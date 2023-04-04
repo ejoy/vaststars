@@ -6,7 +6,7 @@ local function _get_name(prototype)
 end
 
 local recipe_category = {}
-for _, typeobject in pairs(iprototype.each_maintype "recipe") do
+for _, typeobject in pairs(iprototype.each_type "recipe") do
     recipe_category[typeobject.category] = recipe_category[typeobject.category] or {}
     local t = recipe_category[typeobject.category]
     t[#t+1] = typeobject
@@ -21,7 +21,7 @@ local function _get_recipes(category)
 end
 
 local mining_recipe = {}
-for _, typeobject in pairs(iprototype.each_maintype("building", "mining")) do
+for _, typeobject in pairs(iprototype.each_type("building", "mining")) do
     assert(typeobject.mining_category, "mining entity should have mining_category")
     mining_recipe[typeobject.name] = {}
     for _, category in ipairs(typeobject.mining_category) do

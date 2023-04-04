@@ -435,7 +435,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
         global.fluidflow_id = global.fluidflow_id + 1
         new_fluidflow_id = global.fluidflow_id
     end
-    local object_state = State.succ and "construct" or "invalid_construct"
+    local state = State.succ and "construct" or "invalid_construct"
 
     -- TODO: pipe to ground can be replaced by pipe
     if PipeToGroundState.replace then
@@ -464,7 +464,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                 object.dir = v[2]
             end
 
-            object.state = object_state
+            object.state = state
         else
             object = iobject.new {
                 prototype_name = v[1],
@@ -476,8 +476,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                 },
                 fluid_name = State.fluid_name,
                 fluidflow_id = new_fluidflow_id,
-                state = object_state,
-                object_state = "none",
+                state = state,
             }
             objects:set(object, EDITOR_CACHE_NAMES[1])
         end
@@ -689,7 +688,6 @@ local function new_entity(self, datamodel, typeobject)
             t = terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)),
         },
         fluid_name = "",
-        object_state = "none",
     }
 
     --

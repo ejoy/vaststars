@@ -1,9 +1,7 @@
 ﻿#include "system/station.h"
 #include "core/world.h"
 #include "core/capacitance.h"
-extern "C" {
 #include "util/prototype.h"
-}
 #include "luaecs.h"
 #include <lua.hpp>
 #include <bee/nonstd/unreachable.h>
@@ -67,8 +65,7 @@ static uint8_t safe_add(uint8_t a, uint8_t b) {
 
 static std::tuple<uint8_t, uint8_t> building_center(world& world, ecs::building& building) {
     //TODO 使用更精确的x/y
-    prototype_context pt = world.prototype(building.prototype);
-    uint16_t area = (uint16_t)pt_area(&pt);
+    uint16_t area = (uint16_t)prototype::get<"area">(world, building.prototype);
     uint8_t w = area >> 8;
     uint8_t h = area & 0xFF;
     assert(w > 0 && h > 0);
@@ -98,7 +95,7 @@ static std::tuple<uint8_t, uint8_t> building_center(world& world, ecs::building&
 }
 
 static int lbuild(lua_State *L) {
-    auto& w = *(world*)lua_touserdata(L, 1);
+    auto& w = getworld(L);
     auto& rw = w.rw;
     auto& s = w.stations;
     s.consumers.clear();
@@ -125,7 +122,7 @@ static ecs::station& find_producer(world& w, station_vector& producers) {
         size_t ii = (i + w.time) % N;
         auto& station = *producers[ii];
         float cap = (float)station.lorry / station.weights;
-        if (cap < min_cap) {
+        if(!result || (cap < min_cap)) {
             min_cap = cap;
             result = &station;
             if (station.lorry == 0) {
@@ -157,20 +154,19 @@ static std::optional<uint8_t> recipeFirstOutput(world& w, uint16_t recipe) {
     if (recipe == 0) {
         return std::nullopt;
     }
-    prototype_context pt = w.prototype(recipe);
-    recipe_items* ingredients = (recipe_items*)pt_ingredients(&pt);
-    recipe_items* results = (recipe_items*)pt_results(&pt);
-    if (results->n == 0) {
+    auto& ingredients = *(recipe_items*)prototype::get<"ingredients">(w, recipe).data();
+    auto& results = *(recipe_items*)prototype::get<"results">(w, recipe).data();
+    if (results.n == 0) {
         return std::nullopt;
     }
-    if (ingredients->n >= (std::numeric_limits<uint8_t>::max)()) {
+    if (ingredients.n >= (std::numeric_limits<uint8_t>::max)()) {
         return std::nullopt;
     }
-    return (uint8_t)ingredients->n + 1;
+    return (uint8_t)ingredients.n;
 }
 
 static int lupdate(lua_State *L) {
-    world& w = *(world*)lua_touserdata(L, 1);
+    auto& w = getworld(L);
     size_t sz = ecs_api::count<ecs::station_producer>(w.ecs);
     if (sz == 0) {
         return 0;
@@ -180,6 +176,9 @@ static int lupdate(lua_State *L) {
     for (auto& v : ecs_api::select<ecs::station_producer, ecs::station, ecs::building>(w.ecs)) {
         auto& station = v.get<ecs::station>();
         producers[i++] = &station;
+        if (station.endpoint == 0xFFFF) {
+            continue;
+        }
         auto& ep = w.rw.Endpoint(station.endpoint);
         auto lorryId = ep.waitingLorry(w.rw);
         if (!lorryId) {
@@ -204,16 +203,17 @@ static int lupdate(lua_State *L) {
             ep.setOutForce(w.rw);
             auto& target_station = target.get<ecs::station>();
             auto& target_ep = w.rw.Endpoint(target_station.endpoint);
+            l.go(target_ep.rev_neighbor, chestslot.item, chestslot.amount);
             chestslot.amount = 0;
-            l.item_classid = chestslot.item;
-            l.item_amount = chestslot.amount;
-            l.ending = target_ep.rev_neighbor;
             station.lorry--;
             target_station.lorry++;
         }
     }
     for (auto& v : ecs_api::select<ecs::station_consumer, ecs::station>(w.ecs)) {
         auto& station = v.get<ecs::station>();
+        if (station.endpoint == 0xFFFF) {
+            continue;
+        }
         auto& ep = w.rw.Endpoint(station.endpoint);
         auto lorryId = ep.waitingLorry(w.rw);
         if (!lorryId) {
@@ -234,15 +234,16 @@ static int lupdate(lua_State *L) {
         ep.setOutForce(w.rw);
         auto& target_station = producer;
         auto& target_ep = w.rw.Endpoint(target_station.endpoint);
-        chestslot.amount = l.item_amount;
-        l.item_classid = 0;
-        l.item_amount = 0;
-        l.ending = target_ep.rev_neighbor;
+        chestslot.amount = l.get_item_amount();
+        l.go(target_ep.rev_neighbor, 0, 0);
         station.lorry--;
         target_station.lorry++;
     }
     for (auto& v : ecs_api::select<ecs::lorry_factory, ecs::assembling, ecs::chest>(w.ecs)) {
         auto& lorry_factory = v.get<ecs::lorry_factory>();
+        if (lorry_factory.endpoint == 0xFFFF) {
+            continue;
+        }
         auto& ep = w.rw.Endpoint(lorry_factory.endpoint);
         if (!ep.isReady(w.rw)) {
             continue;
@@ -255,16 +256,15 @@ static int lupdate(lua_State *L) {
         auto& slot = *slot_opt;
         auto& chest = v.get<ecs::chest>();
         auto& chestslot = chest::array_at(w, container::index::from(chest.chest), slot);
-        if (chestslot.amount == 0) {
+        if (chestslot.amount == 0 || chestslot.limit == 0) {
             continue;
         }
         chestslot.amount--;
+        chestslot.limit--;
         auto& producer = find_producer(w, producers);
         roadnet::lorryid lorryId = w.rw.createLorry(w, chestslot.item);
         auto& l = w.rw.Lorry(lorryId);
-        l.item_classid = 0;
-        l.item_amount = 0;
-        l.ending = w.rw.Endpoint(producer.endpoint).rev_neighbor;
+        l.go(w.rw.Endpoint(producer.endpoint).rev_neighbor, 0, 0);
         ep.setOutForce(w.rw, lorryId);
     }
     return 0;

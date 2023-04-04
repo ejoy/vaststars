@@ -1,6 +1,7 @@
 local guide = import_package "vaststars.prototype"("guide")
 local M = {}
-local running = false
+local is_in_guide = false
+local running = true
 
 function M.get_guide_id()
     local world = M.world
@@ -29,17 +30,25 @@ function M.get_progress()
 end
 
 function M.step_progress()
-    running = false
+    is_in_guide = false
     local storage = M.world.storage
     storage.guide_id = storage.guide_id + 1
 end
 
-function M.set_running(r)
-    running = r
+function M.set_running(b)
+    running = b
 end
 
 function M.is_running()
     return running
+end
+
+function M.set_is_in_guide(b)
+    is_in_guide = b
+end
+
+function M.is_in_guide()
+    return is_in_guide
 end
 
 function M.set_task(task_name)

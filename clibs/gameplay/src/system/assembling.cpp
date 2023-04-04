@@ -3,9 +3,6 @@
 #include "luaecs.h"
 #include "core/world.h"
 #include "core/capacitance.h"
-extern "C" {
-#include "util/prototype.h"
-}
 
 #define STATUS_IDLE 0
 #define STATUS_DONE 1
@@ -52,12 +49,11 @@ assembling_update(world& w, ecs_api::entity<ecs::assembling, ecs::chest, ecs::ca
 
     // step.2
     while (a.progress <= 0) {
-        prototype_context recipe = w.prototype(a.recipe);
         if (a.status == STATUS_DONE) {
-            if (!chest::place(w, container::index::from(c2.chest), recipe)) {
+            if (!chest::place(w, container::index::from(c2.chest), a.recipe)) {
                 return;
             }
-            w.stat.finish_recipe(w, a.recipe, false);
+            w.stat.finish_recipe(w, a.recipe);
             a.status = STATUS_IDLE;
             if (c2.fluidbox_out != 0) {
                 ecs::fluidboxes* fb = v.sibling<ecs::fluidboxes>();
@@ -67,10 +63,10 @@ assembling_update(world& w, ecs_api::entity<ecs::assembling, ecs::chest, ecs::ca
             }
         }
         if (a.status == STATUS_IDLE) {
-            if (!chest::pickup(w, container::index::from(c2.chest), recipe)) {
+            if (!chest::pickup(w, container::index::from(c2.chest), a.recipe)) {
                 return;
             }
-            int time = pt_time(&recipe);
+            auto time = prototype::get<"time">(w, a.recipe);
             a.progress += time * 100;
             a.status = STATUS_DONE;
             if (c2.fluidbox_in != 0) {
@@ -93,7 +89,7 @@ assembling_update(world& w, ecs_api::entity<ecs::assembling, ecs::chest, ecs::ca
 
 static int
 lupdate(lua_State *L) {
-    world& w = *(world*)lua_touserdata(L, 1);
+    auto& w = getworld(L);
     for (auto& v : ecs_api::select<ecs::assembling, ecs::chest, ecs::capacitance, ecs::building>(w.ecs)) {
         assembling_update(w, v);
     }

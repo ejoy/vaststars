@@ -27,7 +27,7 @@ funcs["fluidboxes"] = function(typeobject)
 end
 
 local function check()
-    for _, typeobject in pairs(iprototype.each_maintype("building")) do
+    for _, typeobject in pairs(iprototype.each_type("building")) do
         for _, type in ipairs(typeobject.type) do
             local func = funcs[type]
             if func then

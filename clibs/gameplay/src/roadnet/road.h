@@ -8,8 +8,8 @@
 
 namespace roadnet {
     enum class roadtype: uint8_t {
-        cross,
         straight,
+        cross,
     };
     struct roadid {
     public:

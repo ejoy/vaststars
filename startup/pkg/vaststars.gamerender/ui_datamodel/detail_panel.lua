@@ -77,14 +77,13 @@ local function get_display_info(e, typeobject, t)
                     local current = 0
                     if cn == "power" then
                         local st = global.statistic["power"][e.eid]
+                        -- if typeobject.name == "指挥中心" then
+                        --     local consumenode = global.statistic.power_consumed["5s"]
+                        --     current = consumenode.power / consumenode.time
+                        -- else
                         if st then
                             -- power is sum of 50 tick
                             current = st[cn] * (UPS / 50)
-                        elseif typeobject.name == "指挥中心" then
-                            current = 0
-                            for _, value in pairs(global.statistic.power_consumed) do
-                                current = current + value
-                            end
                         elseif e.solar_panel then
                             current = get_solar_panel_power(total) * UPS
                             if current <= 0 then
@@ -141,27 +140,30 @@ local function get_property(e, typeobject)
     }
     -- 显示建筑详细信息
     get_display_info(e, typeobject, t)
-    -- if e.chest and e.chest.id == e.chest.id and e.chest.id ~= 0xffff then
-    --     local item_counts = ichest:item_counts(gameplay_core.get_world(), e)
-    --     local slotnum = 0--t.values.slots
-    --     local chest_list0 = {}
-    --     local chest_list1 = {}
-    --     for id, count in pairs(item_counts) do
-    --         local typeobject_item = assert(iprototype.queryById(id))
-    --         slotnum = slotnum + math.floor(count / typeobject_item.stack)
-    --         if count % typeobject_item.stack > 0 then
-    --             slotnum = slotnum + 1
-    --         end
-    --         if #chest_list0 < 5 then
-    --             chest_list0[#chest_list0 + 1] = {icon = typeobject_item.icon, count = count}
-    --         elseif #chest_list1 < 5 then
-    --             chest_list1[#chest_list1 + 1] = {icon = typeobject_item.icon, count = count}
-    --         end
-    --     end
-    --     t.chest_list0 = #chest_list0 > 0 and chest_list0 or nil
-    --     t.chest_list1 = #chest_list1 > 0 and chest_list1 or nil
-    --     t.values.slots = string.format("%d/%d", slotnum, t.values.slots or 0)
-    -- end
+    if e.chest and e.chest.id == e.chest.id and e.chest.id ~= 0xffff then
+        local slotnum = 0
+        -- the items display is shown in two rows, with list0 for the first row and list1 for the second row (five items per row, up to ten items in total)
+        local chest_list0 = {}
+        local chest_list1 = {}
+        local typeobject = iprototype.queryById(e.building.prototype)
+        if typeobject.slots then
+            for _, slot in pairs(ichest.collect_item(gameplay_core.get_world(), e)) do
+                local typeobject_item = assert(iprototype.queryById(slot.item))
+                slotnum = slotnum + math.floor(slot.amount / typeobject_item.stack)
+                if slot.amount % typeobject_item.stack > 0 then
+                    slotnum = slotnum + 1
+                end
+                if #chest_list0 < 5 then
+                    chest_list0[#chest_list0 + 1] = {icon = typeobject_item.icon, count = slot.amount}
+                elseif #chest_list1 < 5 then
+                    chest_list1[#chest_list1 + 1] = {icon = typeobject_item.icon, count = slot.amount}
+                end
+            end
+            t.chest_list0 = #chest_list0 > 0 and chest_list0 or nil
+            t.chest_list1 = #chest_list1 > 0 and chest_list1 or nil
+            t.values.slots = string.format("%d/%d", slotnum, t.values.slots or 0)
+        end
+    end
     if e.fluidbox then
         local name = "无"
         local volume = 0
@@ -250,16 +252,17 @@ local function get_entity_property_list(object_id)
             progress = e.assembling.progress
             property_list.recipe_name = recipe_typeobject.name
             property_list.recipe_inputs, property_list.recipe_ouputs = assembling_common.get(gameplay_core.get_world(), e)
-        end
-        if e.assembling.status == STATUS_IDLE then
-            property_list.progress = "0%"
-        else
-            property_list.progress = itypes.progress_str(progress, total_progress)
-        end
-        if e.mining then
-            property_list.is_minner = true
-        else
-            property_list.is_assemble = true
+        
+            if e.assembling.status == STATUS_IDLE then
+                property_list.progress = "0%"
+            else
+                property_list.progress = itypes.progress_str(progress, total_progress)
+            end
+            if e.mining then
+                property_list.is_minner = true
+            else
+                property_list.is_assemble = true
+            end
         end
     elseif e.laboratory then
         local current_inputs = ilaboratory:get_elements(typeobject.inputs)

@@ -4,9 +4,7 @@
 
 #include "luaecs.h"
 #include "core/world.h"
-extern "C" {
 #include "util/prototype.h"
-}
 
 static constexpr uint64_t UPS        = 30;
 static constexpr uint64_t DuskTick   = 100 * UPS;
@@ -34,15 +32,15 @@ solar_efficiency(uint64_t time) {
 
 static int
 lupdate(lua_State *L) {
-    world& w = *(world*)lua_touserdata(L, 1);
+    auto& w = getworld(L);
     w.time++;
     uint64_t eff = solar_efficiency(w.time / DayTick);
     if (eff != 0) {
         for (auto& v : ecs_api::select<ecs::solar_panel, ecs::capacitance, ecs::building>(w.ecs)) {
             ecs::building& building = v.get<ecs::building>();
             ecs::capacitance& c = v.get<ecs::capacitance>();
-            prototype_context p = w.prototype(building.prototype);
-            unsigned int power = (unsigned int)(eff * pt_power(&p) / FixedPoint);
+            unsigned int power = prototype::get<"power">(w, building.prototype);
+            power = (unsigned int)(eff * power / FixedPoint);
             if (power < c.shortage) {
                 c.shortage -= power;
             }
@@ -52,11 +50,10 @@ lupdate(lua_State *L) {
         }
     }
     
-    for (auto& v : ecs_api::select<ecs::base, ecs::capacitance, ecs::building>(w.ecs)) {
+    for (auto& v : ecs_api::select<ecs::wind_turbine, ecs::capacitance, ecs::building>(w.ecs)) {
         ecs::building& building = v.get<ecs::building>();
         ecs::capacitance& c = v.get<ecs::capacitance>();
-        prototype_context p = w.prototype(building.prototype);
-        unsigned int power = (unsigned int)pt_power(&p);
+        unsigned int power = prototype::get<"power">(w, building.prototype);
         if (power < c.shortage) {
             c.shortage -= power;
         }

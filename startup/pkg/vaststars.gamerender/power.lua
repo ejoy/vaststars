@@ -134,6 +134,10 @@ function M:clear_temp_pole(pole, keep)
        for _, line in ipairs(lines) do
             remove_from_table(line.p1, line.p2.targets)
             remove_from_table(line.p2, line.p1.targets)
+            if line.p2.power_network_link and line.p1.power_network_link then
+                line.p2.power_network_link_target = line.p2.power_network_link_target - 1
+                line.p1.power_network_link_target = line.p1.power_network_link_target - 1
+            end
        end
     end
     if not keep then
@@ -151,6 +155,10 @@ end
 local function do_create_line(pole1, pole2)
     pole1.targets[#pole1.targets + 1] = pole2
     pole2.targets[#pole2.targets + 1] = pole1
+    if pole1.power_network_link and pole2.power_network_link then
+        pole1.power_network_link_target = pole1.power_network_link_target + 1
+        pole2.power_network_link_target = pole2.power_network_link_target + 1
+    end
     return { p1 = pole1, p2 = pole2 }
 end
 
@@ -158,7 +166,7 @@ local function create_lines(head, connects)
     local function has_connected(p, poles)
         for _, connected in ipairs(poles) do
             for _, target in ipairs(connected.targets) do
-                if p == target then
+                if p == target and p.power_network_link and connected.power_network_link then
                     return true
                 end
             end
@@ -172,7 +180,7 @@ local function create_lines(head, connects)
         assert(con[1] == head )
         local tail = con[2]
         local skip = has_connected(tail, connected_pole)
-        if not skip and #head.targets < 5 and #tail.targets < 5 then
+        if not skip and head.power_network_link_target < 5 and tail.power_network_link_target < 5 then
             lines[#lines + 1] = do_create_line(head, tail)
             connected_pole[#connected_pole + 1] = tail
         end
@@ -298,6 +306,7 @@ function M:build_power_network(gw)
         if v.capacitance then
             capacitance[#capacitance + 1] = {
                 targets = {},
+                power_network_link_target = 0,
                 -- name = typeobject.name,
                 eid = v.eid,
                 x = e.x,
@@ -306,9 +315,10 @@ function M:build_power_network(gw)
                 h = ah,
             }
         end
-        if typeobject.name == "指挥中心" or typeobject.power_pole then
+        if typeobject.power_network_link or typeobject.power_supply_distance then
             powerpole[#powerpole + 1] = {
                 targets = {},
+                power_network_link_target = 0,
                 -- name = typeobject.name,
                 eid = v.eid,
                 x = e.x,
@@ -317,7 +327,8 @@ function M:build_power_network(gw)
                 h = ah,
                 sw = tonumber(sw),
                 sh = tonumber(sh),
-                sd = typeobject.power_supply_distance
+                sd = typeobject.power_supply_distance,
+                power_network_link = typeobject.power_network_link
             }
         end
     end

@@ -19,69 +19,23 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  material: /pkg/vaststars.resources/glb/wind-turbine-1.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/wind-turbine-1.glb|meshes/Cube.001_P1.meshbin
-  name: Cube
-  scene: {}
-  visible_state: main_view|selectable|cast_shadow
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  material: /pkg/vaststars.resources/glb/wind-turbine-1.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/wind-turbine-1.glb|meshes/Cylinder.002_P1.meshbin
-  name: Cylinder.001
-  scene: {}
-  visible_state: main_view|selectable|cast_shadow
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  material: /pkg/vaststars.resources/glb/wind-turbine-1.glb|materials/Material.material
+  material: /pkg/vaststars.resources/glb/wind-turbine-1.glb|materials/Material.001_skin.material
   mesh: /pkg/vaststars.resources/glb/wind-turbine-1.glb|meshes/Plane.003_P1.meshbin
   name: Plane.003
-  scene: {}
+  skinning: true
   visible_state: main_view|selectable|cast_shadow
-mount: 1
 policy:
   ant.general|name
-  ant.render|render
+  ant.render|skinrender
 ---
 data:
-  material: /pkg/vaststars.resources/glb/wind-turbine-1.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/wind-turbine-1.glb|meshes/Plane.004_P1.meshbin
-  name: Plane.006
-  scene: {}
-  visible_state: main_view|selectable|cast_shadow
-mount: 1
+  anim_ctrl: {}
+  animation:
+    ArmatureAction: /pkg/vaststars.resources/glb/wind-turbine-1.glb|animations/ArmatureAction.ozz
+    work: /pkg/vaststars.resources/prefabs/animation/wind_turbine_animat.anim
+  animation_birth: ArmatureAction
+  name: animation
+  skeleton: /pkg/vaststars.resources/glb/wind-turbine-1.glb|animations/skeleton.ozz
 policy:
+  ant.animation|animation
   ant.general|name
-  ant.render|render
----
-data:
-  material: /pkg/vaststars.resources/glb/wind-turbine-1.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/wind-turbine-1.glb|meshes/Cylinder.001_P1.meshbin
-  name: Cylinder.002
-  scene:
-    s: {2.2423763275146484, 2.2423763275146484, 2.2423763275146484}
-  visible_state: main_view|selectable|cast_shadow
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  material: /pkg/vaststars.resources/glb/wind-turbine-1.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/wind-turbine-1.glb|meshes/Cylinder.003_P1.meshbin
-  name: Cylinder.003
-  scene:
-    t: {0, 24.63296127319336, 0}
-  visible_state: main_view|selectable|cast_shadow
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render

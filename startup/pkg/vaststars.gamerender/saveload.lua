@@ -8,8 +8,6 @@ local json = import_package "ant.json"
 local SKIP_GUIDE <const> = require "debugger".skip_guide
 local CUSTOM_ARCHIVING <const> = require "debugger".custom_archiving
 local startup_lua <const> = require "debugger".startup or "item.startup"
-local iconstant = require "gameplay.interface.constant"
-local ALL_DIR = iconstant.ALL_DIR
 
 local archival_base_dir
 if CUSTOM_ARCHIVING then
@@ -23,13 +21,12 @@ local iprototype = require "gameplay.interface.prototype"
 local startup_lua = import_package("vaststars.prototype")(startup_lua)
 local startup_entities = startup_lua.entities
 local iroadnet_converter = require "roadnet_converter"
-local startup_road = iroadnet_converter.convert(startup_lua.road)
 local objects = require "objects"
 local ifluid = require "gameplay.interface.fluid"
 local iscience = require "gameplay.interface.science"
 local iguide = require "gameplay.interface.guide"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
-local GAMEPLAY_VERSION <const> = require "version"
+local PROTOTYPE_VERSION <const> = import_package("vaststars.prototype")("version")
 local global = require "global"
 
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
@@ -141,7 +138,6 @@ local function restore_world()
             fluidflow_id = fluidflow_id,
             recipe = recipe,
             fluid_icon = fluid_icon,
-            object_state = "constructed",
         }
         object.gameplay_eid = gameplay_eid
         objects:set(object)
@@ -190,7 +186,7 @@ local function restore_world()
 
         local recipe
         if v.assembling then
-            local show_recipe_icon = typeobject.recipe == nil and not iprototype.has_type(typeobject.type, "mining") -- TODO: special case for mining -- duplicate with build_function_pop.lua
+            local show_recipe_icon = typeobject.recipe == nil and not iprototype.has_type(typeobject.type, "mining") -- TODO: special case for mining -- duplicate with building_arc_menu.lua
             if show_recipe_icon then
                 local typeobject = iprototype.queryById(v.assembling.recipe)
                 if v.assembling.recipe == 0 then
@@ -323,6 +319,7 @@ local function restore_world()
     -- update power network
     ipower:build_power_network(gameplay_core.get_world())
     ipower_line.update_line(ipower:get_pole_lines())
+    global.statistic.valid = false
 end
 
 local function writeall(file, content)
@@ -356,7 +353,7 @@ function M:restore_camera_setting()
     end
 
     if terrain.init then
-        local coord = terrain:align(camera.get_central_position(), terrain.ground_width, terrain.ground_height)
+        local coord = terrain:align(camera.get_central_position(), 1, 1)
         if coord then
             terrain:enable_terrain(coord[1], coord[2])
         end
@@ -383,7 +380,7 @@ function M:backup()
     archival_list[#archival_list + 1] = {dir = dn}
     gameplay_core.backup(archival_dir)
 
-    writeall(archival_dir .. "/version", json.encode({gameplay_version = GAMEPLAY_VERSION}))
+    writeall(archival_dir .. "/version", json.encode({PROTOTYPE_VERSION = PROTOTYPE_VERSION}))
     writeall(archiving_list_path, json.encode(archival_list))
     writeall(camera_setting_path, json.encode(get_camera_setting()))
     print("save success", archival_dir)
@@ -433,8 +430,8 @@ function M:restore(index)
         end
 
         local version = json.decode(readall(archival_dir .. "/version"))
-        if version.gameplay_version ~= GAMEPLAY_VERSION then
-            log.error(("Failed `%s` version `%s` current `%s`"):format(archival_relative_dir, archival_list[index].version, GAMEPLAY_VERSION))
+        if version.PROTOTYPE_VERSION ~= PROTOTYPE_VERSION then
+            log.error(("Failed `%s` version `%s` current `%s`"):format(archival_relative_dir, archival_list[index].version, PROTOTYPE_VERSION))
             iui.open({"option_pop.rml"})
             return false
         else
@@ -453,8 +450,14 @@ function M:restore(index)
     self.running = true
     gameplay_core.restore(archival_dir)
     local map = gameplay_core.get_world():roadnet_get_map()
-    iroadnet:init(iroadnet_converter.from(map))
-    global.roadnet = iroadnet_converter.to_roadnet_data(map)
+    local renderData = {}
+    for coord, mask in pairs(map) do
+        local shape, dir = iroadnet_converter.mask_to_shape_dir(mask)
+        local x, y = iprototype.unpackcoord(coord)
+        renderData[coord] = {x, y, "normal", shape, dir}
+    end
+    iroadnet:init(renderData, true)
+    global.roadnet = map
 
     iscience.update_tech_list(gameplay_core.get_world())
     iui.open({"construct.rml"})
@@ -476,20 +479,15 @@ function M:restart()
     iui.set_guide_progress(iguide.get_progress())
     iui.open({"construct.rml"})
 
-    local coord = terrain:align(camera.get_central_position(), terrain.ground_width, terrain.ground_height)
+    local coord = terrain:align(camera.get_central_position(), 1, 1)
     if coord then
         terrain:enable_terrain(coord[1], coord[2])
     end
 
     --
-    iroadnet:init(startup_road, true)
+    iroadnet:init({}, true)
     global.roadnet = {}
-    local t = {}
-    for _, v in ipairs(startup_lua.road) do
-        global.roadnet[iprototype.packcoord(v.x, v.y)] = {v.prototype_name, v.dir}
-        t[iprototype.packcoord(v.x, v.y)] = iroadnet_converter.prototype_name_dir_to_mask(v.prototype_name, v.dir)
-    end
-    gameplay_core.get_world():roadnet_load_map(t)
+    gameplay_core.get_world():roadnet_reset(global.roadnet)
 
     --
     for _, e in ipairs(startup_entities) do

@@ -21,14 +21,14 @@ local recipe_unlocked; do
         return v
     end
     local recipe_tech = setmetatable({}, mt)
-    for _, typeobject in pairs(iprototype.each_maintype "tech") do
+    for _, typeobject in pairs(iprototype.each_type "tech") do
         if typeobject.effects and typeobject.effects.unlock_recipe then
             for _, recipe in ipairs(typeobject.effects.unlock_recipe) do
                 recipe_tech[recipe][typeobject.name] = true
             end
         end
     end
-    for _, typeobject in pairs(iprototype.each_maintype "task") do
+    for _, typeobject in pairs(iprototype.each_type "task") do
         if typeobject.effects and typeobject.effects.unlock_recipe then
             for _, recipe in ipairs(typeobject.effects.unlock_recipe) do
                 recipe_tech[recipe][typeobject.name] = true

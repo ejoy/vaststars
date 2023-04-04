@@ -96,7 +96,7 @@ register_unit("time", "word", function(s)
 	end
 	if s:match "^[%d.]+s$" then
 		local time = assert(tonumber(s:sub(1, -2)))
-		local tick = math.floor(time*50)
+		local tick = math.floor(time*UPS)
 		return tick
 	end
 	if s:match "^[%d]+$" then
@@ -133,6 +133,12 @@ register_unit("filter", "string", function(s)
 	return s
 end)
 
+register_unit("station_type", "string", function(s)
+	assert(type(s) == "string")
+	assert(s == "station_consumer" or s == "station_producer")
+	return s
+end)
+
 local function query(t, v)
 	if t == "raw" then
 		return tonumber(v)
@@ -155,6 +161,7 @@ register_unit("itemtypes", "string", function(s)
 	end
 	return table.concat(r)
 end)
+unit["itemtypes"].lazy = true
 
 register_unit("items", "string", function(s)
 	local r = {string.pack("<I4", #s)}
@@ -168,6 +175,7 @@ register_unit("items", "string", function(s)
 	end
 	return table.concat(r)
 end)
+unit["items"].lazy = true
 
 register_unit("fluidbox", "table", function(s)
 	return s
@@ -181,7 +189,6 @@ register_unit("task", "string", function(args)
 		select_chest = {3, "raw", "building", "item"},
 		power_generator = {4, "raw"},
 		unknown = {5, "raw", "raw"},
-		stat_manual_production = {6, "raw", "item/fluid"},
 	}
 	local schema = TaskSchema[args[1]]
 	if not schema then
@@ -200,6 +207,7 @@ register_unit("task", "string", function(args)
 	end
 	return table.concat(r)
 end)
+unit["task"].lazy = true
 
 local enum = {
 	priority = {

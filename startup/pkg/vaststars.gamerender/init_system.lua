@@ -48,6 +48,10 @@ function m:init_world()
             {layer_name = "6", logic_layer_names = {"ICON_CONTENT"}},
             {layer_name = "7", logic_layer_names = {"WIRE"}},
         },
+        {
+            "translucent",
+            {layer_name = "8", logic_layer_names = {"SELECTED_BOXES"}},
+        },
     })
 
     iefk.preload "/pkg/vaststars.resources/effect/efk/"
@@ -92,6 +96,7 @@ function m:init_world()
     end
     icanvas.create(icanvas.types().ICON, show)
     icanvas.create(icanvas.types().BUILDING_BASE, true, 0.01)
+    icanvas.create(icanvas.types().ROAD_ENTRANCE_MARKER, false, 0.02)
 
     if not saveload:restore() then
         return
@@ -100,7 +105,6 @@ function m:init_world()
     iui.set_guide_progress(iguide.get_progress())
 end
 
-local tick = 0
 function m:update_world()
     if DEBUG_TERRAIN then
         return
@@ -115,17 +119,13 @@ function m:update_world()
         world_update(gameplay_world)
         gameplay_update(gameplay_world)
 
-        tick = tick + 1
-        if tick > 3 then -- TODO: remove this
-            local is_cross, mc, x, y, z
-            for lorry_id, rc, tick in gameplay_world:roadnet_each_lorry() do
-                is_cross = (rc & 0x8000 ~= 0) -- see also: push_road_coord() in c code
-                mc = gameplay_world:roadnet_map_coord(rc)
-                x = (mc >>  0) & 0xFF
-                y = (mc >>  8) & 0xFF
-                z = (mc >> 16) & 0xFF
-                lorry_manager.update(lorry_id, is_cross, x, y, z, tick)
-            end
+        local mc, x, y, z
+        for lorry_id, rc, tick in gameplay_world:roadnet_each_lorry() do
+            mc = gameplay_world:roadnet_map_coord(rc)
+            x = (mc >>  0) & 0xFF
+            y = (mc >>  8) & 0xFF
+            z = (mc >> 16) & 0xFF
+            lorry_manager.update(lorry_id, x, y, z, tick)
         end
     end
 end
@@ -135,7 +135,7 @@ function m:camera_usage()
         if not terrain.init then
             goto continue
         end
-        local coord = terrain:align(camera.get_central_position(), terrain.ground_width, terrain.ground_height)
+        local coord = terrain:align(camera.get_central_position(), 1, 1)
         if coord then
             terrain:enable_terrain(coord[1], coord[2])
         end
@@ -148,7 +148,7 @@ function m:camera_usage()
             local pos = icamera.screen_to_world(x, y, {PLANES[1]})
             local coord = terrain:get_coord_by_position(pos[1])
             if coord then
-                log.info(("pickup coord: (%s, %s) ground(%s, %s)"):format(coord[1], coord[2], coord[1] - (coord[1] % terrain.ground_width), coord[2] - (coord[2] % terrain.ground_height)))
+                log.info(("pickup coord: (%s, %s)"):format(coord[1], coord[2]))
             end
         end
     end

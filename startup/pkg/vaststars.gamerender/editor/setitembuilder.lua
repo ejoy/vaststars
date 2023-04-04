@@ -24,12 +24,17 @@ local iui = ecs.import.interface "vaststars.gamerender|iui"
 local mc = import_package "ant.math".constant
 local create_road_entrance = ecs.require "editor.road_entrance"
 local iplant = ecs.require "engine.plane"
+local terrain = ecs.require "terrain"
+local gameplay = import_package "vaststars.gameplay"
+local iassembling = gameplay.interface "assembling"
+local assembling_common = require "ui_datamodel.common.assembling"
 local BLOCK_CONSTRUCT_COLOR_INVALID <const> = math3d.constant("v4", {2.5, 0.2, 0.2, 0.4})
 local BLOCK_CONSTRUCT_COLOR_VALID <const> = math3d.constant("v4", {0.0, 1, 0.0, 1.0})
-local BLOCK_CONSTRUCT_POWER_POLE_COLOR_VALID <const> = math3d.constant("v4", {0.13, 1.75, 2.4, 0.5})
-local BLOCK_CONSTRUCT_POWER_POLE_COLOR_INVALID <const> = math3d.constant("v4", {2.5, 0.0, 0.0, 1.0})
-local BLOCK_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.1, 0, 0.0})
+local BLOCK_POWER_SUPPLY_AREA_COLOR_VALID <const> = math3d.constant("v4", {0.13, 1.75, 2.4, 0.5})
+local BLOCK_POWER_SUPPLY_AREA_COLOR_INVALID <const> = math3d.constant("v4", {2.5, 0.0, 0.0, 1.0})
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
+local BLOCK_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
+local BLOCK_EDGE_SIZE <const> = 6
 
 local function _building_to_logisitic(x, y)
     local nposition = assert(building_coord:get_begin_position_by_coord(x, y))
@@ -52,7 +57,7 @@ local function _get_connections(prototype_name, x, y, dir)
 
     for _, conn in ipairs(typeobject.crossing.connections) do
         local dx, dy, ddir = iprototype.rotate_connection(conn.position, dir, typeobject.area)
-        r[#r+1] = {x = x + dx, y = y + dy, dir = ddir, roadside = conn.roadside}
+        r[#r+1] = {x = x + dx, y = y + dy, dir = ddir}
     end
     return r
 end
@@ -83,7 +88,7 @@ local function __new_entity(self, datamodel, typeobject)
     local block_color
     if not self:check_construct_detector(typeobject.name, x, y, dir) then
         if typeobject.power_supply_area then
-            block_color = BLOCK_CONSTRUCT_POWER_POLE_COLOR_INVALID
+            block_color = BLOCK_POWER_SUPPLY_AREA_COLOR_INVALID
         else
             block_color = BLOCK_CONSTRUCT_COLOR_INVALID
         end
@@ -91,7 +96,7 @@ local function __new_entity(self, datamodel, typeobject)
         datamodel.show_rotate = true
     else
         if typeobject.power_supply_area then
-            block_color = BLOCK_CONSTRUCT_POWER_POLE_COLOR_VALID
+            block_color = BLOCK_POWER_SUPPLY_AREA_COLOR_VALID
         else
             block_color = BLOCK_CONSTRUCT_COLOR_VALID
         end
@@ -119,7 +124,6 @@ local function __new_entity(self, datamodel, typeobject)
             t = building_positon,
         },
         fluid_name = fluid_name,
-        object_state = "none",
     }
     iui.open({"construct_pop.rml"}, self.pickup_object.srt.t)
 
@@ -151,6 +155,16 @@ local function __calc_grid_position(self, typeobject)
     return math3d.ref(math3d.add(math3d.sub(buildingPosition, originPosition), GRID_POSITION_OFFSET))
 end
 
+local function __show_block(self, position, dir, color, w, h)
+    self.blocks[#self.blocks+1] = iplant.create("/pkg/vaststars.resources/materials/singlecolor.material", "u_color", color,
+        {
+            s = {terrain.tile_size * w + BLOCK_EDGE_SIZE, 1, terrain.tile_size * h + BLOCK_EDGE_SIZE},
+            r = ROTATORS[dir],
+            t = math3d.ref(math3d.add(position, BLOCK_POSITION_OFFSET))
+        }
+    )
+end
+
 local function new_entity(self, datamodel, typeobject)
     __new_entity(self, datamodel, typeobject)
     self.pickup_object.APPEAR = true
@@ -158,6 +172,17 @@ local function new_entity(self, datamodel, typeobject)
     if not self.grid_entity then
         self.grid_entity = igrid_entity.create("polyline_grid", building_coord.tile_width, building_coord.tile_height, logistic_coord.tile_size, {t = __calc_grid_position(self, typeobject)})
         self.grid_entity:show(true)
+    end
+    if typeobject.power_supply_area and typeobject.power_supply_distance then
+        local block_color = BLOCK_POWER_SUPPLY_AREA_COLOR_VALID
+        for _, object in objects:all() do
+            local otypeobject = iprototype.queryByName(object.prototype_name)
+            if otypeobject.power_supply_area then
+                local ow, oh = otypeobject.power_supply_area:match("(%d+)x(%d+)")
+                ow, oh = tonumber(ow), tonumber(oh)
+                __show_block(self, object.srt.t, object.dir, block_color, ow, oh)
+            end
+        end
     end
 end
 
@@ -250,12 +275,12 @@ local function touch_move(self, datamodel, delta_vec)
         end
         if self.block then
             if typeobject.power_supply_area then
-                block_color = BLOCK_CONSTRUCT_POWER_POLE_COLOR_INVALID
+                block_color = BLOCK_POWER_SUPPLY_AREA_COLOR_INVALID
             else
                 block_color = BLOCK_CONSTRUCT_COLOR_INVALID
             end
             if typeobject.power_supply_area then
-                block_color = BLOCK_CONSTRUCT_POWER_POLE_COLOR_INVALID
+                block_color = BLOCK_POWER_SUPPLY_AREA_COLOR_INVALID
             else
                 block_color = BLOCK_CONSTRUCT_COLOR_INVALID
             end
@@ -268,7 +293,7 @@ local function touch_move(self, datamodel, delta_vec)
         end
         if self.block then
             if typeobject.power_supply_area then
-                block_color = BLOCK_CONSTRUCT_POWER_POLE_COLOR_VALID
+                block_color = BLOCK_POWER_SUPPLY_AREA_COLOR_VALID
             else
                 block_color = BLOCK_CONSTRUCT_COLOR_VALID
             end
@@ -282,7 +307,7 @@ local function touch_move(self, datamodel, delta_vec)
     if typeobject.power_supply_area and typeobject.power_supply_distance then
         local aw, ah = iprototype.unpackarea(typeobject.area)
         local sw, sh = typeobject.power_supply_area:match("(%d+)x(%d+)")
-        ipower:merge_pole({key = pickup_object.id, targets = {}, x = lx, y = ly, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.power_supply_distance, smooth_pos = true})
+        ipower:merge_pole({power_network_link_target = 0, key = pickup_object.id, targets = {}, x = lx, y = ly, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.power_supply_distance, smooth_pos = true, power_network_link = typeobject.power_network_link})
         ipower_line.update_temp_line(ipower:get_temp_pole())
     end
 end
@@ -305,7 +330,6 @@ local function confirm(self, datamodel)
     pickup_object.state = "confirm"
     objects:set(pickup_object, "CONFIRM")
     pickup_object.PREPARE = true
-    pickup_object.object_state = "confirm"
 
     datamodel.show_confirm = false
     datamodel.show_rotate = false
@@ -313,7 +337,7 @@ local function confirm(self, datamodel)
     if typeobject.power_supply_area and typeobject.power_supply_distance then
         local aw, ah = iprototype.unpackarea(typeobject.area)
         local sw, sh = typeobject.power_supply_area:match("(%d+)x(%d+)")
-        ipower:merge_pole({key = pickup_object.id, targets = {}, x = pickup_object.x, y = pickup_object.y, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.power_supply_distance}, true)
+        ipower:merge_pole({power_network_link_target = 0, key = pickup_object.id, targets = {}, x = pickup_object.x, y = pickup_object.y, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.power_supply_distance, power_network_link = typeobject.power_network_link}, true)
         ipower_line.update_temp_line(ipower:get_temp_pole())
     end
 
@@ -328,16 +352,96 @@ local function confirm(self, datamodel)
     end
 
     iui.close("construct_pop.rml")
-    global.construct_queue:put(pickup_object.prototype_name, pickup_object.id)
+    self:complete(pickup_object.id, datamodel)
 end
 
+-- TODO: remove this
 local gameplay_core = require "gameplay.core"
+local gameplay = import_package "vaststars.gameplay"
+local ihub = gameplay.interface "hub"
+local ichest = require "gameplay.interface.chest"
 
-local function complete(self, object_id)
-    do
-        local e = gameplay_core.get_entity(assert(self.gameplay_eid))
-        gameplay_core.get_world():container_pickup(e.chest, self.item, 1)
+local function __set_hub_first_item(gameplay_world, e, prototype_name)
+    ihub.set_item(gameplay_world, e, prototype_name)
+end
+
+local function __get_hub_first_item(gameplay_world, e)
+    local slot = ichest.chest_get(gameplay_world, e.hub, 1)
+    if slot then
+        return slot.item
     end
+end
+
+local function __set_station_first_item(gameplay_world, e, prototype_name)
+    local station = e.station
+    gameplay_world:container_destroy(station)
+
+    local typeobject = iprototype.queryById(e.building.prototype)
+    local typeobject_item = iprototype.queryByName(prototype_name)
+    local c = {}
+    c[#c+1] = gameplay_world:chest_slot {
+        type = typeobject.chest_type,
+        item = typeobject_item.id,
+        limit = 1,
+    }
+    station.chest = gameplay_world:container_create(table.concat(c))
+
+    e.chest.chest = station.chest
+end
+
+local function __get_station_first_item(gameplay_world, e)
+    local slot = ichest.chest_get(gameplay_world, e.station, 1)
+    if slot then
+        return slot.item
+    end
+end
+
+local function __deduct_item(self, e)
+    gameplay_core.get_world():container_pickup(e.chest, self.item, 1)
+
+    local typeobject = iprototype.queryById(e.building.prototype)
+    local _, results = assembling_common.get(gameplay_core.get_world(), e)
+    assert(results and #results == 1)
+    local multiple = math.max((results[1].limit // results[1].output_count) - 1, 0)
+    if typeobject.recipe_max_limit and typeobject.recipe_max_limit.resultsLimit >= multiple then
+        iassembling.set_option(gameplay_core.get_world(), e, {ingredientsLimit = multiple, resultsLimit = multiple})
+        gameplay_core.build()
+    end
+end
+
+local function _get_connections(prototype_name, x, y, dir)
+    local typeobject = iprototype.queryByName(prototype_name)
+    local r = {}
+    if not typeobject.crossing then
+        return r
+    end
+
+    for _, conn in ipairs(typeobject.crossing.connections) do
+        local dx, dy, ddir = iprototype.rotate_connection(conn.position, dir, typeobject.area)
+        r[#r+1] = {x = x + dx, y = y + dy, dir = ddir}
+    end
+    return r
+end
+
+local iroadnet = ecs.require "roadnet"
+local MAPPING <const> = {
+    W = 0, -- left
+    N = 1, -- top
+    E = 2, -- right
+    S = 3, -- bottom
+}
+
+-- TODO：duplicate codes
+local function __set_state_value(num, dir)
+    local index = MAPPING[dir]
+    assert(index >= 0 and index <= 3)
+    num = num & ~(1 << index) | (1 << index)
+    return num
+end
+
+local function complete(self, object_id, datamodel)
+    local e = gameplay_core.get_entity(assert(self.gameplay_eid))
+    __deduct_item(self, e)
 
     self.super.complete(self, object_id)
 
@@ -348,9 +452,31 @@ local function complete(self, object_id)
     end
 
     local typeobject = iprototype.queryByName(object.prototype_name)
-    if iprototype.has_type(typeobject.type, "hub") then
-        iui.open({"drone_depot.rml"}, object_id)
+    local rd = _get_connections(object.prototype_name, object.x, object.y, object.dir)
+    if #rd == 1 then
+        local dx, dy = iprototype.move_coord(rd[1].x, rd[1].y, rd[1].dir, 1)
+        local mask = assert(global.roadnet[iprototype.packcoord(dx, dy)])
+        mask = __set_state_value(mask, iprototype.reverse_dir(rd[1].dir))
+        global.roadnet[iprototype.packcoord(dx, dy)] = mask
+        global.roadnet[iprototype.packcoord(rd[1].x, rd[1].y)] = 0x10
+        iroadnet:editor_build()
     end
+
+    if iprototype.has_type(typeobject.type, "hub") then
+        local interface = {} -- TODO: remove this
+        interface.get_first_item = __get_hub_first_item
+        interface.set_first_item = __set_hub_first_item
+        iui.open({"drone_depot.rml"}, object_id, interface)
+    end
+    if iprototype.has_type(typeobject.type, "station") then
+        local interface = {} -- TODO: remove this
+        interface.get_first_item = __get_station_first_item
+        interface.set_first_item = __set_station_first_item
+        iui.open({"drone_depot.rml"}, object_id, interface)
+    end
+
+    self:clean(datamodel)
+    iui.redirect("construct.rml", "move_finish") -- TODO：remove this
 end
 
 local function check_construct_detector(self, prototype_name, x, y, dir)
@@ -363,10 +489,6 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
     if typeobject.crossing then
         local valid = false
         for _, conn in ipairs(_get_connections(prototype_name, x, y, dir)) do
-            if not conn.roadside then
-                goto continue
-            end
-
             local succ, dx, dy = logistic_coord:move_coord(conn.x, conn.y, conn.dir, 1)
             if not succ then
                 goto continue
@@ -427,6 +549,11 @@ local function clean(self, datamodel)
         self.grid_entity = nil
     end
 
+    for _, block in ipairs(self.blocks) do
+        block:remove()
+    end
+    self.blocks = {}
+
     ieditor:revert_changes({"TEMPORARY"})
     datamodel.show_confirm = false
     datamodel.show_rotate = false
@@ -459,6 +586,7 @@ local function create(gameplay_eid, item)
     M.rotate_pickup_object = rotate_pickup_object
     M.clean = clean
     M.check_construct_detector = check_construct_detector
+    M.blocks = {}
 
     M.gameplay_eid = gameplay_eid
     M.item = item

@@ -52,4 +52,6 @@ prototype "无人机仓库" {
     slots = 1,
     drone_entity = "无人机",
     drone_count = 1,
+    power_supply_area = "6x6",
+    power_supply_distance = 8,
 }

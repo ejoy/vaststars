@@ -31,11 +31,12 @@ component "lorry_factory" {
 }
 
 component "hub" {
+    "id:word",
     "chest:word",
 }
 
 --
--- prev/next/mov2/home
+-- prev/next/mov2
 -- | unused(5bit) | type(2bit) | chest(4bit) | slot(3bit) | y(9bit) | x(9bit) |
 -- 32            27           25            21           18         9         0
 --
@@ -43,7 +44,7 @@ component "drone" {
     "prev:dword",
     "next:dword",
     "mov2:dword",
-    "home:dword",
+    "home:word",
     "classid:word",
     "maxprogress:word",
     "progress:word",
@@ -115,14 +116,10 @@ component "save_fluidflow" {
 component "solar_panel" {
 }
 
-component "base" {
+component "wind_turbine" {
 }
 
-component "manual" {
-    "recipe:word",
-    "speed:word",
-    "status:byte",
-    "progress:int",
+component "base" {
 }
 
 component "fluidbox_changed" {}

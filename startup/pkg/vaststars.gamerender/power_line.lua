@@ -12,6 +12,9 @@ local temp_lines = {}
 local lines = {}
 local pole_height = 30
 local function create_line(pole1, pole2)
+    if not pole1.power_network_link or not pole2.power_network_link then
+        return 0
+    end
     local pos1
     local pos2
     if pole1.key and pole1.smooth_pos then
@@ -33,7 +36,9 @@ end
 
 function M.clear_temp_line()
     for _, le in ipairs(temp_lines) do
-        w:remove(le)
+        if le > 0 then
+            w:remove(le)
+        end
     end
     temp_lines = {}
 end
@@ -41,7 +46,9 @@ end
 function M.clear_line()
     M.clear_temp_line()
     for _, le in ipairs(lines) do
-        w:remove(le)
+        if le > 0 then
+            w:remove(le)
+        end
     end
     lines = {}
 end

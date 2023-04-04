@@ -26,15 +26,6 @@ namespace lua_world {
     }
 
     template <typename T>
-    inline T file_read(FILE* f) {
-        T v;
-        size_t n = fread(&v, sizeof(T), 1, f);
-        (void)n;
-        assert(n == 1);
-        return std::move(v);
-    }
-
-    template <typename T>
         requires (std::is_trivially_copyable_v<T>)
     void file_read(FILE* f, T* v, size_t sz) {
         if (sz == 0) {
@@ -48,27 +39,16 @@ namespace lua_world {
     template <typename T>
         requires (std::is_trivially_copyable_v<T>)
     void file_read(FILE* f, T& v) {
-        size_t n = fread((void*)&v, sizeof(T), 1, f);
+        size_t n = fread(&v, sizeof(T), 1, f);
         (void)n;
         assert(n == 1);
     }
 
-    template <typename Vec, typename fn>
-    static void write_vector(FILE* f, const Vec& vec, fn func) {
-        file_write(f, vec.size());
-        for (auto& v : vec) {
-            func(v);
-        }
-    }
-
-    template <typename Vec, typename fn>
-    static void read_vector(FILE* f, Vec& vec, fn func) {
-        size_t n = 0;
-        file_read(f, n);
-        vec.resize(n);
-        for (auto& v : vec) {
-            func(v);
-        }
+    template <typename T>
+    inline T file_read(FILE* f) {
+        T v;
+        file_read(f, v);
+        return std::move(v);
     }
 
     enum class filemode {

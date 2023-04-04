@@ -1,0 +1,19 @@
+---
+data:
+  name: Scene
+  scene: {}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  material: /pkg/vaststars.resources/glb/pipe_center.glb|materials/Material.001.material
+  mesh: /pkg/vaststars.resources/glb/pipe_center.glb|meshes/Cylinder.004_P1.meshbin
+  name: Cylinder.005
+  scene:
+    r: {0.5, -0.5, -0.5, -0.4999999701976776}
+  visible_state: main_view|selectable|cast_shadow
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render

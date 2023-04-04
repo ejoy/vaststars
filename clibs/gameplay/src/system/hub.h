@@ -31,11 +31,12 @@ struct hub_mgr {
     };
     static_assert(sizeof(berth) == sizeof(uint32_t));
     struct hub_info {
-        uint16_t item;
+        berth self;
         std::vector<berth> hub;
         std::vector<berth> chest_red;
         std::vector<berth> chest_blue;
+        uint16_t item;
     };
-    std::map<berth, hub_info> hubs;
+    std::map<uint16_t, hub_info> hubs;
     flatmap<uint32_t, uint16_t> chests;
 };

@@ -1,21 +1,20 @@
 local type = require "register.type"
-local prototype = require "prototype"
 
 local c = type "drone"
 
 function c:ctor(init, pt)
-    local world = self
-
+    local home = (init.x << 8) | init.y
     return {
         drone = {
-            prev = 0,
+            prev = home,
             next = 0,
             mov2 = 0,
-            home = ((init.sumOfYCoord & 0x1FF) << 14) | ((init.sumOfXCoord & 0x1FF) << 23), -- local x, y = ((home >> 23) & 0x1FF) // 2, ((home >> 14) & 0x1FF) // 2
+            home = 0,
             classid = pt.id,
             maxprogress = 0,
             progress = 0,
             item = 0,
+            home_item = 0,
             status = 0,
         }
     }

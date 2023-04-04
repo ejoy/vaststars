@@ -29,7 +29,7 @@ local function get_techlist(tech_list)
             end
         end
         if value.effects and value.effects.unlock_recipe then
-            local prototypes = iprototype.each_maintype("recipe")
+            local prototypes = iprototype.each_type("recipe")
             for _, recipe in ipairs(value.effects.unlock_recipe) do
                 local recipe_detail = prototypes[recipe]
                 if recipe_detail then

@@ -24,12 +24,15 @@ prototype "蒸汽发电机I" {
 
 prototype "风力发电机I" {
     model = "prefabs/wind-turbine-1.prefab",
-    icon = "textures/construct/wind-turbine.texture",
+    icon = "textures/building_pic/small_pic_wind_turbine.texture",
     construct_detector = {"exclusive"},
-    type = {"building", "generator"},
+    type = {"building", "generator", "wind_turbine"},
     area = "3x3",
     power = "1.2MW",
     priority = "primary",
+    power_network_link = true,
+    power_supply_area = "7x7",
+    power_supply_distance = 7,
 }
 
 prototype "太阳能板I" {
@@ -69,11 +72,13 @@ prototype "换热器I" {
     icon = "textures/building_pic/small_pic_distillery.texture",
     background = "textures/build_background/pic_distillery.texture",
     construct_detector = {"exclusive"},
-    type = {"building", "assembling", "fluidboxes"},
+    type = {"building", "assembling", "fluidboxes", "consumer"},
+    power = "300kW",
+    priority = "secondary",
     area = "3x2",
     rotate_on_build = true,
     craft_category = {"流体换热处理"},
-    show_detail = false,
+    show_arc_menu = false,
     maxslot = "8",
     fluidboxes = {
         input = {
@@ -111,7 +116,7 @@ prototype "热管1-X型" {
     model = "prefabs/pipe/pipe_I.prefab",
     icon = "textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
-    show_detail = false,
+    show_arc_menu = false,
     type = {"building"},
     area = "1x1",
 }
@@ -121,7 +126,9 @@ prototype "锅炉I" {
     icon = "textures/building_pic/small_pic_distillery.texture",
     background = "textures/build_background/pic_distillery.texture",
     construct_detector = {"exclusive"},
-    type = {"building", "assembling", "fluidboxes"},
+    type = {"building", "assembling", "fluidboxes", "consumer"},
+    power = "300kW",
+    priority = "secondary",
     area = "3x2",
     rotate_on_build = true,
     craft_category = {"流体换热处理"},

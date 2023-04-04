@@ -1,57 +1,32 @@
 local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype
 
-local function prototype_road(name)
-    return function (object)
-        assert(object.crossing)
-
-        local connections = object.crossing.connections
-        local len = (1 << #connections) - 1
-
-        for i = 0, len do
-            local o = {}
-            for k, v in pairs(object) do
-                if k ~= "crossing" then
-                    o[k] = v
-                end
-            end
-            o.crossing = { connections = {} }
-
-            for j = 1, #connections do
-                local roadside
-                if i & (1 << (j - 1)) ~= 0 then
-                   roadside = true
-                end
-                o.crossing.connections[j] = {
-                    type = connections[j].type,
-                    position = connections[j].position,
-                    roadside = roadside
-                }
-            end
-
-            prototype(name:format(i + 1))(o)
-        end
-    end
-end
-
 prototype "指挥中心" {
     model = "prefabs/headquater-1.prefab",
     icon = "textures/building_pic/small_pic_headquarter.texture",
     background = "textures/build_background/pic_headquater.texture",
     construct_detector = {"exclusive"},
-    type = {"building", "generator", "base", "chest"},
-    chest_type = "blue",
+    type = {"building", "base", "assembling", "consumer", "lorry_factory"},
+    speed = "50%",
+    maxslot = "8",
+    fluidboxes = {
+        input = {
+        },
+        output = {
+        },
+    },
+    recipe_init_limit = {ingredientsLimit = 0, resultsLimit = 0},
+    recipe = "车辆装配",
     area = "5x5",
     power_supply_area = "9x9",
     power_supply_distance = 9,
     dismantle_area = "21x21",
-    power = "1MW",
+    power = "100kW",
     priority = "primary",
-    slots = 60,
     teardown = false,
     crossing = {
         connections = {
-            {type="chest", position={2,4,"S"}, roadside = true},
+            {type="lorry_factory", position={2,4,"S"}},
         },
     }
 }
@@ -71,7 +46,7 @@ prototype "物流中心I" {
     icon = "textures/building_pic/small_pic_logistics_center2.texture",
     background = "textures/build_background/pic_logisticscenter.texture",
     construct_detector = {"exclusive"},
-    type = {"building", "consumer", "station"},
+    type = {"building", "consumer"},
     area = "3x3",
     capacitance = "50MJ",
     power = "400kW",
@@ -118,6 +93,7 @@ prototype "科研中心I" {
     area = "3x3",
     power = "150kW",
     speed = "100%",
+    show_arc_menu = false,
     priority = "secondary",
     inputs = {
         "地质科技包",
@@ -126,7 +102,7 @@ prototype "科研中心I" {
     },
 }
 
-prototype_road "砖石公路-I型-%02d" {
+prototype "砖石公路-I型" {
     model = "prefabs/road/road_I.prefab",
     show_prototype_name = "砖石公路-I型",
     icon = "textures/construct/road1.texture",
@@ -134,7 +110,6 @@ prototype_road "砖石公路-I型-%02d" {
     flow_type = 11,
     flow_direction = {"N", "E"},
     track = "I",
-    tickcount = 21,
     type = {"building", "road"},
     area = "1x1",
     crossing = {
@@ -142,10 +117,11 @@ prototype_road "砖石公路-I型-%02d" {
             {type="none", position={0,0,"N"}},
             {type="none", position={0,0,"S"}},
         },
-    }
+    },
+    building_base = false,
 }
 
-prototype_road "砖石公路-L型-%02d" {
+prototype "砖石公路-L型" {
     model = "prefabs/road/road_L.prefab",
     show_prototype_name = "砖石公路-I型",
     icon = "textures/construct/road1.texture",
@@ -153,7 +129,6 @@ prototype_road "砖石公路-L型-%02d" {
     flow_type = 11,
     flow_direction = {"N", "E", "S", "W"},
     track = "L",
-    tickcount = 21,
     type = {"building", "road"},
     area = "1x1",
     crossing = {
@@ -161,10 +136,11 @@ prototype_road "砖石公路-L型-%02d" {
             {type="none", position={0,0,"N"}},
             {type="none", position={0,0,"E"}},
         },
-    }
+    },
+    building_base = false,
 }
 
-prototype_road "砖石公路-T型-%02d" {
+prototype "砖石公路-T型" {
     model = "prefabs/road/road_T.prefab",
     show_prototype_name = "砖石公路-I型",
     icon = "textures/construct/road1.texture",
@@ -172,7 +148,6 @@ prototype_road "砖石公路-T型-%02d" {
     flow_type = 11,
     flow_direction = {"N", "E", "S", "W"},
     track = "T",
-    tickcount = 21,
     type = {"building", "road"},
     area = "1x1",
     crossing = {
@@ -181,10 +156,11 @@ prototype_road "砖石公路-T型-%02d" {
             {type="none", position={0,0,"S"}},
             {type="none", position={0,0,"W"}},
         },
-    }
+    },
+    building_base = false,
 }
 
-prototype_road "砖石公路-X型-%02d" {
+prototype "砖石公路-X型" {
     show_prototype_name = "砖石公路-I型",
     model = "prefabs/road/road_X.prefab",
     icon = "textures/construct/road1.texture",
@@ -192,7 +168,6 @@ prototype_road "砖石公路-X型-%02d" {
     flow_type = 11,
     flow_direction = {"N"},
     track = "X",
-    tickcount = 21,
     type = {"building", "road"},
     area = "1x1",
     crossing = {
@@ -202,10 +177,11 @@ prototype_road "砖石公路-X型-%02d" {
             {type="none", position={0,0,"S"}},
             {type="none", position={0,0,"W"}},
         },
-    }
+    },
+    building_base = false,
 }
 
-prototype "砖石公路-O型-01" {
+prototype "砖石公路-O型" {
     model = "prefabs/road/road_O.prefab",
     show_prototype_name = "砖石公路-I型",
     icon = "textures/construct/road1.texture",
@@ -213,16 +189,16 @@ prototype "砖石公路-O型-01" {
     flow_type = 11,
     flow_direction = {"N"},
     track = "O",
-    tickcount = 21,
     type = {"building", "road"},
     area = "1x1",
     crossing = {
         connections = {
         }
-    }
+    },
+    building_base = false,
 }
 
-prototype_road "砖石公路-U型-%02d" {
+prototype "砖石公路-U型" {
     model = "prefabs/road/road_U.prefab",
     show_prototype_name = "砖石公路-I型",
     icon = "textures/construct/road1.texture",
@@ -230,14 +206,14 @@ prototype_road "砖石公路-U型-%02d" {
     flow_type = 11,
     flow_direction = {"N", "E", "S", "W"},
     track = "U",
-    tickcount = 21,
     type = {"building", "road"},
     area = "1x1",
     crossing = {
         connections = {
             {type="none", position={0,0,"N"}},
         },
-    }
+    },
+    building_base = false,
 }
 
 prototype "拆除点" {
@@ -260,9 +236,7 @@ prototype "建造中心" {
     type = {"building", "assembling", "consumer"},
     area = "5x5",
     maxslot = 8,
-    recipe_chest_limit = 10,
     craft_category = {"设计图打印"},
-    slots = 5,
     fluidboxes = {
         input = {
             {
@@ -301,14 +275,16 @@ prototype "建造中心" {
             },
         },
     },
+    recipe_init_limit = {ingredientsLimit = 0, resultsLimit = 0},
+    recipe_max_limit = {ingredientsLimit = 10, resultsLimit = 10},
     power = "75kW",
     priority = "secondary",
     construction_center = true,
 }
 
-prototype "道路建造站" {
-    model = "prefabs/goods-station-1.prefab",
-    icon = "textures/building_pic/small_pic_goodsstation_input.texture",
+prototype "修路站" {
+    model = "prefabs/road-center.prefab",
+    icon = "textures/building_pic/small_pic_road_center.texture",
     background = "textures/build_background/small_pic_goodsstation_input.texture",
     construct_detector = {"exclusive"},
     type = {"building"},
@@ -318,9 +294,9 @@ prototype "道路建造站" {
     road_builder = true,
 }
 
-prototype "管道建造站" {
-    model = "prefabs/goods-station-1.prefab",
-    icon = "textures/building_pic/small_pic_goodsstation_input.texture",
+prototype "修管站" {
+    model = "prefabs/pipe-center.prefab",
+    icon = "textures/building_pic/small_pic_pipe_center.texture",
     background = "textures/build_background/small_pic_goodsstation_input.texture",
     construct_detector = {"exclusive"},
     type = {"building"},
@@ -330,31 +306,20 @@ prototype "管道建造站" {
     pipe_builder = true,
 }
 
-prototype "车站" {
-    model = "prefabs/goods-station-1.prefab",
-    icon = "textures/building_pic/small_pic_goods_station1.texture",
-    background = "textures/build_background/pic_chest.texture",
-    construct_detector = {"exclusive"},
-    type = {"building"},
-    area = "1x1",
-    crossing = {
-        connections = {
-            {type="station", position={0,0,"S"}, roadside = true},
-        },
-    }
-}
-
 --送货车站需要设置送货类型以及需求车辆
 prototype "送货车站" {
     model = "prefabs/delivery-station-1.prefab",
     icon = "textures/building_pic/small_pic_goods_station1.texture",
     background = "textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
-    type = {"building"},
+    type = {"building", "station"},
+    station_type = "station_producer",
+    chest_type = "blue",
     area = "1x1",
+    weights = 1,
     crossing = {
         connections = {
-            {type="station", position={0,0,"S"}, roadside = true},
+            {type="station", position={0,0,"S"}},
         },
     }
 }
@@ -365,11 +330,14 @@ prototype "收货车站" {
     icon = "textures/building_pic/small_pic_goods_station1.texture",
     background = "textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
-    type = {"building"},
+    type = {"building", "station"},
+    station_type = "station_consumer",
+    chest_type = "red",
     area = "1x1",
+    weights = 1,
     crossing = {
         connections = {
-            {type="station", position={0,0,"S"}, roadside = true},
+            {type="station", position={0,0,"S"}},
         },
     }
 }

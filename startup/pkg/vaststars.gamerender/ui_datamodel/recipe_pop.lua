@@ -28,7 +28,7 @@ local itask = ecs.require "task"
 
 local assembling_recipe = {}; local get_recipe_index; do
     local cache = {}
-    for _, v in pairs(iprototype.each_maintype "recipe") do
+    for _, v in pairs(iprototype.each_type "recipe") do
         if v.recipe_group then
             local recipe_item = {
                 name = v.name,
@@ -55,7 +55,7 @@ local assembling_recipe = {}; local get_recipe_index; do
 
     local index_cache = {}
 
-    for _, v in pairs(iprototype.each_maintype "building") do
+    for _, v in pairs(iprototype.each_type "building") do
         if not ((iprototype.has_type(v.type, "assembling") or iprototype.has_type(v.type, "lorry_factory")) and v.craft_category )then
             goto continue
         end
@@ -224,12 +224,13 @@ local function _update_recipe_items(datamodel, recipe_name)
 
     datamodel.recipe_items = {}
     local recipe_category_new_flag = {}
+    local all_new = false
     for group, recipe_set in pairs(recipes) do
         for _, recipe_item in ipairs(recipe_set) do
             if recipe_unlocked(recipe_item.name) then
                 local new_recipe_flag = (not storage.recipe_picked_flag[recipe_item.name]) and true or false
 
-                if group == cur_recipe_category_cfg.group then
+                if group == cur_recipe_category_cfg.group or cur_recipe_category_cfg.group == "全部" then
                     datamodel.recipe_items[#datamodel.recipe_items+1] = {
                         name = recipe_item.name,
                         icon = recipe_item.icon,
@@ -249,11 +250,15 @@ local function _update_recipe_items(datamodel, recipe_name)
 
                 if new_recipe_flag then
                     recipe_category_new_flag[group] = true
+                    all_new = true
                 end
             end
         end
     end
 
+    if all_new then
+        recipe_category_new_flag["全部"] = true
+    end
     datamodel.recipe_category = {}
     for _, category in ipairs(recipe_category_cfg) do
         datamodel.recipe_category[#datamodel.recipe_category+1] = {
@@ -270,7 +275,7 @@ local M = {}
 function M:create(object_id)
     local datamodel = {}
     _show_object_recipe(datamodel, object_id)
-    _update_recipe_items(datamodel)
+    _update_recipe_items(datamodel, datamodel.recipe_name)
     return datamodel
 end
 
@@ -290,9 +295,10 @@ function M:stage_ui_update(datamodel, object_id)
 
     for _, _, _, object_id, recipe_name in set_recipe_mb:unpack() do
         local object = assert(objects:get(object_id, {"CONSTRUCTED"}))
+        local typeobject = iprototype.queryByName(object.prototype_name)
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
         if e.assembling then
-            if iworld.set_recipe(gameplay_core.get_world(), e, recipe_name) then
+            if iworld.set_recipe(gameplay_core.get_world(), e, recipe_name, typeobject.recipe_init_limit) then
                 -- TODO viewport
                 local recipe_typeobject = iprototype.queryByName(recipe_name)
                 assert(recipe_typeobject, ("can not found recipe `%s`"):format(recipe_name))
@@ -301,8 +307,7 @@ function M:stage_ui_update(datamodel, object_id)
                 _update_neighbor_fluidbox(object)
                 gameplay_core.build()
 
-                iui.update("assemble.rml", "update", object_id)
-                iui.update("build_function_pop.rml", "update", object_id)
+                iui.update("building_arc_menu.rml", "update", object_id)
 
                 local vsobject = assert(vsobject_manager:get(object_id))
                 local typeobject = assert(iprototype.queryByName(object.prototype_name))
@@ -328,8 +333,7 @@ function M:stage_ui_update(datamodel, object_id)
         vsobject:add_canvas(icanvas.types().ICON, get_assembling_canvas_items(object, object.x, object.y, w, h))
         object.fluid_name = {}
 
-        iui.update("assemble.rml", "update", object_id)
-        iui.update("build_function_pop.rml", "update", object_id)
+        iui.update("building_arc_menu.rml", "update", object_id)
 
         _update_neighbor_fluidbox(object)
         gameplay_core.build()

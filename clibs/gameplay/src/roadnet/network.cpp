@@ -32,7 +32,6 @@ namespace roadnet {
         return loc;
     }
 
-    // every 2 bits represent one direction of a road, 00 means nothing, 01 means road, 10 means roadside, total 8 bits represent 4 directions
     static constexpr uint8_t makeMask(const char* maskstr) {
         uint8_t m = 0;
         m |= maskstr[0] != '_'? (1 << (uint8_t)direction::l): 0;
@@ -99,7 +98,11 @@ namespace roadnet {
         }
     }
 
-    static constexpr bool isSpecCross(uint8_t m) {
+    static constexpr bool isEndpoint(uint8_t m) {
+        return m & (1 << (uint8_t)direction::n);
+    }
+
+    static constexpr bool isURoad(uint8_t m) {
         switch (m) {
         case mask(L'>'):
         case mask(L'v'):
@@ -111,7 +114,7 @@ namespace roadnet {
         }
     }
     
-    static constexpr direction nextDirection(loction l, uint8_t m, direction dir) {
+    static constexpr direction next_direction(loction l, uint8_t m, direction dir) {
         switch (m) {
         case mask(L'║'):
             switch (dir) {
@@ -233,8 +236,8 @@ namespace roadnet {
                 ;
         case mask(L'╝'):
             return (z & 0x10)
-                ? direction::t
-                : direction::l
+                ? direction::l
+                : direction::t
                 ;
         default: break;
         }
@@ -242,15 +245,12 @@ namespace roadnet {
     }
 
     static void setMapBits(std::map<loction, uint8_t>& map, const loction& l, uint8_t bits) {
-        map.emplace(l, bits);
+        map[l] = bits;
     }
 
     static uint8_t getMapBits(const std::map<loction, uint8_t>& map, const loction& l) {
         auto iter = map.find(l);
-        if (iter == map.end()) {
-            return 0;
-        }
-        return iter->second;
+        return (iter != map.end()) ? iter->second : 0;
     }
 
     struct NeighborResult {
@@ -264,7 +264,8 @@ namespace roadnet {
 
         uint8_t cm = getMapBits(map, ln);
         assert(cm != 0);
-        direction nd = nextDirection(ln, cm, dir);
+        assert(!isEndpoint(cm));
+        direction nd = next_direction(ln, cm, dir);
 
         for (;;) {
             ln = move(ln, nd);
@@ -272,10 +273,13 @@ namespace roadnet {
             if (isCross(m)) {
                 break;
             }
+            if (isEndpoint(m)) {
+                return {ln, nd, (uint16_t)(n+1)};
+            }
             if (ln == l && nd == dir) {
                 break;
             }
-            nd = nextDirection(ln, m, nd);
+            nd = next_direction(ln, m, nd);
             n++;
         }
         return {ln, nd, n};
@@ -290,7 +294,7 @@ namespace roadnet {
             if (i >= n) {
                 return NeighborResult {l, dir, n};
             }
-            dir = nextDirection(l, m, dir);
+            dir = next_direction(l, m, dir);
         }
     }
 
@@ -323,61 +327,56 @@ namespace roadnet {
         return map;
     }
 
-    void network::loadMap(const std::map<loction, uint8_t>& mapData) {
-        map.clear();
+    void network::setMap(const std::map<loction, uint8_t>& mapData) {
+        map = mapData;
+    }
+
+    uint32_t network::reloadMap() {
         straightVec.clear();
         crossMap.clear();
         crossMapR.clear();
-
-        lorryVec.clear();
+        endpointVec.clear();
+        endpointMap.clear();
+        routeMap.clear();
 
         uint16_t genCrossId = 0;
         uint16_t genStraightId = 0;
         uint32_t genLorryOffset = 0;
-        uint16_t crossCount = 0;
-        std::map<loction, uint16_t> specCrossMap;
+        std::map<loction, bool> URoadMap;
 
-        for (auto& [l, bitmask] : mapData) {
-            setMapBits(map, l, bitmask);
-
-            if (isSpecCross(bitmask)) {
-                specCrossMap.emplace(l, true);
+        for (auto& [l, m] : map) {
+            if (isURoad(m)) {
+                URoadMap.emplace(l, true);
             }
 
-            if (isCross(bitmask)) {
+            if (isCross(m)) {
                 roadid  id  { roadtype::cross, genCrossId++ };
                 loction loc {(uint8_t)l.x, (uint8_t)l.y};
                 crossMap.emplace(loc, id);
                 crossMapR.emplace(id, loc);
-                ++crossCount;
             }
         }
 
-        if (crossCount <= 0) {
-            for(auto & [l, b] : specCrossMap) {
+        if (crossMap.size() <= 0) {
+            for(auto & [l, b] : URoadMap) {
                 roadid  id  { roadtype::cross, genCrossId++ };
                 loction loc {(uint8_t)l.x, (uint8_t)l.y};
                 crossMap.emplace(loc, id);
                 crossMapR.emplace(id, loc);
             }
-            return;
+            return 0;
         }
 
         crossAry.reset(genCrossId);
         for (auto const& [loc, id]: crossMap) {
             road::crossroad& crossroad = CrossRoad(id);
-#ifdef _DEBUG_ROADNET
-            crossroad.loc = loc;
-            crossroad.id = id;
-#endif
             uint8_t m = getMapBits(map, loc);
 
             for (uint8_t i = 0; i < 4; ++i) {
                 direction dir = (direction)i;
                 if (m & (1 << i) && !crossroad.hasNeighbor(dir)) {
                     auto result = findNeighbor(map, loc, dir);
-                    roadid neighbor_id = crossMap[result.l];
-                    road::crossroad& neighbor = CrossRoad(neighbor_id);
+
                     if (loc == result.l) {
                         straightData& straight = straightVec.emplace_back(
                             roadid {roadtype::straight, genStraightId++},
@@ -390,25 +389,62 @@ namespace roadnet {
                         crossroad.setNeighbor(dir, straight.id);
                     }
                     else {
-                        straightData& straight1 = straightVec.emplace_back(
-                            roadid {roadtype::straight, genStraightId++},
-                            result.n,
-                            loc,
-                            dir,
-                            reverse(result.dir),
-                            neighbor_id
-                        );
-                        crossroad.setNeighbor(dir, straight1.id);
+                        uint8_t m = getMapBits(map, result.l);
+                        if(isEndpoint(m)) {
+                            road::endpoint endpoint;
 
-                        straightData& straight2 = straightVec.emplace_back(
-                            roadid {roadtype::straight, genStraightId++},
-                            result.n,
-                            result.l,
-                            reverse(result.dir),
-                            dir,
-                            id
-                        );
-                        neighbor.setNeighbor(reverse(result.dir), straight2.id);
+                            straightData& straight1 = straightVec.emplace_back(
+                                roadid {roadtype::straight, genStraightId++},
+                                result.n,
+                                loc,
+                                dir,
+                                dir,
+                                roadid::invalid()
+                            );
+                            crossroad.setNeighbor(dir, straight1.id);
+                            endpoint.rev_neighbor = straight1.id;
+
+                            straightData& straight2 = straightVec.emplace_back(
+                                roadid {roadtype::straight, genStraightId++},
+                                result.n,
+                                loc,
+                                dir,
+                                reverse(dir),
+                                id
+                            );
+                            crossroad.setRevNeighbor(dir, straight2.id);
+                            endpoint.neighbor = straight2.id;
+
+                            endpointVec.emplace_back(endpoint);
+
+                            auto l = move(loc, dir); 
+                            endpointMap.emplace(std::make_pair(l, reverse(dir)), endpointid(static_cast<uint16_t>(endpointVec.size() - 1)));
+                        }
+                        else {
+                            roadid neighbor_id = crossMap[result.l];
+                            road::crossroad& neighbor = CrossRoad(neighbor_id);
+                            straightData& straight1 = straightVec.emplace_back(
+                                roadid {roadtype::straight, genStraightId++},
+                                result.n,
+                                loc,
+                                dir,
+                                reverse(result.dir),
+                                neighbor_id
+                            );
+                            crossroad.setNeighbor(dir, straight1.id);
+                            neighbor.setRevNeighbor(reverse(result.dir), straight1.id);
+
+                            straightData& straight2 = straightVec.emplace_back(
+                                roadid {roadtype::straight, genStraightId++},
+                                result.n,
+                                result.l,
+                                reverse(result.dir),
+                                dir,
+                                id
+                            );
+                            neighbor.setNeighbor(reverse(result.dir), straight2.id);
+                            crossroad.setRevNeighbor(dir, straight2.id);
+                        }
                     }
                 }
             }
@@ -418,14 +454,12 @@ namespace roadnet {
         for (auto& data: straightVec) {
             road::straight& straight = StraightRoad(data.id);
             size_t length = data.len * road::straight::N + 1;
-            straight.init(data.id, (uint16_t)length, data.finish_dir);
+            straight.init(data.id, (uint16_t)length, data.finish_dir, data.neighbor);
             straight.setLorryOffset(genLorryOffset);
-            straight.setNeighbor(data.neighbor);
-            auto& crossroad = CrossRoad(data.neighbor);
-            crossroad.setRevNeighbor(data.finish_dir, straight.id);
             genLorryOffset += (uint16_t)length;
         }
-        lorryAry.reset(genLorryOffset);
+
+        return genLorryOffset;
     }
 
     lorryid network::createLorry(world& w, uint16_t classid) {
@@ -471,7 +505,13 @@ namespace roadnet {
         assert(id.id < endpointVec.size());
         return endpointVec[id.id];
     }
-
+    endpointid network::EndpointId(loction loc, direction dir) {
+        auto it = endpointMap.find({loc, dir});
+        if (it != endpointMap.end()) {
+            return it->second;
+        }
+        return endpointid::invalid();
+    }
     roadid network::findCrossRoad(loction l) {
         auto iter = crossMap.find(l);
         if (iter != crossMap.end()) {
@@ -488,52 +528,6 @@ namespace roadnet {
         return std::nullopt;
     }
 
-    road_coord network::coordConvert(map_coord mc) {
-        if (auto cross = findCrossRoad(mc); cross) {
-            if (!isValidCrossType(getMapBits(map, loction{mc.x, mc.y}), cross_type(mc.z))) {
-                return {};
-            }
-            assert(cross.get_type() == roadtype::cross);
-            return {cross, (cross_type)mc.z};
-        }
-
-        direction dir = straightDirection(getMapBits(map, loction{mc.x, mc.y}), mc.z);
-        if (dir == direction::n) {
-                return {};
-        }
-        auto result = findNeighbor(map, mc, dir);
-        if (auto cross = findCrossRoad(result.l); cross) {
-            roadid id = CrossRoad(cross).neighbor[(uint8_t)reverse(result.dir)];
-            assert(id && id.get_type() == roadtype::straight);
-            uint16_t n = road::straight::N * result.n + (mc.z & 0x0Fu);
-            uint16_t offset = StraightRoad(id).len - n - 1;
-            return {id, straight_type::straight, offset};
-        }
-        return {};
-    }
-
-    road_coord network::coordConvert(loction l, direction dir) {
-        if (auto cross = findCrossRoad(l); cross) {
-            return {};
-        }
-        assert(dir != direction::n);
-        assert(map.size() != 0);
-        uint8_t m = getMapBits(map, l);
-        if (m == 0) {
-            return {};
-        }
-
-        auto result = findNeighbor(map, l, reverse(dir));
-        if (auto cross = findCrossRoad(result.l); cross) {
-            roadid id = CrossRoad(cross).neighbor[(uint8_t)reverse(result.dir)];
-            assert(id && id.get_type() == roadtype::straight);
-            uint16_t n = road::straight::N * result.n + 0;
-            uint16_t offset = StraightRoad(id).len - n - 1;
-            return {id, straight_type::straight, offset};
-        }
-        return {};
-    }
-
     map_coord network::coordConvert(road_coord rc) {
         if (rc.id.get_type() == roadtype::cross) {
             if (auto loc = whereCrossRoad(rc.id); loc) {
@@ -546,19 +540,22 @@ namespace roadnet {
         }
         auto& straight = straightVec[rc.id.get_index()];
         uint16_t n = road::straight::N * straight.len + 1 - rc.offset - 1;
-        if (rc.offset == 0)
+        uint8_t wait = 0x00;
+        if (rc.offset == 0) {
             n -= 1;
-            
+            wait = 0x01;
+        }
+
         if (auto res = moveToNeighbor(map, straight.loc, straight.start_dir, n / road::straight::N); res) {
             auto m = getMapBits(map, res->l);
-            bool b = reverse(res->dir) == straightDirection(m, 0); // TODO: remove this
-            uint8_t z = (uint8_t)direction::n;
-            if (b)
-                z = (uint8_t)straightDirection(m, 0x00);
-            else
-                z = (uint8_t)straightDirection(m, 0x10);
-
-            return {res->l.x, res->l.y, (uint8_t)((n % road::straight::N) | (z << 4))};
+            auto z = 0x00;
+            if(isEndpoint(m)) {
+                z = straight.start_dir == straight.finish_dir ? 0x00 : 0x01;
+            }
+            else {
+                z = reverse(res->dir) == straightDirection(m, 0) ? 0x00 : 0x01;
+            }
+            return {res->l.x, res->l.y, (uint8_t)((wait << 5) | (z << 4) | (n % road::straight::N))};
         }
         return map_coord::invalid();
     }

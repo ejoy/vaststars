@@ -8,6 +8,7 @@ prototype "组装机残骸" {
     construct_detector = {"exclusive"},
     type = {"building", "chest"},
     chest_type = "red",
+    show_arc_menu = false,
     area = "5x5",
     slots = 21,
     building_base = false,
@@ -20,8 +21,9 @@ prototype "排水口残骸" {
     construct_detector = {"exclusive"},
     type = {"building", "chest"},
     chest_type = "red",
+    show_arc_menu = false,
     area = "3x3",
-    slots = 38,
+    slots = 39,
     building_base = false,
 }
 
@@ -32,7 +34,8 @@ prototype "抽水泵残骸" {
     construct_detector = {"exclusive"},
     type = {"building", "chest"},
     chest_type = "red",
+    show_arc_menu = false,
     area = "3x3",
-    slots = 20,
+    slots = 21,
     building_base = false,
 }

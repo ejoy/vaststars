@@ -4,9 +4,11 @@ local function set_item(world, e, item)
     local hub = e.hub
     world:container_destroy(hub)
 
-    local typeobject = assert(prototype.queryByName(item))
-    assert(typeobject.pile)
+    local typeobject = prototype.queryByName(item)
+    assert(typeobject and typeobject.pile, "Invalid item: " .. item)
+
     local w, h, d = typeobject.pile:match("(%d+)x(%d+)x(%d+)")
+    assert(w and h and d, "Invalid pile: " .. typeobject.pile)
     local capacity = w * h * d
 
     local c = {}

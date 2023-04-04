@@ -22,7 +22,7 @@ end
 
 do
     local cache = {}
-    function M.each_maintype(...)
+    function M.each_type(...)
         local function _check_types(typeobject, types)
             for _, type in ipairs(types) do
                 if not M.has_type(typeobject.type, type) then
@@ -34,7 +34,7 @@ do
 
         local types = {...}
         if #types == 0 then
-            return gameplay.prototype.each()
+            return gameplay.prototype.all()
         end
 
         table.sort(types)
@@ -44,7 +44,7 @@ do
         end
 
         local r = {}
-        for _, typeobject in pairs(gameplay.prototype.each()) do
+        for _, typeobject in pairs(gameplay.prototype.all()) do
             if _check_types(typeobject, types) then
                 r[typeobject.name] = typeobject
             end

@@ -58,11 +58,13 @@ return function ()
     end
 
     local context = ecs:context(components)
-    local ptable = require "vaststars.prototype.core"
-    local cworld = vaststars.create_world(context, ptable)
+    local cworld = vaststars.create_world(context)
     world.ecs = ecs
     world._cworld = cworld
     world._context = context
+
+    --TOOD: 如果可以提前得知需要读档，这个操作是可以省略的
+    prototype.restore(cworld, {})
 
     function world:create_entity(type)
         return function (init)
@@ -200,52 +202,6 @@ return function ()
         else
             return cworld:research_progress(pt.id)
         end
-    end
-
-    function world:manual(lst)
-        if lst == nil then
-            lst = {}
-            for _, v in ipairs(cworld:manual()) do
-                local type, id = v[1], v[2]
-                if type == "separator" then
-                    lst[#lst+1] = {type, id}
-                else
-                    local pt = prototype.queryById(id)
-                    assert(pt, "unknown ID: " .. id)
-                    lst[#lst+1] = {type, pt.name}
-                end
-            end
-            return lst
-        end
-        local todos = {}
-        for i, v in ipairs(lst) do
-            local type, id = v[1], v[2]
-            if type == "crafting" then
-                local pt = prototype.queryByName(id)
-                assert(pt, "unknown recipe: " .. id)
-                todos[i] = { type, pt.id }
-            elseif type == "finish" then
-                local pt = prototype.queryByName(id)
-                assert(pt, "unknown item: " .. id)
-                todos[i] = { type, pt.id }
-            elseif type == "separator" then
-                todos[i] = { type, id }
-            else
-                error("unknown type: "..type)
-            end
-        end
-        return cworld:manual(todos)
-    end
-
-    function world:manual_container()
-        local c = {}
-        local cc = cworld:manual_chest()
-        for k, v in pairs(cc) do
-            local pt = prototype.queryById(k)
-            assert(pt, "unknown ID: " .. k)
-            c[pt.name] = v
-        end
-        return c
     end
 
     function world:fluidflow_query(fluid, id)

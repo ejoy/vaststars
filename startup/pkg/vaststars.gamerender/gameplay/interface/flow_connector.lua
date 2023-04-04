@@ -9,7 +9,7 @@ local get_dir_bit do
             W = 3,
         }
 
-        local ground_bit <const> = { -- ground for the pipe, roadside for the road
+        local ground_bit <const> = { -- ground for the pipe
             N = 4,
             E = 5,
             S = 6,
@@ -45,7 +45,7 @@ local accel = {} -- flow_type + bits -> prototype_name + dir
 local prototype_bits = {} -- prototype_name + dir -> bits
 local max_ground = {} -- flow_type -> max_ground
 
-for _, typeobject in pairs(iprototype.each_maintype "building") do
+for _, typeobject in pairs(iprototype.each_type "building") do
     if not typeobject.flow_type then
         goto continue
     end
@@ -55,7 +55,7 @@ for _, typeobject in pairs(iprototype.each_maintype "building") do
         local bits = 0
         for _, connection in ipairs(_get_connections(typeobject)) do
             local dir = iprototype.rotate_dir(connection.position[3], entity_dir)
-            bits = bits | (1 << get_dir_bit(typeobject.flow_type, dir, (connection.ground ~= nil or connection.roadside ~= nil ) )) -- TODO: special case for pipe-to-ground and road
+            bits = bits | (1 << get_dir_bit(typeobject.flow_type, dir, (connection.ground ~= nil) )) -- TODO: special case for pipe-to-ground
 
             -- 
             if connection.ground then
@@ -153,29 +153,6 @@ function M.covers_pipe_to_ground(flow_type, dir, ground_dir)
         bits = bits | (1 << get_dir_bit(flow_type, ground_dir, true))
     end
     local c = assert(accel[flow_type][bits])
-    return c.prototype_name, c.entity_dir
-end
-
--- TODO: spec case for road
-function M.covers_roadside(prototype_name, entity_dir, roadside_dir, v)
-    -- local prototype_name, dir = M.set_connection(prototype_name, entity_dir, roadside_dir, false)
-    local bits
-    local typeobject = iprototype.queryByName(prototype_name)
-
-    if v == true then
-        bits = assert(prototype_bits[prototype_name][entity_dir])
-        bits = prototype_bits[prototype_name][entity_dir]
-        bits = bits | (1 << get_dir_bit(typeobject.flow_type, roadside_dir, v))
-    else
-        bits = prototype_bits[prototype_name][entity_dir]
-        bits = bits & ~(1 << get_dir_bit(typeobject.flow_type, roadside_dir, v))
-    end
-
-    if not accel[typeobject.flow_type][bits] then -- TODO: remove this
-        return prototype_name, entity_dir
-    end
-    -- local c = assert(accel[typeobject.flow_type][bits])
-    local c = accel[typeobject.flow_type][bits]
     return c.prototype_name, c.entity_dir
 end
 

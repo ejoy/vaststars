@@ -3,16 +3,14 @@ local world = ecs.world
 local w = world.w
 
 local iefk = ecs.import.interface "ant.efk|iefk"
-local cr = import_package "ant.compile_resource"
-local serialize = import_package "ant.serialize"
 local game_object_event = ecs.require "engine.game_object_event"
 local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
 local iani = ecs.import.interface "ant.animation|ianimation"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
-local fs = require "filesystem"
 local math3d = require "math3d"
 local COLOR_INVALID <const> = math3d.constant "null"
 local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
+local prefab_parse = require("engine.prefab_parser").parse
 
 local function _replace_material(template, material_file_path)
     for _, v in ipairs(template) do
@@ -107,34 +105,17 @@ local _get_hitch_children ; do
             return cache[hash]
         end
 
-        local template
-
+        local template = prefab_parse(prefab_file_path)
         if state == "translucent" then
-            template = _replace_material(serialize.parse(prefab_file_path, cr.read_file(prefab_file_path)), "/pkg/vaststars.resources/materials/translucent.material")
+            template = _replace_material(template, "/pkg/vaststars.resources/materials/translucent.material")
         elseif state == "opacity" then
-            template = _replace_material(serialize.parse(prefab_file_path, cr.read_file(prefab_file_path)), "/pkg/vaststars.resources/materials/opacity.material")
+            template = _replace_material(template, "/pkg/vaststars.resources/materials/opacity.material")
         else
-            template = serialize.parse(prefab_file_path, cr.read_file(prefab_file_path))
-        end
-
-        local patch = prefab_file_path .. ".patch"
-        if fs.exists(fs.path(patch)) then
-            local count = #template
-            for index, value in ipairs(serialize.parse(patch, cr.read_file(patch))) do -- TODO: duplicated code - ant.ecs/main.lua -> create_template
-                if value.mount then
-                    if value.mount ~= 1 then
-                        value.mount = count + index - 1
-                    end
-                else
-                    value.mount = 1
-                end
-                template[#template + 1] = value
-            end
+            template = template
         end
 
         -- cache all slots & srt of the prefab
         local scene, slots, effects, animations = _cache_prefab_info(template)
-
         hitch_group_id = hitch_group_id + 1
         local g = ecs.group(hitch_group_id)
         g:enable "scene_update"
@@ -167,7 +148,7 @@ local _get_hitch_children ; do
             end
 
             if animation_name and animations[animation_name] then
-                log.info(("animation_name: %s animation_loop: %s"):format(animation_name, animation_loop))
+                log.info(("prefab_file_path: %s animation_name: %s animation_loop: %s"):format(prefab_file_path, animation_name, animation_loop))
                 iani.play(prefab, {name = animation_name, loop = animation_loop, speed = 1.0, manual = false, forwards = true})
             end
         end

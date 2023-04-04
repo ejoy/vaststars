@@ -4,179 +4,174 @@ local w = world.w
 
 local math3d = require "math3d"
 local lorries = {}
-local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local iprototype = require "gameplay.interface.prototype"
+local packcoord = iprototype.packcoord
 local road_track = import_package "vaststars.prototype"("road_track")
-local iroadnet_converter = require "roadnet_converter"
 local iterrain = ecs.require "terrain"
-local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local itrack = ecs.require "engine.track"
 local create_lorry = ecs.require "lorry"
 local global = require "global"
+local iroadnet_converter = require "roadnet_converter"
+local gameplay_core = require "gameplay.core"
+local prefab_parse = require("engine.prefab_parser").parse
 
-local STRAIGHT_TICKCOUNT <const> = 10
-local CROSS_TICKCOUNT <const> = 20
+local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
+local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
+local UPS <const> = require("gameplay.interface.constant").UPS
 
-local is_cross; do
-    local mt = {}
-    function mt:__index(k)
-        local v = {}
-        rawset(self, k, v)
-        return v
-    end
-    local prototype_bits = setmetatable({}, mt) -- = [prototype][direction] = bits
-    local bits_prototype = setmetatable({}, mt)
+local CONSTANTS = gameplay_core.get_world():roadnet_constants()
+local STRAIGHT_TICKCOUNT <const> = CONSTANTS.kTime
+local CROSS_TICKCOUNT <const> = CONSTANTS.kCrossTime
 
-    local mapping = {
-        W = 0, -- left
-        N = 1, -- top
-        E = 2, -- right
-        S = 3, -- bottom
-    }
-
-    -- every 2 bits represent one direction of a road, 00 means nothing, 01 means road, 10 means roadside, total 8 bits represent 4 directions
-    for _, typeobject in pairs(iprototype.each_maintype("building", "road")) do
-        for _, entity_dir in pairs(typeobject.flow_direction) do
-            local bits = 0
-            local c = 0
-
-            local connections = typeobject.crossing.connections
-            for _, connection in ipairs(connections) do
-                local dir = assert(mapping[iprototype.rotate_dir(connection.position[3], entity_dir)])
-                local value
-                if connection.roadside then
-                    value = 2
-                else
-                    value = 1
-                end
-                c = c + 1
-                bits = bits | (value << (dir * 2))
-            end
-
-            assert(prototype_bits[typeobject.name][entity_dir] == nil)
-            prototype_bits[typeobject.name][entity_dir] = {bits = bits, is_cross = (c >= 3), c = c}
-            bits_prototype[bits] = {name = typeobject.name, dir = entity_dir}
+local function __prefab_slots(prefab)
+    local res = {}
+    local t = prefab_parse(RESOURCES_BASE_PATH:format(prefab))
+    for _, v in ipairs(t) do
+        if v.data.slot then
+            res[v.data.name] = v.data
         end
     end
-
-    function is_cross(prototype_name, dir)
-        return assert(prototype_bits[prototype_name][dir]).is_cross
-    end
+    return res
 end
 
-local DIRECTION <const> = {
-    N = 0,
-    E = 1,
-    S = 2,
-    W = 3,
-}
-
 local cache = {}
-local function _make_cache()
-    -- TODO: cache matrix move to prototype?
-    for _, typeobject in pairs(iprototype.each_maintype("building", "road")) do
-        local slots = igame_object.get_prefab(typeobject.model).slots
+local is_cross_cache = {}
+do
+    for _, typeobject in pairs(iprototype.each_type("building", "road")) do
+        local slots = __prefab_slots(typeobject.model)
         if not next(slots) then
             goto continue
         end
 
         assert(typeobject.track)
+        local is_cross = #typeobject.crossing.connections > 2
         local track = assert(road_track[typeobject.track])
         for _, entity_dir in pairs(typeobject.flow_direction) do
             local t = iprototype.dir_tonumber(entity_dir) - iprototype.dir_tonumber('N')
-
+            local tickcount = is_cross and CROSS_TICKCOUNT or (STRAIGHT_TICKCOUNT * 2)
             for toward, slot_names in pairs(track) do
                 local z = toward
-                if is_cross(typeobject.name, entity_dir) then
+                if is_cross then
                     assert(toward <= 0xf) -- see also: enum RoadType
                     local s = ((z >> 2)  + t) % 4 -- high 2 bits is indir
                     local e = ((z & 0x3) + t) % 4 -- low  2 bits is outdir
                     z = s << 2 | e
                 else
-                    z = (z + DIRECTION[entity_dir])%4
+                    z = toward
                 end
 
                 local combine_keys = ("%s:%s:%s"):format(typeobject.name, entity_dir, z) -- TODO: optimize
-                -- assert(cache[combine_keys] == nil)
-                cache[combine_keys] = itrack.make_track(slots, slot_names, typeobject.tickcount)
+                assert(cache[combine_keys] == nil)
+                cache[combine_keys] = itrack.make_track(slots, slot_names, tickcount)
             end
         end
 
+        is_cross_cache[typeobject.name] = #typeobject.crossing.connections > 2
         ::continue::
     end
 end
 
-local function offset_matrix(prototype_name, dir, toward, tick)
-    if not next(cache) then
-        _make_cache()
-    end
+local function __get_offset_matrix(prototype_name, dir, toward, tick)
     local combine_keys = ("%s:%s:%s"):format(prototype_name, dir, toward) -- TODO: optimize
     local mat = assert(cache[combine_keys])
     return assert(mat[tick])
 end
 
-local function _get_offset_matrix(is_cross_flag, x, y, toward, tick)
-    local coord = iprototype.packcoord(x, y)
-    local v = assert(global.roadnet[coord])
-    local prototype_name, dir = v[1], v[2]
-    local matrix = math3d.matrix {t = iterrain:get_position_by_coord(x, y, 1, 1), r = ROTATORS[dir]}
+local function __is_endpoint(m)
+    return (m & (1 << 4)) == (1 << 4) -- see also: isEndpoint()
+end
 
-    if not is_cross_flag then
-        if is_cross(prototype_name, dir) then
-            local REVERSE <const> = {
-                [0] = 2,
-                [1] = 3,
-                [2] = 0,
-                [3] = 1,
-            }
-            toward = toward << 2 | REVERSE[toward]
+local function __create_or_move_lorry(lorry_id, s, r, t, duration)
+    s, r, t = math3d.ref(s), math3d.ref(r), math3d.ref(t)
+    if not lorries[lorry_id] then
+        lorries[lorry_id] = create_lorry("/pkg/vaststars.resources/prefabs/lorry-1.prefab", s, r, t)
+    else
+        local obj = lorries[lorry_id]
+        obj:set_target(s, r, t, duration)
+    end
+end
+
+local handlers = {}
+handlers.endpoint = function(lorry_id, mask, x, y, z, tick)
+    local ti = STRAIGHT_TICKCOUNT - tick
+    local wait, toward, offset = (z >> 5) & 0x01, (z >> 4) & 0x01, z & 0x0F
+    assert(wait >= 0 or wait <= 1)
+    assert(toward >= 0 or toward <= 1)
+    assert(offset >= 0 or offset <= 1)
+    -- toward can be 0 or 1, indicating direction towards the station entrance or exit, respectively
+    -- two cells represent the straight path for entering or leaving the station
+    -- when the offset is 0, it indicates the first cell
+    -- when the offset is 1, it indicates the second cell
+    -- TODO: station track processing
+
+    -- in the waiting area, do nothing
+    if wait == 1 then
+        return
+    end
+end
+
+handlers.straight = function(lorry_id, mask, x, y, z, tick)
+    local wait, toward, offset = (z >> 5) & 0x01, (z >> 4) & 0x01, z & 0x0F
+    assert(wait >= 0 or wait <= 1)
+    assert(toward >= 0 or toward <= 1)
+    assert(offset >= 0 or offset <= 1)
+    local ti = STRAIGHT_TICKCOUNT - tick + (STRAIGHT_TICKCOUNT * offset)
+    ti = ti + 1 -- offset matrix start from 1, [1, 2 * STRAIGHT_TICKCOUNT]
+
+    -- in the waiting area at the intersection, do nothing
+    if wait == 1 then
+        return
+    end
+
+    local prototype_name, dir = iroadnet_converter.mask_to_prototype_name_dir(mask)
+    local road_matrix = math3d.matrix {t = iterrain:get_position_by_coord(x, y, 1, 1), r = ROTATORS[dir]}
+    local typeobject = iprototype.queryByName(prototype_name)
+
+    -- regarding the special optimization for straight roads
+    -- directly instruct the __create_or_move_lorry function to notify the lorry to arrive at the position after STRAIGHT_TICKCOUNT ticks
+    if typeobject.track == "I" then
+        if ti == 1 or ti == STRAIGHT_TICKCOUNT + 1 then
+            local mat = __get_offset_matrix(prototype_name, dir, toward, ti + STRAIGHT_TICKCOUNT - 1)
+            local s, r, t = math3d.srt(math3d.mul(road_matrix, mat))
+            t = math3d.set_index(t, 2, 0.0)
+            __create_or_move_lorry(lorry_id, s, r, t, 1000 / UPS * STRAIGHT_TICKCOUNT)
         else
-            local mapping = {
-                [0] = DIRECTION.W, -- left
-                [1] = DIRECTION.N, -- top
-                [2] = DIRECTION.E, -- right
-                [3] = DIRECTION.S, -- bottom
-            }
-            toward = mapping[toward]
+            return
         end
     end
 
-    local offset_mat = offset_matrix(prototype_name, dir, toward, tick)
-    local s, r, t = math3d.srt(math3d.mul(matrix, offset_mat))
+    local mat = __get_offset_matrix(prototype_name, dir, toward, ti)
+    local s, r, t = math3d.srt(math3d.mul(road_matrix, mat))
     t = math3d.set_index(t, 2, 0.0)
-    return math3d.ref(math3d.matrix {s = s, r = r, t = t})
+    __create_or_move_lorry(lorry_id, s, r, t, 1000 / UPS)
 end
 
-
-local ims = ecs.import.interface "ant.motion_sampler|imotion_sampler"
-local g
-
-local function update(lorry_id, is_cross, x, y, z, tick)
-    if not g then
-        g = ims.sampler_group()
-        g:enable "view_visible"
-        g:enable "scene_update"
-    end
-    local ti, toward
-    if is_cross then
-        assert(z <= 0xf)
-        ti = (CROSS_TICKCOUNT - tick)
-        toward = z
-    else
-        local pos
-        pos, toward = z & 0x0F, (z >> 4) & 0x0F -- pos: [0, 1], toward: [0, 1], tick: [0, (STRAIGHT_TICKCOUNT - 1)]
-        ti = pos * STRAIGHT_TICKCOUNT + (STRAIGHT_TICKCOUNT - tick)
-    end
+handlers.cross = function(lorry_id, mask, x, y, z, tick)
+    local toward = z
+    local ti = CROSS_TICKCOUNT - tick
     ti = ti + 1 -- offset matrix start from 1
 
-    if not lorries[lorry_id] then
-        local offset_mat = _get_offset_matrix(is_cross, x, y, toward, ti)
-        local s, r, t = math3d.srt(offset_mat) -- TODO: optimize
-        lorries[lorry_id] = create_lorry("/pkg/vaststars.resources/prefabs/lorry-1.prefab", s, r, t)
+    local prototype_name, dir = iroadnet_converter.mask_to_prototype_name_dir(mask)
+    local road_matrix = math3d.matrix {t = iterrain:get_position_by_coord(x, y, 1, 1), r = ROTATORS[dir]}
+    local mat = __get_offset_matrix(prototype_name, dir, toward, ti)
+    local s, r, t = math3d.srt(math3d.mul(road_matrix, mat))
+    t = math3d.set_index(t, 2, 0.0)
+    __create_or_move_lorry(lorry_id, s, r, t, 1000 / UPS)
+end
+
+local function update(lorry_id, x, y, z, tick)
+    local mask = assert(global.roadnet[packcoord(x, y)])
+    local is_endpoint = __is_endpoint(mask)
+
+    if is_endpoint then
+        handlers.endpoint(lorry_id, mask, x, y, z, tick)
     else
-        local mat = _get_offset_matrix(is_cross, x, y, toward, ti)
-        local obj = assert(lorries[lorry_id])
-        obj:set_mat(mat)
+        local prototype_name = iroadnet_converter.mask_to_prototype_name_dir(mask)
+        if is_cross_cache[prototype_name] then
+            handlers.cross(lorry_id, mask, x, y, z, tick)
+        else
+            handlers.straight(lorry_id, mask, x, y, z, tick)
+        end
     end
 end
 

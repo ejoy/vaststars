@@ -13,7 +13,7 @@
                 align-items:center;
                 justify-content:flex-end;
                 background-color: rgb(252, 138, 0);
-                border: 0.1vmin rgb(89, 73, 39);
+                border: 0.2vmin rgb(89, 73, 39);
                 background-size:cover;
                 width: 5.70vmin;
                 height: 5.70vmin;
@@ -75,6 +75,7 @@
                 width: 87%;
                 height: 100%;
                 pointer-events: none;
+                animation: 0.5s linear 0s pannelmovement;
             }
             .arrow {
                 width: 4.88vmin;
@@ -96,6 +97,16 @@
                 justify-content: center;
                 align-items: center;
                 font-size: 2.5vmin;
+            }
+            @keyframes pannelmovement {
+                0% {
+                    left: -10vmin;
+                    opacity: 0;
+                }
+                100% {
+                    left: 0vmin;
+                    opacity: 1;
+                }
             }
         </style>
         <style path = "common/building_style.rcss"/>
@@ -210,18 +221,18 @@
                             <div class="progress-background" data-style-width="progress"/>
                             <div style="flex-direction:row; justify-content: flex-start; align-items: center; position: absolute; left:0;">
                                 <div class = "small-bg" style='background-image: "textures/science/book.texture"; padding-top:1vmin;'/>
-                                <div style="text-align: left; -webkit-text-stroke: 0.2vmin rgb(0, 112, 192); font-size: 3.5vmin; padding-bottom: 1vmin;">{{recipe_name}}</div>
+                                <div style="text-align: left; -webkit-text-stroke: 0.2vmin rgb(0, 112, 192); font-size: 3.2vmin;">{{recipe_name}}</div>
                             </div>
-                            <div style="position: absolute; right:0; padding-bottom: 1vmin; text-align: right; -webkit-text-stroke: 0.3vmin rgb(39, 32, 17); font-size: 4.2vmin; color: chartreuse;">{{progress}}</div>
+                            <div style="position: absolute; padding-top:0.5vmin; right:0;text-align: right; -webkit-text-stroke: 0.3vmin rgb(39, 32, 17); font-size: 3.2vmin; color: chartreuse;">{{progress}}</div>
                         </div> 
                     </div>
-                    <div class="row" style="width:100%; height: 100%; justify-content: space-evenly; align-items: center; border: 0.05vmin rgb(89, 73, 39);">
+                    <div class="row" style="width:100%; height: 100%; justify-content: space-evenly; align-items: center;">
                         <!--组装机进料栏-->
                         <div class="row" style="width: 50%; justify-content: space-evenly; flex-wrap: wrap;">
-                            <div class="small-item1" style="width:7vmin; height:7vmin; border: 0.4vmin rgb(0, 217, 255);" data-style-background-image="it.icon" data-for="recipe_inputs">
+                            <div class="small-item1" style="width:7vmin; height:7vmin; border: 0.3vmin rgb(0, 217, 255);" data-style-background-image="it.icon" data-for="recipe_inputs">
                                 <div class ="item-count-combination">
-                                    <div class="item-count-new" data-style-color="it.count < it.need_count ? 'rgb(255,255,255)' : 'rgb(0,255,0)'">{{it.count}}</div>
-                                    <div class="item-count-new" style="font-size: 3vmin;">/{{it.need_count}}</div>
+                                    <div class="item-count-new" data-style-color="it.count < it.demand_count ? 'rgb(255,255,255)' : 'rgb(0,255,0)'">{{it.count}}</div>
+                                    <div class="item-count-new" style="font-size: 3vmin;">/{{it.demand_count}}</div>
                                 </div>
                             </div>
                         </div>
@@ -231,10 +242,10 @@
 
                         <!--组装机成品栏-->
                         <div class="row" style="width: 50%; justify-content: space-evenly; flex-wrap: wrap;">
-                            <div class="small-item1" style="width:7vmin; height:7vmin; border: 0.4vmin rgb(92, 204, 0);" data-style-background-image="it.icon" data-for="recipe_ouputs">
+                            <div class="small-item1" style="width:7vmin; height:7vmin; border: 0.3vmin rgb(89, 73, 39);" data-style-background-image="it.icon" data-for="recipe_ouputs">
                                 <div class ="item-count-combination">
-                                    <div class="item-count-new" data-style-color="it.count < it.need_count ? 'rgb(255,255,255)' : 'rgb(0,255,0)'">{{it.count}}</div>
-                                    <div class="item-count-new" style="font-size: 3vmin;">/{{it.need_count}}</div>
+                                    <div class="item-count-new" data-style-color="it.count < it.output_count ? 'rgb(255,255,255)' : 'rgb(0,255,0)'">{{it.count}}</div>
+                                    <div class="item-count-new" style="font-size: 3vmin;">/{{it.output_count}}</div>
                                 </div>
                             </div>
                         </div>

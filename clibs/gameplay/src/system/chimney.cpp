@@ -2,9 +2,9 @@
 
 #include "luaecs.h"
 #include "core/world.h"
+#include "util/prototype.h"
 extern "C" {
 #include "core/fluidflow.h"
-#include "util/prototype.h"
 }
 
 #define STATUS_IDLE 0
@@ -37,23 +37,22 @@ chimney_update(world& w, ecs_api::entity<ecs::chimney, ecs::fluidbox>& v) {
     }
 
     while (c.progress <= 0) {
-        prototype_context recipe = w.prototype(c.recipe);
         if (c.status == STATUS_DONE) {
             //recipe_items* r = (recipe_items*)pt_results(&recipe);
             //if (false) {
             //    //TODO
             //    return;
             //}
-            w.stat.finish_recipe(w, c.recipe, false);
+            w.stat.finish_recipe(w, c.recipe);
             c.status = STATUS_IDLE;
         }
         if (c.status == STATUS_IDLE) {
-            recipe_items* r = (recipe_items*)pt_ingredients(&recipe);
+            auto& ingredients = *(recipe_items*)prototype::get<"ingredients">(w, c.recipe).data();
             ecs::fluidbox& f = v.get<ecs::fluidbox>();
-            if (!fluidbox_pickup(w, f, *r)) {
+            if (!fluidbox_pickup(w, f, ingredients)) {
                 return;
             }
-            int time = pt_time(&recipe);
+            auto time = prototype::get<"time">(w, c.recipe);
             c.progress += time * 100;
             c.status = STATUS_DONE;
         }
@@ -64,7 +63,7 @@ chimney_update(world& w, ecs_api::entity<ecs::chimney, ecs::fluidbox>& v) {
 
 static int
 lupdate(lua_State *L) {
-    world& w = *(world*)lua_touserdata(L, 1);
+    auto& w = getworld(L);
     for (auto& v : ecs_api::select<ecs::chimney, ecs::fluidbox>(w.ecs)) {
         chimney_update(w, v);
     }

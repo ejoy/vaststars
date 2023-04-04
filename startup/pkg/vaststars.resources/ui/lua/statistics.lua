@@ -42,6 +42,9 @@ local function page_item_update(item, index)
     if index > #start.items then
         return
     else
+        if start.total <= 0 then
+            return
+        end
         local itemdata = start.items[index]
         item.outerHTML = ([[
             <div class="building-sub-content">

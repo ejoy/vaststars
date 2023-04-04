@@ -3,11 +3,10 @@ local world = ecs.world
 local w = world.w
 
 local iroad = ecs.require "engine.road"
-local iroadnet_converter = require "roadnet_converter"
-local iprototype = require "gameplay.interface.prototype"
 local gameplay_core = require "gameplay.core"
-local gameplay = import_package "vaststars.gameplay"
 local global = require "global"
+local gameplay = import_package "vaststars.gameplay"
+local iprototype = require "gameplay.interface.prototype"
 
 local WIDTH <const> = 256 -- coordinate value range: [0, WIDTH - 1]
 local HEIGHT <const> = 256 -- coordinate value range: [0, HEIGHT - 1]
@@ -59,7 +58,7 @@ function roadnet:init(map)
     for _, name in ipairs(LAYER_NAMES) do
         self._layer_cache[name] = {}
     end
-    global.roadnet = {} -- = {[coord] = {prototype_name, dir}, ...}
+    global.roadnet = {} -- = {[coord] = mask, ...}
 
     local layer_name = LAYER_NAMES[1]
     local res = {}
@@ -99,31 +98,32 @@ function roadnet:editor_del(layer_name, x, y)
     iroad:del(layer_name, dx, dy)
 end
 
+local DIRECTION <const> = {
+    N = 0,
+    E = 1,
+    S = 2,
+    W = 3,
+    [0] = 'N',
+    [1] = 'E',
+    [2] = 'S',
+    [3] = 'W',
+}
+
 function roadnet:editor_build()
     --
     local gameplay_world = gameplay_core.get_world()
-    local t = {}
-    for k, v in pairs(global.roadnet) do
-        t[k] = iroadnet_converter.prototype_name_dir_to_mask(v[1], v[2])
-    end
-    gameplay_world:roadnet_load_map(t)
+    gameplay_world:roadnet_reset(global.roadnet)
 
     local iendpoint = gameplay.interface "endpoint"
-    for e in gameplay_core.select "chest:update building:in" do
-        iendpoint.update_chest_endpoint(gameplay_world, e)
-    end
-
     for e in gameplay_core.select "station:update building:in" do
         local pt = iprototype.queryById(e.building.prototype)
-        local endpoint = iendpoint.create(gameplay_world, {x = e.building.x, y = e.building.y, dir = iprototype.dir_tostring(e.building.direction)}, pt, "station")
-        e.station.endpoint = endpoint
+        e.station.endpoint = iendpoint.endpoint_id(gameplay_world, {x = e.building.x, y = e.building.y, dir = DIRECTION[e.building.direction]}, pt, "station")
+    end
+    for e in gameplay_core.select "lorry_factory:update building:in" do
+        local pt = iprototype.queryById(e.building.prototype)
+        e.lorry_factory.endpoint = iendpoint.endpoint_id(gameplay_world, {x = e.building.x, y = e.building.y, dir = DIRECTION[e.building.direction]}, pt, "lorry_factory")
     end
 
-    for e in gameplay_core.select "park:update building:in" do
-        local pt = iprototype.queryById(e.building.prototype)
-        local endpoint = iendpoint.create(gameplay_world, {x = e.building.x, y = e.building.y, dir = iprototype.dir_tostring(e.building.direction)}, pt, "park")
-        e.park.endpoint = endpoint
-    end
     gameplay_world:build()
 
     -- TDDO: we should not clear all the lorries directly. We should place them in the corresponding positions of the roadnet as much as possible.

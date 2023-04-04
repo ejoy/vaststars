@@ -184,7 +184,7 @@
                     item.outerHTML = [[<div style = "width: 100%; height: 100%;" />]]
                 else
                     item.outerHTML = ([[<div class = "item" style = "width: 100%%; height: 100%%; backgroundImage: %s"><p class = "new-coming" data-if="%s">新</p></div>]]):format(start.recipe_items[index].icon, start.recipe_items[index].new)
-                    local select_style_border = "3px green"
+                    local select_style_border = "0.5vmin rgb(109, 47, 156)"
                     if start.recipe_name == start.recipe_items[index].name then
                         select_item = item
                         item.style.border = select_style_border

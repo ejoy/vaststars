@@ -1,5 +1,6 @@
 #include <lua.hpp>
 #include "core/world.h"
+#include "util/prototype.h"
 
 template <typename Key, typename Mapped>
 void flatmap_increase(flatmap<Key, Mapped>& m, Key const& key, Mapped mapped) {
@@ -17,11 +18,9 @@ void flatmap_stat(flatmap<Key, Mapped>& m, recipe_items& r) {
     }
 }
 
-void statistics::finish_recipe(world& w, uint16_t id, bool manual) {
-    prototype_context recipe = w.prototype(id);
-    flatmap_stat(consumption, *(recipe_items*)pt_ingredients(&recipe));
-    flatmap_stat(production, *(recipe_items*)pt_results(&recipe));
-    if (manual) {
-        flatmap_stat(manual_production, *(recipe_items*)pt_results(&recipe));
-    }
+void statistics::finish_recipe(world& w, uint16_t id) {
+    auto& ingredients = *(recipe_items*)prototype::get<"ingredients">(w, id).data();
+    auto& results = *(recipe_items*)prototype::get<"results">(w, id).data();
+    flatmap_stat(consumption, ingredients);
+    flatmap_stat(production, results);
 }

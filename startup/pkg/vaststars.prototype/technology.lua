@@ -2,7 +2,6 @@ local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype
 
   --task = {"stat_production", 0, "铁矿石"},            生产XX个物品
-  --task = {"stat_manual_production", 0, "铁矿石"},     手动生产XX个物品
   --task = {"stat_consumption", 0, "铁矿石"},           消耗XX个物品
   --task = {"select_entity", 0, "组装机"},              拥有XX台机器
   --task = {"select_chest", 0, "指挥中心", "铁丝"},     向指挥中心转移X个物品
@@ -251,7 +250,7 @@ local prototype = gameplay.register.prototype
   --   type = { "tech" },
   --   icon = "textures/science/tech-research.texture",
   --   effects = {
-  --     unlock_recipe = {"道路建造站"},
+  --     unlock_recipe = {"修路站"},
   --   },
   --   prerequisites = {"生产石砖"},
   --   ingredients = {
@@ -261,11 +260,11 @@ local prototype = gameplay.register.prototype
   --   time = "1s"
   -- }
 
-    -- prototype "放置道路建造站" {
-  --   desc = "放置1座道路建造站",
+    -- prototype "放置修路站" {
+  --   desc = "放置1座修路站",
   --   icon = "textures/construct/industry.texture",
   --   type = { "tech", "task" },
-  --   task = {"select_entity", 0, "道路建造站"},
+  --   task = {"select_entity", 0, "修路站"},
   --   prerequisites = {"物流学I"},
   --   count = 1,
   --   effects = {
@@ -275,7 +274,7 @@ local prototype = gameplay.register.prototype
   --     "textures/task_tips_pic/task_place_logistics.texture",
   --   },
   --   sign_desc = {
-  --     { desc = "放置1个道路建造站", icon = "textures/construct/industry.texture"},
+  --     { desc = "放置1个修路站", icon = "textures/construct/industry.texture"},
   --   },
   -- }
 
@@ -283,9 +282,9 @@ local prototype = gameplay.register.prototype
   --   desc = "修建20节公路",
   --   icon = "textures/construct/industry.texture",
   --   type = { "tech", "task" },
-  --   task = {"select_entity", 0, "砖石公路-X型-01"},
+  --   task = {"select_entity", 0, "砖石公路-X型"},
   --   task_params = {starting = {117, 125}, ending = {135, 125}},
-  --   prerequisites = {"放置道路建造站"},
+  --   prerequisites = {"放置修路站"},
   --   count = 20,
   --   tips_pic = {
   --     "textures/task_tips_pic/task_place_road1.texture",
@@ -298,11 +297,11 @@ local prototype = gameplay.register.prototype
   -- }
 
   -- prototype "放置车站" {
-  --   desc = "放置1座道路建造站",
+  --   desc = "放置1座修路站",
   --   icon = "textures/construct/industry.texture",
   --   type = { "tech", "task" },
   --   task = {"select_entity", 0, "车站"},
-  --   prerequisites = {"放置道路建造站"},
+  --   prerequisites = {"放置修路站"},
   --   count = 1,
   --   effects = {
   --     unlock_recipe = {"运输汽车生产"},
@@ -628,7 +627,7 @@ local prototype = gameplay.register.prototype
   --   type = { "tech", "task" },
   --   task = {"unknown", 0, 1},
   --   task_params = {starting = {117, 125}, ending = {135, 125}},
-  --   prerequisites = {"放置道路建造站"},
+  --   prerequisites = {"放置修路站"},
   --   count = 1,
   --   tips_pic = {
   --     "textures/task_tips_pic/task_place_road1.texture",
@@ -659,7 +658,7 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "仓库调度1" {
+  prototype "采矿机调度" {
     desc = "选择采矿机设计图",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
@@ -680,18 +679,18 @@ local prototype = gameplay.register.prototype
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_consumption", 0, "采矿机设计图"},
-    prerequisites = {"仓库调度1"},
-    count = 2,
+    prerequisites = {"采矿机调度"},
+    count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "使用建造中心建造2个采矿机", icon = "textures/construct/industry.texture"},
+      { desc = "使用建造中心建造1个采矿机", icon = "textures/construct/industry.texture"},
     },
   }
 
-  prototype "放置采矿机" {
-    desc = "放置2台采矿机",
+  prototype "石矿放置采矿机" {
+    desc = "放置1台采矿机",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "采矿机I"},
@@ -700,22 +699,22 @@ local prototype = gameplay.register.prototype
        unlock_recipe = {"电线杆打印"},
        unlock_item = {"电线杆设计图"},
     },
-    count = 2,
+    count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "在石矿上放置2个采矿机", icon = "textures/construct/industry.texture"},
+      { desc = "在石矿上放置1个采矿机", icon = "textures/construct/industry.texture"},
     },
   }
 
-  prototype "仓库调度2" {
+  prototype "电线杆调度" {
     desc = "选择电线杆设计图",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"unknown", 0, 5},
     task_params = {item = "电线杆设计图"},
-    prerequisites = {"放置采矿机"},
+    prerequisites = {"石矿放置采矿机"},
     count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
@@ -730,7 +729,7 @@ prototype "建造电线杆" {
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_consumption", 0, "电线杆设计图"},
-    prerequisites = {"仓库调度2"},
+    prerequisites = {"电线杆调度"},
     count = 4,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
@@ -760,7 +759,7 @@ prototype "建造电线杆" {
     },
   }
 
-  prototype "仓库调度3" {
+  prototype "无人机仓库调度" {
     desc = "选择无人机仓库设计图",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
@@ -777,12 +776,12 @@ prototype "建造电线杆" {
   }
 
     prototype "建造无人机仓库" {
-    desc = "建造2个无人机仓库",
+    desc = "建造4个无人机仓库",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_consumption", 0, "无人机仓库设计图"},
-    prerequisites = {"仓库调度3"},
-    count = 3,
+    prerequisites = {"无人机仓库调度"},
+    count = 4,
     effects = {
       unlock_item = {"碎石"},
     },
@@ -790,23 +789,23 @@ prototype "建造电线杆" {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "在“建造中心”建造3个无人机仓库", icon = "textures/construct/industry.texture"},
+      { desc = "在“建造中心”建造4个无人机仓库", icon = "textures/construct/industry.texture"},
     },
   }
 
     prototype "放置无人机仓库" {
-    desc = "放置4个无人机仓库",
+    desc = "放置5个无人机仓库",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "无人机仓库"},
     prerequisites = {"建造无人机仓库"},
-    count = 4,
+    count = 5,
     tips_pic = {
       "textures/task_tips_pic/task_place_pole1.texture",
       "textures/task_tips_pic/task_place_pole2.texture",
     },
     sign_desc = {
-      { desc = "放置4个无人机仓库", icon = "textures/construct/industry.texture"},
+      { desc = "放置5个无人机仓库", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -816,7 +815,7 @@ prototype "建造电线杆" {
     type = { "tech", "task" },
     task = {"stat_production", 0, "碎石"},
     prerequisites = {"放置无人机仓库"},
-    count = 12,
+    count = 16,
     effects = {
        unlock_recipe = {"科研中心打印"},
        unlock_item = {"科研中心设计图"},
@@ -825,7 +824,7 @@ prototype "建造电线杆" {
       "textures/task_tips_pic/task_produce_ore3.texture",
     },
     sign_desc = {
-      { desc = "在碎石矿上放置挖矿机并挖掘12个碎石矿", icon = "textures/construct/industry.texture"},
+      { desc = "在碎石矿上放置挖矿机并挖掘16个碎石矿", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -903,7 +902,7 @@ prototype "建造电线杆" {
     type = { "tech", "task" },
     task = {"stat_production", 0, "地质科技包"},
     prerequisites = {"放置组装机"},
-    count = 4,
+    count = 8,
     tips_pic = {
       "textures/task_tips_pic/task_produce_geopack3.texture",
       "textures/task_tips_pic/task_produce_geopack4.texture",
@@ -911,7 +910,7 @@ prototype "建造电线杆" {
       "textures/task_tips_pic/task_produce_geopack6.texture",
     },
     sign_desc = {
-      { desc = "使用组装机生产至4个地质科技包", icon = "textures/construct/industry.texture"},
+      { desc = "使用组装机生产至8个地质科技包", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -927,7 +926,7 @@ prototype "建造电线杆" {
     ingredients = {
         {"地质科技包", 1},
     },
-    count = 4,
+    count = 8,
     time = "1s"
   }
 
@@ -937,57 +936,83 @@ prototype "建造电线杆" {
     type = { "tech", "task" },
     task = {"stat_production", 0, "石砖"},
     prerequisites = {"石头处理1"},
-    count = 4,
+    count = 10,
     tips_pic = {
       "textures/task_tips_pic/task_produce_ore3.texture",
     },
     sign_desc = {
-      { desc = "使用组装机生产4个石砖", icon = "textures/construct/industry.texture"},
+      { desc = "使用组装机生产10个石砖", icon = "textures/construct/industry.texture"},
     },
   }
 
-  prototype "物流学I" {
-    desc = "获得火星岩石加工成石砖的工艺",
+  prototype "道路研究" {
+    desc = "掌握使用石砖制造道路的技术",
     type = { "tech" },
     icon = "textures/science/tech-research.texture",
     effects = {
-      unlock_recipe = {"道路建造站"},
-      unlock_item = {"道路建造站设计图"},
+      unlock_recipe = {"修路站设计","修路站打印"},
+      unlock_item = {"修路站设计图"},
     },
     prerequisites = {"生产石砖"},
     ingredients = {
         {"地质科技包", 1},
     },
-    count = 6,
+    count = 15,
     time = "1s"
   }
 
-    prototype "放置道路建造站" {
-    desc = "放置1座道路建造站",
+  prototype "道路设计" {
+    desc = "制造1张修路站设计图",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
-    task = {"select_entity", 0, "道路建造站"},
-    prerequisites = {"物流学I"},
+    task = {"stat_production", 0, "修路站设计图"},
+    prerequisites = {"道路研究"},
     count = 1,
-    effects = {
-      unlock_recipe = {"送货车站打印","收货车站打印"},
-      unlock_item = {"送货车站设计图","收货车站设计图","铁矿石"},
+    tips_pic = {
+      "textures/task_tips_pic/task_produce_ore3.texture",
     },
+    sign_desc = {
+      { desc = "组装机生产1张修路站设计图", icon = "textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "建造道路站" {
+    desc = "建造组装机",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"stat_consumption", 0, "修路站设计图"},
+    prerequisites = {"道路设计"},
+    count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "放置1个道路建造站", icon = "textures/construct/industry.texture"},
+      { desc = "在“建造中心”建造1个修路站", icon = "textures/construct/industry.texture"},
     },
   }
 
-  prototype "修建公路" {
+    prototype "放置修路站" {
+    desc = "放置1座修路站",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"select_entity", 0, "修路站"},
+    prerequisites = {"建造道路站"},
+    count = 1,
+    tips_pic = {
+      "textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "放置1个修路站", icon = "textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "通向铁矿" {
     desc = "修建20节公路",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
-    task = {"select_entity", 0, "砖石公路-X型-01"},
-    task_params = {starting = {117, 125}, ending = {135, 125}},
-    prerequisites = {"放置道路建造站"},
+    task = {"unknown", 0, 1},
+    task_params = {},
+    prerequisites = {"放置修路站"},
     count = 20,
     tips_pic = {
       "textures/task_tips_pic/task_place_road1.texture",
@@ -995,20 +1020,36 @@ prototype "建造电线杆" {
       "textures/task_tips_pic/task_place_road3.texture",
     },
     sign_desc = {
-      { desc = "至少修建20段道路", icon = "textures/construct/industry.texture"},
+      { desc = "修建道路从指挥中心到东边的铁矿", icon = "textures/construct/industry.texture"},
     },
   }
 
+  prototype "物流学I" {
+    desc = "研究送货车站和收货车站建造工艺",
+    type = { "tech" },
+    icon = "textures/science/tech-research.texture",
+    effects = {
+      unlock_recipe = {"送货车站打印","收货车站打印"},
+      unlock_item = {"送货车站设计图","收货车站设计图","铁矿石"},
+    },
+    prerequisites = {"通向铁矿"},
+    ingredients = {
+        {"地质科技包", 1},
+    },
+    count = 10,
+    time = "1s"
+  }
+
   prototype "放置送货车站" {
-    desc = "放置1座道路建造站",
+    desc = "放置1座修路站",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "送货车站"},
-    prerequisites = {"放置道路建造站"},
+    prerequisites = {"物流学I"},
     count = 1,
     effects = {
-      unlock_recipe = {"维修运输汽车"},
-      unlock_item = {"运输车辆I"},
+      unlock_recipe = {"车辆装配"},
+      unlock_item = {"运输车框架"},
     },
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
@@ -1019,11 +1060,11 @@ prototype "建造电线杆" {
   }
 
   prototype "放置收货车站" {
-    desc = "放置1座道路建造站",
+    desc = "放置1座修路站",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "收货车站"},
-    prerequisites = {"放置道路建造站"},
+    prerequisites = {"物流学I"},
     count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
@@ -1048,12 +1089,27 @@ prototype "建造电线杆" {
     },
   }
 
+  prototype "铁矿放置采矿机" {
+    desc = "放置1台采矿机",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"select_entity", 0, "采矿机I"},
+    prerequisites = {"生产运输车辆"},
+    count = 2,
+    tips_pic = {
+      "textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "在铁矿上放置1台采矿机", icon = "textures/construct/industry.texture"},
+    },
+  }
+
   prototype "生产铁矿石" {
     desc = "挖掘足够的铁矿石可以开始进行锻造",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_production", 0, "铁矿石"},
-    prerequisites = {"生产运输车辆"},
+    prerequisites = {"铁矿放置采矿机"},
     count = 10,
     effects = {
       unlock_recipe = {"熔炼炉打印"},
@@ -1079,8 +1135,8 @@ prototype "建造电线杆" {
     ingredients = {
         {"地质科技包", 1},
     },
-    count = 4,
-    time = "3s"
+    count = 10,
+    time = "5s"
   }
   
   prototype "放置熔炼炉" {
@@ -1132,8 +1188,8 @@ prototype "建造电线杆" {
     ingredients = {
         {"地质科技包", 1},
     },
-    count = 6,
-    time = "2s"
+    count = 16,
+    time = "5s"
   }
 
   prototype "生产铁齿轮" {
@@ -1142,7 +1198,7 @@ prototype "建造电线杆" {
     type = { "tech", "task" },
     task = {"stat_production", 0, "铁齿轮"},
     prerequisites = {"铁加工1"},
-    count = 2,
+    count = 10,
     tips_pic = {
       "textures/task_tips_pic/task_produce_ironplate1.texture",
       "textures/task_tips_pic/task_produce_ironplate2.texture",
@@ -1151,7 +1207,7 @@ prototype "建造电线杆" {
       "textures/task_tips_pic/task_produce_ironplate5.texture",
     },
     sign_desc = {
-      { desc = "使用组装机生产2个铁齿轮", icon = "textures/construct/industry.texture"},
+      { desc = "使用组装机生产10个铁齿轮", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -1160,14 +1216,30 @@ prototype "建造电线杆" {
     type = { "tech" },
     icon = "textures/science/tech-research.texture",
     effects = {
-      unlock_recipe = {"运输车辆1"},
+      unlock_recipe = {"运输汽车制造"},
     },
     prerequisites = {"生产铁齿轮"},
     ingredients = {
         {"地质科技包", 1},
     },
-    count = 6,
-    time = "2s"
+    count = 16,
+    time = "5s"
+  }
+
+  prototype "电磁学1" {
+    desc = "研究电能转换成机械能的基础供能装置",
+    type = { "tech" },
+    icon = "textures/science/tech-research.texture",
+    effects = {
+      unlock_recipe = {"电动机1"},
+      unlock_item = {"电动机I"},
+    },
+    prerequisites = {"机械运输"},
+    ingredients = {
+      {"地质科技包", 1},
+    },
+    count = 20,
+    time = "6s"
   }
 
   prototype "量产运输车辆" {
@@ -1175,7 +1247,7 @@ prototype "建造电线杆" {
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_production", 0, "运输车辆I"},
-    prerequisites = {"机械运输"},
+    prerequisites = {"电磁学1"},
     count = 8,
     tips_pic = {
       "textures/task_tips_pic/task_produce_ironplate1.texture",
@@ -1189,22 +1261,6 @@ prototype "建造电线杆" {
     },
   }
 
-prototype "电磁学1" {
-  desc = "研究电能转换成机械能的基础供能装置",
-  type = { "tech" },
-  icon = "textures/science/tech-research.texture",
-  effects = {
-    unlock_recipe = {"电动机1"},
-    unlock_item = {"电动机I"},
-  },
-  prerequisites = {"量产运输车辆"},
-  ingredients = {
-    {"地质科技包", 1},
-  },
-  count = 10,
-  time = "6s"
-}
-
 prototype "物流学II" {
   desc = "研究电能转换成机械能的基础供能装置",
   type = { "tech" },
@@ -1216,7 +1272,7 @@ prototype "物流学II" {
   ingredients = {
     {"地质科技包", 1},
   },
-  count = 10,
+  count = 20,
   time = "6s"
 }
 
@@ -1236,7 +1292,7 @@ prototype "气候研究" {
     { desc = "该科技是火星探索的前沿科技，它可以引导更多的科技研究", icon = "textures/science/important.texture"},
   },
   sign_icon = "textures/science/tech-important.texture",
-  count = 6,
+  count = 12,
   time = "1.5s"
 }
 
@@ -1245,14 +1301,14 @@ prototype "管道系统1" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    unlock_recipe = {"管道建造站设计","管道1","管道2","液罐1"},
-    unlock_item = {"液罐I","管道建造站设计图","管道1-X型"},
+    unlock_recipe = {"修管站设计","管道1","管道2","液罐1"},
+    unlock_item = {"液罐I","修管站设计图","管道1-X型"},
   },
   prerequisites = {"气候研究"},
   ingredients = {
       {"地质科技包", 1},
   },
-  count = 6,
+  count = 12,
   time = "1s"
 }
 
@@ -1283,7 +1339,7 @@ prototype "排放" {
   ingredients = {
     {"气候科技包", 1},
   },
-  count = 8,
+  count = 15,
   time = "2s"
 }
 
@@ -1303,7 +1359,7 @@ prototype "采水研究" {
     { desc = "该科技是火星探索的前沿科技，它可以引导更多的科技研究", icon = "textures/science/important.texture"},
   },
   sign_icon = "textures/science/tech-important.texture",
-  count = 6,
+  count = 12,
   time = "1.5s"
 }
 
@@ -1469,7 +1525,7 @@ prototype "生产气候科技包" {
 --   ingredients = {
 --       {"地质科技包", 1},
 --   },
---   count = 4,
+--   count = 8,
 --   time = "3s"
 -- }
 
@@ -1521,7 +1577,7 @@ prototype "生产气候科技包" {
 --   ingredients = {
 --       {"地质科技包", 1},
 --   },
---   count = 4,
+--   count = 8,
 --   time = "1s"
 -- }
 
@@ -1556,7 +1612,7 @@ prototype "生产气候科技包" {
 --     { desc = "该科技是火星探索的前沿科技，它可以引导更多的科技研究", icon = "textures/science/important.texture"},
 --   },
 --   sign_icon = "textures/science/tech-important.texture",
---   count = 6,
+--   count = 12,
 --   time = "1.5s"
 -- }
 
@@ -1637,7 +1693,7 @@ prototype "生产气候科技包" {
 --       {"地质科技包", 1},
 --       {"气候科技包", 1},
 --   },
---   count = 2,
+--   count = 4,
 --   time = "1s"
 -- }
 
@@ -1669,7 +1725,7 @@ prototype "生产气候科技包" {
 --       {"地质科技包", 1},
 --       {"气候科技包", 1},
 --   },
---   count = 4,
+--   count = 8,
 --   time = "1s"
 -- }
 
@@ -1686,7 +1742,7 @@ prototype "生产气候科技包" {
 --   ingredients = {
 --       {"气候科技包", 1},
 --   },
---   count = 5,
+--   count = 10,
 --   time = "2s"
 -- }
 
@@ -1701,7 +1757,7 @@ prototype "生产气候科技包" {
 --   ingredients = {
 --       {"气候科技包", 1},
 --   },
---   count = 4,
+--   count = 8,
 --   time = "1.5s"
 -- }
 
@@ -1733,7 +1789,7 @@ prototype "生产气候科技包" {
 --   ingredients = {
 --       {"地质科技包", 1},
 --   },
---   count = 6,
+--   count = 12,
 --   time = "2s"
 -- }
 
@@ -1764,7 +1820,7 @@ prototype "生产气候科技包" {
 --   ingredients = {
 --       {"地质科技包", 1},
 --   },
---   count = 8,
+--   count = 16,
 --   time = "2s"
 -- }
 
@@ -1811,7 +1867,7 @@ prototype "生产气候科技包" {
 --   ingredients = {
 --       {"地质科技包", 1},
 --   },
---   count = 8,
+--   count = 16,
 --   time = "1s",
 --   sign_desc = {
 --     { desc = "该科技可以持续地提高某项能力", icon = "textures/science/recycle.texture"},
@@ -1832,7 +1888,7 @@ prototype "生产气候科技包" {
 --       {"地质科技包", 1},
 --       {"气候科技包", 1},
 --   },
---   count = 6,
+--   count = 12,
 --   time = "2s"
 -- }
 
@@ -1863,7 +1919,7 @@ prototype "生产气候科技包" {
 --   ingredients = {
 --       {"气候科技包", 1},
 --   },
---   count = 4,
+--   count = 8,
 --   time = "2s"
 -- }
 
@@ -1910,7 +1966,7 @@ prototype "生产气候科技包" {
 --   ingredients = {
 --       {"气候科技包", 1},
 --   },
---   count = 8,
+--   count = 16,
 --   time = "2s"
 -- }
 
@@ -1922,9 +1978,9 @@ prototype "生产气候科技包" {
 --     unlock_recipe = {"地质科技包2"},
 --   },
 --   ingredients = {
---       {"地质科技包", 20},
+--       {"地质科技包", 1},
 --   },
---   count = 5,
+--   count = 10,
 --   time = "1.2s",
 --   prerequisites = {"碳处理2"},
 --   sign_desc = {
@@ -1946,7 +2002,7 @@ prototype "生产气候科技包" {
 --       {"地质科技包", 1},
 --       {"气候科技包", 1},
 --   },
---   count = 5,
+--   count = 10,
 --   time = "2s"
 -- }
 
@@ -1962,7 +2018,7 @@ prototype "生产气候科技包" {
 --   ingredients = {
 --     {"气候科技包", 1},
 --   },
---   count = 8,
+--   count = 16,
 --   time = "2s"
 -- }
 
@@ -1978,7 +2034,7 @@ prototype "生产气候科技包" {
 --   ingredients = {
 --     {"地质科技包", 1},
 --   },
---   count = 5,
+--   count = 10,
 --   time = "4s"
 -- }
 
@@ -2040,7 +2096,7 @@ prototype "生产气候科技包" {
 --     {"地质科技包", 1},
 --     {"气候科技包", 1},
 --   },
---   count = 6,
+--   count = 12,
 --   time = "10s"
 -- }
 
@@ -2086,7 +2142,7 @@ prototype "生产气候科技包" {
 --     {"地质科技包", 1},
 --     {"气候科技包", 1},
 --   },
---   count = 10,
+--   count = 20,
 --   time = "6s"
 -- }
 
@@ -2103,7 +2159,7 @@ prototype "生产气候科技包" {
 --     {"地质科技包", 1},
 --     {"气候科技包", 1},
 --   },
---   count = 6,
+--   count = 12,
 --   time = "2s",
 --   sign_desc = {
 --     { desc = "该科技是火星探索的前沿科技，它可以引导更多的科技研究", icon = "textures/science/important.texture"},
@@ -2139,7 +2195,7 @@ prototype "生产气候科技包" {
 --     {"地质科技包", 1},
 --     {"气候科技包", 1},
 --   },
---   count = 4,
+--   count = 8,
 --   time = "7s"
 -- }
 
@@ -2154,7 +2210,7 @@ prototype "生产气候科技包" {
 -- --   ingredients = {
 -- --     {"机械科技包", 1},
 -- --   },
--- --   count = 3,
+-- --   count = 6,
 -- --   time = "8s"
 -- -- }
 
@@ -2171,7 +2227,7 @@ prototype "生产气候科技包" {
 --     {"气候科技包", 1},
 --     {"机械科技包", 1},
 --   },
---   count = 4,
+--   count = 8,
 --   time = "7s"
 -- }
 
@@ -2189,7 +2245,7 @@ prototype "生产气候科技包" {
 --     {"气候科技包", 1},
 --     {"机械科技包", 1},
 --   },
---   count = 2,
+--   count = 4,
 --   time = "12s"
 -- }
 
@@ -2206,7 +2262,7 @@ prototype "生产气候科技包" {
 --     {"气候科技包", 1},
 --     {"机械科技包", 1},
 --   },
---   count = 4,
+--   count = 8,
 --   time = "6s"
 -- }
 
@@ -2222,7 +2278,7 @@ prototype "生产气候科技包" {
 --   ingredients = {
 --     {"机械科技包", 1},
 --   },
---   count = 4,
+--   count = 8,
 --   time = "9s"
 -- }
 
@@ -2240,7 +2296,7 @@ prototype "生产气候科技包" {
 --     {"气候科技包", 1},
 --     {"机械科技包", 1},
 --   },
---   count = 4,
+--   count = 8,
 --   time = "10s"
 -- }
 
@@ -2257,7 +2313,7 @@ prototype "生产气候科技包" {
 --     {"气候科技包", 1},
 --     {"机械科技包", 1},
 --   },
---   count = 5,
+--   count = 10,
 --   time = "9s"
 -- }
 
@@ -2274,7 +2330,7 @@ prototype "生产气候科技包" {
 --     {"气候科技包", 1},
 --     {"机械科技包", 1},
 --   },
---   count = 4,
+--   count = 8,
 --   time = "15s"
 -- }
 
@@ -2290,7 +2346,7 @@ prototype "生产气候科技包" {
 --   ingredients = {
 --     {"机械科技包", 1},
 --   },
---   count = 5,
+--   count = 10,
 --   time = "10s"
 -- }
 
@@ -2306,7 +2362,7 @@ prototype "生产气候科技包" {
 --   ingredients = {
 --     {"气候科技包", 1},
 --   },
---   count = 5,
+--   count = 10,
 --   time = "10s"
 -- }
 
@@ -2323,7 +2379,7 @@ prototype "生产气候科技包" {
 --     {"地质科技包", 1},
 --     {"机械科技包", 1},
 --   },
---   count = 5,
+--   count = 10,
 --   time = "10s"
 -- }
 
@@ -2339,7 +2395,7 @@ prototype "生产气候科技包" {
 --     {"地质科技包", 1},
 --     {"机械科技包", 1},
 --   },
---   count = 8,
+--   count = 16,
 --   time = "8s"
 -- }
 
@@ -2357,7 +2413,7 @@ prototype "生产气候科技包" {
 --     {"气候科技包", 1},
 --     {"机械科技包", 1},
 --   },
---   count = 8,
+--   count = 16,
 --   time = "8s"
 -- }
 
@@ -2373,7 +2429,7 @@ prototype "生产气候科技包" {
 --     {"地质科技包", 1},
 --     {"机械科技包", 1},
 --   },
---   count = 8,
+--   count = 16,
 --   time = "8s"
 -- }
 
@@ -2389,7 +2445,7 @@ prototype "生产气候科技包" {
 --       {"地质科技包", 1},
 --       {"机械科技包", 1},
 --   },
---   count = 6,
+--   count = 12,
 --   time = "8s"
 -- }
 
@@ -2406,7 +2462,7 @@ prototype "生产气候科技包" {
 --       {"气候科技包", 1},
 --       {"机械科技包", 1},
 --   },
---   count = 4,
+--   count = 8,
 --   time = "12s"
 -- }
 
@@ -2422,7 +2478,7 @@ prototype "生产气候科技包" {
 --       {"气候科技包", 1},
 --       {"机械科技包", 1},
 --   },
---   count = 8,
+--   count = 16,
 --   time = "8s"
 -- }
 
@@ -2440,7 +2496,7 @@ prototype "生产气候科技包" {
 --       {"气候科技包", 1},
 --       {"机械科技包", 1},
 --   },
---   count = 5,
+--   count = 10,
 --   time = "10s"
 -- }
 
@@ -2457,7 +2513,7 @@ prototype "生产气候科技包" {
 --       {"气候科技包", 1},
 --       {"机械科技包", 1},
 --   },
---   count = 6,
+--   count = 12,
 --   time = "10s"
 -- }
 
@@ -2474,7 +2530,7 @@ prototype "生产气候科技包" {
 --       {"气候科技包", 1},
 --       {"机械科技包", 1},
 --   },
---   count = 10,
+--   count = 20,
 --   time = "5s"
 -- }
 
@@ -2491,7 +2547,7 @@ prototype "生产气候科技包" {
 --       {"气候科技包", 1},
 --       {"机械科技包", 1},
 --   },
---   count = 12,
+--   count = 24,
 --   time = "6s"
 -- }
 
@@ -2508,7 +2564,7 @@ prototype "生产气候科技包" {
 --     {"气候科技包", 1},
 --     {"机械科技包", 1},
 --   },
---   count = 12,
+--   count = 24,
 --   time = "8s"
 -- }
 
@@ -2524,7 +2580,7 @@ prototype "生产气候科技包" {
 --       {"气候科技包", 1},
 --       {"机械科技包", 1},
 --   },
---   count = 12,
+--   count = 24,
 --   time = "8s"
 -- }
 
@@ -2541,7 +2597,7 @@ prototype "生产气候科技包" {
 --       {"气候科技包", 1},
 --       {"机械科技包", 1},
 --   },
---   count = 15,
+--   count = 30,
 --   time = "8s"
 -- }
 
@@ -2558,7 +2614,7 @@ prototype "生产气候科技包" {
 --     {"地质科技包", 1},
 --     {"机械科技包", 1},
 --   },
---   count = 20,
+--   count = 40,
 --   time = "6s"
 -- }
 
@@ -2574,7 +2630,7 @@ prototype "生产气候科技包" {
 --     {"地质科技包", 1},
 --     {"机械科技包", 1},
 --   },
---   count = 20,
+--   count = 40,
 --   time = "6s"
 -- }
 
@@ -2590,7 +2646,7 @@ prototype "生产气候科技包" {
 --     {"地质科技包", 1},
 --     {"机械科技包", 1},
 --   },
---   count = 30,
+--   count = 60,
 --   time = "6s"
 -- }
 
@@ -2607,7 +2663,7 @@ prototype "生产气候科技包" {
 --     {"气候科技包", 1},
 --     {"机械科技包", 1},
 --   },
---   count = 30,
+--   count = 60,
 --   time = "5s"
 -- }
 
@@ -2624,7 +2680,7 @@ prototype "生产气候科技包" {
 --     {"气候科技包", 1},
 --     {"机械科技包", 1},
 --   },
---   count = 25,
+--   count = 50,
 --   time = "8s"
 -- }
 
@@ -2642,7 +2698,7 @@ prototype "生产气候科技包" {
 --     {"气候科技包", 1},
 --     {"机械科技包", 1},
 --   },
---   count = 15,
+--   count = 30,
 --   time = "5s"
 -- }
 
@@ -2659,7 +2715,7 @@ prototype "生产气候科技包" {
 --     {"气候科技包", 1},
 --     {"机械科技包", 1},
 --   },
---   count = 40,
+--   count = 80,
 --   time = "5s"
 -- }
 
@@ -2676,7 +2732,7 @@ prototype "生产气候科技包" {
 --     {"气候科技包", 1},
 --     {"机械科技包", 1},
 --   },
---   count = 30,
+--   count = 60,
 --   time = "6s"
 -- }
 
@@ -2697,6 +2753,6 @@ prototype "生产气候科技包" {
 --     { desc = "该科技是火星探索的前沿科技，它可以引导更多的科技研究", icon = "textures/science/important.texture"},
 --   },
 --   sign_icon = "textures/science/tech-important.texture",
---   count = 50,
+--   count = 100,
 --   time = "5s"
 -- }

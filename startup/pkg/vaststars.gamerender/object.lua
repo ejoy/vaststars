@@ -48,7 +48,6 @@ local function new(init)
         y = assert(init.y),
         fluid_name = init.fluid_name,
         fluidflow_id = init.fluidflow_id,
-        object_state = assert(init.object_state),
         recipe = init.recipe,
         fluid_icon = init.fluid_icon,
         srt = init.srt,
@@ -214,7 +213,6 @@ local function move_delta(object, delta_vec, coord_system, area_inc)
 
     object.x, object.y = coord[1], coord[2]
     object.srt.t = position
-    vsobject:set_position(position)
     return object
 end
 

@@ -20,7 +20,7 @@ namespace roadnet::road {
         roadid neighbor;
         direction dir;
 
-        void init(roadid id, uint16_t len, direction dir);
+        void init(roadid id, uint16_t len, direction dir, roadid neighbor);
         void update(network& w, uint64_t ti);
         bool canEntry(network& w, uint16_t offset);
         bool canEntry(network& w);
@@ -28,7 +28,6 @@ namespace roadnet::road {
         bool tryEntry(network& w, lorryid l);
         void setNeighbor(roadid id);
         void setLorryOffset(uint32_t offset) { lorryOffset = offset; }
-        void addLorry(network& w, lorryid l, uint16_t offset);
         bool hasLorry(network& w, uint16_t offset);
         void delLorry(network& w, uint16_t offset);
         lorryid& waitingLorry(network& w);

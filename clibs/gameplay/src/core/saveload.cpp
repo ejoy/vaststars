@@ -21,11 +21,9 @@ namespace lua_world {
     void file_read(FILE* f, T& t) {
         //TODO: performance optimization
         t.clear();
-        size_t n = 0;
-        file_read(f, n);
+        size_t n = file_read<size_t>(f);
         for (size_t i = 0; i < n; ++i) {
-            typename T::value_type v;
-            file_read(f, v);
+            auto v = file_read<typename T::value_type>(f);
             t.push(v);
         }
     }
@@ -42,32 +40,33 @@ namespace lua_world {
     is_instantiation_of<T, std::map> || is_instantiation_of<T, std::unordered_map>;
 
     template <typename T>
+        requires (is_instantiation_of<T, std::pair> && !std::is_trivially_copyable_v<T>)
+    void file_write(FILE* f, const T& t) {
+        file_write(f, t.first);
+        file_write(f, t.second);
+    }
+    template <typename T>
         requires (is_instantiation_of<T, std::map>)
     void file_write(FILE* f, const T& t) {
         file_write<size_t>(f, t.size());
-        for (auto& kv : t) {
-            file_write(f, kv.first);
-            file_write(f, kv.second);
+        for (auto const& kv : t) {
+            file_write(f, kv);
         }
+    }
+    template <typename T>
+        requires (is_instantiation_of<T, std::pair> && !std::is_trivially_copyable_v<T>)
+    void file_read(FILE* f, T& t) {
+        file_read(f, t.first);
+        file_read(f, t.second);
     }
     template <typename T>
         requires (is_instantiation_of<T, std::map>)
     void file_read(FILE* f, T& t) {
         t.clear();
-        size_t n = 0;
-        file_read(f, n);
+        size_t n = file_read<size_t>(f);
         for (size_t i = 1; i <= n; ++i) {
-            typename T::key_type k;
-            file_read(f, k);
-            auto r = t.emplace(typename T::value_type(std::move(k), typename T::mapped_type{}));
-            assert(r.second);
-            if (r.second) {
-                file_read(f, r.first->second);
-            }
-            else {
-                typename T::mapped_type v;
-                file_read(f, v);
-            }
+            auto kv = file_read<typename T::value_type>(f);
+            t.emplace(std::move(kv));
         }
     }
 
@@ -184,7 +183,7 @@ namespace lua_world {
     }
 
     int backup_world(lua_State* L) {
-        world& w = *(world*)lua_touserdata(L, 1);
+        auto& w = getworld(L);
         FILE* f = createfile(L, 2, filemode::write);
 
         lua_newtable(L);
@@ -196,7 +195,6 @@ namespace lua_world {
         backup_scope(L, f, "stat", [&](){
             file_write(f, w.stat.production);
             file_write(f, w.stat.consumption);
-            file_write(f, w.stat.manual_production);
         });
 
         backup_scope(L, f, "techtree", [&](){
@@ -222,15 +220,11 @@ namespace lua_world {
 
         backup_scope(L, f, "roadnet", [&](){
             auto& rw = w.rw;
-            file_write(f, rw.crossAry);
-            file_write(f, rw.straightAry);
             file_write(f, rw.lorryAry);
             file_write(f, rw.lorryFreeList);
             file_write(f, rw.lorryVec);
-            file_write(f, rw.straightVec);
             file_write(f, rw.map);
-            file_write(f, rw.crossMap);
-            file_write(f, rw.crossMapR);
+            file_write(f, rw.crossAry);
         });
 
         fclose(f);
@@ -238,7 +232,7 @@ namespace lua_world {
     }
 
     int restore_world(lua_State *L) {
-        world& w = *(world*)lua_touserdata(L, 1);
+        auto& w = getworld(L);
         FILE* f = createfile(L, 2, filemode::read);
         luaL_checktype(L, 3, LUA_TTABLE);
         lua_settop(L, 3);
@@ -252,11 +246,9 @@ namespace lua_world {
         restore_scope(L, f, "stat", [&](){
             file_read(f, w.stat.production);
             file_read(f, w.stat.consumption);
-            file_read(f, w.stat.manual_production);
         }, [&](){
             w.stat.production.clear();
             w.stat.consumption.clear();
-            w.stat.manual_production.clear();
         });
 
         restore_scope(L, f, "techtree", [&](){
@@ -296,15 +288,12 @@ namespace lua_world {
 
         restore_scope(L, f, "roadnet", [&](){
             auto& rw = w.rw;
-            file_read(f, rw.crossAry);
-            file_read(f, rw.straightAry);
             file_read(f, rw.lorryAry);
             file_read(f, rw.lorryFreeList);
             file_read(f, rw.lorryVec);
-            file_read(f, rw.straightVec);
             file_read(f, rw.map);
-            file_read(f, rw.crossMap);
-            file_read(f, rw.crossMapR);
+            rw.reloadMap();
+            file_read(f, rw.crossAry); // rw.reloadMap() will generate the crossAry, so it must be restored after rw.reloadMap()
         }, [&](){
             //TODO
         });

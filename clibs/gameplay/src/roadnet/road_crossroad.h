@@ -6,10 +6,6 @@
 
 namespace roadnet::road {
     struct crossroad {
-#ifdef _DEBUG_ROADNET
-        loction loc = {0, 0};
-        roadid id;
-#endif//_DEBUG
         roadid     neighbor[4] = {};
         roadid     rev_neighbor[4] = {};
         lorryid    cross_lorry[2] = {};
@@ -19,7 +15,6 @@ namespace roadnet::road {
         bool hasNeighbor(direction dir) const;
         void setNeighbor(direction dir, roadid id);
         void setRevNeighbor(direction dir, roadid id);
-        void addLorry(network& w, lorryid l, uint16_t offset);
         bool hasLorry(network& w, uint16_t offset);
         void delLorry(network& w, uint16_t offset);
 

@@ -9,6 +9,7 @@ local iprototype = require "gameplay.interface.prototype"
 local ichest = require "gameplay.interface.chest"
 local ims = ecs.import.interface "ant.motion_sampler|imotion_sampler"
 local iheapmesh = ecs.import.interface "ant.render|iheapmesh"
+local prefab_meshbin = require("engine.prefab_parser").meshbin
 local gameplay_core = require "gameplay.core"
 local entity_remove = world:sub {"gameplay", "remove_entity"}
 local sampler_group
@@ -181,11 +182,12 @@ local function update_world(gameworld)
     local drone_task = {}
     for e in gameworld.ecs:select "drone:in eid:in" do
         local drone = e.drone
+        assert(drone.prev ~= 0, "drone.prev == 0")
         -- if (drone.prev ~= 0) or (drone.next ~= 0) or (drone.maxprogress ~= 0) or (drone.progress ~= 0) then
         --     print(drone.prev, drone.next, drone.maxprogress, drone.progress, drone.item)
         -- end
         if not lookup_drones[e.eid] then
-            local obj = get_object(drone.home)
+            local obj = get_object(drone.prev)
             assert(obj)
             local pos = obj.srt.t
             local objid = obj.gameplay_eid
@@ -202,11 +204,13 @@ local function update_world(gameworld)
                 pile_id = pile_id + 1
                 local pile_name = "pile" .. pile_id
                 local pos_offset = {-1, 5, 4} -- read from drone depot prefab file
+                local meshbin = prefab_meshbin("/pkg/vaststars.resources/"..typeobject.pile_model)
+                assert(#meshbin == 1)
                 drone_depot[objid] = {
                     drones = {},
                     pile_name = pile_name,
                     pile_num = chest.amount,
-                    pile_eid = create_heap_items(pile_name, "/pkg/vaststars.resources/"..typeobject.pile_model.."|meshes/Cube_P1.meshbin", {s = 1, t = {pos[1] + pos_offset[1], pos[2] + pos_offset[2], pos[3] + pos_offset[3]}}, dim, chest.amount),
+                    pile_eid = create_heap_items(pile_name, meshbin[1], {s = 1, t = {pos[1] + pos_offset[1], pos[2] + pos_offset[2], pos[3] + pos_offset[3]}}, dim, chest.amount),
                     update_heap = function (self, num)
                         self.pile_num = self.pile_num + num
                         iheapmesh.update_heap_mesh_number(self.pile_num, self.pile_name)

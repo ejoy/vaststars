@@ -3,9 +3,6 @@
 #include "luaecs.h"
 #include "core/world.h"
 #include "core/capacitance.h"
-extern "C" {
-#include "util/prototype.h"
-}
 
 static void
 block(world& w, ecs::fluidbox const& fb) {
@@ -14,7 +11,7 @@ block(world& w, ecs::fluidbox const& fb) {
 
 static int
 lupdate(lua_State *L) {
-    world& w = *(world*)lua_touserdata(L, 1);
+    auto& w = getworld(L);
     for (auto& v : ecs_api::select<ecs::pump, ecs::building, ecs::capacitance, ecs::fluidbox>(w.ecs)) {
         auto consumer = get_consumer(w, v);
         if (!consumer.cost_drain() || !consumer.cost_power()) {

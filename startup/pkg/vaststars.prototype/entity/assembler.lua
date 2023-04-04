@@ -12,7 +12,7 @@ prototype "组装机I" {
     construct_detector = {"exclusive"},
     type = {"building", "assembling", "consumer", "fluidboxes"},
     area = "3x3",
-    speed = "50%",
+    speed = "100%",
     power = "60kW",
     priority = "secondary",
     maxslot = "8",
@@ -52,7 +52,7 @@ prototype "组装机II" {
     construct_detector = {"exclusive"},
     type = {"building", "assembling", "consumer", "fluidboxes"},
     area = "3x3",
-    speed = "100%",
+    speed = "150%",
     power = "150kW",
     priority = "secondary",
     maxslot = "8",
@@ -122,7 +122,7 @@ prototype "车辆厂I" {
     icon = "textures/building_pic/small_pic_mars_assembling_machine.texture",
     background = "textures/build_background/pic_mars_assembling_machine.texture",
     construct_detector = {"exclusive"},
-    type = {"building", "consumer", "lorry_factory"},
+    type = {"building", "assembling", "consumer", "lorry_factory"},
     area = "5x5",
     speed = "50%",
     power = "300kW",
@@ -135,4 +135,9 @@ prototype "车辆厂I" {
         output = {
         },
     },
+    crossing = {
+        connections = {
+            {type="lorry_factory", position={2,4,"S"}},
+        },
+    }
 }

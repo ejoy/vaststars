@@ -12,7 +12,7 @@ end
 function M.set_recipe(world, e, recipe_name, option)
     local typeobject = iprototype.queryById(e.building.prototype)
     if not recipe_name then
-        assembling.set_recipe(world, e, typeobject, recipe_name, option)
+        assembling.set_recipe(world, e, typeobject, recipe_name, nil, option)
         log.info(("clean recipe success"))
         return true
     end

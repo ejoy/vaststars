@@ -2,7 +2,7 @@ local iprototype = require "gameplay.interface.prototype"
 local itypes = require "gameplay.interface.types"
 
 local cache = {}
-for _, v in pairs(iprototype.each_maintype "recipe") do
+for _, v in pairs(iprototype.each_type "recipe") do
     cache[v.category] = cache[v.category] or {}
     local ingredients = itypes.items(v.ingredients)
     if #ingredients ~= 1 then

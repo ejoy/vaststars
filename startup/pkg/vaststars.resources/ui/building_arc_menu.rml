@@ -1,0 +1,343 @@
+<rml>
+    <head>
+        <style>
+            body {
+                font: 100% "宋体";
+            }
+            div {
+                font: 100% "微软雅黑";
+            }
+            .title-text {
+                text-align: center;
+                font-size: 3.80vmin;
+                color: gold;
+                -webkit-text-stroke: 0.15vmin rgb(0, 0, 0);
+                position: relative;
+                bottom:0.5em;
+            }
+            .button-fuction-block {
+                width: 13.33vmin;
+            }
+            .button-function {
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                width: 13.33vmin;
+                height: 13.33vmin;
+                background-size: cover;
+            }
+            .info-panel {
+                height: 30.00vmin;
+                width: 83.47vmin;
+                background-image: "textures/common/info-arc.texture";
+                background-size:cover;
+                animation: 0.3s linear 0s enlarge;
+            }
+            .materials-block {
+                flex-direction: column;
+                justify-content: center;
+                align-items: flex-start;
+                background-size: cover;
+                border-radius: 0.27vmin;
+                width: 100%;
+                height:86%;
+            }
+            .materials {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                background-size: cover;
+                width: 10vmin;
+                height:20%;
+            }
+            .materials-item {
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+            }
+            .icon-background {
+                width: 12vmin;
+                height: 12vmin;
+                background-color: rgb(253, 176, 2);
+                transform: rotate(45deg);
+            }
+            .materials-icon {
+                margin-left: 0.5em;
+                width: 4.67vmin;
+                height: 4.67vmin;
+                background-color: rgb(250, 205, 9);
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+                background-size: cover;
+            }
+            .materials-num {
+                padding-bottom: 0.3em;
+                padding-right:1em;
+                font-size: 4.73vmin;
+                text-align: center;
+            }
+            .red-dot {
+                width:4.26vmin; 
+                height:4.26vmin; 
+                position:absolute; 
+                right:0; 
+                top:0; 
+                background-image:"textures/work_status_icon/red_dot.texture";
+            }
+            @keyframes enlarge {
+                0% {
+                    transform: scale(0.9);
+                }
+                50% {
+                    transform: scale(1.1);
+                }
+                100% {
+                    transform: scale(1.0);
+                }
+            }
+        </style>
+        <style path = "common/building_style.rcss"/>
+        <script type="text/x-lua" >
+            local ui_sys = require "ui_system"
+            local start = ui_sys.createDataMode("start", {
+                object_position = {},
+                construction_center_icon = "",
+                construction_center_count = 0,
+                construction_center_multiple = 0,
+                construction_center_ingredients = {},
+                show_set_item = false,
+                show_set_recipe = false,
+                show_road_builder = false,
+                show_pipe_builder = false,
+                object_id = 0,
+                guide_progress = 0,
+                left = "0vmin",
+                top = "0vmin",
+                buttons = {},
+            })
+
+            local positions <const> = {
+                [1] = {
+                    {top = "15.00vmin", left = "2vmin"},
+                },
+                [2] = {
+                    {top = "15.00vmin", left = "2vmin"},
+                    {top = "15.00vmin", left = "69.34vmin"},
+                },
+                [3] = {
+                    {top = "15.00vmin", left = "2vmin"},
+                    {top = "-2vmin", left = "35vmin"},
+                    {top = "15.00vmin", left = "69.34vmin"},
+                },
+                [4] = {
+                    {top = "15.00vmin", left = "2vmin"},
+                    {top = "0.00vmin", left = "21.62vmin"},
+                    {top = "0.00vmin", left = "48.48vmin"},
+                    {top = "15.00vmin", left = "69.34vmin"},
+                },
+                [5] = {
+                    {top = "15.00vmin", left = "2vmin"},
+                    {top = "3.00vmin", left = "16.62vmin"},
+                    {top = "-2vmin", left = "35vmin"},
+                    {top = "3.00vmin", left = "53.48vmin"},
+                    {top = "15.00vmin", left = "69.34vmin"},
+                },
+            }
+
+            function start.clickButton(event, message)
+                if message == "" then
+                    return
+                end
+                ui_sys.pub {message, start.object_id}
+            end
+
+            ui_sys.addEventListener({
+                ["leave"] = function()
+                    ui_sys.pub {"close", start.object_id}
+                    ui_sys.close()
+                end,
+            })
+
+            local PANDEL_WIDTH <const> = 83.47 -- the unit is vmin
+            local PANDEL_HEIGHT <const> = 30
+            local OFFSET_LEFT <const> = PANDEL_WIDTH / 2
+            local OFFSET_TOP <const> = PANDEL_HEIGHT
+            local popup_bound = require "lua.popup_bound"
+            ui_sys.mapping(start, {
+                {
+                    function(_, left, top)
+                        local move_camera, _left, _top = popup_bound(left, top, OFFSET_LEFT, OFFSET_TOP, PANDEL_WIDTH, PANDEL_HEIGHT)
+                        start.left, start.top = ("%0.2fvmin"):format(_left), ("%0.2fvmin"):format(_top)
+                        if move_camera then
+                            ui_sys.world_pub {"ui_message", "move_camera", _left + OFFSET_LEFT, _top + OFFSET_TOP, start.object_position}
+                        end
+                    end,
+                    "left", "top",
+                },
+                {
+                    function(_)
+                        local mt = {
+                            text = " ",
+                            message = " ",
+                            number = -1,
+                            show_number = false,
+                            show_icon_background = false,
+                        }
+
+                        start.buttons = {}
+                        if start.show_set_recipe then
+                            local v = setmetatable({}, {__index = mt})
+                            v.text = "管理"
+                            v.message = "set_recipe"
+                            v.background_image = "textures/assemble/wheel.texture"
+                            start.buttons[#start.buttons + 1] = v
+                        end
+
+                        if start.show_set_item then
+                            local v = setmetatable({}, {__index = mt})
+                            v.text = "管理"
+                            v.message = "set_item"
+                            v.background_image = "textures/assemble/wheel.texture"
+                            start.buttons[#start.buttons + 1] = v
+                        end
+
+                        if start.show_road_builder then
+                            local v = setmetatable({}, {__index = mt})
+                            v.text = "道路施工"
+                            v.message = "road_builder"
+                            v.background_image = "textures/common/road-connect.texture"
+                            start.buttons[#start.buttons + 1] = v
+                        end
+
+                        if start.show_pipe_builder then
+                            local v = setmetatable({}, {__index = mt})
+                            v.text = "管道施工"
+                            v.message = "pipe_builder"
+                            v.background_image = "textures/common/pipe-connect.texture"
+                            start.buttons[#start.buttons + 1] = v
+                        end
+
+                        if start.construction_center_stop_build then
+                            local v = setmetatable({}, {__index = mt})
+                            v.text = "建造取消"
+                            v.message = "construction_center_stop_build"
+                            v.background_image = "textures/construct/hammer-stop.texture"
+                            start.buttons[#start.buttons + 1] = v
+                        end
+
+                        if start.construction_center_icon and start.construction_center_icon ~= "" then
+                            local v = setmetatable({}, {__index = mt})
+                            v.background_image = start.construction_center_icon
+                            v.number = start.construction_center_multiple
+                            v.show_number = true
+                            v.show_icon_background = true
+                            start.buttons[#start.buttons + 1] = v
+                        end
+
+                        if start.construction_center_build then
+                            local v = setmetatable({}, {__index = mt})
+                            v.text = "建造增加"
+                            v.message = "construction_center_build"
+                            v.background_image = "textures/construct/hammer-add.texture"
+                            start.buttons[#start.buttons + 1] = v
+                        end
+
+                        if start.construction_center_place then
+                            local v = setmetatable({}, {__index = mt})
+                            v.text = "放置"
+                            v.message = "construction_center_place"
+                            v.background_image = "textures/factory/place-building.texture"
+                            v.number = start.construction_center_count
+                            v.show_number = start.construction_center_count > 0
+                            v.show_icon_background = false
+                            start.buttons[#start.buttons + 1] = v
+                        end
+
+                        if start.drone_depot_icon and start.drone_depot_icon ~= "" then
+                            local v = setmetatable({}, {__index = mt})
+                            v.background_image = start.drone_depot_icon
+                            v.number = start.drone_depot_count
+                            v.show_number = true
+                            v.show_icon_background = true
+                            start.buttons[#start.buttons + 1] = v
+                        end
+
+                        if start.station_item_icon and start.station_item_icon ~= "" then
+                            local v = setmetatable({}, {__index = mt})
+                            v.background_image = start.station_item_icon
+                            v.number = start.station_item_count
+                            v.show_number = true
+                            v.show_icon_background = true
+                            start.buttons[#start.buttons + 1] = v
+                        end
+
+                        if start.lorry_factory_dec_lorry then
+                            local v = setmetatable({}, {__index = mt})
+                            v.text = "车辆取消"
+                            v.message = "lorry_factory_stop_build"
+                            v.background_image = "textures/construct/truck-cancel.texture"
+                            start.buttons[#start.buttons + 1] = v
+                        end
+
+
+                        if start.lorry_factory_icon and start.lorry_factory_icon ~= "" then
+                            local v = setmetatable({}, {__index = mt})
+                            v.background_image = start.lorry_factory_icon
+                            v.number = start.lorry_factory_count
+                            v.show_number = true
+                            v.show_icon_background = true
+                            start.buttons[#start.buttons + 1] = v
+                        end
+
+                        if start.lorry_factory_inc_lorry then
+                            local v = setmetatable({}, {__index = mt})
+                            v.text = "增加车辆"
+                            v.message = "lorry_factory_inc_lorry"
+                            v.background_image = "textures/construct/truck-add.texture"
+                            start.buttons[#start.buttons + 1] = v
+                        end
+
+                        console.log("#start.buttons", #start.buttons)
+                        if #start.buttons > 0 then
+                            local pos = assert(positions[#start.buttons], #start.buttons)
+                            for i = 1, #start.buttons do
+                                local v = start.buttons[i]
+                                v.left = pos[i].left
+                                v.top = pos[i].top
+                            end
+                        end
+                        start("buttons")
+                    end,
+                    "show_set_recipe", "show_set_item", "show_road_builder", 
+                    "construction_center_icon", "construction_center_count", "construction_center_multiple", "drone_depot_icon", "station_item_icon",
+                    "lorry_factory_icon", "lorry_factory_count", "lorry_factory_inc_lorry", "lorry_factory_dec_lorry",
+                }
+            })
+        </script>
+    </head>
+    <body style = "pointer-events: none;">
+        <div class="info-panel" style="position: relative; pointer-events: none;" data-model="start" data-style-left = "left" data-style-top = "top">
+            <button class="button-fuction-block" style="position: absolute;" data-style-top="it.top" data-style-left="it.left" data-event-click="clickButton(it.message)" data-for = "it : buttons">
+                <div class = "icon-background" style="position: absolute; margin: 1.8vmin 0.7vmin;" data-if = "it.show_icon_background" />
+                <div class="button-function" data-style-background-image = "it.background_image" />
+                <div class="title-text">{{it.text}}</div>
+                <div class = "red-dot" data-if = "it.show_number">
+                    <div style="text-align:center; font-size:3vmin; padding-right: 0.5vmin;">{{it.number}}</div>
+                </div>
+            </button>
+
+            <!-- div class = "materials-block" style="position: absolute; top: 40.33vmin; height: 10vmin; width: 100%; justify-content: center; align-items: center;"> 
+                <div class = "materials" data-for = "construction_center_ingredients">
+                    <div class = "materials-item">
+                        <div class = "materials-icon" data-style-background-image = "it.icon" />
+                        <div style = "flex-grow: 1; flex-direction:row-reverse;">
+                            <div class = "materials-num" data-style-color = "it.color" data-if = "it.state == 'can_craft' || it.state == 'enough'">X{{it.demand_count}}</div>
+                            <div class = "materials-num" data-style-color = "it.color" data-if = "it.state == 'lack'">X({{it.count}}/{{it.demand_count}})</div>
+                        </div>
+                    </div>
+                </div>
+            </div -->
+        </div>
+    </body>
+</rml>

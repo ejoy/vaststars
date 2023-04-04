@@ -2,10 +2,7 @@
 
 #include "luaecs.h"
 #include "core/world.h"
-extern "C" {
 #include "util/prototype.h"
-}
-
 
 struct task {
     enum class type: uint16_t {
@@ -15,7 +12,6 @@ struct task {
         select_chest,
         power_generator,
         unknown,
-        stat_manual_production,
     };
     type     type;
     uint16_t e;
@@ -23,7 +19,6 @@ struct task {
     uint16_t p2;
 
     uint64_t stat_production(world& w);
-    uint64_t stat_manual_production(world& w);
     uint64_t stat_consumption(world& w);
     uint64_t select_entity(world& w);
     uint64_t select_chest(world& w);
@@ -35,14 +30,6 @@ struct task {
 
 uint64_t task::stat_production(world& w) {
     auto iter = w.stat.production.find(p1);
-    if (iter) {
-        return *iter;
-    }
-    return 0;
-}
-
-uint64_t task::stat_manual_production(world& w) {
-    auto iter = w.stat.manual_production.find(p1);
     if (iter) {
         return *iter;
     }
@@ -94,7 +81,6 @@ uint64_t task::power_generator(world& w) {
 uint64_t task::eval(world& w) {
     switch (type) {
     case task::type::stat_production:         return stat_production(w);
-    case task::type::stat_manual_production:  return stat_manual_production(w);
     case task::type::stat_consumption:        return stat_consumption(w);
     case task::type::select_entity:           return select_entity(w);
     case task::type::select_chest:            return select_chest(w);
@@ -117,17 +103,17 @@ uint16_t task::progress(world& w) {
 
 static int
 lupdate(lua_State *L) {
-    world& w = *(world*)lua_touserdata(L, 1);
+    auto& w = getworld(L);
     for (;;) {
         uint16_t taskid = w.techtree.queue_top();
         if (taskid == 0) {
             break;
         }
-        prototype_context task_prototype = w.prototype(taskid);
-        if (0 != pt_time(&task_prototype)) {
+        auto time = prototype::get<"time">(w, taskid);
+        if (0 != time) {
             break;
         }
-        struct task& task = *(struct task*)pt_task(&task_prototype);
+        auto& task = *(struct task*)prototype::get<"task">(w, taskid).data();
         if (task.type == task::type::unknown) {
             break;
         }
