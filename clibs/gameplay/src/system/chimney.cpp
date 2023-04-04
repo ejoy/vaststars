@@ -11,7 +11,7 @@ extern "C" {
 #define STATUS_DONE 1
 #define STATUS_WORKING 2
 
-static bool fluidbox_pickup(world& w, ecs::fluidbox& f, recipe_items& r) {
+static bool fluidbox_pickup(world& w, ecs::fluidbox& f, recipe_items const& r) {
     if (r.n != 1 || r.items[0].item != f.fluid) {
         return false;
     }
@@ -47,7 +47,7 @@ chimney_update(world& w, ecs_api::entity<ecs::chimney, ecs::fluidbox>& v) {
             c.status = STATUS_IDLE;
         }
         if (c.status == STATUS_IDLE) {
-            auto& ingredients = *(recipe_items*)prototype::get<"ingredients">(w, c.recipe).data();
+            auto const& ingredients = prototype::get<"ingredients", recipe_items>(w, c.recipe);
             ecs::fluidbox& f = v.get<ecs::fluidbox>();
             if (!fluidbox_pickup(w, f, ingredients)) {
                 return;

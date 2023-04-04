@@ -154,8 +154,8 @@ static std::optional<uint8_t> recipeFirstOutput(world& w, uint16_t recipe) {
     if (recipe == 0) {
         return std::nullopt;
     }
-    auto& ingredients = *(recipe_items*)prototype::get<"ingredients">(w, recipe).data();
-    auto& results = *(recipe_items*)prototype::get<"results">(w, recipe).data();
+    auto const& ingredients = prototype::get<"ingredients", recipe_items>(w, recipe);
+    auto const& results = prototype::get<"results", recipe_items>(w, recipe);
     if (results.n == 0) {
         return std::nullopt;
     }
