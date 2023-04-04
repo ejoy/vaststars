@@ -30,7 +30,7 @@ bool techtree_mgr::research_set(uint16_t techid, uint16_t max, uint16_t val) {
 }
 
 bool techtree_mgr::research_set(world& w,uint16_t techid, uint16_t val) {
-    uint16_t count = (uint16_t)prototype::get<"count">(w, techid);
+    auto count = prototype::get<"count">(w, techid);
     if (!research_set(techid, count, val)) {
         return false;
     }

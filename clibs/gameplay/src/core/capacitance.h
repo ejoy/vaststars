@@ -6,10 +6,10 @@
 
 struct consumer_context {
     ecs::capacitance& c;
-    unsigned int power;
-    unsigned int drain;
-    unsigned int capacitance;
-    inline unsigned int costall(unsigned int v) {
+    uint32_t power;
+    uint32_t drain;
+    uint32_t capacitance;
+    inline uint32_t costall(uint32_t v) {
         if (c.shortage + v > capacitance) {
             v = capacitance - c.shortage;
             c.shortage = capacitance;
@@ -18,7 +18,7 @@ struct consumer_context {
         c.shortage += v;
         return v;
     }
-    inline bool cost(unsigned int v) {
+    inline bool cost(uint32_t v) {
         if (c.shortage + v > capacitance) {
             return false;
         }
@@ -37,9 +37,9 @@ template <class Entity>
 consumer_context get_consumer(world& w, Entity& v) {
     ecs::building& building = v.template get<ecs::building>();
     ecs::capacitance& c = v.template get<ecs::capacitance>();
-    unsigned int power = prototype::get<"power">(w, building.prototype);
-    unsigned int drain = prototype::get<"drain">(w, building.prototype);
-    unsigned int capacitance = prototype::get<"capacitance">(w, building.prototype);
+    uint32_t power = prototype::get<"power">(w, building.prototype);
+    uint32_t drain = prototype::get<"drain">(w, building.prototype);
+    uint32_t capacitance = prototype::get<"capacitance">(w, building.prototype);
     return {
         c, power, drain, capacitance
     };

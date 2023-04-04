@@ -39,8 +39,8 @@ lupdate(lua_State *L) {
         for (auto& v : ecs_api::select<ecs::solar_panel, ecs::capacitance, ecs::building>(w.ecs)) {
             ecs::building& building = v.get<ecs::building>();
             ecs::capacitance& c = v.get<ecs::capacitance>();
-            unsigned int power = prototype::get<"power">(w, building.prototype);
-            power = (unsigned int)(eff * power / FixedPoint);
+            uint32_t power = prototype::get<"power">(w, building.prototype);
+            power = (uint32_t)(eff * power / FixedPoint);
             if (power < c.shortage) {
                 c.shortage -= power;
             }
@@ -53,7 +53,7 @@ lupdate(lua_State *L) {
     for (auto& v : ecs_api::select<ecs::wind_turbine, ecs::capacitance, ecs::building>(w.ecs)) {
         ecs::building& building = v.get<ecs::building>();
         ecs::capacitance& c = v.get<ecs::capacitance>();
-        unsigned int power = prototype::get<"power">(w, building.prototype);
+        uint32_t power = prototype::get<"power">(w, building.prototype);
         if (power < c.shortage) {
             c.shortage -= power;
         }

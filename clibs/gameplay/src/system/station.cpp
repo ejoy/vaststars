@@ -65,7 +65,7 @@ static uint8_t safe_add(uint8_t a, uint8_t b) {
 
 static std::tuple<uint8_t, uint8_t> building_center(world& world, ecs::building& building) {
     //TODO 使用更精确的x/y
-    uint16_t area = (uint16_t)prototype::get<"area">(world, building.prototype);
+    uint16_t area = prototype::get<"area">(world, building.prototype);
     uint8_t w = area >> 8;
     uint8_t h = area & 0xFF;
     assert(w > 0 && h > 0);

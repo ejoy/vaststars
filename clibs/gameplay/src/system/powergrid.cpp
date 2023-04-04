@@ -29,8 +29,8 @@ stat_consumer(world& w, powergrid pg[]) {
 		}
 		ecs::building& building = v.get<ecs::building>();
 		unsigned int priority = prototype::get<"priority">(w, building.prototype);
-		unsigned int power = prototype::get<"power">(w, building.prototype);
-		unsigned int charge = c.shortage < power ? c.shortage : power;
+		uint32_t power = prototype::get<"power">(w, building.prototype);
+		uint32_t charge = c.shortage < power ? c.shortage : power;
 		pg[c.network].consumer_power[priority] += charge;
 		pg[c.network].active = true;
 	}
@@ -45,7 +45,7 @@ stat_generator(world& w, powergrid pg[]) {
 		}
 		ecs::building& building = v.get<ecs::building>();
 		unsigned int priority = prototype::get<"priority">(w, building.prototype);
-		unsigned int capacitance = prototype::get<"capacitance">(w, building.prototype);
+		uint32_t capacitance = prototype::get<"capacitance">(w, building.prototype);
 		pg[c.network].generator_power[priority] += capacitance - c.shortage;
 		pg[c.network].active = true;
 	}
@@ -59,15 +59,15 @@ stat_accumulator(world& w, powergrid pg[]) {
 			continue;
 		}
 		ecs::building& building = v.get<ecs::building>();
-		unsigned int power = prototype::get<"power">(w, building.prototype);
+		uint32_t power = prototype::get<"power">(w, building.prototype);
 		if (c.shortage == 0) {
 			// battery is full
 			pg[c.network].accumulator_output += power;
 		} else {
-			unsigned int charge_power = prototype::get<"charge_power">(w, building.prototype);
-			unsigned int capacitance = prototype::get<"capacitance">(w, building.prototype);
+			uint32_t charge_power = prototype::get<"charge_power">(w, building.prototype);
+			uint32_t capacitance = prototype::get<"capacitance">(w, building.prototype);
 			pg[c.network].accumulator_input += (c.shortage <= charge_power) ? c.shortage : charge_power;
-			unsigned int capacitance_remain = capacitance - c.shortage;
+			uint32_t capacitance_remain = capacitance - c.shortage;
 			pg[c.network].accumulator_output += (capacitance_remain <= power) ? capacitance_remain : power;
 		}
 		pg[c.network].active = true;
@@ -181,7 +181,7 @@ powergrid_run(world& w, powergrid pg[]) {
 				float eff = pg[c.network].consumer_efficiency[priority];
 				if (eff > 0) {
 					// charge
-					unsigned int power = prototype::get<"power">(w, building.prototype);
+					uint32_t power = prototype::get<"power">(w, building.prototype);
 					if (c.shortage <= power) {
 						if (eff >= 1.0f) {
 							power = c.shortage;	// full charge
@@ -203,7 +203,7 @@ powergrid_run(world& w, powergrid pg[]) {
 			unsigned int priority = prototype::get<"priority">(w, building.prototype);
 			float eff = pg[c.network].generator_efficiency[priority];
 			if (eff > 0) {
-				unsigned int capacitance = prototype::get<"capacitance">(w, building.prototype);
+				uint32_t capacitance = prototype::get<"capacitance">(w, building.prototype);
 				uint32_t power = (uint32_t)((capacitance - c.shortage) * eff);
 				c.delta = power;
 				c.shortage += power;
@@ -215,10 +215,10 @@ powergrid_run(world& w, powergrid pg[]) {
 			float eff = pg[c.network].accumulator_efficiency;
 			if (eff > 0) {
 				// discharge
-				unsigned int power = prototype::get<"power">(w, building.prototype);
-				unsigned int capacitance = prototype::get<"capacitance">(w, building.prototype);
-				unsigned int remain = capacitance - c.shortage;
-				power = (unsigned int)(power * eff);
+				uint32_t power = prototype::get<"power">(w, building.prototype);
+				uint32_t capacitance = prototype::get<"capacitance">(w, building.prototype);
+				uint32_t remain = capacitance - c.shortage;
+				power = (uint32_t)(power * eff);
 				if (remain < power) {
 					power = remain;
 				}
@@ -229,8 +229,8 @@ powergrid_run(world& w, powergrid pg[]) {
 			} else {
 				// charge
 				eff = -eff;
-				unsigned int charge_power = prototype::get<"charge_power">(w, building.prototype);
-				charge_power = (unsigned int)(charge_power * eff);
+				uint32_t charge_power = prototype::get<"charge_power">(w, building.prototype);
+				charge_power = (uint32_t)(charge_power * eff);
 				if (charge_power >= c.shortage) {
 					charge_power = c.shortage;
 				}
