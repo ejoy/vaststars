@@ -16,7 +16,8 @@ namespace roadnet::road {
     }
     bool straight::tryEntry(network& w, lorryid l, uint16_t offset) {
         if (!hasLorry(w, offset)) {
-            addLorry(w, l, offset);
+            w.LorryInRoad(lorryOffset + offset) = l;
+            w.Lorry(l).init_tick(kTime);
             return true;
         }
         return false;
@@ -27,10 +28,6 @@ namespace roadnet::road {
     void straight::setNeighbor(roadid id) {
         assert(neighbor == roadid::invalid());
         neighbor = id;
-    }
-    void straight::addLorry(network& w, lorryid l, uint16_t offset) {
-        w.LorryInRoad(lorryOffset + offset) = l;
-        w.Lorry(l).init_tick(kTime);
     }
     bool straight::hasLorry(network& w, uint16_t offset) {
         return !!w.LorryInRoad(lorryOffset + offset);
