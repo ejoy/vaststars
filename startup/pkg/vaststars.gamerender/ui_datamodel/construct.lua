@@ -296,7 +296,7 @@ function M:stage_camera_usage(datamodel)
     end
 
     for _ in road_builder_mb:unpack() do
-        iui.close("build_function_pop.rml")
+        iui.close("building_arc_menu.rml")
         iui.close("detail_panel.rml")
         datamodel.cur_edit_mode = "construct"
         idetail.unselected()
@@ -306,7 +306,7 @@ function M:stage_camera_usage(datamodel)
     end
 
     for _ in pipe_builder_mb:unpack() do
-        iui.close("build_function_pop.rml")
+        iui.close("building_arc_menu.rml")
         iui.close("detail_panel.rml")
         datamodel.cur_edit_mode = "construct"
         idetail.unselected()

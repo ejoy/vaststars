@@ -10,7 +10,6 @@ local iui = ecs.import.interface "vaststars.gamerender|iui"
 
 local set_recipe_mb = mailbox:sub {"set_recipe"}
 local set_item_mb = mailbox:sub {"set_item"}
-local detail_mb = mailbox:sub {"detail"}
 local close_mb = mailbox:sub {"close"}
 local teardown_mb = mailbox:sub {"teardown"}
 local move_mb = mailbox:sub {"move"}
@@ -33,55 +32,6 @@ local gameplay = import_package "vaststars.gameplay"
 local iassembling = gameplay.interface "assembling"
 local gameplay = import_package "vaststars.gameplay"
 local ihub = gameplay.interface "hub"
-
--- An object may contain multiple types at the same time
--- The types are listed in order, with the earlier ones taking precedence over the later ones
-local detail_rml = {
-    {
-        type = "station",
-        rml = "logistic_center.rml",
-    },
-    {
-        type = "lorry_factory",
-        rml = "assemble.rml",
-    },
-    {
-        type = "assembling",
-        rml = "assemble.rml",
-    },
-    {
-        type = "chest",
-        rml = "chest.rml",
-    },
-    {
-        type = "base",
-        rml = "chest.rml",
-    },
-    {
-        type = "laboratory",
-        rml = "lab.rml",
-    },
-}
-
-local function __get_detail_rml(typeobject)
-    if typeobject.construction_center == true then
-        return
-    end
-
-    for _, v in ipairs(detail_rml) do
-        if iprototype.has_type(typeobject.type, v.type) then
-            return v.rml
-        end
-    end
-    return nil
-end
-
-local function __show_detail(typeobject)
-    if typeobject.show_detail == false then
-        return false
-    end
-    return __get_detail_rml(typeobject) ~= nil
-end
 
 local function __show_set_item(typeobject)
     return iprototype.has_type(typeobject.type, "hub") or iprototype.has_type(typeobject.type, "station")
@@ -219,7 +169,6 @@ function M:create(object_id, object_position, ui_x, ui_y)
     -- 组装机才显示设置配方菜单
     local show_set_recipe = __show_set_recipe(typeobject)
     local show_set_item = __show_set_item(typeobject)
-    local show_detail = false--__show_detail(typeobject)
     local recipe_name = ""
 
     if iprototype.has_type(typeobject.type, "assembling") then
@@ -253,7 +202,6 @@ function M:create(object_id, object_position, ui_x, ui_y)
         station_item_count = 0,
         station_weight_increase = false,
         station_weight_decrease = false,
-        show_detail = show_detail,
         recipe_name = recipe_name,
         object_id = object_id,
         left = ui_x,
@@ -340,15 +288,6 @@ function M:stage_ui_update(datamodel, object_id)
             assert(false)
         end
         iui.open({"drone_depot.rml"}, object_id, interface)
-    end
-
-    for _, _, _, object_id in detail_mb:unpack() do
-        local object = assert(objects:get(object_id))
-        local typeobject = iprototype.queryByName(object.prototype_name)
-        local rml = __get_detail_rml(typeobject)
-        if rml then
-            iui.open({rml}, object_id)
-        end
     end
 
     for _, _, _, object_id in teardown_mb:unpack() do

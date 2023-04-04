@@ -27,10 +27,7 @@ local function update_world(world)
     if run_guide then
         -- hide pop ui
         iui.close("detail_panel.rml")
-        iui.close("build_function_pop.rml")
-        iui.close("assemble.rml")
-        iui.close("chest.rml")
-        iui.close("lab.rml")
+        iui.close("building_arc_menu.rml")
         -- pop guide ui
         iui.open({"guide_pop.rml"}, guide)
         iguide.set_is_in_guide(true)

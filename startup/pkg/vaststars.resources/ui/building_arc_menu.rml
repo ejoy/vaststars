@@ -112,7 +112,6 @@
                 show_set_recipe = false,
                 show_road_builder = false,
                 show_pipe_builder = false,
-                show_detail = false,
                 object_id = 0,
                 guide_progress = 0,
                 left = "0vmin",
@@ -237,14 +236,6 @@
                             start.buttons[#start.buttons + 1] = v
                         end
 
-                        if start.show_detail then
-                            local v = setmetatable({}, {__index = mt})
-                            v.text = "详细"
-                            v.message = "detail"
-                            v.background_image = "textures/factory/seacher.texture"
-                            start.buttons[#start.buttons + 1] = v
-                        end
-
                         if start.construction_center_stop_build then
                             local v = setmetatable({}, {__index = mt})
                             v.text = "建造取消"
@@ -336,7 +327,7 @@
                         end
                         start("buttons")
                     end,
-                    "show_teardown", "show_move", "show_set_recipe", "show_set_item", "show_road_builder", "show_detail", 
+                    "show_teardown", "show_move", "show_set_recipe", "show_set_item", "show_road_builder", 
                     "construction_center_icon", "construction_center_count", "construction_center_multiple", "drone_depot_icon", "station_item_icon",
                     "lorry_factory_icon", "lorry_factory_count", "lorry_factory_inc_lorry", "lorry_factory_dec_lorry",
                 }

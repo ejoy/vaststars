@@ -186,7 +186,7 @@ local function restore_world()
 
         local recipe
         if v.assembling then
-            local show_recipe_icon = typeobject.recipe == nil and not iprototype.has_type(typeobject.type, "mining") -- TODO: special case for mining -- duplicate with build_function_pop.lua
+            local show_recipe_icon = typeobject.recipe == nil and not iprototype.has_type(typeobject.type, "mining") -- TODO: special case for mining -- duplicate with building_arc_menu.lua
             if show_recipe_icon then
                 local typeobject = iprototype.queryById(v.assembling.recipe)
                 if v.assembling.recipe == 0 then
