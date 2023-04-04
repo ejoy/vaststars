@@ -16,5 +16,5 @@ pushd %CURRENT_DIR%
 	luamake.exe tools -mode %mode%
 popd
 
-endlocal
 if "%exit_or_pause%"=="" pause
+endlocal
