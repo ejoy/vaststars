@@ -6,6 +6,7 @@ prototype "指挥中心" {
     icon = "textures/building_pic/small_pic_headquarter.texture",
     background = "textures/build_background/pic_headquater.texture",
     construct_detector = {"exclusive"},
+    craft_category = {"基地制造"},
     type = {"building", "base", "assembling", "consumer", "lorry_factory"},
     speed = "50%",
     maxslot = "8",

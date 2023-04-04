@@ -165,6 +165,46 @@
                 height: 100%;
                 background-color: rgb(87, 238, 0);
             }
+            .teleport-items-block {
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                width:50%;
+                height:15vmin;
+                top:0;
+                left: 40vmin;
+                position: absolute; 
+                z-index: 999;
+            }
+            .item {
+                flex-direction: column;
+                align-items:flex-start;
+                justify-content:flex-start;
+                background-color: rgb(250, 205, 9);
+                border: 0.27vmin rgb(89, 73, 39);
+                background-size:cover;
+                width: 12.00vmin;
+                height: 12.00vmin;
+                font-size: 2.40vmin;
+                border-radius: 1vmin;
+                margin-right: 0.2vmin;
+            }
+            .item-count {
+                font-size: 4vmin;
+                position: absolute;
+                top: -1vmin;
+                left: 0vmin;
+                -webkit-text-stroke: 0.3vmin rgb(39, 32, 17);
+            }
+            .item-sign {
+                position: absolute;
+                bottom:-0.2vmin;
+                right: 0vmin;
+                width:5vmin;
+                height:5vmin;
+                background-size: cover;
+                background-image:"textures/construct/portal-in.texture";
+            }
             p {
                 animation:0.5s linear 0s infinite alternate rotation;
             }
@@ -325,6 +365,29 @@
     </head>
     <body style = "pointer-events: none; justify-content: center; align-items: center;">
         <div class = "panel" data-model="start">
+            <div class="teleport-items-block">
+                <div class="item" style='background-image:"textures/construct/logisitic1.texture";'>
+                    <div class="item-count">99</div>
+                    <div class="item-sign"/>                     
+                </div>
+                <div class="item" style='background-image:"textures/construct/logisitic1.texture";'>
+                    <div class="item-count">99</div>     
+                    <div class="item-sign"/>                       
+                </div>
+                <div class="item" style='background-image:"textures/construct/logisitic1.texture";'>
+                    <div class="item-count">99</div>    
+                    <div class="item-sign"/>                        
+                </div>
+                <div class="item" style='background-image:"textures/construct/logisitic1.texture";'>
+                    <div class="item-count">99</div>       
+                    <div class="item-sign"/>                     
+                </div>
+                <div class="item" style='background-image:"textures/construct/logisitic1.texture";'>
+                    <div class="item-count">99</div>  
+                    <div class="item-sign"/>                          
+                </div>
+
+            </div>
             <!-- 主菜单按钮 -->
             <div class="main-menu-region">
                 <!-- 主菜单隐藏/显示按钮 -->
