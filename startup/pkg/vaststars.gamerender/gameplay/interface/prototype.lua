@@ -70,7 +70,8 @@ function M.unpackarea(area)
 end
 
 function M.is_fluid_id(id)
-    return id & 0x0C00 == 0x0C00
+    local typeobject = assert(M.queryById(id))
+    return M.has_type(typeobject.type, "fluid")
 end
 
 local DIRECTION <const> = {
