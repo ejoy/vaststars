@@ -33,6 +33,7 @@ function c:ctor(init, pt)
 
     return {
         hub = {
+            id = 0,
             chest = chest
         }
     }

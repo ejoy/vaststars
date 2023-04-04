@@ -182,12 +182,12 @@ local function update_world(gameworld)
     local drone_task = {}
     for e in gameworld.ecs:select "drone:in eid:in" do
         local drone = e.drone
-        assert(drone.home ~= 0, "drone.home == 0")
+        assert(drone.prev ~= 0, "drone.prev == 0")
         -- if (drone.prev ~= 0) or (drone.next ~= 0) or (drone.maxprogress ~= 0) or (drone.progress ~= 0) then
         --     print(drone.prev, drone.next, drone.maxprogress, drone.progress, drone.item)
         -- end
         if not lookup_drones[e.eid] then
-            local obj = get_object(drone.home)
+            local obj = get_object(drone.prev)
             assert(obj)
             local pos = obj.srt.t
             local objid = obj.gameplay_eid
