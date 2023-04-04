@@ -30,7 +30,7 @@ namespace roadnet::road {
     }
     void straight::addLorry(network& w, lorryid l, uint16_t offset) {
         w.LorryInRoad(lorryOffset + offset) = l;
-        w.Lorry(l).initTick(kTime);
+        w.Lorry(l).init_tick(kTime);
     }
     bool straight::hasLorry(network& w, uint16_t offset) {
         return !!w.LorryInRoad(lorryOffset + offset);

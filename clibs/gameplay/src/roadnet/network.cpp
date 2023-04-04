@@ -114,7 +114,7 @@ namespace roadnet {
         }
     }
     
-    static constexpr direction nextDirection(loction l, uint8_t m, direction dir) {
+    static constexpr direction next_direction(loction l, uint8_t m, direction dir) {
         switch (m) {
         case mask(L'║'):
             switch (dir) {
@@ -265,7 +265,7 @@ namespace roadnet {
         uint8_t cm = getMapBits(map, ln);
         assert(cm != 0);
         assert(!isEndpoint(cm));
-        direction nd = nextDirection(ln, cm, dir);
+        direction nd = next_direction(ln, cm, dir);
 
         for (;;) {
             ln = move(ln, nd);
@@ -279,7 +279,7 @@ namespace roadnet {
             if (ln == l && nd == dir) {
                 break;
             }
-            nd = nextDirection(ln, m, nd);
+            nd = next_direction(ln, m, nd);
             n++;
         }
         return {ln, nd, n};
@@ -294,7 +294,7 @@ namespace roadnet {
             if (i >= n) {
                 return NeighborResult {l, dir, n};
             }
-            dir = nextDirection(l, m, dir);
+            dir = next_direction(l, m, dir);
         }
     }
 

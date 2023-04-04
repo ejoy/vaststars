@@ -185,7 +185,8 @@ namespace roadnet::lua {
             }
             lua_pushinteger(L, id.id);
             push_road_coord(L, coord);
-            lua_pushinteger(L, w.Lorry(id).tick);
+            auto& l = w.Lorry(id);
+            lua_pushinteger(L, l.get_tick());
             return 3;
         }
         static int gc(lua_State* L) {
