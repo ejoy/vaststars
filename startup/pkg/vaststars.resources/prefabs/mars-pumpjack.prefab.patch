@@ -1,8 +1,8 @@
 ---
 data:
   efk:
-    auto_play: true
-    loop: true
+    auto_play: false
+    loop: false
     path: /pkg/vaststars.resources/effect/efk/mars_Pumpjack_water.efk
     speed: 1
     visible: true
@@ -20,16 +20,16 @@ policy:
 ---
 data:
   efk:
-    auto_play: true
-    loop: true
+    auto_play: false
+    loop: false
     path: /pkg/vaststars.resources/effect/efk/mars_Pumpjack_water.efk
     speed: 1
     visible: true
   name: low_power
   scene:
-    r: {0, 0, -0, 1}
+    r: {0, 0, 0, 1}
     s: {10, 1, 10}
-    t: {-0, 0.5, -0}
+    t: {0, 0.5, 0}
   tag:
     effect
 policy:
