@@ -685,9 +685,24 @@ local prototype = gameplay.register.prototype
       "textures/task_tips_pic/task_place_logistics.texture",
     },
     guide_focus = {
-      effect = "",
-      x = 119,
-      y = 120,
+      {
+        effect = "",
+        x = 119,
+        y = 120,
+        width = 3,
+        length = 3,
+      },
+      {
+        effect = "",
+        x = 119,
+        y = 120,
+        width = 3,
+        length = 3,
+      },
+      {
+        camera_x = 3,
+        camera_y = 3,
+      },
     },
     sign_desc = {
       { desc = "使用建造中心建造1个采矿机", icon = "textures/construct/industry.texture"},
