@@ -74,19 +74,6 @@ namespace roadnet::road {
         rev_neighbor[(uint8_t)dir] = id;
     }
 
-    void crossroad::addLorry(network& w, lorryid id, uint16_t offset) {
-        cross_type type = cross_type(offset);
-        for (size_t i = 0; i < 2; ++i) {
-            if (!cross_lorry[i]) {
-                auto& l = w.Lorry(id);
-                cross_lorry[i] = id;
-                cross_status[i] = type;
-                l.init_tick(kCrossTime);
-                return;
-            }
-        }
-    }
-
     bool crossroad::hasLorry(network& w, uint16_t offset) {
         cross_type type = cross_type(offset);
         if (cross_lorry[0] && cross_lorry[1]) {

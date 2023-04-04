@@ -15,7 +15,6 @@ namespace roadnet::road {
         bool hasNeighbor(direction dir) const;
         void setNeighbor(direction dir, roadid id);
         void setRevNeighbor(direction dir, roadid id);
-        void addLorry(network& w, lorryid l, uint16_t offset);
         bool hasLorry(network& w, uint16_t offset);
         void delLorry(network& w, uint16_t offset);
 
