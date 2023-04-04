@@ -137,6 +137,45 @@ local function __station_update(datamodel, object_id)
     datamodel.station_weight_decrease = true
 end
 
+local manual_items_object_id
+local function __manual_items_oper(datamodel, object_id)
+    local object = assert(objects:get(object_id))
+    local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+    if not e then
+        return
+    end
+    local typeobject = iprototype.queryByName(object.prototype_name)
+
+    if iprototype.has_type(typeobject.type, "assembling") or
+       iprototype.has_type(typeobject.type, "chest") or
+       iprototype.has_type(typeobject.type, "hub") then
+        if not manual_items_object_id then
+            if typeobject.name == "指挥中心" or typeobject.name == "建造中心" then -- TODO: remove hardcode
+                datamodel.manual_items_oper_subscribe = false
+            else
+                datamodel.manual_items_oper_subscribe = true
+            end
+        else
+            datamodel.manual_items_oper_subscribe = false
+        end
+    else
+        datamodel.manual_items_oper_subscribe = false
+    end
+
+    datamodel.manual_items_oper_unsubscribe = (manual_items_object_id == object_id)
+
+    if iprototype.has_type(typeobject.type, "assembling") or
+       iprototype.has_type(typeobject.type, "hub") then
+        if manual_items_object_id and manual_items_object_id ~= object_id then
+            datamodel.manual_items_oper_place = true
+        else
+            datamodel.manual_items_oper_place = false
+        end
+    else
+        datamodel.manual_items_oper_place = false
+    end
+end
+
 ---------------
 local M = {}
 local current_object_id
@@ -193,6 +232,9 @@ function M:create(object_id, object_position, ui_x, ui_y)
         station_item_count = 0,
         station_weight_increase = false,
         station_weight_decrease = false,
+        manual_items_oper_subscribe = false,
+        manual_items_oper_place = false,
+        manual_items_oper_unsubscribe = false,
         recipe_name = recipe_name,
         object_id = object_id,
         left = ui_x,
@@ -200,6 +242,7 @@ function M:create(object_id, object_position, ui_x, ui_y)
         object_position = object_position,
     }
     __construction_center_update(datamodel, object_id)
+    __manual_items_oper(datamodel, object_id)
 
     return datamodel
 end

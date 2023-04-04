@@ -280,7 +280,6 @@
                             start.buttons[#start.buttons + 1] = v
                         end
 
-
                         if start.lorry_factory_icon and start.lorry_factory_icon ~= "" then
                             local v = setmetatable({}, {__index = mt})
                             v.background_image = start.lorry_factory_icon
@@ -295,6 +294,30 @@
                             v.text = "增加车辆"
                             v.message = "lorry_factory_inc_lorry"
                             v.background_image = "textures/construct/truck-add.texture"
+                            start.buttons[#start.buttons + 1] = v
+                        end
+
+                        if start.manual_items_oper_subscribe then
+                            local v = setmetatable({}, {__index = mt})
+                            v.text = "预约物资"
+                            v.message = "manual_items_oper_subscribe"
+                            v.background_image = "textures/construct/portal-in.texture"
+                            start.buttons[#start.buttons + 1] = v
+                        end
+
+                        if start.manual_items_oper_place then
+                            local v = setmetatable({}, {__index = mt})
+                            v.text = "传送"
+                            v.message = "manual_items_oper_place"
+                            v.background_image = "textures/construct/portal-out.texture"
+                            start.buttons[#start.buttons + 1] = v
+                        end
+
+                        if start.manual_items_oper_subscribe then
+                            local v = setmetatable({}, {__index = mt})
+                            v.text = "取消预约"
+                            v.message = "manual_items_oper_unsubscribe"
+                            v.background_image = "textures/construct/portal-in.texture"
                             start.buttons[#start.buttons + 1] = v
                         end
 

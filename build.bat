@@ -1,4 +1,5 @@
 @echo off
+@setlocal
 @chcp 65001 >nul
 
 set current_dir=%~dp0
@@ -15,4 +16,5 @@ pushd %CURRENT_DIR%
 	luamake.exe tools -mode %mode%
 popd
 
+endlocal
 if "%exit_or_pause%"=="" pause
