@@ -1,5 +1,5 @@
 #include "common/inputs.sh"
-$input v_texcoord0 OUTPUT_WORLDPOS OUTPUT_NORMAL OUTPUT_TANGENT OUTPUT_LIGHTMAP_TEXCOORD OUTPUT_COLOR0
+$input v_texcoord0 OUTPUT_WORLDPOS OUTPUT_NORMAL OUTPUT_TANGENT OUTPUT_LIGHTMAP_TEXCOORD OUTPUT_COLOR0 OUTPUT_EMISSIVE
 
 #include <bgfx_shader.sh>
 #include <bgfx_compute.sh>
@@ -32,13 +32,7 @@ void main()
         discard;
     
     #include "pbr/attributes_getter.sh"
-    int building;
-    if(v_posWS.y > u_building_topmost){
-        building = 1;
-    } else{
-        building = 0;
-    }
-
+    bool building = v_posWS.y > u_building_topmost;
     if(building || (dot(input_attribs.N, input_attribs.V) < 0)) {
         gl_FragColor = u_construct_color;
     } else {
