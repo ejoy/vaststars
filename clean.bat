@@ -20,5 +20,5 @@ pushd %current_dir%
 ))
 popd
 
-endlocal
 if "%exit_or_pause%"=="" pause
+endlocal
