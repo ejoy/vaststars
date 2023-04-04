@@ -169,12 +169,11 @@
                 flex-direction: row;
                 justify-content: center;
                 align-items: center;
-                width:50%;
+                width:40%;
                 height:15vmin;
                 top:0;
-                left: 40vmin;
+                left: 45vmin;
                 position: absolute; 
-                z-index: 999;
             }
             .item {
                 flex-direction: column;
