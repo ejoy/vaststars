@@ -673,6 +673,7 @@ local prototype = gameplay.register.prototype
         y = 119,
         w = 5,
         h = 5,
+        show_arrow = true,
       },
       {
         camera_x = 118,
@@ -752,6 +753,7 @@ local prototype = gameplay.register.prototype
         y = 119,
         w = 5,
         h = 5,
+        show_arrow = true,
       },
       {
         camera_x = 118,
@@ -850,6 +852,7 @@ prototype "建造电线杆" {
         y = 119,
         w = 5,
         h = 5,
+        show_arrow = true,
       },
       {
         camera_x = 118,
