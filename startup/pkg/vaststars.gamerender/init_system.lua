@@ -110,7 +110,6 @@ function m:update_world()
         return
     end
 
-    camera.update()
     iroadnet:update()
 
     local gameplay_world = gameplay_core.get_world()

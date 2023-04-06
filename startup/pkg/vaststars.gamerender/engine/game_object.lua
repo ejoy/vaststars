@@ -11,6 +11,7 @@ local math3d = require "math3d"
 local COLOR_INVALID <const> = math3d.constant "null"
 local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
 local prefab_parse = require("engine.prefab_parser").parse
+local irl = ecs.import.interface "ant.render|irender_layer"
 
 local function _replace_material(template, material_file_path)
     for _, v in ipairs(template) do
@@ -99,7 +100,7 @@ local _get_hitch_children ; do
         return scene, slots, effects, animations
     end
 
-    function _get_hitch_children(prefab_file_path, state, color, animation_name, animation_loop, emissive_color)
+    function _get_hitch_children(prefab_file_path, state, color, animation_name, animation_loop, emissive_color, render_layer)
         local hash = _instance_hash(prefab_file_path, state, tostring(color), animation_name, animation_loop, tostring(emissive_color))
         if cache[hash] then
             return cache[hash]
@@ -133,7 +134,7 @@ local _get_hitch_children ; do
         end
         prefab.on_ready = function(prefab)
             for _, eid in ipairs(prefab.tag["*"]) do
-                local e <close> = w:entity(eid, "tag?in animation?in anim_ctrl?in")
+                local e <close> = w:entity(eid, "tag?in animation?in anim_ctrl?in render_layer?update render_object?update")
                 if e.tag then
                     for _, tag in ipairs(e.tag) do
                         inner.tags[tag] = inner.tags[tag] or {}
@@ -145,11 +146,19 @@ local _get_hitch_children ; do
                     e.anim_ctrl.group_id = cache[hash].hitch_group_id
                     iani.load_events(eid, string.sub(prefab_file_path, 1, -8) .. ".event")
                 end
+                if render_layer and e.render_object then
+                    e.render_layer = render_layer
+                    e.render_object.render_layer = irl.layeridx(e.render_layer)
+                end
             end
 
             if animation_name and animations[animation_name] then
                 log.info(("prefab_file_path: %s animation_name: %s animation_loop: %s"):format(prefab_file_path, animation_name, animation_loop))
                 iani.play(prefab, {name = animation_name, loop = animation_loop, speed = 1.0, manual = false, forwards = true})
+            else
+                if animations["ArmatureAction"] then
+                    iani.play(prefab, {name = "ArmatureAction", loop = true, speed = 1.0, manual = false, forwards = true})
+                end
             end
         end
         prefab.on_message = function(prefab, ...)
@@ -185,7 +194,7 @@ init = {
 }
 --]]
 function igame_object.create(init)
-    local children = _get_hitch_children(RESOURCES_BASE_PATH:format(init.prefab), init.state, init.color, init.animation_name, init.animation_loop or false, init.emissive_color)
+    local children = _get_hitch_children(RESOURCES_BASE_PATH:format(init.prefab), init.state, init.color, init.animation_name, init.animation_loop or false, init.emissive_color, init.render_layer)
     local hitch_events = {}
     hitch_events["group"] = function(_, e, group)
         w:extend(e, "hitch:update")
@@ -222,7 +231,6 @@ function igame_object.create(init)
             },
             slot = init.slot,
             scene_needchange = true,
-            render_layer = init.render_layer,
         }
     }, hitch_events)
 
