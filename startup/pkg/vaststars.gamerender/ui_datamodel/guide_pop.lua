@@ -1,7 +1,10 @@
 local ecs, mailbox= ...
 local world = ecs.world
+local w = world.w
 local global = require "global"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
+local iani = ecs.import.interface "ant.animation|ianimation"
+local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local iguide = require "gameplay.interface.guide"
 local story_click_mb = mailbox:sub {"story_click"}
 local gameplay_core = require "gameplay.core"
@@ -18,6 +21,40 @@ function M:create(desc)
         count = 1,
         total_count = #speech
     }
+end
+
+local function init_focus_tips(tech_node)
+    local focus = tech_node.detail.guide_focus
+    if not focus then
+        return
+    end
+    for _, nd in ipairs(focus) do
+        if nd.prefab then
+            if not tech_node.selected_tips then
+                tech_node.selected_tips = {}
+            end
+            local pos = building_coord:get_position_by_coord(nd.x, nd.y, nd.w, nd.h)
+            local prefab = ecs.create_instance("/pkg/vaststars.resources/prefabs/arrow-guide.prefab")
+            prefab.on_ready = function(inst)
+                local children = inst.tag["*"]
+                local re <close> = w:entity(children[1])
+                iom.set_position(re, pos)
+                for _, eid in ipairs(children) do
+                    local e <close> = w:entity(eid, "animation_birth?in")
+                    if e.animation_birth then
+                        iani.play(eid, {name = e.animation_birth, loop = true})
+                        break
+                    end
+                end
+            end
+            function prefab:on_message(msg) end
+            function prefab:on_update() end
+            world:create_object(prefab)
+            tech_node.selected_tips[#tech_node.selected_tips + 1] = {selected_boxes(nd.prefab, building_coord:get_position_by_coord(nd.x, nd.y, 1, 1), nd.w, nd.h), prefab}
+        else
+            print("")
+        end
+    end
 end
 
 function M:stage_ui_update(datamodel)
@@ -42,21 +79,9 @@ function M:stage_ui_update(datamodel)
                 game_world:research_queue {task_name}
                 local tech_node = global.science.tech_tree[task_name]
                 if tech_node then
+                    init_focus_tips(tech_node)
                     global.science.tech_picked_flag[tech_node.detail.name] = false
                     global.science.current_tech = tech_node
-                    local focus = tech_node.detail.guide_focus
-                    if focus then
-                        for _, nd in ipairs(focus) do
-                            if nd.prefab then
-                                if not tech_node.selected_tips then
-                                    tech_node.selected_tips = {}
-                                end
-                                tech_node.selected_tips[#tech_node.selected_tips + 1] = selected_boxes(nd.prefab, building_coord:get_position_by_coord(nd.x, nd.y, 1, 1), nd.w, nd.h)
-                            else
-                                print("")
-                            end
-                        end
-                    end
                 end
                 iguide.set_task(task_name)
             end

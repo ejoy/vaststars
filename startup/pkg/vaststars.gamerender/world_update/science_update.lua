@@ -11,7 +11,11 @@ return function(gameplay_world)
         if gameplay_world:is_researched(science.current_tech.name) then
             if science.current_tech.selected_tips then
                 for _, tip in ipairs(science.current_tech.selected_tips) do
-                    tip:remove()
+                    tip[1]:remove()
+                    local children = tip[2].tag["*"]
+                    for _, eid in ipairs(children) do
+                       w:remove(eid)
+                    end
                 end
                 science.current_tech.selected_tips = {}
             end
