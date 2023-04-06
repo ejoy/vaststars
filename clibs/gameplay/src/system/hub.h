@@ -36,6 +36,10 @@ struct hub_mgr {
         std::vector<berth> chest_red;
         std::vector<berth> chest_blue;
         uint16_t item;
+        
+        bool idle() const {
+            return hub.size() <= 1 && chest_red.empty() && chest_blue.empty();
+        }
     };
     std::map<uint16_t, hub_info> hubs;
     flatmap<uint32_t, uint16_t> chests;
