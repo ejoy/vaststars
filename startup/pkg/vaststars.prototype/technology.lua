@@ -666,11 +666,24 @@ local prototype = gameplay.register.prototype
     task_params = {recipe = "采矿机打印"},
     count = 1,
     prerequisites = {"迫降火星"},
+    guide_focus = {
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 118,
+        y = 119,
+        w = 5,
+        h = 5,
+      },
+      {
+        camera_x = 118,
+        camera_y = 119,
+      },
+    },
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "无人机仓库中选择采矿机设计图", icon = "textures/construct/industry.texture"},
+      { desc = "建造中心选择采矿机打印", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -706,21 +719,14 @@ local prototype = gameplay.register.prototype
     guide_focus = {
       {
         prefab = "prefabs/selected-box-guide.prefab",
-        x = 115,
-        y = 130,
+        x = 113,
+        y = 129,
         w = 3,
         h = 3,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
-        x = 105,
-        y = 130,
-        w = 3,
-        h = 3,
-      },
-      {
-        camera_x = 115,
-        camera_y = 130,
+        camera_x = 113,
+        camera_y = 129,
       },
     },
     sign_desc = {
@@ -739,8 +745,21 @@ local prototype = gameplay.register.prototype
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
+    guide_focus = {
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 118,
+        y = 119,
+        w = 5,
+        h = 5,
+      },
+      {
+        camera_x = 118,
+        camera_y = 119,
+      },
+    },
     sign_desc = {
-      { desc = "无人机仓库中选择电线杆设计图", icon = "textures/construct/industry.texture"},
+      { desc = "建造中心选择电线杆打印", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -753,6 +772,33 @@ prototype "建造电线杆" {
     count = 4,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
+    },
+    guide_focus = {
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 117,
+        y = 115,
+        w = 1,
+        h = 1,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 117,
+        y = 123,
+        w = 1,
+        h = 1,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 117,
+        y = 131,
+        w = 1,
+        h = 1,
+      },
+      {
+        camera_x = 118,
+        camera_y = 119,
+      },
     },
     sign_desc = {
       { desc = "在“建造中心”建造4个电线杆", icon = "textures/construct/industry.texture"},
@@ -790,8 +836,21 @@ prototype "建造电线杆" {
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
+    guide_focus = {
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 118,
+        y = 119,
+        w = 5,
+        h = 5,
+      },
+      {
+        camera_x = 118,
+        camera_y = 119,
+      },
+    },
     sign_desc = {
-      { desc = "无人机仓库中选择无人机仓库设计图", icon = "textures/construct/industry.texture"},
+      { desc = "建造仓库选择无人机仓库打印", icon = "textures/construct/industry.texture"},
     },
   }
 
