@@ -4,7 +4,7 @@ data:
   scene:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
-    t: {0, 3, 0}
+    t: {0, 0, 0}
 policy:
   ant.general|name
   ant.scene|scene_object
