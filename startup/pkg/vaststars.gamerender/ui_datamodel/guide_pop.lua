@@ -4,12 +4,15 @@ local w = world.w
 local global = require "global"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local iani = ecs.import.interface "ant.animation|ianimation"
+local ivs = ecs.import.interface "ant.scene|ivisible_state"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local iguide = require "gameplay.interface.guide"
 local story_click_mb = mailbox:sub {"story_click"}
 local gameplay_core = require "gameplay.core"
 local selected_boxes = ecs.require "selected_boxes"
 local building_coord = require "global".building_coord_system
+local camera = ecs.require "engine.camera"
+
 local M = {}
 local guide_desc
 function M:create(desc)
@@ -28,36 +31,45 @@ local function init_focus_tips(tech_node)
     if not focus then
         return
     end
+    local width, height
     for _, nd in ipairs(focus) do
         if nd.prefab then
+            if not width or not height then
+                width, height = nd.w, nd.h
+            end
             if not tech_node.selected_tips then
                 tech_node.selected_tips = {}
             end
-            local pos = building_coord:get_position_by_coord(nd.x, nd.y, nd.w, nd.h)
-            local prefab = ecs.create_instance("/pkg/vaststars.resources/prefabs/arrow-guide.prefab")
-            prefab.on_ready = function(inst)
-                local children = inst.tag["*"]
-                local re <close> = w:entity(children[1])
-                iom.set_position(re, pos)
-                for _, eid in ipairs(children) do
-                    local e <close> = w:entity(eid, "animation_birth?in")
-                    if e.animation_birth then
-                        iani.play(eid, {name = e.animation_birth, loop = true})
-                        break
+            
+            local prefab
+            if nd.show_arrow then
+                local pos = building_coord:get_position_by_coord(nd.x, nd.y, nd.w, nd.h)
+                prefab = ecs.create_instance("/pkg/vaststars.resources/prefabs/arrow-guide.prefab")
+                prefab.on_ready = function(inst)
+                    local children = inst.tag["*"]
+                    local re <close> = w:entity(children[1])
+                    iom.set_position(re, pos)
+                    for _, eid in ipairs(children) do
+                        local e <close> = w:entity(eid, "animation_birth?in visible_state?in")
+                        if e.animation_birth then
+                            iani.play(eid, {name = e.animation_birth, loop = true})
+                        elseif e.visible_state then
+                            ivs.set_state(e, "cast_shadow", false)
+                        end
                     end
                 end
+                function prefab:on_message(msg) end
+                function prefab:on_update() end
+                world:create_object(prefab)
             end
-            function prefab:on_message(msg) end
-            function prefab:on_update() end
-            world:create_object(prefab)
             tech_node.selected_tips[#tech_node.selected_tips + 1] = {selected_boxes(nd.prefab, building_coord:get_position_by_coord(nd.x, nd.y, 1, 1), nd.w, nd.h), prefab}
-        else
-            print("")
+        elseif nd.camera_x and nd.camera_y then
+            camera.focus_on_position(building_coord:get_position_by_coord(nd.camera_x, nd.camera_y, width, height))
         end
     end
 end
 
-function M:stage_ui_update(datamodel)
+function M:stage_camera_usage(datamodel)
     for _ in story_click_mb:unpack() do
         local speech = guide_desc.narrative
         local count = datamodel.count + 1
@@ -87,7 +99,6 @@ function M:stage_ui_update(datamodel)
             end
             iguide.step_progress()
             iui.set_guide_progress(iguide.get_progress())
-            log.info("story_click_mb update ui", iguide.get_progress()) -- TODO: remove this log
         end
     end
 end

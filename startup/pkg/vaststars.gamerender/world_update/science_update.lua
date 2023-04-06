@@ -12,9 +12,11 @@ return function(gameplay_world)
             if science.current_tech.selected_tips then
                 for _, tip in ipairs(science.current_tech.selected_tips) do
                     tip[1]:remove()
-                    local children = tip[2].tag["*"]
-                    for _, eid in ipairs(children) do
-                       w:remove(eid)
+                    if tip[2] then
+                        local children = tip[2].tag["*"]
+                        for _, eid in ipairs(children) do
+                           w:remove(eid)
+                        end
                     end
                 end
                 science.current_tech.selected_tips = {}
