@@ -54,7 +54,7 @@ local function get_placeable_items(e)
             for i = 1, ingredients_n do
                 local slot = gameplay_core.get_world():container_get(e.chest, i)
                 if slot.amount + slot.lock_space < slot.limit then
-                    items[#items + 1] = {chest = e.assembling, item = slot.item, count = slot.limit - slot.amount + slot.lock_space}
+                    items[#items + 1] = {chest = e.chest, item = slot.item, count = slot.limit - slot.amount + slot.lock_space}
                 end
             end
         end
