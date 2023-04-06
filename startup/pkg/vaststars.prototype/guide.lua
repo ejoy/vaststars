@@ -12,7 +12,7 @@ local guide = {
             task = {
                 "迫降火星",
             },
-            guide_progress = 10,
+            guide_progress = 30,
         },
         prerequisites = {},
 	},
@@ -27,7 +27,7 @@ local guide = {
             task = {
                 "采矿机调度",
             },
-            guide_progress = 10,
+            guide_progress = 30,
         },
         prerequisites = {"迫降火星"},
 	},
@@ -40,7 +40,7 @@ local guide = {
         },
         narrative_end = {
             -- pop_chapter = {"第一阶段","物流网络"},
-            guide_progress = 10,
+            guide_progress = 30,
             task = {
                 "建造采矿机",
             }
@@ -57,7 +57,7 @@ local guide = {
             {"哔哩..将{/g 采矿机}放置在{/g 石矿}上方，碎石就可以被采矿机开采出来了..哔哩..(期待)", "textures/guide/guide-2.texture"},
         },
         narrative_end = {
-            guide_progress = 10,
+            guide_progress = 30,
             task = {
                 "石矿放置采矿机",
             }
@@ -75,7 +75,7 @@ local guide = {
             {"哔哩..废墟中发现可用的{/g 电线杆设计图}，把它传送至{/color:4bd0ff 建造中心}。", "textures/guide/guide-6.texture"}, 
         },
         narrative_end = {
-            guide_progress = 10,
+            guide_progress = 30,
             task = {
                 "电线杆调度",
             }
@@ -91,7 +91,7 @@ local guide = {
             {"哔哩..请使用{/color:4bd0ff 建造中心}生产足够{/g 电线杆}..哔哩..哔哗..(期待)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
-            guide_progress = 10,
+            guide_progress = 30,
             task = {
                 "建造电线杆",
             }
@@ -110,7 +110,7 @@ local guide = {
             {"{/g 电网}可以通过连接多个{/color:4bd0ff 电线杆}逐步扩散，它们所形成的{/g 电网}就能让用电设施工作了..哔哩(兴奋)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
-            guide_progress = 10,
+            guide_progress = 30,
             task = {
                 "放置电线杆",
             }
@@ -126,7 +126,7 @@ local guide = {
             {"哔哩..采矿机顺利工作了，储藏石矿需要新的{/color:4bd0ff 无人机仓库}，请将{/g 无人机仓库设计图}送往{/color:4bd0ff 建造中心}..哔哩(期待)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
-            guide_progress = 10,
+            guide_progress = 30,
             task = {
                 "无人机仓库调度",
             }
@@ -143,7 +143,7 @@ local guide = {
             {"哔哩..{/color:4bd0ff 无人机}能运输指定货物，让我们用{/color:4bd0ff 建造中心}建造更多的{/g 无人机仓库}....(轻松)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
-            guide_progress = 10,
+            guide_progress = 30,
             task = {
                 "建造无人机仓库",
             }
@@ -159,7 +159,7 @@ local guide = {
             {"哔哩..将新建的{/color:4bd0ff 无人机仓库}放置在{/g 采矿机}旁边，无人机就可以运输矿石了....(轻松)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
-            guide_progress = 10,
+            guide_progress = 30,
             task = {
                 "放置无人机仓库",
             }
@@ -178,7 +178,7 @@ local guide = {
             {"哔哩..让我们采集足够{/g 碎石}资源吧..哔哩(兴奋)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
-            guide_progress = 10,
+            guide_progress = 30,
             task = {
                 "生产碎石矿",
             }
@@ -194,7 +194,7 @@ local guide = {
             {"我们需要对这个星球进行全面的科学考察，让我们建造并放置一座{/g 科研中心}..哔哩..(期待)", "textures/guide/guide-2.texture"},
         },
         narrative_end = {
-            guide_progress = 10,
+            guide_progress = 30,--10
             task = {
                 "放置科研中心",
             }
