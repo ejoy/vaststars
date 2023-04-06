@@ -687,21 +687,21 @@ local prototype = gameplay.register.prototype
     guide_focus = {
       {
         effect = "prefabs/selected_box_invalid.prefab",
-        x = 119,
-        y = 120,
+        x = 115,
+        y = 130,
         width = 3,
         length = 3,
       },
       {
         effect = "prefabs/selected_box_invalid.prefab",
-        x = 119,
-        y = 120,
+        x = 105,
+        y = 130,
         width = 3,
         length = 3,
       },
       {
-        camera_x = 3,
-        camera_y = 3,
+        camera_x = 115,
+        camera_y = 130,
       },
     },
     sign_desc = {
