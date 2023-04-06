@@ -301,7 +301,7 @@
                             local v = setmetatable({}, {__index = mt})
                             v.text = "取消预约"
                             v.message = "item_transfer_unsubscribe"
-                            v.background_image = "textures/construct/portal-in.texture"
+                            v.background_image = "textures/construct/portal-cancel.texture"
                             start.buttons[#start.buttons + 1] = v
                         end
 
