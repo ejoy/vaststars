@@ -684,26 +684,6 @@ local prototype = gameplay.register.prototype
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
-    guide_focus = {
-      {
-        effect = "prefabs/selected_box_invalid.prefab",
-        x = 115,
-        y = 130,
-        width = 3,
-        length = 3,
-      },
-      {
-        effect = "prefabs/selected_box_invalid.prefab",
-        x = 105,
-        y = 130,
-        width = 3,
-        length = 3,
-      },
-      {
-        camera_x = 115,
-        camera_y = 130,
-      },
-    },
     sign_desc = {
       { desc = "使用建造中心建造1个采矿机", icon = "textures/construct/industry.texture"},
     },
@@ -722,6 +702,26 @@ local prototype = gameplay.register.prototype
     count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
+    },
+    guide_focus = {
+      {
+        effect = "prefabs/selected-box-guide.prefab",
+        x = 115,
+        y = 130,
+        w = 3,
+        h = 3,
+      },
+      {
+        effect = "prefabs/selected-box-guide.prefab",
+        x = 105,
+        y = 130,
+        w = 3,
+        h = 3,
+      },
+      {
+        camera_x = 115,
+        camera_y = 130,
+      },
     },
     sign_desc = {
       { desc = "在石矿上放置1个采矿机", icon = "textures/construct/industry.texture"},
