@@ -896,35 +896,35 @@ prototype "建造电线杆" {
     guide_focus = {
       {
         prefab = "prefabs/selected-box-guide.prefab",
-        x = 123,
+        x = 122,
         y = 126,
         w = 1.5,
         h = 1.5,
       },
       {
         prefab = "prefabs/selected-box-guide.prefab",
-        x = 123,
-        y = 130,
+        x = 122,
+        y = 129,
         w = 1.5,
         h = 1.5,
       },
       {
         prefab = "prefabs/selected-box-guide.prefab",
-        x = 118,
+        x = 117,
         y = 126,
         w = 1.5,
         h = 1.5,
       },
       {
         prefab = "prefabs/selected-box-guide.prefab",
-        x = 118,
-        y = 130,
+        x = 117,
+        y = 129,
         w = 1.5,
         h = 1.5,
       },
       {
-        camera_x = 118,
-        camera_y = 119,
+        camera_x = 120,
+        camera_y = 128,
       },
     },
     sign_desc = {
@@ -960,6 +960,19 @@ prototype "建造电线杆" {
     count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_click_build.texture",
+    },
+    guide_focus = {
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 125,
+        y = 128,
+        w = 3,
+        h = 3,
+      },
+      {
+        camera_x = 125,
+        camera_y = 128,
+      },
     },
     sign_desc = {
       { desc = "使用“建造”放置1座科研中心", icon = "textures/construct/industry.texture"},
@@ -1013,6 +1026,26 @@ prototype "建造电线杆" {
     count = 3,
     tips_pic = {
       "textures/task_tips_pic/task_click_build.texture",
+    },
+    guide_focus = {
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 119,
+        y = 125,
+        w = 3,
+        h = 3,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 119,
+        y = 128,
+        w = 3,
+        h = 3,
+      },
+      {
+        camera_x = 119,
+        camera_y = 126,
+      },
     },
     sign_desc = {
       { desc = "放置3台组装机", icon = "textures/construct/industry.texture"},
