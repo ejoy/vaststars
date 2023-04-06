@@ -5,7 +5,8 @@ local w = world.w
 local global = require "global"
 local iscience = require "gameplay.interface.science"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
-local function update_world(gameplay_world)
+
+return function(gameplay_world)
     local science = global.science
     if science.current_tech then
         if gameplay_world:is_researched(science.current_tech.name) then
@@ -29,4 +30,3 @@ local function update_world(gameplay_world)
         science.current_tech = nil
     end
 end
-return update_world

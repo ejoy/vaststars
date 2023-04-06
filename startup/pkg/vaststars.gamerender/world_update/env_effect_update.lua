@@ -12,7 +12,7 @@ local storm_life = 20
 local storm_interval = 40
 local show_shorm = true
 
-local function update_world(world)
+return function (world)
     if not storm_effect then
         local mq = w:first("main_queue camera_ref:in")
         storm_effect = iefk.create("/pkg/vaststars.resources/effect/efk/sandstorm.efk", {
@@ -40,4 +40,3 @@ local function update_world(world)
         end
     end
 end
-return update_world

@@ -14,7 +14,7 @@ local function get_object(x, y)
     end
 end
 
-local function update_world(world)
+return function(world)
     local t = {}
     for e in world.ecs:select "assembling:in building:in fluidbox?in fluidboxes?in" do
         local vsobject = get_object(e.building.x, e.building.y)
@@ -41,4 +41,3 @@ local function update_world(world)
     end
     return t
 end
-return update_world

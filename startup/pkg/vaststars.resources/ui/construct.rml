@@ -283,6 +283,7 @@
                 fps_text = " ",           -- fps 信息
                 drawcall_text = " ",      -- drawcall 信息
                 construct_menu = {},
+                item_transfer = {},
 
                 show_construct_menu = false, -- 是否显示右侧建造菜单
                 cur_construct_menu = "",  -- 当前选中的二级建造菜单名
@@ -365,27 +366,10 @@
     <body style = "pointer-events: none; justify-content: center; align-items: center;">
         <div class = "panel" data-model="start">
             <div class="teleport-items-block">
-                <div class="item" style='background-image:"textures/construct/logisitic1.texture";'>
-                    <div class="item-count">99</div>
+                <div class="item" data-style-background-image = "it.icon" data-for = "item_transfer">
+                    <div class="item-count">{{it.count}}</div>
                     <div class="item-sign"/>                     
                 </div>
-                <div class="item" style='background-image:"textures/construct/logisitic1.texture";'>
-                    <div class="item-count">99</div>     
-                    <div class="item-sign"/>                       
-                </div>
-                <div class="item" style='background-image:"textures/construct/logisitic1.texture";'>
-                    <div class="item-count">99</div>    
-                    <div class="item-sign"/>                        
-                </div>
-                <div class="item" style='background-image:"textures/construct/logisitic1.texture";'>
-                    <div class="item-count">99</div>       
-                    <div class="item-sign"/>                     
-                </div>
-                <div class="item" style='background-image:"textures/construct/logisitic1.texture";'>
-                    <div class="item-count">99</div>  
-                    <div class="item-sign"/>                          
-                </div>
-
             </div>
             <!-- 主菜单按钮 -->
             <div class="main-menu-region">

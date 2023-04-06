@@ -297,26 +297,26 @@
                             start.buttons[#start.buttons + 1] = v
                         end
 
-                        if start.manual_items_oper_subscribe then
+                        if start.item_transfer_subscribe then
                             local v = setmetatable({}, {__index = mt})
                             v.text = "预约物资"
-                            v.message = "manual_items_oper_subscribe"
+                            v.message = "item_transfer_subscribe"
                             v.background_image = "textures/construct/portal-in.texture"
                             start.buttons[#start.buttons + 1] = v
                         end
 
-                        if start.manual_items_oper_place then
+                        if start.item_transfer_place then
                             local v = setmetatable({}, {__index = mt})
                             v.text = "传送"
-                            v.message = "manual_items_oper_place"
+                            v.message = "item_transfer_place"
                             v.background_image = "textures/construct/portal-out.texture"
                             start.buttons[#start.buttons + 1] = v
                         end
 
-                        if start.manual_items_oper_unsubscribe then
+                        if start.item_transfer_unsubscribe then
                             local v = setmetatable({}, {__index = mt})
                             v.text = "取消预约"
-                            v.message = "manual_items_oper_unsubscribe"
+                            v.message = "item_transfer_unsubscribe"
                             v.background_image = "textures/construct/portal-in.texture"
                             start.buttons[#start.buttons + 1] = v
                         end
@@ -335,7 +335,7 @@
                     "show_set_recipe", "show_set_item", "show_road_builder", 
                     "construction_center_icon", "construction_center_count", "construction_center_multiple", "drone_depot_icon", "station_item_icon",
                     "lorry_factory_icon", "lorry_factory_count", "lorry_factory_inc_lorry", "lorry_factory_dec_lorry",
-                    "manual_items_oper_subscribe", "manual_items_oper_place", "manual_items_oper_unsubscribe",
+                    "item_transfer_subscribe", "item_transfer_place", "item_transfer_unsubscribe",
                 }
             })
         </script>

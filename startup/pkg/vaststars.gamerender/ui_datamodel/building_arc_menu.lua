@@ -18,8 +18,9 @@ local construction_center_stop_build_mb = mailbox:sub {"construction_center_stop
 local construction_center_place_mb = mailbox:sub {"construction_center_place"}
 local lorry_factory_inc_lorry_mb = mailbox:sub {"lorry_factory_inc_lorry"}
 local lorry_factory_stop_build_mb = mailbox:sub {"lorry_factory_stop_build"}
-local manual_items_oper_subscribe_mb = mailbox:sub {"manual_items_oper_subscribe"}
-local manual_items_oper_unsubscribe_mb = mailbox:sub {"manual_items_oper_unsubscribe"}
+local item_transfer_subscribe_mb = mailbox:sub {"item_transfer_subscribe"}
+local item_transfer_unsubscribe_mb = mailbox:sub {"item_transfer_unsubscribe"}
+local item_transfer_place_mb = mailbox:sub {"item_transfer_place"}
 
 local ichest = require "gameplay.interface.chest"
 local idetail = ecs.import.interface "vaststars.gamerender|idetail"
@@ -28,6 +29,9 @@ local gameplay = import_package "vaststars.gameplay"
 local iassembling = gameplay.interface "assembling"
 local gameplay = import_package "vaststars.gameplay"
 local ihub = gameplay.interface "hub"
+local global = require "global"
+local interval_call = ecs.require "engine.interval_call"
+local item_transfer = require "item_transfer"
 
 local function __show_set_item(typeobject)
     return iprototype.has_type(typeobject.type, "hub") or iprototype.has_type(typeobject.type, "station")
@@ -139,8 +143,7 @@ local function __station_update(datamodel, object_id)
     datamodel.station_weight_decrease = true
 end
 
-local manual_items_object_id
-local function __manual_items_oper(datamodel, object_id)
+local function __item_transfer_update(datamodel, object_id)
     local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if not e then
@@ -151,32 +154,67 @@ local function __manual_items_oper(datamodel, object_id)
     if iprototype.has_type(typeobject.type, "assembling") or
        iprototype.has_type(typeobject.type, "chest") or
        iprototype.has_type(typeobject.type, "hub") then
-        if not manual_items_object_id then
+        if not global.item_transfer_src then
             if typeobject.name == "指挥中心" or typeobject.name == "建造中心" then -- TODO: remove hardcode
-                datamodel.manual_items_oper_subscribe = false
+                datamodel.item_transfer_subscribe = false
             else
-                datamodel.manual_items_oper_subscribe = true
+                datamodel.item_transfer_subscribe = true
             end
         else
-            datamodel.manual_items_oper_subscribe = false
+            datamodel.item_transfer_subscribe = false
         end
     else
-        datamodel.manual_items_oper_subscribe = false
+        datamodel.item_transfer_subscribe = false
     end
 
-    datamodel.manual_items_oper_unsubscribe = (manual_items_object_id ~= nil) and (manual_items_object_id == object_id)
+    datamodel.item_transfer_unsubscribe = (global.item_transfer_src ~= nil) and (global.item_transfer_src == object_id)
 
     if iprototype.has_type(typeobject.type, "assembling") or
        iprototype.has_type(typeobject.type, "hub") then
-        if manual_items_object_id and manual_items_object_id ~= object_id then
-            datamodel.manual_items_oper_place = true
+        if global.item_transfer_src and global.item_transfer_src ~= object_id then
+            datamodel.item_transfer_place = true
         else
-            datamodel.manual_items_oper_place = false
+            datamodel.item_transfer_place = false
         end
     else
-        datamodel.manual_items_oper_place = false
+        datamodel.item_transfer_place = false
+    end
+
+    local movable_items, movable_items_hash, placeable_items
+    do
+        if global.item_transfer_src then
+            local object = assert(objects:get(global.item_transfer_src))
+            local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+            movable_items, movable_items_hash = item_transfer.get_movable_items(e)
+            assert(movable_items and movable_items_hash)
+        else
+            local object = assert(objects:get(object_id))
+            local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+            movable_items, movable_items_hash = item_transfer.get_movable_items(e)
+            assert(movable_items and movable_items_hash)
+            if datamodel.item_transfer_subscribe == true then
+                datamodel.item_transfer_subscribe = #(movable_items or {}) > 0
+            end
+        end
+    end
+
+    do
+        local object = assert(objects:get(object_id))
+        local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+        placeable_items = assert(item_transfer.get_placeable_items(e))
+    end
+
+    if datamodel.item_transfer_place == true then
+        datamodel.item_transfer_place = false
+        for _, slot in ipairs(placeable_items or {}) do
+            if movable_items_hash[slot.item] then
+                datamodel.item_transfer_place = true
+                break
+            end
+        end
     end
 end
+local __item_transfer_update_interval = interval_call(300, __item_transfer_update)
 
 ---------------
 local M = {}
@@ -234,9 +272,9 @@ function M:create(object_id, object_position, ui_x, ui_y)
         station_item_count = 0,
         station_weight_increase = false,
         station_weight_decrease = false,
-        manual_items_oper_subscribe = false,
-        manual_items_oper_place = false,
-        manual_items_oper_unsubscribe = false,
+        item_transfer_subscribe = false,
+        item_transfer_place = false,
+        item_transfer_unsubscribe = false,
         recipe_name = recipe_name,
         object_id = object_id,
         left = ui_x,
@@ -244,7 +282,7 @@ function M:create(object_id, object_position, ui_x, ui_y)
         object_position = object_position,
     }
     __construction_center_update(datamodel, object_id)
-    __manual_items_oper(datamodel, object_id)
+    __item_transfer_update(datamodel, object_id)
 
     return datamodel
 end
@@ -291,6 +329,7 @@ function M:update(datamodel, object_id, recipe_name)
     datamodel.recipe_name = recipe_name
     __construction_center_update(datamodel, object_id)
     __lorry_factory_update(datamodel, object_id)
+    __item_transfer_update(datamodel, object_id)
     return true
 end
 
@@ -305,6 +344,7 @@ function M:stage_ui_update(datamodel, object_id)
     __lorry_factory_update(datamodel, object_id)
     __drone_depot_update(datamodel, object_id)
     __station_update(datamodel, object_id)
+    __item_transfer_update_interval(datamodel, object_id)
 
     for _, _, _, object_id in set_recipe_mb:unpack() do
         iui.open({"recipe_pop.rml"}, object_id)
@@ -408,14 +448,41 @@ function M:stage_ui_update(datamodel, object_id)
         iassembling.set_option(gameplay_core.get_world(), e, {ingredientsLimit = 0, resultsLimit = 0})
     end
 
-    for _ in manual_items_oper_subscribe_mb:unpack() do
-        manual_items_object_id = object_id
-        __manual_items_oper(datamodel, object_id)
+    for _ in item_transfer_subscribe_mb:unpack() do
+        global.item_transfer_src = object_id
+        __item_transfer_update(datamodel, object_id)
     end
 
-    for _ in manual_items_oper_unsubscribe_mb:unpack() do
-        manual_items_object_id = nil
-        __manual_items_oper(datamodel, object_id)
+    for _ in item_transfer_unsubscribe_mb:unpack() do
+        global.item_transfer_src = nil
+        __item_transfer_update(datamodel, object_id)
+    end
+
+    for _ in item_transfer_place_mb:unpack() do
+        local movable_items, movable_items_hash, placeable_items
+        do
+            assert(global.item_transfer_src)
+            local object = assert(objects:get(global.item_transfer_src))
+            local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+            movable_items, movable_items_hash = item_transfer.get_movable_items(e)
+            assert(movable_items and movable_items_hash)
+        end
+
+        do
+            local object = assert(objects:get(object_id))
+            local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+            placeable_items = assert(item_transfer.get_placeable_items(e))
+        end
+
+        for _, dst in ipairs(placeable_items) do
+            local i = movable_items_hash[dst.item]
+            if i then
+                local src = movable_items[i]
+                local count = math.min(dst.count, src.count)
+                assert(ichest.chest_pickup(gameplay_core.get_world(), src.chest, src.item, count))
+                ichest.chest_place(gameplay_core.get_world(), dst.chest, dst.item, count)
+            end
+        end
     end
 end
 

@@ -37,7 +37,7 @@ local function _get_fluid_color(fluid)
     end
 end
 
-local function update_world(world)
+return function(world)
     local t = {}
     for e in world.ecs:select "fluidbox:in building:in" do
         local typeobject = assert(iprototype.queryById(e.building.prototype))
@@ -73,4 +73,3 @@ local function update_world(world)
     end
     return t
 end
-return update_world

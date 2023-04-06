@@ -27,6 +27,8 @@ local construct_menu_cfg = import_package "vaststars.prototype"("construct_menu"
 local SHOW_LOAD_RESOURCE <const> = not require "debugger".disable_load_resource
 local EDITOR_CACHE_NAMES = {"CONFIRM", "CONSTRUCTED"}
 local create_station_builder = ecs.require "editor.stationbuilder"
+local interval_call = ecs.require "engine.interval_call"
+local item_transfer = require "item_transfer"
 
 local rotate_mb = mailbox:sub {"rotate"} -- construct_pop.rml -> 旋转
 local build_mb = mailbox:sub {"build"}   -- construct_pop.rml -> 修建
@@ -50,6 +52,40 @@ local pickup_mb = world:sub {"pickup"}
 local handle_pickup = true
 local single_touch_move_mb = world:sub {"single_touch", "MOVE"}
 local builder
+local item_transfer_dst
+
+local item_transfer_placement_interval = interval_call(300, function(datamodel)
+    if not global.item_transfer_src then
+        datamodel.item_transfer = {}
+        return
+    end
+
+    local object = assert(objects:get(global.item_transfer_src))
+    local e = assert(gameplay_core.get_entity(assert(object.gameplay_eid)))
+    local movable_items, movable_items_hash = item_transfer.get_movable_items(e)
+    if item_transfer_dst then
+        local object = assert(objects:get(item_transfer_dst))
+        local e = assert(gameplay_core.get_entity(assert(object.gameplay_eid)))
+        local placeable_items = item_transfer.get_placeable_items(e)
+        local ci = 1
+        for i, slot in ipairs(placeable_items) do
+            local j = movable_items_hash[slot.item]
+            if j then
+                movable_items[ci], movable_items[j] = movable_items[j], movable_items[ci]
+            end
+        end
+    end
+
+    local items = {}
+    for _, slot in ipairs(movable_items) do
+        local typeobject_item = assert(iprototype.queryById(slot.item))
+        items[#items + 1] = {icon = typeobject_item.icon, count = slot.count}
+        if #items >= 5 then
+            break
+        end
+    end
+    datamodel.item_transfer = items
+end)
 
 local function _get_construct_menu()
     local construct_menu = {}
@@ -95,7 +131,8 @@ function M:create()
         current_tech_progress = "0%",  --当前科技进度
         current_tech_progress_detail = "0/0",  --当前科技进度(数量),
         ingredient_icons = {},
-        show_ingredient = false
+        show_ingredient = false,
+        item_transfer = {},
     }
 end
 local current_techname = ""
@@ -274,9 +311,11 @@ function M:stage_camera_usage(datamodel)
         if object then -- object may be nil, such as when user click on empty space
             if idetail.show(object.id) then
                 leave = false
+                item_transfer_dst = object.id
             end
         else
             idetail.unselected()
+            item_transfer_dst = nil
         end
 
         if leave then
@@ -333,6 +372,8 @@ function M:stage_camera_usage(datamodel)
         self:flush()
         handle_pickup = false
     end
+
+    item_transfer_placement_interval(datamodel)
 
     iobject.flush()
 end
