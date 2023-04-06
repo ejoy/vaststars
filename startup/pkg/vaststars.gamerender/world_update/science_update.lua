@@ -5,13 +5,15 @@ local w = world.w
 local global = require "global"
 local iscience = require "gameplay.interface.science"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
-local selected_boxes = ecs.require "selected_boxes"
 return function(gameplay_world)
     local science = global.science
     if science.current_tech then
         if gameplay_world:is_researched(science.current_tech.name) then
-            if science.current_tech.detail.guide_focus then
-                selected_boxes:remove()
+            if science.current_tech.selected_tips then
+                for _, tip in ipairs(science.current_tech.selected_tips) do
+                    tip:remove()
+                end
+                science.current_tech.selected_tips = {}
             end
             iscience.update_tech_list(gameplay_world)
             iui.update("construct.rml", "update_tech")

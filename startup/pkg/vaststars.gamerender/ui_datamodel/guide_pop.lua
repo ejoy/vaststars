@@ -48,7 +48,10 @@ function M:stage_ui_update(datamodel)
                     if focus then
                         for _, nd in ipairs(focus) do
                             if nd.prefab then
-                                selected_boxes(nd.prefab, building_coord:get_position_by_coord(nd.x, nd.y, 1, 1), nd.w, nd.h)
+                                if not tech_node.selected_tips then
+                                    tech_node.selected_tips = {}
+                                end
+                                tech_node.selected_tips[#tech_node.selected_tips + 1] = selected_boxes(nd.prefab, building_coord:get_position_by_coord(nd.x, nd.y, 1, 1), nd.w, nd.h)
                             else
                                 print("")
                             end
