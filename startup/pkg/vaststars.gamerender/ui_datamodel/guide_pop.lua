@@ -47,8 +47,8 @@ function M:stage_ui_update(datamodel)
                     local focus = tech_node.detail.guide_focus
                     if focus then
                         for _, nd in ipairs(focus) do
-                            if nd.effect then
-                                selected_boxes("prefabs/selected-box-guide.prefab", building_coord:get_position_by_coord(nd.x, nd.y, 1, 1), nd.w, nd.h)
+                            if nd.prefab then
+                                selected_boxes(nd.prefab, building_coord:get_position_by_coord(nd.x, nd.y, 1, 1), nd.w, nd.h)
                             else
                                 print("")
                             end
