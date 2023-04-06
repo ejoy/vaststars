@@ -172,7 +172,7 @@
                 width:40%;
                 height:15vmin;
                 top:0;
-                left: 45vmin;
+                left: 46.5vmin;
                 position: absolute; 
             }
             .item {
