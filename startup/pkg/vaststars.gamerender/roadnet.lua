@@ -49,7 +49,8 @@ local LAYER_NAMES <const> = {"road", "indicator"}
 local SHAPE_TYPES <const> = {"valid", "invalid", "normal", "modify", "remove"}
 
 function roadnet:create()
-    iroad:create(WIDTH, HEIGHT, WIDTH//2, HEIGHT//2, LAYER_NAMES, SHAPE_TYPES)
+    --iroad:create(WIDTH, HEIGHT, WIDTH//2, HEIGHT//2, LAYER_NAMES, SHAPE_TYPES)
+    iroad:create(WIDTH, HEIGHT, WIDTH//2, LAYER_NAMES, SHAPE_TYPES)
 end
 
 -- map = {coord = {x, y, shape_type, shape, dir}, ...}

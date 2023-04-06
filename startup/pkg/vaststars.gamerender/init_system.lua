@@ -76,9 +76,9 @@ function m:init_world()
 
     if DEBUG_TERRAIN then
         gameplay_core.get_world().world_update = false
-        local iterrain  = ecs.import.interface "ant.terrain|iterrain"
-        iterrain.gen_terrain_field(255, 255, 0, 0)
-        iterrain.create_roadnet_entity(DEBUG_TERRAIN)
+        local iterrain  = ecs.import.interface "mod.terrain|iterrain"
+--[[         iterrain.gen_terrain_field(256, 256, 0)
+        iterrain.create_roadnet_entity(DEBUG_TERRAIN) ]]
         return
     end
 

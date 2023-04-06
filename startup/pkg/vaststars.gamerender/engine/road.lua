@@ -2,7 +2,7 @@ local ecs   = ...
 local world = ecs.world
 local w     = world.w
 
-local iterrain  = ecs.import.interface "ant.terrain|iterrain"
+local iterrain  = ecs.import.interface "mod.terrain|iterrain"
 local UNIT <const> = 10
 
 local function __pack(x, y)
@@ -19,10 +19,11 @@ local road = {}
 -- shape = "I" / "U" / "L" / "T" / "O"
 -- dir = "N" / "E" / "S" / "W"
 -- map = {{x, y, shape, dir}, ...}
-function road:create(width, height, offset_x, offset_y, layer_names, shape_types)
+function road:create(width, height, offset, layer_names, shape_types)
     assert(width == height)
-    assert(offset_x == offset_y)
-    self._offset = {offset_x, offset_y}
+    --assert(offset_x == offset_y)
+    --self._offset = {offset_x, offset_y}
+    self._offset = {offset, offset}
     self._update_cache = {}
     self.layer_names = {}
     for _, layer_name in ipairs(layer_names) do
@@ -32,7 +33,7 @@ function road:create(width, height, offset_x, offset_y, layer_names, shape_types
     for _, state in ipairs(shape_types) do
         self.shape_types[state] = true
     end
-    iterrain.gen_terrain_field(width, height, offset_x, offset_y, UNIT)
+    iterrain.gen_terrain_field(width, height, offset, UNIT)
 end
 
 local inner_layer_names = {

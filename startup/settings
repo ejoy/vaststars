@@ -46,9 +46,9 @@ graphic:
     split_lamada: 0.8
     split_num: 4
     split_ratios:
-      {0.1, 0.2}
-      {0.2, 0.4}
-      {0.4, 0.6}
-      {0.6, 0.7}
+      {0.00, 0.05}
+      {0.05, 0.15}
+      {0.15, 0.30}
+      {0.30, 0.70}
     stabilize: true
     type: inv_z
