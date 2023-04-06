@@ -327,8 +327,15 @@ lbuild(lua_State *L) {
     return 0;
 }
 
+static void Arrival(world& w, ecs::drone& drone);
+
 static void Move(world& w, ecs::drone& drone, hub_mgr::berth target) {
     drone.next = std::bit_cast<uint32_t>(target);
+    if (drone.prev == drone.next) {
+        drone.maxprogress = drone.progress = 0;
+        Arrival(w, drone);
+        return;
+    }
     uint32_t x1 = (drone.prev >> 23) & 0x1FF;
     uint32_t y1 = (drone.prev >> 14) & 0x1FF;
     uint32_t x2 = (drone.next >> 23) & 0x1FF;
