@@ -257,11 +257,17 @@ lbuild(lua_State *L) {
                 SetStatus(drone, drone_status::has_error);
             }
             break;
+        case drone_status::idle:
+            CheckHasHome(w, drone, +[](world& w, ecs::drone& drone, hub_mgr::hub_info const& info) {
+                if (info.item != 0) {
+                    SetStatus(drone, drone_status::at_home);
+                }
+            });
+            break;
         case drone_status::at_home:
             CheckHasHome(w, drone, +[](world& w, ecs::drone& drone, hub_mgr::hub_info const& info) {
                 if (info.item == 0) {
                     SetStatus(drone, drone_status::idle);
-                    return;
                 }
             });
             break;
@@ -467,13 +473,15 @@ static bool FindTask(world& w, ecs::drone& drone, hub_mgr::hub_info const& info)
 }
 
 static void FindTaskAtHome(world& w, ecs::drone& drone) {
-    assert((drone_status)drone.status == drone_status::at_home);
     CheckHasHome(w, drone, +[](world& w, ecs::drone& drone, hub_mgr::hub_info const& info) {
         if (info.item == 0) {
             SetStatus(drone, drone_status::idle);
             return;
         }
-        FindTask(w, drone, info);
+        if (FindTask(w, drone, info)) {
+            return;
+        }
+        SetStatus(drone, drone_status::at_home);
         return;
     });
 }
