@@ -12,15 +12,15 @@ void flatmap_increase(flatmap<Key, Mapped>& m, Key const& key, Mapped mapped) {
 }
 
 template <typename Key, typename Mapped>
-void flatmap_stat(flatmap<Key, Mapped>& m, recipe_items& r) {
+void flatmap_stat(flatmap<Key, Mapped>& m, recipe_items const& r) {
     for (size_t i = 0; i < r.n; ++i) {
         flatmap_increase<Key, Mapped>(m, r.items[i].item, r.items[i].amount);
     }
 }
 
 void statistics::finish_recipe(world& w, uint16_t id) {
-    auto& ingredients = *(recipe_items*)prototype::get<"ingredients">(w, id).data();
-    auto& results = *(recipe_items*)prototype::get<"results">(w, id).data();
+    auto const& ingredients = prototype::get<"ingredients", recipe_items>(w, id);
+    auto const& results = prototype::get<"results", recipe_items>(w, id);
     flatmap_stat(consumption, ingredients);
     flatmap_stat(production, results);
 }

@@ -5,6 +5,8 @@ local iui = ecs.import.interface "vaststars.gamerender|iui"
 local iguide = require "gameplay.interface.guide"
 local story_click_mb = mailbox:sub {"story_click"}
 local gameplay_core = require "gameplay.core"
+local selected_boxes = ecs.require "selected_boxes"
+local building_coord = require "global".building_coord_system
 local M = {}
 local guide_desc
 function M:create(desc)
@@ -42,6 +44,19 @@ function M:stage_ui_update(datamodel)
                 if tech_node then
                     global.science.tech_picked_flag[tech_node.detail.name] = false
                     global.science.current_tech = tech_node
+                    local focus = tech_node.detail.guide_focus
+                    if focus then
+                        for _, nd in ipairs(focus) do
+                            if nd.prefab then
+                                if not tech_node.selected_tips then
+                                    tech_node.selected_tips = {}
+                                end
+                                tech_node.selected_tips[#tech_node.selected_tips + 1] = selected_boxes(nd.prefab, building_coord:get_position_by_coord(nd.x, nd.y, 1, 1), nd.w, nd.h)
+                            else
+                                print("")
+                            end
+                        end
+                    end
                 end
                 iguide.set_task(task_name)
             end

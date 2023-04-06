@@ -218,28 +218,12 @@
                             start.buttons[#start.buttons + 1] = v
                         end
 
-                        if start.construction_center_stop_build then
-                            local v = setmetatable({}, {__index = mt})
-                            v.text = "建造取消"
-                            v.message = "construction_center_stop_build"
-                            v.background_image = "textures/construct/hammer-stop.texture"
-                            start.buttons[#start.buttons + 1] = v
-                        end
-
                         if start.construction_center_icon and start.construction_center_icon ~= "" then
                             local v = setmetatable({}, {__index = mt})
                             v.background_image = start.construction_center_icon
                             v.number = start.construction_center_multiple
                             v.show_number = true
                             v.show_icon_background = true
-                            start.buttons[#start.buttons + 1] = v
-                        end
-
-                        if start.construction_center_build then
-                            local v = setmetatable({}, {__index = mt})
-                            v.text = "建造增加"
-                            v.message = "construction_center_build"
-                            v.background_image = "textures/construct/hammer-add.texture"
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -280,7 +264,6 @@
                             start.buttons[#start.buttons + 1] = v
                         end
 
-
                         if start.lorry_factory_icon and start.lorry_factory_icon ~= "" then
                             local v = setmetatable({}, {__index = mt})
                             v.background_image = start.lorry_factory_icon
@@ -298,6 +281,30 @@
                             start.buttons[#start.buttons + 1] = v
                         end
 
+                        if start.item_transfer_subscribe then
+                            local v = setmetatable({}, {__index = mt})
+                            v.text = "预约物资"
+                            v.message = "item_transfer_subscribe"
+                            v.background_image = "textures/construct/portal-in.texture"
+                            start.buttons[#start.buttons + 1] = v
+                        end
+
+                        if start.item_transfer_place then
+                            local v = setmetatable({}, {__index = mt})
+                            v.text = "传送"
+                            v.message = "item_transfer_place"
+                            v.background_image = "textures/construct/portal-out.texture"
+                            start.buttons[#start.buttons + 1] = v
+                        end
+
+                        if start.item_transfer_unsubscribe then
+                            local v = setmetatable({}, {__index = mt})
+                            v.text = "取消预约"
+                            v.message = "item_transfer_unsubscribe"
+                            v.background_image = "textures/construct/portal-cancel.texture"
+                            start.buttons[#start.buttons + 1] = v
+                        end
+
                         console.log("#start.buttons", #start.buttons)
                         if #start.buttons > 0 then
                             local pos = assert(positions[#start.buttons], #start.buttons)
@@ -312,6 +319,7 @@
                     "show_set_recipe", "show_set_item", "show_road_builder", 
                     "construction_center_icon", "construction_center_count", "construction_center_multiple", "drone_depot_icon", "station_item_icon",
                     "lorry_factory_icon", "lorry_factory_count", "lorry_factory_inc_lorry", "lorry_factory_dec_lorry",
+                    "item_transfer_subscribe", "item_transfer_place", "item_transfer_unsubscribe",
                 }
             })
         </script>

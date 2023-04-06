@@ -140,7 +140,7 @@ lbuild(lua_State *L) {
     flatset<uint16_t> used_id;
     for (auto& v : ecs_api::select<ecs::building>(w.ecs)) {
         auto& building = v.get<ecs::building>();
-        uint16_t area = (uint16_t)prototype::get<"area">(w, building.prototype);
+        uint16_t area = prototype::get<"area">(w, building.prototype);
         building_rect r(building, area);
         if (auto phub = v.sibling<ecs::hub>()) {
             auto& hub = *phub;
@@ -196,8 +196,8 @@ lbuild(lua_State *L) {
         auto& hub = v.get<ecs::hub>();
         auto& chestslot = chest::array_at(w, container::index::from(hub.chest), 0);
         auto& building = v.get<ecs::building>();
-        uint16_t area = (uint16_t)prototype::get<"area">(w, building.prototype);
-        uint16_t supply_area = (uint16_t)prototype::get<"supply_area">(w, building.prototype);
+        uint16_t area = prototype::get<"area">(w, building.prototype);
+        uint16_t supply_area = prototype::get<"supply_area">(w, building.prototype);
         building_rect r(building, area, supply_area);
         auto& map = globalmap[chestslot.item];
         flatset<hub_mgr::berth> set;

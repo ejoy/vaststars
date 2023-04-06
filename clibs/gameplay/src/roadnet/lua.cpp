@@ -227,7 +227,7 @@ namespace roadnet::lua {
             { "kCrossTime", roadnet::kCrossTime },
         };
 
-        lua_createtable(L, 0, std::size(constants));
+        lua_createtable(L, 0, (int)std::size(constants));
         for (const auto& [name, value] : constants) {
             lua_pushstring(L, name);
             lua_pushinteger(L, value);

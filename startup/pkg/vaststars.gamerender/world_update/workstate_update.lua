@@ -27,7 +27,7 @@ local STATUS_IDLE <const> = 2
 local statuses = {} -- TODO: when an object is destroyed, clear it.
 local last_frame_count = 0
 
-local function update_world(world)
+return function(world)
     counter = counter + 1
     if counter < update_interval then
         return
@@ -79,4 +79,3 @@ local function update_world(world)
 
     last_frame_count = world:now()
 end
-return update_world

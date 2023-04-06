@@ -4,7 +4,6 @@ local global = require "global"
 local iprototype = require "gameplay.interface.prototype"
 local gameplay_core = require "gameplay.core"
 local itypes = require "gameplay.interface.types"
-local irecipe = require "gameplay.interface.recipe"
 local ilaboratory = require "gameplay.interface.laboratory"
 local ichest = require "gameplay.interface.chest"
 local building_detail = import_package "vaststars.prototype"("building_detail_config")

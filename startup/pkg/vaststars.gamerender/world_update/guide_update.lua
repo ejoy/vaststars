@@ -6,7 +6,7 @@ local global = require "global"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local iguide = require "gameplay.interface.guide"
 
-local function update_world(world)
+return function(world)
     local science = global.science
     if not iguide.is_running() or iguide.is_in_guide() or science.current_tech then
         return
@@ -33,4 +33,3 @@ local function update_world(world)
         iguide.set_is_in_guide(true)
     end
 end
-return update_world

@@ -32,6 +32,8 @@ data:
   anim_ctrl: {}
   animation:
     ArmatureAction: /pkg/vaststars.resources/glb/mars-pumpjack.glb|animations/ArmatureAction.ozz
+    low_power: /pkg/vaststars.resources/prefabs/animation/mars-pumpjack_animat_low.anim
+    work: /pkg/vaststars.resources/prefabs/animation/mars-pumpjack_animat.anim
   animation_birth: ArmatureAction
   name: animation
   skeleton: /pkg/vaststars.resources/glb/mars-pumpjack.glb|animations/skeleton.ozz

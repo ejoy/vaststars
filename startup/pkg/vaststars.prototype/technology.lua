@@ -662,10 +662,10 @@ local prototype = gameplay.register.prototype
     desc = "选择采矿机设计图",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
-    task = {"unknown", 0, 5},
-    task_params = {item = "采矿机设计图"},
-    prerequisites = {"迫降火星"},
+    task = {"unknown", 0, 3},
+    task_params = {recipe = "采矿机打印"},
     count = 1,
+    prerequisites = {"迫降火星"},
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -703,6 +703,26 @@ local prototype = gameplay.register.prototype
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
+    guide_focus = {
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 115,
+        y = 130,
+        w = 3,
+        h = 3,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 105,
+        y = 130,
+        w = 3,
+        h = 3,
+      },
+      {
+        camera_x = 115,
+        camera_y = 130,
+      },
+    },
     sign_desc = {
       { desc = "在石矿上放置1个采矿机", icon = "textures/construct/industry.texture"},
     },
@@ -712,10 +732,10 @@ local prototype = gameplay.register.prototype
     desc = "选择电线杆设计图",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
-    task = {"unknown", 0, 5},
-    task_params = {item = "电线杆设计图"},
-    prerequisites = {"石矿放置采矿机"},
+    task = {"unknown", 0, 3},
+    task_params = {recipe = "电线杆打印"},
     count = 1,
+    prerequisites = {"石矿放置采矿机"},
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -763,10 +783,10 @@ prototype "建造电线杆" {
     desc = "选择无人机仓库设计图",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
-    task = {"unknown", 0, 5},
-    task_params = {item = "无人机仓库设计图"},
-    prerequisites = {"放置电线杆"},
+    task = {"unknown", 0, 3},
+    task_params = {recipe = "无人机仓库打印"},
     count = 1,
+    prerequisites = {"放置电线杆"},
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },

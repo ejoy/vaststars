@@ -6,6 +6,7 @@
 #include <lua.hpp>
 #include <bee/nonstd/unreachable.h>
 #include "core/world.h"
+#include "util/enum.h"
 
 namespace prototype {
     constexpr size_t CACHE_SLOTS = 1021;
@@ -105,6 +106,9 @@ namespace prototype {
             }
         }
 
+        template <typename T>
+        constexpr static inline auto get_value_v = std::is_enum_v<T> || std::is_integral_v<T> || std::is_same_v<T, std::string_view>;
+
         template <typename R>
         R get(world& w, uint16_t id, const char* name) {
             return std::visit([&](auto&& arg)->R {
@@ -121,10 +125,39 @@ namespace prototype {
                         error(w, "[%d].%s limit exceeded.", id, name);
                         std::unreachable();
                     }
+                    else if constexpr (std::is_enum_v<R>) {
+                        using UR = std::underlying_type_t<R>;
+                        static_assert(std::is_unsigned_v<UR>);
+                        static_assert(sizeof(UR) <= sizeof(size_t));
+                        static_assert(sizeof(UR) <= sizeof(lua_Integer));
+                        if (static_cast<size_t>(arg) < enum_count_v<R>) {
+                            return static_cast<R>(static_cast<UR>(arg));
+                        }
+                        error(w, "[%d].%s limit exceeded.", id, name);
+                        std::unreachable();
+                    }
                     else {
                         error(w, "[%d].%s is not integer.", id, name);
                         std::unreachable();
                     }
+                }
+                else {
+                    error(w, "[%d].%s invalid type.", id, name);
+                    std::unreachable();
+                }
+            }, storage);
+        }
+
+        template <typename R>
+        R const* get_ptr(world& w, uint16_t id, const char* name) {
+            return std::visit([&](auto&& arg)->R const* {
+                using T = std::decay_t<decltype(arg)>;
+                if constexpr (std::is_same_v<T, std::string_view>) {
+                    if (arg.size() == sizeof(R)) {
+                        return reinterpret_cast<R const*>(arg.data());
+                    }
+                    error(w, "[%d].%s limit exceeded.", id, name);
+                    std::unreachable();
                 }
                 else {
                     error(w, "[%d].%s invalid type.", id, name);
@@ -179,21 +212,22 @@ namespace prototype {
         v.set(c->L, 3, w, id, name);
     }
 
-    template <typename T>
-    T get(world& w, uint16_t id, uint16_t hash, const char* name) {
+    template <string_literal str, typename T = typename key<str>::type>
+    std::conditional_t<lua_value::get_value_v<T>, T, const T&>
+    get(world& w, uint16_t id) {
         cache* c = w.P;
-        uint32_t cid = (hash<<16) | id;
+        uint32_t cid = (key<str>::id<<16) | id;
         auto& s = c->s[inthash(cid)];
         if (s.k != cid) {
-            fetch_value(w, c, id, name, s.v);
+            fetch_value(w, c, id, str.value, s.v);
             s.k = cid;
         }
-        return s.v.get<T>(w, id, name);
-    }
-
-    template <string_literal str>
-    auto get(world& w, uint16_t id) {
-        return get<typename key<str>::type>(w, id, key<str>::id, str.value);
+        if constexpr (lua_value::get_value_v<T>) {
+            return s.v.get<T>(w, id, str.value);
+        }
+        else {
+            return *s.v.get_ptr<T>(w, id, str.value);
+        }
     }
 
 #define PROTOTYPE(NAME, TYPE) \
@@ -201,15 +235,14 @@ namespace prototype {
         using type = TYPE; \
         static constexpr uint16_t id = __LINE__; \
     };
-    PROTOTYPE(priority, unsigned int)
-    PROTOTYPE(power, unsigned int)
-    PROTOTYPE(drain, unsigned int)
-    PROTOTYPE(charge_power, unsigned int)
-    PROTOTYPE(capacitance, unsigned int)
-    PROTOTYPE(stack, int)
-    PROTOTYPE(time, int)
-    PROTOTYPE(speed, int)
-    PROTOTYPE(count, int)
+    PROTOTYPE(priority, uint8_t)
+    PROTOTYPE(power, uint32_t)
+    PROTOTYPE(drain, uint32_t)
+    PROTOTYPE(charge_power, uint32_t)
+    PROTOTYPE(capacitance, uint32_t)
+    PROTOTYPE(time, uint32_t)
+    PROTOTYPE(speed, uint32_t)
+    PROTOTYPE(count, uint16_t)
     PROTOTYPE(area, uint16_t)
     PROTOTYPE(supply_area, uint16_t)
     PROTOTYPE(ingredients, std::string_view)

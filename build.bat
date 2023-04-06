@@ -1,4 +1,5 @@
 @echo off
+@setlocal
 @chcp 65001 >nul
 
 set current_dir=%~dp0
@@ -16,3 +17,4 @@ pushd %CURRENT_DIR%
 popd
 
 if "%exit_or_pause%"=="" pause
+endlocal

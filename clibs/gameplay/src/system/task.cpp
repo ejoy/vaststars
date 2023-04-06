@@ -18,17 +18,17 @@ struct task {
     uint16_t p1;
     uint16_t p2;
 
-    uint64_t stat_production(world& w);
-    uint64_t stat_consumption(world& w);
-    uint64_t select_entity(world& w);
-    uint64_t select_chest(world& w);
-    uint64_t power_generator(world& w);
-    uint64_t eval(world& w);
-    uint16_t progress(world& w);
+    uint64_t stat_production(world& w) const;
+    uint64_t stat_consumption(world& w) const;
+    uint64_t select_entity(world& w) const;
+    uint64_t select_chest(world& w) const;
+    uint64_t power_generator(world& w) const;
+    uint64_t eval(world& w) const;
+    uint16_t progress(world& w) const;
 };
 
 
-uint64_t task::stat_production(world& w) {
+uint64_t task::stat_production(world& w) const {
     auto iter = w.stat.production.find(p1);
     if (iter) {
         return *iter;
@@ -36,7 +36,7 @@ uint64_t task::stat_production(world& w) {
     return 0;
 }
 
-uint64_t task::stat_consumption(world& w) {
+uint64_t task::stat_consumption(world& w) const {
     auto iter = w.stat.consumption.find(p1);
     if (iter) {
         return *iter;
@@ -44,7 +44,7 @@ uint64_t task::stat_consumption(world& w) {
     return 0;
 }
 
-uint64_t task::select_entity(world& w) {
+uint64_t task::select_entity(world& w) const {
     uint64_t n = 0;
     for (auto& v : ecs_api::select<ecs::building>(w.ecs)) {
         ecs::building& building = v.get<ecs::building>();
@@ -55,7 +55,7 @@ uint64_t task::select_entity(world& w) {
     return n;
 }
 
-uint64_t task::select_chest(world& w) {
+uint64_t task::select_chest(world& w) const {
     uint64_t n = 0;
     //TODO
     //for (auto& v : ecs_api::select<ecs::chest, ecs::building>(w.ecs)) {
@@ -74,11 +74,11 @@ uint64_t task::select_chest(world& w) {
     return n;
 }
 
-uint64_t task::power_generator(world& w) {
+uint64_t task::power_generator(world& w) const {
     return w.stat.generate_power;
 }
 
-uint64_t task::eval(world& w) {
+uint64_t task::eval(world& w) const {
     switch (type) {
     case task::type::stat_production:         return stat_production(w);
     case task::type::stat_consumption:        return stat_consumption(w);
@@ -89,7 +89,7 @@ uint64_t task::eval(world& w) {
     }
 }
 
-uint16_t task::progress(world& w) {
+uint16_t task::progress(world& w) const {
     uint64_t v = eval(w);
     for (uint16_t i = 0; i < e; ++i) {
         v /= 10;
@@ -113,7 +113,7 @@ lupdate(lua_State *L) {
         if (0 != time) {
             break;
         }
-        auto& task = *(struct task*)prototype::get<"task">(w, taskid).data();
+        auto const& task = prototype::get<"task", struct task>(w, taskid);
         if (task.type == task::type::unknown) {
             break;
         }

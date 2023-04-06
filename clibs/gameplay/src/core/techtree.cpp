@@ -30,7 +30,7 @@ bool techtree_mgr::research_set(uint16_t techid, uint16_t max, uint16_t val) {
 }
 
 bool techtree_mgr::research_set(world& w,uint16_t techid, uint16_t val) {
-    uint16_t count = (uint16_t)prototype::get<"count">(w, techid);
+    auto count = prototype::get<"count">(w, techid);
     if (!research_set(techid, count, val)) {
         return false;
     }
@@ -69,7 +69,7 @@ struct lab_inputs {
     uint16_t items[1];
 };
 
-static std::optional<uint16_t> recipeFind(lab_inputs& r, uint16_t item) {
+static std::optional<uint16_t> recipeFind(lab_inputs const& r, uint16_t item) {
     for (uint16_t i = 0; i < r.n; ++i) {
         if (r.items[i] == item) {
             return i;
@@ -84,8 +84,8 @@ techtree_mgr::ingredients_opt& techtree_mgr::get_ingredients(world& w, uint16_t 
     if (iter != techcache.end()) {
         return iter->second;
     }
-    auto& inputs = *(lab_inputs*)prototype::get<"inputs">(w, labid).data();
-    auto& ingredients = *(recipe_items*)prototype::get<"ingredients">(w, techid).data();
+    auto const& inputs = prototype::get<"inputs", lab_inputs>(w, labid);
+    auto const& ingredients = prototype::get<"ingredients", recipe_items>(w, techid);
 
     ingredients_t r(inputs.n+1);
     r[0].item = inputs.n;

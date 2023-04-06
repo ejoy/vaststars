@@ -65,7 +65,7 @@ static uint8_t safe_add(uint8_t a, uint8_t b) {
 
 static std::tuple<uint8_t, uint8_t> building_center(world& world, ecs::building& building) {
     //TODO 使用更精确的x/y
-    uint16_t area = (uint16_t)prototype::get<"area">(world, building.prototype);
+    uint16_t area = prototype::get<"area">(world, building.prototype);
     uint8_t w = area >> 8;
     uint8_t h = area & 0xFF;
     assert(w > 0 && h > 0);
@@ -154,8 +154,8 @@ static std::optional<uint8_t> recipeFirstOutput(world& w, uint16_t recipe) {
     if (recipe == 0) {
         return std::nullopt;
     }
-    auto& ingredients = *(recipe_items*)prototype::get<"ingredients">(w, recipe).data();
-    auto& results = *(recipe_items*)prototype::get<"results">(w, recipe).data();
+    auto const& ingredients = prototype::get<"ingredients", recipe_items>(w, recipe);
+    auto const& results = prototype::get<"results", recipe_items>(w, recipe);
     if (results.n == 0) {
         return std::nullopt;
     }

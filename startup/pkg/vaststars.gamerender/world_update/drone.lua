@@ -166,7 +166,7 @@ end
 -- iheapmesh.update_heap_mesh_number(27, "iron-ingot") -- 更新当前堆叠数 参数一为待更新堆叠数 参数二为entity筛选的glb名字
 -- iheapmesh.update_heap_mesh_sidesize(4, "iron-ingot") -- 更新当前每个轴的最大堆叠数 参数一为待更新每个轴的最大堆叠数 参数二为entity筛选的glb名字
 
-local function update_world(gameworld)
+return function(gameworld)
     for _, _, geid in entity_remove:unpack() do
         local e = gameplay_core.get_entity(geid)
         if e.hub and drone_depot[geid] then
@@ -282,4 +282,3 @@ local function update_world(gameworld)
     end
     return t
 end
-return update_world

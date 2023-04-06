@@ -28,7 +28,7 @@ local filter_statistic = {
     ["10m"] = {interval = 12.0, elapsed = 0.0, maxsec = 600},
     ["1h"] = {interval = 72.0, elapsed = 0.0, maxsec = 3600},
 }
-local function update_world(world)
+return function(world)
     local statistic = global.statistic
     if not statistic.valid then
         statistic.valid = true
@@ -184,4 +184,3 @@ local function update_world(world)
         end
     end
 end
-return update_world

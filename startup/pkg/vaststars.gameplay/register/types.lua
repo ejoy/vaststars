@@ -181,15 +181,20 @@ register_unit("fluidbox", "table", function(s)
 	return s
 end)
 
+local TaskSchema <const> = {
+	stat_production = {0, "raw", "item/fluid"},
+	stat_consumption = {1, "raw", "item/fluid"},
+	select_entity = {2, "raw", "building"},
+	select_chest = {3, "raw", "building", "item"},
+	power_generator = {4, "raw"},
+	unknown = {5, "raw", "raw"},
+}
+local TaskMaxArgsCount = 0
+for _, v in pairs(TaskSchema) do
+	TaskMaxArgsCount = math.max(TaskMaxArgsCount, #v)
+end
+
 register_unit("task", "string", function(args)
-	local TaskSchema <const> = {
-		stat_production = {0, "raw", "item/fluid"},
-		stat_consumption = {1, "raw", "item/fluid"},
-		select_entity = {2, "raw", "building"},
-		select_chest = {3, "raw", "building", "item"},
-		power_generator = {4, "raw"},
-		unknown = {5, "raw", "raw"},
-	}
 	local schema = TaskSchema[args[1]]
 	if not schema then
 		return nil, "Unkonwn task type: " .. args[1]
@@ -202,8 +207,8 @@ register_unit("task", "string", function(args)
 		end
 		r[i] = id
 	end
-	for i = 1, #r do
-		r[i] = string.pack("<I2", r[i])
+	for i = 1, TaskMaxArgsCount do
+		r[i] = string.pack("<I2", r[i] or 0)
 	end
 	return table.concat(r)
 end)

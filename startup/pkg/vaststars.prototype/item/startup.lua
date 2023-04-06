@@ -38,12 +38,12 @@ local entities = {
         x = 113,
         y = 120,
     },
-    {
-        prototype_name = "无人机仓库",
-        dir = "N",
-        x = 116,
-        y = 121,
-    },
+    -- {
+    --     prototype_name = "无人机仓库",
+    --     dir = "N",
+    --     x = 116,
+    --     y = 121,
+    -- },
     {
         prototype_name = "建造中心",
         dir = "N",

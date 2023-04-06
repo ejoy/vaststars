@@ -60,15 +60,15 @@ void chest::set_fluid(world& w, container::index c, uint8_t offset, uint16_t val
 }
 
 bool chest::pickup(world& w, container::index c, uint16_t recipe) {
-    auto ingredients = (recipe_items*)prototype::get<"ingredients">(w, recipe).data();
-    return chest::pickup(w, c, ingredients, 0);
+    auto const& ingredients = prototype::get<"ingredients", recipe_items>(w, recipe);
+    return chest::pickup(w, c, &ingredients, 0);
 }
 
 bool chest::place(world& w, container::index c, uint16_t recipe) {
-    auto ingredients = (recipe_items*)prototype::get<"ingredients">(w, recipe).data();
-    auto results = (recipe_items*)prototype::get<"results">(w, recipe).data();
-    //TODO ingredients->n -> uint8_t
-    return chest::place(w, c, results, (uint8_t)ingredients->n);
+    auto const& ingredients = prototype::get<"ingredients", recipe_items>(w, recipe);
+    auto const& results = prototype::get<"results", recipe_items>(w, recipe);
+    //TODO ingredients.n -> uint8_t
+    return chest::place(w, c, &results, (uint8_t)ingredients.n);
 }
 
 bool chest::pickup(world& w, container::index c, const recipe_items* r, uint8_t offset) {

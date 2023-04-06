@@ -12,7 +12,7 @@ local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
 
 local progresses = {} --TODO: when an object is destroyed, clear it.
 
-local function update_world(world)
+return function(world)
     local t = {}
     for e in world.ecs:select "assembling:in building:in chest:in eid:in" do
         local typeobject = iprototype.queryById(e.building.prototype)
@@ -74,4 +74,3 @@ local function update_world(world)
     end
     return t
 end
-return update_world

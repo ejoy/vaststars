@@ -1,5 +1,4 @@
 ---
-type: ske
 duration: 0.6
 name: mars-pumpjack_animat
 sample_ratio: 50
@@ -43,7 +42,7 @@ target_anims:
   clips:
     ---
     amplitude_pos: 0
-    amplitude_rot: 360
+    amplitude_rot: -360
     direction: 2
     random_amplitude: false
     range: {0, 29}
@@ -53,3 +52,4 @@ target_anims:
     type: 1
   inherit: {false, false, false}
   target_name: Bone.002
+type: ske

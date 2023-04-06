@@ -165,6 +165,45 @@
                 height: 100%;
                 background-color: rgb(87, 238, 0);
             }
+            .teleport-items-block {
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                width:40%;
+                height:15vmin;
+                top:0;
+                left: 46.5vmin;
+                position: absolute; 
+            }
+            .item {
+                flex-direction: column;
+                align-items:flex-start;
+                justify-content:flex-start;
+                background-color: rgb(250, 205, 9);
+                border: 0.27vmin rgb(89, 73, 39);
+                background-size:cover;
+                width: 12.00vmin;
+                height: 12.00vmin;
+                font-size: 2.40vmin;
+                border-radius: 1vmin;
+                margin-right: 0.2vmin;
+            }
+            .item-count {
+                font-size: 4vmin;
+                position: absolute;
+                top: -1vmin;
+                left: 0vmin;
+                -webkit-text-stroke: 0.3vmin rgb(39, 32, 17);
+            }
+            .item-sign {
+                position: absolute;
+                bottom:-0.2vmin;
+                right: 0vmin;
+                width:5vmin;
+                height:5vmin;
+                background-size: cover;
+                background-image:"textures/construct/portal-in.texture";
+            }
             p {
                 animation:0.5s linear 0s infinite alternate rotation;
             }
@@ -244,6 +283,7 @@
                 fps_text = " ",           -- fps 信息
                 drawcall_text = " ",      -- drawcall 信息
                 construct_menu = {},
+                item_transfer = {},
 
                 show_construct_menu = false, -- 是否显示右侧建造菜单
                 cur_construct_menu = "",  -- 当前选中的二级建造菜单名
@@ -325,6 +365,12 @@
     </head>
     <body style = "pointer-events: none; justify-content: center; align-items: center;">
         <div class = "panel" data-model="start">
+            <div class="teleport-items-block">
+                <div class="item" data-style-background-image = "it.icon" data-for = "item_transfer">
+                    <div class="item-count">{{it.count}}</div>
+                    <div class="item-sign"/>                     
+                </div>
+            </div>
             <!-- 主菜单按钮 -->
             <div class="main-menu-region">
                 <!-- 主菜单隐藏/显示按钮 -->

@@ -1156,7 +1156,7 @@ prototype "运输汽车制造" {
 
 prototype "车辆装配" {
     type = { "recipe" },
-    category = "生产手工制造",
+    category = "基地制造",
     recipe_group =  "加工",
     recipe_order =  128,
     recipe_icon =  "textures/construct/broken-truck.texture",
