@@ -773,33 +773,6 @@ prototype "建造电线杆" {
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
-    guide_focus = {
-      {
-        prefab = "prefabs/selected-box-guide.prefab",
-        x = 117,
-        y = 115,
-        w = 1,
-        h = 1,
-      },
-      {
-        prefab = "prefabs/selected-box-guide.prefab",
-        x = 117,
-        y = 123,
-        w = 1,
-        h = 1,
-      },
-      {
-        prefab = "prefabs/selected-box-guide.prefab",
-        x = 117,
-        y = 131,
-        w = 1,
-        h = 1,
-      },
-      {
-        camera_x = 118,
-        camera_y = 119,
-      },
-    },
     sign_desc = {
       { desc = "在“建造中心”建造4个电线杆", icon = "textures/construct/industry.texture"},
     },
@@ -819,6 +792,40 @@ prototype "建造电线杆" {
     tips_pic = {
       "textures/task_tips_pic/task_place_pole1.texture",
       "textures/task_tips_pic/task_place_pole2.texture",
+    },
+    guide_focus = {
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 116,
+        y = 114,
+        w = 1,
+        h = 1,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 116,
+        y = 122,
+        w = 1,
+        h = 1,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 116,
+        y = 130,
+        w = 1,
+        h = 1,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 124,
+        y = 130,
+        w = 1,
+        h = 1,
+      },
+      {
+        camera_x = 118,
+        camera_y = 119,
+      },
     },
     sign_desc = {
       { desc = "放置4个铁制电线杆构成电网", icon = "textures/construct/industry.texture"},
