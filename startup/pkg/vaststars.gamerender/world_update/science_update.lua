@@ -10,15 +10,7 @@ return function(gameplay_world)
     if science.current_tech then
         if gameplay_world:is_researched(science.current_tech.name) then
             if science.current_tech.selected_tips then
-                for _, tip in ipairs(science.current_tech.selected_tips) do
-                    tip[1]:remove()
-                    if tip[2] then
-                        local children = tip[2].tag["*"]
-                        for _, eid in ipairs(children) do
-                           w:remove(eid)
-                        end
-                    end
-                end
+                world:pub {"focus_tips", "close", science.current_tech}
                 science.current_tech.selected_tips = {}
             end
             iscience.update_tech_list(gameplay_world)

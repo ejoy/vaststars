@@ -12,7 +12,7 @@ local gameplay_core = require "gameplay.core"
 local selected_boxes = ecs.require "selected_boxes"
 local building_coord = require "global".building_coord_system
 local camera = ecs.require "engine.camera"
-
+local focus_tips_event = world:sub {"focus_tips"}
 local M = {}
 local guide_desc
 function M:create(desc)
@@ -26,7 +26,7 @@ function M:create(desc)
     }
 end
 
-local function init_focus_tips(tech_node)
+local function open_focus_tips(tech_node)
     local focus = tech_node.detail.guide_focus
     if not focus then
         return
@@ -69,7 +69,23 @@ local function init_focus_tips(tech_node)
     end
 end
 
-function M:stage_camera_usage(datamodel)
+local function close_focus_tips(tech_node)
+    local selected_tips = tech_node.selected_tips
+    if not selected_tips then
+        return
+    end
+    for _, tip in ipairs(selected_tips) do
+        tip[1]:remove()
+        if tip[2] then
+            local children = tip[2].tag["*"]
+            for _, eid in ipairs(children) do
+               w:remove(eid)
+            end
+        end
+    end
+end
+
+function M:stage_ui_update(datamodel)
     for _ in story_click_mb:unpack() do
         local speech = guide_desc.narrative
         local count = datamodel.count + 1
@@ -91,9 +107,9 @@ function M:stage_camera_usage(datamodel)
                 game_world:research_queue {task_name}
                 local tech_node = global.science.tech_tree[task_name]
                 if tech_node then
-                    init_focus_tips(tech_node)
                     global.science.tech_picked_flag[tech_node.detail.name] = false
                     global.science.current_tech = tech_node
+                    world:pub {"focus_tips", "open", global.science.current_tech}
                 end
                 iguide.set_task(task_name)
             end
@@ -101,6 +117,17 @@ function M:stage_camera_usage(datamodel)
             iui.set_guide_progress(iguide.get_progress())
         end
     end
+end
+
+function M:stage_camera_usage(datamodel)
+    for _, actiion, tech_node in focus_tips_event:unpack() do
+        if actiion == "open" then
+            open_focus_tips(tech_node)
+        elseif actiion == "close" then
+            close_focus_tips(tech_node)
+        end
+    end
+    
 end
 
 return M

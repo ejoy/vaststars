@@ -148,8 +148,12 @@ function M:stage_ui_update(datamodel)
             end
             game_world:research_queue {current_tech.name}
             global.science.current_tech = global.science.tech_tree[current_tech.name]
+            world:pub {"focus_tips", "open", global.science.current_tech}
         else
             game_world:research_queue {}
+            if global.science.current_tech then
+                world:pub {"focus_tips", "close", global.science.current_tech}
+            end
             global.science.current_tech = nil
         end
         datamodel.current_running = current_tech.running
