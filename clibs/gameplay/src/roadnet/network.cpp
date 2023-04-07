@@ -1,4 +1,4 @@
-﻿#include "roadnet/network.h"
+#include "roadnet/network.h"
 #include "roadnet/bfs.h"
 #include <assert.h>
 
@@ -528,15 +528,15 @@ namespace roadnet {
         return std::nullopt;
     }
 
-    map_coord network::coordConvert(road_coord rc) {
+    std::optional<map_coord> network::coordConvert(road_coord rc) {
         if (rc.id.get_type() == roadtype::cross) {
             if (auto loc = whereCrossRoad(rc.id); loc) {
-                return {loc->x, loc->y, (uint8_t)rc.offset};
+                return map_coord {loc->x, loc->y, (uint8_t)rc.offset};
             }
-            return map_coord::invalid();
+            return std::nullopt;
         }
         if (rc.id.get_index() >= straightVec.size()) {
-            return map_coord::invalid();
+            return std::nullopt;
         }
         auto& straight = straightVec[rc.id.get_index()];
         uint16_t n = road::straight::N * straight.len + 1 - rc.offset - 1;
@@ -555,8 +555,8 @@ namespace roadnet {
             else {
                 z = reverse(res->dir) == straightDirection(m, 0) ? 0x00 : 0x01;
             }
-            return {res->l.x, res->l.y, (uint8_t)((wait << 5) | (z << 4) | (n % road::straight::N))};
+            return map_coord {res->l.x, res->l.y, (uint8_t)((wait << 5) | (z << 4) | (n % road::straight::N))};
         }
-        return map_coord::invalid();
+        return std::nullopt;
     }
 }

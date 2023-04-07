@@ -39,9 +39,6 @@ namespace roadnet {
         constexpr map_coord(uint8_t x, uint8_t y, uint8_t z)
         : loction(x,y), z(z)
         { }
-        static constexpr map_coord invalid() {
-            return {(uint8_t)-1,(uint8_t)-1, (uint8_t)-1};
-        }
         explicit operator bool() const {
             return z != (uint8_t)-1;
         }

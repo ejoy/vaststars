@@ -97,8 +97,11 @@ namespace roadnet::lua {
     static int lmap_coord(lua_State* L) {
         auto& w = get_network(L);
         auto r = w.coordConvert(get_road_coord(L, 2));
-        push_map_coord(L, r);
-        return 1;
+        if (r) {
+            push_map_coord(L, *r);
+            return 1;
+        }
+        return 0;
     }
     struct eachlorry {
         enum class status {

@@ -27,8 +27,7 @@ namespace roadnet {
         endpointid EndpointId(loction loc, direction dir);
 
         road_coord coordConvert(map_coord  mc);
-        road_coord coordConvert(loction l, direction dir);
-        map_coord  coordConvert(road_coord rc);
+        std::optional<map_coord> coordConvert(road_coord rc);
 
         dynarray<road::crossroad>   crossAry;
         dynarray<road::straight>    straightAry;
