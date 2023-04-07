@@ -195,9 +195,6 @@ local function __item_transfer_update(datamodel, object_id)
             local e = gameplay_core.get_entity(assert(object.gameplay_eid))
             movable_items, movable_items_hash = item_transfer.get_movable_items(e)
             assert(movable_items and movable_items_hash)
-            if datamodel.item_transfer_subscribe == true then
-                datamodel.item_transfer_subscribe = #(movable_items or {}) > 0
-            end
         end
     end
 
