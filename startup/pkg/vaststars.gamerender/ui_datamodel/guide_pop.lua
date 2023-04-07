@@ -1,17 +1,10 @@
 local ecs, mailbox= ...
 local world = ecs.world
-local w = world.w
 local global = require "global"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
-local iani = ecs.import.interface "ant.animation|ianimation"
-local ivs = ecs.import.interface "ant.scene|ivisible_state"
-local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local iguide = require "gameplay.interface.guide"
 local story_click_mb = mailbox:sub {"story_click"}
 local gameplay_core = require "gameplay.core"
-local selected_boxes = ecs.require "selected_boxes"
-local building_coord = require "global".building_coord_system
-local camera = ecs.require "engine.camera"
 
 local M = {}
 local guide_desc
