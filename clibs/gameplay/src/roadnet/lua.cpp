@@ -199,8 +199,7 @@ namespace roadnet::lua {
         auto& w = get_network(L);
         auto x = luaL_checkinteger(L, 2);
         auto y = luaL_checkinteger(L, 3);
-        auto dir = direction(luaL_checkinteger(L, 4));
-        auto id = w.EndpointId({(uint8_t)x, (uint8_t)y}, dir);
+        auto id = w.EndpointId({(uint8_t)x, (uint8_t)y});
         lua_pushinteger(L, id.id);
         return 1;
     }
