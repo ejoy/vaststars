@@ -1052,7 +1052,7 @@ prototype "建造电线杆" {
     },
   }
 
-  prototype "地质科技包产线" {
+  prototype "科技包产线搭建" {
     desc = "选择地质科技包配方",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
@@ -1076,7 +1076,7 @@ prototype "建造电线杆" {
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_production", 0, "地质科技包"},
-    prerequisites = {"地质科技包产线"},
+    prerequisites = {"科技包产线搭建"},
     count = 8,
     tips_pic = {
       "textures/task_tips_pic/task_produce_geopack3.texture",
@@ -1105,12 +1105,31 @@ prototype "建造电线杆" {
     time = "1s"
   }
 
+  prototype "石砖产线搭建" {
+    desc = "选择地质科技包配方",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"unknown", 0, 3},
+    task_params = {recipe = "石砖"},
+    count = 1,
+    prerequisites = {"石头处理1"},
+    tips_pic = {
+      "textures/task_tips_pic/task_produce_geopack3.texture",
+      "textures/task_tips_pic/task_produce_geopack4.texture",
+      "textures/task_tips_pic/task_produce_geopack5.texture",
+      "textures/task_tips_pic/task_produce_geopack6.texture",
+    },
+    sign_desc = {
+      { desc = "在组装机里选择石砖配方", icon = "textures/construct/industry.texture"},
+    },
+  }
+
   prototype "生产石砖" {
     desc = "挖掘足够的碎石可以开始进行锻造",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_production", 0, "石砖"},
-    prerequisites = {"石头处理1"},
+    prerequisites = {"石砖产线搭建"},
     count = 10,
     tips_pic = {
       "textures/task_tips_pic/task_produce_ore3.texture",

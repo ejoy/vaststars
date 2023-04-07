@@ -247,7 +247,7 @@ local guide = {
         narrative_end = {
             guide_progress = 30,
             task = {
-                "地质科技包产线",
+                "科技包产线搭建",
             }
         },
         prerequisites = {
