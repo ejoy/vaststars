@@ -721,7 +721,7 @@ local prototype = gameplay.register.prototype
       {
         prefab = "prefabs/selected-box-guide.prefab",
         x = 113,
-        y = 129,
+        y = 128,
         w = 3,
         h = 3,
       },
@@ -897,28 +897,28 @@ prototype "建造电线杆" {
       {
         prefab = "prefabs/selected-box-guide.prefab",
         x = 122,
-        y = 126,
+        y = 125,
         w = 1.5,
         h = 1.5,
       },
       {
         prefab = "prefabs/selected-box-guide.prefab",
         x = 122,
-        y = 129,
+        y = 128,
         w = 1.5,
         h = 1.5,
       },
       {
         prefab = "prefabs/selected-box-guide.prefab",
         x = 117,
-        y = 126,
+        y = 125,
         w = 1.5,
         h = 1.5,
       },
       {
         prefab = "prefabs/selected-box-guide.prefab",
         x = 117,
-        y = 129,
+        y = 128,
         w = 1.5,
         h = 1.5,
       },
@@ -989,7 +989,7 @@ prototype "建造电线杆" {
     },
     ingredients = {
     },
-    count = 5,
+    count = 10,
     time = "1.2s",
     prerequisites = {"放置科研中心"},
     sign_desc = {
