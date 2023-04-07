@@ -75,21 +75,6 @@ namespace roadnet::lua {
         lua_pushinteger(L, v);
     }
 
-    static void push_route_map(lua_State* L, int from, int to, int cost) {
-        lua_createtable(L, 4, 0);
-
-        lua_pushinteger(L, 1);
-        lua_pushinteger(L, from);
-        lua_settable(L, -3);
-
-        lua_pushinteger(L, 2);
-        lua_pushinteger(L, to);
-        lua_settable(L, -3);
-        
-        lua_pushinteger(L, 3);
-        lua_pushinteger(L, cost);
-        lua_settable(L, -3);
-    }
     static int reset(lua_State* L) {
         auto& w = get_network(L);
         w.lorryVec.clear();

@@ -390,7 +390,7 @@ namespace roadnet {
                     }
                     else {
                         uint8_t m = getMapBits(map, result.l);
-                        if(isEndpoint(m)) {
+                        if (isEndpoint(m)) {
                             road::endpoint endpoint;
 
                             straightData& straight1 = straightVec.emplace_back(
@@ -549,7 +549,7 @@ namespace roadnet {
         if (auto res = moveToNeighbor(map, straight.loc, straight.start_dir, n / road::straight::N); res) {
             auto m = getMapBits(map, res->l);
             auto z = 0x00;
-            if(isEndpoint(m)) {
+            if (isEndpoint(m)) {
                 z = straight.start_dir == straight.finish_dir ? 0x00 : 0x01;
             }
             else {
