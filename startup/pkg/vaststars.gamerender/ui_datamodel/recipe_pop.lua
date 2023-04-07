@@ -313,7 +313,7 @@ function M:stage_ui_update(datamodel, object_id)
                 local typeobject = assert(iprototype.queryByName(object.prototype_name))
                 local w, h = iprototype.unpackarea(typeobject.area)
                 object.recipe = recipe_name
-                vsobject:add_canvas(icanvas.types().ICON, get_assembling_canvas_items(object, object.x, object.y, w, h))
+                vsobject:add_canvas(icanvas.types().ICON, get_assembling_canvas_items, object, object.x, object.y, w, h)
 
                 itask.update_progress("set_recipe", recipe_name)
             end
@@ -330,7 +330,7 @@ function M:stage_ui_update(datamodel, object_id)
         local typeobject = assert(iprototype.queryByName(object.prototype_name))
         local w, h = iprototype.unpackarea(typeobject.area)
         object.recipe = ""
-        vsobject:add_canvas(icanvas.types().ICON, get_assembling_canvas_items(object, object.x, object.y, w, h))
+        vsobject:add_canvas(icanvas.types().ICON, get_assembling_canvas_items, object, object.x, object.y, w, h)
         object.fluid_name = {}
 
         iui.update("building_arc_menu.rml", "update", object_id)

@@ -23,9 +23,10 @@ local iui = ecs.import.interface "vaststars.gamerender|iui"
 local mc = import_package "ant.math".constant
 local create_road_entrance = ecs.require "editor.road_entrance"
 local gameplay_core = require "gameplay.core"
-local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local global = require "global"
 local iplant = ecs.require "engine.plane"
+local vsobject_manager = ecs.require "vsobject_manager"
+
 local BLOCK_CONSTRUCT_COLOR_INVALID <const> = math3d.constant("v4", {2.5, 0.2, 0.2, 0.4})
 local BLOCK_CONSTRUCT_COLOR_VALID <const> = math3d.constant("v4", {0.0, 1, 0.0, 1.0})
 local BLOCK_POWER_SUPPLY_AREA_COLOR_VALID <const> = math3d.constant("v4", {0.13, 1.75, 2.4, 0.5})
@@ -90,7 +91,6 @@ local function __new_entity(self, datamodel, typeobject)
             block_color = BLOCK_CONSTRUCT_COLOR_INVALID
         end
         datamodel.show_confirm = false
-        datamodel.show_rotate = true
     else
         if typeobject.power_supply_area then
             block_color = BLOCK_POWER_SUPPLY_AREA_COLOR_VALID
@@ -98,7 +98,6 @@ local function __new_entity(self, datamodel, typeobject)
             block_color = BLOCK_CONSTRUCT_COLOR_VALID
         end
         datamodel.show_confirm = true
-        datamodel.show_rotate = true
     end
 
     -- some assembling machine have default recipe
@@ -122,7 +121,7 @@ local function __new_entity(self, datamodel, typeobject)
         },
         fluid_name = fluid_name,
     }
-    iui.open({"move_pop.rml"}, self.pickup_object.srt.t)
+    iui.open({"move_building.rml"}, self.pickup_object.srt.t)
 
     local block_pos = math3d.ref(math3d.add(building_positon, BLOCK_POSITION_OFFSET))
     local w, h
@@ -215,7 +214,7 @@ local function touch_move(self, datamodel, delta_vec)
     local lx, ly = _building_to_logisitic(x, y)
     if not lx then
         datamodel.show_confirm = false
-        iui.redirect("move_pop.rml", "show_confirm", datamodel.show_confirm)
+        iui.redirect("move_building.rml", "show_confirm", datamodel.show_confirm)
         return
     end
     pickup_object.x, pickup_object.y = lx, ly
@@ -251,7 +250,7 @@ local function touch_move(self, datamodel, delta_vec)
     local block_color
     if not self:check_construct_detector(pickup_object.prototype_name, lx, ly, pickup_object.dir) then -- TODO
         datamodel.show_confirm = false
-        iui.redirect("move_pop.rml", "show_confirm", datamodel.show_confirm)
+        iui.redirect("move_building.rml", "show_confirm", datamodel.show_confirm)
 
         if self.road_entrance then
             self.road_entrance:set_state("invalid")
@@ -272,7 +271,7 @@ local function touch_move(self, datamodel, delta_vec)
         return
     else
         datamodel.show_confirm = true
-        iui.redirect("move_pop.rml", "show_confirm", datamodel.show_confirm)
+        iui.redirect("move_building.rml", "show_confirm", datamodel.show_confirm)
 
         if self.road_entrance then
             self.road_entrance:set_state("valid")
@@ -304,62 +303,44 @@ local function touch_end(self, datamodel)
     touch_move(self, datamodel, {0, 0, 0})
 end
 
-local function _teardown(object_id)
-    local object = assert(objects:get(object_id))
-    igameplay.remove_entity(object.gameplay_eid)
-    gameplay_core.build()
-
-    iobject.remove(object)
-    objects:remove(object_id, "CONSTRUCTED")
-
-    local typeobject_entity = iprototype.queryByName(object.prototype_name)
-    if typeobject_entity.power_supply_area then
-        ipower:build_power_network(gameplay_core.get_world())
-        ipower_line.update_line(ipower:get_pole_lines())
-    end
-end
-
 local function confirm(self, datamodel)
     iui.redirect("construct.rml", "move_finish")
 
     ---
-    iui.close("move_pop.rml")
-
-    ---
-    _teardown(self.move_object_id)
+    iui.close("move_building.rml")
 
     ---
     local pickup_object = assert(self.pickup_object)
-    local succ = self:check_construct_detector(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir)
-    if not succ then
-        log.info("can not construct")
-        return
-    end
+    local object = assert(objects:get(self.move_object_id))
+    local e = gameplay_core.get_entity(object.gameplay_eid)
+    e.building.x = self.pickup_object.x
+    e.building.y = self.pickup_object.y
+    gameplay_core.build()
 
-    local typeobject = iprototype.queryByName(pickup_object.prototype_name)
-    objects:set(pickup_object, "CONFIRM")
-    pickup_object.PREPARE = true
+    iobject.coord(object, self.pickup_object.x, self.pickup_object.y, logistic_coord)
+    objects:set(object, "CONSTRUCTED")
+    objects:coord_update(object)
+    local vsobject = vsobject_manager:get(object.id)
+    vsobject:mod_canvas(self.pickup_object.x, self.pickup_object.y, object.srt)
 
-    datamodel.show_confirm = false
-    datamodel.show_rotate = false
     --
+    local typeobject = iprototype.queryByName(object.prototype_name)
     if typeobject.power_supply_area and typeobject.power_supply_distance then
         local aw, ah = iprototype.unpackarea(typeobject.area)
         local sw, sh = typeobject.power_supply_area:match("(%d+)x(%d+)")
+        ipower:build_power_network(gameplay_core.get_world())
         ipower:merge_pole({power_network_link_target = 0, key = pickup_object.id, targets = {}, x = pickup_object.x, y = pickup_object.y, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.power_supply_distance, power_network_link = typeobject.power_network_link}, true)
         ipower_line.update_temp_line(ipower:get_temp_pole())
     end
 
-    self.pickup_object = nil
     if self.road_entrance then
         self.road_entrance:remove()
         self.road_entrance = nil
     end
     if self.block then
         self.block:remove()
+        self.block = nil
     end
-    --
-    local object_id = pickup_object.id
     if self.grid_entity then
         self.grid_entity:remove()
         self.grid_entity = nil
@@ -368,10 +349,7 @@ local function confirm(self, datamodel)
     self.pickup_object = nil
 
     ieditor:revert_changes({"TEMPORARY"})
-    datamodel.show_rotate = false
     datamodel.show_confirm = false
-
-    self.super.complete(self, object_id)
 end
 
 local function complete(self, object_id)
@@ -379,7 +357,7 @@ local function complete(self, object_id)
 end
 
 local function check_construct_detector(self, prototype_name, x, y, dir)
-    local succ = self.super:check_construct_detector(prototype_name, x, y, dir)
+    local succ = self.super:check_construct_detector(prototype_name, x, y, dir, self.move_object_id)
     if not succ then
         return false
     end
@@ -422,12 +400,10 @@ local function rotate_pickup_object(self, datamodel, dir, delta_vec)
 
     if not self:check_construct_detector(pickup_object.prototype_name, pickup_object.x, pickup_object.y, dir) then
         datamodel.show_confirm = false
-        datamodel.show_rotate = true
     else
         datamodel.show_confirm = true
-        datamodel.show_rotate = true
     end
-    iui.redirect("move_pop.rml", "show_confirm", datamodel.show_confirm)
+    iui.redirect("move_building.rml", "show_confirm", datamodel.show_confirm)
 
     pickup_object.dir = dir
 
@@ -451,7 +427,6 @@ local function clean(self, datamodel)
 
     ieditor:revert_changes({"TEMPORARY"})
     datamodel.show_confirm = false
-    datamodel.show_rotate = false
     self.super.clean(self, datamodel)
     -- clear temp pole
     ipower:clear_all_temp_pole()
@@ -466,7 +441,7 @@ local function clean(self, datamodel)
         self.block = nil
     end
 
-    iui.close("move_pop.rml")
+    iui.close("move_building.rml")
 end
 
 local function create(move_object_id)

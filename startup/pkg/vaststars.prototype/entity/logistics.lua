@@ -29,7 +29,8 @@ prototype "指挥中心" {
         connections = {
             {type="lorry_factory", position={2,4,"S"}},
         },
-    }
+    },
+    move = false,
 }
 
 prototype "物流需求站" {
@@ -322,7 +323,8 @@ prototype "送货车站" {
         connections = {
             {type="station", position={0,0,"S"}},
         },
-    }
+    },
+    move = false,
 }
 
 --收货车站需要设置送货类型
@@ -340,5 +342,6 @@ prototype "收货车站" {
         connections = {
             {type="station", position={0,0,"S"}},
         },
-    }
+    },
+    move = false,
 }

@@ -17,7 +17,7 @@ local NOTHING <const> = require "debugger".nothing
 local DISABLE_LOADING <const> = require "debugger".disable_loading
 local DEBUG_TERRAIN <const> = require "debugger".debug_terrain
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
-local pickup_mb = world:sub {"pickup"}
+local pickup_gesture_mb = world:sub {"pickup_gesture"}
 local icanvas = ecs.require "engine.canvas"
 local icamera = ecs.require "engine.camera"
 local math3d = require "math3d"
@@ -142,7 +142,7 @@ function m:camera_usage()
     end
 
     -- for debug
-    for _, _, x, y in pickup_mb:unpack() do
+    for _, _, x, y in pickup_gesture_mb:unpack() do
         if terrain.init then
             local pos = icamera.screen_to_world(x, y, {PLANES[1]})
             local coord = terrain:get_coord_by_position(pos[1])

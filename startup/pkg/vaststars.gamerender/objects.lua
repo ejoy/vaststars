@@ -31,6 +31,23 @@ function M:set(object, cache_name)
     objects:set(cache_name, object)
 end
 
+function M:coord_update(object, cache_name)
+    cache_name = cache_name or DEFAULT_CACHE_NAME
+    local typeobject = iprototype.queryByName(object.prototype_name)
+    local w, h = iprototype.rotate_area(typeobject.area, object.dir)
+
+    for coord in tile_objects:select(cache_name, "id", object.id) do
+        tile_objects:remove(cache_name, coord)
+    end
+
+    for i = 0, w - 1 do
+        for j = 0, h - 1 do
+            local coord = iprototype.packcoord(object.x + i, object.y + j)
+            tile_objects:set(cache_name, {coord = coord, id = object.id})
+        end
+    end
+end
+
 function M:coord(x, y, cache_names)
     cache_names = cache_names or DEFAULT_CACHE_NAMES
     local tile = tile_objects:get(cache_names, iprototype.packcoord(x, y))

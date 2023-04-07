@@ -54,7 +54,6 @@
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local start = ui_sys.createDataMode("start", {
-                show_rotate = false,
                 show_cancel = false,
                 show_confirm = false,
                 show_teardown = false,
@@ -63,10 +62,6 @@
                 x = x,
                 y = y,
             })
-
-            function start.clickRotate(event)
-                ui_sys.pub {"rotate"}
-            end
 
             function start.clickBuild(event)
                 ui_sys.pub {"build"}
@@ -104,12 +99,7 @@
             </div>
 
             <div class="button-fuction-block" style="top: -2.33vmin;" data-if = "true"/> <!-- separator -->
-
-            <div class="button-fuction-block" style="top: -5.33vmin;" data-event-click="clickRotate()" data-if = "show_rotate">
-                <button class="button-function" style ='background-image: "textures/construct/rotate.texture";'/>
-                <div class="title-text">旋转建筑</div>
-            </div>
-
+            <div class="button-fuction-block" style="top: -5.33vmin;" data-if = "true"/> <!-- separator -->
             <div class="button-fuction-block" style="top: -2.33vmin;" data-if = "true" /> <!-- separator -->
 
             <div class="button-fuction-block" style="top: 10.67vmin;" data-event-click="clickBuild()" data-if = "show_confirm">

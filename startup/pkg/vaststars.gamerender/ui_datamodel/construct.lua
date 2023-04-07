@@ -44,11 +44,11 @@ local construct_entity_mb = mailbox:sub {"construct_entity"} -- 建造 entity
 local click_techortaskicon_mb = mailbox:sub {"click_techortaskicon"}
 local load_resource_mb = mailbox:sub {"load_resource"}
 local single_touch_mb = world:sub {"single_touch"}
-local move_mb = mailbox:sub {"move"}
 local move_finish_mb = mailbox:sub {"move_finish"}
 local builder_back_mb = mailbox:sub {"builder_back"}
 local construction_center_place_mb = mailbox:sub {"construction_center_place"}
-local pickup_mb = world:sub {"pickup"}
+local pickup_gesture_mb = world:sub {"pickup_gesture"}
+local pickup_long_press_gesture_mb = world:sub {"pickup_long_press_gesture"}
 local handle_pickup = true
 local single_touch_move_mb = world:sub {"single_touch", "MOVE"}
 local builder
@@ -256,28 +256,6 @@ function M:stage_camera_usage(datamodel)
         handle_pickup = false
     end
 
-    for _, _, _, object_id in move_mb:unpack() do
-        if builder then
-            builder:clean(datamodel)
-        end
-
-        idetail.unselected()
-        ieditor:revert_changes({"TEMPORARY"})
-
-        local object = assert(objects:get(object_id))
-        local prototype_name = object.prototype_name
-        builder = create_movebuilder(object_id)
-
-        local typeobject = iprototype.queryByName(prototype_name)
-        builder:new_entity(datamodel, typeobject)
-        self:flush()
-        handle_pickup = false
-    end
-
-    for _ in move_finish_mb:unpack() do
-        handle_pickup = true
-    end
-
     for _, state in single_touch_mb:unpack() do
         if state == "END" or state == "CANCEL" then
             if builder then
@@ -302,7 +280,7 @@ function M:stage_camera_usage(datamodel)
     end
 
     -- 点击其它建筑 或 拖动时, 将弹出窗口隐藏
-    for _, _, x, y in pickup_mb:unpack() do
+    for _, _, x, y in pickup_gesture_mb:unpack() do
         if not handle_pickup then
             goto continue
         end
@@ -324,6 +302,54 @@ function M:stage_camera_usage(datamodel)
             break
         end
         ::continue::
+    end
+
+    for _, _, x, y in pickup_long_press_gesture_mb:unpack() do
+        if not handle_pickup then
+            goto continue
+        end
+
+        local object = _get_object(x, y)
+        if object then -- object may be nil, such as when user click on empty space
+            local prototype_name = object.prototype_name
+            local typeobject = iprototype.queryByName(prototype_name)
+            if typeobject.move == false then
+                goto continue
+            end
+
+            iui.close("building_arc_menu.rml")
+            iui.close("detail_panel.rml")
+            if builder then
+                builder:clean(datamodel)
+            end
+
+            idetail.unselected()
+            ieditor:revert_changes({"TEMPORARY"})
+            builder = create_movebuilder(object.id)
+
+            builder:new_entity(datamodel, typeobject)
+            self:flush()
+            handle_pickup = false
+            leave = false
+        else
+            idetail.unselected()
+            item_transfer_dst = nil
+        end
+
+        if leave then
+            world:pub {"ui_message", "leave"}
+            leave = false
+            break
+        end
+        ::continue::
+    end
+
+    for _ in move_finish_mb:unpack() do
+        if builder then
+            builder:clean(datamodel)
+            builder = nil
+        end
+        handle_pickup = true
     end
 
     for _ in single_touch_move_mb:unpack() do
