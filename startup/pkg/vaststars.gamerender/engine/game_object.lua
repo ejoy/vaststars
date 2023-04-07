@@ -11,18 +11,8 @@ local math3d = require "math3d"
 local COLOR_INVALID <const> = math3d.constant "null"
 local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
 local prefab_parse = require("engine.prefab_parser").parse
+local replace_material = require("engine.prefab_parser").replace_material
 local irl = ecs.import.interface "ant.render|irender_layer"
-
-local function _replace_material(template, material_file_path)
-    for _, v in ipairs(template) do
-        for _, policy in ipairs(v.policy) do
-            if policy == "ant.render|render" or policy == "ant.render|simplerender" then
-                v.data.material = material_file_path
-            end
-        end
-    end
-    return template
-end
 
 local function on_prefab_message(prefab, inner, cmd, ...)
     local event = game_object_event[cmd]
@@ -108,9 +98,9 @@ local _get_hitch_children ; do
 
         local template = prefab_parse(prefab_file_path)
         if state == "translucent" then
-            template = _replace_material(template, "/pkg/vaststars.resources/materials/translucent.material")
+            template = replace_material(template, "/pkg/vaststars.resources/materials/translucent.material")
         elseif state == "opacity" then
-            template = _replace_material(template, "/pkg/vaststars.resources/materials/opacity.material")
+            template = replace_material(template, "/pkg/vaststars.resources/materials/opacity.material")
         else
             template = template
         end
