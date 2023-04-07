@@ -13,7 +13,7 @@ namespace roadnet {
         network() = default;
 
         std::map<loction, uint8_t> getMap() const;
-        void setMap(const std::map<loction, uint8_t>& mapData);
+        void updateMap(const std::map<loction, uint8_t>& mapData);
         uint32_t reloadMap();
         lorryid    createLorry(world& w, uint16_t classid);
         void       destroyLorry(world& w, lorryid id);
@@ -26,7 +26,7 @@ namespace roadnet {
         road::endpoint& Endpoint(endpointid id);
         endpointid EndpointId(loction loc, direction dir);
 
-        road_coord coordConvert(map_coord  mc);
+         std::optional<road_coord> coordConvert(map_coord  mc);
         std::optional<map_coord> coordConvert(road_coord rc);
 
         dynarray<road::crossroad>   crossAry;

@@ -8,20 +8,9 @@ namespace roadnet {
         roadid id;
         uint16_t type: 2;
         uint16_t offset: 14;
-        static constexpr road_coord invalid() {
-            return {};
-        }
-        explicit operator bool() const {
-            return id != roadid::invalid();
-        }
         bool operator ==(road_coord const& rhs) const {
             return id == rhs.id && offset == rhs.offset;
         }
-        constexpr road_coord()
-            : id(roadid::invalid())
-            , type(0)
-            , offset(0)
-        {}
         constexpr road_coord(roadid id, cross_type type)
             : id(id)
             , type(0)
