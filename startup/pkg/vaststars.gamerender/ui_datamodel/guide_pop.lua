@@ -60,8 +60,4 @@ function M:stage_ui_update(datamodel)
     end
 end
 
-function M:stage_camera_usage(datamodel)
-    
-end
-
 return M

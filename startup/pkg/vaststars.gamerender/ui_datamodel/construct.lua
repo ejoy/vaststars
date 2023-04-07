@@ -465,7 +465,7 @@ function M:stage_camera_usage(datamodel)
         self:flush()
         handle_pickup = false
     end
-
+    -- TODO: 多个UI的stage_ui_update中会产生focus_tips_event事件，focus_tips_event处理逻辑涉及到要修改相机位置，所以暂时放在这里处理
     for _, action, tech_node in focus_tips_event:unpack() do
         if action == "open" then
             open_focus_tips(tech_node)
