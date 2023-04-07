@@ -365,7 +365,7 @@
     </head>
     <body style = "pointer-events: none; justify-content: center; align-items: center;">
         <div class = "panel" data-model="start">
-            <div class="teleport-items-block">
+            <div class="teleport-items-block" style = "pointer-events: none;">
                 <div class="item" data-style-background-image = "it.icon" data-for = "item_transfer">
                     <div class="item-count">{{it.count}}</div>
                     <div class="item-sign"/>                     
