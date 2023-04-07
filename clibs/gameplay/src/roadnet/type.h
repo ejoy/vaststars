@@ -37,10 +37,6 @@ namespace roadnet {
 
     enum class straight_type: uint8_t {
         straight = 0,
-        endpoint_in,
-        endpoint_wait,
-        endpoint_out,
-        max,
     };
 
     struct loction {

@@ -107,7 +107,7 @@ namespace roadnet {
         for (uint8_t i = 0; i < 4; ++i) {
             direction dir = (direction)i;
             roadid Next = cross.neighbor[i];
-            if (Next && (cross.u_turn || prev != dir)) {
+            if (Next) {
                 if (!ctx.results.contains({N, dir})) {
                     ctx.results.emplace(bfsRoad{N, dir}, G);
                     if (N == E) {
