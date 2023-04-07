@@ -241,6 +241,23 @@ local guide = {
     {
         name = "",
 		narrative = {
+            {"{/color:4bd0ff 组装机}已经就位,只要不断提供原料组装机就可以不断地自动化生产..哔哩..（期待)", "textures/guide/guide-3.texture"},
+            {"在{/color:4bd0ff 组装机}的{/g 设置}里选择{/g 地质科技包1}进行批量生产吧..哔哩..（期待)", "textures/guide/guide-3.texture"},
+        },
+        narrative_end = {
+            guide_progress = 30,
+            task = {
+                "地质科技包产线",
+            }
+        },
+        prerequisites = {
+            "放置组装机",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
             {"{/color:4bd0ff 石砖}是铺设{/color:4bd0ff 道路}的最佳材料..哔哩..哔哗..(期待)", "textures/guide/guide-2.texture"},
             {"让我们立即研究道路建造的工程方法,{/color:4bd0ff 道路}会帮助我们进行高效{/color:4bd0ff 物流}..哔哩..(兴奋)", "textures/guide/guide-3.texture"},
         },
@@ -284,6 +301,23 @@ local guide = {
         },
         prerequisites = {
             "道路设计",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
+            {"我们需要以{/g 指挥中心}为起点修建一条通往{/g 铁矿}的{/color:4bd0ff 道路}..哔哗..(期待)", "textures/guide/guide-2.texture"},
+            {"{/color:4bd0ff 道路}可以通行{/g 运输车辆},这样可以大大提高我们远程物流的效率..哔哗..(高兴)", "textures/guide/guide-2.texture"},
+        },
+        narrative_end = {
+            guide_progress = 30,
+            task = {
+                "通向铁矿",
+            }
+        },
+        prerequisites = {
+            "放置修路站",
         },
 	},
 
