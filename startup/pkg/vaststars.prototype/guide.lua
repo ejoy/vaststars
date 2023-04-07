@@ -36,7 +36,8 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"哔哩..无人机真是听话的机器..请操作附近的{/color:4bd0ff 建造中心}建造{/g 采矿机}..(期待)", "textures/guide/guide-6.texture"},
+            {"哔哩..使用{/color:4bd0ff 传送功能}可将物资传送至指定建筑..请设置{/g 抽水泵残骸}为{/color:4bd0ff 传送起点}..(期待)", "textures/guide/guide-6.texture"},
+            {"哔哩..再将{/g 建造中心}作为{/color:4bd0ff 传送终点}开始传送..(期待)", "textures/guide/guide-6.texture"},
         },
         narrative_end = {
             -- pop_chapter = {"第一阶段","物流网络"},
