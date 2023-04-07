@@ -884,7 +884,7 @@ local t = {
 	"/pkg/vaststars.gamerender/ui_datamodel/guide_pop.lua",
 	"/pkg/vaststars.gamerender/ui_datamodel/loading.lua",
 	"/pkg/vaststars.gamerender/ui_datamodel/message_pop.lua",
-	"/pkg/vaststars.gamerender/ui_datamodel/move_pop.lua",
+	"/pkg/vaststars.gamerender/ui_datamodel/move_building.lua",
 	"/pkg/vaststars.gamerender/ui_datamodel/option_pop.lua",
 	"/pkg/vaststars.gamerender/ui_datamodel/pipe_build.lua",
 	"/pkg/vaststars.gamerender/ui_datamodel/recipe_pop.lua",
