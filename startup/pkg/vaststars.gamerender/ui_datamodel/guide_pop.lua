@@ -83,6 +83,7 @@ local function close_focus_tips(tech_node)
             end
         end
     end
+    tech_node.selected_tips = {}
 end
 
 function M:stage_ui_update(datamodel)
@@ -120,10 +121,10 @@ function M:stage_ui_update(datamodel)
 end
 
 function M:stage_camera_usage(datamodel)
-    for _, actiion, tech_node in focus_tips_event:unpack() do
-        if actiion == "open" then
+    for _, action, tech_node in focus_tips_event:unpack() do
+        if action == "open" then
             open_focus_tips(tech_node)
-        elseif actiion == "close" then
+        elseif action == "close" then
             close_focus_tips(tech_node)
         end
     end

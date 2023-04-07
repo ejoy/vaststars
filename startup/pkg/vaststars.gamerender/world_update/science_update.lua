@@ -11,7 +11,6 @@ return function(gameplay_world)
         if gameplay_world:is_researched(science.current_tech.name) then
             if science.current_tech.selected_tips then
                 world:pub {"focus_tips", "close", science.current_tech}
-                science.current_tech.selected_tips = {}
             end
             iscience.update_tech_list(gameplay_world)
             iui.update("construct.rml", "update_tech")
