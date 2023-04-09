@@ -101,18 +101,6 @@ namespace roadnet {
     static constexpr bool isEndpoint(uint8_t m) {
         return m & (1 << (uint8_t)direction::n);
     }
-
-    static constexpr bool isURoad(uint8_t m) {
-        switch (m) {
-        case mask(L'>'):
-        case mask(L'v'):
-        case mask(L'<'):
-        case mask(L'^'):
-            return true;
-        default:
-            return false;
-        }
-    }
     
     static constexpr direction next_direction(loction l, uint8_t m, direction dir) {
         switch (m) {
@@ -368,12 +356,8 @@ namespace roadnet {
         uint16_t genCrossId = 0;
         uint16_t genStraightId = 0;
         uint32_t genLorryOffset = 0;
-        std::map<loction, bool> URoadMap;
 
         for (auto& [loc, m] : map) {
-            if (isURoad(m)) {
-                URoadMap.emplace(loc, true);
-            }
             if (isCross(m)) {
                 roadid  id  { roadtype::cross, genCrossId++ };
                 crossMap.emplace(loc, id);
@@ -410,13 +394,6 @@ namespace roadnet {
         }
 
         if (crossMap.size() <= 0) {
-            assert(false);
-            for(auto & [l, b] : URoadMap) {
-                roadid  id  { roadtype::cross, genCrossId++ };
-                loction loc {(uint8_t)l.x, (uint8_t)l.y};
-                crossMap.emplace(loc, id);
-                crossMapR.emplace(id, loc);
-            }
             return 0;
         }
 

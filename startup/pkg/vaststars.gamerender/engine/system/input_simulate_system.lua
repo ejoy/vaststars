@@ -2,11 +2,13 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local LONG_PRESS_DURATION <const> = 1500
+local LONG_PRESS_DURATION <const> = 1000
+local LONG_PRESS_OFFSET <const> = 50
 
 local now = require "engine.time".now
 local sys = ecs.system "input_simulate_system"
 local mouse_mb = world:sub {"mouse", "LEFT"}
+local math_abs = math.abs
 
 local __touch; do
     local active = false
@@ -33,7 +35,9 @@ local __long_press_gesture, __long_press_gesture_update; do
             lasttime = now()
             lastx, lasty = x, y
         elseif state == "MOVE" then
-            lasttime = nil
+            if lastx and lasty and math_abs(x - lastx) > LONG_PRESS_OFFSET and math_abs(y - lasty) > LONG_PRESS_OFFSET then
+                lasttime = nil
+            end
         elseif state == "UP" then
             lasttime = nil
         end

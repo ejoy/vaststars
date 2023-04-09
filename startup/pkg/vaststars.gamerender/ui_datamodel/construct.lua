@@ -29,12 +29,11 @@ local EDITOR_CACHE_NAMES = {"CONFIRM", "CONSTRUCTED"}
 local create_station_builder = ecs.require "editor.stationbuilder"
 local interval_call = ecs.require "engine.interval_call"
 local item_transfer = require "item_transfer"
-
+local logistic_coord = ecs.require "terrain"
 local iani = ecs.import.interface "ant.animation|ianimation"
 local ivs = ecs.import.interface "ant.scene|ivisible_state"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local selected_boxes = ecs.require "selected_boxes"
-local building_coord = require "global".building_coord_system
 
 local rotate_mb = mailbox:sub {"rotate"} -- construct_pop.rml -> 旋转
 local build_mb = mailbox:sub {"build"}   -- construct_pop.rml -> 修建
@@ -248,15 +247,15 @@ local function open_focus_tips(tech_node)
             if not tech_node.selected_tips then
                 tech_node.selected_tips = {}
             end
-            
+
             local prefab
+            local center = logistic_coord:get_position_by_coord(nd.x, nd.y, 1, 1)
             if nd.show_arrow then
-                local pos = building_coord:get_position_by_coord(nd.x, nd.y, nd.w, nd.h)
                 prefab = ecs.create_instance("/pkg/vaststars.resources/prefabs/arrow-guide.prefab")
                 prefab.on_ready = function(inst)
                     local children = inst.tag["*"]
                     local re <close> = w:entity(children[1])
-                    iom.set_position(re, pos)
+                    iom.set_position(re, center)
                     for _, eid in ipairs(children) do
                         local e <close> = w:entity(eid, "animation_birth?in visible_state?in")
                         if e.animation_birth then
@@ -266,13 +265,13 @@ local function open_focus_tips(tech_node)
                         end
                     end
                 end
-                function prefab:on_message(msg) end
+                function prefab:on_message() end
                 function prefab:on_update() end
                 world:create_object(prefab)
             end
-            tech_node.selected_tips[#tech_node.selected_tips + 1] = {selected_boxes(nd.prefab, building_coord:get_position_by_coord(nd.x, nd.y, 1, 1), nd.w, nd.h), prefab}
+            tech_node.selected_tips[#tech_node.selected_tips + 1] = {selected_boxes(nd.prefab, center, nd.w, nd.h), prefab}
         elseif nd.camera_x and nd.camera_y then
-            camera.focus_on_position(building_coord:get_position_by_coord(nd.camera_x, nd.camera_y, width, height))
+            camera.focus_on_position(logistic_coord:get_position_by_coord(nd.camera_x, nd.camera_y, width, height))
         end
     end
 end
