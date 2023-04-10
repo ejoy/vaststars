@@ -45,8 +45,8 @@
             }
             .workbutton-bg {
                 margin: auto auto;
-                width: 6.67vmin;
-                height: 6.67vmin; 
+                width: 7.67vmin;
+                height: 7.67vmin; 
                 background-size: cover;
             }
             .workbutton-text {
@@ -238,6 +238,20 @@
                     opacity: 0;
                 }
             }
+            @keyframes enlarge2 {
+                0% {
+                    transform: scale(1.0);
+                }
+                50% {
+                    transform: scale(2.0);
+                }
+                60% {
+                    transform: scale(2.0);
+                }
+                100% {
+                    transform: scale(1.0);
+                }
+            }
             .safe-area {
                 width: 87%;
                 height: 100%;
@@ -416,9 +430,9 @@
             <div style = "pointer-events: none; height:100%;  position: absolute; right:0vmin;">
                 <div style = "height:100%; flex-direction: column; justify-content: center;">
                     <workbutton data-for = "construction_center_menu" style = "background-color: rgb(246, 142, 14); margin:0.3vmin 0 0.3vmin 0;" data-event-click="clickConstruct(it.object_id, it.index)">
-                        <div class="workbutton-bg" data-style-background-image = "it.icon" data-if = "it.icon != ''" />
+                        <div class="workbutton-bg" data-style-background-image = "it.icon" style="animation:0.5s linear 0s enlarge2;" data-if = "it.icon != ''" />
                         <div class="workbutton-text"  data-if = "it.name != ''">{{it.name}}</div>
-                        <div class="item-count"  data-if = "it.name != ''">{{it.count}}</div>
+                        <div class="item-count" style="animation:0.5s linear 0s enlarge2;" data-if = "it.name != ''">{{it.count}}</div>
                     </workbutton>
                 </div>
             </div>
