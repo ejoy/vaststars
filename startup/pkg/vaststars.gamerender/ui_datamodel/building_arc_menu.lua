@@ -7,7 +7,8 @@ local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
 local vsobject_manager = ecs.require "vsobject_manager"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
-
+local iefk = ecs.import.interface "ant.efk|iefk"
+local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local math3d    = require "math3d"
 local mu = import_package "ant.math".util
 
@@ -33,7 +34,7 @@ local ihub = gameplay.interface "hub"
 local global = require "global"
 local interval_call = ecs.require "engine.interval_call"
 local item_transfer = require "item_transfer"
-
+local transfer_effect
 local function __show_set_item(typeobject)
     return iprototype.has_type(typeobject.type, "hub") or iprototype.has_type(typeobject.type, "station")
 end
@@ -329,6 +330,23 @@ function M:update(datamodel, object_id, recipe_name)
 end
 
 function M:stage_ui_update(datamodel, object_id)
+    -- create transfer effect
+    if not transfer_effect then
+        transfer_effect = {
+            out_effect = iefk.create("/pkg/vaststars.resources/effect/efk/teleport-in.efk", {
+                auto_play = false,
+                loop = false,
+                speed = 1.0,
+                scene = {s = 5, t = {0, 10, 0}}
+            }),
+            in_effect = iefk.create("/pkg/vaststars.resources/effect/efk/teleport-out.efk", {
+                auto_play = false,
+                loop = false,
+                speed = 1.0,
+                scene = {s = 5, t = {0, 10, 0}}
+            })
+        }
+    end
     -- show pickup material button when object has result
     local object = objects:get(object_id)
     if not object then
@@ -422,10 +440,18 @@ function M:stage_ui_update(datamodel, object_id)
         assert(e.assembling.recipe ~= 0)
         iassembling.set_option(gameplay_core.get_world(), e, {ingredientsLimit = 0, resultsLimit = 0})
     end
-
+    local effect_play = false
     for _ in item_transfer_subscribe_mb:unpack() do
         global.item_transfer_src = object_id
         __item_transfer_update(datamodel, object_id)
+        if not effect_play then
+            effect_play = true
+            local e <close> = w:entity(transfer_effect.out_effect)
+            local obj = assert(objects:get(object_id))
+            local pos = obj.srt.t
+            iom.set_position(e, {pos[1], pos[2] + 15, pos[3]})
+            iefk.play(e)
+        end
     end
 
     for _ in item_transfer_unsubscribe_mb:unpack() do
@@ -433,6 +459,7 @@ function M:stage_ui_update(datamodel, object_id)
         __item_transfer_update(datamodel, object_id)
     end
 
+    effect_play = false
     for _ in item_transfer_place_mb:unpack() do
         local movable_items, movable_items_hash, placeable_items
         do
@@ -466,6 +493,14 @@ function M:stage_ui_update(datamodel, object_id)
         local vr = mq.render_target.view_rect
         local sp = math3d.totable(mu.world_to_screen(vp, vr, dst_object.srt.t))
         iui.open({"message_pop.rml"}, {left = sp[1]..'px', top = sp[2]..'px', show_id = "item", items = items})
+        -- play effect
+        if #items > 0 and not effect_play then
+            effect_play = true
+            local e <close> = w:entity(transfer_effect.in_effect)
+            local pos = dst_object.srt.t
+            iom.set_position(e, {pos[1], pos[2] + 15, pos[3]})
+            iefk.play(e)
+        end
     end
 end
 
