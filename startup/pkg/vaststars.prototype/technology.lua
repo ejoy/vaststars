@@ -17,11 +17,14 @@ local prototype = gameplay.register.prototype
   -- task_params = {item = "采矿机设计图"},
 
   -- task = {"unknown", 0, 6},
-  -- task_params = {ui = "item_transfer_subscribe", building = "xxx"},
+  -- task_params = {ui = "item_transfer_subscribe", building = "xxx"},    传送设置
 
   -- task = {"unknown", 0, 6},
-  -- task_params = {ui = "item_transfer_unsubscribe", , building = "xxx"},
+  -- task_params = {ui = "item_transfer_unsubscribe", , building = "xxx"},  传送取消
 
+  -- task = {"unknown", 0, 6},
+  -- task_params = {ui = "item_transfer_place", , building = "xxx"},       传送启动
+  
 
 
   -- prototype "清除废墟" {

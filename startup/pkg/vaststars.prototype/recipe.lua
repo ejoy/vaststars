@@ -1167,7 +1167,7 @@ prototype "采矿机打印" {
     results = {
         {"采矿机I", 1},
     },
-    time = "6s",
+    time = "10s",
     description = "打印采矿机",
 }
 

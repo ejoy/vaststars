@@ -20,7 +20,8 @@ local guide = {
         name = "",
 		narrative = {
             {"作为助理AI，我建议你立刻开始工作..哔哩..你的剩余生存时间理论上只有{/color:4bd0ff 348.26}地球小时..(担忧)", "textures/guide/guide-6.texture"},
-            {"哔哩..发现{/g 建造中心}和{/g 建筑废墟}..哔哩..在{/color:4bd0ff 建造中心}中选择需待建建筑..哔哩..(期待)", "textures/guide/guide-2.texture"},
+            {"哔哩..发现{/g 建造中心}..哔哩..{/g 建造中心}顾名思义是可以建造建筑的场所..逻辑自洽中..(期待)", "textures/guide/guide-2.texture"},
+            {"哔哩..目前急需{/color:4bd0ff 采矿机}，请在{/color:4bd0ff 建造中心}中选择{/g 采矿机打印}..哔哩..(期待)", "textures/guide/guide-2.texture"},
         },
         narrative_end = {
             pop_chapter = {"序章","迫降P4031"},
@@ -35,10 +36,11 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"哔哩..物资传送准备..(期待)", "textures/guide/guide-6.texture"},
+            {"哔哩..建造中心需要{/g 采矿机设计图}..我检测到附近{/color:4bd0ff 抽水泵残骸}有所需物资..(期待)", "textures/guide/guide-6.texture"},
+            {"哔哩..迫降后指挥中心的{/color:4bd0ff 遥感传送仪}依然完好，{/color:4bd0ff 遥感传送仪}可以{/g 远程传送}物资到目的地..(期待)", "textures/guide/guide-6.texture"},
+            {"哔哩..让我们在{/color:4bd0ff 抽水泵残骸}选择{/g 传送设置}进入传送准备状态..(期待)", "textures/guide/guide-6.texture"},
         },
         narrative_end = {
-            -- pop_chapter = {"第一阶段","物流网络"},
             guide_progress = 30,
             task = {
                 "物资传送准备",
@@ -52,10 +54,10 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"哔哩..物资传送接收..(期待)", "textures/guide/guide-6.texture"},
+            {"哔哩..{/g 抽水泵残骸}发出的{/color:4bd0ff 蓝色光晕}表明传送准备就绪..(期待)", "textures/guide/guide-6.texture"},
+            {"哔哩..让我们进入{/color:4bd0ff 建造中心}选择{/g 传送启动}接收物资吧..(期待)", "textures/guide/guide-6.texture"},
         },
         narrative_end = {
-            -- pop_chapter = {"第一阶段","物流网络"},
             guide_progress = 30,
             task = {
                 "采矿机传送接收",
@@ -69,11 +71,10 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"哔哩..使用{/color:4bd0ff 传送功能}可将物资传送至指定建筑..请设置{/g 抽水泵残骸}为{/color:4bd0ff 传送起点}..(期待)", "textures/guide/guide-6.texture"},
-            {"哔哩..再将{/g 建造中心}作为{/color:4bd0ff 传送终点}开始传送..(期待)", "textures/guide/guide-6.texture"},
+            {"哔哩..{/color:4bd0ff 采矿机设计图}已经被成功传送至{/g 建造中心}..(高兴)", "textures/guide/guide-6.texture"},
+            {"哔哩..{/g 采矿机}在{/color:4bd0ff 建造中心}里开始制造了。让我们静静等待一下..哔哩..(期待)", "textures/guide/guide-6.texture"},
         },
         narrative_end = {
-            -- pop_chapter = {"第一阶段","物流网络"},
             guide_progress = 30,
             task = {
                 "建造采矿机",
