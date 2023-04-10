@@ -10,28 +10,6 @@
             .nopointer {
                 pointer-events: none;
             }
-            button {
-                width: 28.00vmin;
-                height: 28.00vmin;
-                text-align: center;
-                border-radius: 2.00vmin;
-                border: 0.53vmin white;
-                font-size: 4.00vmin;
-                transition: transform 0.15s elastic-out;
-                transform: scale(1.0);
-            }
-            button:active {
-                transform: scale(1.3);
-            }
-            button#work {
-                position: absolute;
-                top: 82.67vmin;
-                left: 158.67vmin;
-                width: 16.00vmin;
-                height: 16.00vmin;
-                margin: 0.00vmin;
-                font-size: 150%;
-            }
             workbutton {
                 font-size: 3.20vmin;
                 flex-direction: column;
@@ -234,21 +212,10 @@
                     opacity: 0;
                 }
             }
-            .panel {
+            .safe-area {
                 width: 87%;
                 height: 100%;
                 pointer-events: none;
-            }
-            .panel-switch {
-                height: 6.9vmin;
-                width: 16.6vmin;
-                background-image: "textures/common/arrow.texture";
-                background-size: cover;
-                transform: rotate(270deg);
-                border: 0vmin #fff; 
-                left: 95%; 
-                top: 40%;
-                background-color: transparent;
             }
             .progress-num {
                 width:100%; 
@@ -280,16 +247,10 @@
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local start = ui_sys.createDataMode("start", {
-                fps_text = " ",           -- fps 信息
-                drawcall_text = " ",      -- drawcall 信息
-                construct_menu = {},
                 item_transfer = {},
-
-                show_construct_menu = false, -- 是否显示右侧建造菜单
-                cur_construct_menu = "",  -- 当前选中的二级建造菜单名
                 cur_edit_mode = "",       -- 当前的编辑模式, construct/dismantle
                 show_load_resource = false,
-
+                construction_center_menu = {},
                 tech_count = 0,                 --当前可研究的科技数量
                 show_tech_progress = false,     --是否显示科技进度
                 is_task = false,                --是否是任务
@@ -301,21 +262,11 @@
                 ingredient_icons = {},
                 guide_progress = 0,
             })
-            function start.clickShowConstructMenuDetail(event, construct_menu)
-                start.cur_construct_menu = construct_menu
-            end
-            function start.clickConstructMenuItem(event, prototype_name)
-                ui_sys.pub {"construct_entity", prototype_name}
-                start.show_construct_menu = false
-            end
-            function start.showConstructMenu(event)
-                start.show_construct_menu = not start.show_construct_menu
-                if start.show_construct_menu then
-                    start.cur_edit_mode = "construct"
-                else
-                    start.cur_edit_mode = ""
+            function start.clickConstruct(event, object_id, index)
+                if not object_id or not index then
+                    return
                 end
-                ui_sys.pub {"show_construct_menu", start.show_construct_menu}
+                ui_sys.pub {"construction_center_place", object_id, index}
             end
             function start.clickHeadquater(event)
                 ui_sys.pub {"headquater"}
@@ -364,7 +315,7 @@
         </script>
     </head>
     <body style = "pointer-events: none; justify-content: center; align-items: center;">
-        <div class = "panel" data-model="start">
+        <div class = "safe-area" data-model="start">
             <div class="teleport-items-block" style = "pointer-events: none;">
                 <div class="item" data-style-background-image = "it.icon" data-for = "item_transfer">
                     <div class="item-count">{{it.count}}</div>
@@ -414,11 +365,6 @@
                 <div class = "menu-button-pic" style='width:8vmin; height:8vmin; background-image:"textures/cmdcenter/big_bag.texture"'/>
             </button>
 
-            <!-- 方向键区域 -->
-            <div data-if = "cur_edit_mode == 'construct' || cur_edit_mode == 'dismantle' && 'false'" style='position: absolute; left:2.37vmin;  bottom: 2vmin; width: 35.00vmin; height: 35.00vmin; flex-direction: column; justify-content: center; pointer-events: none;'>
-                <div style='margin: 0 auto; background-image:"textures/construct/joystick.texture"; width: 35vmin; height: 35vmin; background-size:cover; pointer-events: none;'/>
-            </div>
-
             <!-- 右上角：当前科技进度 -->
             <div data-if = "cur_edit_mode == '' && show_tech_progress" style = "pointer-events: none; position: absolute; right:0vmin; top:0vmin;  width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-start; padding-top: 1vmin;">
                 <button style='background-color:rgb(204,219,11);  width: 16.00vmin; height: 16.00vmin; align-items: center;' data-event-click="clickTechOrTaskIcon(is_task)">
@@ -440,35 +386,13 @@
                 </button>
             </div>
 
-            <!-- 指示器 -->
-            <div style = "pointer-events: none; position: absolute; right: 21.5vmin; bottom:2vmin; flex-direction: row; align-items: center;" data-if = "false">
-                <button data-if = "cur_edit_mode == ''"  style='width: 12.00vmin; height: 12.00vmin; background-color: rgb(1, 238, 255); flex-direction: column; justify-content: flex-start;'>
-                    <div style='margin: 0 auto; background-image:"textures/common/indicator.texture"; width: 10vmin; height: 10vmin; background-size:cover;'/>
-                </button>
-            </div>
-
-            <!-- 展开建筑菜单的三角 -->
-            <workbutton class = "panel-switch" data-event-click="showConstructMenu()"/>
-
             <!-- 右边菜单 -->
-            <div style = "pointer-events: none; position: absolute; right:0vmin; width: 98vmax; height: 97vmin; flex-direction: row-reverse;" data-if="show_construct_menu && guide_progress >= 10">
-                <div style = "width: 16.00vmin; height: 80.00vmin; flex-direction: column; justify-content: space-between;" data-if="cur_edit_mode == 'construct'" >
-                    <workbutton data-event-click="clickShowConstructMenuDetail(it.name)" data-for = "construct_menu" data-style-background-color="cur_construct_menu == it.name ? 'rgb(0, 176, 80)' : 'rgb(246, 142, 14)'">
-                        <div class="workbutton-bg" data-style-background-image = "it.icon" />
-                        <div class="workbutton-text" >{{it.name}}</div>
+            <div style = "pointer-events: none; position: absolute; right:0vmin; flex-direction: row-reverse;">
+                <div style = "height: 80.00vmin; flex-direction: column; justify-content: space-between;">
+                    <workbutton data-for = "construction_center_menu" style = "background-color: rgb(246, 142, 14);" data-event-click="clickConstruct(it.object_id, it.index)">
+                        <div class="workbutton-bg" data-style-background-image = "it.icon" data-if = "it.icon != ''" />
+                        <div class="workbutton-text"  data-if = "it.name != ''">{{it.name}}</div>
                     </workbutton>
-                </div>
-
-                <!-- separator -->
-                <div style = "width: 2.67vmin;" />
-
-                <div style = "flex-direction: row; flex-wrap: wrap; width: 30.13vmin; height: 80.00vmin; background-color: rgb(44, 32, 18); border: 0.40vmin rgb(89, 73, 39); border-radius: 0.67vmin;" data-if="cur_edit_mode == 'construct' && cur_construct_menu != '' && cur_construct_menu == it.name" data-for = "construct_menu">
-                    <div class="tools-container" data-for = "menu, menu_id : it.detail">
-                        <button class="tools-button" data-event-click="clickConstructMenuItem(menu.prototype_name)">
-                            <div class="workbutton-bg" data-style-background-image = "menu.icon" />
-                            <div class="tools-button-title">{{menu.show_prototype_name}}</div>
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>

@@ -139,7 +139,7 @@ function m.get_world()
 end
 
 function m.debug_entity(eid)
-    return world.entity.readall(eid)
+    return world.ecs:readall(eid)
 end
 
 function m.backup(rootdir)

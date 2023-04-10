@@ -407,6 +407,9 @@ local function __deduct_item(self, e)
         iassembling.set_option(gameplay_core.get_world(), e, {ingredientsLimit = multiple, resultsLimit = multiple})
         gameplay_core.build()
     end
+
+    _, results = assembling_common.get(gameplay_core.get_world(), e)
+    return results[1].count > 0
 end
 
 local function _get_connections(prototype_name, x, y, dir)
@@ -441,7 +444,7 @@ end
 
 local function complete(self, object_id, datamodel)
     local e = gameplay_core.get_entity(assert(self.gameplay_eid))
-    __deduct_item(self, e)
+    local continue_construct = __deduct_item(self, e)
 
     self.super.complete(self, object_id)
 
@@ -475,8 +478,12 @@ local function complete(self, object_id, datamodel)
         iui.open({"drone_depot.rml"}, object_id, interface)
     end
 
-    self:clean(datamodel)
-    iui.redirect("construct.rml", "move_finish") -- TODO：remove this
+    if not continue_construct then
+        self:clean(datamodel)
+        iui.redirect("construct.rml", "move_finish") -- TODO：remove this
+    else
+        new_entity(self, datamodel, typeobject)
+    end
 end
 
 local function check_construct_detector(self, prototype_name, x, y, dir)

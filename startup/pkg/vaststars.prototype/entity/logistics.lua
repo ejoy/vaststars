@@ -237,7 +237,7 @@ prototype "建造中心" {
     construct_detector = {"exclusive"},
     type = {"building", "assembling", "consumer"},
     area = "5x5",
-    maxslot = 8,
+    maxslot = 6,
     craft_category = {"设计图打印"},
     fluidboxes = {
         input = {

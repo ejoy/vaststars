@@ -18,7 +18,6 @@ local road_builder_mb = mailbox:sub {"road_builder"}
 local pipe_builder_mb = mailbox:sub {"pipe_builder"}
 local construction_center_build_mb = mailbox:sub {"construction_center_build"}
 local construction_center_stop_build_mb = mailbox:sub {"construction_center_stop_build"}
-local construction_center_place_mb = mailbox:sub {"construction_center_place"}
 local lorry_factory_inc_lorry_mb = mailbox:sub {"lorry_factory_inc_lorry"}
 local lorry_factory_stop_build_mb = mailbox:sub {"lorry_factory_stop_build"}
 local item_transfer_subscribe_mb = mailbox:sub {"item_transfer_subscribe"}
@@ -26,7 +25,6 @@ local item_transfer_unsubscribe_mb = mailbox:sub {"item_transfer_unsubscribe"}
 local item_transfer_place_mb = mailbox:sub {"item_transfer_place"}
 
 local ichest = require "gameplay.interface.chest"
-local idetail = ecs.import.interface "vaststars.gamerender|idetail"
 local assembling_common = require "ui_datamodel.common.assembling"
 local gameplay = import_package "vaststars.gameplay"
 local iassembling = gameplay.interface "assembling"
@@ -68,14 +66,12 @@ local function __construction_center_update(datamodel, object_id)
         datamodel.construction_center_icon = ""
         datamodel.construction_center_count = 0
         datamodel.construction_center_build, datamodel.construction_center_stop_build = false, false
-        datamodel.construction_center_place = false
     else
         local ingredients, results = assembling_common.get(gameplay_core.get_world(), e)
         assert(results and results[1])
         datamodel.construction_center_icon = results[1].icon
         datamodel.construction_center_count = results[1].count
         datamodel.construction_center_build, datamodel.construction_center_stop_build = true, true
-        datamodel.construction_center_place = results[1].count > 0
         datamodel.construction_center_ingredients = ingredients
     end
 end
@@ -259,7 +255,6 @@ function M:create(object_id, object_position, ui_x, ui_y)
         construction_center_count = 0,
         construction_center_ingredients = {},
         construction_center_multiple = 0,
-        construction_center_place = false,
         construction_center_build = false,
         construction_center_stop_build = false,
         lorry_factory_icon = "",
@@ -407,26 +402,6 @@ function M:stage_ui_update(datamodel, object_id)
         datamodel.construction_center_multiple = multiple
         iassembling.set_option(gameplay_core.get_world(), e, {ingredientsLimit = multiple, resultsLimit = multiple})
         gameplay_core.build()
-        ::continue::
-    end
-
-    for _ in construction_center_place_mb:unpack() do
-        local object = assert(objects:get(object_id))
-        local e = gameplay_core.get_entity(assert(object.gameplay_eid))
-        if e.assembling.recipe == 0 then
-            goto continue
-        end
-
-        local _, results = assembling_common.get(gameplay_core.get_world(), e)
-        assert(results and results[1])
-        if results[1].count <= 0 then
-            goto continue
-        end
-
-        idetail.unselected()
-        iui.close("build_function_pop.rml")
-        iui.close("detail_panel.rml")
-        iui.redirect("construct.rml", "construction_center_place", results[1].name, object.gameplay_eid, results[1].id)
         ::continue::
     end
 

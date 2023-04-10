@@ -64,7 +64,7 @@ local function createFluidBox(init, recipe)
     return fluidbox_in, fluidbox_out
 end
 
-local function resetItems(world, recipe, chest, option)
+local function resetItems(world, recipe, chest, option, maxslot)
     local ingredients_n <const> = #recipe.ingredients//4 - 1
     local results_n <const> = #recipe.results//4 - 1
     local hash = {}
@@ -108,6 +108,15 @@ local function resetItems(world, recipe, chest, option)
         local id, n = string.unpack("<I2I2", recipe.results, 4*idx+1)
         create_slot(isFluidId(id) and "none" or "red", id, n * option.resultsLimit)
     end
+    for i = #olditems, 1, -1 do
+        if #newitems > maxslot + ingredients_n then
+            break
+        end
+        local v = olditems[i]
+        if v.type == "red" then
+            create_slot(v.type, v.item, v.amount)
+        end
+    end
     return table.concat(newitems)
 end
 
@@ -142,7 +151,7 @@ local function set_recipe(world, e, pt, recipe_name, fluids, option)
     assembling.progress = 0
     assembling.status = STATUS_IDLE
     local chest = e.chest
-    local items = resetItems(world, recipe, chest, option)
+    local items = resetItems(world, recipe, chest, option, pt.maxslot)
     world:container_destroy(chest)
     chest.chest = world:container_create(items)
     if fluids and pt.fluidboxes then

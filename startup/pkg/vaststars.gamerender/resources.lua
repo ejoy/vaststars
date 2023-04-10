@@ -1487,7 +1487,6 @@ local t = {
 	"/pkg/vaststars.resources/ui/textures/factory/demolition.texture",
 	"/pkg/vaststars.resources/ui/textures/factory/item-bg.texture",
 	"/pkg/vaststars.resources/ui/textures/factory/move.texture",
-	"/pkg/vaststars.resources/ui/textures/factory/place-building.texture",
 	"/pkg/vaststars.resources/ui/textures/factory/plus-five.texture",
 	"/pkg/vaststars.resources/ui/textures/factory/plus-one.texture",
 	"/pkg/vaststars.resources/ui/textures/factory/return.texture",

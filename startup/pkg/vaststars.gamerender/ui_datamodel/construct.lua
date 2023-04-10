@@ -23,7 +23,6 @@ local iobject = ecs.require "object"
 local terrain = ecs.require "terrain"
 local icamera = ecs.require "engine.camera"
 local idetail = ecs.import.interface "vaststars.gamerender|idetail"
-local construct_menu_cfg = import_package "vaststars.prototype"("construct_menu")
 local SHOW_LOAD_RESOURCE <const> = not require "debugger".disable_load_resource
 local EDITOR_CACHE_NAMES = {"CONFIRM", "CONSTRUCTED"}
 local create_station_builder = ecs.require "editor.stationbuilder"
@@ -41,7 +40,6 @@ local cancel_mb = mailbox:sub {"cancel"} -- construct_pop.rml -> 取消
 local road_builder_mb = mailbox:sub {"road_builder"}
 local pipe_builder_mb = mailbox:sub {"pipe_builder"}
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
-local show_construct_menu_mb = mailbox:sub {"show_construct_menu"}
 local show_statistic_mb = mailbox:sub {"statistic"} -- 主界面左下角 -> 统计信息
 local show_setting_mb = mailbox:sub {"show_setting"} -- 主界面左下角 -> 游戏设置
 local technology_mb = mailbox:sub {"technology"} -- 主界面左下角 -> 科研中心
@@ -59,6 +57,7 @@ local single_touch_move_mb = world:sub {"single_touch", "MOVE"}
 local focus_tips_event = world:sub {"focus_tips"}
 local builder
 local item_transfer_dst
+local pickup_id
 
 local item_transfer_placement_interval = interval_call(300, function(datamodel)
     if not global.item_transfer_src then
@@ -74,7 +73,7 @@ local item_transfer_placement_interval = interval_call(300, function(datamodel)
         local e = assert(gameplay_core.get_entity(assert(object.gameplay_eid)))
         local placeable_items = item_transfer.get_placeable_items(e)
         local ci = 1
-        for i, slot in ipairs(placeable_items) do
+        for _, slot in ipairs(placeable_items) do
             local j = movable_items_hash[slot.item]
             if j then
                 movable_items[ci], movable_items[j] = movable_items[j], movable_items[ci]
@@ -93,27 +92,50 @@ local item_transfer_placement_interval = interval_call(300, function(datamodel)
     datamodel.item_transfer = items
 end)
 
-local function _get_construct_menu()
-    local construct_menu = {}
-    for _, menu in ipairs(construct_menu_cfg) do
-        local m = {}
-        m.name = menu.name
-        m.icon = menu.icon
-        m.detail = {}
-
-        for _, prototype_name in ipairs(menu.detail) do
-            local typeobject = assert(iprototype.queryByName(prototype_name))
-            m.detail[#m.detail + 1] = {
-                show_prototype_name = iprototype.show_prototype_name(typeobject),
-                prototype_name = prototype_name,
-                icon = typeobject.icon,
-            }
-        end
-
-        construct_menu[#construct_menu+1] = m
+local construction_center_menu_interval = interval_call(500, function(datamodel, object_id)
+    if not object_id then
+        datamodel.construction_center_menu = {}
+        return
     end
-    return construct_menu
-end
+    local object = assert(objects:get(object_id))
+    local typeobject = iprototype.queryByName(object.prototype_name)
+    if not typeobject.construction_center then
+        datamodel.construction_center_menu = {}
+        return
+    end
+
+    local res = {}
+    local e = assert(gameplay_core.get_entity(assert(object.gameplay_eid)))
+    if e.chest.chest ~= 0 then
+        for index = 1, 256 do
+            local slot = gameplay_core.get_world():container_get(e.chest, index)
+            if not slot then
+                break
+            end
+            if slot.item == 0 then
+                goto continue
+            end
+
+            local typeobject_item = assert(iprototype.queryById(slot.item))
+            if not iprototype.has_type(typeobject_item.type, "building") then
+                goto continue
+            end
+
+            if slot.amount > 0 then
+                res[#res+1] = {icon = typeobject_item.icon, count = slot.amount, name = iprototype.show_prototype_name(typeobject_item), object_id = object_id, index = index}
+                assert(#res <= 6, "construction_center_menu too long")
+            end
+            ::continue::
+        end
+    end
+
+    for i = 1, 6 do
+        if not res[i] then
+            res[i] = {icon = "", count = 0, name = ""}
+        end
+    end
+    datamodel.construction_center_menu = res
+end)
 
 ---------------
 local M = {}
@@ -128,8 +150,8 @@ local function get_new_tech_count(tech_list)
 end
 function M:create()
     return {
+        cur_edit_mode = "",
         show_load_resource = SHOW_LOAD_RESOURCE,
-        construct_menu = {},
         tech_count = get_new_tech_count(global.science.tech_list),
         show_tech_progress = false,
         current_tech_icon = "none",    --当前科技图标
@@ -139,6 +161,8 @@ function M:create()
         ingredient_icons = {},
         show_ingredient = false,
         item_transfer = {},
+        show_construction_center_menu = false,
+        construction_center_menu = {},
     }
 end
 local current_techname = ""
@@ -192,18 +216,6 @@ function M:stage_ui_update(datamodel)
             builder = nil
         end
         handle_pickup = true
-    end
-
-    for _, _, _, show in show_construct_menu_mb:unpack() do
-        if show then
-            idetail.unselected()
-            ieditor:revert_changes({"TEMPORARY"})
-            datamodel.show_rotate = false
-            datamodel.show_confirm = false
-            datamodel.construct_menu = _get_construct_menu()
-        else
-            ieditor:revert_changes({"TEMPORARY"})
-        end
     end
 
     for _, _, _, is_task in click_techortaskicon_mb:unpack() do
@@ -356,10 +368,12 @@ function M:stage_camera_usage(datamodel)
             if idetail.show(object.id) then
                 leave = false
                 item_transfer_dst = object.id
+                pickup_id = object.id
             end
         else
             idetail.unselected()
             item_transfer_dst = nil
+            pickup_id = nil
         end
 
         if leave then
@@ -453,13 +467,19 @@ function M:stage_camera_usage(datamodel)
         iui.close("road_or_pipe_build.rml")
     end
 
-    for _, _, _, prototype_name, gameplay_eid, item in construction_center_place_mb:unpack() do
+    for _, _, _, object_id, index in construction_center_place_mb:unpack() do
         if builder then
             builder:clean(datamodel)
         end
 
-        builder = create_setitembuilder(gameplay_eid, item)
-        local typeobject = iprototype.queryByName(prototype_name)
+        local object = assert(objects:get(object_id))
+        local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+        assert(e.chest.chest ~= 0)
+        local slot = assert(gameplay_core.get_world():container_get(e.chest, index))
+        assert(slot.item ~= 0)
+
+        builder = create_setitembuilder(object.gameplay_eid, slot.item)
+        local typeobject = iprototype.queryById(slot.item)
         builder:new_entity(datamodel, typeobject)
         self:flush()
         handle_pickup = false
@@ -474,6 +494,7 @@ function M:stage_camera_usage(datamodel)
     end
 
     item_transfer_placement_interval(datamodel)
+    construction_center_menu_interval(datamodel, pickup_id)
 
     iobject.flush()
 end
