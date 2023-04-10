@@ -392,6 +392,7 @@
                     <workbutton data-for = "construction_center_menu" style = "background-color: rgb(246, 142, 14);" data-event-click="clickConstruct(it.object_id, it.index)">
                         <div class="workbutton-bg" data-style-background-image = "it.icon" data-if = "it.icon != ''" />
                         <div class="workbutton-text"  data-if = "it.name != ''">{{it.name}}</div>
+                        <div class="item-count"  data-if = "it.name != ''">{{it.count}}</div>
                     </workbutton>
                 </div>
             </div>
