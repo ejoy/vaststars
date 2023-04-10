@@ -124,7 +124,11 @@ local function parse_layer(t, s, d)
             pd = 180
         end
     elseif s == "L" then
-        ps = 3
+        if t >= "1" and t <= "3" then
+            ps = 3 
+        else
+            ps = 5
+        end
         if d == "1" then
             pd = 180
         elseif d == "2" then
@@ -135,7 +139,11 @@ local function parse_layer(t, s, d)
             pd = 90
         end
     elseif s == "T" then
-        ps = 4
+        if t >= "1" and t <= "3" then
+            ps = 4 
+        else
+            ps = 6
+        end
         if d == "1" then
             pd = 0
         elseif d == "2" then
@@ -431,16 +439,21 @@ local function is_power_of_2(n)
 	end
 end
 
-function iplane_terrain.set_wh(w, h, offset)
+function iplane_terrain.set_wh(w, h, offset_x, offset_z)
     terrain_width = w
     terrain_height = h
-    if not offset then
+    if offset_x == nil then
         origin_offset_width = 0
+    else
+        origin_offset_width = offset_x
+    end
+
+    if offset_z == nil then
         origin_offset_height = 0
     else
-        origin_offset_width = offset
-        origin_offset_height = offset      
+        origin_offset_height = offset_z
     end
+
     build_ib(terrain_width, terrain_height)
     noise(terrain_width + 1, terrain_height + 1, 4, 2, 0.2, 1)
 end
