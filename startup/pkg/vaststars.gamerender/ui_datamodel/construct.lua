@@ -369,11 +369,13 @@ function M:stage_camera_usage(datamodel)
                 leave = false
                 item_transfer_dst = object.id
                 pickup_id = object.id
+                datamodel.cur_edit_mode = "construct"
             end
         else
             idetail.unselected()
             item_transfer_dst = nil
             pickup_id = nil
+            datamodel.cur_edit_mode = ""
         end
 
         if leave then

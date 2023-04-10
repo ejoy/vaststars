@@ -10,6 +10,28 @@
             .nopointer {
                 pointer-events: none;
             }
+            button {
+                width: 28.00vmin;
+                height: 28.00vmin;
+                text-align: center;
+                border-radius: 2.00vmin;
+                border: 0.53vmin white;
+                font-size: 4.00vmin;
+                transition: transform 0.15s elastic-out;
+                transform: scale(1.0);
+            }
+            button:active {
+                transform: scale(1.3);
+            }
+            button#work {
+                position: absolute;
+                top: 82.67vmin;
+                left: 158.67vmin;
+                width: 16.00vmin;
+                height: 16.00vmin;
+                margin: 0.00vmin;
+                font-size: 150%;
+            }
             workbutton {
                 font-size: 3.20vmin;
                 flex-direction: column;
