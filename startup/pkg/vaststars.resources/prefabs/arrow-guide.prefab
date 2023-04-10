@@ -2,7 +2,8 @@
 data:
   name: Scene
   scene:
-    s: {2, 2, 2}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
 policy:
   ant.general|name
   ant.scene|scene_object
@@ -10,7 +11,9 @@ policy:
 data:
   meshskin: /pkg/vaststars.resources/glb/arrow-guide.glb|meshes/Armature.001.skinbin
   name: meshskin
-  scene: {}
+  scene:
+    s: {2, 2, 2}
+    t: {0, 0, 0}
   skeleton: /pkg/vaststars.resources/glb/arrow-guide.glb|animations/skeleton.ozz
   skinning: true
 mount: 1
