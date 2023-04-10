@@ -20,7 +20,7 @@ local guide = {
         name = "",
 		narrative = {
             {"作为助理AI，我建议你立刻开始工作..哔哩..你的剩余生存时间理论上只有{/color:4bd0ff 348.26}地球小时..(担忧)", "textures/guide/guide-6.texture"},
-            {"哔哩..发现{/g 建造中心}..哔哩..{/g 建造中心}顾名思义是可以建造建筑的场所..逻辑自洽中..(期待)", "textures/guide/guide-2.texture"},
+            {"哔哩..发现{/g 建造中心}..哔哩..{/g 建造中心}顾名思义就是{/color:4bd0ff  建造建筑}的场所..逻辑完美..(期待)", "textures/guide/guide-2.texture"},
             {"哔哩..目前急需{/color:4bd0ff 采矿机}，请在{/color:4bd0ff 建造中心}中选择{/g 采矿机打印}..哔哩..(期待)", "textures/guide/guide-2.texture"},
         },
         narrative_end = {
@@ -123,7 +123,8 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"哔哩..电线杆传送接收", "textures/guide/guide-3.texture"},
+            {"哔哩..还记得{/color:4bd0ff 遥感传送}吗？让我们再次选择{/g 传送启动}这次让{/color:4bd0ff 建造中心}接收{/color:4bd0ff 电线杆设计图}", "textures/guide/guide-3.texture"},
+            {"哔哩..温暖的{/color:4bd0ff 蓝光}再次升起吧..哔哩..（开心）", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
             guide_progress = 30,
