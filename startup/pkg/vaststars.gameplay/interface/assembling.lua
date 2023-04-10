@@ -83,6 +83,7 @@ local function resetItems(world, recipe, chest, option, maxslot)
             end
         end
     end
+    local count = #olditems
     local function create_slot(type, id, limit)
         local o = {}
         if hash[id] then
@@ -108,12 +109,12 @@ local function resetItems(world, recipe, chest, option, maxslot)
         local id, n = string.unpack("<I2I2", recipe.results, 4*idx+1)
         create_slot(isFluidId(id) and "none" or "red", id, n * option.resultsLimit)
     end
-    for i = #olditems, 1, -1 do
+    for i = count, 1, -1 do
         if #newitems > maxslot + ingredients_n then
             break
         end
         local v = olditems[i]
-        if v.type == "red" then
+        if v and v.type == "red" then
             create_slot(v.type, v.item, v.amount)
         end
     end
