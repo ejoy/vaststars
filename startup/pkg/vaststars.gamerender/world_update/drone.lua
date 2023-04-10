@@ -5,11 +5,7 @@ local math3d    = require "math3d"
 local mc = import_package "ant.math".constant
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local objects = require "objects"
-local iprototype = require "gameplay.interface.prototype"
-local ichest = require "gameplay.interface.chest"
 local ims = ecs.import.interface "ant.motion_sampler|imotion_sampler"
-local iheapmesh = ecs.import.interface "ant.render|iheapmesh"
-local prefab_meshbin = require("engine.prefab_parser").meshbin
 local gameplay_core = require "gameplay.core"
 local entity_remove = world:sub {"gameplay", "remove_entity"}
 local sampler_group
@@ -39,7 +35,6 @@ end
 
 local drone_depot = {}
 local lookup_drones = {}
-local pile_id = 0
 local drone_offset = 6
 local fly_height = 20
 local item_height = 15
@@ -51,7 +46,7 @@ local function create_drone()
         start_duration = 0,
         end_duration = 0,
         duration = 0,
-        at_home = true,
+        at_home = false,
         gohome = function (self, dst)
             if self.at_home then
                 return
@@ -162,31 +157,6 @@ local function create_item(item, parent)
     return prefab
 end
 
-local function create_heap_items(glbname, meshname, scene, dimsize, num)
-    ecs.create_entity {
-        policy = {
-            "ant.render|render",
-            "ant.general|name",
-            "ant.render|heap_mesh",
-         },
-        data = {
-            name    = "heap_items",
-            scene   = scene,
-            material = "/pkg/ant.resources/materials/pbr_heap.material", -- 自定义material文件中需加入HEAP_MESH :1
-            visible_state = "main_view",
-            mesh = meshname,
-            heapmesh = {
-                curSideSize = dimsize,  -- 当前 x y z方向最大堆叠数量均为curSideSize = 3，最大堆叠数为3*3*3 = 27
-                curHeapNum = num,       -- 当前堆叠数为10，以x->z->y轴的正方向顺序堆叠。最小为0，最大为10，超过边界值时会clamp到边界值。
-                glbName = glbname,       -- 当前entity对应的glb名字，用于筛选
-                interval = {0, 0, 0}
-            }
-        },
-    }
-end
--- iheapmesh.update_heap_mesh_number(27, "iron-ingot") -- 更新当前堆叠数 参数一为待更新堆叠数 参数二为entity筛选的glb名字
--- iheapmesh.update_heap_mesh_sidesize(4, "iron-ingot") -- 更新当前每个轴的最大堆叠数 参数一为待更新每个轴的最大堆叠数 参数二为entity筛选的glb名字
-
 return function(gameworld)
     for _, _, geid in entity_remove:unpack() do
         local e = gameplay_core.get_entity(geid)
@@ -208,51 +178,8 @@ return function(gameworld)
         --     print(drone.prev, drone.next, drone.maxprogress, drone.progress, drone.item)
         -- end
         if not lookup_drones[e.eid] then
-            local obj = get_object(drone.prev)
-            assert(obj)
-            local pos = obj.srt.t
-            local objid = obj.gameplay_eid
-            if not drone_depot[objid] then
-                local ge = gameplay_core.get_entity(objid)
-                local chest = ichest.chest_get(gameworld, ge.hub, 1)
-                if not chest then
-                    goto continue
-                end
-
-                local typeobject = iprototype.queryById(chest.item)
-                local dw, dh, dd = typeobject.pile:match("(%d+)x(%d+)x(%d+)")
-                local dim = {dw, dh, dd}
-                pile_id = pile_id + 1
-                local pile_name = "pile" .. pile_id
-                local pos_offset = {-1, 5, 4} -- read from drone depot prefab file
-                local meshbin = prefab_meshbin("/pkg/vaststars.resources/"..typeobject.pile_model)
-                assert(#meshbin == 1)
-                drone_depot[objid] = {
-                    drones = {},
-                    pile_name = pile_name,
-                    pile_num = chest.amount,
-                    pile_eid = create_heap_items(pile_name, meshbin[1], {s = 1, t = {pos[1] + pos_offset[1], pos[2] + pos_offset[2], pos[3] + pos_offset[3]}}, dim, chest.amount),
-                    update_heap = function (self, num)
-                        self.pile_num = self.pile_num + num
-                        iheapmesh.update_heap_mesh_number(self.pile_num, self.pile_name)
-                    end,
-                    destroy = function (self)
-                        for _, d in pairs(self.drones) do
-                            d:destroy()
-                        end
-                        w:remove(self.pile_eid)
-                    end
-                }
-            end
-            local depot = drone_depot[objid]
-            local drones = depot.drones
-            if not drones[e.eid] then
-                local newDrone = create_drone()
-                newDrone.owner = depot
-                drones[e.eid] = newDrone
-                -- cache lookup table
-                lookup_drones[e.eid] = newDrone
-            end
+            local newDrone = create_drone()
+            lookup_drones[e.eid] = newDrone
         else
             local current = lookup_drones[e.eid]
             if not current.running then
@@ -279,7 +206,7 @@ return function(gameworld)
                                     drone_depot[srcobj.gameplay_eid]:update_heap(-1)
                                 end
                             end
-                            
+
                             local key = drone.prev << 32 | drone.next
                             if not same_dest_offset[key] then
                                 same_dest_offset[key] = 0
@@ -296,7 +223,7 @@ return function(gameworld)
                             drone_task[#drone_task + 1] = {key, current, dest_pos, duration, tohome}
                         end
                     end
-                elseif drone.status == 4 then
+                elseif drone.status == 3 or drone.status == 4 then
                     -- status : at_home
                     local obj = get_object(drone.prev)
                     assert(obj)
@@ -307,7 +234,6 @@ return function(gameworld)
                 current:update(elapsed_time)
             end
         end
-        ::continue::
     end
     for _, task in ipairs(drone_task) do
         local key = task[1]
