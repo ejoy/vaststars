@@ -43,9 +43,8 @@ local pile_id = 0
 local drone_offset = 6
 local fly_height = 20
 local item_height = 15
-local function create_drone(home)
+local function create_drone()
     local task = {
-        home = home,
         stage = 0,--{0,1,2}
         running = false,
         elapsed_time = 0,
@@ -53,24 +52,34 @@ local function create_drone(home)
         end_duration = 0,
         duration = 0,
         at_home = true,
-        gohome = function (self)
-            self:flyto(fly_height, self.home, 1.0)
+        gohome = function (self, dst)
+            if self.at_home then
+                return
+            end
             self.at_home = true
+            self:flyto(fly_height, dst, 1.0, true)
         end,
-        flyto = function (self, height, to, duration)
-            self.at_home = false
+        flyto = function (self, height, to, duration, home)
+            if not home then
+                self.at_home = false
+            end
             self.duration = duration
             self.start_duration = duration * 0.25
             self.end_duration = duration * 0.25
             self.end_y = {to = {0, to[2], 0}, tin = mc.TWEEN_QUARTIC, tout = mc.TWEEN_QUARTIC}
             --
-            self.moveto(self.motion_xz, {to[1], 0, to[3]}, duration, mc.TWEEN_SINE, mc.TWEEN_SINE)
-            self.moveto(self.motion_y, {0, height, 0}, self.start_duration, mc.TWEEN_QUARTIC, mc.TWEEN_QUARTIC)
+            self:moveto(self.motion_xz, {to[1], 0, to[3]}, duration, mc.TWEEN_SINE, mc.TWEEN_SINE)
+            self:moveto(self.motion_y, {0, height, 0}, self.start_duration, mc.TWEEN_QUARTIC, mc.TWEEN_QUARTIC)
             self.running = true
         end,
-        moveto = function (motion, topos, time, tin, tout)
+        moveto = function (self, motion, topos, time, tin, tout)
             local e <close> = w:entity(motion)
-            ims.set_target(e, nil, nil, math3d.vector(topos), time * 1000, tin, tout)
+            if self.born_pos then
+                ims.set_target_ex(e, {t = math3d.vector(self.born_pos)}, {t = math3d.vector(topos)}, time * 1000, tin, tout)
+                self.born_pos = nil
+            else
+                ims.set_target(e, nil, nil, math3d.vector(topos), time * 1000, tin, tout)
+            end
         end,
         update = function (self, timeStep)
             if not self.running then
@@ -85,7 +94,7 @@ local function create_drone(home)
                 if self.elapsed_time >= self.duration - self.end_duration then
                     self.stage = 2
                     local y = self.end_y
-                    self.moveto(self.motion_y, y.to, self.end_duration, y.tin, y.tout)
+                    self:moveto(self.motion_y, y.to, self.end_duration, y.tin, y.tout)
                 end
             else
                 local endtime = self.duration
@@ -116,11 +125,22 @@ local function create_drone(home)
             end
             w:remove(self.motion_y)
             w:remove(self.motion_xz)
+        end,
+        init = function (self, pos)
+            if self.inited then
+                return
+            end
+            self.inited = true
+            self.born_pos = pos
+            local ey <close> = w:entity(self.motion_y)
+            iom.set_position(ey, math3d.vector(pos[1], 0, pos[3]))
+            local exz <close> = w:entity(self.motion_xz)
+            iom.set_position(exz, math3d.vector(0, pos[2], 0))
         end
     }
-    local motion_xz = create_motion_object(nil, nil, math3d.vector(home[1], 0, home[3]))
+    local motion_xz = create_motion_object()--create_motion_object(nil, nil, math3d.vector(home[1], 0, home[3]))
     task.motion_xz = motion_xz
-    local motion_y = create_motion_object(nil, nil, math3d.vector(0, home[2], 0), motion_xz)
+    local motion_y = create_motion_object(nil, nil, nil, motion_xz)--create_motion_object(nil, nil, math3d.vector(0, home[2], 0), motion_xz)
     task.motion_y = motion_y
     task.prefab = sampler_group:create_instance("/pkg/vaststars.resources/prefabs/drone.prefab", motion_y)
     return task
@@ -227,7 +247,7 @@ return function(gameworld)
             local depot = drone_depot[objid]
             local drones = depot.drones
             if not drones[e.eid] then
-                local newDrone = create_drone({pos[1] + 6, pos[2] + 8, pos[3] - 6})
+                local newDrone = create_drone()
                 newDrone.owner = depot
                 drones[e.eid] = newDrone
                 -- cache lookup table
@@ -253,21 +273,35 @@ return function(gameworld)
                             end
                             -- TODO: update src item count
                             local srcobj = get_object(drone.prev)
-                            if srcobj and drone_depot[srcobj.gameplay_eid] and drone.item > 0 then
-                                drone_depot[srcobj.gameplay_eid]:update_heap(-1)
+                            if srcobj then
+                                current:init(srcobj.srt.t)
+                                if drone_depot[srcobj.gameplay_eid] and drone.item > 0 then
+                                    drone_depot[srcobj.gameplay_eid]:update_heap(-1)
+                                end
                             end
-
+                            
                             local key = drone.prev << 32 | drone.next
                             if not same_dest_offset[key] then
                                 same_dest_offset[key] = 0
                             else
                                 same_dest_offset[key] = same_dest_offset[key] - (drone_offset / 2)
                             end
-                            drone_task[#drone_task + 1] = {key, current, destobj.srt.t, duration}
+                            local dest_pos = destobj.srt.t
+                            -- status : go_home
+                            local tohome
+                            if drone.status == 7 then
+                                dest_pos = {dest_pos[1] + 6, dest_pos[2] + 8, dest_pos[3] - 6}
+                                tohome = true
+                            end
+                            drone_task[#drone_task + 1] = {key, current, dest_pos, duration, tohome}
                         end
                     end
-                elseif not current.at_home then
-                    current:gohome()
+                elseif drone.status == 4 then
+                    -- status : at_home
+                    local obj = get_object(drone.prev)
+                    assert(obj)
+                    local pos = obj.srt.t
+                    current:gohome({pos[1] + 6, pos[2] + 8, pos[3] - 6})
                 end
             else
                 current:update(elapsed_time)
@@ -278,7 +312,7 @@ return function(gameworld)
     for _, task in ipairs(drone_task) do
         local key = task[1]
         local pos = task[3]
-        task[2]:flyto(fly_height, {pos[1] + same_dest_offset[key], item_height, pos[3]}, task[4])
+        task[2]:flyto(fly_height, {pos[1] + same_dest_offset[key], item_height, pos[3]}, task[4], task[5])
         same_dest_offset[key] = same_dest_offset[key] + drone_offset
     end
     return t
