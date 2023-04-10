@@ -1183,7 +1183,7 @@ prototype "采矿机打印" {
     results = {
         {"采矿机I", 1},
     },
-    time = "4s",
+    time = "6s",
     description = "打印采矿机",
 }
 

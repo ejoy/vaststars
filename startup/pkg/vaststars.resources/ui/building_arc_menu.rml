@@ -283,7 +283,7 @@
 
                         if start.item_transfer_subscribe then
                             local v = setmetatable({}, {__index = mt})
-                            v.text = "传送起点"
+                            v.text = "传送设置"
                             v.message = "item_transfer_subscribe"
                             v.background_image = "textures/construct/portal-in.texture"
                             start.buttons[#start.buttons + 1] = v
@@ -291,7 +291,7 @@
 
                         if start.item_transfer_place then
                             local v = setmetatable({}, {__index = mt})
-                            v.text = "传送终点"
+                            v.text = "传送启动"
                             v.message = "item_transfer_place"
                             v.background_image = "textures/construct/portal-out.texture"
                             start.buttons[#start.buttons + 1] = v
