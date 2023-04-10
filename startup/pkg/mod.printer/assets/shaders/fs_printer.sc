@@ -32,7 +32,13 @@ void main()
         discard;
     
     #include "pbr/attributes_getter.sh"
-    bool building = v_posWS.y > u_building_topmost;
+    int building;
+    if(v_posWS.y > u_building_topmost){
+        building = 1;
+    } else{
+        building = 0;
+    }
+
     if(building || (dot(input_attribs.N, input_attribs.V) < 0)) {
         gl_FragColor = u_construct_color;
     } else {

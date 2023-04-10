@@ -16,6 +16,12 @@ local iprinter = ecs.interface "iprinter"
 
 
 function printer_sys:data_changed()
+
+    for e in w:select "printer:update eid:in" do
+        local printer = e.printer
+        printer.eid = e.eid
+        iprinter.update_printer_percent(printer.eid, printer.percent) 
+    end    
 end
 
 

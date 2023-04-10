@@ -613,12 +613,11 @@ local function get_sections_sm()
 end
 
 local function record_sm_idx_to_terrain_field(tf, stone, sm_idx, size_idx)
-    local cur_offset = unit * offset
     local mesh_idx = sm_bms_to_mesh_table[sm_idx][size_idx]
     local center_x, center_z = stone.t.x, stone.t.z
     local extent_x, extent_z = mesh_aabb_table[mesh_idx].extent[1] * stone.s, mesh_aabb_table[mesh_idx].extent[2] * stone.s
-    local min_x, max_x = math.floor((cur_offset + center_x - extent_x) / unit) + 1, math.ceil((cur_offset + center_x + extent_x) / unit)
-    local min_z, max_z = math.floor((cur_offset + center_z - extent_z) / unit), math.ceil((cur_offset + center_z + extent_z) / unit)
+    local min_x, max_x = math.floor((center_x - extent_x) / unit) + 1, math.ceil((center_x + extent_x) / unit)
+    local min_z, max_z = math.floor((center_z - extent_z) / unit), math.ceil((center_z + extent_z) / unit)
     for y = min_z, max_z do
         for x = min_x, max_x do
             local cur_idx= x - 1 + (y - 1) * width + 1
@@ -785,10 +784,9 @@ local function create_visibility_table()
     local v_bf_csm3 = bgfx.create_dynamic_vertex_buffer(instance_num, declmgr.get("t47NIf").handle, "r")
     local v_bf_csm4 = bgfx.create_dynamic_vertex_buffer(instance_num, declmgr.get("t47NIf").handle, "r")
     local v_bf_pre_depth = bgfx.create_dynamic_vertex_buffer(instance_num, declmgr.get("t47NIf").handle, "r")
-    local v_bf_main_view = bgfx.create_dynamic_vertex_buffer(instance_num, declmgr.get("t47NIf").handle, "r")
     local visibility_table = {
         ["csm1"] = v_bf_csm1, ["csm2"] = v_bf_csm2, ["csm3"] = v_bf_csm3, ["csm4"] = v_bf_csm4,
-        ["pre_depth"] = v_bf_pre_depth, ["main_view"] = v_bf_main_view
+        ["pre_depth"] = v_bf_pre_depth
     }
     return visibility_table
 end  
@@ -830,7 +828,6 @@ local function update_sm_dyb_table(mesh_idx, sm_info)
     update_sm_dyb(mesh_idx, "csm3", sm_info)
     update_sm_dyb(mesh_idx, "csm4", sm_info)
     update_sm_dyb(mesh_idx, "pre_depth", sm_info)
-    update_sm_dyb(mesh_idx, "main_view", sm_info)
 end
 
 local function update_sections()
@@ -858,6 +855,16 @@ local function update_sections()
 end
 
 local function create_constant_buffer()
+    local function check_nan(v)
+		if v ~= v then
+			return 0
+		else
+			return v
+		end
+	end
+	local function f2i(v)
+		return math.floor(check_nan(v) * 32767+0.5)
+	end
     constant_buffer_table.sm_srt_memory_buffer = bgfx.memory_buffer(16 * instance_num * 3)
     local fmt<const> = "ffff"
     for real_idx = 1, instance_num do
@@ -865,7 +872,12 @@ local function create_constant_buffer()
         for size_idx = 1, 3 do
             local srt_idx = 16 * ((real_idx - 1) * 3 + size_idx - 1) + 1
             if sm_table[sm_idx][size_idx].s then
+--[[                 local is = string.format("%.1f", sm_table[sm_idx][size_idx].s)+0
+                local itx = string.format("%.1f", sm_table[sm_idx][size_idx].t.x)+0
+                local itz = string.format("%.1f", sm_table[sm_idx][size_idx].t.z)+0
+                local ir = string.format("%.1f", sm_table[sm_idx][size_idx].r)+0 ]]
                 local stone = {sm_table[sm_idx][size_idx].s, sm_table[sm_idx][size_idx].t.x, sm_table[sm_idx][size_idx].t.z, sm_table[sm_idx][size_idx].r}
+                --local stone = {is, itx, itz, ir}
                 constant_buffer_table.sm_srt_memory_buffer[srt_idx] = fmt:pack(table.unpack(stone))
             else
                 constant_buffer_table.sm_srt_memory_buffer[srt_idx] = fmt:pack(table.unpack({0, 0, 0, 0}))
