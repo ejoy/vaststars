@@ -1144,7 +1144,7 @@ prototype "建造电线杆" {
     type = { "tech" },
     icon = "textures/science/tech-research.texture",
     effects = {
-      unlock_recipe = {"修路站设计","修路站打印"},
+      unlock_recipe = {"修路站设计","修路站打印","砖石公路打印"},
       unlock_item = {"修路站设计图"},
     },
     prerequisites = {"生产石砖"},

@@ -354,22 +354,6 @@ prototype "机器爪1" {
     description = "铁制品和电动机制造机器爪",
 }
 
-prototype "砖石公路" {
-    type = { "recipe" },
-    category = "物流中型制造",
-    --recipe_group =  "物流",
-    recipe_order =  104,
-    recipe_icon =  "textures/construct/road1.texture",
-    ingredients = {
-        -- {"石砖", 2},
-    },
-    results = {
-        {"砖石公路-X型", 2},
-    },
-    time = "6s",
-    description = "使用石砖制造公路",
-}
-
 prototype "物流中心1" {
     type = { "recipe" },
     category = "物流大型制造",
@@ -1489,6 +1473,38 @@ prototype "修管站打印" {
     },
     time = "5s",
     description = "打印可建造管道的装置",
+}
+
+prototype "砖石公路打印" {
+    type = { "recipe" },
+    category = "设计图打印",
+    recipe_group =  "物流",
+    recipe_order =  104,
+    recipe_icon =  "textures/construct/road1.texture",
+    ingredients = {
+        {"石砖", 5},
+    },
+    results = {
+        {"砖石公路-X型", 15},
+    },
+    time = "6s",
+    description = "使用石砖制造公路",
+}
+
+prototype "管道打印" {
+    type = { "recipe" },
+    category = "设计图打印",
+    recipe_group =  "化工",
+    recipe_order =  10,
+    recipe_icon =  "textures/construct/pipe.texture",
+    ingredients = {
+        {"铁板", 2},
+    },
+    results = {
+        {"管道1-X型", 2},
+    },
+    time = "5s",
+    description = "铁板制造管道",
 }
 
 ------------------设计图-------------------
