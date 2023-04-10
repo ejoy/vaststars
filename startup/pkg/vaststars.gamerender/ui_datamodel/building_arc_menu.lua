@@ -11,10 +11,10 @@ local iefk = ecs.import.interface "ant.efk|iefk"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local math3d    = require "math3d"
 local mu = import_package "ant.math".util
+local itask = ecs.require "task"
 
 local set_recipe_mb = mailbox:sub {"set_recipe"}
 local set_item_mb = mailbox:sub {"set_item"}
-local close_mb = mailbox:sub {"close"}
 local road_builder_mb = mailbox:sub {"road_builder"}
 local pipe_builder_mb = mailbox:sub {"pipe_builder"}
 local construction_center_build_mb = mailbox:sub {"construction_center_build"}
@@ -24,6 +24,8 @@ local lorry_factory_stop_build_mb = mailbox:sub {"lorry_factory_stop_build"}
 local item_transfer_subscribe_mb = mailbox:sub {"item_transfer_subscribe"}
 local item_transfer_unsubscribe_mb = mailbox:sub {"item_transfer_unsubscribe"}
 local item_transfer_place_mb = mailbox:sub {"item_transfer_place"}
+local close_mb = mailbox:sub {"close"}
+local ui_click_mb = mailbox:sub {"ui_click"}
 
 local ichest = require "gameplay.interface.chest"
 local assembling_common = require "ui_datamodel.common.assembling"
@@ -151,23 +153,21 @@ local function __item_transfer_update(datamodel, object_id)
     end
     local typeobject = iprototype.queryByName(object.prototype_name)
 
+    datamodel.item_transfer_subscribe = false
     if iprototype.has_type(typeobject.type, "assembling") or
        iprototype.has_type(typeobject.type, "chest") or
        iprototype.has_type(typeobject.type, "hub") then
-        if not global.item_transfer_src then
-            if typeobject.name == "指挥中心" or typeobject.name == "建造中心" then -- TODO: remove hardcode
-                datamodel.item_transfer_subscribe = false
-            else
-                datamodel.item_transfer_subscribe = true
-            end
-        else
+
+        if typeobject.name == "指挥中心" or typeobject.name == "建造中心" then -- TODO: remove hardcode
             datamodel.item_transfer_subscribe = false
+        else
+            datamodel.item_transfer_subscribe = global.item_transfer_src ~= object_id
         end
     else
         datamodel.item_transfer_subscribe = false
     end
 
-    datamodel.item_transfer_unsubscribe = (global.item_transfer_src ~= nil) and (global.item_transfer_src == object_id)
+    datamodel.item_transfer_unsubscribe = global.item_transfer_src == object_id
 
     if iprototype.has_type(typeobject.type, "assembling") or
        iprototype.has_type(typeobject.type, "hub") then
@@ -501,6 +501,10 @@ function M:stage_ui_update(datamodel, object_id)
             iom.set_position(e, {pos[1], pos[2] + 15, pos[3]})
             iefk.play(e)
         end
+    end
+
+    for _, _, _, message in ui_click_mb:unpack() do
+        itask.update_progress("click_ui", message, object.prototype_name)
     end
 end
 

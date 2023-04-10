@@ -92,6 +92,15 @@ local item_transfer_placement_interval = interval_call(300, function(datamodel)
     datamodel.item_transfer = items
 end)
 
+local function reverse(array)
+    local i, j = 1, #array
+    while i < j do
+        array[i], array[j] = array[j], array[i]
+        i = i + 1
+        j = j - 1
+    end
+end
+
 local construction_center_menu_interval = interval_call(500, function(datamodel, object_id)
     if not object_id then
         datamodel.construction_center_menu = {}
@@ -129,6 +138,7 @@ local construction_center_menu_interval = interval_call(500, function(datamodel,
         end
     end
 
+    reverse(res)
     for i = 1, 6 do
         if not res[i] then
             res[i] = {icon = "", count = 0, name = ""}

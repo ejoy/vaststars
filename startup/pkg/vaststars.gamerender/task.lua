@@ -12,6 +12,12 @@ custom_type :
 3. set_recipe, recipe = x,
 4. auto_complete_task,
 5. set_item, item = x,
+6. click_ui, ui = x,
+   eg. task = {"unknown", 0, 6},
+       task_params = {ui = "item_transfer_subscribe", building = ""},
+      
+       task = {"unknown", 0, 6},
+       task_params = {ui = "item_transfer_unsubscribe", , building = ""},
 --]]
 local custom_type_mapping = {
     [0] = {s = "undef", check = function() end}, -- TODO
@@ -31,6 +37,13 @@ local custom_type_mapping = {
     end, },
     [5] = {s = "set_item", check = function(task_params, item_name)
         if task_params.item == item_name then
+            return 1
+        else
+            return 0
+        end
+    end, },
+    [6] = {s = "click_ui", check = function(task_params, ui, building)
+        if task_params.ui == ui and task_params.building == building then
             return 1
         else
             return 0

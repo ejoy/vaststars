@@ -150,6 +150,7 @@
                     return
                 end
                 ui_sys.pub {message, start.object_id}
+                ui_sys.pub {"ui_click", message}
             end
 
             ui_sys.addEventListener({
