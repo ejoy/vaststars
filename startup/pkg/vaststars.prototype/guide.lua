@@ -32,6 +32,39 @@ local guide = {
         prerequisites = {"迫降火星"},
 	},
 
+    {
+        name = "",
+		narrative = {
+            {"哔哩..物资传送准备..(期待)", "textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            -- pop_chapter = {"第一阶段","物流网络"},
+            guide_progress = 30,
+            task = {
+                "物资传送准备",
+            }
+        },
+        prerequisites = {
+            "采矿机调度",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
+            {"哔哩..物资传送接收..(期待)", "textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            -- pop_chapter = {"第一阶段","物流网络"},
+            guide_progress = 30,
+            task = {
+                "采矿机传送接收",
+            }
+        },
+        prerequisites = {
+            "物资传送准备",
+        },
+	},
 
     {
         name = "",
@@ -47,7 +80,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "采矿机调度",
+            "采矿机传送接收",
         },
 	},
 
@@ -89,6 +122,22 @@ local guide = {
     {
         name = "",
 		narrative = {
+            {"哔哩..电线杆传送接收", "textures/guide/guide-3.texture"},
+        },
+        narrative_end = {
+            guide_progress = 30,
+            task = {
+                "电线杆传送接收",
+            }
+        },
+        prerequisites = {
+            "电线杆调度",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
             {"哔哩..请使用{/color:4bd0ff 建造中心}生产足够{/g 电线杆}..哔哩..哔哗..(期待)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
@@ -98,7 +147,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "电线杆调度",
+            "电线杆传送接收",
         },
 	},
 

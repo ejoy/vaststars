@@ -7,12 +7,21 @@ local prototype = gameplay.register.prototype
   --task = {"select_chest", 0, "指挥中心", "铁丝"},     向指挥中心转移X个物品
   --task = {"power_generator", 0},                      电力发电到达X瓦
   --task = {"unknown", 0},                              自定义任务
+  
   --task = {"unknown", 0, 3},                           自定义任务，组装机指定选择配方
   --task_params = {recipe = "地质科技包1"},
   --count = 1,
   --time是指1个count所需的时间
+
   -- task = {"unknown", 0, 5},                          自定义任务，无人机仓库指定选择物品
   -- task_params = {item = "采矿机设计图"},
+
+  -- task = {"unknown", 0, 6},
+  -- task_params = {ui = "item_transfer_subscribe", building = "xxx"},
+
+  -- task = {"unknown", 0, 6},
+  -- task_params = {ui = "item_transfer_unsubscribe", , building = "xxx"},
+
 
 
   -- prototype "清除废墟" {
@@ -688,12 +697,73 @@ local prototype = gameplay.register.prototype
     },
   }
 
+  prototype "物资传送准备" {
+    desc = "收集废墟物资准备传送",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"unknown", 0, 6},
+    task_params = {ui = "item_transfer_subscribe", building = "抽水泵残骸"},
+    count = 1,
+    prerequisites = {"采矿机调度"},
+    guide_focus = {
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 114,
+        y = 121,
+        w = 1.5,
+        h = 1.5,
+        show_arrow = true,
+      },
+      {
+        camera_x = 114,
+        camera_y = 121,
+      },
+    },
+    tips_pic = {
+      "textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "收集废墟物资准备传送", icon = "textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "采矿机传送接收" {
+    desc = "建造中心接收废墟的物资传送",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"unknown", 0, 6},
+    task_params = {ui = "item_transfer_place", building = "建造中心"},
+    count = 1,
+    prerequisites = {"物资传送准备"},
+    guide_focus = {
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 121,
+        y = 122,
+        w = 4,
+        h = 4,
+        show_arrow = true,
+      },
+      {
+        camera_x = 121,
+        camera_y = 122,
+      },
+    },
+    tips_pic = {
+      "textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "建造中心接收废墟的物资传送", icon = "textures/construct/industry.texture"},
+    },
+  }
+
+
   prototype "建造采矿机" {
     desc = "",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_consumption", 0, "采矿机设计图"},
-    prerequisites = {"采矿机调度"},
+    prerequisites = {"采矿机传送接收"},
     count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
@@ -765,12 +835,42 @@ local prototype = gameplay.register.prototype
     },
   }
 
+  prototype "电线杆传送接收" {
+    desc = "建造中心接收废墟的物资传送",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"unknown", 0, 6},
+    task_params = {ui = "item_transfer_place", building = "建造中心"},
+    count = 1,
+    prerequisites = {"物资传送准备"},
+    guide_focus = {
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 121,
+        y = 122,
+        w = 4,
+        h = 4,
+        show_arrow = true,
+      },
+      {
+        camera_x = 121,
+        camera_y = 122,
+      },
+    },
+    tips_pic = {
+      "textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "建造中心接收废墟的物资传送", icon = "textures/construct/industry.texture"},
+    },
+  }
+
 prototype "建造电线杆" {
     desc = "建造5个电线杆",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_consumption", 0, "电线杆设计图"},
-    prerequisites = {"电线杆调度"},
+    prerequisites = {"电线杆传送接收"},
     count = 5,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
