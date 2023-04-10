@@ -113,6 +113,9 @@ local DIRECTION <const> = {
 function roadnet:editor_build()
     --
     local gameplay_world = gameplay_core.get_world()
+    if not next(global.roadnet) then
+        return
+    end
     gameplay_world:roadnet_reset(global.roadnet)
 
     local iendpoint = gameplay.interface "endpoint"

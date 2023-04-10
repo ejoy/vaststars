@@ -2,7 +2,7 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local pickup_mb = world:sub {"pickup"}
+local pickup_gesture_mb = world:sub {"pickup_gesture"}
 
 local pickup_mapping_sys = ecs.system "pickup_mapping_system"
 local ipickup_mapping = ecs.interface "ipickup_mapping"
@@ -17,7 +17,7 @@ end
 
 function pickup_mapping_sys.after_pickup()
     local binding
-    for _, eid, x, y in pickup_mb:unpack() do
+    for _, eid, x, y in pickup_gesture_mb:unpack() do
         binding = bindings[eid]
         if binding then
             world:pub {"pickup_mapping", eid, x, y, binding}

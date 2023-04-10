@@ -10,10 +10,7 @@ return function(gameplay_world)
     if science.current_tech then
         if gameplay_world:is_researched(science.current_tech.name) then
             if science.current_tech.selected_tips then
-                for _, tip in ipairs(science.current_tech.selected_tips) do
-                    tip:remove()
-                end
-                science.current_tech.selected_tips = {}
+                world:pub {"focus_tips", "close", science.current_tech}
             end
             iscience.update_tech_list(gameplay_world)
             iui.update("construct.rml", "update_tech")

@@ -36,7 +36,8 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"哔哩..无人机真是听话的机器..请操作附近的{/color:4bd0ff 建造中心}建造{/g 采矿机}..(期待)", "textures/guide/guide-6.texture"},
+            {"哔哩..使用{/color:4bd0ff 传送功能}可将物资传送至指定建筑..请设置{/g 抽水泵残骸}为{/color:4bd0ff 传送起点}..(期待)", "textures/guide/guide-6.texture"},
+            {"哔哩..再将{/g 建造中心}作为{/color:4bd0ff 传送终点}开始传送..(期待)", "textures/guide/guide-6.texture"},
         },
         narrative_end = {
             -- pop_chapter = {"第一阶段","物流网络"},
@@ -194,7 +195,7 @@ local guide = {
             {"我们需要对这个星球进行全面的科学考察，让我们建造并放置一座{/g 科研中心}..哔哩..(期待)", "textures/guide/guide-2.texture"},
         },
         narrative_end = {
-            guide_progress = 10,
+            guide_progress = 10,--10
             task = {
                 "放置科研中心",
             }
@@ -235,6 +236,23 @@ local guide = {
         },
         prerequisites = {
             "放置科研中心",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
+            {"{/color:4bd0ff 组装机}已经就位,只要不断提供原料组装机就可以不断地自动化生产..哔哩..（期待)", "textures/guide/guide-3.texture"},
+            {"在{/color:4bd0ff 组装机}的{/g 设置}里选择{/g 地质科技包1}进行批量生产吧..哔哩..（期待)", "textures/guide/guide-3.texture"},
+        },
+        narrative_end = {
+            guide_progress = 30,
+            task = {
+                "科技包产线搭建",
+            }
+        },
+        prerequisites = {
+            "放置组装机",
         },
 	},
 
@@ -284,6 +302,23 @@ local guide = {
         },
         prerequisites = {
             "道路设计",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
+            {"我们需要以{/g 指挥中心}为起点修建一条通往{/g 铁矿}的{/color:4bd0ff 道路}..哔哗..(期待)", "textures/guide/guide-2.texture"},
+            {"{/color:4bd0ff 道路}可以通行{/g 运输车辆},这样可以大大提高我们远程物流的效率..哔哗..(高兴)", "textures/guide/guide-2.texture"},
+        },
+        narrative_end = {
+            guide_progress = 30,
+            task = {
+                "通向铁矿",
+            }
+        },
+        prerequisites = {
+            "放置修路站",
         },
 	},
 

@@ -9,7 +9,6 @@ local iprototype = require "gameplay.interface.prototype"
 local imodifier = ecs.import.interface "ant.modifier|imodifier"
 local icanvas = ecs.require "engine.canvas"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
-
 local CONSTRUCT_COLOR_INVALID <const> = math3d.constant "null"
 
 local function set_position(self, position)
@@ -73,9 +72,12 @@ local function modifier(self, opt, ...)
     imodifier[opt](self.srt_modifier, ...)
 end
 
-local function add_canvas(self, type, items)
+local function add_canvas(self, type, ...)
     self:del_canvas(type)
+    self.canvas_cache[type] = {...}
     self.canvas_id[type] = self.id
+
+    local items = self.canvas_cache[type][1](table.unpack(self.canvas_cache[type], 2))
     for _, t in ipairs(items) do
         icanvas.add_item(type, self.id, table.unpack(t))
     end
@@ -87,6 +89,35 @@ local function del_canvas(self, type)
     end
     icanvas.remove_item(type, self.canvas_id[type])
     self.canvas_id[type] = nil
+    self.canvas_cache[type] = self.id
+end
+
+local function mod_canvas(self, x, y, srt)
+    do
+        local itype = icanvas.types().ICON
+        icanvas.remove_item(itype, self.canvas_id[itype])
+        if self.canvas_cache[itype] then
+            local f = self.canvas_cache[itype][1]
+            self.canvas_cache[itype][3] = x
+            self.canvas_cache[itype][4] = y
+            local items = f(table.unpack(self.canvas_cache[itype], 2))
+            for _, t in ipairs(items) do
+                icanvas.add_item(itype, self.id, table.unpack(t))
+            end
+        end
+    end
+    do
+        local itype = icanvas.types().BUILDING_BASE
+        icanvas.remove_item(itype, self.canvas_id[itype])
+        if self.canvas_cache[itype] then
+            local f = self.canvas_cache[itype][1]
+            self.canvas_cache[itype][2] = srt
+            local items = f(table.unpack(self.canvas_cache[itype], 2))
+            for _, t in ipairs(items) do
+                icanvas.add_item(itype, self.id, table.unpack(t))
+            end
+        end
+    end
 end
 
 local function get_position(self)
@@ -119,6 +150,7 @@ return function (init)
         group_id = init.group_id,
         slots = {}, -- slot_name -> model
         canvas_id = {}, -- type -> canvas_id
+        canvas_cache = {}, -- type -> {func, ...}
 
         game_object = game_object,
         srt_modifier = imodifier.create_bone_modifier(game_object.hitch_entity_object.id, init.group_id, "/pkg/vaststars.resources/glb/animation/Interact_build.glb|animation.prefab", "Bone"), -- TODO
@@ -136,6 +168,7 @@ return function (init)
         modifier = modifier,
         add_canvas = add_canvas,
         del_canvas = del_canvas,
+        mod_canvas = mod_canvas,
         has_animation = has_animation,
     }
     return vsobject

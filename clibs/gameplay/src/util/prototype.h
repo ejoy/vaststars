@@ -153,11 +153,7 @@ namespace prototype {
             return std::visit([&](auto&& arg)->R const* {
                 using T = std::decay_t<decltype(arg)>;
                 if constexpr (std::is_same_v<T, std::string_view>) {
-                    if (arg.size() == sizeof(R)) {
-                        return reinterpret_cast<R const*>(arg.data());
-                    }
-                    error(w, "[%d].%s limit exceeded.", id, name);
-                    std::unreachable();
+                    return reinterpret_cast<R const*>(arg.data());
                 }
                 else {
                     error(w, "[%d].%s invalid type.", id, name);

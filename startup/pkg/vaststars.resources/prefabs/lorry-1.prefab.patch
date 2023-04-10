@@ -3,13 +3,13 @@ data:
   efk:
     auto_play: false
     loop: false
-    path: /pkg/vaststars.resources/effect/efk/chimney_smoke.efk
+    path: /pkg/vaststars.resources/effect/efk/mars-truck_smoke.efk
     speed: 1
     visible: true
   name: work
   scene:
-    s: {2, 2, 2}
-    t: {0, 30.700000762939453, 0}
+    s: {3, 3, 3}
+    t: {0, 0, -3}
   tag:
     effect
 policy:

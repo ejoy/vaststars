@@ -8,6 +8,9 @@ local iprototype = require "gameplay.interface.prototype"
 local vsobject_manager = ecs.require "vsobject_manager"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 
+local math3d    = require "math3d"
+local mu = import_package "ant.math".util
+
 local set_recipe_mb = mailbox:sub {"set_recipe"}
 local set_item_mb = mailbox:sub {"set_item"}
 local close_mb = mailbox:sub {"close"}
@@ -192,9 +195,6 @@ local function __item_transfer_update(datamodel, object_id)
             local e = gameplay_core.get_entity(assert(object.gameplay_eid))
             movable_items, movable_items_hash = item_transfer.get_movable_items(e)
             assert(movable_items and movable_items_hash)
-            if datamodel.item_transfer_subscribe == true then
-                datamodel.item_transfer_subscribe = #(movable_items or {}) > 0
-            end
         end
     end
 
@@ -462,18 +462,18 @@ function M:stage_ui_update(datamodel, object_id)
         local movable_items, movable_items_hash, placeable_items
         do
             assert(global.item_transfer_src)
-            local object = assert(objects:get(global.item_transfer_src))
-            local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+            local src_object = assert(objects:get(global.item_transfer_src))
+            local e = gameplay_core.get_entity(assert(src_object.gameplay_eid))
             movable_items, movable_items_hash = item_transfer.get_movable_items(e)
             assert(movable_items and movable_items_hash)
         end
-
+        local dst_object = assert(objects:get(object_id))
         do
-            local object = assert(objects:get(object_id))
-            local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+            local e = gameplay_core.get_entity(assert(dst_object.gameplay_eid))
             placeable_items = assert(item_transfer.get_placeable_items(e))
         end
 
+        local items = {}
         for _, dst in ipairs(placeable_items) do
             local i = movable_items_hash[dst.item]
             if i then
@@ -481,8 +481,16 @@ function M:stage_ui_update(datamodel, object_id)
                 local count = math.min(dst.count, src.count)
                 assert(ichest.chest_pickup(gameplay_core.get_world(), src.chest, src.item, count))
                 ichest.chest_place(gameplay_core.get_world(), dst.chest, dst.item, count)
+                local typeobject = iprototype.queryById(dst.item)
+                items[#items + 1] = {icon = typeobject.icon, name = typeobject.name, count = count}
             end
         end
+        local mq = w:first("main_queue camera_ref:in render_target:in")
+        local ce <close> = w:entity(mq.camera_ref, "camera:in")
+        local vp = ce.camera.viewprojmat
+        local vr = mq.render_target.view_rect
+        local sp = math3d.totable(mu.world_to_screen(vp, vr, dst_object.srt.t))
+        iui.open({"message_pop.rml"}, {left = sp[1]..'px', top = sp[2]..'px', show_id = "item", items = items})
     end
 end
 

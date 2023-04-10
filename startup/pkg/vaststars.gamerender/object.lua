@@ -132,10 +132,10 @@ local function flush()
 
             -- display recipe icon of assembling machine
             if outer.recipe then
-                vsobject:add_canvas(icanvas.types().ICON, get_assembling_canvas_items(outer, outer.x, outer.y, w, h))
+                vsobject:add_canvas(icanvas.types().ICON, get_assembling_canvas_items, outer, outer.x, outer.y, w, h)
             end
             if outer.fluid_icon and type(outer.fluid_name) == "string" and outer.fluid_name ~= "" then
-                vsobject:add_canvas(icanvas.types().ICON, get_fluid_canvas_items(outer, outer.x, outer.y, w, h))
+                vsobject:add_canvas(icanvas.types().ICON, get_fluid_canvas_items, outer, outer.x, outer.y, w, h)
             end
         else
             for k in pairs(outer.__change_keys) do
@@ -150,15 +150,15 @@ local function flush()
             -- refresh recipe icon of assembling machine when recipe changed or direction changed
             if (outer.__change_keys.recipe or outer.__change_keys.dir) and not iprototype.has_type(typeobject.type, "mining") and not iprototype.has_type(typeobject.type, "chimney") and iprototype.has_type(typeobject.type, "assembling") and not typeobject.recipe then
                 if outer.recipe then
-                    vsobject:add_canvas(icanvas.types().ICON, get_assembling_canvas_items(outer, outer.x, outer.y, w, h))
+                    vsobject:add_canvas(icanvas.types().ICON, get_assembling_canvas_items, outer, outer.x, outer.y, w, h)
                 end
             end
             if outer.__change_keys.fluid_icon and type(outer.fluid_name) == "string" and outer.fluid_name ~= "" then
-                vsobject:add_canvas(icanvas.types().ICON, get_fluid_canvas_items(outer, outer.x, outer.y, w, h))
+                vsobject:add_canvas(icanvas.types().ICON, get_fluid_canvas_items, outer, outer.x, outer.y, w, h)
             end
         end
         if typeobject.building_base ~= false then
-            vsobject:add_canvas(icanvas.types().BUILDING_BASE, get_building_base_canvas_items(outer.srt, w, h))
+            vsobject:add_canvas(icanvas.types().BUILDING_BASE, get_building_base_canvas_items, outer.srt, w, h)
         end
 
         if outer.PREPARE then
@@ -243,7 +243,6 @@ local function coord(object, x, y, coord_system)
     coord_system = coord_system or terrain
     assert(object)
     assert(object.prototype_name ~= "")
-    local vsobject = assert(vsobject_manager:get(object.id))
     local typeobject = iprototype.queryByName(object.prototype_name)
     local position = coord_system:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, object.dir))
     if not position then
@@ -251,7 +250,7 @@ local function coord(object, x, y, coord_system)
         return
     end
     object.x, object.y = x, y
-    vsobject:set_position(position)
+    object.srt.t = position
 end
 
 return {

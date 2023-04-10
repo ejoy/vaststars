@@ -13,7 +13,7 @@ namespace roadnet {
         network() = default;
 
         std::map<loction, uint8_t> getMap() const;
-        void setMap(const std::map<loction, uint8_t>& mapData);
+        void updateMap(const std::map<loction, uint8_t>& mapData);
         uint32_t reloadMap();
         lorryid    createLorry(world& w, uint16_t classid);
         void       destroyLorry(world& w, lorryid id);
@@ -24,16 +24,15 @@ namespace roadnet {
         lorry&      Lorry(lorryid id);
         lorryid&    LorryInRoad(uint32_t index);
         road::endpoint& Endpoint(endpointid id);
-        endpointid EndpointId(loction loc, direction dir);
+        endpointid EndpointId(loction loc);
 
-        road_coord coordConvert(map_coord  mc);
-        road_coord coordConvert(loction l, direction dir);
-        map_coord  coordConvert(road_coord rc);
+         std::optional<road_coord> coordConvert(map_coord  mc);
+        std::optional<map_coord> coordConvert(road_coord rc);
 
-        dynarray<road::crossroad>   crossAry;
-        dynarray<road::straight>    straightAry;
-        std::vector<road::endpoint> endpointVec;
-        std::map<std::pair<loction, direction>, endpointid> endpointMap;
+        dynarray<road::crossroad> crossAry;
+        dynarray<road::straight>  straightAry;
+        std::vector<road::endpoint>  endpointVec;
+        std::map<loction, endpointid> endpointMap;
         dynarray<lorryid>           lorryAry;
         std::vector<lorry>          lorryVec;
         std::vector<lorryid>        lorryFreeList;

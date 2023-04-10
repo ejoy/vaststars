@@ -158,7 +158,8 @@ local function create_heap_items(glbname, meshname, scene, dimsize, num)
             heapmesh = {
                 curSideSize = dimsize,  -- 当前 x y z方向最大堆叠数量均为curSideSize = 3，最大堆叠数为3*3*3 = 27
                 curHeapNum = num,       -- 当前堆叠数为10，以x->z->y轴的正方向顺序堆叠。最小为0，最大为10，超过边界值时会clamp到边界值。
-                glbName = glbname       -- 当前entity对应的glb名字，用于筛选
+                glbName = glbname,       -- 当前entity对应的glb名字，用于筛选
+                interval = {0, 0, 0}
             }
         },
     }

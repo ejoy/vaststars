@@ -29,6 +29,11 @@ local EDITOR_CACHE_NAMES = {"CONFIRM", "CONSTRUCTED"}
 local create_station_builder = ecs.require "editor.stationbuilder"
 local interval_call = ecs.require "engine.interval_call"
 local item_transfer = require "item_transfer"
+local logistic_coord = ecs.require "terrain"
+local iani = ecs.import.interface "ant.animation|ianimation"
+local ivs = ecs.import.interface "ant.scene|ivisible_state"
+local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+local selected_boxes = ecs.require "selected_boxes"
 
 local rotate_mb = mailbox:sub {"rotate"} -- construct_pop.rml -> 旋转
 local build_mb = mailbox:sub {"build"}   -- construct_pop.rml -> 修建
@@ -44,13 +49,14 @@ local construct_entity_mb = mailbox:sub {"construct_entity"} -- 建造 entity
 local click_techortaskicon_mb = mailbox:sub {"click_techortaskicon"}
 local load_resource_mb = mailbox:sub {"load_resource"}
 local single_touch_mb = world:sub {"single_touch"}
-local move_mb = mailbox:sub {"move"}
 local move_finish_mb = mailbox:sub {"move_finish"}
 local builder_back_mb = mailbox:sub {"builder_back"}
 local construction_center_place_mb = mailbox:sub {"construction_center_place"}
-local pickup_mb = world:sub {"pickup"}
+local pickup_gesture_mb = world:sub {"pickup_gesture"}
+local pickup_long_press_gesture_mb = world:sub {"pickup_long_press_gesture"}
 local handle_pickup = true
 local single_touch_move_mb = world:sub {"single_touch", "MOVE"}
+local focus_tips_event = world:sub {"focus_tips"}
 local builder
 local item_transfer_dst
 
@@ -227,6 +233,66 @@ function M:stage_ui_update(datamodel)
     end
 end
 
+local function open_focus_tips(tech_node)
+    local focus = tech_node.detail.guide_focus
+    if not focus then
+        return
+    end
+    local width, height
+    for _, nd in ipairs(focus) do
+        if nd.prefab then
+            if not width or not height then
+                width, height = nd.w, nd.h
+            end
+            if not tech_node.selected_tips then
+                tech_node.selected_tips = {}
+            end
+
+            local prefab
+            local center = logistic_coord:get_position_by_coord(nd.x, nd.y, 1, 1)
+            if nd.show_arrow then
+                prefab = ecs.create_instance("/pkg/vaststars.resources/prefabs/arrow-guide.prefab")
+                prefab.on_ready = function(inst)
+                    local children = inst.tag["*"]
+                    local re <close> = w:entity(children[1])
+                    iom.set_position(re, center)
+                    for _, eid in ipairs(children) do
+                        local e <close> = w:entity(eid, "animation_birth?in visible_state?in")
+                        if e.animation_birth then
+                            iani.play(eid, {name = e.animation_birth, loop = true})
+                        elseif e.visible_state then
+                            ivs.set_state(e, "cast_shadow", false)
+                        end
+                    end
+                end
+                function prefab:on_message() end
+                function prefab:on_update() end
+                world:create_object(prefab)
+            end
+            tech_node.selected_tips[#tech_node.selected_tips + 1] = {selected_boxes(nd.prefab, center, nd.w, nd.h), prefab}
+        elseif nd.camera_x and nd.camera_y then
+            camera.focus_on_position(logistic_coord:get_position_by_coord(nd.camera_x, nd.camera_y, width, height))
+        end
+    end
+end
+
+local function close_focus_tips(tech_node)
+    local selected_tips = tech_node.selected_tips
+    if not selected_tips then
+        return
+    end
+    for _, tip in ipairs(selected_tips) do
+        tip[1]:remove()
+        if tip[2] then
+            local children = tip[2].tag["*"]
+            for _, eid in ipairs(children) do
+               w:remove(eid)
+            end
+        end
+    end
+    tech_node.selected_tips = {}
+end
+
 function M:stage_camera_usage(datamodel)
     for _, delta in dragdrop_camera_mb:unpack() do
         if builder then
@@ -256,28 +322,6 @@ function M:stage_camera_usage(datamodel)
         handle_pickup = false
     end
 
-    for _, _, _, object_id in move_mb:unpack() do
-        if builder then
-            builder:clean(datamodel)
-        end
-
-        idetail.unselected()
-        ieditor:revert_changes({"TEMPORARY"})
-
-        local object = assert(objects:get(object_id))
-        local prototype_name = object.prototype_name
-        builder = create_movebuilder(object_id)
-
-        local typeobject = iprototype.queryByName(prototype_name)
-        builder:new_entity(datamodel, typeobject)
-        self:flush()
-        handle_pickup = false
-    end
-
-    for _ in move_finish_mb:unpack() do
-        handle_pickup = true
-    end
-
     for _, state in single_touch_mb:unpack() do
         if state == "END" or state == "CANCEL" then
             if builder then
@@ -302,7 +346,7 @@ function M:stage_camera_usage(datamodel)
     end
 
     -- 点击其它建筑 或 拖动时, 将弹出窗口隐藏
-    for _, _, x, y in pickup_mb:unpack() do
+    for _, _, x, y in pickup_gesture_mb:unpack() do
         if not handle_pickup then
             goto continue
         end
@@ -324,6 +368,54 @@ function M:stage_camera_usage(datamodel)
             break
         end
         ::continue::
+    end
+
+    for _, _, x, y in pickup_long_press_gesture_mb:unpack() do
+        if not handle_pickup then
+            goto continue
+        end
+
+        local object = _get_object(x, y)
+        if object then -- object may be nil, such as when user click on empty space
+            local prototype_name = object.prototype_name
+            local typeobject = iprototype.queryByName(prototype_name)
+            if typeobject.move == false then
+                goto continue
+            end
+
+            iui.close("building_arc_menu.rml")
+            iui.close("detail_panel.rml")
+            if builder then
+                builder:clean(datamodel)
+            end
+
+            idetail.unselected()
+            ieditor:revert_changes({"TEMPORARY"})
+            builder = create_movebuilder(object.id)
+
+            builder:new_entity(datamodel, typeobject)
+            self:flush()
+            handle_pickup = false
+            leave = false
+        else
+            idetail.unselected()
+            item_transfer_dst = nil
+        end
+
+        if leave then
+            world:pub {"ui_message", "leave"}
+            leave = false
+            break
+        end
+        ::continue::
+    end
+
+    for _ in move_finish_mb:unpack() do
+        if builder then
+            builder:clean(datamodel)
+            builder = nil
+        end
+        handle_pickup = true
     end
 
     for _ in single_touch_move_mb:unpack() do
@@ -371,6 +463,14 @@ function M:stage_camera_usage(datamodel)
         builder:new_entity(datamodel, typeobject)
         self:flush()
         handle_pickup = false
+    end
+    -- TODO: 多个UI的stage_ui_update中会产生focus_tips_event事件，focus_tips_event处理逻辑涉及到要修改相机位置，所以暂时放在这里处理
+    for _, action, tech_node in focus_tips_event:unpack() do
+        if action == "open" then
+            open_focus_tips(tech_node)
+        elseif action == "close" then
+            close_focus_tips(tech_node)
+        end
     end
 
     item_transfer_placement_interval(datamodel)

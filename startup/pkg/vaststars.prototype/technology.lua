@@ -666,11 +666,33 @@ local prototype = gameplay.register.prototype
     task_params = {recipe = "采矿机打印"},
     count = 1,
     prerequisites = {"迫降火星"},
+    guide_focus = {
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 121,
+        y = 122,
+        w = 4,
+        h = 4,
+        show_arrow = true,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 128,
+        y = 122,
+        w = 4.5,
+        h = 4.5,
+        show_arrow = true,
+      },
+      {
+        camera_x = 118,
+        camera_y = 119,
+      },
+    },
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "无人机仓库中选择采矿机设计图", icon = "textures/construct/industry.texture"},
+      { desc = "建造中心选择采矿机打印", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -706,21 +728,14 @@ local prototype = gameplay.register.prototype
     guide_focus = {
       {
         prefab = "prefabs/selected-box-guide.prefab",
-        x = 115,
-        y = 130,
+        x = 113,
+        y = 127,
         w = 3,
         h = 3,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
-        x = 105,
-        y = 130,
-        w = 3,
-        h = 3,
-      },
-      {
-        camera_x = 115,
-        camera_y = 130,
+        camera_x = 113,
+        camera_y = 129,
       },
     },
     sign_desc = {
@@ -739,8 +754,22 @@ local prototype = gameplay.register.prototype
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
+    guide_focus = {
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 118,
+        y = 119,
+        w = 5,
+        h = 5,
+        show_arrow = true,
+      },
+      {
+        camera_x = 118,
+        camera_y = 119,
+      },
+    },
     sign_desc = {
-      { desc = "无人机仓库中选择电线杆设计图", icon = "textures/construct/industry.texture"},
+      { desc = "建造中心选择电线杆打印", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -774,6 +803,40 @@ prototype "建造电线杆" {
       "textures/task_tips_pic/task_place_pole1.texture",
       "textures/task_tips_pic/task_place_pole2.texture",
     },
+    guide_focus = {
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 116,
+        y = 114,
+        w = 1,
+        h = 1,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 116,
+        y = 122,
+        w = 1,
+        h = 1,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 116,
+        y = 130,
+        w = 1,
+        h = 1,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 124,
+        y = 130,
+        w = 1,
+        h = 1,
+      },
+      {
+        camera_x = 118,
+        camera_y = 119,
+      },
+    },
     sign_desc = {
       { desc = "放置4个铁制电线杆构成电网", icon = "textures/construct/industry.texture"},
     },
@@ -790,8 +853,22 @@ prototype "建造电线杆" {
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
+    guide_focus = {
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 118,
+        y = 119,
+        w = 5,
+        h = 5,
+        show_arrow = true,
+      },
+      {
+        camera_x = 118,
+        camera_y = 119,
+      },
+    },
     sign_desc = {
-      { desc = "无人机仓库中选择无人机仓库设计图", icon = "textures/construct/industry.texture"},
+      { desc = "建造仓库选择无人机仓库打印", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -814,18 +891,52 @@ prototype "建造电线杆" {
   }
 
     prototype "放置无人机仓库" {
-    desc = "放置5个无人机仓库",
+    desc = "放置4个无人机仓库",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "无人机仓库"},
     prerequisites = {"建造无人机仓库"},
-    count = 5,
+    count = 4,
     tips_pic = {
       "textures/task_tips_pic/task_place_pole1.texture",
       "textures/task_tips_pic/task_place_pole2.texture",
     },
+    guide_focus = {
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 122,
+        y = 125,
+        w = 1.5,
+        h = 1.5,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 122,
+        y = 129,
+        w = 1.5,
+        h = 1.5,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 117,
+        y = 125,
+        w = 1.5,
+        h = 1.5,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 117,
+        y = 129,
+        w = 1.5,
+        h = 1.5,
+      },
+      {
+        camera_x = 120,
+        camera_y = 128,
+      },
+    },
     sign_desc = {
-      { desc = "放置5个无人机仓库", icon = "textures/construct/industry.texture"},
+      { desc = "放置4个无人机仓库", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -858,6 +969,19 @@ prototype "建造电线杆" {
     tips_pic = {
       "textures/task_tips_pic/task_click_build.texture",
     },
+    guide_focus = {
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 125,
+        y = 128,
+        w = 3,
+        h = 3,
+      },
+      {
+        camera_x = 125,
+        camera_y = 128,
+      },
+    },
     sign_desc = {
       { desc = "使用“建造”放置1座科研中心", icon = "textures/construct/industry.texture"},
     },
@@ -873,7 +997,7 @@ prototype "建造电线杆" {
     },
     ingredients = {
     },
-    count = 5,
+    count = 10,
     time = "1.2s",
     prerequisites = {"放置科研中心"},
     sign_desc = {
@@ -911,8 +1035,47 @@ prototype "建造电线杆" {
     tips_pic = {
       "textures/task_tips_pic/task_click_build.texture",
     },
+    guide_focus = {
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 119,
+        y = 125,
+        w = 2.5,
+        h = 2.5,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 119,
+        y = 129,
+        w = 2.5,
+        h = 2.5,
+      },
+      {
+        camera_x = 119,
+        camera_y = 126,
+      },
+    },
     sign_desc = {
       { desc = "放置3台组装机", icon = "textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "科技包产线搭建" {
+    desc = "选择地质科技包配方",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"unknown", 0, 3},
+    task_params = {recipe = "地质科技包1"},
+    count = 1,
+    prerequisites = {"放置组装机"},
+    tips_pic = {
+      "textures/task_tips_pic/task_produce_geopack3.texture",
+      "textures/task_tips_pic/task_produce_geopack4.texture",
+      "textures/task_tips_pic/task_produce_geopack5.texture",
+      "textures/task_tips_pic/task_produce_geopack6.texture",
+    },
+    sign_desc = {
+      { desc = "在组装机里选择地质科技包配方", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -921,7 +1084,7 @@ prototype "建造电线杆" {
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_production", 0, "地质科技包"},
-    prerequisites = {"放置组装机"},
+    prerequisites = {"科技包产线搭建"},
     count = 8,
     tips_pic = {
       "textures/task_tips_pic/task_produce_geopack3.texture",
@@ -950,12 +1113,31 @@ prototype "建造电线杆" {
     time = "1s"
   }
 
+  prototype "石砖产线搭建" {
+    desc = "选择地质科技包配方",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"unknown", 0, 3},
+    task_params = {recipe = "石砖"},
+    count = 1,
+    prerequisites = {"石头处理1"},
+    tips_pic = {
+      "textures/task_tips_pic/task_produce_geopack3.texture",
+      "textures/task_tips_pic/task_produce_geopack4.texture",
+      "textures/task_tips_pic/task_produce_geopack5.texture",
+      "textures/task_tips_pic/task_produce_geopack6.texture",
+    },
+    sign_desc = {
+      { desc = "在组装机里选择石砖配方", icon = "textures/construct/industry.texture"},
+    },
+  }
+
   prototype "生产石砖" {
     desc = "挖掘足够的碎石可以开始进行锻造",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_production", 0, "石砖"},
-    prerequisites = {"石头处理1"},
+    prerequisites = {"石砖产线搭建"},
     count = 10,
     tips_pic = {
       "textures/task_tips_pic/task_produce_ore3.texture",
@@ -977,8 +1159,8 @@ prototype "建造电线杆" {
     ingredients = {
         {"地质科技包", 1},
     },
-    count = 15,
-    time = "1s"
+    count = 12,
+    time = "1.5s"
   }
 
   prototype "道路设计" {
@@ -1027,17 +1209,296 @@ prototype "建造电线杆" {
   }
 
   prototype "通向铁矿" {
-    desc = "修建20节公路",
+    desc = "修建35节公路",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"unknown", 0, 1},
     task_params = {},
     prerequisites = {"放置修路站"},
-    count = 20,
+    count = 35,
     tips_pic = {
       "textures/task_tips_pic/task_place_road1.texture",
       "textures/task_tips_pic/task_place_road2.texture",
       "textures/task_tips_pic/task_place_road3.texture",
+    },
+    guide_focus = {
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 126,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 127,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 128,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 129,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 130,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 131,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 132,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 133,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 134,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 135,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 136,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 137,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 138,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 139,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 140,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 141,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 142,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 143,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 144,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 145,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 146,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 147,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 148,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 149,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 150,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 151,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 152,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 153,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 154,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 155,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 156,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 157,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 158,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 159,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 160,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 161,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 162,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 163,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 164,
+        y = 124,
+        w = 0.25,
+        h = 0.25,
+      },
+      {
+        camera_x = 119,
+        camera_y = 126,
+      },
     },
     sign_desc = {
       { desc = "修建道路从指挥中心到东边的铁矿", icon = "textures/construct/industry.texture"},

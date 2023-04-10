@@ -50,16 +50,6 @@ namespace roadnet::road {
         return (CrossMap[(uint8_t)a] & (1 << (uint16_t)b)) != 0;
     }
 
-    static constexpr direction reverse(direction dir) {
-        switch (dir) {
-        case direction::l: return direction::r;
-        case direction::t: return direction::b;
-        case direction::r: return direction::l;
-        case direction::b: return direction::t;
-        case direction::n: default: return direction::n;
-        }
-    }
-
     bool crossroad::hasNeighbor(direction dir) const {
         return neighbor[(uint8_t)dir] != roadid::invalid();
     }
@@ -72,30 +62,6 @@ namespace roadnet::road {
     void crossroad::setRevNeighbor(direction dir, roadid id) {
         assert(rev_neighbor[(uint8_t)dir] == roadid::invalid());
         rev_neighbor[(uint8_t)dir] = id;
-    }
-
-    bool crossroad::hasLorry(network& w, uint16_t offset) {
-        cross_type type = cross_type(offset);
-        if (cross_lorry[0] && cross_lorry[1]) {
-            return false;
-        }
-        if (!cross_lorry[0] && !cross_lorry[1]) {
-            return true;
-        }
-        if (!cross_lorry[0]) {
-            return !isCross(cross_type(offset), cross_status[0]);
-        }
-        return !isCross(cross_type(offset), cross_status[1]);
-    }
-
-    void crossroad::delLorry(network& w, uint16_t offset) {
-        cross_type type = cross_type(offset);
-        for (size_t i = 0; i < 2; ++i) {
-            if (cross_lorry[i] && cross_status[i] == type) {
-                cross_lorry[i] = lorryid::invalid();
-                return;
-            }
-        }
     }
 
     lorryid& crossroad::waitingLorry(network& w, direction dir) {
@@ -121,7 +87,7 @@ namespace roadnet::road {
         }
         for (uint8_t ii = 0; ii < 4; ++ii) {
             uint8_t i = (ii + (ti>>4)) % 4; // swap the order of the lorries every 16 ticks
-            if(!rev_neighbor[i]) {
+            if (!rev_neighbor[i]) {
                 continue;
             }
             lorryid id = waitingLorry(w, direction(i));

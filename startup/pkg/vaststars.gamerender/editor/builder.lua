@@ -17,7 +17,7 @@ local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local global = require "global"
 
-local function check_construct_detector(self, prototype_name, x, y, dir)
+local function check_construct_detector(self, prototype_name, x, y, dir, exclude_object_id)
     dir = dir or DEFAULT_DIR
     local typeobject = iprototype.queryByName(prototype_name)
     local w, h = iprototype.rotate_area(typeobject.area, dir)
@@ -26,7 +26,8 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
         local found_mineral
         for i = 0, w - 1 do
             for j = 0, h - 1 do
-                if objects:coord(x + i, y + j, EDITOR_CACHE_NAMES) then
+                local object = objects:coord(x + i, y + j, EDITOR_CACHE_NAMES)
+                if object and object.id ~= exclude_object_id then
                     return false
                 end
 
