@@ -1227,6 +1227,7 @@ prototype "无人机仓库打印" {
     recipe_icon =  "textures/construct/broken-drone-depot.texture",
     ingredients = {
         {"无人机仓库设计图", 1},
+        {"碎石", 3},
     },
     results = {
         {"无人机仓库", 1},
@@ -1291,6 +1292,7 @@ prototype "科研中心打印" {
     recipe_icon =  "textures/construct/broken-lab.texture",
     ingredients = {
         {"科研中心设计图", 1},
+        {"碎石", 10},
     },
     results = {
         {"科研中心I", 1},
@@ -1403,6 +1405,7 @@ prototype "组装机打印" {
     recipe_icon =  "textures/construct/broken-assembler.texture",
     ingredients = {
         {"组装机设计图", 1},
+        {"碎石", 5},
     },
     results = {
         {"组装机I", 1},
