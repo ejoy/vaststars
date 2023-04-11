@@ -59,9 +59,8 @@ namespace lua_world {
             file_write(f, kv);
         }
     }
-    template <typename T>
-        requires (is_instantiation_of<T, std::pair>)
-    void file_read(FILE* f, T& t) {
+    template <typename First, typename Second>
+    void file_read_pair(FILE* f, std::pair<First, Second>& t) {
         file_read(f, const_cast<std::add_lvalue_reference_t<std::remove_const_t<First>>>(t.first));
         file_read(f, t.second);
     }
@@ -71,7 +70,8 @@ namespace lua_world {
         t.clear();
         size_t n = file_readv<size_t>(f);
         for (size_t i = 1; i <= n; ++i) {
-            auto kv = file_readv<typename T::value_type>(f);
+            typename T::value_type kv;
+            file_read_pair(f, kv);
             t.emplace(std::move(kv));
         }
     }
