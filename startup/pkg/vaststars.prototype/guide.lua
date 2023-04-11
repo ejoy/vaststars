@@ -226,7 +226,7 @@ local guide = {
         narrative_end = {
             guide_progress = 30,
             task = {
-                "无人机平台传送接收",
+                "无人机仓库传送接收",
             }
         },
         prerequisites = {
@@ -237,7 +237,7 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"哔哩..建造{/color:4bd0ff 无人机平台}还需要额外资源{/g 碎石}....(期待)", "textures/guide/guide-1.texture"},
+            {"哔哩..建造{/color:4bd0ff 无人机仓库}还需要额外资源{/g 碎石}....(期待)", "textures/guide/guide-1.texture"},
             {"哔哩..{/color:4bd0ff 采矿机}正好开采出需要的{/g 碎石}..请前往{/color:4bd0ff 采矿机}进行{/g 传送设置}..(期待)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
@@ -247,7 +247,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "无人机平台传送接收",
+            "无人机仓库传送接收",
         },
 	},
 
@@ -287,7 +287,7 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"哔哩..将新建的{/color:4bd0ff 无人机仓库}放置在{/g 采矿机}旁边，无人机就可以运输矿石了....(轻松)", "textures/guide/guide-1.texture"},
+            {"哔哩..将新建的{/color:4bd0ff 无人机仓库}放置在{/g 采矿机}旁边，让无人机仓库储存{/color:4bd0ff 碎石}....(轻松)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
             guide_progress = 30,
@@ -305,17 +305,49 @@ local guide = {
         name = "",
 		narrative = {
             {"哔哩..矿物采集进展非常顺利，存活概率大幅提升至{/color:4bd0ff 0.3244%}..(期待)", "textures/guide/guide-2.texture"},
-            {"哔哩..勤劳的{/color:4bd0ff 无人机}再次上线..在仓库中选择运输{/g 碎石}就可以开始工作了..哔哩(高兴)", "textures/guide/guide-3.texture"},
+            {"哔哩..在{/color:4bd0ff 无人机仓库}中选择储存{/g 碎石}，无人机就会自动搬运物资了..哔哩(高兴)", "textures/guide/guide-3.texture"},
+        },
+        narrative_end = {
+            guide_progress = 30,
+            task = {
+                "无人机仓库设置",
+            }
+        },
+        prerequisites = {
+            "放置无人机仓库",
+        },
+	},
+
+
+    {
+        name = "",
+		narrative = {
             {"哔哩..让我们采集足够{/g 碎石}资源吧..哔哩(期待)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
             guide_progress = 30,
             task = {
-                "生产碎石矿",
+                "收集碎石矿",
             }
         },
         prerequisites = {
-            "放置无人机仓库",
+            "无人机仓库设置",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
+            {"哔哩..我们可以尝试在{/color:4bd0ff 无人机仓库}里进行{/g 传送设置}..(期待)", "textures/guide/guide-2.texture"},
+        },
+        narrative_end = {
+            guide_progress = 30,
+            task = {
+                "无人机仓库传送",
+            }
+        },
+        prerequisites = {
+            "收集碎石矿",
         },
 	},
 
@@ -332,7 +364,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "生产碎石矿",
+            "无人机仓库传送",
         },
 	},
 

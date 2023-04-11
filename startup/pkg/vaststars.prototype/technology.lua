@@ -405,7 +405,7 @@ prototype "建造电线杆" {
       },
     },
     sign_desc = {
-      { desc = "建造仓库选择无人机仓库打印", icon = "textures/construct/industry.texture"},
+      { desc = "建造中心选择无人机仓库打印", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -439,7 +439,7 @@ prototype "建造电线杆" {
     },
   }
 
-  prototype "无人机平台传送接收" {
+  prototype "无人机仓库传送接收" {
     desc = "建造中心接收废墟的物资传送",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
@@ -476,7 +476,7 @@ prototype "建造电线杆" {
     task = {"unknown", 0, 6},
     task_params = {ui = "item_transfer_subscribe", building = "采矿机I"},
     count = 1,
-    prerequisites = {"无人机平台传送接收"},
+    prerequisites = {"无人机仓库传送接收"},
     guide_focus = {
       {
         prefab = "prefabs/selected-box-guide.prefab",
@@ -495,7 +495,7 @@ prototype "建造电线杆" {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "无人机平台传送接收", icon = "textures/construct/industry.texture"},
+      { desc = "无人机仓库传送接收", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -597,13 +597,29 @@ prototype "建造电线杆" {
     },
   }
 
+  prototype "无人机仓库设置" {
+    desc = "无人机仓库选择碎石",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"unknown", 0, 5},                          
+    task_params = {item = "碎石"},
+    count = 1,
+    prerequisites = {"放置无人机仓库"},
+    tips_pic = {
+      "textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "无人机仓库选择碎石", icon = "textures/construct/industry.texture"},
+    },
+  }
 
-  prototype "生产碎石矿" {
+
+  prototype "收集碎石矿" {
     desc = "挖掘足够的碎石可以开始进行锻造",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_production", 0, "碎石"},
-    prerequisites = {"放置无人机仓库"},
+    prerequisites = {"无人机仓库设置"},
     count = 16,
     effects = {
        unlock_recipe = {"科研中心打印"},
@@ -617,12 +633,28 @@ prototype "建造电线杆" {
     },
   }
 
+  prototype "无人机仓库传送" {
+    desc = "无人机仓库传送设置",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"unknown", 0, 6},
+    task_params = {ui = "item_transfer_subscribe", building = "无人机仓库"},
+    count = 1,
+    prerequisites = {"收集碎石矿"},
+    tips_pic = {
+      "textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "无人机仓库传送设置", icon = "textures/construct/industry.texture"},
+    },
+  }
+
   prototype "更多无人机仓库" {
     desc = "再建造3个无人机仓库",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_consumption", 0, "无人机仓库设计图"},
-    prerequisites = {"生产碎石矿"},
+    prerequisites = {"无人机仓库传送"},
     count = 4,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
