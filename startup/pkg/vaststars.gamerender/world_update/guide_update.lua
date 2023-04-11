@@ -28,6 +28,7 @@ return function(world)
         -- hide pop ui
         iui.close("detail_panel.rml")
         iui.close("building_arc_menu.rml")
+        iui.redirect("construct.rml", "clear_pickup_id")
         -- pop guide ui
         iui.open({"guide_pop.rml"}, guide)
         iguide.set_is_in_guide(true)

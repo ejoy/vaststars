@@ -38,7 +38,7 @@ local lookup_drones = {}
 local drone_offset = 6
 local fly_height = 20
 local item_height = 15
-local function create_drone()
+local function create_drone(homepos)
     local task = {
         stage = 0,--{0,1,2}
         running = false,
@@ -133,9 +133,9 @@ local function create_drone()
             iom.set_position(exz, math3d.vector(0, pos[2], 0))
         end
     }
-    local motion_xz = create_motion_object()--create_motion_object(nil, nil, math3d.vector(home[1], 0, home[3]))
+    local motion_xz = create_motion_object(nil, nil, math3d.vector(homepos[1], 0, homepos[3]))
     task.motion_xz = motion_xz
-    local motion_y = create_motion_object(nil, nil, nil, motion_xz)--create_motion_object(nil, nil, math3d.vector(0, home[2], 0), motion_xz)
+    local motion_y = create_motion_object(nil, nil, math3d.vector(0, homepos[2], 0), motion_xz)
     task.motion_y = motion_y
     task.prefab = sampler_group:create_instance("/pkg/vaststars.resources/prefabs/drone.prefab", motion_y)
     return task
@@ -157,13 +157,17 @@ local function create_item(item, parent)
     return prefab
 end
 
+local function get_home_pos(pos)
+    return {pos[1] + 6, pos[2] + 8, pos[3] - 6}
+end
+
 return function(gameworld)
     for _, _, geid in entity_remove:unpack() do
-        local e = gameplay_core.get_entity(geid)
-        if e.hub and drone_depot[geid] then
-            drone_depot[geid]:destroy()
-            drone_depot[geid] = nil
-        end
+        -- local e = gameplay_core.get_entity(geid)
+        -- if e.hub and drone_depot[geid] then
+        --     drone_depot[geid]:destroy()
+        --     drone_depot[geid] = nil
+        -- end
     end
 
     local t = {}
@@ -178,8 +182,9 @@ return function(gameworld)
         --     print(drone.prev, drone.next, drone.maxprogress, drone.progress, drone.item)
         -- end
         if not lookup_drones[e.eid] then
-            local newDrone = create_drone()
-            lookup_drones[e.eid] = newDrone
+            local obj = get_object(drone.prev)
+            assert(obj)
+            lookup_drones[e.eid] = create_drone(get_home_pos(obj.srt.t))
         else
             local current = lookup_drones[e.eid]
             if not current.running then
@@ -202,9 +207,6 @@ return function(gameworld)
                             local srcobj = get_object(drone.prev)
                             if srcobj then
                                 current:init(srcobj.srt.t)
-                                if drone_depot[srcobj.gameplay_eid] and drone.item > 0 then
-                                    drone_depot[srcobj.gameplay_eid]:update_heap(-1)
-                                end
                             end
 
                             local key = drone.prev << 32 | drone.next
@@ -217,7 +219,7 @@ return function(gameworld)
                             -- status : go_home
                             local tohome
                             if drone.status == 7 then
-                                dest_pos = {dest_pos[1] + 6, dest_pos[2] + 8, dest_pos[3] - 6}
+                                dest_pos = get_home_pos(dest_pos)
                                 tohome = true
                             end
                             drone_task[#drone_task + 1] = {key, current, dest_pos, duration, tohome}
@@ -227,8 +229,7 @@ return function(gameworld)
                     -- status : at_home
                     local obj = get_object(drone.prev)
                     assert(obj)
-                    local pos = obj.srt.t
-                    current:gohome({pos[1] + 6, pos[2] + 8, pos[3] - 6})
+                    current:gohome(get_home_pos(obj.srt.t))
                 end
             else
                 current:update(elapsed_time)

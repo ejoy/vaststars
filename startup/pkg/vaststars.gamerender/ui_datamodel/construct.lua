@@ -45,6 +45,7 @@ local show_setting_mb = mailbox:sub {"show_setting"} -- 主界面左下角 -> �
 local technology_mb = mailbox:sub {"technology"} -- 主界面左下角 -> 科研中心
 local construct_entity_mb = mailbox:sub {"construct_entity"} -- 建造 entity
 local click_techortaskicon_mb = mailbox:sub {"click_techortaskicon"}
+local clear_pickup_id_mb = mailbox:sub {"clear_pickup_id"}
 local load_resource_mb = mailbox:sub {"load_resource"}
 local single_touch_mb = world:sub {"single_touch"}
 local move_finish_mb = mailbox:sub {"move_finish"}
@@ -503,6 +504,10 @@ function M:stage_camera_usage(datamodel)
         elseif action == "close" then
             close_focus_tips(tech_node)
         end
+    end
+
+    for _ in clear_pickup_id_mb:unpack() do
+        pickup_id = nil
     end
 
     item_transfer_placement_interval(datamodel)
