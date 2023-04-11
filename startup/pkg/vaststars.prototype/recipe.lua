@@ -1227,12 +1227,12 @@ prototype "无人机仓库打印" {
     recipe_icon =  "textures/construct/broken-drone-depot.texture",
     ingredients = {
         {"无人机仓库设计图", 1},
-        {"碎石", 3},
+        {"碎石", 2},
     },
     results = {
         {"无人机仓库", 1},
     },
-    time = "5s",
+    time = "12s",
     description = "打印无人机仓库",
 }
 

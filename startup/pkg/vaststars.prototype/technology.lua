@@ -432,13 +432,103 @@ prototype "建造电线杆" {
     },
   }
 
+  prototype "无人机平台传送接收" {
+    desc = "建造中心接收废墟的物资传送",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"unknown", 0, 6},
+    task_params = {ui = "item_transfer_place", building = "建造中心"},
+    count = 1,
+    prerequisites = {"铁箱残骸传送"},
+    guide_focus = {
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 121,
+        y = 122,
+        w = 4,
+        h = 4,
+        show_arrow = true,
+      },
+      {
+        camera_x = 121,
+        camera_y = 122,
+      },
+    },
+    tips_pic = {
+      "textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "建造中心接收废墟的物资传送", icon = "textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "采矿机传送" {
+    desc = "收集废墟物资准备传送",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"unknown", 0, 6},
+    task_params = {ui = "item_transfer_subscribe", building = "采矿机I"},
+    count = 1,
+    prerequisites = {"无人机平台传送接收"},
+    guide_focus = {
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 115,
+        y = 129,
+        w = 3,
+        h = 3,
+        show_arrow = true,
+      },
+      {
+        camera_x = 115,
+        camera_y = 129,
+      },
+    },
+    tips_pic = {
+      "textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "无人机平台传送接收", icon = "textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "碎石传送接收" {
+    desc = "建造中心接收废墟的物资传送",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"unknown", 0, 6},
+    task_params = {ui = "item_transfer_place", building = "建造中心"},
+    count = 1,
+    prerequisites = {"采矿机传送"},
+    guide_focus = {
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 121,
+        y = 122,
+        w = 4,
+        h = 4,
+        show_arrow = true,
+      },
+      {
+        camera_x = 121,
+        camera_y = 122,
+      },
+    },
+    tips_pic = {
+      "textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "建造中心接收废墟的物资传送", icon = "textures/construct/industry.texture"},
+    },
+  }
+
     prototype "建造无人机仓库" {
-    desc = "建造4个无人机仓库",
+    desc = "建造1个无人机仓库",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_consumption", 0, "无人机仓库设计图"},
-    prerequisites = {"铁箱残骸传送"},
-    count = 4,
+    prerequisites = {"碎石传送接收"},
+    count = 1,
     effects = {
       unlock_item = {"碎石"},
     },
@@ -446,17 +536,17 @@ prototype "建造电线杆" {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "在“建造中心”建造4个无人机仓库", icon = "textures/construct/industry.texture"},
+      { desc = "在“建造中心”建造1个无人机仓库", icon = "textures/construct/industry.texture"},
     },
   }
 
     prototype "放置无人机仓库" {
-    desc = "放置4个无人机仓库",
+    desc = "放置1个无人机仓库",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "无人机仓库"},
     prerequisites = {"建造无人机仓库"},
-    count = 4,
+    count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_place_pole1.texture",
       "textures/task_tips_pic/task_place_pole2.texture",
@@ -496,9 +586,12 @@ prototype "建造电线杆" {
       },
     },
     sign_desc = {
-      { desc = "放置4个无人机仓库", icon = "textures/construct/industry.texture"},
+      { desc = "放置1个无人机仓库", icon = "textures/construct/industry.texture"},
     },
   }
+
+
+
 
   prototype "生产碎石矿" {
     desc = "挖掘足够的碎石可以开始进行锻造",
