@@ -16,10 +16,10 @@ policy:
   ant.animation|slot
 ---
 data:
-  name: hitch1
+  name: shelf5
   scene:
     r: {0, 0, 0, 1}
-    s: {2, 2, 2}
+    s: {1, 1, 1}
     t: {17.968830108642578, 15.485337257385254, 0}
   slot:
     follow_flag: 1
@@ -30,16 +30,3 @@ policy:
   ant.general|name
   ant.general|tag
   ant.animation|slot
----
-data:
-  name: shelf-output
-  scene:
-    r: {0, -0.7071067690849304, 0, 0.7071067690849304}
-    t: {15.800000190734863, 5.400000095367432, 0}
-policy:
-  ant.general|name
-  ant.scene|scene_object
----
-editor: false
-mount: 6
-prefab: /pkg/vaststars.resources/prefabs/shelf-output.prefab

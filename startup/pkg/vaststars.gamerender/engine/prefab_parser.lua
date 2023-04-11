@@ -49,8 +49,20 @@ local meshbin ; do
     end
 end
 
+local function slots(fullpath)
+    local res = {}
+    local t = parse(fullpath)
+    for _, v in ipairs(t) do
+        if v.data and v.data.slot then
+            res[v.data.name] = v.data
+        end
+    end
+    return res
+end
+
 return {
     parse = parse,
     replace_material = replace_material,
     meshbin = meshbin,
+    slots = slots,
 }

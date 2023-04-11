@@ -3,10 +3,6 @@ local prototype = gameplay.register.prototype
 
 prototype "组装机I" {
     model = "prefabs/mars-assembling-machine.prefab",
-    assembling_slot = {
-        input = {"pipe-joint-input-1"},
-        output = {"pipe-joint-output-1"},
-    },
     icon = "textures/building_pic/small_pic_mars_assembling_machine.texture",
     background = "textures/build_background/pic_mars_assembling_machine.texture",
     construct_detector = {"exclusive"},
@@ -43,10 +39,6 @@ prototype "组装机I" {
 
 prototype "组装机II" {
     model = "prefabs/mars-assembling-machine.prefab",
-    assembling_slot = {
-        input = {"pipe-joint-input-1"},
-        output = {"pipe-joint-output-1"},
-    },
     icon = "textures/building_pic/small_pic_mars_assembling_machine.texture",
     background = "textures/build_background/pic_mars_assembling_machine.texture",
     construct_detector = {"exclusive"},

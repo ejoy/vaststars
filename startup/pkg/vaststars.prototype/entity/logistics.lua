@@ -31,6 +31,7 @@ prototype "指挥中心" {
         },
     },
     move = false,
+    io_shelf = false,
 }
 
 prototype "物流需求站" {
@@ -282,6 +283,7 @@ prototype "建造中心" {
     power = "75kW",
     priority = "secondary",
     construction_center = true,
+    io_shelf = false,
 }
 
 prototype "修路站" {

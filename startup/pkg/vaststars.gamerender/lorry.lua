@@ -33,9 +33,6 @@ end
 local function _create_prefab_object(prefab, parent)
     local p = sampler_group:create_instance(prefab, parent)
     function p:on_ready()
-        for _, eid in ipairs(self.tag["*"]) do
-            local e <close> = w:entity(eid)
-        end
     end
     function p:on_message()
     end
