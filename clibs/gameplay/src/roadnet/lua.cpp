@@ -12,20 +12,6 @@ namespace roadnet::lua {
         return w.rw;
     }
 
-    static std::string_view get_strview(lua_State* L, int idx) {
-        size_t len = 0;
-        const char* buf = luaL_checklstring(L, idx, &len);
-        return std::string_view(buf, len);
-    }
-
-    static map_coord get_map_coord(lua_State* L, int idx) {
-        auto v = luaL_checkinteger(L, idx);
-        uint8_t x = (uint8_t)((v >>  0) & 0xFF);
-        uint8_t y = (uint8_t)((v >>  8) & 0xFF);
-        uint8_t z = (uint8_t)((v >> 16) & 0xFF);
-        return {x,y,z};
-    }
-
     static road_coord get_road_coord(lua_State* L, int idx) {
         auto v = luaL_checkinteger(L, idx);
         uint16_t id     = (uint16_t)(v & 0xFFFF);
@@ -204,7 +190,6 @@ namespace roadnet::lua {
         return 1;
     }
     static int constants(lua_State* L) {
-        auto& w = get_network(L);
         static constexpr std::pair<const char*, uint8_t> constants[] = {
             { "kTime", roadnet::kTime },
             { "kWaitTime", roadnet::kWaitTime },

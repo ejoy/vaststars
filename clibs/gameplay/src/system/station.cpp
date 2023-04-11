@@ -96,7 +96,6 @@ static std::tuple<uint8_t, uint8_t> building_center(world& world, ecs::building&
 
 static int lbuild(lua_State *L) {
     auto& w = getworld(L);
-    auto& rw = w.rw;
     auto& s = w.stations;
     s.consumers.clear();
     for (auto& v : ecs_api::select<ecs::station_consumer, ecs::station, ecs::building>(w.ecs)) {

@@ -80,7 +80,6 @@ namespace roadnet::road {
             }
             cross_type t = cross_status[i];
             auto& road = w.StraightRoad(neighbor[(uint8_t)t & 0x03u]);
-            direction out = direction((uint8_t)t & 0x03u);
             if (road.tryEntry(w, id)) {
                 cross_lorry[i] = lorryid::invalid();
             }

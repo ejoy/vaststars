@@ -25,38 +25,6 @@ namespace roadnet {
         std::map<bfsRoad, bfsRoad> results;
     };
 
-    static constexpr direction reverse(direction dir) {
-        switch (dir) {
-        case direction::l: return direction::r;
-        case direction::t: return direction::b;
-        case direction::r: return direction::l;
-        case direction::b: return direction::t;
-        case direction::n: default: return direction::n;
-        }
-    }
-
-    static constexpr loction move(loction loc, direction dir) {
-        switch (dir) {
-        case direction::l: loc.x -= 1; break;
-        case direction::t: loc.y -= 1; break;
-        case direction::r: loc.x += 1; break;
-        case direction::b: loc.y += 1; break;
-        case direction::n: default: break;
-        }
-        return loc;
-    }
-
-    static constexpr char directionName(direction dir) {
-        switch (dir) {
-        case direction::l: return 'L';
-        case direction::t: return 'T';
-        case direction::r: return 'R';
-        case direction::b: return 'B';
-        default:
-        case direction::n: return 'N';
-        }
-    }
-
     template <typename T>
     static T pop(std::set<T>& s) {
         T r = *s.begin();
@@ -102,7 +70,6 @@ namespace roadnet {
 
     static std::optional<direction> applyCross(network& w, bfsContext& ctx, bfsRoad G, roadid N, roadid E) {
         assert(N.get_type() == roadtype::cross);
-        direction prev = G.dir;
         auto& cross = w.CrossRoad(N);
         for (uint8_t i = 0; i < 4; ++i) {
             direction dir = (direction)i;

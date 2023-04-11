@@ -232,10 +232,6 @@ namespace roadnet {
         return direction::n;
     }
 
-    static void setMapBits(std::map<loction, uint8_t>& map, const loction& l, uint8_t bits) {
-        map[l] = bits;
-    }
-
     static uint8_t getMapBits(const std::map<loction, uint8_t>& map, const loction& l) {
         auto iter = map.find(l);
         return (iter != map.end()) ? iter->second : 0;
