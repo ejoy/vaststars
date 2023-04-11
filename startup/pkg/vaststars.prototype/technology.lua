@@ -75,12 +75,12 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "继电器残骸传送" {
+  prototype "继电器废墟传送" {
     desc = "收集废墟物资准备传送",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"unknown", 0, 6},
-    task_params = {ui = "item_transfer_subscribe", building = "继电器残骸"},
+    task_params = {ui = "item_transfer_subscribe", building = "继电器废墟"},
     count = 1,
     prerequisites = {"采矿机调度"},
     guide_focus = {
@@ -133,7 +133,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 6},
     task_params = {ui = "item_transfer_place", building = "建造中心"},
     count = 1,
-    prerequisites = {"继电器残骸传送"},
+    prerequisites = {"继电器废墟传送"},
     guide_focus = {
       {
         prefab = "prefabs/selected-box-guide.prefab",
@@ -242,12 +242,12 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "排水口残骸传送" {
+  prototype "排水口废墟传送" {
     desc = "收集废墟物资准备传送",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"unknown", 0, 6},
-    task_params = {ui = "item_transfer_subscribe", building = "排水口残骸"},
+    task_params = {ui = "item_transfer_subscribe", building = "排水口废墟"},
     count = 1,
     prerequisites = {"电线杆调度"},
     guide_focus = {
@@ -279,7 +279,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 6},
     task_params = {ui = "item_transfer_place", building = "建造中心"},
     count = 1,
-    prerequisites = {"排水口残骸传送"},
+    prerequisites = {"排水口废墟传送"},
     guide_focus = {
       {
         prefab = "prefabs/selected-box-guide.prefab",
@@ -409,12 +409,12 @@ prototype "建造电线杆" {
     },
   }
 
-  prototype "铁箱残骸传送" {
+  prototype "铁箱废墟传送" {
     desc = "收集废墟物资准备传送",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"unknown", 0, 6},
-    task_params = {ui = "item_transfer_subscribe", building = "铁箱残骸"},
+    task_params = {ui = "item_transfer_subscribe", building = "铁箱废墟"},
     count = 1,
     prerequisites = {"无人机仓库调度"},
     guide_focus = {
@@ -446,7 +446,7 @@ prototype "建造电线杆" {
     task = {"unknown", 0, 6},
     task_params = {ui = "item_transfer_place", building = "建造中心"},
     count = 1,
-    prerequisites = {"铁箱残骸传送"},
+    prerequisites = {"铁箱废墟传送"},
     guide_focus = {
       {
         prefab = "prefabs/selected-box-guide.prefab",
@@ -664,12 +664,48 @@ prototype "建造电线杆" {
     },
   }
 
+  prototype "建造科研中心" {
+    desc = "建造一座科研中心",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"stat_consumption", 0, "科研中心设计图"},
+    count = 1,
+    prerequisites = {"更多无人机仓库"},
+    guide_focus = {
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 114,
+        y = 121,
+        w = 1.5,
+        h = 1.5,
+        show_arrow = true,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 121,
+        y = 122,
+        w = 4,
+        h = 4,
+      },
+      {
+        camera_x = 119,
+        camera_y = 125,
+      },
+    },
+    tips_pic = {
+      "textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "继电器废墟里找寻科研中心设计图，再前往建造中心打印一座科研中心", icon = "textures/construct/industry.texture"},
+    },
+  }
+
   prototype "放置科研中心" {
     desc = "放置可以研究火星科技的建筑",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "科研中心I"},
-    prerequisites = {"更多无人机仓库"},
+    prerequisites = {"建造科研中心"},
     count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_click_build.texture",
