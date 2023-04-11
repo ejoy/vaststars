@@ -175,7 +175,7 @@
                 align-items: center;
                 width:40%;
                 height:15vmin;
-                top:0;
+                top:1vmin;
                 left: 46.5vmin;
                 position: absolute; 
             }
@@ -207,6 +207,15 @@
                 height:5vmin;
                 background-size: cover;
                 background-image:"textures/construct/portal-in.texture";
+            }
+            .teleport-show {
+                position: absolute;
+                top:-0.8vmin;
+                width:8.3vmin;
+                height:3.45vmin;
+                background-size: cover;
+                background-image:"textures/common/arrow.texture";
+                transform: rotate(180deg);
             }
             p {
                 animation:0.5s linear 0s infinite alternate rotation;
@@ -250,6 +259,16 @@
                 }
                 100% {
                     transform: scale(1.0);
+                }
+            }
+            @keyframes pannelmovement {
+                0% {
+                    top: -10vmin;
+                    opacity: 0;
+                }
+                100% {
+                    top: 0vmin;
+                    opacity: 1;
                 }
             }
             .safe-area {
@@ -357,10 +376,11 @@
     <body style = "pointer-events: none; justify-content: center; align-items: center;">
         <div class = "safe-area" data-model="start">
             <div class="teleport-items-block" style = "pointer-events: none;">
-                <div class="item" data-style-background-image = "it.icon" data-for = "item_transfer">
+                <div class="item" data-style-background-image = "it.icon" data-for = "item_transfer" style="animation:1s linear 0s pannelmovement;">
                     <div class="item-count">{{it.count}}</div>
                     <div class="item-sign"/>                     
                 </div>
+                <div class="teleport-show"/>
             </div>
             <!-- 主菜单按钮 -->
             <div class="main-menu-region">
