@@ -4,7 +4,7 @@ local guide = {
 		narrative = {
             {"哔哩..哔哗..已迫降在{/g 代号P4031}的星球。尚未发现任何生命迹象..(失望)", "textures/guide/guide-6.texture"},
             {"哔哩..哔哗..哔哩..启动大气分析协议中..P4031{/g 缺少氧气}..(失望)"},
-            {"哔哩..哔哗..哔哩..启动地质分析协议中..P4031{/g 铁铝丰富}..(轻松)","textures/guide/guide-1.texture"},
+            {"哔哩..哔哗..哔哩..启动地质分析协议中..P4031{/g 石铁丰富}..(轻松)","textures/guide/guide-1.texture"},
             {"哔哩..哔哗..启动生存可靠性分析..{/color:4bd0ff 0.04565%}存活概率..(情绪表达跳过中)","textures/guide/guide-4.texture"},
         },
         narrative_end = {
@@ -18,8 +18,8 @@ local guide = {
 	{
         name = "",
 		narrative = {
-            {"作为助理AI，我建议你立刻开始工作..哔哩..你的剩余生存时间理论上只有{/color:4bd0ff 348.26}地球小时..(担忧)", "textures/guide/guide-6.texture"},
-            {"哔哩..目前急需{/color:4bd0ff 采矿机}，请在{/color:4bd0ff 建造中心}中选择{/g 采矿机打印}..哔哩..(期待)", "textures/guide/guide-2.texture"},
+            {"哔哩..急需工具开采星球资源，让我们先制造一部{/g 采矿机}吧..哔哩..(期待)", "textures/guide/guide-2.texture"},
+            {"{/color:4bd0ff 建造中心}专用于打印建筑或机械，请在{/color:4bd0ff 建造中心}中选择{/g 采矿机打印}..哔哩..(期待)", "textures/guide/guide-2.texture"},
         },
         narrative_end = {
             pop_chapter = {"序章","迫降P4031"},
@@ -70,7 +70,7 @@ local guide = {
         name = "",
 		narrative = {
             {"哔哩..{/color:4bd0ff 采矿机设计图}已经被成功传送至{/g 建造中心}..(高兴)", "textures/guide/guide-3.texture"},
-            {"哔哩..{/g 采矿机}在{/color:4bd0ff 建造中心}里开始制造了。我们只需静静等待..哔哩..(期待)", "textures/guide/guide-1.texture"},
+            {"哔哩..{/g 采矿机}在{/color:4bd0ff 建造中心}里开始打印了。我们只需静静等待打印完成..哔哩..(期待)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
             guide_progress = 30,
@@ -323,6 +323,23 @@ local guide = {
     {
         name = "",
 		narrative = {
+            {"哔哩..我们采集了足够多的碎石，可以建造更多的{/g 无人机仓库}..(期待)", "textures/guide/guide-2.texture"},
+            {"哔哩..储藏{/color:4bd0ff 相同货物}的{/g 无人机仓库}如果距离足够近可以相互传递货物..(期待)", "textures/guide/guide-2.texture"},
+        },
+        narrative_end = {
+            guide_progress = 30,
+            task = {
+                "更多无人机仓库",
+            }
+        },
+        prerequisites = {
+            "生产碎石矿",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
             {"我们需要对这个星球进行全面的科学考察，让我们建造并放置一座{/g 科研中心}..哔哩..(期待)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
@@ -332,7 +349,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "生产碎石矿",
+            "更多无人机仓库",
         },
 	},
     -- {

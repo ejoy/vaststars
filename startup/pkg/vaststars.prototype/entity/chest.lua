@@ -54,4 +54,5 @@ prototype "无人机仓库" {
     drone_count = 1,
     power_supply_area = "6x6",
     power_supply_distance = 8,
+    printer_scale = {1.5,1.5,1.5},
 }

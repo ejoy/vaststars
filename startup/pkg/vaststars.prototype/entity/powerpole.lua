@@ -11,4 +11,5 @@ prototype "铁制电线杆" {
     power_supply_area = "5x5",
     power_supply_distance = 9,
     show_arc_menu = false,
+    printer_scale = {2,2,2},
 }

@@ -356,6 +356,13 @@ prototype "建造电线杆" {
       },
       {
         prefab = "prefabs/selected-box-guide.prefab",
+        x = 123,
+        y = 115,
+        w = 1.5,
+        h = 1.5,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
         x = 121,
         y = 122,
         w = 4,
@@ -591,8 +598,6 @@ prototype "建造电线杆" {
   }
 
 
-
-
   prototype "生产碎石矿" {
     desc = "挖掘足够的碎石可以开始进行锻造",
     icon = "textures/construct/industry.texture",
@@ -612,14 +617,27 @@ prototype "建造电线杆" {
     },
   }
 
-
+  prototype "更多无人机仓库" {
+    desc = "再建造3个无人机仓库",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"stat_consumption", 0, "无人机仓库设计图"},
+    prerequisites = {"生产碎石矿"},
+    count = 4,
+    tips_pic = {
+      "textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "建造总共4个无人机仓库", icon = "textures/construct/industry.texture"},
+    },
+  }
 
   prototype "放置科研中心" {
     desc = "放置可以研究火星科技的建筑",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "科研中心I"},
-    prerequisites = {"生产碎石矿"},
+    prerequisites = {"更多无人机仓库"},
     count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_click_build.texture",
