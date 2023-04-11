@@ -87,17 +87,17 @@ calc_efficiency(world& w, powergrid pgs[]) {
 			break;
 		}
 		uint64_t need_power = 0;
-		for (int i=0;i<POWER_PRIORITY;i++) {
+		for (size_t i=0;i<POWER_PRIORITY;i++) {
 			need_power += pg.consumer_power[i];
 		}
 		uint64_t offer_power = 0;
-		for (int i=0;i<POWER_PRIORITY;i++) {
+		for (size_t i=0;i<POWER_PRIORITY;i++) {
 			offer_power += pg.generator_power[i];
 		}
 
 		if (need_power > offer_power) {
 			// power is not enough, all generator efficiency are 100%
-			for (int i=0;i<POWER_PRIORITY;i++) {
+			for (size_t i=0;i<POWER_PRIORITY;i++) {
 				pg.generator_efficiency[i] = 1.0f;
 			}
 
@@ -110,7 +110,7 @@ calc_efficiency(world& w, powergrid pgs[]) {
 					pg.accumulator_efficiency = 1.0f;
 					offer_power += pg.accumulator_output;
 				}
-				for (int i=0;i<POWER_PRIORITY;i++) {
+				for (size_t i=0;i<POWER_PRIORITY;i++) {
 					if (offer_power == 0) {
 						// no power
 						pg.consumer_efficiency[i] = 0;
@@ -126,13 +126,13 @@ calc_efficiency(world& w, powergrid pgs[]) {
 			} else {
 				pg.accumulator_efficiency = (float)need_power / pg.accumulator_output;
 				// power is enough now.
-				for (int i=0;i<POWER_PRIORITY;i++) {
+				for (size_t i=0;i<POWER_PRIORITY;i++) {
 					pg.consumer_efficiency[i] = 1.0f;
 				}
 			}
 		} else {
 			// power is enough, all consumer efficiency are 100%
-			for (int i=0;i<POWER_PRIORITY;i++) {
+			for (size_t i=0;i<POWER_PRIORITY;i++) {
 				pg.consumer_efficiency[i] = 1.0f;
 			}
 			offer_power -= need_power;
@@ -144,7 +144,7 @@ calc_efficiency(world& w, powergrid pgs[]) {
 					pg.accumulator_efficiency = -1.0f;
 					need_power += pg.accumulator_input;
 				}
-				for (int i=0;i<POWER_PRIORITY;i++) {
+				for (size_t i=0;i<POWER_PRIORITY;i++) {
 					if (need_power == 0) {
 						// Don't need power yet
 						pg.generator_efficiency[i] = 0;
@@ -160,7 +160,7 @@ calc_efficiency(world& w, powergrid pgs[]) {
 			} else {
 				pg.accumulator_efficiency = -(float)offer_power / pg.accumulator_input;
 				// part charge, generators full output
-				for (int i=0;i<POWER_PRIORITY;i++) {
+				for (size_t i=0;i<POWER_PRIORITY;i++) {
 					pg.generator_efficiency[i] = 1.0f;
 				}
 			}

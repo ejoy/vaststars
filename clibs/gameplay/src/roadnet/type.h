@@ -60,6 +60,7 @@ namespace roadnet {
             return id < r.id;
         }
     };
+    static_assert(std::is_trivially_copyable_v<loction>);
 
     using lorryid = objectid;
     using endpointid = objectid;
