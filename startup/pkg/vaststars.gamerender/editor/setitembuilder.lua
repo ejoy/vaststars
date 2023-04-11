@@ -357,44 +357,44 @@ end
 
 -- TODO: remove this
 local gameplay_core = require "gameplay.core"
-local gameplay = import_package "vaststars.gameplay"
-local ihub = gameplay.interface "hub"
 local ichest = require "gameplay.interface.chest"
+-- local gameplay = import_package "vaststars.gameplay"
+-- local ihub = gameplay.interface "hub"
 
-local function __set_hub_first_item(gameplay_world, e, prototype_name)
-    ihub.set_item(gameplay_world, e, prototype_name)
-end
+-- local function __set_hub_first_item(gameplay_world, e, prototype_name)
+--     ihub.set_item(gameplay_world, e, prototype_name)
+-- end
 
-local function __get_hub_first_item(gameplay_world, e)
-    local slot = ichest.chest_get(gameplay_world, e.hub, 1)
-    if slot then
-        return slot.item
-    end
-end
+-- local function __get_hub_first_item(gameplay_world, e)
+--     local slot = ichest.chest_get(gameplay_world, e.hub, 1)
+--     if slot then
+--         return slot.item
+--     end
+-- end
 
-local function __set_station_first_item(gameplay_world, e, prototype_name)
-    local station = e.station
-    gameplay_world:container_destroy(station)
+-- local function __set_station_first_item(gameplay_world, e, prototype_name)
+--     local station = e.station
+--     gameplay_world:container_destroy(station)
 
-    local typeobject = iprototype.queryById(e.building.prototype)
-    local typeobject_item = iprototype.queryByName(prototype_name)
-    local c = {}
-    c[#c+1] = gameplay_world:chest_slot {
-        type = typeobject.chest_type,
-        item = typeobject_item.id,
-        limit = 1,
-    }
-    station.chest = gameplay_world:container_create(table.concat(c))
+--     local typeobject = iprototype.queryById(e.building.prototype)
+--     local typeobject_item = iprototype.queryByName(prototype_name)
+--     local c = {}
+--     c[#c+1] = gameplay_world:chest_slot {
+--         type = typeobject.chest_type,
+--         item = typeobject_item.id,
+--         limit = 1,
+--     }
+--     station.chest = gameplay_world:container_create(table.concat(c))
 
-    e.chest.chest = station.chest
-end
+--     e.chest.chest = station.chest
+-- end
 
-local function __get_station_first_item(gameplay_world, e)
-    local slot = ichest.chest_get(gameplay_world, e.station, 1)
-    if slot then
-        return slot.item
-    end
-end
+-- local function __get_station_first_item(gameplay_world, e)
+--     local slot = ichest.chest_get(gameplay_world, e.station, 1)
+--     if slot then
+--         return slot.item
+--     end
+-- end
 
 local function __deduct_item(self, e)
     gameplay_core.get_world():container_pickup(e.chest, self.item, 1)
@@ -408,8 +408,16 @@ local function __deduct_item(self, e)
         gameplay_core.build()
     end
 
-    _, results = assembling_common.get(gameplay_core.get_world(), e)
-    return results[1].count > 0
+    for i = 1, 256 do
+        local slot = ichest.chest_get(gameplay_core.get_world(), e.chest, i)
+        if not slot then
+            break
+        end
+        if slot.item == self.item and slot.amount - slot.lock_item > 0 then
+            return 0
+        end
+    end
+    return false
 end
 
 local function _get_connections(prototype_name, x, y, dir)
@@ -465,25 +473,27 @@ local function complete(self, object_id, datamodel)
         iroadnet:editor_build()
     end
 
-    if iprototype.has_type(typeobject.type, "hub") then
-        local interface = {} -- TODO: remove this
-        interface.get_first_item = __get_hub_first_item
-        interface.set_first_item = __set_hub_first_item
-        iui.open({"drone_depot.rml"}, object_id, interface)
-    end
-    if iprototype.has_type(typeobject.type, "station") then
-        local interface = {} -- TODO: remove this
-        interface.get_first_item = __get_station_first_item
-        interface.set_first_item = __set_station_first_item
-        iui.open({"drone_depot.rml"}, object_id, interface)
-    end
-
+    print("complete -------- ", continue_construct)
     if not continue_construct then
         self:clean(datamodel)
         iui.redirect("construct.rml", "move_finish") -- TODO：remove this
     else
         new_entity(self, datamodel, typeobject)
     end
+
+    -- must be placed last, otherwise it will block the UI interface opened by new_entity()
+    -- if iprototype.has_type(typeobject.type, "hub") then
+    --     local interface = {} -- TODO: remove this
+    --     interface.get_first_item = __get_hub_first_item
+    --     interface.set_first_item = __set_hub_first_item
+    --     iui.open({"drone_depot.rml"}, object_id, interface)
+    -- end
+    -- if iprototype.has_type(typeobject.type, "station") then
+    --     local interface = {} -- TODO: remove this
+    --     interface.get_first_item = __get_station_first_item
+    --     interface.set_first_item = __set_station_first_item
+    --     iui.open({"drone_depot.rml"}, object_id, interface)
+    -- end
 end
 
 local function check_construct_detector(self, prototype_name, x, y, dir)

@@ -28,7 +28,7 @@ return function(world)
 
         local object = assert(objects:coord(e.building.x, e.building.y))
         local srt = object.srt
-        local t = {srt.t[1], 10, srt.t[3]} --TODO: change the height to be configured in the slot of prefab
+        local t = {srt.t[1], 13, srt.t[3]} --TODO: change the height to be configured in the slot of prefab
 
         progresses[e.eid] = progresses[e.eid] or {progress = 0, printer_entities = {}, recipe = e.assembling.recipe}
         if progresses[e.eid].recipe ~= e.assembling.recipe then
@@ -42,6 +42,7 @@ return function(world)
         local entities = progresses[e.eid].printer_entities
         if #entities == 0 then
             local res_typeobject = iprototype.queryById(results[1].id)
+            local s = res_typeobject.printer_scale and res_typeobject.printer_scale or {1, 1, 1}
             local meshbins = prefab_meshbin(RESOURCES_BASE_PATH:format(res_typeobject.model))
 
             for _, meshbin in ipairs(meshbins) do
@@ -53,7 +54,7 @@ return function(world)
                     },
                     data = {
                         name = "printer",
-                        scene = {s = srt.s, t = t},
+                        scene = {s = s, t = t},
                         material = "/pkg/mod.printer/assets/printer.material",
                         visible_state = "main_view",
                         mesh = meshbin,

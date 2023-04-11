@@ -74,7 +74,7 @@ local function create_io_shelves(gameplay_world, e, building_srt)
             local offset = math3d.ref(math3d.matrix {s = scene.s, r = scene.r, t = scene.t})
             function prefab_instance:on_ready()
                 local e <close> = w:entity(self.tag["*"][1])
-                iom.set_srt_matrix(e, math3d.mul(building_srt, offset))
+                iom.set_srt_matrix(e, math3d.mul(math3d.ref(building_srt), offset))
             end
             function prefab_instance:on_message()
             end
@@ -88,7 +88,7 @@ local function create_io_shelves(gameplay_world, e, building_srt)
     for idx = 1, ingredients_n do
         local id = string.unpack("<I2I2", typeobject_recipe.ingredients, 4*idx+1)
         local typeobject_item = iprototype.queryById(id)
-        local gap3 = typeobject_item.gap and {typeobject_item.gap:match("(%d+)x(%d+)x(%d+)")} or {0, 0, 0}
+        local gap3 = typeobject_item.gap3 and {typeobject_item.gap3:match("(%d+)x(%d+)x(%d+)")} or {0, 0, 0}
         local srt = math3d.mul(building_srt, shelf_offsets[#heaps+1])
         srt = math3d.mul(srt, heap_offsets[#heaps+1])
         local s, r, t = math3d.srt(srt)
@@ -101,7 +101,7 @@ local function create_io_shelves(gameplay_world, e, building_srt)
     for idx = 1, results_n do
         local id = string.unpack("<I2I2", typeobject_recipe.results, 4*idx+1)
         local typeobject_item = iprototype.queryById(id)
-        local gap3 = typeobject_item.gap and {typeobject_item.gap:match("(%d+)x(%d+)x(%d+)")} or {0, 0, 0}
+        local gap3 = typeobject_item.gap3 and {typeobject_item.gap3:match("(%d+)x(%d+)x(%d+)")} or {0, 0, 0}
         local srt = math3d.mul(building_srt, shelf_offsets[#heaps+1])
         srt = math3d.mul(srt, heap_offsets[#heaps+1])
         local s, r, t = math3d.srt(srt)

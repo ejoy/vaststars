@@ -169,16 +169,6 @@
                 height: 100%;
                 background-color: rgb(87, 238, 0);
             }
-            .teleport-items-block {
-                flex-direction: row;
-                justify-content: center;
-                align-items: center;
-                width:40%;
-                height:15vmin;
-                top:1vmin;
-                left: 46.5vmin;
-                position: absolute; 
-            }
             .item {
                 flex-direction: column;
                 align-items:flex-start;
@@ -207,15 +197,6 @@
                 height:5vmin;
                 background-size: cover;
                 background-image:"textures/construct/portal-in.texture";
-            }
-            .teleport-show {
-                position: absolute;
-                top:-0.8vmin;
-                width:8.3vmin;
-                height:3.45vmin;
-                background-size: cover;
-                background-image:"textures/common/arrow.texture";
-                transform: rotate(180deg);
             }
             p {
                 animation:0.5s linear 0s infinite alternate rotation;
@@ -261,14 +242,40 @@
                     transform: scale(1.0);
                 }
             }
-            @keyframes pannelmovement {
+            @keyframes inventory-slide-down {
                 0% {
-                    top: -10vmin;
+                    top: -13vmin;
                     opacity: 0;
                 }
                 100% {
                     top: 0vmin;
                     opacity: 1;
+                }
+            }
+            @keyframes inventory-slide-up {
+                0% {
+                    top: 0vmin;
+                    opacity: 1;
+                }
+                100% {
+                    top: -13vmin;
+                    opacity: 0;
+                }
+            }
+            @keyframes arrow-slide-down {
+                0% {
+                    top: -13vmin;
+                }
+                100% {
+                    top: 0vmin;
+                }
+            }
+            @keyframes arrow-slide-up {
+                0% {
+                    top: 0vmin;
+                }
+                100% {
+                    top: -13vmin;
                 }
             }
             .safe-area {
@@ -302,11 +309,48 @@
                 height:3.4vmin;
                 background-size: cover;
             }
+            .teleport-items-block {
+                width:40%;
+                height:15vmin;
+                top:1vmin;
+                left: 46.5vmin;
+                position: absolute; 
+            }
+            .teleport-items-bar-slide-down {
+                animation: 1s linear 0s inventory-slide-down;
+            }
+            .teleport-items-bar-slide-up {
+                animation: 1s linear 0s inventory-slide-up;
+            }
+            .teleport-items-arrow-slide-down {
+                width:8.3vmin;
+                height:3.45vmin;
+                background-size: cover;
+                background-image:"textures/common/arrow.texture";
+                transform: rotate(360deg);
+                animation: 1s linear 0s arrow-slide-down;
+            }
+            .teleport-items-arrow-slide-up {
+                width:8.3vmin;
+                height:3.45vmin;
+                background-size: cover;
+                background-image:"textures/common/arrow.texture";
+                transform: rotate(180deg);
+                animation: 1s linear 0s arrow-slide-up;
+            }
+            .teleport-items-arrow-slide-init {
+                width:8.3vmin;
+                height:3.45vmin;
+                background-size: cover;
+                background-image:"textures/common/arrow.texture";
+                transform: rotate(180deg);
+            }
         </style>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local start = ui_sys.createDataMode("start", {
-                item_transfer = {},
+                item_transfer_src_inventory_count = 0,
+                item_transfer_src_inventory = {},
                 cur_edit_mode = "",       -- 当前的编辑模式, construct/dismantle
                 show_load_resource = false,
                 construction_center_menu = {},
@@ -368,20 +412,47 @@
                     show(e, 0)
                 end
             end
+
+            local function toggleElement(elementId, slideUpClass, slideDownClass)
+                local e = document.getElementById(elementId)
+                if not e.attributes.expanded or e.attributes.expanded == "false" then
+                    e.className = slideUpClass
+                    e.attributes.expanded = "true"
+                else
+                    e.className = slideDownClass
+                    e.attributes.expanded = "false"
+                end
+            end
+            function start.showItemTransferSrcInv()
+                toggleElement("ItemTransferSrcInv", "teleport-items-bar-slide-up", "teleport-items-bar-slide-down")
+                toggleElement("ItemTransferSrcInvArrow", "teleport-items-arrow-slide-up", "teleport-items-arrow-slide-down")
+            end
             window.addEventListener('mousedown', function(event)
                 ui_sys.world_pub {"ui_message", "leave"}
             end)
+
+            ui_sys.mapping(start, {
+                {
+                    function()
+                        start.item_transfer_src_inventory_count = #start.item_transfer_src_inventory
+                    end,
+                    "item_transfer_src_inventory",
+                }
+            })
         </script>
     </head>
     <body style = "pointer-events: none; justify-content: center; align-items: center;">
         <div class = "safe-area" data-model="start">
-            <div class="teleport-items-block" style = "pointer-events: none;">
-                <div class="item" data-style-background-image = "it.icon" data-for = "item_transfer" style="animation:1s linear 0s pannelmovement;">
-                    <div class="item-count">{{it.count}}</div>
-                    <div class="item-sign"/>                     
+            <div class="teleport-items-block" style = "justify-content: center; align-items: center;">
+                <div id = "ItemTransferSrcInv" style = "flex-direction: row; justify-content: center; align-items: center; pointer-events: none;" data-if = "item_transfer_src_inventory_count > 0">
+                    <div class="item" data-style-background-image = "it.icon" data-for = "item_transfer_src_inventory">
+                        <div class="item-count">{{it.count}}</div>
+                        <div class="item-sign"/> 
+                    </div>
                 </div>
-                <div class="teleport-show"/>
+                <div id = "ItemTransferSrcInvArrow" class = "teleport-items-arrow-slide-init" data-event-click = "showItemTransferSrcInv()" data-if = "item_transfer_src_inventory_count > 0" />
             </div>
+            
             <!-- 主菜单按钮 -->
             <div class="main-menu-region">
                 <!-- 主菜单隐藏/显示按钮 -->

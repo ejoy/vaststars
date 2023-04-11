@@ -62,7 +62,7 @@ local pickup_id
 
 local item_transfer_placement_interval = interval_call(300, function(datamodel)
     if not global.item_transfer_src then
-        datamodel.item_transfer = {}
+        datamodel.item_transfer_src_inventory = {}
         return
     end
 
@@ -90,7 +90,7 @@ local item_transfer_placement_interval = interval_call(300, function(datamodel)
             break
         end
     end
-    datamodel.item_transfer = items
+    datamodel.item_transfer_src_inventory = items
 end)
 
 local function reverse(array)
@@ -171,8 +171,7 @@ function M:create()
         current_tech_progress_detail = "0/0",  --当前科技进度(数量),
         ingredient_icons = {},
         show_ingredient = false,
-        item_transfer = {},
-        show_construction_center_menu = false,
+        item_transfer_src_inventory = {},
         construction_center_menu = {},
     }
 end

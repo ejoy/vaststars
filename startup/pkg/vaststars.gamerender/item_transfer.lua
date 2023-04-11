@@ -7,7 +7,7 @@ local function get_movable_items(e)
     local hash = {}
     if e.hub then
         local slot = gameplay_core.get_world():container_get(e.hub, 1)
-        if slot.item ~= 0 and slot.amount - slot.lock_item > 0 then
+        if slot.item ~= 0 and slot.amount - slot.lock_item >= 0 then
             items[#items + 1] = {chest = e.hub, item = slot.item, count = slot.amount - slot.lock_item}
             hash[slot.item] = #items
         end
@@ -20,7 +20,7 @@ local function get_movable_items(e)
             local results_n <const> = #recipe_typeobject.results//4 - 1
             for i = 1, results_n do
                 local slot = gameplay_core.get_world():container_get(e.chest, ingredients_n + i)
-                if slot.amount - slot.lock_item > 0 then
+                if slot.amount - slot.lock_item >= 0 then
                     items[#items + 1] = {chest = e.chest, item = slot.item, count = slot.amount - slot.lock_item}
                     hash[slot.item] = #items
                 end
