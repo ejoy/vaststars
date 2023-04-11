@@ -75,12 +75,12 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "物资传送准备" {
+  prototype "继电器残骸传送" {
     desc = "收集废墟物资准备传送",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"unknown", 0, 6},
-    task_params = {ui = "item_transfer_subscribe", building = "抽水泵残骸"},
+    task_params = {ui = "item_transfer_subscribe", building = "继电器残骸"},
     count = 1,
     prerequisites = {"采矿机调度"},
     guide_focus = {
@@ -107,8 +107,15 @@ local prototype = gameplay.register.prototype
         h = 1.5,
       },
       {
-        camera_x = 114,
-        camera_y = 121,
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 126,
+        y = 109,
+        w = 1.5,
+        h = 1.5,
+      },
+      {
+        camera_x = 119,
+        camera_y = 125,
       },
     },
     tips_pic = {
@@ -126,7 +133,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 6},
     task_params = {ui = "item_transfer_place", building = "建造中心"},
     count = 1,
-    prerequisites = {"物资传送准备"},
+    prerequisites = {"继电器残骸传送"},
     guide_focus = {
       {
         prefab = "prefabs/selected-box-guide.prefab",
@@ -188,6 +195,14 @@ local prototype = gameplay.register.prototype
         h = 3,
       },
       {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 121,
+        y = 122,
+        w = 4,
+        h = 4,
+        show_arrow = true,
+      },
+      {
         camera_x = 115,
         camera_y = 129,
       },
@@ -227,6 +242,36 @@ local prototype = gameplay.register.prototype
     },
   }
 
+  prototype "排水口残骸传送" {
+    desc = "收集废墟物资准备传送",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"unknown", 0, 6},
+    task_params = {ui = "item_transfer_subscribe", building = "排水口残骸"},
+    count = 1,
+    prerequisites = {"电线杆调度"},
+    guide_focus = {
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 134,
+        y = 122.5,
+        w = 1.5,
+        h = 1.5,
+        show_arrow = true,
+      },
+      {
+        camera_x = 134,
+        camera_y = 122.5,
+      },
+    },
+    tips_pic = {
+      "textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "收集废墟物资准备传送", icon = "textures/construct/industry.texture"},
+    },
+  }
+
   prototype "电线杆传送接收" {
     desc = "建造中心接收废墟的物资传送",
     icon = "textures/construct/industry.texture",
@@ -234,7 +279,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 6},
     task_params = {ui = "item_transfer_place", building = "建造中心"},
     count = 1,
-    prerequisites = {"物资传送准备"},
+    prerequisites = {"排水口残骸传送"},
     guide_focus = {
       {
         prefab = "prefabs/selected-box-guide.prefab",
@@ -310,6 +355,14 @@ prototype "建造电线杆" {
         h = 1,
       },
       {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 121,
+        y = 122,
+        w = 4,
+        h = 4,
+        show_arrow = true,
+      },
+      {
         camera_x = 118,
         camera_y = 119,
       },
@@ -349,12 +402,42 @@ prototype "建造电线杆" {
     },
   }
 
+  prototype "铁箱残骸传送" {
+    desc = "收集废墟物资准备传送",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"unknown", 0, 6},
+    task_params = {ui = "item_transfer_subscribe", building = "铁箱残骸"},
+    count = 1,
+    prerequisites = {"无人机仓库调度"},
+    guide_focus = {
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 126,
+        y = 109,
+        w = 1.5,
+        h = 1.5,
+        show_arrow = true,
+      },
+      {
+        camera_x = 126,
+        camera_y = 109,
+      },
+    },
+    tips_pic = {
+      "textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "收集废墟物资准备传送", icon = "textures/construct/industry.texture"},
+    },
+  }
+
     prototype "建造无人机仓库" {
     desc = "建造4个无人机仓库",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_consumption", 0, "无人机仓库设计图"},
-    prerequisites = {"无人机仓库调度"},
+    prerequisites = {"铁箱残骸传送"},
     count = 4,
     effects = {
       unlock_item = {"碎石"},
@@ -435,6 +518,8 @@ prototype "建造电线杆" {
       { desc = "在碎石矿上放置挖矿机并挖掘16个碎石矿", icon = "textures/construct/industry.texture"},
     },
   }
+
+
 
   prototype "放置科研中心" {
     desc = "放置可以研究火星科技的建筑",

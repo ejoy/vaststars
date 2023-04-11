@@ -54,7 +54,7 @@ local building_detail_config = {
 	["排水口残骸"] = {
 		"chest_capacity",
 	},
-	["抽水泵残骸"] = {
+	["继电器残骸"] = {
 		"chest_capacity",
 	},
 	["蒸汽发电机"] = {

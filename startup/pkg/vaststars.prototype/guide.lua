@@ -6,7 +6,6 @@ local guide = {
             {"哔哩..哔哗..哔哩..启动大气分析协议中..P4031{/g 缺少氧气}..(失望)"},
             {"哔哩..哔哗..哔哩..启动地质分析协议中..P4031{/g 铁铝丰富}..(轻松)","textures/guide/guide-1.texture"},
             {"哔哩..哔哗..启动生存可靠性分析..{/color:4bd0ff 0.04565%}存活概率..(情绪表达跳过中)","textures/guide/guide-4.texture"},
-    
         },
         narrative_end = {
             task = {
@@ -35,14 +34,14 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"哔哩..采矿机建造需要{/g 采矿机设计图}..我检测到附近{/color:4bd0ff 三处残骸}有残留物资..(期待)", "textures/guide/guide-1.texture"},
+            {"哔哩..采矿机建造需要{/g 采矿机设计图}..我检测到附近{/color:4bd0ff 四处残骸}有残留物资..(期待)", "textures/guide/guide-1.texture"},
             {"哔哩..指挥中心的{/color:4bd0ff 遥感传送仪}依然完好，{/color:4bd0ff 遥感传送仪}可以{/g 远程传送}物资到目的地..(高兴)", "textures/guide/guide-3.texture"},
-            {"哔哩..在{/color:4bd0ff 三处残骸}之一的{/g 抽水泵残骸}选择{/g 传送设置}进入传送准备状态..(期待)", "textures/guide/guide-1.texture"},
+            {"哔哩..在{/color:4bd0ff 四处残骸}中的{/g 继电器残骸}选择{/g 传送设置}进入传送准备状态..(期待)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
             guide_progress = 30,
             task = {
-                "物资传送准备",
+                "继电器残骸传送",
             }
         },
         prerequisites = {
@@ -53,7 +52,7 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"哔哩..{/g 抽水泵残骸}发出的{/color:4bd0ff 蓝色光晕}表明传送准备就绪..(开心)", "textures/guide/guide-2.texture"},
+            {"哔哩..{/g 继电器残骸}发出的{/color:4bd0ff 蓝色光晕}表明传送准备就绪..(开心)", "textures/guide/guide-2.texture"},
             {"哔哩..让我们进入{/color:4bd0ff 建造中心}选择{/g 传送启动}接收物资吧..(高兴)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
@@ -63,7 +62,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "物资传送准备",
+            "继电器残骸传送",
         },
 	},
 
@@ -122,8 +121,24 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"哔哩..{/color:4bd0ff 抽水泵残骸}发现所需物资,选择{/g 传送启动}让{/color:4bd0ff 建造中心}接收{/color:4bd0ff 电线杆设计图}..哔哩..（期待）", "textures/guide/guide-1.texture"},
-            {"哔哩..温暖的{/color:4bd0ff 蓝光}再次升起吧..哔哩..（高兴）", "textures/guide/guide-3.texture"},
+            {"哔哩..在{/color:4bd0ff 排水口残骸}发现所需的{/g 电线杆设计图}，请前往该处进行{/g 传送设置}..哔哩..哔哗..(期望)", "textures/guide/guide-1.texture"},
+        },
+        narrative_end = {
+            guide_progress = 30,
+            task = {
+                "排水口残骸传送",
+            }
+        },
+        prerequisites = {
+            "电线杆调度",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
+            {"哔哩..通常情况下我们需要寻找{/color:4bd0ff 不同的建筑}进行{/g 传送设置}..哔哩..（期待）", "textures/guide/guide-1.texture"}, 
+            {"哔哩..选择{/g 传送启动}让{/color:4bd0ff 建造中心}接收{/color:4bd0ff 电线杆设计图}..哔哩..（期待）", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
             guide_progress = 30,
@@ -132,7 +147,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "电线杆调度",
+            "排水口残骸传送",
         },
 	},
 
@@ -191,6 +206,22 @@ local guide = {
     {
         name = "",
 		narrative = {
+            {"哔哩..{/g 铁箱残骸}发现所需{/color:4bd0ff 无人机设计图}，让我们开始{/g 传送设置}吧....(期待)", "textures/guide/guide-1.texture"},
+        },
+        narrative_end = {
+            guide_progress = 30,
+            task = {
+                "铁箱残骸传送",
+            }
+        },
+        prerequisites = {
+            "无人机仓库调度",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
             {"哔哩..{/color:4bd0ff 无人机}能运输指定货物，让我们用{/color:4bd0ff 建造中心}建造更多的{/g 无人机仓库}....(期待)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
@@ -200,7 +231,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "无人机仓库调度",
+            "铁箱残骸传送",
         },
 	},
 
