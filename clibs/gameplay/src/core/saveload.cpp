@@ -6,6 +6,12 @@
 #include <unordered_map>
 
 namespace lua_world {
+    template <typename T>
+    T file_readv(FILE* f) {
+        T v;
+        file_read(f, v);
+        return v;
+    }
 
     template<typename T>
     concept QueueType = std::same_as<T, queue<typename T::value_type, T::chunk_size>>;
@@ -21,9 +27,9 @@ namespace lua_world {
     void file_read(FILE* f, T& t) {
         //TODO: performance optimization
         t.clear();
-        size_t n = file_read<size_t>(f);
+        size_t n = file_readv<size_t>(f);
         for (size_t i = 0; i < n; ++i) {
-            auto v = file_read<typename T::value_type>(f);
+            auto v = file_readv<typename T::value_type>(f);
             t.push(v);
         }
     }
@@ -54,18 +60,18 @@ namespace lua_world {
         }
     }
     template <typename T>
-        requires (is_instantiation_of<T, std::pair> && !std::is_trivially_copyable_v<T>)
+        requires (is_instantiation_of<T, std::pair>)
     void file_read(FILE* f, T& t) {
-        file_read(f, t.first);
+        file_read(f, const_cast<std::add_lvalue_reference_t<std::remove_const_t<First>>>(t.first));
         file_read(f, t.second);
     }
     template <typename T>
         requires (is_instantiation_of<T, std::map>)
     void file_read(FILE* f, T& t) {
         t.clear();
-        size_t n = file_read<size_t>(f);
+        size_t n = file_readv<size_t>(f);
         for (size_t i = 1; i <= n; ++i) {
-            auto kv = file_read<typename T::value_type>(f);
+            auto kv = file_readv<typename T::value_type>(f);
             t.emplace(std::move(kv));
         }
     }
@@ -108,7 +114,7 @@ namespace lua_world {
     template <typename T>
         requires (is_instantiation_of<T, roadnet::dynarray>)
     static void file_read(FILE* f, T& t) {
-        size_t n = file_read<size_t>(f);
+        size_t n = file_readv<size_t>(f);
         t.reset(n);
         file_read(f, t.begin(), t.size());
     }
@@ -124,7 +130,7 @@ namespace lua_world {
     template <typename T>
         requires (is_instantiation_of<T, std::list>)
     static void file_read(FILE* f, T& t) {
-        size_t n = file_read<size_t>(f);
+        size_t n = file_readv<size_t>(f);
         t.resize(n);
         for (auto& v : t) {
             file_read(f, v);
@@ -140,7 +146,7 @@ namespace lua_world {
     template <typename T>
         requires (is_instantiation_of<T, std::vector>)
     static void file_read(FILE* f, T& t) {
-        size_t n = file_read<size_t>(f);
+        size_t n = file_readv<size_t>(f);
         t.resize(n);
         file_read(f, t.data(), t.size());
     }
@@ -263,20 +269,20 @@ namespace lua_world {
 
         restore_scope(L, f, "container", [&](){
             w.container.clear();
-            auto page_n = file_read<size_t>(f);
+            auto page_n = file_readv<size_t>(f);
             w.container.pages.reserve(page_n);
             for (size_t i = 0; i < page_n; ++i) {
                 auto page = std::make_unique<container::page>();
                 file_read(f, page->slots);
                 w.container.pages.emplace_back(std::move(page));
             }
-            auto freelist_n = file_read<size_t>(f);
+            auto freelist_n = file_readv<size_t>(f);
             w.container.freelist.reserve(freelist_n);
             for (size_t i = 0; i < freelist_n; ++i) {
                 std::list<container::chunk> lst;
-                auto lst_n = file_read<size_t>(f);
+                auto lst_n = file_readv<size_t>(f);
                 for (size_t j = 0; j < lst_n; ++j) {
-                    lst.push_back(file_read<container::chunk>(f));
+                    lst.push_back(file_readv<container::chunk>(f));
                 }
                 w.container.freelist.emplace_back(std::move(lst));
             }

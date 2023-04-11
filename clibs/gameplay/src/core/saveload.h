@@ -39,16 +39,9 @@ namespace lua_world {
     template <typename T>
         requires (std::is_trivially_copyable_v<T>)
     void file_read(FILE* f, T& v) {
-        size_t n = fread(&v, sizeof(T), 1, f);
+        size_t n = fread(reinterpret_cast<void*>(&v), sizeof(T), 1, f);
         (void)n;
         assert(n == 1);
-    }
-
-    template <typename T>
-    inline T file_read(FILE* f) {
-        T v;
-        file_read(f, v);
-        return v;
     }
 
     enum class filemode {
