@@ -48,7 +48,7 @@ namespace lua_world {
     inline T file_read(FILE* f) {
         T v;
         file_read(f, v);
-        return std::move(v);
+        return v;
     }
 
     enum class filemode {

@@ -1,6 +1,7 @@
 ﻿#include "roadnet/network.h"
 #include "roadnet/bfs.h"
-#include <assert.h>
+#include <cassert>
+#include <cstdio>
 
 namespace roadnet {
     template <typename T, typename F>

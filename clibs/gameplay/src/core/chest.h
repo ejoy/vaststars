@@ -192,7 +192,7 @@ private:
         top = 0;
     }
     void free_chunk(uint8_t page, chunk c) {
-        if (page+1 > freelist.size()) {
+        if ((size_t)page+1 > freelist.size()) {
             freelist.resize(page+1);
         }
         auto& lst = freelist[page];
