@@ -329,6 +329,17 @@ function M:update(datamodel, object_id, recipe_name)
     return true
 end
 
+local function play_transfer_effect(effect, pos)
+    local e <close> = w:entity(effect)
+    iom.set_position(e, {pos[1], pos[2] + 15, pos[3]})
+    iefk.play(e)
+end
+
+local function stop_transfer_effect(effect)
+    local e <close> = w:entity(effect)
+    iefk.stop(e)
+end
+
 function M:stage_ui_update(datamodel, object_id)
     -- create transfer effect
     if not transfer_effect then
@@ -344,6 +355,12 @@ function M:stage_ui_update(datamodel, object_id)
                 loop = false,
                 speed = 1.0,
                 scene = {s = 5, t = {0, 10, 0}}
+            }),
+            ready_effect = iefk.create("/pkg/vaststars.resources/effect/efk/teleport-ready.efk", {
+                auto_play = false,
+                loop = false,
+                speed = 1.0,
+                scene = {s = 6, t = {0, 10, 0}}
             })
         }
     end
@@ -440,31 +457,30 @@ function M:stage_ui_update(datamodel, object_id)
         assert(e.assembling.recipe ~= 0)
         iassembling.set_option(gameplay_core.get_world(), e, {ingredientsLimit = 0, resultsLimit = 0})
     end
+
     local effect_play = false
     for _ in item_transfer_subscribe_mb:unpack() do
         global.item_transfer_src = object_id
         __item_transfer_update(datamodel, object_id)
         if not effect_play then
             effect_play = true
-            local e <close> = w:entity(transfer_effect.out_effect)
             local obj = assert(objects:get(object_id))
-            local pos = obj.srt.t
-            iom.set_position(e, {pos[1], pos[2] + 15, pos[3]})
-            iefk.play(e)
+            play_transfer_effect(transfer_effect.ready_effect, obj.srt.t)
         end
     end
 
     for _ in item_transfer_unsubscribe_mb:unpack() do
         global.item_transfer_src = nil
         __item_transfer_update(datamodel, object_id)
+        stop_transfer_effect(transfer_effect.ready_effect)
     end
 
     effect_play = false
     for _ in item_transfer_place_mb:unpack() do
         local movable_items, movable_items_hash, placeable_items
+        local src_object = assert(objects:get(global.item_transfer_src))
         do
             assert(global.item_transfer_src)
-            local src_object = assert(objects:get(global.item_transfer_src))
             local e = gameplay_core.get_entity(assert(src_object.gameplay_eid))
             movable_items, movable_items_hash = item_transfer.get_movable_items(e)
             assert(movable_items and movable_items_hash)
@@ -496,10 +512,8 @@ function M:stage_ui_update(datamodel, object_id)
         -- play effect
         if #items > 0 and not effect_play then
             effect_play = true
-            local e <close> = w:entity(transfer_effect.in_effect)
-            local pos = dst_object.srt.t
-            iom.set_position(e, {pos[1], pos[2] + 15, pos[3]})
-            iefk.play(e)
+            play_transfer_effect(transfer_effect.in_effect, dst_object.srt.t)
+            play_transfer_effect(transfer_effect.out_effect, src_object.srt.t)
         end
     end
 
