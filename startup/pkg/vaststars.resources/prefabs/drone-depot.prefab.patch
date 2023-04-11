@@ -1,0 +1,14 @@
+---
+data:
+  name: pile_slot
+  scene:
+    t: {-2.700000047683716, 5, 2.700000047683716}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    slot1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
