@@ -120,13 +120,6 @@ prototype "采矿机II" {
     item_description = "用来挖掘矿物资源的机器",
 }
 
-prototype "机器爪I" {
-    type = {"item"},
-    group = {"物流"},
-    stack = 50,
-    item_description = "用来抓取货物的机械装置",
-}
-
 prototype "蒸汽发电机I" {
     type = {"item"},
     group = {"物流"},
@@ -237,6 +230,7 @@ prototype "运输车辆I" {
     group = {"物流"},
     stack = 1,
     item_description = "运输货物的交通工具",
+    capacitance = "10MJ",
 }
 
 prototype "换热器I" {

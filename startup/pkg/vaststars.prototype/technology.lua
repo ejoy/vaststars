@@ -61,6 +61,7 @@ local prototype = gameplay.register.prototype
         w = 4,
         h = 4,
         show_arrow = true,
+        force = true,
       },
       {
         camera_x = 121,

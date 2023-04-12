@@ -9,19 +9,9 @@ world:create_entity "小铁制箱子I" {
         {"碎石", 100},
     },
 }
-world:create_entity "机器爪I" {
-    x = 2,
-    y = 1,
-    dir = "W"
-}
 world:create_entity "组装机I" {
     x = 3,
     y = 1,
-}
-world:create_entity "机器爪I" {
-    x = 6,
-    y = 1,
-    dir = "W"
 }
 world:create_entity "科研中心I" {
     x = 7,

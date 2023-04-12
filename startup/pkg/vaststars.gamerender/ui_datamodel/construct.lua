@@ -29,10 +29,10 @@ local create_station_builder = ecs.require "editor.stationbuilder"
 local interval_call = ecs.require "engine.interval_call"
 local item_transfer = require "item_transfer"
 local logistic_coord = ecs.require "terrain"
-local iani = ecs.import.interface "ant.animation|ianimation"
-local ivs = ecs.import.interface "ant.scene|ivisible_state"
-local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local selected_boxes = ecs.require "selected_boxes"
+local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
+local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
+local COLOR_INVALID <const> = math3d.constant "null"
 
 local rotate_mb = mailbox:sub {"rotate"} -- construct_pop.rml -> 旋转
 local build_mb = mailbox:sub {"build"}   -- construct_pop.rml -> 修建
@@ -45,12 +45,13 @@ local show_setting_mb = mailbox:sub {"show_setting"} -- 主界面左下角 -> �
 local technology_mb = mailbox:sub {"technology"} -- 主界面左下角 -> 科研中心
 local construct_entity_mb = mailbox:sub {"construct_entity"} -- 建造 entity
 local click_techortaskicon_mb = mailbox:sub {"click_techortaskicon"}
-local clear_pickup_id_mb = mailbox:sub {"clear_pickup_id"}
+local guide_on_going_mb = mailbox:sub {"guide_on_going"}
 local load_resource_mb = mailbox:sub {"load_resource"}
 local single_touch_mb = world:sub {"single_touch"}
 local move_finish_mb = mailbox:sub {"move_finish"}
 local builder_back_mb = mailbox:sub {"builder_back"}
 local construction_center_place_mb = mailbox:sub {"construction_center_place"}
+local item_transfer_src_inventory_mb = mailbox:sub {"item_transfer_src_inventory"}
 local pickup_gesture_mb = world:sub {"pickup_gesture"}
 local pickup_long_press_gesture_mb = world:sub {"pickup_long_press_gesture"}
 local handle_pickup = true
@@ -58,9 +59,11 @@ local single_touch_move_mb = world:sub {"single_touch", "MOVE"}
 local focus_tips_event = world:sub {"focus_tips"}
 local builder
 local item_transfer_dst
-local pickup_id
+local pickup_id -- object id
+local excluded_pickup_id -- object id
+local manual_item_transfer_src_inventory = false
 
-local item_transfer_placement_interval = interval_call(300, function(datamodel)
+local item_transfer_placement_interval = interval_call(300, function(datamodel, object_id)
     if not global.item_transfer_src then
         datamodel.item_transfer_src_inventory = {}
         return
@@ -91,6 +94,42 @@ local item_transfer_placement_interval = interval_call(300, function(datamodel)
         end
     end
     datamodel.item_transfer_src_inventory = items
+
+    if manual_item_transfer_src_inventory then
+        return
+    end
+    ------
+    if pickup_id == global.item_transfer_src then
+        datamodel.show_item_transfer_src_inventory = true
+    else
+        datamodel.show_item_transfer_src_inventory = false
+
+        local movable_items, movable_items_hash, placeable_items
+        do
+            if global.item_transfer_src then
+                local object = assert(objects:get(global.item_transfer_src))
+                local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+                movable_items, movable_items_hash = item_transfer.get_movable_items(e)
+                assert(movable_items and movable_items_hash)
+            end
+        end
+
+        do
+            if object_id then
+                local object = assert(objects:get(object_id))
+                local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+                placeable_items = assert(item_transfer.get_placeable_items(e))
+            end
+        end
+        do
+            for _, slot in ipairs(placeable_items or {}) do
+                if movable_items_hash[slot.item] then
+                    datamodel.show_item_transfer_src_inventory = true
+                    break
+                end
+            end
+        end
+    end
 end)
 
 local function reverse(array)
@@ -273,23 +312,22 @@ local function open_focus_tips(tech_node)
             local prefab
             local center = logistic_coord:get_position_by_coord(nd.x, nd.y, 1, 1)
             if nd.show_arrow then
-                prefab = ecs.create_instance("/pkg/vaststars.resources/prefabs/arrow-guide.prefab")
-                prefab.on_ready = function(inst)
-                    local children = inst.tag["*"]
-                    local re <close> = w:entity(children[1])
-                    iom.set_position(re, center)
-                    for _, eid in ipairs(children) do
-                        local e <close> = w:entity(eid, "animation_birth?in visible_state?in")
-                        if e.animation_birth then
-                            iani.play(eid, {name = e.animation_birth, loop = true})
-                        elseif e.visible_state then
-                            ivs.set_state(e, "cast_shadow", false)
-                        end
-                    end
+                prefab = assert(igame_object.create({
+                    state = "opaque",
+                    color = COLOR_INVALID,
+                    prefab = "prefabs/arrow-guide.prefab",
+                    group_id = 0,
+                    srt = {
+                        t = center,
+                    },
+                    render_layer = RENDER_LAYER.SELECTED_BOXES,
+                }))
+            end
+            if nd.force then
+                local object = objects:coord(nd.x, nd.y, EDITOR_CACHE_NAMES)
+                if object then
+                    excluded_pickup_id = object.id
                 end
-                function prefab:on_message() end
-                function prefab:on_update() end
-                world:create_object(prefab)
             end
             tech_node.selected_tips[#tech_node.selected_tips + 1] = {selected_boxes(nd.prefab, center, nd.w, nd.h), prefab}
         elseif nd.camera_x and nd.camera_y then
@@ -304,15 +342,12 @@ local function close_focus_tips(tech_node)
         return
     end
     for _, tip in ipairs(selected_tips) do
-        tip[1]:remove()
-        if tip[2] then
-            local children = tip[2].tag["*"]
-            for _, eid in ipairs(children) do
-               w:remove(eid)
-            end
+        for _, o in ipairs(tip) do
+            o:remove()
         end
     end
     tech_node.selected_tips = {}
+    excluded_pickup_id = nil
 end
 
 function M:stage_camera_usage(datamodel)
@@ -375,11 +410,13 @@ function M:stage_camera_usage(datamodel)
 
         local object = _get_object(x, y)
         if object then -- object may be nil, such as when user click on empty space
-            if idetail.show(object.id) then
-                leave = false
-                item_transfer_dst = object.id
-                pickup_id = object.id
-                datamodel.cur_edit_mode = "construct"
+            if not excluded_pickup_id or excluded_pickup_id == object.id then
+                if idetail.show(object.id) then
+                    leave = false
+                    item_transfer_dst = object.id
+                    pickup_id = object.id
+                    datamodel.cur_edit_mode = "construct"
+                end
             end
         else
             idetail.unselected()
@@ -391,12 +428,18 @@ function M:stage_camera_usage(datamodel)
         if leave then
             world:pub {"ui_message", "leave"}
             leave = false
+            datamodel.show_item_transfer_src_inventory = false
+            manual_item_transfer_src_inventory = false
             break
         end
         ::continue::
     end
 
     for _, _, x, y in pickup_long_press_gesture_mb:unpack() do
+        if not excluded_pickup_id then
+            goto continue
+        end
+
         if not handle_pickup then
             goto continue
         end
@@ -431,6 +474,8 @@ function M:stage_camera_usage(datamodel)
         if leave then
             world:pub {"ui_message", "leave"}
             leave = false
+            datamodel.show_item_transfer_src_inventory = false
+            manual_item_transfer_src_inventory = false
             break
         end
         ::continue::
@@ -448,6 +493,8 @@ function M:stage_camera_usage(datamodel)
         if leave then
             world:pub {"ui_message", "leave"}
             leave = false
+            datamodel.show_item_transfer_src_inventory = false
+            manual_item_transfer_src_inventory = false
             break
         end
     end
@@ -505,11 +552,16 @@ function M:stage_camera_usage(datamodel)
         end
     end
 
-    for _ in clear_pickup_id_mb:unpack() do
+    for _ in guide_on_going_mb:unpack() do
         pickup_id = nil
     end
 
-    item_transfer_placement_interval(datamodel)
+    for _ in item_transfer_src_inventory_mb:unpack() do
+        datamodel.show_item_transfer_src_inventory = not datamodel.show_item_transfer_src_inventory
+        manual_item_transfer_src_inventory = true
+    end
+
+    item_transfer_placement_interval(datamodel, pickup_id)
     construction_center_menu_interval(datamodel, pickup_id)
 
     iobject.flush()

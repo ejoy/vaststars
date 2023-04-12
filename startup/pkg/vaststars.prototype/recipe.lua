@@ -335,25 +335,6 @@ prototype "铁齿轮" {
     description = "使用铁制品加工铁齿轮",
 }
 
-prototype "机器爪1" {
-    type = { "recipe" },
-    category = "物流小型制造",
-    --recipe_group =  "物流",
-    recipe_order =  40,
-    recipe_icon =  "textures/construct/insert1.texture",
-    ingredients = {
-        -- {"铁棒", 3},
-        {"铁板", 3},
-        {"铁齿轮", 2},
-        {"电动机I", 1},
-    },
-    results = {
-        {"机器爪I", 3},
-    },
-    time = "5s",
-    description = "铁制品和电动机制造机器爪",
-}
-
 prototype "物流中心1" {
     type = { "recipe" },
     category = "物流大型制造",
