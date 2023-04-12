@@ -34,19 +34,24 @@ lm.ios = {
     }
 }
 
-local EnableSanitize = false -- true
+local EnableSanitize = false
 if EnableSanitize then
     lm.builddir = ("build/%s/sanitize"):format(plat)
     lm.mode = "debug"
-    lm.flags = "-fsanitize=address"
-    lm.msvc = {
-        defines = "_DISABLE_STRING_ANNOTATION"
+    lm:config "sanitize" {
+        flags = "-fsanitize=address",
+        msvc = {
+            defines = "_DISABLE_STRING_ANNOTATION"
+        },
+        gcc = {
+            ldflags = "-fsanitize=address"
+        },  
+        clang = {
+            ldflags = "-fsanitize=address"
+        }
     }
-    lm.gcc = {
-        ldflags = "-fsanitize=address"
-    }
-    lm.clang = {
-        ldflags = "-fsanitize=address"
+    lm.configs = {
+        "sanitize"
     }
     lm:msvc_copydll "copy_asan" {
         type = "asan",
