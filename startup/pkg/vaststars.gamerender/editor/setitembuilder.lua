@@ -12,6 +12,7 @@ local global = require "global"
 local iobject = ecs.require "object"
 local ipower = ecs.require "power"
 local ipower_line = ecs.require "power_line"
+local idronecover = ecs.require "drone_cover"
 local imining = require "gameplay.interface.mining"
 local math3d = require "math3d"
 local iconstant = require "gameplay.interface.constant"
@@ -310,6 +311,10 @@ local function touch_move(self, datamodel, delta_vec)
         ipower:merge_pole({power_network_link_target = 0, key = pickup_object.id, targets = {}, x = lx, y = ly, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.power_supply_distance, smooth_pos = true, power_network_link = typeobject.power_network_link})
         ipower_line.update_temp_line(ipower:get_temp_pole())
     end
+
+    if typeobject.name == "无人机仓库" then
+        idronecover.update_cover(pickup_object, typeobject)
+    end
 end
 
 local function touch_end(self, datamodel)
@@ -351,6 +356,9 @@ local function confirm(self, datamodel)
         self.block = nil
     end
 
+    if typeobject.name == "无人机仓库" then
+        idronecover.clear()
+    end
     iui.close("construct_pop.rml")
     self:complete(pickup_object.id, datamodel)
 end

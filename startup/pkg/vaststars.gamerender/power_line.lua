@@ -1,6 +1,6 @@
 local ecs   = ...
 local world = ecs.world
-local w           = world.w
+local w     = world.w
 local iterrain          = ecs.require "terrain"
 local iline_entity      = ecs.require "engine.line_entity"
 local vsobject_manager  = ecs.require "vsobject_manager"
