@@ -1,12 +1,14 @@
 local lm = require "luamake"
 
 if lm.os == "ios" and lm.mode == "release" then
-    lm:runlua {
-        script = "update_version.lua",
-        args = { "$out" },
-        output = "../../startup/pkg/vaststars.version/version.lua",
-    }
+    os.execute "touch clibs/version/update_version.lua"
 end
+
+lm:runlua {
+    script = "update_version.lua",
+    args = { "$out" },
+    output = "../../startup/pkg/vaststars.version/version.lua",
+}
 
 lm:runlua {
     script = "../../3rd/ant/clibs/firmware/embed.lua",
