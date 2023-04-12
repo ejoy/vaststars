@@ -561,32 +561,32 @@ prototype "建造电线杆" {
     guide_focus = {
       {
         prefab = "prefabs/selected-box-guide.prefab",
-        x = 123.5,
-        y = 126,
-        w = 1.5,
-        h = 1.5,
-      },
-      {
-        prefab = "prefabs/selected-box-guide.prefab",
-        x = 123.5,
-        y = 129.5,
-        w = 1.5,
-        h = 1.5,
-      },
-      {
-        prefab = "prefabs/selected-box-guide.prefab",
-        x = 118.5,
-        y = 126,
-        w = 1.5,
-        h = 1.5,
-      },
-      {
-        prefab = "prefabs/selected-box-guide.prefab",
         x = 118.5,
         y = 129.5,
         w = 1.5,
         h = 1.5,
       },
+      -- {
+      --   prefab = "prefabs/selected-box-guide.prefab",
+      --   x = 118.5,
+      --   y = 126,
+      --   w = 1.5,
+      --   h = 1.5,
+      -- },
+      -- {
+      --   prefab = "prefabs/selected-box-guide.prefab",
+      --   x = 123.5,
+      --   y = 126,
+      --   w = 1.5,
+      --   h = 1.5,
+      -- },
+      -- {
+      --   prefab = "prefabs/selected-box-guide.prefab",
+      --   x = 123.5,
+      --   y = 129.5,
+      --   w = 1.5,
+      --   h = 1.5,
+      -- },
       {
         camera_x = 120,
         camera_y = 128,
