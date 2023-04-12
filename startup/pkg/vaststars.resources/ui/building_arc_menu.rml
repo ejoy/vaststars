@@ -84,6 +84,7 @@
                 right:0; 
                 top:0; 
                 background-image:"textures/work_status_icon/red_dot.texture";
+                background-size: cover;
             }
             @keyframes enlarge {
                 0% {
