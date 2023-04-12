@@ -312,6 +312,19 @@ prototype "建造电线杆" {
     task = {"stat_consumption", 0, "电线杆设计图"},
     prerequisites = {"电线杆传送接收"},
     count = 5,
+    guide_focus = {
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 121,
+        y = 122,
+        w = 4,
+        h = 4,
+      },
+      {
+        camera_x = 121,
+        camera_y = 122,
+      },
+    },
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
