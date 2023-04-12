@@ -92,6 +92,7 @@ local prototype = gameplay.register.prototype
         w = 1.5,
         h = 1.5,
         show_arrow = true,
+        force = true,
       },
       {
         prefab = "prefabs/selected-box-guide.prefab",
@@ -143,6 +144,7 @@ local prototype = gameplay.register.prototype
         w = 4,
         h = 4,
         show_arrow = true,
+        force = true,
       },
       {
         camera_x = 121,
@@ -621,7 +623,7 @@ prototype "建造电线杆" {
     type = { "tech", "task" },
     task = {"stat_production", 0, "碎石"},
     prerequisites = {"无人机仓库设置"},
-    count = 16,
+    count = 12,
     effects = {
        unlock_recipe = {"科研中心打印"},
        unlock_item = {"科研中心设计图"},
@@ -630,7 +632,7 @@ prototype "建造电线杆" {
       "textures/task_tips_pic/task_produce_ore3.texture",
     },
     sign_desc = {
-      { desc = "在碎石矿上放置挖矿机并挖掘16个碎石矿", icon = "textures/construct/industry.texture"},
+      { desc = "在碎石矿上放置挖矿机并挖掘12个碎石矿", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -651,17 +653,76 @@ prototype "建造电线杆" {
   }
 
   prototype "更多无人机仓库" {
-    desc = "再建造3个无人机仓库",
+    desc = "再建造1个无人机仓库",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_consumption", 0, "无人机仓库设计图"},
     prerequisites = {"无人机仓库传送"},
-    count = 4,
+    count = 2,
+    guide_focus = {
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 126,
+        y = 109,
+        w = 1.5,
+        h = 1.5,
+        show_arrow = true,
+      },
+      {
+        camera_x = 121,
+        camera_y = 122,
+      },
+    },
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "建造总共4个无人机仓库", icon = "textures/construct/industry.texture"},
+      { desc = "建造总共2个无人机仓库", icon = "textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "第二个无人机仓库" {
+    desc = "再放置1个无人机仓库",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"select_entity", 0, "无人机仓库"},
+    prerequisites = {"更多无人机仓库"},
+    count = 2,
+    tips_pic = {
+      "textures/task_tips_pic/task_place_pole1.texture",
+      "textures/task_tips_pic/task_place_pole2.texture",
+    },
+    guide_focus = {
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 118.5,
+        y = 126,
+        w = 1.5,
+        h = 1.5,
+      },
+      {
+        camera_x = 120,
+        camera_y = 128,
+      },
+    },
+    sign_desc = {
+      { desc = "放置总共2个无人机仓库", icon = "textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "仓库碎石设置" {
+    desc = "无人机仓库选择碎石",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"unknown", 0, 5},                          
+    task_params = {item = "碎石"},
+    count = 1,
+    prerequisites = {"放置无人机仓库"},
+    tips_pic = {
+      "textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "新放置的无人机仓库选择存储碎石", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -671,7 +732,7 @@ prototype "建造电线杆" {
     type = { "tech", "task" },
     task = {"stat_consumption", 0, "科研中心设计图"},
     count = 1,
-    prerequisites = {"更多无人机仓库"},
+    prerequisites = {"仓库碎石设置"},
     guide_focus = {
       {
         prefab = "prefabs/selected-box-guide.prefab",

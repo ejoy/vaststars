@@ -3,8 +3,8 @@ local guide = {
         name = "",
 		narrative = {
             {"哔哩..哔哗..已迫降在{/g 代号P4031}的星球。尚未发现任何生命迹象..(失望)", "textures/guide/guide-6.texture"},
-            {"哔哩..哔哗..哔哩..启动大气分析协议中..P4031{/g 缺少氧气}..(失望)"},
-            {"哔哩..哔哗..哔哩..启动地质分析协议中..P4031{/g 石铁丰富}..(轻松)","textures/guide/guide-1.texture"},
+            {"哔哩..哔哗..启动大气分析协议中..P4031{/g 缺少氧气}..(失望)"},
+            {"哔哩..哔哗..启动地质分析协议中..P4031{/g 石铁丰富}..(轻松)","textures/guide/guide-1.texture"},
             {"哔哩..哔哗..启动生存可靠性分析..{/color:4bd0ff 0.04565%}存活概率..(情绪表达跳过中)","textures/guide/guide-4.texture"},
         },
         narrative_end = {
@@ -19,7 +19,7 @@ local guide = {
         name = "",
 		narrative = {
             {"哔哩..开采星球资源需要工具，让我们先制造一部{/g 采矿机}吧..哔哩..(期待)", "textures/guide/guide-2.texture"},
-            {"{/color:4bd0ff 建造中心}可打印建筑或机械，请前往{/color:4bd0ff 建造中心}中选择{/g 采矿机打印}..哔哩..(期待)", "textures/guide/guide-2.texture"},
+            {"{/color:4bd0ff 建造中心}可打印建筑，前往{/color:4bd0ff 建造中心}中选择{/g 采矿机打印}..哔哩..(期待)", "textures/guide/guide-2.texture"},
         },
         narrative_end = {
             pop_chapter = {"序章","迫降P4031"},
@@ -34,7 +34,7 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"哔哩..建造采矿机需要{/g 采矿机设计图}..检测到附近{/color:4bd0ff 四处废墟}有残留物资..(期待)", "textures/guide/guide-1.texture"},
+            {"哔哩..建造采矿机需要{/g 采矿机设计图}..探测到{/color:4bd0ff 四处废墟}有残留物资..(期待)", "textures/guide/guide-1.texture"},
             {"哔哩..使用{/color:4bd0ff 遥感传送仪}可以{/g 远程传送}物资到目的地..(高兴)", "textures/guide/guide-3.texture"},
             {"哔哩..发现{/g 继电器废墟}有所需材料，请前往选择{/g 传送设置}进入准备传送状态..(期待)", "textures/guide/guide-1.texture"},
         },
@@ -121,7 +121,7 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"哔哩..在{/color:4bd0ff 排水口废墟}发现所需的{/g 电线杆设计图}，请前往该处进行{/g 传送设置}..哔哩..哔哗..(期望)", "textures/guide/guide-1.texture"},
+            {"哔哩..在{/color:4bd0ff 排水口废墟}发现{/g 电线杆设计图}，前往该处进行{/g 传送设置}..哔哩..哔哗..(期望)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
             guide_progress = 30,
@@ -355,7 +355,6 @@ local guide = {
         name = "",
 		narrative = {
             {"哔哩..我们采集了足够多的碎石，可以建造更多的{/g 无人机仓库}..(期待)", "textures/guide/guide-2.texture"},
-            {"哔哩..储藏{/color:4bd0ff 相同货物}的{/g 无人机仓库}如果距离足够近可以相互传递货物..(期待)", "textures/guide/guide-2.texture"},
         },
         narrative_end = {
             guide_progress = 30,
@@ -371,8 +370,41 @@ local guide = {
     {
         name = "",
 		narrative = {
+            {"哔哩..储藏{/color:4bd0ff 相同物品}的{/g 无人机仓库}在足够近的距离可相互传递物品..(期待)", "textures/guide/guide-2.texture"},
+            {"哔哩..需要放置更多的{/g 无人机仓库}，记得设置存储{/color:4bd0ff 物品类型}..哔哩..(期待)", "textures/guide/guide-2.texture"},
+        },
+        narrative_end = {
+            guide_progress = 30,--10
+            task = {
+                "第二个无人机仓库",
+            }
+        },
+        prerequisites = {
+            "更多无人机仓库",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
+            {"让我们把新{/color:4bd0ff 无人机仓库}储存类型也设置为{/g 碎石}..哔哩..(期待)", "textures/guide/guide-1.texture"},
+        },
+        narrative_end = {
+            guide_progress = 30,--10
+            task = {
+                "仓库碎石设置",
+            }
+        },
+        prerequisites = {
+            "第二个无人机仓库",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
             {"我们需要对这个星球进行全面的科学考察，让我们建造一座{/g 科研中心}..哔哩..(期待)", "textures/guide/guide-1.texture"},
-            {"我把{/color:4bd0ff 科研中心设计图}所在废墟给你标注出来，{/color:4bd0ff 碎石}你自行前往{/color:4bd0ff 无人机仓库}..哔哩..(期待)", "textures/guide/guide-1.texture"},
+            {"{/color:4bd0ff 科研中心设计图}所在废墟已经被标注了，传送{/color:4bd0ff 碎石}可前往{/g 无人机仓库}..哔哩..(期待)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
             guide_progress = 30,--10
@@ -381,7 +413,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "更多无人机仓库",
+            "仓库碎石设置",
         },
 	},
 
