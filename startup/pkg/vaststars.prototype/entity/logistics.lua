@@ -67,6 +67,7 @@ prototype "科研中心I" {
     speed = "100%",
     show_arc_menu = false,
     priority = "secondary",
+    printer_scale = {1.3,1.3,1.3},
     inputs = {
         "地质科技包",
         "气候科技包",

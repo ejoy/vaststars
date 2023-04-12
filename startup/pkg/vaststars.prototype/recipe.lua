@@ -1227,7 +1227,7 @@ prototype "送货车站打印" {
         {"送货车站设计图", 1},
     },
     results = {
-        {"送货车站", 1},
+        {"送货车站", 1},k
     },
     time = "5s",
     description = "打印送货车站",
@@ -1273,7 +1273,7 @@ prototype "科研中心打印" {
     recipe_icon =  "textures/construct/broken-lab.texture",
     ingredients = {
         {"科研中心设计图", 1},
-        {"碎石", 10},
+        {"碎石", 20},
     },
     results = {
         {"科研中心I", 1},
