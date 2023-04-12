@@ -51,9 +51,10 @@ local function create_io_shelves(gameplay_world, e, building_srt)
 
     if typeobject_building.io_shelf == false then
         return {
+            on_position_change = function() end,
+            remove = function() end,
             recipe = typeobject_recipe.id,
             update_heap_count = function() end,
-            remove = function() end,
         }
     end
 
@@ -74,7 +75,7 @@ local function create_io_shelves(gameplay_world, e, building_srt)
             local offset = math3d.ref(math3d.matrix {s = scene.s, r = scene.r, t = scene.t})
             function prefab_instance:on_ready()
                 local e <close> = w:entity(self.tag["*"][1])
-                iom.set_srt_matrix(e, math3d.mul(math3d.ref(building_srt), offset))
+                iom.set_srt_matrix(e, math3d.mul(building_srt, offset))
             end
             function prefab_instance:on_message()
             end
@@ -133,7 +134,7 @@ local function create_io_shelves(gameplay_world, e, building_srt)
             end
         end
     end
-    local function remove()
+    local function remove(self)
         for _, o in ipairs(shelves) do
             o:remove()
         end
@@ -141,17 +142,21 @@ local function create_io_shelves(gameplay_world, e, building_srt)
             o:remove()
         end
     end
+    local function on_position_change(self, building_srt)
+        -- TODO: when the building position changes, update the location
+    end
     return {
+        on_position_change = on_position_change,
+        remove = remove,
         recipe = typeobject_recipe.id,
         update_heap_count = update_heap_count,
-        remove = remove,
     }
 end
 
 return function(world)
     for e in world.ecs:select "assembling:in chest:in building:in eid:in" do
         local object = assert(objects:coord(e.building.x, e.building.y))
-        local srt = math3d.matrix {s = object.srt.s, r = object.srt.r, t = object.srt.t}
+        local srt = math3d.ref(math3d.matrix {s = object.srt.s, r = object.srt.r, t = object.srt.t})
         local building = buildings[object.id]
 
         if not building.io_shelves then

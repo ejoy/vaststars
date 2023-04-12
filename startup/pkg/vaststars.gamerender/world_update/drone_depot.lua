@@ -51,11 +51,14 @@ local function create_shelf(building, item, count, building_srt)
     local heap = create_heap(meshbin[1], srt, dim3, gap3, count)
 
     local res = {item = item, count = count, heap = heap, offset = offset}
+    res.on_position_change = function (self, building_srt)
+        -- TODO: when the building position changes, update the location
+    end
     res.update = function(self, count)
         iheapmesh.update_heap_mesh_number(heap.id, count)
         self.count = count
     end
-    res.remove = function (self)
+    res.remove = function(self)
         heap:remove()
     end
     return res
