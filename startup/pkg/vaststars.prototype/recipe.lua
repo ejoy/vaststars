@@ -1278,7 +1278,7 @@ prototype "科研中心打印" {
     results = {
         {"科研中心I", 1},
     },
-    time = "5s",
+    time = "15s",
     description = "打印科研中心",
 }
 
