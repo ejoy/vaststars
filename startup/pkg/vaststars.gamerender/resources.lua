@@ -799,6 +799,7 @@ local t = {
 	"/pkg/vaststars.gamerender/debug_system.lua",
 	"/pkg/vaststars.gamerender/debugger.lua",
 	"/pkg/vaststars.gamerender/detail_system.lua",
+	"/pkg/vaststars.gamerender/drone_cover.lua",
 	"/pkg/vaststars.gamerender/editor/builder.lua",
 	"/pkg/vaststars.gamerender/editor/editor.lua",
 	"/pkg/vaststars.gamerender/editor/movebuilder.lua",
