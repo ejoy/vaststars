@@ -415,7 +415,12 @@ function M:stage_camera_usage(datamodel)
                     leave = false
                     item_transfer_dst = object.id
                     pickup_id = object.id
-                    datamodel.cur_edit_mode = "construct"
+
+                    local prototype_name = object.prototype_name
+                    local typeobject = iprototype.queryByName(prototype_name)
+                    if typeobject.construction_center then
+                        datamodel.cur_edit_mode = "construct"
+                    end
                 end
             end
         else
@@ -554,6 +559,8 @@ function M:stage_camera_usage(datamodel)
 
     for _ in guide_on_going_mb:unpack() do
         pickup_id = nil
+        idetail.unselected()
+        datamodel.cur_edit_mode = ""
     end
 
     for _ in item_transfer_src_inventory_mb:unpack() do
