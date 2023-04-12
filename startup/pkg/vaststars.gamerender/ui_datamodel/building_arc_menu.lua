@@ -203,9 +203,11 @@ local function __item_transfer_update(datamodel, object_id)
 
     if datamodel.item_transfer_place == true then
         datamodel.item_transfer_place = false
+        datamodel.item_transfer_place_disabled = true
         for _, slot in ipairs(placeable_items or {}) do
             if movable_items_hash[slot.item] then
                 datamodel.item_transfer_place = true
+                datamodel.item_transfer_place_disabled = movable_items[movable_items_hash[slot.item]].count <= 0
                 break
             end
         end

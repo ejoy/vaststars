@@ -23,7 +23,7 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  material: /pkg/vaststars.resources/glb/arrow-guide.glb|materials/Material.003_skin_clr.material
+  material: /pkg/vaststars.resources/materials/arrow-guide.material
   mesh: /pkg/vaststars.resources/glb/arrow-guide.glb|meshes/Cylinder_P1.meshbin
   name: Cylinder
   skinning: true
@@ -35,8 +35,8 @@ policy:
 data:
   anim_ctrl: {}
   animation:
-    Armature.001Action: /pkg/vaststars.resources/glb/arrow-guide.glb|animations/Armature.001Action.ozz
-  animation_birth: Armature.001Action
+    ArmatureAction: /pkg/vaststars.resources/glb/arrow-guide.glb|animations/Armature.001Action.ozz
+  animation_birth: ArmatureAction
   name: animation
   skeleton: /pkg/vaststars.resources/glb/arrow-guide.glb|animations/skeleton.ozz
 policy:

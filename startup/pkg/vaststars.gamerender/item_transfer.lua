@@ -51,10 +51,11 @@ local function get_placeable_items(e)
         if recipe ~= 0 then
             local recipe_typeobject = iprototype.queryById(recipe)
             local ingredients_n <const> = #recipe_typeobject.ingredients//4 - 1
-            for i = 1, ingredients_n do
-                local slot = gameplay_core.get_world():container_get(e.chest, i)
-                if slot.amount + slot.lock_space < slot.limit then
-                    items[#items + 1] = {chest = e.chest, item = slot.item, count = slot.limit - slot.amount + slot.lock_space}
+            for idx = 1, ingredients_n do
+                local _, n = string.unpack("<I2I2", recipe_typeobject.ingredients, 4*idx+1)
+                local slot = gameplay_core.get_world():container_get(e.chest, idx)
+                if slot.amount + slot.lock_space < n then
+                    items[#items + 1] = {chest = e.chest, item = slot.item, count = n - slot.amount + slot.lock_space}
                 end
             end
         end

@@ -18,8 +18,8 @@ local guide = {
 	{
         name = "",
 		narrative = {
-            {"哔哩..急需工具开采星球资源，让我们先制造一部{/g 采矿机}吧..哔哩..(期待)", "textures/guide/guide-2.texture"},
-            {"{/color:4bd0ff 建造中心}专用于打印建筑或机械，请在{/color:4bd0ff 建造中心}中选择{/g 采矿机打印}..哔哩..(期待)", "textures/guide/guide-2.texture"},
+            {"哔哩..开采星球资源需要工具，让我们先制造一部{/g 采矿机}吧..哔哩..(期待)", "textures/guide/guide-2.texture"},
+            {"{/color:4bd0ff 建造中心}可打印建筑或机械，请前往{/color:4bd0ff 建造中心}中选择{/g 采矿机打印}..哔哩..(期待)", "textures/guide/guide-2.texture"},
         },
         narrative_end = {
             pop_chapter = {"序章","迫降P4031"},
@@ -52,7 +52,7 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"哔哩..{/g 继电器废墟}发出的{/color:4bd0ff 蓝色光晕}表明传送准备就绪..(开心)", "textures/guide/guide-2.texture"},
+            {"哔哩..{/g 继电器废墟}上方笼罩{/color:4bd0ff 蓝色光晕}表明传送准备就绪..(开心)", "textures/guide/guide-2.texture"},
             {"哔哩..让我们进入{/color:4bd0ff 建造中心}选择{/g 传送启动}接收物资吧..(高兴)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {

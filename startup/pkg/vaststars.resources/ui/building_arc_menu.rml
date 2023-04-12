@@ -115,6 +115,7 @@
                 left = "0vmin",
                 top = "0vmin",
                 buttons = {},
+                item_transfer_place_disabled = false,
             })
 
             local positions <const> = {
@@ -145,8 +146,8 @@
                 },
             }
 
-            function start.clickButton(event, message)
-                if message == "" then
+            function start.clickButton(event, message, disabled)
+                if message == "" or disabled == true then
                     return
                 end
                 ui_sys.pub {message, start.object_id}
@@ -184,6 +185,7 @@
                             number = -1,
                             show_number = false,
                             show_icon_background = false,
+                            disabled = false,
                         }
 
                         start.buttons = {}
@@ -284,6 +286,9 @@
                             v.text = "传送启动"
                             v.message = "item_transfer_place"
                             v.background_image = "textures/construct/portal-out.texture"
+                            v.disabled = start.item_transfer_place_disabled
+                            console.log("start.item_transfer_place_disabled", start.item_transfer_place_disabled)
+                            v.disabled_background_image = "textures/construct/portal-out-disabled.texture"
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -309,17 +314,18 @@
                     "show_set_recipe", "show_set_item", "show_road_builder", 
                     "construction_center_icon", "construction_center_count", "construction_center_multiple", "drone_depot_icon", "station_item_icon",
                     "lorry_factory_icon", "lorry_factory_count", "lorry_factory_inc_lorry", "lorry_factory_dec_lorry",
-                    "item_transfer_subscribe", "item_transfer_place", "item_transfer_unsubscribe",
+                    "item_transfer_subscribe", "item_transfer_place", "item_transfer_unsubscribe", "item_transfer_place_disabled"
                 }
             })
         </script>
     </head>
     <body style = "pointer-events: none;">
         <div class="info-panel" style="position: relative; pointer-events: none;" data-model="start" data-style-left = "left" data-style-top = "top">
-            <button class="button-fuction-block" style="position: absolute;" data-style-top="it.top" data-style-left="it.left" data-event-click="clickButton(it.message)" data-for = "it : buttons">
+            <button class="button-fuction-block" style="position: absolute;" data-style-top="it.top" data-style-left="it.left" data-event-click="clickButton(it.message, it.disabled)" data-for = "it : buttons">
                 <div class = "icon-background" style="position: absolute; margin: 1.8vmin 0.7vmin;" data-if = "it.show_icon_background" />
-                <div class="button-function" data-style-background-image = "it.background_image" />
-                <div class="title-text">{{it.text}}</div>
+                <div class = "button-function" data-style-background-image = "it.background_image" data-if = "!it.disabled" />
+                <div class = "button-function" data-style-background-image = "it.disabled_background_image" data-if = "it.disabled" />
+                <div class = "title-text" data-style-color = "it.disabled ? 'gray' : 'gold'">{{it.text}}</div>
                 <div class = "red-dot" data-if = "it.show_number">
                     <div style="text-align:center; font-size:3vmin; padding-right: 0.5vmin;">{{it.number}}</div>
                 </div>

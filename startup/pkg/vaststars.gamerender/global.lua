@@ -1,6 +1,15 @@
+local BUILDING_COMPONENTS = {
+    io_shelves = true,
+    drone_depot_shelf = true,
+}
+local component_mt = {}
+function component_mt:__index(k)
+    assert(BUILDING_COMPONENTS[k], "invalid building component: " .. k)
+end
+
 local mt = {}
 function mt:__index(k)
-    self[k] = {}
+    self[k] = setmetatable({}, component_mt)
     return self[k]
 end
 
