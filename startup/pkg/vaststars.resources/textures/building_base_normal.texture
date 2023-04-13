@@ -1,7 +1,7 @@
 colorspace: linear
 compress:
-  android: ASTC4x4
-  ios: ASTC4x4
+  android: ASTC6x6
+  ios: ASTC6x6
   windows: BC5
 normalmap: true
 maxsize: 1024
