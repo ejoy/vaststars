@@ -1,20 +1,5 @@
 ---
 data:
-  name: effect
-  scene:
-    s: {3.200000047683716, 3.200000047683716, 3.200000047683716}
-    t: {0, 11.5, 0, 1}
-  slot:
-    follow_flag: 1
-    joint_name: None
-  tag:
-    effect
-policy:
-  ant.general|name
-  ant.general|tag
-  ant.animation|slot
----
-data:
   name: shelf1
   scene:
     r: {0, 0.9537169337272644, 0, 0.30070582032203674}
@@ -103,3 +88,23 @@ policy:
   ant.general|name
   ant.general|tag
   ant.animation|slot
+---
+data:
+  efk:
+    auto_play: false
+    loop: false
+    path: /pkg/vaststars.resources/effect/efk/furnace_smoke.efk
+    speed: 1
+    visible: true
+  name: work
+  scene:
+    r: {0, 0, 0, 1}
+    s: {3.200000047683716, 3.200000047683716, 3.200000047683716}
+    t: {0, 11.5, 0}
+  tag:
+    effect
+policy:
+  ant.general|name
+  ant.scene|scene_object
+  ant.efk|efk
+  ant.general|tag
