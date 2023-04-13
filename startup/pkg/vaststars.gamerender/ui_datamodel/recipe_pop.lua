@@ -257,7 +257,6 @@ local function _update_recipe_items(datamodel, recipe_name)
         end
     end
 
-    print("datamodel.recipe_index = ", datamodel.recipe_index)
     if show_new_tag then
         recipe_category_new_flag["全部"] = true
     end
@@ -290,7 +289,6 @@ function M:stage_ui_update(datamodel, object_id)
     end
 
     for _, _, _, recipe_name in click_recipe_mb:unpack() do
-        print("click_recipe_mb", recipe_name)
         local storage = gameplay_core.get_storage()
         storage.recipe_picked_flag = storage.recipe_picked_flag or {}
         storage.recipe_picked_flag[recipe_name] = true
