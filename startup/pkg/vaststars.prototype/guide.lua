@@ -11,7 +11,7 @@ local guide = {
             task = {
                 "迫降火星",
             },
-            guide_progress = 30,
+            guide_progress = 5,
         },
         prerequisites = {},
 	},
@@ -26,7 +26,7 @@ local guide = {
             task = {
                 "采矿机调度",
             },
-            guide_progress = 30,
+            guide_progress = 5,
         },
         prerequisites = {"迫降火星"},
 	},
@@ -39,7 +39,7 @@ local guide = {
             {"哔哩..发现{/g 继电器废墟}有所需材料，请前往选择{/g 传送设置}进入准备传送状态..(期待)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
-            guide_progress = 30,
+            guide_progress = 5,
             task = {
                 "继电器废墟传送",
             }
@@ -56,7 +56,7 @@ local guide = {
             {"哔哩..让我们进入{/color:4bd0ff 建造中心}选择{/g 传送启动}接收物资吧..(高兴)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
-            guide_progress = 30,
+            guide_progress = 5,
             task = {
                 "采矿机传送接收",
             }
@@ -73,7 +73,7 @@ local guide = {
             {"哔哩..{/g 采矿机}在{/color:4bd0ff 建造中心}里开始打印了。我们只需静静等待打印完成..哔哩..(期待)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
-            guide_progress = 30,
+            guide_progress = 5,
             task = {
                 "建造采矿机",
             }
@@ -90,7 +90,7 @@ local guide = {
             {"哔哩..将{/g 采矿机}放置在{/g 石矿}上方，采矿机就可以开采矿区资源{/color:4bd0ff 碎石}..哔哩..(期待)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
-            guide_progress = 30,
+            guide_progress = 10,
             task = {
                 "石矿放置采矿机",
             }

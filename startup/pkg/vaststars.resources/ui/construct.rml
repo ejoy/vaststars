@@ -242,6 +242,14 @@
                     transform: scale(1.0);
                 }
             }
+            @keyframes enlarge3 {
+                0% {
+                    transform: scale(1.0);
+                }
+                100% {
+                    transform: scale(1.2);
+                }
+            }
             .safe-area {
                 width: 87%;
                 height: 100%;
@@ -353,6 +361,15 @@
                 background-size: cover;
                 background-image:"textures/common/arrow.texture";
                 transform: rotate(180deg);
+            }
+            .guide-finger {
+                position: absolute;
+                left: -6vmin;
+                bottom: 0vmin;
+                width:8vmin;
+                height:8vmin;
+                background-size: cover;
+                background-image:"textures/common/finger.texture";
             }
         </style>
         <script type="text/x-lua" >
@@ -467,7 +484,7 @@
             <div class="teleport-items-block" style="pointer-events: none;">
                 <div id = "ItemTransferSrcInvBar" class = "teleport-items-bar-slide-init" style = "justify-content: center; align-items: center; pointer-events: none;">
                     <div id = "ItemTransferSrcInv" class = "inventory-slide-init" style = "flex-direction: row; justify-content: center; align-items: center; pointer-events: none;" data-if = "item_transfer_src_inventory_count > 0">
-                        <div class="item" data-style-background-image = "it.icon" data-style-background-color= "it.movable ? 'rgb(0,255,0)' : 'rgb(250, 205, 9)'" data-for = "item_transfer_src_inventory">
+                        <div class="item" data-style-background-image = "it.icon" data-style-background-color= "it.movable ? 'rgb(19,175,240)' : 'rgb(250, 205, 9)'" data-for = "item_transfer_src_inventory">
                             <div class="item-count" data-style-color = "it.movable ? 'rgb(250, 205, 9)' : 'rgb(255, 255, 255)'" >{{it.count}}</div>
                             <div class="item-sign"/> 
                         </div>
@@ -544,9 +561,10 @@
             <div style = "pointer-events: none; height:100%;  position: absolute; right:0vmin;">
                 <div style = "height:100%; flex-direction: column; justify-content: center;">
                     <workbutton data-for = "construction_center_menu" style = "background-color: rgb(246, 142, 14); margin:0.3vmin 0 0.3vmin 0;" data-event-click="clickConstruct(it.object_id, it.index)">
-                        <div class="workbutton-bg" data-style-background-image = "it.icon" style="animation:0.5s linear 0s enlarge2;" data-if = "it.icon != ''" />
+                        <div class="workbutton-bg" data-style-background-image = "it.icon" style="animation:0.5s linear 0s enlarge3;" data-if = "it.icon != ''" />
                         <div class="workbutton-text"  data-if = "it.name != ''">{{it.name}}</div>
                         <div class="item-count" style="animation:0.5s linear 0s enlarge2;" data-if = "it.name != ''">{{it.count}}</div>
+                        <div class="guide-finger"  style="animation: 0.3s linear 0s infinite alternate enlarge3;" data-if = "it.name == '采矿机I' && guide_progress == 10"/>
                     </workbutton>
                 </div>
             </div>
