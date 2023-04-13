@@ -39,8 +39,8 @@ function mt:set_position(t)
 end
 
 return function(prefab, center, w, h)
-    local width = w * logistic_coord.tile_size
-    local height = h * logistic_coord.tile_size
+    local width = (w - 1) * logistic_coord.tile_size
+    local height = (h - 1) * logistic_coord.tile_size
 
     local M = {
         selected_boxes = {},

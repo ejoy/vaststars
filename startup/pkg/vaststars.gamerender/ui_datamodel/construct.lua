@@ -52,16 +52,18 @@ local move_finish_mb = mailbox:sub {"move_finish"}
 local builder_back_mb = mailbox:sub {"builder_back"}
 local construction_center_place_mb = mailbox:sub {"construction_center_place"}
 local item_transfer_src_inventory_mb = mailbox:sub {"item_transfer_src_inventory"}
+
 local pickup_gesture_mb = world:sub {"pickup_gesture"}
 local pickup_long_press_gesture_mb = world:sub {"pickup_long_press_gesture"}
-local handle_pickup = true
 local single_touch_move_mb = world:sub {"single_touch", "MOVE"}
 local focus_tips_event = world:sub {"focus_tips"}
+
 local builder
 local item_transfer_dst
 local pickup_id -- object id
 local excluded_pickup_id -- object id
 local manual_item_transfer_src_inventory = false
+local handle_pickup = true
 
 local item_transfer_placement_interval = interval_call(300, function(datamodel, object_id)
     if not global.item_transfer_src then
@@ -80,7 +82,9 @@ local item_transfer_placement_interval = interval_call(300, function(datamodel, 
         for _, slot in ipairs(placeable_items) do
             local j = movable_items_hash[slot.item]
             if j then
+                movable_items[j].movable = true
                 movable_items[ci], movable_items[j] = movable_items[j], movable_items[ci]
+                ci = ci + 1
             end
         end
     end
@@ -88,7 +92,7 @@ local item_transfer_placement_interval = interval_call(300, function(datamodel, 
     local items = {}
     for _, slot in ipairs(movable_items) do
         local typeobject_item = assert(iprototype.queryById(slot.item))
-        items[#items + 1] = {icon = typeobject_item.icon, count = slot.count}
+        items[#items + 1] = {icon = typeobject_item.icon, count = slot.count, movable = (slot.movable == true)}
         if #items >= 5 then
             break
         end

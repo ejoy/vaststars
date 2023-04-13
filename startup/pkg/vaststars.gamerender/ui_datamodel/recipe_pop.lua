@@ -19,11 +19,8 @@ local terrain = ecs.require "terrain"
 local itypes = require "gameplay.interface.types"
 local recipe_unlocked = ecs.require "ui_datamodel.common.recipe_unlocked".recipe_unlocked
 local iflow_connector = require "gameplay.interface.flow_connector"
-local vsobject_manager = ecs.require "vsobject_manager"
 local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONSTRUCTED"}
-local get_assembling_canvas_items = ecs.require "ui_datamodel.common.assembling_canvas".get_assembling_canvas_items
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
-local icanvas = ecs.require "engine.canvas"
 local itask = ecs.require "task"
 
 local assembling_recipe = {}; local get_recipe_index; do
@@ -308,13 +305,7 @@ function M:stage_ui_update(datamodel, object_id)
                 gameplay_core.build()
 
                 iui.update("building_arc_menu.rml", "update", object_id)
-
-                local vsobject = assert(vsobject_manager:get(object_id))
-                local typeobject = assert(iprototype.queryByName(object.prototype_name))
-                local w, h = iprototype.unpackarea(typeobject.area)
                 object.recipe = recipe_name
-                vsobject:add_canvas(icanvas.types().ICON, get_assembling_canvas_items, object, object.x, object.y, w, h)
-
                 itask.update_progress("set_recipe", recipe_name)
             end
         else
@@ -326,11 +317,7 @@ function M:stage_ui_update(datamodel, object_id)
         local object = assert(objects:get(object_id))
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
         iworld.set_recipe(gameplay_core.get_world(), e, nil)
-        local vsobject = assert(vsobject_manager:get(object_id))
-        local typeobject = assert(iprototype.queryByName(object.prototype_name))
-        local w, h = iprototype.unpackarea(typeobject.area)
         object.recipe = ""
-        vsobject:add_canvas(icanvas.types().ICON, get_assembling_canvas_items, object, object.x, object.y, w, h)
         object.fluid_name = {}
 
         iui.update("building_arc_menu.rml", "update", object_id)

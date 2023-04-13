@@ -1,7 +1,6 @@
 colorspace: linear
 normalmap: false
-equirect: true
-path: /pkg/vaststars.resources/textures/cubemap/aerodynamics_workshop_2k.hdr
+path: /pkg/vaststars.resources/textures/cubemap/sky.dds
 mipmap: 0
 sampler:
   MAG: LINEAR

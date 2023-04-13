@@ -39,6 +39,7 @@ local function _load_game()
         saveload:restore_camera_setting()
         return
     end
+
     terrain:create()
     if TERRAIN_ONLY then
         saveload:restore_camera_setting()

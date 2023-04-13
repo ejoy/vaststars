@@ -28,6 +28,7 @@ local iguide = require "gameplay.interface.guide"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local PROTOTYPE_VERSION <const> = import_package("vaststars.prototype")("version")
 local global = require "global"
+local create_buildings = require "building_components"
 
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local irq = ecs.import.interface "ant.render|irenderqueue"
@@ -72,6 +73,12 @@ local function restore_world()
     for _, object in objects:all() do
         iobject.remove(object)
     end
+    for _, building in pairs(global.buildings) do
+        for _, o in pairs(building) do
+            o:remove()
+        end
+    end
+    global.buildings = create_buildings()
     objects:clear()
 
     local function _has_connection(gameplay_eid, all_object, map)
@@ -111,7 +118,7 @@ local function restore_world()
     end
 
     --
-    local function restore_object(all_object, map, gameplay_eid, prototype_name, dir, x, y, fluid_name, fluidflow_id, recipe)
+    local function restore_object(all_object, map, gameplay_eid, prototype_name, dir, x, y, fluid_name, fluidflow_id)
         local typeobject = iprototype.queryByName(prototype_name)
 
         local fluid_icon -- TODO: duplicate code, see also builder.lua
@@ -136,7 +143,6 @@ local function restore_world()
             },
             fluid_name = fluid_name,
             fluidflow_id = fluidflow_id,
-            recipe = recipe,
             fluid_icon = fluid_icon,
         }
         object.gameplay_eid = gameplay_eid
@@ -184,18 +190,6 @@ local function restore_world()
             end
         end
 
-        local recipe
-        if v.assembling then
-            local show_recipe_icon = typeobject.recipe == nil and not iprototype.has_type(typeobject.type, "mining") -- TODO: special case for mining -- duplicate with building_arc_menu.lua
-            if show_recipe_icon then
-                local typeobject = iprototype.queryById(v.assembling.recipe)
-                if v.assembling.recipe == 0 then
-                    recipe = ""
-                else
-                    recipe = typeobject.name
-                end
-            end
-        end
         all_object[v.eid] = {
             prototype_name = typeobject.name,
             dir = iprototype.dir_tostring(e.direction),
@@ -203,7 +197,6 @@ local function restore_world()
             y = e.y,
             fluid_name = fluid_name,
             -- fluidflow_id, -- fluidflow_id is not null only when the object is a fluidbox
-            recipe = recipe, -- for assembling machine only, display the recipe icon, see also: restore_object() -> iobject.new
         }
 
         local w, h = iprototype.rotate_area(typeobject.area, iprototype.dir_tostring(e.direction))
@@ -311,7 +304,7 @@ local function restore_world()
 
     -----------
     for id, v in pairs(all_object) do
-        restore_object(all_object, map, id, v.prototype_name, v.dir, v.x, v.y, v.fluid_name, v.fluidflow_id, v.recipe)
+        restore_object(all_object, map, id, v.prototype_name, v.dir, v.x, v.y, v.fluid_name, v.fluidflow_id)
     end
 
     iobject.flush()
@@ -458,6 +451,7 @@ function M:restore(index)
     end
     iroadnet:init(renderData, true)
     global.roadnet = map
+    global.item_transfer_src = nil
 
     iscience.update_tech_list(gameplay_core.get_world())
     iui.open({"construct.rml"})
@@ -487,6 +481,7 @@ function M:restart()
     --
     iroadnet:init({}, true)
     global.roadnet = {}
+    global.item_transfer_src = nil
     if next(global.roadnet) then
         gameplay_core.get_world():roadnet_reset(global.roadnet)
     end

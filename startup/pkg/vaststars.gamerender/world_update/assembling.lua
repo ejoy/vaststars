@@ -4,7 +4,7 @@ local w = world.w
 
 local math3d = require "math3d"
 local objects = require "objects"
-local buildings = require "global".buildings
+local global = require "global"
 local iprototype = require "gameplay.interface.prototype"
 local prefab_slots = require("engine.prefab_parser").slots
 local prefab_meshbin = require("engine.prefab_parser").meshbin
@@ -12,7 +12,14 @@ local iheapmesh = ecs.import.interface "ant.render|iheapmesh"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
 local building_io_slots = import_package "vaststars.prototype"("building_io_slots")
+local assetmgr = import_package "ant.asset"
+local iterrain = ecs.require "terrain"
+local icanvas = ecs.require "engine.canvas"
+local datalist = require "datalist"
+local fs = require "filesystem"
+local recipe_icon_canvas_cfg = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/textures/recipe_icon_canvas.cfg")):read "a")
 
+local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local HEAP_DIM3 = {2, 4, 2}
 local PREFABS = {
     ["in"]  = "/pkg/vaststars.resources/prefabs/shelf-input.prefab",
@@ -153,15 +160,178 @@ local function create_io_shelves(gameplay_world, e, building_srt)
     }
 end
 
+local ICON_STATUS_NOPOWER <const> = 1
+local ICON_STATUS_NORECIPE <const> = 2
+local ICON_STATUS_RECIPE <const> = 3
+
+local function _get_texture_size(materialpath)
+    local res = assetmgr.resource(materialpath)
+    local texobj = assetmgr.resource(res.properties.s_basecolor.texture)
+    local ti = texobj.texinfo
+    return ti.width, ti.height
+end
+
+local function _get_rect(x, y, icon_w, icon_h)
+    y = y - iterrain.tile_size
+    local max = math.max(icon_h, icon_w)
+    local draw_w = iterrain.tile_size * (icon_w / max)
+    local draw_h = iterrain.tile_size * (icon_h / max)
+    local draw_x = x + (iterrain.tile_size - draw_w) / 2
+    local draw_y = y + (iterrain.tile_size - draw_h) / 2
+    return draw_x, draw_y, draw_w, draw_h
+end
+
+local function __draw_icon(e, object_id, building_srt, status, recipe)
+    local x, y = building_srt.t[1], building_srt.t[3]
+    if status == ICON_STATUS_NOPOWER then
+        local material_path = "/pkg/vaststars.resources/materials/blackout.material"
+        local icon_w, icon_h = _get_texture_size(material_path)
+        local draw_x, draw_y, draw_w, draw_h = _get_rect(x - (iterrain.tile_size // 2), y + (iterrain.tile_size // 2), icon_w, icon_h)
+        icanvas.add_item(icanvas.types().ICON,
+            object_id,
+            material_path,
+            RENDER_LAYER.ICON_CONTENT,
+            {
+                texture = {
+                    rect = {
+                        x = 0,
+                        y = 0,
+                        w = icon_w,
+                        h = icon_h,
+                    },
+                },
+                x = draw_x, y = draw_y, w = draw_w, h = draw_h,
+            }
+        )
+    else
+        local typeobject = iprototype.queryById(e.building.prototype)
+        if typeobject.assembling_icon == false then
+            return
+        end
+        if status == ICON_STATUS_NORECIPE then
+            local material_path = "/pkg/vaststars.resources/materials/setup2.material"
+            local icon_w, icon_h = _get_texture_size(material_path)
+            local texture_x, texture_y, texture_w, texture_h = 0, 0, icon_w, icon_h
+            local draw_x, draw_y, draw_w, draw_h = _get_rect(x - (iterrain.tile_size // 2), y + (iterrain.tile_size // 2), icon_w, icon_h)
+            icanvas.add_item(icanvas.types().ICON,
+                object_id,
+                material_path,
+                RENDER_LAYER.ICON,
+                {
+                    texture = {
+                        rect = {
+                            x = texture_x,
+                            y = texture_y,
+                            w = texture_w,
+                            h = texture_h,
+                        },
+                    },
+                    x = draw_x, y = draw_y, w = draw_w, h = draw_h,
+                }
+            )
+        else
+            local material_path
+            local icon_w, icon_h
+            local draw_x, draw_y, draw_w, draw_h
+            local texture_x, texture_y, texture_w, texture_h
+
+            material_path = "/pkg/vaststars.resources/materials/recipe_icon_bg.material"
+            icon_w, icon_h = _get_texture_size(material_path)
+            texture_x, texture_y, texture_w, texture_h = 0, 0, icon_w, icon_h
+            draw_x, draw_y, draw_w, draw_h = _get_rect(x - (iterrain.tile_size // 2), y + (iterrain.tile_size // 2), icon_w, icon_h)
+            icanvas.add_item(icanvas.types().ICON,
+                object_id,
+                material_path,
+                RENDER_LAYER.ICON,
+                {
+                    texture = {
+                        rect = {
+                            x = texture_x,
+                            y = texture_y,
+                            w = texture_w,
+                            h = texture_h,
+                        },
+                    },
+                    x = draw_x, y = draw_y, w = draw_w, h = draw_h,
+                }
+            )
+
+            local recipe_typeobject = assert(iprototype.queryById(recipe))
+            local cfg = recipe_icon_canvas_cfg[recipe_typeobject.recipe_icon]
+            if not cfg then
+                assert(cfg, ("can not found `%s`"):format(recipe_typeobject.recipe_icon))
+                return
+            end
+            material_path = "/pkg/vaststars.resources/materials/recipe_icon_canvas.material"
+            texture_x, texture_y, texture_w, texture_h = cfg.x, cfg.y, cfg.width, cfg.height
+            draw_x, draw_y, draw_w, draw_h = _get_rect(x - (iterrain.tile_size // 2), y + (iterrain.tile_size // 2), cfg.width, cfg.height)
+            icanvas.add_item(icanvas.types().ICON,
+                object_id,
+                material_path,
+                RENDER_LAYER.ICON_CONTENT,
+                {
+                    texture = {
+                        rect = {
+                            x = texture_x,
+                            y = texture_y,
+                            w = texture_w,
+                            h = texture_h,
+                        },
+                    },
+                    x = draw_x, y = draw_y, w = draw_w, h = draw_h,
+                }
+            )
+        end
+    end
+end
+
+local function create_icon(object_id, e, building_srt)
+    local status = 0
+    local recipe = 0
+
+    local function on_position_change(self, building_srt)
+        icanvas.remove_item(icanvas.types().ICON, object_id)
+        __draw_icon(e, object_id, building_srt, status, recipe)
+    end
+    local function remove(self)
+        icanvas.remove_item(icanvas.types().ICON, object_id)
+    end
+    local function update(self, e)
+        local s
+        if e.capacitance.network == 0 then
+            s = ICON_STATUS_NOPOWER
+        else
+            if e.assembling.recipe == 0 then
+                s = ICON_STATUS_NORECIPE
+            else
+                s = ICON_STATUS_RECIPE
+            end
+        end
+
+        if s == status and recipe == e.assembling.recipe then
+            return
+        end
+
+        status, recipe = s, e.assembling.recipe
+        icanvas.remove_item(icanvas.types().ICON, object_id)
+        __draw_icon(e, object_id, building_srt, status, recipe)
+    end
+    return {
+        on_position_change = on_position_change,
+        remove = remove,
+        update = update,
+    }
+end
+
 return function(world)
-    for e in world.ecs:select "assembling:in chest:in building:in eid:in" do
+    for e in world.ecs:select "assembling:in chest:in building:in capacitance:in eid:in" do
         local object = assert(objects:coord(e.building.x, e.building.y))
-        local srt = math3d.ref(math3d.matrix {s = object.srt.s, r = object.srt.r, t = object.srt.t})
-        local building = buildings[object.id]
+        local mat = math3d.ref(math3d.matrix {s = object.srt.s, r = object.srt.r, t = object.srt.t})
+        local building = global.buildings[object.id]
 
         if not building.io_shelves then
             if e.assembling.recipe ~= 0 then
-                building.io_shelves = create_io_shelves(world, e, srt)
+                building.io_shelves = create_io_shelves(world, e, mat)
             end
         else
             if e.assembling.recipe == 0 then
@@ -172,11 +342,16 @@ return function(world)
             else
                 if building.io_shelves.recipe ~= e.assembling.recipe then
                     building.io_shelves:remove()
-                    building.io_shelves = create_io_shelves(world, e, srt)
+                    building.io_shelves = create_io_shelves(world, e, mat)
                 else
                     building.io_shelves:update_heap_count(e)
                 end
             end
         end
+
+        if not building.assembling_icon then
+            building.assembling_icon = create_icon(object.id, e, object.srt)
+        end
+        building.assembling_icon:update(e)
     end
 end

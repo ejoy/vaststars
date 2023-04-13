@@ -207,8 +207,7 @@ function ui_system.camera_usage()
         end
     end
 
-    -- close 会清理 window_bindings, 必须放至最后处理
-    -- 放在 camera_usage 处理因为 camera_usage 在 ui_update 后面
+    -- "close" will clean up window_bindings, so it must be placed at the end of the processing
     for _, url in rmlui_message_close_mb:unpack() do
         close(url)
     end
@@ -268,7 +267,9 @@ function iui.convert_coord(vr, x, y)
 end
 
 function iui.redirect(url, ...)
-    world:pub {"rmlui_message_pub", url, ...}
+    if window_bindings[url] then
+        world:pub {"rmlui_message_pub", url, ...}
+    end
 end
 
 -- for debuger

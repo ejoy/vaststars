@@ -4,7 +4,7 @@ local w = world.w
 
 local math3d = require "math3d"
 local objects = require "objects"
-local buildings = require "global".buildings
+local global = require "global"
 local iprototype = require "gameplay.interface.prototype"
 local prefab_meshbin = require("engine.prefab_parser").meshbin
 local iheapmesh = ecs.import.interface "ant.render|iheapmesh"
@@ -67,7 +67,7 @@ end
 return function(world)
     for e in world.ecs:select "hub:in building:in eid:in" do
         local object = assert(objects:coord(e.building.x, e.building.y))
-        local building = buildings[object.id]
+        local building = global.buildings[object.id]
         local slot = ichest.chest_get(world, e.hub, 1)
         if building.drone_depot_shelf then
             if not slot then

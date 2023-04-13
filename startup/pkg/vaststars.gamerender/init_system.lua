@@ -15,7 +15,6 @@ local iguide = require "gameplay.interface.guide"
 local TERRAIN_ONLY <const> = require "debugger".terrain_only
 local NOTHING <const> = require "debugger".nothing
 local DISABLE_LOADING <const> = require "debugger".disable_loading
-local DEBUG_TERRAIN <const> = require "debugger".debug_terrain
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
 local pickup_gesture_mb = world:sub {"pickup_gesture"}
 local icanvas = ecs.require "engine.canvas"
@@ -68,8 +67,7 @@ function m:init_world()
     iRmlUi.add_bundle "/pkg/vaststars.resources/ui/ui.bundle"
     iRmlUi.font_dir "/pkg/vaststars.resources/ui/font/"
 
-    iroadnet:create()
-
+    iroadnet:create(not NOTHING)
     if not DISABLE_LOADING then
         iui.open({"loading.rml"})
         return
@@ -79,14 +77,6 @@ function m:init_world()
     ecs.create_instance "/pkg/vaststars.resources/light.prefab"
     if NOTHING then
         saveload:restore_camera_setting()
-        return
-    end
-
-    if DEBUG_TERRAIN then
-        gameplay_core.get_world().world_update = false
-        local iterrain  = ecs.import.interface "mod.terrain|iterrain"
---[[         iterrain.gen_terrain_field(256, 256, 0)
-        iterrain.create_roadnet_entity(DEBUG_TERRAIN) ]]
         return
     end
 
@@ -114,7 +104,7 @@ function m:init_world()
 end
 
 function m:update_world()
-    if DEBUG_TERRAIN then
+    if NOTHING then
         return
     end
 
@@ -129,9 +119,7 @@ function m:update_world()
         local mc, x, y, z
         for lorry_id, rc, tick in gameplay_world:roadnet_each_lorry() do
             mc = gameplay_world:roadnet_map_coord(rc)
-            x = (mc >>  0) & 0xFF
-            y = (mc >>  8) & 0xFF
-            z = (mc >> 16) & 0xFF
+            x, y, z = mc & 0xFF, (mc >> 8) & 0xFF, (mc >> 16) & 0xFF
             lorry_manager.update(lorry_id, x, y, z, tick)
         end
     end
