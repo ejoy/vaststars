@@ -34,7 +34,7 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"哔哩..建造采矿机需要{/g 采矿机设计图}..探测到{/color:4bd0ff 四处废墟}有残留物资..(期待)", "textures/guide/guide-1.texture"},
+            {"哔哩..建造采矿机需要{/g 采矿机框架}..探测到{/color:4bd0ff 四处废墟}有残留物资..(期待)", "textures/guide/guide-1.texture"},
             {"哔哩..使用{/color:4bd0ff 遥感传送仪}可以{/g 远程传送}物资到目的地..(高兴)", "textures/guide/guide-3.texture"},
             {"哔哩..发现{/g 继电器废墟}有所需材料，请前往选择{/g 传送设置}进入准备传送状态..(期待)", "textures/guide/guide-1.texture"},
         },
@@ -69,7 +69,7 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"哔哩..{/color:4bd0ff 采矿机设计图}已经被成功传送至{/g 建造中心}..(高兴)", "textures/guide/guide-3.texture"},
+            {"哔哩..{/color:4bd0ff 采矿机框架}已经被成功传送至{/g 建造中心}..(高兴)", "textures/guide/guide-3.texture"},
             {"哔哩..{/g 采矿机}在{/color:4bd0ff 建造中心}里开始打印了。我们只需静静等待打印完成..哔哩..(期待)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
@@ -121,7 +121,7 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"哔哩..在{/color:4bd0ff 排水口废墟}发现{/g 电线杆设计图}，前往该处进行{/g 传送设置}..哔哩..哔哗..(期望)", "textures/guide/guide-1.texture"},
+            {"哔哩..在{/color:4bd0ff 排水口废墟}发现{/g 电线杆框架}，前往该处进行{/g 传送设置}..哔哩..哔哗..(期望)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
             guide_progress = 30,
@@ -138,7 +138,7 @@ local guide = {
         name = "",
 		narrative = {
             {"哔哩..通常情况下我们需要寻找{/color:4bd0ff 不同的建筑}进行{/g 传送设置}..哔哩..（期待）", "textures/guide/guide-1.texture"}, 
-            {"哔哩..选择{/g 传送启动}让{/color:4bd0ff 建造中心}接收{/color:4bd0ff 电线杆设计图}..哔哩..（期待）", "textures/guide/guide-1.texture"},
+            {"哔哩..选择{/g 传送启动}让{/color:4bd0ff 建造中心}接收{/color:4bd0ff 电线杆框架}..哔哩..（期待）", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
             guide_progress = 30,
@@ -188,7 +188,7 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"哔哩..采矿机顺利工作了，储藏碎石需要新的{/color:4bd0ff 无人机仓库}，请将{/g 无人机仓库设计图}送往{/color:4bd0ff 建造中心}..哔哩(期待)", "textures/guide/guide-1.texture"},
+            {"哔哩..采矿机顺利工作了，储藏碎石需要新的{/color:4bd0ff 无人机仓库}，请将{/g 无人机仓库框架}送往{/color:4bd0ff 建造中心}..哔哩(期待)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
             guide_progress = 30,
@@ -205,7 +205,7 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"哔哩..{/g 铁箱废墟}发现所需{/color:4bd0ff 无人机设计图}，让我们开始{/g 传送设置}吧....(期待)", "textures/guide/guide-1.texture"},
+            {"哔哩..{/g 铁箱废墟}发现所需{/color:4bd0ff 无人机框架}，让我们开始{/g 传送设置}吧....(期待)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
             guide_progress = 30,
@@ -221,7 +221,7 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"哔哩..再次使用{/color:4bd0ff 建造中心}里的{/g 传送启动}接收{/color:4bd0ff 设计图}....(期待)", "textures/guide/guide-1.texture"},
+            {"哔哩..再次使用{/color:4bd0ff 建造中心}里的{/g 传送启动}接收{/color:4bd0ff 框架}....(期待)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
             guide_progress = 30,
@@ -404,7 +404,7 @@ local guide = {
         name = "",
 		narrative = {
             {"我们需要对这个星球进行全面的科学考察，让我们建造一座{/g 科研中心}..哔哩..(期待)", "textures/guide/guide-1.texture"},
-            {"{/color:4bd0ff 科研中心设计图}所在废墟已经被标注了，传送{/color:4bd0ff 碎石}可前往{/g 无人机仓库}..哔哩..(期待)", "textures/guide/guide-1.texture"},
+            {"{/color:4bd0ff 科研中心框架}所在废墟已经被标注了，传送{/color:4bd0ff 碎石}可前往{/g 无人机仓库}..哔哩..(期待)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
             guide_progress = 30,--10
@@ -504,7 +504,7 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"{/color:4bd0ff 组装机}可以制造{/g 修路站设计图}，赶紧开动吧..哔哗..(期待)", "textures/guide/guide-1.texture"},
+            {"{/color:4bd0ff 组装机}可以制造{/g 修路站框架}，赶紧开动吧..哔哗..(期待)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
             guide_progress = 30,
@@ -520,7 +520,7 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"再将{/color:4bd0ff 修路站设计图}送入{/color:4bd0ff 建造中心}就可以开始建造{/g 修路站}了..哔哗..(期待)", "textures/guide/guide-1.texture"},
+            {"再将{/color:4bd0ff 修路站框架}送入{/color:4bd0ff 建造中心}就可以开始建造{/g 修路站}了..哔哗..(期待)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
             guide_progress = 30,
