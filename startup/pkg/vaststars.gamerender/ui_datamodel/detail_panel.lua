@@ -147,6 +147,9 @@ local function get_property(e, typeobject)
         local typeobject = iprototype.queryById(e.building.prototype)
         if typeobject.slots then
             for _, slot in pairs(ichest.collect_item(gameplay_core.get_world(), e)) do
+                if slot.amount <= 0 then
+                    goto continue
+                end
                 local typeobject_item = assert(iprototype.queryById(slot.item))
                 slotnum = slotnum + math.floor(slot.amount / typeobject_item.stack)
                 if slot.amount % typeobject_item.stack > 0 then
@@ -157,6 +160,7 @@ local function get_property(e, typeobject)
                 elseif #chest_list1 < 5 then
                     chest_list1[#chest_list1 + 1] = {icon = typeobject_item.icon, count = slot.amount}
                 end
+                ::continue::
             end
             t.chest_list0 = #chest_list0 > 0 and chest_list0 or nil
             t.chest_list1 = #chest_list1 > 0 and chest_list1 or nil

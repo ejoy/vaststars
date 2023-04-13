@@ -1,5 +1,6 @@
-local ecs, mailbox = ...
+local ecs = ...
 local world = ecs.world
+
 local logistic_coord = ecs.require "terrain"
 local selected_boxes = ecs.require "selected_boxes"
 local objects = require "objects"

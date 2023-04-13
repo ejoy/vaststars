@@ -4,8 +4,6 @@ local world = ecs.world
 local icanvas = ecs.require "engine.canvas"
 local vsobject_manager = ecs.require "vsobject_manager"
 local iprototype = require "gameplay.interface.prototype"
-local get_assembling_canvas_items = ecs.require "ui_datamodel.common.assembling_canvas".get_assembling_canvas_items
-local get_fluid_canvas_items = ecs.require "ui_datamodel.common.fluid_canvas".get_fluid_canvas_items
 local get_building_base_canvas_items = ecs.require "ui_datamodel.common.building_base_canvas".get_building_base_canvas_items
 local math3d = require "math3d"
 local terrain = ecs.require "terrain"
@@ -48,7 +46,6 @@ local function new(init)
         y = assert(init.y),
         fluid_name = init.fluid_name,
         fluidflow_id = init.fluidflow_id,
-        recipe = init.recipe,
         fluid_icon = init.fluid_icon,
         srt = init.srt,
     }
@@ -70,7 +67,6 @@ local function clone(outer)
         fluid_name = outer.fluid_name,
         fluidflow_id = outer.fluidflow_id,
         gameplay_eid = outer.gameplay_eid,
-        recipe = outer.recipe,
         fluid_icon = outer.fluid_icon,
         srt = {s = outer.srt.s, r = outer.srt.r, t = outer.srt.t},
     }
@@ -129,32 +125,12 @@ local function flush()
                 position = outer.srt.t,
                 group_id = terrain:get_group_id(outer.x, outer.y),
             }
-
-            -- display recipe icon of assembling machine
-            if outer.recipe then
-                vsobject:add_canvas(icanvas.types().ICON, get_assembling_canvas_items, outer, outer.x, outer.y, w, h)
-            end
-            if outer.fluid_icon and type(outer.fluid_name) == "string" and outer.fluid_name ~= "" then
-                vsobject:add_canvas(icanvas.types().ICON, get_fluid_canvas_items, outer, outer.x, outer.y, w, h)
-            end
         else
             for k in pairs(outer.__change_keys) do
                 local func = funcs[k]
                 if func then
                     func(outer)
                 end
-            end
-
-            -- display recipe icon of assembling machine
-            -- TODO: special case for mining & chimney
-            -- refresh recipe icon of assembling machine when recipe changed or direction changed
-            if (outer.__change_keys.recipe or outer.__change_keys.dir) and not iprototype.has_type(typeobject.type, "mining") and not iprototype.has_type(typeobject.type, "chimney") and iprototype.has_type(typeobject.type, "assembling") and not typeobject.recipe then
-                if outer.recipe then
-                    vsobject:add_canvas(icanvas.types().ICON, get_assembling_canvas_items, outer, outer.x, outer.y, w, h)
-                end
-            end
-            if outer.__change_keys.fluid_icon and type(outer.fluid_name) == "string" and outer.fluid_name ~= "" then
-                vsobject:add_canvas(icanvas.types().ICON, get_fluid_canvas_items, outer, outer.x, outer.y, w, h)
             end
         end
         if typeobject.building_base ~= false then

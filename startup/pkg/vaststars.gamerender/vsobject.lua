@@ -25,7 +25,7 @@ local function remove(self)
         self.game_object:remove()
     end
 
-    for _, type in ipairs({icanvas.types().ICON, icanvas.types().BUILDING_BASE}) do
+    for _, type in ipairs({icanvas.types().BUILDING_BASE}) do
         self:del_canvas(type)
     end
 end
@@ -93,19 +93,6 @@ local function del_canvas(self, type)
 end
 
 local function mod_canvas(self, x, y, srt)
-    do
-        local itype = icanvas.types().ICON
-        icanvas.remove_item(itype, self.canvas_id[itype])
-        if self.canvas_cache[itype] then
-            local f = self.canvas_cache[itype][1]
-            self.canvas_cache[itype][3] = x
-            self.canvas_cache[itype][4] = y
-            local items = f(table.unpack(self.canvas_cache[itype], 2))
-            for _, t in ipairs(items) do
-                icanvas.add_item(itype, self.id, table.unpack(t))
-            end
-        end
-    end
     do
         local itype = icanvas.types().BUILDING_BASE
         icanvas.remove_item(itype, self.canvas_id[itype])

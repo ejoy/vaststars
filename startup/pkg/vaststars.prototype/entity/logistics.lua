@@ -32,6 +32,7 @@ prototype "指挥中心" {
     },
     move = false,
     io_shelf = false,
+    assembling_icon = false,
 }
 
 prototype "物流需求站" {
