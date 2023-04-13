@@ -152,6 +152,7 @@
             local function clickItem(index)
                 local recipe = start.recipe_items[index]
                 if not recipe then
+                    console.log("recipe is nil")
                     return
                 end
                 ui_sys.pub {"click_recipe", recipe.name}
@@ -185,6 +186,7 @@
                 else
                     item.outerHTML = ([[<div class = "item" style = "width: 100%%; height: 100%%; backgroundImage: %s"><p class = "new-coming" data-if="%s">新</p></div>]]):format(start.recipe_items[index].icon, start.recipe_items[index].new)
                     local select_style_border = "0.5vmin rgb(109, 47, 156)"
+                    console.log("--------------", start.recipe_name, start.recipe_items[index].name)
                     if start.recipe_name == start.recipe_items[index].name then
                         select_item = item
                         item.style.border = select_style_border
@@ -222,6 +224,7 @@
                 {
                     "recipe_index",
                     function()
+                        console.log("recipe_index", start.recipe_index)
                         clickItem(start.recipe_index)
                     end
                 }
