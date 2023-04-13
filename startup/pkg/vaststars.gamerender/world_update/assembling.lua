@@ -164,20 +164,22 @@ local ICON_STATUS_NOPOWER <const> = 1
 local ICON_STATUS_NORECIPE <const> = 2
 local ICON_STATUS_RECIPE <const> = 3
 
-local function _get_texture_size(materialpath)
+local function __get_texture_size(materialpath)
     local res = assetmgr.resource(materialpath)
     local texobj = assetmgr.resource(res.properties.s_basecolor.texture)
     local ti = texobj.texinfo
     return ti.width, ti.height
 end
 
-local function _get_rect(x, y, icon_w, icon_h)
-    y = y - iterrain.tile_size
+local function __get_draw_rect(x, y, icon_w, icon_h, multiple)
+    local tile_size = iterrain.tile_size * multiple
+    multiple = multiple or 1
+    y = y - tile_size
     local max = math.max(icon_h, icon_w)
-    local draw_w = iterrain.tile_size * (icon_w / max)
-    local draw_h = iterrain.tile_size * (icon_h / max)
-    local draw_x = x + (iterrain.tile_size - draw_w) / 2
-    local draw_y = y + (iterrain.tile_size - draw_h) / 2
+    local draw_w = tile_size * (icon_w / max)
+    local draw_h = tile_size * (icon_h / max)
+    local draw_x = x - (tile_size / 2)
+    local draw_y = y + (tile_size / 2)
     return draw_x, draw_y, draw_w, draw_h
 end
 
@@ -185,8 +187,9 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
     local x, y = building_srt.t[1], building_srt.t[3]
     if status == ICON_STATUS_NOPOWER then
         local material_path = "/pkg/vaststars.resources/materials/blackout.material"
-        local icon_w, icon_h = _get_texture_size(material_path)
-        local draw_x, draw_y, draw_w, draw_h = _get_rect(x - (iterrain.tile_size // 2), y + (iterrain.tile_size // 2), icon_w, icon_h)
+        local icon_w, icon_h = __get_texture_size(material_path)
+        local texture_x, texture_y, texture_w, texture_h = 0, 0, icon_w, icon_h
+        local draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x, y, icon_w, icon_h, 1.5)
         icanvas.add_item(icanvas.types().ICON,
             object_id,
             material_path,
@@ -194,10 +197,10 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
             {
                 texture = {
                     rect = {
-                        x = 0,
-                        y = 0,
-                        w = icon_w,
-                        h = icon_h,
+                        x = texture_x,
+                        y = texture_y,
+                        w = texture_w,
+                        h = texture_h,
                     },
                 },
                 x = draw_x, y = draw_y, w = draw_w, h = draw_h,
@@ -210,9 +213,9 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
         end
         if status == ICON_STATUS_NORECIPE then
             local material_path = "/pkg/vaststars.resources/materials/setup2.material"
-            local icon_w, icon_h = _get_texture_size(material_path)
+            local icon_w, icon_h = __get_texture_size(material_path)
             local texture_x, texture_y, texture_w, texture_h = 0, 0, icon_w, icon_h
-            local draw_x, draw_y, draw_w, draw_h = _get_rect(x - (iterrain.tile_size // 2), y + (iterrain.tile_size // 2), icon_w, icon_h)
+            local draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x, y, icon_w, icon_h, 1.5)
             icanvas.add_item(icanvas.types().ICON,
                 object_id,
                 material_path,
@@ -236,9 +239,9 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
             local texture_x, texture_y, texture_w, texture_h
 
             material_path = "/pkg/vaststars.resources/materials/recipe_icon_bg.material"
-            icon_w, icon_h = _get_texture_size(material_path)
+            icon_w, icon_h = __get_texture_size(material_path)
             texture_x, texture_y, texture_w, texture_h = 0, 0, icon_w, icon_h
-            draw_x, draw_y, draw_w, draw_h = _get_rect(x - (iterrain.tile_size // 2), y + (iterrain.tile_size // 2), icon_w, icon_h)
+            draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x, y, icon_w, icon_h, 1.5)
             icanvas.add_item(icanvas.types().ICON,
                 object_id,
                 material_path,
@@ -264,7 +267,7 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
             end
             material_path = "/pkg/vaststars.resources/materials/recipe_icon_canvas.material"
             texture_x, texture_y, texture_w, texture_h = cfg.x, cfg.y, cfg.width, cfg.height
-            draw_x, draw_y, draw_w, draw_h = _get_rect(x - (iterrain.tile_size // 2), y + (iterrain.tile_size // 2), cfg.width, cfg.height)
+            draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x, y, cfg.width, cfg.height, 1.5)
             icanvas.add_item(icanvas.types().ICON,
                 object_id,
                 material_path,
@@ -323,6 +326,45 @@ local function create_icon(object_id, e, building_srt)
     }
 end
 
+local function __draw_consumer_icon(object_id, building_srt)
+    local x, y = building_srt.t[1], building_srt.t[3]
+    local material_path = "/pkg/vaststars.resources/materials/blackout.material"
+    local icon_w, icon_h = __get_texture_size(material_path)
+    local texture_x, texture_y, texture_w, texture_h = 0, 0, icon_w, icon_h
+    local draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x, y, icon_w, icon_h, 1.5)
+    icanvas.add_item(icanvas.types().ICON,
+        object_id,
+        material_path,
+        RENDER_LAYER.ICON_CONTENT,
+        {
+            texture = {
+                rect = {
+                    x = texture_x,
+                    y = texture_y,
+                    w = texture_w,
+                    h = texture_h,
+                },
+            },
+            x = draw_x, y = draw_y, w = draw_w, h = draw_h,
+        }
+    )
+end
+
+local function create_consumer_icon(object_id, building_srt)
+    __draw_consumer_icon(object_id, building_srt)
+    local function remove()
+        icanvas.remove_item(icanvas.types().ICON, object_id)
+    end
+    local function on_position_change(self, building_srt)
+        icanvas.remove_item(icanvas.types().ICON, object_id)
+        __draw_consumer_icon(object_id, building_srt)
+    end
+    return {
+        on_position_change = on_position_change,
+        remove = remove,
+    }
+end
+
 return function(world)
     for e in world.ecs:select "assembling:in chest:in building:in capacitance:in eid:in" do
         local object = assert(objects:coord(e.building.x, e.building.y))
@@ -353,5 +395,21 @@ return function(world)
             building.assembling_icon = create_icon(object.id, e, object.srt)
         end
         building.assembling_icon:update(e)
+    end
+
+    for e in world.ecs:select "consumer:in assembling:absent building:in capacitance:in eid:in" do
+        local object = assert(objects:coord(e.building.x, e.building.y))
+        local building = global.buildings[object.id]
+
+        if e.capacitance.network == 0 then
+            if not building.consumer_icon then
+                building.consumer_icon = create_consumer_icon(object.id, object.srt)
+            end
+        else
+            if building.consumer_icon then
+                building.consumer_icon:remove()
+                building.consumer_icon = nil
+            end
+        end
     end
 end

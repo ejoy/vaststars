@@ -878,7 +878,6 @@ local t = {
 	"/pkg/vaststars.gamerender/ui_datamodel/chapter_pop.lua",
 	"/pkg/vaststars.gamerender/ui_datamodel/common/assembling.lua",
 	"/pkg/vaststars.gamerender/ui_datamodel/common/building_base_canvas.lua",
-	"/pkg/vaststars.gamerender/ui_datamodel/common/fluid_canvas.lua",
 	"/pkg/vaststars.gamerender/ui_datamodel/common/item_unlocked.lua",
 	"/pkg/vaststars.gamerender/ui_datamodel/common/recipe_unlocked.lua",
 	"/pkg/vaststars.gamerender/ui_datamodel/common/resources_loader.lua",
