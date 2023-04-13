@@ -188,13 +188,13 @@ local function _show_object_recipe(datamodel, object_id)
     end
 
     datamodel.object_id = object_id
-    datamodel.recipe_name = ""
+    -- datamodel.recipe_name = ""
     datamodel.catalog_index = 1
     datamodel.recipe_index = 1 -- recipe_index is the index of recipe_items[caterory], default is 1
 
     if e.assembling.recipe ~= 0 then
         datamodel.recipe_name = iprototype.queryById(e.assembling.recipe).name
-        datamodel.catalog_index, datamodel.recipe_index = get_recipe_index(object.prototype_name, datamodel.recipe_name)
+        -- datamodel.catalog_index, datamodel.recipe_index = get_recipe_index(object.prototype_name, datamodel.recipe_name)
     end
 end
 
@@ -210,6 +210,7 @@ local function _update_recipe_items(datamodel, recipe_name)
         for _, recipe in ipairs(recipes[cur_recipe_category_cfg.group] or {}) do
             if recipe_unlocked(recipe.name) then
                 recipe_name = recipe.name
+                datamodel.recipe_name = recipe_name
                 break
             end
         end
@@ -221,10 +222,11 @@ local function _update_recipe_items(datamodel, recipe_name)
 
     datamodel.recipe_items = {}
     local recipe_category_new_flag = {}
-    local all_new = false
+    local show_new_tag = false
     for group, recipe_set in pairs(recipes) do
         for _, recipe_item in ipairs(recipe_set) do
             if recipe_unlocked(recipe_item.name) then
+                datamodel.recipe_name = datamodel.recipe_name or recipe_item.name
                 local new_recipe_flag = (not storage.recipe_picked_flag[recipe_item.name]) and true or false
 
                 if group == cur_recipe_category_cfg.group or cur_recipe_category_cfg.group == "全部" then
@@ -243,17 +245,19 @@ local function _update_recipe_items(datamodel, recipe_name)
                     datamodel.recipe_ingredients = recipe_item.ingredients
                     datamodel.recipe_results = recipe_item.results
                     datamodel.recipe_time = itypes.time(recipe_item.time)
+
+                    datamodel.recipe_index = #datamodel.recipe_items
                 end
 
                 if new_recipe_flag then
                     recipe_category_new_flag[group] = true
-                    all_new = true
+                    show_new_tag = true
                 end
             end
         end
     end
 
-    if all_new then
+    if show_new_tag then
         recipe_category_new_flag["全部"] = true
     end
     datamodel.recipe_category = {}
@@ -273,6 +277,7 @@ function M:create(object_id)
     local datamodel = {}
     _show_object_recipe(datamodel, object_id)
     _update_recipe_items(datamodel, datamodel.recipe_name)
+    datamodel.recipe_name = datamodel.recipe_name or ""
     return datamodel
 end
 

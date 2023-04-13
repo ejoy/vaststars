@@ -2,6 +2,7 @@ local BUILDING_COMPONENTS = {
     io_shelves = true,
     drone_depot_shelf = true,
     assembling_icon = true,
+    consumer_icon = true,
 }
 local BUILDING_COMPONENT_METHODS = {
     on_position_change = true,

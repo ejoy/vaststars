@@ -210,7 +210,7 @@ prototype "建造中心" {
     type = {"building", "assembling", "consumer"},
     area = "5x5",
     maxslot = 6,
-    craft_category = {"设计图打印"},
+    craft_category = {"框架打印"},
     fluidboxes = {
         input = {
             {

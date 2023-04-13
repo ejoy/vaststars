@@ -42,7 +42,7 @@ end
 local function emissive_color_update(self, color)
     self.emissive_color = color
     local typeobject = iprototype.queryByName(self.prototype_name)
-    self.game_object:update(typeobject.model, "opaque", CONSTRUCT_COLOR_INVALID, nil, color)
+    self.game_object:update(typeobject.model, "opaque", CONSTRUCT_COLOR_INVALID, nil, nil, color)
 end
 
 local function animation_name_update(self, animation_name, animation_loop)

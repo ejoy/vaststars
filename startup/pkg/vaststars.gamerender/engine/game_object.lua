@@ -227,8 +227,12 @@ function igame_object.create(init)
     local function remove(self)
         self.hitch_entity_object:remove()
     end
+
     local function update(self, prefab_file_name, state, color, animation_name, animation_loop, emissive_color)
-        local children = _get_hitch_children(RESOURCES_BASE_PATH:format(prefab_file_name), state, color, animation_name, animation_loop, emissive_color)
+        children.instance:send("detach_hitch", hitch_entity_object.id)
+        children = _get_hitch_children(RESOURCES_BASE_PATH:format(prefab_file_name), state, color, animation_name, animation_loop, emissive_color)
+        children.instance:send("attach_hitch", hitch_entity_object.id)
+
         self.hitch_entity_object:send("group", children.hitch_group_id)
         for _, slot_game_object in pairs(self.slot_attach) do
             slot_game_object.hitch_entity_object:send("slot_pose", children.pose)
@@ -285,6 +289,8 @@ function igame_object.create(init)
             }
         })
     end
+
+    children.instance:send("attach_hitch", hitch_entity_object.id)
 
     local outer = {hitch_entity_object = hitch_entity_object, slot_attach = {}}
     outer.remove = remove

@@ -14,7 +14,7 @@ local prototype = gameplay.register.prototype
   --time是指1个count所需的时间
 
   -- task = {"unknown", 0, 5},                          自定义任务，无人机仓库指定选择物品
-  -- task_params = {item = "采矿机设计图"},
+  -- task_params = {item = "采矿机框架"},
 
   -- task = {"unknown", 0, 6},
   -- task_params = {ui = "item_transfer_subscribe", building = "xxx"},    传送设置
@@ -32,8 +32,8 @@ local prototype = gameplay.register.prototype
     type = { "task" },
     task = {"unknown", 0, 4},
     effects = {
-      unlock_recipe = {"采矿机设计图","采矿机打印"},
-      unlock_item = {"采矿机设计图"},
+      unlock_recipe = {"采矿机框架","采矿机打印"},
+      unlock_item = {"采矿机框架"},
     },
     prerequisites = {""},
     count = 1,
@@ -46,7 +46,7 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "采矿机调度" {
-    desc = "选择采矿机设计图",
+    desc = "选择采矿机框架",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"unknown", 0, 3},
@@ -58,8 +58,8 @@ local prototype = gameplay.register.prototype
         prefab = "prefabs/selected-box-guide.prefab",
         x = 121,
         y = 122,
-        w = 4,
-        h = 4,
+        w = 5,
+        h = 5,
         show_arrow = true,
         force = true,
       },
@@ -89,8 +89,8 @@ local prototype = gameplay.register.prototype
         prefab = "prefabs/selected-box-guide.prefab",
         x = 114,
         y = 121,
-        w = 1.5,
-        h = 1.5,
+        w = 2,
+        h = 2,
         show_arrow = true,
         force = true,
       },
@@ -98,22 +98,22 @@ local prototype = gameplay.register.prototype
         prefab = "prefabs/selected-box-guide.prefab",
         x = 109,
         y = 136,
-        w = 2.5,
-        h = 2.5,
+        w = 3,
+        h = 3,
       },
       {
         prefab = "prefabs/selected-box-guide.prefab",
         x = 134,
         y = 122.5,
-        w = 1.5,
-        h = 1.5,
+        w = 2,
+        h = 2,
       },
       {
         prefab = "prefabs/selected-box-guide.prefab",
         x = 126,
         y = 109,
-        w = 1.5,
-        h = 1.5,
+        w = 2,
+        h = 2,
       },
       {
         camera_x = 119,
@@ -141,8 +141,8 @@ local prototype = gameplay.register.prototype
         prefab = "prefabs/selected-box-guide.prefab",
         x = 121,
         y = 122,
-        w = 4,
-        h = 4,
+        w = 5,
+        h = 5,
         show_arrow = true,
         force = true,
       },
@@ -164,7 +164,7 @@ local prototype = gameplay.register.prototype
     desc = "",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
-    task = {"stat_consumption", 0, "采矿机设计图"},
+    task = {"stat_consumption", 0, "采矿机框架"},
     prerequisites = {"采矿机传送接收"},
     count = 1,
     tips_pic = {
@@ -183,7 +183,7 @@ local prototype = gameplay.register.prototype
     prerequisites = {"建造采矿机"},
     effects = {
        unlock_recipe = {"电线杆打印"},
-       unlock_item = {"电线杆设计图"},
+       unlock_item = {"电线杆框架"},
     },
     count = 1,
     tips_pic = {
@@ -194,15 +194,15 @@ local prototype = gameplay.register.prototype
         prefab = "prefabs/selected-box-guide.prefab",
         x = 115,
         y = 129,
-        w = 3,
-        h = 3,
+        w = 3.5,
+        h = 3.5,
       },
       {
         prefab = "prefabs/selected-box-guide.prefab",
         x = 121,
         y = 122,
-        w = 4,
-        h = 4,
+        w = 5,
+        h = 5,
         show_arrow = true,
       },
       {
@@ -216,7 +216,7 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "电线杆调度" {
-    desc = "选择电线杆设计图",
+    desc = "选择电线杆框架",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"unknown", 0, 3},
@@ -231,8 +231,8 @@ local prototype = gameplay.register.prototype
         prefab = "prefabs/selected-box-guide.prefab",
         x = 121,
         y = 122,
-        w = 5,
-        h = 5,
+        w = 5.5,
+        h = 5.5,
         show_arrow = true,
       },
       {
@@ -258,8 +258,8 @@ local prototype = gameplay.register.prototype
         prefab = "prefabs/selected-box-guide.prefab",
         x = 134,
         y = 122.5,
-        w = 1.5,
-        h = 1.5,
+        w = 2,
+        h = 2,
         show_arrow = true,
       },
       {
@@ -288,8 +288,8 @@ local prototype = gameplay.register.prototype
         prefab = "prefabs/selected-box-guide.prefab",
         x = 121,
         y = 122,
-        w = 4,
-        h = 4,
+        w = 5,
+        h = 5,
         show_arrow = true,
       },
       {
@@ -309,7 +309,7 @@ prototype "建造电线杆" {
     desc = "建造5个电线杆",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
-    task = {"stat_consumption", 0, "电线杆设计图"},
+    task = {"stat_consumption", 0, "电线杆框架"},
     prerequisites = {"电线杆传送接收"},
     count = 5,
     guide_focus = {
@@ -317,8 +317,8 @@ prototype "建造电线杆" {
         prefab = "prefabs/selected-box-guide.prefab",
         x = 121,
         y = 122,
-        w = 4,
-        h = 4,
+        w = 5,
+        h = 5,
       },
       {
         camera_x = 121,
@@ -342,7 +342,7 @@ prototype "建造电线杆" {
     count = 3,
     effects = {
        unlock_recipe = {"无人机仓库打印"},
-       unlock_item = {"无人机仓库设计图"},
+       unlock_item = {"无人机仓库框架"},
     },
     tips_pic = {
       "textures/task_tips_pic/task_place_pole1.texture",
@@ -353,36 +353,36 @@ prototype "建造电线杆" {
         prefab = "prefabs/selected-box-guide.prefab",
         x = 117,
         y = 115,
-        w = 1,
-        h = 1,
-      },
-      {
-        prefab = "prefabs/selected-box-guide.prefab",
-        x = 117,
-        y = 123,
-        w = 1,
-        h = 1,
-      },
-      {
-        prefab = "prefabs/selected-box-guide.prefab",
-        x = 117,
-        y = 131,
-        w = 1,
-        h = 1,
-      },
-      {
-        prefab = "prefabs/selected-box-guide.prefab",
-        x = 123,
-        y = 115,
         w = 1.5,
         h = 1.5,
       },
       {
         prefab = "prefabs/selected-box-guide.prefab",
+        x = 117,
+        y = 123,
+        w = 1.5,
+        h = 1.5,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 117,
+        y = 131,
+        w = 1.5,
+        h = 1.5,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 123,
+        y = 115,
+        w = 2,
+        h = 2,
+      },
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
         x = 121,
         y = 122,
-        w = 4,
-        h = 4,
+        w = 5,
+        h = 5,
         show_arrow = true,
       },
       {
@@ -396,7 +396,7 @@ prototype "建造电线杆" {
   }
 
   prototype "无人机仓库调度" {
-    desc = "选择无人机仓库设计图",
+    desc = "选择无人机仓库框架",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"unknown", 0, 3},
@@ -411,8 +411,8 @@ prototype "建造电线杆" {
         prefab = "prefabs/selected-box-guide.prefab",
         x = 121,
         y = 122,
-        w = 5,
-        h = 5,
+        w = 5.5,
+        h = 5.5,
         show_arrow = true,
       },
       {
@@ -438,8 +438,8 @@ prototype "建造电线杆" {
         prefab = "prefabs/selected-box-guide.prefab",
         x = 126,
         y = 109,
-        w = 1.5,
-        h = 1.5,
+        w = 2,
+        h = 2,
         show_arrow = true,
       },
       {
@@ -468,8 +468,8 @@ prototype "建造电线杆" {
         prefab = "prefabs/selected-box-guide.prefab",
         x = 121,
         y = 122,
-        w = 4,
-        h = 4,
+        w = 5,
+        h = 5,
         show_arrow = true,
       },
       {
@@ -498,8 +498,8 @@ prototype "建造电线杆" {
         prefab = "prefabs/selected-box-guide.prefab",
         x = 115,
         y = 129,
-        w = 3,
-        h = 3,
+        w = 3.5,
+        h = 3.5,
         show_arrow = true,
       },
       {
@@ -528,8 +528,8 @@ prototype "建造电线杆" {
         prefab = "prefabs/selected-box-guide.prefab",
         x = 121,
         y = 122,
-        w = 4,
-        h = 4,
+        w = 5,
+        h = 5,
         show_arrow = true,
       },
       {
@@ -549,7 +549,7 @@ prototype "建造电线杆" {
     desc = "建造1个无人机仓库",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
-    task = {"stat_consumption", 0, "无人机仓库设计图"},
+    task = {"stat_consumption", 0, "无人机仓库框架"},
     prerequisites = {"碎石传送接收"},
     count = 1,
     effects = {
@@ -579,8 +579,8 @@ prototype "建造电线杆" {
         prefab = "prefabs/selected-box-guide.prefab",
         x = 118.5,
         y = 129.5,
-        w = 1.5,
-        h = 1.5,
+        w = 2,
+        h = 2,
       },
       -- {
       --   prefab = "prefabs/selected-box-guide.prefab",
@@ -639,7 +639,7 @@ prototype "建造电线杆" {
     count = 12,
     effects = {
        unlock_recipe = {"科研中心打印"},
-       unlock_item = {"科研中心设计图"},
+       unlock_item = {"科研中心框架"},
     },
     tips_pic = {
       "textures/task_tips_pic/task_produce_ore3.texture",
@@ -669,7 +669,7 @@ prototype "建造电线杆" {
     desc = "再建造1个无人机仓库",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
-    task = {"stat_consumption", 0, "无人机仓库设计图"},
+    task = {"stat_consumption", 0, "无人机仓库框架"},
     prerequisites = {"无人机仓库传送"},
     count = 2,
     guide_focus = {
@@ -677,8 +677,8 @@ prototype "建造电线杆" {
         prefab = "prefabs/selected-box-guide.prefab",
         x = 126,
         y = 109,
-        w = 1.5,
-        h = 1.5,
+        w = 2,
+        h = 2,
         show_arrow = true,
       },
       {
@@ -710,8 +710,8 @@ prototype "建造电线杆" {
         prefab = "prefabs/selected-box-guide.prefab",
         x = 118.5,
         y = 126,
-        w = 1.5,
-        h = 1.5,
+        w = 2,
+        h = 2,
       },
       {
         camera_x = 120,
@@ -743,7 +743,7 @@ prototype "建造电线杆" {
     desc = "建造一座科研中心",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
-    task = {"stat_consumption", 0, "科研中心设计图"},
+    task = {"stat_consumption", 0, "科研中心框架"},
     count = 1,
     prerequisites = {"仓库碎石设置"},
     guide_focus = {
@@ -751,16 +751,16 @@ prototype "建造电线杆" {
         prefab = "prefabs/selected-box-guide.prefab",
         x = 114,
         y = 121,
-        w = 1.5,
-        h = 1.5,
+        w = 2,
+        h = 2,
         show_arrow = true,
       },
       {
         prefab = "prefabs/selected-box-guide.prefab",
         x = 121,
         y = 122,
-        w = 4,
-        h = 4,
+        w = 5,
+        h = 5,
       },
       {
         camera_x = 119,
@@ -771,7 +771,7 @@ prototype "建造电线杆" {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "继电器废墟里找寻科研中心设计图，再前往建造中心打印一座科研中心", icon = "textures/construct/industry.texture"},
+      { desc = "继电器废墟里找寻科研中心框架，再前往建造中心打印一座科研中心", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -790,8 +790,8 @@ prototype "建造电线杆" {
         prefab = "prefabs/selected-box-guide.prefab",
         x = 127,
         y = 130,
-        w = 3,
-        h = 3,
+        w = 3.5,
+        h = 3.5,
       },
       {
         camera_x = 128,
@@ -809,7 +809,7 @@ prototype "建造电线杆" {
     icon = "textures/science/tech-research.texture",
     effects = {
       unlock_recipe = {"地质科技包1","组装机打印"},
-      unlock_item = {"组装机设计图"},
+      unlock_item = {"组装机框架"},
     },
     ingredients = {
     },
@@ -827,7 +827,7 @@ prototype "建造电线杆" {
     desc = "建造组装机",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
-    task = {"stat_consumption", 0, "组装机设计图"},
+    task = {"stat_consumption", 0, "组装机框架"},
     prerequisites = {"地质研究"},
     effects = {
       unlock_item = {"地质科技包"},
@@ -856,15 +856,15 @@ prototype "建造电线杆" {
         prefab = "prefabs/selected-box-guide.prefab",
         x = 121,
         y = 126,
-        w = 2.5,
-        h = 2.5,
+        w = 3,
+        h = 3,
       },
       {
         prefab = "prefabs/selected-box-guide.prefab",
         x = 121,
         y = 130,
-        w = 2.5,
-        h = 2.5,
+        w = 3,
+        h = 3,
       },
       {
         camera_x = 119,
@@ -969,7 +969,7 @@ prototype "建造电线杆" {
     icon = "textures/science/tech-research.texture",
     effects = {
       unlock_recipe = {"修路站设计","修路站打印","砖石公路打印"},
-      unlock_item = {"修路站设计图"},
+      unlock_item = {"修路站框架"},
     },
     prerequisites = {"生产石砖"},
     ingredients = {
@@ -980,17 +980,17 @@ prototype "建造电线杆" {
   }
 
   prototype "道路设计" {
-    desc = "制造1张修路站设计图",
+    desc = "制造1张修路站框架",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
-    task = {"stat_production", 0, "修路站设计图"},
+    task = {"stat_production", 0, "修路站框架"},
     prerequisites = {"道路研究"},
     count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_produce_ore3.texture",
     },
     sign_desc = {
-      { desc = "组装机生产1张修路站设计图", icon = "textures/construct/industry.texture"},
+      { desc = "组装机生产1张修路站框架", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -998,7 +998,7 @@ prototype "建造电线杆" {
     desc = "建造组装机",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
-    task = {"stat_consumption", 0, "修路站设计图"},
+    task = {"stat_consumption", 0, "修路站框架"},
     prerequisites = {"道路设计"},
     count = 1,
     tips_pic = {
@@ -1327,7 +1327,7 @@ prototype "建造电线杆" {
     icon = "textures/science/tech-research.texture",
     effects = {
       unlock_recipe = {"送货车站打印","收货车站打印"},
-      unlock_item = {"送货车站设计图","收货车站设计图","铁矿石"},
+      unlock_item = {"送货车站框架","收货车站框架","铁矿石"},
     },
     prerequisites = {"通向铁矿"},
     ingredients = {
@@ -1410,7 +1410,7 @@ prototype "建造电线杆" {
     count = 10,
     effects = {
       unlock_recipe = {"熔炼炉打印"},
-      unlock_item = {"熔炼炉设计图"},
+      unlock_item = {"熔炼炉框架"},
     },
     tips_pic = {
       "textures/task_tips_pic/task_produce_ore3.texture",
@@ -1579,7 +1579,7 @@ prototype "气候研究" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"气候科技包1","空气过滤器打印","地下水挖掘机打印"},
-    unlock_item = {"气候科技包","空气过滤器设计图","地下水挖掘机设计图"},
+    unlock_item = {"气候科技包","空气过滤器框架","地下水挖掘机框架"},
   },
   prerequisites = {"物流学II"},
   ingredients = {
@@ -1599,7 +1599,7 @@ prototype "管道系统1" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"修管站设计","管道1","管道2","液罐1"},
-    unlock_item = {"液罐I","修管站设计图","管道1-X型"},
+    unlock_item = {"液罐I","修管站框架","管道1-X型"},
   },
   prerequisites = {"气候研究"},
   ingredients = {
@@ -1646,7 +1646,7 @@ prototype "采水研究" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"地下水挖掘机","水电站打印"},
-    unlock_item = {"水电站设计图"},
+    unlock_item = {"水电站框架"},
   },
   prerequisites = {"排放"},
   ingredients = {
@@ -1748,7 +1748,7 @@ prototype "生产气候科技包" {
 --   desc = "生产运输车辆2辆",
 --   icon = "textures/construct/industry.texture",
 --   type = { "tech", "task" },
---   task = {"stat_consumption", 0, 运输车辆设计图},
+--   task = {"stat_consumption", 0, 运输车辆框架},
 --   prerequisites = {"放置车辆厂"},
 --   task_params = {},
 --   count = 2,
@@ -1917,7 +1917,7 @@ prototype "生产气候科技包" {
 --   desc = "将破损的机器修复会大大节省建设时间和资源",
 --   icon = "textures/construct/industry.texture",
 --   type = { "tech", "task" },
---   task = {"stat_consumption", 0, "空气过滤器设计图"},
+--   task = {"stat_consumption", 0, "空气过滤器框架"},
 --   prerequisites = {"气候研究"},
 --   count = 1,
 --   tips_pic = {
@@ -1932,7 +1932,7 @@ prototype "生产气候科技包" {
 --   desc = "将破损的机器修复会大大节省建设时间和资源",
 --   icon = "textures/construct/industry.texture",
 --   type = { "tech", "task" },
---   task = {"stat_consumption", 0, "地下水挖掘机设计图"},
+--   task = {"stat_consumption", 0, "地下水挖掘机框架"},
 --   prerequisites = {"气候研究"},
 --   count = 1,
 --   tips_pic = {
@@ -2094,7 +2094,7 @@ prototype "生产气候科技包" {
 --   desc = "将破损的机器修复会大大节省建设时间和资源",
 --   icon = "textures/construct/industry.texture",
 --   type = { "tech", "task" },
---   task = {"stat_consumption", 0, "组装机设计图"},
+--   task = {"stat_consumption", 0, "组装机框架"},
 --   prerequisites = {"铁加工1"},
 --   count = 3,
 --   tips_pic = {
@@ -2125,7 +2125,7 @@ prototype "生产气候科技包" {
 --   desc = "维修太阳能板并利用太阳能板技术发电",
 --   icon = "textures/construct/industry.texture",
 --   type = { "tech", "task" },
---   task = {"stat_consumption", 0, "太阳能板设计图"},
+--   task = {"stat_consumption", 0, "太阳能板框架"},
 --   prerequisites = {"石头处理2"},
 --   count = 2,
 --   tips_pic = {
@@ -2339,7 +2339,7 @@ prototype "生产气候科技包" {
 --   desc = "维修化工厂生成化工原料",
 --   icon = "textures/construct/industry.texture",
 --   type = { "tech", "task" },
---   task = {"stat_consumption", 0, "化工厂设计图"},
+--   task = {"stat_consumption", 0, "化工厂框架"},
 --   prerequisites = {"碳处理2"},
 --   count = 1,
 --   tips_pic = {
