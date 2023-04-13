@@ -468,7 +468,7 @@
                 <div id = "ItemTransferSrcInvBar" class = "teleport-items-bar-slide-init" style = "justify-content: center; align-items: center; pointer-events: none;">
                     <div id = "ItemTransferSrcInv" class = "inventory-slide-init" style = "flex-direction: row; justify-content: center; align-items: center; pointer-events: none;" data-if = "item_transfer_src_inventory_count > 0">
                         <div class="item" data-style-background-image = "it.icon" data-for = "item_transfer_src_inventory">
-                            <div class="item-count">{{it.count}}</div>
+                            <div class="item-count" data-style-color = "it.movable ? 'red' : ''" >{{it.count}}</div>
                             <div class="item-sign"/> 
                         </div>
                     </div>

@@ -82,7 +82,9 @@ local item_transfer_placement_interval = interval_call(300, function(datamodel, 
         for _, slot in ipairs(placeable_items) do
             local j = movable_items_hash[slot.item]
             if j then
+                movable_items[j].movable = true
                 movable_items[ci], movable_items[j] = movable_items[j], movable_items[ci]
+                ci = ci + 1
             end
         end
     end
@@ -90,7 +92,7 @@ local item_transfer_placement_interval = interval_call(300, function(datamodel, 
     local items = {}
     for _, slot in ipairs(movable_items) do
         local typeobject_item = assert(iprototype.queryById(slot.item))
-        items[#items + 1] = {icon = typeobject_item.icon, count = slot.count}
+        items[#items + 1] = {icon = typeobject_item.icon, count = slot.count, movable = (slot.movable == true)}
         if #items >= 5 then
             break
         end
