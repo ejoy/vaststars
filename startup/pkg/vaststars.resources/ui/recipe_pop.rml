@@ -304,7 +304,7 @@
                     </button>
                     <button class = "confirm-button" style="background-color:rgb(52, 207, 115);" data-event-click = "clickConfirm()">
                         <div class="middle-bg" style='background-image: "textures/construct/work.texture";'/>
-                        <div class = "recipe-name-text" style="font-size: 5.73vmin;">{{construction_center ? '确定打印' : '确定生产'}}</div>
+                        <div class = "recipe-name-text" style="font-size: 5.73vmin;">{{construction_center ? '开始打印' : '开始生产'}}</div>
                     </button> 
                 </div>
             </div>
