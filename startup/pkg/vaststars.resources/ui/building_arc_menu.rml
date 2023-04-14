@@ -196,6 +196,7 @@
                             show_icon_background = false,
                             disabled = false,
                             guide_progress = -1,
+                            animation = 'none',
                         }
 
                         start.buttons = {}
@@ -204,6 +205,9 @@
                             v.text = "管理"
                             v.message = "set_recipe"
                             v.background_image = "textures/assemble/wheel.texture"
+                            if start.guide_progress == 5 then
+                                v.animation = '0.4s linear 0s infinite alternate enlarge2'
+                            end
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -288,7 +292,9 @@
                             v.text = "传送设置"
                             v.message = "item_transfer_subscribe"
                             v.background_image = "textures/construct/portal-in.texture"
-                            v.guide_progress = 5
+                            if start.guide_progress == 10 then
+                                v.animation = '0.4s linear 0s infinite alternate enlarge2'
+                            end
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -300,7 +306,9 @@
                             v.disabled = start.item_transfer_place_disabled
                             console.log("start.item_transfer_place_disabled", start.item_transfer_place_disabled)
                             v.disabled_background_image = "textures/construct/portal-out-disabled.texture"
-                            v.guide_progress = 10
+                            if start.guide_progress == 15 then
+                                v.animation = '0.4s linear 0s infinite alternate enlarge2'
+                            end
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -327,14 +335,14 @@
                     "show_set_recipe", "show_set_item", "show_road_builder", 
                     "construction_center_icon", "construction_center_count", "construction_center_multiple", "drone_depot_icon", "station_item_icon",
                     "lorry_factory_icon", "lorry_factory_count", "lorry_factory_inc_lorry", "lorry_factory_dec_lorry",
-                    "item_transfer_subscribe", "item_transfer_place", "item_transfer_unsubscribe", "item_transfer_place_disabled"
+                    "item_transfer_subscribe", "item_transfer_place", "item_transfer_unsubscribe", "item_transfer_place_disabled", "guide_progress"
                 }
             })
         </script>
     </head>
     <body style = "pointer-events: none;">
         <div class="info-panel" style="position: relative; pointer-events: none;" data-model="start" data-style-left = "left" data-style-top = "top">
-            <button class="button-fuction-block" style="position: absolute;" data-style-animation = "it.guide_progress == guide_progress && guide_progress == 5 ? '0.4s linear 0s infinite alternate enlarge2' : 'none'" data-style-top="it.top" data-style-left="it.left" data-event-click="clickButton(it.message, it.disabled)" data-for = "it : buttons">
+            <button class="button-fuction-block" style="position: absolute;" data-style-animation = "it.animation" data-style-top="it.top" data-style-left="it.left" data-event-click="clickButton(it.message, it.disabled)" data-for = "it : buttons">
                 <div class = "icon-background" style="position: absolute; margin: 1.8vmin 0.7vmin;" data-if = "it.show_icon_background" />
                 <div class = "button-function" data-style-background-image = "it.background_image" data-if = "!it.disabled" />
                 <div class = "button-function" data-style-background-image = "it.disabled_background_image" data-if = "it.disabled" />
