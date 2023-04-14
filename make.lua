@@ -37,6 +37,7 @@ lm.ios = {
 local EnableSanitize = false
 if EnableSanitize then
     lm.builddir = ("build/%s/sanitize"):format(plat)
+    lm.bindir = ("bin/%s/sanitize"):format(plat)
     lm.mode = "debug"
     lm:config "sanitize" {
         flags = "-fsanitize=address",

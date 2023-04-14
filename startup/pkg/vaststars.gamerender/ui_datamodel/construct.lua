@@ -50,7 +50,7 @@ local load_resource_mb = mailbox:sub {"load_resource"}
 local single_touch_mb = world:sub {"single_touch"}
 local move_finish_mb = mailbox:sub {"move_finish"}
 local builder_back_mb = mailbox:sub {"builder_back"}
-local construction_center_place_mb = mailbox:sub {"construction_center_place"}
+local construction_center_menu_place_mb = mailbox:sub {"construction_center_menu_place"}
 local item_transfer_src_inventory_mb = mailbox:sub {"item_transfer_src_inventory"}
 
 local pickup_gesture_mb = world:sub {"pickup_gesture"}
@@ -537,7 +537,7 @@ function M:stage_camera_usage(datamodel)
         iui.close("road_or_pipe_build.rml")
     end
 
-    for _, _, _, object_id, index in construction_center_place_mb:unpack() do
+    for _, _, _, object_id, index in construction_center_menu_place_mb:unpack() do
         if builder then
             builder:clean(datamodel)
         end

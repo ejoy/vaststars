@@ -332,7 +332,6 @@
 				OTHER_LDFLAGS = (
 					"-lvaststars",
 					"-lbgfx-lib",
-					"-lgameplay",
 					"-lstdc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.ejoy.ant;
@@ -370,7 +369,6 @@
 				OTHER_LDFLAGS = (
 					"-lvaststars",
 					"-lbgfx-lib",
-					"-lgameplay",
 					"-lstdc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.ejoy.ant;

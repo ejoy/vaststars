@@ -45,7 +45,7 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "采矿机调度" {
+  prototype "采矿机打印预备" {
     desc = "选择采矿机框架",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
@@ -58,8 +58,8 @@ local prototype = gameplay.register.prototype
         prefab = "prefabs/selected-box-guide.prefab",
         x = 121,
         y = 122,
-        w = 5,
-        h = 5,
+        w = 5.5,
+        h = 5.5,
         show_arrow = true,
         force = true,
       },
@@ -83,7 +83,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 6},
     task_params = {ui = "item_transfer_subscribe", building = "继电器废墟"},
     count = 1,
-    prerequisites = {"采矿机调度"},
+    prerequisites = {"采矿机打印预备"},
     guide_focus = {
       {
         prefab = "prefabs/selected-box-guide.prefab",
@@ -141,8 +141,8 @@ local prototype = gameplay.register.prototype
         prefab = "prefabs/selected-box-guide.prefab",
         x = 121,
         y = 122,
-        w = 5,
-        h = 5,
+        w = 5.5,
+        h = 5.5,
         show_arrow = true,
         force = true,
       },
@@ -201,8 +201,8 @@ local prototype = gameplay.register.prototype
         prefab = "prefabs/selected-box-guide.prefab",
         x = 121,
         y = 122,
-        w = 5,
-        h = 5,
+        w = 5.5,
+        h = 5.5,
         show_arrow = true,
       },
       {
@@ -215,7 +215,7 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "电线杆调度" {
+  prototype "电线杆打印预备" {
     desc = "选择电线杆框架",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
@@ -252,7 +252,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 6},
     task_params = {ui = "item_transfer_subscribe", building = "排水口废墟"},
     count = 1,
-    prerequisites = {"电线杆调度"},
+    prerequisites = {"电线杆打印预备"},
     guide_focus = {
       {
         prefab = "prefabs/selected-box-guide.prefab",
@@ -288,8 +288,8 @@ local prototype = gameplay.register.prototype
         prefab = "prefabs/selected-box-guide.prefab",
         x = 121,
         y = 122,
-        w = 5,
-        h = 5,
+        w = 5.5,
+        h = 5.5,
         show_arrow = true,
       },
       {
@@ -317,8 +317,8 @@ prototype "建造电线杆" {
         prefab = "prefabs/selected-box-guide.prefab",
         x = 121,
         y = 122,
-        w = 5,
-        h = 5,
+        w = 5.5,
+        h = 5.5,
       },
       {
         camera_x = 121,
@@ -381,8 +381,8 @@ prototype "建造电线杆" {
         prefab = "prefabs/selected-box-guide.prefab",
         x = 121,
         y = 122,
-        w = 5,
-        h = 5,
+        w = 5.5,
+        h = 5.5,
         show_arrow = true,
       },
       {
@@ -395,7 +395,7 @@ prototype "建造电线杆" {
     },
   }
 
-  prototype "无人机仓库调度" {
+  prototype "无人机仓库打印预备" {
     desc = "选择无人机仓库框架",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
@@ -432,7 +432,7 @@ prototype "建造电线杆" {
     task = {"unknown", 0, 6},
     task_params = {ui = "item_transfer_subscribe", building = "铁箱废墟"},
     count = 1,
-    prerequisites = {"无人机仓库调度"},
+    prerequisites = {"无人机仓库打印预备"},
     guide_focus = {
       {
         prefab = "prefabs/selected-box-guide.prefab",
@@ -468,8 +468,8 @@ prototype "建造电线杆" {
         prefab = "prefabs/selected-box-guide.prefab",
         x = 121,
         y = 122,
-        w = 5,
-        h = 5,
+        w = 5.5,
+        h = 5.5,
         show_arrow = true,
       },
       {
@@ -528,8 +528,8 @@ prototype "建造电线杆" {
         prefab = "prefabs/selected-box-guide.prefab",
         x = 121,
         y = 122,
-        w = 5,
-        h = 5,
+        w = 5.5,
+        h = 5.5,
         show_arrow = true,
       },
       {
@@ -759,8 +759,8 @@ prototype "建造电线杆" {
         prefab = "prefabs/selected-box-guide.prefab",
         x = 121,
         y = 122,
-        w = 5,
-        h = 5,
+        w = 5.5,
+        h = 5.5,
       },
       {
         camera_x = 119,

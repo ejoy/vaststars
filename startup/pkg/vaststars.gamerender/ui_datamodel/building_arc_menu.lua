@@ -378,7 +378,9 @@ function M:stage_ui_update(datamodel, object_id)
     __item_transfer_update_interval(datamodel, object_id)
 
     for _, _, _, object_id in set_recipe_mb:unpack() do
-        iui.open({"recipe_pop.rml"}, object_id)
+        local object = assert(objects:get(object_id))
+        local typeobject = iprototype.queryByName(object.prototype_name)
+        iui.open({"recipe_pop.rml"}, object_id, typeobject.construction_center)
     end
 
     for _, _, _, object_id in set_item_mb:unpack() do
