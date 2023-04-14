@@ -273,11 +273,12 @@ end
 ---------------
 local M = {}
 
-function M:create(object_id)
+function M:create(object_id, construction_center)
     local datamodel = {}
     _show_object_recipe(datamodel, object_id)
     _update_recipe_items(datamodel, datamodel.recipe_name)
     datamodel.recipe_name = datamodel.recipe_name or ""
+    datamodel.construction_center = construction_center
     return datamodel
 end
 

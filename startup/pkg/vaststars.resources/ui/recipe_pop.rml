@@ -143,6 +143,7 @@
                 recipe_index = 1,
                 recipe_name = "",
                 catalog_index = 1,
+                construction_center = false,
 
                 recipe_time = " ",
                 recipe_ingredients = {},
@@ -233,7 +234,7 @@
             <div class="panel" style= "flex-direction: column;">
                 <div class="header" id = "item-name-block">
                     <button class = "back-button" data-event-click="clickClose()"/>
-                    <div class = "menu-title" style="width: 70%;">修改配方</div>
+                    <div class = "menu-title" style="width: 70%;">{{construction_center ? '建造中心修改配方' : '修改配方'}}</div>
                 </div>
 
                 <!-- tag page begin -->
