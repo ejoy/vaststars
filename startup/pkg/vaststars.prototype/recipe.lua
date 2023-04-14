@@ -1305,12 +1305,13 @@ prototype "太阳能板打印" {
     recipe_order =  56,
     recipe_icon =  "textures/construct/broken-solar-panel.texture",
     ingredients = {
+        {"石砖", 8},
         {"太阳能板框架", 1},
     },
     results = {
         {"太阳能板I", 1},
     },
-    time = "5s",
+    time = "10s",
     description = "打印利用太阳能发电的装置",
 }
 
