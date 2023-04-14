@@ -3,6 +3,8 @@ local BUILDING_COMPONENTS = {
     drone_depot_shelf = true,
     assembling_icon = true,
     consumer_icon = true,
+    workstatus = true,
+    construction_center_workstatus = true,
 }
 local BUILDING_COMPONENT_METHODS = {
     on_position_change = true,
