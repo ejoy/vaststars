@@ -963,6 +963,95 @@ prototype "建造电线杆" {
     },
   }
 
+  prototype "电能扩充" {
+    desc = "掌握使用石砖制造道路的技术",
+    type = { "tech" },
+    icon = "textures/science/tech-research.texture",
+    effects = {
+      unlock_recipe = {"太阳能板打印"},
+      unlock_item = {"太阳能板框架","太阳能板I"},
+    },
+    prerequisites = {"生产石砖"},
+    ingredients = {
+        {"地质科技包", 1},
+    },
+    count = 10,
+    time = "1.5s"
+  }
+
+  prototype "生产太阳能板" {
+    desc = "使用组装机生产6个太阳能板",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"stat_production", 0, "太阳能板I"},
+    prerequisites = {"电能扩充"},
+    count = 6,
+    tips_pic = {
+      "textures/task_tips_pic/task_produce_ore3.texture",
+    },
+    guide_focus = {
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 134,
+        y = 122.5,
+        w = 2,
+        h = 2,
+        show_arrow = true,
+      },
+      {
+        camera_x = 134,
+        camera_y = 122.5,
+      },
+    },
+    sign_desc = {
+      { desc = "使用组装机生产6个太阳能板", icon = "textures/construct/industry.texture"},
+    },
+  }
+
+    prototype "放置太阳能板" {
+    desc = "放置6座太阳能板",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"select_entity", 0, "太阳能板I"},
+    prerequisites = {"生产太阳能板"},
+    count = 6,
+    tips_pic = {
+      "textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "放置6个太阳能板", icon = "textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "电力覆盖" {
+    desc = "放置10个电线杆",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"select_entity", 0, "铁制电线杆"},
+    prerequisites = {"放置太阳能板"},
+    count = 10,
+    guide_focus = {
+      {
+        prefab = "prefabs/selected-box-guide.prefab",
+        x = 109,
+        y = 136,
+        w = 4.5,
+        h = 4.5,
+        show_arrow = true,
+      },
+      {
+        camera_x = 107,
+        camera_y = 134,
+      },
+    },
+    tips_pic = {
+      "textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "放置10个电线杆", icon = "textures/construct/industry.texture"},
+    },
+  }
+
   prototype "道路研究" {
     desc = "掌握使用石砖制造道路的技术",
     type = { "tech" },
@@ -971,7 +1060,7 @@ prototype "建造电线杆" {
       unlock_recipe = {"修路站设计","修路站打印","砖石公路打印"},
       unlock_item = {"修路站框架"},
     },
-    prerequisites = {"生产石砖"},
+    prerequisites = {"电力覆盖"},
     ingredients = {
         {"地质科技包", 1},
     },

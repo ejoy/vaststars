@@ -487,6 +487,41 @@ local guide = {
     {
         name = "",
 		narrative = {
+            {"随着基地建设扩大，{/color:4bd0ff 电能}负担越来越大，我们需要补充{/g 发电设施}..哔哩..哔哗..(期待)", "textures/guide/guide-2.texture"},
+            {"4031星球白天日照充足,利用{/color:4bd0ff 太阳能}发电将是最佳选择..哔哩..(高兴)", "textures/guide/guide-3.texture"},
+        },
+        narrative_end = {
+            guide_progress = 30,
+            task = {
+                "电能扩充",
+            }
+        },
+        prerequisites = {
+            "生产石砖",
+        },
+	}, 
+
+
+    {
+        name = "",
+		narrative = {
+            {"使用{/g 电线杆}将我们刚铺设的{/g 太阳能板}连接入{/color:4bd0ff 电网},这样基地就会获得更多电能..哔哩..哔哗..(期待)", "textures/guide/guide-2.texture"},
+        },
+        narrative_end = {
+            guide_progress = 30,
+            task = {
+                "电力覆盖",
+            }
+        },
+        prerequisites = {
+            "放置太阳能板",
+        },
+	}, 
+
+    
+    {
+        name = "",
+		narrative = {
             {"{/color:4bd0ff 石砖}是铺设{/color:4bd0ff 道路}的最佳材料..哔哩..哔哗..(期待)", "textures/guide/guide-2.texture"},
             {"让我们立即研究道路建造的工程方法,{/color:4bd0ff 道路}会帮助我们进行高效{/color:4bd0ff 物流}..哔哩..(高兴)", "textures/guide/guide-3.texture"},
         },
@@ -497,7 +532,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "生产石砖",
+            "电力覆盖",
         },
 	}, 
 
