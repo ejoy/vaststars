@@ -334,12 +334,11 @@ end
 local function play_transfer_effect(effect, pos)
     local e <close> = w:entity(effect)
     iom.set_position(e, {pos[1], pos[2] + 15, pos[3]})
-    iefk.play(e)
+    iefk.play(effect)
 end
 
 local function stop_transfer_effect(effect)
-    local e <close> = w:entity(effect)
-    iefk.stop(e)
+    iefk.stop(effect)
 end
 
 function M:stage_ui_update(datamodel, object_id)

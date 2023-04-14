@@ -74,7 +74,7 @@ prototype "组装机II" {
 }
 
 prototype "铸造厂I" {
-    model = "prefabs/assembling-1.prefab",
+    model = "prefabs/mars-assembling-machine.prefab",
     icon = "textures/building_pic/small_pic_assemble.texture",
     background = "textures/build_background/pic_assemble.texture",
     construct_detector = {"exclusive"},

@@ -10,6 +10,8 @@ local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object
 local prefab_meshbin = require("engine.prefab_parser").meshbin
 local ivs = ecs.import.interface "ant.scene|ivisible_state"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+local global = require "global"
+local vsobject_manager = ecs.require "vsobject_manager"
 
 local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
 -- the assembling machine is currently capable of distinguishing only between two states: working and idle. for more details, see the implementation in assembling.cpp
@@ -17,22 +19,71 @@ local STATUS_WORKING <const> = 1
 
 local progresses = {} --TODO: when an object is destroyed, clear it.
 
+local WING_CLOSE <const> = 0 -- default
+local WING_OPEN <const> = 1
+local WING_NONE <const> = 2
+
+local function create_workstatus()
+    local status = WING_NONE
+    local function on_position_change()
+    end
+    local function remove()
+    end
+    local function set(self, s)
+        status = s
+    end
+    local function get(self, s)
+        return status
+    end
+    return {
+        on_position_change = on_position_change,
+        remove = remove,
+        set = set,
+        get = get,
+    }
+end
+
 return function(gameplay_world)
-    local t = {}
+    local buildings = global.buildings
     for e in gameplay_world.ecs:select "assembling:in building:in chest:in eid:in" do
         local typeobject = iprototype.queryById(e.building.prototype)
         if typeobject.construction_center ~= true then
             goto continue
         end
+        local object = assert(objects:coord(e.building.x, e.building.y))
+        local vsobject = vsobject_manager:get(object.id)
 
         local _, results, progress, total_progress = assembling_common.get(gameplay_world, e)
         if #results == 0 then -- Not yet set recipe
+            vsobject:animation_name_update("wing_close", true)
             goto continue
         end
+
+        buildings[object.id].construction_center_workstatus = buildings[object.id].construction_center_workstatus or create_workstatus()
+        local workstatus = buildings[object.id].construction_center_workstatus
+        local current
+        if e.assembling.status ~= STATUS_WORKING then
+            if results[1].count > 0 then
+                current = WING_OPEN
+            else
+                current = WING_CLOSE
+            end
+        else
+            current = WING_OPEN
+        end
+        if current ~= workstatus:get() then
+            if current == WING_OPEN then
+                vsobject:animation_name_update("wing_open", true)
+            else
+                vsobject:animation_name_update("wing_close", true)
+            end
+            workstatus:set(current)
+        end
+
+        --
         local res_typeobject = iprototype.queryById(results[1].id)
         local s = res_typeobject.printer_scale and res_typeobject.printer_scale or {1, 1, 1}
 
-        local object = assert(objects:coord(e.building.x, e.building.y))
         local srt = object.srt
         local t = {srt.t[1], 13, srt.t[3]} --TODO: change the height to be configured in the slot of prefab
 
