@@ -4,7 +4,8 @@ local BUILDING_COMPONENTS = {
     assembling_icon = true,
     consumer_icon = true,
     workstatus = true,
-    construction_center_workstatus = true,
+    construction_center_wing_status = true,
+    construction_center_printer = true,
 }
 local BUILDING_COMPONENT_METHODS = {
     on_position_change = true,
