@@ -97,6 +97,14 @@
                     transform: scale(1.0);
                 }
             }
+            @keyframes enlarge2 {
+                0% {
+                    transform: scale(0.9);
+                }
+                100% {
+                    transform: scale(1.1);
+                }
+            }
         </style>
         <style path = "common/building_style.rcss"/>
         <script type="text/x-lua" >
@@ -280,7 +288,7 @@
                             v.text = "传送设置"
                             v.message = "item_transfer_subscribe"
                             v.background_image = "textures/construct/portal-in.texture"
-                            v.guide_progress = 10
+                            v.guide_progress = 5
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -326,7 +334,7 @@
     </head>
     <body style = "pointer-events: none;">
         <div class="info-panel" style="position: relative; pointer-events: none;" data-model="start" data-style-left = "left" data-style-top = "top">
-            <button class="button-fuction-block" style="position: absolute;" data-style-top="it.top" data-style-left="it.left" data-event-click="clickButton(it.message, it.disabled)" data-for = "it : buttons">
+            <button class="button-fuction-block" style="position: absolute;" data-style-animation = "it.guide_progress == guide_progress && guide_progress == 5 ? '0.4s linear 0s infinite alternate enlarge2' : 'none'" data-style-top="it.top" data-style-left="it.left" data-event-click="clickButton(it.message, it.disabled)" data-for = "it : buttons">
                 <div class = "icon-background" style="position: absolute; margin: 1.8vmin 0.7vmin;" data-if = "it.show_icon_background" />
                 <div class = "button-function" data-style-background-image = "it.background_image" data-if = "!it.disabled" />
                 <div class = "button-function" data-style-background-image = "it.disabled_background_image" data-if = "it.disabled" />
@@ -334,7 +342,6 @@
                 <div class = "red-dot" data-if = "it.show_number">
                     <div style="text-align:center; font-size:3vmin; padding-right: 0.5vmin;">{{it.number}}</div>
                 </div>
-                <div data-if = "it.guide_progress == guide_progress && guide_progress == 10">abc</div>
             </button>
 
             <!-- div class = "materials-block" style="position: absolute; top: 40.33vmin; height: 10vmin; width: 100%; justify-content: center; align-items: center;"> 

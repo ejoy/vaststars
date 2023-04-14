@@ -247,7 +247,7 @@
                     transform: scale(1.0);
                 }
                 100% {
-                    transform: scale(1.2);
+                    transform: scale(1.3);
                 }
             }
             .safe-area {
@@ -364,10 +364,10 @@
             }
             .guide-finger {
                 position: absolute;
-                left: -6vmin;
-                bottom: 0vmin;
-                width:8vmin;
-                height:8vmin;
+                left: -7vmin;
+                bottom: -1vmin;
+                width:9vmin;
+                height:9vmin;
                 background-size: cover;
                 background-image:"textures/common/finger.texture";
             }
@@ -561,10 +561,9 @@
             <div style = "pointer-events: none; height:100%;  position: absolute; right:0vmin;">
                 <div style = "height:100%; flex-direction: column; justify-content: center;">
                     <workbutton data-for = "construction_center_menu" style = "background-color: rgb(246, 142, 14); margin:0.3vmin 0 0.3vmin 0;" data-event-click="clickConstruct(it.object_id, it.index)">
-                        <div class="workbutton-bg" data-style-background-image = "it.icon" style="animation:0.5s linear 0s enlarge3;" data-if = "it.icon != ''" />
+                        <div class="workbutton-bg" data-style-background-image = "it.icon" data-style-animation = "it.name == '采矿机I' && guide_progress == 15? ' 0.5s linear 0s infinite alternate enlarge3':'0.5s linear 0s enlarge3'" data-if = "it.icon != ''"/>
                         <div class="workbutton-text"  data-if = "it.name != ''">{{it.name}}</div>
                         <div class="item-count" style="animation:0.5s linear 0s enlarge2;" data-if = "it.name != ''">{{it.count}}</div>
-                        <div class="guide-finger"  style="animation: 0.3s linear 0s infinite alternate enlarge3;" data-if = "it.name == '采矿机I' && guide_progress == 10"/>
                     </workbutton>
                 </div>
             </div>
