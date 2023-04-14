@@ -27,16 +27,14 @@ return function (world)
     --     if storm_current_time >= storm_life then
     --         show_shorm = false
     --         storm_current_time = 0
-    --         local e <close> = w:entity(storm_effect)
-    --         iefk.stop(e, true)
+    --         iefk.stop(storm_effect, true)
     --     end
     -- else
     --     storm_rest_time = storm_rest_time + timer.delta() * 0.001
     --     if storm_rest_time >= storm_interval then
     --         show_shorm = true
     --         storm_rest_time = 0
-    --         local e <close> = w:entity(storm_effect)
-    --         iefk.play(e)
+    --         iefk.play(storm_effect)
     --     end
     -- end
 end
