@@ -132,7 +132,7 @@ local _get_hitch_children ; do
                     end
                 end
                 if e.anim_ctrl then
-                    e.anim_ctrl.for_hitch = true
+                    e.anim_ctrl.hitchs = {}
                     e.anim_ctrl.group_id = cache[hash].hitch_group_id
                     iani.load_events(eid, string.sub(prefab_file_path, 1, -8) .. ".event")
                 end
@@ -304,26 +304,22 @@ function igame_object.create(init)
         if #effects > 0 then
             -- when multiple effects are playing simultaneously, only the first effect is checked to see if it is playing.
             -- if the first effect is playing, it is assumed that all effects are playing.
-            local e <close> = w:entity(effects[1])
-            effeting = iefk.is_playing(e)
+            effeting = iefk.is_playing(effects[1])
         end
         if not effeting then
             for _, eid in ipairs(effects) do
-                local e <close> = w:entity(eid)
-                iefk.play(e)
+                iefk.play(eid)
             end
         end
     end
     outer.on_idle = function ()
         local effeting = false
         if #effects > 0 then
-            local e <close> = w:entity(effects[1])
-            effeting = iefk.is_playing(e)
+            effeting = iefk.is_playing(effects[1])
         end
         if effeting then
             for _, eid in ipairs(effects) do
-                local e <close> = w:entity(eid)
-                iefk.stop(e, true)
+                iefk.stop(eid, true)
             end
         end
     end
