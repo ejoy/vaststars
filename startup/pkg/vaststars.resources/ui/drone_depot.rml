@@ -141,7 +141,7 @@
             <div class="panel" style= "flex-direction: column;">
                 <div class="header" id = "item-name-block">
                     <button class = "back-button" data-event-click="clickClose()"/>
-                    <div class = "menu-title" style="width: 70%;">修改物品</div>
+                    <div class = "menu-title" style="width: 70%;">设置物品</div>
                 </div>
 
                 <!-- tag page begin -->
