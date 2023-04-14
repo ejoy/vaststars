@@ -157,7 +157,7 @@
     <body style = "pointer-events: none;">
         <div style="position: absolute; height: 100%;" data-style-left="left" data-style-top="top" data-model="start">
             <!-- 科研完成动画 -->
-            <div class="accomplished">研究完成</div>
+            <div class="accomplished">任务完成</div>
         </div>
     </body>
 </rml>
