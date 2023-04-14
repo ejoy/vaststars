@@ -12,101 +12,90 @@ local ivs = ecs.import.interface "ant.scene|ivisible_state"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local global = require "global"
 local vsobject_manager = ecs.require "vsobject_manager"
+local math3d = require "math3d"
 
 local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
 -- the assembling machine is currently capable of distinguishing only between two states: working and idle. for more details, see the implementation in assembling.cpp
 local STATUS_WORKING <const> = 1
 
-local progresses = {} --TODO: when an object is destroyed, clear it.
-
-local WING_CLOSE <const> = 0 -- default
-local WING_OPEN <const> = 1
-local WING_NONE <const> = 2
-
-local function create_workstatus()
-    local status = WING_NONE
+local function create_wing_status()
+    local status = "wing_none"
     local function on_position_change()
     end
     local function remove()
+        -- do nothing
     end
-    local function set(self, s)
-        status = s
-    end
-    local function get(self, s)
-        return status
+    local function update(self, gameplay_world, e)
+        local object = assert(objects:coord(e.building.x, e.building.y))
+        local vsobject = vsobject_manager:get(object.id)
+        local _, results = assembling_common.get(gameplay_world, e)
+        local current
+        if e.assembling.status ~= STATUS_WORKING then
+            if results[1] and results[1].count > 0 then
+                current = "wing_open"
+            else
+                current = "wing_close"
+            end
+        else
+            current = "wing_open"
+        end
+        if current ~= status then
+            vsobject:animation_name_update(current, true)
+            status = current
+        end
     end
     return {
         on_position_change = on_position_change,
         remove = remove,
-        set = set,
-        get = get,
+        update = update,
     }
 end
 
-return function(gameplay_world)
-    local buildings = global.buildings
-    for e in gameplay_world.ecs:select "assembling:in building:in chest:in eid:in" do
-        local typeobject = iprototype.queryById(e.building.prototype)
-        if typeobject.construction_center ~= true then
-            goto continue
-        end
-        local object = assert(objects:coord(e.building.x, e.building.y))
-        local vsobject = vsobject_manager:get(object.id)
+local function create_printer()
+    local progress = 0
+    local printer_entities = {}
+    local entity = nil
+    local recipe = nil
 
-        local _, results, progress, total_progress = assembling_common.get(gameplay_world, e)
+    local function on_position_change(self, building_srt)
+        local t = math3d.vector(building_srt.t[1], 13, building_srt.t[3]) --TODO: change the height to be configured in the slot of prefab
+        for _, obj in ipairs(printer_entities) do
+            iom.set_position(obj.id, t)
+        end
+        if entity then
+            iom.set_position(entity.id, t)
+        end
+    end
+    local function remove()
+        for _, obj in ipairs(printer_entities) do
+            obj:remove()
+        end
+        printer_entities = {}
+        if entity then
+            entity:remove()
+            entity = nil
+        end
+    end
+    local function update(self, gameplay_world, e, building_srt)
+        local _, results, current, total_progress = assembling_common.get(gameplay_world, e)
         if #results == 0 then -- Not yet set recipe
-            vsobject:animation_name_update("wing_close", true)
-            goto continue
+            remove()
+            return
         end
 
-        buildings[object.id].construction_center_workstatus = buildings[object.id].construction_center_workstatus or create_workstatus()
-        local workstatus = buildings[object.id].construction_center_workstatus
-        local current
-        if e.assembling.status ~= STATUS_WORKING then
-            if results[1].count > 0 then
-                current = WING_OPEN
-            else
-                current = WING_CLOSE
-            end
-        else
-            current = WING_OPEN
-        end
-        if current ~= workstatus:get() then
-            if current == WING_OPEN then
-                vsobject:animation_name_update("wing_open", true)
-            else
-                vsobject:animation_name_update("wing_close", true)
-            end
-            workstatus:set(current)
+        if e.assembling.recipe ~= recipe then
+            recipe = e.assembling.recipe
+            remove()
         end
 
-        --
         local res_typeobject = iprototype.queryById(results[1].id)
-        local s = res_typeobject.printer_scale and res_typeobject.printer_scale or {1, 1, 1}
+        local scale = res_typeobject.printer_scale and res_typeobject.printer_scale or {1, 1, 1}
+        local position = {building_srt.t[1], 13, building_srt.t[3]} --TODO: change the height to be configured in the slot of prefab
 
-        local srt = object.srt
-        local t = {srt.t[1], 13, srt.t[3]} --TODO: change the height to be configured in the slot of prefab
-
-        progresses[e.eid] = progresses[e.eid] or {progress = 0, printer_entities = {}, entity = nil, recipe = e.assembling.recipe}
-        if progresses[e.eid].recipe ~= e.assembling.recipe then
-            progresses[e.eid].recipe = e.assembling.recipe
-            for _, obj in ipairs(progresses[e.eid].printer_entities) do
-                obj:remove()
-            end
-            progresses[e.eid].printer_entities = {}
-
-            if progresses[e.eid].entity then
-                progresses[e.eid].entity:remove()
-                progresses[e.eid].entity = nil
-            end
-        end
-
-        local entities = progresses[e.eid].printer_entities
-        if #entities == 0 then
+        if #printer_entities == 0 then
             local meshbins = prefab_meshbin(RESOURCES_BASE_PATH:format(res_typeobject.model))
-
             for _, meshbin in ipairs(meshbins) do
-                entities[#entities+1] = ientity_object.create(ecs.create_entity {
+                printer_entities[#printer_entities+1] = ientity_object.create(ecs.create_entity {
                     policy = {
                         "ant.render|render",
                         "ant.general|name",
@@ -114,13 +103,13 @@ return function(gameplay_world)
                     },
                     data = {
                         name = "printer",
-                        scene = {s = s, t = t},
+                        scene = {s = scale, t = position},
                         material = "/pkg/mod.printer/assets/printer.material",
                         visible_state = "main_view",
                         mesh = meshbin,
                         render_layer= "postprocess_obj",
                         printer = {
-                            percent = (total_progress - progress)/total_progress
+                            percent = 0,
                         },
                         on_ready = function(e)
                             ivs.set_state(e, "main_view", false)
@@ -130,12 +119,12 @@ return function(gameplay_world)
             end
         end
 
-        if not progresses[e.eid].entity then
+        if not entity then
             local p = ecs.create_instance(RESOURCES_BASE_PATH:format(res_typeobject.model))
             function p:on_ready()
                 local root <close> = w:entity(self.tag['*'][1])
-                iom.set_position(root, t)
-                iom.set_scale(root, s)
+                iom.set_position(root, position)
+                iom.set_scale(root, scale)
 
                 for _, eid in ipairs(self.tag['*']) do
                     local e <close> = w:entity(eid, "visible_state?in")
@@ -155,40 +144,60 @@ return function(gameplay_world)
                     end
                 end
             end
-            progresses[e.eid].entity = world:create_object(p)
+            entity = world:create_object(p)
         end
 
         if e.assembling.status ~= STATUS_WORKING then
             if results[1].count > 0 then
-                progress = 0
+                current = 0
             else
-                progress = total_progress
+                current = total_progress
             end
         end
-
-        if progresses[e.eid].progress ~= progress then
-            if progress == 0 then
-                for _, obj in ipairs(progresses[e.eid].printer_entities) do
+        if progress ~= current then
+            if current == 0 then
+                for _, obj in ipairs(printer_entities) do
                     local e <close> = w:entity(obj.id, "visible_state?in")
                     if e.visible_state then
                         ivs.set_state(e, "main_view", false)
                     end
                 end
-                progresses[e.eid].entity:send("show")
+                entity:send("show")
             else
-                for _, obj in ipairs(progresses[e.eid].printer_entities) do
+                for _, obj in ipairs(printer_entities) do
                     local e <close> = w:entity(obj.id, "visible_state?in")
                     if e.visible_state then
                         ivs.set_state(e, "main_view", true)
                     end
-                    local percent = (total_progress - progress)/total_progress
+                    local percent = (total_progress - current)/total_progress
                     iprinter.update_printer_percent(obj.id, percent)
                 end
-                progresses[e.eid].entity:send("hide")
+                entity:send("hide")
             end
-            progresses[e.eid].progress = progress
+            progress = current
         end
+    end
+    return {
+        on_position_change = on_position_change,
+        remove = remove,
+        update = update,
+    }
+end
 
+return function(gameplay_world)
+    local buildings = global.buildings
+    for e in gameplay_world.ecs:select "assembling:in building:in chest:in eid:in" do
+        local typeobject = iprototype.queryById(e.building.prototype)
+        if typeobject.construction_center ~= true then
+            goto continue
+        end
+        local object = assert(objects:coord(e.building.x, e.building.y))
+
+        buildings[object.id].construction_center_wing_status = buildings[object.id].construction_center_wing_status or create_wing_status()
+        buildings[object.id].construction_center_wing_status:update(gameplay_world, e)
+
+        buildings[object.id].construction_center_printer = buildings[object.id].construction_center_printer or create_printer()
+        buildings[object.id].construction_center_printer:update(gameplay_world, e, object.srt)
         ::continue::
     end
     return t

@@ -8,6 +8,7 @@ local counter = 1
 local math3d = require "math3d"
 local objects = require "objects"
 local vsobject_manager = ecs.require "vsobject_manager"
+local iprototype = require "gameplay.interface.prototype"
 
 local EMISSIVE_COLOR_WORKING  = math3d.constant("v4", {0.0, 1.0, 0.0, 1})
 local EMISSIVE_COLOR_IDLE = math3d.constant("v4", {1.0, 1.0, 0.0, 1})
@@ -54,6 +55,12 @@ return function(world)
 
     local buildings = global.buildings
     for e in world.ecs:select "building:in eid:in assembling?in wind_turbine?in solar_panel?in base?in" do
+        -- handle the work status of the construction center separately, see also construction_center.lua
+        local typeobject = iprototype.queryById(e.building.prototype)
+        if typeobject.construction_center then
+            goto continue
+        end
+
         local object = assert(objects:coord(e.building.x, e.building.y))
         local vsobject = vsobject_manager:get(object.id)
         local game_object = vsobject.game_object
