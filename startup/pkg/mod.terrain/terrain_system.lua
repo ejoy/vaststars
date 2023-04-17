@@ -42,7 +42,9 @@ local TERRAIN_DIRECTIONS<const> = {
 
 local TERRAIN_ZONE_COLORS<const> = {
     opaque = 0,
-    blue = 1
+    blue = 1,
+    red = 2,
+    green = 3
 }
 
 local function parse_terrain_type_dir(layers, tname)

@@ -29,10 +29,24 @@ local function create_instance(prefab, on_ready)
 end
 
 function S.init()
-    ecs.create_instance "/pkg/vaststars.mod.test/assets/skybox.prefab"
+    --ecs.create_instance "/pkg/vaststars.mod.test/assets/skybox.prefab"
+    local p = ecs.create_instance  "/pkg/vaststars.mod.test/assets/light_directional.prefab"
+    p.on_ready = function (e)
+        local pid = e.tag["*"][1]
+        local le<close> = w:entity(pid)
+        iom.set_direction(le, math3d.vector(0.2664446532726288, -0.25660401582717896, 0.14578714966773987, 0.9175552725791931))
+    end
+    world:create_object(p)
 end
 
-
+local function create_zone()
+    local t = {
+        [1] = {x = 0, y = 0, zone_color  = "blue"}, 
+        [2] = {x = 1, y = 0, zone_color  = "red"},
+        [3] = {x = 2, y = 0, zone_color  = "green"}
+    }
+    iterrain.update_zone_entity(t)
+end
 function S.init_world()
     local mq = w:first("main_queue camera_ref:in")
     local eyepos = math3d.vector(0, 8, -8)
@@ -42,7 +56,8 @@ function S.init_world()
     iom.set_direction(camera_ref, dir)
 
     iterrain.gen_terrain_field(256, 256, 128)
-    istonemountain.create_sm_entity(0.8, 256, 256, 128)
+    --istonemountain.create_sm_entity(0.8, 256, 256, 128)
+    create_zone()
     printer_eid = ecs.create_entity {
         policy = {
             "ant.render|render",

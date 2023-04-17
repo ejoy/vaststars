@@ -30,7 +30,9 @@ SAMPLER2DARRAY(s_mark_alpha,            3);
 
 uniform vec4 u_metallic_roughness_factor1;
 uniform vec4 u_metallic_roughness_factor2;
-uniform vec4 u_zone_color_alpha;
+uniform vec4 u_zone_red;
+uniform vec4 u_zone_green;
+uniform vec4 u_zone_blue;
 #define u_sand_metallic_factor      u_metallic_roughness_factor1.x
 #define u_sand_roughness_factor     u_metallic_roughness_factor1.y
 
@@ -48,7 +50,6 @@ uniform vec4 u_zone_color_alpha;
 #define v_stone_color_idx     v_idx2.w
 #define v_mark_type           v_idx1.z
 #define v_mark_shape          v_idx1.w
-#define v_zone_alpha          u_zone_color_alpha.x
 
 vec2 texture2DArrayBc5(sampler2DArray _sampler, vec3 _uv)
 {
@@ -149,9 +150,23 @@ vec3 blend_terrain_color(vec3 sand_basecolor, vec3 stone_basecolor, float sand_h
 vec3 blend_zone(vec3 terrain_color, float zone_color_idx)
 {
     vec3 zone_color;
+    float zone_alpha;
     if(zone_color_idx == 1){
-        zone_color = vec3(0/255, 255/255, 255/255);
-        vec3 final_color = terrain_color * (1 - v_zone_alpha) + zone_color * v_zone_alpha;
+        zone_color = u_zone_blue.rgb;
+        zone_alpha = u_zone_blue.a;
+        vec3 final_color = terrain_color * (1 - zone_alpha) + zone_color * zone_alpha;
+        return final_color;
+    }
+    else if(zone_color_idx == 2){
+        zone_color = u_zone_red.rgb;
+        zone_alpha = u_zone_red.a;
+        vec3 final_color = terrain_color * (1 - zone_alpha) + zone_color * zone_alpha;
+        return final_color;
+    }
+    else if (zone_color_idx == 3){
+        zone_color = u_zone_green.rgb;
+        zone_alpha = u_zone_green.a;
+        vec3 final_color = terrain_color * (1 - zone_alpha) + zone_color * zone_alpha;
         return final_color;
     }
     else{
