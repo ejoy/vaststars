@@ -56,7 +56,7 @@ function S.init_world()
     iom.set_direction(camera_ref, dir)
 
     iterrain.gen_terrain_field(256, 256, 128)
-    --istonemountain.create_sm_entity(0.8, 256, 256, 128)
+    istonemountain.create_sm_entity(0.8, 256, 256, 128)
     create_zone()
     printer_eid = ecs.create_entity {
         policy = {

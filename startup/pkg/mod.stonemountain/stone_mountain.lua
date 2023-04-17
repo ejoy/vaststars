@@ -618,11 +618,13 @@ local function record_sm_idx_to_terrain_field(tf, stone, sm_idx, size_idx)
     local mesh_idx = sm_bms_to_mesh_table[sm_idx][size_idx]
     local center_x, center_z = stone.t.x + offset * unit, stone.t.z + offset * unit
     local extent_x, extent_z = mesh_aabb_table[mesh_idx].extent[1] * stone.s, mesh_aabb_table[mesh_idx].extent[2] * stone.s
-    local min_x, max_x = math.floor((center_x - extent_x) / unit) + 1, math.ceil((center_x + extent_x) / unit)
-    local min_z, max_z = math.floor((center_z - extent_z) / unit), math.ceil((center_z + extent_z) / unit)
+    local min_x, max_x = math.floor((center_x - extent_x) / unit), math.floor((center_x + extent_x) / unit)
+    local min_z, max_z = math.floor((center_z - extent_z) / unit), math.floor((center_z + extent_z) / unit)
+    -- sm_idx = y * width + x + 1
+    -- tf_idx = y * width + x
     for y = min_z, max_z do
         for x = min_x, max_x do
-            local cur_idx= x - 1 + (y - 1) * width + 1
+            local cur_idx= x + y * width
             tf[cur_idx].is_sm = true
         end
     end
