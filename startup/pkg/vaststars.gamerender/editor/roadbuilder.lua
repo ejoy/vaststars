@@ -22,6 +22,8 @@ local global = require "global"
 local iroadnet = ecs.require "roadnet"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local math3d = require "math3d"
+local gen_endpoint_mask = ecs.require "editor.endpoint".gen_endpoint_mask
+local is_roadnet_only = ecs.require "editor.endpoint".is_roadnet_only
 
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 local REMOVE <const> = {}
@@ -49,7 +51,7 @@ local function _get_object(self, x, y, cache_names)
     local object = objects:coord(x, y, cache_names)
     local mask = global.roadnet[packcoord(x, y)]
     if object then
-        assert(not mask)
+        assert(not mask or is_roadnet_only(mask))
         return object
     end
 
@@ -763,20 +765,6 @@ local function __check_connections(self, x, y)
     return false
 end
 
-local MAPPING <const> = {
-    W = 0, -- left
-    N = 1, -- top
-    E = 2, -- right
-    S = 3, -- bottom
-}
-
-local function __set_state_value(num, dir)
-    local index = MAPPING[dir]
-    assert(index >= 0 and index <= 3)
-    num = num & ~(1 << index) | (1 << index)
-    return num
-end
-
 local function confirm(self, datamodel)
     if self.grid_entity then
         self.grid_entity:remove()
@@ -794,20 +782,29 @@ local function confirm(self, datamodel)
             global.roadnet[coord] = nil
             remove[coord] = true
         else
-            for _, dir in ipairs(ALL_DIR) do
-                local succ, dx, dy = terrain:move_coord(x, y, dir, 1)
-                if succ and __check_connections(self, dx, dy) then
-                    mask = __set_state_value(mask, dir)
-                    global.roadnet[packcoord(dx, dy)] = 0x10
-                end
-            end
-
-            global.roadnet[coord] = mask
             c = c + 1
+            global.roadnet[coord] = mask
 
             local x, y = unpackcoord(coord)
             local shape, dir = iroadnet_converter.mask_to_shape_dir(mask)
             iroadnet:editor_set("road", "normal", x, y, shape, dir)
+        end
+    end
+
+    for coord, mask in pairs(self.pending) do
+        local x, y = unpackcoord(coord)
+        if mask ~= REMOVE then
+            for _, dir in ipairs(ALL_DIR) do
+                local succ, dx, dy = terrain:move_coord(x, y, dir, 1)
+                if succ and __check_connections(self, dx, dy) then
+                    local object = _get_object(self, dx, dy, EDITOR_CACHE_NAMES)
+                    for _, coord in ipairs(gen_endpoint_mask(object)) do
+                        local x, y = iprototype.unpackcoord(coord)
+                        local shape, dir = iroadnet_converter.mask_to_shape_dir(global.roadnet[coord])
+                        iroadnet:editor_set("road", "normal", x, y, shape, dir)
+                    end
+                end
+            end
         end
     end
 

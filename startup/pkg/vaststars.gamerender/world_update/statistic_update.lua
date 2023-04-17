@@ -8,6 +8,7 @@ local gameplay_core = require "gameplay.core"
 local global = require "global"
 local entity_create = world:sub {"gameplay", "create_entity"}
 local entity_remove = world:sub {"gameplay", "remove_entity"}
+local iprototype = require "gameplay.interface.prototype"
 
 local function create_statistic_node(cfg, consumer)
     return {
@@ -67,11 +68,10 @@ return function(world)
         if statistic.power[eid] then
             local key = statistic.power[eid].cfg.name
             statistic.power_group[key].count = statistic.power_group[key].count -1
-            statistic.power[eid] = nil
-            local e = gameplay_core.get_entity(eid)
-            if e.generator then
-                statistic.total_generated = statistic.total_generated - statistic.power[eid].cfg.power * UPS
+            if iprototype.has_type(statistic.power[eid].cfg.type, "generator") then
+                statistic.total_generated = statistic.total_generated - statistic.power[eid].cfg.power * UPS                
             end
+            statistic.power[eid] = nil
         end
     end
     local finish = {}

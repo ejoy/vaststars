@@ -33,6 +33,8 @@ local selected_boxes = ecs.require "selected_boxes"
 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local COLOR_INVALID <const> = math3d.constant "null"
+local mu = import_package "ant.math".util
+local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 
 local rotate_mb = mailbox:sub {"rotate"} -- construct_pop.rml -> 旋转
 local build_mb = mailbox:sub {"build"}   -- construct_pop.rml -> 修建
@@ -48,7 +50,9 @@ local click_techortaskicon_mb = mailbox:sub {"click_techortaskicon"}
 local guide_on_going_mb = mailbox:sub {"guide_on_going"}
 local load_resource_mb = mailbox:sub {"load_resource"}
 local single_touch_mb = world:sub {"single_touch"}
+local move_md = mailbox:sub {"move"}
 local move_finish_mb = mailbox:sub {"move_finish"}
+local teardown_mb = mailbox:sub {"teardown"}
 local builder_back_mb = mailbox:sub {"builder_back"}
 local construction_center_menu_place_mb = mailbox:sub {"construction_center_menu_place"}
 local item_transfer_src_inventory_mb = mailbox:sub {"item_transfer_src_inventory"}
@@ -447,36 +451,32 @@ function M:stage_camera_usage(datamodel)
     end
 
     for _, _, x, y in pickup_long_press_gesture_mb:unpack() do
-        if not excluded_pickup_id then
-            goto continue
-        end
-
         if not handle_pickup then
             goto continue
         end
 
         local object = _get_object(x, y)
         if object then -- object may be nil, such as when user click on empty space
-            local prototype_name = object.prototype_name
-            local typeobject = iprototype.queryByName(prototype_name)
-            if typeobject.move == false then
-                goto continue
+            if not excluded_pickup_id or excluded_pickup_id == object.id then
+                local prototype_name = object.prototype_name
+                local typeobject = iprototype.queryByName(prototype_name)
+                if typeobject.move == false and typeobject.teardown == false then
+                    goto continue1
+                end
+
+                idetail.selected(object)
+
+                local mq = w:first("main_queue camera_ref:in render_target:in")
+                local ce <close> = w:entity(mq.camera_ref, "camera:in")
+                local vp = ce.camera.viewprojmat
+                local vr = mq.render_target.view_rect
+                local p = mu.world_to_screen(vp, vr, object.srt.t) -- the position always in the center of the screen after move camera
+                local ui_x, ui_y = iui.convert_coord(vr, math3d.index(p, 1), math3d.index(p, 2))
+                iui.open({"building_md_arc_menu.rml"}, object.id, object.srt.t, ui_x, ui_y)
+
+                leave = false
             end
-
-            iui.close("building_arc_menu.rml")
-            iui.close("detail_panel.rml")
-            if builder then
-                builder:clean(datamodel)
-            end
-
-            idetail.unselected()
-            ieditor:revert_changes({"TEMPORARY"})
-            builder = create_movebuilder(object.id)
-
-            builder:new_entity(datamodel, typeobject)
-            self:flush()
-            handle_pickup = false
-            leave = false
+            ::continue1::
         else
             idetail.unselected()
             item_transfer_dst = nil
@@ -492,12 +492,46 @@ function M:stage_camera_usage(datamodel)
         ::continue::
     end
 
+    for _, _, _, object_id in move_md:unpack() do
+        if builder then
+            builder:clean(datamodel)
+        end
+
+        local object = assert(objects:get(object_id))
+        local typeobject = iprototype.queryByName(object.prototype_name)
+        idetail.unselected()
+        ieditor:revert_changes({"TEMPORARY"})
+        builder = create_movebuilder(object.id)
+
+        builder:new_entity(datamodel, typeobject)
+        self:flush()
+    end
+
     for _ in move_finish_mb:unpack() do
         if builder then
             builder:clean(datamodel)
             builder = nil
         end
         handle_pickup = true
+    end
+
+    for _, _, _, object_id in teardown_mb:unpack() do
+        iui.close("building_md_arc_menu.rml")
+        idetail.unselected()
+
+        local object = assert(objects:get(object_id))
+        igameplay.remove_entity(object.gameplay_eid)
+        gameplay_core.remove_entity(object.gameplay_eid)
+        gameplay_core.build()
+
+        iobject.remove(object)
+        objects:remove(object_id)
+        local building = global.buildings[object_id]
+        if building then
+            for _, v in pairs(building) do
+                v:remove()
+            end
+        end
     end
 
     for _ in single_touch_move_mb:unpack() do

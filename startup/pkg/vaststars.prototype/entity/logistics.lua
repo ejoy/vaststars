@@ -30,6 +30,11 @@ prototype "指挥中心" {
             {type="lorry_factory", position={2,4,"S"}},
         },
     },
+    endpoint = {
+        {position={1, 4}, prototype = "砖石公路-L型", dir = "E", entrance_dir = "S", type="road"},
+        {position={2, 4}, prototype = "砖石公路-I型", dir = "E", type="endpoint"},
+        {position={3, 4}, prototype = "砖石公路-L型", dir = "S", entrance_dir = "S", type="road"},
+    },
     move = false,
     io_shelf = false,
     assembling_icon = false,
@@ -297,6 +302,11 @@ prototype "送货车站" {
             {type="station", position={0,0,"S"}},
         },
     },
+    endpoint = {
+        {position={-1, 0}, prototype = "砖石公路-L型", dir = "E", entrance_dir = "S", type="road"},
+        {position={0,  0}, prototype = "砖石公路-I型", dir = "E", type="endpoint"},
+        {position={1,  0}, prototype = "砖石公路-L型", dir = "S", entrance_dir = "S", type="road"},
+    },
     move = false,
 }
 
@@ -315,6 +325,11 @@ prototype "收货车站" {
         connections = {
             {type="station", position={0,0,"S"}},
         },
+    },
+    endpoint = {
+        {position={-1, 0}, prototype = "砖石公路-L型", dir = "E", entrance_dir = "S", type="road"},
+        {position={0,  0}, prototype = "砖石公路-I型", dir = "E", type="endpoint"},
+        {position={1,  0}, prototype = "砖石公路-L型", dir = "S", entrance_dir = "S", type="road"},
     },
     move = false,
 }

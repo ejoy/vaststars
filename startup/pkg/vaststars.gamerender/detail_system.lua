@@ -12,7 +12,7 @@ local idetail = ecs.interface "idetail"
 function idetail.show(object_id)
     iui.open({"detail_panel.rml"}, object_id)
 
-    -- 显示环型菜单
+    --
     local object = assert(objects:get(object_id))
     local typeobject = iprototype.queryByName(object.prototype_name)
 

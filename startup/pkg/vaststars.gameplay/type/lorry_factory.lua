@@ -7,7 +7,7 @@ function c:ctor(init, pt)
 
     return {
         lorry_factory = {
-            endpoint = iendpoint.endpoint_id(world, init, pt, "lorry_factory"),
+            endpoint = iendpoint.endpoint_id(world, init, pt),
         }
     }
 end

@@ -108,28 +108,3 @@ prototype "铸造厂I" {
         },
     }
 }
-
-prototype "车辆厂I" {
-    model = "prefabs/mars-assembling-machine.prefab",
-    icon = "textures/building_pic/small_pic_mars_assembling_machine.texture",
-    background = "textures/build_background/pic_mars_assembling_machine.texture",
-    construct_detector = {"exclusive"},
-    type = {"building", "assembling", "consumer", "lorry_factory"},
-    area = "5x5",
-    speed = "50%",
-    power = "300kW",
-    priority = "secondary",
-    maxslot = "8",
-    craft_category = {"车辆制造"},
-    fluidboxes = {
-        input = {
-        },
-        output = {
-        },
-    },
-    crossing = {
-        connections = {
-            {type="lorry_factory", position={2,4,"S"}},
-        },
-    }
-}

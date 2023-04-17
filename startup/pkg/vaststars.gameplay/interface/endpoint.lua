@@ -9,47 +9,40 @@ local DIRECTION <const> = {
     [3] = 'W',
 }
 
-local mapping = {
-    W = 0, -- left
-    N = 1, -- top
-    E = 2, -- right
-    S = 3, -- bottom
-}
-
 local function rotate(position, direction, area)
     local w, h = area >> 8, area & 0xFF
     local x, y = position[1], position[2]
-    local dir = (DIRECTION[position[3]] + direction) % 4
     w = w - 1
     h = h - 1
     if direction == DIRECTION.N then
-        return x, y, dir
+        return x, y
     elseif direction == DIRECTION.E then
-        return h - y, x, dir
+        return h - y, x
     elseif direction == DIRECTION.S then
-        return w - x, h - y, dir
+        return w - x, h - y
     elseif direction == DIRECTION.W then
-        return y, w - x, dir
+        return y, w - x
     end
 end
 
-local function getConnection(pt, type)
-    for _, c in ipairs(pt.crossing.connections) do
-        if c.type == type then
-            return c
+local function get_tile(pt, type)
+    assert(pt.endpoint)
+    for _, r in ipairs(pt.endpoint) do
+        if r.type == type then
+            return r
         end
     end
+    assert(false, "can not found type: " .. type)
 end
 
-local function endpoint_id(world, init, pt, type)
-    assert(pt.crossing)
-    local c = assert(getConnection(pt, type))
-    local x, y, dir = rotate(c.position, DIRECTION[init.dir], pt.area)
+local function endpoint_id(world, init, pt)
+    local r = get_tile(pt, "endpoint")
+    local x, y = rotate(r.position, DIRECTION[init.dir], pt.area)
     x = x + init.x
     y = y + init.y
-    local endpoint_id =  world:roadnet_endpoint_id(x, y, mapping[DIRECTION[dir]])
+    local endpoint_id =  world:roadnet_endpoint_id(x, y)
     if endpoint_id == 0xFFFF then
-        print("can not find roadnet endpoint", pt.name, x, y, mapping[DIRECTION[dir]])
+        print("can not find roadnet endpoint", pt.name, x, y)
     end
     return endpoint_id
 end

@@ -10,11 +10,6 @@ local iprototype = require "gameplay.interface.prototype"
 
 local WIDTH <const> = 256 -- coordinate value range: [0, WIDTH - 1]
 local HEIGHT <const> = 256 -- coordinate value range: [0, HEIGHT - 1]
-local MASK_BITS <const> = 2
-local MASK = 0
-for i = 0, MASK_BITS - 1 do
-    MASK = MASK | (1 << i)
-end
 
 local roadnet = {}
 
@@ -112,19 +107,16 @@ local DIRECTION <const> = {
 function roadnet:editor_build()
     --
     local gameplay_world = gameplay_core.get_world()
-    if not next(global.roadnet) then
-        return
-    end
     gameplay_world:roadnet_reset(global.roadnet)
 
     local iendpoint = gameplay.interface "endpoint"
     for e in gameplay_core.select "station:update building:in" do
         local pt = iprototype.queryById(e.building.prototype)
-        e.station.endpoint = iendpoint.endpoint_id(gameplay_world, {x = e.building.x, y = e.building.y, dir = DIRECTION[e.building.direction]}, pt, "station")
+        e.station.endpoint = iendpoint.endpoint_id(gameplay_world, {x = e.building.x, y = e.building.y, dir = DIRECTION[e.building.direction]}, pt)
     end
     for e in gameplay_core.select "lorry_factory:update building:in" do
         local pt = iprototype.queryById(e.building.prototype)
-        e.lorry_factory.endpoint = iendpoint.endpoint_id(gameplay_world, {x = e.building.x, y = e.building.y, dir = DIRECTION[e.building.direction]}, pt, "lorry_factory")
+        e.lorry_factory.endpoint = iendpoint.endpoint_id(gameplay_world, {x = e.building.x, y = e.building.y, dir = DIRECTION[e.building.direction]}, pt)
     end
 
     gameplay_world:build()

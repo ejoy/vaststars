@@ -12,7 +12,7 @@ function c:ctor(init, pt)
 
     local res = {
         station = {
-            endpoint = iendpoint.endpoint_id(world, init, pt, "station"),
+            endpoint = iendpoint.endpoint_id(world, init, pt),
             weights = pt.weights,
             lorry = 0,
         }

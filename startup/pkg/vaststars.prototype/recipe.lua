@@ -1168,22 +1168,6 @@ prototype "物流中心打印" {
     description = "打印可给运输车辆充电的物流中心",
 }
 
-prototype "车辆厂打印" {
-    type = { "recipe" },
-    category = "框架打印",
-    recipe_group =  "物流",
-    recipe_order =  53,
-    recipe_icon =  "textures/construct/logisitic1.texture",
-    ingredients = {
-        {"车辆厂框架", 1},
-    },
-    results = {
-        {"车辆厂I", 1},
-    },
-    time = "5s",
-    description = "打印制造运输汽车的工厂",
-}
-
 prototype "电线杆打印" {
     type = { "recipe" },
     category = "框架打印",
