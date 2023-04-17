@@ -70,7 +70,7 @@ local guide = {
         name = "",
 		narrative = {
             {"哔哩..{/color:4bd0ff 采矿机框架}已经被成功传送至{/g 建造中心}..(高兴)", "textures/guide/guide-3.texture"},
-            {"哔哩..{/g 采矿机}在{/color:4bd0ff 建造中心}里开始打印了。我们只需静静等待打印完成..哔哩..(期待)", "textures/guide/guide-1.texture"},
+            {"哔哩..{/g 采矿机}在{/color:4bd0ff 建造中心}里开始打印了。左侧栏下方显示打印{/color:4bd0ff 需求和进度}..哔哩..(期待)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
             guide_progress = 20,
