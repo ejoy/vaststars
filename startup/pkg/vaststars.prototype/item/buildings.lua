@@ -22,12 +22,6 @@ prototype "组装机II" {
     stack = 1,
     item_description = "用来组装或制造工业产品的工厂",
 }
-prototype "车辆厂I" {
-    type = {"item"},
-    group = {"物流"},
-    stack = 1,
-    item_description = "用来组装运输车的工厂",
-}
 
 prototype "熔炼炉I" {
     type = {"item"},

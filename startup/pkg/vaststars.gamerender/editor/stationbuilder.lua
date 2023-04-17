@@ -28,6 +28,7 @@ local road_entrance_marker_canvas_cfg = datalist.parse(fs.open(fs.path("/pkg/vas
 local building_coord = require "global".building_coord_system
 local math3d = require "math3d"
 local iroadnet_converter = require "roadnet_converter"
+local gen_endpoint_mask = ecs.require "editor.endpoint".gen_endpoint_mask
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -433,20 +434,6 @@ local function confirm(self, datamodel)
     __new_entity(self, datamodel, typeobject)
 end
 
-local MAPPING <const> = {
-    W = 0, -- left
-    N = 1, -- top
-    E = 2, -- right
-    S = 3, -- bottom
-}
-
-local function __set_state_value(num, dir)
-    local index = MAPPING[dir]
-    assert(index >= 0 and index <= 3)
-    num = num & ~(1 << index) | (1 << index)
-    return num
-end
-
 local iroadnet = ecs.require "roadnet"
 local function complete(self, object_id)
     if self.grid_entity then
@@ -457,19 +444,15 @@ local function complete(self, object_id)
     self.pickup_object = nil
 
     icanvas.remove_item(icanvas.types().ROAD_ENTRANCE_MARKER, 0)
-
     ieditor:revert_changes({"TEMPORARY"})
 
-    local object = objects:get(object_id, {"CONFIRM"})
-    local rd = _get_connections(object.prototype_name, object.x, object.y, object.dir)
-    assert(#rd == 1, ("road entrance must have one connection: %s"):format(object.prototype_name))
-    local dx, dy = iprototype.move_coord(rd[1].x, rd[1].y, rd[1].dir, 1)
-    local mask = assert(global.roadnet[iprototype.packcoord(dx, dy)])
-    mask = __set_state_value(mask, iprototype.reverse_dir(rd[1].dir))
-    global.roadnet[iprototype.packcoord(dx, dy)] = mask
-    global.roadnet[iprototype.packcoord(rd[1].x, rd[1].y)] = 0x10
-    iroadnet:editor_build()
+    for _, coord in ipairs(gen_endpoint_mask(objects:get(object_id, {"CONFIRM"}))) do
+        local x, y = iprototype.unpackcoord(coord)
+        local shape, dir = iroadnet_converter.mask_to_shape_dir(global.roadnet[coord])
+        iroadnet:editor_set("road", "normal", x, y, shape, dir)
+    end
 
+    iroadnet:editor_build()
     self.super.complete(self, object_id)
 end
 

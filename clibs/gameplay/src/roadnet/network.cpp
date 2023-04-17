@@ -104,7 +104,7 @@ namespace roadnet {
     }
     
     static constexpr direction next_direction(loction l, uint8_t m, direction dir) {
-        switch (m) {
+        switch (m & 0xF) {
         case mask(L'║'):
             switch (dir) {
             case direction::t: return direction::t;
@@ -189,7 +189,7 @@ namespace roadnet {
     }
 
     static constexpr direction straightDirection(uint8_t m, uint8_t z) {
-        switch (m) {
+        switch (m & 0xF) {
         case mask(L'║'):
             return (z & 0x10)
                 ? direction::t
@@ -365,7 +365,7 @@ namespace roadnet {
                 auto& ep = endpointVec.emplace_back();
                 endpointMap.emplace(loc, id);
 
-                auto rawm = m & (~(1 << (uint8_t)direction::n));
+                auto rawm = m & 0xF;
                 assert(rawm == mask(L'║') || rawm == mask(L'═'));
                 ep.left_handled = true;
                 if (rawm == mask(L'║')) {
@@ -377,8 +377,8 @@ namespace roadnet {
                     }
                 }
                 else if (rawm == mask(L'═')) {
-                    auto l = findNeighbor(map, loc, direction::t);
-                    auto r = findNeighbor(map, loc, direction::b);
+                    auto l = findNeighbor(map, loc, direction::l);
+                    auto r = findNeighbor(map, loc, direction::r);
                     assert(l.l.y == r.l.y);
                     if (loc.y > l.l.y) {
                         ep.left_handled = false;
@@ -442,7 +442,7 @@ namespace roadnet {
                             crossroad.setRevNeighbor(dir, straight2.id);
                         }
                         else {
-                            switch (m) {
+                            switch (m & 0xF) {
                             case mask(L'╣'): assert(dir == direction::l); break;
                             case mask(L'╩'): assert(dir == direction::t); break;
                             case mask(L'╠'): assert(dir == direction::r); break;
@@ -451,7 +451,7 @@ namespace roadnet {
                             }
                             auto& ep = endpointVec[endpointMap[result.l].id];
                             bool rev;
-                            auto rawm = neighbor_m & (~(1 << (uint8_t)direction::n));
+                            auto rawm = neighbor_m & 0xF;
                             if (rawm == mask(L'║')) {
                                 if (result.dir == direction::t) {
                                     rev = !ep.left_handled;

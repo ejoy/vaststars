@@ -26,6 +26,7 @@ namespace roadnet {
         r,
         b,
         n,
+        reserved, // for presentation
     };
 
     enum class cross_type: uint8_t {

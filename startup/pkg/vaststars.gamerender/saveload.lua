@@ -8,6 +8,7 @@ local json = import_package "ant.json"
 local SKIP_GUIDE <const> = require "debugger".skip_guide
 local CUSTOM_ARCHIVING <const> = require "debugger".custom_archiving
 local startup_lua <const> = require "debugger".startup or "item.startup"
+local is_roadnet_only = ecs.require "editor.endpoint".is_roadnet_only
 
 local archival_base_dir
 if CUSTOM_ARCHIVING then
@@ -445,9 +446,11 @@ function M:restore(index)
     local map = gameplay_core.get_world():roadnet_get_map()
     local renderData = {}
     for coord, mask in pairs(map) do
-        local shape, dir = iroadnet_converter.mask_to_shape_dir(mask)
-        local x, y = iprototype.unpackcoord(coord)
-        renderData[coord] = {x, y, "normal", shape, dir}
+        if not is_roadnet_only(mask) then
+            local shape, dir = iroadnet_converter.mask_to_shape_dir(mask)
+            local x, y = iprototype.unpackcoord(coord)
+            renderData[coord] = {x, y, "normal", shape, dir}
+        end
     end
     iroadnet:init(renderData, true)
     global.roadnet = map

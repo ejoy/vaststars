@@ -321,7 +321,14 @@ local function confirm(self, datamodel)
     objects:set(object, "CONSTRUCTED")
     objects:coord_update(object)
     local vsobject = vsobject_manager:get(object.id)
-    vsobject:mod_canvas(self.pickup_object.x, self.pickup_object.y, object.srt)
+    vsobject:mod_canvas(self.pickup_object.x, self.pickup_object.y, object.srt) -- TODO: remove this
+
+    local building = global.buildings[object.id]
+    if building then
+        for _, v in pairs(building) do
+            v:on_position_change(object.srt)
+        end
+    end
 
     --
     local typeobject = iprototype.queryByName(object.prototype_name)

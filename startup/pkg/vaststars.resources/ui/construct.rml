@@ -506,7 +506,7 @@
                             <div class = "menu-button-pic" style='background-image:"textures/construct/logistics_center.texture"'/>
                             <div class = "menu-button-text">指挥中心</div>
                         </button> -->
-                        <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click = "clickTechnology()" data-if = "guide_progress >= 15">
+                        <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click = "clickTechnology()" data-if = "guide_progress >= 30">
                             <div class = "menu-button-pic" style='background-image:"textures/construct/goods_station.texture"'/>
                             <div class = "menu-button-text">科研中心</div>
                             <!-- 科研中心可研究科技标识 start-->
@@ -515,7 +515,7 @@
                             </div>
                             <!-- 科研中心可研究科技标识 end-->
                         </button>
-                        <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click="clickStatistic()" data-if = "guide_progress >= 15">
+                        <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click="clickStatistic()" data-if = "guide_progress >= 35">
                             <div class = "menu-button-pic" style='background-image:"textures/construct/statistics.texture"'/>
                             <div class = "menu-button-text">统计数据</div>
                         </button>
@@ -561,7 +561,7 @@
             <div style = "pointer-events: none; height:100%;  position: absolute; right:0vmin;">
                 <div style = "height:100%; flex-direction: column; justify-content: center;">
                     <workbutton data-for = "construction_center_menu" style = "background-color: rgb(246, 142, 14); margin:0.3vmin 0 0.3vmin 0;" data-event-click="clickConstruct(it.object_id, it.index)">
-                        <div class="workbutton-bg" data-style-background-image = "it.icon" data-style-animation = "it.name == '采矿机I' && guide_progress == 25? ' 0.5s linear 0s infinite alternate enlarge3':'0.5s linear 0s enlarge3'" data-if = "it.icon != ''"/>
+                        <div class="workbutton-bg" data-style-background-image = "it.icon" data-style-animation = "(it.name == '采矿机I' && guide_progress == 25)||(it.name == '铁制电线杆' && guide_progress == 30) ? ' 0.5s linear 0s infinite alternate enlarge3':'0.5s linear 0s enlarge3'" data-if = "it.icon != ''"/>
                         <div class="workbutton-text"  data-if = "it.name != ''">{{it.name}}</div>
                         <div class="item-count" style="animation:0.5s linear 0s enlarge2;" data-if = "it.name != ''">{{it.count}}</div>
                     </workbutton>

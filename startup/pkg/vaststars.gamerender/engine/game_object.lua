@@ -14,6 +14,16 @@ local prefab_parse = require("engine.prefab_parser").parse
 local replace_material = require("engine.prefab_parser").replace_material
 local irl = ecs.import.interface "ant.render|irender_layer"
 
+local function replace_outline_material(template)
+    for _, v in ipairs(template) do
+        if v.data and v.data.mesh then
+            v.data.material = "/pkg/ant.resources/materials/outline/scale.material"
+            v.data.render_layer = "translucent"
+        end
+    end
+    return template
+end
+
 local function on_prefab_message(prefab, inner, cmd, ...)
     local event = game_object_event[cmd]
     if event then
@@ -23,48 +33,49 @@ local function on_prefab_message(prefab, inner, cmd, ...)
     end
 end
 
-local _instance_hash ; do
-    local get_hash_func; do
-        function get_hash_func()
-            local cache = {}
-            local n = 0
-            return function(s)
-                if cache[s] then
-                    return cache[s]
-                else
-                    n = n + 1
-                    assert(n <= 0xff)
-                    cache[s] = n
-                    return n
-                end
+local __calc_param_hash ; do
+    local function get_hash_func(max_value)
+        local n = 0
+        local cache = {}
+        return function(s)
+            if cache[s] then
+                return cache[s]
+            else
+                assert(n <= max_value)
+                cache[s] = n
+                n = n + 1
+                return cache[s]
             end
         end
     end
 
-    local prefab_name_hash = get_hash_func()
-    local state_hash = get_hash_func()
-    local color_hash = get_hash_func()
-    local animation_hash = get_hash_func()
-    local final_frame_hash = get_hash_func()
-    local emissive_color_hash = get_hash_func()
+    local prefab_hash = get_hash_func(0xff)
+    local material_type_hash = get_hash_func(0xf)
+    local color_hash = get_hash_func(0xf)
+    local animation_name_hash = get_hash_func(0xff)
+    local final_frame_hash = get_hash_func(0x1)
+    local emissive_color_hash = get_hash_func(0xf)
+    local render_layer_hash = get_hash_func(0xf)
+    local outline_scale_hash = get_hash_func(0xf)
 
-    function _instance_hash(prefab_file_name, state, color, animation_name, final_frame, emissive_color)
-        local h1 = prefab_name_hash(prefab_file_name or 0)
-        local h2 = state_hash(state or 0)
-        local h3 = color_hash(color or 0)
-        local h4 = animation_hash(animation_name or 0)
-        local h5 = final_frame_hash(final_frame or 0)
-        local h6 = emissive_color_hash(emissive_color or 0)
-
-        return h1 | (h2 << 8) | (h3 << 16) | (h4 << 24) | (h5 << 32) | (h6 << 40) -- assuming 255 types of every parameter at most
+    function __calc_param_hash(prefab, material_type, color, animation_name, final_frame, emissive_color, render_layer, outline_scale)
+        local h1 = prefab_hash(prefab or 0) -- 8 bits
+        local h2 = material_type_hash(material_type or 0) -- 4 bits
+        local h3 = color_hash(color or 0) -- 4 bits
+        local h4 = animation_name_hash(animation_name or 0) -- 8 bits
+        local h5 = final_frame_hash(final_frame or 0) -- 1 bit
+        local h6 = emissive_color_hash(emissive_color or 0) -- 4 bits
+        local h7 = render_layer_hash(render_layer or 0) -- 4 bits
+        local h8 = outline_scale_hash(outline_scale or 0) -- 4 bits
+        return h1 | h2 << 8 | h3 << 12 | h4 << 16 | h5 << 24 | h6 << 25 | h7 << 29 | h8 << 33
     end
 end
 
-local _get_hitch_children ; do
-    local cache = {} -- prefab_file_name + state + color -> object
+local __get_hitch_children ; do
+    local cache = {}
     local hitch_group_id = 10000 -- see also: terrain.lua -> TERRAIN_MAX_GROUP_ID
 
-    local function _cache_prefab_info(template)
+    local function __cache_prefab_info(template)
         local effects = {}
         local slots = {}
         local scene = {}
@@ -90,41 +101,45 @@ local _get_hitch_children ; do
         return scene, slots, effects, animations
     end
 
-    function _get_hitch_children(prefab_file_path, state, color, animation_name, final_frame, emissive_color, render_layer)
-        local hash = _instance_hash(prefab_file_path, state, tostring(color), animation_name, final_frame, tostring(emissive_color))
+    function __get_hitch_children(prefab, material_type, color, animation_name, final_frame, emissive_color, render_layer, outline_scale)
+        local hash = __calc_param_hash(prefab, material_type, tostring(color), animation_name, final_frame, tostring(emissive_color), render_layer, outline_scale)
         if cache[hash] then
             return cache[hash]
         end
 
-        local template = prefab_parse(prefab_file_path)
-        if state == "translucent" then
-            template = replace_material(template, "/pkg/vaststars.resources/materials/translucent.material")
-        elseif state == "opacity" then
-            template = replace_material(template, "/pkg/vaststars.resources/materials/opacity.material")
-        else
-            template = template
-        end
-
-        -- cache all slots & srt of the prefab
-        local scene, slots, effects, animations = _cache_prefab_info(template)
         hitch_group_id = hitch_group_id + 1
         local g = ecs.group(hitch_group_id)
         g:enable "scene_update"
 
-        log.info(("game_object.new_instance: %s"):format(table.concat({hitch_group_id, prefab_file_path, state, require("math3d").tostring(color), tostring(animation_name), tostring(final_frame)}, " "))) -- TODO: remove this line
+        local template = prefab_parse(prefab)
+        if material_type == "translucent" then
+            template = replace_material(template, "/pkg/vaststars.resources/materials/translucent.material")
+        elseif material_type == "opacity" then
+            template = replace_material(template, "/pkg/vaststars.resources/materials/opacity.material")
+        elseif material_type == "outline" then
+            template = replace_outline_material(template)
+        elseif material_type == "opaque" then
+            template = template
+        else
+            assert(false)
+        end
+
+        -- cache all slots & srt of the prefab
+        local scene, slots, effects, animations = __cache_prefab_info(template)
+
+        log.info(("game_object.new_instance: %s"):format(table.concat({hitch_group_id, prefab, material_type, require("math3d").tostring(color), tostring(animation_name), tostring(final_frame)}, " "))) -- TODO: remove this line
 
         local inner = { tags = {} } -- tag -> eid
-        local pose = iani.create_pose()
-        local prefab = g:create_instance(template)
-        prefab.on_init = function(prefab)
-            for _, eid in ipairs(prefab.tag["*"]) do
+        local prefab_instance = g:create_instance(template)
+        function prefab_instance:on_init()
+            for _, eid in ipairs(self.tag["*"]) do
                 local e <close> = w:entity(eid, "scene_update_once?out")
-                e.scene_update_once = true -- TODO: scene_update_once should be generated by prefab editor
+                e.scene_update_once = true
             end
         end
-        prefab.on_ready = function(prefab)
-            for _, eid in ipairs(prefab.tag["*"]) do
-                local e <close> = w:entity(eid, "tag?in animation?in anim_ctrl?in render_layer?update render_object?update")
+        function prefab_instance:on_ready()
+            for _, eid in ipairs(self.tag["*"]) do
+                local e <close> = w:entity(eid, "tag?in anim_ctrl?in render_object?update")
                 if e.tag then
                     for _, tag in ipairs(e.tag) do
                         inner.tags[tag] = inner.tags[tag] or {}
@@ -134,9 +149,10 @@ local _get_hitch_children ; do
                 if e.anim_ctrl then
                     e.anim_ctrl.hitchs = {}
                     e.anim_ctrl.group_id = cache[hash].hitch_group_id
-                    iani.load_events(eid, string.sub(prefab_file_path, 1, -8) .. ".event")
+                    iani.load_events(eid, prefab:match("^(.*)%.prefab$") .. ".event")
                 end
                 if render_layer and e.render_object then
+                    w:extend(e, "render_layer?update")
                     e.render_layer = render_layer
                     e.render_object.render_layer = irl.layeridx(e.render_layer)
                 end
@@ -148,25 +164,28 @@ local _get_hitch_children ; do
             end
             if animations[animation_name] then
                 if final_frame then
-                    iani.play(prefab, {name = animation_name, loop = false, speed = 1.0, manual = true, forwards = true})
-                    iani.set_time(prefab, iani.get_duration(prefab, animation_name))
+                    iani.play(self, {name = animation_name, loop = false, speed = 1.0, manual = true, forwards = true})
+                    iani.set_time(self, iani.get_duration(self, animation_name))
                 else
-                    iani.play(prefab, {name = animation_name, loop = true, speed = 1.0, manual = false})
+                    iani.play(self, {name = animation_name, loop = true, speed = 1.0, manual = false})
                 end
             end
         end
-        prefab.on_message = function(prefab, ...)
-            on_prefab_message(prefab, inner, ...)
+        function prefab_instance:on_message(...)
+            on_prefab_message(self, inner, ...)
         end
-        local instance = world:create_object(prefab)
-        if state == "translucent" or state == "opacity" then
-            instance:send("material", "set_property", "u_basecolor_factor", color)
+        local prefab_proxy = world:create_object(prefab_instance)
+        if material_type == "translucent" or material_type == "opacity" then
+            prefab_proxy:send("material", "set_property", "u_basecolor_factor", color)
+        elseif material_type == "outline" then
+            prefab_proxy:send("material", "set_property", "u_outlinescale", math3d.ref(math3d.vector(outline_scale, 0, 0)))
+            prefab_proxy:send("material", "set_property", "u_outlinecolor", color)
         end
         if emissive_color then -- see also: meno/u_emissive_factor
-            instance:send("material_tag", "set_property", "u_emissive_factor", "u_emissive_factor", emissive_color)
+            prefab_proxy:send("material_tag", "set_property", "u_emissive_factor", "u_emissive_factor", emissive_color)
         end
 
-        cache[hash] = {prefab_file_name = prefab_file_path, instance = instance, hitch_group_id = hitch_group_id, scene = scene, slots = slots, pose = pose, effects = effects, animations = animations}
+        cache[hash] = {prefab_file_name = prefab, instance = prefab_proxy, hitch_group_id = hitch_group_id, scene = scene, slots = slots, pose = iani.create_pose(), effects = effects, animations = animations}
         return cache[hash]
     end
 end
@@ -188,7 +207,7 @@ init = {
 }
 --]]
 function igame_object.create(init)
-    local children = _get_hitch_children(RESOURCES_BASE_PATH:format(init.prefab), init.state, init.color, init.animation_name, init.final_frame, init.emissive_color, init.render_layer)
+    local children = __get_hitch_children(RESOURCES_BASE_PATH:format(init.prefab), init.state, init.color, init.animation_name, init.final_frame, init.emissive_color, init.render_layer, init.outline_scale)
     local hitch_events = {}
     hitch_events["group"] = function(_, e, group)
         w:extend(e, "hitch:update")
@@ -234,7 +253,7 @@ function igame_object.create(init)
 
     local function update(self, prefab_file_name, state, color, animation_name, final_frame, emissive_color)
         children.instance:send("detach_hitch", hitch_entity_object.id)
-        children = _get_hitch_children(RESOURCES_BASE_PATH:format(prefab_file_name), state, color, animation_name, final_frame, emissive_color)
+        children = __get_hitch_children(RESOURCES_BASE_PATH:format(prefab_file_name), state, color, animation_name, final_frame, emissive_color)
         children.instance:send("attach_hitch", hitch_entity_object.id)
 
         self.hitch_entity_object:send("group", children.hitch_group_id)
@@ -326,8 +345,4 @@ function igame_object.create(init)
         end
     end
     return outer
-end
-
-function igame_object.get_prefab(prefab)
-    return _get_hitch_children(RESOURCES_BASE_PATH:format(prefab), "opaque", COLOR_INVALID, nil, nil, nil)
 end

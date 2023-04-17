@@ -48,13 +48,13 @@ local building_detail_config = {
 	["大铁制箱子"] = {
 		"chest_capacity",
 	},
-	["组装机废墟"] = {
+	["机身残骸"] = {
 		"chest_capacity",
 	},
-	["排水口废墟"] = {
+	["机翼残骸"] = {
 		"chest_capacity",
 	},
-	["继电器废墟"] = {
+	["机尾残骸"] = {
 		"chest_capacity",
 	},
 	["蒸汽发电机"] = {
