@@ -141,7 +141,7 @@ local guide = {
             {"哔哩..选择{/g 传送启动}让{/color:4bd0ff 建造中心}接收{/color:4bd0ff 电线杆框架}..哔哩..（期待）", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
-            guide_progress = 25,
+            guide_progress = 26,
             task = {
                 "电线杆传送接收",
             }
@@ -157,7 +157,7 @@ local guide = {
             {"哔哩..请使用{/color:4bd0ff 建造中心}生产尽可能多的{/g 电线杆}..哔哩..哔哗..(期待)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
-            guide_progress = 25,
+            guide_progress = 27,
             task = {
                 "建造电线杆",
             }
@@ -420,23 +420,6 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"现在需要一个{/g 无人机仓库}来存储{/color:4bd0ff 组装机}生产的{/g 地质科技包}..哔哩..(期待)", "textures/guide/guide-1.texture"},
-            {"在组装机附近的{/color:4bd0ff 无人机仓库}选择物品{/g 地质科技包}后，无人机就可以开始搬运了..哔哩..(期待)", "textures/guide/guide-1.texture"},
-        },
-        narrative_end = {
-            guide_progress = 35,--10
-            task = {
-                "仓库地质科技包设置",
-            }
-        },
-        prerequisites = {
-            "科技包产线搭建",
-        },
-	},
-
-    {
-        name = "",
-		narrative = {
             {"终于大功告成，让我们放置{/g 科研中心}到{/color:4bd0ff 电网覆盖}范围中吧..哔哩..(期待)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
@@ -449,6 +432,26 @@ local guide = {
             "建造科研中心",
         },
 	},
+
+    {
+        name = "",
+		narrative = {
+            {"现在需要一个{/g 无人机仓库}来存储{/color:4bd0ff 组装机}生产的{/g 地质科技包}..哔哩..(期待)", "textures/guide/guide-1.texture"},
+            {"在组装机附近的{/color:4bd0ff 无人机仓库}选择物品{/g 地质科技包}后，无人机就可以开始搬运了..哔哩..(期待)", "textures/guide/guide-1.texture"},
+        },
+        narrative_end = {
+            pop_chapter = {"第一章","自动生产"},
+            guide_progress = 35,--10
+            task = {
+                "第三个无人机仓库",
+            }
+        },
+        prerequisites = {
+            "科技包产线搭建",
+        },
+	},
+
+
     -- {
     --     name = "guide-8",
 	-- 	narrative = {
@@ -467,39 +470,7 @@ local guide = {
     --     },
 	-- },
 
-    {
-        name = "",
-		narrative = {
-            {"{/color:4bd0ff 科研中心}需要一些样本才可以开展深入研究..让我们采集一些{/g 地质科技包}吧(高兴)", "textures/guide/guide-3.texture"},
-        },
-        narrative_end = {
-            pop_chapter = {"第一章","自动生产"},
-            guide_progress = 35,
-            task = {
-                "地质研究",
-            }
-        },
-        prerequisites = {
-            "放置科研中心",
-        },
-	},
 
-    {
-        name = "",
-		narrative = {
-            {"{/color:4bd0ff 组装机}已经就位,只要不断提供原料组装机就可以不断地自动化生产..哔哩..（期待)", "textures/guide/guide-3.texture"},
-            {"在{/color:4bd0ff 组装机}的{/g 设置}里选择{/g 地质科技包1}进行批量生产吧..哔哩..（期待)", "textures/guide/guide-3.texture"},
-        },
-        narrative_end = {
-            guide_progress = 35,
-            task = {
-                "科技包产线搭建",
-            }
-        },
-        prerequisites = {
-            "放置组装机",
-        },
-	},
 
     {
         name = "",
