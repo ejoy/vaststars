@@ -6,7 +6,7 @@ local entities = {
         y = 120,
     },
     {
-        prototype_name = "组装机废墟",
+        prototype_name = "机身残骸",
         dir = "N",
         items = {
             {"电线杆框架",10},
@@ -25,7 +25,7 @@ local entities = {
         y = 134,
     },
     {
-        prototype_name = "继电器废墟",
+        prototype_name = "机尾残骸",
         dir = "S",
         items = {
             {"采矿机框架",1},
@@ -54,7 +54,7 @@ local entities = {
         y = 114,
     },
     {
-        prototype_name = "排水口废墟",
+        prototype_name = "机翼残骸",
         dir = "S",
         items = {
             {"组装机框架",2},
@@ -67,7 +67,7 @@ local entities = {
         y = 122,
     },
     {
-        prototype_name = "铁箱废墟",
+        prototype_name = "机头残骸",
         dir = "W",
         items = {
             {"蓄电池框架",15},

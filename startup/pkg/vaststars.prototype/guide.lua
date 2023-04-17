@@ -2,7 +2,7 @@ local guide = {
 	{
         name = "",
 		narrative = {
-            {"哔哩..哔哗..已迫降在{/g 代号P4031}的星球。尚未发现任何生命迹象..(失望)", "textures/guide/guide-6.texture"},
+            {"哔哩..哔哗..航天飞机迫降{/g 代号P4031}星球。机体受重创已四分五裂..(失望)", "textures/guide/guide-6.texture"},
             {"哔哩..哔哗..哔哩..启动大气分析协议中..P4031{/g 缺少氧气}..(失望)"},
             {"哔哩..哔哗..哔哩..启动地质分析协议中..P4031{/g 石铁丰富}..(轻松)","textures/guide/guide-1.texture"},
             {"哔哩..哔哗..启动生存可靠性分析..{/color:4bd0ff 0.04565%}存活概率..(情绪表达跳过中)","textures/guide/guide-4.texture"},
@@ -36,12 +36,12 @@ local guide = {
 		narrative = {
             {"哔哩..建造采矿机需要{/g 采矿机框架}..探测到{/color:4bd0ff 四处废墟}有残留物资..(期待)", "textures/guide/guide-1.texture"},
             {"哔哩..使用{/color:4bd0ff 遥感传送仪}可以{/g 远程传送}物资到目的地..(高兴)", "textures/guide/guide-3.texture"},
-            {"哔哩..发现{/g 继电器废墟}有所需材料，请前往选择{/g 传送设置}进入准备传送状态..(期待)", "textures/guide/guide-1.texture"},
+            {"哔哩..发现{/g 机尾残骸}有所需材料，请前往选择{/g 传送设置}进入准备传送状态..(期待)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
             guide_progress = 10,
             task = {
-                "继电器废墟传送",
+                "机尾残骸传送",
             }
         },
         prerequisites = {
@@ -52,7 +52,7 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"哔哩..{/g 继电器废墟}上方笼罩{/color:4bd0ff 蓝色光晕}表明传送准备就绪..(开心)", "textures/guide/guide-2.texture"},
+            {"哔哩..{/g 机尾残骸}上方笼罩{/color:4bd0ff 蓝色光晕}表明传送准备就绪..(开心)", "textures/guide/guide-2.texture"},
             {"哔哩..让我们进入{/color:4bd0ff 建造中心}选择{/g 传送启动}接收物资吧..(高兴)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
@@ -62,7 +62,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "继电器废墟传送",
+            "机尾残骸传送",
         },
 	},
 
@@ -121,12 +121,12 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"哔哩..在{/color:4bd0ff 排水口废墟}发现{/g 电线杆框架}，前往该处进行{/g 传送设置}..哔哩..哔哗..(期望)", "textures/guide/guide-1.texture"},
+            {"哔哩..在{/color:4bd0ff 机翼残骸}发现{/g 电线杆框架}，前往该处进行{/g 传送设置}..哔哩..哔哗..(期望)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
             guide_progress = 25,
             task = {
-                "排水口废墟传送",
+                "机翼残骸传送",
             }
         },
         prerequisites = {
@@ -147,7 +147,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "排水口废墟传送",
+            "机翼残骸传送",
         },
 	},
 
@@ -205,12 +205,12 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"哔哩..{/g 铁箱废墟}发现所需{/color:4bd0ff 无人机框架}，让我们开始{/g 传送设置}吧....(期待)", "textures/guide/guide-1.texture"},
+            {"哔哩..{/g 机头残骸}发现所需{/color:4bd0ff 无人机框架}，让我们开始{/g 传送设置}吧....(期待)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
             guide_progress = 35,
             task = {
-                "铁箱废墟传送",
+                "机头残骸传送",
             }
         },
         prerequisites = {
@@ -230,7 +230,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "铁箱废墟传送",
+            "机头残骸传送",
         },
 	},
 
