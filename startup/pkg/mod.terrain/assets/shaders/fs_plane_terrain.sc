@@ -30,9 +30,7 @@ SAMPLER2DARRAY(s_mark_alpha,            3);
 
 uniform vec4 u_metallic_roughness_factor1;
 uniform vec4 u_metallic_roughness_factor2;
-uniform vec4 u_zone_red;
-uniform vec4 u_zone_green;
-uniform vec4 u_zone_blue;
+
 #define u_sand_metallic_factor      u_metallic_roughness_factor1.x
 #define u_sand_roughness_factor     u_metallic_roughness_factor1.y
 
@@ -42,7 +40,7 @@ uniform vec4 u_zone_blue;
 #define u_road_metallic_factor    u_metallic_roughness_factor2.x
 #define u_road_roughness_factor   u_metallic_roughness_factor2.y
 
-#define v_zone_color          v_idx1.x
+#define v_zone_rgba           v_idx1.x
 #define v_stone_normal_idx    v_idx1.y
 #define v_road_type           v_idx2.x
 #define v_road_shape          v_idx2.y
@@ -147,31 +145,18 @@ vec3 blend_terrain_color(vec3 sand_basecolor, vec3 stone_basecolor, float sand_h
     return stone_basecolor*stone_weight + sand_basecolor*sand_weight;
 }
 
-vec3 blend_zone(vec3 terrain_color, float zone_color_idx)
+vec3 blend_zone(vec3 terrain_color, uint zone_rgba)
 {
     vec3 zone_color;
     float zone_alpha;
-    if(zone_color_idx == 1){
-        zone_color = u_zone_blue.rgb;
-        zone_alpha = u_zone_blue.a;
-        vec3 final_color = terrain_color * (1 - zone_alpha) + zone_color * zone_alpha;
-        return final_color;
-    }
-    else if(zone_color_idx == 2){
-        zone_color = u_zone_red.rgb;
-        zone_alpha = u_zone_red.a;
-        vec3 final_color = terrain_color * (1 - zone_alpha) + zone_color * zone_alpha;
-        return final_color;
-    }
-    else if (zone_color_idx == 3){
-        zone_color = u_zone_green.rgb;
-        zone_alpha = u_zone_green.a;
-        vec3 final_color = terrain_color * (1 - zone_alpha) + zone_color * zone_alpha;
-        return final_color;
-    }
-    else{
-        return terrain_color;
-    }
+    float r = (zone_rgba >> 24) / 255.0;
+    float g = ((zone_rgba & 0xFF0000) >> 16) / 255.0;
+    float b = ((zone_rgba & 0xFF00) >> 8) / 255.0;
+    float a = (zone_rgba & 0xFF) / 255.0;
+    zone_color = vec3(r, g, b);
+    zone_alpha = a;
+    vec3 final_color = terrain_color * (1 - zone_alpha) + zone_color * zone_alpha;
+    return final_color;
 }
 
 void main()
@@ -234,12 +219,14 @@ void main()
     vec3 terrain_color = blend_terrain_color(sand_basecolor.rgb, stone_basecolor.rgb, sand_height, sand_alpha);
 
     vec3 terrain_blended_color = calc_all_blend_color(v_road_type, road_basecolor, v_mark_type, mark_basecolor, mark_alpha, road_height, terrain_color, stone_height);
-
-    vec3 basecolor = blend_zone(terrain_blended_color, v_zone_color);
+    vec3 basecolor = terrain_blended_color;
+    if(v_zone_rgba != 0){
+        basecolor = blend_zone(terrain_blended_color, v_zone_rgba);
+    }
     bool is_road_part = v_road_type != 0.0 && road_basecolor.a != 0.0;
     bool is_mark_part = v_mark_type != 0 && mark_alpha != 1;
-    bool is_zone_part = v_zone_color != 0;
-    if(is_road_part || is_mark_part||v_zone_color)
+    bool is_zone_part = v_zone_rgba != 0;
+    if(is_road_part || is_mark_part||v_zone_rgba)
     {
         gl_FragColor = vec4(basecolor, 1.0);
     }

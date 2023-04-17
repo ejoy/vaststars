@@ -18,7 +18,7 @@ void main()
 	v_texcoord2 = a_texcoord2;
 	v_texcoord3 = a_texcoord7;
 
-	v_idx1		= vec4(a_texcoord3.xy, a_texcoord6.xy);
+	v_idx1		= uvec4(a_texcoord3.xy, a_texcoord6.xy);
 	v_idx2		= vec4(a_texcoord4.xy, a_texcoord5.xy);
 
 	v_normal	= mul(wm, mediump vec4(0.0, 1.0, 0.0, 0.0)).xyz;

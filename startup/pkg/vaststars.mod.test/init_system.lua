@@ -41,9 +41,9 @@ end
 
 local function create_zone()
     local t = {
-        [1] = {x = 0, y = 0, zone_color  = "blue"}, 
-        [2] = {x = 1, y = 0, zone_color  = "red"},
-        [3] = {x = 2, y = 0, zone_color  = "green"}
+        [1] = {x = 0, y = 0, zone_rgba  = {r = 255, g = 0, b = 0, a = 255}}, 
+        [2] = {x = 1, y = 0, zone_rgba  = {r = 0, g = 255, b = 0, a = 255}},
+        [3] = {x = 2, y = 0, zone_rgba  = {r = 0, g = 0, b = 255, a = 255}}
     }
     iterrain.update_zone_entity(t)
 end
@@ -88,6 +88,13 @@ function S:data_changed()
                 printer_percent = 0.0
             end
             iprinter.update_printer_percent(printer_eid, printer_percent)
+        elseif key == "J" and press == 0 then
+            local t = {
+                [1] = {x = 0, y = 0}, 
+                [2] = {x = 1, y = 0},
+                [3] = {x = 2, y = 0}
+            }
+            iterrain.delete_zone_entity(t)
         end
     end
 end

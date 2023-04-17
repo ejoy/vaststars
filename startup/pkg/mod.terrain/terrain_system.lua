@@ -193,7 +193,21 @@ function iterrain.update_zone_entity(update_list)
         local ul = update_list[ii]
         local x, y = ul.x + terrain_width_offset, ul.y + terrain_height_offset
         local idx = calc_tf_idx(x, y, terrain_width)
-        terrain_fields[idx].zone_color = TERRAIN_ZONE_COLORS[ul.zone_color]
+        terrain_fields[idx].zone_rgba = ul
+        local section_idx = calc_section_idx(idx)
+        if terrain_change[section_idx] == nil then
+            tc_cnt = tc_cnt + 1
+            terrain_change[section_idx] = true
+        end
+    end
+end
+
+function iterrain.delete_zone_entity(delete_list)
+    for ii = 1, #delete_list do
+        local dl = delete_list[ii]
+        local x, y = dl.x + terrain_width_offset, dl.y + terrain_height_offset
+        local idx = calc_tf_idx(x, y, terrain_width)
+        terrain_fields[idx].zone_rgba = nil
         local section_idx = calc_section_idx(idx)
         if terrain_change[section_idx] == nil then
             tc_cnt = tc_cnt + 1
