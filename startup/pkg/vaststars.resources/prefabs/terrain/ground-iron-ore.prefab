@@ -7,12 +7,10 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  material: /pkg/vaststars.resources/glb/terrain/ground-iron-ore.glb|materials/mm.002.material
-  mesh: /pkg/vaststars.resources/glb/terrain/ground-iron-ore.glb|meshes/立方体.020_P1.meshbin
-  name: "123.014"
-  scene:
-    r: {0, 1, 0, 1.6292068494294654e-07}
-    s: {2.812798500061035, 1.5095672607421875, 2.812798500061035}
+  material: /pkg/vaststars.resources/glb/terrain/ground-iron-ore.glb|materials/Material.004.material
+  mesh: /pkg/vaststars.resources/glb/terrain/ground-iron-ore.glb|meshes/Plane_P1.meshbin
+  name: Plane
+  scene: {}
   visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:
@@ -20,12 +18,10 @@ policy:
   ant.render|render
 ---
 data:
-  material: /pkg/vaststars.resources/glb/terrain/ground-iron-ore.glb|materials/mm.003.material
-  mesh: /pkg/vaststars.resources/glb/terrain/ground-iron-ore.glb|meshes/立方体.020_P2.meshbin
-  name: "123.014"
-  scene:
-    r: {0, 1, 0, 1.6292068494294654e-07}
-    s: {2.812798500061035, 1.5095672607421875, 2.812798500061035}
+  material: /pkg/vaststars.resources/glb/terrain/ground-iron-ore.glb|materials/Material.002_clr.material
+  mesh: /pkg/vaststars.resources/glb/terrain/ground-iron-ore.glb|meshes/Plane.004_P1.meshbin
+  name: tie
+  scene: {}
   visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:
