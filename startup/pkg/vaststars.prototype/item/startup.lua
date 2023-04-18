@@ -91,12 +91,6 @@ local entities = {
         x = 140,
         y = 126,
     },
-    {
-        prototype_name = "无人机仓库",
-        dir = "N",
-        x = 131,
-        y = 128,
-    },
 }
 
 local road = {
