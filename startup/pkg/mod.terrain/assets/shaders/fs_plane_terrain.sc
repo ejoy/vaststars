@@ -225,8 +225,8 @@ void main()
     }
     bool is_road_part = v_road_type != 0.0 && road_basecolor.a != 0.0;
     bool is_mark_part = v_mark_type != 0 && mark_alpha != 1;
-    bool is_zone_part = v_zone_rgba != 0;
-    if(is_road_part || is_mark_part)
+    bool zone_opaque = ((v_zone_rgba & 0xFF) == 255);
+    if(is_road_part || is_mark_part || zone_opaque)
     {
         gl_FragColor = vec4(basecolor, 1.0);
     }
