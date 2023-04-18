@@ -97,14 +97,6 @@
                     transform: scale(1.0);
                 }
             }
-            @keyframes enlarge2 {
-                0% {
-                    transform: scale(0.9);
-                }
-                100% {
-                    transform: scale(1.1);
-                }
-            }
         </style>
         <style path = "common/building_style.rcss"/>
         <script type="text/x-lua" >

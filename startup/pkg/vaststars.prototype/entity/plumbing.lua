@@ -163,7 +163,7 @@ prototype "管道1-I型" {
     flow_type = 1,
     flow_direction = {"N", "E"},
     show_arc_menu = false,
-    type = {"building","fluidbox"},
+    type = {"building","fluidbox","pipe"},
     area = "1x1",
     fluidbox = {
         capacity = 100,
@@ -185,7 +185,7 @@ prototype "管道1-L型" {
     flow_type = 1,
     flow_direction = {"N", "E", "S", "W"},
     show_arc_menu = false,
-    type = {"building","fluidbox"},
+    type = {"building","fluidbox","pipe"},
     area = "1x1",
     fluidbox = {
         capacity = 100,
@@ -207,7 +207,7 @@ prototype "管道1-T型" {
     flow_type = 1,
     flow_direction = {"N", "E", "S", "W"},
     show_arc_menu = false,
-    type = {"building","fluidbox"},
+    type = {"building","fluidbox","pipe"},
     area = "1x1",
     fluidbox = {
         capacity = 100,
@@ -231,7 +231,7 @@ prototype "管道1-X型" {
     flow_type = 1,
     flow_direction = {"N"},
     show_arc_menu = false,
-    type = {"building","fluidbox"},
+    type = {"building","fluidbox","pipe"},
     area = "1x1",
     fluidbox = {
         capacity = 100,
@@ -255,7 +255,7 @@ prototype "管道1-O型" {
     flow_type = 1,
     flow_direction = {"N"},
     show_arc_menu = false,
-    type = {"building","fluidbox"},
+    type = {"building","fluidbox","pipe"},
     area = "1x1",
     fluidbox = {
         capacity = 100,
@@ -275,7 +275,7 @@ prototype "管道1-U型" {
     flow_type = 1,
     flow_direction = {"N", "E", "S", "W"},
     show_arc_menu = false,
-    type = {"building","fluidbox"},
+    type = {"building","fluidbox","pipe"},
     area = "1x1",
     fluidbox = {
         capacity = 100,
@@ -296,7 +296,7 @@ prototype "地下管1-JU型" {
     pipe_to_ground = true,
     flow_type = 2,
     flow_direction = {"N", "E", "S", "W"},
-    type = {"building","fluidbox"},
+    type = {"building","fluidbox","pipe"},
     area = "1x1",
     fluidbox = {
         capacity = 100,
@@ -318,7 +318,7 @@ prototype "地下管1-JI型" {
     pipe_to_ground = true,
     flow_type = 2,
     flow_direction = {"N", "E", "S", "W"},
-    type = {"building","fluidbox"},
+    type = {"building","fluidbox","pipe"},
     area = "1x1",
     fluidbox = {
         capacity = 100,
@@ -340,7 +340,7 @@ prototype "地下管2-JU型" {
     pipe_to_ground = true,
     flow_type = 3,
     flow_direction = {"N", "E", "S", "W"},
-    type = {"building","fluidbox"},
+    type = {"building","fluidbox","pipe"},
     area = "1x1",
     fluidbox = {
         capacity = 100,
@@ -362,7 +362,7 @@ prototype "地下管2-JI型" {
     pipe_to_ground = true,
     flow_type = 3,
     flow_direction = {"N", "E", "S", "W"},
-    type = {"building","fluidbox"},
+    type = {"building","fluidbox","pipe"},
     area = "1x1",
     fluidbox = {
         capacity = 100,

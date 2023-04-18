@@ -63,6 +63,7 @@ local function _package_files(root)
         "^/pkg/ant.resources/textures/pochuan_d.texture$",
         "^/pkg/ant.resources/textures/pochuan_n.texture$",
         "^/pkg/ant.bake/materials/bake_lighting.material$",
+        "^/pkg/vaststars.mod.test/.*$",
         ".*mars_pumpjack.*",
     }
 

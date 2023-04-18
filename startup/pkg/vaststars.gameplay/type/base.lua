@@ -15,6 +15,10 @@ type "tech"
     .time "time"
     .count "number"
 
+type "road"
+
+type "pipe"
+
 local c = type "task"
     .ingredients "items"
     .task "task"

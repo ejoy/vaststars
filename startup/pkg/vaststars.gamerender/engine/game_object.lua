@@ -15,13 +15,17 @@ local replace_material = require("engine.prefab_parser").replace_material
 local irl = ecs.import.interface "ant.render|irender_layer"
 
 local function replace_outline_material(template)
+    local res = {}
     for _, v in ipairs(template) do
         if v.data and v.data.mesh then
             v.data.material = "/pkg/ant.resources/materials/outline/scale.material"
             v.data.render_layer = "translucent"
         end
+        if not v.prefab then
+            res[#res+1] = v
+        end
     end
-    return template
+    return res
 end
 
 local function on_prefab_message(prefab, inner, cmd, ...)

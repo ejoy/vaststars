@@ -24,14 +24,9 @@ local mc = import_package "ant.math".constant
 local create_road_entrance = ecs.require "editor.road_entrance"
 local gameplay_core = require "gameplay.core"
 local global = require "global"
-local iplant = ecs.require "engine.plane"
 local vsobject_manager = ecs.require "vsobject_manager"
-
-local BLOCK_CONSTRUCT_COLOR_INVALID <const> = math3d.constant("v4", {2.5, 0.2, 0.2, 0.4})
-local BLOCK_CONSTRUCT_COLOR_VALID <const> = math3d.constant("v4", {0.0, 1, 0.0, 1.0})
-local BLOCK_POWER_SUPPLY_AREA_COLOR_VALID <const> = math3d.constant("v4", {0.13, 1.75, 2.4, 0.5})
-local BLOCK_POWER_SUPPLY_AREA_COLOR_INVALID <const> = math3d.constant("v4", {2.5, 0.0, 0.0, 1.0})
-local BLOCK_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.1, 0, 0.0})
+local create_sprite = ecs.require "sprite"
+local SPRITE_COLOR = import_package "vaststars.prototype"("sprite_color")
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 
 local function _building_to_logisitic(x, y)
@@ -83,19 +78,19 @@ local function __new_entity(self, datamodel, typeobject)
     local building_positon = building_coord:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir, 1, 1))
     x, y = _building_to_logisitic(x, y)
 
-    local block_color
+    local sprite_color
     if not self:check_construct_detector(typeobject.name, x, y, dir) then
         if typeobject.power_supply_area then
-            block_color = BLOCK_POWER_SUPPLY_AREA_COLOR_INVALID
+            sprite_color = SPRITE_COLOR.CONSTRUCT_POWER_INVALID
         else
-            block_color = BLOCK_CONSTRUCT_COLOR_INVALID
+            sprite_color = SPRITE_COLOR.CONSTRUCT_INVALID
         end
         datamodel.show_confirm = false
     else
         if typeobject.power_supply_area then
-            block_color = BLOCK_POWER_SUPPLY_AREA_COLOR_VALID
+            sprite_color = SPRITE_COLOR.CONSTRUCT_POWER_VALID
         else
-            block_color = BLOCK_CONSTRUCT_COLOR_VALID
+            sprite_color = SPRITE_COLOR.CONSTRUCT_VALID
         end
         datamodel.show_confirm = true
     end
@@ -123,7 +118,6 @@ local function __new_entity(self, datamodel, typeobject)
     }
     iui.open({"move_building.rml"}, self.pickup_object.srt.t)
 
-    local block_pos = math3d.ref(math3d.add(building_positon, BLOCK_POSITION_OFFSET))
     local w, h
     if typeobject.power_supply_area then
         w, h = typeobject.power_supply_area:match("(%d+)x(%d+)")
@@ -131,8 +125,7 @@ local function __new_entity(self, datamodel, typeobject)
         w, h = iprototype.rotate_area(typeobject.area, dir, 1, 1)
     end
 
-    local srt = {r = ROTATORS[dir], s = {logistic_coord.tile_size * w, 1, logistic_coord.tile_size * h}, t = block_pos}
-    self.block = iplant.create("/pkg/vaststars.resources/materials/singlecolor.material", "u_color", block_color, srt)
+    self.sprite = create_sprite(x, y, w, h, dir, sprite_color)
 
     local road_entrance_position, _, _, road_entrance_dir = _get_road_entrance_position(typeobject, x, y, dir)
     if road_entrance_position then
@@ -239,15 +232,11 @@ local function touch_move(self, datamodel, delta_vec)
         end
     end
 
-    if self.block then
-        local block_pos = math3d.ref(math3d.add(pickup_object.srt.t, BLOCK_POSITION_OFFSET))
-        self.block:send("obj_motion", "set_position", block_pos)
-    end
     if self.grid_entity then
         self.grid_entity:send("obj_motion", "set_position", __calc_grid_position(self, typeobject))
     end
 
-    local block_color
+    local sprite_color
     if not self:check_construct_detector(pickup_object.prototype_name, lx, ly, pickup_object.dir) then -- TODO
         datamodel.show_confirm = false
         iui.redirect("move_building.rml", "show_confirm", datamodel.show_confirm)
@@ -255,18 +244,13 @@ local function touch_move(self, datamodel, delta_vec)
         if self.road_entrance then
             self.road_entrance:set_state("invalid")
         end
-        if self.block then
-            if typeobject.power_supply_area then
-                block_color = BLOCK_POWER_SUPPLY_AREA_COLOR_INVALID
-            else
-                block_color = BLOCK_CONSTRUCT_COLOR_INVALID
-            end
-            if typeobject.power_supply_area then
-                block_color = BLOCK_POWER_SUPPLY_AREA_COLOR_INVALID
-            else
-                block_color = BLOCK_CONSTRUCT_COLOR_INVALID
-            end
-            self.block:send("set_color", block_color)
+        if typeobject.power_supply_area then
+            sprite_color = SPRITE_COLOR.CONSTRUCT_POWER_INVALID
+        else
+            sprite_color = SPRITE_COLOR.CONSTRUCT_INVALID
+        end
+        if self.sprite then
+            self.sprite:move(pickup_object.x, pickup_object.y, sprite_color)
         end
         return
     else
@@ -276,13 +260,13 @@ local function touch_move(self, datamodel, delta_vec)
         if self.road_entrance then
             self.road_entrance:set_state("valid")
         end
-        if self.block then
-            if typeobject.power_supply_area then
-                block_color = BLOCK_POWER_SUPPLY_AREA_COLOR_VALID
-            else
-                block_color = BLOCK_CONSTRUCT_COLOR_VALID
-            end
-            self.block:send("set_color", block_color)
+        if typeobject.power_supply_area then
+            sprite_color = SPRITE_COLOR.CONSTRUCT_POWER_VALID
+        else
+            sprite_color = SPRITE_COLOR.CONSTRUCT_VALID
+        end
+        if self.sprite then
+            self.sprite:move(pickup_object.x, pickup_object.y, sprite_color)
         end
     end
 
@@ -344,9 +328,9 @@ local function confirm(self, datamodel)
         self.road_entrance:remove()
         self.road_entrance = nil
     end
-    if self.block then
-        self.block:remove()
-        self.block = nil
+    if self.sprite then
+        self.sprite:remove()
+        self.sprite = nil
     end
     if self.grid_entity then
         self.grid_entity:remove()
@@ -443,9 +427,9 @@ local function clean(self, datamodel)
         self.road_entrance:remove()
         self.road_entrance = nil
     end
-    if self.block then
-        self.block:remove()
-        self.block = nil
+    if self.sprite then
+        self.sprite:remove()
+        self.sprite = nil
     end
 
     iui.close("move_building.rml")

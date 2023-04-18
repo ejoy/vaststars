@@ -660,7 +660,7 @@ local function __calc_grid_position(self, typeobject, x, y)
 end
 
 --------------------------------------------------------------------------------------------------
-local function new_entity(self, datamodel, typeobject, x, y)
+local function new_entity(self, datamodel, typeobject)
     local dir = DEFAULT_DIR
     local x, y = iobject.central_coord(typeobject.name, dir, logistic_coord)
     if not x or not y then

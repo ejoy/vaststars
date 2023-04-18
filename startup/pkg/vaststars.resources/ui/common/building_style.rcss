@@ -501,3 +501,11 @@ workbutton {
 	background-size: cover; 
 	background-image: "textures/exchange/right_arrow.texture";
 }
+@keyframes enlarge2 {
+	0% {
+		transform: scale(0.9);
+	}
+	100% {
+		transform: scale(1.1);
+	}
+}

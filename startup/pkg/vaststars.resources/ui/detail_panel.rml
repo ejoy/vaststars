@@ -108,6 +108,14 @@
                     opacity: 1;
                 }
             }
+            @keyframes enlarge3 {
+                0% {
+                    transform: scale(0.97);
+                }
+                100% {
+                    transform: scale(1.03);
+                }
+            }
         </style>
         <style path = "common/building_style.rcss"/>
         <script type="text/x-lua" >
@@ -127,7 +135,8 @@
                 recipe_inputs = {},
                 recipe_ouputs = {},
                 show_assemble = false,
-                recipe_name = " "
+                recipe_name = " ",
+                guide_progress = 0,
             })
 
             ui_sys.addEventListener({
@@ -250,6 +259,7 @@
                             </div>
                         </div>
                     </div>
+                    <div style="height:122%; width: 105%; position: absolute; bottom:2vmin; border: 0.8vmin rgb(0, 217, 255); animation: 0.4s linear 0s infinite alternate enlarge3;" data-if="guide_progress == 15 || guide_progress == 20 || guide_progress == 26 || guide_progress == 27"/>
                 </div>
 
             </div>

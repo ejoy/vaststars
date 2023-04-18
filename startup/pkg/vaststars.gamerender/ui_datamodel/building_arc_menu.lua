@@ -15,8 +15,6 @@ local itask = ecs.require "task"
 
 local set_recipe_mb = mailbox:sub {"set_recipe"}
 local set_item_mb = mailbox:sub {"set_item"}
-local road_builder_mb = mailbox:sub {"road_builder"}
-local pipe_builder_mb = mailbox:sub {"pipe_builder"}
 local construction_center_build_mb = mailbox:sub {"construction_center_build"}
 local construction_center_stop_build_mb = mailbox:sub {"construction_center_stop_build"}
 local lorry_factory_inc_lorry_mb = mailbox:sub {"lorry_factory_inc_lorry"}
@@ -252,8 +250,6 @@ function M:create(object_id, object_position, ui_x, ui_y)
     local datamodel = {
         show_set_recipe = show_set_recipe,
         show_set_item = show_set_item,
-        show_road_builder = typeobject.road_builder,
-        show_pipe_builder = typeobject.pipe_builder,
         construction_center_icon = "",
         construction_center_count = 0,
         construction_center_ingredients = {},
@@ -402,14 +398,6 @@ function M:stage_ui_update(datamodel, object_id)
     for _, _, _, object_id in close_mb:unpack() do
         local vsobject = vsobject_manager:get(object_id)
         vsobject:modifier("start", {name = "over", forwards = true})
-    end
-
-    for _, _, _, object_id in road_builder_mb:unpack() do
-        iui.redirect("construct.rml", "road_builder", object_id)
-    end
-
-    for _, _, _, object_id in pipe_builder_mb:unpack() do
-        iui.redirect("construct.rml", "pipe_builder", object_id)
     end
 
     for _, _, _, object_id in construction_center_build_mb:unpack() do

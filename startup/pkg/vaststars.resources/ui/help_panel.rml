@@ -1,0 +1,175 @@
+<rml>
+    <head>
+        <style>
+            body {
+                font: 100% "宋体";
+            }
+            div {
+                font: 120% "微软雅黑";
+            }
+            .panel1 {
+                width: 87%;
+                height: 100%;
+                pointer-events: none;
+                animation: 0.5s linear 0s pannelmovement;
+            }
+            .help-panel {
+                overflow: hidden; 
+                position: absolute; 
+                left: 0.13vmin; 
+                top: 7vmin; 
+                width: 30.00vmin; 
+                height: 72.33vmin; 
+                background-color: rgb(250, 205, 9); 
+                border: 0.27vmin rgb(89, 73, 39);
+                flex-direction: column; 
+                justify-content: flex-start;
+            }
+            .help-book {
+                position: absolute;
+                left:0;
+                width: 5vmin;
+                height: 5vmin;
+                background-image: "textures/science/book.texture";
+                background-size: cover;
+            }
+            .help-title {
+                width: 95%;
+                height: 100%;
+                text-align: center;
+                font-size: 4vmin;
+                margin-bottom: 1vmin;
+            }
+            .help-title-block {
+                width: 100%;
+                height: 6%;
+                background-color: rgb(1,174,237);
+                background-size: cover;
+                justify-content: flex-start;
+                flex-direction: row;
+                align-items: center;
+                font-size: 5vmin;
+            }
+            .help-title-block2 {
+                overflow: hidden; 
+                position: absolute; 
+                left: 0.13vmin; 
+                top: 7vmin; 
+                width: 30.00vmin;
+                height: 5vmin;
+                background-color: rgb(1,174,237);
+                background-size: cover;
+                justify-content: flex-start;
+                flex-direction: row;
+                align-items: center;
+                font-size: 5vmin;
+            }
+
+            .help-content-block {
+                width: 95%;
+                height: 94%;
+                justify-content: flex-start;
+                flex-direction: row;
+                align-items: flex-start;
+                font-size: 4vmin;
+                word-break: break-all;
+                color: black;
+            }
+            .recipe-name {
+                width:100%;
+                height: 6vmin;
+                position: absolute;
+                top:-5vmin;
+                padding-bottom: 0.5vmin;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                font-size: 2.5vmin;
+            }
+            @keyframes pannelmovement {
+                0% {
+                    left: -10vmin;
+                    opacity: 0;
+                }
+                100% {
+                    left: 0vmin;
+                    opacity: 1;
+                }
+            }
+        </style>
+        <style path = "common/building_style.rcss"/>
+        <script type="text/x-lua" >
+            local ui_sys = require "ui_system"
+            local start = ui_sys.createDataMode("start", {
+                object_id = 0,
+                property_list = {},
+                icon = "",
+                prototype_name = " ",
+                detail_panel_status_icon = "textures/work_status_icon/normal.texture",
+                detail_panel_status_desc = "正常工作",
+                show_chest = false,
+                chest_list0 = {},
+                chest_list1 = {},
+                show_minner = false,
+                progress = "0%",
+                recipe_inputs = {},
+                recipe_ouputs = {},
+                show_assemble = false,
+                recipe_name = " ",
+                guide_progress = 0,
+            })
+
+            ui_sys.addEventListener({
+                ["leave"] = function()
+                    ui_sys.close()
+                end,
+            })
+        </script>
+    </head>
+    <body style = "pointer-events: none; justify-content: center; align-items: center;">
+        <div data-model="start" class="panel1" style="flex-direction: column; justify-content:flex-start;">
+
+            <!-- 帮助条目 start -->
+            <div class="help-panel">
+                <div class="help-title-block" style="margin-bottom: 0.3vmin;">
+                    <div class="help-book"/>
+                    <div class="help-title">游戏帮助</div>
+                </div>
+                <div class="help-title-block" style="margin-bottom: 0.3vmin;">
+                    <div class="help-book"/>
+                    <div class="help-title">游戏帮助</div>
+                </div>
+                <div class="help-title-block" style="margin-bottom: 0.3vmin;">
+                    <div class="help-book"/>
+                    <div class="help-title">游戏帮助</div>
+                </div>
+                <div class="help-title-block" style="margin-bottom: 0.3vmin;">
+                    <div class="help-book"/>
+                    <div class="help-title">游戏帮助</div>
+                </div>
+            </div>
+            <!-- 帮助条目 end -->
+
+            <!-- 帮助内容 start -->
+            <div class="help-panel" data-if="false">
+                <div class="help-title-block">
+                    <div class="help-book"/>
+                    <div class="help-title">游戏帮助</div>
+                </div>
+                <div class="help-content-block">游戏内容12345566778888989898989898989898989898989898989</div>
+            </div>
+            <!-- 帮助内容 end -->
+
+
+            <!-- 帮助收起 start -->
+            <div class="help-title-block2">
+                <div class="help-title-block" style="height: 100%;">
+                    <div class="help-book"/>
+                    <div class="help-title">游戏帮助</div>
+                </div>
+            </div>
+            <!-- 帮助收起 start -->
+            
+        </div>
+    </body>
+</rml>

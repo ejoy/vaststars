@@ -271,7 +271,6 @@ prototype "修路站" {
     area = "2x2",
     capacity = 50,
     build_area = "30x30",
-    road_builder = true,
 }
 
 prototype "修管站" {
@@ -283,7 +282,6 @@ prototype "修管站" {
     area = "2x2",
     capacity = 50,
     build_area = "24x24",
-    pipe_builder = true,
 }
 
 --送货车站需要设置送货类型以及需求车辆
