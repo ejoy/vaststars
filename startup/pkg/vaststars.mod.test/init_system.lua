@@ -41,9 +41,9 @@ end
 
 local function create_zone()
     local t = {
-        [1] = {x = 0, y = 0, zone_rgba  = {r = 255, g = 0, b = 0, a = 255}}, 
-        [2] = {x = 1, y = 0, zone_rgba  = {r = 0, g = 255, b = 0, a = 255}},
-        [3] = {x = 2, y = 0, zone_rgba  = {r = 0, g = 0, b = 255, a = 255}}
+        [1] = {x = 0, y = 0, zone_rgba  = {r = 255, g = 0, b = 0, a = 155}}, 
+        [2] = {x = 1, y = 0, zone_rgba  = {r = 0, g = 255, b = 0, a = 155}},
+        [3] = {x = 2, y = 0, zone_rgba  = {r = 0, g = 0, b = 255, a = 155}}
     }
     iterrain.update_zone_entity(t)
 end
@@ -56,7 +56,7 @@ function S.init_world()
     iom.set_direction(camera_ref, dir)
 
     iterrain.gen_terrain_field(256, 256, 128)
-    istonemountain.create_sm_entity(0.8, 256, 256, 128)
+    --istonemountain.create_sm_entity(0.8, 256, 256, 128)
     create_zone()
     printer_eid = ecs.create_entity {
         policy = {
