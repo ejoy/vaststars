@@ -39,6 +39,10 @@ function road:create(enabled, width, height, offset, layer_names, shape_types)
     end
 end
 
+function road:get_offset()
+    return self._offset[1], self._offset[2]
+end
+
 local inner_layer_names = {
     ["road"] = "road",
     ["indicator"] = "mark",

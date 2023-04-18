@@ -23,15 +23,10 @@ local igrid_entity = ecs.require "engine.grid_entity"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local mc = import_package "ant.math".constant
 local create_road_entrance = ecs.require "editor.road_entrance"
-local iplant = ecs.require "engine.plane"
-local BLOCK_CONSTRUCT_COLOR_INVALID <const> = math3d.constant("v4", {2.5, 0.2, 0.2, 0.4})
-local BLOCK_CONSTRUCT_COLOR_VALID <const> = math3d.constant("v4", {0.0, 1, 0.0, 1.0})
-local BLOCK_POWER_SUPPLY_AREA_COLOR_VALID <const> = math3d.constant("v4", {0.13, 1.75, 2.4, 0.5})
-local BLOCK_POWER_SUPPLY_AREA_COLOR_INVALID <const> = math3d.constant("v4", {2.5, 0.0, 0.0, 1.0})
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
-local BLOCK_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
-local terrain = ecs.require "terrain"
-local BLOCK_EDGE_SIZE <const> = 6
+local create_sprite = ecs.require "sprite"
+local SPRITE_COLOR = import_package "vaststars.prototype"("sprite_color")
+local idronecover = ecs.require "drone_cover"
 
 local function _building_to_logisitic(x, y)
     local nposition = assert(building_coord:get_begin_position_by_coord(x, y))
@@ -82,20 +77,24 @@ local function __new_entity(self, datamodel, typeobject)
     local building_positon = building_coord:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir, 1, 1))
     x, y = _building_to_logisitic(x, y)
 
-    local block_color
+    local sprite_color
     if not self:check_construct_detector(typeobject.name, x, y, dir) then
         if typeobject.power_supply_area then
-            block_color = BLOCK_POWER_SUPPLY_AREA_COLOR_INVALID
+            sprite_color = SPRITE_COLOR.CONSTRUCT_POWER_INVALID
+        elseif typeobject.supply_area then
+            sprite_color = SPRITE_COLOR.DRONE_DEPOT_SUPPLY_AREA_INVALID
         else
-            block_color = BLOCK_CONSTRUCT_COLOR_INVALID
+            sprite_color = SPRITE_COLOR.CONSTRUCT_INVALID
         end
         datamodel.show_confirm = false
         datamodel.show_rotate = true
     else
         if typeobject.power_supply_area then
-            block_color = BLOCK_POWER_SUPPLY_AREA_COLOR_VALID
+            sprite_color = SPRITE_COLOR.CONSTRUCT_POWER_VALID
+        elseif typeobject.supply_area then
+            sprite_color = SPRITE_COLOR.DRONE_DEPOT_SUPPLY_AREA_VALID
         else
-            block_color = BLOCK_CONSTRUCT_COLOR_VALID
+            sprite_color = SPRITE_COLOR.CONSTRUCT_VALID
         end
         datamodel.show_confirm = true
         datamodel.show_rotate = true
@@ -124,16 +123,21 @@ local function __new_entity(self, datamodel, typeobject)
     }
     iui.open({"construct_pop.rml"}, self.pickup_object.srt.t)
 
-    local block_pos = math3d.ref(math3d.add(building_positon, BLOCK_POSITION_OFFSET))
-    local w, h
-    if typeobject.power_supply_area then
-        w, h = typeobject.power_supply_area:match("(%d+)x(%d+)")
+    local offset_x, offset_y = 0, 0
+    if typeobject.supply_area then
+        local aw, ah = iprototype.unpackarea(typeobject.supply_area)
+        local w, h = iprototype.rotate_area(typeobject.area, dir)
+        offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
+        self.sprite = create_sprite(x + offset_x, y + offset_y, aw, ah, dir, sprite_color)
+    elseif typeobject.power_supply_area then
+        local aw, ah = typeobject.power_supply_area:match("(%d+)x(%d+)")
+        local w, h = iprototype.rotate_area(typeobject.area, dir)
+        offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
+        self.sprite = create_sprite(x + offset_x, y + offset_y, aw, ah, dir, sprite_color)
     else
-        w, h = iprototype.rotate_area(typeobject.area, dir, 1, 1)
+        local w, h = iprototype.rotate_area(typeobject.area, dir)
+        self.sprite = create_sprite(x + offset_x, y + offset_y, w, h, dir, sprite_color)
     end
-
-    local srt = {r = ROTATORS[dir], s = {logistic_coord.tile_size * w, 1, logistic_coord.tile_size * h}, t = block_pos}
-    self.block = iplant.create("/pkg/vaststars.resources/materials/singlecolor.material", "u_color", block_color, srt)
 
     local road_entrance_position, _, _, road_entrance_dir = _get_road_entrance_position(typeobject, x, y, dir)
     if road_entrance_position then
@@ -152,34 +156,39 @@ local function __calc_grid_position(self, typeobject)
     return math3d.ref(math3d.add(math3d.sub(buildingPosition, originPosition), GRID_POSITION_OFFSET))
 end
 
-local function __show_block(self, position, dir, color, w, h)
-    self.blocks[#self.blocks+1] = iplant.create("/pkg/vaststars.resources/materials/singlecolor.material", "u_color", color,
-        {
-            s = {terrain.tile_size * w + BLOCK_EDGE_SIZE, 1, terrain.tile_size * h + BLOCK_EDGE_SIZE},
-            r = ROTATORS[dir],
-            t = math3d.ref(math3d.add(position, BLOCK_POSITION_OFFSET))
-        }
-    )
-end
-
 local function new_entity(self, datamodel, typeobject)
+    if typeobject.power_supply_area and typeobject.power_supply_distance and not typeobject.supply_area then
+        local sprite_color = SPRITE_COLOR.POWER_SUPPLY_AREA
+        for _, object in objects:all() do
+            local otypeobject = iprototype.queryByName(object.prototype_name)
+            if otypeobject.power_supply_area then
+                local w, h = iprototype.unpackarea(otypeobject.area)
+                local ow, oh = otypeobject.power_supply_area:match("(%d+)x(%d+)")
+                ow, oh = tonumber(ow), tonumber(oh)
+                self.sprites[#self.sprites+1] = create_sprite(object.x - (ow - w)//2, object.y - (oh - h)//2, ow, oh, object.dir, sprite_color)
+            end
+        end
+    end
+
+    if iprototype.has_chest(typeobject.name) or typeobject.supply_area then
+        local sprite_color = SPRITE_COLOR.DRONE_DEPOT_SUPPLY_AREA_2
+        for _, object in objects:all() do
+            local otypeobject = iprototype.queryByName(object.prototype_name)
+            if otypeobject.supply_area then
+                local w, h = iprototype.unpackarea(otypeobject.area)
+                local ow, oh = iprototype.unpackarea(otypeobject.supply_area)
+                ow, oh = tonumber(ow), tonumber(oh)
+                self.sprites[#self.sprites+1] = create_sprite(object.x - (ow - w)//2, object.y - (oh - h)//2, ow, oh, object.dir, sprite_color)
+            end
+        end
+    end
+
     __new_entity(self, datamodel, typeobject)
     self.pickup_object.APPEAR = true
 
     if not self.grid_entity then
         self.grid_entity = igrid_entity.create("polyline_grid", building_coord.tile_width, building_coord.tile_height, logistic_coord.tile_size, {t = __calc_grid_position(self, typeobject)})
         self.grid_entity:show(true)
-    end
-    if typeobject.power_supply_area and typeobject.power_supply_distance then
-        local block_color = BLOCK_POWER_SUPPLY_AREA_COLOR_VALID
-        for _, object in objects:all() do
-            local otypeobject = iprototype.queryByName(object.prototype_name)
-            if otypeobject.power_supply_area then
-                local ow, oh = otypeobject.power_supply_area:match("(%d+)x(%d+)")
-                ow, oh = tonumber(ow), tonumber(oh)
-                __show_block(self, object.srt.t, object.dir, block_color, ow, oh)
-            end
-        end
     end
 end
 
@@ -255,46 +264,53 @@ local function touch_move(self, datamodel, delta_vec)
         end
     end
 
-    if self.block then
-        local block_pos = math3d.ref(math3d.add(pickup_object.srt.t, BLOCK_POSITION_OFFSET))
-        self.block:send("obj_motion", "set_position", block_pos)
-    end
     if self.grid_entity then
         self.grid_entity:send("obj_motion", "set_position", __calc_grid_position(self, typeobject))
     end
 
-    local block_color
+    if self.last_x == lx and self.last_y == ly then
+        return
+    end
+    self.last_x, self.last_y = lx, ly
+
+    local sprite_color
+    local offset_x, offset_y = 0, 0
+    local w, h = iprototype.rotate_area(typeobject.area, pickup_object.dir)
     if not self:check_construct_detector(pickup_object.prototype_name, lx, ly, pickup_object.dir) then -- TODO
         datamodel.show_confirm = false
 
         if self.road_entrance then
             self.road_entrance:set_state("invalid")
         end
-        if self.block then
-            if typeobject.power_supply_area then
-                block_color = BLOCK_POWER_SUPPLY_AREA_COLOR_INVALID
-            else
-                block_color = BLOCK_CONSTRUCT_COLOR_INVALID
-            end
-            if typeobject.power_supply_area then
-                block_color = BLOCK_POWER_SUPPLY_AREA_COLOR_INVALID
-            else
-                block_color = BLOCK_CONSTRUCT_COLOR_INVALID
-            end
-            self.block:send("set_color", block_color)
+
+        if typeobject.power_supply_area then
+            sprite_color = SPRITE_COLOR.CONSTRUCT_POWER_INVALID
+            local aw, ah = typeobject.power_supply_area:match("(%d+)x(%d+)")
+            offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
+        elseif typeobject.supply_area then
+            sprite_color = SPRITE_COLOR.DRONE_DEPOT_SUPPLY_AREA_INVALID
+        else
+            sprite_color = SPRITE_COLOR.CONSTRUCT_INVALID
+        end
+        if self.sprite then
+            self.sprite:move(pickup_object.x + offset_x, pickup_object.y + offset_y, sprite_color)
         end
         return
     else
         if self.road_entrance then
             self.road_entrance:set_state("valid")
         end
-        if self.block then
-            if typeobject.power_supply_area then
-                block_color = BLOCK_POWER_SUPPLY_AREA_COLOR_VALID
-            else
-                block_color = BLOCK_CONSTRUCT_COLOR_VALID
-            end
-            self.block:send("set_color", block_color)
+        if typeobject.power_supply_area then
+            sprite_color = SPRITE_COLOR.CONSTRUCT_POWER_VALID
+            local aw, ah = typeobject.power_supply_area:match("(%d+)x(%d+)")
+            offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
+        elseif typeobject.supply_area then
+            sprite_color = SPRITE_COLOR.DRONE_DEPOT_SUPPLY_AREA_VALID
+        else
+            sprite_color = SPRITE_COLOR.CONSTRUCT_VALID
+        end
+        if self.sprite then
+            self.sprite:move(pickup_object.x + offset_x, pickup_object.y + offset_y, sprite_color)
         end
     end
 
@@ -306,6 +322,10 @@ local function touch_move(self, datamodel, delta_vec)
         local sw, sh = typeobject.power_supply_area:match("(%d+)x(%d+)")
         ipower:merge_pole({power_network_link_target = 0, key = pickup_object.id, targets = {}, x = lx, y = ly, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.power_supply_distance, smooth_pos = true, power_network_link = typeobject.power_network_link})
         ipower_line.update_temp_line(ipower:get_temp_pole())
+    end
+
+    if iprototype.has_type(typeobject.type, "hub") then
+        idronecover.update_cover(pickup_object, typeobject)
     end
 end
 
@@ -345,10 +365,11 @@ local function confirm(self, datamodel)
         self.road_entrance:remove()
         self.road_entrance = nil
     end
-    if self.block then
-        self.block:remove()
-        self.block = nil
+    if self.sprite then
+        self.sprite:remove()
+        self.sprite = nil
     end
+    idronecover.clear()
     __new_entity(self, datamodel, typeobject)
 end
 
@@ -422,10 +443,10 @@ local function clean(self, datamodel)
         self.grid_entity = nil
     end
 
-    for _, block in ipairs(self.blocks) do
-        block:remove()
+    for _, sprite in ipairs(self.sprites) do
+        sprite:remove()
     end
-    self.blocks = {}
+    self.sprites = {}
 
     ieditor:revert_changes({"TEMPORARY"})
     datamodel.show_confirm = false
@@ -439,10 +460,11 @@ local function clean(self, datamodel)
         self.road_entrance:remove()
         self.road_entrance = nil
     end
-    if self.block then
-        self.block:remove()
-        self.block = nil
+    if self.sprite then
+        self.sprite:remove()
+        self.sprite = nil
     end
+    idronecover.clear()
 
     iui.close("construct_pop.rml")
 end
@@ -459,7 +481,8 @@ local function create()
     M.clean = clean
     M.check_construct_detector = check_construct_detector
     M.complete = M.super.complete
-    M.blocks = {}
+    M.sprites = {}
+    M.last_x, M.last_y = -1, -1
 
     return M
 end

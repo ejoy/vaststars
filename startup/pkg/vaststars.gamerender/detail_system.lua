@@ -44,54 +44,31 @@ function idetail.show(object_id)
 end
 
 do
-    local BLOCK_COLOR <const> = math3d.constant("v4", {0.0, 1, 0.0, 1.0})
-    local BLOCK_POWER_SUPPLY_AREA_COLOR <const> = math3d.constant("v4", {0.13, 1.75, 2.4, 0.5})
-    local BLOCK_EDGE_SIZE <const> = 6
-
-    local BLOCK_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
-    local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
-    local terrain = ecs.require "terrain"
-    local iplant = ecs.require "engine.plane"
-
-    local blocks = {}
+    local sprites = {}
+    local create_sprite = ecs.require "sprite"
+    local SPRITE_COLOR = import_package "vaststars.prototype"("sprite_color")
 
     function idetail.unselected()
-        for _, block in ipairs(blocks) do
-            block:remove()
+        for _, sprite in ipairs(sprites) do
+            sprite:remove()
         end
-        blocks = {}
-    end
-
-    local function __show_block(position, dir, color, w, h)
-        blocks[#blocks+1] = iplant.create("/pkg/vaststars.resources/materials/singlecolor.material", "u_color", color,
-            {
-                s = {terrain.tile_size * w + BLOCK_EDGE_SIZE, 1, terrain.tile_size * h + BLOCK_EDGE_SIZE},
-                r = ROTATORS[dir],
-                t = math3d.ref(math3d.add(position, BLOCK_POSITION_OFFSET))
-            }
-        )
+        sprites = {}
     end
 
     function idetail.selected(object)
         idetail.unselected()
 
-        local block_color
         local typeobject = iprototype.queryByName(object.prototype_name)
-        local w, h
         if typeobject.power_supply_area and typeobject.power_supply_distance then
-            block_color = BLOCK_POWER_SUPPLY_AREA_COLOR
             for _, object in objects:all() do
                 local otypeobject = iprototype.queryByName(object.prototype_name)
                 if otypeobject.power_supply_area then
+                    local w, h = iprototype.unpackarea(otypeobject.area)
                     local ow, oh = otypeobject.power_supply_area:match("(%d+)x(%d+)")
                     ow, oh = tonumber(ow), tonumber(oh)
-                    __show_block(object.srt.t, object.dir, block_color, ow, oh)
+                    sprites[#sprites+1] = create_sprite(object.x - (ow - w)//2, object.y - (oh - h)//2, ow, oh, object.dir, SPRITE_COLOR.POWER_SUPPLY_AREA)
                 end
             end
-        else
-            block_color = BLOCK_COLOR
-            w, h = iprototype.unpackarea(typeobject.area)
-            __show_block(object.srt.t, object.dir, block_color, w, h)
         end
     end
 end
