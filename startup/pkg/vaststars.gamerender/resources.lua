@@ -813,7 +813,6 @@ local t = {
 	"/pkg/vaststars.gamerender/editor/road_entrance.lua",
 	"/pkg/vaststars.gamerender/editor/roadbuilder.lua",
 	"/pkg/vaststars.gamerender/editor/selected_boxes.lua",
-	"/pkg/vaststars.gamerender/editor/setitembuilder.lua",
 	"/pkg/vaststars.gamerender/editor/stationbuilder.lua",
 	"/pkg/vaststars.gamerender/engine/camera.lua",
 	"/pkg/vaststars.gamerender/engine/canvas.lua",
