@@ -6,6 +6,7 @@ local BUILDING_COMPONENTS = {
     workstatus = true,
     construction_center_wing_status = true,
     construction_center_printer = true,
+    item_transfer_effect = true,
 }
 local BUILDING_COMPONENT_METHODS = {
     on_position_change = true,

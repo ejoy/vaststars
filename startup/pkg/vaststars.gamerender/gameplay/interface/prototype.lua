@@ -187,12 +187,12 @@ end
 
 function M.is_pipe(prototype_name)
     local typeobject = assert(M.queryByName(prototype_name))
-    return typeobject.pipe
+    return M.has_type(typeobject.type, "pipe")
 end
 
 function M.is_pipe_to_ground(prototype_name)
     local typeobject = assert(M.queryByName(prototype_name))
-    return typeobject.pipe_to_ground
+    return M.has_type(typeobject.type, "pipe_to_ground")
 end
 
 function M.is_road(prototype_name)

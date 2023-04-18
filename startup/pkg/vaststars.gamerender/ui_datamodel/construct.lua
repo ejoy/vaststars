@@ -12,8 +12,6 @@ local iui = ecs.import.interface "vaststars.gamerender|iui"
 local iprototype = require "gameplay.interface.prototype"
 local irecipe = require "gameplay.interface.recipe"
 local create_normalbuilder = ecs.require "editor.normalbuilder"
-local create_pipebuilder = ecs.require "editor.pipebuilder"
-local create_pipetogroundbuilder = ecs.require "editor.pipetogroundbuilder"
 local create_movebuilder = ecs.require "editor.movebuilder"
 local objects = require "objects"
 local ieditor = ecs.require "editor.editor"
@@ -42,7 +40,6 @@ local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
 local show_statistic_mb = mailbox:sub {"statistic"} -- 主界面左下角 -> 统计信息
 local show_setting_mb = mailbox:sub {"show_setting"} -- 主界面左下角 -> 游戏设置
 local technology_mb = mailbox:sub {"technology"} -- 主界面左下角 -> 科研中心
-local construct_entity_mb = mailbox:sub {"construct_entity"} -- 建造 entity
 local click_techortaskicon_mb = mailbox:sub {"click_techortaskicon"}
 local guide_on_going_mb = mailbox:sub {"guide_on_going"}
 local load_resource_mb = mailbox:sub {"load_resource"}
@@ -357,33 +354,45 @@ local function close_focus_tips(tech_node)
     excluded_pickup_id = nil
 end
 
+local function __construct_entity(datamodel, gameplay_eid, item)
+    local typeobject = iprototype.queryById(item)
+    if iprototype.has_type(typeobject.type, "road") then
+        iui.close("building_arc_menu.rml")
+        iui.close("detail_panel.rml")
+        datamodel.cur_edit_mode = "construct"
+        idetail.unselected()
+        gameplay_core.world_update = false
+        iui.open({"road_or_pipe_build.rml", "road_build.lua"})
+    elseif iprototype.has_type(typeobject.type, "pipe") then
+        iui.close("building_arc_menu.rml")
+        iui.close("detail_panel.rml")
+        datamodel.cur_edit_mode = "construct"
+        idetail.unselected()
+        gameplay_core.world_update = false
+        iui.open({"road_or_pipe_build.rml", "pipe_build.lua"})
+    elseif iprototype.has_type(typeobject.type, "pipe_to_ground") then
+        iui.close("building_arc_menu.rml")
+        iui.close("detail_panel.rml")
+        datamodel.cur_edit_mode = "construct"
+        idetail.unselected()
+        gameplay_core.world_update = false
+        iui.open({"road_or_pipe_build.rml", "pipe_to_ground_build.lua"})
+    elseif iprototype.has_type(typeobject.type, "station") then
+        builder = create_station_builder()
+        builder:new_entity(datamodel, typeobject)
+    else
+        builder = create_normalbuilder(gameplay_eid, item)
+        builder:new_entity(datamodel, typeobject)
+    end
+    handle_pickup = false
+end
+
 function M:stage_camera_usage(datamodel)
     for _, delta in dragdrop_camera_mb:unpack() do
         if builder then
             builder:touch_move(datamodel, delta)
             self:flush()
         end
-    end
-
-    for _, _, _, prototype_name in construct_entity_mb:unpack() do
-        if builder then
-            builder:clean(datamodel)
-        end
-
-        local typeobject = iprototype.queryByName(prototype_name)
-        if iprototype.is_pipe_to_ground(prototype_name) then
-            builder = create_pipetogroundbuilder()
-        elseif iprototype.is_pipe(prototype_name) then
-            builder = create_pipebuilder()
-        elseif typeobject.crossing then
-            builder = create_station_builder()
-        else
-            builder = create_normalbuilder()
-        end
-
-        builder:new_entity(datamodel, typeobject)
-        self:flush()
-        handle_pickup = false
     end
 
     for _, state in single_touch_mb:unpack() do
@@ -559,29 +568,9 @@ function M:stage_camera_usage(datamodel)
         local slot = assert(gameplay_core.get_world():container_get(e.chest, index))
         assert(slot.item ~= 0)
 
-        local typeobject = iprototype.queryById(slot.item)
-
-        if iprototype.has_type(typeobject.type, "road") then
-            iui.close("building_arc_menu.rml")
-            iui.close("detail_panel.rml")
-            datamodel.cur_edit_mode = "construct"
-            idetail.unselected()
-            gameplay_core.world_update = false
-            iui.open({"road_or_pipe_build.rml", "road_build.lua"})
-        elseif iprototype.has_type(typeobject.type, "pipe") then
-            iui.close("building_arc_menu.rml")
-            iui.close("detail_panel.rml")
-            datamodel.cur_edit_mode = "construct"
-            idetail.unselected()
-            gameplay_core.world_update = false
-            iui.open({"road_or_pipe_build.rml", "pipe_build.lua"})
-        else
-            builder = create_normalbuilder(object.gameplay_eid, slot.item)
-            builder:new_entity(datamodel, typeobject)
-            self:flush()
-        end
-        handle_pickup = false
+        __construct_entity(datamodel, object.gameplay_eid, slot.item)
     end
+
     -- TODO: 多个UI的stage_ui_update中会产生focus_tips_event事件，focus_tips_event处理逻辑涉及到要修改相机位置，所以暂时放在这里处理
     for _, action, tech_node in focus_tips_event:unpack() do
         if action == "open" then
