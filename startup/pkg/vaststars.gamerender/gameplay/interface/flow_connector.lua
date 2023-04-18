@@ -33,7 +33,7 @@ local get_dir_bit do
 end
 
 local function _get_connections(typeobject)
-    if typeobject.pipe or typeobject.pipe_to_ground then
+    if iprototype.is_pipe(typeobject.name) or iprototype.is_pipe_to_ground(typeobject.name) then
         return typeobject.fluidbox.connections
     elseif typeobject.crossing then
         return typeobject.crossing.connections

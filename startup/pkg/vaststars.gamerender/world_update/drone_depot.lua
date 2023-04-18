@@ -11,6 +11,12 @@ local iheapmesh = ecs.import.interface "ant.render|iheapmesh"
 local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
 local ichest = require "gameplay.interface.chest"
 local prefab_slots = require("engine.prefab_parser").slots
+local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+
+local events = {}
+events["obj_motion"] = function(_, e, method, ...)
+    iom[method](e, ...)
+end
 
 local function create_heap(meshbin, srt, dim3, gap3, count)
     return ientity_object.create(ecs.create_entity {
@@ -31,7 +37,7 @@ local function create_heap(meshbin, srt, dim3, gap3, count)
                 interval = gap3,
             }
         },
-    })
+    }, events)
 end
 
 local function create_shelf(building, item, count, building_srt)
@@ -52,7 +58,9 @@ local function create_shelf(building, item, count, building_srt)
 
     local res = {item = item, count = count, heap = heap, offset = offset}
     res.on_position_change = function (self, building_srt)
-        -- TODO: when the building position changes, update the location
+        local srt = math3d.mul(math3d.matrix({s = building_srt.s, r = building_srt.r, t = building_srt.t}), offset)
+        local s, r, t = math3d.srt(srt)
+        heap:send("obj_motion", "set_srt", math3d.ref(s), math3d.ref(r), math3d.ref(t))
     end
     res.update = function(self, count)
         iheapmesh.update_heap_mesh_number(heap.id, count)

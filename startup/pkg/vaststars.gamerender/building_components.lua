@@ -6,6 +6,7 @@ local BUILDING_COMPONENTS = {
     workstatus = true,
     construction_center_wing_status = true,
     construction_center_printer = true,
+    item_transfer_effect = true,
 }
 local BUILDING_COMPONENT_METHODS = {
     on_position_change = true,
@@ -17,8 +18,10 @@ function component_mt:__index(k)
     return rawget(self, k)
 end
 function component_mt:__newindex(k, v)
-    for method in pairs(BUILDING_COMPONENT_METHODS) do
-        assert(v[method], ("component '%s' does not support method '%s'"):format(k, method))
+    if v ~= nil then
+        for method in pairs(BUILDING_COMPONENT_METHODS) do
+            assert(v[method], ("component '%s' does not support method '%s'"):format(k, method))
+        end
     end
     return rawset(self, k, v)
 end
