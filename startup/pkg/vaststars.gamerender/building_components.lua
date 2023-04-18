@@ -18,8 +18,10 @@ function component_mt:__index(k)
     return rawget(self, k)
 end
 function component_mt:__newindex(k, v)
-    for method in pairs(BUILDING_COMPONENT_METHODS) do
-        assert(v[method], ("component '%s' does not support method '%s'"):format(k, method))
+    if v ~= nil then
+        for method in pairs(BUILDING_COMPONENT_METHODS) do
+            assert(v[method], ("component '%s' does not support method '%s'"):format(k, method))
+        end
     end
     return rawset(self, k, v)
 end
