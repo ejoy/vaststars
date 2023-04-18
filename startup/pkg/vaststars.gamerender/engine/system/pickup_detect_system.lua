@@ -25,7 +25,7 @@ local function __long_press_gesture(eid, pc)
 end
 
 function pickup_detect_sys:data_changed()
-    for _, _, x, y in gesture_mb:unpack() do
+    for _, _, _, x, y in gesture_mb:unpack() do
         x, y = remap_xy(x, y)
         ipu.pick(x, y, __gesture)
     end
