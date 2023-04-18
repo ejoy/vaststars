@@ -109,8 +109,6 @@
                 construction_center_ingredients = {},
                 show_set_item = false,
                 show_set_recipe = false,
-                show_road_builder = false,
-                show_pipe_builder = false,
                 object_id = 0,
                 guide_progress = 0,
                 left = "0vmin",
@@ -211,22 +209,6 @@
                             start.buttons[#start.buttons + 1] = v
                         end
 
-                        if start.show_road_builder then
-                            local v = setmetatable({}, {__index = mt})
-                            v.text = "道路施工"
-                            v.message = "road_builder"
-                            v.background_image = "textures/common/road-connect.texture"
-                            start.buttons[#start.buttons + 1] = v
-                        end
-
-                        if start.show_pipe_builder then
-                            local v = setmetatable({}, {__index = mt})
-                            v.text = "管道施工"
-                            v.message = "pipe_builder"
-                            v.background_image = "textures/common/pipe-connect.texture"
-                            start.buttons[#start.buttons + 1] = v
-                        end
-
                         if start.construction_center_icon and start.construction_center_icon ~= "" then
                             local v = setmetatable({}, {__index = mt})
                             v.background_image = start.construction_center_icon
@@ -324,7 +306,7 @@
                         end
                         start("buttons")
                     end,
-                    "show_set_recipe", "show_set_item", "show_road_builder", 
+                    "show_set_recipe", "show_set_item",
                     "construction_center_icon", "construction_center_count", "construction_center_multiple", "drone_depot_icon", "station_item_icon",
                     "lorry_factory_icon", "lorry_factory_count", "lorry_factory_inc_lorry", "lorry_factory_dec_lorry",
                     "item_transfer_subscribe", "item_transfer_place", "item_transfer_unsubscribe", "item_transfer_place_disabled", "guide_progress"

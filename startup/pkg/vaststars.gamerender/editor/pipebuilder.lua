@@ -654,18 +654,15 @@ local function __apply_teardown(self, x, y)
     end
 end
 
-local function __calc_grid_position(self, typeobject)
-    local _, originPosition = logistic_coord:align(math3d.vector {0, 0, 0}, iprototype.unpackarea(typeobject.area))
-    local buildingPosition = logistic_coord:get_begin_position_by_coord(self.pickup_object.x, self.pickup_object.y)
+local function __calc_grid_position(self, typeobject, x, y)
+    local w, h = iprototype.unpackarea(typeobject.area)
+    local _, originPosition = logistic_coord:align(math3d.vector {0 - w / 2 * 10, 0, h / 2 * 10}, w, h)
+    local buildingPosition = logistic_coord:get_begin_position_by_coord(x, y)
     return math3d.ref(math3d.add(math3d.sub(buildingPosition, originPosition), GRID_POSITION_OFFSET))
 end
+
 --------------------------------------------------------------------------------------------------
 local function new_entity(self, datamodel, typeobject)
-    if not self.grid_entity then
-        self.grid_entity = igrid_entity.create("polyline_grid", terrain._width, terrain._height, terrain.tile_size, {t = __calc_grid_position(self, typeobject)})
-    end
-    self.grid_entity:show(true)
-
     iobject.remove(self.coord_indicator)
     local dir = DEFAULT_DIR
 
@@ -673,6 +670,11 @@ local function new_entity(self, datamodel, typeobject)
     if not x or not y then
         return
     end
+
+    if not self.grid_entity then
+        self.grid_entity = igrid_entity.create("polyline_grid", terrain._width, terrain._height, terrain.tile_size, {t = __calc_grid_position(self, typeobject, x, y)})
+    end
+    self.grid_entity:show(true)
 
     self.coord_indicator = iobject.new {
         prototype_name = typeobject.name,
@@ -695,7 +697,7 @@ local function touch_move(self, datamodel, delta_vec)
     end
     if self.grid_entity then
         local typeobject = iprototype.queryByName(self.coord_indicator.prototype_name)
-        self.grid_entity:send("obj_motion", "set_position", __calc_grid_position(self, typeobject))
+        self.grid_entity:send("obj_motion", "set_position", __calc_grid_position(self, typeobject, self.coord_indicator.x, self.coord_indicator.y))
     end
 end
 
