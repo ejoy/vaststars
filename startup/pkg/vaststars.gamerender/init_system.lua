@@ -29,13 +29,7 @@ local iroadnet = ecs.require "roadnet"
 local irender_layer = ecs.require "engine.render_layer"
 local ltask     = require "ltask"
 local ServiceResource = ltask.queryservice "ant.compile_resource|resource"
-local texture_table = {
-    [1] = {
-        cfg_path = "/pkg/vaststars.resources/textures/fluid_icon_canvas.cfg",
-        texture_path = "/pkg/vaststars.resources/textures/fluid_icon_canvas.texture"
-    }
-}
-ltask.call(ServiceResource, "create_texture_table", texture_table)
+ltask.call(ServiceResource, "set_texture_flag")
 local m = ecs.system 'init_system'
 function m:init_world()
     bgfx.maxfps(FRAMES_PER_SECOND)
