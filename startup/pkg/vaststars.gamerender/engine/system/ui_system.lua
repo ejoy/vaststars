@@ -222,6 +222,10 @@ function iui.close(url)
     close(url)
 end
 
+function iui.is_open(url)
+    return window_bindings[url] ~= nil
+end
+
 function iui.update(url, event, ...)
     local binding = window_bindings[url]
     if not binding then

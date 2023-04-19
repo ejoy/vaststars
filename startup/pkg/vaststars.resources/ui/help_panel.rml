@@ -33,6 +33,14 @@
                 background-image: "textures/science/book.texture";
                 background-size: cover;
             }
+            .help-collapse {
+                position: absolute;
+                right:0;
+                width: 5vmin;
+                height: 5vmin;
+                background-image: "textures/common/arrow1.texture";
+                background-size: cover;
+            }
             .help-title {
                 width: 95%;
                 height: 100%;
@@ -42,7 +50,6 @@
             }
             .help-title-block {
                 width: 100%;
-                height: 6%;
                 background-color: rgb(1,174,237);
                 background-size: cover;
                 justify-content: flex-start;
@@ -69,7 +76,7 @@
                 width: 95%;
                 height: 94%;
                 justify-content: flex-start;
-                flex-direction: row;
+                flex-direction: column;
                 align-items: flex-start;
                 font-size: 4vmin;
                 word-break: break-all;
@@ -101,71 +108,59 @@
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local start = ui_sys.createDataMode("start", {
-                object_id = 0,
-                property_list = {},
-                icon = "",
-                prototype_name = " ",
-                detail_panel_status_icon = "textures/work_status_icon/normal.texture",
-                detail_panel_status_desc = "正常工作",
-                show_chest = false,
-                chest_list0 = {},
-                chest_list1 = {},
-                show_minner = false,
-                progress = "0%",
-                recipe_inputs = {},
-                recipe_ouputs = {},
-                show_assemble = false,
-                recipe_name = " ",
-                guide_progress = 0,
+                helps = {},
+                collapse = false,
+                current_help = "",
+                current_content = {}
             })
+            function start.clickHelp(event, index)
+                start.current_help = start.helps[index+1].name
+                start.current_content = start.helps[index+1].content
+            end
+            
+            function start.clickReturnMenu(event)
+                start.current_help = ''
+            end
 
-            ui_sys.addEventListener({
-                ["leave"] = function()
-                    ui_sys.close()
-                end,
-            })
+            function start.clickCollapse(event, iscollapse)
+                start.collapse = iscollapse
+            end
         </script>
     </head>
     <body style = "pointer-events: none; justify-content: center; align-items: center;">
         <div data-model="start" class="panel1" style="flex-direction: column; justify-content:flex-start;">
 
             <!-- 帮助条目 start -->
-            <div class="help-panel">
-                <div class="help-title-block" style="margin-bottom: 0.3vmin;">
+            <div class="help-panel" data-if="current_help == ''">
+                <div class="help-title-block" style="margin-bottom: 0.3vmin;" data-event-click="clickHelp(it_index)" data-for = "it : helps">
                     <div class="help-book"/>
-                    <div class="help-title">游戏帮助</div>
-                </div>
-                <div class="help-title-block" style="margin-bottom: 0.3vmin;">
-                    <div class="help-book"/>
-                    <div class="help-title">游戏帮助</div>
-                </div>
-                <div class="help-title-block" style="margin-bottom: 0.3vmin;">
-                    <div class="help-book"/>
-                    <div class="help-title">游戏帮助</div>
-                </div>
-                <div class="help-title-block" style="margin-bottom: 0.3vmin;">
-                    <div class="help-book"/>
-                    <div class="help-title">游戏帮助</div>
+                    <div class="help-title">{{it.name}}</div>
                 </div>
             </div>
             <!-- 帮助条目 end -->
 
             <!-- 帮助内容 start -->
-            <div class="help-panel" data-if="false">
+            <div class="help-panel" data-if="!collapse && current_help != ''">
                 <div class="help-title-block">
-                    <div class="help-book"/>
-                    <div class="help-title">游戏帮助</div>
+                    <div class="help-book" data-event-click="clickReturnMenu()"/>
+                    <div class="help-title" style="pointer-events: none;">{{current_help}}</div>
+                    <div class="help-collapse" data-event-click="clickCollapse(true)"/>
                 </div>
-                <div class="help-content-block">游戏内容12345566778888989898989898989898989898989898989</div>
+                <div class="help-content-block">
+                    <richtext data-for="current_content">
+                        {{it}}
+                    </richtext>
+                </div>
             </div>
             <!-- 帮助内容 end -->
 
 
             <!-- 帮助收起 start -->
-            <div class="help-title-block2">
+            <div class="help-title-block2" data-if="current_help != '' && collapse">
                 <div class="help-title-block" style="height: 100%;">
-                    <div class="help-book"/>
-                    <div class="help-title">游戏帮助</div>
+                    <div class="help-book" data-event-click="clickReturnMenu()"/>
+                    <div class="help-title" style="pointer-events: none;">{{current_help}}</div>
+                    <div class="help-collapse" style="transform: rotate(180deg);" data-event-click="clickCollapse(false)"/>
                 </div>
             </div>
             <!-- 帮助收起 start -->

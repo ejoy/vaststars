@@ -1,12 +1,54 @@
 local ecs = ...
 local world = ecs.world
+local w = world.w
 
 local mc = import_package "ant.math".constant
-local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local math3d = require "math3d"
-local COLOR_INVALID <const> = math3d.constant "null"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local logistic_coord = ecs.require "terrain"
+local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+local irl = ecs.import.interface "ant.render|irender_layer"
+local imaterial = ecs.import.interface "ant.asset|imaterial"
+local iani = ecs.import.interface "ant.animation|ianimation"
+
+local function create_object(prefab, srt)
+    local p = ecs.create_instance(prefab)
+    function p:on_ready()
+        local root <close> = w:entity(self.tag['*'][1])
+        iom.set_srt(root, srt.s, srt.r, srt.t)
+
+        for _, eid in ipairs(self.tag['*']) do
+            local e <close> = w:entity(eid, "render_object?in animation_birth?in")
+            if e.render_object then
+                w:extend(e, "render_object:update render_layer:update")
+                e.render_layer = RENDER_LAYER.SELECTED_BOXES
+                local idx = irl.layeridx(e.render_layer)
+                e.render_object.render_layer = idx
+            end
+
+            if e.animation_birth then
+                iani.play(self, {name = e.animation_birth, loop = true, speed = 1.0, manual = false})
+            end
+        end
+    end
+    function p:on_message(name, ...)
+        if name == "set_color" then
+            local color = ...
+            for _, eid in ipairs(self.tag['*']) do
+                local e <close> = w:entity(eid, "material?in")
+                if e.material then
+                    imaterial.set_property(e, "u_emissive_factor", color)
+                    imaterial.set_property(e, "u_basecolor_factor", color)
+                end
+            end
+        elseif name == "obj_motion" then
+            local method, s, r, t = ...
+            local root <close> = w:entity(self.tag['*'][1])
+            iom[method](root, s, r, t)
+        end
+    end
+    return world:create_object(p)
+end
 
 local mt = {}
 mt.__index = mt
@@ -31,14 +73,21 @@ function mt:remove()
     end
 end
 
-function mt:set_position(t)
+function mt:set_position(center)
+    self.center = center
     for idx, o in ipairs(self.selected_boxes) do
-        local t = math3d.add(self.center, math3d.mul(DIRECTION[idx], math3d.vector {self.w, 0, self.h} ))
-        o:send("obj_motion", "set_srt", mc.ONE, ROTATION[idx], math3d.ref(t))
+        local position = math3d.ref(math3d.muladd(DIRECTION[idx], math3d.vector(self.w, 0, self.h), self.center))
+        o:send("obj_motion", "set_srt", mc.ONE, ROTATION[idx], math3d.ref(position))
     end
 end
 
-return function(prefab, center, w, h)
+function mt:set_color(color)
+    for _, o in ipairs(self.selected_boxes) do
+        o:send("set_color", color)
+    end
+end
+
+return function(prefab, center, color, w, h)
     local width = (w - 1) * logistic_coord.tile_size
     local height = (h - 1) * logistic_coord.tile_size
 
@@ -50,18 +99,14 @@ return function(prefab, center, w, h)
     }
 
     for idx = 1, #DIRECTION do
-        M.selected_boxes[#M.selected_boxes+1] = assert(igame_object.create({
-            state = "opaque",
-            color = COLOR_INVALID,
-            prefab = prefab,
-            group_id = 0,
-            srt = {
-                s = mc.ONE,
-                r = ROTATION[idx],
-                t = math3d.add(M.center, math3d.mul(DIRECTION[idx], math3d.vector {M.w, 0, M.h} )),
-            },
-            render_layer = RENDER_LAYER.SELECTED_BOXES,
-        }))
+        M.selected_boxes[idx] = create_object(prefab, {
+            s = mc.ONE,
+            r = ROTATION[idx],
+            t = math3d.ref(math3d.muladd(DIRECTION[idx], math3d.vector(M.w, 0, M.h), M.center)),
+        })
+        if mc.NULL ~= color then
+            M.selected_boxes[idx]:send("set_color", color)
+        end
     end
 
     return setmetatable(M, mt)

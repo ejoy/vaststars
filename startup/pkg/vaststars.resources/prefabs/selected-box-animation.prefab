@@ -1,0 +1,40 @@
+---
+data:
+  name: Scene
+  scene: {}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  meshskin: /pkg/vaststars.resources/glb/selected-box-animation.glb|meshes/Armature.skinbin
+  name: meshskin
+  scene: {}
+  skeleton: /pkg/vaststars.resources/glb/selected-box-animation.glb|animations/skeleton.ozz
+  skinning: true
+mount: 1
+policy:
+  ant.animation|meshskin
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  material: /pkg/vaststars.resources/materials/selected-box-animation.material
+  mesh: /pkg/vaststars.resources/glb/selected-box-animation.glb|meshes/Plane.002_P1.meshbin
+  name: Plane.002
+  skinning: true
+  visible_state: main_view|selectable|cast_shadow
+policy:
+  ant.general|name
+  ant.render|skinrender
+---
+data:
+  anim_ctrl: {}
+  animation:
+    ArmatureAction: /pkg/vaststars.resources/glb/selected-box-animation.glb|animations/ArmatureAction.ozz
+  animation_birth: ArmatureAction
+  name: animation
+  skeleton: /pkg/vaststars.resources/glb/selected-box-animation.glb|animations/skeleton.ozz
+policy:
+  ant.animation|animation
+  ant.general|name

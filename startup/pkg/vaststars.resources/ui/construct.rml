@@ -416,6 +416,9 @@
             function start.clickLoadResource(event)
                 ui_sys.pub {"load_resource"}
             end
+            function start.clickHelp(event)
+                ui_sys.pub {"help"}
+            end
             function start.clickExpandCollapsedBar(event)
                 local function show(e, v) -- TODO: remove this function
                     if not e.style then
@@ -534,6 +537,11 @@
             <!-- 加载资源按钮 -->
             <button  class = "main-menu-button" style="border: 0.00vmin; position: absolute; left: -5vmin; top: -4vmin;" data-event-click="clickLoadResource()" data-if = "cur_edit_mode == '' && guide_progress >= 10 && show_load_resource">
                 <div class = "menu-button-pic" style='width:8vmin; height:8vmin; background-image:"textures/cmdcenter/big_bag.texture"'/>
+            </button>
+
+            <!-- 帮助按钮 -->
+            <button  class = "main-menu-button" style="border: 0.00vmin; position: absolute; left:5vmin; top: -4vmin;" data-event-click="clickHelp()" data-if = "cur_edit_mode == '' && guide_progress >= 10">
+                <div class = "menu-button-pic" style='width:9vmin; height:9vmin; background-image:"textures/common/help.texture"'/>
             </button>
 
             <!-- 右上角：当前科技进度 -->

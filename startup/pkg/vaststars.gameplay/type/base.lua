@@ -16,8 +16,8 @@ type "tech"
     .count "number"
 
 type "road"
-
 type "pipe"
+type "pipe_to_ground"
 
 local c = type "task"
     .ingredients "items"

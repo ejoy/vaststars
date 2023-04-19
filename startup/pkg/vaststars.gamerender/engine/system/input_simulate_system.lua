@@ -58,7 +58,12 @@ local __gesture; do
             lasttime = now()
         elseif state == "UP" then
             if lasttime and now() - lasttime < LONG_PRESS_DURATION then
-                world:pub {"gesture", "tap", "ended", x, y}
+                world:pub {"gesture", "tap", {
+                    locationInView = {
+                        x = x,
+                        y = y,
+                    }
+                }}
             end
             lasttime = nil
         end

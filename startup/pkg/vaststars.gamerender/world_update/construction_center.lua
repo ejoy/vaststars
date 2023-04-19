@@ -88,6 +88,10 @@ local function create_printer()
             remove()
         end
 
+        if results[1].id == 0 then
+            return
+        end
+
         local res_typeobject = iprototype.queryById(results[1].id)
         local scale = res_typeobject.printer_scale and res_typeobject.printer_scale or {1, 1, 1}
         local position = {building_srt.t[1], 13, building_srt.t[3]} --TODO: change the height to be configured in the slot of prefab

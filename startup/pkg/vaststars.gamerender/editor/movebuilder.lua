@@ -26,7 +26,7 @@ local gameplay_core = require "gameplay.core"
 local global = require "global"
 local vsobject_manager = ecs.require "vsobject_manager"
 local create_sprite = ecs.require "sprite"
-local SPRITE_COLOR = import_package "vaststars.prototype"("sprite_color")
+local SPRITE_COLOR = import_package "vaststars.prototype".load("sprite_color")
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 
 local function _building_to_logisitic(x, y)
@@ -80,14 +80,18 @@ local function __new_entity(self, datamodel, typeobject)
 
     local sprite_color
     if not self:check_construct_detector(typeobject.name, x, y, dir) then
-        if typeobject.power_supply_area then
+        if typeobject.supply_area then
+            sprite_color = SPRITE_COLOR.CONSTRUCT_INVALID
+        elseif typeobject.power_supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_POWER_INVALID
         else
             sprite_color = SPRITE_COLOR.CONSTRUCT_INVALID
         end
         datamodel.show_confirm = false
     else
-        if typeobject.power_supply_area then
+        if typeobject.supply_area then
+            sprite_color = SPRITE_COLOR.DRONE_DEPOT_SUPPLY_AREA_VALID
+        elseif typeobject.power_supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_POWER_VALID
         else
             sprite_color = SPRITE_COLOR.CONSTRUCT_VALID
@@ -118,14 +122,21 @@ local function __new_entity(self, datamodel, typeobject)
     }
     iui.open({"move_building.rml"}, self.pickup_object.srt.t)
 
-    local w, h
-    if typeobject.power_supply_area then
-        w, h = typeobject.power_supply_area:match("(%d+)x(%d+)")
+    local offset_x, offset_y = 0, 0
+    if typeobject.supply_area then
+        local aw, ah = iprototype.unpackarea(typeobject.supply_area)
+        local w, h = iprototype.rotate_area(typeobject.area, dir)
+        offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
+        self.sprite = create_sprite(x + offset_x, y + offset_y, aw, ah, dir, sprite_color)
+    elseif typeobject.power_supply_area then
+        local aw, ah = typeobject.power_supply_area:match("(%d+)x(%d+)")
+        local w, h = iprototype.rotate_area(typeobject.area, dir)
+        offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
+        self.sprite = create_sprite(x + offset_x, y + offset_y, aw, ah, dir, sprite_color)
     else
-        w, h = iprototype.rotate_area(typeobject.area, dir, 1, 1)
+        local w, h = iprototype.rotate_area(typeobject.area, dir)
+        self.sprite = create_sprite(x + offset_x, y + offset_y, w, h, dir, sprite_color)
     end
-
-    self.sprite = create_sprite(x, y, w, h, dir, sprite_color)
 
     local road_entrance_position, _, _, road_entrance_dir = _get_road_entrance_position(typeobject, x, y, dir)
     if road_entrance_position then
@@ -237,6 +248,8 @@ local function touch_move(self, datamodel, delta_vec)
     end
 
     local sprite_color
+    local offset_x, offset_y = 0, 0
+    local w, h = iprototype.rotate_area(typeobject.area, pickup_object.dir)
     if not self:check_construct_detector(pickup_object.prototype_name, lx, ly, pickup_object.dir) then -- TODO
         datamodel.show_confirm = false
         iui.redirect("move_building.rml", "show_confirm", datamodel.show_confirm)
@@ -244,13 +257,19 @@ local function touch_move(self, datamodel, delta_vec)
         if self.road_entrance then
             self.road_entrance:set_state("invalid")
         end
-        if typeobject.power_supply_area then
+        if typeobject.supply_area then
+            sprite_color = SPRITE_COLOR.CONSTRUCT_INVALID
+            local aw, ah = iprototype.unpackarea(typeobject.supply_area)
+            offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
+        elseif typeobject.power_supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_POWER_INVALID
+            local aw, ah = typeobject.power_supply_area:match("(%d+)x(%d+)")
+            offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
         else
             sprite_color = SPRITE_COLOR.CONSTRUCT_INVALID
         end
         if self.sprite then
-            self.sprite:move(pickup_object.x, pickup_object.y, sprite_color)
+            self.sprite:move(pickup_object.x + offset_x, pickup_object.y + offset_y, sprite_color)
         end
         return
     else
@@ -260,13 +279,19 @@ local function touch_move(self, datamodel, delta_vec)
         if self.road_entrance then
             self.road_entrance:set_state("valid")
         end
-        if typeobject.power_supply_area then
+        if typeobject.supply_area then
+            sprite_color = SPRITE_COLOR.DRONE_DEPOT_SUPPLY_AREA_VALID
+            local aw, ah = iprototype.unpackarea(typeobject.supply_area)
+            offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
+        elseif typeobject.power_supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_POWER_VALID
+            local aw, ah = typeobject.power_supply_area:match("(%d+)x(%d+)")
+            offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
         else
             sprite_color = SPRITE_COLOR.CONSTRUCT_VALID
         end
         if self.sprite then
-            self.sprite:move(pickup_object.x, pickup_object.y, sprite_color)
+            self.sprite:move(pickup_object.x + offset_x, pickup_object.y + offset_y, sprite_color)
         end
     end
 
