@@ -192,10 +192,10 @@ local prototype = gameplay.register.prototype
     guide_focus = {
       {
         prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 115,
+        x = 114,
         y = 129,
-        w = 3.5,
-        h = 3.5,
+        w = 4,
+        h = 4,
       },
       {
         prefab = "prefabs/selected-box-no-animation.prefab",
@@ -257,9 +257,9 @@ local prototype = gameplay.register.prototype
       {
         prefab = "prefabs/selected-box-no-animation.prefab",
         x = 134,
-        y = 122.5,
-        w = 2,
-        h = 2,
+        y = 123,
+        w = 2.5,
+        h = 2.5,
         show_arrow = true,
       },
       {
