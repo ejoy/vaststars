@@ -57,30 +57,29 @@ local function subscribe(object_id)
         end,
         remove = function()
             transfer_effect.ready_effect:send("stop")
+
+            local building = global.buildings[object_id]
+            building.item_transfer_effect = nil
         end,
     }
 end
 
 local function unsubscribe(object_id)
-    init()
-    local obj = assert(objects:get(object_id))
-    transfer_effect.ready_effect:send("stop")
+    local building = global.buildings[object_id]
+    building.item_transfer_effect:remove()
+    building.item_transfer_effect = nil
 end
 
 local function place_from(object_id)
     init()
     local obj = assert(objects:get(object_id))
     transfer_effect.out_effect:send("play", obj.srt.t)
-
-    local building = global.buildings[object_id]
-    building.item_transfer_effect = nil
 end
 
 local function place_to(object_id)
     init()
     local obj = assert(objects:get(object_id))
     transfer_effect.in_effect:send("play", obj.srt.t)
-
 end
 
 return {

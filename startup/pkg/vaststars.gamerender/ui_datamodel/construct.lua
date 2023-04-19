@@ -32,6 +32,7 @@ local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local COLOR_INVALID <const> = math3d.constant "null"
 local mu = import_package "ant.math".util
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
+local COLOR_GREEN = math3d.constant("v4", {0.3, 1, 0, 1})
 
 local rotate_mb = mailbox:sub {"rotate"} -- construct_pop.rml -> 旋转
 local build_mb = mailbox:sub {"build"}   -- construct_pop.rml -> 修建
@@ -50,6 +51,7 @@ local move_finish_mb = mailbox:sub {"move_finish"}
 local teardown_mb = mailbox:sub {"teardown"}
 local builder_back_mb = mailbox:sub {"builder_back"}
 local construction_center_menu_place_mb = mailbox:sub {"construction_center_menu_place"}
+local construct_entity_mb = mailbox:sub {"construct_entity"}
 local item_transfer_src_inventory_mb = mailbox:sub {"item_transfer_src_inventory"}
 
 local pickup_gesture_mb = world:sub {"pickup_gesture"}
@@ -345,7 +347,7 @@ local function open_focus_tips(tech_node)
                     excluded_pickup_id = object.id
                 end
             end
-            tech_node.selected_tips[#tech_node.selected_tips + 1] = {selected_boxes(nd.prefab, center, nd.w, nd.h), prefab}
+            tech_node.selected_tips[#tech_node.selected_tips + 1] = {selected_boxes("/pkg/vaststars.resources/" .. nd.prefab, center, COLOR_GREEN, nd.w, nd.h), prefab}
         elseif nd.camera_x and nd.camera_y then
             camera.focus_on_position(logistic_coord:get_position_by_coord(nd.camera_x, nd.camera_y, width, height))
         end
@@ -366,8 +368,7 @@ local function close_focus_tips(tech_node)
     excluded_pickup_id = nil
 end
 
-local function __construct_entity(datamodel, gameplay_eid, item)
-    local typeobject = iprototype.queryById(item)
+local function __construct_entity(datamodel, gameplay_eid, typeobject)
     if iprototype.has_type(typeobject.type, "road") then
         iui.close("building_arc_menu.rml")
         iui.close("detail_panel.rml")
@@ -393,7 +394,7 @@ local function __construct_entity(datamodel, gameplay_eid, item)
         builder = create_station_builder()
         builder:new_entity(datamodel, typeobject)
     else
-        builder = create_normalbuilder(gameplay_eid, item)
+        builder = create_normalbuilder(gameplay_eid, typeobject.id)
         builder:new_entity(datamodel, typeobject)
     end
     handle_pickup = false
@@ -580,7 +581,13 @@ function M:stage_camera_usage(datamodel)
         local slot = assert(gameplay_core.get_world():container_get(e.chest, index))
         assert(slot.item ~= 0)
 
-        __construct_entity(datamodel, object.gameplay_eid, slot.item)
+        local typeobject = iprototype.queryById(slot.item)
+        __construct_entity(datamodel, object.gameplay_eid, typeobject)
+    end
+
+    for _, _, _, item in construct_entity_mb:unpack() do
+        local typeobject = iprototype.queryByName(item)
+        __construct_entity(datamodel, nil, typeobject)
     end
 
     -- TODO: 多个UI的stage_ui_update中会产生focus_tips_event事件，focus_tips_event处理逻辑涉及到要修改相机位置，所以暂时放在这里处理

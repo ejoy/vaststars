@@ -55,7 +55,7 @@ local prototype = gameplay.register.prototype
     prerequisites = {"迫降火星"},
     guide_focus = {
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 121,
         y = 122,
         w = 5.5,
@@ -86,7 +86,7 @@ local prototype = gameplay.register.prototype
     prerequisites = {"采矿机打印预备"},
     guide_focus = {
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 114,
         y = 121,
         w = 2,
@@ -95,21 +95,21 @@ local prototype = gameplay.register.prototype
         force = true,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 109,
         y = 136,
         w = 3,
         h = 3,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 134,
         y = 122.5,
         w = 2,
         h = 2,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 126,
         y = 109,
         w = 2,
@@ -138,7 +138,7 @@ local prototype = gameplay.register.prototype
     prerequisites = {"机尾残骸传送"},
     guide_focus = {
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 121,
         y = 122,
         w = 5.5,
@@ -191,14 +191,14 @@ local prototype = gameplay.register.prototype
     },
     guide_focus = {
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 115,
         y = 129,
         w = 3.5,
         h = 3.5,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 121,
         y = 122,
         w = 5.5,
@@ -228,7 +228,7 @@ local prototype = gameplay.register.prototype
     },
     guide_focus = {
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 121,
         y = 122,
         w = 5.5,
@@ -255,7 +255,7 @@ local prototype = gameplay.register.prototype
     prerequisites = {"电线杆打印预备"},
     guide_focus = {
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 134,
         y = 122.5,
         w = 2,
@@ -285,7 +285,7 @@ local prototype = gameplay.register.prototype
     prerequisites = {"机翼残骸传送"},
     guide_focus = {
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 121,
         y = 122,
         w = 5.5,
@@ -314,7 +314,7 @@ prototype "建造电线杆" {
     count = 5,
     guide_focus = {
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 121,
         y = 122,
         w = 5.5,
@@ -350,35 +350,35 @@ prototype "建造电线杆" {
     },
     guide_focus = {
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 117,
         y = 115,
         w = 1.5,
         h = 1.5,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 117,
         y = 123,
         w = 1.5,
         h = 1.5,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 117,
         y = 131,
         w = 1.5,
         h = 1.5,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 123,
         y = 115,
         w = 2,
         h = 2,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 121,
         y = 122,
         w = 5.5,
@@ -408,7 +408,7 @@ prototype "建造电线杆" {
     },
     guide_focus = {
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 121,
         y = 122,
         w = 5.5,
@@ -435,7 +435,7 @@ prototype "建造电线杆" {
     prerequisites = {"无人机仓库打印预备"},
     guide_focus = {
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 126,
         y = 109,
         w = 2,
@@ -465,7 +465,7 @@ prototype "建造电线杆" {
     prerequisites = {"机头残骸传送"},
     guide_focus = {
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 121,
         y = 122,
         w = 5.5,
@@ -495,7 +495,7 @@ prototype "建造电线杆" {
     prerequisites = {"无人机仓库传送接收"},
     guide_focus = {
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 115,
         y = 129,
         w = 3.5,
@@ -525,7 +525,7 @@ prototype "建造电线杆" {
     prerequisites = {"采矿机传送"},
     guide_focus = {
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 121,
         y = 122,
         w = 5.5,
@@ -576,7 +576,7 @@ prototype "建造电线杆" {
     },
     guide_focus = {
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 118.5,
         y = 129.5,
         w = 2,
@@ -653,7 +653,7 @@ prototype "建造电线杆" {
     count = 2,
     guide_focus = {
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 126,
         y = 109,
         w = 2,
@@ -686,7 +686,7 @@ prototype "建造电线杆" {
     },
     guide_focus = {
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 118.5,
         y = 126,
         w = 2,
@@ -727,7 +727,7 @@ prototype "建造电线杆" {
     prerequisites = {"仓库碎石设置"},
     guide_focus = {
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 114,
         y = 121,
         w = 2,
@@ -735,7 +735,7 @@ prototype "建造电线杆" {
         show_arrow = true,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 121,
         y = 122,
         w = 5.5,
@@ -766,7 +766,7 @@ prototype "建造电线杆" {
     },
     guide_focus = {
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 127,
         y = 130,
         w = 3.5,
@@ -817,7 +817,7 @@ prototype "建造电线杆" {
     },
     guide_focus = {
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 114,
         y = 121,
         w = 2,
@@ -825,7 +825,7 @@ prototype "建造电线杆" {
         show_arrow = true,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 121,
         y = 122,
         w = 5.5,
@@ -853,14 +853,14 @@ prototype "建造电线杆" {
     },
     guide_focus = {
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 121,
         y = 126,
         w = 3,
         h = 3,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 121,
         y = 130,
         w = 3,
@@ -1023,7 +1023,7 @@ prototype "建造电线杆" {
     },
     guide_focus = {
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 134,
         y = 122.5,
         w = 2,
@@ -1064,7 +1064,7 @@ prototype "建造电线杆" {
     count = 10,
     guide_focus = {
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 109,
         y = 136,
         w = 4.5,
@@ -1160,273 +1160,273 @@ prototype "建造电线杆" {
     },
     guide_focus = {
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 126,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 127,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 128,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 129,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 130,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 131,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 132,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 133,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 134,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 135,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 136,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 137,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 138,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 139,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 140,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 141,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 142,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 143,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 144,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 145,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 146,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 147,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 148,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 149,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 150,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 151,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 152,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 153,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 154,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 155,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 156,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 157,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 158,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 159,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 160,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 161,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 162,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 163,
         y = 125,
         w = 0.25,
         h = 0.25,
       },
       {
-        prefab = "prefabs/selected-box-guide.prefab",
+        prefab = "prefabs/selected-box-no-animation.prefab",
         x = 164,
         y = 125,
         w = 0.25,

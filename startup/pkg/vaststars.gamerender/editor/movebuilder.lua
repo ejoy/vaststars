@@ -26,7 +26,7 @@ local gameplay_core = require "gameplay.core"
 local global = require "global"
 local vsobject_manager = ecs.require "vsobject_manager"
 local create_sprite = ecs.require "sprite"
-local SPRITE_COLOR = import_package "vaststars.prototype"("sprite_color")
+local SPRITE_COLOR = import_package "vaststars.prototype".load("sprite_color")
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 
 local function _building_to_logisitic(x, y)

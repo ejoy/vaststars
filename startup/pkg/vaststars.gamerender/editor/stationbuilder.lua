@@ -20,7 +20,7 @@ local igrid_entity = ecs.require "engine.grid_entity"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local mc = import_package "ant.math".constant
 local create_road_entrance = ecs.require "editor.road_entrance"
-local create_selected_boxes = ecs.require "editor.selected_boxes"
+local create_selected_boxes = ecs.require "selected_boxes"
 local icanvas = ecs.require "engine.canvas"
 local datalist = require "datalist"
 local fs = require "filesystem"
@@ -29,6 +29,9 @@ local building_coord = require "global".building_coord_system
 local math3d = require "math3d"
 local iroadnet_converter = require "roadnet_converter"
 local gen_endpoint_mask = ecs.require "editor.endpoint".gen_endpoint_mask
+local COLOR_GREEN = math3d.constant("v4", {0.3, 1, 0, 1})
+local COLOR_RED = math3d.constant("v4", {1, 0.03, 0, 1})
+local terrain = ecs.require "terrain"
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -107,15 +110,16 @@ local function __new_entity(self, datamodel, typeobject)
     iui.open({"construct_pop.rml"}, self.pickup_object.srt.t)
 
     local road_entrance_position, road_entrance_dir = _get_road_entrance_position(typeobject, dir, self.pickup_object.srt.t)
-    local selected_boxes_srt = {t = logistic_coord:get_begin_position_by_coord(x, y, 1, 1)}
+    local w, h = iprototype.unpackarea(typeobject.area)
+    local selected_boxes_position = logistic_coord:get_position_by_coord(x, y, w, h)
     if road_entrance_position then
         local srt = {t = road_entrance_position, r = ROTATORS[road_entrance_dir]}
         if datamodel.show_confirm then
             self.road_entrance = create_road_entrance(srt, "valid")
-            self.selected_boxes = create_selected_boxes(selected_boxes_srt, typeobject.area, "valid")
+            self.selected_boxes = create_selected_boxes("/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab", selected_boxes_position, COLOR_GREEN, w+1, h+1)
         else
             self.road_entrance = create_road_entrance(srt, "invalid")
-            self.selected_boxes = create_selected_boxes(selected_boxes_srt, typeobject.area, "invalid")
+            self.selected_boxes = create_selected_boxes("/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab", selected_boxes_position, COLOR_RED, w+1, h+1)
         end
     end
 end
@@ -319,7 +323,9 @@ local function rotate_pickup_object(self, datamodel, dir, delta_vec)
         self.road_entrance:set_srt(mc.ONE, ROTATORS[ddir], road_entrance_position)
     end
 
-    self.selected_boxes:set_srt(mc.ONE, ROTATORS.W, logistic_coord:get_begin_position_by_coord(pickup_object.x, pickup_object.y, 1, 1))
+    local w, h = iprototype.unpackarea(typeobject.area)
+    local selected_boxes_position = logistic_coord:get_position_by_coord(pickup_object.x, pickup_object.y, w, h)
+    self.selected_boxes:set_position(selected_boxes_position)
 end
 
 local function touch_move(self, datamodel, delta_vec)
@@ -332,10 +338,11 @@ local function touch_move(self, datamodel, delta_vec)
         assert(road_entrance_position)
         self.road_entrance:set_srt(mc.ONE, ROTATORS[road_entrance_dir], road_entrance_position)
 
-        do
-            local typeobject = iprototype.queryByName(self.pickup_object.prototype_name)
-            local coord = logistic_coord:align(camera.get_central_position(), iprototype.rotate_area(typeobject.area, self.pickup_object.dir))
-            self.selected_boxes:set_srt(mc.ONE, ROTATORS.W, logistic_coord:get_begin_position_by_coord(coord[1], coord[2], 1, 1))
+        local position, x, y = __align(self.pickup_object.prototype_name, self.pickup_object.dir)
+        if position then
+            local w, h = iprototype.unpackarea(typeobject.area)
+            local selected_boxes_position = logistic_coord:get_position_by_coord(x, y, w, h)
+            self.selected_boxes:set_position(selected_boxes_position)
         end
 
         self.last_position = {self.pickup_object.srt.t[1], self.pickup_object.srt.t[2], self.pickup_object.srt.t[3]}
@@ -375,18 +382,21 @@ local function touch_end(self, datamodel)
 
         if self.road_entrance then
             self.road_entrance:set_state("invalid")
-            self.selected_boxes:set_state("invalid")
+            self.selected_boxes:set_color(COLOR_RED)
         end
     else
         if self.road_entrance then
             self.road_entrance:set_state("valid")
-            self.selected_boxes:set_state("valid")
+            self.selected_boxes:set_color(COLOR_GREEN)
         end
     end
 
     local road_entrance_position, road_entrance_dir = _get_road_entrance_position(typeobject, self.pickup_object.dir, self.pickup_object.srt.t)
     self.road_entrance:set_srt(mc.ONE, ROTATORS[road_entrance_dir], road_entrance_position)
-    self.selected_boxes:set_srt(mc.ONE, ROTATORS.W, logistic_coord:get_begin_position_by_coord(pickup_object.x, pickup_object.y, 1, 1))
+
+    local w, h = iprototype.unpackarea(typeobject.area)
+    local selected_boxes_position = logistic_coord:get_position_by_coord(pickup_object.x, pickup_object.y, w, h)
+    self.selected_boxes:set_position(selected_boxes_position)
 
     pickup_object.recipe = _get_mineral_recipe(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir) -- TODO: maybe set recipt according to entity type?
 

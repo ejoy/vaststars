@@ -25,7 +25,7 @@ local mc = import_package "ant.math".constant
 local create_road_entrance = ecs.require "editor.road_entrance"
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 local create_sprite = ecs.require "sprite"
-local SPRITE_COLOR = import_package "vaststars.prototype"("sprite_color")
+local SPRITE_COLOR = import_package "vaststars.prototype".load("sprite_color")
 local idronecover = ecs.require "drone_cover"
 local gameplay_core = require "gameplay.core"
 local ichest = require "gameplay.interface.chest"
@@ -273,6 +273,14 @@ local function touch_move(self, datamodel, delta_vec)
         self.grid_entity:send("obj_motion", "set_position", __calc_grid_position(self, typeobject))
     end
 
+    -- update temp pole
+    if typeobject.power_supply_area and typeobject.power_supply_distance then
+        local aw, ah = iprototype.unpackarea(typeobject.area)
+        local sw, sh = typeobject.power_supply_area:match("(%d+)x(%d+)")
+        ipower:merge_pole({power_network_link_target = 0, key = pickup_object.id, targets = {}, x = lx, y = ly, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.power_supply_distance, smooth_pos = true, power_network_link = typeobject.power_network_link})
+        ipower_line.update_temp_line(ipower:get_temp_pole())
+    end
+
     if self.last_x == lx and self.last_y == ly then
         return
     end
@@ -324,14 +332,6 @@ local function touch_move(self, datamodel, delta_vec)
     end
 
     pickup_object.recipe = _get_mineral_recipe(pickup_object.prototype_name, lx, ly, pickup_object.dir) -- TODO: maybe set recipt according to entity type?
-
-    -- update temp pole
-    if typeobject.power_supply_area and typeobject.power_supply_distance then
-        local aw, ah = iprototype.unpackarea(typeobject.area)
-        local sw, sh = typeobject.power_supply_area:match("(%d+)x(%d+)")
-        ipower:merge_pole({power_network_link_target = 0, key = pickup_object.id, targets = {}, x = lx, y = ly, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.power_supply_distance, smooth_pos = true, power_network_link = typeobject.power_network_link})
-        ipower_line.update_temp_line(ipower:get_temp_pole())
-    end
 
     if iprototype.has_type(typeobject.type, "hub") then
         idronecover.update_cover(pickup_object, typeobject)

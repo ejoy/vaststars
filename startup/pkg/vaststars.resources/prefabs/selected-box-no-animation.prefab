@@ -7,9 +7,9 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  material: /pkg/vaststars.resources/materials/selected_box_valid.material
-  mesh: /pkg/vaststars.resources/glb/selected_box_valid.glb|meshes/Plane.002_P1.meshbin
-  name: Plane.002
+  material: /pkg/vaststars.resources/materials/selected-box-no-animation.material
+  mesh: /pkg/vaststars.resources/glb/selected-box-no-animation.glb|meshes/Plane.002_P1.meshbin
+  name: Plane.001
   scene: {}
   visible_state: main_view|selectable|cast_shadow
 mount: 1

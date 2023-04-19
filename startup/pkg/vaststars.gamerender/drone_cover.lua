@@ -6,6 +6,8 @@ local selected_boxes = ecs.require "selected_boxes"
 local objects = require "objects"
 local gameplay_core = require "gameplay.core"
 local iprototype = require "gameplay.interface.prototype"
+local math3d = require "math3d"
+local BLUE = math3d.constant("v4", {0, 0.4, 1, 1})
 
 local M = {}
 local selects = {}
@@ -18,7 +20,7 @@ local function select_cover(x, y, dist, obj)
         local dx = obj.x + (w - 1) / 2 - x
         local dy = obj.y + (h - 1) / 2 - y
         if math.sqrt(dx * dx + dy * dy) <= dist and not selects[obj.id] then
-            selects[obj.id] = selected_boxes("prefabs/selected_box_valid.prefab", logistic_coord:get_position_by_coord(obj.x, obj.y, w, h), w, h)
+            selects[obj.id] = selected_boxes("/pkg/vaststars.resources/" .. "prefabs/selected-box-no-animation.prefab", logistic_coord:get_position_by_coord(obj.x, obj.y, w, h), BLUE, w, h)
         end
     end
 end
