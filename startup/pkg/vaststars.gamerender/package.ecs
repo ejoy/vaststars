@@ -89,6 +89,7 @@ interface "iui"
     .method "set_guide_progress"
     .method "convert_coord"
     .method "redirect"
+    .method "is_open"
 
 system "camera_controller"
     .implement "engine/system/camera_controller.lua"

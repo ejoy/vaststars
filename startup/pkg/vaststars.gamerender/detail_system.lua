@@ -10,6 +10,7 @@ local iprototype = require "gameplay.interface.prototype"
 local idetail = ecs.interface "idetail"
 
 function idetail.show(object_id)
+    iui.close("help_panel.rml")
     iui.open({"detail_panel.rml"}, object_id)
 
     --

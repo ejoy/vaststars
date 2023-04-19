@@ -131,11 +131,6 @@
                     event.target.transform = "rotate(0deg)"
                 end
             end
-            ui_sys.addEventListener({
-                ["leave"] = function()
-                    ui_sys.close()
-                end,
-            })
         </script>
     </head>
     <body style = "pointer-events: none; justify-content: center; align-items: center;">

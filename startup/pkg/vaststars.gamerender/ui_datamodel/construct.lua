@@ -65,7 +65,6 @@ local pickup_id -- object id
 local excluded_pickup_id -- object id
 local manual_item_transfer_src_inventory = false
 local handle_pickup = true
-local help_open = false
 
 local item_transfer_placement_interval = interval_call(300, function(datamodel, object_id)
     if not global.item_transfer_src then
@@ -295,12 +294,10 @@ function M:stage_ui_update(datamodel)
     end
 
     for _ in help_mb:unpack() do
-        if not help_open then
-            help_open = true
+        if not iui.is_open("help_panel.rml") then
             iui.open({"help_panel.rml"})
         else
-            help_open = false
-            iui.close({"help_panel.rml"})
+            iui.close("help_panel.rml")
         end
     end
 

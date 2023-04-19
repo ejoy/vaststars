@@ -30,6 +30,8 @@ return function(world)
         iui.close("building_arc_menu.rml")
         iui.redirect("construct_pop.rml", "guide_on_going")
         iui.redirect("construct.rml", "guide_on_going")
+        iui.redirect("help_panel.rml", "guide_on_going")
+
         -- pop guide ui
         iui.open({"guide_pop.rml"}, guide)
         iguide.set_is_in_guide(true)
