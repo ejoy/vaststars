@@ -140,7 +140,7 @@ prototype "砖石公路-T型" {
 }
 
 prototype "砖石公路-X型" {
-    show_prototype_name = "砖石公路-I型",
+    show_prototype_name = "砖石公路",
     model = "prefabs/road/road_X.prefab",
     icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
