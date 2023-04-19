@@ -1101,47 +1101,17 @@ prototype "建造电线杆" {
   }
 
   prototype "道路设计" {
-    desc = "制造1张修路站框架",
+    desc = "建造60段公路",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
-    task = {"stat_production", 0, "修路站框架"},
+    task = {"stat_production", 0, "砖石公路-X型"},
     prerequisites = {"道路研究"},
-    count = 1,
+    count = 60,
     tips_pic = {
       "textures/task_tips_pic/task_produce_ore3.texture",
     },
     sign_desc = {
-      { desc = "组装机生产1张修路站框架", icon = "textures/construct/industry.texture"},
-    },
-  }
-
-  prototype "建造道路站" {
-    desc = "建造组装机",
-    icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
-    task = {"stat_consumption", 0, "修路站框架"},
-    prerequisites = {"道路设计"},
-    count = 1,
-    tips_pic = {
-      "textures/task_tips_pic/task_place_logistics.texture",
-    },
-    sign_desc = {
-      { desc = "在“建造中心”建造1个修路站", icon = "textures/construct/industry.texture"},
-    },
-  }
-
-    prototype "放置修路站" {
-    desc = "放置1座修路站",
-    icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
-    task = {"select_entity", 0, "修路站"},
-    prerequisites = {"建造道路站"},
-    count = 1,
-    tips_pic = {
-      "textures/task_tips_pic/task_place_logistics.texture",
-    },
-    sign_desc = {
-      { desc = "放置1个修路站", icon = "textures/construct/industry.texture"},
+      { desc = "建造中心生产60段公路", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -1151,7 +1121,7 @@ prototype "建造电线杆" {
     type = { "tech", "task" },
     task = {"unknown", 0, 1},
     task_params = {},
-    prerequisites = {"放置修路站"},
+    prerequisites = {"道路设计"},
     count = 35,
     tips_pic = {
       "textures/task_tips_pic/task_place_road1.texture",

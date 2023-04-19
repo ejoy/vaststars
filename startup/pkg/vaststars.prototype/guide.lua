@@ -527,7 +527,7 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"{/color:4bd0ff 组装机}可以制造{/g 修路站框架}，赶紧开动吧..哔哗..(期待)", "textures/guide/guide-1.texture"},
+            {"{/color:4bd0ff 建造中心}可以制造{/g 道路}，赶紧开动吧..哔哗..(期待)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
             guide_progress = 52,
@@ -543,33 +543,17 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"再将{/color:4bd0ff 修路站框架}送入{/color:4bd0ff 建造中心}就可以开始建造{/g 修路站}了..哔哗..(期待)", "textures/guide/guide-1.texture"},
-        },
-        narrative_end = {
-            guide_progress = 53,
-            task = {
-                "建造道路站",
-            }
-        },
-        prerequisites = {
-            "道路设计",
-        },
-	},
-
-    {
-        name = "",
-		narrative = {
             {"我们需要以{/g 指挥中心}为起点修建一条通往{/g 铁矿}的{/color:4bd0ff 道路}..哔哗..(期待)", "textures/guide/guide-2.texture"},
             {"{/color:4bd0ff 道路}可以通行{/g 运输车辆},这样可以大大提高我们远程物流的效率..哔哗..(高兴)", "textures/guide/guide-2.texture"},
         },
         narrative_end = {
-            guide_progress = 54,
+            guide_progress = 53,
             task = {
                 "通向铁矿",
             }
         },
         prerequisites = {
-            "放置修路站",
+            "道路设计",
         },
 	},
 
