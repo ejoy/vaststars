@@ -1,0 +1,19 @@
+fx:
+  vs: /pkg/mod.translucent_plane/assets/shaders/vs_translucent_plane.sc
+  fs: /pkg/mod.translucent_plane/assets/shaders/fs_translucent_plane.sc
+  setting:
+    ALPHAMODE_OPAQUE: 1
+    lighting: on
+    shadow_cast: on
+    shadow_receive: on
+    subsurface: off
+properties:
+  u_colorTable: {0, 0, 0, 0} 
+state:
+  ALPHA_REF: 1
+  CULL: CCW
+  DEPTH_TEST: EQUAL
+  MSAA: true
+  WRITE_MASK: RGBAZ
+  BLEND_FUNC: "sS"
+  BLEND_ENABLE: "i"

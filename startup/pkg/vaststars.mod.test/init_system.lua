@@ -18,6 +18,7 @@ local iprinter= ecs.import.interface "mod.printer|iprinter"
 local printer_percent = 1.0
 local printer_eid
 local istonemountain= ecs.import.interface "mod.stonemountain|istonemountain"
+local itp = ecs.import.interface "mod.translucent_plane|itranslucent_plane"
 local S = ecs.system "init_system"
 
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
@@ -41,7 +42,7 @@ end
 
 local function create_zone()
     local t = {
-        [1] = {x = 0, y = 0, zone_rgba  = {r = 255, g = 0, b = 0, a = 155}}, 
+        [1] = {x = 0, y = 0, zone_rgba  = {r = 255, g = 0, b = 0, a = 255}}, 
         [2] = {x = 1, y = 0, zone_rgba  = {r = 0, g = 255, b = 0, a = 155}},
         [3] = {x = 2, y = 0, zone_rgba  = {r = 0, g = 0, b = 255, a = 155}}
     }
@@ -57,7 +58,14 @@ function S.init_world()
 
     iterrain.gen_terrain_field(256, 256, 128)
     --istonemountain.create_sm_entity(0.8, 256, 256, 128)
-    create_zone()
+    --create_zone()
+    local t = {
+        [1] = {r = 255, g = 0, b = 0, a = 255}, 
+        [2] = {r = 0, g = 255, b = 0, a = 155},
+        [3] = {r = 0, g = 0, b = 255, a = 155}
+    }
+    itp.set_translucent_rgba(t)
+
     printer_eid = ecs.create_entity {
         policy = {
             "ant.render|render",
@@ -89,12 +97,34 @@ function S:data_changed()
             end
             iprinter.update_printer_percent(printer_eid, printer_percent)
         elseif key == "J" and press == 0 then
-            local t = {
-                [1] = {x = 0, y = 0}, 
-                [2] = {x = 1, y = 0},
-                [3] = {x = 2, y = 0}
+            local plane_table = {
+                [1] = {x = 0, z = 0},
+                [2] = {x = 1, z = 0},
             }
-            iterrain.delete_zone_entity(t)
+            local translucent_info = {
+                color_idx = 1,
+                min_x = 0,
+                min_z = 0
+            }
+            itp.create_translucent_plane_entity(plane_table, translucent_info)
+
+            local plane_table2 = {
+                [1] = {x = 2, z = 2},
+                [2] = {x = 2, z = 3},
+            }
+            local translucent_info2 = {
+                color_idx = 2,
+                min_x = 2,
+                min_z = 2
+            }
+            itp.create_translucent_plane_entity(plane_table2, translucent_info2 )
+        elseif key == "K" and press == 0 then
+            local translucent_info = {
+                color_idx = 1,
+                min_x = 0,
+                min_z = 0
+            }
+            itp.remove_translucent_plane_entity(translucent_info)
         end
     end
 end
