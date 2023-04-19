@@ -122,13 +122,13 @@
                 start.current_help = ''
             end
 
-            function start.clickCollapse(event)
-                start.collapse = not start.collapse
-                local ea = document.getElementById('CollapseHelp')
-                if start.collapse then
-                    ea.style.transform = "rotate(180deg)"
+            function start.clickCollapse(event, iscollapse)
+                start.collapse = iscollapse
+                --local ea = document.getElementById('CollapseHelp')
+                if iscollapse then
+                    event.target.transform = "rotate(180deg)"
                 else
-                    ea.style.transform = "rotate(0deg)"
+                    event.target.transform = "rotate(0deg)"
                 end
             end
             ui_sys.addEventListener({
@@ -151,13 +151,13 @@
             <!-- 帮助条目 end -->
 
             <!-- 帮助内容 start -->
-            <div class="help-panel" data-if="current_help != ''">
+            <div class="help-panel" data-if="!collapse && current_help != ''">
                 <div class="help-title-block">
                     <div class="help-book" data-event-click="clickReturnMenu()"/>
                     <div class="help-title" style="pointer-events: none;">{{current_help}}</div>
-                    <div class="help-collapse" id = "CollapseHelp" data-event-click="clickCollapse()"/>
+                    <div class="help-collapse" data-event-click="clickCollapse(true)"/>
                 </div>
-                <div class="help-content-block" data-if="!collapse">
+                <div class="help-content-block">
                     <div data-for="current_content">
                         {{it}}
                     </div>
@@ -167,10 +167,11 @@
 
 
             <!-- 帮助收起 start -->
-            <div class="help-title-block2" data-if="false">
+            <div class="help-title-block2" data-if="current_help != '' && collapse">
                 <div class="help-title-block" style="height: 100%;">
-                    <div class="help-book"/>
-                    <div class="help-title">游戏帮助</div>
+                    <div class="help-book" data-event-click="clickReturnMenu()"/>
+                    <div class="help-title" style="pointer-events: none;">{{current_help}}</div>
+                    <div class="help-collapse" data-event-click="clickCollapse(false)"/>
                 </div>
             </div>
             <!-- 帮助收起 start -->
