@@ -416,6 +416,9 @@
             function start.clickLoadResource(event)
                 ui_sys.pub {"load_resource"}
             end
+            function start.clickHelp(event)
+                ui_sys.pub {"help"}
+            end
             function start.clickExpandCollapsedBar(event)
                 local function show(e, v) -- TODO: remove this function
                     if not e.style then
@@ -537,7 +540,7 @@
             </button>
 
             <!-- 帮助按钮 -->
-            <button  class = "main-menu-button" style="border: 0.00vmin; position: absolute; left:5vmin; top: -4vmin;" data-if = "cur_edit_mode == '' && guide_progress >= 10">
+            <button  class = "main-menu-button" style="border: 0.00vmin; position: absolute; left:5vmin; top: -4vmin;" data-event-click="clickHelp()" data-if = "cur_edit_mode == '' && guide_progress >= 10">
                 <div class = "menu-button-pic" style='width:9vmin; height:9vmin; background-image:"textures/common/help.texture"'/>
             </button>
 

@@ -43,6 +43,7 @@ local technology_mb = mailbox:sub {"technology"} -- 主界面左下角 -> 科研
 local click_techortaskicon_mb = mailbox:sub {"click_techortaskicon"}
 local guide_on_going_mb = mailbox:sub {"guide_on_going"}
 local load_resource_mb = mailbox:sub {"load_resource"}
+local help_mb = mailbox:sub {"help"}
 local single_touch_mb = world:sub {"single_touch"}
 local move_md = mailbox:sub {"move"}
 local move_finish_mb = mailbox:sub {"move_finish"}
@@ -62,6 +63,7 @@ local pickup_id -- object id
 local excluded_pickup_id -- object id
 local manual_item_transfer_src_inventory = false
 local handle_pickup = true
+local help_open = false
 
 local item_transfer_placement_interval = interval_call(300, function(datamodel, object_id)
     if not global.item_transfer_src then
@@ -288,6 +290,16 @@ function M:stage_ui_update(datamodel)
 
     for _ in show_setting_mb:unpack() do
         iui.open({"option_pop.rml"})
+    end
+
+    for _ in help_mb:unpack() do
+        if not help_open then
+            help_open = true
+            iui.open({"help_panel.rml"})
+        else
+            help_open = false
+            iui.close({"help_panel.rml"})
+        end
     end
 
     for _ in load_resource_mb:unpack() do
