@@ -111,7 +111,7 @@
                 helps = {},
                 collapse = false,
                 current_help = "",
-                current_content = {"1.","2.","3.","4."}
+                current_content = {}
             })
             function start.clickHelp(event, index)
                 start.current_help = start.helps[index+1].name

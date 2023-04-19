@@ -8,6 +8,13 @@ local objects = require "objects"
 local ims = ecs.import.interface "ant.motion_sampler|imotion_sampler"
 local gameplay_core = require "gameplay.core"
 local entity_remove = world:sub {"gameplay", "remove_entity"}
+-- enum defined in c 
+local STATUS_HAS_ERROR = 1
+local STATUS_EMPTY_TASK = 2
+local STATUS_IDLE <const> = 3
+local STATUS_AT_HOME <const> = 4
+local STATUS_GO_HOME <const> = 7
+
 local sampler_group
 local function create_motion_object(s, r, t, parent)
     if not sampler_group then
@@ -181,6 +188,10 @@ return function(gameworld)
         -- if (drone.prev ~= 0) or (drone.next ~= 0) or (drone.maxprogress ~= 0) or (drone.progress ~= 0) then
         --     print(drone.prev, drone.next, drone.maxprogress, drone.progress, drone.item)
         -- end
+        if drone.status == STATUS_HAS_ERROR and lookup_drones[e.eid] then
+            lookup_drones[e.eid]:destroy()
+            lookup_drones[e.eid] = nil
+        end
         if not lookup_drones[e.eid] then
             local obj = get_object(drone.prev)
             assert(obj)
@@ -218,14 +229,14 @@ return function(gameworld)
                             local dest_pos = destobj.srt.t
                             -- status : go_home
                             local tohome
-                            if drone.status == 7 then
+                            if drone.status == STATUS_GO_HOME then
                                 dest_pos = get_home_pos(dest_pos)
                                 tohome = true
                             end
                             drone_task[#drone_task + 1] = {key, current, dest_pos, duration, tohome}
                         end
                     end
-                elseif drone.status == 3 or drone.status == 4 then
+                elseif drone.status == STATUS_IDLE or drone.status == STATUS_AT_HOME then
                     -- status : at_home
                     local obj = get_object(drone.prev)
                     assert(obj)
