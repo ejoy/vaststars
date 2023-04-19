@@ -111,7 +111,8 @@
                 helps = {},
                 collapse = false,
                 current_help = "",
-                current_content = {}
+                current_content = {},
+                guide_progress = 0
             })
             function start.clickHelp(event, index)
                 start.current_help = start.helps[index+1].name
@@ -132,7 +133,7 @@
 
             <!-- 帮助条目 start -->
             <div class="help-panel" data-if="current_help == ''">
-                <div class="help-title-block" style="margin-bottom: 0.3vmin;" data-event-click="clickHelp(it_index)" data-for = "it : helps">
+                <div class="help-title-block" style="margin-bottom: 0.3vmin;" data-event-click="clickHelp(it_index)" data-if="guide_progress >= it.guide_progress" data-for = "it : helps">
                     <div class="help-book"/>
                     <div class="help-title">{{it.name}}</div>
                 </div>
