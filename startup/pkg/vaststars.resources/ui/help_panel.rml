@@ -158,9 +158,9 @@
                     <div class="help-collapse" data-event-click="clickCollapse(true)"/>
                 </div>
                 <div class="help-content-block">
-                    <div data-for="current_content">
+                    <richtext data-for="current_content">
                         {{it}}
-                    </div>
+                    </richtext>
                 </div>
             </div>
             <!-- 帮助内容 end -->
