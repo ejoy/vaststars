@@ -124,12 +124,6 @@
 
             function start.clickCollapse(event, iscollapse)
                 start.collapse = iscollapse
-                --local ea = document.getElementById('CollapseHelp')
-                if iscollapse then
-                    event.target.transform = "rotate(180deg)"
-                else
-                    event.target.transform = "rotate(0deg)"
-                end
             end
         </script>
     </head>
@@ -166,7 +160,7 @@
                 <div class="help-title-block" style="height: 100%;">
                     <div class="help-book" data-event-click="clickReturnMenu()"/>
                     <div class="help-title" style="pointer-events: none;">{{current_help}}</div>
-                    <div class="help-collapse" data-event-click="clickCollapse(false)"/>
+                    <div class="help-collapse" style="transform: rotate(180deg);" data-event-click="clickCollapse(false)"/>
                 </div>
             </div>
             <!-- 帮助收起 start -->
