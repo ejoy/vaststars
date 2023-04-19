@@ -536,6 +536,11 @@
                 <div class = "menu-button-pic" style='width:8vmin; height:8vmin; background-image:"textures/cmdcenter/big_bag.texture"'/>
             </button>
 
+            <!-- 帮助按钮 -->
+            <button  class = "main-menu-button" style="border: 0.00vmin; position: absolute; left:5vmin; top: -4vmin;" data-if = "cur_edit_mode == '' && guide_progress >= 10">
+                <div class = "menu-button-pic" style='width:9vmin; height:9vmin; background-image:"textures/common/help.texture"'/>
+            </button>
+
             <!-- 右上角：当前科技进度 -->
             <div data-if = "cur_edit_mode == '' && show_tech_progress" style = "pointer-events: none; position: absolute; right:0vmin; top:0vmin;  width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-start; padding-top: 1vmin;">
                 <button style='background-color:rgb(204,219,11);  width: 16.00vmin; height: 16.00vmin; align-items: center;' data-event-click="clickTechOrTaskIcon(is_task)">
