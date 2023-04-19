@@ -424,6 +424,10 @@ function iplane_terrain.set_wh(w, h, offset_x, offset_z)
     noise(terrain_width + 1, terrain_height + 1, 4, 2, 0.2, 1)
 end
 
+function iplane_terrain.get_wh()
+    return terrain_width, terrain_height, unit, origin_offset_width
+end
+
 function iplane_terrain.init_plane_terrain(st)
     for e in ww:select "shape_terrain st:update eid:in" do
         e.st = st

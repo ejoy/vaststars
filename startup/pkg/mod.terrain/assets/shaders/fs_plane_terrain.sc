@@ -145,7 +145,7 @@ vec3 blend_terrain_color(vec3 sand_basecolor, vec3 stone_basecolor, float sand_h
     return stone_basecolor*stone_weight + sand_basecolor*sand_weight;
 }
 
-vec3 blend_zone(vec3 terrain_color, uint zone_rgba)
+/* vec3 blend_zone(vec3 terrain_color, uint zone_rgba)
 {
     vec3 zone_color;
     float zone_alpha;
@@ -157,7 +157,7 @@ vec3 blend_zone(vec3 terrain_color, uint zone_rgba)
     zone_alpha = a;
     vec3 final_color = terrain_color * (1 - zone_alpha) + zone_color * zone_alpha;
     return final_color;
-}
+} */
 
 void main()
 { 
@@ -220,13 +220,13 @@ void main()
 
     vec3 terrain_blended_color = calc_all_blend_color(v_road_type, road_basecolor, v_mark_type, mark_basecolor, mark_alpha, road_height, terrain_color, stone_height);
     vec3 basecolor = terrain_blended_color;
-    if(v_zone_rgba != 0){
+/*     if(v_zone_rgba != 0){
         basecolor = blend_zone(terrain_blended_color, v_zone_rgba);
-    }
+    } */
     bool is_road_part = v_road_type != 0.0 && road_basecolor.a != 0.0;
     bool is_mark_part = v_mark_type != 0 && mark_alpha != 1;
-    bool zone_opaque = ((v_zone_rgba & 0xFF) == 255);
-    if(is_road_part || is_mark_part || zone_opaque)
+    //bool zone_opaque = ((v_zone_rgba & 0xFF) == 255);
+    if(is_road_part || is_mark_part)
     {
         gl_FragColor = vec4(basecolor, 1.0);
     }
