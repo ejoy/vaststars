@@ -66,13 +66,12 @@ local function to_mesh_buffer(vb, ib_handle, aabb)
     }
 end
 
-local function build_mesh(plane_num, plane_table, unit, offset, aabb)
+local function build_mesh(plane_table, unit, offset, aabb)
     local packfmt<const> = "fff"
     local vb = {}
-    local ib_handle = build_ib(plane_num)
-    for plane, _ in pairs(plane_table) do
-       local x, z = plane & 0xff, plane >> 8
-       local ox, oz = (x + offset) * unit, (z + offset) * unit
+    local ib_handle = build_ib(#plane_table)
+    for _, plane in pairs(plane_table) do
+       local ox, oz = (plane[1] + offset) * unit, (plane[2] + offset) * unit
        local nx, nz = ox + unit, oz + unit
        local v = {
             packfmt:pack(ox, 0, oz),
@@ -88,8 +87,8 @@ end
 local function get_aabb(plane_table, width, height, unit, offset)
     local minx, minz = width + 1, height + 1
     local maxx, maxz = -1, -1
-    for plane, _ in pairs(plane_table) do
-        local x, z = plane & 0xff, plane >> 8
+    for _, plane in pairs(plane_table) do
+        local x, z = plane[1], plane[2]
         if x > maxx then
             maxx = x
         end
@@ -120,15 +119,13 @@ function itp.set_translucent_rgba(translucent_rgba_table)
     end
 end
 
-local function create_translucent_plane(tinfo)
-    local plane_table = tinfo.plane_table
-    local color_idx = tinfo.color_idx
-    local plane_num = tinfo.plane_num
+function itp.create_translucent_plane_entity(plane_table, color_idx)
     local width, height, unit, offset = iplane_terrain.get_wh()
     local aabb = get_aabb(plane_table, width, height, unit, offset)
-    local plane_mesh = build_mesh(plane_num, plane_table, unit, offset, aabb)
+    local plane_mesh = build_mesh(plane_table, unit, offset, aabb)
+    local eid
     if plane_mesh then
-        ecs.create_entity{
+        eid = ecs.create_entity{
             policy = {
                 "ant.scene|scene_object",
                 "ant.render|simplerender",
@@ -145,109 +142,25 @@ local function create_translucent_plane(tinfo)
                 end,
                 visible_state = "main_view",
                 render_layer = "translucent",
-                translucent_info = tinfo
+                translucent_info = {
+                    color_idx = color_idx,
+                }
             },
         }
     end
+    return eid
 end
 
-local function get_translucent_info(rect, color_idx)
-    local plane_table, tinfo = {}, {}
-    local plane_num = 0
-    for ih = 0, rect.h - 1 do
-        for iw = 0, rect.w - 1 do
-            local coord = {rect.x + iw, rect.z + ih}
-            local plane_coord = (coord[2] << 8) + coord[1]
-            plane_table[plane_coord] = true
-            plane_num = plane_num + 1
-        end
-    end
-    tinfo.merge_table = {}
-    tinfo.plane_table, tinfo.rect, tinfo.color_idx, tinfo.plane_num = plane_table, rect, color_idx, plane_num
-    return tinfo
-end
-
-function itp.create_translucent_plane_entity(rect, color_idx)
-    local tinfo = get_translucent_info(rect, color_idx)
-    create_translucent_plane(tinfo)
-end
-
-function itp.remove_translucent_plane_entity(remove_coord)
+function itp.remove_translucent_plane_entity(eid)
     for e in w:select "translucent_info:in eid:in" do
         local translucent_info = e.translucent_info
-        if translucent_info then
-            if translucent_info.rect.x == remove_coord[1] and  translucent_info.rect.z == remove_coord[2] then
-                w:remove(e.eid)
-                local merge_table = translucent_info.merge_table
-                for compress_m, _ in pairs(merge_table) do
-                    for ee in w:select "translucent_info:in eid:in" do
-                        local cur_tinfo = ee.translucent_info
-                        local compress_c = (ee.translucent_info.rect.z << 8) + ee.translucent_info.rect.x
-                        if compress_c == compress_m then
-                            local compress_t = (translucent_info.rect.z << 8) + translucent_info.rect.x
-                            cur_tinfo.merge_table[compress_t] = nil
-                            merge_table[compress_m] = nil
-                            local merge_coord_table = {}
-                            for compress_coord, _ in pairs(cur_tinfo.merge_table)do
-                                local merge_coord = {compress_coord & 0xff, compress_coord >> 8}
-                                merge_coord_table[#merge_coord_table+1] = merge_coord
-                            end
-                            itp.merge_translucent_plane_entity(cur_tinfo.rect, cur_tinfo.color_idx, merge_coord_table)
-                            w:remove(ee.eid)
-                        end
-                    end 
-                end
-            end
+        if translucent_info and e.eid and e.eid == eid then
+            w:remove(e.eid)
         end
     end
 end
 
-function itp.merge_translucent_plane_entity(rect, color_idx, merge_coord_table)
-    local intersect_table = {}
-    local origin_plane_num_table = {}
-    local tinfo = get_translucent_info(rect, color_idx)
-    local cur_plane_table, cur_plane_num = tinfo.plane_table, tinfo.plane_num
-    local merge_tinfo_table = {}
-    for e in w:select "translucent_info:in eid:in" do
-        local translucent_info = e.translucent_info
-        if translucent_info then
-            for _, merge_coord in pairs(merge_coord_table) do
-                local ix, iz = translucent_info.rect.x, translucent_info.rect.z
-                if ix == merge_coord[1] and iz == merge_coord[2] then
-                    merge_tinfo_table[merge_coord] = translucent_info
-                    origin_plane_num_table[merge_coord] = translucent_info.plane_num
-                end
-            end
-        end
-    end
-    for compress_coord, _ in pairs(cur_plane_table) do
-        for merge_coord, merge_tinfo in pairs(merge_tinfo_table) do
-            if merge_tinfo.plane_table[compress_coord] then
-                intersect_table[merge_coord] = true
-                if color_idx < merge_tinfo.color_idx then
-                    merge_tinfo.plane_table[compress_coord] = nil
-                    merge_tinfo.plane_num = merge_tinfo.plane_num - 1
-                else
-                    cur_plane_table[compress_coord] = nil
-                    cur_plane_num = cur_plane_num - 1
-                end
-            end
-        end
-    end
-    for merge_coord, merge_tinfo in pairs(merge_tinfo_table) do
-        if merge_tinfo.plane_num ~= origin_plane_num_table[merge_coord] then
-            itp.remove_translucent_plane_entity(merge_coord)
-        end
-        if intersect_table[merge_coord] then
-            local compress_t = (tinfo.rect.z << 8) + tinfo.rect.x
-            local compress_m = (merge_tinfo.rect.z << 8) + merge_tinfo.rect.x
-            merge_tinfo.merge_table[compress_t] = true
-            tinfo.merge_table[compress_m] = true 
-        end
-        if merge_tinfo.plane_num ~= origin_plane_num_table[merge_coord] then
-            create_translucent_plane(merge_tinfo)
-        end
-    end
-    create_translucent_plane(tinfo)
-end
+
+
+
 

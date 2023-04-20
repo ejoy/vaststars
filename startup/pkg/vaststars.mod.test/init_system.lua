@@ -96,7 +96,7 @@ function S.init_world()
 
     iterrain.gen_terrain_field(256, 256, 128)
     --istonemountain.create_sm_entity(0.8, 256, 256, 128)
-    create_mark()
+    --create_mark()
 
     -- priority 1>2>3
     local t = {
@@ -106,7 +106,7 @@ function S.init_world()
     }
     itp.set_translucent_rgba(t)
 
---[[     printer_eid = ecs.create_entity {
+     printer_eid = ecs.create_entity {
         policy = {
             "ant.render|render",
             "ant.general|name",
@@ -123,11 +123,12 @@ function S.init_world()
                 percent  = printer_percent
             }
         },
-    } ]]
+    } 
 end
 
 local kb_mb = world:sub{"keyboard"}
 
+local eid1, eid2
 function S:data_changed()
     for _, key, press in kb_mb:unpack() do
         if key == "M" and press == 0 then
@@ -136,34 +137,48 @@ function S:data_changed()
                 printer_percent = 0.0
             end
             iprinter.update_printer_percent(printer_eid, printer_percent)
-        elseif key == "G" and press == 0 then
-            local rect1 = {
-                x = 1, z = 1, w = 3, h = 3
-            }
-            -- rect color_idx
-            itp.create_translucent_plane_entity(rect1, 3)
-            local rect2 = {
-                x = 5, z = 1, w = 4, h = 4
-            }
-            itp.create_translucent_plane_entity(rect2, 1)
-        elseif key == "H" and press == 0 then
-            local rect3 = {
-                x = 3, z = 3, w = 5, h = 5
-            }
-            local merge_list = {
-                {1, 1}, {5, 1}
-            }
-            -- rect color_idx possible_need_merge_list
-            itp.merge_translucent_plane_entity(rect3, 2, merge_list)
-        elseif key =="J" and press == 0 then
-            -- if translucent_plane_entity need move
-            -- remove first
-            -- then create/merge
-            itp.remove_translucent_plane_entity({1, 1})
+        elseif key == "J" and press == 0 then
+            local ox1, oz1 = 1, 1
+            local plane_table1 = {}
+            for ih = 0, 2 do
+                for iw = 0, 2 do
+                    local x, z = ox1 + iw, oz1 + ih
+                    plane_table1[#plane_table1+1] = {x, z}
+                end
+            end
+            eid1 = itp.create_translucent_plane_entity(plane_table1, 1)
+
+            local ox2, oz2 = 4, 1
+            local plane_table2 = {}
+            for ih = 0, 2 do
+                for iw = 0, 1 do
+                    local x, z = ox2 + iw, oz2 + ih
+                    plane_table2[#plane_table2+1] = {x, z}
+                end
+            end
+            eid2 = itp.create_translucent_plane_entity(plane_table2, 2)
         elseif key =="K" and press == 0 then
-            itp.remove_translucent_plane_entity({5, 1})
-        elseif key =="L" and press == 0 then
-            itp.remove_translucent_plane_entity({3, 3})
+            itp.remove_translucent_plane_entity(eid1)
+            itp.remove_translucent_plane_entity(eid2)
+            local ox1, oz1 = 0, 1
+            local plane_table1 = {}
+            for ih = 0, 2 do
+                for iw = 0, 2 do
+                    local x, z = ox1 + iw, oz1 + ih
+                    plane_table1[#plane_table1+1] = {x, z}
+                end
+            end
+            eid1 = itp.create_translucent_plane_entity(plane_table1, 1)
+
+            local ox2, oz2 = 3, 1
+            local plane_table2 = {}
+            for ih = 0, 2 do
+                for iw = 0, 2 do
+                    local x, z = ox2 + iw, oz2 + ih
+                    plane_table2[#plane_table2+1] = {x, z}
+                end
+            end
+            eid2 = itp.create_translucent_plane_entity(plane_table2, 2)
         end
     end
 end
