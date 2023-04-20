@@ -53,7 +53,8 @@ local builder_back_mb = mailbox:sub {"builder_back"}
 local construction_center_menu_place_mb = mailbox:sub {"construction_center_menu_place"}
 local construct_entity_mb = mailbox:sub {"construct_entity"}
 local item_transfer_src_inventory_mb = mailbox:sub {"item_transfer_src_inventory"}
-local focus_on_building = mailbox:sub {"focus_on_building"}
+local focus_on_building_mb = mailbox:sub {"focus_on_building"}
+local on_pickup_object_mb = mailbox:sub {"on_pickup_object"}
 
 local pickup_gesture_mb = world:sub {"pickup_gesture"}
 local pickup_long_press_gesture_mb = world:sub {"pickup_long_press_gesture"}
@@ -660,12 +661,17 @@ function M:stage_camera_usage(datamodel)
         manual_item_transfer_src_inventory = true
     end
 
-    for _, _, _, object_id in focus_on_building:unpack() do
+    for _, _, _, object_id in on_pickup_object_mb:unpack() do
+        local object = assert(objects:get(object_id))
+        __on_pickup_object(datamodel, object)
+    end
+
+    for _, _, _, object_id in focus_on_building_mb:unpack() do
         local object = assert(objects:get(object_id))
         local typeobject = iprototype.queryByName(object.prototype_name)
         local w, h = iprototype.unpackarea(typeobject.area)
         camera.focus_on_position(logistic_coord:get_position_by_coord(object.x, object.y, w, h))
-        __on_pickup_object(datamodel, object)
+        iui.redirect("construct.rml", "on_pickup_object", object_id)
     end
 
     item_transfer_placement_interval(datamodel, pickup_id)

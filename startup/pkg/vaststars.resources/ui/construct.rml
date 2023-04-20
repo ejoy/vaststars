@@ -393,6 +393,7 @@
                 guide_progress = 0,
             })
             function start.clickConstruct(event, object_id, index)
+                console.log("clickConstruct", object_id, index)
                 if not object_id or not index then
                     return
                 end
