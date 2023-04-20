@@ -572,7 +572,7 @@
                     <workbutton data-for = "construction_center_menu" style = "background-color: rgb(246, 142, 14); margin:0.3vmin 0 0.3vmin 0;" data-event-click="clickConstruct(it.object_id, it.index)">
                         <div class="workbutton-bg" data-style-background-image = "it.icon" data-style-animation = "(it.name == '采矿机I' && guide_progress == 25)||(it.name == '铁制电线杆' && guide_progress == 30) ? ' 0.5s linear 0s infinite alternate enlarge3':'0.5s linear 0s enlarge3'" data-if = "it.icon != ''"/>
                         <div class="workbutton-text"  data-if = "it.name != ''">{{it.name}}</div>
-                        <div class="item-count" style="animation:0.5s linear 0s enlarge2;" data-if = "it.name != ''">{{it.count}}</div>
+                        <!-- div class="item-count" style="animation:0.5s linear 0s enlarge2;" data-if = "it.name != ''">{{it.count}}</div -->
                     </workbutton>
                 </div>
             </div>
