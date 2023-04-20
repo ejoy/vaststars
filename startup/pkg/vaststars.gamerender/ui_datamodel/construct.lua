@@ -53,6 +53,7 @@ local builder_back_mb = mailbox:sub {"builder_back"}
 local construction_center_menu_place_mb = mailbox:sub {"construction_center_menu_place"}
 local construct_entity_mb = mailbox:sub {"construct_entity"}
 local item_transfer_src_inventory_mb = mailbox:sub {"item_transfer_src_inventory"}
+local focus_on_building = mailbox:sub {"focus_on_building"}
 
 local pickup_gesture_mb = world:sub {"pickup_gesture"}
 local pickup_long_press_gesture_mb = world:sub {"pickup_long_press_gesture"}
@@ -185,7 +186,8 @@ local function __construction_center_menu(datamodel, object_id)
     local sort_map = {}
     for eid in pairs(map) do
         local e = gameplay_core.get_entity(eid)
-        local slot = __get_first_item(e.chest)
+        local o = assert(objects:coord(e.building.x, e.building.y))
+        local slot = __get_first_item(e.chest, o.id)
         if slot then
             sort_map[#sort_map+1] = {x = e.building.x, y = e.building.y, eid = e.eid, slot = slot}
         end
@@ -223,6 +225,22 @@ local function __construction_center_menu(datamodel, object_id)
     end
 
     datamodel.construction_center_menu = res
+end
+
+local function __on_pickup_object(datamodel, object)
+    if not excluded_pickup_id or excluded_pickup_id == object.id then
+        if idetail.show(object.id) then
+            item_transfer_dst = object.id
+            pickup_id = object.id
+            __construction_center_menu(datamodel, pickup_id)
+
+            local prototype_name = object.prototype_name
+            local typeobject = iprototype.queryByName(prototype_name)
+            if iprototype.has_type(typeobject.type, "construction_center") then
+                datamodel.cur_edit_mode = "construct"
+            end
+        end
+    end
 end
 
 ---------------
@@ -495,6 +513,7 @@ function M:stage_camera_usage(datamodel)
             leave = false
             datamodel.show_item_transfer_src_inventory = false
             manual_item_transfer_src_inventory = false
+            __construction_center_menu(datamodel)
             break
         end
         ::continue::
@@ -639,6 +658,14 @@ function M:stage_camera_usage(datamodel)
     for _ in item_transfer_src_inventory_mb:unpack() do
         datamodel.show_item_transfer_src_inventory = not datamodel.show_item_transfer_src_inventory
         manual_item_transfer_src_inventory = true
+    end
+
+    for _, _, _, object_id in focus_on_building:unpack() do
+        local object = assert(objects:get(object_id))
+        local typeobject = iprototype.queryByName(object.prototype_name)
+        local w, h = iprototype.unpackarea(typeobject.area)
+        camera.focus_on_position(logistic_coord:get_position_by_coord(object.x, object.y, w, h))
+        __on_pickup_object(datamodel, object)
     end
 
     item_transfer_placement_interval(datamodel, pickup_id)
