@@ -697,7 +697,7 @@ prototype "烟囱1" {
     results = {
         {"烟囱I", 1},
     },
-    time = "5s",
+    time = "8s",
     description = "铁制品和管道制造烟囱",
 }
 
@@ -781,7 +781,7 @@ prototype "管道1" {
     results = {
         {"管道1-X型", 2},
     },
-    time = "5s",
+    time = "4s",
     description = "石砖制造管道",
 }
 
@@ -798,7 +798,7 @@ prototype "管道2" {
         {"管道1-X型", 5},
         {"碎石", 1},
     },
-    time = "5s",
+    time = "12s",
     description = "石砖制造管道",
 }
 
@@ -1115,7 +1115,7 @@ prototype "运输汽车制造" {
     results = {
         {"运输车框架", 1},
     },
-    time = "4s",
+    time = "6s",
     description = "制造运输车框架",
 }
 
@@ -1208,13 +1208,13 @@ prototype "送货车站打印" {
     recipe_order =  56,
     recipe_icon =  "textures/construct/broken-goodsstation-output.texture",
     ingredients = {
-        {"石砖", 10},
+        {"石砖", 8},
         {"送货车站框架", 1},
     },
     results = {
         {"送货车站", 1},
     },
-    time = "5s",
+    time = "8s",
     description = "打印送货车站",
 }
 
@@ -1225,13 +1225,13 @@ prototype "收货车站打印" {
     recipe_order =  57,
     recipe_icon =  "textures/construct/broken-goodsstation-input.texture",
     ingredients = {
-        {"石砖", 10},
+        {"石砖", 8},
         {"收货车站框架", 1},
     },
     results = {
         {"收货车站", 1},
     },
-    time = "5s",
+    time = "8s",
     description = "打印收货车站",
 }
 
@@ -1248,7 +1248,7 @@ prototype "熔炼炉打印" {
     results = {
         {"熔炼炉I", 1},
     },
-    time = "5s",
+    time = "12s",
     description = "打印熔炼炉",
 }
 
@@ -1330,7 +1330,7 @@ prototype "水电站打印" {
     results = {
         {"水电站I", 1},
     },
-    time = "5s",
+    time = "15s",
     description = "打印可处理液体的装置",
 }
 
@@ -1391,11 +1391,12 @@ prototype "空气过滤器打印" {
     recipe_icon =  "textures/construct/broken-air-filter1.texture",
     ingredients = {
         {"空气过滤器框架", 1},
+        {"电动机I", 1},
     },
     results = {
         {"空气过滤器I", 1},
     },
-    time = "5s",
+    time = "8s",
     description = "打印可过滤空气的装置",
 }
 
@@ -1407,11 +1408,12 @@ prototype "地下水挖掘机打印" {
     recipe_icon =  "textures/construct/broken-pump.texture",
     ingredients = {
         {"地下水挖掘机框架", 1},
+        {"电动机I", 1},
     },
     results = {
         {"地下水挖掘机", 1},
     },
-    time = "5s",
+    time = "8s",
     description = "打印可挖掘地下水的装置",
 }
 
@@ -1568,11 +1570,12 @@ prototype "送货车站设计" {
     recipe_icon =  "textures/construct/broken-logisitic.texture",
     ingredients = {
         {"电动机I", 1},
+        {"石砖", 4},
     },
     results = {
         {"送货车站框架", 1},
     },
-    time = "5s",
+    time = "8s",
     description = "打印送货车站",
 }
 
@@ -1584,11 +1587,12 @@ prototype "收货车站设计" {
     recipe_icon =  "textures/construct/broken-logisitic.texture",
     ingredients = {
         {"电动机I", 1},
+        {"石砖", 4},
     },
     results = {
         {"收货车站框架", 1},
     },
-    time = "5s",
+    time = "8s",
     description = "打印收货车站",
 }
 
@@ -1744,12 +1748,12 @@ prototype "地下水挖掘机设计" {
     recipe_order =  54,
     recipe_icon =  "textures/construct/broken-pump.texture",
     ingredients = {
-        {"电动机I", 1},
+        {"排水口I", 2},
     },
     results = {
         {"地下水挖掘机框架", 1},
     },
-    time = "5s",
+    time = "10s",
     description = "打印可挖掘地下水的装置",
 }
 
