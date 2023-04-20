@@ -57,7 +57,7 @@ return function(world)
     for e in world.ecs:select "building:in eid:in assembling?in wind_turbine?in solar_panel?in base?in" do
         -- handle the work status of the construction center separately, see also construction_center.lua
         local typeobject = iprototype.queryById(e.building.prototype)
-        if typeobject.construction_center then
+        if iprototype.has_type(typeobject.type, "construction_center") then
             goto continue
         end
 

@@ -137,60 +137,93 @@ local item_transfer_placement_interval = interval_call(300, function(datamodel, 
     end
 end)
 
-local function reverse(array)
-    local i, j = 1, #array
-    while i < j do
-        array[i], array[j] = array[j], array[i]
-        i = i + 1
-        j = j - 1
+local function __get_first_item(e, object_id)
+    if e.chest == 0 then
+        return
+    end
+    for index = 1, 256 do
+        local slot = gameplay_core.get_world():container_get(e, index)
+        if not slot then
+            break
+        end
+        if slot.item == 0 or slot.amount <= 0 then
+            goto continue
+        end
+        if slot.type ~= "red" then
+            goto continue
+        end
+
+        local typeobject_item = assert(iprototype.queryById(slot.item))
+        if iprototype.has_type(typeobject_item.type, "building") then
+            return {icon = typeobject_item.icon, count = slot.amount, name = iprototype.show_prototype_name(typeobject_item), object_id = object_id, index = index}
+        end
+
+        ::continue::
     end
 end
 
-local construction_center_menu_interval = interval_call(500, function(datamodel, object_id)
+local function __construction_center_menu(datamodel, object_id)
     if not object_id then
         datamodel.construction_center_menu = {}
         return
     end
     local object = assert(objects:get(object_id))
     local typeobject = iprototype.queryByName(object.prototype_name)
-    if not typeobject.construction_center then
+    if not iprototype.has_types(typeobject.type, "construction_center", "construction_chest") then
         datamodel.construction_center_menu = {}
         return
     end
 
-    local res = {}
-    local e = assert(gameplay_core.get_entity(assert(object.gameplay_eid)))
-    if e.chest.chest ~= 0 then
-        for index = 1, 256 do
-            local slot = gameplay_core.get_world():container_get(e.chest, index)
-            if not slot then
-                break
-            end
-            if slot.item == 0 then
-                goto continue
-            end
-
-            local typeobject_item = assert(iprototype.queryById(slot.item))
-            if not iprototype.has_type(typeobject_item.type, "building") then
-                goto continue
-            end
-
-            if slot.amount > 0 then
-                res[#res+1] = {icon = typeobject_item.icon, count = slot.amount, name = iprototype.show_prototype_name(typeobject_item), object_id = object_id, index = index}
-                assert(#res <= 6, "construction_center_menu too long")
-            end
-            ::continue::
+    local map = {}
+    for e in gameplay_core.select("chest:in eid:in building:in") do
+        local typeobject = iprototype.queryById(e.building.prototype)
+        if iprototype.has_types(typeobject.type, "construction_center", "construction_chest") then
+            map[e.eid] = true
         end
     end
 
-    reverse(res)
+    local sort_map = {}
+    for eid in pairs(map) do
+        local e = gameplay_core.get_entity(eid)
+        local slot = __get_first_item(e.chest)
+        if slot then
+            sort_map[#sort_map+1] = {x = e.building.x, y = e.building.y, eid = e.eid, slot = slot}
+        end
+    end
+
+    -- find the six nearest buildings
+    table.sort(sort_map, function(a, b)
+        local dx = a.x - object.x
+        local dy = a.y - object.y
+        local da = dx * dx + dy * dy
+        dx = b.x - object.x
+        dy = b.y - object.y
+        local db = dx * dx + dy * dy
+        return da < db
+    end)
+
+    local nearest = {}
+    for _, v in ipairs(sort_map) do
+        nearest[#nearest+1] = v
+        if #nearest >= 6 then
+            break
+        end
+    end
+    table.sort(nearest, function(a, b)
+        return a.eid < b.eid
+    end)
+
+    local res = {}
     for i = 1, 6 do
-        if not res[i] then
+        if nearest[i] then
+            res[i] = nearest[i].slot
+        else
             res[i] = {icon = "", count = 0, name = ""}
         end
     end
+
     datamodel.construction_center_menu = res
-end)
+end
 
 ---------------
 local M = {}
@@ -441,10 +474,11 @@ function M:stage_camera_usage(datamodel)
                     leave = false
                     item_transfer_dst = object.id
                     pickup_id = object.id
+                    __construction_center_menu(datamodel, pickup_id)
 
                     local prototype_name = object.prototype_name
                     local typeobject = iprototype.queryByName(prototype_name)
-                    if typeobject.construction_center then
+                    if iprototype.has_type(typeobject.type, "construction_center") then
                         datamodel.cur_edit_mode = "construct"
                     end
                 end
@@ -608,8 +642,6 @@ function M:stage_camera_usage(datamodel)
     end
 
     item_transfer_placement_interval(datamodel, pickup_id)
-    construction_center_menu_interval(datamodel, pickup_id)
-
     iobject.flush()
 end
 return M

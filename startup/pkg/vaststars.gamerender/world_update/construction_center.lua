@@ -192,7 +192,7 @@ return function(gameplay_world)
     local buildings = global.buildings
     for e in gameplay_world.ecs:select "assembling:in building:in chest:in eid:in" do
         local typeobject = iprototype.queryById(e.building.prototype)
-        if typeobject.construction_center ~= true then
+        if not iprototype.has_type(typeobject.type, "construction_center") then
             goto continue
         end
         local object = assert(objects:coord(e.building.x, e.building.y))

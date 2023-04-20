@@ -42,7 +42,7 @@ local function __show_set_item(typeobject)
 end
 
 local function __show_set_recipe(typeobject)
-    if typeobject.construction_center == true then
+    if iprototype.has_type(typeobject.type, "construction_center") then
         return true
     end
 
@@ -61,7 +61,7 @@ local function __construction_center_update(datamodel, object_id)
         return
     end
     local typeobject = iprototype.queryByName(object.prototype_name)
-    if typeobject.construction_center ~= true then
+    if not iprototype.has_type(typeobject.type, "construction_center") then
         return
     end
 
@@ -348,7 +348,7 @@ function M:stage_ui_update(datamodel, object_id)
     for _, _, _, object_id in set_recipe_mb:unpack() do
         local object = assert(objects:get(object_id))
         local typeobject = iprototype.queryByName(object.prototype_name)
-        iui.open({"recipe_pop.rml"}, object_id, typeobject.construction_center)
+        iui.open({"recipe_pop.rml"}, object_id, iprototype.has_type(typeobject.type, "construction_center"))
     end
 
     for _, _, _, object_id in set_item_mb:unpack() do
