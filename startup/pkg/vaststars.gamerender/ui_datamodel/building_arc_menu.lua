@@ -81,6 +81,51 @@ local function __construction_center_update(datamodel, object_id)
     end
 end
 
+-- TODO: duplicated with construct.lua
+local function __get_first_item(e, object_id)
+    if e.chest == 0 then
+        return
+    end
+    for index = 1, 256 do
+        local slot = gameplay_core.get_world():container_get(e, index)
+        if not slot then
+            break
+        end
+        if slot.item == 0 or slot.amount <= 0 then
+            goto continue
+        end
+        if slot.type ~= "red" then
+            goto continue
+        end
+
+        local typeobject_item = assert(iprototype.queryById(slot.item))
+        if iprototype.has_type(typeobject_item.type, "building") then
+            return {icon = typeobject_item.icon, count = slot.amount, name = iprototype.show_prototype_name(typeobject_item), object_id = object_id, index = index}
+        end
+
+        ::continue::
+    end
+end
+
+local function __construction_chest_update(datamodel, object_id)
+    local object = assert(objects:get(object_id))
+    local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+    if not e then
+        return
+    end
+    local typeobject = iprototype.queryByName(object.prototype_name)
+    if not iprototype.has_type(typeobject.type, "construction_chest") then
+        return
+    end
+
+    local slot = __get_first_item(e.chest)
+    if not slot then
+        datamodel.construction_center_place = false
+    else
+        datamodel.construction_center_place = slot.count > 0
+    end
+end
+
 local function __lorry_factory_update(datamodel, object_id)
     local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
@@ -160,7 +205,7 @@ local function __item_transfer_update(datamodel, object_id)
        iprototype.has_type(typeobject.type, "chest") or
        iprototype.has_type(typeobject.type, "hub") then
 
-        if typeobject.name == "指挥中心" or typeobject.name == "建造中心" then -- TODO: remove hardcode
+        if typeobject.name == "指挥中心" or typeobject.name == "建造中心" or iprototype.has_type(typeobject.type, "construction_chest") then -- TODO: remove hardcode
             datamodel.item_transfer_subscribe = false
         else
             datamodel.item_transfer_subscribe = global.item_transfer_src ~= object_id
@@ -281,6 +326,7 @@ function M:create(object_id, object_position, ui_x, ui_y)
         object_position = object_position,
     }
     __construction_center_update(datamodel, object_id)
+    __construction_chest_update(datamodel, object_id)
     __item_transfer_update(datamodel, object_id)
 
     return datamodel
@@ -479,19 +525,29 @@ function M:stage_ui_update(datamodel, object_id)
     for _ in construction_center_place_mb:unpack() do
         local object = assert(objects:get(object_id))
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
-        if e.assembling.recipe == 0 then
-            goto continue
-        end
+        local index
 
-        local recipe = assert(iprototype.queryById(e.assembling.recipe), "unknown recipe: "..e.assembling.recipe)
-        local ingredients_n <const> = #recipe.ingredients//4 - 1
-        local results_n <const> = #recipe.results//4 - 1
+        -- TODO: here it is assumed that e is either a construction center or a construction chest
+        if e.assembling then
+            if e.assembling.recipe == 0 then
+                goto continue
+            end
+
+            local recipe = assert(iprototype.queryById(e.assembling.recipe), "unknown recipe: "..e.assembling.recipe)
+            local ingredients_n <const> = #recipe.ingredients//4 - 1
+            index = ingredients_n + 1
+        else
+            local slot = __get_first_item(e.chest, object_id)
+            if slot then
+                index = slot.index
+            end
+        end
 
         idetail.unselected()
         iui.close("build_function_pop.rml")
         iui.close("detail_panel.rml")
         iui.close("building_arc_menu.rml")
-        iui.redirect("construct.rml", "construction_center_menu_place", object.id, ingredients_n + 1)
+        iui.redirect("construct.rml", "construction_center_menu_place", object.id, index)
         ::continue::
     end
 end

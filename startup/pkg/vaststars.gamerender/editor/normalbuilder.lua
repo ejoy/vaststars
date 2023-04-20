@@ -383,13 +383,16 @@ end
 local function __deduct_item(self, e)
     gameplay_core.get_world():container_pickup(e.chest, self.item, 1)
 
-    local typeobject = iprototype.queryById(e.building.prototype)
-    local _, results = assembling_common.get(gameplay_core.get_world(), e)
-    assert(results and #results == 1)
-    local multiple = math.max((results[1].limit // results[1].output_count) - 1, 0)
-    if typeobject.recipe_max_limit and typeobject.recipe_max_limit.resultsLimit >= multiple then
-        iassembling.set_option(gameplay_core.get_world(), e, {ingredientsLimit = multiple, resultsLimit = multiple})
-        gameplay_core.build()
+    -- TODO: here it is assumed that e is either a construction center or a construction chest
+    if e.assembling then
+        local typeobject = iprototype.queryById(e.building.prototype)
+        local _, results = assembling_common.get(gameplay_core.get_world(), e)
+        assert(results and #results == 1)
+        local multiple = math.max((results[1].limit // results[1].output_count) - 1, 0)
+        if typeobject.recipe_max_limit and typeobject.recipe_max_limit.resultsLimit >= multiple then
+            iassembling.set_option(gameplay_core.get_world(), e, {ingredientsLimit = multiple, resultsLimit = multiple})
+            gameplay_core.build()
+        end
     end
 
     for i = 1, 256 do
