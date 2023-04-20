@@ -32,7 +32,7 @@ local prototype = gameplay.register.prototype
     type = { "task" },
     task = {"unknown", 0, 4},
     effects = {
-      unlock_recipe = {"采矿机框架","采矿机打印"},
+      unlock_recipe = {"采矿机打印"},
       unlock_item = {"采矿机框架"},
     },
     prerequisites = {""},
@@ -1089,8 +1089,7 @@ prototype "建造电线杆" {
     type = { "tech" },
     icon = "textures/science/tech-research.texture",
     effects = {
-      unlock_recipe = {"修路站设计","修路站打印","砖石公路打印"},
-      unlock_item = {"修路站框架"},
+      unlock_recipe = {"砖石公路打印"},
     },
     prerequisites = {"电力覆盖"},
     ingredients = {
@@ -1689,8 +1688,8 @@ prototype "管道系统1" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    unlock_recipe = {"修管站设计","管道1","管道2","液罐1"},
-    unlock_item = {"液罐I","修管站框架","管道1-X型"},
+    unlock_recipe = {"管道1","管道2","液罐1"},
+    unlock_item = {"液罐I","管道1-X型"},
   },
   prerequisites = {"气候研究"},
   ingredients = {
@@ -1720,8 +1719,8 @@ prototype "排放" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    unlock_recipe = {"烟囱1","排水口1"},
-    unlock_item = {"烟囱I","排水口I"},
+    unlock_recipe = {"烟囱1","排水口1","地下管1"},
+    unlock_item = {"烟囱I","排水口I","地下管1-JI型"},
   },
   prerequisites = {"生产管道"},
   ingredients = {
@@ -1736,7 +1735,7 @@ prototype "采水研究" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    unlock_recipe = {"地下水挖掘机","水电站打印"},
+    unlock_recipe = {"地下水挖掘机设计","水电站打印"},
     unlock_item = {"水电站框架"},
   },
   prerequisites = {"排放"},
