@@ -32,6 +32,7 @@ local ichest = require "gameplay.interface.chest"
 local assembling_common = require "ui_datamodel.common.assembling"
 local gameplay = import_package "vaststars.gameplay"
 local iassembling = gameplay.interface "assembling"
+local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 
 local function _building_to_logisitic(x, y)
     local nposition = assert(building_coord:get_begin_position_by_coord(x, y))
@@ -380,6 +381,8 @@ local function confirm(self, datamodel)
     self:complete(pickup_object.id, datamodel)
 end
 
+local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
+
 local function __deduct_item(self, e)
     gameplay_core.get_world():container_pickup(e.chest, self.item, 1)
 
@@ -392,6 +395,34 @@ local function __deduct_item(self, e)
         if typeobject.recipe_max_limit and typeobject.recipe_max_limit.resultsLimit >= multiple then
             iassembling.set_option(gameplay_core.get_world(), e, {ingredientsLimit = multiple, resultsLimit = multiple})
             gameplay_core.build()
+        end
+    else
+        for i = 1, 256 do
+            local slot = ichest.chest_get(gameplay_core.get_world(), e.chest, i)
+            if not slot or slot.amount <= 0 then
+                if i == 1 then
+                    -- no item in chest, remove chest
+                    local object_id
+                    for _, object in objects:selectall("gameplay_eid", e.eid, EDITOR_CACHE_NAMES) do
+                        object_id = object.id
+                        break
+                    end
+                    local object = assert(objects:get(object_id))
+                    iobject.remove(object)
+                    local building = global.buildings[object_id]
+                    if building then
+                        for _, v in pairs(building) do
+                            v:remove()
+                        end
+                    end
+
+                    igameplay.remove_entity(object.gameplay_eid)
+                    gameplay_core.remove_entity(object.gameplay_eid)
+                    gameplay_core.build()
+                    return false
+                end
+                break
+            end
         end
     end
 
