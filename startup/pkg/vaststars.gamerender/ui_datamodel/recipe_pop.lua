@@ -22,6 +22,9 @@ local iflow_connector = require "gameplay.interface.flow_connector"
 local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONSTRUCTED"}
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local itask = ecs.require "task"
+local ichest = require "gameplay.interface.chest"
+local iobject = ecs.require "object"
+local logistic_coord = ecs.require "terrain"
 
 local assembling_recipe = {}; local get_recipe_index; do
     local cache = {}
@@ -270,6 +273,88 @@ local function _update_recipe_items(datamodel, recipe_name)
     end
 end
 
+local function __random_dir()
+    local dir = math.random(1, 4)
+    if dir == 1 then
+        return "N"
+    elseif dir == 2 then
+        return "E"
+    elseif dir == 3 then
+        return "S"
+    elseif dir == 4 then
+        return "W"
+    end
+end
+
+local function __find_empty_tile(x, y, w, h)
+    local empty_tile = {}
+    for i = x - 1, x + w do
+        for j = y - 1, y + h do
+            if not objects:coord(i, j) then
+                empty_tile[#empty_tile + 1] = {i, j}
+            end
+        end
+    end
+    return empty_tile
+end
+
+local function __throw_construction_chest(e, x, y, w, h)
+    local olditems = {}
+    local old_recipe = iprototype.queryById(e.assembling.recipe)
+
+    if old_recipe then
+        local ingredients_n <const> = #old_recipe.ingredients//4 - 1
+        local results_n <const> = #old_recipe.results//4 - 1
+        for i = 1, results_n do
+            local slot = ichest.chest_get(gameplay_core.get_world(), e.chest, i + ingredients_n)
+            if slot and slot.item ~= 0 and slot.amount > 0 then
+                olditems[#olditems+1] = slot
+            end
+        end
+
+        if #olditems > 0 then
+            local empty_tile = __find_empty_tile(x, y, w, h)
+            if #empty_tile < #olditems then
+                log.error("not enough space to place items")
+                return false
+            end
+
+            for i, slot in ipairs(olditems) do
+                local v = empty_tile[i]
+                local x, y = v[1], v[2]
+                local item = iprototype.queryById(slot.item)
+
+                assert(ichest.chest_pickup(gameplay_core.get_world(), e.chest, slot.item, slot.amount))
+
+                local o = iobject.new {
+                    prototype_name = "小铁制箱子I", -- TODO: remove hardcode
+                    dir = __random_dir(),
+                    x = x,
+                    y = y,
+                    srt = {
+                        t = logistic_coord:get_position_by_coord(x, y, 1, 1),
+                    },
+                }
+                objects:set(o, "CONSTRUCTED")
+
+                local entity = {
+                    prototype_name = o.prototype_name,
+                    dir = o.dir,
+                    x = o.x,
+                    y = o.y,
+                    items = {
+                        {item.name, slot.amount,},
+                    },
+                }
+                o.gameplay_eid = igameplay.create_entity(entity)
+            end
+
+            gameplay_core.build()
+        end
+    end
+    return true
+end
+
 ---------------
 local M = {}
 
@@ -300,28 +385,35 @@ function M:stage_ui_update(datamodel, object_id)
         local object = assert(objects:get(object_id, {"CONSTRUCTED"}))
         local typeobject = iprototype.queryByName(object.prototype_name)
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
-        if e.assembling then
-            if iworld.set_recipe(gameplay_core.get_world(), e, recipe_name, typeobject.recipe_init_limit) then
-                -- TODO viewport
-                local recipe_typeobject = iprototype.queryByName(recipe_name)
-                assert(recipe_typeobject, ("can not found recipe `%s`"):format(recipe_name))
-                object.fluid_name = irecipe.get_init_fluids(recipe_typeobject) or {} -- recipe may not have fluid
-
-                _update_neighbor_fluidbox(object)
-                gameplay_core.build()
-
-                iui.update("building_arc_menu.rml", "update", object_id)
-                object.recipe = recipe_name
-                itask.update_progress("set_recipe", recipe_name)
-            end
-        else
-            log.error(("can not found assembling `%s`(%s, %s)"):format(object.name, object.x, object.y))
+        assert(e.assembling)
+        if not __throw_construction_chest(e, object.x, object.y, iprototype.unpackarea(typeobject.area)) then
+            goto continue
         end
+
+        if iworld.set_recipe(gameplay_core.get_world(), e, recipe_name, typeobject.recipe_init_limit) then
+            -- TODO viewport
+            local recipe_typeobject = iprototype.queryByName(recipe_name)
+            assert(recipe_typeobject, ("can not found recipe `%s`"):format(recipe_name))
+            object.fluid_name = irecipe.get_init_fluids(recipe_typeobject) or {} -- recipe may not have fluid
+
+            _update_neighbor_fluidbox(object)
+            gameplay_core.build()
+
+            iui.update("building_arc_menu.rml", "update", object_id)
+            object.recipe = recipe_name
+            itask.update_progress("set_recipe", recipe_name)
+        end
+        ::continue::
     end
 
     for _ in clear_recipe_mb:unpack() do
         local object = assert(objects:get(object_id))
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+        local typeobject = iprototype.queryByName(object.prototype_name)
+        if not __throw_construction_chest(e, object.x, object.y, iprototype.unpackarea(typeobject.area)) then
+            goto continue
+        end
+
         iworld.set_recipe(gameplay_core.get_world(), e, nil)
         object.recipe = ""
         object.fluid_name = {}
@@ -330,6 +422,7 @@ function M:stage_ui_update(datamodel, object_id)
 
         _update_neighbor_fluidbox(object)
         gameplay_core.build()
+        ::continue::
     end
 end
 

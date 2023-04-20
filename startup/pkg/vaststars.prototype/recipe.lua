@@ -1208,10 +1208,11 @@ prototype "送货车站打印" {
     recipe_order =  56,
     recipe_icon =  "textures/construct/broken-goodsstation-output.texture",
     ingredients = {
+        {"石砖", 10},
         {"送货车站框架", 1},
     },
     results = {
-        {"送货车站", 1},k
+        {"送货车站", 1},
     },
     time = "5s",
     description = "打印送货车站",
@@ -1224,6 +1225,7 @@ prototype "收货车站打印" {
     recipe_order =  57,
     recipe_icon =  "textures/construct/broken-goodsstation-input.texture",
     ingredients = {
+        {"石砖", 10},
         {"收货车站框架", 1},
     },
     results = {
@@ -1240,6 +1242,7 @@ prototype "熔炼炉打印" {
     recipe_order =  56,
     recipe_icon =  "textures/construct/broken-furnace.texture",
     ingredients = {
+        {"铁矿石", 10},
         {"熔炼炉框架", 1},
     },
     results = {

@@ -192,10 +192,10 @@ local prototype = gameplay.register.prototype
     guide_focus = {
       {
         prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 114,
-        y = 129,
-        w = 4,
-        h = 4,
+        x = 115,
+        y = 128.5,
+        w = 3.5,
+        h = 3.5,
       },
       {
         prefab = "prefabs/selected-box-no-animation.prefab",
@@ -688,7 +688,7 @@ prototype "建造电线杆" {
       {
         prefab = "prefabs/selected-box-no-animation.prefab",
         x = 118.5,
-        y = 126,
+        y = 126.5,
         w = 2,
         h = 2,
       },

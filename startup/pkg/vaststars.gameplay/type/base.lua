@@ -18,6 +18,8 @@ type "tech"
 type "road"
 type "pipe"
 type "pipe_to_ground"
+type "construction_center"
+type "construction_chest"
 
 local c = type "task"
     .ingredients "items"

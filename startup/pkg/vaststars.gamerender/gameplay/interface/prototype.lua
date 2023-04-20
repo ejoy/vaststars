@@ -20,6 +20,17 @@ function M.has_type(types, type)
     return false
 end
 
+function M.has_types(types, ...)
+    for i = 1, #types do
+        for j = 1, select("#", ...) do
+            if types[i] == select(j, ...) then
+                return true
+            end
+        end
+    end
+    return false
+end
+
 do
     local cache = {}
     function M.each_type(...)

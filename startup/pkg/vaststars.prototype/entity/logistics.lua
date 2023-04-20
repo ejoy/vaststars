@@ -212,7 +212,7 @@ prototype "建造中心" {
     icon = "textures/building_pic/small_pic_construction_site.texture",
     background = "textures/build_background/pic_headquater.texture",
     construct_detector = {"exclusive"},
-    type = {"building", "assembling", "consumer"},
+    type = {"building", "assembling", "consumer", "construction_center"},
     area = "5x5",
     maxslot = 6,
     craft_category = {"框架打印"},
@@ -258,7 +258,6 @@ prototype "建造中心" {
     recipe_max_limit = {ingredientsLimit = 10, resultsLimit = 10},
     power = "75kW",
     priority = "secondary",
-    construction_center = true,
     io_shelf = false,
 }
 

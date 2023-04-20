@@ -45,24 +45,23 @@ namespace lua_world {
     concept map_type =
     is_instantiation_of<T, std::map> || is_instantiation_of<T, std::unordered_map>;
 
-    template <typename T>
-        requires (is_instantiation_of<T, std::pair> && !std::is_trivially_copyable_v<T>)
-    void file_write(FILE* f, const T& t) {
+    template <typename First, typename Second>
+    void file_write_pair(FILE* f, const std::pair<First, Second>& t) {
         file_write(f, t.first);
         file_write(f, t.second);
+    }
+    template <typename First, typename Second>
+    void file_read_pair(FILE* f, std::pair<First, Second>& t) {
+        file_read(f, const_cast<std::add_lvalue_reference_t<std::remove_const_t<First>>>(t.first));
+        file_read(f, t.second);
     }
     template <typename T>
         requires (is_instantiation_of<T, std::map>)
     void file_write(FILE* f, const T& t) {
         file_write<size_t>(f, t.size());
         for (auto const& kv : t) {
-            file_write(f, kv);
+            file_write_pair(f, kv);
         }
-    }
-    template <typename First, typename Second>
-    void file_read_pair(FILE* f, std::pair<First, Second>& t) {
-        file_read(f, const_cast<std::add_lvalue_reference_t<std::remove_const_t<First>>>(t.first));
-        file_read(f, t.second);
     }
     template <typename T>
         requires (is_instantiation_of<T, std::map>)

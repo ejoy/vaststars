@@ -184,6 +184,20 @@ prototype "科研中心I" {
     item_description = "研究科技技术的中心",
 }
 
+prototype "送货车站" {
+    type = {"item"},
+    group = {"物流"},
+    stack = 8,
+    item_description = "负责送货的车站",
+}
+
+prototype "收货车站" {
+    type = {"item"},
+    group = {"物流"},
+    stack = 8,
+    item_description = "负责收货的车站",
+}
+
 prototype "电解厂I" {
     type = {"item"},
     group = {"化工"},
@@ -225,6 +239,7 @@ prototype "运输车辆I" {
     stack = 1,
     item_description = "运输货物的交通工具",
     capacitance = "10MJ",
+    icon = "textures/construct/truck.texture",
 }
 
 prototype "换热器I" {

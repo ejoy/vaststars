@@ -215,6 +215,17 @@
                             v.number = start.construction_center_multiple
                             v.show_number = false
                             v.show_icon_background = true
+                            -- start.buttons[#start.buttons + 1] = v
+                        end
+
+                        if start.construction_center_place then
+                            local v = setmetatable({}, {__index = mt})
+                            v.text = "放置"
+                            v.message = "construction_center_place"
+                            v.background_image = "textures/factory/place-building.texture"
+                            v.number = start.construction_center_count
+                            v.show_number = start.construction_center_count > 0
+                            v.show_icon_background = false
                             start.buttons[#start.buttons + 1] = v
                         end
 

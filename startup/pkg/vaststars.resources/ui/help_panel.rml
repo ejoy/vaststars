@@ -46,7 +46,7 @@
                 height: 100%;
                 text-align: center;
                 font-size: 4vmin;
-                margin-bottom: 1vmin;
+                margin-bottom: 0.5vmin;
             }
             .help-title-block {
                 width: 100%;
@@ -63,13 +63,14 @@
                 left: 0.13vmin; 
                 top: 7vmin; 
                 width: 30.00vmin;
-                height: 5vmin;
+                height: 5.5vmin;
                 background-color: rgb(1,174,237);
                 background-size: cover;
                 justify-content: flex-start;
                 flex-direction: row;
                 align-items: center;
                 font-size: 5vmin;
+                border: 0.27vmin rgb(89, 73, 39);
             }
 
             .help-content-block {
