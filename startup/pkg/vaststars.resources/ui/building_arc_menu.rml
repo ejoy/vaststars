@@ -215,7 +215,7 @@
                             v.number = start.construction_center_multiple
                             v.show_number = false
                             v.show_icon_background = true
-                            start.buttons[#start.buttons + 1] = v
+                            -- start.buttons[#start.buttons + 1] = v
                         end
 
                         if start.construction_center_place then
