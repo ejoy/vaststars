@@ -335,8 +335,6 @@ local function __throw_construction_chest(e, x, y, w, h)
                         t = logistic_coord:get_position_by_coord(x, y, 1, 1),
                     },
                 }
-                objects:set(o, "CONSTRUCTED")
-
                 local entity = {
                     prototype_name = o.prototype_name,
                     dir = o.dir,
@@ -347,6 +345,8 @@ local function __throw_construction_chest(e, x, y, w, h)
                     },
                 }
                 o.gameplay_eid = igameplay.create_entity(entity)
+
+                objects:set(o, "CONSTRUCTED")
             end
 
             gameplay_core.build()

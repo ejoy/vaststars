@@ -252,6 +252,7 @@ function igame_object.create(init)
     }, hitch_events)
 
     local function remove(self)
+        children.instance:send("detach_hitch", hitch_entity_object.id)
         self.hitch_entity_object:remove()
     end
 

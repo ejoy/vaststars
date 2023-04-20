@@ -78,16 +78,18 @@ local item_transfer_placement_interval = interval_call(300, function(datamodel, 
     local e = assert(gameplay_core.get_entity(assert(object.gameplay_eid)))
     local movable_items, movable_items_hash = item_transfer.get_movable_items(e)
     if item_transfer_dst then
-        local object = assert(objects:get(item_transfer_dst))
-        local e = assert(gameplay_core.get_entity(assert(object.gameplay_eid)))
-        local placeable_items = item_transfer.get_placeable_items(e)
-        local ci = 1
-        for _, slot in ipairs(placeable_items) do
-            local j = movable_items_hash[slot.item]
-            if j then
-                movable_items[j].movable = true
-                movable_items[ci], movable_items[j] = movable_items[j], movable_items[ci]
-                ci = ci + 1
+        local object = objects:get(item_transfer_dst) -- object maybe removed
+        if object then
+            local e = assert(gameplay_core.get_entity(assert(object.gameplay_eid)))
+            local placeable_items = item_transfer.get_placeable_items(e)
+            local ci = 1
+            for _, slot in ipairs(placeable_items) do
+                local j = movable_items_hash[slot.item]
+                if j then
+                    movable_items[j].movable = true
+                    movable_items[ci], movable_items[j] = movable_items[j], movable_items[ci]
+                    ci = ci + 1
+                end
             end
         end
     end
@@ -123,9 +125,11 @@ local item_transfer_placement_interval = interval_call(300, function(datamodel, 
 
         do
             if object_id then
-                local object = assert(objects:get(object_id))
-                local e = gameplay_core.get_entity(assert(object.gameplay_eid))
-                placeable_items = assert(item_transfer.get_placeable_items(e))
+                local object = objects:get(object_id) -- object maybe removed
+                if object then
+                    local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+                    placeable_items = assert(item_transfer.get_placeable_items(e))
+                end
             end
         end
         do

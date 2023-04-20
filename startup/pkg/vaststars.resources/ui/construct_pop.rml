@@ -110,6 +110,8 @@
                 <div class="title-text">旋转建筑</div>
             </div>
 
+            <div class="button-fuction-block" style="top: -2.33vmin;" data-if = "!show_rotate" /> <!-- separator -->
+
             <div class="button-fuction-block" style="top: -2.33vmin;" data-if = "true" /> <!-- separator -->
 
             <div class="button-fuction-block" style="top: 10.67vmin;" data-event-click="clickBuild()" data-if = "show_confirm">
