@@ -298,47 +298,13 @@ local function __find_empty_tile(x, y, w, h)
     return empty_tile
 end
 
----------------
-local M = {}
+local function __throw_construction_chest(e, x, y, w, h)
+    local olditems = {}
+    local old_recipe = iprototype.queryById(e.assembling.recipe)
 
-function M:create(object_id, construction_center)
-    local datamodel = {}
-    _show_object_recipe(datamodel, object_id)
-    _update_recipe_items(datamodel, datamodel.recipe_name)
-    datamodel.recipe_name = datamodel.recipe_name or ""
-    datamodel.construction_center = construction_center
-    return datamodel
-end
-
-function M:stage_ui_update(datamodel, object_id)
-    for _, _, _, category_id in click_category_mb:unpack() do
-        datamodel.catalog_index = category_id
-        datamodel.recipe_index = 1 -- recipe_index is the index of recipe_items[caterory], default is 1
-        _update_recipe_items(datamodel)
-    end
-
-    for _, _, _, recipe_name in click_recipe_mb:unpack() do
-        local storage = gameplay_core.get_storage()
-        storage.recipe_picked_flag = storage.recipe_picked_flag or {}
-        storage.recipe_picked_flag[recipe_name] = true
-        _update_recipe_items(datamodel, recipe_name)
-    end
-
-    for _, _, _, object_id, recipe_name in set_recipe_mb:unpack() do
-        local object = assert(objects:get(object_id, {"CONSTRUCTED"}))
-        local typeobject = iprototype.queryByName(object.prototype_name)
-        local e = gameplay_core.get_entity(assert(object.gameplay_eid))
-        assert(e.assembling)
-
-        local old_recipe = iprototype.queryById(e.assembling.recipe)
-        local recipe = iprototype.queryByName(recipe_name)
-        if recipe.id == e.assembling.recipe then
-            goto continue
-        end
-
+    if old_recipe then
         local ingredients_n <const> = #old_recipe.ingredients//4 - 1
         local results_n <const> = #old_recipe.results//4 - 1
-        local olditems = {}
         for i = 1, results_n do
             local slot = ichest.chest_get(gameplay_core.get_world(), e.chest, i + ingredients_n)
             if slot and slot.item ~= 0 and slot.amount > 0 then
@@ -347,10 +313,10 @@ function M:stage_ui_update(datamodel, object_id)
         end
 
         if #olditems > 0 then
-            local empty_tile = __find_empty_tile(object.x, object.y, iprototype.unpackarea(typeobject.area))
+            local empty_tile = __find_empty_tile(x, y, w, h)
             if #empty_tile < #olditems then
                 log.error("not enough space to place items")
-                goto continue
+                return false
             end
 
             for i, slot in ipairs(olditems) do
@@ -385,6 +351,44 @@ function M:stage_ui_update(datamodel, object_id)
 
             gameplay_core.build()
         end
+    end
+    return true
+end
+
+---------------
+local M = {}
+
+function M:create(object_id, construction_center)
+    local datamodel = {}
+    _show_object_recipe(datamodel, object_id)
+    _update_recipe_items(datamodel, datamodel.recipe_name)
+    datamodel.recipe_name = datamodel.recipe_name or ""
+    datamodel.construction_center = construction_center
+    return datamodel
+end
+
+function M:stage_ui_update(datamodel, object_id)
+    for _, _, _, category_id in click_category_mb:unpack() do
+        datamodel.catalog_index = category_id
+        datamodel.recipe_index = 1 -- recipe_index is the index of recipe_items[caterory], default is 1
+        _update_recipe_items(datamodel)
+    end
+
+    for _, _, _, recipe_name in click_recipe_mb:unpack() do
+        local storage = gameplay_core.get_storage()
+        storage.recipe_picked_flag = storage.recipe_picked_flag or {}
+        storage.recipe_picked_flag[recipe_name] = true
+        _update_recipe_items(datamodel, recipe_name)
+    end
+
+    for _, _, _, object_id, recipe_name in set_recipe_mb:unpack() do
+        local object = assert(objects:get(object_id, {"CONSTRUCTED"}))
+        local typeobject = iprototype.queryByName(object.prototype_name)
+        local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+        assert(e.assembling)
+        if not __throw_construction_chest(e, object.x, object.y, iprototype.unpackarea(typeobject.area)) then
+            goto continue
+        end
 
         if iworld.set_recipe(gameplay_core.get_world(), e, recipe_name, typeobject.recipe_init_limit) then
             -- TODO viewport
@@ -405,6 +409,11 @@ function M:stage_ui_update(datamodel, object_id)
     for _ in clear_recipe_mb:unpack() do
         local object = assert(objects:get(object_id))
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+        local typeobject = iprototype.queryByName(object.prototype_name)
+        if not __throw_construction_chest(e, object.x, object.y, iprototype.unpackarea(typeobject.area)) then
+            goto continue
+        end
+
         iworld.set_recipe(gameplay_core.get_world(), e, nil)
         object.recipe = ""
         object.fluid_name = {}
@@ -413,6 +422,7 @@ function M:stage_ui_update(datamodel, object_id)
 
         _update_neighbor_fluidbox(object)
         gameplay_core.build()
+        ::continue::
     end
 end
 
