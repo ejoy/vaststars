@@ -218,6 +218,17 @@
                             start.buttons[#start.buttons + 1] = v
                         end
 
+                        if start.construction_center_place then
+                            local v = setmetatable({}, {__index = mt})
+                            v.text = "放置"
+                            v.message = "construction_center_place"
+                            v.background_image = "textures/factory/place-building.texture"
+                            v.number = start.construction_center_count
+                            v.show_number = start.construction_center_count > 0
+                            v.show_icon_background = false
+                            start.buttons[#start.buttons + 1] = v
+                        end
+
                         if start.drone_depot_icon and start.drone_depot_icon ~= "" then
                             local v = setmetatable({}, {__index = mt})
                             v.background_image = start.drone_depot_icon

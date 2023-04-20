@@ -397,6 +397,7 @@ return function(world)
         building.assembling_icon:update(e)
     end
 
+    -- special handling for the display of the 'no power' icon on the laboratory
     for e in world.ecs:select "consumer:in assembling:absent building:in capacitance:in eid:in" do
         local object = assert(objects:coord(e.building.x, e.building.y))
         local building = global.buildings[object.id]

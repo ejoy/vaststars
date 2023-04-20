@@ -23,6 +23,7 @@ local item_transfer_unsubscribe_mb = mailbox:sub {"item_transfer_unsubscribe"}
 local item_transfer_place_mb = mailbox:sub {"item_transfer_place"}
 local close_mb = mailbox:sub {"close"}
 local ui_click_mb = mailbox:sub {"ui_click"}
+local construction_center_place_mb = mailbox:sub {"construction_center_place"}
 
 local ichest = require "gameplay.interface.chest"
 local assembling_common = require "ui_datamodel.common.assembling"
@@ -34,6 +35,7 @@ local global = require "global"
 local interval_call = ecs.require "engine.interval_call"
 local item_transfer = require "item_transfer"
 local item_transfer_effect = ecs.require "item_transfer_effect"
+local idetail = ecs.import.interface "vaststars.gamerender|idetail"
 
 local function __show_set_item(typeobject)
     return iprototype.has_type(typeobject.type, "hub") or iprototype.has_type(typeobject.type, "station")
@@ -67,6 +69,7 @@ local function __construction_center_update(datamodel, object_id)
         datamodel.construction_center_icon = ""
         datamodel.construction_center_count = 0
         datamodel.construction_center_build, datamodel.construction_center_stop_build = false, false
+        datamodel.construction_center_place = false
     else
         local ingredients, results = assembling_common.get(gameplay_core.get_world(), e)
         assert(results and results[1])
@@ -74,6 +77,7 @@ local function __construction_center_update(datamodel, object_id)
         datamodel.construction_center_count = results[1].count
         datamodel.construction_center_build, datamodel.construction_center_stop_build = true, true
         datamodel.construction_center_ingredients = ingredients
+        datamodel.construction_center_place = results[1].count > 0
     end
 end
 
@@ -254,6 +258,7 @@ function M:create(object_id, object_position, ui_x, ui_y)
         construction_center_count = 0,
         construction_center_ingredients = {},
         construction_center_multiple = 0,
+        construction_center_place = false,
         construction_center_build = false,
         construction_center_stop_build = false,
         lorry_factory_icon = "",
@@ -469,6 +474,25 @@ function M:stage_ui_update(datamodel, object_id)
 
     for _, _, _, message in ui_click_mb:unpack() do
         itask.update_progress("click_ui", message, object.prototype_name)
+    end
+
+    for _ in construction_center_place_mb:unpack() do
+        local object = assert(objects:get(object_id))
+        local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+        if e.assembling.recipe == 0 then
+            goto continue
+        end
+
+        local recipe = assert(iprototype.queryById(e.assembling.recipe), "unknown recipe: "..e.assembling.recipe)
+        local ingredients_n <const> = #recipe.ingredients//4 - 1
+        local results_n <const> = #recipe.results//4 - 1
+
+        idetail.unselected()
+        iui.close("build_function_pop.rml")
+        iui.close("detail_panel.rml")
+        iui.close("building_arc_menu.rml")
+        iui.redirect("construct.rml", "construction_center_menu_place", object.id, ingredients_n + 1)
+        ::continue::
     end
 end
 
