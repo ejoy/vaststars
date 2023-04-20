@@ -225,6 +225,7 @@ prototype "运输车辆I" {
     stack = 1,
     item_description = "运输货物的交通工具",
     capacitance = "10MJ",
+    icon = "textures/construct/truck.texture",
 }
 
 prototype "换热器I" {
