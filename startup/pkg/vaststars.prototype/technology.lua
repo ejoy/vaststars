@@ -171,7 +171,7 @@ local prototype = gameplay.register.prototype
       "textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "使用建造中心建造1个采矿机", icon = "textures/construct/industry.texture"},
+      { desc = "在建造中心打印1个采矿机", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -329,7 +329,7 @@ prototype "建造电线杆" {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "在“建造中心”建造4个电线杆", icon = "textures/construct/industry.texture"},
+      { desc = "在“建造中心”打印4个电线杆", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -559,7 +559,7 @@ prototype "建造电线杆" {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "在“建造中心”建造1个无人机仓库", icon = "textures/construct/industry.texture"},
+      { desc = "在“建造中心”打印1个无人机仓库", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -778,7 +778,7 @@ prototype "建造电线杆" {
       },
     },
     sign_desc = {
-      { desc = "使用“建造”放置1座科研中心", icon = "textures/construct/industry.texture"},
+      { desc = "放置1座科研中心", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -1036,7 +1036,7 @@ prototype "建造电线杆" {
       },
     },
     sign_desc = {
-      { desc = "使用组装机生产6个太阳能板", icon = "textures/construct/industry.texture"},
+      { desc = "在建造中心打印6个太阳能板", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -1110,7 +1110,7 @@ prototype "建造电线杆" {
       "textures/task_tips_pic/task_produce_ore3.texture",
     },
     sign_desc = {
-      { desc = "建造中心生产60段公路", icon = "textures/construct/industry.texture"},
+      { desc = "在建造中心生产60段公路", icon = "textures/construct/industry.texture"},
     },
   }
 
