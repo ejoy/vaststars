@@ -251,7 +251,7 @@ function cterrain_fields:init()
     end
 end
 
-local packfmt<const> = "fffffffffIIffffIIff"
+local packfmt<const> = "fffffffffffffffffff"
 
 local direction_table ={
     [0]   = {0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0},

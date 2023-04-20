@@ -11,6 +11,7 @@ interface "itranslucent_plane"
     .method "set_translucent_rgba"
     .method "create_translucent_plane_entity"
     .method "remove_translucent_plane_entity"
+    .method "merge_translucent_plane_entity"
 
 policy "translucent_plane"
     .require_system "mod.translucent_plane|init_system"

@@ -40,14 +40,52 @@ function S.init()
     world:create_object(p)
 end
 
-local function create_zone()
-    local t = {
-        [1] = {x = 0, y = 0, zone_rgba  = {r = 255, g = 0, b = 0, a = 255}}, 
-        [2] = {x = 1, y = 0, zone_rgba  = {r = 0, g = 255, b = 0, a = 155}},
-        [3] = {x = 2, y = 0, zone_rgba  = {r = 0, g = 0, b = 255, a = 155}}
+local function create_mark()
+    local t = {}
+    local x, y = 0, 0
+    for _, shape in ipairs({"I", "L", "T", "U", "X", "O"}) do
+        y = y + 2
+        x = 0
+        for rtype = 1, 2 do
+            for _, dir in ipairs({"N", "E", "S", "W"}) do
+                x = x + 2
+                --
+                t[#t+1] = {
+                    x = x, y = y,
+                    layers = {
+                        mark = {type  = rtype, shape = shape, dir = dir}
+                    }
+                }
+            end
+        end
+    end
+    t[#t+1] =     {
+        x = 0, y = 0,
+        layers =
+        {
+            road =
+            {
+                type  = "3",
+                shape = "I",
+                dir   = "N"
+            }
+        }
     }
-    iterrain.update_zone_entity(t)
+    t[#t+1] =     {
+        x = 1, y = 0,
+        layers =
+        {
+            road =
+            {
+                type  = "3",
+                shape = "I",
+                dir   = "N"
+            }
+        }
+    }
+    iterrain.create_roadnet_entity(t)
 end
+
 function S.init_world()
     local mq = w:first("main_queue camera_ref:in")
     local eyepos = math3d.vector(0, 8, -8)
@@ -58,7 +96,9 @@ function S.init_world()
 
     iterrain.gen_terrain_field(256, 256, 128)
     --istonemountain.create_sm_entity(0.8, 256, 256, 128)
-    --create_zone()
+    create_mark()
+
+    -- priority 1>2>3
     local t = {
         [1] = {r = 255, g = 0, b = 0, a = 255}, 
         [2] = {r = 0, g = 255, b = 0, a = 155},
@@ -66,7 +106,7 @@ function S.init_world()
     }
     itp.set_translucent_rgba(t)
 
-    printer_eid = ecs.create_entity {
+--[[     printer_eid = ecs.create_entity {
         policy = {
             "ant.render|render",
             "ant.general|name",
@@ -83,7 +123,7 @@ function S.init_world()
                 percent  = printer_percent
             }
         },
-    }
+    } ]]
 end
 
 local kb_mb = world:sub{"keyboard"}
@@ -96,35 +136,34 @@ function S:data_changed()
                 printer_percent = 0.0
             end
             iprinter.update_printer_percent(printer_eid, printer_percent)
-        elseif key == "J" and press == 0 then
-            local plane_table = {
-                [1] = {x = 0, z = 0},
-                [2] = {x = 1, z = 0},
+        elseif key == "G" and press == 0 then
+            local rect1 = {
+                x = 1, z = 1, w = 3, h = 3
             }
-            local translucent_info = {
-                color_idx = 1,
-                min_x = 0,
-                min_z = 0
+            -- rect color_idx
+            itp.create_translucent_plane_entity(rect1, 3)
+            local rect2 = {
+                x = 5, z = 1, w = 4, h = 4
             }
-            itp.create_translucent_plane_entity(plane_table, translucent_info)
-
-            local plane_table2 = {
-                [1] = {x = 2, z = 2},
-                [2] = {x = 2, z = 3},
+            itp.create_translucent_plane_entity(rect2, 1)
+        elseif key == "H" and press == 0 then
+            local rect3 = {
+                x = 3, z = 3, w = 5, h = 5
             }
-            local translucent_info2 = {
-                color_idx = 2,
-                min_x = 2,
-                min_z = 2
+            local merge_list = {
+                {1, 1}, {5, 1}
             }
-            itp.create_translucent_plane_entity(plane_table2, translucent_info2 )
-        elseif key == "K" and press == 0 then
-            local translucent_info = {
-                color_idx = 1,
-                min_x = 0,
-                min_z = 0
-            }
-            itp.remove_translucent_plane_entity(translucent_info)
+            -- rect color_idx possible_need_merge_list
+            itp.merge_translucent_plane_entity(rect3, 2, merge_list)
+        elseif key =="J" and press == 0 then
+            -- if translucent_plane_entity need move
+            -- remove first
+            -- then create/merge
+            itp.remove_translucent_plane_entity({1, 1})
+        elseif key =="K" and press == 0 then
+            itp.remove_translucent_plane_entity({5, 1})
+        elseif key =="L" and press == 0 then
+            itp.remove_translucent_plane_entity({3, 3})
         end
     end
 end
