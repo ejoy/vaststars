@@ -6,7 +6,8 @@ prototype "小铁制箱子I" {
     icon = "textures/building_pic/small_pic_chest.texture",
     background = "textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
-    type = {"building"},
+    type = {"building", "chest"},
+    chest_type = "red",
     area = "1x1",
     slots = 10,
 }
