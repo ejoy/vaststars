@@ -1,0 +1,20 @@
+---
+data:
+  name: Scene
+  scene: {}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  material: /pkg/vaststars.resources/glb/drop-box.glb|materials/Material.002.material
+  mesh: /pkg/vaststars.resources/glb/drop-box.glb|meshes/Cube_P1.meshbin
+  name: Cube
+  scene:
+    s: {1.138555884361267, 1.138555884361267, 1.138555884361267}
+    t: {0, 5.814689636230469, 0}
+  visible_state: main_view|selectable|cast_shadow
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
