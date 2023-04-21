@@ -7,6 +7,7 @@ local math3d = require "math3d"
 local camera = ecs.require "engine.camera"
 
 local MOVE_SPEED <const> = 8.0
+local DROP_SPEED <const> = 2.5
 local YAXIS_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
 local PLANES <const> = {YAXIS_PLANE}
 local camera_controller = ecs.system "camera_controller"
@@ -41,9 +42,12 @@ local __handle_drop_camera; do
 
         for _, _, e in gesture_pan:unpack() do
             if e.state == "began" then
-                last_position = math3d.ref(camera.screen_to_world(e.translationInView.x, e.translationInView.y, PLANES)[1])
+                local x, y = e.translationInView.x, e.translationInView.y
+                last_position = math3d.ref(camera.screen_to_world(x, y, PLANES)[1])
             elseif e.state == "changed" then
-                position = e.translationInView
+                local x, y = e.translationInView.x, e.translationInView.y
+                x, y = x * DROP_SPEED, y * DROP_SPEED
+                position = {x = x, y = y}
             elseif e.state == "ended" then
                 last_position = nil
             end
