@@ -10,6 +10,11 @@ local MOVE_SPEED <const> = 8.0
 local DROP_SPEED <const> = 2.5
 local YAXIS_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
 local PLANES <const> = {YAXIS_PLANE}
+local platform = require "bee.platform"
+local function is_ios()
+	return "ios" == platform.os
+end
+
 local camera_controller = ecs.system "camera_controller"
 local ui_message_move_camera_mb = world:sub {"ui_message", "move_camera"}
 local mouse_wheel_mb = world:sub {"mouse_wheel"}
@@ -22,6 +27,7 @@ local CAMERA_DEFAULT = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/
 local CAMERA_DEFAULT_YAIXS <const> = CAMERA_DEFAULT[1].data.scene.t[2]
 local CAMERA_YAIXS_MIN <const> = CAMERA_DEFAULT_YAIXS - 150
 local CAMERA_YAIXS_MAX <const> = CAMERA_DEFAULT_YAIXS + 150
+
 
 local function zoom(v)
     local mq = w:first("main_queue camera_ref:in render_target:in")
@@ -46,7 +52,9 @@ local __handle_drop_camera; do
                 last_position = math3d.ref(camera.screen_to_world(x, y, PLANES)[1])
             elseif e.state == "changed" then
                 local x, y = e.translationInView.x, e.translationInView.y
-                x, y = x * DROP_SPEED, y * DROP_SPEED
+                if is_ios() then
+                    x, y = x * DROP_SPEED, y * DROP_SPEED
+                end
                 position = {x = x, y = y}
             elseif e.state == "ended" then
                 last_position = nil
