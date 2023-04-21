@@ -5,7 +5,7 @@ local w     = world.w
 local pickup_detect_sys = ecs.system "pickup_detect_system"
 local ipu = ecs.import.interface "ant.objcontroller|ipickup"
 local gesture_mb = world:sub{"gesture", "tap"}
-local long_press_gesture_mb = world:sub{"long_press_gesture", "tap"}
+local long_press_gesture_mb = world:sub{"gesture", "long_press"}
 
 local mathpkg = import_package "ant.math"
 local mu      = mathpkg.util
@@ -29,8 +29,8 @@ function pickup_detect_sys:data_changed()
         local x, y = remap_xy(v.locationInView.x, v.locationInView.y)
         ipu.pick(x, y, __gesture)
     end
-    for _, _, x, y in long_press_gesture_mb:unpack() do
-        x, y = remap_xy(x, y)
+    for _, _, v in long_press_gesture_mb:unpack() do
+        local x, y = remap_xy(v.locationInView.x, v.locationInView.y)
         ipu.pick(x, y, __long_press_gesture)
     end
 end

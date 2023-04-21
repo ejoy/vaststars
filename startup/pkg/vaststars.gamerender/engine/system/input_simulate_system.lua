@@ -14,14 +14,14 @@ local __touch; do
     local active = false
     function __touch(state, x, y)
         if state == "DOWN" then
-            world:pub {"touch", "START", {{x = x, y = y, id = 0}}}
+            world:pub {"gesture", "pan", {state = "began", translationInView = {x = x, y = y}}}
             active = true
         elseif state == "MOVE" then
             if active then
-                world:pub {"touch", "MOVE", {{x = x, y = y, id = 0}}}
+                world:pub {"gesture", "pan", {state = "changed", translationInView = {x = x, y = y}}}
             end
         elseif state == "UP" then
-            world:pub {"touch", "END", {{x = x, y = y, id = 0}}}
+            world:pub {"gesture", "pan", {state = "ended", translationInView = {x = x, y = y}}}
             active = false
         end
     end
@@ -45,7 +45,12 @@ local __long_press_gesture, __long_press_gesture_update; do
 
     function __long_press_gesture_update()
         if lasttime and now() - lasttime > LONG_PRESS_DURATION then
-            world:pub {"long_press_gesture", "tap", lastx, lasty}
+            world:pub {"gesture", "long_press", {
+                locationInView = {
+                    x = lastx,
+                    y = lasty,
+                },
+            }}
             lasttime = nil
         end
     end

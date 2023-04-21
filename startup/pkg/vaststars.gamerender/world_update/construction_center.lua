@@ -52,18 +52,17 @@ local function create_wing_status()
 end
 
 local function create_printer()
-    local progress = 0
+    local progress, entity, recipe
     local printer_entities = {}
-    local entity = nil
-    local recipe = nil
 
     local function on_position_change(self, building_srt)
         local t = math3d.vector(building_srt.t[1], 13, building_srt.t[3]) --TODO: change the height to be configured in the slot of prefab
         for _, obj in ipairs(printer_entities) do
-            iom.set_position(obj.id, t)
+            local e <close> = w:entity(obj.id)
+            iom.set_position(e, t)
         end
         if entity then
-            iom.set_position(entity.id, t)
+            entity:send("set_position", math3d.ref(t))
         end
     end
     local function remove()
@@ -138,14 +137,20 @@ local function create_printer()
                     end
                 end
             end
-            function p:on_message(msg)
-                assert(msg == "show" or msg == "hide")
-                for _, eid in ipairs(self.tag['*']) do
-                    local e <close> = w:entity(eid, "visible_state?in")
-                    if e.visible_state then
-                        ivs.set_state(e, "main_view", msg == "show")
-                        ivs.set_state(e, "cast_shadow", msg == "show")
+            function p:on_message(msg, ...)
+                assert(msg == "show" or msg == "hide" or msg == "set_position")
+                if msg == "show" or msg == "hide" then
+                    for _, eid in ipairs(self.tag['*']) do
+                        local e <close> = w:entity(eid, "visible_state?in")
+                        if e.visible_state then
+                            ivs.set_state(e, "main_view", msg == "show")
+                            ivs.set_state(e, "cast_shadow", msg == "show")
+                        end
                     end
+                elseif msg == "set_position" then
+                    local position = ...
+                    local root <close> = w:entity(self.tag['*'][1])
+                    iom.set_position(root, position)
                 end
             end
             entity = world:create_object(p)

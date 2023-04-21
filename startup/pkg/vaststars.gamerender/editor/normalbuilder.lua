@@ -93,7 +93,7 @@ local function __new_entity(self, datamodel, typeobject)
             sprite_color = SPRITE_COLOR.CONSTRUCT_INVALID
         end
         datamodel.show_confirm = false
-        datamodel.show_rotate = true
+        datamodel.show_rotate = (typeobject.rotate_on_build == true)
     else
         if typeobject.supply_area then
             sprite_color = SPRITE_COLOR.DRONE_DEPOT_SUPPLY_AREA_VALID
@@ -103,7 +103,7 @@ local function __new_entity(self, datamodel, typeobject)
             sprite_color = SPRITE_COLOR.CONSTRUCT_VALID
         end
         datamodel.show_confirm = true
-        datamodel.show_rotate = true
+        datamodel.show_rotate = (typeobject.rotate_on_build == true)
     end
 
     -- some assembling machine have default recipe
@@ -127,7 +127,7 @@ local function __new_entity(self, datamodel, typeobject)
         },
         fluid_name = fluid_name,
     }
-    iui.open({"construct_pop.rml"}, self.pickup_object.srt.t)
+    iui.open({"construct_pop.rml"}, self.pickup_object.srt.t, typeobject.name)
 
     local offset_x, offset_y = 0, 0
     if typeobject.supply_area then
@@ -409,6 +409,7 @@ local function __deduct_item(self, e)
                     end
                     local object = assert(objects:get(object_id))
                     iobject.remove(object)
+                    objects:remove(object_id)
                     local building = global.buildings[object_id]
                     if building then
                         for _, v in pairs(building) do
@@ -503,10 +504,10 @@ local function rotate_pickup_object(self, datamodel, dir, delta_vec)
 
     if not self:check_construct_detector(pickup_object.prototype_name, pickup_object.x, pickup_object.y, dir) then
         datamodel.show_confirm = false
-        datamodel.show_rotate = true
+        datamodel.show_rotate = (typeobject.rotate_on_build == true)
     else
         datamodel.show_confirm = true
-        datamodel.show_rotate = true
+        datamodel.show_rotate = (typeobject.rotate_on_build == true)
     end
 
     pickup_object.dir = dir

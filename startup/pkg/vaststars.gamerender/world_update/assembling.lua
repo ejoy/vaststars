@@ -365,6 +365,35 @@ local function create_consumer_icon(object_id, building_srt)
     }
 end
 
+local function __need_assembly_icon(gameplay_world, e)
+    if e.assembling.recipe == 0 then
+        return true
+    end
+
+    local typeobject_recipe = iprototype.queryById(e.assembling.recipe)
+    local typeobject_building = iprototype.queryById(e.building.prototype)
+    if not iprototype.has_type(typeobject_building.type, "construction_center") then
+        return true
+    end
+
+    local ingredients_n <const> = #typeobject_recipe.ingredients//4 - 1
+    local results_n <const> = #typeobject_recipe.results//4 - 1
+
+    for idx = 1, results_n do
+        local slot = assert(gameplay_world:container_get(e.chest, idx + ingredients_n))
+        if slot.amount > 0 then
+            return false
+        end
+    end
+
+    -- construction in progress
+    if e.assembling.progress ~= 0 then
+        return false
+    end
+
+    return true
+end
+
 return function(world)
     for e in world.ecs:select "assembling:in chest:in building:in capacitance:in eid:in" do
         local object = assert(objects:coord(e.building.x, e.building.y))
@@ -391,10 +420,17 @@ return function(world)
             end
         end
 
-        if not building.assembling_icon then
-            building.assembling_icon = create_icon(object.id, e, object.srt)
+        if __need_assembly_icon(world, e) then
+            if not building.assembling_icon then
+                building.assembling_icon = create_icon(object.id, e, object.srt)
+            end
+            building.assembling_icon:update(e)
+        else
+            if building.assembling_icon then
+                building.assembling_icon:remove()
+                building.assembling_icon = nil
+            end
         end
-        building.assembling_icon:update(e)
     end
 
     -- special handling for the display of the 'no power' icon on the laboratory

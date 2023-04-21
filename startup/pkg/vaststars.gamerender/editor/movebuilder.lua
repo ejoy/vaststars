@@ -156,11 +156,6 @@ local function __calc_grid_position(self, typeobject)
 end
 
 local function new_entity(self, datamodel, typeobject)
-    local object = assert(objects:get(self.move_object_id))
-    object = iobject.clone(object)
-    object.state = "moving"
-    objects:set(object, "TEMPORARY")
-
     __new_entity(self, datamodel, typeobject)
     self.pickup_object.APPEAR = true
 
@@ -342,11 +337,8 @@ local function confirm(self, datamodel)
     --
     local typeobject = iprototype.queryByName(object.prototype_name)
     if typeobject.power_supply_area and typeobject.power_supply_distance then
-        local aw, ah = iprototype.unpackarea(typeobject.area)
-        local sw, sh = typeobject.power_supply_area:match("(%d+)x(%d+)")
         ipower:build_power_network(gameplay_core.get_world())
-        ipower:merge_pole({power_network_link_target = 0, key = pickup_object.id, targets = {}, x = pickup_object.x, y = pickup_object.y, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.power_supply_distance, power_network_link = typeobject.power_network_link}, true)
-        ipower_line.update_temp_line(ipower:get_temp_pole())
+        ipower_line.update_line(ipower:get_pole_lines())
     end
 
     if self.road_entrance then

@@ -123,6 +123,7 @@ local function __construction_chest_update(datamodel, object_id)
         datamodel.construction_center_place = false
     else
         datamodel.construction_center_place = slot.count > 0
+        datamodel.construction_center_count = slot.count
     end
 end
 
@@ -321,6 +322,7 @@ function M:create(object_id, object_position, ui_x, ui_y)
         item_transfer_unsubscribe = false,
         recipe_name = recipe_name,
         object_id = object_id,
+        prototype_name = object.prototype_name,
         left = ui_x,
         top = ui_y,
         object_position = object_position,

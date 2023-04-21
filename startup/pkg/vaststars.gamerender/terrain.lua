@@ -9,8 +9,8 @@ local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local COLOR_INVALID <const> = math3d.constant "null"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
-local MINERAL_WIDTH <const> = 4
-local MINERAL_HEIGHT <const> = 4
+local MINERAL_WIDTH <const> = 3
+local MINERAL_HEIGHT <const> = 3
 
 -- three-dimensional axial
 -- z
@@ -156,11 +156,7 @@ function terrain:create(width, height)
     for c, mineral in pairs(map) do
         local x, y = c:match("^(%d+),(%d+)$")
         x, y = tonumber(x), tonumber(y)
-        for i = 0, MINERAL_WIDTH - 1 do
-            for j = 0, MINERAL_HEIGHT - 1 do
-                self.mineral_map[_hash(x + i, y + j)] = mineral
-            end
-        end
+        self.mineral_map[_hash(x, y)] = mineral
 
         local prefab = mineral_prefabs[mineral]
         local srt = {r = ROTATORS[math.random(1, 4)], t = self:get_position_by_coord(x, y, MINERAL_WIDTH, MINERAL_HEIGHT)}

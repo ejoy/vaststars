@@ -98,14 +98,6 @@ function S.init_world()
     --istonemountain.create_sm_entity(0.8, 256, 256, 128)
     --create_mark()
 
-    -- priority 1>2>3
-    local t = {
-        [1] = {r = 255, g = 0, b = 0, a = 255}, 
-        [2] = {r = 0, g = 255, b = 0, a = 155},
-        [3] = {r = 0, g = 0, b = 255, a = 155}
-    }
-    itp.set_translucent_rgba(t)
-
      printer_eid = ecs.create_entity {
         policy = {
             "ant.render|render",
@@ -146,7 +138,7 @@ function S:data_changed()
                     plane_table1[#plane_table1+1] = {x, z}
                 end
             end
-            eid1 = itp.create_translucent_plane_entity(plane_table1, 1)
+            eid1 = itp.create_translucent_plane_entity(plane_table1, {1, 0, 0, 0.5})
 
             local ox2, oz2 = 4, 1
             local plane_table2 = {}
@@ -156,7 +148,7 @@ function S:data_changed()
                     plane_table2[#plane_table2+1] = {x, z}
                 end
             end
-            eid2 = itp.create_translucent_plane_entity(plane_table2, 2)
+            eid2 = itp.create_translucent_plane_entity(plane_table2, {0, 0, 1, 0.5})
         elseif key =="K" and press == 0 then
             itp.remove_translucent_plane_entity(eid1)
             itp.remove_translucent_plane_entity(eid2)
@@ -168,7 +160,7 @@ function S:data_changed()
                     plane_table1[#plane_table1+1] = {x, z}
                 end
             end
-            eid1 = itp.create_translucent_plane_entity(plane_table1, 1)
+            eid1 = itp.create_translucent_plane_entity(plane_table1, {1, 0, 0, 0.5})
 
             local ox2, oz2 = 3, 1
             local plane_table2 = {}
@@ -178,7 +170,7 @@ function S:data_changed()
                     plane_table2[#plane_table2+1] = {x, z}
                 end
             end
-            eid2 = itp.create_translucent_plane_entity(plane_table2, 2)
+            eid2 = itp.create_translucent_plane_entity(plane_table2, {0, 0, 1, 0.5})
         end
     end
 end

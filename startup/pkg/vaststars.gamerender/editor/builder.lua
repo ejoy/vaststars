@@ -34,12 +34,11 @@ local function check_construct_detector(self, prototype_name, x, y, dir, exclude
                 if global.roadnet[iprototype.packcoord(x + i, y + j)] then
                     return false
                 end
-
-                local mineral = terrain:get_mineral(x + i, y + j) -- TODO: maybe have multiple minerals in the area
-                if mineral then
-                    found_mineral = mineral
-                end
             end
+        end
+        local mineral = terrain:get_mineral(x, y) -- TODO: maybe have multiple minerals in the area
+        if mineral then
+            found_mineral = mineral
         end
 
         if iprototype.has_type(typeobject.type, "mining") then -- TODO: special case for mining
