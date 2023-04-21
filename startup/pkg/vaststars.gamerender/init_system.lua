@@ -28,13 +28,27 @@ local iefk = ecs.require "engine.efk"
 local iroadnet = ecs.require "roadnet"
 local irender_layer = ecs.require "engine.render_layer"
 local ltask     = require "ltask"
+local idn = ecs.import.interface "mod.daynight|idaynight"
+local DayTick <const> = require("gameplay.interface.constant").DayTick
 local m = ecs.system 'init_system'
 
 iRmlUi.set_prefix "/pkg/vaststars.resources/ui/"
 iRmlUi.add_bundle "/pkg/vaststars.resources/ui/ui.bundle"
 iRmlUi.font_dir "/pkg/vaststars.resources/ui/font/"
+
+local function daynight_update(gameplayWorld)
+    local dne = w:first "daynight:in"
+    if not dne then
+        return
+    end
+
+    local cycle = (gameplayWorld:now() % DayTick) / DayTick
+    idn.update_cycle(dne, cycle)
+end
+
 function m:init_world()
     bgfx.maxfps(FRAMES_PER_SECOND)
+    ecs.create_instance "/pkg/vaststars.resources/daynight.prefab"
 
     -- "foreground", "opacity", "background", "translucent", "decal_stage", "ui_stage"
     irender_layer.init({
@@ -100,9 +114,10 @@ function m:update_world()
         return
     end
 
+    local gameplay_world = gameplay_core.get_world()
+    daynight_update(gameplay_world)
     iroadnet:update()
 
-    local gameplay_world = gameplay_core.get_world()
     if gameplay_core.world_update then
         gameplay_core.update()
         world_update(gameplay_world)
