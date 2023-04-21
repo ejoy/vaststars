@@ -1046,7 +1046,6 @@ local t = {
 	"/pkg/vaststars.resources/prefabs/animation/mars-assembling-machine_animat_low.anim",
 	"/pkg/vaststars.resources/prefabs/animation/mars-pumpjack_animat.anim",
 	"/pkg/vaststars.resources/prefabs/animation/mars-pumpjack_animat_low.anim",
-	"/pkg/vaststars.resources/prefabs/animation/miner_Bone - 副本.anim",
 	"/pkg/vaststars.resources/prefabs/animation/miner_Bone.anim",
 	"/pkg/vaststars.resources/prefabs/animation/turbine_animat.anim",
 	"/pkg/vaststars.resources/prefabs/animation/wind_turbine_animat.anim",
