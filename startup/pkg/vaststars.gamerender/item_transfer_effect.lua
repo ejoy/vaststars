@@ -8,6 +8,10 @@ local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local objects = require "objects"
 local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
 local global = require "global"
+local math3d = require "math3d"
+local COLOR_NULL = math3d.constant "null"
+local selected_boxes = ecs.require "selected_boxes"
+local iprototype = require "gameplay.interface.prototype"
 
 local efk_events = {}
 efk_events["play"] = function(o, e, pos)
@@ -18,8 +22,6 @@ end
 efk_events["stop"] = function(o, e)
     iefk.stop(o.id)
 end
-
-local subscribe_id
 
 local function init()
     if not transfer_effect then
@@ -36,47 +38,43 @@ local function init()
                 speed = 1.0,
                 scene = {s = 5, t = {0, 10, 0}}
             }), efk_events),
-            ready_effect = ientity_object.create(iefk.create("/pkg/vaststars.resources/effect/efk/teleport-ready.efk", {
-                auto_play = false,
-                loop = false,
-                speed = 1.0,
-                scene = {s = 6, t = {0, 10, 0}}
-            }), efk_events),
         }
     end
 end
 
+local subscribe_id, unsubscribe
 local function subscribe(object_id)
     init()
 
     if subscribe_id then
-        local building = global.buildings[subscribe_id]
-        building.item_transfer_effect = nil
+        unsubscribe(subscribe_id)
     end
-    subscribe_id = object_id
-
-    local obj = assert(objects:get(object_id))
-    transfer_effect.ready_effect:send("play", obj.srt.t)
 
     local building = global.buildings[object_id]
     assert(building.item_transfer_effect == nil)
+
+    local obj = assert(objects:get(object_id))
+    local typeobject = iprototype.queryByName(obj.prototype_name)
+    local w, h = iprototype.unpackarea(typeobject.area)
+    local item_transfer_effect = selected_boxes("/pkg/vaststars.resources/prefabs/item-transfer-source.prefab", obj.srt.t, COLOR_NULL, w, h)
+
     building.item_transfer_effect = {
         on_position_change = function(self, building_srt)
-            transfer_effect.ready_effect:send("play", building_srt.t)
+            item_transfer_effect:set_position(building_srt.t)
         end,
         remove = function()
-            local building = global.buildings[object_id]
-            building.item_transfer_effect = nil
+            item_transfer_effect:remove()
         end,
     }
+
+    subscribe_id = object_id
 end
 
-local function unsubscribe(object_id)
+function unsubscribe(object_id)
     local building = global.buildings[object_id]
+    building.item_transfer_effect:remove()
     building.item_transfer_effect = nil
-
     subscribe_id = nil
-    transfer_effect.ready_effect:send("stop")
 end
 
 local function place_from(object_id)

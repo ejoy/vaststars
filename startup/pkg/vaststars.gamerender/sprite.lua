@@ -7,7 +7,8 @@ local iroad = ecs.require "engine.road"
 
 local WIDTH <const> = 256 -- coordinate value range: [0, WIDTH - 1]
 local HEIGHT <const> = 256 -- coordinate value range: [0, HEIGHT - 1]
-local function __convert_coord(x, y, offset_x, offset_y)
+local function __convert_coord(x, y)
+    local offset_x, offset_y = iroad:get_offset()
     x, y = x, HEIGHT - y - 1
     return x - offset_x, y - offset_y
 end
@@ -22,11 +23,10 @@ end
 
 return function(x, y, w, h, dir, color)
     local w, h = __rotate_area(w, h, dir)
-    local offset_x, offset_y = iroad:get_offset()
     local id
 
     local function create(x, y, w, h, color)
-        x, y = __convert_coord(x, y, offset_x, offset_y)
+        x, y = __convert_coord(x, y)
         local t = {}
         for i = 0, w-1 do
             for j = 0, h-1 do

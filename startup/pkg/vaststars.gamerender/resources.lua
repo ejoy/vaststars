@@ -994,7 +994,6 @@ local t = {
 	"/pkg/vaststars.resources/effect/efk/suipian.texture",
 	"/pkg/vaststars.resources/effect/efk/teleport-in.efk",
 	"/pkg/vaststars.resources/effect/efk/teleport-out.efk",
-	"/pkg/vaststars.resources/effect/efk/teleport-ready.efk",
 	"/pkg/vaststars.resources/effect/efk/yuan.texture",
 	"/pkg/vaststars.resources/glb/images/shelf-put_Roughness.texture",
 	"/pkg/vaststars.resources/glb/images/shelf-put_color.texture",
