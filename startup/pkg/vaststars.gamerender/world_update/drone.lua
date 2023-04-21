@@ -185,12 +185,15 @@ return function(gameworld)
     for e in gameworld.ecs:select "drone:in eid:in" do
         local drone = e.drone
         assert(drone.prev ~= 0, "drone.prev == 0")
-        -- if (drone.prev ~= 0) or (drone.next ~= 0) or (drone.maxprogress ~= 0) or (drone.progress ~= 0) then
+        -- if (drone.prev ~= 0) and (drone.next ~= 0) and (drone.maxprogress ~= 0) and (drone.progress ~= 0) then
         --     print(drone.prev, drone.next, drone.maxprogress, drone.progress, drone.item)
         -- end
         if drone.status == STATUS_HAS_ERROR and lookup_drones[e.eid] then
             lookup_drones[e.eid]:destroy()
             lookup_drones[e.eid] = nil
+        end
+        if drone.status == STATUS_HAS_ERROR then
+            goto continue
         end
         if not lookup_drones[e.eid] then
             local obj = get_object(drone.prev)
@@ -246,11 +249,12 @@ return function(gameworld)
                 current:update(elapsed_time)
             end
         end
+        ::continue::
     end
     for _, task in ipairs(drone_task) do
         local key = task[1]
         local pos = task[3]
-        task[2]:flyto(fly_height, {pos[1] + same_dest_offset[key], item_height, pos[3]}, task[4], task[5])
+        task[2]:flyto(fly_height, {pos[1] + same_dest_offset[key], task[5] and pos[2] or item_height, pos[3]}, task[4], task[5])
         same_dest_offset[key] = same_dest_offset[key] + drone_offset
     end
     return t
