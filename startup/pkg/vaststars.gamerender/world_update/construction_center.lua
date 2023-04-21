@@ -52,10 +52,8 @@ local function create_wing_status()
 end
 
 local function create_printer()
-    local progress = 0
+    local progress, entity, recipe
     local printer_entities = {}
-    local entity = nil
-    local recipe = nil
 
     local function on_position_change(self, building_srt)
         local t = math3d.vector(building_srt.t[1], 13, building_srt.t[3]) --TODO: change the height to be configured in the slot of prefab
