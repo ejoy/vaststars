@@ -32,8 +32,8 @@ local prototype = gameplay.register.prototype
     type = { "task" },
     task = {"unknown", 0, 4},
     effects = {
-      unlock_recipe = {"采矿机打印"},
-      unlock_item = {"采矿机框架"},
+      -- unlock_recipe = {"采矿机打印"},
+      -- unlock_item = {"采矿机框架"},
     },
     prerequisites = {""},
     count = 1,
@@ -45,145 +45,145 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "采矿机打印预备" {
-    desc = "选择采矿机框架",
-    icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
-    task = {"unknown", 0, 3},
-    task_params = {recipe = "采矿机打印"},
-    count = 1,
-    prerequisites = {"迫降火星"},
-    guide_focus = {
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 121,
-        y = 122,
-        w = 5.5,
-        h = 5.5,
-        show_arrow = true,
-        force = true,
-      },
-      {
-        camera_x = 121,
-        camera_y = 122,
-      },
-    },
-    tips_pic = {
-      "textures/task_tips_pic/task_place_logistics.texture",
-    },
-    sign_desc = {
-      { desc = "建造中心选择采矿机打印", icon = "textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "采矿机打印预备" {
+  --   desc = "选择采矿机框架",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"unknown", 0, 3},
+  --   task_params = {recipe = "采矿机打印"},
+  --   count = 1,
+  --   prerequisites = {"迫降火星"},
+  --   guide_focus = {
+  --     {
+  --       prefab = "prefabs/selected-box-no-animation.prefab",
+  --       x = 121,
+  --       y = 122,
+  --       w = 5.5,
+  --       h = 5.5,
+  --       show_arrow = true,
+  --       force = false,
+  --     },
+  --     {
+  --       camera_x = 121,
+  --       camera_y = 122,
+  --     },
+  --   },
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_place_logistics.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "建造中心选择采矿机打印", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
 
-  prototype "机尾残骸传送" {
-    desc = "收集废墟物资准备传送",
-    icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
-    task = {"unknown", 0, 6},
-    task_params = {ui = "item_transfer_subscribe", building = "机尾残骸"},
-    count = 1,
-    prerequisites = {"采矿机打印预备"},
-    guide_focus = {
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 114,
-        y = 121,
-        w = 2,
-        h = 2,
-        show_arrow = true,
-        force = true,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 109,
-        y = 136,
-        w = 3,
-        h = 3,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 134,
-        y = 123,
-        w = 2.5,
-        h = 2.5,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 126,
-        y = 109,
-        w = 2,
-        h = 2,
-      },
-      {
-        camera_x = 119,
-        camera_y = 125,
-      },
-    },
-    tips_pic = {
-      "textures/task_tips_pic/task_place_logistics.texture",
-    },
-    sign_desc = {
-      { desc = "收集废墟物资准备传送", icon = "textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "机尾残骸传送" {
+  --   desc = "收集废墟物资准备传送",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"unknown", 0, 6},
+  --   task_params = {ui = "item_transfer_subscribe", building = "机尾残骸"},
+  --   count = 1,
+  --   prerequisites = {"采矿机打印预备"},
+  --   guide_focus = {
+  --     {
+  --       prefab = "prefabs/selected-box-no-animation.prefab",
+  --       x = 114,
+  --       y = 121,
+  --       w = 2,
+  --       h = 2,
+  --       show_arrow = true,
+  --       force = true,
+  --     },
+  --     {
+  --       prefab = "prefabs/selected-box-no-animation.prefab",
+  --       x = 109,
+  --       y = 136,
+  --       w = 3,
+  --       h = 3,
+  --     },
+  --     {
+  --       prefab = "prefabs/selected-box-no-animation.prefab",
+  --       x = 134,
+  --       y = 123,
+  --       w = 2.5,
+  --       h = 2.5,
+  --     },
+  --     {
+  --       prefab = "prefabs/selected-box-no-animation.prefab",
+  --       x = 126,
+  --       y = 109,
+  --       w = 2,
+  --       h = 2,
+  --     },
+  --     {
+  --       camera_x = 119,
+  --       camera_y = 125,
+  --     },
+  --   },
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_place_logistics.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "收集废墟物资准备传送", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
 
-  prototype "采矿机传送接收" {
-    desc = "建造中心接收废墟的物资传送",
-    icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
-    task = {"unknown", 0, 6},
-    task_params = {ui = "item_transfer_place", building = "建造中心"},
-    count = 1,
-    prerequisites = {"机尾残骸传送"},
-    guide_focus = {
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 121,
-        y = 122,
-        w = 5.5,
-        h = 5.5,
-        show_arrow = true,
-        force = true,
-      },
-      {
-        camera_x = 121,
-        camera_y = 122,
-      },
-    },
-    tips_pic = {
-      "textures/task_tips_pic/task_place_logistics.texture",
-    },
-    sign_desc = {
-      { desc = "建造中心接收废墟的物资传送", icon = "textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "采矿机传送接收" {
+  --   desc = "建造中心接收废墟的物资传送",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"unknown", 0, 6},
+  --   task_params = {ui = "item_transfer_place", building = "建造中心"},
+  --   count = 1,
+  --   prerequisites = {"机尾残骸传送"},
+  --   guide_focus = {
+  --     {
+  --       prefab = "prefabs/selected-box-no-animation.prefab",
+  --       x = 121,
+  --       y = 122,
+  --       w = 5.5,
+  --       h = 5.5,
+  --       show_arrow = true,
+  --       force = true,
+  --     },
+  --     {
+  --       camera_x = 121,
+  --       camera_y = 122,
+  --     },
+  --   },
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_place_logistics.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "建造中心接收废墟的物资传送", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
 
 
-  prototype "建造采矿机" {
-    desc = "",
-    icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
-    task = {"stat_consumption", 0, "采矿机框架"},
-    prerequisites = {"采矿机传送接收"},
-    count = 1,
-    tips_pic = {
-      "textures/task_tips_pic/task_place_logistics.texture",
-    },
-    sign_desc = {
-      { desc = "在建造中心打印1个采矿机", icon = "textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "建造采矿机" {
+  --   desc = "",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"stat_consumption", 0, "采矿机框架"},
+  --   prerequisites = {"采矿机传送接收"},
+  --   count = 1,
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_place_logistics.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "在建造中心打印1个采矿机", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
 
-  prototype "石矿放置采矿机" {
+  prototype "放置采矿机" {
     desc = "放置1台采矿机",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "采矿机I"},
     prerequisites = {"建造采矿机"},
     effects = {
-       unlock_recipe = {"电线杆打印"},
-       unlock_item = {"电线杆框架"},
+      --  unlock_recipe = {"电线杆打印"},
+      --  unlock_item = {"电线杆框架"},
     },
     count = 1,
     tips_pic = {
@@ -192,22 +192,22 @@ local prototype = gameplay.register.prototype
     guide_focus = {
       {
         prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 115,
-        y = 128.5,
+        x = 114,
+        y = 128,
         w = 3.5,
         h = 3.5,
       },
       {
         prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 121,
-        y = 122,
-        w = 5.5,
-        h = 5.5,
+        x = 114,
+        y = 123.8,
+        w = 1.8,
+        h = 1.8,
         show_arrow = true,
       },
       {
         camera_x = 115,
-        camera_y = 129,
+        camera_y = 125,
       },
     },
     sign_desc = {
@@ -215,372 +215,485 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "电线杆打印预备" {
-    desc = "选择电线杆框架",
+  prototype "放置风力发电机" {
+    desc = "放置1台采矿机",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
-    task = {"unknown", 0, 3},
-    task_params = {recipe = "电线杆打印"},
+    task = {"select_entity", 0, "风力发电机I"},
+    prerequisites = {"放置采矿机"},
+    effects = {
+    },
     count = 1,
-    prerequisites = {"石矿放置采矿机"},
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
     guide_focus = {
       {
         prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 121,
-        y = 122,
-        w = 5.5,
-        h = 5.5,
+        x = 114,
+        y = 117.8,
+        w = 1.8,
+        h = 1.8,
         show_arrow = true,
       },
       {
-        camera_x = 121,
-        camera_y = 122,
+        prefab = "prefabs/selected-box-no-animation.prefab",
+        x = 110,
+        y = 124,
+        w = 3.5,
+        h = 3.5,
+      },
+      {
+        prefab = "prefabs/selected-box-no-animation.prefab",
+        x = 118,
+        y = 124,
+        w = 3.5,
+        h = 3.5,
+      },
+      {
+        prefab = "prefabs/selected-box-no-animation.prefab",
+        x = 114,
+        y = 124,
+        w = 3.5,
+        h = 3.5,
+      },
+      {
+        prefab = "prefabs/selected-box-no-animation.prefab",
+        x = 114,
+        y = 132,
+        w = 3.5,
+        h = 3.5,
+      },
+      {
+        prefab = "prefabs/selected-box-no-animation.prefab",
+        x = 110,
+        y = 132,
+        w = 3.5,
+        h = 3.5,
+      },
+      {
+        prefab = "prefabs/selected-box-no-animation.prefab",
+        x = 118,
+        y = 132,
+        w = 3.5,
+        h = 3.5,
+      },
+      {
+        prefab = "prefabs/selected-box-no-animation.prefab",
+        x = 110,
+        y = 128,
+        w = 3.5,
+        h = 3.5,
+      },
+      {
+        prefab = "prefabs/selected-box-no-animation.prefab",
+        x = 118,
+        y = 128,
+        w = 3.5,
+        h = 3.5,
+      },
+      {
+        camera_x = 115,
+        camera_y = 125,
       },
     },
     sign_desc = {
-      { desc = "建造中心选择电线杆打印", icon = "textures/construct/industry.texture"},
+      { desc = "在石矿上放置1个采矿机", icon = "textures/construct/industry.texture"},
     },
   }
 
-  prototype "机翼残骸传送" {
-    desc = "收集废墟物资准备传送",
-    icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
-    task = {"unknown", 0, 6},
-    task_params = {ui = "item_transfer_subscribe", building = "机翼残骸"},
-    count = 1,
-    prerequisites = {"电线杆打印预备"},
-    guide_focus = {
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 134,
-        y = 123,
-        w = 2.5,
-        h = 2.5,
-        show_arrow = true,
-      },
-      {
-        camera_x = 134,
-        camera_y = 123,
-      },
-    },
-    tips_pic = {
-      "textures/task_tips_pic/task_place_logistics.texture",
-    },
-    sign_desc = {
-      { desc = "收集废墟物资准备传送", icon = "textures/construct/industry.texture"},
-    },
-  }
 
-  prototype "电线杆传送接收" {
-    desc = "建造中心接收废墟的物资传送",
-    icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
-    task = {"unknown", 0, 6},
-    task_params = {ui = "item_transfer_place", building = "建造中心"},
-    count = 1,
-    prerequisites = {"机翼残骸传送"},
-    guide_focus = {
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 121,
-        y = 122,
-        w = 5.5,
-        h = 5.5,
-        show_arrow = true,
-      },
-      {
-        camera_x = 121,
-        camera_y = 122,
-      },
-    },
-    tips_pic = {
-      "textures/task_tips_pic/task_place_logistics.texture",
-    },
-    sign_desc = {
-      { desc = "建造中心接收废墟的物资传送", icon = "textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "电线杆打印预备" {
+  --   desc = "选择电线杆框架",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"unknown", 0, 3},
+  --   task_params = {recipe = "电线杆打印"},
+  --   count = 1,
+  --   prerequisites = {"石矿放置采矿机"},
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_place_logistics.texture",
+  --   },
+  --   guide_focus = {
+  --     {
+  --       prefab = "prefabs/selected-box-no-animation.prefab",
+  --       x = 121,
+  --       y = 122,
+  --       w = 5.5,
+  --       h = 5.5,
+  --       show_arrow = true,
+  --     },
+  --     {
+  --       camera_x = 121,
+  --       camera_y = 122,
+  --     },
+  --   },
+  --   sign_desc = {
+  --     { desc = "建造中心选择电线杆打印", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
 
-prototype "建造电线杆" {
-    desc = "建造5个电线杆",
-    icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
-    task = {"stat_consumption", 0, "电线杆框架"},
-    prerequisites = {"电线杆传送接收"},
-    count = 5,
-    guide_focus = {
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 121,
-        y = 122,
-        w = 5.5,
-        h = 5.5,
-      },
-      {
-        camera_x = 121,
-        camera_y = 122,
-      },
-    },
-    tips_pic = {
-      "textures/task_tips_pic/task_place_logistics.texture",
-    },
-    sign_desc = {
-      { desc = "在“建造中心”打印4个电线杆", icon = "textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "机翼残骸传送" {
+  --   desc = "收集废墟物资准备传送",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"unknown", 0, 6},
+  --   task_params = {ui = "item_transfer_subscribe", building = "机翼残骸"},
+  --   count = 1,
+  --   prerequisites = {"电线杆打印预备"},
+  --   guide_focus = {
+  --     {
+  --       prefab = "prefabs/selected-box-no-animation.prefab",
+  --       x = 134,
+  --       y = 123,
+  --       w = 2.5,
+  --       h = 2.5,
+  --       show_arrow = true,
+  --     },
+  --     {
+  --       camera_x = 134,
+  --       camera_y = 123,
+  --     },
+  --   },
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_place_logistics.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "收集废墟物资准备传送", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
+
+  -- prototype "电线杆传送接收" {
+  --   desc = "建造中心接收废墟的物资传送",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"unknown", 0, 6},
+  --   task_params = {ui = "item_transfer_place", building = "建造中心"},
+  --   count = 1,
+  --   prerequisites = {"机翼残骸传送"},
+  --   guide_focus = {
+  --     {
+  --       prefab = "prefabs/selected-box-no-animation.prefab",
+  --       x = 121,
+  --       y = 122,
+  --       w = 5.5,
+  --       h = 5.5,
+  --       show_arrow = true,
+  --     },
+  --     {
+  --       camera_x = 121,
+  --       camera_y = 122,
+  --     },
+  --   },
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_place_logistics.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "建造中心接收废墟的物资传送", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
+
+-- prototype "建造电线杆" {
+--     desc = "建造5个电线杆",
+--     icon = "textures/construct/industry.texture",
+--     type = { "tech", "task" },
+--     task = {"stat_consumption", 0, "电线杆框架"},
+--     prerequisites = {"电线杆传送接收"},
+--     count = 5,
+--     guide_focus = {
+--       {
+--         prefab = "prefabs/selected-box-no-animation.prefab",
+--         x = 121,
+--         y = 122,
+--         w = 5.5,
+--         h = 5.5,
+--       },
+--       {
+--         camera_x = 121,
+--         camera_y = 122,
+--       },
+--     },
+--     tips_pic = {
+--       "textures/task_tips_pic/task_place_logistics.texture",
+--     },
+--     sign_desc = {
+--       { desc = "在“建造中心”打印4个电线杆", icon = "textures/construct/industry.texture"},
+--     },
+--   }
 
   prototype "放置电线杆" {
-    desc = "放置3个铁制电线杆",
+    desc = "放置2个铁制电线杆",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "铁制电线杆"},
-    prerequisites = {"建造电线杆"},
-    count = 3,
+    prerequisites = {"放置风力发电机"},
+    count = 2,
     effects = {
-       unlock_recipe = {"无人机仓库打印"},
-       unlock_item = {"无人机仓库框架"},
+      --  unlock_recipe = {"无人机仓库打印"},
+      --  unlock_item = {"无人机仓库框架"},
     },
     tips_pic = {
       "textures/task_tips_pic/task_place_pole1.texture",
       "textures/task_tips_pic/task_place_pole2.texture",
     },
     guide_focus = {
+      -- {
+      --   prefab = "prefabs/selected-box-no-animation.prefab",
+      --   x = 117,
+      --   y = 115,
+      --   w = 1.5,
+      --   h = 1.5,
+      -- },
+      -- {
+      --   prefab = "prefabs/selected-box-no-animation.prefab",
+      --   x = 117,
+      --   y = 123,
+      --   w = 1.5,
+      --   h = 1.5,
+      -- },
+      -- {
+      --   prefab = "prefabs/selected-box-no-animation.prefab",
+      --   x = 117,
+      --   y = 131,
+      --   w = 1.5,
+      --   h = 1.5,
+      -- },
+      -- {
+      --   prefab = "prefabs/selected-box-no-animation.prefab",
+      --   x = 123,
+      --   y = 115,
+      --   w = 2,
+      --   h = 2,
+      -- },
       {
         prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 117,
-        y = 115,
-        w = 1.5,
-        h = 1.5,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 117,
-        y = 123,
-        w = 1.5,
-        h = 1.5,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 117,
-        y = 131,
-        w = 1.5,
-        h = 1.5,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 123,
-        y = 115,
-        w = 2,
-        h = 2,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 121,
-        y = 122,
-        w = 5.5,
-        h = 5.5,
+        x = 127,
+        y = 115.8,
+        w = 1.8,
+        h = 1.8,
         show_arrow = true,
       },
       {
-        camera_x = 118,
-        camera_y = 119,
+        camera_x = 125,
+        camera_y = 121,
       },
     },
     sign_desc = {
-      { desc = "放置4个铁制电线杆构成电网", icon = "textures/construct/industry.texture"},
+      { desc = "风力发电机附近放置2个铁制电线杆构成电网", icon = "textures/construct/industry.texture"},
     },
   }
 
-  prototype "无人机仓库打印预备" {
-    desc = "选择无人机仓库框架",
-    icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
-    task = {"unknown", 0, 3},
-    task_params = {recipe = "无人机仓库打印"},
-    count = 1,
-    prerequisites = {"放置电线杆"},
-    tips_pic = {
-      "textures/task_tips_pic/task_place_logistics.texture",
-    },
-    guide_focus = {
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 121,
-        y = 122,
-        w = 5.5,
-        h = 5.5,
-        show_arrow = true,
-      },
-      {
-        camera_x = 121,
-        camera_y = 122,
-      },
-    },
-    sign_desc = {
-      { desc = "建造中心选择无人机仓库打印", icon = "textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "无人机仓库打印预备" {
+  --   desc = "选择无人机仓库框架",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"unknown", 0, 3},
+  --   task_params = {recipe = "无人机仓库打印"},
+  --   count = 1,
+  --   prerequisites = {"放置电线杆"},
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_place_logistics.texture",
+  --   },
+  --   guide_focus = {
+  --     {
+  --       prefab = "prefabs/selected-box-no-animation.prefab",
+  --       x = 121,
+  --       y = 122,
+  --       w = 5.5,
+  --       h = 5.5,
+  --       show_arrow = true,
+  --     },
+  --     {
+  --       camera_x = 121,
+  --       camera_y = 122,
+  --     },
+  --   },
+  --   sign_desc = {
+  --     { desc = "建造中心选择无人机仓库打印", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
 
-  prototype "机头残骸传送" {
-    desc = "收集废墟物资准备传送",
-    icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
-    task = {"unknown", 0, 6},
-    task_params = {ui = "item_transfer_subscribe", building = "机头残骸"},
-    count = 1,
-    prerequisites = {"无人机仓库打印预备"},
-    guide_focus = {
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 126,
-        y = 109,
-        w = 2,
-        h = 2,
-        show_arrow = true,
-      },
-      {
-        camera_x = 126,
-        camera_y = 109,
-      },
-    },
-    tips_pic = {
-      "textures/task_tips_pic/task_place_logistics.texture",
-    },
-    sign_desc = {
-      { desc = "收集废墟物资准备传送", icon = "textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "机头残骸传送" {
+  --   desc = "收集废墟物资准备传送",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"unknown", 0, 6},
+  --   task_params = {ui = "item_transfer_subscribe", building = "机头残骸"},
+  --   count = 1,
+  --   prerequisites = {"无人机仓库打印预备"},
+  --   guide_focus = {
+  --     {
+  --       prefab = "prefabs/selected-box-no-animation.prefab",
+  --       x = 126,
+  --       y = 109,
+  --       w = 2,
+  --       h = 2,
+  --       show_arrow = true,
+  --     },
+  --     {
+  --       camera_x = 126,
+  --       camera_y = 109,
+  --     },
+  --   },
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_place_logistics.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "收集废墟物资准备传送", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
 
-  prototype "无人机仓库传送接收" {
-    desc = "建造中心接收废墟的物资传送",
-    icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
-    task = {"unknown", 0, 6},
-    task_params = {ui = "item_transfer_place", building = "建造中心"},
-    count = 1,
-    prerequisites = {"机头残骸传送"},
-    guide_focus = {
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 121,
-        y = 122,
-        w = 5.5,
-        h = 5.5,
-        show_arrow = true,
-      },
-      {
-        camera_x = 121,
-        camera_y = 122,
-      },
-    },
-    tips_pic = {
-      "textures/task_tips_pic/task_place_logistics.texture",
-    },
-    sign_desc = {
-      { desc = "建造中心接收废墟的物资传送", icon = "textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "无人机仓库传送接收" {
+  --   desc = "建造中心接收废墟的物资传送",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"unknown", 0, 6},
+  --   task_params = {ui = "item_transfer_place", building = "建造中心"},
+  --   count = 1,
+  --   prerequisites = {"机头残骸传送"},
+  --   guide_focus = {
+  --     {
+  --       prefab = "prefabs/selected-box-no-animation.prefab",
+  --       x = 121,
+  --       y = 122,
+  --       w = 5.5,
+  --       h = 5.5,
+  --       show_arrow = true,
+  --     },
+  --     {
+  --       camera_x = 121,
+  --       camera_y = 122,
+  --     },
+  --   },
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_place_logistics.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "建造中心接收废墟的物资传送", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
 
-  prototype "采矿机传送" {
-    desc = "收集废墟物资准备传送",
-    icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
-    task = {"unknown", 0, 6},
-    task_params = {ui = "item_transfer_subscribe", building = "采矿机I"},
-    count = 1,
-    prerequisites = {"无人机仓库传送接收"},
-    guide_focus = {
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 115,
-        y = 129,
-        w = 3.5,
-        h = 3.5,
-        show_arrow = true,
-      },
-      {
-        camera_x = 115,
-        camera_y = 129,
-      },
-    },
-    tips_pic = {
-      "textures/task_tips_pic/task_place_logistics.texture",
-    },
-    sign_desc = {
-      { desc = "无人机仓库传送接收", icon = "textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "采矿机传送" {
+  --   desc = "收集废墟物资准备传送",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"unknown", 0, 6},
+  --   task_params = {ui = "item_transfer_subscribe", building = "采矿机I"},
+  --   count = 1,
+  --   prerequisites = {"无人机仓库传送接收"},
+  --   guide_focus = {
+  --     {
+  --       prefab = "prefabs/selected-box-no-animation.prefab",
+  --       x = 115,
+  --       y = 129,
+  --       w = 3.5,
+  --       h = 3.5,
+  --       show_arrow = true,
+  --     },
+  --     {
+  --       camera_x = 115,
+  --       camera_y = 129,
+  --     },
+  --   },
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_place_logistics.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "无人机仓库传送接收", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
 
-  prototype "碎石传送接收" {
-    desc = "建造中心接收废墟的物资传送",
-    icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
-    task = {"unknown", 0, 6},
-    task_params = {ui = "item_transfer_place", building = "建造中心"},
-    count = 1,
-    prerequisites = {"采矿机传送"},
-    guide_focus = {
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 121,
-        y = 122,
-        w = 5.5,
-        h = 5.5,
-        show_arrow = true,
-      },
-      {
-        camera_x = 121,
-        camera_y = 122,
-      },
-    },
-    tips_pic = {
-      "textures/task_tips_pic/task_place_logistics.texture",
-    },
-    sign_desc = {
-      { desc = "建造中心接收废墟的物资传送", icon = "textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "碎石传送接收" {
+  --   desc = "建造中心接收废墟的物资传送",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"unknown", 0, 6},
+  --   task_params = {ui = "item_transfer_place", building = "建造中心"},
+  --   count = 1,
+  --   prerequisites = {"采矿机传送"},
+  --   guide_focus = {
+  --     {
+  --       prefab = "prefabs/selected-box-no-animation.prefab",
+  --       x = 121,
+  --       y = 122,
+  --       w = 5.5,
+  --       h = 5.5,
+  --       show_arrow = true,
+  --     },
+  --     {
+  --       camera_x = 121,
+  --       camera_y = 122,
+  --     },
+  --   },
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_place_logistics.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "建造中心接收废墟的物资传送", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
 
-    prototype "建造无人机仓库" {
-    desc = "建造1个无人机仓库",
-    icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
-    task = {"stat_consumption", 0, "无人机仓库框架"},
-    prerequisites = {"碎石传送接收"},
-    count = 1,
-    effects = {
-      unlock_item = {"碎石"},
-    },
-    tips_pic = {
-      "textures/task_tips_pic/task_place_logistics.texture",
-    },
-    sign_desc = {
-      { desc = "在“建造中心”打印1个无人机仓库", icon = "textures/construct/industry.texture"},
-    },
-  }
+  --   prototype "建造无人机仓库" {
+  --   desc = "建造1个无人机仓库",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"stat_consumption", 0, "无人机仓库框架"},
+  --   prerequisites = {"碎石传送接收"},
+  --   count = 1,
+  --   effects = {
+  --     -- unlock_item = {"碎石"},
+  --   },
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_place_logistics.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "在“建造中心”打印1个无人机仓库", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
 
     prototype "放置无人机仓库" {
     desc = "放置1个无人机仓库",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "无人机仓库"},
-    prerequisites = {"建造无人机仓库"},
+    prerequisites = {"放置电线杆"},
     count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_place_pole1.texture",
       "textures/task_tips_pic/task_place_pole2.texture",
     },
+    effects = {
+      unlock_item = {"碎石"},
+    },
     guide_focus = {
       {
         prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 118.5,
-        y = 129.5,
-        w = 2,
-        h = 2,
+        x = 127,
+        y = 127.8,
+        w = 1.8,
+        h = 1.8,
+        show_arrow = true,
+      },
+      {
+        prefab = "prefabs/selected-box-no-animation.prefab",
+        x = 117.5,
+        y = 124.5,
+        w = 2.5,
+        h = 2.5,
+      },
+      {
+        prefab = "prefabs/selected-box-no-animation.prefab",
+        x = 117.5,
+        y = 132.5,
+        w = 2.5,
+        h = 2.5,
+      },
+      {
+        prefab = "prefabs/selected-box-no-animation.prefab",
+        x = 117.5,
+        y = 128.5,
+        w = 2.5,
+        h = 2.5,
       },
       {
         camera_x = 120,
@@ -609,7 +722,7 @@ prototype "建造电线杆" {
   }
 
 
-  prototype "收集碎石矿" {
+  prototype "收集碎石" {
     desc = "挖掘足够的碎石可以开始进行锻造",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
@@ -617,8 +730,8 @@ prototype "建造电线杆" {
     prerequisites = {"无人机仓库设置"},
     count = 12,
     effects = {
-       unlock_recipe = {"科研中心打印"},
-       unlock_item = {"科研中心框架"},
+      --  unlock_recipe = {"科研中心打印"},
+      --  unlock_item = {"科研中心框架"},
     },
     tips_pic = {
       "textures/task_tips_pic/task_produce_ore3.texture",
@@ -628,138 +741,157 @@ prototype "建造电线杆" {
     },
   }
 
-  prototype "无人机仓库传送" {
-    desc = "无人机仓库传送设置",
+  prototype "更多碎石" {
+    desc = "挖掘足够的碎石可以开始进行锻造",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
-    task = {"unknown", 0, 6},
-    task_params = {ui = "item_transfer_subscribe", building = "无人机仓库"},
-    count = 1,
-    prerequisites = {"收集碎石矿"},
+    task = {"stat_production", 0, "碎石"},
+    prerequisites = {"收集碎石"},
+    count = 24,
+    effects = {
+      --  unlock_recipe = {"科研中心打印"},
+      --  unlock_item = {"科研中心框架"},
+    },
     tips_pic = {
-      "textures/task_tips_pic/task_place_logistics.texture",
+      "textures/task_tips_pic/task_produce_ore3.texture",
     },
     sign_desc = {
-      { desc = "无人机仓库传送设置", icon = "textures/construct/industry.texture"},
+      { desc = "放置2个无人机平台收集达24个碎石矿", icon = "textures/construct/industry.texture"},
     },
   }
 
-  prototype "更多无人机仓库" {
-    desc = "再建造1个无人机仓库",
-    icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
-    task = {"stat_consumption", 0, "无人机仓库框架"},
-    prerequisites = {"无人机仓库传送"},
-    count = 2,
-    guide_focus = {
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 126,
-        y = 109,
-        w = 2,
-        h = 2,
-        show_arrow = true,
-      },
-      {
-        camera_x = 121,
-        camera_y = 122,
-      },
-    },
-    tips_pic = {
-      "textures/task_tips_pic/task_place_logistics.texture",
-    },
-    sign_desc = {
-      { desc = "建造总共2个无人机仓库", icon = "textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "无人机仓库传送" {
+  --   desc = "无人机仓库传送设置",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"unknown", 0, 6},
+  --   task_params = {ui = "item_transfer_subscribe", building = "无人机仓库"},
+  --   count = 1,
+  --   prerequisites = {"收集碎石"},
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_place_logistics.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "无人机仓库传送设置", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
 
-  prototype "第二个无人机仓库" {
-    desc = "再放置1个无人机仓库",
-    icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
-    task = {"select_entity", 0, "无人机仓库"},
-    prerequisites = {"更多无人机仓库"},
-    count = 2,
-    tips_pic = {
-      "textures/task_tips_pic/task_place_pole1.texture",
-      "textures/task_tips_pic/task_place_pole2.texture",
-    },
-    guide_focus = {
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 118.5,
-        y = 126.5,
-        w = 2,
-        h = 2,
-      },
-      {
-        camera_x = 120,
-        camera_y = 128,
-      },
-    },
-    sign_desc = {
-      { desc = "放置总共2个无人机仓库", icon = "textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "更多无人机仓库" {
+  --   desc = "再建造1个无人机仓库",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"stat_consumption", 0, "无人机仓库框架"},
+  --   prerequisites = {"无人机仓库传送"},
+  --   count = 2,
+  --   guide_focus = {
+  --     {
+  --       prefab = "prefabs/selected-box-no-animation.prefab",
+  --       x = 126,
+  --       y = 109,
+  --       w = 2,
+  --       h = 2,
+  --       show_arrow = true,
+  --     },
+  --     {
+  --       camera_x = 121,
+  --       camera_y = 122,
+  --     },
+  --   },
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_place_logistics.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "建造总共2个无人机仓库", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
 
-  prototype "仓库碎石设置" {
-    desc = "无人机仓库选择碎石",
-    icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
-    task = {"unknown", 0, 5},                          
-    task_params = {item = "碎石"},
-    count = 1,
-    prerequisites = {"第二个无人机仓库"},
-    tips_pic = {
-      "textures/task_tips_pic/task_place_logistics.texture",
-    },
-    sign_desc = {
-      { desc = "第二个无人机仓库选择碎石", icon = "textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "第二个无人机仓库" {
+  --   desc = "再放置1个无人机仓库",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"select_entity", 0, "无人机仓库"},
+  --   prerequisites = {"更多无人机仓库"},
+  --   count = 2,
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_place_pole1.texture",
+  --     "textures/task_tips_pic/task_place_pole2.texture",
+  --   },
+  --   guide_focus = {
+  --     {
+  --       prefab = "prefabs/selected-box-no-animation.prefab",
+  --       x = 118.5,
+  --       y = 126.5,
+  --       w = 2,
+  --       h = 2,
+  --     },
+  --     {
+  --       camera_x = 120,
+  --       camera_y = 128,
+  --     },
+  --   },
+  --   sign_desc = {
+  --     { desc = "放置总共2个无人机仓库", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
 
-  prototype "建造科研中心" {
-    desc = "建造一座科研中心",
-    icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
-    task = {"stat_consumption", 0, "科研中心框架"},
-    count = 1,
-    prerequisites = {"仓库碎石设置"},
-    guide_focus = {
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 114,
-        y = 121,
-        w = 2,
-        h = 2,
-        show_arrow = true,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 121,
-        y = 122,
-        w = 5.5,
-        h = 5.5,
-      },
-      {
-        camera_x = 119,
-        camera_y = 125,
-      },
-    },
-    tips_pic = {
-      "textures/task_tips_pic/task_place_logistics.texture",
-    },
-    sign_desc = {
-      { desc = "机尾残骸里找寻科研中心框架，再前往建造中心打印一座科研中心", icon = "textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "仓库碎石设置" {
+  --   desc = "无人机仓库选择碎石",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"unknown", 0, 5},                          
+  --   task_params = {item = "碎石"},
+  --   count = 1,
+  --   prerequisites = {"第二个无人机仓库"},
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_place_logistics.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "第二个无人机仓库选择碎石", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
+
+  -- prototype "建造科研中心" {
+  --   desc = "建造一座科研中心",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"stat_consumption", 0, "科研中心框架"},
+  --   count = 1,
+  --   prerequisites = {"仓库碎石设置"},
+  --   guide_focus = {
+  --     {
+  --       prefab = "prefabs/selected-box-no-animation.prefab",
+  --       x = 114,
+  --       y = 121,
+  --       w = 2,
+  --       h = 2,
+  --       show_arrow = true,
+  --     },
+  --     {
+  --       prefab = "prefabs/selected-box-no-animation.prefab",
+  --       x = 121,
+  --       y = 122,
+  --       w = 5.5,
+  --       h = 5.5,
+  --     },
+  --     {
+  --       camera_x = 119,
+  --       camera_y = 125,
+  --     },
+  --   },
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_place_logistics.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "机尾残骸里找寻科研中心框架，再前往建造中心打印一座科研中心", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
 
   prototype "放置科研中心" {
     desc = "放置可以研究火星科技的建筑",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "科研中心I"},
-    prerequisites = {"建造科研中心"},
+    prerequisites = {"更多碎石"},
     count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_click_build.texture",
@@ -767,14 +899,15 @@ prototype "建造电线杆" {
     guide_focus = {
       {
         prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 127,
-        y = 130,
-        w = 3.5,
-        h = 3.5,
+        x = 130,
+        y = 115.8,
+        w = 1.8,
+        h = 1.8,
+        show_arrow = true,
       },
       {
         camera_x = 128,
-        camera_y = 131,
+        camera_y = 121,
       },
     },
     sign_desc = {
@@ -787,13 +920,13 @@ prototype "建造电线杆" {
     type = { "tech" },
     icon = "textures/science/tech-research.texture",
     effects = {
-      unlock_recipe = {"地质科技包1","组装机打印"},
-      unlock_item = {"组装机框架"},
+      unlock_recipe = {"地质科技包1"},
+      -- unlock_item = {"组装机框架"},
     },
     ingredients = {
     },
     count = 10,
-    time = "1.2s",
+    time = "2s",
     prerequisites = {"放置科研中心"},
     sign_desc = {
       { desc = "该科技是火星探索的前沿科技，它可以引导更多的科技研究", icon = "textures/science/important.texture"},
@@ -802,137 +935,133 @@ prototype "建造电线杆" {
 }
 
 
-   prototype "建造组装机" {
-    desc = "建造组装机",
-    icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
-    task = {"stat_consumption", 0, "组装机框架"},
-    prerequisites = {"地质研究"},
-    effects = {
-      unlock_item = {"地质科技包"},
-    },
-    count = 2,
-    tips_pic = {
-      "textures/task_tips_pic/task_place_logistics.texture",
-    },
-    guide_focus = {
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 114,
-        y = 121,
-        w = 2,
-        h = 2,
-        show_arrow = true,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 121,
-        y = 122,
-        w = 5.5,
-        h = 5.5,
-      },
-      {
-        camera_x = 122,
-        camera_y = 124,
-      },
-    },
-    sign_desc = {
-      { desc = "在“建造中心”建造2台组装机", icon = "textures/construct/industry.texture"},
-    },
-  }
+  --  prototype "建造组装机" {
+  --   desc = "建造组装机",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"stat_consumption", 0, "组装机框架"},
+  --   prerequisites = {"地质研究"},
+  --   effects = {
+  --     unlock_item = {"地质科技包"},
+  --   },
+  --   count = 2,
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_place_logistics.texture",
+  --   },
+  --   guide_focus = {
+  --     {
+  --       prefab = "prefabs/selected-box-no-animation.prefab",
+  --       x = 114,
+  --       y = 121,
+  --       w = 2,
+  --       h = 2,
+  --       show_arrow = true,
+  --     },
+  --     {
+  --       prefab = "prefabs/selected-box-no-animation.prefab",
+  --       x = 121,
+  --       y = 122,
+  --       w = 5.5,
+  --       h = 5.5,
+  --     },
+  --     {
+  --       camera_x = 122,
+  --       camera_y = 124,
+  --     },
+  --   },
+  --   sign_desc = {
+  --     { desc = "在“建造中心”建造2台组装机", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
 
   prototype "放置组装机" {
     desc = "放置组装机",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "组装机I"},
-    prerequisites = {"建造组装机"},
-    count = 3,
+    effects = {
+      unlock_item = {"地质科技包"},
+    },
+    prerequisites = {"地质研究"},
+    count = 2,
     tips_pic = {
       "textures/task_tips_pic/task_click_build.texture",
     },
     guide_focus = {
       {
         prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 121,
-        y = 126,
-        w = 3,
-        h = 3,
+        x = 130,
+        y = 127.8,
+        w = 1.8,
+        h = 1.8,
+        show_arrow = true,
       },
       {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 121,
-        y = 130,
-        w = 3,
-        h = 3,
-      },
-      {
-        camera_x = 119,
-        camera_y = 126,
+        camera_x = 128,
+        camera_y = 121,
       },
     },
     sign_desc = {
-      { desc = "放置3台组装机", icon = "textures/construct/industry.texture"},
+      { desc = "放置2台组装机", icon = "textures/construct/industry.texture"},
     },
   }
 
-  prototype "科技包产线搭建" {
-    desc = "选择地质科技包配方",
-    icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
-    task = {"unknown", 0, 3},
-    task_params = {recipe = "地质科技包1"},
-    count = 1,
-    prerequisites = {"放置组装机"},
-    tips_pic = {
-      "textures/task_tips_pic/task_produce_geopack3.texture",
-      "textures/task_tips_pic/task_produce_geopack4.texture",
-      "textures/task_tips_pic/task_produce_geopack5.texture",
-      "textures/task_tips_pic/task_produce_geopack6.texture",
-    },
-    sign_desc = {
-      { desc = "在组装机里选择地质科技包配方", icon = "textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "科技包产线搭建" {
+  --   desc = "选择地质科技包配方",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"unknown", 0, 3},
+  --   task_params = {recipe = "地质科技包1"},
+  --   count = 1,
+  --   prerequisites = {"放置组装机"},
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_produce_geopack3.texture",
+  --     "textures/task_tips_pic/task_produce_geopack4.texture",
+  --     "textures/task_tips_pic/task_produce_geopack5.texture",
+  --     "textures/task_tips_pic/task_produce_geopack6.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "在组装机里选择地质科技包配方", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
 
-  prototype "第三个无人机仓库" {
-    desc = "再放置1个无人机仓库",
-    icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
-    task = {"select_entity", 0, "无人机仓库"},
-    prerequisites = {"科技包产线搭建"},
-    count = 3,
-    tips_pic = {
-      "textures/task_tips_pic/task_place_pole1.texture",
-      "textures/task_tips_pic/task_place_pole2.texture",
-    },
-    sign_desc = {
-      { desc = "放置总共3个无人机仓库", icon = "textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "第三个无人机仓库" {
+  --   desc = "再放置1个无人机仓库",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"select_entity", 0, "无人机仓库"},
+  --   prerequisites = {"科技包产线搭建"},
+  --   count = 3,
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_place_pole1.texture",
+  --     "textures/task_tips_pic/task_place_pole2.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "放置总共3个无人机仓库", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
 
-  prototype "仓库地质科技包设置" {
-    desc = "仓库地质科技包设置",
-    icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
-    task = {"unknown", 0, 5},                          
-    task_params = {item = "地质科技包"},
-    count = 1,
-    prerequisites = {"第三个无人机仓库"},
-    tips_pic = {
-      "textures/task_tips_pic/task_place_logistics.texture",
-    },
-    sign_desc = {
-      { desc = "新放置的无人机仓库选择存储地质科技包", icon = "textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "仓库地质科技包设置" {
+  --   desc = "仓库地质科技包设置",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"unknown", 0, 5},                          
+  --   count = 1,
+  --   prerequisites = {"第三个无人机仓库"},
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_place_logistics.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "新放置的无人机仓库选择存储地质科技包", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
   
-  prototype "自动化生产" {
+  prototype "组装机生产" {
     desc = "自动化生产科技包用于科技研究",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_production", 0, "地质科技包"},
-    prerequisites = {"仓库地质科技包设置"},
+    prerequisites = {"放置组装机"},
     count = 8,
     tips_pic = {
       "textures/task_tips_pic/task_produce_geopack3.texture",
@@ -941,7 +1070,7 @@ prototype "建造电线杆" {
       "textures/task_tips_pic/task_produce_geopack6.texture",
     },
     sign_desc = {
-      { desc = "使用组装机生产至8个地质科技包", icon = "textures/construct/industry.texture"},
+      { desc = "用无人机仓库存储从组装机中生产的8个地质科技包", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -953,7 +1082,7 @@ prototype "建造电线杆" {
       unlock_recipe = {"石砖"},
       unlock_item = {"石砖"},
     },
-    prerequisites = {"自动化生产"},
+    prerequisites = {"组装机生产"},
     ingredients = {
         {"地质科技包", 1},
     },
@@ -961,137 +1090,63 @@ prototype "建造电线杆" {
     time = "1s"
   }
 
-  prototype "石砖产线搭建" {
-    desc = "选择地质科技包配方",
-    icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
-    task = {"unknown", 0, 3},
-    task_params = {recipe = "石砖"},
-    count = 1,
-    prerequisites = {"石头处理1"},
-    tips_pic = {
-      "textures/task_tips_pic/task_produce_geopack3.texture",
-      "textures/task_tips_pic/task_produce_geopack4.texture",
-      "textures/task_tips_pic/task_produce_geopack5.texture",
-      "textures/task_tips_pic/task_produce_geopack6.texture",
-    },
-    sign_desc = {
-      { desc = "在组装机里选择石砖配方", icon = "textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "石砖产线搭建" {
+  --   desc = "选择地质科技包配方",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"unknown", 0, 3},
+  --   task_params = {recipe = "石砖"},
+  --   count = 1,
+  --   prerequisites = {"石头处理1"},
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_produce_geopack3.texture",
+  --     "textures/task_tips_pic/task_produce_geopack4.texture",
+  --     "textures/task_tips_pic/task_produce_geopack5.texture",
+  --     "textures/task_tips_pic/task_produce_geopack6.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "在组装机里选择石砖配方", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
 
   prototype "生产石砖" {
     desc = "挖掘足够的碎石可以开始进行锻造",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_production", 0, "石砖"},
-    prerequisites = {"石砖产线搭建"},
-    count = 10,
+    prerequisites = {"石头处理1"},
+    count = 8,
     tips_pic = {
       "textures/task_tips_pic/task_produce_ore3.texture",
     },
     sign_desc = {
-      { desc = "使用组装机生产10个石砖", icon = "textures/construct/industry.texture"},
+      { desc = "使用组装机生产8个石砖", icon = "textures/construct/industry.texture"},
     },
   }
 
-  prototype "电能扩充" {
-    desc = "掌握使用石砖制造道路的技术",
+  prototype "铁矿石开采" {
+    desc = "获得火星铁矿开采的能力",
     type = { "tech" },
     icon = "textures/science/tech-research.texture",
     effects = {
-      unlock_recipe = {"太阳能板打印"},
-      unlock_item = {"太阳能板框架","太阳能板I"},
+      unlock_item = {"铁矿石"},
     },
     prerequisites = {"生产石砖"},
     ingredients = {
         {"地质科技包", 1},
     },
-    count = 10,
-    time = "1.5s"
+    count = 8,
+    time = "1s"
   }
 
-  prototype "生产太阳能板" {
-    desc = "使用组装机生产6个太阳能板",
-    icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
-    task = {"stat_production", 0, "太阳能板I"},
-    prerequisites = {"电能扩充"},
-    count = 6,
-    tips_pic = {
-      "textures/task_tips_pic/task_produce_ore3.texture",
-    },
-    guide_focus = {
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 134,
-        y = 123,
-        w = 2.5,
-        h = 2.5,
-        show_arrow = true,
-      },
-      {
-        camera_x = 134,
-        camera_y = 123,
-      },
-    },
-    sign_desc = {
-      { desc = "在建造中心打印6个太阳能板", icon = "textures/construct/industry.texture"},
-    },
-  }
-
-    prototype "放置太阳能板" {
-    desc = "放置6座太阳能板",
-    icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
-    task = {"select_entity", 0, "太阳能板I"},
-    prerequisites = {"生产太阳能板"},
-    count = 6,
-    tips_pic = {
-      "textures/task_tips_pic/task_place_logistics.texture",
-    },
-    sign_desc = {
-      { desc = "放置6个太阳能板", icon = "textures/construct/industry.texture"},
-    },
-  }
-
-  prototype "电力覆盖" {
-    desc = "放置10个电线杆",
-    icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
-    task = {"select_entity", 0, "铁制电线杆"},
-    prerequisites = {"放置太阳能板"},
-    count = 10,
-    guide_focus = {
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 109,
-        y = 136,
-        w = 4.5,
-        h = 4.5,
-        show_arrow = true,
-      },
-      {
-        camera_x = 107,
-        camera_y = 134,
-      },
-    },
-    tips_pic = {
-      "textures/task_tips_pic/task_place_logistics.texture",
-    },
-    sign_desc = {
-      { desc = "放置10个电线杆", icon = "textures/construct/industry.texture"},
-    },
-  }
-
-  prototype "道路研究" {
-    desc = "掌握使用石砖制造道路的技术",
+  prototype "公路研究" {
+    desc = "掌握使用石砖制造公路的技术",
     type = { "tech" },
     icon = "textures/science/tech-research.texture",
+    prerequisites = {"铁矿石开采"},
     effects = {
       unlock_recipe = {"砖石公路打印"},
     },
-    prerequisites = {"电力覆盖"},
     ingredients = {
         {"地质科技包", 1},
     },
@@ -1099,12 +1154,47 @@ prototype "建造电线杆" {
     time = "1.5s"
   }
 
-  prototype "道路设计" {
+  prototype "放置建造中心" {
+    desc = "放置1座建造中心",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"select_entity", 0, "建造中心"},
+    prerequisites = {"公路研究"},
+    effects = {
+      -- unlock_recipe = {"太阳能板打印"},
+      -- unlock_item = {"太阳能板框架","太阳能板I"},
+    },
+    count = 1,
+    tips_pic = {
+      "textures/task_tips_pic/task_place_logistics.texture",
+    },
+    guide_focus = {
+      {
+        prefab = "prefabs/selected-box-no-animation.prefab",
+        x = 134,
+        y = 119.8,
+        w = 1.8,
+        h = 1.8,
+        show_arrow = true,
+      },
+      {
+        camera_x = 128,
+        camera_y = 121,
+      },
+    },
+    sign_desc = {
+      { desc = "放置1个建造中心", icon = "textures/construct/industry.texture"},
+    },
+  }
+
+
+
+  prototype "建造公路" {
     desc = "建造60段公路",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_production", 0, "砖石公路-X型"},
-    prerequisites = {"道路研究"},
+    prerequisites = {"放置建造中心"},
     count = 60,
     tips_pic = {
       "textures/task_tips_pic/task_produce_ore3.texture",
@@ -1114,13 +1204,138 @@ prototype "建造电线杆" {
     },
   }
 
+
+  -- prototype "电能扩充" {
+  --   desc = "掌握使用石砖制造道路的技术",
+  --   type = { "tech" },
+  --   icon = "textures/science/tech-research.texture",
+  --   effects = {
+
+  --   },
+  --   prerequisites = {"生产石砖"},
+  --   ingredients = {
+  --       {"地质科技包", 1},
+  --   },
+  --   count = 10,
+  --   time = "1.5s"
+  -- }
+
+  -- prototype "生产太阳能板" {
+  --   desc = "使用组装机生产6个太阳能板",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"stat_production", 0, "太阳能板I"},
+  --   prerequisites = {"电能扩充"},
+  --   count = 6,
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_produce_ore3.texture",
+  --   },
+  --   guide_focus = {
+  --     {
+  --       prefab = "prefabs/selected-box-no-animation.prefab",
+  --       x = 134,
+  --       y = 123,
+  --       w = 2.5,
+  --       h = 2.5,
+  --       show_arrow = true,
+  --     },
+  --     {
+  --       camera_x = 134,
+  --       camera_y = 123,
+  --     },
+  --   },
+  --   sign_desc = {
+  --     { desc = "在建造中心打印6个太阳能板", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
+
+
+
+  -- prototype "生产太阳能板" {
+  --   desc = "使用建造中心生产6个太阳能板",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"stat_production", 0, "太阳能板I"},
+  --   prerequisites = {"电能扩充"},
+  --   count = 6,
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_produce_ore3.texture",
+  --   },
+  --   guide_focus = {
+  --     {
+  --       prefab = "prefabs/selected-box-no-animation.prefab",
+  --       x = 134,
+  --       y = 123,
+  --       w = 2.5,
+  --       h = 2.5,
+  --       show_arrow = true,
+  --     },
+  --     {
+  --       camera_x = 134,
+  --       camera_y = 123,
+  --     },
+  --   },
+  --   sign_desc = {
+  --     { desc = "在建造中心打印6个太阳能板", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
+
+  --   prototype "放置太阳能板" {
+  --   desc = "放置6座太阳能板",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"select_entity", 0, "太阳能板I"},
+  --   prerequisites = {"电能扩充"},
+  --   count = 6,
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_place_logistics.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "放置6个太阳能板", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
+
+  -- prototype "电力覆盖" {
+  --   desc = "放置10个电线杆",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"select_entity", 0, "铁制电线杆"},
+  --   prerequisites = {"放置太阳能板"},
+  --   count = 10,
+  --   guide_focus = {
+  --     {
+  --       prefab = "prefabs/selected-box-no-animation.prefab",
+  --       x = 109,
+  --       y = 136,
+  --       w = 4.5,
+  --       h = 4.5,
+  --       show_arrow = true,
+  --     },
+  --     {
+  --       camera_x = 107,
+  --       camera_y = 134,
+  --     },
+  --   },
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_place_logistics.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "放置10个电线杆", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
+
+  
   prototype "通向铁矿" {
     desc = "修建35节公路",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"unknown", 0, 1},
+    effects = {
+      unlock_recipe = {"采矿机打印"},
+      unlock_item = {"采矿机框架"},
+    },
     task_params = {},
-    prerequisites = {"道路设计"},
+    prerequisites = {"建造公路"},
     count = 35,
     tips_pic = {
       "textures/task_tips_pic/task_place_road1.texture",
@@ -1417,7 +1632,7 @@ prototype "建造电线杆" {
     icon = "textures/science/tech-research.texture",
     effects = {
       unlock_recipe = {"送货车站打印","收货车站打印"},
-      unlock_item = {"送货车站框架","收货车站框架","铁矿石"},
+      unlock_item = {"送货车站框架","收货车站框架"},
     },
     prerequisites = {"通向铁矿"},
     ingredients = {

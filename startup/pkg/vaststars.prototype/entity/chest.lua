@@ -12,6 +12,17 @@ prototype "小铁制箱子I" {
     slots = 10,
 }
 
+prototype "建材箱" {
+    model = "prefabs/drop-box.prefab",
+    icon = "textures/building_pic/small_pic_chest.texture",
+    background = "textures/build_background/pic_chest.texture",
+    construct_detector = {"exclusive"},
+    type = {"building", "chest", "construction_chest"},
+    chest_type = "red",
+    area = "1x1",
+    slots = 10,
+}
+
 prototype "小铁制箱子II" {
     model = "prefabs/small-chest.prefab",
     icon = "textures/building_pic/small_pic_chest.texture",
