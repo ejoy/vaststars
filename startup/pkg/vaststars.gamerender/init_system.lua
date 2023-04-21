@@ -28,9 +28,11 @@ local iefk = ecs.require "engine.efk"
 local iroadnet = ecs.require "roadnet"
 local irender_layer = ecs.require "engine.render_layer"
 local ltask     = require "ltask"
-local ServiceResource = ltask.queryservice "ant.compile_resource|resource"
-ltask.call(ServiceResource, "set_texture_flag")
 local m = ecs.system 'init_system'
+
+iRmlUi.set_prefix "/pkg/vaststars.resources/ui/"
+iRmlUi.add_bundle "/pkg/vaststars.resources/ui/ui.bundle"
+iRmlUi.font_dir "/pkg/vaststars.resources/ui/font/"
 function m:init_world()
     bgfx.maxfps(FRAMES_PER_SECOND)
 
@@ -56,10 +58,6 @@ function m:init_world()
     })
 
     iefk.preload "/pkg/vaststars.resources/effect/efk/"
-
-    iRmlUi.set_prefix "/pkg/vaststars.resources/ui/"
-    iRmlUi.add_bundle "/pkg/vaststars.resources/ui/ui.bundle"
-    iRmlUi.font_dir "/pkg/vaststars.resources/ui/font/"
 
     iroadnet:create(not NOTHING)
     if not DISABLE_LOADING then
