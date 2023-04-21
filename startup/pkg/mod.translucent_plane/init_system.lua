@@ -111,15 +111,7 @@ function init_sys:init_world()
     translucent_plane_material = "/pkg/mod.translucent_plane/assets/translucent_plane.material"
 end
 
-function itp.set_translucent_rgba(translucent_rgba_table)
-    assert(#translucent_rgba_table < 4)
-    for idx, rgba in pairs(translucent_rgba_table) do
-        local r, g, b, a = rgba.r, rgba.g, rgba.b, rgba.a
-        rgba_table[idx] = {r/255, g/255, b/255, a/255}
-    end
-end
-
-function itp.create_translucent_plane_entity(plane_table, color_idx)
+function itp.create_translucent_plane_entity(plane_table, color)
     local width, height, unit, offset = iplane_terrain.get_wh()
     local aabb = get_aabb(plane_table, width, height, unit, offset)
     local plane_mesh = build_mesh(plane_table, unit, offset, aabb)
@@ -138,13 +130,10 @@ function itp.create_translucent_plane_entity(plane_table, color_idx)
                 simplemesh  = plane_mesh,
                 material    = translucent_plane_material,
                 on_ready = function (e)
-                    imaterial.set_property(e, "u_colorTable", math3d.vector(rgba_table[color_idx]))
+                    imaterial.set_property(e, "u_colorTable", math3d.vector(color))
                 end,
                 visible_state = "main_view",
                 render_layer = "translucent",
-                translucent_info = {
-                    color_idx = color_idx,
-                }
             },
         }
     end
@@ -152,15 +141,5 @@ function itp.create_translucent_plane_entity(plane_table, color_idx)
 end
 
 function itp.remove_translucent_plane_entity(eid)
-    for e in w:select "translucent_info:in eid:in" do
-        local translucent_info = e.translucent_info
-        if translucent_info and e.eid and e.eid == eid then
-            w:remove(e.eid)
-        end
-    end
+    w:remove(eid)
 end
-
-
-
-
-

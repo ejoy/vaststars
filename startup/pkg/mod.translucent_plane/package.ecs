@@ -1,5 +1,4 @@
 import "@mod.terrain"
-component "translucent_info".type "lua"
 
 system "init_system"
     .implement "init_system.lua"
@@ -8,7 +7,6 @@ system "init_system"
 
 interface "itranslucent_plane"
     .implement "init_system.lua"
-    .method "set_translucent_rgba"
     .method "create_translucent_plane_entity"
     .method "remove_translucent_plane_entity"
 
@@ -16,4 +14,3 @@ policy "translucent_plane"
     .require_system "mod.translucent_plane|init_system"
     .require_system "ant.render|postprocess_obj_system"
     .require_interface "mod.terrain|iplane_terrain"
-    .component "translucent_info"

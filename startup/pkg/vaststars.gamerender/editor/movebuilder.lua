@@ -156,11 +156,6 @@ local function __calc_grid_position(self, typeobject)
 end
 
 local function new_entity(self, datamodel, typeobject)
-    local object = assert(objects:get(self.move_object_id))
-    object = iobject.clone(object)
-    object.state = "moving"
-    objects:set(object, "TEMPORARY")
-
     __new_entity(self, datamodel, typeobject)
     self.pickup_object.APPEAR = true
 
