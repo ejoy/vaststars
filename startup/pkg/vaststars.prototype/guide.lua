@@ -106,7 +106,7 @@ local guide = {
             {"哔哩..让我们采集足够{/g 碎石}资源吧..哔哩(期待)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
-            guide_progress = 30,
+            guide_progress = 27,
             task = {
                 "收集碎石",
             }
@@ -123,7 +123,7 @@ local guide = {
             {"哔哩..要放置更多的{/color:4bd0ff 碎石}就需要更多的{/g 无人机仓库},尝试收集更多碎石吧..哔哩(期待)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
-            guide_progress = 31,
+            guide_progress = 28,
             task = {
                 "更多碎石",
             }
@@ -139,7 +139,7 @@ local guide = {
             {"资源充足可开展科学研究。请在{/color:4bd0ff 电网覆盖}范围中放置一座{/g 科研中心}..哔哩..(期待)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
-            guide_progress = 32,--10
+            guide_progress = 29,--10
             task = {
                 "放置科研中心",
             }
@@ -155,7 +155,7 @@ local guide = {
             {"有了{/color:4bd0ff 科研中心}我们就可以从{/g 科研目标}里选择需要研究的对象(期待)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
-            guide_progress = 33,--10
+            guide_progress = 30,--10
             task = {
 
             }
