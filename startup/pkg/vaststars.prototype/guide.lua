@@ -2,10 +2,10 @@ local guide = {
 	{
         name = "",
 		narrative = {
-            {"哔哩..哔哗..航天飞机迫降{/g 代号P4031}星球。机体受重创已四分五裂..(失望)", "textures/guide/guide-6.texture"},
+            {"哔哩..航天飞机迫降{/g 代号P4031}星球。机体受重创已四分五裂..(失望)", "textures/guide/guide-6.texture"},
             {"哔哩..哔哗..哔哩..启动大气分析协议中..P4031{/g 缺少氧气}..(失望)"},
             {"哔哩..哔哗..哔哩..启动地质分析协议中..P4031{/g 石铁丰富}..(轻松)","textures/guide/guide-1.texture"},
-            {"哔哩..哔哗..启动生存可靠性分析..{/color:4bd0ff 0.04565%}存活概率..(情绪表达跳过中)","textures/guide/guide-4.texture"},
+            {"哔哩..哔哗..启动生存可靠性分析..存活概率为{/color:4bd0ff 0.04565%}..(失望)","textures/guide/guide-4.texture"},
         },
         narrative_end = {
             task = {
@@ -18,8 +18,8 @@ local guide = {
 	{
         name = "",
 		narrative = {
-            {"哔哩..开采星球资源需要工具，在附近的{/color:4bd0ff 建材箱}里寻找一部{/g 采矿机}吧..哔哩..(期待)", "textures/guide/guide-2.texture"},
-            {"哔哩..将{/g 采矿机}放置在{/g 石矿}上方，采矿机就可以开采矿区资源了..哔哩..(期待)", "textures/guide/guide-1.texture"},
+            {"哔哩..开采星球资源需要工具，附近的{/color:4bd0ff 建材箱}寻找{/g 采矿机}..哔哩..(期待)", "textures/guide/guide-2.texture"},
+            {"哔哩..{/g 采矿机}放置在{/g 石矿}上方，采矿机将开采石矿资源..哔哩..(期待)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
             pop_chapter = {"序章","迫降P4031"},
@@ -69,7 +69,7 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"哔哩..采矿机终于通电运转了。石矿里的{/color:4bd0ff 碎石}将源源不断地被开采出来..哔哩(期待)", "textures/guide/guide-1.texture"},
+            {"哔哩..采矿机通电正常运转。石矿里{/color:4bd0ff 碎石}将被开采出来..哔哩(期待)", "textures/guide/guide-1.texture"},
             {"哔哩..{/color:4bd0ff 碎石}存放需要仓库，{/color:4bd0ff 建材箱}里的{/g 无人机仓库}正好适合....(轻松)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
@@ -119,7 +119,7 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"哔哩..无人机仓库容纳有上限,{/g 1座}无人机仓库最多只能容纳{/g 12块}碎石..(期待)", "textures/guide/guide-1.texture"},
+            {"哔哩..{/g 1座}无人机仓库最多容纳{/g 12块}碎石..(失望)", "textures/guide/guide-6.texture"},
             {"哔哩..要放置更多的{/color:4bd0ff 碎石}就需要更多的{/g 无人机仓库},尝试收集更多碎石吧..哔哩(期待)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
@@ -136,7 +136,7 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"有了充足的资源就可以开展科学研究了。放置一座{/g 科研中心}到{/color:4bd0ff 电网覆盖}范围中吧..哔哩..(期待)", "textures/guide/guide-1.texture"},
+            {"资源充足可开展科学研究。请在{/color:4bd0ff 电网覆盖}范围中放置一座{/g 科研中心}..哔哩..(期待)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
             guide_progress = 32,--10
@@ -660,8 +660,8 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"基地的{/color:4bd0ff 东面}有一处未开发的{/g 铁矿}，要前往开采铁矿需要更便捷的物流方式..哔哩..哔哗..(期待)", "textures/guide/guide-2.texture"},
-            {"修建{/g 公路}可以让我们方便地使用{/color:4bd0ff 运输车辆}抵达{/g 铁矿}..哔哗(高兴)", "textures/guide/guide-3.texture"},
+            {"基地{/color:4bd0ff 东面}有未开发的{/g 铁矿}，前往开采铁矿需要更便捷物流方式..哔哩..哔哗..(期待)", "textures/guide/guide-2.texture"},
+            {"修建{/g 公路}可以让我们使用{/color:4bd0ff 运输车辆}抵达{/g 铁矿}..哔哗(高兴)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
             guide_progress = 49,
