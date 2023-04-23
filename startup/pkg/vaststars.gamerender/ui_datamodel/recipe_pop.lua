@@ -327,7 +327,7 @@ local function __throw_construction_chest(e, x, y, w, h)
                 assert(ichest.chest_pickup(gameplay_core.get_world(), e.chest, slot.item, slot.amount))
 
                 local o = iobject.new {
-                    prototype_name = "小铁制箱子I", -- TODO: remove hardcode
+                    prototype_name = "建材箱", -- TODO: remove hardcode
                     dir = __random_dir(),
                     x = x,
                     y = y,

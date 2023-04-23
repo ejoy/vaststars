@@ -1,5 +1,6 @@
 local ecs = ...
 local world = ecs.world
+local w = world.w
 
 local irmlui = ecs.import.interface "ant.rmlui|irmlui"
 local json = require "engine.system.json"
@@ -264,8 +265,10 @@ local function _to_vmin(vmin, v)
     return v / vmin * 100
 end
 
--- vr: view_rect
-function iui.convert_coord(vr, x, y)
+function iui.convert_coord(x, y)
+    local mq = w:first("main_queue camera_ref:in render_target:in")
+    local ce <close> = w:entity(mq.camera_ref, "camera:in")
+    local vr = mq.render_target.view_rect
     local vmin = _get_vmin(vr.w, vr.h, vr.ratio)
     return _to_vmin(vmin, x), _to_vmin(vmin, y)
 end

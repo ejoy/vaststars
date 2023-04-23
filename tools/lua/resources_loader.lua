@@ -105,10 +105,35 @@ for _, v in ipairs(packagedir) do
 end
 table.sort(t)
 
+local function containsChinese(str)
+    if not str then
+        return false
+    end
+    local pattern = "[\226\128\168-\239\191\189]+"
+    return string.find(str, pattern) ~= nil
+end
+
+local function containsSpace(path)
+    return string.match(path, "%s")
+end
+
+local err = false
 local s = {}
 s[#s+1] = "local t = {"
 for _, v in ipairs(t) do
+    if containsChinese(v) then
+        err = true
+        log.error("path contains chinese: ", v)
+    end
+    if containsSpace(v) then
+        err = true
+        log.error("path contains space: ", v)
+    end
     s[#s+1] = ([[%s"%s",]]):format("\t", v)
+end
+
+if err then
+    error(false)
 end
 
 s[#s+1] = ([[%s"/pkg/vaststars.resources/glb/animation/Interact_build.glb|animation.prefab"]]):format("\t")

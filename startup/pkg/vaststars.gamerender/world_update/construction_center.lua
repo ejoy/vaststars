@@ -200,7 +200,12 @@ return function(gameplay_world)
         if not iprototype.has_type(typeobject.type, "construction_center") then
             goto continue
         end
-        local object = assert(objects:coord(e.building.x, e.building.y))
+
+        -- object may not have been fully created yet
+        local object = objects:coord(e.building.x, e.building.y)
+        if not object then
+            goto continue
+        end
 
         buildings[object.id].construction_center_wing_status = buildings[object.id].construction_center_wing_status or create_wing_status()
         buildings[object.id].construction_center_wing_status:update(gameplay_world, e)

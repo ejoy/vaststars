@@ -331,6 +331,28 @@
                     opacity: 0;
                 }
             }
+            @keyframes teleport-in {
+                0% {
+                    left: 0vmin;
+                    top:120vmin;
+                }
+                25% {
+                    left: 16vmin;
+                    top:80vmin;
+                }
+                50% {
+                    left: 32vmin;
+                    top:50vmin;
+                }
+                75% {
+                    left: 50vmin;
+                    top:20vmin;
+                }
+                100% {
+                    left: 75vmin;
+                    top:0vmin;
+                }
+            }
             .inventory-slide-init{
                 opacity: 0;
             }
@@ -363,13 +385,11 @@
                 transform: rotate(180deg);
             }
             .guide-finger {
-                position: absolute;
-                left: -7vmin;
-                bottom: -1vmin;
                 width:9vmin;
                 height:9vmin;
                 background-size: cover;
                 background-image:"textures/common/finger.texture";
+                animation:5s exponential 0s teleport-in;
             }
         </style>
         <script type="text/x-lua" >
@@ -485,6 +505,7 @@
     </head>
     <body style = "pointer-events: none; justify-content: center; align-items: center;">
         <div class = "safe-area" data-model="start">
+            <div class="guide-finger"/>
             <div class="teleport-items-block" style="pointer-events: none;">
                 <div id = "ItemTransferSrcInvBar" class = "teleport-items-bar-slide-init" style = "justify-content: center; align-items: center; pointer-events: none;">
                     <div id = "ItemTransferSrcInv" class = "inventory-slide-init" style = "flex-direction: row; justify-content: center; align-items: center; pointer-events: none;" data-if = "item_transfer_src_inventory_count > 0">
@@ -512,7 +533,7 @@
                         </button> -->
                         <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click = "clickTechnology()" data-if = "guide_progress >= 30">
                             <div class = "menu-button-pic" style='background-image:"textures/construct/goods_station.texture"'/>
-                            <div class = "menu-button-text">科研中心</div>
+                            <div class = "menu-button-text">科研目标</div>
                             <!-- 科研中心可研究科技标识 start-->
                             <div class = "menu-button-pic" data-if = "tech_count > 0" style='width:3.6vmin; height:3.6vmin; position:absolute; right:0; top:0; background-image:"textures/work_status_icon/red_dot.texture"'>
                                 <div style="text-align:center; font-size:3vmin; padding-right: 0.5vmin;">{{tech_count}}</div>
@@ -544,6 +565,7 @@
             <button  class = "main-menu-button" style="border: 0.00vmin; position: absolute; left:5vmin; top: -4vmin;" data-event-click="clickHelp()" data-if = "cur_edit_mode == '' && guide_progress >= 10">
                 <div class = "menu-button-pic" style='width:9vmin; height:9vmin; background-image:"textures/common/help.texture"'/>
             </button>
+
 
             <!-- 右上角：当前科技进度 -->
             <div data-if = "cur_edit_mode == '' && show_tech_progress" style = "pointer-events: none; position: absolute; right:0vmin; top:0vmin;  width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-start; padding-top: 1vmin;">

@@ -18,16 +18,14 @@ local DISABLE_LOADING <const> = require "debugger".disable_loading
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
 local pickup_gesture_mb = world:sub {"pickup_gesture"}
 local icanvas = ecs.require "engine.canvas"
-local icamera = ecs.require "engine.camera"
+local icamera_controller = ecs.import.interface "vaststars.gamerender|icamera_controller"
 local math3d = require "math3d"
-local camera = ecs.require "engine.camera"
 local YAXIS_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
 local PLANES <const> = {YAXIS_PLANE}
 local lorry_manager = ecs.require "lorry_manager"
 local iefk = ecs.require "engine.efk"
 local iroadnet = ecs.require "roadnet"
 local irender_layer = ecs.require "engine.render_layer"
-local ltask     = require "ltask"
 local idn = ecs.import.interface "mod.daynight|idaynight"
 local DayTick <const> = require("gameplay.interface.constant").DayTick
 local m = ecs.system 'init_system'
@@ -35,6 +33,29 @@ local m = ecs.system 'init_system'
 iRmlUi.set_prefix "/pkg/vaststars.resources/ui/"
 iRmlUi.add_bundle "/pkg/vaststars.resources/ui/ui.bundle"
 iRmlUi.font_dir "/pkg/vaststars.resources/ui/font/"
+
+local prefab_parse = require("engine.prefab_parser").parse
+local mathpkg = import_package "ant.math"
+local mc = mathpkg.constant
+local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+local ic = ecs.import.interface "ant.camera|icamera"
+local function init_camera_position(prefab_file_name)
+    local data = prefab_parse("/pkg/vaststars.resources/" .. prefab_file_name)
+    if not data then
+        return
+    end
+    assert(data[1] and data[1].data and data[1].data.camera)
+    local c = data[1].data
+
+    local mq = w:first("main_queue camera_ref:in")
+    local e <close> = w:entity(mq.camera_ref, "scene:update")
+    e.scene.updir = mc.NULL -- TODO: use math3d.lookto() to reset updir
+
+    iom.set_srt(e, c.scene.s or mc.ONE, c.scene.r, c.scene.t)
+    -- Note: It will be inversed when the animation exceeds 90 degrees
+    -- iom.set_view(e, iom.get_position(e), iom.get_direction(e), math3d.vector(data.scene.updir)) -- don't need to set updir, it will cause nan error
+    ic.set_frustum(e, c.camera.frustum)
+end
 
 local function daynight_update(gameplayWorld)
     local dne = w:first "daynight:in"
@@ -79,7 +100,7 @@ function m:init_world()
         return
     end
 
-    camera.init("camera_default.prefab")
+    init_camera_position("camera_default.prefab")
     ecs.create_instance "/pkg/vaststars.resources/light.prefab"
     if NOTHING then
         saveload:restore_camera_setting()
@@ -137,7 +158,7 @@ function m:camera_usage()
         if not terrain.init then
             goto continue
         end
-        local coord = terrain:align(camera.get_central_position(), 1, 1)
+        local coord = terrain:align(icamera_controller.get_central_position(), 1, 1)
         if coord then
             terrain:enable_terrain(coord[1], coord[2])
         end
@@ -147,7 +168,7 @@ function m:camera_usage()
     -- for debug
     for _, _, x, y in pickup_gesture_mb:unpack() do
         if terrain.init then
-            local pos = icamera.screen_to_world(x, y, {PLANES[1]})
+            local pos = icamera_controller.screen_to_world(x, y, {PLANES[1]})
             local coord = terrain:get_coord_by_position(pos[1])
             if coord then
                 log.info(("pickup coord: (%s, %s)"):format(coord[1], coord[2]))

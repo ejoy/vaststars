@@ -396,7 +396,12 @@ end
 
 return function(world)
     for e in world.ecs:select "assembling:in chest:in building:in capacitance:in eid:in" do
-        local object = assert(objects:coord(e.building.x, e.building.y))
+        -- object may not have been fully created yet
+        local object = objects:coord(e.building.x, e.building.y)
+        if not object then
+            goto continue
+        end
+
         local mat = math3d.ref(math3d.matrix {s = object.srt.s, r = object.srt.r, t = object.srt.t})
         local building = global.buildings[object.id]
 
@@ -431,11 +436,18 @@ return function(world)
                 building.assembling_icon = nil
             end
         end
+
+        ::continue::
     end
 
     -- special handling for the display of the 'no power' icon on the laboratory
     for e in world.ecs:select "consumer:in assembling:absent building:in capacitance:in eid:in" do
-        local object = assert(objects:coord(e.building.x, e.building.y))
+        -- object may not have been fully created yet
+        local object = objects:coord(e.building.x, e.building.y)
+        if not object then
+            goto continue
+        end
+
         local building = global.buildings[object.id]
 
         if e.capacitance.network == 0 then
@@ -448,5 +460,6 @@ return function(world)
                 building.consumer_icon = nil
             end
         end
+        ::continue::
     end
 end

@@ -97,6 +97,13 @@ system "camera_controller"
     .implement "engine/system/camera_controller.lua"
     .method "camera_usage"
 
+interface "icamera_controller"
+    .implement "engine/system/camera_controller.lua"
+    .method "screen_to_world"
+    .method "world_to_screen"
+    .method "get_central_position"
+    .method "focus_on_position"
+
 system "input_simulate_system"
     .implement "engine/system/input_simulate_system.lua"
     .method "data_changed"

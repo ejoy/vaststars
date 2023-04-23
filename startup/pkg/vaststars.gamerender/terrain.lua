@@ -97,7 +97,8 @@ local function _get_grid_id(x, y)
 end
 
 function terrain:get_group_id(x, y)
-	return self._group_id[_get_grid_id(x, y)]
+    return 0
+	-- return self._group_id[_get_grid_id(x, y)]
 end
 
 function terrain:create(width, height)
@@ -181,6 +182,9 @@ function terrain:get_mineral(x, y)
 end
 
 function terrain:enable_terrain(x, y)
+    if true then
+        return
+    end
     local function diff(t1, t2)
         local add, del = {}, {}
         for group_id in pairs(t1) do

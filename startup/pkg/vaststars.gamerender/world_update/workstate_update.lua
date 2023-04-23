@@ -3,8 +3,6 @@ local world = ecs.world
 local w = world.w
 
 local global = require "global"
-local update_interval = 25 --update per 25 frame
-local counter = 1
 local math3d = require "math3d"
 local objects = require "objects"
 local vsobject_manager = ecs.require "vsobject_manager"
@@ -23,10 +21,10 @@ local function create_workstatus()
     end
     local function remove()
     end
-    local function set(self, s)
+    local function set(_, s)
         status = s
     end
-    local function get(self, s)
+    local function get(_, s)
         return status
     end
     return {
@@ -37,7 +35,7 @@ local function create_workstatus()
     }
 end
 
-local function get_workstatus(world, e)
+local function get_working_state(e)
     if e.assembling then
         return e.assembling.progress > 0 and STATUS_WORKING or STATUS_IDLE
     end
@@ -47,26 +45,30 @@ local function get_workstatus(world, e)
 end
 
 return function(world)
-    counter = counter + 1
-    if counter < update_interval then
-        return
-    end
-    counter = 1
-
     local buildings = global.buildings
     for e in world.ecs:select "building:in eid:in assembling?in wind_turbine?in solar_panel?in base?in" do
+        -- only some buildings have a working state
+        local current = get_working_state(e)
+        if not current then
+            goto continue
+        end
+
         -- handle the work status of the construction center separately, see also construction_center.lua
         local typeobject = iprototype.queryById(e.building.prototype)
         if iprototype.has_type(typeobject.type, "construction_center") then
             goto continue
         end
 
-        local object = assert(objects:coord(e.building.x, e.building.y))
-        local vsobject = vsobject_manager:get(object.id)
+        -- object may not have been fully created yet
+        local object = objects:coord(e.building.x, e.building.y)
+        if not object then
+            goto continue
+        end
+
+        local vsobject = assert(vsobject_manager:get(object.id), ("(%s) vsobject not found"):format(object.prototype_name))
         local game_object = vsobject.game_object
         buildings[object.id].workstatus = buildings[object.id].workstatus or create_workstatus()
         local workstatus = buildings[object.id].workstatus
-        local current = get_workstatus(world, e)
         if current == workstatus:get() then
             goto continue
         end
@@ -91,9 +93,5 @@ return function(world)
         end
         -- TODO: low_power
         ::continue::
-    end
-
-    for e in world.ecs:select "REMOVED building:in" do
-        print("REMOVED building:in", e.eid)
     end
 end
