@@ -28,6 +28,12 @@ local ICON_POS <const> = {
     },
 }
 
+local ICON_POS1 <const> = {
+    [1] = {
+        {top = "15.00vmin", left = "69.34vmin"},
+    },
+}
+
 t["建造中心"] = function (start, default)
     start.buttons = {}
     if start.show_set_recipe then
@@ -75,6 +81,86 @@ t["建造中心"] = function (start, default)
     end
 
     return ICON_POS
+end
+
+t["建材箱"] = function (start, default)
+    start.buttons = {}
+    if start.construction_center_place then
+        local v = setmetatable({}, {__index = default})
+        v.text = "放置"
+        v.message = "construction_center_place"
+        v.background_image = "textures/factory/place-building.texture"
+        v.number = start.construction_center_count
+        v.show_number = start.construction_center_count > 0
+        v.show_icon_background = false
+        start.buttons[#start.buttons + 1] = v
+    end
+
+    return ICON_POS1
+end
+
+t["机身残骸"] = function (start, default)
+    start.buttons = {}
+    if start.item_transfer_subscribe then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.text = "传送设置"
+        v.message = "item_transfer_subscribe"
+        v.background_image = "textures/construct/portal-in.texture"
+        if start.guide_progress == 10 then
+            v.animation = '0.4s linear 0s infinite alternate enlarge2'
+        end
+        start.buttons[#start.buttons + 1] = v
+    end
+
+    return ICON_POS1
+end
+
+t["机翼残骸"] = function (start, default)
+    start.buttons = {}
+    if start.item_transfer_subscribe then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.text = "传送设置"
+        v.message = "item_transfer_subscribe"
+        v.background_image = "textures/construct/portal-in.texture"
+        if start.guide_progress == 10 then
+            v.animation = '0.4s linear 0s infinite alternate enlarge2'
+        end
+        start.buttons[#start.buttons + 1] = v
+    end
+
+    return ICON_POS1
+end
+
+t["机头残骸"] = function (start, default)
+    start.buttons = {}
+    if start.item_transfer_subscribe then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.text = "传送设置"
+        v.message = "item_transfer_subscribe"
+        v.background_image = "textures/construct/portal-in.texture"
+        if start.guide_progress == 10 then
+            v.animation = '0.4s linear 0s infinite alternate enlarge2'
+        end
+        start.buttons[#start.buttons + 1] = v
+    end
+
+    return ICON_POS1
+end
+
+t["机尾残骸"] = function (start, default)
+    start.buttons = {}
+    if start.item_transfer_subscribe then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.text = "传送设置"
+        v.message = "item_transfer_subscribe"
+        v.background_image = "textures/construct/portal-in.texture"
+        if start.guide_progress == 10 then
+            v.animation = '0.4s linear 0s infinite alternate enlarge2'
+        end
+        start.buttons[#start.buttons + 1] = v
+    end
+
+    return ICON_POS1
 end
 
 return t
