@@ -33,6 +33,7 @@ local assembling_common = require "ui_datamodel.common.assembling"
 local gameplay = import_package "vaststars.gameplay"
 local iassembling = gameplay.interface "assembling"
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
+local CREATE_BUILDING <const> = require "debugger".create_building
 
 local function _building_to_logisitic(x, y)
     local nposition = assert(building_coord:get_begin_position_by_coord(x, y))
@@ -440,22 +441,23 @@ local function __deduct_item(self, e)
 end
 
 local function complete(self, object_id, datamodel)
-    local e = gameplay_core.get_entity(assert(self.gameplay_eid))
-    local continue_construct = __deduct_item(self, e)
-
-    self.super.complete(self, object_id)
-
-    local object = assert(objects:get(object_id))
-    local e = gameplay_core.get_entity(assert(object.gameplay_eid))
-    if not e then
+    if CREATE_BUILDING and not self.gameplay_eid then
+        self.super.complete(self, object_id)
+        self:clean(datamodel)
+        iui.redirect("construct.rml", "move_finish") -- TODO：remove this
         return
     end
 
-    local typeobject = iprototype.queryByName(object.prototype_name)
+    local e = gameplay_core.get_entity(assert(self.gameplay_eid))
+    local continue_construct = __deduct_item(self, e)
+    self.super.complete(self, object_id)
+
     if not continue_construct then
         self:clean(datamodel)
         iui.redirect("construct.rml", "move_finish") -- TODO：remove this
     else
+        local object = assert(objects:get(object_id))
+        local typeobject = iprototype.queryByName(object.prototype_name)
         new_entity(self, datamodel, typeobject)
     end
 end

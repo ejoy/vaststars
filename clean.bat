@@ -11,6 +11,7 @@ set list=%list% build
 set list=%list% bin
 set list=%list% 3rd\ant\tools\prefab_editor\.build
 set list=%list% 3rd\ant\bin
+set list=%list% 3rd\ant\build
 
 pushd %current_dir%
 (for %%a in (%list%) do (

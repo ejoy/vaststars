@@ -20,12 +20,12 @@ end
 
 function M.collect_item(world, e)
     local r = {}
-    local typeobject = iprototype.queryById(e.building.prototype)
-    for i = 1, typeobject.slots do
-        local slot = M.chest_get(world, e.chest, i)
-        if slot then
-            r[slot.item] = slot
+    for i = 1, 256 do
+        local slot = world:container_get(e.chest, i)
+        if not slot then
+            break
         end
+        r[slot.item] = slot
     end
     return r
 end

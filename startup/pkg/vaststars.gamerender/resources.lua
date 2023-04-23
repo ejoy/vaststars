@@ -845,7 +845,6 @@ local t = {
 	"/pkg/vaststars.gamerender/engine/system/json.lua",
 	"/pkg/vaststars.gamerender/engine/system/pickup_detect_system.lua",
 	"/pkg/vaststars.gamerender/engine/system/pickup_mapping_system.lua",
-	"/pkg/vaststars.gamerender/engine/system/single_touch_system.lua",
 	"/pkg/vaststars.gamerender/engine/system/ui_system.lua",
 	"/pkg/vaststars.gamerender/engine/time.lua",
 	"/pkg/vaststars.gamerender/engine/track.lua",

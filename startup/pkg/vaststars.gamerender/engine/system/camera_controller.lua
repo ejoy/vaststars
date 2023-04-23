@@ -25,7 +25,7 @@ local datalist = require "datalist"
 local fs = require "filesystem"
 local CAMERA_DEFAULT = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/camera_default.prefab")):read "a")
 local CAMERA_DEFAULT_YAIXS <const> = CAMERA_DEFAULT[1].data.scene.t[2]
-local CAMERA_YAIXS_MIN <const> = CAMERA_DEFAULT_YAIXS - 150
+local CAMERA_YAIXS_MIN <const> = CAMERA_DEFAULT_YAIXS - 280
 local CAMERA_YAIXS_MAX <const> = CAMERA_DEFAULT_YAIXS + 150
 
 
