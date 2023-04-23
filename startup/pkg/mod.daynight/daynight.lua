@@ -180,3 +180,15 @@ function idn.set_rotation_data(start_dir, normal)
     math3d.unmark(dnl.start_dir)
     dnl.start_dir = math3d.mark(math3d.vector(start_dir))
 end
+
+--[[test code:
+local sys = ecs.system "test_system"
+function sys:data_changed()
+    local idn = ecs.import.interface "mod.daynight|idaynight"
+    local itimer = ecs.import.interface "ant.timer|itimer"
+    local dne = w:first "daynight:in"
+    local tenSecondMS<const> = 10000
+    local cycle = (itimer.current() % tenSecondMS) / tenSecondMS
+    idn.update_cycle(dne, cycle)
+end
+]]
