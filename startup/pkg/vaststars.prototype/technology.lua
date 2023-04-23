@@ -1200,7 +1200,7 @@ local prototype = gameplay.register.prototype
       "textures/task_tips_pic/task_produce_ore3.texture",
     },
     sign_desc = {
-      { desc = "在建造中心生产60段公路", icon = "textures/construct/industry.texture"},
+      { desc = "往建造中心运送石砖生产60段公路", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -1330,10 +1330,6 @@ local prototype = gameplay.register.prototype
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"unknown", 0, 1},
-    effects = {
-      unlock_recipe = {"采矿机打印"},
-      unlock_item = {"采矿机框架"},
-    },
     task_params = {},
     prerequisites = {"建造公路"},
     count = 35,
@@ -1635,6 +1631,10 @@ local prototype = gameplay.register.prototype
     task_params = {ui = "item_transfer_subscribe", building = "机尾残骸"},
     count = 1,
     prerequisites = {"通向铁矿"},
+    effects = {
+      unlock_recipe = {"采矿机打印"},
+      unlock_item = {"采矿机框架"},
+    },
     guide_focus = {
       {
         prefab = "prefabs/selected-box-no-animation.prefab",
@@ -1664,7 +1664,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 3},
     task_params = {recipe = "采矿机打印"},
     count = 1,
-    prerequisites = {"通向铁矿"},
+    prerequisites = {"机尾残骸传送"},
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -1680,7 +1680,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 6},
     task_params = {ui = "item_transfer_place", building = "建造中心"},
     count = 1,
-    prerequisites = {"机尾残骸传送","采矿机打印预备"},
+    prerequisites = {"采矿机打印预备"},
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
