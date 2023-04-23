@@ -50,7 +50,7 @@
                 text-align: center;
                 align-items: center;
             }
-            .button-text {
+            .button-text1 {
                 padding-bottom: 0.15em;
                 font-size: 3.73vmin;
                 text-align: center;
@@ -102,15 +102,15 @@
                 <div class = "main-panel">
                     <button class = "button-style" style="background-color:rgb(203, 118, 24);" data-event-click = "clickStartMode('adventure')">
                         <div class="middle-bg" style='background-image: "textures/science/book.texture";'/>
-                        <div class = "button-text" style="font-size: 5.73vmin;">冒险模式</div>
+                        <div class = "button-text1" style="font-size: 5.73vmin;">冒险模式</div>
                     </button>
                     <button class = "button-style" style="background-color:rgb(0, 160, 235);" data-event-click = "clickStartMode('free')">
                         <div class="middle-bg" style='background-image: "textures/construct/work.texture";'/>
-                        <div class = "button-text" style="font-size: 5.73vmin;">自由模式</div>
+                        <div class = "button-text1" style="font-size: 5.73vmin;">自由模式</div>
                     </button> 
                     <button class = "button-style" style="background-color: rgb(52, 207, 115)" data-event-click = "clickLoad()">
-                        <div class="middle-bg" style='background-image: "textures/road/forbidden.texture";'/>
-                        <div class = "button-text" style="font-size: 5.73vmin;">读取进度</div>
+                        <div class="middle-bg" style='background-image: "textures/road/write.texture"; width:5.5vmin; height:5.5vmin;'/>
+                        <div class = "button-text1" style="font-size: 5.73vmin;">读取进度</div>
                     </button> 
                 </div>
             </div>
