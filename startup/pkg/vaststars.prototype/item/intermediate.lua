@@ -153,7 +153,7 @@ prototype "铝丝" {
 prototype "碎石" {
     type = {"item"},
     stack = 12,
-    pile = "4x4x4",
+    pile = "2x2x3",
     pile_model = "prefabs/stackeditems/gravel.prefab",
     icon = "textures/construct/gravel.texture",
     item_description = "伴生在矿物里的碎石",
@@ -163,7 +163,7 @@ prototype "碎石" {
 prototype "石砖" {
     type = {"item"},
     stack = 8,
-    pile = "4x4x4",
+    pile = "4x2x4",
     pile_model = "prefabs/stackeditems/gravel.prefab",
     icon = "textures/construct/stone-brick.texture",
     item_description = "石头制成的砖头",

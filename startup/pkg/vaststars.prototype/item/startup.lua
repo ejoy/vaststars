@@ -31,27 +31,83 @@ local entities = {
             {"组装机框架",2},
             {"科研中心框架",1},
         },
-        x = 113,
+        x = 110,
         y = 120,
+    },
+    
+    {
+        prototype_name = "建材箱",
+        dir = "N",
+        x = 114,
+        y = 124,
+        items = {
+            {"采矿机I",1},
+        },
+    },
+
+    {
+        prototype_name = "建材箱",
+        dir = "N",
+        x = 127,
+        y = 116,
+        items = {
+            {"铁制电线杆",10},
+        },
+    },
+
+    {
+        prototype_name = "建材箱",
+        dir = "N",
+        x = 130,
+        y = 116,
+        items = {
+            {"科研中心I",1},
+        },
+    },
+
+    {
+        prototype_name = "建材箱",
+        dir = "N",
+        x = 127,
+        y = 128,
+        items = {
+            {"无人机仓库",4},
+        },
+    },
+
+    {
+        prototype_name = "建材箱",
+        dir = "N",
+        x = 130,
+        y = 128,
+        items = {
+            {"组装机I",2},
+        },
+    },
+    {
+        prototype_name = "建材箱",
+        dir = "N",
+        x = 134,
+        y = 120,
+        items = {
+            {"建造中心",1},
+        },
+    },
+    {
+        prototype_name = "建材箱",
+        dir = "N",
+        x = 114,
+        y = 118,
+        items = {
+            {"风力发电机I",1},
+        },
     },
     -- {
-    --     prototype_name = "无人机仓库",
+    --     prototype_name = "建造中心",
     --     dir = "N",
-    --     x = 116,
-    --     y = 121,
+    --     x = 119,
+    --     y = 120,
     -- },
-    {
-        prototype_name = "建造中心",
-        dir = "N",
-        x = 119,
-        y = 120,
-    },
-    {
-        prototype_name = "风力发电机I",
-        dir = "N",
-        x = 122,
-        y = 114,
-    },
     {
         prototype_name = "机翼残骸",
         dir = "S",
@@ -78,18 +134,18 @@ local entities = {
         x = 125,
         y = 108,
     },
-    {
-        prototype_name = "组装机I",
-        dir = "N",
-        x = 133,
-        y = 117,
-    },
-    {
-        prototype_name = "熔炼炉I",
-        dir = "N",
-        x = 140,
-        y = 126,
-    },
+    -- {
+    --     prototype_name = "组装机I",
+    --     dir = "N",
+    --     x = 133,
+    --     y = 117,
+    -- },
+    -- {
+    --     prototype_name = "熔炼炉I",
+    --     dir = "N",
+    --     x = 140,
+    --     y = 126,
+    -- },
 }
 
 local road = {

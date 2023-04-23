@@ -4,7 +4,7 @@ local w = world.w
 
 local create_builder = ecs.require "editor.pipebuilder"
 local iprototype = require "gameplay.interface.prototype"
-local single_touch_mb = world:sub {"single_touch"}
+local gesture_pan_mb = world:sub {"gesture", "pan"}
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
 
 ---------------
@@ -64,8 +64,8 @@ function M:create()
 end
 
 function M:stage_ui_update(datamodel)
-    for _, state in single_touch_mb:unpack() do
-        if state == "END" or state == "CANCEL" then
+    for _, _, e in gesture_pan_mb:unpack() do
+        if e.state == "ended" then
             if builder then
                 builder:touch_end(datamodel)
             end

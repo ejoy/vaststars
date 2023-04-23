@@ -1922,7 +1922,7 @@ prototype "碎石挖掘" {
     results = {
         {"碎石", 1},
     },
-    time = "4s",
+    time = "3s",
     description = "采集碎石",
 }
 

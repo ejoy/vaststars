@@ -45,7 +45,6 @@ local click_techortaskicon_mb = mailbox:sub {"click_techortaskicon"}
 local guide_on_going_mb = mailbox:sub {"guide_on_going"}
 local load_resource_mb = mailbox:sub {"load_resource"}
 local help_mb = mailbox:sub {"help"}
-local single_touch_mb = world:sub {"single_touch"}
 local move_md = mailbox:sub {"move"}
 local move_finish_mb = mailbox:sub {"move_finish"}
 local teardown_mb = mailbox:sub {"teardown"}
@@ -58,7 +57,7 @@ local on_pickup_object_mb = mailbox:sub {"on_pickup_object"}
 
 local pickup_gesture_mb = world:sub {"pickup_gesture"}
 local pickup_long_press_gesture_mb = world:sub {"pickup_long_press_gesture"}
-local single_touch_move_mb = world:sub {"single_touch", "MOVE"}
+local gesture_pan_mb = world:sub {"gesture", "pan"}
 local focus_tips_event = world:sub {"focus_tips"}
 
 local builder
@@ -461,12 +460,15 @@ function M:stage_camera_usage(datamodel)
         end
     end
 
-    for _, state in single_touch_mb:unpack() do
-        if state == "END" or state == "CANCEL" then
+    local gesture_pan_changed = false
+    for _, _, e in gesture_pan_mb:unpack() do
+        if e.state == "ended" then
             if builder then
                 builder:touch_end(datamodel)
                 self:flush()
             end
+        elseif e.state == "changed" then
+            gesture_pan_changed = true
         end
     end
 
@@ -608,14 +610,11 @@ function M:stage_camera_usage(datamodel)
         end
     end
 
-    for _ in single_touch_move_mb:unpack() do
-        if leave then
-            world:pub {"ui_message", "leave"}
-            leave = false
-            datamodel.show_item_transfer_src_inventory = false
-            manual_item_transfer_src_inventory = false
-            break
-        end
+    if gesture_pan_changed and leave then
+        world:pub {"ui_message", "leave"}
+        leave = false
+        datamodel.show_item_transfer_src_inventory = false
+        manual_item_transfer_src_inventory = false
     end
 
     for _ in builder_back_mb:unpack() do

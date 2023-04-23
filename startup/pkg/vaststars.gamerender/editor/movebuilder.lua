@@ -163,6 +163,9 @@ local function new_entity(self, datamodel, typeobject)
         self.grid_entity = igrid_entity.create("polyline_grid", building_coord.tile_width, building_coord.tile_height, logistic_coord.tile_size, {t = __calc_grid_position(self, typeobject)})
         self.grid_entity:show(true)
     end
+
+    local object = assert(objects:get(self.move_object_id))
+    ipower:build_power_network(gameplay_core.get_world(), object.gameplay_eid)
 end
 
 -- TODO: duplicate from builder.lua
