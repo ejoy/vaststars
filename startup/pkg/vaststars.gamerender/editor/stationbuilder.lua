@@ -2,7 +2,7 @@ local ecs = ...
 local world = ecs.world
 
 local iprototype = require "gameplay.interface.prototype"
-local camera = ecs.require "engine.camera"
+local icamera_controller = ecs.interface "icamera_controller"
 local create_builder = ecs.require "editor.builder"
 local ieditor = ecs.require "editor.editor"
 local objects = require "objects"
@@ -74,7 +74,7 @@ end
 
 local function __align(prototype_name, dir)
     local typeobject = iprototype.queryByName(prototype_name)
-    local coord, position = logistic_coord:align(camera.get_central_position(), iprototype.rotate_area(typeobject.area, dir))
+    local coord, position = logistic_coord:align(icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, dir))
     if not coord then
         return
     end

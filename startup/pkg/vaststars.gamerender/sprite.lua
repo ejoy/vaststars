@@ -27,16 +27,10 @@ return function(x, y, w, h, dir, color)
 
     local function create(x, y, w, h, color)
         x, y = __convert_coord(x, y)
-        local t = {}
-        for i = 0, w-1 do
-            for j = 0, h-1 do
-                t[#t+1] = {x + i, y - j}
-            end
-        end
-        id = itp.create_translucent_plane_entity(t, color)
+        id = itp.create_translucent_plane({{x = x, z = y, w = w, h = h}}, {color})[1]
     end
     local function remove()
-        itp.remove_translucent_plane_entity(id)
+        itp.remove_translucent_plane({id})
     end
     local function move(_, x, y, color)
         remove()

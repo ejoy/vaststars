@@ -6,7 +6,7 @@ local math3d = require "math3d"
 local YAXIS_PLANE_B <const> = math3d.constant("v4", {0, 1, 0, 0})
 local YAXIS_PLANE_T <const> = math3d.constant("v4", {0, 1, 0, 20})
 local PLANES <const> = {YAXIS_PLANE_T, YAXIS_PLANE_B}
-local camera = ecs.require "engine.camera"
+local icamera_controller = ecs.interface "icamera_controller"
 local gameplay_core = require "gameplay.core"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local iprototype = require "gameplay.interface.prototype"
@@ -18,7 +18,6 @@ local ieditor = ecs.require "editor.editor"
 local global = require "global"
 local iobject = ecs.require "object"
 local terrain = ecs.require "terrain"
-local icamera = ecs.require "engine.camera"
 local idetail = ecs.import.interface "vaststars.gamerender|idetail"
 local SHOW_LOAD_RESOURCE <const> = not require "debugger".disable_load_resource
 local EDITOR_CACHE_NAMES = {"CONFIRM", "CONSTRUCTED"}
@@ -30,7 +29,6 @@ local selected_boxes = ecs.require "selected_boxes"
 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local COLOR_INVALID <const> = math3d.constant "null"
-local mu = import_package "ant.math".util
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local COLOR_GREEN = math3d.constant("v4", {0.3, 1, 0, 1})
 
@@ -240,7 +238,7 @@ local function __on_pickup_object(datamodel, object)
 
             local prototype_name = object.prototype_name
             local typeobject = iprototype.queryByName(prototype_name)
-            if iprototype.has_type(typeobject.type, "construction_center") then
+            if iprototype.has_types(typeobject.type, "construction_center", "construction_chest") then
                 datamodel.cur_edit_mode = "construct"
             end
         end
@@ -358,7 +356,6 @@ function M:stage_ui_update(datamodel)
 
     for _ in load_resource_mb:unpack() do
         iui.open({"loading.rml"}, false)
-        camera.init("camera_default.prefab")
     end
 end
 
@@ -401,7 +398,7 @@ local function open_focus_tips(tech_node)
             end
             tech_node.selected_tips[#tech_node.selected_tips + 1] = {selected_boxes("/pkg/vaststars.resources/" .. nd.prefab, center, COLOR_GREEN, nd.w, nd.h), prefab}
         elseif nd.camera_x and nd.camera_y then
-            camera.focus_on_position(logistic_coord:get_position_by_coord(nd.camera_x, nd.camera_y, width, height))
+            icamera_controller.focus_on_position(logistic_coord:get_position_by_coord(nd.camera_x, nd.camera_y, width, height))
         end
     end
 end
@@ -475,7 +472,7 @@ function M:stage_camera_usage(datamodel)
     local leave = true
 
     local function _get_object(pickup_x, pickup_y)
-        for _, pos in ipairs(icamera.screen_to_world(pickup_x, pickup_y, PLANES)) do
+        for _, pos in ipairs(icamera_controller.screen_to_world(pickup_x, pickup_y, PLANES)) do
             local coord = terrain:get_coord_by_position(pos)
             if coord then
                 local object = objects:coord(coord[1], coord[2], EDITOR_CACHE_NAMES)
@@ -494,7 +491,7 @@ function M:stage_camera_usage(datamodel)
 
         local object = _get_object(x, y)
         if object then -- object may be nil, such as when user click on empty space
-            if not excluded_pickup_id or excluded_pickup_id == object.id then
+            if not excluded_pickup_id or excluded_pickup_id == object.id then -- TODO: duplicated code with __on_pickup_object
                 if idetail.show(object.id) then
                     leave = false
                     item_transfer_dst = object.id
@@ -503,7 +500,7 @@ function M:stage_camera_usage(datamodel)
 
                     local prototype_name = object.prototype_name
                     local typeobject = iprototype.queryByName(prototype_name)
-                    if iprototype.has_type(typeobject.type, "construction_center") then
+                    if iprototype.has_types(typeobject.type, "construction_center", "construction_chest") then
                         datamodel.cur_edit_mode = "construct"
                     end
                 end
@@ -542,12 +539,8 @@ function M:stage_camera_usage(datamodel)
 
                 idetail.selected(object)
 
-                local mq = w:first("main_queue camera_ref:in render_target:in")
-                local ce <close> = w:entity(mq.camera_ref, "camera:in")
-                local vp = ce.camera.viewprojmat
-                local vr = mq.render_target.view_rect
-                local p = mu.world_to_screen(vp, vr, object.srt.t) -- the position always in the center of the screen after move camera
-                local ui_x, ui_y = iui.convert_coord(vr, math3d.index(p, 1), math3d.index(p, 2))
+                local p = icamera_controller.world_to_screen(object.srt.t)
+                local ui_x, ui_y = iui.convert_coord(math3d.index(p, 1), math3d.index(p, 2))
                 iui.open({"building_md_arc_menu.rml"}, object.id, object.srt.t, ui_x, ui_y)
 
                 leave = false
@@ -673,7 +666,7 @@ function M:stage_camera_usage(datamodel)
         local object = assert(objects:get(object_id))
         local typeobject = iprototype.queryByName(object.prototype_name)
         local w, h = iprototype.unpackarea(typeobject.area)
-        camera.focus_on_position(logistic_coord:get_position_by_coord(object.x, object.y, w, h))
+        icamera_controller.focus_on_position(logistic_coord:get_position_by_coord(object.x, object.y, w, h))
         iui.redirect("construct.rml", "on_pickup_object", object_id)
     end
 

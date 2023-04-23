@@ -7,7 +7,7 @@ local iprototype = require "gameplay.interface.prototype"
 local get_building_base_canvas_items = ecs.require "ui_datamodel.common.building_base_canvas".get_building_base_canvas_items
 local math3d = require "math3d"
 local terrain = ecs.require "terrain"
-local camera = ecs.require "engine.camera"
+local icamera_controller = ecs.interface "icamera_controller"
 local changeset = {}
 local removed = {}
 
@@ -195,7 +195,7 @@ end
 local function central_coord(prototype_name, dir, coord_system, area_inc)
     coord_system = coord_system or terrain
     local typeobject = iprototype.queryByName(prototype_name)
-    local coord = coord_system["align"](coord_system, camera.get_central_position(), iprototype.rotate_area(typeobject.area, dir, area_inc, area_inc))
+    local coord = coord_system["align"](coord_system, icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, dir, area_inc, area_inc))
     if not coord then
         return
     end
@@ -207,7 +207,7 @@ local function align(object)
 
     assert(object)
     local typeobject = iprototype.queryByName(object.prototype_name)
-    local coord = coord_system["align"](coord_system, camera.get_central_position(), iprototype.rotate_area(typeobject.area, object.dir))
+    local coord = coord_system["align"](coord_system, icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, object.dir))
     if not coord then
         return object
     end

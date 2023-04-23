@@ -9,8 +9,8 @@ local vsobject_manager = ecs.require "vsobject_manager"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 
 local math3d    = require "math3d"
-local mu = import_package "ant.math".util
 local itask = ecs.require "task"
+local icamera_controller = ecs.interface "icamera_controller"
 
 local set_recipe_mb = mailbox:sub {"set_recipe"}
 local set_item_mb = mailbox:sub {"set_item"}
@@ -508,12 +508,8 @@ function M:stage_ui_update(datamodel, object_id)
                 items[#items + 1] = {icon = typeobject.icon, name = typeobject.name, count = count}
             end
         end
-        local mq = w:first("main_queue camera_ref:in render_target:in")
-        local ce <close> = w:entity(mq.camera_ref, "camera:in")
-        local vp = ce.camera.viewprojmat
-        local vr = mq.render_target.view_rect
-        local sp = math3d.totable(mu.world_to_screen(vp, vr, dst_object.srt.t))
-        iui.open({"message_pop.rml"}, {left = sp[1]..'px', top = sp[2]..'px', show_id = "item", items = items})
+        local position = icamera_controller.world_to_screen(object.srt.t)
+        iui.open({"message_pop.rml"}, {left = math3d.index(position, 1)..'px', top = math3d.index(position, 2)..'px', show_id = "item", items = items})
         if #items > 0 then
             item_transfer_effect.place_from(src_object.id)
             item_transfer_effect.place_to(dst_object.id)

@@ -4,7 +4,9 @@ local w = world.w
 
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local math3d = require "math3d"
-local camera = ecs.require "engine.camera"
+local mathpkg = import_package "ant.math"
+local mu = mathpkg.util
+local irq = ecs.import.interface "ant.render|irenderqueue"
 
 local MOVE_SPEED <const> = 8.0
 local DROP_SPEED <const> = 2.5
@@ -16,6 +18,8 @@ local function is_ios()
 end
 
 local camera_controller = ecs.system "camera_controller"
+local icamera_controller = ecs.interface "icamera_controller"
+
 local ui_message_move_camera_mb = world:sub {"ui_message", "move_camera"}
 local mouse_wheel_mb = world:sub {"mouse_wheel"}
 local gesture_pinch = world:sub {"gesture", "pinch"}
@@ -49,7 +53,7 @@ local __handle_drop_camera; do
         for _, _, e in gesture_pan:unpack() do
             if e.state == "began" then
                 local x, y = e.translationInView.x, e.translationInView.y
-                last_position = math3d.ref(camera.screen_to_world(x, y, PLANES)[1])
+                last_position = math3d.ref(icamera_controller.screen_to_world(x, y, PLANES)[1])
             elseif e.state == "changed" then
                 local x, y = e.translationInView.x, e.translationInView.y
                 if is_ios() then
@@ -62,7 +66,7 @@ local __handle_drop_camera; do
         end
 
         if last_position and position then
-            local current = camera.screen_to_world(position.x, position.y, PLANES)[1]
+            local current = icamera_controller.screen_to_world(position.x, position.y, PLANES)[1]
             local delta = math3d.ref(math3d.sub(last_position, current))
             iom.move_delta(ce, delta)
             world:pub {"dragdrop_camera", delta}
@@ -88,9 +92,54 @@ function camera_controller:camera_usage()
         local mq = w:first("main_queue render_target:in")
         local vr = mq.render_target.view_rect
         local vmin = math.min(vr.w / vr.ratio, vr.h / vr.ratio)
-        local ui_position = camera.screen_to_world(left / 100 * vmin, top / 100 * vmin, PLANES)[1]
+        local ui_position = icamera_controller.screen_to_world(left / 100 * vmin, top / 100 * vmin, PLANES)[1]
 
         local delta = math3d.set_index(math3d.sub(position, ui_position), 2, 0) -- the camera is always moving in the x/z axis and the y axis is always 0
         iom.move_delta(ce, delta)
     end
+end
+
+-- the following interfaces must be called during the `camera_usage` stage
+function icamera_controller.screen_to_world(x, y, planes)
+    local mq = w:first("main_queue render_target:in camera_ref:in")
+    local ce <close> = w:entity(mq.camera_ref, "camera:in")
+    local vpmat = ce.camera.viewprojmat
+
+    local vr = mq.render_target.view_rect
+    local nx, ny = mu.remap_xy(x, y, vr.ratio)
+    local ndcpt = mu.pt2D_to_NDC({nx, ny}, vr)
+    ndcpt[3] = 0
+    local p0 = mu.ndc_to_world(vpmat, ndcpt)
+    ndcpt[3] = 1
+    local p1 = mu.ndc_to_world(vpmat, ndcpt)
+
+    local ray = {o = p0, d = math3d.sub(p0, p1)}
+
+    local t = {}
+    for _, plane in ipairs(planes) do
+        t[#t + 1] = math3d.muladd(ray.d, math3d.plane_ray(ray.o, ray.d, plane), ray.o)
+    end
+    return t
+end
+
+function icamera_controller.world_to_screen(position)
+    local mq = w:first("main_queue camera_ref:in render_target:in")
+    local ce <close> = w:entity(mq.camera_ref, "camera:in")
+    local vp = ce.camera.viewprojmat
+    local vr = mq.render_target.view_rect
+    return mu.world_to_screen(vp, vr, position)
+end
+
+function icamera_controller.get_central_position()
+    local ce <close> = w:entity(irq.main_camera())
+    local ray = {o = iom.get_position(ce), d = math3d.mul(math.maxinteger, iom.get_direction(ce))}
+    return math3d.muladd(ray.d, math3d.plane_ray(ray.o, ray.d, YAXIS_PLANE), ray.o)
+end
+
+function icamera_controller.focus_on_position(position)
+    local mq = w:first("main_queue camera_ref:in")
+    local ce <close> = w:entity(mq.camera_ref)
+    local p = icamera_controller.get_central_position()
+    local delta = math3d.set_index(math3d.sub(position, p), 2, 0) -- the camera is always moving in the x/z axis and the y axis is always 0
+    iom.move_delta(ce, delta)
 end

@@ -2,7 +2,7 @@ local ecs = ...
 local world = ecs.world
 
 local iprototype = require "gameplay.interface.prototype"
-local camera = ecs.require "engine.camera"
+local icamera_controller = ecs.interface "icamera_controller"
 local create_builder = ecs.require "editor.builder"
 local ieditor = ecs.require "editor.editor"
 local objects = require "objects"
@@ -227,7 +227,7 @@ end
 local function __align(object)
     assert(object)
     local typeobject = iprototype.queryByName(object.prototype_name)
-    local coord, srt = building_coord:align(camera.get_central_position(), iprototype.rotate_area(typeobject.area, object.dir, 1, 1))
+    local coord, srt = building_coord:align(icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, object.dir, 1, 1))
     if not coord then
         return object
     end
@@ -499,7 +499,7 @@ local function rotate_pickup_object(self, datamodel, dir, delta_vec)
     dir = dir or iprototype.rotate_dir_times(pickup_object.dir, -1)
 
     local typeobject = iprototype.queryByName(pickup_object.prototype_name)
-    local coord = building_coord:align(camera.get_central_position(), iprototype.rotate_area(typeobject.area, dir, 1, 1))
+    local coord = building_coord:align(icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, dir, 1, 1))
     if not coord then
         return
     end

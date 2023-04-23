@@ -45,6 +45,14 @@ return function(world)
             goto continue
         end
 
+        -- object may not have been fully created yet
+        local object = objects:coord(e.building.x, e.building.y)
+        if not object then
+            goto continue
+        end
+
+        local vsobject = assert(vsobject_manager:get(object.id), ("(%s) vsobject not found"):format(object.prototype_name))
+
         local volume = 0
         local capacity = 0
         local color
@@ -56,8 +64,6 @@ return function(world)
                 capacity = r.capacity / r.multiple
             end
         end
-
-        local vsobject = get_object(e.building.x, e.building.y)
 
         if volume > 0 then
             vsobject:attach("water_slot", "prefabs/storage-tank-water.prefab", "opacity", color or DEFAULT_COLOR)

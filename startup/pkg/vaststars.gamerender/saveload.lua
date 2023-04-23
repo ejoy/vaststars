@@ -38,7 +38,7 @@ local ic = ecs.import.interface "ant.camera|icamera"
 local math3d = require "math3d"
 local iobject = ecs.require "object"
 local terrain = ecs.require "terrain"
-local camera = ecs.require "engine.camera"
+local icamera_controller = ecs.interface "icamera_controller"
 local ipower = ecs.require "power"
 local ipower_line = ecs.require "power_line"
 local iroadnet = ecs.require "roadnet"
@@ -347,7 +347,7 @@ function M:restore_camera_setting()
     end
 
     if terrain.init then
-        local coord = terrain:align(camera.get_central_position(), 1, 1)
+        local coord = terrain:align(icamera_controller.get_central_position(), 1, 1)
         if coord then
             terrain:enable_terrain(coord[1], coord[2])
         end
@@ -476,7 +476,7 @@ function M:restart()
     iui.set_guide_progress(iguide.get_progress())
     iui.open({"construct.rml"})
 
-    local coord = terrain:align(camera.get_central_position(), 1, 1)
+    local coord = terrain:align(icamera_controller.get_central_position(), 1, 1)
     if coord then
         terrain:enable_terrain(coord[1], coord[2])
     end

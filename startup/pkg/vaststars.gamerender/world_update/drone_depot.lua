@@ -74,7 +74,12 @@ end
 
 return function(world)
     for e in world.ecs:select "hub:in building:in eid:in" do
-        local object = assert(objects:coord(e.building.x, e.building.y))
+        -- object may not have been fully created yet
+        local object = objects:coord(e.building.x, e.building.y)
+        if not object then
+            goto continue
+        end
+
         local building = global.buildings[object.id]
         local slot = ichest.chest_get(world, e.hub, 1)
         if building.drone_depot_shelf then
@@ -95,5 +100,6 @@ return function(world)
                 building.drone_depot_shelf = create_shelf(e.building.prototype, slot.item, slot.amount, object.srt)
             end
         end
+        ::continue::
     end
 end
