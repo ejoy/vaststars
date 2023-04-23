@@ -108,10 +108,14 @@
                         <div class="middle-bg" style='background-image: "textures/construct/work.texture";'/>
                         <div class = "button-text1" style="font-size: 5.73vmin;">自由模式</div>
                     </button> 
+                    <button class = "button-style" style="background-color: rgb(195, 0, 255)" data-event-click = "clickLoad()">
+                        <div class="middle-bg" style='background-image: "textures/road_net/big_bag.texture"; width:5.5vmin; height:5.5vmin;'/>
+                        <div class = "button-text1" style="font-size: 5.73vmin;">加载资源</div>
+                    </button> 
                     <button class = "button-style" style="background-color: rgb(52, 207, 115)" data-event-click = "clickLoad()">
                         <div class="middle-bg" style='background-image: "textures/road/write.texture"; width:5.5vmin; height:5.5vmin;'/>
                         <div class = "button-text1" style="font-size: 5.73vmin;">读取进度</div>
-                    </button> 
+                    </button>
                 </div>
             </div>
         </div>
