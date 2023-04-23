@@ -505,7 +505,6 @@
     </head>
     <body style = "pointer-events: none; justify-content: center; align-items: center;">
         <div class = "safe-area" data-model="start">
-            <div class="guide-finger"/>
             <div class="teleport-items-block" style="pointer-events: none;">
                 <div id = "ItemTransferSrcInvBar" class = "teleport-items-bar-slide-init" style = "justify-content: center; align-items: center; pointer-events: none;">
                     <div id = "ItemTransferSrcInv" class = "inventory-slide-init" style = "flex-direction: row; justify-content: center; align-items: center; pointer-events: none;" data-if = "item_transfer_src_inventory_count > 0">

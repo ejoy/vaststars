@@ -45,6 +45,17 @@
                 align-items: center;
                 animation: 4s cubic-out 0s slideup;
             }
+            .item-teleport-panel {
+                pointer-events: none;
+                border-radius: 0.67vmin;
+                margin:auto 0.3em;
+                width: 45%;
+                height: 11%;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                animation: 4s cubic-out 0s teleport;
+            }
             .materials {
                 pointer-events: none;
                 flex-direction: row;
@@ -118,6 +129,28 @@
                     opacity: 0;
                 }
             }
+            @keyframes teleport {
+                0% {
+                    left: 0vmin;
+                    top:120vmin;
+                }
+                25% {
+                    left: 16vmin;
+                    top:80vmin;
+                }
+                50% {
+                    left: 32vmin;
+                    top:50vmin;
+                }
+                75% {
+                    left: 50vmin;
+                    top:20vmin;
+                }
+                100% {
+                    left: 75vmin;
+                    top:0vmin;
+                }
+            }
         </style>
         <style path = "common/building_style.rcss"/>
         <style path = "common/listpage_style.rcss"/>
@@ -151,6 +184,16 @@
                         <div class = "materials-name">{{it.name}}</div>
                     </div>
                     <div class = "materials-num">X {{it.count}}</div>
+                </div>
+            </div>
+
+            <!-- 传送上漂框 -->
+            <div class="item-teleport-panel" data-if="false">
+                <div class = "materials" data-for="items">
+                    <div class = "materials-item">
+                        <div class = "materials-icon" data-style-background-image="it.icon"/>
+                        <div class = "materials-name">{{it.name}}</div>
+                    </div>
                 </div>
             </div>
         </div>
