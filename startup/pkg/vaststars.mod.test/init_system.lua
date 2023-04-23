@@ -131,9 +131,9 @@ function S:data_changed()
             iprinter.update_printer_percent(printer_eid, printer_percent)
         elseif key == "J" and press == 0 then
             local rect_table = {
-                [1] = {x = 1, z = 1, w = 5, h = 5},
-                [2] = {x = 3, z = 3, w = 4, h = 4},
-                [3] = {x = -2, z = -2, w = 6, h = 6}
+                [1] = {x = -1, z = -1, w = 3, h = 3},
+                [2] = {x = 3, z = 3, w = 5, h = 5},
+                [3] = {x = 1, z = 1, w = 4, h = 4}
             }
             local color_table = {
                 {1.0, 0.0, 0.0, 1.0},

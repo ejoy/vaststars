@@ -156,7 +156,7 @@ local function create_grids_table(rect_table, offset)
         local grids = {}
         for ih = 0, hh - 1 do
             for iw = 0, ww - 1 do
-                local xx, zz = x + iw, z + ih
+                local xx, zz = x + iw, z - ih
                 local compress_coord = (xx << 8) + zz
                 grids[compress_coord] = true
             end
@@ -172,7 +172,7 @@ local function create_aabb_table(rect_table, offset)
     for idx = 1, #rect_table do
         local rect = rect_table[idx]
         local x, z, ww, hh = rect.x + offset, rect.z + offset, rect.w, rect.h
-        local aabb = math3d.aabb(math3d.vector(x, 0, z), math3d.vector(x + ww - 1, 0, z + hh - 1))
+        local aabb = math3d.aabb(math3d.vector(x, 0, z - (hh - 1)), math3d.vector(x + ww - 1, 0, z))
         aabb_table[idx] = aabb
     end
     return aabb_table
