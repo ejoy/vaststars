@@ -1,0 +1,142 @@
+<rml>
+    <head>
+        <style>
+            body {
+                font: 100% "微软雅黑";
+            }
+            .login-panel {
+                width: 100%;
+                height: 100%;
+                background-size: cover;
+                background-image: "ui/textures/login/login.texture";
+            }
+            .main-panel {
+                position: absolute;  
+                width: 20%; 
+                height:65%; 
+                flex-direction: column; 
+                justify-content: flex-end;
+                align-items: center;
+                right:5vmin;
+                top:20vmin;
+            }
+            .verison-block {
+                position: absolute;
+                width: 20%;
+                height:5%;
+                top:0;
+                left:0;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+            }
+            .title-block {
+                position: absolute;
+                width: 20%;
+                height:15%;
+                top:38vmin;
+                left:71vmin;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                font-size: 20vmin;
+                color: rgb(255, 255, 255);
+                -webkit-text-stroke: 0.3vmin #a52525;
+                animation:1s linear 0s infinite alternate floating;
+            }
+            .version-text {
+                font-size: 2.5vmin;
+                text-align: center;
+                align-items: center;
+            }
+            .button-text {
+                padding-bottom: 0.15em;
+                font-size: 3.73vmin;
+                text-align: center;
+                align-items: center;
+            }
+            .button-style {
+                margin-bottom: 1vmin;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                width: 35.00vmin;
+                height:12.00vmin;
+                background-color: rgb(250, 205, 9);
+                border: 0.27vmin rgb(89, 73, 39);
+                background-size: cover;
+            }
+            @keyframes floating {
+                from {
+                    top:37.5vmin;
+                }
+                to {
+                    top:38.5vmin;
+                }
+            }
+        </style>
+        <style path = "common/building_style.rcss"/>
+        <script type="text/x-lua" >
+            local ui_sys = require "ui_system"
+            local start = ui_sys.createDataMode("start", {
+                archival_files = {},
+                show_archival_files = false,
+                info = false,
+            })
+
+            function start.clickSave(event)
+                ui_sys.pub {"save"}
+            end
+
+            function start.clickRestart(event)
+                ui_sys.pub {"restart"}
+                ui_sys.close()
+            end
+
+            function start.clickRestore(event, index)
+                ui_sys.pub {"restore", index}
+            end
+
+            function start.clickInfo(event)
+                ui_sys.pub {"info"}
+                ui_sys.close()
+            end
+
+            function start.clickClose()
+                ui_sys.pub {"close"}
+            end
+
+            function start.clickDebug()
+                ui_sys.pub {"close"}
+                ui_sys.world_pub {"roadnet", "build"}
+            end
+
+        </script>
+    </head>
+    <body style = "background-color: black;">
+        <div class="item-container-region"  data-model="start">
+            <div class="login-panel" style = "flex-direction: column; height: 100%;">
+                <!-- 标题栏 -->
+                <div class = "verison-block">
+                    <div class = "version-text" style="-webkit-text-stroke:0.2vmin #000; font-size: 5vmin;">version: 1.0.0</div>
+                </div>
+                <div class = "title-block">浩瀚星辰</div>
+                <div class = "main-panel">
+                    <button class = "button-style" style="background-color:rgb(203, 118, 24);" data-event-click = "clickSave()">
+                        <div class="middle-bg" style='background-image: "textures/science/book.texture";'/>
+                        <div class = "button-text" style="font-size: 5.73vmin;">冒险模式</div>
+                    </button>
+                    <button class = "button-style" style="background-color:rgb(0, 160, 235);" data-event-click = "show_archival_files = !show_archival_files">
+                        <div class="middle-bg" style='background-image: "textures/construct/work.texture";'/>
+                        <div class = "button-text" style="font-size: 5.73vmin;">自由模式</div>
+                    </button> 
+                    <button class = "button-style" style="background-color: rgb(52, 207, 115)" data-event-click = "clickRestart()">
+                        <div class="middle-bg" style='background-image: "textures/road/forbidden.texture";'/>
+                        <div class = "button-text" style="font-size: 5.73vmin;">读取进度</div>
+                    </button> 
+                </div>
+            </div>
+        </div>
+    </body>
+</rml>
