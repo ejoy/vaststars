@@ -7,8 +7,8 @@ system "init_system"
 
 interface "itranslucent_plane"
     .implement "init_system.lua"
-    .method "create_translucent_plane_entity"
-    .method "remove_translucent_plane_entity"
+    .method "create_translucent_plane"
+    .method "remove_translucent_plane"
 
 policy "translucent_plane"
     .require_system "mod.translucent_plane|init_system"

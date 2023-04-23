@@ -66,12 +66,13 @@ local function to_mesh_buffer(vb, ib_handle, aabb)
     }
 end
 
-local function build_mesh(plane_table, unit, offset, aabb)
+local function build_mesh(grids, unit, offset, aabb)
     local packfmt<const> = "fff"
     local vb = {}
-    local ib_handle = build_ib(#plane_table)
-    for _, plane in pairs(plane_table) do
-       local ox, oz = (plane[1] + offset) * unit, (plane[2] + offset) * unit
+    local grid_num = 0
+    for grid, _ in pairs(grids) do
+       local cx, cz = grid >> 8, grid & 0xff
+       local ox, oz = cx * unit, cz * unit
        local nx, nz = ox + unit, oz + unit
        local v = {
             packfmt:pack(ox, 0, oz),
@@ -80,30 +81,35 @@ local function build_mesh(plane_table, unit, offset, aabb)
             packfmt:pack(nx, 0, oz),        
         }  
         vb[#vb+1] = table.concat(v, "")
+        grid_num = grid_num + 1
     end
+    if grid_num == 0 then
+        return nil
+    end
+    local ib_handle = build_ib(grid_num)
     return to_mesh_buffer(vb, ib_handle, aabb)
 end
 
-local function get_aabb(plane_table, width, height, unit, offset)
+local function get_aabb(grids, width, height, unit, offset)
     local minx, minz = width + 1, height + 1
     local maxx, maxz = -1, -1
-    for _, plane in pairs(plane_table) do
-        local x, z = plane[1], plane[2]
-        if x > maxx then
-            maxx = x
+    for grid,  _ in pairs(grids) do
+        local cx, cz = grid >> 8, grid & 0xff
+        if cx > maxx then
+            maxx = cx
         end
-        if x < minx then
-            minx = x
+        if cx < minx then
+            minx = cx
         end
-        if z > maxz then
-            maxz = z
+        if cz > maxz then
+            maxz = cz
         end
-        if z < minz then
-            minz = z
+        if cz < minz then
+            minz = cz
         end
     end
-    local aabb_min = math3d.vector((minx + offset) * unit, 0, (minz + offset) * unit)
-    local aabb_max = math3d.vector((maxx + offset) * unit + unit, 0, (maxz + offset) * unit + unit)
+    local aabb_min = math3d.vector(minx * unit, 0, minz * unit)
+    local aabb_max = math3d.vector(minx * unit + unit, 0, minz * unit + unit)
     return math3d.aabb(aabb_min, aabb_max)
 end
 
@@ -111,10 +117,10 @@ function init_sys:init_world()
     translucent_plane_material = "/pkg/mod.translucent_plane/assets/translucent_plane.material"
 end
 
-function itp.create_translucent_plane_entity(plane_table, color)
+local function create_translucent_plane_entity(grids_table, color, render_layer)
     local width, height, unit, offset = iplane_terrain.get_wh()
-    local aabb = get_aabb(plane_table, width, height, unit, offset)
-    local plane_mesh = build_mesh(plane_table, unit, offset, aabb)
+    local aabb = get_aabb(grids_table, width, height, unit, offset)
+    local plane_mesh = build_mesh(grids_table, unit, offset, aabb)
     local eid
     if plane_mesh then
         eid = ecs.create_entity{
@@ -133,13 +139,87 @@ function itp.create_translucent_plane_entity(plane_table, color)
                     imaterial.set_property(e, "u_colorTable", math3d.vector(color))
                 end,
                 visible_state = "main_view",
-                render_layer = "translucent",
+                --render_layer = "translucent",
+                render_layer = render_layer
             },
         }
     end
     return eid
+end 
+
+local function create_grids_table(rect_table, offset)
+    local grids_table = {}
+    -- create all rect' grids
+    for idx = 1, #rect_table do
+        local rect = rect_table[idx]
+        local x, z, ww, hh = rect.x + offset, rect.z + offset, rect.w, rect.h
+        local grids = {}
+        for ih = 0, hh - 1 do
+            for iw = 0, ww - 1 do
+                local xx, zz = x + iw, z + ih
+                local compress_coord = (xx << 8) + zz
+                grids[compress_coord] = true
+            end
+        end
+        grids_table[idx] = grids
+    end
+    return grids_table
 end
 
-function itp.remove_translucent_plane_entity(eid)
-    w:remove(eid)
+local function create_aabb_table(rect_table, offset)
+    local aabb_table = {}
+    -- create all rect' aabb
+    for idx = 1, #rect_table do
+        local rect = rect_table[idx]
+        local x, z, ww, hh = rect.x + offset, rect.z + offset, rect.w, rect.h
+        local aabb = math3d.aabb(math3d.vector(x, 0, z), math3d.vector(x + ww - 1, 0, z + hh - 1))
+        aabb_table[idx] = aabb
+    end
+    return aabb_table
 end
+
+local function update_grids_table(grids_table, aabb_table)
+    if #grids_table <= 1 then
+        return
+    end
+    for idx_offset = 0, #grids_table - 1 do
+        local cur_idx = #grids_table-idx_offset
+        local aabb = aabb_table[cur_idx]
+        for prev_idx = 1, cur_idx - 1 do
+            local prev_grids = grids_table[prev_idx]
+            local prev_aabb = aabb_table[prev_idx]
+            local inter_aabb = math3d.aabb_intersection(aabb, prev_aabb)
+            if inter_aabb ~= mc.NULL then
+                local inter_center, inter_extent = math3d.aabb_center_extents(inter_aabb)
+                local inter_min, inter_max = math3d.sub(inter_center, inter_extent), math3d.add(inter_center, inter_extent)
+                local inter_min_x, inter_min_z = math3d.index(inter_min, 1, 3)
+                local inter_max_x, inter_max_z = math3d.index(inter_max, 1, 3)
+                for zz = inter_min_z, inter_max_z do
+                    for xx = inter_min_x, inter_max_x do
+                        local compress_coord = (xx << 8) + zz
+                        prev_grids[compress_coord] = nil
+                    end
+                end
+            end
+        end
+    end
+end
+
+function itp.create_translucent_plane(rect_table, color_table, render_layer)
+    local width, height, unit, offset = iplane_terrain.get_wh()
+    local eid_table = {}
+    local grids_table = create_grids_table(rect_table, offset)
+    local aabb_table = create_aabb_table(rect_table, offset)
+    update_grids_table(grids_table, aabb_table)
+    for idx = 1, #rect_table do
+        eid_table[idx] = create_translucent_plane_entity(grids_table[idx], color_table[idx], render_layer)
+    end
+    return eid_table
+end
+
+function itp.remove_translucent_plane(eid_table)
+    for idx = 1,#eid_table do
+        w:remove(eid_table[idx])
+    end
+end
+

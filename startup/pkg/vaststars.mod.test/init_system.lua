@@ -120,7 +120,7 @@ end
 
 local kb_mb = world:sub{"keyboard"}
 
-local eid1, eid2
+local eid_table = {}
 function S:data_changed()
     for _, key, press in kb_mb:unpack() do
         if key == "M" and press == 0 then
@@ -130,47 +130,19 @@ function S:data_changed()
             end
             iprinter.update_printer_percent(printer_eid, printer_percent)
         elseif key == "J" and press == 0 then
-            local ox1, oz1 = 1, 1
-            local plane_table1 = {}
-            for ih = 0, 2 do
-                for iw = 0, 2 do
-                    local x, z = ox1 + iw, oz1 + ih
-                    plane_table1[#plane_table1+1] = {x, z}
-                end
-            end
-            eid1 = itp.create_translucent_plane_entity(plane_table1, {1, 0, 0, 0.5})
-
-            local ox2, oz2 = 4, 1
-            local plane_table2 = {}
-            for ih = 0, 2 do
-                for iw = 0, 1 do
-                    local x, z = ox2 + iw, oz2 + ih
-                    plane_table2[#plane_table2+1] = {x, z}
-                end
-            end
-            eid2 = itp.create_translucent_plane_entity(plane_table2, {0, 0, 1, 0.5})
+            local rect_table = {
+                [1] = {x = 1, z = 1, w = 5, h = 5},
+                [2] = {x = 3, z = 3, w = 4, h = 4},
+                [3] = {x = -2, z = -2, w = 6, h = 6}
+            }
+            local color_table = {
+                {1.0, 0.0, 0.0, 1.0},
+                {0.0, 1.0, 0.0, 1.0},
+                {0.0, 0.0, 1.0, 1.0}
+            }
+            eid_table = itp.create_translucent_plane(rect_table, color_table, "translucent")
         elseif key =="K" and press == 0 then
-            itp.remove_translucent_plane_entity(eid1)
-            itp.remove_translucent_plane_entity(eid2)
-            local ox1, oz1 = 0, 1
-            local plane_table1 = {}
-            for ih = 0, 2 do
-                for iw = 0, 2 do
-                    local x, z = ox1 + iw, oz1 + ih
-                    plane_table1[#plane_table1+1] = {x, z}
-                end
-            end
-            eid1 = itp.create_translucent_plane_entity(plane_table1, {1, 0, 0, 0.5})
-
-            local ox2, oz2 = 3, 1
-            local plane_table2 = {}
-            for ih = 0, 2 do
-                for iw = 0, 2 do
-                    local x, z = ox2 + iw, oz2 + ih
-                    plane_table2[#plane_table2+1] = {x, z}
-                end
-            end
-            eid2 = itp.create_translucent_plane_entity(plane_table2, {0, 0, 1, 0.5})
+            itp.remove_translucent_plane(eid_table)
         end
     end
 end
