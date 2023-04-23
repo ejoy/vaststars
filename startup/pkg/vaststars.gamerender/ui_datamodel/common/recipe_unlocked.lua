@@ -4,7 +4,7 @@ local w = world.w
 
 local iprototype = require "gameplay.interface.prototype"
 local gameplay_core = require "gameplay.core"
-local VASTSTARS_DEBUG_RECIPE_UNLOCKED <const> = require "debugger".recipe_unlocked
+local debugger = require "debugger"
 
 local recipe_unlocked; do
     local function length(t)
@@ -41,20 +41,16 @@ local recipe_unlocked; do
         end
     end
 
-if VASTSTARS_DEBUG_RECIPE_UNLOCKED then
     function recipe_unlocked(recipe)
-        return true
-    end
-else
-    function recipe_unlocked(recipe)
+        if debugger.recipe_unlocked then
+            return true
+        end
         local tech = next(recipe_tech[recipe])
         if not tech then
             return false
         end
         return gameplay_core.is_researched(tech)
     end
-end
-
 end
 
 return {

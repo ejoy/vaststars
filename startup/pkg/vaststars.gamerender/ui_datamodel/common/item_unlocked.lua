@@ -4,7 +4,7 @@ local w = world.w
 
 local iprototype = require "gameplay.interface.prototype"
 local gameplay_core = require "gameplay.core"
-local VASTSTARS_DEBUG_ITEM_UNLOCKED <const> = require "debugger".item_unlocked
+local debugger <const> = require "debugger"
 
 local is_unlocked; do
     local function length(t)
@@ -41,20 +41,16 @@ local is_unlocked; do
         end
     end
 
-if VASTSTARS_DEBUG_ITEM_UNLOCKED then
-    function is_unlocked(_)
-        return true
-    end
-else
     function is_unlocked(prototype_name)
+        if debugger.item_unlocked then
+            return true
+        end
         local tech = next(unlocked_tech[prototype_name])
         if not tech then
             return false
         end
         return gameplay_core.is_researched(tech)
     end
-end
-
 end
 
 return {

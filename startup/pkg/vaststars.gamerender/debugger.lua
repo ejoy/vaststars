@@ -13,6 +13,12 @@ local options = {
     ["disable_load_resource"] = true,
 }
 
+local free_mode = {
+    ["skip_guide"] = true,
+    ["recipe_unlocked"] = true,
+    ["item_unlocked"] = true,
+}
+
 local function get(k)
     if not fs.exists(fs.path(fn)) then
         log.error(("can not found file '%s'"):format(fn))
@@ -49,11 +55,18 @@ local function call(k, ...)
     log.info(("call function '%s' success"):format(k))
 end
 
-return setmetatable({get = get, call = call}, { __index = function (_, k)
+local function set_free_mode(b)
+    debugger.free_mode = b
+end
+
+return setmetatable({get = get, call = call, set_free_mode = set_free_mode}, { __index = function (_, k)
     if not debugger then
         return false
     end
     if debugger.enable and options[k] then
+        return true
+    end
+    if debugger.free_mode and free_mode[k] then
         return true
     end
     return debugger[k]

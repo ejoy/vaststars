@@ -5,7 +5,7 @@ local w = world.w
 local gameplay_core = require "gameplay.core"
 local fs = require "bee.filesystem"
 local json = import_package "ant.json"
-local SKIP_GUIDE <const> = require "debugger".skip_guide
+local debugger = require "debugger"
 local CUSTOM_ARCHIVING <const> = require "debugger".custom_archiving
 local startup_lua <const> = require "debugger".startup or "item.startup"
 local is_roadnet_only = ecs.require "editor.endpoint".is_roadnet_only
@@ -54,7 +54,7 @@ local function restore_world()
 
     local function _debug()
         local guide = import_package "vaststars.prototype"("guide")
-        if SKIP_GUIDE then
+        if debugger.skip_guide then
             print("skip guide")
             gameplay_core.get_storage().guide_id = #guide
             iui.set_guide_progress(guide[#guide].narrative_end.guide_progress)

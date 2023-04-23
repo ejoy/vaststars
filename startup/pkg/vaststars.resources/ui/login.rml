@@ -80,38 +80,15 @@
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local start = ui_sys.createDataMode("start", {
-                archival_files = {},
-                show_archival_files = false,
-                info = false,
             })
 
-            function start.clickSave(event)
-                ui_sys.pub {"save"}
+            function start.clickStartMode(event, mode)
+                ui_sys.pub {"start_mode", mode}
             end
 
-            function start.clickRestart(event)
-                ui_sys.pub {"restart"}
-                ui_sys.close()
+            function start.clickLoad(event)
+                ui_sys.pub {"load"}
             end
-
-            function start.clickRestore(event, index)
-                ui_sys.pub {"restore", index}
-            end
-
-            function start.clickInfo(event)
-                ui_sys.pub {"info"}
-                ui_sys.close()
-            end
-
-            function start.clickClose()
-                ui_sys.pub {"close"}
-            end
-
-            function start.clickDebug()
-                ui_sys.pub {"close"}
-                ui_sys.world_pub {"roadnet", "build"}
-            end
-
         </script>
     </head>
     <body style = "background-color: black;">
@@ -123,15 +100,15 @@
                 </div>
                 <div class = "title-block">浩瀚星辰</div>
                 <div class = "main-panel">
-                    <button class = "button-style" style="background-color:rgb(203, 118, 24);" data-event-click = "clickSave()">
+                    <button class = "button-style" style="background-color:rgb(203, 118, 24);" data-event-click = "clickStartMode('adventure')">
                         <div class="middle-bg" style='background-image: "textures/science/book.texture";'/>
                         <div class = "button-text" style="font-size: 5.73vmin;">冒险模式</div>
                     </button>
-                    <button class = "button-style" style="background-color:rgb(0, 160, 235);" data-event-click = "show_archival_files = !show_archival_files">
+                    <button class = "button-style" style="background-color:rgb(0, 160, 235);" data-event-click = "clickStartMode('free')">
                         <div class="middle-bg" style='background-image: "textures/construct/work.texture";'/>
                         <div class = "button-text" style="font-size: 5.73vmin;">自由模式</div>
                     </button> 
-                    <button class = "button-style" style="background-color: rgb(52, 207, 115)" data-event-click = "clickRestart()">
+                    <button class = "button-style" style="background-color: rgb(52, 207, 115)" data-event-click = "clickLoad()">
                         <div class="middle-bg" style='background-image: "textures/road/forbidden.texture";'/>
                         <div class = "button-text" style="font-size: 5.73vmin;">读取进度</div>
                     </button> 

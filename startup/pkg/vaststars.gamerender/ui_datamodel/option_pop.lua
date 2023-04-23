@@ -12,10 +12,11 @@ local saveload = ecs.require "saveload"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local gameplay_core = require "gameplay.core"
 local icanvas = ecs.require "engine.canvas"
+
 ---------------
 local M = {}
 
--- TDOO: duplicate with startup\pkg\vaststars.gamerender\init_system.lua
+-- TDOO: duplicate with startup\pkg\vaststars.gamerender\load_game.lua
 local prefab_parse = require("engine.prefab_parser").parse
 local mathpkg = import_package "ant.math"
 local mc = mathpkg.constant
