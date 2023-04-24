@@ -85,8 +85,6 @@ local function read_colors_from_files()
 end
 
 function dn_sys:init()
-    DEFAULT_DIRECTIONAL_LIGHT_INTENSITY = ilight.default_intensity "directional"
-
     read_colors_from_files()
 end
 
@@ -101,26 +99,30 @@ function dn_sys:entity_init()
     for dne in w:select "INIT daynight:in" do
         local dn = dne.daynight
 
-        local dnl = dn.light
-        dnl.normal = math3d.mark(math3d.vector(dnl.normal))
-        dnl.start_dir = math3d.mark(math3d.vector(dnl.start_dir))
+        if not dn.cycle then
+            dn.cycle = 0
+        end
+        if dn.start_rotator then
+            local q = math3d.quaternion(dn.start_rotator)
+            
+            dn.start_dir = math3d.mark(math3d.transform(q, mc.NXAXIS, 0))
+            dn.normal = math3d.mark(math3d.transform(q, mc.ZAXIS, 0))
+        else
+            dn.start_dir = math3d.mark(mc.NXAXIS)
+            dn.normal = math3d.mark(mc.ZAXIS)
+        end
 
-        dnl.intensity = 0
-    end
-
-    local dne = w:first "daynight:in"
-    if dne then
-        for dl in w:select "INIT directional_light light:in" do
-            dne.daynight.light.intensity = ilight.intensity(dl)
+        if not dn.intensity then
+            dn.intensity = ilight.default_intensity "directional"
         end
     end
 end
 
 function dn_sys:entity_remove()
     for dne in w:select "REMOVED daynight:in" do
-        local dnl = dne.daynight.light
-        math3d.unmark(dnl.normal)
-        math3d.unmark(dnl.start_dir)
+        local dn = dne.daynight
+        math3d.unmark(dn.normal)
+        math3d.unmark(dn.start_dir)
     end
 end
 
@@ -136,14 +138,12 @@ local function update_daynight_value(dne)
     --move directional light in cycle
     local dl = w:first "directional_light light:in scene:in"
     if dl then
-        local dnl = dn.light
-
         do
             local c<const> = interpolate_in_array(tc, DIRECT_COLORS)
             local r, g, b, i = math3d.index(c, 1, 2, 3, 4)
             ilight.set_color_rgb(dl, r, g, b)
 
-            ilight.set_intensity(dl, i * DEFAULT_DIRECTIONAL_LIGHT_INTENSITY)
+            ilight.set_intensity(dl, i * dn.intensity)
         end
 
         assert(0.0 <= tc and tc <= 1.0, "Invalid time cycle")
@@ -155,8 +155,8 @@ local function update_daynight_value(dne)
 
         ntc = ntc * 2
 
-        local q = math3d.quaternion{axis=dnl.normal, r=math.pi*ntc}
-        iom.set_direction(dl, math3d.transform(q, dnl.start_dir, 0))
+        local q = math3d.quaternion{axis=dn.normal, r=math.pi*ntc}
+        iom.set_direction(dl, math3d.transform(q, dn.start_dir, 0))
         w:submit(dl)
 
         --print("cycle:", tc, "intensity:", l, "direction:", math3d.tostring(math3d.transform(q, dnl.start_dir, 0)), "modulate color:", math3d.tostring(modulate_color))
@@ -180,3 +180,15 @@ function idn.set_rotation_data(start_dir, normal)
     math3d.unmark(dnl.start_dir)
     dnl.start_dir = math3d.mark(math3d.vector(start_dir))
 end
+
+--[[test code:
+local sys = ecs.system "test_system"
+function sys:data_changed()
+    local idn = ecs.import.interface "mod.daynight|idaynight"
+    local itimer = ecs.import.interface "ant.timer|itimer"
+    local dne = w:first "daynight:in"
+    local tenSecondMS<const> = 10000
+    local cycle = (itimer.current() % tenSecondMS) / tenSecondMS
+    idn.update_cycle(dne, cycle)
+end
+]]

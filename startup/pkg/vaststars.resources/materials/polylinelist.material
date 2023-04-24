@@ -18,7 +18,7 @@ properties:
     u_grid_bound: {0.0, 0.0, 90.0, 90.0}
 state:
     CULL: NONE
-    DEPTH_TEST: ALWAYS
+    DEPTH_TEST: GREATER
     MSAA: true
     WRITE_MASK: RGBA
     BLEND: ALPHA

@@ -37,7 +37,7 @@ function M.update_tech_list(gw)
     if not global.science.tech_tree then
         M.update_tech_tree()
     end
-    
+
     local storage = gameplay_core.get_storage()
     storage.tech_picked_flag = storage.tech_picked_flag or {}
     global.science.tech_picked_flag = storage.tech_picked_flag

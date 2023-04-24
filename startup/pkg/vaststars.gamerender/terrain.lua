@@ -170,7 +170,7 @@ function terrain:create(width, height)
             srt = srt,
             parent = nil,
             slot = nil,
-            render_layer = RENDER_LAYER.TERRAIN
+            render_layer = RENDER_LAYER.MINERAL
         }
     end
 

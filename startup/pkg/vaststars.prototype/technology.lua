@@ -998,7 +998,7 @@ local prototype = gameplay.register.prototype
       },
       {
         camera_x = 128,
-        camera_y = 121,
+        camera_y = 125,
       },
     },
     sign_desc = {
@@ -1638,8 +1638,8 @@ local prototype = gameplay.register.prototype
     guide_focus = {
       {
         prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 110,
-        y = 120,
+        x = 111,
+        y = 121,
         w = 2.5,
         h = 2.5,
         show_arrow = true,
@@ -1673,7 +1673,7 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "采矿机传送接收" {
+  prototype "采矿机传送启动" {
     desc = "建造中心接收废墟的物资传送",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
@@ -1694,7 +1694,7 @@ local prototype = gameplay.register.prototype
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "采矿机I"},
-    prerequisites = {"采矿机传送接收"},
+    prerequisites = {"采矿机传送启动"},
     count = 2,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
@@ -1748,8 +1748,22 @@ local prototype = gameplay.register.prototype
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
+    guide_focus = {
+      {
+        prefab = "prefabs/selected-box-no-animation.prefab",
+        x = 109,
+        y = 136,
+        w = 5,
+        h = 5,
+        show_arrow = true,
+      },
+      {
+        camera_x = 108,
+        camera_y = 130,
+      },
+    },
     sign_desc = {
-      { desc = "放置1个送货车站", icon = "textures/construct/industry.texture"},
+      { desc = "搜索废墟传送至建造中心生产并放置1个送货车站", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -1763,8 +1777,22 @@ local prototype = gameplay.register.prototype
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
+    guide_focus = {
+      {
+        prefab = "prefabs/selected-box-no-animation.prefab",
+        x = 109,
+        y = 136,
+        w = 5,
+        h = 5,
+        show_arrow = true,
+      },
+      {
+        camera_x = 108,
+        camera_y = 130,
+      },
+    },
     sign_desc = {
-      { desc = "放置1个收货车站", icon = "textures/construct/industry.texture"},
+      { desc = "搜索废墟传送至建造中心生产并放置1个收货车站", icon = "textures/construct/industry.texture"},
     },
   }
 

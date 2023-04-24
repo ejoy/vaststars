@@ -142,6 +142,7 @@ prototype "砖石公路-T型" {
 prototype "砖石公路-X型" {
     show_prototype_name = "砖石公路",
     model = "prefabs/road/road_X.prefab",
+    printer_model = "prefabs/road/road_X-printer.prefab",
     icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     flow_type = 11,
@@ -157,6 +158,7 @@ prototype "砖石公路-X型" {
             {type="none", position={0,0,"W"}},
         },
     },
+    printer_scale = {1.3,1.3,1.3},
     building_base = false,
 }
 

@@ -1,7 +1,3 @@
-local ecs = ...
-local world = ecs.world
-local w = world.w
-
 local hierarchy = require "hierarchy"
 local animation = hierarchy.animation
 local skeleton = hierarchy.skeleton

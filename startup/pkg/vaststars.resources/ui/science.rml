@@ -512,7 +512,7 @@
             local function onclose()
                 if start.show_finish then
                     start.show_finish = false
-                    start.return_title = "科研中心"
+                    start.return_title = "科研目标"
                     start.list:reset_position()
                     ui_sys.pub {"show_list", "todo"}
                 else

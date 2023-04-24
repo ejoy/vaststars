@@ -45,6 +45,10 @@
                 align-items: center;
                 animation: 4s cubic-out 0s slideup;
             }
+            .item-teleport-panel {
+                pointer-events: none;
+                animation: 1.5s cubic-in-out 0s teleport;
+            }
             .materials {
                 pointer-events: none;
                 flex-direction: row;
@@ -118,6 +122,16 @@
                     opacity: 0;
                 }
             }
+            @keyframes teleport {
+                0% {
+                    left: 20vmin;
+                    top: 65vmin;
+                }
+                100% {
+                    left: 75vmin;
+                    top: 0vmin;
+                }
+            }
         </style>
         <style path = "common/building_style.rcss"/>
         <style path = "common/listpage_style.rcss"/>
@@ -151,6 +165,18 @@
                         <div class = "materials-name">{{it.name}}</div>
                     </div>
                     <div class = "materials-num">X {{it.count}}</div>
+                </div>
+            </div>
+
+            <!-- 传送上漂框 -->
+            <div class="item-teleport-panel" data-if="show_id == 'teleport'">
+                <div class = "materials" data-for="items">
+                    <div class = "materials-item">
+                        <div class = "materials-icon" data-style-background-image="it.icon"/>
+                        <!--
+                        <div class = "materials-name">{{it.name}}</div>
+                        -->
+                    </div>
                 </div>
             </div>
         </div>

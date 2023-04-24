@@ -6,16 +6,13 @@ local math3d = require "math3d"
 local lorries = {}
 local iprototype = require "gameplay.interface.prototype"
 local packcoord = iprototype.packcoord
-local road_track = import_package "vaststars.prototype"("road_track")
 local iterrain = ecs.require "terrain"
-local itrack = ecs.require "engine.track"
 local create_lorry = ecs.require "lorry"
 local global = require "global"
 local iroadnet_converter = require "roadnet_converter"
 local gameplay_core = require "gameplay.core"
-local prefab_parse = require("engine.prefab_parser").parse
+local iprototype_cache = require "gameplay.prototype_cache.init"
 
-local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local UPS <const> = require("gameplay.interface.constant").UPS
 
@@ -23,56 +20,9 @@ local CONSTANTS = gameplay_core.get_world():roadnet_constants()
 local STRAIGHT_TICKCOUNT <const> = CONSTANTS.kTime
 local CROSS_TICKCOUNT <const> = CONSTANTS.kCrossTime
 
-local function __prefab_slots(prefab)
-    local res = {}
-    local t = prefab_parse(RESOURCES_BASE_PATH:format(prefab))
-    for _, v in ipairs(t) do
-        if v.data.slot then
-            res[v.data.name] = v.data
-        end
-    end
-    return res
-end
-
-local cache = {}
-local is_cross_cache = {}
-do
-    for _, typeobject in pairs(iprototype.each_type("building", "road")) do
-        local slots = __prefab_slots(typeobject.model)
-        if not next(slots) then
-            goto continue
-        end
-
-        assert(typeobject.track)
-        local is_cross = #typeobject.crossing.connections > 2
-        local track = assert(road_track[typeobject.track])
-        for _, entity_dir in pairs(typeobject.flow_direction) do
-            local t = iprototype.dir_tonumber(entity_dir) - iprototype.dir_tonumber('N')
-            local tickcount = is_cross and CROSS_TICKCOUNT or (STRAIGHT_TICKCOUNT * 2)
-            for toward, slot_names in pairs(track) do
-                local z = toward
-                if is_cross then
-                    assert(toward <= 0xf) -- see also: enum RoadType
-                    local s = ((z >> 2)  + t) % 4 -- high 2 bits is indir
-                    local e = ((z & 0x3) + t) % 4 -- low  2 bits is outdir
-                    z = s << 2 | e
-                else
-                    z = toward
-                end
-
-                local combine_keys = ("%s:%s:%s"):format(typeobject.name, entity_dir, z) -- TODO: optimize
-                assert(cache[combine_keys] == nil)
-                cache[combine_keys] = itrack.make_track(slots, slot_names, tickcount)
-            end
-        end
-
-        is_cross_cache[typeobject.name] = #typeobject.crossing.connections > 2
-        ::continue::
-    end
-end
-
 local function __get_offset_matrix(prototype_name, dir, toward, tick)
     local combine_keys = ("%s:%s:%s"):format(prototype_name, dir, toward) -- TODO: optimize
+    local cache = iprototype_cache.get("lorry_manager").cache
     local mat = assert(cache[combine_keys])
     return assert(mat[tick])
 end
@@ -167,6 +117,7 @@ local function update(lorry_id, x, y, z, tick)
         handlers.endpoint(lorry_id, mask, x, y, z, tick)
     else
         local prototype_name = iroadnet_converter.mask_to_prototype_name_dir(mask)
+        local is_cross_cache = iprototype_cache.get("lorry_manager").is_cross_cache
         if is_cross_cache[prototype_name] then
             handlers.cross(lorry_id, mask, x, y, z, tick)
         else
