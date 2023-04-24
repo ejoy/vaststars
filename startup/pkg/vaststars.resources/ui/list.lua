@@ -179,6 +179,8 @@ function list_meta:on_mousedown(event)
     end
     self.drag.mouse_pos = pos
     self.drag.anchor = self.pos
+    self.oldClassName = self.panel.className
+    self.panel.className = self.panel.className .. " notransition"
 end
 
 function list_meta:on_mouseup(event)
@@ -195,6 +197,7 @@ function list_meta:on_mouseup(event)
         self.pos = min
         adjust = true
     end
+    self.panel.className = self.oldClassName
     if adjust then
         if self.direction == 0 then
             self.panel.style.left = tostring(self.pos) .. 'px'
@@ -213,14 +216,11 @@ function list_meta:on_drag(event)
         self.drag.delta = pos - self.drag.mouse_pos
         self.pos = self.drag.anchor + self.drag.delta
         local e = self.panel
-        local oldClassName = e.className
-        e.className = e.className .. " notransition"
         if self.direction == 0 then
             e.style.left = tostring(math.floor(self.pos)) .. 'px'
         else
             e.style.top = tostring(math.floor(self.pos)) .. 'px'
         end
-        e.className = oldClassName
     end
 end
 
