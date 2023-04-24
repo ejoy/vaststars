@@ -1,6 +1,6 @@
 ---
 policy:
-  mod.daynight|daynight
+  ant.daynight|daynight
   ant.general|name
 data:
   daynight:
