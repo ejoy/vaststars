@@ -157,6 +157,7 @@ prototype "砖石公路-X型" {
             {type="none", position={0,0,"W"}},
         },
     },
+    printer_scale = {1.3,1.3,1.3},
     building_base = false,
 }
 
