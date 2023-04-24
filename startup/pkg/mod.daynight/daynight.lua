@@ -101,26 +101,26 @@ function dn_sys:entity_init()
     for dne in w:select "INIT daynight:in" do
         local dn = dne.daynight
 
-        local dnl = dn.light
-        dnl.normal = math3d.mark(math3d.vector(dnl.normal))
-        dnl.start_dir = math3d.mark(math3d.vector(dnl.start_dir))
+        if not dn.cycle then
+            dn.cycle = 0
+        end
+        if dn.start_dir then
+            dn.start_dir = math3d.mark(math3d.normalize(math3d.vector(dn.start_dir)))
 
-        dnl.intensity = 0
-    end
-
-    local dne = w:first "daynight:in"
-    if dne then
-        for dl in w:select "INIT directional_light light:in" do
-            dne.daynight.light.intensity = ilight.intensity(dl)
+            local n = math3d.isequal(dn.start_dir, mc.NXAXIS) and mc.XAXIS or math3d.normalize(math3d.cross(mc.NXAXIS, dn.start_dir))
+            dn.normal = math3d.mark(n)
+        else
+            dn.start_dir = math3d.mark(mc.NXAXIS)
+            dn.normal = math3d.mark(mc.ZAXIS)
         end
     end
 end
 
 function dn_sys:entity_remove()
     for dne in w:select "REMOVED daynight:in" do
-        local dnl = dne.daynight.light
-        math3d.unmark(dnl.normal)
-        math3d.unmark(dnl.start_dir)
+        local dn = dne.daynight
+        math3d.unmark(dn.normal)
+        math3d.unmark(dn.start_dir)
     end
 end
 
@@ -136,8 +136,6 @@ local function update_daynight_value(dne)
     --move directional light in cycle
     local dl = w:first "directional_light light:in scene:in"
     if dl then
-        local dnl = dn.light
-
         do
             local c<const> = interpolate_in_array(tc, DIRECT_COLORS)
             local r, g, b, i = math3d.index(c, 1, 2, 3, 4)
@@ -155,8 +153,8 @@ local function update_daynight_value(dne)
 
         ntc = ntc * 2
 
-        local q = math3d.quaternion{axis=dnl.normal, r=math.pi*ntc}
-        iom.set_direction(dl, math3d.transform(q, dnl.start_dir, 0))
+        local q = math3d.quaternion{axis=dn.normal, r=math.pi*ntc}
+        iom.set_direction(dl, math3d.transform(q, dn.start_dir, 0))
         w:submit(dl)
 
         --print("cycle:", tc, "intensity:", l, "direction:", math3d.tostring(math3d.transform(q, dnl.start_dir, 0)), "modulate color:", math3d.tostring(modulate_color))
