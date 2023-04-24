@@ -104,11 +104,11 @@ function dn_sys:entity_init()
         if not dn.cycle then
             dn.cycle = 0
         end
-        if dn.start_dir then
-            dn.start_dir = math3d.mark(math3d.normalize(math3d.vector(dn.start_dir)))
-
-            local n = math3d.isequal(dn.start_dir, mc.NXAXIS) and mc.XAXIS or math3d.normalize(math3d.cross(mc.NXAXIS, dn.start_dir))
-            dn.normal = math3d.mark(n)
+        if dn.start_rotator then
+            local q = math3d.quaternion(dn.start_rotator)
+            
+            dn.start_dir = math3d.mark(math3d.transform(q, mc.NXAXIS, 0))
+            dn.normal = math3d.mark(math3d.transform(q, mc.ZAXIS, 0))
         else
             dn.start_dir = math3d.mark(mc.NXAXIS)
             dn.normal = math3d.mark(mc.ZAXIS)
