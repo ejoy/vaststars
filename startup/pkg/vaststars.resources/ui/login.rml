@@ -104,7 +104,7 @@
                 </div>
                 <div class = "main-panel">
                     <button class = "button-style" style="background-color:rgb(169, 187, 6);" data-event-click = "clickButton('start_mode', 'adventure')">
-                        <div class="middle-bg" style='background-image: "textures/road/traffic.texture";'/>
+                        <div class="middle-bg" style='background-image: "textures/road/traffic.texture";width:8vmin; height:8vmin;'/>
                         <div class = "button-text1" style="font-size: 5.73vmin;">继续游戏</div>
                     </button>
                     <button class = "button-style" style="background-color:rgb(203, 118, 24);" data-event-click = "clickButton('start_mode', 'adventure')">
@@ -116,7 +116,7 @@
                         <div class = "button-text1" style="font-size: 5.73vmin;">自由模式</div>
                     </button> 
                     <button class = "button-style" style="background-color: rgb(195, 0, 255)" data-event-click = "clickButton('load_resources')">
-                        <div class="middle-bg" style='background-image: "textures/road_net/big_bag.texture"; width:5.5vmin; height:5.5vmin;'/>
+                        <div class="middle-bg" style='background-image: "textures/road_net/big_bag.texture"; width:6.7vmin; height:6.7vmin;'/>
                         <div class = "button-text1" style="font-size: 5.73vmin;">加载资源</div>
                     </button> 
                     <button class = "button-style" style="background-color: rgb(52, 207, 115)" data-event-click = "clickButton('load_archive')">
