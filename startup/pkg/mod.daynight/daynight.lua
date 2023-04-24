@@ -95,6 +95,14 @@ local function interpolate_in_array(t, arrays)
     return math3d.lerp(arrays[x+1], arrays[x+2], y)
 end
 
+local function update_rotation_frame(dn, q)
+    math3d.unmark(dn.normal)
+    math3d.unmark(dn.start_dir)
+
+    dn.start_dir= math3d.mark(math3d.transform(q, mc.NXAXIS, 0))
+    dn.normal   = math3d.mark(math3d.transform(q, mc.ZAXIS, 0))
+end
+
 function dn_sys:entity_init()
     for dne in w:select "INIT daynight:in" do
         local dn = dne.daynight
@@ -103,10 +111,7 @@ function dn_sys:entity_init()
             dn.cycle = 0
         end
         if dn.start_rotator then
-            local q = math3d.quaternion(dn.start_rotator)
-            
-            dn.start_dir = math3d.mark(math3d.transform(q, mc.NXAXIS, 0))
-            dn.normal = math3d.mark(math3d.transform(q, mc.ZAXIS, 0))
+            update_rotation_frame(math3d.quaternion(dn.start_rotator))
         else
             dn.start_dir = math3d.mark(mc.NXAXIS)
             dn.normal = math3d.mark(mc.ZAXIS)
@@ -170,15 +175,9 @@ function idn.update_cycle(e, cycle)
     update_daynight_value(e)
 end
 
-function idn.set_rotation_data(start_dir, normal)
-    local dne = w:first "daynight:in"
-    local dnl = dne.daynight.light
-
-    math3d.unmark(dnl.normal)
-    dnl.normal = math3d.mark(math3d.vector(normal))
-
-    math3d.unmark(dnl.start_dir)
-    dnl.start_dir = math3d.mark(math3d.vector(start_dir))
+function idn.set_rotation(e, rotator)
+    w:extend(e, "daynight:in")
+    update_rotation_frame(e.daynight, rotator)
 end
 
 --[[test code:
