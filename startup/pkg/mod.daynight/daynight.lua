@@ -85,8 +85,6 @@ local function read_colors_from_files()
 end
 
 function dn_sys:init()
-    DEFAULT_DIRECTIONAL_LIGHT_INTENSITY = ilight.default_intensity "directional"
-
     read_colors_from_files()
 end
 
@@ -112,6 +110,10 @@ function dn_sys:entity_init()
         else
             dn.start_dir = math3d.mark(mc.NXAXIS)
             dn.normal = math3d.mark(mc.ZAXIS)
+        end
+
+        if not dn.intensity then
+            dn.intensity = ilight.default_intensity "directional"
         end
     end
 end
@@ -141,7 +143,7 @@ local function update_daynight_value(dne)
             local r, g, b, i = math3d.index(c, 1, 2, 3, 4)
             ilight.set_color_rgb(dl, r, g, b)
 
-            ilight.set_intensity(dl, i * DEFAULT_DIRECTIONAL_LIGHT_INTENSITY)
+            ilight.set_intensity(dl, i * dn.intensity)
         end
 
         assert(0.0 <= tc and tc <= 1.0, "Invalid time cycle")
