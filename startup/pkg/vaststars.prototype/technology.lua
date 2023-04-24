@@ -998,7 +998,7 @@ local prototype = gameplay.register.prototype
       },
       {
         camera_x = 128,
-        camera_y = 121,
+        camera_y = 125,
       },
     },
     sign_desc = {
