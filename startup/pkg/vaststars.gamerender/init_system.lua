@@ -50,7 +50,7 @@ local daynight_update; do
             end
 
             local cycle = (gettime() % second_ms) / second_ms
-            idn.update_cycle(dne, cycle)
+            idn.update_day_cycle(dne, cycle)
         end
     else
         function daynight_update(gameplayWorld)
@@ -60,7 +60,7 @@ local daynight_update; do
             end
 
             local cycle = (gameplayWorld:now() % DayTick) / DayTick
-            idn.update_cycle(dne, cycle)
+            idn.update_day_cycle(dne, cycle)
         end
     end
 end
