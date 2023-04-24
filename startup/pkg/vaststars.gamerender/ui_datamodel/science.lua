@@ -96,7 +96,7 @@ function M:create(object_id)
     return {
         techitems = items,
         show_finish = false,
-        return_title = "科研中心",
+        return_title = "科研任务",
         current_tech = current_tech,
         current_desc = current_tech.desc,
         current_icon = current_tech.icon,
