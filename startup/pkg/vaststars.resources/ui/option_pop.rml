@@ -95,28 +95,28 @@
                     <div class = "recipe-change-block">
                         <button class = "button-style" style="background-color:rgb(203, 118, 24);" data-event-click = "clickSave()">
                             <div class="middle-bg" style='background-image: "textures/science/book.texture";'/>
-                            <div class = "recipe-name-text" style="font-size: 5.73vmin;">SAVE</div>
+                            <div class = "recipe-name-text" style="font-size: 5.73vmin;">保存游戏</div>
                         </button>
                         <button class = "button-style" style="background-color:rgb(52, 207, 115);" data-event-click = "show_archival_files = !show_archival_files">
                             <div class="middle-bg" style='background-image: "textures/construct/work.texture";'/>
-                            <div class = "recipe-name-text" style="font-size: 5.73vmin;">LOAD</div>
-                        </button> 
-                        <button class = "button-style" style="background-color: rgb(52, 207, 115)" data-event-click = "clickRestart()">
-                            <div class="middle-bg" style='background-image: "textures/road/forbidden.texture";'/>
-                            <div class = "recipe-name-text" style="font-size: 5.73vmin;">RESTART</div>
+                            <div class = "recipe-name-text" style="font-size: 5.73vmin;">读取游戏</div>
                         </button> 
                         <button class = "button-style" style="background-color:rgb(0, 160, 235);" data-event-click = "clickInfo()">
                             <div class="middle-bg" style='background-image: "textures/science/book.texture";'/>
-                            <div class = "recipe-name-text" style="font-size: 5.73vmin;">{{info == false ? 'INFO ON' : 'INFO OFF'}}</div>
+                            <div class = "recipe-name-text" style="font-size: 5.73vmin;">{{info == false ? '提示开启' : '提示关闭'}}</div>
                         </button>
                         <button class = "button-style" style="background-color:rgb(253, 0, 0);" data-event-click = "clickClose()">
                             <div class="middle-bg" style='background-image: "textures/road/forbidden.texture";'/>
-                            <div class = "recipe-name-text" style="font-size: 5.73vmin;">RETURN</div>
+                            <div class = "recipe-name-text" style="font-size: 5.73vmin;">返回游戏</div>
                         </button>
                         <button class = "button-style" style="background-color:rgb(253, 0, 0);" data-event-click = "clickDebug()">
                             <div class="middle-bg" style='background-image: "textures/road/forbidden.texture";'/>
-                            <div class = "recipe-name-text" style="font-size: 5.73vmin;">DEBUG</div>
+                            <div class = "recipe-name-text" style="font-size: 5.73vmin;">调试模式</div>
                         </button>
+                        <button class = "button-style" style="background-color: rgb(52, 207, 115)" data-event-click = "clickRestart()">
+                            <div class="middle-bg" style='background-image: "textures/road/forbidden.texture";'/>
+                            <div class = "recipe-name-text" style="font-size: 5.73vmin;">重新登录</div>
+                        </button> 
                     </div>
                 </div>
             </div>
