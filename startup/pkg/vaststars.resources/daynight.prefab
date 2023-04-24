@@ -5,7 +5,7 @@ policy:
 data:
   daynight:
     day:
-      start_rotator:  {0.0, 1.0, 0.0}
+      start_rotator:  {0.5, 5.76, 0.0}
     night:
       start_rotator:  {0.0, 1.0, 0.0}
   name: daynight_test
