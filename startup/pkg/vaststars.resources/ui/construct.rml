@@ -391,6 +391,17 @@
                 background-image:"textures/common/finger.texture";
                 animation:5s exponential 0s teleport-in;
             }
+            .panel-switch {
+                height: 6.9vmin;
+                width: 16.6vmin;
+                background-image: "textures/common/arrow.texture";
+                background-size: cover;
+                transform: rotate(270deg);
+                border: 0vmin #fff; 
+                left: 95%; 
+                top: 40%;
+                background-color: transparent;
+            }
         </style>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
@@ -411,6 +422,10 @@
                 show_ingredient = false,
                 ingredient_icons = {},
                 guide_progress = 0,
+                construct_menu = {},
+                cur_construct_menu = "",
+                show_construct_menu = false,
+                show_construct_entity = false,
             })
             function start.clickConstruct(event, object_id, index)
                 console.log("clickConstruct", object_id, index)
@@ -462,6 +477,15 @@
                     e.attributes.expanded = "false"
                     show(e, 0)
                 end
+            end
+            function start.clickShowConstructMenuDetail(event, construct_menu)
+                start.cur_construct_menu = construct_menu
+            end
+            function start.clickConstructMenuItem(event, building)
+                ui_sys.pub {"construct_entity", building}
+            end
+            function start.showConstructMenu(event)
+                start.show_construct_menu = not start.show_construct_menu
             end
 
             local function setElementClass(elementId, class, expanded)
@@ -595,6 +619,29 @@
                         <div class="workbutton-text"  data-if = "it.name != ''">{{it.name}}</div>
                         <!-- div class="item-count" style="animation:0.5s linear 0s enlarge2;" data-if = "it.name != ''">{{it.count}}</div -->
                     </workbutton>
+                </div>
+            </div>
+
+            <!-- right-side construction menu -->
+            <workbutton class = "panel-switch" data-event-click="showConstructMenu()" data-if = "show_construct_entity" />
+            <div style = "pointer-events: none; position: absolute; right:0vmin; width: 98vmax; height: 97vmin; flex-direction: row-reverse;" data-if="show_construct_menu && show_construct_entity">
+                <div style = "width: 16.00vmin; height: 80.00vmin; flex-direction: column; justify-content: space-between;">
+                    <workbutton data-event-click="clickShowConstructMenuDetail(it.name)" data-for = "construct_menu" data-style-background-color="cur_construct_menu == it.name ? 'rgb(0, 176, 80)' : 'rgb(246, 142, 14)'">
+                        <div class="workbutton-bg" data-style-background-image = "it.icon" />
+                        <div class="workbutton-text" >{{it.name}}</div>
+                    </workbutton>
+                </div>
+
+                <!-- separator -->
+                <div style = "width: 2.67vmin;" />
+
+                <div style = "flex-direction: row; flex-wrap: wrap; width: 30.13vmin; height: 80.00vmin; background-color: rgb(44, 32, 18); border: 0.40vmin rgb(89, 73, 39); border-radius: 0.67vmin;" data-if="cur_construct_menu == it.name" data-for = "construct_menu">
+                    <div class="tools-container" data-for = "menu, menu_id : it.detail">
+                        <button class="tools-button" data-event-click="clickConstructMenuItem(menu.prototype_name)">
+                            <div class="workbutton-bg" data-style-background-image = "menu.icon" />
+                            <div class="tools-button-title">{{menu.show_prototype_name}}</div>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

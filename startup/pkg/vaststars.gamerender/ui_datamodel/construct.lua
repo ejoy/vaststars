@@ -31,6 +31,7 @@ local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local COLOR_INVALID <const> = math3d.constant "null"
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local COLOR_GREEN = math3d.constant("v4", {0.3, 1, 0, 1})
+local construct_menu_cfg = import_package "vaststars.prototype"("construct_menu")
 
 local rotate_mb = mailbox:sub {"rotate"} -- construct_pop.rml -> 旋转
 local build_mb = mailbox:sub {"build"}   -- construct_pop.rml -> 修建
@@ -245,6 +246,28 @@ local function __on_pickup_object(datamodel, object)
     end
 end
 
+local function _get_construct_menu()
+    local construct_menu = {}
+    for _, menu in ipairs(construct_menu_cfg) do
+        local m = {}
+        m.name = menu.name
+        m.icon = menu.icon
+        m.detail = {}
+
+        for _, prototype_name in ipairs(menu.detail) do
+            local typeobject = assert(iprototype.queryByName(prototype_name))
+            m.detail[#m.detail + 1] = {
+                show_prototype_name = iprototype.show_prototype_name(typeobject),
+                prototype_name = prototype_name,
+                icon = typeobject.icon,
+            }
+        end
+
+        construct_menu[#construct_menu+1] = m
+    end
+    return construct_menu
+end
+
 ---------------
 local M = {}
 local function get_new_tech_count(tech_list)
@@ -270,6 +293,8 @@ function M:create()
         show_ingredient = false,
         item_transfer_src_inventory = {},
         construction_center_menu = {},
+        construct_menu = _get_construct_menu(),
+        show_construct_entity = require("debugger").show_construct_entity,
     }
 end
 local current_techname = ""
