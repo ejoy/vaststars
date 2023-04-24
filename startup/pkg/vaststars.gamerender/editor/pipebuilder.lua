@@ -17,7 +17,7 @@ local terrain = ecs.require "terrain"
 local math_abs = math.abs
 local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 local igrid_entity = ecs.require "engine.grid_entity"
-local logistic_coord = ecs.require "terrain"
+local coord_system = ecs.require "terrain"
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local ientity = require "gameplay.interface.entity"
 local gameplay_core = require "gameplay.core"
@@ -656,8 +656,8 @@ end
 
 local function __calc_grid_position(self, typeobject, x, y)
     local w, h = iprototype.unpackarea(typeobject.area)
-    local _, originPosition = logistic_coord:align(math3d.vector {0 - w / 2 * 10, 0, h / 2 * 10}, w, h)
-    local buildingPosition = logistic_coord:get_begin_position_by_coord(x, y)
+    local _, originPosition = coord_system:align(math3d.vector {0 - w / 2 * 10, 0, h / 2 * 10}, w, h)
+    local buildingPosition = coord_system:get_begin_position_by_coord(x, y)
     return math3d.ref(math3d.add(math3d.sub(buildingPosition, originPosition), GRID_POSITION_OFFSET))
 end
 
@@ -666,7 +666,7 @@ local function new_entity(self, datamodel, typeobject)
     iobject.remove(self.coord_indicator)
     local dir = DEFAULT_DIR
 
-    local x, y = iobject.central_coord(typeobject.name, dir, logistic_coord)
+    local x, y = iobject.central_coord(typeobject.name, dir, coord_system)
     if not x or not y then
         return
     end

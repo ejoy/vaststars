@@ -4,7 +4,7 @@ local world = ecs.world
 local iprototype = require "gameplay.interface.prototype"
 local global = require "global"
 local iroadnet_converter = require "roadnet_converter"
-local logistic_coord = ecs.require "terrain"
+local coord_system = ecs.require "terrain"
 
 local MASK_ENDPOINT <const> = 0x10
 local MASK_ROADNET_ONLY <const> = 0x20
@@ -48,7 +48,7 @@ local function gen_endpoint_mask(object)
         end
         if tile.entrance_dir then
             local entrance_dir = iprototype.rotate_dir(tile.entrance_dir, object.dir)
-            local succ, dx, dy = logistic_coord:move_coord(x, y, entrance_dir, 1)
+            local succ, dx, dy = coord_system:move_coord(x, y, entrance_dir, 1)
             assert(succ)
             local coord = iprototype.packcoord(dx, dy)
             assert(global.roadnet[coord])

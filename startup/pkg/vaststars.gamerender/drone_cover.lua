@@ -1,7 +1,7 @@
 local ecs = ...
 local world = ecs.world
 
-local logistic_coord = ecs.require "terrain"
+local coord_system = ecs.require "terrain"
 local selected_boxes = ecs.require "selected_boxes"
 local objects = require "objects"
 local gameplay_core = require "gameplay.core"
@@ -20,7 +20,7 @@ local function select_cover(x, y, dist, obj)
         local dx = obj.x + (w - 1) / 2 - x
         local dy = obj.y + (h - 1) / 2 - y
         if math.sqrt(dx * dx + dy * dy) <= dist and not selects[obj.id] then
-            selects[obj.id] = selected_boxes("/pkg/vaststars.resources/" .. "prefabs/selected-box-no-animation.prefab", logistic_coord:get_position_by_coord(obj.x, obj.y, w, h), BLUE, w, h)
+            selects[obj.id] = selected_boxes("/pkg/vaststars.resources/" .. "prefabs/selected-box-no-animation.prefab", coord_system:get_position_by_coord(obj.x, obj.y, w, h), BLUE, w, h)
         end
     end
 end

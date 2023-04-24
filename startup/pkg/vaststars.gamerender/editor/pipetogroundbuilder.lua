@@ -19,7 +19,7 @@ local dotted_line_material <const> = "/pkg/vaststars.resources/materials/dotted_
 local igrid_entity = ecs.require "engine.grid_entity"
 local math3d = require "math3d"
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
-local logistic_coord = ecs.require "terrain"
+local coord_system = ecs.require "terrain"
 
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
 local STATE_NONE  <const> = 0
@@ -664,8 +664,8 @@ local function _builder_start(self, datamodel)
 end
 
 local function __calc_grid_position(self, typeobject)
-    local _, originPosition = logistic_coord:align(math3d.vector {0, 0, 0}, iprototype.unpackarea(typeobject.area))
-    local buildingPosition = logistic_coord:get_begin_position_by_coord(self.pickup_object.x, self.pickup_object.y)
+    local _, originPosition = coord_system:align(math3d.vector {0, 0, 0}, iprototype.unpackarea(typeobject.area))
+    local buildingPosition = coord_system:get_position_by_coord(self.pickup_object.x, self.pickup_object.y, iprototype.unpackarea(typeobject.area))
     return math3d.ref(math3d.add(math3d.sub(buildingPosition, originPosition), GRID_POSITION_OFFSET))
 end
 

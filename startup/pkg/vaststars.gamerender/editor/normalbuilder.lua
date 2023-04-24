@@ -15,8 +15,7 @@ local ipower_line = ecs.require "power_line"
 local imining = require "gameplay.interface.mining"
 local math3d = require "math3d"
 local iconstant = require "gameplay.interface.constant"
-local logistic_coord = ecs.require "terrain"
-local building_coord = require "global".building_coord_system
+local coord_system = ecs.require "terrain"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local ALL_DIR = iconstant.ALL_DIR
 local igrid_entity = ecs.require "engine.grid_entity"
@@ -34,17 +33,6 @@ local gameplay = import_package "vaststars.gameplay"
 local iassembling = gameplay.interface "assembling"
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local CREATE_BUILDING <const> = require "debugger".create_building
-
-local function _building_to_logisitic(x, y)
-    local nposition = assert(building_coord:get_begin_position_by_coord(x, y))
-    nposition[1] = nposition[1] + 5
-    nposition[3] = nposition[3] - 5
-    local ncoord = logistic_coord:get_coord_by_position(math3d.vector(nposition)) -- building layer to logisitc layer
-    if not ncoord then
-        return
-    end
-    return ncoord[1], ncoord[2]
-end
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -67,22 +55,21 @@ local function _get_road_entrance_position(typeobject, x, y, dir)
     end
     local connections = _get_connections(typeobject.name, x, y, dir)
     local conn = connections[1]
-    local succ, neighbor_x, neighbor_y = logistic_coord:move_coord(conn.x, conn.y, conn.dir, 1)
+    local succ, neighbor_x, neighbor_y = coord_system:move_coord(conn.x, conn.y, conn.dir, 1)
     if not succ then
         return
     end
-    return logistic_coord:get_position_by_coord(neighbor_x, neighbor_y, 1, 1), neighbor_x, neighbor_y, conn.dir
+    return coord_system:get_position_by_coord(neighbor_x, neighbor_y, 1, 1), neighbor_x, neighbor_y, conn.dir
 end
 
 local function __new_entity(self, datamodel, typeobject)
     iobject.remove(self.pickup_object)
     local dir = DEFAULT_DIR
-    local x, y = iobject.central_coord(typeobject.name, dir, building_coord, 1)
+    local x, y = iobject.central_coord(typeobject.name, dir, coord_system, 1)
     if not x or not y then
         return
     end
-    local building_positon = building_coord:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir, 1, 1))
-    x, y = _building_to_logisitic(x, y)
+    local building_positon = coord_system:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir))
 
     local sprite_color
     if not self:check_construct_detector(typeobject.name, x, y, dir) then
@@ -158,8 +145,8 @@ local function __new_entity(self, datamodel, typeobject)
 end
 
 local function __calc_grid_position(self, typeobject)
-    local _, originPosition = building_coord:align(math3d.vector {0, 0, 0}, iprototype.unpackarea(typeobject.area))
-    local buildingPosition = building_coord:get_begin_position_by_coord(_building_to_logisitic(self.pickup_object.x, self.pickup_object.y))
+    local _, originPosition = coord_system:align(math3d.vector {0, 0, 0}, iprototype.unpackarea(typeobject.area))
+    local buildingPosition = coord_system:get_position_by_coord(self.pickup_object.x, self.pickup_object.y, iprototype.unpackarea(typeobject.area))
     return math3d.ref(math3d.add(math3d.sub(buildingPosition, originPosition), GRID_POSITION_OFFSET))
 end
 
@@ -194,7 +181,7 @@ local function new_entity(self, datamodel, typeobject)
     self.pickup_object.APPEAR = true
 
     if not self.grid_entity then
-        self.grid_entity = igrid_entity.create("polyline_grid", building_coord.tile_width, building_coord.tile_height, logistic_coord.tile_size, {t = __calc_grid_position(self, typeobject)})
+        self.grid_entity = igrid_entity.create("polyline_grid", coord_system.tile_width, coord_system.tile_height, coord_system.tile_size, {t = __calc_grid_position(self, typeobject)})
         self.grid_entity:show(true)
     end
 end
@@ -210,7 +197,7 @@ local function _get_mineral_recipe(prototype_name, x, y, dir)
     local found
     for i = 0, w - 1 do
         for j = 0, h - 1 do
-            local mineral = logistic_coord:get_mineral(x + i, y + j) -- TODO: maybe have multiple minerals in the area
+            local mineral = coord_system:get_mineral(x + i, y + j) -- TODO: maybe have multiple minerals in the area
             if mineral then
                 found = mineral
             end
@@ -227,7 +214,7 @@ end
 local function __align(object)
     assert(object)
     local typeobject = iprototype.queryByName(object.prototype_name)
-    local coord, srt = building_coord:align(icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, object.dir, 1, 1))
+    local coord, srt = coord_system:align(icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, object.dir))
     if not coord then
         return object
     end
@@ -240,11 +227,11 @@ local function touch_move(self, datamodel, delta_vec)
         return
     end
     local pickup_object = self.pickup_object
-    iobject.move_delta(pickup_object, delta_vec, building_coord, 1)
+    iobject.move_delta(pickup_object, delta_vec, coord_system)
 
     local x, y
     self.pickup_object, x, y = __align(self.pickup_object)
-    local lx, ly = _building_to_logisitic(x, y)
+    local lx, ly = x, y
     if not lx then
         datamodel.show_confirm = false
         return
@@ -472,7 +459,7 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
     if typeobject.crossing then
         local valid = false
         for _, conn in ipairs(_get_connections(prototype_name, x, y, dir)) do
-            local succ, dx, dy = logistic_coord:move_coord(conn.x, conn.y, conn.dir, 1)
+            local succ, dx, dy = coord_system:move_coord(conn.x, conn.y, conn.dir, 1)
             if not succ then
                 goto continue
             end
@@ -499,7 +486,7 @@ local function rotate_pickup_object(self, datamodel, dir, delta_vec)
     dir = dir or iprototype.rotate_dir_times(pickup_object.dir, -1)
 
     local typeobject = iprototype.queryByName(pickup_object.prototype_name)
-    local coord = building_coord:align(icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, dir, 1, 1))
+    local coord = coord_system:align(icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, dir))
     if not coord then
         return
     end
@@ -514,7 +501,7 @@ local function rotate_pickup_object(self, datamodel, dir, delta_vec)
 
     pickup_object.dir = dir
 
-    local x, y = _building_to_logisitic(coord[1], coord[2])
+    local x, y = coord[1], coord[2]
     if not x then
         return
     end

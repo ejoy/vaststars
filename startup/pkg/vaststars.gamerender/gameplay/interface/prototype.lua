@@ -152,11 +152,8 @@ function M.calc_dir(x1, y1, x2, y2)
     end
 end
 
-function M.rotate_area(area, dir, incw, inch)
-    incw = incw or 0
-    inch = inch or 0
+function M.rotate_area(area, dir)
     local w, h = M.unpackarea(area)
-    w, h = w + incw, h + inch
     if dir == 'N' or dir == 'S' then
         return w, h
     elseif dir == 'E' or dir == 'W' then
