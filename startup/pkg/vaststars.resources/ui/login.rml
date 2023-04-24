@@ -30,6 +30,19 @@
                 justify-content: flex-start;
                 align-items: center;
             }
+            .info-block {
+                position: absolute;
+                width: 3%;
+                height:1%;
+                left:-16vmin;
+                bottom:-38vmin;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+                font-size: 2.5vmin;
+                text-align: center;
+                color: rgb(145, 141, 141);
+            }
             @keyframes floating {
                 from {
                     transform: translateY(-1.56vmin);
@@ -46,9 +59,9 @@
                 transform: translateY(-1.06vmin);
             }
             .version-text {
-                font-size: 2.5vmin;
-                text-align: center;
-                align-items: center;
+                font-size: 2.8vmin;
+                text-align: left;
+                align-items: flex-start;
             }
             .button-text1 {
                 padding-bottom: 0.15em;
@@ -82,8 +95,9 @@
         <div class="item-container-region"  data-model="start">
             <div class="login-panel" style = "flex-direction: column; height: 100%;">
                 <!-- 标题栏 -->
+                <div class = "info-block">IN DEVELOPMENT</div>
                 <div class = "verison-block">
-                    <div class = "version-text" style="-webkit-text-stroke:0.2vmin #000; font-size: 5vmin;">version: 1.0.0</div>
+                    <div class = "version-text" style="-webkit-text-stroke:0.2vmin #000; font-size: 3vmin;">version: 1.0.0</div>
                 </div>
                 <div style = "position: absolute; width: 100%; height: 100%; justify-content: center; align-items: center;">
                     <div class = "title-block">浩瀚星辰</div>
