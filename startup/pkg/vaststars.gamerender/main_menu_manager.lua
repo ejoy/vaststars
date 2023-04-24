@@ -8,17 +8,12 @@ local mc = mathpkg.constant
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local ic = ecs.import.interface "ant.camera|icamera"
 local saveload = ecs.require "saveload"
-local terrain = ecs.require "terrain"
 local gameplay_core = require "gameplay.core"
-local icanvas = ecs.require "engine.canvas"
 local iguide = require "gameplay.interface.guide"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 
-local NOTHING <const> = require "debugger".nothing
-local TERRAIN_ONLY <const> = require "debugger".terrain_only
-
-local function init_camera_position(prefab_file_name)
-    local data = prefab_parse("/pkg/vaststars.resources/" .. prefab_file_name)
+local function __set_camera_from_prefab(prefab)
+    local data = prefab_parse("/pkg/vaststars.resources/" .. prefab)
     if not data then
         return
     end
@@ -35,32 +30,29 @@ local function init_camera_position(prefab_file_name)
     ic.set_frustum(e, c.camera.frustum)
 end
 
-return function()
-    init_camera_position("camera_default.prefab")
-    ecs.create_instance "/pkg/vaststars.resources/light.prefab"
-    if NOTHING then
-        saveload:restore_camera_setting()
+local function init()
+    __set_camera_from_prefab("camera_default.prefab")
+end
+
+local function new_game()
+    __set_camera_from_prefab("camera_default.prefab")
+    if not saveload:restart() then
         return
     end
+    iguide.world = gameplay_core.get_world()
+    iui.set_guide_progress(iguide.get_progress())
+end
 
-    terrain:create()
-    if TERRAIN_ONLY then
-        saveload:restore_camera_setting()
-        return
-    end
-
-    local show = true
-    local storage = gameplay_core.get_storage()
-    if storage.info ~= nil then
-        show = storage.info
-    end
-    icanvas.create(icanvas.types().ICON, show)
-    icanvas.create(icanvas.types().BUILDING_BASE, true, 0.01)
-    icanvas.create(icanvas.types().ROAD_ENTRANCE_MARKER, false, 0.02)
-
+local function continue_game()
     if not saveload:restore() then
         return
     end
     iguide.world = gameplay_core.get_world()
     iui.set_guide_progress(iguide.get_progress())
 end
+
+return {
+    init = init,
+    new_game = new_game,
+    continue_game = continue_game,
+}

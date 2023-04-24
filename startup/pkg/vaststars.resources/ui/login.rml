@@ -103,7 +103,7 @@
                     <div class = "title-block">浩瀚星辰</div>
                 </div>
                 <div class = "main-panel">
-                    <button class = "button-style" style="background-color:rgb(169, 187, 6);" data-event-click = "clickButton('start_mode', 'adventure')">
+                    <button class = "button-style" style="background-color:rgb(169, 187, 6);" data-event-click = "clickButton('continue')">
                         <div class="middle-bg" style='background-image: "textures/road/traffic.texture";width:8vmin; height:8vmin;'/>
                         <div class = "button-text1" style="font-size: 5.73vmin;">继续游戏</div>
                     </button>

@@ -82,6 +82,10 @@
                 ui_sys.world_pub {"roadnet", "build"}
             end
 
+            function start.clickBackToMainMenu()
+                ui_sys.pub {"back_to_main_menu"}
+            end
+
         </script>
     </head>
     <body style = "background-color: black;">
@@ -113,7 +117,7 @@
                             <div class="middle-bg" style='background-image: "textures/road/forbidden.texture";'/>
                             <div class = "recipe-name-text" style="font-size: 5.73vmin;">调试模式</div>
                         </button>
-                        <button class = "button-style" style="background-color: rgb(52, 207, 115)" data-event-click = "clickRestart()">
+                        <button class = "button-style" style="background-color: rgb(52, 207, 115)" data-event-click = "clickBackToMainMenu()">
                             <div class="middle-bg" style='background-image: "textures/road/forbidden.texture";'/>
                             <div class = "recipe-name-text" style="font-size: 5.73vmin;">重新登录</div>
                         </button> 

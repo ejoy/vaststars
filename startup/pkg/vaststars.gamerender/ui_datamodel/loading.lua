@@ -4,7 +4,6 @@ local w = world.w
 
 local resources_loader = ecs.require "ui_datamodel.common.resources_loader"
 local resources = require "resources"
-local iui = ecs.import.interface "vaststars.gamerender|iui"
 
 local current
 ---------------
@@ -29,9 +28,6 @@ function M:stage_camera_usage(datamodel)
         return
     end
     if current + 1 > #resources then
-        if datamodel.load then
-            iui.open({"login.rml"})
-        end
         world:pub {"rmlui_message_close", "loading.rml"}
         datamodel.closed = true
         return

@@ -19,10 +19,8 @@ local road = {}
 -- shape = "I" / "U" / "L" / "T" / "O"
 -- dir = "N" / "E" / "S" / "W"
 -- map = {{x, y, shape, dir}, ...}
-function road:create(enabled, width, height, offset, layer_names, shape_types)
+function road:create(width, height, offset, layer_names, shape_types)
     assert(width == height)
-    --assert(offset_x == offset_y)
-    --self._offset = {offset_x, offset_y}
     self._offset = {offset, offset}
     self._update_cache = {}
     self.layer_names = {}
@@ -34,9 +32,7 @@ function road:create(enabled, width, height, offset, layer_names, shape_types)
         self.shape_types[state] = true
     end
 
-    if enabled then
-        iterrain.gen_terrain_field(width, height, offset, UNIT)
-    end
+    iterrain.gen_terrain_field(width, height, offset, UNIT)
 end
 
 function road:get_offset()

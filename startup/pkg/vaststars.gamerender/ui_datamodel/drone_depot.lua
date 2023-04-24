@@ -4,82 +4,24 @@ local w = world.w
 
 local objects = require "objects"
 local gameplay_core = require "gameplay.core"
-local iprototype = require "gameplay.interface.prototype"
-local item_category = import_package "vaststars.prototype"("item_category")
+
 local click_category_mb = mailbox:sub {"click_category"}
 local set_item_mb = mailbox:sub {"set_item"}
 local itask = ecs.require "task"
 local item_unlocked = ecs.require "ui_datamodel.common.item_unlocked".is_unlocked
-
-local cache = {} -- item_index -> item
-local category_cache = {} -- category_index -> category
-local category_index_cache = {} -- item_id -> category_index
-local items_cache = {} -- category_index -> items
-
-do
-    for _, typeobject in pairs(iprototype.each_type("item")) do
-        -- "任务" is a special item that is not subject to any checks.
-        if typeobject.name == "任务" then
-            goto continue
-        end
-
-        -- If the 'pile' field is not configured, it is usually a 'building' that cannot be placed in a drone depot.
-        if not typeobject.pile then
-            goto continue
-        end
-
-        local item = {
-            id = typeobject.id,
-            name = typeobject.name,
-            icon = typeobject.icon,
-            category = assert(typeobject.group[1]),
-            desc = typeobject.item_description,
-        }
-
-        cache[#cache+1] = item
-        ::continue::
-    end
-end
-
-do
-    local category_name_to_index = {}
-    category_cache = item_category
-
-    for index, v in ipairs(category_cache) do
-        category_name_to_index[v.category] = index
-    end
-
-    for _, item in pairs(cache) do
-        category_index_cache[item.id] = assert(category_name_to_index[item.category])
-    end
-end
-
-do
-    for category_index, v in ipairs(category_cache) do
-        local items = {}
-        for _, item in pairs(cache) do
-            if item.category == v.category or v.category == "全部" then
-                table.insert(items, item)
-            end
-        end
-        table.sort(items, function(a, b)
-            return a.name < b.name
-        end)
-        items_cache[category_index] = items
-    end
-end
+local iprototype_cache = require "gameplay.prototype_cache.init"
 
 local function __get_categories()
-    return category_cache
+    return iprototype_cache.get("drone_depot").category_cache
 end
 
 local function __get_category_index(item_id)
-  return assert(category_index_cache[item_id])
+  return assert(iprototype_cache.get("drone_depot").category_index_cache[item_id])
 end
 
 local function __get_items(category_index)
     local res = {}
-    for _, item in ipairs(items_cache[category_index]) do
+    for _, item in ipairs(iprototype_cache.get("drone_depot").items_cache[category_index]) do
         if item_unlocked(item.name) then
             res[#res+1] = item
         end
@@ -89,7 +31,7 @@ end
 
 local function __get_default_item_indexes()
     local res = {}
-    for index in ipairs(category_cache) do
+    for index in ipairs(iprototype_cache.get("drone_depot").category_cache) do
         res[index] = 1
     end
     return res

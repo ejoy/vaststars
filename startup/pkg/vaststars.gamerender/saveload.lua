@@ -9,6 +9,7 @@ local debugger = require "debugger"
 local CUSTOM_ARCHIVING <const> = require "debugger".custom_archiving
 local startup_lua <const> = require "debugger".startup or "item.startup"
 local is_roadnet_only = ecs.require "editor.endpoint".is_roadnet_only
+local iprototype_cache = require "gameplay.prototype_cache.init"
 
 local archival_base_dir
 if CUSTOM_ARCHIVING then
@@ -43,8 +44,6 @@ local ipower = ecs.require "power"
 local ipower_line = ecs.require "power_line"
 local iroadnet = ecs.require "roadnet"
 local MAX_ARCHIVING_COUNT <const> = 9
-
-local archival_list = {}
 
 local function restore_world()
     local function _finish_task(task)
@@ -360,6 +359,7 @@ function M:backup()
         return false
     end
 
+    local archival_list = M:get_archival_list()
     while #archival_list + 1 > MAX_ARCHIVING_COUNT do
         local archival = table.remove(archival_list, 1)
         local archival_dir = archival_base_dir .. ("%s"):format(archival.dir)
@@ -387,13 +387,11 @@ function M:restore(index)
     --
     if not fs.exists(fs.path(archiving_list_path)) then
         self:restart()
-        self.running = true
         return true
     end
-    archival_list = json.decode(readall(archiving_list_path))
+    local archival_list = json.decode(readall(archiving_list_path))
     if #archival_list <= 0 then
         self:restart()
-        self.running = true
         return true
     end
 
@@ -443,6 +441,8 @@ function M:restore(index)
 
     self.running = true
     gameplay_core.restore(archival_dir)
+    iprototype_cache.reload()
+
     local map = gameplay_core.get_world():roadnet_get_map()
     local renderData = {}
     for coord, mask in pairs(map) do
@@ -468,6 +468,7 @@ end
 
 function M:restart()
     gameplay_core.restart()
+    iprototype_cache.reload()
 
     self.running = true
     local cw = gameplay_core.get_world()
@@ -498,7 +499,10 @@ function M:restart()
 end
 
 function M:get_archival_list()
-    return archival_list
+    if not fs.exists(fs.path(archiving_list_path)) then
+        return {}
+    end
+    return json.decode(readall(archiving_list_path))
 end
 
 return M

@@ -4,14 +4,16 @@ local w = world.w
 
 local FRAMES_PER_SECOND <const> = 30
 local bgfx = require 'bgfx'
-local iRmlUi   = ecs.import.interface "ant.rmlui|irmlui"
+local iRmlUi = ecs.import.interface "ant.rmlui|irmlui"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local terrain = ecs.require "terrain"
 local gameplay_core = require "gameplay.core"
 local world_update = ecs.require "world_update.init"
 local gameplay_update = require "gameplay.update.init"
 local NOTHING <const> = require "debugger".nothing
-local DISABLE_LOADING <const> = require "debugger".disable_loading
+local TERRAIN_ONLY <const> = require "debugger".terrain_only
+local DAYNIGHT_DEBUG <const> = require "debugger".daynight
+
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
 local pickup_gesture_mb = world:sub {"pickup_gesture"}
 local icamera_controller = ecs.import.interface "vaststars.gamerender|icamera_controller"
@@ -22,7 +24,9 @@ local lorry_manager = ecs.require "lorry_manager"
 local iefk = ecs.require "engine.efk"
 local iroadnet = ecs.require "roadnet"
 local irender_layer = ecs.require "engine.render_layer"
+local imain_menu_manager = ecs.require "main_menu_manager"
 local idn = ecs.import.interface "mod.daynight|idaynight"
+local icanvas = ecs.require "engine.canvas"
 local DayTick <const> = require("gameplay.interface.constant").DayTick
 local m = ecs.system 'init_system'
 
@@ -30,19 +34,43 @@ iRmlUi.set_prefix "/pkg/vaststars.resources/ui/"
 iRmlUi.add_bundle "/pkg/vaststars.resources/ui/ui.bundle"
 iRmlUi.font_dir "/pkg/vaststars.resources/ui/font/"
 
-local function daynight_update(gameplayWorld)
-    local dne = w:first "daynight:in"
-    if not dne then
-        return
-    end
+local daynight_update; do
+    if DAYNIGHT_DEBUG then
+        local second_ms = DAYNIGHT_DEBUG * 1000
+        local ltask = require "ltask"
+        local function gettime()
+            local _, now = ltask.now()
+            return now * 10
+        end
 
-    local cycle = (gameplayWorld:now() % DayTick) / DayTick
-    idn.update_cycle(dne, cycle)
+        function daynight_update()
+            local dne = w:first "daynight:in"
+            if not dne then
+                return
+            end
+
+            local cycle = (gettime() % second_ms) / second_ms
+            idn.update_cycle(dne, cycle)
+        end
+    else
+        function daynight_update(gameplayWorld)
+            local dne = w:first "daynight:in"
+            if not dne then
+                return
+            end
+
+            local cycle = (gameplayWorld:now() % DayTick) / DayTick
+            idn.update_cycle(dne, cycle)
+        end
+    end
 end
+
+
 
 function m:init_world()
     bgfx.maxfps(FRAMES_PER_SECOND)
     ecs.create_instance "/pkg/vaststars.resources/daynight.prefab"
+    ecs.create_instance "/pkg/vaststars.resources/light.prefab"
 
     -- "foreground", "opacity", "background", "translucent", "decal_stage", "ui_stage"
     irender_layer.init({
@@ -71,11 +99,22 @@ function m:init_world()
 
     iefk.preload "/pkg/vaststars.resources/effect/efk/"
 
-    iroadnet:create(not NOTHING)
-    if not DISABLE_LOADING then
-        iui.open({"loading.rml"})
+    if NOTHING then
         return
     end
+
+    iroadnet:create()
+
+    terrain:create()
+
+    if TERRAIN_ONLY then
+        imain_menu_manager.init()
+        return
+    end
+
+    icanvas.create(icanvas.types().ICON, gameplay_core.get_storage().info or true)
+    icanvas.create(icanvas.types().BUILDING_BASE, true, 0.01)
+    icanvas.create(icanvas.types().ROAD_ENTRANCE_MARKER, false, 0.02)
 
     iui.open({"login.rml"})
 end
