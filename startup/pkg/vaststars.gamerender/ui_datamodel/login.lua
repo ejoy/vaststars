@@ -11,11 +11,14 @@ local continue_mb = mailbox:sub {"continue"}
 local new_game = ecs.require "main_menu_manager".new_game
 local continue_game = ecs.require "main_menu_manager".continue_game
 local debugger <const> = require "debugger"
+local saveload = ecs.require "saveload"
 
 ---------------
 local M = {}
 function M:create()
-    return {}
+    return {
+        show_continue_game = #saveload:get_archival_list() > 0
+    }
 end
 
 function M:stage_camera_usage(datamodel)

@@ -94,9 +94,10 @@ local function create_printer()
         local res_typeobject = iprototype.queryById(results[1].id)
         local scale = res_typeobject.printer_scale and res_typeobject.printer_scale or {1, 1, 1}
         local position = {building_srt.t[1], 13, building_srt.t[3]} --TODO: change the height to be configured in the slot of prefab
+        local model = res_typeobject.printer_model or res_typeobject.model
 
         if #printer_entities == 0 then
-            local meshbins = prefab_meshbin(RESOURCES_BASE_PATH:format(res_typeobject.model))
+            local meshbins = prefab_meshbin(RESOURCES_BASE_PATH:format(model))
             for _, meshbin in ipairs(meshbins) do
                 printer_entities[#printer_entities+1] = ientity_object.create(ecs.create_entity {
                     policy = {
@@ -123,7 +124,7 @@ local function create_printer()
         end
 
         if not entity then
-            local p = ecs.create_instance(RESOURCES_BASE_PATH:format(res_typeobject.model))
+            local p = ecs.create_instance(RESOURCES_BASE_PATH:format(model))
             function p:on_ready()
                 local root <close> = w:entity(self.tag['*'][1])
                 iom.set_position(root, position)

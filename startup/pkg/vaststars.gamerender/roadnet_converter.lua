@@ -32,7 +32,27 @@ local _mask_to_shape_dir, _prototype_name_to_shape, _mask_to_prototype_name_dir,
         return table.unpack(assert(iprototype_cache.get("roadnet_converter").mask_prototype_name_dir[res]))
     end
 
+    local cover = {
+        ['I'] = {
+            ['S'] = 'N',
+            ['W'] = 'E',
+        },
+        ['X'] = {
+            ['W'] = 'N',
+            ['S'] = 'N',
+            ['E'] = 'N',
+        },
+        ['O'] = {
+            ['W'] = 'N',
+            ['S'] = 'N',
+            ['E'] = 'N',
+        },
+    }
     function _prototype_name_dir_to_mask(prototype_name, dir)
+        local typeobject = iprototype.queryByName(prototype_name)
+        if cover[typeobject.track] and cover[typeobject.track][dir] then
+            dir = cover[typeobject.track][dir]
+        end
         local v = assert(iprototype_cache.get("roadnet_converter").prototype_name_dir_mask[prototype_name][dir])
         local mask = 0
         for _, pd in pairs(ALL_DIR) do
