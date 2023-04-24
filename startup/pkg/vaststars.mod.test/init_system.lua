@@ -98,7 +98,7 @@ function S.init_world()
     --istonemountain.create_sm_entity(0.8, 256, 256, 128)
     --create_mark()
 
-     printer_eid = ecs.create_entity {
+--[[      printer_eid = ecs.create_entity {
         policy = {
             "ant.render|render",
             "ant.general|name",
@@ -115,7 +115,14 @@ function S.init_world()
                 percent  = printer_percent
             }
         },
-    } 
+    } ]]
+
+    create_instance("/pkg/vaststars.mod.test/assets/miner-1.glb|mesh.prefab",
+    function (e)
+        local ee<close> = w:entity(e.tag['*'][1])
+        iom.set_scale(ee, 0.1)
+        iom.set_position(ee, math3d.vector(10, 0, 0, 1))
+    end)
 end
 
 local kb_mb = world:sub{"keyboard"}
