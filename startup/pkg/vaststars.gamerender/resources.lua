@@ -690,7 +690,6 @@ local t = {
 	"/pkg/ant.settings/package.lua",
 	"/pkg/ant.settings/registry.lua",
 	"/pkg/ant.settings/setting.lua",
-	"/pkg/ant.sky/assets/panorama2cubemap.material",
 	"/pkg/ant.sky/package.ecs",
 	"/pkg/ant.sky/package.lua",
 	"/pkg/ant.sky/panorama/cs2cm.lua",
