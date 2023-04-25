@@ -161,6 +161,14 @@
                 -webkit-text-stroke: 0.05em rgb(0,0,0);
                 background-color: rgb(203, 118, 24);
             }
+            .recipe-des-text {
+                width: 90%;
+                height: 10%;
+                font-size: 4vmin;
+                text-align: left;
+                -webkit-text-stroke: 0.05em rgb(0,0,0);
+                word-break: break-all;
+            }
             .recipe-content-block {
                 width: 100%;
                 height:90%;
@@ -554,6 +562,7 @@
                 <div class="column" id ="item-recipe-region">
                     <div class="column" style="width: 100%; height: 88%;">
                         <div class="recipe-name-text">其他信息</div>
+                        <div class="recipe-des-text">{{current_tech.desc}}</div>
                         <div style="flex-direction: column; width:100%; height:100%;">
                             <detaillist direction='1' width='100%' height='100%'/>
                         </div>
