@@ -4,6 +4,7 @@
 
 #include "luaecs.h"
 #include "core/world.h"
+#include "core/capacitance.h"
 #include "util/prototype.h"
 
 static constexpr uint64_t UPS        = 30;
@@ -36,30 +37,16 @@ lupdate(lua_State *L) {
     w.time++;
     uint64_t eff = solar_efficiency(w.time / DayTick);
     if (eff != 0) {
+        float efficiency = (float)eff / FixedPoint;
         for (auto& v : ecs_api::select<ecs::solar_panel, ecs::capacitance, ecs::building>(w.ecs)) {
-            ecs::building& building = v.get<ecs::building>();
-            ecs::capacitance& c = v.get<ecs::capacitance>();
-            uint32_t power = prototype::get<"power">(w, building.prototype);
-            power = (uint32_t)(eff * power / FixedPoint);
-            if (power < c.shortage) {
-                c.shortage -= power;
-            }
-            else {
-                c.shortage = 0;
-            }
+            auto generator = get_generator(w, v);
+            generator.force_produce(efficiency);
         }
     }
     
     for (auto& v : ecs_api::select<ecs::wind_turbine, ecs::capacitance, ecs::building>(w.ecs)) {
-        ecs::building& building = v.get<ecs::building>();
-        ecs::capacitance& c = v.get<ecs::capacitance>();
-        uint32_t power = prototype::get<"power">(w, building.prototype);
-        if (power < c.shortage) {
-            c.shortage -= power;
-        }
-        else {
-            c.shortage = 0;
-        }
+        auto generator = get_generator(w, v);
+        generator.force_produce();
     }
     return 0;
 }

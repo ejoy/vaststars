@@ -64,7 +64,7 @@ local function init(object)
 		local type = typelist[i]
 		local funcs = typefuncs[type]
 		if funcs and funcs.init then
-			for k, v in pairs(funcs.init()) do
+			for k, v in pairs(funcs.init(nil, object)) do
 				if object[k] == nil then
 					object[k] = v
 				end
@@ -119,19 +119,18 @@ end
 
 local function converter(name, object, key)
 	local v = object[key.key]
-	local ok, r, errmsg = pcall(unit[key.unit].converter, v, object)
+	local ok, r, errmsg = pcall(unit[key.unit].converter, v)
 	if not ok then
 		error(string.format("Error format .%s in %s", key.key, name))
 	end
 	if r == nil then
-		error(string.format(".%s in %s: %s", key.key, name, errmsg))
+		return
 	end
 	object[key.key] = r
 end
 
 function m.register(name)
 	return function (object)
-		init(object)
 		local typelist = assert(object.type)
 		local cache_key = table.concat(typelist, ":")
 		local combine_keys = ckeys[cache_key](typelist)
@@ -143,6 +142,7 @@ function m.register(name)
 				converter(name, object, key)
 			end
 		end
+		init(object)
 		local oldobject = lookup[name]
 		if oldobject == nil then
 			object.name = name

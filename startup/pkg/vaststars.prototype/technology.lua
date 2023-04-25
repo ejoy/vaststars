@@ -29,7 +29,7 @@ local prototype = gameplay.register.prototype
   prototype "迫降火星" {
     desc = "迫降火星",
     icon = "textures/construct/industry.texture",
-    type = { "task" },
+    type = { "tech", "task" },
     task = {"unknown", 0, 4},
     effects = {
       -- unlock_recipe = {"采矿机打印"},
