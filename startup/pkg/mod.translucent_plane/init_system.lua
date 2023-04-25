@@ -20,7 +20,10 @@ local translucent_plane_material
 local rgba_table = {[1] = 0, [2] = 0, [3] = 0, [4] = 0}
 local tp_table = {}
 local NUM_QUAD_VERTICES<const> = 4
-
+local RENDER_LAYER = "translucent"
+local call_to_tp = {}
+local tp_to_call = {}
+local cur_call_id = 0
 --build ib
 local function build_ib(max_plane)
     do
@@ -117,7 +120,7 @@ function init_sys:init_world()
     translucent_plane_material = "/pkg/mod.translucent_plane/assets/translucent_plane.material"
 end
 
-local function create_translucent_plane_entity(grids_table, color, render_layer)
+local function create_translucent_plane_entity(grids_table, color)
     if not grids_table then
         return
     end
@@ -143,7 +146,7 @@ local function create_translucent_plane_entity(grids_table, color, render_layer)
                 end,
                 visible_state = "main_view",
                 --render_layer = "translucent",
-                render_layer = render_layer
+                render_layer = RENDER_LAYER
             },
         }
     end
@@ -223,53 +226,89 @@ local function get_final_table(rect_table, color_table)
     end
 end
 
-function itp.create_translucent_plane(rect_table, color_table, render_layer)
-    remove_all_tp()
-    local width, height, unit, offset = iplane_terrain.get_wh()
-    local eid_table = {}
-    local index_table = {}
+local function generate_each_grids(offset, old_tp_num)
     local final_table = {}
-    get_final_table(rect_table, color_table)
+    local id_table = {}
     local grids_table = create_grids_table(offset)
     local aabb_table = create_aabb_table(offset)
     update_grids_table(grids_table, aabb_table)
+    -- tp_table contain old table + new table
     for idx = 1, #tp_table do
-        local eid = create_translucent_plane_entity(grids_table[idx], tp_table[idx].color, render_layer)
-        if eid then
-            tp_table[idx].eid = eid
-            eid_table[#eid_table+1] = eid
+        local eid = create_translucent_plane_entity(grids_table[idx], tp_table[idx].color)
+        local tp = {}
+        tp.rect = tp_table[idx].rect
+        tp.color = tp_table[idx].color
+        tp.eid = eid
+        if idx <= old_tp_num then
+            -- old
+            local old_call_id = tp_to_call[idx]
+            call_to_tp[old_call_id] = nil
+
+            local new_tp_id = #final_table + 1
+            if eid then
+                final_table[new_tp_id] = tp
+                call_to_tp[old_call_id] = new_tp_id
+                tp_to_call[new_tp_id] = old_call_id
+            else
+                tp_to_call[idx] = nil 
+            end
         else
-            index_table[idx] = true
+            -- new
+            local new_id = -1
+            if eid then
+                local new_tp_id = #final_table + 1
+                final_table[new_tp_id] = tp
+                local new_call_id = cur_call_id + 1
+                cur_call_id = cur_call_id + 1
+                call_to_tp[new_call_id] = new_call_id
+                tp_to_call[new_tp_id] = new_call_id
+                new_id = new_tp_id
+            end
+            id_table[#id_table+1] = new_id
         end
     end
-    for idx, tp in pairs(tp_table) do
-        if not index_table[idx] then
-            final_table[#final_table+1] = tp 
-        end
-    end
+
     tp_table = final_table
-    return eid_table
+    return id_table
+end
+
+function itp.create_translucent_plane(rect_table, color_table, render_layer)
+    remove_all_tp()
+    local width, height, unit, offset = iplane_terrain.get_wh()
+    local old_tp_num = #tp_table
+    get_final_table(rect_table, color_table)
+    RENDER_LAYER = render_layer
+    return generate_each_grids(offset, old_tp_num)
 end
 
 
-function itp.remove_translucent_plane(eid_table)
+function itp.remove_translucent_plane(id_table)
     local index_table = {}
-    for idx = 1, #eid_table do
-        local eid = eid_table[idx]
-        for ii = 1, #tp_table do
-            local cur_eid = tp_table[ii].eid
-            if cur_eid == eid then
-                w:remove(cur_eid)
-                index_table[ii] = true
-            end
+    for idx = 1, #id_table do
+        local call_id = id_table[idx]
+        local tp_id = call_to_tp[call_id]
+        call_to_tp[call_id] = nil
+        if tp_id then
+            tp_to_call[tp_id] = nil
+            index_table[tp_id] = true
+            w:remove(tp_table[tp_id].eid)
         end
     end
     local final_table = {}
     for idx, tp in pairs(tp_table) do
+        local new_tp_id = #final_table + 1
         if not index_table[idx] then
-            final_table[#final_table+1] = tp 
+            final_table[new_tp_id] = tp
+            local old_call_id = tp_to_call[idx]
+            call_to_tp[old_call_id] = new_tp_id
+            tp_to_call[idx] = nil
+            tp_to_call[new_tp_id] = old_call_id
         end
     end
+    remove_all_tp()
     tp_table = final_table
+    local old_tp_num = #tp_table
+    local width, height, unit, offset = iplane_terrain.get_wh()
+    generate_each_grids(offset, old_tp_num)
 end
 

@@ -156,14 +156,15 @@ function S:data_changed()
             end
             iprinter.update_printer_percent(printer_eid, printer_percent)
         elseif key == "J" and press == 0 then
---[[             local rect_table = {
+             local rect_table = {
                 [1] = {x = -1, z = -1, w = 5, h = 5},
+                [2] = {x = -3, z = -3, w = 4, h = 4}
             }
             local color_table = {
                 {1.0, 0.0, 0.0, 1.0},
+                {1.0, 1.0, 0.0, 1.0},
             }
-            eid_table = itp.create_translucent_plane(rect_table, color_table, "translucent") ]]
-            itp.create_translucent_plane({{x = 0, z = 2, w = 3, h = 3}, {x = 0, z = 2, w = 4, h = 4}}, {{1, 0, 0, 0.5}, {1, 0, 0, 0.5}}, "translucent")
+            eid_table = itp.create_translucent_plane(rect_table, color_table, "translucent")
         elseif key =="K" and press == 0 then
             local rect_table = {
                 [1] = {x = 3, z = 3, w = 5, h = 5},
@@ -171,21 +172,22 @@ function S:data_changed()
             local color_table = {
                 {0.0, 1.0, 0.0, 1.0},
             }
-            eid_table = itp.create_translucent_plane(rect_table, color_table, "translucent")
+           local t2 = itp.create_translucent_plane(rect_table, color_table, "translucent")
+           local t3 = 1
         elseif key =="L" and press == 0 then
-            do
-                local irl = ecs.import.interface "ant.render|irender_layer"
-                irl.add_layers(irl.layeridx("foreground"), "mineral")
-                irl.add_layers(irl.layeridx("mineral"), "translucent_plane")
-            end
-
-            do
-                createPrefabInst("/pkg/vaststars.resources/prefabs/terrain/ground-iron-ore.prefab", {0, 0, 0}, "mineral")
-            end
-
-            do
-                itp.create_translucent_plane({{x = 0, z = 2, w = 3, h = 3}, {x = 0, z = 2, w = 4, h = 4}}, {{1, 0, 0, 0.5}, {1, 0, 0, 0.5}}, "translucent_plane")
-            end
+            local rect_table = {
+                [1] = {x = 0, z = 0, w = 4, h = 4},
+            }
+            local color_table = {
+                {0.0, 0.0, 1.0, 1.0},
+            }
+           local t3 = itp.create_translucent_plane(rect_table, color_table, "translucent")
+        elseif key == "V" and press == 0 then
+            itp.remove_translucent_plane({2})
+        elseif key == "B" and press == 0 then
+            itp.remove_translucent_plane({1})
+        elseif key == "N" and press == 0 then
+            itp.remove_translucent_plane({3})
         end
     end
 end
