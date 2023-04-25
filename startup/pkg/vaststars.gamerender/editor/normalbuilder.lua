@@ -115,7 +115,8 @@ local function __new_entity(self, datamodel, typeobject)
         },
         fluid_name = fluid_name,
     }
-    iui.open({"construct_pop.rml"}, self.pickup_object.srt.t, typeobject.name)
+    iui.open({"construct_building.rml"}, self.pickup_object.srt.t, typeobject.name)
+    iui.redirect("construct.rml", "construction_mode", true)
 
     local offset_x, offset_y = 0, 0
     if typeobject.supply_area then
@@ -340,6 +341,7 @@ local function confirm(self, datamodel)
         log.info("can not construct")
         return
     end
+    iui.redirect("construct.rml", "construction_mode", false)
 
     local typeobject = iprototype.queryByName(pickup_object.prototype_name)
     pickup_object.state = "confirm"
@@ -542,7 +544,8 @@ local function clean(self, datamodel)
     end
     idronecover.clear()
 
-    iui.close("construct_pop.rml")
+    iui.close("construct_building.rml")
+    iui.redirect("construct.rml", "construction_mode", false)
 end
 
 local function create(gameplay_eid, item)

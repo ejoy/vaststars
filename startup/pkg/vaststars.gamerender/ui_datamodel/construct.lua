@@ -19,7 +19,6 @@ local global = require "global"
 local iobject = ecs.require "object"
 local terrain = ecs.require "terrain"
 local idetail = ecs.import.interface "vaststars.gamerender|idetail"
-local SHOW_LOAD_RESOURCE <const> = not require "debugger".disable_load_resource
 local EDITOR_CACHE_NAMES = {"CONFIRM", "CONSTRUCTED"}
 local create_station_builder = ecs.require "editor.stationbuilder"
 local interval_call = ecs.require "engine.interval_call"
@@ -33,9 +32,9 @@ local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local COLOR_GREEN = math3d.constant("v4", {0.3, 1, 0, 1})
 local construct_menu_cfg = import_package "vaststars.prototype"("construct_menu")
 
-local rotate_mb = mailbox:sub {"rotate"} -- construct_pop.rml -> 旋转
-local build_mb = mailbox:sub {"build"}   -- construct_pop.rml -> 修建
-local cancel_mb = mailbox:sub {"cancel"} -- construct_pop.rml -> 取消
+local rotate_mb = mailbox:sub {"rotate"}
+local build_mb = mailbox:sub {"build"}
+local cancel_mb = mailbox:sub {"cancel"}
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
 local show_statistic_mb = mailbox:sub {"statistic"} -- 主界面左下角 -> 统计信息
 local show_setting_mb = mailbox:sub {"show_setting"} -- 主界面左下角 -> 游戏设置
@@ -53,6 +52,7 @@ local construct_entity_mb = mailbox:sub {"construct_entity"}
 local item_transfer_src_inventory_mb = mailbox:sub {"item_transfer_src_inventory"}
 local focus_on_building_mb = mailbox:sub {"focus_on_building"}
 local on_pickup_object_mb = mailbox:sub {"on_pickup_object"}
+local construction_mode_mb = mailbox:sub {"construction_mode"}
 
 local pickup_gesture_mb = world:sub {"pickup_gesture"}
 local pickup_long_press_gesture_mb = world:sub {"pickup_long_press_gesture"}
@@ -240,7 +240,7 @@ local function __on_pickup_object(datamodel, object)
             local prototype_name = object.prototype_name
             local typeobject = iprototype.queryByName(prototype_name)
             if iprototype.has_types(typeobject.type, "construction_center", "construction_chest") then
-                datamodel.cur_edit_mode = "construct"
+                datamodel.cur_edit_mode = "auto-construct"
             end
         end
     end
@@ -282,7 +282,6 @@ end
 function M:create()
     return {
         cur_edit_mode = "",
-        show_load_resource = SHOW_LOAD_RESOURCE,
         tech_count = get_new_tech_count(global.science.tech_list),
         show_tech_progress = false,
         current_tech_icon = "none",    --当前科技图标
@@ -446,21 +445,21 @@ local function __construct_entity(datamodel, gameplay_eid, typeobject)
     if iprototype.has_type(typeobject.type, "road") then
         iui.close("building_arc_menu.rml")
         iui.close("detail_panel.rml")
-        datamodel.cur_edit_mode = "construct"
+        datamodel.cur_edit_mode = "manual-construct"
         idetail.unselected()
         gameplay_core.world_update = false
         iui.open({"road_or_pipe_build.rml", "road_build.lua"})
     elseif iprototype.has_type(typeobject.type, "pipe") then
         iui.close("building_arc_menu.rml")
         iui.close("detail_panel.rml")
-        datamodel.cur_edit_mode = "construct"
+        datamodel.cur_edit_mode = "manual-construct"
         idetail.unselected()
         gameplay_core.world_update = false
         iui.open({"road_or_pipe_build.rml", "pipe_build.lua"})
     elseif iprototype.has_type(typeobject.type, "pipe_to_ground") then
         iui.close("building_arc_menu.rml")
         iui.close("detail_panel.rml")
-        datamodel.cur_edit_mode = "construct"
+        datamodel.cur_edit_mode = "manual-construct"
         idetail.unselected()
         gameplay_core.world_update = false
         iui.open({"road_or_pipe_build.rml", "pipe_to_ground_build.lua"})
@@ -526,7 +525,7 @@ function M:stage_camera_usage(datamodel)
                     local prototype_name = object.prototype_name
                     local typeobject = iprototype.queryByName(prototype_name)
                     if iprototype.has_types(typeobject.type, "construction_center", "construction_chest") then
-                        datamodel.cur_edit_mode = "construct"
+                        datamodel.cur_edit_mode = "auto-construct"
                     end
                 end
             end
@@ -534,7 +533,9 @@ function M:stage_camera_usage(datamodel)
             idetail.unselected()
             item_transfer_dst = nil
             pickup_id = nil
-            datamodel.cur_edit_mode = ""
+            if datamodel.cur_edit_mode == "auto-construct" then
+                datamodel.cur_edit_mode = ""
+            end
         end
 
         if leave then
@@ -687,6 +688,10 @@ function M:stage_camera_usage(datamodel)
         __on_pickup_object(datamodel, object)
     end
 
+    for _, _, _, show in construction_mode_mb:unpack() do
+        datamodel.cur_edit_mode = show and "manual-construct" or ""
+    end
+
     for _, _, _, object_id in focus_on_building_mb:unpack() do
         local object = assert(objects:get(object_id))
         local typeobject = iprototype.queryByName(object.prototype_name)
@@ -698,4 +703,4 @@ function M:stage_camera_usage(datamodel)
     item_transfer_placement_interval(datamodel, pickup_id)
     iobject.flush()
 end
-return M
+return M    

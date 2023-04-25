@@ -153,6 +153,7 @@ local function new_entity(self, datamodel, typeobject)
 
     local object = assert(objects:get(self.move_object_id))
     ipower:build_power_network(gameplay_core.get_world(), object.gameplay_eid)
+    iui.redirect("construct.rml", "construction_mode", true)
 end
 
 -- TODO: duplicate from builder.lua
@@ -299,12 +300,12 @@ end
 
 local function confirm(self, datamodel)
     iui.redirect("construct.rml", "move_finish")
+    iui.redirect("construct.rml", "construction_mode", false)
 
     ---
     iui.close("move_building.rml")
 
     ---
-    local pickup_object = assert(self.pickup_object)
     local object = assert(objects:get(self.move_object_id))
     local e = gameplay_core.get_entity(object.gameplay_eid)
     e.building.x = self.pickup_object.x
@@ -440,6 +441,7 @@ local function clean(self, datamodel)
     end
 
     iui.close("move_building.rml")
+    iui.redirect("construct.rml", "construction_mode", false)
 end
 
 local function create(move_object_id)

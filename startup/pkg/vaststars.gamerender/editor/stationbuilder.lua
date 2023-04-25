@@ -105,7 +105,7 @@ local function __new_entity(self, datamodel, typeobject)
         },
         fluid_name = "",
     }
-    iui.open({"construct_pop.rml"}, self.pickup_object.srt.t, typeobject.name)
+    iui.open({"construct_building.rml"}, self.pickup_object.srt.t, typeobject.name)
 
     local road_entrance_position, road_entrance_dir = _get_road_entrance_position(typeobject, dir, self.pickup_object.srt.t)
     local w, h = iprototype.unpackarea(typeobject.area)
@@ -602,7 +602,7 @@ local function clean(self, datamodel)
         self.selected_boxes = nil
     end
 
-    iui.close("construct_pop.rml")
+    iui.close("construct_building.rml")
 end
 
 local function create()
