@@ -12,7 +12,7 @@ properties:
 state:
   ALPHA_REF: 1
   CULL: CCW
-  DEPTH_TEST: EQUAL
+  DEPTH_TEST: ALWAYS
   MSAA: true
   WRITE_MASK: RGBAZ
   BLEND_FUNC: "sS"

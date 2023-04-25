@@ -18,7 +18,7 @@ local itp = ecs.interface "itranslucent_plane"
 local assetmgr  = import_package "ant.asset"
 local translucent_plane_material
 local rgba_table = {[1] = 0, [2] = 0, [3] = 0, [4] = 0}
-
+local tp_table = {}
 local NUM_QUAD_VERTICES<const> = 4
 
 --build ib
@@ -118,6 +118,9 @@ function init_sys:init_world()
 end
 
 local function create_translucent_plane_entity(grids_table, color, render_layer)
+    if not grids_table then
+        return
+    end
     local width, height, unit, offset = iplane_terrain.get_wh()
     local aabb = get_aabb(grids_table, width, height, unit, offset)
     local plane_mesh = build_mesh(grids_table, unit, offset, aabb)
@@ -147,11 +150,11 @@ local function create_translucent_plane_entity(grids_table, color, render_layer)
     return eid
 end 
 
-local function create_grids_table(rect_table, offset)
+local function create_grids_table(offset)
     local grids_table = {}
     -- create all rect' grids
-    for idx = 1, #rect_table do
-        local rect = rect_table[idx]
+    for idx = 1, #tp_table do
+        local rect = tp_table[idx].rect
         local x, z, ww, hh = rect.x + offset, rect.z + offset, rect.w, rect.h
         local grids = {}
         for ih = 0, hh - 1 do
@@ -166,11 +169,11 @@ local function create_grids_table(rect_table, offset)
     return grids_table
 end
 
-local function create_aabb_table(rect_table, offset)
+local function create_aabb_table(offset)
     local aabb_table = {}
     -- create all rect' aabb
-    for idx = 1, #rect_table do
-        local rect = rect_table[idx]
+    for idx = 1, #tp_table do
+        local rect = tp_table[idx].rect
         local x, z, ww, hh = rect.x + offset, rect.z + offset, rect.w, rect.h
         local aabb = math3d.aabb(math3d.vector(x, 0, z - (hh - 1)), math3d.vector(x + ww - 1, 0, z))
         aabb_table[idx] = aabb
@@ -205,21 +208,68 @@ local function update_grids_table(grids_table, aabb_table)
     end
 end
 
+local function remove_all_tp()
+    for idx = 1, #tp_table do
+        w:remove(tp_table[idx].eid)
+    end
+end
+
+local function get_final_table(rect_table, color_table)
+    for idx = 1, #rect_table do
+        tp_table[#tp_table+1] = {
+            rect = rect_table[idx],
+            color = color_table[idx]
+        }
+    end
+end
+
 function itp.create_translucent_plane(rect_table, color_table, render_layer)
+    remove_all_tp()
     local width, height, unit, offset = iplane_terrain.get_wh()
     local eid_table = {}
-    local grids_table = create_grids_table(rect_table, offset)
-    local aabb_table = create_aabb_table(rect_table, offset)
+    local index_table = {}
+    local final_table = {}
+    get_final_table(rect_table, color_table)
+    local grids_table = create_grids_table(offset)
+    local aabb_table = create_aabb_table(offset)
     update_grids_table(grids_table, aabb_table)
-    for idx = 1, #rect_table do
-        eid_table[idx] = create_translucent_plane_entity(grids_table[idx], color_table[idx], render_layer)
+    for idx = 1, #tp_table do
+        local eid = create_translucent_plane_entity(grids_table[idx], tp_table[idx].color, render_layer)
+        if eid then
+            tp_table[idx].eid = eid
+            eid_table[#eid_table+1] = eid
+        else
+            index_table[idx] = true
+        end
     end
+    for idx, tp in pairs(tp_table) do
+        if not index_table[idx] then
+            final_table[#final_table+1] = tp 
+        end
+    end
+    tp_table = final_table
     return eid_table
 end
 
+
 function itp.remove_translucent_plane(eid_table)
-    for idx = 1,#eid_table do
-        w:remove(eid_table[idx])
+    local index_table = {}
+    for idx = 1, #eid_table do
+        local eid = eid_table[idx]
+        for ii = 1, #tp_table do
+            local cur_eid = tp_table[ii].eid
+            if cur_eid == eid then
+                w:remove(cur_eid)
+                index_table[ii] = true
+            end
+        end
     end
+    local final_table = {}
+    for idx, tp in pairs(tp_table) do
+        if not index_table[idx] then
+            final_table[#final_table+1] = tp 
+        end
+    end
+    tp_table = final_table
 end
 

@@ -120,13 +120,32 @@ function S.init_world()
     create_instance("/pkg/vaststars.mod.test/assets/miner-1.glb|mesh.prefab",
     function (e)
         local ee<close> = w:entity(e.tag['*'][1])
-        iom.set_scale(ee, 0.1)
+        iom.set_scale(ee, 0.5)
         iom.set_position(ee, math3d.vector(10, 0, 0, 1))
     end)
 end
 
 local kb_mb = world:sub{"keyboard"}
+local function createPrefabInst(prefab, position, render_layer)
+    local p = ecs.create_instance(prefab)
+    function p:on_ready()
+        local root <close> = w:entity(self.tag['*'][1])
+        iom.set_position(root, position)
 
+        local irl = ecs.import.interface "ant.render|irender_layer"
+        for _, eid in ipairs(self.tag["*"]) do
+            local e <close> = w:entity(eid, "tag?in anim_ctrl?in render_object?update")
+            if render_layer and e.render_object then
+                w:extend(e, "render_layer?update")
+                e.render_layer = render_layer
+                e.render_object.render_layer = irl.layeridx(e.render_layer)
+            end
+        end
+    end
+    function p:on_message()
+    end
+    return world:create_object(p)
+end
 local eid_table = {}
 function S:data_changed()
     for _, key, press in kb_mb:unpack() do
@@ -137,19 +156,36 @@ function S:data_changed()
             end
             iprinter.update_printer_percent(printer_eid, printer_percent)
         elseif key == "J" and press == 0 then
-            local rect_table = {
-                [1] = {x = -1, z = -1, w = 3, h = 3},
-                [2] = {x = 3, z = 3, w = 5, h = 5},
-                [3] = {x = 1, z = 1, w = 4, h = 4}
+--[[             local rect_table = {
+                [1] = {x = -1, z = -1, w = 5, h = 5},
             }
             local color_table = {
                 {1.0, 0.0, 0.0, 1.0},
+            }
+            eid_table = itp.create_translucent_plane(rect_table, color_table, "translucent") ]]
+            itp.create_translucent_plane({{x = 0, z = 2, w = 3, h = 3}, {x = 0, z = 2, w = 4, h = 4}}, {{1, 0, 0, 0.5}, {1, 0, 0, 0.5}}, "translucent")
+        elseif key =="K" and press == 0 then
+            local rect_table = {
+                [1] = {x = 3, z = 3, w = 5, h = 5},
+            }
+            local color_table = {
                 {0.0, 1.0, 0.0, 1.0},
-                {0.0, 0.0, 1.0, 1.0}
             }
             eid_table = itp.create_translucent_plane(rect_table, color_table, "translucent")
-        elseif key =="K" and press == 0 then
-            itp.remove_translucent_plane(eid_table)
+        elseif key =="L" and press == 0 then
+            do
+                local irl = ecs.import.interface "ant.render|irender_layer"
+                irl.add_layers(irl.layeridx("foreground"), "mineral")
+                irl.add_layers(irl.layeridx("mineral"), "translucent_plane")
+            end
+
+            do
+                createPrefabInst("/pkg/vaststars.resources/prefabs/terrain/ground-iron-ore.prefab", {0, 0, 0}, "mineral")
+            end
+
+            do
+                itp.create_translucent_plane({{x = 0, z = 2, w = 3, h = 3}, {x = 0, z = 2, w = 4, h = 4}}, {{1, 0, 0, 0.5}, {1, 0, 0, 0.5}}, "translucent_plane")
+            end
         end
     end
 end
