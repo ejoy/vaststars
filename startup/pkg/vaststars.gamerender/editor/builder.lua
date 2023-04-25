@@ -101,30 +101,29 @@ local function complete(self, object_id)
     objects:set(object, "CONSTRUCTED")
     gameplay_core.build()
 
+    -- TODO: duplicate code
     local gw = gameplay_core.get_world()
     if typeobject.power_network_link or typeobject.power_supply_distance then
         -- update power network
         ipower:build_power_network(gw)
         ipower_line.update_line(ipower:get_pole_lines())
     else
-        local capacitance = {}
-        for v in gameplay_core.select("eid:in building:in capacitance:in") do
-            if v.capacitance then
-                local e = v.building
-                local typeobject = iprototype.queryById(e.prototype)
-                local aw, ah = iprototype.unpackarea(typeobject.area)
-                capacitance[#capacitance + 1] = {
-                    targets = {},
-                    power_network_link_target = 0,
-                    eid = v.eid,
-                    x = e.x,
-                    y = e.y,
-                    w = aw,
-                    h = ah,
-                }
-            end
+        local v = gameplay_core.get_entity(object.gameplay_eid)
+        if v.capacitance then
+            local capacitance = {}
+            local e = v.building
+            local typeobject = iprototype.queryById(e.prototype)
+            local aw, ah = iprototype.unpackarea(typeobject.area)
+            capacitance[#capacitance + 1] = {
+                targets = {},
+                power_network_link_target = 0,
+                eid = v.eid,
+                x = e.x,
+                y = e.y,
+                w = aw,
+                h = ah,
+            }
         end
-        ipower:set_network_id(gw, capacitance)
     end
 end
 

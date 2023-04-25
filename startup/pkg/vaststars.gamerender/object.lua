@@ -94,9 +94,8 @@ local function flush()
             local vsobject = assert(vsobject_manager:get(outer.id))
             vsobject:set_dir(outer.dir)
         end,
-        state = function(outer)
-            local vsobject = assert(vsobject_manager:get(outer.id))
-            vsobject:update {type = outer.state, srt = outer.srt}
+        state = function(outer) -- TODO: remove this
+            assert(false, "not implemented")
         end,
         srt = function(outer)
             local vsobject = assert(vsobject_manager:get(outer.id))

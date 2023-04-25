@@ -11,6 +11,7 @@ local fs = require "filesystem"
 local rmlui_message_mb = world:sub {"rmlui_message"}
 local rmlui_message_close_mb = world:sub {"rmlui_message_close"}
 local ui_message_mb = world:sub {"ui_message"}
+local ui_message_send_mb = world:sub {"ui_message_send"}
 local window_bindings = {} -- = {[url] = { w = xx, datamodel = xx, }, ...}
 local datamodel_changed = {}
 local stage_ui_update = {}
@@ -183,6 +184,16 @@ function ui_system.ui_update()
         end
     end
 
+    for msg in ui_message_send_mb:each() do
+        local binding = window_bindings[msg[2]]
+        if binding then
+            local ud = {}
+            ud.event = msg[3]
+            ud.ud = {table_unpack(msg, 4, #msg)}
+            window_bindings[msg[2]].window.postMessage(json:encode(ud))
+        end
+    end
+
     for url in pairs(stage_ui_update) do
         local binding = window_bindings[url]
         binding.template:stage_ui_update(binding.datamodel, table_unpack(binding.param))
@@ -225,6 +236,12 @@ end
 
 function iui.is_open(url)
     return window_bindings[url] ~= nil
+end
+
+function iui.send(url, event, ...)
+    if window_bindings[url] then
+        world:pub {"ui_message_send", url, event, ...}
+    end
 end
 
 function iui.update(url, event, ...)

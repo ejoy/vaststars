@@ -32,7 +32,6 @@ local assembling_common = require "ui_datamodel.common.assembling"
 local gameplay = import_package "vaststars.gameplay"
 local iassembling = gameplay.interface "assembling"
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
-local CREATE_BUILDING <const> = require "debugger".create_building
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -344,7 +343,6 @@ local function confirm(self, datamodel)
     iui.redirect("construct.rml", "construction_mode", false)
 
     local typeobject = iprototype.queryByName(pickup_object.prototype_name)
-    pickup_object.state = "confirm"
     objects:set(pickup_object, "CONFIRM")
     pickup_object.PREPARE = true
 
@@ -430,10 +428,12 @@ local function __deduct_item(self, e)
 end
 
 local function complete(self, object_id, datamodel)
-    if CREATE_BUILDING and not self.gameplay_eid then
+    local show_construct_entity = require("debugger").show_construct_entity
+    if show_construct_entity and not self.gameplay_eid then
         self.super.complete(self, object_id)
-        self:clean(datamodel)
-        iui.redirect("construct.rml", "move_finish") -- TODO：remove this
+        local object = assert(objects:get(object_id))
+        local typeobject = iprototype.queryByName(object.prototype_name)
+        new_entity(self, datamodel, typeobject)
         return
     end
 

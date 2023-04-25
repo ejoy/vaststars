@@ -210,7 +210,6 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
         global.fluidflow_id = global.fluidflow_id + 1
         new_fluidflow_id = global.fluidflow_id
     end
-    local state = State.succ and "construct" or "invalid_construct"
 
     -- TODO: map may be include some non-pipe objects, such as some building which have fluidboxes, only for changing the state of the building
     for coord, v in pairs(map) do
@@ -222,7 +221,6 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                 object.prototype_name = v[1]
                 object.dir = v[2]
             end
-            object.state = state
         else
             object = iobject.new {
                 prototype_name = v[1],
@@ -234,7 +232,6 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                 },
                 fluid_name = State.fluid_name,
                 fluidflow_id = new_fluidflow_id,
-                state = state,
             }
             objects:set(object, EDITOR_CACHE_NAMES[1])
         end
@@ -327,7 +324,6 @@ local function _teardown_end(self, datamodel, State, dir, dir_delta)
         global.fluidflow_id = global.fluidflow_id + 1
         new_fluidflow_id = global.fluidflow_id
     end
-    local state = State.succ and "construct" or "invalid_construct"
 
     -- TODO: map may be include some non-pipe objects, such as some building which have fluidboxes, only for changing the state of the building
     for coord, v in pairs(map) do
@@ -339,7 +335,6 @@ local function _teardown_end(self, datamodel, State, dir, dir_delta)
                 object.prototype_name = v[1]
                 object.dir = v[2]
             end
-            object.state = state
         else
             object = iobject.new {
                 prototype_name = v[1],
@@ -351,7 +346,6 @@ local function _teardown_end(self, datamodel, State, dir, dir_delta)
                 },
                 fluid_name = State.fluid_name,
                 fluidflow_id = new_fluidflow_id,
-                state = state,
             }
             objects:set(object, EDITOR_CACHE_NAMES[1])
         end
@@ -746,7 +740,7 @@ local function finish_laying(self, datamodel)
     datamodel.show_cancel = false
 
     for _, object in objects:all("TEMPORARY") do
-        object.state = "confirm"
+        -- TODO: mark the object for deletion
         self.pending[iprototype.packcoord(object.x, object.y)] = object
     end
     objects:commit("TEMPORARY", "CONFIRM")
@@ -788,7 +782,7 @@ local function remove_one(self, datamodel)
     local coord = iprototype.packcoord(x, y)
 
     local object = assert(objects:modify(x, y, {"CONFIRM", "CONSTRUCTED"}, iobject.clone))
-    object.state = "remove"
+    -- TODO: mark the object for deletion
 
     self.pending[coord] = REMOVE
 
@@ -897,7 +891,7 @@ local function finish_teardown(self, datamodel)
     datamodel.show_cancel = false
 
     for _, object in objects:all("TEMPORARY") do
-        object.state = "remove"
+        -- TODO: mark the object for deletion
         self.pending[iprototype.packcoord(object.x, object.y)] = REMOVE
     end
     objects:commit("TEMPORARY", "CONFIRM")

@@ -100,11 +100,11 @@ function m:init_world()
     iefk.preload "/pkg/vaststars.resources/effect/efk/"
 
     if NOTHING then
+        imain_menu_manager.init()
         return
     end
 
     iroadnet:create()
-
     terrain:create()
 
     if TERRAIN_ONLY then

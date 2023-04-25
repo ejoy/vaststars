@@ -23,7 +23,6 @@ function M:revert_changes(revert_cache_names)
         if old_object then
             object.prototype_name = old_object.prototype_name
             object.dir = old_object.dir
-            object.state = old_object.state
             object.fluid_name = old_object.fluid_name
             object.fluidflow_id = old_object.fluidflow_id
         else

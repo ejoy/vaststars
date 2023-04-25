@@ -682,7 +682,6 @@ local function new_entity(self, datamodel, typeobject)
         srt = {
             t = terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)),
         },
-        state = "construct",
     }
 
     --

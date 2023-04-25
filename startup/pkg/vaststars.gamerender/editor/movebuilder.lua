@@ -325,11 +325,29 @@ local function confirm(self, datamodel)
         end
     end
 
-    --
+    -- TODO: duplicate code with editor/builder.lua
     local typeobject = iprototype.queryByName(object.prototype_name)
     if typeobject.power_supply_area and typeobject.power_supply_distance then
         ipower:build_power_network(gameplay_core.get_world())
         ipower_line.update_line(ipower:get_pole_lines())
+    else
+        local gw = gameplay_core.get_world()
+        local e = gameplay_core.get_entity(object.gameplay_eid)
+        if e.capacitance then
+            local typeobject = iprototype.queryById(e.building.prototype)
+            local aw, ah = iprototype.unpackarea(typeobject.area)
+            local capacitance = {}
+            capacitance[#capacitance + 1] = {
+                targets = {},
+                power_network_link_target = 0,
+                eid = e.eid,
+                x = e.building.x,
+                y = e.building.y,
+                w = aw,
+                h = ah,
+            }
+            ipower:set_network_id(gw, capacitance)
+        end
     end
 
     if self.road_entrance then

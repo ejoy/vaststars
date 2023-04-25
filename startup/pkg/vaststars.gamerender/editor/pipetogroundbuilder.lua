@@ -435,7 +435,6 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
         global.fluidflow_id = global.fluidflow_id + 1
         new_fluidflow_id = global.fluidflow_id
     end
-    local state = State.succ and "construct" or "invalid_construct"
 
     -- TODO: pipe to ground can be replaced by pipe
     if PipeToGroundState.replace then
@@ -464,7 +463,6 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                 object.dir = v[2]
             end
 
-            object.state = state
         else
             object = iobject.new {
                 prototype_name = v[1],
@@ -476,7 +474,6 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                 },
                 fluid_name = State.fluid_name,
                 fluidflow_id = new_fluidflow_id,
-                state = state,
             }
             objects:set(object, EDITOR_CACHE_NAMES[1])
         end
@@ -768,7 +765,6 @@ end
 
 local function laying_pipe_confirm(self, datamodel)
     for _, object in objects:all("TEMPORARY") do
-        object.state = "confirm"
         object.PREPARE = true
     end
     objects:commit("TEMPORARY", "CONFIRM")

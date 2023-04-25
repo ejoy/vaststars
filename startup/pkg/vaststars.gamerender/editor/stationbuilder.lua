@@ -416,7 +416,6 @@ local function confirm(self, datamodel)
     end
 
     local typeobject = iprototype.queryByName(pickup_object.prototype_name)
-    pickup_object.state = "confirm"
     objects:set(pickup_object, "CONFIRM")
     pickup_object.PREPARE = true
 

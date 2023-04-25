@@ -659,6 +659,9 @@ function M:stage_camera_usage(datamodel)
     end
 
     for _, _, _, item in construct_entity_mb:unpack() do
+        if builder then
+            builder:clean(datamodel)
+        end
         local typeobject = iprototype.queryByName(item)
         __construct_entity(datamodel, nil, typeobject)
     end
