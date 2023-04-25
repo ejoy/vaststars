@@ -29,16 +29,8 @@ local function number_conversion(n, u)
 end
 
 register_unit("power", "dword", function(s)
-	local n, u = s:match "^(%d+%.?%d*)([kMG]?)W$"
-	if not n then
-		return nil, "Need power : nW"
-	end
-	return number_conversion(n,u) // UPS
-end)
-
-register_unit("drain_power", "dword", function(s, object)
 	if s == nil then
-		return object.power // 30
+		return
 	end
 	local n, u = s:match "^(%d+%.?%d*)([kMG]?)W$"
 	if not n then
@@ -47,9 +39,9 @@ register_unit("drain_power", "dword", function(s, object)
 	return number_conversion(n,u) // UPS
 end)
 
-register_unit("energy", "dword", function(s, object)
+register_unit("energy", "dword", function(s)
 	if s == nil then
-		return object.power * 2
+		return
 	end
 	local n, u = s:match "^(%d+%.?%d*)([kMG]?)J$"
 	if not n then
@@ -90,6 +82,9 @@ register_unit("percentage", "float", function(s)
 end)
 
 register_unit("time", "word", function(s)
+	if s == nil then
+		return
+	end
 	if type(s) == "number" then
 		local tick = math.floor(s)
 		return tick

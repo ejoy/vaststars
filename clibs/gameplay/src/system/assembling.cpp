@@ -32,66 +32,74 @@ sync_output_fluidbox(world& w, ecs::chest& c2, ecs::fluidboxes& fb) {
 	}
 }
 
+static bool assembling_update(world& w, ecs::assembling& assembling, ecs::chest& chest, ecs::fluidboxes* fb) {
+    while (assembling.progress <= 0) {
+        if (assembling.status == STATUS_DONE) {
+            if (!chest::place(w, container::index::from(chest.chest), assembling.recipe)) {
+                return false;
+            }
+            w.stat.finish_recipe(w, assembling.recipe);
+            assembling.status = STATUS_IDLE;
+            if (chest.fluidbox_out != 0) {
+                if (fb) {
+                    sync_output_fluidbox(w, chest, *fb);
+                }
+            }
+        }
+        if (assembling.status == STATUS_IDLE) {
+            if (!chest::pickup(w, container::index::from(chest.chest), assembling.recipe)) {
+                return false;
+            }
+            auto time = prototype::get<"time">(w, assembling.recipe);
+            assembling.progress += time * 100;
+            assembling.status = STATUS_DONE;
+            if (chest.fluidbox_in != 0) {
+                if (fb) {
+                    sync_input_fluidbox(w, chest, *fb);
+                }
+            }
+        }
+    }
+    return true;
+}
+
 static void
 assembling_update(world& w, ecs_api::entity<ecs::assembling, ecs::chest, ecs::capacitance, ecs::building>& v) {
-    ecs::assembling& a = v.get<ecs::assembling>();
-    ecs::chest& c2 = v.get<ecs::chest>();
-    auto consumer = get_consumer(w, v);
-
-    // step.1
-    if (!consumer.cost_drain()) {
-        return;
-    }
-
-    if (a.recipe == 0) {
-        return;
-    }
-
-    // step.2
-    while (a.progress <= 0) {
-        if (a.status == STATUS_DONE) {
-            if (!chest::place(w, container::index::from(c2.chest), a.recipe)) {
-                return;
-            }
-            w.stat.finish_recipe(w, a.recipe);
-            a.status = STATUS_IDLE;
-            if (c2.fluidbox_out != 0) {
-                ecs::fluidboxes* fb = v.sibling<ecs::fluidboxes>();
-                if (fb) {
-                    sync_output_fluidbox(w, c2, *fb);
-                }
-            }
-        }
-        if (a.status == STATUS_IDLE) {
-            if (!chest::pickup(w, container::index::from(c2.chest), a.recipe)) {
-                return;
-            }
-            auto time = prototype::get<"time">(w, a.recipe);
-            a.progress += time * 100;
-            a.status = STATUS_DONE;
-            if (c2.fluidbox_in != 0) {
-                ecs::fluidboxes* fb = v.sibling<ecs::fluidboxes>();
-                if (fb) {
-                    sync_input_fluidbox(w, c2, *fb);
-                }
-            }
-        }
-    }
-
-    // step.3
-    if (!consumer.cost_power()) {
-        return;
-    }
-
-    // step.4
-    a.progress -= a.speed;
 }
 
 static int
 lupdate(lua_State *L) {
     auto& w = getworld(L);
-    for (auto& v : ecs_api::select<ecs::assembling, ecs::chest, ecs::capacitance, ecs::building>(w.ecs)) {
-        assembling_update(w, v);
+    for (auto& v : ecs_api::select<ecs::assembling, ecs::consumer, ecs::chest, ecs::capacitance, ecs::building>(w.ecs)) {
+        ecs::assembling& assembling = v.get<ecs::assembling>();
+        auto consumer = get_consumer(w, v);
+        if (!consumer.cost_drain()) {
+            continue;
+        }
+        if (assembling.recipe == 0) {
+            continue;
+        }
+        if (!assembling_update(w, assembling, v.get<ecs::chest>(), v.sibling<ecs::fluidboxes>())) {
+            continue;
+        }
+        if (!consumer.cost_power()) {
+            continue;
+        }
+        assembling.progress -= assembling.speed;
+    }
+    for (auto& v : ecs_api::select<ecs::assembling, ecs::generator, ecs::chest, ecs::capacitance, ecs::building>(w.ecs)) {
+        ecs::assembling& assembling = v.get<ecs::assembling>();
+        if (assembling.recipe == 0) {
+            continue;
+        }
+        if (!assembling_update(w, assembling, v.get<ecs::chest>(), v.sibling<ecs::fluidboxes>())) {
+            continue;
+        }
+        auto generator = get_generator(w, v);
+        if (!generator.produce()) {
+            continue;
+        }
+        assembling.progress -= assembling.speed;
     }
     return 0;
 }
