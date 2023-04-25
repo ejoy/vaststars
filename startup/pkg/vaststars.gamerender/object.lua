@@ -94,9 +94,8 @@ local function flush()
             local vsobject = assert(vsobject_manager:get(outer.id))
             vsobject:set_dir(outer.dir)
         end,
-        state = function(outer)
-            local vsobject = assert(vsobject_manager:get(outer.id))
-            vsobject:update {type = outer.state, srt = outer.srt}
+        state = function(outer) -- TODO: remove this
+            assert(false, "not implemented")
         end,
         srt = function(outer)
             local vsobject = assert(vsobject_manager:get(outer.id))
@@ -172,7 +171,7 @@ local function flush()
     end
 end
 
-local function move_delta(object, delta_vec, coord_system, area_inc)
+local function move_delta(object, delta_vec, coord_system)
     coord_system = coord_system or terrain
     local vsobject = vsobject_manager:get(object.id)
     if not vsobject then
@@ -181,7 +180,7 @@ local function move_delta(object, delta_vec, coord_system, area_inc)
 
     local typeobject = iprototype.queryByName(object.prototype_name)
     local position = math3d.ref(math3d.add(object.srt.t, delta_vec))
-    local coord = coord_system["align"](coord_system, position, iprototype.rotate_area(typeobject.area, object.dir, area_inc, area_inc))
+    local coord = coord_system["align"](coord_system, position, iprototype.rotate_area(typeobject.area, object.dir))
     if not coord then
         log.error(("can not get coord"))
         return
@@ -192,10 +191,10 @@ local function move_delta(object, delta_vec, coord_system, area_inc)
     return object
 end
 
-local function central_coord(prototype_name, dir, coord_system, area_inc)
+local function central_coord(prototype_name, dir, coord_system)
     coord_system = coord_system or terrain
     local typeobject = iprototype.queryByName(prototype_name)
-    local coord = coord_system["align"](coord_system, icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, dir, area_inc, area_inc))
+    local coord = coord_system["align"](coord_system, icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, dir))
     if not coord then
         return
     end

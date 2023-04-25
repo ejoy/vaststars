@@ -24,7 +24,7 @@ local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local itask = ecs.require "task"
 local ichest = require "gameplay.interface.chest"
 local iobject = ecs.require "object"
-local logistic_coord = ecs.require "terrain"
+local coord_system = ecs.require "terrain"
 local iprototype_cache = require "gameplay.prototype_cache.init"
 
 -- TODO：duplicate code with builder.lua
@@ -267,7 +267,7 @@ local function __throw_construction_chest(e, x, y, w, h)
                     x = x,
                     y = y,
                     srt = {
-                        t = logistic_coord:get_position_by_coord(x, y, 1, 1),
+                        t = coord_system:get_position_by_coord(x, y, 1, 1),
                     },
                 }
                 local entity = {

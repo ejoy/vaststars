@@ -22,6 +22,7 @@ local fb = type "fluidbox"
 function fb:ctor(init, pt)
     if not init.fluid then
         return {
+            fluidbox_changed = true,
             fluidbox = { fluid = 0, id = 0 }
         }
     end

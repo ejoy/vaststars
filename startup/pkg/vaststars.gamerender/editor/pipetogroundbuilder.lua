@@ -19,7 +19,7 @@ local dotted_line_material <const> = "/pkg/vaststars.resources/materials/dotted_
 local igrid_entity = ecs.require "engine.grid_entity"
 local math3d = require "math3d"
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
-local logistic_coord = ecs.require "terrain"
+local coord_system = ecs.require "terrain"
 
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
 local STATE_NONE  <const> = 0
@@ -435,7 +435,6 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
         global.fluidflow_id = global.fluidflow_id + 1
         new_fluidflow_id = global.fluidflow_id
     end
-    local state = State.succ and "construct" or "invalid_construct"
 
     -- TODO: pipe to ground can be replaced by pipe
     if PipeToGroundState.replace then
@@ -464,7 +463,6 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                 object.dir = v[2]
             end
 
-            object.state = state
         else
             object = iobject.new {
                 prototype_name = v[1],
@@ -476,7 +474,6 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                 },
                 fluid_name = State.fluid_name,
                 fluidflow_id = new_fluidflow_id,
-                state = state,
             }
             objects:set(object, EDITOR_CACHE_NAMES[1])
         end
@@ -664,8 +661,8 @@ local function _builder_start(self, datamodel)
 end
 
 local function __calc_grid_position(self, typeobject)
-    local _, originPosition = logistic_coord:align(math3d.vector {0, 0, 0}, iprototype.unpackarea(typeobject.area))
-    local buildingPosition = logistic_coord:get_begin_position_by_coord(self.pickup_object.x, self.pickup_object.y)
+    local _, originPosition = coord_system:align(math3d.vector {0, 0, 0}, iprototype.unpackarea(typeobject.area))
+    local buildingPosition = coord_system:get_position_by_coord(self.pickup_object.x, self.pickup_object.y, iprototype.unpackarea(typeobject.area))
     return math3d.ref(math3d.add(math3d.sub(buildingPosition, originPosition), GRID_POSITION_OFFSET))
 end
 
@@ -768,7 +765,6 @@ end
 
 local function laying_pipe_confirm(self, datamodel)
     for _, object in objects:all("TEMPORARY") do
-        object.state = "confirm"
         object.PREPARE = true
     end
     objects:commit("TEMPORARY", "CONFIRM")

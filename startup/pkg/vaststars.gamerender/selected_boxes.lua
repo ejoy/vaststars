@@ -5,7 +5,7 @@ local w = world.w
 local mc = import_package "ant.math".constant
 local math3d = require "math3d"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
-local logistic_coord = ecs.require "terrain"
+local coord_system = ecs.require "terrain"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local irl = ecs.import.interface "ant.render|irender_layer"
 local imaterial = ecs.import.interface "ant.asset|imaterial"
@@ -88,8 +88,8 @@ function mt:set_color(color)
 end
 
 return function(prefab, center, color, w, h)
-    local width = (w - 1) * logistic_coord.tile_size
-    local height = (h - 1) * logistic_coord.tile_size
+    local width = (w - 1) * coord_system.tile_size
+    local height = (h - 1) * coord_system.tile_size
 
     local M = {
         selected_boxes = {},

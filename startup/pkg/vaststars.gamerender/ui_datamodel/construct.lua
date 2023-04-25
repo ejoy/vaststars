@@ -19,22 +19,22 @@ local global = require "global"
 local iobject = ecs.require "object"
 local terrain = ecs.require "terrain"
 local idetail = ecs.import.interface "vaststars.gamerender|idetail"
-local SHOW_LOAD_RESOURCE <const> = not require "debugger".disable_load_resource
 local EDITOR_CACHE_NAMES = {"CONFIRM", "CONSTRUCTED"}
 local create_station_builder = ecs.require "editor.stationbuilder"
 local interval_call = ecs.require "engine.interval_call"
 local item_transfer = require "item_transfer"
-local logistic_coord = ecs.require "terrain"
+local coord_system = ecs.require "terrain"
 local selected_boxes = ecs.require "selected_boxes"
 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local COLOR_INVALID <const> = math3d.constant "null"
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local COLOR_GREEN = math3d.constant("v4", {0.3, 1, 0, 1})
+local construct_menu_cfg = import_package "vaststars.prototype"("construct_menu")
 
-local rotate_mb = mailbox:sub {"rotate"} -- construct_pop.rml -> 旋转
-local build_mb = mailbox:sub {"build"}   -- construct_pop.rml -> 修建
-local cancel_mb = mailbox:sub {"cancel"} -- construct_pop.rml -> 取消
+local rotate_mb = mailbox:sub {"rotate"}
+local build_mb = mailbox:sub {"build"}
+local cancel_mb = mailbox:sub {"cancel"}
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
 local show_statistic_mb = mailbox:sub {"statistic"} -- 主界面左下角 -> 统计信息
 local show_setting_mb = mailbox:sub {"show_setting"} -- 主界面左下角 -> 游戏设置
@@ -52,6 +52,7 @@ local construct_entity_mb = mailbox:sub {"construct_entity"}
 local item_transfer_src_inventory_mb = mailbox:sub {"item_transfer_src_inventory"}
 local focus_on_building_mb = mailbox:sub {"focus_on_building"}
 local on_pickup_object_mb = mailbox:sub {"on_pickup_object"}
+local construction_mode_mb = mailbox:sub {"construction_mode"}
 
 local pickup_gesture_mb = world:sub {"pickup_gesture"}
 local pickup_long_press_gesture_mb = world:sub {"pickup_long_press_gesture"}
@@ -239,10 +240,32 @@ local function __on_pickup_object(datamodel, object)
             local prototype_name = object.prototype_name
             local typeobject = iprototype.queryByName(prototype_name)
             if iprototype.has_types(typeobject.type, "construction_center", "construction_chest") then
-                datamodel.cur_edit_mode = "construct"
+                datamodel.cur_edit_mode = "auto-construct"
             end
         end
     end
+end
+
+local function _get_construct_menu()
+    local construct_menu = {}
+    for _, menu in ipairs(construct_menu_cfg) do
+        local m = {}
+        m.name = menu.name
+        m.icon = menu.icon
+        m.detail = {}
+
+        for _, prototype_name in ipairs(menu.detail) do
+            local typeobject = assert(iprototype.queryByName(prototype_name))
+            m.detail[#m.detail + 1] = {
+                show_prototype_name = iprototype.show_prototype_name(typeobject),
+                prototype_name = prototype_name,
+                icon = typeobject.icon,
+            }
+        end
+
+        construct_menu[#construct_menu+1] = m
+    end
+    return construct_menu
 end
 
 ---------------
@@ -259,7 +282,6 @@ end
 function M:create()
     return {
         cur_edit_mode = "",
-        show_load_resource = SHOW_LOAD_RESOURCE,
         tech_count = get_new_tech_count(global.science.tech_list),
         show_tech_progress = false,
         current_tech_icon = "none",    --当前科技图标
@@ -270,6 +292,8 @@ function M:create()
         show_ingredient = false,
         item_transfer_src_inventory = {},
         construction_center_menu = {},
+        construct_menu = _get_construct_menu(),
+        show_construct_entity = require("debugger").show_construct_entity,
     }
 end
 local current_techname = ""
@@ -375,7 +399,7 @@ local function open_focus_tips(tech_node)
             end
 
             local prefab
-            local center = logistic_coord:get_position_by_coord(nd.x, nd.y, 1, 1)
+            local center = coord_system:get_position_by_coord(nd.x, nd.y, 1, 1)
             if nd.show_arrow then
                 prefab = assert(igame_object.create({
                     state = "opaque",
@@ -398,7 +422,7 @@ local function open_focus_tips(tech_node)
             end
             tech_node.selected_tips[#tech_node.selected_tips + 1] = {selected_boxes("/pkg/vaststars.resources/" .. nd.prefab, center, COLOR_GREEN, nd.w, nd.h), prefab}
         elseif nd.camera_x and nd.camera_y then
-            icamera_controller.focus_on_position(logistic_coord:get_position_by_coord(nd.camera_x, nd.camera_y, width, height))
+            icamera_controller.focus_on_position(coord_system:get_position_by_coord(nd.camera_x, nd.camera_y, width, height))
         end
     end
 end
@@ -421,21 +445,21 @@ local function __construct_entity(datamodel, gameplay_eid, typeobject)
     if iprototype.has_type(typeobject.type, "road") then
         iui.close("building_arc_menu.rml")
         iui.close("detail_panel.rml")
-        datamodel.cur_edit_mode = "construct"
+        datamodel.cur_edit_mode = "manual-construct"
         idetail.unselected()
         gameplay_core.world_update = false
         iui.open({"road_or_pipe_build.rml", "road_build.lua"})
     elseif iprototype.has_type(typeobject.type, "pipe") then
         iui.close("building_arc_menu.rml")
         iui.close("detail_panel.rml")
-        datamodel.cur_edit_mode = "construct"
+        datamodel.cur_edit_mode = "manual-construct"
         idetail.unselected()
         gameplay_core.world_update = false
         iui.open({"road_or_pipe_build.rml", "pipe_build.lua"})
     elseif iprototype.has_type(typeobject.type, "pipe_to_ground") then
         iui.close("building_arc_menu.rml")
         iui.close("detail_panel.rml")
-        datamodel.cur_edit_mode = "construct"
+        datamodel.cur_edit_mode = "manual-construct"
         idetail.unselected()
         gameplay_core.world_update = false
         iui.open({"road_or_pipe_build.rml", "pipe_to_ground_build.lua"})
@@ -501,7 +525,7 @@ function M:stage_camera_usage(datamodel)
                     local prototype_name = object.prototype_name
                     local typeobject = iprototype.queryByName(prototype_name)
                     if iprototype.has_types(typeobject.type, "construction_center", "construction_chest") then
-                        datamodel.cur_edit_mode = "construct"
+                        datamodel.cur_edit_mode = "auto-construct"
                     end
                 end
             end
@@ -509,7 +533,9 @@ function M:stage_camera_usage(datamodel)
             idetail.unselected()
             item_transfer_dst = nil
             pickup_id = nil
-            datamodel.cur_edit_mode = ""
+            if datamodel.cur_edit_mode == "auto-construct" then
+                datamodel.cur_edit_mode = ""
+            end
         end
 
         if leave then
@@ -633,6 +659,9 @@ function M:stage_camera_usage(datamodel)
     end
 
     for _, _, _, item in construct_entity_mb:unpack() do
+        if builder then
+            builder:clean(datamodel)
+        end
         local typeobject = iprototype.queryByName(item)
         __construct_entity(datamodel, nil, typeobject)
     end
@@ -662,15 +691,19 @@ function M:stage_camera_usage(datamodel)
         __on_pickup_object(datamodel, object)
     end
 
+    for _, _, _, show in construction_mode_mb:unpack() do
+        datamodel.cur_edit_mode = show and "manual-construct" or ""
+    end
+
     for _, _, _, object_id in focus_on_building_mb:unpack() do
         local object = assert(objects:get(object_id))
         local typeobject = iprototype.queryByName(object.prototype_name)
         local w, h = iprototype.unpackarea(typeobject.area)
-        icamera_controller.focus_on_position(logistic_coord:get_position_by_coord(object.x, object.y, w, h))
+        icamera_controller.focus_on_position(coord_system:get_position_by_coord(object.x, object.y, w, h))
         iui.redirect("construct.rml", "on_pickup_object", object_id)
     end
 
     item_transfer_placement_interval(datamodel, pickup_id)
     iobject.flush()
 end
-return M
+return M    

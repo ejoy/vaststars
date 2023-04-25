@@ -17,6 +17,7 @@ local free_mode = {
     ["skip_guide"] = true,
     ["recipe_unlocked"] = true,
     ["item_unlocked"] = true,
+    ["show_construct_entity"] = true,
 }
 
 local function get(k)

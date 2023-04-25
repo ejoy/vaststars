@@ -105,17 +105,7 @@ local function restore_world()
         end
     end
 
-    local building_coord = require "global".building_coord_system
-    local function _logisitic_to_building(x, y)
-        local nposition = assert(terrain:get_begin_position_by_coord(x, y))
-        nposition[1] = nposition[1] - 5
-        nposition[3] = nposition[3] + 5
-        local ncoord = building_coord:get_coord_by_position(math3d.vector(nposition))
-        if not ncoord then
-            return
-        end
-        return ncoord[1], ncoord[2]
-    end
+    local coord_system = require "global".coord_system
 
     --
     local function restore_object(all_object, map, gameplay_eid, prototype_name, dir, x, y, fluid_name, fluidflow_id)
@@ -132,14 +122,13 @@ local function restore_world()
             end
         end
 
-        local xx, yy = _logisitic_to_building(x, y) -- TODO: Some buildings may not require coordinate transformation, eg: storage box.
         local object = iobject.new {
             prototype_name = prototype_name,
             dir = dir,
             x = x,
             y = y,
             srt = {
-                t = building_coord:get_position_by_coord(xx, yy, iprototype.rotate_area(typeobject.area, dir, 1, 1)),
+                t = coord_system:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)),
             },
             fluid_name = fluid_name,
             fluidflow_id = fluidflow_id,

@@ -1,5 +1,3 @@
-local iprototype = require "gameplay.interface.prototype"
-
 local M = {}
 
 function M.chest_get(world, ...)

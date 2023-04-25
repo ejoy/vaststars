@@ -95,6 +95,7 @@ return function(tile_width, tile_height)
     M.tile_width, M.tile_height = tile_width, tile_height
     M.tile_unit_width = TILE_UNIT
     M.tile_unit_height = TILE_UNIT
+    M.tile_size = TILE_UNIT
 
     local offset_3d = {-(M.tile_width * TILE_UNIT)/2, 0.0, -(M.tile_height * TILE_UNIT)/2}
     local boundary_3d = {

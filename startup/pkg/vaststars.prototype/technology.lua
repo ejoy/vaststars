@@ -2441,7 +2441,7 @@ prototype "生产气候科技包" {
 --   type = { "tech" },
 --   icon = "textures/science/tech-research.texture",
 --   effects = {
---     unlock_recipe = {"地下卤水电解","隔膜电解","电解厂设计"},
+--     unlock_recipe = {"地下卤水电解1","地下卤水电解2","电解厂设计"},
 --     unlock_building = {"电解厂I"},
 --   },
 --   prerequisites = {"水利研究"},

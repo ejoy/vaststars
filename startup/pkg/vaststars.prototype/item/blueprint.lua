@@ -336,7 +336,7 @@ prototype "建造中心框架" {
     stack = 4,
     pile = "2x2x4",
     pile_model = "prefabs/stackeditems/iron-ore.prefab",
-    icon = "textures/construct/broken-truck.texture",
+    icon = "textures/construct/broken-assembler.texture",
     group = {"加工"},
     item_description = "用于建造建造中心的框架",
 }

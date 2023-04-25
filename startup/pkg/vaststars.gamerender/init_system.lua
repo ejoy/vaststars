@@ -25,7 +25,7 @@ local iefk = ecs.require "engine.efk"
 local iroadnet = ecs.require "roadnet"
 local irender_layer = ecs.require "engine.render_layer"
 local imain_menu_manager = ecs.require "main_menu_manager"
-local idn = ecs.import.interface "mod.daynight|idaynight"
+local idn = ecs.import.interface "ant.daynight|idaynight"
 local icanvas = ecs.require "engine.canvas"
 local DayTick <const> = require("gameplay.interface.constant").DayTick
 local m = ecs.system 'init_system'
@@ -50,7 +50,7 @@ local daynight_update; do
             end
 
             local cycle = (gettime() % second_ms) / second_ms
-            idn.update_cycle(dne, cycle)
+            idn.update_day_cycle(dne, cycle)
         end
     else
         function daynight_update(gameplayWorld)
@@ -60,7 +60,7 @@ local daynight_update; do
             end
 
             local cycle = (gameplayWorld:now() % DayTick) / DayTick
-            idn.update_cycle(dne, cycle)
+            idn.update_day_cycle(dne, cycle)
         end
     end
 end
@@ -100,11 +100,11 @@ function m:init_world()
     iefk.preload "/pkg/vaststars.resources/effect/efk/"
 
     if NOTHING then
+        imain_menu_manager.init()
         return
     end
 
     iroadnet:create()
-
     terrain:create()
 
     if TERRAIN_ONLY then

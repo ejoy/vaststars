@@ -13,7 +13,7 @@ local ipower = ecs.require "power"
 local ipower_line = ecs.require "power_line"
 local imining = require "gameplay.interface.mining"
 local iconstant = require "gameplay.interface.constant"
-local logistic_coord = ecs.require "terrain"
+local coord_system = ecs.require "terrain"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local ALL_DIR = iconstant.ALL_DIR
 local igrid_entity = ecs.require "engine.grid_entity"
@@ -25,13 +25,11 @@ local icanvas = ecs.require "engine.canvas"
 local datalist = require "datalist"
 local fs = require "filesystem"
 local road_entrance_marker_canvas_cfg = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/textures/road_entrance_marker_canvas.cfg")):read "a")
-local building_coord = require "global".building_coord_system
 local math3d = require "math3d"
 local iroadnet_converter = require "roadnet_converter"
 local gen_endpoint_mask = ecs.require "editor.endpoint".gen_endpoint_mask
 local COLOR_GREEN = math3d.constant("v4", {0.3, 1, 0, 1})
 local COLOR_RED = math3d.constant("v4", {1, 0.03, 0, 1})
-local terrain = ecs.require "terrain"
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -69,12 +67,12 @@ local function _get_road_entrance_position(typeobject, dir, position)
 
     local conn  = typeobject.crossing.connections[1]
     local ox, oy, ddir = __rotate_connection_direction(conn.position, dir, typeobject.area)
-    return math3d.ref(math3d.add(position, {ox * logistic_coord.tile_size / 2, 0, oy * logistic_coord.tile_size / 2})), ddir
+    return math3d.ref(math3d.add(position, {ox * coord_system.tile_size / 2, 0, oy * coord_system.tile_size / 2})), ddir
 end
 
 local function __align(prototype_name, dir)
     local typeobject = iprototype.queryByName(prototype_name)
-    local coord, position = logistic_coord:align(icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, dir))
+    local coord, position = coord_system:align(icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, dir))
     if not coord then
         return
     end
@@ -107,11 +105,11 @@ local function __new_entity(self, datamodel, typeobject)
         },
         fluid_name = "",
     }
-    iui.open({"construct_pop.rml"}, self.pickup_object.srt.t, typeobject.name)
+    iui.open({"construct_building.rml"}, self.pickup_object.srt.t, typeobject.name)
 
     local road_entrance_position, road_entrance_dir = _get_road_entrance_position(typeobject, dir, self.pickup_object.srt.t)
     local w, h = iprototype.unpackarea(typeobject.area)
-    local selected_boxes_position = logistic_coord:get_position_by_coord(x, y, w, h)
+    local selected_boxes_position = coord_system:get_position_by_coord(x, y, w, h)
     if road_entrance_position then
         local srt = {t = road_entrance_position, r = ROTATORS[road_entrance_dir]}
         if datamodel.show_confirm then
@@ -184,7 +182,7 @@ local function __show_road_entrance_marker(self, typeobject, dir)
                 goto continue
             end
 
-            local succ, dx, dy = logistic_coord:move_coord(x, y, d, 1)
+            local succ, dx, dy = coord_system:move_coord(x, y, d, 1)
             if not succ then
                 goto continue
             end
@@ -209,7 +207,7 @@ local function __show_road_entrance_marker(self, typeobject, dir)
     local min_dist
     local min_coord
     for _, c in ipairs(coords) do
-        local position = logistic_coord:get_position_by_coord(c.x, c.y, 1, 1)
+        local position = coord_system:get_position_by_coord(c.x, c.y, 1, 1)
         local delta = dir_move_delta[iprototype.reverse_dir(c.dir)]
 
         position[1] = position[1] + (delta.x * (iterrain.tile_size / 2))
@@ -229,7 +227,7 @@ local function __show_road_entrance_marker(self, typeobject, dir)
 
     local markers = {}
     for _, coord in ipairs(coords) do
-        local position = logistic_coord:get_begin_position_by_coord(coord.x, coord.y, 1, 1)
+        local position = coord_system:get_begin_position_by_coord(coord.x, coord.y, 1, 1)
         local delta = dir_move_delta[iprototype.reverse_dir(coord.dir)]
 
         position[1] = position[1] + (delta.x * (iterrain.tile_size / 2))
@@ -273,7 +271,7 @@ local function new_entity(self, datamodel, typeobject)
     self.pickup_object.APPEAR = true
 
     if not self.grid_entity then
-        self.grid_entity = igrid_entity.create("polyline_grid", building_coord.tile_width, building_coord.tile_height, logistic_coord.tile_size, {t = {0, 1, 0}})
+        self.grid_entity = igrid_entity.create("polyline_grid", coord_system.tile_width, coord_system.tile_height, coord_system.tile_size, {t = {0, 1, 0}})
         self.grid_entity:show(true)
 
         if self.road_entrance then
@@ -295,7 +293,7 @@ local function _get_mineral_recipe(prototype_name, x, y, dir)
     local found
     for i = 0, w - 1 do
         for j = 0, h - 1 do
-            local mineral = logistic_coord:get_mineral(x + i, y + j) -- TODO: maybe have multiple minerals in the area
+            local mineral = coord_system:get_mineral(x + i, y + j) -- TODO: maybe have multiple minerals in the area
             if mineral then
                 found = mineral
             end
@@ -324,13 +322,13 @@ local function rotate_pickup_object(self, datamodel, dir, delta_vec)
     end
 
     local w, h = iprototype.unpackarea(typeobject.area)
-    local selected_boxes_position = logistic_coord:get_position_by_coord(pickup_object.x, pickup_object.y, w, h)
+    local selected_boxes_position = coord_system:get_position_by_coord(pickup_object.x, pickup_object.y, w, h)
     self.selected_boxes:set_position(selected_boxes_position)
 end
 
 local function touch_move(self, datamodel, delta_vec)
     if self.pickup_object then
-        iobject.move_delta(self.pickup_object, delta_vec, logistic_coord)
+        iobject.move_delta(self.pickup_object, delta_vec, coord_system)
 
         local typeobject = iprototype.queryByName(self.pickup_object.prototype_name)
 
@@ -341,7 +339,7 @@ local function touch_move(self, datamodel, delta_vec)
         local position, x, y = __align(self.pickup_object.prototype_name, self.pickup_object.dir)
         if position then
             local w, h = iprototype.unpackarea(typeobject.area)
-            local selected_boxes_position = logistic_coord:get_position_by_coord(x, y, w, h)
+            local selected_boxes_position = coord_system:get_position_by_coord(x, y, w, h)
             self.selected_boxes:set_position(selected_boxes_position)
         end
 
@@ -395,7 +393,7 @@ local function touch_end(self, datamodel)
     self.road_entrance:set_srt(mc.ONE, ROTATORS[road_entrance_dir], road_entrance_position)
 
     local w, h = iprototype.unpackarea(typeobject.area)
-    local selected_boxes_position = logistic_coord:get_position_by_coord(pickup_object.x, pickup_object.y, w, h)
+    local selected_boxes_position = coord_system:get_position_by_coord(pickup_object.x, pickup_object.y, w, h)
     self.selected_boxes:set_position(selected_boxes_position)
 
     pickup_object.recipe = _get_mineral_recipe(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir) -- TODO: maybe set recipt according to entity type?
@@ -418,7 +416,6 @@ local function confirm(self, datamodel)
     end
 
     local typeobject = iprototype.queryByName(pickup_object.prototype_name)
-    pickup_object.state = "confirm"
     objects:set(pickup_object, "CONFIRM")
     pickup_object.PREPARE = true
 
@@ -496,7 +493,7 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
     if typeobject.crossing then
         local valid = false
         for _, conn in ipairs(_get_connections(prototype_name, x, y, dir)) do
-            local succ, dx, dy = logistic_coord:move_coord(conn.x, conn.y, conn.dir, 1)
+            local succ, dx, dy = coord_system:move_coord(conn.x, conn.y, conn.dir, 1)
             if not succ then
                 goto continue
             end
@@ -515,7 +512,7 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
             local left = iprototype.rotate_dir_times(conn.dir, -1)
             local right = iprototype.rotate_dir_times(conn.dir, 1)
 
-            local succ, lx, ly = logistic_coord:move_coord(dx, dy, left, 1)
+            local succ, lx, ly = coord_system:move_coord(dx, dy, left, 1)
             if not succ then
                 goto continue
             end
@@ -530,7 +527,7 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
                 break
             end
 
-            local succ, rx, ry = logistic_coord:move_coord(dx, dy, right, 1)
+            local succ, rx, ry = coord_system:move_coord(dx, dy, right, 1)
             if not succ then
                 goto continue
             end
@@ -560,7 +557,7 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
             local dx, dy = x + i, y + j
             local c = {}
             for _, dir in ipairs(ALL_DIR) do
-                local succ, nx, ny = logistic_coord:move_coord(dx, dy, dir, 1)
+                local succ, nx, ny = coord_system:move_coord(dx, dy, dir, 1)
                 if not succ then
                     goto continue
                 end
@@ -604,7 +601,7 @@ local function clean(self, datamodel)
         self.selected_boxes = nil
     end
 
-    iui.close("construct_pop.rml")
+    iui.close("construct_building.rml")
 end
 
 local function create()
