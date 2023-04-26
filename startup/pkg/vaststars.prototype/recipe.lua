@@ -1383,7 +1383,8 @@ prototype "采矿机设计" {
     recipe_order =  52,
     recipe_icon =  "textures/construct/broken-miner.texture",
     ingredients = {
-        {"电动机I", 1},
+        {"电动机I", 2},
+        {"石砖", 4},
     },
     results = {
         {"采矿机框架", 1},
@@ -1415,7 +1416,7 @@ prototype "电线杆设计" {
     recipe_order =  54,
     recipe_icon =  "textures/construct/broken-electric-pole1.texture",
     ingredients = {
-        {"铁板", 1},
+        {"铁板", 3},
     },
     results = {
         {"电线杆框架", 1},
@@ -1498,6 +1499,7 @@ prototype "熔炼炉设计" {
     recipe_icon =  "textures/construct/broken-furnace.texture",
     ingredients = {
         {"电动机I", 1},
+        {"石砖", 8},
     },
     results = {
         {"熔炼炉框架", 1},
@@ -1513,7 +1515,7 @@ prototype "科研中心设计" {
     recipe_order =  56,
     recipe_icon =  "textures/construct/broken-lab.texture",
     ingredients = {
-        {"电动机I", 1},
+        {"电动机I", 2},
     },
     results = {
         {"科研中心框架", 1},
@@ -1529,7 +1531,7 @@ prototype "太阳能板设计" {
     recipe_order =  56,
     recipe_icon =  "textures/construct/broken-solar-panel.texture",
     ingredients = {
-        {"电动机I", 1},
+        {"硅", 15},
     },
     results = {
         {"太阳能板框架", 1},
@@ -1546,6 +1548,7 @@ prototype "蓄电池设计" {
     recipe_icon =  "textures/construct/broken-grid-battery.texture",
     ingredients = {
         {"电动机I", 1},
+        {"硅", 4},
     },
     results = {
         {"蓄电池框架", 1},
@@ -1562,6 +1565,7 @@ prototype "水电站设计" {
     recipe_icon =  "textures/construct/broken-hydroplant.texture",
     ingredients = {
         {"电动机I", 1},
+        {"坩埚", 2},
     },
     results = {
         {"水电站框架", 1},
@@ -1746,7 +1750,7 @@ prototype "机械科技包1" {
     recipe_icon =  "textures/recipe/mechanical-pack.texture",
     ingredients = {
         {"电动机I", 1},
-        {"铁齿轮", 3},
+        {"塑料", 3},
     },
     results = {
         {"机械科技包", 1},
@@ -1816,7 +1820,7 @@ prototype "碎石挖掘" {
     results = {
         {"碎石", 1},
     },
-    time = "3s",
+    time = "2s",
     description = "采集碎石",
 }
 
@@ -2548,6 +2552,22 @@ prototype "丁二烯排泄" {
     time = "1s",
     description = "丁二烯排泄",
 }
+
+prototype "蒸汽发电" {
+    type = { "recipe" },
+    category = "流体发电",
+    --recipe_group =  "化工",
+    recipe_order =  119,
+    recipe_icon =  "textures/fluid/gas.texture",
+    ingredients = {
+        {"蒸汽", 400},
+    },
+    results = {
+    },
+    time = "4s",
+    description = "蒸汽发电",
+}
+
 ---------地下卤水生成矿物配方----------
 prototype "地下卤水分离铁" {
     type = { "recipe" },
