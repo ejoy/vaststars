@@ -256,10 +256,10 @@ local function generate_each_grids(offset, old_tp_num)
             cur_call_id = cur_call_id + 1
             call_to_tp[new_call_id] = new_call_id
             tp_to_call[new_tp_id] = new_call_id
-            id_table[#id_table+1] = new_tp_id
+            id_table[#id_table+1] = new_call_id
         end
     end
-
+    
     tp_table = final_table
     return id_table
 end
