@@ -170,7 +170,6 @@ local TaskSchema <const> = {
 	stat_production = {0, "raw", "item/fluid"},
 	stat_consumption = {1, "raw", "item/fluid"},
 	select_entity = {2, "raw", "building"},
-	select_chest = {3, "raw", "building", "item"},
 	power_generator = {4, "raw"},
 	unknown = {5, "raw", "raw"},
 }
