@@ -213,7 +213,9 @@ end
 
 local function remove_all_tp()
     for idx = 1, #tp_table do
-        w:remove(tp_table[idx].eid)
+        if tp_table[idx].eid then
+            w:remove(tp_table[idx].eid)
+        end
     end
 end
 
@@ -242,29 +244,19 @@ local function generate_each_grids(offset, old_tp_num)
         if idx <= old_tp_num then
             -- old
             local old_call_id = tp_to_call[idx]
-            call_to_tp[old_call_id] = nil
-
             local new_tp_id = #final_table + 1
-            if eid then
-                final_table[new_tp_id] = tp
-                call_to_tp[old_call_id] = new_tp_id
-                tp_to_call[new_tp_id] = old_call_id
-            else
-                tp_to_call[idx] = nil 
-            end
+            final_table[new_tp_id] = tp
+            call_to_tp[old_call_id] = new_tp_id
+            tp_to_call[new_tp_id] = old_call_id
         else
             -- new
-            local new_id = -1
-            if eid then
-                local new_tp_id = #final_table + 1
-                final_table[new_tp_id] = tp
-                local new_call_id = cur_call_id + 1
-                cur_call_id = cur_call_id + 1
-                call_to_tp[new_call_id] = new_call_id
-                tp_to_call[new_tp_id] = new_call_id
-                new_id = new_tp_id
-            end
-            id_table[#id_table+1] = new_id
+            local new_tp_id = #final_table + 1
+            final_table[new_tp_id] = tp
+            local new_call_id = cur_call_id + 1
+            cur_call_id = cur_call_id + 1
+            call_to_tp[new_call_id] = new_call_id
+            tp_to_call[new_tp_id] = new_call_id
+            id_table[#id_table+1] = new_tp_id
         end
     end
 
@@ -291,7 +283,9 @@ function itp.remove_translucent_plane(id_table)
         if tp_id then
             tp_to_call[tp_id] = nil
             index_table[tp_id] = true
-            w:remove(tp_table[tp_id].eid)
+            if tp_table[tp_id].eid then
+                w:remove(tp_table[tp_id].eid)
+            end
         end
     end
     local final_table = {}
