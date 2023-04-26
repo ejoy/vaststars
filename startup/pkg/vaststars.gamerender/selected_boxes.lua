@@ -20,10 +20,7 @@ local function create_object(prefab, srt)
         for _, eid in ipairs(self.tag['*']) do
             local e <close> = w:entity(eid, "render_object?in animation_birth?in")
             if e.render_object then
-                w:extend(e, "render_object:update render_layer:update")
-                e.render_layer = RENDER_LAYER.SELECTED_BOXES
-                local idx = irl.layeridx(e.render_layer)
-                e.render_object.render_layer = idx
+                irl.set_layer(e, RENDER_LAYER.SELECTED_BOXES)
             end
 
             if e.animation_birth then
