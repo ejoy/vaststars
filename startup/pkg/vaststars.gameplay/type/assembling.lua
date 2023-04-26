@@ -4,7 +4,7 @@ local fluidbox = require "interface.fluidbox"
 
 local c = type "assembling"
     .speed "percentage"
-    .maxslot "count"
+    .maxslot "integer"
 
 local STATUS_IDLE <const> = 0
 local STATUS_DONE <const> = 1

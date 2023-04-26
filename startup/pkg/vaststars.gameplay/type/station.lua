@@ -5,7 +5,7 @@ local iendpoint = require "interface.endpoint"
 local c = type "station"
     .station_type "station_type"
     .chest_type "chest_type"
-    .weights "count"
+    .weights "integer"
 
 function c:ctor(init, pt)
     local world = self

@@ -2,7 +2,7 @@ local type = require "register.type"
 local prototype = require "prototype"
 
 type "item"
-    .stack "number"
+    .stack "integer"
 
 type "fluid"
 
@@ -26,7 +26,7 @@ end
 local tech = type "tech"
     .ingredients "items"
     .time "time"
-    .count "number"
+    .count "integer"
 
 function tech:init()
     return {
@@ -37,7 +37,7 @@ end
 local task = type "task"
     .ingredients "items"
     .task "task"
-    .count "number"
+    .count "integer"
     .time "time"
 
 function task:init()
