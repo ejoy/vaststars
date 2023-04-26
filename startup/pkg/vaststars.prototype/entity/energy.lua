@@ -13,14 +13,27 @@ prototype "蒸汽发电机I" {
     priority = "secondary",
     craft_category = {"流体发电"},
     maxslot = "8",
-    fluidbox = {
-        capacity = 100,
-        height = 200,
-        base_level = -100,
-        connections = {
-            {type="input-output", position={1,0,"N"}},
-            {type="input-output", position={1,2,"S"}},
-        }
+    fluidboxes = {
+        input = {
+            {
+                capacity = 400,
+                height = 100,
+                base_level = -100,
+                connections = {
+                    {type="input-output", position={1,0,"N"}},
+                }
+            },
+        },
+        output = {
+            {
+                capacity = 400,
+                height = 200,
+                base_level = 100,
+                connections = {
+                    {type="input-output", position={1,2,"S"}},
+                }
+            },
+        },
     }
 }
 
