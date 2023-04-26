@@ -5,6 +5,8 @@ local fluidbox = require "interface.fluidbox"
 local STATUS_IDLE <const> = 0
 local STATUS_DONE <const> = 1
 
+local InvalidChest <const> = 0
+
 local function isFluidId(id)
     local pt = query(id)
     for _, t in ipairs(pt.type) do
@@ -70,7 +72,7 @@ local function resetItems(world, recipe, chest, option, maxslot)
     local hash = {}
     local olditems = {}
     local newitems = {}
-    if chest.chest ~= 0 then
+    if chest.chest ~= InvalidChest then
         for i = 1, 256 do
             local slot = world:container_get(chest, i)
             if not slot then
@@ -153,7 +155,9 @@ local function set_recipe(world, e, pt, recipe_name, fluids, option)
     assembling.status = STATUS_IDLE
     local chest = e.chest
     local items = resetItems(world, recipe, chest, option, pt.maxslot)
-    world:container_destroy(chest)
+    if chest.chest ~= InvalidChest then
+        world:container_destroy(chest)
+    end
     chest.chest = world:container_create(items)
     if fluids and pt.fluidboxes then
         local fluidbox_in, fluidbox_out = createFluidBox(fluids, recipe)

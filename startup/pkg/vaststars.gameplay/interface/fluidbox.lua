@@ -9,7 +9,9 @@ local function fluidId(name)
 end
 
 local function update_fluidboxes(e, pt, fluids)
-    assert(e.fluidboxes ~= nil)
+    if not e.fluidboxes then
+        return
+    end
     assert(pt.fluidboxes)
     assert(#pt.fluidboxes.input <= 4)
     assert(#pt.fluidboxes.output <= 3)

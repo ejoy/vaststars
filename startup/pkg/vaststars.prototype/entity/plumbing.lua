@@ -132,7 +132,7 @@ prototype "空气过滤器I" {
     model = "prefabs/chimney-1.prefab",
     icon = "textures/building_pic/small_pic_outfall.texture",
     construct_detector = {"exclusive"},
-    type = {"building", "consumer","assembling","fluidboxes"},
+    type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "2x2",
     rotate_on_build = true,
     power = "50kW",
