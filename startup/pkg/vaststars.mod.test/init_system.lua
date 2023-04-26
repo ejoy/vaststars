@@ -165,7 +165,6 @@ function S:data_changed()
                 {1.0, 1.0, 0.0, 1.0},
             }
             eid_table = itp.create_translucent_plane(rect_table, color_table, "translucent")
-            local t = 1
         elseif key =="K" and press == 0 then
             local rect_table = {
                 [1] = {x = -3, z = -3, w = 3, h = 3},

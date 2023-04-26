@@ -254,7 +254,7 @@ local function generate_each_grids(offset, old_tp_num)
             final_table[new_tp_id] = tp
             local new_call_id = cur_call_id + 1
             cur_call_id = cur_call_id + 1
-            call_to_tp[new_call_id] = new_call_id
+            call_to_tp[new_call_id] = new_tp_id
             tp_to_call[new_tp_id] = new_call_id
             id_table[#id_table+1] = new_call_id
         end
@@ -273,7 +273,7 @@ function itp.create_translucent_plane(rect_table, color_table, render_layer)
     return generate_each_grids(offset, old_tp_num)
 end
 
-
+--删除完以后tp_table和tp_all中的idx没有保持一致
 function itp.remove_translucent_plane(id_table)
     local index_table = {}
     for idx = 1, #id_table do
