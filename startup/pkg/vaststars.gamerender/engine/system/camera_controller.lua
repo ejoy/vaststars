@@ -5,8 +5,9 @@ local w = world.w
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local math3d = require "math3d"
 local mathpkg = import_package "ant.math"
-local mu = mathpkg.util
+local mu, mc = mathpkg.util, mathpkg.constant
 local irq = ecs.import.interface "ant.render|irenderqueue"
+local ic = ecs.import.interface "ant.camera|icamera"
 
 local MOVE_SPEED <const> = 8.0
 local DROP_SPEED <const> = 2.5
@@ -27,11 +28,20 @@ local gesture_pan = world:sub {"gesture", "pan"}
 
 local datalist = require "datalist"
 local fs = require "filesystem"
-local CAMERA_DEFAULT = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/camera_default.prefab")):read "a")
-local CAMERA_DEFAULT_YAIXS <const> = CAMERA_DEFAULT[1].data.scene.t[2]
+local CAMERA_DEFAULT = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/camera_default.prefab")):read "a")[1].data.scene
+local CAMERA_CONSTRUCT = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/camera_construct.prefab")):read "a")[1].data.scene
+
+local CAMERA_DEFAULT_SCALE    = CAMERA_DEFAULT.s and math3d.constant("v4", CAMERA_DEFAULT.s)or mc.ONE
+local CAMERA_DEFAULT_ROTATION = CAMERA_DEFAULT.r and math3d.constant("quat", CAMERA_DEFAULT.r) or mc.IDENTITY_QUAT
+local CAMERA_DEFAULT_POSITION = CAMERA_DEFAULT.t and math3d.constant("v4", CAMERA_DEFAULT.t) or mc.ZERO_PT
+
+local CAMERA_CONSTRUCT_SCALE    = CAMERA_CONSTRUCT.s and math3d.constant("v4", CAMERA_CONSTRUCT.s) or mc.ONE
+local CAMERA_CONSTRUCT_ROTATION = CAMERA_CONSTRUCT.r and math3d.constant("quat", CAMERA_CONSTRUCT.r) or mc.IDENTITY_QUAT
+local CAMERA_CONSTRUCT_POSITION = CAMERA_CONSTRUCT.t and math3d.constant("v4", CAMERA_CONSTRUCT.t) or mc.ZERO_PT
+
+local CAMERA_DEFAULT_YAIXS <const> = CAMERA_DEFAULT.t[2]
 local CAMERA_YAIXS_MIN <const> = CAMERA_DEFAULT_YAIXS - 280
 local CAMERA_YAIXS_MAX <const> = CAMERA_DEFAULT_YAIXS + 150
-
 
 local function zoom(v)
     local mq = w:first("main_queue camera_ref:in render_target:in")
@@ -142,4 +152,33 @@ function icamera_controller.focus_on_position(position)
     local p = icamera_controller.get_central_position()
     local delta = math3d.set_index(math3d.sub(position, p), 2, 0) -- the camera is always moving in the x/z axis and the y axis is always 0
     iom.move_delta(ce, delta)
+end
+
+function icamera_controller.toggle_view(v)
+    local mq = w:first("main_queue camera_ref:in")
+    local e <close> = w:entity(mq.camera_ref)
+
+    if v == "construct" then
+        local delta = math3d.sub(iom.get_position(e), CAMERA_DEFAULT_POSITION)
+        local position = math3d.add(delta, CAMERA_CONSTRUCT_POSITION)
+        iom.set_srt(e, CAMERA_CONSTRUCT_SCALE, CAMERA_CONSTRUCT_ROTATION, position)
+    else
+        local delta = math3d.sub(iom.get_position(e), CAMERA_CONSTRUCT_POSITION)
+        local position = math3d.add(delta, CAMERA_DEFAULT_POSITION)
+        iom.set_srt(e, CAMERA_DEFAULT_SCALE, CAMERA_DEFAULT_ROTATION, position)
+    end
+end
+
+function icamera_controller.set_camera_from_prefab(prefab)
+    local data = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/" .. prefab)):read "a")
+    if not data then
+        return
+    end
+    assert(data[1] and data[1].data and data[1].data.camera)
+    local c = data[1].data
+
+    local mq = w:first("main_queue camera_ref:in")
+    local e <close> = w:entity(mq.camera_ref, "scene:update")
+    iom.set_srt(e, c.scene.s or mc.ONE, c.scene.r, c.scene.t)
+    ic.set_frustum(e, c.camera.frustum)
 end

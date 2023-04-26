@@ -892,6 +892,8 @@ local prototype = gameplay.register.prototype
     type = { "tech", "task" },
     task = {"select_entity", 0, "科研中心I"},
     prerequisites = {"更多碎石"},
+    ingredients = {
+    },
     count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_click_build.texture",
