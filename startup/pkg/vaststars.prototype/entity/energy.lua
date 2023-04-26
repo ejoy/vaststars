@@ -11,6 +11,7 @@ prototype "蒸汽发电机I" {
     rotate_on_build = true,
     power = "1MW",
     priority = "secondary",
+    maxslot = "8",
     fluidbox = {
         capacity = 100,
         height = 200,
