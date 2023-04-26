@@ -9,7 +9,7 @@ struct task {
         stat_production = 0,
         stat_consumption,
         select_entity,
-        select_chest,
+        reserve,
         power_generator,
         unknown,
     };
@@ -21,7 +21,6 @@ struct task {
     uint64_t stat_production(world& w) const;
     uint64_t stat_consumption(world& w) const;
     uint64_t select_entity(world& w) const;
-    uint64_t select_chest(world& w) const;
     uint64_t power_generator(world& w) const;
     uint64_t eval(world& w) const;
     uint16_t progress(world& w) const;
@@ -55,25 +54,6 @@ uint64_t task::select_entity(world& w) const {
     return n;
 }
 
-uint64_t task::select_chest(world& w) const {
-    uint64_t n = 0;
-    //TODO
-    //for (auto& v : ecs_api::select<ecs::chest, ecs::building>(w.ecs)) {
-    //    ecs::building& building = v.get<ecs::building>();
-    //    if (building.prototype == p1) {
-    //        auto& c = v.get<ecs::chest>();
-    //        auto& chest = w.query_chest(c.id);
-    //        for (auto& slot : chest.slots) {
-    //            if (slot.item == p2) {
-    //                n += slot.amount;
-    //                break;
-    //            }
-    //        }
-    //    }
-    //}
-    return n;
-}
-
 uint64_t task::power_generator(world& w) const {
     return w.stat.generate_power;
 }
@@ -83,7 +63,6 @@ uint64_t task::eval(world& w) const {
     case task::type::stat_production:         return stat_production(w);
     case task::type::stat_consumption:        return stat_consumption(w);
     case task::type::select_entity:           return select_entity(w);
-    case task::type::select_chest:            return select_chest(w);
     case task::type::power_generator:         return power_generator(w);
     default: return 0;
     }
