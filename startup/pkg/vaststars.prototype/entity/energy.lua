@@ -6,7 +6,7 @@ prototype "蒸汽发电机I" {
     icon = "textures/building_pic/small_pic_turbine.texture",
     background = "textures/build_background/pic_turbine.texture",
     construct_detector = {"exclusive"},
-    type = {"building", "generator", "fluidbox"},
+    type = {"building", "generator", "fluidbox","assembling"},
     area = "3x5",
     rotate_on_build = true,
     power = "1MW",
