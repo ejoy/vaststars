@@ -28,7 +28,7 @@ local function number_conversion(n, u)
 	return math.floor(n)
 end
 
-register_unit("power", "dword", function(s)
+register_unit("power", "integer", function(s)
 	if s == nil then
 		return
 	end
@@ -39,7 +39,7 @@ register_unit("power", "dword", function(s)
 	return number_conversion(n,u) // UPS
 end)
 
-register_unit("energy", "dword", function(s)
+register_unit("energy", "integer", function(s)
 	if s == nil then
 		return
 	end
@@ -50,26 +50,22 @@ register_unit("energy", "dword", function(s)
 	return number_conversion(n,u)
 end)
 
-local function check_number(s)
+local function check_integer(s)
 	if type(s) == "number" then
-		return s
+		return math.floor(s)
 	end
 	local n, u = s:match "^(%d+%.?%d*)([kMG]?)$"
 	if not n then
-		return nil, "Need a number"
+		return nil, "Need a integer"
 	end
 	return number_conversion(n,u)
 end
 
-register_unit("number", "float", check_number)
-
-register_unit("count", "int", function(s)
-	return check_number(s) | 0
-end)
+register_unit("integer", "integer", check_integer)
 
 register_unit("percentage", "float", function(s)
 	if s == nil then
-		return 1
+		return 1.0
 	end
 	if type(s) == "number" then
 		return s
@@ -81,13 +77,12 @@ register_unit("percentage", "float", function(s)
 	return p / 100
 end)
 
-register_unit("time", "word", function(s)
+register_unit("time", "integer", function(s)
 	if s == nil then
 		return
 	end
 	if type(s) == "number" then
-		local tick = math.floor(s)
-		return tick
+		return math.floor(s)
 	end
 	if s:match "^[%d.]+s$" then
 		local time = assert(tonumber(s:sub(1, -2)))
@@ -101,7 +96,7 @@ register_unit("time", "word", function(s)
 	return nil, "Invalid time"
 end)
 
-register_unit("size", "word", function(s)
+register_unit("size", "integer", function(s)
 	if type(s) ~= "string" then
 		return nil, "Need size *x*"
 	end
@@ -119,11 +114,6 @@ end)
 
 register_unit("text", "string", function(s)
 	-- todo : localization
-	assert(type(s) == "string")
-	return s
-end)
-
-register_unit("filter", "string", function(s)
 	assert(type(s) == "string")
 	return s
 end)
@@ -253,5 +243,5 @@ local function register_enum(tname)
 end
 
 for name in pairs(enum) do
-	register_unit(name, "int", register_enum(name))
+	register_unit(name, "integer", register_enum(name))
 end
