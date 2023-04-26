@@ -16,6 +16,8 @@ lm.bindir = ("bin/%s/%s"):format(plat, lm.mode)
 lm.compile_commands = "build"
 lm.visibility = "default"
 
+lm.c = "c17"
+lm.cxx = "c++20"
 if lm.os == "ios" then
     lm.arch = "arm64"
     if lm.mode == "release" then
