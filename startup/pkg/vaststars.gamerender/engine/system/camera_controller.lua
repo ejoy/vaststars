@@ -8,15 +8,20 @@ local mathpkg = import_package "ant.math"
 local mu, mc = mathpkg.util, mathpkg.constant
 local irq = ecs.import.interface "ant.render|irenderqueue"
 local ic = ecs.import.interface "ant.camera|icamera"
+local platform = require "bee.platform"
+local create_queue = require("utility.queue")
+local hierarchy = require "hierarchy"
+local animation = hierarchy.animation
+local skeleton = hierarchy.skeleton
 
 local MOVE_SPEED <const> = 8.0
-local DROP_SPEED <const> = 2.5
+local PAN_SPEED = 1.0
+if "ios" == platform.os then
+    PAN_SPEED = 2.5
+end
+
 local YAXIS_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
 local PLANES <const> = {YAXIS_PLANE}
-local platform = require "bee.platform"
-local function is_ios()
-	return "ios" == platform.os
-end
 
 local camera_controller = ecs.system "camera_controller"
 local icamera_controller = ecs.interface "icamera_controller"
@@ -43,6 +48,9 @@ local CAMERA_DEFAULT_YAIXS <const> = CAMERA_DEFAULT.t[2]
 local CAMERA_YAIXS_MIN <const> = CAMERA_DEFAULT_YAIXS - 280
 local CAMERA_YAIXS_MAX <const> = CAMERA_DEFAULT_YAIXS + 150
 
+local cam_cmd_queue = create_queue()
+local cam_motion_matrix_queue = create_queue()
+
 local function zoom(v)
     local mq = w:first("main_queue camera_ref:in render_target:in")
     local ce<close> = w:entity(mq.camera_ref, "scene:update")
@@ -54,6 +62,104 @@ local function zoom(v)
     end
 end
 
+local function focus_on_position(position)
+    local mq = w:first("main_queue camera_ref:in")
+    local ce <close> = w:entity(mq.camera_ref)
+    local p = icamera_controller.get_central_position()
+    local delta = math3d.set_index(math3d.sub(position, p), 2, 0) -- the camera is always moving in the x/z axis and the y axis is always 0
+    return iom.get_scale(ce), iom.get_rotation(ce), math3d.add(iom.get_position(ce), delta)
+end
+
+local function toggle_view(v)
+    local mq = w:first("main_queue camera_ref:in")
+    local e <close> = w:entity(mq.camera_ref)
+
+    if v == "construct" then
+        local delta = math3d.sub(iom.get_position(e), CAMERA_DEFAULT_POSITION)
+        local position = math3d.add(delta, CAMERA_CONSTRUCT_POSITION)
+        return CAMERA_CONSTRUCT_SCALE, CAMERA_CONSTRUCT_ROTATION, position
+    else
+        local delta = math3d.sub(iom.get_position(e), CAMERA_CONSTRUCT_POSITION)
+        local position = math3d.add(delta, CAMERA_DEFAULT_POSITION)
+        return CAMERA_DEFAULT_SCALE, CAMERA_DEFAULT_ROTATION, position
+    end
+end
+
+local function __check_camera_editable()
+    return cam_cmd_queue:size() <= 0 and cam_motion_matrix_queue:size() <= 0
+end
+
+local function __add_camera_track(s, r, t)
+    local raw_animation = animation.new_raw_animation()
+    local skl = skeleton.build({{name = "root", s = mc.T_ONE, r = mc.T_IDENTITY_QUAT, t = mc.T_ZERO}})
+    raw_animation:setup(skl, 2)
+
+    local mq = w:first("main_queue camera_ref:in")
+    local ce <close> = w:entity(mq.camera_ref)
+
+    raw_animation:push_prekey(
+        "root",
+        0,
+        iom.get_scale(ce),
+        iom.get_rotation(ce),
+        iom.get_position(ce)
+    )
+
+    raw_animation:push_prekey(
+        "root",
+        1,
+        s,
+        r,
+        t
+    )
+
+    local ani = raw_animation:build()
+    local poseresult = animation.new_pose_result(#skl)
+    poseresult:setup(skl)
+
+    local ratio = 0
+    local step = 2 / 30
+
+    while ratio <= 1.0 do
+        poseresult:do_sample(animation.new_sampling_context(1), ani, ratio, 0)
+        poseresult:fetch_result()
+        cam_motion_matrix_queue:push( math3d.ref(poseresult:joint(1)) )
+        ratio = ratio + step
+    end
+end
+
+local function __handle_camera_motion()
+    if cam_motion_matrix_queue:size() == 0 then
+        if cam_cmd_queue:size() == 0 then
+            return
+        end
+
+        local cmd = assert(cam_cmd_queue:pop())
+        local c = cmd[1]
+        if c[1] == "focus_on_position" then
+            __add_camera_track(focus_on_position(table.unpack(c, 2)))
+        elseif c[1] == "toggle_view" then
+            __add_camera_track(toggle_view(table.unpack(c, 2)))
+        elseif c[1] == "callback" then
+            c[2]()
+        else
+            assert(false)
+        end
+    end
+
+    if cam_motion_matrix_queue:size() > 0 then
+        local mat = cam_motion_matrix_queue:pop()
+        if mat then
+            local mq = w:first("main_queue camera_ref:in")
+            local e <close> = w:entity(mq.camera_ref)
+            local s, r, t = math3d.srt(mat)
+            iom.set_scale(e, s)
+            iom.set_rotation(e, r)
+            iom.set_position(e, t)
+        end
+    end
+end
+
 local __handle_drop_camera; do
     local last_position
 
@@ -61,17 +167,16 @@ local __handle_drop_camera; do
         local position
 
         for _, _, e in gesture_pan:unpack() do
-            if e.state == "began" then
-                local x, y = e.translationInView.x, e.translationInView.y
-                last_position = math3d.ref(icamera_controller.screen_to_world(x, y, PLANES)[1])
-            elseif e.state == "changed" then
-                local x, y = e.translationInView.x, e.translationInView.y
-                if is_ios() then
-                    x, y = x * DROP_SPEED, y * DROP_SPEED
+            if __check_camera_editable() then
+                if e.state == "began" then
+                    local x, y = e.translationInView.x, e.translationInView.y
+                    last_position = math3d.ref(icamera_controller.screen_to_world(x, y, PLANES)[1])
+                elseif e.state == "changed" then
+                    local x, y = e.translationInView.x * PAN_SPEED, e.translationInView.y * PAN_SPEED
+                    position = {x = x, y = y}
+                elseif e.state == "ended" then
+                    last_position = nil
                 end
-                position = {x = x, y = y}
-            elseif e.state == "ended" then
-                last_position = nil
             end
         end
 
@@ -89,14 +194,19 @@ function camera_controller:camera_usage()
     local ce <close> = w:entity(mq.camera_ref)
 
     for _, delta in mouse_wheel_mb:unpack() do
-        zoom(delta)
+        if __check_camera_editable() then
+            zoom(delta)
+        end
     end
 
     for _, _, e in gesture_pinch:unpack() do
-        zoom(e.velocity)
+        if __check_camera_editable() then
+            zoom(e.velocity)
+        end
     end
 
     __handle_drop_camera(ce)
+    __handle_camera_motion()
 
     for _, _, left, top, position in ui_message_move_camera_mb:unpack() do
         local mq = w:first("main_queue render_target:in")
@@ -146,29 +256,6 @@ function icamera_controller.get_central_position()
     return math3d.muladd(ray.d, math3d.plane_ray(ray.o, ray.d, YAXIS_PLANE), ray.o)
 end
 
-function icamera_controller.focus_on_position(position)
-    local mq = w:first("main_queue camera_ref:in")
-    local ce <close> = w:entity(mq.camera_ref)
-    local p = icamera_controller.get_central_position()
-    local delta = math3d.set_index(math3d.sub(position, p), 2, 0) -- the camera is always moving in the x/z axis and the y axis is always 0
-    iom.move_delta(ce, delta)
-end
-
-function icamera_controller.toggle_view(v)
-    local mq = w:first("main_queue camera_ref:in")
-    local e <close> = w:entity(mq.camera_ref)
-
-    if v == "construct" then
-        local delta = math3d.sub(iom.get_position(e), CAMERA_DEFAULT_POSITION)
-        local position = math3d.add(delta, CAMERA_CONSTRUCT_POSITION)
-        iom.set_srt(e, CAMERA_CONSTRUCT_SCALE, CAMERA_CONSTRUCT_ROTATION, position)
-    else
-        local delta = math3d.sub(iom.get_position(e), CAMERA_CONSTRUCT_POSITION)
-        local position = math3d.add(delta, CAMERA_DEFAULT_POSITION)
-        iom.set_srt(e, CAMERA_DEFAULT_SCALE, CAMERA_DEFAULT_ROTATION, position)
-    end
-end
-
 function icamera_controller.set_camera_from_prefab(prefab)
     local data = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/" .. prefab)):read "a")
     if not data then
@@ -181,4 +268,18 @@ function icamera_controller.set_camera_from_prefab(prefab)
     local e <close> = w:entity(mq.camera_ref, "scene:update")
     iom.set_srt(e, c.scene.s or mc.ONE, c.scene.r, c.scene.t)
     ic.set_frustum(e, c.camera.frustum)
+end
+
+function icamera_controller.focus_on_position(position, callback)
+    cam_cmd_queue:push {{"focus_on_position", position}}
+    if callback then
+        cam_cmd_queue:push {{"callback", callback}}
+    end
+end
+
+function icamera_controller.toggle_view(v, callback)
+    cam_cmd_queue:push {{"toggle_view", v}}
+    if callback then
+        cam_cmd_queue:push {{"callback", callback}}
+    end
 end

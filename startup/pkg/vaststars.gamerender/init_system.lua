@@ -81,8 +81,6 @@ local daynight_update; do
     end
 end
 
-
-
 function m:init_world()
     bgfx.maxfps(FRAMES_PER_SECOND)
     ecs.create_instance "/pkg/vaststars.resources/daynight.prefab"
@@ -91,21 +89,17 @@ function m:init_world()
     -- "foreground", "opacity", "background", "translucent", "decal_stage", "ui_stage"
     irender_layer.init({
         {
-            "foreground",
-            {"TERRAIN"},
+            "opacity",
             {"MINERAL"},
             {"BUILDING_BASE"},
             {"TRANSLUCENT_PLANE"},
-        },
-        {
-            "opacity",
+            {"BUILDING"},
             {"LORRY_SHADOW", "LORRY"},
         },
         {
             "background",
             {"ICON"},
-            {"ICON_CONTENT"},
-            {"WIRE"},
+            {"ICON_CONTENT", "WIRE"},
         },
         {
             "translucent",

@@ -412,7 +412,7 @@ local function confirm(self, datamodel)
     local succ = self:check_construct_detector(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir)
     if not succ then
         log.info("can not construct")
-        return
+        return true
     end
 
     local typeobject = iprototype.queryByName(pickup_object.prototype_name)
@@ -439,6 +439,7 @@ local function confirm(self, datamodel)
         self.selected_boxes = nil
     end
     __new_entity(self, datamodel, typeobject)
+    return false
 end
 
 local iroadnet = ecs.require "roadnet"

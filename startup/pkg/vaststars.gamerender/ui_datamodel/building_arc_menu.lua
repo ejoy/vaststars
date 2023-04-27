@@ -91,7 +91,7 @@ local function __get_first_item(e, object_id)
         if not slot then
             break
         end
-        if slot.item == 0 or slot.amount <= 0 then
+        if slot.item == 0 or ichest.get_amount(slot) <= 0 then
             goto continue
         end
         if slot.type ~= "red" then
@@ -100,7 +100,7 @@ local function __get_first_item(e, object_id)
 
         local typeobject_item = assert(iprototype.queryById(slot.item))
         if iprototype.has_type(typeobject_item.type, "building") then
-            return {icon = typeobject_item.icon, count = slot.amount, name = iprototype.show_prototype_name(typeobject_item), object_id = object_id, index = index}
+            return {icon = typeobject_item.icon, count = ichest.get_amount(slot), name = iprototype.show_prototype_name(typeobject_item), object_id = object_id, index = index}
         end
 
         ::continue::

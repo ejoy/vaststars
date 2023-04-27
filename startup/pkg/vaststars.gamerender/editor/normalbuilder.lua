@@ -115,7 +115,6 @@ local function __new_entity(self, datamodel, typeobject)
         fluid_name = fluid_name,
     }
     iui.open({"construct_building.rml"}, self.pickup_object.srt.t, typeobject.name)
-    iui.redirect("construct.rml", "construction_mode", true)
 
     local offset_x, offset_y = 0, 0
     if typeobject.supply_area then
@@ -340,7 +339,6 @@ local function confirm(self, datamodel)
         log.info("can not construct")
         return
     end
-    iui.redirect("construct.rml", "construction_mode", false)
 
     local typeobject = iprototype.queryByName(pickup_object.prototype_name)
     objects:set(pickup_object, "CONFIRM")
@@ -366,7 +364,7 @@ local function confirm(self, datamodel)
         self.sprite = nil
     end
     idronecover.clear()
-    self:complete(pickup_object.id, datamodel)
+    return self:complete(pickup_object.id, datamodel)
 end
 
 local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
@@ -420,7 +418,7 @@ local function __deduct_item(self, e)
         if not slot then
             break
         end
-        if slot.item == self.item and slot.amount - slot.lock_item > 0 then
+        if slot.item == self.item and ichest.get_amount(slot) > 0 then
             return 0
         end
     end
@@ -434,7 +432,7 @@ local function complete(self, object_id, datamodel)
         local object = assert(objects:get(object_id))
         local typeobject = iprototype.queryByName(object.prototype_name)
         new_entity(self, datamodel, typeobject)
-        return
+        return true
     end
 
     local e = gameplay_core.get_entity(assert(self.gameplay_eid))
@@ -442,12 +440,12 @@ local function complete(self, object_id, datamodel)
     self.super.complete(self, object_id)
 
     if not continue_construct then
-        self:clean(datamodel)
-        iui.redirect("construct.rml", "move_finish") -- TODO：remove this
+        return false
     else
         local object = assert(objects:get(object_id))
         local typeobject = iprototype.queryByName(object.prototype_name)
         new_entity(self, datamodel, typeobject)
+        return true
     end
 end
 
@@ -545,7 +543,6 @@ local function clean(self, datamodel)
     idronecover.clear()
 
     iui.close("construct_building.rml")
-    iui.redirect("construct.rml", "construction_mode", false)
 end
 
 local function create(gameplay_eid, item)

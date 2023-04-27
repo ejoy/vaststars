@@ -10,6 +10,7 @@ local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local math3d = require "math3d"
 local COLOR_INVALID <const> = math3d.constant "null"
 local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
+local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local prefab_parse = require("engine.prefab_parser").parse
 local replace_material = require("engine.prefab_parser").replace_material
 local irl = ecs.import.interface "ant.render|irender_layer"
@@ -106,6 +107,7 @@ local __get_hitch_children ; do
     end
 
     function __get_hitch_children(prefab, material_type, color, animation_name, final_frame, emissive_color, render_layer, outline_scale)
+        render_layer = render_layer or RENDER_LAYER.BUILDING
         local hash = __calc_param_hash(prefab, material_type, tostring(color), animation_name, final_frame, tostring(emissive_color), render_layer, outline_scale)
         if cache[hash] then
             return cache[hash]

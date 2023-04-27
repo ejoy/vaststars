@@ -29,7 +29,7 @@ end
 
 function M:stage_ui_update(datamodel)
     for _ in cancel_mb:unpack() do
-        iui.redirect("construct.rml", "move_finish")
+        iui.redirect("construct.rml", "cancel")
     end
 
     for _ in build_mb:unpack() do

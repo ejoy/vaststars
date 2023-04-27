@@ -7,8 +7,8 @@ local function get_movable_items(e)
     local hash = {}
     if e.hub then
         local slot = gameplay_core.get_world():container_get(e.hub, 1)
-        if slot.item ~= 0 and slot.amount - slot.lock_item >= 0 then
-            items[#items + 1] = {chest = e.hub, item = slot.item, count = slot.amount - slot.lock_item}
+        if slot.item ~= 0 and ichest.get_amount(slot) >= 0 then
+            items[#items + 1] = {chest = e.hub, item = slot.item, count = ichest.get_amount(slot)}
             hash[slot.item] = #items
         end
     end
@@ -20,8 +20,8 @@ local function get_movable_items(e)
             local results_n <const> = #recipe_typeobject.results//4 - 1
             for i = 1, results_n do
                 local slot = gameplay_core.get_world():container_get(e.chest, ingredients_n + i)
-                if slot.amount - slot.lock_item >= 0 then
-                    items[#items + 1] = {chest = e.chest, item = slot.item, count = slot.amount - slot.lock_item}
+                if ichest.get_amount(slot) >= 0 then
+                    items[#items + 1] = {chest = e.chest, item = slot.item, count = ichest.get_amount(slot)}
                     hash[slot.item] = #items
                 end
             end
@@ -29,8 +29,8 @@ local function get_movable_items(e)
     else
         if e.chest then
             for _, slot in pairs(ichest.collect_item(gameplay_core.get_world(), e)) do
-                if slot.amount - slot.lock_item > 0 then
-                    items[#items + 1] = {chest = e.chest, item = slot.item, count = slot.amount - slot.lock_item}
+                if ichest.get_amount(slot) > 0 then
+                    items[#items + 1] = {chest = e.chest, item = slot.item, count = ichest.get_amount(slot)}
                     hash[slot.item] = #items
                 end
             end
@@ -42,8 +42,8 @@ local function get_placeable_items(e)
     local items = {}
     if e.hub then
         local slot = gameplay_core.get_world():container_get(e.hub, 1)
-        if slot.item ~= 0 and slot.amount + slot.lock_space < slot.limit then
-            items[#items + 1] = {chest = e.hub, item = slot.item, count = slot.limit - slot.amount + slot.lock_space}
+        if slot.item ~= 0 and ichest.get_space(slot) > 0 then
+            items[#items + 1] = {chest = e.hub, item = slot.item, count = ichest.get_space(slot)}
         end
     end
     if e.assembling then

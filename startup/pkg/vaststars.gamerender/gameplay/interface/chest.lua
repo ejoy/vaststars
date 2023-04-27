@@ -28,4 +28,12 @@ function M.collect_item(world, e)
     return r
 end
 
+function M.get_amount(slot)
+    return slot.amount - slot.lock_item
+end
+
+function M.get_space(slot)
+    return slot.limit - slot.amount + slot.lock_space
+end
+
 return M

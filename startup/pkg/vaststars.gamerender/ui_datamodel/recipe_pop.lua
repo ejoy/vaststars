@@ -242,7 +242,7 @@ local function __throw_construction_chest(e, x, y, w, h)
         local results_n <const> = #old_recipe.results//4 - 1
         for i = 1, results_n do
             local slot = ichest.chest_get(gameplay_core.get_world(), e.chest, i + ingredients_n)
-            if slot and slot.item ~= 0 and slot.amount > 0 then
+            if slot and slot.item ~= 0 and ichest.get_amount(slot) > 0 then
                 olditems[#olditems+1] = slot
             end
         end
@@ -258,8 +258,9 @@ local function __throw_construction_chest(e, x, y, w, h)
                 local v = empty_tile[i]
                 local x, y = v[1], v[2]
                 local item = iprototype.queryById(slot.item)
+                local amount = ichest.get_amount(slot)
 
-                assert(ichest.chest_pickup(gameplay_core.get_world(), e.chest, slot.item, slot.amount))
+                assert(ichest.chest_pickup(gameplay_core.get_world(), e.chest, slot.item, amount))
 
                 local o = iobject.new {
                     prototype_name = "建材箱", -- TODO: remove hardcode
@@ -276,7 +277,7 @@ local function __throw_construction_chest(e, x, y, w, h)
                     x = o.x,
                     y = o.y,
                     items = {
-                        {item.name, slot.amount,},
+                        {item.name, amount},
                     },
                 }
                 o.gameplay_eid = igameplay.create_entity(entity)
