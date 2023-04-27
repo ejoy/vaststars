@@ -5,9 +5,17 @@ policy:
 data:
   daynight:
     day:
+      resources:
+        direct      : /pkg/ant.resources.binary/textures/daynight/day_direct.pngx
+        indirect    : /pkg/ant.resources.binary/textures/daynight/day_indirect.pngx
+        intensity   : /pkg/ant.resources.binary/textures/daynight/day_intensity.pngx
       start_rotator:  {0.0,-0.4,0.0}
       rotate_axis: {0.0,-0.6,0.9}
     night:
       start_rotator:  {0.0,-0.4,0.0}
       rotate_axis: {0.0,-0.6,0.9}
+    resources:
+        direct      : /pkg/ant.resources.binary/textures/daynight/night_direct.pngx
+        indirect    : /pkg/ant.resources.binary/textures/daynight/night_indirect.pngx
+        intensity   : /pkg/ant.resources.binary/textures/daynight/night_intensity.pngx
   name: daynight_test 
