@@ -969,6 +969,7 @@ local t = {
 	"/pkg/vaststars.prototype/sprite_color.lua",
 	"/pkg/vaststars.prototype/technology.lua",
 	"/pkg/vaststars.prototype/version.lua",
+	"/pkg/vaststars.resources/camera_construct.prefab",
 	"/pkg/vaststars.resources/camera_default.prefab",
 	"/pkg/vaststars.resources/daynight.prefab",
 	"/pkg/vaststars.resources/effect/efk/a1.texture",
