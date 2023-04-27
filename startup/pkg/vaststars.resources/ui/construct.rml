@@ -409,8 +409,7 @@
                 item_transfer_src_inventory_count = 0,
                 item_transfer_src_inventory = {},
                 show_item_transfer_src_inventory = false,
-                cur_edit_mode = "",       -- 当前的编辑模式, construct/dismantle
-                show_load_resource = false,
+                is_concise_mode = false, -- in concise mode, the main menu in the lower left corner, technology progress button in the upper right corner and help button in the upper left corner are not displayed
                 construction_center_menu = {},
                 tech_count = 0,                 --当前可研究的科技数量
                 show_tech_progress = false,     --是否显示科技进度
@@ -544,12 +543,12 @@
             <!-- 主菜单按钮 -->
             <div class="main-menu-region">
                 <!-- 主菜单隐藏/显示按钮 -->
-                <button class = "main-menu-button" style="border: 0.00vmin; margin:0 1vmin; align-items:flex-end;" data-event-click = "clickExpandCollapsedBar()" data-if = "cur_edit_mode == '' && guide_progress >= 15">
+                <button class = "main-menu-button" style="border: 0.00vmin; margin:0 1vmin; align-items:flex-end;" data-event-click = "clickExpandCollapsedBar()" data-if = "!is_concise_mode && guide_progress >= 15">
                     <div id = "main-menu-button" class = "menu-button-pic" style='height: 6.9vmin; width: 16.6vmin; transform: rotate(270deg); background-image: "textures/common/arrow.texture";'/>
                 </button>
                 <!-- 主菜单隐藏/显示按钮 end-->
-                <collapsed-bar id = "main-menu-collapsed-bar" style = "left: 15vmin; bottom: 0vmin; position: absolute; overflow: hidden;" data-if = "guide_progress >= 15">
-                    <div class = "main-menu-block" data-if = "cur_edit_mode == '' && guide_progress >= 10">
+                <collapsed-bar id = "main-menu-collapsed-bar" style = "left: 15vmin; bottom: 0vmin; position: absolute; overflow: hidden;" data-if = "!is_concise_mode && guide_progress >= 15">
+                    <div class = "main-menu-block" data-if = "guide_progress >= 10">
                         <!-- <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click = "clickHeadquater()" data-if = "guide_progress == 10">
                             <div class = "menu-button-pic" style='background-image:"textures/construct/logistics_center.texture"'/>
                             <div class = "menu-button-text">指挥中心</div>
@@ -579,19 +578,15 @@
                     </div>
                 </collapsed-bar>
             </div>
-            <!-- 加载资源按钮 -->
-            <!-- button  class = "main-menu-button" style="border: 0.00vmin; position: absolute; left: -5vmin; top: -4vmin;" data-event-click="clickLoadResource()" data-if = "cur_edit_mode == '' && guide_progress >= 10 && show_load_resource">
-                <div class = "menu-button-pic" style='width:8vmin; height:8vmin; background-image:"textures/cmdcenter/big_bag.texture"'/>
-            </button -->
 
             <!-- 帮助按钮 -->
-            <button  class = "main-menu-button" style="border: 0.00vmin; position: absolute; left:-5vmin; top: -4vmin;" data-event-click="clickHelp()" data-if = "cur_edit_mode == '' && guide_progress >= 10">
+            <button  class = "main-menu-button" style="border: 0.00vmin; position: absolute; left:-5vmin; top: -4vmin;" data-event-click="clickHelp()" data-if = "!is_concise_mode && guide_progress >= 10">
                 <div class = "menu-button-pic" style='width:9vmin; height:9vmin; background-image:"textures/common/help.texture"'/>
             </button>
 
 
             <!-- 右上角：当前科技进度 -->
-            <div data-if = "cur_edit_mode == '' && show_tech_progress" style = "pointer-events: none; position: absolute; right:0vmin; top:0vmin;  width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-start; padding-top: 1vmin;">
+            <div data-if = "!is_concise_mode && show_tech_progress" style = "pointer-events: none; position: absolute; right:0vmin; top:0vmin;  width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-start; padding-top: 1vmin;">
                 <button style='background-color:rgb(204,219,11);  width: 16.00vmin; height: 16.00vmin; align-items: center;' data-event-click="clickTechOrTaskIcon(is_task)">
                     <div style="position:absolute; left:3.5vmin; bottom:2.7vmin; width: 50%; height: 50%; background-size:cover;" data-style-background-image="current_tech_icon"/>
                     <div style="-webkit-text-stroke: 0.3vmin rgb(39, 32, 17);font-size: 3.5vmin; word-break: break-all;">{{current_tech_name}}</div>

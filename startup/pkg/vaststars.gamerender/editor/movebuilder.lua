@@ -153,7 +153,6 @@ local function new_entity(self, datamodel, typeobject)
 
     local object = assert(objects:get(self.move_object_id))
     ipower:build_power_network(gameplay_core.get_world(), object.gameplay_eid)
-    iui.redirect("construct.rml", "construction_mode", true)
 end
 
 -- TODO: duplicate from builder.lua
@@ -299,10 +298,6 @@ local function touch_end(self, datamodel)
 end
 
 local function confirm(self, datamodel)
-    iui.redirect("construct.rml", "move_finish")
-    iui.redirect("construct.rml", "construction_mode", false)
-
-    ---
     iui.close("move_building.rml")
 
     ---
@@ -367,6 +362,8 @@ local function confirm(self, datamodel)
 
     ieditor:revert_changes({"TEMPORARY"})
     datamodel.show_confirm = false
+
+    return false
 end
 
 local function complete(self, object_id)
@@ -459,7 +456,6 @@ local function clean(self, datamodel)
     end
 
     iui.close("move_building.rml")
-    iui.redirect("construct.rml", "construction_mode", false)
 end
 
 local function create(move_object_id)

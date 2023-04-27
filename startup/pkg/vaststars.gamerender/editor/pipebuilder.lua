@@ -852,7 +852,11 @@ local function confirm(self, datamodel)
     end
 
     gameplay_core.build()
-    iui.redirect("construct.rml", "builder_back")
+
+    iui.redirect("construct.rml", "cancel")
+    gameplay_core.world_update = true
+    iui.close("road_or_pipe_build.rml")
+    return false
 end
 
 local function cancel(self, datamodel)
@@ -917,9 +921,11 @@ local function back(self, datamodel)
     iobject.remove(self.coord_indicator)
     self.coord_indicator = nil
 
-	iui.redirect("construct.rml", "builder_back")
-
     self.pending = {}
+
+	iui.redirect("construct.rml", "cancel")
+    gameplay_core.world_update = true
+    iui.close("road_or_pipe_build.rml")
 end
 
 local function create()

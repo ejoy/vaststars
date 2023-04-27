@@ -24,6 +24,7 @@ local iui = ecs.import.interface "vaststars.gamerender|iui"
 local math3d = require "math3d"
 local gen_endpoint_mask = ecs.require "editor.endpoint".gen_endpoint_mask
 local is_roadnet_only = ecs.require "editor.endpoint".is_roadnet_only
+local gameplay_core = require "gameplay.core"
 
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 local REMOVE <const> = {}
@@ -821,7 +822,10 @@ local function confirm(self, datamodel)
 
     task.update_progress("road_laying", c)
 
-    iui.redirect("construct.rml", "builder_back")
+	iui.redirect("construct.rml", "cancel")
+    gameplay_core.world_update = true
+    iui.close("road_or_pipe_build.rml")
+    return false
 end
 
 local function start_laying(self, datamodel)
@@ -1242,11 +1246,12 @@ local function back(self, datamodel)
     end
     iobject.remove(self.coord_indicator)
     self.coord_indicator = nil
-
-	iui.redirect("construct.rml", "builder_back")
-
     self.temporary_map = {}
     self.pending = {}
+
+    iui.redirect("construct.rml", "cancel")
+    gameplay_core.world_update = true
+    iui.close("road_or_pipe_build.rml")
 end
 
 local function create()

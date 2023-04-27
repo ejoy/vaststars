@@ -24,26 +24,20 @@ data:
   name: Plane.003
   scene: {}
   visible_state: main_view|selectable|cast_shadow
-  tag:
-    construction-center-finished
 mount: 1
 policy:
   ant.general|name
   ant.render|render
-  ant.general|tag
 ---
 data:
   material: /pkg/vaststars.resources/glb/construction-center.glb|materials/Material.002_skin.material
   mesh: /pkg/vaststars.resources/glb/construction-center.glb|meshes/Plane.002_P1.meshbin
   name: Plane.002
   skinning: true
-  tag:
-    u_emissive_factor
   visible_state: main_view|selectable|cast_shadow
 policy:
   ant.general|name
   ant.render|skinrender
-  ant.general|tag
 ---
 data:
   anim_ctrl: {}

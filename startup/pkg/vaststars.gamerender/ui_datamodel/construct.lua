@@ -14,7 +14,6 @@ local irecipe = require "gameplay.interface.recipe"
 local create_normalbuilder = ecs.require "editor.normalbuilder"
 local create_movebuilder = ecs.require "editor.movebuilder"
 local objects = require "objects"
-local ieditor = ecs.require "editor.editor"
 local global = require "global"
 local iobject = ecs.require "object"
 local terrain = ecs.require "terrain"
@@ -31,6 +30,7 @@ local COLOR_INVALID <const> = math3d.constant "null"
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local COLOR_GREEN = math3d.constant("v4", {0.3, 1, 0, 1})
 local construct_menu_cfg = import_package "vaststars.prototype"("construct_menu")
+local ichest = require "gameplay.interface.chest"
 
 local rotate_mb = mailbox:sub {"rotate"}
 local build_mb = mailbox:sub {"build"}
@@ -44,15 +44,12 @@ local guide_on_going_mb = mailbox:sub {"guide_on_going"}
 local load_resource_mb = mailbox:sub {"load_resource"}
 local help_mb = mailbox:sub {"help"}
 local move_md = mailbox:sub {"move"}
-local move_finish_mb = mailbox:sub {"move_finish"}
 local teardown_mb = mailbox:sub {"teardown"}
-local builder_back_mb = mailbox:sub {"builder_back"}
 local construction_center_menu_place_mb = mailbox:sub {"construction_center_menu_place"}
 local construct_entity_mb = mailbox:sub {"construct_entity"}
 local item_transfer_src_inventory_mb = mailbox:sub {"item_transfer_src_inventory"}
 local focus_on_building_mb = mailbox:sub {"focus_on_building"}
 local on_pickup_object_mb = mailbox:sub {"on_pickup_object"}
-local construction_mode_mb = mailbox:sub {"construction_mode"}
 
 local pickup_gesture_mb = world:sub {"pickup_gesture"}
 local pickup_long_press_gesture_mb = world:sub {"pickup_long_press_gesture"}
@@ -150,7 +147,7 @@ local function __get_first_item(e, object_id)
         if not slot then
             break
         end
-        if slot.item == 0 or slot.amount <= 0 then
+        if slot.item == 0 or ichest.get_amount(slot) <= 0 then
             goto continue
         end
         if slot.type ~= "red" then
@@ -159,7 +156,7 @@ local function __get_first_item(e, object_id)
 
         local typeobject_item = assert(iprototype.queryById(slot.item))
         if iprototype.has_type(typeobject_item.type, "building") then
-            return {icon = typeobject_item.icon, count = slot.amount, name = iprototype.show_prototype_name(typeobject_item), object_id = object_id, index = index}
+            return {icon = typeobject_item.icon, count = ichest.get_amount(slot), name = iprototype.show_prototype_name(typeobject_item), object_id = object_id, index = index}
         end
 
         ::continue::
@@ -240,7 +237,7 @@ local function __on_pickup_object(datamodel, object)
             local prototype_name = object.prototype_name
             local typeobject = iprototype.queryByName(prototype_name)
             if iprototype.has_types(typeobject.type, "construction_center", "construction_chest") then
-                datamodel.cur_edit_mode = "auto-construct"
+                datamodel.is_concise_mode = true
             end
         end
     end
@@ -268,6 +265,23 @@ local function _get_construct_menu()
     return construct_menu
 end
 
+local status = "default"
+local function __switch_status(s, cb)
+    if status == s then
+        if cb then
+            cb()
+        end
+        return
+    end
+    status = s
+
+    if status == "default" then
+        icamera_controller.toggle_view("default", cb)
+    elseif status == "construct" then
+        icamera_controller.toggle_view("construct", cb)
+    end
+end
+
 ---------------
 local M = {}
 local function get_new_tech_count(tech_list)
@@ -281,7 +295,7 @@ local function get_new_tech_count(tech_list)
 end
 function M:create()
     return {
-        cur_edit_mode = "",
+        is_concise_mode = false,
         tech_count = get_new_tech_count(global.science.tech_list),
         show_tech_progress = false,
         current_tech_icon = "none",    --当前科技图标
@@ -335,18 +349,36 @@ function M:stage_ui_update(datamodel)
     end
 
     for _ in build_mb:unpack() do
-        if builder then
-            builder:confirm(datamodel)
+        assert(builder)
+        if not builder:confirm(datamodel) then
+            builder:clean(datamodel)
+            builder = nil
+            __switch_status("default")
+            datamodel.is_concise_mode = false
+            handle_pickup = true
         end
-        self:flush()
     end
 
     for _ in cancel_mb:unpack() do
+        -- if statement mainly applies to road and pipe construction, where builder is nil
         if builder then
             builder:clean(datamodel)
             builder = nil
         end
+        __switch_status("default")
+        datamodel.is_concise_mode = false
         handle_pickup = true
+    end
+
+    for _ in guide_on_going_mb:unpack() do
+        if builder then
+            builder:clean()
+            builder = nil
+        end
+        pickup_id = nil
+        idetail.unselected()
+        datamodel.is_concise_mode = false
+        __switch_status("default")
     end
 
     for _, _, _, is_task in click_techortaskicon_mb:unpack() do
@@ -467,7 +499,6 @@ local function __construct_entity(datamodel, gameplay_eid, typeobject)
         builder = create_normalbuilder(gameplay_eid, typeobject.id)
         builder:new_entity(datamodel, typeobject)
     end
-    handle_pickup = false
 end
 
 function M:stage_camera_usage(datamodel)
@@ -522,7 +553,7 @@ function M:stage_camera_usage(datamodel)
                     local prototype_name = object.prototype_name
                     local typeobject = iprototype.queryByName(prototype_name)
                     if iprototype.has_types(typeobject.type, "construction_center", "construction_chest") then
-                        datamodel.cur_edit_mode = "auto-construct"
+                        datamodel.is_concise_mode = true
                     end
                 end
             end
@@ -530,9 +561,7 @@ function M:stage_camera_usage(datamodel)
             idetail.unselected()
             item_transfer_dst = nil
             pickup_id = nil
-            if datamodel.cur_edit_mode == "auto-construct" then
-                datamodel.cur_edit_mode = ""
-            end
+            datamodel.is_concise_mode = false
         end
 
         if leave then
@@ -584,29 +613,6 @@ function M:stage_camera_usage(datamodel)
         ::continue::
     end
 
-    for _, _, _, object_id in move_md:unpack() do
-        if builder then
-            builder:clean(datamodel)
-        end
-
-        local object = assert(objects:get(object_id))
-        local typeobject = iprototype.queryByName(object.prototype_name)
-        idetail.unselected()
-        ieditor:revert_changes({"TEMPORARY"})
-        builder = create_movebuilder(object.id)
-
-        builder:new_entity(datamodel, typeobject)
-        self:flush()
-    end
-
-    for _ in move_finish_mb:unpack() do
-        if builder then
-            builder:clean(datamodel)
-            builder = nil
-        end
-        handle_pickup = true
-    end
-
     for _, _, _, object_id in teardown_mb:unpack() do
         iui.close("building_md_arc_menu.rml")
         idetail.unselected()
@@ -633,34 +639,47 @@ function M:stage_camera_usage(datamodel)
         manual_item_transfer_src_inventory = false
     end
 
-    for _ in builder_back_mb:unpack() do
-        datamodel.cur_edit_mode = ""
-        handle_pickup = true
-        gameplay_core.world_update = true
-        iui.close("road_or_pipe_build.rml")
+    for _, _, _, object_id in move_md:unpack() do
+        datamodel.is_concise_mode = true
+        handle_pickup = false
+        __switch_status("construct", function()
+            assert(builder == nil)
+
+            local object = assert(objects:get(object_id))
+            local typeobject = iprototype.queryByName(object.prototype_name)
+            idetail.unselected()
+
+            builder = create_movebuilder(object.id)
+            builder:new_entity(datamodel, typeobject)
+        end)
     end
 
     for _, _, _, object_id, index in construction_center_menu_place_mb:unpack() do
-        if builder then
-            builder:clean(datamodel)
-        end
+        handle_pickup = false
+        __switch_status("construct", function()
+            assert(builder == nil)
 
-        local object = assert(objects:get(object_id))
-        local e = gameplay_core.get_entity(assert(object.gameplay_eid))
-        assert(e.chest.chest ~= 0)
-        local slot = assert(gameplay_core.get_world():container_get(e.chest, index))
-        assert(slot.item ~= 0)
+            local object = assert(objects:get(object_id))
+            local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+            assert(e.chest.chest ~= 0)
+            local slot = assert(gameplay_core.get_world():container_get(e.chest, index))
+            assert(slot.item ~= 0)
 
-        local typeobject = iprototype.queryById(slot.item)
-        __construct_entity(datamodel, object.gameplay_eid, typeobject)
+            local typeobject = iprototype.queryById(slot.item)
+            __construct_entity(datamodel, object.gameplay_eid, typeobject)
+        end)
     end
 
     for _, _, _, item in construct_entity_mb:unpack() do
-        if builder then
-            builder:clean(datamodel)
-        end
-        local typeobject = iprototype.queryByName(item)
-        __construct_entity(datamodel, nil, typeobject)
+        handle_pickup = false
+        __switch_status("construct", function()
+            -- we may click the button repeatedly, so we need to clear the old model first
+            if builder then
+                builder:clean(datamodel)
+            end
+            local typeobject = iprototype.queryByName(item)
+            __construct_entity(datamodel, nil, typeobject)
+        end)
     end
 
     -- TODO: 多个UI的stage_ui_update中会产生focus_tips_event事件，focus_tips_event处理逻辑涉及到要修改相机位置，所以暂时放在这里处理
@@ -670,12 +689,6 @@ function M:stage_camera_usage(datamodel)
         elseif action == "close" then
             close_focus_tips(tech_node)
         end
-    end
-
-    for _ in guide_on_going_mb:unpack() do
-        pickup_id = nil
-        idetail.unselected()
-        datamodel.cur_edit_mode = ""
     end
 
     for _ in item_transfer_src_inventory_mb:unpack() do
@@ -688,24 +701,16 @@ function M:stage_camera_usage(datamodel)
         __on_pickup_object(datamodel, object)
     end
 
-    for _, _, _, show in construction_mode_mb:unpack() do
-        datamodel.cur_edit_mode = show and "manual-construct" or ""
-        if show then
-            icamera_controller.toggle_view("construct")
-            if builder then
-                builder:touch_move(datamodel, {0, 0, 0})
-            end
-        else
-            icamera_controller.toggle_view("default")
+    local function focus_on_position_cb(object_id)
+        return function()
+            iui.redirect("construct.rml", "on_pickup_object", object_id)
         end
     end
-
     for _, _, _, object_id in focus_on_building_mb:unpack() do
         local object = assert(objects:get(object_id))
         local typeobject = iprototype.queryByName(object.prototype_name)
         local w, h = iprototype.unpackarea(typeobject.area)
-        icamera_controller.focus_on_position(coord_system:get_position_by_coord(object.x, object.y, w, h))
-        iui.redirect("construct.rml", "on_pickup_object", object_id)
+        icamera_controller.focus_on_position(coord_system:get_position_by_coord(object.x, object.y, w, h), focus_on_position_cb(object_id))
     end
 
     item_transfer_placement_interval(datamodel, pickup_id)
