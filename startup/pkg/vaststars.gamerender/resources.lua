@@ -307,8 +307,6 @@ local t = {
 	"/pkg/ant.objcontroller/pickup/pickup_system.lua",
 	"/pkg/ant.objcontroller/screen_3dobj.ecs",
 	"/pkg/ant.objcontroller/screen_3dobj.lua",
-	"/pkg/ant.render/billboard/billboard.ecs",
-	"/pkg/ant.render/billboard/billboard.lua",
 	"/pkg/ant.render/components/entity.lua",
 	"/pkg/ant.render/compute/compute.ecs",
 	"/pkg/ant.render/compute/compute.lua",

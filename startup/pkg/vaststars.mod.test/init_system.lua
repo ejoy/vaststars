@@ -14,11 +14,12 @@ local declmgr = renderpkg.declmgr
 local assetmgr = import_package "ant.asset"
 local imaterial = ecs.import.interface "ant.asset|imaterial"
 local iterrain  = ecs.import.interface "mod.terrain|iterrain"
-local iprinter= ecs.import.interface "mod.printer|iprinter"
+local iprinter = ecs.import.interface "mod.printer|iprinter"
 local printer_percent = 1.0
 local printer_eid
-local istonemountain= ecs.import.interface "mod.stonemountain|istonemountain"
+local istonemountain = ecs.import.interface "mod.stonemountain|istonemountain"
 local itp = ecs.import.interface "mod.translucent_plane|itranslucent_plane"
+local ibillboard = ecs.import.interface "mod.billboard|ibillboard"
 local S = ecs.system "init_system"
 
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
@@ -117,12 +118,14 @@ function S.init_world()
         },
     } ]]
 
-    create_instance("/pkg/vaststars.mod.test/assets/miner-1.glb|mesh.prefab",
+--[[     create_instance("/pkg/vaststars.mod.test/assets/miner-1.glb|mesh.prefab",
     function (e)
         local ee<close> = w:entity(e.tag['*'][1])
         iom.set_scale(ee, 0.5)
         iom.set_position(ee, math3d.vector(10, 0, 0, 1))
-    end)
+    end) ]]
+
+
 end
 
 local kb_mb = world:sub{"keyboard"}
@@ -147,6 +150,7 @@ local function createPrefabInst(prefab, position, render_layer)
     return world:create_object(p)
 end
 local eid_table = {}
+local id_table = {}
 function S:data_changed()
     for _, key, press in kb_mb:unpack() do
         if key == "M" and press == 0 then
@@ -185,9 +189,21 @@ function S:data_changed()
         elseif key == "V" and press == 0 then
             itp.remove_translucent_plane({2})
         elseif key == "B" and press == 0 then
-            itp.remove_translucent_plane({1})
+            local billboard_bases = {
+                [1] = {
+                    srt = {s = {15, 15, 15}, t = {0, 4, -4}},
+                    texture = "/pkg/vaststars.resources/ui/fluid_icon_canvas.texture",
+                    render_layer = "translucent"
+                },
+                [2] ={
+                    srt = {s = {15, 15, 15}, t = {4, 4, -4}},
+                    texture = "/pkg/vaststars.resources/ui/textures/assemble/arrow.texture",
+                    render_layer = "translucent" 
+                }
+            }
+            id_table = ibillboard.create_billboard_base(billboard_bases)
         elseif key == "N" and press == 0 then
-            itp.remove_translucent_plane({3})
+            ibillboard.remove_billboard_base(id_table)
         end
     end
 end
