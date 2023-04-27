@@ -1,0 +1,9 @@
+{
+    "workspace.ignoreDir": [
+        "*.ecs"
+    ],
+    "diagnostics.globals": [
+        "import_package",
+        "log"
+    ]
+}

@@ -7,15 +7,9 @@ prototype "指挥中心" {
     background = "textures/build_background/pic_headquater.texture",
     construct_detector = {"exclusive"},
     craft_category = {"基地制造"},
-    type = {"building", "base", "assembling", "consumer", "lorry_factory"},
+    type = {"building", "consumer", "assembling", "base", "lorry_factory"},
     speed = "50%",
     maxslot = "8",
-    fluidboxes = {
-        input = {
-        },
-        output = {
-        },
-    },
     recipe_init_limit = {ingredientsLimit = 0, resultsLimit = 0},
     recipe = "车辆装配",
     area = "5x5",
@@ -214,7 +208,7 @@ prototype "建造中心" {
     icon = "textures/building_pic/small_pic_construction_site.texture",
     background = "textures/build_background/pic_headquater.texture",
     construct_detector = {"exclusive"},
-    type = {"building", "assembling", "consumer", "construction_center"},
+    type = {"building", "consumer", "assembling", "fluidboxes", "construction_center"},
     area = "5x5",
     maxslot = 6,
     craft_category = {"框架打印"},

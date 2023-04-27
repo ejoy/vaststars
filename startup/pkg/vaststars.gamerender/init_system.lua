@@ -27,7 +27,11 @@ local irender_layer = ecs.require "engine.render_layer"
 local imain_menu_manager = ecs.require "main_menu_manager"
 local idn = ecs.import.interface "ant.daynight|idaynight"
 local icanvas = ecs.require "engine.canvas"
+
+local DuskTick <const> = require("gameplay.interface.constant").DuskTick
+local NightTick <const> = require("gameplay.interface.constant").NightTick
 local DayTick <const> = require("gameplay.interface.constant").DayTick
+
 local m = ecs.system 'init_system'
 
 iRmlUi.set_prefix "/pkg/vaststars.resources/ui/"
@@ -36,7 +40,9 @@ iRmlUi.font_dir "/pkg/vaststars.resources/ui/font/"
 
 local daynight_update; do
     if DAYNIGHT_DEBUG then
-        local second_ms = DAYNIGHT_DEBUG * 1000
+        local total_ms = DAYNIGHT_DEBUG * 1000
+        local night_ms = total_ms / 2
+
         local ltask = require "ltask"
         local function gettime()
             local _, now = ltask.now()
@@ -49,8 +55,12 @@ local daynight_update; do
                 return
             end
 
-            local cycle = (gettime() % second_ms) / second_ms
-            idn.update_day_cycle(dne, cycle)
+            local cycle = gettime() % total_ms
+            if cycle >= 0 and cycle < night_ms then
+                idn.update_day_cycle(dne, (cycle % night_ms)/night_ms)
+            else
+                idn.update_night_cycle(dne, (cycle - night_ms)/(total_ms - night_ms))
+            end
         end
     else
         function daynight_update(gameplayWorld)
@@ -59,8 +69,14 @@ local daynight_update; do
                 return
             end
 
-            local cycle = (gameplayWorld:now() % DayTick) / DayTick
-            idn.update_day_cycle(dne, cycle)
+            local cycle = gameplayWorld:now() % DayTick
+            if cycle >= 0 and cycle < DuskTick then
+                idn.update_day_cycle(dne, (cycle % DuskTick)/DuskTick)
+            elseif cycle < NightTick then
+                idn.update_night_cycle(dne, (cycle - DuskTick)/(NightTick - DuskTick))
+            else
+                idn.update_day_cycle(dne, (cycle - NightTick)/(DayTick - NightTick))
+            end
         end
     end
 end

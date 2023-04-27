@@ -13,12 +13,6 @@ prototype "熔炼炉I" {
     priority = "secondary",
     craft_category = {"金属冶炼"},
     maxslot = "8",
-    fluidboxes = {
-        input = {
-        },
-        output = {
-        },
-    },
 }
 
 prototype "熔炼炉II" {
@@ -26,19 +20,13 @@ prototype "熔炼炉II" {
     icon = "textures/building_pic/small_pic_furnace.texture",
     background = "textures/build_background/pic_furnace.texture",
     construct_detector = {"exclusive"},
-    type = {"building", "assembling", "consumer"},
+    type = {"building", "consumer", "assembling"},
     area = "3x3",
     speed = "50%",
     power = "150kW",
     priority = "secondary",
     craft_category = {"金属冶炼"},
     maxslot = "8",
-    fluidboxes = {
-        input = {
-        },
-        output = {
-        },
-    },
 }
 
 prototype "粉碎机I" {
@@ -46,19 +34,13 @@ prototype "粉碎机I" {
     icon = "textures/building_pic/small_pic_crusher.texture",
     background = "textures/build_background/pic_crusher.texture",
     construct_detector = {"exclusive"},
-    type = {"building", "assembling", "consumer"},
+    type = {"building", "consumer", "assembling"},
     area = "3x3",
     power = "100kW",
     drain = "3kW",
     priority = "secondary",
     craft_category = {"矿石粉碎"},
     maxslot = "8",
-    fluidboxes = {
-        input = {
-        },
-        output = {
-        },
-    }
 }
 
 prototype "浮选器I" {
@@ -66,7 +48,7 @@ prototype "浮选器I" {
     icon = "textures/building_pic/small_pic_flotation_cell.texture",
     background = "textures/build_background/pic_flotation_cell.texture",
     construct_detector = {"exclusive"},
-    type = {"building", "assembling", "consumer"},
+    type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "4x4",
     power = "200kW",
     drain = "6kW",

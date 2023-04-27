@@ -6,7 +6,7 @@ prototype "采矿机I" {
     icon = "textures/building_pic/small_pic_miner.texture",
     background = "textures/build_background/pic_miner.texture",
     construct_detector = {"exclusive"},
-    type = {"building", "consumer", "mining", "assembling", "fluidboxes"},
+    type = {"building", "consumer", "assembling", "mining"},
     area = "3x3",
     assembling_icon = false,
     power = "75kW",
@@ -17,10 +17,6 @@ prototype "采矿机I" {
     building_base = false,
     maxslot = "8",
     printer_scale = {1.3,1.3,1.3},
-    fluidboxes = {
-        input = {},
-        output = {},
-    },
 }
 
 prototype "采矿机II" {
@@ -28,7 +24,7 @@ prototype "采矿机II" {
     icon = "textures/building_pic/small_pic_miner.texture",
     background = "textures/build_background/pic_miner.texture",
     construct_detector = {"exclusive"},
-    type = {"building", "consumer", "mining", "assembling", "fluidboxes"},
+    type = {"building", "consumer", "assembling", "mining"},
     area = "3x3",
     assembling_icon = false,
     power = "150kW",
@@ -39,8 +35,4 @@ prototype "采矿机II" {
     building_base = false,
     maxslot = "8",
     printer_scale = {1.3,1.3,1.3},
-    fluidboxes = {
-        input = {},
-        output = {},
-    },
 }

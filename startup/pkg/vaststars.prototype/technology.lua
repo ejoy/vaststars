@@ -892,6 +892,8 @@ local prototype = gameplay.register.prototype
     type = { "tech", "task" },
     task = {"select_entity", 0, "科研中心I"},
     prerequisites = {"更多碎石"},
+    ingredients = {
+    },
     count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_click_build.texture",
@@ -2022,7 +2024,7 @@ prototype "管道系统1" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    unlock_recipe = {"管道1","管道2","液罐1"},
+    unlock_recipe = {"管道1","管道2","液罐设计"},
     unlock_item = {"液罐I","管道1-X型"},
   },
   prerequisites = {"气候研究"},
@@ -2053,7 +2055,7 @@ prototype "排放" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    unlock_recipe = {"烟囱1","排水口1","地下管1"},
+    unlock_recipe = {"烟囱设计","排水口设计","地下管1"},
     unlock_item = {"烟囱I","排水口I","地下管1-JI型"},
   },
   prerequisites = {"生产管道"},

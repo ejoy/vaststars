@@ -445,21 +445,18 @@ local function __construct_entity(datamodel, gameplay_eid, typeobject)
     if iprototype.has_type(typeobject.type, "road") then
         iui.close("building_arc_menu.rml")
         iui.close("detail_panel.rml")
-        datamodel.cur_edit_mode = "manual-construct"
         idetail.unselected()
         gameplay_core.world_update = false
         iui.open({"road_or_pipe_build.rml", "road_build.lua"})
     elseif iprototype.has_type(typeobject.type, "pipe") then
         iui.close("building_arc_menu.rml")
         iui.close("detail_panel.rml")
-        datamodel.cur_edit_mode = "manual-construct"
         idetail.unselected()
         gameplay_core.world_update = false
         iui.open({"road_or_pipe_build.rml", "pipe_build.lua"})
     elseif iprototype.has_type(typeobject.type, "pipe_to_ground") then
         iui.close("building_arc_menu.rml")
         iui.close("detail_panel.rml")
-        datamodel.cur_edit_mode = "manual-construct"
         idetail.unselected()
         gameplay_core.world_update = false
         iui.open({"road_or_pipe_build.rml", "pipe_to_ground_build.lua"})
@@ -693,6 +690,14 @@ function M:stage_camera_usage(datamodel)
 
     for _, _, _, show in construction_mode_mb:unpack() do
         datamodel.cur_edit_mode = show and "manual-construct" or ""
+        if show then
+            icamera_controller.toggle_view("construct")
+            if builder then
+                builder:touch_move(datamodel, {0, 0, 0})
+            end
+        else
+            icamera_controller.toggle_view("default")
+        end
     end
 
     for _, _, _, object_id in focus_on_building_mb:unpack() do
@@ -706,4 +711,4 @@ function M:stage_camera_usage(datamodel)
     item_transfer_placement_interval(datamodel, pickup_id)
     iobject.flush()
 end
-return M    
+return M

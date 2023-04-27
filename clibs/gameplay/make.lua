@@ -9,7 +9,6 @@ lm:runlua "compile_gameplay_ecs" {
 local antdir = "../../" .. lm.antdir
 
 lm:lua_source "gameplay" {
-    cxx = "c++20",
     objdeps = "compile_gameplay_ecs",
     includes = {
         "src/",

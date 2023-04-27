@@ -6,19 +6,34 @@ prototype "蒸汽发电机I" {
     icon = "textures/building_pic/small_pic_turbine.texture",
     background = "textures/build_background/pic_turbine.texture",
     construct_detector = {"exclusive"},
-    type = {"building", "generator", "fluidbox"},
+    type = {"building", "generator", "fluidbox","assembling"},
     area = "3x5",
     rotate_on_build = true,
     power = "1MW",
     priority = "secondary",
-    fluidbox = {
-        capacity = 100,
-        height = 200,
-        base_level = -100,
-        connections = {
-            {type="input-output", position={1,0,"N"}},
-            {type="input-output", position={1,2,"S"}},
-        }
+    craft_category = {"流体发电"},
+    maxslot = "8",
+    fluidboxes = {
+        input = {
+            {
+                capacity = 400,
+                height = 100,
+                base_level = -100,
+                connections = {
+                    {type="input-output", position={1,0,"N"}},
+                }
+            },
+        },
+        output = {
+            {
+                capacity = 400,
+                height = 200,
+                base_level = 100,
+                connections = {
+                    {type="input-output", position={1,2,"S"}},
+                }
+            },
+        },
     }
 }
 
@@ -73,7 +88,7 @@ prototype "换热器I" {
     icon = "textures/building_pic/small_pic_distillery.texture",
     background = "textures/build_background/pic_distillery.texture",
     construct_detector = {"exclusive"},
-    type = {"building", "assembling", "fluidboxes", "consumer"},
+    type = {"building", "consumer", "assembling", "fluidboxes"},
     power = "300kW",
     priority = "secondary",
     area = "3x2",
@@ -127,7 +142,7 @@ prototype "锅炉I" {
     icon = "textures/building_pic/small_pic_distillery.texture",
     background = "textures/build_background/pic_distillery.texture",
     construct_detector = {"exclusive"},
-    type = {"building", "assembling", "fluidboxes", "consumer"},
+    type = {"building", "consumer", "assembling", "fluidboxes"},
     power = "300kW",
     priority = "secondary",
     area = "3x2",

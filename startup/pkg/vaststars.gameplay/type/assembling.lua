@@ -9,13 +9,13 @@ local c = type "assembling"
 local STATUS_IDLE <const> = 0
 local STATUS_DONE <const> = 1
 
+local InvalidChest <const> = 0
+
 function c:ctor(init, pt)
-    local world = self
     local recipe_name = pt.recipe and pt.recipe or init.recipe
     local e = {
-        fluidboxes = {},
         chest = {
-            chest = 0xffff,
+            chest = InvalidChest,
             fluidbox_in = 0,
             fluidbox_out = 0,
         },
@@ -27,17 +27,12 @@ function c:ctor(init, pt)
         },
     }
     if recipe_name == nil then
+        if pt.fluidboxes then
+            e.fluidboxes = {}
+        end
         fluidbox.update_fluidboxes(e, pt, init.fluids)
+    else
+        assembling.set_recipe(self, e, pt, recipe_name, init.fluids, pt.recipe_init_limit)
     end
-
-    local r = {}
-    r[#r+1] = world:chest_slot {
-        type = "blue",
-        item = 0,
-        limit = 0,
-    }
-    e.chest.chest = world:container_create(table.concat(r))
-
-    assembling.set_recipe(self, e, pt, recipe_name, init.fluids, pt.recipe_init_limit)
     return e
 end

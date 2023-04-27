@@ -48,9 +48,10 @@ policy:
 data:
   anim_ctrl: {}
   animation:
+    default: /pkg/vaststars.resources/glb/construction-center.glb|animations/default.ozz
     wing_close: /pkg/vaststars.resources/glb/construction-center.glb|animations/wing_close.ozz
     wing_open: /pkg/vaststars.resources/glb/construction-center.glb|animations/wing_open.ozz
-  animation_birth: wing_close
+  animation_birth: default
   name: animation
   skeleton: /pkg/vaststars.resources/glb/construction-center.glb|animations/skeleton.ozz
 policy:

@@ -743,7 +743,7 @@ prototype "空气过滤器1" {
     recipe_icon =  "textures/construct/air-filter1.texture",
     ingredients = {
         {"塑料", 4},
-        {"蒸汽发电机I", 1},
+        {"烟囱I", 1},
     },
     results = {
         {"空气过滤器I", 1},
@@ -899,7 +899,7 @@ prototype "科研中心1" {
     recipe_icon =  "textures/property/research-packs.texture",
     ingredients = {
         {"电动机I", 8},
-        {"铁板", 20},
+        {"坩埚", 3},
     },
     results = {
         {"科研中心I", 1},
@@ -1078,6 +1078,39 @@ prototype "电线杆打印" {
     description = "打印可导电的电线杆",
 }
 
+prototype "烟囱打印" {
+    type = { "recipe" },
+    category = "框架打印",
+    recipe_group =  "物流",
+    recipe_order =  54,
+    recipe_icon =  "textures/construct/broken-electric-pole1.texture",
+    ingredients = {
+        {"烟囱框架", 1},
+    },
+    results = {
+        {"烟囱I", 1},
+    },
+    time = "6s",
+    description = "打印排气的烟囱",
+}
+
+prototype "排水口打印" {
+    type = { "recipe" },
+    category = "框架打印",
+    recipe_group =  "物流",
+    recipe_order =  54,
+    recipe_icon =  "textures/construct/broken-electric-pole1.texture",
+    ingredients = {
+        {"排水口框架", 1},
+    },
+    results = {
+        {"排水口I", 1},
+    },
+    time = "6s",
+    description = "打印排气的烟囱",
+}
+
+
 prototype "无人机仓库打印" {
     type = { "recipe" },
     category = "框架打印",
@@ -1110,6 +1143,22 @@ prototype "送货车站打印" {
     },
     time = "8s",
     description = "打印送货车站",
+}
+
+prototype "液罐打印" {
+    type = { "recipe" },
+    category = "框架打印",
+    recipe_group =  "物流",
+    recipe_order =  56,
+    recipe_icon =  "textures/construct/broken-goodsstation-output.texture",
+    ingredients = {
+        {"液罐框架", 1},
+    },
+    results = {
+        {"液罐I", 1},
+    },
+    time = "8s",
+    description = "打印液罐",
 }
 
 prototype "收货车站打印" {
@@ -1161,6 +1210,22 @@ prototype "科研中心打印" {
     },
     time = "15s",
     description = "打印科研中心",
+}
+
+prototype "粉碎机心打印" {
+    type = { "recipe" },
+    category = "框架打印",
+    recipe_group =  "加工",
+    recipe_order =  56,
+    recipe_icon =  "textures/construct/broken-lab.texture",
+    ingredients = {
+        {"粉碎机框架", 1},
+    },
+    results = {
+        {"粉碎机I", 1},
+    },
+    time = "15s",
+    description = "打印粉碎机",
 }
 
 prototype "建造中心打印" {
@@ -1311,6 +1376,22 @@ prototype "地下水挖掘机打印" {
     description = "打印可挖掘地下水的装置",
 }
 
+prototype "压力泵打印" {
+    type = { "recipe" },
+    category = "框架打印",
+    recipe_group =  "化工",
+    recipe_order =  54,
+    recipe_icon =  "textures/construct/broken-pump.texture",
+    ingredients = {
+        {"压力泵框架", 1},
+    },
+    results = {
+        {"压力泵I", 1},
+    },
+    time = "8s",
+    description = "打印抽水的装置",
+}
+
 prototype "修路站打印" {
     type = { "recipe" },
     category = "框架打印",
@@ -1383,12 +1464,13 @@ prototype "采矿机设计" {
     recipe_order =  52,
     recipe_icon =  "textures/construct/broken-miner.texture",
     ingredients = {
-        {"电动机I", 1},
+        {"电动机I", 2},
+        {"石砖", 4},
     },
     results = {
         {"采矿机框架", 1},
     },
-    time = "5s",
+    time = "10s",
     description = "打印采矿机",
 }
 
@@ -1415,7 +1497,7 @@ prototype "电线杆设计" {
     recipe_order =  54,
     recipe_icon =  "textures/construct/broken-electric-pole1.texture",
     ingredients = {
-        {"铁板", 1},
+        {"铁板", 3},
     },
     results = {
         {"电线杆框架", 1},
@@ -1497,12 +1579,13 @@ prototype "熔炼炉设计" {
     recipe_order =  56,
     recipe_icon =  "textures/construct/broken-furnace.texture",
     ingredients = {
-        {"电动机I", 1},
+        {"铁板", 8},
+        {"石砖", 8},
     },
     results = {
         {"熔炼炉框架", 1},
     },
-    time = "5s",
+    time = "8s",
     description = "打印熔炼炉",
 }
 
@@ -1513,7 +1596,8 @@ prototype "科研中心设计" {
     recipe_order =  56,
     recipe_icon =  "textures/construct/broken-lab.texture",
     ingredients = {
-        {"电动机I", 1},
+        {"电动机I", 8},
+        {"坩埚", 3},
     },
     results = {
         {"科研中心框架", 1},
@@ -1529,7 +1613,7 @@ prototype "太阳能板设计" {
     recipe_order =  56,
     recipe_icon =  "textures/construct/broken-solar-panel.texture",
     ingredients = {
-        {"电动机I", 1},
+        {"硅", 15},
     },
     results = {
         {"太阳能板框架", 1},
@@ -1546,6 +1630,7 @@ prototype "蓄电池设计" {
     recipe_icon =  "textures/construct/broken-grid-battery.texture",
     ingredients = {
         {"电动机I", 1},
+        {"硅", 4},
     },
     results = {
         {"蓄电池框架", 1},
@@ -1562,12 +1647,30 @@ prototype "水电站设计" {
     recipe_icon =  "textures/construct/broken-hydroplant.texture",
     ingredients = {
         {"电动机I", 1},
+        {"坩埚", 2},
     },
     results = {
         {"水电站框架", 1},
     },
     time = "5s",
     description = "打印可处理液体的装置",
+}
+
+prototype "粉碎机设计" {
+    type = { "recipe" },
+    category = "框架设计",
+    recipe_group =  "加工",
+    recipe_order =  54,
+    recipe_icon =  "textures/construct/broken-hydroplant.texture",
+    ingredients = {
+        {"采矿机I", 1},
+        {"齿轮", 4},
+    },
+    results = {
+        {"粉碎机框架", 1},
+    },
+    time = "5s",
+    description = "打印可粉碎物品的装置",
 }
 
 prototype "电解厂设计" {
@@ -1577,10 +1680,27 @@ prototype "电解厂设计" {
     recipe_order =  54,
     recipe_icon =  "textures/construct/broken-electrolysis1.texture",
     ingredients = {
-        {"电动机I", 1},
+        {"液罐框架", 4},
+        {"电线杆框架", 8},
     },
     results = {
         {"电解厂框架", 1},
+    },
+    time = "5s",
+    description = "打印可电解液体的工厂",
+}
+
+prototype "液罐设计" {
+    type = { "recipe" },
+    category = "框架设计",
+    recipe_group =  "化工",
+    recipe_order =  54,
+    recipe_icon =  "textures/construct/broken-electrolysis1.texture",
+    ingredients = {
+        {"管道1-X型", 6},
+    },
+    results = {
+        {"液罐框架", 1},
     },
     time = "5s",
     description = "打印可电解液体的工厂",
@@ -1593,7 +1713,8 @@ prototype "化工厂设计" {
     recipe_order =  54,
     recipe_icon =  "textures/construct/broken-chemistry2.texture",
     ingredients = {
-        {"电动机I", 1},
+        {"液罐框架", 12},
+        {"组装机框架", 1},
     },
     results = {
         {"化工厂框架", 1},
@@ -1609,7 +1730,8 @@ prototype "组装机设计" {
     recipe_order =  54,
     recipe_icon =  "textures/construct/broken-assembler.texture",
     ingredients = {
-        {"电动机I", 1},
+        {"电动机I", 2},
+        {"铁齿轮", 4},
     },
     results = {
         {"组装机框架", 1},
@@ -1625,14 +1747,65 @@ prototype "空气过滤器设计" {
     recipe_order =  54,
     recipe_icon =  "textures/construct/broken-air-filter1.texture",
     ingredients = {
-        {"电动机I", 1},
-        {"管道1-X型", 2},
+        {"塑料", 4},
+        {"烟囱I", 1},
     },
     results = {
         {"空气过滤器框架", 1},
     },
     time = "5s",
     description = "打印可过滤空气的装置",
+}
+
+prototype "烟囱设计" {
+    type = { "recipe" },
+    category = "框架设计",
+    recipe_group =  "化工",
+    recipe_order =  54,
+    recipe_icon =  "textures/construct/broken-air-filter1.texture",
+    ingredients = {
+        {"石砖", 4},
+        {"管道1-X型", 3},
+    },
+    results = {
+        {"烟囱框架", 1},
+    },
+    time = "5s",
+    description = "打印可过滤空气的装置",
+}
+
+prototype "排水口设计" {
+    type = { "recipe" },
+    category = "框架设计",
+    recipe_group =  "化工",
+    recipe_order =  54,
+    recipe_icon =  "textures/construct/broken-air-filter1.texture",
+    ingredients = {
+        {"管道1-X型", 5},
+        {"地下管1-JI型", 1},
+    },
+    results = {
+        {"排水口框架", 1},
+    },
+    time = "8s",
+    description = "打印可排泄液体的装置",
+}
+
+prototype "压力泵设计" {
+    type = { "recipe" },
+    category = "器件中型制造",
+    recipe_group =  "化工",
+    recipe_order =  40,
+    recipe_icon =  "textures/construct/pump1.texture",
+    ingredients = {
+        {"电动机I", 1},
+        {"管道1-X型", 4},
+    },
+    results = {
+        {"压力泵框架", 1},
+    },
+    time = "5s",
+    description = "管道和电机制造压力泵",
 }
 
 prototype "地下水挖掘机设计" {
@@ -1642,7 +1815,8 @@ prototype "地下水挖掘机设计" {
     recipe_order =  54,
     recipe_icon =  "textures/construct/broken-pump.texture",
     ingredients = {
-        {"排水口I", 2},
+        {"排水口I", 1},
+        {"压力泵I", 1},
     },
     results = {
         {"地下水挖掘机框架", 1},
@@ -1746,7 +1920,7 @@ prototype "机械科技包1" {
     recipe_icon =  "textures/recipe/mechanical-pack.texture",
     ingredients = {
         {"电动机I", 1},
-        {"铁齿轮", 3},
+        {"塑料", 3},
     },
     results = {
         {"机械科技包", 1},
@@ -1816,7 +1990,7 @@ prototype "碎石挖掘" {
     results = {
         {"碎石", 1},
     },
-    time = "3s",
+    time = "2s",
     description = "采集碎石",
 }
 
@@ -2228,15 +2402,15 @@ prototype "钢板1" {
     recipe_order =  20,
     recipe_icon =  "textures/construct/steel-beam.texture",
     ingredients = {
-        {"铁板", 5},
-        {"氧气", 60},
+        {"铁板", 2},
+        {"氧气", 30},
     },
     results = {
-        {"钢板", 2},
-        {"二氧化碳", 25},
+        {"钢板", 1},
+        {"二氧化碳", 12},
         -- {"碎石", 1},
     },
-    time = "12s",
+    time = "6s",
     description = "铁板通过金属冶炼获得钢板",
 }
 
@@ -2548,6 +2722,22 @@ prototype "丁二烯排泄" {
     time = "1s",
     description = "丁二烯排泄",
 }
+
+prototype "蒸汽发电" {
+    type = { "recipe" },
+    category = "流体发电",
+    --recipe_group =  "化工",
+    recipe_order =  119,
+    recipe_icon =  "textures/fluid/gas.texture",
+    ingredients = {
+        {"蒸汽", 400},
+    },
+    results = {
+    },
+    time = "4s",
+    description = "蒸汽发电",
+}
+
 ---------地下卤水生成矿物配方----------
 prototype "地下卤水分离铁" {
     type = { "recipe" },

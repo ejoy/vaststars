@@ -211,6 +211,26 @@ prototype "无人机仓库框架" {
     item_description = "用于建造无人机仓库的框架",
 }
 
+prototype "压力泵框架" {
+    type = {"item"},
+    stack = 4,
+    pile = "2x2x4",
+    pile_model = "prefabs/stackeditems/iron-ore.prefab",
+    icon = "textures/construct/broken-drone-depot.texture",
+    group = {"加工"},
+    item_description = "用于抽水的框架",
+}
+
+prototype "液罐框架" {
+    type = {"item"},
+    stack = 4,
+    pile = "2x2x4",
+    pile_model = "prefabs/stackeditems/iron-ore.prefab",
+    icon = "textures/construct/broken-drone-depot.texture",
+    group = {"加工"},
+    item_description = "用于液罐的框架",
+}
+
 prototype "车站框架" {
     type = {"item"},
     stack = 4,
@@ -339,4 +359,34 @@ prototype "建造中心框架" {
     icon = "textures/construct/broken-assembler.texture",
     group = {"加工"},
     item_description = "用于建造建造中心的框架",
+}
+
+prototype "排水口框架" {
+    type = {"item"},
+    stack = 4,
+    pile = "2x2x4",
+    pile_model = "prefabs/stackeditems/iron-ore.prefab",
+    icon = "textures/construct/broken-assembler.texture",
+    group = {"加工"},
+    item_description = "用于排水设施的框架",
+}
+
+prototype "粉碎机框架" {
+    type = {"item"},
+    stack = 4,
+    pile = "2x2x4",
+    pile_model = "prefabs/stackeditems/iron-ore.prefab",
+    icon = "textures/construct/broken-assembler.texture",
+    group = {"加工"},
+    item_description = "用于粉碎物品的框架",
+}
+
+prototype "烟囱框架" {
+    type = {"item"},
+    stack = 4,
+    pile = "2x2x4",
+    pile_model = "prefabs/stackeditems/iron-ore.prefab",
+    icon = "textures/construct/broken-assembler.texture",
+    group = {"加工"},
+    item_description = "用于排气设施的框架",
 }

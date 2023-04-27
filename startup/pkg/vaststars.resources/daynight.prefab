@@ -5,7 +5,17 @@ policy:
 data:
   daynight:
     day:
-      start_rotator:  {0.5, 5.76, 0.0}
+      resources:
+        direct      : /pkg/vaststars.resources/textures/daynight/day_direct.pngx
+        indirect    : /pkg/vaststars.resources/textures/daynight/day_indirect.pngx
+        intensity   : /pkg/vaststars.resources/textures/daynight/day_intensity.pngx
+      start_rotator:  {0.0,-0.4,0.0}
+      rotate_axis: {0.0,-0.6,0.9}
     night:
-      start_rotator:  {0.0, 1.0, 0.0}
-  name: daynight_test
+      start_rotator:  {0.0,-0.4,0.0}
+      rotate_axis: {0.0,-0.6,0.9}
+      resources:
+        direct      : /pkg/vaststars.resources/textures/daynight/night_direct.pngx
+        indirect    : /pkg/vaststars.resources/textures/daynight/night_indirect.pngx
+        intensity   : /pkg/vaststars.resources/textures/daynight/night_intensity.pngx
+  name: daynight_test 

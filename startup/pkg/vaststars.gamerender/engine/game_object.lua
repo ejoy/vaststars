@@ -156,9 +156,7 @@ local __get_hitch_children ; do
                     iani.load_events(eid, prefab:match("^(.*)%.prefab$") .. ".event")
                 end
                 if render_layer and e.render_object then
-                    w:extend(e, "render_layer?update")
-                    e.render_layer = render_layer
-                    e.render_object.render_layer = irl.layeridx(e.render_layer)
+                    irl.set_layer(e, render_layer)
                 end
             end
 
