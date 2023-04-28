@@ -46,5 +46,5 @@ graphic:
     split_lamada: 0.8
     split_num: 1
     split_ratios:
-      {0.25, 0.65},
+      {0.25, 1.00},
     type: inv_z
