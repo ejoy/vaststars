@@ -44,6 +44,8 @@ local CAMERA_CONSTRUCT_SCALE    = CAMERA_CONSTRUCT.s and math3d.constant("v4", C
 local CAMERA_CONSTRUCT_ROTATION = CAMERA_CONSTRUCT.r and math3d.constant("quat", CAMERA_CONSTRUCT.r) or mc.IDENTITY_QUAT
 local CAMERA_CONSTRUCT_POSITION = CAMERA_CONSTRUCT.t and math3d.constant("v4", CAMERA_CONSTRUCT.t) or mc.ZERO_PT
 
+local CAMERA_DELTA_Z <const> = math3d.index(math3d.sub(CAMERA_CONSTRUCT_POSITION, CAMERA_DEFAULT_POSITION), 3)
+
 local CAMERA_DEFAULT_YAIXS <const> = CAMERA_DEFAULT.t[2]
 local CAMERA_YAIXS_MIN <const> = CAMERA_DEFAULT_YAIXS - 280
 local CAMERA_YAIXS_MAX <const> = CAMERA_DEFAULT_YAIXS + 150
@@ -78,13 +80,16 @@ local function toggle_view(v)
     local mq = w:first("main_queue camera_ref:in")
     local e <close> = w:entity(mq.camera_ref)
 
+    -- using the properties of similar triangles to calculate the position of the z-axis
     if v == "construct" then
-        local delta = math3d.sub(iom.get_position(e), CAMERA_DEFAULT_POSITION)
-        local position = math3d.add(delta, CAMERA_CONSTRUCT_POSITION)
+        local position = iom.get_position(e)
+        local z = CAMERA_DELTA_Z * (math3d.index(position, 2) / math3d.index(CAMERA_DEFAULT_POSITION, 2))
+        local position = math3d.add(iom.get_position(e), math3d.vector(0, 0, z))
         return CAMERA_CONSTRUCT_SCALE, CAMERA_CONSTRUCT_ROTATION, position
     else
-        local delta = math3d.sub(iom.get_position(e), CAMERA_CONSTRUCT_POSITION)
-        local position = math3d.add(delta, CAMERA_DEFAULT_POSITION)
+        local position = iom.get_position(e)
+        local z = -CAMERA_DELTA_Z * (math3d.index(position, 2) / math3d.index(CAMERA_DEFAULT_POSITION, 2))
+        local position = math3d.add(iom.get_position(e), math3d.vector(0, 0, z))
         return CAMERA_DEFAULT_SCALE, CAMERA_DEFAULT_ROTATION, position
     end
 end
