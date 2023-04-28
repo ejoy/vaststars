@@ -156,10 +156,7 @@ local function __handle_camera_motion()
         if mat then
             local mq = w:first("main_queue camera_ref:in")
             local e <close> = w:entity(mq.camera_ref)
-            local s, r, t = math3d.srt(mat)
-            iom.set_scale(e, s)
-            iom.set_rotation(e, r)
-            iom.set_position(e, t)
+            iom.set_srt(e, math3d.srt(mat))
         end
     end
 end
