@@ -42,9 +42,9 @@ graphic:
     far_offset: 0
     min_variance: 0.012
     normal_offset: 0.001
-    size: 512
+    size: 1024
     split_lamada: 0.8
     split_num: 1
     split_ratios:
-      {0.05, 0.65}
+      {0.25, 0.65},
     type: inv_z

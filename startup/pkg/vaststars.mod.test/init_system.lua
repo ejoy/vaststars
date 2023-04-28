@@ -118,14 +118,19 @@ function S.init_world()
         },
     } ]]
 
---[[     create_instance("/pkg/vaststars.mod.test/assets/miner-1.glb|mesh.prefab",
+     create_instance("/pkg/vaststars.mod.test/assets/miner-1.glb|mesh.prefab",
     function (e)
         local ee<close> = w:entity(e.tag['*'][1])
-        iom.set_scale(ee, 0.5)
-        iom.set_position(ee, math3d.vector(10, 0, 0, 1))
-    end) ]]
+        iom.set_scale(ee, 1)
+        iom.set_position(ee, math3d.vector(200, 0, 0, 1))
+    end) 
 
-
+    create_instance("/pkg/vaststars.mod.test/assets/miner-1.glb|mesh.prefab",
+    function (e)
+        local ee<close> = w:entity(e.tag['*'][1])
+        iom.set_scale(ee, 1)
+        iom.set_position(ee, math3d.vector(0, 0, 0, 1))
+    end) 
 end
 
 local kb_mb = world:sub{"keyboard"}
