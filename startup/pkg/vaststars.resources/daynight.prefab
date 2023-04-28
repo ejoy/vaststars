@@ -6,16 +6,16 @@ data:
   daynight:
     day:
       resources:
-        direct      : /pkg/vaststars.resources/textures/daynight/day_direct.pngx
-        indirect    : /pkg/vaststars.resources/textures/daynight/day_indirect.pngx
-        intensity   : /pkg/vaststars.resources/textures/daynight/day_intensity.pngx
-      start_rotator:  {0.0,-0.4,0.0}
-      rotate_axis: {0.0,-0.6,0.9}
+        direct      : /pkg/vaststars.resources/textures/daynight/day_direct.jpg
+        indirect    : /pkg/vaststars.resources/textures/daynight/day_indirect.jpg
+        intensity   : /pkg/vaststars.resources/textures/daynight/day_intensity.jpg
+      start_rotator:  {0.0,-0.9,0.0}
+      rotate_axis: {0.0,-0.1,0.9}
     night:
-      start_rotator:  {0.0,-0.4,0.0}
-      rotate_axis: {0.0,-0.6,0.9}
+      start_rotator:  {0.0,-0.9,0.0}
+      rotate_axis: {0.0,-0.3,0.8}
       resources:
-        direct      : /pkg/vaststars.resources/textures/daynight/night_direct.pngx
-        indirect    : /pkg/vaststars.resources/textures/daynight/night_indirect.pngx
-        intensity   : /pkg/vaststars.resources/textures/daynight/night_intensity.pngx
+        direct      : /pkg/vaststars.resources/textures/daynight/night_direct.jpg
+        indirect    : /pkg/vaststars.resources/textures/daynight/night_indirect.jpg
+        intensity   : /pkg/vaststars.resources/textures/daynight/night_intensity.jpg
   name: daynight_test 
