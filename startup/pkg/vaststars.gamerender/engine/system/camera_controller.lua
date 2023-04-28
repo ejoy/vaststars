@@ -51,11 +51,15 @@ local CAMERA_YAIXS_MAX <const> = CAMERA_DEFAULT_YAIXS + 150
 local cam_cmd_queue = create_queue()
 local cam_motion_matrix_queue = create_queue()
 
-local function zoom(v)
+local function zoom(factor, x, y)
     local mq = w:first("main_queue camera_ref:in render_target:in")
-    local ce<close> = w:entity(mq.camera_ref, "scene:update")
-    local deltavec = math3d.mul(iom.get_direction(ce), v * MOVE_SPEED)
-    local position = math3d.add(iom.get_position(ce), deltavec)
+    local ce <close> = w:entity(mq.camera_ref)
+
+    local position = iom.get_position(ce)
+    local target = icamera_controller.screen_to_world(x, y, PLANES)[1]
+    local dir = math3d.normalize(math3d.sub(target, position))
+    local position = math3d.muladd(dir, factor * MOVE_SPEED, position)
+
     local y = math3d.index(position, 2)
     if y >= CAMERA_YAIXS_MIN and y <= CAMERA_YAIXS_MAX then
         iom.set_position(ce, position)
@@ -193,15 +197,15 @@ function camera_controller:camera_usage()
     local mq = w:first("main_queue camera_ref:in")
     local ce <close> = w:entity(mq.camera_ref)
 
-    for _, delta in mouse_wheel_mb:unpack() do
+    for _, delta, x, y in mouse_wheel_mb:unpack() do
         if __check_camera_editable() then
-            zoom(delta)
+            zoom(delta, x, y)
         end
     end
 
     for _, _, e in gesture_pinch:unpack() do
         if __check_camera_editable() then
-            zoom(e.velocity)
+            zoom(e.velocity, e.locationInView.x, e.locationInView.y)
         end
     end
 
