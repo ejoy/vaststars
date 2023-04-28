@@ -650,8 +650,8 @@ end
 
 local function __calc_grid_position(self, typeobject, x, y)
     local w, h = iprototype.unpackarea(typeobject.area)
-    local _, originPosition = coord_system:align(math3d.vector {0 - w / 2 * 10, 0, h / 2 * 10}, w, h)
-    local buildingPosition = coord_system:get_begin_position_by_coord(x, y)
+    local _, originPosition = coord_system:align(math3d.vector {0, 0, 0}, w, h)
+    local buildingPosition = coord_system:get_position_by_coord(x, y, w, h)
     return math3d.ref(math3d.add(math3d.sub(buildingPosition, originPosition), GRID_POSITION_OFFSET))
 end
 

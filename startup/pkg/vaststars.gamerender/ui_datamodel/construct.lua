@@ -372,7 +372,7 @@ function M:stage_ui_update(datamodel)
 
     for _ in guide_on_going_mb:unpack() do
         if builder then
-            builder:clean()
+            builder:clean(datamodel)
             builder = nil
         end
         pickup_id = nil
