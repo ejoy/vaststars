@@ -123,6 +123,7 @@ local function complete(self, object_id)
                 w = aw,
                 h = ah,
             }
+            ipower:set_network_id(gw, capacitance)
         end
     end
 end

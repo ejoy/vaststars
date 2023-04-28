@@ -40,8 +40,18 @@ iRmlUi.font_dir "/pkg/vaststars.resources/ui/font/"
 
 local daynight_update; do
     if DAYNIGHT_DEBUG then
-        local total_ms = DAYNIGHT_DEBUG * 1000
-        local night_ms = total_ms / 2
+        local function parse(s)
+            if type(s) ~= "string" or s == "" then
+                return s
+            end
+            local total_sec, day_ratio, night_ratio = s:match("(%d+):?(%d*):?(%d*)")
+            return tonumber(total_sec), tonumber(day_ratio), tonumber(night_ratio)
+        end
+
+        local total_sec, day_ratio, night_ratio = parse(DAYNIGHT_DEBUG)
+        day_ratio, night_ratio = day_ratio or 50, night_ratio or 50
+        local total_ms = total_sec * 1000
+        local day_ms = total_ms * (day_ratio / (day_ratio + night_ratio))
 
         local ltask = require "ltask"
         local function gettime()
@@ -56,10 +66,10 @@ local daynight_update; do
             end
 
             local cycle = gettime() % total_ms
-            if cycle >= 0 and cycle < night_ms then
-                idn.update_day_cycle(dne, (cycle % night_ms)/night_ms)
+            if cycle >= 0 and cycle < day_ms then
+                idn.update_day_cycle(dne, (cycle % day_ms)/day_ms)
             else
-                idn.update_night_cycle(dne, (cycle - night_ms)/(total_ms - night_ms))
+                idn.update_night_cycle(dne, (cycle - day_ms)/(total_ms - day_ms))
             end
         end
     else
