@@ -5,9 +5,6 @@ local BUILDING_COMPONENTS = {
     assembling_icon = true,
     consumer_icon = true,
     workstatus = true,
-    construction_center_wing_status = true,
-    construction_center_printer = true,
-    item_transfer_effect = true,
     building_base = true,
 }
 local BUILDING_COMPONENT_METHODS = {

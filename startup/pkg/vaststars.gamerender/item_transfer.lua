@@ -28,7 +28,7 @@ local function get_movable_items(e)
         end
     else
         if e.chest then
-            for _, slot in pairs(ichest.collect_item(gameplay_core.get_world(), e)) do
+            for _, slot in pairs(ichest.collect_item(gameplay_core.get_world(), e.chest)) do
                 if ichest.get_amount(slot) > 0 then
                     items[#items + 1] = {chest = e.chest, item = slot.item, count = ichest.get_amount(slot)}
                     hash[slot.item] = #items

@@ -13,6 +13,10 @@ component "chest" {
     "fluidbox_out:word",
 }
 
+component "base_chest" {
+    "chest:word",
+}
+
 component "station_producer" {
 }
 

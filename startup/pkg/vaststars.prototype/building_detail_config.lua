@@ -39,9 +39,6 @@ local building_detail_config = {
 		"production_speed",
 		-- "productivity_bonus",
 	},
-	["建造中心"] = {
-		"work_power",
-	},
 	["小铁制箱子"] = {
 		"chest_capacity",
 	},

@@ -281,116 +281,6 @@
                 height:3.4vmin;
                 background-size: cover;
             }
-            .teleport-items-block {
-                width:40%;
-                height:15vmin;
-                top:1vmin;
-                left: 46.5vmin;
-                position: absolute; 
-            }
-
-            @keyframes bar-slide-down {
-                0% {
-                    top: -13vmin;
-                }
-                100% {
-                    top: 0vmin;
-                }
-            }
-            @keyframes bar-slide-up {
-                0% {
-                    top: 0vmin;
-                }
-                100% {
-                    top: -13vmin;
-                }
-            }
-            .teleport-items-bar-slide-init{
-                top: -13vmin;
-            }
-            .teleport-items-bar-slide-down {
-                animation: 1s linear 0s bar-slide-down;
-            }
-            .teleport-items-bar-slide-up {
-                animation: 1s linear 0s bar-slide-up;
-            }
-
-            @keyframes inventory-slide-down {
-                0% {
-                    opacity: 0;
-                }
-                100% {
-                    opacity: 1;
-                }
-            }
-            @keyframes inventory-slide-up {
-                0% {
-                    opacity: 1;
-                }
-                100% {
-                    opacity: 0;
-                }
-            }
-            @keyframes teleport-in {
-                0% {
-                    left: 0vmin;
-                    top:120vmin;
-                }
-                25% {
-                    left: 16vmin;
-                    top:80vmin;
-                }
-                50% {
-                    left: 32vmin;
-                    top:50vmin;
-                }
-                75% {
-                    left: 50vmin;
-                    top:20vmin;
-                }
-                100% {
-                    left: 75vmin;
-                    top:0vmin;
-                }
-            }
-            .inventory-slide-init{
-                opacity: 0;
-            }
-            .inventory-slide-down {
-                animation: 1s linear 0s inventory-slide-down;
-            }
-            .inventory-slide-up {
-                animation: 1s linear 0s inventory-slide-up;
-            }
-
-            .teleport-items-arrow-slide-down {
-                width:8.3vmin;
-                height:3.45vmin;
-                background-size: cover;
-                background-image:"textures/common/arrow.texture";
-                transform: rotate(360deg);
-            }
-            .teleport-items-arrow-slide-up {
-                width:8.3vmin;
-                height:3.45vmin;
-                background-size: cover;
-                background-image:"textures/common/arrow.texture";
-                transform: rotate(180deg);
-            }
-            .teleport-items-arrow-slide-init {
-                width:8.3vmin;
-                height:3.45vmin;
-                background-size: cover;
-                background-image:"textures/common/arrow.texture";
-                transform: rotate(180deg);
-            }
-            .guide-finger {
-                width:9vmin;
-                height:9vmin;
-                background-size: cover;
-                background-image:"textures/common/finger.texture";
-                animation:5s exponential 0s teleport-in;
-            }
             .panel-switch {
                 height: 6.9vmin;
                 width: 16.6vmin;
@@ -406,11 +296,7 @@
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local start = ui_sys.createDataMode("start", {
-                item_transfer_src_inventory_count = 0,
-                item_transfer_src_inventory = {},
-                show_item_transfer_src_inventory = false,
                 is_concise_mode = false, -- in concise mode, the main menu in the lower left corner, technology progress button in the upper right corner and help button in the upper left corner are not displayed
-                construction_center_menu = {},
                 tech_count = 0,                 --当前可研究的科技数量
                 show_tech_progress = false,     --是否显示科技进度
                 is_task = false,                --是否是任务
@@ -424,7 +310,6 @@
                 construct_menu = {},
                 cur_construct_menu = "",
                 show_construct_menu = false,
-                show_construct_entity = false,
             })
             function start.clickConstruct(event, object_id, index)
                 console.log("clickConstruct", object_id, index)
@@ -495,9 +380,6 @@
                 e.className = class
                 e.attributes.expanded = expanded
             end
-            function start.toggleItemTransferSrcInv()
-                ui_sys.pub {"item_transfer_src_inventory"}
-            end
             window.addEventListener('mousedown', function(event)
                 ui_sys.world_pub {"ui_message", "leave"}
             end)
@@ -505,41 +387,15 @@
             ui_sys.mapping(start, {
                 {
                     function()
-                        start.item_transfer_src_inventory_count = #start.item_transfer_src_inventory
+                        start.show_construct_menu = start.is_concise_mode
                     end,
-                    "item_transfer_src_inventory",
+                    "is_concise_mode",
                 },
-                {
-                    function()
-                        if start.show_item_transfer_src_inventory then
-                            setElementClass("ItemTransferSrcInv", "inventory-slide-down", "true")
-                            setElementClass("ItemTransferSrcInvBar", "teleport-items-bar-slide-down", "true")
-                            setElementClass("ItemTransferSrcInvArrow", "teleport-items-arrow-slide-down", "true")
-                        else
-                            setElementClass("ItemTransferSrcInv", "inventory-slide-up", "false")
-                            setElementClass("ItemTransferSrcInvBar", "teleport-items-bar-slide-up", "false")
-                            setElementClass("ItemTransferSrcInvArrow", "teleport-items-arrow-slide-up", "false")
-                        end
-                    end,
-                    "show_item_transfer_src_inventory"
-                }
             })
         </script>
     </head>
     <body style = "pointer-events: none; justify-content: center; align-items: center;">
-        <div class = "safe-area" data-model="start">
-            <div class="teleport-items-block" style="pointer-events: none;">
-                <div id = "ItemTransferSrcInvBar" class = "teleport-items-bar-slide-init" style = "justify-content: center; align-items: center; pointer-events: none;">
-                    <div id = "ItemTransferSrcInv" class = "inventory-slide-init" style = "flex-direction: row; justify-content: center; align-items: center; pointer-events: none;" data-if = "item_transfer_src_inventory_count > 0">
-                        <div class="item" data-style-background-image = "it.icon" data-style-background-color= "it.movable ? 'rgb(32,232,222)' : 'rgb(250, 205, 9)'" data-for = "item_transfer_src_inventory">
-                            <div class="item-count" data-style-color = "it.movable ? 'rgb(250, 205, 9)' : 'rgb(255, 255, 255)'" >{{it.count}}</div>
-                            <div class="item-sign"/> 
-                        </div>
-                    </div>
-                    <div id = "ItemTransferSrcInvArrow" class = "teleport-items-arrow-slide-init" data-event-click = "toggleItemTransferSrcInv()" data-if = "item_transfer_src_inventory_count > 0" />
-                </div>
-            </div>
-            
+        <div class = "safe-area" data-model="start">           
             <!-- 主菜单按钮 -->
             <div class="main-menu-region">
                 <!-- 主菜单隐藏/显示按钮 -->
@@ -606,20 +462,9 @@
                 </button>
             </div>
 
-            <!-- 右边菜单 -->
-            <div style = "pointer-events: none; height:100%;  position: absolute; right:0vmin;">
-                <div style = "height:100%; flex-direction: column; justify-content: center;">
-                    <workbutton data-for = "construction_center_menu" style = "background-color: rgb(246, 142, 14); margin:0.3vmin 0 0.3vmin 0;" data-event-click="clickConstruct(it.object_id, it.index)">
-                        <div class="workbutton-bg" data-style-background-image = "it.icon" data-style-animation = "(it.name == '采矿机I' && guide_progress == 25)||(it.name == '铁制电线杆' && guide_progress == 30) ? ' 0.5s linear 0s infinite alternate enlarge3':'0.5s linear 0s enlarge3'" data-if = "it.icon != ''"/>
-                        <div class="workbutton-text"  data-if = "it.name != ''">{{it.name}}</div>
-                        <!-- div class="item-count" style="animation:0.5s linear 0s enlarge2;" data-if = "it.name != ''">{{it.count}}</div -->
-                    </workbutton>
-                </div>
-            </div>
-
             <!-- right-side construction menu -->
-            <workbutton class = "panel-switch" data-event-click="showConstructMenu()" data-if = "show_construct_entity" />
-            <div style = "pointer-events: none; position: absolute; right:0vmin; width: 98vmax; height: 97vmin; flex-direction: row-reverse;" data-if="show_construct_menu && show_construct_entity">
+            <workbutton class = "panel-switch" data-event-click="showConstructMenu()" />
+            <div style = "pointer-events: none; position: absolute; right:0vmin; width: 98vmax; height: 97vmin; flex-direction: row-reverse;" data-if="show_construct_menu">
                 <div style = "width: 16.00vmin; height: 80.00vmin; flex-direction: column; justify-content: space-between;">
                     <workbutton data-event-click="clickShowConstructMenuDetail(it.name)" data-for = "construct_menu" data-style-background-color="cur_construct_menu == it.name ? 'rgb(0, 176, 80)' : 'rgb(246, 142, 14)'">
                         <div class="workbutton-bg" data-style-background-image = "it.icon" />

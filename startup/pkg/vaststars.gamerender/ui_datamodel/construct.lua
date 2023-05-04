@@ -21,7 +21,6 @@ local idetail = ecs.import.interface "vaststars.gamerender|idetail"
 local EDITOR_CACHE_NAMES = {"CONFIRM", "CONSTRUCTED"}
 local create_station_builder = ecs.require "editor.stationbuilder"
 local interval_call = ecs.require "engine.interval_call"
-local item_transfer = require "item_transfer"
 local coord_system = ecs.require "terrain"
 local selected_boxes = ecs.require "selected_boxes"
 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
@@ -30,7 +29,6 @@ local COLOR_INVALID <const> = math3d.constant "null"
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local COLOR_GREEN = math3d.constant("v4", {0.3, 1, 0, 1})
 local construct_menu_cfg = import_package "vaststars.prototype"("construct_menu")
-local ichest = require "gameplay.interface.chest"
 
 local rotate_mb = mailbox:sub {"rotate"}
 local build_mb = mailbox:sub {"build"}
@@ -45,9 +43,7 @@ local load_resource_mb = mailbox:sub {"load_resource"}
 local help_mb = mailbox:sub {"help"}
 local move_md = mailbox:sub {"move"}
 local teardown_mb = mailbox:sub {"teardown"}
-local construction_center_menu_place_mb = mailbox:sub {"construction_center_menu_place"}
 local construct_entity_mb = mailbox:sub {"construct_entity"}
-local item_transfer_src_inventory_mb = mailbox:sub {"item_transfer_src_inventory"}
 local focus_on_building_mb = mailbox:sub {"focus_on_building"}
 local on_pickup_object_mb = mailbox:sub {"on_pickup_object"}
 
@@ -57,186 +53,18 @@ local gesture_pan_mb = world:sub {"gesture", "pan"}
 local focus_tips_event = world:sub {"focus_tips"}
 
 local builder
-local item_transfer_dst
 local pickup_id -- object id
 local excluded_pickup_id -- object id
-local manual_item_transfer_src_inventory = false
 local handle_pickup = true
-
-local item_transfer_placement_interval = interval_call(300, function(datamodel, object_id)
-    if not global.item_transfer_src then
-        datamodel.item_transfer_src_inventory = {}
-        return
-    end
-
-    local object = assert(objects:get(global.item_transfer_src))
-    local e = assert(gameplay_core.get_entity(assert(object.gameplay_eid)))
-    local movable_items, movable_items_hash = item_transfer.get_movable_items(e)
-    if item_transfer_dst then
-        local object = objects:get(item_transfer_dst) -- object maybe removed
-        if object then
-            local e = assert(gameplay_core.get_entity(assert(object.gameplay_eid)))
-            local placeable_items = item_transfer.get_placeable_items(e)
-            local ci = 1
-            for _, slot in ipairs(placeable_items) do
-                local j = movable_items_hash[slot.item]
-                if j then
-                    movable_items[j].movable = true
-                    movable_items[ci], movable_items[j] = movable_items[j], movable_items[ci]
-                    ci = ci + 1
-                end
-            end
-        end
-    end
-
-    local items = {}
-    for _, slot in ipairs(movable_items) do
-        local typeobject_item = assert(iprototype.queryById(slot.item))
-        items[#items + 1] = {icon = typeobject_item.icon, count = slot.count, movable = (slot.movable == true)}
-        if #items >= 5 then
-            break
-        end
-    end
-    datamodel.item_transfer_src_inventory = items
-
-    if manual_item_transfer_src_inventory then
-        return
-    end
-    ------
-    if pickup_id == global.item_transfer_src then
-        datamodel.show_item_transfer_src_inventory = true
-    else
-        datamodel.show_item_transfer_src_inventory = false
-
-        local movable_items, movable_items_hash, placeable_items
-        do
-            if global.item_transfer_src then
-                local object = assert(objects:get(global.item_transfer_src))
-                local e = gameplay_core.get_entity(assert(object.gameplay_eid))
-                movable_items, movable_items_hash = item_transfer.get_movable_items(e)
-                assert(movable_items and movable_items_hash)
-            end
-        end
-
-        do
-            if object_id then
-                local object = objects:get(object_id) -- object maybe removed
-                if object then
-                    local e = gameplay_core.get_entity(assert(object.gameplay_eid))
-                    placeable_items = assert(item_transfer.get_placeable_items(e))
-                end
-            end
-        end
-        do
-            for _, slot in ipairs(placeable_items or {}) do
-                if movable_items_hash[slot.item] then
-                    datamodel.show_item_transfer_src_inventory = true
-                    break
-                end
-            end
-        end
-    end
-end)
-
-local function __get_first_item(e, object_id)
-    if e.chest == 0 then
-        return
-    end
-    for index = 1, 256 do
-        local slot = gameplay_core.get_world():container_get(e, index)
-        if not slot then
-            break
-        end
-        if slot.item == 0 or ichest.get_amount(slot) <= 0 then
-            goto continue
-        end
-        if slot.type ~= "red" then
-            goto continue
-        end
-
-        local typeobject_item = assert(iprototype.queryById(slot.item))
-        if iprototype.has_type(typeobject_item.type, "building") then
-            return {icon = typeobject_item.icon, count = ichest.get_amount(slot), name = iprototype.show_prototype_name(typeobject_item), object_id = object_id, index = index}
-        end
-
-        ::continue::
-    end
-end
-
-local function __construction_center_menu(datamodel, object_id)
-    if not object_id then
-        datamodel.construction_center_menu = {}
-        return
-    end
-    local object = assert(objects:get(object_id))
-    local typeobject = iprototype.queryByName(object.prototype_name)
-    if not iprototype.has_types(typeobject.type, "construction_center", "construction_chest") then
-        datamodel.construction_center_menu = {}
-        return
-    end
-
-    local map = {}
-    for e in gameplay_core.select("chest:in eid:in building:in") do
-        local typeobject = iprototype.queryById(e.building.prototype)
-        if iprototype.has_types(typeobject.type, "construction_center", "construction_chest") then
-            map[e.eid] = true
-        end
-    end
-
-    local sort_map = {}
-    for eid in pairs(map) do
-        local e = gameplay_core.get_entity(eid)
-        local o = assert(objects:coord(e.building.x, e.building.y))
-        local slot = __get_first_item(e.chest, o.id)
-        if slot then
-            sort_map[#sort_map+1] = {x = e.building.x, y = e.building.y, eid = e.eid, slot = slot}
-        end
-    end
-
-    -- find the six nearest buildings
-    table.sort(sort_map, function(a, b)
-        local dx = a.x - object.x
-        local dy = a.y - object.y
-        local da = dx * dx + dy * dy
-        dx = b.x - object.x
-        dy = b.y - object.y
-        local db = dx * dx + dy * dy
-        return da < db
-    end)
-
-    local nearest = {}
-    for _, v in ipairs(sort_map) do
-        nearest[#nearest+1] = v
-        if #nearest >= 6 then
-            break
-        end
-    end
-    table.sort(nearest, function(a, b)
-        return a.eid < b.eid
-    end)
-
-    local res = {}
-    for i = 1, 6 do
-        if nearest[i] then
-            res[i] = nearest[i].slot
-        else
-            res[i] = {icon = "", count = 0, name = ""}
-        end
-    end
-
-    datamodel.construction_center_menu = res
-end
 
 local function __on_pickup_object(datamodel, object)
     if not excluded_pickup_id or excluded_pickup_id == object.id then
         if idetail.show(object.id) then
-            item_transfer_dst = object.id
             pickup_id = object.id
-            __construction_center_menu(datamodel, pickup_id)
 
             local prototype_name = object.prototype_name
             local typeobject = iprototype.queryByName(prototype_name)
-            if iprototype.has_types(typeobject.type, "construction_center", "construction_chest") then
+            if iprototype.has_types(typeobject.type, "base") then
                 datamodel.is_concise_mode = true
             end
         end
@@ -315,10 +143,7 @@ function M:create()
         current_tech_progress_detail = "0/0",  --当前科技进度(数量),
         ingredient_icons = {},
         show_ingredient = false,
-        item_transfer_src_inventory = {},
-        construction_center_menu = {},
         construct_menu = _get_construct_menu(),
-        show_construct_entity = require("debugger").show_construct_entity,
     }
 end
 local current_techname = ""
@@ -553,20 +378,17 @@ function M:stage_camera_usage(datamodel)
             if not excluded_pickup_id or excluded_pickup_id == object.id then -- TODO: duplicated code with __on_pickup_object
                 if idetail.show(object.id) then
                     leave = false
-                    item_transfer_dst = object.id
                     pickup_id = object.id
-                    __construction_center_menu(datamodel, pickup_id)
 
                     local prototype_name = object.prototype_name
                     local typeobject = iprototype.queryByName(prototype_name)
-                    if iprototype.has_types(typeobject.type, "construction_center", "construction_chest") then
+                    if iprototype.has_types(typeobject.type, "base") then
                         datamodel.is_concise_mode = true
                     end
                 end
             end
         else
             idetail.unselected()
-            item_transfer_dst = nil
             pickup_id = nil
             datamodel.is_concise_mode = false
         end
@@ -574,9 +396,6 @@ function M:stage_camera_usage(datamodel)
         if leave then
             world:pub {"ui_message", "leave"}
             leave = false
-            datamodel.show_item_transfer_src_inventory = false
-            manual_item_transfer_src_inventory = false
-            __construction_center_menu(datamodel)
             break
         end
         ::continue::
@@ -607,14 +426,11 @@ function M:stage_camera_usage(datamodel)
             ::continue1::
         else
             idetail.unselected()
-            item_transfer_dst = nil
         end
 
         if leave then
             world:pub {"ui_message", "leave"}
             leave = false
-            datamodel.show_item_transfer_src_inventory = false
-            manual_item_transfer_src_inventory = false
             break
         end
         ::continue::
@@ -642,8 +458,6 @@ function M:stage_camera_usage(datamodel)
     if gesture_pan_changed and leave then
         world:pub {"ui_message", "leave"}
         leave = false
-        datamodel.show_item_transfer_src_inventory = false
-        manual_item_transfer_src_inventory = false
     end
 
     for _, _, _, object_id in move_md:unpack() do
@@ -658,24 +472,6 @@ function M:stage_camera_usage(datamodel)
 
             builder = create_movebuilder(object.id)
             builder:new_entity(datamodel, typeobject)
-        end)
-    end
-
-    for _, _, _, object_id, index in construction_center_menu_place_mb:unpack() do
-        handle_pickup = false
-        __switch_status("construct", function()
-            -- we may click the button repeatedly, so we need to clear the old model first
-            if builder then
-                builder:clean(datamodel)
-            end
-            local object = assert(objects:get(object_id))
-            local e = gameplay_core.get_entity(assert(object.gameplay_eid))
-            assert(e.chest.chest ~= 0)
-            local slot = assert(gameplay_core.get_world():container_get(e.chest, index))
-            assert(slot.item ~= 0)
-
-            local typeobject = iprototype.queryById(slot.item)
-            __construct_entity(datamodel, object.gameplay_eid, typeobject)
         end)
     end
 
@@ -700,11 +496,6 @@ function M:stage_camera_usage(datamodel)
         end
     end
 
-    for _ in item_transfer_src_inventory_mb:unpack() do
-        datamodel.show_item_transfer_src_inventory = not datamodel.show_item_transfer_src_inventory
-        manual_item_transfer_src_inventory = true
-    end
-
     for _, _, _, object_id in on_pickup_object_mb:unpack() do
         local object = assert(objects:get(object_id))
         __on_pickup_object(datamodel, object)
@@ -722,7 +513,6 @@ function M:stage_camera_usage(datamodel)
         icamera_controller.focus_on_position(coord_system:get_position_by_coord(object.x, object.y, w, h), focus_on_position_cb(object_id))
     end
 
-    item_transfer_placement_interval(datamodel, pickup_id)
     iobject.flush()
 end
 return M

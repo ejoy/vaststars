@@ -36,6 +36,7 @@ local function get_tile(pt, type)
 end
 
 local function endpoint_id(world, init, pt)
+    assert(init.x and init.y and init.dir)
     local r = get_tile(pt, "endpoint")
     local x, y = rotate(r.position, DIRECTION[init.dir], pt.area)
     x = x + init.x

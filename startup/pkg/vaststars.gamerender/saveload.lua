@@ -443,7 +443,6 @@ function M:restore(index)
     end
     iroadnet:init(renderData, true)
     global.roadnet = map
-    global.item_transfer_src = nil
 
     iscience.update_tech_list(gameplay_core.get_world())
     iui.open({"construct.rml"})
@@ -474,7 +473,6 @@ function M:restart()
     --
     iroadnet:init({}, true)
     global.roadnet = {}
-    global.item_transfer_src = nil
     if next(global.roadnet) then
         gameplay_core.get_world():roadnet_reset(global.roadnet)
     end

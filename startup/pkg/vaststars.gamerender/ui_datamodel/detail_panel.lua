@@ -146,7 +146,7 @@ local function get_property(e, typeobject)
         local chest_list1 = {}
         local typeobject = iprototype.queryById(e.building.prototype)
         if typeobject.slots then
-            for _, slot in pairs(ichest.collect_item(gameplay_core.get_world(), e)) do
+            for _, slot in pairs(ichest.collect_item(gameplay_core.get_world(), e.chest)) do
                 if slot.amount <= 0 then
                     goto continue
                 end

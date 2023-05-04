@@ -24,10 +24,8 @@ funcs["solar_panel"] = DO_NOTHING
 funcs["road"] = DO_NOTHING
 funcs["station"] = DO_NOTHING
 funcs["lorry_factory"] = DO_NOTHING
-funcs["construction_center"] = DO_NOTHING
 funcs["hub"] = DO_NOTHING
 funcs["wind_turbine"] = DO_NOTHING
-funcs["construction_chest"] = DO_NOTHING
 funcs["accumulator"] = DO_NOTHING
 
 funcs["building"] = function (export_data, e)

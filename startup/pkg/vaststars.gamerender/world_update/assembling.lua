@@ -371,10 +371,6 @@ local function __need_assembly_icon(gameplay_world, e)
     end
 
     local typeobject_recipe = iprototype.queryById(e.assembling.recipe)
-    local typeobject_building = iprototype.queryById(e.building.prototype)
-    if not iprototype.has_type(typeobject_building.type, "construction_center") then
-        return true
-    end
 
     local ingredients_n <const> = #typeobject_recipe.ingredients//4 - 1
     local results_n <const> = #typeobject_recipe.results//4 - 1

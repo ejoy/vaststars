@@ -870,8 +870,6 @@ local t = {
 	"/pkg/vaststars.gamerender/global.lua",
 	"/pkg/vaststars.gamerender/init_system.lua",
 	"/pkg/vaststars.gamerender/inspect.lua",
-	"/pkg/vaststars.gamerender/item_transfer.lua",
-	"/pkg/vaststars.gamerender/item_transfer_effect.lua",
 	"/pkg/vaststars.gamerender/lorry.lua",
 	"/pkg/vaststars.gamerender/lorry_manager.lua",
 	"/pkg/vaststars.gamerender/main.lua",

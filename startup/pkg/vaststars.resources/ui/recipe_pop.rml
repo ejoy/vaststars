@@ -143,7 +143,6 @@
                 recipe_index = 1,
                 recipe_name = "",
                 catalog_index = 1,
-                construction_center = false,
 
                 recipe_time = " ",
                 recipe_ingredients = {},
@@ -234,7 +233,7 @@
             <div class="panel" style= "flex-direction: column;">
                 <div class="header" id = "item-name-block">
                     <button class = "back-button" data-event-click="clickClose()"/>
-                    <div class = "menu-title" style="width: 70%;">{{construction_center ? '打印预览' : '生产预览'}}</div>
+                    <div class = "menu-title" style="width: 70%;">{{'生产预览'}}</div>
                 </div>
 
                 <!-- tag page begin -->
@@ -300,11 +299,11 @@
                 <div class = "recipe-button-block">
                     <button class = "confirm-button" style="background-color:rgb(203, 118, 24);" data-event-click = "clickClearRecipe()">
                         <div class="middle-bg" style='background-image: "textures/road/forbidden.texture";'/>
-                        <div class = "recipe-name-text" style="font-size: 5.73vmin;">{{construction_center ? '取消打印' : '取消生产'}}</div>
+                        <div class = "recipe-name-text" style="font-size: 5.73vmin;">{{'取消生产'}}</div>
                     </button>
                     <button class = "confirm-button" style="background-color:rgb(52, 207, 115);" data-event-click = "clickConfirm()">
                         <div class="middle-bg" style='background-image: "textures/construct/work.texture";'/>
-                        <div class = "recipe-name-text" style="font-size: 5.73vmin;">{{construction_center ? '开始打印' : '开始生产'}}</div>
+                        <div class = "recipe-name-text" style="font-size: 5.73vmin;">{{'开始生产'}}</div>
                     </button> 
                 </div>
             </div>

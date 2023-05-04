@@ -55,14 +55,27 @@ return function(start)
     end
 
     start.buttons = {}
+    if start.pickup_item then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.text = "收取物品"
+        v.message = "pickup_item"
+        v.background_image = "textures/assemble/wheel.texture"
+        start.buttons[#start.buttons + 1] = v
+    end
+
+    if start.place_item then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.text = "放置物品"
+        v.message = "place_item"
+        v.background_image = "textures/assemble/wheel.texture"
+        start.buttons[#start.buttons + 1] = v
+    end
+
     if start.show_set_recipe then
         local v = setmetatable({}, {__index = DEFAULT})
         v.text = "管理"
         v.message = "set_recipe"
         v.background_image = "textures/assemble/wheel.texture"
-        if start.guide_progress == 5 then
-            v.animation = '0.4s linear 0s infinite alternate enlarge2'
-        end
         start.buttons[#start.buttons + 1] = v
     end
 
@@ -71,26 +84,6 @@ return function(start)
         v.text = "管理"
         v.message = "set_item"
         v.background_image = "textures/assemble/wheel.texture"
-        start.buttons[#start.buttons + 1] = v
-    end
-
-    if start.construction_center_icon and start.construction_center_icon ~= "" then
-        local v = setmetatable({}, {__index = DEFAULT})
-        v.background_image = start.construction_center_icon
-        v.number = start.construction_center_multiple
-        v.show_number = false
-        v.show_icon_background = true
-        -- start.buttons[#start.buttons + 1] = v
-    end
-
-    if start.construction_center_place then
-        local v = setmetatable({}, {__index = DEFAULT})
-        v.text = "放置"
-        v.message = "construction_center_place"
-        v.background_image = "textures/factory/place-building.texture"
-        v.number = start.construction_center_count
-        v.show_number = start.construction_center_count > 0
-        v.show_icon_background = false
         start.buttons[#start.buttons + 1] = v
     end
 
@@ -134,40 +127,6 @@ return function(start)
         v.text = "增加车辆"
         v.message = "lorry_factory_inc_lorry"
         v.background_image = "textures/construct/truck-add.texture"
-        start.buttons[#start.buttons + 1] = v
-    end
-
-    if start.item_transfer_subscribe then
-        local v = setmetatable({}, {__index = DEFAULT})
-        v.text = "传送设置"
-        v.message = "item_transfer_subscribe"
-        v.background_image = "textures/construct/portal-in.texture"
-        if start.guide_progress == 10 then
-            v.animation = '0.4s linear 0s infinite alternate enlarge2'
-        end
-        start.buttons[#start.buttons + 1] = v
-    end
-
-    if start.item_transfer_place then
-        local v = setmetatable({}, {__index = DEFAULT})
-        v.text = "传送启动"
-        v.message = "item_transfer_place"
-        v.background_image = "textures/construct/portal-out.texture"
-        v.disabled = start.item_transfer_place_disabled
-        console.log("start.item_transfer_place_disabled", start.item_transfer_place_disabled)
-        v.disabled_background_image = "textures/construct/portal-out-disabled.texture"
-        if start.guide_progress == 15 then
-            v.animation = '0.4s linear 0s infinite alternate enlarge2'
-        end
-        start.buttons[#start.buttons + 1] = v
-    end
-
-    if start.item_transfer_unsubscribe then
-        local v = setmetatable({}, {__index = DEFAULT})
-        v.text = "取消传送"
-        v.message = "item_transfer_unsubscribe"
-        v.background_image = "textures/construct/portal-cancel.texture"
-        v.guide_progress = 10
         start.buttons[#start.buttons + 1] = v
     end
 

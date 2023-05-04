@@ -53,12 +53,6 @@ return function(world)
             goto continue
         end
 
-        -- handle the work status of the construction center separately, see also construction_center.lua
-        local typeobject = iprototype.queryById(e.building.prototype)
-        if iprototype.has_type(typeobject.type, "construction_center") then
-            goto continue
-        end
-
         -- object may not have been fully created yet
         local object = objects:coord(e.building.x, e.building.y)
         if not object then

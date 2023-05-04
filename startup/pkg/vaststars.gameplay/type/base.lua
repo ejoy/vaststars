@@ -10,8 +10,6 @@ type "fluid"
 type "road"
 type "pipe"
 type "pipe_to_ground"
-type "construction_center"
-type "construction_chest"
 
 local recipe = type "recipe"
     .ingredients "items"
@@ -44,5 +42,26 @@ function task:init()
     return {
         ingredients = {{"任务", 1}},
         time = 0,
+    }
+end
+
+local base_chest = type "base_chest"
+    .chest_type "chest_type"
+
+function base_chest:ctor(init, pt)
+    local world = self
+    local items = {}
+    for _, v in ipairs(init.items or {}) do
+        items[#items+1] = world:chest_slot {
+            type = pt.chest_type,
+            item = v[1],
+            amount = v[2],
+        }
+    end
+
+    return {
+        base_chest = {
+            chest = world:container_create(table.concat(items)),
+        }
     }
 end

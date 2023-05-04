@@ -208,7 +208,7 @@ local function new_entity(self, datamodel, typeobject)
         end
     end
 
-    if iprototype.has_chest(typeobject.name) or typeobject.supply_area then
+    if iprototype.has_chest(typeobject.name) then
         local sprite_color = SPRITE_COLOR.DRONE_DEPOT_SUPPLY_AREA_2
         for _, object in objects:all() do
             local otypeobject = iprototype.queryByName(object.prototype_name)
@@ -491,8 +491,8 @@ end
 local function complete(self, object_id, datamodel)
     self.pickup_object = nil
 
-    local show_construct_entity = require("debugger").show_construct_entity
-    if show_construct_entity and not self.gameplay_eid then
+    -- TODO: gm mode
+    if not self.gameplay_eid then
         self.super.complete(self, object_id)
         local object = assert(objects:get(object_id))
         local typeobject = iprototype.queryByName(object.prototype_name)
