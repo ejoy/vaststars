@@ -286,7 +286,7 @@ local function touch_move(self, datamodel, delta_vec)
     if typeobject.power_supply_area and typeobject.power_supply_distance then
         local aw, ah = iprototype.unpackarea(typeobject.area)
         local sw, sh = typeobject.power_supply_area:match("(%d+)x(%d+)")
-        ipower:merge_pole({power_network_link_target = 0, key = pickup_object.id, targets = {}, x = lx, y = ly, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.power_supply_distance, smooth_pos = true, power_network_link = typeobject.power_network_link})
+        ipower:merge_pole({power_network_link_target = 0, key = pickup_object.id, position = pickup_object.srt.t, targets = {}, x = lx, y = ly, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.power_supply_distance, smooth_pos = true, power_network_link = typeobject.power_network_link})
         ipower_line.update_temp_line(ipower:get_temp_pole())
     end
 end
@@ -305,13 +305,12 @@ local function confirm(self, datamodel)
     local e = gameplay_core.get_entity(object.gameplay_eid)
     e.building.x = self.pickup_object.x
     e.building.y = self.pickup_object.y
+    e.building_changed = true
     gameplay_core.build()
 
     iobject.coord(object, self.pickup_object.x, self.pickup_object.y, coord_system)
     objects:set(object, "CONSTRUCTED")
     objects:coord_update(object)
-    local vsobject = vsobject_manager:get(object.id)
-    vsobject:mod_canvas(self.pickup_object.x, self.pickup_object.y, object.srt) -- TODO: remove this
 
     local building = global.buildings[object.id]
     if building then

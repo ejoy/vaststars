@@ -322,8 +322,11 @@ function M:stage_ui_update(datamodel, object_id)
         local typeobject = iprototype.queryByName(object.prototype_name)
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
         assert(e.assembling)
-        if not __throw_construction_chest(e, object.x, object.y, iprototype.unpackarea(typeobject.area)) then
-            goto continue
+
+        if iprototype.has_type(typeobject.type, "construction_center") then
+            if not __throw_construction_chest(e, object.x, object.y, iprototype.unpackarea(typeobject.area)) then
+                goto continue
+            end
         end
 
         if iworld.set_recipe(gameplay_core.get_world(), e, recipe_name, typeobject.recipe_init_limit) then
@@ -346,8 +349,11 @@ function M:stage_ui_update(datamodel, object_id)
         local object = assert(objects:get(object_id))
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
         local typeobject = iprototype.queryByName(object.prototype_name)
-        if not __throw_construction_chest(e, object.x, object.y, iprototype.unpackarea(typeobject.area)) then
-            goto continue
+
+        if iprototype.has_type(typeobject.type, "construction_center") then
+            if not __throw_construction_chest(e, object.x, object.y, iprototype.unpackarea(typeobject.area)) then
+                goto continue
+            end
         end
 
         iworld.set_recipe(gameplay_core.get_world(), e, nil)

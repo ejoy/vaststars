@@ -28,7 +28,6 @@ return function(world)
         -- hide pop ui
         iui.close("detail_panel.rml")
         iui.close("building_arc_menu.rml")
-        iui.redirect("construct_building.rml", "guide_on_going")
         iui.redirect("construct.rml", "guide_on_going")
         iui.redirect("help_panel.rml", "guide_on_going")
 

@@ -189,7 +189,7 @@ lbuild(lua_State *L) {
     uint16_t maxid = 1;
     auto create_hubid = [&]()->uint16_t {
         for (; maxid <= (std::numeric_limits<uint16_t>::max)(); ++maxid) {
-            if (!b.hubs.contains(maxid) && !used_id.contains(maxid)) {
+            if (!hubs.contains(maxid) && !used_id.contains(maxid)) {
                 return maxid;
             }
         }

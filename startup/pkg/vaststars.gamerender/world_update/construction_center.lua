@@ -215,5 +215,4 @@ return function(gameplay_world)
         buildings[object.id].construction_center_printer:update(gameplay_world, e, object.srt)
         ::continue::
     end
-    return t
 end

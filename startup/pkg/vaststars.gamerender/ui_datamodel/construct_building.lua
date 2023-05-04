@@ -9,7 +9,6 @@ local math3d = require "math3d"
 local rotate_mb = mailbox:sub {"rotate"}
 local cancel_mb = mailbox:sub {"cancel"}
 local build_mb = mailbox:sub {"build"}
-local guide_on_going_mb = mailbox:sub {"guide_on_going"}
 local iprototype = require "gameplay.interface.prototype"
 local icamera_controller = ecs.interface "icamera_controller"
 
@@ -43,10 +42,6 @@ function M:stage_ui_update(datamodel)
 
     for _ in build_mb:unpack() do
         iui.redirect("construct.rml", "build")
-    end
-
-    for _ in guide_on_going_mb:unpack() do
-        iui.redirect("construct.rml", "cancel")
     end
 end
 

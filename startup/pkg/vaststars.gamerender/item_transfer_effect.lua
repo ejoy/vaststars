@@ -56,7 +56,7 @@ local function subscribe(object_id)
     local obj = assert(objects:get(object_id))
     local typeobject = iprototype.queryByName(obj.prototype_name)
     local w, h = iprototype.unpackarea(typeobject.area)
-    local item_transfer_effect = selected_boxes("/pkg/vaststars.resources/prefabs/item-transfer-source.prefab", obj.srt.t, COLOR_NULL, w, h)
+    local item_transfer_effect = selected_boxes({"/pkg/vaststars.resources/prefabs/item-transfer-source.prefab"}, obj.srt.t, COLOR_NULL, w, h)
 
     building.item_transfer_effect = {
         on_position_change = function(self, building_srt)

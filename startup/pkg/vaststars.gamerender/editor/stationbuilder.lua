@@ -114,10 +114,10 @@ local function __new_entity(self, datamodel, typeobject)
         local srt = {t = road_entrance_position, r = ROTATORS[road_entrance_dir]}
         if datamodel.show_confirm then
             self.road_entrance = create_road_entrance(srt, "valid")
-            self.selected_boxes = create_selected_boxes("/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab", selected_boxes_position, COLOR_GREEN, w+1, h+1)
+            self.selected_boxes = create_selected_boxes({"/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab"}, selected_boxes_position, COLOR_GREEN, w+1, h+1)
         else
             self.road_entrance = create_road_entrance(srt, "invalid")
-            self.selected_boxes = create_selected_boxes("/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab", selected_boxes_position, COLOR_RED, w+1, h+1)
+            self.selected_boxes = create_selected_boxes({"/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab"}, selected_boxes_position, COLOR_RED, w+1, h+1)
         end
     end
 end

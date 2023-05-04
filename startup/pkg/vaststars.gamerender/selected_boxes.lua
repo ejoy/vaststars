@@ -50,59 +50,120 @@ end
 local mt = {}
 mt.__index = mt
 
-local DIRECTION <const> = {
-    math3d.constant("v4", {-1, 0, 1}),  -- lefttop
-    math3d.constant("v4", {-1, 0, -1}), -- leftbottom
-    math3d.constant("v4", {1, 0, 1}),   -- righttop
-    math3d.constant("v4", {1, 0, -1}),  -- rightbottom
+local CORNER_DIRECTIONS <const> = {
+    math3d.constant("v4", {-1, 0, 1}),  -- left top
+    math3d.constant("v4", {-1, 0, -1}), -- left bottom
+    math3d.constant("v4", {1, 0, 1}),   -- right top
+    math3d.constant("v4", {1, 0, -1}),  -- right bottom
 }
 
-local ROTATION <const> = {
-    math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(180)}) )), -- lefttop
-    math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(90)})  )), -- leftbottom
-    math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(270)}) )), -- righttop
-    math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(0)})   )), -- rightbottom
+local CORNER_QUATERNIONS <const> = {
+    math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(180)}) )), -- left top
+    math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(90)})  )), -- left bottom
+    math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(270)}) )), -- right top
+    math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(0)})   )), -- right bottom
+}
+
+local LINE_DIRECTIONS <const> = {
+    math3d.constant("v4", {0, 0, 1}),  -- top
+    math3d.constant("v4", {0, 0, -1}), -- bottom
+    math3d.constant("v4", {-1, 0, 0}), -- left
+    math3d.constant("v4", {1, 0, 0}),  -- right
+}
+
+local LINE_QUATERNIONS <const> = {
+    math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(0)}) )),  -- top
+    math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(0)}) )),  -- bottom
+    math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(90)}) )), -- left
+    math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(90)}) )), -- right
+}
+
+local LINE_SCALE <const> = {
+    function(w, h) return math3d.ref(math3d.vector((w-1)*2, 1, 1)) end, -- top
+    function(w, h) return math3d.ref(math3d.vector((w-1)*2, 1, 1)) end, -- bottom
+    function(w, h) return math3d.ref(math3d.vector((w-1)*2, 1, 1)) end, -- left
+    function(w, h) return math3d.ref(math3d.vector((w-1)*2, 1, 1)) end, -- right
+}
+
+local LINE_OFFSET <const> = {
+    math3d.constant("v4", {0, 0, 3.8}), -- top
+    math3d.constant("v4", {0, 0, 5}),   -- bottom
+    math3d.constant("v4", {5, 0, 0}),   -- left
+    math3d.constant("v4", {3.8, 0, 0}), -- right
+}
+
+local LINE_CHECK <const> = {
+    function(w, h) return w - 1 > 0 end, -- top
+    function(w, h) return w - 1 > 0 end, -- bottom
+    function(w, h) return h - 1 > 0 end, -- left
+    function(w, h) return h - 1 > 0 end, -- right
 }
 
 function mt:remove()
-    for _, v in ipairs(self.selected_boxes) do
+    for _, v in pairs(self.corners) do
+        v:remove()
+    end
+    for _, v in pairs(self.lines) do
         v:remove()
     end
 end
 
 function mt:set_position(center)
     self.center = center
-    for idx, o in ipairs(self.selected_boxes) do
-        local position = math3d.ref(math3d.muladd(DIRECTION[idx], math3d.vector(self.w, 0, self.h), self.center))
-        o:send("obj_motion", "set_srt", mc.ONE, ROTATION[idx], math3d.ref(position))
+    for idx, o in pairs(self.corners) do
+        local position = math3d.ref(math3d.muladd(CORNER_DIRECTIONS[idx], self.corner_offset, self.center))
+        o:send("obj_motion", "set_position", position)
+    end
+    for idx, o in pairs(self.lines) do
+        local position = math3d.ref(math3d.add(math3d.muladd(LINE_DIRECTIONS[idx], self.line_offset, self.center), LINE_OFFSET[idx]))
+        o:send("obj_motion", "set_position", position)
     end
 end
 
 function mt:set_color(color)
-    for _, o in ipairs(self.selected_boxes) do
+    for _, o in pairs(self.corners) do
+        o:send("set_color", color)
+    end
+    for _, o in pairs(self.lines) do
         o:send("set_color", color)
     end
 end
 
-return function(prefab, center, color, w, h)
-    local width = (w - 1) * coord_system.tile_size
-    local height = (h - 1) * coord_system.tile_size
+return function(prefabs, center, color, w, h)
+    local width = (w - 1) * 10
+    local height = (h - 1) * 10
 
     local M = {
-        selected_boxes = {},
-        w = width / 2,
-        h = height / 2,
+        corners = {},
+        corner_offset = math3d.ref(math3d.vector(width / 2, 0, height / 2)),
+        line_offset = math3d.ref(math3d.vector(w * 10 / 2, 0, h * 10 / 2)),
+        lines = {},
         center = center,
     }
 
-    for idx = 1, #DIRECTION do
-        M.selected_boxes[idx] = create_object(prefab, {
+    for idx = 1, #CORNER_DIRECTIONS do
+        M.corners[idx] = create_object(prefabs[1], {
             s = mc.ONE,
-            r = ROTATION[idx],
-            t = math3d.ref(math3d.muladd(DIRECTION[idx], math3d.vector(M.w, 0, M.h), M.center)),
+            r = CORNER_QUATERNIONS[idx],
+            t = math3d.ref(math3d.muladd(CORNER_DIRECTIONS[idx], M.corner_offset, M.center)),
         })
         if mc.NULL ~= color then
-            M.selected_boxes[idx]:send("set_color", color)
+            M.corners[idx]:send("set_color", color)
+        end
+    end
+
+    if prefabs[2] then
+        for idx, f in ipairs(LINE_CHECK) do
+            if f(w, h) then
+                M.lines[idx] = create_object(prefabs[2], {
+                    s = LINE_SCALE[idx](w, h),
+                    r = LINE_QUATERNIONS[idx],
+                    t = math3d.ref(math3d.add(math3d.muladd(LINE_DIRECTIONS[idx], M.line_offset, M.center), LINE_OFFSET[idx])),
+                })
+                if mc.NULL ~= color then
+                    M.lines[idx]:send("set_color", color)
+                end
+            end
         end
     end
 

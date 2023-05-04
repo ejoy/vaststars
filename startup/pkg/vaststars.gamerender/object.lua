@@ -1,10 +1,8 @@
 local ecs = ...
 local world = ecs.world
 
-local icanvas = ecs.require "engine.canvas"
 local vsobject_manager = ecs.require "vsobject_manager"
 local iprototype = require "gameplay.interface.prototype"
-local get_building_base_canvas_items = ecs.require "ui_datamodel.common.building_base_canvas".get_building_base_canvas_items
 local math3d = require "math3d"
 local terrain = ecs.require "terrain"
 local icamera_controller = ecs.interface "icamera_controller"
@@ -94,9 +92,6 @@ local function flush()
             local vsobject = assert(vsobject_manager:get(outer.id))
             vsobject:set_dir(outer.dir)
         end,
-        state = function(outer) -- TODO: remove this
-            assert(false, "not implemented")
-        end,
         srt = function(outer)
             local vsobject = assert(vsobject_manager:get(outer.id))
             vsobject:set_position(outer.srt.t)
@@ -112,9 +107,7 @@ local function flush()
             goto continue
         end
         vsobject = vsobject_manager:get(object_id)
-        local typeobject = iprototype.queryByName(outer.prototype_name)
         outer.srt = outer.srt or {}
-        local w, h = iprototype.unpackarea(typeobject.area) -- TODO: duplicate code
 
         if not vsobject then
             vsobject = vsobject_manager:create {
@@ -131,9 +124,6 @@ local function flush()
                     func(outer)
                 end
             end
-        end
-        if typeobject.building_base ~= false then
-            vsobject:add_canvas(icanvas.types().BUILDING_BASE, get_building_base_canvas_items, outer.srt, w, h)
         end
 
         if outer.PREPARE then

@@ -234,8 +234,8 @@ end
 function terrain:bound_coord(x, y)
     x = math.max(x, self._coord_bounds[1][1])
     x = math.min(x, self._coord_bounds[2][1])
-    y = math.max(x, self._coord_bounds[1][2])
-    y = math.min(x, self._coord_bounds[2][2])
+    y = math.max(y, self._coord_bounds[1][2])
+    y = math.min(y, self._coord_bounds[2][2])
     return x, y
 end
 

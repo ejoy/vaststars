@@ -282,6 +282,17 @@ local function __switch_status(s, cb)
     end
 end
 
+local function __clean(datamodel)
+    if builder then
+        builder:clean(datamodel)
+        builder = nil
+    end
+    idetail.unselected()
+    pickup_id = nil
+    datamodel.is_concise_mode = false
+    handle_pickup = true
+end
+
 ---------------
 local M = {}
 local function get_new_tech_count(tech_list)
@@ -371,14 +382,10 @@ function M:stage_ui_update(datamodel)
     end
 
     for _ in guide_on_going_mb:unpack() do
-        if builder then
-            builder:clean(datamodel)
-            builder = nil
-        end
-        pickup_id = nil
-        idetail.unselected()
-        datamodel.is_concise_mode = false
-        __switch_status("default")
+        __clean(datamodel)
+        __switch_status("default", function()
+            __clean(datamodel)
+        end)
     end
 
     for _, _, _, is_task in click_techortaskicon_mb:unpack() do
@@ -452,7 +459,7 @@ local function open_focus_tips(tech_node)
                     excluded_pickup_id = object.id
                 end
             end
-            tech_node.selected_tips[#tech_node.selected_tips + 1] = {selected_boxes("/pkg/vaststars.resources/" .. nd.prefab, center, COLOR_GREEN, nd.w, nd.h), prefab}
+            tech_node.selected_tips[#tech_node.selected_tips + 1] = {selected_boxes({"/pkg/vaststars.resources/" .. nd.prefab}, center, COLOR_GREEN, nd.w, nd.h), prefab}
         elseif nd.camera_x and nd.camera_y then
             icamera_controller.focus_on_position(coord_system:get_position_by_coord(nd.camera_x, nd.camera_y, width, height))
         end
@@ -657,8 +664,10 @@ function M:stage_camera_usage(datamodel)
     for _, _, _, object_id, index in construction_center_menu_place_mb:unpack() do
         handle_pickup = false
         __switch_status("construct", function()
-            assert(builder == nil)
-
+            -- we may click the button repeatedly, so we need to clear the old model first
+            if builder then
+                builder:clean(datamodel)
+            end
             local object = assert(objects:get(object_id))
             local e = gameplay_core.get_entity(assert(object.gameplay_eid))
             assert(e.chest.chest ~= 0)

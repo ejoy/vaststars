@@ -123,3 +123,4 @@ component "base" {
 }
 
 component "fluidbox_changed" {}
+component "building_changed" {}

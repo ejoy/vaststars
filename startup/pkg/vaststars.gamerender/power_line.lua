@@ -3,8 +3,6 @@ local world = ecs.world
 local w     = world.w
 local iterrain          = ecs.require "terrain"
 local iline_entity      = ecs.require "engine.line_entity"
-local vsobject_manager  = ecs.require "vsobject_manager"
-local math3d            = require "math3d"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
 local M ={}
@@ -17,15 +15,11 @@ local function create_line(pole1, pole2)
     end
     local pos1
     local pos2
-    if pole1.key and pole1.smooth_pos then
-        local vsobject = assert(vsobject_manager:get(pole1.key))
-        local p1 = math3d.totable(vsobject:get_position())
-        pos1 = {p1[1], p1[2], p1[3]}
+    if pole1.position and pole1.smooth_pos then
+        pos1 = {pole1.position[1], pole1.position[2], pole1.position[3]}
     end
-    if pole2.key and pole2.smooth_pos then
-        local vsobject = assert(vsobject_manager:get(pole2.key))
-        local p2 = math3d.totable(vsobject:get_position())
-        pos2 = {p2[1], p2[2], p2[3]}
+    if pole2.position and pole2.smooth_pos then
+        pos2 = {pole2.position[1], pole2.position[2], pole2.position[3]}
     end
     pos1 = pos1 or iterrain:get_position_by_coord(pole1.x, pole1.y, pole1.w, pole1.h)
     pos1[2] = pos1[2] + pole_height

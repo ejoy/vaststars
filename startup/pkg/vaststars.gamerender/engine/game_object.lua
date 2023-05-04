@@ -14,6 +14,7 @@ local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local prefab_parse = require("engine.prefab_parser").parse
 local replace_material = require("engine.prefab_parser").replace_material
 local irl = ecs.import.interface "ant.render|irender_layer"
+local imodifier = ecs.import.interface "ant.modifier|imodifier"
 
 local function replace_outline_material(template)
     local res = {}
@@ -83,7 +84,6 @@ local __get_hitch_children ; do
     local function __cache_prefab_info(template)
         local effects = {}
         local slots = {}
-        local scene = {}
         local animations = {}
         for _, v in ipairs(template) do
             if v.data then
@@ -93,9 +93,6 @@ local __get_hitch_children ; do
                     -- work effects
                     effects[#effects + 1] = {efk = v.data.efk, slotname = v.mount and template[v.mount].data.name}
                 end
-                if v.data.name == "Scene" and v.data.scene then -- TODO: special for hitch which attach to slot
-                    scene = v.data.scene
-                end
                 if v.data.animation then
                     for animation_name in pairs(v.data.animation) do
                         animations[animation_name] = true
@@ -103,7 +100,7 @@ local __get_hitch_children ; do
                 end
             end
         end
-        return scene, slots, effects, animations
+        return slots, effects, animations
     end
 
     function __get_hitch_children(prefab, material_type, color, animation_name, final_frame, emissive_color, render_layer, outline_scale)
@@ -131,7 +128,7 @@ local __get_hitch_children ; do
         end
 
         -- cache all slots & srt of the prefab
-        local scene, slots, effects, animations = __cache_prefab_info(template)
+        local slots, effects, animations = __cache_prefab_info(template)
 
         log.info(("game_object.new_instance: %s"):format(table.concat({hitch_group_id, prefab, material_type, require("math3d").tostring(color), tostring(animation_name), tostring(final_frame)}, " "))) -- TODO: remove this line
 
@@ -189,7 +186,7 @@ local __get_hitch_children ; do
             prefab_proxy:send("material_tag", "set_property", "u_emissive_factor", "u_emissive_factor", emissive_color)
         end
 
-        cache[hash] = {prefab_file_name = prefab, instance = prefab_proxy, hitch_group_id = hitch_group_id, scene = scene, slots = slots, pose = iani.create_pose(), effects = effects, animations = animations}
+        cache[hash] = {prefab_file_name = prefab, instance = prefab_proxy, hitch_group_id = hitch_group_id, slots = slots, pose = iani.create_pose(), effects = effects, animations = animations}
         return cache[hash]
     end
 end
@@ -204,7 +201,6 @@ init = {
     color,
     srt,
     parent, -- the parent of the hitch
-    slot, -- the slot of the hitch
     animation_name,
     emissive_color,
     render_layer,
@@ -217,10 +213,6 @@ function igame_object.create(init)
         w:extend(e, "hitch:update")
         e.hitch.group = group
     end
-    hitch_events["slot_pose"] = function(_, e, pose)
-        w:extend(e, "slot:in")
-        e.slot.pose = pose
-    end
     hitch_events["obj_motion"] = function(_, e, method, ...)
         iom[method](e, ...)
     end
@@ -229,9 +221,6 @@ function igame_object.create(init)
         "ant.general|name",
         "ant.scene|hitch_object",
     }
-    if init.slot then
-        policy[#policy+1] = "ant.animation|slot"
-    end
 
     local hitch_entity_object = ientity_object.create(ecs.group(init.group_id):create_entity{
         policy = policy,
@@ -246,7 +235,6 @@ function igame_object.create(init)
             hitch = {
                 group = children.hitch_group_id,
             },
-            slot = init.slot,
             scene_needchange = true,
         }
     }, hitch_events)
@@ -262,47 +250,15 @@ function igame_object.create(init)
         children.instance:send("attach_hitch", hitch_entity_object.id)
 
         self.hitch_entity_object:send("group", children.hitch_group_id)
-        for _, slot_game_object in pairs(self.slot_attach) do
-            slot_game_object.hitch_entity_object:send("slot_pose", children.pose)
-        end
     end
     local function has_animation(self, animation_name)
         return children.animations[animation_name] ~= nil
     end
-    local function attach(self, slot_name, model, state, color)
-        local s = children.slots[slot_name]
-        if not s then
-            log.error(("game_object.attach: slot %s not found"):format(slot_name))
-            return
-        end
-        local _slot = {}
-        for k, v in pairs(s.slot) do
-            _slot[k] = v
-        end
-        _slot.pose = children.pose
-
-        -- TODO: create a new entity for hitch's parent
-        -- slot.offset_srt is the offset of the slot when the slot is attached to the bone
-        -- slot.scene is the offset of the slot when the slot not attached to the bone
-        -- children.scene: offset of the parent
-        self.slot_attach[slot_name] = igame_object.create {
-            prefab = model,
-            group_id = init.group_id,
-            state = state or "opaque",
-            color = color or COLOR_INVALID,
-            srt = children.scene, -- TODO: slot scene
-            parent = self.hitch_entity_object.id,
-            slot = _slot,
-        }
-    end
-    local function detach(self)
-        for _, v in pairs(self.slot_attach) do
-            v:remove()
-        end
-        self.slot_attach = {}
-    end
     local function send(self, ...)
         self.hitch_entity_object:send(...)
+    end
+    local function modifier(self, opt, ...)
+        imodifier[opt](self.srt_modifier, ...)
     end
 
     -- special for hitch
@@ -332,11 +288,18 @@ function igame_object.create(init)
 
     children.instance:send("attach_hitch", hitch_entity_object.id)
 
-    local outer = {hitch_entity_object = hitch_entity_object, slot_attach = {}}
+    local outer = {
+        hitch_entity_object = hitch_entity_object,
+        srt_modifier = imodifier.create_bone_modifier(
+            hitch_entity_object.id,
+            init.group_id,
+            "/pkg/vaststars.resources/glb/animation/Interact_build.glb|animation.prefab",
+            "Bone"
+        ),
+    }
+    outer.modifier = modifier
     outer.remove = remove
     outer.update = update
-    outer.attach = attach
-    outer.detach = detach
     outer.send   = send
     outer.has_animation = has_animation
     outer.on_work = function ()

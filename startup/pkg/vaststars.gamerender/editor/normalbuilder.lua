@@ -32,6 +32,7 @@ local assembling_common = require "ui_datamodel.common.assembling"
 local gameplay = import_package "vaststars.gameplay"
 local iassembling = gameplay.interface "assembling"
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
+local create_selected_boxes = ecs.require "selected_boxes"
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -61,14 +62,8 @@ local function _get_road_entrance_position(typeobject, x, y, dir)
     return coord_system:get_position_by_coord(neighbor_x, neighbor_y, 1, 1), neighbor_x, neighbor_y, conn.dir
 end
 
-local function __new_entity(self, datamodel, typeobject)
+local function __new_entity(self, datamodel, typeobject, position, x, y, dir)
     iobject.remove(self.pickup_object)
-    local dir = DEFAULT_DIR
-    local x, y = iobject.central_coord(typeobject.name, dir, coord_system, 1)
-    if not x or not y then
-        return
-    end
-    local building_positon = coord_system:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir))
 
     local sprite_color
     if not self:check_construct_detector(typeobject.name, x, y, dir) then
@@ -110,11 +105,15 @@ local function __new_entity(self, datamodel, typeobject)
         x = x,
         y = y,
         srt = {
-            t = building_positon,
+            t = position,
         },
         fluid_name = fluid_name,
     }
     iui.open({"construct_building.rml"}, self.pickup_object.srt.t, typeobject.name)
+
+    if self.sprite then
+        self.sprite:remove()
+    end
 
     local offset_x, offset_y = 0, 0
     if typeobject.supply_area then
@@ -149,6 +148,50 @@ local function __calc_grid_position(self, typeobject)
     return math3d.ref(math3d.add(math3d.sub(buildingPosition, originPosition), GRID_POSITION_OFFSET))
 end
 
+local function __get_nearby_buldings(x, y, w, h)
+    local r = {}
+    local begin_x, begin_y = coord_system:bound_coord(x - ((10 - w) // 2), y - ((10 - h) // 2))
+    local end_x, end_y = coord_system:bound_coord(x + ((10 - w) // 2) + w, y + ((10 - h) // 2) + h)
+    for x = begin_x, end_x do
+        for y = begin_y, end_y do
+            local object = objects:coord(x, y)
+            if object then
+                r[object.id] = object
+            end
+        end
+    end
+    return r
+end
+
+local function __show_nearby_buildings_selected_boxes(self, x, y, typeobject)
+    local nearby_buldings = __get_nearby_buldings(x, y, iprototype.unpackarea(typeobject.area))
+
+    local redraw = {}
+    for object_id, object in pairs(nearby_buldings) do
+        if not self.selected_boxes[object_id] then
+            redraw[object_id] = object
+        end
+    end
+
+    for object_id, o in pairs(self.selected_boxes) do
+        if not nearby_buldings[object_id] then
+            o:remove()
+            self.selected_boxes[object_id] = nil
+        end
+    end
+
+    for object_id, object in pairs(redraw) do
+        local typeobject = iprototype.queryByName(object.prototype_name)
+        self.selected_boxes[object_id] = create_selected_boxes(
+            {
+                "/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab",
+                "/pkg/vaststars.resources/prefabs/selected-box-no-animation-line.prefab",
+            },
+            object.srt.t, SPRITE_COLOR.CONSTRUCT_NEARBY_BUILDINGS_OUTLINE, iprototype.unpackarea(typeobject.area)
+        )
+    end
+end
+
 local function new_entity(self, datamodel, typeobject)
     if typeobject.power_supply_area and typeobject.power_supply_distance and not typeobject.supply_area then
         local sprite_color = SPRITE_COLOR.POWER_SUPPLY_AREA
@@ -158,7 +201,9 @@ local function new_entity(self, datamodel, typeobject)
                 local w, h = iprototype.unpackarea(otypeobject.area)
                 local ow, oh = otypeobject.power_supply_area:match("(%d+)x(%d+)")
                 ow, oh = tonumber(ow), tonumber(oh)
-                self.sprites[#self.sprites+1] = create_sprite(object.x - (ow - w)//2, object.y - (oh - h)//2, ow, oh, object.dir, sprite_color)
+                if not self.sprites[object.id] then
+                    self.sprites[object.id] = create_sprite(object.x - (ow - w)//2, object.y - (oh - h)//2, ow, oh, object.dir, sprite_color)
+                end
             end
         end
     end
@@ -171,12 +216,36 @@ local function new_entity(self, datamodel, typeobject)
                 local w, h = iprototype.unpackarea(otypeobject.area)
                 local ow, oh = iprototype.unpackarea(otypeobject.supply_area)
                 ow, oh = tonumber(ow), tonumber(oh)
-                self.sprites[#self.sprites+1] = create_sprite(object.x - (ow - w)//2, object.y - (oh - h)//2, ow, oh, object.dir, sprite_color)
+                if not self.sprites[object.id] then
+                    self.sprites[object.id] = create_sprite(object.x - (ow - w)//2, object.y - (oh - h)//2, ow, oh, object.dir, sprite_color)
+                end
             end
         end
     end
 
-    __new_entity(self, datamodel, typeobject)
+    local dir = DEFAULT_DIR
+    local x, y = iobject.central_coord(typeobject.name, dir, coord_system, 1)
+    if not x or not y then
+        return
+    end
+
+    local position = coord_system:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir))
+
+    if not self.self_selected_boxes then
+        self.self_selected_boxes = create_selected_boxes(
+            {
+                "/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab",
+                "/pkg/vaststars.resources/prefabs/selected-box-no-animation-line.prefab",
+            },
+            position, SPRITE_COLOR.CONSTRUCT_SELF_OUTLINE, iprototype.unpackarea(typeobject.area)
+        )
+    else
+        self.self_selected_boxes:set_position(position)
+    end
+
+    __show_nearby_buildings_selected_boxes(self, x, y, typeobject)
+
+    __new_entity(self, datamodel, typeobject, position, x, y, dir)
     self.pickup_object.APPEAR = true
 
     if not self.grid_entity then
@@ -261,11 +330,13 @@ local function touch_move(self, datamodel, delta_vec)
         self.grid_entity:send("obj_motion", "set_position", __calc_grid_position(self, typeobject))
     end
 
+    self.self_selected_boxes:set_position(pickup_object.srt.t)
+
     -- update temp pole
     if typeobject.power_supply_area and typeobject.power_supply_distance then
         local aw, ah = iprototype.unpackarea(typeobject.area)
         local sw, sh = typeobject.power_supply_area:match("(%d+)x(%d+)")
-        ipower:merge_pole({power_network_link_target = 0, key = pickup_object.id, targets = {}, x = lx, y = ly, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.power_supply_distance, smooth_pos = true, power_network_link = typeobject.power_network_link})
+        ipower:merge_pole({power_network_link_target = 0, key = pickup_object.id, position = pickup_object.srt.t, targets = {}, x = lx, y = ly, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.power_supply_distance, smooth_pos = true, power_network_link = typeobject.power_network_link})
         ipower_line.update_temp_line(ipower:get_temp_pole())
     end
 
@@ -273,6 +344,8 @@ local function touch_move(self, datamodel, delta_vec)
         return
     end
     self.last_x, self.last_y = lx, ly
+
+    __show_nearby_buildings_selected_boxes(self, x, y, typeobject)
 
     local sprite_color
     local offset_x, offset_y = 0, 0
@@ -354,16 +427,6 @@ local function confirm(self, datamodel)
         ipower_line.update_temp_line(ipower:get_temp_pole())
     end
 
-    self.pickup_object = nil
-    if self.road_entrance then
-        self.road_entrance:remove()
-        self.road_entrance = nil
-    end
-    if self.sprite then
-        self.sprite:remove()
-        self.sprite = nil
-    end
-    idronecover.clear()
     return self:complete(pickup_object.id, datamodel)
 end
 
@@ -426,6 +489,8 @@ local function __deduct_item(self, e)
 end
 
 local function complete(self, object_id, datamodel)
+    self.pickup_object = nil
+
     local show_construct_entity = require("debugger").show_construct_entity
     if show_construct_entity and not self.gameplay_eid then
         self.super.complete(self, object_id)
@@ -519,10 +584,23 @@ local function clean(self, datamodel)
         self.grid_entity = nil
     end
 
-    for _, sprite in ipairs(self.sprites) do
+    for _, sprite in pairs(self.sprites) do
         sprite:remove()
     end
     self.sprites = {}
+
+    if self.sprite then
+        self.sprite:remove()
+        self.sprite = nil
+    end
+
+    for _, o in pairs(self.selected_boxes) do
+        o:remove()
+    end
+
+    if self.self_selected_boxes then
+        self.self_selected_boxes:remove()
+    end
 
     ieditor:revert_changes({"TEMPORARY"})
     datamodel.show_confirm = false
@@ -535,10 +613,6 @@ local function clean(self, datamodel)
     if self.road_entrance then
         self.road_entrance:remove()
         self.road_entrance = nil
-    end
-    if self.sprite then
-        self.sprite:remove()
-        self.sprite = nil
     end
     idronecover.clear()
 
@@ -558,6 +632,7 @@ local function create(gameplay_eid, item)
     M.check_construct_detector = check_construct_detector
     M.complete = complete
     M.sprites = {}
+    M.selected_boxes = {}
     M.last_x, M.last_y = -1, -1
     M.gameplay_eid = gameplay_eid
     M.item = item

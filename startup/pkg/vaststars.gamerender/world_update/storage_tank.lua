@@ -66,9 +66,9 @@ return function(world)
         end
 
         if volume > 0 then
-            vsobject:attach("water_slot", "prefabs/storage-tank-water.prefab", "opacity", color or DEFAULT_COLOR)
+            -- vsobject:attach("water_slot", "prefabs/storage-tank-water.prefab", "opacity", color or DEFAULT_COLOR)
         else
-            vsobject:detach()
+            -- vsobject:detach()
         end
 
         if volume > 0 then

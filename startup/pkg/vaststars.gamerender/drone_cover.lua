@@ -20,7 +20,7 @@ local function select_cover(x, y, dist, obj)
         local dx = obj.x + (w - 1) / 2 - x
         local dy = obj.y + (h - 1) / 2 - y
         if math.sqrt(dx * dx + dy * dy) <= dist and not selects[obj.id] then
-            selects[obj.id] = selected_boxes("/pkg/vaststars.resources/" .. "prefabs/selected-box-no-animation.prefab", coord_system:get_position_by_coord(obj.x, obj.y, w, h), BLUE, w, h)
+            selects[obj.id] = selected_boxes({"/pkg/vaststars.resources/" .. "prefabs/selected-box-no-animation.prefab"}, coord_system:get_position_by_coord(obj.x, obj.y, w, h), BLUE, w, h)
         end
     end
 end

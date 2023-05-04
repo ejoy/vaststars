@@ -12,6 +12,8 @@ M.ROTATORS = {
     W = math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(270)}) )),
 }
 M.UPS = 30
+M.DELTA_TIME = 1000 / M.UPS
+
 M.DuskTick   = 100 * M.UPS;
 M.NightTick  =  50 * M.UPS + M.DuskTick;
 M.DawnTick   = 100 * M.UPS + M.NightTick;
