@@ -6,6 +6,7 @@ local menu = {
             "铁制电线杆",
             "太阳能板I",
             "蓄电池I",
+            "风力发电机I",
         }
     },
     {
@@ -43,27 +44,24 @@ local menu = {
         name = "物流",
         icon = "textures/construct/logisitic1.texture",
         detail = {
+            "砖石公路-X型",
             "科研中心I",
             "采矿机I",
             "送货车站",
             "收货车站",
             "无人机仓库", 
-            "修路站",
-            "修管站",
-            "物流中心I",
         },
     },
     {
         name = "默认",
         icon = "textures/construct/modify.texture",
         detail = {
-            "修路站",
-            "修管站",
-            "液罐I",
+            "铁制电线杆",
+            "砖石公路-X型",
+            "无人机仓库", 
             "熔炼炉I",
             "组装机I",
             "采矿机I",
-            "风力发电机I",
         },
     },
 }
