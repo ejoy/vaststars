@@ -463,7 +463,6 @@ function M:restart()
     iscience.update_tech_list(cw)
     iguide.world = cw
     iui.set_guide_progress(iguide.get_progress())
-    iui.open({"construct.rml"})
 
     local coord = terrain:align(icamera_controller.get_central_position(), 1, 1)
     if coord then
@@ -482,6 +481,8 @@ function M:restart()
         igameplay.create_entity(e)
     end
     gameplay_core.build()
+
+    iui.open({"construct.rml"})
     restore_world()
 end
 

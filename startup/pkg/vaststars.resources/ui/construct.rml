@@ -292,6 +292,14 @@
                 top: 40%;
                 background-color: transparent;
             }
+            .item-num {
+                position: absolute;
+                font-size: 5vmin;
+                left:0.2vmin;
+                top:-1.5vmin;
+                color:rgb(255,255,255);
+                -webkit-text-stroke: 0.26vmin rgb(0,0,0);
+            }
         </style>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
@@ -388,6 +396,7 @@
                 {
                     function()
                         start.show_construct_menu = start.is_concise_mode
+                        start.cur_construct_menu = ""
                     end,
                     "is_concise_mode",
                 },
@@ -480,6 +489,7 @@
                         <button class="tools-button" data-event-click="clickConstructMenuItem(menu.prototype_name)">
                             <div class="workbutton-bg" data-style-background-image = "menu.icon" />
                             <div class="tools-button-title">{{menu.show_prototype_name}}</div>
+                            <div class="item-num">{{menu.count}}</div>
                         </button>
                     </div>
                 </div>

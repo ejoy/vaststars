@@ -20,7 +20,6 @@ local terrain = ecs.require "terrain"
 local idetail = ecs.import.interface "vaststars.gamerender|idetail"
 local EDITOR_CACHE_NAMES = {"CONFIRM", "CONSTRUCTED"}
 local create_station_builder = ecs.require "editor.stationbuilder"
-local interval_call = ecs.require "engine.interval_call"
 local coord_system = ecs.require "terrain"
 local selected_boxes = ecs.require "selected_boxes"
 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
@@ -29,6 +28,7 @@ local COLOR_INVALID <const> = math3d.constant "null"
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local COLOR_GREEN = math3d.constant("v4", {0.3, 1, 0, 1})
 local construct_menu_cfg = import_package "vaststars.prototype"("construct_menu")
+local ichest = require "gameplay.interface.chest"
 
 local rotate_mb = mailbox:sub {"rotate"}
 local build_mb = mailbox:sub {"build"}
@@ -53,15 +53,12 @@ local gesture_pan_mb = world:sub {"gesture", "pan"}
 local focus_tips_event = world:sub {"focus_tips"}
 
 local builder
-local pickup_id -- object id
 local excluded_pickup_id -- object id
 local handle_pickup = true
 
 local function __on_pickup_object(datamodel, object)
     if not excluded_pickup_id or excluded_pickup_id == object.id then
         if idetail.show(object.id) then
-            pickup_id = object.id
-
             local prototype_name = object.prototype_name
             local typeobject = iprototype.queryByName(prototype_name)
             if iprototype.has_types(typeobject.type, "base") then
@@ -72,6 +69,9 @@ local function __on_pickup_object(datamodel, object)
 end
 
 local function _get_construct_menu()
+    local e = assert(gameplay_core.get_world().ecs:first("base base_chest:in"))
+    local items = ichest.collect_item(gameplay_core.get_world(), e.base_chest)
+
     local construct_menu = {}
     for _, menu in ipairs(construct_menu_cfg) do
         local m = {}
@@ -81,10 +81,15 @@ local function _get_construct_menu()
 
         for _, prototype_name in ipairs(menu.detail) do
             local typeobject = assert(iprototype.queryByName(prototype_name))
+            local count = 0
+            if items[typeobject.id] then
+                count = ichest.get_amount(items[typeobject.id])
+            end
             m.detail[#m.detail + 1] = {
                 show_prototype_name = iprototype.show_prototype_name(typeobject),
                 prototype_name = prototype_name,
                 icon = typeobject.icon,
+                count = count,
             }
         end
 
@@ -116,7 +121,6 @@ local function __clean(datamodel)
         builder = nil
     end
     idetail.unselected()
-    pickup_id = nil
     datamodel.is_concise_mode = false
     handle_pickup = true
 end
@@ -378,7 +382,6 @@ function M:stage_camera_usage(datamodel)
             if not excluded_pickup_id or excluded_pickup_id == object.id then -- TODO: duplicated code with __on_pickup_object
                 if idetail.show(object.id) then
                     leave = false
-                    pickup_id = object.id
 
                     local prototype_name = object.prototype_name
                     local typeobject = iprototype.queryByName(prototype_name)
@@ -389,7 +392,6 @@ function M:stage_camera_usage(datamodel)
             end
         else
             idetail.unselected()
-            pickup_id = nil
             datamodel.is_concise_mode = false
         end
 
