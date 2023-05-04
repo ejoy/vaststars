@@ -29,7 +29,7 @@ local prototype = gameplay.register.prototype
   prototype "迫降火星" {
     desc = "迫降火星",
     icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
+    type = { "task" },
     ingredients = {
     },
     task = {"unknown", 0, 4},
@@ -50,7 +50,7 @@ local prototype = gameplay.register.prototype
   -- prototype "采矿机打印预备" {
   --   desc = "选择采矿机框架",
   --   icon = "textures/construct/industry.texture",
-  --   type = { "tech", "task" },
+  --   type = { "task" },
   --   task = {"unknown", 0, 3},
   --   task_params = {recipe = "采矿机打印"},
   --   count = 1,
@@ -81,7 +81,7 @@ local prototype = gameplay.register.prototype
   -- prototype "机尾残骸传送" {
   --   desc = "收集废墟物资准备传送",
   --   icon = "textures/construct/industry.texture",
-  --   type = { "tech", "task" },
+  --   type = { "task" },
   --   task = {"unknown", 0, 6},
   --   task_params = {ui = "item_transfer_subscribe", building = "机尾残骸"},
   --   count = 1,
@@ -133,7 +133,7 @@ local prototype = gameplay.register.prototype
   -- prototype "采矿机传送接收" {
   --   desc = "建造中心接收废墟的物资传送",
   --   icon = "textures/construct/industry.texture",
-  --   type = { "tech", "task" },
+  --   type = { "task" },
   --   task = {"unknown", 0, 6},
   --   task_params = {ui = "item_transfer_place", building = "建造中心"},
   --   count = 1,
@@ -165,7 +165,7 @@ local prototype = gameplay.register.prototype
   -- prototype "建造采矿机" {
   --   desc = "",
   --   icon = "textures/construct/industry.texture",
-  --   type = { "tech", "task" },
+  --   type = { "task" },
   --   task = {"stat_consumption", 0, "采矿机框架"},
   --   prerequisites = {"采矿机传送接收"},
   --   count = 1,
@@ -180,7 +180,7 @@ local prototype = gameplay.register.prototype
   prototype "放置采矿机" {
     desc = "放置1台采矿机",
     icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
+    type = { "task" },
     ingredients = {
     },
     task = {"select_entity", 0, "采矿机I"},
@@ -222,7 +222,7 @@ local prototype = gameplay.register.prototype
   prototype "放置风力发电机" {
     desc = "放置1台采矿机",
     icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
+    type = { "task" },
     ingredients = {
     },
     task = {"select_entity", 0, "风力发电机I"},
@@ -312,7 +312,7 @@ local prototype = gameplay.register.prototype
   -- prototype "电线杆打印预备" {
   --   desc = "选择电线杆框架",
   --   icon = "textures/construct/industry.texture",
-  --   type = { "tech", "task" },
+  --   type = { "task" },
   --   task = {"unknown", 0, 3},
   --   task_params = {recipe = "电线杆打印"},
   --   count = 1,
@@ -342,7 +342,7 @@ local prototype = gameplay.register.prototype
   -- prototype "机翼残骸传送" {
   --   desc = "收集废墟物资准备传送",
   --   icon = "textures/construct/industry.texture",
-  --   type = { "tech", "task" },
+  --   type = { "task" },
   --   task = {"unknown", 0, 6},
   --   task_params = {ui = "item_transfer_subscribe", building = "机翼残骸"},
   --   count = 1,
@@ -372,7 +372,7 @@ local prototype = gameplay.register.prototype
   -- prototype "电线杆传送接收" {
   --   desc = "建造中心接收废墟的物资传送",
   --   icon = "textures/construct/industry.texture",
-  --   type = { "tech", "task" },
+  --   type = { "task" },
   --   task = {"unknown", 0, 6},
   --   task_params = {ui = "item_transfer_place", building = "建造中心"},
   --   count = 1,
@@ -402,7 +402,7 @@ local prototype = gameplay.register.prototype
 -- prototype "建造电线杆" {
 --     desc = "建造5个电线杆",
 --     icon = "textures/construct/industry.texture",
---     type = { "tech", "task" },
+--     type = { "task" },
 --     task = {"stat_consumption", 0, "电线杆框架"},
 --     prerequisites = {"电线杆传送接收"},
 --     count = 5,
@@ -430,7 +430,7 @@ local prototype = gameplay.register.prototype
   prototype "放置电线杆" {
     desc = "放置2个铁制电线杆",
     icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
+    type = { "task" },
     ingredients = {
     },
     task = {"select_entity", 0, "铁制电线杆"},
@@ -494,7 +494,7 @@ local prototype = gameplay.register.prototype
   -- prototype "无人机仓库打印预备" {
   --   desc = "选择无人机仓库框架",
   --   icon = "textures/construct/industry.texture",
-  --   type = { "tech", "task" },
+  --   type = { "task" },
   --   task = {"unknown", 0, 3},
   --   task_params = {recipe = "无人机仓库打印"},
   --   count = 1,
@@ -524,7 +524,7 @@ local prototype = gameplay.register.prototype
   -- prototype "机头残骸传送" {
   --   desc = "收集废墟物资准备传送",
   --   icon = "textures/construct/industry.texture",
-  --   type = { "tech", "task" },
+  --   type = { "task" },
   --   task = {"unknown", 0, 6},
   --   task_params = {ui = "item_transfer_subscribe", building = "机头残骸"},
   --   count = 1,
@@ -554,7 +554,7 @@ local prototype = gameplay.register.prototype
   -- prototype "无人机仓库传送接收" {
   --   desc = "建造中心接收废墟的物资传送",
   --   icon = "textures/construct/industry.texture",
-  --   type = { "tech", "task" },
+  --   type = { "task" },
   --   task = {"unknown", 0, 6},
   --   task_params = {ui = "item_transfer_place", building = "建造中心"},
   --   count = 1,
@@ -584,7 +584,7 @@ local prototype = gameplay.register.prototype
   -- prototype "采矿机传送" {
   --   desc = "收集废墟物资准备传送",
   --   icon = "textures/construct/industry.texture",
-  --   type = { "tech", "task" },
+  --   type = { "task" },
   --   task = {"unknown", 0, 6},
   --   task_params = {ui = "item_transfer_subscribe", building = "采矿机I"},
   --   count = 1,
@@ -614,7 +614,7 @@ local prototype = gameplay.register.prototype
   -- prototype "碎石传送接收" {
   --   desc = "建造中心接收废墟的物资传送",
   --   icon = "textures/construct/industry.texture",
-  --   type = { "tech", "task" },
+  --   type = { "task" },
   --   task = {"unknown", 0, 6},
   --   task_params = {ui = "item_transfer_place", building = "建造中心"},
   --   count = 1,
@@ -644,7 +644,7 @@ local prototype = gameplay.register.prototype
   --   prototype "建造无人机仓库" {
   --   desc = "建造1个无人机仓库",
   --   icon = "textures/construct/industry.texture",
-  --   type = { "tech", "task" },
+  --   type = { "task" },
   --   task = {"stat_consumption", 0, "无人机仓库框架"},
   --   prerequisites = {"碎石传送接收"},
   --   count = 1,
@@ -662,7 +662,7 @@ local prototype = gameplay.register.prototype
     prototype "放置无人机仓库" {
     desc = "放置1个无人机仓库",
     icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
+    type = { "task" },
     ingredients = {
     },
     task = {"select_entity", 0, "无人机仓库"},
@@ -718,7 +718,7 @@ local prototype = gameplay.register.prototype
   prototype "无人机仓库设置" {
     desc = "无人机仓库选择碎石",
     icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
+    type = { "task" },
     ingredients = {
     },
     task = {"unknown", 0, 5},                          
@@ -737,7 +737,7 @@ local prototype = gameplay.register.prototype
   prototype "收集碎石" {
     desc = "挖掘足够的碎石可以开始进行锻造",
     icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
+    type = { "task" },
     ingredients = {
     },
     task = {"stat_production", 0, "碎石"},
@@ -758,7 +758,7 @@ local prototype = gameplay.register.prototype
   prototype "更多碎石" {
     desc = "挖掘足够的碎石可以开始进行锻造",
     icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
+    type = { "task" },
     ingredients = {
     },
     task = {"stat_production", 0, "碎石"},
@@ -779,7 +779,7 @@ local prototype = gameplay.register.prototype
   -- prototype "无人机仓库传送" {
   --   desc = "无人机仓库传送设置",
   --   icon = "textures/construct/industry.texture",
-  --   type = { "tech", "task" },
+  --   type = { "task" },
   --   task = {"unknown", 0, 6},
   --   task_params = {ui = "item_transfer_subscribe", building = "无人机仓库"},
   --   count = 1,
@@ -795,7 +795,7 @@ local prototype = gameplay.register.prototype
   -- prototype "更多无人机仓库" {
   --   desc = "再建造1个无人机仓库",
   --   icon = "textures/construct/industry.texture",
-  --   type = { "tech", "task" },
+  --   type = { "task" },
   --   task = {"stat_consumption", 0, "无人机仓库框架"},
   --   prerequisites = {"无人机仓库传送"},
   --   count = 2,
@@ -824,7 +824,7 @@ local prototype = gameplay.register.prototype
   -- prototype "第二个无人机仓库" {
   --   desc = "再放置1个无人机仓库",
   --   icon = "textures/construct/industry.texture",
-  --   type = { "tech", "task" },
+  --   type = { "task" },
   --   task = {"select_entity", 0, "无人机仓库"},
   --   prerequisites = {"更多无人机仓库"},
   --   count = 2,
@@ -853,7 +853,7 @@ local prototype = gameplay.register.prototype
   -- prototype "仓库碎石设置" {
   --   desc = "无人机仓库选择碎石",
   --   icon = "textures/construct/industry.texture",
-  --   type = { "tech", "task" },
+  --   type = { "task" },
   --   task = {"unknown", 0, 5},                          
   --   task_params = {item = "碎石"},
   --   count = 1,
@@ -869,7 +869,7 @@ local prototype = gameplay.register.prototype
   -- prototype "建造科研中心" {
   --   desc = "建造一座科研中心",
   --   icon = "textures/construct/industry.texture",
-  --   type = { "tech", "task" },
+  --   type = { "task" },
   --   task = {"stat_consumption", 0, "科研中心框架"},
   --   count = 1,
   --   prerequisites = {"仓库碎石设置"},
@@ -905,7 +905,7 @@ local prototype = gameplay.register.prototype
   prototype "放置科研中心" {
     desc = "放置可以研究火星科技的建筑",
     icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
+    type = { "task" },
     task = {"select_entity", 0, "科研中心I"},
     prerequisites = {"更多碎石"},
     ingredients = {
@@ -956,7 +956,7 @@ local prototype = gameplay.register.prototype
   --  prototype "建造组装机" {
   --   desc = "建造组装机",
   --   icon = "textures/construct/industry.texture",
-  --   type = { "tech", "task" },
+  --   type = { "task" },
   --   task = {"stat_consumption", 0, "组装机框架"},
   --   prerequisites = {"地质研究"},
   --   effects = {
@@ -995,7 +995,7 @@ local prototype = gameplay.register.prototype
   prototype "放置组装机" {
     desc = "放置组装机",
     icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
+    type = { "task" },
     task = {"select_entity", 0, "组装机I"},
     ingredients = {
     },
@@ -1029,7 +1029,7 @@ local prototype = gameplay.register.prototype
   -- prototype "科技包产线搭建" {
   --   desc = "选择地质科技包配方",
   --   icon = "textures/construct/industry.texture",
-  --   type = { "tech", "task" },
+  --   type = { "task" },
   --   task = {"unknown", 0, 3},
   --   task_params = {recipe = "地质科技包1"},
   --   count = 1,
@@ -1048,7 +1048,7 @@ local prototype = gameplay.register.prototype
   -- prototype "第三个无人机仓库" {
   --   desc = "再放置1个无人机仓库",
   --   icon = "textures/construct/industry.texture",
-  --   type = { "tech", "task" },
+  --   type = { "task" },
   --   task = {"select_entity", 0, "无人机仓库"},
   --   prerequisites = {"科技包产线搭建"},
   --   count = 3,
@@ -1064,7 +1064,7 @@ local prototype = gameplay.register.prototype
   -- prototype "仓库地质科技包设置" {
   --   desc = "仓库地质科技包设置",
   --   icon = "textures/construct/industry.texture",
-  --   type = { "tech", "task" },
+  --   type = { "task" },
   --   task = {"unknown", 0, 5},                          
   --   count = 1,
   --   prerequisites = {"第三个无人机仓库"},
@@ -1079,7 +1079,7 @@ local prototype = gameplay.register.prototype
   prototype "组装机生产" {
     desc = "自动化生产科技包用于科技研究",
     icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
+    type = { "task" },
     ingredients = {
     },
     task = {"stat_production", 0, "地质科技包"},
@@ -1115,7 +1115,7 @@ local prototype = gameplay.register.prototype
   -- prototype "石砖产线搭建" {
   --   desc = "选择地质科技包配方",
   --   icon = "textures/construct/industry.texture",
-  --   type = { "tech", "task" },
+  --   type = { "task" },
   --   task = {"unknown", 0, 3},
   --   task_params = {recipe = "石砖"},
   --   count = 1,
@@ -1134,7 +1134,7 @@ local prototype = gameplay.register.prototype
   prototype "生产石砖" {
     desc = "挖掘足够的碎石可以开始进行锻造",
     icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
+    type = { "task" },
     ingredients = {
     },
     task = {"stat_production", 0, "石砖"},
@@ -1181,7 +1181,7 @@ local prototype = gameplay.register.prototype
   prototype "放置建造中心" {
     desc = "放置1座建造中心",
     icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
+    type = { "task" },
     task = {"select_entity", 0, "建造中心"},
     ingredients = {
     },
@@ -1218,7 +1218,7 @@ local prototype = gameplay.register.prototype
   prototype "建造公路" {
     desc = "建造60段公路",
     icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
+    type = { "task" },
     ingredients = {
     },
     task = {"stat_production", 0, "砖石公路-X型"},
@@ -1251,7 +1251,7 @@ local prototype = gameplay.register.prototype
   -- prototype "生产太阳能板" {
   --   desc = "使用组装机生产6个太阳能板",
   --   icon = "textures/construct/industry.texture",
-  --   type = { "tech", "task" },
+  --   type = { "task" },
   --   task = {"stat_production", 0, "太阳能板I"},
   --   prerequisites = {"电能扩充"},
   --   count = 6,
@@ -1282,7 +1282,7 @@ local prototype = gameplay.register.prototype
   -- prototype "生产太阳能板" {
   --   desc = "使用建造中心生产6个太阳能板",
   --   icon = "textures/construct/industry.texture",
-  --   type = { "tech", "task" },
+  --   type = { "task" },
   --   task = {"stat_production", 0, "太阳能板I"},
   --   prerequisites = {"电能扩充"},
   --   count = 6,
@@ -1311,7 +1311,7 @@ local prototype = gameplay.register.prototype
   --   prototype "放置太阳能板" {
   --   desc = "放置6座太阳能板",
   --   icon = "textures/construct/industry.texture",
-  --   type = { "tech", "task" },
+  --   type = { "task" },
   --   task = {"select_entity", 0, "太阳能板I"},
   --   prerequisites = {"电能扩充"},
   --   count = 6,
@@ -1326,7 +1326,7 @@ local prototype = gameplay.register.prototype
   -- prototype "电力覆盖" {
   --   desc = "放置10个电线杆",
   --   icon = "textures/construct/industry.texture",
-  --   type = { "tech", "task" },
+  --   type = { "task" },
   --   task = {"select_entity", 0, "铁制电线杆"},
   --   prerequisites = {"放置太阳能板"},
   --   count = 10,
@@ -1356,7 +1356,7 @@ local prototype = gameplay.register.prototype
   prototype "通向铁矿" {
     desc = "修建35节公路",
     icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
+    type = { "task" },
     ingredients = {
     },
     task = {"unknown", 0, 1},
@@ -1656,7 +1656,7 @@ local prototype = gameplay.register.prototype
   prototype "机尾残骸传送" {
     desc = "收集废墟物资准备传送",
     icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
+    type = { "task" },
     ingredients = {
     },
     task = {"unknown", 0, 6},
@@ -1692,7 +1692,7 @@ local prototype = gameplay.register.prototype
     prototype "采矿机打印预备" {
     desc = "选择采矿机框架",
     icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
+    type = { "task" },
     ingredients = {
     },
     task = {"unknown", 0, 3},
@@ -1710,7 +1710,7 @@ local prototype = gameplay.register.prototype
   prototype "采矿机传送启动" {
     desc = "建造中心接收废墟的物资传送",
     icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
+    type = { "task" },
     ingredients = {
     },
     task = {"unknown", 0, 6},
@@ -1728,7 +1728,7 @@ local prototype = gameplay.register.prototype
   prototype "铁矿放置采矿机" {
     desc = "放置1台采矿机",
     icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
+    type = { "task" },
     ingredients = {
     },
     task = {"select_entity", 0, "采矿机I"},
@@ -1775,7 +1775,7 @@ local prototype = gameplay.register.prototype
   prototype "放置送货车站" {
     desc = "放置1座修路站",
     icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
+    type = { "task" },
     ingredients = {
     },
     task = {"select_entity", 0, "送货车站"},
@@ -1810,7 +1810,7 @@ local prototype = gameplay.register.prototype
   prototype "放置收货车站" {
     desc = "放置1座修路站",
     icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
+    type = { "task" },
     task = {"select_entity", 0, "收货车站"},
     ingredients = {
     },
@@ -1841,7 +1841,7 @@ local prototype = gameplay.register.prototype
   prototype "生产运输车辆" {
     desc = "指挥中心建造4辆运输车辆",
     icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
+    type = { "task" },
     ingredients = {
     },
     task = {"stat_production", 0, "运输车辆I"},
@@ -1872,7 +1872,7 @@ local prototype = gameplay.register.prototype
   prototype "生产铁矿石" {
     desc = "挖掘足够的铁矿石可以开始进行锻造",
     icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
+    type = { "task" },
     ingredients = {
     },
     task = {"stat_production", 0, "铁矿石"},
@@ -1909,7 +1909,7 @@ local prototype = gameplay.register.prototype
   prototype "放置熔炼炉" {
     desc = "放置熔炼炉",
     icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
+    type = { "task" },
     ingredients = {
     },
     task = {"select_entity", 0, "熔炼炉I"},
@@ -1929,7 +1929,7 @@ local prototype = gameplay.register.prototype
   prototype "生产铁板" {
     desc = "铁板可以打造坚固器材，对于基地建设多多益善",
     icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
+    type = { "task" },
     ingredients = {
     },
     task = {"stat_production", 0, "铁板"},
@@ -1966,7 +1966,7 @@ local prototype = gameplay.register.prototype
   prototype "生产铁齿轮" {
     desc = "铁板可以打造坚固器材，对于基地建设多多益善",
     icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
+    type = { "task" },
     ingredients = {
     },
     task = {"stat_production", 0, "铁齿轮"},
@@ -2018,7 +2018,7 @@ local prototype = gameplay.register.prototype
   prototype "量产运输车辆" {
     desc = "生产8辆运输车",
     icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
+    type = { "task" },
     ingredients = {
     },
     task = {"stat_production", 0, "运输车辆I"},
@@ -2090,7 +2090,7 @@ prototype "管道系统1" {
 prototype "生产管道" {
   desc = "管道用于液体传输",
   icon = "textures/construct/industry.texture",
-  type = { "tech", "task" },
+  type = { "task" },
   ingredients = {
   },
   task = {"stat_production", 0, "管道1-X型"},
@@ -2143,7 +2143,7 @@ prototype "采水研究" {
 prototype "建造地下水挖掘机" {
   desc = "生产科技包用于科技研究",
   icon = "textures/construct/industry.texture",
-  type = { "tech", "task" },
+  type = { "task" },
   ingredients = {
   },
   task = {"stat_production", 0, "地下水挖掘机"},
@@ -2163,7 +2163,7 @@ prototype "建造地下水挖掘机" {
 prototype "建造水电站" {
   desc = "建造水电站用于处理液体",
   icon = "textures/construct/industry.texture",
-  type = { "tech", "task" },
+  type = { "task" },
   ingredients = {
   },
   task = {"stat_production", 0, "水电站I"},
@@ -2183,7 +2183,7 @@ prototype "建造水电站" {
 prototype "生产气候科技包" {
   desc = "生产科技包用于科技研究",
   icon = "textures/construct/industry.texture",
-  type = { "tech", "task" },
+  type = { "task" },
   ingredients = {
   },
   task = {"stat_production", 0, "气候科技包"},
@@ -2203,7 +2203,7 @@ prototype "生产气候科技包" {
   -- prototype "放置太阳能板" {
   --   desc = "放置4座太阳能板",
   --   icon = "textures/construct/industry.texture",
-  --   type = { "tech", "task" },
+  --   type = { "task" },
   --   task = {"select_entity", 0, "太阳能板I"},
   --   prerequisites = {"地质研究"},
   --   count = 4,
@@ -2218,7 +2218,7 @@ prototype "生产气候科技包" {
 -- prototype "生产运输车辆" {
 --   desc = "生产运输车辆2辆",
 --   icon = "textures/construct/industry.texture",
---   type = { "tech", "task" },
+--   type = { "task" },
 --   task = {"stat_consumption", 0, 运输车辆框架},
 --   prerequisites = {"放置车辆厂"},
 --   task_params = {},
@@ -2236,7 +2236,7 @@ prototype "生产气候科技包" {
 -- prototype "增添运输车辆" {
 --   desc = "增加运输车辆至5辆",
 --   icon = "textures/construct/industry.texture",
---   type = { "tech", "task" },
+--   type = { "task" },
 --   task = {"unknown", 0, 2},
 --   prerequisites = {"地质研究"},
 --   task_params = {},
@@ -2254,7 +2254,7 @@ prototype "生产气候科技包" {
 -- prototype "维修运输汽车" {
 --   desc = "维修运输车参与物流",
 --   icon = "textures/construct/industry.texture",
---   type = { "tech", "task" },
+--   type = { "task" },
 --   task = {"stat_consumption", 0, "破损运输车辆"},
 --   prerequisites = {"基地生产1"},
 --   count = 2,
@@ -2269,7 +2269,7 @@ prototype "生产气候科技包" {
 -- prototype "维修物流中心" {
 --   desc = "维修运输车参与物流",
 --   icon = "textures/construct/industry.texture",
---   type = { "tech", "task" },
+--   type = { "task" },
 --   task = {"stat_consumption", 0, "破损物流中心"},
 --   prerequisites = {"基地生产1"},
 --   count = 1,
@@ -2300,7 +2300,7 @@ prototype "生产气候科技包" {
 -- prototype "放置熔炼炉" {
 --   desc = "放置熔炼炉",
 --   icon = "textures/construct/industry.texture",
---   type = { "tech", "task" },
+--   type = { "task" },
 --   task = {"select_entity", 0, "熔炼炉I"},
 --   prerequisites = {"铁矿熔炼"},
 --   count = 2,
@@ -2318,7 +2318,7 @@ prototype "生产气候科技包" {
 -- prototype "生产铁板" {
 --   desc = "铁板可以打造坚固器材，对于基地建设多多益善",
 --   icon = "textures/construct/industry.texture",
---   type = { "tech", "task" },
+--   type = { "task" },
 --   task = {"stat_production", 0, "铁板"},
 --   prerequisites = {"放置熔炼炉"},
 --   count = 4,
@@ -2352,7 +2352,7 @@ prototype "生产气候科技包" {
 -- prototype "生产石砖" {
 --   desc = "石砖可以打造基础建筑，对于基地建设多多益善",
 --   icon = "textures/construct/industry.texture",
---   type = { "tech", "task" },
+--   type = { "task" },
 --   task = {"stat_production", 0, "石砖"},
 --   prerequisites = {"石头处理1"},
 --   count = 4,
@@ -2387,7 +2387,7 @@ prototype "生产气候科技包" {
 -- prototype "维修破损空气过滤器" {
 --   desc = "将破损的机器修复会大大节省建设时间和资源",
 --   icon = "textures/construct/industry.texture",
---   type = { "tech", "task" },
+--   type = { "task" },
 --   task = {"stat_consumption", 0, "空气过滤器框架"},
 --   prerequisites = {"气候研究"},
 --   count = 1,
@@ -2402,7 +2402,7 @@ prototype "生产气候科技包" {
 -- prototype "维修破损地下水挖掘机" {
 --   desc = "将破损的机器修复会大大节省建设时间和资源",
 --   icon = "textures/construct/industry.texture",
---   type = { "tech", "task" },
+--   type = { "task" },
 --   task = {"stat_consumption", 0, "地下水挖掘机框架"},
 --   prerequisites = {"气候研究"},
 --   count = 1,
@@ -2417,7 +2417,7 @@ prototype "生产气候科技包" {
 -- prototype "修建水电站" {
 --   desc = "修建水电站收集气体和液体",
 --   icon = "textures/construct/industry.texture",
---   type = { "tech", "task" },
+--   type = { "task" },
 --   task = {"select_entity", 0, "水电站I"},
 --   prerequisites = {"维修破损空气过滤器","维修破损地下水挖掘机"},
 --   count = 1,
@@ -2433,7 +2433,7 @@ prototype "生产气候科技包" {
 -- prototype "生产气候科技包" {
 --   desc = "生产科技包用于科技研究",
 --   icon = "textures/construct/industry.texture",
---   type = { "tech", "task" },
+--   type = { "task" },
 --   task = {"stat_production", 0, "气候科技包"},
 --   prerequisites = {"修建水电站"},
 --   count = 1,
@@ -2468,7 +2468,7 @@ prototype "生产气候科技包" {
 -- prototype "生产管道" {
 --   desc = "管道可以承载液体和气体，将需要相同气液的机器彼此联通起来",
 --   icon = "textures/construct/industry.texture",
---   type = { "tech", "task" },
+--   type = { "task" },
 --   task = {"stat_production", 0, "管道1-X型"},
 --   prerequisites = {"管道系统1"},
 --   count = 10,
@@ -2531,7 +2531,7 @@ prototype "生产气候科技包" {
 
 -- prototype "收集空气" {
 --   desc = "采集火星上的空气",
---   type = { "tech", "task" },
+--   type = { "task" },
 --   icon = "textures/construct/industry.texture",
 --   task = {"stat_production", 1, "空气"},
 --   prerequisites = {"空气分离"},
@@ -2564,7 +2564,7 @@ prototype "生产气候科技包" {
 -- prototype "维修破损组装机" {
 --   desc = "将破损的机器修复会大大节省建设时间和资源",
 --   icon = "textures/construct/industry.texture",
---   type = { "tech", "task" },
+--   type = { "task" },
 --   task = {"stat_consumption", 0, "组装机框架"},
 --   prerequisites = {"铁加工1"},
 --   count = 3,
@@ -2595,7 +2595,7 @@ prototype "生产气候科技包" {
 -- prototype "修理太阳能板" {
 --   desc = "维修太阳能板并利用太阳能板技术发电",
 --   icon = "textures/construct/industry.texture",
---   type = { "tech", "task" },
+--   type = { "task" },
 --   task = {"stat_consumption", 0, "太阳能板框架"},
 --   prerequisites = {"石头处理2"},
 --   count = 2,
@@ -2610,7 +2610,7 @@ prototype "生产气候科技包" {
 -- prototype "放置太阳能板" {
 --   desc = "放置太阳能板将光热转换成电能",
 --   icon = "textures/construct/industry.texture",
---   type = { "tech", "task" },
+--   type = { "task" },
 --   task = {"select_entity", 0, "太阳能板I"},
 --   prerequisites = {"修理太阳能板"},
 --   count = 8,
@@ -2663,7 +2663,7 @@ prototype "生产气候科技包" {
 -- prototype "生产铁制箱子" {
 --   desc = "生产小铁制箱子用于存储基地的资源",
 --   icon = "textures/construct/industry.texture",
---   type = { "tech", "task" },
+--   type = { "task" },
 --   task = {"stat_production", 0, "小铁制箱子I"},
 --   prerequisites = {"储存1"},
 --   count = 3,
@@ -2694,7 +2694,7 @@ prototype "生产气候科技包" {
 -- prototype "生产氢气" {
 --   desc = "生产工业气体氢气",
 --   icon = "textures/construct/industry.texture",
---   type = { "tech", "task" },
+--   type = { "task" },
 --   task = {"stat_production", 0, "氢气"},
 --   prerequisites = {"碳处理1"},
 --   count = 500,
@@ -2710,7 +2710,7 @@ prototype "生产气候科技包" {
 -- prototype "生产二氧化碳" {
 --   desc = "生产工业气体二氧化碳",
 --   icon = "textures/construct/industry.texture",
---   type = { "tech", "task" },
+--   type = { "task" },
 --   task = {"stat_production", 0, "二氧化碳"},
 --   prerequisites = {"碳处理1"},
 --   count = 500,
@@ -2809,7 +2809,7 @@ prototype "生产气候科技包" {
 -- prototype "维修化工厂" {
 --   desc = "维修化工厂生成化工原料",
 --   icon = "textures/construct/industry.texture",
---   type = { "tech", "task" },
+--   type = { "task" },
 --   task = {"stat_consumption", 0, "化工厂框架"},
 --   prerequisites = {"碳处理2"},
 --   count = 1,
@@ -2824,7 +2824,7 @@ prototype "生产气候科技包" {
 -- prototype "放置化工厂" {
 --   desc = "放置化工厂生产化工产品",
 --   icon = "textures/construct/industry.texture",
---   type = { "tech", "task" },
+--   type = { "task" },
 --   task = {"select_entity", 0, "化工厂I"},
 --   prerequisites = {"维修化工厂"},
 --   count = 1,
@@ -2840,7 +2840,7 @@ prototype "生产气候科技包" {
 -- prototype "生产甲烷" {
 --   desc = "生产工业气体甲烷",
 --   icon = "textures/construct/industry.texture",
---   type = { "tech", "task" },
+--   type = { "task" },
 --   task = {"stat_production", 0, "甲烷"},
 --   prerequisites = {"放置化工厂"},
 --   count = 1000,
@@ -2871,7 +2871,7 @@ prototype "生产气候科技包" {
 -- prototype "生产乙烯" {
 --   desc = "生产工业气体乙烯",
 --   icon = "textures/construct/industry.texture",
---   type = { "tech", "task" },
+--   type = { "task" },
 --   task = {"stat_production", 0, "乙烯"},
 --   prerequisites = {"有机化学"},
 --   count = 1000,
@@ -2886,7 +2886,7 @@ prototype "生产气候科技包" {
 -- prototype "生产塑料" {
 --   desc = "使用有机化学的科学成果生产质量轻、耐腐蚀的工业材料塑料",
 --   icon = "textures/construct/industry.texture",
---   type = { "tech", "task" },
+--   type = { "task" },
 --   task = {"stat_production", 0, "塑料"},
 --   prerequisites = {"生产乙烯"},
 --   count = 30,
@@ -2938,7 +2938,7 @@ prototype "生产气候科技包" {
 -- prototype "生产机械科技包" {
 --   desc = "生产科技包用于科技研究",
 --   icon = "textures/construct/industry.texture",
---   type = { "tech", "task" },
+--   type = { "task" },
 --   task = {"stat_production", 0, "机械科技包"},
 --   prerequisites = {"机械研究"},
 --   count = 3,
