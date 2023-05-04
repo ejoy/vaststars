@@ -180,15 +180,9 @@ local prototype = gameplay.register.prototype
   prototype "放置采矿机" {
     desc = "放置1台采矿机",
     icon = "textures/construct/industry.texture",
-    type = { "task" },
-    ingredients = {
-    },
+    type = {"task" },
     task = {"select_entity", 0, "采矿机I"},
     prerequisites = {"建造采矿机"},
-    effects = {
-      --  unlock_recipe = {"电线杆打印"},
-      --  unlock_item = {"电线杆框架"},
-    },
     count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
