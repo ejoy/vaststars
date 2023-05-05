@@ -595,7 +595,7 @@
                         <!-- 研究队列 end --> 
 
                         <!-- 开始研究按钮 start --> 
-                        <button data-if="!show_finish" class="column" style="justify-content:center; width: 35%; height:100%;" data-style-background-color="current_running ? 'rgb(211, 59, 59);' : 'rgb(0,176,240)'" data-event-click="startSwitch()">
+                        <button data-if="!current_running" class="column" style="justify-content:center; width: 35%; height:100%; background-color:rgb(0,176,240);" data-event-click="startSwitch()">
                             <div style="font-size: 6.00vmin; text-align: center;">{{current_button_str}}</div>
                         </button>
                         <!-- 开始研究按钮 end --> 

@@ -83,7 +83,7 @@ local function get_techlist(tech_list)
 end
 
 local function get_button_str(tech)
-    return (tech.running and "停止" or "开始") .. (tech.task and "任务" or "研究")
+    return "开始" .. (tech.task and "任务" or "研究")
 end
 
 function M:create(object_id)
