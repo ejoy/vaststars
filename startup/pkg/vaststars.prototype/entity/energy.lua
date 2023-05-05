@@ -138,8 +138,8 @@ prototype "热管1-X型" {
 }
 
 prototype "锅炉I" {
-    model = "prefabs/distillery-1.prefab",
-    icon = "textures/building_pic/small_pic_distillery.texture",
+    model = "prefabs/boiler.prefab",
+    icon = "textures/building_pic/small_pic_boiler.texture",
     background = "textures/build_background/pic_distillery.texture",
     construct_detector = {"exclusive"},
     type = {"building", "assembling", "fluidboxes"},
