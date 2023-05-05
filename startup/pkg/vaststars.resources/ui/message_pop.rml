@@ -7,28 +7,30 @@
             .warning-panel {
                 pointer-events: none;
                 background-color: rgb(44, 32, 18);
-                border: 0.2vmin rgb(89, 73, 39);
+                /*border: 0.2vmin rgb(89, 73, 39);*/
                 border-radius: 0.67vmin;
-                margin:auto 0.3em;
-                width: 35%;
-                height: 11%;
-                justify-content: space-evenly;
+                /*margin:auto 0.3em;*/
+                /*width: 35%;*/
+                /*height: 11%;*/
+                /*justify-content: space-evenly;*/
                 flex-direction: row;
                 animation: 3s cubic-out 0s slideup;
             }
             .warning-message {
                 pointer-events: none;
+                /*
                 width: 95%;
                 height: 100%;
+                */
                 font-size: 4vmin;
                 text-align: left;
                 word-break: break-all;
             }
             .warning-icon {
                 pointer-events: none;
-                position: absolute;
-                left: -1vmin;
-                top:-3vmin;
+                /*position: absolute;*/
+                /*left: -1vmin;*/
+                /*top:-6vmin;*/
                 width: 2.8vmin;
                 height: 7.6vmin;
                 background-size: cover;
@@ -36,24 +38,25 @@
             }
             .item-collect-panel {
                 pointer-events: none;
-                border-radius: 0.67vmin;
-                margin:auto 0.3em;
-                width: 45%;
-                height: 11%;
+                /*margin:auto 0.3em;*/
                 flex-direction: column;
-                justify-content: center;
-                align-items: center;
+                justify-content: flex-start;
+                /*align-items: center;*/
                 animation: 4s cubic-out 0s slideup;
             }
-            .item-teleport-panel {
+            .item-teleport-send {
                 pointer-events: none;
-                animation: 1.5s cubic-in-out 0s teleport;
+                animation: 1.6s cubic-in-out 0s teleport-send;
+            }
+            .item-teleport-recv {
+                pointer-events: none;
+                animation: 1.6s cubic-in-out 0s teleport-recv;
             }
             .materials {
                 pointer-events: none;
                 flex-direction: row;
-                align-items: center;
-                background-size: cover;
+                /*align-items: center;*/
+                /*background-size: cover;*/
             }
             .materials-item {
                 pointer-events: none;
@@ -65,7 +68,7 @@
                 pointer-events: none;
                 width: 4.67vmin;
                 height: 4.67vmin;
-                background-color: rgb(250, 205, 9);;
+                background-color: rgb(250, 205, 9);
                 flex-direction: row;
                 justify-content: flex-start;
                 align-items: center;
@@ -92,15 +95,15 @@
             }
             @keyframes slideup {
                 0% {
-                     bottom: 30%; 
+                     transform: translateY(0px); 
                      opacity: 1;
                 }
                 50% {
-                     bottom: 60%; 
+                     transform: translateY(-200px); 
                      opacity: 1;
                 }
                 100% { 
-                    bottom: 60%; 
+                    transform: translateY(-200px); 
                     opacity: 0;
                 }
             }
@@ -122,14 +125,38 @@
                     opacity: 0;
                 }
             }
-            @keyframes teleport {
+            @keyframes teleport-send {
                 0% {
                     left: 20vmin;
                     top: 65vmin;
+                    opacity: 1;
+                }
+                95% {
+                    left: 80vmin;
+                    top: 5vmin;
+                    opacity: 1;
                 }
                 100% {
-                    left: 75vmin;
-                    top: 0vmin;
+                    left: 80vmin;
+                    top: 5vmin;
+                    opacity: 0;
+                }
+            }
+            @keyframes teleport-recv {
+                0% {
+                    left: 80vmin;
+                    top: 5vmin;
+                    opacity: 1;
+                }
+                95% {
+                    left: 20vmin;
+                    top: 65vmin;
+                    opacity: 1;
+                }
+                100% {
+                    left: 20vmin;
+                    top: 65vmin;
+                    opacity: 0;
                 }
             }
         </style>
@@ -138,47 +165,71 @@
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local start = ui_sys.createDataMode("start", {
-                show_id = "message",
-                message = "none",
-                items = {},
                 left = "0vmin",
                 top = "0vmin",
             })
-            window.setTimeout(function()
-                ui_sys.close()
-            end, 3000)
+            ui_sys.addEventListener({
+                ["message"] = function(...)
+                    local param = ...
+                    local parent = document.getElementById('pop_root')
+                    local child = document.createElement "div"
+                    child.style.left = param.left .. 'px'
+                    child.style.top = param.top .. 'px'
+                    child.style.position = 'absolute' 
+                    child.outerHTML = ([[
+                        <div class="warning-panel">
+                            <div class="warning-icon"/>
+                            <div class="warning-message">%s</div>
+                        </div>
+                    ]]):format(param.message)
+                    --child.addEventListener('animationend', function(event) parent.removeChild(event.target) end)
+                    parent.appendChild(child)
+                end,
+                ["item"] = function(...)
+                    local parent = document.getElementById('pop_root')
+                    local child = document.createElement "div"
+                    --child.addEventListener('animationend', function(event) parent.removeChild(event.target) end)
+                    parent.appendChild(child)
+                    child.className = "item-collect-panel"
+                    local param = ...
+                    child.style.left = (param.left - 100) .. 'px'
+                    child.style.top = (param.top - #param.items * 50) .. 'px'
+                    --child.style.border = '2px rgb(255,0,0)'
+                    child.style.position = 'absolute'
+                    for _, it in ipairs(param.items) do
+                        local item = document.createElement "div"
+                        child.appendChild(item)
+                        item.outerHTML = ([[
+                            <div class = "materials">
+                                <div class = "materials-item">
+                                    <div class = "materials-icon" style='background-image: %s;'/>
+                                    <div class = "materials-name">%s</div>
+                                </div>
+                                <div class = "materials-num">X %d</div>
+                            </div>
+                        ]]):format(it.icon, it.name, it.count)
+                    end
+                end,
+                ["teleport-recv"] = function(...)
+                    local parent = document.getElementById('pop_root')
+                    local child = document.createElement "div"
+                    child.outerHTML = ([[<div class="item-teleport-send" style="flex-direction:row; left: 20vmin; top:65vmin;"/>]])
+                    for _, it in ipairs(param.items) do
+                        local item = document.createElement "div"
+                        item.outerHTML = ([[
+                            <div class = "materials">
+                                <div class = "materials-icon" style = 'background-image: %s;'/>
+                            </div>
+                        ]]):format(it.icon)
+                        child.appendChild(item)
+                    end
+                    --child.addEventListener('animationend', function(event) parent.removeChild(event.target) end)
+                    parent.appendChild(child)
+                end,
+            })
         </script>
     </head>
     <body style="pointer-events: none;">
-        <div style="pointer-events: none; position: absolute; height: 100%;" data-style-left="left" data-style-top="top" data-model="start">
-            <!-- 警告上漂框 -->
-            <div class="warning-panel" data-if="show_id == 'message'">
-                <div class="warning-icon"/>
-                <div class="warning-message">{{message}}</div>
-            </div>
-
-            <!-- 物品获得上漂框 -->
-            <div class="item-collect-panel" data-if="show_id == 'item'">
-                <div class = "materials" data-for="items">
-                    <div class = "materials-item">
-                        <div class = "materials-icon" data-style-background-image="it.icon"/>
-                        <div class = "materials-name">{{it.name}}</div>
-                    </div>
-                    <div class = "materials-num">X {{it.count}}</div>
-                </div>
-            </div>
-
-            <!-- 传送上漂框 -->
-            <div class="item-teleport-panel" data-if="show_id == 'teleport'">
-                <div class = "materials" data-for="items">
-                    <div class = "materials-item">
-                        <div class = "materials-icon" data-style-background-image="it.icon"/>
-                        <!--
-                        <div class = "materials-name">{{it.name}}</div>
-                        -->
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div id = "pop_root" style="position: absolute; pointer-events: none; width:100%; height:100%;" data-model="start"/>
     </body>
 </rml>

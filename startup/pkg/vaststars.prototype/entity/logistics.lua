@@ -8,7 +8,7 @@ prototype "指挥中心" {
     construct_detector = {"exclusive"},
     craft_category = {"基地制造"},
     chest_type = "red",
-    type = {"building", "consumer", "assembling", "base", "base_chest", "lorry_factory"},
+    type = {"building", "consumer", "assembling", "base", "inventory", "lorry_factory"},
     speed = "50%",
     maxslot = "8",
     recipe_init_limit = {ingredientsLimit = 0, resultsLimit = 0},

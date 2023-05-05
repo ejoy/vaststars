@@ -446,7 +446,8 @@ function M:restore(index)
 
     iscience.update_tech_list(gameplay_core.get_world())
     iui.open({"construct.rml"})
-
+    iui.open({"message_pop.rml"})
+    
     gameplay_core.build()
     restore_world()
 
@@ -483,6 +484,7 @@ function M:restart()
     gameplay_core.build()
 
     iui.open({"construct.rml"})
+    iui.open({"message_pop.rml"})
     restore_world()
 end
 

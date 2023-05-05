@@ -6,11 +6,8 @@ local M = {}
 
 function M:create(content)
     return {
-        show_id = content.show_id or "message",
-        message = content.message or "none",
-        items = content.items or {},
-        left = content.left,
-        top = content.top,
+        left = content and content.left or "0vmin",
+        top = content and content.top or "0vmin",
     }
 end
 

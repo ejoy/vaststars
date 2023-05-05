@@ -2867,12 +2867,12 @@ prototype "卤水沸腾" {
     recipe_order =  108,
     recipe_icon =  "textures/fluid/gas.texture",
     ingredients = {
-        {"地下卤水", 70},
+        {"地下卤水", 60},
     },
     results = {
-        {"蒸汽", 225},
-        {"废水", 10},
+        {"蒸汽", 60},
+        -- {"废水", 10},
     },
-    time = "1s",
+    time = "1.25s",
     description = "卤水转蒸汽",
 }

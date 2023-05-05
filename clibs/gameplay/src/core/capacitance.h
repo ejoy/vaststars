@@ -34,15 +34,20 @@ struct consumer_context {
 };
 
 template <class Entity>
-consumer_context get_consumer(world& w, Entity& v) {
+consumer_context get_consumer(world& w, Entity& v, ecs::capacitance& c) {
     ecs::building& building = v.template get<ecs::building>();
-    ecs::capacitance& c = v.template get<ecs::capacitance>();
     uint32_t power = prototype::get<"power">(w, building.prototype);
     uint32_t drain = prototype::get<"drain">(w, building.prototype);
     uint32_t capacitance = prototype::get<"capacitance">(w, building.prototype);
     return {
         c, power, drain, capacitance
     };
+}
+
+template <class Entity>
+consumer_context get_consumer(world& w, Entity& v) {
+    ecs::capacitance& c = v.template get<ecs::capacitance>();
+    return get_consumer(w, v, c);
 }
 
 struct generator_context {
@@ -76,12 +81,17 @@ struct generator_context {
 };
 
 template <class Entity>
-generator_context get_generator(world& w, Entity& v) {
+generator_context get_generator(world& w, Entity& v, ecs::capacitance& c) {
     ecs::building& building = v.template get<ecs::building>();
-    ecs::capacitance& c = v.template get<ecs::capacitance>();
     uint32_t power = prototype::get<"power">(w, building.prototype);
     uint32_t capacitance = prototype::get<"capacitance">(w, building.prototype);
     return {
         c, power, capacitance
     };
+}
+
+template <class Entity>
+generator_context get_generator(world& w, Entity& v) {
+    ecs::capacitance& c = v.template get<ecs::capacitance>();
+    return get_generator(w, v, c);
 }

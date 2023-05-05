@@ -245,11 +245,10 @@ function M:stage_ui_update(datamodel, object_id)
             _update_neighbor_fluidbox(object)
             gameplay_core.build()
 
-            iui.update("building_arc_menu.rml", "update", object_id)
+            iui.call_datamodel_method("building_arc_menu.rml", "update", object_id)
             object.recipe = recipe_name
             itask.update_progress("set_recipe", recipe_name)
         end
-        ::continue::
     end
 
     for _ in clear_recipe_mb:unpack() do
@@ -260,11 +259,10 @@ function M:stage_ui_update(datamodel, object_id)
         object.recipe = ""
         object.fluid_name = {}
 
-        iui.update("building_arc_menu.rml", "update", object_id)
+        iui.call_datamodel_method("building_arc_menu.rml", "update", object_id)
 
         _update_neighbor_fluidbox(object)
         gameplay_core.build()
-        ::continue::
     end
 end
 

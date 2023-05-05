@@ -84,8 +84,8 @@ prototype "核反应堆" {
 }
 
 prototype "换热器I" {
-    model = "prefabs/distillery-1.prefab",
-    icon = "textures/building_pic/small_pic_distillery.texture",
+    model = "prefabs/boiler.prefab",
+    icon = "textures/building_pic/small_pic_boiler.texture",
     background = "textures/build_background/pic_distillery.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
@@ -101,9 +101,17 @@ prototype "换热器I" {
             {
                 capacity = 200,
                 height = 100,
-                base_level = -100,
+                base_level = -50,
                 connections = {
-                    {type="input", position={0,0,"W"}},
+                    {type="input-output", position={0,0,"W"}},
+                }
+            },
+            {
+                capacity = 200,
+                height = 100,
+                base_level = -50,
+                connections = {
+                    {type="input-output", position={2,0,"E"}},
                 }
             },
         },
@@ -114,14 +122,6 @@ prototype "换热器I" {
                 base_level = 150,
                 connections = {
                     {type="output", position={1,1,"S"}},
-                }
-            },
-            {
-                capacity = 200,
-                height = 100,
-                base_level = 150,
-                connections = {
-                    {type="output", position={2,0,"E"}},
                 }
             },
         },
@@ -138,12 +138,11 @@ prototype "热管1-X型" {
 }
 
 prototype "锅炉I" {
-    model = "prefabs/distillery-1.prefab",
-    icon = "textures/building_pic/small_pic_distillery.texture",
+    model = "prefabs/boiler.prefab",
+    icon = "textures/building_pic/small_pic_boiler.texture",
     background = "textures/build_background/pic_distillery.texture",
     construct_detector = {"exclusive"},
-    type = {"building", "consumer", "assembling", "fluidboxes"},
-    power = "300kW",
+    type = {"building", "assembling", "fluidboxes"},
     priority = "secondary",
     area = "3x2",
     rotate_on_build = true,

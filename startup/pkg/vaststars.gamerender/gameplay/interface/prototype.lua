@@ -214,13 +214,14 @@ local CHEST_TYPES <const> = {
     "laboratory",
     "station",
     "hub",
-    "base_chest",
+    "inventory",
 }
 
 local PICKUP_TYPES <const> = {
     "assembling",
     "station",
     "hub",
+    "chest",
 }
 
 local PLACE_TYPES <const> = {

@@ -35,6 +35,7 @@ local function create_motion_object(s, r, t, parent)
                 r = r,
                 t = t,
             },
+            motion_sampler = {},
             name = "motion_sampler",
         }
     }
@@ -76,12 +77,14 @@ local function create_drone(homepos)
         end,
         moveto = function (self, motion, topos, time, tin, tout)
             local e <close> = w:entity(motion)
-            if self.born_pos then
-                ims.set_target_ex(e, {t = math3d.vector(self.born_pos)}, {t = math3d.vector(topos)}, time * 1000, tin, tout)
-                self.born_pos = nil
-            else
-                ims.set_target(e, nil, nil, math3d.vector(topos), time * 1000, tin, tout)
-            end
+            ims.set_duration(e, time * 1000)
+            ims.set_tween(e, tin, tout)
+
+            local first_track = {t = math3d.vector(self.born_pos or mc.ONE), step = 0.0}
+            local last_track  = {t = math3d.vector(topos),                   step = 1.0}
+            
+            ims.set_keyframes(e, first_track, last_track)
+            self.born_pos = nil
         end,
         update = function (self, timeStep)
             if not self.running then

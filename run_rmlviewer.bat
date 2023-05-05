@@ -21,10 +21,12 @@ if not exist "%exe%" (
 	goto end
 )
 
+:again
 pushd %current_dir%
 	title %mode% - %current_dir%%exe%
 	%current_dir%%exe% %param% %rml%
 popd
+goto :again
 
 :end
 pause

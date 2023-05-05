@@ -101,7 +101,7 @@
                     <div class = "version-text" style="-webkit-text-stroke:0.2vmin #000; font-size: 3vmin;">version: 1.0.0</div>
                 </div>
                 <div style = "position: absolute; width: 100%; height: 100%; justify-content: center; align-items: center;">
-                    <div class = "title-block">浩瀚星辰</div>
+                    <div class = "title-block">赤  疆</div>
                 </div>
                 <div class = "main-panel">
                     <button class = "button-style" style="background-color:rgb(169, 187, 6);" data-event-click = "clickButton('continue')" data-if = "show_continue_game">

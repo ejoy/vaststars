@@ -63,43 +63,62 @@ static bool assembling_update(world& w, ecs::assembling& assembling, ecs::chest&
     return true;
 }
 
-static void
-assembling_update(world& w, ecs_api::entity<ecs::assembling, ecs::chest, ecs::capacitance, ecs::building>& v) {
-}
-
 static int
 lupdate(lua_State *L) {
     auto& w = getworld(L);
-    for (auto& v : ecs_api::select<ecs::assembling, ecs::consumer, ecs::chest, ecs::capacitance, ecs::building>(w.ecs)) {
+    for (auto& v : ecs_api::select<ecs::assembling, ecs::chest, ecs::building>(w.ecs)) {
+        bool is_consumer = v.sibling<ecs::consumer>();
+        bool is_generator = v.sibling<ecs::generator>();
         ecs::assembling& assembling = v.get<ecs::assembling>();
-        auto consumer = get_consumer(w, v);
-        if (!consumer.cost_drain()) {
+        if (is_consumer && is_generator) {
             continue;
         }
-        if (assembling.recipe == 0) {
-            continue;
+        else if (is_consumer) {
+            auto capacitance = v.sibling<ecs::capacitance>();
+            if (!capacitance) {
+                continue;
+            }
+            auto consumer = get_consumer(w, v, *capacitance);
+            if (!consumer.cost_drain()) {
+                continue;
+            }
+            if (assembling.recipe == 0) {
+                continue;
+            }
+            if (!assembling_update(w, assembling, v.get<ecs::chest>(), v.sibling<ecs::fluidboxes>())) {
+                continue;
+            }
+            if (!consumer.cost_power()) {
+                continue;
+            }
+            assembling.progress -= assembling.speed;
         }
-        if (!assembling_update(w, assembling, v.get<ecs::chest>(), v.sibling<ecs::fluidboxes>())) {
-            continue;
+        else if (is_generator) {
+            auto capacitance = v.sibling<ecs::capacitance>();
+            if (!capacitance) {
+                continue;
+            }
+            if (assembling.recipe == 0) {
+                continue;
+            }
+            if (!assembling_update(w, assembling, v.get<ecs::chest>(), v.sibling<ecs::fluidboxes>())) {
+                continue;
+            }
+            auto generator = get_generator(w, v, *capacitance);
+            if (!generator.produce()) {
+                continue;
+            }
+            assembling.progress -= assembling.speed;
         }
-        if (!consumer.cost_power()) {
-            continue;
+        else {
+            if (assembling.recipe == 0) {
+                continue;
+            }
+            if (!assembling_update(w, assembling, v.get<ecs::chest>(), v.sibling<ecs::fluidboxes>())) {
+                continue;
+            }
+            assembling.progress -= assembling.speed;
         }
-        assembling.progress -= assembling.speed;
-    }
-    for (auto& v : ecs_api::select<ecs::assembling, ecs::generator, ecs::chest, ecs::capacitance, ecs::building>(w.ecs)) {
-        ecs::assembling& assembling = v.get<ecs::assembling>();
-        if (assembling.recipe == 0) {
-            continue;
-        }
-        if (!assembling_update(w, assembling, v.get<ecs::chest>(), v.sibling<ecs::fluidboxes>())) {
-            continue;
-        }
-        auto generator = get_generator(w, v);
-        if (!generator.produce()) {
-            continue;
-        }
-        assembling.progress -= assembling.speed;
     }
     return 0;
 }
