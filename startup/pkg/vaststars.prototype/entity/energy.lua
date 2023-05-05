@@ -89,8 +89,8 @@ prototype "换热器I" {
     background = "textures/build_background/pic_distillery.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
-    power = "0.01kW",
-    priority = "primary",
+    power = "1.8MW",
+    priority = "secondary",
     area = "3x2",
     rotate_on_build = true,
     craft_category = {"流体换热处理"},
@@ -138,12 +138,12 @@ prototype "热管1-X型" {
 }
 
 prototype "锅炉I" {
-    model = "prefabs/boiler.prefab",
-    icon = "textures/building_pic/small_pic_boiler.texture",
+    model = "prefabs/distillery-1.prefab",
+    icon = "textures/building_pic/small_pic_distillery.texture",
     background = "textures/build_background/pic_distillery.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
-    power = "0.01kW",
+    power = "300kW",
     priority = "secondary",
     area = "3x2",
     rotate_on_build = true,
