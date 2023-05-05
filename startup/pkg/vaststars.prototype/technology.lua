@@ -911,6 +911,8 @@ local prototype = gameplay.register.prototype
       unlock_recipe = {"地质科技包1"},
       -- unlock_item = {"组装机框架"},
     },
+    ingredients = {
+    },
     count = 10,
     time = "2s",
     prerequisites = {"放置科研中心"},
