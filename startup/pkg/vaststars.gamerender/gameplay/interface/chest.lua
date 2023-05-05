@@ -110,6 +110,7 @@ function M.move_to_inventory(world, chest, item, count)
     end
 
     M.chest_place(world, e.inventory, item, available)
+    e.inventory_changed = true
     return true, available
 end
 
@@ -119,7 +120,8 @@ function M.inventory_pickup(world, ...)
         return true
     end
 
-    local e = assert(world.ecs:first("inventory:in"))
+    local e = __get_inventory_entity(world)
+    e.inventory_changed = true
     return M.chest_pickup(world, e.inventory, ...)
 end
 

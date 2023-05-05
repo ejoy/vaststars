@@ -928,6 +928,7 @@ local t = {
 	"/pkg/vaststars.gamerender/world_update/env_effect_update.lua",
 	"/pkg/vaststars.gamerender/world_update/guide_update.lua",
 	"/pkg/vaststars.gamerender/world_update/init.lua",
+	"/pkg/vaststars.gamerender/world_update/inventory.lua",
 	"/pkg/vaststars.gamerender/world_update/science_update.lua",
 	"/pkg/vaststars.gamerender/world_update/statistic_update.lua",
 	"/pkg/vaststars.gamerender/world_update/storage_tank.lua",

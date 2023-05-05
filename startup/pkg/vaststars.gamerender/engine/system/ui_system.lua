@@ -244,7 +244,7 @@ function iui.send(url, event, ...)
     end
 end
 
-function iui.update(url, event, ...)
+function iui.call_datamodel_method(url, event, ...)
     local binding = window_bindings[url]
     if not binding then
         return

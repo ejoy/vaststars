@@ -29,6 +29,7 @@ local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local COLOR_GREEN = math3d.constant("v4", {0.3, 1, 0, 1})
 local construct_menu_cfg = import_package "vaststars.prototype"("construct_menu")
 local ichest = require "gameplay.interface.chest"
+local debugger = require "debugger"
 
 local rotate_mb = mailbox:sub {"rotate"}
 local build_mb = mailbox:sub {"build"}
@@ -70,8 +71,8 @@ local function __on_pickup_object(datamodel, object)
     end
 end
 
-local function _get_construct_menu()
-    local e = assert(gameplay_core.get_world().ecs:first("base inventory:in"))
+local function __get_construct_menu()
+    local e = assert(gameplay_core.get_world().ecs:first("inventory:in"))
     local items = ichest.collect_item(gameplay_core.get_world(), e.inventory)
 
     local construct_menu = {}
@@ -86,6 +87,9 @@ local function _get_construct_menu()
             local count = 0
             if items[typeobject.id] then
                 count = ichest.get_amount(items[typeobject.id])
+            end
+            if debugger.infinite_item then
+                count = 99999
             end
             m.detail[#m.detail + 1] = {
                 show_prototype_name = iprototype.show_prototype_name(typeobject),
@@ -149,9 +153,14 @@ function M:create()
         current_tech_progress_detail = "0/0",  --当前科技进度(数量),
         ingredient_icons = {},
         show_ingredient = false,
-        construct_menu = _get_construct_menu(),
+        construct_menu = __get_construct_menu(),
     }
 end
+
+function M:update_construct_menu(datamodel)
+    datamodel.construct_menu = __get_construct_menu()
+end
+
 local current_techname = ""
 function M:update_tech(datamodel, tech)
     if tech then

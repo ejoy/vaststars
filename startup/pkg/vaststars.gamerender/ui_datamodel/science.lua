@@ -121,9 +121,9 @@ function M:stage_ui_update(datamodel)
     for _, _, _, index in click_tech_event:unpack() do
         global.science.tech_picked_flag[datamodel.techitems[index].name] = false
         set_current_tech(datamodel.techitems[index])
-        iui.update("construct.rml", "update_tech")
+        iui.call_datamodel_method("construct.rml", "update_tech")
     end
-    
+
     for _, _, _ in close_techui_event:unpack() do
         gameplay_core.world_update = true
     end

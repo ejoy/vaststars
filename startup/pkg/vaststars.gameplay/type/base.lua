@@ -62,6 +62,7 @@ function inventory:ctor(init, pt)
     return {
         inventory = {
             chest = world:container_create(table.concat(items)),
-        }
+        },
+        inventory_changed = true,
     }
 end

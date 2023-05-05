@@ -52,6 +52,7 @@ prototype "地下水挖掘机" {
     priority = "secondary",
     recipe = "离岸抽水",
     show_arc_menu = false,
+    io_shelf = false,
     maxslot = "8",
     fluidboxes = {
         input = {},
