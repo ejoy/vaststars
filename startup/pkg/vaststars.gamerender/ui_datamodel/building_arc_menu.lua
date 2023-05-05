@@ -331,7 +331,7 @@ function M:stage_ui_update(datamodel, object_id)
             end
 
             local pt = icamera_controller.world_to_screen(object.srt.t)
-            iui.open({"message_pop.rml"}, {items = message, left = math3d.index(pt, 1), top = math3d.index(pt, 1)})
+            iui.send("message_pop.rml", "item", {items = message, left = math3d.index(pt, 1), top = math3d.index(pt, 1)})
 
             iui.close("detail_panel.rml")
             world:pub {"rmlui_message_close", "building_arc_menu.rml"}
