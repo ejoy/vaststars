@@ -7,28 +7,30 @@
             .warning-panel {
                 pointer-events: none;
                 background-color: rgb(44, 32, 18);
-                border: 0.2vmin rgb(89, 73, 39);
+                /*border: 0.2vmin rgb(89, 73, 39);*/
                 border-radius: 0.67vmin;
-                margin:auto 0.3em;
-                width: 35%;
-                height: 11%;
-                justify-content: space-evenly;
+                /*margin:auto 0.3em;*/
+                /*width: 35%;*/
+                /*height: 11%;*/
+                /*justify-content: space-evenly;*/
                 flex-direction: row;
                 animation: 3s cubic-out 0s slideup;
             }
             .warning-message {
                 pointer-events: none;
+                /*
                 width: 95%;
                 height: 100%;
+                */
                 font-size: 4vmin;
                 text-align: left;
                 word-break: break-all;
             }
             .warning-icon {
                 pointer-events: none;
-                position: absolute;
-                left: -1vmin;
-                top:-3vmin;
+                /*position: absolute;*/
+                /*left: -1vmin;*/
+                /*top:-6vmin;*/
                 width: 2.8vmin;
                 height: 7.6vmin;
                 background-size: cover;
@@ -36,10 +38,10 @@
             }
             .item-collect-panel {
                 pointer-events: none;
-                margin:auto 0.3em;
+                /*margin:auto 0.3em;*/
                 flex-direction: column;
                 justify-content: flex-start;
-                align-items: center;
+                /*align-items: center;*/
                 animation: 4s cubic-out 0s slideup;
             }
             .item-teleport-send {
@@ -53,8 +55,8 @@
             .materials {
                 pointer-events: none;
                 flex-direction: row;
-                align-items: center;
-                background-size: cover;
+                /*align-items: center;*/
+                /*background-size: cover;*/
             }
             .materials-item {
                 pointer-events: none;
@@ -66,7 +68,7 @@
                 pointer-events: none;
                 width: 4.67vmin;
                 height: 4.67vmin;
-                background-color: rgb(250, 205, 9);;
+                background-color: rgb(250, 205, 9);
                 flex-direction: row;
                 justify-content: flex-start;
                 align-items: center;
@@ -93,15 +95,15 @@
             }
             @keyframes slideup {
                 0% {
-                     top: 0px; 
+                     transform: translateY(0px); 
                      opacity: 1;
                 }
                 50% {
-                     top: -200px; 
+                     transform: translateY(-200px); 
                      opacity: 1;
                 }
                 100% { 
-                    top: -200px; 
+                    transform: translateY(-200px); 
                     opacity: 0;
                 }
             }
@@ -168,42 +170,45 @@
             })
             ui_sys.addEventListener({
                 ["message"] = function(...)
-                    local message = ...
+                    local param = ...
                     local parent = document.getElementById('pop_root')
                     local child = document.createElement "div"
-                    --child.style.animation = '0.3s linear 0s enlarge'
+                    child.style.left = param.left .. 'px'
+                    child.style.top = param.top .. 'px'
+                    child.style.position = 'absolute' 
                     child.outerHTML = ([[
                         <div class="warning-panel">
                             <div class="warning-icon"/>
                             <div class="warning-message">%s</div>
                         </div>
-                    ]]):format(message)
+                    ]]):format(param.message)
                     --child.addEventListener('animationend', function(event) parent.removeChild(event.target) end)
                     parent.appendChild(child)
                 end,
                 ["item"] = function(...)
                     local parent = document.getElementById('pop_root')
                     local child = document.createElement "div"
+                    --child.addEventListener('animationend', function(event) parent.removeChild(event.target) end)
+                    parent.appendChild(child)
                     child.className = "item-collect-panel"
                     local param = ...
-                    console.log("----item----", param.left, param.top)
-                    child.style.left = param.left
-                    child.style.top = param.top
+                    child.style.left = (param.left - 100) .. 'px'
+                    child.style.top = (param.top - #param.items * 50) .. 'px'
+                    --child.style.border = '2px rgb(255,0,0)'
+                    child.style.position = 'absolute'
                     for _, it in ipairs(param.items) do
                         local item = document.createElement "div"
+                        child.appendChild(item)
                         item.outerHTML = ([[
                             <div class = "materials">
                                 <div class = "materials-item">
-                                    <div class = "materials-icon" backgroundImage: %s"/>
+                                    <div class = "materials-icon" style='background-image: %s;'/>
                                     <div class = "materials-name">%s</div>
                                 </div>
                                 <div class = "materials-num">X %d</div>
                             </div>
                         ]]):format(it.icon, it.name, it.count)
-                        child.appendChild(item)
                     end
-                    --child.addEventListener('animationend', function(event) parent.removeChild(event.target) end)
-                    parent.appendChild(child)
                 end,
                 ["teleport-recv"] = function(...)
                     local parent = document.getElementById('pop_root')
@@ -213,7 +218,7 @@
                         local item = document.createElement "div"
                         item.outerHTML = ([[
                             <div class = "materials">
-                                <div class = "materials-icon" backgroundImage: %s"/>
+                                <div class = "materials-icon" style = 'background-image: %s;'/>
                             </div>
                         ]]):format(it.icon)
                         child.appendChild(item)
@@ -225,39 +230,6 @@
         </script>
     </head>
     <body style="pointer-events: none;">
-        <div id = "pop_root" style="pointer-events: none; position: absolute; width:100%; height:100%; border: 4px rgb(73,255,39);" data-style-left="left" data-style-top="top" data-model="start">
-            <!--
-            <!-- 警告上漂框 -->
-            <div class="warning-panel" data-if="show_id == 'message'">
-                <div class="warning-icon"/>
-                <div class="warning-message">{{message}}</div>
-            </div>
-
-            <!-- 物品获得上漂框 -->
-            <div class="item-collect-panel" data-if="show_id == 'item'">
-                <div class = "materials" data-for="items">
-                    <div class = "materials-item">
-                        <div class = "materials-icon" data-style-background-image="it.icon"/>
-                        <div class = "materials-name">{{it.name}}</div>
-                    </div>
-                    <div class = "materials-num">X {{it.count}}</div>
-                </div>
-            </div>
-
-            <!-- 传送上漂框 发送 -->
-            <div class="item-teleport-send" style="flex-direction:row; left: 20vmin; top:65vmin;" data-if="show_id == 'teleport-send'">
-                <div class = "materials" data-for="items">
-                    <div class = "materials-icon" data-style-background-image="it.icon"/>
-                </div>
-            </div>
-            
-            <!-- 传送下漂框 接收 -->
-            <div class="item-teleport-recv" style="flex-direction:row; left: 80vmin; top:5vmin;" data-if="show_id == 'teleport-recv'">
-                <div class = "materials" data-for="items">
-                    <div class = "materials-icon" data-style-background-image="it.icon"/>
-                </div>
-            </div>
-            -->
-        </div>
+        <div id = "pop_root" style="position: absolute; pointer-events: none; width:100%; height:100%;" data-model="start"/>
     </body>
 </rml>

@@ -326,13 +326,12 @@ function M:stage_ui_update(datamodel, object_id)
                 local succ, available = ichest.move_to_inventory(gameplay_core.get_world(), e.chest, slot.item, ichest.get_amount(slot))
                 if succ then
                     local typeobject = iprototype.queryById(slot.item)
-                    message[slot.item] = {icon = assert(typeobject.icon), name = typeobject.name, count = available}
+                    message[#message + 1] = {icon = assert(typeobject.icon), name = typeobject.name, count = available}
                 end
             end
 
             local pt = icamera_controller.world_to_screen(object.srt.t)
-            iui.send("message_pop.rml", "item", {items = message, left = math3d.index(pt, 1), top = math3d.index(pt, 1)})
-
+            -- iui.send("message_pop.rml", "item", {items = message, left = math.floor(math3d.index(pt, 1)), top = math.floor(math3d.index(pt, 2))})
             iui.close("detail_panel.rml")
             world:pub {"rmlui_message_close", "building_arc_menu.rml"}
 
