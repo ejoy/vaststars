@@ -25,6 +25,7 @@ local function _create_motion_object(s, r, t)
                 r = r,
                 t = t,
             },
+            motion_sampler = {},
             name = "motion_sampler",
         }
     }, events)
