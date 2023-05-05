@@ -1,0 +1,19 @@
+---
+data:
+  name: Scene
+  scene: {}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  material: /pkg/vaststars.resources/glb/geothermal-plant.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/geothermal-plant.glb|meshes/Cylinder.010_P1.meshbin
+  name: Cylinder.011
+  scene:
+    t: {0, 0.2505394518375397, 0}
+  visible_state: main_view|selectable|cast_shadow
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
