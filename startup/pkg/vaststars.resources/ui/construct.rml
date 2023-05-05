@@ -52,7 +52,7 @@
             .workbutton-text {
                 width: 100%;
                 text-align: center;
-                font-size: 2.5vmin;
+                font-size: 3.5vmin;
                 -webkit-text-stroke: 0.2vmin #000;
                 color: rgb(221, 235, 26)
             }
