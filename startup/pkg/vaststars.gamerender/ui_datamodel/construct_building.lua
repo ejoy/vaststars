@@ -3,7 +3,6 @@ local world = ecs.world
 local w = world.w
 
 local iui = ecs.import.interface "vaststars.gamerender|iui"
-local mu = import_package "ant.math".util
 local math3d = require "math3d"
 
 local rotate_mb = mailbox:sub {"rotate"}

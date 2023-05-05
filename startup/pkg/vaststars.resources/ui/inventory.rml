@@ -1,0 +1,466 @@
+<rml>
+    <head>
+        <style path = "common/building_style.rcss"/>
+        <style>
+            .building-info {
+                margin-top:1em;
+                width: 28%;
+                height:80%;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-evenly;
+            }
+            .drone-title-block {
+                width:21%;
+                height:8%;
+                flex-direction: row;
+                justify-content: flex-start;
+                background-color: rgb(255,217,102);
+                border-radius: 0.67vmin;
+                border: 0.13vmin rgb(89, 73, 39);
+                align-items: center;
+            }
+            .drone-pic {
+                margin-left: 0.2em;
+                width: 3.33vmin;
+                height: 3.33vmin;
+                background-size:cover;
+                background-image: "textures/construct/drone1.texture";
+            }
+            .drone-title {
+                font-size: 3.47vmin;
+                color:rgb(255,255,255);
+                -webkit-text-stroke: 0.13vmin rgb(89, 73, 39);
+                text-align: left;
+                margin-bottom: 0.2em;
+            }
+            .item-info-block {
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                width:100%;
+                height:30%;
+            }
+            .item-recipe-block {
+                flex-direction: column;
+                align-items: center;
+                width:100%;
+                height:50%;
+            }
+            .item-material-block {
+                flex-direction: column;
+                align-items: center;
+                width:100%;
+                height:30%;
+            }
+            .item-building-block {
+                flex-direction: column;
+                align-items: center;
+                width:100%;
+                height:20%;
+            }
+            .pre-title-block {
+                justify-content: center;
+                width:20%;
+                height:5vmin; 
+                background-color: rgb(255,217,102);
+                border-radius: 0.37vmin;
+                border: 0.13vmin rgb(89, 73, 39);
+                font-size: 3.47vmin;
+                color:rgb(255,255,255);
+                -webkit-text-stroke: 0.13vmin rgb(89, 73, 39);
+                text-align: center;
+            }
+            .small-item-1 {
+                flex-direction: column;
+                align-items:center;
+                justify-content:flex-end;
+                background-color: rgb(250, 205, 9);
+                border: 0.27vmin rgb(89, 73, 39);
+                background-size:cover;
+                width: 8.00vmin;
+                height: 8.00vmin;
+                font-size: 4.40vmin;
+            }
+            .small-item-count {
+                margin-bottom: -0.1em;
+                font-size: 4vmin;
+                text-align:center;
+                color:rgb(87, 238, 0);
+                -webkit-text-stroke: 0.2vmin rgb(0, 0, 0);
+            }
+            .small-arrow {
+                margin: auto 0.2em;
+                width:61px;
+                height:47px;
+                background-image:"textures/exchange/right_arrow.texture";
+                background-size:cover;
+                transform: rotate(180deg)
+            }
+            .small-building-block{
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                height: 50%;
+            }
+            .small-building {
+                width:128px;
+                height:128px;
+                background-size: cover;
+                margin:auto 0.5vmin;
+            }
+            .small-building-name {
+                font-size: 4vmin;
+                -webkit-text-stroke: 1px rgb(0, 0, 0);
+                text-align: center;
+            }
+        </style>
+        <script type="text/x-lua">
+            local ui_sys = require "ui_system"
+            local start = ui_sys.createDataMode("start", {
+                object_id = 0,
+                background = "",
+                is_headquater = false,
+                item_category = {},
+                inventory = {},
+                prototype_name = "",
+                sub_inventory = {},
+                cur_item_category = "",
+                item_info = {},
+                item_prototype_name = "",
+
+                max_slot_count = 0,
+                slot_count = 0,
+                show_item_info = false,
+                show = false,
+                guide_progress = 0,
+                item_index = 0,
+            })
+
+            local function update_category(category)
+                start.sub_inventory = {}
+                for _, v in ipairs(start.inventory) do
+                    if v.category == category or category == "全部" then
+                        start.sub_inventory[#start.sub_inventory + 1] = v
+                    end
+                end
+
+                start.slot_count = #start.sub_inventory
+                if category == "全部" then
+                    start.slot_count = math.max(start.max_slot_count, start.slot_count)
+                end
+                start("sub_inventory")
+
+                -- <!-- tag page begin -->
+                start.page:on_dirty_all(start.slot_count)
+                -- <!-- tag page end -->
+            end
+
+            function start.clickClose(event)
+                ui_sys.close()
+            end
+
+            function start.clickCategory(event, category)
+                start.cur_item_category = category
+                start.item_index = nil
+                update_category(category)
+            end
+
+            local select_item
+            -- <!-- tag page begin -->
+            local function page_item_update(item, index)
+                item.removeEventListener('click')
+                if index > #start.sub_inventory then
+                    item.outerHTML = [[<div style = "width: 100%; height: 100%;" />]]
+                else
+                    item.outerHTML = ([[<div class = "item" style = "width: 100%%; height: 100%%; backgroundImage: %s"><div class="item-count">%s</div> </div>]]):format(
+                        start.sub_inventory[index].icon,
+                        start.sub_inventory[index].count
+                    )
+                    local select_style_border = "0.5vmin rgb(109, 47, 156)"
+                    if start.item_index == index then
+                        select_item = item
+                        item.style.border = select_style_border
+                    end
+                    item.addEventListener('click', function(event)
+                        if select_item then
+                            select_item.style.border = '0px green' -- TODO: define style
+                        end
+                        item.style.border = select_style_border
+                        ui_sys.pub {"click_item", start.sub_inventory[index].id}
+                        select_item = item
+                    end)
+                end
+            end
+            local function page_item_init(item, index)
+                page_item_update(item, index)
+            end
+            local pageclass = require "page"
+            window.customElements.define("page", function(e)
+                start.page = pageclass.create(document, e, page_item_init, page_item_update)
+            end)
+            -- <!-- tag page end -->
+
+            ui_sys.mapping(start, {
+                {
+                    function()
+                        if start.cur_item_category == "" and start.item_category[1] then
+                            start.cur_item_category = start.item_category[1].category or ""
+                        end
+                        if start.cur_item_category == "" then
+                            start.cur_item_category = start.item_category[1]
+                        end
+                        update_category(start.cur_item_category)
+                    end,
+                    "inventory", "item_category"
+                }
+            })
+        </script>
+    </head>
+    <body>
+        <div class="item-container-region"  data-model="start">
+            <div class="panel" style = "width: 50%;">
+                <div class="column" style="width:100%; height:100%;" data-if="!show_item_info">
+                    <!-- 指挥中心标题 start -->
+                    <div class="header" id = "item-name-block">
+                        <button class = "back-button" data-event-click="clickClose()" />
+                        <div class = "menu-title" style="width: 70%;">{{prototype_name}}</div>
+                    </div>
+                    <!-- 指挥中心标题 end -->
+
+                    <div style="border-bottom: 1px rgb(89, 73, 39);"/>
+
+                    <!-- 指挥中心建筑信息 start -->
+                    <div class="column" style="width: 100%;height: 95%;">
+                        <div class="build-info-reigon" data-style-background-image="background" style='background-size: cover;'>
+                            <div class="build-model-block">
+                                <div class="build-model"/>
+                            </div>
+                        </div>
+                         <!-- 指挥中心建筑信息 end -->
+                    </div>
+                </div>
+
+                <!-- 物品基础信息 start -->
+                <div class="item-info-block" data-if = "false">
+                    <div style="flex-direction:row; justify-content: flex-start; align-items: center; width:100%;height:20%;">
+                        <div class ="drone-title-block" style="height:5vmin;">
+                            <div class = "drone-pic" style='background-image:"textures/science/book.texture";'/>
+                            <div class = "drone-title">基本信息</div>
+                        </div>
+                        <div class="property-text" style="-webkit-text-stroke: 0.20vmin rgb(39, 32, 17);color: rgb(221, 235, 26)">一种用于抓取货物的机械手臂</div>
+                    </div>
+                    <div class="row" style="width:100%; height:80%; justify-content: flex-start; align-items: center;">
+                        <div class="info-block" style="margin-top:0; margin-left:1em; justify-content: center; align-items: flex-start">
+                            <div class="row">
+                                <div class="property-icon" style='background-image:"textures/character/timer.texture";'/>
+                                <div class="property-text" style="color: rgb(0,176,240);">制造速度</div>
+                                <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                            </div>
+                            <div class="row">
+                                <div class="property-icon" style='background-image:"textures/character/buffer.texture";'/>
+                                <div class="property-text" style="color: rgb(0,176,240);">产能加成</div>
+                                <div class="property-text" style="color:#fff;">40%</div>
+                            </div>
+                            <div class="row">
+                                <div class="property-icon" style='background-image:"textures/character/health.texture";'/>
+                                <div class="property-text" style="color: rgb(0,176,240);">建筑生命</div>
+                                <div class="property-text" style="color:#fff;">200/990</div>
+                            </div>
+                            <div class="row">
+                                <div class="property-icon" style='background-image:"textures/character/flash.texture";'/>
+                                <div class="property-text" style="color: rgb(0,176,240);">建筑能耗</div>
+                                <div class="property-text" style="color:#fff;">500kw(-250kw)</div>
+                            </div>
+                        </div>
+                        <div class="info-block" style="margin-top:0; margin-left:2.2em; justify-content: center; align-items: flex-start;">
+                            <div class="row">
+                                <div class="property-icon" style='background-image:"textures/character/timer.texture";'/>
+                                <div class="property-text" style="color: rgb(0,176,240);">制造速度</div>
+                                <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                            </div>
+                            <div class="row">
+                                <div class="property-icon" style='background-image:"textures/character/buffer.texture";'/>
+                                <div class="property-text" style="color: rgb(0,176,240);">产能加成</div>
+                                <div class="property-text" style="color:#fff;">40%</div>
+                            </div>
+                            <div class="row">
+                                <div class="property-icon" style='background-image:"textures/character/health.texture";'/>
+                                <div class="property-text" style="color: rgb(0,176,240);">建筑生命</div>
+                                <div class="property-text" style="color:#fff;">200/990</div>
+                            </div>
+                            <div class="row">
+                                <div class="property-icon" style='background-image:"textures/character/flash.texture";'/>
+                                <div class="property-text" style="color: rgb(0,176,240);">建筑能耗</div>
+                                <div class="property-text" style="color:#fff;">500kw(-250kw)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 物品基础信息 end -->
+
+                <!-- 物品配方展示标题 start -->
+                <div class="header" id = "item-name-block">
+                    <button class = "back-button" data-event-click="clickClose()" />
+                    <div class = "menu-title" style="width: 70%;">{{item_prototype_name}}</div>
+                </div>
+                <!-- 物品配方展示标题 end -->
+                
+                <div class = "draw-line"/>
+
+                <div class="column" style="width:100%; height:100%;" data-if="show_item_info">
+                    <!-- 物品配方展示 start -->
+                    <div class="item-recipe-block" style = "justify-content: flex-start; align-items: center;">
+                        <div style="flex-direction:row; align-items: flex-start; width: 100%; height:10%;">
+                            <div class ="drone-title-block" style="height:5vmin;">
+                                <div class = "drone-pic" style='background-image:"textures/property/research-packs.texture";'/>
+                                <div class = "drone-title">生产配方</div>
+                            </div>
+                        </div>
+                        <div style="margin:0.08em auto; flex-direction:row; justify-content: flex-start; width:100%;" data-for = "item_info">
+                            <div class="small-item-1" style="margin-left:0.3em;" data-style-background-image="it.icon"/>
+                            <div class="small-arrow">
+                                <div style="position:absolute; left: 2vmin; bottom: 1.7vmin; text-align: center; font-size: 2.5vmin; transform: rotate(180deg)">{{it.time}}</div>
+                            </div>
+                            <div class="small-item-1" data-for = "it_element : it.element" data-style-background-image = "it_element.icon">
+                                <div class="small-item-count">{{it_element.count}}</div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- 物品配方展示 end -->
+
+                    <div class = "draw-line"/>
+
+                    <!-- 可生产该物品建筑展示 start --> 
+                    <div class="item-recipe-block" style = "justify-content: flex-start; align-items: center;">
+                        <div style="flex-direction:row; align-items: flex-start; width: 100%; height:10%;">
+                            <div class ="drone-title-block" style="height:5vmin;">
+                                <div class = "drone-pic" style='background-image:"textures/construct/assembler.texture";'/>
+                                <div class = "drone-title">生产建筑</div>
+                            </div>
+                        </div>
+                        <div style="flex-direction:row; justify-content: center; width:100%; align-items: center; height:70%;" data-for = "item_info">
+                            <div data-for = "entity : it.entities">
+                                <div class="small-building-block">
+                                    <div class="small-building" data-style-background-image = "entity.icon" />
+                                    <div class="small-building-name">组装机</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 可生产该物品建筑展示 end --> 
+
+                    <div class = "draw-line"/>
+
+                    <!-- 物品所需资源展示 start -->
+                    <div class="item-material-block" data-if = "false">
+                        <div style="flex-direction:row; justify-content: flex-start; width:100%;">
+                            <div class ="drone-title-block" style="height:5vmin;">
+                                <div class = "drone-pic" style='background-image:"textures/construct/industry.texture";'/>
+                                <div class = "drone-title">基础资源</div>
+                            </div>
+                        </div>
+                        <div class="column" style="justify-content: center; align-items: center;width:100%;height:80%;">
+                            <div style="flex-direction:row; justify-content: center; width:100%;">
+                                <div class="small-item-1">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                                <div class="small-item-1">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                                <div class="small-item-1">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                                <div class="small-item-1">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                                <div class="small-item-1">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                                <div class="small-item-1">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                                <div class="small-item-1">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                                <div class="small-item-1">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                                <div class="small-item-1">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                                <div class="small-item-1">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                            </div>
+                            <div style="flex-direction:row; justify-content: center; width:100%;">
+                                <div class="small-item-1">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                                <div class="small-item-1">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                                <div class="small-item-1">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                                <div class="small-item-1">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                                <div class="small-item-1">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                                <div class="small-item-1">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                                <div class="small-item-1">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                                <div class="small-item-1">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                                <div class="small-item-1">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                                <div class="small-item-1">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 物品所需资源展示 end -->
+                </div>
+            </div>
+            <div class="panel" style= "flex-direction: column; width: 50%;">
+                <!-- 制造舱按钮 start -->
+                <div class="header" id = "item-name-block" style="justify-content: flex-end;" data-if = "is_headquater && guide_progress >= 25" >
+                    <div class = "menu-title" style="text-align: right; width: 70%;" >制造舱</div>
+                    <button class = "recipe-change-button" data-event-click="clickManual()"/>  
+                </div>
+                <!-- 制造舱按钮 end -->
+                <div class="header" id = "item-name-block" style="justify-content: flex-end;" data-if = "!(is_headquater && guide_progress >= 25)"/>
+
+                <!-- 指挥中心物品栏 start -->
+                <!-- tag page begin -->
+                <div class="item-container" style = "width: 100%;">
+                    <page width = '88vmin' height = '66.00vmin' footerheight= '4.00vmin' row='5' col='7' />
+                </div>
+                <!-- tag page end -->
+                <!-- 指挥中心物品栏 end -->
+
+                <div class = "draw-line"/>
+
+                <!-- 物品栏分类页签 start -->
+                <div class = "tab-container" style="flex-grow: 1;">
+                    <div data-for = "item_category" style = "justify-content: center; align-items: center; flex-basis: 30%; height: 49%;">
+                        <workbutton data-event-click="clickCategory(it.category)" style = "width: 100%;" data-style-background-color="it.category == cur_item_category ? 'rgb(0,176,80)' : 'rgb(246, 142, 14)'">
+                            <div class="workbutton-bg" data-style-background-image="it.icon" />
+                            <div class="catalog-desc">{{it.category}}</div>
+                        </workbutton>
+                    </div>
+                </div>
+                <!-- 物品栏分类页签 end -->
+            </div>
+        </div>
+    </body>
+</rml>

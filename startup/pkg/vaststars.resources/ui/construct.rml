@@ -317,17 +317,9 @@
                 guide_progress = 0,
                 construct_menu = {},
                 cur_construct_menu = "",
-                show_construct_menu = false,
             })
-            function start.clickConstruct(event, object_id, index)
-                console.log("clickConstruct", object_id, index)
-                if not object_id or not index then
-                    return
-                end
-                ui_sys.pub {"focus_on_building", object_id}
-            end
             function start.clickHeadquater(event)
-                ui_sys.pub {"headquater"}
+                ui_sys.pub {"inventory"}
             end
             function start.clickTechnology()
                 ui_sys.pub {"technology"}
@@ -376,8 +368,8 @@
             function start.clickConstructMenuItem(event, building)
                 ui_sys.pub {"construct_entity", building}
             end
-            function start.showConstructMenu(event)
-                start.show_construct_menu = not start.show_construct_menu
+            function start.switchConciseMode(event)
+                ui_sys.pub {"switch_concise_mode"}
             end
 
             local function setElementClass(elementId, class, expanded)
@@ -395,7 +387,6 @@
             ui_sys.mapping(start, {
                 {
                     function()
-                        start.show_construct_menu = start.is_concise_mode
                         start.cur_construct_menu = ""
                     end,
                     "is_concise_mode",
@@ -414,10 +405,10 @@
                 <!-- 主菜单隐藏/显示按钮 end-->
                 <collapsed-bar id = "main-menu-collapsed-bar" style = "left: 15vmin; bottom: 0vmin; position: absolute; overflow: hidden;" data-if = "!is_concise_mode && guide_progress >= 15">
                     <div class = "main-menu-block" data-if = "guide_progress >= 10">
-                        <!-- <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click = "clickHeadquater()" data-if = "guide_progress == 10">
+                        <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click = "clickHeadquater()">
                             <div class = "menu-button-pic" style='background-image:"textures/construct/logistics_center.texture"'/>
                             <div class = "menu-button-text">指挥中心</div>
-                        </button> -->
+                        </button>
                         <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click = "clickTechnology()" data-if = "guide_progress >= 30">
                             <div class = "menu-button-pic" style='background-image:"textures/construct/goods_station.texture"'/>
                             <div class = "menu-button-text">科研任务</div>
@@ -472,8 +463,8 @@
             </div>
 
             <!-- right-side construction menu -->
-            <workbutton class = "panel-switch" data-event-click="showConstructMenu()" />
-            <div style = "pointer-events: none; position: absolute; right:0vmin; width: 98vmax; height: 97vmin; flex-direction: row-reverse;" data-if="show_construct_menu">
+            <workbutton class = "panel-switch" data-event-click="switchConciseMode()" />
+            <div style = "pointer-events: none; position: absolute; right:0vmin; width: 98vmax; height: 97vmin; flex-direction: row-reverse;" data-if="is_concise_mode">
                 <div style = "width: 16.00vmin; height: 80.00vmin; flex-direction: column; justify-content: space-between;">
                     <workbutton data-event-click="clickShowConstructMenuDetail(it.name)" data-for = "construct_menu" data-style-background-color="cur_construct_menu == it.name ? 'rgb(0, 176, 80)' : 'rgb(246, 142, 14)'">
                         <div class="workbutton-bg" data-style-background-image = "it.icon" />

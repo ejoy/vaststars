@@ -28,10 +28,6 @@ local SPRITE_COLOR = import_package "vaststars.prototype".load("sprite_color")
 local idronecover = ecs.require "drone_cover"
 local gameplay_core = require "gameplay.core"
 local ichest = require "gameplay.interface.chest"
-local assembling_common = require "ui_datamodel.common.assembling"
-local gameplay = import_package "vaststars.gameplay"
-local iassembling = gameplay.interface "assembling"
-local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local create_selected_boxes = ecs.require "selected_boxes"
 
 -- TODO: duplicate from roadbuilder.lua
@@ -430,85 +426,18 @@ local function confirm(self, datamodel)
     return self:complete(pickup_object.id, datamodel)
 end
 
-local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
-
-local function __deduct_item(self, e)
-    gameplay_core.get_world():container_pickup(e.chest, self.item, 1)
-
-    -- TODO: here it is assumed that e is either a construction center or a construction chest
-    if e.assembling then
-        local typeobject = iprototype.queryById(e.building.prototype)
-        local _, results = assembling_common.get(gameplay_core.get_world(), e)
-        assert(results and #results == 1)
-        local multiple = math.max((results[1].limit // results[1].output_count) - 1, 0)
-        if typeobject.recipe_max_limit and typeobject.recipe_max_limit.resultsLimit >= multiple then
-            iassembling.set_option(gameplay_core.get_world(), e, {ingredientsLimit = multiple, resultsLimit = multiple})
-            gameplay_core.build()
-        end
-    else
-        for i = 1, 256 do
-            local slot = ichest.chest_get(gameplay_core.get_world(), e.chest, i)
-            if not slot or slot.amount <= 0 then
-                if i == 1 then
-                    -- no item in chest, remove chest
-                    local object_id
-                    for _, object in objects:selectall("gameplay_eid", e.eid, EDITOR_CACHE_NAMES) do
-                        object_id = object.id
-                        break
-                    end
-                    local object = assert(objects:get(object_id))
-                    iobject.remove(object)
-                    objects:remove(object_id)
-                    local building = global.buildings[object_id]
-                    if building then
-                        for _, v in pairs(building) do
-                            v:remove()
-                        end
-                    end
-
-                    igameplay.remove_entity(object.gameplay_eid)
-                    gameplay_core.remove_entity(object.gameplay_eid)
-                    gameplay_core.build()
-                    return false
-                end
-                break
-            end
-        end
-    end
-
-    for i = 1, 256 do
-        local slot = ichest.chest_get(gameplay_core.get_world(), e.chest, i)
-        if not slot then
-            break
-        end
-        if slot.item == self.item and ichest.get_amount(slot) > 0 then
-            return 0
-        end
-    end
-    return false
-end
-
 local function complete(self, object_id, datamodel)
     self.pickup_object = nil
-
-    -- TODO: gm mode
-    if not self.gameplay_eid then
-        self.super.complete(self, object_id)
-        local object = assert(objects:get(object_id))
-        local typeobject = iprototype.queryByName(object.prototype_name)
-        new_entity(self, datamodel, typeobject)
-        return true
-    end
-
-    local e = gameplay_core.get_entity(assert(self.gameplay_eid))
-    local continue_construct = __deduct_item(self, e)
     self.super.complete(self, object_id)
 
+    local object = assert(objects:get(object_id))
+    local typeobject = iprototype.queryByName(object.prototype_name)
+    assert(ichest.inventory_pickup(gameplay_core.get_world(), typeobject.id, 1))
+
+    local continue_construct = ichest.get_inventory_item_count(gameplay_core.get_world(), typeobject.id) > 0
     if not continue_construct then
         return false
     else
-        local object = assert(objects:get(object_id))
-        local typeobject = iprototype.queryByName(object.prototype_name)
         new_entity(self, datamodel, typeobject)
         return true
     end
@@ -619,7 +548,7 @@ local function clean(self, datamodel)
     iui.close("construct_building.rml")
 end
 
-local function create(gameplay_eid, item)
+local function create(item)
     local builder = create_builder()
 
     local M = setmetatable({super = builder}, {__index = builder})
@@ -634,7 +563,6 @@ local function create(gameplay_eid, item)
     M.sprites = {}
     M.selected_boxes = {}
     M.last_x, M.last_y = -1, -1
-    M.gameplay_eid = gameplay_eid
     M.item = item
 
     return M

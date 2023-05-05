@@ -9,14 +9,13 @@ local options = {
     ["skip_guide"] = true,
     ["recipe_unlocked"] = true,
     ["infinite_item"] = true,
-    ["disable_loading"] = true,
-    ["disable_load_resource"] = true,
 }
 
 local free_mode = {
     ["skip_guide"] = true,
     ["recipe_unlocked"] = true,
     ["item_unlocked"] = true,
+    ["infinite_item"] = true,
 }
 
 local function get(k)

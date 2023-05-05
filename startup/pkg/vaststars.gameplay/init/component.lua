@@ -13,7 +13,7 @@ component "chest" {
     "fluidbox_out:word",
 }
 
-component "base_chest" {
+component "inventory" {
     "chest:word",
 }
 

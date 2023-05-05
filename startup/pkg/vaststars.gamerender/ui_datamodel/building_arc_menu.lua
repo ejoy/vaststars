@@ -7,10 +7,7 @@ local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
 local vsobject_manager = ecs.require "vsobject_manager"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
-
-local math3d    = require "math3d"
 local itask = ecs.require "task"
-local icamera_controller = ecs.interface "icamera_controller"
 
 local set_recipe_mb = mailbox:sub {"set_recipe"}
 local set_item_mb = mailbox:sub {"set_item"}
@@ -28,7 +25,11 @@ local iassembling = gameplay.interface "assembling"
 local gameplay = import_package "vaststars.gameplay"
 local ihub = gameplay.interface "hub"
 local global = require "global"
-local interval_call = ecs.require "engine.interval_call"
+local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
+local iobject = ecs.require "object"
+local igameplay = ecs.interface "igameplay"
+local icamera_controller = ecs.interface "icamera_controller"
+local math3d = require "math3d"
 
 local function __show_set_item(typeobject)
     return iprototype.has_type(typeobject.type, "hub") or iprototype.has_type(typeobject.type, "station")
@@ -293,46 +294,75 @@ function M:stage_ui_update(datamodel, object_id)
                 print("recipe not set yet")
                 goto continue
             end
-            if not ichest.chest_pickup(gameplay_core.get_world(), e.chest, results[1].id, results[1].count) then
-                print("failed to pickup")
-                goto continue
-            end
-            if not ichest.base_chest_place(gameplay_core.get_world(), results[1].id, results[1].count) then
-                print("failed to base_chest_place")
+            if not ichest.move_to_inventory(gameplay_core.get_world(), e.chest, results[1].id, results[1].count) then
+                print("failed to move to the inventory")
                 goto continue
             end
             print("success")
         elseif iprototype.has_type(typeobject.type, "station") then
             local slot = ichest.chest_get(gameplay_core.get_world(), e.station, 1)
-            if not slot or slot.item == 0 then
-                print("failed to pickup")
+            if not slot then
+                print("item not set yet")
                 goto continue
             end
-            if not ichest.chest_pickup(gameplay_core.get_world(), e.station, slot.item, slot.count) then
-                print("failed to pickup")
-                goto continue
-            end
-            if not ichest.base_chest_place(gameplay_core.get_world(), slot.item, slot.count) then
-                print("failed to pickup")
+            if not ichest.move_to_inventory(gameplay_core.get_world(), e.station, slot.item, ichest.get_amount(slot)) then
+                print("failed to move to the inventory")
                 goto continue
             end
         elseif iprototype.has_type(typeobject.type, "hub") then
             local slot = ichest.chest_get(gameplay_core.get_world(), e.hub, 1)
-            if not slot or slot.item == 0 then
+            if not slot then
+                print("item not set yet")
+                goto continue
+            end
+            if not ichest.move_to_inventory(gameplay_core.get_world(), e.hub, slot.item, ichest.get_amount(slot)) then
                 print("failed to pickup")
                 goto continue
             end
-            if not ichest.chest_pickup(gameplay_core.get_world(), e.hub, slot.item, slot.count) then
-                print("failed to pickup")
-                goto continue
+        elseif iprototype.has_type(typeobject.type, "chest") then
+            local items = ichest.collect_item(gameplay_core.get_world(), e.chest)
+            local message = {}
+            for _, slot in pairs(items) do
+                local succ, available = ichest.move_to_inventory(gameplay_core.get_world(), e.chest, slot.item, ichest.get_amount(slot))
+                if succ then
+                    local typeobject = iprototype.queryById(slot.item)
+                    message[slot.item] = {icon = assert(typeobject.icon), name = typeobject.name, count = available}
+                end
             end
-            if not ichest.base_chest_place(gameplay_core.get_world(), slot.item, slot.count) then
-                print("failed to pickup")
-                goto continue
+
+            local pt = icamera_controller.world_to_screen(object.srt.t)
+            iui.open({"message_pop.rml"}, {items = message, left = math3d.index(pt, 1), top = math3d.index(pt, 1)})
+
+            iui.close("detail_panel.rml")
+            world:pub {"rmlui_message_close", "building_arc_menu.rml"}
+
+            local items = ichest.collect_item(gameplay_core.get_world(), e.chest)
+            if not next(items) then
+                -- TODO: optimize
+                -- no item in chest, remove chest
+                local object_id
+                for _, object in objects:selectall("gameplay_eid", e.eid, EDITOR_CACHE_NAMES) do
+                    object_id = object.id
+                    break
+                end
+                local object = assert(objects:get(object_id))
+                iobject.remove(object)
+                objects:remove(object_id)
+                local building = global.buildings[object_id]
+                if building then
+                    for _, v in pairs(building) do
+                        v:remove()
+                    end
+                end
+
+                igameplay.remove_entity(object.gameplay_eid)
+                gameplay_core.remove_entity(object.gameplay_eid)
             end
         else
             assert(false)
         end
+
+        gameplay_core.build()
         ::continue::
     end
 
@@ -344,7 +374,7 @@ function M:stage_ui_update(datamodel, object_id)
             local ingredients = assembling_common.get(gameplay_core.get_world(), e)
             for idx, ingredient in ipairs(ingredients) do
                 if ingredient.demand_count > ingredient.count then
-                    if not ichest.base_chest_pickup(gameplay_core.get_world(), ingredient.id, ingredient.demand_count - ingredient.count) then
+                    if not ichest.inventory_pickup(gameplay_core.get_world(), ingredient.id, ingredient.demand_count - ingredient.count) then
                         goto continue
                     end
 
@@ -353,44 +383,52 @@ function M:stage_ui_update(datamodel, object_id)
             end
             print("success")
         elseif iprototype.has_type(typeobject.type, "station") then
-            local slot = ichest.chest_get(gameplay_core.get_world(), e.station, 1)
-            if not slot or slot.item == 0 then
+            local component = "station"
+            local slot = ichest.chest_get(gameplay_core.get_world(), e[component], 1)
+            if not slot then
                 print("item not set yet")
                 goto continue
             end
-            if slot.limit >= slot.count then
+
+            local c = ichest.get_amount(slot)
+            if slot.limit <= c then
                 print("item already full")
                 goto continue
             end
-            if not ichest.base_chest_pickup(gameplay_core.get_world(), slot.item, slot.limit - slot.count) then
+            if not ichest.inventory_pickup(gameplay_core.get_world(), slot.item, slot.limit - c) then
                 print("failed to place")
                 goto continue
             end
-            if not ichest.chest_place(gameplay_core.get_world(), e.station, slot.item, slot.limit - slot.count) then
+            if not ichest.chest_place(gameplay_core.get_world(), e[component], slot.item, slot.limit - c) then
                 print("failed to place")
                 goto continue
             end
         elseif iprototype.has_type(typeobject.type, "hub") then
-            local slot = ichest.chest_get(gameplay_core.get_world(), e.hub, 1)
-            if not slot or slot.item == 0 then
+            local component = "hub"
+            local slot = ichest.chest_get(gameplay_core.get_world(), e[component], 1)
+            if not slot then
                 print("item not set yet")
                 goto continue
             end
-            if slot.limit >= slot.count then
+
+            local c = ichest.get_amount(slot)
+            if slot.limit <= c then
                 print("item already full")
                 goto continue
             end
-            if not ichest.base_chest_pickup(gameplay_core.get_world(), slot.item, slot.limit - slot.count) then
+            if not ichest.inventory_pickup(gameplay_core.get_world(), slot.item, slot.limit - c) then
                 print("failed to place")
                 goto continue
             end
-            if not ichest.chest_place(gameplay_core.get_world(), e.hub, slot.item, slot.limit - slot.count) then
+            if not ichest.chest_place(gameplay_core.get_world(), e[component], slot.item, slot.limit - c) then
                 print("failed to place")
                 goto continue
             end
         else
             assert(false)
         end
+
+        gameplay_core.build()
         ::continue::
     end
 end

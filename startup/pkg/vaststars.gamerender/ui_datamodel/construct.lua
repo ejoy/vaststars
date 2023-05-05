@@ -46,6 +46,8 @@ local teardown_mb = mailbox:sub {"teardown"}
 local construct_entity_mb = mailbox:sub {"construct_entity"}
 local focus_on_building_mb = mailbox:sub {"focus_on_building"}
 local on_pickup_object_mb = mailbox:sub {"on_pickup_object"}
+local inventory_mb = mailbox:sub {"inventory"}
+local switch_concise_mode_mb = mailbox:sub {"switch_concise_mode"}
 
 local pickup_gesture_mb = world:sub {"pickup_gesture"}
 local pickup_long_press_gesture_mb = world:sub {"pickup_long_press_gesture"}
@@ -69,8 +71,8 @@ local function __on_pickup_object(datamodel, object)
 end
 
 local function _get_construct_menu()
-    local e = assert(gameplay_core.get_world().ecs:first("base base_chest:in"))
-    local items = ichest.collect_item(gameplay_core.get_world(), e.base_chest)
+    local e = assert(gameplay_core.get_world().ecs:first("base inventory:in"))
+    local items = ichest.collect_item(gameplay_core.get_world(), e.inventory)
 
     local construct_menu = {}
     for _, menu in ipairs(construct_menu_cfg) do
@@ -309,7 +311,7 @@ local function close_focus_tips(tech_node)
     excluded_pickup_id = nil
 end
 
-local function __construct_entity(datamodel, gameplay_eid, typeobject)
+local function __construct_entity(datamodel, typeobject)
     if iprototype.has_type(typeobject.type, "road") then
         iui.close("building_arc_menu.rml")
         iui.close("detail_panel.rml")
@@ -332,7 +334,7 @@ local function __construct_entity(datamodel, gameplay_eid, typeobject)
         builder = create_station_builder()
         builder:new_entity(datamodel, typeobject)
     else
-        builder = create_normalbuilder(gameplay_eid, typeobject.id)
+        builder = create_normalbuilder(typeobject.id)
         builder:new_entity(datamodel, typeobject)
     end
 end
@@ -478,15 +480,17 @@ function M:stage_camera_usage(datamodel)
     end
 
     for _, _, _, item in construct_entity_mb:unpack() do
-        handle_pickup = false
-        __switch_status("construct", function()
-            -- we may click the button repeatedly, so we need to clear the old model first
-            if builder then
-                builder:clean(datamodel)
-            end
-            local typeobject = iprototype.queryByName(item)
-            __construct_entity(datamodel, nil, typeobject)
-        end)
+        local typeobject = iprototype.queryByName(item)
+        if ichest.get_inventory_item_count(gameplay_core.get_world(), typeobject.id) >= 1 then
+            handle_pickup = false
+            __switch_status("construct", function()
+                -- we may click the button repeatedly, so we need to clear the old model first
+                if builder then
+                    builder:clean(datamodel)
+                end
+                __construct_entity(datamodel, typeobject)
+            end)
+        end
     end
 
     -- TODO: 多个UI的stage_ui_update中会产生focus_tips_event事件，focus_tips_event处理逻辑涉及到要修改相机位置，所以暂时放在这里处理
@@ -513,6 +517,20 @@ function M:stage_camera_usage(datamodel)
         local typeobject = iprototype.queryByName(object.prototype_name)
         local w, h = iprototype.unpackarea(typeobject.area)
         icamera_controller.focus_on_position(coord_system:get_position_by_coord(object.x, object.y, w, h), focus_on_position_cb(object_id))
+    end
+
+    for _ in inventory_mb:unpack() do
+        for _, object in objects:all() do -- TODO: optimize
+            local typeobject = iprototype.queryByName(object.prototype_name)
+            if iprototype.has_type(typeobject.type, "base") then
+                iui.open({"inventory.rml"}, object.id)
+                break
+            end
+        end
+    end
+
+    for _ in switch_concise_mode_mb:unpack() do
+        datamodel.is_concise_mode = not datamodel.is_concise_mode
     end
 
     iobject.flush()
