@@ -96,7 +96,20 @@ function S.init_world()
     iom.set_direction(camera_ref, dir)
 
     iterrain.gen_terrain_field(256, 256, 128)
-    --istonemountain.create_sm_entity(0.8, 256, 256, 128)
+    local density = 0.5
+    local width, height, offset, UNIT = 256, 256, 128, 10
+    local scale_table = {
+        big = 1.0,
+        middle = 0.6,
+        small = 0.2
+    }
+    local stone_area = {
+        {x = 0, z = 0}
+    }
+    local open_area = {
+        {x = 5, z = 5, w = 15, h = 15}
+    }
+    istonemountain.create_sm_entity(density, width, height, offset, UNIT, scale_table, stone_area, open_area)
     --create_mark()
 
 --[[      printer_eid = ecs.create_entity {
@@ -118,7 +131,7 @@ function S.init_world()
         },
     } ]]
 
-     create_instance("/pkg/vaststars.mod.test/assets/miner-1.glb|mesh.prefab",
+--[[      create_instance("/pkg/vaststars.mod.test/assets/miner-1.glb|mesh.prefab",
     function (e)
         local ee<close> = w:entity(e.tag['*'][1])
         iom.set_scale(ee, 1)
@@ -130,7 +143,7 @@ function S.init_world()
         local ee<close> = w:entity(e.tag['*'][1])
         iom.set_scale(ee, 1)
         iom.set_position(ee, math3d.vector(0, 0, 0, 1))
-    end) 
+    end)  ]]
 end
 
 local kb_mb = world:sub{"keyboard"}

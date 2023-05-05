@@ -3,6 +3,7 @@ local world = ecs.world
 local w     = world.w
 
 local iterrain  = ecs.import.interface "mod.terrain|iterrain"
+local ism = ecs.import.interface "mod.stonemountain|istonemountain"
 local UNIT <const> = 10
 
 local function __pack(x, y)
@@ -31,8 +32,22 @@ function road:create(width, height, offset, layer_names, shape_types)
     for _, state in ipairs(shape_types) do
         self.shape_types[state] = true
     end
-
     iterrain.gen_terrain_field(width, height, offset, UNIT)
+--[[     local density = 0.5
+    local scale_table = {
+        big = 0.8,
+        middle = 0.5,
+        small = 0.1
+    }
+    -- must generate stonemountain
+    local stone_area = {
+        {x = 0, z = 0}
+    }
+    -- should not generate stonemountain
+    local open_area = {
+        {x = 5, z = 5, w = 15, h = 15}
+    }
+    ism.create_sm_entity(density, width, height, offset, UNIT, scale_table, stone_area, open_area) ]]
 end
 
 function road:get_offset()

@@ -3,6 +3,7 @@ local world = ecs.world
 local w = world.w
 local open_sm = false
 local math3d 	= require "math3d"
+local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local mathpkg	= import_package "ant.math"
 local mc		= mathpkg.constant
 local renderpkg = import_package "ant.render"
@@ -15,11 +16,16 @@ local terrain_module = require "terrain"
 local ism = ecs.interface "istonemountain"
 local sm_sys = ecs.system "stone_mountain"
 local sm_material
-local ratio, width, height, section_size
+local ratio, width, height, section_size = 0.5, 256, 256, 32
 local freq, depth, unit, offset = 4, 4, 10, 0
+local remove_offset = 3
 local is_build_sm = false
 local instance_num = 0
+local open_area
+local stone_area
 -- mapping between instance idx and sm_idx
+local remove_table = {}
+local scale_table = {b = 0.80, m = 0.50, s = 0.10}
 local real_to_sm_table = {}
 local sm_to_real_table = {}
 local sm_table = {}
@@ -52,10 +58,30 @@ local constant_buffer_table = {
     }
 }
 
+local mesh_table = {
+    [1] = "/pkg/mod.stonemountain/assets/mountain1.glb|meshes/Cylinder.002_P1.meshbin",
+    [2] = "/pkg/mod.stonemountain/assets/mountain2.glb|meshes/Cylinder.004_P1.meshbin",
+    [3] = "/pkg/mod.stonemountain/assets/mountain3.glb|meshes/Cylinder_P1.meshbin",
+    [4] = "/pkg/mod.stonemountain/assets/mountain4.glb|meshes/Cylinder.021_P1.meshbin"
+}
+
 local function calc_section_idx(idx)
     local x = (idx - 1) %  width
     local y = (idx - 1) // height
     return y // section_size * (height / section_size)  + x // section_size + 1
+end
+
+local function exclude_from_open_area(ix, iy)
+    local out_area = true
+    for _, area in pairs(open_area) do
+        local ox, oz, ww, hh = area.x + offset, area.z + offset, area.w, area.h
+        local lw, rw, lh, rh = math.max(0, ox - remove_offset), math.min(255, ox + ww + remove_offset), math.max(0, oz - remove_offset), math.min(255, oz + hh + remove_offset)
+        if ix >= lw and ix <= rw and iy >= lh and iy <= rh then
+            out_area = false
+            break
+        end
+    end
+    return out_area
 end
 
 local function get_corner_table(center, extent)
@@ -132,53 +158,82 @@ local function get_center()
     local m_clamp = (ratio + 0.2) * 0.1 -- [0.02, 0.12]
     local b_clamp = 1 - m_clamp -- [0.88, 0.98]
     local tmp_center_table = {}
+    -- random stone_area
     for iy = 6, height - 6 do
       for ix = 6, width - 6 do
         local cur_index = ix - 1 + (iy - 1) * width + 1
-        local offset_x = iy
-        local offset_y = ix
-        local seed = iy * ix
-        local e = terrain_module.noise(ix - 1, iy - 1, freq, depth, seed, offset_y, offset_x)
-        local is_center = e <= m_clamp or e >= b_clamp
-        if is_center then
+            local offset_x = iy
+            local offset_y = ix
+            local seed = iy * ix
+            local e = terrain_module.noise(ix - 1, iy - 1, freq, depth, seed, offset_y, offset_x)
+            local is_center = e <= m_clamp or e >= b_clamp
+            if is_center then
+                local cur_center
+                if e > m_clamp then
+                    cur_center = 2 -- m 1+1
+                else
+                    cur_center = 3-- b 2+1
+                end
+    
+                for y_offset = -4, 4 do
+                    for x_offset = -4, 4 do
+                        local nei_x, nei_y = iy + y_offset, ix + x_offset
+                        local nei_index = nei_x - 1 + (nei_y - 1) * width + 1
+                        if tmp_center_table[nei_index] then
+                            is_center = false
+                            goto continue
+                        end
+                    end
+                end
+                ::continue::
+                if is_center then
+                    local out_area = exclude_from_open_area(ix, iy)
+                    if out_area then
+                        tmp_center_table[cur_index] = cur_center
+                        sm_table[cur_index] = {}
+                        if cur_center == 3 then
+                            sm_table[cur_index][1] = {}
+                            sm_table[cur_index].center_stone = {t = 1, idx = 1} -- big 1
+                        else
+                            sm_table[cur_index][2] = {}
+                            sm_table[cur_index].center_stone = {t = 2, idx = 1} -- middle 1
+                        end 
+                    end
+                end
+            end 
+        end
+    end 
+
+        -- pre-defined stone_area
+        for _, stone in pairs(stone_area) do
+            local iy, ix = stone.z + offset, stone.x + offset
+            local cur_index = ix + iy * width + 1
+            local offset_x = iy
+            local offset_y = ix
+            local seed = iy * ix
+            local e = terrain_module.noise(ix - 1, iy - 1, freq, depth, seed, offset_y, offset_x)
+            sm_table[cur_index] = {}
             local cur_center
             if e <= m_clamp then
                 cur_center = 2 -- m 1+1
             else
                 cur_center = 3-- b 2+1
             end
-
-            for y_offset = -4, 4 do
-                for x_offset = -4, 4 do
-                    local nei_x, nei_y = iy + y_offset, ix + x_offset
-                    local nei_index = nei_x - 1 + (nei_y - 1) * width + 1
-                    if tmp_center_table[nei_index] then
-                        is_center = false
-                        goto continue
-                    end
-                end
-            end
-            ::continue::
-            if is_center then
-                tmp_center_table[cur_index] = cur_center
-                sm_table[cur_index] = {}
-                if cur_center == 3 then
-                    sm_table[cur_index][1] = {}
-                    sm_table[cur_index].center_stone = {t = 1, idx = 1} -- big 1
-                else
-                    sm_table[cur_index][2] = {}
-                    sm_table[cur_index].center_stone = {t = 2, idx = 1} -- middle 1
-                end
-            end
+            if cur_center == 3 then
+                sm_table[cur_index][1] = {}
+                sm_table[cur_index].center_stone = {t = 1, idx = 1} -- big 1
+            else
+                sm_table[cur_index][2] = {}
+                sm_table[cur_index].center_stone = {t = 2, idx = 1} -- middle 1
+            end 
         end
-      end
-  end 
   --sm_table[1].center_stone = {t = 1, idx = 1}
   for idx = 1, width * height do
     if not sm_table[idx].center_stone then
         sm_table[idx] = nil
     end
   end
+
 end
 
 local function get_count()
@@ -331,14 +386,14 @@ local function get_scale()
                     local offset_y = ix * size_idx * count_idx
                     local seed = sm_idx * size_idx * count_idx
                     if size_idx == 1 then
-                        local e = terrain_module.noise(ix, iy, freq, depth, seed, offset_y, offset_x) * (1.30 - 0.80) + 0.80
+                        local e = terrain_module.noise(ix, iy, freq, depth, seed, offset_y, offset_x) * 0.5 + scale_table.b
                         sm_table[sm_idx][size_idx].s = e
                         sm_table[sm_idx].center_stone.s = e
                     elseif size_idx == 2 then
-                        local e = terrain_module.noise(ix, iy, freq, depth, seed, offset_y, offset_x) * (1.00 - 0.50) + 0.50
+                        local e = terrain_module.noise(ix, iy, freq, depth, seed, offset_y, offset_x) * 0.5 + scale_table.m
                         temp_scale_table[count_idx] = e
                     elseif size_idx == 3 then
-                        local e = terrain_module.noise(ix, iy, freq, depth, seed, offset_y, offset_x) * (0.75 - 0.10) + 0.10
+                        local e = terrain_module.noise(ix, iy, freq, depth, seed, offset_y, offset_x) * 0.5 + scale_table.s
                         temp_scale_table[count_idx] = e     
                     end
                 end
@@ -548,67 +603,14 @@ local function get_translation()
     get_final_map()
 end
 
-local function get_real_sm() 
-    for sm_idx, _ in pairs(sm_table) do
-        instance_num = instance_num + 1
-        real_to_sm_table[instance_num] = sm_idx
-        sm_to_real_table[sm_idx] = instance_num
-    end
-end
-
-local function get_stone_aabb(sm_idx, size_idx)
-    local stone = sm_table[sm_idx][size_idx]
-    local stone_aabb = math3d.aabb()
-    if stone.s then
-        local center_x = mesh_aabb_table[sm_bms_to_mesh_table[sm_idx][size_idx]].center[1]
-        local center_y = mesh_aabb_table[sm_bms_to_mesh_table[sm_idx][size_idx]].center[2]
-        local center_z = mesh_aabb_table[sm_bms_to_mesh_table[sm_idx][size_idx]].center[3]
-        local extent_x = mesh_aabb_table[sm_bms_to_mesh_table[sm_idx][size_idx]].extent[1]
-        local extent_y = mesh_aabb_table[sm_bms_to_mesh_table[sm_idx][size_idx]].extent[2]
-        local extent_z = mesh_aabb_table[sm_bms_to_mesh_table[sm_idx][size_idx]].extent[3]
-        local stone_center = math3d.add(math3d.mul(stone.s, math3d.vector(center_x, center_y, center_z)), math3d.vector(stone.t.x, 0, stone.t.z))
-        local stone_extent = math3d.mul(stone.s, math3d.vector(extent_x, extent_y, extent_z))
-        stone_aabb = math3d.aabb(math3d.add(stone_center, stone_extent), math3d.sub(stone_center, stone_extent)) 
-    end
-    return stone_aabb
-end
-
-local function get_sections_sm()
-    for sm_idx, _ in pairs(sm_table)do
-        local section_idx = calc_section_idx(sm_idx)
-        if not sections_sm_table[section_idx] then
-            sections_sm_table[section_idx] = {sms = {}, aabb = math3d.ref(math3d.aabb())}
-        end
-        local big_aabb, middle_aabb, small_aabb = get_stone_aabb(sm_idx, 1), get_stone_aabb(sm_idx, 2), get_stone_aabb(sm_idx, 3)
-        local cur_aabb
-        local small_valid = math3d.aabb_isvalid(small_aabb)
-        local middle_valid = math3d.aabb_isvalid(middle_aabb)
-        local big_valid = math3d.aabb_isvalid(big_aabb)
-
-        if not small_valid and not middle_valid and not big_valid then
-            cur_aabb = math3d.aabb()
-        elseif small_valid then
-            cur_aabb = small_aabb
-            if middle_valid then
-                cur_aabb = math3d.aabb_merge(cur_aabb, middle_aabb)
-            end
-            if big_valid then
-                cur_aabb = math3d.aabb_merge(cur_aabb, big_aabb)
-            end
-        elseif middle_valid then
-            cur_aabb = middle_aabb
-            if big_valid then
-                cur_aabb = math3d.aabb_merge(cur_aabb, big_aabb)
-            end
-        else
-            cur_aabb = big_aabb 
-        end
-        sections_sm_table[section_idx].sms[sm_idx] = true
-        if not math3d.aabb_isvalid(sections_sm_table[section_idx].aabb) then
-            sections_sm_table[section_idx].aabb = math3d.ref(cur_aabb)
-        else
-            if math3d.aabb_isvalid(cur_aabb) then
-                sections_sm_table[section_idx].aabb = math3d.ref(math3d.aabb_merge(sections_sm_table[section_idx].aabb, cur_aabb))                
+local function exclude_sm()
+    for sm_idx, stones in pairs(sm_table) do
+        for size_idx = 1, 3 do
+            local stone = stones[size_idx]
+            if stone and stone.s then
+                local ix, iy = math.floor(stone.t.x // unit + offset), math.floor(stone.t.z // unit + offset)
+                local out_area = exclude_from_open_area(ix, iy)
+                if not out_area then sm_table[sm_idx][size_idx] = nil end
             end
         end
     end
@@ -638,21 +640,26 @@ local function set_terrain_sm()
         end
         for sm_idx, stones in pairs(sm_table) do
             local big_stone, middle_stone, small_stone = stones[1], stones[2], stones[3]
-            if big_stone.s then
+            if big_stone and big_stone.s then
                 record_sm_idx_to_terrain_field(st.prev_terrain_fields, big_stone, sm_idx, 1)
             end
-            if middle_stone.s then
+            if middle_stone and middle_stone.s then
                 record_sm_idx_to_terrain_field(st.prev_terrain_fields, middle_stone, sm_idx, 2)
             end
-            if small_stone.s then
+            if small_stone and small_stone.s then
                 record_sm_idx_to_terrain_field(st.prev_terrain_fields, small_stone, sm_idx, 3)
             end
         end
     end 
 end
 
-function ism.create_sm_entity(r, ww, hh, off, un, f, d)
+function ism.create_sm_entity(r, ww, hh, off, un, scale, sa, oa, f, d)
     open_sm = true
+    if scale then
+        scale_table.b, scale_table.m, scale_table.s = scale.big, scale.middle, scale.small
+    end
+    stone_area = sa
+    open_area = oa
     ratio, width, height= r, ww, hh
     if off then
         offset = off
@@ -670,7 +677,7 @@ function ism.create_sm_entity(r, ww, hh, off, un, f, d)
     for center_idx = 1, width * height do
         sm_table[center_idx] = {[1] = {}, [2] = {}, [3] = {}} -- b m s
     end
-    ecs.create_entity {
+    remove_table[1] = ecs.create_entity {
         policy = {
             "ant.render|render",
             "ant.general|name",
@@ -688,7 +695,7 @@ function ism.create_sm_entity(r, ww, hh, off, un, f, d)
             }
         },
     }   
-    ecs.create_entity {
+    remove_table[2] = ecs.create_entity {
         policy = {
             "ant.render|render",
             "ant.general|name",
@@ -706,7 +713,7 @@ function ism.create_sm_entity(r, ww, hh, off, un, f, d)
             }
         },
     } 
-    ecs.create_entity {
+    remove_table[3] = ecs.create_entity {
         policy = {
             "ant.render|render",
             "ant.general|name",
@@ -724,7 +731,7 @@ function ism.create_sm_entity(r, ww, hh, off, un, f, d)
             }
         },
     }  
-    ecs.create_entity {
+    remove_table[4] = ecs.create_entity {
         policy = {
             "ant.render|render",
             "ant.general|name",
@@ -753,158 +760,7 @@ function ism.get_sm_aabb(queue_name)
     end
 end
 
-local function create_sm_compute(sm_info, queue_name, mesh_idx)
-    local dispatchsize = {
-		math.floor((instance_num - 1) / 64) + 1, 1, 1
-	}
-    local dis = {}
-	dis.size = dispatchsize
-    local mo = sm_material.object
-    dis.material = mo:instance()
-    local mat = dis.material
-    mat.b_indirect_vb   = constant_buffer_table.indirect_buffer_table[mesh_idx]
-    mat.b_visibility_vb = sm_info.sm_visibility_table[queue_name] 
-    mat.u_instance_params = sm_info.instance_params
-    mat.u_indirect_params = math3d.vector(instance_num, 0, 0, 0)
-	dis.fx = sm_material._data.fx
-	return dis
-end
 
-local function do_sm_compute(sm_info, queue_name)
-    icompute.dispatch(viewidmgr.get(queue_name), sm_info.dispatch_entity_table[queue_name])
-end
-
-local function update_sm_dyb(mesh_idx, queue_name, sm_info)
-    bgfx.update(sm_info.sm_visibility_table[queue_name], 0, constant_buffer_table.visibility_memory_table[mesh_idx]["pre_depth"])
-    if not sm_info.dispatch_entity_table[queue_name] then
-        sm_info.dispatch_entity_table[queue_name] = create_sm_compute(sm_info, queue_name, mesh_idx)
-    end
-    do_sm_compute(sm_info, queue_name)
-end
-
-local function create_visibility_table()
-    local v_bf_csm1 = bgfx.create_dynamic_vertex_buffer(instance_num, declmgr.get("t47NIf").handle, "r")
-    local v_bf_csm2 = bgfx.create_dynamic_vertex_buffer(instance_num, declmgr.get("t47NIf").handle, "r")
-    local v_bf_csm3 = bgfx.create_dynamic_vertex_buffer(instance_num, declmgr.get("t47NIf").handle, "r")
-    local v_bf_csm4 = bgfx.create_dynamic_vertex_buffer(instance_num, declmgr.get("t47NIf").handle, "r")
-    local v_bf_pre_depth = bgfx.create_dynamic_vertex_buffer(instance_num, declmgr.get("t47NIf").handle, "r")
-    local visibility_table = {
-        ["csm1"] = v_bf_csm1, ["csm2"] = v_bf_csm2, ["csm3"] = v_bf_csm3, ["csm4"] = v_bf_csm4,
-        ["pre_depth"] = v_bf_pre_depth
-    }
-    return visibility_table
-end  
-
-local function create_sm_dyb(sm_info, ro)
-    sm_info.sm_visibility_table  = create_visibility_table()
-    sm_info.instance_params = math3d.vector(0, ro.vb_num, 0, ro.ib_num)
-    sm_info.indirect_params = math3d.vector(instance_num, 0, 0, 0)
-    sm_info.dispatch_entity_table = {}
-end
-
-local function queue_select_sections_shadow(select_condition, queue_name)
-    for e in w:select(select_condition) do
-        local section_idx = e.section_index
-        if sections_sm_table[section_idx] then
-            for sm_idx, _ in pairs(sections_sm_table[section_idx].sms) do
-                terrain_section_cull_table[queue_name].sms[sm_idx] = true
-                local vidx = (sm_to_real_table[sm_idx] - 1) * 16 + 1
-                for mesh_idx = 1, 4 do
-                    constant_buffer_table.visibility_memory_table[mesh_idx][queue_name][vidx] = sm_table[sm_idx].mesh_visibility[mesh_idx]
-                end
-            end
-
-            local ref_section_aabb = math3d.ref(sections_sm_table[section_idx].aabb)
-            if not math3d.aabb_isvalid(terrain_section_cull_table[queue_name].aabb) then
-                terrain_section_cull_table[queue_name].aabb = ref_section_aabb
-            else
-                if math3d.aabb_isvalid(ref_section_aabb) then
-                    terrain_section_cull_table[queue_name].aabb = math3d.ref(math3d.aabb_merge(terrain_section_cull_table[queue_name].aabb, ref_section_aabb))
-                end
-            end 
-        end
-    end 
-end
-
-local function update_sm_dyb_table(mesh_idx, sm_info)
-    update_sm_dyb(mesh_idx, "csm1", sm_info)
-    update_sm_dyb(mesh_idx, "csm2", sm_info)
-    update_sm_dyb(mesh_idx, "csm3", sm_info)
-    update_sm_dyb(mesh_idx, "csm4", sm_info)
-    update_sm_dyb(mesh_idx, "pre_depth", sm_info)
-end
-
-local function update_sections()
-    terrain_section_cull_table = {
---[[         csm1 = {sections = {}, sms = {}, aabb = math3d.ref(math3d.aabb(mc.ZERO, mc.ZERO))},
-        csm2 = {sections = {}, sms = {}, aabb = math3d.ref(math3d.aabb(mc.ZERO, mc.ZERO))},
-        csm3 = {sections = {}, sms = {}, aabb = math3d.ref(math3d.aabb(mc.ZERO, mc.ZERO))},
-        csm4 = {sections = {}, sms = {}, aabb = math3d.ref(math3d.aabb(mc.ZERO, mc.ZERO))},   ]] 
-        pre_depth = {sections = {}, sms = {}, aabb = math3d.ref(math3d.aabb(mc.ZERO, mc.ZERO))}
-    }
-    for mesh_idx = 1, 4 do
-        constant_buffer_table.visibility_memory_table[mesh_idx] = {
---[[             ["csm1"] = bgfx.memory_buffer(instance_num * 16),
-            ["csm2"] = bgfx.memory_buffer(instance_num * 16),
-            ["csm3"] = bgfx.memory_buffer(instance_num * 16),
-            ["csm4"] = bgfx.memory_buffer(instance_num * 16), ]]
-            ["pre_depth"] = bgfx.memory_buffer(instance_num * 16),
-        }
-    end
---[[     queue_select_sections_shadow("section_index:in csm1_queue_cull:absent", "csm1")
-    queue_select_sections_shadow("section_index:in csm2_queue_cull:absent", "csm2")
-    queue_select_sections_shadow("section_index:in csm3_queue_cull:absent", "csm3")
-    queue_select_sections_shadow("section_index:in csm4_queue_cull:absent", "csm4") ]]
-    queue_select_sections_shadow("section_index:in main_queue_cull:absent", "pre_depth")
-end
-
-local function create_constant_buffer()
-    local function check_nan(v)
-		if v ~= v then
-			return 0
-		else
-			return v
-		end
-	end
-	local function f2i(v)
-		return math.floor(check_nan(v) * 32767+0.5)
-	end
-    constant_buffer_table.sm_srt_memory_buffer = bgfx.memory_buffer(16 * instance_num * 3)
-    local fmt<const> = "ffff"
-    for real_idx = 1, instance_num do
-        local sm_idx = real_to_sm_table[real_idx]
-        for size_idx = 1, 3 do
-            local srt_idx = 16 * ((real_idx - 1) * 3 + size_idx - 1) + 1
-            if sm_table[sm_idx][size_idx].s then
---[[                 local is = string.format("%.1f", sm_table[sm_idx][size_idx].s)+0
-                local itx = string.format("%.1f", sm_table[sm_idx][size_idx].t.x)+0
-                local itz = string.format("%.1f", sm_table[sm_idx][size_idx].t.z)+0
-                local ir = string.format("%.1f", sm_table[sm_idx][size_idx].r)+0 ]]
-                local stone = {sm_table[sm_idx][size_idx].s, sm_table[sm_idx][size_idx].t.x, sm_table[sm_idx][size_idx].t.z, sm_table[sm_idx][size_idx].r}
-                --local stone = {is, itx, itz, ir}
-                constant_buffer_table.sm_srt_memory_buffer[srt_idx] = fmt:pack(table.unpack(stone))
-            else
-                constant_buffer_table.sm_srt_memory_buffer[srt_idx] = fmt:pack(table.unpack({0, 0, 0, 0}))
-            end
-        end 
-    end
-    constant_buffer_table.sm_srt_buffer   = bgfx.create_dynamic_vertex_buffer(constant_buffer_table.sm_srt_memory_buffer, declmgr.get("t47NIf").handle, "r")
-    constant_buffer_table.indirect_buffer_table = {
-        bgfx.create_indirect_buffer(instance_num * 3),
-        bgfx.create_indirect_buffer(instance_num * 3),
-        bgfx.create_indirect_buffer(instance_num * 3),
-        bgfx.create_indirect_buffer(instance_num * 3)
-    }
-    for mesh_idx = 1, 4 do
-        constant_buffer_table.visibility_memory_table[mesh_idx] = {
---[[             ["csm1"] = bgfx.memory_buffer(instance_num * 16),
-            ["csm2"] = bgfx.memory_buffer(instance_num * 16),
-            ["csm3"] = bgfx.memory_buffer(instance_num * 16),
-            ["csm4"] = bgfx.memory_buffer(instance_num * 16), ]]
-            ["pre_depth"] = bgfx.memory_buffer(instance_num * 16),
-        }
-    end
-end
 
 local function make_sm_noise()
     get_center()
@@ -913,8 +769,7 @@ local function make_sm_noise()
     get_scale()
     get_rotation()
     get_translation()
-    get_real_sm()
-    get_sections_sm()
+    exclude_sm()
     set_terrain_sm()
 end
 
@@ -922,36 +777,59 @@ function sm_sys:init()
     sm_material = assetmgr.resource("/pkg/ant.resources/materials/stone_mountain/stone_mountain.material")
 end
 
+local function create_sm_entity()
+    for sm_idx, _ in pairs(sm_table)do
+        for size_idx = 1, 3 do
+            local stone = sm_table[sm_idx][size_idx]
+            if stone and stone.s then
+                local mesh_idx = sm_bms_to_mesh_table[sm_idx][size_idx]
+                local mesh_address = mesh_table[mesh_idx]
+                local eid = ecs.create_entity {
+                    policy = {
+                        "ant.render|render",
+                     },
+                    data = {
+                        scene         = {},
+                        material      ="/pkg/mod.stonemountain/assets/pbr_sm.material", 
+                        visible_state = "main_view|cast_shadow|selectable",
+                        mesh          = mesh_address,
+                        on_ready = function (e)
+                            local scaley = stone.s
+                            if scaley > 1 then scaley = scaley * 0.5 end
+                            iom.set_position(e, math3d.vector(stone.t.x, 0, stone.t.z))
+                            iom.set_scale(e, math3d.vector(stone.s, scaley, stone.s))
+                            local cosh = stone.r
+                            local sinh = (1 - cosh * cosh) ^ 0.5
+                            local rot_matrix = math3d.matrix(cosh, 0, -sinh, 0, 0, 1, 0, 0, sinh, 0, cosh, 0, 0, 0, 0 ,1)
+                            iom.set_rotation(e, math3d.torotation(rot_matrix))
+                        end
+                    },
+                }
+                if eid then stone.eid = eid end
+            end
+        end
+    end
+end
+
+local function remove_aabb_entity()
+    for rid = 1, 4 do
+        w:remove(remove_table[rid])
+    end
+end
+
 function sm_sys:stone_mountain()
     if open_sm then
-        if not is_build_sm then
-            is_build_sm = true
-            for e in w:select "stonemountain sm_info?in bounding:update" do
-                local sm_info = e.sm_info
-                local center, extent = math3d.aabb_center_extents(e.bounding.aabb)
-                mesh_aabb_table[sm_info.mesh_idx] = {center = math3d.tovalue(center), extent = math3d.tovalue(extent)}
-                e.bounding.scene_aabb = mc.NULL
-                e.bounding.aabb = mc.NULL
-            end
-            make_sm_noise()
-            create_constant_buffer() 
-        else
-            update_sections()
-            for e in w:select "stonemountain sm_info?update render_object?update" do
-                local mesh_idx = e.sm_info.mesh_idx
-                local ro = e.render_object
-                local sm_info = e.sm_info
-                local need_create_dyb = not e.sm_info.dispatch_entity_table
-    
-                if need_create_dyb then -- first create dynamic vertex buffer
-                    create_sm_dyb(sm_info, ro)
-                end
-                update_sm_dyb_table(mesh_idx, sm_info)
-                ro.idb_handle = constant_buffer_table.indirect_buffer_table[mesh_idx]
-                ro.itb_handle = constant_buffer_table.sm_srt_buffer
-                ro.draw_num   = instance_num * 3
-            end
-        end   
+        for e in w:select "stonemountain sm_info?in bounding:update" do
+            local sm_info = e.sm_info
+            local center, extent = math3d.aabb_center_extents(e.bounding.aabb)
+            mesh_aabb_table[sm_info.mesh_idx] = {center = math3d.tovalue(center), extent = math3d.tovalue(extent)}
+            e.bounding.scene_aabb = mc.NULL
+            e.bounding.aabb = mc.NULL
+        end
+        make_sm_noise()
+        create_sm_entity()
+        remove_aabb_entity()
+        open_sm = false
     end
 end
 
