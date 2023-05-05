@@ -2730,11 +2730,11 @@ prototype "蒸汽发电" {
     recipe_order =  119,
     recipe_icon =  "textures/fluid/gas.texture",
     ingredients = {
-        {"蒸汽", 400},
+        {"蒸汽", 30},
     },
     results = {
     },
-    time = "4s",
+    time = "1s",
     description = "蒸汽发电",
 }
 
@@ -2851,10 +2851,10 @@ prototype "纯水沸腾" {
     recipe_order =  108,
     recipe_icon =  "textures/fluid/gas.texture",
     ingredients = {
-        {"纯水", 65},
+        {"纯水", 60},
     },
     results = {
-        {"蒸汽", 270},
+        {"蒸汽", 60},
     },
     time = "1s",
     description = "纯水转蒸汽",
