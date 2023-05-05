@@ -16,7 +16,6 @@ prototype "采矿机I" {
     speed = "100%",
     building_base = false,
     maxslot = "8",
-    printer_scale = {1.3,1.3,1.3},
 }
 
 prototype "采矿机II" {
@@ -34,5 +33,4 @@ prototype "采矿机II" {
     speed = "150%",
     building_base = false,
     maxslot = "8",
-    printer_scale = {1.3,1.3,1.3},
 }

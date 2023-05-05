@@ -59,6 +59,7 @@
             ui_sys.mapping(start, {
                 {getMappingParam("show_cancel")},
                 {getMappingParam("show_confirm")},
+                {getMappingParam("show_rotate")},
             })
         </script>
     </head>

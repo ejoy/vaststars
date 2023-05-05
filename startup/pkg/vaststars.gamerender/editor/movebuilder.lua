@@ -56,6 +56,35 @@ local function _get_road_entrance_position(typeobject, x, y, dir)
     return coord_system:get_position_by_coord(neighbor_x, neighbor_y, 1, 1), neighbor_x, neighbor_y, conn.dir
 end
 
+local function __rotate_area(w, h, dir)
+    if dir == 'N' or dir == 'S' then
+        return w, h
+    elseif dir == 'E' or dir == 'W' then
+        return h, w
+    end
+end
+
+local function __create_self_sprite(typeobject, x, y, dir, sprite_color)
+    local sprite
+    local offset_x, offset_y = 0, 0
+    if typeobject.supply_area then
+        local aw, ah = iprototype.rotate_area(typeobject.supply_area, dir)
+        local w, h = iprototype.rotate_area(typeobject.area, dir)
+        offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
+        sprite = create_sprite(x + offset_x, y + offset_y, aw, ah, dir, sprite_color)
+    elseif typeobject.power_supply_area then
+        local aw, ah = typeobject.power_supply_area:match("(%d+)x(%d+)")
+        aw, ah = __rotate_area(aw, ah, dir)
+        local w, h = iprototype.rotate_area(typeobject.area, dir)
+        offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
+        sprite = create_sprite(x + offset_x, y + offset_y, aw, ah, dir, sprite_color)
+    else
+        local w, h = iprototype.rotate_area(typeobject.area, dir)
+        sprite = create_sprite(x + offset_x, y + offset_y, w, h, dir, sprite_color)
+    end
+    return sprite
+end
+
 local function __new_entity(self, datamodel, typeobject)
     iobject.remove(self.pickup_object)
     local dir = DEFAULT_DIR
@@ -85,6 +114,7 @@ local function __new_entity(self, datamodel, typeobject)
         end
         datamodel.show_confirm = true
     end
+    datamodel.show_rotate = (typeobject.rotate_on_build == true)
 
     -- some assembling machine have default recipe
     local fluid_name = ""
@@ -107,23 +137,12 @@ local function __new_entity(self, datamodel, typeobject)
         },
         fluid_name = fluid_name,
     }
-    iui.open({"move_building.rml"}, self.pickup_object.srt.t)
+    iui.open({"move_building.rml"}, self.pickup_object.srt.t, typeobject.name)
 
-    local offset_x, offset_y = 0, 0
-    if typeobject.supply_area then
-        local aw, ah = iprototype.unpackarea(typeobject.supply_area)
-        local w, h = iprototype.rotate_area(typeobject.area, dir)
-        offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
-        self.sprite = create_sprite(x + offset_x, y + offset_y, aw, ah, dir, sprite_color)
-    elseif typeobject.power_supply_area then
-        local aw, ah = typeobject.power_supply_area:match("(%d+)x(%d+)")
-        local w, h = iprototype.rotate_area(typeobject.area, dir)
-        offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
-        self.sprite = create_sprite(x + offset_x, y + offset_y, aw, ah, dir, sprite_color)
-    else
-        local w, h = iprototype.rotate_area(typeobject.area, dir)
-        self.sprite = create_sprite(x + offset_x, y + offset_y, w, h, dir, sprite_color)
+    if self.sprite then
+        self.sprite:remove()
     end
+    self.sprite = __create_self_sprite(typeobject, x, y, dir, sprite_color)
 
     local road_entrance_position, _, _, road_entrance_dir = _get_road_entrance_position(typeobject, x, y, dir)
     if road_entrance_position then
@@ -361,6 +380,7 @@ local function confirm(self, datamodel)
 
     ieditor:revert_changes({"TEMPORARY"})
     datamodel.show_confirm = false
+    datamodel.show_rotate = false
 
     return false
 end
@@ -404,6 +424,16 @@ local function rotate_pickup_object(self, datamodel, dir, delta_vec)
 
     ieditor:revert_changes({"TEMPORARY"})
     dir = dir or iprototype.rotate_dir_times(pickup_object.dir, -1)
+    pickup_object.dir = dir
+
+    local x, y
+    self.pickup_object, x, y = __align(self.pickup_object)
+    local lx, ly = x, y
+    if not lx then
+        datamodel.show_confirm = false
+        return
+    end
+    pickup_object.x, pickup_object.y = lx, ly
 
     local typeobject = iprototype.queryByName(pickup_object.prototype_name)
     local coord = coord_system:align(icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, dir))
@@ -411,20 +441,31 @@ local function rotate_pickup_object(self, datamodel, dir, delta_vec)
         return
     end
 
-    if not self:check_construct_detector(pickup_object.prototype_name, pickup_object.x, pickup_object.y, dir) then
+    local typeobject = iprototype.queryByName(pickup_object.prototype_name)
+    local sprite_color
+    if not self:check_construct_detector(typeobject.name, pickup_object.x, pickup_object.y, dir) then
+        if typeobject.supply_area then
+            sprite_color = SPRITE_COLOR.CONSTRUCT_INVALID
+        elseif typeobject.power_supply_area then
+            sprite_color = SPRITE_COLOR.CONSTRUCT_POWER_INVALID
+        else
+            sprite_color = SPRITE_COLOR.CONSTRUCT_INVALID
+        end
         datamodel.show_confirm = false
     else
+        if typeobject.supply_area then
+            sprite_color = SPRITE_COLOR.DRONE_DEPOT_SUPPLY_AREA_VALID
+        elseif typeobject.power_supply_area then
+            sprite_color = SPRITE_COLOR.CONSTRUCT_POWER_VALID
+        else
+            sprite_color = SPRITE_COLOR.CONSTRUCT_VALID
+        end
         datamodel.show_confirm = true
     end
     iui.redirect("move_building.rml", "show_confirm", datamodel.show_confirm)
 
-    pickup_object.dir = dir
-
-    local x, y = coord[1], coord[2]
-    if not x then
-        return
-    end
-    pickup_object.x, pickup_object.y = x, y
+    self.sprite:remove()
+    self.sprite = __create_self_sprite(typeobject, x, y, dir, sprite_color)
 
     local road_entrance_position, dx, dy, ddir = _get_road_entrance_position(typeobject, x, y, pickup_object.dir)
     if road_entrance_position then
@@ -440,6 +481,8 @@ local function clean(self, datamodel)
 
     ieditor:revert_changes({"TEMPORARY"})
     datamodel.show_confirm = false
+    datamodel.show_rotate = false
+
     self.super.clean(self, datamodel)
     -- clear temp pole
     ipower:clear_all_temp_pole()

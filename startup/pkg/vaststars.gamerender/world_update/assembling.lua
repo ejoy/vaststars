@@ -103,7 +103,7 @@ local function create_io_shelves(gameplay_world, e, building_srt)
         srt = {s = s, r = r, t = t}
         local prefab = "/pkg/vaststars.resources/" .. typeobject_item.pile_model
         local slot = assert(gameplay_world:container_get(e.chest, idx))
-        heaps[#heaps+1] = create_heap(prefab_meshbin(prefab)[1], srt, HEAP_DIM3, gap3, slot.amount)
+        heaps[#heaps+1] = create_heap(prefab_meshbin(prefab)[1].meshbin, srt, HEAP_DIM3, gap3, slot.amount)
         io_counts[#io_counts+1] = slot.amount
     end
     for idx = 1, results_n do
@@ -116,7 +116,7 @@ local function create_io_shelves(gameplay_world, e, building_srt)
         srt = {s = s, r = r, t = t}
         local prefab = "/pkg/vaststars.resources/" .. typeobject_item.pile_model
         local slot = assert(gameplay_world:container_get(e.chest, idx + ingredients_n))
-        heaps[#heaps+1] = create_heap(prefab_meshbin(prefab)[1], srt, HEAP_DIM3, gap3, slot.amount)
+        heaps[#heaps+1] = create_heap(prefab_meshbin(prefab)[1].meshbin, srt, HEAP_DIM3, gap3, slot.amount)
         io_counts[#io_counts+1] = slot.amount
     end
 

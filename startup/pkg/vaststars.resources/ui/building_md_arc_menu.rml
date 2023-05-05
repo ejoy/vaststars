@@ -181,9 +181,6 @@
                             v.text = "拆除"
                             v.message = "teardown"
                             v.background_image = "textures/factory/demolition.texture"
-                            if start.guide_progress == 5 then
-                                v.animation = '0.4s linear 0s infinite alternate enlarge2'
-                            end
                             start.buttons[#start.buttons + 1] = v
                         end
 
