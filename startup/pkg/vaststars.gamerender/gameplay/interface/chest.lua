@@ -45,6 +45,7 @@ end
 -- special treatment for chest of the headquarter
 local iprototype = require "gameplay.interface.prototype"
 local debugger = require "debugger"
+local InvalidChest <const> = 0
 
 local function __get_item_stack(item)
     local typeobject = assert(iprototype.queryById(item))
@@ -76,6 +77,9 @@ local function __rebuild_chest(world, e, new_item)
         limit = __get_item_stack(new_item),
     }
 
+    if e.inventory and e.inventory.chest ~= InvalidChest then
+        world:container_destroy(e.inventory)
+    end
     e.inventory.chest = world:container_create(table.concat(r))
 end
 
