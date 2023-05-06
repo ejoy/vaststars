@@ -175,7 +175,7 @@ return function(gameworld)
         local drone = e.drone
         assert(drone.prev ~= 0, "drone.prev == 0")
         -- if (drone.prev ~= 0) and (drone.next ~= 0) and (drone.maxprogress ~= 0) and (drone.progress ~= 0) then
-            print(drone.status, drone.prev, drone.next, drone.maxprogress, drone.progress, drone.item)
+        --     print(drone.status, drone.prev, drone.next, drone.maxprogress, drone.progress, drone.item)
         -- end
         if drone.status == STATUS_HAS_ERROR and lookup_drones[e.eid] then
             lookup_drones[e.eid]:destroy()
