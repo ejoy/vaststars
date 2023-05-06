@@ -95,9 +95,9 @@ function S.init_world()
     local dir = math3d.normalize(math3d.sub(mc.ZERO_PT, eyepos))
     iom.set_direction(camera_ref, dir)
 
-    iterrain.gen_terrain_field(256, 256, 128)
+    iterrain.gen_terrain_field(60, 60, 0)
     local density = 0.5
-    local width, height, offset, UNIT = 256, 256, 128, 10
+    local width, height, offset, UNIT = 60, 60, 0, 10
     local scale_table = {
         big = 1.0,
         middle = 0.6,
@@ -107,7 +107,7 @@ function S.init_world()
         {x = 0, z = 0}
     }
     local open_area = {
-        {x = 5, z = 5, w = 15, h = 15}
+        {x = 0, z = 600, w = 600, h = 600}
     }
     istonemountain.create_sm_entity(density, width, height, offset, UNIT, scale_table, stone_area, open_area)
     --create_mark()
@@ -131,19 +131,19 @@ function S.init_world()
         },
     } ]]
 
---[[      create_instance("/pkg/vaststars.mod.test/assets/miner-1.glb|mesh.prefab",
+--[[       create_instance("/pkg/vaststars.mod.test/assets/miner-1.glb|mesh.prefab",
     function (e)
         local ee<close> = w:entity(e.tag['*'][1])
         iom.set_scale(ee, 1)
         iom.set_position(ee, math3d.vector(200, 0, 0, 1))
-    end) 
+    end)  ]]
 
     create_instance("/pkg/vaststars.mod.test/assets/miner-1.glb|mesh.prefab",
     function (e)
         local ee<close> = w:entity(e.tag['*'][1])
         iom.set_scale(ee, 1)
         iom.set_position(ee, math3d.vector(0, 0, 0, 1))
-    end)  ]]
+    end)  
 end
 
 local kb_mb = world:sub{"keyboard"}
@@ -205,23 +205,23 @@ function S:data_changed()
             }
            local t3 = itp.create_translucent_plane(rect_table, color_table, "translucent")
         elseif key == "V" and press == 0 then
-            itp.remove_translucent_plane({2})
-        elseif key == "B" and press == 0 then
-            local billboard_bases = {
-                [1] = {
-                    srt = {s = {15, 15, 15}, t = {0, 4, -4}},
-                    texture = "/pkg/vaststars.resources/ui/fluid_icon_canvas.texture",
-                    render_layer = "translucent"
-                },
-                [2] ={
-                    srt = {s = {15, 15, 15}, t = {4, 4, -4}},
-                    texture = "/pkg/vaststars.resources/ui/textures/assemble/arrow.texture",
-                    render_layer = "translucent" 
-                }
+            local areas = {
+                {x = 5, z = 5, w = 15, h = 15}
             }
-            id_table = ibillboard.create_billboard_base(billboard_bases)
+            local t = istonemountain.exist_sm(areas)
+            local t1 = 1
+        elseif key == "B" and press == 0 then
+            local areas = {
+                {x = 5, z = 5, w = 10, h = 10}
+            }
+            local t = istonemountain.exist_sm(areas)
+            local t1 = 1
         elseif key == "N" and press == 0 then
-            ibillboard.remove_billboard_base(id_table)
+            local areas = {
+                {x = 0, z = 0, w = 5, h = 5}
+            }
+            local t = istonemountain.exist_sm(areas)
+            local t1 = 1
         end
     end
 end

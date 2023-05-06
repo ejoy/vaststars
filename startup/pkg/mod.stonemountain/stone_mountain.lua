@@ -71,14 +71,13 @@ local function calc_section_idx(idx)
     return y // section_size * (height / section_size)  + x // section_size + 1
 end
 
-local function exclude_from_open_area(ix, iy)
+local function exclude_from_open_area(ix, iz, areas)
     local out_area = true
-    for _, area in pairs(open_area) do
+    for _, area in pairs(areas) do
         local ox, oz, ww, hh = area.x + offset, area.z + offset, area.w, area.h
-        local lw, rw, lh, rh = math.max(0, ox - remove_offset), math.min(255, ox + ww + remove_offset), math.max(0, oz - remove_offset), math.min(255, oz + hh + remove_offset)
-        if ix >= lw and ix <= rw and iy >= lh and iy <= rh then
-            out_area = false
-            break
+        local lw, rw, lh, rh = math.max(0, ox - remove_offset), math.min(width, ox + ww + remove_offset), math.max(0, oz - hh - remove_offset), math.min(width, oz + remove_offset)
+        if ix >= lw and ix <= rw and iz >= lh and iz <= rh then
+            return false
         end
     end
     return out_area
@@ -187,8 +186,8 @@ local function get_center()
                 end
                 ::continue::
                 if is_center then
-                    local out_area = exclude_from_open_area(ix, iy)
-                    if out_area then
+                    local out_area = exclude_from_open_area(ix, iy, open_area)
+                    if out_area == true then
                         tmp_center_table[cur_index] = cur_center
                         sm_table[cur_index] = {}
                         if cur_center == 3 then
@@ -609,8 +608,8 @@ local function exclude_sm()
             local stone = stones[size_idx]
             if stone and stone.s then
                 local ix, iy = math.floor(stone.t.x // unit + offset), math.floor(stone.t.z // unit + offset)
-                local out_area = exclude_from_open_area(ix, iy)
-                if not out_area then sm_table[sm_idx][size_idx] = nil end
+                local out_area = exclude_from_open_area(ix, iy, open_area)
+                if out_area == false then sm_table[sm_idx][size_idx] = nil end
             end
         end
     end
@@ -769,12 +768,28 @@ local function make_sm_noise()
     get_scale()
     get_rotation()
     get_translation()
-    exclude_sm()
-    set_terrain_sm()
+    --exclude_sm()
+    --set_terrain_sm()
 end
 
 function sm_sys:init()
     sm_material = assetmgr.resource("/pkg/ant.resources/materials/stone_mountain/stone_mountain.material")
+end
+local kb_mb = world:sub{"keyboard"}
+function sm_sys:data_changed()--[[ 
+    for _, key, press in kb_mb:unpack() do
+        if key == "T" and press == 0 then
+            local in_area = {
+                {x = -5, z = 5, w = 5, h = 5}
+            }
+            local out_area = {
+                {x = 10, z = 10, w = 10, h = 10}
+            }
+            local exist_sm1 = ism.exist_sm(in_area)
+            local exist_sm2 = ism.exist_sm(out_area)
+            local t = 1
+        end
+    end ]]
 end
 
 local function create_sm_entity()
@@ -815,6 +830,23 @@ local function remove_aabb_entity()
     for rid = 1, 4 do
         w:remove(remove_table[rid])
     end
+end
+
+function ism.exist_sm(areas)
+    local out_area
+    for sm_idx, _ in pairs(sm_table)do
+        for size_idx = 1, 3 do
+            local stone = sm_table[sm_idx][size_idx]
+            if stone and stone.s then
+                local ix, iz = math.floor(stone.t.x // unit + offset), math.floor(stone.t.z // unit + offset)
+                out_area = exclude_from_open_area(ix, iz, areas)
+                if out_area == false then
+                    return true
+                end
+            end
+        end
+    end
+    return false
 end
 
 function sm_sys:stone_mountain()

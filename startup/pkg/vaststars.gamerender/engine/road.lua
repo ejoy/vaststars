@@ -45,9 +45,18 @@ function road:create(width, height, offset, layer_names, shape_types)
     }
     -- should not generate stonemountain
     local open_area = {
-        {x = 5, z = 5, w = 15, h = 15}
+        {x = -10, z = 10, w = 20, h = 20}
     }
-    ism.create_sm_entity(density, width, height, offset, UNIT, scale_table, stone_area, open_area) ]]
+    ism.create_sm_entity(density, width, height, offset, UNIT, scale_table, stone_area, open_area)
+
+    local in_area = {
+        {x = -5, z = 5, w = 5, h = 5}
+    }
+    local out_area = {
+        {x = 10, z = 10, w = 10, h = 10}
+    }
+    local exist_sm1 = ism.exist_sm(in_area)
+    local exist_sm2 = ism.exist_sm(out_area) ]]
 end
 
 function road:get_offset()
