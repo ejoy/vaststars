@@ -7,9 +7,11 @@ scale = {
 }
 
 mountain_coords = {
-    {x = 0, z = 0}
+    {10, 10}
 }
 
+-- the first two numbers represent the x and y coordinates of the upper-left corner of the rectangle
+-- the last two numbers represent the x and y coordinates of the lower-right corner of the rectangle
 excluded_rects = {
-    {x = 5, z = 5, w = 15, h = 15}
+    {107, 113, 153, 147},
 }

@@ -124,8 +124,8 @@ function m:init_world()
         return
     end
 
-    iroadnet:create()
     terrain:create()
+    iroadnet:create()
 
     if TERRAIN_ONLY then
         imain_menu_manager.init()
