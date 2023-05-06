@@ -68,6 +68,7 @@
                 font-size: 3.73vmin;
                 text-align: center;
                 align-items: center;
+                color: rgb(166,166,166);
             }
             .button-style {
                 margin-bottom: 1vmin;
@@ -76,8 +77,9 @@
                 justify-content: center;
                 width: 35.00vmin;
                 height:12.00vmin;
-                background-color: rgb(250, 205, 9);
-                border: 0.27vmin rgb(89, 73, 39);
+                background-color: rgba(15, 9, 6,240);
+                border: 1vmin rgba(15, 9, 6,110);
+                border-radius: 2vmin;
                 background-size: cover;
             }
         </style>
@@ -104,23 +106,23 @@
                     <div class = "title-block">赤  域</div>
                 </div>
                 <div class = "main-panel">
-                    <button class = "button-style" style="background-color:rgb(169, 187, 6);" data-event-click = "clickButton('continue')" data-if = "show_continue_game">
+                    <button class = "button-style"  data-event-click = "clickButton('continue')" data-if = "show_continue_game">
                         <div class="middle-bg" style='background-image: "textures/road/traffic.texture";width:8vmin; height:8vmin;'/>
                         <div class = "button-text1" style="font-size: 5.73vmin;">继续游戏</div>
                     </button>
-                    <button class = "button-style" style="background-color:rgb(203, 118, 24);" data-event-click = "clickButton('start_mode', 'adventure')">
+                    <button class = "button-style"  data-event-click = "clickButton('start_mode', 'adventure')">
                         <div class="middle-bg" style='background-image: "textures/science/book.texture";'/>
                         <div class = "button-text1" style="font-size: 5.73vmin;">冒险模式</div>
                     </button>
-                    <button class = "button-style" style="background-color:rgb(0, 160, 235);" data-event-click = "clickButton('start_mode', 'free')">
+                    <button class = "button-style"  data-event-click = "clickButton('start_mode', 'free')">
                         <div class="middle-bg" style='background-image: "textures/construct/work.texture";'/>
                         <div class = "button-text1" style="font-size: 5.73vmin;">自由模式</div>
                     </button> 
-                    <button class = "button-style" style="background-color: rgb(195, 0, 255)" data-event-click = "clickButton('load_resources')">
+                    <button class = "button-style"  data-event-click = "clickButton('load_resources')">
                         <div class="middle-bg" style='background-image: "textures/road_net/big_bag.texture"; width:6.7vmin; height:6.7vmin;'/>
                         <div class = "button-text1" style="font-size: 5.73vmin;">加载资源</div>
                     </button> 
-                    <button class = "button-style" style="background-color: rgb(52, 207, 115)" data-event-click = "clickButton('load_archive')">
+                    <button class = "button-style"  data-event-click = "clickButton('load_archive')">
                         <div class="middle-bg" style='background-image: "textures/road/write.texture"; width:5.5vmin; height:5.5vmin;'/>
                         <div class = "button-text1" style="font-size: 5.73vmin;">读取进度</div>
                     </button>
