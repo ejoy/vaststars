@@ -61,6 +61,14 @@ local function create_drone(homepos)
             self:flyto(fly_height, dst, 1.0, true)
         end,
         flyto = function (self, height, to, duration, home)
+            print("----flyto----",self.current_pos[1], self.current_pos[2], self.current_pos[3], to[1], to[2], to[3])
+            if self.at_home then
+                local exz <close> = w:entity(self.motion_xz)
+                local xzpos = iom.get_position(exz)
+                local ey <close> = w:entity(self.motion_y)
+                local xpos = iom.get_position(ey)
+                self.current_pos = {math3d.index(xzpos, 1), math3d.index(xpos, 2), math3d.index(xzpos, 3)}
+            end
             if not home then
                 self.at_home = false
             end
@@ -167,7 +175,7 @@ return function(gameworld)
         local drone = e.drone
         assert(drone.prev ~= 0, "drone.prev == 0")
         -- if (drone.prev ~= 0) and (drone.next ~= 0) and (drone.maxprogress ~= 0) and (drone.progress ~= 0) then
-        --     print(drone.prev, drone.next, drone.maxprogress, drone.progress, drone.item)
+            print(drone.status, drone.prev, drone.next, drone.maxprogress, drone.progress, drone.item)
         -- end
         if drone.status == STATUS_HAS_ERROR and lookup_drones[e.eid] then
             lookup_drones[e.eid]:destroy()
@@ -182,7 +190,7 @@ return function(gameworld)
             lookup_drones[e.eid] = create_drone(get_home_pos(obj.srt.t))
         else
             local current = lookup_drones[e.eid]
-            if not current.running then
+            if not current.running or current.at_home then
                 if drone.maxprogress > 0 then
                     if not current.start_progress then
                         current.start_progress = drone.progress
