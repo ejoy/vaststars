@@ -1620,7 +1620,6 @@ local prototype = gameplay.register.prototype
     count = 1,
     prerequisites = {"通向铁矿"},
     effects = {
-      unlock_recipe = {"采矿机打印"},
       unlock_item = {"采矿机框架"},
     },
     guide_focus = {
@@ -1712,7 +1711,7 @@ local prototype = gameplay.register.prototype
     icon = "textures/science/tech-research.texture",
     effects = {
       unlock_recipe = {"送货车站打印","收货车站打印"},
-      unlock_item = {"送货车站框架","收货车站框架"},
+      unlock_item = {"送货车站","收货车站"},
     },
     prerequisites = {"铁矿放置采矿机"},
     ingredients = {
@@ -1822,7 +1821,7 @@ local prototype = gameplay.register.prototype
     count = 10,
     effects = {
       unlock_recipe = {"熔炼炉打印"},
-      unlock_item = {"熔炼炉框架"},
+      unlock_item = {"熔炼炉I"},
     },
     tips_pic = {
       "textures/task_tips_pic/task_produce_ore3.texture",
@@ -1975,7 +1974,6 @@ prototype "物流学II" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    unlock_recipe = {"送货车站设计","收货车站设计"},
   },
   prerequisites = {"量产运输车辆"},
   ingredients = {
@@ -1991,7 +1989,7 @@ prototype "气候研究" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"气候科技包1","空气过滤器打印","地下水挖掘机打印"},
-    unlock_item = {"气候科技包","空气过滤器框架","地下水挖掘机框架"},
+    unlock_item = {"气候科技包","空气过滤器I","地下水挖掘机"},
   },
   prerequisites = {"物流学II"},
   ingredients = {
@@ -2010,7 +2008,7 @@ prototype "管道系统1" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    unlock_recipe = {"管道1","管道2","液罐设计"},
+    unlock_recipe = {"管道1","管道2","液罐打印"},
     unlock_item = {"液罐I","管道1-X型"},
   },
   prerequisites = {"气候研究"},
@@ -2041,7 +2039,7 @@ prototype "排放" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    unlock_recipe = {"烟囱设计","排水口设计","地下管1"},
+    unlock_recipe = {"烟囱打印","排水口打印","地下管1"},
     unlock_item = {"烟囱I","排水口I","地下管1-JI型"},
   },
   prerequisites = {"生产管道"},
@@ -2057,8 +2055,8 @@ prototype "采水研究" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    unlock_recipe = {"地下水挖掘机设计","水电站打印"},
-    unlock_item = {"水电站框架"},
+    unlock_recipe = {"水电站打印"},
+    unlock_item = {"水电站I"},
   },
   prerequisites = {"排放"},
   ingredients = {
@@ -2411,7 +2409,7 @@ prototype "生产气候科技包" {
 --   type = { "tech" },
 --   icon = "textures/science/tech-research.texture",
 --   effects = {
---     unlock_recipe = {"水电站设计"},
+--     unlock_recipe = {"水电站打印"},
 --     unlock_building = {"水电站I"},
 --   },
 --   prerequisites = {"生产管道"},
@@ -2429,7 +2427,7 @@ prototype "生产气候科技包" {
 --   type = { "tech" },
 --   icon = "textures/science/tech-research.texture",
 --   effects = {
---     unlock_recipe = {"地下卤水电解1","地下卤水电解2","电解厂设计"},
+--     unlock_recipe = {"地下卤水电解1","地下卤水电解2","电解厂打印"},
 --     unlock_building = {"电解厂I"},
 --   },
 --   prerequisites = {"水利研究"},
