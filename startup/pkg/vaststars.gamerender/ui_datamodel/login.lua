@@ -12,6 +12,7 @@ local new_game = ecs.require "main_menu_manager".new_game
 local continue_game = ecs.require "main_menu_manager".continue_game
 local debugger <const> = require "debugger"
 local saveload = ecs.require "saveload"
+local gameplay_core = require "gameplay.core"
 
 ---------------
 local M = {}
@@ -30,7 +31,7 @@ function M:stage_camera_usage(datamodel)
     for _, _, _, mode in start_mode_mb:unpack() do
         debugger.set_free_mode(mode == "free")
         world:pub {"rmlui_message_close", "login.rml"}
-        new_game()
+        new_game(mode)
     end
 
     for _ in load_resources_mb:unpack() do
