@@ -54,7 +54,7 @@ local function create_shelf(building, item, count, building_srt)
     local srt = math3d.mul(math3d.matrix({s = building_srt.s, r = building_srt.r, t = building_srt.t}), offset)
     local s, r, t = math3d.srt(srt)
     srt = {s = s, r = r, t = t}
-    local heap = create_heap(meshbin[1], srt, dim3, gap3, count)
+    local heap = create_heap(meshbin[1].meshbin, srt, dim3, gap3, count)
 
     local res = {item = item, count = count, heap = heap, offset = offset}
     res.on_position_change = function (self, building_srt)

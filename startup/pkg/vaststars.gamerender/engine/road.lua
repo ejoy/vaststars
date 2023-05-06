@@ -5,6 +5,8 @@ local w     = world.w
 local iterrain  = ecs.import.interface "mod.terrain|iterrain"
 local ism = ecs.import.interface "mod.stonemountain|istonemountain"
 local UNIT <const> = 10
+local MOUNTAIN = import_package "vaststars.prototype".load("mountain")
+local coord_system = ecs.require "terrain"
 
 local function __pack(x, y)
     assert(x & 0xFF == x and y & 0xFF == y)
@@ -13,6 +15,25 @@ end
 
 local function __unpack(coord)
     return coord & 0xFF, coord >> 8
+end
+
+local function __coords_to_positions(t)
+    local r = {}
+    for _, v in ipairs(t) do
+        local p = coord_system:get_position_by_coord(v[1], v[2], 1, 1)
+        table.insert(r, {x = p[1], z = p[2]})
+    end
+    return r
+end
+
+local function __rects_to_positions(t)
+    local r = {}
+    for _, v in ipairs(t) do
+        local p1 = coord_system:get_begin_position_by_coord(v[1], v[2], 1, 1)
+        local p2 = coord_system:get_begin_position_by_coord(v[3], v[4], 1, 1)
+        table.insert(r, {x = p1[1], z = p1[3], w = math.abs(p2[1] + coord_system.tile_size - p1[1]), h = math.abs(p2[3] + coord_system.tile_size - p1[3])})
+    end
+    return r
 end
 
 local road = {}

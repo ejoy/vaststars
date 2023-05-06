@@ -60,8 +60,8 @@ do
             for _, object in objects:all() do
                 local otypeobject = iprototype.queryByName(object.prototype_name)
                 if otypeobject.supply_area then
-                    local w, h = iprototype.unpackarea(otypeobject.area)
-                    local ow, oh = iprototype.unpackarea(otypeobject.supply_area)
+                    local w, h = iprototype.rotate_area(otypeobject.area, object.dir)
+                    local ow, oh = iprototype.rotate_area(otypeobject.supply_area, object.dir)
                     ow, oh = tonumber(ow), tonumber(oh)
                     sprites[#sprites+1] = create_sprite(object.x - (ow - w)//2, object.y - (oh - h)//2, ow, oh, object.dir, SPRITE_COLOR.DRONE_DEPOT_SUPPLY_AREA_2)
                 end
@@ -70,7 +70,7 @@ do
             for _, object in objects:all() do
                 local otypeobject = iprototype.queryByName(object.prototype_name)
                 if otypeobject.power_supply_area then
-                    local w, h = iprototype.unpackarea(otypeobject.area)
+                    local w, h = iprototype.rotate_area(otypeobject.area, object.dir)
                     local ow, oh = otypeobject.power_supply_area:match("(%d+)x(%d+)")
                     ow, oh = tonumber(ow), tonumber(oh)
                     sprites[#sprites+1] = create_sprite(object.x - (ow - w)//2, object.y - (oh - h)//2, ow, oh, object.dir, SPRITE_COLOR.POWER_SUPPLY_AREA)

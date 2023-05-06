@@ -35,13 +35,14 @@ local function __draw_building_base(object_id, building_srt, w, h)
     )
 end
 
-local function __create_building_base(object_id, typeobject, building_srt)
-    local w, h = iprototype.unpackarea(typeobject.area)
+local function __create_building_base(object_id, typeobject, building_srt, dir)
+    local w, h = iprototype.rotate_area(typeobject.area, dir)
     __draw_building_base(object_id, building_srt, w, h)
     local function remove()
         icanvas.remove_item(icanvas.types().BUILDING_BASE, object_id)
     end
-    local function on_position_change(self, building_srt)
+    local function on_position_change(self, building_srt, dir)
+        local w, h = iprototype.rotate_area(typeobject.area, dir)
         icanvas.remove_item(icanvas.types().BUILDING_BASE, object_id)
         __draw_building_base(object_id, building_srt, w, h)
     end
@@ -66,7 +67,7 @@ return function(gameplay_world)
 
         local building = global.buildings[object.id]
         if not building.building_base then
-            building.building_base = __create_building_base(object.id, typeobject, object.srt)
+            building.building_base = __create_building_base(object.id, typeobject, object.srt, object.dir)
         end
 
         ::continue::

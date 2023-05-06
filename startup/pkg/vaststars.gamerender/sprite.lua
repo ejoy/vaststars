@@ -14,16 +14,7 @@ local function __convert_coord(x, y)
     return x - offset_x, y - offset_y
 end
 
-local function __rotate_area(w, h, dir)
-    if dir == 'N' or dir == 'S' then
-        return w, h
-    elseif dir == 'E' or dir == 'W' then
-        return h, w
-    end
-end
-
 return function(x, y, w, h, dir, color)
-    local w, h = __rotate_area(w, h, dir)
     local id
 
     local function create(x, y, w, h, color)

@@ -18,6 +18,8 @@ local icanvas = ecs.require "engine.canvas"
 local datalist = require "datalist"
 local fs = require "filesystem"
 local recipe_icon_canvas_cfg = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/textures/recipe_icon_canvas.cfg")):read "a")
+local fluid_icon_canvas_cfg = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/textures/fluid_icon_canvas.cfg")):read "a")
+local irecipe = require "gameplay.interface.recipe"
 
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local HEAP_DIM3 = {2, 4, 2}
@@ -103,7 +105,7 @@ local function create_io_shelves(gameplay_world, e, building_srt)
         srt = {s = s, r = r, t = t}
         local prefab = "/pkg/vaststars.resources/" .. typeobject_item.pile_model
         local slot = assert(gameplay_world:container_get(e.chest, idx))
-        heaps[#heaps+1] = create_heap(prefab_meshbin(prefab)[1], srt, HEAP_DIM3, gap3, slot.amount)
+        heaps[#heaps+1] = create_heap(prefab_meshbin(prefab)[1].meshbin, srt, HEAP_DIM3, gap3, slot.amount)
         io_counts[#io_counts+1] = slot.amount
     end
     for idx = 1, results_n do
@@ -116,7 +118,7 @@ local function create_io_shelves(gameplay_world, e, building_srt)
         srt = {s = s, r = r, t = t}
         local prefab = "/pkg/vaststars.resources/" .. typeobject_item.pile_model
         local slot = assert(gameplay_world:container_get(e.chest, idx + ingredients_n))
-        heaps[#heaps+1] = create_heap(prefab_meshbin(prefab)[1], srt, HEAP_DIM3, gap3, slot.amount)
+        heaps[#heaps+1] = create_heap(prefab_meshbin(prefab)[1].meshbin, srt, HEAP_DIM3, gap3, slot.amount)
         io_counts[#io_counts+1] = slot.amount
     end
 
@@ -182,6 +184,17 @@ local function __get_draw_rect(x, y, icon_w, icon_h, multiple)
     local draw_y = y + (tile_size / 2)
     return draw_x, draw_y, draw_w, draw_h
 end
+
+local DIRECTION <const> = {
+    N = 0,
+    E = 1,
+    S = 2,
+    W = 3,
+    [0] = 'N',
+    [1] = 'E',
+    [2] = 'S',
+    [3] = 'W',
+}
 
 local function __draw_icon(e, object_id, building_srt, status, recipe)
     local x, y = building_srt.t[1], building_srt.t[3]
@@ -284,6 +297,71 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
                     x = draw_x, y = draw_y, w = draw_w, h = draw_h,
                 }
             )
+
+            if typeobject.fluidboxes then
+                -- draw fluid icon of fluidboxes
+                local t = {
+                    {"ingredients", "input"},
+                    {"results", "output"},
+                }
+
+                for _, r in ipairs(t) do
+                    for idx, v in ipairs(irecipe.get_elements(recipe_typeobject[r[1]])) do
+                        if iprototype.is_fluid_id(v.id) then
+                            local c = assert(typeobject.fluidboxes[r[2]][idx])
+                            local connection = assert(c.connections[1])
+                            local connection_x, connection_y = iprototype.rotate_connection(connection.position, DIRECTION[e.building.direction], typeobject.area)
+
+                            material_path = "/pkg/vaststars.resources/materials/fluid_icon_bg.material"
+                            texture_x, texture_y, texture_w, texture_h = 0, 0, __get_texture_size(material_path)
+                            draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x + connection_x * iterrain.tile_size, y + connection_y * iterrain.tile_size - iterrain.tile_size / 2, texture_w, texture_h, 1)
+                            icanvas.add_item(icanvas.types().ICON,
+                                object_id,
+                                material_path,
+                                RENDER_LAYER.ICON_CONTENT,
+                                {
+                                    texture = {
+                                        rect = {
+                                            x = texture_x,
+                                            y = texture_y,
+                                            w = texture_w,
+                                            h = texture_h,
+                                        },
+                                    },
+                                    x = draw_x, y = draw_y, w = draw_w, h = draw_h,
+                                }
+                            )
+
+                            local fluid_typeobject = iprototype.queryById(v.id)
+                            local cfg = fluid_icon_canvas_cfg[fluid_typeobject.icon]
+                            if not cfg then
+                                assert(cfg, ("can not found `%s`"):format(fluid_typeobject.icon))
+                                return
+                            end
+                            material_path = "/pkg/vaststars.resources/materials/fluid_icon_canvas.material"
+                            texture_x, texture_y, texture_w, texture_h = cfg.x, cfg.y, cfg.width, cfg.height
+                            draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x + connection_x * iterrain.tile_size, y + connection_y * iterrain.tile_size - iterrain.tile_size / 2, cfg.width, cfg.height, 1)
+                            icanvas.add_item(icanvas.types().ICON,
+                                object_id,
+                                material_path,
+                                RENDER_LAYER.ICON_CONTENT,
+                                {
+                                    texture = {
+                                        rect = {
+                                            x = texture_x,
+                                            y = texture_y,
+                                            w = texture_w,
+                                            h = texture_h,
+                                        },
+                                    },
+                                    x = draw_x, y = draw_y, w = draw_w, h = draw_h,
+                                }
+                            )
+                        end
+                    end
+                end
+            end -- typeobject.fluidboxes
+
         end
     end
 end
@@ -301,7 +379,7 @@ local function create_icon(object_id, e, building_srt)
     end
     local function update(self, e)
         local s
-        if e.capacitance.network == 0 then
+        if e.capacitance and e.capacitance.network == 0 then
             s = ICON_STATUS_NOPOWER
         else
             if e.assembling.recipe == 0 then
@@ -391,7 +469,7 @@ local function __need_assembly_icon(gameplay_world, e)
 end
 
 return function(world)
-    for e in world.ecs:select "assembling:in chest:in building:in capacitance:in eid:in" do
+    for e in world.ecs:select "assembling:in chest:in building:in capacitance?in eid:in" do
         -- object may not have been fully created yet
         local object = objects:coord(e.building.x, e.building.y)
         if not object then
