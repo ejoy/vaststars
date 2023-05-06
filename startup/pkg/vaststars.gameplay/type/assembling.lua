@@ -26,10 +26,10 @@ function c:ctor(init, pt)
             status = STATUS_IDLE,
         },
     }
+    if pt.fluidboxes then
+        e.fluidboxes = {}
+    end
     if recipe_name == nil then
-        if pt.fluidboxes then
-            e.fluidboxes = {}
-        end
         fluidbox.update_fluidboxes(e, pt, init.fluids)
     else
         assembling.set_recipe(self, e, pt, recipe_name, init.fluids, pt.recipe_init_limit)

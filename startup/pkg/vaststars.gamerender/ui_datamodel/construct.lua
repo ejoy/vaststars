@@ -496,6 +496,7 @@ function M:stage_camera_usage(datamodel)
                 -- we may click the button repeatedly, so we need to clear the old model first
                 if builder then
                     builder:clean(datamodel)
+                    builder = nil
                 end
                 __construct_entity(datamodel, typeobject)
             end)

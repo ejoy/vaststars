@@ -196,6 +196,13 @@ local DIRECTION <const> = {
     [3] = 'W',
 }
 
+local function __calc_begin_xy(x, y, w, h)
+    local tile_size = iterrain.tile_size
+    local begin_x = x - (w * tile_size) / 2
+    local begin_y = y + (h * tile_size) / 2
+    return begin_x, begin_y
+end
+
 local function __draw_icon(e, object_id, building_srt, status, recipe)
     local x, y = building_srt.t[1], building_srt.t[3]
     if status == ICON_STATUS_NOPOWER then
@@ -305,6 +312,8 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
                     {"results", "output"},
                 }
 
+                local begin_x, begin_y = __calc_begin_xy(x, y, iprototype.rotate_area(typeobject.area, DIRECTION[e.building.direction]))
+
                 for _, r in ipairs(t) do
                     for idx, v in ipairs(irecipe.get_elements(recipe_typeobject[r[1]])) do
                         if iprototype.is_fluid_id(v.id) then
@@ -314,7 +323,13 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
 
                             material_path = "/pkg/vaststars.resources/materials/fluid_icon_bg.material"
                             texture_x, texture_y, texture_w, texture_h = 0, 0, __get_texture_size(material_path)
-                            draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x + connection_x * iterrain.tile_size, y + connection_y * iterrain.tile_size - iterrain.tile_size / 2, texture_w, texture_h, 1)
+                            draw_x, draw_y, draw_w, draw_h = __get_draw_rect(
+                                begin_x + connection_x * iterrain.tile_size + iterrain.tile_size / 2,
+                                begin_y - connection_y * iterrain.tile_size - iterrain.tile_size / 2,
+                                texture_w,
+                                texture_h,
+                                1
+                            )
                             icanvas.add_item(icanvas.types().ICON,
                                 object_id,
                                 material_path,
@@ -340,7 +355,13 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
                             end
                             material_path = "/pkg/vaststars.resources/materials/fluid_icon_canvas.material"
                             texture_x, texture_y, texture_w, texture_h = cfg.x, cfg.y, cfg.width, cfg.height
-                            draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x + connection_x * iterrain.tile_size, y + connection_y * iterrain.tile_size - iterrain.tile_size / 2, cfg.width, cfg.height, 1)
+                            draw_x, draw_y, draw_w, draw_h = __get_draw_rect(
+                                begin_x + connection_x * iterrain.tile_size + iterrain.tile_size / 2,
+                                begin_y - connection_y * iterrain.tile_size - iterrain.tile_size / 2,
+                                texture_w,
+                                texture_h,
+                                1
+                            )
                             icanvas.add_item(icanvas.types().ICON,
                                 object_id,
                                 material_path,

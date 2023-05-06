@@ -500,47 +500,34 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
             end
 
             if not global.roadnet[iprototype.packcoord(dx, dy)] then
-                valid = false
-                break
+                return false
             end
 
             local prototype_name = iroadnet_converter.mask_to_prototype_name_dir(global.roadnet[iprototype.packcoord(dx, dy)])
             if not __is_station_placeable(prototype_name) then
-                valid = false
-                break
+                return false
             end
 
-            local left = iprototype.rotate_dir_times(conn.dir, -1)
-            local right = iprototype.rotate_dir_times(conn.dir, 1)
+            local deltas = {
+                {iprototype.rotate_dir_times(conn.dir, -1), 1},
+                {iprototype.rotate_dir_times(conn.dir, -1), 2},
+                {iprototype.rotate_dir_times(conn.dir, 1) , 1},
+                {iprototype.rotate_dir_times(conn.dir, 1) , 2},
+            }
 
-            local succ, lx, ly = coord_system:move_coord(dx, dy, left, 1)
-            if not succ then
-                goto continue
-            end
-            if not global.roadnet[iprototype.packcoord(lx, ly)] then
-                valid = false
-                break
-            end
+            for _, d in ipairs(deltas) do
+                local succ, lx, ly = coord_system:move_coord(dx, dy, d[1], d[2])
+                if not succ then
+                    goto continue
+                end
+                if not global.roadnet[iprototype.packcoord(lx, ly)] then
+                    return false
+                end
 
-            prototype_name = iroadnet_converter.mask_to_prototype_name_dir(global.roadnet[iprototype.packcoord(lx, ly)])
-            if not __is_straight_road(prototype_name) then
-                valid = false
-                break
-            end
-
-            local succ, rx, ry = coord_system:move_coord(dx, dy, right, 1)
-            if not succ then
-                goto continue
-            end
-            if not global.roadnet[iprototype.packcoord(rx, ry)] then
-                valid = false
-                break
-            end
-
-            prototype_name = iroadnet_converter.mask_to_prototype_name_dir(global.roadnet[iprototype.packcoord(rx, ry)])
-            if not __is_straight_road(prototype_name) then
-                valid = false
-                break
+                prototype_name = iroadnet_converter.mask_to_prototype_name_dir(global.roadnet[iprototype.packcoord(lx, ly)])
+                if not __is_straight_road(prototype_name) then
+                    return false
+                end
             end
 
             valid = true

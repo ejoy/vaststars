@@ -395,7 +395,7 @@ local function _builder_start(self, datamodel)
                 if fluidbox.dir ~= iprototype.reverse_dir(dir) then
                     goto continue
                 end
-                succ, to_x, to_y = terrain:move_coord(fluidbox.x, fluidbox.y, dir,
+                succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir,
                     math_abs(from_x - fluidbox.x),
                     math_abs(from_y - fluidbox.y)
                 )
