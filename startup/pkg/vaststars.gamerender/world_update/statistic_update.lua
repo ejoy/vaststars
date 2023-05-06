@@ -79,7 +79,7 @@ return function(world)
         local e = gameplay_core.get_entity(eid)
         if e then
             if cfg.power then
-                if e.consumer or e.generator then
+                if e.consumer or e.generator or e.accumulator then
                     statistic.power[eid] = create_statistic_node(cfg, e.consumer)
                     local pg = statistic.power_group[cfg.name]
                     if not pg then

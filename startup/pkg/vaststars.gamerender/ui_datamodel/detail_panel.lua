@@ -72,17 +72,18 @@ local function get_display_info(e, typeobject, t)
                 key = cn.. "." .. vn
             else
                 total = typeobject[cn]
-                if cn == "power" or cn == "capacitance" then
+                if cn == "power" or cn == "capacitance" or cn == "charge_power" then
                     local current = 0
-                    if cn == "power" then
+                    if cn == "power" or cn == "charge_power" then
                         local st = global.statistic["power"][e.eid]
-                        -- if typeobject.name == "指挥中心" then
-                        --     local consumenode = global.statistic.power_consumed["5s"]
-                        --     current = consumenode.power / consumenode.time
-                        -- else
                         if st then
                             -- power is sum of 50 tick
-                            current = st[cn] * (UPS / 50)
+                            current = st["power"] * (UPS / 50)
+                            if typeobject.name == "蓄电池I" then
+                                if (cn == "charge_power" and e.capacitance.delta > 0) or (cn == "power" and e.capacitance.delta < 0) then
+                                    current = 0
+                                end
+                            end
                         elseif e.solar_panel then
                             current = get_solar_panel_power(total) * UPS
                             if current <= 0 then
@@ -96,8 +97,10 @@ local function get_display_info(e, typeobject, t)
                                 status = 2 --idle status
                             end
                         end
+                        total = total * UPS
+                    elseif cn == "capacitance" then
+                        current = total - e.capacitance.shortage
                     end
-                    total = total * UPS
                     local unit = "k"
                     local divisor = 1000
                     if total >= 1000000000 then
