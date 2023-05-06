@@ -146,6 +146,7 @@ prototype "锅炉I" {
     priority = "secondary",
     area = "3x2",
     rotate_on_build = true,
+    io_shelf = false,
     craft_category = {"流体换热处理"},
     maxslot = "8",
     fluidboxes = {

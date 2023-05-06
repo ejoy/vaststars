@@ -5,6 +5,7 @@ local w     = world.w
 local iterrain  = ecs.import.interface "mod.terrain|iterrain"
 local ism = ecs.import.interface "mod.stonemountain|istonemountain"
 local UNIT <const> = 10
+local MOUNTAIN = import_package "vaststars.prototype".load("mountain")
 
 local function __pack(x, y)
     assert(x & 0xFF == x and y & 0xFF == y)
@@ -33,21 +34,9 @@ function road:create(width, height, offset, layer_names, shape_types)
         self.shape_types[state] = true
     end
     iterrain.gen_terrain_field(width, height, offset, UNIT)
---[[     local density = 0.5
-    local scale_table = {
-        big = 0.8,
-        middle = 0.5,
-        small = 0.1
-    }
-    -- must generate stonemountain
-    local stone_area = {
-        {x = 0, z = 0}
-    }
-    -- should not generate stonemountain
-    local open_area = {
-        {x = 5, z = 5, w = 15, h = 15}
-    }
-    ism.create_sm_entity(density, width, height, offset, UNIT, scale_table, stone_area, open_area) ]]
+
+    --
+    ism.create_sm_entity(MOUNTAIN.density, width, height, offset, UNIT, MOUNTAIN.scale, MOUNTAIN.mountain_coords, MOUNTAIN.excluded_rects)
 end
 
 function road:get_offset()

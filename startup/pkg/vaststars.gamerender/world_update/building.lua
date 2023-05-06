@@ -41,7 +41,8 @@ local function __create_building_base(object_id, typeobject, building_srt, dir)
     local function remove()
         icanvas.remove_item(icanvas.types().BUILDING_BASE, object_id)
     end
-    local function on_position_change(self, building_srt)
+    local function on_position_change(self, building_srt, dir)
+        local w, h = iprototype.rotate_area(typeobject.area, dir)
         icanvas.remove_item(icanvas.types().BUILDING_BASE, object_id)
         __draw_building_base(object_id, building_srt, w, h)
     end

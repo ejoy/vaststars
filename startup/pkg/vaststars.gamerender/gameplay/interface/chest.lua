@@ -49,7 +49,7 @@ local InvalidChest <const> = 0
 
 local function __get_item_stack(item)
     local typeobject = assert(iprototype.queryById(item))
-    return typeobject.stack
+    return typeobject.stack or 0
 end
 
 local function __rebuild_chest(world, e, new_item)

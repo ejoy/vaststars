@@ -23,10 +23,10 @@ local mc = import_package "ant.math".constant
 local create_road_entrance = ecs.require "editor.road_entrance"
 local gameplay_core = require "gameplay.core"
 local global = require "global"
-local vsobject_manager = ecs.require "vsobject_manager"
 local create_sprite = ecs.require "sprite"
 local SPRITE_COLOR = import_package "vaststars.prototype".load("sprite_color")
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
+local ientity = require "gameplay.interface.entity"
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -324,17 +324,19 @@ local function confirm(self, datamodel)
     local e = gameplay_core.get_entity(object.gameplay_eid)
     e.building.x = self.pickup_object.x
     e.building.y = self.pickup_object.y
+    ientity:set_direction(gameplay_core.get_world(), e, self.pickup_object.dir)
     e.building_changed = true
     gameplay_core.build()
 
     iobject.coord(object, self.pickup_object.x, self.pickup_object.y, coord_system)
+    object.dir = self.pickup_object.dir
     objects:set(object, "CONSTRUCTED")
     objects:coord_update(object)
 
     local building = global.buildings[object.id]
     if building then
         for _, v in pairs(building) do
-            v:on_position_change(object.srt)
+            v:on_position_change(object.srt, object.dir)
         end
     end
 
