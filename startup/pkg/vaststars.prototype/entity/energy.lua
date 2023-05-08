@@ -25,7 +25,7 @@ prototype "蒸汽发电机I" {
                 base_level = -100,
                 connections = {
                     {type="input-output", position={1,0,"N"}},
-                    {type="input-output", position={1,2,"S"}},
+                    {type="input-output", position={1,4,"S"}},
                 }
             },
         },
