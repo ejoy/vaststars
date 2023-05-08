@@ -1,7 +1,7 @@
 local ecs = ...
 local world = ecs.world
 local w = world.w
-
+local audio     = require "audio"
 local FRAMES_PER_SECOND <const> = 30
 local bgfx = require 'bgfx'
 local iRmlUi = ecs.import.interface "ant.rmlui|irmlui"
@@ -27,6 +27,7 @@ local irender_layer = ecs.require "engine.render_layer"
 local imain_menu_manager = ecs.require "main_menu_manager"
 local idn = ecs.import.interface "ant.daynight|idaynight"
 local icanvas = ecs.require "engine.canvas"
+local ia = ecs.import.interface "ant.audio|audio_interface"
 
 local DuskTick <const> = require("gameplay.interface.constant").DuskTick
 local NightTick <const> = require("gameplay.interface.constant").NightTick
@@ -90,7 +91,7 @@ local daynight_update; do
         end
     end
 end
-
+local sound_event = {}
 function m:init_world()
     bgfx.maxfps(FRAMES_PER_SECOND)
     ecs.create_instance "/pkg/vaststars.resources/daynight.prefab"
@@ -137,6 +138,49 @@ function m:init_world()
     icanvas.create(icanvas.types().ROAD_ENTRANCE_MARKER, false, 0.02)
 
     iui.open({"login.rml"})
+    -- audio test
+    -- local bankname = "/pkg/vaststars.resources/sounds/Master.bank"
+    -- local master = ia.load_bank(bankname)
+    -- if not master then
+    --     print("LoadBank Faied. :", bankname)
+    -- end
+    -- bankname = "/pkg/vaststars.resources/sounds/Master.strings.bank"
+    -- local bank1 = ia.load_bank(bankname)
+    -- if not bank1 then
+    --     print("LoadBank Faied. :", bankname)
+    -- end
+    -- bankname = "/pkg/vaststars.resources/sounds/Construt.bank"
+    -- local construt = ia.load_bank(bankname)
+    -- if not construt then
+    --     print("LoadBank Faied. :", bankname)
+    -- end
+    -- bankname = "/pkg/vaststars.resources/sounds/UI.bank"
+    -- local ui = ia.load_bank(bankname)
+    -- if not ui then
+    --     print("LoadBank Faied. :", bankname)
+    -- end
+    -- local bank_list = audio.get_bank_list()
+    -- for _, v in ipairs(bank_list) do
+    --     print(audio.get_bank_name(v))
+    -- end
+
+    -- local event_list = audio.get_event_list(master)
+    -- for _, v in ipairs(event_list) do
+    --     print(audio.get_event_name(v))
+    -- end
+    -- local event_list = audio.get_event_list(construt)
+    -- for _, v in ipairs(event_list) do
+    --     print(audio.get_event_name(v))
+    -- end
+    -- local event_list = audio.get_event_list(ui)
+    -- for _, v in ipairs(event_list) do
+    --     print(audio.get_event_name(v))
+    -- end
+    -- local event_name = "event:/background"
+    -- sound_event[event_name] = ia.create(event_name)
+    -- -- event_name = "event:/UI/click"
+    -- -- sound_event[event_name] = ia.create(event_name)
+    -- ia.play(event_name)
 end
 
 function m:update_world()
