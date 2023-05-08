@@ -28,6 +28,11 @@ local PREFABS = {
     ["out"] = "/pkg/vaststars.resources/prefabs/shelf-output.prefab",
 }
 
+local heap_events = {}
+heap_events["set_matrix"] = function(_, e, mat)
+    iom.set_srt(e, math3d.srt(mat))
+end
+
 local function create_heap(meshbin, srt, dim3, gap3, count)
     return ientity_object.create(ecs.create_entity {
         policy = {
@@ -47,10 +52,10 @@ local function create_heap(meshbin, srt, dim3, gap3, count)
                 interval = gap3,
             }
         },
-    })
+    }, heap_events)
 end
 
-local function create_io_shelves(gameplay_world, e, building_srt)
+local function create_io_shelves(gameplay_world, e, building_mat)
     local typeobject_recipe = iprototype.queryById(e.assembling.recipe)
     local typeobject_building = iprototype.queryById(e.building.prototype)
     local ingredients_n <const> = #typeobject_recipe.ingredients//4 - 1
@@ -84,9 +89,13 @@ local function create_io_shelves(gameplay_world, e, building_srt)
             local offset = math3d.ref(math3d.matrix {s = scene.s, r = scene.r, t = scene.t})
             function prefab_instance:on_ready()
                 local e <close> = w:entity(self.tag["*"][1])
-                iom.set_srt_matrix(e, math3d.mul(building_srt, offset))
+                iom.set_srt(e, math3d.srt(math3d.mul(building_mat, offset)))
             end
-            function prefab_instance:on_message()
+            function prefab_instance:on_message(msg, ...)
+                local mat = ...
+                assert(msg == "set_matrix", "invalid message")
+                local e <close> = w:entity(self.tag["*"][1])
+                iom.set_srt(e, math3d.srt(mat))
             end
             shelves[#shelves+1] = world:create_object(prefab_instance)
 
@@ -99,26 +108,22 @@ local function create_io_shelves(gameplay_world, e, building_srt)
         local id = string.unpack("<I2I2", typeobject_recipe.ingredients, 4*idx+1)
         local typeobject_item = iprototype.queryById(id)
         local gap3 = typeobject_item.gap3 and {typeobject_item.gap3:match("(%d+)x(%d+)x(%d+)")} or {0, 0, 0}
-        local srt = math3d.mul(building_srt, shelf_offsets[#heaps+1])
-        srt = math3d.mul(srt, heap_offsets[#heaps+1])
-        local s, r, t = math3d.srt(srt)
-        srt = {s = s, r = r, t = t}
+        local mat = math3d.mul(math3d.mul(building_mat, shelf_offsets[#heaps+1]), heap_offsets[#heaps+1])
+        local s, r, t = math3d.srt(mat)
         local prefab = "/pkg/vaststars.resources/" .. typeobject_item.pile_model
         local slot = assert(gameplay_world:container_get(e.chest, idx))
-        heaps[#heaps+1] = create_heap(prefab_meshbin(prefab)[1].meshbin, srt, HEAP_DIM3, gap3, slot.amount)
+        heaps[#heaps+1] = create_heap(prefab_meshbin(prefab)[1].meshbin, {s = s, r = r, t = t}, HEAP_DIM3, gap3, slot.amount)
         io_counts[#io_counts+1] = slot.amount
     end
     for idx = 1, results_n do
         local id = string.unpack("<I2I2", typeobject_recipe.results, 4*idx+1)
         local typeobject_item = iprototype.queryById(id)
         local gap3 = typeobject_item.gap3 and {typeobject_item.gap3:match("(%d+)x(%d+)x(%d+)")} or {0, 0, 0}
-        local srt = math3d.mul(building_srt, shelf_offsets[#heaps+1])
-        srt = math3d.mul(srt, heap_offsets[#heaps+1])
-        local s, r, t = math3d.srt(srt)
-        srt = {s = s, r = r, t = t}
+        local mat = math3d.mul(math3d.mul(building_mat, shelf_offsets[#heaps+1]), heap_offsets[#heaps+1])
+        local s, r, t = math3d.srt(mat)
         local prefab = "/pkg/vaststars.resources/" .. typeobject_item.pile_model
         local slot = assert(gameplay_world:container_get(e.chest, idx + ingredients_n))
-        heaps[#heaps+1] = create_heap(prefab_meshbin(prefab)[1].meshbin, srt, HEAP_DIM3, gap3, slot.amount)
+        heaps[#heaps+1] = create_heap(prefab_meshbin(prefab)[1].meshbin, {s = s, r = r, t = t}, HEAP_DIM3, gap3, slot.amount)
         io_counts[#io_counts+1] = slot.amount
     end
 
@@ -152,7 +157,16 @@ local function create_io_shelves(gameplay_world, e, building_srt)
         end
     end
     local function on_position_change(self, building_srt)
-        -- TODO: when the building position changes, update the location
+        local mat = math3d.matrix {s = building_srt.s, r = building_srt.r, t = building_srt.t}
+        for idx, o in ipairs(shelves) do
+            local offset = shelf_offsets[idx]
+            o:send("set_matrix", math3d.ref(math3d.mul(mat, offset)))
+        end
+
+        for idx, o in ipairs(heaps) do
+            local srt = math3d.mul(mat, shelf_offsets[idx])
+            o:send("set_matrix", math3d.ref(math3d.mul(srt, heap_offsets[idx])))
+        end
     end
     return {
         on_position_change = on_position_change,
@@ -401,7 +415,7 @@ local function create_icon(object_id, e, building_srt)
     end
     local function update(self, e)
         local s
-        if e.capacitance and e.capacitance.network == 0 then
+        if global.statistic.power and global.statistic.power[e.eid] and global.statistic.power[e.eid] == 0 then
             s = ICON_STATUS_NOPOWER
         else
             if e.assembling.recipe == 0 then
