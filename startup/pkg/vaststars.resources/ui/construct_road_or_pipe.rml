@@ -45,7 +45,6 @@
             local ui_sys = require "ui_system"
             local start = ui_sys.createDataMode("start", {
                 buttons = {},
-                show_confirm = false,
                 show_start_teardown = false,
                 show_start_laying = false,
                 show_place_one = false,
@@ -83,9 +82,9 @@
                         end
                         if start.show_cancel then
                             start.buttons[#start.buttons+1] = {name = "修建取消", message = "cancel", background_color = "rgb(105, 112, 8)", background_image = "textures/common/road-disable.texture"}
-                         end
+                        end
                         if start.show_finish_laying then
-                            start.buttons[#start.buttons+1] = {name = "修建结束", message = "finish_laying", background_color = "rgb(105, 112, 8)", background_image = "textures/construct/confirm.texture"}
+                            start.buttons[#start.buttons+1] = {name = "施工", message = "finish_laying", background_color = "rgb(105, 112, 8)", background_image = "textures/construct/confirm.texture"}
                         end
 
                         for i = 1, #start.buttons do
@@ -103,7 +102,7 @@
     <body style = "pointer-events: none;">
         <div data-model="start" style = "pointer-events: none; width: 100%; height:100%;">
             <div style = "pointer-events: none; position: absolute; width: 100%; height:100%;">
-                <button class = "back-button" data-event-click="clickButton('back')"/>
+                <button class = "back-button" data-event-click="clickButton('quit')"/>
             </div>
             <div style = "pointer-events: none; position: absolute; width: 100%; height:100%; flex-direction: column-reverse;">
                 <div style = "pointer-events: none; margin: 0 auto; margin-bottom: 2vmin; flex-direction: row;">
@@ -113,18 +112,6 @@
                             <div style="font-size: 85%;">{{it.name}}</div>
                         </button>
                         <div style = "width: 2vmin;" data-if = "it.separator" />
-                    </div>
-                </div>
-            </div>
-
-            <div style = "pointer-events: none; position: absolute; width: 100%; height:100%; flex-direction: column-reverse;">
-                <div style = "pointer-events: none; width: 100%; margin-bottom: 2vmin; flex-direction: row-reverse;">
-                    <div style = "width: 5vmin;" />
-                    <div style = "flex-direction: row;">
-                        <button style='width: 22.00vmin; height: 16.00vmin; background-color: rgb(3, 196, 106);' data-event-click="clickConfirm()" data-if = "show_confirm" >
-                            <div style='margin: 0 auto; background-image:"textures/construct/hammer.texture"; width: 11.20vmin; height: 11.20vmin; background-size:cover; animation:0.5s linear 0s infinite alternate rotation;'/>
-                            <div style="font-size: 85%;">施工</div>
-                        </button>
                     </div>
                 </div>
             </div>

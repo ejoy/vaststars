@@ -17,21 +17,31 @@ local function __unpack(coord)
     return coord & 0xFF, coord >> 8
 end
 
-local function __coords_to_positions(t)
+local WIDTH <const> = 256 -- coordinate value range: [0, WIDTH - 1]
+local HEIGHT <const> = 256 -- coordinate value range: [0, HEIGHT - 1]
+
+local function __logic_to_render(x, y, offset)
+    x, y = x, HEIGHT - y - 1
+    x, y = x - offset, y - offset
+    return {x, y}
+end
+
+local function __coords_to_positions(t, offset)
     local r = {}
     for _, v in ipairs(t) do
-        local p = coord_system:get_position_by_coord(v[1], v[2], 1, 1)
-        table.insert(r, {x = p[1], z = p[2]})
+        local c = __logic_to_render(v[1], v[2], offset)
+        table.insert(r, {x = c[1], z = c[2]})
     end
     return r
 end
 
-local function __rects_to_positions(t)
+local function __rects_to_positions(t, offset)
     local r = {}
     for _, v in ipairs(t) do
-        local p1 = coord_system:get_begin_position_by_coord(v[1], v[2], 1, 1)
-        local p2 = coord_system:get_begin_position_by_coord(v[3], v[4], 1, 1)
-        table.insert(r, {x = p1[1], z = p1[3], w = math.abs(p2[1] + coord_system.tile_size - p1[1]), h = math.abs(p2[3] + coord_system.tile_size - p1[3])})
+        local c1 = __logic_to_render(v[1], v[2], offset)
+        local c2 = __logic_to_render(v[3], v[4], offset)
+        local w, h = math.abs(c2[1] - c1[1]), math.abs(c2[2] - c1[2])
+        table.insert(r, {x = c1[1], z = c1[2], w = w, h = h})
     end
     return r
 end
@@ -54,30 +64,9 @@ function road:create(width, height, offset, layer_names, shape_types)
         self.shape_types[state] = true
     end
     iterrain.gen_terrain_field(width, height, offset, UNIT)
---[[     local density = 0.5
-    local scale_table = {
-        big = 0.8,
-        middle = 0.5,
-        small = 0.1
-    }
-    -- must generate stonemountain
-    local stone_area = {
-        {x = 0, z = 0}
-    }
-    -- should not generate stonemountain
-    local open_area = {
-        {x = -10, z = 10, w = 20, h = 20}
-    }
-    ism.create_sm_entity(density, width, height, offset, UNIT, scale_table, stone_area, open_area)
 
-    local in_area = {
-        {x = -5, z = 5, w = 5, h = 5}
-    }
-    local out_area = {
-        {x = 10, z = 10, w = 10, h = 10}
-    }
-    local exist_sm1 = ism.exist_sm(in_area)
-    local exist_sm2 = ism.exist_sm(out_area) ]]
+    --
+    ism.create_sm_entity(MOUNTAIN.density, width, height, offset, UNIT, MOUNTAIN.scale, __coords_to_positions(MOUNTAIN.mountain_coords, offset), __rects_to_positions(MOUNTAIN.excluded_rects, offset))
 end
 
 function road:get_offset()
@@ -93,9 +82,9 @@ local inner_shape = {
     ["valid"] = "2",
     ["invalid"] = "1",
 
-    ["normal"] = "1",
-    ["modify"] = "2",
-    ["remove"] = "3",
+    ["normal"] = "3",
+    ["remove"] = "2",
+    ["modify"] = "1",
 }
 
 -- map = {{x, y, shape_type, shape, dir}, ...}

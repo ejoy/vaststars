@@ -56,7 +56,6 @@ local function create_io_shelves(gameplay_world, e, building_srt)
     local ingredients_n <const> = #typeobject_recipe.ingredients//4 - 1
     local results_n <const> = #typeobject_recipe.results//4 - 1
     local key = ("%s%s"):format(ingredients_n, results_n)
-    local cfg = assert(building_io_slots[key])
 
     if typeobject_building.io_shelf == false then
         return {
@@ -73,6 +72,7 @@ local function create_io_shelves(gameplay_world, e, building_srt)
     local heaps = {}
     local io_counts = {}
 
+    local cfg = assert(building_io_slots[key])
     local building_slots = prefab_slots("/pkg/vaststars.resources/" .. typeobject_building.model)
     for _, io in ipairs({"in", "out"}) do
         local prefab = PREFABS[io]
@@ -196,6 +196,13 @@ local DIRECTION <const> = {
     [3] = 'W',
 }
 
+local function __calc_begin_xy(x, y, w, h)
+    local tile_size = iterrain.tile_size
+    local begin_x = x - (w * tile_size) / 2
+    local begin_y = y + (h * tile_size) / 2
+    return begin_x, begin_y
+end
+
 local function __draw_icon(e, object_id, building_srt, status, recipe)
     local x, y = building_srt.t[1], building_srt.t[3]
     if status == ICON_STATUS_NOPOWER then
@@ -221,9 +228,6 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
         )
     else
         local typeobject = iprototype.queryById(e.building.prototype)
-        if typeobject.assembling_icon == false then
-            return
-        end
         if status == ICON_STATUS_NORECIPE then
             local material_path = "/pkg/vaststars.resources/materials/setup2.material"
             local icon_w, icon_h = __get_texture_size(material_path)
@@ -251,59 +255,65 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
             local draw_x, draw_y, draw_w, draw_h
             local texture_x, texture_y, texture_w, texture_h
 
-            material_path = "/pkg/vaststars.resources/materials/recipe_icon_bg.material"
-            icon_w, icon_h = __get_texture_size(material_path)
-            texture_x, texture_y, texture_w, texture_h = 0, 0, icon_w, icon_h
-            draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x, y, icon_w, icon_h, 1.5)
-            icanvas.add_item(icanvas.types().ICON,
-                object_id,
-                material_path,
-                RENDER_LAYER.ICON,
-                {
-                    texture = {
-                        rect = {
-                            x = texture_x,
-                            y = texture_y,
-                            w = texture_w,
-                            h = texture_h,
+            if typeobject.assembling_icon ~= false then
+                material_path = "/pkg/vaststars.resources/materials/recipe_icon_bg.material"
+                icon_w, icon_h = __get_texture_size(material_path)
+                texture_x, texture_y, texture_w, texture_h = 0, 0, icon_w, icon_h
+                draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x, y, icon_w, icon_h, 1.5)
+                icanvas.add_item(icanvas.types().ICON,
+                    object_id,
+                    material_path,
+                    RENDER_LAYER.ICON,
+                    {
+                        texture = {
+                            rect = {
+                                x = texture_x,
+                                y = texture_y,
+                                w = texture_w,
+                                h = texture_h,
+                            },
                         },
-                    },
-                    x = draw_x, y = draw_y, w = draw_w, h = draw_h,
-                }
-            )
+                        x = draw_x, y = draw_y, w = draw_w, h = draw_h,
+                    }
+                )
 
-            local recipe_typeobject = assert(iprototype.queryById(recipe))
-            local cfg = recipe_icon_canvas_cfg[recipe_typeobject.recipe_icon]
-            if not cfg then
-                assert(cfg, ("can not found `%s`"):format(recipe_typeobject.recipe_icon))
-                return
-            end
-            material_path = "/pkg/vaststars.resources/materials/recipe_icon_canvas.material"
-            texture_x, texture_y, texture_w, texture_h = cfg.x, cfg.y, cfg.width, cfg.height
-            draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x, y, cfg.width, cfg.height, 1.5)
-            icanvas.add_item(icanvas.types().ICON,
-                object_id,
-                material_path,
-                RENDER_LAYER.ICON_CONTENT,
-                {
-                    texture = {
-                        rect = {
-                            x = texture_x,
-                            y = texture_y,
-                            w = texture_w,
-                            h = texture_h,
+                local recipe_typeobject = assert(iprototype.queryById(recipe))
+                local cfg = recipe_icon_canvas_cfg[recipe_typeobject.recipe_icon]
+                if not cfg then
+                    assert(cfg, ("can not found `%s`"):format(recipe_typeobject.recipe_icon))
+                    return
+                end
+                material_path = "/pkg/vaststars.resources/materials/recipe_icon_canvas.material"
+                texture_x, texture_y, texture_w, texture_h = cfg.x, cfg.y, cfg.width, cfg.height
+                draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x, y, cfg.width, cfg.height, 1.5)
+                icanvas.add_item(icanvas.types().ICON,
+                    object_id,
+                    material_path,
+                    RENDER_LAYER.ICON_CONTENT,
+                    {
+                        texture = {
+                            rect = {
+                                x = texture_x,
+                                y = texture_y,
+                                w = texture_w,
+                                h = texture_h,
+                            },
                         },
-                    },
-                    x = draw_x, y = draw_y, w = draw_w, h = draw_h,
-                }
-            )
+                        x = draw_x, y = draw_y, w = draw_w, h = draw_h,
+                    }
+                )
+            end
 
             if typeobject.fluidboxes then
+                local recipe_typeobject = assert(iprototype.queryById(recipe))
+
                 -- draw fluid icon of fluidboxes
                 local t = {
                     {"ingredients", "input"},
                     {"results", "output"},
                 }
+
+                local begin_x, begin_y = __calc_begin_xy(x, y, iprototype.rotate_area(typeobject.area, DIRECTION[e.building.direction]))
 
                 for _, r in ipairs(t) do
                     for idx, v in ipairs(irecipe.get_elements(recipe_typeobject[r[1]])) do
@@ -314,7 +324,13 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
 
                             material_path = "/pkg/vaststars.resources/materials/fluid_icon_bg.material"
                             texture_x, texture_y, texture_w, texture_h = 0, 0, __get_texture_size(material_path)
-                            draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x + connection_x * iterrain.tile_size, y + connection_y * iterrain.tile_size - iterrain.tile_size / 2, texture_w, texture_h, 1)
+                            draw_x, draw_y, draw_w, draw_h = __get_draw_rect(
+                                begin_x + connection_x * iterrain.tile_size + iterrain.tile_size / 2,
+                                begin_y - connection_y * iterrain.tile_size - iterrain.tile_size / 2,
+                                texture_w,
+                                texture_h,
+                                1
+                            )
                             icanvas.add_item(icanvas.types().ICON,
                                 object_id,
                                 material_path,
@@ -340,7 +356,13 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
                             end
                             material_path = "/pkg/vaststars.resources/materials/fluid_icon_canvas.material"
                             texture_x, texture_y, texture_w, texture_h = cfg.x, cfg.y, cfg.width, cfg.height
-                            draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x + connection_x * iterrain.tile_size, y + connection_y * iterrain.tile_size - iterrain.tile_size / 2, cfg.width, cfg.height, 1)
+                            draw_x, draw_y, draw_w, draw_h = __get_draw_rect(
+                                begin_x + connection_x * iterrain.tile_size + iterrain.tile_size / 2,
+                                begin_y - connection_y * iterrain.tile_size - iterrain.tile_size / 2,
+                                texture_w,
+                                texture_h,
+                                1
+                            )
                             icanvas.add_item(icanvas.types().ICON,
                                 object_id,
                                 material_path,
@@ -443,31 +465,6 @@ local function create_consumer_icon(object_id, building_srt)
     }
 end
 
-local function __need_assembly_icon(gameplay_world, e)
-    if e.assembling.recipe == 0 then
-        return true
-    end
-
-    local typeobject_recipe = iprototype.queryById(e.assembling.recipe)
-
-    local ingredients_n <const> = #typeobject_recipe.ingredients//4 - 1
-    local results_n <const> = #typeobject_recipe.results//4 - 1
-
-    for idx = 1, results_n do
-        local slot = assert(gameplay_world:container_get(e.chest, idx + ingredients_n))
-        if slot.amount > 0 then
-            return false
-        end
-    end
-
-    -- construction in progress
-    if e.assembling.progress ~= 0 then
-        return false
-    end
-
-    return true
-end
-
 return function(world)
     for e in world.ecs:select "assembling:in chest:in building:in capacitance?in eid:in" do
         -- object may not have been fully created yet
@@ -499,17 +496,10 @@ return function(world)
             end
         end
 
-        if __need_assembly_icon(world, e) then
-            if not building.assembling_icon then
-                building.assembling_icon = create_icon(object.id, e, object.srt)
-            end
-            building.assembling_icon:update(e)
-        else
-            if building.assembling_icon then
-                building.assembling_icon:remove()
-                building.assembling_icon = nil
-            end
+        if not building.assembling_icon then
+            building.assembling_icon = create_icon(object.id, e, object.srt)
         end
+        building.assembling_icon:update(e)
 
         ::continue::
     end

@@ -63,7 +63,7 @@ do
                     local w, h = iprototype.rotate_area(otypeobject.area, object.dir)
                     local ow, oh = iprototype.rotate_area(otypeobject.supply_area, object.dir)
                     ow, oh = tonumber(ow), tonumber(oh)
-                    sprites[#sprites+1] = create_sprite(object.x - (ow - w)//2, object.y - (oh - h)//2, ow, oh, object.dir, SPRITE_COLOR.DRONE_DEPOT_SUPPLY_AREA_2)
+                    sprites[#sprites+1] = create_sprite(object.x - (ow - w)//2, object.y - (oh - h)//2, ow, oh, object.dir, SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_OTHER)
                 end
             end
         elseif typeobject.power_supply_area and typeobject.power_supply_distance then

@@ -6,6 +6,7 @@ local mc = import_package "ant.math".constant
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local objects = require "objects"
 local ims = ecs.import.interface "ant.motion_sampler|imotion_sampler"
+local ltween = require "motion.tween"
 local gameplay_core = require "gameplay.core"
 local entity_remove = world:sub {"gameplay", "remove_entity"}
 -- enum defined in c 
@@ -48,12 +49,9 @@ local fly_height = 20
 local item_height = 15
 local function create_drone(homepos)
     local task = {
-        stage = 0,--{0,1,2}
         running = false,
-        elapsed_time = 0,
-        start_duration = 0,
-        end_duration = 0,
         duration = 0,
+        elapsed_time = 0,
         at_home = false,
         gohome = function (self, dst)
             if self.at_home then
@@ -63,64 +61,51 @@ local function create_drone(homepos)
             self:flyto(fly_height, dst, 1.0, true)
         end,
         flyto = function (self, height, to, duration, home)
+            -- print("----flyto----",self.current_pos[1], self.current_pos[2], self.current_pos[3], to[1], to[2], to[3])
+            if self.at_home then
+                local exz <close> = w:entity(self.motion_xz)
+                local xzpos = iom.get_position(exz)
+                local ey <close> = w:entity(self.motion_y)
+                local xpos = iom.get_position(ey)
+                self.current_pos = {math3d.index(xzpos, 1), math3d.index(xpos, 2), math3d.index(xzpos, 3)}
+            end
             if not home then
                 self.at_home = false
             end
             self.duration = duration
-            self.start_duration = duration * 0.25
-            self.end_duration = duration * 0.25
-            self.end_y = {to = {0, to[2], 0}, tin = mc.TWEEN_QUARTIC, tout = mc.TWEEN_QUARTIC}
-            --
-            self:moveto(self.motion_xz, {to[1], 0, to[3]}, duration, mc.TWEEN_SINE, mc.TWEEN_SINE)
-            self:moveto(self.motion_y, {0, height, 0}, self.start_duration, mc.TWEEN_QUARTIC, mc.TWEEN_QUARTIC)
+            local ms = duration * 1000
+            local exz <close> = w:entity(self.motion_xz)
+            ims.set_duration(exz, ms)
+            ims.set_tween(exz, ltween.type("Sine"), ltween.type("Sine"))
+            ims.set_keyframes(exz,
+                {t = math3d.vector({self.current_pos[1], 0, self.current_pos[3]}), step = 0.0},
+                {t = math3d.vector({to[1], 0, to[3]}),  step = 1.0}
+            )
+            local ey <close> = w:entity(self.motion_y)
+            ims.set_duration(ey, ms)
+            ims.set_tween(ey, ltween.type("Quartic"), ltween.type("Quartic"))
+            ims.set_keyframes(ey,
+                {t = math3d.vector({0, self.current_pos[2], 0}), step = 0.0},
+                {t = math3d.vector({0, height, 0}), step = 0.25},
+                {t = math3d.vector({0, height, 0}), step = 0.75},
+                {t = math3d.vector({0, to[2], 0}),  step = 1.0}
+            )
+            self.current_pos = to
             self.running = true
-        end,
-        moveto = function (self, motion, topos, time, tin, tout)
-            local e <close> = w:entity(motion)
-            ims.set_duration(e, time * 1000)
-            ims.set_tween(e, tin, tout)
-
-            local first_track = {t = math3d.vector(self.born_pos or mc.ONE), step = 0.0}
-            local last_track  = {t = math3d.vector(topos),                   step = 1.0}
-            
-            ims.set_keyframes(e, first_track, last_track)
-            self.born_pos = nil
         end,
         update = function (self, timeStep)
             if not self.running then
                 return
             end
             self.elapsed_time = self.elapsed_time + timeStep
-            if self.stage == 0 then
-                if self.elapsed_time >= self.start_duration then
-                    self.stage = 1
-                end
-            elseif self.stage == 1 then
-                if self.elapsed_time >= self.duration - self.end_duration then
-                    self.stage = 2
-                    local y = self.end_y
-                    self:moveto(self.motion_y, y.to, self.end_duration, y.tin, y.tout)
-                end
-            else
-                local endtime = self.duration
-                -- if not self.reverse then
-                --     endtime = endtime + 0.2
-                -- end
-                if self.elapsed_time >= endtime then
-                    self.running = false
-                    self.elapsed_time = 0
-                    self.stage = 0
-                    if self.item then
-                        for _, eid in ipairs(self.item.tag["*"]) do
-                            w:remove(eid)
-                        end
-                        self.item = nil
-                        -- TODO: update dest item count
-                        if self.target and drone_depot[self.target.gameplay_eid] then
-                            drone_depot[self.target.gameplay_eid]:update_heap(1)
-                            -- print("--------targetobj", self.target.gameplay_eid)
-                        end
+            if self.elapsed_time >= self.duration then
+                self.running = false
+                self.elapsed_time = 0
+                if self.item then
+                    for _, eid in ipairs(self.item.tag["*"]) do
+                        w:remove(eid)
                     end
+                    self.item = nil
                 end
             end
         end,
@@ -136,13 +121,14 @@ local function create_drone(homepos)
                 return
             end
             self.inited = true
-            self.born_pos = pos
-            local ey <close> = w:entity(self.motion_y)
-            iom.set_position(ey, math3d.vector(pos[1], 0, pos[3]))
+            self.current_pos = pos
             local exz <close> = w:entity(self.motion_xz)
-            iom.set_position(exz, math3d.vector(0, pos[2], 0))
+            iom.set_position(exz, math3d.vector(pos[1], 0, pos[3]))
+            local ey <close> = w:entity(self.motion_y)
+            iom.set_position(ey, math3d.vector(0, pos[2], 0))
         end
     }
+    task.current_pos = homepos
     local motion_xz = create_motion_object(nil, nil, math3d.vector(homepos[1], 0, homepos[3]))
     task.motion_xz = motion_xz
     local motion_y = create_motion_object(nil, nil, math3d.vector(0, homepos[2], 0), motion_xz)
@@ -189,7 +175,7 @@ return function(gameworld)
         local drone = e.drone
         assert(drone.prev ~= 0, "drone.prev == 0")
         -- if (drone.prev ~= 0) and (drone.next ~= 0) and (drone.maxprogress ~= 0) and (drone.progress ~= 0) then
-        --     print(drone.prev, drone.next, drone.maxprogress, drone.progress, drone.item)
+        --     print(drone.status, drone.prev, drone.next, drone.maxprogress, drone.progress, drone.item)
         -- end
         if drone.status == STATUS_HAS_ERROR and lookup_drones[e.eid] then
             lookup_drones[e.eid]:destroy()
@@ -204,7 +190,7 @@ return function(gameworld)
             lookup_drones[e.eid] = create_drone(get_home_pos(obj.srt.t))
         else
             local current = lookup_drones[e.eid]
-            if not current.running then
+            if not current.running or current.at_home then
                 if drone.maxprogress > 0 then
                     if not current.start_progress then
                         current.start_progress = drone.progress
@@ -216,7 +202,7 @@ return function(gameworld)
 
                         local destobj = get_object(drone.next)
                         if destobj then
-                            current.target = destobj
+                            -- current.target = destobj
                             if drone.item > 0 then
                                 current.item = create_item(drone.item, current.prefab.tag["*"][1])
                             end

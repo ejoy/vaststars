@@ -20,11 +20,11 @@ local igrid_entity = ecs.require "engine.grid_entity"
 local coord_system = ecs.require "terrain"
 local global = require "global"
 local iroadnet = ecs.require "roadnet"
-local iui = ecs.import.interface "vaststars.gamerender|iui"
 local math3d = require "math3d"
 local gen_endpoint_mask = ecs.require "editor.endpoint".gen_endpoint_mask
 local is_roadnet_only = ecs.require "editor.endpoint".is_roadnet_only
 local gameplay_core = require "gameplay.core"
+local ichest = require "gameplay.interface.chest"
 
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 local REMOVE <const> = {}
@@ -395,7 +395,7 @@ local function _builder_start(self, datamodel)
                 if fluidbox.dir ~= iprototype.reverse_dir(dir) then
                     goto continue
                 end
-                succ, to_x, to_y = terrain:move_coord(fluidbox.x, fluidbox.y, dir,
+                succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir,
                     math_abs(from_x - fluidbox.x),
                     math_abs(from_y - fluidbox.y)
                 )
@@ -822,10 +822,15 @@ local function confirm(self, datamodel)
 
     task.update_progress("road_laying", c)
 
-	iui.redirect("construct.rml", "cancel")
-    gameplay_core.world_update = true
-    iui.close("road_or_pipe_build.rml")
-    return false
+    local typeobject = iprototype.queryByName("砖石公路-X型")
+    local continue_construct = ichest.get_inventory_item_count(gameplay_core.get_world(), typeobject.id) > 0
+    if not continue_construct then
+        gameplay_core.world_update = true
+        return false
+    else
+        new_entity(self, datamodel, typeobject)
+        return true
+    end
 end
 
 local function start_laying(self, datamodel)
@@ -878,6 +883,8 @@ local function finish_laying(self, datamodel)
         end
     end
     self.temporary_map = {}
+
+    return self:confirm(datamodel)
 end
 
 local function place_one(self, datamodel)
@@ -891,6 +898,7 @@ local function place_one(self, datamodel)
     self.pending[coord] = 0 -- {"砖石公路-O型", "N"}
 
     _builder_init(self, datamodel)
+    return self:confirm(datamodel)
 end
 
 local function _road_teardown(self, x, y)
@@ -1169,6 +1177,7 @@ local function remove_one(self, datamodel)
     end
 
     _builder_init(self, datamodel)
+    return self:confirm(datamodel)
 end
 local function start_teardown(self, datamodel)
     iroadnet:clear("indicator")
@@ -1222,9 +1231,13 @@ local function finish_teardown(self, datamodel)
         end
     end
     self.temporary_map = {}
+    return self:confirm(datamodel)
 end
 
-local function back(self, datamodel)
+local function clean(self, datamodel)
+    iobject.remove(self.coord_indicator)
+    self.coord_indicator = nil
+
     iroadnet:clear("indicator")
 
     self.state = STATE_NONE
@@ -1248,10 +1261,6 @@ local function back(self, datamodel)
     self.coord_indicator = nil
     self.temporary_map = {}
     self.pending = {}
-
-    iui.redirect("construct.rml", "cancel")
-    gameplay_core.world_update = true
-    iui.close("road_or_pipe_build.rml")
 end
 
 local function create()
@@ -1271,7 +1280,7 @@ local function create()
     M.finish_teardown = finish_teardown
     M.cancel = cancel
     M.confirm = confirm
-    M.back = back
+    M.clean = clean
 
     M.temporary_map = {}
     M.pending = {}

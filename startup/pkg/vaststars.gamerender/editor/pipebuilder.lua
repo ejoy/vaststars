@@ -21,7 +21,6 @@ local coord_system = ecs.require "terrain"
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local ientity = require "gameplay.interface.entity"
 local gameplay_core = require "gameplay.core"
-local iui = ecs.import.interface "vaststars.gamerender|iui"
 local math3d = require "math3d"
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 
@@ -747,6 +746,8 @@ local function finish_laying(self, datamodel)
 
     local typeobject = iprototype.queryByName(self.coord_indicator.prototype_name)
     self:new_entity(datamodel, typeobject)
+
+    return self:confirm(datamodel)
 end
 
 local function place_one(self, datamodel)
@@ -774,6 +775,8 @@ local function place_one(self, datamodel)
     objects:set(object, EDITOR_CACHE_NAMES[2])
 
     datamodel.show_confirm = true
+
+    return self:confirm(datamodel)
 end
 
 local function remove_one(self, datamodel)
@@ -787,6 +790,7 @@ local function remove_one(self, datamodel)
     self.pending[coord] = REMOVE
 
     datamodel.show_confirm = true
+    return self:confirm(datamodel)
 end
 
 local function confirm(self, datamodel)
@@ -852,11 +856,7 @@ local function confirm(self, datamodel)
     end
 
     gameplay_core.build()
-
-    iui.redirect("construct.rml", "cancel")
     gameplay_core.world_update = true
-    iui.close("road_or_pipe_build.rml")
-    return false
 end
 
 local function cancel(self, datamodel)
@@ -902,9 +902,11 @@ local function finish_teardown(self, datamodel)
 
     local typeobject = iprototype.queryByName(self.coord_indicator.prototype_name)
     self:new_entity(datamodel, typeobject)
+
+    return self:confirm(datamodel)
 end
 
-local function back(self, datamodel)
+local function clean(self, datamodel)
     self:revert_changes({"TEMPORARY", "CONFIRM"})
 
     self.state = STATE_NONE
@@ -923,9 +925,7 @@ local function back(self, datamodel)
 
     self.pending = {}
 
-	iui.redirect("construct.rml", "cancel")
     gameplay_core.world_update = true
-    iui.close("road_or_pipe_build.rml")
 end
 
 local function create()
@@ -946,7 +946,7 @@ local function create()
     M.remove_one = remove_one
     M.start_teardown = start_teardown
     M.finish_teardown = finish_teardown
-    M.back = back
+    M.clean = clean
 
     M.pending = {}
     return M

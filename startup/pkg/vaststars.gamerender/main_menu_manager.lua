@@ -12,11 +12,9 @@ local function init()
     icamera_controller.set_camera_from_prefab("camera_default.prefab")
 end
 
-local function new_game()
+local function new_game(mode)
     icamera_controller.set_camera_from_prefab("camera_default.prefab")
-    if not saveload:restart() then
-        return
-    end
+    saveload:restart(mode)
     iguide.world = gameplay_core.get_world()
     iui.set_guide_progress(iguide.get_progress())
 end

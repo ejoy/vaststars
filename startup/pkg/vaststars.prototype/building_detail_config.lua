@@ -62,7 +62,7 @@ local building_detail_config = {
 	},
 	["蓄电池"] = {
 		"generate_power",
-		"work_power",
+		"charge_power",
 		"charge_energy",
 	},
 	["指挥中心"] = {

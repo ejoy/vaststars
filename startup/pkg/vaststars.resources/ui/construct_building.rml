@@ -25,24 +25,26 @@
             local ui_sys = require "ui_system"
             local start = ui_sys.createDataMode("start", {
                 buttons = {},
-                show_cancel = false,
+                show_quit = false,
                 show_rotate = false,
                 show_confirm = false,
             })
 
-            start.buttons[#start.buttons+1] = {name = "取消", show_var = "show_cancel", show = false, param = "cancel", background_color = "rgb(105, 112, 8)", background_image = "textures/cmdcenter/yellow_arrow.texture"}
-            start.buttons[#start.buttons+1] = {name = "旋转建筑", show_var = "show_rotate", show = false, param = "rotate", background_color = "rgb(105, 112, 8)", background_image = "textures/construct/rotate.texture"}
-            start.buttons[#start.buttons+1] = {name = "修建", show_var = "show_confirm", show = false, param = "build", background_color = "rgb(105, 112, 8)", background_image = "textures/construct/confirm.texture"}
+            start.buttons[#start.buttons+1] = {name = "取消", bind_var = "show_quit", enabled = true, show = false, param = "quit", background_color = "rgb(105, 112, 8)", background_image = "textures/cmdcenter/yellow_arrow.texture"}
+            start.buttons[#start.buttons+1] = {name = "旋转建筑", bind_var = "show_rotate", enabled = true, show = false, param = "rotate", background_color = "rgb(105, 112, 8)", background_image = "textures/construct/rotate.texture"}
+            start.buttons[#start.buttons+1] = {name = "修建", bind_var = "show_confirm", enabled = true, show = false, always_show = true, param = "build", background_color = "rgb(0, 176, 240)", background_image = "textures/construct/confirm.texture"}
             start("buttons")
 
-            function start.clickButton(event, param)
-                ui_sys.pub {param}
+            function start.clickButton(event, param, enabled)
+                if enabled then
+                    ui_sys.pub {param}
+                end
             end
 
             local function getMappingParam(var)
                 local function getButton(var)
                     for i = 1, #start.buttons do
-                        if start.buttons[i].show_var == var then
+                        if start.buttons[i].bind_var == var then
                             return start.buttons[i]
                         end
                     end
@@ -50,14 +52,19 @@
                 return function(_, v)
                     local button = getButton(var)
                     if button then
-                        button.show = v
+                        if button.always_show then
+                            button.show = true
+                        else
+                            button.show = v
+                        end
+                        button.enabled = v
                         start("buttons")
                     end
                 end, var
             end
             --
             ui_sys.mapping(start, {
-                {getMappingParam("show_cancel")},
+                {getMappingParam("show_quit")},
                 {getMappingParam("show_confirm")},
                 {getMappingParam("show_rotate")},
             })
@@ -65,7 +72,7 @@
     </head>
     <body style = "pointer-events: none;">
         <div class="button-container" data-model="start" style = "pointer-events: none;">
-            <button style="width: 22.00vmin; height: 16.00vmin;" data-style-background-color = "it.background_color" data-event-click="clickButton(it.param)" data-for = "it : buttons" data-if = "it.show">
+            <button style="width: 22.00vmin; height: 16.00vmin;" data-style-background-color = "it.enabled ? it.background_color : 'rgb(117,112,112)'" data-event-click="clickButton(it.param, it.enabled)" data-for = "it : buttons" data-if = "it.show">
                 <div style="margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-size:cover;" data-style-background-image = "it.background_image" />
                 <div style="font-size: 85%;">{{it.name}}</div>
             </button>

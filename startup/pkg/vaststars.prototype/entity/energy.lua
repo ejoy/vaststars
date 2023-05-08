@@ -9,9 +9,13 @@ prototype "蒸汽发电机I" {
     type = {"building", "generator", "fluidboxes","assembling"},
     area = "3x5",
     rotate_on_build = true,
+    io_shelf = false,
+    assembling_icon = false,
+    -- show_arc_menu = false,
     power = "900kW",
     priority = "secondary",
-    craft_category = {"流体发电"},
+    recipe = "蒸汽发电",
+    -- craft_category = {"流体发电"},
     maxslot = "8",
     fluidboxes = {
         input = {
@@ -59,6 +63,7 @@ prototype "太阳能板I" {
     area = "3x3",
     power = "300kW",
     priority = "primary",
+    show_arc_menu = false,
 }
 
 prototype "蓄电池I" {
@@ -71,6 +76,7 @@ prototype "蓄电池I" {
 	capacitance = "10MJ",
     area = "2x2",
     priority = "secondary",
+    show_arc_menu = false,
 }
 
 prototype "核反应堆" {
@@ -92,6 +98,7 @@ prototype "换热器I" {
     power = "1.8MW",
     priority = "secondary",
     area = "3x2",
+    io_shelf = false,
     rotate_on_build = true,
     craft_category = {"流体换热处理"},
     show_arc_menu = false,

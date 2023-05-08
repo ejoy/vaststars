@@ -10,6 +10,9 @@ local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local irl = ecs.import.interface "ant.render|irender_layer"
 local imaterial = ecs.import.interface "ant.asset|imaterial"
 local iani = ecs.import.interface "ant.animation|ianimation"
+local iupdate = ecs.import.interface "vaststars.gamerender|iupdate"
+
+local DELTA_TIME <const> = require("gameplay.interface.constant").DELTA_TIME
 
 local function create_object(prefab, srt)
     local p = ecs.create_instance(prefab)
@@ -81,8 +84,8 @@ local LINE_QUATERNIONS <const> = {
 local LINE_SCALE <const> = {
     function(w, h) return math3d.ref(math3d.vector((w-1)*2, 1, 1)) end, -- top
     function(w, h) return math3d.ref(math3d.vector((w-1)*2, 1, 1)) end, -- bottom
-    function(w, h) return math3d.ref(math3d.vector((w-1)*2, 1, 1)) end, -- left
-    function(w, h) return math3d.ref(math3d.vector((w-1)*2, 1, 1)) end, -- right
+    function(w, h) return math3d.ref(math3d.vector((h-1)*2, 1, 1)) end, -- left
+    function(w, h) return math3d.ref(math3d.vector((h-1)*2, 1, 1)) end, -- right
 }
 
 local LINE_OFFSET <const> = {
@@ -120,13 +123,55 @@ function mt:set_position(center)
     end
 end
 
+function mt:set_wh(w, h)
+    if self.w == w and self.h == h then
+        return
+    end
+
+    self.w = w
+    self.h = h
+
+    for _, v in pairs(self.lines) do
+        v:remove()
+    end
+
+    if self.prefabs[2] then
+        for idx, f in ipairs(LINE_CHECK) do
+            if f(w, h) then
+                self.lines[idx] = create_object(self.prefabs[2], {
+                    s = LINE_SCALE[idx](w, h),
+                    r = LINE_QUATERNIONS[idx],
+                    t = math3d.ref(math3d.add(math3d.muladd(LINE_DIRECTIONS[idx], self.line_offset, self.center), LINE_OFFSET[idx])),
+                })
+                if mc.NULL ~= self.color then
+                    self.lines[idx]:send("set_color", self.color)
+                end
+            end
+        end
+    end
+end
+
 function mt:set_color(color)
+    self.color = color
     for _, o in pairs(self.corners) do
         o:send("set_color", color)
     end
     for _, o in pairs(self.lines) do
         o:send("set_color", color)
     end
+end
+
+function mt:set_color_transition(color, duration)
+    local t = 0
+    local origin_color = self.color
+    self.color = color
+
+    iupdate.add(function()
+        t = t + DELTA_TIME
+        local c = math3d.ref(math3d.lerp(origin_color, color, t/duration))
+        self:set_color(c)
+        return t < duration
+    end)
 end
 
 return function(prefabs, center, color, w, h)
@@ -139,6 +184,10 @@ return function(prefabs, center, color, w, h)
         line_offset = math3d.ref(math3d.vector(w * 10 / 2, 0, h * 10 / 2)),
         lines = {},
         center = center,
+        color = color,
+        prefabs = prefabs,
+        w = w,
+        h = h,
     }
 
     for idx = 1, #CORNER_DIRECTIONS do

@@ -14,18 +14,11 @@ local ipower = ecs.require "power"
 local ipower_line = ecs.require "power_line"
 local imining = require "gameplay.interface.mining"
 local math3d = require "math3d"
-local iconstant = require "gameplay.interface.constant"
 local coord_system = ecs.require "terrain"
-local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
-local ALL_DIR = iconstant.ALL_DIR
 local igrid_entity = ecs.require "engine.grid_entity"
-local iui = ecs.import.interface "vaststars.gamerender|iui"
-local mc = import_package "ant.math".constant
-local create_road_entrance = ecs.require "editor.road_entrance"
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 local create_sprite = ecs.require "sprite"
 local SPRITE_COLOR = import_package "vaststars.prototype".load("sprite_color")
-local idronecover = ecs.require "drone_cover"
 local gameplay_core = require "gameplay.core"
 local ichest = require "gameplay.interface.chest"
 local create_selected_boxes = ecs.require "selected_boxes"
@@ -43,19 +36,6 @@ local function _get_connections(prototype_name, x, y, dir)
         r[#r+1] = {x = x + dx, y = y + dy, dir = ddir}
     end
     return r
-end
-
-local function _get_road_entrance_position(typeobject, x, y, dir)
-    if not typeobject.crossing then
-        return
-    end
-    local connections = _get_connections(typeobject.name, x, y, dir)
-    local conn = connections[1]
-    local succ, neighbor_x, neighbor_y = coord_system:move_coord(conn.x, conn.y, conn.dir, 1)
-    if not succ then
-        return
-    end
-    return coord_system:get_position_by_coord(neighbor_x, neighbor_y, 1, 1), neighbor_x, neighbor_y, conn.dir
 end
 
 local function __rotate_area(w, h, dir)
@@ -80,38 +60,58 @@ local function __create_self_sprite(typeobject, x, y, dir, sprite_color)
         local w, h = iprototype.rotate_area(typeobject.area, dir)
         offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
         sprite = create_sprite(x + offset_x, y + offset_y, aw, ah, dir, sprite_color)
-    else
-        local w, h = iprototype.rotate_area(typeobject.area, dir)
-        sprite = create_sprite(x + offset_x, y + offset_y, w, h, dir, sprite_color)
     end
     return sprite
+end
+
+local function __show_self_selected_boxes(self, position, typeobject, dir, valid)
+    --
+    local color
+    if valid then
+        color = SPRITE_COLOR.CONSTRUCT_OUTLINE_SELF_VALID
+    else
+        color = SPRITE_COLOR.CONSTRUCT_OUTLINE_SELF_INVALID
+    end
+    if not self.self_selected_boxes then
+        self.self_selected_boxes = create_selected_boxes(
+            {
+                "/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab",
+                "/pkg/vaststars.resources/prefabs/selected-box-no-animation-line.prefab",
+            },
+            position, color, iprototype.rotate_area(typeobject.area, dir)
+        )
+    else
+        self.self_selected_boxes:set_wh(iprototype.rotate_area(typeobject.area, dir))
+        self.self_selected_boxes:set_position(position)
+        self.self_selected_boxes:set_color_transition(color, 400)
+    end
 end
 
 local function __new_entity(self, datamodel, typeobject, position, x, y, dir)
     iobject.remove(self.pickup_object)
 
     local sprite_color
+    local valid
     if not self:check_construct_detector(typeobject.name, x, y, dir) then
         if typeobject.supply_area then
-            sprite_color = SPRITE_COLOR.CONSTRUCT_INVALID
+            sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID
         elseif typeobject.power_supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_POWER_INVALID
-        else
-            sprite_color = SPRITE_COLOR.CONSTRUCT_INVALID
         end
         datamodel.show_confirm = false
-        datamodel.show_rotate = (typeobject.rotate_on_build == true)
+        valid = false
     else
         if typeobject.supply_area then
-            sprite_color = SPRITE_COLOR.DRONE_DEPOT_SUPPLY_AREA_VALID
+            sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_VALID
         elseif typeobject.power_supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_POWER_VALID
-        else
-            sprite_color = SPRITE_COLOR.CONSTRUCT_VALID
         end
         datamodel.show_confirm = true
-        datamodel.show_rotate = (typeobject.rotate_on_build == true)
+        valid = true
     end
+    datamodel.show_rotate = (typeobject.rotate_on_build == true)
+
+    __show_self_selected_boxes(self, position, typeobject, dir, valid)
 
     -- some assembling machine have default recipe
     local fluid_name = ""
@@ -134,23 +134,12 @@ local function __new_entity(self, datamodel, typeobject, position, x, y, dir)
         },
         fluid_name = fluid_name,
     }
-    iui.open({"construct_building.rml"}, self.pickup_object.srt.t, typeobject.name)
 
     if self.sprite then
         self.sprite:remove()
     end
 
     self.sprite = __create_self_sprite(typeobject, x, y, dir, sprite_color)
-
-    local road_entrance_position, _, _, road_entrance_dir = _get_road_entrance_position(typeobject, x, y, dir)
-    if road_entrance_position then
-        local srt = {t = road_entrance_position, r = ROTATORS[road_entrance_dir]}
-        if datamodel.show_confirm then
-            self.road_entrance = create_road_entrance(srt, "valid")
-        else
-            self.road_entrance = create_road_entrance(srt, "invalid")
-        end
-    end
 end
 
 local function __calc_grid_position(self, typeobject)
@@ -198,7 +187,7 @@ local function __show_nearby_buildings_selected_boxes(self, x, y, typeobject)
                 "/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab",
                 "/pkg/vaststars.resources/prefabs/selected-box-no-animation-line.prefab",
             },
-            object.srt.t, SPRITE_COLOR.CONSTRUCT_NEARBY_BUILDINGS_OUTLINE, iprototype.unpackarea(typeobject.area)
+            object.srt.t, SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS, iprototype.unpackarea(typeobject.area)
         )
     end
 end
@@ -221,7 +210,7 @@ local function new_entity(self, datamodel, typeobject)
     end
 
     if iprototype.has_chest(typeobject.name) then
-        local sprite_color = SPRITE_COLOR.DRONE_DEPOT_SUPPLY_AREA_2
+        local sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_OTHER
         for _, object in objects:all() do
             local otypeobject = iprototype.queryByName(object.prototype_name)
             if otypeobject.supply_area then
@@ -243,18 +232,6 @@ local function new_entity(self, datamodel, typeobject)
     end
 
     local position = coord_system:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir))
-
-    if not self.self_selected_boxes then
-        self.self_selected_boxes = create_selected_boxes(
-            {
-                "/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab",
-                "/pkg/vaststars.resources/prefabs/selected-box-no-animation-line.prefab",
-            },
-            position, SPRITE_COLOR.CONSTRUCT_SELF_OUTLINE, iprototype.unpackarea(typeobject.area)
-        )
-    else
-        self.self_selected_boxes:set_position(position)
-    end
 
     __show_nearby_buildings_selected_boxes(self, x, y, typeobject)
 
@@ -321,29 +298,9 @@ local function touch_move(self, datamodel, delta_vec)
 
     local typeobject = iprototype.queryByName(pickup_object.prototype_name)
 
-    if self.road_entrance then
-        local road_entrance_position, _, _, road_entrance_dir = _get_road_entrance_position(typeobject, lx, ly, pickup_object.dir)
-        self.road_entrance:set_srt(mc.ONE, ROTATORS[road_entrance_dir], road_entrance_position)
-
-        local t = {}
-        for _, dir in ipairs(ALL_DIR) do
-            local _, dx, dy = _get_road_entrance_position(typeobject, lx, ly, dir)
-            if dx and dy then
-                if global.roadnet[iprototype.packcoord(dx, dy)] then
-                    t[#t+1] = dir
-                end
-            end
-        end
-        if #t == 1 and t[1] ~= pickup_object.dir then
-            self:rotate_pickup_object(datamodel, t[1], delta_vec)
-        end
-    end
-
     if self.grid_entity then
         self.grid_entity:send("obj_motion", "set_position", __calc_grid_position(self, typeobject))
     end
-
-    self.self_selected_boxes:set_position(pickup_object.srt.t)
 
     -- update temp pole
     if typeobject.power_supply_area and typeobject.power_supply_distance then
@@ -358,58 +315,50 @@ local function touch_move(self, datamodel, delta_vec)
     end
     self.last_x, self.last_y = lx, ly
 
-    __show_nearby_buildings_selected_boxes(self, x, y, typeobject)
-
     local sprite_color
+    local valid
     local offset_x, offset_y = 0, 0
     local w, h = iprototype.rotate_area(typeobject.area, pickup_object.dir)
     if not self:check_construct_detector(pickup_object.prototype_name, lx, ly, pickup_object.dir) then -- TODO
         datamodel.show_confirm = false
-
-        if self.road_entrance then
-            self.road_entrance:set_state("invalid")
-        end
+        valid = false
 
         if typeobject.supply_area then
-            sprite_color = SPRITE_COLOR.CONSTRUCT_INVALID
+            sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID
             local aw, ah = iprototype.unpackarea(typeobject.supply_area)
             offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
         elseif typeobject.power_supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_POWER_INVALID
             local aw, ah = typeobject.power_supply_area:match("(%d+)x(%d+)")
             offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
-        else
-            sprite_color = SPRITE_COLOR.CONSTRUCT_INVALID
         end
         if self.sprite then
             self.sprite:move(pickup_object.x + offset_x, pickup_object.y + offset_y, sprite_color)
         end
+        __show_self_selected_boxes(self, pickup_object.srt.t, typeobject, pickup_object.dir, valid)
+        __show_nearby_buildings_selected_boxes(self, x, y, typeobject)
         return
     else
-        if self.road_entrance then
-            self.road_entrance:set_state("valid")
-        end
+        datamodel.show_confirm = true
+        valid = true
+
         if typeobject.supply_area then
-            sprite_color = SPRITE_COLOR.DRONE_DEPOT_SUPPLY_AREA_VALID
+            sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_VALID
             local aw, ah = iprototype.unpackarea(typeobject.supply_area)
             offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
         elseif typeobject.power_supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_POWER_VALID
             local aw, ah = typeobject.power_supply_area:match("(%d+)x(%d+)")
             offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
-        else
-            sprite_color = SPRITE_COLOR.CONSTRUCT_VALID
         end
         if self.sprite then
             self.sprite:move(pickup_object.x + offset_x, pickup_object.y + offset_y, sprite_color)
         end
+        __show_self_selected_boxes(self, pickup_object.srt.t, typeobject, pickup_object.dir, valid)
+        __show_nearby_buildings_selected_boxes(self, x, y, typeobject)
     end
 
     pickup_object.recipe = _get_mineral_recipe(pickup_object.prototype_name, lx, ly, pickup_object.dir) -- TODO: maybe set recipt according to entity type?
-
-    if iprototype.has_type(typeobject.type, "hub") then
-        idronecover.update_cover(pickup_object, typeobject)
-    end
 end
 
 local function touch_end(self, datamodel)
@@ -508,42 +457,31 @@ local function rotate_pickup_object(self, datamodel, dir, delta_vec)
 
     local typeobject = iprototype.queryByName(pickup_object.prototype_name)
     local sprite_color
+    local valid
     if not self:check_construct_detector(typeobject.name, pickup_object.x, pickup_object.y, dir) then
+        valid = false
         if typeobject.supply_area then
-            sprite_color = SPRITE_COLOR.CONSTRUCT_INVALID
+            sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID
         elseif typeobject.power_supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_POWER_INVALID
-        else
-            sprite_color = SPRITE_COLOR.CONSTRUCT_INVALID
         end
         datamodel.show_confirm = false
     else
+        valid = true
         if typeobject.supply_area then
-            sprite_color = SPRITE_COLOR.DRONE_DEPOT_SUPPLY_AREA_VALID
+            sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_VALID
         elseif typeobject.power_supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_POWER_VALID
-        else
-            sprite_color = SPRITE_COLOR.CONSTRUCT_VALID
         end
         datamodel.show_confirm = true
     end
 
-    self.self_selected_boxes:remove()
-    self.self_selected_boxes = create_selected_boxes(
-        {
-            "/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab",
-            "/pkg/vaststars.resources/prefabs/selected-box-no-animation-line.prefab",
-        },
-        pickup_object.srt.t, SPRITE_COLOR.CONSTRUCT_SELF_OUTLINE, iprototype.rotate_area(typeobject.area, dir)
-    )
+    __show_self_selected_boxes(self, pickup_object.srt.t, typeobject, pickup_object.dir, valid)
 
-    self.sprite:remove()
-    self.sprite = __create_self_sprite(typeobject, x, y, dir, sprite_color)
-
-    local road_entrance_position, dx, dy, ddir = _get_road_entrance_position(typeobject, x, y, pickup_object.dir)
-    if road_entrance_position then
-        self.road_entrance:set_srt(mc.ONE, ROTATORS[ddir], road_entrance_position)
+    if self.sprite then
+        self.sprite:remove()
     end
+    self.sprite = __create_self_sprite(typeobject, x, y, dir, sprite_color)
 end
 
 local function clean(self, datamodel)
@@ -577,14 +515,6 @@ local function clean(self, datamodel)
     -- clear temp pole
     ipower:clear_all_temp_pole()
     ipower_line.update_temp_line(ipower:get_temp_pole())
-
-    if self.road_entrance then
-        self.road_entrance:remove()
-        self.road_entrance = nil
-    end
-    idronecover.clear()
-
-    iui.close("construct_building.rml")
 end
 
 local function create(item)

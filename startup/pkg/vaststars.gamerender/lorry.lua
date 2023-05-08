@@ -5,13 +5,19 @@ local w = world.w
 local ims = ecs.import.interface "ant.motion_sampler|imotion_sampler"
 local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
+local ltween = require "motion.tween"
 
 local sampler_group
 
 local function _create_motion_object(s, r, t)
     local events = {}
-    events["set_target"] = function(_, e, ...)
-        ims.set_target(e, ...)
+    events["set_target"] = function(_, e, from_srt, to_srt, duration)
+        ims.set_tween(e, ltween.type("Quartic"), ltween.type("Quartic"))
+        ims.set_duration(e, duration)
+        ims.set_keyframes(e,
+            {s = from_srt.s, r = from_srt.r, t = from_srt.t, step = 0.0},
+            {s = to_srt.s, r = to_srt.r, t = to_srt.t, step = 1.0}
+        )
     end
     return ientity_object.create(sampler_group:create_entity {
         policy = {
@@ -81,7 +87,7 @@ local function create(prefab, s, r, t)
         sampler_group:enable "scene_update"
     end
 
-    local outer = {objs = {}}
+    local outer = {objs = {}, s, r, t}
     local motion_obj = _create_motion_object(s, r, t)
     local prefab_obj = _create_prefab_object(prefab, motion_obj.id)
     local shadow_obj = _create_shadow_object(motion_obj.id)
@@ -104,8 +110,9 @@ local function create(prefab, s, r, t)
             outer.objs[#outer.objs] = nil
         end
     end
-    function outer:set_target(...)
-        motion_obj:send("set_target", ...)
+    function outer:set_target(s, r, t, duration)
+        motion_obj:send("set_target", {s = self.s, r = self.r, t = self.t}, {s = s, r = r, t = t}, duration)
+        self.s, self.r, self.t = s, r, t
     end
 
     return outer

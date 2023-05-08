@@ -443,19 +443,19 @@ function M:restore(index)
     end
     iroadnet:init(renderData, true)
     global.roadnet = map
+    gameplay_core.build()
 
     iscience.update_tech_list(gameplay_core.get_world())
-    iui.open({"construct.rml"})
-    iui.open({"message_pop.rml"})
-    
-    gameplay_core.build()
+    debugger.set_free_mode(gameplay_core.get_storage().game_mode == "free")
     restore_world()
 
+    iui.open({"construct.rml"})
+    iui.open({"message_pop.rml"})
     print("restore success", archival_dir)
     return true
 end
 
-function M:restart()
+function M:restart(mode)
     gameplay_core.restart()
     iprototype_cache.reload()
 
@@ -485,6 +485,7 @@ function M:restart()
 
     iui.open({"construct.rml"})
     iui.open({"message_pop.rml"})
+    gameplay_core.get_storage().game_mode = mode
     restore_world()
 end
 
