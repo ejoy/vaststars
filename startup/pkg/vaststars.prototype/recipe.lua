@@ -2726,7 +2726,7 @@ prototype "丁二烯排泄" {
 prototype "蒸汽发电" {
     type = { "recipe" },
     category = "流体发电",
-    --recipe_group =  "化工",
+    recipe_group =  "化工",
     recipe_order =  119,
     recipe_icon =  "textures/fluid/gas.texture",
     ingredients = {
