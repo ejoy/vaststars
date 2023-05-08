@@ -7,25 +7,25 @@
 #include "core/capacitance.h"
 #include "util/prototype.h"
 
-static constexpr uint64_t UPS        = 30;
-static constexpr uint64_t DuskTick   = 100 * UPS;
-static constexpr uint64_t NightTick  =  50 * UPS + DuskTick;
-static constexpr uint64_t DawnTick   = 100 * UPS + NightTick;
-static constexpr uint64_t DayTick    = 250 * UPS + DawnTick;
+static constexpr uint16_t UPS        = 30;
+static constexpr uint16_t DuskTick   = 100 * UPS;
+static constexpr uint16_t NightTick  =  50 * UPS + DuskTick;
+static constexpr uint16_t DawnTick   = 100 * UPS + NightTick;
+static constexpr uint16_t DayTick    = 250 * UPS + DawnTick;
+static constexpr uint16_t FixedPoint = 100 * UPS;
 
-static constexpr uint64_t FixedPoint = 100 * UPS;
+static_assert(FixedPoint == DuskTick);
+static_assert(FixedPoint == (DawnTick - NightTick));
+static_assert(FixedPoint / UPS == 100);
 
-static uint64_t
-solar_efficiency(uint64_t time) {
+static uint16_t solar_efficiency(uint16_t time) {
     if (time < DuskTick) {
-        static_assert(FixedPoint == DuskTick);
         return DuskTick - time;
     }
     if (time < NightTick) {
         return 0;
     }
     if (time < DawnTick) {
-        static_assert(FixedPoint == (DawnTick - NightTick));
         return time - NightTick;
     }
     return FixedPoint;
@@ -35,12 +35,13 @@ static int
 lupdate(lua_State *L) {
     auto& w = getworld(L);
     w.time++;
-    uint64_t eff = solar_efficiency(w.time / DayTick);
-    if (eff != 0) {
-        float efficiency = (float)eff / FixedPoint;
-        for (auto& v : ecs_api::select<ecs::solar_panel, ecs::capacitance, ecs::building>(w.ecs)) {
+    uint8_t efficiency = solar_efficiency(w.time % DayTick) / UPS;
+    for (auto& v : ecs_api::select<ecs::solar_panel, ecs::capacitance, ecs::building>(w.ecs)) {
+        auto& solar_panel = v.get<ecs::solar_panel>();
+        solar_panel.efficiency = efficiency;
+        if (efficiency != 0) {
             auto generator = get_generator(w, v);
-            generator.force_produce(efficiency);
+            generator.force_produce(efficiency, 100);
         }
     }
     

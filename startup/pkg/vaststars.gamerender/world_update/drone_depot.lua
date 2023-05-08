@@ -124,12 +124,8 @@ local function create_icon(object_id, e)
     local cache
 
     local function remove(self)
+        cache = nil
         icanvas.remove_item(icanvas.types().ICON, object_id)
-    end
-    local function on_position_change(self, building_srt)
-        remove(self)
-        local x, y = building_srt.t[1], building_srt.t[3]
-        __draw_icon(object_id, x, y)
     end
     local function update(self, building_srt, item)
         if item == cache then
@@ -143,6 +139,10 @@ local function create_icon(object_id, e)
         end
         local x, y = building_srt.t[1], building_srt.t[3]
         __draw_icon(object_id, x, y)
+    end
+    local function on_position_change(self, building_srt)
+        remove(self)
+        update(self, building_srt, cache)
     end
     return {
         on_position_change = on_position_change,

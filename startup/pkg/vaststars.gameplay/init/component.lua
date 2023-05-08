@@ -118,6 +118,7 @@ component "save_fluidflow" {
 }
 
 component "solar_panel" {
+    "efficiency:byte"
 }
 
 component "wind_turbine" {

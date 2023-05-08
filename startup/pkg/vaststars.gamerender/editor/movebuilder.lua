@@ -443,7 +443,9 @@ local function rotate_pickup_object(self, datamodel, dir, delta_vec)
         datamodel.show_confirm = true
     end
 
-    self.sprite:remove()
+    if self.sprite then
+        self.sprite:remove()
+    end
     self.sprite = __create_self_sprite(typeobject, x, y, dir, sprite_color)
 
     local road_entrance_position, dx, dy, ddir = _get_road_entrance_position(typeobject, x, y, pickup_object.dir)

@@ -7,6 +7,7 @@ local ism = ecs.import.interface "mod.stonemountain|istonemountain"
 local UNIT <const> = 10
 local MOUNTAIN = import_package "vaststars.prototype".load("mountain")
 local coord_system = ecs.require "terrain"
+local iroad = ecs.import.interface "mod.road|iroad"
 
 local function __pack(x, y)
     assert(x & 0xFF == x and y & 0xFF == y)
@@ -112,7 +113,7 @@ function road:init(layer_name, map)
         self.cache[__pack(x, y)] = v
         t[#t+1] = v
     end
-    iterrain.create_roadnet_entity(t)
+    iroad.create_roadnet_entity(t)
 end
 
 -- shape = "I" / "U" / "L" / "T" / "O"
@@ -173,10 +174,10 @@ function road:flush()
             end
         end
         if next(update) then
-            iterrain.update_roadnet_entity(update)
+            iroad.update_roadnet_entity(update)
         end
         if next(delete) then
-            iterrain.delete_roadnet_entity(delete)
+            iroad.delete_roadnet_entity(delete)
         end
         self._update_cache = {}
     end

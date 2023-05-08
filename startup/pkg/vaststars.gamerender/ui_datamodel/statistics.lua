@@ -271,6 +271,9 @@ function M:stage_ui_update(datamodel)
         items_ref = {}
         show_count = 0
         for _, group in pairs(power_group) do
+            if group.count < 1 then
+                goto continue
+            end
             local node = group[filter_type]
             local match = false
             if chart_type == 0 and node.consumer then
@@ -291,6 +294,7 @@ function M:stage_ui_update(datamodel)
                 items[#items + 1] = item
                 items_ref[name] = item
             end
+            ::continue::
         end
         return items
     end
