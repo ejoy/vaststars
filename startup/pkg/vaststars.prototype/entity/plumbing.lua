@@ -49,6 +49,7 @@ prototype "地下水挖掘机" {
     area = "2x2",
     rotate_on_build = true,
     power = "6kW",
+    assembling_icon = false,
     priority = "secondary",
     recipe = "离岸抽水",
     show_arc_menu = false,
