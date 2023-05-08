@@ -7,6 +7,36 @@
 
 #define MAX_PIPE_CONNECTION 1024
 
+struct heat_pipe {
+	int id;
+	uint32_t energy;
+	int connection_index;
+
+	uint32_t input;
+	uint32_t output;
+
+	// cap := max_temperature * specific_heat
+	uint32_t cap;
+
+	uint32_t specific_heat;
+	uint32_t power;
+};
+
+struct heat_connection {
+	int from;
+	int to;
+};
+
+struct heat_network {
+	struct heat_pipe *p;
+	struct heat_connection *c;
+	int pipe_n;
+	int connection_n;
+	int pipe_cap;
+	int connection_cap;
+	int sorted;
+};
+
 struct heat_network *
 heatnet_new() {
 	struct heat_network * H = (struct heat_network *)malloc(sizeof(*H));

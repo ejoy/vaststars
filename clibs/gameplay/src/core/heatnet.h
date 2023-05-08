@@ -16,36 +16,7 @@ struct heat_state {
 	struct heat_box box;
 };
 
-
-struct heat_pipe {
-	int id;
-	uint32_t energy;
-	int connection_index;
-
-	uint32_t input;
-	uint32_t output;
-
-	// cap := max_temperature * specific_heat
-	uint32_t cap;
-
-	uint32_t specific_heat;
-	uint32_t power;
-};
-
-struct heat_connection {
-	int from;
-	int to;
-};
-
-struct heat_network {
-	struct heat_pipe *p;
-	struct heat_connection *c;
-	int pipe_n;
-	int connection_n;
-	int pipe_cap;
-	int connection_cap;
-	int sorted;
-};
+struct heat_network;
 
 struct heat_network * heatnet_new();
 void heatnet_delete(struct heat_network *net);
