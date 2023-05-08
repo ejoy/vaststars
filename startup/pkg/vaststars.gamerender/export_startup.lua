@@ -27,12 +27,24 @@ funcs["lorry_factory"] = DO_NOTHING
 funcs["hub"] = DO_NOTHING
 funcs["wind_turbine"] = DO_NOTHING
 funcs["accumulator"] = DO_NOTHING
+funcs["inventory"] = DO_NOTHING
 
 funcs["building"] = function (export_data, e)
     export_data.prototype_name = iprototype.queryById(e.building.prototype).name
     export_data.dir = iprototype.dir_tostring(e.building.direction)
     export_data.x = e.building.x
     export_data.y = e.building.y
+
+    gameplay_core.extend(e, "inventory?in")
+    if e.inventory then
+        local items = {}
+        for _, slot in pairs(ichest.collect_item(gameplay_core.get_world(), e.inventory)) do
+            items[#items+1] = {iprototype.queryById(slot.item).name, slot.amount}
+        end
+
+        export_data.items = items
+        return export_data
+    end
     return export_data
 end
 
@@ -74,7 +86,7 @@ end
 funcs["chest"] = function (export_data, e)
     gameplay_core.extend(e, "chest?in building?in")
     local items = {}
-    for _, slot in pairs(ichest.collect_item(gameplay_core.get_world(), e)) do
+    for _, slot in pairs(ichest.collect_item(gameplay_core.get_world(), e.chest)) do
         items[#items+1] = {iprototype.queryById(slot.item).name, slot.amount}
     end
 

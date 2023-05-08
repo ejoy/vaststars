@@ -61,7 +61,7 @@ local function create_drone(homepos)
             self:flyto(fly_height, dst, 1.0, true)
         end,
         flyto = function (self, height, to, duration, home)
-            print("----flyto----",self.current_pos[1], self.current_pos[2], self.current_pos[3], to[1], to[2], to[3])
+            -- print("----flyto----",self.current_pos[1], self.current_pos[2], self.current_pos[3], to[1], to[2], to[3])
             if self.at_home then
                 local exz <close> = w:entity(self.motion_xz)
                 local xzpos = iom.get_position(exz)

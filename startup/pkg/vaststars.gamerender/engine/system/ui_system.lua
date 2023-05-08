@@ -68,7 +68,7 @@ local function open(uiData, ...)
             binding.template:flush()
             datamodel_changed[url] = true
         end
-        return binding.window
+        return binding.datamodel
     end
 
     binding = {}
@@ -100,7 +100,7 @@ local function open(uiData, ...)
 
     binding.template = _load_datamodel(url, datamodel)
     if not binding.template then
-        return binding.window
+        return binding.datamodel
     end
 
     function binding.template:flush()
@@ -138,7 +138,7 @@ local function open(uiData, ...)
         stage_camera_usage[url] = true
     end
 
-    return binding.window
+    return binding.datamodel
 end
 
 local function world_pub(msg)

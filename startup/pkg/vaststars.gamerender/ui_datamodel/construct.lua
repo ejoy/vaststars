@@ -13,6 +13,9 @@ local iprototype = require "gameplay.interface.prototype"
 local irecipe = require "gameplay.interface.recipe"
 local create_normalbuilder = ecs.require "editor.normalbuilder"
 local create_movebuilder = ecs.require "editor.movebuilder"
+local create_roadbuilder = ecs.require "editor.roadbuilder"
+local create_pipebuilder = ecs.require "editor.pipebuilder"
+local create_pipetogroundbuilder = ecs.require "editor.pipetogroundbuilder"
 local objects = require "objects"
 local global = require "global"
 local iobject = ecs.require "object"
@@ -30,10 +33,12 @@ local COLOR_GREEN = math3d.constant("v4", {0.3, 1, 0, 1})
 local construct_menu_cfg = import_package "vaststars.prototype"("construct_menu")
 local ichest = require "gameplay.interface.chest"
 local debugger = require "debugger"
+local create_event_handler = require "ui_datamodel.common.event_handler"
+local ipower_line = ecs.require "power_line"
 
 local rotate_mb = mailbox:sub {"rotate"}
 local build_mb = mailbox:sub {"build"}
-local cancel_mb = mailbox:sub {"cancel"}
+local quit_mb = mailbox:sub {"quit"}
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
 local show_statistic_mb = mailbox:sub {"statistic"} -- 主界面左下角 -> 统计信息
 local show_setting_mb = mailbox:sub {"show_setting"} -- 主界面左下角 -> 游戏设置
@@ -49,15 +54,34 @@ local focus_on_building_mb = mailbox:sub {"focus_on_building"}
 local on_pickup_object_mb = mailbox:sub {"on_pickup_object"}
 local inventory_mb = mailbox:sub {"inventory"}
 local switch_concise_mode_mb = mailbox:sub {"switch_concise_mode"}
-
 local pickup_gesture_mb = world:sub {"pickup_gesture"}
 local pickup_long_press_gesture_mb = world:sub {"pickup_long_press_gesture"}
 local gesture_pan_mb = world:sub {"gesture", "pan"}
 local focus_tips_event = world:sub {"focus_tips"}
+local ipower = ecs.require "power"
 
-local builder
+local builder, builder_datamodel, builder_ui
 local excluded_pickup_id -- object id
 local handle_pickup = true
+
+local event_handler = create_event_handler(
+    mailbox,
+    {
+        "start_laying",
+        "finish_laying",
+        "start_teardown",
+        "finish_teardown",
+        "cancel",
+        "place_one",
+        "remove_one",
+        -- "quit", -- "quit" event is handled in the same way as construct building
+    },
+    function(event)
+        if builder then
+            builder[event](builder, builder_datamodel)
+        end
+    end
+)
 
 local function __on_pickup_object(datamodel, object)
     if not excluded_pickup_id or excluded_pickup_id == object.id then
@@ -123,8 +147,9 @@ end
 
 local function __clean(datamodel)
     if builder then
-        builder:clean(datamodel)
-        builder = nil
+        builder:clean(builder_datamodel)
+        builder, builder_datamodel = nil, nil
+        iui.close(builder_ui)
     end
     idetail.unselected()
     datamodel.is_concise_mode = false
@@ -193,32 +218,29 @@ function M:update_tech(datamodel, tech)
 end
 
 function M:stage_ui_update(datamodel)
+    event_handler()
+
     for _ in rotate_mb:unpack() do
         if builder then
-            builder:rotate_pickup_object(datamodel)
+            builder:rotate_pickup_object(builder_datamodel)
         end
     end
 
     for _ in build_mb:unpack() do
         assert(builder)
-        if not builder:confirm(datamodel) then
-            builder:clean(datamodel)
-            builder = nil
-            __switch_status("default")
-            datamodel.is_concise_mode = false
-            handle_pickup = true
+        if not builder:confirm(builder_datamodel) then
+            __clean(datamodel)
+            __switch_status("default", function()
+                __clean(datamodel)
+            end)
         end
     end
 
-    for _ in cancel_mb:unpack() do
-        -- if statement mainly applies to road and pipe construction, where builder is nil
-        if builder then
-            builder:clean(datamodel)
-            builder = nil
-        end
-        __switch_status("default")
-        datamodel.is_concise_mode = false
-        handle_pickup = true
+    for _ in quit_mb:unpack() do
+        __clean(datamodel)
+        __switch_status("default", function()
+            __clean(datamodel)
+        end)
     end
 
     for _ in guide_on_going_mb:unpack() do
@@ -320,38 +342,45 @@ local function close_focus_tips(tech_node)
     excluded_pickup_id = nil
 end
 
-local function __construct_entity(datamodel, typeobject)
+local function __construct_entity(typeobject)
+    iui.close("building_arc_menu.rml")
+    iui.close("detail_panel.rml")
+    idetail.unselected()
+    gameplay_core.world_update = false
+    handle_pickup = false
+
     if iprototype.has_type(typeobject.type, "road") then
-        iui.close("building_arc_menu.rml")
-        iui.close("detail_panel.rml")
-        idetail.unselected()
-        gameplay_core.world_update = false
-        iui.open({"road_or_pipe_build.rml", "road_build.lua"})
+        builder_ui = "construct_road_or_pipe.rml"
+        builder_datamodel = iui.open({"construct_road_or_pipe.rml", "construct_road_or_pipe.lua"})
+        builder = create_roadbuilder()
+        builder:new_entity(builder_datamodel, typeobject)
     elseif iprototype.has_type(typeobject.type, "pipe") then
-        iui.close("building_arc_menu.rml")
-        iui.close("detail_panel.rml")
-        idetail.unselected()
-        gameplay_core.world_update = false
-        iui.open({"road_or_pipe_build.rml", "pipe_build.lua"})
+        builder_ui = "construct_road_or_pipe.rml"
+        builder_datamodel = iui.open({"construct_road_or_pipe.rml", "construct_road_or_pipe.lua"})
+        builder = create_pipebuilder()
+        builder:new_entity(builder_datamodel, typeobject)
     elseif iprototype.has_type(typeobject.type, "pipe_to_ground") then
-        iui.close("building_arc_menu.rml")
-        iui.close("detail_panel.rml")
-        idetail.unselected()
-        gameplay_core.world_update = false
-        iui.open({"road_or_pipe_build.rml", "pipe_to_ground_build.lua"})
+        builder_ui = "construct_road_or_pipe.rml"
+        builder_datamodel = iui.open({"construct_road_or_pipe.rml", "construct_road_or_pipe.lua"})
+        builder = create_pipetogroundbuilder()
+        builder:new_entity(builder_datamodel, typeobject)
     elseif iprototype.has_type(typeobject.type, "station") then
+        builder_ui = "construct_building.rml"
+        builder_datamodel = iui.open({"construct_building.rml"})
         builder = create_station_builder()
-        builder:new_entity(datamodel, typeobject)
+        builder:new_entity(builder_datamodel, typeobject)
     else
+        builder_ui = "construct_building.rml"
+        builder_datamodel = iui.open({"construct_building.rml"})
         builder = create_normalbuilder(typeobject.id)
-        builder:new_entity(datamodel, typeobject)
+        builder:new_entity(builder_datamodel, typeobject)
     end
 end
 
 function M:stage_camera_usage(datamodel)
     for _, delta in dragdrop_camera_mb:unpack() do
         if builder then
-            builder:touch_move(datamodel, delta)
+            builder:touch_move(builder_datamodel, delta)
             self:flush()
         end
     end
@@ -360,7 +389,7 @@ function M:stage_camera_usage(datamodel)
     for _, _, e in gesture_pan_mb:unpack() do
         if e.state == "ended" then
             if builder then
-                builder:touch_end(datamodel)
+                builder:touch_end(builder_datamodel)
                 self:flush()
             end
         elseif e.state == "changed" then
@@ -451,12 +480,21 @@ function M:stage_camera_usage(datamodel)
 
     for _, _, _, object_id in teardown_mb:unpack() do
         iui.close("building_md_arc_menu.rml")
+        iui.close("detail_panel.rml")
         idetail.unselected()
 
         local object = assert(objects:get(object_id))
+        local gw = gameplay_core.get_world()
+        local typeobject = iprototype.queryByName(object.prototype_name)
+
         igameplay.remove_entity(object.gameplay_eid)
         gameplay_core.remove_entity(object.gameplay_eid)
         gameplay_core.build()
+
+        if typeobject.power_network_link or typeobject.power_supply_distance then
+            ipower:build_power_network(gw)
+            ipower_line.update_line(ipower:get_pole_lines())
+        end
 
         iobject.remove(object)
         objects:remove(object_id)
@@ -482,23 +520,29 @@ function M:stage_camera_usage(datamodel)
             local object = assert(objects:get(object_id))
             local typeobject = iprototype.queryByName(object.prototype_name)
             idetail.unselected()
-
-            builder = create_movebuilder(object.id)
-            builder:new_entity(datamodel, typeobject)
+            builder_ui = "move_building.rml"
+            builder_datamodel = iui.open({"move_building.rml"}, object.prototype_name)
+            builder = create_movebuilder(object_id)
+            builder:new_entity(builder_datamodel, typeobject)
         end)
     end
 
     for _, _, _, item in construct_entity_mb:unpack() do
         local typeobject = iprototype.queryByName(item)
         if ichest.get_inventory_item_count(gameplay_core.get_world(), typeobject.id) >= 1 then
+            iui.close("building_arc_menu.rml")
+            iui.close("detail_panel.rml")
+            idetail.unselected()
+            gameplay_core.world_update = false
             handle_pickup = false
             __switch_status("construct", function()
                 -- we may click the button repeatedly, so we need to clear the old model first
                 if builder then
-                    builder:clean(datamodel)
-                    builder = nil
+                    builder:clean(builder_datamodel)
+                    builder, builder_datamodel = nil, nil
+                    iui.close(builder_ui)
                 end
-                __construct_entity(datamodel, typeobject)
+                __construct_entity(typeobject)
             end)
         end
     end

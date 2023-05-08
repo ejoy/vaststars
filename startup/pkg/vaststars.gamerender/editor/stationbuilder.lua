@@ -17,7 +17,6 @@ local coord_system = ecs.require "terrain"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local ALL_DIR = iconstant.ALL_DIR
 local igrid_entity = ecs.require "engine.grid_entity"
-local iui = ecs.import.interface "vaststars.gamerender|iui"
 local mc = import_package "ant.math".constant
 local create_road_entrance = ecs.require "editor.road_entrance"
 local create_selected_boxes = ecs.require "selected_boxes"
@@ -30,6 +29,9 @@ local iroadnet_converter = require "roadnet_converter"
 local gen_endpoint_mask = ecs.require "editor.endpoint".gen_endpoint_mask
 local COLOR_GREEN = math3d.constant("v4", {0.3, 1, 0, 1})
 local COLOR_RED = math3d.constant("v4", {1, 0.03, 0, 1})
+local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
+local gameplay_core = require "gameplay.core"
+local ichest = require "gameplay.interface.chest"
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -105,7 +107,6 @@ local function __new_entity(self, datamodel, typeobject)
         },
         fluid_name = "",
     }
-    iui.open({"construct_building.rml"}, self.pickup_object.srt.t, typeobject.name)
 
     local road_entrance_position, road_entrance_dir = _get_road_entrance_position(typeobject, dir, self.pickup_object.srt.t)
     local w, h = iprototype.unpackarea(typeobject.area)
@@ -113,11 +114,23 @@ local function __new_entity(self, datamodel, typeobject)
     if road_entrance_position then
         local srt = {t = road_entrance_position, r = ROTATORS[road_entrance_dir]}
         if datamodel.show_confirm then
-            self.road_entrance = create_road_entrance(srt, "valid")
-            self.selected_boxes = create_selected_boxes({"/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab"}, selected_boxes_position, COLOR_GREEN, w+1, h+1)
+            if not self.road_entrance then
+                self.road_entrance = create_road_entrance(srt, "valid")
+            else
+                self.road_entrance:set_state("valid")
+            end
+            if not self.selected_boxes then
+                self.selected_boxes = create_selected_boxes({"/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab"}, selected_boxes_position, COLOR_GREEN, w+1, h+1)
+            end
         else
-            self.road_entrance = create_road_entrance(srt, "invalid")
-            self.selected_boxes = create_selected_boxes({"/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab"}, selected_boxes_position, COLOR_RED, w+1, h+1)
+            if not self.road_entrance then
+                self.road_entrance = create_road_entrance(srt, "invalid")
+            else
+                self.road_entrance:set_state("invalid")
+            end
+            if not self.selected_boxes then
+                self.selected_boxes = create_selected_boxes({"/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab"}, selected_boxes_position, COLOR_RED, w+1, h+1)
+            end
         end
     end
 end
@@ -266,19 +279,23 @@ local function __show_road_entrance_marker(self, typeobject, dir)
     return min_coord
 end
 
+local function __calc_grid_position(self, typeobject)
+    local _, originPosition = coord_system:align(math3d.vector {0, 0, 0}, iprototype.unpackarea(typeobject.area))
+    local buildingPosition = coord_system:get_position_by_coord(self.pickup_object.x, self.pickup_object.y, iprototype.unpackarea(typeobject.area))
+    return math3d.ref(math3d.add(math3d.sub(buildingPosition, originPosition), GRID_POSITION_OFFSET))
+end
+
 local function new_entity(self, datamodel, typeobject)
     __new_entity(self, datamodel, typeobject)
     self.pickup_object.APPEAR = true
 
-    if not self.grid_entity then
-        self.grid_entity = igrid_entity.create("polyline_grid", coord_system.tile_width, coord_system.tile_height, coord_system.tile_size, {t = {0, 1, 0}})
-        self.grid_entity:show(true)
+    icanvas.remove_item(icanvas.types().ROAD_ENTRANCE_MARKER, 0)
+    __show_road_entrance_marker(self, typeobject, self.pickup_object.dir)
+    icanvas.show(icanvas.types().ROAD_ENTRANCE_MARKER, true)
 
-        if self.road_entrance then
-            icanvas.remove_item(icanvas.types().ROAD_ENTRANCE_MARKER, 0)
-            __show_road_entrance_marker(self, typeobject, self.pickup_object.dir)
-            icanvas.show(icanvas.types().ROAD_ENTRANCE_MARKER, true)
-        end
+    if not self.grid_entity then
+        self.grid_entity = igrid_entity.create("polyline_grid", coord_system.tile_width, coord_system.tile_height, coord_system.tile_size, {t = __calc_grid_position(self, typeobject)})
+        self.grid_entity:show(true)
     end
 end
 
@@ -329,8 +346,11 @@ end
 local function touch_move(self, datamodel, delta_vec)
     if self.pickup_object then
         iobject.move_delta(self.pickup_object, delta_vec, coord_system)
-
         local typeobject = iprototype.queryByName(self.pickup_object.prototype_name)
+
+        if self.grid_entity then
+            self.grid_entity:send("obj_motion", "set_position", __calc_grid_position(self, typeobject))
+        end
 
         local road_entrance_position, road_entrance_dir = _get_road_entrance_position(typeobject, self.pickup_object.dir, self.pickup_object.srt.t)
         assert(road_entrance_position)
@@ -383,6 +403,8 @@ local function touch_end(self, datamodel)
             self.selected_boxes:set_color(COLOR_RED)
         end
     else
+        datamodel.show_confirm = true
+
         if self.road_entrance then
             self.road_entrance:set_state("valid")
             self.selected_boxes:set_color(COLOR_GREEN)
@@ -429,21 +451,11 @@ local function confirm(self, datamodel)
         ipower_line.update_temp_line(ipower:get_temp_pole())
     end
 
-    self:complete(pickup_object.id)
-
-    self.pickup_object = nil
-    if self.road_entrance then
-        self.road_entrance:remove()
-        self.road_entrance = nil
-        self.selected_boxes:remove()
-        self.selected_boxes = nil
-    end
-    __new_entity(self, datamodel, typeobject)
-    return false
+    return self:complete(pickup_object.id, datamodel)
 end
 
 local iroadnet = ecs.require "roadnet"
-local function complete(self, object_id)
+local function complete(self, object_id, datamodel)
     if self.grid_entity then
         self.grid_entity:remove()
         self.grid_entity = nil
@@ -462,6 +474,18 @@ local function complete(self, object_id)
 
     iroadnet:editor_build()
     self.super.complete(self, object_id)
+
+    local object = assert(objects:get(object_id))
+    local typeobject = iprototype.queryByName(object.prototype_name)
+    assert(ichest.inventory_pickup(gameplay_core.get_world(), typeobject.id, 1))
+
+    local continue_construct = ichest.get_inventory_item_count(gameplay_core.get_world(), typeobject.id) > 0
+    if not continue_construct then
+        return false
+    else
+        new_entity(self, datamodel, typeobject)
+        return true
+    end
 end
 
 local function __is_station_placeable(prototype_name)
@@ -582,14 +606,14 @@ local function clean(self, datamodel)
     ipower:clear_all_temp_pole()
     ipower_line.update_temp_line(ipower:get_temp_pole())
 
+    icanvas.remove_item(icanvas.types().ROAD_ENTRANCE_MARKER, 0)
+
     if self.road_entrance then
         self.road_entrance:remove()
         self.road_entrance = nil
         self.selected_boxes:remove()
         self.selected_boxes = nil
     end
-
-    iui.close("construct_building.rml")
 end
 
 local function create()

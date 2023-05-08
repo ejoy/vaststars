@@ -18,7 +18,6 @@ local coord_system = require "global".coord_system
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local ALL_DIR = iconstant.ALL_DIR
 local igrid_entity = ecs.require "engine.grid_entity"
-local iui = ecs.import.interface "vaststars.gamerender|iui"
 local mc = import_package "ant.math".constant
 local create_road_entrance = ecs.require "editor.road_entrance"
 local gameplay_core = require "gameplay.core"
@@ -78,9 +77,6 @@ local function __create_self_sprite(typeobject, x, y, dir, sprite_color)
         local w, h = iprototype.rotate_area(typeobject.area, dir)
         offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
         sprite = create_sprite(x + offset_x, y + offset_y, aw, ah, dir, sprite_color)
-    else
-        local w, h = iprototype.rotate_area(typeobject.area, dir)
-        sprite = create_sprite(x + offset_x, y + offset_y, w, h, dir, sprite_color)
     end
     return sprite
 end
@@ -97,20 +93,16 @@ local function __new_entity(self, datamodel, typeobject)
     local sprite_color
     if not self:check_construct_detector(typeobject.name, x, y, dir) then
         if typeobject.supply_area then
-            sprite_color = SPRITE_COLOR.CONSTRUCT_INVALID
+            sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID
         elseif typeobject.power_supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_POWER_INVALID
-        else
-            sprite_color = SPRITE_COLOR.CONSTRUCT_INVALID
         end
         datamodel.show_confirm = false
     else
         if typeobject.supply_area then
-            sprite_color = SPRITE_COLOR.DRONE_DEPOT_SUPPLY_AREA_VALID
+            sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_VALID
         elseif typeobject.power_supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_POWER_VALID
-        else
-            sprite_color = SPRITE_COLOR.CONSTRUCT_VALID
         end
         datamodel.show_confirm = true
     end
@@ -137,7 +129,6 @@ local function __new_entity(self, datamodel, typeobject)
         },
         fluid_name = fluid_name,
     }
-    iui.open({"move_building.rml"}, self.pickup_object.srt.t, typeobject.name)
 
     if self.sprite then
         self.sprite:remove()
@@ -222,7 +213,6 @@ local function touch_move(self, datamodel, delta_vec)
     local lx, ly = x, y
     if not lx then
         datamodel.show_confirm = false
-        iui.redirect("move_building.rml", "show_confirm", datamodel.show_confirm)
         return
     end
     pickup_object.x, pickup_object.y = lx, ly
@@ -256,21 +246,18 @@ local function touch_move(self, datamodel, delta_vec)
     local w, h = iprototype.rotate_area(typeobject.area, pickup_object.dir)
     if not self:check_construct_detector(pickup_object.prototype_name, lx, ly, pickup_object.dir) then -- TODO
         datamodel.show_confirm = false
-        iui.redirect("move_building.rml", "show_confirm", datamodel.show_confirm)
 
         if self.road_entrance then
             self.road_entrance:set_state("invalid")
         end
         if typeobject.supply_area then
-            sprite_color = SPRITE_COLOR.CONSTRUCT_INVALID
+            sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID
             local aw, ah = iprototype.unpackarea(typeobject.supply_area)
             offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
         elseif typeobject.power_supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_POWER_INVALID
             local aw, ah = typeobject.power_supply_area:match("(%d+)x(%d+)")
             offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
-        else
-            sprite_color = SPRITE_COLOR.CONSTRUCT_INVALID
         end
         if self.sprite then
             self.sprite:move(pickup_object.x + offset_x, pickup_object.y + offset_y, sprite_color)
@@ -278,21 +265,18 @@ local function touch_move(self, datamodel, delta_vec)
         return
     else
         datamodel.show_confirm = true
-        iui.redirect("move_building.rml", "show_confirm", datamodel.show_confirm)
 
         if self.road_entrance then
             self.road_entrance:set_state("valid")
         end
         if typeobject.supply_area then
-            sprite_color = SPRITE_COLOR.DRONE_DEPOT_SUPPLY_AREA_VALID
+            sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_VALID
             local aw, ah = iprototype.unpackarea(typeobject.supply_area)
             offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
         elseif typeobject.power_supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_POWER_VALID
             local aw, ah = typeobject.power_supply_area:match("(%d+)x(%d+)")
             offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
-        else
-            sprite_color = SPRITE_COLOR.CONSTRUCT_VALID
         end
         if self.sprite then
             self.sprite:move(pickup_object.x + offset_x, pickup_object.y + offset_y, sprite_color)
@@ -317,8 +301,6 @@ local function touch_end(self, datamodel)
 end
 
 local function confirm(self, datamodel)
-    iui.close("move_building.rml")
-
     ---
     local object = assert(objects:get(self.move_object_id))
     local e = gameplay_core.get_entity(object.gameplay_eid)
@@ -447,24 +429,19 @@ local function rotate_pickup_object(self, datamodel, dir, delta_vec)
     local sprite_color
     if not self:check_construct_detector(typeobject.name, pickup_object.x, pickup_object.y, dir) then
         if typeobject.supply_area then
-            sprite_color = SPRITE_COLOR.CONSTRUCT_INVALID
+            sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID
         elseif typeobject.power_supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_POWER_INVALID
-        else
-            sprite_color = SPRITE_COLOR.CONSTRUCT_INVALID
         end
         datamodel.show_confirm = false
     else
         if typeobject.supply_area then
-            sprite_color = SPRITE_COLOR.DRONE_DEPOT_SUPPLY_AREA_VALID
+            sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_VALID
         elseif typeobject.power_supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_POWER_VALID
-        else
-            sprite_color = SPRITE_COLOR.CONSTRUCT_VALID
         end
         datamodel.show_confirm = true
     end
-    iui.redirect("move_building.rml", "show_confirm", datamodel.show_confirm)
 
     self.sprite:remove()
     self.sprite = __create_self_sprite(typeobject, x, y, dir, sprite_color)
@@ -498,8 +475,6 @@ local function clean(self, datamodel)
         self.sprite:remove()
         self.sprite = nil
     end
-
-    iui.close("move_building.rml")
 end
 
 local function create(move_object_id)

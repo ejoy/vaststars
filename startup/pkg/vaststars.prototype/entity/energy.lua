@@ -10,6 +10,7 @@ prototype "蒸汽发电机I" {
     area = "3x5",
     rotate_on_build = true,
     io_shelf = false,
+    assembling_icon = false,
     -- show_arc_menu = false,
     power = "900kW",
     priority = "secondary",
