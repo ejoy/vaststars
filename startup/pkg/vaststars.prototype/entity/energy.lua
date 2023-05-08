@@ -11,7 +11,7 @@ prototype "蒸汽发电机I" {
     rotate_on_build = true,
     io_shelf = false,
     assembling_icon = false,
-    -- show_arc_menu = false,
+    show_arc_menu = false,
     power = "900kW",
     priority = "secondary",
     recipe = "蒸汽发电",
@@ -20,7 +20,7 @@ prototype "蒸汽发电机I" {
     fluidboxes = {
         input = {
             {
-                capacity = 400,
+                capacity = 100,
                 height = 100,
                 base_level = -100,
                 connections = {
