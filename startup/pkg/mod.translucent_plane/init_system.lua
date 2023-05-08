@@ -120,7 +120,27 @@ function init_sys:init_world()
     translucent_plane_material = "/pkg/mod.translucent_plane/assets/translucent_plane.material"
 end
 
-local function create_translucent_plane_entity(grids_table, color)
+function init_sys:data_changed()
+    for e in w:select "breath:update" do
+        local min, max, cur, freq, trend, color = e.breath.min, e.breath.max, e.breath.cur, e.breath.freq, e.breath.trend, e.breath.color
+        local increment = (1 / 60) * freq
+        if trend == 0 then
+            cur = cur + increment
+            if cur > max then
+                cur, trend = max, 1
+            end
+        else
+            cur = cur - increment
+            if cur < min then
+                cur, trend = min, 0
+            end
+        end
+        e.breath.cur, e.breath.trend = cur, trend
+        imaterial.set_property(e, "u_colorTable", math3d.vector(color[1], color[2], color[3], cur))
+    end
+end
+
+local function create_translucent_plane_entity(grids_table, color, alpha)
     if not grids_table then
         return
     end
@@ -129,26 +149,58 @@ local function create_translucent_plane_entity(grids_table, color)
     local plane_mesh = build_mesh(grids_table, unit, offset, aabb)
     local eid
     if plane_mesh then
-        eid = ecs.create_entity{
-            policy = {
-                "ant.scene|scene_object",
-                "ant.render|simplerender",
-                "mod.translucent_plane|translucent_plane",
-            },
-            data = {
-                scene = {
-                    t = math3d.vector(-offset * unit, 0, -offset * unit)
+        if alpha then
+            eid = ecs.create_entity{
+                policy = {
+                    "ant.scene|scene_object",
+                    "ant.render|simplerender",
+                    "mod.translucent_plane|translucent_plane",
                 },
-                simplemesh  = plane_mesh,
-                material    = translucent_plane_material,
-                on_ready = function (e)
-                    imaterial.set_property(e, "u_colorTable", math3d.vector(color))
-                end,
-                visible_state = "main_view",
-                --render_layer = "translucent",
-                render_layer = RENDER_LAYER
-            },
-        }
+                data = {
+                    scene = {
+                        t = math3d.vector(-offset * unit, 0, -offset * unit)
+                    },
+                    simplemesh  = plane_mesh,
+                    material    = translucent_plane_material,
+                    on_ready = function (e)
+                        imaterial.set_property(e, "u_colorTable", math3d.vector(color[1], color[2], color[3], alpha.min))
+                    end,
+                    breath = {
+                        min = alpha.min,
+                        max = alpha.max,
+                        cur = alpha.min,
+                        freq = alpha.freq,
+                        trend = 0,
+                        color = {color[1], color[2], color[3]}
+                    },
+                    visible_state = "main_view",
+                    --render_layer = "translucent",
+                    render_layer = RENDER_LAYER
+                },
+            }
+        else
+            eid = ecs.create_entity{
+                policy = {
+                    "ant.scene|scene_object",
+                    "ant.render|simplerender",
+                    "mod.translucent_plane|translucent_plane",
+                },
+                data = {
+                    scene = {
+                        t = math3d.vector(-offset * unit, 0, -offset * unit)
+                    },
+                    simplemesh  = plane_mesh,
+                    material    = translucent_plane_material,
+                    on_ready = function (e)
+                        imaterial.set_property(e, "u_colorTable", math3d.vector(color))
+                    end,
+                    visible_state = "main_view",
+                    --render_layer = "translucent",
+                    render_layer = RENDER_LAYER
+                },
+            }
+
+        end
     end
     return eid
 end 
@@ -219,12 +271,14 @@ local function remove_all_tp()
     end
 end
 
-local function get_final_table(rect_table, color_table)
+local function get_final_table(rect_table, color_table, alpha_table)
     for idx = 1, #rect_table do
-        tp_table[#tp_table+1] = {
+        local tp_idx = #tp_table + 1
+        tp_table[tp_idx] = {
             rect = rect_table[idx],
             color = color_table[idx]
         }
+        if alpha_table and alpha_table[idx] then tp_table[tp_idx].alpha = alpha_table[idx] end
     end
 end
 
@@ -236,7 +290,7 @@ local function generate_each_grids(offset, old_tp_num)
     update_grids_table(grids_table, aabb_table)
     -- tp_table contain old table + new table
     for idx = 1, #tp_table do
-        local eid = create_translucent_plane_entity(grids_table[idx], tp_table[idx].color)
+        local eid = create_translucent_plane_entity(grids_table[idx], tp_table[idx].color, tp_table[idx].alpha)
         local tp = {}
         tp.rect = tp_table[idx].rect
         tp.color = tp_table[idx].color
@@ -264,11 +318,11 @@ local function generate_each_grids(offset, old_tp_num)
     return id_table
 end
 
-function itp.create_translucent_plane(rect_table, color_table, render_layer)
+function itp.create_translucent_plane(rect_table, color_table, render_layer, alpha_table)
     remove_all_tp()
     local width, height, unit, offset = iplane_terrain.get_wh()
     local old_tp_num = #tp_table
-    get_final_table(rect_table, color_table)
+    get_final_table(rect_table, color_table, alpha_table)
     RENDER_LAYER = render_layer
     return generate_each_grids(offset, old_tp_num)
 end

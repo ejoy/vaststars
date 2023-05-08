@@ -154,7 +154,23 @@ function S:data_changed()
         elseif key == "K" and press == 0 then
             iroad.update_roadnet_entity(update_list)
         elseif key == "L" and press == 0 then
-            iroad.delete_roadnet_entity(delete_list)            
+            iroad.delete_roadnet_entity(delete_list)      
+        elseif key == "N" and press == 0 then
+            local rect_table = {
+                {x = 0, z = 0, w = 5, h = 5},
+                {x = 3, z = 3, w = 4, h = 4},
+                {x = -2, z = -2, w = 5, h = 5},
+            }
+            local color_table = {
+                {1, 0, 0, 0.5},
+                {0, 1, 0, 0.7},
+                {0, 0, 1, 0.8}
+            }
+             local alpha_table = {
+                [1] = {min = 0.2, max = 0.8, freq = 1.0},
+                [3] = {min = 0.3, max = 0.7, freq = 2.0},
+            } 
+            itp.create_translucent_plane(rect_table, color_table, "translucent", alpha_table)
         end
     end
 end
