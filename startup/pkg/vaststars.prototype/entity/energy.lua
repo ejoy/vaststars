@@ -13,7 +13,8 @@ prototype "蒸汽发电机I" {
     -- show_arc_menu = false,
     power = "900kW",
     priority = "secondary",
-    craft_category = {"流体发电"},
+    recipe = "蒸汽发电",
+    -- craft_category = {"流体发电"},
     maxslot = "8",
     fluidboxes = {
         input = {
