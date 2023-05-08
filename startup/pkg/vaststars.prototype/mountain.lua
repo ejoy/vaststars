@@ -7,9 +7,13 @@ scale = {
 }
 
 mountain_coords = {
-    {103,142},
+    {73,159},
     {153,101},
     {97,113},
+    {92,110},
+    {84,109},
+    {143,139},
+    {150,145},
 }
 
 -- the first two numbers represent the x and y coordinates of the upper-left corner of the rectangle
