@@ -69,8 +69,8 @@ struct generator_context {
             c.shortage = 0;
         }
     }
-    inline void force_produce(float efficiency) {
-        uint32_t real_power = (uint32_t)(power * efficiency);
+    inline void force_produce(uint32_t efficiency, uint32_t fixed) {
+        uint32_t real_power = (power / fixed) * efficiency + (power % fixed) * efficiency / fixed;
         if (real_power < c.shortage) {
             c.shortage -= real_power;
         }
