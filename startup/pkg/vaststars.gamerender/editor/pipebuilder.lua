@@ -818,20 +818,10 @@ local function confirm(self, datamodel)
 
             remove[coord] = true
         else
-            local fluid_icon
-            local fluid_name = object.fluid_name
             local object_id = object.id
-
-            if fluid_name ~= "" then
-                if ((x % 2 == 1 and y % 2 == 1) or (x % 2 == 0 and y % 2 == 0)) then
-                    fluid_icon = true
-                end
-            end
-
             local old = objects:get(object_id, {"CONSTRUCTED"})
             if not old then
                 object.gameplay_eid = igameplay.create_entity(object)
-                object.fluid_icon = fluid_icon
             else
                 if old.prototype_name ~= object.prototype_name then
                     igameplay.remove_entity(object.gameplay_eid)
@@ -840,7 +830,6 @@ local function confirm(self, datamodel)
                     ientity:set_direction(gameplay_core.get_world(), gameplay_core.get_entity(object.gameplay_eid), object.dir)
                 elseif old.fluid_name ~= object.fluid_name then
                     if iprototype.has_type(iprototype.queryByName(object.prototype_name).type, "fluidbox") then
-                        object.fluid_icon = fluid_icon
                         ifluid:update_fluidbox(gameplay_core.get_entity(object.gameplay_eid), object.fluid_name)
                         igameplay.update_chimney_recipe(object)
                     end

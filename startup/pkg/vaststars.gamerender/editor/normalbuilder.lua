@@ -22,6 +22,8 @@ local SPRITE_COLOR = import_package "vaststars.prototype".load("sprite_color")
 local gameplay_core = require "gameplay.core"
 local ichest = require "gameplay.interface.chest"
 local create_selected_boxes = ecs.require "selected_boxes"
+local mathpkg = import_package "ant.math"
+local mc = mathpkg.constant
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -163,8 +165,38 @@ local function __get_nearby_buldings(x, y, w, h)
     return r
 end
 
-local function __show_nearby_buildings_selected_boxes(self, x, y, typeobject)
+local function __is_building_intersect(x1, y1, w1, h1, x2, y2, w2, h2)
+    local x1_1, y1_1 = x1, y1
+    local x1_2, y1_2 = x1 + w1 - 1, y1
+    local x1_3, y1_3 = x1, y1 + h1 - 1
+    local x1_4, y1_4 = x1 + w1 - 1, y1 + h1 - 1
+
+    if (x1_1 >= x2 and x1_1 <= x2 + w2 - 1 and y1_1 >= y2 and y1_1 <= y2 + h2 - 1) or
+        (x1_2 >= x2 and x1_2 <= x2 + w2 - 1 and y1_2 >= y2 and y1_2 <= y2 + h2 - 1) or
+        (x1_3 >= x2 and x1_3 <= x2 + w2 - 1 and y1_3 >= y2 and y1_3 <= y2 + h2 - 1) or
+        (x1_4 >= x2 and x1_4 <= x2 + w2 - 1 and y1_4 >= y2 and y1_4 <= y2 + h2 - 1) then
+        return true
+    end
+
+    local x2_1, y2_1 = x2, y2
+    local x2_2, y2_2 = x2 + w2 - 1, y2
+    local x2_3, y2_3 = x2, y2 + h2 - 1
+    local x2_4, y2_4 = x2 + w2 - 1, y2 + h2 - 1
+
+    if (x2_1 >= x1 and x2_1 <= x1 + w1 - 1 and y2_1 >= y1 and y2_1 <= y1 + h1 - 1) or
+        (x2_2 >= x1 and x2_2 <= x1 + w1 - 1 and y2_2 >= y1 and y2_2 <= y1 + h1 - 1) or
+        (x2_3 >= x1 and x2_3 <= x1 + w1 - 1 and y2_3 >= y1 and y2_3 <= y1 + h1 - 1) or
+        (x2_4 >= x1 and x2_4 <= x1 + w1 - 1 and y2_4 >= y1 and y2_4 <= y1 + h1 - 1) then
+        return true
+    end
+
+    return false
+end
+
+
+local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject)
     local nearby_buldings = __get_nearby_buldings(x, y, iprototype.unpackarea(typeobject.area))
+    local w, h = iprototype.rotate_area(typeobject.area, dir)
 
     local redraw = {}
     for object_id, object in pairs(nearby_buldings) do
@@ -182,13 +214,36 @@ local function __show_nearby_buildings_selected_boxes(self, x, y, typeobject)
 
     for object_id, object in pairs(redraw) do
         local typeobject = iprototype.queryByName(object.prototype_name)
+        local ow, oh = iprototype.rotate_area(typeobject.area, object.dir)
+
+        local color
+        if __is_building_intersect(x, y, w, h, object.x, object.y, ow, oh) then
+            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_FARAWAY_BUILDINGS_INTERSECTION
+        else
+            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+        end
+
         self.selected_boxes[object_id] = create_selected_boxes(
             {
                 "/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab",
                 "/pkg/vaststars.resources/prefabs/selected-box-no-animation-line.prefab",
             },
-            object.srt.t, SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS, iprototype.unpackarea(typeobject.area)
+            object.srt.t, color, iprototype.unpackarea(typeobject.area)
         )
+    end
+
+    for object_id, o in pairs(self.selected_boxes) do
+        local object = assert(objects:get(object_id))
+        local typeobject = iprototype.queryByName(object.prototype_name)
+        local ow, oh = iprototype.rotate_area(typeobject.area, object.dir)
+
+        local color
+        if __is_building_intersect(x, y, w, h, object.x, object.y, ow, oh) then
+            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_FARAWAY_BUILDINGS_INTERSECTION
+        else
+            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+        end
+        o:set_color(color)
     end
 end
 
@@ -233,7 +288,7 @@ local function new_entity(self, datamodel, typeobject)
 
     local position = coord_system:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir))
 
-    __show_nearby_buildings_selected_boxes(self, x, y, typeobject)
+    __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject)
 
     __new_entity(self, datamodel, typeobject, position, x, y, dir)
     self.pickup_object.APPEAR = true
@@ -336,7 +391,7 @@ local function touch_move(self, datamodel, delta_vec)
             self.sprite:move(pickup_object.x + offset_x, pickup_object.y + offset_y, sprite_color)
         end
         __show_self_selected_boxes(self, pickup_object.srt.t, typeobject, pickup_object.dir, valid)
-        __show_nearby_buildings_selected_boxes(self, x, y, typeobject)
+        __show_nearby_buildings_selected_boxes(self, x, y, pickup_object.dir, typeobject)
         return
     else
         datamodel.show_confirm = true
@@ -355,7 +410,7 @@ local function touch_move(self, datamodel, delta_vec)
             self.sprite:move(pickup_object.x + offset_x, pickup_object.y + offset_y, sprite_color)
         end
         __show_self_selected_boxes(self, pickup_object.srt.t, typeobject, pickup_object.dir, valid)
-        __show_nearby_buildings_selected_boxes(self, x, y, typeobject)
+        __show_nearby_buildings_selected_boxes(self, x, y, pickup_object.dir, typeobject)
     end
 
     pickup_object.recipe = _get_mineral_recipe(pickup_object.prototype_name, lx, ly, pickup_object.dir) -- TODO: maybe set recipt according to entity type?

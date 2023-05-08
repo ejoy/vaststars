@@ -80,18 +80,6 @@ local function _update_neighbor_fluidbox(object)
                         sibling.fluid_name = fb.fluid_name
                         sibling.fluidflow_id = neighbor.fluidflow_id
 
-                        local fluid_icon -- TODO: duplicate code, see also saveload.lua
-                        local typeobject = iprototype.queryByName(sibling.prototype_name)
-                        if iprototype.has_type(typeobject.type, "fluidbox") and sibling.fluid_name ~= "" then
-                            if iprototype.is_pipe(sibling.prototype_name) or iprototype.is_pipe_to_ground(sibling.prototype_name) then
-                                if ((sibling.x % 2 == 1 and sibling.y % 2 == 1) or (sibling.x % 2 == 0 and sibling.y % 2 == 0)) and not _has_connection(sibling) then
-                                    fluid_icon = true
-                                end
-                            else
-                                fluid_icon = true
-                            end
-                        end
-                        sibling.fluid_icon = fluid_icon
                         ifluid:update_fluidbox(gameplay_core.get_entity(sibling.gameplay_eid), sibling.fluid_name)
                         igameplay.update_chimney_recipe(sibling)
                     end
