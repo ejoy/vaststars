@@ -15,9 +15,6 @@ properties:
   s_normal:
     stage: 2
     texture: /pkg/mod.terrain/assets/textures/shape_normal.texture
-  s_mark_alpha:
-    stage: 3
-    texture: /pkg/mod.terrain/assets/textures/shape_mark_alpha.texture
 state: 
     ALPHA_REF: 0
     CULL: CCW

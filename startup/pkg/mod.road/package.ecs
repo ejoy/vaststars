@@ -1,0 +1,14 @@
+
+
+component "road".type "lua"
+
+system "init_system"
+    .implement "road.lua"
+    .method "init_world"
+
+interface "iroad"
+    .implement "road.lua"
+    .method "create_roadnet_entity"
+    .method "update_roadnet_entity"
+    .method "delete_roadnet_entity"
+    .method "set_args"

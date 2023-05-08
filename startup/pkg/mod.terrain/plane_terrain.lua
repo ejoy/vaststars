@@ -11,7 +11,7 @@ local declmgr   = renderpkg.declmgr
 local bgfx      = require "bgfx"
 local math3d    = require "math3d"
 local terrain_module = require "terrain"
-local layout_name<const>    = declmgr.correct_layout "p3|t20|t21|t22|t23|t24|t25|t26|t27"
+local layout_name<const>    = declmgr.correct_layout "p3|t20|t21|t22"
 local layout                = declmgr.get(layout_name)
 local noise1 = {}
 local terrain_width, terrain_height, unit, origin_offset_width, origin_offset_height
@@ -21,27 +21,6 @@ local default_quad_ib<const> = {
     2, 3, 0,
 }
 
-local function calc_tf_idx(iw, ih, w)
-    if iw > w then
-        iw = 0
-    end
-    if ih > w then
-        ih = 0
-    end
-    return ih * w + iw + 1
-end
-
-local function calc_alpha_idx(iw, ih, w)
-    local aw = iw
-    local ah = ih
-    if iw > w then
-        aw = 0
-    end
-    if ih > w then
-        ah = 0
-    end
-    return aw, ah
-end
 
 local function noise(x, y, freq, exp, lb ,ub)
     local a = ub - lb
@@ -114,166 +93,7 @@ function cterrain_fields.new(st)
     return setmetatable(st, {__index=cterrain_fields})
 end
 
-local function parse_layer(t, s, d)
-    local pt, ps, pd
-    if s == "U" then
-        ps = 1 -- road 4 + 1 / mark 1
-        if d == "1" then
-            pd = 0
-        elseif d == "2" then
-            pd = 90
-        elseif d == "3" then
-            pd = 180
-        elseif d == "4" then
-            pd = 270
-        end
-    elseif s == "I" then
-        if t >= "1" and t <= "3" then
-            ps = 2 -- road 4 + 2
-        else
-            ps = 3 -- mark 3
-        end
-        if d == "1" then
-            pd = 90
-        elseif d == "2" then
-            pd = 0   
-        elseif d == "3" then
-            pd = 270
-        elseif d == "4" then
-            pd = 180
-        end
-    elseif s == "L" then
-        if t >= "1" and t <= "3" then
-            ps = 3 
-        else
-            ps = 5
-        end
-        if d == "1" then
-            pd = 180
-        elseif d == "2" then
-            pd = 270
-        elseif d == "3" then
-            pd = 0
-        elseif d == "4" then
-            pd = 90
-        end
-    elseif s == "T" then
-        if t >= "1" and t <= "3" then
-            ps = 4 
-        else
-            ps = 6
-        end
-        if d == "1" then
-            pd = 0
-        elseif d == "2" then
-            pd = 90
-        elseif d == "3" then
-            pd = 180
-        elseif d == "4" then
-            pd = 270
-        end
-    elseif s == "X" then
-        if t >= "1" and t <= "3" then
-            ps = 5  -- road 4 + 5
-        else
-            ps = 4 -- mark 4
-        end
-    elseif s == 'O' then    
-        if t >= "1" and t <= "3" then
-            ps = 7  -- road 4 + 7
-        else
-            ps = 2 -- mark 2
-        end
-    else
-        if t >= "1" and t <= "3" then
-            ps = 6  -- road 4 + 6
-        else
-            ps = 5 -- mark 5
-        end
-    end
-    pt = t
-    return pt, ps, pd                          
-end
-
-function cterrain_fields:init()
-    local tf = self.prev_terrain_fields
-    local width, height = self.width, self.height
-
-    for ih = 1, height do
-        for iw = 1, width do
-            local idx = (ih - 1) * width + iw
-            local f = tf[idx]
-            local layers = f.layers
-
-            if layers == nil then
-                f.road_type = 0.0
-                f.road_direction = 0.0
-                f.road_shape = 0.0
-                f.mark_type  = 0.0
-                f.mark_direction = 0.0
-                f.mark_shape = 0.0
-            else
-                for i, layer in pairs(layers) do
-                    local t, s, d
-                    t = string.sub(layer, 1, 1)
-                    s = string.sub(layer, 2, 2)
-                    d = string.sub(layer, 3, 3)
-                    local pt, ps, pd = parse_layer(t, s, d)
-                    if i == 1 then
-                        f["road_type"] = pt
-                        f["road_direction"] = pd
-                        f["road_shape"] = ps
-                    elseif i == 2 then
-                        f["mark_type"] = pt
-                        f["mark_direction"] = pd
-                        f["mark_shape"] = ps
-                    end
-                end
-            end  
-            
-            if layers and layers[1] == nil then
-                f.road_type = 0.0
-                f.road_direction = 0.0
-                f.road_shape = 0.0
-            elseif layers and layers[2] == nil then
-                f.mark_type  = 0.0
-                f.mark_direction = 0.0
-                f.mark_shape = 0.0
-            elseif layers and layers[1] == nil and layers[2] == nil then
-                f.road_type = 0.0
-                f.road_direction = 0.0
-                f.road_shape = 0.0
-                f.mark_type  = 0.0
-                f.mark_direction = 0.0
-                f.mark_shape = 0.0                                        
-            end
-        end
-    end
-end
-
-local packfmt<const> = "fffffffffffffffffff"
-
-local direction_table ={
-    [0]   = {0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0},
-    [90]  = {1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0},
-    [180] = {1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0},
-    [270] = {0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0}
-}
-
-local function get_vb(rd, rd_idx, md, md_idx)
-    local t1x, t1y, t7x, t7y
-    if rd == nil then
-        t1x, t1y = direction_table[0][rd_idx * 2 + 1], direction_table[0][rd_idx * 2 + 2]
-    else
-        t1x, t1y = direction_table[rd][rd_idx * 2 + 1], direction_table[rd][rd_idx * 2 + 2]
-    end
-    if md == nil then
-        t7x, t7y = direction_table[0][md_idx * 2 + 1], direction_table[0][md_idx * 2 + 2]
-    else
-        t7x, t7y = direction_table[md][md_idx * 2 + 1], direction_table[md][md_idx * 2 + 2]
-    end
-    return t1x, t1y, t7x, t7y
-end
+local packfmt<const> = "fffffffff"
 
 local function get_terrain_uv(size, sectionx, sectiony)
     local uv_segment0 = {}
@@ -290,54 +110,24 @@ local function get_terrain_uv(size, sectionx, sectiony)
     return u0, v0, u1, v1
 end 
 
-local function add_quad(vb, origin, extent, uv0, uv1, xx, yy, rd, md, rtype, road_shape, mtype, mark_shape, sand_color_idx, stone_color_idx, stone_normal_idx, zone_info)
-    local zone_rgba
-    if zone_info then
-        local zone = zone_info.zone_rgba
-        local r, g, b, a = zone.r, zone.g, zone.b, zone.a
-        zone_rgba = (r << 24) + (g << 16) + (b << 8) + a 
-    else
-        zone_rgba = 0
-    end
-    local road_type, mark_type
-    -- road_type ground/road/red/white
-    if not rtype or rtype == 0 then
-        road_type = 0
-    else
-        road_type = rtype
-    end
-    if not mtype or mtype == 0 then
-        mark_type = 0
-    else
-        mark_type = mtype - 3
-    end
+local function add_quad(vb, origin, extent, xx, yy, sand_color_idx, stone_color_idx)
 
     local ox, oy, oz = table.unpack(origin)
     local nx, ny, nz = ox + extent[1], oy + extent[2], oz + extent[3]
     --local u00, v00, u01, v01 = table.unpack(uv0)
     local u00, v00, u01, v01 = get_terrain_uv(8, xx, yy)
     --local u10, v10, u11, v11 = get_terrain_uv(32, xx, yy)
-    local u20, v20, u21, v21 = get_terrain_uv(32, xx, yy)
-
+    local u10, v10, u11, v11 = get_terrain_uv(32, xx, yy)
 
     -- p3 position 
     -- t20 terrain_basecolor/terrain_height/terrain_normal 8x8
-    -- t21 road_basecolor/road_height 1x1
-    -- t22 sand_alpha 32x32
-    -- t23 zone_color v_stone_normal_idx
-    -- t24 v_road_type v_road_shape(flat)
-    -- t25 v_sand_color_idx v_stone_color_idx(flat)
-    -- t26 v_mark_type v_mark_shape
-    -- t27 mark_basecolor/mark_alpha  1x1
-    local t1x0, t1y0, t7x0, t7y0 = get_vb(rd, 0, md, 0)
-    local t1x1, t1y1, t7x1, t7y1 = get_vb(rd, 1, md, 1)
-    local t1x2, t1y2, t7x2, t7y2 = get_vb(rd, 2, md, 2)
-    local t1x3, t1y3, t7x3, t7y3 = get_vb(rd, 3, md, 3)
+    -- t21 sand_alpha 32x32
+    -- t22 v_sand_color_idx v_stone_color_idx(flat)
     local v = {
-        packfmt:pack(ox, oy, oz, u00, v00, t1x0, t1y0, u20, v20, zone_rgba, stone_normal_idx, road_type, road_shape, sand_color_idx, stone_color_idx, mark_type, mark_shape, t7x0, t7y0),
-        packfmt:pack(ox, oy, nz, u00, v01, t1x1, t1y1, u20, v21, zone_rgba, stone_normal_idx, road_type, road_shape, sand_color_idx, stone_color_idx, mark_type, mark_shape, t7x1, t7y1),
-        packfmt:pack(nx, ny, nz, u01, v01, t1x2, t1y2, u21, v21, zone_rgba, stone_normal_idx, road_type, road_shape, sand_color_idx, stone_color_idx, mark_type, mark_shape, t7x2, t7y2),
-        packfmt:pack(nx, ny, oz, u01, v00, t1x3, t1y3, u21, v20, zone_rgba, stone_normal_idx, road_type, road_shape, sand_color_idx, stone_color_idx, mark_type, mark_shape, t7x3, t7y3)            
+        packfmt:pack(ox, oy, oz, u00, v00, u10, v10, sand_color_idx, stone_color_idx),
+        packfmt:pack(ox, oy, nz, u00, v01, u10, v11, sand_color_idx, stone_color_idx),
+        packfmt:pack(nx, ny, nz, u01, v01, u11, v11, sand_color_idx, stone_color_idx),
+        packfmt:pack(nx, ny, oz, u01, v00, u11, v10, sand_color_idx, stone_color_idx)            
     }  
     vb[#vb+1] = table.concat(v, "")
     
@@ -365,25 +155,15 @@ local function build_mesh(sectionsize, sectionidx, cterrainfileds, width)
     for ih = 1, sectionsize do
         for iw = 1, sectionsize do
             local xx, yy, offset, field = cterrainfileds:get_field(sectionidx, iw, ih)
-            local alphax, alphay = (offset - 1) % 256, (offset - 1) // 256
             if field ~= nil then
                 local x, z = cterrainfileds:get_offset(sectionidx)
                 local origin = {(iw - 1 + x) * unit, 0.0, (ih - 1 + z) * unit}
                 local extent = {unit, 0, unit}
-                local uv0 = {0.0, 0.0, 1.0, 1.0}
                 -- other_uv sand_color_uv stone_color_uv sand_normal_uv stone_normal_uv sand_height_uv stone_height_uv
                 local sand_color_idx = ((xx - 1) // 4) % 3
                 local stone_color_idx = ((yy - 1) // 4) % 2 + 3
-                local stone_normal_idx
-                if stone_color_idx == 3 then
-                    stone_normal_idx = 1
-                else
-                    stone_normal_idx = 2
-                end
-                local uv1 = uv0
                 --  add_quad(vb, origin, extent, uv0, uv1, xx, yy, rd, md, road_type, road_shape, mark_type, mark_shape, sand_color_idx, stone_color_idx, stone_normal_idx, width)
-                add_quad(vb, origin, extent, uv0, uv1, xx, yy, field.road_direction, field.mark_direction, field.road_type, field.road_shape, 
-                field.mark_type, field.mark_shape, sand_color_idx, stone_color_idx, stone_normal_idx, field.zone_rgba)
+                add_quad(vb, origin, extent, xx, yy, sand_color_idx, stone_color_idx)
             end
         end
     end
@@ -448,7 +228,6 @@ function iplane_terrain.init_plane_terrain(st)
         
         --build_ib(width,height)
         local ctf = cterrain_fields.new(st)
-        ctf:init()
         
         for ih = 1, st.section_height do
             for iw = 1, st.section_width do
@@ -484,60 +263,5 @@ function iplane_terrain.init_plane_terrain(st)
     end   
 end
 
-
-function iplane_terrain.update_plane_terrain(tc)
-    
-    for e in ww:select "shape_terrain st:update eid:in" do
-        local st = e.st
-        if st.prev_terrain_fields == nil then
-            error "need define terrain_field, it should be file or table"
-        end
-
-        local width, height = st.width, st.height
-
-        local ss = st.section_size
-
-
-        st.section_width, st.section_height = width // ss, height // ss
-        st.num_section = st.section_width * st.section_height
-
-        local shapematerial = st.material
-        
-        --build_ib(width,height)
-        local ctf = cterrain_fields.new(st)
-        ctf:init()
-        
-        for section_idx,_ in pairs(tc) do
-            local terrain_mesh = build_mesh(ss, section_idx, ctf, width)
-            if terrain_mesh then
-                local eid; eid = ecs.create_entity{
-                    policy = {
-                        "ant.scene|scene_object",
-                        "ant.render|simplerender",
-                        "ant.general|name",
-                    },
-                    data = {
-                        scene = {
-                            parent = e.eid,
-                        },
-                        simplemesh  = terrain_mesh,
-                        material    = shapematerial,
-                        visible_state= "main_view|selectable",
-                        name        = "section" .. section_idx,
-                        plane_terrain = true,
-                        section_index = section_idx,
-                        on_ready = function()
-                            world:pub {"shape_terrain", "on_ready", eid, e.eid}
-                        end,
-                    },
-                }
-            end    
-        end
-        iom.set_position(e, math3d.vector(-origin_offset_width * unit, 0, -origin_offset_height * unit))
-    end
-end
-
 function p_ts:init()
-
-
 end
