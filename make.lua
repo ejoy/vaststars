@@ -36,6 +36,12 @@ lm.ios = {
     }
 }
 
+lm.android  = {
+    flags = "-fPIC",
+    ldflags = "-Wl,--no-undefined",
+    target = "aarch64-linux-android33"
+}
+
 local EnableSanitize = false
 if EnableSanitize then
     lm.builddir = ("build/%s/sanitize"):format(plat)
@@ -108,16 +114,22 @@ if lm.os == "windows" then
 end
 
 if lm.os == "ios" then
-    lm:phony "phony_ios" {
-        deps = {
-            "bgfx-lib",
-        }
+    lm:default {
+        "bgfx-lib",
+        "vaststars",
     }
+    return
+end
+
+if lm.os == "android" then
+    lm:default {
+        "vaststars",
+    }
+    return
 end
 
 lm:default {
     lm.os == "windows" and "phony_windows",
-    lm.os == "ios" and "phony_ios",
-    lm.os ~= "ios" and "vaststars_rt",
+    "vaststars_rt",
     "vaststars",
 }

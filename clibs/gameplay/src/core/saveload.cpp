@@ -4,6 +4,7 @@
 #include "roadnet/network.h"
 #include "util/queue.h"
 #include <unordered_map>
+#include <concepts>
 
 namespace lua_world {
     template <typename T>

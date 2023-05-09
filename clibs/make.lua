@@ -32,6 +32,23 @@ if lm.os == "ios" then
     return
 end
 
+if lm.os == "android" then
+    lm:dll "vaststars" {
+        deps = {
+            "ant_runtime",
+            "ant_links",
+            "bgfx-lib",
+            modules
+        },
+        includes = {
+            LuaInclude,
+            Antdir .. "runtime/common",
+        },
+        sources = "vaststars_modules.c"
+    }
+    return
+end
+
 if lm.os == "macos" then
     lm:lib "vaststars_lib" {
         basename = "vaststars",
