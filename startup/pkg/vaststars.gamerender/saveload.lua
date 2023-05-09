@@ -45,6 +45,20 @@ local ipower_line = ecs.require "power_line"
 local iroadnet = ecs.require "roadnet"
 local MAX_ARCHIVING_COUNT <const> = 9
 
+local function clean()
+    -- clean
+    for _, object in objects:all() do
+        iobject.remove(object)
+    end
+    for _, building in pairs(global.buildings) do
+        for _, o in pairs(building) do
+            o:remove()
+        end
+    end
+    global.buildings = create_buildings()
+    objects:clear()
+end
+
 local function restore_world()
     local function _finish_task(task)
         local typeobject = iprototype.queryByName(task)
@@ -69,22 +83,11 @@ local function restore_world()
     end
     _debug()
 
-    -- clean
-    for _, object in objects:all() do
-        iobject.remove(object)
-    end
-    for _, building in pairs(global.buildings) do
-        for _, o in pairs(building) do
-            o:remove()
-        end
-    end
-    global.buildings = create_buildings()
-    objects:clear()
-
+    clean()
     local coord_system = require "global".coord_system
 
     --
-    local function restore_object(all_object, map, gameplay_eid, prototype_name, dir, x, y, fluid_name, fluidflow_id)
+    local function restore_object(gameplay_eid, prototype_name, dir, x, y, fluid_name, fluidflow_id)
         local typeobject = iprototype.queryByName(prototype_name)
         local object = iobject.new {
             prototype_name = prototype_name,
@@ -256,7 +259,7 @@ local function restore_world()
 
     -----------
     for id, v in pairs(all_object) do
-        restore_object(all_object, map, id, v.prototype_name, v.dir, v.x, v.y, v.fluid_name, v.fluidflow_id)
+        restore_object(id, v.prototype_name, v.dir, v.x, v.y, v.fluid_name, v.fluidflow_id)
     end
 
     iobject.flush()
@@ -331,6 +334,10 @@ function M:backup()
     writeall(camera_setting_path, json.encode(get_camera_setting()))
     print("save success", archival_dir)
     return true
+end
+
+function M:clean()
+    clean()
 end
 
 function M:restore(index)

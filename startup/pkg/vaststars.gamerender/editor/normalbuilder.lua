@@ -117,13 +117,16 @@ local function __new_entity(self, datamodel, typeobject, position, x, y, dir)
 
     -- some assembling machine have default recipe
     local fluid_name = ""
+    local fluidflow_id
     if typeobject.recipe then
         local recipe_typeobject = iprototype.queryByName(typeobject.recipe)
         if recipe_typeobject then
             fluid_name = irecipe.get_init_fluids(recipe_typeobject) or "" -- maybe no fluid in recipe
-        else
-            fluid_name = ""
         end
+    end
+    if iprototype.has_type(typeobject.type, "fluidbox") then
+        fluidflow_id = global.fluidflow_id + 1
+        global.fluidflow_id = global.fluidflow_id + 1
     end
 
     self.pickup_object = iobject.new {
@@ -135,6 +138,7 @@ local function __new_entity(self, datamodel, typeobject, position, x, y, dir)
             t = position,
         },
         fluid_name = fluid_name,
+        fluidflow_id = fluidflow_id,
     }
 
     if self.sprite then

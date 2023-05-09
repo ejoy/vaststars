@@ -94,6 +94,20 @@ local function toggle_view(v)
     end
 end
 
+local function __set_camera_from_prefab(prefab)
+    local data = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/" .. prefab)):read "a")
+    if not data then
+        return
+    end
+    assert(data[1] and data[1].data and data[1].data.camera)
+    local c = data[1].data
+
+    local mq = w:first("main_queue camera_ref:in")
+    local e <close> = w:entity(mq.camera_ref, "scene:update")
+    iom.set_srt(e, c.scene.s or mc.ONE, c.scene.r, c.scene.t)
+    ic.set_frustum(e, c.camera.frustum)
+end
+
 local function __check_camera_editable()
     return cam_cmd_queue:size() <= 0 and cam_motion_matrix_queue:size() <= 0
 end
@@ -151,6 +165,8 @@ local function __handle_camera_motion()
             __add_camera_track(toggle_view(table.unpack(c, 2)))
         elseif c[1] == "callback" then
             c[2]()
+        elseif c[1] == "set_camera_from_prefab" then
+            __set_camera_from_prefab(c[2])
         else
             assert(false)
         end
@@ -263,17 +279,7 @@ function icamera_controller.get_central_position()
 end
 
 function icamera_controller.set_camera_from_prefab(prefab)
-    local data = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/" .. prefab)):read "a")
-    if not data then
-        return
-    end
-    assert(data[1] and data[1].data and data[1].data.camera)
-    local c = data[1].data
-
-    local mq = w:first("main_queue camera_ref:in")
-    local e <close> = w:entity(mq.camera_ref, "scene:update")
-    iom.set_srt(e, c.scene.s or mc.ONE, c.scene.r, c.scene.t)
-    ic.set_frustum(e, c.camera.frustum)
+    cam_cmd_queue:push {{"set_camera_from_prefab", prefab}}
 end
 
 function icamera_controller.focus_on_position(position, callback)

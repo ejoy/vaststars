@@ -10,10 +10,10 @@ local info_mb = mailbox:sub {"info"}
 local back_to_main_menu_mb = mailbox:sub {"back_to_main_menu"}
 
 local saveload = ecs.require "saveload"
-local iui = ecs.import.interface "vaststars.gamerender|iui"
 local gameplay_core = require "gameplay.core"
 local icanvas = ecs.require "engine.canvas"
 local new_game = ecs.require "main_menu_manager".new_game
+local imain_menu_manager = ecs.require "main_menu_manager"
 
 ---------------
 local M = {}
@@ -67,9 +67,8 @@ function M:stage_camera_usage()
     end
 
     for _ in back_to_main_menu_mb:unpack() do
-        gameplay_core.world_update = false
         world:pub {"rmlui_message_close", "option_pop.rml"}
-        iui.open({"login.rml"})
+        imain_menu_manager.back_to_main_menu()
     end
 end
 

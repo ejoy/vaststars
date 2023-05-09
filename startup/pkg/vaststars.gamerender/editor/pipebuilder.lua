@@ -240,9 +240,10 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
         for fluidflow_id in pairs(State.fluidflow_ids) do
             for _, object in objects:selectall("fluidflow_id", fluidflow_id, EDITOR_CACHE_NAMES) do
                 local _object = assert(objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone))
-                assert(iprototype.has_type(iprototype.queryByName(_object.prototype_name).type, "fluidbox"))
-                _object.fluid_name = State.fluid_name
-                _object.fluidflow_id = new_fluidflow_id
+                if iprototype.has_type(iprototype.queryByName(_object.prototype_name).type, "fluidbox") then
+                    _object.fluid_name = State.fluid_name
+                    _object.fluidflow_id = new_fluidflow_id
+                end
             end
         end
     end
@@ -505,7 +506,7 @@ local function _builder_start(self, datamodel)
                 if fluidbox.dir ~= iprototype.reverse_dir(dir) then
                     goto continue
                 end
-                succ, to_x, to_y = terrain:move_coord(fluidbox.x, fluidbox.y, dir,
+                succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir,
                     math_abs(from_x - fluidbox.x),
                     math_abs(from_y - fluidbox.y)
                 )

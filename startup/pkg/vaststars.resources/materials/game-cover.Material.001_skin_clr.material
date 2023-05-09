@@ -12,7 +12,7 @@ fx:
 properties:
   s_basecolor:
     stage: 0
-    texture: $path ./../images/BG.texture
+    texture: $path /pkg/vaststars.resources/glb/game-cover.glb|images/BG.texture
   u_basecolor_factor: {1, 1, 1, 1}
   u_emissive_factor: {0, 0, 0, 0}
   u_pbr_factor: {0, 0.5, 0.5, 1}

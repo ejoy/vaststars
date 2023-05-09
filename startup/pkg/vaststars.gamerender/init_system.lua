@@ -121,7 +121,7 @@ function m:init_world()
     iefk.preload "/pkg/vaststars.resources/effect/efk/"
 
     if NOTHING then
-        imain_menu_manager.init()
+        imain_menu_manager.init("camera_default.prefab")
         return
     end
 
@@ -129,7 +129,7 @@ function m:init_world()
     iroadnet:create()
 
     if TERRAIN_ONLY then
-        imain_menu_manager.init()
+        imain_menu_manager.init("camera_default.prefab")
         return
     end
 
@@ -137,7 +137,8 @@ function m:init_world()
     icanvas.create(icanvas.types().BUILDING_BASE, true, 0.01)
     icanvas.create(icanvas.types().ROAD_ENTRANCE_MARKER, false, 0.02)
 
-    iui.open({"login.rml"})
+    imain_menu_manager.back_to_main_menu()
+
     -- audio test
     -- local bankname = "/pkg/vaststars.resources/sounds/Master.bank"
     -- local master = ia.load_bank(bankname)
