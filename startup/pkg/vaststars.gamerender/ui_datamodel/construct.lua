@@ -59,6 +59,7 @@ local pickup_long_press_gesture_mb = world:sub {"pickup_long_press_gesture"}
 local gesture_pan_mb = world:sub {"gesture", "pan"}
 local focus_tips_event = world:sub {"focus_tips"}
 local ipower = ecs.require "power"
+local ia = ecs.import.interface "ant.audio|audio_interface"
 
 local builder, builder_datamodel, builder_ui
 local excluded_pickup_id -- object id
@@ -85,6 +86,7 @@ local event_handler = create_event_handler(
 
 local function __on_pickup_object(datamodel, object)
     if not excluded_pickup_id or excluded_pickup_id == object.id then
+        ia.play("event:/construct/construct4_big")
         if idetail.show(object.id) then
             local prototype_name = object.prototype_name
             local typeobject = iprototype.queryByName(prototype_name)

@@ -140,48 +140,45 @@ function m:init_world()
     imain_menu_manager.back_to_main_menu()
 
     -- audio test
-    -- local bankname = "/pkg/vaststars.resources/sounds/Master.bank"
-    -- local master = ia.load_bank(bankname)
-    -- if not master then
-    --     print("LoadBank Faied. :", bankname)
-    -- end
-    -- bankname = "/pkg/vaststars.resources/sounds/Master.strings.bank"
-    -- local bank1 = ia.load_bank(bankname)
-    -- if not bank1 then
-    --     print("LoadBank Faied. :", bankname)
-    -- end
-    -- bankname = "/pkg/vaststars.resources/sounds/Construt.bank"
-    -- local construt = ia.load_bank(bankname)
-    -- if not construt then
-    --     print("LoadBank Faied. :", bankname)
-    -- end
-    -- bankname = "/pkg/vaststars.resources/sounds/UI.bank"
-    -- local ui = ia.load_bank(bankname)
-    -- if not ui then
-    --     print("LoadBank Faied. :", bankname)
-    -- end
-    -- local bank_list = audio.get_bank_list()
-    -- for _, v in ipairs(bank_list) do
-    --     print(audio.get_bank_name(v))
-    -- end
+    local bankname = "/pkg/vaststars.resources/sounds/Master.bank"
+    local master = ia.load_bank(bankname)
+    if not master then
+        print("LoadBank Faied. :", bankname)
+    end
+    bankname = "/pkg/vaststars.resources/sounds/Master.strings.bank"
+    local bank1 = ia.load_bank(bankname)
+    if not bank1 then
+        print("LoadBank Faied. :", bankname)
+    end
+    bankname = "/pkg/vaststars.resources/sounds/Construt.bank"
+    local construt = ia.load_bank(bankname)
+    if not construt then
+        print("LoadBank Faied. :", bankname)
+    end
+    bankname = "/pkg/vaststars.resources/sounds/UI.bank"
+    local ui = ia.load_bank(bankname)
+    if not ui then
+        print("LoadBank Faied. :", bankname)
+    end
+    local bank_list = audio.get_bank_list()
+    for _, v in ipairs(bank_list) do
+        print(audio.get_bank_name(v))
+    end
 
-    -- local event_list = audio.get_event_list(master)
-    -- for _, v in ipairs(event_list) do
-    --     print(audio.get_event_name(v))
-    -- end
-    -- local event_list = audio.get_event_list(construt)
-    -- for _, v in ipairs(event_list) do
-    --     print(audio.get_event_name(v))
-    -- end
-    -- local event_list = audio.get_event_list(ui)
-    -- for _, v in ipairs(event_list) do
-    --     print(audio.get_event_name(v))
-    -- end
-    -- local event_name = "event:/background"
-    -- sound_event[event_name] = ia.create(event_name)
-    -- -- event_name = "event:/UI/click"
-    -- -- sound_event[event_name] = ia.create(event_name)
-    -- ia.play(event_name)
+    local event_list = audio.get_event_list(master)
+    for _, v in ipairs(event_list) do
+        print(audio.get_event_name(v))
+    end
+    local event_list = audio.get_event_list(construt)
+    for _, v in ipairs(event_list) do
+        print(audio.get_event_name(v))
+    end
+    local event_list = audio.get_event_list(ui)
+    for _, v in ipairs(event_list) do
+        print(audio.get_event_name(v))
+    end
+    -- ia.play("event:/openui1")
+    ia.play("event:/background")
 end
 
 function m:update_world()
