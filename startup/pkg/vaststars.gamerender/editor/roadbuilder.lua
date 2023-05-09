@@ -819,6 +819,7 @@ local function confirm(self, datamodel)
     datamodel.show_finish_laying = false
     datamodel.show_cancel = false
     datamodel.show_start_laying = false
+    self.pending = {}
 
     task.update_progress("road_laying", c)
 
