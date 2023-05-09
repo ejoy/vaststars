@@ -91,6 +91,7 @@ local function __on_pickup_object(datamodel, object)
             if iprototype.has_types(typeobject.type, "base") then
                 datamodel.is_concise_mode = true
             end
+            return true
         end
     end
 end
@@ -419,16 +420,8 @@ function M:stage_camera_usage(datamodel)
 
         local object = _get_object(x, y)
         if object then -- object may be nil, such as when user click on empty space
-            if not excluded_pickup_id or excluded_pickup_id == object.id then -- TODO: duplicated code with __on_pickup_object
-                if idetail.show(object.id) then
-                    leave = false
-
-                    local prototype_name = object.prototype_name
-                    local typeobject = iprototype.queryByName(prototype_name)
-                    if iprototype.has_types(typeobject.type, "base") then
-                        datamodel.is_concise_mode = true
-                    end
-                end
+            if __on_pickup_object(datamodel, object) then
+                leave = false
             end
         else
             idetail.unselected()

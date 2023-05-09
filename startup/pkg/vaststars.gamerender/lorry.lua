@@ -12,7 +12,7 @@ local sampler_group
 local function _create_motion_object(s, r, t)
     local events = {}
     events["set_target"] = function(_, e, from_srt, to_srt, duration)
-        ims.set_tween(e, ltween.type("Quartic"), ltween.type("Quartic"))
+        ims.set_tween(e, ltween.type("None"), ltween.type("None"))
         ims.set_duration(e, duration)
         ims.set_keyframes(e,
             {s = from_srt.s, r = from_srt.r, t = from_srt.t, step = 0.0},
