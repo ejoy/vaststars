@@ -8,6 +8,20 @@ local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
 local idetail = ecs.interface "idetail"
 local icamera_controller = ecs.import.interface "vaststars.gamerender|icamera_controller"
+local gameplay_core = require "gameplay.core"
+
+local function __get_capacitance_network(eid)
+    local e = gameplay_core.get_entity(eid)
+    if not e then
+        return
+    end
+
+    if not e.capacitance then
+        return
+    end
+
+    return e.capacitance.network
+end
 
 function idetail.show(object_id)
     iui.close("help_panel.rml")
@@ -27,15 +41,23 @@ function idetail.show(object_id)
     end
 
     do
-        log.info(object.id, object.prototype_name, object.x, object.y, object.dir, object.fluid_name, object.fluidflow_id)
-        -- log.info(([[
-        -- {
-        --     prototype_name = "%s",
-        --     dir = "%s",
-        --     x = %s,
-        --     y = %s,
-        -- },
-        -- ]]):format(object.prototype_name, object.dir, object.x, object.y))
+        log.info(([[
+        {
+            id = %d,
+            prototype_name = "%s",
+            dir = "%s",
+            x = %s,
+            y = %s,
+            network = %s,
+        },
+        ]]):format(
+            object.id,
+            object.prototype_name,
+            object.dir,
+            object.x,
+            object.y,
+            __get_capacitance_network(object.gameplay_eid) or "none"
+        ))
     end
     return true
 end

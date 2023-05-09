@@ -1,0 +1,25 @@
+fx:
+  fs: /pkg/ant.resources/shaders/pbr/fs_pbr.sc
+  setting:
+    ALPHAMODE_MASK: 1
+    GPU_SKINNING: 1
+    MATERIAL_UNLIT: 1
+    lighting: off
+    shadow_cast: on
+    shadow_receive: on
+    subsurface: off
+  vs: /pkg/ant.resources/shaders/pbr/vs_pbr.sc
+properties:
+  s_basecolor:
+    stage: 0
+    texture: $path ./../images/logo2.texture
+  u_basecolor_factor: {1, 1, 1, 1}
+  u_emissive_factor: {0, 0, 0, 0}
+  u_pbr_factor: {0, 0.5, 0.5, 1}
+state:
+  ALPHA_REF: 0
+  BLEND: ALPHA
+  CULL: NONE
+  DEPTH_TEST: ALWAYS
+  MSAA: true
+  WRITE_MASK: RGBA

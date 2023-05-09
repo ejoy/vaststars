@@ -530,7 +530,7 @@ return function(world)
 
         local building = global.buildings[object.id]
 
-        if e.capacitance.network == 0 then
+        if global.statistic.power and global.statistic.power[e.eid] and global.statistic.power[e.eid].power == 0 then
             if not building.consumer_icon then
                 building.consumer_icon = create_consumer_icon(object.id, object.srt)
             end

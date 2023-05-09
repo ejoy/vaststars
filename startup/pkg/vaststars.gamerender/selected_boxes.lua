@@ -36,7 +36,7 @@ local function create_object(prefab, srt)
             local color = ...
             for _, eid in ipairs(self.tag['*']) do
                 local e <close> = w:entity(eid, "material?in")
-                if e.material then
+                if e and e.material then
                     imaterial.set_property(e, "u_emissive_factor", color)
                     imaterial.set_property(e, "u_basecolor_factor", color)
                 end

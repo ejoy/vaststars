@@ -558,9 +558,11 @@ local function clean(self, datamodel)
     for _, o in pairs(self.selected_boxes) do
         o:remove()
     end
+    self.selected_boxes = {}
 
     if self.self_selected_boxes then
         self.self_selected_boxes:remove()
+        self.self_selected_boxes = nil
     end
 
     ieditor:revert_changes({"TEMPORARY"})
