@@ -41,10 +41,11 @@ graphic:
     enable: true
     far_offset: 0
     min_variance: 0.012
-    normal_offset: 0.001
+    normal_offset: 0.012
     size: 1024
     split_lamada: 0.8
-    split_num: 1
+    split_num: 2
     split_ratios:
-      {0.35, 0.65}
+      {0.15, 0.30},
+      {0.30, 0.65}
     type: inv_z
