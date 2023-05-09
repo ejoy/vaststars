@@ -405,6 +405,8 @@ end
 local function create_icon(object_id, e, building_srt)
     local status = 0
     local recipe = 0
+    local typeobject = iprototype.queryById(e.building.prototype)
+    local is_generator = iprototype.has_type(typeobject.type, "generator")
 
     local function on_position_change(self, building_srt)
         icanvas.remove_item(icanvas.types().ICON, object_id)
@@ -415,7 +417,7 @@ local function create_icon(object_id, e, building_srt)
     end
     local function update(self, e)
         local s
-        if global.statistic.power and global.statistic.power[e.eid] and global.statistic.power[e.eid] == 0 then
+        if not is_generator and global.statistic.power and global.statistic.power[e.eid] and global.statistic.power[e.eid].power == 0 then
             s = ICON_STATUS_NOPOWER
         else
             if e.assembling.recipe == 0 then
@@ -528,7 +530,7 @@ return function(world)
 
         local building = global.buildings[object.id]
 
-        if e.capacitance.network == 0 then
+        if global.statistic.power and global.statistic.power[e.eid] and global.statistic.power[e.eid].power == 0 then
             if not building.consumer_icon then
                 building.consumer_icon = create_consumer_icon(object.id, object.srt)
             end

@@ -45,6 +45,20 @@ local ipower_line = ecs.require "power_line"
 local iroadnet = ecs.require "roadnet"
 local MAX_ARCHIVING_COUNT <const> = 9
 
+local function clean()
+    -- clean
+    for _, object in objects:all() do
+        iobject.remove(object)
+    end
+    for _, building in pairs(global.buildings) do
+        for _, o in pairs(building) do
+            o:remove()
+        end
+    end
+    global.buildings = create_buildings()
+    objects:clear()
+end
+
 local function restore_world()
     local function _finish_task(task)
         local typeobject = iprototype.queryByName(task)
@@ -69,59 +83,12 @@ local function restore_world()
     end
     _debug()
 
-    -- clean
-    for _, object in objects:all() do
-        iobject.remove(object)
-    end
-    for _, building in pairs(global.buildings) do
-        for _, o in pairs(building) do
-            o:remove()
-        end
-    end
-    global.buildings = create_buildings()
-    objects:clear()
-
-    local function _has_connection(gameplay_eid, all_object, map)
-        local object = all_object[gameplay_eid]
-        for _, fb in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir)) do
-            local succ, dx, dy = terrain:move_coord(fb.x, fb.y, fb.dir, 1)
-            if not succ then
-                goto continue
-            end
-
-            local coord = iprototype.packcoord(dx, dy)
-            local id = map[coord]
-            if not id then
-                goto continue
-            end
-
-            local o = all_object[id]
-
-            local typeobject = iprototype.queryByName(o.prototype_name)
-            if iprototype.has_type(typeobject.type, "assembling") then
-                return true
-            end
-            ::continue::
-        end
-    end
-
+    clean()
     local coord_system = require "global".coord_system
 
     --
-    local function restore_object(all_object, map, gameplay_eid, prototype_name, dir, x, y, fluid_name, fluidflow_id)
+    local function restore_object(gameplay_eid, prototype_name, dir, x, y, fluid_name, fluidflow_id)
         local typeobject = iprototype.queryByName(prototype_name)
-
-        local fluid_icon -- TODO: duplicate code, see also builder.lua
-        if iprototype.has_type(typeobject.type, "fluidbox") and fluid_name ~= "" then
-            if iprototype.is_pipe(prototype_name) or iprototype.is_pipe_to_ground(prototype_name) then
-                if ((x % 2 == 1 and y % 2 == 1) or (x % 2 == 0 and y % 2 == 0)) and not _has_connection(gameplay_eid, all_object, map) then
-                    fluid_icon = true
-                end
-            else
-                fluid_icon = true
-            end
-        end
-
         local object = iobject.new {
             prototype_name = prototype_name,
             dir = dir,
@@ -132,7 +99,6 @@ local function restore_world()
             },
             fluid_name = fluid_name,
             fluidflow_id = fluidflow_id,
-            fluid_icon = fluid_icon,
         }
         object.gameplay_eid = gameplay_eid
         objects:set(object)
@@ -293,7 +259,7 @@ local function restore_world()
 
     -----------
     for id, v in pairs(all_object) do
-        restore_object(all_object, map, id, v.prototype_name, v.dir, v.x, v.y, v.fluid_name, v.fluidflow_id)
+        restore_object(id, v.prototype_name, v.dir, v.x, v.y, v.fluid_name, v.fluidflow_id)
     end
 
     iobject.flush()
@@ -368,6 +334,10 @@ function M:backup()
     writeall(camera_setting_path, json.encode(get_camera_setting()))
     print("save success", archival_dir)
     return true
+end
+
+function M:clean()
+    clean()
 end
 
 function M:restore(index)

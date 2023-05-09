@@ -347,6 +347,7 @@ namespace roadnet {
         straightVec.clear();
         crossMap.clear();
         crossMapR.clear();
+        endpointVec.clear();
         endpointMap.clear();
         routeMap.clear();
 

@@ -240,9 +240,10 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
         for fluidflow_id in pairs(State.fluidflow_ids) do
             for _, object in objects:selectall("fluidflow_id", fluidflow_id, EDITOR_CACHE_NAMES) do
                 local _object = assert(objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone))
-                assert(iprototype.has_type(iprototype.queryByName(_object.prototype_name).type, "fluidbox"))
-                _object.fluid_name = State.fluid_name
-                _object.fluidflow_id = new_fluidflow_id
+                if iprototype.has_type(iprototype.queryByName(_object.prototype_name).type, "fluidbox") then
+                    _object.fluid_name = State.fluid_name
+                    _object.fluidflow_id = new_fluidflow_id
+                end
             end
         end
     end
@@ -505,7 +506,7 @@ local function _builder_start(self, datamodel)
                 if fluidbox.dir ~= iprototype.reverse_dir(dir) then
                     goto continue
                 end
-                succ, to_x, to_y = terrain:move_coord(fluidbox.x, fluidbox.y, dir,
+                succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir,
                     math_abs(from_x - fluidbox.x),
                     math_abs(from_y - fluidbox.y)
                 )
@@ -818,20 +819,10 @@ local function confirm(self, datamodel)
 
             remove[coord] = true
         else
-            local fluid_icon
-            local fluid_name = object.fluid_name
             local object_id = object.id
-
-            if fluid_name ~= "" then
-                if ((x % 2 == 1 and y % 2 == 1) or (x % 2 == 0 and y % 2 == 0)) then
-                    fluid_icon = true
-                end
-            end
-
             local old = objects:get(object_id, {"CONSTRUCTED"})
             if not old then
                 object.gameplay_eid = igameplay.create_entity(object)
-                object.fluid_icon = fluid_icon
             else
                 if old.prototype_name ~= object.prototype_name then
                     igameplay.remove_entity(object.gameplay_eid)
@@ -840,7 +831,6 @@ local function confirm(self, datamodel)
                     ientity:set_direction(gameplay_core.get_world(), gameplay_core.get_entity(object.gameplay_eid), object.dir)
                 elseif old.fluid_name ~= object.fluid_name then
                     if iprototype.has_type(iprototype.queryByName(object.prototype_name).type, "fluidbox") then
-                        object.fluid_icon = fluid_icon
                         ifluid:update_fluidbox(gameplay_core.get_entity(object.gameplay_eid), object.fluid_name)
                         igameplay.update_chimney_recipe(object)
                     end

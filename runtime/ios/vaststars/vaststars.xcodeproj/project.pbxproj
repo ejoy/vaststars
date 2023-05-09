@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		115F77B029C1A17500F87BBB /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 115F77AF29C1A17500F87BBB /* IOSurface.framework */; };
 		115F77B229C1A1EA00F87BBB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 115F77B129C1A1EA00F87BBB /* CoreGraphics.framework */; };
+		11C5E60F2A09F8AD00793559 /* assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 11C5E60E2A09F8AD00793559 /* assets.xcassets */; };
 		11FAA86A279E7C2500D847F3 /* vaststars_modules.c in Sources */ = {isa = PBXBuildFile; fileRef = 11FAA869279E7C2500D847F3 /* vaststars_modules.c */; };
 		11FAA86D279E7CFB00D847F3 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11FAA86C279E7CFB00D847F3 /* Metal.framework */; };
 		11FAA86F279E7D1200D847F3 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11FAA86E279E7D1200D847F3 /* CoreText.framework */; };
@@ -23,6 +24,7 @@
 /* Begin PBXFileReference section */
 		115F77AF29C1A17500F87BBB /* IOSurface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOSurface.framework; path = System/Library/Frameworks/IOSurface.framework; sourceTree = SDKROOT; };
 		115F77B129C1A1EA00F87BBB /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		11C5E60E2A09F8AD00793559 /* assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = assets.xcassets; sourceTree = "<group>"; };
 		11FAA849279AA48600D847F3 /* vaststars.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = vaststars.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		11FAA869279E7C2500D847F3 /* vaststars_modules.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = vaststars_modules.c; path = ../../../../clibs/vaststars_modules.c; sourceTree = "<group>"; };
 		11FAA86C279E7CFB00D847F3 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
@@ -79,6 +81,7 @@
 				11FAA880279E8EF700D847F3 /* Info.plist */,
 				11FAA869279E7C2500D847F3 /* vaststars_modules.c */,
 				11FAA87C279E808A00D847F3 /* Settings.bundle */,
+				11C5E60E2A09F8AD00793559 /* assets.xcassets */,
 			);
 			path = vaststars;
 			sourceTree = "<group>";
@@ -156,6 +159,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11C5E60F2A09F8AD00793559 /* assets.xcassets in Resources */,
 				11FAA87D279E808A00D847F3 /* Settings.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -309,6 +313,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = GP6WLPM75Q;
@@ -346,6 +351,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = GP6WLPM75Q;

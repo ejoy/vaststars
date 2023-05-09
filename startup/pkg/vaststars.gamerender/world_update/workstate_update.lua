@@ -39,8 +39,11 @@ local function get_working_state(e)
     if e.assembling then
         return e.assembling.progress > 0 and STATUS_WORKING or STATUS_IDLE
     end
-    if e.wind_turbine or e.solar_panel or e.base then
+    if e.wind_turbine or e.base then
         return STATUS_WORKING
+    end
+    if e.solar_panel then
+        return e.solar_panel.efficiency > 0 and STATUS_WORKING or STATUS_IDLE
     end
 end
 

@@ -80,14 +80,13 @@ handlers.straight = function(lorry_id, mask, x, y, z, tick)
     -- regarding the special optimization for straight roads
     -- directly instruct the __create_or_move_lorry function to notify the lorry to arrive at the position after STRAIGHT_TICKCOUNT ticks
     if typeobject.track == "I" then
-        if ti == 1 or ti == STRAIGHT_TICKCOUNT + 1 then
+        if not lorries[lorry_id] or ti == 1 or ti == STRAIGHT_TICKCOUNT + 1 then
             local mat = __get_offset_matrix(prototype_name, dir, toward, ti + STRAIGHT_TICKCOUNT - 1)
             local s, r, t = math3d.srt(math3d.mul(road_matrix, mat))
             t = math3d.set_index(t, 2, 0.0)
             __create_or_move_lorry(lorry_id, s, r, t, 1000 / UPS * STRAIGHT_TICKCOUNT)
-        else
-            return
         end
+        return
     end
 
     local mat = __get_offset_matrix(prototype_name, dir, toward, ti)

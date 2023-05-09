@@ -59,6 +59,7 @@ local pickup_long_press_gesture_mb = world:sub {"pickup_long_press_gesture"}
 local gesture_pan_mb = world:sub {"gesture", "pan"}
 local focus_tips_event = world:sub {"focus_tips"}
 local ipower = ecs.require "power"
+local ia = ecs.import.interface "ant.audio|audio_interface"
 
 local builder, builder_datamodel, builder_ui
 local excluded_pickup_id -- object id
@@ -85,12 +86,14 @@ local event_handler = create_event_handler(
 
 local function __on_pickup_object(datamodel, object)
     if not excluded_pickup_id or excluded_pickup_id == object.id then
+        ia.play("event:/construct/construct4_big")
         if idetail.show(object.id) then
             local prototype_name = object.prototype_name
             local typeobject = iprototype.queryByName(prototype_name)
             if iprototype.has_types(typeobject.type, "base") then
                 datamodel.is_concise_mode = true
             end
+            return true
         end
     end
 end
@@ -419,16 +422,8 @@ function M:stage_camera_usage(datamodel)
 
         local object = _get_object(x, y)
         if object then -- object may be nil, such as when user click on empty space
-            if not excluded_pickup_id or excluded_pickup_id == object.id then -- TODO: duplicated code with __on_pickup_object
-                if idetail.show(object.id) then
-                    leave = false
-
-                    local prototype_name = object.prototype_name
-                    local typeobject = iprototype.queryByName(prototype_name)
-                    if iprototype.has_types(typeobject.type, "base") then
-                        datamodel.is_concise_mode = true
-                    end
-                end
+            if __on_pickup_object(datamodel, object) then
+                leave = false
             end
         else
             idetail.unselected()
@@ -458,6 +453,8 @@ function M:stage_camera_usage(datamodel)
                 end
 
                 idetail.selected(object)
+
+                iui.close({"building_arc_menu.rml"})
 
                 local p = icamera_controller.world_to_screen(object.srt.t)
                 local ui_x, ui_y = iui.convert_coord(math3d.index(p, 1), math3d.index(p, 2))

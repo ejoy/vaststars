@@ -71,20 +71,20 @@
                         if start.show_start_teardown then
                             start.buttons[#start.buttons+1] = {name = "批量拆除", message = "start_teardown", background_color = "rgb(203, 118, 24)", background_image = "textures/common/road-mutiple-delete.texture"}
                         end
-                        if start.show_finish_teardown then
-                            start.buttons[#start.buttons+1] = {name = "拆除结束", message = "finish_teardown", background_color = "rgb(203, 118, 24)", background_image = "textures/construct/confirm.texture"}
-                        end
                         if start.show_place_one then
-                            start.buttons[#start.buttons+1] = {name = "修建 1 个", message = "place_one", background_color = "rgb(19,175,240)", background_image = "textures/common/road-connect.texture"}
+                            start.buttons[#start.buttons+1] = {name = "修建 1 个", message = "place_one", background_color = "rgb(105, 112, 8)", background_image = "textures/common/road-connect.texture"}
                         end
                         if start.show_start_laying then
-                            start.buttons[#start.buttons+1] = {name = "批量修建", message = "start_laying", background_color = "rgb(19,175,240)", background_image = "textures/common/road-mutiple-build.texture"}
+                            start.buttons[#start.buttons+1] = {name = "批量铺设", message = "start_laying", background_color = "rgb(105, 112, 8)", background_image = "textures/common/road-mutiple-build.texture"}
                         end
                         if start.show_cancel then
-                            start.buttons[#start.buttons+1] = {name = "修建取消", message = "cancel", background_color = "rgb(105, 112, 8)", background_image = "textures/common/road-disable.texture"}
+                            start.buttons[#start.buttons+1] = {name = "取消", message = "cancel", background_color = "rgb(172, 20, 20)", background_image = "textures/common/road-disable.texture"}
+                        end
+                        if start.show_finish_teardown then
+                            start.buttons[#start.buttons+1] = {name = "拆除", message = "finish_teardown", background_color = "rgb(19,175,240)", background_image = "textures/construct/confirm.texture"}
                         end
                         if start.show_finish_laying then
-                            start.buttons[#start.buttons+1] = {name = "施工", message = "finish_laying", background_color = "rgb(105, 112, 8)", background_image = "textures/construct/confirm.texture"}
+                            start.buttons[#start.buttons+1] = {name = "修建", message = "finish_laying", background_color = "rgb(19,175,240)", background_image = "textures/construct/confirm.texture"}
                         end
 
                         for i = 1, #start.buttons do

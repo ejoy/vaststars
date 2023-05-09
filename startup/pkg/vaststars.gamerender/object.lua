@@ -44,7 +44,6 @@ local function new(init)
         y = assert(init.y),
         fluid_name = init.fluid_name,
         fluidflow_id = init.fluidflow_id,
-        fluid_icon = init.fluid_icon,
         srt = init.srt,
     }
 
@@ -65,7 +64,6 @@ local function clone(outer)
         fluid_name = outer.fluid_name,
         fluidflow_id = outer.fluidflow_id,
         gameplay_eid = outer.gameplay_eid,
-        fluid_icon = outer.fluid_icon,
         srt = {s = outer.srt.s, r = outer.srt.r, t = outer.srt.t},
     }
 

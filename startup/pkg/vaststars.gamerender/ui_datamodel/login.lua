@@ -13,7 +13,7 @@ local continue_game = ecs.require "main_menu_manager".continue_game
 local debugger <const> = require "debugger"
 local saveload = ecs.require "saveload"
 local gameplay_core = require "gameplay.core"
-
+local ia = ecs.import.interface "ant.audio|audio_interface"
 ---------------
 local M = {}
 function M:create()
@@ -24,21 +24,25 @@ end
 
 function M:stage_camera_usage(datamodel)
     for _ in continue_mb:unpack() do
+        ia.play("event:/ui/button1")
         world:pub {"rmlui_message_close", "login.rml"}
         continue_game()
     end
 
     for _, _, _, mode in start_mode_mb:unpack() do
+        ia.play("event:/ui/button1")
         debugger.set_free_mode(mode == "free")
         world:pub {"rmlui_message_close", "login.rml"}
         new_game(mode)
     end
 
     for _ in load_resources_mb:unpack() do
+        ia.play("event:/ui/button1")
         iui.open({"loading.rml"})
     end
 
     for _ in load_archive_mb:unpack() do
+        ia.play("event:/ui/button1")
         world:pub {"rmlui_message_close", "login.rml"}
         iui.open({"option_pop.rml"})
     end

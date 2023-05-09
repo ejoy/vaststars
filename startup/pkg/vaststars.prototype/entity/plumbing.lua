@@ -46,13 +46,15 @@ prototype "地下水挖掘机" {
     icon = "textures/building_pic/small_pic_offshore.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
-    area = "2x2",
+    area = "3x3",
     rotate_on_build = true,
     power = "6kW",
+    assembling_icon = false,
     priority = "secondary",
     recipe = "离岸抽水",
     show_arc_menu = false,
     io_shelf = false,
+    building_base = false,
     maxslot = "8",
     fluidboxes = {
         input = {},
@@ -62,7 +64,7 @@ prototype "地下水挖掘机" {
                 height = 100,
                 base_level = 150,
                 connections = {
-                    {type="output", position={1,0,"E"}},
+                    {type="output", position={2,1,"E"}},
                 }
             }
         }

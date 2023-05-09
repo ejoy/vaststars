@@ -182,13 +182,19 @@
                             <div class="warning-message">%s</div>
                         </div>
                     ]]):format(param.message)
-                    --child.addEventListener('animationend', function(event) parent.removeChild(event.target) end)
+                    child.addEventListener('animationend', function(event)
+                        console.log("----message animationend----")
+                        parent.removeChild(child)
+                    end)
                     parent.appendChild(child)
                 end,
                 ["item"] = function(...)
                     local parent = document.getElementById('pop_root')
                     local child = document.createElement "div"
-                    --child.addEventListener('animationend', function(event) parent.removeChild(event.target) end)
+                    child.addEventListener('animationend', function(event)
+                        console.log("----item animationend----")
+                        parent.removeChild(child)
+                    end)
                     parent.appendChild(child)
                     child.className = "item-collect-panel"
                     local param = ...
@@ -223,7 +229,10 @@
                         ]]):format(it.icon)
                         child.appendChild(item)
                     end
-                    --child.addEventListener('animationend', function(event) parent.removeChild(event.target) end)
+                    child.addEventListener('animationend', function(event)
+                        console.log("----teleport-recv animationend----")
+                        parent.removeChild(child)
+                    end)
                     parent.appendChild(child)
                 end,
             })

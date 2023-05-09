@@ -45,6 +45,6 @@ prototype "机尾残骸" {
     type = {"building", "chest"},
     chest_type = "red",
     area = "3x3",
-    slots = 21,
+    slots = 11,
     building_base = false,
 }

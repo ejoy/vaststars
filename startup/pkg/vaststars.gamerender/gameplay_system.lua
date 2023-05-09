@@ -87,8 +87,6 @@ funcs["fluidbox"] = function (object, typeobject)
     end
 
     local fluid_name = object.fluid_name
-
-    found.fluid_icon = true
     found.fluid_name = fluid_name
 
     if not found.gameplay_eid then -- not yet created in gameplay

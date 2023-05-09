@@ -331,7 +331,9 @@ function M:build_power_network(gw, exclude_eid)
                 sw = tonumber(sw),
                 sh = tonumber(sh),
                 sd = typeobject.power_supply_distance,
-                power_network_link = typeobject.power_network_link
+                power_network_link = typeobject.power_network_link,
+                --for filter
+                gen_power = typeobject.power,
             }
         end
         ::continue::
@@ -371,7 +373,16 @@ function M:build_power_network(gw, exclude_eid)
         local network = {}
         for index, value in ipairs(power_network) do
             if not remove_flags[index] then
-                network[#network + 1] = value
+                local gen_power = false
+                for _, pole in ipairs(value.poles) do
+                    if pole.gen_power then
+                        gen_power = true
+                        break
+                    end
+                end
+                if gen_power then
+                    network[#network + 1] = value
+                end
             end
         end
         power_network = network
