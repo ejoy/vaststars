@@ -93,7 +93,7 @@ handlers.straight = function(lorry_id, mask, x, y, z, tick)
     local mat = __get_offset_matrix(prototype_name, dir, toward, ti)
     local s, r, t = math3d.srt(math3d.mul(road_matrix, mat))
     t = math3d.set_index(t, 2, 0.0)
-    __create_or_move_lorry(lorry_id, s, r, t, 1000 / UPS)
+    __create_or_move_lorry(lorry_id, s, r, t, 1000 / UPS * STRAIGHT_TICKCOUNT)
 end
 
 handlers.cross = function(lorry_id, mask, x, y, z, tick)
@@ -106,7 +106,7 @@ handlers.cross = function(lorry_id, mask, x, y, z, tick)
     local mat = __get_offset_matrix(prototype_name, dir, toward, ti)
     local s, r, t = math3d.srt(math3d.mul(road_matrix, mat))
     t = math3d.set_index(t, 2, 0.0)
-    __create_or_move_lorry(lorry_id, s, r, t, 1000 / UPS)
+    __create_or_move_lorry(lorry_id, s, r, t, 1000 / UPS * CROSS_TICKCOUNT)
 end
 
 local function update(lorry_id, x, y, z, tick)
