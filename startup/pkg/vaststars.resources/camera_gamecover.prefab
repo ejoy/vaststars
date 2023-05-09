@@ -4,17 +4,17 @@ data:
     frustum:
       aspect: 2
       f: 1200
-      n: 1
+      n: -200
       l: -165
       r: 165
-      t: -82
-      b: 82
+      t: 82
+      b: -82
       ortho: true
   name: camera1
   scene:
-    r:{0.7071068, 0, 0, 0.7071068}
-    t: {0, -300, 0}
-    updir: {0, 0, 1, 0}
+    r:{0.0,0.0,0.0}
+    t: {0, 0, -100}
+    updir: {0, 1, 0, 0}
   exposure:
     type          : manual
     aperture      : 16.0
