@@ -203,7 +203,7 @@ local function __set_station_first_item(gameplay_world, e, prototype_name)
     c[#c+1] = gameplay_world:chest_slot {
         type = typeobject.chest_type,
         item = typeobject_item.id,
-        limit = 1,
+        limit = typeobject_item.stack,
     }
     station.chest = gameplay_world:container_create(table.concat(c))
 

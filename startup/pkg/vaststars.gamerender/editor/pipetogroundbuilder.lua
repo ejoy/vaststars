@@ -492,7 +492,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
 
     _show_dotted_line(self, table.unpack(State.dotted_line_coord))
 
-    datamodel.show_laying_pipe_confirm = State.succ
+    datamodel.show_finish_laying = State.succ
 end
 
 local function _builder_init(self, datamodel)
@@ -506,9 +506,9 @@ local function _builder_init(self, datamodel)
     end
 
     if is_valid_starting(coord_indicator.x, coord_indicator.y) then
-        datamodel.show_laying_pipe_begin = true
+        datamodel.show_start_laying = true
     else
-        datamodel.show_laying_pipe_begin = false
+        datamodel.show_start_laying = false
     end
 end
 
@@ -660,21 +660,18 @@ local function _builder_start(self, datamodel)
     end
 end
 
-local function __calc_grid_position(self, typeobject)
-    local _, originPosition = coord_system:align(math3d.vector {0, 0, 0}, iprototype.unpackarea(typeobject.area))
-    local buildingPosition = coord_system:get_position_by_coord(self.pickup_object.x, self.pickup_object.y, iprototype.unpackarea(typeobject.area))
+local function __calc_grid_position(self, typeobject, x, y)
+    local w, h = iprototype.unpackarea(typeobject.area)
+    local _, originPosition = coord_system:align(math3d.vector {0, 0, 0}, w, h)
+    local buildingPosition = coord_system:get_position_by_coord(x, y, w, h)
     return math3d.ref(math3d.add(math3d.sub(buildingPosition, originPosition), GRID_POSITION_OFFSET))
 end
 
 --------------------------------------------------------------------------------------------------
 local function new_entity(self, datamodel, typeobject)
-    if not self.grid_entity then
-        self.grid_entity = igrid_entity.create("polyline_grid", terrain._width, terrain._height, terrain.tile_size, {t = __calc_grid_position(self, typeobject)})
-        self.grid_entity:show(true)
-    end
-
     iobject.remove(self.coord_indicator)
     local dir = DEFAULT_DIR
+
     local x, y = iobject.central_coord(typeobject.name, dir)
     self.coord_indicator = iobject.new {
         prototype_name = typeobject.name,
@@ -687,6 +684,11 @@ local function new_entity(self, datamodel, typeobject)
         fluid_name = "",
     }
 
+    if not self.grid_entity then
+        self.grid_entity = igrid_entity.create("polyline_grid", terrain._width, terrain._height, terrain.tile_size, {t = __calc_grid_position(self, typeobject, x, y)})
+        self.grid_entity:show(true)
+    end
+
     --
     _builder_init(self, datamodel)
 end
@@ -697,7 +699,7 @@ local function touch_move(self, datamodel, delta_vec)
     end
     if self.grid_entity then
         local typeobject = iprototype.queryByName(self.coord_indicator.prototype_name)
-        self.grid_entity:send("obj_motion", "set_position", __calc_grid_position(self, typeobject))
+        self.grid_entity:send("obj_motion", "set_position", __calc_grid_position(self, typeobject, self.coord_indicator.x, self.coord_indicator.y))
     end
 end
 
@@ -732,19 +734,19 @@ local function complete(self, datamodel)
     self:revert_changes({"TEMPORARY"})
 
     datamodel.show_rotate = false
-    datamodel.show_laying_pipe_confirm = false
-    datamodel.show_laying_pipe_cancel = false
-    datamodel.show_laying_pipe_begin = false
+    datamodel.show_finish_laying = false
+    datamodel.show_cancel = false
+    datamodel.show_start_laying = false
 end
 
-local function laying_pipe_begin(self, datamodel)
+local function start_laying(self, datamodel)
     local x, y
     self.coord_indicator, x, y = iobject.align(self.coord_indicator)
     self.coord_indicator.x, self.coord_indicator.y = x, y
 
     self:revert_changes({"TEMPORARY"})
-    datamodel.show_laying_pipe_begin = false
-    datamodel.show_laying_pipe_cancel = true
+    datamodel.show_start_laying = false
+    datamodel.show_cancel = true
 
     self.state = STATE_START
     self.from_x = self.coord_indicator.x
@@ -753,17 +755,17 @@ local function laying_pipe_begin(self, datamodel)
     _builder_start(self, datamodel)
 end
 
-local function laying_pipe_cancel(self, datamodel)
+local function cancel(self, datamodel)
     self:revert_changes({"TEMPORARY"})
     local typeobject = iprototype.queryByName(self.coord_indicator.prototype_name)
     self:new_entity(datamodel, typeobject)
 
     self.state = STATE_NONE
-    datamodel.show_laying_pipe_confirm = false
-    datamodel.show_laying_pipe_cancel = false
+    datamodel.show_finish_laying = false
+    datamodel.show_cancel = false
 end
 
-local function laying_pipe_confirm(self, datamodel)
+local function finish_laying(self, datamodel)
     for _, object in objects:all("TEMPORARY") do
         object.PREPARE = true
     end
@@ -777,8 +779,8 @@ local function laying_pipe_confirm(self, datamodel)
     self:new_entity(datamodel, typeobject)
 
     self.state = STATE_NONE
-    datamodel.show_laying_pipe_confirm = false
-    datamodel.show_laying_pipe_cancel = false
+    datamodel.show_finish_laying = false
+    datamodel.show_cancel = false
 end
 
 local function clean(self, datamodel)
@@ -798,9 +800,9 @@ local function clean(self, datamodel)
     self:revert_changes({"TEMPORARY"})
     datamodel.show_rotate = false
     self.state = STATE_NONE
-    datamodel.show_laying_pipe_confirm = false
-    datamodel.show_laying_pipe_cancel = false
-    datamodel.show_laying_pipe_begin = false
+    datamodel.show_finish_laying = false
+    datamodel.show_cancel = false
+    datamodel.show_start_laying = false
     self.super.clean(self, datamodel)
 end
 
@@ -817,9 +819,9 @@ local function create()
 
     M.prototype_name = ""
     M.state = STATE_NONE
-    M.laying_pipe_begin = laying_pipe_begin
-    M.laying_pipe_cancel = laying_pipe_cancel
-    M.laying_pipe_confirm = laying_pipe_confirm
+    M.start_laying = start_laying
+    M.cancel = cancel
+    M.finish_laying = finish_laying
     M.dotted_line = iquad_lines_entity.create(dotted_line_material) -- NOTE: different from pipe_builder
 
     return M
