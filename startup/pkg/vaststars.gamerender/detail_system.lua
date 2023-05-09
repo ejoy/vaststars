@@ -10,17 +10,17 @@ local idetail = ecs.interface "idetail"
 local icamera_controller = ecs.import.interface "vaststars.gamerender|icamera_controller"
 local gameplay_core = require "gameplay.core"
 
-local function __get_capacitance_network(eid)
+local function __get_capacitance(eid)
     local e = gameplay_core.get_entity(eid)
     if not e then
-        return
+        return {network = "none", delta = 0, shortage = 0}
     end
 
     if not e.capacitance then
-        return
+        return {network = "none", delta = 0, shortage = 0}
     end
 
-    return e.capacitance.network
+    return e.capacitance
 end
 
 function idetail.show(object_id)
@@ -49,6 +49,7 @@ function idetail.show(object_id)
             x = %s,
             y = %s,
             network = %s,
+            delta = %s,
         },
         ]]):format(
             object.id,
@@ -56,7 +57,8 @@ function idetail.show(object_id)
             object.dir,
             object.x,
             object.y,
-            __get_capacitance_network(object.gameplay_eid) or "none"
+            __get_capacitance(object.gameplay_eid).network,
+            __get_capacitance(object.gameplay_eid).delta
         ))
     end
     return true
