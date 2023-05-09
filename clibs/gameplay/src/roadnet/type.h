@@ -66,7 +66,7 @@ namespace roadnet {
     using lorryid = objectid;
     using endpointid = objectid;
 
-    static constexpr uint8_t kTime = (uint8_t)(8);
-    static constexpr uint8_t kWaitTime  = (uint8_t)(5);
-    static constexpr uint8_t kCrossTime = (uint8_t)(12);
+    static constexpr uint8_t kTime = (uint8_t)(15);
+    static constexpr uint8_t kWaitTime  = (uint8_t)(8);
+    static constexpr uint8_t kCrossTime = (uint8_t)(30);
 }
