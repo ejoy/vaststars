@@ -69,13 +69,13 @@
                             start.buttons[#start.buttons+1] = {name = "拆除 1 个", message = "remove_one", background_color = "rgb(203, 118, 24)", background_image = "textures/common/road-disconnect.texture"}
                         end
                         if start.show_start_teardown then
-                            start.buttons[#start.buttons+1] = {name = "批量拆路", message = "start_teardown", background_color = "rgb(203, 118, 24)", background_image = "textures/common/road-mutiple-delete.texture"}
+                            start.buttons[#start.buttons+1] = {name = "批量拆除", message = "start_teardown", background_color = "rgb(203, 118, 24)", background_image = "textures/common/road-mutiple-delete.texture"}
                         end
                         if start.show_place_one then
                             start.buttons[#start.buttons+1] = {name = "修建 1 个", message = "place_one", background_color = "rgb(105, 112, 8)", background_image = "textures/common/road-connect.texture"}
                         end
                         if start.show_start_laying then
-                            start.buttons[#start.buttons+1] = {name = "批量铺路", message = "start_laying", background_color = "rgb(105, 112, 8)", background_image = "textures/common/road-mutiple-build.texture"}
+                            start.buttons[#start.buttons+1] = {name = "批量铺设", message = "start_laying", background_color = "rgb(105, 112, 8)", background_image = "textures/common/road-mutiple-build.texture"}
                         end
                         if start.show_cancel then
                             start.buttons[#start.buttons+1] = {name = "取消", message = "cancel", background_color = "rgb(172, 20, 20)", background_image = "textures/common/road-disable.texture"}
