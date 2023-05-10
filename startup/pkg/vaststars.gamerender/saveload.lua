@@ -413,6 +413,7 @@ function M:restore(index)
     iroadnet:init(renderData, true)
     global.roadnet = map
     gameplay_core.build()
+    iroadnet:editor_build()
 
     iscience.update_tech_list(gameplay_core.get_world())
     debugger.set_free_mode(gameplay_core.get_storage().game_mode == "free")
@@ -454,7 +455,7 @@ function M:restart(mode, startup_lua)
         end
     end
     iroadnet:init(renderData, true)
-    global.roadnet = {}
+    global.roadnet = map
     if next(global.roadnet) then
         gameplay_core.get_world():roadnet_reset(global.roadnet)
     end
@@ -464,6 +465,7 @@ function M:restart(mode, startup_lua)
         igameplay.create_entity(e)
     end
     gameplay_core.build()
+    iroadnet:editor_build()
 
     iui.open({"construct.rml"})
     iui.open({"message_pop.rml"})
