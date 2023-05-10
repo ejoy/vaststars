@@ -5,8 +5,8 @@ data:
       aspect: 2
       f: 1200
       n: -200
-      l: -165
-      r: 165
+      l: -161
+      r: 161
       t: 82
       b: -82
       ortho: true

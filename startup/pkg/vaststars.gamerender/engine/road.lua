@@ -160,11 +160,14 @@ function road:del(layer_name, x, y)
 end
 
 function road:flush()
+    if not self._update_cache then
+        return
+    end
     if next(self._update_cache) then
         local update = {}
         local delete = {}
         for coord in pairs(self._update_cache) do
-            if next(self.cache[coord].layers) == nil then
+            if not self.cache[coord] or next(self.cache[coord].layers) == nil then
                 self.cache[coord] = nil
                 local x, y = __unpack(coord)
                 local dx, dy = x - self._offset[1], y - self._offset[2]

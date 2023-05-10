@@ -721,8 +721,54 @@ local function touch_end(self, datamodel)
     end
 end
 
+local ientity = require "gameplay.interface.entity"
+local gameplay_core = require "gameplay.core"
+local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
+local function __complete(self)
+    local needbuild = false
+    for object_id, object in objects:all("CONFIRM") do -- TODO: duplicate code, see also pipe_function_pop.lua
+        if object.REMOVED then
+            if object.gameplay_eid then
+                igameplay.remove_entity(object.gameplay_eid)
+            end
+        else
+            -- TODO: special case for assembling machine
+            local recipe
+            local typeobject = iprototype.queryByName(object.prototype_name)
+            if iprototype.has_type(typeobject.type, "assembling") then
+                recipe = ""
+            end
+
+            local old = objects:get(object_id, {"CONSTRUCTED"})
+            if not old then
+                object.gameplay_eid = igameplay.create_entity(object)
+                object.recipe = recipe
+            else
+                if old.prototype_name ~= object.prototype_name then
+                    igameplay.remove_entity(object.gameplay_eid)
+                    object.gameplay_eid = igameplay.create_entity(object)
+                elseif old.dir ~= object.dir then
+                    ientity:set_direction(gameplay_core.get_world(), gameplay_core.get_entity(object.gameplay_eid), object.dir)
+                elseif old.fluid_name ~= object.fluid_name then
+                    if iprototype.has_type(iprototype.queryByName(object.prototype_name).type, "fluidbox") then -- TODO: object may be fluidboxes
+                        ifluid:update_fluidbox(gameplay_core.get_entity(object.gameplay_eid), object.fluid_name)
+                    end
+                end
+            end
+        end
+        needbuild = true
+    end
+    objects:commit("CONFIRM", "CONSTRUCTED")
+    objects:clear("CONFIRM")
+    objects:clear("CONSTRUCTED")
+
+    if needbuild then
+        gameplay_core.build()
+    end
+end
+
 local function complete(self, datamodel)
-    self.super.complete(self)
+    __complete(self)
     if self.grid_entity then
         self.grid_entity:remove()
         self.grid_entity = nil
@@ -781,6 +827,8 @@ local function finish_laying(self, datamodel)
     self.state = STATE_NONE
     datamodel.show_finish_laying = false
     datamodel.show_cancel = false
+
+    return complete(self, datamodel)
 end
 
 local function clean(self, datamodel)

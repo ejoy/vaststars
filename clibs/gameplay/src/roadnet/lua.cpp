@@ -61,6 +61,14 @@ namespace roadnet::lua {
         lua_pushinteger(L, v);
     }
 
+    static int init(lua_State* L) {
+        auto& w = get_network(L);
+        auto time = (uint8_t)luaL_checkinteger(L, 2);
+        auto WaitTime = (uint8_t)luaL_checkinteger(L, 3);
+        auto CrossTime = (uint8_t)luaL_checkinteger(L, 4);
+        w.init(time, WaitTime, CrossTime);
+        return 0;
+    }
     static int reset(lua_State* L) {
         auto& w = get_network(L);
         w.updateMap(get_map_data(L, 2));
@@ -189,33 +197,17 @@ namespace roadnet::lua {
         lua_pushinteger(L, id.id);
         return 1;
     }
-    static int constants(lua_State* L) {
-        static constexpr std::pair<const char*, uint8_t> constants[] = {
-            { "kTime", roadnet::kTime },
-            { "kWaitTime", roadnet::kWaitTime },
-            { "kCrossTime", roadnet::kCrossTime },
-        };
-
-        lua_createtable(L, 0, (int)std::size(constants));
-        for (const auto& [name, value] : constants) {
-            lua_pushstring(L, name);
-            lua_pushinteger(L, value);
-            lua_settable(L, -3);
-        }
-
-        return 1;
-    }
 }
 
 extern "C" int
 luaopen_vaststars_roadnet_core(lua_State* L) {
     luaL_Reg l[] = {
+        { "init", roadnet::lua::init },
         { "reset", roadnet::lua::reset },
         { "get_map", roadnet::lua::get_map },
         { "map_coord", roadnet::lua::lmap_coord },
         { "each_lorry", roadnet::lua::each_lorry },
         { "endpoint_id", roadnet::lua::endpoint_id },
-        { "constants", roadnet::lua::constants},
         { NULL, NULL },
     };
     luaL_newlib(L, l);

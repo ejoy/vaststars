@@ -49,7 +49,7 @@ end
 
 -- map = {coord = {x, y, shape_type, shape, dir}, ...}
 function roadnet:init(map)
-    self._layer_cache = {}
+     self._layer_cache = {}
     for _, name in ipairs(LAYER_NAMES) do
         self._layer_cache[name] = {}
     end
@@ -68,7 +68,8 @@ function roadnet:init(map)
 end
 
 function roadnet:clear(layer_name)
-    for coord in pairs(self._layer_cache[layer_name]) do
+    self._layer_cache = self._layer_cache or {}
+    for coord in pairs(self._layer_cache[layer_name] or {}) do
         local x, y = __unpack(coord)
         local dx, dy = _convert_coord(x, y)
         iroad:del(layer_name, dx, dy)

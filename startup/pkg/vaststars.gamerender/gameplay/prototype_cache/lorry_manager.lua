@@ -1,14 +1,13 @@
 local itrack = require "engine.track"
 local iprototype = require "gameplay.interface.prototype"
 local prefab_parse = require("engine.prefab_parser").parse
-local gameplay_core = require "gameplay.core"
 
 local road_track = import_package "vaststars.prototype"("road_track")
 
 local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
-local CONSTANTS = gameplay_core.get_world():roadnet_constants()
-local STRAIGHT_TICKCOUNT <const> = CONSTANTS.kTime
-local CROSS_TICKCOUNT <const> = CONSTANTS.kCrossTime
+local CONSTANTS = import_package "vaststars.prototype".load("roadnet")
+local STRAIGHT_TICKCOUNT <const> = CONSTANTS.STRAIGHT_TICKCOUNT
+local CROSS_TICKCOUNT <const> = CONSTANTS.CROSS_TICKCOUNT
 
 local function __prefab_slots(prefab)
     local res = {}
