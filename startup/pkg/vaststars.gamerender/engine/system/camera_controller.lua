@@ -278,8 +278,11 @@ function icamera_controller.get_central_position()
     return math3d.muladd(ray.d, math3d.plane_ray(ray.o, ray.d, YAXIS_PLANE), ray.o)
 end
 
-function icamera_controller.set_camera_from_prefab(prefab)
+function icamera_controller.set_camera_from_prefab(prefab, callback)
     cam_cmd_queue:push {{"set_camera_from_prefab", prefab}}
+    if callback then
+        cam_cmd_queue:push {{"callback", callback}}
+    end
 end
 
 function icamera_controller.focus_on_position(position, callback)

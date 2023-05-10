@@ -160,6 +160,9 @@ function road:del(layer_name, x, y)
 end
 
 function road:flush()
+    if not self._update_cache then
+        return
+    end
     if next(self._update_cache) then
         local update = {}
         local delete = {}
