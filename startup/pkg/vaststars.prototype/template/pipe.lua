@@ -19,7 +19,7 @@ local entities = { {
     y = 120
   }, {
     dir = "S",
-    items = { { "风力发电机I", 1 }, { "蓄电池I", 10 }, { "运输车框架", 4 }, { "太阳能板I", 6 }, { "蒸汽发电机I", 8 }, { "锅炉I", 4 } },
+    items = { { "风力发电机I", 1 }, { "蓄电池I", 10 }, { "运输车框架", 100 }, { "太阳能板I", 6 }, { "蒸汽发电机I", 8 }, { "锅炉I", 4 } },
     prototype_name = "机翼残骸",
     x = 133,
     y = 122
@@ -66,369 +66,375 @@ local entities = { {
     y = 150
   }, {
     dir = "N",
-    fluids = {
+    prototype_name = "铁制电线杆",
+    x = 117,
+    y = 155
+  }, {
+    dir = "N",
+    fluid_name = {
       input = {},
       output = { "地下卤水" }
     },
     prototype_name = "地下水挖掘机",
     recipe = "离岸抽水",
     x = 119,
-    y = 127
+    y = 126
   }, {
     dir = "N",
-    fluid = "地下卤水",
+    fluid_name = {
+      input = {},
+      output = { "地下卤水" }
+    },
+    prototype_name = "地下水挖掘机",
+    recipe = "离岸抽水",
+    x = 119,
+    y = 130
+  }, {
+    dir = "N",
+    fluid_name = {
+      input = {},
+      output = { "地下卤水" }
+    },
+    prototype_name = "地下水挖掘机",
+    recipe = "离岸抽水",
+    x = 119,
+    y = 134
+  }, {
+    dir = "N",
+    fluid_name = {
+      input = {},
+      output = { "地下卤水" }
+    },
+    prototype_name = "地下水挖掘机",
+    recipe = "离岸抽水",
+    x = 119,
+    y = 138
+  }, {
+    dir = "N",
+    fluid_name = {
+      input = {},
+      output = { "地下卤水" }
+    },
+    prototype_name = "地下水挖掘机",
+    recipe = "离岸抽水",
+    x = 119,
+    y = 142
+  }, {
+    dir = "N",
+    fluid_name = {
+      input = {},
+      output = { "地下卤水" }
+    },
+    prototype_name = "地下水挖掘机",
+    recipe = "离岸抽水",
+    x = 119,
+    y = 146
+  }, {
+    dir = "N",
+    fluid_name = "地下卤水",
     prototype_name = "液罐I",
     x = 133,
-    y = 127
+    y = 126
   }, {
     dir = "N",
-    fluid = "地下卤水",
+    fluid_name = "地下卤水",
     prototype_name = "液罐I",
     x = 133,
-    y = 131
+    y = 130
   }, {
     dir = "N",
-    fluid = "",
+    fluid_name = "",
     prototype_name = "液罐I",
     x = 133,
-    y = 135
+    y = 134
   }, {
     dir = "N",
-    fluid = "地下卤水",
+    fluid_name = "地下卤水",
     prototype_name = "液罐I",
     x = 133,
-    y = 139
+    y = 138
   }, {
     dir = "N",
-    fluid = "地下卤水",
+    fluid_name = "地下卤水",
     prototype_name = "液罐I",
     x = 133,
-    y = 143
-  }, {
-    dir = "N",
-    fluids = {
-      input = {},
-      output = { "地下卤水" }
-    },
-    prototype_name = "地下水挖掘机",
-    recipe = "离岸抽水",
-    x = 119,
-    y = 131
-  }, {
-    dir = "N",
-    fluids = {
-      input = {},
-      output = { "地下卤水" }
-    },
-    prototype_name = "地下水挖掘机",
-    recipe = "离岸抽水",
-    x = 119,
-    y = 135
-  }, {
-    dir = "N",
-    fluids = {
-      input = {},
-      output = { "地下卤水" }
-    },
-    prototype_name = "地下水挖掘机",
-    recipe = "离岸抽水",
-    x = 119,
-    y = 139
-  }, {
-    dir = "N",
-    fluids = {
-      input = {},
-      output = { "地下卤水" }
-    },
-    prototype_name = "地下水挖掘机",
-    recipe = "离岸抽水",
-    x = 119,
-    y = 143
-  }, {
-    dir = "N",
-    fluids = {
-      input = {},
-      output = { "地下卤水" }
-    },
-    prototype_name = "地下水挖掘机",
-    recipe = "离岸抽水",
-    x = 119,
-    y = 147
+    y = 142
   }, {
     dir = "E",
-    fluid = "地下卤水",
-    prototype_name = "管道1-I型",
-    x = 127,
-    y = 128
-  }, {
-    dir = "E",
-    fluid = "地下卤水",
+    fluid_name = "地下卤水",
     prototype_name = "管道1-I型",
     x = 128,
-    y = 128
+    y = 127
   }, {
     dir = "E",
-    fluid = "地下卤水",
+    fluid_name = "地下卤水",
     prototype_name = "管道1-I型",
     x = 129,
-    y = 128
+    y = 127
   }, {
     dir = "E",
-    fluid = "地下卤水",
+    fluid_name = "地下卤水",
     prototype_name = "管道1-I型",
     x = 130,
-    y = 128
+    y = 127
   }, {
     dir = "E",
-    fluid = "地下卤水",
+    fluid_name = "地下卤水",
     prototype_name = "管道1-I型",
     x = 131,
-    y = 128
+    y = 127
   }, {
     dir = "E",
-    fluid = "地下卤水",
+    fluid_name = "地下卤水",
+    prototype_name = "管道1-I型",
+    x = 132,
+    y = 127
+  }, {
+    dir = "E",
+    fluid_name = "地下卤水",
     prototype_name = "管道1-I型",
     x = 122,
-    y = 128
+    y = 127
   }, {
     dir = "E",
-    fluid = "地下卤水",
+    fluid_name = "地下卤水",
     prototype_name = "管道1-I型",
     x = 123,
-    y = 128
+    y = 127
   }, {
     dir = "E",
-    fluid = "地下卤水",
+    fluid_name = "地下卤水",
     prototype_name = "管道1-I型",
     x = 124,
-    y = 128
+    y = 127
   }, {
     dir = "E",
-    fluid = "地下卤水",
+    fluid_name = "地下卤水",
     prototype_name = "管道1-I型",
     x = 125,
-    y = 128
+    y = 127
   }, {
     dir = "E",
-    fluid = "地下卤水",
+    fluid_name = "地下卤水",
     prototype_name = "管道1-I型",
     x = 126,
-    y = 128
+    y = 127
   }, {
     dir = "E",
-    fluid = "地下卤水",
+    fluid_name = "地下卤水",
     prototype_name = "管道1-I型",
-    x = 132,
-    y = 128
+    x = 127,
+    y = 127
   }, {
     dir = "E",
-    fluid = "地下卤水",
+    fluid_name = "地下卤水",
     prototype_name = "地下管1-JI型",
     x = 122,
-    y = 132
+    y = 131
   }, {
     dir = "W",
-    fluid = "地下卤水",
+    fluid_name = "地下卤水",
     prototype_name = "地下管1-JI型",
     x = 132,
-    y = 132
+    y = 131
   }, {
     dir = "N",
-    fluid = "地下卤水",
+    fluid_name = "地下卤水",
     prototype_name = "液罐I",
     x = 122,
-    y = 135
+    y = 134
   }, {
     dir = "N",
-    fluid = "地下卤水",
+    fluid_name = "地下卤水",
     prototype_name = "液罐I",
     x = 125,
-    y = 135
+    y = 134
   }, {
     dir = "N",
-    fluid = "地下卤水",
+    fluid_name = "地下卤水",
     prototype_name = "液罐I",
     x = 130,
+    y = 134
+  }, {
+    dir = "E",
+    fluid_name = "地下卤水",
+    prototype_name = "管道1-I型",
+    x = 129,
     y = 135
   }, {
     dir = "E",
-    fluid = "地下卤水",
+    fluid_name = "地下卤水",
     prototype_name = "管道1-I型",
     x = 128,
-    y = 136
+    y = 135
   }, {
     dir = "E",
-    fluid = "地下卤水",
-    prototype_name = "管道1-I型",
-    x = 129,
-    y = 136
-  }, {
-    dir = "E",
-    fluid = "地下卤水",
-    prototype_name = "管道1-I型",
-    x = 122,
-    y = 140
-  }, {
-    dir = "E",
-    fluid = "地下卤水",
+    fluid_name = "地下卤水",
     prototype_name = "管道1-I型",
     x = 123,
-    y = 140
-  }, {
-    dir = "W",
-    fluid = "地下卤水",
-    prototype_name = "地下管1-JI型",
-    x = 132,
-    y = 140
+    y = 139
   }, {
     dir = "E",
-    fluid = "地下卤水",
+    fluid_name = "地下卤水",
     prototype_name = "管道1-I型",
     x = 124,
-    y = 140
+    y = 139
   }, {
     dir = "E",
-    fluid = "地下卤水",
-    prototype_name = "地下管1-JI型",
-    x = 125,
-    y = 140
-  }, {
-    dir = "E",
-    fluid = "地下卤水",
-    prototype_name = "地下管1-JI型",
+    fluid_name = "地下卤水",
+    prototype_name = "管道1-I型",
     x = 122,
-    y = 144
+    y = 139
   }, {
     dir = "W",
-    fluid = "地下卤水",
+    fluid_name = "地下卤水",
     prototype_name = "地下管1-JI型",
     x = 132,
-    y = 144
+    y = 139
   }, {
     dir = "E",
-    fluid = "地下卤水",
+    fluid_name = "地下卤水",
     prototype_name = "地下管1-JI型",
+    x = 126,
+    y = 139
+  }, {
+    dir = "E",
+    fluid_name = "地下卤水",
+    prototype_name = "管道1-I型",
     x = 125,
-    y = 144
+    y = 139
+  }, {
+    dir = "E",
+    fluid_name = "地下卤水",
+    prototype_name = "地下管1-JI型",
+    x = 122,
+    y = 143
   }, {
     dir = "W",
-    fluid = "地下卤水",
+    fluid_name = "地下卤水",
+    prototype_name = "地下管1-JI型",
+    x = 132,
+    y = 143
+  }, {
+    dir = "W",
+    fluid_name = "地下卤水",
     prototype_name = "地下管1-JI型",
     x = 124,
-    y = 144
-  }, {
-    dir = "W",
-    fluid = "地下卤水",
-    prototype_name = "地下管1-JI型",
-    x = 128,
-    y = 144
+    y = 143
   }, {
     dir = "E",
-    fluid = "地下卤水",
+    fluid_name = "地下卤水",
+    prototype_name = "地下管1-JI型",
+    x = 125,
+    y = 143
+  }, {
+    dir = "W",
+    fluid_name = "地下卤水",
+    prototype_name = "地下管1-JI型",
+    x = 128,
+    y = 143
+  }, {
+    dir = "E",
+    fluid_name = "地下卤水",
     prototype_name = "地下管1-JI型",
     x = 129,
-    y = 144
+    y = 143
   }, {
     dir = "N",
-    fluids = {
+    fluid_name = {
       input = { "地下卤水" },
       output = { "蒸汽" }
     },
     prototype_name = "锅炉I",
     recipe = "卤水沸腾",
     x = 133,
-    y = 148
+    y = 147
   }, {
     dir = "E",
-    fluid = "地下卤水",
-    prototype_name = "管道1-I型",
-    x = 122,
-    y = 148
-  }, {
-    dir = "E",
-    fluid = "地下卤水",
+    fluid_name = "地下卤水",
     prototype_name = "管道1-I型",
     x = 123,
-    y = 148
+    y = 147
   }, {
     dir = "E",
-    fluid = "地下卤水",
+    fluid_name = "地下卤水",
     prototype_name = "管道1-I型",
     x = 124,
-    y = 148
+    y = 147
   }, {
     dir = "E",
-    fluid = "地下卤水",
+    fluid_name = "地下卤水",
     prototype_name = "管道1-I型",
     x = 125,
-    y = 148
+    y = 147
   }, {
     dir = "E",
-    fluid = "地下卤水",
+    fluid_name = "地下卤水",
     prototype_name = "管道1-I型",
     x = 126,
-    y = 148
+    y = 147
   }, {
     dir = "E",
-    fluid = "地下卤水",
+    fluid_name = "地下卤水",
     prototype_name = "管道1-I型",
     x = 127,
-    y = 148
+    y = 147
   }, {
     dir = "E",
-    fluid = "地下卤水",
+    fluid_name = "地下卤水",
     prototype_name = "管道1-I型",
     x = 128,
-    y = 148
+    y = 147
   }, {
     dir = "E",
-    fluid = "地下卤水",
+    fluid_name = "地下卤水",
     prototype_name = "管道1-I型",
     x = 129,
-    y = 148
+    y = 147
   }, {
     dir = "E",
-    fluid = "地下卤水",
+    fluid_name = "地下卤水",
     prototype_name = "管道1-I型",
     x = 130,
-    y = 148
+    y = 147
   }, {
     dir = "E",
-    fluid = "地下卤水",
+    fluid_name = "地下卤水",
     prototype_name = "管道1-I型",
     x = 131,
-    y = 148
+    y = 147
   }, {
     dir = "E",
-    fluid = "地下卤水",
+    fluid_name = "地下卤水",
     prototype_name = "管道1-I型",
     x = 132,
-    y = 148
+    y = 147
+  }, {
+    dir = "E",
+    fluid_name = "地下卤水",
+    prototype_name = "管道1-I型",
+    x = 122,
+    y = 147
   }, {
     dir = "N",
-    fluids = {
+    fluid_name = {
       input = { "蒸汽" },
       output = {}
     },
     prototype_name = "蒸汽发电机I",
     recipe = "蒸汽发电",
     x = 133,
-    y = 150
+    y = 149
   }, {
     dir = "N",
-    fluids = {
+    fluid_name = {
       input = { "蒸汽" },
       output = {}
     },
     prototype_name = "蒸汽发电机I",
     recipe = "蒸汽发电",
     x = 133,
-    y = 155
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 117,
-    y = 155
+    y = 154
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
@@ -440,10 +446,25 @@ local entities = { {
     x = 132,
     y = 155
   } }
-local road = {}
+local road = {
+  [32145] = 4,
+  [32146] = 5,
+  [32147] = 5,
+  [32148] = 5,
+  [32149] = 5,
+  [32150] = 5,
+  [32151] = 5,
+  [32152] = 5,
+  [32153] = 5,
+  [32154] = 5,
+  [32155] = 5,
+  [32156] = 5,
+  [32157] = 5,
+  [32158] = 1
+}
 
 return {
-    name = "水管测试",
+    name = "管道测试",
     entities = entities,
     road = road,
 }

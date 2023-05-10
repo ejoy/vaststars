@@ -7,7 +7,7 @@ local entities = { {
     y = 120
   }, {
     dir = "N",
-    items = { { "收货车站", 2 }, { "送货车站", 2 }, { "水电站I", 2 }, { "熔炼炉I", 2 }, { "无人机仓库", 5 }, { "铁制电线杆", 10 } },
+    items = { { "收货车站", 2 }, { "送货车站", 2 }, { "铁制电线杆", 10 }, { "熔炼炉I", 2 }, { "水电站I", 2 }, { "无人机仓库", 5 } },
     prototype_name = "机身残骸",
     x = 107,
     y = 134
@@ -19,13 +19,13 @@ local entities = { {
     y = 120
   }, {
     dir = "S",
-    items = { { "风力发电机I", 1 }, { "蓄电池I", 10 }, { "运输车框架", 4 }, { "太阳能板I", 6 }, { "锅炉I", 4 }, { "蒸汽发电机I", 8 } },
+    items = { { "风力发电机I", 1 }, { "蓄电池I", 10 }, { "太阳能板I", 6 }, { "蒸汽发电机I", 8 }, { "锅炉I", 4 } },
     prototype_name = "机翼残骸",
     x = 133,
     y = 122
   }, {
     dir = "W",
-    items = { { "空气过滤器I", 4 }, { "地下水挖掘机", 4 }, { "化工厂I", 3 }, { "电解厂I", 1 } },
+    items = { { "电解厂I", 1 }, { "空气过滤器I", 4 }, { "化工厂I", 3 }, { "地下水挖掘机", 4 } },
     prototype_name = "机头残骸",
     x = 125,
     y = 108
@@ -94,16 +94,19 @@ local entities = { {
     y = 119
   }, {
     dir = "N",
+    item = "碎石",
     prototype_name = "无人机仓库",
     x = 117,
     y = 126
   }, {
     dir = "N",
+    item = "碎石",
     prototype_name = "送货车站",
     x = 119,
     y = 124
   }, {
     dir = "W",
+    item = "碎石",
     prototype_name = "收货车站",
     x = 139,
     y = 113
@@ -114,6 +117,7 @@ local entities = { {
     y = 117
   }, {
     dir = "N",
+    item = "碎石",
     prototype_name = "无人机仓库",
     x = 136,
     y = 112
@@ -124,13 +128,13 @@ local entities = { {
     y = 116
   }, {
     dir = "N",
-    fluids = "",
+    fluid_name = "",
     prototype_name = "熔炼炉I",
     x = 133,
     y = 116
   }, {
     dir = "N",
-    fluids = "",
+    fluid_name = "",
     prototype_name = "组装机I",
     x = 133,
     y = 111
@@ -156,6 +160,7 @@ local entities = { {
     y = 114
   }, {
     dir = "N",
+    item = "运输车框架",
     prototype_name = "无人机仓库",
     x = 131,
     y = 123

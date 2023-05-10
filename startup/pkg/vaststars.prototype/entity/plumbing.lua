@@ -6,6 +6,7 @@ prototype "液罐I" {
     icon = "textures/building_pic/small_pic_tank.texture",
     construct_detector = {"exclusive"},
     storage_tank = true,
+    show_arc_menu = false,
     type = {"building", "fluidbox"},
     area = "3x3",
     fluidbox = {
@@ -26,6 +27,7 @@ prototype "气罐I" {
     icon = "textures/building_pic/small_pic_tank.texture",
     construct_detector = {"exclusive"},
     storage_tank = true,
+    show_arc_menu = false,
     type = {"building", "fluidbox"},
     area = "3x3",
     fluidbox = {
