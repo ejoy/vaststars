@@ -88,7 +88,7 @@
                 </button>
                 <button class = "button-style"  data-event-click = "clickButton('load_template')">
                     <div class="middle-bg" style='background-image: "textures/character/health.texture"; width:7.5vmin; height:7.5vmin;'/>
-                    <div class = "button-text1" style="font-size: 5.73vmin;">测试模板</div>
+                    <div class = "button-text1" style="font-size: 5.73vmin;">测试模式</div>
                 </button>
             </div>
         </div>
