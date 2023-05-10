@@ -1,0 +1,66 @@
+---
+data:
+  name: slot1
+  scene:
+    s: {30, 30, 4.050000190734863}
+    t: {0, 0, -104.19999694824219}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    slot1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+---
+data:
+  efk:
+    auto_play: true
+    loop: true
+    path: /pkg/vaststars.resources/effect/efk/sandstorm2.efk
+    speed: 1
+    visible: true
+  name: root
+  scene: {}
+  tag:
+    effect
+mount: 1
+policy:
+  ant.general|name
+  ant.scene|scene_object
+  ant.efk|efk
+  ant.general|tag
+---
+data:
+  name: slot1
+  scene:
+    s: {20, 5, 5}
+    t: {0, 58.806888580322266, 55.77799987792969}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    slot1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+---
+data:
+  efk:
+    auto_play: true
+    loop: true
+    path: /pkg/vaststars.resources/effect/efk/sandstorm2.efk
+    speed: 1
+    visible: true
+  name: root
+  scene: {}
+  tag:
+    effect
+mount: 3
+policy:
+  ant.general|name
+  ant.scene|scene_object
+  ant.efk|efk
+  ant.general|tag
