@@ -34,6 +34,7 @@ data:
   name: Plane.001
   skinning: true
   visible_state: main_view|selectable|cast_shadow
+  render_layer: translucent
 policy:
   ant.general|name
   ant.render|skinrender
