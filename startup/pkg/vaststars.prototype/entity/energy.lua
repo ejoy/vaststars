@@ -17,6 +17,7 @@ prototype "蒸汽发电机I" {
     recipe = "蒸汽发电",
     -- craft_category = {"流体发电"},
     maxslot = "8",
+    power_supply_area = "3x5",
     power_supply_distance = 0,
     fluidboxes = {
         input = {
@@ -58,6 +59,7 @@ prototype "太阳能板I" {
     power = "300kW",
     priority = "primary",
     show_arc_menu = false,
+    power_supply_area = "3x3",
     power_supply_distance = 0,
 }
 
@@ -72,6 +74,7 @@ prototype "蓄电池I" {
     area = "2x2",
     priority = "secondary",
     show_arc_menu = false,
+    power_supply_area = "2x2",
     power_supply_distance = 0,
 }
 
