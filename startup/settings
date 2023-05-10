@@ -44,8 +44,7 @@ graphic:
     normal_offset: 0.012
     size: 1024
     split_lamada: 0.8
-    split_num: 2
+    split_num: 1
     split_ratios:
-      {0.15, 0.30},
-      {0.30, 0.65}
+      {0.00, 1.00}
     type: inv_z
