@@ -2,7 +2,7 @@
     <head>
         <style>
             body {
-                font: 100% "宋体";
+                font: 100% "微软雅黑";
             }
             .recipe-panel {
                 background-color: rgb(44, 32, 18);
@@ -68,7 +68,7 @@
                 <div style="width: 100%; height:90%; flex-direction: column; justify-content: center; align-items: center;">
                     <div class = "recipe-change-block" style = "justify-content: center; align-items: center;">
                         <button class = "button-style" style="background-color:rgb(203, 118, 24);" data-for = "templates" data-event-click = "clickButton('load_template', it.filename)">
-                            <div class = "recipe-name-text" style="font-size: 2.73vmin;">{{it.name}}</div>
+                            <div class = "recipe-name-text" style="font-size: 4.73vmin;">{{it.name}}</div>
                         </button>
                     </div>
                 </div>
