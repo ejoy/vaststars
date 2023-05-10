@@ -4,6 +4,7 @@ local global            = require "global"
 
 local M = {}
 local function set_power_supply_area(area, e)
+    if not e.sw or not e.sh then return end
     local offset_x = (e.sw - e.w)//2
     local offset_y = (e.sh - e.h)//2
     for i = e.y - offset_y, e.y + e.h + offset_y - 1 do
@@ -32,6 +33,12 @@ local function min_area_x(e) return e.x end
 local function max_area_x(e) return e.x + e.w - 1 end
 local function min_area_y(e) return e.y end
 local function max_area_y(e) return e.y + e.h - 1 end
+-- supply
+local function min_max_supply(e)
+    local offset_x = (e.sw - e.w)//2
+    local offset_y = (e.sh - e.h)//2
+    return e.x - offset_x, e.x + e.w + offset_x - 1, e.y - offset_y, e.y + e.h + offset_y - 1
+end
 
 -- power_supply_distance
 local function min_distance_x(e) return e.x - (e.sd - (e.w + 1)//2) end
@@ -53,14 +60,30 @@ local function can_connect(e0, e1)
         min_e = e1
         max_e = e0
     end
-    local r = max_e.w//2
-    if max_e.w%2 == 0 then
-        return contain(min_e, max_e.x + r - 1, max_e.y + r - 1)
-            or contain(min_e, max_e.x + r - 1, max_e.y + r)
-            or contain(min_e, max_e.x + r, max_e.y + r - 1)
-            or contain(min_e, max_e.x + r, max_e.y + r)
+    if min_e.sd == 0 then
+        if max_e.sd == 0 then
+            return false
+        else
+            local minsx, maxsx, minsy, maxsy = min_max_supply(max_e)
+            if max_area_x(min_e) < minsx
+                or min_area_x(min_e) > maxsx
+                or max_area_y(min_e) < minsy
+                or min_area_y(min_e) > maxsy then
+                return false
+            else
+                return true
+            end
+        end
     else
-        return contain(min_e, max_e.x + r, max_e.y + r)
+        local r = max_e.w//2
+        if max_e.w%2 == 0 then
+            return contain(min_e, max_e.x + r - 1, max_e.y + r - 1)
+                or contain(min_e, max_e.x + r - 1, max_e.y + r)
+                or contain(min_e, max_e.x + r, max_e.y + r - 1)
+                or contain(min_e, max_e.x + r, max_e.y + r)
+        else
+            return contain(min_e, max_e.x + r, max_e.y + r)
+        end
     end
 end
 
@@ -93,14 +116,6 @@ local function shortest_conect(poles1, poles2)
     
     return connects
 end
-
-local function area_supply_overlap(e0, e1)
-    if max_area_x(e0) < min_supply_x(e1) or min_area_x(e0) > max_supply_x(e1) or max_area_y(e0) < min_supply_y(e1) or min_area_y(e0) > max_supply_y(e1) then
-        return false
-    end
-    return true
-end
-
 
 local function remove_from_table(pole, poles)
     for index, value in ipairs(poles) do
@@ -310,7 +325,7 @@ function M:build_power_network(gw, exclude_eid)
             capacitance[#capacitance + 1] = {
                 targets = {},
                 power_network_link_target = 0,
-                -- name = typeobject.name,
+                name = typeobject.name,
                 eid = v.eid,
                 x = e.x,
                 y = e.y,
@@ -318,11 +333,11 @@ function M:build_power_network(gw, exclude_eid)
                 h = ah,
             }
         end
-        if typeobject.power_network_link or typeobject.power_supply_distance then
+        if typeobject.power_supply_distance then
             powerpole[#powerpole + 1] = {
                 targets = {},
                 power_network_link_target = 0,
-                -- name = typeobject.name,
+                name = typeobject.name,
                 eid = v.eid,
                 x = e.x,
                 y = e.y,
