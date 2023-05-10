@@ -59,7 +59,7 @@ return function(start)
         local v = setmetatable({}, {__index = DEFAULT})
         v.text = "收取物品"
         v.message = "pickup_item"
-        v.background_image = "textures/assemble/wheel.texture"
+        v.background_image = "textures/cmdcenter/item-in.texture"
         start.buttons[#start.buttons + 1] = v
     end
 
@@ -67,7 +67,7 @@ return function(start)
         local v = setmetatable({}, {__index = DEFAULT})
         v.text = "放置物品"
         v.message = "place_item"
-        v.background_image = "textures/assemble/wheel.texture"
+        v.background_image = "textures/cmdcenter/item-out.texture"
         start.buttons[#start.buttons + 1] = v
     end
 
