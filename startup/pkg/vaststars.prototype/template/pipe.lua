@@ -143,7 +143,7 @@ local entities = { {
     y = 130
   }, {
     dir = "N",
-    fluid_name = "",
+    fluid_name = "地下卤水",
     prototype_name = "液罐I",
     x = 133,
     y = 134
