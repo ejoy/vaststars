@@ -34,6 +34,7 @@ end
 
 if lm.os == "android" then
     lm:dll "vaststars" {
+        basename = "libvaststars",
         deps = {
             "ant_runtime",
             "ant_links",
