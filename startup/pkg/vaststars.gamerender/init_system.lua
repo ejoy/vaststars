@@ -33,7 +33,7 @@ local DayTick <const> = require("gameplay.interface.constant").DayTick
 
 local platform = require "bee.platform"
 local caudio
-if "android" == platform.os then
+if "android" ~= platform.os then
     caudio = require "audio"
 end
 local m = ecs.system 'init_system'
