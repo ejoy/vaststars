@@ -1607,7 +1607,6 @@ local t = {
 	"/pkg/vaststars.resources/ui/textures/guide/guide-4.texture",
 	"/pkg/vaststars.resources/ui/textures/guide/guide-5.texture",
 	"/pkg/vaststars.resources/ui/textures/guide/guide-6.texture",
-	"/pkg/vaststars.resources/ui/textures/login/login.texture",
 	"/pkg/vaststars.resources/ui/textures/property/building-health.texture",
 	"/pkg/vaststars.resources/ui/textures/property/chest-capacity.texture",
 	"/pkg/vaststars.resources/ui/textures/property/chest-max.texture",
