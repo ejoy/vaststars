@@ -38,6 +38,19 @@ local function continue_game()
     end
 end
 
+local function load_game(index)
+    if not saveload:restore(index) then
+        return
+    end
+    iguide.world = gameplay_core.get_world()
+    iui.set_guide_progress(iguide.get_progress())
+    if game_cover then
+        game_cover:remove()
+        game_cover = nil
+    end
+    return true
+end
+
 local function createPrefabInst(prefab)
     local p = ecs.create_instance(prefab)
     function p:on_ready()
@@ -69,6 +82,7 @@ end
 
 return {
     init = init,
+    load_game = load_game,
     new_game = new_game,
     continue_game = continue_game,
     back_to_main_menu = back_to_main_menu,

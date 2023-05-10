@@ -42,7 +42,7 @@ function M:stage_camera_usage()
     end
 
     for _, _, _, index in restore_mb:unpack() do -- 读档时会还原摄像机的位置
-        if saveload:restore(index) then
+        if imain_menu_manager.load_game(index) then
             world:pub {"rmlui_message_close", "option_pop.rml"}
         end
     end
