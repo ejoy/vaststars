@@ -7,8 +7,6 @@
             .login-panel {
                 width: 100%;
                 height: 100%;
-                background-size: cover;
-                background-image: "textures/login/login.texture";
             }
             .main-panel {
                 position: absolute;  
@@ -19,16 +17,6 @@
                 align-items: center;
                 right:5vmin;
                 top:20vmin;
-            }
-            .verison-block {
-                position: absolute;
-                width: 20%;
-                height:5%;
-                top:0;
-                left:0;
-                flex-direction: row;
-                justify-content: flex-start;
-                align-items: center;
             }
             .info-block {
                 position: absolute;
@@ -42,26 +30,6 @@
                 font-size: 2.5vmin;
                 text-align: center;
                 color: rgb(145, 141, 141);
-            }
-            @keyframes floating {
-                from {
-                    transform: translateY(-1.56vmin);
-                }
-                to {
-                    transform: translateY(-0.56vmin);
-                }
-            }
-            .title-block {
-                font-size: 20vmin;
-                color: rgb(255, 255, 255);
-                -webkit-text-stroke: 0.3vmin #a52525;
-                animation:1s linear 0s infinite alternate floating;
-                transform: translateY(-1.06vmin);
-            }
-            .version-text {
-                font-size: 2.8vmin;
-                text-align: left;
-                align-items: flex-start;
             }
             .button-text1 {
                 padding-bottom: 0.15em;
@@ -94,43 +62,30 @@
             end
         </script>
     </head>
-    <body style = "background-color: black;">
-        <div class="item-container-region"  data-model="start">
-            <div class="login-panel" style = "flex-direction: column; height: 100%;">
-                <!-- 标题栏 -->
-                <div class = "info-block">IN DEVELOPMENT</div>
-                <div class = "verison-block">
-                    <div class = "version-text" style="-webkit-text-stroke:0.2vmin #000; font-size: 3vmin;">version: 1.0.0</div>
-                </div>
-                <div style = "position: absolute; width: 100%; height: 100%; justify-content: center; align-items: center;">
-                    <div class = "title-block">赤  域</div>
-                </div>
-                <div class = "main-panel">
-                    <button class = "button-style"  data-event-click = "clickButton('continue')" data-if = "show_continue_game">
-                        <div class="middle-bg" style='background-image: "textures/road/traffic.texture";width:8vmin; height:8vmin;'/>
-                        <div class = "button-text1" style="font-size: 5.73vmin;">继续游戏</div>
-                    </button>
-                    <button class = "button-style"  data-event-click = "clickButton('start_mode', 'adventure')">
-                        <div class="middle-bg" style='background-image: "textures/science/book.texture";'/>
-                        <div class = "button-text1" style="font-size: 5.73vmin;">冒险模式</div>
-                    </button>
-                    <button class = "button-style"  data-event-click = "clickButton('start_mode', 'free')">
-                        <div class="middle-bg" style='background-image: "textures/construct/work.texture";'/>
-                        <div class = "button-text1" style="font-size: 5.73vmin;">自由模式</div>
-                    </button> 
-                    <button class = "button-style"  data-event-click = "clickButton('load_resources')">
-                        <div class="middle-bg" style='background-image: "textures/road_net/big_bag.texture"; width:6.7vmin; height:6.7vmin;'/>
-                        <div class = "button-text1" style="font-size: 5.73vmin;">加载资源</div>
-                    </button> 
-                    <button class = "button-style"  data-event-click = "clickButton('load_archive')">
-                        <div class="middle-bg" style='background-image: "textures/road/write.texture"; width:5.5vmin; height:5.5vmin;'/>
-                        <div class = "button-text1" style="font-size: 5.73vmin;">读取进度</div>
-                    </button>
-                    <button class = "button-style"  data-event-click = "clickButton('load_template')">
-                        <div class="middle-bg" style='background-image: "textures/road/write.texture"; width:5.5vmin; height:5.5vmin;'/>
-                        <div class = "button-text1" style="font-size: 5.73vmin;">加载模板</div>
-                    </button>
-                </div>
+    <body>
+        <div class="login-panel" style = "flex-direction: column; height: 100%;" data-model="start">
+            <div class = "info-block">IN DEVELOPMENT</div>
+            <div class = "main-panel">
+                <button class = "button-style"  data-event-click = "clickButton('continue')" data-if = "show_continue_game">
+                    <div class="middle-bg" style='background-image: "textures/road/traffic.texture";width:8vmin; height:8vmin;'/>
+                    <div class = "button-text1" style="font-size: 5.73vmin;">继续游戏</div>
+                </button>
+                <button class = "button-style"  data-event-click = "clickButton('start_mode', 'adventure')">
+                    <div class="middle-bg" style='background-image: "textures/science/book.texture";'/>
+                    <div class = "button-text1" style="font-size: 5.73vmin;">冒险模式</div>
+                </button>
+                <button class = "button-style"  data-event-click = "clickButton('start_mode', 'free')">
+                    <div class="middle-bg" style='background-image: "textures/construct/work.texture";'/>
+                    <div class = "button-text1" style="font-size: 5.73vmin;">自由模式</div>
+                </button> 
+                <button class = "button-style"  data-event-click = "clickButton('load_resources')">
+                    <div class="middle-bg" style='background-image: "textures/road_net/big_bag.texture"; width:6.7vmin; height:6.7vmin;'/>
+                    <div class = "button-text1" style="font-size: 5.73vmin;">加载资源</div>
+                </button> 
+                <button class = "button-style"  data-event-click = "clickButton('load_archive')">
+                    <div class="middle-bg" style='background-image: "textures/road/write.texture"; width:5.5vmin; height:5.5vmin;'/>
+                    <div class = "button-text1" style="font-size: 5.73vmin;">读取进度</div>
+                </button>
             </div>
         </div>
     </body>

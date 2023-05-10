@@ -12,6 +12,8 @@ namespace roadnet {
     public:
         network() = default;
 
+        void init(uint8_t time, uint8_t waitTime, uint8_t crossTime);
+
         std::map<loction, uint8_t> getMap() const;
         void updateMap(const std::map<loction, uint8_t>& mapData);
         uint32_t reloadMap();
@@ -76,6 +78,9 @@ namespace roadnet {
         std::map<loction, roadid> crossMap;
         std::map<roadid, loction> crossMapR;
 
+        uint8_t time = (uint8_t)(150);
+        uint8_t waitTime = (uint8_t)(80);
+        uint8_t crossTime = (uint8_t)(30);
     private:
         roadid   findCrossRoad(loction l);
         std::optional<loction> whereCrossRoad(roadid id);

@@ -307,6 +307,12 @@ namespace roadnet {
             ;
     }
 
+    void network::init(uint8_t time, uint8_t waitTime, uint8_t crossTime){
+        this->time = time;
+        this->waitTime = waitTime;
+        this->crossTime = crossTime;
+    }
+
     std::map<loction, uint8_t> network::getMap() const {
         return map;
     }

@@ -10,15 +10,14 @@ local iterrain = ecs.require "terrain"
 local create_lorry = ecs.require "lorry"
 local global = require "global"
 local iroadnet_converter = require "roadnet_converter"
-local gameplay_core = require "gameplay.core"
 local iprototype_cache = require "gameplay.prototype_cache.init"
 
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local UPS <const> = require("gameplay.interface.constant").UPS
 
-local CONSTANTS = gameplay_core.get_world():roadnet_constants()
-local STRAIGHT_TICKCOUNT <const> = CONSTANTS.kTime
-local CROSS_TICKCOUNT <const> = CONSTANTS.kCrossTime
+local CONSTANTS = import_package "vaststars.prototype".load("roadnet")
+local STRAIGHT_TICKCOUNT <const> = CONSTANTS.STRAIGHT_TICKCOUNT
+local CROSS_TICKCOUNT <const> = CONSTANTS.CROSS_TICKCOUNT
 
 local function __get_offset_matrix(prototype_name, dir, toward, tick)
     local combine_keys = ("%s:%s:%s"):format(prototype_name, dir, toward) -- TODO: optimize

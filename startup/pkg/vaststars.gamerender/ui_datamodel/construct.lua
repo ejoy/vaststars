@@ -243,6 +243,8 @@ function M:stage_ui_update(datamodel)
         __clean(datamodel)
         __switch_status("default", function()
             __clean(datamodel)
+            gameplay_core.world_update = false
+            gameplay_core.build()
         end)
     end
 
