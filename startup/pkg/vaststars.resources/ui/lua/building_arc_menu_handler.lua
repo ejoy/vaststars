@@ -63,14 +63,6 @@ return function(start)
         start.buttons[#start.buttons + 1] = v
     end
 
-    if start.place_item then
-        local v = setmetatable({}, {__index = DEFAULT})
-        v.text = "放置物品"
-        v.message = "place_item"
-        v.background_image = "textures/cmdcenter/item-out.texture"
-        start.buttons[#start.buttons + 1] = v
-    end
-
     if start.show_set_recipe then
         local v = setmetatable({}, {__index = DEFAULT})
         v.text = "管理"
@@ -84,6 +76,14 @@ return function(start)
         v.text = "管理"
         v.message = "set_item"
         v.background_image = "textures/assemble/wheel.texture"
+        start.buttons[#start.buttons + 1] = v
+    end
+
+    if start.place_item then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.text = "放置物品"
+        v.message = "place_item"
+        v.background_image = "textures/cmdcenter/item-out.texture"
         start.buttons[#start.buttons + 1] = v
     end
 
