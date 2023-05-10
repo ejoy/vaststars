@@ -1,7 +1,6 @@
 local ecs = ...
 local world = ecs.world
 local w = world.w
-local audio     = require "audio"
 local FRAMES_PER_SECOND <const> = 30
 local bgfx = require 'bgfx'
 local iRmlUi = ecs.import.interface "ant.rmlui|irmlui"
@@ -32,6 +31,11 @@ local DuskTick <const> = require("gameplay.interface.constant").DuskTick
 local NightTick <const> = require("gameplay.interface.constant").NightTick
 local DayTick <const> = require("gameplay.interface.constant").DayTick
 
+local platform = require "bee.platform"
+local caudio
+if "android" == platform.os then
+    caudio = require "audio"
+end
 local m = ecs.system 'init_system'
 
 iRmlUi.set_prefix "/pkg/vaststars.resources/ui/"
@@ -159,23 +163,26 @@ function m:init_world()
     if not ui then
         print("LoadBank Faied. :", bankname)
     end
-    local bank_list = audio.get_bank_list()
-    for _, v in ipairs(bank_list) do
-        print(audio.get_bank_name(v))
+    if caudio then
+        local bank_list = caudio.get_bank_list()
+        for _, v in ipairs(bank_list) do
+            print(caudio.get_bank_name(v))
+        end
+    
+        local event_list = caudio.get_event_list(master)
+        for _, v in ipairs(event_list) do
+            print(caudio.get_event_name(v))
+        end
+        local event_list = caudio.get_event_list(construt)
+        for _, v in ipairs(event_list) do
+            print(caudio.get_event_name(v))
+        end
+        local event_list = caudio.get_event_list(ui)
+        for _, v in ipairs(event_list) do
+            print(caudio.get_event_name(v))
+        end
     end
-
-    local event_list = audio.get_event_list(master)
-    for _, v in ipairs(event_list) do
-        print(audio.get_event_name(v))
-    end
-    local event_list = audio.get_event_list(construt)
-    for _, v in ipairs(event_list) do
-        print(audio.get_event_name(v))
-    end
-    local event_list = audio.get_event_list(ui)
-    for _, v in ipairs(event_list) do
-        print(audio.get_event_name(v))
-    end
+    
     -- ia.play("event:/openui1")
     ia.play("event:/background")
 end
