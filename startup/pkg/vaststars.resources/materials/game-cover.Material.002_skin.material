@@ -12,14 +12,8 @@ fx:
 properties:
   s_basecolor:
     stage: 0
-    texture: /pkg/vaststars.resources/glb/game-cover.glb|images/logo2.texture
+    texture: /pkg/vaststars.resources/materials/game-cover.images.logo2.texture
   u_basecolor_factor: {1, 1, 1, 1}
   u_emissive_factor: {0, 0, 0, 0}
   u_pbr_factor: {0, 0.5, 0.5, 1}
-state:
-  ALPHA_REF: 0
-  BLEND: ALPHA
-  CULL: NONE
-  DEPTH_TEST: ALWAYS
-  MSAA: true
-  WRITE_MASK: RGBA
+state: /pkg/ant.resources/materials/states/translucent.state

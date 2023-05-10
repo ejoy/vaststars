@@ -28,7 +28,7 @@ local MINERAL_HEIGHT <const> = 3
 
 local terrain = {}
 
-local SURFACE_HEIGHT <const> = 1
+local SURFACE_HEIGHT <const> = 0
 local TILE_SIZE <const> = 10
 local WIDTH <const> = 256 -- coordinate value range: [0, WIDTH - 1]
 local HEIGHT <const> = 256

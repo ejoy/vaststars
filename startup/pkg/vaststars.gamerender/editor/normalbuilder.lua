@@ -89,6 +89,55 @@ local function __show_self_selected_boxes(self, position, typeobject, dir, valid
     end
 end
 
+local ifluid = require "gameplay.interface.fluid"
+local function get_dir_coord(x, y, dir, dx, dy)
+    local dir_coord = {
+        ['N'] = {x = 0,  y = -1},
+        ['E'] = {x = 1,  y = 0},
+        ['S'] = {x = 0,  y = 1},
+        ['W'] = {x = -1, y = 0},
+    }
+
+    local function axis_value(v)
+        v = math.max(v, 0)
+        v = math.min(v, 255)
+        return v
+    end
+
+    local c = assert(dir_coord[dir])
+    return axis_value(x + c.x * (dx or 1)), axis_value(y + c.y * (dy or 1))
+end
+
+local __get_neighbor_fluid_types; do
+    local function is_neighbor(x1, y1, dir1, x2, y2, dir2)
+        local dx1, dy1 = get_dir_coord(x1, y1, dir1)
+        local dx2, dy2 = get_dir_coord(x2, y2, dir2)
+        return (dx1 == x2 and dy1 == y2) and (dx2 == x1 and dy2 == y1)
+    end
+
+    function __get_neighbor_fluid_types(prototype_name, x, y, dir)
+        local fluid_names = {}
+
+        for _, v in ipairs(ifluid:get_fluidbox(prototype_name, x, y, dir, "")) do
+            local dx, dy = get_dir_coord(v.x, v.y, v.dir)
+            local object = objects:coord(dx, dy)
+            if object then
+                for _, v1 in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
+                    if is_neighbor(v.x, v.y, v.dir, v1.x, v1.y, v1.dir) then
+                        fluid_names[v1.fluid_name] = true
+                    end
+                end
+            end
+        end
+
+        local array = {}
+        for fluid in pairs(fluid_names) do
+            array[#array + 1] = fluid
+        end
+        return array
+    end
+end
+
 local function __new_entity(self, datamodel, typeobject, position, x, y, dir)
     iobject.remove(self.pickup_object)
 
@@ -113,8 +162,6 @@ local function __new_entity(self, datamodel, typeobject, position, x, y, dir)
     end
     datamodel.show_rotate = (typeobject.rotate_on_build == true)
 
-    __show_self_selected_boxes(self, position, typeobject, dir, valid)
-
     -- some assembling machine have default recipe
     local fluid_name = ""
     local fluidflow_id
@@ -124,10 +171,21 @@ local function __new_entity(self, datamodel, typeobject, position, x, y, dir)
             fluid_name = irecipe.get_init_fluids(recipe_typeobject) or "" -- maybe no fluid in recipe
         end
     end
+
+    -- the fluid type of the liquid container should be determined based on the surrounding fluid tanks when placing the fluid tank
     if iprototype.has_type(typeobject.type, "fluidbox") then
-        fluidflow_id = global.fluidflow_id + 1
-        global.fluidflow_id = global.fluidflow_id + 1
+        local fluid_types = __get_neighbor_fluid_types(typeobject.name, x, y, dir)
+        if #fluid_types > 1 then
+            datamodel.show_confirm = false
+            valid = false
+        else
+            fluidflow_id = global.fluidflow_id + 1
+            global.fluidflow_id = global.fluidflow_id + 1
+            fluid_name = fluid_types[1] or ""
+        end
     end
+
+    __show_self_selected_boxes(self, position, typeobject, dir, valid)
 
     self.pickup_object = iobject.new {
         prototype_name = typeobject.name,
@@ -418,6 +476,17 @@ local function touch_move(self, datamodel, delta_vec)
     end
 
     pickup_object.recipe = _get_mineral_recipe(pickup_object.prototype_name, lx, ly, pickup_object.dir) -- TODO: maybe set recipt according to entity type?
+
+    -- the fluid type of the liquid container should be determined based on the surrounding fluid tanks when placing the fluid tank
+    if iprototype.has_type(typeobject.type, "fluidbox") then
+        local fluid_types = __get_neighbor_fluid_types(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir)
+        if #fluid_types > 1 then
+            datamodel.show_confirm = false
+            valid = false
+        else
+            pickup_object.fluid_name = fluid_types[1] or ""
+        end
+    end
 end
 
 local function touch_end(self, datamodel)
