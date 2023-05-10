@@ -5,7 +5,6 @@ local audio     = require "audio"
 local FRAMES_PER_SECOND <const> = 30
 local bgfx = require 'bgfx'
 local iRmlUi = ecs.import.interface "ant.rmlui|irmlui"
-local iui = ecs.import.interface "vaststars.gamerender|iui"
 local terrain = ecs.require "terrain"
 local gameplay_core = require "gameplay.core"
 local world_update = ecs.require "world_update.init"
@@ -91,7 +90,7 @@ local daynight_update; do
         end
     end
 end
-local sound_event = {}
+
 function m:init_world()
     bgfx.maxfps(FRAMES_PER_SECOND)
     ecs.create_instance "/pkg/vaststars.resources/daynight.prefab"

@@ -15,13 +15,13 @@ local function init(prefab)
     icamera_controller.set_camera_from_prefab(prefab)
 end
 
-local function new_game(mode)
+local function new_game(mode, startup)
     if game_cover then
         game_cover:remove()
         game_cover = nil
     end
     icamera_controller.set_camera_from_prefab("camera_default.prefab")
-    saveload:restart(mode)
+    saveload:restart(mode, startup)
     iguide.world = gameplay_core.get_world()
     iui.set_guide_progress(iguide.get_progress())
 end

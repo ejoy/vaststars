@@ -7,7 +7,6 @@ local fs = require "bee.filesystem"
 local json = import_package "ant.json"
 local debugger = require "debugger"
 local CUSTOM_ARCHIVING <const> = require "debugger".custom_archiving
-local startup_lua <const> = require "debugger".startup or "item.startup"
 local is_roadnet_only = ecs.require "editor.endpoint".is_roadnet_only
 local iprototype_cache = require "gameplay.prototype_cache.init"
 
@@ -20,8 +19,6 @@ end
 local archiving_list_path = archival_base_dir .. "archiving.json"
 local camera_setting_path = archival_base_dir .. "camera.json"
 local iprototype = require "gameplay.interface.prototype"
-local startup_lua = import_package("vaststars.prototype")(startup_lua)
-local startup_entities = startup_lua.entities
 local iroadnet_converter = require "roadnet_converter"
 local objects = require "objects"
 local ifluid = require "gameplay.interface.fluid"
@@ -57,6 +54,8 @@ local function clean()
     end
     global.buildings = create_buildings()
     objects:clear()
+    iroadnet:clear("indicator")
+    iroadnet:clear("road")
 end
 
 local function restore_world()
@@ -83,7 +82,6 @@ local function restore_world()
     end
     _debug()
 
-    clean()
     local coord_system = require "global".coord_system
 
     --
@@ -402,6 +400,7 @@ function M:restore(index)
     gameplay_core.restore(archival_dir)
     iprototype_cache.reload()
 
+    clean()
     local map = gameplay_core.get_world():roadnet_get_map()
     local renderData = {}
     for coord, mask in pairs(map) do
@@ -425,7 +424,7 @@ function M:restore(index)
     return true
 end
 
-function M:restart(mode)
+function M:restart(mode, startup_lua)
     gameplay_core.restart()
     iprototype_cache.reload()
 
@@ -440,8 +439,21 @@ function M:restart(mode)
         terrain:enable_terrain(coord[1], coord[2])
     end
 
+    startup_lua = startup_lua or "item.startup"
+    local startup_entities = import_package("vaststars.prototype")(startup_lua).entities
+
     --
-    iroadnet:init({}, true)
+    clean()
+    local map = import_package("vaststars.prototype")(startup_lua).road
+    local renderData = {}
+    for coord, mask in pairs(map) do
+        if not is_roadnet_only(mask) then
+            local shape, dir = iroadnet_converter.mask_to_shape_dir(mask)
+            local x, y = iprototype.unpackcoord(coord)
+            renderData[coord] = {x, y, "normal", shape, dir}
+        end
+    end
+    iroadnet:init(renderData, true)
     global.roadnet = {}
     if next(global.roadnet) then
         gameplay_core.get_world():roadnet_reset(global.roadnet)
@@ -455,7 +467,9 @@ function M:restart(mode)
 
     iui.open({"construct.rml"})
     iui.open({"message_pop.rml"})
-    gameplay_core.get_storage().game_mode = mode
+    if mode then
+        gameplay_core.get_storage().game_mode = mode
+    end
     restore_world()
 end
 

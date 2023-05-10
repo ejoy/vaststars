@@ -14,6 +14,7 @@ funcs["recipe"] = DO_NOTHING
 funcs["consumer"] = DO_NOTHING
 funcs["fluidboxes"] = DO_NOTHING -- usually only assembler has fluidboxes, handle it uniformly in assembling type
 funcs["pipe"] = DO_NOTHING -- pipes are typically represented by fluidboxes and should be handled in the fluidbox type
+funcs["pipe_to_ground"] = DO_NOTHING -- pipes are typically represented by fluidboxes and should be handled in the fluidbox type
 funcs["generator"] = DO_NOTHING
 funcs["inserter"] = DO_NOTHING
 funcs["pole"] = DO_NOTHING
@@ -126,11 +127,14 @@ return function()
     end
     writefile(([[
 local entities = %s
-local road = {}
+local road = %s
 
 return {
     entities = entities,
     road = road,
 }
-    ]]):format(inspect(r)))
+    ]]):format(
+        inspect(r),
+        inspect(gameplay_core.get_world():roadnet_get_map())
+    ))
 end
