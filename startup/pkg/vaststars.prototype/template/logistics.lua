@@ -286,7 +286,7 @@ local function prepare(world)
       end
   end
   assert(slot)
-  world:container_set(e.chest, idx, {amount = 1, limit = 1})
+  world:container_set(e.chest, idx, {amount = 25, limit = 25})
 end
 
 return {

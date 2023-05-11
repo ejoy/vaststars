@@ -6,12 +6,34 @@ prototype "熔炼炉I" {
     icon = "textures/building_pic/small_pic_furnace.texture",
     background = "textures/build_background/pic_furnace.texture",
     construct_detector = {"exclusive"},
-    type = {"building", "assembling", "consumer"},
+    type = {"building", "assembling", "consumer","fluidboxes"},
     area = "3x3",
     speed = "25%",
     power = "75kW",
     priority = "secondary",
     craft_category = {"金属冶炼"},
+    fluidboxes = {
+        input = {
+            {
+                capacity = 500,
+                height = 100,
+                base_level = -100,
+                connections = {
+                    {type="input", position={1,0,"N"}},
+                }
+            },
+        },
+        output = {
+            {
+                capacity = 500,
+                height = 100,
+                base_level = 100,
+                connections = {
+                    {type="output", position={1,2,"S"}},
+                }
+            },
+        },
+    },
     maxslot = "8",
 }
 
@@ -20,12 +42,34 @@ prototype "熔炼炉II" {
     icon = "textures/building_pic/small_pic_furnace.texture",
     background = "textures/build_background/pic_furnace.texture",
     construct_detector = {"exclusive"},
-    type = {"building", "consumer", "assembling"},
+    type = {"building", "consumer", "assembling","fluidboxes"},
     area = "3x3",
     speed = "50%",
     power = "150kW",
     priority = "secondary",
     craft_category = {"金属冶炼"},
+    fluidboxes = {
+        input = {
+            {
+                capacity = 500,
+                height = 100,
+                base_level = -100,
+                connections = {
+                    {type="input", position={1,0,"N"}},
+                }
+            },
+        },
+        output = {
+            {
+                capacity = 500,
+                height = 100,
+                base_level = 100,
+                connections = {
+                    {type="output", position={1,2,"S"}},
+                }
+            },
+        },
+    },
     maxslot = "8",
 }
 
