@@ -10,6 +10,8 @@
 		115F77B029C1A17500F87BBB /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 115F77AF29C1A17500F87BBB /* IOSurface.framework */; };
 		115F77B229C1A1EA00F87BBB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 115F77B129C1A1EA00F87BBB /* CoreGraphics.framework */; };
 		11C5E60F2A09F8AD00793559 /* assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 11C5E60E2A09F8AD00793559 /* assets.xcassets */; };
+		11C5E6112A0CD38900793559 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11C5E6102A0CD38900793559 /* AVFoundation.framework */; };
+		11C5E6132A0CD3C300793559 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11C5E6122A0CD3C300793559 /* AudioToolbox.framework */; };
 		11FAA86A279E7C2500D847F3 /* vaststars_modules.c in Sources */ = {isa = PBXBuildFile; fileRef = 11FAA869279E7C2500D847F3 /* vaststars_modules.c */; };
 		11FAA86D279E7CFB00D847F3 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11FAA86C279E7CFB00D847F3 /* Metal.framework */; };
 		11FAA86F279E7D1200D847F3 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11FAA86E279E7D1200D847F3 /* CoreText.framework */; };
@@ -25,6 +27,8 @@
 		115F77AF29C1A17500F87BBB /* IOSurface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOSurface.framework; path = System/Library/Frameworks/IOSurface.framework; sourceTree = SDKROOT; };
 		115F77B129C1A1EA00F87BBB /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		11C5E60E2A09F8AD00793559 /* assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = assets.xcassets; sourceTree = "<group>"; };
+		11C5E6102A0CD38900793559 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		11C5E6122A0CD3C300793559 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		11FAA849279AA48600D847F3 /* vaststars.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = vaststars.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		11FAA869279E7C2500D847F3 /* vaststars_modules.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = vaststars_modules.c; path = ../../../../clibs/vaststars_modules.c; sourceTree = "<group>"; };
 		11FAA86C279E7CFB00D847F3 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
@@ -43,6 +47,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11C5E6132A0CD3C300793559 /* AudioToolbox.framework in Frameworks */,
+				11C5E6112A0CD38900793559 /* AVFoundation.framework in Frameworks */,
 				115F77B229C1A1EA00F87BBB /* CoreGraphics.framework in Frameworks */,
 				115F77B029C1A17500F87BBB /* IOSurface.framework in Frameworks */,
 				11FAA879279E7D5F00D847F3 /* SystemConfiguration.framework in Frameworks */,
@@ -89,6 +95,8 @@
 		11FAA86B279E7CFB00D847F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				11C5E6122A0CD3C300793559 /* AudioToolbox.framework */,
+				11C5E6102A0CD38900793559 /* AVFoundation.framework */,
 				115F77B129C1A1EA00F87BBB /* CoreGraphics.framework */,
 				115F77AF29C1A17500F87BBB /* IOSurface.framework */,
 				11FAA878279E7D5F00D847F3 /* SystemConfiguration.framework */,
@@ -234,12 +242,19 @@
 					../../../3rd/ant/clibs/lua,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
-				"LIBRARY_SEARCH_PATHS[arch=*]" = ../../../bin/ios/debug;
+				"LIBRARY_SEARCH_PATHS[arch=*]" = (
+					../../../bin/ios/debug,
+					../../../3rd/ant/3rd/fmod/ios/core/lib/,
+					../../../3rd/ant/3rd/fmod/ios/studio/lib/,
+				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
+					"-lfmodL_iphoneos",
+					"-lfmodstudioL_iphoneos",
 					"-lvaststars",
+					"-lbgfx-lib",
 					"-lstdc++",
 				);
 				SDKROOT = iphoneos;
@@ -296,11 +311,18 @@
 					../../../3rd/ant/clibs/lua,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
-				"LIBRARY_SEARCH_PATHS[arch=*]" = ../../../bin/ios/release;
+				"LIBRARY_SEARCH_PATHS[arch=*]" = (
+					../../../bin/ios/release,
+					../../../3rd/ant/3rd/fmod/ios/core/lib/,
+					../../../3rd/ant/3rd/fmod/ios/studio/lib/,
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_LDFLAGS = (
+					"-lfmodL_iphoneos",
+					"-lfmodstudioL_iphoneos",
 					"-lvaststars",
+					"-lbgfx-lib",
 					"-lstdc++",
 				);
 				SDKROOT = iphoneos;
@@ -335,6 +357,8 @@
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = (
+					"-lfmodL_iphoneos",
+					"-lfmodstudioL_iphoneos",
 					"-lvaststars",
 					"-lbgfx-lib",
 					"-lstdc++",
@@ -373,6 +397,8 @@
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = (
+					"-lfmodL_iphoneos",
+					"-lfmodstudioL_iphoneos",
 					"-lvaststars",
 					"-lbgfx-lib",
 					"-lstdc++",
