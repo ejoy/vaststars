@@ -35,6 +35,7 @@ end
 if lm.os == "android" then
     lm:dll "vaststars" {
         basename = "libvaststars",
+        crt = "static",
         deps = {
             "ant_runtime",
             "ant_links",
@@ -45,7 +46,7 @@ if lm.os == "android" then
             LuaInclude,
             Antdir .. "runtime/common",
         },
-        sources = "vaststars_modules.c"
+        sources = "vaststars_modules.c",
     }
     return
 end
