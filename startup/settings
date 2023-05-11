@@ -35,7 +35,6 @@ graphic:
     clear_depth: 1
     clear_stencil: 0
   shadow:
-    bias: 0.003
     color: {0, 0, 0, 1}
     depth_multiplier: 100
     enable: true
