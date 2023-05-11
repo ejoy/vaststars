@@ -62,11 +62,13 @@ local function to_mesh_buffer(vb, ib_handle, aabb)
             start = 0,
             num = numv,
             handle = bgfx.create_vertex_buffer(bgfx.memory_buffer(vbbin), layout.handle),
+            owned = true
         },
         ib = {
             start = 0,
             num = numi,
             handle = ib_handle,
+            owned = true
         }
     }
 end
@@ -163,6 +165,7 @@ local function create_translucent_plane_entity(grids_table, color, alpha)
                         t = math3d.vector(-offset * unit, 0, -offset * unit)
                     },
                     simplemesh  = plane_mesh,
+                    owned_mesh_buffer = true,
                     material    = translucent_plane_material,
                     on_ready = function (e)
                         imaterial.set_property(e, "u_colorTable", math3d.vector(color[1], color[2], color[3], alpha.min))
@@ -192,6 +195,7 @@ local function create_translucent_plane_entity(grids_table, color, alpha)
                         t = math3d.vector(-offset * unit, 0, -offset * unit)
                     },
                     simplemesh  = plane_mesh,
+                    owned_mesh_buffer = true,
                     material    = translucent_plane_material,
                     on_ready = function (e)
                         imaterial.set_property(e, "u_colorTable", math3d.vector(color))
