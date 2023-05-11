@@ -36,12 +36,14 @@ if lm.os == "android" then
     lm:dll "vaststars" {
         basename = "libvaststars",
         crt = "static",
+        bindir = "runtime/android/app/src/main/jniLibs/arm64-v8a",
         deps = {
             "ant_runtime",
             "ant_links",
             "bgfx-lib",
             modules
         },
+        ldflags = "-Wl,--no-undefined",
         includes = {
             LuaInclude,
             Antdir .. "runtime/common",
