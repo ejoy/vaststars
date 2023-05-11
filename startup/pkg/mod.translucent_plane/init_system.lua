@@ -24,6 +24,19 @@ local RENDER_LAYER = "translucent"
 local call_to_tp = {}
 local tp_to_call = {}
 local cur_call_id = 0
+
+local function check_destroy(ro)
+    if ro and ro.vb_handle ~= 0xffffffff then
+        bgfx.destroy(ro.vb_handle)
+    end
+    if ro and ro.vb2_handle ~= 0xffffffff then
+        bgfx.destroy(ro.vb2_handle)
+    end
+    if ro and ro.ib_handle ~= 0xffffffff then
+        bgfx.destroy(ro.ib_handle)
+    end
+end
+
 --build ib
 local function build_ib(max_plane)
     do
@@ -266,6 +279,8 @@ end
 local function remove_all_tp()
     for idx = 1, #tp_table do
         if tp_table[idx].eid then
+            local e <close> = w:entity(tp_table[idx].eid, "render_object:update")
+            check_destroy(e.render_object)
             w:remove(tp_table[idx].eid)
         end
     end

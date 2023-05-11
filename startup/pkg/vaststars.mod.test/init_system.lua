@@ -102,6 +102,7 @@ local kb_mb = world:sub{"keyboard"}
 local create_list = {}
 local update_list = {}
 local delete_list = {}
+local tf_table = {}
 function S:data_changed()
     for _, key, press in kb_mb:unpack() do
         if key == "J" and press == 0 then
@@ -170,7 +171,9 @@ function S:data_changed()
                 [1] = {min = 0.2, max = 0.8, freq = 1.0},
                 [3] = {min = 0.3, max = 0.7, freq = 2.0},
             } 
-            itp.create_translucent_plane(rect_table, color_table, "translucent", alpha_table)
+            tf_table = itp.create_translucent_plane(rect_table, color_table, "translucent", alpha_table)
+        elseif key == "M" and press == 0 then
+            itp.remove_translucent_plane(tf_table)
         end
     end
 end
