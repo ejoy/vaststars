@@ -107,7 +107,7 @@ local function create_io_shelves(gameplay_world, e, building_mat)
     for idx = 1, ingredients_n do
         local id = string.unpack("<I2I2", typeobject_recipe.ingredients, 4*idx+1)
         local typeobject_item = iprototype.queryById(id)
-        local gap3 = typeobject_item.gap3 and {typeobject_item.gap3:match("([%d%.]+):?([%d%.]*):?([%d%.]*)")} or {0, 0, 0}
+        local gap3 = typeobject_item.gap3 and {typeobject_item.gap3:match("([%d%.]+)x([%d%.]*)x([%d%.]*)")} or {0, 0, 0}
         local mat = math3d.mul(math3d.mul(building_mat, shelf_offsets[#heaps+1]), heap_offsets[#heaps+1])
         local s, r, t = math3d.srt(mat)
         local prefab = "/pkg/vaststars.resources/" .. typeobject_item.pile_model
@@ -118,7 +118,7 @@ local function create_io_shelves(gameplay_world, e, building_mat)
     for idx = 1, results_n do
         local id = string.unpack("<I2I2", typeobject_recipe.results, 4*idx+1)
         local typeobject_item = iprototype.queryById(id)
-        local gap3 = typeobject_item.gap3 and {typeobject_item.gap3:match("([%d%.]+):?([%d%.]*):?([%d%.]*)")} or {0, 0, 0}
+        local gap3 = typeobject_item.gap3 and {typeobject_item.gap3:match("([%d%.]+)x([%d%.]*)x([%d%.]*)")} or {0, 0, 0}
         local mat = math3d.mul(math3d.mul(building_mat, shelf_offsets[#heaps+1]), heap_offsets[#heaps+1])
         local s, r, t = math3d.srt(mat)
         local prefab = "/pkg/vaststars.resources/" .. typeobject_item.pile_model

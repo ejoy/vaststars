@@ -50,7 +50,7 @@ local function create_shelf(building, item, count, building_srt)
     local typeobject_item = iprototype.queryById(item)
     local meshbin = assert(prefab_meshbin("/pkg/vaststars.resources/" .. typeobject_item.pile_model))
     local dim3 = {typeobject_item.pile:match("(%d+)x(%d+)x(%d+)")}
-    local gap3 = typeobject_item.gap3 and {typeobject_item.gap3:match("([%d%.]+):?([%d%.]*):?([%d%.]*)")} or {0, 0, 0}
+    local gap3 = typeobject_item.gap3 and {typeobject_item.gap3:match("([%d%.]+)x([%d%.]*)x([%d%.]*)")} or {0, 0, 0}
     local srt = math3d.mul(math3d.matrix({s = building_srt.s, r = building_srt.r, t = building_srt.t}), offset)
     local s, r, t = math3d.srt(srt)
     srt = {s = s, r = r, t = t}
