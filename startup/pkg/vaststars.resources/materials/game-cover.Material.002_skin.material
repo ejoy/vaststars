@@ -1,9 +1,7 @@
 fx:
   fs: /pkg/ant.resources/shaders/pbr/fs_pbr.sc
   setting:
-    ALPHAMODE_MASK: 1
-    GPU_SKINNING: 1
-    MATERIAL_UNLIT: 1
+    UNLIT_INVERSE_TONEMAP: 1
     lighting: off
     shadow_cast: on
     shadow_receive: on
