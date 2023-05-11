@@ -79,13 +79,6 @@ return function(start)
         start.buttons[#start.buttons + 1] = v
     end
 
-    if start.place_item then
-        local v = setmetatable({}, {__index = DEFAULT})
-        v.text = "放置物品"
-        v.message = "place_item"
-        v.background_image = "textures/cmdcenter/item-out.texture"
-        start.buttons[#start.buttons + 1] = v
-    end
 
     if start.drone_depot_icon and start.drone_depot_icon ~= "" then
         local v = setmetatable({}, {__index = DEFAULT})
@@ -130,6 +123,14 @@ return function(start)
         start.buttons[#start.buttons + 1] = v
     end
 
+    if start.place_item then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.text = "放置物品"
+        v.message = "place_item"
+        v.background_image = "textures/cmdcenter/item-out.texture"
+        start.buttons[#start.buttons + 1] = v
+    end
+    
     console.log("#start.buttons", #start.buttons)
     if #start.buttons > 0 then
         local pos = assert(positions[#start.buttons], #start.buttons)
