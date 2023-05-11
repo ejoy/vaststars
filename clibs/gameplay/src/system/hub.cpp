@@ -223,9 +223,12 @@ lbuild(lua_State *L) {
             case hub_mgr::berth_type::chest_blue:
                 hub_info.chest_blue.emplace_back(h);
                 break;
+            default:
+                assert(false);
+                break;
             }
         }
-        hub_info.self = create_berth({building, area}, hub_mgr::berth_type::hub, 0);
+        hub_info.self = create_berth({building, area}, hub_mgr::berth_type::home, 0);
         hub_info.item = hub_info.idle()? 0 : chestslot.item;
         if (hub.id == 0) {
             hub.id = create_hubid();

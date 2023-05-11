@@ -11,6 +11,7 @@ struct hub_mgr {
         hub,
         chest_red,
         chest_blue,
+        home,
     };
     struct berth {
         uint32_t unused : 5;
