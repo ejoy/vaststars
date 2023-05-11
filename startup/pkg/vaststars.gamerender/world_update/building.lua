@@ -72,5 +72,4 @@ return function(gameplay_world)
 
         ::continue::
     end
-    gameplay_world.ecs:clear "building_changed"
 end

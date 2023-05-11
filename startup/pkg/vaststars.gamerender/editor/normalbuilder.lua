@@ -164,7 +164,6 @@ local function __new_entity(self, datamodel, typeobject, position, x, y, dir)
 
     -- some assembling machine have default recipe
     local fluid_name = ""
-    local fluidflow_id
     if typeobject.recipe then
         local recipe_typeobject = iprototype.queryByName(typeobject.recipe)
         if recipe_typeobject then
@@ -179,8 +178,6 @@ local function __new_entity(self, datamodel, typeobject, position, x, y, dir)
             datamodel.show_confirm = false
             valid = false
         else
-            fluidflow_id = global.fluidflow_id + 1
-            global.fluidflow_id = global.fluidflow_id + 1
             fluid_name = fluid_types[1] or ""
         end
     end
@@ -196,7 +193,6 @@ local function __new_entity(self, datamodel, typeobject, position, x, y, dir)
             t = position,
         },
         fluid_name = fluid_name,
-        fluidflow_id = fluidflow_id,
     }
 
     if self.sprite then

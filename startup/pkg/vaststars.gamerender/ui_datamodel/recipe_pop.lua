@@ -39,26 +39,6 @@ local function _update_neighbor_fluidbox(object)
         return (dx1 == x2 and dy1 == y2) and (dx2 == x1 and dy2 == y1)
     end
 
-    local function _has_connection(object)
-        for _, fb in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir)) do
-            local succ, dx, dy = terrain:move_coord(fb.x, fb.y, fb.dir, 1)
-            if not succ then
-                goto continue
-            end
-
-            local o = objects:coord(dx, dy, EDITOR_CACHE_NAMES)
-            if not o then
-                goto continue
-            end
-
-            local typeobject = iprototype.queryByName(o.prototype_name)
-            if iprototype.has_type(typeobject.type, "assembling") then
-                return true
-            end
-            ::continue::
-        end
-    end
-
     for _, fb in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
         local succ, neighbor_x, neighbor_y = terrain:move_coord(fb.x, fb.y, fb.dir, 1)
         if not succ then
@@ -75,15 +55,7 @@ local function _update_neighbor_fluidbox(object)
         local prototype_name = iflow_connector.covers(neighbor.prototype_name, neighbor.dir)
         for _, neighbor_fb in ipairs(ifluid:get_fluidbox(prototype_name, neighbor_x, neighbor_y, neighbor.dir, neighbor.fluid_name)) do
             if is_connection(fb.x, fb.y, fb.dir, neighbor_fb.x, neighbor_fb.y, neighbor_fb.dir) then
-                if neighbor_fb.fluid_name == "" then
-                    for _, sibling in objects:selectall("fluidflow_id", neighbor.fluidflow_id, {"CONSTRUCTED"}) do
-                        sibling.fluid_name = fb.fluid_name
-                        sibling.fluidflow_id = neighbor.fluidflow_id
-
-                        ifluid:update_fluidbox(gameplay_core.get_entity(sibling.gameplay_eid), sibling.fluid_name)
-                        igameplay.update_chimney_recipe(sibling)
-                    end
-                else
+                if neighbor_fb.fluid_name ~= "" then
                     local prototype_name, dir
                     if neighbor.fluid_name ~= fb.fluid_name then
                         prototype_name, dir = ieditor:refresh_pipe(neighbor.prototype_name, neighbor.dir, neighbor_fb.dir, false)

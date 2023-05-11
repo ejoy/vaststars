@@ -85,7 +85,7 @@ local function restore_world()
     local coord_system = require "global".coord_system
 
     --
-    local function restore_object(gameplay_eid, prototype_name, dir, x, y, fluid_name, fluidflow_id)
+    local function restore_object(gameplay_eid, prototype_name, dir, x, y, fluid_name)
         local typeobject = iprototype.queryByName(prototype_name)
         local object = iobject.new {
             prototype_name = prototype_name,
@@ -96,7 +96,6 @@ local function restore_world()
                 t = coord_system:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)),
             },
             fluid_name = fluid_name,
-            fluidflow_id = fluidflow_id,
         }
         object.gameplay_eid = gameplay_eid
         objects:set(object)
@@ -149,7 +148,6 @@ local function restore_world()
             x = e.x,
             y = e.y,
             fluid_name = fluid_name,
-            -- fluidflow_id, -- fluidflow_id is not null only when the object is a fluidbox
         }
 
         local w, h = iprototype.rotate_area(typeobject.area, iprototype.dir_tostring(e.direction))
@@ -164,100 +162,9 @@ local function restore_world()
         world:pub {"gameplay", "create_entity", v.eid, typeobject}
     end
 
-    local function find_pipe_to_ground(c, map)
-        local succ, x, y
-        for i = 1, c.ground do
-            succ, x, y = terrain:move_coord(c.x, c.y, c.dir, i)
-            if not succ then
-                goto continue
-            end
-
-            local object_id = map[iprototype.packcoord(x, y)]
-            if not object_id then
-                goto continue
-            end
-
-            local object = assert(all_object[object_id])
-            for _, v in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir)) do
-                if v.ground and v.dir == iprototype.reverse_dir(c.dir) then
-                    return x, y
-                end
-            end
-
-            ::continue::
-        end
-    end
-
-    local function match_fluidbox(object, dx, dy)
-        local succ, x, y
-        for _, v in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir)) do
-            if not v.ground then
-                succ, x, y = terrain:move_coord(v.x, v.y, v.dir, 1)
-                if succ and x == dx and y == dy then
-                    return true
-                end
-            end
-        end
-    end
-
-    local function fluidbox_dfs(all_object, map, object, input_dir)
-        for _, v in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir)) do
-            if v.dir == input_dir then
-                goto continue
-            end
-
-            local succ, x, y
-            if not v.ground then
-                succ, x, y = terrain:move_coord(v.x, v.y, v.dir, 1)
-                if not succ then
-                    goto continue -- out of bound
-                end
-            else
-                x, y = find_pipe_to_ground(v, map)
-            end
-
-            if not x or not y then
-                goto continue
-            end
-
-            local neighbor_id = map[iprototype.packcoord(x, y)]
-            if not neighbor_id then
-                goto continue
-            end
-
-            local neighbor = assert(all_object[neighbor_id])
-            if not iprototype.has_type(iprototype.queryByName(neighbor.prototype_name).type, "fluidbox") then
-                goto continue
-            end
-
-            -- check if the neighbor is close to the fluidbox(v)
-            if not v.ground and not match_fluidbox(neighbor, v.x, v.y) then
-                goto continue
-            end
-
-            assert(neighbor.fluid_name == object.fluid_name)
-            if neighbor.fluidflow_id then
-                goto continue
-            end
-
-            neighbor.fluidflow_id = object.fluidflow_id
-            fluidbox_dfs(all_object, map, neighbor, iprototype.reverse_dir(v.dir))
-            ::continue::
-        end
-    end
-
-    for _, id in pairs(fluidbox_map) do
-        local object = all_object[id]
-        if not object.fluidflow_id then
-            global.fluidflow_id = global.fluidflow_id + 1
-            object.fluidflow_id = global.fluidflow_id
-            fluidbox_dfs(all_object, fluidbox_map, object)
-        end
-    end
-
     -----------
     for id, v in pairs(all_object) do
-        restore_object(id, v.prototype_name, v.dir, v.x, v.y, v.fluid_name, v.fluidflow_id)
+        restore_object(id, v.prototype_name, v.dir, v.x, v.y, v.fluid_name)
     end
 
     iobject.flush()
@@ -463,6 +370,10 @@ function M:restart(mode, startup_lua)
     --
     for _, e in ipairs(startup_entities) do
         igameplay.create_entity(e)
+    end
+    local prepare = import_package("vaststars.prototype")(startup_lua).prepare
+    if prepare then
+        prepare(gameplay_core.get_world())
     end
     gameplay_core.build()
     iroadnet:editor_build()

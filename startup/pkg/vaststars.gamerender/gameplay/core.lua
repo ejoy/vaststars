@@ -133,7 +133,7 @@ function m.create_entity(init)
     end
 
     local eid = create(world, init.prototype_name, template)
-    print("gameplay create_entity", init.prototype_name, template.dir, template.x, template.y, template.fluid or "[fluid]", template.recipe or "[recipe]", template.fluidflow_id or "[fluidflow_id]", eid)
+    print("gameplay create_entity", init.prototype_name, template.dir, template.x, template.y, template.fluid or "[fluid]", template.recipe or "[recipe]", eid)
     return eid
 end
 

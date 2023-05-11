@@ -118,6 +118,7 @@ function m:init_world()
         {
             "translucent",
             {"SELECTED_BOXES"},
+            {"ROAD_ENTRANCE_ARROW"},
         },
     })
 
@@ -200,6 +201,7 @@ function m:update_world()
         gameplay_core.update()
         world_update(gameplay_world)
         gameplay_update(gameplay_world)
+        gameplay_world.ecs:clear "building_changed"
 
         local mc, x, y, z
         for lorry_id, rc, tick in gameplay_world:roadnet_each_lorry() do

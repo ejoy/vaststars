@@ -120,7 +120,10 @@ local function __new_entity(self, datamodel, typeobject)
                 self.road_entrance:set_state("valid")
             end
             if not self.selected_boxes then
-                self.selected_boxes = create_selected_boxes({"/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab"}, selected_boxes_position, COLOR_GREEN, w+1, h+1)
+                self.selected_boxes = create_selected_boxes({
+                    "/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab",
+                    "/pkg/vaststars.resources/prefabs/selected-box-no-animation-line.prefab"
+                }, selected_boxes_position, COLOR_GREEN, w+1, h+1)
             end
         else
             if not self.road_entrance then
@@ -129,7 +132,10 @@ local function __new_entity(self, datamodel, typeobject)
                 self.road_entrance:set_state("invalid")
             end
             if not self.selected_boxes then
-                self.selected_boxes = create_selected_boxes({"/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab"}, selected_boxes_position, COLOR_RED, w+1, h+1)
+                self.selected_boxes = create_selected_boxes({
+                    "/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab",
+                    "/pkg/vaststars.resources/prefabs/selected-box-no-animation-line.prefab"
+                }, selected_boxes_position, COLOR_RED, w+1, h+1)
             end
         end
     end

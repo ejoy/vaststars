@@ -5,7 +5,7 @@ compress:
 maxsize: 512x512
 mipmap: 0
 colorspace: linear
-path: /pkg/mod.terrain/assets/shapes/mark_alpha.dds
+path: /pkg/mod.road/assets/shapes/mark_alpha.dds
 sampler:
   MAG: POINT
   MIN: POINT

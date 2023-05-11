@@ -42,27 +42,6 @@ local function _get_object(self, x, y, cache_names)
     return objects:coord(x, y, cache_names)
 end
 
--- fluidflow_id may be nil, only used for fluidbox
-local function _update_fluid_name(State, fluid_name, fluidflow_id)
-    if State.fluid_name ~= "" then
-        if fluid_name ~= "" then
-            if State.fluid_name ~= fluid_name then
-                State.succ = false
-            end
-        end
-        if fluidflow_id then
-            State.fluidflow_ids[fluidflow_id] = true
-        end
-    else
-        if fluid_name ~= "" then
-            State.fluid_name = fluid_name
-        end
-        if fluidflow_id then
-            State.fluidflow_ids[fluidflow_id] = true
-        end
-    end
-end
-
 -- automatically connects to its neighbors which has fluidbox, except for pipe or pipe to ground
 local function _connect_to_neighbor(x, y, State, prototype_name, dir)
     local succ, neighbor_x, neighbor_y, dx, dy
@@ -85,7 +64,6 @@ local function _connect_to_neighbor(x, y, State, prototype_name, dir)
             succ, dx, dy = terrain:move_coord(fb.x, fb.y, fb.dir, 1)
             if succ and dx == x and dy == y then
                 prototype_name, dir = iflow_connector.set_connection(prototype_name, dir, neighbor_dir, true)
-                _update_fluid_name(State, fb.fluid_name, object.fluidflow_id) -- TODO: different fluid just don't connect automatically, but it doesn't cause fatal error
                 goto continue -- only one fluidbox can be connected to the endpoint
             end
         end
@@ -109,8 +87,6 @@ end
 
 local function _set_endpoint_connection(prototype_name, State, object, connection, dir)
     if iprototype.is_pipe(object.prototype_name) or iprototype.is_pipe_to_ground(object.prototype_name) then
-        _update_fluid_name(State, object.fluid_name, object.fluidflow_id)
-
         local typeobject = iprototype.queryByName(object.prototype_name)
         local _prototype_name, _dir
         -- normal pipe can replace other pipe, including pipe to ground
@@ -125,8 +101,6 @@ local function _set_endpoint_connection(prototype_name, State, object, connectio
     else
         if not connection then
             State.succ = false
-        else
-            _update_fluid_name(State, connection.fluid_name, object.fluidflow_id)
         end
         return object.prototype_name, object.dir
     end
@@ -184,7 +158,6 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                     State.succ = false
                     map[coord] = {object.prototype_name, object.dir}
                 else
-                    _update_fluid_name(State, object.fluid_name, object.fluidflow_id)
                     local endpoint_prototype_name, endpoint_dir = object.prototype_name, object.dir
                     endpoint_prototype_name, endpoint_dir = iflow_connector.set_connection(endpoint_prototype_name, endpoint_dir, dir, true)
                     endpoint_prototype_name, endpoint_dir = iflow_connector.set_connection(endpoint_prototype_name, endpoint_dir, reverse_dir, true)
@@ -202,12 +175,6 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
             break
         end
         x, y = x + dir_delta.x, y + dir_delta.y
-    end
-
-    local new_fluidflow_id = 0
-    if State.succ then
-        global.fluidflow_id = global.fluidflow_id + 1
-        new_fluidflow_id = global.fluidflow_id
     end
 
     -- TODO: map may be include some non-pipe objects, such as some building which have fluidboxes, only for changing the state of the building
@@ -230,21 +197,8 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                     t = terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)),
                 },
                 fluid_name = State.fluid_name,
-                fluidflow_id = new_fluidflow_id,
             }
             objects:set(object, EDITOR_CACHE_NAMES[1])
-        end
-    end
-
-    if State.succ then
-        for fluidflow_id in pairs(State.fluidflow_ids) do
-            for _, object in objects:selectall("fluidflow_id", fluidflow_id, EDITOR_CACHE_NAMES) do
-                local _object = assert(objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone))
-                if iprototype.has_type(iprototype.queryByName(_object.prototype_name).type, "fluidbox") then
-                    _object.fluid_name = State.fluid_name
-                    _object.fluidflow_id = new_fluidflow_id
-                end
-            end
         end
     end
 
@@ -302,7 +256,6 @@ local function _teardown_end(self, datamodel, State, dir, dir_delta)
                     State.succ = false
                     map[coord] = {object.prototype_name, object.dir}
                 else
-                    _update_fluid_name(State, object.fluid_name, object.fluidflow_id)
                     local endpoint_prototype_name, endpoint_dir = object.prototype_name, object.dir
                     endpoint_prototype_name, endpoint_dir = iflow_connector.set_connection(endpoint_prototype_name, endpoint_dir, dir, true)
                     endpoint_prototype_name, endpoint_dir = iflow_connector.set_connection(endpoint_prototype_name, endpoint_dir, reverse_dir, true)
@@ -317,12 +270,6 @@ local function _teardown_end(self, datamodel, State, dir, dir_delta)
             break
         end
         x, y = x + dir_delta.x, y + dir_delta.y
-    end
-
-    local new_fluidflow_id = 0
-    if State.succ then
-        global.fluidflow_id = global.fluidflow_id + 1
-        new_fluidflow_id = global.fluidflow_id
     end
 
     -- TODO: map may be include some non-pipe objects, such as some building which have fluidboxes, only for changing the state of the building
@@ -345,7 +292,6 @@ local function _teardown_end(self, datamodel, State, dir, dir_delta)
                     t = terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)),
                 },
                 fluid_name = State.fluid_name,
-                fluidflow_id = new_fluidflow_id,
             }
             objects:set(object, EDITOR_CACHE_NAMES[1])
         end
@@ -420,11 +366,8 @@ local function _builder_start(self, datamodel)
     local State = {
         succ = true,
         fluid_name = "",
-        fluidflow_ids = {},
         starting_connection = nil,
-        starting_fluidflow_id = nil,
         ending_connection = nil,
-        ending_fluidflow_id = nil,
         from_x = from_x,
         from_y = from_y,
         to_x = to_x,
@@ -434,7 +377,7 @@ local function _builder_start(self, datamodel)
     if starting then
         -- starting object should at least have one connection, promised by _builder_init()
         local connection = _find_starting_connection(prototype_name, starting, to_x, to_y, dir)
-        State.starting_connection, State.starting_fluidflow_id = connection, starting.fluidflow_id
+        State.starting_connection = connection
         if connection.dir ~= dir then
             State.succ = false
         end
@@ -453,7 +396,7 @@ local function _builder_start(self, datamodel)
         if ending then
             if starting.id == ending.id then
                 State.succ = false
-                State.ending_connection, State.ending_fluidflow_id = connection, ending.fluidflow_id
+                State.ending_connection = connection
             else
                 for _, another in ipairs(_get_covers_connections(prototype_name, ending)) do
                     if another.dir ~= iprototype.reverse_dir(dir) then
@@ -467,7 +410,7 @@ local function _builder_start(self, datamodel)
                         goto continue
                     end
                     if to_x == another.x and to_y == another.y then
-                        State.ending_connection, State.ending_fluidflow_id = another, ending.fluidflow_id
+                        State.ending_connection = another
                         _builder_end(self, datamodel, State, dir, delta)
                         return
                     end
@@ -514,7 +457,7 @@ local function _builder_start(self, datamodel)
                     goto continue
                 end
                 if to_x == fluidbox.x and to_y == fluidbox.y then
-                    State.ending_connection, State.ending_fluidflow_id = fluidbox, ending.fluidflow_id
+                    State.ending_connection = fluidbox
                     _builder_end(self, datamodel, State, dir, delta)
                     return
                 end
@@ -552,11 +495,8 @@ local function _teardown_start(self, datamodel)
     local State = {
         succ = true,
         fluid_name = "",
-        fluidflow_ids = {},
         starting_connection = nil,
-        starting_fluidflow_id = nil,
         ending_connection = nil,
-        ending_fluidflow_id = nil,
         from_x = from_x,
         from_y = from_y,
         to_x = to_x,
@@ -566,7 +506,7 @@ local function _teardown_start(self, datamodel)
     if starting then
         -- starting object should at least have one connection, promised by _builder_init()
         local connection = _find_starting_connection(prototype_name, starting, to_x, to_y, dir)
-        State.starting_connection, State.starting_fluidflow_id = connection, starting.fluidflow_id
+        State.starting_connection = connection
         if connection.dir ~= dir then
             State.succ = false
         end
@@ -585,7 +525,7 @@ local function _teardown_start(self, datamodel)
         if ending then
             if starting.id == ending.id then
                 State.succ = false
-                State.ending_connection, State.ending_fluidflow_id = connection, ending.fluidflow_id
+                State.ending_connection = connection
             else
                 for _, another in ipairs(_get_covers_connections(prototype_name, ending)) do
                     if another.dir ~= iprototype.reverse_dir(dir) then
@@ -599,7 +539,7 @@ local function _teardown_start(self, datamodel)
                         goto continue
                     end
                     if to_x == another.x and to_y == another.y then
-                        State.ending_connection, State.ending_fluidflow_id = another, ending.fluidflow_id
+                        State.ending_connection = another
                         _teardown_end(self, datamodel, State, dir, delta)
                         return
                     end
@@ -757,9 +697,6 @@ local function place_one(self, datamodel)
     local object = _get_object(self, x, y, EDITOR_CACHE_NAMES)
     assert(not object)
 
-    local new_fluidflow_id = 0
-    global.fluidflow_id = global.fluidflow_id + 1
-    new_fluidflow_id = global.fluidflow_id
     local typeobject = iprototype.queryByName("管道1-O型")
 
     object = iobject.new {
@@ -771,7 +708,6 @@ local function place_one(self, datamodel)
             t = terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, "N")),
         },
         fluid_name = 0,
-        fluidflow_id = new_fluidflow_id,
     }
     objects:set(object, EDITOR_CACHE_NAMES[2])
 

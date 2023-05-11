@@ -1,61 +1,84 @@
 local ecs = ...
 local world = ecs.world
+local w = world.w
 
 local math3d = require "math3d"
-local iplant = ecs.require "engine.plane"
-local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local coord_system = require "global".coord_system
+local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
+local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+local irl = ecs.import.interface "ant.render|irender_layer"
 
 local ARROW_VALID <const> = math3d.constant("v4", {0.0, 1.0, 0.0, 1})
 local ARROW_INVALID <const> = math3d.constant("v4", {1.0, 0.0, 0.0, 1})
-
-local BLOCK_VALID <const> = math3d.constant("v4", {0.0, 2.5, 0.0, 0.5})
-local BLOCK_INVALID <const> = math3d.constant("v4", {2.5, 0.0, 0.0, 0.5})
-
-local BLOCK_SCALE = math3d.constant("v4", {coord_system.tile_unit_width * 1, 1, coord_system.tile_unit_height * 1, 0.0})
-
 local mt = {}
 mt.__index = mt
 
 function mt:remove()
     self.arrow:remove()
-    self.block:remove()
 end
 
 function mt:set_srt(s, r, t)
     self.arrow:send("obj_motion", "set_srt", s, r, t)
-    self.block:send("obj_motion", "set_srt", BLOCK_SCALE, r, t)
 end
 
 function mt:set_state(state)
-    local arrow_color, block_color
+    local arrow_color
     if state == "valid" then
-        arrow_color, block_color = ARROW_VALID, BLOCK_VALID
+        arrow_color = ARROW_VALID
     else
-        arrow_color, block_color = ARROW_INVALID, BLOCK_INVALID
+        arrow_color = ARROW_INVALID
     end
-    self.arrow:update("prefabs/road/roadside_arrow.prefab", "translucent", arrow_color)
-    self.block:send("material", "set_property", "u_basecolor_factor", block_color)
+    self.arrow:send("material", "set_property", "u_basecolor_factor", arrow_color)
+end
+
+local prefab_parse = require("engine.prefab_parser").parse
+local replace_material = require("engine.prefab_parser").replace_material
+local imaterial = ecs.import.interface "ant.asset|imaterial"
+
+local function createPrefabInst(prefab, position)
+    local template = prefab_parse(prefab)
+    template = replace_material(template, "/pkg/vaststars.resources/materials/translucent.material")
+
+    local p = ecs.create_instance(template)
+    function p:on_ready()
+        local root <close> = w:entity(self.tag['*'][1])
+        iom.set_position(root, math3d.vector(position))
+        for _, eid in ipairs(self.tag['*']) do
+            local e <close> = w:entity(eid, "render_object?in")
+            if e.render_object then
+                irl.set_layer(e, RENDER_LAYER.ROAD_ENTRANCE_ARROW)
+            end
+        end
+    end
+    function p:on_message(msg, method, ...)
+        if msg == "obj_motion" then
+            local root <close> = w:entity(self.tag['*'][1])
+            iom[method](root, ...)
+        end
+        if msg == "material" then
+            for _, eid in ipairs(self.tag["*"]) do
+                local e <close> = w:entity(eid, "material?in")
+                if e.material then
+                    imaterial[method](e, ...)
+                end
+            end
+        end
+    end
+    return world:create_object(p)
 end
 
 return function(srt, state)
-    local arrow_color, block_color
+    local arrow_color
     if state == "valid" then
-        arrow_color, block_color = ARROW_VALID, BLOCK_VALID
+        arrow_color = ARROW_VALID
     else
-        arrow_color, block_color = ARROW_INVALID, BLOCK_INVALID
+        arrow_color = ARROW_INVALID
     end
 
     local M = {}
-    M.arrow = assert(igame_object.create({
-        state = "translucent",
-        color = arrow_color,
-        prefab = "prefabs/road/roadside_arrow.prefab",
-        group_id = 0,
-        srt = srt,
-    }))
 
-    local block_srt = {s = BLOCK_SCALE, r = srt.r, t = srt.t}
-    M.block = iplant.create("/pkg/vaststars.resources/materials/translucent.material", "u_basecolor_factor", block_color, block_srt, "translucent")
+    M.arrow = createPrefabInst("/pkg/vaststars.resources/prefabs/road/roadside_arrow.prefab", srt.t)
+    M.arrow:send("material", "set_property", "u_basecolor_factor", arrow_color)
+
     return setmetatable(M, mt)
 end

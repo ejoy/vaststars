@@ -57,27 +57,6 @@ local function _check_dotted_line(from_x, from_y, to_x, to_y, dir, dir_delta) --
     end
 end
 
--- fluidflow_id may be nil, only used for fluidbox
-local function _update_fluid_name(State, fluid_name, fluidflow_id)
-    if State.fluid_name ~= "" then
-        if fluid_name ~= "" then
-            if State.fluid_name ~= fluid_name then
-                State.succ = false
-            end
-        end
-        if fluidflow_id then
-            State.fluidflow_ids[fluidflow_id] = true
-        end
-    else
-        if fluid_name ~= "" then
-            State.fluid_name = fluid_name
-        end
-        if fluidflow_id then
-            State.fluidflow_ids[fluidflow_id] = true
-        end
-    end
-end
-
 -- Note: different from pipe_builder
 -- automatically connects to its neighbors which has fluidbox, except for pipe or pipe to ground
 local function _connect_to_neighbor(State, x, y, neighbor_dir, prototype_name, dir)
@@ -101,7 +80,6 @@ local function _connect_to_neighbor(State, x, y, neighbor_dir, prototype_name, d
         if succ and dx == x and dy == y then
             prototype_name, dir = iflow_connector.set_connection(prototype_name, dir, neighbor_dir, true)
             assert(prototype_name and dir) -- TODO:remove this assert
-            _update_fluid_name(State, fb.fluid_name, object.fluidflow_id) -- TODO: different fluid just don't connect automatically, but it doesn't cause fatal error
             return prototype_name, dir -- only one fluidbox can be connected to the endpoint
         end
     end
@@ -151,6 +129,28 @@ local function _can_replace(object, forward_dir)
     return true
 end
 
+local function __can_be_starting_point(object, forward_dir)
+    if not iprototype.is_pipe(object.prototype_name) and not iprototype.is_pipe_to_ground(object.prototype_name) then
+        return false
+    end
+
+    local valid1, valid2 = false, false
+
+    local reverse_dir = iprototype.reverse_dir(forward_dir)
+    local _prototype_name, _dir
+    _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, forward_dir, true)
+    if _prototype_name and _dir then
+        valid1 = true
+    end
+
+    _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, reverse_dir, true)
+    if _prototype_name and _dir then
+        valid2 = true
+    end
+
+    return valid1 or valid2
+end
+
 local function _set_starting(prototype_name, State, PipeToGroundState, x, y, dir)
     local object = objects:coord(x, y, EDITOR_CACHE_NAMES)
     local typeobject = iprototype.queryByName(prototype_name)
@@ -167,8 +167,6 @@ local function _set_starting(prototype_name, State, PipeToGroundState, x, y, dir
     end
 
     if iprototype.is_pipe(object.prototype_name) then
-        _update_fluid_name(State, object.fluid_name, object.fluidflow_id)
-
         local coord = packcoord(x, y)
         local _prototype_name, _dir
         if _can_replace(object, dir) then
@@ -207,19 +205,23 @@ local function _set_starting(prototype_name, State, PipeToGroundState, x, y, dir
         return x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
 
     elseif iprototype.is_pipe_to_ground(object.prototype_name) then
-        _update_fluid_name(State, object.fluid_name, object.fluidflow_id)
-
         local _prototype_name, _dir
         -- the pipe to ground can certainly be replaced with the new pipe to ground, promise by _builder_init()
-        assert(_can_replace(object, dir))
+        if not __can_be_starting_point(object, dir) then
+            State.succ = false
+            return x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
+        end
+        _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, dir, true)
+        local coord = packcoord(x, y)
+        PipeToGroundState.map[coord] = {assert(_prototype_name), assert(_dir)}
+
         _prototype_name, _dir = iflow_connector.covers_pipe_to_ground(typeobject.flow_type, iprototype.reverse_dir(dir), dir)
+        x, y = x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
         local coord = packcoord(x, y)
         PipeToGroundState.map[coord] = {assert(_prototype_name), assert(_dir)}
         return x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
 
     else
-        _update_fluid_name(State, State.starting_fluidbox.fluid_name, object.fluidflow_id)
-
         local _prototype_name, _dir
         local typeobject = iprototype.queryByName(prototype_name)
         _prototype_name, _dir = iflow_connector.covers_pipe_to_ground(typeobject.flow_type, iprototype.reverse_dir(dir), dir)
@@ -430,12 +432,6 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
         end
     end
 
-    local new_fluidflow_id = 0
-    if State.succ then
-        global.fluidflow_id = global.fluidflow_id + 1
-        new_fluidflow_id = global.fluidflow_id
-    end
-
     -- TODO: pipe to ground can be replaced by pipe
     if PipeToGroundState.replace then
         for object_id in pairs(PipeToGroundState.replace_object) do
@@ -473,20 +469,8 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                     t = terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)),
                 },
                 fluid_name = State.fluid_name,
-                fluidflow_id = new_fluidflow_id,
             }
             objects:set(object, EDITOR_CACHE_NAMES[1])
-        end
-    end
-
-    if State.succ then
-        for fluidflow_id in pairs(State.fluidflow_ids) do
-            for _, object in objects:selectall("fluidflow_id", fluidflow_id, EDITOR_CACHE_NAMES) do
-                local _object = objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone)
-                assert(iprototype.has_type(iprototype.queryByName(_object.prototype_name).type, "fluidbox"))
-                _object.fluid_name = State.fluid_name
-                _object.fluidflow_id = new_fluidflow_id
-            end
         end
     end
 
@@ -545,11 +529,8 @@ local function _builder_start(self, datamodel)
     local State = {
         succ = true,
         fluid_name = "",
-        fluidflow_ids = {},
         starting_fluidbox = nil,
-        starting_fluidflow_id = nil,
         ending_fluidbox = nil,
-        ending_fluidflow_id = nil,
         from_x = from_x,
         from_y = from_y,
         to_x = to_x,
@@ -560,7 +541,7 @@ local function _builder_start(self, datamodel)
     if starting then
         -- starting object should at least have one fluidbox, promised by _builder_init()
         local fluidbox = _find_starting_fluidbox(starting, to_x, to_y, dir)
-        State.starting_fluidbox, State.starting_fluidflow_id = fluidbox, starting.fluidflow_id
+        State.starting_fluidbox = fluidbox
         if fluidbox.dir ~= dir then
             State.succ = false
         end
@@ -579,7 +560,7 @@ local function _builder_start(self, datamodel)
         if ending then
             if starting.id == ending.id then
                 State.succ = false
-                State.ending_fluidbox, State.ending_fluidflow_id = fluidbox, ending.fluidflow_id
+                State.ending_fluidbox = fluidbox
             else
                 for _, another in ipairs(_get_covers_fluidbox(ending)) do
                     if another.dir ~= iprototype.reverse_dir(dir) then
@@ -593,7 +574,7 @@ local function _builder_start(self, datamodel)
                         goto continue
                     end
                     if to_x == another.x and to_y == another.y then
-                        State.ending_fluidbox, State.ending_fluidflow_id = another, ending.fluidflow_id
+                        State.ending_fluidbox = another
                         _builder_end(self, datamodel, State, dir, delta)
                         return
                     end
@@ -631,7 +612,7 @@ local function _builder_start(self, datamodel)
                     goto continue
                 end
                 if to_x == fluidbox.x and to_y == fluidbox.y then
-                    State.ending_fluidbox, State.ending_fluidflow_id = fluidbox, ending.fluidflow_id
+                    State.ending_fluidbox = fluidbox
                     _builder_end(self, datamodel, State, dir, delta)
                     return
                 end

@@ -18,7 +18,7 @@ function M:create()
         else
             assert(tostring(v:extension()) == ".lua")
             local filename = "template." .. v:stem():string()
-            local name = import_package("vaststars.prototype")(filename).name or ""
+            local name = import_package("vaststars.prototype")(filename).name or "undef"
             templates[#templates + 1] = {name = name, filename = filename}
         end
     end

@@ -12,5 +12,6 @@ return function(interval_ms, func)
             return
         end
         func(...)
+        last_update_time = current
     end
 end

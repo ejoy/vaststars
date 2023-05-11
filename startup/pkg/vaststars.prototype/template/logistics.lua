@@ -269,9 +269,29 @@ local road = {
   [38028] = 2
 }
 
+local function prepare(world)
+  local prototype = import_package "vaststars.gameplay".prototype
+  local e = assert(world.ecs:first("base eid:in"))
+  e = world.entity[e.eid]
+  local pt = prototype.queryByName("运输车辆I")
+  local slot, idx
+  for i = 1, 256 do
+      local s = world:container_get(e.chest, i)
+      if not s then
+          break
+      end
+      if s.item == pt.id then
+          slot, idx = s, i
+          break
+      end
+  end
+  assert(slot)
+  world:container_set(e.chest, idx, {amount = 1, limit = 1})
+end
+
 return {
     name = "路网测试",
     entities = entities,
     road = road,
+    prepare = prepare,
 }
-    

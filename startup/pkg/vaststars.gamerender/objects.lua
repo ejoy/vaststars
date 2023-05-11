@@ -6,7 +6,7 @@ local DEFAULT_CACHE_NAME <const> = "CONSTRUCTED"
 
 local ALL_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 
-local objects = create_cache(ALL_CACHE_NAMES, "id", "fluidflow_id", "gameplay_eid") -- = {[id] = object, ...}
+local objects = create_cache(ALL_CACHE_NAMES, "id", "gameplay_eid") -- = {[id] = object, ...}
 local tile_objects = create_cache(ALL_CACHE_NAMES, "coord", "id") -- = {[coord] = {id = xx, coord = coord}
 
 local M = {}

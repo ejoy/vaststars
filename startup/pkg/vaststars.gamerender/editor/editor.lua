@@ -24,7 +24,6 @@ function M:revert_changes(revert_cache_names)
             object.prototype_name = old_object.prototype_name
             object.dir = old_object.dir
             object.fluid_name = old_object.fluid_name
-            object.fluidflow_id = old_object.fluidflow_id
         else
             iobject.remove(object)
         end

@@ -1,7 +1,6 @@
 local create_buildings = require "building_components"
 
 return {
-    fluidflow_id = 0,
     science = {},
     statistic = {
         valid = false,
