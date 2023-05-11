@@ -446,7 +446,7 @@ prototype "无人机" {
 prototype "运输车框架" {
     type = {"item"},
     stack = 4,
-    pile = "4x4x4",
+    pile = "2x2x4",
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/broken-truck.texture",
     item_description = "用来装配运输车的框架",
