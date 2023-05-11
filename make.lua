@@ -73,43 +73,25 @@ lm:import(lm.antdir .. "make.lua")
 lm:import "clibs/make.lua"
 
 if lm.os == "windows" then
-    lm:copy "fmod_dll" {
+    lm:copy "copy_dll" {
         input = {
             lm.antdir .. "3rd/fmod/windows/core/lib/x64/fmodL.dll",
             lm.antdir .. "3rd/fmod/windows/studio/lib/x64/fmodstudioL.dll",
+            lm.antdir .. "3rd/vulkan/x64/vulkan-1.dll",
         },
         output = {
             lm.bindir .. "/fmodL.dll",
             lm.bindir .. "/fmodstudioL.dll",
-        },
-    }
-
-    lm:copy "vulkan_dll" {
-        input = {
-            lm.antdir .. "3rd/vulkan/x64/vulkan-1.dll",
-        },
-        output = {
             lm.bindir .. "/vulkan-1.dll",
         },
     }
-
-    lm:copy "vulkan_ant_dll" {
-        input = {
-            lm.antdir .. "3rd/vulkan/x64/vulkan-1.dll",
-        },
-        output = {
-            lm.antdir .. "bin/msvc/debug/vulkan-1.dll"
-        },
+    lm:default {
+        "copy_dll",
+        lm.compiler == "msvc" and EnableSanitize and "copy_asan",
+        "vaststars_rt",
+        "vaststars",
     }
-
-    lm:phony "phony_windows" {
-        deps = {
-            "fmod_dll",
-            "vulkan_dll",
-            "vulkan_ant_dll",
-            lm.compiler == "msvc" and EnableSanitize and "copy_asan",
-        }
-    }
+    return
 end
 
 if lm.os == "ios" then
@@ -128,7 +110,6 @@ if lm.os == "android" then
 end
 
 lm:default {
-    lm.os == "windows" and "phony_windows",
     "vaststars_rt",
     "vaststars",
 }
