@@ -126,6 +126,12 @@ local building_detail_config = {
 		"power_supply_area",
 		"power_supply_distance",
 	},
+	["铁矿"] = {
+		"mine_type",
+	},
+	["碎石矿"] = {
+		"mine_type",
+	},
 }
 
 return building_detail_config

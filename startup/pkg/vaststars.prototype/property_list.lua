@@ -142,6 +142,11 @@ local property_list = {
 		desc = "矿物储量",
 		pos = 27,
 	},
+	["mine_type"] = {
+		icon = "textures/property/mine-type.texture",
+		desc = "矿物类型",
+		pos = 28,
+	},
 }
 
 -- for debug
