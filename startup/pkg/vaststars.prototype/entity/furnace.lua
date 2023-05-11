@@ -37,6 +37,7 @@ prototype "粉碎机I" {
     type = {"building", "consumer", "assembling"},
     area = "3x3",
     power = "100kW",
+    speed = "50%",
     drain = "3kW",
     priority = "secondary",
     craft_category = {"矿石粉碎"},
