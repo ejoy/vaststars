@@ -54,19 +54,6 @@ if lm.os == "android" then
 end
 
 if lm.os == "macos" then
-    lm:lib "vaststars_lib" {
-        basename = "vaststars",
-        deps = {
-            "ant_runtime",
-            "ant_links",
-            modules
-        },
-        includes = {
-            LuaInclude,
-            Antdir .. "runtime/common",
-        },
-        sources = "vaststars_modules.c"
-    }
     lm:exe "vaststars" {
         deps = {
             "ant_editor",
@@ -86,9 +73,11 @@ if lm.os == "macos" then
     }
     lm:exe "vaststars_rt" {
         deps = {
-            "vaststars_lib",
+            "ant_runtime",
             "bgfx-lib",
+            "ant_links",
             "bootstrap_lua",
+            modules
         },
         includes = {
             LuaInclude,
