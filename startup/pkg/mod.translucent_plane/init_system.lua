@@ -55,20 +55,20 @@ local function to_mesh_buffer(vb, ib_handle, aabb)
     local vbbin = table.concat(vb, "")
     local numv = #vbbin // layout.stride
     local numi = (numv // NUM_QUAD_VERTICES) * 6 --6 for one quad 2 triangles and 1 triangle for 3 indices
-
+    if numv < 1 then return end
     return {
         bounding = {aabb = aabb and math3d.ref(aabb) or nil},
         vb = {
             start = 0,
             num = numv,
             handle = bgfx.create_vertex_buffer(bgfx.memory_buffer(vbbin), layout.handle),
-            owned = true
+            --owned = true
         },
         ib = {
             start = 0,
             num = numi,
             handle = ib_handle,
-            owned = true
+            --owned = true
         }
     }
 end
@@ -89,9 +89,6 @@ local function build_mesh(grids, unit, offset, aabb)
         }  
         vb[#vb+1] = table.concat(v, "")
         grid_num = grid_num + 1
-    end
-    if grid_num == 0 then
-        return nil
     end
     local ib_handle = build_ib(grid_num)
     return to_mesh_buffer(vb, ib_handle, aabb)
@@ -145,14 +142,20 @@ function init_sys:data_changed()
 end
 
 local function create_translucent_plane_entity(grids_table, color, alpha)
-    if not grids_table then
+    local grid_num = 0
+    for k, v in pairs(grids_table) do
+        grid_num  = grid_num + 1
+    end
+    if grid_num == 0 then
         return
     end
     local width, height, unit, offset = iplane_terrain.get_wh()
     local aabb = get_aabb(grids_table, width, height, unit, offset)
     local plane_mesh = build_mesh(grids_table, unit, offset, aabb)
     local eid
+    local vb_handle, ib_handle
     if plane_mesh then
+        vb_handle, ib_handle = plane_mesh.vb.handle, plane_mesh.ib.handle
         if alpha then
             eid = ecs.create_entity{
                 policy = {
@@ -165,7 +168,6 @@ local function create_translucent_plane_entity(grids_table, color, alpha)
                         t = math3d.vector(-offset * unit, 0, -offset * unit)
                     },
                     simplemesh  = plane_mesh,
-                    owned_mesh_buffer = true,
                     material    = translucent_plane_material,
                     on_ready = function (e)
                         imaterial.set_property(e, "u_colorTable", math3d.vector(color[1], color[2], color[3], alpha.min))
@@ -195,7 +197,6 @@ local function create_translucent_plane_entity(grids_table, color, alpha)
                         t = math3d.vector(-offset * unit, 0, -offset * unit)
                     },
                     simplemesh  = plane_mesh,
-                    owned_mesh_buffer = true,
                     material    = translucent_plane_material,
                     on_ready = function (e)
                         imaterial.set_property(e, "u_colorTable", math3d.vector(color))
@@ -208,7 +209,7 @@ local function create_translucent_plane_entity(grids_table, color, alpha)
 
         end
     end
-    return eid
+    return eid, vb_handle, ib_handle
 end 
 
 local function create_grids_table(offset)
@@ -274,6 +275,12 @@ local function remove_all_tp()
         if tp_table[idx].eid then
             w:remove(tp_table[idx].eid)
         end
+        if tp_table[idx].vb_handle then
+            bgfx.destroy(tp_table[idx].vb_handle)
+        end
+        if tp_table[idx].ib_handle then
+            bgfx.destroy(tp_table[idx].ib_handle)
+        end
     end
 end
 
@@ -296,11 +303,13 @@ local function generate_each_grids(offset, old_tp_num)
     update_grids_table(grids_table, aabb_table)
     -- tp_table contain old table + new table
     for idx = 1, #tp_table do
-        local eid = create_translucent_plane_entity(grids_table[idx], tp_table[idx].color, tp_table[idx].alpha)
+        local eid, vb_handle, ib_handle = create_translucent_plane_entity(grids_table[idx], tp_table[idx].color, tp_table[idx].alpha)
         local tp = {}
         tp.rect = tp_table[idx].rect
         tp.color = tp_table[idx].color
         tp.eid = eid
+        tp.vb_handle = vb_handle
+        tp.ib_handle = ib_handle
         if idx <= old_tp_num then
             -- old
             local old_call_id = tp_to_call[idx]
