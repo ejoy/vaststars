@@ -52,55 +52,83 @@ local function create_drone(homepos)
         running = false,
         duration = 0,
         elapsed_time = 0,
-        at_home = false,
-        gohome = function (self, dst)
-            if self.at_home then
-                return
-            end
-            self.at_home = true
-            self:flyto(fly_height, dst, 1.0, true)
+        to_home = false,
+        process = 0,
+        flyid = 0,
+        gohome = function (self, flyid, from, to)
+            if self.to_home then return end
+            self:flyto(flyid, fly_height, from, to, true, 1.0)
+            self.to_home = true
+            -- print("----gohome----", dst[1], dst[2], dst[3])
         end,
-        flyto = function (self, height, to, duration, home)
-            -- print("----flyto----",self.current_pos[1], self.current_pos[2], self.current_pos[3], to[1], to[2], to[3])
-            if self.at_home then
+        flyto = function (self, flyid, height, from, to, home, duration)
+            self.flyid = flyid
+            if self.to_home and not home then
                 local exz <close> = w:entity(self.motion_xz)
                 local xzpos = iom.get_position(exz)
                 local ey <close> = w:entity(self.motion_y)
                 local xpos = iom.get_position(ey)
-                self.current_pos = {math3d.index(xzpos, 1), math3d.index(xpos, 2), math3d.index(xzpos, 3)}
+                from = {math3d.index(xzpos, 1), math3d.index(xpos, 2), math3d.index(xzpos, 3)}
+                self.to_home = false
+                ims.set_duration(exz, -1)
+                ims.set_duration(ey, -1)
             end
-            if not home then
-                self.at_home = false
-            end
-            self.duration = duration
-            local ms = duration * 1000
+            -- print("----flyto----", home, from[1], from[2], from[3], to[1], to[2], to[3])
             local exz <close> = w:entity(self.motion_xz)
-            ims.set_duration(exz, ms)
             ims.set_tween(exz, ltween.type("Sine"), ltween.type("Sine"))
             ims.set_keyframes(exz,
-                {t = math3d.vector({self.current_pos[1], 0, self.current_pos[3]}), step = 0.0},
+                {t = math3d.vector({from[1], 0, from[3]}), step = 0.0},
                 {t = math3d.vector({to[1], 0, to[3]}),  step = 1.0}
             )
             local ey <close> = w:entity(self.motion_y)
-            ims.set_duration(ey, ms)
             ims.set_tween(ey, ltween.type("Quartic"), ltween.type("Quartic"))
+            -- print("----height----", home, from[2], height, to[2])
             ims.set_keyframes(ey,
-                {t = math3d.vector({0, self.current_pos[2], 0}), step = 0.0},
-                {t = math3d.vector({0, height, 0}), step = 0.25},
-                {t = math3d.vector({0, height, 0}), step = 0.75},
+                {t = math3d.vector({0, from[2], 0}), step = 0.0},
+                {t = math3d.vector({0, height, 0}), step = 0.1},
+                {t = math3d.vector({0, height, 0}), step = 0.9},
                 {t = math3d.vector({0, to[2], 0}),  step = 1.0}
             )
-            self.current_pos = to
+            if home then
+                self.duration = duration
+                local ms = duration * 1000
+                ims.set_duration(exz, ms)
+                ims.set_duration(ey, ms)
+            else
+                ims.set_ratio(exz, 0)
+                ims.set_ratio(ey, 0)
+            end
             self.running = true
         end,
-        update = function (self, timeStep)
+        update = function (self, step)
             if not self.running then
                 return
             end
-            self.elapsed_time = self.elapsed_time + timeStep
-            if self.elapsed_time >= self.duration then
+            local finished = false
+            if self.to_home then
+                local elapsed_time = 1.0 / 30
+                self.elapsed_time = self.elapsed_time + elapsed_time
+                if self.elapsed_time >= self.duration then
+                    finished = true
+                end
+            else
+                -- print("----update----", step)
+                local exz <close> = w:entity(self.motion_xz)
+                ims.set_ratio(exz, step)
+                local ey <close> = w:entity(self.motion_y)
+                ims.set_ratio(ey, step)
+                if step >= 1.0 then
+                    finished = true
+                end
+            end
+            
+            if finished then
                 self.running = false
                 self.elapsed_time = 0
+                local exz <close> = w:entity(self.motion_xz)
+                ims.set_duration(exz, -1)
+                local ey <close> = w:entity(self.motion_y)
+                ims.set_duration(ey, -1)
                 if self.item then
                     for _, eid in ipairs(self.item.tag["*"]) do
                         w:remove(eid)
@@ -190,61 +218,54 @@ return function(gameworld)
             lookup_drones[e.eid] = create_drone(get_home_pos(obj.srt.t))
         else
             local current = lookup_drones[e.eid]
-            if not current.running or current.at_home then
+            local flyid = drone.prev << 32 | drone.next
+            if current.flyid ~= flyid or current.to_home then
                 if drone.maxprogress > 0 then
-                    if not current.start_progress then
-                        current.start_progress = drone.progress
-                    else
-                        local stepCount = drone.maxprogress / (current.start_progress - drone.progress)
-                        local total = stepCount * elapsed_time
-                        local duration = (current.start_progress / drone.maxprogress) * total
-                        current.start_progress = nil
-
-                        local destobj = get_object(drone.next)
-                        if destobj then
-                            -- current.target = destobj
-                            if drone.item > 0 then
-                                current.item = create_item(drone.item, current.prefab.tag["*"][1])
-                            end
-                            -- TODO: update src item count
-                            local srcobj = get_object(drone.prev)
-                            if srcobj then
-                                current:init(srcobj.srt.t)
-                            end
-
-                            local key = drone.prev << 32 | drone.next
-                            if not same_dest_offset[key] then
-                                same_dest_offset[key] = 0
-                            else
-                                same_dest_offset[key] = same_dest_offset[key] - (drone_offset / 2)
-                            end
-                            local dest_pos = destobj.srt.t
-                            -- status : go_home
-                            local tohome
-                            if drone.status == STATUS_GO_HOME then
-                                dest_pos = get_home_pos(dest_pos)
-                                tohome = true
-                            end
-                            drone_task[#drone_task + 1] = {key, current, dest_pos, duration, tohome}
+                    local destobj = get_object(drone.next)
+                    if destobj then
+                        -- current.target = destobj
+                        -- if drone.item > 0 then
+                        --     current.item = create_item(drone.item, current.prefab.tag["*"][1])
+                        -- end
+                        -- TODO: update src item count
+                        local srcobj = get_object(drone.prev)
+                        if srcobj then
+                            current:init(srcobj.srt.t)
+                        end
+                        if not same_dest_offset[flyid] then
+                            same_dest_offset[flyid] = 0
+                        else
+                            same_dest_offset[flyid] = same_dest_offset[flyid] - (drone_offset / 2)
+                        end
+                        local from = srcobj and srcobj.srt.t or {0, 0, 0}
+                        local to = destobj.srt.t
+                        -- status : go_home
+                        -- print(e.eid, drone.prev, drone.next, drone.maxprogress, drone.progress)
+                        if drone.status == STATUS_GO_HOME then
+                            current:gohome(flyid, {from[1], item_height, from[3]}, get_home_pos(to))
+                        else
+                            drone_task[#drone_task + 1] = {flyid, current, {from[1], item_height, from[3]}, to}
                         end
                     end
-                elseif drone.status == STATUS_IDLE or drone.status == STATUS_AT_HOME then
-                    -- status : at_home
+                elseif (drone.status == STATUS_IDLE or drone.status == STATUS_AT_HOME) and not current.to_home then
+                    -- print(e.eid, drone.prev, drone.next, drone.maxprogress, drone.progress)
+                    -- status : to_home
                     local obj = get_object(drone.prev)
                     assert(obj)
-                    current:gohome(get_home_pos(obj.srt.t))
+                    local dst = obj.srt.t
+                    current:gohome(flyid, {dst[1], item_height, dst[3]}, get_home_pos(dst))
                 end
             else
-                current:update(elapsed_time)
+                current:update(drone.maxprogress > 0 and (drone.maxprogress - drone.progress) / drone.maxprogress or 0)
             end
         end
         ::continue::
     end
     for _, task in ipairs(drone_task) do
-        local key = task[1]
-        local pos = task[3]
-        task[2]:flyto(fly_height, {pos[1] + same_dest_offset[key], task[5] and pos[2] or item_height, pos[3]}, task[4], task[5])
-        same_dest_offset[key] = same_dest_offset[key] + drone_offset
+        local flyid = task[1]
+        local to = task[4]
+        task[2]:flyto(flyid, fly_height, task[3], {to[1] + same_dest_offset[flyid], item_height, to[3]}, false)
+        same_dest_offset[flyid] = same_dest_offset[flyid] + drone_offset
     end
     return t
 end

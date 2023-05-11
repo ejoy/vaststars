@@ -264,19 +264,23 @@ function M:stage_ui_update(datamodel)
 
     --任务完成提示界面
     for _ in technology_mb:unpack() do
+        ia.play("event:/ui/button1")
         gameplay_core.world_update = false
         iui.open({"science.rml"})
     end
 
     for _ in show_statistic_mb:unpack() do
+        ia.play("event:/ui/button1")
         iui.open({"statistics.rml"})
     end
 
     for _ in show_setting_mb:unpack() do
+        ia.play("event:/ui/button1")
         iui.open({"option_pop.rml"})
     end
 
     for _ in help_mb:unpack() do
+        ia.play("event:/ui/button1")
         if not iui.is_open("help_panel.rml") then
             iui.open({"help_panel.rml"})
         else
@@ -573,6 +577,7 @@ function M:stage_camera_usage(datamodel)
     end
 
     for _ in inventory_mb:unpack() do
+        ia.play("event:/ui/button1")
         for _, object in objects:all() do -- TODO: optimize
             local typeobject = iprototype.queryByName(object.prototype_name)
             if iprototype.has_type(typeobject.type, "base") then
