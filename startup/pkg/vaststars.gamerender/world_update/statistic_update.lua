@@ -183,4 +183,6 @@ return function(world)
             step_frame_head(statistic.power_generated[filter])
         end
     end
+
+    return false
 end

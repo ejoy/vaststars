@@ -877,9 +877,6 @@ local function finish_laying(self, datamodel)
             if mask ~= m then
                 iroadnet:editor_set("road", "modify", x, y, shape, dir)
                 self.pending[coord] = mask
-            else
-                iroadnet:editor_set("road", "remove", x, y, shape, dir)
-                self.pending[coord] = nil
             end
         end
     end

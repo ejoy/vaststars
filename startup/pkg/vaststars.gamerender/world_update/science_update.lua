@@ -31,4 +31,5 @@ return function(gameplay_world)
     elseif science.current_tech then
         science.current_tech = nil
     end
+    return false
 end

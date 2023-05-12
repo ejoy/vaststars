@@ -7,7 +7,6 @@ local iRmlUi = ecs.import.interface "ant.rmlui|irmlui"
 local terrain = ecs.require "terrain"
 local gameplay_core = require "gameplay.core"
 local world_update = ecs.require "world_update.init"
-local gameplay_update = require "gameplay.update.init"
 local NOTHING <const> = require "debugger".nothing
 local TERRAIN_ONLY <const> = require "debugger".terrain_only
 local DAYNIGHT_DEBUG <const> = require "debugger".daynight
@@ -199,15 +198,21 @@ function m:update_world()
 
     if gameplay_core.world_update then
         gameplay_core.update()
-        world_update(gameplay_world)
-        gameplay_update(gameplay_world)
+        if world_update(gameplay_world) then
+            gameplay_world:build()
+        end
         gameplay_world.ecs:clear "building_changed"
 
         local mc, x, y, z
         for lorry_id, rc, tick in gameplay_world:roadnet_each_lorry() do
             mc = gameplay_world:roadnet_map_coord(rc)
+            if not mc then
+                print("can not found lorry_id(%s) rc(%s)", lorry_id, rc)
+                goto continue
+            end
             x, y, z = mc & 0xFF, (mc >> 8) & 0xFF, (mc >> 16) & 0xFF
             lorry_manager.update(lorry_id, x, y, z, tick)
+            ::continue::
         end
     end
 end

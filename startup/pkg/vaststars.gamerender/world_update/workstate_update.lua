@@ -92,4 +92,5 @@ return interval_call(3000, function(world)
         -- TODO: low_power
         ::continue::
     end
-end)
+    return false
+end, false)

@@ -355,7 +355,6 @@ function M:stage_ui_update(datamodel, object_id)
                 end
 
                 igameplay.remove_entity(object.gameplay_eid)
-                gameplay_core.remove_entity(object.gameplay_eid)
             end
         else
             assert(false)

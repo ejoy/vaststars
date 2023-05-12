@@ -194,4 +194,6 @@ return function(world)
 
         ::continue::
     end
+
+    return false
 end

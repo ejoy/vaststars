@@ -7,4 +7,5 @@ local interval_call = ecs.require "engine.interval_call"
 return interval_call(300, function()
     itask.update_progress("lorry_count")
     itask.update_progress("auto_complete_task")
-end)
+    return false
+end, false)
