@@ -291,31 +291,6 @@ namespace roadnet {
         }
     }
 
-    static constexpr bool isRealNeighbor(loction a, loction b) {
-        if (a.x == b.x) {
-            return abs(a.y - b.y) == 1;
-        }
-        if (a.y == b.y) {
-            return abs(a.x - b.x) == 1;
-        }
-        return false;
-    }
-
-    static constexpr direction getDirection(loction start, loction end) {
-        assert(start != end);
-        assert((start.x == end.x) || (start.y == end.y));
-        if (start.y == end.y) {
-            return start.x < end.x
-                ? direction::r
-                : direction::l
-                ;
-        }
-        return start.y < end.y
-            ? direction::b
-            : direction::t
-            ;
-    }
-
     std::map<loction, uint8_t> network::getMap() const {
         return map;
     }
