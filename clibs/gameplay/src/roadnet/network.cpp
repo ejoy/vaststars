@@ -4,6 +4,19 @@
 #include <cstdio>
 
 namespace roadnet {
+    enum class MapRoad: uint8_t {
+        Left       = 1 << 0,
+        Top        = 1 << 1,
+        Right      = 1 << 2,
+        Bottom     = 1 << 3,
+        Endpoint   = 1 << 4,
+        NoLeftTurn = 1 << 5,
+    };
+
+    static bool operator&(uint8_t v, MapRoad m) {
+        return v & (uint8_t)m;
+    }
+
     template <typename T, typename F>
     static void ary_call(network& w, uint64_t ti, T& ary, F func) {
         size_t N = ary.size();
@@ -99,10 +112,6 @@ namespace roadnet {
         }
     }
 
-    static constexpr bool isEndpoint(uint8_t m) {
-        return m & 0x10;
-    }
-    
     static constexpr direction next_direction(loction l, uint8_t m, direction dir) {
         switch (m & 0xF) {
         case mask(L'║'):
@@ -257,7 +266,7 @@ namespace roadnet {
             if (isCross(m)) {
                 break;
             }
-            if (isEndpoint(m)) {
+            if (m & MapRoad::Endpoint) {
                 break;
             }
             if (ln == l && nd == dir) {
@@ -432,7 +441,10 @@ namespace roadnet {
         for (auto const& [loc, id]: crossMap) {
             road::crossroad& crossroad = CrossRoad(id);
             uint8_t m = getMapBits(map, loc);
-
+            if (m & MapRoad::NoLeftTurn) {
+                crossroad.ban = road::NoLeftTurn;
+            }
+    
             for (uint8_t i = 0; i < 4; ++i) {
                 direction dir = (direction)i;
                 if (m & (1 << i) && !crossroad.hasNeighbor(dir)) {
@@ -451,7 +463,7 @@ namespace roadnet {
                     }
                     else {
                         auto neighbor_m = getMapBits(map, result.l);
-                        if (!isEndpoint(neighbor_m)) {
+                        if (!(neighbor_m & MapRoad::Endpoint)) {
                             roadid neighbor_id = crossMap[result.l];
                             road::crossroad& neighbor = CrossRoad(neighbor_id);
                             straightData& straight1 = straightVec.emplace_back(
@@ -481,7 +493,7 @@ namespace roadnet {
         }
 
         for (auto& [loc, m] : map) {
-            if (isEndpoint(m)) {
+            if (m & MapRoad::Endpoint) {
                 auto rawm = m & 0xF;
                 switch (rawm) {
                 case mask(L'║'): setEndpoint(loc, direction::t, direction::b, genStraightId); break;
@@ -619,7 +631,7 @@ namespace roadnet {
         if (auto res = moveToNeighbor(map, straight.loc, straight.start_dir, n / road::straight::N); res) {
             auto m = getMapBits(map, res->l);
             auto z = 0x00;
-            if (isEndpoint(m)) {
+            if (m & MapRoad::Endpoint) {
                 z = straight.start_dir == straight.finish_dir ? 0x00 : 0x01;
             }
             else {

@@ -107,7 +107,7 @@ namespace roadnet::road {
             if (!w.StraightRoad(neighbor[(uint8_t)out]).canEntry(w)) {
                 continue;
             }
-            cross_type type = (cross_type)(((uint8_t)i << 2) | (uint8_t)out);
+            cross_type type = crossType(direction(i), out);
             size_t idx;
             if (!cross_lorry[0] && !cross_lorry[1]) {
                 idx = 0;
@@ -129,5 +129,9 @@ namespace roadnet::road {
             cross_status[idx] = type;
             l.init_tick(w.crossTime);
         }
+    }
+
+    bool crossroad::allowed(direction from, direction to) const {
+        return (ban & (1 << (uint16_t)crossType(from, to))) == 0;
     }
 }

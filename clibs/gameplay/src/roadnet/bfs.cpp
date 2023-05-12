@@ -71,10 +71,11 @@ namespace roadnet {
     static std::optional<direction> applyCross(network& w, bfsContext& ctx, bfsRoad G, roadid N, roadid E) {
         assert(N.get_type() == roadtype::cross);
         auto& cross = w.CrossRoad(N);
+        direction prev = G.dir;
         for (uint8_t i = 0; i < 4; ++i) {
             direction dir = (direction)i;
             roadid Next = cross.neighbor[i];
-            if (Next) {
+            if (Next && cross.allowed(prev, dir)) {
                 if (!ctx.results.contains({N, dir})) {
                     ctx.results.emplace(bfsRoad{N, dir}, G);
                     if (N == E) {
