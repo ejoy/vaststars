@@ -5,7 +5,7 @@ fx:
     ALPHAMODE_OPAQUE: 1
     lighting: on
     shadow_cast: on
-    shadow_receive: off
+    shadow_receive: on
     subsurface: off
     WITH_COLOR_ATTRIB: 1
 properties:
