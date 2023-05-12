@@ -378,6 +378,7 @@ namespace roadnet {
         else {
             assert(false);
         }
+        assert(na.n > 0);
 
         endpointid id { (uint16_t)endpointVec.size() };
         auto& ep = endpointVec.emplace_back();
@@ -387,7 +388,7 @@ namespace roadnet {
 
         straightData& straight1 = straightVec.emplace_back(
             roadid {roadtype::straight, straightId},
-            nb.n,
+            nb.n + 1,
             nb.l,
             reverse(nb.dir),
             reverse(b),
