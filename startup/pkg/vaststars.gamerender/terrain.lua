@@ -154,10 +154,18 @@ function terrain:create(width, height)
     }
 
     self.mineral_map = {}
+    self.mineral_tiles = {}
+
     for c, mineral in pairs(map) do
         local x, y = c:match("^(%d+),(%d+)$")
         x, y = tonumber(x), tonumber(y)
         self.mineral_map[_hash(x, y)] = mineral
+
+        for i = 0, MINERAL_WIDTH - 1 do
+            for j = 0, MINERAL_HEIGHT - 1 do
+                self.mineral_tiles[_hash(x + i, y + j)] = mineral
+            end
+        end
 
         local prefab = mineral_prefabs[mineral]
         local srt = {r = ROTATORS[math.random(1, 4)], t = self:get_position_by_coord(x, y, MINERAL_WIDTH, MINERAL_HEIGHT)}
@@ -179,6 +187,10 @@ end
 
 function terrain:get_mineral(x, y)
     return self.mineral_map[_hash(x, y)]
+end
+
+function terrain:get_mineral_tiles(x, y)
+    return self.mineral_tiles[_hash(x, y)]
 end
 
 function terrain:enable_terrain(x, y)

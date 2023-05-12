@@ -15,7 +15,6 @@ namespace roadnet::road {
     struct endpoint {
         roadid neighbor;
         roadid rev_neighbor;
-        bool left_handled;
         lorryid& waitingLorry(network& w);
         bool isReady(network& w);
         bool setOut(network& w, lorryid id);

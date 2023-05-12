@@ -66,6 +66,12 @@ do
     end
 end
 
+function M.queryFirstByType(...)
+    for _, v in pairs(M.each_type(...)) do
+        return v
+    end
+end
+
 function M.packcoord(x, y)
     assert(x & 0xFF == x)
     assert(y & 0xFF == y)

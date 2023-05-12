@@ -128,6 +128,9 @@ local function __update_pipe_shape(gameplay_world)
 
     for _, v in pairs(removed) do
         local typeobject = iprototype.queryById(v.prototype)
+        if not typeobject.fluidbox then
+            goto continue
+        end
         for _, connection in ipairs(typeobject.fluidbox.connections) do
             local x, y, dir = iprototype.rotate_connection(connection.position, DIRECTION[v.direction], typeobject.area)
             local neighbor_object = __find_neighbor(v.x + x, v.y + y, dir)
@@ -149,6 +152,8 @@ local function __update_pipe_shape(gameplay_world)
             end
         end
         need_build = true
+
+        ::continue::
     end
 
     global.removed = {}

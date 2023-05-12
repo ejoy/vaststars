@@ -17,7 +17,7 @@ namespace roadnet::road {
     bool straight::tryEntry(network& w, lorryid l, uint16_t offset) {
         if (!hasLorry(w, offset)) {
             w.LorryInRoad(lorryOffset + offset) = l;
-            w.Lorry(l).init_tick(w.time);
+            w.Lorry(l).init_tick(roadtype::straight);
             return true;
         }
         return false;

@@ -239,6 +239,7 @@ prototype "运输车辆I" {
     stack = 25,
     item_description = "运输货物的交通工具",
     capacitance = "10MJ",
+    speed = 63,
     icon = "textures/construct/truck.texture",
 }
 

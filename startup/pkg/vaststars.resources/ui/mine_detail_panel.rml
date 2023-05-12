@@ -1,0 +1,103 @@
+<rml>
+    <head>
+        <style>
+            body {
+                font: 100% "宋体";
+            }
+            div {
+                font: 120% "微软雅黑";
+            }
+            .panel1 {
+                width: 87%;
+                height: 100%;
+                pointer-events: none;
+                animation: 0.5s linear 0s pannelmovement;
+            }
+            @keyframes pannelmovement {
+                0% {
+                    left: -10vmin;
+                    opacity: 0;
+                }
+                100% {
+                    left: 0vmin;
+                    opacity: 1;
+                }
+            }
+            @keyframes enlarge3 {
+                0% {
+                    transform: scale(0.97);
+                }
+                100% {
+                    transform: scale(1.03);
+                }
+            }
+        </style>
+        <style path = "common/building_style.rcss"/>
+        <script type="text/x-lua" >
+            local ui_sys = require "ui_system"
+            local start = ui_sys.createDataMode("start", {
+                object_id = 0,
+                property_list = {},
+                icon = "",
+                prototype_name = " ",
+                detail_panel_status_icon = "textures/work_status_icon/normal.texture",
+                detail_panel_status_desc = "正常工作",
+                show_chest = false,
+                chest_list0 = {},
+                chest_list1 = {},
+                show_minner = false,
+                progress = "0%",
+                recipe_inputs = {},
+                recipe_ouputs = {},
+                show_assemble = false,
+                recipe_name = " ",
+                guide_progress = 0,
+            })
+
+            ui_sys.addEventListener({
+                ["leave"] = function()
+                    ui_sys.close()
+                end,
+            })
+        </script>
+    </head>
+    <body style = "pointer-events: none; justify-content: center; align-items: center;">
+        <div data-model="start" class="panel1" style="flex-direction: column; justify-content:flex-start;">
+
+            <!-- detail panel begin -->
+            <div style = "overflow: hidden; position: absolute; left: 0.13vmin; top: 7vmin; width: 30.00vmin; height: 72.33vmin; background-color: rgb(250, 205, 9); border: 0.27vmin rgb(89, 73, 39);flex-direction: column; justify-content: flex-start;">
+                <!-- title -->
+                <div style = "width: 100%; height: 15%; flex-direction: row; justify-content: center; align-items: center;">
+                    <!-- icon -->
+                    <div style = "flex-direction:row; justify-content:center; align-items: center; width: 10vmin;">
+                        <div data-style-background-image="icon" style = "width: 9.50vmin; height: 9.50vmin; background-size: contain; background-size: cover;" />
+                    </div>
+                    <div style = "justify-content: center;">
+                        <div style = "flex-direction: column; justify-content: center;">
+                            <div style = "width: 20.00vmin; height: 65%; font-size: 4.10vmin; -webkit-text-stroke: 0.13vmin black; word-break: break-all;">{{prototype_name}}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- property list -->
+                <div style = "width:100%; border-bottom: 0.1vmin #fff; padding-top: 1vmin;" />
+                <div style="height:65%; padding-top: 2vmin;">
+                    <div data-for = "property : property_list">
+                        <div style = "width: 100%; height: 6.67vmin; flex-direction: row; align-items: center; justify-content: center;">
+                            <!-- proprety & value -->
+                            <div style = "flex-direction: column; justify-content: center; align-items: center;">
+                                <div style="flex-direction:row; justify-content: center; top: 0.40vmin;">
+                                    <div style = "width: 4.00vmin; height: 4.00vmin; background-size:cover;" data-style-background-image="property.icon" />
+                                    <div style = "padding-bottom: 0.75vmin; flex-direction:row; justify-content: center; align-items:center;  height:4vmin; font-size: 4vmin; -webkit-text-stroke: 0.13vmin black; text-align: center;">{{property.desc}}</div>
+                                </div>
+                                <div style = "text-align: center; width: 100%; height: 4.00vmin; font-size: 3.20vmin; color: rgb(73, 60, 32);-webkit-text-stroke: 0.07vmin rgb(39, 32, 17);">{{property.value}}</div>
+                            </div>
+                        </div>
+                        <div style = "height: 2.67vmin;" />
+                    </div>
+                </div>
+            </div>
+            <!-- detail panel end -->
+        </div>
+    </body>
+</rml>

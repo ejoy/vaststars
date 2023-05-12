@@ -318,26 +318,8 @@
                 construct_menu = {},
                 cur_construct_menu = "",
             })
-            function start.clickHeadquater(event)
-                ui_sys.pub {"inventory"}
-            end
-            function start.clickTechnology()
-                ui_sys.pub {"technology"}
-            end
-            function start.clickStatistic()
-                ui_sys.pub {"statistic"}
-            end
-            function start.clickSetting(event)
-                ui_sys.pub {"show_setting"}
-            end
-            function start.clickTechOrTaskIcon(event, is_task)
-                ui_sys.pub {"click_techortaskicon", is_task}
-            end
-            function start.clickLoadResource(event)
-                ui_sys.pub {"load_resource"}
-            end
-            function start.clickHelp(event)
-                ui_sys.pub {"help"}
+            function start.clickButton(event, ...)
+                ui_sys.pub {...}
             end
             function start.clickExpandCollapsedBar(event)
                 local function show(e, v) -- TODO: remove this function
@@ -405,11 +387,11 @@
                 <!-- 主菜单隐藏/显示按钮 end-->
                 <collapsed-bar id = "main-menu-collapsed-bar" style = "left: 15vmin; bottom: 0vmin; position: absolute; overflow: hidden;" data-if = "!is_concise_mode && guide_progress >= 15">
                     <div class = "main-menu-block" data-if = "guide_progress >= 10">
-                        <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click = "clickHeadquater()">
+                        <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click = "clickButton('inventory')">
                             <div class = "menu-button-pic" style='background-image:"textures/construct/logistics_center.texture"'/>
                             <div class = "menu-button-text">指挥中心</div>
                         </button>
-                        <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click = "clickTechnology()" data-if = "guide_progress >= 30">
+                        <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click = "clickButton('technology')" data-if = "guide_progress >= 30">
                             <div class = "menu-button-pic" style='background-image:"textures/construct/goods_station.texture"'/>
                             <div class = "menu-button-text">科研任务</div>
                             <!-- 科研中心可研究科技标识 start-->
@@ -418,7 +400,7 @@
                             </div>
                             <!-- 科研中心可研究科技标识 end-->
                         </button>
-                        <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click="clickStatistic()" data-if = "guide_progress >= 35">
+                        <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click="clickButton('statistic')" data-if = "guide_progress >= 35">
                             <div class = "menu-button-pic" style='background-image:"textures/construct/statistics.texture"'/>
                             <div class = "menu-button-text">统计数据</div>
                         </button>
@@ -426,8 +408,7 @@
                             <div class = "menu-button-pic" style='background-image:"textures/construct/road.texture"'/>
                             <div class = "menu-button-text">地图信息</div>
                         </button>
-                        <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click="clickSetting()" data-if = "guide_progress >= 15">
-                        <!--button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click="clickSetting()" data-if = "guide_progress >= 20"-->
+                        <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click="clickButton('show_setting')" data-if = "guide_progress >= 15">
                             <div class = "menu-button-pic" style='background-image:"textures/assemble/wheel.texture"'/>
                             <div class = "menu-button-text">游戏设置</div>
                         </button>
@@ -436,14 +417,14 @@
             </div>
 
             <!-- 帮助按钮 -->
-            <button  class = "main-menu-button" style="border: 0.00vmin; position: absolute; left:-6.7vmin; top: -4vmin;" data-event-click="clickHelp()" data-if = "!is_concise_mode && guide_progress >= 10">
+            <button  class = "main-menu-button" style="border: 0.00vmin; position: absolute; left:-6.7vmin; top: -4vmin;" data-event-click="clickButton('help')" data-if = "!is_concise_mode && guide_progress >= 10">
                 <div class = "menu-button-pic" style='width:9vmin; height:9vmin; background-image:"textures/common/help.texture"'/>
             </button>
 
 
             <!-- 右上角：当前科技进度 -->
             <div data-if = "!is_concise_mode && show_tech_progress" style = "pointer-events: none; position: absolute; right:0vmin; top:0vmin;  width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-start; padding-top: 1vmin;">
-                <button style='background-color:rgb(204,219,11);  width: 16.00vmin; height: 16.00vmin; align-items: center;' data-event-click="clickTechOrTaskIcon(is_task)">
+                <button style='background-color:rgb(204,219,11);  width: 16.00vmin; height: 16.00vmin; align-items: center;' data-event-click="clickButton('click_techortaskicon', is_task)">
                     <div style="position:absolute; left:3.5vmin; bottom:2.7vmin; width: 50%; height: 50%; background-size:cover;" data-style-background-image="current_tech_icon"/>
                     <div style="-webkit-text-stroke: 0.3vmin rgb(39, 32, 17);font-size: 3.5vmin; word-break: break-all;">{{current_tech_name}}</div>
                     <div class="progress-bar-block" style = "position:absolute; bottom: -4.1vmin; width:100%; height:20%; border-radius: 0.3vmin; background-color: rgb(194, 194, 194);">

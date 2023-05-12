@@ -35,6 +35,7 @@ local ichest = require "gameplay.interface.chest"
 local debugger = require "debugger"
 local create_event_handler = require "ui_datamodel.common.event_handler"
 local ipower_line = ecs.require "power_line"
+local iroad = ecs.require "engine.road"
 
 local rotate_mb = mailbox:sub {"rotate"}
 local build_mb = mailbox:sub {"build"}
@@ -84,7 +85,7 @@ local event_handler = create_event_handler(
     end
 )
 
-local function __on_pickup_object(datamodel, object)
+local function __on_pickup_building(datamodel, object)
     if not excluded_pickup_id or excluded_pickup_id == object.id then
         ia.play("event:/construct/construct4_big")
         if idetail.show(object.id) then
@@ -96,6 +97,12 @@ local function __on_pickup_object(datamodel, object)
             return true
         end
     end
+end
+
+local function __on_pickup_mineral(datamodel, mineral)
+    local typeobject = iprototype.queryByName(mineral)
+    iui.open({"mine_detail_panel.rml"}, typeobject.icon, mineral)
+    return true
 end
 
 local function __get_construct_menu()
@@ -408,13 +415,35 @@ function M:stage_camera_usage(datamodel)
 
     local leave = true
 
-    local function _get_object(pickup_x, pickup_y)
-        for _, pos in ipairs(icamera_controller.screen_to_world(pickup_x, pickup_y, PLANES)) do
+    local function __get_building(x, y)
+        for _, pos in ipairs(icamera_controller.screen_to_world(x, y, PLANES)) do
             local coord = terrain:get_coord_by_position(pos)
             if coord then
-                local object = objects:coord(coord[1], coord[2], EDITOR_CACHE_NAMES)
-                if object then
-                    return object
+                local r = objects:coord(coord[1], coord[2], EDITOR_CACHE_NAMES)
+                if r then
+                    return r
+                end
+            end
+        end
+    end
+
+    local function __get_mineral(x, y)
+        for _, pos in ipairs(icamera_controller.screen_to_world(x, y, PLANES)) do
+            local coord = terrain:get_coord_by_position(pos)
+            if coord then
+                local r = terrain:get_mineral_tiles(coord[1], coord[2])
+                if r then
+                    return r
+                end
+            end
+        end
+
+        for _, pos in ipairs(icamera_controller.screen_to_world(x, y, PLANES)) do
+            local coord = terrain:get_coord_by_position(pos)
+            if coord then
+                local r = iroad:has_mountain(coord[1], coord[2])
+                if r then
+                    return assert(iprototype.queryFirstByType("mountain")).name
                 end
             end
         end
@@ -426,9 +455,14 @@ function M:stage_camera_usage(datamodel)
             goto continue
         end
 
-        local object = _get_object(x, y)
+        local object = __get_building(x, y)
+        local mineral = __get_mineral(x, y)
         if object then -- object may be nil, such as when user click on empty space
-            if __on_pickup_object(datamodel, object) then
+            if __on_pickup_building(datamodel, object) then
+                leave = false
+            end
+        elseif mineral then
+            if __on_pickup_mineral(datamodel, mineral) then
                 leave = false
             end
         else
@@ -449,7 +483,7 @@ function M:stage_camera_usage(datamodel)
             goto continue
         end
 
-        local object = _get_object(x, y)
+        local object = __get_building(x, y)
         if object then -- object may be nil, such as when user click on empty space
             if not excluded_pickup_id or excluded_pickup_id == object.id then
                 local prototype_name = object.prototype_name
@@ -560,7 +594,7 @@ function M:stage_camera_usage(datamodel)
 
     for _, _, _, object_id in on_pickup_object_mb:unpack() do
         local object = assert(objects:get(object_id))
-        __on_pickup_object(datamodel, object)
+        __on_pickup_building(datamodel, object)
     end
 
     local function focus_on_position_cb(object_id)
