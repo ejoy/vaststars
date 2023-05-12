@@ -15,13 +15,13 @@ namespace roadnet {
         this->straightTime = 1000 / speed;
         this->crossTime = 1500 / speed;
     }
-    void lorry::init_tick(roadtype type) {
+    void lorry::entry(roadtype type) {
         switch (type) {
         case roadtype::cross:
-            tick = crossTime;
+            maxprogress = progress = crossTime;
             break;
         case roadtype::straight:
-            tick = straightTime;
+            maxprogress = progress = straightTime;
             break;
         default:
             std::unreachable();
@@ -36,8 +36,8 @@ namespace roadnet {
     void lorry::reset(world& w) {
     }
     void lorry::update(network& w, uint64_t ti) {
-        if (tick != 0) {
-            --tick;
+        if (progress != 0) {
+            --progress;
         }
     }
     bool lorry::next_direction(network& w, roadid C, direction& dir) {
@@ -54,6 +54,6 @@ namespace roadnet {
         if (status != status::normal) {
             return false;
         }
-        return tick == 0;
+        return progress == 0;
     }
 }

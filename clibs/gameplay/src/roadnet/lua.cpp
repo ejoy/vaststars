@@ -157,8 +157,10 @@ namespace roadnet::lua {
             lua_pushinteger(L, lorryid.id);
             push_road_coord(L, std::get<1>(*res));
             auto& l = w.Lorry(lorryid);
-            lua_pushinteger(L, l.get_tick());
-            return 3;
+            auto [progress, maxprogress] = l.get_progress();
+            lua_pushinteger(L, progress);
+            lua_pushinteger(L, maxprogress);
+            return 4;
         }
         static int gc(lua_State* L) {
             get(L, 1).~eachlorry();
