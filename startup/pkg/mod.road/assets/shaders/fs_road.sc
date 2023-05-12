@@ -149,7 +149,14 @@ void main()
         discard;
     }
     else{
-        gl_FragColor = vec4(basecolor, 1.0);
+        v_normal = normalize(v_normal);
+        v_tangent = normalize(v_tangent);
+        vec3 bitangent = cross(v_normal, v_tangent);
+        mat3 tbn = mat3(v_tangent, bitangent, v_normal);
+        //vec3 road_normal = terrain_normal_from_tangent_frame(tbn, road_uv, 1);
+        vec3 road_normal = v_normal;
+        input_attributes input_attribs = init_input_attributes(v_normal, road_normal, v_posWS, vec4(basecolor, 1.0), gl_FragCoord);
+        gl_FragColor = compute_lighting(input_attribs);
     }
 /*     if(!is_road_part)
     {
