@@ -72,6 +72,11 @@
                     <div style = "flex-direction:row; justify-content:center; align-items: center; width: 10vmin;">
                         <div data-style-background-image="icon" style = "width: 9.50vmin; height: 9.50vmin; background-size: contain; background-size: cover;" />
                     </div>
+                    <div style = "justify-content: center;">
+                        <div style = "flex-direction: column; justify-content: center;">
+                            <div style = "width: 20.00vmin; height: 65%; font-size: 4.10vmin; -webkit-text-stroke: 0.13vmin black; word-break: break-all;">{{prototype_name}}</div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- property list -->

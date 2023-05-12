@@ -84,8 +84,8 @@ local inner_shape = {
     ["invalid"] = "1",
 
     ["normal"] = "3",
-    ["remove"] = "2",
-    ["modify"] = "1",
+    ["remove"] = "1",
+    ["modify"] = "2",
 }
 
 -- map = {{x, y, shape_type, shape, dir}, ...}

@@ -266,15 +266,15 @@ local function _builder_init(self, datamodel)
             datamodel.show_start_teardown = true
         end
         datamodel.show_place_one = false
+        if is_valid_starting(coord_indicator.x, coord_indicator.y) then
+            datamodel.show_start_laying = true
+        else
+            datamodel.show_start_laying = false
+        end
     else
         datamodel.show_place_one = true
         datamodel.show_remove_one = false
         datamodel.show_start_teardown = false
-    end
-
-    if is_valid_starting(coord_indicator.x, coord_indicator.y) then
-        datamodel.show_start_laying = true
-    else
         datamodel.show_start_laying = false
     end
 end
