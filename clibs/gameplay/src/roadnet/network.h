@@ -82,6 +82,7 @@ namespace roadnet {
         uint8_t waitTime = (uint8_t)(80);
         uint8_t crossTime = (uint8_t)(30);
     private:
+        void setEndpoint(loction loc, direction a, direction b, uint16_t straightId);
         roadid   findCrossRoad(loction l);
         std::optional<loction> whereCrossRoad(roadid id);
     };
