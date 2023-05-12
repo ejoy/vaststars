@@ -89,7 +89,7 @@ namespace roadnet {
     }
 
     static constexpr bool isCross(uint8_t m) {
-        switch (m) {
+        switch (m & 0xF) {
         case mask(L' '):
         case mask(L'║'):
         case mask(L'═'):
@@ -116,80 +116,69 @@ namespace roadnet {
         switch (m & 0xF) {
         case mask(L'║'):
             switch (dir) {
-            case direction::t: return direction::t;
-            case direction::b: return direction::b;
+            case direction::t: return direction::b;
+            case direction::b: return direction::t;
             default: break;
             }
             break;
         case mask(L'═'):
             switch (dir) {
-            case direction::l: return direction::l;
-            case direction::r: return direction::r;
+            case direction::l: return direction::r;
+            case direction::r: return direction::l;
             default: break;
             }
             break;
         case mask(L'>'):
             switch (dir) {
-            case direction::r: return direction::l;
             case direction::l: return direction::l;
             default: break;
             }
             break;
         case mask(L'v'):
             switch (dir) {
-            case direction::b: return direction::t;
             case direction::t: return direction::t;
             default: break;
             }
             break;
         case mask(L'<'):
             switch (dir) {
-            case direction::l: return direction::r;
             case direction::r: return direction::r;
             default: break;
             }
             break;
         case mask(L'^'):
             switch (dir) {
-            case direction::t: return direction::b;
             case direction::b: return direction::b;
             default: break;
             }
             break;
         case mask(L'╔'):
             switch (dir) {
-            case direction::l: return direction::b;
-            case direction::t: return direction::r;
+            case direction::r: return direction::b;
+            case direction::b: return direction::r;
             default: break;
             }
             break;
         case mask(L'╚'):
             switch (dir) {
-            case direction::l: return direction::t;
-            case direction::b: return direction::r;
+            case direction::r: return direction::t;
+            case direction::t: return direction::r;
             default: break;
             }
             break;
         case mask(L'╗'):
             switch (dir) {
-            case direction::r: return direction::b;
-            case direction::t: return direction::l;
+            case direction::l: return direction::b;
+            case direction::b: return direction::l;
             default: break;
             }
             break;
         case mask(L'╝'):
             switch (dir) {
-            case direction::r: return direction::t;
-            case direction::b: return direction::l;
+            case direction::l: return direction::t;
+            case direction::t: return direction::l;
             default: break;
             }
-            break;
-        case mask(L'╠'):
-        case mask(L'╦'):
-        case mask(L'╬'):
-        case mask(L'╩'):
-        case mask(L'╣'):
-            return dir;
             break;
         }
         printf("Invalid road type: (%d,%d) %d\n", l.x, l.y, m);
@@ -255,11 +244,7 @@ namespace roadnet {
     static NeighborResult findNeighbor(const std::map<loction, uint8_t>& map, loction l, direction dir) {
         uint16_t n = 0;
         loction ln = l;
-
-        uint8_t cm = getMapBits(map, ln);
-        assert(cm != 0);
-        direction nd = next_direction(ln, cm, dir);
-
+        direction nd = dir;
         for (;;) {
             ln = move(ln, nd);
             uint8_t m = getMapBits(map, ln);
@@ -269,9 +254,10 @@ namespace roadnet {
             if (m & MapRoad::Endpoint) {
                 break;
             }
-            if (ln == l && nd == dir) {
+            if (ln == l) {
                 break;
             }
+            nd = reverse(nd);
             nd = next_direction(ln, m, nd);
             n++;
         }
@@ -287,6 +273,7 @@ namespace roadnet {
             if (i >= n) {
                 return NeighborResult {l, dir, n};
             }
+            dir = reverse(dir);
             dir = next_direction(l, m, dir);
         }
     }
@@ -420,13 +407,13 @@ namespace roadnet {
                 if (m & (1 << i) && !crossroad.hasNeighbor(dir)) {
                     auto result = findNeighbor(map, loc, dir);
 
-                    if (loc == result.l) {
+                    if (loc == result.l && dir == reverse(result.dir)) {
                         straightData& straight = straightVec.emplace_back(
                             roadid {roadtype::straight, genStraightId++},
                             result.n,
                             loc,
                             dir,
-                            dir,
+                            result.dir,
                             id
                         );
                         crossroad.setNeighbor(dir, straight.id);
@@ -441,7 +428,7 @@ namespace roadnet {
                                 result.n,
                                 loc,
                                 dir,
-                                reverse(result.dir),
+                                result.dir,
                                 neighbor_id
                             );
                             crossroad.setNeighbor(dir, straight1.id);
@@ -451,7 +438,7 @@ namespace roadnet {
                                 result.n,
                                 result.l,
                                 reverse(result.dir),
-                                dir,
+                                reverse(dir),
                                 id
                             );
                             neighbor.setNeighbor(reverse(result.dir), straight2.id);
