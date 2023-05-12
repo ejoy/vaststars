@@ -17,7 +17,7 @@ namespace roadnet {
             fatal,
         };
         void init(world& w, uint16_t classid);
-        void init_tick(uint8_t tick);
+        void init_tick(roadtype type);
         void go(roadid ending, uint16_t item_classid, uint16_t item_amount);
         void reset(world& w);
         void update(network& w, uint64_t ti);
@@ -31,6 +31,8 @@ namespace roadnet {
         uint16_t item_classid;
         uint16_t item_amount;
         uint8_t tick;
+        uint8_t straightTime;
+        uint8_t crossTime;
         enum status status;
     };
 }

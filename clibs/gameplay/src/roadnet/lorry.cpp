@@ -3,17 +3,29 @@
 #include "roadnet/bfs.h"
 #include "core/world.h"
 #include "util/prototype.h"
+#include <bee/nonstd/unreachable.h>
 
 namespace roadnet {
     void lorry::init(world& w, uint16_t classid) {
-        //auto capacitance = prototype::get<"capacitance">(w, classid);
+        auto speed = prototype::get<"speed">(w, classid);
         this->classid = classid;
         this->item_classid = 0;
         this->item_amount = 0;
         this->status = status::normal;
+        this->straightTime = 1000 / speed;
+        this->crossTime = 1500 / speed;
     }
-    void lorry::init_tick(uint8_t v) {
-        tick = v;
+    void lorry::init_tick(roadtype type) {
+        switch (type) {
+        case roadtype::cross:
+            tick = crossTime;
+            break;
+        case roadtype::straight:
+            tick = straightTime;
+            break;
+        default:
+            std::unreachable();
+        }
     }
     void lorry::go(roadid ending, uint16_t item_classid, uint16_t item_amount) {
         this->status = status::normal;
