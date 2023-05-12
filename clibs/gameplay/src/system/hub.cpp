@@ -546,14 +546,19 @@ static void Arrival(world& w, ecs::drone& drone) {
                 return;
             }
             auto slot = ChestGetSlot(w, std::bit_cast<hub_mgr::berth>(drone.next));
-            if (!slot || slot->lock_item == 0 || slot->amount == 0 || slot->item != info.item) {
+            if (!slot || slot->item != info.item || slot->amount == 0) {
+                if (slot && slot->item == info.item && slot->amount == 0 && slot->lock_item > 0) {
+                    slot->lock_item--;
+                }
                 if (FindTask(w, drone, info)) {
                     return;
                 }
                 GoHome(w, drone, info);
                 return;
             }
-            slot->lock_item--;
+            if (slot->lock_item > 0) {
+                slot->lock_item--;
+            }
             slot->amount--;
             drone.item = info.item;
             SetStatus(drone, drone_status::go_mov2);
@@ -564,11 +569,13 @@ static void Arrival(world& w, ecs::drone& drone) {
     }
     case drone_status::go_mov2: {
         auto slot = ChestGetSlot(w, std::bit_cast<hub_mgr::berth>(drone.next));
-        if (!slot || slot->lock_space == 0 || slot->item != drone.item) {
+        if (!slot || slot->item != drone.item) {
             CheckThenFindTask(w, drone, drone.item);
             break;
         }
-        slot->lock_space--;
+        if (slot->lock_space > 0) {
+            slot->lock_space--;
+        }
         slot->amount++;
         drone.item = 0;
         CheckThenFindTask(w, drone);
