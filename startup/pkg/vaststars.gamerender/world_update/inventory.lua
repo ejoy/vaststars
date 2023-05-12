@@ -9,4 +9,5 @@ return function(gameplay_world)
         iui.call_datamodel_method("construct.rml", "update_construct_menu")
     end
     gameplay_world.ecs:clear "inventory_changed"
+    return false
 end

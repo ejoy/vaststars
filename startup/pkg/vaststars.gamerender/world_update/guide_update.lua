@@ -35,4 +35,5 @@ return function(world)
         iui.open({"guide_pop.rml"}, guide)
         iguide.set_is_in_guide(true)
     end
+    return false
 end

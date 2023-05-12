@@ -491,8 +491,7 @@ function M:stage_camera_usage(datamodel)
         local typeobject = iprototype.queryByName(object.prototype_name)
 
         igameplay.remove_entity(object.gameplay_eid)
-        gameplay_core.remove_entity(object.gameplay_eid)
-        gameplay_core.build()
+        -- no need to call build() here, it will be called in world_update() uniformly
 
         if typeobject.power_network_link or typeobject.power_supply_distance then
             ipower:build_power_network(gw)

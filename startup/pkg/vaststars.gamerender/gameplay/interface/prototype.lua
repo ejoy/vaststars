@@ -241,6 +241,10 @@ local function __check_types(prototype_name, types)
     return false
 end
 
+function M.check_types(...)
+    return __check_types(...)
+end
+
 function M.has_chest(prototype_name)
     return __check_types(prototype_name, CHEST_TYPES)
 end

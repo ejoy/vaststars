@@ -12,9 +12,13 @@ for file in fs.pairs(fs.path "/pkg/vaststars.gamerender/world_update/") do
     end
 end
 
-local function update(world, get_vsobject_func)
+local function update(world)
+    local need_build = false
     for _, func in pairs(system_funcs) do
-        func(world, get_vsobject_func)
+        if func(world) then
+            need_build = true
+        end
     end
+    return need_build
 end
 return update

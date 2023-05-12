@@ -38,8 +38,7 @@ local function _get_fluid_color(fluid)
 end
 
 return function(world)
-    local t = {}
-    for e in world.ecs:select "fluidbox:in building:in" do
+    for e in world.ecs:select "fluidbox:in fluidbox_changed:absent building:in" do
         local typeobject = assert(iprototype.queryById(e.building.prototype))
         if not typeobject.storage_tank then
             goto continue
@@ -77,5 +76,5 @@ return function(world)
         end
         ::continue::
     end
-    return t
+    return false
 end

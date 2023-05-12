@@ -542,4 +542,6 @@ return function(world)
         end
         ::continue::
     end
+
+    return false
 end

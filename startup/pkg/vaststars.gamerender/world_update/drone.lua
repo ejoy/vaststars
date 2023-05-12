@@ -194,7 +194,6 @@ return function(gameworld)
         -- end
     end
 
-    local t = {}
     --TODO: update framerate is 30
     local elapsed_time = 1.0 / 30
     local same_dest_offset = {}
@@ -267,5 +266,5 @@ return function(gameworld)
         task[2]:flyto(flyid, fly_height, task[3], {to[1] + same_dest_offset[flyid], item_height, to[3]}, false)
         same_dest_offset[flyid] = same_dest_offset[flyid] + drone_offset
     end
-    return t
+    return false
 end

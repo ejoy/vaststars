@@ -121,7 +121,8 @@ function igameplay.create_entity(init)
     return eid
 end
 
-function igameplay.remove_entity(eid)
+local global = require "global"
+function igameplay.remove_entity(eid, mark)
     world:pub {"gameplay", "remove_entity", eid}
 
     local e = gameplay_core.get_entity(eid)
@@ -129,6 +130,10 @@ function igameplay.remove_entity(eid)
         if e.chest.index ~= nil then
             gameplay_core.get_world():container_rollback(e.chest)
         end
+    end
+
+    if mark ~= false then
+        global.removed[eid] = {x = e.building.x, y = e.building.y, direction = e.building.direction, prototype = e.building.prototype}
     end
     return gameplay_core.remove_entity(eid)
 end

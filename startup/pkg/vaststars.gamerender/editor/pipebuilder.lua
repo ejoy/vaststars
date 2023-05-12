@@ -8,7 +8,6 @@ local unpackcoord = iprototype.unpackcoord
 local iconstant = require "gameplay.interface.constant"
 local ALL_DIR = iconstant.ALL_DIR
 local ifluid = require "gameplay.interface.fluid"
-local global = require "global"
 local iobject = ecs.require "object"
 local iprototype = require "gameplay.interface.prototype"
 local iflow_connector = require "gameplay.interface.flow_connector"

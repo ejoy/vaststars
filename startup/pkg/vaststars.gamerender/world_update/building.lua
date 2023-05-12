@@ -72,4 +72,6 @@ return function(gameplay_world)
 
         ::continue::
     end
+
+    return false
 end
