@@ -70,6 +70,11 @@ function road:create(width, height, offset, layer_names, shape_types)
     ism.create_sm_entity(MOUNTAIN.density, width, height, offset, UNIT, MOUNTAIN.scale, __coords_to_positions(MOUNTAIN.mountain_coords, offset), __rects_to_positions(MOUNTAIN.excluded_rects, offset))
 end
 
+function road:has_mountain(x, y)
+    local c = __logic_to_render(x, y, self._offset[1])
+    return ism.exist_sm({{x = c[1], z = c[2], w = 1, h = 1}})
+end
+
 function road:get_offset()
     return self._offset[1], self._offset[2]
 end

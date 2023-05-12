@@ -14,3 +14,11 @@ prototype "任务" {
     group = {},
     icon = "",
 }
+
+prototype "山丘" {
+    type = {"mountain"},
+    icon = "textures/construct/alumina.texture",
+    item_description = "地面上的沙丘",
+    stack = 0,
+    group = {},
+}
