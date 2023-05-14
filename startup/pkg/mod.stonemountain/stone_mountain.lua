@@ -26,8 +26,8 @@ local stone_area
 -- mapping between instance idx and sm_idx
 local remove_table = {}
 local scale_table = {b = 0.80, m = 0.50, s = 0.10}
-local real_to_sm_table = {}
-local sm_to_real_table = {}
+local sm_rect_table = {}
+local sm_grid_table = {}
 local sm_table = {}
 -- 1. mapping between mesh_idx and sm_idx with size_idx with count_idx (before get_final_map)
 -- 1. mapping between mesh_idx and sm_idx with size_idx (after get_final_map)
@@ -39,24 +39,11 @@ local mesh_to_sm_table = {
 }
 local sm_bms_to_mesh_table = {}
 
--- section_idx to sm_idx
-local sections_sm_table = {
-}
-
 -- queue_idx to section_idx
 local terrain_section_cull_table = {}
 
 -- mesh_idx to mesh_origin_aabb
 local mesh_aabb_table    = {}
-
-local constant_buffer_table = {
-    sm_srt_memory_buffer = nil, 
-    sm_srt_buffer = nil,       -- instance buffer
-    indirect_buffer_table = {}, -- indirect buffer of each mesh
-    visibility_memory_table = {
-        [1] = {}, [2] = {}, [3] = {}, [4] = {}
-    }
-}
 
 local mesh_table = {
     [1] = "/pkg/mod.stonemountain/assets/mountain1.glb|meshes/Cylinder.002_P1.meshbin",
@@ -65,14 +52,10 @@ local mesh_table = {
     [4] = "/pkg/mod.stonemountain/assets/mountain4.glb|meshes/Cylinder.021_P1.meshbin"
 }
 
-local function calc_section_idx(idx)
-    local x = (idx - 1) %  width
-    local y = (idx - 1) // height
-    return y // section_size * (height / section_size)  + x // section_size + 1
-end
 
 local function exclude_from_open_area(ix, iz, areas)
     local out_area = true
+    if not areas then return true end
     for _, area in pairs(areas) do
         local ox, oz, ww, hh = area.x + offset, area.z + offset, area.w, area.h
         local lw, rw, lh, rh = math.max(0, ox - remove_offset), math.min(width, ox + ww + remove_offset), math.max(0, oz - hh - remove_offset), math.min(width, oz + remove_offset)
@@ -792,11 +775,26 @@ function sm_sys:data_changed()--[[
     end ]]
 end
 
+--world coordinate
+local function set_sm_rect(mesh_aabb_value, worldmat)
+    local cc, ee = mesh_aabb_value.center, mesh_aabb_value.extent
+    local min, max = math3d.sub(cc, ee), math3d.add(cc, ee)
+    local origin_aabb = math3d.aabb(min, max)
+    local t_aabb = math3d.aabb_transform(worldmat, origin_aabb)
+    local center, extent = math3d.aabb_center_extents(t_aabb)
+    local minv, maxv = math3d.sub(center, extent), math3d.add(center, extent)
+    local minx, minz= math.floor(math.floor(math3d.index(minv, 1)) / unit),  math.floor(math.floor(math3d.index(minv, 3)) / unit)
+    local maxx, maxz= math.ceil(math.ceil(math3d.index(maxv, 1)) / unit),  math.ceil(math.ceil(math3d.index(maxv, 3)) / unit)
+    local rect = {x = minx, z = maxz - 1, w = maxx - minx, h = maxz - minz}
+    sm_rect_table[#sm_rect_table+1] = rect
+    return rect
+end
+
 local function create_sm_entity()
     for sm_idx, _ in pairs(sm_table)do
         for size_idx = 1, 3 do
             local stone = sm_table[sm_idx][size_idx]
-            if stone and stone.s then
+            if stone and stone.s  then
                 local mesh_idx = sm_bms_to_mesh_table[sm_idx][size_idx]
                 local mesh_address = mesh_table[mesh_idx]
                 local eid = ecs.create_entity {
@@ -817,10 +815,15 @@ local function create_sm_entity()
                             local sinh = (1 - cosh * cosh) ^ 0.5
                             local rot_matrix = math3d.matrix(cosh, 0, -sinh, 0, 0, 1, 0, 0, sinh, 0, cosh, 0, 0, 0, 0 ,1)
                             iom.set_rotation(e, math3d.torotation(rot_matrix))
+                            local worldmat = math3d.matrix(e.scene)
+                            local mesh_aabb_value = mesh_aabb_table[mesh_idx]
+                            local rect = set_sm_rect(mesh_aabb_value, worldmat)
+                            --set_sm_grid(rect)
                         end
                     },
                 }
                 if eid then stone.eid = eid end
+
             end
         end
     end
@@ -830,6 +833,35 @@ local function remove_aabb_entity()
     for rid = 1, 4 do
         w:remove(remove_table[rid])
     end
+end
+
+function ism.get_sm_rect_intersect(area)
+    local minx, maxx, minz, maxz = area.x, area.x + area.w, area.z - area.h, area.z
+    local intersect_rect_table = {}
+    for _, rect in pairs(sm_rect_table) do
+        local rminx, rmaxx, rminz, rmaxz = rect.x, rect.x + rect.w, rect.z - rect.h, rect.z
+        local intersect = true
+        if rminx > maxx or rmaxx < minx or rminz > maxz or rmaxz < minz then
+            intersect = false
+        end
+        if intersect then
+            intersect_rect_table[#intersect_rect_table+1] = rect
+        end
+    end
+    return intersect_rect_table 
+end
+
+function ism.get_sm_rect_inside(area)
+    local minx, maxx, minz, maxz = area.x, area.x + area.w, area.z - area.h, area.z
+    local inside_rect_table = {}
+    for _, rect in pairs(sm_rect_table) do
+        local rminx, rmaxx, rminz, rmaxz = rect.x, rect.x + rect.w, rect.z - rect.h, rect.z
+        if rminx > minx and rmaxx < maxx and rminz > minz and rmaxz < maxz then
+            inside_rect_table[#inside_rect_table+1] = rect
+        end 
+
+    end
+    return inside_rect_table 
 end
 
 function ism.exist_sm(areas)

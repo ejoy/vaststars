@@ -9,6 +9,8 @@ interface "istonemountain"
     .implement "stone_mountain.lua"
     .method "create_sm_entity"
     .method "get_sm_aabb"
+    .method "get_sm_rect_inside"
+    .method "get_sm_rect_intersect"
     .method "exist_sm"
 
 component "stonemountain"

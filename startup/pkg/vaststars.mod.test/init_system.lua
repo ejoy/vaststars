@@ -47,20 +47,20 @@ function S.init_world()
 
     iterrain.gen_terrain_field(256, 256, 128)
 
---[[     local density = 0.5
-    local width, height, offset, UNIT = 60, 60, 0, 10
+     local density = 0.5
+    local width, height, offset, UNIT = 256, 256, 128, 10
     local scale_table = {
         big = 1.0,
         middle = 0.6,
         small = 0.2
     }
     local stone_area = {
-        {x = 0, z = 0}
+        {x = 5, z = 5},
     }
-    local open_area = {
-        {x = 0, z = 600, w = 600, h = 600}
-    }
-    istonemountain.create_sm_entity(density, width, height, offset, UNIT, scale_table, stone_area, open_area) ]]
+     local open_area = {
+        --{x = -128, z = 128, w = 256, h = 256}
+    } 
+    istonemountain.create_sm_entity(density, width, height, offset, UNIT, scale_table, stone_area, open_area) 
     --create_mark()
 
 --[[      printer_eid = ecs.create_entity {
@@ -118,7 +118,7 @@ function S:data_changed()
                         create_list[#create_list+1] = {
                             x = x, y = y,
                             layers = {
-                                mark = {type  = rtype, shape = shape, dir = dir}
+                                road = {type  = rtype, shape = shape, dir = dir}
                             }
                         }
                         update_list[#update_list+1] = {
@@ -133,7 +133,7 @@ function S:data_changed()
                     end
                 end
             end
-            create_list[#create_list+1] = {
+--[[             create_list[#create_list+1] = {
                 x = 1, y = 1,
                 layers =
                 {
@@ -150,29 +150,38 @@ function S:data_changed()
                         dir   = "N"
                     }
                 }
-            }
+            } ]]
             iroad.create_roadnet_entity(create_list)
         elseif key == "K" and press == 0 then
             iroad.update_roadnet_entity(update_list)
         elseif key == "L" and press == 0 then
-            iroad.delete_roadnet_entity(delete_list)      
-        elseif key == "N" and press == 0 then
-            local rect_table = {
-                {x = 0, z = 0, w = 256, h = 256},
-            }
-            local color_table = {
-                {1, 0, 0, 0.5},
-            }
+            local judge_area = {x = -5, z = 5, w = 15, h = 15}
+            local rect_table = istonemountain.get_sm_rect_intersect(judge_area)
+            
+            local color_table = {}
+            for i = 1, #rect_table do
+                color_table[#color_table+1] = {1, 0, 0, 0.5}
+            end
              local alpha_table = {
             } 
-            tf_table = itp.create_translucent_plane(rect_table, color_table, "translucent", alpha_table)
+            itp.create_translucent_plane(rect_table, color_table, "translucent", alpha_table)  
+        elseif key == "N" and press == 0 then
+            local judge_area = {x = -5, z = 5, w = 15, h = 15}
+            local rect_table = istonemountain.get_sm_rect_inside(judge_area)
+            
+            local color_table = {}
+            for i = 1, #rect_table do
+                color_table[#color_table+1] = {1, 0, 0, 0.5}
+            end
+             local alpha_table = {
+            } 
             itp.create_translucent_plane(rect_table, color_table, "translucent", alpha_table)
         elseif key == "M" and press == 0 then
             local rect_table = {
-                {x = 0, z = 0, w = 256, h = 256},
+                {x = -5, z = 5, w = 15, h = 15},
             }
             local color_table = {
-                {1, 0, 0, 0.5},
+                {1, 1, 0, 0.5},
             }
              local alpha_table = {
                 --[1] = {min = 0.2, max = 0.8, freq = 1.0},
