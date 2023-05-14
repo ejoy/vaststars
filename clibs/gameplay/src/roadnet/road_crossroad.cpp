@@ -127,7 +127,7 @@ namespace roadnet::road {
             waitingLorry(w, direction(i)) = lorryid::invalid();
             cross_lorry[idx] = id;
             cross_status[idx] = type;
-            l.init_tick(roadtype::cross);
+            l.entry(roadtype::cross);
         }
     }
 

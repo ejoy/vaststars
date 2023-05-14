@@ -382,7 +382,7 @@ static void DoTask(world& w, ecs::drone& drone, const hub_mgr::hub_info& info, h
     Move(w, drone, mov1);
 }
 
-static void DoTask(world& w, ecs::drone& drone, const hub_mgr::hub_info& info, hub_mgr::berth const& mov2) {
+static void DoTaskHasItem(world& w, ecs::drone& drone, const hub_mgr::hub_info& info, hub_mgr::berth const& mov2) {
     {
         //lock mov2
         auto chestslot = ChestGetSlot(w, mov2);
@@ -426,6 +426,19 @@ static size_t FindChestBlue(world& w, const hub_mgr::hub_info& info) {
     return (size_t)-1;
 }
 
+static size_t FindChestBlueForce(world& w, const hub_mgr::hub_info& info) {
+    size_t N = info.chest_blue.size();
+    for (size_t i = 0; i < N; ++i) {
+        size_t ii = (i + w.time) % N;
+        auto berth = info.chest_blue[ii];
+        if (auto chest = w.hubs.chests.find(berth.hash())) {
+            return ii;
+        }
+    }
+    return (size_t)-1;
+}
+
+
 static std::tuple<size_t, size_t, bool> FindHub(world& w, const hub_mgr::hub_info& info) {
     struct hub_find {
         size_t index = -1;
@@ -458,6 +471,28 @@ static std::tuple<size_t, size_t, bool> FindHub(world& w, const hub_mgr::hub_inf
         moveable = min.amount + 2 <= max.amount;
     }
     return {min.index, max.index, moveable};
+}
+
+static size_t FindHubForce(world& w, const hub_mgr::hub_info& info) {
+    struct hub_find {
+        size_t index = -1;
+        uint16_t amount = 0;
+    };
+    hub_find min;
+    size_t N = info.hub.size();
+    for (size_t i = 0; i < N; ++i) {
+        size_t ii = (i + w.time) % N;
+        auto berth = info.hub[ii];
+        if (auto chest = w.hubs.chests.find(berth.hash())) {
+            auto& chestslot = chest::array_at(w, container::index::from(*chest), berth.chest_slot);
+            auto amount1 = chestslot.amount + chestslot.lock_space;
+            if ((min.index == (size_t)-1) || (amount1 < min.amount)) {
+                min.index = ii;
+                min.amount = amount1;
+            }
+        }
+    }
+    return min.index;
 }
 
 static void GoHome(world& w, ecs::drone& drone, const hub_mgr::hub_info& info) {
@@ -504,21 +539,34 @@ static void FindTaskAtHome(world& w, ecs::drone& drone, hub_mgr::hub_info const&
     SetStatus(drone, drone_status::at_home);
 }
 
-static void CheckThenFindTask(world& w, ecs::drone& drone, uint16_t item) {
+static void CheckThenFindTaskHasItem(world& w, ecs::drone& drone) {
     CheckHasHome(w, drone, +[](world& w, ecs::drone& drone, hub_mgr::hub_info const& info) {
+        if (info.item != drone.item) {
+            drone.item = 0;
+            GoHome(w, drone, info);
+            return;
+        }
         auto blue = FindChestBlue(w, info);
         if (blue != (size_t)-1) {
-            DoTask(w, drone, info, info.chest_blue[blue]);
+            DoTaskHasItem(w, drone, info, info.chest_blue[blue]);
             return;
         }
         auto [min, _1, _2] = FindHub(w, info);
         if (min != (size_t)-1) {
-            DoTask(w, drone, info, info.hub[min]);
+            DoTaskHasItem(w, drone, info, info.hub[min]);
             return;
         }
-        drone.item = 0;
-        GoHome(w, drone, info);
-        return;
+        blue = FindChestBlueForce(w, info);
+        if (blue != (size_t)-1) {
+            DoTaskHasItem(w, drone, info, info.chest_blue[blue]);
+            return;
+        }
+        min = FindHubForce(w, info);
+        if (min != (size_t)-1) {
+            DoTaskHasItem(w, drone, info, info.hub[min]);
+            return;
+        }
+        assert(false);
     });
 }
 
@@ -546,14 +594,19 @@ static void Arrival(world& w, ecs::drone& drone) {
                 return;
             }
             auto slot = ChestGetSlot(w, std::bit_cast<hub_mgr::berth>(drone.next));
-            if (!slot || slot->lock_item == 0 || slot->amount == 0 || slot->item != info.item) {
+            if (!slot || slot->item != info.item || slot->amount == 0) {
+                if (slot && slot->item == info.item && slot->amount == 0 && slot->lock_item > 0) {
+                    slot->lock_item--;
+                }
                 if (FindTask(w, drone, info)) {
                     return;
                 }
                 GoHome(w, drone, info);
                 return;
             }
-            slot->lock_item--;
+            if (slot->lock_item > 0) {
+                slot->lock_item--;
+            }
             slot->amount--;
             drone.item = info.item;
             SetStatus(drone, drone_status::go_mov2);
@@ -564,11 +617,13 @@ static void Arrival(world& w, ecs::drone& drone) {
     }
     case drone_status::go_mov2: {
         auto slot = ChestGetSlot(w, std::bit_cast<hub_mgr::berth>(drone.next));
-        if (!slot || slot->lock_space == 0 || slot->item != drone.item) {
-            CheckThenFindTask(w, drone, drone.item);
+        if (!slot || slot->item != drone.item) {
+            CheckThenFindTaskHasItem(w, drone);
             break;
         }
-        slot->lock_space--;
+        if (slot->lock_space > 0) {
+            slot->lock_space--;
+        }
         slot->amount++;
         drone.item = 0;
         CheckThenFindTask(w, drone);

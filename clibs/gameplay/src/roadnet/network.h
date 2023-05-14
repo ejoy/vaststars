@@ -26,7 +26,7 @@ namespace roadnet {
         road::endpoint& Endpoint(endpointid id);
         endpointid EndpointId(loction loc);
 
-         std::optional<road_coord> coordConvert(map_coord  mc);
+        std::optional<road_coord> coordConvert(map_coord  mc);
         std::optional<map_coord> coordConvert(road_coord rc);
 
         dynarray<road::crossroad> crossAry;

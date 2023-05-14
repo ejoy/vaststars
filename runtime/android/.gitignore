@@ -14,3 +14,4 @@
 .cxx
 local.properties
 /app/src/main/jniLibs/
+/.idea/deploymentTargetDropDown.xml
