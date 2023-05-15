@@ -108,7 +108,7 @@ prototype "蒸馏厂I" {
                 height = 100,
                 base_level = 100,
                 connections = {
-                    {type="output", position={2,4,"S"}},
+                    {type="output", position={4,4,"S"}},
                 }
             },
             {
@@ -116,9 +116,10 @@ prototype "蒸馏厂I" {
                 height = 100,
                 base_level = 100,
                 connections = {
-                    {type="output", position={4,4,"S"}},
+                    {type="output", position={2,4,"S"}},
                 }
             },
+
         },
     }
 }
