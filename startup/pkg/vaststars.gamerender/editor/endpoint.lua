@@ -37,12 +37,16 @@ local function gen_endpoint_mask(object)
     for _, tile in pairs(typeobject.endpoint) do
         local offset_x, offset_y = __calc_offset(tile.position, object.dir, typeobject.area)
         local x, y = object.x + offset_x, object.y + offset_y
+        local no_left_turn = false
         do
             local coord = iprototype.packcoord(x, y)
             local dir = iprototype.rotate_dir(tile.dir, object.dir)
             assert(global.roadnet[coord] == nil)
             global.roadnet[coord] = iroadnet_converter.prototype_name_dir_to_mask(tile.prototype, dir)
             for _, mask in ipairs(tile.mask) do
+                if CONSTANT[mask] == CONSTANT.ROADNET_MASK_ENDPOINT then
+                    no_left_turn = true
+                end
                 global.roadnet[coord] = global.roadnet[coord] | CONSTANT[mask]
             end
         end
@@ -53,6 +57,10 @@ local function gen_endpoint_mask(object)
             local coord = iprototype.packcoord(dx, dy)
             assert(global.roadnet[coord])
             global.roadnet[coord] = global.roadnet[coord] | (1 << MAPPING[iprototype.reverse_dir(entrance_dir)])
+            global.roadnet[coord] = global.roadnet[coord] | CONSTANT.ROADNET_MASK_NOUTURN
+            if no_left_turn then
+                global.roadnet[coord] = global.roadnet[coord] | CONSTANT.ROADNET_MASK_NOLEFTTURN
+            end
 
             res[#res + 1] = coord
         end
