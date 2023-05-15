@@ -100,6 +100,9 @@ static int lbuild(lua_State *L) {
     s.consumers.clear();
     for (auto& v : ecs_api::select<ecs::station_consumer, ecs::station, ecs::building>(w.ecs)) {
         auto& station = v.get<ecs::station>();
+        if (station.endpoint == 0xFFFF) {
+            continue;
+        }
         auto& chestslot = chest::array_at(w, container::index::from(station.chest), 0);
         auto& kdtree = s.consumers[chestslot.item];
         auto& building = v.get<ecs::building>();
@@ -174,10 +177,10 @@ static int lupdate(lua_State *L) {
     station_vector producers(sz);
     for (auto& v : ecs_api::select<ecs::station_producer, ecs::station, ecs::building>(w.ecs)) {
         auto& station = v.get<ecs::station>();
-        producers[i++] = &station;
         if (station.endpoint == 0xFFFF) {
             continue;
         }
+        producers[i++] = &station;
         auto& ep = w.rw.Endpoint(station.endpoint);
         auto lorryId = ep.waitingLorry(w.rw);
         if (!lorryId) {
