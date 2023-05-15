@@ -152,7 +152,7 @@
                     "show_set_recipe", "show_set_item",
                     "drone_depot_icon", "station_item_icon",
                     "lorry_factory_icon", "lorry_factory_count", "lorry_factory_inc_lorry", "lorry_factory_dec_lorry",
-                    "guide_progress"
+                    "guide_progress", "pickup_item_count"
                 }
             })
         </script>

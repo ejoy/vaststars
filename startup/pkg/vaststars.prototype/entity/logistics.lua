@@ -26,9 +26,8 @@ prototype "指挥中心" {
         },
     },
     endpoint = {
-        {position={1, 4}, prototype = "砖石公路-L型", dir = "E", entrance_dir = "S", type="road"},
-        {position={2, 4}, prototype = "砖石公路-I型", dir = "E", type="endpoint"},
-        {position={3, 4}, prototype = "砖石公路-L型", dir = "S", entrance_dir = "S", type="road"},
+        {position={0, 4}, prototype = "砖石公路-L型", dir = "E", entrance_dir = "S", mask={"ROADNET_MASK_ROADNET_ONLY"}},
+        {position={1, 4}, prototype = "砖石公路-L型", dir = "S", entrance_dir = "S", mask={"ROADNET_MASK_ROADNET_ONLY", "ROADNET_MASK_ENDPOINT", "ROADNET_MASK_NOLEFTTURN"}},
     },
     move = false,
     io_shelf = false,
@@ -286,7 +285,7 @@ prototype "送货车站" {
     type = {"building", "station"},
     station_type = "station_producer",
     chest_type = "blue",
-    area = "1x1",
+    area = "2x1",
     weights = 1,
     crossing = {
         connections = {
@@ -294,9 +293,8 @@ prototype "送货车站" {
         },
     },
     endpoint = {
-        {position={-1, 0}, prototype = "砖石公路-L型", dir = "E", entrance_dir = "S", type="road"},
-        {position={0,  0}, prototype = "砖石公路-I型", dir = "E", type="endpoint"},
-        {position={1,  0}, prototype = "砖石公路-L型", dir = "S", entrance_dir = "S", type="road"},
+        {position={0, 0}, prototype = "砖石公路-L型", dir = "E", entrance_dir = "S", mask={"ROADNET_MASK_ROADNET_ONLY"}},
+        {position={1, 0}, prototype = "砖石公路-L型", dir = "S", entrance_dir = "S", mask={"ROADNET_MASK_ROADNET_ONLY", "ROADNET_MASK_ENDPOINT", "ROADNET_MASK_NOLEFTTURN"}},
     },
     move = false,
 }
@@ -310,7 +308,7 @@ prototype "收货车站" {
     type = {"building", "station"},
     station_type = "station_consumer",
     chest_type = "red",
-    area = "1x1",
+    area = "2x1",
     weights = 1,
     crossing = {
         connections = {
@@ -318,9 +316,8 @@ prototype "收货车站" {
         },
     },
     endpoint = {
-        {position={-1, 0}, prototype = "砖石公路-L型", dir = "E", entrance_dir = "S", type="road"},
-        {position={0,  0}, prototype = "砖石公路-I型", dir = "E", type="endpoint"},
-        {position={1,  0}, prototype = "砖石公路-L型", dir = "S", entrance_dir = "S", type="road"},
+        {position={0, 0}, prototype = "砖石公路-L型", dir = "E", entrance_dir = "S", mask={"ROADNET_MASK_ROADNET_ONLY"}},
+        {position={1, 0}, prototype = "砖石公路-L型", dir = "S", entrance_dir = "S", mask={"ROADNET_MASK_ROADNET_ONLY", "ROADNET_MASK_ENDPOINT", "ROADNET_MASK_NOLEFTTURN"}},
     },
     move = false,
 }

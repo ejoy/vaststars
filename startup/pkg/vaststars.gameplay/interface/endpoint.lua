@@ -25,19 +25,21 @@ local function rotate(position, direction, area)
     end
 end
 
-local function get_tile(pt, type)
+local function get_tile(pt, mask)
     assert(pt.endpoint)
     for _, r in ipairs(pt.endpoint) do
-        if r.type == type then
-            return r
+        for _, m in ipairs(r.mask) do
+            if m == mask then
+                return r
+            end
         end
     end
-    assert(false, "can not found type: " .. type)
+    assert(false, "can not found endpoint: " .. pt.name)
 end
 
 local function endpoint_id(world, init, pt)
     assert(init.x and init.y and init.dir)
-    local r = get_tile(pt, "endpoint")
+    local r = get_tile(pt, "ROADNET_MASK_ENDPOINT")
     local x, y = rotate(r.position, DIRECTION[init.dir], pt.area)
     x = x + init.x
     y = y + init.y

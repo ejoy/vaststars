@@ -1,5 +1,6 @@
 local BUILDING_COMPONENTS = {
     io_shelves = true,
+    station_shelf = true,
     drone_depot_shelf = true,
     drone_depot_icon = true,
     assembling_icon = true,

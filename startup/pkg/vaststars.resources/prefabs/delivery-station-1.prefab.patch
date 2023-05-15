@@ -180,7 +180,7 @@ policy:
   ant.animation|slot
 ---
 data:
-  name: slot1
+  name: shelf
   scene:
     t: {0, 10, 0}
   slot:

@@ -241,6 +241,7 @@ prototype "运输车辆I" {
     capacitance = "10MJ",
     speed = 63,
     icon = "textures/construct/truck.texture",
+    model = "prefabs/lorry-1.prefab",
 }
 
 prototype "换热器I" {

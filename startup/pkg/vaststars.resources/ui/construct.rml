@@ -347,13 +347,6 @@
             function start.clickShowConstructMenuDetail(event, construct_menu)
                 start.cur_construct_menu = construct_menu
             end
-            function start.clickConstructMenuItem(event, building)
-                ui_sys.pub {"construct_entity", building}
-            end
-            function start.switchConciseMode(event)
-                ui_sys.pub {"switch_concise_mode"}
-            end
-
             local function setElementClass(elementId, class, expanded)
                 local e = document.getElementById(elementId)
                 if not e then
@@ -444,7 +437,7 @@
             </div>
 
             <!-- right-side construction menu -->
-            <workbutton class = "panel-switch" data-event-click="switchConciseMode()" />
+            <workbutton class = "panel-switch" data-event-click="clickButton('switch_concise_mode')" />
             <div style = "pointer-events: none; position: absolute; right:0vmin; width: 98vmax; height: 97vmin; flex-direction: row-reverse;" data-if="is_concise_mode">
                 <div style = "width: 16.00vmin; height: 80.00vmin; flex-direction: column; justify-content: space-between;">
                     <workbutton data-event-click="clickShowConstructMenuDetail(it.name)" data-for = "construct_menu" data-style-background-color="cur_construct_menu == it.name ? 'rgb(0, 176, 80)' : 'rgb(246, 142, 14)'">
@@ -458,7 +451,7 @@
 
                 <div style = "flex-direction: row; flex-wrap: wrap; width: 30.13vmin; height: 80.00vmin; background-color: rgb(44, 32, 18); border: 0.40vmin rgb(89, 73, 39); border-radius: 0.67vmin;" data-if="cur_construct_menu == it.name" data-for = "construct_menu">
                     <div class="tools-container" data-for = "menu, menu_id : it.detail">
-                        <button class="tools-button" data-event-click="clickConstructMenuItem(menu.prototype_name)">
+                        <button class="tools-button" data-event-click="clickButton('construct_entity', menu.prototype_name)">
                             <div class="workbutton-bg" data-style-background-image = "menu.icon" />
                             <div class="tools-button-title">{{menu.show_prototype_name}}</div>
                             <div class="item-num">{{menu.count}}</div>

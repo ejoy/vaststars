@@ -154,13 +154,17 @@ namespace roadnet::lua {
                 return 0;
             }
             auto lorryid = std::get<0>(*res);
-            lua_pushinteger(L, lorryid.id);
-            push_road_coord(L, std::get<1>(*res));
             auto& l = w.Lorry(lorryid);
+            lua_pushinteger(L, lorryid.id);
+            lua_pushinteger(L, l.get_classid());
+            auto [item_classid, item_amount] = l.get_item();
+            lua_pushinteger(L, item_classid);
+            lua_pushinteger(L, item_amount);
+            push_road_coord(L, std::get<1>(*res));
             auto [progress, maxprogress] = l.get_progress();
             lua_pushinteger(L, progress);
             lua_pushinteger(L, maxprogress);
-            return 4;
+            return 7;
         }
         static int gc(lua_State* L) {
             get(L, 1).~eachlorry();

@@ -65,6 +65,7 @@ local function zoom(factor, x, y)
     local y = math3d.index(position, 2)
     if y >= CAMERA_YAIXS_MIN and y <= CAMERA_YAIXS_MAX then
         iom.set_position(ce, position)
+        world:pub {"camera_zoom"}
     end
 end
 

@@ -97,6 +97,7 @@ interface "iui"
     .method "convert_coord"
     .method "redirect"
     .method "is_open"
+    .method "broadcast"
 
 system "camera_controller"
     .implement "engine/system/camera_controller.lua"

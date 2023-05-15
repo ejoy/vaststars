@@ -6,8 +6,8 @@ local global = require "global"
 local iroadnet_converter = require "roadnet_converter"
 local coord_system = ecs.require "terrain"
 
-local MASK_ENDPOINT <const> = 0x10
-local MASK_ROADNET_ONLY <const> = 0x20
+local CONSTANT = require("gameplay.interface.constant")
+local ROADNET_MASK_ROADNET_ONLY <const> = require("gameplay.interface.constant").ROADNET_MASK_ROADNET_ONLY
 
 local function __calc_offset(position, direction, area)
     local w, h = iprototype.unpackarea(area)
@@ -41,9 +41,9 @@ local function gen_endpoint_mask(object)
             local coord = iprototype.packcoord(x, y)
             local dir = iprototype.rotate_dir(tile.dir, object.dir)
             assert(global.roadnet[coord] == nil)
-            global.roadnet[coord] = iroadnet_converter.prototype_name_dir_to_mask(tile.prototype, dir) | MASK_ROADNET_ONLY
-            if tile.type == "endpoint" then
-                global.roadnet[coord] = global.roadnet[coord] | MASK_ENDPOINT
+            global.roadnet[coord] = iroadnet_converter.prototype_name_dir_to_mask(tile.prototype, dir)
+            for _, mask in ipairs(tile.mask) do
+                global.roadnet[coord] = global.roadnet[coord] | CONSTANT[mask]
             end
         end
         if tile.entrance_dir then
@@ -61,7 +61,7 @@ local function gen_endpoint_mask(object)
 end
 
 local function is_roadnet_only(mask)
-    return (mask & MASK_ROADNET_ONLY) == MASK_ROADNET_ONLY
+    return (mask & ROADNET_MASK_ROADNET_ONLY) == ROADNET_MASK_ROADNET_ONLY
 end
 
 return {

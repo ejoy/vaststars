@@ -201,6 +201,9 @@ static int lupdate(lua_State *L) {
             }
             ep.setOutForce(w.rw);
             auto& target_station = target.get<ecs::station>();
+            if (target_station.endpoint == 0xFFFF) {
+                continue;
+            }
             auto& target_ep = w.rw.Endpoint(target_station.endpoint);
             l.go(target_ep.rev_neighbor, chestslot.item, chestslot.amount);
             chestslot.amount = 0;
@@ -232,6 +235,9 @@ static int lupdate(lua_State *L) {
         auto& producer = find_producer(w, producers);
         ep.setOutForce(w.rw);
         auto& target_station = producer;
+        if (target_station.endpoint == 0xFFFF) {
+            continue;
+        }
         auto& target_ep = w.rw.Endpoint(target_station.endpoint);
         chestslot.amount = l.get_item_amount();
         l.go(target_ep.rev_neighbor, 0, 0);
@@ -263,6 +269,9 @@ static int lupdate(lua_State *L) {
         auto& producer = find_producer(w, producers);
         roadnet::lorryid lorryId = w.rw.createLorry(w, chestslot.item);
         auto& l = w.rw.Lorry(lorryId);
+        if (producer.endpoint == 0xFFFF) {
+            continue;
+        }
         l.go(w.rw.Endpoint(producer.endpoint).rev_neighbor, 0, 0);
         ep.setOutForce(w.rw, lorryId);
     }

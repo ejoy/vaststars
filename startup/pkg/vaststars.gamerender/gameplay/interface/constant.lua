@@ -19,4 +19,8 @@ M.NightTick  =  50 * M.UPS + M.DuskTick;
 M.DawnTick   = 100 * M.UPS + M.NightTick;
 M.DayTick    = 250 * M.UPS + M.DawnTick;
 
+M.ROADNET_MASK_ENDPOINT     = 1 << 4
+M.ROADNET_MASK_NOLEFTTURN   = 1 << 5
+M.ROADNET_MASK_ROADNET_ONLY = 1 << 6
+
 return M

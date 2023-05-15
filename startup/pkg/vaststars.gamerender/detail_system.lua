@@ -9,6 +9,7 @@ local iprototype = require "gameplay.interface.prototype"
 local idetail = ecs.interface "idetail"
 local icamera_controller = ecs.import.interface "vaststars.gamerender|icamera_controller"
 local gameplay_core = require "gameplay.core"
+local create_selected_boxes = ecs.require "selected_boxes"
 
 local function __get_capacitance(eid)
     local e = gameplay_core.get_entity(eid)
@@ -68,18 +69,33 @@ do
     local sprites = {}
     local create_sprite = ecs.require "sprite"
     local SPRITE_COLOR = import_package "vaststars.prototype".load("sprite_color")
+    local selected_boxes
 
     function idetail.unselected()
         for _, sprite in ipairs(sprites) do
             sprite:remove()
         end
         sprites = {}
+
+        if selected_boxes then
+            selected_boxes:remove()
+            selected_boxes = nil
+        end
     end
 
     function idetail.selected(object)
         idetail.unselected()
-
         local typeobject = iprototype.queryByName(object.prototype_name)
+        local color = SPRITE_COLOR.SELECTED_OUTLINE
+
+        selected_boxes = create_selected_boxes(
+            {
+                "/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab",
+                "/pkg/vaststars.resources/prefabs/selected-box-no-animation-line.prefab",
+            },
+            object.srt.t, color, iprototype.rotate_area(typeobject.area, object.dir)
+        )
+
         if typeobject.supply_area then
             for _, object in objects:all() do
                 local otypeobject = iprototype.queryByName(object.prototype_name)
