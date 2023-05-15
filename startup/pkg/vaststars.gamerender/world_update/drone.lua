@@ -11,11 +11,12 @@ local gameplay_core = require "gameplay.core"
 local entity_remove = world:sub {"gameplay", "remove_entity"}
 -- enum defined in c 
 local STATUS_HAS_ERROR = 1
-local STATUS_EMPTY_TASK = 2
 local STATUS_IDLE <const> = 3
 local STATUS_AT_HOME <const> = 4
-local STATUS_GO_HOME <const> = 7
-
+local BERTH_HUB = 0
+local BERTH_RED = 1
+local BERTH_BLUE = 2
+local BERTH_HOME = 3
 local sampler_group
 local function create_motion_object(s, r, t, parent)
     if not sampler_group then
@@ -169,6 +170,10 @@ local function get_object(lacation)
     return objects:coord(((lacation >> 23) & 0x1FF) // 2, ((lacation >> 14) & 0x1FF) // 2)
 end
 
+local function get_berth(lacation)
+    return (lacation >> 5) & 0x03
+end
+
 local function create_item(item, parent)
     local prefab = sampler_group:create_instance("/pkg/vaststars.resources/prefabs/rock.prefab", parent)
     prefab.on_init = function(inst) end
@@ -185,17 +190,28 @@ local function get_home_pos(pos)
     return {pos[1] + 6, pos[2] + 8, pos[3] - 6}
 end
 
-return function(gameworld)
-    for _, _, geid in entity_remove:unpack() do
-        -- local e = gameplay_core.get_entity(geid)
-        -- if e.hub and drone_depot[geid] then
-        --     drone_depot[geid]:destroy()
-        --     drone_depot[geid] = nil
-        -- end
+local function remove_drone(drones)
+    if #drones == 0 then
+        for _, drone in pairs(lookup_drones) do
+            drone:destroy()
+        end
+        lookup_drones = {}
+    else
+        for _, eid in ipairs(drones) do
+            if lookup_drones[eid] then
+                lookup_drones[eid]:destroy()
+                lookup_drones[eid] = nil
+            end
+        end
     end
+end
+
+return function(gameworld)
+    -- for _, _, geid in entity_remove:unpack() do
+    -- end
 
     --TODO: update framerate is 30
-    local elapsed_time = 1.0 / 30
+    -- local elapsed_time = 1.0 / 30
     local same_dest_offset = {}
     local drone_task = {}
     for e in gameworld.ecs:select "drone:in eid:in" do
@@ -205,8 +221,7 @@ return function(gameworld)
         --     print(drone.status, drone.prev, drone.next, drone.maxprogress, drone.progress, drone.item)
         -- end
         if drone.status == STATUS_HAS_ERROR and lookup_drones[e.eid] then
-            lookup_drones[e.eid]:destroy()
-            lookup_drones[e.eid] = nil
+            remove_drone({e.eid})
         end
         if drone.status == STATUS_HAS_ERROR then
             goto continue
@@ -239,19 +254,19 @@ return function(gameworld)
                         local from = srcobj and srcobj.srt.t or {0, 0, 0}
                         local to = destobj.srt.t
                         -- status : go_home
-                        -- print(e.eid, drone.prev, drone.next, drone.maxprogress, drone.progress)
-                        if drone.status == STATUS_GO_HOME then
+                        -- print("berth1:", get_berth(drone.prev), get_berth(drone.next))
+                        if get_berth(drone.next) == BERTH_HOME then
                             current:gohome(flyid, {from[1], item_height, from[3]}, get_home_pos(to))
                         else
                             drone_task[#drone_task + 1] = {flyid, current, {from[1], item_height, from[3]}, to}
                         end
                     end
-                elseif (drone.status == STATUS_IDLE or drone.status == STATUS_AT_HOME) and not current.to_home then
-                    -- print(e.eid, drone.prev, drone.next, drone.maxprogress, drone.progress)
+                elseif get_berth(drone.prev) == BERTH_HOME and not current.to_home then
                     -- status : to_home
                     local obj = get_object(drone.prev)
                     assert(obj)
                     local dst = obj.srt.t
+                    -- print("berth2:", get_berth(drone.prev), get_berth(drone.next))
                     current:gohome(flyid, {dst[1], item_height, dst[3]}, get_home_pos(dst))
                 end
             else
