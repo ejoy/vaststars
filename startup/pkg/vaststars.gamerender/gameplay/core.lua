@@ -1,12 +1,7 @@
 local gameplay = import_package "vaststars.gameplay"
-local CONSTANTS = import_package "vaststars.prototype".load("roadnet")
-local STRAIGHT_TICKCOUNT <const> = CONSTANTS.STRAIGHT_TICKCOUNT
-local CROSS_WAIT_TICKCOUNT <const> = CONSTANTS.CROSS_WAIT_TICKCOUNT
-local CROSS_TICKCOUNT <const> = CONSTANTS.CROSS_TICKCOUNT
 
 local function __create_gameplay_world()
     local world = gameplay.createWorld()
-    world:roadnet_init(STRAIGHT_TICKCOUNT, CROSS_WAIT_TICKCOUNT, CROSS_TICKCOUNT)
     return world
 end
 

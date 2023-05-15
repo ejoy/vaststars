@@ -12,6 +12,7 @@ local NOTHING <const> = require "debugger".nothing
 local TERRAIN_ONLY <const> = require "debugger".terrain_only
 
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
+local camera_zoom_mb = world:sub {"camera_zoom"}
 local pickup_gesture_mb = world:sub {"pickup_gesture"}
 local icamera_controller = ecs.import.interface "vaststars.gamerender|icamera_controller"
 local math3d = require "math3d"
@@ -23,6 +24,7 @@ local irender_layer = ecs.require "engine.render_layer"
 local imain_menu_manager = ecs.require "main_menu_manager"
 local icanvas = ecs.require "engine.canvas"
 local ia = ecs.import.interface "ant.audio|audio_interface"
+local iui = ecs.import.interface "vaststars.gamerender|iui"
 
 local platform = require "bee.platform"
 local caudio
@@ -155,6 +157,10 @@ function m:camera_usage()
             terrain:enable_terrain(coord[1], coord[2])
         end
         ::continue::
+    end
+
+    for _ in camera_zoom_mb:unpack() do
+        iui.redirect("building_arc_menu.rml", "lost_focus")
     end
 
     -- for debug

@@ -17,6 +17,7 @@ local close_mb = mailbox:sub {"close"}
 local ui_click_mb = mailbox:sub {"ui_click"}
 local pickup_item_mb = mailbox:sub {"pickup_item"}
 local place_item_mb = mailbox:sub {"place_item"}
+local lost_focus_mb = mailbox:sub {"lost_focus"}
 
 local ichest = require "gameplay.interface.chest"
 local assembling_common = require "ui_datamodel.common.assembling"
@@ -29,7 +30,7 @@ local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 local iobject = ecs.require "object"
 local igameplay = ecs.interface "igameplay"
 local icamera_controller = ecs.interface "icamera_controller"
-local math3d = require "math3d"
+local interval_call = ecs.require "engine.interval_call"
 
 local function __show_set_item(typeobject)
     return iprototype.has_type(typeobject.type, "hub") or iprototype.has_type(typeobject.type, "station")
@@ -44,7 +45,7 @@ local function __show_set_recipe(typeobject)
     return typeobject.recipe == nil and not iprototype.has_type(typeobject.type, "mining")
 end
 
-local function __lorry_factory_update(datamodel, object_id)
+local __lorry_factory_update = interval_call(800, function(datamodel, object_id)
     local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if not e then
@@ -68,9 +69,9 @@ local function __lorry_factory_update(datamodel, object_id)
     datamodel.lorry_factory_count = lorry_factory_count
     datamodel.lorry_factory_inc_lorry = lorry_factory_inc_lorry
     datamodel.lorry_factory_dec_lorry = lorry_factory_dec_lorry
-end
+end, false)
 
-local function __drone_depot_update(datamodel, object_id)
+local __drone_depot_update = interval_call(800, function(datamodel, object_id)
     local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if not e then
@@ -87,9 +88,9 @@ local function __drone_depot_update(datamodel, object_id)
     local item_typeobject = iprototype.queryById(c.item)
     datamodel.drone_depot_icon = item_typeobject.icon
     datamodel.drone_depot_count = c.amount
-end
+end, false)
 
-local function __station_update(datamodel, object_id)
+local __station_update = interval_call(800, function(datamodel, object_id)
     local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if not e then
@@ -107,13 +108,69 @@ local function __station_update(datamodel, object_id)
     datamodel.station_item_icon = item_typeobject.icon
     datamodel.station_item_count = c.amount
     datamodel.station_weight_increase = true
-    datamodel.station_weight_decrease = true
+    datamodel.station_weight_decrease = true    return false
+end, false)
+
+local function __get_moveable_count(object_id)
+    local object = assert(objects:get(object_id))
+    local typeobject = iprototype.queryByName(object.prototype_name)
+    local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+    if iprototype.has_type(typeobject.type, "assembling") then
+        local _, results = assembling_common.get(gameplay_core.get_world(), e)
+        if not results[1] then
+            return 0
+        end
+        local succ, count = ichest.get_moveable_count(gameplay_core.get_world(), results[1].id, results[1].count)
+        if not succ then
+            return 0
+        end
+        return count
+    elseif iprototype.has_type(typeobject.type, "station") then
+        local slot = ichest.chest_get(gameplay_core.get_world(), e.station, 1)
+        if not slot then
+            return 0
+        end
+        local succ, count = ichest.get_moveable_count(gameplay_core.get_world(), slot.item, ichest.get_amount(slot))
+        if not succ then
+            return 0
+        end
+        return count
+    elseif iprototype.has_type(typeobject.type, "hub") then
+        local slot = ichest.chest_get(gameplay_core.get_world(), e.hub, 1)
+        if not slot then
+            return 0
+        end
+        local succ, count = ichest.get_moveable_count(gameplay_core.get_world(), slot.item, ichest.get_amount(slot))
+        if not succ then
+            return 0
+        end
+        return count
+    elseif iprototype.has_type(typeobject.type, "chest") then
+        local count = 0
+        local items = ichest.collect_item(gameplay_core.get_world(), e.chest)
+        for _, slot in pairs(items) do
+            local succ, available = ichest.get_moveable_count(gameplay_core.get_world(), slot.item, ichest.get_amount(slot))
+            if succ then
+                count = count + available
+            end
+        end
+        return count
+    else
+        assert(false)
+    end
 end
+
+local __moveable_count_update = interval_call(800, function(datamodel, object_id)
+    datamodel.pickup_item_count = __get_moveable_count(object_id)
+    return false
+end, false)
 
 ---------------
 local M = {}
 local current_object_id
 function M:create(object_id, object_position, ui_x, ui_y)
+    lost_focus_mb:clear()
+
     if current_object_id and current_object_id ~= object_id then
         local vsobject = vsobject_manager:get(current_object_id)
         if vsobject then -- current_object_id may be destroyed
@@ -171,6 +228,7 @@ function M:create(object_id, object_position, ui_x, ui_y)
         station_weight_decrease = false,
         pickup_item = pickup_item,
         place_item = place_item,
+        pickup_item_count = __get_moveable_count(object_id),
         recipe_name = recipe_name,
         object_id = object_id,
         prototype_name = object.prototype_name,
@@ -236,6 +294,7 @@ function M:stage_ui_update(datamodel, object_id)
     __lorry_factory_update(datamodel, object_id)
     __drone_depot_update(datamodel, object_id)
     __station_update(datamodel, object_id)
+    __moveable_count_update(datamodel, object_id)
 
     for _, _, _, object_id in set_recipe_mb:unpack() do
         iui.open({"recipe_pop.rml"}, object_id)
@@ -428,6 +487,10 @@ function M:stage_ui_update(datamodel, object_id)
 
         gameplay_core.build()
         ::continue::
+    end
+
+    for _ in lost_focus_mb:unpack() do
+        world:pub {"rmlui_message_close", "building_arc_menu.rml"}
     end
 end
 

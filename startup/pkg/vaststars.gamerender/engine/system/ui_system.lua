@@ -296,6 +296,12 @@ function iui.redirect(url, ...)
     end
 end
 
+function iui.broadcast(...)
+    for url in pairs(window_bindings) do
+        world:pub {"rmlui_message_pub", url, ...}
+    end
+end
+
 -- for debuger
 function iui.add_datamodel_listener(url, func)
     datamodel_listener[url] = func

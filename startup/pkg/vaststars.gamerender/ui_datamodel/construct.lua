@@ -32,7 +32,6 @@ local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local COLOR_GREEN = math3d.constant("v4", {0.3, 1, 0, 1})
 local construct_menu_cfg = import_package "vaststars.prototype"("construct_menu")
 local ichest = require "gameplay.interface.chest"
-local debugger = require "debugger"
 local create_event_handler = require "ui_datamodel.common.event_handler"
 local ipower_line = ecs.require "power_line"
 local iroad = ecs.require "engine.road"
@@ -106,9 +105,6 @@ local function __on_pickup_mineral(datamodel, mineral)
 end
 
 local function __get_construct_menu()
-    local e = assert(gameplay_core.get_world().ecs:first("inventory:in"))
-    local items = ichest.collect_item(gameplay_core.get_world(), e.inventory)
-
     local construct_menu = {}
     for _, menu in ipairs(construct_menu_cfg) do
         local m = {}
@@ -118,13 +114,7 @@ local function __get_construct_menu()
 
         for _, prototype_name in ipairs(menu.detail) do
             local typeobject = assert(iprototype.queryByName(prototype_name))
-            local count = 0
-            if items[typeobject.id] then
-                count = ichest.get_amount(items[typeobject.id])
-            end
-            if debugger.infinite_item then
-                count = 99999
-            end
+            local count = ichest.get_inventory_item_count(gameplay_core.get_world(), typeobject.id)
             m.detail[#m.detail + 1] = {
                 show_prototype_name = iprototype.show_prototype_name(typeobject),
                 prototype_name = prototype_name,

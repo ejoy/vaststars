@@ -59,6 +59,8 @@ return function(start)
         local v = setmetatable({}, {__index = DEFAULT})
         v.text = "收取物品"
         v.message = "pickup_item"
+        v.number = start.pickup_item_count
+        v.show_number = true
         v.background_image = "textures/cmdcenter/item-in.texture"
         start.buttons[#start.buttons + 1] = v
     end
