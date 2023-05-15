@@ -16,20 +16,16 @@ function M.chest_place(world, ...)
     return world:container_place(...)
 end
 
-function M.collect_item(world, e, check)
+function M.collect_item(world, e)
     local r = {}
     for i = 1, 256 do
         local slot = world:container_get(e, i)
         if not slot then
             break
         end
-        if slot.item ~= 0 then
-            if not check and slot.amount == 0 then
-                goto continue
-            end
+        if slot.item ~= 0 and slot.amount ~= 0 then
             r[slot.item] = slot
         end
-        ::continue::
     end
     return r
 end
@@ -148,6 +144,20 @@ function M.get_moveable_count(world, item, count)
 
     local available = math.min(stack - existing, count)
     return true, available
+end
+
+function M.can_move_to_inventory(world, chest)
+    local slots = M.collect_item(world, chest)
+    for _, slot in pairs(slots) do
+        local ok, count = M.get_moveable_count(world, slot.item, slot.amount)
+        if not ok then
+            return false
+        end
+        if count < slot.amount then
+            return false
+        end
+    end
+    return true
 end
 
 -- item count

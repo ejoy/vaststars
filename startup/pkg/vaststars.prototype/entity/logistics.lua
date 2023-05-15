@@ -297,6 +297,7 @@ prototype "送货车站" {
         {position={1, 0}, prototype = "砖石公路-L型", dir = "S", entrance_dir = "S", mask={"ROADNET_MASK_ROADNET_ONLY", "ROADNET_MASK_ENDPOINT", "ROADNET_MASK_NOLEFTTURN"}},
     },
     move = false,
+    teardown = false,
 }
 
 --收货车站需要设置送货类型
@@ -320,4 +321,5 @@ prototype "收货车站" {
         {position={1, 0}, prototype = "砖石公路-L型", dir = "S", entrance_dir = "S", mask={"ROADNET_MASK_ROADNET_ONLY", "ROADNET_MASK_ENDPOINT", "ROADNET_MASK_NOLEFTTURN"}},
     },
     move = false,
+    teardown = false,
 }

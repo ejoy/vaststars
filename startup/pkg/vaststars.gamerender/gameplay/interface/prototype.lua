@@ -255,6 +255,15 @@ function M.has_chest(prototype_name)
     return __check_types(prototype_name, CHEST_TYPES)
 end
 
+function M.get_chest_component(prototype_name)
+    local typeobject = assert(M.queryByName(prototype_name))
+    for _, t in ipairs(CHEST_TYPES) do
+        if M.has_type(typeobject.type, t) then
+            return t
+        end
+    end
+end
+
 function M.has_pickup(prototype_name)
     return __check_types(prototype_name, PICKUP_TYPES)
 end

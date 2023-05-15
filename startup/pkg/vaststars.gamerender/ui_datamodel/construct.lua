@@ -514,6 +514,21 @@ function M:stage_camera_usage(datamodel)
         local gw = gameplay_core.get_world()
         local typeobject = iprototype.queryByName(object.prototype_name)
 
+        local chest_component = iprototype.get_chest_component(object.prototype_name)
+        if chest_component then
+            local e = gameplay_core.get_entity(object.gameplay_eid)
+            if not ichest.can_move_to_inventory(gameplay_core.get_world(), e[chest_component]) then
+                log.error("can not teardown")
+                goto continue
+            end
+
+            -- TODO: optimize
+            local slots = ichest.collect_item(gameplay_core.get_world(), e[chest_component])
+            for _, slot in pairs(slots) do
+                ichest.move_to_inventory(gameplay_core.get_world(), e[chest_component], slot.item, ichest.get_amount(slot))
+            end
+        end
+
         igameplay.remove_entity(object.gameplay_eid)
         -- no need to call build() here, it will be called in world_update() uniformly
 
@@ -530,6 +545,7 @@ function M:stage_camera_usage(datamodel)
                 v:remove()
             end
         end
+        ::continue::
     end
 
     if gesture_pan_changed and leave then
