@@ -81,50 +81,63 @@ local function create_io_shelves(gameplay_world, e, building_mat)
     local building_slots = prefab_slots("/pkg/vaststars.resources/" .. typeobject_building.model)
     for _, io in ipairs({"in", "out"}) do
         local prefab = PREFABS[io]
-        for _, idx in ipairs(cfg[io .. "_slots"]) do
-            local prefab_instance = ecs.create_instance(prefab)
-            local slots = prefab_slots(prefab)
-            assert(building_slots["shelf" .. idx], "prefab(" .. prefab .. ") has no 'shelf" .. idx .. "' slot")
-            local scene = building_slots["shelf" .. idx].scene
-            local offset = math3d.ref(math3d.matrix {s = scene.s, r = scene.r, t = scene.t})
-            function prefab_instance:on_ready()
-                local e <close> = w:entity(self.tag["*"][1])
-                iom.set_srt(e, math3d.srt(math3d.mul(building_mat, offset)))
+        for slot_idx, idx in ipairs(cfg[io .. "_slots"]) do
+            local id 
+            if io == "in" then
+                id = string.unpack("<I2I2", typeobject_recipe.ingredients, 4*slot_idx+1)
+            else
+                id = string.unpack("<I2I2", typeobject_recipe.results, 4*slot_idx+1)
             end
-            function prefab_instance:on_message(msg, ...)
-                local mat = ...
-                assert(msg == "set_matrix", "invalid message")
-                local e <close> = w:entity(self.tag["*"][1])
-                iom.set_srt(e, math3d.srt(mat))
-            end
-            shelves[#shelves+1] = world:create_object(prefab_instance)
+            local typeobject_item = iprototype.queryById(id)
+            if iprototype.has_type(typeobject_item.type, "item") then
+                local prefab_instance = ecs.create_instance(prefab)
+                local slots = prefab_slots(prefab)
+                assert(building_slots["shelf" .. idx], "prefab(" .. prefab .. ") has no 'shelf" .. idx .. "' slot")
+                local scene = building_slots["shelf" .. idx].scene
+                local offset = math3d.ref(math3d.matrix {s = scene.s, r = scene.r, t = scene.t})
+                function prefab_instance:on_ready()
+                    local e <close> = w:entity(self.tag["*"][1])
+                    iom.set_srt(e, math3d.srt(math3d.mul(building_mat, offset)))
+                end
+                function prefab_instance:on_message(msg, ...)
+                    local mat = ...
+                    assert(msg == "set_matrix", "invalid message")
+                    local e <close> = w:entity(self.tag["*"][1])
+                    iom.set_srt(e, math3d.srt(mat))
+                end
+                shelves[#shelves+1] = world:create_object(prefab_instance)
 
-            shelf_offsets[#shelf_offsets+1] = offset
-            heap_offsets[#heap_offsets+1] = math3d.ref(math3d.matrix {s = slots["pile_slot"].scene.s, r = slots["pile_slot"].scene.r, t = slots["pile_slot"].scene.t})
+                shelf_offsets[#shelf_offsets+1] = offset
+                heap_offsets[#heap_offsets+1] = math3d.ref(math3d.matrix {s = slots["pile_slot"].scene.s, r = slots["pile_slot"].scene.r, t = slots["pile_slot"].scene.t})
+            end
         end
     end
 
     for idx = 1, ingredients_n do
         local id = string.unpack("<I2I2", typeobject_recipe.ingredients, 4*idx+1)
         local typeobject_item = iprototype.queryById(id)
-        local gap3 = typeobject_item.gap3 and {typeobject_item.gap3:match("([%d%.]+)x([%d%.]*)x([%d%.]*)")} or {0, 0, 0}
-        local mat = math3d.mul(math3d.mul(building_mat, shelf_offsets[#heaps+1]), heap_offsets[#heaps+1])
-        local s, r, t = math3d.srt(mat)
-        local prefab = "/pkg/vaststars.resources/" .. typeobject_item.pile_model
-        local slot = assert(gameplay_world:container_get(e.chest, idx))
-        heaps[#heaps+1] = create_heap(prefab_meshbin(prefab)[1].meshbin, {s = s, r = r, t = t}, HEAP_DIM3, gap3, slot.amount)
-        io_counts[#io_counts+1] = slot.amount
+        if iprototype.has_type(typeobject_item.type, "item") then
+            local gap3 = typeobject_item.gap3 and {typeobject_item.gap3:match("([%d%.]+)x([%d%.]*)x([%d%.]*)")} or {0, 0, 0}
+            local mat = math3d.mul(math3d.mul(building_mat, shelf_offsets[#heaps+1]), heap_offsets[#heaps+1])
+            local s, r, t = math3d.srt(mat)
+            local prefab = "/pkg/vaststars.resources/" .. typeobject_item.pile_model
+            local slot = assert(gameplay_world:container_get(e.chest, idx))
+            heaps[#heaps+1] = create_heap(prefab_meshbin(prefab)[1].meshbin, {s = s, r = r, t = t}, HEAP_DIM3, gap3, slot.amount)
+            io_counts[#io_counts+1] = slot.amount
+        end
     end
     for idx = 1, results_n do
         local id = string.unpack("<I2I2", typeobject_recipe.results, 4*idx+1)
         local typeobject_item = iprototype.queryById(id)
-        local gap3 = typeobject_item.gap3 and {typeobject_item.gap3:match("([%d%.]+)x([%d%.]*)x([%d%.]*)")} or {0, 0, 0}
-        local mat = math3d.mul(math3d.mul(building_mat, shelf_offsets[#heaps+1]), heap_offsets[#heaps+1])
-        local s, r, t = math3d.srt(mat)
-        local prefab = "/pkg/vaststars.resources/" .. typeobject_item.pile_model
-        local slot = assert(gameplay_world:container_get(e.chest, idx + ingredients_n))
-        heaps[#heaps+1] = create_heap(prefab_meshbin(prefab)[1].meshbin, {s = s, r = r, t = t}, HEAP_DIM3, gap3, slot.amount)
-        io_counts[#io_counts+1] = slot.amount
+        if iprototype.has_type(typeobject_item.type, "item") then
+            local gap3 = typeobject_item.gap3 and {typeobject_item.gap3:match("([%d%.]+)x([%d%.]*)x([%d%.]*)")} or {0, 0, 0}
+            local mat = math3d.mul(math3d.mul(building_mat, shelf_offsets[#heaps+1]), heap_offsets[#heaps+1])
+            local s, r, t = math3d.srt(mat)
+            local prefab = "/pkg/vaststars.resources/" .. typeobject_item.pile_model
+            local slot = assert(gameplay_world:container_get(e.chest, idx + ingredients_n))
+            heaps[#heaps+1] = create_heap(prefab_meshbin(prefab)[1].meshbin, {s = s, r = r, t = t}, HEAP_DIM3, gap3, slot.amount)
+            io_counts[#io_counts+1] = slot.amount
+        end
     end
 
     local function update_heap_count(_, e)
@@ -132,19 +145,29 @@ local function create_io_shelves(gameplay_world, e, building_mat)
             return
         end
 
+        local typeobject_recipe = iprototype.queryById(e.assembling.recipe)
+
         for idx = 1, ingredients_n do
-            local slot = assert(gameplay_world:container_get(e.chest, idx))
-            if io_counts[idx] ~= slot.amount then
-                iheapmesh.update_heap_mesh_number(heaps[idx].id, slot.amount)
-                io_counts[idx] = slot.amount
+            local id = string.unpack("<I2I2", typeobject_recipe.ingredients, 4*idx+1)
+            local typeobject_item = iprototype.queryById(id)
+            if iprototype.has_type(typeobject_item.type, "item") then
+                local slot = assert(gameplay_world:container_get(e.chest, idx))
+                if io_counts[idx] ~= slot.amount then
+                    iheapmesh.update_heap_mesh_number(heaps[idx].id, slot.amount)
+                    io_counts[idx] = slot.amount
+                end
             end
         end
         for idx = 1, results_n do
-            local io_idx = idx + ingredients_n
-            local slot = assert(gameplay_world:container_get(e.chest, io_idx))
-            if io_counts[io_idx] ~= slot.amount then
-                iheapmesh.update_heap_mesh_number(heaps[idx].id, slot.amount)
-                io_counts[io_idx] = slot.amount
+            local id = string.unpack("<I2I2", typeobject_recipe.results, 4*idx+1)
+            local typeobject_item = iprototype.queryById(id)
+            if iprototype.has_type(typeobject_item.type, "item") then
+                local io_idx = idx + ingredients_n
+                local slot = assert(gameplay_world:container_get(e.chest, io_idx))
+                if io_counts[io_idx] ~= slot.amount then
+                    iheapmesh.update_heap_mesh_number(heaps[idx].id, slot.amount)
+                    io_counts[io_idx] = slot.amount
+                end
             end
         end
     end
