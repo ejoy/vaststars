@@ -22,6 +22,7 @@ local fluid_icon_canvas_cfg = datalist.parse(fs.open(fs.path("/pkg/vaststars.res
 local irecipe = require "gameplay.interface.recipe"
 local gameplay_core = require "gameplay.core"
 
+local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local HEAP_DIM3 = {2, 4, 2}
 local PREFABS = {
@@ -181,14 +182,15 @@ local function create_io_shelves(object_id, gameplay_world, e, building_mat)
         end
     end
     local function on_position_change(self, building_srt)
-        local mat = math3d.matrix {s = building_srt.s, r = building_srt.r, t = building_srt.t}
-        for idx, o in ipairs(shelves) do
-            local offset = shelf_offsets[idx]
+        local object = assert(objects:get(object_id))
+        local mat = math3d.matrix {s = building_srt.s, r = ROTATORS[object.dir], t = building_srt.t}
+        for idx, o in ipairs(self.shelves) do
+            local offset = self.shelf_offsets[idx]
             o:send("set_matrix", math3d.ref(math3d.mul(mat, offset)))
         end
 
-        for idx, o in ipairs(heaps) do
-            local srt = math3d.mul(mat, shelf_offsets[idx])
+        for idx, o in ipairs(self.heaps) do
+            local srt = math3d.mul(mat, self.shelf_offsets[idx])
             o:send("set_matrix", math3d.ref(math3d.mul(srt, heap_offsets[idx])))
         end
     end
@@ -198,6 +200,9 @@ local function create_io_shelves(object_id, gameplay_world, e, building_mat)
         recipe = typeobject_recipe.id,
         update_heap_count = update_heap_count,
         object_id = object_id,
+        shelf_offsets = shelf_offsets,
+        shelves = shelves,
+        heaps = heaps,
     }
 end
 
@@ -517,7 +522,7 @@ return function(world)
             goto continue
         end
 
-        local mat = math3d.ref(math3d.matrix {s = object.srt.s, r = object.srt.r, t = object.srt.t})
+        local mat = math3d.ref(math3d.matrix {s = object.srt.s, r = ROTATORS[object.dir], t = object.srt.t})
         local building = global.buildings[object.id]
 
         if not building.io_shelves then
