@@ -372,10 +372,10 @@ local function get_scale()
                         sm_table[sm_idx][size_idx].s = e
                         sm_table[sm_idx].center_stone.s = e
                     elseif size_idx == 2 then
-                        local e = terrain_module.noise(ix, iy, freq, depth, seed, offset_y, offset_x) * 0.5 + scale_table.m
+                        local e = terrain_module.noise(ix, iy, freq, depth, seed, offset_y, offset_x) * (scale_table.b - scale_table.m) + scale_table.m
                         temp_scale_table[count_idx] = e
                     elseif size_idx == 3 then
-                        local e = terrain_module.noise(ix, iy, freq, depth, seed, offset_y, offset_x) * 0.5 + scale_table.s
+                        local e = terrain_module.noise(ix, iy, freq, depth, seed, offset_y, offset_x) * (scale_table.m - scale_table.s) + scale_table.s
                         temp_scale_table[count_idx] = e     
                     end
                 end
@@ -585,56 +585,6 @@ local function get_translation()
     get_final_map()
 end
 
-local function exclude_sm()
-    for sm_idx, stones in pairs(sm_table) do
-        for size_idx = 1, 3 do
-            local stone = stones[size_idx]
-            if stone and stone.s then
-                local ix, iy = math.floor(stone.t.x // unit + offset), math.floor(stone.t.z // unit + offset)
-                local out_area = exclude_from_open_area(ix, iy, open_area)
-                if out_area == false then sm_table[sm_idx][size_idx] = nil end
-            end
-        end
-    end
-end
-
-local function record_sm_idx_to_terrain_field(tf, stone, sm_idx, size_idx)
-    local mesh_idx = sm_bms_to_mesh_table[sm_idx][size_idx]
-    local center_x, center_z = stone.t.x + offset * unit, stone.t.z + offset * unit
-    local extent_x, extent_z = mesh_aabb_table[mesh_idx].extent[1] * stone.s, mesh_aabb_table[mesh_idx].extent[2] * stone.s
-    local min_x, max_x = math.floor((center_x - extent_x) / unit), math.floor((center_x + extent_x) / unit)
-    local min_z, max_z = math.floor((center_z - extent_z) / unit), math.floor((center_z + extent_z) / unit)
-    -- sm_idx = y * width + x + 1
-    -- tf_idx = y * width + x
-    for y = min_z, max_z do
-        for x = min_x, max_x do
-            local cur_idx= x + y * width
-            tf[cur_idx].is_sm = true
-        end
-    end
-end
-
-local function set_terrain_sm()
-     for e in w:select "shape_terrain st:update" do
-        local st = e.st
-        if st.prev_terrain_fields == nil then
-            error "need define terrain_field, it should be file or table"
-        end
-        for sm_idx, stones in pairs(sm_table) do
-            local big_stone, middle_stone, small_stone = stones[1], stones[2], stones[3]
-            if big_stone and big_stone.s then
-                record_sm_idx_to_terrain_field(st.prev_terrain_fields, big_stone, sm_idx, 1)
-            end
-            if middle_stone and middle_stone.s then
-                record_sm_idx_to_terrain_field(st.prev_terrain_fields, middle_stone, sm_idx, 2)
-            end
-            if small_stone and small_stone.s then
-                record_sm_idx_to_terrain_field(st.prev_terrain_fields, small_stone, sm_idx, 3)
-            end
-        end
-    end 
-end
-
 function ism.create_sm_entity(r, ww, hh, off, un, scale, sa, oa, f, d)
     open_sm = true
     if scale then
@@ -733,17 +683,6 @@ function ism.create_sm_entity(r, ww, hh, off, un, scale, sa, oa, f, d)
     }   
 end
 
-function ism.get_sm_aabb(queue_name)
-    if terrain_section_cull_table[queue_name] then
-        local sm_aabb = math3d.ref(terrain_section_cull_table[queue_name].aabb)
-        return sm_aabb 
-    else
-        return math3d.ref(math3d.aabb())
-    end
-end
-
-
-
 local function make_sm_noise()
     get_center()
     get_count()
@@ -751,8 +690,7 @@ local function make_sm_noise()
     get_scale()
     get_rotation()
     get_translation()
-    --exclude_sm()
-    --set_terrain_sm()
+
 end
 
 function sm_sys:init()
@@ -790,6 +728,18 @@ local function set_sm_rect(mesh_aabb_value, worldmat)
     return rect
 end
 
+
+local function set_sm_grid(rect)
+    local ox, oz, ww, hh = rect.x + offset, rect.z + offset, rect.w, rect.h
+    for ih = 0, hh - 1 do
+        for iw = 0, ww - 1 do
+            local xx, zz = ox + iw, oz - ih
+            local sm_idx = xx + zz * width + 1
+            sm_grid_table[sm_idx] = true
+        end
+    end
+end
+
 local function create_sm_entity()
     for sm_idx, _ in pairs(sm_table)do
         for size_idx = 1, 3 do
@@ -818,7 +768,7 @@ local function create_sm_entity()
                             local worldmat = math3d.matrix(e.scene)
                             local mesh_aabb_value = mesh_aabb_table[mesh_idx]
                             local rect = set_sm_rect(mesh_aabb_value, worldmat)
-                            --set_sm_grid(rect)
+                            set_sm_grid(rect)
                         end
                     },
                 }
@@ -833,6 +783,12 @@ local function remove_aabb_entity()
     for rid = 1, 4 do
         w:remove(remove_table[rid])
     end
+end
+
+function ism.get_sm_grid(world_x, world_z)
+    local logic_x, logic_z = world_x + offset, world_z + offset
+    local sm_idx = logic_z * width + logic_x + 1
+    return sm_grid_table[sm_idx]
 end
 
 function ism.get_sm_rect_intersect(area)
