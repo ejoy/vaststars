@@ -126,11 +126,10 @@ namespace roadnet {
         return Next;
     }
 
-    bool route(network& w, roadid S, roadid E, route_info& info) {
-        auto key = std::make_pair(S, E);
-        auto it = w.routeMap.find(key);
-        if (it != w.routeMap.end()) {
-            info = it->second;
+    bool route(network& w, roadid S, roadid E, route_value& val) {
+        route_key key { S, E };
+        if (auto pval = w.routeMap.find(key)) {
+            val = *pval;
             return true;
         }
         std::vector<direction> path;
@@ -140,10 +139,10 @@ namespace roadnet {
             uint16_t n = (uint16_t)path.size();
             auto C = S;
             for (auto d : path) {
-                w.routeMap.emplace(std::make_pair(C, E), route_info {(uint16_t)d, --n});
+                w.routeMap.insert_or_assign(route_key { C, E }, route_value {(uint16_t)d, --n});
                 C = next_road(w, C, d);
             }
-            info = route_info {
+            val = route_value {
                 (uint16_t)path[0],
                 (uint16_t)path.size()
             };

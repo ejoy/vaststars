@@ -31,10 +31,10 @@ namespace roadnet::road {
         id = lorryid::invalid();
     }
     std::optional<uint16_t> endpoint::distance(network& w, road::endpoint const& to) {
-        route_info info;
-        if (!route(w, neighbor, to.rev_neighbor, info)) {
+        route_value val;
+        if (!route(w, neighbor, to.rev_neighbor, val)) {
             return std::nullopt;
         }
-        return (uint16_t)info.n;
+        return (uint16_t)val.n;
     }
 }

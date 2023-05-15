@@ -44,9 +44,9 @@ namespace roadnet {
         if (status != status::normal) {
             return false;
         }
-        route_info info;
-        if (route(w, C, ending, info)) {
-            dir = (direction)info.dir;
+        route_value val;
+        if (route(w, C, ending, val)) {
+            dir = (direction)val.dir;
             return true;
         }
         status = status::error;

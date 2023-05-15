@@ -6,9 +6,17 @@
 #include "roadnet/road_straight.h"
 #include "roadnet/road_endpoint.h"
 #include "util/dynarray.h"
+#include "util/flatmap.h"
 
 namespace roadnet {
-    struct route_info {
+    struct route_key {
+        roadid S;
+        roadid E;
+        bool operator==(const route_key& rhs) const {
+            return S == rhs.S && E == rhs.E;
+        }
+    };
+    struct route_value {
         uint16_t dir : 2;
         uint16_t n : 14;
     };
@@ -39,7 +47,7 @@ namespace roadnet {
         dynarray<lorryid>           lorryAry;
         std::vector<lorry>          lorryVec;
         std::vector<lorryid>        lorryFreeList;
-        std::map<std::pair<roadid, roadid>, route_info> routeMap;
+        flatmap<route_key, route_value> routeMap;
 
         struct straightData {
             roadid    id;
