@@ -223,6 +223,15 @@ local CHEST_TYPES <const> = {
     "inventory",
 }
 
+local CHEST_COMPONENT <const> = {
+    ["assembling"] = "chest",
+    ["chest"] = "chest",
+    ["laboratory"] = "chest",
+    ["station"] = "chest",
+    ["hub"] = "hub",
+    ["inventory"] = "inventory",
+}
+
 local PICKUP_TYPES <const> = {
     "assembling",
     "station",
@@ -257,9 +266,9 @@ end
 
 function M.get_chest_component(prototype_name)
     local typeobject = assert(M.queryByName(prototype_name))
-    for _, t in ipairs(CHEST_TYPES) do
+    for t, c in ipairs(CHEST_COMPONENT) do
         if M.has_type(typeobject.type, t) then
-            return t
+            return c
         end
     end
 end
