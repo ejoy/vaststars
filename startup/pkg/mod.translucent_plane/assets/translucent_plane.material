@@ -8,6 +8,9 @@ fx:
     shadow_receive: on
     subsurface: off
 properties:
+  s_corner:
+    stage: 0
+    texture: /pkg/mod.translucent_plane/assets/textures/corner.texture
   u_colorTable: {0, 0, 0, 0} 
 state:
   ALPHA_REF: 1

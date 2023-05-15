@@ -7,7 +7,7 @@ local math3d    = require "math3d"
 local mathpkg = import_package "ant.math"
 local imaterial = ecs.import.interface "ant.asset|imaterial"
 local timer 	= ecs.import.interface "ant.timer|itimer"
-local layout_name<const>    = declmgr.correct_layout "p3"
+local layout_name<const>    = declmgr.correct_layout "p3|t20"
 local layout                = declmgr.get(layout_name)
 local init_sys = ecs.system 'init_system'
 local mc    = mathpkg.constant
@@ -23,6 +23,7 @@ local NUM_QUAD_VERTICES<const> = 4
 local RENDER_LAYER = "translucent"
 local call_to_tp = {}
 local tp_to_call = {}
+local grid_list = {}
 local cur_call_id = 0
 local tp_update
 
@@ -73,32 +74,101 @@ local function to_mesh_buffer(vb, ib_handle, aabb)
     }
 end
 
-local function is_corner(cx, cz, rect)
-    local xx, zz, ww, hh = rect.x, rect.z, rect.w, rect.h
-    if cx == xx and cz == zz then return "N"
-    elseif cx == xx + ww and cz == zz then return "E"
-    elseif cx == xx and cz == zz - hh then return "S"
-    elseif cx == xx + ww and cz == zz - hh then return "W"
-    else return
+local direction_table ={
+    [0]   = {0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0},
+    [90]  = {1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0},
+    [180] = {1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0},
+    [270] = {0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0}
+}
+
+local function get_coord(dir, tidx)
+    local u, v
+    if dir == -1 then
+        u, v = -1, -1
+    else
+        u, v = direction_table[dir][tidx * 2 + 1], direction_table[dir][tidx * 2 + 2]
     end
+    return u, v
 end
 
-local function build_mesh(grids, unit, offset, aabb)
-    local packfmt<const> = "fff"
+local function is_corner(cx, cz, rect, offset, level)
+    local xx, zz, ww, hh = rect.x, rect.z, rect.w, rect.h
+    if cx == xx and cz == zz then
+        -- topleft
+        local tx, tz, lx, lz = cx + offset, cz + offset + 1, cx + offset - 1, cz + offset
+        local ct, cl = (tx << 8) + tz, (lx << 8) + lz
+        if grid_list[ct] then
+            if grid_list[ct] < level then return 180
+            else return -1 end
+        elseif grid_list[cl] then
+            if grid_list[cl] < level then return 180
+            else return -1 end
+        else
+            return 180
+        end
+    elseif cx == xx + ww - 1 and cz == zz then 
+        -- topright
+        local tx, tz, rx, rz = cx + offset, cz + offset + 1, cx + offset + 1, cz + offset
+        local ct, cr = (tx << 8) + tz, (rx << 8) + rz
+        if grid_list[ct] then
+            if grid_list[ct] < level then return 270
+            else return -1 end
+        elseif grid_list[cr] then
+            if grid_list[cr] < level then return 270
+            else return -1 end
+        else
+            return 270
+        end
+    elseif cx == xx and cz == zz - hh + 1 then 
+        -- bottomleft
+        local bx, bz, lx, lz = cx + offset, cz + offset - 1, cx + offset - 1, cz + offset
+        local cb, cl = (bx << 8) + bz, (lx << 8) + lz
+        if grid_list[cb] then
+            if grid_list[cb] < level then return 90
+            else return -1 end
+        elseif grid_list[cl] then
+            if grid_list[cl] < level then return 90
+            else return -1 end
+        else
+            return 90
+        end     
+    elseif cx == xx + ww - 1 and cz == zz - hh + 1 then
+        -- bottomright
+        local bx, bz, rx, rz = cx + offset, cz + offset - 1, cx + offset + 1, cz + offset
+        local cb, cr = (bx << 8) + bz, (rx << 8) + rz
+
+        if grid_list[cb] then
+            if grid_list[cb] < level then return 0
+            else return -1 end
+        elseif grid_list[cr] then
+            if grid_list[cr] < level then return 0
+            else return -1 end
+        else
+            return 0
+        end        
+    else return -1 end
+end
+
+local function build_mesh(grids, unit, offset, aabb, rect)
+    local packfmt<const> = "fffff"
     local vb = {}
     local grid_num = 0
-    --local rect = grids.rect
     for grid, _ in pairs(grids) do
         if grid ~= "rect" then
             local cx, cz = grid >> 8, grid & 0xff
-            --local is_corner = is_corner(cx - offset, cz - offset, rect)
+            local level = grid_list[grid]
+--[[             local dir = is_corner(cx - offset, cz - offset, rect, offset, level)
+            local t0x, t0y = get_coord(dir, 0)
+            local t1x, t1y = get_coord(dir, 1)
+            local t2x, t2y = get_coord(dir, 2)
+            local t3x, t3y = get_coord(dir, 3) ]]
             local ox, oz = cx * unit, cz * unit
             local nx, nz = ox + unit, oz + unit
             local v = {
-                packfmt:pack(ox, 0, oz),
-                packfmt:pack(ox, 0, nz),
-                packfmt:pack(nx, 0, nz),
-                packfmt:pack(nx, 0, oz),        
+                packfmt:pack(ox, 0, oz, 0, 1),
+                packfmt:pack(ox, 0, nz, 0, 0),
+                packfmt:pack(nx, 0, nz, 1, 0),
+                packfmt:pack(nx, 0, oz, 1, 1),        
             }  
             vb[#vb+1] = table.concat(v, "")
             grid_num = grid_num + 1
@@ -139,7 +209,7 @@ function init_sys:init_world()
 end
 
 
-local function create_translucent_plane_entity(grids_table, color, alpha)
+local function create_translucent_plane_entity(grids_table, color, alpha, rect)
     local grid_num = 0
     for k, v in pairs(grids_table) do
         grid_num  = grid_num + 1
@@ -149,7 +219,7 @@ local function create_translucent_plane_entity(grids_table, color, alpha)
     end
     local width, height, unit, offset = iplane_terrain.get_wh()
     local aabb = get_aabb(grids_table, width, height, unit, offset)
-    local plane_mesh = build_mesh(grids_table, unit, offset, aabb)
+    local plane_mesh = build_mesh(grids_table, unit, offset, aabb, rect)
     local eid
     local vb_handle, ib_handle
     if plane_mesh then
@@ -381,6 +451,17 @@ function itp.remove_translucent_plane(id_table)
     generate_each_grids(offset, old_tp_num)
 end
 
+local function build_grid_list()
+    for idx = 1, #tp_table do
+        local grids = tp_table[idx].grids
+        if grids then
+            for grid, _ in pairs(grids) do
+                grid_list[grid] = idx
+            end
+        end
+    end
+end
+
 function init_sys:data_changed()
     for e in w:select "breath:update" do
         local min, max, cur, freq, trend, color = e.breath.min, e.breath.max, e.breath.cur, e.breath.freq, e.breath.trend, e.breath.color
@@ -408,8 +489,10 @@ function init_sys:data_changed()
             bgfx.destroy(ib_handle)
         end
         remove_list = {}
+        grid_list = {}
+        --build_grid_list()
         for idx = 1, #tp_table do
-            local eid, vb_handle, ib_handle = create_translucent_plane_entity(tp_table[idx].grids, tp_table[idx].color, tp_table[idx].alpha)
+            local eid, vb_handle, ib_handle = create_translucent_plane_entity(tp_table[idx].grids, tp_table[idx].color, tp_table[idx].alpha, tp_table[idx].rect)
             if eid then
                 tp_table[idx].eid = eid
                 tp_table[idx].vb_handle = vb_handle 
