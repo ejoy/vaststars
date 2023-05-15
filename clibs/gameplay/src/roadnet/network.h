@@ -8,6 +8,11 @@
 #include "util/dynarray.h"
 
 namespace roadnet {
+    struct route_info {
+        uint16_t dir : 2;
+        uint16_t n : 14;
+    };
+
     class network {
     public:
         network() = default;
@@ -34,7 +39,7 @@ namespace roadnet {
         dynarray<lorryid>           lorryAry;
         std::vector<lorry>          lorryVec;
         std::vector<lorryid>        lorryFreeList;
-        std::map<std::pair<roadid,roadid>, direction> routeMap;
+        std::map<std::pair<roadid, roadid>, route_info> routeMap;
 
         struct straightData {
             roadid    id;
