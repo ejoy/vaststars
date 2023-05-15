@@ -142,7 +142,7 @@ local function get_property(e, typeobject)
     }
     -- 显示建筑详细信息
     get_display_info(e, typeobject, t)
-    if e.chest and e.chest.id == e.chest.id and e.chest.id ~= 0xffff then
+    if e.chest and e.chest.id ~= 0xffff then
         local slotnum = 0
         -- the items display is shown in two rows, with list0 for the first row and list1 for the second row (five items per row, up to ten items in total)
         local chest_list0 = {}
@@ -167,7 +167,7 @@ local function get_property(e, typeobject)
             end
             t.chest_list0 = #chest_list0 > 0 and chest_list0 or nil
             t.chest_list1 = #chest_list1 > 0 and chest_list1 or nil
-            t.values.slots = string.format("%d/%d", slotnum, t.values.slots or 0)
+            -- t.values.slots = string.format("%d/%d", slotnum, t.values.slots or 0)
         end
     end
     if e.fluidbox then
