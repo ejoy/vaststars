@@ -89,6 +89,8 @@ local function __create_item_object(prefab, parent, offset_srt)
             end
         end
     end
+    function p:on_message()
+    end
     return world:create_object(p)
 end
 
@@ -113,12 +115,17 @@ local function create(prefab, s, r, t, motion_events)
         end
     end
     function outer:set_item(item_classid, item_amount)
-        if self.item_classid == item_classid then
+        if self.item_classid == item_classid and self.item_amount == item_amount then
             return
         end
         self.item_classid = item_classid
+        self.item_amount = item_amount
 
-        if item_classid == 0 then
+        if item_classid == 0 or item_amount == 0 then
+            if self.objs[ITEM_INDEX] then
+                self.objs[ITEM_INDEX]:remove()
+                self.objs[ITEM_INDEX] = nil
+            end
             return
         end
 

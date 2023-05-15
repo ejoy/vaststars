@@ -20,6 +20,7 @@ local fs = require "filesystem"
 local recipe_icon_canvas_cfg = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/textures/recipe_icon_canvas.cfg")):read "a")
 local fluid_icon_canvas_cfg = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/textures/fluid_icon_canvas.cfg")):read "a")
 local irecipe = require "gameplay.interface.recipe"
+local gameplay_core = require "gameplay.core"
 
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local HEAP_DIM3 = {2, 4, 2}
@@ -55,7 +56,7 @@ local function create_heap(meshbin, srt, dim3, gap3, count)
     }, heap_events)
 end
 
-local function create_io_shelves(gameplay_world, e, building_mat)
+local function create_io_shelves(object_id, gameplay_world, e, building_mat)
     local typeobject_recipe = iprototype.queryById(e.assembling.recipe)
     local typeobject_building = iprototype.queryById(e.building.prototype)
     local ingredients_n <const> = #typeobject_recipe.ingredients//4 - 1
@@ -196,6 +197,7 @@ local function create_io_shelves(gameplay_world, e, building_mat)
         remove = remove,
         recipe = typeobject_recipe.id,
         update_heap_count = update_heap_count,
+        object_id = object_id,
     }
 end
 
@@ -432,6 +434,8 @@ local function create_icon(object_id, e, building_srt)
     local is_generator = iprototype.has_type(typeobject.type, "generator")
 
     local function on_position_change(self, building_srt)
+        local object = assert(objects:get(object_id))
+        local e = assert(gameplay_core.get_entity(object.gameplay_eid))
         icanvas.remove_item(icanvas.types().ICON, object_id)
         __draw_icon(e, object_id, building_srt, status, recipe)
     end
@@ -462,6 +466,7 @@ local function create_icon(object_id, e, building_srt)
         on_position_change = on_position_change,
         remove = remove,
         update = update,
+        object_id = object_id,
     }
 end
 
@@ -517,7 +522,7 @@ return function(world)
 
         if not building.io_shelves then
             if e.assembling.recipe ~= 0 then
-                building.io_shelves = create_io_shelves(world, e, mat)
+                building.io_shelves = create_io_shelves(object.id, world, e, mat)
             end
         else
             if e.assembling.recipe == 0 then
@@ -528,7 +533,7 @@ return function(world)
             else
                 if building.io_shelves.recipe ~= e.assembling.recipe then
                     building.io_shelves:remove()
-                    building.io_shelves = create_io_shelves(world, e, mat)
+                    building.io_shelves = create_io_shelves(object.id, world, e, mat)
                 else
                     building.io_shelves:update_heap_count(e)
                 end
