@@ -422,6 +422,7 @@ namespace roadnet {
                             id
                         );
                         crossroad.setNeighbor(dir, straight.id);
+                        crossroad.setRevNeighbor(reverse(result.dir), straight.id);
                     }
                     else {
                         auto neighbor_m = getMapBits(map, result.l);
