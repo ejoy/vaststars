@@ -346,7 +346,7 @@ namespace roadnet {
 
         endpointid id { (uint16_t)endpointVec.size() };
         auto& ep = endpointVec.emplace_back();
-        endpointMap.emplace(loc, id);
+        ep.loc = loc;
         auto cross_a = crossMap[na.l];
         auto cross_b = crossMap[nb.l];
 
@@ -377,7 +377,6 @@ namespace roadnet {
         crossMap.clear();
         crossMapR.clear();
         endpointVec.clear();
-        endpointMap.clear();
         routeMap.clear();
 
         uint16_t genCrossId = 0;
@@ -525,13 +524,6 @@ namespace roadnet {
     road::endpoint& network::Endpoint(endpointid id) {
         assert(id.id < endpointVec.size());
         return endpointVec[id.id];
-    }
-    endpointid network::EndpointId(loction loc) {
-        auto it = endpointMap.find(loc);
-        if (it != endpointMap.end()) {
-            return it->second;
-        }
-        return endpointid::invalid();
     }
     roadid network::findCrossRoad(loction l) {
         auto iter = crossMap.find(l);

@@ -24,7 +24,6 @@ namespace roadnet {
         lorry&      Lorry(lorryid id);
         lorryid&    LorryInRoad(uint32_t index);
         road::endpoint& Endpoint(endpointid id);
-        endpointid EndpointId(loction loc);
 
         std::optional<road_coord> coordConvert(map_coord  mc);
         std::optional<map_coord> coordConvert(road_coord rc);
@@ -32,7 +31,6 @@ namespace roadnet {
         dynarray<road::crossroad> crossAry;
         dynarray<road::straight>  straightAry;
         std::vector<road::endpoint>  endpointVec;
-        std::map<loction, endpointid> endpointMap;
         dynarray<lorryid>           lorryAry;
         std::vector<lorry>          lorryVec;
         std::vector<lorryid>        lorryFreeList;

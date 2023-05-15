@@ -43,7 +43,7 @@ local function endpoint_id(world, init, pt)
     local x, y = rotate(r.position, DIRECTION[init.dir], pt.area)
     x = x + init.x
     y = y + init.y
-    return world:roadnet_endpoint_id(x, y)
+    return world._endpoints[(y<<8)|x] or 0xFFFF
 end
 
 return {

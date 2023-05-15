@@ -47,8 +47,7 @@ namespace roadnet {
             };
             uint16_t id;
         };
-        constexpr loction() : id(0xFFFF)
-        {}
+        constexpr loction() = default;
         constexpr loction(uint16_t id) : id(id)
         {}
         constexpr loction(uint8_t x, uint8_t y) : x(x), y(y)
@@ -60,7 +59,7 @@ namespace roadnet {
             return id < r.id;
         }
     };
-    static_assert(std::is_trivially_copyable_v<loction>);
+    static_assert(std::is_trivial_v<loction>);
 
     using lorryid = objectid;
     using endpointid = objectid;
