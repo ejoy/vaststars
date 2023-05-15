@@ -32,6 +32,16 @@ namespace roadnet {
         return r;
     }
 
+    static constexpr direction reverse(direction dir) {
+        switch (dir) {
+        case direction::l: return direction::r;
+        case direction::t: return direction::b;
+        case direction::r: return direction::l;
+        case direction::b: return direction::t;
+        case direction::n: default: return direction::n;
+        }
+    }
+
     static bool buildPath(bfsContext& ctx, bfsRoad S, bfsRoad E, std::vector<direction>& path) {
         std::vector<direction> r;
         bfsRoad C = E;
@@ -71,7 +81,7 @@ namespace roadnet {
     static std::optional<direction> applyCross(network& w, bfsContext& ctx, bfsRoad G, roadid N, roadid E) {
         assert(N.get_type() == roadtype::cross);
         auto& cross = w.CrossRoad(N);
-        direction prev = G.dir;
+        direction prev = reverse(G.dir);
         for (uint8_t i = 0; i < 4; ++i) {
             direction dir = (direction)i;
             roadid Next = cross.neighbor[i];

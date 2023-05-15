@@ -12,6 +12,7 @@ namespace roadnet {
         Endpoint   = 1 << 4,
         NoLeftTurn = 1 << 5,
         RoadNetOnly= 1 << 6, // for presentation
+        NoUTurn    = 1 << 7,
     };
 
     static bool operator&(uint8_t v, MapRoad m) {
@@ -400,7 +401,10 @@ namespace roadnet {
             road::crossroad& crossroad = CrossRoad(id);
             uint8_t m = getMapBits(map, loc);
             if (m & MapRoad::NoLeftTurn) {
-                crossroad.ban = road::NoLeftTurn;
+                crossroad.ban |= road::NoLeftTurn;
+            }
+            if (m & MapRoad::NoUTurn) {
+                crossroad.ban |= road::NoUTurn;
             }
     
             for (uint8_t i = 0; i < 4; ++i) {
