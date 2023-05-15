@@ -1,5 +1,6 @@
 #include "roadnet/road_endpoint.h"
 #include "roadnet/network.h"
+#include "roadnet/bfs.h"
 
 namespace roadnet::road {
     lorryid& endpoint::waitingLorry(network& w) {
@@ -28,5 +29,12 @@ namespace roadnet::road {
         auto& id = waitingLorry(w);
         setOutForce(w, id);
         id = lorryid::invalid();
+    }
+    std::optional<uint16_t> endpoint::distance(network& w, road::endpoint const& to) {
+        route_info info;
+        if (!route(w, neighbor, to.rev_neighbor, info)) {
+            return std::nullopt;
+        }
+        return (uint16_t)info.n;
     }
 }

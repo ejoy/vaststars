@@ -6,5 +6,6 @@
 
 namespace roadnet {
     class network;
-    bool route(network& w, roadid S, roadid E, direction& dir);
+    struct route_info;
+    bool route(network& w, roadid S, roadid E, route_info& info);
 }

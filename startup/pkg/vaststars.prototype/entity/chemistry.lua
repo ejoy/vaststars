@@ -32,15 +32,6 @@ prototype "化工厂I" {
                     {type="input", position={2,0,"N"}},
                 }
             },
-            {
-                capacity = 500,
-                height = 150,
-                base_level = -100,
-                connections = {
-                    {type="input-output", position={0,1,"W"}},
-                    {type="input-output", position={2,1,"E"}},
-                }
-            },
         },
         output = {
             {
@@ -57,6 +48,15 @@ prototype "化工厂I" {
                 base_level = 150,
                 connections = {
                     {type="output", position={2,2,"S"}},
+                }
+            },
+            {
+                capacity = 500,
+                height = 150,
+                base_level = -100,
+                connections = {
+                    {type="input-output", position={0,1,"W"}},
+                    {type="input-output", position={2,1,"E"}},
                 }
             },
         },
@@ -108,7 +108,7 @@ prototype "蒸馏厂I" {
                 height = 100,
                 base_level = 100,
                 connections = {
-                    {type="output", position={2,4,"S"}},
+                    {type="output", position={4,4,"S"}},
                 }
             },
             {
@@ -116,9 +116,10 @@ prototype "蒸馏厂I" {
                 height = 100,
                 base_level = 100,
                 connections = {
-                    {type="output", position={4,4,"S"}},
+                    {type="output", position={2,4,"S"}},
                 }
             },
+
         },
     }
 }
@@ -143,7 +144,7 @@ prototype "电解厂I" {
                 height = 100,
                 base_level = -100,
                 connections = {
-                    {type="input", position={0,1,"W"}},
+                    {type="input", position={3,3,"S"}},
                 }
             },
         },
@@ -153,7 +154,15 @@ prototype "电解厂I" {
                 height = 100,
                 base_level = 150,
                 connections = {
-                    {type="output", position={3,1,"E"}},
+                    {type="output", position={3,0,"N"}},
+                }
+            },
+            {
+                capacity = 500,
+                height = 100,
+                base_level = 150,
+                connections = {
+                    {type="output", position={0,0,"N"}},
                 }
             },
             {
@@ -162,14 +171,6 @@ prototype "电解厂I" {
                 base_level = 150,
                 connections = {
                     {type="output", position={0,3,"S"}},
-                }
-            },
-            {
-                capacity = 500,
-                height = 100,
-                base_level = 150,
-                connections = {
-                    {type="output", position={3,3,"S"}},
                 }
             },
         },

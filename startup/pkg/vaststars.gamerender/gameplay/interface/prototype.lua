@@ -266,7 +266,7 @@ end
 
 function M.get_chest_component(prototype_name)
     local typeobject = assert(M.queryByName(prototype_name))
-    for t, c in ipairs(CHEST_COMPONENT) do
+    for t, c in pairs(CHEST_COMPONENT) do
         if M.has_type(typeobject.type, t) then
             return c
         end

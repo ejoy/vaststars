@@ -255,6 +255,23 @@ return function ()
         chest.place(cworld, c.chest, item, amount)
     end
 
+    function world:roadnet_reset(...)
+        roadnet.reset(cworld, ...)
+        self._endpoints = roadnet.endpoint_loction(cworld)
+    end
+
+    function world:roadnet_get_map(...)
+        return roadnet.get_map(cworld, ...)
+    end
+
+    function world:roadnet_map_coord(...)
+        return roadnet.map_coord(cworld, ...)
+    end
+
+    function world:roadnet_each_lorry(...)
+        return roadnet.each_lorry(cworld, ...)
+    end
+
     function world:wait(...)
         return timer.wait(...)
     end
@@ -263,12 +280,6 @@ return function ()
     end
     function world:now(...)
         return timer.now(...)
-    end
-
-    for name, f in pairs(roadnet) do
-        world["roadnet_"..name] = function (_, ...)
-            return f(cworld, ...)
-        end
     end
 
     return world

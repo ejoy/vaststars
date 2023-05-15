@@ -9,6 +9,7 @@ local ichest = require "gameplay.interface.chest"
 local building_detail = import_package "vaststars.prototype"("building_detail_config")
 local assembling_common = require "ui_datamodel.common.assembling"
 local UPS <const> = require("gameplay.interface.constant").UPS
+local CHEST_LIST_TYPES <const> = {"chest", "station", "hub"}
 
 local function format_vars(fmt, vars)
     return string.gsub(fmt, "%$([%w%._]+)%$", vars)
@@ -136,39 +137,28 @@ local function get_display_info(e, typeobject, t)
     end
     t.status = status
 end
+
 local function get_property(e, typeobject)
     local t = {
         values = {}
     }
     -- 显示建筑详细信息
     get_display_info(e, typeobject, t)
-    if e.chest and e.chest.id == e.chest.id and e.chest.id ~= 0xffff then
-        local slotnum = 0
+    local chest_component = iprototype.get_chest_component(typeobject.name)
+    if iprototype.check_types(typeobject.name, CHEST_LIST_TYPES) and chest_component then
         -- the items display is shown in two rows, with list0 for the first row and list1 for the second row (five items per row, up to ten items in total)
         local chest_list0 = {}
         local chest_list1 = {}
-        local typeobject = iprototype.queryById(e.building.prototype)
-        if typeobject.slots then
-            for _, slot in pairs(ichest.collect_item(gameplay_core.get_world(), e.chest)) do
-                if slot.amount <= 0 then
-                    goto continue
-                end
-                local typeobject_item = assert(iprototype.queryById(slot.item))
-                slotnum = slotnum + math.floor(slot.amount / typeobject_item.stack)
-                if slot.amount % typeobject_item.stack > 0 then
-                    slotnum = slotnum + 1
-                end
-                if #chest_list0 < 5 then
-                    chest_list0[#chest_list0 + 1] = {icon = typeobject_item.icon, count = slot.amount}
-                elseif #chest_list1 < 5 then
-                    chest_list1[#chest_list1 + 1] = {icon = typeobject_item.icon, count = slot.amount}
-                end
-                ::continue::
+        for _, slot in pairs(ichest.collect_item(gameplay_core.get_world(), e[chest_component])) do
+            local typeobject_item = assert(iprototype.queryById(slot.item))
+            if #chest_list0 < 5 then
+                chest_list0[#chest_list0 + 1] = {icon = typeobject_item.icon, count = ichest.get_amount(slot)}
+            elseif #chest_list1 < 5 then
+                chest_list1[#chest_list1 + 1] = {icon = typeobject_item.icon, count = ichest.get_amount(slot)}
             end
-            t.chest_list0 = #chest_list0 > 0 and chest_list0 or nil
-            t.chest_list1 = #chest_list1 > 0 and chest_list1 or nil
-            t.values.slots = string.format("%d/%d", slotnum, t.values.slots or 0)
         end
+        t.chest_list0 = #chest_list0 > 0 and chest_list0 or nil
+        t.chest_list1 = #chest_list1 > 0 and chest_list1 or nil
     end
     if e.fluidbox then
         local name = "无"
@@ -238,7 +228,7 @@ end
 local STATUS_IDLE <const> = 0
 local STATUS_DONE <const> = 1
 
-local function get_entity_property_list(object_id)
+local function get_entity_property_list(object_id, recipe_inputs, recipe_ouputs)
     local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if not e then
@@ -257,8 +247,11 @@ local function get_entity_property_list(object_id)
             total_progress = recipe_typeobject.time * 100
             progress = e.assembling.progress
             property_list.recipe_name = recipe_typeobject.name
-            property_list.recipe_inputs, property_list.recipe_ouputs = assembling_common.get(gameplay_core.get_world(), e)
-        
+            if recipe_inputs and recipe_ouputs then
+                property_list.recipe_inputs, property_list.recipe_ouputs = recipe_inputs, recipe_ouputs
+            else
+                property_list.recipe_inputs, property_list.recipe_ouputs = assembling_common.get(gameplay_core.get_world(), e)
+            end
             if e.assembling.status == STATUS_IDLE then
                 property_list.progress = "0%"
             else
@@ -304,12 +297,30 @@ local function update_property_list(datamodel, property_list)
     property_list.chest_list0 = nil
     property_list.chest_list1 = nil
     property_list.progress = nil
-    property_list.recipe_inputs = nil
-    property_list.recipe_ouputs = nil
     property_list.status = nil
     property_list.recipe_name = nil
+    local inputs = property_list.recipe_inputs
+    local ouputs = property_list.recipe_ouputs
+    property_list.recipe_inputs = nil
+    property_list.recipe_ouputs = nil
     datamodel.property_list = property_list
+    return inputs, ouputs
 end
+
+local last_inputs, last_ouputs
+local preinput
+local function copy_table(inputs)
+    local out = {}
+    for index, item in ipairs(inputs) do
+        local t = {}
+        for key, value in pairs(item) do
+            t[key] = value
+        end
+        out[index] = t
+    end
+    return out
+end
+
 function M:create(object_id)
     counter = update_interval
     local object = assert(objects:get(object_id))
@@ -324,17 +335,65 @@ function M:create(object_id)
         icon = typeobject.icon,
         prototype_name = iprototype.show_prototype_name(typeobject)
     }
-    update_property_list(datamodel, get_entity_property_list(object_id))
+    last_inputs, last_ouputs = update_property_list(datamodel, get_entity_property_list(object_id))
+    preinput = {}
     return datamodel
 end
 
+local function get_delta(last, current, input)
+    local delta = {}
+    local autodirty = false
+    local dirty = false
+    for index, value in ipairs(current) do
+        local d = last and (value.count - last[index].count) or value.count
+        if input then
+            if d < 0 and not autodirty then
+                autodirty = true
+            end
+        else
+            if d > 0 and not autodirty then
+                autodirty = true
+            end
+        end
+        if d ~= 0 and not dirty then
+            dirty = true
+        end
+        delta[index] = d
+    end
+    return autodirty, dirty, delta
+end
+
 function M:stage_ui_update(datamodel, object_id)
+    local object = assert(objects:get(object_id))
+    local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+    local current_inputs, current_ouputs
+    if e.assembling and e.assembling.recipe ~= 0 then
+        current_inputs, current_ouputs = assembling_common.get(gameplay_core.get_world(), e)
+        local input_auto, input_dirty, input_delta = get_delta(last_inputs, current_inputs, true)
+        local out_auto, output_dirty, _ = get_delta(last_ouputs, current_ouputs)
+        if input_auto then
+            preinput = copy_table(last_inputs)
+        elseif out_auto then
+            preinput = {}
+        end
+        if #preinput > 0 and not input_auto then
+            for index, input in ipairs(preinput) do
+                input.count = input.count + input_delta[index]
+            end
+        end
+        last_inputs, last_ouputs = current_inputs, current_ouputs
+        if input_dirty or output_dirty then
+            counter = 1
+            update_property_list(datamodel, get_entity_property_list(object_id, (#preinput > 0) and preinput or current_inputs, current_ouputs))
+            return
+        end
+    end
     counter = counter + 1
     if counter < update_interval then
         return
     end
     counter = 1
-    update_property_list(datamodel, get_entity_property_list(object_id))
+    update_property_list(datamodel, get_entity_property_list(object_id, (#preinput > 0) and preinput or current_inputs, current_ouputs))
 end
 
 return M

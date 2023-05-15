@@ -57,54 +57,20 @@ private:
     ElementType  dists;
 };
 
-static uint8_t safe_add(uint8_t a, uint8_t b) {
-    if (b > UINT8_C(255) - a)
-        return UINT8_C(255);
-    return a + b;
-}
-
-static std::tuple<uint8_t, uint8_t> building_center(world& world, ecs::building& building) {
-    //TODO 使用更精确的x/y
-    uint16_t area = prototype::get<"area">(world, building.prototype);
-    uint8_t w = area >> 8;
-    uint8_t h = area & 0xFF;
-    assert(w > 0 && h > 0);
-    w--;
-    h--;
-    uint8_t dx = w / 2;
-    uint8_t dy = h / 2;
-    switch (building.direction) {
-    case 0: // N
-        break;
-    case 1: // E
-        if (h % 2 != 0) dy++;
-        std::swap(dx, dy);
-        break;
-    case 2: // S
-        if (w % 2 != 0) dx++;
-        if (h % 2 != 0) dy++;
-        break;
-    case 3: // W
-        if (w % 2 != 0) dx++;
-        std::swap(dx, dy);
-        break;
-    default:
-        std::unreachable();
-    }
-    return {safe_add(building.x, dx), safe_add(building.y, dy)};
-}
-
 static int lbuild(lua_State *L) {
     auto& w = getworld(L);
     auto& s = w.stations;
     s.consumers.clear();
     for (auto& v : ecs_api::select<ecs::station_consumer, ecs::station, ecs::building>(w.ecs)) {
         auto& station = v.get<ecs::station>();
+        if (station.endpoint == 0xFFFF) {
+            continue;
+        }
+        auto& ep = w.rw.Endpoint(station.endpoint);
         auto& chestslot = chest::array_at(w, container::index::from(station.chest), 0);
         auto& kdtree = s.consumers[chestslot.item];
         auto& building = v.get<ecs::building>();
-        auto [x, y] = building_center(w, building);
-        kdtree.dataset.emplace_back(x, y, v.getid());
+        kdtree.dataset.emplace_back(ep.loc.x, ep.loc.y, v.getid());
     }
     for (auto& [_, kdtree]: s.consumers) {
         kdtree.tree.build();
@@ -134,7 +100,7 @@ static ecs::station& find_producer(world& w, station_vector& producers) {
     return *result;
 }
 
-static std::optional<ecs_cid> find_consumer(world& w, ecs::building& starting, uint16_t item) {
+static std::optional<ecs_cid> find_consumer(world& w, const roadnet::loction& starting, uint16_t item) {
     auto& consumers = w.stations.consumers;
     auto it = consumers.find(item);
     if (it == consumers.end()) {
@@ -142,8 +108,7 @@ static std::optional<ecs_cid> find_consumer(world& w, ecs::building& starting, u
     }
     auto& kdtree = it->second;
     nearest_result result(w);
-    auto [x, y] = building_center(w, starting);
-    if (!kdtree.tree.nearest(result, {x,y})) {
+    if (!kdtree.tree.nearest(result, {starting.x,starting.y})) {
         return std::nullopt;
     }
     return kdtree.dataset[result.value()].cid;
@@ -174,10 +139,10 @@ static int lupdate(lua_State *L) {
     station_vector producers(sz);
     for (auto& v : ecs_api::select<ecs::station_producer, ecs::station, ecs::building>(w.ecs)) {
         auto& station = v.get<ecs::station>();
-        producers[i++] = &station;
         if (station.endpoint == 0xFFFF) {
             continue;
         }
+        producers[i++] = &station;
         auto& ep = w.rw.Endpoint(station.endpoint);
         auto lorryId = ep.waitingLorry(w.rw);
         if (!lorryId) {
@@ -194,7 +159,7 @@ static int lupdate(lua_State *L) {
         if (chestslot.amount == 0 || chestslot.amount < chestslot.limit) {
             continue;
         }
-        if (auto consumer_cid = find_consumer(w, v.get<ecs::building>(), chestslot.item)) {
+        if (auto consumer_cid = find_consumer(w, ep.loc, chestslot.item)) {
             ecs_api::entity<ecs::station_consumer, ecs::station> target {w.ecs};
             if (!target.init(*consumer_cid)) {
                 continue;
