@@ -11,6 +11,7 @@ namespace roadnet {
         Bottom     = 1 << 3,
         Endpoint   = 1 << 4,
         NoLeftTurn = 1 << 5,
+        RoadNetOnly= 1 << 6, // for presentation
     };
 
     static bool operator&(uint8_t v, MapRoad m) {
@@ -321,7 +322,7 @@ namespace roadnet {
             assert(loc.y != na.l.y);
             assert(na.l.x != nb.l.x);
             bool left_handled = loc.y > na.l.y;
-            bool a_less_b = na.l.x < nb.l.x;
+            bool a_less_b = na.l.x > nb.l.x;
             if (left_handled != a_less_b) {
                 std::swap(na, nb);
                 std::swap(a, b);
@@ -331,7 +332,7 @@ namespace roadnet {
             assert(loc.x != nb.l.x);
             assert(na.l.y != nb.l.y);
             bool left_handled = loc.x < nb.l.x;
-            bool a_less_b = na.l.y < nb.l.y;
+            bool a_less_b = na.l.y > nb.l.y;
             if (left_handled != a_less_b) {
                 std::swap(na, nb);
                 std::swap(a, b);
