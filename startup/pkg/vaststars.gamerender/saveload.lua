@@ -363,9 +363,7 @@ function M:restart(mode, startup_lua)
     end
     iroadnet:init(renderData, true)
     global.roadnet = map
-    if next(global.roadnet) then
-        gameplay_core.get_world():roadnet_reset(global.roadnet)
-    end
+    gameplay_core.get_world():roadnet_reset(global.roadnet)
 
     --
     for _, e in ipairs(startup_entities) do
