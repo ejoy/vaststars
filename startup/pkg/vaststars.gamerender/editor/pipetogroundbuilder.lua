@@ -322,7 +322,7 @@ local function _set_ending(prototype_name, State, PipeToGroundState, x, y, dir)
         return
     end
 
-    if __can_be_starting_point(object, dir) then
+    if _can_replace(object, dir) then
         PipeToGroundState.map[packcoord(x, y)] = {assert(endpoint_prototype_name), assert(endpoint_dir)}
         return
     end
