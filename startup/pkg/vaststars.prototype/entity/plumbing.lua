@@ -110,6 +110,7 @@ prototype "压力泵I" {
     type = {"building", "consumer", "fluidbox", "pump"},
     area = "1x2",
     rotate_on_build = true,
+    show_arc_menu = false,
     power = "10kW",
     drain = "300W",
     priority = "secondary",
@@ -134,6 +135,7 @@ prototype "烟囱I" {
     rotate_on_build = true,
     craft_category = {"流体气体排泄"},
     speed = "100%",
+    show_arc_menu = false,
     fluidbox = {
         capacity = 1000,
         height = 100,
@@ -153,6 +155,7 @@ prototype "排水口I" {
     rotate_on_build = true,
     craft_category = {"流体液体排泄"},
     speed = "100%",
+    show_arc_menu = false,
     fluidbox = {
         capacity = 1000,
         height = 100,
