@@ -94,7 +94,6 @@ static int lbuild(lua_State *L) {
         if (station.endpoint == 0xFFFF) {
             continue;
         }
-        auto& ep = w.rw.Endpoint(station.endpoint);
         auto& chestslot = chest::array_at(w, container::index::from(station.chest), 0);
         auto& consumers = s.consumers[chestslot.item];
         consumers.emplace_back(&station);
