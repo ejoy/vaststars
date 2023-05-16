@@ -44,6 +44,7 @@ graphic:
     size: 1024
     split_lamada: 0.8
     split_num: 1
+    height: 5
     split_ratios:
       {0.00, 1.00}
     type: inv_z
