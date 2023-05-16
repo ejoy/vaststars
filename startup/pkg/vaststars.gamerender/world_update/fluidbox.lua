@@ -48,6 +48,52 @@ local function __find_neighbor(x, y, dir, ground)
     end
 end
 
+local ifluid = require "gameplay.interface.fluid"
+local function __find_neighbor_fluid(gameplay_world, x, y, dir, ground)
+    local succ, dx, dy = false, x, y
+    for i = 1, ground or 1 do
+        succ, dx, dy = terrain:move_coord(dx, dy, dir, 1)
+        if not succ then
+            return
+        end
+
+        local object = objects:coord(dx, dy)
+        if object then
+            local typeobject = iprototype.queryByName(object.prototype_name)
+
+            local fluid_name
+            if iprototype.has_type(typeobject.type, "fluidbox") then
+                local e = assert(gameplay_world.entity[object.gameplay_eid])
+                if e.fluidbox.fluid ~= 0 then
+                    fluid_name = iprototype.queryById(e.fluidbox.fluid).name
+                end
+            elseif iprototype.has_type(typeobject.type, "fluidboxes") then
+                fluid_name = {}
+                local e = assert(gameplay_world.entity[object.gameplay_eid])
+
+                local io_name = {
+                    ["in"] = "input",
+                    ["out"] = "output",
+                }
+                for _, io_type in ipairs({"in", "out"}) do
+                    for i = 1, 4 do
+                        local n = io_type .. i .. "_fluid"
+                        if e.fluidboxes[n] and e.fluidboxes[n] ~= 0 then
+                            fluid_name[io_name[io_type]] = fluid_name[io_name[io_type]] or {}
+                            fluid_name[io_name[io_type]][i] = iprototype.queryById(e.fluidboxes[n]).name
+                        end
+                    end
+                end
+            end
+            for _, fb in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir, fluid_name)) do
+                if fb.x == dx and fb.y == dy then
+                    return fb.fluid_name, object
+                end
+            end
+        end
+    end
+end
+
 local function __update_neighbor_fluid_type(gameplay_world, e, typeobject)
     local need_build = false
 
@@ -55,17 +101,14 @@ local function __update_neighbor_fluid_type(gameplay_world, e, typeobject)
     local fluid = e.fluidbox.fluid
     for _, connection in ipairs(typeobject.fluidbox.connections) do
         local x, y, dir = iprototype.rotate_connection(connection.position, DIRECTION[e.building.direction], typeobject.area)
-        local neighbor_object = __find_neighbor(e.building.x + x, e.building.y + y, dir, connection.ground)
-        if neighbor_object then
+        local neighbor_fluid_name, neighbor_object = __find_neighbor_fluid(gameplay_world, e.building.x + x, e.building.y + y, dir, connection.ground)
+        if (not neighbor_fluid_name or neighbor_fluid_name == "") and neighbor_object then
             local neighbor = assert(gameplay_world.entity[neighbor_object.gameplay_eid])
             if neighbor.fluidbox then
-                local neighbor_fluid = neighbor.fluidbox.fluid or 0
-                assert(neighbor_fluid == fluid or neighbor_fluid == 0)
-                if neighbor_fluid == 0 then
-                    ifluidbox.update_fluidbox(neighbor, fluid)
-                    __update_neighbor_fluid_type(gameplay_world, neighbor, iprototype.queryById(neighbor.building.prototype))
-                    need_build = true
-                end
+                print("update fluidbox", neighbor.building.x, neighbor.building.y, fluid)
+                ifluidbox.update_fluidbox(neighbor, fluid)
+                __update_neighbor_fluid_type(gameplay_world, neighbor, iprototype.queryById(neighbor.building.prototype))
+                need_build = true
             end
         end
     end
@@ -89,14 +132,11 @@ local function __update_fluid_type(gameplay_world)
             local fluids = {}
             for _, connection in ipairs(typeobject.fluidbox.connections) do
                 local x, y, dir = iprototype.rotate_connection(connection.position, DIRECTION[e.building.direction], typeobject.area)
-                local neighbor_object = __find_neighbor(e.building.x + x, e.building.y + y, dir, connection.ground)
-                if neighbor_object then
-                    local neighbor = assert(gameplay_world.entity[neighbor_object.gameplay_eid])
-                    if neighbor.fluidbox then
-                        local neighbor_fluid = neighbor.fluidbox.fluid or 0
-                        if neighbor_fluid ~= 0 then
-                            fluids[neighbor_fluid] = true
-                        end
+                local neighbor_fluid_name = __find_neighbor_fluid(gameplay_world, e.building.x + x, e.building.y + y, dir, connection.ground)
+                if neighbor_fluid_name then
+                    if neighbor_fluid_name ~= "" then
+                        local neighbor_fluid = iprototype.queryByName(neighbor_fluid_name).id
+                        fluids[neighbor_fluid] = true
                     end
                 end
             end
@@ -104,6 +144,7 @@ local function __update_fluid_type(gameplay_world)
             if __length(fluids) == 1 then
                 local fluid = next(fluids)
                 ifluidbox.update_fluidbox(e, fluid)
+                print("update fluidbox", e.building.x, e.building.y, fluid)
                 __update_neighbor_fluid_type(gameplay_world, e, typeobject)
                 need_build = true
             end
