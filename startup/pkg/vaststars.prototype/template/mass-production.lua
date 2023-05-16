@@ -901,23 +901,478 @@ local entities = { {
     x = 137,
     y = 136
   }, {
-    dir = "N",
-    fluid_name = "",
+    dir = "W",
+    fluid_name = {
+      input = { "一氧化碳", "氢气" },
+      output = { "纯水" }
+    },
     prototype_name = "化工厂I",
+    recipe = "一氧化碳转石墨",
     x = 134,
     y = 138
   }, {
     dir = "N",
-    fluid_name = "",
+    fluid_name = {
+      input = { "一氧化碳", "氢气" },
+      output = { "纯水" }
+    },
     prototype_name = "化工厂I",
+    recipe = "一氧化碳转石墨",
     x = 134,
     y = 141
   }, {
     dir = "N",
-    fluid_name = "",
+    fluid_name = {
+      input = { "一氧化碳", "氢气" },
+      output = { "纯水" }
+    },
     prototype_name = "化工厂I",
+    recipe = "一氧化碳转石墨",
     x = 134,
     y = 144
+  }, {
+    dir = "N",
+    fluid_name = "",
+    prototype_name = "液罐I",
+    x = 136,
+    y = 147
+  }, {
+    dir = "S",
+    fluid_name = "",
+    prototype_name = "排水口I",
+    x = 136,
+    y = 150
+  }, {
+    dir = "N",
+    prototype_name = "风力发电机I",
+    x = 110,
+    y = 146
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 115,
+    y = 147
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 115,
+    y = 155
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 121,
+    y = 116
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 129,
+    y = 116
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 135,
+    y = 115
+  }, {
+    dir = "W",
+    item = "石墨",
+    prototype_name = "送货车站",
+    x = 139,
+    y = 146
+  }, {
+    dir = "N",
+    fluid_name = {
+      input = { "空气" },
+      output = {}
+    },
+    prototype_name = "水电站I",
+    recipe = "气候科技包1",
+    x = 142,
+    y = 118
+  }, {
+    dir = "N",
+    fluid_name = {
+      input = { "空气" },
+      output = {}
+    },
+    prototype_name = "水电站I",
+    recipe = "气候科技包1",
+    x = 148,
+    y = 118
+  }, {
+    dir = "N",
+    item = "气候科技包",
+    prototype_name = "无人机仓库",
+    x = 142,
+    y = 123
+  }, {
+    dir = "N",
+    item = "气候科技包",
+    prototype_name = "无人机仓库",
+    x = 144,
+    y = 123
+  }, {
+    dir = "N",
+    item = "气候科技包",
+    prototype_name = "无人机仓库",
+    x = 146,
+    y = 123
+  }, {
+    dir = "N",
+    item = "气候科技包",
+    prototype_name = "无人机仓库",
+    x = 148,
+    y = 123
+  }, {
+    dir = "N",
+    item = "气候科技包",
+    prototype_name = "无人机仓库",
+    x = 150,
+    y = 123
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 143,
+    y = 115
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 147,
+    y = 120
+  }, {
+    dir = "W",
+    fluid_name = {
+      input = { "空气" },
+      output = { "氮气", "二氧化碳" }
+    },
+    prototype_name = "蒸馏厂I",
+    recipe = "空气分离1",
+    x = 145,
+    y = 163
+  }, {
+    dir = "W",
+    fluid_name = {
+      input = { "空气" },
+      output = { "氮气", "二氧化碳" }
+    },
+    prototype_name = "蒸馏厂I",
+    recipe = "空气分离1",
+    x = 145,
+    y = 169
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 147,
+    y = 168
+  }, {
+    dir = "N",
+    fluid_name = "",
+    prototype_name = "液罐I",
+    x = 150,
+    y = 154
+  }, {
+    dir = "N",
+    fluid_name = "",
+    prototype_name = "液罐I",
+    x = 150,
+    y = 151
+  }, {
+    dir = "E",
+    fluid_name = {
+      input = { "二氧化碳", "氢气" },
+      output = { "一氧化碳", "纯水" }
+    },
+    prototype_name = "化工厂I",
+    recipe = "二氧化碳转一氧化碳",
+    x = 147,
+    y = 176
+  }, {
+    dir = "E",
+    fluid_name = {
+      input = { "二氧化碳", "氢气" },
+      output = { "一氧化碳", "纯水" }
+    },
+    prototype_name = "化工厂I",
+    recipe = "二氧化碳转一氧化碳",
+    x = 147,
+    y = 180
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 147,
+    y = 175
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 147,
+    y = 183
+  }, {
+    dir = "N",
+    fluid_name = "",
+    prototype_name = "液罐I",
+    x = 128,
+    y = 180
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 155,
+    y = 168
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 163,
+    y = 168
+  }, {
+    dir = "N",
+    fluid_name = {
+      input = { "地下卤水" },
+      output = { "氧气", "氢气", "氯气" }
+    },
+    prototype_name = "电解厂I",
+    recipe = "地下卤水电解1",
+    x = 161,
+    y = 163
+  }, {
+    dir = "N",
+    fluid_name = {
+      input = { "地下卤水" },
+      output = { "氧气", "氢气", "氯气" }
+    },
+    prototype_name = "电解厂I",
+    recipe = "地下卤水电解1",
+    x = 161,
+    y = 170
+  }, {
+    dir = "N",
+    fluid_name = "",
+    prototype_name = "液罐I",
+    x = 157,
+    y = 154
+  }, {
+    dir = "N",
+    fluid_name = "",
+    prototype_name = "液罐I",
+    x = 157,
+    y = 151
+  }, {
+    dir = "E",
+    fluid_name = {
+      input = { "二氧化碳", "氢气" },
+      output = { "甲烷", "纯水" }
+    },
+    prototype_name = "化工厂I",
+    recipe = "二氧化碳转甲烷",
+    x = 147,
+    y = 184
+  }, {
+    dir = "E",
+    fluid_name = {
+      input = { "二氧化碳", "氢气" },
+      output = { "甲烷", "纯水" }
+    },
+    prototype_name = "化工厂I",
+    recipe = "二氧化碳转甲烷",
+    x = 147,
+    y = 188
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 147,
+    y = 187
+  }, {
+    dir = "N",
+    fluid_name = "",
+    prototype_name = "液罐I",
+    x = 128,
+    y = 186
+  }, {
+    dir = "N",
+    fluid_name = "",
+    prototype_name = "液罐I",
+    x = 128,
+    y = 191
+  }, {
+    dir = "E",
+    fluid_name = {
+      input = { "氧气", "甲烷" },
+      output = { "乙烯", "纯水" }
+    },
+    prototype_name = "化工厂I",
+    recipe = "甲烷转乙烯",
+    x = 162,
+    y = 180
+  }, {
+    dir = "E",
+    fluid_name = {
+      input = { "氧气", "甲烷" },
+      output = { "乙烯", "纯水" }
+    },
+    prototype_name = "化工厂I",
+    recipe = "甲烷转乙烯",
+    x = 162,
+    y = 176
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 179,
+    y = 189
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 179,
+    y = 186
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 171,
+    y = 186
+  }, {
+    dir = "N",
+    fluid_name = "",
+    prototype_name = "液罐I",
+    x = 165,
+    y = 154
+  }, {
+    dir = "N",
+    fluid_name = "",
+    prototype_name = "液罐I",
+    x = 165,
+    y = 151
+  }, {
+    dir = "W",
+    fluid_name = {
+      input = { "乙烯", "氯气" },
+      output = { "盐酸" }
+    },
+    prototype_name = "化工厂I",
+    recipe = "塑料1",
+    x = 170,
+    y = 163
+  }, {
+    dir = "W",
+    fluid_name = {
+      input = { "乙烯", "氯气" },
+      output = { "盐酸" }
+    },
+    prototype_name = "化工厂I",
+    recipe = "塑料1",
+    x = 170,
+    y = 167
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 163,
+    y = 175
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 163,
+    y = 183
+  }, {
+    dir = "W",
+    fluid_name = {
+      input = {},
+      output = { "空气" }
+    },
+    prototype_name = "空气过滤器I",
+    recipe = "空气过滤",
+    x = 143,
+    y = 166
+  }, {
+    dir = "W",
+    fluid_name = {
+      input = {},
+      output = { "空气" }
+    },
+    prototype_name = "空气过滤器I",
+    recipe = "空气过滤",
+    x = 143,
+    y = 172
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 141,
+    y = 175
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 141,
+    y = 168
+  }, {
+    dir = "E",
+    fluid_name = {
+      input = { "氮气" },
+      output = {}
+    },
+    prototype_name = "烟囱I",
+    recipe = "氮气排泄",
+    x = 150,
+    y = 166
+  }, {
+    dir = "E",
+    fluid_name = {
+      input = { "氮气" },
+      output = {}
+    },
+    prototype_name = "烟囱I",
+    recipe = "氮气排泄",
+    x = 150,
+    y = 172
+  }, {
+    dir = "N",
+    fluid_name = "",
+    prototype_name = "液罐I",
+    x = 153,
+    y = 162
+  }, {
+    dir = "E",
+    fluid_name = "",
+    prototype_name = "管道1-I型",
+    x = 150,
+    y = 163
+  }, {
+    dir = "E",
+    fluid_name = "",
+    prototype_name = "管道1-I型",
+    x = 151,
+    y = 163
+  }, {
+    dir = "E",
+    fluid_name = "",
+    prototype_name = "管道1-I型",
+    x = 152,
+    y = 163
+  }, {
+    dir = "N",
+    fluid_name = "",
+    prototype_name = "液罐I",
+    x = 157,
+    y = 196
+  }, {
+    dir = "N",
+    fluid_name = "",
+    prototype_name = "液罐I",
+    x = 157,
+    y = 199
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 170,
+    y = 166
+  }, {
+    dir = "N",
+    prototype_name = "无人机仓库",
+    x = 174,
+    y = 164
+  }, {
+    dir = "N",
+    prototype_name = "无人机仓库",
+    x = 174,
+    y = 161
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 134,
+    y = 175
   } }
 local road = {
   [22850] = 8,
@@ -1455,9 +1910,11 @@ local road = {
   [37234] = 1,
   [37260] = 10,
   [37450] = 10,
-  [37516] = 10,
+  [37515] = 92,
+  [37516] = 171,
   [37706] = 10,
-  [37772] = 10,
+  [37771] = 70,
+  [37772] = 139,
   [37962] = 10,
   [38028] = 10,
   [38218] = 10,
@@ -1590,8 +2047,8 @@ local road = {
   [40875] = 5,
   [40876] = 5,
   [40877] = 5,
-  [40878] = 5,
-  [40879] = 5,
+  [40878] = 173,
+  [40879] = 141,
   [40880] = 5,
   [40881] = 5,
   [40882] = 5,
@@ -1622,6 +2079,8 @@ local road = {
   [40907] = 5,
   [40908] = 1,
   [41092] = 10,
+  [41134] = 86,
+  [41135] = 67,
   [41161] = 118,
   [41162] = 67,
   [41348] = 10,
@@ -1668,4 +2127,3 @@ return {
     road = road,
     prepare = prepare,
 }
-    
