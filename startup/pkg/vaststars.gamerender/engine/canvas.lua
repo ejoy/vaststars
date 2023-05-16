@@ -5,7 +5,6 @@ local w     = world.w
 local icas   = ecs.import.interface "ant.terrain|icanvas"
 local iterrain = ecs.require "terrain"
 local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
-local fs = require "filesystem"
 
 local types <const> = {
     BUILDING_BASE = 1,
@@ -66,10 +65,6 @@ function M.create(canvas_type, show, yaxis)
 end
 
 function M.add_item(canvas_type, id, materialpath, ...)
-	-- if not fs.exists(fs.path(materialpath)) then
-    --     error("material not found: " .. materialpath)
-    -- end
-
     local canvas_entity_object = assert(cache[canvas_type])
     canvas_entity_object:send("add_item", id, materialpath, ...)
     return id

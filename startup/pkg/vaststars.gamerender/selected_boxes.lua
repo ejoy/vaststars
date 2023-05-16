@@ -44,7 +44,9 @@ local function create_object(prefab, srt)
         elseif name == "obj_motion" then
             local method, s, r, t = ...
             local root <close> = w:entity(self.tag['*'][1])
-            iom[method](root, s, r, t)
+            if root then
+                iom[method](root, s, r, t)
+            end
         end
     end
     return world:create_object(p)
@@ -131,8 +133,24 @@ function mt:set_wh(w, h)
     self.w = w
     self.h = h
 
-    for _, v in pairs(self.lines) do
-        v:remove()
+    self:remove()
+
+    local width = (w - 1) * 10
+    local height = (h - 1) * 10
+    self.corner_offset = math3d.ref(math3d.vector(width / 2, 0, height / 2))
+    self.line_offset = math3d.ref(math3d.vector(w * 10 / 2, 0, h * 10 / 2))
+    self.w = w
+    self.h = h
+
+    for idx = 1, #CORNER_DIRECTIONS do
+        self.corners[idx] = create_object(self.prefabs[1], {
+            s = mc.ONE,
+            r = CORNER_QUATERNIONS[idx],
+            t = math3d.ref(math3d.muladd(CORNER_DIRECTIONS[idx], self.corner_offset, self.center)),
+        })
+        if mc.NULL ~= self.color then
+            self.corners[idx]:send("set_color", self.color)
+        end
     end
 
     if self.prefabs[2] then

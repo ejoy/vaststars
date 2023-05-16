@@ -26,6 +26,7 @@ local create_sprite = ecs.require "sprite"
 local SPRITE_COLOR = import_package "vaststars.prototype".load("sprite_color")
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 local ientity = require "gameplay.interface.entity"
+local create_pickup_icon = ecs.require "pickup_icon".create
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -82,8 +83,10 @@ local function __create_self_sprite(typeobject, x, y, dir, sprite_color)
 end
 
 local function __new_entity(self, datamodel, typeobject)
+    local object = assert(objects:get(self.move_object_id))
+
     iobject.remove(self.pickup_object)
-    local dir = DEFAULT_DIR
+    local dir = object.dir
     local x, y = iobject.central_coord(typeobject.name, dir, coord_system, 1)
     if not x or not y then
         return
@@ -119,6 +122,9 @@ local function __new_entity(self, datamodel, typeobject)
         end
     end
 
+    local object = assert(objects:get(self.move_object_id))
+    local e = assert(gameplay_core.get_entity(object.gameplay_eid))
+
     self.pickup_object = iobject.new {
         prototype_name = typeobject.name,
         dir = dir,
@@ -129,6 +135,10 @@ local function __new_entity(self, datamodel, typeobject)
         },
         fluid_name = fluid_name,
     }
+
+    if e.assembling and e.assembling.recipe ~= 0 then
+        self.pickup_components[#self.pickup_components + 1] = create_pickup_icon(typeobject, dir, e.assembling.recipe, self.pickup_object.srt)
+    end
 
     if self.sprite then
         self.sprite:remove()
@@ -218,6 +228,10 @@ local function touch_move(self, datamodel, delta_vec)
     pickup_object.x, pickup_object.y = lx, ly
 
     local typeobject = iprototype.queryByName(pickup_object.prototype_name)
+
+    for _, c in pairs(self.pickup_components) do
+        c:on_position_change(self.pickup_object.srt, self.pickup_object.dir)
+    end
 
     if self.road_entrance then
         local road_entrance_position, _, _, road_entrance_dir = _get_road_entrance_position(typeobject, lx, ly, pickup_object.dir)
@@ -420,6 +434,9 @@ local function rotate_pickup_object(self, datamodel, dir, delta_vec)
     pickup_object.x, pickup_object.y = lx, ly
 
     local typeobject = iprototype.queryByName(pickup_object.prototype_name)
+    for _, c in pairs(self.pickup_components) do
+        c:on_position_change(self.pickup_object.srt, self.pickup_object.dir)
+    end
     local coord = coord_system:align(icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, dir))
     if not coord then
         return
@@ -464,6 +481,10 @@ local function clean(self, datamodel)
     datamodel.show_confirm = false
     datamodel.show_rotate = false
 
+    for _, c in pairs(self.pickup_components) do
+        c:remove()
+    end
+
     self.super.clean(self, datamodel)
     -- clear temp pole
     ipower:clear_all_temp_pole()
@@ -492,6 +513,7 @@ local function create(move_object_id)
     M.clean = clean
     M.check_construct_detector = check_construct_detector
     M.move_object_id = move_object_id
+    M.pickup_components = {}
 
     return M
 end
