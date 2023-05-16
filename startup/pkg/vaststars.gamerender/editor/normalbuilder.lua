@@ -22,8 +22,6 @@ local SPRITE_COLOR = import_package "vaststars.prototype".load("sprite_color")
 local gameplay_core = require "gameplay.core"
 local ichest = require "gameplay.interface.chest"
 local create_selected_boxes = ecs.require "selected_boxes"
-local mathpkg = import_package "ant.math"
-local mc = mathpkg.constant
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)

@@ -104,6 +104,7 @@ post_funcs["hub"] = function (pt, template)
 end
 
 function m.create_entity(init)
+    -- assert(not(init.x == 0 and init.y == 0))
     local func
     local template = {
         x = init.x,

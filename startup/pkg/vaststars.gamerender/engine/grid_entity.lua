@@ -63,7 +63,7 @@ function M.create(name, width, height, unit, srt)
     local material = "/pkg/vaststars.resources/materials/polylinelist.material"
 
 	local objects = {}
-	objects[#objects+1] = ientity_object.create(ipl.add_linelist(p1, LINE_WIDTH * 2, COLOR, material, srt), events)
+	objects[#objects+1] = ientity_object.create(ipl.add_linelist(p1, LINE_WIDTH, COLOR, material, srt), events)
 	objects[#objects+1] = ientity_object.create(ipl.add_linelist(p2, LINE_WIDTH, COLOR, material, srt), events)
 
 	local outer_proxy = {

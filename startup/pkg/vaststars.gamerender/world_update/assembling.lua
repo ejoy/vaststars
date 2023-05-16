@@ -35,7 +35,7 @@ heap_events["set_matrix"] = function(_, e, mat)
     iom.set_srt(e, math3d.srt(mat))
 end
 
-local function create_heap(meshbin, srt, dim3, gap3, count)
+local function __create_heap(meshbin, srt, dim3, gap3, count)
     return ientity_object.create(ecs.create_entity {
         policy = {
             "ant.render|render",
@@ -57,7 +57,7 @@ local function create_heap(meshbin, srt, dim3, gap3, count)
     }, heap_events)
 end
 
-local function create_io_shelves(object_id, gameplay_world, e, building_mat)
+local function __create_io_shelves(object_id, gameplay_world, e, building_mat)
     local typeobject_recipe = iprototype.queryById(e.assembling.recipe)
     local typeobject_building = iprototype.queryById(e.building.prototype)
     local ingredients_n <const> = #typeobject_recipe.ingredients//4 - 1
@@ -124,7 +124,7 @@ local function create_io_shelves(object_id, gameplay_world, e, building_mat)
             local s, r, t = math3d.srt(mat)
             local prefab = "/pkg/vaststars.resources/" .. typeobject_item.pile_model
             local slot = assert(gameplay_world:container_get(e.chest, idx))
-            heaps[#heaps+1] = create_heap(prefab_meshbin(prefab)[1].meshbin, {s = s, r = r, t = t}, HEAP_DIM3, gap3, slot.amount)
+            heaps[#heaps+1] = __create_heap(prefab_meshbin(prefab)[1].meshbin, {s = s, r = r, t = t}, HEAP_DIM3, gap3, slot.amount)
             io_counts[#io_counts+1] = slot.amount
         end
     end
@@ -137,7 +137,7 @@ local function create_io_shelves(object_id, gameplay_world, e, building_mat)
             local s, r, t = math3d.srt(mat)
             local prefab = "/pkg/vaststars.resources/" .. typeobject_item.pile_model
             local slot = assert(gameplay_world:container_get(e.chest, idx + ingredients_n))
-            heaps[#heaps+1] = create_heap(prefab_meshbin(prefab)[1].meshbin, {s = s, r = r, t = t}, HEAP_DIM3, gap3, slot.amount)
+            heaps[#heaps+1] = __create_heap(prefab_meshbin(prefab)[1].meshbin, {s = s, r = r, t = t}, HEAP_DIM3, gap3, slot.amount)
             io_counts[#io_counts+1] = slot.amount
         end
     end
@@ -527,7 +527,7 @@ return function(world)
 
         if not building.io_shelves then
             if e.assembling.recipe ~= 0 then
-                building.io_shelves = create_io_shelves(object.id, world, e, mat)
+                building.io_shelves = __create_io_shelves(object.id, world, e, mat)
             end
         else
             if e.assembling.recipe == 0 then
@@ -538,7 +538,7 @@ return function(world)
             else
                 if building.io_shelves.recipe ~= e.assembling.recipe then
                     building.io_shelves:remove()
-                    building.io_shelves = create_io_shelves(object.id, world, e, mat)
+                    building.io_shelves = __create_io_shelves(object.id, world, e, mat)
                 else
                     building.io_shelves:update_heap_count(e)
                 end

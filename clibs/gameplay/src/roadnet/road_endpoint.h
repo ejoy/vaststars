@@ -23,7 +23,7 @@ namespace roadnet::road {
         bool setOut(network& w);
         void setOutForce(network& w, lorryid id);
         void setOutForce(network& w);
-        std::optional<uint16_t> distance(network& w, road::endpoint const& to);
+        std::optional<uint16_t> distance(network& w, road::endpoint const& to) const;
     };
     static_assert(std::is_trivial_v<endpoint>);
 }

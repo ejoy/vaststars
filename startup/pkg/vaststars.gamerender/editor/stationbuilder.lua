@@ -135,7 +135,7 @@ local function __new_entity(self, datamodel, typeobject)
                 self.selected_boxes = create_selected_boxes({
                     "/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab",
                     "/pkg/vaststars.resources/prefabs/selected-box-no-animation-line.prefab"
-                }, selected_boxes_position, COLOR_RED, w+1, h+1)
+                }, selected_boxes_position, COLOR_RED, w, h)
             end
         end
     end
@@ -344,9 +344,10 @@ local function rotate_pickup_object(self, datamodel, dir, delta_vec)
         self.road_entrance:set_srt(mc.ONE, ROTATORS[ddir], road_entrance_position)
     end
 
-    local w, h = iprototype.unpackarea(typeobject.area)
+    local w, h = iprototype.rotate_area(typeobject.area, dir)
     local selected_boxes_position = coord_system:get_position_by_coord(pickup_object.x, pickup_object.y, w, h)
     self.selected_boxes:set_position(selected_boxes_position)
+    self.selected_boxes:set_wh(w, h)
 end
 
 local function touch_move(self, datamodel, delta_vec)
@@ -364,9 +365,10 @@ local function touch_move(self, datamodel, delta_vec)
 
         local position, x, y = __align(self.pickup_object.prototype_name, self.pickup_object.dir)
         if position then
-            local w, h = iprototype.unpackarea(typeobject.area)
+            local w, h = iprototype.rotate_area(typeobject.area, self.pickup_object.dir)
             local selected_boxes_position = coord_system:get_position_by_coord(x, y, w, h)
             self.selected_boxes:set_position(selected_boxes_position)
+            self.selected_boxes:set_wh(w, h)
         end
 
         self.last_position = {self.pickup_object.srt.t[1], self.pickup_object.srt.t[2], self.pickup_object.srt.t[3]}
@@ -420,9 +422,10 @@ local function touch_end(self, datamodel)
     local road_entrance_position, road_entrance_dir = _get_road_entrance_position(typeobject, self.pickup_object.dir, self.pickup_object.srt.t)
     self.road_entrance:set_srt(mc.ONE, ROTATORS[road_entrance_dir], road_entrance_position)
 
-    local w, h = iprototype.unpackarea(typeobject.area)
+    local w, h = iprototype.rotate_area(typeobject.area, self.pickup_object.dir)
     local selected_boxes_position = coord_system:get_position_by_coord(pickup_object.x, pickup_object.y, w, h)
     self.selected_boxes:set_position(selected_boxes_position)
+    self.selected_boxes:set_wh(w, h)
 
     pickup_object.recipe = _get_mineral_recipe(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir) -- TODO: maybe set recipt according to entity type?
 
