@@ -156,7 +156,7 @@ local function __get_moveable_count(object_id)
         end
         return count
     else
-        assert(false)
+        return 0
     end
 end
 
