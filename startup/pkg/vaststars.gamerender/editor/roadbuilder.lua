@@ -8,7 +8,6 @@ local unpackcoord = iprototype.unpackcoord
 local iconstant = require "gameplay.interface.constant"
 local ALL_DIR = iconstant.ALL_DIR
 local iobject = ecs.require "object"
-local iprototype = require "gameplay.interface.prototype"
 local iflow_connector = require "gameplay.interface.flow_connector"
 local objects = require "objects"
 local terrain = ecs.require "terrain"
@@ -25,6 +24,7 @@ local gen_endpoint_mask = ecs.require "editor.endpoint".gen_endpoint_mask
 local is_roadnet_only = ecs.require "editor.endpoint".is_roadnet_only
 local gameplay_core = require "gameplay.core"
 local ichest = require "gameplay.interface.chest"
+local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_box"
 
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 local REMOVE <const> = {}
@@ -271,11 +271,19 @@ local function _builder_init(self, datamodel)
         else
             datamodel.show_start_laying = false
         end
+
+        for _, c in pairs(self.pickup_components) do
+            c:on_status_change(datamodel.show_start_laying)
+        end
     else
         datamodel.show_place_one = true
         datamodel.show_remove_one = false
         datamodel.show_start_teardown = false
         datamodel.show_start_laying = false
+
+        for _, c in pairs(self.pickup_components) do
+            c:on_status_change(true)
+        end
     end
 end
 
@@ -685,6 +693,8 @@ local function new_entity(self, datamodel, typeobject)
         },
     }
 
+    self.pickup_components[#self.pickup_components + 1] = create_pickup_selected_box(self.coord_indicator.srt.t, typeobject, dir, true)
+
     --
     _builder_init(self, datamodel)
 end
@@ -696,6 +706,9 @@ local function touch_move(self, datamodel, delta_vec)
     if self.grid_entity then
         local typeobject = iprototype.queryByName(self.coord_indicator.prototype_name)
         self.grid_entity:send("obj_motion", "set_position", __calc_grid_position(self, typeobject, self.coord_indicator.x, self.coord_indicator.y))
+    end
+    for _, c in pairs(self.pickup_components) do
+        c:on_position_change(self.coord_indicator.srt, self.coord_indicator.dir)
     end
 end
 
@@ -709,6 +722,9 @@ local function touch_end(self, datamodel)
     self.coord_indicator.x, self.coord_indicator.y = x, y
     iroadnet:clear("indicator")
 
+    for _, c in pairs(self.pickup_components) do
+        c:on_position_change(self.coord_indicator.srt, self.coord_indicator.dir)
+    end
     if self.state == STATE_NONE then
         _builder_init(self, datamodel)
         return false
@@ -1255,6 +1271,10 @@ local function clean(self, datamodel)
         self.grid_entity:remove()
         self.grid_entity = nil
     end
+    for _, c in pairs(self.pickup_components) do
+        c:remove()
+    end
+    self.pickup_components = {}
     iobject.remove(self.coord_indicator)
     self.coord_indicator = nil
     self.temporary_map = {}
@@ -1282,6 +1302,8 @@ local function create()
 
     M.temporary_map = {}
     M.pending = {}
+    M.pickup_components = {}
+
     return M
 end
 return create

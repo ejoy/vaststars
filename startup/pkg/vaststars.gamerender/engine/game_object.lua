@@ -29,6 +29,14 @@ local function replace_outline_material(template)
     return res
 end
 
+local function set_efk_auto_play(template, auto_play)
+    for _, v in ipairs(template) do
+        if v.data and v.data.efk then
+            v.data.efk.auto_play = auto_play
+        end
+    end
+end
+
 local function on_prefab_message(prefab, inner, cmd, ...)
     local event = game_object_event[cmd]
     if event then
@@ -125,6 +133,8 @@ local __get_hitch_children ; do
         else
             assert(false)
         end
+
+        set_efk_auto_play(template, false)
 
         -- cache all slots & srt of the prefab
         local slots, effects, animations = __cache_prefab_info(template)

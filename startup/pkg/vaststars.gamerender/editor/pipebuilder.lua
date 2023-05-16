@@ -22,6 +22,7 @@ local ientity = require "gameplay.interface.entity"
 local gameplay_core = require "gameplay.core"
 local math3d = require "math3d"
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
+local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_box"
 
 local REMOVE <const> = {}
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
@@ -329,6 +330,10 @@ local function _builder_init(self, datamodel)
     else
         datamodel.show_start_laying = false
     end
+
+    for _, c in pairs(self.pickup_components) do
+        c:on_status_change(datamodel.show_start_laying or datamodel.show_place_one)
+    end
 end
 
 -- sort by distance and direction
@@ -620,6 +625,8 @@ local function new_entity(self, datamodel, typeobject)
         fluid_name = "",
     }
 
+    self.pickup_components[#self.pickup_components + 1] = create_pickup_selected_box(self.coord_indicator.srt.t, typeobject, dir, true)
+
     --
     _builder_init(self, datamodel)
 end
@@ -632,6 +639,9 @@ local function touch_move(self, datamodel, delta_vec)
         local typeobject = iprototype.queryByName(self.coord_indicator.prototype_name)
         self.grid_entity:send("obj_motion", "set_position", __calc_grid_position(self, typeobject, self.coord_indicator.x, self.coord_indicator.y))
     end
+    for _, c in pairs(self.pickup_components) do
+        c:on_position_change(self.coord_indicator.srt, self.coord_indicator.dir)
+    end
 end
 
 local function touch_end(self, datamodel)
@@ -643,6 +653,10 @@ local function touch_end(self, datamodel)
     self.coord_indicator, x, y = iobject.align(self.coord_indicator)
     self.coord_indicator.x, self.coord_indicator.y = x, y
     self:revert_changes({"TEMPORARY"})
+
+    for _, c in pairs(self.pickup_components) do
+        c:on_position_change(self.coord_indicator.srt, self.coord_indicator.dir)
+    end
 
     if self.state == STATE_NONE then
         return _builder_init(self, datamodel)
@@ -684,10 +698,11 @@ local function finish_laying(self, datamodel)
     end
     objects:commit("TEMPORARY", "CONFIRM")
 
-    local typeobject = iprototype.queryByName(self.coord_indicator.prototype_name)
+    local prototype_name = self.coord_indicator.prototype_name
+    local ret = self:confirm(datamodel)
+    local typeobject = iprototype.queryByName(prototype_name)
     self:new_entity(datamodel, typeobject)
-
-    return self:confirm(datamodel)
+    return ret
 end
 
 local function place_one(self, datamodel)
@@ -749,7 +764,7 @@ local function confirm(self, datamodel)
 
         if object == REMOVE then
             local obj = assert(objects:coord(x, y, {"CONFIRM"}))
-            igameplay.remove_entity(obj.gameplay_eid)
+            igameplay.remove_entity(obj.gameplay_eid, false)
             iobject.remove(obj)
 
             remove[coord] = true
@@ -760,7 +775,7 @@ local function confirm(self, datamodel)
                 object.gameplay_eid = igameplay.create_entity(object)
             else
                 if old.prototype_name ~= object.prototype_name then
-                    igameplay.remove_entity(object.gameplay_eid)
+                    igameplay.remove_entity(object.gameplay_eid, false)
                     object.gameplay_eid = igameplay.create_entity(object)
                 elseif old.dir ~= object.dir then
                     ientity:set_direction(gameplay_core.get_world(), gameplay_core.get_entity(object.gameplay_eid), object.dir)
@@ -848,6 +863,10 @@ local function clean(self, datamodel)
     iobject.remove(self.coord_indicator)
     self.coord_indicator = nil
 
+    for _, c in pairs(self.pickup_components) do
+        c:remove()
+    end
+    self.pickup_components = {}
     self.pending = {}
 
     gameplay_core.world_update = true
@@ -874,6 +893,7 @@ local function create()
     M.clean = clean
 
     M.pending = {}
+    M.pickup_components = {}
     return M
 end
 return create

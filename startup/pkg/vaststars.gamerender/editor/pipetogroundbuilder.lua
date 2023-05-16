@@ -19,6 +19,7 @@ local igrid_entity = ecs.require "engine.grid_entity"
 local math3d = require "math3d"
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 local coord_system = ecs.require "terrain"
+local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_box"
 
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
 local STATE_NONE  <const> = 0
@@ -147,7 +148,7 @@ local function __can_be_starting_point(object, forward_dir)
         valid2 = true
     end
 
-    return valid1 or valid2
+    return (valid1 == true) or (valid2 == true)
 end
 
 local function _set_starting(prototype_name, State, PipeToGroundState, x, y, dir)
@@ -321,7 +322,7 @@ local function _set_ending(prototype_name, State, PipeToGroundState, x, y, dir)
         return
     end
 
-    if _can_replace(object, dir) then
+    if __can_be_starting_point(object, dir) then
         PipeToGroundState.map[packcoord(x, y)] = {assert(endpoint_prototype_name), assert(endpoint_dir)}
         return
     end
@@ -492,6 +493,10 @@ local function _builder_init(self, datamodel)
         datamodel.show_start_laying = true
     else
         datamodel.show_start_laying = false
+    end
+
+    for _, c in pairs(self.pickup_components) do
+        c:on_status_change(datamodel.show_start_laying)
     end
 end
 
@@ -669,17 +674,25 @@ local function new_entity(self, datamodel, typeobject)
         self.grid_entity:show(true)
     end
 
+    self.pickup_components[#self.pickup_components + 1] = create_pickup_selected_box(self.coord_indicator.srt.t, typeobject, dir, true)
+
     --
     _builder_init(self, datamodel)
 end
 
 local function touch_move(self, datamodel, delta_vec)
+    if not self.coord_indicator then
+        return
+    end
     if self.coord_indicator then
         iobject.move_delta(self.coord_indicator, delta_vec)
     end
     if self.grid_entity then
         local typeobject = iprototype.queryByName(self.coord_indicator.prototype_name)
         self.grid_entity:send("obj_motion", "set_position", __calc_grid_position(self, typeobject, self.coord_indicator.x, self.coord_indicator.y))
+    end
+    for _, c in pairs(self.pickup_components) do
+        c:on_position_change(self.coord_indicator.srt, self.coord_indicator.dir)
     end
 end
 
@@ -693,6 +706,10 @@ local function touch_end(self, datamodel)
 
     self:revert_changes({"TEMPORARY"})
     self.dotted_line:show(false) -- NOTE: different from pipe_builder
+
+    for _, c in pairs(self.pickup_components) do
+        c:on_position_change(self.coord_indicator.srt, self.coord_indicator.dir)
+    end
 
     if self.state ~= STATE_START then
         _builder_init(self, datamodel)
@@ -709,7 +726,7 @@ local function __complete(self)
     for object_id, object in objects:all("CONFIRM") do -- TODO: duplicate code, see also pipe_function_pop.lua
         if object.REMOVED then
             if object.gameplay_eid then
-                igameplay.remove_entity(object.gameplay_eid)
+                igameplay.remove_entity(object.gameplay_eid, false)
             end
         else
             -- TODO: special case for assembling machine
@@ -725,7 +742,7 @@ local function __complete(self)
                 object.recipe = recipe
             else
                 if old.prototype_name ~= object.prototype_name then
-                    igameplay.remove_entity(object.gameplay_eid)
+                    igameplay.remove_entity(object.gameplay_eid, false)
                     object.gameplay_eid = igameplay.create_entity(object)
                 elseif old.dir ~= object.dir then
                     ientity:set_direction(gameplay_core.get_world(), gameplay_core.get_entity(object.gameplay_eid), object.dir)
@@ -754,15 +771,20 @@ local function complete(self, datamodel)
         self.grid_entity = nil
     end
 
-    iobject.remove(self.coord_indicator)
-    self.coord_indicator = nil
-
     self:revert_changes({"TEMPORARY"})
 
     datamodel.show_rotate = false
     datamodel.show_finish_laying = false
     datamodel.show_cancel = false
     datamodel.show_start_laying = false
+
+    local typeobject = iprototype.queryByName(self.coord_indicator.prototype_name)
+
+    iobject.remove(self.coord_indicator)
+    self.coord_indicator = nil
+
+    self:new_entity(datamodel, typeobject)
+    return true
 end
 
 local function start_laying(self, datamodel)
@@ -825,6 +847,11 @@ local function clean(self, datamodel)
         self.dotted_line = nil
     end
 
+    for _, c in pairs(self.pickup_components) do
+        c:remove()
+    end
+    self.pickup_components = {}
+
     self:revert_changes({"TEMPORARY"})
     datamodel.show_rotate = false
     self.state = STATE_NONE
@@ -845,6 +872,7 @@ local function create()
 
     M.clean = clean
 
+    M.pickup_components = {}
     M.prototype_name = ""
     M.state = STATE_NONE
     M.start_laying = start_laying

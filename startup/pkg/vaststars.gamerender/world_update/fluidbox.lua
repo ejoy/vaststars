@@ -60,6 +60,9 @@ local function __find_neighbor_fluid(gameplay_world, x, y, dir, ground)
         local object = objects:coord(dx, dy)
         if object then
             local typeobject = iprototype.queryByName(object.prototype_name)
+            if ground and not iprototype.has_type(typeobject.type, "pipe_to_ground") then
+                goto continue
+            end
 
             local fluid_name
             if iprototype.has_type(typeobject.type, "fluidbox") then
@@ -91,6 +94,7 @@ local function __find_neighbor_fluid(gameplay_world, x, y, dir, ground)
                 end
             end
         end
+        ::continue::
     end
 end
 
@@ -186,8 +190,8 @@ local function __update_pipe_shape(gameplay_world)
                 neighbor_object.gameplay_eid = igameplay.create_entity({
                     prototype_name = _prototype_name,
                     dir = _dir,
-                    x = x,
-                    y = y,
+                    x = v.x + x,
+                    y = v.y + y,
                     fluid_name = neighbor_object.fluid_name,
                 })
             end
