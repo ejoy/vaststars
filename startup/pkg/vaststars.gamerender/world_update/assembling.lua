@@ -21,7 +21,9 @@ local recipe_icon_canvas_cfg = datalist.parse(fs.open(fs.path("/pkg/vaststars.re
 local fluid_icon_canvas_cfg = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/textures/fluid_icon_canvas.cfg")):read "a")
 local irecipe = require "gameplay.interface.recipe"
 local gameplay_core = require "gameplay.core"
-
+local ims = ecs.import.interface "ant.motion_sampler|imotion_sampler"
+local ivs = ecs.import.interface "ant.scene|ivisible_state"
+local imotion = ecs.require "imotion"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local HEAP_DIM3 = {2, 4, 2}
@@ -29,6 +31,24 @@ local PREFABS = {
     ["in"]  = "/pkg/vaststars.resources/prefabs/shelf-input.prefab",
     ["out"] = "/pkg/vaststars.resources/prefabs/shelf-output.prefab",
 }
+local motions = {}
+local motion_caches = {}
+local function create_motion(prefab, from, to, duration)
+    local cache = motion_caches[prefab]
+    if not cache or #cache < 1 then
+        local motion = imotion.create_motion_object(nil, nil, math3d.vector(from))
+        imotion.sampler_group:create_instance(prefab, motion)
+        return {inited = false, prefab = prefab, from = from, to = to, duration = duration, elapsed_time = 0, motion = motion }
+    else
+        local m = table.remove(cache, #cache)
+        m.from = from
+        m.to = to
+        m.duration = duration
+        m.elapsed_time = 0
+        m.inited = false
+        return m
+    end
+end
 
 local heap_events = {}
 heap_events["set_matrix"] = function(_, e, mat)
@@ -155,6 +175,10 @@ local function __create_io_shelves(object_id, gameplay_world, e, building_mat)
             if iprototype.has_type(typeobject_item.type, "item") then
                 local slot = assert(gameplay_world:container_get(e.chest, idx))
                 if io_counts[idx] ~= slot.amount then
+                    -- 原料从货架到组装机中心的动画
+                    -- if io_counts[idx] > slot.amount then
+                    --     motions[#motions + 1] = create_motion(prefab, from, to, 1.0) 
+                    -- end
                     iheapmesh.update_heap_mesh_number(heaps[idx].id, slot.amount)
                     io_counts[idx] = slot.amount
                 end
@@ -167,6 +191,10 @@ local function __create_io_shelves(object_id, gameplay_world, e, building_mat)
                 local io_idx = idx + ingredients_n
                 local slot = assert(gameplay_world:container_get(e.chest, io_idx))
                 if io_counts[io_idx] ~= slot.amount then
+                    -- 成品从组装机中心到货架动画
+                    -- if io_counts[io_idx] < slot.amount then
+                    --     motions[#motions + 1] = create_motion(prefab, from, to, 1.0)
+                    -- end
                     iheapmesh.update_heap_mesh_number(heaps[idx].id, slot.amount)
                     io_counts[io_idx] = slot.amount
                 end
@@ -514,7 +542,41 @@ local function create_consumer_icon(object_id, building_srt)
     }
 end
 
+local function update_motions()
+    local time_step = 1.0 / 30
+    local remove_idx = {}
+    for index, mobj in ipairs(motions) do
+        if not mobj.inited then
+            mobj.inited = true
+            local e <close> = w:entity(mobj.motion)
+            ims.set_keyframes(e, {t = math3d.vector(mobj.from), step = 0.0}, {t = math3d.vector(mobj.to),  step = 1.0})
+            ivs.set_state(e, "main_view", true)
+        end
+        local e <close> = w:entity(mobj.motion)
+        mobj.elapsed_time = mobj.elapsed_time + time_step
+        local ratio = mobj.elapsed_time / mobj.duration
+        if ratio > 1.0 then
+            ratio = 1.0
+            ivs.set_state(e, "main_view", false)
+            local cache = motion_caches[mobj.prefab]
+            if not cache then
+                motion_caches[mobj.prefab] = {mobj}
+            else
+                table.insert(cache, mobj)
+            end
+            remove_idx[#remove_idx + 1] = index
+        else
+            ims.set_ratio(e, ratio)
+        end
+    end
+
+    for _, value in ipairs(remove_idx) do
+        table.remove(motions, value)
+    end
+end
+
 return function(world)
+    update_motions()
     for e in world.ecs:select "assembling:in chest:in building:in capacitance?in eid:in" do
         -- object may not have been fully created yet
         local object = objects:coord(e.building.x, e.building.y)
