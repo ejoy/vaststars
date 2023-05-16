@@ -30,7 +30,7 @@ namespace roadnet::road {
         setOutForce(w, id);
         id = lorryid::invalid();
     }
-    std::optional<uint16_t> endpoint::distance(network& w, road::endpoint const& to) {
+    std::optional<uint16_t> endpoint::distance(network& w, road::endpoint const& to) const {
         route_value val;
         if (!route(w, neighbor, to.rev_neighbor, val)) {
             return std::nullopt;
