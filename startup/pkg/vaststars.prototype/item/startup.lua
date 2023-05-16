@@ -1,6 +1,6 @@
 local entities = { {
     dir = "N",
-    items = { { "无人机仓库", 5 }, { "蒸汽发电机I", 8 }, { "铁制电线杆", 10 }, { "风力发电机I", 1 }, { "太阳能板I", 6 }, { "运输车框架", 4 }, { "送货车站", 2 }, { "蓄电池I", 10 }, { "锅炉I", 4 }, { "熔炼炉I", 2 }, { "水电站I", 2 }, { "收货车站", 2 } },
+    items = { { "无人机仓库", 5 }, { "蒸汽发电机I", 8 }, { "蓄电池I", 10 }, { "风力发电机I", 1 }, { "铁制电线杆", 10 }, { "收货车站", 2 }, { "熔炼炉I", 2 }, { "太阳能板I", 6 }, { "锅炉I", 4 }, { "运输车框架", 4 }, { "水电站I", 2 }, { "送货车站", 2 } },
     prototype_name = "指挥中心",
     recipe = "车辆装配",
     x = 126,
@@ -1350,66 +1350,6 @@ local entities = { {
     x = 134,
     y = 175
   }, {
-    dir = "N",
-    fluid_name = "二氧化碳",
-    prototype_name = "地下管1-JI型",
-    x = 150,
-    y = 187
-  }, {
-    dir = "W",
-    fluid_name = "二氧化碳",
-    prototype_name = "管道1-L型",
-    x = 150,
-    y = 188
-  }, {
-    dir = "N",
-    fluid_name = "二氧化碳",
-    prototype_name = "地下管1-JI型",
-    x = 150,
-    y = 183
-  }, {
-    dir = "E",
-    fluid_name = "二氧化碳",
-    prototype_name = "管道1-T型",
-    x = 150,
-    y = 184
-  }, {
-    dir = "E",
-    fluid_name = "二氧化碳",
-    prototype_name = "管道1-T型",
-    x = 150,
-    y = 180
-  }, {
-    dir = "N",
-    fluid_name = "二氧化碳",
-    prototype_name = "地下管1-JI型",
-    x = 150,
-    y = 179
-  }, {
-    dir = "N",
-    fluid_name = "氮气",
-    prototype_name = "地下管1-JI型",
-    x = 150,
-    y = 175
-  }, {
-    dir = "E",
-    fluid_name = "氮气",
-    prototype_name = "管道1-T型",
-    x = 150,
-    y = 176
-  }, {
-    dir = "N",
-    fluid_name = "氮气",
-    prototype_name = "地下管1-JI型",
-    x = 150,
-    y = 168
-  }, {
-    dir = "E",
-    fluid_name = "氮气",
-    prototype_name = "管道1-T型",
-    x = 150,
-    y = 169
-  }, {
     dir = "S",
     fluid_name = "二氧化碳",
     prototype_name = "管道1-L型",
@@ -1422,11 +1362,89 @@ local entities = { {
     x = 150,
     y = 164
   }, {
+    dir = "N",
+    fluid_name = "二氧化碳",
+    prototype_name = "地下管1-JI型",
+    x = 150,
+    y = 168
+  }, {
     dir = "S",
-    fluid_name = "氮气",
+    fluid_name = "二氧化碳",
     prototype_name = "地下管1-JI型",
     x = 150,
     y = 170
+  }, {
+    dir = "E",
+    fluid_name = "二氧化碳",
+    prototype_name = "管道1-T型",
+    x = 150,
+    y = 169
+  }, {
+    dir = "N",
+    fluid_name = "二氧化碳",
+    prototype_name = "地下管1-JI型",
+    x = 150,
+    y = 175
+  }, {
+    dir = "N",
+    fluid_name = "二氧化碳",
+    prototype_name = "地下管1-JI型",
+    x = 150,
+    y = 179
+  }, {
+    dir = "E",
+    fluid_name = "二氧化碳",
+    prototype_name = "管道1-T型",
+    x = 150,
+    y = 180
+  }, {
+    dir = "S",
+    fluid_name = "二氧化碳",
+    prototype_name = "地下管1-JI型",
+    x = 150,
+    y = 181
+  }, {
+    dir = "N",
+    fluid_name = "二氧化碳",
+    prototype_name = "地下管1-JI型",
+    x = 150,
+    y = 183
+  }, {
+    dir = "S",
+    fluid_name = "二氧化碳",
+    prototype_name = "地下管1-JI型",
+    x = 150,
+    y = 185
+  }, {
+    dir = "E",
+    fluid_name = "二氧化碳",
+    prototype_name = "管道1-T型",
+    x = 150,
+    y = 184
+  }, {
+    dir = "N",
+    fluid_name = "二氧化碳",
+    prototype_name = "地下管1-JI型",
+    x = 150,
+    y = 187
+  }, {
+    dir = "W",
+    fluid_name = "二氧化碳",
+    prototype_name = "管道1-L型",
+    x = 150,
+    y = 188
+  }, {
+    dir = "E",
+    fluid_name = "二氧化碳",
+    prototype_name = "管道1-T型",
+    x = 150,
+    y = 176
+  }, {
+    dir = "S",
+    fluid_name = "二氧化碳",
+    prototype_name = "地下管1-JI型",
+    x = 150,
+    y = 177
   } }
 local road = {
   [22850] = 8,
