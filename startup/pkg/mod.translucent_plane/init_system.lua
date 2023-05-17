@@ -184,7 +184,7 @@ local function create_translucent_plane_entity(grids_num, grids, color, alpha, r
     return eid
 end 
 
-local function get_intersect_tp(rect, remove_idx)
+local function get_intersect_tp(table, rect, remove_idx)
     local function is_intersect(r1, r2)
         width, height, unit, offset = iplane_terrain.get_wh()
         local xmin1, zmin1, xmax1, zmax1 = r1.x + offset, r1.z + offset - r1.h + 1, r1.x + offset + r1.w - 1, r1.z + offset
@@ -195,7 +195,7 @@ local function get_intersect_tp(rect, remove_idx)
     for tp_idx, tp in pairs(tp_table) do
         if remove_idx and remove_idx == tp_idx then
         elseif is_intersect(rect, tp.rect) then
-            intersect_table[tp_idx] = true
+            table[tp_idx] = true
         end
     end
 end
@@ -261,7 +261,7 @@ end
 function itp.create_translucent_plane(rect, color, render_layer, alpha)
     local new_tp = {rect = rect, color = color, render_layer = render_layer, alpha = alpha}
     cur_tp_idx = cur_tp_idx + 1
-    get_intersect_tp(rect)
+    get_intersect_tp(intersect_table, rect)
     remove_old_tp()
     tp_table[cur_tp_idx] = new_tp
     intersect_table[cur_tp_idx] = true
@@ -276,13 +276,23 @@ function itp.remove_translucent_plane(remove_idx)
         if remove_tp.eid and (not remove_list[remove_tp.eid]) then
             remove_list[remove_tp.eid] = true
         end
-        get_intersect_tp(remove_tp.rect, remove_idx)
+        get_intersect_tp(intersect_table, remove_tp.rect, remove_idx)
         remove_old_tp()
         tp_table[remove_idx] = nil
         update_build_tp()
     end
 end
 
+local function update_intersect_table()
+    local neighbour_table = {}
+    for tp_idx, _ in pairs(intersect_table) do
+        if tp_table[tp_idx] and tp_table[tp_idx].rect then
+            get_intersect_tp(neighbour_table, tp_table[tp_idx].rect)
+        end
+        neighbour_table[tp_idx] = true
+    end
+    intersect_table = neighbour_table
+end
 
 function init_sys:data_changed()
     for e in w:select "breath:update" do
@@ -309,6 +319,7 @@ function init_sys:data_changed()
         end
         remove_list = {}
         if tp_update then
+            update_intersect_table()
             update_intersect_tp()
             for tp_idx, _ in pairs(tp_update) do
                 if tp_table and tp_table[tp_idx] then
