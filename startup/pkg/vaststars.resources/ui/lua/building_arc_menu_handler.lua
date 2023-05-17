@@ -133,7 +133,7 @@ return function(start)
         start.buttons[#start.buttons + 1] = v
     end
     
-    console.log("#start.buttons", #start.buttons)
+    -- console.log("#start.buttons", #start.buttons)
     if #start.buttons > 0 then
         local pos = assert(positions[#start.buttons], #start.buttons)
         for i = 1, #start.buttons do

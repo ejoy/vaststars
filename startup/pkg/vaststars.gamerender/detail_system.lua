@@ -24,6 +24,60 @@ local function __get_capacitance(eid)
     return e.capacitance
 end
 
+local function __fluid_str(prefix, fluid, id, box_base_level, box_capacity, box_height)
+    local volume = "(none)"
+    local capacity = "(none)"
+    local flow = "(none)"
+    local elevation = "(none)"
+
+    local fluid_name = ""
+    if fluid ~= 0 then
+        fluid_name = iprototype.queryById(fluid).name
+        local r = gameplay_core.fluidflow_query(fluid, id)
+        if r then
+            volume = r.volume / r.multiple
+            capacity = r.capacity / r.multiple
+            flow = r.flow / r.multiple
+            elevation = volume / (box_capacity / box_height) + box_base_level
+        end
+    end
+
+    return (([[%s fluidbox: %s, volume: %s, capacity: %s, flow: %s box_base_level: %s, box_capacity: %s, box_height: %s, elevation: %s ]]):format(
+        prefix, fluid_name, volume, capacity, flow, box_base_level, box_capacity, box_height, elevation)
+    )
+end
+
+local function __fluidbox_str(eid)
+    local e = gameplay_core.get_entity(eid)
+    if not e then
+        return
+    end
+
+    local typeobject = iprototype.queryById(e.building.prototype)
+    local res = {}
+
+    if e.fluidbox then
+        res[#res+1] = __fluid_str("fluidbox 0 ", e.fluidbox.fluid, e.fluidbox.id, typeobject.fluidbox.base_level, typeobject.fluidbox.capacity, typeobject.fluidbox.height)
+    end
+
+    if e.fluidboxes then
+        local fluidboxes_io_type = {
+            ["in"] = "input",
+            ["out"] = "output",
+        }
+        for _, classify in ipairs {"in1","in2","in3","in4","out1","out2","out3"} do
+            local iotype, idx = classify:match("^(%a+)(%d+)$")
+            local box = typeobject.fluidboxes[fluidboxes_io_type[iotype]][tonumber(idx)] or {base_level = 0, capacity = 0, height = 0}
+
+            local fluid = e.fluidboxes[classify.."_fluid"]
+            local id = e.fluidboxes[classify.."_id"]
+            res[#res+1] = __fluid_str(("fluidbox %s "):format(classify), fluid, id, box.base_level, box.capacity, box.height)
+        end
+    end
+
+    return table.concat(res, "\n\t")
+end
+
 function idetail.show(object_id)
     iui.close("help_panel.rml")
     iui.open({"detail_panel.rml"}, object_id)
@@ -52,6 +106,7 @@ function idetail.show(object_id)
             network = %s,
             delta = %s,
         },
+        %s
         ]]):format(
             object.id,
             object.prototype_name,
@@ -59,7 +114,8 @@ function idetail.show(object_id)
             object.x,
             object.y,
             __get_capacitance(object.gameplay_eid).network,
-            __get_capacitance(object.gameplay_eid).delta
+            __get_capacitance(object.gameplay_eid).delta,
+            __fluidbox_str(object.gameplay_eid)
         ))
     end
     return true

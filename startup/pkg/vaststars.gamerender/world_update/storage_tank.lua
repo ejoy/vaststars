@@ -2,43 +2,36 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local iprototype = require "gameplay.interface.prototype"
-local gameplay_core = require "gameplay.core"
-local math3d = require "math3d"
-local DEFAULT_COLOR <const> = math3d.constant("v4", {2.5, 0.0, 0.0, 0.55})
 local objects = require "objects"
-local vsobject_manager = ecs.require "vsobject_manager"
+local iprototype = require "gameplay.interface.prototype"
+local draw_fluid_icon = ecs.require "fluid_icon"
+local icanvas = ecs.require "engine.canvas"
+local global = require "global"
 
-local function get_object(x, y)
-    local object = objects:coord(x, y)
-    if object then
-        return vsobject_manager:get(object.id)
-    end
-end
+local function __create_fluid_icon_component(object_id, x, y, fluid)
+    local m = {id = object_id, fluid = fluid, x = x, y = y}
+    draw_fluid_icon(object_id, x, y, fluid)
 
-local function _round(max_tick)
-    local v <const> = 100 / max_tick / 100
-    return function(progress) -- progress: 0.0 ~ 1.0
-        return math.ceil(progress / v) * v
+    function m:on_position_change(building_srt)
+        self:remove()
+        self.x, self.y = building_srt.t[1], building_srt.t[3]
+        draw_fluid_icon(self.object_id, building_srt.t[1], building_srt.t[3], self.fluid)
     end
-end
-local _get_progress = _round(10)
-
-local color_cache = {}
-local function _get_fluid_color(fluid)
-    if color_cache[fluid] then
-        return color_cache[fluid]
+    function m:remove()
+        icanvas.remove_item(icanvas.types().ICON, self.object_id)
     end
-
-    local typeobject = iprototype.queryById(fluid)
-    if typeobject.color then
-        color_cache[fluid] = math3d.constant("v4", typeobject.color)
-        return color_cache[fluid]
+    function m:update(fluid)
+        if self.fluid == fluid then
+            return
+        end
+        self.fluid = fluid
+        draw_fluid_icon(self.object_id, self.x, self.y, fluid)
     end
+    return m
 end
 
 return function(world)
-    for e in world.ecs:select "fluidbox:in fluidbox_changed:absent building:in" do
+    for e in world.ecs:select "fluidbox:in building:in" do
         local typeobject = assert(iprototype.queryById(e.building.prototype))
         if not typeobject.storage_tank then
             goto continue
@@ -50,30 +43,17 @@ return function(world)
             goto continue
         end
 
-        local vsobject = assert(vsobject_manager:get(object.id), ("(%s) vsobject not found"):format(object.prototype_name))
-
-        local volume = 0
-        local capacity = 0
-        local color
-        if e.fluidbox.fluid ~= 0 then
-            color = _get_fluid_color(e.fluidbox.fluid)
-            local r = gameplay_core.fluidflow_query(e.fluidbox.fluid, e.fluidbox.id)
-            if r then
-                volume = r.volume / r.multiple
-                capacity = r.capacity / r.multiple
-            end
+        if e.fluidbox.fluid == 0 then
+            goto continue
         end
 
-        if volume > 0 then
-            -- vsobject:attach("water_slot", "prefabs/storage-tank-water.prefab", "opacity", color or DEFAULT_COLOR)
-        else
-            -- vsobject:detach()
+        local building = global.buildings[object.id]
+        local x, y = object.srt.t[1], object.srt.t[3]
+        if not building.storage_tank_icon then
+            building.storage_tank_icon = __create_fluid_icon_component(object.id, x, y, e.fluidbox.fluid)
         end
+        building.storage_tank_icon:update(e.fluidbox.fluid)
 
-        if volume > 0 then
-            -- local animation_name = "ArmatureAction"
-            -- animation_name, _get_progress(volume / capacity)
-        end
         ::continue::
     end
     return false
