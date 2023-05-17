@@ -60,8 +60,10 @@ local function __find_neighbor_fluid(gameplay_world, x, y, dir, ground)
         local object = objects:coord(dx, dy)
         if object then
             local typeobject = iprototype.queryByName(object.prototype_name)
-            if ground and not iprototype.has_type(typeobject.type, "pipe_to_ground") then
-                goto continue
+            if ground then
+                if not iprototype.has_type(typeobject.type, "pipe_to_ground") then
+                    goto continue
+                end
             end
 
             local fluid_name
@@ -89,10 +91,12 @@ local function __find_neighbor_fluid(gameplay_world, x, y, dir, ground)
                 end
             end
             for _, fb in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir, fluid_name)) do
-                if fb.x == dx and fb.y == dy then
+                if fb.x == dx and fb.y == dy and fb.dir == iprototype.reverse_dir(dir) then
                     return fb.fluid_name, object
                 end
             end
+
+            goto continue
         end
         ::continue::
     end

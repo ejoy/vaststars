@@ -291,7 +291,8 @@ function igame_object.create(init)
             speed = efkinfo.efk.loop or 1.0,
             scene = {
                 parent = hitch_entity_object.id
-            }
+            },
+            group_id = init.group_id,
         }), efk_events)
     end
 

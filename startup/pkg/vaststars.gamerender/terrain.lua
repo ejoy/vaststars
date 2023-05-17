@@ -97,8 +97,8 @@ local function _get_grid_id(x, y)
 end
 
 function terrain:get_group_id(x, y)
-    return 0
-	-- return self._group_id[_get_grid_id(x, y)]
+    -- return 0
+	return self._group_id[_get_grid_id(x, y)]
 end
 
 function terrain:create(width, height)
