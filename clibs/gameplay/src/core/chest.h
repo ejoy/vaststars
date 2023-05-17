@@ -140,20 +140,25 @@ private:
         assert(size <= kPageSize);
         uint8_t page;
         uint8_t slot;
-        if (size + top <= kPageSize) {
-            page = (uint8_t)(pages.size()-1);
+        if (size + top < kPageSize) {
+            page = (uint8_t)(pages.size() - 1);
             slot = top;
             top += size;
         }
+        else if (size + top == kPageSize) {
+            page = (uint8_t)(pages.size()-1);
+            slot = top;
+            alloc_page();
+        }
         else if (size == kPageSize) {
-            free_page();
+            free_page_last();
             alloc_page();
             page = (uint8_t)(pages.size()-1);
             slot = 0;
             alloc_page();
         }
         else {
-            free_page();
+            free_page_last();
             alloc_page();
             page = (uint8_t)(pages.size()-1);
             slot = 0;
@@ -183,7 +188,7 @@ private:
         }
         return alloc_array_(size);
     }
-    void free_page() {
+    void free_page_last() {
         free_chunk((uint8_t)(pages.size()-1), {top, size_type(kPageSize - top)});
     }
     void alloc_page() {
