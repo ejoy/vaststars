@@ -229,6 +229,7 @@ local t = {
 	"/pkg/ant.efk/materials/sprite_unlit.material",
 	"/pkg/ant.efk/package.ecs",
 	"/pkg/ant.efk/package.lua",
+	"/pkg/ant.efk/playhandle.lua",
 	"/pkg/ant.efk/service/efk.lua",
 	"/pkg/ant.font/main.lua",
 	"/pkg/ant.font/make.lua",
