@@ -388,9 +388,11 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
                 local begin_x, begin_y = __calc_begin_xy(x, y, iprototype.rotate_area(typeobject.area, DIRECTION[e.building.direction]))
 
                 for _, r in ipairs(t) do
+                    local i = 0
                     for idx, v in ipairs(irecipe.get_elements(recipe_typeobject[r[1]])) do
                         if iprototype.is_fluid_id(v.id) then
-                            local c = assert(typeobject.fluidboxes[r[2]][idx])
+                            i = i + 1
+                            local c = assert(typeobject.fluidboxes[r[2]][i])
                             local connection = assert(c.connections[1])
                             local connection_x, connection_y = iprototype.rotate_connection(connection.position, DIRECTION[e.building.direction], typeobject.area)
 
