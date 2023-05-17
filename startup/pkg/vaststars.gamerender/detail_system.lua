@@ -42,8 +42,8 @@ local function __fluid_str(prefix, fluid, id, box_base_level, box_capacity, box_
         end
     end
 
-    return (([[%s fluidbox: %s, volume: %s, capacity: %s, flow: %s box_base_level: %s, box_capacity: %s, box_height: %s, elevation: %s ]]):format(
-        prefix, fluid_name, volume, capacity, flow, box_base_level, box_capacity, box_height, elevation)
+    return (([[%s fluidbox: (%s)[%s], volume: %s, capacity: %s, flow: %s box_base_level: %s, box_capacity: %s, box_height: %s, elevation: %s ]]):format(
+        prefix, fluid, fluid_name, volume, capacity, flow, box_base_level, box_capacity, box_height, elevation)
     )
 end
 
