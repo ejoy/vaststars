@@ -23,6 +23,7 @@ local gameplay_core = require "gameplay.core"
 local math3d = require "math3d"
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_box"
+local global = require "global"
 
 local REMOVE <const> = {}
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
@@ -566,32 +567,6 @@ local function _teardown_start(self, datamodel)
     end
 end
 
-local function __apply_teardown(self, x, y)
-    for _, dir in ipairs(iconstant.ALL_DIR) do
-        local succ, dx, dy = terrain:move_coord(x, y, dir, 1)
-        if not succ then
-            goto continue
-        end
-        local object = objects:modify(dx, dy, {"CONFIRM", "CONSTRUCTED"}, iobject.clone)
-        if not object then
-            goto continue
-        end
-        if not iprototype.is_pipe(object.prototype_name) then
-            goto continue
-        end
-
-        local prototype_name, dir = iflow_connector.set_connection(object.prototype_name, object.dir, iprototype.reverse_dir(dir), false)
-        assert(prototype_name and dir)
-
-        object.prototype_name = prototype_name
-        object.dir = dir
-        objects:set(object, "CONFIRM")
-
-        self.pending[iprototype.packcoord(dx, dy)] = object
-        ::continue::
-    end
-end
-
 local function __calc_grid_position(self, typeobject, x, y)
     local w, h = iprototype.unpackarea(typeobject.area)
     local _, originPosition = coord_system:align(math3d.vector {0, 0, 0}, w, h)
@@ -601,6 +576,7 @@ end
 
 --------------------------------------------------------------------------------------------------
 local function new_entity(self, datamodel, typeobject)
+    self.typeobject = typeobject
     iobject.remove(self.coord_indicator)
     local dir = DEFAULT_DIR
 
@@ -632,6 +608,9 @@ local function new_entity(self, datamodel, typeobject)
 end
 
 local function touch_move(self, datamodel, delta_vec)
+    if not self.coord_indicator then
+        return
+    end
     if self.coord_indicator then
         iobject.move_delta(self.coord_indicator, delta_vec)
     end
@@ -698,10 +677,8 @@ local function finish_laying(self, datamodel)
     end
     objects:commit("TEMPORARY", "CONFIRM")
 
-    local prototype_name = self.coord_indicator.prototype_name
     local ret = self:confirm(datamodel)
-    local typeobject = iprototype.queryByName(prototype_name)
-    self:new_entity(datamodel, typeobject)
+    self:new_entity(datamodel, self.typeobject)
     return ret
 end
 
@@ -727,7 +704,11 @@ local function place_one(self, datamodel)
 
     datamodel.show_confirm = true
 
-    return self:confirm(datamodel)
+    local ret = self:confirm(datamodel)
+    self:clean(self, datamodel)
+
+    self:new_entity(datamodel, self.typeobject)
+    return ret
 end
 
 local function remove_one(self, datamodel)
@@ -741,7 +722,12 @@ local function remove_one(self, datamodel)
     self.pending[coord] = REMOVE
 
     datamodel.show_confirm = true
-    return self:confirm(datamodel)
+
+    local ret = self:confirm(datamodel)
+    self:clean(self, datamodel)
+
+    self:new_entity(datamodel, self.typeobject)
+    return ret
 end
 
 local function confirm(self, datamodel)
@@ -758,16 +744,10 @@ local function confirm(self, datamodel)
     datamodel.show_finish_laying = false
     datamodel.show_cancel = false
 
-    local remove = {}
+    local removed = {}
     for coord, object in pairs(self.pending) do
-        local x, y = iprototype.unpackcoord(coord)
-
         if object == REMOVE then
-            local obj = assert(objects:coord(x, y, {"CONFIRM"}))
-            igameplay.remove_entity(obj.gameplay_eid, false)
-            iobject.remove(obj)
-
-            remove[coord] = true
+            removed[coord] = true
         else
             local object_id = object.id
             local old = objects:get(object_id, {"CONSTRUCTED"})
@@ -790,9 +770,20 @@ local function confirm(self, datamodel)
     end
     objects:commit("CONFIRM", "CONSTRUCTED")
 
-    for coord in pairs(remove) do
+    for coord in pairs(removed) do
         local x, y = iprototype.unpackcoord(coord)
-        __apply_teardown(self, x, y)
+        local obj = assert(objects:coord(x, y))
+        iobject.remove(obj)
+        objects:remove(obj.id)
+        local building = global.buildings[obj.id]
+        if building then
+            for _, v in pairs(building) do
+                v:remove()
+            end
+        end
+
+        print("remove", obj.id, obj.x, obj.y)
+        igameplay.remove_entity(obj.gameplay_eid)
     end
 
     gameplay_core.build()
@@ -830,6 +821,7 @@ end
 
 local function finish_teardown(self, datamodel)
     self.state = STATE_NONE
+    datamodel.show_finish_teardown = false
     datamodel.show_finish_laying = false
     datamodel.show_confirm = true
     datamodel.show_cancel = false
@@ -840,10 +832,11 @@ local function finish_teardown(self, datamodel)
     end
     objects:commit("TEMPORARY", "CONFIRM")
 
-    local typeobject = iprototype.queryByName(self.coord_indicator.prototype_name)
-    self:new_entity(datamodel, typeobject)
+    local ret = self:confirm(datamodel)
+    self:clean(self, datamodel)
 
-    return self:confirm(datamodel)
+    self:new_entity(datamodel, self.typeobject)
+    return ret
 end
 
 local function clean(self, datamodel)
@@ -855,6 +848,7 @@ local function clean(self, datamodel)
     datamodel.show_start_laying = false
     datamodel.show_start_teardown = false
     datamodel.show_cancel = false
+    datamodel.show_remove_one = false
 
     if self.grid_entity then
         self.grid_entity:remove()

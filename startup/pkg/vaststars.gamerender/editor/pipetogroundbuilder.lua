@@ -20,6 +20,7 @@ local math3d = require "math3d"
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 local coord_system = ecs.require "terrain"
 local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_box"
+local global = require "global"
 
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
 local STATE_NONE  <const> = 0
@@ -88,7 +89,7 @@ local function _connect_to_neighbor(State, x, y, neighbor_dir, prototype_name, d
 end
 
 -- NOTE: different from pipe_builder
-local function _get_covers_fluidbox(object)
+local function _get_covers_fluidbox(object, groud)
     local prototype_name
     if iprototype.is_pipe(object.prototype_name) or iprototype.is_pipe_to_ground(object.prototype_name) then
         prototype_name = iflow_connector.covers(object.prototype_name, object.dir)
@@ -98,7 +99,7 @@ local function _get_covers_fluidbox(object)
 
     local t = {}
     for _, fb in ipairs(ifluid:get_fluidbox(prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
-        if fb.ground then
+        if groud == nil and fb.ground then
             goto continue
         end
 
@@ -205,20 +206,27 @@ local function _set_starting(prototype_name, State, PipeToGroundState, x, y, dir
         return x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
 
     elseif iprototype.is_pipe_to_ground(object.prototype_name) then
-        local _prototype_name, _dir
         -- the pipe to ground can certainly be replaced with the new pipe to ground, promise by _builder_init()
         if not __can_be_starting_point(object, dir) then
             State.succ = false
             return x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
         end
-        _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, dir, true)
-        local coord = packcoord(x, y)
-        PipeToGroundState.map[coord] = {assert(_prototype_name), assert(_dir)}
 
-        _prototype_name, _dir = iflow_connector.covers_pipe_to_ground(typeobject.flow_type, iprototype.reverse_dir(dir), dir)
-        x, y = x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
-        local coord = packcoord(x, y)
-        PipeToGroundState.map[coord] = {assert(_prototype_name), assert(_dir)}
+        local _prototype_name, _dir
+
+        _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, dir, true)
+        if _prototype_name then
+            local coord = packcoord(x, y)
+            PipeToGroundState.map[coord] = {assert(_prototype_name), assert(_dir)}
+
+            _prototype_name, _dir = iflow_connector.covers_pipe_to_ground(typeobject.flow_type, iprototype.reverse_dir(dir), dir)
+            if _prototype_name then
+                x, y = x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
+                local coord = packcoord(x, y)
+                PipeToGroundState.map[coord] = {assert(_prototype_name), assert(_dir)}
+            end
+        end
+
         return x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
 
     else
@@ -411,7 +419,8 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
 
             -- refresh the shape of the neighboring pipe
             -- TODO: optimize
-            do
+            local coord = packcoord(to_x, to_y)
+            if PipeToGroundState.map[coord] and iprototype.is_pipe_to_ground(PipeToGroundState.map[coord][1]) then
                 local dx, dy = last_x + dir_delta.x, last_y + dir_delta.y
                 local coord = packcoord(dx, dy)
                 local object = objects:coord(dx, dy, EDITOR_CACHE_NAMES)
@@ -442,6 +451,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
             PipeToGroundState.remove[item_name] = (PipeToGroundState.remove[item_name] or 0) + 1
 
             iobject.remove(object)
+            self.removed[object.id] = true
         end
     end
 
@@ -502,7 +512,7 @@ end
 
 -- sort by distance and direction
 local function _find_starting_fluidbox(object, dx, dy, dir)
-    local fluidboxes = _get_covers_fluidbox(object)
+    local fluidboxes = _get_covers_fluidbox(object, true)
     assert(#fluidboxes > 0) -- promised by _builder_init()
 
     local function _get_distance(x1, y1, x2, y2)
@@ -724,32 +734,26 @@ local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local function __complete(self)
     local needbuild = false
     for object_id, object in objects:all("CONFIRM") do -- TODO: duplicate code, see also pipe_function_pop.lua
-        if object.REMOVED then
-            if object.gameplay_eid then
-                igameplay.remove_entity(object.gameplay_eid, false)
-            end
-        else
-            -- TODO: special case for assembling machine
-            local recipe
-            local typeobject = iprototype.queryByName(object.prototype_name)
-            if iprototype.has_type(typeobject.type, "assembling") then
-                recipe = ""
-            end
+        -- TODO: special case for assembling machine
+        local recipe
+        local typeobject = iprototype.queryByName(object.prototype_name)
+        if iprototype.has_type(typeobject.type, "assembling") then
+            recipe = ""
+        end
 
-            local old = objects:get(object_id, {"CONSTRUCTED"})
-            if not old then
+        local old = objects:get(object_id, {"CONSTRUCTED"})
+        if not old then
+            object.gameplay_eid = igameplay.create_entity(object)
+            object.recipe = recipe
+        else
+            if old.prototype_name ~= object.prototype_name then
+                igameplay.remove_entity(object.gameplay_eid, false)
                 object.gameplay_eid = igameplay.create_entity(object)
-                object.recipe = recipe
-            else
-                if old.prototype_name ~= object.prototype_name then
-                    igameplay.remove_entity(object.gameplay_eid, false)
-                    object.gameplay_eid = igameplay.create_entity(object)
-                elseif old.dir ~= object.dir then
-                    ientity:set_direction(gameplay_core.get_world(), gameplay_core.get_entity(object.gameplay_eid), object.dir)
-                elseif old.fluid_name ~= object.fluid_name then
-                    if iprototype.has_type(iprototype.queryByName(object.prototype_name).type, "fluidbox") then -- TODO: object may be fluidboxes
-                        ifluid:update_fluidbox(gameplay_core.get_entity(object.gameplay_eid), object.fluid_name)
-                    end
+            elseif old.dir ~= object.dir then
+                ientity:set_direction(gameplay_core.get_world(), gameplay_core.get_entity(object.gameplay_eid), object.dir)
+            elseif old.fluid_name ~= object.fluid_name then
+                if iprototype.has_type(iprototype.queryByName(object.prototype_name).type, "fluidbox") then -- TODO: object may be fluidboxes
+                    ifluid:update_fluidbox(gameplay_core.get_entity(object.gameplay_eid), object.fluid_name)
                 end
             end
         end
@@ -758,6 +762,21 @@ local function __complete(self)
     objects:commit("CONFIRM", "CONSTRUCTED")
     objects:clear("CONFIRM")
     objects:clear("CONSTRUCTED")
+
+    for object_id in pairs(self.removed) do
+        local obj = assert(objects:get(object_id))
+        iobject.remove(obj)
+        objects:remove(obj.id)
+        local building = global.buildings[obj.id]
+        if building then
+            for _, v in pairs(building) do
+                v:remove()
+            end
+        end
+
+        print("remove", obj.id, obj.x, obj.y)
+        igameplay.remove_entity(obj.gameplay_eid)
+    end
 
     if needbuild then
         gameplay_core.build()
@@ -852,6 +871,7 @@ local function clean(self, datamodel)
     end
     self.pickup_components = {}
 
+    self.removed = {}
     self:revert_changes({"TEMPORARY"})
     datamodel.show_rotate = false
     self.state = STATE_NONE
@@ -872,6 +892,7 @@ local function create()
 
     M.clean = clean
 
+    M.removed = {}
     M.pickup_components = {}
     M.prototype_name = ""
     M.state = STATE_NONE
