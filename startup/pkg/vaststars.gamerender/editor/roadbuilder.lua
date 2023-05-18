@@ -691,6 +691,7 @@ local function new_entity(self, datamodel, typeobject)
         srt = {
             t = terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)),
         },
+        group_id = 0,
     }
 
     self.pickup_components[#self.pickup_components + 1] = create_pickup_selected_box(self.coord_indicator.srt.t, typeobject, dir, true)

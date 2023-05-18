@@ -106,6 +106,7 @@ local function __new_entity(self, datamodel, typeobject)
             t = position,
         },
         fluid_name = "",
+        group_id = 0,
     }
 
     local road_entrance_position, road_entrance_dir = _get_road_entrance_position(typeobject, dir, self.pickup_object.srt.t)

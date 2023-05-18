@@ -44,6 +44,7 @@ local function new(init)
         y = assert(init.y),
         fluid_name = init.fluid_name,
         srt = init.srt,
+        group_id = init.group_id,
     }
 
     local outer = setmetatable(t, mt)
@@ -63,6 +64,7 @@ local function clone(outer)
         fluid_name = outer.fluid_name,
         gameplay_eid = outer.gameplay_eid,
         srt = {s = outer.srt.s, r = outer.srt.r, t = outer.srt.t},
+        group_id = outer.group_id,
     }
 
     local outer = setmetatable(t, mt)
@@ -111,7 +113,7 @@ local function flush()
                 prototype_name = outer.prototype_name,
                 dir = outer.dir,
                 position = outer.srt.t,
-                group_id = 0, -- terrain:get_group_id(outer.x, outer.y),
+                group_id = outer.group_id or terrain:get_group_id(outer.x, outer.y),
             }
         else
             for k in pairs(outer.__change_keys) do

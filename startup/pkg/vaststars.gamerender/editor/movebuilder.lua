@@ -134,6 +134,7 @@ local function __new_entity(self, datamodel, typeobject)
             t = building_positon,
         },
         fluid_name = fluid_name,
+        group_id = 0,
     }
 
     if e.assembling and e.assembling.recipe ~= 0 then

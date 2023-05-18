@@ -198,6 +198,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                     t = terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)),
                 },
                 fluid_name = State.fluid_name,
+                group_id = 0,
             }
             objects:set(object, EDITOR_CACHE_NAMES[1])
         end
@@ -293,6 +294,7 @@ local function _teardown_end(self, datamodel, State, dir, dir_delta)
                     t = terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)),
                 },
                 fluid_name = State.fluid_name,
+                group_id = 0,
             }
             objects:set(object, EDITOR_CACHE_NAMES[1])
         end
@@ -599,6 +601,7 @@ local function new_entity(self, datamodel, typeobject)
             t = terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)),
         },
         fluid_name = "",
+        group_id = 0,
     }
 
     self.pickup_components[#self.pickup_components + 1] = create_pickup_selected_box(self.coord_indicator.srt.t, typeobject, dir, true)
@@ -699,6 +702,7 @@ local function place_one(self, datamodel)
             t = terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, "N")),
         },
         fluid_name = 0,
+        group_id = 0,
     }
     objects:set(object, EDITOR_CACHE_NAMES[2])
 

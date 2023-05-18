@@ -191,6 +191,7 @@ local function __new_entity(self, datamodel, typeobject, position, x, y, dir)
             t = position,
         },
         fluid_name = fluid_name,
+        group_id = 0,
     }
 
     if self.sprite then

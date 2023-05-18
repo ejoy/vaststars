@@ -479,6 +479,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                     t = terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)),
                 },
                 fluid_name = State.fluid_name,
+                group_id = 0,
             }
             objects:set(object, EDITOR_CACHE_NAMES[1])
         end
@@ -677,6 +678,7 @@ local function new_entity(self, datamodel, typeobject)
             t = terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)),
         },
         fluid_name = "",
+        group_id = 0,
     }
 
     if not self.grid_entity then
