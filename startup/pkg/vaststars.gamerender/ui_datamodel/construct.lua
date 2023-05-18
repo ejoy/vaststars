@@ -104,6 +104,12 @@ local function __on_pickup_mineral(datamodel, mineral)
     return true
 end
 
+local function __on_pickup_ground(datamodel)
+    iui.open({"main_menu.rml"})
+    gameplay_core.world_update = false
+    return true
+end
+
 local function __get_construct_menu()
     local construct_menu = {}
     for _, menu in ipairs(construct_menu_cfg) do
@@ -158,19 +164,10 @@ end
 
 ---------------
 local M = {}
-local function get_new_tech_count(tech_list)
-    local count = 0
-    for _, tech in ipairs(tech_list) do
-        if global.science.tech_picked_flag[tech.detail.name] then
-            count = count + 1
-        end
-    end
-    return count
-end
+
 function M:create()
     return {
         is_concise_mode = false,
-        tech_count = get_new_tech_count(global.science.tech_list),
         show_tech_progress = false,
         current_tech_icon = "none",    --当前科技图标
         current_tech_name = "none",    --当前科技名字
@@ -473,6 +470,7 @@ function M:stage_camera_usage(datamodel)
             goto continue
         end
 
+        leave = false
         local object = __get_building(x, y)
         if object then -- object may be nil, such as when user click on empty space
             if not excluded_pickup_id or excluded_pickup_id == object.id then
@@ -489,18 +487,11 @@ function M:stage_camera_usage(datamodel)
                 local p = icamera_controller.world_to_screen(object.srt.t)
                 local ui_x, ui_y = iui.convert_coord(math3d.index(p, 1), math3d.index(p, 2))
                 iui.open({"building_md_arc_menu.rml"}, object.id, object.srt.t, ui_x, ui_y)
-
-                leave = false
             end
             ::continue1::
         else
             idetail.unselected()
-        end
-
-        if leave then
-            world:pub {"ui_message", "leave"}
-            leave = false
-            break
+            __on_pickup_ground(datamodel)
         end
         ::continue::
     end

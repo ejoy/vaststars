@@ -122,6 +122,7 @@ function M:stage_ui_update(datamodel)
         global.science.tech_picked_flag[datamodel.techitems[index].name] = false
         set_current_tech(datamodel.techitems[index])
         iui.call_datamodel_method("construct.rml", "update_tech")
+        iui.call_datamodel_method("main_menu.rml", "update_tech")
     end
 
     for _, _, _ in close_techui_event:unpack() do

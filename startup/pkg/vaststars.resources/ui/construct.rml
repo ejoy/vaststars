@@ -81,28 +81,6 @@
                 width: 10.67vmin;
                 margin: 0.00vmin;
             }
-            .main-menu-region {
-                width: 78vmin;
-                height: 20.00vmin;
-                flex-direction: row;
-                align-items: center;
-                justify-content: flex-start;
-                position: absolute; 
-                left:0vmin; 
-                bottom:0vmin;
-                z-index: 999;
-                border-radius: 1.33vmin;
-            }
-            .main-menu-block {
-                height: 20.00vmin;
-                flex-direction: row;
-                align-items: center;
-                justify-content: flex-start; 
-                border: 0.13vmin #fff;
-                z-index: 999;
-                background-color: rgba(200,200,200,80);
-                border-radius: 1.33vmin;
-            }
             .building-block {
                 width: 28vmin;
                 height: 40.00vmin;
@@ -146,12 +124,6 @@
                 width: 12.67vmin;
                 height: 12.67vmin;
             }
-            .menu-button-text {
-                font-size: 4.5vmin;
-                text-align: center;
-                -webkit-text-stroke: 0.07vmin rgb(19,175,240);
-                color:rgb(255,255,255);;
-            }
             .row {
                 flex-direction: row;
             }
@@ -182,22 +154,6 @@
                 border-radius: 1vmin;
                 margin-right: 0.2vmin;
             }
-            .item-count {
-                font-size: 4vmin;
-                position: absolute;
-                top: -1vmin;
-                left: 0vmin;
-                -webkit-text-stroke: 0.3vmin rgb(39, 32, 17);
-            }
-            .item-sign {
-                position: absolute;
-                bottom:-0.2vmin;
-                right: 0vmin;
-                width:5vmin;
-                height:5vmin;
-                background-size: cover;
-                background-image:"textures/construct/portal-in.texture";
-            }
             p {
                 animation:0.5s linear 0s infinite alternate rotation;
             }
@@ -208,46 +164,6 @@
 
                 to {
                     transform: rotate(-10deg);
-                }
-            }
-            @keyframes enlarge {
-                0% {
-                    transform: scale(1.0);
-                    opacity: 1;
-                }
-                50% {
-                    transform: scale(2.0);
-                    opacity: 1;
-                }
-                60% {
-                    transform: scale(2.0);
-                    opacity: 1;
-                }
-                100% {
-                    transform: scale(1.0);
-                    opacity: 0;
-                }
-            }
-            @keyframes enlarge2 {
-                0% {
-                    transform: scale(1.0);
-                }
-                50% {
-                    transform: scale(2.0);
-                }
-                60% {
-                    transform: scale(2.0);
-                }
-                100% {
-                    transform: scale(1.0);
-                }
-            }
-            @keyframes enlarge3 {
-                0% {
-                    transform: scale(1.0);
-                }
-                100% {
-                    transform: scale(1.3);
                 }
             }
             .safe-area {
@@ -305,7 +221,6 @@
             local ui_sys = require "ui_system"
             local start = ui_sys.createDataMode("start", {
                 is_concise_mode = false, -- in concise mode, the main menu in the lower left corner, technology progress button in the upper right corner and help button in the upper left corner are not displayed
-                tech_count = 0,                 --当前可研究的科技数量
                 show_tech_progress = false,     --是否显示科技进度
                 is_task = false,                --是否是任务
                 current_tech_icon = "none",     --当前科技图标
@@ -321,39 +236,8 @@
             function start.clickButton(event, ...)
                 ui_sys.pub {...}
             end
-            function start.clickExpandCollapsedBar(event)
-                local function show(e, v) -- TODO: remove this function
-                    if not e.style then
-                        return
-                    end
-                    e.style.opacity = v
-                    for _, child in ipairs(e.childNodes) do
-                        show(child)
-                    end
-                end
-                local e = document.getElementById('main-menu-collapsed-bar')
-                local ea = document.getElementById('main-menu-button')
-
-                if e.attributes.expanded == "false" then
-                    ea.style.transform = "rotate(270deg)"
-                    e.attributes.expanded = "true"
-                    show(e, 1)
-                else
-                    ea.style.transform = "rotate(450deg)"
-                    e.attributes.expanded = "false"
-                    show(e, 0)
-                end
-            end
             function start.clickShowConstructMenuDetail(event, construct_menu)
                 start.cur_construct_menu = construct_menu
-            end
-            local function setElementClass(elementId, class, expanded)
-                local e = document.getElementById(elementId)
-                if not e then
-                    return
-                end
-                e.className = class
-                e.attributes.expanded = expanded
             end
             window.addEventListener('mousedown', function(event)
                 ui_sys.world_pub {"ui_message", "leave"}
@@ -371,49 +255,10 @@
     </head>
     <body style = "pointer-events: none; justify-content: center; align-items: center;">
         <div class = "safe-area" data-model="start">           
-            <!-- 主菜单按钮 -->
-            <div class="main-menu-region">
-                <!-- 主菜单隐藏/显示按钮 -->
-                <button class = "main-menu-button" style="border: 0.00vmin; margin:0 1vmin; align-items:flex-end;" data-event-click = "clickExpandCollapsedBar()" data-if = "!is_concise_mode && guide_progress >= 15">
-                    <div id = "main-menu-button" class = "menu-button-pic" style='height: 6.9vmin; width: 16.6vmin; transform: rotate(270deg); background-image: "textures/common/arrow.texture";'/>
-                </button>
-                <!-- 主菜单隐藏/显示按钮 end-->
-                <collapsed-bar id = "main-menu-collapsed-bar" style = "left: 15vmin; bottom: 0vmin; position: absolute; overflow: hidden;" data-if = "!is_concise_mode && guide_progress >= 15">
-                    <div class = "main-menu-block" data-if = "guide_progress >= 10">
-                        <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click = "clickButton('inventory')">
-                            <div class = "menu-button-pic" style='background-image:"textures/construct/logistics_center.texture"'/>
-                            <div class = "menu-button-text">指挥中心</div>
-                        </button>
-                        <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click = "clickButton('technology')" data-if = "guide_progress >= 30">
-                            <div class = "menu-button-pic" style='background-image:"textures/construct/goods_station.texture"'/>
-                            <div class = "menu-button-text">科研任务</div>
-                            <!-- 科研中心可研究科技标识 start-->
-                            <div class = "menu-button-pic" data-if = "tech_count > 0" style='width:3.6vmin; height:3.6vmin; position:absolute; right:0; top:0; background-image:"textures/work_status_icon/red_dot.texture"'>
-                                <div style="text-align:center; font-size:3vmin; padding-right: 0.5vmin;">{{tech_count}}</div>
-                            </div>
-                            <!-- 科研中心可研究科技标识 end-->
-                        </button>
-                        <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click="clickButton('statistic')" data-if = "guide_progress >= 35">
-                            <div class = "menu-button-pic" style='background-image:"textures/construct/statistics.texture"'/>
-                            <div class = "menu-button-text">统计数据</div>
-                        </button>
-                        <button  class = "main-menu-button" style="border: 0.00vmin;" data-if="false"> 
-                            <div class = "menu-button-pic" style='background-image:"textures/construct/road.texture"'/>
-                            <div class = "menu-button-text">地图信息</div>
-                        </button>
-                        <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click="clickButton('show_setting')" data-if = "guide_progress >= 15">
-                            <div class = "menu-button-pic" style='background-image:"textures/assemble/wheel.texture"'/>
-                            <div class = "menu-button-text">游戏设置</div>
-                        </button>
-                    </div>
-                </collapsed-bar>
-            </div>
-
             <!-- 帮助按钮 -->
             <button  class = "main-menu-button" style="border: 0.00vmin; position: absolute; left:-6.7vmin; top: -4vmin;" data-event-click="clickButton('help')" data-if = "!is_concise_mode && guide_progress >= 10">
                 <div class = "menu-button-pic" style='width:9vmin; height:9vmin; background-image:"textures/common/help.texture"'/>
             </button>
-
 
             <!-- 右上角：当前科技进度 -->
             <div data-if = "!is_concise_mode && show_tech_progress" style = "pointer-events: none; position: absolute; right:0vmin; top:0vmin;  width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-start; padding-top: 1vmin;">
