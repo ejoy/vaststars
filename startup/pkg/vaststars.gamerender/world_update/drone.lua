@@ -7,42 +7,14 @@ local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local objects = require "objects"
 local ims = ecs.import.interface "ant.motion_sampler|imotion_sampler"
 local ltween = require "motion.tween"
-local gameplay_core = require "gameplay.core"
 local entity_remove = world:sub {"gameplay", "remove_entity"}
+local imotion = ecs.require "imotion"
 -- enum defined in c 
 local STATUS_HAS_ERROR = 1
-local STATUS_IDLE <const> = 3
-local STATUS_AT_HOME <const> = 4
 local BERTH_HUB = 0
 local BERTH_RED = 1
 local BERTH_BLUE = 2
 local BERTH_HOME = 3
-local sampler_group
-local function create_motion_object(s, r, t, parent)
-    if not sampler_group then
-        sampler_group = ims.sampler_group()
-        sampler_group:enable "view_visible"
-        sampler_group:enable "scene_update"
-    end
-    return sampler_group:create_entity {
-        policy = {
-            "ant.scene|scene_object",
-            "ant.motion_sampler|motion_sampler",
-            "ant.general|name",
-        },
-        data = {
-            scene = {
-                parent = parent,
-                s = s,
-                r = r,
-                t = t,
-            },
-            motion_sampler = {},
-            name = "motion_sampler",
-        }
-    }
-end
-
 local drone_depot = {}
 local lookup_drones = {}
 local drone_offset = 6
@@ -158,11 +130,11 @@ local function create_drone(homepos)
         end
     }
     task.current_pos = homepos
-    local motion_xz = create_motion_object(nil, nil, math3d.vector(homepos[1], 0, homepos[3]))
+    local motion_xz = imotion.create_motion_object(nil, nil, math3d.vector(homepos[1], 0, homepos[3]))
     task.motion_xz = motion_xz
-    local motion_y = create_motion_object(nil, nil, math3d.vector(0, homepos[2], 0), motion_xz)
+    local motion_y = imotion.create_motion_object(nil, nil, math3d.vector(0, homepos[2], 0), motion_xz)
     task.motion_y = motion_y
-    task.prefab = sampler_group:create_instance("/pkg/vaststars.resources/prefabs/drone.prefab", motion_y)
+    task.prefab = imotion.sampler_group:create_instance("/pkg/vaststars.resources/prefabs/drone.prefab", motion_y)
     return task
 end
 
@@ -175,7 +147,7 @@ local function get_berth(lacation)
 end
 
 local function create_item(item, parent)
-    local prefab = sampler_group:create_instance("/pkg/vaststars.resources/prefabs/rock.prefab", parent)
+    local prefab = imotion.sampler_group:create_instance("/pkg/vaststars.resources/prefabs/rock.prefab", parent)
     prefab.on_init = function(inst) end
     prefab.on_ready = function(inst)
         local e <close> = w:entity(inst.tag["*"][1])
@@ -220,10 +192,10 @@ return function(gameworld)
         -- if (drone.prev ~= 0) and (drone.next ~= 0) and (drone.maxprogress ~= 0) and (drone.progress ~= 0) then
         --     print(drone.status, drone.prev, drone.next, drone.maxprogress, drone.progress, drone.item)
         -- end
-        if drone.status == STATUS_HAS_ERROR and lookup_drones[e.eid] then
-            remove_drone({e.eid})
-        end
         if drone.status == STATUS_HAS_ERROR then
+            if lookup_drones[e.eid] then
+                remove_drone({e.eid})
+            end
             goto continue
         end
         if not lookup_drones[e.eid] then

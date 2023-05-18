@@ -34,17 +34,18 @@ local PREFABS = {
 }
 local motions = {}
 local motion_caches = {}
-local function create_motion(prefab, from, to, duration)
+local function create_motion(prefab, from, to, duration, repeat_count)
     local cache = motion_caches[prefab]
     if not cache or #cache < 1 then
         local motion = imotion.create_motion_object(nil, nil, math3d.vector(from))
         imotion.sampler_group:create_instance(prefab, motion)
-        return {inited = false, prefab = prefab, from = from, to = to, duration = duration, elapsed_time = 0, motion = motion }
+        return {inited = false, prefab = prefab, from = from, to = to, duration = duration, repeat_count = repeat_count, elapsed_time = 0, motion = motion }
     else
         local m = table.remove(cache, #cache)
         m.from = from
         m.to = to
         m.duration = duration
+        m.repeat_count = 1
         m.elapsed_time = 0
         m.inited = false
         return m
@@ -569,15 +570,20 @@ local function update_motions()
         mobj.elapsed_time = mobj.elapsed_time + time_step
         local ratio = mobj.elapsed_time / mobj.duration
         if ratio > 1.0 then
-            ratio = 1.0
-            -- ivs.set_state(e, "main_view", false) -- TODO
-            local cache = motion_caches[mobj.prefab]
-            if not cache then
-                motion_caches[mobj.prefab] = {mobj}
+            if mobj.repeat_count > 1 then
+                mobj.repeat_count = mobj.repeat_count - 1
+                mobj.elapsed_time = 0
+                ims.set_ratio(e, 0)
             else
-                table.insert(cache, mobj)
+                ivs.set_state(e, "main_view", false)
+                local cache = motion_caches[mobj.prefab]
+                if not cache then
+                    motion_caches[mobj.prefab] = {mobj}
+                else
+                    table.insert(cache, mobj)
+                end
+                remove_idx[#remove_idx + 1] = index
             end
-            remove_idx[#remove_idx + 1] = index
         else
             ims.set_ratio(e, ratio)
         end
