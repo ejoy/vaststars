@@ -236,7 +236,7 @@ prototype "砖石公路-X型" {
 prototype "运输车辆I" {
     type = {"item"},
     group = {"物流"},
-    stack = 25,
+    stack = 50,
     item_description = "运输货物的交通工具",
     capacitance = "10MJ",
     speed = 63,
