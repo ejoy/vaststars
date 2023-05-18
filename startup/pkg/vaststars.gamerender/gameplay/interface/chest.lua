@@ -149,6 +149,9 @@ end
 function M.can_move_to_inventory(world, chest)
     local slots = M.collect_item(world, chest)
     for _, slot in pairs(slots) do
+        if slot.type == "unknown" then
+            goto continue
+        end
         local ok, count = M.get_moveable_count(world, slot.item, slot.amount)
         if not ok then
             return false
@@ -156,6 +159,7 @@ function M.can_move_to_inventory(world, chest)
         if count < slot.amount then
             return false
         end
+        ::continue::
     end
     return true
 end
