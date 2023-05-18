@@ -67,3 +67,18 @@ prototype "无人机仓库" {
     power_supply_area = "6x6",
     power_supply_distance = 8,
 }
+
+prototype "无人机仓库II" {
+    model = "prefabs/drone-depot.prefab",
+    icon = "textures/building_pic/small_pic_drone_depot.texture",
+    background = "textures/build_background/pic_chest.texture",
+    construct_detector = {"exclusive"},
+    type = {"building", "hub"},
+    area = "2x2",
+    supply_area = "8x8",
+    slots = 1,
+    drone_entity = "无人机",
+    drone_count = 1,
+    power_supply_area = "6x6",
+    power_supply_distance = 8,
+}
