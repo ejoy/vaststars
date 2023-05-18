@@ -29,7 +29,7 @@ local iui = ecs.import.interface "vaststars.gamerender|iui"
 local platform = require "bee.platform"
 local caudio
 if "android" ~= platform.os then
-    caudio = require "audio"
+    _, caudio = pcall(require, "audio")
 end
 local m = ecs.system 'init_system'
 
