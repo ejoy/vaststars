@@ -275,12 +275,12 @@ function igame_object.create(init)
     local efk_events = {}
     efk_events["play"] = function(o, e)
         if not iefk.is_playing(o.id) then
-            -- iefk.play(o.id)
+            iefk.play(o.id)
         end
     end
     efk_events["stop"] = function(o, e)
         if iefk.is_playing(o.id) then
-            -- iefk.stop(o.id)
+            iefk.stop(o.id)
         end
     end
 
@@ -288,7 +288,7 @@ function igame_object.create(init)
         effects[#effects + 1] = ientity_object.create(iefk.create(efkinfo.efk.path, {
             auto_play = efkinfo.efk.auto_play or false,
             loop = efkinfo.efk.loop or false,
-            speed = efkinfo.efk.loop or 1.0,
+            speed = efkinfo.efk.speed or 1.0,
             scene = {
                 parent = hitch_entity_object.id
             },
