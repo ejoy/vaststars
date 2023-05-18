@@ -184,7 +184,7 @@ local function __create_io_shelves(object_id, gameplay_world, e, building_mat)
 
                     -- 原料从货架到组装机中心的动画
                     if (io_counts[idx] or 0) > slot.amount then
-                        motions[#motions + 1] = create_motion("/pkg/vaststars.resources/" .. typeobject_item.pile_model, from, building_srt.t, 1.0)
+                        -- motions[#motions + 1] = create_motion("/pkg/vaststars.resources/" .. typeobject_item.pile_model, from, building_srt.t, 1.0)
                     end
                     iheapmesh.update_heap_mesh_number(heaps[idx].id, slot.amount)
                     io_counts[idx] = slot.amount
@@ -205,7 +205,7 @@ local function __create_io_shelves(object_id, gameplay_world, e, building_mat)
                         local _, _, to = math3d.srt(math3d.mul(mat, offset))
                         to = math3d.ref(to)
 
-                        motions[#motions + 1] = create_motion("/pkg/vaststars.resources/" .. typeobject_item.pile_model, building_srt.t, to, 1.0)
+                        -- motions[#motions + 1] = create_motion("/pkg/vaststars.resources/" .. typeobject_item.pile_model, building_srt.t, to, 1.0)
                     end
                     iheapmesh.update_heap_mesh_number(heaps[idx].id, slot.amount)
                     io_counts[io_idx] = slot.amount
@@ -595,7 +595,7 @@ local function update_motions()
 end
 
 return function(world)
-    update_motions()
+    -- update_motions()
     for e in world.ecs:select "assembling:in chest:in building:in capacitance?in eid:in" do
         -- object may not have been fully created yet
         local object = objects:coord(e.building.x, e.building.y)
