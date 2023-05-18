@@ -42,6 +42,8 @@ lm.android  = {
 }
 
 local EnableSanitize = false
+local EnableLog = false
+
 if EnableSanitize then
     lm.builddir = ("build/%s/sanitize"):format(plat)
     lm.bindir = ("bin/%s/sanitize"):format(plat)
@@ -75,13 +77,13 @@ lm:import "clibs/make.lua"
 if lm.os == "windows" then
     lm:copy "copy_dll" {
         input = {
-            lm.antdir .. "3rd/fmod/windows/core/lib/x64/fmodL.dll",
-            lm.antdir .. "3rd/fmod/windows/studio/lib/x64/fmodstudioL.dll",
+            lm.antdir .. "3rd/fmod/windows/core/lib/x64/" .. (EnableLog and "fmodL.dll" or "fmod.dll"),
+            lm.antdir .. "3rd/fmod/windows/studio/lib/x64/" .. (EnableLog and "fmodstudioL.dll" or "fmodstudio.dll"),
             lm.antdir .. "3rd/vulkan/x64/vulkan-1.dll",
         },
         output = {
-            lm.bindir .. "/fmodL.dll",
-            lm.bindir .. "/fmodstudioL.dll",
+            lm.bindir .. (EnableLog and "/fmodL.dll" or "/fmod.dll"),
+            lm.bindir .. (EnableLog and "/fmodstudioL.dll" or "/fmodstudio.dll"),
             lm.bindir .. "/vulkan-1.dll",
         },
     }
