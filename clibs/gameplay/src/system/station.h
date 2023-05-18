@@ -4,7 +4,11 @@
 #include <map>
 #include <vector>
 
-using station_vector = std::vector<ecs::station*>;
+struct station_ref {
+    ecs::station* ptr;
+};
+
+using station_vector = std::vector<station_ref>;
 using station_map = std::map<uint16_t, station_vector>;
 
 struct station_mgr {

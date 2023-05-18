@@ -7,23 +7,26 @@
 #include <bee/nonstd/unreachable.h>
 
 template <>
-struct std::less<ecs::station*> {
-    constexpr bool operator()(const ecs::station*& a, const ecs::station*& b) const {
-        return ((uint32_t)a->lorry * b->weights) < ((uint32_t)b->lorry * a->weights);
+struct std::less<station_ref> {
+    constexpr bool operator()(const station_ref& a, const station_ref& b) const {
+        return ((uint32_t)a.ptr->lorry * b.ptr->weights) < ((uint32_t)b.ptr->lorry * a.ptr->weights);
     }
 };
 
 static void producer_sort(station_vector& producers) {
-    std::sort(producers.begin(), producers.end());
+    std::sort(producers.begin(), producers.end(), std::less<station_ref> {});
 }
 
 static void producer_update(station_vector& producers, size_t idx) {
-    ecs::station new_value = *producers[idx];
+    ecs::station new_value = *producers[idx].ptr;
+    station_ref new_ref { &new_value };
     new_value.lorry++;
-    auto it = std::lower_bound(producers.begin(), producers.end(), &new_value);
+    auto it = std::lower_bound(producers.begin(), producers.end(), new_ref, std::less<station_ref> {});
     auto old_it = producers.begin() + idx;
-    (*old_it)->lorry++;
-    if (old_it < it) {
+    old_it->ptr->lorry++;
+    if (old_it == it) {
+    }
+    else if (old_it < it) {
         std::rotate(old_it, old_it + 1, it);
     }
     else if (it < old_it) {
@@ -33,7 +36,7 @@ static void producer_update(station_vector& producers, size_t idx) {
 
 static std::optional<size_t> find_producer(world& w, station_vector& producers, const roadnet::road::endpoint& from) {
     for (size_t i = 0; i < producers.size(); ++i) {
-        const auto& ep = w.rw.Endpoint(producers[i]->endpoint);
+        const auto& ep = w.rw.Endpoint(producers[i].ptr->endpoint);
         if (from.distance(w.rw, ep)) {
             return i;
         }
@@ -42,23 +45,23 @@ static std::optional<size_t> find_producer(world& w, station_vector& producers, 
 }
 
 static void goto_producer(world& w, station_vector& producers, size_t producer_idx, roadnet::lorry& l, roadnet::road::endpoint& ep) {
-    auto& producer = *producers[producer_idx];
+    auto& producer = *producers[producer_idx].ptr;
     auto& producer_ep = w.rw.Endpoint(producer.endpoint);
     l.go(producer_ep.rev_neighbor, 0, 0);
     producer_update(producers, producer_idx);
 }
 
-static std::optional<ecs::station*> find_consumer(world& w, uint16_t item, const roadnet::road::endpoint& from) {
+static std::optional<station_ref> find_consumer(world& w, uint16_t item, const roadnet::road::endpoint& from) {
     auto it = w.stations.consumers.find(item);
     if (it == w.stations.consumers.end()) {
         return std::nullopt;
     }
     uint16_t min_distance = (uint16_t)-1;
-    ecs::station* min_station = nullptr;
+    station_ref min_station { nullptr };
     auto& consumers = it->second;
     for (size_t i = 0; i < consumers.size(); ++i) {
         auto station = consumers[i];
-        const auto& ep = w.rw.Endpoint(consumers[i]->endpoint);
+        const auto& ep = w.rw.Endpoint(consumers[i].ptr->endpoint);
         if (auto distance = from.distance(w.rw, ep)) {
             if (*distance < min_distance) {
                 min_distance = *distance;
@@ -109,7 +112,7 @@ static int lbuild(lua_State *L) {
             if (station.endpoint == 0xFFFF) {
                 continue;
             }
-            s.producers[i++] = &station;
+            s.producers[i++].ptr = &station;
         }
         s.producers.resize(i);
         producer_sort(s.producers);
@@ -146,11 +149,11 @@ static int lupdate(lua_State *L) {
         }
         if (auto pconsumer = find_consumer(w, chestslot.item, ep)) {
             ep.setOutForce(w.rw);
-            auto& target_ep = w.rw.Endpoint((*pconsumer)->endpoint);
+            auto& target_ep = w.rw.Endpoint(pconsumer->ptr->endpoint);
             l.go(target_ep.rev_neighbor, chestslot.item, chestslot.amount);
             chestslot.amount = 0;
             station.lorry--;
-            (*pconsumer)->lorry++;
+            pconsumer->ptr->lorry++;
         }
     }
 
