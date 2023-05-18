@@ -19,6 +19,7 @@ local datalist = require "datalist"
 local fs = require "filesystem"
 local recipe_icon_canvas_cfg = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/textures/recipe_icon_canvas.cfg")):read "a")
 local fluid_icon_canvas_cfg = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/textures/fluid_icon_canvas.cfg")):read "a")
+local mc = import_package "ant.math".constant
 local irecipe = require "gameplay.interface.recipe"
 local gameplay_core = require "gameplay.core"
 local ims = ecs.import.interface "ant.motion_sampler|imotion_sampler"
@@ -162,7 +163,7 @@ local function __create_io_shelves(object_id, gameplay_world, e, building_mat)
         end
     end
 
-    local function update_heap_count(_, e)
+    local function update_heap_count(self, e, building_srt)
         if typeobject_building.io_shelf == false then
             return
         end
@@ -175,10 +176,15 @@ local function __create_io_shelves(object_id, gameplay_world, e, building_mat)
             if iprototype.has_type(typeobject_item.type, "item") then
                 local slot = assert(gameplay_world:container_get(e.chest, idx))
                 if io_counts[idx] ~= slot.amount then
+                    local mat = math3d.matrix {s = mc.ONE, r = mc.IDENTITY_QUAT, t = building_srt.t}
+                    local offset = self.shelf_offsets[idx]
+                    local _, _, from = math3d.srt(math3d.mul(mat, offset))
+                    from = math3d.ref(from)
+
                     -- 原料从货架到组装机中心的动画
-                    -- if io_counts[idx] > slot.amount then
-                    --     motions[#motions + 1] = create_motion(prefab, from, to, 1.0) 
-                    -- end
+                    if (io_counts[idx] or 0) > slot.amount then
+                        motions[#motions + 1] = create_motion("/pkg/vaststars.resources/" .. typeobject_item.pile_model, from, building_srt.t, 1.0)
+                    end
                     iheapmesh.update_heap_mesh_number(heaps[idx].id, slot.amount)
                     io_counts[idx] = slot.amount
                 end
@@ -192,9 +198,14 @@ local function __create_io_shelves(object_id, gameplay_world, e, building_mat)
                 local slot = assert(gameplay_world:container_get(e.chest, io_idx))
                 if io_counts[io_idx] ~= slot.amount then
                     -- 成品从组装机中心到货架动画
-                    -- if io_counts[io_idx] < slot.amount then
-                    --     motions[#motions + 1] = create_motion(prefab, from, to, 1.0)
-                    -- end
+                    if (io_counts[io_idx] or 0) < slot.amount then
+                        local mat = math3d.matrix {s = mc.ONE, r = mc.IDENTITY_QUAT, t = building_srt.t}
+                        local offset = self.shelf_offsets[idx]
+                        local _, _, to = math3d.srt(math3d.mul(mat, offset))
+                        to = math3d.ref(to)
+
+                        motions[#motions + 1] = create_motion("/pkg/vaststars.resources/" .. typeobject_item.pile_model, building_srt.t, to, 1.0)
+                    end
                     iheapmesh.update_heap_mesh_number(heaps[idx].id, slot.amount)
                     io_counts[io_idx] = slot.amount
                 end
@@ -552,14 +563,14 @@ local function update_motions()
             mobj.inited = true
             local e <close> = w:entity(mobj.motion)
             ims.set_keyframes(e, {t = math3d.vector(mobj.from), step = 0.0}, {t = math3d.vector(mobj.to),  step = 1.0})
-            ivs.set_state(e, "main_view", true)
+            -- ivs.set_state(e, "main_view", true) -- TODO
         end
         local e <close> = w:entity(mobj.motion)
         mobj.elapsed_time = mobj.elapsed_time + time_step
         local ratio = mobj.elapsed_time / mobj.duration
         if ratio > 1.0 then
             ratio = 1.0
-            ivs.set_state(e, "main_view", false)
+            -- ivs.set_state(e, "main_view", false) -- TODO
             local cache = motion_caches[mobj.prefab]
             if not cache then
                 motion_caches[mobj.prefab] = {mobj}
@@ -573,7 +584,7 @@ local function update_motions()
     end
 
     for _, value in ipairs(remove_idx) do
-        table.remove(motions, value)
+        -- table.remove(motions, value) -- TODO
     end
 end
 
@@ -604,7 +615,7 @@ return function(world)
                     building.io_shelves:remove()
                     building.io_shelves = __create_io_shelves(object.id, world, e, mat)
                 else
-                    building.io_shelves:update_heap_count(e)
+                    building.io_shelves:update_heap_count(e, object.srt)
                 end
             end
         end

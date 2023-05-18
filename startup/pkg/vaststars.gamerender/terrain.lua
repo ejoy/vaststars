@@ -97,7 +97,6 @@ local function _get_grid_id(x, y)
 end
 
 function terrain:get_group_id(x, y)
-    -- return 0
 	return self._group_id[_get_grid_id(x, y)]
 end
 
@@ -194,9 +193,6 @@ function terrain:get_mineral_tiles(x, y)
 end
 
 function terrain:enable_terrain(x, y)
-    if true then
-        return
-    end
     local function diff(t1, t2)
         local add, del = {}, {}
         for group_id in pairs(t1) do
@@ -212,21 +208,16 @@ function terrain:enable_terrain(x, y)
         return add, del
     end
 
-    if math.type(x) ~= "integer" or math.type(y) ~= "integer" then
-        log.error(("invalid argument: %s, %s"):format(x, y))
-        return
-    end
-
     local new = _get_screen_group_id(self, x, y)
     local add, del = diff(self._enabled_group_id, new)
     self._enabled_group_id = new
     for _, group_id in ipairs(add) do
-        -- print(("enable group id: %s"):format(group_id))
+        print(("enable group id: %s"):format(group_id))
         ecs.group(group_id):enable "view_visible"
         ecs.group(group_id):enable "scene_update"
     end
     for _, group_id in ipairs(del) do
-        -- print(("disable group id: %s"):format(group_id))
+        print(("disable group id: %s"):format(group_id))
         ecs.group(group_id):disable "view_visible"
         ecs.group(group_id):disable "scene_update"
     end

@@ -111,7 +111,7 @@ local function flush()
                 prototype_name = outer.prototype_name,
                 dir = outer.dir,
                 position = outer.srt.t,
-                group_id = terrain:get_group_id(outer.x, outer.y),
+                group_id = 0, -- terrain:get_group_id(outer.x, outer.y),
             }
         else
             for k in pairs(outer.__change_keys) do

@@ -275,12 +275,12 @@ function igame_object.create(init)
     local efk_events = {}
     efk_events["play"] = function(o, e)
         if not iefk.is_playing(o.id) then
-            iefk.play(o.id)
+            -- iefk.play(o.id)
         end
     end
     efk_events["stop"] = function(o, e)
         if iefk.is_playing(o.id) then
-            iefk.stop(o.id)
+            -- iefk.stop(o.id)
         end
     end
 
