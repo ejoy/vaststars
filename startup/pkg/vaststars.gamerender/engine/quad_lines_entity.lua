@@ -20,7 +20,7 @@ local delta_vec = {
 
 local events = {}
 events["init"] = function(_, e)
-    w:extend(e, "render_object:in")
+    w:extend(e, "render_object:update")
     local ro = e.render_object
     ro.ib_start, ro.ib_num = 0, 0 -- *6
     ro.vb_start, ro.vb_num = 0, 0 -- *4
@@ -28,7 +28,7 @@ end
 
 events["update"] = function(_, e, position, quad_num, dir)
     iom.set_position(e, math3d.add(position, delta_vec[dir]))
-    w:extend(e, "render_object:in")
+    w:extend(e, "render_object:update")
     local ro = e.render_object
     ro.ib_num = quad_num * 6
     ro.vb_num = quad_num * 4
