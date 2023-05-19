@@ -99,7 +99,7 @@ static int lbuild(lua_State *L) {
         }
         auto& chestslot = chest::array_at(w, container::index::from(station.chest), 0);
         auto& consumers = s.consumers[chestslot.item];
-        consumers.emplace_back(&station);
+        consumers.emplace_back(station_ref{&station});
     }
 
     s.producers.clear();
