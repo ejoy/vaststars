@@ -142,6 +142,9 @@ interface "ientity_object"
 ----------------------------------------------------
 system "debug_system"
     .implement "debug_system.lua"
+    .require_system "ant.render|outline_system"
+    .require_policy "ant.render|outline_create"
+    .require_policy "ant.render|outline_remove"
     .method "ui_update"
 
 system "update_system"

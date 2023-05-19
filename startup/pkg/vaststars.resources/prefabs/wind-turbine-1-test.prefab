@@ -1,0 +1,47 @@
+---
+data:
+  name: Scene
+  scene: {}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  meshskin: /pkg/vaststars.resources/glb/wind-turbine-1.glb|meshes/Armature.skinbin
+  name: meshskin
+  scene: {}
+  skeleton: /pkg/vaststars.resources/glb/wind-turbine-1.glb|animations/skeleton.ozz
+  skinning: true
+mount: 1
+policy:
+  ant.animation|meshskin
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  material: /pkg/vaststars.resources/glb/wind-turbine-1.glb|materials/Material.001_skin.material
+  mesh: /pkg/vaststars.resources/glb/wind-turbine-1.glb|meshes/Plane.003_P1.meshbin
+  name: Plane.003
+  skinning: true
+  visible_state: main_view|selectable|cast_shadow
+  outline_create: 
+    render_layer: "background"
+    outline_scale: 0.1
+    outline_color: {0.5, 0.5, 0, 1}
+    outline_mesh: /pkg/vaststars.resources/glb/wind-turbine-1.glb|meshes/Plane.003_P1.meshbin
+policy:
+  ant.render|outline_create
+  ant.general|name
+  ant.render|skinrender
+---
+data:
+  anim_ctrl: {}
+  animation:
+    ArmatureAction: /pkg/vaststars.resources/glb/wind-turbine-1.glb|animations/ArmatureAction.ozz
+    work: /pkg/vaststars.resources/prefabs/animation/wind_turbine_animat.anim
+  animation_birth: ArmatureAction
+  name: animation
+  skeleton: /pkg/vaststars.resources/glb/wind-turbine-1.glb|animations/skeleton.ozz
+policy:
+  ant.animation|animation
+  ant.general|name
