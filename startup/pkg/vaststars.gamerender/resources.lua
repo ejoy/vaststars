@@ -1034,6 +1034,7 @@ local t = {
 	"/pkg/vaststars.resources/effect/efk/mars-truck_smoke.efk",
 	"/pkg/vaststars.resources/effect/efk/mars_Pumpjack_water.efk",
 	"/pkg/vaststars.resources/effect/efk/miner_dust.efk",
+	"/pkg/vaststars.resources/effect/efk/sandstorm2.efk",
 	"/pkg/vaststars.resources/effect/efk/smoke.texture",
 	"/pkg/vaststars.resources/effect/efk/suipian.texture",
 	"/pkg/vaststars.resources/effect/efk/yuan.texture",
