@@ -84,46 +84,11 @@ function m:init_world()
 
     imain_menu_manager.back_to_main_menu()
 
-    -- audio test
-    local bankname = "/pkg/vaststars.resources/sounds/Master.bank"
-    local master = ia.load_bank(bankname)
-    if not master then
-        print("LoadBank Faied. :", bankname)
-    end
-    bankname = "/pkg/vaststars.resources/sounds/Master.strings.bank"
-    local bank1 = ia.load_bank(bankname)
-    if not bank1 then
-        print("LoadBank Faied. :", bankname)
-    end
-    bankname = "/pkg/vaststars.resources/sounds/Construt.bank"
-    local construt = ia.load_bank(bankname)
-    if not construt then
-        print("LoadBank Faied. :", bankname)
-    end
-    bankname = "/pkg/vaststars.resources/sounds/UI.bank"
-    local ui = ia.load_bank(bankname)
-    if not ui then
-        print("LoadBank Faied. :", bankname)
-    end
-    if caudio then
-        local bank_list = caudio.get_bank_list()
-        for _, v in ipairs(bank_list) do
-            print(caudio.get_bank_name(v))
-        end
-
-        local event_list = caudio.get_event_list(master)
-        for _, v in ipairs(event_list) do
-            print(caudio.get_event_name(v))
-        end
-        local event_list = caudio.get_event_list(construt)
-        for _, v in ipairs(event_list) do
-            print(caudio.get_event_name(v))
-        end
-        local event_list = caudio.get_event_list(ui)
-        for _, v in ipairs(event_list) do
-            print(caudio.get_event_name(v))
-        end
-    end
+    -- audio test (Master.strings.bank must be first)
+    ia.load_bank "/pkg/vaststars.resources/sounds/Master.strings.bank"
+    ia.load_bank "/pkg/vaststars.resources/sounds/Master.bank"
+    ia.load_bank "/pkg/vaststars.resources/sounds/Construt.bank"
+    ia.load_bank "/pkg/vaststars.resources/sounds/UI.bank"
 
     -- ia.play("event:/openui1")
     ia.play("event:/background")
