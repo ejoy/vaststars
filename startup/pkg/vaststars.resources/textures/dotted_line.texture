@@ -1,8 +1,8 @@
 colorspace: sRGB
 compress:
-  android: ASTC6x6
-  ios: ASTC6x6
-  windows: BC1
+  android: ASTC4x4
+  ios: ASTC4x4
+  windows: BC3
 normalmap: false
 mipmap: true
 path: /pkg/vaststars.resources/textures/dotted_line.png

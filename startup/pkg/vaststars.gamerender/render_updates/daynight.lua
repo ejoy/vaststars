@@ -7,6 +7,9 @@ local DuskTick <const> = require("gameplay.interface.constant").DuskTick
 local NightTick <const> = require("gameplay.interface.constant").NightTick
 local DayTick <const> = require("gameplay.interface.constant").DayTick
 local idn = ecs.import.interface "ant.daynight|idaynight"
+local gameplay_core = require "gameplay.core"
+
+local daynight_sys = ecs.system "daynight_system"
 
 local daynight_update; do
     if DAYNIGHT_DEBUG then
@@ -64,4 +67,7 @@ local daynight_update; do
         end
     end
 end
-return daynight_update
+
+function daynight_sys:update_world()
+    daynight_update(gameplay_core.get_world())
+end

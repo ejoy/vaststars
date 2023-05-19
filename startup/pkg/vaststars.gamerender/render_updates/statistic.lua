@@ -9,6 +9,7 @@ local global = require "global"
 local entity_create = world:sub {"gameplay", "create_entity"}
 local entity_remove = world:sub {"gameplay", "remove_entity"}
 local iprototype = require "gameplay.interface.prototype"
+local statistic_sys = ecs.system "statistic_system"
 
 local function create_statistic_node(cfg, consumer)
     return {
@@ -29,7 +30,9 @@ local filter_statistic = {
     ["10m"] = {interval = 12.0, elapsed = 0.0, maxsec = 600},
     ["1h"] = {interval = 72.0, elapsed = 0.0, maxsec = 3600},
 }
-return function(world)
+
+local interval_call = ecs.require "engine.interval_call"
+local update = interval_call(500, function()
     local statistic = global.statistic
     if not statistic.valid then
         statistic.valid = true
@@ -185,4 +188,8 @@ return function(world)
     end
 
     return false
+end)
+
+function statistic_sys:update_world()
+    update()
 end

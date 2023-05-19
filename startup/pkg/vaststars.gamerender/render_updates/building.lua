@@ -11,6 +11,8 @@ local iterrain = ecs.require "terrain"
 local datalist = require "datalist"
 local fs = require "filesystem"
 local building_base_cfg = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/textures/building_base.cfg")):read "a")
+local building_sys = ecs.system "building_system"
+local gameplay_core = require "gameplay.core"
 
 local function __draw_building_base(object_id, building_srt, w, h)
     local cfg = building_base_cfg[("%dx%d"):format(w, h)]
@@ -52,7 +54,8 @@ local function __create_building_base(object_id, typeobject, building_srt, dir)
     }
 end
 
-return function(gameplay_world)
+function building_sys:update_world()
+    local gameplay_world = gameplay_core.get_world()
     for e in gameplay_world.ecs:select "building_changed:in building:in eid:in" do
         -- object may not have been fully created yet
         local object = objects:coord(e.building.x, e.building.y)
@@ -72,6 +75,4 @@ return function(gameplay_world)
 
         ::continue::
     end
-
-    return false
 end

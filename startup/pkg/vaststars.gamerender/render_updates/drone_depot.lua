@@ -12,6 +12,8 @@ local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object
 local ichest = require "gameplay.interface.chest"
 local prefab_slots = require("engine.prefab_parser").slots
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+local gameplay_core = require "gameplay.core"
+local drone_depot_sys = ecs.system "drone_depot_systme"
 
 local events = {}
 events["obj_motion"] = function(_, e, method, ...)
@@ -151,7 +153,8 @@ local function create_icon(object_id, e)
     }
 end
 
-return function(world)
+function drone_depot_sys:update_world()
+    local world = gameplay_core.get_world()
     for e in world.ecs:select "hub:in building:in eid:in" do
         -- object may not have been fully created yet
         local object = objects:coord(e.building.x, e.building.y)
@@ -194,6 +197,4 @@ return function(world)
 
         ::continue::
     end
-
-    return false
 end

@@ -2,8 +2,8 @@
 data:
   name: shelf1
   scene:
-    r: {-0, 1, -0, -4.371138828673793e-08}
-    t: {-5, 22, 13.300000190734863}
+    r: {0, 1, 0, -4.371138828673793e-08}
+    t: {-6, 22, 13.300000190734863}
   slot:
     follow_flag: 1
     joint_name: None
@@ -17,8 +17,8 @@ policy:
 data:
   name: shelf2
   scene:
-    r: {-0, 1, -0, -4.371138828673793e-08}
-    t: {5, 22, 13.300000190734863}
+    r: {0, 1, 0, -4.371138828673793e-08}
+    t: {0, 22, 13.300000190734863}
   slot:
     follow_flag: 1
     joint_name: None
@@ -32,8 +32,8 @@ policy:
 data:
   name: shelf3
   scene:
-    r: {0, 0.7071067690849304, 0, 0.7071067690849304}
-    t: {-12.149999618530273, 22.227720260620117, 0}
+    r: {0, -1, 0, -4.371138828673793e-08}
+    t: {6, 22, 13.300000190734863}
   slot:
     follow_flag: 1
     joint_name: None
@@ -47,8 +47,8 @@ policy:
 data:
   name: shelf4
   scene:
-    r: {0, -0.7071067690849304, 0, 0.7071067690849304}
-    t: {12.149999618530273, 22, 0}
+    r: {0, 0, 0, 1}
+    t: {-6, 6, -15}
   slot:
     follow_flag: 1
     joint_name: None
@@ -62,7 +62,7 @@ policy:
 data:
   name: shelf5
   scene:
-    t: {-5, 6, -15}
+    t: {0, 6, -15}
   slot:
     follow_flag: 1
     joint_name: None
@@ -76,7 +76,7 @@ policy:
 data:
   name: shelf6
   scene:
-    t: {5, 6, -15}
+    t: {6, 6, -15}
   slot:
     follow_flag: 1
     joint_name: None

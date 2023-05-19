@@ -69,7 +69,7 @@ local __lorry_factory_update = interval_call(800, function(datamodel, object_id)
     datamodel.lorry_factory_count = lorry_factory_count
     datamodel.lorry_factory_inc_lorry = lorry_factory_inc_lorry
     datamodel.lorry_factory_dec_lorry = lorry_factory_dec_lorry
-end, false)
+end)
 
 local __drone_depot_update = interval_call(800, function(datamodel, object_id)
     local object = assert(objects:get(object_id))
@@ -88,7 +88,7 @@ local __drone_depot_update = interval_call(800, function(datamodel, object_id)
     local item_typeobject = iprototype.queryById(c.item)
     datamodel.drone_depot_icon = item_typeobject.icon
     datamodel.drone_depot_count = c.amount
-end, false)
+end)
 
 local __station_update = interval_call(800, function(datamodel, object_id)
     local object = assert(objects:get(object_id))
@@ -108,8 +108,8 @@ local __station_update = interval_call(800, function(datamodel, object_id)
     datamodel.station_item_icon = item_typeobject.icon
     datamodel.station_item_count = c.amount
     datamodel.station_weight_increase = true
-    datamodel.station_weight_decrease = true    return false
-end, false)
+    datamodel.station_weight_decrease = true
+end)
 
 local function __get_moveable_count(object_id)
     local object = assert(objects:get(object_id))

@@ -9,6 +9,9 @@ local ims = ecs.import.interface "ant.motion_sampler|imotion_sampler"
 local ltween = require "motion.tween"
 local entity_remove = world:sub {"gameplay", "remove_entity"}
 local imotion = ecs.require "imotion"
+local drone_sys = ecs.system "drone_system"
+local gameplay_core = require "gameplay.core"
+
 -- enum defined in c 
 local STATUS_HAS_ERROR = 1
 local BERTH_HUB = 0
@@ -178,7 +181,8 @@ local function remove_drone(drones)
     end
 end
 
-return function(gameworld)
+function drone_sys:update_world()
+    local gameworld = gameplay_core.get_world()
     -- for _, _, geid in entity_remove:unpack() do
     -- end
 
@@ -253,5 +257,4 @@ return function(gameworld)
         task[2]:flyto(flyid, fly_height, task[3], {to[1] + same_dest_offset[flyid], item_height, to[3]}, false)
         same_dest_offset[flyid] = same_dest_offset[flyid] + drone_offset
     end
-    return false
 end

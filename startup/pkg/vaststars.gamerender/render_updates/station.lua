@@ -12,6 +12,8 @@ local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object
 local iheapmesh = ecs.import.interface "ant.render|iheapmesh"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local math3d = require "math3d"
+local station_sys = ecs.system "station_system"
+local gameplay_core = require "gameplay.core"
 
 local HEAP_DIM3 <const> = {2, 4, 2}
 
@@ -109,7 +111,8 @@ local function __get_item(gameplay_world, e)
     return slot.item, ichest.get_amount(slot)
 end
 
-return function(gameplay_world)
+function station_sys:update_world()
+    local gameplay_world = gameplay_core.get_world()
     for e in gameplay_world.ecs:select "station:in building:in eid:in" do
         -- object may not have been fully created yet
         local object = objects:coord(e.building.x, e.building.y)

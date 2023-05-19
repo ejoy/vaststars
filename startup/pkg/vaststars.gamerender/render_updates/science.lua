@@ -5,7 +5,11 @@ local w = world.w
 local global = require "global"
 local iscience = require "gameplay.interface.science"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
-return function(gameplay_world)
+local gameplay_core = require "gameplay.core"
+local science_sys = ecs.system "science_system"
+
+function science_sys:update_world()
+    local gameplay_world = gameplay_core.get_world()
     local science = global.science
     if science.current_tech then
         if gameplay_world:is_researched(science.current_tech.name) then

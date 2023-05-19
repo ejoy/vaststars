@@ -7,7 +7,6 @@ local bgfx = require 'bgfx'
 local iRmlUi = ecs.import.interface "ant.rmlui|irmlui"
 local terrain = ecs.require "terrain"
 local gameplay_core = require "gameplay.core"
-local world_update = ecs.require "world_update.init"
 local NOTHING <const> = require "debugger".nothing
 local TERRAIN_ONLY <const> = require "debugger".terrain_only
 
@@ -29,7 +28,7 @@ local iui = ecs.import.interface "vaststars.gamerender|iui"
 local platform = require "bee.platform"
 local caudio
 if "android" ~= platform.os then
-    caudio = require "audio"
+    _, caudio = pcall(require, "audio")
 end
 local m = ecs.system 'init_system'
 
@@ -85,46 +84,11 @@ function m:init_world()
 
     imain_menu_manager.back_to_main_menu()
 
-    -- audio test
-    local bankname = "/pkg/vaststars.resources/sounds/Master.bank"
-    local master = ia.load_bank(bankname)
-    if not master then
-        print("LoadBank Faied. :", bankname)
-    end
-    bankname = "/pkg/vaststars.resources/sounds/Master.strings.bank"
-    local bank1 = ia.load_bank(bankname)
-    if not bank1 then
-        print("LoadBank Faied. :", bankname)
-    end
-    bankname = "/pkg/vaststars.resources/sounds/Construt.bank"
-    local construt = ia.load_bank(bankname)
-    if not construt then
-        print("LoadBank Faied. :", bankname)
-    end
-    bankname = "/pkg/vaststars.resources/sounds/UI.bank"
-    local ui = ia.load_bank(bankname)
-    if not ui then
-        print("LoadBank Faied. :", bankname)
-    end
-    if caudio then
-        local bank_list = caudio.get_bank_list()
-        for _, v in ipairs(bank_list) do
-            print(caudio.get_bank_name(v))
-        end
-
-        local event_list = caudio.get_event_list(master)
-        for _, v in ipairs(event_list) do
-            print(caudio.get_event_name(v))
-        end
-        local event_list = caudio.get_event_list(construt)
-        for _, v in ipairs(event_list) do
-            print(caudio.get_event_name(v))
-        end
-        local event_list = caudio.get_event_list(ui)
-        for _, v in ipairs(event_list) do
-            print(caudio.get_event_name(v))
-        end
-    end
+    -- audio test (Master.strings.bank must be first)
+    ia.load_bank "/pkg/vaststars.resources/sounds/Master.strings.bank"
+    ia.load_bank "/pkg/vaststars.resources/sounds/Master.bank"
+    ia.load_bank "/pkg/vaststars.resources/sounds/Construt.bank"
+    ia.load_bank "/pkg/vaststars.resources/sounds/UI.bank"
 
     -- ia.play("event:/openui1")
     ia.play("event:/background")
@@ -135,16 +99,15 @@ function m:update_world()
         return
     end
 
-    local gameplay_world = gameplay_core.get_world()
     iroadnet:update()
-
     if gameplay_core.world_update then
         gameplay_core.update()
-        if world_update(gameplay_world) then
-            gameplay_world:build()
-        end
-        gameplay_world.ecs:clear "building_changed"
     end
+end
+
+function m:end_frame()
+    local gameplay_world = gameplay_core.get_world()
+    gameplay_world.ecs:clear "building_changed"
 end
 
 function m:camera_usage()
