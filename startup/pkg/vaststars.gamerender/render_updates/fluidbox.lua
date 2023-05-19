@@ -10,6 +10,8 @@ local ifluidbox = gameplay.interface "fluidbox"
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local iflow_connector = require "gameplay.interface.flow_connector"
 local iobject = ecs.require "object"
+local gameplay_core = require "gameplay.core"
+local fluidbox_sys = ecs.system "fluidbox_system"
 
 local DIRECTION <const> = {
     N = 0,
@@ -209,7 +211,9 @@ local function __update_pipe_shape(gameplay_world)
     return need_build
 end
 
-return function(gameplay_world)
+function fluidbox_sys:update_world()
+    local gameplay_world = gameplay_core.get_world()
+
     local need_build = false
     if __update_fluid_type(gameplay_world) then
         need_build = true
@@ -217,5 +221,8 @@ return function(gameplay_world)
     if __update_pipe_shape(gameplay_world) then
         need_build = true
     end
-    return need_build
+
+    if need_build then
+        gameplay_world:build()
+    end
 end

@@ -1,19 +1,19 @@
 local entities = { {
     dir = "N",
-    items = { { "无人机仓库", 5 }, { "蒸汽发电机I", 8 }, { "蓄电池I", 10 }, { "风力发电机I", 1 }, { "铁制电线杆", 10 }, { "收货车站", 2 }, { "熔炼炉I", 2 }, { "太阳能板I", 6 }, { "锅炉I", 4 }, { "运输车框架", 4 }, { "水电站I", 2 }, { "送货车站", 2 } },
+    items = {},
     prototype_name = "指挥中心",
     recipe = "车辆装配",
     x = 126,
     y = 120
   }, {
     dir = "S",
-    items = { { "无人机仓库", 4 }, { "采矿机I", 2 }, { "科研中心I", 1 }, { "组装机I", 4 } },
+    items = {},
     prototype_name = "机尾残骸",
     x = 110,
     y = 120
   }, {
     dir = "W",
-    items = { { "化工厂I", 3 }, { "空气过滤器I", 4 }, { "地下水挖掘机", 4 }, { "电解厂I", 1 } },
+    items = {},
     prototype_name = "机头残骸",
     x = 125,
     y = 108
@@ -30,13 +30,13 @@ local entities = { {
     y = 127
   }, {
     dir = "N",
-    item = "碎石",
+    item = "电动机I",
     prototype_name = "无人机仓库",
     x = 117,
     y = 126
   }, {
     dir = "N",
-    item = "碎石",
+    item = "塑料",
     prototype_name = "无人机仓库",
     x = 117,
     y = 128
@@ -53,37 +53,37 @@ local entities = { {
     y = 130
   }, {
     dir = "N",
-    item = "碎石",
+    item = "电动机I",
     prototype_name = "无人机仓库",
     x = 71,
     y = 128
   }, {
     dir = "N",
-    item = "碎石",
+    item = "塑料",
     prototype_name = "无人机仓库",
     x = 71,
     y = 126
   }, {
     dir = "N",
-    item = "碎石",
+    item = "机械科技包",
     prototype_name = "无人机仓库",
     x = 89,
     y = 126
   }, {
     dir = "N",
-    item = "碎石",
+    item = "电动机I",
     prototype_name = "无人机仓库",
     x = 92,
     y = 126
   }, {
     dir = "N",
-    item = "碎石",
+    item = "塑料",
     prototype_name = "无人机仓库",
     x = 95,
     y = 126
   }, {
     dir = "N",
-    item = "碎石",
+    item = "机械科技包",
     prototype_name = "无人机仓库",
     x = 98,
     y = 126
@@ -100,7 +100,7 @@ local entities = { {
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 105,
+    x = 108,
     y = 126
   }, {
     dir = "N",
@@ -114,21 +114,21 @@ local entities = { {
     y = 126
   }, {
     dir = "N",
-    item = "运输车框架",
+    item = "电动机I",
     prototype_name = "无人机仓库",
     x = 131,
     y = 123
   }, {
     dir = "N",
-    item = "石砖",
+    item = "塑料",
     prototype_name = "无人机仓库",
-    x = 92,
+    x = 96,
     y = 131
   }, {
     dir = "N",
-    item = "石砖",
+    item = "机械科技包",
     prototype_name = "无人机仓库",
-    x = 95,
+    x = 98,
     y = 131
   }, {
     dir = "N",
@@ -180,19 +180,13 @@ local entities = { {
     dir = "N",
     prototype_name = "组装机I",
     recipe = "石砖",
-    x = 87,
+    x = 93,
     y = 128
   }, {
-    dir = "N",
+    dir = "E",
     prototype_name = "组装机I",
     recipe = "石砖",
-    x = 91,
-    y = 128
-  }, {
-    dir = "N",
-    prototype_name = "组装机I",
-    recipe = "石砖",
-    x = 95,
+    x = 96,
     y = 128
   }, {
     dir = "N",
@@ -204,13 +198,7 @@ local entities = { {
     dir = "N",
     item = "石砖",
     prototype_name = "无人机仓库",
-    x = 89,
-    y = 131
-  }, {
-    dir = "N",
-    item = "石砖",
-    prototype_name = "无人机仓库",
-    x = 98,
+    x = 100,
     y = 131
   }, {
     dir = "N",
@@ -873,43 +861,19 @@ local entities = { {
   }, {
     dir = "N",
     item = "石墨",
-    prototype_name = "无人机仓库",
-    x = 138,
-    y = 138
-  }, {
-    dir = "N",
-    item = "石墨",
-    prototype_name = "无人机仓库",
-    x = 138,
-    y = 140
-  }, {
-    dir = "N",
-    item = "石墨",
-    prototype_name = "无人机仓库",
-    x = 138,
-    y = 142
-  }, {
-    dir = "N",
-    item = "石墨",
-    prototype_name = "无人机仓库",
-    x = 138,
-    y = 144
-  }, {
-    dir = "N",
-    item = "石墨",
     prototype_name = "送货车站",
     x = 137,
     y = 136
   }, {
-    dir = "W",
+    dir = "N",
     fluid_name = {
       input = { "一氧化碳", "氢气" },
       output = { "纯水" }
     },
     prototype_name = "化工厂I",
     recipe = "一氧化碳转石墨",
-    x = 134,
-    y = 138
+    x = 128,
+    y = 156
   }, {
     dir = "N",
     fluid_name = {
@@ -918,30 +882,8 @@ local entities = { {
     },
     prototype_name = "化工厂I",
     recipe = "一氧化碳转石墨",
-    x = 134,
-    y = 141
-  }, {
-    dir = "N",
-    fluid_name = {
-      input = { "一氧化碳", "氢气" },
-      output = { "纯水" }
-    },
-    prototype_name = "化工厂I",
-    recipe = "一氧化碳转石墨",
-    x = 134,
-    y = 144
-  }, {
-    dir = "N",
-    fluid_name = "",
-    prototype_name = "液罐I",
-    x = 136,
-    y = 147
-  }, {
-    dir = "S",
-    fluid_name = "",
-    prototype_name = "排水口I",
-    x = 136,
-    y = 150
+    x = 124,
+    y = 156
   }, {
     dir = "N",
     prototype_name = "风力发电机I",
@@ -1064,18 +1006,6 @@ local entities = { {
     x = 147,
     y = 168
   }, {
-    dir = "N",
-    fluid_name = "",
-    prototype_name = "液罐I",
-    x = 150,
-    y = 154
-  }, {
-    dir = "N",
-    fluid_name = "",
-    prototype_name = "液罐I",
-    x = 150,
-    y = 151
-  }, {
     dir = "E",
     fluid_name = {
       input = { "二氧化碳", "氢气" },
@@ -1107,12 +1037,6 @@ local entities = { {
     y = 183
   }, {
     dir = "N",
-    fluid_name = "",
-    prototype_name = "液罐I",
-    x = 128,
-    y = 180
-  }, {
-    dir = "N",
     prototype_name = "铁制电线杆",
     x = 155,
     y = 168
@@ -1122,7 +1046,7 @@ local entities = { {
     x = 163,
     y = 168
   }, {
-    dir = "N",
+    dir = "W",
     fluid_name = {
       input = { "地下卤水" },
       output = { "氧气", "氢气", "氯气" }
@@ -1132,7 +1056,7 @@ local entities = { {
     x = 161,
     y = 163
   }, {
-    dir = "N",
+    dir = "W",
     fluid_name = {
       input = { "地下卤水" },
       output = { "氧气", "氢气", "氯气" }
@@ -1143,13 +1067,13 @@ local entities = { {
     y = 170
   }, {
     dir = "N",
-    fluid_name = "",
+    fluid_name = "氢气",
     prototype_name = "液罐I",
     x = 157,
     y = 154
   }, {
     dir = "N",
-    fluid_name = "",
+    fluid_name = "氢气",
     prototype_name = "液罐I",
     x = 157,
     y = 151
@@ -1179,37 +1103,15 @@ local entities = { {
     x = 147,
     y = 187
   }, {
-    dir = "N",
-    fluid_name = "",
-    prototype_name = "液罐I",
-    x = 128,
-    y = 186
-  }, {
-    dir = "N",
-    fluid_name = "",
-    prototype_name = "液罐I",
-    x = 128,
-    y = 191
-  }, {
-    dir = "E",
+    dir = "W",
     fluid_name = {
       input = { "氧气", "甲烷" },
       output = { "乙烯", "纯水" }
     },
     prototype_name = "化工厂I",
     recipe = "甲烷转乙烯",
-    x = 162,
+    x = 161,
     y = 180
-  }, {
-    dir = "E",
-    fluid_name = {
-      input = { "氧气", "甲烷" },
-      output = { "乙烯", "纯水" }
-    },
-    prototype_name = "化工厂I",
-    recipe = "甲烷转乙烯",
-    x = 162,
-    y = 176
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
@@ -1221,22 +1123,15 @@ local entities = { {
     x = 179,
     y = 186
   }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 171,
-    y = 186
-  }, {
-    dir = "N",
-    fluid_name = "",
-    prototype_name = "液罐I",
-    x = 165,
-    y = 154
-  }, {
-    dir = "N",
-    fluid_name = "",
-    prototype_name = "液罐I",
-    x = 165,
-    y = 151
+    dir = "W",
+    fluid_name = {
+      input = { "乙烯", "氯气" },
+      output = { "盐酸" }
+    },
+    prototype_name = "化工厂I",
+    recipe = "塑料1",
+    x = 175,
+    y = 165
   }, {
     dir = "W",
     fluid_name = {
@@ -1245,23 +1140,13 @@ local entities = { {
     },
     prototype_name = "化工厂I",
     recipe = "塑料1",
-    x = 170,
-    y = 163
-  }, {
-    dir = "W",
-    fluid_name = {
-      input = { "乙烯", "氯气" },
-      output = { "盐酸" }
-    },
-    prototype_name = "化工厂I",
-    recipe = "塑料1",
-    x = 170,
-    y = 167
+    x = 175,
+    y = 169
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
     x = 163,
-    y = 175
+    y = 174
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
@@ -1317,33 +1202,6 @@ local entities = { {
     recipe = "氮气排泄",
     x = 150,
     y = 172
-  }, {
-    dir = "N",
-    fluid_name = "",
-    prototype_name = "液罐I",
-    x = 157,
-    y = 196
-  }, {
-    dir = "N",
-    fluid_name = "",
-    prototype_name = "液罐I",
-    x = 157,
-    y = 199
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 170,
-    y = 166
-  }, {
-    dir = "N",
-    prototype_name = "无人机仓库",
-    x = 174,
-    y = 164
-  }, {
-    dir = "N",
-    prototype_name = "无人机仓库",
-    x = 174,
-    y = 161
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
@@ -1428,12 +1286,6 @@ local entities = { {
     x = 150,
     y = 187
   }, {
-    dir = "W",
-    fluid_name = "二氧化碳",
-    prototype_name = "管道1-L型",
-    x = 150,
-    y = 188
-  }, {
     dir = "E",
     fluid_name = "二氧化碳",
     prototype_name = "管道1-T型",
@@ -1444,6 +1296,1789 @@ local entities = { {
     fluid_name = "二氧化碳",
     prototype_name = "地下管1-JI型",
     x = 150,
+    y = 177
+  }, {
+    dir = "S",
+    fluid_name = "二氧化碳",
+    prototype_name = "地下管1-JI型",
+    x = 150,
+    y = 189
+  }, {
+    dir = "E",
+    fluid_name = "二氧化碳",
+    prototype_name = "管道1-T型",
+    x = 150,
+    y = 188
+  }, {
+    dir = "N",
+    fluid_name = "二氧化碳",
+    prototype_name = "液罐I",
+    x = 149,
+    y = 198
+  }, {
+    dir = "N",
+    fluid_name = "二氧化碳",
+    prototype_name = "地下管1-JI型",
+    x = 150,
+    y = 197
+  }, {
+    dir = "E",
+    fluid_name = {
+      input = {},
+      output = { "地下卤水" }
+    },
+    prototype_name = "地下水挖掘机",
+    recipe = "离岸抽水",
+    x = 166,
+    y = 154
+  }, {
+    dir = "S",
+    fluid_name = "地下卤水",
+    prototype_name = "地下管1-JI型",
+    x = 167,
+    y = 157
+  }, {
+    dir = "E",
+    fluid_name = "地下卤水",
+    prototype_name = "管道1-I型",
+    x = 165,
+    y = 163
+  }, {
+    dir = "E",
+    fluid_name = "地下卤水",
+    prototype_name = "管道1-I型",
+    x = 166,
+    y = 163
+  }, {
+    dir = "N",
+    fluid_name = "地下卤水",
+    prototype_name = "地下管1-JI型",
+    x = 167,
+    y = 162
+  }, {
+    dir = "S",
+    fluid_name = "地下卤水",
+    prototype_name = "地下管1-JI型",
+    x = 167,
+    y = 164
+  }, {
+    dir = "E",
+    fluid_name = "地下卤水",
+    prototype_name = "管道1-T型",
+    x = 167,
+    y = 163
+  }, {
+    dir = "E",
+    fluid_name = "地下卤水",
+    prototype_name = "管道1-I型",
+    x = 166,
+    y = 170
+  }, {
+    dir = "E",
+    fluid_name = "地下卤水",
+    prototype_name = "管道1-I型",
+    x = 165,
+    y = 170
+  }, {
+    dir = "N",
+    fluid_name = "地下卤水",
+    prototype_name = "地下管1-JI型",
+    x = 167,
+    y = 169
+  }, {
+    dir = "N",
+    fluid_name = "氯气",
+    prototype_name = "液罐I",
+    x = 166,
+    y = 189
+  }, {
+    dir = "E",
+    fluid_name = "氢气",
+    prototype_name = "管道1-I型",
+    x = 160,
+    y = 173
+  }, {
+    dir = "E",
+    fluid_name = "氢气",
+    prototype_name = "管道1-I型",
+    x = 159,
+    y = 173
+  }, {
+    dir = "E",
+    fluid_name = "氢气",
+    prototype_name = "管道1-I型",
+    x = 159,
+    y = 166
+  }, {
+    dir = "E",
+    fluid_name = "氢气",
+    prototype_name = "管道1-I型",
+    x = 160,
+    y = 166
+  }, {
+    dir = "S",
+    fluid_name = "氢气",
+    prototype_name = "地下管1-JI型",
+    x = 158,
+    y = 157
+  }, {
+    dir = "N",
+    fluid_name = "氢气",
+    prototype_name = "地下管1-JI型",
+    x = 158,
+    y = 165
+  }, {
+    dir = "W",
+    fluid_name = "氢气",
+    prototype_name = "管道1-T型",
+    x = 158,
+    y = 166
+  }, {
+    dir = "S",
+    fluid_name = "氢气",
+    prototype_name = "地下管1-JI型",
+    x = 158,
+    y = 167
+  }, {
+    dir = "N",
+    fluid_name = "氢气",
+    prototype_name = "地下管1-JI型",
+    x = 158,
+    y = 172
+  }, {
+    dir = "E",
+    fluid_name = "氧气",
+    prototype_name = "管道1-L型",
+    x = 160,
+    y = 163
+  }, {
+    dir = "S",
+    fluid_name = "氧气",
+    prototype_name = "地下管1-JI型",
+    x = 160,
+    y = 164
+  }, {
+    dir = "N",
+    fluid_name = "氧气",
+    prototype_name = "地下管1-JI型",
+    x = 160,
+    y = 169
+  }, {
+    dir = "N",
+    fluid_name = "氧气",
+    prototype_name = "液罐I",
+    x = 159,
+    y = 189
+  }, {
+    dir = "S",
+    fluid_name = "氯气",
+    prototype_name = "地下管1-JI型",
+    x = 165,
+    y = 167
+  }, {
+    dir = "S",
+    fluid_name = "氯气",
+    prototype_name = "管道1-L型",
+    x = 165,
+    y = 166
+  }, {
+    dir = "N",
+    fluid_name = "氯气",
+    prototype_name = "地下管1-JI型",
+    x = 165,
+    y = 172
+  }, {
+    dir = "E",
+    fluid_name = "氢气",
+    prototype_name = "管道1-I型",
+    x = 150,
+    y = 178
+  }, {
+    dir = "E",
+    fluid_name = "氢气",
+    prototype_name = "管道1-I型",
+    x = 151,
+    y = 178
+  }, {
+    dir = "E",
+    fluid_name = "氢气",
+    prototype_name = "管道1-I型",
+    x = 150,
+    y = 182
+  }, {
+    dir = "E",
+    fluid_name = "氢气",
+    prototype_name = "管道1-I型",
+    x = 151,
+    y = 182
+  }, {
+    dir = "E",
+    fluid_name = "氢气",
+    prototype_name = "管道1-I型",
+    x = 150,
+    y = 186
+  }, {
+    dir = "E",
+    fluid_name = "氢气",
+    prototype_name = "管道1-I型",
+    x = 151,
+    y = 186
+  }, {
+    dir = "E",
+    fluid_name = "氢气",
+    prototype_name = "管道1-I型",
+    x = 150,
+    y = 190
+  }, {
+    dir = "E",
+    fluid_name = "氢气",
+    prototype_name = "管道1-I型",
+    x = 151,
+    y = 190
+  }, {
+    dir = "N",
+    fluid_name = "氢气",
+    prototype_name = "地下管1-JI型",
+    x = 152,
+    y = 166
+  }, {
+    dir = "S",
+    fluid_name = "氢气",
+    prototype_name = "地下管1-JI型",
+    x = 152,
+    y = 167
+  }, {
+    dir = "N",
+    fluid_name = "氢气",
+    prototype_name = "地下管1-JI型",
+    x = 152,
+    y = 177
+  }, {
+    dir = "E",
+    fluid_name = "氢气",
+    prototype_name = "管道1-T型",
+    x = 152,
+    y = 178
+  }, {
+    dir = "S",
+    fluid_name = "氢气",
+    prototype_name = "地下管1-JI型",
+    x = 152,
+    y = 179
+  }, {
+    dir = "N",
+    fluid_name = "氢气",
+    prototype_name = "地下管1-JI型",
+    x = 152,
+    y = 181
+  }, {
+    dir = "S",
+    fluid_name = "氢气",
+    prototype_name = "地下管1-JI型",
+    x = 152,
+    y = 183
+  }, {
+    dir = "E",
+    fluid_name = "氢气",
+    prototype_name = "管道1-T型",
+    x = 152,
+    y = 182
+  }, {
+    dir = "N",
+    fluid_name = "氢气",
+    prototype_name = "地下管1-JI型",
+    x = 152,
+    y = 185
+  }, {
+    dir = "E",
+    fluid_name = "氢气",
+    prototype_name = "管道1-T型",
+    x = 152,
+    y = 186
+  }, {
+    dir = "S",
+    fluid_name = "氢气",
+    prototype_name = "地下管1-JI型",
+    x = 152,
+    y = 187
+  }, {
+    dir = "N",
+    fluid_name = "氢气",
+    prototype_name = "地下管1-JI型",
+    x = 152,
+    y = 189
+  }, {
+    dir = "W",
+    fluid_name = "氢气",
+    prototype_name = "管道1-L型",
+    x = 152,
+    y = 190
+  }, {
+    dir = "W",
+    fluid_name = "氢气",
+    prototype_name = "地下管1-JI型",
+    x = 156,
+    y = 155
+  }, {
+    dir = "S",
+    fluid_name = "氢气",
+    prototype_name = "地下管1-JI型",
+    x = 152,
+    y = 156
+  }, {
+    dir = "E",
+    fluid_name = "氢气",
+    prototype_name = "地下管1-JI型",
+    x = 153,
+    y = 155
+  }, {
+    dir = "E",
+    fluid_name = "纯水",
+    prototype_name = "管道1-L型",
+    x = 146,
+    y = 178
+  }, {
+    dir = "S",
+    fluid_name = "纯水",
+    prototype_name = "地下管1-JI型",
+    x = 146,
+    y = 179
+  }, {
+    dir = "N",
+    fluid_name = "纯水",
+    prototype_name = "地下管1-JI型",
+    x = 146,
+    y = 181
+  }, {
+    dir = "S",
+    fluid_name = "纯水",
+    prototype_name = "地下管1-JI型",
+    x = 146,
+    y = 183
+  }, {
+    dir = "W",
+    fluid_name = "纯水",
+    prototype_name = "管道1-T型",
+    x = 146,
+    y = 182
+  }, {
+    dir = "N",
+    fluid_name = "纯水",
+    prototype_name = "地下管1-JI型",
+    x = 146,
+    y = 185
+  }, {
+    dir = "W",
+    fluid_name = "纯水",
+    prototype_name = "管道1-T型",
+    x = 146,
+    y = 186
+  }, {
+    dir = "S",
+    fluid_name = "纯水",
+    prototype_name = "地下管1-JI型",
+    x = 146,
+    y = 187
+  }, {
+    dir = "N",
+    fluid_name = "纯水",
+    prototype_name = "地下管1-JI型",
+    x = 146,
+    y = 189
+  }, {
+    dir = "W",
+    fluid_name = "纯水",
+    prototype_name = "管道1-T型",
+    x = 146,
+    y = 190
+  }, {
+    dir = "S",
+    fluid_name = "纯水",
+    prototype_name = "地下管1-JI型",
+    x = 146,
+    y = 191
+  }, {
+    dir = "N",
+    fluid_name = "纯水",
+    prototype_name = "液罐I",
+    x = 145,
+    y = 198
+  }, {
+    dir = "N",
+    fluid_name = "纯水",
+    prototype_name = "地下管1-JI型",
+    x = 146,
+    y = 197
+  }, {
+    dir = "N",
+    fluid_name = "纯水",
+    prototype_name = "液罐I",
+    x = 145,
+    y = 201
+  }, {
+    dir = "E",
+    fluid_name = "纯水",
+    prototype_name = "地下管1-JI型",
+    x = 148,
+    y = 202
+  }, {
+    dir = "N",
+    fluid_name = "纯水",
+    prototype_name = "地下管1-JI型",
+    x = 164,
+    y = 201
+  }, {
+    dir = "W",
+    fluid_name = "纯水",
+    prototype_name = "管道1-L型",
+    x = 164,
+    y = 202
+  }, {
+    dir = "W",
+    fluid_name = "纯水",
+    prototype_name = "地下管1-JI型",
+    x = 163,
+    y = 202
+  }, {
+    dir = "N",
+    fluid_name = "纯水",
+    prototype_name = "地下管1-JI型",
+    x = 164,
+    y = 179
+  }, {
+    dir = "E",
+    fluid_name = "纯水",
+    prototype_name = "地下管1-JI型",
+    x = 159,
+    y = 202
+  }, {
+    dir = "W",
+    fluid_name = "纯水",
+    prototype_name = "地下管1-JI型",
+    x = 158,
+    y = 202
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 171,
+    y = 160
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 171,
+    y = 152
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 164,
+    y = 152
+  }, {
+    dir = "N",
+    fluid_name = "氯气",
+    prototype_name = "液罐I",
+    x = 173,
+    y = 154
+  }, {
+    dir = "S",
+    fluid_name = "氯气",
+    prototype_name = "地下管1-JI型",
+    x = 174,
+    y = 166
+  }, {
+    dir = "N",
+    fluid_name = "氯气",
+    prototype_name = "地下管1-JI型",
+    x = 174,
+    y = 180
+  }, {
+    dir = "S",
+    fluid_name = "氯气",
+    prototype_name = "地下管1-JI型",
+    x = 174,
+    y = 181
+  }, {
+    dir = "E",
+    fluid_name = "氯气",
+    prototype_name = "地下管1-JI型",
+    x = 169,
+    y = 190
+  }, {
+    dir = "N",
+    fluid_name = "氯气",
+    prototype_name = "地下管1-JI型",
+    x = 174,
+    y = 189
+  }, {
+    dir = "W",
+    fluid_name = "氯气",
+    prototype_name = "管道1-L型",
+    x = 174,
+    y = 190
+  }, {
+    dir = "W",
+    fluid_name = "氯气",
+    prototype_name = "地下管1-JI型",
+    x = 173,
+    y = 190
+  }, {
+    dir = "S",
+    fluid_name = "氯气",
+    prototype_name = "地下管1-JI型",
+    x = 174,
+    y = 170
+  }, {
+    dir = "N",
+    fluid_name = "乙烯",
+    prototype_name = "液罐I",
+    x = 170,
+    y = 193
+  }, {
+    dir = "W",
+    fluid_name = "乙烯",
+    prototype_name = "地下管1-JI型",
+    x = 174,
+    y = 171
+  }, {
+    dir = "E",
+    fluid_name = "乙烯",
+    prototype_name = "地下管1-JI型",
+    x = 172,
+    y = 167
+  }, {
+    dir = "S",
+    fluid_name = "乙烯",
+    prototype_name = "地下管1-JI型",
+    x = 171,
+    y = 168
+  }, {
+    dir = "N",
+    fluid_name = "乙烯",
+    prototype_name = "地下管1-JI型",
+    x = 171,
+    y = 170
+  }, {
+    dir = "E",
+    fluid_name = "乙烯",
+    prototype_name = "地下管1-JI型",
+    x = 172,
+    y = 171
+  }, {
+    dir = "N",
+    fluid_name = "一氧化碳",
+    prototype_name = "液罐I",
+    x = 142,
+    y = 151
+  }, {
+    dir = "W",
+    fluid_name = "一氧化碳",
+    prototype_name = "地下管1-JI型",
+    x = 146,
+    y = 176
+  }, {
+    dir = "W",
+    fluid_name = "一氧化碳",
+    prototype_name = "地下管1-JI型",
+    x = 146,
+    y = 180
+  }, {
+    dir = "E",
+    fluid_name = "一氧化碳",
+    prototype_name = "地下管1-JI型",
+    x = 144,
+    y = 180
+  }, {
+    dir = "N",
+    fluid_name = "一氧化碳",
+    prototype_name = "地下管1-JI型",
+    x = 143,
+    y = 179
+  }, {
+    dir = "N",
+    fluid_name = "一氧化碳",
+    prototype_name = "管道1-L型",
+    x = 143,
+    y = 180
+  }, {
+    dir = "E",
+    fluid_name = "一氧化碳",
+    prototype_name = "地下管1-JI型",
+    x = 144,
+    y = 176
+  }, {
+    dir = "S",
+    fluid_name = "一氧化碳",
+    prototype_name = "地下管1-JI型",
+    x = 143,
+    y = 177
+  }, {
+    dir = "W",
+    fluid_name = "一氧化碳",
+    prototype_name = "管道1-T型",
+    x = 143,
+    y = 176
+  }, {
+    dir = "N",
+    fluid_name = "一氧化碳",
+    prototype_name = "地下管1-JI型",
+    x = 143,
+    y = 175
+  }, {
+    dir = "N",
+    fluid_name = {
+      input = { "一氧化碳", "氢气" },
+      output = { "纯水" }
+    },
+    prototype_name = "化工厂I",
+    recipe = "一氧化碳转石墨",
+    x = 120,
+    y = 156
+  }, {
+    dir = "W",
+    fluid_name = "氢气",
+    prototype_name = "地下管1-JI型",
+    x = 140,
+    y = 155
+  }, {
+    dir = "E",
+    fluid_name = "氢气",
+    prototype_name = "地下管1-JI型",
+    x = 141,
+    y = 155
+  }, {
+    dir = "N",
+    fluid_name = "氢气",
+    prototype_name = "管道1-T型",
+    x = 152,
+    y = 155
+  }, {
+    dir = "W",
+    fluid_name = "氢气",
+    prototype_name = "地下管1-JI型",
+    x = 151,
+    y = 155
+  }, {
+    dir = "E",
+    fluid_name = "氢气",
+    prototype_name = "地下管1-JI型",
+    x = 130,
+    y = 155
+  }, {
+    dir = "N",
+    fluid_name = "氢气",
+    prototype_name = "管道1-T型",
+    x = 129,
+    y = 155
+  }, {
+    dir = "W",
+    fluid_name = "氢气",
+    prototype_name = "地下管1-JI型",
+    x = 128,
+    y = 155
+  }, {
+    dir = "E",
+    fluid_name = "氢气",
+    prototype_name = "地下管1-JI型",
+    x = 126,
+    y = 155
+  }, {
+    dir = "W",
+    fluid_name = "氢气",
+    prototype_name = "地下管1-JI型",
+    x = 124,
+    y = 155
+  }, {
+    dir = "N",
+    fluid_name = "氢气",
+    prototype_name = "管道1-T型",
+    x = 125,
+    y = 155
+  }, {
+    dir = "E",
+    fluid_name = "氢气",
+    prototype_name = "地下管1-JI型",
+    x = 122,
+    y = 155
+  }, {
+    dir = "E",
+    fluid_name = "氢气",
+    prototype_name = "管道1-L型",
+    x = 121,
+    y = 155
+  }, {
+    dir = "W",
+    fluid_name = "一氧化碳",
+    prototype_name = "地下管1-JI型",
+    x = 138,
+    y = 154
+  }, {
+    dir = "E",
+    fluid_name = "一氧化碳",
+    prototype_name = "地下管1-JI型",
+    x = 139,
+    y = 154
+  }, {
+    dir = "N",
+    fluid_name = "一氧化碳",
+    prototype_name = "管道1-I型",
+    x = 119,
+    y = 155
+  }, {
+    dir = "E",
+    fluid_name = "一氧化碳",
+    prototype_name = "管道1-L型",
+    x = 119,
+    y = 154
+  }, {
+    dir = "E",
+    fluid_name = "一氧化碳",
+    prototype_name = "地下管1-JI型",
+    x = 120,
+    y = 154
+  }, {
+    dir = "W",
+    fluid_name = "一氧化碳",
+    prototype_name = "地下管1-JI型",
+    x = 122,
+    y = 154
+  }, {
+    dir = "E",
+    fluid_name = "一氧化碳",
+    prototype_name = "地下管1-JI型",
+    x = 124,
+    y = 154
+  }, {
+    dir = "N",
+    fluid_name = "一氧化碳",
+    prototype_name = "管道1-I型",
+    x = 123,
+    y = 155
+  }, {
+    dir = "N",
+    fluid_name = "一氧化碳",
+    prototype_name = "管道1-T型",
+    x = 123,
+    y = 154
+  }, {
+    dir = "N",
+    fluid_name = "一氧化碳",
+    prototype_name = "管道1-I型",
+    x = 127,
+    y = 155
+  }, {
+    dir = "E",
+    fluid_name = "一氧化碳",
+    prototype_name = "地下管1-JI型",
+    x = 128,
+    y = 154
+  }, {
+    dir = "W",
+    fluid_name = "一氧化碳",
+    prototype_name = "地下管1-JI型",
+    x = 126,
+    y = 154
+  }, {
+    dir = "N",
+    fluid_name = "一氧化碳",
+    prototype_name = "管道1-T型",
+    x = 127,
+    y = 154
+  }, {
+    dir = "W",
+    fluid_name = "一氧化碳",
+    prototype_name = "地下管1-JI型",
+    x = 142,
+    y = 154
+  }, {
+    dir = "E",
+    fluid_name = "一氧化碳",
+    prototype_name = "管道1-T型",
+    x = 143,
+    y = 154
+  }, {
+    dir = "S",
+    fluid_name = "一氧化碳",
+    prototype_name = "地下管1-JI型",
+    x = 143,
+    y = 155
+  }, {
+    dir = "S",
+    fluid_name = "一氧化碳",
+    prototype_name = "地下管1-JI型",
+    x = 143,
+    y = 165
+  }, {
+    dir = "N",
+    fluid_name = "一氧化碳",
+    prototype_name = "地下管1-JI型",
+    x = 143,
+    y = 164
+  }, {
+    dir = "N",
+    item = "石墨",
+    prototype_name = "无人机仓库",
+    x = 126,
+    y = 160
+  }, {
+    dir = "N",
+    item = "石墨",
+    prototype_name = "无人机仓库",
+    x = 122,
+    y = 160
+  }, {
+    dir = "S",
+    item = "石墨",
+    prototype_name = "送货车站",
+    x = 126,
+    y = 163
+  }, {
+    dir = "S",
+    item = "石墨",
+    prototype_name = "送货车站",
+    x = 122,
+    y = 163
+  }, {
+    dir = "N",
+    prototype_name = "风力发电机I",
+    x = 166,
+    y = 166
+  }, {
+    dir = "E",
+    fluid_name = "甲烷",
+    prototype_name = "管道1-I型",
+    x = 146,
+    y = 184
+  }, {
+    dir = "E",
+    fluid_name = "甲烷",
+    prototype_name = "管道1-I型",
+    x = 146,
+    y = 188
+  }, {
+    dir = "N",
+    fluid_name = "甲烷",
+    prototype_name = "液罐I",
+    x = 157,
+    y = 195
+  }, {
+    dir = "W",
+    fluid_name = "甲烷",
+    prototype_name = "地下管1-JI型",
+    x = 157,
+    y = 194
+  }, {
+    dir = "E",
+    fluid_name = "甲烷",
+    prototype_name = "管道1-I型",
+    x = 146,
+    y = 194
+  }, {
+    dir = "E",
+    fluid_name = "甲烷",
+    prototype_name = "地下管1-JI型",
+    x = 147,
+    y = 194
+  }, {
+    dir = "N",
+    fluid_name = "甲烷",
+    prototype_name = "地下管1-JI型",
+    x = 145,
+    y = 193
+  }, {
+    dir = "N",
+    fluid_name = "甲烷",
+    prototype_name = "管道1-L型",
+    x = 145,
+    y = 194
+  }, {
+    dir = "S",
+    fluid_name = "甲烷",
+    prototype_name = "地下管1-JI型",
+    x = 145,
+    y = 189
+  }, {
+    dir = "N",
+    fluid_name = "甲烷",
+    prototype_name = "地下管1-JI型",
+    x = 145,
+    y = 187
+  }, {
+    dir = "W",
+    fluid_name = "甲烷",
+    prototype_name = "管道1-T型",
+    x = 145,
+    y = 188
+  }, {
+    dir = "S",
+    fluid_name = "甲烷",
+    prototype_name = "地下管1-JI型",
+    x = 145,
+    y = 185
+  }, {
+    dir = "E",
+    fluid_name = "甲烷",
+    prototype_name = "管道1-L型",
+    x = 145,
+    y = 184
+  }, {
+    dir = "E",
+    fluid_name = "甲烷",
+    prototype_name = "管道1-I型",
+    x = 159,
+    y = 180
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 176,
+    y = 160
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 176,
+    y = 168
+  }, {
+    dir = "S",
+    fluid_name = "",
+    prototype_name = "排水口I",
+    x = 177,
+    y = 178
+  }, {
+    dir = "N",
+    item = "塑料",
+    prototype_name = "无人机仓库",
+    x = 179,
+    y = 171
+  }, {
+    dir = "N",
+    item = "塑料",
+    prototype_name = "无人机仓库",
+    x = 179,
+    y = 169
+  }, {
+    dir = "N",
+    item = "塑料",
+    prototype_name = "无人机仓库",
+    x = 179,
+    y = 165
+  }, {
+    dir = "N",
+    prototype_name = "组装机I",
+    recipe = "铁齿轮",
+    x = 108,
+    y = 134
+  }, {
+    dir = "N",
+    prototype_name = "组装机I",
+    recipe = "铁齿轮",
+    x = 103,
+    y = 134
+  }, {
+    dir = "N",
+    item = "铁齿轮",
+    prototype_name = "无人机仓库",
+    x = 105,
+    y = 131
+  }, {
+    dir = "N",
+    item = "铁齿轮",
+    prototype_name = "无人机仓库",
+    x = 107,
+    y = 131
+  }, {
+    dir = "N",
+    prototype_name = "组装机I",
+    recipe = "电动机1",
+    x = 102,
+    y = 130
+  }, {
+    dir = "N",
+    prototype_name = "组装机I",
+    recipe = "电动机1",
+    x = 102,
+    y = 127
+  }, {
+    dir = "N",
+    item = "电动机I",
+    prototype_name = "无人机仓库",
+    x = 105,
+    y = 129
+  }, {
+    dir = "N",
+    item = "电动机I",
+    prototype_name = "无人机仓库",
+    x = 105,
+    y = 126
+  }, {
+    dir = "N",
+    item = "电动机I",
+    prototype_name = "送货车站",
+    x = 103,
+    y = 124
+  }, {
+    dir = "N",
+    prototype_name = "送货车站",
+    x = 107,
+    y = 124
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 102,
+    y = 126
+  }, {
+    dir = "N",
+    prototype_name = "组装机I",
+    recipe = "机械科技包1",
+    x = 185,
+    y = 163
+  }, {
+    dir = "N",
+    prototype_name = "组装机I",
+    recipe = "机械科技包1",
+    x = 185,
+    y = 166
+  }, {
+    dir = "N",
+    prototype_name = "组装机I",
+    recipe = "机械科技包1",
+    x = 185,
+    y = 169
+  }, {
+    dir = "N",
+    prototype_name = "组装机I",
+    recipe = "机械科技包1",
+    x = 185,
+    y = 160
+  }, {
+    dir = "N",
+    prototype_name = "组装机I",
+    recipe = "机械科技包1",
+    x = 185,
+    y = 172
+  }, {
+    dir = "N",
+    item = "塑料",
+    prototype_name = "无人机仓库",
+    x = 179,
+    y = 163
+  }, {
+    dir = "W",
+    fluid_name = {
+      input = { "乙烯", "氯气" },
+      output = { "盐酸" }
+    },
+    prototype_name = "化工厂I",
+    recipe = "塑料1",
+    x = 175,
+    y = 161
+  }, {
+    dir = "W",
+    item = "电动机I",
+    prototype_name = "收货车站",
+    x = 180,
+    y = 167
+  }, {
+    dir = "N",
+    item = "电动机I",
+    prototype_name = "无人机仓库",
+    x = 182,
+    y = 170
+  }, {
+    dir = "N",
+    item = "电动机I",
+    prototype_name = "无人机仓库",
+    x = 182,
+    y = 164
+  }, {
+    dir = "N",
+    item = "塑料",
+    prototype_name = "无人机仓库",
+    x = 182,
+    y = 167
+  }, {
+    dir = "N",
+    item = "塑料",
+    prototype_name = "无人机仓库",
+    x = 182,
+    y = 172
+  }, {
+    dir = "N",
+    item = "塑料",
+    prototype_name = "无人机仓库",
+    x = 182,
+    y = 162
+  }, {
+    dir = "N",
+    item = "机械科技包",
+    prototype_name = "无人机仓库",
+    x = 189,
+    y = 164
+  }, {
+    dir = "N",
+    item = "机械科技包",
+    prototype_name = "无人机仓库",
+    x = 189,
+    y = 170
+  }, {
+    dir = "E",
+    fluid_name = "纯水",
+    prototype_name = "管道1-T型",
+    x = 164,
+    y = 180
+  }, {
+    dir = "S",
+    fluid_name = "纯水",
+    prototype_name = "地下管1-JI型",
+    x = 164,
+    y = 181
+  }, {
+    dir = "N",
+    fluid_name = "纯水",
+    prototype_name = "地下管1-JI型",
+    x = 164,
+    y = 183
+  }, {
+    dir = "E",
+    fluid_name = "纯水",
+    prototype_name = "管道1-T型",
+    x = 164,
+    y = 184
+  }, {
+    dir = "S",
+    fluid_name = "纯水",
+    prototype_name = "地下管1-JI型",
+    x = 164,
+    y = 185
+  }, {
+    dir = "S",
+    fluid_name = "纯水",
+    prototype_name = "地下管1-JI型",
+    x = 164,
+    y = 192
+  }, {
+    dir = "N",
+    fluid_name = "纯水",
+    prototype_name = "地下管1-JI型",
+    x = 164,
+    y = 191
+  }, {
+    dir = "W",
+    fluid_name = {
+      input = { "氧气", "甲烷" },
+      output = { "乙烯", "纯水" }
+    },
+    prototype_name = "化工厂I",
+    recipe = "甲烷转乙烯",
+    x = 161,
+    y = 184
+  }, {
+    dir = "S",
+    fluid_name = "氧气",
+    prototype_name = "地下管1-JI型",
+    x = 160,
+    y = 183
+  }, {
+    dir = "N",
+    fluid_name = "氧气",
+    prototype_name = "地下管1-JI型",
+    x = 160,
+    y = 185
+  }, {
+    dir = "N",
+    fluid_name = "氧气",
+    prototype_name = "管道1-I型",
+    x = 160,
+    y = 187
+  }, {
+    dir = "W",
+    fluid_name = "氧气",
+    prototype_name = "管道1-T型",
+    x = 160,
+    y = 186
+  }, {
+    dir = "N",
+    fluid_name = "氧气",
+    prototype_name = "管道1-I型",
+    x = 160,
+    y = 188
+  }, {
+    dir = "E",
+    fluid_name = "甲烷",
+    prototype_name = "管道1-I型",
+    x = 159,
+    y = 184
+  }, {
+    dir = "E",
+    fluid_name = "甲烷",
+    prototype_name = "管道1-I型",
+    x = 160,
+    y = 184
+  }, {
+    dir = "E",
+    fluid_name = "甲烷",
+    prototype_name = "管道1-T型",
+    x = 158,
+    y = 194
+  }, {
+    dir = "N",
+    fluid_name = "甲烷",
+    prototype_name = "地下管1-JI型",
+    x = 158,
+    y = 193
+  }, {
+    dir = "S",
+    fluid_name = "甲烷",
+    prototype_name = "地下管1-JI型",
+    x = 158,
+    y = 185
+  }, {
+    dir = "N",
+    fluid_name = "甲烷",
+    prototype_name = "地下管1-JI型",
+    x = 158,
+    y = 183
+  }, {
+    dir = "W",
+    fluid_name = "甲烷",
+    prototype_name = "管道1-T型",
+    x = 158,
+    y = 184
+  }, {
+    dir = "S",
+    fluid_name = "甲烷",
+    prototype_name = "地下管1-JI型",
+    x = 158,
+    y = 181
+  }, {
+    dir = "S",
+    fluid_name = "乙烯",
+    prototype_name = "地下管1-JI型",
+    x = 171,
+    y = 172
+  }, {
+    dir = "W",
+    fluid_name = "乙烯",
+    prototype_name = "管道1-T型",
+    x = 171,
+    y = 171
+  }, {
+    dir = "E",
+    fluid_name = "乙烯",
+    prototype_name = "地下管1-JI型",
+    x = 164,
+    y = 182
+  }, {
+    dir = "E",
+    fluid_name = "乙烯",
+    prototype_name = "地下管1-JI型",
+    x = 164,
+    y = 186
+  }, {
+    dir = "N",
+    fluid_name = "乙烯",
+    prototype_name = "地下管1-JI型",
+    x = 171,
+    y = 192
+  }, {
+    dir = "S",
+    fluid_name = "乙烯",
+    prototype_name = "地下管1-JI型",
+    x = 171,
+    y = 183
+  }, {
+    dir = "N",
+    fluid_name = "乙烯",
+    prototype_name = "地下管1-JI型",
+    x = 171,
+    y = 181
+  }, {
+    dir = "E",
+    fluid_name = "乙烯",
+    prototype_name = "管道1-T型",
+    x = 171,
+    y = 182
+  }, {
+    dir = "W",
+    fluid_name = "乙烯",
+    prototype_name = "地下管1-JI型",
+    x = 170,
+    y = 182
+  }, {
+    dir = "N",
+    fluid_name = "乙烯",
+    prototype_name = "地下管1-JI型",
+    x = 171,
+    y = 185
+  }, {
+    dir = "S",
+    fluid_name = "乙烯",
+    prototype_name = "地下管1-JI型",
+    x = 171,
+    y = 187
+  }, {
+    dir = "W",
+    fluid_name = "乙烯",
+    prototype_name = "地下管1-JI型",
+    x = 170,
+    y = 186
+  }, {
+    dir = "E",
+    fluid_name = "乙烯",
+    prototype_name = "管道1-T型",
+    x = 171,
+    y = 186
+  }, {
+    dir = "W",
+    fluid_name = {
+      input = { "地下卤水" },
+      output = { "氧气", "氢气", "氯气" }
+    },
+    prototype_name = "电解厂I",
+    recipe = "地下卤水电解1",
+    x = 161,
+    y = 175
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 163,
+    y = 179
+  }, {
+    dir = "E",
+    fluid_name = "甲烷",
+    prototype_name = "管道1-L型",
+    x = 158,
+    y = 179
+  }, {
+    dir = "W",
+    fluid_name = "氧气",
+    prototype_name = "管道1-T型",
+    x = 160,
+    y = 182
+  }, {
+    dir = "N",
+    fluid_name = "氧气",
+    prototype_name = "地下管1-JI型",
+    x = 160,
+    y = 181
+  }, {
+    dir = "S",
+    fluid_name = "氧气",
+    prototype_name = "地下管1-JI型",
+    x = 160,
+    y = 176
+  }, {
+    dir = "N",
+    fluid_name = "氧气",
+    prototype_name = "地下管1-JI型",
+    x = 160,
+    y = 174
+  }, {
+    dir = "W",
+    fluid_name = "氧气",
+    prototype_name = "管道1-T型",
+    x = 160,
+    y = 175
+  }, {
+    dir = "W",
+    fluid_name = "氧气",
+    prototype_name = "管道1-T型",
+    x = 160,
+    y = 170
+  }, {
+    dir = "S",
+    fluid_name = "氧气",
+    prototype_name = "地下管1-JI型",
+    x = 160,
+    y = 171
+  }, {
+    dir = "E",
+    fluid_name = "氢气",
+    prototype_name = "管道1-I型",
+    x = 159,
+    y = 178
+  }, {
+    dir = "E",
+    fluid_name = "氢气",
+    prototype_name = "管道1-I型",
+    x = 160,
+    y = 178
+  }, {
+    dir = "S",
+    fluid_name = "氢气",
+    prototype_name = "地下管1-JI型",
+    x = 158,
+    y = 174
+  }, {
+    dir = "W",
+    fluid_name = "氢气",
+    prototype_name = "管道1-T型",
+    x = 158,
+    y = 173
+  }, {
+    dir = "N",
+    fluid_name = "氢气",
+    prototype_name = "管道1-L型",
+    x = 158,
+    y = 178
+  }, {
+    dir = "N",
+    fluid_name = "氢气",
+    prototype_name = "地下管1-JI型",
+    x = 158,
+    y = 177
+  }, {
+    dir = "S",
+    fluid_name = "氯气",
+    prototype_name = "地下管1-JI型",
+    x = 165,
+    y = 174
+  }, {
+    dir = "E",
+    fluid_name = "氯气",
+    prototype_name = "管道1-T型",
+    x = 165,
+    y = 173
+  }, {
+    dir = "E",
+    fluid_name = "氯气",
+    prototype_name = "管道1-T型",
+    x = 165,
+    y = 178
+  }, {
+    dir = "N",
+    fluid_name = "氯气",
+    prototype_name = "地下管1-JI型",
+    x = 165,
+    y = 177
+  }, {
+    dir = "S",
+    fluid_name = "氯气",
+    prototype_name = "地下管1-JI型",
+    x = 165,
+    y = 179
+  }, {
+    dir = "N",
+    fluid_name = "氯气",
+    prototype_name = "管道1-L型",
+    x = 165,
+    y = 190
+  }, {
+    dir = "N",
+    fluid_name = "氯气",
+    prototype_name = "地下管1-JI型",
+    x = 165,
+    y = 189
+  }, {
+    dir = "E",
+    fluid_name = "地下卤水",
+    prototype_name = "管道1-I型",
+    x = 165,
+    y = 175
+  }, {
+    dir = "E",
+    fluid_name = "地下卤水",
+    prototype_name = "管道1-I型",
+    x = 166,
+    y = 175
+  }, {
+    dir = "S",
+    fluid_name = "地下卤水",
+    prototype_name = "地下管1-JI型",
+    x = 167,
+    y = 171
+  }, {
+    dir = "E",
+    fluid_name = "地下卤水",
+    prototype_name = "管道1-T型",
+    x = 167,
+    y = 170
+  }, {
+    dir = "W",
+    fluid_name = "地下卤水",
+    prototype_name = "管道1-L型",
+    x = 167,
+    y = 175
+  }, {
+    dir = "N",
+    fluid_name = "地下卤水",
+    prototype_name = "地下管1-JI型",
+    x = 167,
+    y = 174
+  }, {
+    dir = "S",
+    fluid_name = {
+      input = { "氧气" },
+      output = {}
+    },
+    prototype_name = "烟囱I",
+    recipe = "氧气排泄",
+    x = 160,
+    y = 192
+  }, {
+    dir = "W",
+    fluid_name = "纯水",
+    prototype_name = "地下管1-JI型",
+    x = 144,
+    y = 202
+  }, {
+    dir = "W",
+    fluid_name = "纯水",
+    prototype_name = "地下管1-JI型",
+    x = 137,
+    y = 202
+  }, {
+    dir = "E",
+    fluid_name = "纯水",
+    prototype_name = "地下管1-JI型",
+    x = 138,
+    y = 202
+  }, {
+    dir = "S",
+    fluid_name = "纯水",
+    prototype_name = "地下管1-JI型",
+    x = 128,
+    y = 193
+  }, {
+    dir = "N",
+    fluid_name = "纯水",
+    prototype_name = "地下管1-JI型",
+    x = 128,
+    y = 192
+  }, {
+    dir = "S",
+    fluid_name = "纯水",
+    prototype_name = "地下管1-JI型",
+    x = 128,
+    y = 171
+  }, {
+    dir = "S",
+    fluid_name = "纯水",
+    prototype_name = "地下管1-JI型",
+    x = 128,
+    y = 182
+  }, {
+    dir = "N",
+    fluid_name = "纯水",
+    prototype_name = "地下管1-JI型",
+    x = 128,
+    y = 170
+  }, {
+    dir = "N",
+    fluid_name = "纯水",
+    prototype_name = "地下管1-JI型",
+    x = 128,
+    y = 181
+  }, {
+    dir = "N",
+    fluid_name = "纯水",
+    prototype_name = "管道1-L型",
+    x = 120,
+    y = 159
+  }, {
+    dir = "E",
+    fluid_name = "纯水",
+    prototype_name = "地下管1-JI型",
+    x = 121,
+    y = 159
+  }, {
+    dir = "W",
+    fluid_name = "纯水",
+    prototype_name = "地下管1-JI型",
+    x = 123,
+    y = 159
+  }, {
+    dir = "S",
+    fluid_name = "纯水",
+    prototype_name = "管道1-T型",
+    x = 124,
+    y = 159
+  }, {
+    dir = "E",
+    fluid_name = "纯水",
+    prototype_name = "地下管1-JI型",
+    x = 125,
+    y = 159
+  }, {
+    dir = "W",
+    fluid_name = "纯水",
+    prototype_name = "地下管1-JI型",
+    x = 127,
+    y = 159
+  }, {
+    dir = "S",
+    fluid_name = "纯水",
+    prototype_name = "地下管1-JI型",
+    x = 128,
+    y = 160
+  }, {
+    dir = "E",
+    fluid_name = "纯水",
+    prototype_name = "管道1-T型",
+    x = 128,
+    y = 159
+  }, {
+    dir = "E",
+    fluid_name = "纯水",
+    prototype_name = "地下管1-JI型",
+    x = 129,
+    y = 202
+  }, {
+    dir = "N",
+    fluid_name = "纯水",
+    prototype_name = "管道1-L型",
+    x = 128,
+    y = 202
+  }, {
+    dir = "N",
+    fluid_name = "纯水",
+    prototype_name = "地下管1-JI型",
+    x = 128,
+    y = 201
+  }, {
+    dir = "S",
+    fluid_name = {
+      input = { "二氧化碳" },
+      output = {}
+    },
+    prototype_name = "烟囱I",
+    recipe = "二氧化碳排泄",
+    x = 150,
+    y = 201
+  }, {
+    dir = "N",
+    fluid_name = "氯气",
+    prototype_name = "地下管1-JI型",
+    x = 174,
+    y = 168
+  }, {
+    dir = "W",
+    fluid_name = "氯气",
+    prototype_name = "管道1-T型",
+    x = 174,
+    y = 169
+  }, {
+    dir = "W",
+    fluid_name = "氯气",
+    prototype_name = "管道1-T型",
+    x = 174,
+    y = 165
+  }, {
+    dir = "N",
+    fluid_name = "氯气",
+    prototype_name = "地下管1-JI型",
+    x = 174,
+    y = 164
+  }, {
+    dir = "S",
+    fluid_name = "氯气",
+    prototype_name = "地下管1-JI型",
+    x = 174,
+    y = 157
+  }, {
+    dir = "N",
+    fluid_name = "氯气",
+    prototype_name = "地下管1-JI型",
+    x = 174,
+    y = 160
+  }, {
+    dir = "S",
+    fluid_name = "氯气",
+    prototype_name = "地下管1-JI型",
+    x = 174,
+    y = 162
+  }, {
+    dir = "W",
+    fluid_name = "氯气",
+    prototype_name = "管道1-T型",
+    x = 174,
+    y = 161
+  }, {
+    dir = "W",
+    fluid_name = "乙烯",
+    prototype_name = "地下管1-JI型",
+    x = 174,
+    y = 163
+  }, {
+    dir = "W",
+    fluid_name = "乙烯",
+    prototype_name = "管道1-T型",
+    x = 171,
+    y = 167
+  }, {
+    dir = "N",
+    fluid_name = "乙烯",
+    prototype_name = "地下管1-JI型",
+    x = 171,
+    y = 166
+  }, {
+    dir = "S",
+    fluid_name = "乙烯",
+    prototype_name = "地下管1-JI型",
+    x = 171,
+    y = 164
+  }, {
+    dir = "E",
+    fluid_name = "乙烯",
+    prototype_name = "管道1-L型",
+    x = 171,
+    y = 163
+  }, {
+    dir = "E",
+    fluid_name = "乙烯",
+    prototype_name = "地下管1-JI型",
+    x = 172,
+    y = 163
+  }, {
+    dir = "S",
+    fluid_name = "盐酸",
+    prototype_name = "管道1-L型",
+    x = 178,
+    y = 163
+  }, {
+    dir = "S",
+    fluid_name = "盐酸",
+    prototype_name = "地下管1-JI型",
+    x = 178,
+    y = 164
+  }, {
+    dir = "N",
+    fluid_name = "盐酸",
+    prototype_name = "地下管1-JI型",
+    x = 178,
+    y = 166
+  }, {
+    dir = "S",
+    fluid_name = "盐酸",
+    prototype_name = "地下管1-JI型",
+    x = 178,
+    y = 168
+  }, {
+    dir = "E",
+    fluid_name = "盐酸",
+    prototype_name = "管道1-T型",
+    x = 178,
+    y = 167
+  }, {
+    dir = "N",
+    fluid_name = "盐酸",
+    prototype_name = "地下管1-JI型",
+    x = 178,
+    y = 170
+  }, {
+    dir = "E",
+    fluid_name = "盐酸",
+    prototype_name = "管道1-T型",
+    x = 178,
+    y = 171
+  }, {
+    dir = "S",
+    fluid_name = "盐酸",
+    prototype_name = "地下管1-JI型",
+    x = 178,
+    y = 172
+  }, {
+    dir = "N",
+    fluid_name = "盐酸",
+    prototype_name = "地下管1-JI型",
+    x = 178,
     y = 177
   } }
 local road = {
@@ -1577,6 +3212,10 @@ local road = {
   [31838] = 121,
   [31841] = 76,
   [31842] = 121,
+  [31847] = 76,
+  [31848] = 89,
+  [31851] = 76,
+  [31852] = 89,
   [31860] = 76,
   [31861] = 121,
   [31870] = 76,
@@ -1621,12 +3260,12 @@ local road = {
   [32100] = 5,
   [32101] = 5,
   [32102] = 5,
-  [32103] = 5,
-  [32104] = 5,
+  [32103] = 135,
+  [32104] = 167,
   [32105] = 5,
   [32106] = 5,
-  [32107] = 5,
-  [32108] = 5,
+  [32107] = 135,
+  [32108] = 167,
   [32109] = 5,
   [32110] = 5,
   [32111] = 5,
@@ -1699,7 +3338,7 @@ local road = {
   [32178] = 5,
   [32179] = 5,
   [32180] = 5,
-  [32181] = 5,
+  [32181] = 13,
   [32182] = 5,
   [32183] = 5,
   [32184] = 5,
@@ -1712,18 +3351,25 @@ local road = {
   [32191] = 3,
   [32330] = 10,
   [32396] = 10,
+  [32437] = 10,
   [32586] = 10,
   [32652] = 10,
+  [32693] = 10,
   [32842] = 10,
   [32908] = 10,
+  [32949] = 10,
   [33098] = 10,
   [33164] = 10,
+  [33205] = 10,
   [33354] = 10,
   [33420] = 10,
+  [33461] = 10,
   [33610] = 10,
   [33676] = 10,
+  [33717] = 10,
   [33866] = 10,
   [33932] = 10,
+  [33973] = 10,
   [34122] = 14,
   [34123] = 5,
   [34124] = 5,
@@ -1831,15 +3477,17 @@ local road = {
   [34226] = 5,
   [34227] = 5,
   [34228] = 5,
-  [34229] = 5,
+  [34229] = 15,
   [34230] = 5,
   [34231] = 5,
   [34232] = 5,
   [34233] = 1,
   [34378] = 10,
   [34444] = 10,
+  [34485] = 10,
   [34634] = 10,
   [34700] = 10,
+  [34741] = 10,
   [34890] = 10,
   [34910] = 76,
   [34911] = 121,
@@ -1850,6 +3498,7 @@ local road = {
   [34953] = 76,
   [34954] = 89,
   [34956] = 10,
+  [34997] = 10,
   [35146] = 14,
   [35147] = 5,
   [35148] = 5,
@@ -1917,20 +3566,27 @@ local road = {
   [35210] = 167,
   [35211] = 5,
   [35212] = 11,
+  [35253] = 10,
   [35402] = 10,
   [35468] = 10,
+  [35509] = 10,
   [35658] = 10,
   [35724] = 10,
+  [35765] = 10,
   [35914] = 10,
   [35980] = 10,
+  [36021] = 10,
   [36170] = 10,
   [36236] = 10,
+  [36277] = 10,
   [36426] = 10,
   [36492] = 14,
   [36493] = 73,
+  [36533] = 10,
   [36682] = 10,
   [36748] = 14,
   [36749] = 115,
+  [36789] = 10,
   [36938] = 10,
   [36956] = 76,
   [36957] = 121,
@@ -1939,6 +3595,7 @@ local road = {
   [36973] = 76,
   [36974] = 121,
   [37004] = 10,
+  [37045] = 10,
   [37194] = 14,
   [37195] = 5,
   [37196] = 5,
@@ -1981,22 +3638,30 @@ local road = {
   [37233] = 5,
   [37234] = 1,
   [37260] = 10,
+  [37301] = 10,
   [37450] = 10,
   [37515] = 92,
   [37516] = 171,
+  [37557] = 10,
   [37706] = 10,
   [37771] = 70,
   [37772] = 139,
+  [37813] = 10,
   [37962] = 10,
   [38028] = 10,
+  [38069] = 10,
   [38218] = 10,
   [38284] = 10,
+  [38325] = 10,
   [38474] = 10,
   [38540] = 10,
+  [38581] = 10,
   [38730] = 10,
   [38796] = 10,
+  [38837] = 10,
   [38986] = 10,
   [39052] = 10,
+  [39093] = 10,
   [39242] = 6,
   [39243] = 5,
   [39244] = 5,
@@ -2041,7 +3706,7 @@ local road = {
   [39283] = 5,
   [39284] = 5,
   [39285] = 5,
-  [39286] = 5,
+  [39286] = 13,
   [39287] = 5,
   [39288] = 5,
   [39289] = 5,
@@ -2064,6 +3729,7 @@ local road = {
   [39306] = 5,
   [39307] = 5,
   [39308] = 3,
+  [39349] = 10,
   [39520] = 118,
   [39521] = 67,
   [39525] = 118,
@@ -2072,11 +3738,22 @@ local road = {
   [39529] = 67,
   [39532] = 118,
   [39533] = 67,
+  [39542] = 10,
   [39556] = 10,
+  [39605] = 10,
+  [39798] = 10,
   [39812] = 10,
+  [39861] = 10,
+  [40054] = 10,
   [40068] = 10,
+  [40117] = 10,
+  [40310] = 10,
   [40324] = 10,
+  [40373] = 10,
+  [40566] = 10,
   [40580] = 10,
+  [40629] = 10,
+  [40822] = 10,
   [40836] = 14,
   [40837] = 5,
   [40838] = 5,
@@ -2126,7 +3803,7 @@ local road = {
   [40882] = 5,
   [40883] = 5,
   [40884] = 5,
-  [40885] = 5,
+  [40885] = 15,
   [40886] = 5,
   [40887] = 5,
   [40888] = 5,
@@ -2136,7 +3813,7 @@ local road = {
   [40892] = 5,
   [40893] = 5,
   [40894] = 5,
-  [40895] = 5,
+  [40895] = 13,
   [40896] = 5,
   [40897] = 5,
   [40898] = 5,
@@ -2150,31 +3827,117 @@ local road = {
   [40906] = 13,
   [40907] = 5,
   [40908] = 1,
+  [41078] = 10,
   [41092] = 10,
   [41134] = 86,
   [41135] = 67,
+  [41141] = 10,
+  [41151] = 10,
   [41161] = 118,
   [41162] = 67,
+  [41334] = 10,
   [41348] = 10,
-  [41604] = 10,
+  [41397] = 10,
+  [41407] = 10,
+  [41590] = 6,
+  [41591] = 5,
+  [41592] = 5,
+  [41593] = 5,
+  [41594] = 173,
+  [41595] = 141,
+  [41596] = 5,
+  [41597] = 5,
+  [41598] = 173,
+  [41599] = 141,
+  [41600] = 5,
+  [41601] = 5,
+  [41602] = 5,
+  [41603] = 5,
+  [41604] = 11,
+  [41653] = 10,
+  [41663] = 10,
+  [41850] = 86,
+  [41851] = 67,
+  [41854] = 86,
+  [41855] = 67,
   [41860] = 10,
+  [41909] = 10,
+  [41919] = 10,
   [42116] = 10,
+  [42165] = 10,
+  [42175] = 10,
   [42372] = 10,
+  [42421] = 10,
+  [42431] = 10,
   [42628] = 10,
+  [42677] = 10,
+  [42687] = 10,
   [42884] = 10,
+  [42932] = 92,
+  [42933] = 171,
+  [42943] = 10,
   [43140] = 10,
+  [43188] = 70,
+  [43189] = 139,
+  [43199] = 10,
   [43396] = 10,
+  [43445] = 10,
+  [43455] = 10,
   [43652] = 14,
   [43653] = 73,
+  [43701] = 10,
+  [43711] = 10,
   [43908] = 14,
   [43909] = 115,
+  [43957] = 10,
+  [43967] = 10,
   [44164] = 10,
+  [44213] = 10,
+  [44223] = 10,
   [44420] = 10,
-  [44676] = 2
+  [44469] = 10,
+  [44479] = 10,
+  [44676] = 2,
+  [44725] = 10,
+  [44735] = 10,
+  [44981] = 10,
+  [44991] = 10,
+  [45237] = 6,
+  [45238] = 5,
+  [45239] = 5,
+  [45240] = 5,
+  [45241] = 5,
+  [45242] = 5,
+  [45243] = 5,
+  [45244] = 5,
+  [45245] = 5,
+  [45246] = 5,
+  [45247] = 3
 }
+
+local function prepare(world)
+  local prototype = import_package "vaststars.gameplay".prototype
+  local e = assert(world.ecs:first("base eid:in"))
+  e = world.entity[e.eid]
+  local pt = prototype.queryByName("运输车辆I")
+  local slot, idx
+  for i = 1, 256 do
+      local s = world:container_get(e.chest, i)
+      if not s then
+          break
+      end
+      if s.item == pt.id then
+          slot, idx = s, i
+          break
+      end
+  end
+  assert(slot)
+  world:container_set(e.chest, idx, {amount = 50, limit = 50})
+end
 
 return {
     entities = entities,
     road = road,
+    prepare = prepare,
 }
     

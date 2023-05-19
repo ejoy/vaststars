@@ -24,7 +24,7 @@ local function __get_capacitance(eid)
     return e.capacitance
 end
 
-local function __fluid_str(prefix, fluid, id, box_base_level, box_capacity, box_height)
+local function __fluid_str(prefix, fluid, fluidbox_id, box_base_level, box_capacity, box_height)
     local volume = "(none)"
     local capacity = "(none)"
     local flow = "(none)"
@@ -33,7 +33,7 @@ local function __fluid_str(prefix, fluid, id, box_base_level, box_capacity, box_
     local fluid_name = ""
     if fluid ~= 0 then
         fluid_name = iprototype.queryById(fluid).name
-        local r = gameplay_core.fluidflow_query(fluid, id)
+        local r = gameplay_core.fluidflow_query(fluid, fluidbox_id)
         if r then
             volume = r.volume / r.multiple
             capacity = r.capacity / r.multiple
@@ -42,8 +42,8 @@ local function __fluid_str(prefix, fluid, id, box_base_level, box_capacity, box_
         end
     end
 
-    return (([[%s fluidbox: (%s, %d)[%s], volume: %s, capacity: %s, flow: %s box_base_level: %s, box_capacity: %s, box_height: %s, elevation: %s ]]):format(
-        prefix, fluid, id, fluid_name, volume, capacity, flow, box_base_level, box_capacity, box_height, elevation)
+    return (([[%s fluidbox: fluid: %s, fluidbox_id: %d fluid_name: [%s], volume: %s, capacity: %s, flow: %s box_base_level: %s, box_capacity: %s, box_height: %s, elevation: %s ]]):format(
+        prefix, fluid, fluidbox_id, fluid_name, volume, capacity, flow, box_base_level, box_capacity, box_height, elevation)
     )
 end
 

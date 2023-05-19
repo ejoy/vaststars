@@ -7,7 +7,6 @@ local bgfx = require 'bgfx'
 local iRmlUi = ecs.import.interface "ant.rmlui|irmlui"
 local terrain = ecs.require "terrain"
 local gameplay_core = require "gameplay.core"
-local world_update = ecs.require "world_update.init"
 local NOTHING <const> = require "debugger".nothing
 local TERRAIN_ONLY <const> = require "debugger".terrain_only
 
@@ -135,16 +134,15 @@ function m:update_world()
         return
     end
 
-    local gameplay_world = gameplay_core.get_world()
     iroadnet:update()
-
     if gameplay_core.world_update then
         gameplay_core.update()
-        if world_update(gameplay_world) then
-            gameplay_world:build()
-        end
-        gameplay_world.ecs:clear "building_changed"
     end
+end
+
+function m:end_frame()
+    local gameplay_world = gameplay_core.get_world()
+    gameplay_world.ecs:clear "building_changed"
 end
 
 function m:camera_usage()

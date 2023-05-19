@@ -3,13 +3,17 @@ local world = ecs.world
 local w = world.w
 
 local lorry_manager = ecs.require "lorry_manager"
+local gameplay_core = require "gameplay.core"
+local lorry_sys = ecs.system "lorry_system"
 
-return function(gameplay_world)
+function lorry_sys:update_world()
+    local gameplay_world = gameplay_core.get_world()
+
     local mc, x, y, z
     for lorry_id, classid, item_classid, item_amount, rc, progress, maxprogress in gameplay_world:roadnet_each_lorry() do
         mc = gameplay_world:roadnet_map_coord(rc)
         if not mc then
-            log.error(("failed to get map coord, lorry_id(%s) rc(%s)"):format(lorry_id, rc))
+            -- log.error(("failed to get map coord, lorry_id(%s) rc(%s)"):format(lorry_id, rc)) -- TODO
             goto continue
         end
         x, y, z = mc & 0xFF, (mc >> 8) & 0xFF, (mc >> 16) & 0xFF

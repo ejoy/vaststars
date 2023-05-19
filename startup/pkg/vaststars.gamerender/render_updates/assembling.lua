@@ -2,6 +2,8 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
+local assembling_sys = ecs.system "assembling_system"
+
 local math3d = require "math3d"
 local objects = require "objects"
 local global = require "global"
@@ -594,7 +596,9 @@ local function update_motions()
     end
 end
 
-return function(world)
+local interval_call = ecs.require "engine.interval_call"
+local update = interval_call(500, function()
+    local world = gameplay_core.get_world()
     -- update_motions()
     for e in world.ecs:select "assembling:in chest:in building:in capacitance?in eid:in" do
         -- object may not have been fully created yet
@@ -656,6 +660,8 @@ return function(world)
         end
         ::continue::
     end
+end)
 
-    return false
+function assembling_sys:update_world()
+    update()
 end

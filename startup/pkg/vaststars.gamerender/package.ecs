@@ -76,10 +76,28 @@ system "init_system"
     .require_system "ant.render|indirect_system"
     .require_system "mod.translucent_plane|init_system"
     .require_system "mod.billboard|billboard_system"
+    -- render_updates begin
+    .require_system "vaststars.gamerender|assembling_system"
+    .require_system "vaststars.gamerender|daynight_system"
+    .require_system "vaststars.gamerender|building_system"
+    .require_system "vaststars.gamerender|inventory_system"
+    .require_system "vaststars.gamerender|drone_system"
+    .require_system "vaststars.gamerender|drone_depot_systme"
+    .require_system "vaststars.gamerender|work_state_system"
+    .require_system "vaststars.gamerender|task_system"
+    .require_system "vaststars.gamerender|storage_tank_system"
+    .require_system "vaststars.gamerender|statistic_system"
+    .require_system "vaststars.gamerender|station_system"
+    .require_system "vaststars.gamerender|guide_system"
+    .require_system "vaststars.gamerender|science_system"
+    .require_system "vaststars.gamerender|lorry_system"
+    .require_system "vaststars.gamerender|fluidbox_system"
+    -- render_updates end
     .implement "init_system.lua"
     .method "init_world"
     .method "update_world"
     .method "camera_usage"
+    .method "end_frame"
 
 system "ui_system"
     .implement "engine/system/ui_system.lua"
@@ -167,3 +185,66 @@ interface "igameplay"
     .method "create_entity"
     .method "remove_entity"
     .method "update_chimney_recipe"
+
+----------------------------------------------------
+----------------------------------------------------
+-- render_updates
+system "assembling_system"
+    .implement "render_updates/assembling.lua"
+    .method "update_world"
+
+system "daynight_system"
+    .implement "render_updates/daynight.lua"
+    .method "update_world"
+
+system "building_system"
+    .implement "render_updates/building.lua"
+    .method "update_world"
+
+system "inventory_system"
+    .implement "render_updates/inventory.lua"
+    .method "update_world"
+
+system "drone_system"
+    .implement "render_updates/drone.lua"
+    .method "update_world"
+
+system "drone_depot_systme"
+    .implement "render_updates/drone_depot.lua"
+    .method "update_world"
+
+system "work_state_system"
+    .implement "render_updates/work_state.lua"
+    .method "update_world"
+
+system "task_system"
+    .implement "render_updates/task.lua"
+    .method "update_world"
+
+system "storage_tank_system"
+    .implement "render_updates/storage_tank.lua"
+    .method "update_world"
+
+system "statistic_system"
+    .implement "render_updates/statistic.lua"
+    .method "update_world"
+
+system "station_system"
+    .implement "render_updates/station.lua"
+    .method "update_world"
+
+system "guide_system"
+    .implement "render_updates/guide.lua"
+    .method "update_world"
+
+system "science_system"
+    .implement "render_updates/science.lua"
+    .method "update_world"
+
+system "lorry_system"
+    .implement "render_updates/lorry.lua"
+    .method "update_world"
+
+system "fluidbox_system"
+    .implement "render_updates/fluidbox.lua"
+    .method "update_world"

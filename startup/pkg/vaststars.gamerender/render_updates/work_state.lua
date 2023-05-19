@@ -7,6 +7,8 @@ local math3d = require "math3d"
 local objects = require "objects"
 local vsobject_manager = ecs.require "vsobject_manager"
 local interval_call = ecs.require "engine.interval_call"
+local gameplay_core = require "gameplay.core"
+local work_state_sys = ecs.system "work_state_system"
 
 local EMISSIVE_COLOR_WORKING  = math3d.constant("v4", {0.0, 1.0, 0.0, 1})
 local EMISSIVE_COLOR_IDLE = math3d.constant("v4", {1.0, 1.0, 0.0, 1})
@@ -48,7 +50,8 @@ local function get_working_state(e)
 end
 
 -- switch the working status of all machines every 3 seconds
-return interval_call(3000, function(world)
+local update = interval_call(3000, function()
+    local world = gameplay_core.get_world()
     local buildings = global.buildings
     for e in world.ecs:select "building:in eid:in assembling?in wind_turbine?in solar_panel?in base?in" do
         -- only some buildings have a working state
@@ -92,5 +95,8 @@ return interval_call(3000, function(world)
         -- TODO: low_power
         ::continue::
     end
-    return false
-end, false)
+end)
+
+function work_state_sys:update_world()
+    update()
+end

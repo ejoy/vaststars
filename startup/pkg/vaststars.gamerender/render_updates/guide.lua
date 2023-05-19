@@ -5,8 +5,11 @@ local w = world.w
 local global = require "global"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local iguide = require "gameplay.interface.guide"
+local guide_sys = ecs.system "guide_system"
+local gameplay_core = require "gameplay.core"
 
-return function(world)
+function guide_sys:update_world()
+    local world = gameplay_core.get_world()
     local science = global.science
     if not iguide.is_running() or iguide.is_in_guide() or science.current_tech then
         return
@@ -35,5 +38,4 @@ return function(world)
         iui.open({"guide_pop.rml"}, guide)
         iguide.set_is_in_guide(true)
     end
-    return false
 end

@@ -7,6 +7,8 @@ local iprototype = require "gameplay.interface.prototype"
 local draw_fluid_icon = ecs.require "fluid_icon"
 local icanvas = ecs.require "engine.canvas"
 local global = require "global"
+local gameplay_core = require "gameplay.core"
+local storage_tank_sys = ecs.system "storage_tank_system"
 
 local function __create_fluid_icon_component(object_id, x, y, fluid)
     local m = {id = object_id, fluid = fluid, x = x, y = y}
@@ -30,7 +32,8 @@ local function __create_fluid_icon_component(object_id, x, y, fluid)
     return m
 end
 
-return function(world)
+function storage_tank_sys:update_world()
+    local world = gameplay_core.get_world()
     for e in world.ecs:select "fluidbox:in building:in" do
         local typeobject = assert(iprototype.queryById(e.building.prototype))
         if not typeobject.storage_tank then
@@ -56,5 +59,4 @@ return function(world)
 
         ::continue::
     end
-    return false
 end
