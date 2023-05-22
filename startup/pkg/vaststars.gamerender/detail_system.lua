@@ -163,15 +163,19 @@ do
                 end
             end
         elseif typeobject.power_supply_area and typeobject.power_supply_distance then
-            for _, object in objects:all() do
-                local otypeobject = iprototype.queryByName(object.prototype_name)
-                if otypeobject.power_supply_area then
-                    local w, h = iprototype.rotate_area(otypeobject.area, object.dir)
-                    local ow, oh = otypeobject.power_supply_area:match("(%d+)x(%d+)")
-                    ow, oh = tonumber(ow), tonumber(oh)
-                    sprites[#sprites+1] = create_sprite(object.x - (ow - w)//2, object.y - (oh - h)//2, ow, oh, object.dir, SPRITE_COLOR.POWER_SUPPLY_AREA)
+            for _, o in objects:all() do
+                if o.id ~= object.id then
+                    local otypeobject = iprototype.queryByName(o.prototype_name)
+                    if otypeobject.power_supply_area then
+                        local w, h = iprototype.rotate_area(otypeobject.area, o.dir)
+                        local ow, oh = otypeobject.power_supply_area:match("(%d+)x(%d+)")
+                        sprites[#sprites+1] = create_sprite(o.x - (ow - w)//2, o.y - (oh - h)//2, ow, oh, o.dir, SPRITE_COLOR.POWER_SUPPLY_AREA)
+                    end
                 end
             end
+            local w, h = iprototype.rotate_area(typeobject.area, object.dir)
+            local ow, oh = typeobject.power_supply_area:match("(%d+)x(%d+)")
+            sprites[#sprites+1] = create_sprite(object.x - (ow - w)//2, object.y - (oh - h)//2, ow, oh, object.dir, SPRITE_COLOR.POWER_SUPPLY_AREA_SELF)
         end
     end
 end

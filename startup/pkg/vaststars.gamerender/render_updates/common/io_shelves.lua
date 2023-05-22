@@ -55,9 +55,8 @@ local function __create_shelves(group_id, recipe, shelf_matrices)
 end
 
 local heap_events = {}
-heap_events["on_position_change"] = function(_, e, mat, group_id)
+heap_events["on_position_change"] = function(_, e, mat, group_id) -- TODO: group_id
     iom.set_srt(e, math3d.srt(mat))
-    e.group_id = group_id
 end
 
 heap_events["update_count"] = function (ud, e, item, count)
@@ -103,6 +102,14 @@ local function __create_heaps(heap_matrices, items)
     return heaps
 end
 
+local function __get_heap_positions(heap_matrices)
+    local positions = {}
+    for idx, mat in pairs(heap_matrices) do
+        positions[idx] = math3d.ref(math3d.index(mat, 4))
+    end
+    return positions
+end
+
 --
 function mt:update_heap_count(idx, item, count)
     assert(self._heaps[idx])
@@ -117,10 +124,15 @@ function mt:get_recipe()
     return self._recipe
 end
 
+function mt:get_heap_position(idx)
+    return self._heap_positions[idx]
+end
+
 --
 function mt:remove()
     self._shelf_matrices = {}
     self._heap_matrices = {}
+    self._heap_positions = {}
     self._heap_counts = {}
 
     for _, o in pairs(self._shelves) do
@@ -136,6 +148,7 @@ end
 function mt:on_position_change(building_srt, group_id)
     self._shelf_matrices = get_shelf_matrices(self._building, self._recipe, math3d.matrix(building_srt))
     self._heap_matrices = get_heap_matrices(self._recipe, self._shelf_matrices)
+    self._heap_positions = __get_heap_positions(self._heap_matrices)
 
     for idx, o in pairs(self._shelves) do
         o:send("on_position_change", self._shelf_matrices[idx], group_id)
@@ -153,6 +166,7 @@ function m.create(group_id, building, recipe, building_srt, items)
 
     self._shelf_matrices = get_shelf_matrices(self._building, self._recipe, math3d.matrix(building_srt))
     self._heap_matrices = get_heap_matrices(self._recipe, self._shelf_matrices)
+    self._heap_positions = __get_heap_positions(self._heap_matrices)
 
     self._shelves = __create_shelves(group_id, self._recipe, self._shelf_matrices)
     self._heaps = __create_heaps(self._heap_matrices, items)

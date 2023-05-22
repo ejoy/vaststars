@@ -15,11 +15,11 @@ local icanvas = ecs.require "engine.canvas"
 local datalist = require "datalist"
 local fs = require "filesystem"
 local recipe_icon_canvas_cfg = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/textures/recipe_icon_canvas.cfg")):read "a")
-local fluid_icon_canvas_cfg = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/textures/fluid_icon_canvas.cfg")):read "a")
 local irecipe = require "gameplay.interface.recipe"
 local gameplay_core = require "gameplay.core"
 local interval_call = ecs.require "engine.interval_call"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
+local draw_fluid_icon = ecs.require "fluid_icon"
 
 local ICON_STATUS_NOPOWER <const> = 1
 local ICON_STATUS_NORECIPE <const> = 2
@@ -173,72 +173,19 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
                 }
 
                 local begin_x, begin_y = __calc_begin_xy(x, y, iprototype.rotate_area(typeobject.area, DIRECTION[e.building.direction]))
-
                 for _, r in ipairs(t) do
                     local i = 0
-                    for idx, v in ipairs(irecipe.get_elements(recipe_typeobject[r[1]])) do
+                    for _, v in ipairs(irecipe.get_elements(recipe_typeobject[r[1]])) do
                         if iprototype.is_fluid_id(v.id) then
                             i = i + 1
                             local c = assert(typeobject.fluidboxes[r[2]][i])
                             local connection = assert(c.connections[1])
                             local connection_x, connection_y = iprototype.rotate_connection(connection.position, DIRECTION[e.building.direction], typeobject.area)
-
-                            material_path = "/pkg/vaststars.resources/materials/fluid_icon_bg.material"
-                            texture_x, texture_y, texture_w, texture_h = 0, 0, __get_texture_size(material_path)
-                            draw_x, draw_y, draw_w, draw_h = __get_draw_rect(
+                            draw_fluid_icon(
+                                object_id,
                                 begin_x + connection_x * iterrain.tile_size + iterrain.tile_size / 2,
                                 begin_y - connection_y * iterrain.tile_size - iterrain.tile_size / 2,
-                                texture_w,
-                                texture_h,
-                                1
-                            )
-                            icanvas.add_item(icanvas.types().ICON,
-                                object_id,
-                                material_path,
-                                RENDER_LAYER.ICON_CONTENT,
-                                {
-                                    texture = {
-                                        rect = {
-                                            x = texture_x,
-                                            y = texture_y,
-                                            w = texture_w,
-                                            h = texture_h,
-                                        },
-                                    },
-                                    x = draw_x, y = draw_y, w = draw_w, h = draw_h,
-                                }
-                            )
-
-                            local fluid_typeobject = iprototype.queryById(v.id)
-                            local cfg = fluid_icon_canvas_cfg[fluid_typeobject.icon]
-                            if not cfg then
-                                assert(cfg, ("can not found `%s`"):format(fluid_typeobject.icon))
-                                return
-                            end
-                            material_path = "/pkg/vaststars.resources/materials/fluid_icon_canvas.material"
-                            texture_x, texture_y, texture_w, texture_h = cfg.x, cfg.y, cfg.width, cfg.height
-                            draw_x, draw_y, draw_w, draw_h = __get_draw_rect(
-                                begin_x + connection_x * iterrain.tile_size + iterrain.tile_size / 2,
-                                begin_y - connection_y * iterrain.tile_size - iterrain.tile_size / 2,
-                                texture_w,
-                                texture_h,
-                                1
-                            )
-                            icanvas.add_item(icanvas.types().ICON,
-                                object_id,
-                                material_path,
-                                RENDER_LAYER.ICON_CONTENT,
-                                {
-                                    texture = {
-                                        rect = {
-                                            x = texture_x,
-                                            y = texture_y,
-                                            w = texture_w,
-                                            h = texture_h,
-                                        },
-                                    },
-                                    x = draw_x, y = draw_y, w = draw_w, h = draw_h,
-                                }
+                                v.id
                             )
                         end
                     end
@@ -351,6 +298,7 @@ function assembling_sys:gameworld_build()
             local io_shelves = building.io_shelves
             if io_shelves then
                 io_shelves:remove()
+                building.io_shelves = nil
             end
         else
             local typeobject_recipe = iprototype.queryById(e.assembling.recipe)

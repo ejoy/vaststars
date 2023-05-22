@@ -382,6 +382,8 @@ function M:restart(mode, game_template)
     if prepare then
         prepare(gameplay_core.get_world())
     end
+
+    restore_world()
     igameplay.build_world()
     iroadnet:editor_build()
 
@@ -390,7 +392,7 @@ function M:restart(mode, game_template)
     if mode then
         gameplay_core.get_storage().game_mode = mode
     end
-    restore_world()
+
 end
 
 function M:get_archival_list()
