@@ -379,8 +379,11 @@ function assembling_sys:gameworld_build()
         --
         if building.ing_res_motion then
             building.ing_res_motion:remove()
+            building.ing_res_motion = nil
         end
-        building.ing_res_motion = create_ing_res_motion(e.building.prototype, e.assembling.recipe, object.srt)
+        if e.assembling.recipe ~= 0 then
+            building.ing_res_motion = create_ing_res_motion(e.building.prototype, e.assembling.recipe, object.srt)
+        end
         ::continue::
     end
 end
