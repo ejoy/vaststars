@@ -190,6 +190,6 @@ local update = interval_call(500, function()
     return false
 end)
 
-function statistic_sys:update_world()
+function statistic_sys:gameworld_update()
     update()
 end

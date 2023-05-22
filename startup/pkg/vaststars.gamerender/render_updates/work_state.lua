@@ -97,6 +97,6 @@ local update = interval_call(3000, function()
     end
 end)
 
-function work_state_sys:update_world()
+function work_state_sys:gameworld_update()
     update()
 end

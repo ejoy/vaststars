@@ -7,6 +7,7 @@ local gameplay_core = require "gameplay.core"
 local global = require "global"
 local gameplay = import_package "vaststars.gameplay"
 local iprototype = require "gameplay.interface.prototype"
+local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 
 local WIDTH <const> = 256 -- coordinate value range: [0, WIDTH - 1]
 local HEIGHT <const> = 256 -- coordinate value range: [0, HEIGHT - 1]
@@ -120,7 +121,7 @@ function roadnet:editor_build()
         e.lorry_factory.endpoint = iendpoint.endpoint_id(gameplay_world, {x = e.building.x, y = e.building.y, dir = DIRECTION[e.building.direction]}, pt)
     end
 
-    gameplay_world:build()
+    igameplay.build_world()
 
     -- TDDO: we should not clear all the lorries directly. We should place them in the corresponding positions of the roadnet as much as possible.
 	local lorry_manager = ecs.require "lorry_manager" -- init_system.lua require "lorry_manager" & "roadnet"

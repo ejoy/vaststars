@@ -92,7 +92,7 @@ function idetail.show(object_id)
     local ui_x, ui_y = iui.convert_coord(math3d.index(p, 1), math3d.index(p, 2))
 
     if typeobject.show_arc_menu ~= false then
-        iui.open({"building_arc_menu.rml"}, object_id, object.srt.t, ui_x, ui_y)
+        iui.open({"building_arc_menu.rml"}, object_id, {math3d.index(object.srt.t, 1, 2, 3)}, ui_x, ui_y)
     end
 
     do

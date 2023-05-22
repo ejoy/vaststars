@@ -181,7 +181,7 @@ local function remove_drone(drones)
     end
 end
 
-function drone_sys:update_world()
+function drone_sys:gameworld_update()
     local gameworld = gameplay_core.get_world()
     -- for _, _, geid in entity_remove:unpack() do
     -- end

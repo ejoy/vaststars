@@ -24,12 +24,7 @@ local imain_menu_manager = ecs.require "main_menu_manager"
 local icanvas = ecs.require "engine.canvas"
 local ia = ecs.import.interface "ant.audio|audio_interface"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
-
-local platform = require "bee.platform"
-local caudio
-if "android" ~= platform.os then
-    _, caudio = pcall(require, "audio")
-end
+local render_layer_def = require "render_layer_def"
 local m = ecs.system 'init_system'
 
 iRmlUi.set_prefix "/pkg/vaststars.resources/ui/"
@@ -41,27 +36,7 @@ function m:init_world()
     ecs.create_instance "/pkg/vaststars.resources/daynight.prefab"
     ecs.create_instance "/pkg/vaststars.resources/light.prefab"
 
-    -- "foreground", "opacity", "background", "translucent", "decal_stage", "ui_stage"
-    irender_layer.init({
-        {
-            "opacity",
-            {"MINERAL"},
-            {"BUILDING_BASE"},
-            {"TRANSLUCENT_PLANE"},
-            {"BUILDING"},
-            {"LORRY_SHADOW", "LORRY"},
-        },
-        {
-            "background",
-            {"ICON"},
-            {"ICON_CONTENT", "WIRE"},
-        },
-        {
-            "translucent",
-            {"SELECTED_BOXES"},
-            {"ROAD_ENTRANCE_ARROW"},
-        },
-    })
+    irender_layer.init(render_layer_def)
 
     iefk.preload "/pkg/vaststars.resources/effect/efk/"
 
@@ -94,7 +69,7 @@ function m:init_world()
     ia.play("event:/background")
 end
 
-function m:update_world()
+function m:gameplay_update()
     if NOTHING then
         return
     end
@@ -105,7 +80,7 @@ function m:update_world()
     end
 end
 
-function m:end_frame()
+function m:gameworld_end()
     local gameplay_world = gameplay_core.get_world()
     gameplay_world.ecs:clear "building_changed"
 end

@@ -882,7 +882,6 @@ local t = {
 	"/pkg/vaststars.gamerender/gameplay/prototype_cache/roadnet_converter.lua",
 	"/pkg/vaststars.gamerender/gameplay/prototype_cache/task.lua",
 	"/pkg/vaststars.gamerender/gameplay/utility/flow_shape.lua",
-	"/pkg/vaststars.gamerender/gameplay/utility/vector2.lua",
 	"/pkg/vaststars.gamerender/gameplay_system.lua",
 	"/pkg/vaststars.gamerender/global.lua",
 	"/pkg/vaststars.gamerender/imotion.lua",

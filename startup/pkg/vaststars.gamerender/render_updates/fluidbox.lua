@@ -12,6 +12,7 @@ local iflow_connector = require "gameplay.interface.flow_connector"
 local iobject = ecs.require "object"
 local gameplay_core = require "gameplay.core"
 local fluidbox_sys = ecs.system "fluidbox_system"
+local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 
 local DIRECTION <const> = {
     N = 0,
@@ -193,6 +194,7 @@ local function __update_pipe_shape(gameplay_world)
 
                 neighbor_object.prototype_name = _prototype_name
                 neighbor_object.dir = _dir
+                neighbor_object.srt.r = ROTATORS[neighbor_object.dir]
                 neighbor_object.gameplay_eid = igameplay.create_entity({
                     prototype_name = _prototype_name,
                     dir = _dir,
@@ -211,7 +213,7 @@ local function __update_pipe_shape(gameplay_world)
     return need_build
 end
 
-function fluidbox_sys:update_world()
+function fluidbox_sys:gameworld_update()
     local gameplay_world = gameplay_core.get_world()
 
     local need_build = false
@@ -223,6 +225,6 @@ function fluidbox_sys:update_world()
     end
 
     if need_build then
-        gameplay_world:build()
+        igameplay.build_world()
     end
 end

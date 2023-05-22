@@ -17,6 +17,7 @@ local math3d = require "math3d"
 local coord_system = ecs.require "terrain"
 local igrid_entity = ecs.require "engine.grid_entity"
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
+local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local create_sprite = ecs.require "sprite"
 local SPRITE_COLOR = import_package "vaststars.prototype".load("sprite_color")
 local gameplay_core = require "gameplay.core"
@@ -188,7 +189,8 @@ local function __new_entity(self, datamodel, typeobject, position, x, y, dir)
         x = x,
         y = y,
         srt = {
-            t = position,
+            t = math3d.ref(math3d.vector(position)),
+            r = ROTATORS[dir],
         },
         fluid_name = fluid_name,
         group_id = 0,
@@ -384,11 +386,11 @@ end
 local function __align(object)
     assert(object)
     local typeobject = iprototype.queryByName(object.prototype_name)
-    local coord, srt = coord_system:align(icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, object.dir))
+    local coord, position = coord_system:align(icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, object.dir))
     if not coord then
         return object
     end
-    object.srt.t = srt
+    object.srt.t = math3d.ref(math3d.vector(position))
     return object, coord[1], coord[2]
 end
 
@@ -568,6 +570,7 @@ local function rotate_pickup_object(self, datamodel, dir, delta_vec)
     ieditor:revert_changes({"TEMPORARY"})
     dir = dir or iprototype.rotate_dir_times(pickup_object.dir, -1)
     pickup_object.dir = dir
+    pickup_object.srt.r = ROTATORS[dir]
 
     local x, y
     self.pickup_object, x, y = __align(self.pickup_object)

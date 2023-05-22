@@ -111,7 +111,7 @@ local function __get_item(gameplay_world, e)
     return slot.item, ichest.get_amount(slot)
 end
 
-function station_sys:update_world()
+function station_sys:gameworld_update()
     local gameplay_world = gameplay_core.get_world()
     for e in gameplay_world.ecs:select "station:in building:in eid:in" do
         -- object may not have been fully created yet

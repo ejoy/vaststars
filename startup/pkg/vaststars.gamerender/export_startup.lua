@@ -148,13 +148,16 @@ return function()
     writefile(([[
 local entities = %s
 local road = %s
+local mineral = %s
 
 return {
     entities = entities,
     road = road,
+    mineral = mineral,
 }
     ]]):format(
         inspect(r),
-        inspect(gameplay_core.get_world():roadnet_get_map())
+        inspect(gameplay_core.get_world():roadnet_get_map()),
+        inspect(import_package "vaststars.prototype"("map"))
     ))
 end

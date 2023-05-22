@@ -19,10 +19,10 @@ local terrain = ecs.require "terrain"
 local itypes = require "gameplay.interface.types"
 local recipe_unlocked = ecs.require "ui_datamodel.common.recipe_unlocked".recipe_unlocked
 local iflow_connector = require "gameplay.interface.flow_connector"
-local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONSTRUCTED"}
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local itask = ecs.require "task"
 local iprototype_cache = require "gameplay.prototype_cache.init"
+local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 
 -- TODO：duplicate code with builder.lua
 local function _update_neighbor_fluidbox(object)
@@ -65,6 +65,7 @@ local function _update_neighbor_fluidbox(object)
                     if prototype_name and dir and (prototype_name ~= neighbor.prototype_name or dir ~= neighbor.dir) then
                         neighbor.prototype_name = prototype_name
                         neighbor.dir = dir
+                        neighbor.srt.r = ROTATORS[neighbor.dir]
                     end
                 end
                 break -- should only have one fluidbox connected
@@ -72,7 +73,7 @@ local function _update_neighbor_fluidbox(object)
         end
         ::continue::
     end
-    gameplay_core.build()
+    igameplay.build_world()
 end
 
 local function _show_object_recipe(datamodel, object_id)
@@ -203,7 +204,7 @@ function M:stage_ui_update(datamodel, object_id)
             object.fluid_name = irecipe.get_init_fluids(recipe_typeobject) or {} -- recipe may not have fluid
 
             _update_neighbor_fluidbox(object)
-            gameplay_core.build()
+            igameplay.build_world()
 
             iui.call_datamodel_method("building_arc_menu.rml", "update", object_id)
             object.recipe = recipe_name
@@ -222,7 +223,7 @@ function M:stage_ui_update(datamodel, object_id)
         iui.call_datamodel_method("building_arc_menu.rml", "update", object_id)
 
         _update_neighbor_fluidbox(object)
-        gameplay_core.build()
+        igameplay.build_world()
     end
 end
 

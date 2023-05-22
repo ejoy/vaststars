@@ -25,7 +25,8 @@ local is_roadnet_only = ecs.require "editor.endpoint".is_roadnet_only
 local gameplay_core = require "gameplay.core"
 local ichest = require "gameplay.interface.chest"
 local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_box"
-
+local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
+local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 local REMOVE <const> = {}
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
@@ -689,7 +690,8 @@ local function new_entity(self, datamodel, typeobject)
         x = x,
         y = y,
         srt = {
-            t = terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)),
+            t = math3d.ref(math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)))),
+            r = ROTATORS[dir],
         },
         group_id = 0,
     }
@@ -830,6 +832,7 @@ local function confirm(self, datamodel)
         __apply_teardown(self, x, y)
     end
 
+    igameplay.build_world()
     iroadnet:clear("indicator")
     iroadnet:editor_build()
 

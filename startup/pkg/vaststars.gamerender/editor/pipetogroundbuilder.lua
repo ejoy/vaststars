@@ -21,6 +21,7 @@ local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 local coord_system = ecs.require "terrain"
 local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_box"
 local global = require "global"
+local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
 local STATE_NONE  <const> = 0
@@ -467,6 +468,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                 end
                 object.prototype_name = v[1]
                 object.dir = v[2]
+                object.srt.r = ROTATORS[object.dir]
             end
 
         else
@@ -476,7 +478,8 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                 x = x,
                 y = y,
                 srt = {
-                    t = terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)),
+                    t = math3d.ref(math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)))),
+                    r = ROTATORS[dir],
                 },
                 fluid_name = State.fluid_name,
                 group_id = 0,
@@ -675,7 +678,8 @@ local function new_entity(self, datamodel, typeobject)
         x = x,
         y = y,
         srt = {
-            t = terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)),
+            t = math3d.ref(math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)))),
+            r = ROTATORS[dir],
         },
         fluid_name = "",
         group_id = 0,
@@ -781,7 +785,7 @@ local function __complete(self)
     end
 
     if needbuild then
-        gameplay_core.build()
+        igameplay.build_world()
     end
 end
 

@@ -8,6 +8,7 @@ local draw_fluid_icon = ecs.require "fluid_icon"
 local icanvas = ecs.require "engine.canvas"
 local global = require "global"
 local gameplay_core = require "gameplay.core"
+local math3d = require "math3d"
 local storage_tank_sys = ecs.system "storage_tank_system"
 
 local function __create_fluid_icon_component(object_id, x, y, fluid)
@@ -32,7 +33,7 @@ local function __create_fluid_icon_component(object_id, x, y, fluid)
     return m
 end
 
-function storage_tank_sys:update_world()
+function storage_tank_sys:gameworld_build()
     local world = gameplay_core.get_world()
     for e in world.ecs:select "fluidbox:in building:in" do
         local typeobject = assert(iprototype.queryById(e.building.prototype))
@@ -51,7 +52,7 @@ function storage_tank_sys:update_world()
         end
 
         local building = global.buildings[object.id]
-        local x, y = object.srt.t[1], object.srt.t[3]
+        local x, y = math3d.index(object.srt.t, 1, 3)
         if not building.storage_tank_icon then
             building.storage_tank_icon = __create_fluid_icon_component(object.id, x, y, e.fluidbox.fluid)
         end

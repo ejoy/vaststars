@@ -24,6 +24,7 @@ local math3d = require "math3d"
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_box"
 local global = require "global"
+local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 
 local REMOVE <const> = {}
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
@@ -187,6 +188,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
             if object.prototype_name ~= v[1] or object.dir ~= v[2] then
                 object.prototype_name = v[1]
                 object.dir = v[2]
+                object.srt.r = ROTATORS[object.dir]
             end
         else
             object = iobject.new {
@@ -195,7 +197,8 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                 x = x,
                 y = y,
                 srt = {
-                    t = terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)),
+                    t = math3d.ref(math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)))),
+                    r = ROTATORS[dir],
                 },
                 fluid_name = State.fluid_name,
                 group_id = 0,
@@ -283,6 +286,7 @@ local function _teardown_end(self, datamodel, State, dir, dir_delta)
             if object.prototype_name ~= v[1] or object.dir ~= v[2] then
                 object.prototype_name = v[1]
                 object.dir = v[2]
+                object.srt.r = ROTATORS[object.dir]
             end
         else
             object = iobject.new {
@@ -291,7 +295,8 @@ local function _teardown_end(self, datamodel, State, dir, dir_delta)
                 x = x,
                 y = y,
                 srt = {
-                    t = terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)),
+                    t = math3d.ref(math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)))),
+                    r = ROTATORS[dir],
                 },
                 fluid_name = State.fluid_name,
                 group_id = 0,
@@ -598,7 +603,8 @@ local function new_entity(self, datamodel, typeobject)
         x = x,
         y = y,
         srt = {
-            t = terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)),
+            t = math3d.ref(math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)))),
+            r = ROTATORS[dir],
         },
         fluid_name = "",
         group_id = 0,
@@ -699,7 +705,8 @@ local function place_one(self, datamodel)
         x = x,
         y = y,
         srt = {
-            t = terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, "N")),
+            t = math3d.ref(math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, "N")))),
+            r = ROTATORS[dir],
         },
         fluid_name = 0,
         group_id = 0,
@@ -790,8 +797,7 @@ local function confirm(self, datamodel)
         igameplay.remove_entity(obj.gameplay_eid)
     end
 
-    gameplay_core.build()
-    gameplay_core.world_update = true
+    igameplay.build_world()
 end
 
 local function cancel(self, datamodel)
