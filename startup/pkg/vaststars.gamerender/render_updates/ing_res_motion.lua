@@ -22,25 +22,14 @@ local function set_visible(inst, visible)
 end
 function ing_res_motion_sys:gameworld_update()
     local time_step = 1.0 / 30
-    local remove_idx = {}
+    local valid_motions = {}
     for index, mobj in ipairs(motions) do
-        -- if not mobj.inited then
-        --     mobj.inited = true
-        --     -- mobj.motion:send("motion", "set_duration", 1.0)
-        --     -- mobj.motion:send("motion", "set_tween", ltween.type("Linear"), ltween.type("Linear"))
-        --     -- mobj.motion:send("motion", "set_keyframes", {t = mobj.from, step = 0.0}, {t = mobj.to,  step = 1.0})
-        --     -- local e <close> = w:entity(mobj.motion)
-        --     -- ims.set_keyframes(e, {t = mobj.from, step = 0.0}, {t = mobj.to,  step = 1.0})
-        -- end
-        -- local e <close> = w:entity(mobj.motion)
         mobj.elapsed_time = mobj.elapsed_time + time_step
         local ratio = mobj.elapsed_time / mobj.duration
         if ratio > 1.0 then
             if mobj.repeat_count > 1 then
                 mobj.repeat_count = mobj.repeat_count - 1
                 mobj.elapsed_time = 0
-                -- ims.set_ratio(e, 0)
-                -- mobj.motion:send("set_ratio", 0)
             else
                 set_visible(mobj.inst, false)
                 local cache = motion_caches[mobj.prefab]
@@ -49,17 +38,15 @@ function ing_res_motion_sys:gameworld_update()
                 else
                     table.insert(cache, mobj)
                 end
-                remove_idx[#remove_idx + 1] = index
             end
-        -- else
-        --     -- ims.set_ratio(e, ratio)
-        --     mobj.motion:send("motion", "set_ratio", ratio)
+        else
+            valid_motions[#valid_motions + 1] = mobj
         end
     end
-
-    for _, value in ipairs(remove_idx) do
-        table.remove(motions, value)
-    end
+    motions = valid_motions
+    -- for _, value in ipairs(remove_idx) do
+    --     table.remove(motions, value)
+    -- end
 end
 
 function ing_res_motion_sys:gameworld_clean()
