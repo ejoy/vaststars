@@ -37,7 +37,10 @@ local function __create_instance(group_id, prefab, mat)
     return world:create_object(prefab_instance)
 end
 
-local function __create_shelves(group_id, ingredients_n, results_n, shelf_matrices)
+local function __create_shelves(group_id, recipe, shelf_matrices)
+    local typeobject_recipe = iprototype.queryById(recipe)
+    local ingredients_n <const> = #typeobject_recipe.ingredients//4 - 1
+
     local objects = {}
     for idx, mat in pairs(shelf_matrices) do
         local prefab
@@ -148,14 +151,10 @@ function m.create(group_id, building, recipe, building_srt, items)
     self._building = building
     self._recipe = recipe
 
-    local typeobject_recipe = iprototype.queryById(self._recipe)
-    local ingredients_n <const> = #typeobject_recipe.ingredients//4 - 1
-    local results_n <const> = #typeobject_recipe.results//4 - 1
-
     self._shelf_matrices = get_shelf_matrices(self._building, self._recipe, math3d.matrix(building_srt))
     self._heap_matrices = get_heap_matrices(self._recipe, self._shelf_matrices)
 
-    self._shelves = __create_shelves(group_id, ingredients_n, results_n, self._shelf_matrices)
+    self._shelves = __create_shelves(group_id, self._recipe, self._shelf_matrices)
     self._heaps = __create_heaps(self._heap_matrices, items)
 
     self._heap_counts = {}
