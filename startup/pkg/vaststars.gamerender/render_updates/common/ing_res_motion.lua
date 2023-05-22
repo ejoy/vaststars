@@ -22,11 +22,11 @@ function mt:update(idx, item, count)
     local m = assert(self._motions[idx])
     if m.type == "in" then
         if self._counts[idx] > count then
-            iing_res_motion.create(m.model, m.from, m.to, 1.0)
+            iing_res_motion.create(m.model, m.from, m.to, 1.0, self._counts[idx] - count)
         end
     else
         if self._counts[idx] < count then
-            iing_res_motion.create(m.model, m.to, m.from, 1.0)
+            iing_res_motion.create(m.model, m.from, m.to, 1.0, count - self._counts[idx])
         end
     end
     self._counts[idx] = count
@@ -53,10 +53,11 @@ function mt:on_position_change(building_srt)
         if iprototype.has_type(typeobject_item.type, "item") then
             assert(heap_matrices[idx])
             local _, _, t = math3d.srt(heap_matrices[idx])
+            local to = math3d.ref(math3d.set_index(building_srt.t, 2, 10))
             self._motions[idx] = {
                 model = "/pkg/vaststars.resources/" .. typeobject_item.pile_model,
                 from = math3d.ref(t),
-                to = building_srt.t,
+                to = to,
                 type = "in",
             }
         end
@@ -68,9 +69,10 @@ function mt:on_position_change(building_srt)
         if iprototype.has_type(typeobject_item.type, "item") then
             assert(heap_matrices[idx])
             local _, _, t = math3d.srt(heap_matrices[idx])
+            local from = math3d.ref(math3d.set_index(building_srt.t, 2, 10))
             self._motions[idx] = {
                 model = "/pkg/vaststars.resources/" .. typeobject_item.pile_model,
-                from = building_srt.t,
+                from = from,
                 to = math3d.ref(t),
                 type = "out",
             }
