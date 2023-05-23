@@ -259,17 +259,24 @@ local function __fix_road(map)
     local res = {}
     for coord, mask in pairs(map) do
         local x, y = iprototype.unpackcoord(coord)
+        local flag = is_roadnet_only(mask)
         for i = 0, 3 do
             if mask & (1 << i) ~= 0 then
                 local dx, dy = iprototype.move_coord(x, y, DIRECTION[i], 1, 1)
                 if not map[iprototype.packcoord(dx, dy)] then
                     mask = mask & ~(1 << i)
                     log.error(("fix road: %d, %d, %d"):format(x, y, i))
+                    if flag then
+                        mask = 0
+                    end
                 else
                     local neighbor_mask = map[iprototype.packcoord(dx, dy)]
                     if neighbor_mask & (1 << ((i + 2) % 4)) == 0 then
                         mask = mask & ~(1 << i)
                         log.error(("fix road: %d, %d, %d"):format(x, y, i))
+                        if flag then
+                            mask = 0
+                        end
                     end
                 end
             end
