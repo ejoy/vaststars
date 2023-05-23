@@ -147,7 +147,7 @@ function terrain:reset_mineral(map)
     --
     self.eids = self.eids or {}
     for _, eid in ipairs(self.eids) do
-        w:remove(eid)
+        eid:remove()
     end
 
     local mineral_prefabs = {

@@ -186,7 +186,7 @@ local function create_road(road)
         },
         data = {
             scene = {
-                t = math3d.vector(-offset * unit, 0, -offset * unit)
+                t = math3d.mark(math3d.vector(-offset * unit, 0, -offset * unit))
             },
             simplemesh  = road_mesh,
             material    = road_material,

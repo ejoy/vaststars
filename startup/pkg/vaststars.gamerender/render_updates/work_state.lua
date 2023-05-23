@@ -26,7 +26,7 @@ local function create_workstatus()
     local function set(_, s)
         status = s
     end
-    local function get(_, s)
+    local function get()
         return status
     end
     return {

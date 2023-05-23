@@ -15,7 +15,7 @@ return {
     },
     {
         "translucent",
-        {"SELECTED_BOXES"},
+        {"SELECTED_BOXES", "FLUID_INDICATION_ARROW"},
         {"ROAD_ENTRANCE_ARROW"},
     },
 }

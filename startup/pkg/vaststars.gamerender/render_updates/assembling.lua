@@ -20,6 +20,12 @@ local gameplay_core = require "gameplay.core"
 local interval_call = ecs.require "engine.interval_call"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local draw_fluid_icon = ecs.require "fluid_icon"
+local ROTATORS <const> = {
+    N = math.rad(0),
+    E = math.rad(-90),
+    S = math.rad(-180),
+    W = math.rad(-270),
+}
 
 local ICON_STATUS_NOPOWER <const> = 1
 local ICON_STATUS_NORECIPE <const> = 2
@@ -33,8 +39,8 @@ local function __get_texture_size(materialpath)
 end
 
 local function __get_draw_rect(x, y, icon_w, icon_h, multiple)
-    local tile_size = iterrain.tile_size * multiple
     multiple = multiple or 1
+    local tile_size = iterrain.tile_size * multiple
     y = y - tile_size
     local max = math.max(icon_h, icon_w)
     local draw_w = tile_size * (icon_w / max)
@@ -165,6 +171,7 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
 
             if typeobject.fluidboxes then
                 local recipe_typeobject = assert(iprototype.queryById(recipe))
+                local ingredients_n <const> = #recipe_typeobject.ingredients//4 - 1
 
                 -- draw fluid icon of fluidboxes
                 local t = {
@@ -180,12 +187,48 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
                             i = i + 1
                             local c = assert(typeobject.fluidboxes[r[2]][i])
                             local connection = assert(c.connections[1])
-                            local connection_x, connection_y = iprototype.rotate_connection(connection.position, DIRECTION[e.building.direction], typeobject.area)
+                            local connection_x, connection_y, connection_dir = iprototype.rotate_connection(connection.position, DIRECTION[e.building.direction], typeobject.area)
                             draw_fluid_icon(
                                 object_id,
                                 begin_x + connection_x * iterrain.tile_size + iterrain.tile_size / 2,
                                 begin_y - connection_y * iterrain.tile_size - iterrain.tile_size / 2,
                                 v.id
+                            )
+
+                            local dx, dy = iprototype.move_coord(connection_x, connection_y, connection_dir, 1, 1)
+
+                            if r[2] == "input" then
+                                material_path = "/pkg/vaststars.resources/materials/fluid-indication-arrow-input.material"
+                            else
+                                material_path = "/pkg/vaststars.resources/materials/fluid-indication-arrow-output.material"
+                            end
+
+                            icon_w, icon_h = __get_texture_size(material_path)
+                            texture_x, texture_y, texture_w, texture_h = 0, 0, icon_w, icon_h
+                            draw_x, draw_y, draw_w, draw_h = __get_draw_rect(
+                                begin_x + dx * iterrain.tile_size + iterrain.tile_size / 2,
+                                begin_y - dy * iterrain.tile_size - iterrain.tile_size / 2,
+                                icon_w,
+                                icon_h
+                            )
+                            icanvas.add_item(icanvas.types().ICON,
+                                object_id,
+                                material_path,
+                                RENDER_LAYER.FLUID_INDICATION_ARROW,
+                                {
+                                    texture = {
+                                        rect = {
+                                            x = texture_x,
+                                            y = texture_y,
+                                            w = texture_w,
+                                            h = texture_h,
+                                        },
+                                        srt = {
+                                            r = ROTATORS[connection_dir],
+                                        },
+                                    },
+                                    x = draw_x, y = draw_y, w = draw_w, h = draw_h,
+                                }
                             )
                         end
                     end
