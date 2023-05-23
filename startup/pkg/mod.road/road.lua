@@ -17,6 +17,7 @@ local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local iindirect = ecs.import.interface "ant.render|iindirect"
 local road_material
 local group_table = {}
+local road_default_group = 30001
 local TERRAIN_TYPES<const> = {
     road1 = "1",
     road2 = "2",
@@ -194,6 +195,9 @@ function iroad.set_args(ww, hh, off, un)
 end
 
 function iroad.update_roadnet_group(gid, update_list)
+    if not gid then
+        gid = 30001
+    end
     local indirect_info = create_road_instance_info(update_list)
     if #indirect_info == 0 then
         iindirect.remove_old_entity(gid)
