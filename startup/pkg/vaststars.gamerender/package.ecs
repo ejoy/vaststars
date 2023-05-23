@@ -238,6 +238,7 @@ system "inventory_system"
 system "drone_system"
     .implement "render_updates/drone.lua"
     .method "gameworld_update"
+    .method "gameworld_clean"
 
 system "drone_depot_systme"
     .implement "render_updates/drone_depot.lua"

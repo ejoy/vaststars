@@ -14,10 +14,6 @@ local function __pack(x, y)
     return x | (y<<8)
 end
 
-local function __unpack(coord)
-    return coord & 0xFF, coord >> 8
-end
-
 local WIDTH <const> = 256 -- coordinate value range: [0, WIDTH - 1]
 local HEIGHT <const> = 256 -- coordinate value range: [0, HEIGHT - 1]
 
@@ -118,7 +114,7 @@ function road:init(layer_name, map)
         self.cache[__pack(x, y)] = v
         t[#t+1] = v
     end
-    iroad.create_roadnet_entity(t)
+    iroad.update_roadnet_group(0, t)
 end
 
 -- shape = "I" / "U" / "L" / "T" / "O"
@@ -169,25 +165,18 @@ function road:flush()
         return
     end
     if next(self._update_cache) then
-        local update = {}
-        local delete = {}
         for coord in pairs(self._update_cache) do
             if not self.cache[coord] or next(self.cache[coord].layers) == nil then
                 self.cache[coord] = nil
-                local x, y = __unpack(coord)
-                local dx, dy = x - self._offset[1], y - self._offset[2]
-                delete[#delete+1] = {x = dx, y = dy}
-            else
-                update[#update+1] = self.cache[coord]
             end
         end
-        if next(update) then
-            iroad.update_roadnet_entity(update)
-        end
-        if next(delete) then
-            iroad.delete_roadnet_entity(delete)
-        end
         self._update_cache = {}
+
+        local t = {}
+        for _, v in pairs(self.cache) do
+            t[#t+1] = v
+        end
+        iroad.update_roadnet_group(0, t)
     end
 end
 

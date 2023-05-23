@@ -12,6 +12,7 @@ local imotion = ecs.require "imotion"
 local drone_sys = ecs.system "drone_system"
 local gameplay_core = require "gameplay.core"
 local global = require "global"
+local terrain = ecs.require "terrain"
 
 -- enum defined in c 
 local STATUS_HAS_ERROR = 1
@@ -121,17 +122,6 @@ local function create_drone(homepos)
             w:remove(self.motion_y)
             w:remove(self.motion_xz)
         end,
-        init = function (self, pos)
-            if self.inited then
-                return
-            end
-            self.inited = true
-            self.current_pos = pos
-            local exz <close> = w:entity(self.motion_xz)
-            iom.set_position(exz, math3d.vector(pos[1], 0, pos[3]))
-            local ey <close> = w:entity(self.motion_y)
-            iom.set_position(ey, math3d.vector(0, pos[2], 0))
-        end
     }
     task.current_pos = homepos
     local motion_xz = imotion.create_motion_object(nil, nil, math3d.set_index(homepos, 2, 0))
@@ -140,10 +130,6 @@ local function create_drone(homepos)
     task.motion_y = motion_y
     task.prefab = imotion.sampler_group:create_instance("/pkg/vaststars.resources/prefabs/drone.prefab", motion_y)
     return task
-end
-
-local function get_object(lacation)
-    return objects:coord(((lacation >> 23) & 0x1FF) // 2, ((lacation >> 14) & 0x1FF) // 2)
 end
 
 local function get_berth(lacation)
@@ -166,30 +152,29 @@ local function get_home_pos(pos)
     return math3d.add(math3d.set_index(pos, 2, 0), {6, 8, -6})
 end
 
-local function remove_drone(drones)
-    if #drones == 0 then
-        for _, drone in pairs(lookup_drones) do
-            drone:destroy()
-        end
-        lookup_drones = {}
-    else
-        for _, eid in ipairs(drones) do
-            if lookup_drones[eid] then
-                lookup_drones[eid]:destroy()
-                lookup_drones[eid] = nil
-            end
-        end
+local function remove_drone(eid)
+    if lookup_drones[eid] then
+        lookup_drones[eid]:destroy()
+        lookup_drones[eid] = nil
     end
 end
 
-local function get_shelf_position(object_id, idx)
-    local building = global.buildings[object_id]
+local function __get_position(location)
+    local x, y = ((location >> 23) & 0x1FF) // 2, ((location >> 14) & 0x1FF) // 2
+    local object = objects:coord(x, y)
+    if not object then
+        return math3d.vector(terrain:get_position_by_coord(x, y, 1, 1))
+    end
+
+    local idx = (location >> 7) & 0xF
+
+    local building = global.buildings[object.id]
     if not building then
-        return
+        return math3d.set_index(object.srt.t, 2, item_height)
     end
     local io_shelves = building.io_shelves
     if not io_shelves then
-        return
+        return math3d.set_index(object.srt.t, 2, item_height)
     end
     return io_shelves:get_heap_position(idx+1)
 end
@@ -211,54 +196,43 @@ function drone_sys:gameworld_update()
         -- end
         if drone.status == STATUS_HAS_ERROR then
             if lookup_drones[e.eid] then
-                remove_drone({e.eid})
+                remove_drone(e.eid)
             end
             goto continue
         end
         if not lookup_drones[e.eid] then
-            local obj = get_object(drone.prev)
-            assert(obj)
-            lookup_drones[e.eid] = create_drone(get_home_pos(obj.srt.t))
+            lookup_drones[e.eid] = create_drone(get_home_pos(__get_position(drone.prev)))
         else
             local current = lookup_drones[e.eid]
             local flyid = drone.prev << 32 | drone.next
             if current.flyid ~= flyid or current.to_home then
                 if drone.maxprogress > 0 then
-                    local destobj = get_object(drone.next)
-                    if destobj then
-                        -- current.target = destobj
-                        -- if drone.item > 0 then
-                        --     current.item = create_item(drone.item, current.prefab.tag["*"][1])
-                        -- end
-                        -- TODO: update src item count
-                        local srcobj = assert(get_object(drone.prev))
-                        if srcobj then
-                            current:init(srcobj.srt.t)
-                        end
-                        if not same_dest_offset[flyid] then
-                            same_dest_offset[flyid] = 0
-                        else
-                            same_dest_offset[flyid] = same_dest_offset[flyid] - (drone_offset / 2)
-                        end
+                    -- current.target = destobj
+                    -- if drone.item > 0 then
+                    --     current.item = create_item(drone.item, current.prefab.tag["*"][1])
+                    -- end
+                    -- TODO: update src item count
+                    if not same_dest_offset[flyid] then
+                        same_dest_offset[flyid] = 0
+                    else
+                        same_dest_offset[flyid] = same_dest_offset[flyid] - (drone_offset / 2)
+                    end
 
-                        local from = get_shelf_position(srcobj.id, (drone.prev >> 7) & 0xF) or math3d.set_index(srcobj.srt.t, 2, item_height)
-                        local to = get_shelf_position(destobj.id, (drone.next >> 7) & 0xF) or math3d.set_index(destobj.srt.t, 2, item_height)
+                    local from = __get_position(drone.prev)
+                    local to = __get_position(drone.next)
 
-                        -- status : go_home
-                        -- print("berth1:", get_berth(drone.prev), get_berth(drone.next))
-                        if get_berth(drone.next) == BERTH_HOME then
-                            current:gohome(flyid, from, get_home_pos(to))
-                        else
-                            drone_task[#drone_task + 1] = {flyid, current, from, to}
-                        end
+                    -- status : go_home
+                    print("berth1:", e.eid, drone.maxprogress, drone.prev, drone.next, drone.progress)
+                    if get_berth(drone.next) == BERTH_HOME then
+                        current:gohome(flyid, from, get_home_pos(to))
+                    else
+                        drone_task[#drone_task + 1] = {flyid, current, from, to}
                     end
                 elseif get_berth(drone.prev) == BERTH_HOME and not current.to_home then
                     -- status : to_home
-                    local obj = get_object(drone.prev)
-                    assert(obj)
-                    local dst = obj.srt.t
+                    local dst = __get_position(drone.prev)
                     -- print("berth2:", get_berth(drone.prev), get_berth(drone.next))
-                    current:gohome(flyid, math3d.vector(dst[1], item_height, dst[3]), get_home_pos(dst))
+                    current:gohome(flyid, math3d.set_index(dst, 2, item_height), get_home_pos(dst))
                 end
             else
                 current:update(drone.maxprogress > 0 and (drone.maxprogress - drone.progress) / drone.maxprogress or 0)
@@ -272,4 +246,11 @@ function drone_sys:gameworld_update()
         task[2]:flyto(flyid, fly_height, task[3], to, false)
         same_dest_offset[flyid] = same_dest_offset[flyid] + drone_offset
     end
+end
+
+function drone_sys:gameworld_clean()
+    for _, drone in pairs(lookup_drones) do
+        drone:destroy()
+    end
+    lookup_drones = {}
 end
