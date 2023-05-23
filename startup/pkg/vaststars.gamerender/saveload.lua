@@ -44,6 +44,13 @@ local ipower_line = ecs.require "power_line"
 local iroadnet = ecs.require "roadnet"
 local MAX_ARCHIVING_COUNT <const> = 9
 
+local DIRECTION = {
+    [0] = 'W',
+    [1] = 'N',
+    [2] = 'E',
+    [3] = 'S',
+}
+
 local function clean()
     -- clean
     for _, object in objects:all() do
@@ -248,6 +255,32 @@ function M:clean()
     clean()
 end
 
+local function __fix_road(map)
+    local res = {}
+    for coord, mask in pairs(map) do
+        local x, y = iprototype.unpackcoord(coord)
+        for i = 0, 3 do
+            if mask & (1 << i) ~= 0 then
+                local dx, dy = iprototype.move_coord(x, y, DIRECTION[i], 1, 1)
+                if not map[iprototype.packcoord(dx, dy)] then
+                    mask = mask & ~(1 << i)
+                    log.error(("fix road: %d, %d, %d"):format(x, y, i))
+                else
+                    local neighbor_mask = map[iprototype.packcoord(dx, dy)]
+                    if neighbor_mask & (1 << ((i + 2) % 4)) == 0 then
+                        mask = mask & ~(1 << i)
+                        log.error(("fix road: %d, %d, %d"):format(x, y, i))
+                    end
+                end
+            end
+        end
+        if mask ~= 0 then
+            res[coord] = mask
+        end
+    end
+    return res
+end
+
 function M:restore(index)
     self:restore_camera_setting()
 
@@ -358,7 +391,7 @@ function M:restart(mode, game_template)
 
     --
     clean()
-    local game_template_road = import_package("vaststars.prototype")(game_template).road
+    local game_template_road = __fix_road(import_package("vaststars.prototype")(game_template).road)
     local renderData = {}
     for coord, mask in pairs(game_template_road) do
         if not is_roadnet_only(mask) then
