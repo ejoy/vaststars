@@ -84,6 +84,7 @@ local function create_drone(homepos)
             end
             local finished = false
             if self.to_home then
+                --TODO: update framerate is 30
                 local elapsed_time = 1.0 / 30
                 self.elapsed_time = self.elapsed_time + elapsed_time
                 if self.elapsed_time >= self.duration then
@@ -181,11 +182,6 @@ end
 
 function drone_sys:gameworld_update()
     local gameworld = gameplay_core.get_world()
-    -- for _, _, geid in entity_remove:unpack() do
-    -- end
-
-    --TODO: update framerate is 30
-    -- local elapsed_time = 1.0 / 30
     local same_dest_offset = {}
     local drone_task = {}
     for e in gameworld.ecs:select "drone:in eid:in" do
@@ -207,11 +203,6 @@ function drone_sys:gameworld_update()
             local flyid = drone.prev << 32 | drone.next
             if current.flyid ~= flyid or current.to_home then
                 if drone.maxprogress > 0 then
-                    -- current.target = destobj
-                    -- if drone.item > 0 then
-                    --     current.item = create_item(drone.item, current.prefab.tag["*"][1])
-                    -- end
-                    -- TODO: update src item count
                     if not same_dest_offset[flyid] then
                         same_dest_offset[flyid] = 0
                     else
@@ -222,7 +213,7 @@ function drone_sys:gameworld_update()
                     local to = __get_position(drone.next)
 
                     -- status : go_home
-                    print("berth1:", e.eid, drone.maxprogress, drone.prev, drone.next, drone.progress)
+                    --print("berth1:", e.eid, drone.maxprogress, drone.prev, drone.next, drone.progress)
                     if get_berth(drone.next) == BERTH_HOME then
                         current:gohome(flyid, from, get_home_pos(to))
                     else
