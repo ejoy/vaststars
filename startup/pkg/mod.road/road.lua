@@ -10,13 +10,13 @@ local renderpkg = import_package "ant.render"
 local declmgr   = renderpkg.declmgr
 local bgfx      = require "bgfx"
 local math3d    = require "math3d"
-local layout_name<const>    = declmgr.correct_layout "p3|t20|t21|t22|t23"
+local layout_name<const>    = declmgr.correct_layout "p3|t20|t21"
 local layout                = declmgr.get(layout_name)
 local width, height, offset, unit = 256, 256, 128, 10
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+local iindirect = ecs.import.interface "ant.render|iindirect"
 local road_material
-local road_table = {}
-
+local group_table = {}
 local TERRAIN_TYPES<const> = {
     road1 = "1",
     road2 = "2",
@@ -41,10 +41,6 @@ local function parse_terrain_type_dir(layers, tname)
     return ("%s%s%s"):format(t, s, d)
 end
 
-local function calc_tf_idx(ix, iy)
-    return iy * width + ix + 1
-end
-
 local function parse_layer(t, s, d)
     local pt, ps, pd
     local u_table = {["1"] = 0, ["2"]= 90, ["3"] = 180, ["4"] = 270}
@@ -67,28 +63,6 @@ local function parse_layer(t, s, d)
     end
     pt = t
     return pt, ps, pd                          
-end
-
-local direction_table ={
-    [0]   = {0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0},
-    [90]  = {1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0},
-    [180] = {1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0},
-    [270] = {0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0}
-}
-
-local function get_road_mark_coord(rd, rd_idx, md, md_idx)
-    local t1x, t1y, t7x, t7y
-    if rd == nil then
-        t1x, t1y = direction_table[0][rd_idx * 2 + 1], direction_table[0][rd_idx * 2 + 2]
-    else
-        t1x, t1y = direction_table[rd][rd_idx * 2 + 1], direction_table[rd][rd_idx * 2 + 2]
-    end
-    if md == nil then
-        t7x, t7y = direction_table[0][md_idx * 2 + 1], direction_table[0][md_idx * 2 + 2]
-    else
-        t7x, t7y = direction_table[md][md_idx * 2 + 1], direction_table[md][md_idx * 2 + 2]
-    end
-    return t1x, t1y, t7x, t7y
 end
 
 local NUM_QUAD_VERTICES<const> = 4
@@ -116,45 +90,16 @@ local function build_ib(max_plane)
     end
 end
 
-local function to_mesh_buffer(vb, ib_handle, aabb)
-    local vbbin = table.concat(vb, "")
-    local numv = #vbbin // layout.stride
-    local numi = (numv // NUM_QUAD_VERTICES) * 6 --6 for one quad 2 triangles and 1 triangle for 3 indices
-
-    return {
-        bounding = {aabb = aabb and math3d.ref(aabb) or nil},
-        vb = {
-            start = 0,
-            num = numv,
-            handle = bgfx.create_vertex_buffer(bgfx.memory_buffer(vbbin), layout.handle),
-        },
-        ib = {
-            start = 0,
-            num = numi,
-            handle = ib_handle,
-        }
+local function get_road_info(road)
+    local t = {(road.x - offset) * unit, 0, (road.y - offset) * unit, 0}
+    local road_direction = road.road_direction or 0
+    local mark_direction = road.mark_direction or 0
+    local road_info = {
+        [1] = t,
+        [2] = {road_direction, mark_direction, 0, 0},
+        [3] = {road.road_type, road.road_shape, road.mark_type, road.mark_shape},
     }
-end
-
-local function build_mesh(road)
-    local packfmt<const> = "fffffffffff"
-    local t0x0, t0y0, t1x0, t1y0 = get_road_mark_coord(road.road_direction, 0, road.mark_direction, 0)
-    local t0x1, t0y1, t1x1, t1y1 = get_road_mark_coord(road.road_direction, 1, road.mark_direction, 1)
-    local t0x2, t0y2, t1x2, t1y2 = get_road_mark_coord(road.road_direction, 2, road.mark_direction, 2)
-    local t0x3, t0y3, t1x3, t1y3 = get_road_mark_coord(road.road_direction, 3, road.mark_direction, 3)
-    local x, y = road.x, road.y
-    local ox, oz = x * unit, y * unit
-    local nx, nz = ox + unit, oz + unit
-    local vb = {
-        packfmt:pack(ox, 0, oz, t0x0, t0y0, t1x0, t1y0, road.road_type, road.road_shape, road.mark_type, road.mark_shape),
-        packfmt:pack(ox, 0, nz, t0x1, t0y1, t1x1, t1y1, road.road_type, road.road_shape, road.mark_type, road.mark_shape),
-        packfmt:pack(nx, 0, nz, t0x2, t0y2, t1x2, t1y2, road.road_type, road.road_shape, road.mark_type, road.mark_shape),
-        packfmt:pack(nx, 0, oz, t0x3, t0y3, t1x3, t1y3, road.road_type, road.road_shape, road.mark_type, road.mark_shape),        
-    }
-    local ib_handle = build_ib(1)
-    local aabb_min, aabb_max = math3d.vector(ox, 0, oz), math3d.vector(nx, 0, nz)
-    local aabb = math3d.aabb(aabb_min, aabb_max)
-    return to_mesh_buffer(vb, ib_handle, aabb)
+    return road_info
 end
 
 
@@ -178,66 +123,67 @@ local function create_road(road)
             road.mark_shape = ps
         end
     end
-    local road_mesh = build_mesh(road)
-    local eid = ecs.create_entity{
-        policy = {
-            "ant.scene|scene_object",
-            "ant.render|simplerender",
-        },
-        data = {
-            scene = {
-                t = math3d.vector(-offset * unit, 0, -offset * unit)
-            },
-            simplemesh  = road_mesh,
-            material    = road_material,
-            visible_state = "main_view",
-        },
-    }
-    return eid
+    local road_info = get_road_info(road)
+    return road_info
 end
 
-function iroad.create_roadnet_entity(create_list)
+function init_system:init_world()
+    road_material = "/pkg/mod.road/assets/road.material"
+end
+
+local function create_road_instance_info(create_list)
+    local indirect_info = {}
     for ii = 1, #create_list do
         local cl = create_list[ii]
         local x, y = cl.x + offset, cl.y + offset
         local layers = cl.layers
-        local idx = calc_tf_idx(x, y)
         local road_layer, mark_layer
-        if layers and layers.road then
-            road_layer = parse_terrain_type_dir(layers, "road")
-        end
-        if layers and layers.mark then
-            mark_layer = parse_terrain_type_dir(layers, "mark")
-        end
-        road_table[idx] = {
+        if layers and layers.road then road_layer = parse_terrain_type_dir(layers, "road") end
+        if layers and layers.mark then mark_layer = parse_terrain_type_dir(layers, "mark") end
+        local road = {
             layers = {
                 [1] = road_layer,
                 [2] = mark_layer
             },
-            x = x,
-            y = y
+            x = x, y = y
         }
-        local eid = create_road(road_table[idx])
-        road_table[idx].eid = eid
+        indirect_info[#indirect_info+1] = create_road(road)
     end
+    return indirect_info
 end
 
-function iroad.delete_roadnet_entity(delete_list)
-    for ii = 1, #delete_list do
-        local dl = delete_list[ii]
-        local x, y = dl.x + offset, dl.y + offset
-        local idx = calc_tf_idx(x, y)
-        if road_table[idx] and road_table[idx].eid then
-            w:remove(road_table[idx].eid)
-            road_table[idx] = nil
-        end
-    end    
+local function to_mesh_buffer(vb, ib_handle)
+    local vbbin = table.concat(vb, "")
+    local numv = #vbbin // layout.stride
+    local numi = (numv // NUM_QUAD_VERTICES) * 6 --6 for one quad 2 triangles and 1 triangle for 3 indices
+
+    return {
+        bounding = nil,
+        vb = {
+            start = 0,
+            num = numv,
+            handle = bgfx.create_vertex_buffer(bgfx.memory_buffer(vbbin), layout.handle),
+        },
+        ib = {
+            start = 0,
+            num = numi,
+            handle = ib_handle,
+        }
+    }
 end
 
-
-function iroad.update_roadnet_entity(update_list)
-    iroad.delete_roadnet_entity(update_list)
-    iroad.create_roadnet_entity(update_list)
+local function build_mesh()
+    local packfmt<const> = "fffffff"
+    local ox, oz = 0, 0
+    local nx, nz = unit, unit
+    local vb = {
+        packfmt:pack(ox, 0, oz, 0, 1, 0, 1),
+        packfmt:pack(ox, 0, nz, 0, 0, 0, 0),
+        packfmt:pack(nx, 0, nz, 1, 0, 1, 0),
+        packfmt:pack(nx, 0, oz, 1, 1, 1, 1),        
+    }
+    local ib_handle = build_ib(1)
+    return to_mesh_buffer(vb, ib_handle)
 end
 
 function iroad.set_args(ww, hh, off, un)
@@ -246,6 +192,34 @@ function iroad.set_args(ww, hh, off, un)
     if off then offset = off end
     if un then unit = un end
 end
-function init_system:init_world()
-    road_material = "/pkg/mod.road/assets/road.material"
+
+function iroad.update_roadnet_group(gid, update_list)
+    local indirect_info = create_road_instance_info(update_list)
+    if #indirect_info == 0 then
+        iindirect.remove_old_entity(gid)
+        return
+    end
+    local indirect_update = {
+        group = gid,
+        indirect_info = indirect_info
+    }
+    local road_mesh = build_mesh()
+    local g = ecs.group(gid)
+    ecs.group(gid):enable "view_visible"
+    ecs.group(gid):enable "scene_update"
+    g:create_entity{
+        policy = {
+            "ant.scene|scene_object",
+            "ant.render|simplerender",
+            "ant.render|indirect_update"
+        },
+        data = {
+            scene = {},
+            simplemesh  = road_mesh,
+            material    = road_material,
+            visible_state = "main_view",
+            indirect_update = indirect_update,
+            road = true,
+        },
+    }
 end

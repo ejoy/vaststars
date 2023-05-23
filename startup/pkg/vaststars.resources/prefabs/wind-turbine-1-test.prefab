@@ -26,7 +26,7 @@ data:
   visible_state: main_view|selectable|cast_shadow
   outline_create: 
     render_layer: "background"
-    outline_scale: 0.1
+    outline_scale: 1
     outline_color: {0.5, 0.5, 0, 1}
     outline_mesh: /pkg/vaststars.resources/glb/wind-turbine-1.glb|meshes/Plane.003_P1.meshbin
 policy:

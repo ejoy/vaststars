@@ -8,7 +8,5 @@ system "init_system"
 
 interface "iroad"
     .implement "road.lua"
-    .method "create_roadnet_entity"
-    .method "update_roadnet_entity"
-    .method "delete_roadnet_entity"
+    .method "update_roadnet_group"
     .method "set_args"

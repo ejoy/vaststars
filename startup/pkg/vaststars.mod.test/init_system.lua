@@ -36,7 +36,9 @@ function S.init()
     world:create_object(p)
 end
 
-
+local create_list = {}
+local update_list = {}
+local delete_list = {}
 function S.init_world()
     local mq = w:first("main_queue camera_ref:in")
     local eyepos = math3d.vector(0, 100, -50)
@@ -46,21 +48,48 @@ function S.init_world()
     iom.set_direction(camera_ref, dir)
 
     iterrain.gen_terrain_field(256, 256, 128)
-
+--[[     local x, y = 0, 0
+    for _, shape in ipairs({"I", "L", "T", "U", "X", "O"}) do
+        y = y + 2
+        x = 0
+        for rtype = 1, 2 do
+            for _, dir in ipairs({"N", "E", "S", "W"}) do
+                x = x + 2
+                
+                create_list[#create_list+1] = {
+                    x = x, y = y,
+                    layers = {
+                        road = {type  = rtype, shape = shape, dir = dir}
+                    }
+                }
+                update_list[#update_list+1] = {
+                    x = x, y = y,
+                    layers = {
+                        mark = {type  = 1, shape = shape, dir = dir}
+                    }
+                }
+                delete_list[#delete_list+1] = {
+                    x = x, y = y,
+                }
+            end
+        end
+    end
+    iroad.update_roadnet_group(1000, create_list) ]]
+ 
      local density = 0.5
     local width, height, offset, UNIT = 256, 256, 128, 10
     local scale_table = {
         big = 1.0,
         middle = 0.6,
-        small = 0.2
+        small = 0.01
     }
-    local stone_area = {
-        {x = 5, z = 5},
+--[[     local stone_area = {
+        {x = 0, z = 0},
     }
      local open_area = {
-        --{x = -128, z = 128, w = 256, h = 256}
-    } 
-    istonemountain.create_sm_entity(density, width, height, offset, UNIT, scale_table, stone_area, open_area) 
+        {x = -128, z = 128, w = 256, h = 256}
+    }  ]]
+    istonemountain.create_sm_entity(density, width, height, offset, UNIT, scale_table, {}, {})   
     --create_mark()
 
 --[[      printer_eid = ecs.create_entity {
@@ -99,15 +128,13 @@ end
 
 local kb_mb = world:sub{"keyboard"}
 
-local create_list = {}
-local update_list = {}
-local delete_list = {}
 local tf_table = {}
+local remove_id
 function S:data_changed()
     for _, key, press in kb_mb:unpack() do
         if key == "J" and press == 0 then
-    
-             local x, y = 0, 0
+            create_list = {}
+             local x, y = -5, -5
             for _, shape in ipairs({"I", "L", "T", "U", "X", "O"}) do
                 y = y + 2
                 x = 0
@@ -133,6 +160,7 @@ function S:data_changed()
                     end
                 end
             end
+            iroad.update_roadnet_group(1000, create_list)
 --[[             create_list[#create_list+1] = {
                 x = 1, y = 1,
                 layers =
@@ -151,42 +179,26 @@ function S:data_changed()
                     }
                 }
             } ]]
-            iroad.create_roadnet_entity(create_list)
         elseif key == "K" and press == 0 then
-            iroad.update_roadnet_entity(update_list)
+
+            iroad.update_roadnet_group(1000, {})
         elseif key == "L" and press == 0 then
-            local judge_area = {x = -5, z = 5, w = 15, h = 15}
-            local rect_table = istonemountain.get_sm_rect_intersect(judge_area)
-            
-            local color_table = {}
-            for i = 1, #rect_table do
-                color_table[#color_table+1] = {1, 0, 0, 0.5}
-            end
-             local alpha_table = {
-            } 
-            itp.create_translucent_plane(rect_table, color_table, "translucent", alpha_table)  
+
+            local rect = {x = 5, z = 5, w = 5, h = 5}
+            local color = {1, 1, 0, 0.5}
+            remove_id = itp.create_translucent_plane(rect, color, "translucent")
+
+--[[              itp.remove_translucent_plane(remove_id)
+            remove_id = itp.create_translucent_plane(rect, color, "translucent")   ]]
         elseif key == "N" and press == 0 then
-            local judge_area = {x = -5, z = 5, w = 15, h = 15}
-            local rect_table = istonemountain.get_sm_rect_inside(judge_area)
-            
-            local color_table = {}
-            for i = 1, #rect_table do
-                color_table[#color_table+1] = {1, 0, 0, 0.5}
-            end
-             local alpha_table = {
-            } 
-            itp.create_translucent_plane(rect_table, color_table, "translucent", alpha_table)
+            local rect = {x = 4, z = 4, w = 6, h = 6}
+            local color = {1, 0, 0, 0.5}
+            remove_id = itp.create_translucent_plane(rect, color, "translucent")  
         elseif key == "M" and press == 0 then
-            local rect_table = {
-                {x = -5, z = 5, w = 15, h = 15},
-            }
-            local color_table = {
-                {1, 1, 0, 0.5},
-            }
-             local alpha_table = {
-                --[1] = {min = 0.2, max = 0.8, freq = 1.0},
-            } 
-            itp.create_translucent_plane(rect_table, color_table, "translucent", alpha_table)
+            local rect = {x = 5, z = 5, w = 5, h = 5}
+            local color = {1, 1, 0, 0.5}
+            itp.remove_translucent_plane(remove_id)
+            remove_id = itp.create_translucent_plane(rect, color, "translucent")
         end
     end
 end

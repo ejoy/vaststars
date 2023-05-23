@@ -3,6 +3,8 @@ fx:
   vs: /pkg/ant.resources/shaders/pbr/vs_pbr.sc
   setting:
     ALPHAMODE_OPAQUE: 1
+    STONE_MOUNTAIN: 1
+    INDIRECT_BUFFER: 1
     lighting: on
     shadow_cast: on
     shadow_receive: on

@@ -38,7 +38,9 @@ local mesh_to_sm_table = {
     [4] = {}
 }
 local sm_bms_to_mesh_table = {}
-
+local sm_group = {
+    [1] = 40001, [2] = 40002, [3] = 40003, [4] = 40004
+}
 -- queue_idx to section_idx
 local terrain_section_cull_table = {}
 
@@ -741,41 +743,61 @@ local function set_sm_grid(rect)
 end
 
 local function create_sm_entity()
+    local indirect_info_table  = {
+        {}, {}, {}, {}
+    }
     for sm_idx, _ in pairs(sm_table)do
         for size_idx = 1, 3 do
             local stone = sm_table[sm_idx][size_idx]
             if stone and stone.s  then
                 local mesh_idx = sm_bms_to_mesh_table[sm_idx][size_idx]
-                local mesh_address = mesh_table[mesh_idx]
-                local eid = ecs.create_entity {
-                    policy = {
-                        "ant.render|render",
-                     },
-                    data = {
-                        scene         = {},
-                        material      ="/pkg/mod.stonemountain/assets/pbr_sm.material", 
-                        visible_state = "main_view|cast_shadow|selectable",
-                        mesh          = mesh_address,
-                        on_ready = function (e)
-                            local scaley = stone.s
-                            if scaley > 1 then scaley = scaley * 0.5 end
-                            iom.set_position(e, math3d.vector(stone.t.x, 0, stone.t.z))
-                            iom.set_scale(e, math3d.vector(stone.s, scaley, stone.s))
-                            local cosh = stone.r
-                            local sinh = (1 - cosh * cosh) ^ 0.5
-                            local rot_matrix = math3d.matrix(cosh, 0, -sinh, 0, 0, 1, 0, 0, sinh, 0, cosh, 0, 0, 0, 0 ,1)
-                            iom.set_rotation(e, math3d.torotation(rot_matrix))
-                            local worldmat = math3d.matrix(e.scene)
-                            local mesh_aabb_value = mesh_aabb_table[mesh_idx]
-                            local rect = set_sm_rect(mesh_aabb_value, worldmat)
-                            set_sm_grid(rect)
-                        end
-                    },
+                --local mesh_address = mesh_table[mesh_idx]
+                indirect_info_table[mesh_idx][#indirect_info_table[mesh_idx]+1] = {
+                    {stone.s, stone.t.x, stone.t.z, stone.r},
+                    {0, 0, 0, 0},
+                    {0, 0, 0, 0}
                 }
-                if eid then stone.eid = eid end
-
+                local scale = stone.s;
+                local scale_y = stone.s;
+                local tx = stone.t.x;
+                local tz = stone.t.z;
+                local cosy = stone.r;
+                local scosy = cosy * scale;
+                local ssiny = (1 - scosy * scosy) ^ 0.5 * scale;
+                if scale_y > 1 then
+                    scale_y = scale_y * 0.5
+                end
+                local world_mat = math3d.matrix(scosy, 0, -ssiny, tx, 0, scale_y, 0, 0, ssiny, 0, scosy, tz, 0, 0, 0 ,1)
+                local mesh_aabb_value = mesh_aabb_table[mesh_idx]
+                local rect = set_sm_rect(mesh_aabb_value, world_mat)
+                set_sm_grid(rect)
             end
         end
+    end
+    for mesh_idx = 1, 4 do
+        local mesh_address = mesh_table[mesh_idx]
+        local gid = sm_group[mesh_idx]
+        local g = ecs.group(gid)
+        ecs.group(gid):enable "view_visible"
+        ecs.group(gid):enable "scene_update"
+        g:create_entity {
+            policy = {
+                "ant.render|render",
+                "ant.render|indirect_update"
+             },
+            data = {
+                scene         = {},
+                material      ="/pkg/mod.stonemountain/assets/pbr_sm.material", 
+                visible_state = "main_view|cast_shadow|selectable",
+                mesh          = mesh_address,
+                indirect_update = {
+                    group = sm_group[mesh_idx],
+                    indirect_info = indirect_info_table[mesh_idx]
+                },
+                render_layer = "foreground",
+                stonemountain = true,
+            },
+        }
     end
 end
 
@@ -853,4 +875,6 @@ function sm_sys:stone_mountain()
     end
 end
 
-
+function ism.get_sm_group(mesh_idx)
+    return sm_group[mesh_idx]
+end

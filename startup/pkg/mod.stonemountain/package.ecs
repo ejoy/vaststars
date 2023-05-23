@@ -12,6 +12,7 @@ interface "istonemountain"
     .method "get_sm_rect_intersect"
     .method "get_sm_grid"
     .method "exist_sm"
+    .method "get_sm_group"
 
 component "stonemountain"
 component "sm_info".type "lua"

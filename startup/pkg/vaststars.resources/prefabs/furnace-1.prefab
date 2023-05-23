@@ -24,9 +24,15 @@ data:
   name: Cylinder.001
   skinning: true
   visible_state: main_view|selectable|cast_shadow
+  outline_create: 
+    render_layer: "background"
+    outline_scale: 0.03
+    outline_color: {0.5, 0.5, 0, 1}
+    outline_mesh: /pkg/vaststars.resources/glb/furnace-1.glb|meshes/Cylinder.001_P1.meshbin
 policy:
   ant.general|name
   ant.render|skinrender
+  ant.render|outline_create
 ---
 data:
   anim_ctrl: {}
