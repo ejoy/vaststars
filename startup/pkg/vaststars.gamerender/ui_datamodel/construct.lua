@@ -237,8 +237,7 @@ function M:stage_ui_update(datamodel)
         __clean(datamodel)
         __switch_status("default", function()
             __clean(datamodel)
-            gameplay_core.world_update = false
-            gameplay_core.build()
+            igameplay.build_world()
         end)
     end
 
@@ -486,7 +485,7 @@ function M:stage_camera_usage(datamodel)
 
                 local p = icamera_controller.world_to_screen(object.srt.t)
                 local ui_x, ui_y = iui.convert_coord(math3d.index(p, 1), math3d.index(p, 2))
-                iui.open({"building_md_arc_menu.rml"}, object.id, object.srt.t, ui_x, ui_y)
+                iui.open({"building_md_arc_menu.rml"}, object.id, {math3d.index(object.srt.t, 1, 2, 3)}, ui_x, ui_y)
             end
             ::continue1::
         else
@@ -521,7 +520,7 @@ function M:stage_camera_usage(datamodel)
         end
 
         igameplay.remove_entity(object.gameplay_eid)
-        gameplay_core.build()
+        igameplay.build_world()
 
         if typeobject.power_network_link or typeobject.power_supply_distance then
             ipower:build_power_network(gw)

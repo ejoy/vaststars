@@ -6,7 +6,6 @@ local icamera_controller = ecs.interface "icamera_controller"
 local create_builder = ecs.require "editor.builder"
 local ieditor = ecs.require "editor.editor"
 local objects = require "objects"
-local DEFAULT_DIR <const> = 'N'
 local irecipe = require "gameplay.interface.recipe"
 local iobject = ecs.require "object"
 local ipower = ecs.require "power"
@@ -27,6 +26,7 @@ local SPRITE_COLOR = import_package "vaststars.prototype".load("sprite_color")
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 local ientity = require "gameplay.interface.entity"
 local create_pickup_icon = ecs.require "pickup_icon".create
+local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -131,7 +131,8 @@ local function __new_entity(self, datamodel, typeobject)
         x = x,
         y = y,
         srt = {
-            t = building_positon,
+            t = math3d.ref(math3d.vector(building_positon)),
+            r = ROTATORS[dir],
         },
         fluid_name = fluid_name,
         group_id = 0,
@@ -204,11 +205,11 @@ end
 local function __align(object)
     assert(object)
     local typeobject = iprototype.queryByName(object.prototype_name)
-    local coord, srt = coord_system:align(icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, object.dir))
+    local coord, position = coord_system:align(icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, object.dir))
     if not coord then
         return object
     end
-    object.srt.t = srt
+    object.srt.t = math3d.ref(math3d.vector(position))
     return object, coord[1], coord[2]
 end
 
@@ -323,12 +324,14 @@ local function confirm(self, datamodel)
     e.building.y = self.pickup_object.y
     ientity:set_direction(gameplay_core.get_world(), e, self.pickup_object.dir)
     e.building_changed = true
-    gameplay_core.build()
 
     iobject.coord(object, self.pickup_object.x, self.pickup_object.y, coord_system)
     object.dir = self.pickup_object.dir
+    object.srt.r = ROTATORS[object.dir]
     objects:set(object, "CONSTRUCTED")
     objects:coord_update(object)
+
+    igameplay.build_world()
 
     local building = global.buildings[object.id]
     if building then
@@ -424,6 +427,7 @@ local function rotate_pickup_object(self, datamodel, dir, delta_vec)
     ieditor:revert_changes({"TEMPORARY"})
     dir = dir or iprototype.rotate_dir_times(pickup_object.dir, -1)
     pickup_object.dir = dir
+    pickup_object.srt.r = ROTATORS[dir]
 
     local x, y
     self.pickup_object, x, y = __align(self.pickup_object)

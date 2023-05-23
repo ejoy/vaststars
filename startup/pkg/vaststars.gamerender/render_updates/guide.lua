@@ -8,7 +8,7 @@ local iguide = require "gameplay.interface.guide"
 local guide_sys = ecs.system "guide_system"
 local gameplay_core = require "gameplay.core"
 
-function guide_sys:update_world()
+function guide_sys:gameworld_update()
     local world = gameplay_core.get_world()
     local science = global.science
     if not iguide.is_running() or iguide.is_in_guide() or science.current_tech then

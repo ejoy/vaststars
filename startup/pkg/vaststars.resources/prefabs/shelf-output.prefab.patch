@@ -8,7 +8,7 @@ data:
     joint_name: None
   tag:
     slot2
-mount: 0
+mount: 1
 policy:
   ant.general|name
   ant.general|tag

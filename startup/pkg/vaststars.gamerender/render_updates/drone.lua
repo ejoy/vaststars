@@ -11,6 +11,7 @@ local entity_remove = world:sub {"gameplay", "remove_entity"}
 local imotion = ecs.require "imotion"
 local drone_sys = ecs.system "drone_system"
 local gameplay_core = require "gameplay.core"
+local global = require "global"
 
 -- enum defined in c 
 local STATUS_HAS_ERROR = 1
@@ -35,7 +36,7 @@ local function create_drone(homepos)
             if self.to_home then return end
             self:flyto(flyid, fly_height, from, to, true, 1.0)
             self.to_home = true
-            -- print("----gohome----", dst[1], dst[2], dst[3])
+            -- print("----gohome----", math3d.index(to, 1, 2, 3))
         end,
         flyto = function (self, flyid, height, from, to, home, duration)
             self.flyid = flyid
@@ -44,7 +45,7 @@ local function create_drone(homepos)
                 local xzpos = iom.get_position(exz)
                 local ey <close> = w:entity(self.motion_y)
                 local xpos = iom.get_position(ey)
-                from = {math3d.index(xzpos, 1), math3d.index(xpos, 2), math3d.index(xzpos, 3)}
+                from = math3d.vector {math3d.index(xzpos, 1), math3d.index(xpos, 2), math3d.index(xzpos, 3)}
                 self.to_home = false
                 ims.set_duration(exz, -1)
                 ims.set_duration(ey, -1)
@@ -53,17 +54,17 @@ local function create_drone(homepos)
             local exz <close> = w:entity(self.motion_xz)
             ims.set_tween(exz, ltween.type("Sine"), ltween.type("Sine"))
             ims.set_keyframes(exz,
-                {t = math3d.vector({from[1], 0, from[3]}), step = 0.0},
-                {t = math3d.vector({to[1], 0, to[3]}),  step = 1.0}
+                {t = math3d.set_index(from, 2, 0), step = 0.0},
+                {t = math3d.set_index(to, 2, 0),  step = 1.0}
             )
             local ey <close> = w:entity(self.motion_y)
             ims.set_tween(ey, ltween.type("Quartic"), ltween.type("Quartic"))
             -- print("----height----", home, from[2], height, to[2])
             ims.set_keyframes(ey,
-                {t = math3d.vector({0, from[2], 0}), step = 0.0},
+                {t = math3d.vector({0, math3d.index(from, 2), 0}), step = 0.0},
                 {t = math3d.vector({0, height, 0}), step = 0.1},
                 {t = math3d.vector({0, height, 0}), step = 0.9},
-                {t = math3d.vector({0, to[2], 0}),  step = 1.0}
+                {t = math3d.vector({0, math3d.index(to, 2), 0}),  step = 1.0}
             )
             if home then
                 self.duration = duration
@@ -133,9 +134,9 @@ local function create_drone(homepos)
         end
     }
     task.current_pos = homepos
-    local motion_xz = imotion.create_motion_object(nil, nil, math3d.vector(homepos[1], 0, homepos[3]))
+    local motion_xz = imotion.create_motion_object(nil, nil, math3d.set_index(homepos, 2, 0))
     task.motion_xz = motion_xz
-    local motion_y = imotion.create_motion_object(nil, nil, math3d.vector(0, homepos[2], 0), motion_xz)
+    local motion_y = imotion.create_motion_object(nil, nil, math3d.vector(0, math3d.index(homepos, 2), 0), motion_xz)
     task.motion_y = motion_y
     task.prefab = imotion.sampler_group:create_instance("/pkg/vaststars.resources/prefabs/drone.prefab", motion_y)
     return task
@@ -162,7 +163,7 @@ local function create_item(item, parent)
 end
 
 local function get_home_pos(pos)
-    return {pos[1] + 6, pos[2] + 8, pos[3] - 6}
+    return math3d.add(math3d.set_index(pos, 2, 0), {6, 8, -6})
 end
 
 local function remove_drone(drones)
@@ -181,7 +182,19 @@ local function remove_drone(drones)
     end
 end
 
-function drone_sys:update_world()
+local function get_shelf_position(object_id, idx)
+    local building = global.buildings[object_id]
+    if not building then
+        return
+    end
+    local io_shelves = building.io_shelves
+    if not io_shelves then
+        return
+    end
+    return io_shelves:get_heap_position(idx+1)
+end
+
+function drone_sys:gameworld_update()
     local gameworld = gameplay_core.get_world()
     -- for _, _, geid in entity_remove:unpack() do
     -- end
@@ -218,7 +231,7 @@ function drone_sys:update_world()
                         --     current.item = create_item(drone.item, current.prefab.tag["*"][1])
                         -- end
                         -- TODO: update src item count
-                        local srcobj = get_object(drone.prev)
+                        local srcobj = assert(get_object(drone.prev))
                         if srcobj then
                             current:init(srcobj.srt.t)
                         end
@@ -227,14 +240,16 @@ function drone_sys:update_world()
                         else
                             same_dest_offset[flyid] = same_dest_offset[flyid] - (drone_offset / 2)
                         end
-                        local from = srcobj and srcobj.srt.t or {0, 0, 0}
-                        local to = destobj.srt.t
+
+                        local from = get_shelf_position(srcobj.id, (drone.prev >> 7) & 0xF) or math3d.set_index(srcobj.srt.t, 2, item_height)
+                        local to = get_shelf_position(destobj.id, (drone.next >> 7) & 0xF) or math3d.set_index(destobj.srt.t, 2, item_height)
+
                         -- status : go_home
                         -- print("berth1:", get_berth(drone.prev), get_berth(drone.next))
                         if get_berth(drone.next) == BERTH_HOME then
-                            current:gohome(flyid, {from[1], item_height, from[3]}, get_home_pos(to))
+                            current:gohome(flyid, from, get_home_pos(to))
                         else
-                            drone_task[#drone_task + 1] = {flyid, current, {from[1], item_height, from[3]}, to}
+                            drone_task[#drone_task + 1] = {flyid, current, from, to}
                         end
                     end
                 elseif get_berth(drone.prev) == BERTH_HOME and not current.to_home then
@@ -243,7 +258,7 @@ function drone_sys:update_world()
                     assert(obj)
                     local dst = obj.srt.t
                     -- print("berth2:", get_berth(drone.prev), get_berth(drone.next))
-                    current:gohome(flyid, {dst[1], item_height, dst[3]}, get_home_pos(dst))
+                    current:gohome(flyid, math3d.vector(dst[1], item_height, dst[3]), get_home_pos(dst))
                 end
             else
                 current:update(drone.maxprogress > 0 and (drone.maxprogress - drone.progress) / drone.maxprogress or 0)
@@ -253,8 +268,8 @@ function drone_sys:update_world()
     end
     for _, task in ipairs(drone_task) do
         local flyid = task[1]
-        local to = task[4]
-        task[2]:flyto(flyid, fly_height, task[3], {to[1] + same_dest_offset[flyid], item_height, to[3]}, false)
+        local to = math3d.add(task[4], {same_dest_offset[flyid], 0, 0})
+        task[2]:flyto(flyid, fly_height, task[3], to, false)
         same_dest_offset[flyid] = same_dest_offset[flyid] + drone_offset
     end
 end

@@ -54,7 +54,7 @@ local function __create_building_base(object_id, typeobject, building_srt, dir)
     }
 end
 
-function building_sys:update_world()
+function building_sys:gameworld_update()
     local gameplay_world = gameplay_core.get_world()
     for e in gameplay_world.ecs:select "building_changed:in building:in eid:in" do
         -- object may not have been fully created yet

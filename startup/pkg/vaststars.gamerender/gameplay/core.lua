@@ -22,11 +22,6 @@ function m.extend(...)
     return world.ecs:extend(...)
 end
 
-function m.build(...)
-    m.world_update = true
-    return world:build()
-end
-
 function m.update()
     if m.world_update then
         for _ = 1, m.multiple do

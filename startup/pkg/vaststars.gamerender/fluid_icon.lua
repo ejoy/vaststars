@@ -7,9 +7,12 @@ local iterrain = ecs.require "terrain"
 local icanvas = ecs.require "engine.canvas"
 local datalist = require "datalist"
 local fs = require "filesystem"
-local fluid_icon_canvas_cfg = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/textures/fluid_icon_canvas.cfg")):read "a")
-local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local iprototype = require "gameplay.interface.prototype"
+
+local FLUID_ICON_CANVAS_CFG <const> = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/textures/fluid_icon_canvas.cfg")):read "a")
+local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
+local BG_MATERIAL_PATH = "/pkg/vaststars.resources/materials/fluid_icon_bg.material"
+local ICON_MATERIAL_PATH = "/pkg/vaststars.resources/materials/fluid_icon_canvas.material"
 
 local function __get_texture_size(materialpath)
     local res = assetmgr.resource(materialpath)
@@ -30,14 +33,13 @@ local function __get_draw_rect(x, y, icon_w, icon_h, multiple)
     return draw_x, draw_y, draw_w, draw_h
 end
 
-local function __create_bg(id, x, y)
-    local material_path = "/pkg/vaststars.resources/materials/fluid_icon_bg.material"
-    local icon_w, icon_h = __get_texture_size(material_path)
+local function __draw_bg(id, x, y, multiple)
+    local icon_w, icon_h = __get_texture_size(BG_MATERIAL_PATH)
     local texture_x, texture_y, texture_w, texture_h = 0, 0, icon_w, icon_h
-    local draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x, y, icon_w, icon_h, 1.5)
+    local draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x, y, icon_w, icon_h, multiple)
     icanvas.add_item(icanvas.types().ICON,
         id,
-        material_path,
+        BG_MATERIAL_PATH,
         RENDER_LAYER.ICON,
         {
             texture = {
@@ -53,20 +55,19 @@ local function __create_bg(id, x, y)
     )
 end
 
-local function __create_icon(id, x, y, fluid)
+local function __draw_icon(id, x, y, fluid, multiple)
     local fluid_typeobject = iprototype.queryById(fluid)
-    local cfg = fluid_icon_canvas_cfg[fluid_typeobject.icon]
+    local cfg = FLUID_ICON_CANVAS_CFG[fluid_typeobject.icon]
     if not cfg then
         assert(cfg, ("can not found `%s`"):format(fluid_typeobject.icon))
         return
     end
 
-    local material_path = "/pkg/vaststars.resources/materials/fluid_icon_canvas.material"
     local texture_x, texture_y, texture_w, texture_h = cfg.x, cfg.y, cfg.width, cfg.height
-    local draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x, y, cfg.width, cfg.height, 1.5)
+    local draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x, y, cfg.width, cfg.height, multiple)
     icanvas.add_item(icanvas.types().ICON,
         id,
-        material_path,
+        ICON_MATERIAL_PATH,
         RENDER_LAYER.ICON_CONTENT,
         {
             texture = {
@@ -82,8 +83,9 @@ local function __create_icon(id, x, y, fluid)
     )
 end
 
-local function create(id, x, y, fluid)
-    __create_bg(id, x, y)
-    __create_icon(id, x, y, fluid)
+return function (id, x, y, fluid, multiple)
+    multiple = multiple or 1
+
+    __draw_bg(id, x, y, multiple)
+    __draw_icon(id, x, y, fluid, multiple)
 end
-return create

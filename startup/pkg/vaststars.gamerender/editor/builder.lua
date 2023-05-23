@@ -99,7 +99,7 @@ local function complete(self, object_id)
 
     objects:remove(object_id, "CONFIRM")
     objects:set(object, "CONSTRUCTED")
-    gameplay_core.build()
+    igameplay.build_world()
 
     -- TODO: duplicate code
     local gw = gameplay_core.get_world()

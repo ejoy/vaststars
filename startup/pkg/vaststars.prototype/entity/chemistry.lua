@@ -134,6 +134,7 @@ prototype "电解厂I" {
     power = "1MW",
     drain = "30kW",
     rotate_on_build = true,
+    io_shelf = false,
     priority = "secondary",
     craft_category = {"电解"},
     maxslot = "8",

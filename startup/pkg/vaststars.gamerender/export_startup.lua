@@ -73,11 +73,7 @@ end
 funcs["chimney"] = function (export_data, e)
     gameplay_core.extend(e, "chimney?in")
     if e.chimney.recipe ~= 0 then
-        local typeobject = iprototype.queryById(e.chimney.recipe)
-        export_data.recipe = typeobject.name
-        export_data.fluid_name = irecipe.get_init_fluids(typeobject)
-    else
-        export_data.fluid_name = ""
+        export_data.recipe = iprototype.queryById(e.chimney.recipe).name
     end
     return export_data
 end
@@ -148,13 +144,16 @@ return function()
     writefile(([[
 local entities = %s
 local road = %s
+local mineral = %s
 
 return {
     entities = entities,
     road = road,
+    mineral = mineral,
 }
     ]]):format(
         inspect(r),
-        inspect(gameplay_core.get_world():roadnet_get_map())
+        inspect(gameplay_core.get_world():roadnet_get_map()),
+        inspect(import_package "vaststars.prototype"("map"))
     ))
 end

@@ -153,7 +153,7 @@ local function create_icon(object_id, e)
     }
 end
 
-function drone_depot_sys:update_world()
+function drone_depot_sys:gameworld_update()
     local world = gameplay_core.get_world()
     for e in world.ecs:select "hub:in building:in eid:in" do
         -- object may not have been fully created yet

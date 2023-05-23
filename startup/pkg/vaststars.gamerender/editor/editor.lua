@@ -5,6 +5,7 @@ local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
 local iobject = ecs.require "object"
 local iflow_connector = require "gameplay.interface.flow_connector"
+local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 
 --
 local M = {}
@@ -23,6 +24,7 @@ function M:revert_changes(revert_cache_names)
         if old_object then
             object.prototype_name = old_object.prototype_name
             object.dir = old_object.dir
+            object.srt.r = ROTATORS[object.dir]
             object.fluid_name = old_object.fluid_name
         else
             iobject.remove(object)

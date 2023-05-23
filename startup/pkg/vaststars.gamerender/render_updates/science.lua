@@ -8,7 +8,7 @@ local iui = ecs.import.interface "vaststars.gamerender|iui"
 local gameplay_core = require "gameplay.core"
 local science_sys = ecs.system "science_system"
 
-function science_sys:update_world()
+function science_sys:gameworld_update()
     local gameplay_world = gameplay_core.get_world()
     local science = global.science
     if science.current_tech then

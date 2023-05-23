@@ -389,8 +389,6 @@ function M:stage_ui_update(datamodel, object_id)
                 end
             end
 
-            local pt = icamera_controller.world_to_screen(object.srt.t)
-            -- iui.send("message_pop.rml", "item", {items = message, left = math.floor(math3d.index(pt, 1)), top = math.floor(math3d.index(pt, 2))})
             iui.close("detail_panel.rml")
             world:pub {"rmlui_message_close", "building_arc_menu.rml"}
 
@@ -419,7 +417,7 @@ function M:stage_ui_update(datamodel, object_id)
             assert(false)
         end
 
-        gameplay_core.build()
+        igameplay.build_world()
         ::continue::
     end
 
@@ -485,7 +483,7 @@ function M:stage_ui_update(datamodel, object_id)
             assert(false)
         end
 
-        gameplay_core.build()
+        igameplay.build_world()
         ::continue::
     end
 

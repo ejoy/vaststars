@@ -68,6 +68,6 @@ local daynight_update; do
     end
 end
 
-function daynight_sys:update_world()
+function daynight_sys:gameworld_update()
     daynight_update(gameplay_core.get_world())
 end

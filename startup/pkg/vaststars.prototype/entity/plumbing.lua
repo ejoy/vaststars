@@ -173,6 +173,7 @@ prototype "空气过滤器I" {
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "2x2",
     rotate_on_build = true,
+    io_shelf = false,
     power = "50kW",
     drain = "1.5kW",
     priority = "secondary",

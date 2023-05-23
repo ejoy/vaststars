@@ -9,6 +9,7 @@ local debugger = require "debugger"
 local CUSTOM_ARCHIVING <const> = require "debugger".custom_archiving
 local is_roadnet_only = ecs.require "editor.endpoint".is_roadnet_only
 local iprototype_cache = require "gameplay.prototype_cache.init"
+local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 
 local archival_base_dir
 if CUSTOM_ARCHIVING then
@@ -28,6 +29,7 @@ local iui = ecs.import.interface "vaststars.gamerender|iui"
 local PROTOTYPE_VERSION <const> = import_package("vaststars.prototype")("version")
 local global = require "global"
 local create_buildings = require "building_components"
+local mineral_map = import_package "vaststars.prototype"("map")
 
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local irq = ecs.import.interface "ant.render|irenderqueue"
@@ -41,6 +43,13 @@ local ipower = ecs.require "power"
 local ipower_line = ecs.require "power_line"
 local iroadnet = ecs.require "roadnet"
 local MAX_ARCHIVING_COUNT <const> = 9
+
+local DIRECTION = {
+    [0] = 'W',
+    [1] = 'N',
+    [2] = 'E',
+    [3] = 'S',
+}
 
 local function clean()
     -- clean
@@ -93,7 +102,8 @@ local function restore_world()
             x = x,
             y = y,
             srt = {
-                t = coord_system:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)),
+                t = math3d.ref(math3d.vector(coord_system:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)))),
+                r = ROTATORS[dir],
             },
             fluid_name = fluid_name,
         }
@@ -245,6 +255,39 @@ function M:clean()
     clean()
 end
 
+local function __fix_road(map)
+    local res = {}
+    for coord, mask in pairs(map) do
+        local x, y = iprototype.unpackcoord(coord)
+        local flag = is_roadnet_only(mask)
+        for i = 0, 3 do
+            if mask & (1 << i) ~= 0 then
+                local dx, dy = iprototype.move_coord(x, y, DIRECTION[i], 1, 1)
+                if not map[iprototype.packcoord(dx, dy)] then
+                    mask = mask & ~(1 << i)
+                    log.error(("fix road: %d, %d, %d"):format(x, y, i))
+                    if flag then
+                        mask = 0
+                    end
+                else
+                    local neighbor_mask = map[iprototype.packcoord(dx, dy)]
+                    if neighbor_mask & (1 << ((i + 2) % 4)) == 0 then
+                        mask = mask & ~(1 << i)
+                        log.error(("fix road: %d, %d, %d"):format(x, y, i))
+                        if flag then
+                            mask = 0
+                        end
+                    end
+                end
+            end
+        end
+        if mask ~= 0 then
+            res[coord] = mask
+        end
+    end
+    return res
+end
+
 function M:restore(index)
     self:restore_camera_setting()
 
@@ -319,7 +362,10 @@ function M:restore(index)
     end
     iroadnet:init(renderData, true)
     global.roadnet = map
-    gameplay_core.build()
+
+    terrain:reset_mineral(mineral_map)
+
+    igameplay.build_world()
     iroadnet:editor_build()
 
     iscience.update_tech_list(gameplay_core.get_world())
@@ -332,7 +378,7 @@ function M:restore(index)
     return true
 end
 
-function M:restart(mode, startup_lua)
+function M:restart(mode, game_template)
     gameplay_core.restart()
     iprototype_cache.reload()
 
@@ -347,14 +393,14 @@ function M:restart(mode, startup_lua)
         terrain:enable_terrain(coord[1], coord[2])
     end
 
-    startup_lua = startup_lua or "item.startup"
-    local startup_entities = import_package("vaststars.prototype")(startup_lua).entities
+    game_template = game_template or "item.startup"
+    local game_template_entities = import_package("vaststars.prototype")(game_template).entities
 
     --
     clean()
-    local map = import_package("vaststars.prototype")(startup_lua).road
+    local game_template_road = __fix_road(import_package("vaststars.prototype")(game_template).road)
     local renderData = {}
-    for coord, mask in pairs(map) do
+    for coord, mask in pairs(game_template_road) do
         if not is_roadnet_only(mask) then
             local shape, dir = iroadnet_converter.mask_to_shape_dir(mask)
             local x, y = iprototype.unpackcoord(coord)
@@ -362,18 +408,23 @@ function M:restart(mode, startup_lua)
         end
     end
     iroadnet:init(renderData, true)
-    global.roadnet = map
+    global.roadnet = game_template_road
     gameplay_core.get_world():roadnet_reset(global.roadnet)
 
+    local game_template_mineral = import_package("vaststars.prototype")(game_template).mineral
+    terrain:reset_mineral(game_template_mineral or mineral_map)
+
     --
-    for _, e in ipairs(startup_entities) do
+    for _, e in ipairs(game_template_entities) do
         igameplay.create_entity(e)
     end
-    local prepare = import_package("vaststars.prototype")(startup_lua).prepare
+    local prepare = import_package("vaststars.prototype")(game_template).prepare
     if prepare then
         prepare(gameplay_core.get_world())
     end
-    gameplay_core.build()
+
+    restore_world()
+    igameplay.build_world()
     iroadnet:editor_build()
 
     iui.open({"construct.rml"})
@@ -381,7 +432,7 @@ function M:restart(mode, startup_lua)
     if mode then
         gameplay_core.get_storage().game_mode = mode
     end
-    restore_world()
+
 end
 
 function M:get_archival_list()

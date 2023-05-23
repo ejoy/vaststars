@@ -10,6 +10,7 @@ local idetail = ecs.interface "idetail"
 local icamera_controller = ecs.import.interface "vaststars.gamerender|icamera_controller"
 local gameplay_core = require "gameplay.core"
 local create_selected_boxes = ecs.require "selected_boxes"
+local terrain = ecs.require "terrain"
 
 local function __get_capacitance(eid)
     local e = gameplay_core.get_entity(eid)
@@ -92,7 +93,7 @@ function idetail.show(object_id)
     local ui_x, ui_y = iui.convert_coord(math3d.index(p, 1), math3d.index(p, 2))
 
     if typeobject.show_arc_menu ~= false then
-        iui.open({"building_arc_menu.rml"}, object_id, object.srt.t, ui_x, ui_y)
+        iui.open({"building_arc_menu.rml"}, object_id, {math3d.index(object.srt.t, 1, 2, 3)}, ui_x, ui_y)
     end
 
     do
@@ -122,21 +123,62 @@ function idetail.show(object_id)
 end
 
 do
-    local sprites = {}
+    local temp_objects = {}
     local create_sprite = ecs.require "sprite"
-    local SPRITE_COLOR = import_package "vaststars.prototype".load("sprite_color")
-    local selected_boxes
+    local SPRITE_COLOR <const> = import_package "vaststars.prototype".load("sprite_color")
+    local DOTTED_LINE_MATERIAL <const> = "/pkg/vaststars.resources/materials/dotted_line.material"
+    local iquad_lines_entity = ecs.require "engine.quad_lines_entity"
+
+    local function __check_pipe_to_ground(object, dir)
+        local typeobject = iprototype.queryByName(object.prototype_name)
+        for _, connection in ipairs(typeobject.fluidbox.connections) do
+            if connection.ground then
+                local _, _, connection_dir = iprototype.rotate_connection(connection.position, object.dir, typeobject.area)
+                if connection_dir == dir then
+                    return true
+                end
+            end
+        end
+    end
+
+    local function __find_ground_neighbor(prototype_name, x, y, dir)
+        local typeobject = iprototype.queryByName(prototype_name)
+        for _, connection in ipairs(typeobject.fluidbox.connections) do
+            if connection.ground then
+                local connection_x, connection_y, connection_dir = iprototype.rotate_connection(connection.position, dir, typeobject.area)
+                local succ, dx, dy = false, x + connection_x, y + connection_y
+                for _ = 1, connection.ground do
+                    succ, dx, dy = terrain:move_coord(dx, dy, connection_dir, 1)
+                    if not succ then
+                        return
+                    end
+
+                    local neighbor = objects:coord(dx, dy)
+                    if not neighbor then
+                        goto continue
+                    end
+
+                    if not iprototype.is_pipe_to_ground(neighbor.prototype_name) then
+                        goto continue
+                    end
+
+                    if __check_pipe_to_ground(neighbor, iprototype.reverse_dir(connection_dir)) then
+                        return neighbor, connection_dir
+                    end
+
+                    ::continue::
+                end
+                return
+            end
+        end
+        assert(false)
+    end
 
     function idetail.unselected()
-        for _, sprite in ipairs(sprites) do
-            sprite:remove()
+        for _, o in ipairs(temp_objects) do
+            o:remove()
         end
-        sprites = {}
-
-        if selected_boxes then
-            selected_boxes:remove()
-            selected_boxes = nil
-        end
+        temp_objects = {}
     end
 
     function idetail.selected(object)
@@ -144,7 +186,8 @@ do
         local typeobject = iprototype.queryByName(object.prototype_name)
         local color = SPRITE_COLOR.SELECTED_OUTLINE
 
-        selected_boxes = create_selected_boxes(
+        --
+        temp_objects[#temp_objects+1] = create_selected_boxes(
             {
                 "/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab",
                 "/pkg/vaststars.resources/prefabs/selected-box-no-animation-line.prefab",
@@ -152,6 +195,7 @@ do
             object.srt.t, color, iprototype.rotate_area(typeobject.area, object.dir)
         )
 
+        --
         if typeobject.supply_area then
             for _, object in objects:all() do
                 local otypeobject = iprototype.queryByName(object.prototype_name)
@@ -159,17 +203,56 @@ do
                     local w, h = iprototype.rotate_area(otypeobject.area, object.dir)
                     local ow, oh = iprototype.rotate_area(otypeobject.supply_area, object.dir)
                     ow, oh = tonumber(ow), tonumber(oh)
-                    sprites[#sprites+1] = create_sprite(object.x - (ow - w)//2, object.y - (oh - h)//2, ow, oh, object.dir, SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_OTHER)
+                    temp_objects[#temp_objects+1] = create_sprite(object.x - (ow - w)//2, object.y - (oh - h)//2, ow, oh, object.dir, SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_OTHER)
                 end
             end
         elseif typeobject.power_supply_area and typeobject.power_supply_distance then
-            for _, object in objects:all() do
-                local otypeobject = iprototype.queryByName(object.prototype_name)
-                if otypeobject.power_supply_area then
-                    local w, h = iprototype.rotate_area(otypeobject.area, object.dir)
-                    local ow, oh = otypeobject.power_supply_area:match("(%d+)x(%d+)")
-                    ow, oh = tonumber(ow), tonumber(oh)
-                    sprites[#sprites+1] = create_sprite(object.x - (ow - w)//2, object.y - (oh - h)//2, ow, oh, object.dir, SPRITE_COLOR.POWER_SUPPLY_AREA)
+            for _, o in objects:all() do
+                if o.id ~= object.id then
+                    local otypeobject = iprototype.queryByName(o.prototype_name)
+                    if otypeobject.power_supply_area then
+                        local w, h = iprototype.rotate_area(otypeobject.area, o.dir)
+                        local ow, oh = otypeobject.power_supply_area:match("(%d+)x(%d+)")
+                        temp_objects[#temp_objects+1] = create_sprite(o.x - (ow - w)//2, o.y - (oh - h)//2, ow, oh, o.dir, SPRITE_COLOR.POWER_SUPPLY_AREA)
+                    end
+                end
+            end
+            local w, h = iprototype.rotate_area(typeobject.area, object.dir)
+            local ow, oh = typeobject.power_supply_area:match("(%d+)x(%d+)")
+            temp_objects[#temp_objects+1] = create_sprite(object.x - (ow - w)//2, object.y - (oh - h)//2, ow, oh, object.dir, SPRITE_COLOR.POWER_SUPPLY_AREA_SELF)
+        end
+
+        --
+        if iprototype.is_pipe_to_ground(object.prototype_name) then
+            local neighbor, connection_dir = __find_ground_neighbor(object.prototype_name, object.x, object.y, object.dir)
+            if neighbor then
+                temp_objects[#temp_objects+1] = create_selected_boxes(
+                    {
+                        "/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab",
+                        "/pkg/vaststars.resources/prefabs/selected-box-no-animation-line.prefab",
+                    },
+                    neighbor.srt.t, color, iprototype.rotate_area(typeobject.area, neighbor.dir)
+                )
+
+                local quad_num
+                if object.x == neighbor.x then
+                    quad_num = math.abs(object.y - neighbor.y) - 1
+                elseif object.y == neighbor.y then
+                    quad_num = math.abs(object.x - neighbor.x) - 1
+                else
+                    log.error("invalid quad line")
+                end
+
+                if quad_num > 0 then
+                    local dotted_line = iquad_lines_entity.create(DOTTED_LINE_MATERIAL)
+                    local succ, dx, dy = terrain:move_coord(object.x, object.y, connection_dir, 1)
+                    if succ then
+                        local position = terrain:get_position_by_coord(dx, dy, 1, 1)
+                        dotted_line:update(position, quad_num, connection_dir)
+                        dotted_line:show(true)
+
+                        temp_objects[#temp_objects+1] = dotted_line
+                    end
                 end
             end
         end

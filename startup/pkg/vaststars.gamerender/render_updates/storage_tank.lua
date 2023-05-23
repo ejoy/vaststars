@@ -8,31 +8,33 @@ local draw_fluid_icon = ecs.require "fluid_icon"
 local icanvas = ecs.require "engine.canvas"
 local global = require "global"
 local gameplay_core = require "gameplay.core"
+local math3d = require "math3d"
 local storage_tank_sys = ecs.system "storage_tank_system"
 
-local function __create_fluid_icon_component(object_id, x, y, fluid)
+local function __create_storage_tank_icon(object_id, building_srt, fluid)
+    local x, y = math3d.index(building_srt, 1, 3)
     local m = {id = object_id, fluid = fluid, x = x, y = y}
-    draw_fluid_icon(object_id, x, y, fluid)
+    draw_fluid_icon(object_id, x, y, fluid, 1.5)
 
     function m:on_position_change(building_srt)
         self:remove()
-        self.x, self.y = building_srt.t[1], building_srt.t[3]
-        draw_fluid_icon(self.object_id, building_srt.t[1], building_srt.t[3], self.fluid)
+        self.x, self.y = math3d.index(building_srt.t, 1, 3)
+        draw_fluid_icon(self.id, self.x, self.y, self.fluid, 1.5)
     end
     function m:remove()
-        icanvas.remove_item(icanvas.types().ICON, self.object_id)
+        icanvas.remove_item(icanvas.types().ICON, self.id)
     end
     function m:update(fluid)
         if self.fluid == fluid then
             return
         end
         self.fluid = fluid
-        draw_fluid_icon(self.object_id, self.x, self.y, fluid)
+        draw_fluid_icon(self.id, self.x, self.y, self.fluid, 1.5)
     end
     return m
 end
 
-function storage_tank_sys:update_world()
+function storage_tank_sys:gameworld_build()
     local world = gameplay_core.get_world()
     for e in world.ecs:select "fluidbox:in building:in" do
         local typeobject = assert(iprototype.queryById(e.building.prototype))
@@ -46,14 +48,17 @@ function storage_tank_sys:update_world()
             goto continue
         end
 
+        local building = global.buildings[object.id]
+
         if e.fluidbox.fluid == 0 then
+            if building.storage_tank_icon then
+                building.storage_tank_icon:remove()
+            end
             goto continue
         end
 
-        local building = global.buildings[object.id]
-        local x, y = object.srt.t[1], object.srt.t[3]
         if not building.storage_tank_icon then
-            building.storage_tank_icon = __create_fluid_icon_component(object.id, x, y, e.fluidbox.fluid)
+            building.storage_tank_icon = __create_storage_tank_icon(object.id, object.srt.t, e.fluidbox.fluid)
         end
         building.storage_tank_icon:update(e.fluidbox.fluid)
 

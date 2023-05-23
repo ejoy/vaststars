@@ -32,6 +32,7 @@ local COLOR_RED = math3d.constant("v4", {1, 0.03, 0, 1})
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 local gameplay_core = require "gameplay.core"
 local ichest = require "gameplay.interface.chest"
+local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -103,7 +104,8 @@ local function __new_entity(self, datamodel, typeobject)
         x = x,
         y = y,
         srt = {
-            t = position,
+            t = math3d.ref(math3d.vector(position)),
+            r = ROTATORS[dir],
         },
         fluid_name = "",
         group_id = 0,
@@ -219,9 +221,9 @@ local function __show_road_entrance_marker(self, typeobject, dir)
 
     local pr
     if self.last_position then
-        pr = {self.last_position[1], 0, self.last_position[3]}
+        pr = {math3d.index(self.last_position, 1), 0, math3d.index(self.last_position, 3)}
     else
-        pr = {self.pickup_object.srt.t[1], 0, self.pickup_object.srt.t[3]}
+        pr = {math3d.index(self.pickup_object.srt.t, 1), 0, math3d.index(self.pickup_object.srt.t, 3)}
     end
 
     local min_dist
@@ -339,6 +341,7 @@ local function rotate_pickup_object(self, datamodel, dir, delta_vec)
 
     local typeobject = iprototype.queryByName(pickup_object.prototype_name)
     pickup_object.dir = dir
+    pickup_object.srt.r = ROTATORS[dir]
 
     local road_entrance_position, ddir = _get_road_entrance_position(typeobject, dir, self.pickup_object.srt.t)
     if road_entrance_position then
@@ -372,7 +375,7 @@ local function touch_move(self, datamodel, delta_vec)
             self.selected_boxes:set_wh(w, h)
         end
 
-        self.last_position = {self.pickup_object.srt.t[1], self.pickup_object.srt.t[2], self.pickup_object.srt.t[3]}
+        self.last_position = self.pickup_object.srt.t
         icanvas.remove_item(icanvas.types().ROAD_ENTRANCE_MARKER, 0)
         local c = __show_road_entrance_marker(self, typeobject, self.pickup_object.dir)
         if c then
@@ -400,7 +403,7 @@ local function touch_end(self, datamodel)
         return
     end
     pickup_object.x, pickup_object.y = x, y
-    pickup_object.srt.t = position
+    pickup_object.srt.t = math3d.ref(math3d.vector(position))
 
     local typeobject = iprototype.queryByName(pickup_object.prototype_name)
 
@@ -482,6 +485,7 @@ local function complete(self, object_id, datamodel)
         iroadnet:editor_set("road", "normal", x, y, shape, dir)
     end
 
+    igameplay.build_world()
     iroadnet:editor_build()
     self.super.complete(self, object_id)
 

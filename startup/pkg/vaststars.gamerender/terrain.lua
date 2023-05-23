@@ -4,7 +4,6 @@ local w     = world.w
 
 local iprototype = require "gameplay.interface.prototype"
 local math3d = require "math3d"
-local map = import_package "vaststars.prototype"("map")
 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local COLOR_INVALID <const> = math3d.constant "null"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
@@ -141,10 +140,14 @@ function terrain:create(width, height)
     self._group_id = gen_group_id()
     self._enabled_group_id = {}
 
+    self.init = true
+end
+
+function terrain:reset_mineral(map)
     --
     self.eids = self.eids or {}
     for _, eid in ipairs(self.eids) do
-        w:remove(eid)
+        eid:remove()
     end
 
     local mineral_prefabs = {
@@ -180,8 +183,6 @@ function terrain:create(width, height)
             render_layer = RENDER_LAYER.MINERAL
         }
     end
-
-    self.init = true
 end
 
 function terrain:get_mineral(x, y)

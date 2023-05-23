@@ -11,6 +11,6 @@ local update = interval_call(300, function()
     itask.update_progress("auto_complete_task")
 end)
 
-function task_sys:update_world()
+function task_sys:gameworld_update()
     update()
 end

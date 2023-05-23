@@ -26,7 +26,7 @@ local function create_workstatus()
     local function set(_, s)
         status = s
     end
-    local function get(_, s)
+    local function get()
         return status
     end
     return {
@@ -97,6 +97,6 @@ local update = interval_call(3000, function()
     end
 end)
 
-function work_state_sys:update_world()
+function work_state_sys:gameworld_update()
     update()
 end

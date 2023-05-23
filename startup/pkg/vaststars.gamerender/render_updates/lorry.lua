@@ -6,7 +6,7 @@ local lorry_manager = ecs.require "lorry_manager"
 local gameplay_core = require "gameplay.core"
 local lorry_sys = ecs.system "lorry_system"
 
-function lorry_sys:update_world()
+function lorry_sys:gameworld_update()
     local gameplay_world = gameplay_core.get_world()
 
     local mc, x, y, z
