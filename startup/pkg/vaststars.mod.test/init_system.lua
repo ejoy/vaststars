@@ -48,7 +48,7 @@ function S.init_world()
     iom.set_direction(camera_ref, dir)
 
     iterrain.gen_terrain_field(256, 256, 128)
---[[     local x, y = 0, 0
+     local x, y = 0, 0
     for _, shape in ipairs({"I", "L", "T", "U", "X", "O"}) do
         y = y + 2
         x = 0
@@ -74,7 +74,7 @@ function S.init_world()
             end
         end
     end
-    iroad.update_roadnet_group(1000, create_list) ]]
+    iroad.update_roadnet_group(1000, create_list) 
  
      local density = 0.5
     local width, height, offset, UNIT = 256, 256, 128, 10

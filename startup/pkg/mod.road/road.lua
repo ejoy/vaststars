@@ -224,6 +224,7 @@ function iroad.update_roadnet_group(gid, update_list)
             visible_state = "main_view",
             indirect_update = indirect_update,
             road = true,
+            render_layer = "background"
         },
     }
 end
