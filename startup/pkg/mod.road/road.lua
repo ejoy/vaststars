@@ -44,9 +44,9 @@ end
 
 local function parse_layer(t, s, d)
     local pt, ps, pd
-    local u_table = {["1"] = 0, ["2"]= 90, ["3"] = 180, ["4"] = 270}
-    local i_table = {["1"] = 90, ["2"]= 0, ["3"] = 270, ["4"] = 180}
-    local l_table = {["1"] = 180, ["2"]= 270, ["3"] = 0, ["4"] = 90}
+    local u_table = {["1"] = 0, ["2"]= 270, ["3"] = 180, ["4"] = 90}
+    local i_table = {["1"] = 270, ["2"]= 0, ["3"] = 90, ["4"] = 180}
+    local l_table = {["1"] = 180, ["2"]= 90, ["3"] = 0, ["4"] = 270}
     if s == "U" then
         ps, pd = 0, u_table[d]
     elseif s == "I" then
