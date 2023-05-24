@@ -2,7 +2,6 @@ local ecs   = ...
 local world = ecs.world
 local w     = world.w
 local iterrain          = ecs.require "terrain"
-local iline_entity      = ecs.require "engine.line_entity"
 local ipl               = ecs.import.interface "ant.render|ipolyline"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
