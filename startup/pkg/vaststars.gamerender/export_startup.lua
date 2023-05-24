@@ -1,7 +1,12 @@
+local ecs   = ...
+local world = ecs.world
+local w     = world.w
+
 local gameplay_core = import_package "vaststars.gamerender"("gameplay.core")
 local iprototype = import_package "vaststars.gamerender"("gameplay.interface.prototype")
 local irecipe = import_package "vaststars.gamerender"("gameplay.interface.recipe")
 local ichest = require "gameplay.interface.chest"
+local terrain = ecs.require "terrain"
 
 local function DO_NOTHING(export_data)
     return export_data
@@ -154,6 +159,6 @@ return {
     ]]):format(
         inspect(r),
         inspect(gameplay_core.get_world():roadnet_get_map()),
-        inspect(import_package "vaststars.prototype"("map"))
+        inspect(terrain.mineral_source)
     ))
 end

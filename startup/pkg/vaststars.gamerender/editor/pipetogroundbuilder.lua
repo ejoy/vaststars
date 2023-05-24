@@ -136,21 +136,7 @@ local function __can_be_starting_point(object, forward_dir)
         return false
     end
 
-    local valid1, valid2 = false, false
-
-    local reverse_dir = iprototype.reverse_dir(forward_dir)
-    local _prototype_name, _dir
-    _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, forward_dir, true)
-    if _prototype_name and _dir then
-        valid1 = true
-    end
-
-    _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, reverse_dir, true)
-    if _prototype_name and _dir then
-        valid2 = true
-    end
-
-    return (valid1 == true) or (valid2 == true)
+    return true
 end
 
 local function _set_starting(prototype_name, State, PipeToGroundState, x, y, dir)
@@ -226,6 +212,11 @@ local function _set_starting(prototype_name, State, PipeToGroundState, x, y, dir
                 local coord = packcoord(x, y)
                 PipeToGroundState.map[coord] = {assert(_prototype_name), assert(_dir)}
             end
+        else
+            local coord = packcoord(x, y)
+            _prototype_name, _dir = iflow_connector.covers_pipe_to_ground(typeobject.flow_type, iprototype.reverse_dir(dir), dir)
+            _prototype_name, _dir = iflow_connector.set_connection(_prototype_name, _dir, iprototype.reverse_dir(dir), false)
+            PipeToGroundState.map[coord] = {assert(_prototype_name), assert(_dir)}
         end
 
         return x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
@@ -372,7 +363,6 @@ end
 local function _builder_end(self, datamodel, State, dir, dir_delta)
     local prototype_name = self.coord_indicator.prototype_name
     local typeobject = iprototype.queryByName(prototype_name)
-    local item_typeobject = iprototype.queryByName(iflow_connector.covers(prototype_name, DEFAULT_DIR))
 
     if State.starting_fluidbox then -- TODO: optimize
         if State.ending_fluidbox then
@@ -560,9 +550,6 @@ local function _builder_start(self, datamodel)
         -- starting object should at least have one fluidbox, promised by _builder_init()
         local fluidbox = _find_starting_fluidbox(starting, to_x, to_y, dir)
         State.starting_fluidbox = fluidbox
-        if fluidbox.dir ~= dir then
-            State.succ = false
-        end
 
         local succ
         succ, to_x, to_y = terrain:move_coord(fluidbox.x, fluidbox.y, dir,

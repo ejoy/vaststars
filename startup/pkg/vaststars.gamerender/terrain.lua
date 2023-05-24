@@ -157,6 +157,7 @@ function terrain:reset_mineral(map)
 
     self.mineral_map = {}
     self.mineral_tiles = {}
+    self.mineral_source = map
 
     for c, mineral in pairs(map) do
         local x, y = c:match("^(%d+),(%d+)$")

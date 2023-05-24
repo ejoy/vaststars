@@ -5,7 +5,7 @@ local w = world.w
 local debug_sys = ecs.system "debug_system"
 local kb_mb = world:sub{"keyboard"}
 local gameplay_core = require "gameplay.core"
-local export_startup = require "export_startup"
+local export_startup = ecs.require "export_startup"
 
 function debug_sys:ui_update()
     for _, key, press in kb_mb:unpack() do
