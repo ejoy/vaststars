@@ -29,6 +29,7 @@ local scale_table = {b = 0.80, m = 0.50, s = 0.10}
 local sm_rect_table = {}
 local sm_grid_table = {}
 local sm_table = {}
+local stone_instance_params = {}
 -- 1. mapping between mesh_idx and sm_idx with size_idx with count_idx (before get_final_map)
 -- 1. mapping between mesh_idx and sm_idx with size_idx (after get_final_map)
 local mesh_to_sm_table = {
@@ -680,7 +681,7 @@ function ism.create_sm_entity(r, ww, hh, off, un, scale, sa, oa, f, d)
             stonemountain = true,
             sm_info       ={
                 mesh_idx  = 4
-            }
+            },
         },
     }   
 end
@@ -783,20 +784,22 @@ local function create_sm_entity()
         g:create_entity {
             policy = {
                 "ant.render|render",
-                "ant.render|indirect_update"
+                "ant.render|indirect"
              },
             data = {
                 scene         = {},
                 material      ="/pkg/mod.stonemountain/assets/pbr_sm.material", 
                 visible_state = "main_view|cast_shadow|selectable",
                 mesh          = mesh_address,
-                indirect_update = {
+                indirect = {
                     group = sm_group[mesh_idx],
-                    indirect_info = indirect_info_table[mesh_idx]
+                    indirect_info = indirect_info_table[mesh_idx],
+                    type = "STONEMOUNTAIN",
                 },
+                indirect_update = true,
                 render_layer = "foreground",
                 stonemountain = true,
-            },
+            }
         }
     end
 end
@@ -861,12 +864,13 @@ end
 
 function sm_sys:stone_mountain()
     if open_sm then
-        for e in w:select "stonemountain sm_info?in bounding:update" do
+        for e in w:select "stonemountain sm_info?in bounding:update render_object:in" do
             local sm_info = e.sm_info
             local center, extent = math3d.aabb_center_extents(e.bounding.aabb)
             mesh_aabb_table[sm_info.mesh_idx] = {center = math3d.tovalue(center), extent = math3d.tovalue(extent)}
             e.bounding.scene_aabb = mc.NULL
             e.bounding.aabb = mc.NULL
+            stone_instance_params[sm_info.mesh_idx] = {0, e.render_object.vb_num, 0, e.render_object.ib_num}
         end
         make_sm_noise()
         create_sm_entity()

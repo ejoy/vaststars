@@ -14,7 +14,6 @@ local layout_name<const>    = declmgr.correct_layout "p3|t20|t21"
 local layout                = declmgr.get(layout_name)
 local width, height, offset, unit = 256, 256, 128, 10
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
-local iindirect = ecs.import.interface "ant.render|iindirect"
 local road_material
 local group_table = {}
 local road_default_group = 30001
@@ -194,19 +193,20 @@ function iroad.set_args(ww, hh, off, un)
     if un then unit = un end
 end
 
-function iroad.update_roadnet_group(gid, update_list)
-    if not gid then
-        gid = 30001
-    end
+local road_group = {}
+
+local function get_indirect(gid, update_list)
     local indirect_info = create_road_instance_info(update_list)
-    if #indirect_info == 0 then
-        iindirect.remove_old_entity(gid)
-        return
-    end
-    local indirect_update = {
+    local indirect = {
         group = gid,
-        indirect_info = indirect_info
+        indirect_info = indirect_info,
+        type = "ROAD"
     }
+    return indirect 
+end
+
+local function create_road_group(gid, update_list)
+    local indirect = get_indirect(gid, update_list)
     local road_mesh = build_mesh()
     local g = ecs.group(gid)
     ecs.group(gid):enable "view_visible"
@@ -215,15 +215,43 @@ function iroad.update_roadnet_group(gid, update_list)
         policy = {
             "ant.scene|scene_object",
             "ant.render|simplerender",
-            "ant.render|indirect_update"
+            "ant.render|indirect"
         },
         data = {
             scene = {},
             simplemesh  = road_mesh,
             material    = road_material,
             visible_state = "main_view",
-            indirect_update = indirect_update,
+            indirect = indirect,
+            indirect_update = true,
             road = true,
         },
-    }
+    }  
+end
+
+local function update_road_group(gid, update_list)
+    local indirect = get_indirect(gid, update_list)
+    ecs.group(gid):enable "view_visible"
+    ecs.group(gid):enable "scene_update"
+    local select_tag = "road view_visible:in scene_update:in indirect:update indirect_update?update"
+    ecs.group_flush()
+    for e in w:select(select_tag) do
+        e.indirect = indirect
+        if e.indirect.group == gid then
+            e.indirect_update = true
+        end
+    end
+end
+
+function iroad.update_roadnet_group(gid, update_list)
+    if not gid then
+        gid = 30001
+    end
+    if road_group[gid] then
+        update_road_group(gid, update_list)
+    else
+        create_road_group(gid, update_list)
+        road_group[gid] = true
+    end
+
 end
