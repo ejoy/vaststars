@@ -85,7 +85,7 @@ local entities = { {
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 108,
+    x = 107,
     y = 129
   }, {
     dir = "N",
@@ -212,11 +212,6 @@ local entities = { {
     y = 110
   }, {
     dir = "N",
-    prototype_name = "风力发电机I",
-    x = 168,
-    y = 107
-  }, {
-    dir = "N",
     prototype_name = "采矿机I",
     recipe = "铁矿石挖掘",
     x = 162,
@@ -288,24 +283,9 @@ local entities = { {
     y = 93
   }, {
     dir = "N",
-    prototype_name = "风力发电机I",
-    x = 145,
-    y = 93
-  }, {
-    dir = "N",
-    prototype_name = "风力发电机I",
-    x = 168,
-    y = 74
-  }, {
-    dir = "N",
     prototype_name = "采矿机I",
     recipe = "铁矿石挖掘",
     x = 60,
-    y = 183
-  }, {
-    dir = "N",
-    prototype_name = "风力发电机I",
-    x = 57,
     y = 183
   }, {
     dir = "N",
@@ -3025,16 +3005,6 @@ local entities = { {
     y = 169
   }, {
     dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 108,
-    y = 133
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 107,
-    y = 139
-  }, {
-    dir = "N",
     prototype_name = "太阳能板I",
     x = 66,
     y = 159
@@ -3601,13 +3571,8 @@ local entities = { {
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 163,
-    y = 151
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
     x = 169,
-    y = 164
+    y = 168
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
@@ -3628,11 +3593,6 @@ local entities = { {
     prototype_name = "铁制电线杆",
     x = 205,
     y = 160
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 115,
-    y = 139
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
@@ -3673,6 +3633,21 @@ local entities = { {
     prototype_name = "铁制电线杆",
     x = 176,
     y = 192
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 107,
+    y = 133
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 107,
+    y = 139
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 169,
+    y = 160
   } }
 local road = {
   [22850] = 8,
