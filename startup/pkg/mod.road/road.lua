@@ -200,7 +200,8 @@ local function get_indirect(gid, update_list)
     local indirect = {
         group = gid,
         indirect_info = indirect_info,
-        type = "ROAD"
+        type = "ROAD",
+        instance_layout = "t45NIf|t46NIf|t47NIf"
     }
     return indirect 
 end

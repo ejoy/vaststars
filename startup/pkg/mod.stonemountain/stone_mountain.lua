@@ -24,7 +24,6 @@ local instance_num = 0
 local open_area
 local stone_area
 -- mapping between instance idx and sm_idx
-local remove_table = {}
 local scale_table = {b = 0.80, m = 0.50, s = 0.10}
 local sm_rect_table = {}
 local sm_grid_table = {}
@@ -612,78 +611,6 @@ function ism.create_sm_entity(r, ww, hh, off, un, scale, sa, oa, f, d)
     for center_idx = 1, width * height do
         sm_table[center_idx] = {[1] = {}, [2] = {}, [3] = {}} -- b m s
     end
-    remove_table[1] = ecs.create_entity {
-        policy = {
-            "ant.render|render",
-            "ant.general|name",
-            "mod.stonemountain|stone_mountain",
-         },
-        data = {
-            name          = "sm1",
-            scene         = {},
-            material      ="/pkg/mod.stonemountain/assets/pbr_sm.material", 
-            visible_state = "main_view|cast_shadow",
-            mesh          = "/pkg/mod.stonemountain/assets/mountain1.glb|meshes/Cylinder.002_P1.meshbin",
-            stonemountain = true,
-            sm_info       ={
-                mesh_idx  = 1
-            }
-        },
-    }   
-    remove_table[2] = ecs.create_entity {
-        policy = {
-            "ant.render|render",
-            "ant.general|name",
-            "mod.stonemountain|stone_mountain",
-         },
-        data = {
-            name          = "sm2",
-            scene         = {},
-            material      = "/pkg/mod.stonemountain/assets/pbr_sm.material", 
-            visible_state = "main_view|cast_shadow",
-            mesh          = "/pkg/mod.stonemountain/assets/mountain2.glb|meshes/Cylinder.004_P1.meshbin",
-            stonemountain = true,
-            sm_info       ={
-                mesh_idx  = 2
-            }
-        },
-    } 
-    remove_table[3] = ecs.create_entity {
-        policy = {
-            "ant.render|render",
-            "ant.general|name",
-            "mod.stonemountain|stone_mountain",
-         },
-        data = {
-            name          = "sm3",
-            scene         = {},
-            material      = "/pkg/mod.stonemountain/assets/pbr_sm.material", 
-            visible_state = "main_view|cast_shadow",
-            mesh          = "/pkg/mod.stonemountain/assets/mountain3.glb|meshes/Cylinder_P1.meshbin",
-            stonemountain = true,
-            sm_info       ={
-                mesh_idx  = 3
-            }
-        },
-    }  
-    remove_table[4] = ecs.create_entity {
-        policy = {
-            "ant.render|render",
-            "ant.general|name",
-            "mod.stonemountain|stone_mountain",
-         },
-        data = {
-            name          = "sm4",
-            scene         = {},
-            material      = "/pkg/mod.stonemountain/assets/pbr_sm.material", 
-            visible_state = "main_view|cast_shadow",
-            mesh          = "/pkg/mod.stonemountain/assets/mountain4.glb|meshes/Cylinder.021_P1.meshbin",
-            stonemountain = true,
-            sm_info       ={
-                mesh_idx  = 4
-            },
-        },
-    }   
 end
 
 local function make_sm_noise()
@@ -754,9 +681,7 @@ local function create_sm_entity()
                 local mesh_idx = sm_bms_to_mesh_table[sm_idx][size_idx]
                 --local mesh_address = mesh_table[mesh_idx]
                 indirect_info_table[mesh_idx][#indirect_info_table[mesh_idx]+1] = {
-                    {stone.s, stone.t.x, stone.t.z, stone.r},
-                    {0, 0, 0, 0},
-                    {0, 0, 0, 0}
+                    {stone.s, stone.t.x, stone.t.z, stone.r}
                 }
                 local scale = stone.s;
                 local scale_y = stone.s;
@@ -795,6 +720,7 @@ local function create_sm_entity()
                     group = sm_group[mesh_idx],
                     indirect_info = indirect_info_table[mesh_idx],
                     type = "STONEMOUNTAIN",
+                    instance_layout = "t47NIf"
                 },
                 indirect_update = true,
                 render_layer = "foreground",
@@ -804,11 +730,6 @@ local function create_sm_entity()
     end
 end
 
-local function remove_aabb_entity()
-    for rid = 1, 4 do
-        w:remove(remove_table[rid])
-    end
-end
 
 function ism.get_sm_grid(world_x, world_z)
     local logic_x, logic_z = world_x + offset, world_z + offset
@@ -864,17 +785,13 @@ end
 
 function sm_sys:stone_mountain()
     if open_sm then
-        for e in w:select "stonemountain sm_info?in bounding:update render_object:in" do
-            local sm_info = e.sm_info
-            local center, extent = math3d.aabb_center_extents(e.bounding.aabb)
-            mesh_aabb_table[sm_info.mesh_idx] = {center = math3d.tovalue(center), extent = math3d.tovalue(extent)}
-            e.bounding.scene_aabb = mc.NULL
-            e.bounding.aabb = mc.NULL
-            stone_instance_params[sm_info.mesh_idx] = {0, e.render_object.vb_num, 0, e.render_object.ib_num}
+        for mesh_idx = 1, 4 do
+            local aabb = assetmgr.resource(mesh_table[mesh_idx]).bounding.aabb
+            local center, extent = math3d.aabb_center_extents(aabb)
+            mesh_aabb_table[mesh_idx] = {center = math3d.tovalue(center), extent = math3d.tovalue(extent)}
         end
         make_sm_noise()
         create_sm_entity()
-        remove_aabb_entity()
         open_sm = false
     end
 end
