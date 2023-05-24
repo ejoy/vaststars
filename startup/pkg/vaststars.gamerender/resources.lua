@@ -42,7 +42,6 @@ local t = {
 	"/pkg/ant.atmosphere/atmosphere.lua",
 	"/pkg/ant.atmosphere/package.ecs",
 	"/pkg/ant.atmosphere/package.lua",
-	"/pkg/ant.audio/package.ecs",
 	"/pkg/ant.audio/package.lua",
 	"/pkg/ant.bundle/glob.lua",
 	"/pkg/ant.bundle/main.lua",

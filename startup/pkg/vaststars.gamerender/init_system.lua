@@ -59,10 +59,12 @@ function m:init_world()
     imain_menu_manager.back_to_main_menu()
 
     -- audio test (Master.strings.bank must be first)
-    audio.load_bank "/pkg/vaststars.resources/sounds/Master.strings.bank"
-    audio.load_bank "/pkg/vaststars.resources/sounds/Master.bank"
-    audio.load_bank "/pkg/vaststars.resources/sounds/Construt.bank"
-    audio.load_bank "/pkg/vaststars.resources/sounds/UI.bank"
+    audio.init {
+        "/pkg/vaststars.resources/sounds/Master.strings.bank",
+        "/pkg/vaststars.resources/sounds/Master.bank",
+        "/pkg/vaststars.resources/sounds/Construt.bank",
+        "/pkg/vaststars.resources/sounds/UI.bank",
+    }
 
     -- audio.play("event:/openui1")
     audio.play("event:/background")
