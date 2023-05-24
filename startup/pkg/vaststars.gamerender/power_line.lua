@@ -3,6 +3,7 @@ local world = ecs.world
 local w     = world.w
 local iterrain          = ecs.require "terrain"
 local iline_entity      = ecs.require "engine.line_entity"
+local ipl               = ecs.import.interface "ant.render|ipolyline"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
 local M ={}
@@ -49,7 +50,7 @@ function M.update_temp_line(temp_pole)
         end
     end
     if #lines_data > 0 then
-        temp_lines = iline_entity.create_lines(lines_data, 80, {1.0, 0.0, 0.0, 0.7}, RENDER_LAYER.WIRE)
+        temp_lines = ipl.create_lines(lines_data, 80, {1.0, 0.0, 0.0, 0.7}, nil, nil, RENDER_LAYER.WIRE)
     end
 end
 
@@ -67,7 +68,7 @@ function M.update_line(pole_lines)
         end
     end
     if #lines_data > 0 then
-        lines = iline_entity.create_lines(lines_data, 80, {1.0, 0.0, 0.0, 0.7}, RENDER_LAYER.WIRE)
+        lines = ipl.create_lines(lines_data, 80, {1.0, 0.0, 0.0, 0.7}, nil, nil, RENDER_LAYER.WIRE)
     end
 end
 
