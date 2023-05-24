@@ -23,16 +23,20 @@ end
 
 function M.get_progress()
     local guide_id = M.get_guide_id()
-    if guide_id < 2 then
+    if guide_id == 1 then
         return 0
     end
+    assert(guide_id > 1 and guide_id <= #guide + 1)
     return guide[guide_id - 1].narrative_end.guide_progress
 end
 
 function M.step_progress()
     is_in_guide = false
+
     local storage = M.world.storage
-    storage.guide_id = storage.guide_id + 1
+    if storage.guide_id <= #guide then
+        storage.guide_id = storage.guide_id + 1
+    end
 end
 
 function M.set_running(b)
