@@ -109,6 +109,12 @@ local function __set_camera_from_prefab(prefab)
     ic.set_frustum(e, c.camera.frustum)
 end
 
+local function __set_camera_srt(s, r, t)
+    local mq = w:first("main_queue camera_ref:in")
+    local e <close> = w:entity(mq.camera_ref, "scene:update")
+    iom.set_srt(e, s, r, t)
+end
+
 local function __check_camera_editable()
     return cam_cmd_queue:size() <= 0 and cam_motion_matrix_queue:size() <= 0
 end
@@ -168,6 +174,8 @@ local function __handle_camera_motion()
             c[2]()
         elseif c[1] == "set_camera_from_prefab" then
             __set_camera_from_prefab(c[2])
+        elseif c[1] == "set_camera_srt" then
+            __set_camera_srt(c[2], c[3], c[4])
         else
             assert(false)
         end
@@ -295,6 +303,13 @@ end
 
 function icamera_controller.toggle_view(v, callback)
     cam_cmd_queue:push {{"toggle_view", v}}
+    if callback then
+        cam_cmd_queue:push {{"callback", callback}}
+    end
+end
+
+function icamera_controller.set_camera_srt(s, r, t, callback)
+    cam_cmd_queue:push {{"set_camera_srt", s, r, t}}
     if callback then
         cam_cmd_queue:push {{"callback", callback}}
     end

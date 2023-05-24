@@ -3354,7 +3354,6 @@ local road = {
   [32437] = 10,
   [32586] = 10,
   [32623] = 10,
-  [32625] = 8,
   [32652] = 10,
   [32693] = 10,
   [32842] = 14,
@@ -3395,12 +3394,9 @@ local road = {
   [32877] = 5,
   [32878] = 5,
   [32879] = 3,
-  [32881] = 10,
   [32908] = 10,
   [32949] = 10,
   [33098] = 10,
-  [33136] = 4,
-  [33137] = 3,
   [33164] = 10,
   [33205] = 10,
   [33354] = 10,
@@ -4017,7 +4013,7 @@ local function prepare(world)
       end
   end
   assert(slot)
-  world:container_set(e.chest, idx, {amount = 25, limit = 25})
+  world:container_set(e.chest, idx, {amount = 50, limit = 50})
 end
 
 return {
