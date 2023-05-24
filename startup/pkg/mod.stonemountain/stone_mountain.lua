@@ -622,7 +622,7 @@ function ism.create_sm_entity(r, ww, hh, off, un, scale, sa, oa, f, d)
             name          = "sm1",
             scene         = {},
             material      ="/pkg/mod.stonemountain/assets/pbr_sm.material", 
-            visible_state = "main_view|cast_shadow",
+            visible_state = "",
             mesh          = "/pkg/mod.stonemountain/assets/mountain1.glb|meshes/Cylinder.002_P1.meshbin",
             stonemountain = true,
             sm_info       ={
@@ -640,7 +640,7 @@ function ism.create_sm_entity(r, ww, hh, off, un, scale, sa, oa, f, d)
             name          = "sm2",
             scene         = {},
             material      = "/pkg/mod.stonemountain/assets/pbr_sm.material", 
-            visible_state = "main_view|cast_shadow",
+            visible_state = "",
             mesh          = "/pkg/mod.stonemountain/assets/mountain2.glb|meshes/Cylinder.004_P1.meshbin",
             stonemountain = true,
             sm_info       ={
@@ -658,7 +658,7 @@ function ism.create_sm_entity(r, ww, hh, off, un, scale, sa, oa, f, d)
             name          = "sm3",
             scene         = {},
             material      = "/pkg/mod.stonemountain/assets/pbr_sm.material", 
-            visible_state = "main_view|cast_shadow",
+            visible_state = "",
             mesh          = "/pkg/mod.stonemountain/assets/mountain3.glb|meshes/Cylinder_P1.meshbin",
             stonemountain = true,
             sm_info       ={
@@ -676,7 +676,7 @@ function ism.create_sm_entity(r, ww, hh, off, un, scale, sa, oa, f, d)
             name          = "sm4",
             scene         = {},
             material      = "/pkg/mod.stonemountain/assets/pbr_sm.material", 
-            visible_state = "main_view|cast_shadow",
+            visible_state = "",
             mesh          = "/pkg/mod.stonemountain/assets/mountain4.glb|meshes/Cylinder.021_P1.meshbin",
             stonemountain = true,
             sm_info       ={
