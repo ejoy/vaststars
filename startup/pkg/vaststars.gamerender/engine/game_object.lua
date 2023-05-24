@@ -98,7 +98,7 @@ local __get_hitch_children ; do
                     slots[v.data.name] = v.data
                 elseif v.data.efk and not v.data.efk.auto_play then
                     -- work effects
-                    effects[#effects + 1] = {efk = v.data.efk, slotname = v.mount and template[v.mount].data.name}
+                    effects[#effects + 1] = {efk = v.data.efk, slotname = v.mount and template[v.mount].data.name, s = v.data.scene.s, r = v.data.scene.r, t = v.data.scene.t }
                 end
                 if v.data.animation then
                     for animation_name in pairs(v.data.animation) do
@@ -290,7 +290,10 @@ function igame_object.create(init)
             loop = efkinfo.efk.loop or false,
             speed = efkinfo.efk.speed or 1.0,
             scene = {
-                parent = hitch_entity_object.id
+                parent = hitch_entity_object.id,
+                s = efkinfo.s,
+                t = efkinfo.t,
+                r = efkinfo.r,
             },
             group_id = init.group_id,
         }), efk_events)
