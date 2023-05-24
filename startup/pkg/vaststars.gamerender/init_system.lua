@@ -1,6 +1,5 @@
 local ecs = ...
 local world = ecs.world
-local w = world.w
 
 local FRAMES_PER_SECOND <const> = 30
 local bgfx = require 'bgfx'
@@ -22,7 +21,7 @@ local iroadnet = ecs.require "roadnet"
 local irender_layer = ecs.require "engine.render_layer"
 local imain_menu_manager = ecs.require "main_menu_manager"
 local icanvas = ecs.require "engine.canvas"
-local ia = ecs.import.interface "ant.audio|audio_interface"
+local audio = import_package "ant.audio"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local render_layer_def = require "render_layer_def"
 local m = ecs.system 'init_system'
@@ -60,13 +59,15 @@ function m:init_world()
     imain_menu_manager.back_to_main_menu()
 
     -- audio test (Master.strings.bank must be first)
-    ia.load_bank "/pkg/vaststars.resources/sounds/Master.strings.bank"
-    ia.load_bank "/pkg/vaststars.resources/sounds/Master.bank"
-    ia.load_bank "/pkg/vaststars.resources/sounds/Construt.bank"
-    ia.load_bank "/pkg/vaststars.resources/sounds/UI.bank"
+    audio.init {
+        "/pkg/vaststars.resources/sounds/Master.strings.bank",
+        "/pkg/vaststars.resources/sounds/Master.bank",
+        "/pkg/vaststars.resources/sounds/Construt.bank",
+        "/pkg/vaststars.resources/sounds/UI.bank",
+    }
 
-    -- ia.play("event:/openui1")
-    ia.play("event:/background")
+    -- audio.play("event:/openui1")
+    audio.play("event:/background")
 end
 
 function m:gameplay_update()

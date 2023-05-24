@@ -45,7 +45,7 @@ local function _get_object(self, x, y, cache_names)
 end
 
 -- automatically connects to its neighbors which has fluidbox, except for pipe or pipe to ground
-local function _connect_to_neighbor(x, y, State, prototype_name, dir)
+local function _connect_to_neighbor(State, x, y, prototype_name, dir)
     local succ, neighbor_x, neighbor_y, dx, dy
     for _, neighbor_dir in ipairs(ALL_DIR) do
         succ, neighbor_x, neighbor_y = terrain:move_coord(x, y, neighbor_dir, 1)
@@ -65,6 +65,16 @@ local function _connect_to_neighbor(x, y, State, prototype_name, dir)
         for _, fb in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
             succ, dx, dy = terrain:move_coord(fb.x, fb.y, fb.dir, 1)
             if succ and dx == x and dy == y then
+                if State.fluid_name ~= "" then
+                    if fb.fluid_name ~= "" then
+                        State.succ = (State.fluid_name == fb.fluid_name)
+                    end
+                else
+                    if fb.fluid_name then
+                        State.fluid_name = fb.fluid_name
+                    end
+                end
+
                 prototype_name, dir = iflow_connector.set_connection(prototype_name, dir, neighbor_dir, true)
                 goto continue -- only one fluidbox can be connected to the endpoint
             end
@@ -138,7 +148,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                 map[coord] = {_set_endpoint_connection(prototype_name, State, object, State.starting_connection, dir)}
             else
                 local endpoint_prototype_name, endpoint_dir = iflow_connector.cleanup(prototype_name, DEFAULT_DIR)
-                endpoint_prototype_name, endpoint_dir = _connect_to_neighbor(x, y, State, endpoint_prototype_name, endpoint_dir)
+                endpoint_prototype_name, endpoint_dir = _connect_to_neighbor(State, x, y, endpoint_prototype_name, endpoint_dir)
                 if not (x == to_x and y == to_y) then
                     endpoint_prototype_name, endpoint_dir = iflow_connector.set_connection(endpoint_prototype_name, endpoint_dir, dir, true)
                 end
@@ -150,7 +160,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                 map[coord] = {_set_endpoint_connection(prototype_name, State, object, State.ending_connection, reverse_dir)}
             else
                 local endpoint_prototype_name, endpoint_dir = iflow_connector.cleanup(prototype_name, DEFAULT_DIR)
-                endpoint_prototype_name, endpoint_dir = _connect_to_neighbor(x, y, State, endpoint_prototype_name, endpoint_dir)
+                endpoint_prototype_name, endpoint_dir = _connect_to_neighbor(State, x, y, endpoint_prototype_name, endpoint_dir)
                 endpoint_prototype_name, endpoint_dir = iflow_connector.set_connection(endpoint_prototype_name, endpoint_dir, reverse_dir, true)
                 map[coord] = {endpoint_prototype_name, endpoint_dir}
             end
@@ -169,6 +179,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                 local endpoint_prototype_name, endpoint_dir = iflow_connector.cleanup(prototype_name, DEFAULT_DIR)
                 endpoint_prototype_name, endpoint_dir = iflow_connector.set_connection(endpoint_prototype_name, endpoint_dir, dir, true)
                 endpoint_prototype_name, endpoint_dir = iflow_connector.set_connection(endpoint_prototype_name, endpoint_dir, reverse_dir, true)
+                endpoint_prototype_name, endpoint_dir = _connect_to_neighbor(State, x, y, endpoint_prototype_name, endpoint_dir)
                 map[coord] = {endpoint_prototype_name, endpoint_dir}
             end
         end
@@ -239,7 +250,7 @@ local function _teardown_end(self, datamodel, State, dir, dir_delta)
                 map[coord] = {_set_endpoint_connection(prototype_name, State, object, State.starting_connection, dir)}
             else
                 local endpoint_prototype_name, endpoint_dir = iflow_connector.cleanup(prototype_name, DEFAULT_DIR)
-                endpoint_prototype_name, endpoint_dir = _connect_to_neighbor(x, y, State, endpoint_prototype_name, endpoint_dir)
+                endpoint_prototype_name, endpoint_dir = _connect_to_neighbor(State, x, y, endpoint_prototype_name, endpoint_dir)
                 if not (x == to_x and y == to_y) then
                     endpoint_prototype_name, endpoint_dir = iflow_connector.set_connection(endpoint_prototype_name, endpoint_dir, dir, true)
                 end
@@ -251,7 +262,7 @@ local function _teardown_end(self, datamodel, State, dir, dir_delta)
                 map[coord] = {_set_endpoint_connection(prototype_name, State, object, State.ending_connection, reverse_dir)}
             else
                 local endpoint_prototype_name, endpoint_dir = iflow_connector.cleanup(prototype_name, DEFAULT_DIR)
-                endpoint_prototype_name, endpoint_dir = _connect_to_neighbor(x, y, State, endpoint_prototype_name, endpoint_dir)
+                endpoint_prototype_name, endpoint_dir = _connect_to_neighbor(State, x, y, endpoint_prototype_name, endpoint_dir)
                 endpoint_prototype_name, endpoint_dir = iflow_connector.set_connection(endpoint_prototype_name, endpoint_dir, reverse_dir, true)
                 map[coord] = {endpoint_prototype_name, endpoint_dir}
             end
@@ -390,6 +401,9 @@ local function _builder_start(self, datamodel)
         -- starting object should at least have one connection, promised by _builder_init()
         local connection = _find_starting_connection(prototype_name, starting, to_x, to_y, dir)
         State.starting_connection = connection
+        if State.starting_connection.fluid_name ~= "" then
+            State.fluid_name = State.starting_connection.fluid_name
+        end
         if connection.dir ~= dir then
             State.succ = false
         end
@@ -574,11 +588,10 @@ local function _teardown_start(self, datamodel)
     end
 end
 
-local function __calc_grid_position(self, typeobject, x, y)
+local function __calc_grid_position(building_position, typeobject)
     local w, h = iprototype.unpackarea(typeobject.area)
-    local _, originPosition = coord_system:align(math3d.vector {0, 0, 0}, w, h)
-    local buildingPosition = coord_system:get_position_by_coord(x, y, w, h)
-    return math3d.ref(math3d.add(math3d.sub(buildingPosition, originPosition), GRID_POSITION_OFFSET))
+    local _, originPosition = coord_system:align(math3d.vector(0, 0, 0), w, h)
+    return math3d.ref(math3d.add(math3d.sub(building_position, originPosition), GRID_POSITION_OFFSET))
 end
 
 --------------------------------------------------------------------------------------------------
@@ -592,11 +605,6 @@ local function new_entity(self, datamodel, typeobject)
         return
     end
 
-    if not self.grid_entity then
-        self.grid_entity = igrid_entity.create("polyline_grid", terrain._width, terrain._height, terrain.tile_size, {t = __calc_grid_position(self, typeobject, x, y)})
-    end
-    self.grid_entity:show(true)
-
     self.coord_indicator = iobject.new {
         prototype_name = typeobject.name,
         dir = dir,
@@ -609,6 +617,11 @@ local function new_entity(self, datamodel, typeobject)
         fluid_name = "",
         group_id = 0,
     }
+
+    if not self.grid_entity then
+        self.grid_entity = igrid_entity.create("polyline_grid", terrain._width, terrain._height, terrain.tile_size, {t = __calc_grid_position(self.coord_indicator.srt.t, typeobject)})
+    end
+    self.grid_entity:show(true)
 
     self.pickup_components[#self.pickup_components + 1] = create_pickup_selected_box(self.coord_indicator.srt.t, typeobject, dir, true)
 
@@ -625,7 +638,9 @@ local function touch_move(self, datamodel, delta_vec)
     end
     if self.grid_entity then
         local typeobject = iprototype.queryByName(self.coord_indicator.prototype_name)
-        self.grid_entity:send("obj_motion", "set_position", __calc_grid_position(self, typeobject, self.coord_indicator.x, self.coord_indicator.y))
+        local w, h = iprototype.unpackarea(typeobject.area)
+        local grid_position = coord_system:get_position_by_coord(self.coord_indicator.x, self.coord_indicator.y, w, h)
+        self.grid_entity:send("obj_motion", "set_position", __calc_grid_position(grid_position, typeobject))
     end
     for _, c in pairs(self.pickup_components) do
         c:on_position_change(self.coord_indicator.srt, self.coord_indicator.dir)
@@ -641,6 +656,13 @@ local function touch_end(self, datamodel)
     self.coord_indicator, x, y = iobject.align(self.coord_indicator)
     self.coord_indicator.x, self.coord_indicator.y = x, y
     self:revert_changes({"TEMPORARY"})
+
+    if self.grid_entity then
+        local typeobject = iprototype.queryByName(self.coord_indicator.prototype_name)
+        local w, h = iprototype.unpackarea(typeobject.area)
+        local grid_position = coord_system:get_position_by_coord(self.coord_indicator.x, self.coord_indicator.y, w, h)
+        self.grid_entity:send("obj_motion", "set_position", __calc_grid_position(grid_position, typeobject))
+    end
 
     for _, c in pairs(self.pickup_components) do
         c:on_position_change(self.coord_indicator.srt, self.coord_indicator.dir)
@@ -706,7 +728,7 @@ local function place_one(self, datamodel)
         y = y,
         srt = {
             t = math3d.ref(math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, "N")))),
-            r = ROTATORS[dir],
+            r = ROTATORS["N"],
         },
         fluid_name = 0,
         group_id = 0,

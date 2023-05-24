@@ -2,16 +2,16 @@ local ecs   = ...
 local world = ecs.world
 local w     = world.w
 local iterrain          = ecs.require "terrain"
-local iline_entity      = ecs.require "engine.line_entity"
+local ipl               = ecs.import.interface "ant.render|ipolyline"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
 local M ={}
-local temp_lines = {}
-local lines = {}
+local temp_lines
+local lines
 local pole_height = 30
-local function create_line(pole1, pole2)
+local function get_line(pole1, pole2)
     if not pole1.power_network_link or not pole2.power_network_link then
-        return 0
+        return
     end
     local pos1
     local pos2
@@ -25,45 +25,49 @@ local function create_line(pole1, pole2)
     pos1[2] = pos1[2] + pole_height
     pos2 = pos2 or iterrain:get_position_by_coord(pole2.x, pole2.y, pole2.w, pole2.h)
     pos2[2] = pos2[2] + pole_height
-    return iline_entity.create_lines({pos1, pos2}, 80, {1.0, 0.0, 0.0, 0.7}, RENDER_LAYER.WIRE)
-end
-
-function M.clear_temp_line()
-    for _, le in ipairs(temp_lines) do
-        if le > 0 then
-            w:remove(le)
-        end
-    end
-    temp_lines = {}
-end
-
-function M.clear_line()
-    M.clear_temp_line()
-    for _, le in ipairs(lines) do
-        if le > 0 then
-            w:remove(le)
-        end
-    end
-    lines = {}
+    return pos1, pos2
+    -- return iline_entity.create_lines({pos1, pos2}, 80, {1.0, 0.0, 0.0, 0.7}, RENDER_LAYER.WIRE)
 end
 
 function M.update_temp_line(temp_pole)
-    M.clear_temp_line()
+    if temp_lines then
+        w:remove(temp_lines)
+        temp_lines = nil
+    end
+    local lines_data = {}
     if temp_pole then
         for _, poles in pairs(temp_pole) do
             if poles.lines then
                 for _, l in ipairs(poles.lines) do
-                    temp_lines[#temp_lines + 1] = create_line(l.p1, l.p2)
+                    local p0, p1 = get_line(l.p1, l.p2)
+                    if p0 then
+                        lines_data[#lines_data + 1] = p0
+                        lines_data[#lines_data + 1] = p1
+                    end
                 end
             end
         end
     end
+    if #lines_data > 0 then
+        temp_lines = ipl.add_linelist(lines_data, 80, {1.0, 0.0, 0.0, 0.7}, nil, nil, RENDER_LAYER.WIRE)
+    end
 end
 
 function M.update_line(pole_lines)
-    M.clear_line()
+    if lines then
+        w:remove(lines)
+        lines = nil
+    end
+    local lines_data = {}
     for _, l in ipairs(pole_lines) do
-        lines[#lines + 1] = create_line(l.p1, l.p2)
+        local p0, p1 = get_line(l.p1, l.p2)
+        if p0 then
+            lines_data[#lines_data + 1] = p0
+            lines_data[#lines_data + 1] = p1
+        end
+    end
+    if #lines_data > 0 then
+        lines = ipl.add_linelist(lines_data, 80, {1.0, 0.0, 0.0, 0.7}, nil, nil, RENDER_LAYER.WIRE)
     end
 end
 
