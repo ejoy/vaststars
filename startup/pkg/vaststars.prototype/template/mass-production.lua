@@ -19,11 +19,6 @@ local entities = { {
     y = 108
   }, {
     dir = "N",
-    prototype_name = "风力发电机I",
-    x = 120,
-    y = 121
-  }, {
-    dir = "N",
     prototype_name = "采矿机I",
     recipe = "碎石挖掘",
     x = 113,
@@ -45,11 +40,6 @@ local entities = { {
     prototype_name = "采矿机I",
     recipe = "碎石挖掘",
     x = 70,
-    y = 130
-  }, {
-    dir = "N",
-    prototype_name = "风力发电机I",
-    x = 67,
     y = 130
   }, {
     dir = "N",
@@ -90,17 +80,12 @@ local entities = { {
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 121,
-    y = 127
+    x = 122,
+    y = 129
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 113,
-    y = 130
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 108,
+    x = 107,
     y = 129
   }, {
     dir = "N",
@@ -120,13 +105,13 @@ local entities = { {
     y = 123
   }, {
     dir = "N",
-    item = "塑料",
+    item = "石砖",
     prototype_name = "无人机仓库",
     x = 96,
     y = 134
   }, {
     dir = "N",
-    item = "机械科技包",
+    item = "石砖",
     prototype_name = "无人机仓库",
     x = 98,
     y = 134
@@ -141,11 +126,6 @@ local entities = { {
     item = "碎石",
     prototype_name = "无人机仓库",
     x = 142,
-    y = 144
-  }, {
-    dir = "N",
-    prototype_name = "风力发电机I",
-    x = 144,
     y = 144
   }, {
     dir = "N",
@@ -214,11 +194,6 @@ local entities = { {
     y = 131
   }, {
     dir = "N",
-    prototype_name = "风力发电机I",
-    x = 193,
-    y = 130
-  }, {
-    dir = "N",
     item = "碎石",
     prototype_name = "无人机仓库",
     x = 165,
@@ -235,11 +210,6 @@ local entities = { {
     recipe = "碎石挖掘",
     x = 168,
     y = 110
-  }, {
-    dir = "N",
-    prototype_name = "风力发电机I",
-    x = 168,
-    y = 107
   }, {
     dir = "N",
     prototype_name = "采矿机I",
@@ -278,21 +248,6 @@ local entities = { {
     y = 163
   }, {
     dir = "N",
-    prototype_name = "风力发电机I",
-    x = 158,
-    y = 129
-  }, {
-    dir = "N",
-    prototype_name = "风力发电机I",
-    x = 198,
-    y = 115
-  }, {
-    dir = "N",
-    prototype_name = "风力发电机I",
-    x = 133,
-    y = 172
-  }, {
-    dir = "N",
     prototype_name = "采矿机I",
     recipe = "铁矿石挖掘",
     x = 136,
@@ -305,30 +260,10 @@ local entities = { {
     y = 191
   }, {
     dir = "N",
-    prototype_name = "风力发电机I",
-    x = 178,
-    y = 194
-  }, {
-    dir = "N",
     prototype_name = "采矿机I",
     recipe = "铁矿石挖掘",
     x = 207,
     y = 160
-  }, {
-    dir = "N",
-    prototype_name = "风力发电机I",
-    x = 204,
-    y = 160
-  }, {
-    dir = "N",
-    prototype_name = "风力发电机I",
-    x = 56,
-    y = 116
-  }, {
-    dir = "N",
-    prototype_name = "风力发电机I",
-    x = 73,
-    y = 88
   }, {
     dir = "N",
     prototype_name = "采矿机I",
@@ -348,29 +283,9 @@ local entities = { {
     y = 93
   }, {
     dir = "N",
-    prototype_name = "风力发电机I",
-    x = 145,
-    y = 93
-  }, {
-    dir = "N",
-    prototype_name = "风力发电机I",
-    x = 168,
-    y = 74
-  }, {
-    dir = "N",
-    prototype_name = "风力发电机I",
-    x = 86,
-    y = 163
-  }, {
-    dir = "N",
     prototype_name = "采矿机I",
     recipe = "铁矿石挖掘",
     x = 60,
-    y = 183
-  }, {
-    dir = "N",
-    prototype_name = "风力发电机I",
-    x = 57,
     y = 183
   }, {
     dir = "N",
@@ -868,11 +783,6 @@ local entities = { {
     y = 156
   }, {
     dir = "N",
-    prototype_name = "风力发电机I",
-    x = 110,
-    y = 152
-  }, {
-    dir = "N",
     prototype_name = "铁制电线杆",
     x = 115,
     y = 147
@@ -884,7 +794,7 @@ local entities = { {
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 121,
+    x = 122,
     y = 116
   }, {
     dir = "N",
@@ -1084,16 +994,6 @@ local entities = { {
     recipe = "甲烷转乙烯",
     x = 161,
     y = 180
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 179,
-    y = 189
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 179,
-    y = 186
   }, {
     dir = "W",
     fluid_name = {
@@ -1666,18 +1566,13 @@ local entities = { {
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 171,
-    y = 160
+    x = 169,
+    y = 156
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 171,
-    y = 152
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 164,
-    y = 152
+    x = 169,
+    y = 151
   }, {
     dir = "N",
     fluid_name = "氯气",
@@ -1916,11 +1811,6 @@ local entities = { {
     prototype_name = "送货车站",
     x = 122,
     y = 164
-  }, {
-    dir = "N",
-    prototype_name = "风力发电机I",
-    x = 166,
-    y = 166
   }, {
     dir = "E",
     fluid_name = "甲烷",
@@ -3115,14 +3005,649 @@ local entities = { {
     y = 169
   }, {
     dir = "N",
+    prototype_name = "太阳能板I",
+    x = 66,
+    y = 159
+  }, {
+    dir = "N",
+    prototype_name = "太阳能板I",
+    x = 63,
+    y = 159
+  }, {
+    dir = "N",
+    prototype_name = "太阳能板I",
+    x = 60,
+    y = 159
+  }, {
+    dir = "N",
+    prototype_name = "太阳能板I",
+    x = 57,
+    y = 159
+  }, {
+    dir = "N",
+    prototype_name = "太阳能板I",
+    x = 54,
+    y = 159
+  }, {
+    dir = "N",
+    prototype_name = "太阳能板I",
+    x = 66,
+    y = 163
+  }, {
+    dir = "N",
+    prototype_name = "太阳能板I",
+    x = 63,
+    y = 163
+  }, {
+    dir = "N",
+    prototype_name = "太阳能板I",
+    x = 60,
+    y = 163
+  }, {
+    dir = "N",
+    prototype_name = "太阳能板I",
+    x = 57,
+    y = 163
+  }, {
+    dir = "N",
+    prototype_name = "太阳能板I",
+    x = 54,
+    y = 163
+  }, {
+    dir = "N",
+    prototype_name = "太阳能板I",
+    x = 51,
+    y = 159
+  }, {
+    dir = "N",
+    prototype_name = "太阳能板I",
+    x = 51,
+    y = 163
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 64,
+    y = 162
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 58,
+    y = 162
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 52,
+    y = 162
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 64,
+    y = 169
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 67,
+    y = 167
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 65,
+    y = 167
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 63,
+    y = 167
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 61,
+    y = 167
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 59,
+    y = 167
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 57,
+    y = 167
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 55,
+    y = 167
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 53,
+    y = 167
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 58,
+    y = 169
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 52,
+    y = 169
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 51,
+    y = 167
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 49,
+    y = 167
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 70,
+    y = 169
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 69,
+    y = 167
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 71,
+    y = 167
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 71,
+    y = 170
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 69,
+    y = 170
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 67,
+    y = 170
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 65,
+    y = 170
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 63,
+    y = 170
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 61,
+    y = 170
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 59,
+    y = 170
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 57,
+    y = 170
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 55,
+    y = 170
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 53,
+    y = 170
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 51,
+    y = 170
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 49,
+    y = 170
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 70,
+    y = 172
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 64,
+    y = 172
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 58,
+    y = 172
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 52,
+    y = 172
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 71,
+    y = 173
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 69,
+    y = 173
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 67,
+    y = 173
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 65,
+    y = 173
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 63,
+    y = 173
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 61,
+    y = 173
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 59,
+    y = 173
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 57,
+    y = 173
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 55,
+    y = 173
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 53,
+    y = 173
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 51,
+    y = 173
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 49,
+    y = 173
+  }, {
+    dir = "S",
+    fluid_name = {
+      input = { "地下卤水" },
+      output = { "蒸汽" }
+    },
+    prototype_name = "锅炉I",
+    recipe = "卤水沸腾",
+    x = 31,
+    y = 173
+  }, {
+    dir = "S",
+    fluid_name = {
+      input = { "地下卤水" },
+      output = { "蒸汽" }
+    },
+    prototype_name = "锅炉I",
+    recipe = "卤水沸腾",
+    x = 37,
+    y = 173
+  }, {
+    dir = "S",
+    fluid_name = {
+      input = { "地下卤水" },
+      output = { "蒸汽" }
+    },
+    prototype_name = "锅炉I",
+    recipe = "卤水沸腾",
+    x = 43,
+    y = 173
+  }, {
+    dir = "S",
+    fluid_name = {
+      input = {},
+      output = { "地下卤水" }
+    },
+    prototype_name = "地下水挖掘机",
+    recipe = "离岸抽水",
+    x = 40,
+    y = 173
+  }, {
+    dir = "S",
+    fluid_name = {
+      input = {},
+      output = { "地下卤水" }
+    },
+    prototype_name = "地下水挖掘机",
+    recipe = "离岸抽水",
+    x = 34,
+    y = 173
+  }, {
+    dir = "S",
+    fluid_name = {
+      input = {},
+      output = { "地下卤水" }
+    },
+    prototype_name = "地下水挖掘机",
+    recipe = "离岸抽水",
+    x = 46,
+    y = 173
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 47,
+    y = 162
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 41,
+    y = 162
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 46,
+    y = 172
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 40,
+    y = 172
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 34,
+    y = 172
+  }, {
+    dir = "S",
+    fluid_name = {
+      input = { "蒸汽" },
+      output = {}
+    },
+    prototype_name = "蒸汽发电机I",
+    recipe = "蒸汽发电",
+    x = 43,
+    y = 168
+  }, {
+    dir = "S",
+    fluid_name = {
+      input = { "蒸汽" },
+      output = {}
+    },
+    prototype_name = "蒸汽发电机I",
+    recipe = "蒸汽发电",
+    x = 43,
+    y = 163
+  }, {
+    dir = "S",
+    fluid_name = {
+      input = { "蒸汽" },
+      output = {}
+    },
+    prototype_name = "蒸汽发电机I",
+    recipe = "蒸汽发电",
+    x = 37,
+    y = 168
+  }, {
+    dir = "S",
+    fluid_name = {
+      input = { "蒸汽" },
+      output = {}
+    },
+    prototype_name = "蒸汽发电机I",
+    recipe = "蒸汽发电",
+    x = 37,
+    y = 163
+  }, {
+    dir = "S",
+    fluid_name = {
+      input = { "蒸汽" },
+      output = {}
+    },
+    prototype_name = "蒸汽发电机I",
+    recipe = "蒸汽发电",
+    x = 31,
+    y = 168
+  }, {
+    dir = "S",
+    fluid_name = {
+      input = { "蒸汽" },
+      output = {}
+    },
+    prototype_name = "蒸汽发电机I",
+    recipe = "蒸汽发电",
+    x = 31,
+    y = 163
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 34,
+    y = 162
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 64,
+    y = 154
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 64,
+    y = 146
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 64,
+    y = 138
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 64,
+    y = 130
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 69,
+    y = 130
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 64,
+    y = 122
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 64,
+    y = 115
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 64,
+    y = 107
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 64,
+    y = 99
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 64,
+    y = 91
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 77,
+    y = 130
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 85,
+    y = 130
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 114,
+    y = 129
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 122,
+    y = 121
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 155,
+    y = 119
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 155,
+    y = 127
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 163,
+    y = 127
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 171,
+    y = 127
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 179,
+    y = 127
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 187,
+    y = 127
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 195,
+    y = 127
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 195,
+    y = 119
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 163,
+    y = 135
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 163,
+    y = 143
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 169,
+    y = 168
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 184,
+    y = 160
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 190,
+    y = 160
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 198,
+    y = 160
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 205,
+    y = 160
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 110,
+    y = 155
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 121,
+    y = 155
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 155,
+    y = 151
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 147,
+    y = 151
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 121,
+    y = 161
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 176,
+    y = 176
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 176,
+    y = 184
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 176,
+    y = 192
+  }, {
+    dir = "N",
     prototype_name = "铁制电线杆",
     x = 107,
     y = 133
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 106,
+    x = 107,
     y = 139
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 169,
+    y = 160
   } }
 local road = {
   [22850] = 8,
