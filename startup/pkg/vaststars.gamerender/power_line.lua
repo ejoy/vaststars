@@ -49,7 +49,7 @@ function M.update_temp_line(temp_pole)
         end
     end
     if #lines_data > 0 then
-        temp_lines = ipl.create_lines(lines_data, 80, {1.0, 0.0, 0.0, 0.7}, nil, nil, RENDER_LAYER.WIRE)
+        temp_lines = ipl.add_linelist(lines_data, 80, {1.0, 0.0, 0.0, 0.7}, nil, nil, RENDER_LAYER.WIRE)
     end
 end
 
@@ -67,7 +67,7 @@ function M.update_line(pole_lines)
         end
     end
     if #lines_data > 0 then
-        lines = ipl.create_lines(lines_data, 80, {1.0, 0.0, 0.0, 0.7}, nil, nil, RENDER_LAYER.WIRE)
+        lines = ipl.add_linelist(lines_data, 80, {1.0, 0.0, 0.0, 0.7}, nil, nil, RENDER_LAYER.WIRE)
     end
 end
 
