@@ -159,6 +159,7 @@ interface "icamera_controller"
     .method "focus_on_position"
     .method "set_camera_from_prefab"
     .method "toggle_view"
+    .method "set_camera_srt"
 
 system "input_simulate_system"
     .implement "engine/system/input_simulate_system.lua"
