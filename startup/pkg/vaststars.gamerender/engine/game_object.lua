@@ -280,7 +280,7 @@ function igame_object.create(init)
     end
     efk_events["stop"] = function(o, e)
         if iefk.is_playing(o.id) then
-            iefk.stop(o.id)
+            iefk.stop(o.id, true)
         end
     end
 
