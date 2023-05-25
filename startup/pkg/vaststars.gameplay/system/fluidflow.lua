@@ -1,9 +1,18 @@
 local system = require "register.system"
-local query = require "prototype".queryById
+local prototype = require "prototype"
+local query = prototype.queryById
 
 local m = system "fluidflow"
 
+local mt = {}
+mt.__index = function (t, k)
+    t[k] = setmetatable({}, mt)
+    return t[k]
+end
+
 local builder = {}
+local pipebits = setmetatable({}, mt)
+local rev_pipebits = setmetatable({}, mt)
 
 local N <const> = 0
 local E <const> = 1
@@ -27,6 +36,15 @@ local PipeDirection <const> = {
     ["S"] = 2,
     ["W"] = 3,
 }
+
+local function is_pipeid(pt)
+    for _, t in ipairs(pt.type) do
+        if t == "pipe" or t == "pipe_to_ground" then
+            return true
+        end
+    end
+    return false
+end
 
 local function uniquekey(x, y, d)
     if d == N then
@@ -57,6 +75,31 @@ local function rotate(position, direction, area)
         return w - x, h - y, dir
     elseif direction == W then
         return y, w - x, dir
+    end
+end
+
+local function calc_pipebits(pt, direction)
+    local bits = 0
+    for _, c in ipairs(pt.fluidbox.connections) do
+        local dir = (PipeDirection[c.position[3]] + direction) % 4
+        bits = bits | ((c.ground and 2 or 1) << (dir * 2))
+    end
+    return bits
+end
+
+function m.prototype_restore()
+    pipebits = setmetatable({}, mt)
+    rev_pipebits = setmetatable({}, mt)
+    for _, pt in pairs(prototype.all()) do
+        if is_pipeid(pt) then
+            for _, dir in pairs(pt.building_direction) do
+                local bits = calc_pipebits(pt, PipeDirection[dir])
+                assert(rawget(pipebits[pt.id], dir) == nil)
+                pipebits[pt.id][PipeDirection[dir]] = bits
+                assert(rawget(rev_pipebits[pt.building_category], bits) == nil)
+                rev_pipebits[pt.building_category][bits] = {id = pt.id, direction = PipeDirection[dir]}
+            end
+        end
     end
 end
 
@@ -106,17 +149,17 @@ local function connect(connects, a_id, a_type, b_id, b_type)
     end
 end
 
-local function builder_connect(c, key, id, type)
+local function builder_connect(c, key, id, type, eid, conndir)
     local neighbor = c.map[key]
     if not neighbor then
-        c.map[key] = { id = id, type = type }
+        c.map[key] = { id = id, type = type, eid = eid, conndir = conndir }
         return
     end
     connect(c.connects, id, type, neighbor.id, neighbor.type)
     c.map[key] = nil
 end
 
-local function builder_connect_fluidbox(fluid, id, fluidbox, entity, area)
+local function builder_connect_fluidbox(fluid, id, fluidbox, eid, entity, area)
     local c = builder[fluid]
     if not c then
         c = {
@@ -149,7 +192,7 @@ local function builder_connect_fluidbox(fluid, id, fluidbox, entity, area)
             }
         else
             local key = uniquekey(x, y, dir)
-            builder_connect(c, key, id, PipeEdgeType[conn.type])
+            builder_connect(c, key, id, PipeEdgeType[conn.type], eid, dir)
         end
     end
 end
@@ -259,7 +302,7 @@ end
 function m.build(world)
     local ecs = world.ecs
     builder_init()
-    for v in ecs:select "fluidbox:update building:in fluidbox_changed?in" do
+    for v in ecs:select "fluidbox:update building:in fluidbox_changed?in eid:in" do
         local pt = query(v.building.prototype)
         local fluid = v.fluidbox.fluid
         local id = v.fluidbox.id
@@ -272,9 +315,9 @@ function m.build(world)
         else
             assert(id ~= 0)
         end
-        builder_connect_fluidbox(fluid, id, pt.fluidbox, v.building, pt.area)
+        builder_connect_fluidbox(fluid, id, pt.fluidbox, v.eid, v.building, pt.area)
     end
-    for v in ecs:select "fluidboxes:update building:in fluidbox_changed?in" do
+    for v in ecs:select "fluidboxes:update building:in fluidbox_changed?in eid:in" do
         local pt = query(v.building.prototype)
         local function init_fluidflow(classify)
             for i, fluidbox in ipairs(pt.fluidboxes[classify.."put"]) do
@@ -290,7 +333,7 @@ function m.build(world)
                     else
                         assert(id ~= 0)
                     end
-                    builder_connect_fluidbox(fluid, id, fluidbox, v.building, pt.area)
+                    builder_connect_fluidbox(fluid, id, fluidbox, v.eid, v.building, pt.area)
                 end
             end
         end
@@ -299,6 +342,21 @@ function m.build(world)
     end
     builder_finish(world)
     ecs:clear "fluidbox_changed"
+    -- handling disconnected pipes
+    for _, c in pairs(builder) do
+        for _, v in pairs(c.map) do
+            local e = assert(world.entity[v.eid])
+            local pt = query(e.building.prototype)
+            if is_pipeid(pt) then
+                local bits = assert(pipebits[e.building.prototype][e.building.direction])
+                bits = bits & ~(3 << (v.conndir*2))
+                local r = assert(rev_pipebits[pt.building_category][bits])
+                e.building.prototype = r.id
+                e.building.direction = r.direction
+                e.building_changed = true
+            end
+        end
+    end
 end
 
 function m.backup_start(world)
@@ -341,12 +399,12 @@ end
 function m.restore_finish(world)
     local ecs = world.ecs
     builder_init()
-    for v in ecs:select "fluidbox:in building:in" do
+    for v in ecs:select "fluidbox:in building:in eid:in" do
         local pt = query(v.building.prototype)
         local fluid = v.fluidbox.fluid
         local id = v.fluidbox.id
         builder_restore(world, fluid, id, pt.fluidbox)
-        builder_connect_fluidbox(fluid, id, pt.fluidbox, v.building, pt.area)
+        builder_connect_fluidbox(fluid, id, pt.fluidbox, v.eid, v.building, pt.area)
     end
     for v in ecs:select "fluidboxes:in building:in" do
         local pt = query(v.building.prototype)
@@ -356,7 +414,7 @@ function m.restore_finish(world)
                 if fluid ~= 0 then
                     local id = v.fluidboxes[classify..i.."_id"]
                     builder_restore(world, fluid, id, fluidbox)
-                    builder_connect_fluidbox(fluid, id, fluidbox, v.building, pt.area)
+                    builder_connect_fluidbox(fluid, id, fluidbox, v.eid, v.building, pt.area)
                 end
             end
         end

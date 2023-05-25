@@ -61,7 +61,7 @@ end
 
 -- Note: different from pipe_builder
 -- automatically connects to its neighbors which has fluidbox, except for pipe or pipe to ground
-local function _connect_to_neighbor(State, x, y, neighbor_dir, prototype_name, dir)
+local function _connect_to_neighbor(State, PipeToGroundState, x, y, neighbor_dir, prototype_name, dir)
     local succ, neighbor_x, neighbor_y, dx, dy
     succ, neighbor_x, neighbor_y = terrain:move_coord(x, y, neighbor_dir, 1)
     if not succ then
@@ -73,15 +73,31 @@ local function _connect_to_neighbor(State, x, y, neighbor_dir, prototype_name, d
         return prototype_name, dir
     end
 
+    local _prototype_name, _dir = object.prototype_name, object.dir
     if iprototype.is_pipe(object.prototype_name) or iprototype.is_pipe_to_ground(object.prototype_name) then
-        return prototype_name, dir
+        _prototype_name, _dir = iflow_connector.covers(object.prototype_name, object.dir)
     end
 
-    for _, fb in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
+    for _, fb in ipairs(ifluid:get_fluidbox(_prototype_name, object.x, object.y, _dir, object.fluid_name)) do
         succ, dx, dy = terrain:move_coord(fb.x, fb.y, fb.dir, 1)
         if succ and dx == x and dy == y then
             prototype_name, dir = iflow_connector.set_connection(prototype_name, dir, neighbor_dir, true)
             assert(prototype_name and dir) -- TODO:remove this assert
+
+            if iprototype.is_pipe(object.prototype_name) or iprototype.is_pipe_to_ground(object.prototype_name) then
+                local coord = packcoord(object.x, object.y)
+                _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, iprototype.reverse_dir(neighbor_dir), true)
+                if _prototype_name then
+                    PipeToGroundState.map[coord] = {_prototype_name, _dir}
+                end
+            end
+
+            if not (fb.fluid_name == "" or State.fluid_name == "" or fb.fluid_name == object.fluid_name) then
+                State.succ = false
+            else
+                State.fluid_name = fb.fluid_name
+            end
+
             return prototype_name, dir -- only one fluidbox can be connected to the endpoint
         end
     end
@@ -148,8 +164,8 @@ local function _set_starting(prototype_name, State, PipeToGroundState, x, y, dir
     end
 
     if not object then
-        local endpoint_prototype_name, endpoint_dir = iflow_connector.covers_pipe_to_ground(typeobject.flow_type, nil, dir)
-        endpoint_prototype_name, endpoint_dir = _connect_to_neighbor(State, x, y, iprototype.reverse_dir(dir), endpoint_prototype_name, endpoint_dir)
+        local endpoint_prototype_name, endpoint_dir = iflow_connector.covers_pipe_to_ground(typeobject.building_category, nil, dir)
+        endpoint_prototype_name, endpoint_dir = _connect_to_neighbor(State, PipeToGroundState, x, y, iprototype.reverse_dir(dir), endpoint_prototype_name, endpoint_dir)
         PipeToGroundState.map[packcoord(x, y)] = {assert(endpoint_prototype_name), assert(endpoint_dir)}
         return x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
     end
@@ -159,7 +175,7 @@ local function _set_starting(prototype_name, State, PipeToGroundState, x, y, dir
         local _prototype_name, _dir
         if _can_replace(object, dir) then
             -- replace the neighbor pipe with a pipe to ground
-            _prototype_name, _dir = iflow_connector.covers_pipe_to_ground(typeobject.flow_type, iprototype.reverse_dir(dir), dir)
+            _prototype_name, _dir = iflow_connector.covers_pipe_to_ground(typeobject.building_category, iprototype.reverse_dir(dir), dir)
             PipeToGroundState.map[coord] = {assert(_prototype_name), assert(_dir)}
             return x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
         end
@@ -174,7 +190,7 @@ local function _set_starting(prototype_name, State, PipeToGroundState, x, y, dir
             return
         end
 
-        _prototype_name, _dir = iflow_connector.covers_pipe_to_ground(typeobject.flow_type, iprototype.reverse_dir(dir), dir)
+        _prototype_name, _dir = iflow_connector.covers_pipe_to_ground(typeobject.building_category, iprototype.reverse_dir(dir), dir)
 
         coord = packcoord(x, y)
         local next_object = objects:coord(x, y, EDITOR_CACHE_NAMES)
@@ -206,7 +222,7 @@ local function _set_starting(prototype_name, State, PipeToGroundState, x, y, dir
             local coord = packcoord(x, y)
             PipeToGroundState.map[coord] = {assert(_prototype_name), assert(_dir)}
 
-            _prototype_name, _dir = iflow_connector.covers_pipe_to_ground(typeobject.flow_type, iprototype.reverse_dir(dir), dir)
+            _prototype_name, _dir = iflow_connector.covers_pipe_to_ground(typeobject.building_category, iprototype.reverse_dir(dir), dir)
             if _prototype_name then
                 x, y = x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
                 local coord = packcoord(x, y)
@@ -214,7 +230,7 @@ local function _set_starting(prototype_name, State, PipeToGroundState, x, y, dir
             end
         else
             local coord = packcoord(x, y)
-            _prototype_name, _dir = iflow_connector.covers_pipe_to_ground(typeobject.flow_type, iprototype.reverse_dir(dir), dir)
+            _prototype_name, _dir = iflow_connector.covers_pipe_to_ground(typeobject.building_category, iprototype.reverse_dir(dir), dir)
             _prototype_name, _dir = iflow_connector.set_connection(_prototype_name, _dir, iprototype.reverse_dir(dir), false)
             PipeToGroundState.map[coord] = {assert(_prototype_name), assert(_dir)}
         end
@@ -224,7 +240,7 @@ local function _set_starting(prototype_name, State, PipeToGroundState, x, y, dir
     else
         local _prototype_name, _dir
         local typeobject = iprototype.queryByName(prototype_name)
-        _prototype_name, _dir = iflow_connector.covers_pipe_to_ground(typeobject.flow_type, iprototype.reverse_dir(dir), dir)
+        _prototype_name, _dir = iflow_connector.covers_pipe_to_ground(typeobject.building_category, iprototype.reverse_dir(dir), dir)
 
         x, y = x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
         if x == PipeToGroundState.to_x and y == PipeToGroundState.to_y then
@@ -280,7 +296,7 @@ local function _set_section(prototype_name, State, PipeToGroundState, x, y, dir)
         end
     end
 
-    local _prototype_name, _dir = iflow_connector.covers_pipe_to_ground(typeobject.flow_type, dir, reverse_dir)
+    local _prototype_name, _dir = iflow_connector.covers_pipe_to_ground(typeobject.building_category, dir, reverse_dir)
     PipeToGroundState.map[packcoord(x, y)] = {assert(_prototype_name), assert(_dir)}
 
     x, y = x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
@@ -299,7 +315,7 @@ local function _set_section(prototype_name, State, PipeToGroundState, x, y, dir)
             return
         end
     end
-    local _prototype_name, _dir = iflow_connector.covers_pipe_to_ground(typeobject.flow_type, reverse_dir, dir)
+    local _prototype_name, _dir = iflow_connector.covers_pipe_to_ground(typeobject.building_category, reverse_dir, dir)
     PipeToGroundState.map[packcoord(x, y)] = {assert(_prototype_name), assert(_dir)}
 
     if last then
@@ -311,9 +327,9 @@ end
 
 local function _set_ending(prototype_name, State, PipeToGroundState, x, y, dir)
     local typeobject = iprototype.queryByName(prototype_name)
-    local endpoint_prototype_name, endpoint_dir = iflow_connector.covers_pipe_to_ground(typeobject.flow_type, nil, iprototype.reverse_dir(dir))
+    local endpoint_prototype_name, endpoint_dir = iflow_connector.covers_pipe_to_ground(typeobject.building_category, nil, iprototype.reverse_dir(dir))
     assert(endpoint_prototype_name and endpoint_dir)
-    endpoint_prototype_name, endpoint_dir = _connect_to_neighbor(State, x, y, dir, endpoint_prototype_name, endpoint_dir)
+    endpoint_prototype_name, endpoint_dir = _connect_to_neighbor(State, PipeToGroundState, x, y, dir, endpoint_prototype_name, endpoint_dir)
     assert(endpoint_prototype_name and endpoint_dir)
 
     local object = objects:coord(x, y, EDITOR_CACHE_NAMES)
@@ -341,7 +357,7 @@ local function _set_ending(prototype_name, State, PipeToGroundState, x, y, dir)
         return
     end
 
-    endpoint_prototype_name, endpoint_dir = iflow_connector.covers_pipe_to_ground(typeobject.flow_type, dir, iprototype.reverse_dir(dir))
+    endpoint_prototype_name, endpoint_dir = iflow_connector.covers_pipe_to_ground(typeobject.building_category, dir, iprototype.reverse_dir(dir))
     PipeToGroundState.map[coord] = {assert(endpoint_prototype_name), assert(endpoint_dir)}
 
     coord = packcoord(x, y)
@@ -394,7 +410,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
     PipeToGroundState.to_x = to_x
     PipeToGroundState.to_y = to_y
     PipeToGroundState.distance = 0
-    PipeToGroundState.max_distance = iflow_connector.ground(typeobject.flow_type) -- The maximum distance at which an underground pipe can connect is 10 tiles, resulting in a gap of 9 tiles in between.
+    PipeToGroundState.max_distance = iflow_connector.ground(typeobject.building_category) -- The maximum distance at which an underground pipe can connect is 10 tiles, resulting in a gap of 9 tiles in between.
     PipeToGroundState.remove = {}
     PipeToGroundState.replace_object = {}
     PipeToGroundState.replace = true
@@ -602,6 +618,7 @@ local function _builder_start(self, datamodel)
         end
         State.from_x, State.from_y = from_x, from_y
 
+        local succ
         local ending = objects:coord(to_x, to_y, EDITOR_CACHE_NAMES)
         if ending then
             -- find one fluidbox that is matched with the direction specified, not the pipe to ground
@@ -740,7 +757,7 @@ local function __complete(self)
             object.recipe = recipe
         else
             if old.prototype_name ~= object.prototype_name then
-                igameplay.remove_entity(object.gameplay_eid, false)
+                igameplay.remove_entity(object.gameplay_eid)
                 object.gameplay_eid = igameplay.create_entity(object)
             elseif old.dir ~= object.dir then
                 ientity:set_direction(gameplay_core.get_world(), gameplay_core.get_entity(object.gameplay_eid), object.dir)

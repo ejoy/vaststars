@@ -79,7 +79,7 @@ local function __create_station_shelf(building_srt, e, item_id, item_count)
     local prefab = "/pkg/vaststars.resources/" .. typeobject_item.pile_model
     local s, r, t = __calc_heap_srt(building_srt, slot.scene)
 
-    local heap = create_heap(prefab_meshbin(prefab)[1].meshbin, {s = s, r = r, t = t}, HEAP_DIM3, gap3, item_count)
+    local heap = create_heap(prefab_meshbin(prefab)[1].mesh, {s = s, r = r, t = t}, HEAP_DIM3, gap3, item_count)
 
     local function update_heap_count(self, c)
         if self.item_count == c then

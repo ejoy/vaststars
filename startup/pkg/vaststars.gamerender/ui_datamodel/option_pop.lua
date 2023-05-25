@@ -47,6 +47,7 @@ function M:stage_camera_usage()
 
     for _ in restart_mb:unpack() do
         new_game()
+        world:pub {"rmlui_message_close", "option_pop.rml"}
     end
 
     for _ in close_mb:unpack() do
@@ -62,6 +63,7 @@ function M:stage_camera_usage()
         end
         storage.info = not storage.info
         icanvas.show(icanvas.types().ICON, storage.info)
+        world:pub {"rmlui_message_close", "option_pop.rml"}
     end
 
     for _ in back_to_main_menu_mb:unpack() do

@@ -15,7 +15,7 @@ return function()
     local prototype_name_dir_mask = setmetatable({}, mt)
 
     for _, pt in pairs(iprototype.each_type("building", "road")) do
-        for _, dir in ipairs(pt.flow_direction) do
+        for _, dir in ipairs(pt.building_direction) do
             local v = 0
             for _, conn in ipairs(pt.crossing.connections) do
                 local dn = assert(iprototype.dir_tonumber(iprototype.rotate_dir(conn.position[3], dir)))

@@ -40,7 +40,7 @@ local meshbin ; do
             local res = {}
             for _, v in ipairs(parse(fullpath)) do
                 if v.data and v.data.mesh then
-                    res[#res+1] = {meshbin = v.data.mesh, scene = v.data.scene or {}}
+                    res[#res+1] = v.data
                 end
             end
             meshbin_caches[fullpath] = res

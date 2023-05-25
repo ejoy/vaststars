@@ -54,6 +54,7 @@
             })
 
             function start.clickButton(event, ...)
+                audio.play("event:/ui/button1")
                 ui_sys.pub {...}
             end
         </script>

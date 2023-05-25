@@ -133,7 +133,7 @@ local function _set_endpoint_connection(State, object, connection, dir)
         local typeobject = iprototype.queryByName(object.prototype_name)
         local _prototype_name, _dir
         -- normal road can replace other road
-        _prototype_name, _dir = iflow_connector.covers_flow_type(object.prototype_name, object.dir, typeobject.flow_type)
+        _prototype_name, _dir = iflow_connector.covers_building_category(object.prototype_name, object.dir, typeobject.building_category)
         _prototype_name, _dir = iflow_connector.set_road_connection(_prototype_name, _dir, dir, true)
         if not _prototype_name or not _dir then
             State.succ = false

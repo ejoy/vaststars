@@ -128,5 +128,8 @@ component "base" {
 }
 
 component "fluidbox_changed" {}
+
+--
+component "building_new" {}
 component "building_changed" {}
 component "inventory_changed" {}

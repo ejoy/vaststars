@@ -55,43 +55,10 @@
                 info = false,
             })
 
-            function start.clickSave(event)
+            function start.clickButton(event, ...)
                 audio.play "event:/ui/button1"
-                ui_sys.pub {"save"}
+                ui_sys.pub {...}
             end
-
-            function start.clickRestart(event)
-                audio.play "event:/ui/button1"
-                ui_sys.pub {"restart"}
-                ui_sys.close()
-            end
-
-            function start.clickRestore(event, index)
-                audio.play "event:/ui/button1"
-                ui_sys.pub {"restore", index}
-            end
-
-            function start.clickInfo(event)
-                audio.play "event:/ui/button1"
-                ui_sys.pub {"info"}
-                ui_sys.close()
-            end
-
-            function start.clickClose()
-                audio.play "event:/ui/button1"
-                ui_sys.pub {"close"}
-            end
-
-            function start.clickDebug()
-                ui_sys.pub {"close"}
-                ui_sys.world_pub {"roadnet", "build"}
-            end
-
-            function start.clickBackToMainMenu()
-                audio.play "event:/ui/button1"
-                ui_sys.pub {"back_to_main_menu"}
-            end
-
         </script>
     </head>
     <body style = "background-color: black;">
@@ -103,7 +70,7 @@
                 </div>
                 <div style="width: 100%; height:95%; flex-direction: column; justify-content: center; align-items: center;">
                     <div class = "recipe-change-block">
-                        <button class = "button-style" style="background-color:rgb(203, 118, 24);" data-event-click = "clickSave()">
+                        <button class = "button-style" style="background-color:rgb(203, 118, 24);" data-event-click = "clickButton('save')">
                             <div class="middle-bg" style='background-image: "textures/science/book.texture";'/>
                             <div class = "recipe-name-text" style="font-size: 5.73vmin;">保存游戏</div>
                         </button>
@@ -111,19 +78,19 @@
                             <div class="middle-bg" style='background-image: "textures/construct/work.texture";'/>
                             <div class = "recipe-name-text" style="font-size: 5.73vmin;">读取游戏</div>
                         </button> 
-                        <button class = "button-style" style="background-color:rgb(0, 160, 235);" data-event-click = "clickInfo()">
+                        <button class = "button-style" style="background-color:rgb(0, 160, 235);" data-event-click = "clickButton('info')">
                             <div class="middle-bg" style='background-image: "textures/science/book.texture";'/>
                             <div class = "recipe-name-text" style="font-size: 5.73vmin;">{{info == false ? '提示开启' : '提示关闭'}}</div>
                         </button>
-                        <button class = "button-style" style="background-color:rgb(253, 0, 0);" data-event-click = "clickClose()">
+                        <button class = "button-style" style="background-color:rgb(253, 0, 0);" data-event-click = "clickButton('close')">
                             <div class="middle-bg" style='background-image: "textures/road/forbidden.texture";'/>
                             <div class = "recipe-name-text" style="font-size: 5.73vmin;">返回游戏</div>
                         </button>
-                        <button class = "button-style" style="background-color:rgb(253, 0, 0);" data-event-click = "clickDebug()">
+                        <button class = "button-style" style="background-color:rgb(253, 0, 0);">
                             <div class="middle-bg" style='background-image: "textures/road/forbidden.texture";'/>
                             <div class = "recipe-name-text" style="font-size: 5.73vmin;">调试模式</div>
                         </button>
-                        <button class = "button-style" style="background-color: rgb(52, 207, 115)" data-event-click = "clickBackToMainMenu()">
+                        <button class = "button-style" style="background-color: rgb(52, 207, 115)" data-event-click = "clickButton('back_to_main_menu')">
                             <div class="middle-bg" style='background-image: "textures/road/forbidden.texture";'/>
                             <div class = "recipe-name-text" style="font-size: 5.73vmin;">重新登录</div>
                         </button> 
@@ -137,7 +104,7 @@
                 </div>
                 <div style="width: 100%; height:90%; flex-direction: column; justify-content: center; align-items: center;">
                     <div class = "recipe-change-block" style = "justify-content: center; align-items: center;">
-                        <button class = "button-style" style="background-color:rgb(203, 118, 24);" data-for = "archival_files" data-event-click = "clickRestore(it_index + 1)">
+                        <button class = "button-style" style="background-color:rgb(203, 118, 24);" data-for = "archival_files" data-event-click = "clickButton('restore', it_index + 1)">
                             <div class = "recipe-name-text" style="font-size: 3.73vmin;">{{it_index}}</div>
                             <div class = "recipe-name-text" style="font-size: 2.73vmin;">{{it}}</div>
                         </button>

@@ -31,7 +31,7 @@ return function()
             is_cross_cache[typeobject.name] = is_cross
 
             local track = assert(road_track[typeobject.track])
-            for _, entity_dir in pairs(typeobject.flow_direction) do
+            for _, entity_dir in pairs(typeobject.building_direction) do
                 for toward, slot_names in pairs(track) do
                     local z
                     if is_cross then

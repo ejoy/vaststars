@@ -65,6 +65,7 @@ return function ()
 
     --TOOD: 如果可以提前得知需要读档，这个操作是可以省略的
     prototype.restore(cworld, {})
+    pipeline(world, cworld, "prototype")()
 
     function world:create_entity(type)
         return function (init)
@@ -86,6 +87,7 @@ return function ()
     end
 
     world.entity = ecs:visitor_create()
+    world.pipeline = pipeline
 
     local pipeline_update = pipeline(world, cworld, "update")
     local pipeline_clean = pipeline(world, cworld, "clean")

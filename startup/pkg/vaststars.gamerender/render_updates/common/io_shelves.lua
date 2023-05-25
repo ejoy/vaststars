@@ -68,7 +68,7 @@ local function __create_heap(heap_mat, item, amount)
     assert(typeobject_item.pile_model, ("no pile model: %s"):format(typeobject_item.name))
     local prefab = "/pkg/vaststars.resources/" .. typeobject_item.pile_model
     assert(prefab_meshbin(prefab)[1])
-    local meshbin = prefab_meshbin(prefab)[1].meshbin
+    local meshbin = prefab_meshbin(prefab)[1].mesh
     local gap3 = typeobject_item.gap3 and {typeobject_item.gap3:match("([%d%.]+)x([%d%.]*)x([%d%.]*)")} or {0, 0, 0}
     local s, r, t = math3d.srt(heap_mat)
 

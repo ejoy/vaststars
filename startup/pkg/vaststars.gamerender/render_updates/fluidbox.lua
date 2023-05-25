@@ -8,11 +8,8 @@ local terrain = ecs.require "terrain"
 local gameplay = import_package "vaststars.gameplay"
 local ifluidbox = gameplay.interface "fluidbox"
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
-local iflow_connector = require "gameplay.interface.flow_connector"
-local iobject = ecs.require "object"
 local gameplay_core = require "gameplay.core"
 local fluidbox_sys = ecs.system "fluidbox_system"
-local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 
 local DIRECTION <const> = {
     N = 0,
@@ -25,30 +22,12 @@ local DIRECTION <const> = {
     [3] = 'W',
 }
 
-local PIPE_TYPES <const> = {"pipe", "pipe_to_ground"}
-local EDITOR_CACHE_NAMES = {"CONSTRUCTED"}
-
 local function __length(t)
     local n = 0
     for _ in pairs(t) do
         n = n + 1
     end
     return n
-end
-
-local function __find_neighbor(x, y, dir, ground)
-    local succ, dx, dy = false, x, y
-    for i = 1, ground or 1 do
-        succ, dx, dy = terrain:move_coord(dx, dy, dir, 1)
-        if not succ then
-            return
-        end
-
-        local object = objects:coord(dx, dy)
-        if object then
-            return object
-        end
-    end
 end
 
 local ifluid = require "gameplay.interface.fluid"
@@ -130,7 +109,7 @@ local function __update_fluid_type(gameplay_world)
     local need_build = false
 
     local changed = {}
-    for e in gameplay_world.ecs:select "building_changed:in building:in fluidbox:update fluidbox_changed?update eid:in" do
+    for e in gameplay_world.ecs:select "building_new:in fluidbox:in eid:in" do
         changed[e.eid] = true
     end
 
@@ -168,51 +147,6 @@ local function __update_fluid_type(gameplay_world)
     return need_build
 end
 
-local global = require "global"
-local function __update_pipe_shape(gameplay_world)
-    local need_build = false
-
-    local removed = global.removed
-    global.removed = {}
-    -- for e in gameplay_world.ecs:select "REMOVED:in" do
-    --     removed[e.eid] = true
-    -- end
-
-    for _, v in pairs(removed) do
-        local typeobject = iprototype.queryById(v.prototype)
-        if not typeobject.fluidbox then
-            goto continue
-        end
-        for _, connection in ipairs(typeobject.fluidbox.connections) do
-            local x, y, dir = iprototype.rotate_connection(connection.position, DIRECTION[v.direction], typeobject.area)
-            local neighbor_object = __find_neighbor(v.x + x, v.y + y, dir)
-            if neighbor_object and iprototype.check_types(neighbor_object.prototype_name, PIPE_TYPES) then
-                neighbor_object = assert(objects:modify(neighbor_object.x, neighbor_object.y, EDITOR_CACHE_NAMES, iobject.clone))
-                igameplay.remove_entity(neighbor_object.gameplay_eid, false)
-
-                local _prototype_name, _dir = iflow_connector.set_connection(neighbor_object.prototype_name, neighbor_object.dir, iprototype.reverse_dir(dir), false)
-
-                neighbor_object.prototype_name = _prototype_name
-                neighbor_object.dir = _dir
-                neighbor_object.srt.r = ROTATORS[neighbor_object.dir]
-                neighbor_object.gameplay_eid = igameplay.create_entity({
-                    prototype_name = _prototype_name,
-                    dir = _dir,
-                    x = v.x + x,
-                    y = v.y + y,
-                    fluid_name = neighbor_object.fluid_name,
-                })
-            end
-        end
-        need_build = true
-
-        ::continue::
-    end
-
-    global.removed = {}
-    return need_build
-end
-
 function fluidbox_sys:gameworld_update()
     local gameplay_world = gameplay_core.get_world()
 
@@ -220,10 +154,6 @@ function fluidbox_sys:gameworld_update()
     if __update_fluid_type(gameplay_world) then
         need_build = true
     end
-    if __update_pipe_shape(gameplay_world) then
-        need_build = true
-    end
-
     if need_build then
         igameplay.build_world()
     end

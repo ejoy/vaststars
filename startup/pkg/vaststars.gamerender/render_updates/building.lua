@@ -14,6 +14,19 @@ local building_base_cfg = datalist.parse(fs.open(fs.path("/pkg/vaststars.resourc
 local building_sys = ecs.system "building_system"
 local gameplay_core = require "gameplay.core"
 
+local DIRECTION <const> = {
+    N = 0,
+    E = 1,
+    S = 2,
+    W = 3,
+    [0] = 'N',
+    [1] = 'E',
+    [2] = 'S',
+    [3] = 'W',
+}
+
+local EDITOR_CACHE_NAMES = {"CONSTRUCTED"}
+
 local function __draw_building_base(object_id, building_srt, w, h)
     local cfg = building_base_cfg[("%dx%d"):format(w, h)]
     local item_x, item_y = building_srt.t[1] - (w/2 * iterrain.tile_size), building_srt.t[3] - (h/2 * iterrain.tile_size)
@@ -56,7 +69,8 @@ end
 
 function building_sys:gameworld_update()
     local gameplay_world = gameplay_core.get_world()
-    for e in gameplay_world.ecs:select "building_changed:in building:in eid:in" do
+
+    for e in gameplay_world.ecs:select "building_new:in building:in eid:in" do
         -- object may not have been fully created yet
         local object = objects:coord(e.building.x, e.building.y)
         if not object then
@@ -74,5 +88,13 @@ function building_sys:gameworld_update()
         end
 
         ::continue::
+    end
+
+    for e in gameplay_world.ecs:select "building_changed building:in" do
+        local object = assert(objects:coord(e.building.x, e.building.y))
+        local typeobject = iprototype.queryById(e.building.prototype)
+        object.prototype_name = typeobject.name
+        object.dir = DIRECTION[e.building.direction]
+        objects:set(object, EDITOR_CACHE_NAMES[1])
     end
 end

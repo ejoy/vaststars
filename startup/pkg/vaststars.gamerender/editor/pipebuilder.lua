@@ -102,7 +102,7 @@ local function _set_endpoint_connection(prototype_name, State, object, connectio
         local typeobject = iprototype.queryByName(object.prototype_name)
         local _prototype_name, _dir
         -- normal pipe can replace other pipe, including pipe to ground
-        _prototype_name, _dir = iflow_connector.covers_flow_type(object.prototype_name, object.dir, typeobject.flow_type)
+        _prototype_name, _dir = iflow_connector.covers_building_category(object.prototype_name, object.dir, typeobject.building_category)
         _prototype_name, _dir = iflow_connector.set_connection(_prototype_name, _dir, dir, true)
         if not _prototype_name or not _dir then
             State.succ = false
@@ -788,7 +788,7 @@ local function confirm(self, datamodel)
                 object.gameplay_eid = igameplay.create_entity(object)
             else
                 if old.prototype_name ~= object.prototype_name then
-                    igameplay.remove_entity(object.gameplay_eid, false)
+                    igameplay.remove_entity(object.gameplay_eid)
                     object.gameplay_eid = igameplay.create_entity(object)
                 elseif old.dir ~= object.dir then
                     ientity:set_direction(gameplay_core.get_world(), gameplay_core.get_entity(object.gameplay_eid), object.dir)

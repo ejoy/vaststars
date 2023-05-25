@@ -39,12 +39,8 @@ local rotate_mb = mailbox:sub {"rotate"}
 local build_mb = mailbox:sub {"build"}
 local quit_mb = mailbox:sub {"quit"}
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
-local show_statistic_mb = mailbox:sub {"statistic"} -- 主界面左下角 -> 统计信息
-local show_setting_mb = mailbox:sub {"show_setting"} -- 主界面左下角 -> 游戏设置
-local technology_mb = mailbox:sub {"technology"} -- 主界面左下角 -> 科研中心
 local click_techortaskicon_mb = mailbox:sub {"click_techortaskicon"}
 local guide_on_going_mb = mailbox:sub {"guide_on_going"}
-local load_resource_mb = mailbox:sub {"load_resource"}
 local help_mb = mailbox:sub {"help"}
 local move_md = mailbox:sub {"move"}
 local teardown_mb = mailbox:sub {"teardown"}
@@ -161,6 +157,16 @@ local function __clean(datamodel)
     handle_pickup = true
 end
 
+local function __get_new_tech_count(tech_list)
+    local count = 0
+    for _, tech in ipairs(tech_list) do
+        if global.science.tech_picked_flag[tech.detail.name] then
+            count = count + 1
+        end
+    end
+    return count
+end
+
 ---------------
 local M = {}
 
@@ -209,7 +215,7 @@ function M:update_tech(datamodel, tech)
         datamodel.current_tech_progress_detail = tech.progress.."/"..tech.detail.count
     else
         datamodel.show_tech_progress = false
-        datamodel.tech_count = get_new_tech_count(global.science.tech_list)
+        datamodel.tech_count = __get_new_tech_count(global.science.tech_list)
     end
 end
 
@@ -254,30 +260,12 @@ function M:stage_ui_update(datamodel)
         end
     end
 
-    --任务完成提示界面
-    for _ in technology_mb:unpack() do
-        gameplay_core.world_update = false
-        iui.open({"science.rml"})
-    end
-
-    for _ in show_statistic_mb:unpack() do
-        iui.open({"statistics.rml"})
-    end
-
-    for _ in show_setting_mb:unpack() do
-        iui.open({"option_pop.rml"})
-    end
-
     for _ in help_mb:unpack() do
         if not iui.is_open("help_panel.rml") then
             iui.open({"help_panel.rml"})
         else
             iui.close("help_panel.rml")
         end
-    end
-
-    for _ in load_resource_mb:unpack() do
-        iui.open({"loading.rml"}, false)
     end
 end
 

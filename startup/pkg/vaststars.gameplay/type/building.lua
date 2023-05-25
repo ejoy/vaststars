@@ -18,6 +18,6 @@ function c:ctor(init, pt)
             prototype = pt.id,
             direction = init.dir and DIRECTION[init.dir] or 0,
         },
-        building_changed = true,
+        building_new = true,
     }
 end

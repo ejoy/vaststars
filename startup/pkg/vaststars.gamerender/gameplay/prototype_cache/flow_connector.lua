@@ -27,9 +27,9 @@ return function ()
         end
 
         local cache = {}
-        function get_dir_bit(flow_type, dir, ground)
-            cache[flow_type] = cache[flow_type] or get_bit_func()
-            return cache[flow_type](dir, ground)
+        function get_dir_bit(building_category, dir, ground)
+            cache[building_category] = cache[building_category] or get_bit_func()
+            return cache[building_category](dir, ground)
         end
     end
 
@@ -42,35 +42,35 @@ return function ()
         assert(false)
     end
 
-    local accel = {} -- flow_type + bits -> prototype_name + dir
+    local accel = {} -- building_category + bits -> prototype_name + dir
     local prototype_bits = {} -- prototype_name + dir -> bits
-    local max_ground = {} -- flow_type -> max_ground
+    local max_ground = {} -- building_category -> max_ground
 
     for _, typeobject in pairs(iprototype.each_type "building") do
-        if not typeobject.flow_type then
+        if not typeobject.building_category then
             goto continue
         end
 
-        -- flow_direction is a table of all directions that the entity can rotate around.
-        for _, entity_dir in ipairs(typeobject.flow_direction) do
+        -- building_direction is a table of all directions that the entity can rotate around.
+        for _, entity_dir in ipairs(typeobject.building_direction) do
             local bits = 0
             for _, connection in ipairs(_get_connections(typeobject)) do
                 local dir = iprototype.rotate_dir(connection.position[3], entity_dir)
-                bits = bits | (1 << get_dir_bit(typeobject.flow_type, dir, (connection.ground ~= nil) )) -- TODO: special case for pipe-to-ground
+                bits = bits | (1 << get_dir_bit(typeobject.building_category, dir, (connection.ground ~= nil) )) -- TODO: special case for pipe-to-ground
 
                 -- 
                 if connection.ground then
-                    if not max_ground[typeobject.flow_type] then
-                        max_ground[typeobject.flow_type] = connection.ground
+                    if not max_ground[typeobject.building_category] then
+                        max_ground[typeobject.building_category] = connection.ground
                     else
-                        assert(max_ground[typeobject.flow_type] == connection.ground)
+                        assert(max_ground[typeobject.building_category] == connection.ground)
                     end
                 end
             end
 
-            accel[typeobject.flow_type] = accel[typeobject.flow_type] or {}
-            assert(not accel[typeobject.flow_type][entity_dir])
-            accel[typeobject.flow_type][bits] = {prototype_name = typeobject.name, entity_dir = entity_dir}
+            accel[typeobject.building_category] = accel[typeobject.building_category] or {}
+            assert(not accel[typeobject.building_category][entity_dir])
+            accel[typeobject.building_category][bits] = {prototype_name = typeobject.name, entity_dir = entity_dir}
 
             prototype_bits[typeobject.name] = prototype_bits[typeobject.name] or {}
             assert(not prototype_bits[typeobject.name][entity_dir])
@@ -80,24 +80,24 @@ return function ()
         ::continue::
     end
 
-    local function _get_covers(flow_type, pipe_bits)
+    local function _get_covers(building_category, pipe_bits)
         local r = pipe_bits
-        for bits in pairs(accel[flow_type]) do
+        for bits in pairs(accel[building_category]) do
             if pipe_bits ~= bits and pipe_bits & bits == pipe_bits then
                 r = r | bits
             end
         end
-        return assert(accel[flow_type][r])
+        return assert(accel[building_category][r])
     end
 
-    local function _get_road_covers(flow_type, pipe_bits)
+    local function _get_road_covers(building_category, pipe_bits)
         local r = pipe_bits & 0xF
-        for bits in pairs(accel[flow_type]) do
+        for bits in pairs(accel[building_category]) do
             if pipe_bits ~= bits and r & bits == r then
                 r = r | (bits & 0xF)
             end
         end
-        return assert(accel[flow_type][r])
+        return assert(accel[building_category][r])
     end
 
     local function _get_cleanup(prototype_name, entity_dir)
@@ -106,10 +106,10 @@ return function ()
         for _, connection in ipairs(_get_connections(typeobject)) do
             if connection.ground then
                 local dir = iprototype.rotate_dir(connection.position[3], entity_dir)
-                bits = bits | (1 << get_dir_bit(typeobject.flow_type, dir, true))
+                bits = bits | (1 << get_dir_bit(typeobject.building_category, dir, true))
             end
         end
-        return assert(accel[typeobject.flow_type][bits])
+        return assert(accel[typeobject.building_category][bits])
     end
 
     local prototype_covers = {}
@@ -120,9 +120,9 @@ return function ()
             prototype_covers[prototype_name] = prototype_covers[prototype_name] or {}
 
             if iprototype.is_road(typeobject.name) then -- TODO: special case for road
-                prototype_covers[prototype_name][entity_dir] = _get_road_covers(typeobject.flow_type, bits)
+                prototype_covers[prototype_name][entity_dir] = _get_road_covers(typeobject.building_category, bits)
             else
-                prototype_covers[prototype_name][entity_dir] = _get_covers(typeobject.flow_type, bits)
+                prototype_covers[prototype_name][entity_dir] = _get_covers(typeobject.building_category, bits)
             end
 
             prototype_cleanup[prototype_name] = prototype_cleanup[prototype_name] or {}

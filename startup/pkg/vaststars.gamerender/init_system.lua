@@ -83,6 +83,7 @@ end
 
 function m:gameworld_end()
     local gameplay_world = gameplay_core.get_world()
+    gameplay_world.ecs:clear "building_new"
     gameplay_world.ecs:clear "building_changed"
 end
 

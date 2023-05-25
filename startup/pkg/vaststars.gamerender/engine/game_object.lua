@@ -15,20 +15,6 @@ local replace_material = require("engine.prefab_parser").replace_material
 local irl = ecs.import.interface "ant.render|irender_layer"
 local imodifier = ecs.import.interface "ant.modifier|imodifier"
 
-local function replace_outline_material(template)
-    local res = {}
-    for _, v in ipairs(template) do
-        if v.data and v.data.mesh then
-            v.data.material = "/pkg/ant.resources/materials/outline/scale.material"
-            v.data.render_layer = "translucent"
-        end
-        if not v.prefab then
-            res[#res+1] = v
-        end
-    end
-    return res
-end
-
 local function set_efk_auto_play(template, auto_play)
     for _, v in ipairs(template) do
         if v.data and v.data.efk then
@@ -69,9 +55,8 @@ local __calc_param_hash ; do
     local final_frame_hash = get_hash_func(0x1)
     local emissive_color_hash = get_hash_func(0xf)
     local render_layer_hash = get_hash_func(0xf)
-    local outline_scale_hash = get_hash_func(0xf)
 
-    function __calc_param_hash(prefab, material_type, color, animation_name, final_frame, emissive_color, render_layer, outline_scale)
+    function __calc_param_hash(prefab, material_type, color, animation_name, final_frame, emissive_color, render_layer)
         local h1 = prefab_hash(prefab or 0) -- 8 bits
         local h2 = material_type_hash(material_type or 0) -- 4 bits
         local h3 = color_hash(color or 0) -- 4 bits
@@ -79,8 +64,7 @@ local __calc_param_hash ; do
         local h5 = final_frame_hash(final_frame or 0) -- 1 bit
         local h6 = emissive_color_hash(emissive_color or 0) -- 4 bits
         local h7 = render_layer_hash(render_layer or 0) -- 4 bits
-        local h8 = outline_scale_hash(outline_scale or 0) -- 4 bits
-        return h1 | h2 << 8 | h3 << 12 | h4 << 16 | h5 << 24 | h6 << 25 | h7 << 29 | h8 << 33
+        return h1 | h2 << 8 | h3 << 12 | h4 << 16 | h5 << 24 | h6 << 25 | h7 << 29
     end
 end
 
@@ -110,9 +94,9 @@ local __get_hitch_children ; do
         return slots, effects, animations
     end
 
-    function __get_hitch_children(prefab, material_type, color, animation_name, final_frame, emissive_color, render_layer, outline_scale)
+    function __get_hitch_children(prefab, material_type, color, animation_name, final_frame, emissive_color, render_layer)
         render_layer = render_layer or RENDER_LAYER.BUILDING
-        local hash = __calc_param_hash(prefab, material_type, tostring(color), animation_name, final_frame, tostring(emissive_color), render_layer, outline_scale)
+        local hash = __calc_param_hash(prefab, material_type, tostring(color), animation_name, final_frame, tostring(emissive_color), render_layer)
         if cache[hash] then
             return cache[hash]
         end
@@ -126,8 +110,6 @@ local __get_hitch_children ; do
             template = replace_material(template, "/pkg/vaststars.resources/materials/translucent.material")
         elseif material_type == "opacity" then
             template = replace_material(template, "/pkg/vaststars.resources/materials/opacity.material")
-        elseif material_type == "outline" then
-            template = replace_outline_material(template)
         elseif material_type == "opaque" then
             template = template
         else
@@ -187,9 +169,6 @@ local __get_hitch_children ; do
         local prefab_proxy = world:create_object(prefab_instance)
         if material_type == "translucent" or material_type == "opacity" then
             prefab_proxy:send("material", "set_property", "u_basecolor_factor", color)
-        elseif material_type == "outline" then
-            prefab_proxy:send("material", "set_property", "u_outlinescale", math3d.ref(math3d.vector(outline_scale, 0, 0)))
-            prefab_proxy:send("material", "set_property", "u_outlinecolor", color)
         end
         if emissive_color then -- see also: meno/u_emissive_factor
             prefab_proxy:send("material_tag", "set_property", "u_emissive_factor", "u_emissive_factor", emissive_color)
@@ -216,7 +195,7 @@ init = {
 }
 --]]
 function igame_object.create(init)
-    local children = __get_hitch_children(RESOURCES_BASE_PATH:format(init.prefab), init.state, init.color, init.animation_name, init.final_frame, init.emissive_color, init.render_layer, init.outline_scale)
+    local children = __get_hitch_children(RESOURCES_BASE_PATH:format(init.prefab), init.state, init.color, init.animation_name, init.final_frame, init.emissive_color, init.render_layer)
     local hitch_events = {}
     hitch_events["group"] = function(_, e, group)
         w:extend(e, "hitch:update")

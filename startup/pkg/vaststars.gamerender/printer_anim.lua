@@ -36,7 +36,7 @@ return function(building, building_srt, duration_ms)
                 scene = {t = position, s = m.scene.s},
                 material = "/pkg/mod.printer/assets/printer.material",
                 visible_state = "main_view",
-                mesh = m.meshbin,
+                mesh = m.mesh,
                 render_layer= "postprocess_obj",
                 printer = {
                     percent = 0,
