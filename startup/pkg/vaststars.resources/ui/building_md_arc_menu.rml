@@ -192,6 +192,14 @@
                             start.buttons[#start.buttons + 1] = v
                         end
 
+                        if start.copy then
+                            local v = setmetatable({}, {__index = mt})
+                            v.text = "复制"
+                            v.message = "copy"
+                            v.background_image = "textures/construct/portal-in.texture"
+                            start.buttons[#start.buttons + 1] = v
+                        end
+
                         if #start.buttons > 0 then
                             local pos = assert(positions[#start.buttons], #start.buttons)
                             for i = 1, #start.buttons do
