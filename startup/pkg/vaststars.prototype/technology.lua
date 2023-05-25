@@ -2147,7 +2147,7 @@ prototype "电解" {
     unlock_recipe = {"地下卤水电解1","地下卤水电解2","电解厂打印"},
     unlock_building = {"电解厂I"},
   },
-  prerequisites = {"放置太阳能板"},
+  prerequisites = {"生产气候科技包"},
   ingredients = {
       {"气候科技包", 1},
   },
