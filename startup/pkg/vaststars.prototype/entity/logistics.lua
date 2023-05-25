@@ -14,6 +14,7 @@ prototype "指挥中心" {
     recipe_init_limit = {ingredientsLimit = 0, resultsLimit = 0},
     recipe = "车辆装配",
     area = "6x6",
+    building_base = false,
     power_supply_area = "8x8",
     power_supply_distance = 9,
     dismantle_area = "21x21",
@@ -285,6 +286,7 @@ prototype "送货车站" {
     type = {"building", "station"},
     station_type = "station_producer",
     chest_type = "blue",
+    building_base = false,
     area = "4x2",
     weights = 1,
     crossing = {
@@ -309,6 +311,7 @@ prototype "收货车站" {
     type = {"building", "station"},
     station_type = "station_consumer",
     chest_type = "red",
+    building_base = false,
     area = "4x2",
     weights = 1,
     crossing = {

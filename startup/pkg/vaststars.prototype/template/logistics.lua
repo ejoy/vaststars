@@ -141,31 +141,7 @@ local entities = { {
     prototype_name = "无人机仓库I",
     x = 131,
     y = 123
-  }, {
-    dir = "N",
-    item = "碎石",
-    prototype_name = "送货车站",
-    x = 118,
-    y = 124
-  }, {
-    dir = "E",
-    item = "碎石",
-    prototype_name = "收货车站",
-    x = 139,
-    y = 112
-  }, {
-    dir = "N",
-    item = "铁矿石",
-    prototype_name = "送货车站",
-    x = 157,
-    y = 124
-  }, {
-    dir = "E",
-    item = "铁矿石",
-    prototype_name = "收货车站",
-    x = 139,
-    y = 116
-  } }
+  },}
 local road = {
   [28298] = 8,
   [28554] = 10,
