@@ -59,7 +59,7 @@ function m:init_world()
     imain_menu_manager.back_to_main_menu()
 
     -- audio test (Master.strings.bank must be first)
-    audio.init {
+    audio.load {
         "/pkg/vaststars.resources/sounds/Master.strings.bank",
         "/pkg/vaststars.resources/sounds/Master.bank",
         "/pkg/vaststars.resources/sounds/Construt.bank",
