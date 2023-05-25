@@ -33,10 +33,25 @@ if lm.os == "ios" then
 end
 
 if lm.os == "android" then
+    local jniDir
+    local arch
+    if lm.target then
+        arch = lm.target:match "^[^-]*"
+    elseif lm.arch then
+        arch = lm.arch
+    end
+    if arch == "aarch64" then
+        jniDir = "arm64-v8a"
+    elseif arch == "x86_64" then
+        jniDir = "x86_64"
+    else
+        error("unknown arch:"..tostring(arch))
+    end
+
     lm:dll "vaststars" {
         basename = "libvaststars",
         crt = "static",
-        bindir = "runtime/android/app/src/main/jniLibs/arm64-v8a",
+        bindir = "runtime/android/app/src/main/jniLibs/"..jniDir,
         deps = {
             "ant_runtime",
             "ant_links",

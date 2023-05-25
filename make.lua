@@ -1,18 +1,6 @@
 local lm = require "luamake"
 
-local plat = (function ()
-    if lm.os == "windows" then
-        if lm.compiler == "gcc" then
-            return "mingw"
-        end
-        return "msvc"
-    end
-    return lm.os
-end)()
-
 lm.mode = "debug"
-lm.builddir = ("build/%s/%s"):format(plat, lm.mode)
-lm.bindir = ("bin/%s/%s"):format(plat, lm.mode)
 lm.compile_commands = "build"
 lm.visibility = "default"
 
@@ -38,8 +26,28 @@ lm.ios = {
 
 lm.android  = {
     flags = "-fPIC",
-    target = "aarch64-linux-android33"
 }
+
+if lm.os == "android" then
+    lm.arch = "aarch64"
+    lm.vendor = "linux"
+    lm.sys = "android33"
+end
+
+local plat = (function ()
+    if lm.os == "windows" then
+        if lm.compiler == "gcc" then
+            return "mingw"
+        end
+        return "msvc"
+    end
+    if lm.os == "android" then
+        return lm.os.."-"..lm.arch
+    end
+    return lm.os
+end)()
+lm.builddir = ("build/%s/%s"):format(plat, lm.mode)
+lm.bindir = ("bin/%s/%s"):format(plat, lm.mode)
 
 local EnableSanitize = false
 local EnableLog = false
