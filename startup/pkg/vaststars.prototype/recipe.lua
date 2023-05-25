@@ -856,6 +856,24 @@ prototype "粉碎机1" {
     description = "石砖和采矿机制造粉碎机",
 }
 
+prototype "无人机仓库1" {
+    type = { "recipe" },
+    category = "生产大型制造",
+    recipe_group =  "加工",
+    recipe_order =  60,
+    recipe_icon =  "textures/construct/crusher1.texture",
+    ingredients = {
+        -- {"铁丝", 4},
+        {"电动机I", 2},
+        {"石砖", 4},
+    },
+    results = {
+        {"无人机仓库I", 1},
+    },
+    time = "5s",
+    description = "石砖和采矿机制造粉碎机",
+}
+
 prototype "电解厂1" {
     type = { "recipe" },
     category = "生产大型制造",
@@ -1111,21 +1129,21 @@ prototype "车辆装配" {
 -- }
 
 
--- prototype "无人机仓库打印" {
+-- prototype "无人机仓库I打印" {
 --     type = { "recipe" },
 --     category = "框架打印",
 --     recipe_group =  "物流",
 --     recipe_order =  55,
 --     recipe_icon =  "textures/construct/broken-drone-depot.texture",
 --     ingredients = {
---         {"无人机仓库框架", 1},
+--         {"无人机仓库I框架", 1},
 --         {"碎石", 2},
 --     },
 --     results = {
---         {"无人机仓库", 1},
+--         {"无人机仓库I", 1},
 --     },
 --     time = "12s",
---     description = "打印无人机仓库",
+--     description = "打印无人机仓库I",
 -- }
 
 -- prototype "送货车站打印" {
@@ -1506,7 +1524,7 @@ prototype "电线杆打印" {
     description = "打印可导电的电线杆",
 }
 
-prototype "无人机仓库打印" {
+prototype "无人机仓库I打印" {
     type = { "recipe" },
     category = "建筑打印",
     recipe_group =  "物流",
@@ -1516,10 +1534,10 @@ prototype "无人机仓库打印" {
         {"电动机I", 1},
     },
     results = {
-        {"无人机仓库", 1},
+        {"无人机仓库I", 1},
     },
     time = "5s",
-    description = "打印无人机仓库",
+    description = "打印无人机仓库I",
 }
 
 prototype "车站打印" {
