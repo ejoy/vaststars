@@ -7,9 +7,9 @@ mipmap: 0
 colorspace: sRGB
 path:/pkg/mod.road/assets/shapes/basecolor.dds
 sampler:
-  MAG: LINEAR
-  MIN: LINEAR
-  MIP: LINEAR
+  MAG: POINT
+  MIN: POINT
+  MIP: POINT
   U: WRAP
   V: WRAP
 type: texture
