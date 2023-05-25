@@ -1705,7 +1705,7 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "物流学I" {
+  prototype "物流学1" {
     desc = "研究送货车站和收货车站建造工艺",
     type = { "tech" },
     icon = "textures/science/tech-research.texture",
@@ -1726,7 +1726,7 @@ local prototype = gameplay.register.prototype
     icon = "textures/construct/industry.texture",
     type = { "task" },
     task = {"select_entity", 0, "送货车站"},
-    prerequisites = {"物流学I"},
+    prerequisites = {"物流学1"},
     count = 1,
     effects = {
       unlock_recipe = {"车辆装配"},
@@ -1759,7 +1759,7 @@ local prototype = gameplay.register.prototype
     icon = "textures/construct/industry.texture",
     type = { "task" },
     task = {"select_entity", 0, "收货车站"},
-    prerequisites = {"物流学I"},
+    prerequisites = {"物流学1"},
     count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
@@ -1969,7 +1969,7 @@ local prototype = gameplay.register.prototype
     },
   }
 
-prototype "物流学II" {
+prototype "物流学2" {
   desc = "研究电能转换成机械能的基础供能装置",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
@@ -1991,7 +1991,7 @@ prototype "气候研究" {
     unlock_recipe = {"气候科技包1","空气过滤器打印","地下水挖掘机打印"},
     unlock_item = {"气候科技包","空气过滤器I","地下水挖掘机"},
   },
-  prerequisites = {"物流学II"},
+  prerequisites = {"物流学2"},
   ingredients = {
       {"地质科技包", 1},
   },
