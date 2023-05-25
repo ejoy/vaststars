@@ -2147,7 +2147,7 @@ prototype "电解" {
     unlock_recipe = {"地下卤水电解1","地下卤水电解2","电解厂打印"},
     unlock_building = {"电解厂I"},
   },
-  prerequisites = {"水利研究"},
+  prerequisites = {"放置太阳能板"},
   ingredients = {
       {"气候科技包", 1},
   },
@@ -2162,7 +2162,7 @@ prototype "空气分离" {
   effects = {
     unlock_recipe = {"空气分离1"},
   },
-  prerequisites = {"维修破损组装机","电解"},
+  prerequisites = {"电解"},
   ingredients = {
       {"气候科技包", 1},
   },
