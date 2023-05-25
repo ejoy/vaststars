@@ -285,7 +285,7 @@ prototype "送货车站" {
     type = {"building", "station"},
     station_type = "station_producer",
     chest_type = "blue",
-    area = "2x1",
+    area = "4x2",
     weights = 1,
     crossing = {
         connections = {
@@ -309,7 +309,7 @@ prototype "收货车站" {
     type = {"building", "station"},
     station_type = "station_consumer",
     chest_type = "red",
-    area = "2x1",
+    area = "4x2",
     weights = 1,
     crossing = {
         connections = {
