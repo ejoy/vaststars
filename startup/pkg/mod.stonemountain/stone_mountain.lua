@@ -714,7 +714,7 @@ local function create_sm_entity()
             data = {
                 scene         = {},
                 material      ="/pkg/mod.stonemountain/assets/pbr_sm.material", 
-                visible_state = "main_view|cast_shadow|selectable",
+                visible_state = "main_view|cast_shadow",
                 mesh          = mesh_address,
                 indirect = {
                     group = sm_group[mesh_idx],
