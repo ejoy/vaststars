@@ -449,7 +449,7 @@ static size_t FindChestBlueForce(world& w, const hub_mgr::hub_info& info) {
     for (size_t i = 0; i < N; ++i) {
         size_t ii = (i + w.time) % N;
         auto berth = info.chest_blue[ii];
-        if (auto chest = w.hubs.chests.find(berth.hash())) {
+        if (w.hubs.chests.find(berth.hash())) {
             return ii;
         }
     }
