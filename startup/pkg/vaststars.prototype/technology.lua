@@ -647,8 +647,8 @@ local prototype = gameplay.register.prototype
   --   },
   -- }
 
-    prototype "放置无人机仓库I" {
-    desc = "放置1个无人机仓库I",
+    prototype "放置无人机仓库" {
+    desc = "放置1个无人机仓库",
     icon = "textures/construct/industry.texture",
     type = { "task" },
     task = {"select_entity", 0, "无人机仓库I"},
@@ -701,19 +701,19 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "无人机仓库I设置" {
-    desc = "无人机仓库I选择碎石",
+  prototype "无人机仓库设置" {
+    desc = "无人机仓库选择碎石",
     icon = "textures/construct/industry.texture",
     type = { "task" },
     task = {"unknown", 0, 5},                          
     task_params = {item = "碎石"},
     count = 1,
-    prerequisites = {"放置无人机仓库I"},
+    prerequisites = {"放置无人机仓库"},
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "无人机仓库I选择碎石", icon = "textures/construct/industry.texture"},
+      { desc = "无人机仓库选择碎石", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -723,7 +723,7 @@ local prototype = gameplay.register.prototype
     icon = "textures/construct/industry.texture",
     type = { "task" },
     task = {"stat_production", 0, "碎石"},
-    prerequisites = {"无人机仓库I设置"},
+    prerequisites = {"无人机仓库设置"},
     count = 12,
     tips_pic = {
       "textures/task_tips_pic/task_produce_ore3.texture",
