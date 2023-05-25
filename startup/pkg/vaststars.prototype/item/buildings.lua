@@ -72,7 +72,7 @@ prototype "物流需求站" {
     item_description = "将货物从运输车卸载到货站",
 }
 
-prototype "无人机仓库" {
+prototype "无人机仓库I" {
     type = {"item"},
     group = {"物流"},
     stack = 10,

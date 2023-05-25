@@ -56,24 +56,29 @@
             })
 
             function start.clickSave(event)
+                audio.play "event:/ui/button1"
                 ui_sys.pub {"save"}
             end
 
             function start.clickRestart(event)
+                audio.play "event:/ui/button1"
                 ui_sys.pub {"restart"}
                 ui_sys.close()
             end
 
             function start.clickRestore(event, index)
+                audio.play "event:/ui/button1"
                 ui_sys.pub {"restore", index}
             end
 
             function start.clickInfo(event)
+                audio.play "event:/ui/button1"
                 ui_sys.pub {"info"}
                 ui_sys.close()
             end
 
             function start.clickClose()
+                audio.play "event:/ui/button1"
                 ui_sys.pub {"close"}
             end
 
@@ -83,6 +88,7 @@
             end
 
             function start.clickBackToMainMenu()
+                audio.play "event:/ui/button1"
                 ui_sys.pub {"back_to_main_menu"}
             end
 

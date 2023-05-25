@@ -53,7 +53,7 @@ prototype "仓库" {
     slots = 60,
 }
 
-prototype "无人机仓库" {
+prototype "无人机仓库I" {
     model = "prefabs/drone-depot.prefab",
     icon = "textures/building_pic/small_pic_drone_depot.texture",
     background = "textures/build_background/pic_chest.texture",

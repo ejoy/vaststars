@@ -201,14 +201,14 @@ prototype "电线杆框架" {
     item_description = "用于建造铁制电线杆的框架",
 }
 
-prototype "无人机仓库框架" {
+prototype "无人机仓库I框架" {
     type = {"item"},
     stack = 4,
     pile = "2x2x4",
     pile_model = "prefabs/stackeditems/iron-ore.prefab",
     icon = "textures/construct/broken-drone-depot.texture",
     group = {"加工"},
-    item_description = "用于建造无人机仓库的框架",
+    item_description = "用于建造无人机仓库I的框架",
 }
 
 prototype "压力泵框架" {
