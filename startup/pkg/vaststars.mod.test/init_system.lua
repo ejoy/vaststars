@@ -48,7 +48,7 @@ function S.init_world()
     iom.set_direction(camera_ref, dir)
 
     iterrain.gen_terrain_field(256, 256, 128)
-     local x, y = 0, 0
+--[[     local x, y = 0, 0
     for _, shape in ipairs({"I", "L", "T", "U", "X", "O"}) do
         y = y + 2
         x = 0
@@ -74,22 +74,22 @@ function S.init_world()
             end
         end
     end
-    iroad.update_roadnet_group(1000, create_list) 
+    iroad.update_roadnet_group(1000, create_list)  ]]
  
-      local density = 0.5
+    local density = 0.5
     local width, height, offset, UNIT = 256, 256, 128, 10
     local scale_table = {
         big = 1.0,
         middle = 0.6,
         small = 0.01
     }
---[[      local stone_area = {
+      local stone_area = {
         {x = 0, z = 0},
     }
      local open_area = {
         {x = -128, z = 128, w = 256, h = 256}
-    }   ]]
-    istonemountain.create_sm_entity(density, width, height, offset, UNIT, scale_table, {}, {})    
+    }   
+    istonemountain.create_sm_entity(density, width, height, offset, UNIT, scale_table, {} , {})    
     --create_mark()
 
 --[[      printer_eid = ecs.create_entity {
@@ -199,6 +199,14 @@ function S:data_changed()
             local color = {1, 1, 0, 0.5}
             itp.remove_translucent_plane(remove_id)
             remove_id = itp.create_translucent_plane(rect, color, "translucent")
+        elseif key == "T" and press == 0 then
+            local rect = {x = -10, z = 10, w = 20, h = 20}
+            itp.create_translucent_plane(rect, {1, 0, 0, 1}, "opacity")  
+            local area = istonemountain.get_sm_rect_intersect(rect)
+            for k, v in pairs(area) do
+                itp.create_translucent_plane(v, {1, 1, 0, 1}, "opacity") 
+            end
+            local t = 1
         end
     end
 end

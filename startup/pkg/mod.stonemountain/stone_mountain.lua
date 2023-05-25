@@ -689,11 +689,11 @@ local function create_sm_entity()
                 local tz = stone.t.z;
                 local cosy = stone.r;
                 local scosy = cosy * scale;
-                local ssiny = (1 - scosy * scosy) ^ 0.5 * scale;
+                local ssiny = (1 - cosy * cosy) ^ 0.5 * scale;
                 if scale_y > 1 then
                     scale_y = scale_y * 0.5
                 end
-                local world_mat = math3d.matrix(scosy, 0, -ssiny, tx, 0, scale_y, 0, 0, ssiny, 0, scosy, tz, 0, 0, 0 ,1)
+                local world_mat = math3d.matrix(scosy, 0, -ssiny, 0, 0, scale_y, 0, 0, ssiny, 0, scosy, 0, tx, 0, tz ,1)
                 local mesh_aabb_value = mesh_aabb_table[mesh_idx]
                 local rect = set_sm_rect(mesh_aabb_value, world_mat)
                 set_sm_grid(rect)
