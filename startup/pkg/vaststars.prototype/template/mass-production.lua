@@ -545,7 +545,7 @@ local entities = { {
     prototype_name = "无人机仓库I",
     x = 193,
     y = 115
-  },  {
+  }, {
     dir = "N",
     item = "铁矿石",
     prototype_name = "无人机仓库I",
@@ -587,7 +587,7 @@ local entities = { {
     recipe = "地质科技包1",
     x = 95,
     y = 122
-  },  {
+  }, {
     dir = "N",
     item = "地质科技包",
     prototype_name = "无人机仓库I",
@@ -605,7 +605,7 @@ local entities = { {
     prototype_name = "无人机仓库I",
     x = 92,
     y = 115
-  },{
+  }, {
     dir = "N",
     fluid_name = {
       input = { "一氧化碳", "氢气" },
@@ -1803,7 +1803,7 @@ local entities = { {
     prototype_name = "无人机仓库I",
     x = 105,
     y = 129
-  },  {
+  }, {
     dir = "N",
     prototype_name = "铁制电线杆",
     x = 102,
@@ -3451,6 +3451,86 @@ local entities = { {
     prototype_name = "铁制电线杆",
     x = 169,
     y = 160
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 70,
+    y = 175
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 64,
+    y = 175
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 58,
+    y = 175
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 52,
+    y = 175
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 71,
+    y = 176
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 69,
+    y = 176
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 67,
+    y = 176
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 65,
+    y = 176
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 63,
+    y = 176
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 61,
+    y = 176
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 59,
+    y = 176
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 57,
+    y = 176
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 55,
+    y = 176
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 53,
+    y = 176
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 51,
+    y = 176
+  }, {
+    dir = "N",
+    prototype_name = "蓄电池I",
+    x = 49,
+    y = 176
   } }
 local road = {
   [22850] = 8,
