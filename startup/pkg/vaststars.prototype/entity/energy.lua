@@ -179,3 +179,32 @@ prototype "锅炉I" {
         },
     },
 }
+
+prototype "地热井I" {
+    model = "prefabs/geothermal-plant.prefab",
+    icon = "textures/building_pic/small_pic_geothermal_plant.texture",
+    background = "textures/build_background/pic_distillery.texture",
+    construct_detector = {"exclusive"},
+    type = {"building", "assembling", "fluidboxes"},
+    priority = "secondary",
+    area = "5x5",
+    rotate_on_build = true,
+    io_shelf = false,
+    show_arc_menu = false,
+    craft_category = {"地热处理"},
+    maxslot = "8",
+    fluidboxes = {
+        input = {
+        },
+        output = {
+            {
+                capacity = 1000,
+                height = 100,
+                base_level = 150,
+                connections = {
+                    {type="output", position={2,4,"S"}},
+                }
+            },
+        },
+    },
+}
