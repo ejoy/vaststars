@@ -2581,22 +2581,6 @@ prototype "发电机1" {
   time = "15s"
 }
 
-prototype "物流1" {
-  desc = "使用交通工具进行远程运输",
-  type = { "tech" },
-  icon = "textures/science/tech-logistics.texture",
-  effects = {
-    unlock_recipe ={"物流中心1","运输车辆1"},
-    unlock_item = {"物流中心I"},
-  },
-  prerequisites = {"发电机1"},
-  ingredients = {
-    {"机械科技包", 1},
-  },
-  count = 10,
-  time = "10s"
-}
-
 prototype "空气过滤技术" {
   desc = "研究将火星混合气体分离的装置",
   type = { "tech" },
