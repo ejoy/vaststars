@@ -874,6 +874,24 @@ prototype "无人机仓库1" {
     description = "石砖和采矿机制造粉碎机",
 }
 
+prototype "无人机仓库2" {
+    type = { "recipe" },
+    category = "生产大型制造",
+    recipe_group =  "加工",
+    recipe_order =  60,
+    recipe_icon =  "textures/construct/crusher1.texture",
+    ingredients = {
+        -- {"铁丝", 4},
+        {"电动机I", 2},
+        {"钢齿轮", 4},
+    },
+    results = {
+        {"无人机仓库II", 1},
+    },
+    time = "5s",
+    description = "石砖和采矿机制造粉碎机",
+}
+
 prototype "电解厂1" {
     type = { "recipe" },
     category = "生产大型制造",

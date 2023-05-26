@@ -2619,6 +2619,7 @@ prototype "钢加工" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"钢齿轮"},
+    unlock_item = {"钢齿轮"},
   },
   prerequisites = {"炼钢"},
   ingredients = {
@@ -2653,6 +2654,7 @@ prototype "硅处理" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"硅1","玻璃"},
+    unlock_item = {"硅","玻璃"},
   },
   prerequisites = {"浮选"},
   ingredients = {
@@ -2812,13 +2814,13 @@ prototype "有机化学3" {
   time = "8s"
 }
 
-prototype "储存2" {
+prototype "无人机运输2" {
   desc = "研究更便捷的存储方式",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    unlock_recipe = {"大铁制箱子1","小铁制箱子2"},
-    unlock_item = {"大铁制箱子I","小铁制箱子II"},
+    unlock_recipe = {"无人机仓库2"},
+    unlock_item = {"无人机仓库II"},
   },
   prerequisites = {"有机化学3","炼钢"},
   ingredients = {
@@ -2852,6 +2854,7 @@ prototype "铝生产" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"碾碎铝矿石","铝矿石浮选","氧化铝","铝板1"},
+    unlock_item = {"铝板"}
   },
   prerequisites = {"无机化学"},
   ingredients = {
@@ -2868,6 +2871,7 @@ prototype "硅生产" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"硅板1"},
+    unlock_item = {"硅板"}
   },
   prerequisites = {"无机化学","冶金学2"},
   ingredients = {
@@ -2901,6 +2905,7 @@ prototype "铝加工" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"铝丝1","铝棒1"},
+    unlock_item = {"铝丝","铝棒"},
   },
   prerequisites = {"铝生产","冶金学2"},
   ingredients = {
@@ -2936,6 +2941,7 @@ prototype "电子器件" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"电容1","绝缘线1","逻辑电路1"},
+    unlock_item = {"电容","绝缘线","逻辑电路"},
   },
   prerequisites = {"铝加工","硅生产"},
   ingredients = {
@@ -2953,6 +2959,8 @@ prototype "批量生产1" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"组装机2","采矿机2"},
+    unlock_item = {"组装机II","采矿机II"},
+
   },
   prerequisites = {"废料回收1"},
   ingredients = {
@@ -2970,6 +2978,7 @@ prototype "电子研究" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"电子科技包1"},
+    unlock_item = {"电子科技包"},
   },
   prerequisites = {"批量生产1","电子器件"},
   ingredients = {
