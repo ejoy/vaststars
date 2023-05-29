@@ -12,7 +12,7 @@ local bgfx      = require "bgfx"
 local math3d    = require "math3d"
 local layout_name<const>    = declmgr.correct_layout "p3|t20|t21"
 local layout                = declmgr.get(layout_name)
-local width, height, offset, unit = 256, 256, 128, 10
+local width, height = 20, 20
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local road_material
 local group_table = {}
@@ -91,7 +91,7 @@ local function build_ib(max_plane)
 end
 
 local function get_road_info(road)
-    local t = {(road.x - offset) * unit, 0, (road.y - offset) * unit, 0}
+    local t = {road.x, 0.5, road.y, 0}
     local road_direction = road.road_direction or 0
     local mark_direction = road.mark_direction or 0
     local road_info = {
@@ -135,7 +135,6 @@ local function create_road_instance_info(create_list)
     local indirect_info = {}
     for ii = 1, #create_list do
         local cl = create_list[ii]
-        local x, y = cl.x + offset, cl.y + offset
         local layers = cl.layers
         local road_layer, mark_layer
         if layers and layers.road then road_layer = parse_terrain_type_dir(layers, "road") end
@@ -145,7 +144,8 @@ local function create_road_instance_info(create_list)
                 [1] = road_layer,
                 [2] = mark_layer
             },
-            x = x, y = y
+            x = cl.x,
+            y = cl.y
         }
         indirect_info[#indirect_info+1] = create_road(road)
     end
@@ -175,7 +175,7 @@ end
 local function build_mesh()
     local packfmt<const> = "fffffff"
     local ox, oz = 0, 0
-    local nx, nz = unit, unit
+    local nx, nz = width, height
     local vb = {
         packfmt:pack(ox, 0, oz, 0, 1, 0, 1),
         packfmt:pack(ox, 0, nz, 0, 0, 0, 0),
@@ -186,11 +186,9 @@ local function build_mesh()
     return to_mesh_buffer(vb, ib_handle)
 end
 
-function iroad.set_args(ww, hh, off, un)
+function iroad.set_args(ww, hh)
     if ww then width = ww end
     if hh then height = hh end
-    if off then offset = off end
-    if un then unit = un end
 end
 
 local road_group = {}
@@ -222,10 +220,11 @@ local function create_road_group(gid, update_list)
             scene = {},
             simplemesh  = road_mesh,
             material    = road_material,
-            visible_state = "main_view",
+            visible_state = "main_view|selectable",
             indirect = indirect,
             indirect_update = true,
             road = true,
+            render_layer = "background"
         },
     }  
 end

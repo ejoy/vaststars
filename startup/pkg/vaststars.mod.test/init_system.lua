@@ -48,7 +48,7 @@ function S.init_world()
     iom.set_direction(camera_ref, dir)
 
     iterrain.gen_terrain_field(256, 256, 128)
---[[     local x, y = 0, 0
+--[[      local x, y = 0, 0
     for _, shape in ipairs({"I", "L", "T", "U", "X", "O"}) do
         y = y + 2
         x = 0
@@ -74,7 +74,7 @@ function S.init_world()
             end
         end
     end
-    iroad.update_roadnet_group(1000, create_list)  ]]
+    iroad.update_roadnet_group(1000, create_list)   ]]
  
     local density = 0.5
     local width, height, offset, UNIT = 256, 256, 128, 10
@@ -89,7 +89,7 @@ function S.init_world()
      local open_area = {
         {x = -128, z = 128, w = 256, h = 256}
     }   
-    istonemountain.create_sm_entity(density, width, height, offset, UNIT, scale_table, {} , {})    
+    istonemountain.create_sm_entity(density, width, height, offset, UNIT, scale_table, {} , {})     
     --create_mark()
 
 --[[      printer_eid = ecs.create_entity {
@@ -133,8 +133,19 @@ local remove_id
 function S:data_changed()
     for _, key, press in kb_mb:unpack() do
         if key == "J" and press == 0 then
-            create_list = {}
-             local x, y = -5, -5
+            local width, height = 20, 20
+            iroad.set_args(width, height)
+            create_list = {
+                [1] = {
+                    layers = {
+                        road = {type  = 1, shape = "I", dir = "N"},
+                        mark = {type  = 1, shape = "I", dir = "N"}
+                    },
+                    x = 0, y = 0 --leftbottom
+                }
+            }
+            iroad.update_roadnet_group(1000, create_list)
+--[[              local x, y = -5, -5
             for _, shape in ipairs({"I", "L", "T", "U", "X", "O"}) do
                 y = y + 2
                 x = 0
@@ -159,8 +170,8 @@ function S:data_changed()
                         }
                     end
                 end
-            end
-            iroad.update_roadnet_group(1000, create_list)
+            end ]]
+        
 --[[             create_list[#create_list+1] = {
                 x = 1, y = 1,
                 layers =

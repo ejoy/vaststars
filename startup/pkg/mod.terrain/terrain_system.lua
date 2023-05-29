@@ -33,7 +33,7 @@ function iterrain.gen_terrain_field(width, height, offset, unit)
     calc_shape_terrain(unit, terrain_field)
     iplane_terrain.set_wh(width, height, offset, offset)
     iplane_terrain.init_plane_terrain(shape_terrain)
-    iroad.set_args(width, height, offset, unit)
+    --iroad.set_args(width, height, offset, unit)
 end
 
 function terrain_sys:init()
