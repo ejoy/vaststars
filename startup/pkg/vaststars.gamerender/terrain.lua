@@ -150,11 +150,6 @@ function terrain:reset_mineral(map)
         eid:remove()
     end
 
-    local mineral_prefabs = {
-        ["铁矿石"] = "prefabs/terrain/ground-iron-ore.prefab", -- TODO: remove hard code
-        ["碎石"] = "prefabs/terrain/ground-gravel.prefab",
-    }
-
     self.mineral_map = {}
     self.mineral_tiles = {}
     self.mineral_source = map
@@ -170,7 +165,8 @@ function terrain:reset_mineral(map)
             end
         end
 
-        local prefab = mineral_prefabs[mineral]
+        local prefab = assert(assert(iprototype.queryByName(mineral)).mineral_model)
+
         local srt = {r = ROTATORS[math.random(1, 4)], t = self:get_position_by_coord(x, y, MINERAL_WIDTH, MINERAL_HEIGHT)}
         self.eids[#self.eids+1] = igame_object.create {
             prefab = prefab,
