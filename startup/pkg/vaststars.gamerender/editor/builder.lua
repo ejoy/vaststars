@@ -36,7 +36,12 @@ local function check_construct_detector(self, prototype_name, x, y, dir, exclude
                 end
             end
         end
-        local mineral = terrain:get_mineral(x, y) -- TODO: maybe have multiple minerals in the area
+
+        local MINERAL_WIDTH <const> = 7 -- TODO: remove hard codes
+        local MINERAL_HEIGHT <const> = 7
+        local mx = x - (MINERAL_WIDTH - w) // 2
+        local my = y - (MINERAL_HEIGHT - h) // 2
+        local mineral = terrain:get_mineral(mx, my) -- TODO: maybe have multiple minerals in the area
         if mineral then
             found_mineral = mineral
         end

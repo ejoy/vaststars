@@ -8,8 +8,8 @@ local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local COLOR_INVALID <const> = math3d.constant "null"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
-local MINERAL_WIDTH <const> = 3
-local MINERAL_HEIGHT <const> = 3
+local MINERAL_WIDTH <const> = 7
+local MINERAL_HEIGHT <const> = 7
 
 -- three-dimensional axial
 -- z
