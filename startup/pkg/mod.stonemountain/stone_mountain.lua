@@ -2,6 +2,7 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 local open_sm = false
+local aabb_test
 local math3d 	= require "math3d"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local mathpkg	= import_package "ant.math"
@@ -237,15 +238,27 @@ local function get_count()
              elseif size_idx == 2 then
                 local e = terrain_module.noise(ix, iy, freq, depth, seed, offset_y, offset_x) * (8 + 1 - 1) + 1
                 e = math.floor(e)
-                if sm_table[sm_idx][2] then -- center_stone:middle1
-                    sm_table[sm_idx][2].c = e + 1
+                if aabb_test then
+                    if sm_table[sm_idx][2] then -- center_stone:middle1
+                        sm_table[sm_idx][2].c = 1
+                    else
+                        sm_table[sm_idx][2] = {c = 0}
+                    end
                 else
-                    sm_table[sm_idx][2] = {c = e}
+                    if sm_table[sm_idx][2] then -- center_stone:middle1
+                        sm_table[sm_idx][2].c = e + 1
+                    else
+                        sm_table[sm_idx][2] = {c = e}
+                    end
                 end
             else
                 local e = terrain_module.noise(ix, iy, freq, depth, seed, offset_y, offset_x) * (16 + 1 - 1) + 1
                 e = math.floor(e)
-                sm_table[sm_idx][3] = {c = e} 
+                if aabb_test then
+                    sm_table[sm_idx][3] = {c = 0}
+                else
+                    sm_table[sm_idx][3] = {c = e} 
+                end
             end
         end
     end
@@ -595,18 +608,10 @@ function ism.create_sm_entity(r, ww, hh, off, un, scale, sa, oa, f, d)
     stone_area = sa
     open_area = oa
     ratio, width, height= r, ww, hh
-    if off then
-        offset = off
-    end
-    if un then
-        un = unit
-    end
-    if f then
-        freq = f
-    end
-    if d then
-        depth = d
-    end
+    if off then offset = off end
+    if un then un = unit end
+    if f then freq = f end
+    if d then depth = d end
     section_size = math.min(math.max(1, width > 4 and width//4 or width//2), 32)
     for center_idx = 1, width * height do
         sm_table[center_idx] = {[1] = {}, [2] = {}, [3] = {}} -- b m s
@@ -651,8 +656,8 @@ local function set_sm_rect(mesh_aabb_value, worldmat)
     local t_aabb = math3d.aabb_transform(worldmat, origin_aabb)
     local center, extent = math3d.aabb_center_extents(t_aabb)
     local minv, maxv = math3d.sub(center, extent), math3d.add(center, extent)
-    local minx, minz= math.floor(math.floor(math3d.index(minv, 1)) / unit),  math.floor(math.floor(math3d.index(minv, 3)) / unit)
-    local maxx, maxz= math.ceil(math.ceil(math3d.index(maxv, 1)) / unit),  math.ceil(math.ceil(math3d.index(maxv, 3)) / unit)
+    local minx, minz= math.ceil(math.floor(math3d.index(minv, 1)) / unit),  math.ceil(math.floor(math3d.index(minv, 3)) / unit)
+    local maxx, maxz= math.floor(math.ceil(math3d.index(maxv, 1)) / unit),  math.floor(math.ceil(math3d.index(maxv, 3)) / unit)
     local rect = {x = minx, z = maxz - 1, w = maxx - minx, h = maxz - minz}
     sm_rect_table[#sm_rect_table+1] = rect
     return rect
