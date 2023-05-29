@@ -185,13 +185,13 @@ prototype "地热井I" {
     icon = "textures/building_pic/small_pic_geothermal_plant.texture",
     background = "textures/build_background/pic_distillery.texture",
     construct_detector = {"exclusive"},
-    type = {"building", "assembling", "fluidboxes"},
+    type = {"building", "assembling", "fluidboxes","mining"},
     priority = "secondary",
     area = "5x5",
     rotate_on_build = true,
     io_shelf = false,
     show_arc_menu = false,
-    craft_category = {"地热处理"},
+    mining_category = {"地热处理"},
     maxslot = "8",
     fluidboxes = {
         input = {
