@@ -21,8 +21,8 @@ local entities = { {
     dir = "N",
     prototype_name = "采矿机I",
     recipe = "碎石挖掘",
-    x = 113,
-    y = 131
+    x = 115,
+    y = 133
   }, {
     dir = "N",
     item = "碎石",
@@ -39,8 +39,8 @@ local entities = { {
     dir = "N",
     prototype_name = "采矿机I",
     recipe = "碎石挖掘",
-    x = 70,
-    y = 130
+    x = 72,
+    y = 132
   }, {
     dir = "N",
     item = "碎石",
@@ -113,8 +113,8 @@ local entities = { {
     dir = "N",
     prototype_name = "采矿机I",
     recipe = "碎石挖掘",
-    x = 143,
-    y = 147
+    x = 145,
+    y = 149
   }, {
     dir = "N",
     item = "碎石",
@@ -125,25 +125,13 @@ local entities = { {
     dir = "N",
     prototype_name = "采矿机I",
     recipe = "碎石挖掘",
-    x = 91,
-    y = 100
+    x = 93,
+    y = 102
   }, {
     dir = "N",
     prototype_name = "风力发电机I",
     x = 88,
     y = 100
-  }, {
-    dir = "N",
-    item = "碎石",
-    prototype_name = "无人机仓库I",
-    x = 94,
-    y = 102
-  }, {
-    dir = "N",
-    item = "碎石",
-    prototype_name = "无人机仓库I",
-    x = 96,
-    y = 102
   }, {
     dir = "N",
     prototype_name = "组装机I",
@@ -172,8 +160,8 @@ local entities = { {
     dir = "N",
     prototype_name = "采矿机I",
     recipe = "碎石挖掘",
-    x = 190,
-    y = 130
+    x = 192,
+    y = 132
   }, {
     dir = "N",
     item = "碎石",
@@ -202,68 +190,68 @@ local entities = { {
     dir = "N",
     prototype_name = "采矿机I",
     recipe = "碎石挖掘",
-    x = 168,
-    y = 110
+    x = 170,
+    y = 112
   }, {
     dir = "N",
     prototype_name = "采矿机I",
     recipe = "铁矿石挖掘",
-    x = 162,
-    y = 128
+    x = 164,
+    y = 130
   }, {
     dir = "N",
     prototype_name = "采矿机I",
     recipe = "铁矿石挖掘",
-    x = 195,
-    y = 115
+    x = 197,
+    y = 117
   }, {
     dir = "N",
     prototype_name = "采矿机I",
     recipe = "铁矿石挖掘",
-    x = 171,
-    y = 74
+    x = 172,
+    y = 76
   }, {
     dir = "N",
     prototype_name = "采矿机I",
     recipe = "铁矿石挖掘",
-    x = 73,
-    y = 91
+    x = 77,
+    y = 93
   }, {
     dir = "N",
     prototype_name = "采矿机I",
     recipe = "铁矿石挖掘",
-    x = 59,
-    y = 116
+    x = 61,
+    y = 118
   }, {
     dir = "N",
     prototype_name = "采矿机I",
     recipe = "铁矿石挖掘",
-    x = 89,
-    y = 163
+    x = 91,
+    y = 165
   }, {
     dir = "N",
     prototype_name = "采矿机I",
     recipe = "铁矿石挖掘",
-    x = 136,
-    y = 172
+    x = 138,
+    y = 174
   }, {
     dir = "N",
     prototype_name = "采矿机I",
     recipe = "铁矿石挖掘",
-    x = 178,
-    y = 191
+    x = 180,
+    y = 193
   }, {
     dir = "N",
     prototype_name = "采矿机I",
     recipe = "铁矿石挖掘",
-    x = 207,
-    y = 160
+    x = 209,
+    y = 162
   }, {
     dir = "N",
     prototype_name = "采矿机I",
     recipe = "铁矿石挖掘",
-    x = 100,
-    y = 60
+    x = 102,
+    y = 62
   }, {
     dir = "N",
     prototype_name = "风力发电机I",
@@ -273,14 +261,14 @@ local entities = { {
     dir = "N",
     prototype_name = "采矿机I",
     recipe = "铁矿石挖掘",
-    x = 148,
-    y = 93
+    x = 150,
+    y = 95
   }, {
     dir = "N",
     prototype_name = "采矿机I",
     recipe = "铁矿石挖掘",
-    x = 60,
-    y = 183
+    x = 62,
+    y = 185
   }, {
     dir = "N",
     item = "铁矿石",
@@ -509,12 +497,6 @@ local entities = { {
     prototype_name = "无人机仓库I",
     x = 92,
     y = 143
-  }, {
-    dir = "N",
-    item = "铁矿石",
-    prototype_name = "无人机仓库I",
-    x = 62,
-    y = 117
   }, {
     dir = "N",
     item = "铁矿石",
@@ -3414,11 +3396,6 @@ local entities = { {
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 147,
-    y = 151
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
     x = 121,
     y = 161
   }, {
@@ -3593,6 +3570,57 @@ local entities = { {
     prototype_name = "科研中心I",
     x = 175,
     y = 138
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 148,
+    y = 151
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 213,
+    y = 160
+  }, {
+    dir = "N",
+    fluid_name = "",
+    prototype_name = "地热井I",
+    x = 209,
+    y = 141
+  }, {
+    dir = "N",
+    fluid_name = {
+      input = { "蒸汽" },
+      output = {}
+    },
+    prototype_name = "蒸汽发电机I",
+    recipe = "蒸汽发电",
+    x = 210,
+    y = 146
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 78,
+    y = 169
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 86,
+    y = 169
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 94,
+    y = 169
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 195,
+    y = 135
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 114,
+    y = 133
   } }
 local road = {
   [22850] = 8,
@@ -4458,14 +4486,14 @@ local mineral = {
   ["190,130"] = "碎石",
   ["195,115"] = "铁矿石",
   ["207,160"] = "铁矿石",
+  ["208,140"] = "蒸汽",
   ["59,116"] = "铁矿石",
   ["60,183"] = "铁矿石",
   ["70,130"] = "碎石",
   ["73,91"] = "铁矿石",
   ["89,163"] = "铁矿石",
   ["91,100"] = "碎石",
-  ["208,140"] = "蒸汽",
-  ["91,201"] = "蒸汽",
+  ["91,201"] = "蒸汽"
 }
 
 local function prepare(world)
