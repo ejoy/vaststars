@@ -7,8 +7,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  material: /pkg/vaststars.resources/glb/terrain/ground-gravel.glb|materials/Material.024.material
-  mesh: /pkg/vaststars.resources/glb/terrain/ground-gravel.glb|meshes/Plane.003_P1.meshbin
+  material: /pkg/vaststars.resources/glb/mineral/ground-gravel.glb|materials/Material.024.material
+  mesh: /pkg/vaststars.resources/glb/mineral/ground-gravel.glb|meshes/Plane.003_P1.meshbin
   name: Plane.002
   scene: {}
   visible_state: main_view|selectable|cast_shadow
