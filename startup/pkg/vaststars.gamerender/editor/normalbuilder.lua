@@ -23,6 +23,7 @@ local SPRITE_COLOR = import_package "vaststars.prototype".load("sprite_color")
 local gameplay_core = require "gameplay.core"
 local ichest = require "gameplay.interface.chest"
 local create_selected_boxes = ecs.require "selected_boxes"
+local terrain = ecs.require "terrain"
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -151,7 +152,7 @@ local function _get_mineral_recipe(prototype_name, x, y, dir)
     local MINERAL_HEIGHT <const> = 7
     local mx = x - (MINERAL_WIDTH - w) // 2
     local my = y - (MINERAL_HEIGHT - h) // 2
-    local mineral = coord_system:get_mineral(mx, my) -- TODO: maybe have multiple minerals in the area
+    local mineral = terrain:get_mineral(mx, my) -- TODO: maybe have multiple minerals in the area
     if mineral then
         found = mineral
     end
