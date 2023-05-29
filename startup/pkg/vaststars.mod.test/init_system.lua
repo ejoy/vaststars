@@ -89,7 +89,7 @@ function S.init_world()
      local open_area = {
         {x = -128, z = 128, w = 256, h = 256}
     }   
-    istonemountain.create_sm_entity(density, width, height, offset, UNIT, scale_table, {} , {})     
+    istonemountain.create_sm_entity(density, width, height, offset, UNIT, scale_table, stone_area, open_area)     
     --create_mark()
 
 --[[      printer_eid = ecs.create_entity {
