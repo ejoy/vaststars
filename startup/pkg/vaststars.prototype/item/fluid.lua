@@ -164,6 +164,7 @@ prototype "蒸汽" {
     default_temperature = 165,
     max_temperature = 200,
     item_description = "一种化工气体",
+    mineral_model = "prefabs/terrain/ground-gravel.prefab",
 }
 
 prototype "丁二烯" {
