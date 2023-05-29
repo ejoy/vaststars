@@ -3582,22 +3582,6 @@ local entities = { {
     y = 160
   }, {
     dir = "N",
-    fluid_name = "",
-    prototype_name = "地热井I",
-    x = 209,
-    y = 141
-  }, {
-    dir = "N",
-    fluid_name = {
-      input = { "蒸汽" },
-      output = {}
-    },
-    prototype_name = "蒸汽发电机I",
-    recipe = "蒸汽发电",
-    x = 210,
-    y = 146
-  }, {
-    dir = "N",
     prototype_name = "铁制电线杆",
     x = 78,
     y = 169
@@ -3621,6 +3605,61 @@ local entities = { {
     prototype_name = "铁制电线杆",
     x = 114,
     y = 133
+  }, {
+    dir = "S",
+    fluid_name = {
+      input = {},
+      output = { "蒸汽" }
+    },
+    prototype_name = "地热井I",
+    recipe = "地热采集",
+    x = 209,
+    y = 141
+  }, {
+    dir = "S",
+    fluid_name = {
+      input = { "蒸汽" },
+      output = {}
+    },
+    prototype_name = "蒸汽发电机I",
+    recipe = "蒸汽发电",
+    x = 210,
+    y = 136
+  }, {
+    dir = "S",
+    fluid_name = {
+      input = { "蒸汽" },
+      output = {}
+    },
+    prototype_name = "蒸汽发电机I",
+    recipe = "蒸汽发电",
+    x = 210,
+    y = 131
+  }, {
+    dir = "S",
+    fluid_name = {
+      input = { "蒸汽" },
+      output = {}
+    },
+    prototype_name = "蒸汽发电机I",
+    recipe = "蒸汽发电",
+    x = 210,
+    y = 126
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 203,
+    y = 135
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 209,
+    y = 135
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 209,
+    y = 129
   } }
 local road = {
   [22850] = 8,
