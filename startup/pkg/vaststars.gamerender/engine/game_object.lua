@@ -7,7 +7,6 @@ local game_object_event = ecs.require "engine.game_object_event"
 local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
 local iani = ecs.import.interface "ant.animation|ianimation"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
-local math3d = require "math3d"
 local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local prefab_parse = require("engine.prefab_parser").parse

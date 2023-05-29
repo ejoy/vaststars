@@ -251,6 +251,13 @@ prototype "换热器I" {
     item_description = "将水变成蒸汽的机器",
 }
 
+prototype "地热井I" {
+    type = {"item"},
+    group = {"物流"},
+    stack = 10,
+    item_description = "地下获取蒸汽的机器",
+}
+
 prototype "锅炉I" {
     type = {"item"},
     group = {"物流"},

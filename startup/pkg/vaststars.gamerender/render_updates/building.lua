@@ -28,7 +28,7 @@ local DIRECTION <const> = {
 local EDITOR_CACHE_NAMES = {"CONSTRUCTED"}
 
 local function __draw_building_base(object_id, building_srt, w, h)
-    local cfg = building_base_cfg[("%dx%d"):format(w, h)]
+    local cfg = assert(building_base_cfg[("%dx%d"):format(w, h)], ("no building_base of this size(%dx%d) available"):format(w, h))
     local item_x, item_y = building_srt.t[1] - (w/2 * iterrain.tile_size), building_srt.t[3] - (h/2 * iterrain.tile_size)
     local draw_x, draw_y, draw_w, draw_h = item_x, item_y, w * iterrain.tile_size, h * iterrain.tile_size
 

@@ -2100,6 +2100,21 @@ prototype "空气过滤" {
     description = "采集大气并过滤",
 }
 
+prototype "地热采集" {
+    type = { "recipe" },
+    category = "地热处理",
+    --recipe_group =  "化工",
+    recipe_order =  20,
+    recipe_icon =  "textures/construct/air-filter1.texture",
+    ingredients = {
+    },
+    results = {
+        {"蒸汽", 120},
+    },
+    time = "3s",
+    description = "采集地热蒸汽",
+}
+
 prototype "离岸抽水" {
     type = { "recipe" },
     category = "水泵",

@@ -167,7 +167,13 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
         else
             if object then
                 if not iprototype.is_pipe(object.prototype_name) then
-                    State.succ = false
+                    local typeobject = iprototype.queryByName(object.prototype_name)
+                    -- usually, the type of 'fluidbox' is a fluid tank.
+                    if not iprototype.has_type(typeobject.type, "fluidbox") then
+                        State.succ = false
+                    else
+                        _update_fluid_name(State, object.fluid_name, object.fluidflow_id)
+                    end
                     map[coord] = {object.prototype_name, object.dir}
                 else
                     local endpoint_prototype_name, endpoint_dir = object.prototype_name, object.dir

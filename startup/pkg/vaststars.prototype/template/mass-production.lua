@@ -3531,6 +3531,68 @@ local entities = { {
     prototype_name = "蓄电池I",
     x = 49,
     y = 176
+  }, {
+    dir = "N",
+    item = "机械科技包",
+    prototype_name = "无人机仓库I",
+    x = 165,
+    y = 136
+  }, {
+    dir = "N",
+    item = "机械科技包",
+    prototype_name = "无人机仓库I",
+    x = 177,
+    y = 136
+  }, {
+    dir = "N",
+    item = "地质科技包",
+    prototype_name = "无人机仓库I",
+    x = 171,
+    y = 136
+  }, {
+    dir = "N",
+    item = "气候科技包",
+    prototype_name = "无人机仓库I",
+    x = 167,
+    y = 136
+  }, {
+    dir = "N",
+    item = "地质科技包",
+    prototype_name = "无人机仓库I",
+    x = 169,
+    y = 136
+  }, {
+    dir = "N",
+    item = "地质科技包",
+    prototype_name = "无人机仓库I",
+    x = 173,
+    y = 136
+  }, {
+    dir = "N",
+    item = "气候科技包",
+    prototype_name = "无人机仓库I",
+    x = 175,
+    y = 136
+  }, {
+    dir = "N",
+    prototype_name = "科研中心I",
+    x = 166,
+    y = 138
+  }, {
+    dir = "N",
+    prototype_name = "科研中心I",
+    x = 169,
+    y = 138
+  }, {
+    dir = "N",
+    prototype_name = "科研中心I",
+    x = 172,
+    y = 138
+  }, {
+    dir = "N",
+    prototype_name = "科研中心I",
+    x = 175,
+    y = 138
   } }
 local road = {
   [22850] = 8,
@@ -4401,7 +4463,9 @@ local mineral = {
   ["70,130"] = "碎石",
   ["73,91"] = "铁矿石",
   ["89,163"] = "铁矿石",
-  ["91,100"] = "碎石"
+  ["91,100"] = "碎石",
+  ["208,140"] = "蒸汽",
+  ["91,201"] = "蒸汽",
 }
 
 local function prepare(world)
