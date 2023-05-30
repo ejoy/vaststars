@@ -621,6 +621,7 @@ prototype "化工厂1" {
     recipe_icon =  "textures/construct/chemistry2.texture",
     ingredients = {
         {"液罐I", 2},
+        {"玻璃", 4},
         {"组装机I", 1},
     },
     results = {
@@ -934,8 +935,9 @@ prototype "科研中心1" {
     recipe_order =  80,
     recipe_icon =  "textures/property/research-packs.texture",
     ingredients = {
-        {"电动机I", 8},
-        {"坩埚", 3},
+        {"玻璃", 8},
+        {"铝棒", 8},
+        {"无人机仓库II", 4},
     },
     results = {
         {"科研中心I", 1},

@@ -46,13 +46,13 @@ local entities = { {
     item = "碎石",
     prototype_name = "无人机仓库I",
     x = 71,
-    y = 128
+    y = 129
   }, {
     dir = "N",
     item = "碎石",
     prototype_name = "无人机仓库I",
     x = 71,
-    y = 126
+    y = 127
   }, {
     dir = "N",
     item = "碎石",
@@ -531,14 +531,14 @@ local entities = { {
     dir = "N",
     item = "铁矿石",
     prototype_name = "无人机仓库I",
-    x = 160,
-    y = 127
+    x = 161,
+    y = 128
   }, {
     dir = "N",
     item = "铁矿石",
     prototype_name = "无人机仓库I",
-    x = 158,
-    y = 127
+    x = 159,
+    y = 128
   }, {
     dir = "N",
     item = "碎石",
