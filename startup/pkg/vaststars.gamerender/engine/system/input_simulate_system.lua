@@ -18,10 +18,8 @@ local __simulate_tap; do
         elseif state == "UP" then
             if lasttime and now() - lasttime < LONG_PRESS_DURATION then
                 world:pub {"gesture", "tap", {
-                    locationInView = {
-                        x = x,
-                        y = y,
-                    }
+                    x = x,
+                    y = y,
                 }}
             end
             lasttime = nil
@@ -65,10 +63,8 @@ local __simulate_long_press, __simulate_long_press_update; do
     function __simulate_long_press_update()
         if lasttime and now() - lasttime > LONG_PRESS_DURATION then
             world:pub {"gesture", "long_press", {
-                locationInView = {
-                    x = lastx,
-                    y = lasty,
-                },
+                x = lastx,
+                y = lasty,
             }}
             lasttime = nil
         end

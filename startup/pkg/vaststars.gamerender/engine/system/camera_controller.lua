@@ -232,7 +232,7 @@ function camera_controller:camera_usage()
 
     for _, _, e in gesture_pinch:unpack() do
         if __check_camera_editable() then
-            zoom(e.velocity, e.locationInView.x, e.locationInView.y)
+            zoom(e.velocity, e.x, e.y)
         end
     end
 

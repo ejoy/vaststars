@@ -26,11 +26,11 @@ end
 
 function pickup_detect_sys:data_changed()
     for _, _, v in gesture_mb:unpack() do
-        local x, y = remap_xy(v.locationInView.x, v.locationInView.y)
+        local x, y = remap_xy(v.x, v.y)
         ipu.pick(x, y, __gesture)
     end
     for _, _, v in long_press_gesture_mb:unpack() do
-        local x, y = remap_xy(v.locationInView.x, v.locationInView.y)
+        local x, y = remap_xy(v.x, v.y)
         ipu.pick(x, y, __long_press_gesture)
     end
 end
