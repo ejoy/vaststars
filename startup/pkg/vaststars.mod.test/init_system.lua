@@ -144,7 +144,7 @@ function S:data_changed()
                     x = 0, y = 0 --leftbottom
                 }
             }
-            iroad.update_roadnet_group(1000, create_list, "foreground")
+            iroad.update_roadnet_group(1000, create_list)
 --[[              local x, y = -5, -5
             for _, shape in ipairs({"I", "L", "T", "U", "X", "O"}) do
                 y = y + 2

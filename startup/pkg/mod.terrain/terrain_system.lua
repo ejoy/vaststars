@@ -17,7 +17,8 @@ local function calc_shape_terrain(unit, terrain_field)
     shape_terrain.material = "/pkg/mod.terrain/assets/plane_terrain.material"
 end
 
-function iterrain.gen_terrain_field(width, height, offset, unit)
+function iterrain.gen_terrain_field(width, height, offset, unit, render_layer)
+    if not render_layer then render_layer = "opacity" end
     local terrain_field = {}
     terrain_width  = width
     terrain_height = height
@@ -32,7 +33,7 @@ function iterrain.gen_terrain_field(width, height, offset, unit)
     end
     calc_shape_terrain(unit, terrain_field)
     iplane_terrain.set_wh(width, height, offset, offset)
-    iplane_terrain.init_plane_terrain(shape_terrain)
+    iplane_terrain.init_plane_terrain(shape_terrain, render_layer)
     --iroad.set_args(width, height, offset, unit)
 end
 

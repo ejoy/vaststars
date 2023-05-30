@@ -205,6 +205,7 @@ local function get_indirect(gid, update_list)
 end
 
 local function create_road_group(gid, update_list, render_layer)
+    if not render_layer then render_layer = "foreground" end
     local indirect = get_indirect(gid, update_list)
     local road_mesh = build_mesh()
     local g = ecs.group(gid)

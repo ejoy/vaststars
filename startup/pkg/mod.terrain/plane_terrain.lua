@@ -208,7 +208,7 @@ function iplane_terrain.get_wh()
     return terrain_width, terrain_height, unit, origin_offset_width
 end
 
-function iplane_terrain.init_plane_terrain(st)
+function iplane_terrain.init_plane_terrain(st, render_layer)
     for e in ww:select "shape_terrain st:update eid:in" do
         e.st = st
         if st.prev_terrain_fields == nil then
@@ -251,6 +251,7 @@ function iplane_terrain.init_plane_terrain(st)
                             name        = "section" .. sectionidx,
                             plane_terrain = true,
                             section_index = sectionidx,
+                            render_layer = render_layer,
                             on_ready = function()
                                 world:pub {"shape_terrain", "on_ready", eid, e.eid}
                             end,
