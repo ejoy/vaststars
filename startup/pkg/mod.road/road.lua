@@ -91,7 +91,7 @@ local function build_ib(max_plane)
 end
 
 local function get_road_info(road)
-    local t = {road.x, 0.5, road.y, 0}
+    local t = {road.x, 0.1, road.y, 0}
     local road_direction = road.road_direction or 0
     local mark_direction = road.mark_direction or 0
     local road_info = {
@@ -204,7 +204,7 @@ local function get_indirect(gid, update_list)
     return indirect 
 end
 
-local function create_road_group(gid, update_list)
+local function create_road_group(gid, update_list, render_layer)
     local indirect = get_indirect(gid, update_list)
     local road_mesh = build_mesh()
     local g = ecs.group(gid)
@@ -224,6 +224,7 @@ local function create_road_group(gid, update_list)
             indirect = indirect,
             indirect_update = true,
             road = true,
+            render_layer = render_layer
         },
     }  
 end
@@ -242,14 +243,14 @@ local function update_road_group(gid, update_list)
     end
 end
 
-function iroad.update_roadnet_group(gid, update_list)
+function iroad.update_roadnet_group(gid, update_list, render_layer)
     if not gid then
         gid = 30001
     end
     if road_group[gid] then
         update_road_group(gid, update_list)
     else
-        create_road_group(gid, update_list)
+        create_road_group(gid, update_list, render_layer)
         road_group[gid] = true
     end
 

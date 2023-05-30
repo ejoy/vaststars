@@ -76,7 +76,7 @@ function S.init_world()
     end
     iroad.update_roadnet_group(1000, create_list)   ]]
  
-    local density = 0.5
+--[[     local density = 0.5
     local width, height, offset, UNIT = 256, 256, 128, 10
     local scale_table = {
         big = 1.0,
@@ -89,7 +89,7 @@ function S.init_world()
      local open_area = {
         {x = -128, z = 128, w = 256, h = 256}
     }   
-    istonemountain.create_sm_entity(density, width, height, offset, UNIT, scale_table, stone_area, open_area)     
+    istonemountain.create_sm_entity(density, width, height, offset, UNIT, scale_table, stone_area, open_area)     ]] 
     --create_mark()
 
 --[[      printer_eid = ecs.create_entity {
@@ -144,7 +144,7 @@ function S:data_changed()
                     x = 0, y = 0 --leftbottom
                 }
             }
-            iroad.update_roadnet_group(1000, create_list)
+            iroad.update_roadnet_group(1000, create_list, "foreground")
 --[[              local x, y = -5, -5
             for _, shape in ipairs({"I", "L", "T", "U", "X", "O"}) do
                 y = y + 2
