@@ -150,45 +150,30 @@
         <div data-model="start" class="panel1" style="flex-direction: column; justify-content:flex-start;">
 
             <!-- detail panel begin -->
-            <div style = "overflow: hidden; position: absolute; left: 0.13vmin; top: 7vmin; width: 30.00vmin; height: 72.33vmin; background-color: rgb(250, 205, 9); border: 0.27vmin rgb(89, 73, 39);flex-direction: column; justify-content: flex-start;">
+            <div style = 'position: absolute; left: 0.13vmin; top: 7vmin; width: 30.00vmin; height: 86vmin; background-image: "textures/detail/background.texture"; background-size: cover; flex-direction: column; justify-content: flex-start;'>
                 <!-- title -->
-                <div style = "width: 100%; height: 15%; flex-direction: row; justify-content: center; align-items: center;">
-                    <!-- icon -->
-                    <div style = "flex-direction:row; justify-content:center; align-items: center; width: 10vmin;">
-                        <div data-style-background-image="icon" style = "width: 9.50vmin; height: 9.50vmin; background-size: contain; background-size: cover;" />
-                    </div>
-                    <!-- prototype & status -->
-                    <div style = "justify-content: center;">
-                        <div style = "flex-direction: column; justify-content: center;">
-                            <div style = "width: 20.00vmin; height: 65%; font-size: 4.10vmin; -webkit-text-stroke: 0.13vmin black; word-break: break-all;">{{prototype_name}}</div>
-                            <div style = "flex-direction: row; justify-content: flex-start; height:35%;">
-                                <div style = 'width: 3.2vmin; height: 3.2vmin; background-size: cover;' data-style-background-image = "detail_panel_status_icon" />
-                                <div style = "left: 0.5vmin; bottom:0.5vmin; font-size: 3.25vmin; color: rgb(73, 60, 32);-webkit-text-stroke: 0.07vmin rgb(39, 32, 17);">{{detail_panel_status_desc}}</div>
-                            </div>
-                        </div>
-                    </div>
+                <div style = "flex-direction: row; justify-content: center; align-items: center;">
+                    <div data-style-background-image="icon" style = "width: 20vmin; height: 20vmin; background-size: cover;" />
                 </div>
-
+                <div style="top: -3.0vmin;">
+                    <div style = "text-align: center; font-size: 4vmin; word-break: break-all;">{{prototype_name}}</div>
+                    <div style = "text-align: center; font-size: 3.2vmin; color: #000; padding-top: 0.9vmin;">{{detail_panel_status_desc}}</div>
+                </div>
                 <!-- property list -->
-                <div style = "width:100%; border-bottom: 0.1vmin #fff; padding-top: 1vmin;" />
-                <div style="height:65%; padding-top: 2vmin;">
-                    <div data-for = "property : property_list">
-                        <div style = "width: 100%; height: 6.67vmin; flex-direction: row; align-items: center; justify-content: center;">
+                <div style="height: 28vmin; border: 2px #fff;">
+                    <div style="border: 2px #ff0000;" data-for = "property : property_list">
+                        <div style = "width: 100%; height: 9vmin; flex-direction: row; align-items: center; justify-content: flex-start;">
+                            <div style = "width: 8.00vmin; height: 8.00vmin; background-size:cover;" data-style-background-image="property.icon" />
                             <!-- proprety & value -->
-                            <div style = "flex-direction: column; justify-content: center; align-items: center;">
-                                <div style="flex-direction:row; justify-content: center; top: 0.40vmin;">
-                                    <div style = "width: 4.00vmin; height: 4.00vmin; background-size:cover;" data-style-background-image="property.icon" />
-                                    <div style = "padding-bottom: 0.75vmin; flex-direction:row; justify-content: center; align-items:center;  height:4vmin; font-size: 4vmin; -webkit-text-stroke: 0.13vmin black; text-align: center;">{{property.desc}}</div>
-                                </div>
-                                <div style = "text-align: center; width: 100%; height: 4.00vmin; font-size: 3.20vmin; color: rgb(73, 60, 32);-webkit-text-stroke: 0.07vmin rgb(39, 32, 17);">{{property.value}}</div>
+                            <div style = "flex-direction: column; justify-content: center; align-items: flex-start;">
+                                <div style = "color:#adadad; padding-bottom: 0.75vmin; flex-direction:row; justify-content: center; align-items:center; height: 4vmin; font-size: 4vmin; text-align: center;">{{property.desc}}</div>
+                                <div style = "text-align: center; width: 100%; height: 4.00vmin; font-size: 3.20vmin;">{{property.value}}</div>
                             </div>
                         </div>
-                        <div style = "height: 2.67vmin;" />
                     </div>
-                
                 </div>
-                
-                <div style="height:19%; flex-direction: column; justify-content: flex-start; align-items: center;" data-if = "show_chest">
+                <div style="border: 2px #ffff00; color:#adadad; text-align: center; margin:0.3vmin; font-size: 3.20vmin;">生产信息</div>
+                <div style="border: 2px #ff00ff; height:19%; flex-direction: column; justify-content: flex-start; align-items: center;" data-if = "show_chest">
                     <div style = "width:98%; border-bottom: 0.1vmin #fff; margin:0.3vmin"/>
                     <div style="padding-top:0.3vmin; padding-left:0.04vmin; width:100%; flex-direction: row; justify-content: flex-start; align-items: center;">
                         <div data-for = "chest : chest_list0" class="small-item1" data-style-background-image="chest.icon">
@@ -202,10 +187,8 @@
                     </div>
                 </div>
 
-
                 <!--采矿机底部显示进度-->
-                <div style="height:19%; flex-direction: column; justify-content: center; align-items: center;" data-if = "show_minner">
-                    <div style = "width:98%; border-bottom: 0.1vmin #fff; margin:0.3vmin"/>
+                <div style="border: 2px #0000ff; height:19%; flex-direction: column; justify-content: center; align-items: center;" data-if = "show_minner">
                     <div class="row" style="width:100%; height: 100%; justify-content: space-evenly; align-items: center;">
                         <div class="column" style="justify-content: center; width: 70%; height:30%;">
                             <div class="progress-bar-block" style = "width: 100%; height:100%; border: 0.30vmin rgb(0, 0, 0);">
@@ -224,7 +207,7 @@
                 </div>
 
                 <!--组装机类型底部显示进度-->
-                <div style="height:22%; flex-direction: column; justify-content: center; align-items: center;" data-if = "show_assemble">
+                <div style="border: 2px #00ffff; top: 5vmin; height:22%; flex-direction: column; justify-content: center; align-items: center;" data-if = "show_assemble">
                     <div class="recipe-name">
                         <div class="progress-bar-block" style = "width: 100%; height:98%; border: 0.2vmin rgb(0, 0, 0);">
                             <div class="progress-background" data-style-width="progress"/>
@@ -261,7 +244,6 @@
                     </div>
                     <div style="height:122%; width: 105%; position: absolute; bottom:2vmin; border: 0.8vmin rgb(0, 217, 255); animation: 0.4s linear 0s infinite alternate enlarge3;" data-if="guide_progress == 15 || guide_progress == 20 || guide_progress == 26 || guide_progress == 27"/>
                 </div>
-
             </div>
             <!-- detail panel end -->
         </div>
