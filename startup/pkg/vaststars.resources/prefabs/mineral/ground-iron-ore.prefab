@@ -18,7 +18,7 @@ policy:
   ant.render|render
 ---
 data:
-  material: /pkg/vaststars.resources/glb/mineral/ground-iron-ore.glb|materials/Material.002_clr.material
+  material: /pkg/vaststars.resources/prefabs/mineral/ground-iron-ore-Material.002_clr.material
   mesh: /pkg/vaststars.resources/glb/mineral/ground-iron-ore.glb|meshes/Plane.004_P1.meshbin
   name: tie
   scene: {}

@@ -27,6 +27,7 @@ local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 local ientity = require "gameplay.interface.entity"
 local create_pickup_icon = ecs.require "pickup_icon".create
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
+local terrain = ecs.require "terrain"
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -188,7 +189,7 @@ local function _get_mineral_recipe(prototype_name, x, y, dir)
     local found
     for i = 0, w - 1 do
         for j = 0, h - 1 do
-            local mineral = coord_system:get_mineral(x + i, y + j) -- TODO: maybe have multiple minerals in the area
+            local mineral = terrain:get_mineral(x + i, y + j) -- TODO: maybe have multiple minerals in the area
             if mineral then
                 found = mineral
             end

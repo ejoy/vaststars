@@ -23,6 +23,7 @@ local SPRITE_COLOR = import_package "vaststars.prototype".load("sprite_color")
 local gameplay_core = require "gameplay.core"
 local ichest = require "gameplay.interface.chest"
 local create_selected_boxes = ecs.require "selected_boxes"
+local terrain = ecs.require "terrain"
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -137,6 +138,32 @@ local __get_neighbor_fluid_types; do
     end
 end
 
+-- TODO: duplicate from builder.lua
+local function _get_mineral_recipe(prototype_name, x, y, dir)
+    local typeobject = iprototype.queryByName(prototype_name)
+    local w, h = iprototype.rotate_area(typeobject.area, dir)
+
+    if not iprototype.has_type(typeobject.type, "mining") then
+        return
+    end
+    local found
+
+    local MINERAL_WIDTH <const> = 7 -- TODO: remove hard codes
+    local MINERAL_HEIGHT <const> = 7
+    local mx = x - (MINERAL_WIDTH - w) // 2
+    local my = y - (MINERAL_HEIGHT - h) // 2
+    local mineral = terrain:get_mineral(mx, my) -- TODO: maybe have multiple minerals in the area
+    if mineral then
+        found = mineral
+    end
+
+    if not found then
+        return
+    end
+
+    return imining.get_mineral_recipe(prototype_name, found)
+end
+
 local function __new_entity(self, datamodel, typeobject, position, x, y, dir)
     iobject.remove(self.pickup_object)
 
@@ -182,6 +209,13 @@ local function __new_entity(self, datamodel, typeobject, position, x, y, dir)
     end
 
     __show_self_selected_boxes(self, position, typeobject, dir, valid)
+    local recipe = _get_mineral_recipe(typeobject.name, x, y, dir) -- TODO: maybe set recipt according to entity type?
+    if recipe then
+        local recipe_typeobject = iprototype.queryByName(recipe)
+        if recipe_typeobject then
+            fluid_name = irecipe.get_init_fluids(recipe_typeobject) or "" -- maybe no fluid in recipe
+        end
+    end
 
     self.pickup_object = iobject.new {
         prototype_name = typeobject.name,
@@ -194,6 +228,7 @@ local function __new_entity(self, datamodel, typeobject, position, x, y, dir)
         },
         fluid_name = fluid_name,
         group_id = 0,
+        recipe = recipe,
     }
 
     if self.sprite then
@@ -358,31 +393,6 @@ local function new_entity(self, datamodel, typeobject)
     end
 end
 
--- TODO: duplicate from builder.lua
-local function _get_mineral_recipe(prototype_name, x, y, dir)
-    local typeobject = iprototype.queryByName(prototype_name)
-    local w, h = iprototype.rotate_area(typeobject.area, dir)
-
-    if not iprototype.has_type(typeobject.type, "mining") then
-        return
-    end
-    local found
-    for i = 0, w - 1 do
-        for j = 0, h - 1 do
-            local mineral = coord_system:get_mineral(x + i, y + j) -- TODO: maybe have multiple minerals in the area
-            if mineral then
-                found = mineral
-            end
-        end
-    end
-
-    if not found then
-        return
-    end
-
-    return imining.get_mineral_recipe(prototype_name, found)
-end
-
 local function __align(object)
     assert(object)
     local typeobject = iprototype.queryByName(object.prototype_name)
@@ -473,6 +483,12 @@ local function touch_move(self, datamodel, delta_vec)
     end
 
     pickup_object.recipe = _get_mineral_recipe(pickup_object.prototype_name, lx, ly, pickup_object.dir) -- TODO: maybe set recipt according to entity type?
+    if pickup_object.recipe then
+        local recipe_typeobject = iprototype.queryByName(pickup_object.recipe)
+        if recipe_typeobject then
+            pickup_object.fluid_name = irecipe.get_init_fluids(recipe_typeobject) or "" -- maybe no fluid in recipe
+        end
+    end
 
     -- the fluid type of the liquid container should be determined based on the surrounding fluid tanks when placing the fluid tank
     if iprototype.has_type(typeobject.type, "fluidbox") then

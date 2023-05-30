@@ -62,6 +62,7 @@ prototype "铁矿石" {
     icon = "textures/construct/ore-Fe.texture",
     item_description = "含铁的矿石",
     group = {"金属"},
+    mineral_name = "铁矿",
 }
 
 prototype "铝矿石" {
@@ -163,6 +164,7 @@ prototype "碎石" {
     icon = "textures/construct/gravel.texture",
     item_description = "伴生在矿物里的碎石",
     group = {"金属"},
+    mineral_name = "石矿",
 }
 
 prototype "石砖" {

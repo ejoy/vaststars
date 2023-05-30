@@ -1154,6 +1154,7 @@ local t = {
 	"/pkg/vaststars.resources/prefabs/mineral/ground-geothermal-Material.002_clr.material",
 	"/pkg/vaststars.resources/prefabs/mineral/ground-geothermal.prefab",
 	"/pkg/vaststars.resources/prefabs/mineral/ground-gravel.prefab",
+	"/pkg/vaststars.resources/prefabs/mineral/ground-iron-ore-Material.002_clr.material",
 	"/pkg/vaststars.resources/prefabs/mineral/ground-iron-ore.prefab",
 	"/pkg/vaststars.resources/prefabs/offshore-pump-1.prefab",
 	"/pkg/vaststars.resources/prefabs/outfall-1.prefab",

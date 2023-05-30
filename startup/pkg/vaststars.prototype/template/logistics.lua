@@ -49,25 +49,25 @@ local entities = { {
     dir = "N",
     prototype_name = "采矿机I",
     recipe = "铁矿石挖掘",
-    x = 162,
-    y = 127
+    x = 164,
+    y = 129
   }, {
     dir = "N",
     prototype_name = "风力发电机I",
-    x = 162,
+    x = 160,
     y = 130
   }, {
     dir = "N",
     item = "铁矿石",
     prototype_name = "无人机仓库I",
-    x = 159,
+    x = 161,
     y = 126
   }, {
     dir = "N",
     prototype_name = "采矿机I",
     recipe = "碎石挖掘",
-    x = 113,
-    y = 127
+    x = 115,
+    y = 129
   }, {
     dir = "N",
     prototype_name = "风力发电机I",
@@ -135,13 +135,7 @@ local entities = { {
     prototype_name = "铁制电线杆",
     x = 134,
     y = 114
-  }, {
-    dir = "N",
-    item = "运输车框架",
-    prototype_name = "无人机仓库I",
-    x = 131,
-    y = 123
-  },}
+  }, }
 local road = {
   [28298] = 8,
   [28554] = 10,

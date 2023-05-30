@@ -38,8 +38,8 @@ local entities = { {
     dir = "N",
     prototype_name = "采矿机I",
     recipe = "碎石挖掘",
-    x = 113,
-    y = 127
+    x = 115,
+    y = 129
   }, {
     dir = "N",
     item = "碎石",
@@ -67,37 +67,37 @@ local entities = { {
   }, {
     dir = "N",
     prototype_name = "风力发电机I",
-    x = 160,
-    y = 122
+    x = 162,
+    y = 123
   }, {
     dir = "N",
     prototype_name = "采矿机I",
     recipe = "铁矿石挖掘",
-    x = 162,
-    y = 127
+    x = 164,
+    y = 129
   }, {
     dir = "N",
     item = "铁矿石",
     prototype_name = "无人机仓库I",
-    x = 160,
+    x = 162,
     y = 127
   }, {
     dir = "N",
     prototype_name = "熔炼炉I",
     recipe = "铁板1",
-    x = 156,
+    x = 158,
     y = 124
   }, {
     dir = "N",
     prototype_name = "熔炼炉I",
     recipe = "铁板1",
-    x = 156,
+    x = 158,
     y = 128
   }, {
     dir = "N",
     item = "铁板",
     prototype_name = "无人机仓库I",
-    x = 153,
+    x = 155,
     y = 127
   } }
 local road = {}
