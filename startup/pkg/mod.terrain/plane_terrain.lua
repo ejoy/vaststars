@@ -251,7 +251,6 @@ function iplane_terrain.init_plane_terrain(st)
                             name        = "section" .. sectionidx,
                             plane_terrain = true,
                             section_index = sectionidx,
-                            --render_layer = "background",
                             on_ready = function()
                                 world:pub {"shape_terrain", "on_ready", eid, e.eid}
                             end,

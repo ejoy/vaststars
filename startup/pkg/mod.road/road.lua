@@ -224,7 +224,6 @@ local function create_road_group(gid, update_list)
             indirect = indirect,
             indirect_update = true,
             road = true,
-            render_layer = "background"
         },
     }  
 end
