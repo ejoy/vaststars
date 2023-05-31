@@ -98,6 +98,13 @@
                 align-items: center;
                 font-size: 2.5vmin;
             }
+            .tips-bg {
+                margin-left: 10vmin;
+                width: 100vmin;
+                height: 80vmin;
+                background-image: "textures/detail/tips_bg.texture";
+                background-size: 100% 100%;
+            }
             @keyframes pannelmovement {
                 0% {
                     left: -10vmin;
@@ -148,9 +155,9 @@
         </script>
     </head>
     <body style = "pointer-events: none; justify-content: center; align-items: center;">
-        <div data-model="start" class="panel1" style="flex-direction: column; justify-content: flex-start;">
+        <div data-model="start" class="panel1" style="flex-direction: row; justify-content: flex-start; align-items: center;">
             <!-- detail panel begin -->
-            <div style = 'position: absolute; top: 7vmin; width: 30vmin; height: 86vmin; background-image: "textures/detail/background.texture"; background-size: 100% 100%; flex-direction: column; justify-content: flex-start;'>
+            <div style = 'margin-top: 7vmin; margin-bottom: 7vmin; width: 30vmin; height: 86vmin; background-image: "textures/detail/background.texture"; background-size: 100% 100%; flex-direction: column; justify-content: flex-start;'>
                 <!-- title -->
                 <div style = "flex-direction: row; justify-content: center; align-items: center;">
                     <div data-style-background-image="icon" style = "width: 20vmin; height: 20vmin; background-size: cover;" />
@@ -240,6 +247,55 @@
                 </div>
             </div>
             <!-- detail panel end -->
+            <!--
+            <div class="tips-bg" style='flex-direction: row; justify-content: space-evenly; align-items: center;'>
+                <div style="border: 2px red; width: 45vmin; height: 45vmin; background-size: 100% 100%;" data-style-background-image="icon"/>
+                <div style="width: 35vmin; flex-direction: column; justify-content: center;">
+                    <div style="text-align: center; font-size: 8vmin;">{{prototype_name}}</div>
+                    <div style="font-size: 3vmin; word-break: break-all;">
+                        详细描述详细描述详细描述详细描述详细描述详细描述详细描述详细描述详细描述详细描述详细描述
+                    </div>
+                </div>
+            </div>
+            -->
+            <!--
+            <div class="tips-bg" style='flex-direction: column; justify-content: center; align-items: flex-start;'>
+                <div data-for = "property : property_list">
+                    <div style = "margin-left: 10vmin; height: 22vmin; flex-direction: row; align-items: center; justify-content: flex-start;">
+                        <div style = "width: 16.00vmin; height: 16.00vmin; background-size:cover;" data-style-background-image="property.icon" />
+                        <div style = "flex-direction: column; justify-content: center; align-items: flex-start;">
+                            <div style = "color:#adadad; padding-bottom: 0.75vmin; flex-direction:row; justify-content: center; align-items:center; height: 8vmin; font-size: 8vmin; text-align: center;">{{property.desc}}</div>
+                            <div style = "text-align: center; width: 100%; height: 8vmin; font-size: 6vmin;">{{property.value}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            -->
+            <!--
+            <div class="tips-bg" style='flex-direction: row; justify-content: center; align-items: center; '>
+                <div class="column" style="width: 18vmin; justify-content: space-evenly; align-items: center;">
+                    <div class="small-item1" style="width: 15vmin; height: 15vmin; border: 0.3vmin rgb(0, 217, 255);" data-style-background-image="it.icon" data-for="recipe_inputs">
+                        <div class ="item-count-combination">
+                            <div class="item-count-new" data-style-font-size="it.count > 99 ? '5vmin' : '6.4vmin'" data-style-color="it.count < it.demand_count ? 'rgb(255,255,255)' : 'rgb(0,255,0)'">{{it.count}}</div>
+                            <div class="item-count-new" data-style-font-size="it.demand_count > 99 ? '4vmin' : '5.4vmin'">/{{it.demand_count}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column" style="justify-content: flex-start; width: 50vmin; height: 10vmin;">
+                    <div style='align-self: flex-start; background-image: "textures/detail/progress_bar.texture"; background-size: cover; width: 100%; height: 100%;' data-style-width="progress"/>
+                    <div style='align-self: flex-start; background-image: "textures/detail/indicator.texture"; background-size: 100% 100%; top: -110%; width: 0.5vmin; height: 120%;' data-style-left="progress"/>
+                    <div style="text-align: center; font-size: 7vmin; top: -210%; ">{{progress}}</div>
+                </div>
+                <div class="column" style="width: 18vmin; justify-content: space-evenly; align-items: center;">
+                    <div class="small-item1" style="width: 15vmin; height: 15vmin; border: 0.3vmin rgb(89, 73, 39);" data-style-background-image="it.icon" data-for="recipe_ouputs">
+                        <div class ="item-count-combination">
+                            <div class="item-count-new" data-style-font-size="it.count > 99 ? '5vmin' : '6.4vmin'" data-style-color="it.count < it.output_count ? 'rgb(255,255,255)' : 'rgb(0,255,0)'">{{it.count}}</div>
+                            <div class="item-count-new" data-style-font-size="it.output_count > 99 ? '4vmin' : '5.4vmin'">/{{it.output_count}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            -->
         </div>
     </body>
 </rml>
