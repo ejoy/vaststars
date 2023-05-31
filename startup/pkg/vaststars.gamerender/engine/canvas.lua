@@ -56,8 +56,6 @@ function M.create(canvas_type, show, yaxis)
                 t = {0.0, yaxis or iterrain.surface_height + 10, 0.0},
             },
             canvas = {
-                textures = {},
-                texts = {},
                 show = show,
             },
         }
