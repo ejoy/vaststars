@@ -55,7 +55,7 @@ local function _get_object(self, x, y, cache_names)
     local object = objects:coord(x, y, cache_names)
     local mask = iroad.get(gameplay_core.get_world(), x, y)
     if object then
-        assert(not mask)
+        assert(not mask, ("road overlaps with the building(%s,%s) %s"):format(x, y, object.prototype_name))
         return object
     end
 

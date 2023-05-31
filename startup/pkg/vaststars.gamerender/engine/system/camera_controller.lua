@@ -27,7 +27,6 @@ local camera_controller = ecs.system "camera_controller"
 local icamera_controller = ecs.interface "icamera_controller"
 
 local ui_message_move_camera_mb = world:sub {"ui_message", "move_camera"}
-local mouse_wheel_mb = world:sub {"mouse_wheel"}
 local gesture_pinch = world:sub {"gesture", "pinch"}
 local gesture_pan = world:sub {"gesture", "pan"}
 
@@ -193,21 +192,19 @@ end
 
 local __handle_drop_camera; do
     local last_position
+    local begin_x, begin_y
 
     function __handle_drop_camera(ce)
         local position
 
         for _, _, e in gesture_pan:unpack() do
             if __check_camera_editable() then
-                if e.state == "began" then
-                    local x, y = e.translationInView.x, e.translationInView.y
-                    last_position = math3d.ref(icamera_controller.screen_to_world(x, y, PLANES)[1])
-                elseif e.state == "changed" then
-                    local x, y = e.translationInView.x * PAN_SPEED, e.translationInView.y * PAN_SPEED
-                    position = {x = x, y = y}
-                elseif e.state == "ended" then
-                    last_position = nil
+                local bx, by = e.x - e.vx, e.y - e.vy
+                if bx ~= begin_x or by ~= begin_y then
+                    begin_x, begin_y = bx, by
+                    last_position = math3d.ref(icamera_controller.screen_to_world(begin_x, begin_y, PLANES)[1])
                 end
+                position = {x = e.x, y = e.y}
             end
         end
 
@@ -223,12 +220,6 @@ end
 function camera_controller:camera_usage()
     local mq = w:first("main_queue camera_ref:in")
     local ce <close> = w:entity(mq.camera_ref)
-
-    for _, delta, x, y in mouse_wheel_mb:unpack() do
-        if __check_camera_editable() then
-            zoom(delta, x, y)
-        end
-    end
 
     for _, _, e in gesture_pinch:unpack() do
         if __check_camera_editable() then

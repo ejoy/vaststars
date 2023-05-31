@@ -372,14 +372,19 @@ function M:stage_camera_usage(datamodel)
 
     local gesture_pan_changed = false
     for _, _, e in gesture_pan_mb:unpack() do
-        if e.state == "ended" then
-            if builder then
-                builder:touch_end(builder_datamodel)
-                self:flush()
-            end
-        elseif e.state == "changed" then
+        if builder then
+            builder:touch_end(builder_datamodel)
+            self:flush()
             gesture_pan_changed = true
         end
+        -- if e.state == "ended" then
+        --     if builder then
+        --         builder:touch_end(builder_datamodel)
+        --         self:flush()
+        --     end
+        -- elseif e.state == "changed" then
+        --     gesture_pan_changed = true
+        -- end
     end
 
     local leave = true

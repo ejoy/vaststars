@@ -162,6 +162,52 @@ function m.prototype_restore()
     end
 end
 
+--
+local dir_move_delta = {
+    [0] = {x = 0,  y = -1},
+    [1] = {x = 1,  y = 0},
+    [2] = {x = 0,  y = 1},
+    [3] = {x = -1, y = 0},
+}
+local function move_coord(x, y, dir, dx, dy)
+    dx = dx or 1
+    dy = dy or dx
+
+    local c = assert(dir_move_delta[dir])
+    return x + c.x * dx, y + c.y * dy
+end
+
+local function fix(world, map, road_cache)
+    local ecs = world.ecs
+
+    local res = {}
+    for coord, mask in pairs(map) do
+        local x, y = unpack(coord)
+        for i = 0, 3 do
+            local maproad = DirectionToMapRoad[i]
+            if mask & (1 << maproad) ~= 0 then
+                local dx, dy = move_coord(x, y, i, 1, 1)
+                if not map[pack(dx, dy)] then
+                    mask = mask & ~(1 << maproad)
+                else
+                    local neighbor_mask = map[pack(dx, dy)]
+                    if neighbor_mask & (1 << ((maproad + 2) % 4)) == 0 then
+                        mask = mask & ~(1 << maproad)
+                    end
+                end
+            end
+        end
+        if mask ~= 0 then
+            res[coord] = mask
+            local r = assert(world.entity[road_cache[coord]])
+            r.road.mask = mask
+        else
+            ecs:remove(road_cache[coord])
+        end
+    end
+    return res
+end
+
 function m.build(world)
     local ecs = world.ecs
 
@@ -187,6 +233,7 @@ function m.build(world)
         build_road(world, v.eid, v.building, map, road_cache, endpoint_keys)
     end
 
+    map = fix(world, map, road_cache)
     world:roadnet_reset(map)
 
     for v in ecs:select "station:update eid:in" do

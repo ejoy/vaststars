@@ -86,7 +86,6 @@ policy "mod"
 
 policy "engine_utils"
     .require_system "camera_controller"
-    .require_system "input_simulate_system"
     .require_system "entity_object_system"
     .require_system "pickup_detect_system"
     .require_system "debug_system"
@@ -108,6 +107,7 @@ policy "render_updates"
     .require_system "science_system"
     .require_system "lorry_system"
     .require_system "fluidbox_system"
+    .require_system "road_system"
 
 ----------------------------------------------------
 ----------------------------------------------------
@@ -156,10 +156,6 @@ interface "icamera_controller"
     .method "set_camera_from_prefab"
     .method "toggle_view"
     .method "set_camera_srt"
-
-system "input_simulate_system"
-    .implement "engine/system/input_simulate_system.lua"
-    .method "data_changed"
 
 system "pickup_detect_system"
     .implement "engine/system/pickup_detect_system.lua"
@@ -286,3 +282,7 @@ system "ing_res_motion_system"
 interface "iing_res_motion"
     .implement "render_updates/ing_res_motion.lua"
     .method "create"
+
+system "road_system"
+.implement "render_updates/road.lua"
+    .method "gameworld_build"

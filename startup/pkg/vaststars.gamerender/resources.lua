@@ -848,7 +848,6 @@ local t = {
 	"/pkg/vaststars.gamerender/engine/road.lua",
 	"/pkg/vaststars.gamerender/engine/system/camera_controller.lua",
 	"/pkg/vaststars.gamerender/engine/system/entity_object_system.lua",
-	"/pkg/vaststars.gamerender/engine/system/input_simulate_system.lua",
 	"/pkg/vaststars.gamerender/engine/system/json.lua",
 	"/pkg/vaststars.gamerender/engine/system/pickup_detect_system.lua",
 	"/pkg/vaststars.gamerender/engine/system/pickup_mapping_system.lua",
