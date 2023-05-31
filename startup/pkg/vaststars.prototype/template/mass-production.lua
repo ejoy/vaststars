@@ -4,7 +4,7 @@ local entities = { {
     prototype_name = "指挥中心",
     recipe = "车辆装配",
     x = 125,
-    y = 119
+    y = 118
   }, {
     dir = "S",
     items = {},
