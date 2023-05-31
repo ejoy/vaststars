@@ -63,24 +63,16 @@
     </head>
     <body style = "pointer-events: none; justify-content: center; align-items: center;">
         <div data-model="start" class="panel1" style="flex-direction: column; justify-content:flex-start;">
-
             <!-- detail panel begin -->
-            <div style = "overflow: hidden; position: absolute; left: 0.13vmin; top: 7vmin; width: 30.00vmin; height: 72.33vmin; background-color: rgb(250, 205, 9); border: 0.27vmin rgb(89, 73, 39);flex-direction: column; justify-content: flex-start;">
+            <div style = 'overflow: hidden; position: absolute; left: 0.13vmin; top: 7vmin; width: 30.00vmin; height: 72.33vmin; background-image: "textures/detail/background.texture"; background-size: 100% 100%; flex-direction: column; justify-content: flex-start;'>
                 <!-- title -->
-                <div style = "width: 100%; height: 15%; flex-direction: row; justify-content: center; align-items: center;">
-                    <!-- icon -->
-                    <div style = "flex-direction:row; justify-content:center; align-items: center; width: 10vmin;">
-                        <div data-style-background-image="icon" style = "width: 9.50vmin; height: 9.50vmin; background-size: contain; background-size: cover;" />
-                    </div>
-                    <div style = "justify-content: center;">
-                        <div style = "flex-direction: column; justify-content: center;">
-                            <div style = "width: 20.00vmin; height: 65%; font-size: 4.10vmin; -webkit-text-stroke: 0.13vmin black; word-break: break-all;">{{prototype_name}}</div>
-                        </div>
-                    </div>
+                <div style = "flex-direction: row; justify-content: center; align-items: center;">
+                    <div data-style-background-image="icon" style = "width: 20vmin; height: 20vmin; background-size: cover;" />
                 </div>
+                <div style = "text-align: center; top: -3.0vmin; font-size: 4vmin; word-break: break-all;">{{prototype_name}}</div>
 
                 <!-- property list -->
-                <div style = "width:100%; border-bottom: 0.1vmin #fff; padding-top: 1vmin;" />
+                <div style = "margin-left: 3%; margin-right: 3%; border-bottom: 0.1vmin #6d6d6d; padding-top: 1vmin;" />
                 <div style="height:65%; padding-top: 2vmin;">
                     <div data-for = "property : property_list">
                         <div style = "width: 100%; height: 6.67vmin; flex-direction: row; align-items: center; justify-content: center;">

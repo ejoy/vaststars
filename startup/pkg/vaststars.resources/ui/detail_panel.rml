@@ -172,7 +172,7 @@
                         </div>
                     </div>
                 </div>
-                <div style="margin-left: 3%; margin-right: 3%; border-bottom: 0.1vmin #a1a1a1; padding-top: 1vmin;" />
+                <div style="margin-left: 3%; margin-right: 3%; border-bottom: 0.1vmin #6d6d6d; padding-top: 1vmin;" />
                 <div style="height:19%; margin-left: 3%; margin-right: 3%; flex-direction: column; justify-content: flex-start; align-items: center;" data-if = "show_chest">
                     <div style = "width:98%; border-bottom: 0.1vmin #fff; margin:0.3vmin"/>
                     <div style="padding-top:0.3vmin; padding-left:0.04vmin; width:100%; flex-direction: row; justify-content: flex-start; align-items: center;">
