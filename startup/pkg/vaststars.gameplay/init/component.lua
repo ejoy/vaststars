@@ -134,7 +134,6 @@ component "base" {
 component "fluidbox_changed" {}
 
 --
-component "endpoint_road" {}
 component "building_new" {}
 component "building_changed" {}
 component "inventory_changed" {}

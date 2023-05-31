@@ -148,7 +148,7 @@ return function()
     end
 
     local roads = {}
-    for v in gameplay_core.select("road:in endpoint_road:absent") do
+    for v in gameplay_core.select("road:in") do
         local e = {}
         e.x = v.road.x
         e.y = v.road.y

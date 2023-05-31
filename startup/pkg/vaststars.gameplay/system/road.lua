@@ -58,10 +58,6 @@ local function pack(x, y)
     return (y << 8)|x
 end
 
-local function unpack(v)
-    return v & 0xFF, v >> 8
-end
-
 local function rotate(position, direction, area)
     local w, h = area >> 8, area & 0xFF
     local x, y = position[1], position[2]
@@ -135,17 +131,6 @@ local function build_road(world, building_eid, building, map, entities, endpoint
                 endpoint_keys[building_eid] = key
             end
         end
-
-        entities[key] = ecs:new {
-            road = {
-                x = building.x + dx,
-                y = building.y + dy,
-                mask = map[key],
-                classid = id,
-            },
-            endpoint_road = true,
-            road_changed = true,
-        }
     end
 end
 
@@ -169,7 +154,7 @@ function m.build(world)
     local entities = {}
     local endpoint_keys = {}
 
-    for v in ecs:select "road:in eid:in endpoint_road:absent" do
+    for v in ecs:select "road:in eid:in" do
         local key = pack(v.road.x, v.road.y)
         map[key] = v.road.mask
         entities[key] = v.eid
