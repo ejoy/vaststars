@@ -268,6 +268,7 @@ local t = {
 	"/pkg/ant.imgui/service/imgui.lua",
 	"/pkg/ant.inputmgr/imgui_keymap.lua",
 	"/pkg/ant.inputmgr/main.lua",
+	"/pkg/ant.inputmgr/mouse_gesture.lua",
 	"/pkg/ant.inputmgr/package.lua",
 	"/pkg/ant.inputmgr/sdl_keymap.lua",
 	"/pkg/ant.inputmgr/win32_keymap.lua",
