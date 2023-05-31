@@ -58,6 +58,10 @@ local function pack(x, y)
     return (y << 8)|x
 end
 
+local function unpack(coord)
+    return coord & 0xFF, coord >> 8
+end
+
 local function rotate(position, direction, area)
     local w, h = area >> 8, area & 0xFF
     local x, y = position[1], position[2]
@@ -88,7 +92,7 @@ local function open(bits, dir)
     return bits | (1 << (DirectionToMapRoad[dir]))
 end
 
-local function build_road(world, building_eid, building, map, entities, endpoint_keys)
+local function build_road(world, building_eid, building, map, road_cache, endpoint_keys)
     local ecs = world.ecs
     local pt = query(building.prototype)
 
@@ -110,7 +114,7 @@ local function build_road(world, building_eid, building, map, entities, endpoint
     for key, mask in pairs(roads) do
         map[key] = mask
 
-        local eid = assert(entities[key])
+        local eid = assert(road_cache[key])
         local e = assert(world.entity[eid])
         e.road.mask = mask
         e.road_changed = true
@@ -131,6 +135,17 @@ local function build_road(world, building_eid, building, map, entities, endpoint
                 endpoint_keys[building_eid] = key
             end
         end
+
+        road_cache[key] = ecs:new {
+            road = {
+                x = building.x + dx,
+                y = building.y + dy,
+                mask = map[key],
+                classid = id,
+            },
+            endpoint_road = true,
+            road_changed = true,
+        }
     end
 end
 
@@ -151,22 +166,27 @@ function m.build(world)
     local ecs = world.ecs
 
     local map = {}
-    local entities = {}
+    local road_cache = {}
     local endpoint_keys = {}
 
-    for v in ecs:select "road:in eid:in" do
+    for v in ecs:select "endpoint_road:in eid:in" do
+        ecs:remove(v.eid)
+    end
+
+    for v in ecs:select "road:in eid:in endpoint_road?in REMOVED:absent" do
         local key = pack(v.road.x, v.road.y)
         map[key] = v.road.mask
-        entities[key] = v.eid
+        road_cache[key] = v.eid
     end
 
     for v in ecs:select "station:update building:in eid:in" do
-        build_road(world, v.eid, v.building, map, entities, endpoint_keys)
+        build_road(world, v.eid, v.building, map, road_cache, endpoint_keys)
     end
 
     for v in ecs:select "lorry_factory:update building:in eid:in" do
-        build_road(world, v.eid, v.building, map, entities, endpoint_keys)
+        build_road(world, v.eid, v.building, map, road_cache, endpoint_keys)
     end
+
     world:roadnet_reset(map)
 
     for v in ecs:select "station:update eid:in" do
@@ -181,6 +201,6 @@ function m.build(world)
 
     ecs:clear "road_cache"
     ecs:new {
-        road_cache = entities,
+        road_cache = road_cache,
     }
 end

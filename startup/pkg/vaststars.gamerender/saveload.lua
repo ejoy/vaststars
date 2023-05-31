@@ -318,7 +318,7 @@ function M:restore(index)
 
     clean()
     local renderData = {}
-    for v in gameplay_core.select("road:in") do
+    for v in gameplay_core.select("road:in endpoint_road:absent") do
         local shape, dir = iroadnet_converter.mask_to_shape_dir(v.road.mask) -- TODO: remove this
         renderData[iprototype.packcoord(v.road.x * 2, v.road.y * 2)] = {v.road.x * 2, v.road.y * 2, "normal", shape, dir}
     end
