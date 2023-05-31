@@ -3,44 +3,20 @@ local world = ecs.world
 local w     = world.w
 
 local iterrain  = ecs.import.interface "mod.terrain|iterrain"
-local ism = ecs.import.interface "mod.stonemountain|istonemountain"
 local UNIT <const> = 10
-local MOUNTAIN = import_package "vaststars.prototype".load("mountain")
-local coord_system = ecs.require "terrain"
 local iroad = ecs.import.interface "mod.road|iroad"
+local ROAD_WIDTH, ROAD_HEIGHT = 20, 20
+local terrain  = ecs.require "terrain"
+local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
 local function __pack(x, y)
     assert(x & 0xFF == x and y & 0xFF == y)
     return x | (y<<8)
 end
 
-local WIDTH <const> = 256 -- coordinate value range: [0, WIDTH - 1]
-local HEIGHT <const> = 256 -- coordinate value range: [0, HEIGHT - 1]
-
-local function __logic_to_render(x, y, offset)
-    x, y = x, HEIGHT - y - 1
-    x, y = x - offset, y - offset
-    return {x, y}
-end
-
-local function __coords_to_positions(t, offset)
-    local r = {}
-    for _, v in ipairs(t) do
-        local c = __logic_to_render(v[1], v[2], offset)
-        table.insert(r, {x = c[1], z = c[2]})
-    end
-    return r
-end
-
-local function __rects_to_positions(t, offset)
-    local r = {}
-    for _, v in ipairs(t) do
-        local c1 = __logic_to_render(v[1], v[2], offset)
-        local c2 = __logic_to_render(v[3], v[4], offset)
-        local w, h = math.abs(c2[1] - c1[1]), math.abs(c2[2] - c1[2])
-        table.insert(r, {x = c1[1], z = c1[2], w = w, h = h})
-    end
-    return r
+local function convertTileToWorld(x, y)
+    local pos = terrain:get_begin_position_by_coord(x, y, 1, 1)
+    return pos[1], pos[3] - ROAD_HEIGHT
 end
 
 local road = {}
@@ -49,6 +25,8 @@ local road = {}
 -- dir = "N" / "E" / "S" / "W"
 -- map = {{x, y, shape, dir}, ...}
 function road:create(width, height, offset, layer_names, shape_types)
+    iroad.set_args(ROAD_WIDTH, ROAD_HEIGHT)
+
     assert(width == height)
     self._offset = {offset, offset}
     self._update_cache = {}
@@ -61,14 +39,6 @@ function road:create(width, height, offset, layer_names, shape_types)
         self.shape_types[state] = true
     end
     iterrain.gen_terrain_field(width, height, offset, UNIT)
-
-    --
-    ism.create_sm_entity(MOUNTAIN.density, width, height, offset, UNIT, MOUNTAIN.scale, __coords_to_positions(MOUNTAIN.mountain_coords, offset), __rects_to_positions(MOUNTAIN.excluded_rects, offset))
-end
-
-function road:has_mountain(x, y)
-    local c = __logic_to_render(x, y, self._offset[1])
-    return ism.exist_sm({{x = c[1], z = c[2], w = 1, h = 1}})
 end
 
 function road:get_offset()
@@ -81,27 +51,27 @@ local inner_layer_names = {
 }
 
 local inner_shape = {
-    ["valid"] = "2",
     ["invalid"] = "1",
+    ["valid"] = "2",
 
-    ["normal"] = "3",
-    ["remove"] = "1",
-    ["modify"] = "2",
+    ["normal"] = "1",
+    ["remove"] = "2",
+    ["modify"] = "3",
 }
 
 -- map = {{x, y, shape_type, shape, dir}, ...}
 function road:init(layer_name, map)
     assert(self._offset)
     assert(self.layer_names[layer_name])
-    local offset_x, offset_y = self._offset[1], self._offset[2]
     self.cache = {}
 
     local t = {}
     for _, v in ipairs(map) do
         local x, y, shape_type, shape, dir = v[1], v[2], v[3], v[4], v[5]
+        local posx, posy = convertTileToWorld(x, y)
         local v = {
-            x = x - offset_x,
-            y = y - offset_y,
+            x = posx,
+            y = posy,
             layers = {
                 [inner_layer_names[layer_name]] = {
                     type = assert(inner_shape[shape_type]),
@@ -114,7 +84,7 @@ function road:init(layer_name, map)
         self.cache[__pack(x, y)] = v
         t[#t+1] = v
     end
-    iroad.update_roadnet_group(0, t)
+    iroad.update_roadnet_group(0, t, RENDER_LAYER.ROAD)
 end
 
 -- shape = "I" / "U" / "L" / "T" / "O"
@@ -123,13 +93,13 @@ function road:set(layer_name, shape_type, x, y, shape, dir)
     assert(self._offset)
     assert(self.layer_names[layer_name])
     assert(self.shape_types[shape_type])
-    local offset_x, offset_y = self._offset[1], self._offset[2]
 
     local v = self.cache[__pack(x, y)]
     if not v then
+        local posx, posy = convertTileToWorld(x, y)
         self.cache[__pack(x, y)] = {
-            x = x - offset_x,
-            y = y - offset_y,
+            x = posx,
+            y = posy,
             layers = {
                 [inner_layer_names[layer_name]] = {
                     type = inner_shape[shape_type],

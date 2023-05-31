@@ -272,6 +272,7 @@ system "science_system"
 system "lorry_system"
     .implement "render_updates/lorry.lua"
     .method "gameworld_update"
+    .method "gameworld_clean"
 
 system "fluidbox_system"
     .implement "render_updates/fluidbox.lua"

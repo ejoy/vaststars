@@ -109,6 +109,10 @@ component "mining" {
 }
 
 component "road" {
+    "x:byte",
+    "y:byte",
+    "prototype:word",
+    "mask:byte"
 }
 
 component "save_fluidflow" {
@@ -130,6 +134,8 @@ component "base" {
 component "fluidbox_changed" {}
 
 --
+component "endpoint_road" {}
 component "building_new" {}
 component "building_changed" {}
 component "inventory_changed" {}
+component "road_changed" {}

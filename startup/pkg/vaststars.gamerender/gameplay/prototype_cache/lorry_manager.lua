@@ -1,6 +1,8 @@
 local iprototype = require "gameplay.interface.prototype"
 local prefab_slots = require("engine.prefab_parser").slots
+local prefab_root = require("engine.prefab_parser").root
 local road_track = import_package "vaststars.prototype"("road_track")
+local math3d = require "math3d"
 
 local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
 
@@ -45,13 +47,22 @@ return function()
 
                     assert(rawget(cache[typeobject.name][entity_dir], z) == nil)
 
+                    local root_srt = prefab_root(RESOURCES_BASE_PATH:format(typeobject.model)).data.scene
+
                     local track_srts = {}
                     for _, slot_name in ipairs(slot_names) do
-                        local position = {slots[slot_name].scene.t[1], 0, slots[slot_name].scene.t[3]}
+                        local slot_srt = {
+                            s = math3d.vector(slots[slot_name].scene.s),
+                            r = math3d.quaternion(slots[slot_name].scene.r),
+                            t = math3d.set_index(math3d.vector(slots[slot_name].scene.t), 2, 0),
+                        }
+                        local mat = math3d.mul(math3d.matrix(root_srt), math3d.matrix(slot_srt))
+                        local s, r, t = math3d.srt(mat)
+
                         track_srts[#track_srts+1] = {
-                            s = slots[slot_name].scene.s,
-                            r = slots[slot_name].scene.r,
-                            t = position,
+                            s = math3d.ref(s),
+                            r = math3d.ref(r),
+                            t = math3d.ref(t),
                         }
                     end
                     cache[typeobject.name][entity_dir][z] = track_srts

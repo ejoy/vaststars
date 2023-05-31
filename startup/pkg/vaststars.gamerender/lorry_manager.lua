@@ -5,16 +5,19 @@ local w = world.w
 local math3d = require "math3d"
 local lorries = {}
 local iprototype = require "gameplay.interface.prototype"
-local packcoord = iprototype.packcoord
 local iterrain = ecs.require "terrain"
 local create_lorry = ecs.require "lorry"
-local global = require "global"
 local iroadnet_converter = require "roadnet_converter"
 local iprototype_cache = require "gameplay.prototype_cache.init"
 local mask_to_prototype_name_dir = iroadnet_converter.mask_to_prototype_name_dir
 local mc = import_package "ant.math".constant
 local ims = ecs.import.interface "ant.motion_sampler|imotion_sampler"
+local gameplay_core = require "gameplay.core"
+local gameplay = import_package "vaststars.gameplay"
+local iroad = gameplay.interface "road"
 
+local ROAD_TILE_WIDTH_SCALE <const> = 2
+local ROAD_TILE_HEIGHT_SCALE <const> = 2
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local ROADNET_MASK_ENDPOINT <const> = require("gameplay.interface.constant").ROADNET_MASK_ENDPOINT
 
@@ -25,7 +28,7 @@ end
 
 local function __gen_keyframes(mask, x, y, toward)
     local prototype_name, dir = mask_to_prototype_name_dir(mask)
-    local road_srt = {s = mc.ONE, r = ROTATORS[dir], t = math3d.vector(iterrain:get_position_by_coord(x, y, 1, 1))}
+    local road_srt = {s = mc.ONE, r = ROTATORS[dir], t = math3d.vector(iterrain:get_position_by_coord(x, y, ROAD_TILE_WIDTH_SCALE, ROAD_TILE_HEIGHT_SCALE))}
     local cache = iprototype_cache.get("lorry_manager").cache
     if not rawget(cache[prototype_name][dir], toward) then
         local s = rotate_dir(toward >> 0x2, dir) -- high 2 bits is indir
@@ -55,13 +58,6 @@ local function __gen_keyframes(mask, x, y, toward)
             step = value,
         }
 
-        -- key_frames[#key_frames+1] = {
-        --     s = math3d.mul(road_srt.s, srt.s),
-        --     r = math3d.mul(math3d.quaternion(srt.r), road_srt.r),
-        --     t = math3d.add(road_srt.t, srt.t),
-        --     step = value,
-        -- }
-
         value = value + step
     end
     return key_frames
@@ -74,7 +70,6 @@ motion_events["update_keyframes_on_change"] = function(obj, e, mask, x, y, towar
         return
     end
     obj.mask, obj.x, obj.y, obj.toward = mask, x, y, toward
-
     ims.set_keyframes(e, table.unpack(__gen_keyframes(mask, x, y, toward)))
 end
 motion_events["set_ratio"] = function (_, e, progress, maxprogress)
@@ -149,7 +144,8 @@ handlers.cross = function(lorry_id, classid, item_classid, item_amount, mask, x,
 end
 
 local function update(lorry_id, classid, item_classid, item_amount, x, y, z, progress, maxprogress)
-    local mask = assert(global.roadnet[packcoord(x, y)])
+    x, y = x * ROAD_TILE_WIDTH_SCALE, y * ROAD_TILE_HEIGHT_SCALE
+    local mask = assert(iroad.get_road(gameplay_core.get_world(), x, y))
     local is_endpoint = (mask & ROADNET_MASK_ENDPOINT == ROADNET_MASK_ENDPOINT)
 
     if is_endpoint then

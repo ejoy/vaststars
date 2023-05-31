@@ -22,3 +22,8 @@ function lorry_sys:gameworld_update()
     end
     return false
 end
+
+function lorry_sys:gameworld_clean()
+    local lorry_manager = ecs.require "lorry_manager" -- init_system.lua require "lorry_manager" & "roadnet"
+    lorry_manager.clear()
+end

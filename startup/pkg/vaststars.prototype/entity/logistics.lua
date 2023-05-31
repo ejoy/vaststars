@@ -17,7 +17,6 @@ prototype "指挥中心" {
     building_base = false,
     power_supply_area = "8x8",
     power_supply_distance = 9,
-    dismantle_area = "21x21",
     power = "100kW",
     priority = "primary",
     teardown = false,
@@ -27,8 +26,12 @@ prototype "指挥中心" {
         },
     },
     endpoint = {
-        {position={0, 4}, prototype = "砖石公路-L型", dir = "E", entrance_dir = "S", mask={"ROADNET_MASK_ROADNET_ONLY"}},
-        {position={1, 4}, prototype = "砖石公路-L型", dir = "S", entrance_dir = "S", mask={"ROADNET_MASK_ROADNET_ONLY", "ROADNET_MASK_ENDPOINT"}},
+        {position={1, 4}, prototype = "砖石公路-L型", dir = "E", mask={}},
+        {position={3, 4}, prototype = "砖石公路-L型", dir = "S", mask={"Endpoint"}},
+    },
+    affected_roads = {
+        {position={1, 6}, dir = "N", mask={"NoUTurn"}},
+        {position={3, 6}, dir = "N", mask={"NoUTurn", "NoLeftTurn"}},
     },
     move = false,
     io_shelf = false,
@@ -84,7 +87,7 @@ prototype "砖石公路-I型" {
     building_direction = {"N", "E"},
     track = "I",
     type = {"building", "road"},
-    area = "1x1",
+    area = "2x2",
     crossing = {
         connections = {
             {type="none", position={0,0,"N"}},
@@ -103,7 +106,7 @@ prototype "砖石公路-L型" {
     building_direction = {"N", "E", "S", "W"},
     track = "L",
     type = {"building", "road"},
-    area = "1x1",
+    area = "2x2",
     crossing = {
         connections = {
             {type="none", position={0,0,"N"}},
@@ -122,7 +125,7 @@ prototype "砖石公路-T型" {
     building_direction = {"N", "E", "S", "W"},
     track = "T",
     type = {"building", "road"},
-    area = "1x1",
+    area = "2x2",
     crossing = {
         connections = {
             {type="none", position={0,0,"E"}},
@@ -142,7 +145,7 @@ prototype "砖石公路-X型" {
     building_direction = {"N"},
     track = "X",
     type = {"building", "road"},
-    area = "1x1",
+    area = "2x2",
     crossing = {
         connections = {
             {type="none", position={0,0,"N"}},
@@ -163,7 +166,7 @@ prototype "砖石公路-O型" {
     building_direction = {"N"},
     track = "O",
     type = {"building", "road"},
-    area = "1x1",
+    area = "2x2",
     crossing = {
         connections = {
         }
@@ -180,7 +183,7 @@ prototype "砖石公路-U型" {
     building_direction = {"N", "E", "S", "W"},
     track = "U",
     type = {"building", "road"},
-    area = "1x1",
+    area = "2x2",
     crossing = {
         connections = {
             {type="none", position={0,0,"N"}},
@@ -197,7 +200,6 @@ prototype "拆除点" {
     type = {"building", "chest"},
     chest_type = "red",
     area = "1x1",
-    dismantle_area = "32x32",
     slots = 20,
 }
 
@@ -295,8 +297,12 @@ prototype "送货车站" {
         },
     },
     endpoint = {
-        {position={0, 0}, prototype = "砖石公路-L型", dir = "E", entrance_dir = "S", mask={"ROADNET_MASK_ROADNET_ONLY"}},
-        {position={1, 0}, prototype = "砖石公路-L型", dir = "S", entrance_dir = "S", mask={"ROADNET_MASK_ROADNET_ONLY", "ROADNET_MASK_ENDPOINT"}},
+        {position={0, 0}, prototype = "砖石公路-L型", dir = "E", mask={}},
+        {position={2, 0}, prototype = "砖石公路-L型", dir = "S", mask={"Endpoint"}},
+    },
+    affected_roads = {
+        {position={0, 2}, dir = "N", mask={"NoUTurn"}},
+        {position={2, 2}, dir = "N", mask={"NoUTurn", "NoLeftTurn"}},
     },
     move = false,
     teardown = false,
@@ -320,8 +326,12 @@ prototype "收货车站" {
         },
     },
     endpoint = {
-        {position={0, 0}, prototype = "砖石公路-L型", dir = "E", entrance_dir = "S", mask={"ROADNET_MASK_ROADNET_ONLY"}},
-        {position={1, 0}, prototype = "砖石公路-L型", dir = "S", entrance_dir = "S", mask={"ROADNET_MASK_ROADNET_ONLY", "ROADNET_MASK_ENDPOINT"}},
+        {position={0, 0}, prototype = "砖石公路-L型", dir = "E", mask={}},
+        {position={2, 0}, prototype = "砖石公路-L型", dir = "S", mask={"Endpoint"}},
+    },
+    affected_roads = {
+        {position={0, 2}, dir = "N", mask={"NoUTurn"}},
+        {position={2, 2}, dir = "N", mask={"NoUTurn", "NoLeftTurn"}},
     },
     move = false,
     teardown = false,

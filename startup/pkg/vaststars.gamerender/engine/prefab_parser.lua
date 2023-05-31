@@ -60,9 +60,16 @@ local function slots(fullpath)
     return res
 end
 
+local function root(fullpath)
+    local t = parse(fullpath)
+    assert(#t >= 1)
+    return t[1]
+end
+
 return {
     parse = parse,
     replace_material = replace_material,
     meshbin = meshbin,
     slots = slots,
+    root = root,
 }

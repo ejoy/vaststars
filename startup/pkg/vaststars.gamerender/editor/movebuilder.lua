@@ -19,7 +19,6 @@ local ALL_DIR = iconstant.ALL_DIR
 local igrid_entity = ecs.require "engine.grid_entity"
 local mc = import_package "ant.math".constant
 local create_road_entrance = ecs.require "editor.road_entrance"
-local gameplay_core = require "gameplay.core"
 local global = require "global"
 local create_sprite = ecs.require "sprite"
 local SPRITE_COLOR = import_package "vaststars.prototype".load("sprite_color")
@@ -28,6 +27,9 @@ local ientity = require "gameplay.interface.entity"
 local create_pickup_icon = ecs.require "pickup_icon".create
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local terrain = ecs.require "terrain"
+local gameplay_core = require "gameplay.core"
+local gameplay = import_package "vaststars.gameplay"
+local iroad = gameplay.interface "road"
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -244,7 +246,7 @@ local function touch_move(self, datamodel, delta_vec)
         for _, dir in ipairs(ALL_DIR) do
             local _, dx, dy = _get_road_entrance_position(typeobject, lx, ly, dir)
             if dx and dy then
-                if global.roadnet[iprototype.packcoord(dx, dy)] then
+                if iroad.get_road(gameplay_core.get_world(), dx, dy) then
                     t[#t+1] = dir
                 end
             end
@@ -407,7 +409,7 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
                 goto continue
             end
 
-            if global.roadnet[iprototype.packcoord(dx, dy)] then
+            if iroad.get_road(gameplay_core.get_world(), dx, dy) then
                 valid = true
                 break
             end

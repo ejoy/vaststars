@@ -3,7 +3,7 @@ data:
   name: Scene
   scene:
     r: {0, 0, 0, 1}
-    s: {1, 1, 1}
+    s: {2, 1, 2}
     t: {0, 4, 0}
 policy:
   ant.general|name
@@ -11,7 +11,7 @@ policy:
 ---
 data:
   material: /pkg/vaststars.resources/glb/road/road_L.glb|materials/Road.material
-  mesh: "/pkg/vaststars.resources/glb/road/road_L.glb|meshes/立方体.023_P1.meshbin"
+  mesh: /pkg/vaststars.resources/glb/road/road_L.glb|meshes/立方体.023_P1.meshbin
   name: zhuanwan
   scene:
     r: {0, -0.70710688829422, 0, 0.7071066498756409}
@@ -23,8 +23,8 @@ policy:
 ---
 data:
   material: /pkg/vaststars.resources/glb/road/road_L.glb|materials/Road.line.material
-  mesh: "/pkg/vaststars.resources/glb/road/road_L.glb|meshes/平面.011_P1.meshbin"
-  name: "平面.007"
+  mesh: /pkg/vaststars.resources/glb/road/road_L.glb|meshes/平面.011_P1.meshbin
+  name: 平面.007
   scene:
     r: {0, 0.3826834559440613, 0, -0.9238795042037964}
     t: {0.5, 2.0999999046325684, -0.5}
@@ -36,8 +36,8 @@ policy:
 ---
 data:
   material: /pkg/vaststars.resources/glb/road/road_L.glb|materials/Road.line.material
-  mesh: "/pkg/vaststars.resources/glb/road/road_L.glb|meshes/平面.012_P1.meshbin"
-  name: "平面.008"
+  mesh: /pkg/vaststars.resources/glb/road/road_L.glb|meshes/平面.012_P1.meshbin
+  name: 平面.008
   scene:
     r: {0, 0.3826834559440613, 0, -0.9238795042037964}
     t: {0.5, 2.0999999046325684, -0.5}
@@ -49,8 +49,8 @@ policy:
 ---
 data:
   material: /pkg/vaststars.resources/glb/road/road_L.glb|materials/Road.line.material
-  mesh: "/pkg/vaststars.resources/glb/road/road_L.glb|meshes/柱体.005_P1.meshbin"
-  name: "柱体.003"
+  mesh: /pkg/vaststars.resources/glb/road/road_L.glb|meshes/柱体.005_P1.meshbin
+  name: 柱体.003
   scene:
     r: {0, 0.3826834559440613, 0, -0.9238795042037964}
     t: {0, 4.078086853027344, 0}
@@ -62,8 +62,8 @@ policy:
 ---
 data:
   material: /pkg/vaststars.resources/glb/road/road_L.glb|materials/road.shiti.material
-  mesh: "/pkg/vaststars.resources/glb/road/road_L.glb|meshes/立方体.024_P1.meshbin"
-  name: "立方体.001"
+  mesh: /pkg/vaststars.resources/glb/road/road_L.glb|meshes/立方体.024_P1.meshbin
+  name: 立方体.001
   scene:
     r: {0, 0.3826834559440613, 0, -0.9238795042037964}
     t: {0.5, 2, -0.5}
@@ -75,8 +75,8 @@ policy:
 ---
 data:
   material: /pkg/vaststars.resources/glb/road/road_L.glb|materials/Road.bian.material
-  mesh: "/pkg/vaststars.resources/glb/road/road_L.glb|meshes/立方体.025_P1.meshbin"
-  name: "立方体.002"
+  mesh: /pkg/vaststars.resources/glb/road/road_L.glb|meshes/立方体.025_P1.meshbin
+  name: 立方体.002
   scene:
     r: {0, 0.3826834559440613, 0, -0.9238795042037964}
     t: {0.5, 2.0999999046325684, -0.5}
@@ -88,8 +88,8 @@ policy:
 ---
 data:
   material: /pkg/vaststars.resources/glb/road/road_L.glb|materials/road.jia.material
-  mesh: "/pkg/vaststars.resources/glb/road/road_L.glb|meshes/立方体.026_P1.meshbin"
-  name: "立方体.006"
+  mesh: /pkg/vaststars.resources/glb/road/road_L.glb|meshes/立方体.026_P1.meshbin
+  name: 立方体.006
   scene:
     r: {0, 0.3826834559440613, 0, -0.9238795042037964}
     s: {1, 1, 1.009615421295166}
@@ -102,7 +102,7 @@ policy:
 ---
 data:
   material: /pkg/vaststars.resources/glb/road/road_L.glb|materials/Road.material
-  mesh: "/pkg/vaststars.resources/glb/road/road_L.glb|meshes/立方体.023_P1.meshbin"
+  mesh: /pkg/vaststars.resources/glb/road/road_L.glb|meshes/立方体.023_P1.meshbin
   name: zhuanwan
   scene:
     r: {0, -0.70710688829422, 0, 0.7071066498756409}

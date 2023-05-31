@@ -33,7 +33,7 @@ local construct_menu_cfg = import_package "vaststars.prototype"("construct_menu"
 local ichest = require "gameplay.interface.chest"
 local create_event_handler = require "ui_datamodel.common.event_handler"
 local ipower_line = ecs.require "power_line"
-local iroad = ecs.require "engine.road"
+local imountain = ecs.require "engine.mountain"
 
 local rotate_mb = mailbox:sub {"rotate"}
 local build_mb = mailbox:sub {"build"}
@@ -410,7 +410,7 @@ function M:stage_camera_usage(datamodel)
         for _, pos in ipairs(icamera_controller.screen_to_world(x, y, PLANES)) do
             local coord = terrain:get_coord_by_position(pos)
             if coord then
-                local r = iroad:has_mountain(coord[1], coord[2])
+                local r = imountain:has_mountain(coord[1], coord[2])
                 if r then
                     return assert(iprototype.queryFirstByType("mountain")).name
                 end

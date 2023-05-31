@@ -146,19 +146,50 @@ return function()
         export_data.prototype_name = prototype_name
         r[#r+1] = export_data
     end
+
+    local roads = {}
+    for v in gameplay_core.select("road:in endpoint_road:absent") do
+        local e = {}
+        e.x = v.road.x
+        e.y = v.road.y
+        e.mask = v.road.mask
+        e.prototype = iprototype.queryById(v.road.prototype).name
+        roads[#roads+1] = e
+    end
+
     writefile(([[
 local entities = %s
 local road = %s
 local mineral = %s
+local function prepare(world)
+    local prototype = import_package "vaststars.gameplay".prototype
+    local e = assert(world.ecs:first("base eid:in"))
+    e = world.entity[e.eid]
+    local pt = prototype.queryByName("运输车辆I")
+    local slot, idx
+    for i = 1, 256 do
+        local s = world:container_get(e.chest, i)
+        if not s then
+            break
+        end
+        if s.item == pt.id then
+            slot, idx = s, i
+            break
+        end
+    end
+    assert(slot)
+    world:container_set(e.chest, idx, {amount = 1, limit = 50})
+  end
 
 return {
     entities = entities,
     road = road,
     mineral = mineral,
+    prepare = prepare,
 }
     ]]):format(
         inspect(r),
-        inspect(gameplay_core.get_world():roadnet_get_map()),
+        inspect(roads),
         inspect(terrain.mineral_source)
     ))
 end

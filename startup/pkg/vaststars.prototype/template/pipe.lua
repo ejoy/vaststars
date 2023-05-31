@@ -446,22 +446,77 @@ local entities = { {
     x = 132,
     y = 155
   } }
-local road = {
-  [32145] = 4,
-  [32146] = 5,
-  [32147] = 5,
-  [32148] = 5,
-  [32149] = 5,
-  [32150] = 5,
-  [32151] = 5,
-  [32152] = 5,
-  [32153] = 5,
-  [32154] = 5,
-  [32155] = 5,
-  [32156] = 5,
-  [32157] = 5,
-  [32158] = 1
-}
+local road = { {
+  mask = 4,
+  prototype = "砖石公路-U型",
+  x = 72,
+  y = 62
+}, {
+  mask = 5,
+  prototype = "砖石公路-I型",
+  x = 73,
+  y = 62
+}, {
+  mask = 5,
+  prototype = "砖石公路-I型",
+  x = 73,
+  y = 62
+}, {
+  mask = 5,
+  prototype = "砖石公路-I型",
+  x = 74,
+  y = 62
+}, {
+  mask = 5,
+  prototype = "砖石公路-I型",
+  x = 74,
+  y = 62
+}, {
+  mask = 5,
+  prototype = "砖石公路-I型",
+  x = 75,
+  y = 62
+}, {
+  mask = 5,
+  prototype = "砖石公路-I型",
+  x = 75,
+  y = 62
+}, {
+  mask = 5,
+  prototype = "砖石公路-I型",
+  x = 76,
+  y = 62
+}, {
+  mask = 5,
+  prototype = "砖石公路-I型",
+  x = 76,
+  y = 62
+}, {
+  mask = 5,
+  prototype = "砖石公路-I型",
+  x = 77,
+  y = 62
+}, {
+  mask = 5,
+  prototype = "砖石公路-I型",
+  x = 77,
+  y = 62
+}, {
+  mask = 5,
+  prototype = "砖石公路-I型",
+  x = 78,
+  y = 62
+}, {
+  mask = 5,
+  prototype = "砖石公路-I型",
+  x = 78,
+  y = 62
+}, {
+  mask = 1,
+  prototype = "砖石公路-U型",
+  x = 79,
+  y = 62
+} }
 
 local mineral = {
   ["136,172"] = "铁矿石",

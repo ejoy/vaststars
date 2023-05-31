@@ -66,16 +66,6 @@ namespace roadnet::lua {
         w.updateMap(get_map_data(L, 2));
         return 0;
     }
-    static int get_map(lua_State* L) {
-        auto& w = get_network(L);
-        lua_createtable(L, 0, 0);
-        for(auto& [l, m] : w.getMap()) {
-            lua_pushinteger(L, l.id);
-            lua_pushinteger(L, m);
-            lua_settable(L, -3);
-        }
-        return 1;
-    }
     static int lmap_coord(lua_State* L) {
         auto& w = get_network(L);
         auto r = w.coordConvert(get_road_coord(L, 2));
@@ -204,7 +194,6 @@ extern "C" int
 luaopen_vaststars_roadnet_core(lua_State* L) {
     luaL_Reg l[] = {
         { "reset", roadnet::lua::reset },
-        { "get_map", roadnet::lua::get_map },
         { "map_coord", roadnet::lua::lmap_coord },
         { "each_lorry", roadnet::lua::each_lorry },
         { "endpoint_loction", roadnet::lua::endpoint_loction },

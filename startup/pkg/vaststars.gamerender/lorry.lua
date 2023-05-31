@@ -9,6 +9,7 @@ local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local ivs = ecs.import.interface "ant.scene|ivisible_state"
 local mathpkg = import_package "ant.math"
 local mc = mathpkg.constant
+local irl = ecs.import.interface "ant.render|irender_layer"
 
 local prefab_slots = require("engine.prefab_parser").slots
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
@@ -43,6 +44,12 @@ end
 local function __create_lorry_object(prefab, parent)
     local p = sampler_group:create_instance(prefab, parent)
     function p:on_ready()
+        for _, eid in ipairs(self.tag["*"]) do
+            local e <close> = w:entity(eid, "render_object?update")
+            if e.render_object then
+                irl.set_layer(e, RENDER_LAYER.LORRY)
+            end
+        end
     end
     function p:on_message()
     end
@@ -83,9 +90,12 @@ local function __create_item_object(prefab, parent, offset_srt)
         iom.set_srt(root, offset_srt.s or mc.ONE, offset_srt.r or mc.IDENTITY_QUAT, offset_srt.t or mc.ZERO_PT)
 
         for _, eid in ipairs(self.tag['*']) do
-            local e <close> = w:entity(eid, "visible_state?in")
+            local e <close> = w:entity(eid, "visible_state?in render_object?in")
             if e.visible_state then
                 ivs.set_state(e, "cast_shadow", false)
+            end
+            if e.render_object then
+                irl.set_layer(e, RENDER_LAYER.LORRY_ITEM)
             end
         end
     end

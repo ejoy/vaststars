@@ -6,7 +6,6 @@ local objects = require "objects"
 local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 local ieditor = ecs.require "editor.editor"
 local ifluid = require "gameplay.interface.fluid"
-local gameplay_core = require "gameplay.core"
 local ientity = require "gameplay.interface.entity"
 local imining = require "gameplay.interface.mining"
 local iobject = ecs.require "object"
@@ -15,7 +14,9 @@ local ipower = ecs.require "power"
 local ipower_line = ecs.require "power_line"
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
-local global = require "global"
+local gameplay_core = require "gameplay.core"
+local gameplay = import_package "vaststars.gameplay"
+local iroad = gameplay.interface "road"
 
 local function check_construct_detector(self, prototype_name, x, y, dir, exclude_object_id)
     dir = dir or DEFAULT_DIR
@@ -31,7 +32,7 @@ local function check_construct_detector(self, prototype_name, x, y, dir, exclude
                     return false
                 end
 
-                if global.roadnet[iprototype.packcoord(x + i, y + j)] then
+                if iroad.get_road(gameplay_core.get_world(), x + i, y + j) then
                     return false
                 end
             end

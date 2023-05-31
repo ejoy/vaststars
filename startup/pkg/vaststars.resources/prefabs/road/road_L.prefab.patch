@@ -1,37 +1,5 @@
 ---
 data:
-  name: "下转右"
-  scene:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0.009999999776482582, 0}
-  slot:
-    follow_flag: 1
-  tag:
-    empty3
-policy:
-  ant.general|name
-  ant.general|tag
-  ant.animation|slot
-  ant.scene|scene_object
----
-data:
-  name: "右转下"
-  scene:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0.009999999776482582, 0}
-  slot:
-    follow_flag: 1
-  tag:
-    empty4
-policy:
-  ant.general|name
-  ant.general|tag
-  ant.animation|slot
-  ant.scene|scene_object
----
-data:
   name: path_l_3
   scene:
     r: {0, 0.7071067690849304, 0, 0.7071067690849304}

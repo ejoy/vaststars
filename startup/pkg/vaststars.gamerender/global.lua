@@ -6,6 +6,5 @@ return {
         valid = false,
     },
     coord_system = require "coord_transform"(256, 256),
-    roadnet = {}, -- = {[coord] = {prototype_name, dir}, ...}
     buildings = create_buildings(), -- { object-id = {}, ...}
 }

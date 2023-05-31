@@ -8,7 +8,6 @@ local ieditor = ecs.require "editor.editor"
 local objects = require "objects"
 local DEFAULT_DIR <const> = 'N'
 local irecipe = require "gameplay.interface.recipe"
-local global = require "global"
 local iobject = ecs.require "object"
 local ipower = ecs.require "power"
 local ipower_line = ecs.require "power_line"
@@ -20,10 +19,12 @@ local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local create_sprite = ecs.require "sprite"
 local SPRITE_COLOR = import_package "vaststars.prototype".load("sprite_color")
-local gameplay_core = require "gameplay.core"
 local ichest = require "gameplay.interface.chest"
 local create_selected_boxes = ecs.require "selected_boxes"
 local terrain = ecs.require "terrain"
+local gameplay_core = require "gameplay.core"
+local gameplay = import_package "vaststars.gameplay"
+local iroad = gameplay.interface "road"
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -565,7 +566,7 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
                 goto continue
             end
 
-            if global.roadnet[iprototype.packcoord(dx, dy)] then
+            if iroad.get_road(gameplay_core.get_world(), dx, dy) then
                 valid = true
                 break
             end

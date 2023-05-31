@@ -3,10 +3,10 @@ return {
     {
         "opacity",
         {"MINERAL"},
-        {"BUILDING_BASE"},
+        {"BUILDING_BASE", "ROAD"},
         {"TRANSLUCENT_PLANE"},
         {"BUILDING"},
-        {"LORRY_SHADOW", "LORRY"},
+        {"LORRY_SHADOW", "LORRY", "LORRY_ITEM"},
     },
     {
         "background",

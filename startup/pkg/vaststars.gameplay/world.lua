@@ -57,6 +57,11 @@ return function ()
         components[#components+1] = c.name
     end
 
+    ecs:register {
+        name = "road_cache",
+        type = "lua",
+    }
+
     local context = ecs:context(components)
     local cworld = vaststars.create_world(context)
     world.ecs = ecs
@@ -260,10 +265,6 @@ return function ()
     function world:roadnet_reset(...)
         roadnet.reset(cworld, ...)
         self._endpoints = roadnet.endpoint_loction(cworld)
-    end
-
-    function world:roadnet_get_map(...)
-        return roadnet.get_map(cworld, ...)
     end
 
     function world:roadnet_map_coord(...)

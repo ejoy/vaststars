@@ -11,8 +11,7 @@ namespace roadnet {
         Bottom     = 1 << 3,
         Endpoint   = 1 << 4,
         NoLeftTurn = 1 << 5,
-        RoadNetOnly= 1 << 6, // for presentation
-        NoUTurn    = 1 << 7,
+        NoUTurn    = 1 << 6,
     };
 
     static bool operator&(uint8_t v, MapRoad m) {
@@ -280,10 +279,6 @@ namespace roadnet {
         }
     }
 
-    std::map<loction, uint8_t> network::getMap() const {
-        return map;
-    }
-
     void network::updateMap(const std::map<loction, uint8_t>& mapData) {
         dynarray<std::optional<map_coord>> lorryWhere;
         lorryWhere.reset(lorryVec.size());
@@ -310,9 +305,10 @@ namespace roadnet {
 
         map = mapData;
         uint32_t genLorryOffset = reloadMap();
-        lorryAry.reset(genLorryOffset);
-
-        lorryVec.clear();
+        if(genLorryOffset > 0) {
+            lorryAry.reset(genLorryOffset);
+            lorryVec.clear();
+        }
         lorryFreeList.clear();
     }
 

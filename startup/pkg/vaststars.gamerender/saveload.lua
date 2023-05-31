@@ -7,7 +7,6 @@ local fs = require "bee.filesystem"
 local json = import_package "ant.json"
 local debugger = require "debugger"
 local CUSTOM_ARCHIVING <const> = require "debugger".custom_archiving
-local is_roadnet_only = ecs.require "editor.endpoint".is_roadnet_only
 local iprototype_cache = require "gameplay.prototype_cache.init"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 
@@ -255,39 +254,6 @@ function M:clean()
     clean()
 end
 
-local function __fix_road(map)
-    local res = {}
-    for coord, mask in pairs(map) do
-        local x, y = iprototype.unpackcoord(coord)
-        local flag = is_roadnet_only(mask)
-        for i = 0, 3 do
-            if mask & (1 << i) ~= 0 then
-                local dx, dy = iprototype.move_coord(x, y, DIRECTION[i], 1, 1)
-                if not map[iprototype.packcoord(dx, dy)] then
-                    mask = mask & ~(1 << i)
-                    log.error(("fix road: %d, %d, %d"):format(x, y, i))
-                    if flag then
-                        mask = 0
-                    end
-                else
-                    local neighbor_mask = map[iprototype.packcoord(dx, dy)]
-                    if neighbor_mask & (1 << ((i + 2) % 4)) == 0 then
-                        mask = mask & ~(1 << i)
-                        log.error(("fix road: %d, %d, %d"):format(x, y, i))
-                        if flag then
-                            mask = 0
-                        end
-                    end
-                end
-            end
-        end
-        if mask ~= 0 then
-            res[coord] = mask
-        end
-    end
-    return res
-end
-
 function M:restore(index)
     self:restore_camera_setting()
 
@@ -351,17 +317,12 @@ function M:restore(index)
     iprototype_cache.reload()
 
     clean()
-    local map = gameplay_core.get_world():roadnet_get_map()
     local renderData = {}
-    for coord, mask in pairs(map) do
-        if not is_roadnet_only(mask) then
-            local shape, dir = iroadnet_converter.mask_to_shape_dir(mask)
-            local x, y = iprototype.unpackcoord(coord)
-            renderData[coord] = {x, y, "normal", shape, dir}
-        end
+    for v in gameplay_core.select("road:in endpoint_road:absent") do
+        local shape, dir = iroadnet_converter.mask_to_shape_dir(v.road.mask) -- TODO: remove this
+        renderData[iprototype.packcoord(v.road.x * 2, v.road.y * 2)] = {v.road.x * 2, v.road.y * 2, "normal", shape, dir}
     end
     iroadnet:init(renderData, true)
-    global.roadnet = map
 
     terrain:reset_mineral(mineral_map)
 
@@ -395,22 +356,10 @@ function M:restart(mode, game_template)
 
     game_template = game_template or "item.startup"
     local game_template_entities = import_package("vaststars.prototype")(game_template).entities
+    local game_template_road = import_package("vaststars.prototype")(game_template).road
 
     --
     clean()
-    local game_template_road = __fix_road(import_package("vaststars.prototype")(game_template).road)
-    local renderData = {}
-    for coord, mask in pairs(game_template_road) do
-        if not is_roadnet_only(mask) then
-            local shape, dir = iroadnet_converter.mask_to_shape_dir(mask)
-            local x, y = iprototype.unpackcoord(coord)
-            renderData[coord] = {x, y, "normal", shape, dir}
-        end
-    end
-    iroadnet:init(renderData, true)
-    global.roadnet = game_template_road
-    gameplay_core.get_world():roadnet_reset(global.roadnet)
-
     local game_template_mineral = import_package("vaststars.prototype")(game_template).mineral
     terrain:reset_mineral(game_template_mineral or mineral_map)
 
@@ -418,6 +367,24 @@ function M:restart(mode, game_template)
     for _, e in ipairs(game_template_entities) do
         igameplay.create_entity(e)
     end
+    local renderData = {}
+    for _, road in ipairs(game_template_road) do
+        local e = {
+            road = {
+                x = road.x,
+                y = road.y,
+                mask = road.mask,
+                prototype = iprototype.queryByName(road.prototype).id
+            }
+        }
+        gameplay_core.get_world().ecs:new(e)
+
+        local shape, dir = iroadnet_converter.mask_to_shape_dir(road.mask) -- TODO: remove this
+        renderData[iprototype.packcoord(road.x * 2, road.y * 2)] = {road.x * 2, road.y * 2, "normal", shape, dir}
+    end
+    iroadnet:init(renderData, true)
+
+
     local prepare = import_package("vaststars.prototype")(game_template).prepare
     if prepare then
         prepare(gameplay_core.get_world())

@@ -1,7 +1,6 @@
 local type = require "register.type"
 local prototype = require "prototype"
 
-local iendpoint = require "interface.endpoint"
 local c = type "station"
     .station_type "station_type"
     .chest_type "chest_type"
@@ -12,7 +11,7 @@ function c:ctor(init, pt)
 
     local res = {
         station = {
-            endpoint = iendpoint.endpoint_id(world, init, pt),
+            endpoint = 0xffff,
             weights = pt.weights,
             lorry = 0,
         }
