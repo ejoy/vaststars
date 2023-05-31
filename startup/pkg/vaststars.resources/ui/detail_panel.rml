@@ -173,7 +173,7 @@
                     </div>
                 </div>
                 <div style="margin-left: 3%; margin-right: 3%; border-bottom: 0.1vmin #a1a1a1; padding-top: 1vmin;" />
-                <div style="height:19%; flex-direction: column; justify-content: flex-start; align-items: center;" data-if = "show_chest">
+                <div style="height:19%; margin-left: 3%; margin-right: 3%; flex-direction: column; justify-content: flex-start; align-items: center;" data-if = "show_chest">
                     <div style = "width:98%; border-bottom: 0.1vmin #fff; margin:0.3vmin"/>
                     <div style="padding-top:0.3vmin; padding-left:0.04vmin; width:100%; flex-direction: row; justify-content: flex-start; align-items: center;">
                         <div data-for = "chest : chest_list0" class="small-item1" data-style-background-image="chest.icon">
@@ -188,12 +188,12 @@
                 </div>
 
                 <!--采矿机底部显示进度-->
-                <div style="height:19%; margin-left: 3%; margin-right: 3%;flex-direction: column; justify-content: center; align-items: center;" data-if = "show_minner">
+                <div style="top: 1vmin; height: 8vmin; margin-left: 3%; margin-right: 3%;flex-direction: column; justify-content: flex-start; align-items: center;" data-if = "show_minner">
                     <div class="row" style="width:100%; height: 100%; justify-content: space-evenly; align-items: center;">
-                        <div class="column" style="justify-content: center; width: 70%; height:30%;">
-                            <div style='align-self: flex-start; background-image: "textures/detail/progress_bar.texture"; background-size: cover; width: 100%; height:100%;' data-style-width="progress"/>
-                            <div style='align-self: flex-start; background-image: "textures/detail/indicator.texture"; background-size: 100% 100%; top: -110%; width: 0.5vmin; height:120%;' data-style-left="progress"/>
-                            <div class="percent-num" style="top: -60%;">{{progress}}</div>
+                        <div class="column" style="justify-content: flex-start; width: 70%; height:50%;">
+                            <div style='align-self: flex-start; background-image: "textures/detail/progress_bar.texture"; background-size: cover; width: 100%; height: 100%;' data-style-width="progress"/>
+                            <div style='align-self: flex-start; background-image: "textures/detail/indicator.texture"; background-size: 100% 100%; top: -110%; width: 0.5vmin; height: 120%;' data-style-left="progress"/>
+                            <div style="text-align: center; font-size: 3vmin; top: -220%; ">{{progress}}</div>
                         </div>
                         <div class="row" style="width: 25%; justify-content: center;">
                             <div class="small-item1" style="width:7vmin; height:7vmin;" data-style-background-image="it.icon" data-for="recipe_ouputs">
@@ -206,11 +206,11 @@
                 </div>
 
                 <!--组装机类型底部显示进度-->
-                <div style="top: 5vmin; height:22%; margin-left: 3%; margin-right: 3%; flex-direction: column; justify-content: center; align-items: center;" data-if = "show_assemble">
-                    <div class="column" style="justify-content: center; width: 100%; height:30%;">
-                        <div style='align-self: flex-start; background-image: "textures/detail/progress_bar.texture"; background-size: cover; width: 100%; height:100%;' data-style-width="progress"/>
-                        <div style='align-self: flex-start; background-image: "textures/detail/indicator.texture"; background-size: 100% 100%; top: -110%; width: 0.5vmin; height:120%;' data-style-left="progress"/>
-                        <div class="percent-num" style="top: -60%;">{{progress}}</div>
+                <div style="top: 3vmin; height:22%; margin-left: 3%; margin-right: 3%; flex-direction: column; justify-content: center; align-items: center;" data-if = "show_assemble">
+                    <div class="column" style="justify-content: flex-start; width: 100%; height: 4vmin;">
+                        <div style='align-self: flex-start; background-image: "textures/detail/progress_bar.texture"; background-size: cover; width: 100%; height: 100%;' data-style-width="progress"/>
+                        <div style='align-self: flex-start; background-image: "textures/detail/indicator.texture"; background-size: 100% 100%; top: -110%; width: 0.5vmin; height: 120%;' data-style-left="progress"/>
+                        <div style="text-align: center; font-size: 3vmin; top: -220%; ">{{progress}}</div>
                     </div>
                     <div class="row" style="width:100%; height: 100%; justify-content: space-evenly; align-items: center;">
                         <!--组装机进料栏-->
