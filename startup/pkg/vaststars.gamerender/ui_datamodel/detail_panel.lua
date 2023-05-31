@@ -276,10 +276,10 @@ local function get_entity_property_list(object_id, recipe_inputs, recipe_ouputs)
 end
 
 ---------------
-local detail_panel_status_icon = {"textures/work_status_icon/out_of_power.texture","textures/work_status_icon/idle.texture","textures/work_status_icon/normal.texture"}
+local detail_panel_status_icon = {"textures/detail/stop.texture","textures/detail/idle.texture","textures/detail/work.texture"}
 local detail_panel_status_desc = {"断电停机", "待机空闲", "正常工作"}
 local M = {}
-local update_interval = 25 --update per 25 frame
+local update_interval = 15 --update per 25 frame
 local counter = 1
 local function update_property_list(datamodel, property_list)
     datamodel.chest_list0 = property_list.chest_list0 or {}
