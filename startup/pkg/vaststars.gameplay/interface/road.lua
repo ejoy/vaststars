@@ -12,7 +12,7 @@ local function get_road(world, x, y)
     return e.road.mask
 end
 
-local function set_road(world, x, y, prototype, mask)
+local function set_road(world, x, y, classid, mask)
     assert(x % 2 == 0 and y % 2 == 0)
     local ecs = world.ecs
     local e = assert(ecs:first("road_cache:in"))
@@ -25,15 +25,15 @@ local function set_road(world, x, y, prototype, mask)
             road = {
                 x = x,
                 y = y,
-                prototype = prototype,
                 mask = mask,
+                classid = classid,
             },
             road_changed = true,
         }
     else
         local e = assert(world.entity[eid])
+        e.road.classid = classid
         e.road.mask = mask
-        e.road.prototype = prototype
     end
 end
 

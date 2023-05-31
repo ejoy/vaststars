@@ -773,6 +773,8 @@ local function confirm(self, datamodel)
         self.grid_entity:remove()
         self.grid_entity = nil
     end
+
+    local prototype_name = self.coord_indicator.prototype_name
     iobject.remove(self.coord_indicator)
     self.coord_indicator = nil
 
@@ -784,7 +786,6 @@ local function confirm(self, datamodel)
         else
             c = c + 1
 
-            local prototype_name = iroadnet_converter.mask_to_prototype_name_dir(mask)
             iroad.set_road(gameplay_core.get_world(), x, y, iprototype.queryByName(prototype_name).id, mask)
             local shape, dir = iroadnet_converter.mask_to_shape_dir(mask)
             iroadnet:editor_set("road", "normal", x, y, shape, dir)

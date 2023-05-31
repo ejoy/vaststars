@@ -3,7 +3,7 @@ local entities = { {
     items = {},
     prototype_name = "指挥中心",
     recipe = "车辆装配",
-    x = 126,
+    x = 125,
     y = 120
   }, {
     dir = "N",
@@ -446,77 +446,7 @@ local entities = { {
     x = 132,
     y = 155
   } }
-local road = { {
-  mask = 4,
-  prototype = "砖石公路-U型",
-  x = 72,
-  y = 62
-}, {
-  mask = 5,
-  prototype = "砖石公路-I型",
-  x = 73,
-  y = 62
-}, {
-  mask = 5,
-  prototype = "砖石公路-I型",
-  x = 73,
-  y = 62
-}, {
-  mask = 5,
-  prototype = "砖石公路-I型",
-  x = 74,
-  y = 62
-}, {
-  mask = 5,
-  prototype = "砖石公路-I型",
-  x = 74,
-  y = 62
-}, {
-  mask = 5,
-  prototype = "砖石公路-I型",
-  x = 75,
-  y = 62
-}, {
-  mask = 5,
-  prototype = "砖石公路-I型",
-  x = 75,
-  y = 62
-}, {
-  mask = 5,
-  prototype = "砖石公路-I型",
-  x = 76,
-  y = 62
-}, {
-  mask = 5,
-  prototype = "砖石公路-I型",
-  x = 76,
-  y = 62
-}, {
-  mask = 5,
-  prototype = "砖石公路-I型",
-  x = 77,
-  y = 62
-}, {
-  mask = 5,
-  prototype = "砖石公路-I型",
-  x = 77,
-  y = 62
-}, {
-  mask = 5,
-  prototype = "砖石公路-I型",
-  x = 78,
-  y = 62
-}, {
-  mask = 5,
-  prototype = "砖石公路-I型",
-  x = 78,
-  y = 62
-}, {
-  mask = 1,
-  prototype = "砖石公路-U型",
-  x = 79,
-  y = 62
-} }
+local road = {}
 
 local mineral = {
   ["136,172"] = "铁矿石",

@@ -153,7 +153,7 @@ return function()
         e.x = v.road.x
         e.y = v.road.y
         e.mask = v.road.mask
-        e.prototype = iprototype.queryById(v.road.prototype).name
+        e.prototype = iprototype.queryById(v.road.classid).name
         roads[#roads+1] = e
     end
 

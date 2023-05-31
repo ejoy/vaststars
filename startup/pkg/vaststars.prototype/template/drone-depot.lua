@@ -3,7 +3,7 @@ local entities = { {
     items = {},
     prototype_name = "指挥中心",
     recipe = "车辆装配",
-    x = 126,
+    x = 125,
     y = 120
   }, {
     dir = "N",

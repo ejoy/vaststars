@@ -152,162 +152,162 @@ local entities = { {
 } }
 local road = { {
   mask = 103,
-  prototype = "砖石公路-I型",
+  prototype = "砖石公路-X型",
   x = 62,
   y = 62
 }, {
   mask = 5,
-  prototype = "砖石公路-I型",
+  prototype = "砖石公路-X型",
   x = 63,
   y = 62
 }, {
   mask = 5,
-  prototype = "砖石公路-I型",
+  prototype = "砖石公路-X型",
   x = 64,
   y = 62
 }, {
   mask = 5,
-  prototype = "砖石公路-I型",
+  prototype = "砖石公路-X型",
   x = 65,
   y = 62
 }, {
   mask = 5,
-  prototype = "砖石公路-I型",
+  prototype = "砖石公路-X型",
   x = 66,
   y = 62
 }, {
   mask = 5,
-  prototype = "砖石公路-I型",
+  prototype = "砖石公路-X型",
   x = 67,
   y = 62
 }, {
   mask = 5,
-  prototype = "砖石公路-I型",
+  prototype = "砖石公路-X型",
   x = 68,
   y = 62
 }, {
   mask = 7,
-  prototype = "砖石公路-T型",
+  prototype = "砖石公路-X型",
   x = 69,
   y = 62
 }, {
   mask = 5,
-  prototype = "砖石公路-I型",
+  prototype = "砖石公路-X型",
   x = 70,
   y = 62
 }, {
   mask = 5,
-  prototype = "砖石公路-I型",
+  prototype = "砖石公路-X型",
   x = 71,
   y = 62
 }, {
   mask = 5,
-  prototype = "砖石公路-I型",
+  prototype = "砖石公路-X型",
   x = 72,
   y = 62
 }, {
   mask = 5,
-  prototype = "砖石公路-I型",
+  prototype = "砖石公路-X型",
   x = 73,
   y = 62
 }, {
   mask = 5,
-  prototype = "砖石公路-I型",
+  prototype = "砖石公路-X型",
   x = 74,
   y = 62
 }, {
   mask = 5,
-  prototype = "砖石公路-I型",
+  prototype = "砖石公路-X型",
   x = 75,
   y = 62
 }, {
   mask = 5,
-  prototype = "砖石公路-I型",
+  prototype = "砖石公路-X型",
   x = 76,
   y = 62
 }, {
   mask = 109,
-  prototype = "砖石公路-I型",
+  prototype = "砖石公路-X型",
   x = 77,
   y = 62
 }, {
   mask = 77,
-  prototype = "砖石公路-I型",
+  prototype = "砖石公路-X型",
   x = 78,
   y = 62
 }, {
   mask = 1,
-  prototype = "砖石公路-U型",
+  prototype = "砖石公路-X型",
   x = 79,
   y = 62
 }, {
   mask = 10,
-  prototype = "砖石公路-I型",
+  prototype = "砖石公路-X型",
   x = 69,
   y = 56
 }, {
   mask = 75,
-  prototype = "砖石公路-I型",
+  prototype = "砖石公路-X型",
   x = 69,
   y = 60
 }, {
   mask = 79,
-  prototype = "砖石公路-I型",
+  prototype = "砖石公路-X型",
   x = 61,
   y = 62
 }, {
   mask = 10,
-  prototype = "砖石公路-I型",
+  prototype = "砖石公路-X型",
   x = 69,
   y = 58
 }, {
   mask = 109,
-  prototype = "砖石公路-I型",
+  prototype = "砖石公路-X型",
   x = 60,
   y = 62
 }, {
   mask = 75,
-  prototype = "砖石公路-I型",
+  prototype = "砖石公路-X型",
   x = 69,
   y = 55
 }, {
   mask = 4,
-  prototype = "砖石公路-U型",
+  prototype = "砖石公路-X型",
   x = 58,
   y = 62
 }, {
   mask = 5,
-  prototype = "砖石公路-I型",
+  prototype = "砖石公路-X型",
   x = 59,
   y = 62
 }, {
   mask = 10,
-  prototype = "砖石公路-I型",
+  prototype = "砖石公路-X型",
   x = 69,
   y = 57
 }, {
   mask = 10,
-  prototype = "砖石公路-I型",
+  prototype = "砖石公路-X型",
   x = 69,
   y = 61
 }, {
   mask = 107,
-  prototype = "砖石公路-I型",
+  prototype = "砖石公路-X型",
   x = 69,
   y = 59
 }, {
   mask = 107,
-  prototype = "砖石公路-I型",
+  prototype = "砖石公路-X型",
   x = 69,
   y = 54
 }, {
   mask = 10,
-  prototype = "砖石公路-I型",
+  prototype = "砖石公路-X型",
   x = 69,
   y = 53
 }, {
   mask = 8,
-  prototype = "砖石公路-U型",
+  prototype = "砖石公路-X型",
   x = 69,
   y = 52
 } }
@@ -353,6 +353,7 @@ local function prepare(world)
 end
 
 return {
+  name = "物流测试",
   entities = entities,
   road = road,
   mineral = mineral,

@@ -111,8 +111,8 @@ component "mining" {
 component "road" {
     "x:byte",
     "y:byte",
-    "prototype:word",
-    "mask:byte"
+    "mask:byte",
+    "classid:word",
 }
 
 component "save_fluidflow" {

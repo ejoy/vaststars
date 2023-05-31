@@ -374,7 +374,7 @@ function M:restart(mode, game_template)
                 x = road.x,
                 y = road.y,
                 mask = road.mask,
-                prototype = iprototype.queryByName(road.prototype).id
+                classid = iprototype.queryByName(road.prototype).id
             }
         }
         gameplay_core.get_world().ecs:new(e)

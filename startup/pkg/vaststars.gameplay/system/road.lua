@@ -123,7 +123,7 @@ local function build_road(world, building_eid, building, map, entities, endpoint
     for _, e in ipairs(pt.endpoint) do
         local dx, dy = rotate(e.position, building.direction, pt.area)
         local key = pack((building.x + dx) // ROAD_TILE_WIDTH_SCALE, (building.y + dy) // ROAD_TILE_HEIGHT_SCALE)
-        local id = prototype.queryByName(e.prototype).id
+        local id = prototype.queryByName(e.prototype).id -- TODO: remove prototype
 
         assert(not map[key])
         local dir = (Direction[e.dir]+ building.direction) % 4
@@ -140,8 +140,8 @@ local function build_road(world, building_eid, building, map, entities, endpoint
             road = {
                 x = building.x + dx,
                 y = building.y + dy,
-                prototype = id,
                 mask = map[key],
+                classid = id,
             },
             endpoint_road = true,
             road_changed = true,
