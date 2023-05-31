@@ -173,7 +173,7 @@ function m.build(world)
         ecs:remove(v.eid)
     end
 
-    for v in ecs:select "road:in eid:in endpoint_road?in REMOVED:absent" do
+    for v in ecs:select "road:in eid:in REMOVED:absent" do
         local key = pack(v.road.x, v.road.y)
         map[key] = v.road.mask
         road_cache[key] = v.eid

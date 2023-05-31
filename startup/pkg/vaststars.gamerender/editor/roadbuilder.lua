@@ -53,7 +53,7 @@ local function _get_object(self, x, y, cache_names)
     end
 
     local object = objects:coord(x, y, cache_names)
-    local mask = iroad.get_road(gameplay_core.get_world(), x, y)
+    local mask = iroad.get(gameplay_core.get_world(), x, y)
     if object then
         assert(not mask)
         return object
@@ -782,11 +782,12 @@ local function confirm(self, datamodel)
     for coord, mask in pairs(self.pending) do
         local x, y = unpackcoord(coord)
         if mask == REMOVE then
+            iroad.remove(gameplay_core.get_world(), x, y)
             iroadnet:editor_del("road", x, y)
         else
             c = c + 1
 
-            iroad.set_road(gameplay_core.get_world(), x, y, iprototype.queryByName(prototype_name).id, mask)
+            iroad.set(gameplay_core.get_world(), x, y, iprototype.queryByName(prototype_name).id, mask)
             local shape, dir = iroadnet_converter.mask_to_shape_dir(mask)
             iroadnet:editor_set("road", "normal", x, y, shape, dir)
         end
@@ -849,7 +850,7 @@ local function finish_laying(self, datamodel)
     for coord, mask in pairs(self.temporary_map) do
         local x, y = unpackcoord(coord)
         local shape, dir = iroadnet_converter.mask_to_shape_dir(mask)
-        local m = iroad.get_road(gameplay_core.get_world(), x, y)
+        local m = iroad.get(gameplay_core.get_world(), x, y)
         if not m then
             iroadnet:editor_set("road", "modify", x, y, shape, dir)
             self.pending[coord] = mask
@@ -869,7 +870,7 @@ local function place_one(self, datamodel)
     local coord_indicator = self.coord_indicator
     local x, y = coord_indicator.x, coord_indicator.y
     local coord = packcoord(x, y)
-    assert(not iroad.get_road(gameplay_core.get_world(), x, y))
+    assert(not iroad.get(gameplay_core.get_world(), x, y))
 
     datamodel.show_confirm = true
 
@@ -1135,7 +1136,7 @@ local function remove_one(self, datamodel)
     if self.pending[coord] and self.pending[coord] ~= REMOVE then
         self.pending[coord] = nil
 
-        local mask = iroad.get_road(gameplay_core.get_world(), x, y)
+        local mask = iroad.get(gameplay_core.get_world(), x, y)
         if mask then
             local shape, dir = iroadnet_converter.mask_to_shape_dir(mask)
             iroadnet:editor_set("road", "remove", x, y, shape, dir)
@@ -1145,7 +1146,7 @@ local function remove_one(self, datamodel)
             _road_teardown(self, x, y)
         end
     else
-        local mask = iroad.get_road(gameplay_core.get_world(), x, y)
+        local mask = iroad.get(gameplay_core.get_world(), x, y)
         if mask then
             local shape, dir = iroadnet_converter.mask_to_shape_dir(mask)
             iroadnet:editor_set("road", "remove", x, y, shape, dir)
@@ -1189,7 +1190,7 @@ local function finish_teardown(self, datamodel)
         if self.pending[coord] and self.pending[coord] ~= REMOVE then
             self.pending[coord] = nil
 
-            local mask = iroad.get_road(gameplay_core.get_world(), x, y)
+            local mask = iroad.get(gameplay_core.get_world(), x, y)
             if mask then
                 local shape, dir = iroadnet_converter.mask_to_shape_dir(mask)
                 iroadnet:editor_set("road", "remove", x, y, shape, dir)
@@ -1199,7 +1200,7 @@ local function finish_teardown(self, datamodel)
                 _road_teardown(self, x, y)
             end
         else
-            local mask = iroad.get_road(gameplay_core.get_world(), x, y)
+            local mask = iroad.get(gameplay_core.get_world(), x, y)
             if mask then
                 local shape, dir = iroadnet_converter.mask_to_shape_dir(mask)
                 iroadnet:editor_set("road", "remove", x, y, shape, dir)

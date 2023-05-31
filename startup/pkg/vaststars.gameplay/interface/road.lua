@@ -1,24 +1,34 @@
-local function get_road(world, x, y)
+local ROAD_TILE_WIDTH_SCALE <const> = 2
+local ROAD_TILE_HEIGHT_SCALE <const> = 2
+
+local function pack(x, y)
+    return (y << 8)|x
+end
+
+local function unpack(coord)
+    return coord & 0xFF, coord >> 8
+end
+
+local function get(world, x, y)
     local ecs = world.ecs
     local e = assert(ecs:first("road_cache:in"))
     local road_cache = e.road_cache
-    x, y = x // 2, y // 2
-    local key = (y << 8)|x
-    local eid = road_cache[key]
+    x, y = x // ROAD_TILE_WIDTH_SCALE, y // ROAD_TILE_HEIGHT_SCALE
+    local eid = road_cache[pack(x, y)]
     if not eid then
         return
     end
-    local e = assert(world.entity[eid])
-    return e.road.mask
+    return assert(world.entity[eid]).road.mask
 end
 
-local function set_road(world, x, y, classid, mask)
-    assert(x % 2 == 0 and y % 2 == 0)
+local function set(world, x, y, classid, mask)
+    assert(x % ROAD_TILE_WIDTH_SCALE == 0 and y % ROAD_TILE_HEIGHT_SCALE == 0)
     local ecs = world.ecs
     local e = assert(ecs:first("road_cache:in"))
     local road_cache = e.road_cache
-    x, y = x // 2, y // 2
-    local key = (y << 8)|x
+
+    x, y = x // ROAD_TILE_WIDTH_SCALE, y // ROAD_TILE_HEIGHT_SCALE
+    local key = pack(x, y)
     local eid = road_cache[key]
     if not eid then
         road_cache[key] = ecs:new {
@@ -37,23 +47,33 @@ local function set_road(world, x, y, classid, mask)
     end
 end
 
-local function get(world)
+local function remove(world, x, y)
     local ecs = world.ecs
     local e = assert(ecs:first("road_cache:in"))
-    local road_cache = e.road_cache
-    local roads = {}
 
-    for key, eid in pairs(road_cache) do
-        local x, y = key & 0xff, key >> 8
-        x, y = x * 2, y * 2
-        local e = assert(world.entity[eid])
-        roads[(y << 8) | x] = e.road.mask
+    x, y = x // ROAD_TILE_WIDTH_SCALE, y // ROAD_TILE_HEIGHT_SCALE
+    local eid = assert(e.road_cache[pack(x, y)])
+    ecs:remove(eid)
+end
+
+local function all(world)
+    local ecs = world.ecs
+    local e = assert(ecs:first("road_cache:in"))
+
+    local roads = {}
+    for key, eid in pairs(e.road_cache) do
+        local x, y = unpack(key)
+        x, y = x * ROAD_TILE_WIDTH_SCALE, y * ROAD_TILE_HEIGHT_SCALE
+
+        local r = assert(world.entity[eid])
+        roads[pack(x, y)] = r.road.mask
     end
     return roads
 end
 
 return {
+    all = all,
     get = get,
-    get_road = get_road,
-    set_road = set_road,
+    set = set,
+    remove = remove,
 }

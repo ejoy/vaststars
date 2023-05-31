@@ -145,7 +145,7 @@ end
 
 local function update(lorry_id, classid, item_classid, item_amount, x, y, z, progress, maxprogress)
     x, y = x * ROAD_TILE_WIDTH_SCALE, y * ROAD_TILE_HEIGHT_SCALE
-    local mask = assert(iroad.get_road(gameplay_core.get_world(), x, y))
+    local mask = assert(iroad.get(gameplay_core.get_world(), x, y))
     local is_endpoint = (mask & ROADNET_MASK_ENDPOINT == ROADNET_MASK_ENDPOINT)
 
     if is_endpoint then

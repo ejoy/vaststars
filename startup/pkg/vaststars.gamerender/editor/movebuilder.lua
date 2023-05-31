@@ -246,7 +246,7 @@ local function touch_move(self, datamodel, delta_vec)
         for _, dir in ipairs(ALL_DIR) do
             local _, dx, dy = _get_road_entrance_position(typeobject, lx, ly, dir)
             if dx and dy then
-                if iroad.get_road(gameplay_core.get_world(), dx, dy) then
+                if iroad.get(gameplay_core.get_world(), dx, dy) then
                     t[#t+1] = dir
                 end
             end
@@ -409,7 +409,7 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
                 goto continue
             end
 
-            if iroad.get_road(gameplay_core.get_world(), dx, dy) then
+            if iroad.get(gameplay_core.get_world(), dx, dy) then
                 valid = true
                 break
             end

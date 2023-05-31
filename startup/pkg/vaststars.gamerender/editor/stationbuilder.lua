@@ -200,7 +200,7 @@ local function __show_road_entrance_marker(self, typeobject)
     end
 
     local coords = {}
-    for coord, mask in pairs(iroad.get(gameplay_core.get_world())) do
+    for coord, mask in pairs(iroad.all(gameplay_core.get_world())) do
         local x, y = iprototype.unpackcoord(coord)
         local prototype_name, dir = iroadnet_converter.mask_to_prototype_name_dir(mask)
         local dirs = _get_connections_dir(prototype_name, dir)
@@ -510,7 +510,7 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
                 goto continue
             end
 
-            local mask = iroad.get_road(gameplay_core.get_world(), dx//2*2, dy//2*2)
+            local mask = iroad.get(gameplay_core.get_world(), dx//2*2, dy//2*2)
             if not mask then
                 return false
             end
@@ -533,7 +533,7 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
             --         goto continue
             --     end
 
-            --     local mask = iroad.get_road(gameplay_core.get_world(), lx//2*2, ly//2*2)
+            --     local mask = iroad.get(gameplay_core.get_world(), lx//2*2, ly//2*2)
             --     if not mask then
             --         return false
             --     end
@@ -564,7 +564,7 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
     --                 goto continue
     --             end
 
-    --             local mask = iroad.get_road(gameplay_core.get_world(), nx//2*2, ny//2*2)
+    --             local mask = iroad.get(gameplay_core.get_world(), nx//2*2, ny//2*2)
     --             if mask then
     --                 c[dir] = true
     --             end

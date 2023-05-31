@@ -32,7 +32,7 @@ local function check_construct_detector(self, prototype_name, x, y, dir, exclude
                     return false
                 end
 
-                if iroad.get_road(gameplay_core.get_world(), x + i, y + j) then
+                if iroad.get(gameplay_core.get_world(), x + i, y + j) then
                     return false
                 end
             end
