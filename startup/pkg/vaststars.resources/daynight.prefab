@@ -10,7 +10,7 @@ data:
         indirect    : /pkg/vaststars.resources/textures/daynight/day_indirect.jpg
         intensity   : /pkg/vaststars.resources/textures/daynight/day_intensity.jpg
       start_rotator:  {0.0,-0.7,0.0}
-      rotate_axis: {0.0,-0.1,0.9}
+      rotate_axis: {0.0,-0.3,0.8}
       rotate_range: 2.5
     night:
       start_rotator:  {0.0,-0.7,0.0}
