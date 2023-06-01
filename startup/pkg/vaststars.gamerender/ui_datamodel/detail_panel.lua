@@ -23,6 +23,7 @@ end
 
 local function get_property_list(entity)
     local r = {}
+    local prop_list = {}
     for property_name in pairs(entity) do
         local cfg = property_list[property_name]
         if not cfg then
@@ -35,10 +36,11 @@ local function get_property_list(entity)
         t.value = cfg.value and format_vars(cfg.value, entity.values) or ""
         t.pos = cfg.pos
 
-        r[#r + 1] = t
+        prop_list[#prop_list + 1] = t
         ::continue::
     end
-    table.sort(r, function(a, b) return a.pos < b.pos end)
+    table.sort(prop_list, function(a, b) return a.pos < b.pos end)
+    r.prop_list = prop_list
     r.chest_list = entity.chest_list
     r.status = entity.status
     return r
@@ -292,16 +294,8 @@ local function update_property_list(datamodel, property_list)
     local status = property_list.status
     datamodel.detail_panel_status_icon = detail_panel_status_icon[status]
     datamodel.detail_panel_status_desc = detail_panel_status_desc[status]
-    property_list.chest_list = nil
-    property_list.progress = nil
-    property_list.status = nil
-    property_list.recipe_name = nil
-    local inputs = property_list.recipe_inputs
-    local ouputs = property_list.recipe_ouputs
-    property_list.recipe_inputs = nil
-    property_list.recipe_ouputs = nil
-    datamodel.property_list = property_list
-    return inputs, ouputs
+    datamodel.property_list = property_list.prop_list
+    return property_list.recipe_inputs, property_list.recipe_ouputs
 end
 
 local last_inputs, last_ouputs
