@@ -3609,7 +3609,7 @@ local entities = { {
     dir = "S",
     fluid_name = {
       input = {},
-      output = { "蒸汽" }
+      output = { "地热气" }
     },
     prototype_name = "地热井I",
     recipe = "地热采集",
@@ -5586,14 +5586,14 @@ local mineral = {
   ["190,130"] = "碎石",
   ["195,115"] = "铁矿石",
   ["207,160"] = "铁矿石",
-  ["208,140"] = "蒸汽",
+  ["208,140"] = "地热气",
   ["59,116"] = "铁矿石",
   ["60,183"] = "铁矿石",
   ["70,130"] = "碎石",
   ["73,91"] = "铁矿石",
   ["89,163"] = "铁矿石",
   ["91,100"] = "碎石",
-  ["91,201"] = "蒸汽"
+  ["91,201"] = "地热气"
 }
 local function prepare(world)
     local prototype = import_package "vaststars.gameplay".prototype

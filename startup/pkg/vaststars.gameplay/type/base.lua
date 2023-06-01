@@ -11,6 +11,13 @@ type "pipe"
 type "pipe_to_ground"
 type "mountain"
 
+local auto_set_recipe = type "auto_set_recipe"
+function auto_set_recipe:ctor(init, pt)
+    return {
+        auto_set_recipe = true,
+    }
+end
+
 local recipe = type "recipe"
     .ingredients "items"
     .results "items"
