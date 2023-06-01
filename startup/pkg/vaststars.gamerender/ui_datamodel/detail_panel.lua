@@ -291,7 +291,7 @@ local function update_property_list(datamodel, property_list)
     datamodel.show_minner = property_list.is_minner
     datamodel.show_assemble = property_list.is_assemble
     datamodel.recipe_name = property_list.recipe_name
-    local status = property_list.status
+    local status = property_list.status or 3
     datamodel.detail_panel_status_icon = detail_panel_status_icon[status]
     datamodel.detail_panel_status_desc = detail_panel_status_desc[status]
     datamodel.property_list = property_list.prop_list
