@@ -3,7 +3,7 @@ local prototype = gameplay.register.prototype
 
 prototype "铁板" {
     type = {"item"},
-    stack = 8,
+    stack = 12,
     pile = "4x4x4",
     gap3 = "0.05x0.05x0.05",
     pile_model = "prefabs/stackeditems/iron-gear.prefab",
@@ -14,7 +14,7 @@ prototype "铁板" {
 
 prototype "铁丝" {
     type = {"item"},
-    stack = 4,
+    stack = 12,
     pile = "4x2x4",
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/iron-wire.texture",
@@ -24,7 +24,7 @@ prototype "铁丝" {
 
 prototype "铁棒" {
     type = {"item"},
-    stack = 4,
+    stack = 12,
     pile = "4x2x4",
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/iron_stick.texture",
@@ -34,7 +34,7 @@ prototype "铁棒" {
 
 prototype "钢板" {
     type = {"item"},
-    stack = 4,
+    stack = 12,
     pile = "4x2x4",
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/steel-beam.texture",
@@ -44,7 +44,7 @@ prototype "钢板" {
 
 prototype "钢齿轮" {
     type = {"item"},
-    stack = 4,
+    stack = 12,
     pile = "4x4x4",
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/steel-gear.texture",
@@ -78,7 +78,7 @@ prototype "铝矿石" {
 
 prototype "碾碎铁矿石" {
     type = {"item"},
-    stack = 16,
+    stack = 24,
     pile = "4x4x4",
     pile_model = "prefabs/stackeditems/iron-ore.prefab",
     icon = "textures/construct/crush-ore-Fe.texture",
@@ -88,7 +88,7 @@ prototype "碾碎铁矿石" {
 
 prototype "碾碎铝矿石" {
     type = {"item"},
-    stack = 16,
+    stack = 24,
     pile = "4x4x4",
     pile_model = "prefabs/stackeditems/gravel.prefab",
     icon = "textures/construct/crush-ore-Al.texture",
@@ -98,7 +98,7 @@ prototype "碾碎铝矿石" {
 
 prototype "氢氧化铝" {
     type = {"item"},
-    stack = 8,
+    stack = 12,
     pile = "4x2x4",
     pile_model = "prefabs/stackeditems/gravel.prefab",
     icon = "textures/construct/aluminum-hydroxide.texture",
@@ -108,7 +108,7 @@ prototype "氢氧化铝" {
 
 prototype "氧化铝" {
     type = {"item"},
-    stack = 8,
+    stack = 12,
     pile = "4x2x4",
     pile_model = "prefabs/stackeditems/iron-ore.prefab",
     icon = "textures/construct/alumina.texture",
@@ -118,7 +118,7 @@ prototype "氧化铝" {
 
 prototype "碳化铝" {
     type = {"item"},
-    stack = 8,
+    stack = 12,
     pile = "4x2x4",
     icon = "textures/construct/aluminium-carbide.texture",
     item_description = "氧化铝燃烧后的剩余物",
@@ -127,7 +127,7 @@ prototype "碳化铝" {
 
 prototype "铝板" {
     type = {"item"},
-    stack = 8,
+    stack = 12,
     pile = "4x2x4",
     pile_model = "prefabs/stackeditems/iron-ore.prefab",
     icon = "textures/construct/plate-Al.texture",
@@ -137,7 +137,7 @@ prototype "铝板" {
 
 prototype "铝棒" {
     type = {"item"},
-    stack = 4,
+    stack = 12,
     pile = "2x2x4",
     pile_model = "prefabs/stackeditems/iron-ore.prefab",
     icon = "textures/construct/iron_stick.texture",
@@ -147,7 +147,7 @@ prototype "铝棒" {
 
 prototype "铝丝" {
     type = {"item"},
-    stack = 8,
+    stack = 16,
     pile = "4x2x4",
     pile_model = "prefabs/stackeditems/iron-ore.prefab",
     icon = "textures/construct/iron-wire.texture",
@@ -249,7 +249,7 @@ prototype "沙子" {
 
 prototype "塑料" {
     type = {"item"},
-    stack = 8,
+    stack = 12,
     pile = "2x2x4",
     pile_model = "prefabs/stackeditems/iron-gear.prefab",
     icon = "textures/construct/plastic.texture",
@@ -259,7 +259,7 @@ prototype "塑料" {
 
 prototype "电动机I" {
     type = {"item"},
-    stack = 4,
+    stack = 8,
     pile = "2x2x4",
     pile_model = "prefabs/stackeditems/iron-gear.prefab",
     icon = "textures/construct/electric-motor.texture",
@@ -299,7 +299,7 @@ prototype "坩埚" {
 
 prototype "橡胶" {
     type = {"item"},
-    stack = 4,
+    stack = 8,
     pile = "2x2x4",
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/rubber.texture",
@@ -309,7 +309,7 @@ prototype "橡胶" {
 
 prototype "电容" {
     type = {"item"},
-    stack = 4,
+    stack = 8,
     pile = "2x2x4",
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/capacitor.texture",
@@ -319,7 +319,7 @@ prototype "电容" {
 
 prototype "绝缘线" {
     type = {"item"},
-    stack = 4,
+    stack = 8,
     pile = "2x2x4",
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/insulated-wire.texture",
@@ -329,7 +329,7 @@ prototype "绝缘线" {
 
 prototype "逻辑电路" {
     type = {"item"},
-    stack = 4,
+    stack = 8,
     pile = "2x2x4",
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
@@ -339,7 +339,7 @@ prototype "逻辑电路" {
 
 prototype "地质科技包" {
     type = {"item"},
-    stack = 2,
+    stack = 8,
     pile = "4x4x4",
     pile_model = "prefabs/stackeditems/geology-pack.prefab",
     icon = "textures/recipe/geology-pack.texture",
@@ -350,7 +350,7 @@ prototype "地质科技包" {
 
 prototype "气候科技包" {
     type = {"item"},
-    stack = 2,
+    stack = 8,
     pile = "4x4x4",
     pile_model = "prefabs/stackeditems/geology-pack.prefab",
     icon = "textures/recipe/climatology-pack.texture",
@@ -361,7 +361,7 @@ prototype "气候科技包" {
 
 prototype "机械科技包" {
     type = {"item"},
-    stack = 2,
+    stack = 8,
     pile = "4x4x4",
     pile_model = "prefabs/stackeditems/geology-pack.prefab",
     icon = "textures/recipe/mechanical-pack.texture",
@@ -372,7 +372,7 @@ prototype "机械科技包" {
 
 prototype "电子科技包" {
     type = {"item"},
-    stack = 2,
+    stack = 8,
     pile = "4x4x4",
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/recipe/electrical-pack.texture",
@@ -452,7 +452,7 @@ prototype "无人机" {
 
 prototype "运输车框架" {
     type = {"item"},
-    stack = 4,
+    stack = 12,
     pile = "2x2x4",
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/broken-truck.texture",
