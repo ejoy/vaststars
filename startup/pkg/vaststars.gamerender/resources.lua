@@ -913,6 +913,7 @@ local t = {
 	"/pkg/vaststars.gamerender/render_updates/ing_res_motion.lua",
 	"/pkg/vaststars.gamerender/render_updates/inventory.lua",
 	"/pkg/vaststars.gamerender/render_updates/lorry.lua",
+	"/pkg/vaststars.gamerender/render_updates/road.lua",
 	"/pkg/vaststars.gamerender/render_updates/science.lua",
 	"/pkg/vaststars.gamerender/render_updates/station.lua",
 	"/pkg/vaststars.gamerender/render_updates/statistic.lua",
