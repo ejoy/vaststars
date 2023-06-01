@@ -1,3 +1,8 @@
+local ecs, mailbox = ...
+local iui = ecs.import.interface "vaststars.gamerender|iui"
+local math3d = require "math3d"
+local idetail = ecs.interface "idetail"
+local icamera_controller = ecs.import.interface "vaststars.gamerender|icamera_controller"
 local property_list = import_package "vaststars.prototype"("property_list")
 local objects = require "objects"
 local global = require "global"
@@ -8,6 +13,7 @@ local ilaboratory = require "gameplay.interface.laboratory"
 local ichest = require "gameplay.interface.chest"
 local building_detail = import_package "vaststars.prototype"("building_detail_config")
 local assembling_common = require "ui_datamodel.common.assembling"
+local show_detail_mb = mailbox:sub {"show_detail"}
 local UPS <const> = require("gameplay.interface.constant").UPS
 local CHEST_LIST_TYPES <const> = {"chest", "station", "hub"}
 
@@ -364,6 +370,17 @@ local function get_delta(last, current, input)
 end
 
 function M:stage_ui_update(datamodel, object_id)
+    for _, _, _, area_id in show_detail_mb:unpack() do
+        if area_id == 0 then
+            local object = assert(objects:get(object_id))
+            idetail.selected(object)
+            local p = icamera_controller.world_to_screen(object.srt.t)
+            local ui_x, ui_y = iui.convert_coord(math3d.index(p, 1), math3d.index(p, 2))
+            iui.open({"building_arc_menu.rml"}, object_id, {math3d.index(object.srt.t, 1, 2, 3)}, ui_x, ui_y)
+        else
+            iui.close("building_arc_menu.rml")
+        end
+    end
     local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     local current_inputs, current_ouputs
