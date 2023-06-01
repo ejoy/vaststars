@@ -165,7 +165,8 @@ function terrain:reset_mineral(map)
             end
         end
 
-        local prefab = assert(assert(iprototype.queryByName(mineral)).mineral_model)
+        local errmsg <const> = "%s is defined as a type of mineral, but no corresponding mineral model is configured."
+        local prefab = assert(assert(iprototype.queryByName(mineral)).mineral_model, errmsg:format(mineral))
 
         local srt = {r = ROTATORS[math.random(1, 4)], t = self:get_position_by_coord(x, y, MINERAL_WIDTH, MINERAL_HEIGHT)}
         self.eids[#self.eids+1] = igame_object.create {

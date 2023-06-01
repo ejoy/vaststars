@@ -875,7 +875,8 @@ local function place_one(self, datamodel)
     datamodel.show_confirm = true
 
     assert(x % 2 == 0 and y % 2 == 0)
-    iroadnet:editor_set("road", "normal", x, y, "O", "N")
+    iroad.set(gameplay_core.get_world(), x, y, iprototype.queryByName(self.coord_indicator.prototype_name).id, 0)
+
     self.pending[coord] = 0 -- {"砖石公路-O型", "N"}
 
     _builder_init(self, datamodel)

@@ -201,8 +201,6 @@ local function fix(world, map, road_cache)
             res[coord] = mask
             local r = assert(world.entity[road_cache[coord]])
             r.road.mask = mask
-        else
-            ecs:remove(road_cache[coord])
         end
     end
     return res

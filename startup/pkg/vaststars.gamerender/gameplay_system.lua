@@ -144,7 +144,8 @@ end
 
 function igameplay.build_world()
     gameplay_core.world_update = true
-    gameplay_core.get_world():build()
 
+    world:pipeline_func "gameworld_prepare" ()
+    gameplay_core.get_world():build()
     world:pipeline_func "gameworld_build" ()
 end

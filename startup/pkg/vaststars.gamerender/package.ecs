@@ -54,6 +54,9 @@ pipeline "gameworld"
     .stage "gameworld_update"
     .stage "gameworld_end"
 
+pipeline "gameworld_prepare"
+    .stage "gameworld_prepare"
+
 pipeline "gameworld_build"
     .stage "gameworld_build"
 
@@ -213,6 +216,7 @@ interface "igameplay"
 -- render_updates
 system "assembling_system"
     .implement "render_updates/assembling.lua"
+    .method "gameworld_prepare"
     .method "gameworld_build"
     .method "gameworld_update"
 

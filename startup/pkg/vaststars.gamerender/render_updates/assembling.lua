@@ -20,6 +20,9 @@ local gameplay_core = require "gameplay.core"
 local interval_call = ecs.require "engine.interval_call"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local draw_fluid_icon = ecs.require "fluid_icon"
+local iprototype_cache = require "gameplay.prototype_cache.init"
+local ifluid = require "gameplay.interface.fluid"
+
 local ROTATORS <const> = {
     N = math.rad(0),
     E = math.rad(-90),
@@ -319,6 +322,87 @@ local function create_consumer_icon(object_id, building_srt)
         on_position_change = on_position_change,
         remove = remove,
     }
+end
+
+local terrain = ecs.require "terrain"
+local iworld = require "gameplay.interface.world"
+
+local function __find_neighbor_fluid(gameplay_world, x, y, dir, ground)
+    local succ, dx, dy = false, x, y
+    for i = 1, ground or 1 do
+        succ, dx, dy = terrain:move_coord(dx, dy, dir, 1)
+        if not succ then
+            return
+        end
+
+        local object = objects:coord(dx, dy)
+        if object then
+            local typeobject = iprototype.queryByName(object.prototype_name)
+            if ground then
+                if not iprototype.has_type(typeobject.type, "pipe_to_ground") then
+                    goto continue
+                end
+            end
+
+            local fluid_name
+            if iprototype.has_type(typeobject.type, "fluidbox") then
+                local e = assert(gameplay_world.entity[object.gameplay_eid])
+                if e.fluidbox.fluid ~= 0 then
+                    fluid_name = iprototype.queryById(e.fluidbox.fluid).name
+                end
+            elseif iprototype.has_type(typeobject.type, "fluidboxes") then
+                fluid_name = {}
+                local e = assert(gameplay_world.entity[object.gameplay_eid])
+
+                local io_name = {
+                    ["in"] = "input",
+                    ["out"] = "output",
+                }
+                for _, io_type in ipairs({"in", "out"}) do
+                    for i = 1, 4 do
+                        local n = io_type .. i .. "_fluid"
+                        if e.fluidboxes[n] and e.fluidboxes[n] ~= 0 then
+                            fluid_name[io_name[io_type]] = fluid_name[io_name[io_type]] or {}
+                            fluid_name[io_name[io_type]][i] = iprototype.queryById(e.fluidboxes[n]).name
+                        end
+                    end
+                end
+            end
+            for _, fb in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir, fluid_name)) do
+                if fb.x == dx and fb.y == dy and fb.dir == iprototype.reverse_dir(dir) then
+                    return fb.fluid_name, object
+                end
+            end
+
+            goto continue
+        end
+        ::continue::
+    end
+end
+
+function assembling_sys:gameworld_prepare()
+    local gameplay_world = gameplay_core.get_world()
+    for e in gameplay_world.ecs:select "auto_set_recipe:in assembling:update building:in chest:update" do
+        local object = assert(objects:coord(e.building.x, e.building.y))
+        local typeobject = iprototype.queryById(e.building.prototype)
+        local _, recipes = next(iprototype_cache.get("recipe_pop")[typeobject.name])
+        local cache = {}
+        for _, recipe in ipairs(recipes) do
+            local ingredients = recipe.ingredients
+            assert(#ingredients == 1)
+            cache[ingredients[1].name] = recipe.name
+        end
+        for _, fb in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir)) do
+            local neighbor_fluid_name = __find_neighbor_fluid(gameplay_world, fb.x, fb.y, fb.dir)
+            if neighbor_fluid_name then
+                local recipe_name = cache[neighbor_fluid_name]
+                if recipe_name then
+                    iworld.set_recipe(gameplay_core.get_world(), e, recipe_name, typeobject.recipe_init_limit)
+                    break
+                end
+            end
+        end
+    end
 end
 
 function assembling_sys:gameworld_build()
