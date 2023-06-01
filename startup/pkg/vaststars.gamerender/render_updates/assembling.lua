@@ -382,7 +382,7 @@ end
 
 function assembling_sys:gameworld_prepare()
     local gameplay_world = gameplay_core.get_world()
-    for e in gameplay_world.ecs:select "auto_set_recipe:in assembling:update building:in chest:update" do
+    for e in gameplay_world.ecs:select "auto_set_recipe:in assembling:update building:in chest:update fluidboxes:update" do
         local object = assert(objects:coord(e.building.x, e.building.y))
         local typeobject = iprototype.queryById(e.building.prototype)
         local _, recipes = next(iprototype_cache.get("recipe_pop")[typeobject.name])
