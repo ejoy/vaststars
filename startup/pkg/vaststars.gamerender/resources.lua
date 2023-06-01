@@ -94,6 +94,7 @@ local t = {
 	"/pkg/ant.compile_resource/editor/texture/png_param.lua",
 	"/pkg/ant.compile_resource/editor/texture/sampler.lua",
 	"/pkg/ant.compile_resource/editor/texture/util.lua",
+	"/pkg/ant.compile_resource/entry.lua",
 	"/pkg/ant.compile_resource/main.lua",
 	"/pkg/ant.compile_resource/package.lua",
 	"/pkg/ant.compile_resource/service/resource.lua",
