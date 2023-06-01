@@ -95,6 +95,7 @@ end
 
 local function __on_pickup_mineral(datamodel, mineral)
     iui.close "detail_panel.rml"
+    iui.close "building_arc_menu.rml"
     local typeobject = iprototype.queryByName(mineral)
     iui.open({"mine_detail_panel.rml"}, typeobject.icon, typeobject.mineral_name or typeobject.name)
     return true
