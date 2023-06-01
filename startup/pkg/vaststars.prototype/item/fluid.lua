@@ -164,6 +164,17 @@ prototype "蒸汽" {
     default_temperature = 165,
     max_temperature = 200,
     item_description = "一种化工气体",
+}
+
+prototype "地热气" {
+    type = {"fluid"},
+    catagory = {"普通气体"},
+    icon = "textures/fluid/gas-steam.texture",
+    color = {1, 1, 1, 1},
+    heat_capacity = "1KJ",
+    default_temperature = 165,
+    max_temperature = 200,
+    item_description = "一种化工气体",
     mineral_model = "prefabs/mineral/ground-geothermal.prefab",
     mineral_name = "地热",
 }

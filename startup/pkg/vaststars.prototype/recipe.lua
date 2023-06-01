@@ -2111,7 +2111,7 @@ prototype "地热采集" {
     ingredients = {
     },
     results = {
-        {"蒸汽", 120},
+        {"地热气", 120},
     },
     time = "3s",
     description = "采集地热蒸汽",
@@ -2789,6 +2789,21 @@ prototype "蒸汽发电" {
     },
     time = "1s",
     description = "蒸汽发电",
+}
+
+prototype "地热气发电" {
+    type = { "recipe" },
+    category = "流体发电",
+    recipe_group =  "化工",
+    recipe_order =  120,
+    recipe_icon =  "textures/fluid/gas.texture",
+    ingredients = {
+        {"地热气", 30},
+    },
+    results = {
+    },
+    time = "1s",
+    description = "地热气发电",
 }
 
 ---------地下卤水生成矿物配方----------
