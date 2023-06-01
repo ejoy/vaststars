@@ -467,9 +467,8 @@ function M:stage_camera_usage(datamodel)
                     goto continue1
                 end
 
+                iui.close("building_arc_menu.rml")
                 idetail.selected(object)
-
-                iui.close({"building_arc_menu.rml"})
 
                 local p = icamera_controller.world_to_screen(object.srt.t)
                 local ui_x, ui_y = iui.convert_coord(math3d.index(p, 1), math3d.index(p, 2))

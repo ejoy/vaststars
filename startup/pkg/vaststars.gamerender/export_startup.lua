@@ -32,6 +32,7 @@ funcs["lorry_factory"] = DO_NOTHING
 funcs["wind_turbine"] = DO_NOTHING
 funcs["accumulator"] = DO_NOTHING
 funcs["inventory"] = DO_NOTHING
+funcs["auto_set_recipe"] = DO_NOTHING
 
 funcs["building"] = function (export_data, e)
     export_data.prototype_name = iprototype.queryById(e.building.prototype).name
