@@ -138,8 +138,7 @@
                 detail_panel_status_icon = "textures/work_status_icon/normal.texture",
                 detail_panel_status_desc = "正常工作",
                 show_chest = false,
-                chest_list0 = {},
-                chest_list1 = {},
+                chest_list = {},
                 show_minner = false,
                 progress = "0%",
                 recipe_inputs = {},
@@ -188,17 +187,9 @@
                     </div>
                 </div>
                 <div style="margin-left: 3%; margin-right: 3%; border-bottom: 0.1vmin #6d6d6d; padding-top: 1vmin;" />
-                <div style="height:19%; margin-left: 3%; margin-right: 3%; flex-direction: column; justify-content: flex-start; align-items: center;" data-if = "show_chest" data-event-click="onLongPress(3)">
-                    <div style = "width:98%; border-bottom: 0.1vmin #fff; margin:0.3vmin"/>
-                    <div style="padding-top:0.3vmin; padding-left:0.04vmin; width:100%; flex-direction: row; justify-content: flex-start; align-items: center;">
-                        <div data-for = "chest : chest_list0" class="small-item1" data-style-background-image="chest.icon">
-                            <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0);">{{chest.count}}</div>
-                        </div>
-                    </div>
-                    <div style="padding-top:0.3vmin; padding-left:0.04vmin; width:100%;flex-direction: row; justify-content: flex-start; align-items: center;">
-                        <div data-for = "chest : chest_list1" class="small-item1" data-style-background-image="chest.icon">
-                            <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0);">{{chest.count}}</div>
-                        </div>
+                <div style="width:90%; margin-left: 3%; margin-right: 3%; flex-direction: row; justify-content: flex-start; align-items: center; flex-wrap: wrap;" data-if = "show_chest" data-event-click="onLongPress(3)">
+                    <div data-for = "chest : chest_list" class="small-item1" style="margin: 0.5vmin; " data-style-background-image="chest.icon">
+                        <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0);">{{chest.count}}</div>
                     </div>
                 </div>
 
@@ -271,7 +262,14 @@
                     </div>
                 </div>
             </div>
-            <div class="tips-bg" style='flex-direction: row; justify-content: center; align-items: center; ' data-if="areaid==3.0 || areaid==4.0 || areaid==5.0 ">
+            <div class="tips-bg" style='flex-direction: column; justify-content: center; align-items: center;' data-if="areaid==3.0">
+                <div style="width:80%; flex-direction: row; justify-content: flex-start; align-items: center; flex-wrap: wrap;">
+                    <div data-for = "chest : chest_list" class="small-item1" style="margin: 1vmin; width: 18vmin; height: 18vmin;" data-style-background-image="chest.icon">
+                        <div style="font-size: 6.00vmin; -webkit-text-stroke:0.25vmin rgb(0, 0, 0);">{{chest.count}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="tips-bg" style='flex-direction: row; justify-content: center; align-items: center;' data-if="areaid==4.0 || areaid==5.0">
                 <div class="column" style="width: 18vmin; justify-content: space-evenly; align-items: center;">
                     <div class="small-item1" style="width: 15vmin; height: 15vmin; border: 0.3vmin rgb(0, 217, 255);" data-style-background-image="it.icon" data-for="recipe_inputs">
                         <div class ="item-count-combination">

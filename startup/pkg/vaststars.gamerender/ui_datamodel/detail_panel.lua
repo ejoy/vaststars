@@ -39,8 +39,7 @@ local function get_property_list(entity)
         ::continue::
     end
     table.sort(r, function(a, b) return a.pos < b.pos end)
-    r.chest_list0 = entity.chest_list0
-    r.chest_list1 = entity.chest_list1
+    r.chest_list = entity.chest_list
     r.status = entity.status
     return r
 end
@@ -153,18 +152,12 @@ local function get_property(e, typeobject)
     local chest_component = iprototype.get_chest_component(typeobject.name)
     if iprototype.check_types(typeobject.name, CHEST_LIST_TYPES) and chest_component then
         -- the items display is shown in two rows, with list0 for the first row and list1 for the second row (five items per row, up to ten items in total)
-        local chest_list0 = {}
-        local chest_list1 = {}
+        local chest_list = {}
         for _, slot in pairs(ichest.collect_item(gameplay_core.get_world(), e[chest_component])) do
             local typeobject_item = assert(iprototype.queryById(slot.item))
-            if #chest_list0 < 5 then
-                chest_list0[#chest_list0 + 1] = {icon = typeobject_item.icon, count = ichest.get_amount(slot)}
-            elseif #chest_list1 < 5 then
-                chest_list1[#chest_list1 + 1] = {icon = typeobject_item.icon, count = ichest.get_amount(slot)}
-            end
+            chest_list[#chest_list + 1] = {icon = typeobject_item.icon, count = ichest.get_amount(slot)}
         end
-        t.chest_list0 = #chest_list0 > 0 and chest_list0 or nil
-        t.chest_list1 = #chest_list1 > 0 and chest_list1 or nil
+        t.chest_list = #chest_list > 0 and chest_list or nil
     end
     if e.fluidbox then
         local name = "无"
@@ -276,7 +269,7 @@ local function get_entity_property_list(object_id, recipe_inputs, recipe_ouputs)
             local slot = ichest.chest_get(gameplay_core.get_world(), e.chest, i)
             items[#items+1] = {icon = value.icon, count = slot.amount or 0}
         end
-        property_list.chest_list0 = items
+        property_list.chest_list = items
     end
     return property_list
 end
@@ -288,9 +281,8 @@ local M = {}
 local update_interval = 10 --update per 25 frame
 local counter = 1
 local function update_property_list(datamodel, property_list)
-    datamodel.chest_list0 = property_list.chest_list0 or {}
-    datamodel.chest_list1 = property_list.chest_list1 or {}
-    datamodel.show_chest = #datamodel.chest_list0 > 0
+    datamodel.chest_list = property_list.chest_list or {}
+    datamodel.show_chest = #datamodel.chest_list > 0
     datamodel.progress = property_list.progress or "0%"
     datamodel.recipe_inputs = property_list.recipe_inputs or {}
     datamodel.recipe_ouputs = property_list.recipe_ouputs or {}
@@ -300,8 +292,7 @@ local function update_property_list(datamodel, property_list)
     local status = property_list.status
     datamodel.detail_panel_status_icon = detail_panel_status_icon[status]
     datamodel.detail_panel_status_desc = detail_panel_status_desc[status]
-    property_list.chest_list0 = nil
-    property_list.chest_list1 = nil
+    property_list.chest_list = nil
     property_list.progress = nil
     property_list.status = nil
     property_list.recipe_name = nil

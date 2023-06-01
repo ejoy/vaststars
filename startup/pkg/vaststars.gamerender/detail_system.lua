@@ -80,7 +80,8 @@ local function __fluidbox_str(eid)
 end
 
 function idetail.show(object_id)
-    iui.close("help_panel.rml")
+    iui.close "help_panel.rml"
+    iui.close "mine_detail_panel.rml"
     iui.open({"detail_panel.rml"}, object_id)
 
     --
