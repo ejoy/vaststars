@@ -221,21 +221,21 @@ local entities = { {
   }, {
     dir = "S",
     fluid_name = {
-      input = { "蒸汽" },
+      input = { "地热气" },
       output = {}
     },
     prototype_name = "蒸汽发电机I",
-    recipe = "蒸汽发电",
+    recipe = "地热气发电",
     x = 122,
     y = 146
   }, {
     dir = "S",
     fluid_name = {
-      input = { "蒸汽" },
+      input = { "地热气" },
       output = {}
     },
     prototype_name = "蒸汽发电机I",
-    recipe = "蒸汽发电",
+    recipe = "地热气发电",
     x = 122,
     y = 141
   }, {
@@ -257,7 +257,7 @@ local entities = { {
     dir = "S",
     fluid_name = {
       input = {},
-      output = { "蒸汽" }
+      output = { "地热气" }
     },
     prototype_name = "地热井I",
     recipe = "地热采集",
