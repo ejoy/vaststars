@@ -288,8 +288,8 @@ local function __show_road_entrance_marker(self, typeobject)
         table.unpack(markers)
     }
 
-    icanvas.remove_item(icanvas.types().ROAD_ENTRANCE_MARKER, 0)
-    icanvas.add_item(icanvas.types().ROAD_ENTRANCE_MARKER, 0, table.unpack(t))
+    -- icanvas.remove_item(icanvas.types().ROAD_ENTRANCE_MARKER, 0)
+    -- icanvas.add_item(icanvas.types().ROAD_ENTRANCE_MARKER, 0, table.unpack(t))
     return min_coord
 end
 

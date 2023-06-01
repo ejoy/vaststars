@@ -1,14 +1,26 @@
 local fs = require "filesystem"
 local serialize = import_package "ant.serialize"
-local cr = import_package "ant.compile_resource"
+local assetmgr = import_package "ant.asset"
+
+local function read_file(filename)
+    local f
+    if string.sub(filename, 1, 1) == "/" then
+        f = assert(io.open(assetmgr.compile(filename), "rb"))
+    else
+        f = assert(io.open(filename, "rb"))
+    end
+    local c = f:read "a"
+    f:close()
+    return c
+end
 
 local function parse(fullpath)
-    local template = serialize.parse(fullpath, cr.read_file(fullpath))
+    local template = serialize.parse(fullpath, read_file(fullpath))
     local patch = fullpath .. ".patch"
     -- duplicated code - ant.ecs/main.lua -> create_template()
     if fs.exists(fs.path(patch)) then
         local count = #template
-        for index, value in ipairs(serialize.parse(patch, cr.read_file(patch))) do
+        for index, value in ipairs(serialize.parse(patch, read_file(patch))) do
             if value.mount then
                 if value.mount ~= 1 then
                     value.mount = count + index - 1
