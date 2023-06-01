@@ -71,12 +71,10 @@ function M:get_fluidbox(prototype_name, x, y, dir, fluid_name)
     local iotypes = {"input", "output"}
     funcs["fluidboxes"] = function(typeobject, x, y, dir, fluid_name, result)
         for _, iotype in ipairs(iotypes) do
-            local i = 0
-            for _, v in ipairs(typeobject.fluidboxes[iotype]) do
+            for idx, v in ipairs(typeobject.fluidboxes[iotype]) do
                 for _, conn in ipairs(v.connections) do
-                    i = i + 1
                     local dx, dy, dir = iprototype.rotate_connection(conn.position, dir, typeobject.area)
-                    result[#result+1] = {x = x + dx, y = y + dy, dir = dir, ground = conn.ground, fluid_name = get_fluid_name(fluid_name, iotype, i)}
+                    result[#result+1] = {x = x + dx, y = y + dy, dir = dir, ground = conn.ground, fluid_name = get_fluid_name(fluid_name, iotype, idx)}
                 end
             end
         end
