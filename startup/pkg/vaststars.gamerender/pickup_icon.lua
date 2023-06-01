@@ -8,7 +8,10 @@ local iterrain = ecs.require "terrain"
 local irecipe = require "gameplay.interface.recipe"
 local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
 local icas = ecs.import.interface "ant.terrain|icanvas"
+local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+local constant = require "gameplay.interface.constant"
 
+local ROTATORS = constant.ROTATORS
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
 local fs = require "filesystem"
@@ -18,6 +21,10 @@ local fluid_icon_canvas_cfg <const> = datalist.parse(fs.open(fs.path("/pkg/vasts
 local entity_events = {}
 entity_events.add_item = function(self, e, ...)
     icas.add_items(e, ...)
+end
+
+entity_events.iom = function(self, e, method, ...)
+    iom[method](e, ...)
 end
 
 local function __get_texture_size(materialpath)
@@ -100,7 +107,7 @@ local function __create_icon(canvas, fluid, begin_x, begin_y, connection_x, conn
     canvas:send("add_item", material_path, render_layer, item2)
 end
 
-local function __create_icons(self, typeobject, recipe, building_srt, dir)
+local function __create_icons(self, typeobject, recipe, building_srt, dir, parent)
     self.__canvas = ientity_object.create(ecs.create_entity {
         policy = {
             "ant.scene|scene_object",
@@ -110,11 +117,10 @@ local function __create_icons(self, typeobject, recipe, building_srt, dir)
         data = {
             name = "canvas",
             scene = {
+                parent = parent,
                 t = {0.0, iterrain.surface_height + 10, 0.0},
             },
             canvas = {
-                textures = {},
-                texts = {},
                 show = true,
             },
         }
@@ -151,15 +157,18 @@ function mt:remove()
 end
 
 function mt:on_position_change(building_srt, dir)
-    if not self.typeobject.fluidboxes then
-        return
-    end
-    self:remove()
-    __create_icons(self, self.typeobject, self.recipe, building_srt, dir)
+    -- if not self.typeobject.fluidboxes then
+    --     return
+    -- end
+    -- self:remove()
+    -- __create_icons(self, self.typeobject, self.recipe, building_srt, dir)
+
+    self.__canvas:send("iom", "set_position", building_srt.t)
+    self.__canvas:send("iom", "set_rotation", ROTATORS[dir])
 end
 
 local m = {}
-function m.create(typeobject, dir, recipe, building_srt)
+function m.create(typeobject, dir, recipe, building_srt, parent)
     local self = setmetatable({}, mt)
     self.typeobject = typeobject
     if not typeobject.fluidboxes then
@@ -168,7 +177,7 @@ function m.create(typeobject, dir, recipe, building_srt)
 
     self.dir = dir
     self.recipe = recipe
-    __create_icons(self, typeobject, recipe, building_srt, dir)
+    __create_icons(self, typeobject, recipe, building_srt, dir, parent)
     return self
 end
 return m

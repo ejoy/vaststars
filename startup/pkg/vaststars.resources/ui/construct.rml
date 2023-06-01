@@ -239,10 +239,6 @@
             function start.clickShowConstructMenuDetail(event, construct_menu)
                 start.cur_construct_menu = construct_menu
             end
-            window.addEventListener('mousedown', function(event)
-                ui_sys.world_pub {"ui_message", "leave"}
-            end)
-
             ui_sys.mapping(start, {
                 {
                     function()
