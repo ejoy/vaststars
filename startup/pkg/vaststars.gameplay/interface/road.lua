@@ -26,7 +26,16 @@ local function get(world, x, y, exclude_endpoint)
     return r.road.mask
 end
 
+local function set_change(world)
+    local ecs = world.ecs
+    ecs:new {
+        roadnet_changed = true,
+    }
+end
+
 local function set(world, x, y, classid, mask)
+    set_change(world)
+
     assert(x % ROAD_TILE_WIDTH_SCALE == 0 and y % ROAD_TILE_HEIGHT_SCALE == 0)
     local ecs = world.ecs
     local e = assert(ecs:first("road_cache:in"))
@@ -53,6 +62,8 @@ local function set(world, x, y, classid, mask)
 end
 
 local function remove(world, x, y)
+    set_change(world)
+
     local ecs = world.ecs
     local e = assert(ecs:first("road_cache:in"))
 
@@ -81,4 +92,5 @@ return {
     get = get,
     set = set,
     remove = remove,
+    set_change = set_change,
 }

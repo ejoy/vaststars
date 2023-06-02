@@ -592,6 +592,7 @@ local function complete(self, object_id, datamodel)
     icanvas.remove_item(icanvas.types().ROAD_ENTRANCE_MARKER, 0)
     ieditor:revert_changes({"TEMPORARY"})
 
+    iroad.set_change(gameplay_core.get_world())
     igameplay.build_world()
     iroadnet:editor_build()
     self.super.complete(self, object_id)

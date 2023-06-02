@@ -1,6 +1,7 @@
 local system = require "register.system"
 local prototype = require "prototype"
 local query = prototype.queryById
+local iroad = require "interface.road"
 
 local ROAD_TILE_WIDTH_SCALE <const> = 2
 local ROAD_TILE_HEIGHT_SCALE <const> = 2
@@ -149,7 +150,9 @@ local function build_road(world, building_eid, building, map, road_cache, endpoi
     end
 end
 
-function m.prototype_restore()
+function m.prototype_restore(world)
+    iroad.set_change(world)
+
     roadbits = setmetatable({}, mt)
     for _, pt in pairs(prototype.all()) do
         if is_roadid(pt) then
@@ -208,6 +211,10 @@ end
 
 function m.build(world)
     local ecs = world.ecs
+
+    if not ecs:first("roadnet_changed:in") then
+        return
+    end
 
     local map = {}
     local road_cache = {}

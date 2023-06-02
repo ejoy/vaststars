@@ -43,13 +43,6 @@ local ipower_line = ecs.require "power_line"
 local iroadnet = ecs.require "roadnet"
 local MAX_ARCHIVING_COUNT <const> = 9
 
-local DIRECTION = {
-    [0] = 'W',
-    [1] = 'N',
-    [2] = 'E',
-    [3] = 'S',
-}
-
 local function clean()
     -- clean
     for _, object in objects:all() do

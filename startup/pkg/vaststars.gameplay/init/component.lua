@@ -140,3 +140,4 @@ component "building_changed" {}
 component "inventory_changed" {}
 component "road_changed" {}
 component "auto_set_recipe" {}
+component "roadnet_changed" {}
