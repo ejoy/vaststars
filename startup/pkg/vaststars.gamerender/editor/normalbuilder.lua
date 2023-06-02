@@ -298,10 +298,8 @@ local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobjec
     end
 
     for object_id, o in pairs(self.selected_boxes) do
-        if not nearby_buldings[object_id] then
-            o:remove()
-            self.selected_boxes[object_id] = nil
-        end
+        o:remove()
+        self.selected_boxes[object_id] = nil
     end
 
     for object_id, object in pairs(redraw) do
@@ -355,18 +353,28 @@ local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobjec
         if __is_building_intersect(x, y, w, h, object.x, object.y, ow, oh) then
             color = SPRITE_COLOR.CONSTRUCT_OUTLINE_FARAWAY_BUILDINGS_INTERSECTION
         else
-            if iprototype.has_type(typeobject.type, "station") then
-                if otypeobject.supply_area then
-                    local aw, ah = iprototype.unpackarea(otypeobject.area)
-                    local sw, sh = iprototype.unpackarea(otypeobject.supply_area)
-                    if __is_building_intersect(x, y, ow, oh, object.x  - (sw - aw) // 2, object.y - (sh - ah) // 2, sw, sh) then
-                        color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
-                    else
-                        color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
-                    end
+            if typeobject.supply_area then
+                local aw, ah = iprototype.unpackarea(typeobject.area)
+                local sw, sh = iprototype.unpackarea(typeobject.supply_area)
+                if __is_building_intersect(x - (sw - aw) // 2, y - (sh - ah) // 2, sw, sh, object.x, object.y, ow, oh) then
+                    color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
+                else
+                    color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                 end
             else
-                color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+                if iprototype.has_type(typeobject.type, "station") then
+                    if otypeobject.supply_area then
+                        local aw, ah = iprototype.unpackarea(otypeobject.area)
+                        local sw, sh = iprototype.unpackarea(otypeobject.supply_area)
+                        if __is_building_intersect(x, y, ow, oh, object.x  - (sw - aw) // 2, object.y - (sh - ah) // 2, sw, sh) then
+                            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
+                        else
+                            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+                        end
+                    end
+                else
+                    color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+                end
             end
         end
         o:set_color(color)
