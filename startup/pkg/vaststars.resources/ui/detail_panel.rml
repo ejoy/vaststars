@@ -182,12 +182,12 @@
     <body style = "pointer-events: none; justify-content: center; align-items: center;">
         <div data-model="start" class="panel1" style="flex-direction: row; justify-content: flex-start; align-items: center;">
             <!-- detail panel begin -->
-            <div style = 'margin-top: 7vmin; margin-bottom: 7vmin; width: 30vmin; height: 86vmin; background-image: "textures/detail/background.texture"; background-size: 100% 100%; flex-direction: column; justify-content: flex-start;'>
+            <div style = 'margin-top: 7vmin; margin-bottom: 7vmin; width: 30vmin; height: 86vmin; background-image: "textures/detail/background.texture"; background-size: 100% 100%;'>
                 <!-- title -->
                 <div style = "flex-direction: row; justify-content: center; align-items: center;">
                     <div data-style-background-image="icon" style = "width: 20vmin; height: 20vmin; background-size: cover;" data-event-click="onLongPress(1)"/>
                 </div>
-                <div style="top: -3.0vmin;">
+                <div style="top: -3.0vmin; height: 9vmin;">
                     <div style = "text-align: center; font-size: 4vmin; word-break: break-all;">{{prototype_name}}</div>
                     <div style = "text-align: center; font-size: 3.2vmin; color: #000; margin-left: 2%; margin-right: 2%; background-size: 100% 100%;" data-style-background-image="detail_panel_status_icon">{{detail_panel_status_desc}}</div>
                 </div>
@@ -204,13 +204,13 @@
                         </div>
                     </div>
                 </div>
-                <div style="margin-left: 3%; margin-right: 3%; border-bottom: 0.1vmin #6d6d6d; padding-top: 1vmin;" />
+                <div style="width:94%; margin-left: 3%; margin-right: 3%; border-bottom: 0.1vmin #6d6d6d;" />
+                <!--箱子中当前物品-->
                 <div style="width:90%; margin-left: 3%; margin-right: 3%; flex-direction: row; justify-content: flex-start; align-items: center; flex-wrap: wrap;" data-if = "show_chest" data-event-click="onLongPress(3)">
                     <div data-for = "chest : chest_list" class="small-item1" style="margin: 0.5vmin; " data-style-background-image="chest.icon">
                         <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0);">{{chest.count}}</div>
                     </div>
                 </div>
-
                 <!--采矿机底部显示进度-->
                 <div style="top: 1vmin; height: 8vmin; margin-left: 3%; margin-right: 3%; flex-direction: column; justify-content: flex-start; align-items: center;" data-if = "show_minner" data-event-click="onLongPress(4)">
                     <div class="column" style="justify-content: flex-start; width: 100%; height:50%;">
@@ -226,9 +226,8 @@
                         </div>
                     </div>
                 </div>
-
                 <!--组装机类型底部显示进度-->
-                <div style="top: 3vmin; height:22%; margin-left: 3%; margin-right: 3%; flex-direction: column; justify-content: center; align-items: center;" data-if = "show_assemble" data-event-click="onLongPress(5)">
+                <div style="top: 1vmin; margin-left: 3%; margin-right: 3%; flex-direction: column; justify-content: center; align-items: center;" data-if = "show_assemble" data-event-click="onLongPress(5)">
                     <div class="column" style="width:100%; justify-content: space-evenly; align-items: center;">
                         <!--组装机进料栏-->
                         <div class="row" style="width: 100%; justify-content: flex-start; flex-wrap: wrap;">
