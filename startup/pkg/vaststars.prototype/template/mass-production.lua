@@ -6,12 +6,6 @@ local entities = { {
     x = 125,
     y = 118
   }, {
-    dir = "S",
-    items = {},
-    prototype_name = "机尾残骸",
-    x = 110,
-    y = 122
-  }, {
     dir = "W",
     items = {},
     prototype_name = "机头残骸",
@@ -28,13 +22,13 @@ local entities = { {
     item = "碎石",
     prototype_name = "无人机仓库I",
     x = 117,
-    y = 127
+    y = 131
   }, {
     dir = "N",
     item = "碎石",
     prototype_name = "无人机仓库I",
     x = 117,
-    y = 129
+    y = 128
   }, {
     dir = "N",
     prototype_name = "采矿机I",
@@ -45,37 +39,25 @@ local entities = { {
     dir = "N",
     item = "碎石",
     prototype_name = "无人机仓库I",
-    x = 71,
+    x = 75,
+    y = 132
+  }, {
+    dir = "N",
+    item = "碎石",
+    prototype_name = "无人机仓库I",
+    x = 75,
+    y = 130
+  }, {
+    dir = "N",
+    item = "碎石",
+    prototype_name = "无人机仓库I",
+    x = 94,
     y = 129
   }, {
     dir = "N",
     item = "碎石",
     prototype_name = "无人机仓库I",
-    x = 71,
-    y = 127
-  }, {
-    dir = "N",
-    item = "碎石",
-    prototype_name = "无人机仓库I",
-    x = 89,
-    y = 129
-  }, {
-    dir = "N",
-    item = "碎石",
-    prototype_name = "无人机仓库I",
-    x = 92,
-    y = 129
-  }, {
-    dir = "N",
-    item = "碎石",
-    prototype_name = "无人机仓库I",
-    x = 95,
-    y = 129
-  }, {
-    dir = "N",
-    item = "碎石",
-    prototype_name = "无人机仓库I",
-    x = 98,
+    x = 100,
     y = 129
   }, {
     dir = "N",
@@ -85,29 +67,13 @@ local entities = { {
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 107,
-    y = 129
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 97,
-    y = 129
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 91,
-    y = 129
+    x = 114,
+    y = 130
   }, {
     dir = "N",
     item = "石砖",
     prototype_name = "无人机仓库I",
     x = 96,
-    y = 134
-  }, {
-    dir = "N",
-    item = "石砖",
-    prototype_name = "无人机仓库I",
-    x = 98,
     y = 134
   }, {
     dir = "N",
@@ -120,18 +86,13 @@ local entities = { {
     item = "碎石",
     prototype_name = "无人机仓库I",
     x = 142,
-    y = 144
+    y = 148
   }, {
     dir = "N",
     prototype_name = "采矿机I",
     recipe = "碎石挖掘",
     x = 93,
     y = 102
-  }, {
-    dir = "N",
-    prototype_name = "风力发电机I",
-    x = 88,
-    y = 100
   }, {
     dir = "N",
     prototype_name = "组装机I",
@@ -154,7 +115,7 @@ local entities = { {
     dir = "N",
     item = "石砖",
     prototype_name = "无人机仓库I",
-    x = 100,
+    x = 99,
     y = 134
   }, {
     dir = "N",
@@ -167,25 +128,25 @@ local entities = { {
     item = "碎石",
     prototype_name = "无人机仓库I",
     x = 188,
-    y = 131
+    y = 132
   }, {
     dir = "N",
     item = "碎石",
     prototype_name = "无人机仓库I",
-    x = 186,
-    y = 131
+    x = 190,
+    y = 132
   }, {
     dir = "N",
     item = "碎石",
     prototype_name = "无人机仓库I",
-    x = 165,
-    y = 111
+    x = 173,
+    y = 115
   }, {
     dir = "N",
     item = "碎石",
     prototype_name = "无人机仓库I",
-    x = 163,
-    y = 111
+    x = 170,
+    y = 115
   }, {
     dir = "N",
     prototype_name = "采矿机I",
@@ -196,8 +157,8 @@ local entities = { {
     dir = "N",
     prototype_name = "采矿机I",
     recipe = "铁矿石挖掘",
-    x = 164,
-    y = 130
+    x = 165,
+    y = 129
   }, {
     dir = "N",
     prototype_name = "采矿机I",
@@ -214,7 +175,7 @@ local entities = { {
     dir = "N",
     prototype_name = "采矿机I",
     recipe = "铁矿石挖掘",
-    x = 77,
+    x = 75,
     y = 93
   }, {
     dir = "N",
@@ -273,19 +234,13 @@ local entities = { {
     dir = "N",
     item = "铁矿石",
     prototype_name = "无人机仓库I",
-    x = 92,
-    y = 161
+    x = 90,
+    y = 162
   }, {
     dir = "N",
     item = "铁矿石",
     prototype_name = "无人机仓库I",
     x = 94,
-    y = 157
-  }, {
-    dir = "N",
-    item = "铁矿石",
-    prototype_name = "无人机仓库I",
-    x = 97,
     y = 157
   }, {
     dir = "N",
@@ -297,19 +252,7 @@ local entities = { {
     dir = "N",
     item = "铁矿石",
     prototype_name = "无人机仓库I",
-    x = 103,
-    y = 157
-  }, {
-    dir = "N",
-    item = "铁矿石",
-    prototype_name = "无人机仓库I",
-    x = 106,
-    y = 157
-  }, {
-    dir = "N",
-    item = "铁矿石",
-    prototype_name = "无人机仓库I",
-    x = 109,
+    x = 110,
     y = 157
   }, {
     dir = "N",
@@ -357,37 +300,13 @@ local entities = { {
     dir = "N",
     item = "碾碎铁矿石",
     prototype_name = "无人机仓库I",
-    x = 102,
-    y = 152
-  }, {
-    dir = "N",
-    item = "碾碎铁矿石",
-    prototype_name = "无人机仓库I",
     x = 106,
     y = 152
   }, {
     dir = "N",
     item = "碾碎铁矿石",
     prototype_name = "无人机仓库I",
-    x = 100,
-    y = 152
-  }, {
-    dir = "N",
-    item = "碎石",
-    prototype_name = "无人机仓库I",
-    x = 103,
-    y = 148
-  }, {
-    dir = "N",
-    item = "碎石",
-    prototype_name = "无人机仓库I",
-    x = 98,
-    y = 148
-  }, {
-    dir = "N",
-    item = "碾碎铁矿石",
-    prototype_name = "无人机仓库I",
-    x = 105,
+    x = 106,
     y = 148
   }, {
     dir = "N",
@@ -400,12 +319,6 @@ local entities = { {
     item = "碎石",
     prototype_name = "无人机仓库I",
     x = 94,
-    y = 148
-  }, {
-    dir = "N",
-    item = "碾碎铁矿石",
-    prototype_name = "无人机仓库I",
-    x = 107,
     y = 148
   }, {
     dir = "N",
@@ -423,19 +336,19 @@ local entities = { {
     dir = "N",
     prototype_name = "熔炼炉I",
     recipe = "铁板2",
-    x = 101,
+    x = 102,
     y = 145
   }, {
     dir = "N",
     prototype_name = "熔炼炉I",
     recipe = "铁板2",
-    x = 104,
+    x = 105,
     y = 145
   }, {
     dir = "N",
     prototype_name = "熔炼炉I",
     recipe = "铁板2",
-    x = 107,
+    x = 108,
     y = 145
   }, {
     dir = "N",
@@ -453,17 +366,11 @@ local entities = { {
     dir = "N",
     item = "石墨",
     prototype_name = "无人机仓库I",
-    x = 100,
-    y = 143
-  }, {
-    dir = "N",
-    item = "石墨",
-    prototype_name = "无人机仓库I",
     x = 106,
     y = 143
   }, {
     dir = "N",
-    item = "铁板",
+    item = "石墨",
     prototype_name = "无人机仓库I",
     x = 96,
     y = 143
@@ -472,12 +379,6 @@ local entities = { {
     item = "铁板",
     prototype_name = "无人机仓库I",
     x = 98,
-    y = 143
-  }, {
-    dir = "N",
-    item = "铁板",
-    prototype_name = "无人机仓库I",
-    x = 102,
     y = 143
   }, {
     dir = "N",
@@ -493,100 +394,64 @@ local entities = { {
     y = 143
   }, {
     dir = "N",
-    item = "铁板",
+    item = "铁矿石",
     prototype_name = "无人机仓库I",
-    x = 92,
-    y = 143
+    x = 62,
+    y = 116
   }, {
     dir = "N",
     item = "铁矿石",
     prototype_name = "无人机仓库I",
-    x = 64,
-    y = 117
-  }, {
-    dir = "N",
-    item = "铁矿石",
-    prototype_name = "无人机仓库I",
-    x = 70,
+    x = 69,
     y = 92
   }, {
     dir = "N",
     item = "铁矿石",
     prototype_name = "无人机仓库I",
-    x = 67,
+    x = 72,
     y = 92
   }, {
     dir = "N",
     item = "铁矿石",
     prototype_name = "无人机仓库I",
-    x = 193,
-    y = 117
+    x = 196,
+    y = 120
   }, {
     dir = "N",
     item = "铁矿石",
     prototype_name = "无人机仓库I",
-    x = 193,
-    y = 115
+    x = 198,
+    y = 120
   }, {
     dir = "N",
     item = "铁矿石",
     prototype_name = "无人机仓库I",
-    x = 161,
+    x = 168,
     y = 128
   }, {
     dir = "N",
     item = "铁矿石",
     prototype_name = "无人机仓库I",
-    x = 159,
-    y = 128
+    x = 168,
+    y = 130
   }, {
     dir = "N",
     item = "碎石",
     prototype_name = "无人机仓库I",
-    x = 91,
-    y = 125
-  }, {
-    dir = "N",
-    item = "碎石",
-    prototype_name = "无人机仓库I",
-    x = 95,
-    y = 125
+    x = 97,
+    y = 124
   }, {
     dir = "N",
     prototype_name = "组装机I",
     recipe = "地质科技包1",
-    x = 89,
-    y = 122
+    x = 98,
+    y = 121
   }, {
     dir = "N",
     prototype_name = "组装机I",
     recipe = "地质科技包1",
-    x = 92,
-    y = 122
-  }, {
-    dir = "N",
-    prototype_name = "组装机I",
-    recipe = "地质科技包1",
-    x = 95,
-    y = 122
-  }, {
-    dir = "N",
-    item = "地质科技包",
-    prototype_name = "无人机仓库I",
-    x = 94,
-    y = 118
-  }, {
-    dir = "N",
-    item = "地质科技包",
-    prototype_name = "无人机仓库I",
-    x = 92,
-    y = 117
-  }, {
-    dir = "N",
-    item = "地质科技包",
-    prototype_name = "无人机仓库I",
-    x = 92,
-    y = 115
+    x = 101,
+    y = 121
   }, {
     dir = "N",
     fluid_name = {
@@ -620,12 +485,7 @@ local entities = { {
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 122,
-    y = 116
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 129,
+    x = 125,
     y = 116
   }, {
     dir = "W",
@@ -635,8 +495,8 @@ local entities = { {
     },
     prototype_name = "水电站I",
     recipe = "气候科技包1",
-    x = 142,
-    y = 118
+    x = 145,
+    y = 117
   }, {
     dir = "W",
     fluid_name = {
@@ -645,43 +505,13 @@ local entities = { {
     },
     prototype_name = "水电站I",
     recipe = "气候科技包1",
-    x = 148,
-    y = 118
-  }, {
-    dir = "N",
-    item = "气候科技包",
-    prototype_name = "无人机仓库I",
-    x = 142,
-    y = 123
-  }, {
-    dir = "N",
-    item = "气候科技包",
-    prototype_name = "无人机仓库I",
-    x = 144,
-    y = 123
-  }, {
-    dir = "N",
-    item = "气候科技包",
-    prototype_name = "无人机仓库I",
-    x = 146,
-    y = 123
-  }, {
-    dir = "N",
-    item = "气候科技包",
-    prototype_name = "无人机仓库I",
-    x = 148,
-    y = 123
-  }, {
-    dir = "N",
-    item = "气候科技包",
-    prototype_name = "无人机仓库I",
     x = 150,
-    y = 123
+    y = 117
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 147,
-    y = 119
+    x = 156,
+    y = 116
   }, {
     dir = "W",
     fluid_name = {
@@ -773,12 +603,6 @@ local entities = { {
     prototype_name = "液罐I",
     x = 157,
     y = 154
-  }, {
-    dir = "N",
-    fluid_name = "氢气",
-    prototype_name = "液罐I",
-    x = 157,
-    y = 151
   }, {
     dir = "E",
     fluid_name = {
@@ -1148,12 +972,6 @@ local entities = { {
     fluid_name = "氢气",
     prototype_name = "管道1-I型",
     x = 151,
-    y = 182
-  }, {
-    dir = "E",
-    fluid_name = "氢气",
-    prototype_name = "管道1-I型",
-    x = 151,
     y = 186
   }, {
     dir = "E",
@@ -1204,9 +1022,9 @@ local entities = { {
     x = 152,
     y = 183
   }, {
-    dir = "E",
+    dir = "N",
     fluid_name = "氢气",
-    prototype_name = "管道1-T型",
+    prototype_name = "管道1-I型",
     x = 152,
     y = 182
   }, {
@@ -1391,7 +1209,7 @@ local entities = { {
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 169,
+    x = 165,
     y = 151
   }, {
     dir = "N",
@@ -1611,7 +1429,7 @@ local entities = { {
     dir = "N",
     item = "石墨",
     prototype_name = "无人机仓库I",
-    x = 126,
+    x = 129,
     y = 160
   }, {
     dir = "N",
@@ -1706,12 +1524,12 @@ local entities = { {
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 176,
+    x = 177,
     y = 160
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 176,
+    x = 177,
     y = 168
   }, {
     dir = "S",
@@ -1724,31 +1542,19 @@ local entities = { {
     item = "塑料",
     prototype_name = "无人机仓库I",
     x = 179,
-    y = 171
-  }, {
-    dir = "N",
-    item = "塑料",
-    prototype_name = "无人机仓库I",
-    x = 179,
-    y = 169
-  }, {
-    dir = "N",
-    item = "塑料",
-    prototype_name = "无人机仓库I",
-    x = 179,
-    y = 165
+    y = 168
   }, {
     dir = "N",
     prototype_name = "组装机I",
     recipe = "铁齿轮",
-    x = 108,
-    y = 138
+    x = 107,
+    y = 140
   }, {
     dir = "N",
     prototype_name = "组装机I",
     recipe = "铁齿轮",
-    x = 103,
-    y = 138
+    x = 94,
+    y = 140
   }, {
     dir = "N",
     item = "铁齿轮",
@@ -1784,48 +1590,31 @@ local entities = { {
     item = "电动机I",
     prototype_name = "无人机仓库I",
     x = 105,
-    y = 129
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 102,
-    y = 129
+    y = 130
   }, {
     dir = "N",
     prototype_name = "组装机I",
     recipe = "机械科技包1",
-    x = 185,
+    x = 186,
     y = 163
   }, {
     dir = "N",
     prototype_name = "组装机I",
     recipe = "机械科技包1",
-    x = 185,
-    y = 166
-  }, {
-    dir = "N",
-    prototype_name = "组装机I",
-    recipe = "机械科技包1",
-    x = 185,
+    x = 186,
     y = 169
   }, {
     dir = "N",
     prototype_name = "组装机I",
     recipe = "机械科技包1",
-    x = 185,
+    x = 186,
     y = 160
   }, {
     dir = "N",
     prototype_name = "组装机I",
     recipe = "机械科技包1",
-    x = 185,
+    x = 186,
     y = 172
-  }, {
-    dir = "N",
-    item = "塑料",
-    prototype_name = "无人机仓库I",
-    x = 179,
-    y = 163
   }, {
     dir = "W",
     fluid_name = {
@@ -1838,46 +1627,40 @@ local entities = { {
     y = 161
   }, {
     dir = "N",
-    item = "电动机I",
+    item = "机械科技包",
     prototype_name = "无人机仓库I",
-    x = 183,
-    y = 170
+    x = 189,
+    y = 174
   }, {
     dir = "N",
-    item = "电动机I",
+    item = "机械科技包",
     prototype_name = "无人机仓库I",
-    x = 183,
-    y = 164
-  }, {
-    dir = "N",
-    item = "塑料",
-    prototype_name = "无人机仓库I",
-    x = 183,
-    y = 167
+    x = 184,
+    y = 166
   }, {
     dir = "N",
     item = "塑料",
     prototype_name = "无人机仓库I",
-    x = 183,
+    x = 184,
     y = 172
   }, {
     dir = "N",
     item = "塑料",
     prototype_name = "无人机仓库I",
-    x = 183,
-    y = 162
+    x = 184,
+    y = 160
   }, {
     dir = "N",
-    item = "机械科技包",
+    item = "电动机I",
     prototype_name = "无人机仓库I",
     x = 189,
-    y = 164
+    y = 160
   }, {
     dir = "N",
-    item = "机械科技包",
+    item = "电动机I",
     prototype_name = "无人机仓库I",
     x = 189,
-    y = 170
+    y = 172
   }, {
     dir = "E",
     fluid_name = "纯水",
@@ -2257,13 +2040,6 @@ local entities = { {
     prototype_name = "地下管1-JI型",
     x = 167,
     y = 174
-  }, {
-    dir = "S",
-    fluid_name = "氮气",
-    prototype_name = "烟囱I",
-    recipe = "氧气排泄",
-    x = 160,
-    y = 192
   }, {
     dir = "W",
     fluid_name = "纯水",
@@ -2667,7 +2443,7 @@ local entities = { {
     prototype_name = "烟囱I",
     recipe = "氢气排泄",
     x = 157,
-    y = 149
+    y = 151
   }, {
     dir = "E",
     fluid_name = "甲烷",
@@ -2682,8 +2458,8 @@ local entities = { {
     },
     prototype_name = "空气过滤器I",
     recipe = "空气过滤",
-    x = 142,
-    y = 116
+    x = 145,
+    y = 115
   }, {
     dir = "N",
     fluid_name = {
@@ -2692,30 +2468,25 @@ local entities = { {
     },
     prototype_name = "空气过滤器I",
     recipe = "空气过滤",
-    x = 148,
-    y = 116
+    x = 150,
+    y = 115
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 137,
-    y = 116
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 145,
+    x = 133,
     y = 116
   }, {
     dir = "N",
     item = "铁矿石",
     prototype_name = "无人机仓库I",
-    x = 204,
-    y = 156
+    x = 207,
+    y = 162
   }, {
     dir = "N",
     item = "铁矿石",
     prototype_name = "无人机仓库I",
-    x = 134,
-    y = 170
+    x = 136,
+    y = 174
   }, {
     dir = "N",
     fluid_name = "二氧化碳",
@@ -2759,9 +2530,9 @@ local entities = { {
     x = 150,
     y = 188
   }, {
-    dir = "E",
+    dir = "W",
     fluid_name = "氢气",
-    prototype_name = "管道1-I型",
+    prototype_name = "管道1-U型",
     x = 150,
     y = 182
   }, {
@@ -3296,32 +3067,17 @@ local entities = { {
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 114,
-    y = 129
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
     x = 122,
     y = 121
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 155,
-    y = 119
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 155,
+    x = 164,
     y = 127
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 163,
-    y = 127
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 171,
+    x = 172,
     y = 127
   }, {
     dir = "N",
@@ -3341,17 +3097,17 @@ local entities = { {
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 195,
-    y = 119
+    x = 203,
+    y = 127
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 163,
-    y = 135
+    x = 164,
+    y = 139
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 163,
+    x = 165,
     y = 143
   }, {
     dir = "N",
@@ -3361,12 +3117,7 @@ local entities = { {
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 184,
-    y = 160
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 190,
+    x = 191,
     y = 160
   }, {
     dir = "N",
@@ -3391,38 +3142,23 @@ local entities = { {
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 155,
-    y = 151
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 121,
-    y = 161
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 176,
+    x = 177,
     y = 176
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 176,
+    x = 177,
     y = 184
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 176,
+    x = 177,
     y = 192
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 107,
-    y = 133
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 107,
-    y = 139
+    x = 114,
+    y = 140
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
@@ -3553,27 +3289,27 @@ local entities = { {
   }, {
     dir = "N",
     prototype_name = "科研中心I",
-    x = 166,
+    x = 165,
     y = 138
   }, {
     dir = "N",
     prototype_name = "科研中心I",
-    x = 169,
+    x = 168,
     y = 138
   }, {
     dir = "N",
     prototype_name = "科研中心I",
-    x = 172,
+    x = 173,
     y = 138
   }, {
     dir = "N",
     prototype_name = "科研中心I",
-    x = 175,
+    x = 176,
     y = 138
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 148,
+    x = 152,
     y = 151
   }, {
     dir = "N",
@@ -3616,36 +3352,6 @@ local entities = { {
     x = 209,
     y = 141
   }, {
-    dir = "S",
-    fluid_name = {
-      input = { "蒸汽" },
-      output = {}
-    },
-    prototype_name = "蒸汽发电机I",
-    recipe = "蒸汽发电",
-    x = 210,
-    y = 136
-  }, {
-    dir = "S",
-    fluid_name = {
-      input = { "蒸汽" },
-      output = {}
-    },
-    prototype_name = "蒸汽发电机I",
-    recipe = "蒸汽发电",
-    x = 210,
-    y = 131
-  }, {
-    dir = "S",
-    fluid_name = {
-      input = { "蒸汽" },
-      output = {}
-    },
-    prototype_name = "蒸汽发电机I",
-    recipe = "蒸汽发电",
-    x = 210,
-    y = 126
-  }, {
     dir = "N",
     prototype_name = "铁制电线杆",
     x = 203,
@@ -3660,6 +3366,472 @@ local entities = { {
     prototype_name = "铁制电线杆",
     x = 209,
     y = 129
+  }, {
+    dir = "N",
+    item = "铁矿石",
+    prototype_name = "无人机仓库I",
+    x = 136,
+    y = 176
+  }, {
+    dir = "S",
+    item = "铁矿石",
+    prototype_name = "送货车站",
+    x = 92,
+    y = 162
+  }, {
+    dir = "N",
+    item = "铁矿石",
+    prototype_name = "无人机仓库I",
+    x = 104,
+    y = 157
+  }, {
+    dir = "S",
+    item = "碾碎铁矿石",
+    prototype_name = "送货车站",
+    x = 92,
+    y = 152
+  }, {
+    dir = "S",
+    item = "碾碎铁矿石",
+    prototype_name = "送货车站",
+    x = 108,
+    y = 152
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 158,
+    y = 127
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 141,
+    y = 116
+  }, {
+    dir = "N",
+    prototype_name = "组装机I",
+    recipe = "机械科技包1",
+    x = 186,
+    y = 157
+  }, {
+    dir = "N",
+    prototype_name = "组装机I",
+    recipe = "机械科技包1",
+    x = 186,
+    y = 175
+  }, {
+    dir = "S",
+    fluid_name = {
+      input = { "地热气" },
+      output = {}
+    },
+    prototype_name = "蒸汽发电机I",
+    recipe = "地热气发电",
+    x = 210,
+    y = 136
+  }, {
+    dir = "S",
+    fluid_name = {
+      input = { "地热气" },
+      output = {}
+    },
+    prototype_name = "蒸汽发电机I",
+    recipe = "地热气发电",
+    x = 210,
+    y = 131
+  }, {
+    dir = "S",
+    fluid_name = {
+      input = { "地热气" },
+      output = {}
+    },
+    prototype_name = "蒸汽发电机I",
+    recipe = "地热气发电",
+    x = 210,
+    y = 126
+  }, {
+    dir = "N",
+    item = "机械科技包",
+    prototype_name = "无人机仓库I",
+    x = 189,
+    y = 158
+  }, {
+    dir = "E",
+    item = "塑料",
+    prototype_name = "收货车站",
+    x = 184,
+    y = 156
+  }, {
+    dir = "E",
+    item = "塑料",
+    prototype_name = "收货车站",
+    x = 184,
+    y = 174
+  }, {
+    dir = "W",
+    item = "塑料",
+    prototype_name = "送货车站",
+    x = 180,
+    y = 164
+  }, {
+    dir = "W",
+    item = "电动机I",
+    prototype_name = "收货车站",
+    x = 190,
+    y = 168
+  }, {
+    dir = "W",
+    item = "电动机I",
+    prototype_name = "收货车站",
+    x = 190,
+    y = 162
+  }, {
+    dir = "W",
+    prototype_name = "送货车站",
+    x = 190,
+    y = 176
+  }, {
+    dir = "W",
+    item = "机械科技包",
+    prototype_name = "收货车站",
+    x = 190,
+    y = 154
+  }, {
+    dir = "E",
+    item = "机械科技包",
+    prototype_name = "送货车站",
+    x = 184,
+    y = 168
+  }, {
+    dir = "N",
+    item = "碎石",
+    prototype_name = "送货车站",
+    x = 184,
+    y = 132
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 201,
+    y = 120
+  }, {
+    dir = "E",
+    item = "铁矿石",
+    prototype_name = "送货车站",
+    x = 194,
+    y = 120
+  }, {
+    dir = "S",
+    item = "铁矿石",
+    prototype_name = "送货车站",
+    x = 168,
+    y = 126
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 160,
+    y = 151
+  }, {
+    dir = "N",
+    item = "碎石",
+    prototype_name = "无人机仓库I",
+    x = 142,
+    y = 146
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 148,
+    y = 151
+  }, {
+    dir = "E",
+    item = "碎石",
+    prototype_name = "送货车站",
+    x = 142,
+    y = 142
+  }, {
+    dir = "N",
+    item = "石墨",
+    prototype_name = "送货车站",
+    x = 124,
+    y = 160
+  }, {
+    dir = "N",
+    item = "气候科技包",
+    prototype_name = "送货车站",
+    x = 154,
+    y = 122
+  }, {
+    dir = "N",
+    item = "气候科技包",
+    prototype_name = "送货车站",
+    x = 142,
+    y = 122
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 164,
+    y = 131
+  }, {
+    dir = "S",
+    item = "机械科技包",
+    prototype_name = "收货车站",
+    x = 178,
+    y = 134
+  }, {
+    dir = "S",
+    item = "气候科技包",
+    prototype_name = "收货车站",
+    x = 174,
+    y = 134
+  }, {
+    dir = "S",
+    item = "地质科技包",
+    prototype_name = "收货车站",
+    x = 170,
+    y = 134
+  }, {
+    dir = "S",
+    item = "气候科技包",
+    prototype_name = "收货车站",
+    x = 166,
+    y = 134
+  }, {
+    dir = "S",
+    item = "机械科技包",
+    prototype_name = "收货车站",
+    x = 162,
+    y = 134
+  }, {
+    dir = "W",
+    item = "铁矿石",
+    prototype_name = "送货车站",
+    x = 64,
+    y = 116
+  }, {
+    dir = "S",
+    item = "碎石",
+    prototype_name = "送货车站",
+    x = 74,
+    y = 128
+  }, {
+    dir = "S",
+    item = "铁矿石",
+    prototype_name = "送货车站",
+    x = 206,
+    y = 160
+  }, {
+    dir = "S",
+    item = "碎石",
+    prototype_name = "送货车站",
+    x = 116,
+    y = 126
+  }, {
+    dir = "E",
+    item = "碎石",
+    prototype_name = "送货车站",
+    x = 168,
+    y = 114
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 172,
+    y = 116
+  }, {
+    dir = "N",
+    item = "铁矿石",
+    prototype_name = "收货车站",
+    x = 96,
+    y = 158
+  }, {
+    dir = "N",
+    item = "铁矿石",
+    prototype_name = "收货车站",
+    x = 106,
+    y = 158
+  }, {
+    dir = "S",
+    fluid_name = "氧气",
+    prototype_name = "烟囱I",
+    recipe = "氧气排泄",
+    x = 160,
+    y = 192
+  }, {
+    dir = "S",
+    prototype_name = "收货车站",
+    x = 98,
+    y = 140
+  }, {
+    dir = "S",
+    item = "石墨",
+    prototype_name = "收货车站",
+    x = 102,
+    y = 140
+  }, {
+    dir = "N",
+    item = "铁齿轮",
+    prototype_name = "无人机仓库I",
+    x = 92,
+    y = 142
+  }, {
+    dir = "N",
+    item = "铁齿轮",
+    prototype_name = "无人机仓库I",
+    x = 90,
+    y = 142
+  }, {
+    dir = "N",
+    item = "铁齿轮",
+    prototype_name = "无人机仓库I",
+    x = 110,
+    y = 142
+  }, {
+    dir = "N",
+    item = "铁齿轮",
+    prototype_name = "无人机仓库I",
+    x = 112,
+    y = 142
+  }, {
+    dir = "S",
+    item = "铁齿轮",
+    prototype_name = "送货车站",
+    x = 90,
+    y = 140
+  }, {
+    dir = "S",
+    item = "铁齿轮",
+    prototype_name = "送货车站",
+    x = 110,
+    y = 140
+  }, {
+    dir = "N",
+    item = "铁齿轮",
+    prototype_name = "收货车站",
+    x = 106,
+    y = 136
+  }, {
+    dir = "N",
+    item = "碾碎铁矿石",
+    prototype_name = "收货车站",
+    x = 98,
+    y = 148
+  }, {
+    dir = "N",
+    item = "碾碎铁矿石",
+    prototype_name = "收货车站",
+    x = 102,
+    y = 148
+  }, {
+    dir = "N",
+    item = "碾碎铁矿石",
+    prototype_name = "无人机仓库I",
+    x = 108,
+    y = 148
+  }, {
+    dir = "S",
+    item = "电动机I",
+    prototype_name = "送货车站",
+    x = 102,
+    y = 128
+  }, {
+    dir = "S",
+    item = "碎石",
+    prototype_name = "收货车站",
+    x = 96,
+    y = 128
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 107,
+    y = 130
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 99,
+    y = 130
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 92,
+    y = 130
+  }, {
+    dir = "N",
+    item = "碎石",
+    prototype_name = "无人机仓库I",
+    x = 99,
+    y = 124
+  }, {
+    dir = "N",
+    item = "地质科技包",
+    prototype_name = "无人机仓库I",
+    x = 102,
+    y = 124
+  }, {
+    dir = "N",
+    item = "地质科技包",
+    prototype_name = "无人机仓库I",
+    x = 104,
+    y = 124
+  }, {
+    dir = "N",
+    item = "塑料",
+    prototype_name = "无人机仓库I",
+    x = 179,
+    y = 162
+  }, {
+    dir = "E",
+    item = "碎石",
+    prototype_name = "收货车站",
+    x = 96,
+    y = 120
+  }, {
+    dir = "W",
+    item = "地质科技包",
+    prototype_name = "送货车站",
+    x = 104,
+    y = 120
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 148,
+    y = 116
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 164,
+    y = 116
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 164,
+    y = 123
+  }, {
+    dir = "N",
+    item = "气候科技包",
+    prototype_name = "无人机仓库I",
+    x = 146,
+    y = 122
+  }, {
+    dir = "N",
+    item = "气候科技包",
+    prototype_name = "无人机仓库I",
+    x = 148,
+    y = 122
+  }, {
+    dir = "N",
+    item = "气候科技包",
+    prototype_name = "无人机仓库I",
+    x = 150,
+    y = 122
+  }, {
+    dir = "N",
+    item = "气候科技包",
+    prototype_name = "无人机仓库I",
+    x = 152,
+    y = 122
+  }, {
+    dir = "E",
+    item = "铁矿石",
+    prototype_name = "送货车站",
+    x = 134,
+    y = 170
   } }
 local road = { {
     mask = 8,
@@ -3697,108 +3869,23 @@ local road = { {
     x = 33,
     y = 56
   }, {
-    mask = 10,
+    mask = 107,
     prototype = "砖石公路-X型",
     x = 33,
     y = 58
   }, {
-    mask = 14,
+    mask = 10,
     prototype = "砖石公路-X型",
     x = 33,
     y = 60
   }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 34,
-    y = 60
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 35,
-    y = 60
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 36,
-    y = 60
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 37,
-    y = 60
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 38,
-    y = 60
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 39,
-    y = 60
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 40,
-    y = 60
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 41,
-    y = 60
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 42,
-    y = 60
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 43,
-    y = 60
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 44,
-    y = 60
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 45,
-    y = 60
-  }, {
-    mask = 2,
+    mask = 6,
     prototype = "砖石公路-X型",
     x = 37,
     y = 78
   }, {
     mask = 5,
     prototype = "砖石公路-X型",
-    x = 45,
-    y = 64
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 44,
-    y = 68
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 45,
-    y = 68
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 48,
-    y = 64
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 47,
-    y = 68
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
     x = 42,
     y = 80
   }, {
@@ -3817,22 +3904,22 @@ local road = { {
     x = 45,
     y = 80
   }, {
-    mask = 5,
+    mask = 109,
     prototype = "砖石公路-X型",
     x = 46,
     y = 80
   }, {
-    mask = 5,
+    mask = 77,
     prototype = "砖石公路-X型",
     x = 47,
     y = 80
   }, {
-    mask = 5,
+    mask = 71,
     prototype = "砖石公路-X型",
     x = 48,
     y = 80
   }, {
-    mask = 5,
+    mask = 103,
     prototype = "砖石公路-X型",
     x = 49,
     y = 80
@@ -3852,12 +3939,12 @@ local road = { {
     x = 52,
     y = 80
   }, {
-    mask = 5,
+    mask = 71,
     prototype = "砖石公路-X型",
     x = 53,
     y = 80
   }, {
-    mask = 5,
+    mask = 103,
     prototype = "砖石公路-X型",
     x = 54,
     y = 80
@@ -3872,42 +3959,12 @@ local road = { {
     x = 56,
     y = 80
   }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 62,
-    y = 70
-  }, {
     mask = 10,
     prototype = "砖石公路-X型",
     x = 59,
     y = 78
   }, {
     mask = 5,
-    prototype = "砖石公路-X型",
-    x = 64,
-    y = 70
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 65,
-    y = 70
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 66,
-    y = 70
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 67,
-    y = 70
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 68,
-    y = 70
-  }, {
-    mask = 4,
     prototype = "砖石公路-X型",
     x = 71,
     y = 66
@@ -3957,17 +4014,17 @@ local road = { {
     x = 80,
     y = 66
   }, {
-    mask = 5,
+    mask = 109,
     prototype = "砖石公路-X型",
     x = 81,
     y = 66
   }, {
-    mask = 5,
+    mask = 77,
     prototype = "砖石公路-X型",
     x = 82,
     y = 66
   }, {
-    mask = 5,
+    mask = 109,
     prototype = "砖石公路-X型",
     x = 83,
     y = 66
@@ -3977,17 +4034,17 @@ local road = { {
     x = 86,
     y = 62
   }, {
-    mask = 5,
+    mask = 109,
     prototype = "砖石公路-X型",
     x = 85,
     y = 66
   }, {
-    mask = 5,
+    mask = 77,
     prototype = "砖石公路-X型",
     x = 86,
     y = 66
   }, {
-    mask = 5,
+    mask = 109,
     prototype = "砖石公路-X型",
     x = 87,
     y = 66
@@ -3997,7 +4054,7 @@ local road = { {
     x = 90,
     y = 62
   }, {
-    mask = 5,
+    mask = 13,
     prototype = "砖石公路-X型",
     x = 91,
     y = 62
@@ -4017,77 +4074,27 @@ local road = { {
     x = 94,
     y = 62
   }, {
-    mask = 1,
+    mask = 5,
     prototype = "砖石公路-X型",
     x = 95,
     y = 62
   }, {
-    mask = 2,
+    mask = 3,
     prototype = "砖石公路-X型",
     x = 96,
     y = 62
   }, {
-    mask = 10,
-    prototype = "砖石公路-X型",
-    x = 90,
-    y = 76
-  }, {
-    mask = 10,
-    prototype = "砖石公路-X型",
-    x = 90,
-    y = 78
-  }, {
-    mask = 10,
-    prototype = "砖石公路-X型",
-    x = 90,
-    y = 80
-  }, {
-    mask = 10,
-    prototype = "砖石公路-X型",
-    x = 90,
-    y = 82
-  }, {
-    mask = 10,
-    prototype = "砖石公路-X型",
-    x = 90,
-    y = 84
-  }, {
-    mask = 10,
-    prototype = "砖石公路-X型",
-    x = 90,
-    y = 86
-  }, {
-    mask = 6,
-    prototype = "砖石公路-X型",
-    x = 90,
-    y = 88
-  }, {
-    mask = 5,
+    mask = 110,
     prototype = "砖石公路-X型",
     x = 91,
     y = 88
   }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 92,
-    y = 88
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 93,
-    y = 88
-  }, {
-    mask = 10,
+    mask = 107,
     prototype = "砖石公路-X型",
     x = 96,
     y = 84
   }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 95,
-    y = 88
-  }, {
-    mask = 3,
+    mask = 107,
     prototype = "砖石公路-X型",
     x = 96,
     y = 88
@@ -4117,207 +4124,22 @@ local road = { {
     x = 59,
     y = 76
   }, {
-    mask = 4,
+    mask = 5,
     prototype = "砖石公路-X型",
     x = 58,
     y = 76
   }, {
-    mask = 2,
+    mask = 6,
     prototype = "砖石公路-X型",
     x = 57,
     y = 76
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 42,
-    y = 68
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 41,
-    y = 68
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 43,
-    y = 64
-  }, {
-    mask = 4,
-    prototype = "砖石公路-X型",
-    x = 37,
-    y = 80
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 34,
-    y = 62
-  }, {
-    mask = 10,
-    prototype = "砖石公路-X型",
-    x = 37,
-    y = 66
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 46,
-    y = 60
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 47,
-    y = 60
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 48,
-    y = 60
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 49,
-    y = 60
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 50,
-    y = 60
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 51,
-    y = 60
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 52,
-    y = 60
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 53,
-    y = 60
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 54,
-    y = 60
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 55,
-    y = 60
-  }, {
-    mask = 1,
-    prototype = "砖石公路-X型",
-    x = 56,
-    y = 60
-  }, {
-    mask = 12,
-    prototype = "砖石公路-X型",
-    x = 55,
-    y = 62
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 56,
-    y = 62
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 49,
-    y = 70
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 50,
-    y = 70
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 51,
-    y = 70
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 52,
-    y = 70
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 53,
-    y = 70
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 56,
-    y = 68
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 57,
-    y = 68
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 58,
-    y = 68
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 59,
-    y = 68
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 60,
-    y = 68
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 61,
-    y = 68
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 62,
-    y = 68
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 63,
-    y = 68
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 64,
-    y = 68
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 65,
-    y = 68
   }, {
     mask = 10,
     prototype = "砖石公路-X型",
     x = 70,
     y = 64
   }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 67,
-    y = 68
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 68,
-    y = 68
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 75,
-    y = 62
-  }, {
-    mask = 11,
+    mask = 10,
     prototype = "砖石公路-X型",
     x = 70,
     y = 68
@@ -4327,12 +4149,12 @@ local road = { {
     x = 70,
     y = 70
   }, {
-    mask = 2,
+    mask = 110,
     prototype = "砖石公路-X型",
     x = 70,
     y = 72
   }, {
-    mask = 8,
+    mask = 10,
     prototype = "砖石公路-X型",
     x = 70,
     y = 74
@@ -4362,40 +4184,15 @@ local road = { {
     x = 93,
     y = 62
   }, {
-    mask = 8,
+    mask = 9,
     prototype = "砖石公路-X型",
     x = 38,
     y = 78
   }, {
-    mask = 10,
-    prototype = "砖石公路-X型",
-    x = 90,
-    y = 70
-  }, {
-    mask = 10,
-    prototype = "砖石公路-X型",
-    x = 90,
-    y = 72
-  }, {
-    mask = 10,
-    prototype = "砖石公路-X型",
-    x = 90,
-    y = 74
-  }, {
-    mask = 1,
+    mask = 9,
     prototype = "砖石公路-X型",
     x = 89,
     y = 79
-  }, {
-    mask = 10,
-    prototype = "砖石公路-X型",
-    x = 90,
-    y = 81
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 94,
-    y = 88
   }, {
     mask = 5,
     prototype = "砖石公路-X型",
@@ -4412,12 +4209,12 @@ local road = { {
     x = 87,
     y = 62
   }, {
-    mask = 5,
+    mask = 77,
     prototype = "砖石公路-X型",
     x = 85,
     y = 62
   }, {
-    mask = 5,
+    mask = 109,
     prototype = "砖石公路-X型",
     x = 84,
     y = 62
@@ -4425,26 +4222,6 @@ local road = { {
     mask = 5,
     prototype = "砖石公路-X型",
     x = 76,
-    y = 62
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 74,
-    y = 62
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 73,
-    y = 62
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 72,
-    y = 62
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 71,
     y = 62
   }, {
     mask = 13,
@@ -4502,32 +4279,32 @@ local road = { {
     x = 60,
     y = 62
   }, {
-    mask = 5,
+    mask = 77,
     prototype = "砖石公路-X型",
     x = 59,
     y = 62
   }, {
-    mask = 5,
+    mask = 109,
     prototype = "砖石公路-X型",
     x = 58,
     y = 62
   }, {
-    mask = 5,
+    mask = 12,
     prototype = "砖石公路-X型",
     x = 57,
     y = 62
   }, {
-    mask = 2,
+    mask = 3,
     prototype = "砖石公路-X型",
     x = 70,
     y = 76
   }, {
-    mask = 10,
+    mask = 14,
     prototype = "砖石公路-X型",
     x = 70,
     y = 66
   }, {
-    mask = 10,
+    mask = 107,
     prototype = "砖石公路-X型",
     x = 96,
     y = 82
@@ -4537,47 +4314,17 @@ local road = { {
     x = 96,
     y = 86
   }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 46,
-    y = 64
-  }, {
-    mask = 5,
+    mask = 77,
     prototype = "砖石公路-X型",
     x = 84,
     y = 66
   }, {
-    mask = 10,
+    mask = 110,
     prototype = "砖石公路-X型",
     x = 66,
     y = 86
   }, {
-    mask = 10,
-    prototype = "砖石公路-X型",
-    x = 90,
-    y = 68
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 42,
-    y = 64
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 47,
-    y = 64
-  }, {
-    mask = 10,
-    prototype = "砖石公路-X型",
-    x = 90,
-    y = 66
-  }, {
-    mask = 10,
-    prototype = "砖石公路-X型",
-    x = 90,
-    y = 64
-  }, {
-    mask = 5,
+    mask = 77,
     prototype = "砖石公路-X型",
     x = 88,
     y = 66
@@ -4622,7 +4369,7 @@ local road = { {
     x = 33,
     y = 57
   }, {
-    mask = 10,
+    mask = 75,
     prototype = "砖石公路-X型",
     x = 33,
     y = 59
@@ -4632,42 +4379,17 @@ local road = { {
     x = 33,
     y = 61
   }, {
-    mask = 6,
+    mask = 10,
     prototype = "砖石公路-X型",
     x = 33,
     y = 62
   }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 66,
-    y = 68
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 55,
-    y = 68
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 48,
-    y = 70
-  }, {
-    mask = 10,
+    mask = 109,
     prototype = "砖石公路-X型",
     x = 37,
     y = 63
   }, {
-    mask = 10,
-    prototype = "砖石公路-X型",
-    x = 37,
-    y = 65
-  }, {
-    mask = 10,
-    prototype = "砖石公路-X型",
-    x = 37,
-    y = 67
-  }, {
-    mask = 10,
+    mask = 12,
     prototype = "砖石公路-X型",
     x = 37,
     y = 69
@@ -4727,12 +4449,12 @@ local road = { {
     x = 45,
     y = 75
   }, {
-    mask = 5,
+    mask = 109,
     prototype = "砖石公路-X型",
     x = 46,
     y = 75
   }, {
-    mask = 5,
+    mask = 77,
     prototype = "砖石公路-X型",
     x = 47,
     y = 75
@@ -4742,22 +4464,22 @@ local road = { {
     x = 48,
     y = 75
   }, {
-    mask = 5,
+    mask = 71,
     prototype = "砖石公路-X型",
     x = 49,
     y = 75
   }, {
-    mask = 5,
+    mask = 103,
     prototype = "砖石公路-X型",
     x = 50,
     y = 75
   }, {
-    mask = 5,
+    mask = 71,
     prototype = "砖石公路-X型",
     x = 51,
     y = 75
   }, {
-    mask = 5,
+    mask = 103,
     prototype = "砖石公路-X型",
     x = 52,
     y = 75
@@ -4767,12 +4489,12 @@ local road = { {
     x = 53,
     y = 75
   }, {
-    mask = 5,
+    mask = 109,
     prototype = "砖石公路-X型",
     x = 54,
     y = 75
   }, {
-    mask = 5,
+    mask = 77,
     prototype = "砖石公路-X型",
     x = 55,
     y = 75
@@ -4787,16 +4509,6 @@ local road = { {
     x = 57,
     y = 75
   }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 47,
-    y = 70
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 46,
-    y = 70
-  }, {
     mask = 10,
     prototype = "砖石公路-X型",
     x = 59,
@@ -4807,15 +4519,10 @@ local road = { {
     x = 59,
     y = 79
   }, {
-    mask = 2,
+    mask = 6,
     prototype = "砖石公路-X型",
     x = 59,
     y = 81
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 45,
-    y = 70
   }, {
     mask = 10,
     prototype = "砖石公路-X型",
@@ -4837,7 +4544,7 @@ local road = { {
     x = 66,
     y = 77
   }, {
-    mask = 10,
+    mask = 14,
     prototype = "砖石公路-X型",
     x = 66,
     y = 79
@@ -4852,7 +4559,7 @@ local road = { {
     x = 66,
     y = 83
   }, {
-    mask = 10,
+    mask = 78,
     prototype = "砖石公路-X型",
     x = 66,
     y = 85
@@ -4922,11 +4629,6 @@ local road = { {
     x = 82,
     y = 79
   }, {
-    mask = 10,
-    prototype = "砖石公路-X型",
-    x = 90,
-    y = 65
-  }, {
     mask = 5,
     prototype = "砖石公路-X型",
     x = 84,
@@ -4937,57 +4639,17 @@ local road = { {
     x = 96,
     y = 57
   }, {
-    mask = 1,
+    mask = 5,
     prototype = "砖石公路-X型",
     x = 86,
     y = 79
   }, {
-    mask = 10,
-    prototype = "砖石公路-X型",
-    x = 90,
-    y = 73
-  }, {
-    mask = 10,
-    prototype = "砖石公路-X型",
-    x = 90,
-    y = 75
-  }, {
-    mask = 10,
-    prototype = "砖石公路-X型",
-    x = 90,
-    y = 77
-  }, {
-    mask = 10,
-    prototype = "砖石公路-X型",
-    x = 90,
-    y = 79
-  }, {
-    mask = 4,
+    mask = 110,
     prototype = "砖石公路-X型",
     x = 91,
     y = 79
   }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 92,
-    y = 79
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 93,
-    y = 79
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 94,
-    y = 79
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 95,
-    y = 79
-  }, {
-    mask = 13,
+    mask = 14,
     prototype = "砖石公路-X型",
     x = 96,
     y = 79
@@ -5022,172 +4684,47 @@ local road = { {
     x = 102,
     y = 79
   }, {
-    mask = 1,
+    mask = 109,
     prototype = "砖石公路-X型",
     x = 103,
     y = 79
   }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 44,
-    y = 70
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 43,
-    y = 70
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 42,
-    y = 70
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 41,
-    y = 70
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 40,
-    y = 70
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 39,
-    y = 70
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 38,
-    y = 70
-  }, {
     mask = 10,
     prototype = "砖石公路-X型",
     x = 96,
     y = 87
   }, {
-    mask = 10,
+    mask = 75,
     prototype = "砖石公路-X型",
     x = 96,
     y = 85
   }, {
-    mask = 10,
+    mask = 74,
     prototype = "砖石公路-X型",
     x = 96,
     y = 83
   }, {
-    mask = 10,
+    mask = 107,
     prototype = "砖石公路-X型",
     x = 96,
     y = 81
   }, {
-    mask = 10,
-    prototype = "砖石公路-X型",
-    x = 90,
-    y = 87
-  }, {
-    mask = 10,
-    prototype = "砖石公路-X型",
-    x = 90,
-    y = 85
-  }, {
-    mask = 10,
-    prototype = "砖石公路-X型",
-    x = 90,
-    y = 83
-  }, {
-    mask = 4,
+    mask = 5,
     prototype = "砖石公路-X型",
     x = 88,
     y = 79
   }, {
-    mask = 10,
+    mask = 110,
     prototype = "砖石公路-X型",
     x = 96,
     y = 61
   }, {
     mask = 5,
     prototype = "砖石公路-X型",
-    x = 50,
-    y = 64
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
     x = 79,
     y = 66
   }, {
-    mask = 4,
-    prototype = "砖石公路-X型",
-    x = 38,
-    y = 64
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 40,
-    y = 64
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 44,
-    y = 64
-  }, {
-    mask = 10,
-    prototype = "砖石公路-X型",
-    x = 37,
-    y = 68
-  }, {
-    mask = 4,
-    prototype = "砖石公路-X型",
-    x = 56,
-    y = 59
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 52,
-    y = 64
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 53,
-    y = 64
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 54,
-    y = 64
-  }, {
-    mask = 3,
-    prototype = "砖石公路-X型",
-    x = 55,
-    y = 64
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 48,
-    y = 68
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 49,
-    y = 68
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 50,
-    y = 68
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 51,
-    y = 68
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 51,
-    y = 64
-  }, {
-    mask = 5,
+    mask = 6,
     prototype = "砖石公路-X型",
     x = 38,
     y = 80
@@ -5202,12 +4739,12 @@ local road = { {
     x = 40,
     y = 80
   }, {
-    mask = 5,
+    mask = 71,
     prototype = "砖石公路-X型",
     x = 77,
     y = 62
   }, {
-    mask = 5,
+    mask = 103,
     prototype = "砖石公路-X型",
     x = 78,
     y = 62
@@ -5227,7 +4764,7 @@ local road = { {
     x = 82,
     y = 62
   }, {
-    mask = 5,
+    mask = 7,
     prototype = "砖石公路-X型",
     x = 83,
     y = 62
@@ -5242,22 +4779,22 @@ local road = { {
     x = 66,
     y = 76
   }, {
-    mask = 10,
+    mask = 11,
     prototype = "砖石公路-X型",
     x = 59,
     y = 80
   }, {
-    mask = 1,
+    mask = 5,
     prototype = "砖石公路-X型",
     x = 69,
     y = 76
   }, {
-    mask = 1,
+    mask = 5,
     prototype = "砖石公路-X型",
     x = 58,
     y = 80
   }, {
-    mask = 10,
+    mask = 78,
     prototype = "砖石公路-X型",
     x = 96,
     y = 60
@@ -5297,81 +4834,6 @@ local road = { {
     x = 65,
     y = 76
   }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 52,
-    y = 68
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 53,
-    y = 68
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 54,
-    y = 68
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 69,
-    y = 68
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 54,
-    y = 70
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 55,
-    y = 70
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 56,
-    y = 70
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 57,
-    y = 70
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 58,
-    y = 70
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 59,
-    y = 70
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 60,
-    y = 70
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 61,
-    y = 70
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 63,
-    y = 70
-  }, {
-    mask = 1,
-    prototype = "砖石公路-X型",
-    x = 69,
-    y = 70
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 49,
-    y = 64
-  }, {
     mask = 10,
     prototype = "砖石公路-X型",
     x = 37,
@@ -5382,7 +4844,7 @@ local road = { {
     x = 37,
     y = 74
   }, {
-    mask = 14,
+    mask = 10,
     prototype = "砖石公路-X型",
     x = 37,
     y = 70
@@ -5397,17 +4859,7 @@ local road = { {
     x = 83,
     y = 79
   }, {
-    mask = 10,
-    prototype = "砖石公路-X型",
-    x = 90,
-    y = 71
-  }, {
-    mask = 10,
-    prototype = "砖石公路-X型",
-    x = 90,
-    y = 69
-  }, {
-    mask = 1,
+    mask = 109,
     prototype = "砖石公路-X型",
     x = 89,
     y = 66
@@ -5417,7 +4869,7 @@ local road = { {
     x = 66,
     y = 80
   }, {
-    mask = 4,
+    mask = 5,
     prototype = "砖石公路-X型",
     x = 64,
     y = 81
@@ -5427,112 +4879,22 @@ local road = { {
     x = 72,
     y = 66
   }, {
-    mask = 1,
-    prototype = "砖石公路-X型",
-    x = 60,
-    y = 59
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 59,
-    y = 59
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 58,
-    y = 59
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 57,
-    y = 59
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 46,
-    y = 68
-  }, {
     mask = 10,
     prototype = "砖石公路-X型",
     x = 37,
     y = 76
   }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 43,
-    y = 68
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 40,
-    y = 68
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 39,
-    y = 68
-  }, {
-    mask = 4,
-    prototype = "砖石公路-X型",
-    x = 38,
-    y = 68
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 41,
-    y = 64
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 39,
-    y = 64
-  }, {
     mask = 10,
-    prototype = "砖石公路-X型",
-    x = 37,
-    y = 64
-  }, {
-    mask = 9,
-    prototype = "砖石公路-X型",
-    x = 37,
-    y = 62
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 36,
-    y = 62
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
-    x = 35,
-    y = 62
-  }, {
-    mask = 8,
-    prototype = "砖石公路-X型",
-    x = 90,
-    y = 63
-  }, {
-    mask = 10,
-    prototype = "砖石公路-X型",
-    x = 55,
-    y = 63
-  }, {
-    mask = 2,
     prototype = "砖石公路-X型",
     x = 38,
     y = 79
   }, {
     mask = 14,
     prototype = "砖石公路-X型",
-    x = 90,
-    y = 67
-  }, {
-    mask = 5,
-    prototype = "砖石公路-X型",
     x = 91,
     y = 67
   }, {
-    mask = 1,
+    mask = 71,
     prototype = "砖石公路-X型",
     x = 92,
     y = 67
@@ -5542,7 +4904,7 @@ local road = { {
     x = 96,
     y = 59
   }, {
-    mask = 4,
+    mask = 5,
     prototype = "砖石公路-X型",
     x = 67,
     y = 79
@@ -5557,12 +4919,12 @@ local road = { {
     x = 69,
     y = 79
   }, {
-    mask = 10,
+    mask = 11,
     prototype = "砖石公路-X型",
     x = 70,
     y = 69
   }, {
-    mask = 10,
+    mask = 78,
     prototype = "砖石公路-X型",
     x = 70,
     y = 71
@@ -5571,6 +4933,661 @@ local road = { {
     prototype = "砖石公路-X型",
     x = 70,
     y = 75
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 70,
+    y = 73
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 61,
+    y = 81
+  }, {
+    mask = 71,
+    prototype = "砖石公路-X型",
+    x = 62,
+    y = 81
+  }, {
+    mask = 103,
+    prototype = "砖石公路-X型",
+    x = 63,
+    y = 81
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 60,
+    y = 81
+  }, {
+    mask = 1,
+    prototype = "砖石公路-X型",
+    x = 94,
+    y = 67
+  }, {
+    mask = 103,
+    prototype = "砖石公路-X型",
+    x = 93,
+    y = 67
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 87,
+    y = 79
+  }, {
+    mask = 77,
+    prototype = "砖石公路-X型",
+    x = 104,
+    y = 79
+  }, {
+    mask = 1,
+    prototype = "砖石公路-X型",
+    x = 105,
+    y = 79
+  }, {
+    mask = 107,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 82
+  }, {
+    mask = 75,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 83
+  }, {
+    mask = 78,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 84
+  }, {
+    mask = 110,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 85
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 86
+  }, {
+    mask = 78,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 87
+  }, {
+    mask = 11,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 80
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 81
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 74,
+    y = 62
+  }, {
+    mask = 71,
+    prototype = "砖石公路-X型",
+    x = 71,
+    y = 62
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 75,
+    y = 62
+  }, {
+    mask = 103,
+    prototype = "砖石公路-X型",
+    x = 72,
+    y = 62
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 73,
+    y = 62
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 54,
+    y = 63
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 39,
+    y = 63
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 55,
+    y = 63
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 40,
+    y = 63
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 56,
+    y = 63
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 41,
+    y = 63
+  }, {
+    mask = 3,
+    prototype = "砖石公路-X型",
+    x = 57,
+    y = 63
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 42,
+    y = 63
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 43,
+    y = 63
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 44,
+    y = 63
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 45,
+    y = 63
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 46,
+    y = 63
+  }, {
+    mask = 7,
+    prototype = "砖石公路-X型",
+    x = 47,
+    y = 63
+  }, {
+    mask = 109,
+    prototype = "砖石公路-X型",
+    x = 48,
+    y = 63
+  }, {
+    mask = 77,
+    prototype = "砖石公路-X型",
+    x = 49,
+    y = 63
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 50,
+    y = 63
+  }, {
+    mask = 109,
+    prototype = "砖石公路-X型",
+    x = 51,
+    y = 63
+  }, {
+    mask = 77,
+    prototype = "砖石公路-X型",
+    x = 52,
+    y = 63
+  }, {
+    mask = 7,
+    prototype = "砖石公路-X型",
+    x = 53,
+    y = 63
+  }, {
+    mask = 77,
+    prototype = "砖石公路-X型",
+    x = 38,
+    y = 63
+  }, {
+    mask = 107,
+    prototype = "砖石公路-X型",
+    x = 96,
+    y = 77
+  }, {
+    mask = 75,
+    prototype = "砖石公路-X型",
+    x = 96,
+    y = 78
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 77
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 70
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 72
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 74
+  }, {
+    mask = 14,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 76
+  }, {
+    mask = 78,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 78
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 63
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 65
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 69
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 71
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 73
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 75
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 64
+  }, {
+    mask = 11,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 66
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 68
+  }, {
+    mask = 77,
+    prototype = "砖石公路-X型",
+    x = 90,
+    y = 66
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 89
+  }, {
+    mask = 6,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 90
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 95,
+    y = 90
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 92,
+    y = 90
+  }, {
+    mask = 3,
+    prototype = "砖石公路-X型",
+    x = 96,
+    y = 90
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 93,
+    y = 90
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 94,
+    y = 90
+  }, {
+    mask = 75,
+    prototype = "砖石公路-X型",
+    x = 96,
+    y = 89
+  }, {
+    mask = 9,
+    prototype = "砖石公路-X型",
+    x = 96,
+    y = 76
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 95,
+    y = 76
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 92,
+    y = 76
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 93,
+    y = 76
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 94,
+    y = 76
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 35,
+    y = 63
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 36,
+    y = 63
+  }, {
+    mask = 6,
+    prototype = "砖石公路-X型",
+    x = 33,
+    y = 63
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 34,
+    y = 63
+  }, {
+    mask = 8,
+    prototype = "砖石公路-X型",
+    x = 83,
+    y = 56
+  }, {
+    mask = 110,
+    prototype = "砖石公路-X型",
+    x = 83,
+    y = 58
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 83,
+    y = 59
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 83,
+    y = 60
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 83,
+    y = 61
+  }, {
+    mask = 78,
+    prototype = "砖石公路-X型",
+    x = 83,
+    y = 57
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 39,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 40,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 41,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 42,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 43,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 44,
+    y = 69
+  }, {
+    mask = 109,
+    prototype = "砖石公路-X型",
+    x = 45,
+    y = 69
+  }, {
+    mask = 77,
+    prototype = "砖石公路-X型",
+    x = 46,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 47,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 48,
+    y = 69
+  }, {
+    mask = 109,
+    prototype = "砖石公路-X型",
+    x = 49,
+    y = 69
+  }, {
+    mask = 77,
+    prototype = "砖石公路-X型",
+    x = 50,
+    y = 69
+  }, {
+    mask = 109,
+    prototype = "砖石公路-X型",
+    x = 51,
+    y = 69
+  }, {
+    mask = 77,
+    prototype = "砖石公路-X型",
+    x = 52,
+    y = 69
+  }, {
+    mask = 103,
+    prototype = "砖石公路-X型",
+    x = 53,
+    y = 69
+  }, {
+    mask = 103,
+    prototype = "砖石公路-X型",
+    x = 54,
+    y = 69
+  }, {
+    mask = 109,
+    prototype = "砖石公路-X型",
+    x = 55,
+    y = 69
+  }, {
+    mask = 77,
+    prototype = "砖石公路-X型",
+    x = 56,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 57,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 58,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 59,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 60,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 61,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 62,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 63,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 64,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 65,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 66,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 67,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 68,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 69,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 38,
+    y = 69
+  }, {
+    mask = 6,
+    prototype = "砖石公路-X型",
+    x = 89,
+    y = 80
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 90,
+    y = 80
+  }, {
+    mask = 78,
+    prototype = "砖石公路-X型",
+    x = 47,
+    y = 60
+  }, {
+    mask = 110,
+    prototype = "砖石公路-X型",
+    x = 47,
+    y = 61
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 47,
+    y = 62
+  }, {
+    mask = 12,
+    prototype = "砖石公路-X型",
+    x = 47,
+    y = 59
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 53,
+    y = 62
+  }, {
+    mask = 9,
+    prototype = "砖石公路-X型",
+    x = 53,
+    y = 59
+  }, {
+    mask = 107,
+    prototype = "砖石公路-X型",
+    x = 53,
+    y = 60
+  }, {
+    mask = 75,
+    prototype = "砖石公路-X型",
+    x = 53,
+    y = 61
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 51,
+    y = 59
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 48,
+    y = 59
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 52,
+    y = 59
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 49,
+    y = 59
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 50,
+    y = 59
   } }
 local mineral = {
   ["100,60"] = "铁矿石",
@@ -5579,7 +5596,7 @@ local mineral = {
   ["142,84"] = "碎石",
   ["143,147"] = "碎石",
   ["148,93"] = "铁矿石",
-  ["162,128"] = "铁矿石",
+  ["163,127"] = "铁矿石",
   ["168,110"] = "碎石",
   ["171,74"] = "铁矿石",
   ["178,191"] = "铁矿石",
@@ -5612,7 +5629,7 @@ local function prepare(world)
         end
     end
     assert(slot)
-    world:container_set(e.chest, idx, {amount = 1, limit = 50})
+    world:container_set(e.chest, idx, {amount = 50, limit = 50})
   end
 
 return {
