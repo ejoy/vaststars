@@ -394,6 +394,9 @@ namespace roadnet {
         crossAry.reset(genCrossId);
         for (auto const& [loc, id]: crossMap) {
             road::crossroad& crossroad = CrossRoad(id);
+            #ifdef DEBUG_ROADNET 
+                crossroad.loc = loc;
+            #endif
             uint8_t m = getMapBits(map, loc);
             if (m & MapRoad::NoLeftTurn) {
                 crossroad.ban |= road::NoLeftTurn;

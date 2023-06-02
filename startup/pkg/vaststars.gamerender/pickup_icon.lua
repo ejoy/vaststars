@@ -163,8 +163,8 @@ function mt:on_position_change(building_srt, dir)
     -- self:remove()
     -- __create_icons(self, self.typeobject, self.recipe, building_srt, dir)
 
-    self.__canvas:send("iom", "set_position", building_srt.t)
-    self.__canvas:send("iom", "set_rotation", ROTATORS[dir])
+    -- self.__canvas:send("iom", "set_position", building_srt.t)
+    -- self.__canvas:send("iom", "set_rotation", ROTATORS[dir])
 end
 
 local m = {}

@@ -9,7 +9,7 @@ local function unpack(coord)
     return coord & 0xFF, coord >> 8
 end
 
-local function get(world, x, y)
+local function get(world, x, y, exclude_endpoint)
     local ecs = world.ecs
     local e = assert(ecs:first("road_cache:in"))
     local road_cache = e.road_cache
@@ -18,7 +18,12 @@ local function get(world, x, y)
     if not eid then
         return
     end
-    return assert(world.entity[eid]).road.mask
+
+    local r = world.entity[eid]
+    if exclude_endpoint and r.endpoint_road then
+        return
+    end
+    return r.road.mask
 end
 
 local function set(world, x, y, classid, mask)

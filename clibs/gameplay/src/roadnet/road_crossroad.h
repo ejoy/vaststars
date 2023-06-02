@@ -27,6 +27,10 @@ namespace roadnet::road {
     ;
 
     struct crossroad {
+        #ifdef DEBUG_ROADNET
+        roadnet::loction loc;
+        #endif
+
         roadid     neighbor[4] = {};
         roadid     rev_neighbor[4] = {};
         lorryid    cross_lorry[2] = {};

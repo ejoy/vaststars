@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 #include <compare>
+// #define DEBUG_ROADNET
 
 namespace roadnet {
     struct objectid {
