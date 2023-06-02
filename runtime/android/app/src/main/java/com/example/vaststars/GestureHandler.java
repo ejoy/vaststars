@@ -55,7 +55,6 @@ public class GestureHandler implements GestureDetector.OnGestureListener, ScaleG
 
     @Override
     public boolean onSingleTapUp(MotionEvent event) {
-        Log.d(DEBUG_TAG, "onSingleTapUp: " + event.toString());
         final int actionIndex = event.getActionIndex();
         nativeOnTap(nativeHandle, event.getX(actionIndex), event.getY(actionIndex));
         return true;
@@ -63,7 +62,6 @@ public class GestureHandler implements GestureDetector.OnGestureListener, ScaleG
 
     @Override
     public void onLongPress(MotionEvent event) {
-        Log.d(DEBUG_TAG, "onLongPress: " + event.toString());
         final int actionIndex = event.getActionIndex();
         nativeOnLongPress(nativeHandle, event.getX(actionIndex), event.getY(actionIndex));
     }
@@ -73,7 +71,6 @@ public class GestureHandler implements GestureDetector.OnGestureListener, ScaleG
         if (scaling) {
             return false;
         }
-        Log.d(DEBUG_TAG, "onScroll: " + event1.toString() + event2.toString());
         final float x1 = event1.getX(event1.getActionIndex());
         final float y1 = event1.getY(event1.getActionIndex());
         final float x2 = event2.getX(event2.getActionIndex());
@@ -82,24 +79,27 @@ public class GestureHandler implements GestureDetector.OnGestureListener, ScaleG
         return true;
     }
 
+    private float getScaleVelocity(ScaleGestureDetector detector) {
+        final float factor =  detector.getScaleFactor();
+        final float delta =  detector.getTimeDelta();
+        return (factor-1.f) * 1000.f / delta;
+    }
+
     @Override
     public boolean onScaleBegin(ScaleGestureDetector detector) {
-        Log.d(DEBUG_TAG, "onScaleBegin");
-        nativeOnPinch(nativeHandle, 0, detector.getFocusX(), detector.getFocusY(), detector.getScaleFactor());
+        nativeOnPinch(nativeHandle, 0, detector.getFocusX(), detector.getFocusY(), getScaleVelocity(detector));
         return true;
     }
 
     @Override
     public boolean onScale(ScaleGestureDetector detector) {
         scaling = true;
-        Log.d(DEBUG_TAG, "onScale");
-        nativeOnPinch(nativeHandle, 1, detector.getFocusX(), detector.getFocusY(), detector.getScaleFactor());
+        nativeOnPinch(nativeHandle, 1, detector.getFocusX(), detector.getFocusY(), getScaleVelocity(detector));
         return true;
     }
 
     @Override
     public void onScaleEnd(ScaleGestureDetector detector) {
-        Log.d(DEBUG_TAG, "onScaleEnd");
-        nativeOnPinch(nativeHandle, 2, detector.getFocusX(), detector.getFocusY(), detector.getScaleFactor());
+        nativeOnPinch(nativeHandle, 2, detector.getFocusX(), detector.getFocusY(), getScaleVelocity(detector));
     }
 }
