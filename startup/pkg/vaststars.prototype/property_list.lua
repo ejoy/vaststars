@@ -150,6 +150,7 @@ local property_list = {
 	["drone_count"] = {
 		icon = "textures/property/drone.texture",
 		desc = "无人机数量",
+		value = "$drone_count$",
 		pos = 29,
 	},
 }

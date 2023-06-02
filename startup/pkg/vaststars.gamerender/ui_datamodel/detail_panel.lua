@@ -1,6 +1,9 @@
 local ecs, mailbox = ...
+local world = ecs.world
+local w = world.w
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local math3d = require "math3d"
+local iUiRt = ecs.import.interface "ant.rmlui|iuirt"
 local idetail = ecs.interface "idetail"
 local icamera_controller = ecs.import.interface "vaststars.gamerender|icamera_controller"
 local property_list = import_package "vaststars.prototype"("property_list")
@@ -16,7 +19,7 @@ local assembling_common = require "ui_datamodel.common.assembling"
 local show_detail_mb = mailbox:sub {"show_detail"}
 local UPS <const> = require("gameplay.interface.constant").UPS
 local CHEST_LIST_TYPES <const> = {"chest", "station", "hub"}
-
+local queuename = "detail_scene_queue"
 local function format_vars(fmt, vars)
     return string.gsub(fmt, "%$([%w%._]+)%$", vars)
 end
@@ -356,6 +359,19 @@ local function get_delta(last, current, input)
 end
 
 function M:stage_ui_update(datamodel, object_id)
+    -- local gid = iUiRt.get_group_id("detail_scene")
+    -- if gid and canvas_size_w == 0 then
+    --     local g = ecs.group(gid)
+    --     g:enable "view_visible"
+    --     g:enable "scene_update"
+    --     local qe = w:first(queuename .." render_target:in")
+    --     local rt = qe.render_target
+    --     local vr = rt.view_rect
+    --     canvas_size_w, canvas_size_h = vr.w, vr.h
+    --     line_step = canvas_size_w / (line_count - 1)
+    --     create_grid(8, 10)
+    -- end
+
     for _, _, _, area_id in show_detail_mb:unpack() do
         if area_id == 0 then
             local object = assert(objects:get(object_id))
