@@ -295,9 +295,7 @@ local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobjec
 
     local redraw = {}
     for object_id, object in pairs(nearby_buldings) do
-        if not self.selected_boxes[object_id] then
-            redraw[object_id] = object
-        end
+        redraw[object_id] = object
     end
 
     for object_id, o in pairs(self.selected_boxes) do
@@ -308,14 +306,24 @@ local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobjec
     end
 
     for object_id, object in pairs(redraw) do
-        local typeobject = iprototype.queryByName(object.prototype_name)
-        local ow, oh = iprototype.rotate_area(typeobject.area, object.dir)
+        local otypeobject = iprototype.queryByName(object.prototype_name)
+        local ow, oh = iprototype.rotate_area(otypeobject.area, object.dir)
 
         local color
         if __is_building_intersect(x, y, w, h, object.x, object.y, ow, oh) then
             color = SPRITE_COLOR.CONSTRUCT_OUTLINE_FARAWAY_BUILDINGS_INTERSECTION
         else
-            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+            if typeobject.supply_area then
+                local aw, ah = iprototype.unpackarea(typeobject.area)
+                local sw, sh = iprototype.unpackarea(typeobject.supply_area)
+                if __is_building_intersect(x - (sw - aw) // 2, y - (sh - ah) // 2, sw, sh, object.x, object.y, ow, oh) then
+                    color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
+                else
+                    color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+                end
+            else
+                color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+            end
         end
 
         self.selected_boxes[object_id] = create_selected_boxes(
@@ -323,20 +331,30 @@ local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobjec
                 "/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab",
                 "/pkg/vaststars.resources/prefabs/selected-box-no-animation-line.prefab",
             },
-            object.srt.t, color, iprototype.unpackarea(typeobject.area)
+            object.srt.t, color, iprototype.rotate_area(otypeobject.area, object.dir)
         )
     end
 
     for object_id, o in pairs(self.selected_boxes) do
         local object = assert(objects:get(object_id))
-        local typeobject = iprototype.queryByName(object.prototype_name)
-        local ow, oh = iprototype.rotate_area(typeobject.area, object.dir)
+        local otypeobject = iprototype.queryByName(object.prototype_name)
+        local ow, oh = iprototype.rotate_area(otypeobject.area, object.dir)
 
         local color
         if __is_building_intersect(x, y, w, h, object.x, object.y, ow, oh) then
             color = SPRITE_COLOR.CONSTRUCT_OUTLINE_FARAWAY_BUILDINGS_INTERSECTION
         else
-            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+            if typeobject.supply_area then
+                local aw, ah = iprototype.unpackarea(typeobject.area)
+                local sw, sh = iprototype.unpackarea(typeobject.supply_area)
+                if __is_building_intersect(x - (sw - aw) // 2, y - (sh - ah) // 2, sw, sh, object.x, object.y, ow, oh) then
+                    color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
+                else
+                    color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+                end
+            else
+                color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+            end
         end
         o:set_color(color)
     end
