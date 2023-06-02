@@ -75,7 +75,7 @@
                 width: 87%;
                 height: 100%;
                 pointer-events: none;
-                /* animation: 0.5s linear 0s pannelmovement; */
+                animation: 0.5s linear 0s pannelmovement;
             }
             .arrow {
                 width: 4.88vmin;
@@ -192,7 +192,7 @@
                     <div style = "text-align: center; font-size: 3.2vmin; color: #000; margin-left: 2%; margin-right: 2%; background-size: 100% 100%;" data-style-background-image="detail_panel_status_icon">{{detail_panel_status_desc}}</div>
                 </div>
                 <!-- property list -->
-                <div style="height: 28vmin;" data-event-click="onLongPress(2)">
+                <div style="height: 27vmin;" data-event-click="onLongPress(2)">
                     <div data-for = "property : property_list">
                         <div style = "width: 100%; height: 9vmin; flex-direction: row; align-items: center; justify-content: flex-start;">
                             <div style = "width: 8.00vmin; height: 8.00vmin; background-size:cover;" data-style-background-image="property.icon" />
