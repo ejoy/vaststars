@@ -147,6 +147,11 @@ local property_list = {
 		desc = "矿物类型",
 		pos = 28,
 	},
+	["drone_count"] = {
+		icon = "textures/property/drone.texture",
+		desc = "无人机数量",
+		pos = 29,
+	},
 }
 
 -- for debug

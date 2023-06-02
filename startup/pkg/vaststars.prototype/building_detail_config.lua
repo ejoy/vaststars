@@ -126,6 +126,9 @@ local building_detail_config = {
 		"power_supply_area",
 		"power_supply_distance",
 	},
+	["无人机仓库"] = {
+		"drone_count",
+	},
 	["铁矿"] = {
 		"mine_type",
 	},
