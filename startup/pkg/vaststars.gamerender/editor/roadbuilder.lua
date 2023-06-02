@@ -52,22 +52,26 @@ local function _get_object(self, x, y, cache_names)
         }
     end
 
-    local object = objects:coord(x, y, cache_names)
-    local mask = iroad.get(gameplay_core.get_world(), x, y, true)
-    if object then
-        assert(not mask, ("road overlaps with the building(%s,%s) %s"):format(x, y, object.prototype_name))
-        return object
-    end
+    for i = 0, ROAD_TILE_SCALE_WIDTH - 1 do
+        for j = 0, ROAD_TILE_SCALE_HEIGHT - 1 do
+            local object = objects:coord(x + i, y + j, cache_names)
+            local mask = iroad.get(gameplay_core.get_world(), x, y, true)
+            if object then
+                assert(not mask, ("road overlaps with the building(%s,%s) %s"):format(x, y, object.prototype_name))
+                return object
+            end
 
-    if mask then
-        local prototype_name, dir = iroadnet_converter.mask_to_prototype_name_dir(mask)
-        return {
-            id = iobject.new_object_id(),
-            x = x,
-            y = y,
-            prototype_name = prototype_name,
-            dir = dir,
-        }
+            if mask then
+                local prototype_name, dir = iroadnet_converter.mask_to_prototype_name_dir(mask)
+                return {
+                    id = iobject.new_object_id(),
+                    x = x,
+                    y = y,
+                    prototype_name = prototype_name,
+                    dir = dir,
+                }
+            end
+        end
     end
 end
 
