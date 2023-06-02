@@ -35,6 +35,7 @@ local gameplay = import_package "vaststars.gameplay"
 local iroad = gameplay.interface "road"
 local ROAD_TILE_SCALE_WIDTH <const> = 2
 local ROAD_TILE_SCALE_HEIGHT <const> = 2
+local SPRITE_COLOR = import_package "vaststars.prototype".load("sprite_color")
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -87,6 +88,135 @@ local function __align(prototype_name, dir)
     return position, coord[1], coord[2]
 end
 
+
+local function __get_nearby_buldings(x, y, w, h)
+    local r = {}
+    local begin_x, begin_y = coord_system:bound_coord(x - ((10 - w) // 2), y - ((10 - h) // 2))
+    local end_x, end_y = coord_system:bound_coord(x + ((10 - w) // 2) + w, y + ((10 - h) // 2) + h)
+    for x = begin_x, end_x do
+        for y = begin_y, end_y do
+            local object = objects:coord(x, y)
+            if object then
+                r[object.id] = object
+            end
+        end
+    end
+    return r
+end
+
+local function __is_building_intersect(x1, y1, w1, h1, x2, y2, w2, h2)
+    local x1_1, y1_1 = x1, y1
+    local x1_2, y1_2 = x1 + w1 - 1, y1
+    local x1_3, y1_3 = x1, y1 + h1 - 1
+    local x1_4, y1_4 = x1 + w1 - 1, y1 + h1 - 1
+
+    if (x1_1 >= x2 and x1_1 <= x2 + w2 - 1 and y1_1 >= y2 and y1_1 <= y2 + h2 - 1) or
+        (x1_2 >= x2 and x1_2 <= x2 + w2 - 1 and y1_2 >= y2 and y1_2 <= y2 + h2 - 1) or
+        (x1_3 >= x2 and x1_3 <= x2 + w2 - 1 and y1_3 >= y2 and y1_3 <= y2 + h2 - 1) or
+        (x1_4 >= x2 and x1_4 <= x2 + w2 - 1 and y1_4 >= y2 and y1_4 <= y2 + h2 - 1) then
+        return true
+    end
+
+    local x2_1, y2_1 = x2, y2
+    local x2_2, y2_2 = x2 + w2 - 1, y2
+    local x2_3, y2_3 = x2, y2 + h2 - 1
+    local x2_4, y2_4 = x2 + w2 - 1, y2 + h2 - 1
+
+    if (x2_1 >= x1 and x2_1 <= x1 + w1 - 1 and y2_1 >= y1 and y2_1 <= y1 + h1 - 1) or
+        (x2_2 >= x1 and x2_2 <= x1 + w1 - 1 and y2_2 >= y1 and y2_2 <= y1 + h1 - 1) or
+        (x2_3 >= x1 and x2_3 <= x1 + w1 - 1 and y2_3 >= y1 and y2_3 <= y1 + h1 - 1) or
+        (x2_4 >= x1 and x2_4 <= x1 + w1 - 1 and y2_4 >= y1 and y2_4 <= y1 + h1 - 1) then
+        return true
+    end
+
+    return false
+end
+
+local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject)
+    local nearby_buldings = __get_nearby_buldings(x, y, iprototype.unpackarea(typeobject.area))
+    local w, h = iprototype.rotate_area(typeobject.area, dir)
+
+    local redraw = {}
+    for object_id, object in pairs(nearby_buldings) do
+        redraw[object_id] = object
+    end
+
+    for object_id, o in pairs(self.selected_boxes) do
+        if not nearby_buldings[object_id] then
+            o:remove()
+            self.selected_boxes[object_id] = nil
+        end
+    end
+
+    for object_id, object in pairs(redraw) do
+        local otypeobject = iprototype.queryByName(object.prototype_name)
+        local ow, oh = iprototype.rotate_area(otypeobject.area, object.dir)
+
+        local color
+        if __is_building_intersect(x, y, w, h, object.x, object.y, ow, oh) then
+            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_FARAWAY_BUILDINGS_INTERSECTION
+        else
+            if typeobject.supply_area then
+                local aw, ah = iprototype.unpackarea(typeobject.area)
+                local sw, sh = iprototype.unpackarea(typeobject.supply_area)
+                if __is_building_intersect(x - (sw - aw) // 2, y - (sh - ah) // 2, sw, sh, object.x, object.y, ow, oh) then
+                    color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
+                else
+                    color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+                end
+            else
+                if iprototype.has_type(typeobject.type, "station") then
+                    if otypeobject.supply_area then
+                        local aw, ah = iprototype.unpackarea(otypeobject.area)
+                        local sw, sh = iprototype.unpackarea(otypeobject.supply_area)
+                        if __is_building_intersect(x, y, ow, oh, object.x  - (sw - aw) // 2, object.y - (sh - ah) // 2, sw, sh) then
+                            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
+                        else
+                            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+                        end
+                    end
+                else
+                    color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+                end
+            end
+        end
+
+        self.selected_boxes[object_id] = create_selected_boxes(
+            {
+                "/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab",
+                "/pkg/vaststars.resources/prefabs/selected-box-no-animation-line.prefab",
+            },
+            object.srt.t, color, iprototype.rotate_area(otypeobject.area, object.dir)
+        )
+    end
+
+    for object_id, o in pairs(self.selected_boxes) do
+        local object = assert(objects:get(object_id))
+        local otypeobject = iprototype.queryByName(object.prototype_name)
+        local ow, oh = iprototype.rotate_area(otypeobject.area, object.dir)
+
+        local color
+        if __is_building_intersect(x, y, w, h, object.x, object.y, ow, oh) then
+            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_FARAWAY_BUILDINGS_INTERSECTION
+        else
+            if iprototype.has_type(typeobject.type, "station") then
+                if otypeobject.supply_area then
+                    local aw, ah = iprototype.unpackarea(otypeobject.area)
+                    local sw, sh = iprototype.unpackarea(otypeobject.supply_area)
+                    if __is_building_intersect(x, y, ow, oh, object.x  - (sw - aw) // 2, object.y - (sh - ah) // 2, sw, sh) then
+                        color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
+                    else
+                        color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+                    end
+                end
+            else
+                color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+            end
+        end
+        o:set_color(color)
+    end
+end
+
 local function __new_entity(self, datamodel, typeobject)
     iobject.remove(self.pickup_object)
     local dir = DEFAULT_DIR
@@ -116,9 +246,11 @@ local function __new_entity(self, datamodel, typeobject)
         group_id = 0,
     }
 
+    __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject)
+
     local road_entrance_position, road_entrance_dir = _get_road_entrance_position(typeobject, dir, self.pickup_object.srt.t)
     local w, h = iprototype.unpackarea(typeobject.area)
-    local selected_boxes_position = coord_system:get_position_by_coord(x, y, w, h)
+    local self_selected_boxes_position = coord_system:get_position_by_coord(x, y, w, h)
     if road_entrance_position then
         local srt = {t = road_entrance_position, r = ROTATORS[road_entrance_dir]}
         if datamodel.show_confirm then
@@ -127,11 +259,11 @@ local function __new_entity(self, datamodel, typeobject)
             else
                 self.road_entrance:set_state("valid")
             end
-            if not self.selected_boxes then
-                self.selected_boxes = create_selected_boxes({
+            if not self.self_selected_boxes then
+                self.self_selected_boxes = create_selected_boxes({
                     "/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab",
                     "/pkg/vaststars.resources/prefabs/selected-box-no-animation-line.prefab"
-                }, selected_boxes_position, COLOR_GREEN, w+1, h+1)
+                }, self_selected_boxes_position, COLOR_GREEN, w+1, h+1)
             end
         else
             if not self.road_entrance then
@@ -139,11 +271,11 @@ local function __new_entity(self, datamodel, typeobject)
             else
                 self.road_entrance:set_state("invalid")
             end
-            if not self.selected_boxes then
-                self.selected_boxes = create_selected_boxes({
+            if not self.self_selected_boxes then
+                self.self_selected_boxes = create_selected_boxes({
                     "/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab",
                     "/pkg/vaststars.resources/prefabs/selected-box-no-animation-line.prefab"
-                }, selected_boxes_position, COLOR_RED, w, h)
+                }, self_selected_boxes_position, COLOR_RED, w, h)
             end
         end
     end
@@ -330,9 +462,9 @@ local function rotate_pickup_object(self, datamodel, dir, delta_vec)
     end
 
     local w, h = iprototype.rotate_area(typeobject.area, dir)
-    local selected_boxes_position = coord_system:get_position_by_coord(pickup_object.x, pickup_object.y, w, h)
-    self.selected_boxes:set_position(selected_boxes_position)
-    self.selected_boxes:set_wh(w, h)
+    local self_selected_boxes_position = coord_system:get_position_by_coord(pickup_object.x, pickup_object.y, w, h)
+    self.self_selected_boxes:set_position(self_selected_boxes_position)
+    self.self_selected_boxes:set_wh(w, h)
 end
 
 local function touch_move(self, datamodel, delta_vec)
@@ -351,10 +483,12 @@ local function touch_move(self, datamodel, delta_vec)
         local position, x, y = __align(self.pickup_object.prototype_name, self.pickup_object.dir)
         if position then
             local w, h = iprototype.rotate_area(typeobject.area, self.pickup_object.dir)
-            local selected_boxes_position = coord_system:get_position_by_coord(x, y, w, h)
-            self.selected_boxes:set_position(selected_boxes_position)
-            self.selected_boxes:set_wh(w, h)
+            local self_selected_boxes_position = coord_system:get_position_by_coord(x, y, w, h)
+            self.self_selected_boxes:set_position(self_selected_boxes_position)
+            self.self_selected_boxes:set_wh(w, h)
         end
+
+        __show_nearby_buildings_selected_boxes(self, x, y, self.pickup_object.dir, typeobject)
 
         self.last_position = self.pickup_object.srt.t
         icanvas.remove_item(icanvas.types().ROAD_ENTRANCE_MARKER, 0)
@@ -393,14 +527,14 @@ local function touch_end(self, datamodel)
 
         if self.road_entrance then
             self.road_entrance:set_state("invalid")
-            self.selected_boxes:set_color(COLOR_RED)
+            self.self_selected_boxes:set_color(COLOR_RED)
         end
     else
         datamodel.show_confirm = true
 
         if self.road_entrance then
             self.road_entrance:set_state("valid")
-            self.selected_boxes:set_color(COLOR_GREEN)
+            self.self_selected_boxes:set_color(COLOR_GREEN)
         end
     end
 
@@ -408,9 +542,9 @@ local function touch_end(self, datamodel)
     self.road_entrance:set_srt(mc.ONE, ROTATORS[road_entrance_dir], road_entrance_position)
 
     local w, h = iprototype.rotate_area(typeobject.area, self.pickup_object.dir)
-    local selected_boxes_position = coord_system:get_position_by_coord(pickup_object.x, pickup_object.y, w, h)
-    self.selected_boxes:set_position(selected_boxes_position)
-    self.selected_boxes:set_wh(w, h)
+    local self_selected_boxes_position = coord_system:get_position_by_coord(pickup_object.x, pickup_object.y, w, h)
+    self.self_selected_boxes:set_position(self_selected_boxes_position)
+    self.self_selected_boxes:set_wh(w, h)
 
     -- update temp pole
     if typeobject.supply_area and typeobject.supply_distance then
@@ -601,8 +735,8 @@ local function clean(self, datamodel)
     if self.road_entrance then
         self.road_entrance:remove()
         self.road_entrance = nil
-        self.selected_boxes:remove()
-        self.selected_boxes = nil
+        self.self_selected_boxes:remove()
+        self.self_selected_boxes = nil
     end
 end
 
@@ -619,6 +753,7 @@ local function create()
     M.clean = clean
     M.check_construct_detector = check_construct_detector
 
+    M.selected_boxes = {}
     return M
 end
 return create
