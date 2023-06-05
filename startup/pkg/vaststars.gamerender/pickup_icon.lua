@@ -14,6 +14,13 @@ local fs = require "filesystem"
 local datalist = require "datalist"
 local FLUIDS_CFG <const> = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/config/canvas/fluids.cfg")):read "a")
 
+local ROTATORS <const> = {
+    N = math.rad(0),
+    E = math.rad(-90),
+    S = math.rad(-180),
+    W = math.rad(-270),
+}
+
 local function __get_texture_size(materialpath)
     local res = assetmgr.resource(materialpath)
     local texobj = assetmgr.resource(res.properties.s_basecolor.texture)
@@ -22,6 +29,7 @@ local function __get_texture_size(materialpath)
 end
 
 local function __get_draw_rect(x, y, icon_w, icon_h, multiple)
+    multiple = multiple or 1
     local tile_size = iterrain.tile_size * multiple
     multiple = multiple or 1
     y = y - tile_size
@@ -94,6 +102,44 @@ local function __create_icon(fluid, begin_x, begin_y, connection_x, connection_y
     icanvas.add_item(icanvas.types().PICKUP_ICON, 0, icanvas.get_key(material_path, RENDER_LAYER.ICON_CONTENT), item2)
 end
 
+local function __create_fluid_indication_arrow(connection_x, connection_y, connection_dir, iotype, begin_x, begin_y)
+    local dx, dy = iprototype.move_coord(connection_x, connection_y, connection_dir, 1, 1)
+    local material_path
+
+    if iotype == "input" then
+        material_path = "/pkg/vaststars.resources/materials/canvas/fluid-indication-arrow-input.material"
+    else
+        material_path = "/pkg/vaststars.resources/materials/canvas/fluid-indication-arrow-output.material"
+    end
+
+    local icon_w, icon_h = __get_texture_size(material_path)
+    local texture_x, texture_y, texture_w, texture_h = 0, 0, icon_w, icon_h
+    local draw_x, draw_y, draw_w, draw_h = __get_draw_rect(
+        begin_x + dx * iterrain.tile_size + iterrain.tile_size / 2,
+        begin_y - dy * iterrain.tile_size - iterrain.tile_size / 2,
+        icon_w,
+        icon_h
+    )
+    icanvas.add_item(icanvas.types().PICKUP_ICON,
+        0,
+        icanvas.get_key(material_path, RENDER_LAYER.FLUID_INDICATION_ARROW),
+        {
+            texture = {
+                rect = {
+                    x = texture_x,
+                    y = texture_y,
+                    w = texture_w,
+                    h = texture_h,
+                },
+                srt = {
+                    r = ROTATORS[connection_dir],
+                },
+            },
+            x = draw_x, y = draw_y, w = draw_w, h = draw_h,
+        }
+    )
+end
+
 local function __create_icons(self, typeobject, recipe, building_srt, dir)
     local recipe_typeobject = assert(iprototype.queryById(recipe))
     local t = {
@@ -108,8 +154,9 @@ local function __create_icons(self, typeobject, recipe, building_srt, dir)
             if iprototype.is_fluid_id(v.id) then
                 local c = assert(typeobject.fluidboxes[r[2]][idx])
                 local connection = assert(c.connections[1])
-                local connection_x, connection_y = iprototype.rotate_connection(connection.position, dir, typeobject.area)
+                local connection_x, connection_y, connection_dir = iprototype.rotate_connection(connection.position, dir, typeobject.area)
                 __create_icon(v.id, begin_x, begin_y, connection_x, connection_y)
+                __create_fluid_indication_arrow(connection_x, connection_y, connection_dir, r[2], begin_x, begin_y)
             end
         end
     end
