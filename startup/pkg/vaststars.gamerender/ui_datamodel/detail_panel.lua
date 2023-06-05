@@ -320,7 +320,9 @@ local function copy_table(inputs)
     return out
 end
 
+local rt_inst
 function M:create(object_id)
+    iUiRt.close_ui_rt("detail_scene")
     counter = update_interval
     local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
@@ -364,18 +366,13 @@ local function get_delta(last, current, input)
 end
 
 function M:stage_ui_update(datamodel, object_id)
-    -- local gid = iUiRt.get_group_id("detail_scene")
-    -- if gid and canvas_size_w == 0 then
-    --     local g = ecs.group(gid)
-    --     g:enable "view_visible"
-    --     g:enable "scene_update"
-    --     local qe = w:first(queuename .." render_target:in")
-    --     local rt = qe.render_target
-    --     local vr = rt.view_rect
-    --     canvas_size_w, canvas_size_h = vr.w, vr.h
-    --     line_step = canvas_size_w / (line_count - 1)
-    --     create_grid(8, 10)
-    -- end
+    local gid = iUiRt.get_group_id("detail_scene")
+    if gid and not rt_inst then
+        local focus_path = "/pkg/vaststars.resources/prefabs/drone.prefab"
+        local plane_path = "/pkg/vaststars.resources/glb/plane_rt.glb|mesh.prefab"
+        local light_path = "/pkg/vaststars.resources/light_rt.prefab"
+        rt_inst = iUiRt.create_new_rt("detail_scene", plane_path, light_path, focus_path, {s = {1,1,1}, t = {0, 0, 0}})
+    end
 
     for _, _, _, area_id in show_detail_mb:unpack() do
         if area_id == 0 then
