@@ -48,6 +48,19 @@ function S.init_world()
     iom.set_direction(camera_ref, dir)
 
     iterrain.gen_terrain_field(256, 256, 128)
+    ecs.create_entity{
+        policy = {
+            "ant.scene|scene_object",
+            "ant.render|render",
+        },
+        data = {
+            scene = {t = {0, 0, 0}},
+            mesh  = "/pkg/mod.crack/assets/shapes/crack.glb|meshes/Plane_P1.meshbin",
+            material    = "/pkg/mod.crack/assets/crack.material",
+            visible_state = "main_view|selectable",
+            render_layer = "background"
+        },
+    }  
 --[[      local x, y = 0, 0
     for _, shape in ipairs({"I", "L", "T", "U", "X", "O"}) do
         y = y + 2
@@ -144,7 +157,7 @@ function S:data_changed()
                     x = 0, y = 0 --leftbottom
                 }
             }
-            iroad.update_roadnet_group(1000, create_list)
+            iroad.update_roadnet_group(1000, {})
 --[[              local x, y = -5, -5
             for _, shape in ipairs({"I", "L", "T", "U", "X", "O"}) do
                 y = y + 2
