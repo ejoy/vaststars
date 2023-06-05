@@ -4,13 +4,13 @@
 
 namespace roadnet {
     enum class MapRoad: uint8_t {
-        Left       = 1 << 0,
-        Top        = 1 << 1,
-        Right      = 1 << 2,
-        Bottom     = 1 << 3,
-        Endpoint   = 1 << 4,
-        NoLeftTurn = 1 << 5,
-        NoUTurn    = 1 << 6,
+        Left         = 1 << 0,
+        Top          = 1 << 1,
+        Right        = 1 << 2,
+        Bottom       = 1 << 3,
+        Endpoint     = 1 << 4,
+        NoHorizontal = 1 << 5,
+        NoVertical   = 1 << 6,
     };
 
     static bool operator&(uint8_t v, MapRoad m) {
@@ -397,11 +397,15 @@ namespace roadnet {
                 crossroad.loc = loc;
             #endif
             uint8_t m = getMapBits(map, loc);
-            if (m & MapRoad::NoLeftTurn) {
-                crossroad.ban |= road::NoLeftTurn;
+            if (m & MapRoad::NoHorizontal) {
+                crossroad.ban |= road::LeftTurn;
+                crossroad.ban |= road::UTurn;
+                crossroad.ban |= road::Horizontal;
             }
-            if (m & MapRoad::NoUTurn) {
-                crossroad.ban |= road::NoUTurn;
+            if (m & MapRoad::NoVertical) {
+                crossroad.ban |= road::LeftTurn;
+                crossroad.ban |= road::UTurn;
+                crossroad.ban |= road::Vertical;
             }
     
             for (uint8_t i = 0; i < 4; ++i) {
