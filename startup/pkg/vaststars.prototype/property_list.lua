@@ -153,6 +153,18 @@ local property_list = {
 		value = "$drone_count$",
 		pos = 29,
 	},
+	["weights"] = {
+		icon = "textures/property/delivery-truck-req.texture",
+		desc = "需求车辆",
+		value = "$drone_count$",
+		pos = 30,
+	},
+	["lorry"] = {
+		icon = "textures/property/delivery-truck.texture",
+		desc = "响应车辆",
+		value = "$drone_count$",
+		pos = 31,
+	},
 }
 
 -- for debug
