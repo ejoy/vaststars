@@ -12,19 +12,33 @@ namespace roadnet::road {
         return 1 << (uint16_t)crossType(from, to);
     }
 
-    constexpr uint16_t NoUTurn = 0
+    constexpr uint16_t UTurn = 0
         | crossTypeMask(direction::l, direction::l)
         | crossTypeMask(direction::r, direction::r)
         | crossTypeMask(direction::t, direction::t)
         | crossTypeMask(direction::b, direction::b)
     ;
-
-    constexpr uint16_t NoLeftTurn = 0
+    constexpr uint16_t LeftTurn = 0
         | crossTypeMask(direction::l, direction::t)
         | crossTypeMask(direction::r, direction::b)
         | crossTypeMask(direction::t, direction::r)
         | crossTypeMask(direction::b, direction::l)
     ;
+    constexpr uint16_t RightTurn = 0
+        | crossTypeMask(direction::l, direction::b)
+        | crossTypeMask(direction::r, direction::t)
+        | crossTypeMask(direction::t, direction::l)
+        | crossTypeMask(direction::b, direction::r)
+    ;
+    constexpr uint16_t Horizontal = 0
+        | crossTypeMask(direction::l, direction::r)
+        | crossTypeMask(direction::r, direction::l)
+    ;
+    constexpr uint16_t Vertical = 0
+        | crossTypeMask(direction::t, direction::b)
+        | crossTypeMask(direction::b, direction::t)
+    ;
+    static_assert((UTurn | LeftTurn | RightTurn | Horizontal | Vertical) == 0xFFFF);
 
     struct crossroad {
         #ifdef DEBUG_ROADNET

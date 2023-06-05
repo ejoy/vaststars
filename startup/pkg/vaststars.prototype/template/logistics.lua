@@ -128,7 +128,7 @@ local entities = { {
 }, {
   dir = "S",
   item = "铁矿石",
-  prototype_name = "收货车站",
+  prototype_name = "出货车站",
   x = 154,
   y = 126
 }, {
@@ -349,7 +349,7 @@ local function prepare(world)
       end
   end
   assert(slot)
-  world:container_set(e.chest, idx, {amount = 1, limit = 50})
+  world:container_set(e.chest, idx, {amount = 10, limit = 50})
 end
 
 return {
