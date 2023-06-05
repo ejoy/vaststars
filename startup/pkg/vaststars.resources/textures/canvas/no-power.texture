@@ -4,9 +4,8 @@ compress:
   ios: ASTC6x6
   windows: BC3
 noresize: true
-maxsize: 1024
 normalmap: false
-path: /pkg/vaststars.resources/textures/recipe_icon_canvas.png
+path: ../../images/canvas/no-power.png
 sampler:
   MAG: LINEAR
   MIN: LINEAR

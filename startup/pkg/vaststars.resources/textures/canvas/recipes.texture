@@ -1,11 +1,12 @@
 colorspace: sRGB
 compress:
-  android: ASTC4x4
-  ios: ASTC4x4
+  android: ASTC6x6
+  ios: ASTC6x6
   windows: BC3
 noresize: true
+maxsize: 1024
 normalmap: false
-path: $path ./fluid-indication-arrow-input.png
+path: ../../images/canvas/recipes.png
 sampler:
   MAG: LINEAR
   MIN: LINEAR

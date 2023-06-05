@@ -9,10 +9,10 @@ local datalist = require "datalist"
 local fs = require "filesystem"
 local iprototype = require "gameplay.interface.prototype"
 
-local FLUID_ICON_CANVAS_CFG <const> = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/textures/fluid_icon_canvas.cfg")):read "a")
+local FLUIDS_CFG <const> = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/config/canvas/fluids.cfg")):read "a")
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
-local BG_MATERIAL_PATH = "/pkg/vaststars.resources/materials/fluid_icon_bg.material"
-local ICON_MATERIAL_PATH = "/pkg/vaststars.resources/materials/fluid_icon_canvas.material"
+local BG_MATERIAL_PATH = "/pkg/vaststars.resources/materials/canvas/fluid-bg.material"
+local ICON_MATERIAL_PATH = "/pkg/vaststars.resources/materials/canvas/fluids.material"
 
 local function __get_texture_size(materialpath)
     local res = assetmgr.resource(materialpath)
@@ -39,8 +39,7 @@ local function __draw_bg(id, x, y, multiple)
     local draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x, y, icon_w, icon_h, multiple)
     icanvas.add_item(icanvas.types().ICON,
         id,
-        BG_MATERIAL_PATH,
-        RENDER_LAYER.ICON,
+        icanvas.get_key(BG_MATERIAL_PATH, RENDER_LAYER.ICON),
         {
             texture = {
                 rect = {
@@ -57,7 +56,7 @@ end
 
 local function __draw_icon(id, x, y, fluid, multiple)
     local fluid_typeobject = iprototype.queryById(fluid)
-    local cfg = FLUID_ICON_CANVAS_CFG[fluid_typeobject.icon]
+    local cfg = FLUIDS_CFG[fluid_typeobject.icon]
     if not cfg then
         assert(cfg, ("can not found `%s`"):format(fluid_typeobject.icon))
         return
@@ -67,8 +66,7 @@ local function __draw_icon(id, x, y, fluid, multiple)
     local draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x, y, cfg.width, cfg.height, multiple)
     icanvas.add_item(icanvas.types().ICON,
         id,
-        ICON_MATERIAL_PATH,
-        RENDER_LAYER.ICON_CONTENT,
+        icanvas.get_key(ICON_MATERIAL_PATH, RENDER_LAYER.ICON_CONTENT),
         {
             texture = {
                 rect = {

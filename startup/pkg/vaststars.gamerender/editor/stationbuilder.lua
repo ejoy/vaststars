@@ -21,7 +21,7 @@ local create_selected_boxes = ecs.require "selected_boxes"
 local icanvas = ecs.require "engine.canvas"
 local datalist = require "datalist"
 local fs = require "filesystem"
-local road_entrance_marker_canvas_cfg = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/textures/road_entrance_marker_canvas.cfg")):read "a")
+local ROAD_ENTRANCE_MARKER_CFG = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/config/canvas/road-entrance-marker.cfg")):read "a")
 local math3d = require "math3d"
 local iroadnet_converter = require "roadnet_converter"
 local COLOR_GREEN = math3d.constant("v4", {0.3, 1, 0, 1})
@@ -402,9 +402,9 @@ local function __show_road_entrance_marker(self, typeobject)
 
         local cfg
         if coord.x == min_coord.x and coord.y == min_coord.y and coord.dir == min_coord.dir then
-            cfg = road_entrance_marker_canvas_cfg["white"]
+            cfg = ROAD_ENTRANCE_MARKER_CFG["white"]
         else
-            cfg = road_entrance_marker_canvas_cfg["green"]
+            cfg = ROAD_ENTRANCE_MARKER_CFG["green"]
         end
 
         local x, y, w, h = _get_rect(position[1], position[3] - iterrain.tile_size, cfg.width, cfg.height)
@@ -423,7 +423,7 @@ local function __show_road_entrance_marker(self, typeobject)
     end
 
     local t = {
-        "/pkg/vaststars.resources/materials/road_entrance_marker_canvas.material",
+        "/pkg/vaststars.resources/materials/canvas/road-entrance-marker.material",
         RENDER_LAYER.ICON_CONTENT,
         table.unpack(markers)
     }

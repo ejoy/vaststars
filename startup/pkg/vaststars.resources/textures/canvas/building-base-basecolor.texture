@@ -6,7 +6,7 @@ compress:
 normalmap: false
 maxsize: 1024
 mipmap: true
-path: /pkg/vaststars.resources/textures/building_base_basecolor.png
+path: ../../images/canvas/building-base-basecolor.png
 sampler:
   MAG: LINEAR
   MIN: LINEAR

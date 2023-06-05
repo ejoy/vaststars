@@ -139,8 +139,8 @@ local function build_road(world, building_eid, building, map, road_cache, endpoi
 
         road_cache[key] = ecs:new {
             road = {
-                x = building.x + dx,
-                y = building.y + dy,
+                x = (building.x + dx) // ROAD_TILE_WIDTH_SCALE,
+                y = (building.y + dy) // ROAD_TILE_HEIGHT_SCALE,
                 mask = map[key],
                 classid = id,
             },

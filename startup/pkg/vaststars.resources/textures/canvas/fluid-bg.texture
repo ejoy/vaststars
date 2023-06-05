@@ -1,11 +1,11 @@
 colorspace: sRGB
 compress:
-  android: ASTC4x4
-  ios: ASTC4x4
+  android: ASTC6x6
+  ios: ASTC6x6
   windows: BC3
 noresize: true
 normalmap: false
-path: $path ./fluid-indication-arrow-output.png
+path: ../../images/canvas/fluid-bg.png
 sampler:
   MAG: LINEAR
   MIN: LINEAR

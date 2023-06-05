@@ -3,6 +3,7 @@ local world = ecs.world
 local w = world.w
 
 local irl = ecs.import.interface "ant.render|irender_layer"
+local render_layer_def = require "render_layer_def"
 
 local RENDER_LAYER = {}
 
@@ -25,8 +26,8 @@ local function init(layers)
         end
     end
 end
+init(render_layer_def)
 
 return {
-    init = init,
     RENDER_LAYER = RENDER_LAYER,
 }

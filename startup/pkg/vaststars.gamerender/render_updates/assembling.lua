@@ -14,7 +14,7 @@ local iterrain = ecs.require "terrain"
 local icanvas = ecs.require "engine.canvas"
 local datalist = require "datalist"
 local fs = require "filesystem"
-local recipe_icon_canvas_cfg = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/textures/recipe_icon_canvas.cfg")):read "a")
+local RECIPES_CFG = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/config/canvas/recipes.cfg")):read "a")
 local irecipe = require "gameplay.interface.recipe"
 local gameplay_core = require "gameplay.core"
 local interval_call = ecs.require "engine.interval_call"
@@ -74,14 +74,13 @@ end
 local function __draw_icon(e, object_id, building_srt, status, recipe)
     local x, y = building_srt.t[1], building_srt.t[3]
     if status == ICON_STATUS_NOPOWER then
-        local material_path = "/pkg/vaststars.resources/materials/blackout.material"
+        local material_path = "/pkg/vaststars.resources/materials/canvas/no-power.material"
         local icon_w, icon_h = __get_texture_size(material_path)
         local texture_x, texture_y, texture_w, texture_h = 0, 0, icon_w, icon_h
         local draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x, y, icon_w, icon_h, 1.5)
         icanvas.add_item(icanvas.types().ICON,
             object_id,
-            material_path,
-            RENDER_LAYER.ICON_CONTENT,
+            icanvas.get_key(material_path, RENDER_LAYER.ICON),
             {
                 texture = {
                     rect = {
@@ -97,14 +96,13 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
     else
         local typeobject = iprototype.queryById(e.building.prototype)
         if status == ICON_STATUS_NORECIPE then
-            local material_path = "/pkg/vaststars.resources/materials/setup2.material"
+            local material_path = "/pkg/vaststars.resources/materials/canvas/no-recipe.material"
             local icon_w, icon_h = __get_texture_size(material_path)
             local texture_x, texture_y, texture_w, texture_h = 0, 0, icon_w, icon_h
             local draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x, y, icon_w, icon_h, 1.5)
             icanvas.add_item(icanvas.types().ICON,
                 object_id,
-                material_path,
-                RENDER_LAYER.ICON,
+                icanvas.get_key(material_path, RENDER_LAYER.ICON),
                 {
                     texture = {
                         rect = {
@@ -124,14 +122,13 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
             local texture_x, texture_y, texture_w, texture_h
 
             if typeobject.assembling_icon ~= false then
-                material_path = "/pkg/vaststars.resources/materials/recipe_icon_bg.material"
+                material_path = "/pkg/vaststars.resources/materials/canvas/recipe-bg.material"
                 icon_w, icon_h = __get_texture_size(material_path)
                 texture_x, texture_y, texture_w, texture_h = 0, 0, icon_w, icon_h
                 draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x, y, icon_w, icon_h, 1.5)
                 icanvas.add_item(icanvas.types().ICON,
                     object_id,
-                    material_path,
-                    RENDER_LAYER.ICON,
+                    icanvas.get_key(material_path, RENDER_LAYER.ICON),
                     {
                         texture = {
                             rect = {
@@ -146,18 +143,17 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
                 )
 
                 local recipe_typeobject = assert(iprototype.queryById(recipe))
-                local cfg = recipe_icon_canvas_cfg[recipe_typeobject.recipe_icon]
+                local cfg = RECIPES_CFG[recipe_typeobject.recipe_icon]
                 if not cfg then
                     assert(cfg, ("can not found `%s`"):format(recipe_typeobject.recipe_icon))
                     return
                 end
-                material_path = "/pkg/vaststars.resources/materials/recipe_icon_canvas.material"
+                material_path = "/pkg/vaststars.resources/materials/canvas/recipes.material"
                 texture_x, texture_y, texture_w, texture_h = cfg.x, cfg.y, cfg.width, cfg.height
                 draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x, y, cfg.width, cfg.height, 1.5)
                 icanvas.add_item(icanvas.types().ICON,
                     object_id,
-                    material_path,
-                    RENDER_LAYER.ICON_CONTENT,
+                    icanvas.get_key(material_path, RENDER_LAYER.ICON_CONTENT),
                     {
                         texture = {
                             rect = {
@@ -201,9 +197,9 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
                             local dx, dy = iprototype.move_coord(connection_x, connection_y, connection_dir, 1, 1)
 
                             if r[2] == "input" then
-                                material_path = "/pkg/vaststars.resources/materials/fluid-indication-arrow-input.material"
+                                material_path = "/pkg/vaststars.resources/materials/canvas/fluid-indication-arrow-input.material"
                             else
-                                material_path = "/pkg/vaststars.resources/materials/fluid-indication-arrow-output.material"
+                                material_path = "/pkg/vaststars.resources/materials/canvas/fluid-indication-arrow-output.material"
                             end
 
                             icon_w, icon_h = __get_texture_size(material_path)
@@ -216,8 +212,7 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
                             )
                             icanvas.add_item(icanvas.types().ICON,
                                 object_id,
-                                material_path,
-                                RENDER_LAYER.FLUID_INDICATION_ARROW,
+                                icanvas.get_key(material_path, RENDER_LAYER.FLUID_INDICATION_ARROW),
                                 {
                                     texture = {
                                         rect = {
@@ -287,14 +282,13 @@ end
 
 local function __draw_consumer_icon(object_id, building_srt)
     local x, y = building_srt.t[1], building_srt.t[3]
-    local material_path = "/pkg/vaststars.resources/materials/blackout.material"
+    local material_path = "/pkg/vaststars.resources/materials/canvas/no-power.material"
     local icon_w, icon_h = __get_texture_size(material_path)
     local texture_x, texture_y, texture_w, texture_h = 0, 0, icon_w, icon_h
     local draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x, y, icon_w, icon_h, 1.5)
     icanvas.add_item(icanvas.types().ICON,
         object_id,
-        material_path,
-        RENDER_LAYER.ICON_CONTENT,
+        icanvas.get_key(material_path, RENDER_LAYER.ICON_CONTENT),
         {
             texture = {
                 rect = {

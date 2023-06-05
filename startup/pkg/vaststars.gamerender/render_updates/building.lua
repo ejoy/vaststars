@@ -10,7 +10,7 @@ local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local iterrain = ecs.require "terrain"
 local datalist = require "datalist"
 local fs = require "filesystem"
-local building_base_cfg = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/textures/building_base.cfg")):read "a")
+local building_base_cfg = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/config/canvas/building-base.cfg")):read "a")
 local building_sys = ecs.system "building_system"
 local gameplay_core = require "gameplay.core"
 
@@ -34,8 +34,7 @@ local function __draw_building_base(object_id, building_srt, w, h)
 
     icanvas.add_item(icanvas.types().BUILDING_BASE,
         object_id,
-        "/pkg/vaststars.resources/textures/canvas_texture.material",
-        RENDER_LAYER.BUILDING_BASE,
+        icanvas.get_key("/pkg/vaststars.resources/materials/canvas/building-base.material", RENDER_LAYER.BUILDING_BASE),
         {
             texture = {
                 rect = {

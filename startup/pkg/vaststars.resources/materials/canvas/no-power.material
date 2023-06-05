@@ -6,6 +6,6 @@ fx:
 properties:
   s_basecolor:
     stage: 0
-    texture: /pkg/vaststars.resources/textures/fluid-indication-arrow-output.texture
+    texture: /pkg/vaststars.resources/textures/canvas/no-power.texture
   u_basecolor_factor: {2.0, 2.0, 2.0, 1.0}
 state: /pkg/ant.resources/materials/states/blend.state

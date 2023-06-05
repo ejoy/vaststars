@@ -3,6 +3,8 @@ local debugger
 local fn = "/pkg/vaststars.prototype/debugger.lua"
 if fs.exists(fs.path(fn)) then
     debugger = import_package "vaststars.prototype"("debugger")
+else
+    debugger = {}
 end
 
 local options = {

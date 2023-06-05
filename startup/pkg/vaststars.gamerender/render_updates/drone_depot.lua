@@ -100,14 +100,13 @@ local function __get_draw_rect(x, y, icon_w, icon_h, multiple)
 end
 
 local function __draw_icon(object_id, x, y)
-    local material_path = "/pkg/vaststars.resources/materials/setup2.material"
+    local material_path = "/pkg/vaststars.resources/materials/canvas/no-recipe.material"
     local icon_w, icon_h = __get_texture_size(material_path)
     local texture_x, texture_y, texture_w, texture_h = 0, 0, icon_w, icon_h
     local draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x, y, icon_w, icon_h, 1.5)
     icanvas.add_item(icanvas.types().ICON,
         object_id,
-        material_path,
-        RENDER_LAYER.ICON,
+        icanvas.get_key(material_path, RENDER_LAYER.ICON),
         {
             texture = {
                 rect = {

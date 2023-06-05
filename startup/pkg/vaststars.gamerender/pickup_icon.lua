@@ -6,26 +6,13 @@ local iprototype = require "gameplay.interface.prototype"
 local assetmgr = import_package "ant.asset"
 local iterrain = ecs.require "terrain"
 local irecipe = require "gameplay.interface.recipe"
-local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
-local icas = ecs.import.interface "ant.terrain|icanvas"
-local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
-local constant = require "gameplay.interface.constant"
-
-local ROTATORS = constant.ROTATORS
+local icanvas = ecs.require "engine.canvas"
+local math3d = require "math3d"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
 local fs = require "filesystem"
 local datalist = require "datalist"
-local fluid_icon_canvas_cfg <const> = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/textures/fluid_icon_canvas.cfg")):read "a")
-
-local entity_events = {}
-entity_events.add_item = function(self, e, ...)
-    icas.add_items(e, ...)
-end
-
-entity_events.iom = function(self, e, method, ...)
-    iom[method](e, ...)
-end
+local FLUIDS_CFG <const> = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/config/canvas/fluids.cfg")):read "a")
 
 local function __get_texture_size(materialpath)
     local res = assetmgr.resource(materialpath)
@@ -53,8 +40,8 @@ local function __calc_begin_xy(x, y, w, h)
     return begin_x, begin_y
 end
 
-local function __create_icon(canvas, fluid, begin_x, begin_y, connection_x, connection_y, render_layer)
-    local material_path = "/pkg/vaststars.resources/materials/fluid_icon_bg.material"
+local function __create_icon(fluid, begin_x, begin_y, connection_x, connection_y)
+    local material_path = "/pkg/vaststars.resources/materials/canvas/fluid-bg.material"
     local texture_x, texture_y, texture_w, texture_h = 0, 0, __get_texture_size(material_path)
     local draw_x, draw_y, draw_w, draw_h = __get_draw_rect(
         begin_x + connection_x * iterrain.tile_size + iterrain.tile_size / 2,
@@ -75,16 +62,16 @@ local function __create_icon(canvas, fluid, begin_x, begin_y, connection_x, conn
         },
         x = draw_x, y = draw_y, w = draw_w, h = draw_h,
     }
-    canvas:send("add_item", material_path, render_layer, item1)
+    icanvas.add_item(icanvas.types().PICKUP_ICON, 0, icanvas.get_key(material_path, RENDER_LAYER.ICON), item1)
 
     local fluid_typeobject = iprototype.queryById(fluid)
-    local cfg = fluid_icon_canvas_cfg[fluid_typeobject.icon]
+    local cfg = FLUIDS_CFG[fluid_typeobject.icon]
     if not cfg then
         assert(cfg, ("can not found `%s`"):format(fluid_typeobject.icon))
         return
     end
 
-    local material_path = "/pkg/vaststars.resources/materials/fluid_icon_canvas.material"
+    local material_path = "/pkg/vaststars.resources/materials/canvas/fluids.material"
     texture_x, texture_y, texture_w, texture_h = cfg.x, cfg.y, cfg.width, cfg.height
     draw_x, draw_y, draw_w, draw_h = __get_draw_rect(
         begin_x + connection_x * iterrain.tile_size + iterrain.tile_size / 2,
@@ -104,28 +91,10 @@ local function __create_icon(canvas, fluid, begin_x, begin_y, connection_x, conn
         },
         x = draw_x, y = draw_y, w = draw_w, h = draw_h,
     }
-    canvas:send("add_item", material_path, render_layer, item2)
+    icanvas.add_item(icanvas.types().PICKUP_ICON, 0, icanvas.get_key(material_path, RENDER_LAYER.ICON_CONTENT), item2)
 end
 
-local function __create_icons(self, typeobject, recipe, building_srt, dir, parent)
-    self.__canvas = ientity_object.create(ecs.create_entity {
-        policy = {
-            "ant.scene|scene_object",
-            "ant.terrain|canvas",
-            "ant.general|name",
-        },
-        data = {
-            name = "canvas",
-            scene = {
-                parent = parent,
-                t = {0.0, iterrain.surface_height + 10, 0.0},
-            },
-            canvas = {
-                show = true,
-            },
-        }
-    }, entity_events)
-
+local function __create_icons(self, typeobject, recipe, building_srt, dir)
     local recipe_typeobject = assert(iprototype.queryById(recipe))
     local t = {
         {"ingredients", "input"},
@@ -140,7 +109,7 @@ local function __create_icons(self, typeobject, recipe, building_srt, dir, paren
                 local c = assert(typeobject.fluidboxes[r[2]][idx])
                 local connection = assert(c.connections[1])
                 local connection_x, connection_y = iprototype.rotate_connection(connection.position, dir, typeobject.area)
-                __create_icon(self.__canvas, v.id, begin_x, begin_y, connection_x, connection_y, RENDER_LAYER.ICON)
+                __create_icon(v.id, begin_x, begin_y, connection_x, connection_y)
             end
         end
     end
@@ -150,25 +119,32 @@ local mt = {}
 mt.__index = mt
 
 function mt:remove()
-    if not self.__canvas then
-        return
-    end
-    self.__canvas:remove()
+    icanvas.remove_item(icanvas.types().PICKUP_ICON, 0)
+    icanvas.show(icanvas.types().PICKUP_ICON, false)
+    local obj = icanvas.get(icanvas.types().PICKUP_ICON)
+    obj:send("iom", "set_position", {0, 0, 0})
 end
 
 function mt:on_position_change(building_srt, dir)
-    -- if not self.typeobject.fluidboxes then
-    --     return
-    -- end
-    -- self:remove()
-    -- __create_icons(self, self.typeobject, self.recipe, building_srt, dir)
+    if not self.typeobject.fluidboxes then
+        return
+    end
 
-    -- self.__canvas:send("iom", "set_position", building_srt.t)
-    -- self.__canvas:send("iom", "set_rotation", ROTATORS[dir])
+    local delta = math3d.ref(math3d.sub(building_srt.t, self.position))
+    local obj = icanvas.get(icanvas.types().PICKUP_ICON)
+    obj:send("iom", "move_delta", delta)
+    self.position = building_srt.t
+
+    if dir ~= self.dir then
+        icanvas.remove_item(icanvas.types().PICKUP_ICON, 0)
+        obj:send("iom", "set_position", {0, 0, 0})
+        __create_icons(self, self.typeobject, self.recipe, building_srt, dir)
+        self.dir = dir
+    end
 end
 
 local m = {}
-function m.create(typeobject, dir, recipe, building_srt, parent)
+function m.create(typeobject, dir, recipe, building_srt)
     local self = setmetatable({}, mt)
     self.typeobject = typeobject
     if not typeobject.fluidboxes then
@@ -177,7 +153,9 @@ function m.create(typeobject, dir, recipe, building_srt, parent)
 
     self.dir = dir
     self.recipe = recipe
-    __create_icons(self, typeobject, recipe, building_srt, dir, parent)
+    self.position = building_srt.t
+    __create_icons(self, typeobject, recipe, building_srt, dir)
+    icanvas.show(icanvas.types().PICKUP_ICON, true)
     return self
 end
 return m
