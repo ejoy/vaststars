@@ -226,6 +226,11 @@ local function get_property(e, typeobject)
             end
         end
     end
+
+    if e.station then
+        t.values['weights'] = e.station.weights
+        t.values['lorry'] = e.station.lorry
+    end
     return t
 end
 

@@ -156,13 +156,13 @@ local property_list = {
 	["weights"] = {
 		icon = "textures/property/delivery-truck-req.texture",
 		desc = "需求车辆",
-		value = "$drone_count$",
+		value = "$weights$",
 		pos = 30,
 	},
 	["lorry"] = {
 		icon = "textures/property/delivery-truck.texture",
 		desc = "响应车辆",
-		value = "$drone_count$",
+		value = "$lorry$",
 		pos = 31,
 	},
 }
