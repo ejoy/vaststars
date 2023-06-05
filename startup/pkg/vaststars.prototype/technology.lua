@@ -1541,12 +1541,12 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "物流学1" {
-    desc = "研究送货车站和收货车站建造工艺",
+    desc = "研究出货车站和收货车站建造工艺",
     type = { "tech" },
     icon = "textures/science/tech-research.texture",
     effects = {
-      unlock_recipe = {"送货车站打印","收货车站打印"},
-      unlock_item = {"送货车站","收货车站"},
+      unlock_recipe = {"出货车站打印","收货车站打印"},
+      unlock_item = {"出货车站","收货车站"},
     },
     prerequisites = {"铁矿放置采矿机"},
     ingredients = {
@@ -1556,11 +1556,11 @@ local prototype = gameplay.register.prototype
     time = "1s"
   }
 
-  prototype "放置送货车站" {
+  prototype "放置出货车站" {
     desc = "放置1座修路站",
     icon = "textures/construct/industry.texture",
     type = { "task" },
-    task = {"select_entity", 0, "送货车站"},
+    task = {"select_entity", 0, "出货车站"},
     prerequisites = {"物流学1"},
     count = 1,
     effects = {
@@ -1585,7 +1585,7 @@ local prototype = gameplay.register.prototype
       },
     },
     sign_desc = {
-      { desc = "搜索废墟传送至建造中心生产并放置1个送货车站", icon = "textures/construct/industry.texture"},
+      { desc = "搜索废墟传送至建造中心生产并放置1个出货车站", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -1623,7 +1623,7 @@ local prototype = gameplay.register.prototype
     icon = "textures/construct/industry.texture",
     type = { "task" },
     task = {"stat_production", 0, "运输车辆I"},
-    prerequisites = {"放置送货车站","放置收货车站"},
+    prerequisites = {"放置出货车站","放置收货车站"},
     count = 4,
     tips_pic = {
       "textures/task_tips_pic/task_produce_ore3.texture",

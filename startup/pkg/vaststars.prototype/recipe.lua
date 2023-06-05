@@ -1166,7 +1166,7 @@ prototype "车辆装配" {
 --     description = "打印无人机仓库I",
 -- }
 
--- prototype "送货车站打印" {
+-- prototype "出货车站打印" {
 --     type = { "recipe" },
 --     category = "框架打印",
 --     recipe_group =  "物流",
@@ -1174,13 +1174,13 @@ prototype "车辆装配" {
 --     recipe_icon =  "textures/construct/broken-goodsstation-output.texture",
 --     ingredients = {
 --         {"石砖", 8},
---         {"送货车站框架", 1},
+--         {"出货车站框架", 1},
 --     },
 --     results = {
---         {"送货车站", 1},
+--         {"出货车站", 1},
 --     },
 --     time = "8s",
---     description = "打印送货车站",
+--     description = "打印出货车站",
 -- }
 
 -- prototype "液罐打印" {
@@ -1576,7 +1576,7 @@ prototype "车站打印" {
     description = "打印车站",
 }
 
-prototype "送货车站打印" {
+prototype "出货车站打印" {
     type = { "recipe" },
     category = "建筑打印",
     recipe_group =  "物流",
@@ -1587,10 +1587,10 @@ prototype "送货车站打印" {
         {"石砖", 4},
     },
     results = {
-        {"送货车站", 1},
+        {"出货车站", 1},
     },
     time = "8s",
-    description = "打印送货车站",
+    description = "打印出货车站",
 }
 
 prototype "收货车站打印" {

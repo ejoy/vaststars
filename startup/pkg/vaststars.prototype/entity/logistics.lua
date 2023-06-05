@@ -279,8 +279,8 @@ prototype "修管站" {
     build_area = "24x24",
 }
 
---送货车站需要设置送货类型以及需求车辆
-prototype "送货车站" {
+--出货车站需要设置送货类型以及需求车辆
+prototype "出货车站" {
     model = "prefabs/delivery-station-1.prefab",
     icon = "textures/building_pic/small_pic_goods_station1.texture",
     background = "textures/build_background/pic_chest.texture",

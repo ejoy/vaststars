@@ -241,14 +241,14 @@ prototype "车站框架" {
     item_description = "用于建造车站的框架",
 }
 
-prototype "送货车站框架" {
+prototype "出货车站框架" {
     type = {"item"},
     stack = 4,
     pile = "2x2x4",
     pile_model = "prefabs/stackeditems/iron-ore.prefab",
     icon = "textures/construct/broken-goodsstation-output.texture",
     group = {"加工"},
-    item_description = "用于建造送货车站的框架",
+    item_description = "用于建造出货车站的框架",
 }
 
 prototype "收货车站框架" {

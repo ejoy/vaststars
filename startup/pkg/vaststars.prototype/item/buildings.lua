@@ -184,7 +184,7 @@ prototype "科研中心I" {
     item_description = "研究科技技术的中心",
 }
 
-prototype "送货车站" {
+prototype "出货车站" {
     type = {"item"},
     group = {"物流"},
     stack = 10,

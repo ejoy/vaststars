@@ -63,7 +63,7 @@ local entities = { {
     dir = "N",
     prototype_name = "铁制电线杆",
     x = 122,
-    y = 129
+    y = 130
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
@@ -3068,7 +3068,7 @@ local entities = { {
     dir = "N",
     prototype_name = "铁制电线杆",
     x = 122,
-    y = 121
+    y = 122
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
@@ -3370,7 +3370,7 @@ local entities = { {
   }, {
     dir = "S",
     item = "铁矿石",
-    prototype_name = "送货车站",
+    prototype_name = "出货车站",
     x = 94,
     y = 162
   }, {
@@ -3382,13 +3382,13 @@ local entities = { {
   }, {
     dir = "S",
     item = "碾碎铁矿石",
-    prototype_name = "送货车站",
+    prototype_name = "出货车站",
     x = 92,
     y = 152
   }, {
     dir = "S",
     item = "碾碎铁矿石",
-    prototype_name = "送货车站",
+    prototype_name = "出货车站",
     x = 108,
     y = 152
   }, {
@@ -3464,7 +3464,7 @@ local entities = { {
   }, {
     dir = "W",
     item = "塑料",
-    prototype_name = "送货车站",
+    prototype_name = "出货车站",
     x = 180,
     y = 164
   }, {
@@ -3481,7 +3481,7 @@ local entities = { {
     y = 162
   }, {
     dir = "W",
-    prototype_name = "送货车站",
+    prototype_name = "出货车站",
     x = 190,
     y = 176
   }, {
@@ -3493,13 +3493,13 @@ local entities = { {
   }, {
     dir = "E",
     item = "机械科技包",
-    prototype_name = "送货车站",
+    prototype_name = "出货车站",
     x = 184,
     y = 168
   }, {
     dir = "N",
     item = "碎石",
-    prototype_name = "送货车站",
+    prototype_name = "出货车站",
     x = 184,
     y = 132
   }, {
@@ -3510,13 +3510,13 @@ local entities = { {
   }, {
     dir = "E",
     item = "铁矿石",
-    prototype_name = "送货车站",
+    prototype_name = "出货车站",
     x = 194,
     y = 120
   }, {
     dir = "S",
     item = "铁矿石",
-    prototype_name = "送货车站",
+    prototype_name = "出货车站",
     x = 168,
     y = 126
   }, {
@@ -3538,25 +3538,25 @@ local entities = { {
   }, {
     dir = "E",
     item = "碎石",
-    prototype_name = "送货车站",
+    prototype_name = "出货车站",
     x = 142,
     y = 142
   }, {
     dir = "N",
     item = "石墨",
-    prototype_name = "送货车站",
+    prototype_name = "出货车站",
     x = 124,
     y = 160
   }, {
     dir = "N",
     item = "气候科技包",
-    prototype_name = "送货车站",
+    prototype_name = "出货车站",
     x = 154,
     y = 122
   }, {
     dir = "N",
     item = "气候科技包",
-    prototype_name = "送货车站",
+    prototype_name = "出货车站",
     x = 142,
     y = 122
   }, {
@@ -3597,31 +3597,31 @@ local entities = { {
   }, {
     dir = "W",
     item = "铁矿石",
-    prototype_name = "送货车站",
+    prototype_name = "出货车站",
     x = 64,
     y = 116
   }, {
     dir = "S",
     item = "碎石",
-    prototype_name = "送货车站",
+    prototype_name = "出货车站",
     x = 74,
     y = 128
   }, {
     dir = "S",
     item = "铁矿石",
-    prototype_name = "送货车站",
+    prototype_name = "出货车站",
     x = 206,
     y = 160
   }, {
     dir = "S",
     item = "碎石",
-    prototype_name = "送货车站",
+    prototype_name = "出货车站",
     x = 116,
     y = 126
   }, {
     dir = "E",
     item = "碎石",
-    prototype_name = "送货车站",
+    prototype_name = "出货车站",
     x = 168,
     y = 114
   }, {
@@ -3638,6 +3638,7 @@ local entities = { {
     y = 192
   }, {
     dir = "S",
+    item = "石墨",
     prototype_name = "收货车站",
     x = 96,
     y = 140
@@ -3662,13 +3663,13 @@ local entities = { {
   }, {
     dir = "S",
     item = "铁齿轮",
-    prototype_name = "送货车站",
+    prototype_name = "出货车站",
     x = 88,
     y = 140
   }, {
     dir = "S",
     item = "铁齿轮",
-    prototype_name = "送货车站",
+    prototype_name = "出货车站",
     x = 112,
     y = 140
   }, {
@@ -3698,7 +3699,7 @@ local entities = { {
   }, {
     dir = "S",
     item = "电动机I",
-    prototype_name = "送货车站",
+    prototype_name = "出货车站",
     x = 102,
     y = 128
   }, {
@@ -3755,7 +3756,7 @@ local entities = { {
   }, {
     dir = "W",
     item = "地质科技包",
-    prototype_name = "送货车站",
+    prototype_name = "出货车站",
     x = 104,
     y = 120
   }, {
@@ -3800,7 +3801,7 @@ local entities = { {
   }, {
     dir = "E",
     item = "铁矿石",
-    prototype_name = "送货车站",
+    prototype_name = "出货车站",
     x = 134,
     y = 170
   }, {
@@ -3812,19 +3813,19 @@ local entities = { {
   }, {
     dir = "N",
     item = "碎石",
-    prototype_name = "送货车站",
+    prototype_name = "出货车站",
     x = 100,
     y = 148
   }, {
     dir = "N",
     item = "碎石",
-    prototype_name = "送货车站",
+    prototype_name = "出货车站",
     x = 88,
     y = 148
   }, {
     dir = "N",
     item = "碎石",
-    prototype_name = "送货车站",
+    prototype_name = "出货车站",
     x = 112,
     y = 148
   }, {
@@ -3842,7 +3843,7 @@ local entities = { {
   }, {
     dir = "N",
     item = "碎石",
-    prototype_name = "送货车站",
+    prototype_name = "出货车站",
     x = 100,
     y = 158
   }, {
@@ -3860,9 +3861,57 @@ local entities = { {
   }, {
     dir = "E",
     item = "铁矿石",
-    prototype_name = "送货车站",
+    prototype_name = "出货车站",
     x = 68,
     y = 92
+  }, {
+    dir = "N",
+    item = "碎石",
+    prototype_name = "收货车站",
+    x = 122,
+    y = 150
+  }, {
+    dir = "N",
+    item = "碎石",
+    prototype_name = "无人机仓库I",
+    x = 122,
+    y = 148
+  }, {
+    dir = "N",
+    prototype_name = "组装机I",
+    recipe = "地质科技包1",
+    x = 124,
+    y = 145
+  }, {
+    dir = "N",
+    prototype_name = "组装机I",
+    recipe = "地质科技包1",
+    x = 127,
+    y = 145
+  }, {
+    dir = "N",
+    item = "地质科技包",
+    prototype_name = "无人机仓库I",
+    x = 130,
+    y = 148
+  }, {
+    dir = "N",
+    item = "地质科技包",
+    prototype_name = "出货车站",
+    x = 128,
+    y = 150
+  }, {
+    dir = "N",
+    item = "碎石",
+    prototype_name = "无人机仓库I",
+    x = 124,
+    y = 148
+  }, {
+    dir = "N",
+    item = "地质科技包",
+    prototype_name = "无人机仓库I",
+    x = 128,
+    y = 148
   } }
 local road = { {
     mask = 78,
@@ -4135,7 +4184,7 @@ local road = { {
     x = 68,
     y = 76
   }, {
-    mask = 5,
+    mask = 71,
     prototype = "砖石公路-X型",
     x = 61,
     y = 76
@@ -4785,7 +4834,7 @@ local road = { {
     x = 83,
     y = 62
   }, {
-    mask = 5,
+    mask = 71,
     prototype = "砖石公路-X型",
     x = 64,
     y = 76
@@ -4835,7 +4884,7 @@ local road = { {
     x = 63,
     y = 76
   }, {
-    mask = 5,
+    mask = 103,
     prototype = "砖石公路-X型",
     x = 62,
     y = 76
@@ -4845,7 +4894,7 @@ local road = { {
     x = 67,
     y = 76
   }, {
-    mask = 5,
+    mask = 103,
     prototype = "砖石公路-X型",
     x = 65,
     y = 76
