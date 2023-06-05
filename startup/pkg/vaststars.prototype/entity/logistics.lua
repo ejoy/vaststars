@@ -30,7 +30,7 @@ prototype "指挥中心" {
         {position={3, 4}, prototype = "砖石公路-L型", dir = "S", mask={"Endpoint"}},
     },
     affected_roads = {
-        {position={1, 6}, dir = "N", mask={"NoUTurn"}},
+        {position={1, 6}, dir = "N", mask={"NoUTurn", "NoLeftTurn"}},
         {position={3, 6}, dir = "N", mask={"NoUTurn", "NoLeftTurn"}},
     },
     move = false,
@@ -301,7 +301,7 @@ prototype "出货车站" {
         {position={2, 0}, prototype = "砖石公路-L型", dir = "S", mask={"Endpoint"}},
     },
     affected_roads = {
-        {position={0, 2}, dir = "N", mask={"NoUTurn"}},
+        {position={0, 2}, dir = "N", mask={"NoUTurn", "NoLeftTurn"}},
         {position={2, 2}, dir = "N", mask={"NoUTurn", "NoLeftTurn"}},
     },
     move = false,
@@ -330,7 +330,7 @@ prototype "收货车站" {
         {position={2, 0}, prototype = "砖石公路-L型", dir = "S", mask={"Endpoint"}},
     },
     affected_roads = {
-        {position={0, 2}, dir = "N", mask={"NoUTurn"}},
+        {position={0, 2}, dir = "N", mask={"NoUTurn", "NoLeftTurn"}},
         {position={2, 2}, dir = "N", mask={"NoUTurn", "NoLeftTurn"}},
     },
     move = false,
