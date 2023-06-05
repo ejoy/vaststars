@@ -3841,6 +3841,7 @@ local entities = { {
     y = 142
   }, {
     dir = "N",
+    item = "碎石",
     prototype_name = "送货车站",
     x = 100,
     y = 158
