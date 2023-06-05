@@ -190,6 +190,9 @@ function mt:on_position_change(building_srt, dir)
     end
 end
 
+function mt:on_status_change(status)
+end
+
 local m = {}
 function m.create(typeobject, dir, recipe, building_srt)
     local self = setmetatable({}, mt)

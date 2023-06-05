@@ -19,7 +19,8 @@ function mt:on_status_change(valid)
     self.selected_boxes:set_color_transition(color, 400)
 end
 
-function mt:on_position_change(building_srt)
+function mt:on_position_change(building_srt, dir)
+    self.selected_boxes:set_wh(iprototype.rotate_area(self.typeobject.area, dir))
     self.selected_boxes:set_position(building_srt.t)
 end
 
@@ -36,14 +37,14 @@ return function (position, typeobject, dir, valid)
     else
         color = SPRITE_COLOR.CONSTRUCT_OUTLINE_SELF_INVALID
     end
-    local selected_boxes = create_selected_boxes(
+
+    self.typeobject = typeobject
+    self.selected_boxes = create_selected_boxes(
         {
             "/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab",
             "/pkg/vaststars.resources/prefabs/selected-box-no-animation-line.prefab",
         },
         position, color, iprototype.rotate_area(typeobject.area, dir)
     )
-
-    self.selected_boxes = selected_boxes
     return self
 end

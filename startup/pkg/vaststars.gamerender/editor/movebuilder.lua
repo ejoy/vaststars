@@ -13,7 +13,7 @@ local ipower_line = ecs.require "power_line"
 local imining = require "gameplay.interface.mining"
 local math3d = require "math3d"
 local iconstant = require "gameplay.interface.constant"
-local coord_system = require "global".coord_system
+local coord_system = ecs.require "terrain"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local ALL_DIR = iconstant.ALL_DIR
 local igrid_entity = ecs.require "engine.grid_entity"
@@ -30,6 +30,8 @@ local terrain = ecs.require "terrain"
 local gameplay_core = require "gameplay.core"
 local gameplay = import_package "vaststars.gameplay"
 local iroad = gameplay.interface "road"
+local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_box"
+local create_selected_boxes = ecs.require "selected_boxes"
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -83,6 +85,151 @@ local function __create_self_sprite(typeobject, x, y, dir, sprite_color)
         sprite = create_sprite(x + offset_x, y + offset_y, aw, ah, dir, sprite_color)
     end
     return sprite
+end
+
+
+local function __get_nearby_buldings(x, y, w, h)
+    local r = {}
+    local begin_x, begin_y = coord_system:bound_coord(x - ((10 - w) // 2), y - ((10 - h) // 2))
+    local end_x, end_y = coord_system:bound_coord(x + ((10 - w) // 2) + w, y + ((10 - h) // 2) + h)
+    for x = begin_x, end_x do
+        for y = begin_y, end_y do
+            local object = objects:coord(x, y)
+            if object then
+                r[object.id] = object
+            end
+        end
+    end
+    return r
+end
+
+local function __is_building_intersect(x1, y1, w1, h1, x2, y2, w2, h2)
+    local x1_1, y1_1 = x1, y1
+    local x1_2, y1_2 = x1 + w1 - 1, y1
+    local x1_3, y1_3 = x1, y1 + h1 - 1
+    local x1_4, y1_4 = x1 + w1 - 1, y1 + h1 - 1
+
+    if (x1_1 >= x2 and x1_1 <= x2 + w2 - 1 and y1_1 >= y2 and y1_1 <= y2 + h2 - 1) or
+        (x1_2 >= x2 and x1_2 <= x2 + w2 - 1 and y1_2 >= y2 and y1_2 <= y2 + h2 - 1) or
+        (x1_3 >= x2 and x1_3 <= x2 + w2 - 1 and y1_3 >= y2 and y1_3 <= y2 + h2 - 1) or
+        (x1_4 >= x2 and x1_4 <= x2 + w2 - 1 and y1_4 >= y2 and y1_4 <= y2 + h2 - 1) then
+        return true
+    end
+
+    local x2_1, y2_1 = x2, y2
+    local x2_2, y2_2 = x2 + w2 - 1, y2
+    local x2_3, y2_3 = x2, y2 + h2 - 1
+    local x2_4, y2_4 = x2 + w2 - 1, y2 + h2 - 1
+
+    if (x2_1 >= x1 and x2_1 <= x1 + w1 - 1 and y2_1 >= y1 and y2_1 <= y1 + h1 - 1) or
+        (x2_2 >= x1 and x2_2 <= x1 + w1 - 1 and y2_2 >= y1 and y2_2 <= y1 + h1 - 1) or
+        (x2_3 >= x1 and x2_3 <= x1 + w1 - 1 and y2_3 >= y1 and y2_3 <= y1 + h1 - 1) or
+        (x2_4 >= x1 and x2_4 <= x1 + w1 - 1 and y2_4 >= y1 and y2_4 <= y1 + h1 - 1) then
+        return true
+    end
+
+    return false
+end
+
+local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject)
+    local nearby_buldings = __get_nearby_buldings(x, y, iprototype.unpackarea(typeobject.area))
+    local w, h = iprototype.rotate_area(typeobject.area, dir)
+
+    local redraw = {}
+    for object_id, object in pairs(nearby_buldings) do
+        redraw[object_id] = object
+    end
+
+    for object_id in pairs(redraw) do
+        if self.selected_boxes[object_id] then
+            redraw[object_id] = nil
+        end
+    end
+    for object_id in pairs(self.selected_boxes) do
+        if redraw[object_id] then
+            self.selected_boxes[object_id]:remove()
+            self.selected_boxes[object_id] = nil
+        end
+    end
+
+    for object_id, object in pairs(redraw) do
+        local otypeobject = iprototype.queryByName(object.prototype_name)
+        local ow, oh = iprototype.rotate_area(otypeobject.area, object.dir)
+
+        local color
+        if __is_building_intersect(x, y, w, h, object.x, object.y, ow, oh) then
+            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_FARAWAY_BUILDINGS_INTERSECTION
+        else
+            if typeobject.supply_area then
+                local aw, ah = iprototype.unpackarea(typeobject.area)
+                local sw, sh = iprototype.unpackarea(typeobject.supply_area)
+                if __is_building_intersect(x - (sw - aw) // 2, y - (sh - ah) // 2, sw, sh, object.x, object.y, ow, oh) then
+                    color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
+                else
+                    color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+                end
+            else
+                if iprototype.has_type(typeobject.type, "station") then
+                    if otypeobject.supply_area then
+                        local aw, ah = iprototype.unpackarea(otypeobject.area)
+                        local sw, sh = iprototype.unpackarea(otypeobject.supply_area)
+                        if __is_building_intersect(x, y, ow, oh, object.x  - (sw - aw) // 2, object.y - (sh - ah) // 2, sw, sh) then
+                            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
+                        else
+                            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+                        end
+                    end
+                else
+                    color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+                end
+            end
+        end
+
+        assert(self.selected_boxes[object_id] == nil)
+        self.selected_boxes[object_id] = create_selected_boxes(
+            {
+                "/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab",
+                "/pkg/vaststars.resources/prefabs/selected-box-no-animation-line.prefab",
+            },
+            object.srt.t, color, iprototype.rotate_area(otypeobject.area, object.dir)
+        )
+    end
+
+    for object_id, o in pairs(self.selected_boxes) do
+        local object = assert(objects:get(object_id))
+        local otypeobject = iprototype.queryByName(object.prototype_name)
+        local ow, oh = iprototype.rotate_area(otypeobject.area, object.dir)
+
+        local color
+        if __is_building_intersect(x, y, w, h, object.x, object.y, ow, oh) then
+            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_FARAWAY_BUILDINGS_INTERSECTION
+        else
+            if typeobject.supply_area then
+                local aw, ah = iprototype.unpackarea(typeobject.area)
+                local sw, sh = iprototype.unpackarea(typeobject.supply_area)
+                if __is_building_intersect(x - (sw - aw) // 2, y - (sh - ah) // 2, sw, sh, object.x, object.y, ow, oh) then
+                    color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
+                else
+                    color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+                end
+            else
+                if iprototype.has_type(typeobject.type, "station") then
+                    if otypeobject.supply_area then
+                        local aw, ah = iprototype.unpackarea(otypeobject.area)
+                        local sw, sh = iprototype.unpackarea(otypeobject.supply_area)
+                        if __is_building_intersect(x, y, ow, oh, object.x  - (sw - aw) // 2, object.y - (sh - ah) // 2, sw, sh) then
+                            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
+                        else
+                            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+                        end
+                    end
+                else
+                    color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+                end
+            end
+        end
+        o:set_color(color)
+    end
 end
 
 local function __new_entity(self, datamodel, typeobject)
@@ -142,8 +289,10 @@ local function __new_entity(self, datamodel, typeobject)
     }
 
     if e.assembling and e.assembling.recipe ~= 0 then
-        self.pickup_components[#self.pickup_components + 1] = create_pickup_icon(typeobject, dir, e.assembling.recipe, self.pickup_object.srt)
+        self.pickup_components.pickup_icon = create_pickup_icon(typeobject, dir, e.assembling.recipe, self.pickup_object.srt)
     end
+    self.pickup_components.self_selected_box = create_pickup_selected_box(self.pickup_object.srt.t, typeobject, dir, datamodel.show_confirm and true or false)
+    __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject)
 
     if self.sprite then
         self.sprite:remove()
@@ -281,6 +430,10 @@ local function touch_move(self, datamodel, delta_vec)
         if self.sprite then
             self.sprite:move(pickup_object.x + offset_x, pickup_object.y + offset_y, sprite_color)
         end
+        for _, c in pairs(self.pickup_components) do
+            c:on_status_change(datamodel.show_confirm)
+        end
+        __show_nearby_buildings_selected_boxes(self, x, y, pickup_object.dir, typeobject)
         return
     else
         datamodel.show_confirm = true
@@ -300,6 +453,10 @@ local function touch_move(self, datamodel, delta_vec)
         if self.sprite then
             self.sprite:move(pickup_object.x + offset_x, pickup_object.y + offset_y, sprite_color)
         end
+        for _, c in pairs(self.pickup_components) do
+            c:on_status_change(datamodel.show_confirm)
+        end
+        __show_nearby_buildings_selected_boxes(self, x, y, pickup_object.dir, typeobject)
     end
 
     pickup_object.recipe = _get_mineral_recipe(pickup_object.prototype_name, lx, ly, pickup_object.dir) -- TODO: maybe set recipt according to entity type?
@@ -489,6 +646,11 @@ local function clean(self, datamodel)
     datamodel.show_confirm = false
     datamodel.show_rotate = false
 
+    for _, o in pairs(self.selected_boxes) do
+        o:remove()
+    end
+    self.selected_boxes = {}
+
     for _, c in pairs(self.pickup_components) do
         c:remove()
     end
@@ -522,6 +684,7 @@ local function create(move_object_id)
     M.check_construct_detector = check_construct_detector
     M.move_object_id = move_object_id
     M.pickup_components = {}
+    M.selected_boxes = {}
 
     return M
 end

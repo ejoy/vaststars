@@ -731,6 +731,11 @@ local function clean(self, datamodel)
         self.grid_entity = nil
     end
 
+    for _, o in pairs(self.selected_boxes) do
+        o:remove()
+    end
+    self.selected_boxes = {}
+
     ieditor:revert_changes({"TEMPORARY"})
     datamodel.show_confirm = false
     datamodel.show_rotate = false
