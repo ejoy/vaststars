@@ -402,7 +402,7 @@ local entities = { {
     dir = "N",
     item = "铁矿石",
     prototype_name = "无人机仓库I",
-    x = 69,
+    x = 70,
     y = 92
   }, {
     dir = "N",
@@ -3857,14 +3857,15 @@ local entities = { {
     prototype_name = "收货车站",
     x = 110,
     y = 158
+  }, {
+    dir = "E",
+    item = "铁矿石",
+    prototype_name = "送货车站",
+    x = 68,
+    y = 92
   } }
 local road = { {
-    mask = 8,
-    prototype = "砖石公路-X型",
-    x = 33,
-    y = 44
-  }, {
-    mask = 10,
+    mask = 78,
     prototype = "砖石公路-X型",
     x = 33,
     y = 46
@@ -4349,12 +4350,12 @@ local road = { {
     x = 96,
     y = 80
   }, {
-    mask = 10,
+    mask = 8,
     prototype = "砖石公路-X型",
     x = 33,
     y = 45
   }, {
-    mask = 10,
+    mask = 110,
     prototype = "砖石公路-X型",
     x = 33,
     y = 47
@@ -4404,7 +4405,7 @@ local road = { {
     x = 37,
     y = 63
   }, {
-    mask = 12,
+    mask = 13,
     prototype = "砖石公路-X型",
     x = 37,
     y = 69
@@ -5329,7 +5330,7 @@ local road = { {
     x = 36,
     y = 63
   }, {
-    mask = 6,
+    mask = 14,
     prototype = "砖石公路-X型",
     x = 33,
     y = 63
@@ -5613,6 +5614,51 @@ local road = { {
     prototype = "砖石公路-X型",
     x = 58,
     y = 75
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 33,
+    y = 67
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 33,
+    y = 68
+  }, {
+    mask = 6,
+    prototype = "砖石公路-X型",
+    x = 33,
+    y = 69
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 33,
+    y = 64
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 33,
+    y = 65
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 33,
+    y = 66
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 34,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 36,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 35,
+    y = 69
   } }
 local mineral = {
   ["100,60"] = "铁矿石",

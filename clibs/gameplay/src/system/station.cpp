@@ -57,15 +57,17 @@ static std::optional<station_ref> find_consumer(world& w, uint16_t item, const r
         return std::nullopt;
     }
     uint16_t min_distance = (uint16_t)-1;
-    station_ref min_station { nullptr };
+    std::optional<station_ref> min_station;
     auto& consumers = it->second;
     for (size_t i = 0; i < consumers.size(); ++i) {
         auto station = consumers[i];
         const auto& ep = w.rw.Endpoint(consumers[i].ptr->endpoint);
-        if (auto distance = from.distance(w.rw, ep)) {
-            if (*distance < min_distance) {
-                min_distance = *distance;
-                min_station = station;
+        if (station.ptr->lorry < station.ptr->weights) {
+            if (auto distance = from.distance(w.rw, ep)) {
+                if (*distance < min_distance) {
+                    min_distance = *distance;
+                    min_station = station;
+                }
             }
         }
     }
