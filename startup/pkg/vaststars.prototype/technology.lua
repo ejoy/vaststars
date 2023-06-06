@@ -1980,7 +1980,6 @@ prototype "电解" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"地下卤水电解1","地下卤水电解2","电解厂打印"},
-    unlock_item = {"电解厂I"},
   },
   prerequisites = {"生产气候科技包"},
   ingredients = {
@@ -2027,7 +2026,6 @@ prototype "碳处理1" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"二氧化碳转甲烷","化工厂打印"},
-    unlock_item = {"化工厂I"},
   },
   prerequisites = {"电解","空气分离","放置太阳能板"},
   ingredients = {
@@ -2362,7 +2360,7 @@ prototype "自动化1" {
     {"机械科技包", 1},
   },
   count = 8,
-  time = "9s"
+  time = "10s"
 }
 
 prototype "地下水净化" {
@@ -2388,6 +2386,7 @@ prototype "炼钢" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"钢板1"},
+    unlock_item = {"钢板"},
   },
   prerequisites = {"挖掘1"},
   ingredients = {
@@ -2396,7 +2395,7 @@ prototype "炼钢" {
     {"机械科技包", 1},
   },
   count = 10,
-  time = "9s"
+  time = "10s"
 }
 
 prototype "发电机1" {
@@ -2437,7 +2436,7 @@ prototype "矿物处理1" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"粉碎机1","沙子1"},
-    unlock_item = {"粉碎机I"},
+    unlock_item = {"粉碎机I","沙子"},
   },
   prerequisites = {"挖掘1","自动化1"},
   ingredients = {
@@ -2522,6 +2521,7 @@ prototype "能量存储" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"电解厂1"},
+    unlock_item = {"电解厂I"},
   },
   prerequisites = {"空气过滤技术"},
   ingredients = {
@@ -2554,6 +2554,7 @@ prototype "化学工程" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"化工厂1","纯水电解"},
+    unlock_item = {"化工厂I"},
   },
   prerequisites = {"有机化学2"},
   ingredients = {
@@ -2588,6 +2589,7 @@ prototype "无机化学" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"酸碱中和","碱性溶液","盐酸"},
+    unlock_item = {"碱性溶液","盐酸"},
   },
   prerequisites = {"化学工程","管道系统3"},
   ingredients = {
@@ -2622,6 +2624,7 @@ prototype "石头处理3" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"坩埚"},
+    unlock_item = {"坩埚"},
   },
   prerequisites = {"硅处理"},
   ingredients = {
@@ -2639,6 +2642,7 @@ prototype "有机化学3" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"橡胶"},
+    unlock_item = {"橡胶"},
   },
   prerequisites = {"化学工程"},
   ingredients = {
@@ -2689,7 +2693,7 @@ prototype "铝生产" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"碾碎铝矿石","铝矿石浮选","氧化铝","铝板1"},
-    unlock_item = {"铝板"}
+    unlock_item = {"铝板","碾碎铝矿石","氧化铝"},
   },
   prerequisites = {"无机化学"},
   ingredients = {
@@ -2706,7 +2710,7 @@ prototype "硅生产" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"硅板1"},
-    unlock_item = {"硅板"}
+    unlock_item = {"硅板"},
   },
   prerequisites = {"无机化学","冶金学2"},
   ingredients = {
@@ -2723,6 +2727,7 @@ prototype "润滑" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"润滑油"},
+    unlock_item = {"润滑油"},
   },
   prerequisites = {"硅生产"},
   ingredients = {
