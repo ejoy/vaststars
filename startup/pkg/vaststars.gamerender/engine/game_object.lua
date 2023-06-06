@@ -90,16 +90,24 @@ local __get_hitch_children ; do
     local hitch_group_id = 10000 -- see also: terrain.lua -> TERRAIN_MAX_GROUP_ID
 
     local function __cache_prefab_info(template)
-        local effects = {}
+        local effects = {auto_play = {}, work = {}, idle = {}}
         local slots = {}
         local animations = {}
         for _, v in ipairs(template) do
             if v.data then
                 if v.data.slot then
                     slots[v.data.name] = v.data
-                elseif v.data.efk and not v.data.efk.auto_play then
-                    -- work effects
-                    effects[#effects + 1] = {efk = v.data.efk, slotname = v.mount and template[v.mount].data.name, s = v.data.scene.s, r = v.data.scene.r, t = v.data.scene.t }
+                elseif v.data.efk then
+                    local efk = v.data.efk
+                    if v.data.efk.auto_play then
+                        effects.auto_play[#effects.auto_play+1] = efk
+                    elseif v.data.name:match("^work.*$") then
+                        effects.work[#effects.work+1] = efk
+                    elseif v.data.name:match("^idle.*$") then
+                        effects.idle[#effects.idle+1] = efk
+                    else
+                        print("unknown efk", v.data.name)
+                    end
                 end
                 if v.data.animation then
                     for animation_name in pairs(v.data.animation) do
@@ -135,11 +143,10 @@ local __get_hitch_children ; do
             assert(false)
         end
 
-        set_efk_auto_play(template, false)
-
         -- cache all slots & srt of the prefab
         local slots, effects, animations = __cache_prefab_info(template)
 
+        set_efk_auto_play(template, false)
         log.info(("game_object.new_instance: %s"):format(table.concat({hitch_group_id, prefab, material_type, require("math3d").tostring(color), tostring(animation_name), tostring(final_frame)}, " "))) -- TODO: remove this line
 
         local inner = { tags = {} } -- tag -> eid
@@ -269,7 +276,7 @@ function igame_object.create(init)
     end
 
     -- special for hitch
-    local effects = {}
+    local effects = {auto_play = {}, work = {}, idle = {}}
     local efk_events = {}
     efk_events["play"] = function(o, e)
         if not iefk.is_playing(o.id) then
@@ -282,11 +289,11 @@ function igame_object.create(init)
         end
     end
 
-    for _, efkinfo in ipairs(children.effects) do
-        effects[#effects + 1] = ientity_object.create(iefk.create(efkinfo.efk.path, {
-            auto_play = efkinfo.efk.auto_play or false,
-            loop = efkinfo.efk.loop or false,
-            speed = efkinfo.efk.speed or 1.0,
+    for _, efkinfo in ipairs(children.effects.auto_play) do
+        effects.auto_play[#effects.auto_play + 1] = ientity_object.create(iefk.create(efkinfo.path, {
+            auto_play = true,
+            loop = efkinfo.loop or false,
+            speed = efkinfo.speed or 1.0,
             scene = {
                 parent = hitch_entity_object.id,
                 s = efkinfo.s,
@@ -296,6 +303,32 @@ function igame_object.create(init)
             group_id = init.group_id,
         }), efk_events)
     end
+    -- for _, efkinfo in ipairs(children.effects.work) do
+    --     effects.work[#effects.work + 1] = ientity_object.create(iefk.create(efkinfo.path, {
+    --         auto_play = false,
+    --         loop = efkinfo.loop or false,
+    --         speed = efkinfo.loop or 1.0,
+    --         scene = {
+    --             parent = hitch_entity_object.id,
+    --             s = efkinfo.s,
+    --             t = efkinfo.t,
+    --             r = efkinfo.r,
+    --         }
+    --     }), efk_events)
+    -- end
+    -- for _, efkinfo in ipairs(children.effects.idle) do
+    --     effects.idle[#effects.idle + 1] = ientity_object.create(iefk.create(efkinfo.path, {
+    --         auto_play = false,
+    --         loop = efkinfo.loop or false,
+    --         speed = efkinfo.loop or 1.0,
+    --         scene = {
+    --             parent = hitch_entity_object.id,
+    --             s = efkinfo.s,
+    --             t = efkinfo.t,
+    --             r = efkinfo.r,
+    --         }
+    --     }), efk_events)
+    -- end
 
     children.instance:send("attach_hitch", hitch_entity_object.id)
 
@@ -314,14 +347,20 @@ function igame_object.create(init)
     outer.send   = send
     outer.has_animation = has_animation
     outer.on_work = function ()
-        for _, o in ipairs(effects) do
-            o:send("play")
-        end
+        -- for _, o in ipairs(effects.idle) do
+        --     o:send("stop")
+        -- end
+        -- for _, o in ipairs(effects.work) do
+        --     o:send("play")
+        -- end
     end
     outer.on_idle = function ()
-        for _, o in ipairs(effects) do
-            o:send("stop")
-        end
+        -- for _, o in ipairs(effects.work) do
+        --     o:send("stop")
+        -- end
+        -- for _, o in ipairs(effects.idle) do
+        --     o:send("play")
+        -- end
     end
     return outer
 end
