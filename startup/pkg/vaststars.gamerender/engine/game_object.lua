@@ -14,6 +14,22 @@ local replace_material = require("engine.prefab_parser").replace_material
 local irl = ecs.import.interface "ant.render|irender_layer"
 local imodifier = ecs.import.interface "ant.modifier|imodifier"
 
+local function replace_outline_material(template)
+    local res = {}
+    for _, v in ipairs(template) do
+        if v.data and v.data.mesh then
+            v.data.visible_state = v.data.visible_state .. "|outline_queue"
+            v.data.outline_info = {
+                outline_scale = 1.0,
+                outline_color = {0.5, 0.5, 0, 1},
+            }
+            v.policy[#v.policy+1] = "ant.render|outline_info"
+        end
+        res[#res+1] = v
+    end
+    return res
+end
+
 local function set_efk_auto_play(template, auto_play)
     for _, v in ipairs(template) do
         if v.data and v.data.efk then
@@ -54,8 +70,9 @@ local __calc_param_hash ; do
     local final_frame_hash = get_hash_func(0x1)
     local emissive_color_hash = get_hash_func(0xf)
     local render_layer_hash = get_hash_func(0xf)
+    local outline_scale_hash = get_hash_func(0xf)
 
-    function __calc_param_hash(prefab, material_type, color, animation_name, final_frame, emissive_color, render_layer)
+    function __calc_param_hash(prefab, material_type, color, animation_name, final_frame, emissive_color, render_layer, outline_scale)
         local h1 = prefab_hash(prefab or 0) -- 8 bits
         local h2 = material_type_hash(material_type or 0) -- 4 bits
         local h3 = color_hash(color or 0) -- 4 bits
@@ -63,7 +80,8 @@ local __calc_param_hash ; do
         local h5 = final_frame_hash(final_frame or 0) -- 1 bit
         local h6 = emissive_color_hash(emissive_color or 0) -- 4 bits
         local h7 = render_layer_hash(render_layer or 0) -- 4 bits
-        return h1 | h2 << 8 | h3 << 12 | h4 << 16 | h5 << 24 | h6 << 25 | h7 << 29
+        local h8 = outline_scale_hash(outline_scale or 0) -- 4 bits
+        return h1 | h2 << 8 | h3 << 12 | h4 << 16 | h5 << 24 | h6 << 25 | h7 << 29 | h8 << 33
     end
 end
 
@@ -93,9 +111,9 @@ local __get_hitch_children ; do
         return slots, effects, animations
     end
 
-    function __get_hitch_children(prefab, material_type, color, animation_name, final_frame, emissive_color, render_layer)
+    function __get_hitch_children(prefab, material_type, color, animation_name, final_frame, emissive_color, render_layer, outline_scale)
         render_layer = render_layer or RENDER_LAYER.BUILDING
-        local hash = __calc_param_hash(prefab, material_type, tostring(color), animation_name, final_frame, tostring(emissive_color), render_layer)
+        local hash = __calc_param_hash(prefab, material_type, tostring(color), animation_name, final_frame, tostring(emissive_color), render_layer, outline_scale)
         if cache[hash] then
             return cache[hash]
         end
@@ -109,6 +127,8 @@ local __get_hitch_children ; do
             template = replace_material(template, "/pkg/vaststars.resources/materials/translucent.material")
         elseif material_type == "opacity" then
             template = replace_material(template, "/pkg/vaststars.resources/materials/opacity.material")
+        elseif material_type == "outline" then
+            template = replace_outline_material(template, outline_scale)
         elseif material_type == "opaque" then
             template = template
         else
@@ -194,7 +214,7 @@ init = {
 }
 --]]
 function igame_object.create(init)
-    local children = __get_hitch_children(RESOURCES_BASE_PATH:format(init.prefab), init.state, init.color, init.animation_name, init.final_frame, init.emissive_color, init.render_layer)
+    local children = __get_hitch_children(RESOURCES_BASE_PATH:format(init.prefab), init.state, init.color, init.animation_name, init.final_frame, init.emissive_color, init.render_layer, init.outline_scale)
     local hitch_events = {}
     hitch_events["group"] = function(_, e, group)
         w:extend(e, "hitch:update")
@@ -231,9 +251,9 @@ function igame_object.create(init)
         self.hitch_entity_object:remove()
     end
 
-    local function update(self, prefab_file_name, state, color, animation_name, final_frame, emissive_color)
+    local function update(self, prefab_file_name, state, color, animation_name, final_frame, emissive_color, outline_scale)
         children.instance:send("detach_hitch", hitch_entity_object.id)
-        children = __get_hitch_children(RESOURCES_BASE_PATH:format(prefab_file_name), state, color, animation_name, final_frame, emissive_color)
+        children = __get_hitch_children(RESOURCES_BASE_PATH:format(prefab_file_name), state, color, animation_name, final_frame, emissive_color, init.render_layer, outline_scale)
         children.instance:send("attach_hitch", hitch_entity_object.id)
 
         self.hitch_entity_object:send("group", children.hitch_group_id)

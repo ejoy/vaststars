@@ -3371,7 +3371,7 @@ local entities = { {
     dir = "S",
     item = "铁矿石",
     prototype_name = "出货车站",
-    x = 94,
+    x = 90,
     y = 162
   }, {
     dir = "N",
@@ -3487,7 +3487,7 @@ local entities = { {
   }, {
     dir = "W",
     item = "机械科技包",
-    prototype_name = "收货车站",
+    prototype_name = "出货车站",
     x = 190,
     y = 154
   }, {
@@ -3676,7 +3676,7 @@ local entities = { {
     dir = "N",
     item = "铁齿轮",
     prototype_name = "收货车站",
-    x = 108,
+    x = 104,
     y = 136
   }, {
     dir = "N",
@@ -3914,7 +3914,7 @@ local entities = { {
     y = 148
   } }
 local road = { {
-    mask = 78,
+    mask = 14,
     prototype = "砖石公路-X型",
     x = 33,
     y = 46
@@ -3944,7 +3944,7 @@ local road = { {
     x = 33,
     y = 56
   }, {
-    mask = 107,
+    mask = 11,
     prototype = "砖石公路-X型",
     x = 33,
     y = 58
@@ -3974,22 +3974,22 @@ local road = { {
     x = 44,
     y = 80
   }, {
-    mask = 71,
+    mask = 15,
     prototype = "砖石公路-X型",
     x = 45,
     y = 80
   }, {
-    mask = 103,
+    mask = 15,
     prototype = "砖石公路-X型",
     x = 46,
     y = 80
   }, {
-    mask = 109,
+    mask = 5,
     prototype = "砖石公路-X型",
     x = 47,
     y = 80
   }, {
-    mask = 77,
+    mask = 5,
     prototype = "砖石公路-X型",
     x = 48,
     y = 80
@@ -3999,12 +3999,12 @@ local road = { {
     x = 49,
     y = 80
   }, {
-    mask = 71,
+    mask = 7,
     prototype = "砖石公路-X型",
     x = 50,
     y = 80
   }, {
-    mask = 103,
+    mask = 7,
     prototype = "砖石公路-X型",
     x = 51,
     y = 80
@@ -4024,12 +4024,12 @@ local road = { {
     x = 54,
     y = 80
   }, {
-    mask = 71,
+    mask = 7,
     prototype = "砖石公路-X型",
     x = 55,
     y = 80
   }, {
-    mask = 103,
+    mask = 7,
     prototype = "砖石公路-X型",
     x = 56,
     y = 80
@@ -4089,17 +4089,17 @@ local road = { {
     x = 80,
     y = 66
   }, {
-    mask = 109,
+    mask = 13,
     prototype = "砖石公路-X型",
     x = 81,
     y = 66
   }, {
-    mask = 77,
+    mask = 13,
     prototype = "砖石公路-X型",
     x = 82,
     y = 66
   }, {
-    mask = 109,
+    mask = 13,
     prototype = "砖石公路-X型",
     x = 83,
     y = 66
@@ -4109,17 +4109,17 @@ local road = { {
     x = 86,
     y = 62
   }, {
-    mask = 109,
+    mask = 13,
     prototype = "砖石公路-X型",
     x = 85,
     y = 66
   }, {
-    mask = 77,
+    mask = 13,
     prototype = "砖石公路-X型",
     x = 86,
     y = 66
   }, {
-    mask = 109,
+    mask = 13,
     prototype = "砖石公路-X型",
     x = 87,
     y = 66
@@ -4159,17 +4159,17 @@ local road = { {
     x = 96,
     y = 62
   }, {
-    mask = 110,
+    mask = 14,
     prototype = "砖石公路-X型",
     x = 91,
     y = 88
   }, {
-    mask = 107,
+    mask = 11,
     prototype = "砖石公路-X型",
     x = 96,
     y = 84
   }, {
-    mask = 107,
+    mask = 11,
     prototype = "砖石公路-X型",
     x = 96,
     y = 88
@@ -4184,7 +4184,7 @@ local road = { {
     x = 68,
     y = 76
   }, {
-    mask = 71,
+    mask = 7,
     prototype = "砖石公路-X型",
     x = 61,
     y = 76
@@ -4214,7 +4214,7 @@ local road = { {
     x = 70,
     y = 70
   }, {
-    mask = 110,
+    mask = 14,
     prototype = "砖石公路-X型",
     x = 70,
     y = 72
@@ -4274,12 +4274,12 @@ local road = { {
     x = 87,
     y = 62
   }, {
-    mask = 77,
+    mask = 13,
     prototype = "砖石公路-X型",
     x = 85,
     y = 62
   }, {
-    mask = 109,
+    mask = 13,
     prototype = "砖石公路-X型",
     x = 84,
     y = 62
@@ -4319,12 +4319,12 @@ local road = { {
     x = 65,
     y = 62
   }, {
-    mask = 103,
+    mask = 7,
     prototype = "砖石公路-X型",
     x = 64,
     y = 62
   }, {
-    mask = 71,
+    mask = 7,
     prototype = "砖石公路-X型",
     x = 63,
     y = 62
@@ -4344,12 +4344,12 @@ local road = { {
     x = 60,
     y = 62
   }, {
-    mask = 77,
+    mask = 13,
     prototype = "砖石公路-X型",
     x = 59,
     y = 62
   }, {
-    mask = 109,
+    mask = 13,
     prototype = "砖石公路-X型",
     x = 58,
     y = 62
@@ -4369,7 +4369,7 @@ local road = { {
     x = 70,
     y = 66
   }, {
-    mask = 107,
+    mask = 11,
     prototype = "砖石公路-X型",
     x = 96,
     y = 82
@@ -4379,17 +4379,17 @@ local road = { {
     x = 96,
     y = 86
   }, {
-    mask = 77,
+    mask = 13,
     prototype = "砖石公路-X型",
     x = 84,
     y = 66
   }, {
-    mask = 110,
+    mask = 14,
     prototype = "砖石公路-X型",
     x = 66,
     y = 86
   }, {
-    mask = 77,
+    mask = 13,
     prototype = "砖石公路-X型",
     x = 88,
     y = 66
@@ -4404,7 +4404,7 @@ local road = { {
     x = 33,
     y = 45
   }, {
-    mask = 110,
+    mask = 14,
     prototype = "砖石公路-X型",
     x = 33,
     y = 47
@@ -4434,7 +4434,7 @@ local road = { {
     x = 33,
     y = 57
   }, {
-    mask = 75,
+    mask = 11,
     prototype = "砖石公路-X型",
     x = 33,
     y = 59
@@ -4449,7 +4449,7 @@ local road = { {
     x = 33,
     y = 62
   }, {
-    mask = 109,
+    mask = 13,
     prototype = "砖石公路-X型",
     x = 37,
     y = 63
@@ -4504,72 +4504,72 @@ local road = { {
     x = 43,
     y = 75
   }, {
-    mask = 71,
+    mask = 7,
     prototype = "砖石公路-X型",
     x = 44,
     y = 75
   }, {
-    mask = 103,
+    mask = 7,
     prototype = "砖石公路-X型",
     x = 45,
     y = 75
   }, {
-    mask = 109,
+    mask = 13,
     prototype = "砖石公路-X型",
     x = 46,
     y = 75
   }, {
-    mask = 77,
+    mask = 13,
     prototype = "砖石公路-X型",
     x = 47,
     y = 75
   }, {
-    mask = 71,
+    mask = 7,
     prototype = "砖石公路-X型",
     x = 48,
     y = 75
   }, {
-    mask = 103,
+    mask = 7,
     prototype = "砖石公路-X型",
     x = 49,
     y = 75
   }, {
-    mask = 71,
+    mask = 7,
     prototype = "砖石公路-X型",
     x = 50,
     y = 75
   }, {
-    mask = 103,
+    mask = 7,
     prototype = "砖石公路-X型",
     x = 51,
     y = 75
   }, {
-    mask = 103,
+    mask = 7,
     prototype = "砖石公路-X型",
     x = 52,
     y = 75
   }, {
-    mask = 103,
+    mask = 7,
     prototype = "砖石公路-X型",
     x = 53,
     y = 75
   }, {
-    mask = 109,
+    mask = 13,
     prototype = "砖石公路-X型",
     x = 54,
     y = 75
   }, {
-    mask = 77,
+    mask = 13,
     prototype = "砖石公路-X型",
     x = 55,
     y = 75
   }, {
-    mask = 71,
+    mask = 7,
     prototype = "砖石公路-X型",
     x = 56,
     y = 75
   }, {
-    mask = 103,
+    mask = 7,
     prototype = "砖石公路-X型",
     x = 57,
     y = 75
@@ -4624,7 +4624,7 @@ local road = { {
     x = 66,
     y = 83
   }, {
-    mask = 78,
+    mask = 14,
     prototype = "砖石公路-X型",
     x = 66,
     y = 85
@@ -4709,7 +4709,7 @@ local road = { {
     x = 86,
     y = 79
   }, {
-    mask = 110,
+    mask = 14,
     prototype = "砖石公路-X型",
     x = 91,
     y = 79
@@ -4749,7 +4749,7 @@ local road = { {
     x = 102,
     y = 79
   }, {
-    mask = 109,
+    mask = 13,
     prototype = "砖石公路-X型",
     x = 103,
     y = 79
@@ -4759,17 +4759,17 @@ local road = { {
     x = 96,
     y = 87
   }, {
-    mask = 75,
+    mask = 11,
     prototype = "砖石公路-X型",
     x = 96,
     y = 85
   }, {
-    mask = 74,
+    mask = 10,
     prototype = "砖石公路-X型",
     x = 96,
     y = 83
   }, {
-    mask = 107,
+    mask = 11,
     prototype = "砖石公路-X型",
     x = 96,
     y = 81
@@ -4779,7 +4779,7 @@ local road = { {
     x = 88,
     y = 79
   }, {
-    mask = 110,
+    mask = 14,
     prototype = "砖石公路-X型",
     x = 96,
     y = 61
@@ -4804,12 +4804,12 @@ local road = { {
     x = 40,
     y = 80
   }, {
-    mask = 71,
+    mask = 7,
     prototype = "砖石公路-X型",
     x = 77,
     y = 62
   }, {
-    mask = 103,
+    mask = 7,
     prototype = "砖石公路-X型",
     x = 78,
     y = 62
@@ -4834,7 +4834,7 @@ local road = { {
     x = 83,
     y = 62
   }, {
-    mask = 71,
+    mask = 7,
     prototype = "砖石公路-X型",
     x = 64,
     y = 76
@@ -4859,7 +4859,7 @@ local road = { {
     x = 58,
     y = 80
   }, {
-    mask = 78,
+    mask = 14,
     prototype = "砖石公路-X型",
     x = 96,
     y = 60
@@ -4884,7 +4884,7 @@ local road = { {
     x = 63,
     y = 76
   }, {
-    mask = 103,
+    mask = 7,
     prototype = "砖石公路-X型",
     x = 62,
     y = 76
@@ -4894,7 +4894,7 @@ local road = { {
     x = 67,
     y = 76
   }, {
-    mask = 103,
+    mask = 7,
     prototype = "砖石公路-X型",
     x = 65,
     y = 76
@@ -4924,7 +4924,7 @@ local road = { {
     x = 83,
     y = 79
   }, {
-    mask = 109,
+    mask = 13,
     prototype = "砖石公路-X型",
     x = 89,
     y = 66
@@ -4959,7 +4959,7 @@ local road = { {
     x = 91,
     y = 67
   }, {
-    mask = 71,
+    mask = 7,
     prototype = "砖石公路-X型",
     x = 92,
     y = 67
@@ -4989,7 +4989,7 @@ local road = { {
     x = 70,
     y = 69
   }, {
-    mask = 78,
+    mask = 14,
     prototype = "砖石公路-X型",
     x = 70,
     y = 71
@@ -5009,12 +5009,12 @@ local road = { {
     x = 61,
     y = 81
   }, {
-    mask = 71,
+    mask = 7,
     prototype = "砖石公路-X型",
     x = 62,
     y = 81
   }, {
-    mask = 103,
+    mask = 7,
     prototype = "砖石公路-X型",
     x = 63,
     y = 81
@@ -5029,7 +5029,7 @@ local road = { {
     x = 94,
     y = 67
   }, {
-    mask = 103,
+    mask = 7,
     prototype = "砖石公路-X型",
     x = 93,
     y = 67
@@ -5039,7 +5039,7 @@ local road = { {
     x = 87,
     y = 79
   }, {
-    mask = 77,
+    mask = 13,
     prototype = "砖石公路-X型",
     x = 104,
     y = 79
@@ -5049,22 +5049,22 @@ local road = { {
     x = 105,
     y = 79
   }, {
-    mask = 107,
+    mask = 11,
     prototype = "砖石公路-X型",
     x = 91,
     y = 82
   }, {
-    mask = 75,
+    mask = 11,
     prototype = "砖石公路-X型",
     x = 91,
     y = 83
   }, {
-    mask = 78,
+    mask = 14,
     prototype = "砖石公路-X型",
     x = 91,
     y = 84
   }, {
-    mask = 110,
+    mask = 14,
     prototype = "砖石公路-X型",
     x = 91,
     y = 85
@@ -5074,7 +5074,7 @@ local road = { {
     x = 91,
     y = 86
   }, {
-    mask = 78,
+    mask = 14,
     prototype = "砖石公路-X型",
     x = 91,
     y = 87
@@ -5094,7 +5094,7 @@ local road = { {
     x = 74,
     y = 62
   }, {
-    mask = 71,
+    mask = 7,
     prototype = "砖石公路-X型",
     x = 71,
     y = 62
@@ -5104,7 +5104,7 @@ local road = { {
     x = 75,
     y = 62
   }, {
-    mask = 103,
+    mask = 7,
     prototype = "砖石公路-X型",
     x = 72,
     y = 62
@@ -5179,12 +5179,12 @@ local road = { {
     x = 47,
     y = 63
   }, {
-    mask = 109,
+    mask = 13,
     prototype = "砖石公路-X型",
     x = 48,
     y = 63
   }, {
-    mask = 77,
+    mask = 13,
     prototype = "砖石公路-X型",
     x = 49,
     y = 63
@@ -5194,12 +5194,12 @@ local road = { {
     x = 50,
     y = 63
   }, {
-    mask = 109,
+    mask = 13,
     prototype = "砖石公路-X型",
     x = 51,
     y = 63
   }, {
-    mask = 77,
+    mask = 13,
     prototype = "砖石公路-X型",
     x = 52,
     y = 63
@@ -5209,17 +5209,17 @@ local road = { {
     x = 53,
     y = 63
   }, {
-    mask = 77,
+    mask = 13,
     prototype = "砖石公路-X型",
     x = 38,
     y = 63
   }, {
-    mask = 107,
+    mask = 11,
     prototype = "砖石公路-X型",
     x = 96,
     y = 77
   }, {
-    mask = 75,
+    mask = 11,
     prototype = "砖石公路-X型",
     x = 96,
     y = 78
@@ -5249,7 +5249,7 @@ local road = { {
     x = 91,
     y = 76
   }, {
-    mask = 78,
+    mask = 14,
     prototype = "砖石公路-X型",
     x = 91,
     y = 78
@@ -5299,7 +5299,7 @@ local road = { {
     x = 91,
     y = 68
   }, {
-    mask = 77,
+    mask = 13,
     prototype = "砖石公路-X型",
     x = 90,
     y = 66
@@ -5339,7 +5339,7 @@ local road = { {
     x = 94,
     y = 90
   }, {
-    mask = 75,
+    mask = 11,
     prototype = "砖石公路-X型",
     x = 96,
     y = 89
@@ -5394,7 +5394,7 @@ local road = { {
     x = 83,
     y = 56
   }, {
-    mask = 110,
+    mask = 14,
     prototype = "砖石公路-X型",
     x = 83,
     y = 58
@@ -5414,7 +5414,7 @@ local road = { {
     x = 83,
     y = 61
   }, {
-    mask = 78,
+    mask = 14,
     prototype = "砖石公路-X型",
     x = 83,
     y = 57
@@ -5444,12 +5444,12 @@ local road = { {
     x = 43,
     y = 69
   }, {
-    mask = 109,
+    mask = 13,
     prototype = "砖石公路-X型",
     x = 44,
     y = 69
   }, {
-    mask = 77,
+    mask = 13,
     prototype = "砖石公路-X型",
     x = 45,
     y = 69
@@ -5464,12 +5464,12 @@ local road = { {
     x = 47,
     y = 69
   }, {
-    mask = 109,
+    mask = 13,
     prototype = "砖石公路-X型",
     x = 48,
     y = 69
   }, {
-    mask = 77,
+    mask = 13,
     prototype = "砖石公路-X型",
     x = 49,
     y = 69
@@ -5484,32 +5484,32 @@ local road = { {
     x = 51,
     y = 69
   }, {
-    mask = 109,
+    mask = 15,
     prototype = "砖石公路-X型",
     x = 52,
     y = 69
   }, {
-    mask = 77,
+    mask = 15,
     prototype = "砖石公路-X型",
     x = 53,
     y = 69
   }, {
-    mask = 71,
+    mask = 5,
     prototype = "砖石公路-X型",
     x = 54,
     y = 69
   }, {
-    mask = 103,
+    mask = 5,
     prototype = "砖石公路-X型",
     x = 55,
     y = 69
   }, {
-    mask = 109,
+    mask = 13,
     prototype = "砖石公路-X型",
     x = 56,
     y = 69
   }, {
-    mask = 77,
+    mask = 13,
     prototype = "砖石公路-X型",
     x = 57,
     y = 69
@@ -5589,12 +5589,12 @@ local road = { {
     x = 90,
     y = 80
   }, {
-    mask = 78,
+    mask = 14,
     prototype = "砖石公路-X型",
     x = 47,
     y = 60
   }, {
-    mask = 110,
+    mask = 14,
     prototype = "砖石公路-X型",
     x = 47,
     y = 61
@@ -5619,12 +5619,12 @@ local road = { {
     x = 53,
     y = 59
   }, {
-    mask = 107,
+    mask = 11,
     prototype = "砖石公路-X型",
     x = 53,
     y = 60
   }, {
-    mask = 75,
+    mask = 11,
     prototype = "砖石公路-X型",
     x = 53,
     y = 61
@@ -5749,7 +5749,7 @@ local function prepare(world)
         end
     end
     assert(slot)
-    world:container_set(e.chest, idx, {amount = 50, limit = 50})
+    world:container_set(e.chest, idx, {amount = 60, limit = 60})
   end
 
 return {

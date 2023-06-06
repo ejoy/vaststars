@@ -11,6 +11,7 @@ local icamera_controller = ecs.import.interface "vaststars.gamerender|icamera_co
 local gameplay_core = require "gameplay.core"
 local create_selected_boxes = ecs.require "selected_boxes"
 local terrain = ecs.require "terrain"
+local vsobject_manager = ecs.require "vsobject_manager"
 
 local function __get_capacitance(eid)
     local e = gameplay_core.get_entity(eid)
@@ -184,17 +185,19 @@ do
 
     function idetail.selected(object)
         idetail.unselected()
+
+        local object_id = object.id
+        local vsobject = assert(vsobject_manager:get(object_id))
+        vsobject:update({state = "outline", outline_scale = 0.3})
+        temp_objects[#temp_objects+1] = {
+            remove = function (self)
+                local vsobject = assert(vsobject_manager:get(object_id))
+                vsobject:update({state = "opaque"})
+            end
+        }
+
         local typeobject = iprototype.queryByName(object.prototype_name)
         local color = SPRITE_COLOR.SELECTED_OUTLINE
-
-        --
-        temp_objects[#temp_objects+1] = create_selected_boxes(
-            {
-                "/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab",
-                "/pkg/vaststars.resources/prefabs/selected-box-no-animation-line.prefab",
-            },
-            object.srt.t, color, iprototype.rotate_area(typeobject.area, object.dir)
-        )
 
         --
         if typeobject.supply_area then

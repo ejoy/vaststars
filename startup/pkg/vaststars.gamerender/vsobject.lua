@@ -24,23 +24,18 @@ local function remove(self)
 end
 
 local function update(self, t)
-    local typeobject = iprototype.queryByName(t.prototype_name or self.prototype_name)
-    self.game_object:update(typeobject.model, "opaque", CONSTRUCT_COLOR_INVALID, t.animation_name)
-
     self.type = t.type or self.type
     self.prototype_name = t.prototype_name or self.prototype_name
-end
-
--- TODO: remove this function, simply use update
-local function emissive_color_update(self, color)
-    self.emissive_color = color
     local typeobject = iprototype.queryByName(self.prototype_name)
-    self.game_object:update(typeobject.model, "opaque", CONSTRUCT_COLOR_INVALID, nil, nil, color)
-end
 
-local function animation_name_update(self, animation_name, final_frame)
-    local typeobject = iprototype.queryByName(self.prototype_name)
-    self.game_object:update(typeobject.model, "opaque", CONSTRUCT_COLOR_INVALID, animation_name, final_frame, self.emissive_color)
+    self.state = t.state or self.state or "opaque"
+    self.color = t.color or self.color or CONSTRUCT_COLOR_INVALID
+    self.animation_name = t.animation_name or self.animation_name
+    self.final_frame = t.final_frame or self.final_frame or false
+    self.emissive_color = t.emissive_color or self.emissive_color
+    self.outline_scale = t.outline_scale or self.outline_scale
+
+    self.game_object:update(typeobject.model, self.state, self.color, self.animation_name, self.final_frame, self.emissive_color, self.outline_scale)
 end
 
 local function has_animation(self, animation_name)
@@ -82,8 +77,6 @@ return function (init)
         set_position = set_position,
         set_dir = set_dir,
         remove = remove,
-        emissive_color_update = emissive_color_update,
-        animation_name_update = animation_name_update,
         modifier = modifier,
         has_animation = has_animation,
     }

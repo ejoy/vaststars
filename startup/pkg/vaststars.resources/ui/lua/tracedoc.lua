@@ -141,6 +141,10 @@ local function doc_change(doc, k, v)
 				lv[k] = v
 				keys[k] = nil
 			end
+			if not doc._dirty then
+				doc._dirty = lv._dirty
+			end
+
 			-- clear keys not exist in v
 			for k in pairs(keys) do
 				lv[k] = nil
