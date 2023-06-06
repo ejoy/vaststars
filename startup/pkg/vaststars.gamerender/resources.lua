@@ -696,6 +696,8 @@ local t = {
 	"/pkg/ant.serialize/test/patch.json",
 	"/pkg/ant.serialize/test/patch.lua",
 	"/pkg/ant.serialize/watch.lua",
+	"/pkg/ant.service/main.lua",
+	"/pkg/ant.service/package.lua",
 	"/pkg/ant.settings/default.lua",
 	"/pkg/ant.settings/main.lua",
 	"/pkg/ant.settings/package.lua",
