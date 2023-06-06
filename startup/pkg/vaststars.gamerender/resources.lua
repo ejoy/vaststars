@@ -325,6 +325,7 @@ local t = {
 	"/pkg/ant.render/decal/decal.ecs",
 	"/pkg/ant.render/decal/decal.lua",
 	"/pkg/ant.render/font/dyn_vb.lua",
+	"/pkg/ant.render/font/fontmanager.lua",
 	"/pkg/ant.render/font/fontrender.ecs",
 	"/pkg/ant.render/font/fontrender.lua",
 	"/pkg/ant.render/frame_system.lua",
