@@ -111,6 +111,7 @@ policy "render_updates"
     .require_system "lorry_system"
     .require_system "fluidbox_system"
     .require_system "road_system"
+    .require_system "chimney_system"
 
 ----------------------------------------------------
 ----------------------------------------------------
@@ -288,5 +289,9 @@ interface "iing_res_motion"
     .method "create"
 
 system "road_system"
-.implement "render_updates/road.lua"
+    .implement "render_updates/road.lua"
+    .method "gameworld_build"
+
+system "chimney_system"
+    .implement "render_updates/chimney.lua"
     .method "gameworld_build"
