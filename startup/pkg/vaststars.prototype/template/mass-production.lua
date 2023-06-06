@@ -3371,7 +3371,7 @@ local entities = { {
     dir = "S",
     item = "铁矿石",
     prototype_name = "出货车站",
-    x = 94,
+    x = 90,
     y = 162
   }, {
     dir = "N",
@@ -3487,7 +3487,7 @@ local entities = { {
   }, {
     dir = "W",
     item = "机械科技包",
-    prototype_name = "收货车站",
+    prototype_name = "出货车站",
     x = 190,
     y = 154
   }, {
@@ -3676,7 +3676,7 @@ local entities = { {
     dir = "N",
     item = "铁齿轮",
     prototype_name = "收货车站",
-    x = 108,
+    x = 104,
     y = 136
   }, {
     dir = "N",
@@ -3914,1801 +3914,1801 @@ local entities = { {
     y = 148
   } }
 local road = { {
-  mask = 14,
-  prototype = "砖石公路-X型",
-  x = 33,
-  y = 46
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 33,
-  y = 48
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 33,
-  y = 50
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 33,
-  y = 52
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 33,
-  y = 54
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 33,
-  y = 56
-}, {
-  mask = 11,
-  prototype = "砖石公路-X型",
-  x = 33,
-  y = 58
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 33,
-  y = 60
-}, {
-  mask = 6,
-  prototype = "砖石公路-X型",
-  x = 37,
-  y = 78
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 42,
-  y = 80
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 43,
-  y = 80
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 44,
-  y = 80
-}, {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 45,
-  y = 80
-}, {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 46,
-  y = 80
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 47,
-  y = 80
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 48,
-  y = 80
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 49,
-  y = 80
-}, {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 50,
-  y = 80
-}, {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 51,
-  y = 80
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 52,
-  y = 80
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 53,
-  y = 80
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 54,
-  y = 80
-}, {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 55,
-  y = 80
-}, {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 56,
-  y = 80
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 59,
-  y = 78
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 71,
-  y = 66
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 66,
-  y = 78
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 73,
-  y = 66
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 74,
-  y = 66
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 75,
-  y = 66
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 76,
-  y = 66
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 77,
-  y = 66
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 78,
-  y = 66
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 81,
-  y = 62
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 80,
-  y = 66
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 81,
-  y = 66
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 82,
-  y = 66
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 83,
-  y = 66
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 86,
-  y = 62
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 85,
-  y = 66
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 86,
-  y = 66
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 87,
-  y = 66
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 90,
-  y = 62
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 91,
-  y = 62
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 92,
-  y = 62
-}, {
-  mask = 8,
-  prototype = "砖石公路-X型",
-  x = 96,
-  y = 56
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 94,
-  y = 62
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 95,
-  y = 62
-}, {
-  mask = 3,
-  prototype = "砖石公路-X型",
-  x = 96,
-  y = 62
-}, {
-  mask = 14,
-  prototype = "砖石公路-X型",
-  x = 91,
-  y = 88
-}, {
-  mask = 11,
-  prototype = "砖石公路-X型",
-  x = 96,
-  y = 84
-}, {
-  mask = 11,
-  prototype = "砖石公路-X型",
-  x = 96,
-  y = 88
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 37,
-  y = 77
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 68,
-  y = 76
-}, {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 61,
-  y = 76
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 60,
-  y = 76
-}, {
-  mask = 14,
-  prototype = "砖石公路-X型",
-  x = 59,
-  y = 76
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 70,
-  y = 64
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 70,
-  y = 68
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 70,
-  y = 70
-}, {
-  mask = 14,
-  prototype = "砖石公路-X型",
-  x = 70,
-  y = 72
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 70,
-  y = 74
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 65,
-  y = 81
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 66,
-  y = 82
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 66,
-  y = 84
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 96,
-  y = 58
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 93,
-  y = 62
-}, {
-  mask = 9,
-  prototype = "砖石公路-X型",
-  x = 38,
-  y = 78
-}, {
-  mask = 9,
-  prototype = "砖石公路-X型",
-  x = 89,
-  y = 79
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 89,
-  y = 62
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 88,
-  y = 62
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 87,
-  y = 62
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 85,
-  y = 62
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 84,
-  y = 62
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 76,
-  y = 62
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 70,
-  y = 62
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 69,
-  y = 62
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 68,
-  y = 62
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 67,
-  y = 62
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 66,
-  y = 62
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 65,
-  y = 62
-}, {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 64,
-  y = 62
-}, {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 63,
-  y = 62
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 62,
-  y = 62
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 61,
-  y = 62
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 60,
-  y = 62
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 59,
-  y = 62
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 58,
-  y = 62
-}, {
-  mask = 12,
-  prototype = "砖石公路-X型",
-  x = 57,
-  y = 62
-}, {
-  mask = 3,
-  prototype = "砖石公路-X型",
-  x = 70,
-  y = 76
-}, {
-  mask = 14,
-  prototype = "砖石公路-X型",
-  x = 70,
-  y = 66
-}, {
-  mask = 11,
-  prototype = "砖石公路-X型",
-  x = 96,
-  y = 82
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 96,
-  y = 86
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 84,
-  y = 66
-}, {
-  mask = 14,
-  prototype = "砖石公路-X型",
-  x = 66,
-  y = 86
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 88,
-  y = 66
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 96,
-  y = 80
-}, {
-  mask = 8,
-  prototype = "砖石公路-X型",
-  x = 33,
-  y = 45
-}, {
-  mask = 14,
-  prototype = "砖石公路-X型",
-  x = 33,
-  y = 47
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 33,
-  y = 49
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 33,
-  y = 51
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 33,
-  y = 53
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 33,
-  y = 55
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 33,
-  y = 57
-}, {
-  mask = 11,
-  prototype = "砖石公路-X型",
-  x = 33,
-  y = 59
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 33,
-  y = 61
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 33,
-  y = 62
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 37,
-  y = 63
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 37,
-  y = 69
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 37,
-  y = 71
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 37,
-  y = 73
-}, {
-  mask = 14,
-  prototype = "砖石公路-X型",
-  x = 37,
-  y = 75
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 38,
-  y = 75
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 39,
-  y = 75
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 40,
-  y = 75
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 41,
-  y = 75
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 42,
-  y = 75
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 43,
-  y = 75
-}, {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 44,
-  y = 75
-}, {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 45,
-  y = 75
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 46,
-  y = 75
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 47,
-  y = 75
-}, {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 48,
-  y = 75
-}, {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 49,
-  y = 75
-}, {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 50,
-  y = 75
-}, {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 51,
-  y = 75
-}, {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 52,
-  y = 75
-}, {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 53,
-  y = 75
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 54,
-  y = 75
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 55,
-  y = 75
-}, {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 56,
-  y = 75
-}, {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 57,
-  y = 75
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 59,
-  y = 77
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 59,
-  y = 79
-}, {
-  mask = 6,
-  prototype = "砖石公路-X型",
-  x = 59,
-  y = 81
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 70,
-  y = 63
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 70,
-  y = 65
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 70,
-  y = 67
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 66,
-  y = 77
-}, {
-  mask = 14,
-  prototype = "砖石公路-X型",
-  x = 66,
-  y = 79
-}, {
-  mask = 11,
-  prototype = "砖石公路-X型",
-  x = 66,
-  y = 81
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 66,
-  y = 83
-}, {
-  mask = 14,
-  prototype = "砖石公路-X型",
-  x = 66,
-  y = 85
-}, {
-  mask = 2,
-  prototype = "砖石公路-X型",
-  x = 66,
-  y = 87
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 71,
-  y = 79
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 72,
-  y = 79
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 73,
-  y = 79
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 74,
-  y = 79
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 75,
-  y = 79
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 76,
-  y = 79
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 77,
-  y = 79
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 78,
-  y = 79
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 79,
-  y = 79
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 80,
-  y = 79
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 81,
-  y = 79
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 82,
-  y = 79
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 84,
-  y = 79
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 96,
-  y = 57
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 86,
-  y = 79
-}, {
-  mask = 14,
-  prototype = "砖石公路-X型",
-  x = 91,
-  y = 79
-}, {
-  mask = 14,
-  prototype = "砖石公路-X型",
-  x = 96,
-  y = 79
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 97,
-  y = 79
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 98,
-  y = 79
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 99,
-  y = 79
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 100,
-  y = 79
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 101,
-  y = 79
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 102,
-  y = 79
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 103,
-  y = 79
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 96,
-  y = 87
-}, {
-  mask = 11,
-  prototype = "砖石公路-X型",
-  x = 96,
-  y = 85
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 96,
-  y = 83
-}, {
-  mask = 11,
-  prototype = "砖石公路-X型",
-  x = 96,
-  y = 81
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 88,
-  y = 79
-}, {
-  mask = 14,
-  prototype = "砖石公路-X型",
-  x = 96,
-  y = 61
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 79,
-  y = 66
-}, {
-  mask = 6,
-  prototype = "砖石公路-X型",
-  x = 38,
-  y = 80
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 39,
-  y = 80
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 40,
-  y = 80
-}, {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 77,
-  y = 62
-}, {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 78,
-  y = 62
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 79,
-  y = 62
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 80,
-  y = 62
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 82,
-  y = 62
-}, {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 83,
-  y = 62
-}, {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 64,
-  y = 76
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 66,
-  y = 76
-}, {
-  mask = 11,
-  prototype = "砖石公路-X型",
-  x = 59,
-  y = 80
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 69,
-  y = 76
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 58,
-  y = 80
-}, {
-  mask = 14,
-  prototype = "砖石公路-X型",
-  x = 96,
-  y = 60
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 70,
-  y = 79
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 57,
-  y = 80
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 41,
-  y = 80
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 63,
-  y = 76
-}, {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 62,
-  y = 76
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 67,
-  y = 76
-}, {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 65,
-  y = 76
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 37,
-  y = 72
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 37,
-  y = 74
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 37,
-  y = 70
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 85,
-  y = 79
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 83,
-  y = 79
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 89,
-  y = 66
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 66,
-  y = 80
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 64,
-  y = 81
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 72,
-  y = 66
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 37,
-  y = 76
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 38,
-  y = 79
-}, {
-  mask = 14,
-  prototype = "砖石公路-X型",
-  x = 91,
-  y = 67
-}, {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 92,
-  y = 67
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 96,
-  y = 59
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 67,
-  y = 79
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 68,
-  y = 79
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 69,
-  y = 79
-}, {
-  mask = 11,
-  prototype = "砖石公路-X型",
-  x = 70,
-  y = 69
-}, {
-  mask = 14,
-  prototype = "砖石公路-X型",
-  x = 70,
-  y = 71
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 70,
-  y = 75
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 70,
-  y = 73
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 61,
-  y = 81
-}, {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 62,
-  y = 81
-}, {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 63,
-  y = 81
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 60,
-  y = 81
-}, {
-  mask = 1,
-  prototype = "砖石公路-X型",
-  x = 94,
-  y = 67
-}, {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 93,
-  y = 67
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 87,
-  y = 79
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 104,
-  y = 79
-}, {
-  mask = 1,
-  prototype = "砖石公路-X型",
-  x = 105,
-  y = 79
-}, {
-  mask = 11,
-  prototype = "砖石公路-X型",
-  x = 91,
-  y = 82
-}, {
-  mask = 11,
-  prototype = "砖石公路-X型",
-  x = 91,
-  y = 83
-}, {
-  mask = 14,
-  prototype = "砖石公路-X型",
-  x = 91,
-  y = 84
-}, {
-  mask = 14,
-  prototype = "砖石公路-X型",
-  x = 91,
-  y = 85
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 91,
-  y = 86
-}, {
-  mask = 14,
-  prototype = "砖石公路-X型",
-  x = 91,
-  y = 87
-}, {
-  mask = 11,
-  prototype = "砖石公路-X型",
-  x = 91,
-  y = 80
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 91,
-  y = 81
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 74,
-  y = 62
-}, {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 71,
-  y = 62
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 75,
-  y = 62
-}, {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 72,
-  y = 62
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 73,
-  y = 62
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 54,
-  y = 63
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 39,
-  y = 63
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 55,
-  y = 63
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 40,
-  y = 63
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 56,
-  y = 63
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 41,
-  y = 63
-}, {
-  mask = 3,
-  prototype = "砖石公路-X型",
-  x = 57,
-  y = 63
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 42,
-  y = 63
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 43,
-  y = 63
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 44,
-  y = 63
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 45,
-  y = 63
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 46,
-  y = 63
-}, {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 47,
-  y = 63
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 48,
-  y = 63
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 49,
-  y = 63
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 50,
-  y = 63
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 51,
-  y = 63
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 52,
-  y = 63
-}, {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 53,
-  y = 63
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 38,
-  y = 63
-}, {
-  mask = 11,
-  prototype = "砖石公路-X型",
-  x = 96,
-  y = 77
-}, {
-  mask = 11,
-  prototype = "砖石公路-X型",
-  x = 96,
-  y = 78
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 91,
-  y = 77
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 91,
-  y = 70
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 91,
-  y = 72
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 91,
-  y = 74
-}, {
-  mask = 14,
-  prototype = "砖石公路-X型",
-  x = 91,
-  y = 76
-}, {
-  mask = 14,
-  prototype = "砖石公路-X型",
-  x = 91,
-  y = 78
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 91,
-  y = 63
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 91,
-  y = 65
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 91,
-  y = 69
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 91,
-  y = 71
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 91,
-  y = 73
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 91,
-  y = 75
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 91,
-  y = 64
-}, {
-  mask = 11,
-  prototype = "砖石公路-X型",
-  x = 91,
-  y = 66
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 91,
-  y = 68
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 90,
-  y = 66
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 91,
-  y = 89
-}, {
-  mask = 6,
-  prototype = "砖石公路-X型",
-  x = 91,
-  y = 90
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 95,
-  y = 90
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 92,
-  y = 90
-}, {
-  mask = 3,
-  prototype = "砖石公路-X型",
-  x = 96,
-  y = 90
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 93,
-  y = 90
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 94,
-  y = 90
-}, {
-  mask = 11,
-  prototype = "砖石公路-X型",
-  x = 96,
-  y = 89
-}, {
-  mask = 9,
-  prototype = "砖石公路-X型",
-  x = 96,
-  y = 76
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 95,
-  y = 76
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 92,
-  y = 76
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 93,
-  y = 76
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 94,
-  y = 76
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 35,
-  y = 63
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 36,
-  y = 63
-}, {
-  mask = 14,
-  prototype = "砖石公路-X型",
-  x = 33,
-  y = 63
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 34,
-  y = 63
-}, {
-  mask = 8,
-  prototype = "砖石公路-X型",
-  x = 83,
-  y = 56
-}, {
-  mask = 14,
-  prototype = "砖石公路-X型",
-  x = 83,
-  y = 58
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 83,
-  y = 59
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 83,
-  y = 60
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 83,
-  y = 61
-}, {
-  mask = 14,
-  prototype = "砖石公路-X型",
-  x = 83,
-  y = 57
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 39,
-  y = 69
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 40,
-  y = 69
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 41,
-  y = 69
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 42,
-  y = 69
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 43,
-  y = 69
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 44,
-  y = 69
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 45,
-  y = 69
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 46,
-  y = 69
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 47,
-  y = 69
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 48,
-  y = 69
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 49,
-  y = 69
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 50,
-  y = 69
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 51,
-  y = 69
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 52,
-  y = 69
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 53,
-  y = 69
-}, {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 54,
-  y = 69
-}, {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 55,
-  y = 69
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 56,
-  y = 69
-}, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 57,
-  y = 69
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 58,
-  y = 69
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 59,
-  y = 69
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 60,
-  y = 69
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 61,
-  y = 69
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 62,
-  y = 69
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 63,
-  y = 69
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 64,
-  y = 69
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 65,
-  y = 69
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 66,
-  y = 69
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 67,
-  y = 69
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 68,
-  y = 69
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 69,
-  y = 69
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 38,
-  y = 69
-}, {
-  mask = 6,
-  prototype = "砖石公路-X型",
-  x = 89,
-  y = 80
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 90,
-  y = 80
-}, {
-  mask = 14,
-  prototype = "砖石公路-X型",
-  x = 47,
-  y = 60
-}, {
-  mask = 14,
-  prototype = "砖石公路-X型",
-  x = 47,
-  y = 61
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 47,
-  y = 62
-}, {
-  mask = 12,
-  prototype = "砖石公路-X型",
-  x = 47,
-  y = 59
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 53,
-  y = 62
-}, {
-  mask = 9,
-  prototype = "砖石公路-X型",
-  x = 53,
-  y = 59
-}, {
-  mask = 11,
-  prototype = "砖石公路-X型",
-  x = 53,
-  y = 60
-}, {
-  mask = 11,
-  prototype = "砖石公路-X型",
-  x = 53,
-  y = 61
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 51,
-  y = 59
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 48,
-  y = 59
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 52,
-  y = 59
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 49,
-  y = 59
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 50,
-  y = 59
-}, {
-  mask = 9,
-  prototype = "砖石公路-X型",
-  x = 59,
-  y = 75
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 58,
-  y = 75
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 33,
-  y = 67
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 33,
-  y = 68
-}, {
-  mask = 6,
-  prototype = "砖石公路-X型",
-  x = 33,
-  y = 69
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 33,
-  y = 64
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 33,
-  y = 65
-}, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 33,
-  y = 66
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 34,
-  y = 69
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 36,
-  y = 69
-}, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 35,
-  y = 69
-} }
+    mask = 14,
+    prototype = "砖石公路-X型",
+    x = 33,
+    y = 46
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 33,
+    y = 48
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 33,
+    y = 50
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 33,
+    y = 52
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 33,
+    y = 54
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 33,
+    y = 56
+  }, {
+    mask = 11,
+    prototype = "砖石公路-X型",
+    x = 33,
+    y = 58
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 33,
+    y = 60
+  }, {
+    mask = 6,
+    prototype = "砖石公路-X型",
+    x = 37,
+    y = 78
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 42,
+    y = 80
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 43,
+    y = 80
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 44,
+    y = 80
+  }, {
+    mask = 15,
+    prototype = "砖石公路-X型",
+    x = 45,
+    y = 80
+  }, {
+    mask = 15,
+    prototype = "砖石公路-X型",
+    x = 46,
+    y = 80
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 47,
+    y = 80
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 48,
+    y = 80
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 49,
+    y = 80
+  }, {
+    mask = 7,
+    prototype = "砖石公路-X型",
+    x = 50,
+    y = 80
+  }, {
+    mask = 7,
+    prototype = "砖石公路-X型",
+    x = 51,
+    y = 80
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 52,
+    y = 80
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 53,
+    y = 80
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 54,
+    y = 80
+  }, {
+    mask = 7,
+    prototype = "砖石公路-X型",
+    x = 55,
+    y = 80
+  }, {
+    mask = 7,
+    prototype = "砖石公路-X型",
+    x = 56,
+    y = 80
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 59,
+    y = 78
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 71,
+    y = 66
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 66,
+    y = 78
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 73,
+    y = 66
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 74,
+    y = 66
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 75,
+    y = 66
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 76,
+    y = 66
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 77,
+    y = 66
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 78,
+    y = 66
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 81,
+    y = 62
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 80,
+    y = 66
+  }, {
+    mask = 13,
+    prototype = "砖石公路-X型",
+    x = 81,
+    y = 66
+  }, {
+    mask = 13,
+    prototype = "砖石公路-X型",
+    x = 82,
+    y = 66
+  }, {
+    mask = 13,
+    prototype = "砖石公路-X型",
+    x = 83,
+    y = 66
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 86,
+    y = 62
+  }, {
+    mask = 13,
+    prototype = "砖石公路-X型",
+    x = 85,
+    y = 66
+  }, {
+    mask = 13,
+    prototype = "砖石公路-X型",
+    x = 86,
+    y = 66
+  }, {
+    mask = 13,
+    prototype = "砖石公路-X型",
+    x = 87,
+    y = 66
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 90,
+    y = 62
+  }, {
+    mask = 13,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 62
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 92,
+    y = 62
+  }, {
+    mask = 8,
+    prototype = "砖石公路-X型",
+    x = 96,
+    y = 56
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 94,
+    y = 62
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 95,
+    y = 62
+  }, {
+    mask = 3,
+    prototype = "砖石公路-X型",
+    x = 96,
+    y = 62
+  }, {
+    mask = 14,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 88
+  }, {
+    mask = 11,
+    prototype = "砖石公路-X型",
+    x = 96,
+    y = 84
+  }, {
+    mask = 11,
+    prototype = "砖石公路-X型",
+    x = 96,
+    y = 88
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 37,
+    y = 77
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 68,
+    y = 76
+  }, {
+    mask = 7,
+    prototype = "砖石公路-X型",
+    x = 61,
+    y = 76
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 60,
+    y = 76
+  }, {
+    mask = 14,
+    prototype = "砖石公路-X型",
+    x = 59,
+    y = 76
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 70,
+    y = 64
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 70,
+    y = 68
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 70,
+    y = 70
+  }, {
+    mask = 14,
+    prototype = "砖石公路-X型",
+    x = 70,
+    y = 72
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 70,
+    y = 74
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 65,
+    y = 81
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 66,
+    y = 82
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 66,
+    y = 84
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 96,
+    y = 58
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 93,
+    y = 62
+  }, {
+    mask = 9,
+    prototype = "砖石公路-X型",
+    x = 38,
+    y = 78
+  }, {
+    mask = 9,
+    prototype = "砖石公路-X型",
+    x = 89,
+    y = 79
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 89,
+    y = 62
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 88,
+    y = 62
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 87,
+    y = 62
+  }, {
+    mask = 13,
+    prototype = "砖石公路-X型",
+    x = 85,
+    y = 62
+  }, {
+    mask = 13,
+    prototype = "砖石公路-X型",
+    x = 84,
+    y = 62
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 76,
+    y = 62
+  }, {
+    mask = 13,
+    prototype = "砖石公路-X型",
+    x = 70,
+    y = 62
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 69,
+    y = 62
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 68,
+    y = 62
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 67,
+    y = 62
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 66,
+    y = 62
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 65,
+    y = 62
+  }, {
+    mask = 7,
+    prototype = "砖石公路-X型",
+    x = 64,
+    y = 62
+  }, {
+    mask = 7,
+    prototype = "砖石公路-X型",
+    x = 63,
+    y = 62
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 62,
+    y = 62
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 61,
+    y = 62
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 60,
+    y = 62
+  }, {
+    mask = 13,
+    prototype = "砖石公路-X型",
+    x = 59,
+    y = 62
+  }, {
+    mask = 13,
+    prototype = "砖石公路-X型",
+    x = 58,
+    y = 62
+  }, {
+    mask = 12,
+    prototype = "砖石公路-X型",
+    x = 57,
+    y = 62
+  }, {
+    mask = 3,
+    prototype = "砖石公路-X型",
+    x = 70,
+    y = 76
+  }, {
+    mask = 14,
+    prototype = "砖石公路-X型",
+    x = 70,
+    y = 66
+  }, {
+    mask = 11,
+    prototype = "砖石公路-X型",
+    x = 96,
+    y = 82
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 96,
+    y = 86
+  }, {
+    mask = 13,
+    prototype = "砖石公路-X型",
+    x = 84,
+    y = 66
+  }, {
+    mask = 14,
+    prototype = "砖石公路-X型",
+    x = 66,
+    y = 86
+  }, {
+    mask = 13,
+    prototype = "砖石公路-X型",
+    x = 88,
+    y = 66
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 96,
+    y = 80
+  }, {
+    mask = 8,
+    prototype = "砖石公路-X型",
+    x = 33,
+    y = 45
+  }, {
+    mask = 14,
+    prototype = "砖石公路-X型",
+    x = 33,
+    y = 47
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 33,
+    y = 49
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 33,
+    y = 51
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 33,
+    y = 53
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 33,
+    y = 55
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 33,
+    y = 57
+  }, {
+    mask = 11,
+    prototype = "砖石公路-X型",
+    x = 33,
+    y = 59
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 33,
+    y = 61
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 33,
+    y = 62
+  }, {
+    mask = 13,
+    prototype = "砖石公路-X型",
+    x = 37,
+    y = 63
+  }, {
+    mask = 13,
+    prototype = "砖石公路-X型",
+    x = 37,
+    y = 69
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 37,
+    y = 71
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 37,
+    y = 73
+  }, {
+    mask = 14,
+    prototype = "砖石公路-X型",
+    x = 37,
+    y = 75
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 38,
+    y = 75
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 39,
+    y = 75
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 40,
+    y = 75
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 41,
+    y = 75
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 42,
+    y = 75
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 43,
+    y = 75
+  }, {
+    mask = 7,
+    prototype = "砖石公路-X型",
+    x = 44,
+    y = 75
+  }, {
+    mask = 7,
+    prototype = "砖石公路-X型",
+    x = 45,
+    y = 75
+  }, {
+    mask = 13,
+    prototype = "砖石公路-X型",
+    x = 46,
+    y = 75
+  }, {
+    mask = 13,
+    prototype = "砖石公路-X型",
+    x = 47,
+    y = 75
+  }, {
+    mask = 7,
+    prototype = "砖石公路-X型",
+    x = 48,
+    y = 75
+  }, {
+    mask = 7,
+    prototype = "砖石公路-X型",
+    x = 49,
+    y = 75
+  }, {
+    mask = 7,
+    prototype = "砖石公路-X型",
+    x = 50,
+    y = 75
+  }, {
+    mask = 7,
+    prototype = "砖石公路-X型",
+    x = 51,
+    y = 75
+  }, {
+    mask = 7,
+    prototype = "砖石公路-X型",
+    x = 52,
+    y = 75
+  }, {
+    mask = 7,
+    prototype = "砖石公路-X型",
+    x = 53,
+    y = 75
+  }, {
+    mask = 13,
+    prototype = "砖石公路-X型",
+    x = 54,
+    y = 75
+  }, {
+    mask = 13,
+    prototype = "砖石公路-X型",
+    x = 55,
+    y = 75
+  }, {
+    mask = 7,
+    prototype = "砖石公路-X型",
+    x = 56,
+    y = 75
+  }, {
+    mask = 7,
+    prototype = "砖石公路-X型",
+    x = 57,
+    y = 75
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 59,
+    y = 77
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 59,
+    y = 79
+  }, {
+    mask = 6,
+    prototype = "砖石公路-X型",
+    x = 59,
+    y = 81
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 70,
+    y = 63
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 70,
+    y = 65
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 70,
+    y = 67
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 66,
+    y = 77
+  }, {
+    mask = 14,
+    prototype = "砖石公路-X型",
+    x = 66,
+    y = 79
+  }, {
+    mask = 11,
+    prototype = "砖石公路-X型",
+    x = 66,
+    y = 81
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 66,
+    y = 83
+  }, {
+    mask = 14,
+    prototype = "砖石公路-X型",
+    x = 66,
+    y = 85
+  }, {
+    mask = 2,
+    prototype = "砖石公路-X型",
+    x = 66,
+    y = 87
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 71,
+    y = 79
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 72,
+    y = 79
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 73,
+    y = 79
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 74,
+    y = 79
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 75,
+    y = 79
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 76,
+    y = 79
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 77,
+    y = 79
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 78,
+    y = 79
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 79,
+    y = 79
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 80,
+    y = 79
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 81,
+    y = 79
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 82,
+    y = 79
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 84,
+    y = 79
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 96,
+    y = 57
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 86,
+    y = 79
+  }, {
+    mask = 14,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 79
+  }, {
+    mask = 14,
+    prototype = "砖石公路-X型",
+    x = 96,
+    y = 79
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 97,
+    y = 79
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 98,
+    y = 79
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 99,
+    y = 79
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 100,
+    y = 79
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 101,
+    y = 79
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 102,
+    y = 79
+  }, {
+    mask = 13,
+    prototype = "砖石公路-X型",
+    x = 103,
+    y = 79
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 96,
+    y = 87
+  }, {
+    mask = 11,
+    prototype = "砖石公路-X型",
+    x = 96,
+    y = 85
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 96,
+    y = 83
+  }, {
+    mask = 11,
+    prototype = "砖石公路-X型",
+    x = 96,
+    y = 81
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 88,
+    y = 79
+  }, {
+    mask = 14,
+    prototype = "砖石公路-X型",
+    x = 96,
+    y = 61
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 79,
+    y = 66
+  }, {
+    mask = 6,
+    prototype = "砖石公路-X型",
+    x = 38,
+    y = 80
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 39,
+    y = 80
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 40,
+    y = 80
+  }, {
+    mask = 7,
+    prototype = "砖石公路-X型",
+    x = 77,
+    y = 62
+  }, {
+    mask = 7,
+    prototype = "砖石公路-X型",
+    x = 78,
+    y = 62
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 79,
+    y = 62
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 80,
+    y = 62
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 82,
+    y = 62
+  }, {
+    mask = 7,
+    prototype = "砖石公路-X型",
+    x = 83,
+    y = 62
+  }, {
+    mask = 7,
+    prototype = "砖石公路-X型",
+    x = 64,
+    y = 76
+  }, {
+    mask = 13,
+    prototype = "砖石公路-X型",
+    x = 66,
+    y = 76
+  }, {
+    mask = 11,
+    prototype = "砖石公路-X型",
+    x = 59,
+    y = 80
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 69,
+    y = 76
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 58,
+    y = 80
+  }, {
+    mask = 14,
+    prototype = "砖石公路-X型",
+    x = 96,
+    y = 60
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 70,
+    y = 79
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 57,
+    y = 80
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 41,
+    y = 80
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 63,
+    y = 76
+  }, {
+    mask = 7,
+    prototype = "砖石公路-X型",
+    x = 62,
+    y = 76
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 67,
+    y = 76
+  }, {
+    mask = 7,
+    prototype = "砖石公路-X型",
+    x = 65,
+    y = 76
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 37,
+    y = 72
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 37,
+    y = 74
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 37,
+    y = 70
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 85,
+    y = 79
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 83,
+    y = 79
+  }, {
+    mask = 13,
+    prototype = "砖石公路-X型",
+    x = 89,
+    y = 66
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 66,
+    y = 80
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 64,
+    y = 81
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 72,
+    y = 66
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 37,
+    y = 76
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 38,
+    y = 79
+  }, {
+    mask = 14,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 67
+  }, {
+    mask = 7,
+    prototype = "砖石公路-X型",
+    x = 92,
+    y = 67
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 96,
+    y = 59
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 67,
+    y = 79
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 68,
+    y = 79
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 69,
+    y = 79
+  }, {
+    mask = 11,
+    prototype = "砖石公路-X型",
+    x = 70,
+    y = 69
+  }, {
+    mask = 14,
+    prototype = "砖石公路-X型",
+    x = 70,
+    y = 71
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 70,
+    y = 75
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 70,
+    y = 73
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 61,
+    y = 81
+  }, {
+    mask = 7,
+    prototype = "砖石公路-X型",
+    x = 62,
+    y = 81
+  }, {
+    mask = 7,
+    prototype = "砖石公路-X型",
+    x = 63,
+    y = 81
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 60,
+    y = 81
+  }, {
+    mask = 1,
+    prototype = "砖石公路-X型",
+    x = 94,
+    y = 67
+  }, {
+    mask = 7,
+    prototype = "砖石公路-X型",
+    x = 93,
+    y = 67
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 87,
+    y = 79
+  }, {
+    mask = 13,
+    prototype = "砖石公路-X型",
+    x = 104,
+    y = 79
+  }, {
+    mask = 1,
+    prototype = "砖石公路-X型",
+    x = 105,
+    y = 79
+  }, {
+    mask = 11,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 82
+  }, {
+    mask = 11,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 83
+  }, {
+    mask = 14,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 84
+  }, {
+    mask = 14,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 85
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 86
+  }, {
+    mask = 14,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 87
+  }, {
+    mask = 11,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 80
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 81
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 74,
+    y = 62
+  }, {
+    mask = 7,
+    prototype = "砖石公路-X型",
+    x = 71,
+    y = 62
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 75,
+    y = 62
+  }, {
+    mask = 7,
+    prototype = "砖石公路-X型",
+    x = 72,
+    y = 62
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 73,
+    y = 62
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 54,
+    y = 63
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 39,
+    y = 63
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 55,
+    y = 63
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 40,
+    y = 63
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 56,
+    y = 63
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 41,
+    y = 63
+  }, {
+    mask = 3,
+    prototype = "砖石公路-X型",
+    x = 57,
+    y = 63
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 42,
+    y = 63
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 43,
+    y = 63
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 44,
+    y = 63
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 45,
+    y = 63
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 46,
+    y = 63
+  }, {
+    mask = 7,
+    prototype = "砖石公路-X型",
+    x = 47,
+    y = 63
+  }, {
+    mask = 13,
+    prototype = "砖石公路-X型",
+    x = 48,
+    y = 63
+  }, {
+    mask = 13,
+    prototype = "砖石公路-X型",
+    x = 49,
+    y = 63
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 50,
+    y = 63
+  }, {
+    mask = 13,
+    prototype = "砖石公路-X型",
+    x = 51,
+    y = 63
+  }, {
+    mask = 13,
+    prototype = "砖石公路-X型",
+    x = 52,
+    y = 63
+  }, {
+    mask = 7,
+    prototype = "砖石公路-X型",
+    x = 53,
+    y = 63
+  }, {
+    mask = 13,
+    prototype = "砖石公路-X型",
+    x = 38,
+    y = 63
+  }, {
+    mask = 11,
+    prototype = "砖石公路-X型",
+    x = 96,
+    y = 77
+  }, {
+    mask = 11,
+    prototype = "砖石公路-X型",
+    x = 96,
+    y = 78
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 77
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 70
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 72
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 74
+  }, {
+    mask = 14,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 76
+  }, {
+    mask = 14,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 78
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 63
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 65
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 69
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 71
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 73
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 75
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 64
+  }, {
+    mask = 11,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 66
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 68
+  }, {
+    mask = 13,
+    prototype = "砖石公路-X型",
+    x = 90,
+    y = 66
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 89
+  }, {
+    mask = 6,
+    prototype = "砖石公路-X型",
+    x = 91,
+    y = 90
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 95,
+    y = 90
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 92,
+    y = 90
+  }, {
+    mask = 3,
+    prototype = "砖石公路-X型",
+    x = 96,
+    y = 90
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 93,
+    y = 90
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 94,
+    y = 90
+  }, {
+    mask = 11,
+    prototype = "砖石公路-X型",
+    x = 96,
+    y = 89
+  }, {
+    mask = 9,
+    prototype = "砖石公路-X型",
+    x = 96,
+    y = 76
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 95,
+    y = 76
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 92,
+    y = 76
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 93,
+    y = 76
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 94,
+    y = 76
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 35,
+    y = 63
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 36,
+    y = 63
+  }, {
+    mask = 14,
+    prototype = "砖石公路-X型",
+    x = 33,
+    y = 63
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 34,
+    y = 63
+  }, {
+    mask = 8,
+    prototype = "砖石公路-X型",
+    x = 83,
+    y = 56
+  }, {
+    mask = 14,
+    prototype = "砖石公路-X型",
+    x = 83,
+    y = 58
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 83,
+    y = 59
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 83,
+    y = 60
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 83,
+    y = 61
+  }, {
+    mask = 14,
+    prototype = "砖石公路-X型",
+    x = 83,
+    y = 57
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 39,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 40,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 41,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 42,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 43,
+    y = 69
+  }, {
+    mask = 13,
+    prototype = "砖石公路-X型",
+    x = 44,
+    y = 69
+  }, {
+    mask = 13,
+    prototype = "砖石公路-X型",
+    x = 45,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 46,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 47,
+    y = 69
+  }, {
+    mask = 13,
+    prototype = "砖石公路-X型",
+    x = 48,
+    y = 69
+  }, {
+    mask = 13,
+    prototype = "砖石公路-X型",
+    x = 49,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 50,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 51,
+    y = 69
+  }, {
+    mask = 15,
+    prototype = "砖石公路-X型",
+    x = 52,
+    y = 69
+  }, {
+    mask = 15,
+    prototype = "砖石公路-X型",
+    x = 53,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 54,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 55,
+    y = 69
+  }, {
+    mask = 13,
+    prototype = "砖石公路-X型",
+    x = 56,
+    y = 69
+  }, {
+    mask = 13,
+    prototype = "砖石公路-X型",
+    x = 57,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 58,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 59,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 60,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 61,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 62,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 63,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 64,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 65,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 66,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 67,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 68,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 69,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 38,
+    y = 69
+  }, {
+    mask = 6,
+    prototype = "砖石公路-X型",
+    x = 89,
+    y = 80
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 90,
+    y = 80
+  }, {
+    mask = 14,
+    prototype = "砖石公路-X型",
+    x = 47,
+    y = 60
+  }, {
+    mask = 14,
+    prototype = "砖石公路-X型",
+    x = 47,
+    y = 61
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 47,
+    y = 62
+  }, {
+    mask = 12,
+    prototype = "砖石公路-X型",
+    x = 47,
+    y = 59
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 53,
+    y = 62
+  }, {
+    mask = 9,
+    prototype = "砖石公路-X型",
+    x = 53,
+    y = 59
+  }, {
+    mask = 11,
+    prototype = "砖石公路-X型",
+    x = 53,
+    y = 60
+  }, {
+    mask = 11,
+    prototype = "砖石公路-X型",
+    x = 53,
+    y = 61
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 51,
+    y = 59
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 48,
+    y = 59
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 52,
+    y = 59
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 49,
+    y = 59
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 50,
+    y = 59
+  }, {
+    mask = 9,
+    prototype = "砖石公路-X型",
+    x = 59,
+    y = 75
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 58,
+    y = 75
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 33,
+    y = 67
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 33,
+    y = 68
+  }, {
+    mask = 6,
+    prototype = "砖石公路-X型",
+    x = 33,
+    y = 69
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 33,
+    y = 64
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 33,
+    y = 65
+  }, {
+    mask = 10,
+    prototype = "砖石公路-X型",
+    x = 33,
+    y = 66
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 34,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 36,
+    y = 69
+  }, {
+    mask = 5,
+    prototype = "砖石公路-X型",
+    x = 35,
+    y = 69
+  } }
 local mineral = {
   ["100,60"] = "铁矿石",
   ["113,131"] = "碎石",
@@ -5749,7 +5749,7 @@ local function prepare(world)
         end
     end
     assert(slot)
-    world:container_set(e.chest, idx, {amount = 50, limit = 50})
+    world:container_set(e.chest, idx, {amount = 60, limit = 60})
   end
 
 return {
