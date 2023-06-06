@@ -5,6 +5,7 @@ local BUILDING_COMPONENTS = {
     drone_depot_shelf = true,
     drone_depot_icon = true,
     assembling_icon = true,
+    chimney_icon = true,
     consumer_icon = true,
     workstatus = true,
     building_base = true,

@@ -21,7 +21,7 @@ local function replace_outline_material(template)
             v.data.visible_state = v.data.visible_state .. "|outline_queue"
             v.data.outline_info = {
                 outline_scale = 1.0,
-                outline_color = {0.5, 0.5, 0, 1},
+                outline_color = {0, 1, 0, 1},
             }
             v.policy[#v.policy+1] = "ant.render|outline_info"
         end

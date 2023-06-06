@@ -33,10 +33,11 @@ local tech = type "tech"
     .time "time"
     .count "integer"
 
-function tech:init()
-    return {
-        time = 0
-    }
+function tech:init(object)
+    assert(object.ingredients, "ingredients is empty.")
+    assert(object.time, "time is empty.")
+    assert(object.count, "count is empty.")
+    return {}
 end
 
 local task = type "task"
@@ -45,9 +46,14 @@ local task = type "task"
     .count "integer"
     .time "time"
 
-function task:init()
+function task:preinit()
     return {
         ingredients = {{"任务", 1}},
+    }
+end
+
+function task:init()
+    return {
         time = 0,
     }
 end

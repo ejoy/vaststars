@@ -58,6 +58,21 @@ end
 
 local ckeys = setmetatable({}, { __mode = "kv", __index = keys_union })
 
+local function preinit(object)
+	local typelist = assert(object.type)
+	for i = #typelist, 1, -1 do
+		local type = typelist[i]
+		local funcs = typefuncs[type]
+		if funcs and funcs.preinit then
+			for k, v in pairs(funcs.preinit(nil, object)) do
+				if object[k] == nil then
+					object[k] = v
+				end
+			end
+		end
+	end
+end
+
 local function init(object)
 	local typelist = assert(object.type)
 	for i = #typelist, 1, -1 do
@@ -131,6 +146,7 @@ end
 
 function m.register(name)
 	return function (object)
+		preinit(object)
 		local typelist = assert(object.type)
 		local cache_key = table.concat(typelist, ":")
 		local combine_keys = ckeys[cache_key](typelist)

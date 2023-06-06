@@ -15,16 +15,8 @@ namespace roadnet::lua {
     static road_coord get_road_coord(lua_State* L, int idx) {
         auto v = luaL_checkinteger(L, idx);
         uint16_t id     = (uint16_t)(v & 0xFFFF);
-        uint16_t type   = (uint16_t)((v >> 0) & 0x1);
-        if (type) {
-            cross_type offset = (cross_type)((v >> 18) & 0x00FF);
-            return road_coord(std::bit_cast<roadid>(id), offset);
-        }
-        else {
-            uint8_t  stype  = (uint8_t)(((v >> 16) >> 14) & 0x3);
-            uint16_t offset = (uint16_t)((v >> 18) & 0x3FFF);
-            return road_coord(std::bit_cast<roadid>(id), (straight_type)stype, offset);
-        }
+        uint16_t offset = (uint16_t)((v >> 16) & 0xFFFF);
+        return road_coord(std::bit_cast<roadid>(id), offset);
     }
 
     static loction get_loction(lua_State* L, int idx) {
@@ -56,8 +48,7 @@ namespace roadnet::lua {
     static void push_road_coord(lua_State* L, road_coord& c) {
         uint32_t v = 0;
         v |= (uint32_t)std::bit_cast<uint16_t>(c.id);
-        v |= (uint32_t)c.type << 16;
-        v |= (uint32_t)c.offset << 18;
+        v |= (uint32_t)c.offset << 16;
         lua_pushinteger(L, v);
     }
 
@@ -115,7 +106,7 @@ namespace roadnet::lua {
                     while (index >= w.straightAry[straight].lorryOffset + w.straightAry[straight].len) {
                         straight++;
                     }
-                    road_coord coord = {roadid {roadtype::straight, straight}, straight_type::straight, (uint16_t)(index - w.straightAry[straight].lorryOffset)};
+                    road_coord coord = {roadid {roadtype::straight, straight}, (uint16_t)(index - w.straightAry[straight].lorryOffset)};
                     index++;
                     return std::make_tuple(id, coord);
                 }

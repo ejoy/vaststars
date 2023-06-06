@@ -6,19 +6,16 @@
 namespace roadnet {
     struct road_coord {
         roadid id;
-        uint16_t type: 2;
-        uint16_t offset: 14;
+        uint16_t offset;
         bool operator ==(road_coord const& rhs) const {
             return id == rhs.id && offset == rhs.offset;
         }
         constexpr road_coord(roadid id, cross_type type)
             : id(id)
-            , type(0)
             , offset((uint8_t)type)
         {}
-        constexpr road_coord(roadid id, straight_type type, uint16_t offset)
+        constexpr road_coord(roadid id, uint16_t offset)
             : id(id)
-            , type((uint8_t)type)
             , offset(offset)
         {}
     };
