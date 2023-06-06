@@ -139,6 +139,9 @@ local function doc_change(doc, k, v)
 			-- deepcopy v
 			for k,v in pairs(v) do
 				lv[k] = v
+				if not doc._dirty then
+					doc._dirty = lv._dirty
+				end
 				keys[k] = nil
 			end
 			-- clear keys not exist in v
