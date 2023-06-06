@@ -25,6 +25,7 @@ local SPRITE_COLOR = import_package "vaststars.prototype".load("sprite_color")
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 local ientity = require "gameplay.interface.entity"
 local create_pickup_icon = ecs.require "pickup_icon".create
+local create_pickup_icon_chimney = ecs.require "pickup_icon_chimney".create
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local terrain = ecs.require "terrain"
 local gameplay_core = require "gameplay.core"
@@ -290,6 +291,9 @@ local function __new_entity(self, datamodel, typeobject)
 
     if e.assembling and e.assembling.recipe ~= 0 then
         self.pickup_components.pickup_icon = create_pickup_icon(typeobject, dir, e.assembling.recipe, self.pickup_object.srt)
+    end
+    if e.chimney then
+        self.pickup_components.pickup_icon_chimney = create_pickup_icon_chimney(dir, self.pickup_object.srt, typeobject)
     end
     self.pickup_components.self_selected_box = create_pickup_selected_box(self.pickup_object.srt.t, typeobject, dir, datamodel.show_confirm and true or false)
     __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject)

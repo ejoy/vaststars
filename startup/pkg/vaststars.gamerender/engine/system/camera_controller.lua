@@ -199,7 +199,7 @@ local __handle_drop_camera; do
 
         for _, _, e in gesture_pan:unpack() do
             if __check_camera_editable() then
-                local bx, by = e.x - e.vx, e.y - e.vy
+                local bx, by = e.x - e.dx, e.y - e.dy
                 if bx ~= begin_x or by ~= begin_y then
                     begin_x, begin_y = bx, by
                     last_position = math3d.ref(icamera_controller.screen_to_world(begin_x, begin_y, PLANES)[1])

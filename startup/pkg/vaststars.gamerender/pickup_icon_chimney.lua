@@ -2,15 +2,13 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local chimney_sys = ecs.system "chimney_system"
-local gameplay_core = require "gameplay.core"
+local math3d = require "math3d"
 local iprototype = require "gameplay.interface.prototype"
 local iterrain = ecs.require "terrain"
 local assetmgr = import_package "ant.asset"
 local icanvas = ecs.require "engine.canvas"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local objects = require "objects"
-local global = require "global"
 
 local ROTATORS <const> = {
     N = math.rad(0),
@@ -65,7 +63,7 @@ local function __draw_fluid_indication_arrow(object_id, building_srt, dir, proto
             icon_w,
             icon_h
         )
-        icanvas.add_item(icanvas.types().ICON,
+        icanvas.add_item(icanvas.types().PICKUP_ICON,
             object_id,
             icanvas.get_key(material_path, RENDER_LAYER.FLUID_INDICATION_ARROW),
             {
@@ -89,11 +87,11 @@ end
 local function __create_icon(object_id, building_srt, dir, prototype)
     local function on_position_change(self, building_srt)
         local object = assert(objects:get(object_id))
-        icanvas.remove_item(icanvas.types().ICON, object_id)
+        icanvas.remove_item(icanvas.types().PICKUP_ICON, object_id)
         __draw_fluid_indication_arrow(object_id, building_srt, object.dir, prototype)
     end
     local function remove(self)
-        icanvas.remove_item(icanvas.types().ICON, object_id)
+        icanvas.remove_item(icanvas.types().PICKUP_ICON, object_id)
     end
     __draw_fluid_indication_arrow(object_id, building_srt, dir, prototype)
 
@@ -104,13 +102,42 @@ local function __create_icon(object_id, building_srt, dir, prototype)
     }
 end
 
-function chimney_sys:gameworld_build()
-    local gameplay_world = gameplay_core.get_world()
-    for e in gameplay_world.ecs:select "chimney:in building:in" do
-        local object = assert(objects:coord(e.building.x, e.building.y))
-        local building = global.buildings[object.id]
-        if not building.chimney_icon then
-            building.chimney_icon = __create_icon(object.id, object.srt, object.dir, e.building.prototype)
-        end
+local mt = {}
+mt.__index = mt
+
+function mt:remove()
+    icanvas.remove_item(icanvas.types().PICKUP_ICON, 0)
+    icanvas.show(icanvas.types().PICKUP_ICON, false)
+    local obj = icanvas.get(icanvas.types().PICKUP_ICON)
+    obj:send("iom", "set_position", {0, 0, 0})
+end
+
+function mt:on_position_change(building_srt, dir)
+    local delta = math3d.ref(math3d.sub(building_srt.t, self.position))
+    local obj = icanvas.get(icanvas.types().PICKUP_ICON)
+    obj:send("iom", "move_delta", delta)
+    self.position = building_srt.t
+
+    if dir ~= self.dir then
+        icanvas.remove_item(icanvas.types().PICKUP_ICON, 0)
+        obj:send("iom", "set_position", {0, 0, 0})
+        __create_icon(0, building_srt, dir, self.typeobject.id)
+        self.dir = dir
     end
 end
+
+function mt:on_status_change(status)
+end
+
+local m = {}
+function m.create(dir, building_srt, typeobject)
+    local self = setmetatable({}, mt)
+    self.typeobject = typeobject
+
+    self.dir = dir
+    self.position = building_srt.t
+    __create_icon(0, building_srt, dir, typeobject.id)
+    icanvas.show(icanvas.types().PICKUP_ICON, true)
+    return self
+end
+return m
