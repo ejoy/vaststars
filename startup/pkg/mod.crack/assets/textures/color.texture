@@ -7,9 +7,9 @@ mipmap: 0
 colorspace: sRGB
 path:/pkg/mod.crack/assets/shapes/color.png
 sampler:
-  MAG: POINT
-  MIN: POINT
-  MIP: POINT
+  MAG: LINEAR
+  MIN: LINEAR
+  MIP: LINEAR
   U: WRAP
   V: WRAP
 type: texture

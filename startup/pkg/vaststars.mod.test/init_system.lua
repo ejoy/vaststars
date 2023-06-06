@@ -54,11 +54,15 @@ function S.init_world()
             "ant.render|render",
         },
         data = {
-            scene = {t = {0, 0, 0}},
+            scene = {t = {10, 0, 10}},
             mesh  = "/pkg/mod.crack/assets/shapes/crack.glb|meshes/Plane_P1.meshbin",
             material    = "/pkg/mod.crack/assets/crack.material",
             visible_state = "main_view|selectable",
-            render_layer = "background"
+            render_layer = "background",
+            crack = {
+                crack_color = {0, 0, 1, 1},
+                crack_emissive = {2, 2, 2, 1}
+            }
         },
     }  
 --[[      local x, y = 0, 0

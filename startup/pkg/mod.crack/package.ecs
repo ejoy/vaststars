@@ -1,0 +1,11 @@
+component "crack".type "lua"
+
+system "init_system"
+    .implement "crack.lua"
+    .method "entity_init"
+    .method "entity_remove"
+
+
+policy "crack"
+    .require_system "mod.crack|init_system"
+    .component "crack"

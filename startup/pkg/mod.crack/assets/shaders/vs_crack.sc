@@ -6,7 +6,8 @@ $output v_texcoord0 v_normal v_tangent v_posWS
 
 void main()
 {
-	highp vec4 posWS = mul(u_model[0], vec4(a_position, 1.0));
+	mat4 wm = get_world_matrix();
+	highp vec4 posWS = transformWS(wm, mediump vec4(a_position, 1.0));
 	gl_Position = mul(u_viewProj, posWS);
 	v_texcoord0 = a_texcoord0;
 	
@@ -19,8 +20,9 @@ void main()
 	mediump vec3 tangent = a_tangent.xyz;
 #	endif//PACK_TANGENT_TO_QUAT
 
-	v_normal	= mul(u_model[0], mediump vec4(normal, 0.0)).xyz;
-	v_tangent	= mul(u_model[0], mediump vec4(tangent, 0.0)).xyz * sign(a_tangent.w);
+	v_normal	= mul(wm, mediump vec4(normal, 0.0)).xyz;
+	v_tangent	= mul(wm, mediump vec4(tangent, 0.0)).xyz * sign(a_tangent.w);
 	v_posWS = posWS;
 	v_posWS.w = mul(u_view, v_posWS).z;
+	
 }

@@ -1,5 +1,5 @@
 fx:
-  fs: /pkg/mod.crack/assets/shaders/fs_crack.sc
+  fs: /pkg/mod.crack/assets/shaders/fs_crack_color.sc
   vs: /pkg/mod.crack/assets/shaders/vs_crack.sc
   setting:
     lighting: on
@@ -8,9 +8,10 @@ fx:
     subsurface: off
 properties:
   u_pbr_factor: {1, 1, 0, 0}  #metallic, roughness, alpha_cutoff, occlusion strength
-  s_color:
+  u_crack_color: {1, 1, 1, 1}
+  s_alpha:
     stage: 0
-    texture: /pkg/mod.crack/assets/textures/color.texture
+    texture: /pkg/mod.crack/assets/textures/alpha.texture
   s_normal:
     stage: 1
     texture: /pkg/mod.crack/assets/textures/normal.texture

@@ -13,12 +13,14 @@ $input v_texcoord0 v_normal v_tangent v_posWS
 #include "pbr/lighting.sh"
 #include "pbr/indirect_lighting.sh"
 #include "pbr/pbr.sh"
-
+#include "pbr/attribute_uniforms.sh"
 #include "pbr/attribute_define.sh"
 
-SAMPLER2D(s_color,                 0);
+SAMPLER2D(s_alpha,                 0);
 SAMPLER2D(s_normal,                1);
 SAMPLER2D(s_height,                2);
+
+uniform vec4 u_crack_color;
 
 #define u_metallic_factor     u_pbr_factor.x
 #define u_roughness_factor    u_pbr_factor.y
@@ -103,13 +105,17 @@ void main()
     vec2 uv = parallax_mapping(v_texcoord0, view_dir, num_layers);
     if(uv.x > 1.0 || uv.y > 1.0 || uv.x < 0.0 || uv.y < 0.0){
         discard;
-    } 
-    vec4 basecolor = texture2D(s_color, uv);
+    }
+    float crack_alpha = 1 - texture2D(s_alpha, uv).r;
+    if(crack_alpha == 0){
+        discard;
+    }
+    vec4 basecolor = get_basecolor(uv, u_crack_color);
+    basecolor.a = crack_alpha;
     vec3 normal = normal_from_tangent_frame(tbn, uv);
     input_attributes input_attribs = init_input_attributes(v_normal, normal, v_posWS, basecolor, gl_FragCoord);
 
     gl_FragColor = compute_lighting(input_attribs);
-
 }
 
 

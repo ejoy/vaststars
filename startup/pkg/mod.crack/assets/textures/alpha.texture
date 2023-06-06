@@ -5,11 +5,11 @@ compress:
 maxsize: 1024x1024
 mipmap: 0
 colorspace: linear
-path: /pkg/mod.crack/assets/shapes/alpha.png
+path: /pkg/mod.crack/assets/shapes/alpha.dds
 sampler:
-  MAG: POINT
-  MIN: POINT
-  MIP: POINT
+  MAG: LINEAR
+  MIN: LINEAR
+  MIP: LINEAR
   U: WRAP
   V: WRAP
 type: texture
