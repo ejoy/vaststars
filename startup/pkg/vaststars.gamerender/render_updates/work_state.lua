@@ -77,19 +77,19 @@ local update = interval_call(3000, function()
 
         if current == STATUS_IDLE then
             game_object.on_idle()
-            vsobject:emissive_color_update(EMISSIVE_COLOR_IDLE)
+            vsobject:update({emissive_color = EMISSIVE_COLOR_IDLE})
             if vsobject:has_animation("idle_start") then
-                vsobject:animation_name_update("idle_start", true)
+                vsobject:update({animation_name = "idle_start", final_frame = true})
             else
-                vsobject:animation_name_update("idle", false)
+                vsobject:update({animation_name = "idle", final_frame = false})
             end
         else
             game_object.on_work()
-            vsobject:emissive_color_update(EMISSIVE_COLOR_WORKING)
+            vsobject:update({emissive_color = EMISSIVE_COLOR_WORKING})
             if vsobject:has_animation("work_start") then
-                vsobject:animation_name_update("work_start", true)
+                vsobject:update({animation_name = "work_start", final_frame = true})
             else
-                vsobject:animation_name_update("work", false)
+                vsobject:update({animation_name = "work", final_frame = false})
             end
         end
         -- TODO: low_power

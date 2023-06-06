@@ -151,7 +151,7 @@ local entities = { {
   y = 108
 } }
 local road = { {
-  mask = 103,
+  mask = 7,
   prototype = "砖石公路-X型",
   x = 62,
   y = 62
@@ -226,12 +226,12 @@ local road = { {
   x = 76,
   y = 62
 }, {
-  mask = 109,
+  mask = 13,
   prototype = "砖石公路-X型",
   x = 77,
   y = 62
 }, {
-  mask = 77,
+  mask = 13,
   prototype = "砖石公路-X型",
   x = 78,
   y = 62
@@ -246,12 +246,12 @@ local road = { {
   x = 69,
   y = 56
 }, {
-  mask = 75,
+  mask = 11,
   prototype = "砖石公路-X型",
   x = 69,
   y = 60
 }, {
-  mask = 79,
+  mask = 15,
   prototype = "砖石公路-X型",
   x = 61,
   y = 62
@@ -261,12 +261,12 @@ local road = { {
   x = 69,
   y = 58
 }, {
-  mask = 109,
+  mask = 13,
   prototype = "砖石公路-X型",
   x = 60,
   y = 62
 }, {
-  mask = 75,
+  mask = 11,
   prototype = "砖石公路-X型",
   x = 69,
   y = 55
@@ -291,12 +291,12 @@ local road = { {
   x = 69,
   y = 61
 }, {
-  mask = 107,
+  mask = 11,
   prototype = "砖石公路-X型",
   x = 69,
   y = 59
 }, {
-  mask = 107,
+  mask = 11,
   prototype = "砖石公路-X型",
   x = 69,
   y = 54

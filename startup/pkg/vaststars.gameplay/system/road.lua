@@ -31,13 +31,13 @@ local S <const> = 2
 local W <const> = 3
 
 local MapRoad <const> = {
-    Left       = 1 << 0,
-    Top        = 1 << 1,
-    Right      = 1 << 2,
-    Bottom     = 1 << 3,
-    Endpoint   = 1 << 4,
-    NoLeftTurn = 1 << 5,
-    NoUTurn    = 1 << 6,
+    Left         = 1 << 0,
+    Top          = 1 << 1,
+    Right        = 1 << 2,
+    Bottom       = 1 << 3,
+    Endpoint     = 1 << 4,
+    NoHorizontal = 1 << 5,
+    NoVertical   = 1 << 6,
 }
 
 local Direction <const> = {
@@ -46,6 +46,11 @@ local Direction <const> = {
     ["S"] = 2,
     ["W"] = 3,
 }
+
+local N <const> = 0
+local E <const> = 1
+local S <const> = 2
+local W <const> = 3
 
 -- see also roadnet/network.h - MapRoad 
 local DirectionToMapRoad <const> = {
@@ -97,6 +102,13 @@ local function build_road(world, building_eid, building, map, road_cache, endpoi
     local ecs = world.ecs
     local pt = query(building.prototype)
 
+    local affected_roads_mask = 0
+    if building.direction == N or building.direction == S then
+        affected_roads_mask = MapRoad.NoVertical
+    else
+        affected_roads_mask = MapRoad.NoHorizontal
+    end
+
     local roads = {}
     for _, e in ipairs(pt.affected_roads) do
         local dx, dy = rotate(e.position, building.direction, pt.area)
@@ -107,9 +119,7 @@ local function build_road(world, building_eid, building, map, road_cache, endpoi
         end
         local dir = (Direction[e.dir] + building.direction) % 4
         roads[key] = open(map[key], dir)
-        for _, m in ipairs(e.mask) do
-            roads[key] = roads[key] | MapRoad[m]
-        end
+        roads[key] = roads[key] | affected_roads_mask
     end
 
     for key, mask in pairs(roads) do

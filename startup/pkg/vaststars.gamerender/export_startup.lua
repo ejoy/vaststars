@@ -153,7 +153,7 @@ return function()
         local e = {}
         e.x = v.road.x
         e.y = v.road.y
-        e.mask = v.road.mask
+        e.mask = v.road.mask & 0x0f
         e.prototype = iprototype.queryById(v.road.classid).name
         roads[#roads+1] = e
     end
