@@ -132,7 +132,15 @@ return function(start)
         v.background_image = "textures/cmdcenter/item-out.texture"
         start.buttons[#start.buttons + 1] = v
     end
-    
+
+    if start.station_weight_increase then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.text = "增加需求"
+        v.message = "station_weight_increase"
+        v.background_image = "textures/assemble/status.texture"
+        start.buttons[#start.buttons + 1] = v
+    end
+
     -- console.log("#start.buttons", #start.buttons)
     if #start.buttons > 0 then
         local pos = assert(positions[#start.buttons], #start.buttons)

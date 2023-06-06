@@ -13,6 +13,7 @@ local set_recipe_mb = mailbox:sub {"set_recipe"}
 local set_item_mb = mailbox:sub {"set_item"}
 local lorry_factory_inc_lorry_mb = mailbox:sub {"lorry_factory_inc_lorry"}
 local lorry_factory_stop_build_mb = mailbox:sub {"lorry_factory_stop_build"}
+local station_weight_increase_mb = mailbox:sub {"station_weight_increase"}
 local close_mb = mailbox:sub {"close"}
 local ui_click_mb = mailbox:sub {"ui_click"}
 local pickup_item_mb = mailbox:sub {"pickup_item"}
@@ -337,6 +338,13 @@ function M:stage_ui_update(datamodel, object_id)
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
         assert(e.assembling.recipe ~= 0)
         iassembling.set_option(gameplay_core.get_world(), e, {ingredientsLimit = 0, resultsLimit = 0})
+    end
+
+    for _ in station_weight_increase_mb:unpack() do
+        local object = assert(objects:get(object_id))
+        local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+        e.station.weights = e.station.weights + 1
+        igameplay.build_world()
     end
 
     for _, _, _, message in ui_click_mb:unpack() do

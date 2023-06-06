@@ -391,7 +391,10 @@ function assembling_sys:gameworld_prepare()
             if neighbor_fluid_name then
                 local recipe_name = cache[neighbor_fluid_name]
                 if recipe_name then
-                    iworld.set_recipe(gameplay_core.get_world(), e, recipe_name, typeobject.recipe_init_limit)
+                    local pt = iprototype.queryByName(recipe_name)
+                    if pt.id ~= e.assembling.recipe then
+                        iworld.set_recipe(gameplay_core.get_world(), e, recipe_name, typeobject.recipe_init_limit)
+                    end
                     break
                 end
             end
