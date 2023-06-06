@@ -1536,7 +1536,7 @@ local entities = { {
     fluid_name = "盐酸",
     prototype_name = "排水口I",
     x = 177,
-    y = 178
+    y = 181
   }, {
     dir = "N",
     item = "塑料",
@@ -2299,12 +2299,6 @@ local entities = { {
     prototype_name = "地下管1-JI型",
     x = 178,
     y = 172
-  }, {
-    dir = "N",
-    fluid_name = "盐酸",
-    prototype_name = "地下管1-JI型",
-    x = 178,
-    y = 177
   }, {
     dir = "E",
     fluid_name = "甲烷",
@@ -3912,6 +3906,24 @@ local entities = { {
     prototype_name = "无人机仓库I",
     x = 128,
     y = 148
+  }, {
+    dir = "N",
+    item = "碎石",
+    prototype_name = "无人机仓库I",
+    x = 101,
+    y = 156
+  }, {
+    dir = "N",
+    fluid_name = "盐酸",
+    prototype_name = "液罐I",
+    x = 177,
+    y = 178
+  }, {
+    dir = "N",
+    fluid_name = "盐酸",
+    prototype_name = "地下管1-JI型",
+    x = 178,
+    y = 177
   } }
 local road = { {
     mask = 14,
