@@ -297,7 +297,7 @@ namespace roadnet {
                 while (i >= straightAry[straight].lorryOffset + straightAry[straight].len) {
                     straight++;
                 }
-                auto coord = coordConvert(road_coord {roadid {roadtype::straight, straight}, straight_type::straight, (uint16_t)(i - straightAry[straight].lorryOffset)});
+                auto coord = coordConvert(road_coord {roadid {roadtype::straight, straight}, (uint16_t)(i - straightAry[straight].lorryOffset)});
                 lorryWhere[id.id] = coord;
             }
         }
@@ -551,7 +551,6 @@ namespace roadnet {
             assert(cross.get_type() == roadtype::cross);
             return road_coord {cross, (cross_type)mc.z};
         }
- 
         direction dir = straightDirection(getMapBits(map, loction{mc.x, mc.y}), mc.z);
         if (dir == direction::n) {
             return std::nullopt;
@@ -562,14 +561,14 @@ namespace roadnet {
             assert(id && id.get_type() == roadtype::straight);
             uint16_t n = road::straight::N * result.n + (mc.z & 0x0Fu);
             uint16_t offset = StraightRoad(id).len - n - 1;
-            return road_coord {id, straight_type::straight, offset};
+            return road_coord {id, offset};
         }
         return std::nullopt;
     }
 
     std::optional<map_coord> network::coordConvert(road_coord rc) {
         if (rc.id.get_type() == roadtype::cross) {
-            if (auto loc = whereCrossRoad(rc.id); loc) {
+            if (auto loc = whereCrossRoad(rc.id)) {
                 return map_coord {loc->x, loc->y, (uint8_t)rc.offset};
             }
             return std::nullopt;
@@ -585,7 +584,7 @@ namespace roadnet {
             wait = 0x01;
         }
 
-        if (auto res = moveToNeighbor(map, straight.loc, straight.start_dir, n / road::straight::N); res) {
+        if (auto res = moveToNeighbor(map, straight.loc, straight.start_dir, n / road::straight::N)) {
             auto m = getMapBits(map, res->l);
             auto z = 0x00;
             if (m & MapRoad::Endpoint) {

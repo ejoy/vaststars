@@ -36,10 +36,6 @@ namespace roadnet {
         bl,   bt, br, bb,
     };
 
-    enum class straight_type: uint8_t {
-        straight = 0,
-    };
-
     struct loction {
         union {
             struct {
