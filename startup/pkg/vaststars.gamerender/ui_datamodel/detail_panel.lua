@@ -6,6 +6,7 @@ local math3d = require "math3d"
 local iUiRt = ecs.import.interface "ant.rmlui|iuirt"
 local idetail = ecs.interface "idetail"
 local icamera_controller = ecs.import.interface "vaststars.gamerender|icamera_controller"
+local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local property_list = import_package "vaststars.prototype"("property_list")
 local objects = require "objects"
 local global = require "global"
@@ -17,6 +18,7 @@ local ichest = require "gameplay.interface.chest"
 local building_detail = import_package "vaststars.prototype"("building_detail_config")
 local assembling_common = require "ui_datamodel.common.assembling"
 local show_detail_mb = mailbox:sub {"show_detail"}
+local close_detail_mb = mailbox:sub {"close_detail"}
 local UPS <const> = require("gameplay.interface.constant").UPS
 local CHEST_LIST_TYPES <const> = {"chest", "station", "hub"}
 local queuename = "detail_scene_queue"
@@ -320,9 +322,22 @@ local function copy_table(inputs)
     return out
 end
 
-local rt_inst
+local model_inst
+local model_path
+local model_ready
+local model_euler
+local function update_model(mdl)
+    local e <close> = w:entity(mdl.tag["*"][1])
+    if not model_euler then
+        local r = iom.get_rotation(e)
+        local rad = math3d.tovalue(math3d.quat2euler(r))
+        model_euler = { math.deg(rad[1]), math.deg(rad[2]), math.deg(rad[3]) }
+    end
+    model_euler[2] = model_euler[2] + 1
+    iom.set_rotation(e, math3d.quaternion{math.rad(model_euler[1]), math.rad(model_euler[2]), math.rad(model_euler[3])})
+end
+
 function M:create(object_id)
-    iUiRt.close_ui_rt("detail_scene")
     counter = update_interval
     local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
@@ -339,6 +354,10 @@ function M:create(object_id)
     }
     last_inputs, last_ouputs = update_property_list(datamodel, get_entity_property_list(object_id))
     preinput = {}
+    model_path = "/pkg/vaststars.resources/"..typeobject.model
+    model_ready = false
+    model_euler = nil
+    model_inst = nil
     return datamodel
 end
 
@@ -366,12 +385,21 @@ local function get_delta(last, current, input)
 end
 
 function M:stage_ui_update(datamodel, object_id)
+    for _, _, _ in close_detail_mb:unpack() do
+        iUiRt.close_ui_rt("detail_scene")
+    end
+    if model_ready and model_inst then
+        update_model(model_inst)
+    end
     local gid = iUiRt.get_group_id("detail_scene")
-    if gid and not rt_inst then
-        local focus_path = "/pkg/vaststars.resources/prefabs/drone.prefab"
-        local plane_path = "/pkg/vaststars.resources/glb/plane_rt.glb|mesh.prefab"
-        local light_path = "/pkg/vaststars.resources/light_rt.prefab"
-        rt_inst = iUiRt.create_new_rt("detail_scene", plane_path, light_path, focus_path, {s = {1,1,1}, t = {0, 0, 0}})
+    if gid and not model_inst then
+        iUiRt.close_ui_rt("detail_scene")
+        model_inst = iUiRt.create_new_rt("detail_scene",
+            "/pkg/vaststars.resources/prefabs/plane_rt.prefab",
+            "/pkg/vaststars.resources/light_rt.prefab",
+            model_path,
+            {s = {1,1,1}, t = {0, 0, 0}})
+        model_ready = true
     end
 
     for _, _, _, area_id in show_detail_mb:unpack() do
