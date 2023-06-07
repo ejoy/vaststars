@@ -25,6 +25,7 @@ local terrain = ecs.require "terrain"
 local gameplay_core = require "gameplay.core"
 local gameplay = import_package "vaststars.gameplay"
 local iroad = gameplay.interface "road"
+local create_pickup_icon_chimney = ecs.require "pickup_icon_chimney".create
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -231,6 +232,10 @@ local function __new_entity(self, datamodel, typeobject, position, x, y, dir)
         group_id = 0,
         recipe = recipe,
     }
+
+    if iprototype.has_type(typeobject.type, "chimney") then
+        self.pickup_components.pickup_icon_chimney = create_pickup_icon_chimney(dir, self.pickup_object.srt, typeobject)
+    end
 
     if self.sprite then
         self.sprite:remove()
@@ -462,6 +467,10 @@ local function touch_move(self, datamodel, delta_vec)
 
     local typeobject = iprototype.queryByName(pickup_object.prototype_name)
 
+    for _, c in pairs(self.pickup_components) do
+        c:on_position_change(self.pickup_object.srt, self.pickup_object.dir)
+    end
+
     if self.grid_entity then
         self.grid_entity:send("obj_motion", "set_position", __calc_grid_position(self, typeobject))
     end
@@ -501,6 +510,10 @@ local function touch_move(self, datamodel, delta_vec)
         end
         __show_self_selected_boxes(self, pickup_object.srt.t, typeobject, pickup_object.dir, valid)
         __show_nearby_buildings_selected_boxes(self, x, y, pickup_object.dir, typeobject)
+
+        for _, c in pairs(self.pickup_components) do
+            c:on_status_change(datamodel.show_confirm)
+        end
         return
     else
         datamodel.show_confirm = true
@@ -520,6 +533,10 @@ local function touch_move(self, datamodel, delta_vec)
         end
         __show_self_selected_boxes(self, pickup_object.srt.t, typeobject, pickup_object.dir, valid)
         __show_nearby_buildings_selected_boxes(self, x, y, pickup_object.dir, typeobject)
+
+        for _, c in pairs(self.pickup_components) do
+            c:on_status_change(datamodel.show_confirm)
+        end
     end
 
     pickup_object.recipe = _get_mineral_recipe(pickup_object.prototype_name, lx, ly, pickup_object.dir) -- TODO: maybe set recipt according to entity type?
@@ -638,6 +655,9 @@ local function rotate_pickup_object(self, datamodel, dir, delta_vec)
     pickup_object.x, pickup_object.y = lx, ly
 
     local typeobject = iprototype.queryByName(pickup_object.prototype_name)
+    for _, c in pairs(self.pickup_components) do
+        c:on_position_change(self.pickup_object.srt, self.pickup_object.dir)
+    end
     local sprite_color
     local valid
     if not self:check_construct_detector(typeobject.name, pickup_object.x, pickup_object.y, dir) then
@@ -687,6 +707,10 @@ local function clean(self, datamodel)
     end
     self.selected_boxes = {}
 
+    for _, c in pairs(self.pickup_components) do
+        c:remove()
+    end
+
     if self.self_selected_boxes then
         self.self_selected_boxes:remove()
         self.self_selected_boxes = nil
@@ -718,6 +742,7 @@ local function create(item)
     M.selected_boxes = {}
     M.last_x, M.last_y = -1, -1
     M.item = item
+    M.pickup_components = {}
 
     return M
 end
