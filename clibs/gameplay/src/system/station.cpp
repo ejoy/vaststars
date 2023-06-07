@@ -128,6 +128,7 @@ static int lupdate(lua_State *L) {
     if (s.producers.empty()) {
         return 0;
     }
+    bool producer_changed = false;
     for (auto& v : ecs_api::select<ecs::station_producer, ecs::station, ecs::building>(w.ecs)) {
         auto& station = v.get<ecs::station>();
         if (station.endpoint == 0xFFFF) {
@@ -156,7 +157,11 @@ static int lupdate(lua_State *L) {
             chestslot.amount = 0;
             station.lorry--;
             pconsumer->ptr->lorry++;
+            producer_changed = true;
         }
+    }
+    if (producer_changed) {
+        producer_sort(s.producers);
     }
 
     for (auto& v : ecs_api::select<ecs::station_consumer, ecs::station>(w.ecs)) {
