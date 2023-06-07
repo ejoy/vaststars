@@ -16,15 +16,11 @@ $input v_texcoord0 v_normal v_tangent v_posWS
 #include "pbr/attribute_uniforms.sh"
 #include "pbr/attribute_define.sh"
 
-SAMPLER2D(s_alpha,                 0);
-SAMPLER2D(s_normal,                1);
-SAMPLER2D(s_height,                2);
-
-uniform vec4 u_crack_color;
+SAMPLER2D(s_height,                3);
 
 #define u_metallic_factor     u_pbr_factor.x
 #define u_roughness_factor    u_pbr_factor.y
-
+uniform vec4 u_crack_color;
 vec2 texture2DArrayBc5(sampler2DArray _sampler, vec3 _uv)
 {
 #if BGFX_SHADER_LANGUAGE_HLSL && BGFX_SHADER_LANGUAGE_HLSL <= 300
@@ -34,17 +30,12 @@ vec2 texture2DArrayBc5(sampler2DArray _sampler, vec3 _uv)
 #endif
 }
 
-mediump vec3 normal_from_tangent_frame(mat3 tbn, mediump vec2 texcoord)
-{
-	mediump vec3 normalTS = remap_normal(texture2DBc5(s_normal, texcoord));
-	// same as: mul(transpose(tbn), normalTS)
-    return normalize(mul(normalTS, tbn));
-}
 
-input_attributes init_input_attributes(vec3 gnormal, vec3 normal, vec4 posWS, vec4 basecolor, vec4 fragcoord)
+input_attributes init_input_attributes(vec3 gnormal, vec3 normal, vec4 posWS, vec4 basecolor, vec4 emissive, vec4 fragcoord)
 {
     input_attributes input_attribs  = (input_attributes)0;
     input_attribs.basecolor         = basecolor;
+    input_attribs.emissive          = emissive;
     input_attribs.posWS             = posWS.xyz;
     input_attribs.distanceVS        = posWS.w;
     input_attribs.V                 = normalize(u_eyepos.xyz - posWS.xyz);
@@ -55,7 +46,6 @@ input_attributes init_input_attributes(vec3 gnormal, vec3 normal, vec4 posWS, ve
     input_attribs.perceptual_roughness  = clamp(u_roughness_factor, 0.0, 1.0);
     input_attribs.metallic              = clamp(u_metallic_factor, 0.0, 1.0);
     input_attribs.occlusion         = 1.0;
-
     input_attribs.screen_uv         = get_normalize_fragcoord(fragcoord.xy);
     return input_attribs;
 }
@@ -106,14 +96,15 @@ void main()
     if(uv.x > 1.0 || uv.y > 1.0 || uv.x < 0.0 || uv.y < 0.0){
         discard;
     }
-    float crack_alpha = 1 - texture2D(s_alpha, uv).r;
+    float crack_alpha = 1 - texture2D(s_basecolor, uv).r;
     if(crack_alpha == 0){
         discard;
     }
-    vec4 basecolor = get_basecolor(uv, u_crack_color);
+    vec4 basecolor = u_crack_color;
+    vec4 emissive = get_emissive_color(uv);
     basecolor.a = crack_alpha;
     vec3 normal = normal_from_tangent_frame(tbn, uv);
-    input_attributes input_attribs = init_input_attributes(v_normal, normal, v_posWS, basecolor, gl_FragCoord);
+    input_attributes input_attribs = init_input_attributes(v_normal, normal, v_posWS, basecolor, emissive, gl_FragCoord);
 
     gl_FragColor = compute_lighting(input_attribs);
 }

@@ -48,23 +48,43 @@ function S.init_world()
     iom.set_direction(camera_ref, dir)
 
     iterrain.gen_terrain_field(256, 256, 128)
+
+    local crack_color = math3d.vector(0, 0, 1, 1)
+    local crack_emissive = math3d.vector(0, 0, 2, 1)
     ecs.create_entity{
         policy = {
             "ant.scene|scene_object",
             "ant.render|render",
+            "ant.general|name"
         },
         data = {
+            name = "crack",
             scene = {t = {10, 0, 10}},
             mesh  = "/pkg/mod.crack/assets/shapes/crack.glb|meshes/Plane_P1.meshbin",
             material    = "/pkg/mod.crack/assets/crack.material",
             visible_state = "main_view|selectable",
             render_layer = "background",
-            crack = {
-                crack_color = {0, 0, 1, 1},
-                crack_emissive = {2, 2, 2, 1}
-            }
         },
-    }  
+    }
+    ecs.create_entity{
+        policy = {
+            "ant.scene|scene_object",
+            "ant.render|render",
+            "ant.general|name"
+        },
+        data = {
+            name = "crack_plane",
+            scene = {t = {10, 0, 10}},
+            mesh  = "/pkg/mod.crack/assets/shapes/crack.glb|meshes/Plane_P1.meshbin",
+            material    = "/pkg/mod.crack/assets/crack_color.material",
+            visible_state = "main_view|selectable",
+            render_layer = "background",
+            on_ready = function(ee)
+                imaterial.set_property(ee, "u_crack_color", math3d.vector(crack_color))
+                imaterial.set_property(ee, "u_emissive_factor", math3d.vector(crack_emissive))
+            end
+        },
+    } 
 --[[      local x, y = 0, 0
     for _, shape in ipairs({"I", "L", "T", "U", "X", "O"}) do
         y = y + 2

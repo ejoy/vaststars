@@ -16,9 +16,7 @@ $input v_texcoord0 v_normal v_tangent v_posWS
 
 #include "pbr/attribute_define.sh"
 
-SAMPLER2D(s_color,                 0);
-SAMPLER2D(s_normal,                1);
-SAMPLER2D(s_height,                2);
+SAMPLER2D(s_height,                3);
 
 #define u_metallic_factor     u_pbr_factor.x
 #define u_roughness_factor    u_pbr_factor.y
@@ -32,12 +30,6 @@ vec2 texture2DArrayBc5(sampler2DArray _sampler, vec3 _uv)
 #endif
 }
 
-mediump vec3 normal_from_tangent_frame(mat3 tbn, mediump vec2 texcoord)
-{
-	mediump vec3 normalTS = remap_normal(texture2DBc5(s_normal, texcoord));
-	// same as: mul(transpose(tbn), normalTS)
-    return normalize(mul(normalTS, tbn));
-}
 
 input_attributes init_input_attributes(vec3 gnormal, vec3 normal, vec4 posWS, vec4 basecolor, vec4 fragcoord)
 {
@@ -104,7 +96,7 @@ void main()
     if(uv.x > 1.0 || uv.y > 1.0 || uv.x < 0.0 || uv.y < 0.0){
         discard;
     } 
-    vec4 basecolor = texture2D(s_color, uv);
+    vec4 basecolor = texture2D(s_basecolor, uv);
     vec3 normal = normal_from_tangent_frame(tbn, uv);
     input_attributes input_attribs = init_input_attributes(v_normal, normal, v_posWS, basecolor, gl_FragCoord);
 
