@@ -754,8 +754,6 @@ local t = {
 	"/pkg/mod.crack/assets/textures/color.texture",
 	"/pkg/mod.crack/assets/textures/height.texture",
 	"/pkg/mod.crack/assets/textures/normal.texture",
-	"/pkg/mod.crack/crack.lua",
-	"/pkg/mod.crack/package.ecs",
 	"/pkg/mod.crack/package.lua",
 	"/pkg/mod.printer/assets/printer.material",
 	"/pkg/mod.printer/package.ecs",
