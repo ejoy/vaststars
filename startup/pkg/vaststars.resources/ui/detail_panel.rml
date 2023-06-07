@@ -174,6 +174,7 @@
 
             ui_sys.addEventListener({
                 ["leave"] = function()
+                    ui_sys.pub {"close_detail"}
                     ui_sys.close()
                 end,
             })
@@ -182,7 +183,7 @@
     <body style = "pointer-events: none; justify-content: center; align-items: center;">
         <div data-model="start" class="panel1" style="flex-direction: row; justify-content: flex-start; align-items: center;">
             <!-- detail panel begin -->
-            <div style = 'margin-top: 7vmin; margin-bottom: 7vmin; width: 30vmin; height: 86vmin; background-image: "textures/detail/background.texture"; background-size: 100% 100%;'>
+            <div style = 'margin-top: 7vmin; margin-bottom: 7vmin; width: 30vmin; height: 86vmin; background-lattice: 30%; background-image: "textures/detail/background.texture"; background-size: 100% 100%;'>
                 <!-- title -->
                 <div style = "flex-direction: row; justify-content: center; align-items: center;">
                     <div data-style-background-image="icon" style = "width: 20vmin; height: 20vmin; background-size: cover;" data-event-click="onLongPress(1)"/>
@@ -260,7 +261,7 @@
             </div>
             <!-- detail panel end -->
             <div class="tips-bg" style='flex-direction: row; justify-content: space-evenly; align-items: center;' data-if="areaid==1.0">
-                <div style='width: 45vmin; height: 45vmin; border: 2px red; background-image:"<detail_scene>"; background-size: 100% 100%;'/>
+                <div style='width: 45vmin; height: 45vmin; background-image:"<detail_scene>"; background-size: 100% 100%;'/>
                 <div style="width: 35vmin; flex-direction: column; justify-content: center;">
                     <div style="text-align: center; font-size: 8vmin;">{{prototype_name}}</div>
                     <div style="color:#adadad; font-size: 4vmin; word-break: break-all;">{{desc}}</div>
