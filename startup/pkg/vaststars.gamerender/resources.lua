@@ -1175,7 +1175,6 @@ local t = {
 	"/pkg/vaststars.resources/prefabs/miner-1.prefab.patch",
 	"/pkg/vaststars.resources/prefabs/mineral/ground-aluminum-Material.002_clr.material",
 	"/pkg/vaststars.resources/prefabs/mineral/ground-aluminum.prefab",
-	"/pkg/vaststars.resources/prefabs/mineral/ground-geothermal-Material.002_clr.material",
 	"/pkg/vaststars.resources/prefabs/mineral/ground-geothermal.prefab",
 	"/pkg/vaststars.resources/prefabs/mineral/ground-gravel.prefab",
 	"/pkg/vaststars.resources/prefabs/mineral/ground-iron-ore-Material.002_clr.material",
