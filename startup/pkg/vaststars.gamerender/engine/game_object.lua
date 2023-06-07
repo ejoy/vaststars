@@ -14,13 +14,13 @@ local replace_material = require("engine.prefab_parser").replace_material
 local irl = ecs.import.interface "ant.render|irender_layer"
 local imodifier = ecs.import.interface "ant.modifier|imodifier"
 
-local function replace_outline_material(template)
+local function replace_outline_material(template, outline_scale)
     local res = {}
     for _, v in ipairs(template) do
         if v.data and v.data.mesh then
             v.data.visible_state = v.data.visible_state .. "|outline_queue"
             v.data.outline_info = {
-                outline_scale = 1.0,
+                outline_scale = outline_scale,
                 outline_color = {0, 1, 0, 1},
             }
             v.policy[#v.policy+1] = "ant.render|outline_info"

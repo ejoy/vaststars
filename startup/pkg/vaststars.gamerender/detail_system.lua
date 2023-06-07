@@ -188,7 +188,7 @@ do
 
         local object_id = object.id
         local vsobject = assert(vsobject_manager:get(object_id))
-        vsobject:update({state = "outline", outline_scale = 0.3})
+        vsobject:update({state = "outline", outline_scale = 1.0})
         temp_objects[#temp_objects+1] = {
             remove = function (self)
                 local vsobject = assert(vsobject_manager:get(object_id))
