@@ -15,10 +15,7 @@ local animation = hierarchy.animation
 local skeleton = hierarchy.skeleton
 
 local MOVE_SPEED <const> = 8.0
-local PAN_SPEED = 1.0
-if "ios" == platform.os then
-    PAN_SPEED = 2.5
-end
+local PAN_SPEED = 2.5
 
 local YAXIS_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
 local PLANES <const> = {YAXIS_PLANE}
@@ -199,7 +196,7 @@ local __handle_drop_camera; do
 
         for _, _, e in gesture_pan:unpack() do
             if __check_camera_editable() then
-                local bx, by = e.x - e.dx, e.y - e.dy
+                local bx, by = e.x - (e.dx * PAN_SPEED), e.y - (e.dy * PAN_SPEED)
                 if bx ~= begin_x or by ~= begin_y then
                     begin_x, begin_y = bx, by
                     last_position = math3d.ref(icamera_controller.screen_to_world(begin_x, begin_y, PLANES)[1])

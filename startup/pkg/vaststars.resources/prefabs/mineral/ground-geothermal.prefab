@@ -1,29 +1,13 @@
 ---
 data:
-  name: Scene
   scene: {}
+  material: /pkg/mod.crack/assets/crack.material
+  mesh: /pkg/mod.crack/assets/shapes/crack.glb|meshes/Plane_P1.meshbin
+  scene: {}
+  visible_state: main_view|selectable
+  crack:
+    crack_color: {0, 0, 1, 1},
+    crack_emissive: {2, 2, 2, 1}
 policy:
-  ant.general|name
   ant.scene|scene_object
----
-data:
-  material: /pkg/vaststars.resources/glb/mineral/ground-iron-ore.glb|materials/Material.004.material
-  mesh: /pkg/vaststars.resources/glb/mineral/ground-iron-ore.glb|meshes/Plane.002_P1.meshbin
-  name: Plane.002
-  scene: {}
-  visible_state: main_view|selectable|cast_shadow
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  material: /pkg/vaststars.resources/prefabs/mineral/ground-geothermal-Material.002_clr.material
-  mesh: /pkg/vaststars.resources/glb/mineral/ground-iron-ore.glb|meshes/Plane.004_P1.meshbin
-  name: tie
-  scene: {}
-  visible_state: main_view|selectable|cast_shadow
-mount: 1
-policy:
-  ant.general|name
   ant.render|render

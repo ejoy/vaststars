@@ -99,14 +99,15 @@ local __get_hitch_children ; do
                     slots[v.data.name] = v.data
                 elseif v.data.efk then
                     local efk = v.data.efk
+                    local t = {efk = efk, srt = v.data.scene}
                     if v.data.efk.auto_play then
-                        effects.auto_play[#effects.auto_play+1] = efk
+                        effects.auto_play[#effects.auto_play+1] = t
                     elseif v.data.name:match("^work.*$") then
-                        effects.work[#effects.work+1] = efk
+                        effects.work[#effects.work+1] = t
                     elseif v.data.name:match("^idle.*$") then
-                        effects.idle[#effects.idle+1] = efk
+                        effects.idle[#effects.idle+1] = t
                     else
-                        print("unknown efk", v.data.name)
+                        log.error("unknown efk", v.data.name)
                     end
                 end
                 if v.data.animation then
@@ -205,6 +206,33 @@ local __get_hitch_children ; do
     end
 end
 
+local efk_events = {}
+efk_events["play"] = function(o, e)
+    if not iefk.is_playing(o.id) then
+        iefk.play(o.id)
+    end
+end
+efk_events["stop"] = function(o, e)
+    if iefk.is_playing(o.id) then
+        iefk.stop(o.id, true)
+    end
+end
+
+local function __create_efk_object(efk, srt, parent, group_id, auto_play)
+    return ientity_object.create(iefk.create(efk.path, {
+        auto_play = auto_play,
+        loop = efk.loop or false,
+        speed = efk.speed or 1.0,
+        scene = {
+            parent = parent,
+            s = srt.s,
+            t = srt.t,
+            r = srt.r,
+        },
+        group_id = group_id,
+    }), efk_events)
+end
+
 local igame_object = ecs.interface "igame_object"
 --[[
 init = {
@@ -277,58 +305,15 @@ function igame_object.create(init)
 
     -- special for hitch
     local effects = {auto_play = {}, work = {}, idle = {}}
-    local efk_events = {}
-    efk_events["play"] = function(o, e)
-        if not iefk.is_playing(o.id) then
-            iefk.play(o.id)
-        end
+    for _, v in ipairs(children.effects.auto_play) do
+        effects.auto_play[#effects.auto_play + 1] = __create_efk_object(v.efk, v.srt,  hitch_entity_object.id, init.group_id, true)
     end
-    efk_events["stop"] = function(o, e)
-        if iefk.is_playing(o.id) then
-            iefk.stop(o.id, true)
-        end
+    for _, v in ipairs(children.effects.work) do
+        effects.work[#effects.work + 1] = __create_efk_object(v.efk, v.srt,  hitch_entity_object.id, init.group_id, false)
     end
-
-    for _, efkinfo in ipairs(children.effects.auto_play) do
-        effects.auto_play[#effects.auto_play + 1] = ientity_object.create(iefk.create(efkinfo.path, {
-            auto_play = true,
-            loop = efkinfo.loop or false,
-            speed = efkinfo.speed or 1.0,
-            scene = {
-                parent = hitch_entity_object.id,
-                s = efkinfo.s,
-                t = efkinfo.t,
-                r = efkinfo.r,
-            },
-            group_id = init.group_id,
-        }), efk_events)
+    for _, v in ipairs(children.effects.idle) do
+        effects.idle[#effects.idle + 1] = __create_efk_object(v.efk, v.srt,  hitch_entity_object.id, init.group_id, false)
     end
-    -- for _, efkinfo in ipairs(children.effects.work) do
-    --     effects.work[#effects.work + 1] = ientity_object.create(iefk.create(efkinfo.path, {
-    --         auto_play = false,
-    --         loop = efkinfo.loop or false,
-    --         speed = efkinfo.loop or 1.0,
-    --         scene = {
-    --             parent = hitch_entity_object.id,
-    --             s = efkinfo.s,
-    --             t = efkinfo.t,
-    --             r = efkinfo.r,
-    --         }
-    --     }), efk_events)
-    -- end
-    -- for _, efkinfo in ipairs(children.effects.idle) do
-    --     effects.idle[#effects.idle + 1] = ientity_object.create(iefk.create(efkinfo.path, {
-    --         auto_play = false,
-    --         loop = efkinfo.loop or false,
-    --         speed = efkinfo.loop or 1.0,
-    --         scene = {
-    --             parent = hitch_entity_object.id,
-    --             s = efkinfo.s,
-    --             t = efkinfo.t,
-    --             r = efkinfo.r,
-    --         }
-    --     }), efk_events)
-    -- end
 
     children.instance:send("attach_hitch", hitch_entity_object.id)
 
@@ -347,20 +332,20 @@ function igame_object.create(init)
     outer.send   = send
     outer.has_animation = has_animation
     outer.on_work = function ()
-        -- for _, o in ipairs(effects.idle) do
-        --     o:send("stop")
-        -- end
-        -- for _, o in ipairs(effects.work) do
-        --     o:send("play")
-        -- end
+        for _, o in ipairs(effects.idle) do
+            o:send("stop")
+        end
+        for _, o in ipairs(effects.work) do
+            o:send("play")
+        end
     end
     outer.on_idle = function ()
-        -- for _, o in ipairs(effects.work) do
-        --     o:send("stop")
-        -- end
-        -- for _, o in ipairs(effects.idle) do
-        --     o:send("play")
-        -- end
+        for _, o in ipairs(effects.work) do
+            o:send("stop")
+        end
+        for _, o in ipairs(effects.idle) do
+            o:send("play")
+        end
     end
     return outer
 end

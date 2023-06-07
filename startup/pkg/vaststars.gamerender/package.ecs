@@ -13,6 +13,7 @@ import "@mod.stonemountain"
 import "@mod.translucent_plane"
 import "@ant.daynight"
 import "@mod.billboard"
+import "@mod.crack"
 
 pipeline "init"
     .stage "init"

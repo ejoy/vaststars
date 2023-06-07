@@ -25,11 +25,6 @@ end
 
 local roadbits = setmetatable({}, mt)
 
-local N <const> = 0
-local E <const> = 1
-local S <const> = 2
-local W <const> = 3
-
 local MapRoad <const> = {
     Left         = 1 << 0,
     Top          = 1 << 1,
@@ -94,8 +89,16 @@ local function calc_roadbits(pt, direction)
 end
 
 local function open(bits, dir)
-    -- assert(bits & (1 << (DirectionToMapRoad[dir])) == 0)
     return bits | (1 << (DirectionToMapRoad[dir]))
+end
+
+local function close(bits, dir)
+    assert(bits & (1 << (DirectionToMapRoad[dir])) ~= 0)
+    return bits & ~(1 << (DirectionToMapRoad[dir]))
+end
+
+local function check(bits, dir)
+    return (bits & (1 << (DirectionToMapRoad[dir]))) ~= 0
 end
 
 local function build_road(world, building_eid, building, map, road_cache, endpoint_keys)
@@ -175,48 +178,105 @@ function m.prototype_restore(world)
     end
 end
 
---
-local dir_move_delta = {
-    [0] = {x = 0,  y = -1},
-    [1] = {x = 1,  y = 0},
-    [2] = {x = 0,  y = 1},
-    [3] = {x = -1, y = 0},
-}
-local function move_coord(x, y, dir, dx, dy)
-    dx = dx or 1
-    dy = dy or dx
-
-    local c = assert(dir_move_delta[dir])
-    return x + c.x * dx, y + c.y * dy
+local function move(d)
+    if d == N then
+        return 0, -1
+    elseif d == E then
+        return 1, 0
+    elseif d == S then
+        return 0, 1
+    elseif d == W then
+        return -1, 0
+    end
 end
 
-local function fix(world, map, road_cache)
-    local ecs = world.ecs
+local function reverse(d)
+    if d == N then
+        return S
+    elseif d == E then
+        return W
+    elseif d == S then
+        return N
+    elseif d == W then
+        return E
+    end
+end
 
-    local res = {}
+local function repair(world, map, road_cache)
+    local m
     for coord, mask in pairs(map) do
+        m = mask
         local x, y = unpack(coord)
-        for i = 0, 3 do
-            local maproad = DirectionToMapRoad[i]
-            if mask & (1 << maproad) ~= 0 then
-                local dx, dy = move_coord(x, y, i, 1, 1)
-                if not map[pack(dx, dy)] then
-                    mask = mask & ~(1 << maproad)
+        for dir = 0, 3 do
+            if check(m, dir) then
+                local dx, dy = move(dir)
+                dx, dy = x + dx, y + dy
+
+                local neighbor_mask = map[pack(dx, dy)]
+                if not neighbor_mask then
+                    m = close(m, dir)
                 else
-                    local neighbor_mask = map[pack(dx, dy)]
-                    if neighbor_mask & (1 << ((maproad + 2) % 4)) == 0 then
-                        mask = mask & ~(1 << maproad)
+                    if not check(neighbor_mask, reverse(dir)) then
+                        m = close(m, dir)
                     end
                 end
             end
         end
-        if mask ~= 0 then
-            res[coord] = mask
+
+        if mask ~= m then
+            map[coord] = m
+
             local r = assert(world.entity[road_cache[coord]])
-            r.road.mask = mask
+            r.road.mask = m
         end
     end
-    return res
+    return map
+end
+
+local function mark_neighbor(valid, map, x, y)
+    local m = map[pack(x, y)]
+    for dir = 0, 3 do
+        if not check(m, dir) then
+            goto continue
+        end
+
+        local dx, dy = move(dir)
+        dx, dy = x + dx, y + dy
+        local key = pack(dx, dy)
+        if valid[key] then
+            goto continue
+        end
+
+        local neighbor_mask = map[key]
+        if neighbor_mask then
+            valid[key] = true
+            mark_neighbor(valid, map, dx, dy)
+        end
+        ::continue::
+    end
+end
+
+local function mark_invalid(world, map, road_cache, building)
+    local pt = query(building.prototype)
+
+    local valid = {}
+    for _, e in ipairs(pt.affected_roads) do
+        local dx, dy = rotate(e.position, building.direction, pt.area)
+        dx, dy = (building.x + dx) // ROAD_TILE_WIDTH_SCALE, (building.y + dy) // ROAD_TILE_HEIGHT_SCALE
+        local key = pack(dx, dy)
+        local m = map[key]
+        if m then
+            valid[key] = true
+            mark_neighbor(valid, map, dx, dy)
+        end
+    end
+
+    for coord in pairs(map) do
+        if not valid[coord] then
+            local r = assert(world.entity[road_cache[coord]])
+            r.road_invalid = true
+        end
+    end
 end
 
 function m.build(world)
@@ -225,6 +285,7 @@ function m.build(world)
     if not ecs:first("roadnet_changed:in") then
         return
     end
+    ecs:clear "road_invalid"
 
     local map = {}
     local road_cache = {}
@@ -244,11 +305,15 @@ function m.build(world)
         build_road(world, v.eid, v.building, map, road_cache, endpoint_keys)
     end
 
+    local building
     for v in ecs:select "lorry_factory:update building:in eid:in" do
+        building = v.building
         build_road(world, v.eid, v.building, map, road_cache, endpoint_keys)
     end
 
-    map = fix(world, map, road_cache)
+    map = repair(world, map, road_cache)
+    mark_invalid(world, map, road_cache, building)
+
     world:roadnet_reset(map)
 
     for v in ecs:select "station:update eid:in" do

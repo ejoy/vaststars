@@ -89,14 +89,14 @@ local function __create_self_sprite(typeobject, x, y, dir, sprite_color)
 end
 
 
-local function __get_nearby_buldings(x, y, w, h)
+local function __get_nearby_buldings(exclude_id, x, y, w, h)
     local r = {}
     local begin_x, begin_y = coord_system:bound_coord(x - ((10 - w) // 2), y - ((10 - h) // 2))
     local end_x, end_y = coord_system:bound_coord(x + ((10 - w) // 2) + w, y + ((10 - h) // 2) + h)
     for x = begin_x, end_x do
         for y = begin_y, end_y do
             local object = objects:coord(x, y)
-            if object then
+            if object and object.id ~= exclude_id then
                 r[object.id] = object
             end
         end
@@ -133,7 +133,7 @@ local function __is_building_intersect(x1, y1, w1, h1, x2, y2, w2, h2)
 end
 
 local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject)
-    local nearby_buldings = __get_nearby_buldings(x, y, iprototype.unpackarea(typeobject.area))
+    local nearby_buldings = __get_nearby_buldings(self.move_object_id, x, y, iprototype.unpackarea(typeobject.area))
     local w, h = iprototype.rotate_area(typeobject.area, dir)
 
     local redraw = {}
