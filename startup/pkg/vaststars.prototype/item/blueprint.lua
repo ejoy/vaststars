@@ -121,6 +121,36 @@ prototype "破损运输车辆" {
 
 ----
 
+prototype "初级建筑框架" {
+    type = {"item"},
+    stack = 8,
+    pile = "2x2x2",
+    pile_model = "prefabs/stackeditems/iron-ore.prefab",
+    icon = "textures/construct/broken-hydroplant.texture",
+    group = {"加工"},
+    item_description = "用于修建初级建筑的框架",
+}
+
+prototype "中级建筑框架" {
+    type = {"item"},
+    stack = 8,
+    pile = "2x2x2",
+    pile_model = "prefabs/stackeditems/iron-ore.prefab",
+    icon = "textures/construct/broken-hydroplant.texture",
+    group = {"加工"},
+    item_description = "用于修建中级建筑的框架",
+}
+
+prototype "高级建筑框架" {
+    type = {"item"},
+    stack = 8,
+    pile = "2x2x2",
+    pile_model = "prefabs/stackeditems/iron-ore.prefab",
+    icon = "textures/construct/broken-hydroplant.texture",
+    group = {"加工"},
+    item_description = "用于修建高级建筑的框架",
+}
+
 prototype "水电站框架" {
     type = {"item"},
     stack = 4,

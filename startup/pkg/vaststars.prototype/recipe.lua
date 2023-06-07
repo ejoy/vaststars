@@ -1495,6 +1495,57 @@ prototype "管道打印" {
 }
 
 ------------------框架-------------------
+prototype "初级建筑框架" {
+    type = { "recipe" },
+    category = "建筑打印",
+    recipe_group =  "物流",
+    recipe_order =  52,
+    recipe_icon =  "textures/construct/broken-miner.texture",
+    ingredients = {
+        {"铁板", 4},
+        {"石砖", 4},
+    },
+    results = {
+        {"初级建筑框架", 1},
+    },
+    time = "3s",
+    description = "初级建筑框架",
+}
+
+prototype "中级建筑框架" {
+    type = { "recipe" },
+    category = "建筑打印",
+    recipe_group =  "物流",
+    recipe_order =  52,
+    recipe_icon =  "textures/construct/broken-miner.texture",
+    ingredients = {
+        {"电动机I", 2},
+        {"石砖", 4},
+    },
+    results = {
+        {"采矿机I", 1},
+    },
+    time = "6s",
+    description = "中级建筑框架",
+}
+
+prototype "高级建筑框架" {
+    type = { "recipe" },
+    category = "建筑打印",
+    recipe_group =  "物流",
+    recipe_order =  52,
+    recipe_icon =  "textures/construct/broken-miner.texture",
+    ingredients = {
+        {"电动机I", 2},
+        {"石砖", 4},
+    },
+    results = {
+        {"采矿机I", 1},
+    },
+    time = "12s",
+    description = "高级建筑框架",
+}
+
 prototype "采矿机打印" {
     type = { "recipe" },
     category = "建筑打印",
