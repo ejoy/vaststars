@@ -1087,6 +1087,7 @@ local t = {
 	"/pkg/vaststars.resources/materials/game-cover.images.logo2.texture",
 	"/pkg/vaststars.resources/materials/goods-station-output.material",
 	"/pkg/vaststars.resources/materials/lorry_shadow.material",
+	"/pkg/vaststars.resources/materials/mineral/ground-geothermal.material",
 	"/pkg/vaststars.resources/materials/opacity.material",
 	"/pkg/vaststars.resources/materials/plane_rt.material",
 	"/pkg/vaststars.resources/materials/polylinelist.material",
