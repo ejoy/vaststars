@@ -33,6 +33,7 @@ local gameplay = import_package "vaststars.gameplay"
 local iroad = gameplay.interface "road"
 local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_box"
 local create_selected_boxes = ecs.require "selected_boxes"
+local vsobject_manager = ecs.require "vsobject_manager"
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -274,6 +275,9 @@ local function __new_entity(self, datamodel, typeobject)
     end
 
     local object = assert(objects:get(self.move_object_id))
+    local vsobject = assert(vsobject_manager:get(self.move_object_id))
+    vsobject:update {state = "translucent", color = SPRITE_COLOR.MOVE_SELF, emissive_color = SPRITE_COLOR.MOVE_SELF}
+
     local e = assert(gameplay_core.get_entity(object.gameplay_eid))
 
     self.pickup_object = iobject.new {
@@ -672,6 +676,9 @@ local function clean(self, datamodel)
         self.sprite:remove()
         self.sprite = nil
     end
+
+    local vsobject = assert(vsobject_manager:get(self.move_object_id))
+    vsobject:update {state = "opaque", color = math3d.null, emissive_color = math3d.null}
 end
 
 local function create(move_object_id)
