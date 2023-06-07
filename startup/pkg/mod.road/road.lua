@@ -17,6 +17,9 @@ local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local road_material
 local group_table = {}
 local road_default_group = 30001
+local viewidmgr = renderpkg.viewidmgr
+local icompute = ecs.import.interface "ant.render|icompute"
+local main_viewid = viewidmgr.get "csm_fb"
 local TERRAIN_TYPES<const> = {
     road1 = "1",
     road2 = "2",
@@ -132,7 +135,7 @@ function init_system:init_world()
 end
 
 local function create_road_instance_info(create_list)
-    local indirect_info = {}
+    local road_info = {}
     for ii = 1, #create_list do
         local cl = create_list[ii]
         local layers = cl.layers
@@ -147,9 +150,9 @@ local function create_road_instance_info(create_list)
             x = cl.x,
             y = cl.y
         }
-        indirect_info[#indirect_info+1] = create_road(road)
+        road_info[#road_info+1] = create_road(road)
     end
-    return indirect_info
+    return road_info
 end
 
 local function to_mesh_buffer(vb, ib_handle)
@@ -193,20 +196,18 @@ end
 
 local road_group = {}
 
-local function get_indirect(gid, update_list)
-    local indirect_info = create_road_instance_info(update_list)
-    local indirect = {
+local function get_road(gid, update_list)
+    local road_info = create_road_instance_info(update_list)
+    local road = {
         group = gid,
-        indirect_info = indirect_info,
-        type = "ROAD",
-        instance_layout = "t45NIf|t46NIf|t47NIf"
+        road_info = road_info
     }
-    return indirect 
+    return road
 end
 
 local function create_road_group(gid, update_list, render_layer)
     if not render_layer then render_layer = "foreground" end
-    local indirect = get_indirect(gid, update_list)
+    local road = get_road(gid, update_list)
     local road_mesh = build_mesh()
     local g = ecs.group(gid)
     ecs.group(gid):enable "view_visible"
@@ -215,32 +216,122 @@ local function create_road_group(gid, update_list, render_layer)
         policy = {
             "ant.scene|scene_object",
             "ant.render|simplerender",
-            "ant.render|indirect"
+            "mod.road|road"
         },
         data = {
             scene = {},
             simplemesh  = road_mesh,
             material    = road_material,
             visible_state = "main_view|selectable",
-            indirect = indirect,
-            indirect_update = true,
-            road = true,
+            road = road,
             render_layer = render_layer
         },
     }  
 end
 
 local function update_road_group(gid, update_list)
-    local indirect = get_indirect(gid, update_list)
+    local road = get_road(gid, update_list)
     ecs.group(gid):enable "view_visible"
     ecs.group(gid):enable "scene_update"
-    local select_tag = "road view_visible:in scene_update:in indirect:update indirect_update?update"
+    local select_tag = "road view_visible:in scene_update:in road:update"
     ecs.group_flush()
     for e in w:select(select_tag) do
-        e.indirect = indirect
-        if e.indirect.group == gid then
-            e.indirect_update = true
+        e.road.road_info = road.road_info
+        if e.road.group == gid then
+            e.road.ready = true
         end
+    end
+end
+
+function init_system:entity_init()
+    for e in w:select "INIT road:update render_object?update" do
+        local road = e.road
+        local max_num = 500
+        local draw_indirect_eid = ecs.create_entity {
+            policy = {
+                "ant.render|compute_policy",
+                "ant.render|draw_indirect"
+            },
+            data = {
+                material    = "/pkg/ant.resources/materials/indirect/indirect.material",
+                dispatch    = {
+                    size    = {0, 0, 0},
+                },
+                compute = true,
+                draw_indirect = {
+                    itb_flag = "r",
+                    max_num = max_num
+                },
+                on_ready = function()
+                    road.ready = true
+                end 
+            }
+        }
+        road.draw_indirect_eid = draw_indirect_eid
+        e.render_object.draw_num = 0
+        e.render_object.idb_handle = 0xffffffff
+        e.render_object.itb_handle = 0xffffffff
+    end   
+end
+
+function init_system:entity_remove()
+    for e in w:select "REMOVED road:in" do
+        w:remove(e.road.draw_indirect_eid)
+    end
+end
+
+local function create_road_compute(dispatch, road_num, indirect_buffer, instance_buffer, instance_params, indirect_params)
+    dispatch.size[1] = math.floor((road_num - 1) / 64) + 1
+    local m = dispatch.material
+    m.u_instance_params			= instance_params
+    m.u_indirect_params         = indirect_params
+    m.indirect_buffer           = indirect_buffer
+    m.instance_buffer           = instance_buffer
+    icompute.dispatch(main_viewid, dispatch)
+end
+
+local function get_instance_memory_buffer(road_info, max_num)
+    local road_num = #road_info
+    local fmt<const> = "ffff"
+    local memory_buffer = bgfx.memory_buffer(3 * 16 * max_num)
+    local memory_buffer_offset = 1
+    for road_idx = 1, road_num do
+        local instance_data = road_info[road_idx]
+        for data_idx = 1, #instance_data do
+            memory_buffer[memory_buffer_offset] = fmt:pack(table.unpack(instance_data[data_idx]))
+            memory_buffer_offset = memory_buffer_offset + 16
+        end
+    end
+    return memory_buffer
+end
+
+function init_system:data_changed()
+    for e in w:select "road:update render_object:update scene:in" do
+        if not e.road.ready then
+            goto continue
+        end
+        local road = e.road
+        local road_info = road.road_info
+        local road_num = #road_info
+        if road_num > 0 then
+            local de <close> = w:entity(road.draw_indirect_eid, "draw_indirect:in dispatch:in")
+            local idb_handle, itb_handle = de.draw_indirect.idb_handle, de.draw_indirect.itb_handle
+            local instance_memory_buffer = get_instance_memory_buffer(road_info, 500)
+            bgfx.update(itb_handle, 0, instance_memory_buffer)
+            local instance_params = math3d.vector(0, e.render_object.vb_num, 0, e.render_object.ib_num)
+            local indirect_params = math3d.vector(road_num, 0, 0, 0)
+            create_road_compute(de.dispatch, road_num, idb_handle, itb_handle, instance_params, indirect_params)
+            e.render_object.idb_handle = idb_handle
+            e.render_object.itb_handle = itb_handle
+            e.render_object.draw_num = road_num
+        else
+            e.render_object.idb_handle = 0xffffffff
+            e.render_object.itb_handle = 0xffffffff
+            e.render_object.draw_num = 0
+        end
+
+        e.road.ready = nil
+        ::continue::
     end
 end
 
