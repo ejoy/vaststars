@@ -191,6 +191,7 @@ prototype "地热井I" {
     rotate_on_build = true,
     io_shelf = false,
     show_arc_menu = false,
+    building_base = false,
     mining_category = {"地热处理"},
     maxslot = "8",
     fluidboxes = {
