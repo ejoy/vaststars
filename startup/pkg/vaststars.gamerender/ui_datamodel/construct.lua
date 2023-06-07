@@ -377,8 +377,8 @@ function M:stage_camera_usage(datamodel)
         if builder then
             builder:touch_end(builder_datamodel)
             self:flush()
-            gesture_pan_changed = true
         end
+        gesture_pan_changed = true
     end
 
     local leave = true
@@ -520,8 +520,8 @@ function M:stage_camera_usage(datamodel)
     end
 
     if gesture_pan_changed and leave then
+        idetail.unselected()
         world:pub {"ui_message", "leave"}
-        leave = false
     end
 
     for _, _, _, object_id in move_md:unpack() do

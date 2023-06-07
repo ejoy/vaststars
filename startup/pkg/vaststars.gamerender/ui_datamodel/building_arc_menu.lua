@@ -91,7 +91,7 @@ local __drone_depot_update = interval_call(800, function(datamodel, object_id)
     datamodel.drone_depot_count = c.amount
 end)
 
-local __station_update = interval_call(800, function(datamodel, object_id)
+local __station_update = function(datamodel, object_id)
     local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if not e then
@@ -110,7 +110,8 @@ local __station_update = interval_call(800, function(datamodel, object_id)
     datamodel.station_item_count = c.amount
     datamodel.station_weight_increase = true
     datamodel.station_weight_decrease = true
-end)
+end
+local __station_update_interval = interval_call(800, __station_update)
 
 local function __get_moveable_count(object_id)
     local object = assert(objects:get(object_id))
@@ -238,6 +239,7 @@ function M:create(object_id, object_position, ui_x, ui_y)
         object_position = object_position,
     }
 
+    __station_update(datamodel, object_id)
     return datamodel
 end
 
@@ -294,7 +296,7 @@ function M:stage_ui_update(datamodel, object_id)
 
     __lorry_factory_update(datamodel, object_id)
     __drone_depot_update(datamodel, object_id)
-    __station_update(datamodel, object_id)
+    __station_update_interval(datamodel, object_id)
     __moveable_count_update(datamodel, object_id)
 
     for _, _, _, object_id in set_recipe_mb:unpack() do
