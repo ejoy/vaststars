@@ -1,77 +1,17 @@
 ---
 data:
   name: Scene
-  scene:
-    r: {0, 0, 0, 1}
-    s: {2, 1, 2}
-    t: {0, 4, 0}
+  scene: {}
 policy:
   ant.general|name
   ant.scene|scene_object
 ---
 data:
-  material: /pkg/vaststars.resources/glb/road/road_X.glb|materials/Road.material
-  mesh: /pkg/vaststars.resources/glb/road/road_X.glb|meshes/立方体.003_P1.meshbin
-  name: SHIZI
-  scene: {}
-  visible_state: main_view|selectable|cast_shadow
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  material: /pkg/vaststars.resources/glb/road/road_X.glb|materials/Road.line.material
-  mesh: /pkg/vaststars.resources/glb/road/road_X.glb|meshes/平面.001_P1.meshbin
-  name: 平面.001
+  material: /pkg/vaststars.resources/glb/road/road_X.glb|materials/Material.003.material
+  mesh: /pkg/vaststars.resources/glb/road/road_X.glb|meshes/Plane.003_P1.meshbin
+  name: Plane.002
   scene:
-    t: {0, 2.2019999027252197, 0}
-  visible_state: main_view|selectable|cast_shadow
-mount: 2
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  material: /pkg/vaststars.resources/glb/road/road_X.glb|materials/road.shiti.material
-  mesh: /pkg/vaststars.resources/glb/road/road_X.glb|meshes/立方体.004_P1.meshbin
-  name: 立方体.003
-  scene:
-    t: {0, 2, 0}
-  visible_state: main_view|selectable|cast_shadow
-mount: 2
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  material: /pkg/vaststars.resources/glb/road/road_X.glb|materials/Road.bian.material
-  mesh: /pkg/vaststars.resources/glb/road/road_X.glb|meshes/立方体.005_P1.meshbin
-  name: 立方体.004
-  scene:
-    t: {0, 2.0999999046325684, 0}
-  visible_state: main_view|selectable|cast_shadow
-mount: 2
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  material: /pkg/vaststars.resources/glb/road/road_X.glb|materials/road.jia.material
-  mesh: /pkg/vaststars.resources/glb/road/road_X.glb|meshes/立方体.001_P1.meshbin
-  name: 立方体.005
-  scene: {}
-  visible_state: main_view|selectable|cast_shadow
-mount: 2
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  material: /pkg/vaststars.resources/glb/road/road_X.glb|materials/Road.material
-  mesh: /pkg/vaststars.resources/glb/road/road_X.glb|meshes/立方体.003_P1.meshbin
-  name: SHIZI
-  scene: {}
+    s: {1, 1, 1.0060884952545166}
   visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:

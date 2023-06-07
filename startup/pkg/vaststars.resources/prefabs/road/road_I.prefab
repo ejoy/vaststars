@@ -1,109 +1,18 @@
 ---
 data:
   name: Scene
-  scene:
-    r: {0, 0, 0, 1}
-    s: {2, 1, 2}
-    t: {0, 4, 0}
+  scene: {}
 policy:
   ant.general|name
   ant.scene|scene_object
 ---
 data:
-  material: /pkg/vaststars.resources/glb/road/road_I.glb|materials/Road.material
-  mesh: /pkg/vaststars.resources/glb/road/road_I.glb|meshes/立方体.019_P1.meshbin
-  name: YIZHI
+  material: /pkg/vaststars.resources/glb/road/road_I.glb|materials/Material.001.material
+  mesh: /pkg/vaststars.resources/glb/road/road_I.glb|meshes/Plane_P1.meshbin
+  name: Plane
   scene:
-    r: {0, 1, 0, 1.6292068494294654e-07}
-  visible_state: main_view|selectable|cast_shadow
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  material: /pkg/vaststars.resources/glb/road/road_I.glb|materials/Road.line.material
-  mesh: /pkg/vaststars.resources/glb/road/road_I.glb|meshes/平面.009_P1.meshbin
-  name: 平面.005
-  scene:
-    r: {0, 0.7071068286895752, 0, -0.7071067094802856}
-    t: {0, 2.2019999027252197, 0}
-  visible_state: main_view|selectable|cast_shadow
-mount: 2
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  material: /pkg/vaststars.resources/glb/road/road_I.glb|materials/Road.line.material
-  mesh: /pkg/vaststars.resources/glb/road/road_I.glb|meshes/平面.010_P1.meshbin
-  name: 平面.006
-  scene:
-    r: {0, 0.7071068286895752, 0, -0.7071067094802856}
-    t: {0, 2.2019999027252197, 0}
-  visible_state: main_view|selectable|cast_shadow
-mount: 2
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  material: /pkg/vaststars.resources/glb/road/road_I.glb|materials/Road.line.material
-  mesh: /pkg/vaststars.resources/glb/road/road_I.glb|meshes/柱体.004_P1.meshbin
-  name: 柱体.002
-  scene:
-    r: {0, 0.7071068286895752, 0, -0.7071067094802856}
-    t: {0, 4.078086853027344, 0}
-  visible_state: main_view|selectable|cast_shadow
-mount: 2
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  material: /pkg/vaststars.resources/glb/road/road_I.glb|materials/road.shiti.material
-  mesh: /pkg/vaststars.resources/glb/road/road_I.glb|meshes/立方体.020_P1.meshbin
-  name: 立方体.011
-  scene:
-    r: {0, 0.7071068286895752, 0, -0.7071067094802856}
-    t: {0, 2, 0}
-  visible_state: main_view|selectable|cast_shadow
-mount: 2
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  material: /pkg/vaststars.resources/glb/road/road_I.glb|materials/Road.bian.material
-  mesh: /pkg/vaststars.resources/glb/road/road_I.glb|meshes/立方体.021_P1.meshbin
-  name: 立方体.012
-  scene:
-    r: {0, 0.7071068286895752, 0, -0.7071067094802856}
-    t: {0, 2.0999999046325684, 0}
-  visible_state: main_view|selectable|cast_shadow
-mount: 2
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  material: /pkg/vaststars.resources/glb/road/road_I.glb|materials/road.jia.material
-  mesh: /pkg/vaststars.resources/glb/road/road_I.glb|meshes/立方体.022_P1.meshbin
-  name: 立方体.013
-  scene:
-    r: {0, 0.7071068286895752, 0, -0.7071067094802856}
-  visible_state: main_view|selectable|cast_shadow
-mount: 2
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  material: /pkg/vaststars.resources/glb/road/road_I.glb|materials/Road.material
-  mesh: /pkg/vaststars.resources/glb/road/road_I.glb|meshes/立方体.019_P1.meshbin
-  name: YIZHI
-  scene:
-    r: {0, 1, 0, 1.6292068494294654e-07}
+    r: {0, 0.7071068286895752, 0, -0.7071068286895752}
+    s: {1, 1, 1.0060884952545166}
   visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:
