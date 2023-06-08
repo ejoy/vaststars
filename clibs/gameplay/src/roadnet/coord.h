@@ -4,35 +4,25 @@
 #include "roadnet/road.h"
 
 namespace roadnet {
-    //struct road_coord {
-    //    roadid id;
-    //    uint16_t offset;
-    //    bool operator ==(road_coord const& rhs) const {
-    //        return id == rhs.id && offset == rhs.offset;
-    //    }
-    //    constexpr road_coord(roadid id, cross_type type)
-    //        : id(id)
-    //        , offset((uint8_t)type)
-    //    {}
-    //    constexpr road_coord(roadid id, uint16_t offset)
-    //        : id(id)
-    //        , offset(offset)
-    //    {}
-    //};
+    enum class map_index : uint8_t {
+        w0      = 0x0,
+        w1      = 0x1,
+        unset   = 0xE,
+        invaild = 0xF,
+    };
 
     struct map_coord: public loction {
-        cross_type z;
+        uint8_t z: 4;
+        uint8_t w: 4;
         constexpr map_coord()
-        : loction(0,0), z((cross_type)-1)
+            : loction(0, 0)
+            , z(0)
+            , w((uint8_t)map_index::invaild)
         { }
-        constexpr map_coord(loction loc, cross_type z)
-        : loction(loc), z(z)
+        constexpr map_coord(loction loc, cross_type z, map_index w)
+            : loction(loc)
+            , z((uint8_t)z)
+            , w((uint8_t)w)
         { }
-        explicit operator bool() const {
-            return z != (cross_type)-1;
-        }
-        bool operator ==(map_coord const& rhs) const {
-            return x == rhs.x && y == rhs.y && z == rhs.z;
-        }
     };
 }

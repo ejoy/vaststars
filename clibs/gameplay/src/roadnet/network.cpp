@@ -272,12 +272,12 @@ namespace roadnet {
             if (isCross(m)) {
                 assert(!(m & MapRoad::Endpoint));
                 cross_type type = road::crossType(prev_dir, dir);
-                func({l, type});
+                func({l, type, map_index::unset});
                 return;
             }
             direction next_dir = next_direction(l, m, prev_dir);
             cross_type type = road::crossType(prev_dir, next_dir);
-            func({l, type});
+            func({l, type, map_index::unset});
             if (m & MapRoad::Endpoint) {
                 func({}); //TODO: remove it
                 return;
