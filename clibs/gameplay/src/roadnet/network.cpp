@@ -345,9 +345,10 @@ namespace roadnet {
         auto cross_a = crossMap[na.l];
         auto cross_b = crossMap[nb.l];
 
+        assert(nb.n == 0);
         straightData& straight1 = straightVec.emplace_back(
             roadid {roadtype::straight, straightId},
-            nb.n + 1,
+            1 * road::straight::N,
             nb.l,
             reverse(nb.dir),
             reverse(b),
@@ -355,9 +356,10 @@ namespace roadnet {
         );
         CrossRoad(cross_b).setNeighbor(reverse(nb.dir), straight1.id);
         ep.rev_neighbor = straight1.id;
+        assert(na.n == 1);
         straightData& straight2 = straightVec.emplace_back(
             roadid {roadtype::straight, ++straightId},
-            na.n,
+            na.n * road::straight::N,
             loc,
             a,
             na.dir,
@@ -410,9 +412,10 @@ namespace roadnet {
                     auto result = findNeighbor(map, loc, dir);
 
                     if (loc == result.l && dir == reverse(result.dir)) {
+                        assert(result.n > 0);
                         straightData& straight = straightVec.emplace_back(
                             roadid {roadtype::straight, genStraightId++},
-                            result.n,
+                            result.n * road::straight::N + 1,
                             loc,
                             dir,
                             result.dir,
@@ -428,7 +431,7 @@ namespace roadnet {
                             road::crossroad& neighbor = CrossRoad(neighbor_id);
                             straightData& straight1 = straightVec.emplace_back(
                                 roadid {roadtype::straight, genStraightId++},
-                                result.n,
+                                result.n * road::straight::N + 1,
                                 loc,
                                 dir,
                                 result.dir,
@@ -438,7 +441,7 @@ namespace roadnet {
                             neighbor.setRevNeighbor(reverse(result.dir), straight1.id);
                             straightData& straight2 = straightVec.emplace_back(
                                 roadid {roadtype::straight, genStraightId++},
-                                result.n,
+                                result.n * road::straight::N + 1,
                                 result.l,
                                 reverse(result.dir),
                                 reverse(dir),
@@ -471,7 +474,7 @@ namespace roadnet {
         straightAry.reset(genStraightId);
         for (auto& data: straightVec) {
             road::straight& straight = StraightRoad(data.id);
-            size_t length = data.len * road::straight::N + 1;
+            size_t length = data.len;
             straight.init(data.id, (uint16_t)length, data.finish_dir, data.neighbor);
             straight.setLorryOffset(genLorryOffset);
             genLorryOffset += (uint16_t)length;
@@ -547,7 +550,7 @@ namespace roadnet {
         if (auto cross = findCrossRoad(result.l); cross) {
             roadid id = CrossRoad(cross).neighbor[(uint8_t)reverse(result.dir)];
             assert(id && id.get_type() == roadtype::straight);
-            uint16_t n = road::straight::N * result.n + (mc.z & 0x0Fu);
+            uint16_t n = result.n + (mc.z & 0x0Fu);
             uint16_t offset = StraightRoad(id).len - n - 1;
             return road_coord {id, offset};
         }
@@ -563,23 +566,11 @@ namespace roadnet {
             return std::nullopt;
         }
         auto& straight = straightVec[rc.id.get_index()];
-        uint16_t n = road::straight::N * straight.len + 1 - rc.offset - 1;
-        uint8_t wait = 0x00;
-        if (rc.offset == 0) {
-            n -= 1;
-            wait = 0x01;
-        }
-
+        uint16_t n = straight.len - rc.offset - 1;
         if (auto res = moveToNeighbor(map, straight.loc, straight.start_dir, n / road::straight::N)) {
             auto m = getMapBits(map, res->l);
-            auto z = 0x00;
-            if (m & MapRoad::Endpoint) {
-                z = straight.start_dir == straight.finish_dir ? 0x00 : 0x01;
-            }
-            else {
-                z = reverse(res->dir) == straightDirection(m, 0) ? 0x00 : 0x01;
-            }
-            return map_coord {res->l.x, res->l.y, (uint8_t)((wait << 5) | (z << 4) | (n % road::straight::N))};
+            auto z = reverse(res->dir) == straightDirection(m, 0) ? 0x00 : 0x01;
+            return map_coord {res->l.x, res->l.y, (uint8_t)((z << 4) | (n % road::straight::N))};
         }
         return std::nullopt;
     }
