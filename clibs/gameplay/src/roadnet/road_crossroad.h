@@ -41,15 +41,12 @@ namespace roadnet::road {
     static_assert((UTurn | LeftTurn | RightTurn | Horizontal | Vertical) == 0xFFFF);
 
     struct crossroad {
-        #ifdef DEBUG_ROADNET
-        roadnet::loction loc;
-        #endif
-
         roadid     neighbor[4] = {};
         roadid     rev_neighbor[4] = {};
         lorryid    cross_lorry[2] = {};
         cross_type cross_status[2];
         uint16_t   ban = 0;
+        roadnet::loction loc;
         void update(network& w, uint64_t ti);
         bool hasNeighbor(direction dir) const;
         void setNeighbor(direction dir, roadid id);

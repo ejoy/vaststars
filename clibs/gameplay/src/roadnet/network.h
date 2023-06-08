@@ -85,10 +85,8 @@ namespace roadnet {
         std::map<loction, uint8_t> map;
         std::vector<straightData> straightVec;
         std::map<loction, roadid> crossMap;
-        std::map<roadid, loction> crossMapR;
     private:
         void setEndpoint(loction loc, direction a, direction b, uint16_t straightId);
         roadid   findCrossRoad(loction l);
-        std::optional<loction> whereCrossRoad(roadid id);
     };
 }

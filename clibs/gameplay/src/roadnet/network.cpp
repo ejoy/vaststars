@@ -370,7 +370,6 @@ namespace roadnet {
     uint32_t network::reloadMap() {
         straightVec.clear();
         crossMap.clear();
-        crossMapR.clear();
         endpointVec.clear();
         routeMap.clear();
 
@@ -382,7 +381,6 @@ namespace roadnet {
             if (isCross(m)) {
                 roadid id { roadtype::cross, genCrossId++ };
                 crossMap.emplace(loc, id);
-                crossMapR.emplace(id, loc);
             }
         }
 
@@ -393,9 +391,7 @@ namespace roadnet {
         crossAry.reset(genCrossId);
         for (auto const& [loc, id]: crossMap) {
             road::crossroad& crossroad = CrossRoad(id);
-            #ifdef DEBUG_ROADNET 
-                crossroad.loc = loc;
-            #endif
+            crossroad.loc = loc;
             uint8_t m = getMapBits(map, loc);
             if (m & MapRoad::NoHorizontal) {
                 crossroad.ban |= road::LeftTurn;
@@ -535,14 +531,6 @@ namespace roadnet {
         return roadid::invalid();
     }
 
-    std::optional<loction> network::whereCrossRoad(roadid id) {
-        auto iter = crossMapR.find(id);
-        if (iter != crossMapR.end()) {
-            return iter->second;
-        }
-        return std::nullopt;
-    }
-
     std::optional<road_coord> network::coordConvert(map_coord mc) {
         if (auto cross = findCrossRoad(mc); cross) {
             if (!isValidCrossType(getMapBits(map, loction{mc.x, mc.y}), cross_type(mc.z))) {
@@ -568,10 +556,8 @@ namespace roadnet {
 
     std::optional<map_coord> network::coordConvert(road_coord rc) {
         if (rc.id.get_type() == roadtype::cross) {
-            if (auto loc = whereCrossRoad(rc.id)) {
-                return map_coord {loc->x, loc->y, (uint8_t)rc.offset};
-            }
-            return std::nullopt;
+            auto loc = CrossRoad(rc.id).loc;
+            return map_coord {loc.x, loc.y, (uint8_t)rc.offset};
         }
         if (rc.id.get_index() >= straightVec.size()) {
             return std::nullopt;
