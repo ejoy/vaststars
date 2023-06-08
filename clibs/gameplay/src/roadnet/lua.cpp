@@ -31,10 +31,7 @@ namespace roadnet::lua {
     }
 
     static void push_map_coord(lua_State* L, map_coord& c) {
-        uint32_t v = 0;
-        v |= (uint32_t)c.x <<  0;
-        v |= (uint32_t)c.y <<  8;
-        v |= (uint32_t)c.z << 16;
+        uint32_t v = std::bit_cast<uint32_t>(c);
         lua_pushinteger(L, v);
     }
 
@@ -67,7 +64,7 @@ namespace roadnet::lua {
                 auto& road = w.crossAry[road_idx];
                 auto id = road.cross_lorry[entry_idx];
                 if (id) {
-                    map_coord coord {road.loc, road.cross_status[entry_idx], map_index::w1};
+                    map_coord coord {road.loc, map_index::w1, road.cross_status[entry_idx]};
                     return std::make_tuple(id, coord);
                 }
             }
@@ -89,8 +86,8 @@ namespace roadnet::lua {
                         uint32_t offset = index - straight.lorryOffset;
                         map_coord coord = straight.getCoord(w, offset);
                         switch (offset % road::straight::N) {
-                        case 0: coord.w = (uint8_t)map_index::w0; break;
-                        case 1: coord.w = (uint8_t)map_index::w1; break;
+                        case 0: coord.set(map_index::w0); break;
+                        case 1: coord.set(map_index::w1); break;
                         default:
                             std::unreachable();
                         }
