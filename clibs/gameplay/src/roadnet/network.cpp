@@ -345,10 +345,9 @@ namespace roadnet {
         auto cross_a = crossMap[na.l];
         auto cross_b = crossMap[nb.l];
 
-        assert(nb.n == 0);
         straightData& straight1 = straightVec.emplace_back(
             roadid {roadtype::straight, straightId},
-            1 * road::straight::N,
+            (nb.n + 1) * road::straight::N,
             nb.l,
             reverse(nb.dir),
             reverse(b),
@@ -356,10 +355,10 @@ namespace roadnet {
         );
         CrossRoad(cross_b).setNeighbor(reverse(nb.dir), straight1.id);
         ep.rev_neighbor = straight1.id;
-        assert(na.n == 1);
+
         straightData& straight2 = straightVec.emplace_back(
             roadid {roadtype::straight, ++straightId},
-            na.n * road::straight::N,
+            na.n * road::straight::N + 1,
             loc,
             a,
             na.dir,
