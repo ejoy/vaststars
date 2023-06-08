@@ -14,7 +14,7 @@ function lorry_sys:gameworld_update()
         y = (mc >> 8) & 0xFF
         z = (mc >> 16) & 0xF
         w = (mc >> 20) & 0xF
-        lorry_manager.update(lorry_id, classid, item_classid, item_amount, x, y, w, progress, maxprogress)
+        lorry_manager.update(lorry_id, classid, item_classid, item_amount, x, y, w, z, progress, maxprogress)
     end
     return false
 end
