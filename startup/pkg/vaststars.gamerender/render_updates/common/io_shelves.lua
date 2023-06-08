@@ -88,7 +88,8 @@ local function __create_heap(heap_mat, item, amount)
                 curSideSize = HEAP_DIM3,
                 curHeapNum = amount,
                 interval = gap3,
-            }
+            },
+            indirect = "HEAP_MESH"
         },
     }, heap_events)
 end

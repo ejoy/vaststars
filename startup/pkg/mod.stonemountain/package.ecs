@@ -2,6 +2,8 @@ system "stone_mountain"
     .implement "stone_mountain.lua"
     .method "init"
     .method "stone_mountain"
+    .method "entity_init"
+    .method "entity_remove"
     .method "data_changed"
 
 
@@ -14,10 +16,8 @@ interface "istonemountain"
     .method "exist_sm"
     .method "get_sm_group"
 
-component "stonemountain"
-component "sm_info".type "lua"
+component "stonemountain".type "lua"
 
-policy "stone_mountain"
+policy "stonemountain"
     .require_system "mod.stonemountain|stone_mountain"
     .component "stonemountain"
-    .component "sm_info"

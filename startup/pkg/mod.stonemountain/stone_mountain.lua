@@ -3,6 +3,8 @@ local world = ecs.world
 local w = world.w
 local open_sm = false
 local aabb_test
+local idrawindirect = ecs.import.interface "ant.render|idrawindirect"
+local imaterial = ecs.import.interface "ant.asset|imaterial"
 local math3d 	= require "math3d"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local mathpkg	= import_package "ant.math"
@@ -22,6 +24,7 @@ local freq, depth, unit, offset = 4, 4, 10, 0
 local remove_offset = 3
 local is_build_sm = false
 local instance_num = 0
+local main_viewid = viewidmgr.get "csm_fb"
 local open_area
 local stone_area
 -- mapping between instance idx and sm_idx
@@ -632,21 +635,7 @@ function sm_sys:init()
     sm_material = assetmgr.resource("/pkg/ant.resources/materials/stone_mountain/stone_mountain.material")
 end
 local kb_mb = world:sub{"keyboard"}
-function sm_sys:data_changed()--[[ 
-    for _, key, press in kb_mb:unpack() do
-        if key == "T" and press == 0 then
-            local in_area = {
-                {x = -5, z = 5, w = 5, h = 5}
-            }
-            local out_area = {
-                {x = 10, z = 10, w = 10, h = 10}
-            }
-            local exist_sm1 = ism.exist_sm(in_area)
-            local exist_sm2 = ism.exist_sm(out_area)
-            local t = 1
-        end
-    end ]]
-end
+
 
 --world coordinate
 local function set_sm_rect(mesh_aabb_value, worldmat)
@@ -676,7 +665,7 @@ local function set_sm_grid(rect)
 end
 
 local function create_sm_entity()
-    local indirect_info_table  = {
+    local stonemountain_info_table  = {
         {}, {}, {}, {}
     }
     for sm_idx, _ in pairs(sm_table)do
@@ -685,7 +674,7 @@ local function create_sm_entity()
             if stone and stone.s  then
                 local mesh_idx = sm_bms_to_mesh_table[sm_idx][size_idx]
                 --local mesh_address = mesh_table[mesh_idx]
-                indirect_info_table[mesh_idx][#indirect_info_table[mesh_idx]+1] = {
+                stonemountain_info_table[mesh_idx][#stonemountain_info_table[mesh_idx]+1] = {
                     {stone.s, stone.t.x, stone.t.z, stone.r}
                 }
                 local scale = stone.s;
@@ -714,6 +703,7 @@ local function create_sm_entity()
         g:create_entity {
             policy = {
                 "ant.render|render",
+                "mod.stonemountain|stonemountain",
                 "ant.render|indirect"
              },
             data = {
@@ -721,15 +711,16 @@ local function create_sm_entity()
                 material      ="/pkg/mod.stonemountain/assets/pbr_sm.material", 
                 visible_state = "main_view|cast_shadow",
                 mesh          = mesh_address,
-                indirect = {
+                stonemountain = {
                     group = sm_group[mesh_idx],
-                    indirect_info = indirect_info_table[mesh_idx],
-                    type = "STONEMOUNTAIN",
-                    instance_layout = "t47NIf"
+                    stonemountain_info = stonemountain_info_table[mesh_idx],
                 },
-                indirect_update = true,
                 render_layer = "foreground",
-                stonemountain = true,
+                indirect = "STONE_MOUNTAIN",
+                on_ready = function(e)
+                    local draw_indirect_type = idrawindirect.get_draw_indirect_type("STONE_MOUNTAIN")
+                    imaterial.set_property(e, "u_draw_indirect_type", math3d.vector(draw_indirect_type))
+                end
             }
         }
     end
@@ -798,6 +789,100 @@ function sm_sys:stone_mountain()
         make_sm_noise()
         create_sm_entity()
         open_sm = false
+    end
+end
+
+function sm_sys:entity_init()
+    for e in w:select "INIT stonemountain:update render_object?update indirect?update" do
+        local stonemountain = e.stonemountain
+        local max_num = 1000
+        local draw_indirect_eid = ecs.create_entity {
+            policy = {
+                "ant.render|compute_policy",
+                "ant.render|draw_indirect"
+            },
+            data = {
+                material    = "/pkg/ant.resources/materials/indirect/indirect.material",
+                dispatch    = {
+                    size    = {0, 0, 0},
+                },
+                compute = true,
+                draw_indirect = {
+                    itb_flag = "r",
+                    max_num = max_num
+                },
+                on_ready = function()
+                    stonemountain.ready = true
+                end 
+            }
+        }
+        stonemountain.draw_indirect_eid = draw_indirect_eid
+        e.render_object.draw_num = 0
+        e.render_object.idb_handle = 0xffffffff
+        e.render_object.itb_handle = 0xffffffff
+    end   
+end
+
+function sm_sys:entity_remove()
+    for e in w:select "REMOVED stonemountain:in" do
+        w:remove(e.stonemountain.draw_indirect_eid)
+    end
+end
+
+local function get_instance_memory_buffer(stonemountain_info, max_num)
+    local stonemountain_num = #stonemountain_info
+    local fmt<const> = "ffff"
+    local memory_buffer = bgfx.memory_buffer(3 * 16 * max_num)
+    local memory_buffer_offset = 1
+    for stonemountain_idx = 1, stonemountain_num do
+        local instance_data = stonemountain_info[stonemountain_idx]
+        for data_idx = 1, #instance_data do
+            memory_buffer[memory_buffer_offset] = fmt:pack(table.unpack(instance_data[data_idx]))
+            memory_buffer_offset = memory_buffer_offset + 16
+        end
+    end
+    return memory_buffer
+end
+
+local function create_stonemountain_compute(dispatch, stonemountain_num, indirect_buffer, instance_buffer, instance_params, indirect_params)
+    dispatch.size[1] = math.floor((stonemountain_num - 1) / 64) + 1
+    local m = dispatch.material
+    m.u_instance_params			= instance_params
+    m.u_indirect_params         = indirect_params
+    m.indirect_buffer           = indirect_buffer
+    m.instance_buffer           = instance_buffer
+    icompute.dispatch(main_viewid, dispatch)
+end
+
+function sm_sys:data_changed()
+    
+    for e in w:select "stonemountain:update render_object:update scene:in bounding:update" do
+        if not e.stonemountain.ready then
+            goto continue
+        end
+        e.bounding.scene_aabb = mc.NULL
+        local stonemountain = e.stonemountain
+        local stonemountain_info = stonemountain.stonemountain_info
+        local stonemountain_num = #stonemountain_info
+        if stonemountain_num > 0 then
+            local de <close> = w:entity(stonemountain.draw_indirect_eid, "draw_indirect:in dispatch:in")
+            local idb_handle, itb_handle = de.draw_indirect.idb_handle, de.draw_indirect.itb_handle
+            local instance_memory_buffer = get_instance_memory_buffer(stonemountain_info, 1000)
+            bgfx.update(itb_handle, 0, instance_memory_buffer)
+            local instance_params = math3d.vector(0, e.render_object.vb_num, 0, e.render_object.ib_num)
+            local indirect_params = math3d.vector(stonemountain_num, 0, 0, 0)
+            create_stonemountain_compute(de.dispatch, stonemountain_num, idb_handle, itb_handle, instance_params, indirect_params)
+            e.render_object.idb_handle = idb_handle
+            e.render_object.itb_handle = itb_handle
+            e.render_object.draw_num = stonemountain_num
+        else
+            e.render_object.idb_handle = 0xffffffff
+            e.render_object.itb_handle = 0xffffffff
+            e.render_object.draw_num = 0
+        end
+
+        e.stonemountain.ready = nil
+        ::continue::
     end
 end
 

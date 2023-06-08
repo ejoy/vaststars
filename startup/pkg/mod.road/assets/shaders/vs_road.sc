@@ -14,8 +14,6 @@ $output v_texcoord v_normal v_tangent v_posWS v_idx
 #define road_texcoord_r i_data1.x
 #define mark_texcoord_r i_data1.y
 
-#define road_t i_data0
-
 vec2 get_tex(float idx){
 	if(idx == 0){
 		return vec2(0, 1);
@@ -46,13 +44,11 @@ vec2 get_rotated_texcoord(float r, vec2 tex){
 
 void main()
 {
-	mat4 indirect_matrix = mat4(
-		1,      0,     0,       road_t.x, 
-		0,      1,     0,       road_t.y, 
-	    0,      0,     1,       road_t.z, 
-		0,      0,     0,       1
-	);	 
-    mat4 wm = mul(u_model[0], indirect_matrix);
+#ifdef DRAW_INDIRECT
+	mediump mat4 wm = get_indirect_wolrd_matrix(i_data0, i_data1, i_data2, u_draw_indirect_type);
+#else
+	mediump mat4 wm = get_world_matrix();
+#endif //DRAW_INDIRECT
 	highp vec4 posWS = transformWS(wm, mediump vec4(a_position, 1.0));
 	gl_Position = mul(u_viewProj, posWS);
 	v_texcoord	= vec4(get_rotated_texcoord(road_texcoord_r, a_texcoord0).xy, get_rotated_texcoord(mark_texcoord_r, a_texcoord1).xy);

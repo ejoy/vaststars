@@ -20,6 +20,7 @@ local road_default_group = 30001
 local viewidmgr = renderpkg.viewidmgr
 local icompute = ecs.import.interface "ant.render|icompute"
 local main_viewid = viewidmgr.get "csm_fb"
+local idrawindirect = ecs.import.interface "ant.render|idrawindirect"
 local TERRAIN_TYPES<const> = {
     road1 = "1",
     road2 = "2",
@@ -216,15 +217,21 @@ local function create_road_group(gid, update_list, render_layer)
         policy = {
             "ant.scene|scene_object",
             "ant.render|simplerender",
-            "mod.road|road"
+            "mod.road|road",
+            "ant.render|indirect"
         },
         data = {
             scene = {},
             simplemesh  = road_mesh,
             material    = road_material,
-            visible_state = "main_view|selectable",
+            visible_state = "main_view|selectable|pickup",
             road = road,
-            render_layer = render_layer
+            render_layer = render_layer,
+            indirect = "ROAD",
+            on_ready = function(e)
+                local draw_indirect_type = idrawindirect.get_draw_indirect_type("ROAD")
+                imaterial.set_property(e, "u_draw_indirect_type", math3d.vector(draw_indirect_type))
+            end
         },
     }  
 end
@@ -244,7 +251,7 @@ local function update_road_group(gid, update_list)
 end
 
 function init_system:entity_init()
-    for e in w:select "INIT road:update render_object?update" do
+    for e in w:select "INIT road:update render_object?update indirect?update" do
         local road = e.road
         local max_num = 500
         local draw_indirect_eid = ecs.create_entity {

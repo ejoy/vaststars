@@ -46,7 +46,8 @@ local function create_heap(meshbin, srt, dim3, gap3, count)
                 curSideSize = dim3,
                 curHeapNum = count,
                 interval = gap3,
-            }
+            },
+            indirect = "HEAP_MESH"
         },
     }, heap_events)
 end
