@@ -50,6 +50,14 @@ namespace roadnet::road {
         return w.LorryInRoad(lorryOffset);
     }
     map_coord straight::getCoord(network& w, uint16_t offset) {
-        return w.LorryInCoord(coordOffset + offset / N);
+        offset = len - offset;
+        auto coord = w.LorryInCoord(coordOffset + offset / N);
+        switch (offset % N) {
+        case 0: coord.set(map_index::w0); break;
+        case 1: coord.set(map_index::w1); break;
+        default:
+            std::unreachable();
+        }
+        return coord;
     }
 }

@@ -79,19 +79,13 @@ namespace roadnet::lua {
                 if (id) {
                     for (;;) {
                         auto& straight = w.straightAry[straightId];
-                        if (index >= straight.lorryOffset + straight.len) {
+                        uint32_t offset = index - straight.lorryOffset;
+                        if (offset >= straight.len) {
                             straightId++;
                             continue;
                         }
-                        uint32_t offset = index - straight.lorryOffset;
-                        map_coord coord = straight.getCoord(w, offset);
-                        switch (offset % road::straight::N) {
-                        case 0: coord.set(map_index::w0); break;
-                        case 1: coord.set(map_index::w1); break;
-                        default:
-                            std::unreachable();
-                        }
                         index++;
+                        map_coord coord = straight.getCoord(w, offset);
                         return std::make_tuple(id, coord);
                     }
                 }
