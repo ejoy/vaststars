@@ -10,7 +10,8 @@ data:
   material: /pkg/vaststars.resources/glb/goods-gate.glb|materials/Material.017.material
   mesh: /pkg/vaststars.resources/glb/goods-gate.glb|meshes/Plane.023_P1.meshbin
   name: Plane.036
-  scene: {}
+  scene:
+    s: {1.5, 1.5, 1.5}
   visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:

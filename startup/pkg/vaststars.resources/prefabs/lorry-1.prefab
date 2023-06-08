@@ -12,7 +12,8 @@ data:
   name: Cylinder
   scene:
     r: {0, -1, 0, -4.371138828673793e-08}
-  visible_state: main_view|selectable
+    s: {1.600000023841858, 1.600000023841858, 1.600000023841858}
+  visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:
   ant.general|name
@@ -24,7 +25,8 @@ data:
   name: Cylinder
   scene:
     r: {0, -1, 0, -4.371138828673793e-08}
-  visible_state: main_view|selectable
+    s: {1.600000023841858, 1.600000023841858, 1.600000023841858}
+  visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:
   ant.general|name
