@@ -306,6 +306,7 @@ local function get_instance_memory_buffer(road_info, max_num)
 end
 
 function init_system:data_changed()
+    if true then return end
     for e in w:select "road:update render_object:update scene:in" do
         if not e.road.ready then
             goto continue

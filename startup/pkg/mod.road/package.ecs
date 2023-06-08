@@ -4,7 +4,7 @@ component "road".type "lua"
 
 system "init_system"
     .implement "road.lua"
-    --.require_policy "ant.render|draw_indirect"
+    .require_policy "ant.render|draw_indirect"
     .require_system "ant.render|indirect_system"
     .method "init_world"
     .method "entity_init"
