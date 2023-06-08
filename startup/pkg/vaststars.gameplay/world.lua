@@ -267,10 +267,6 @@ return function ()
         self._endpoints = roadnet.endpoint_loction(cworld)
     end
 
-    function world:roadnet_map_coord(...)
-        return roadnet.map_coord(cworld, ...)
-    end
-
     function world:roadnet_each_lorry(...)
         return roadnet.each_lorry(cworld, ...)
     end

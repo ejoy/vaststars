@@ -1,42 +1,10 @@
 ---
 data:
-  name: path_l_3
-  scene:
-    r: {0, 0.7071067690849304, 0, 0.7071067690849304}
-    s: {1, 1, 1}
-    t: {5, 6.200000047683716, -1.5}
-  slot:
-    follow_flag: 1
-  tag:
-    empty1
-policy:
-  ant.general|name
-  ant.general|tag
-  ant.animation|slot
-  ant.scene|scene_object
----
-data:
-  name: path_l_2
-  scene:
-    r: {0, 0.9238795042037964, 0, 0.3826834261417389}
-    s: {1, 1, 1}
-    t: {0.5, 6.200000047683716, 0.5}
-  slot:
-    follow_flag: 1
-  tag:
-    empty2
-policy:
-  ant.general|name
-  ant.general|tag
-  ant.animation|slot
-  ant.scene|scene_object
----
-data:
-  name: path_l_1
+  name: path_l_0
   scene:
     r: {0, 1, 0, -4.371138828673793e-08}
     s: {1, 1, 1}
-    t: {-1.5, 6.200000047683716, 5}
+    t: {-3.5, 0, 10}
   slot:
     follow_flag: 1
   tag:
@@ -48,11 +16,75 @@ policy:
   ant.scene|scene_object
 ---
 data:
+  name: path_l_1
+  scene:
+    r: {0, 1, 0, -4.371138828673793e-08}
+    s: {1, 1, 1}
+    t: {-3.5, 0, 5.5}
+  slot:
+    follow_flag: 1
+  tag:
+    empty3
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+  ant.scene|scene_object
+---
+data:
+  name: path_l_2
+  scene:
+    r: {0, 0.9238795042037964, 0, 0.3826834261417389}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
+  tag:
+    empty2
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+  ant.scene|scene_object
+---
+data:
+  name: path_l_3
+  scene:
+    r: {0, 0.7071067690849304, 0, 0.7071067690849304}
+    s: {1, 1, 1}
+    t: {5.5, 0, -3.5}
+  slot:
+    follow_flag: 1
+  tag:
+    empty1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+  ant.scene|scene_object
+---
+data:
+  name: path_r_0
+  scene:
+    r: {0, -0.7071067690849304, 0, 0.7071067690849304}
+    s: {1, 1, 1}
+    t: {10, 0, 3.5}
+  slot:
+    follow_flag: 1
+  tag:
+    empty4
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+  ant.scene|scene_object
+---
+data:
   name: path_r_1
   scene:
     r: {0, -0.7071067690849304, 0, 0.7071067690849304}
     s: {1, 1, 1}
-    t: {5, 6.200001001358032, 1.5}
+    t: {5.5, 0, 3.5}
   slot:
     follow_flag: 1
   tag:
@@ -68,7 +100,7 @@ data:
   scene:
     r: {0, -0.3826834559440613, 0, 0.9238795042037964}
     s: {1, 1, 1}
-    t: {2.5, 6.200001001358032, 2.5}
+    t: {4.5, 0, 4.5}
   slot:
     follow_flag: 1
   tag:
@@ -84,7 +116,7 @@ data:
   scene:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
-    t: {1.5, 6.199999094009399, 5}
+    t: {3.5, 0, 5.5}
   slot:
     follow_flag: 1
   tag:

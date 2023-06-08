@@ -7,9 +7,9 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  material: "/pkg/vaststars.resources/glb/pipe/pipe_I.glb|materials/材质.004.material"
-  mesh: /pkg/vaststars.resources/glb/pipe/pipe_I.glb|meshes/zhuti.007_P1.meshbin
-  name: zhuti.II.001
+  material: /pkg/vaststars.resources/glb/pipe/pipe_I.glb|materials/Material.001.material
+  mesh: /pkg/vaststars.resources/glb/pipe/pipe_I.glb|meshes/zhuti.001_P1.meshbin
+  name: zhuti.II.002
   scene:
     r: {0, 1, 0, 1.6292068494294654e-07}
   visible_state: main_view|selectable|cast_shadow
