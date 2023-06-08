@@ -12,13 +12,6 @@ namespace roadnet::lua {
         return w.rw;
     }
 
-    static road_coord get_road_coord(lua_State* L, int idx) {
-        auto v = luaL_checkinteger(L, idx);
-        uint16_t id     = (uint16_t)(v & 0xFFFF);
-        uint16_t offset = (uint16_t)((v >> 16) & 0xFFFF);
-        return road_coord(std::bit_cast<roadid>(id), offset);
-    }
-
     static loction get_loction(lua_State* L, int idx) {
         auto v = luaL_checkinteger(L, idx);
         uint8_t x = (uint8_t)((v >>  0) & 0xFF);
@@ -45,25 +38,9 @@ namespace roadnet::lua {
         lua_pushinteger(L, v);
     }
 
-    static void push_road_coord(lua_State* L, road_coord& c) {
-        uint32_t v = 0;
-        v |= (uint32_t)std::bit_cast<uint16_t>(c.id);
-        v |= (uint32_t)c.offset << 16;
-        lua_pushinteger(L, v);
-    }
-
     static int reset(lua_State* L) {
         auto& w = get_network(L);
         w.updateMap(get_map_data(L, 2));
-        return 0;
-    }
-    static int lmap_coord(lua_State* L) {
-        auto& w = get_network(L);
-        auto r = w.coordConvert(get_road_coord(L, 2));
-        if (r) {
-            push_map_coord(L, *r);
-            return 1;
-        }
         return 0;
     }
     struct eachlorry {
@@ -74,8 +51,8 @@ namespace roadnet::lua {
         };
         status status = status::cross;
         uint32_t index = 0;
-        uint16_t straight = 0;
-        using result_type = std::optional<std::tuple<lorryid, road_coord>>;
+        uint16_t straightId = 0;
+        using result_type = std::optional<std::tuple<lorryid, map_coord>>;
         result_type next_cross(roadnet::network& w) {
             static constexpr int N = 2;
             for (;;) {
@@ -90,25 +67,29 @@ namespace roadnet::lua {
                 auto& road = w.crossAry[road_idx];
                 auto id = road.cross_lorry[entry_idx];
                 if (id) {
-                    road_coord coord = {roadid {roadtype::cross, road_idx}, road.cross_status[entry_idx]};
+                    map_coord coord {road.loc, road.cross_status[entry_idx]};
                     return std::make_tuple(id, coord);
                 }
             }
         }
         result_type next_straight(roadnet::network& w) {
             for (;;) {
-                if (index >= w.lorryAry.size()) {
+                if (index >= w.straightLorry.size()) {
                     status = status::finish;
                     return std::nullopt;
                 }
-                auto& id = w.lorryAry[index];
+                auto& id = w.straightLorry[index];
                 if (id) {
-                    while (index >= w.straightAry[straight].lorryOffset + w.straightAry[straight].len) {
-                        straight++;
+                    for (;;) {
+                        auto& straight = w.straightAry[straightId];
+                        if (index >= straight.lorryOffset + straight.len) {
+                            straightId++;
+                            continue;
+                        }
+                        map_coord coord = straight.getCoord(w, index - straight.lorryOffset);
+                        index++;
+                        return std::make_tuple(id, coord);
                     }
-                    road_coord coord = {roadid {roadtype::straight, straight}, (uint16_t)(index - w.straightAry[straight].lorryOffset)};
-                    index++;
-                    return std::make_tuple(id, coord);
                 }
                 index++;
             }
@@ -141,7 +122,7 @@ namespace roadnet::lua {
             auto [item_classid, item_amount] = l.get_item();
             lua_pushinteger(L, item_classid);
             lua_pushinteger(L, item_amount);
-            push_road_coord(L, std::get<1>(*res));
+            push_map_coord(L, std::get<1>(*res));
             auto [progress, maxprogress] = l.get_progress();
             lua_pushinteger(L, progress);
             lua_pushinteger(L, maxprogress);
@@ -185,7 +166,6 @@ extern "C" int
 luaopen_vaststars_roadnet_core(lua_State* L) {
     luaL_Reg l[] = {
         { "reset", roadnet::lua::reset },
-        { "map_coord", roadnet::lua::lmap_coord },
         { "each_lorry", roadnet::lua::each_lorry },
         { "endpoint_loction", roadnet::lua::endpoint_loction },
         { NULL, NULL },

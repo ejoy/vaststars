@@ -17,6 +17,7 @@ namespace roadnet::road {
         roadid id;
         uint16_t len;
         uint32_t lorryOffset;
+        uint32_t coordOffset;
         roadid neighbor;
         direction dir;
 
@@ -28,9 +29,11 @@ namespace roadnet::road {
         bool tryEntry(network& w, lorryid l);
         void setNeighbor(roadid id);
         void setLorryOffset(uint32_t offset) { lorryOffset = offset; }
+        void setCoordOffset(uint32_t offset) { coordOffset = offset; }
         bool hasLorry(network& w, uint16_t offset);
         void delLorry(network& w, uint16_t offset);
         lorryid& waitingLorry(network& w);
+        map_coord getCoord(network& w, uint16_t offset);
     };
     static_assert(std::is_trivial_v<straight>);
 }
