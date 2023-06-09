@@ -2853,7 +2853,7 @@ prototype "地热气发电" {
     },
     results = {
     },
-    time = "1s",
+    time = "1.25s",
     description = "地热气发电",
 }
 
