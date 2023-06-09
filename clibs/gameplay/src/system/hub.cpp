@@ -215,8 +215,7 @@ lbuild(lua_State *L) {
             }
         });
         hub_mgr::hub_info hub_info;
-        for (auto const& m: set) {
-            auto const& h = m.first;
+        for (auto h: set) {
             switch ((hub_mgr::berth_type)h.type) {
             case hub_mgr::berth_type::hub:
                 hub_info.hub.emplace_back(h);
