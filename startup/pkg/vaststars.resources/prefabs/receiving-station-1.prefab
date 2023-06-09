@@ -10,7 +10,8 @@ data:
   material: /pkg/vaststars.resources/materials/receiving-station-1.material
   mesh: /pkg/vaststars.resources/glb/goods-station-1.glb|meshes/Plane.012_P1.meshbin
   name: Plane.004
-  scene: {}
+  scene:
+    s: {2, 2, 2}
   visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:
