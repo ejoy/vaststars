@@ -329,7 +329,7 @@ namespace roadnet {
         {}
     };
 
-    static void setEndpoint(network& w, flatmap<loction, uint8_t> const& map, flatmap<loction, roadid>& crossMap, std::vector<straightData>& straightVec, loction loc, direction a, direction b, uint16_t endpointId, uint16_t straightId) {
+    static void setEndpoint(network& w, flatmap<loction, uint8_t> const& map, flatmap<loction, roadid>& crossMap, std::vector<straightData>& straightVec, loction loc, direction a, direction b, uint16_t endpointId) {
         auto na = findNeighbor(map, loc, a);
         auto nb = findNeighbor(map, loc, b);
         if (na.l == nb.l) {
@@ -365,7 +365,7 @@ namespace roadnet {
         assert(cross_b);
 
         straightData& straight1 = straightVec.emplace_back(
-            roadid {roadtype::straight, straightId},
+            roadid {roadtype::straight, (uint16_t)straightVec.size()},
             (nb.n + 1) * road::straight::N,
             nb.l,
             reverse(nb.dir),
@@ -375,7 +375,7 @@ namespace roadnet {
         w.CrossRoad(*cross_b).setNeighbor(reverse(nb.dir), straight1.id);
         ep.rev_neighbor = straight1.id;
         straightData& straight2 = straightVec.emplace_back(
-            roadid {roadtype::straight, ++straightId},
+            roadid {roadtype::straight, (uint16_t)straightVec.size()},
             na.n * road::straight::N + 1,
             loc,
             a,
@@ -393,7 +393,6 @@ namespace roadnet {
         routeCached.clear();
 
         uint16_t genCrossId = 0;
-        uint16_t genStraightId = 0;
         uint32_t genStraightLorryOffset = 0;
         uint32_t genStraightCoordOffset = 0;
         uint16_t genEndpoint = 0;
@@ -437,7 +436,7 @@ namespace roadnet {
                     if (loc == result.l && dir == reverse(result.dir)) {
                         assert(result.n > 0);
                         straightData& straight = straightVec.emplace_back(
-                            roadid {roadtype::straight, genStraightId++},
+                            roadid {roadtype::straight, (uint16_t)straightVec.size()},
                             result.n * road::straight::N + 1,
                             loc,
                             dir,
@@ -455,7 +454,7 @@ namespace roadnet {
                             roadid neighbor_id = *res;
                             road::crossroad& neighbor = CrossRoad(neighbor_id);
                             straightData& straight1 = straightVec.emplace_back(
-                                roadid {roadtype::straight, genStraightId++},
+                                roadid {roadtype::straight, (uint16_t)straightVec.size()},
                                 result.n * road::straight::N + 1,
                                 loc,
                                 dir,
@@ -465,7 +464,7 @@ namespace roadnet {
                             crossroad.setNeighbor(dir, straight1.id);
                             neighbor.setRevNeighbor(reverse(result.dir), straight1.id);
                             straightData& straight2 = straightVec.emplace_back(
-                                roadid {roadtype::straight, genStraightId++},
+                                roadid {roadtype::straight, (uint16_t)straightVec.size()},
                                 result.n * road::straight::N + 1,
                                 result.l,
                                 reverse(result.dir),
@@ -486,20 +485,19 @@ namespace roadnet {
             if (m & MapRoad::Endpoint) {
                 auto rawm = m & 0xF;
                 switch (rawm) {
-                case mask(L'║'): setEndpoint(*this, map, crossMap, straightVec, loc, direction::t, direction::b, endpointId, genStraightId); break;
-                case mask(L'═'): setEndpoint(*this, map, crossMap, straightVec, loc, direction::l, direction::r, endpointId, genStraightId); break;
-                case mask(L'╔'): setEndpoint(*this, map, crossMap, straightVec, loc, direction::r, direction::b, endpointId, genStraightId); break;
-                case mask(L'╚'): setEndpoint(*this, map, crossMap, straightVec, loc, direction::r, direction::t, endpointId, genStraightId); break;
-                case mask(L'╗'): setEndpoint(*this, map, crossMap, straightVec, loc, direction::l, direction::b, endpointId, genStraightId); break;
-                case mask(L'╝'): setEndpoint(*this, map, crossMap, straightVec, loc, direction::l, direction::t, endpointId, genStraightId); break;
+                case mask(L'║'): setEndpoint(*this, map, crossMap, straightVec, loc, direction::t, direction::b, endpointId); break;
+                case mask(L'═'): setEndpoint(*this, map, crossMap, straightVec, loc, direction::l, direction::r, endpointId); break;
+                case mask(L'╔'): setEndpoint(*this, map, crossMap, straightVec, loc, direction::r, direction::b, endpointId); break;
+                case mask(L'╚'): setEndpoint(*this, map, crossMap, straightVec, loc, direction::r, direction::t, endpointId); break;
+                case mask(L'╗'): setEndpoint(*this, map, crossMap, straightVec, loc, direction::l, direction::b, endpointId); break;
+                case mask(L'╝'): setEndpoint(*this, map, crossMap, straightVec, loc, direction::l, direction::t, endpointId); break;
                 default: assert(false); break;
                 }
                 endpointId++;
-                genStraightId += 2;
             }
         }
 
-        straightAry.reset(genStraightId);
+        straightAry.reset(straightVec.size());
         for (auto& data: straightVec) {
             road::straight& straight = StraightRoad(data.id);
             size_t length = data.len;
