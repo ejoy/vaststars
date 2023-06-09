@@ -139,6 +139,7 @@ function M.get_moveable_count(world, item, count)
 
     local existing = M.get_amount(slot)
     if existing >= stack then
+        log.debug(("get_moveable_count: %s %s >= %s"):format(item, existing, stack))
         return false
     end
 
@@ -154,9 +155,11 @@ function M.can_move_to_inventory(world, chest)
         end
         local ok, count = M.get_moveable_count(world, slot.item, slot.amount)
         if not ok then
+            log.debug(("can't move to inventory: %s %s"):format(slot.item, slot.amount))
             return false
         end
         if count < slot.amount then
+            log.debug(("can't move to inventory: %s %s < %s"):format(slot.item, count, slot.amount))
             return false
         end
         ::continue::

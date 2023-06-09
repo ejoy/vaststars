@@ -99,8 +99,12 @@ function idetail.show(object_id)
     end
 
     do
+        local vsobject = assert(vsobject_manager:get(object.id), ("(%s) vsobject not found"):format(object.prototype_name))
+        local game_object = vsobject.game_object
         log.info(([[
         {
+            hitch_eid = %s,
+            group_id = %s,
             id = %d,
             prototype_name = "%s",
             dir = "%s",
@@ -111,6 +115,8 @@ function idetail.show(object_id)
         },
         %s
         ]]):format(
+            game_object.hitch_entity_object.id,
+            game_object.group_id,
             object.id,
             object.prototype_name,
             object.dir,

@@ -318,6 +318,7 @@ function igame_object.create(init)
     children.instance:send("attach_hitch", hitch_entity_object.id)
 
     local outer = {
+        group_id = init.group_id,
         hitch_entity_object = hitch_entity_object,
         srt_modifier = imodifier.create_bone_modifier(
             hitch_entity_object.id,
