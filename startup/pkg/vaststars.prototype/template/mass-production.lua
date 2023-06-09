@@ -1,6 +1,5 @@
 local entities = { {
     dir = "N",
-    items = { { "碎石", 12 } },
     prototype_name = "指挥中心",
     recipe = "车辆装配",
     x = 125,
@@ -3380,11 +3379,6 @@ local entities = { {
     prototype_name = "出货车站",
     x = 108,
     y = 152
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 158,
-    y = 127
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
