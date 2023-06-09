@@ -395,7 +395,7 @@ namespace roadnet {
         flatmap<loction, roadid> crossMap;
         std::vector<straightData> straightVec;
 
-        routeMap.clear();
+        routeCached.clear();
 
         uint16_t genCrossId = 0;
         uint16_t genStraightId = 0;

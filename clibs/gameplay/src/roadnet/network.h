@@ -39,11 +39,11 @@ namespace roadnet {
         dynarray<road::crossroad>       crossAry;
         dynarray<road::straight>        straightAry;
         dynarray<road::endpoint>        endpointAry;
-        std::vector<lorry>              lorryVec;
-        std::vector<lorryid>            lorryFreeList;
-        flatmap<route_key, route_value> routeMap;
         dynarray<lorryid>               straightLorry;
         dynarray<map_coord>             straightCoord;
+        std::vector<lorry>              lorryVec;
+        std::vector<lorryid>            lorryFreeList;
         flatmap<loction, uint8_t>       map;
+        flatmap<route_key, route_value> routeCached;
     };
 }

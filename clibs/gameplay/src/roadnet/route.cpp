@@ -78,7 +78,7 @@ namespace roadnet {
         for (auto C = E;;) {
             if (auto node = ctx.get(C)) {
                 C = node->prev;
-                w.routeMap.insert_or_assign(route_key { C, E }, route_value {
+                w.routeCached.insert_or_assign(route_key { C, E }, route_value {
                     (uint16_t)node->dir,
                     (uint16_t)node->distance,
                 });
@@ -132,7 +132,7 @@ namespace roadnet {
 
     bool route(network& w, roadid S, roadid E, route_value& val) {
         route_key key { S, E };
-        if (auto pval = w.routeMap.find(key)) {
+        if (auto pval = w.routeCached.find(key)) {
             val = *pval;
             return true;
         }
