@@ -12,16 +12,15 @@ namespace roadnet {
         this->item_classid = 0;
         this->item_amount = 0;
         this->status = status::normal;
-        this->straightTime = 1000 / speed;
-        this->crossTime = 1500 / speed;
+        this->time = 1000 / speed;
     }
     void lorry::entry(roadtype type) {
         switch (type) {
         case roadtype::cross:
-            maxprogress = progress = crossTime;
+            maxprogress = progress = time;
             break;
         case roadtype::straight:
-            maxprogress = progress = straightTime;
+            maxprogress = progress = time;
             break;
         default:
             std::unreachable();

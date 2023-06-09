@@ -34,8 +34,7 @@ namespace roadnet {
         uint16_t item_amount;
         uint8_t progress;
         uint8_t maxprogress;
-        uint8_t straightTime;
-        uint8_t crossTime;
+        uint8_t time;
         enum status status;
     };
 }
