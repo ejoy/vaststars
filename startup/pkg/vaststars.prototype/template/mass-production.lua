@@ -3509,12 +3509,6 @@ local entities = { {
     y = 151
   }, {
     dir = "N",
-    item = "碎石",
-    prototype_name = "无人机仓库I",
-    x = 142,
-    y = 146
-  }, {
-    dir = "N",
     prototype_name = "铁制电线杆",
     x = 148,
     y = 151
