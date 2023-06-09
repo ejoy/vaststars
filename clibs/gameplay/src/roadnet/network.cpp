@@ -240,6 +240,7 @@ namespace roadnet {
         loction   l;
         direction dir;
         uint16_t  n;
+        uint8_t   m;
     };
     static NeighborResult findNeighbor(const flatmap<loction, uint8_t>& map, loction l, direction dir) {
         uint16_t n = 0;
@@ -248,20 +249,14 @@ namespace roadnet {
         for (;;) {
             ln = move(ln, nd);
             uint8_t m = getMapBits(map, ln);
-            if (isCross(m)) {
-                break;
+            if (isCross(m) || (m & MapRoad::Endpoint)) {
+                return {ln, nd, n, m};
             }
-            if (m & MapRoad::Endpoint) {
-                break;
-            }
-            if (ln == l) {
-                break;
-            }
+            assert(ln != l);
             nd = reverse(nd);
             nd = next_direction(ln, m, nd);
             n++;
         }
-        return {ln, nd, n};
     }
 
     static void walkToNeighbor(const flatmap<loction, uint8_t>& map, loction l, direction dir, std::function<void(map_coord)> func) {
@@ -453,7 +448,7 @@ namespace roadnet {
                         crossroad.setRevNeighbor(reverse(result.dir), straight.id);
                     }
                     else {
-                        auto neighbor_m = getMapBits(map, result.l);
+                        auto neighbor_m = result.m;
                         if (!(neighbor_m & MapRoad::Endpoint)) {
                             auto res = crossMap.find(result.l);
                             assert(res);
