@@ -52,8 +52,7 @@ local function __gen_keyframes(last_srt, mask, x, y, toward, offset)
         return {}
     end
     local srts = assert(rawget(cache[prototype_name][dir][toward], offset))
-
-    local step = 1 / (#srts)
+    local step = 1 / #srts
     local value = 0
     local key_frames = {}
 
@@ -89,17 +88,17 @@ end
 local motion_events = {}
 -- key_frames = {s = xx, r = xx, t = xx, step = xx}, ...
 motion_events["update_keyframes_on_change"] = function(obj, e, mask, x, y, toward, offset, last_srt)
-    if obj.mask == mask and obj.x == x and obj.y == y and obj.toward == toward then
+    if obj.mask == mask and obj.x == x and obj.y == y and obj.toward == toward and obj.offset == offset then
         return
     end
-    obj.mask, obj.x, obj.y, obj.toward = mask, x, y, toward
+    obj.mask, obj.x, obj.y, obj.toward, obj.offset = mask, x, y, toward, offset
     obj.last_srt = obj.last_srt or last_srt
 
     local keyframes = __gen_keyframes(obj.last_srt, mask, x, y, toward, offset)
-    if not next(keyframes) then -- TODO
-        return
-    end
-    obj.last_srt = {s = math3d.ref(keyframes[#keyframes].s), r = math3d.ref(keyframes[#keyframes].r), t = math3d.ref(keyframes[#keyframes].t)}
+    assert(#keyframes > 0)
+    local last = keyframes[#keyframes]
+    obj.last_srt = {s = math3d.ref(last.s), r = math3d.ref(last.r), t = math3d.ref(last.t)}
+
     ims.set_keyframes(e, table.unpack(keyframes))
 end
 motion_events["set_ratio"] = function (_, e, progress, maxprogress)
@@ -156,7 +155,7 @@ handlers.straight = function(lorry_id, classid, item_classid, item_amount, mask,
 
     local lorry = __get_or_create_lorry(lorry_id, classid, mask, x, y, toward, offset)
     lorry:motion_opt("update_keyframes_on_change", mask, x, y, toward, offset, lorry.last_srt)
-    lorry:motion_opt("set_ratio", progress, maxprogress)
+    lorry:motion_opt("set_ratio", maxprogress - progress, maxprogress)
     lorry:set_item(item_classid, item_amount)
 end
 
@@ -166,7 +165,7 @@ handlers.cross = function(lorry_id, classid, item_classid, item_amount, mask, x,
 
     local lorry = __get_or_create_lorry(lorry_id, classid, mask, x, y, toward, offset)
     lorry:motion_opt("update_keyframes_on_change", mask, x, y, toward, offset, lorry.last_srt)
-    lorry:motion_opt("set_ratio", progress, maxprogress)
+    lorry:motion_opt("set_ratio", maxprogress - progress, maxprogress)
     lorry:set_item(item_classid, item_amount)
 end
 
