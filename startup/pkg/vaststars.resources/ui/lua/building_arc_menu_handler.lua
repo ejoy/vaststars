@@ -57,7 +57,7 @@ return function(start)
     start.buttons = {}
     if start.pickup_item then
         local v = setmetatable({}, {__index = DEFAULT})
-        v.text = "收取物品"
+        v.text = "收取成品"
         v.message = "pickup_item"
         v.number = start.pickup_item_count
         v.show_number = true
@@ -135,7 +135,7 @@ return function(start)
 
     if start.place_item then
         local v = setmetatable({}, {__index = DEFAULT})
-        v.text = "放置物品"
+        v.text = "放置原料"
         v.message = "place_item"
         v.background_image = "textures/cmdcenter/item-out.texture"
         start.buttons[#start.buttons + 1] = v
