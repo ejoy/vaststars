@@ -332,9 +332,11 @@ namespace roadnet {
     static void setEndpoint(network& w, flatmap<loction, uint8_t> const& map, flatmap<loction, roadid>& crossMap, std::vector<straightData>& straightVec, loction loc, direction a, direction b, uint16_t endpointId, uint16_t straightId) {
         auto na = findNeighbor(map, loc, a);
         auto nb = findNeighbor(map, loc, b);
-        if (na.l.y == nb.l.y) {
+        if (na.l == nb.l) {
+            assert(false);
+        }
+        else if (na.l.y == nb.l.y) {
             assert(loc.y != na.l.y);
-            assert(na.l.x != nb.l.x);
             bool left_handled = loc.y > na.l.y;
             bool a_less_b = na.l.x > nb.l.x;
             if (left_handled != a_less_b) {
@@ -344,7 +346,6 @@ namespace roadnet {
         }
         else if (na.l.x == nb.l.x) {
             assert(loc.x != nb.l.x);
-            assert(na.l.y != nb.l.y);
             bool left_handled = loc.x < nb.l.x;
             bool a_less_b = na.l.y > nb.l.y;
             if (left_handled != a_less_b) {
