@@ -836,8 +836,12 @@ local function get_instance_memory_buffer(stonemountain_info, max_num)
     local memory_buffer_offset = 1
     for stonemountain_idx = 1, stonemountain_num do
         local instance_data = stonemountain_info[stonemountain_idx]
-        for data_idx = 1, #instance_data do
-            memory_buffer[memory_buffer_offset] = fmt:pack(table.unpack(instance_data[data_idx]))
+        for data_idx = 1, 3 do
+            if data_idx == 1 then
+                memory_buffer[memory_buffer_offset] = fmt:pack(table.unpack(instance_data[data_idx]))
+            else
+                memory_buffer[memory_buffer_offset] = fmt:pack(table.unpack({0, 0, 0, 0})) 
+            end
             memory_buffer_offset = memory_buffer_offset + 16
         end
     end
