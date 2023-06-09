@@ -6,7 +6,7 @@
 #include "roadnet/road_straight.h"
 #include "roadnet/road_endpoint.h"
 #include "util/dynarray.h"
-#include "util/flatmap.h"
+#include "flatmap.h"
 
 namespace roadnet {
     struct route_key {

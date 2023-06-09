@@ -1,7 +1,7 @@
 #pragma once
 
 #include "util/component.h"
-#include "util/flatmap.h"
+#include "flatmap.h"
 #include <bee/nonstd/bit.h>
 #include <vector>
 #include <map>

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../util/flatmap.h"
+#include "flatmap.h"
 
 struct statistics {
     void finish_recipe(world& w, uint16_t id);

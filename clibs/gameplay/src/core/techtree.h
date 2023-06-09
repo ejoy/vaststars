@@ -4,7 +4,7 @@
 #include <vector>
 #include <map>
 #include "chest.h"
-#include "util/flatmap.h"
+#include "flatmap.h"
 
 struct world;
 struct lua_State;
