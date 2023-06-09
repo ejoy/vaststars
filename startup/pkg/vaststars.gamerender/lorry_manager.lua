@@ -33,22 +33,37 @@ local function rotate_dir(dir, entity_dir)
     return (dir - t) % 4
 end
 
-local function __gen_keyframes(mask, x, y, toward)
+local function rotate_toward(toward, entity_dir)
+    local s = rotate_dir(toward >> 0x2, entity_dir) -- high 2 bits is indir
+    local e = rotate_dir(toward &  0x3, entity_dir) -- low  2 bits is outdir
+    return s << 2 | e
+end
+
+local function __gen_keyframes(last_srt, mask, x, y, toward, offset)
     local prototype_name, dir = mask_to_prototype_name_dir(mask)
     local road_srt = {s = mc.ONE, r = ROTATORS[dir], t = math3d.vector(iterrain:get_position_by_coord(x, y, ROAD_TILE_WIDTH_SCALE, ROAD_TILE_HEIGHT_SCALE))}
     local cache = iprototype_cache.get("lorry_manager").cache
-    if not rawget(cache[prototype_name][dir], toward) then
-        log.error(("can not found track keyframes(%s, %s), w(%s) from(%s) -> to(%s)"):format(prototype_name, dir, toward, ROAD_DIRECTION[toward >> 0x2], ROAD_DIRECTION[toward &  0x3]))
-        -- local s = rotate_dir(toward >> 0x2, dir) -- high 2 bits is indir
-        -- local e = rotate_dir(toward &  0x3, dir) -- low  2 bits is outdir
-        -- log.error(("can not found track keyframes(%s, %s), toward(%s) -> (%s), from(%s) -> to(%s)"):format(prototype_name, dir, toward, s << 2 | e, ROAD_DIRECTION[s], ROAD_DIRECTION[e]))
+    if not rawget(cache[prototype_name][dir][toward], offset) then
+        log.error(("can not found track keyframes(%s, %s), w(%s) -> (%s) from(%s) -> to(%s) offset(%s)"):format(
+            prototype_name, dir,
+            toward, rotate_toward(toward, dir),
+            ROAD_DIRECTION[toward >> 0x2], ROAD_DIRECTION[toward & 0x3],
+            offset))
         return {}
     end
-    local srts = assert(rawget(cache[prototype_name][dir], toward))
+    local srts = assert(rawget(cache[prototype_name][dir][toward], offset))
 
-    local step = 1 / (#srts - 1)
+    local step = 1 / (#srts)
     local value = 0
     local key_frames = {}
+
+    key_frames[#key_frames+1] = {
+        s = last_srt.s,
+        r = last_srt.r,
+        t = last_srt.t,
+        step = value,
+    }
+    value = value + step
 
     for idx, srt in ipairs(srts) do
         if idx == #srt then
@@ -57,7 +72,7 @@ local function __gen_keyframes(mask, x, y, toward)
 
         local road_mat = math3d.matrix {s = road_srt.s, r = road_srt.r, t = road_srt.t}
         local mat = math3d.matrix {s = srt.s, r = srt.r, t = srt.t}
-        local mat = math3d.mul(road_mat, mat)
+        mat = math3d.mul(road_mat, mat)
         local s, r, t = math3d.srt(mat)
         key_frames[#key_frames+1] = {
             s = s,
@@ -73,19 +88,26 @@ end
 
 local motion_events = {}
 -- key_frames = {s = xx, r = xx, t = xx, step = xx}, ...
-motion_events["update_keyframes_on_change"] = function(obj, e, mask, x, y, toward)
+motion_events["update_keyframes_on_change"] = function(obj, e, mask, x, y, toward, offset, last_srt)
     if obj.mask == mask and obj.x == x and obj.y == y and obj.toward == toward then
         return
     end
     obj.mask, obj.x, obj.y, obj.toward = mask, x, y, toward
-    ims.set_keyframes(e, table.unpack(__gen_keyframes(mask, x, y, toward)))
+    obj.last_srt = obj.last_srt or last_srt
+
+    local keyframes = __gen_keyframes(obj.last_srt, mask, x, y, toward, offset)
+    if not next(keyframes) then -- TODO
+        return
+    end
+    obj.last_srt = {s = math3d.ref(keyframes[#keyframes].s), r = math3d.ref(keyframes[#keyframes].r), t = math3d.ref(keyframes[#keyframes].t)}
+    ims.set_keyframes(e, table.unpack(keyframes))
 end
 motion_events["set_ratio"] = function (_, e, progress, maxprogress)
     assert(progress <= maxprogress)
     ims.set_ratio(e, progress/maxprogress)
 end
 
-local function __get_or_create_lorry(lorry_id, classid, mask, x, y, toward)
+local function __get_or_create_lorry(lorry_id, classid, mask, x, y, toward, offset)
     local lorry = lorries[lorry_id]
     if lorry and lorry.classid == classid then
         return lorry
@@ -95,11 +117,23 @@ local function __get_or_create_lorry(lorry_id, classid, mask, x, y, toward)
         lorry:remove()
     end
 
+    --
+    local start = iprototype_cache.get("lorry_manager").start
+    local prototype_name, dir = mask_to_prototype_name_dir(mask)
+    local road_srt = {s = mc.ONE, r = ROTATORS[dir], t = math3d.vector(iterrain:get_position_by_coord(x, y, ROAD_TILE_WIDTH_SCALE, ROAD_TILE_HEIGHT_SCALE))}
+    local srt = start[prototype_name]
+    local road_mat = math3d.matrix {s = road_srt.s, r = road_srt.r, t = road_srt.t}
+    local mat = math3d.matrix {s = srt.s, r = srt.r, t = srt.t}
+    mat = math3d.mul(road_mat, mat)
+    local s, r, t = math3d.srt(mat)
+    local last_srt = {s = math3d.ref(s), r = math3d.ref(r), t = math3d.ref(t)}
+
     local typeobject = iprototype.queryById(classid)
-    local kfs = __gen_keyframes(mask, x, y, toward)
+    local kfs = __gen_keyframes(last_srt, mask, x, y, toward, offset)
     assert(kfs[1])
     lorry = create_lorry("/pkg/vaststars.resources/" .. typeobject.model, kfs[1].s, kfs[1].r, kfs[1].t, motion_events)
     lorry.classid = classid
+    lorry.last_srt = last_srt
     lorries[lorry_id] = lorry
 
     return lorry
@@ -117,22 +151,22 @@ handlers.endpoint = function(lorry_id, classid, item_classid, item_amount, mask,
 end
 
 handlers.straight = function(lorry_id, classid, item_classid, item_amount, mask, x, y, toward, offset, progress, maxprogress)
-    assert(offset == 0 or offset == 1)
     assert(progress <= maxprogress)
+    assert(offset == 0 or offset == 1)
 
-    local lorry = __get_or_create_lorry(lorry_id, classid, mask, x, y, toward)
-    lorry:motion_opt("update_keyframes_on_change", mask, x, y, toward)
-    lorry:motion_opt("set_ratio", (maxprogress * offset) + (maxprogress - progress), maxprogress * 2)
+    local lorry = __get_or_create_lorry(lorry_id, classid, mask, x, y, toward, offset)
+    lorry:motion_opt("update_keyframes_on_change", mask, x, y, toward, offset, lorry.last_srt)
+    lorry:motion_opt("set_ratio", progress, maxprogress)
     lorry:set_item(item_classid, item_amount)
 end
 
 handlers.cross = function(lorry_id, classid, item_classid, item_amount, mask, x, y, toward, offset, progress, maxprogress)
     assert(progress <= maxprogress)
-    assert(offset == 0)
+    assert(offset == 0 or offset == 1)
 
-    local lorry = __get_or_create_lorry(lorry_id, classid, mask, x, y, toward)
-    lorry:motion_opt("update_keyframes_on_change", mask, x, y, toward)
-    lorry:motion_opt("set_ratio", (maxprogress - progress), maxprogress)
+    local lorry = __get_or_create_lorry(lorry_id, classid, mask, x, y, toward, offset)
+    lorry:motion_opt("update_keyframes_on_change", mask, x, y, toward, offset, lorry.last_srt)
+    lorry:motion_opt("set_ratio", progress, maxprogress)
     lorry:set_item(item_classid, item_amount)
 end
 
@@ -142,16 +176,12 @@ local function update(lorry_id, classid, item_classid, item_amount, x, y, toward
     local is_endpoint = (mask & ROADNET_MASK_ENDPOINT == ROADNET_MASK_ENDPOINT)
     assert(toward >= 0 and toward <= 0xf)
 
-    if is_endpoint then
-        handlers.endpoint(lorry_id, classid, mask, x, y, toward, offset, progress, maxprogress)
+    local prototype_name = mask_to_prototype_name_dir(mask)
+    local is_cross_cache = iprototype_cache.get("lorry_manager").is_cross_cache -- TODO: optimize
+    if is_cross_cache[prototype_name] then
+        handlers.cross(lorry_id, classid, item_classid, item_amount, mask, x, y, toward, offset, progress, maxprogress)
     else
-        local prototype_name = mask_to_prototype_name_dir(mask)
-        local is_cross_cache = iprototype_cache.get("lorry_manager").is_cross_cache -- TODO: optimize
-        if is_cross_cache[prototype_name] then
-            handlers.cross(lorry_id, classid, item_classid, item_amount, mask, x, y, toward, offset, progress, maxprogress)
-        else
-            handlers.straight(lorry_id, classid, item_classid, item_amount, mask, x, y, toward, offset, progress, maxprogress)
-        end
+        handlers.straight(lorry_id, classid, item_classid, item_amount, mask, x, y, toward, offset, progress, maxprogress)
     end
 end
 

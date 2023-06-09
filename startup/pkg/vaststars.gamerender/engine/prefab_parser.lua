@@ -1,6 +1,8 @@
 local fs = require "filesystem"
 local serialize = import_package "ant.serialize"
 local assetmgr = import_package "ant.asset"
+local mathpkg = import_package "ant.math"
+local mc = mathpkg.constant
 
 local function read_file(filename)
     local f
@@ -66,6 +68,9 @@ local function slots(fullpath)
     local t = parse(fullpath)
     for _, v in ipairs(t) do
         if v.data and v.data.slot then
+            v.data.scene.s = v.data.scene.s or mc.ONE
+            v.data.scene.r = v.data.scene.r or mc.IDENTITY_QUAT
+            v.data.scene.t = v.data.scene.t or mc.ZERO_PT
             res[v.data.name] = v.data
         end
     end

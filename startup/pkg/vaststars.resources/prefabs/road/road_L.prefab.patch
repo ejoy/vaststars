@@ -1,6 +1,6 @@
 ---
 data:
-  name: path_l_0
+  name: path_start
   scene:
     r: {0, 1, 0, -4.371138828673793e-08}
     s: {1, 1, 1}
@@ -57,22 +57,6 @@ data:
     follow_flag: 1
   tag:
     empty1
-policy:
-  ant.general|name
-  ant.general|tag
-  ant.animation|slot
-  ant.scene|scene_object
----
-data:
-  name: path_r_0
-  scene:
-    r: {0, -0.7071067690849304, 0, 0.7071067690849304}
-    s: {1, 1, 1}
-    t: {10, 0, 3.5}
-  slot:
-    follow_flag: 1
-  tag:
-    empty4
 policy:
   ant.general|name
   ant.general|tag
