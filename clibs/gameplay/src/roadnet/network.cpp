@@ -388,7 +388,7 @@ namespace roadnet {
             na.dir,
             cross_a
         );
-        w.CrossRoad(cross_a).setRevNeighbor(na.dir, straight2.id);
+        w.CrossRoad(cross_a).setRevNeighbor(reverse(na.dir), straight2.id);
         ep.neighbor = straight2.id;
     }
 
