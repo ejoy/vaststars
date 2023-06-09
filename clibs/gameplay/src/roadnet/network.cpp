@@ -231,9 +231,9 @@ namespace roadnet {
         return direction::n;
     }
 
-    static uint8_t getMapBits(const std::map<loction, uint8_t>& map, const loction& l) {
-        auto iter = map.find(l);
-        return (iter != map.end()) ? iter->second : 0;
+    static uint8_t getMapBits(const flatmap<loction, uint8_t>& map, const loction& l) {
+        auto res = map.find(l);
+        return res ? *res : 0;
     }
 
     struct NeighborResult {
@@ -241,7 +241,7 @@ namespace roadnet {
         direction dir;
         uint16_t  n;
     };
-    static NeighborResult findNeighbor(const std::map<loction, uint8_t>& map, loction l, direction dir) {
+    static NeighborResult findNeighbor(const flatmap<loction, uint8_t>& map, loction l, direction dir) {
         uint16_t n = 0;
         loction ln = l;
         direction nd = dir;
@@ -264,13 +264,12 @@ namespace roadnet {
         return {ln, nd, n};
     }
 
-    static void walkToNeighbor(const std::map<loction, uint8_t>& map, loction l, direction dir, std::function<void(map_coord)> func) {
+    static void walkToNeighbor(const flatmap<loction, uint8_t>& map, loction l, direction dir, std::function<void(map_coord)> func) {
         for (uint16_t i = 0; ; ++i) {
             l = move(l, dir);
             uint8_t m = getMapBits(map, l);
             direction prev_dir = reverse(dir);
             if (isCross(m)) {
-                assert(!(m & MapRoad::Endpoint));
                 cross_type type = road::crossType(prev_dir, dir);
                 func({l, map_index::unset, type});
                 return;
@@ -286,7 +285,7 @@ namespace roadnet {
         }
     }
 
-    void network::updateMap(const std::map<loction, uint8_t>& mapData) {
+    void network::updateMap(flatmap<loction, uint8_t>&& mapData) {
         //dynarray<std::optional<map_coord>> lorryWhere;
         //lorryWhere.reset(lorryVec.size());
         //for (uint16_t i = 0; i < crossAry.size(); ++i) {
@@ -310,7 +309,7 @@ namespace roadnet {
         //    }
         //}
 
-        map = mapData;
+        map = std::move(mapData);
         uint32_t genLorryOffset = reloadMap();
         if(genLorryOffset > 0) {
             straightLorry.reset(genLorryOffset);
@@ -336,7 +335,7 @@ namespace roadnet {
         {}
     };
 
-    static void setEndpoint(network& w, std::map<loction, roadid>& crossMap, std::vector<straightData>& straightVec, loction loc, direction a, direction b, uint16_t straightId) {
+    static void setEndpoint(network& w, flatmap<loction, roadid>& crossMap, std::vector<straightData>& straightVec, loction loc, direction a, direction b, uint16_t endpointId, uint16_t straightId) {
         auto na = findNeighbor(w.map, loc, a);
         auto nb = findNeighbor(w.map, loc, b);
         if (na.l.y == nb.l.y) {
@@ -363,12 +362,12 @@ namespace roadnet {
             assert(false);
         }
         assert(na.n > 0);
-
-        endpointid id { (uint16_t)w.endpointVec.size() };
-        auto& ep = w.endpointVec.emplace_back();
+        auto& ep = w.endpointAry[endpointId];
         ep.loc = loc;
-        auto cross_a = crossMap[na.l];
-        auto cross_b = crossMap[nb.l];
+        auto cross_a = crossMap.find(na.l);
+        auto cross_b = crossMap.find(nb.l);
+        assert(cross_a);
+        assert(cross_b);
 
         straightData& straight1 = straightVec.emplace_back(
             roadid {roadtype::straight, straightId},
@@ -378,7 +377,7 @@ namespace roadnet {
             reverse(b),
             roadid::invalid()
         );
-        w.CrossRoad(cross_b).setNeighbor(reverse(nb.dir), straight1.id);
+        w.CrossRoad(*cross_b).setNeighbor(reverse(nb.dir), straight1.id);
         ep.rev_neighbor = straight1.id;
         straightData& straight2 = straightVec.emplace_back(
             roadid {roadtype::straight, ++straightId},
@@ -386,28 +385,32 @@ namespace roadnet {
             loc,
             a,
             na.dir,
-            cross_a
+            *cross_a
         );
-        w.CrossRoad(cross_a).setRevNeighbor(reverse(na.dir), straight2.id);
+        w.CrossRoad(*cross_a).setRevNeighbor(reverse(na.dir), straight2.id);
         ep.neighbor = straight2.id;
     }
 
     uint32_t network::reloadMap() {
-        std::map<loction, roadid> crossMap;
+        flatmap<loction, roadid> crossMap;
         std::vector<straightData> straightVec;
 
-        endpointVec.clear();
         routeMap.clear();
 
         uint16_t genCrossId = 0;
         uint16_t genStraightId = 0;
         uint32_t genStraightLorryOffset = 0;
         uint32_t genStraightCoordOffset = 0;
+        uint16_t genEndpoint = 0;
 
-        for (auto& [loc, m] : map) {
+        for (auto const& [loc, m] : map) {
             if (isCross(m)) {
+                assert(!(m & MapRoad::Endpoint));
                 roadid id { roadtype::cross, genCrossId++ };
-                crossMap.emplace(loc, id);
+                crossMap.insert_or_assign(loc, id);
+            }
+            else if (m & MapRoad::Endpoint) {
+                genEndpoint++;
             }
         }
 
@@ -452,7 +455,9 @@ namespace roadnet {
                     else {
                         auto neighbor_m = getMapBits(map, result.l);
                         if (!(neighbor_m & MapRoad::Endpoint)) {
-                            roadid neighbor_id = crossMap[result.l];
+                            auto res = crossMap.find(result.l);
+                            assert(res);
+                            roadid neighbor_id = *res;
                             road::crossroad& neighbor = CrossRoad(neighbor_id);
                             straightData& straight1 = straightVec.emplace_back(
                                 roadid {roadtype::straight, genStraightId++},
@@ -480,18 +485,21 @@ namespace roadnet {
             }
         }
 
-        for (auto& [loc, m] : map) {
+        endpointAry.reset(genEndpoint);
+        uint16_t endpointId = 0;
+        for (auto const& [loc, m] : map) {
             if (m & MapRoad::Endpoint) {
                 auto rawm = m & 0xF;
                 switch (rawm) {
-                case mask(L'║'): setEndpoint(*this, crossMap, straightVec, loc, direction::t, direction::b, genStraightId); break;
-                case mask(L'═'): setEndpoint(*this, crossMap, straightVec, loc, direction::l, direction::r, genStraightId); break;
-                case mask(L'╔'): setEndpoint(*this, crossMap, straightVec, loc, direction::r, direction::b, genStraightId); break;
-                case mask(L'╚'): setEndpoint(*this, crossMap, straightVec, loc, direction::r, direction::t, genStraightId); break;
-                case mask(L'╗'): setEndpoint(*this, crossMap, straightVec, loc, direction::l, direction::b, genStraightId); break;
-                case mask(L'╝'): setEndpoint(*this, crossMap, straightVec, loc, direction::l, direction::t, genStraightId); break;
+                case mask(L'║'): setEndpoint(*this, crossMap, straightVec, loc, direction::t, direction::b, endpointId, genStraightId); break;
+                case mask(L'═'): setEndpoint(*this, crossMap, straightVec, loc, direction::l, direction::r, endpointId, genStraightId); break;
+                case mask(L'╔'): setEndpoint(*this, crossMap, straightVec, loc, direction::r, direction::b, endpointId, genStraightId); break;
+                case mask(L'╚'): setEndpoint(*this, crossMap, straightVec, loc, direction::r, direction::t, endpointId, genStraightId); break;
+                case mask(L'╗'): setEndpoint(*this, crossMap, straightVec, loc, direction::l, direction::b, endpointId, genStraightId); break;
+                case mask(L'╝'): setEndpoint(*this, crossMap, straightVec, loc, direction::l, direction::t, endpointId, genStraightId); break;
                 default: assert(false); break;
                 }
+                endpointId++;
                 genStraightId += 2;
             }
         }
@@ -562,7 +570,7 @@ namespace roadnet {
         return lorryVec[id.id];
     }
     road::endpoint& network::Endpoint(endpointid id) {
-        assert(id.id < endpointVec.size());
-        return endpointVec[id.id];
+        assert(id.id < endpointAry.size());
+        return endpointAry[id.id];
     }
 }

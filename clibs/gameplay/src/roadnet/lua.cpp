@@ -19,17 +19,6 @@ namespace roadnet::lua {
         return {x,y};
     }
 
-    static std::map<loction, uint8_t> get_map_data(lua_State* L, int idx) {
-        std::map<loction, uint8_t> map;
-        luaL_checktype(L, idx, LUA_TTABLE);
-        for(lua_pushnil(L); lua_next(L, idx); lua_pop(L, 1)) {
-            auto l = get_loction(L, -2);
-            uint8_t m = (uint8_t)luaL_checkinteger(L, -1);
-            map.emplace(l, m);
-        }
-        return map;
-    }
-
     static void push_map_coord(lua_State* L, map_coord& c) {
         uint32_t v = std::bit_cast<uint32_t>(c);
         lua_pushinteger(L, v);
@@ -37,9 +26,19 @@ namespace roadnet::lua {
 
     static int reset(lua_State* L) {
         auto& w = get_network(L);
-        w.updateMap(get_map_data(L, 2));
+        luaL_checktype(L, 2, LUA_TTABLE);
+        flatmap<loction, uint8_t> map;
+        lua_pushnil(L);
+        while (lua_next(L, 2)) {
+            auto l = get_loction(L, -2);
+            uint8_t m = (uint8_t)luaL_checkinteger(L, -1);
+            map.insert_or_assign(l, m);
+            lua_pop(L, 1);
+        }
+        w.updateMap(std::move(map));
         return 0;
     }
+
     struct eachlorry {
         enum class status {
             cross,
@@ -149,9 +148,9 @@ namespace roadnet::lua {
     }
     static int endpoint_loction(lua_State* L) {
         auto& w = get_network(L);
-        lua_createtable(L, 0, (int)w.endpointVec.size());
+        lua_createtable(L, 0, (int)w.endpointAry.size());
         lua_Integer n = 0;
-        for (const auto& ep : w.endpointVec) {
+        for (const auto& ep : w.endpointAry) {
             lua_pushinteger(L, ep.loc.id);
             lua_pushinteger(L, n++);
             lua_rawset(L, -3);

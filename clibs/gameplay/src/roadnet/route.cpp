@@ -1,6 +1,6 @@
 ﻿#include "roadnet/route.h"
 #include "roadnet/network.h"
-#include <map>
+#include "flatmap.h"
 #include <set>
 #include <optional>
 #include <queue>
@@ -17,29 +17,28 @@ namespace roadnet {
             roadid    prev;
             direction dir;
         };
-        using dijkstraResult = std::map<roadid, dijkstraNode>;
+        using dijkstraResult = flatmap<roadid, dijkstraNode>;
         dijkstraQueue  openlist;
         dijkstraResult results;
 
         uint16_t get_distance(roadid N) const {
-            auto it = results.find(N);
-            if (it == results.end()) {
+            auto node = results.find(N);
+            if (!node) {
                 return (uint16_t)-1;
             }
-            auto& node = it->second;
-            return node.distance;
+            return node->distance;
         }
         std::optional<dijkstraNode> get(roadid N) const {
-            auto it = results.find(N);
-            if (it == results.end()) {
+            auto node = results.find(N);
+            if (!node) {
                 return std::nullopt;
             }
-            return it->second;
+            return *node;
         }
         void set(roadid N, roadid prev, direction dir, uint16_t distance) {
-            auto it = results.find(N);
-            if (it == results.end()) {
-                results.emplace(N, dijkstraNode {
+            auto node = results.find(N);
+            if (!node) {
+                results.insert_or_assign(N, dijkstraNode {
                     distance,
                     prev,
                     dir,
@@ -47,11 +46,10 @@ namespace roadnet {
                 openlist.push({distance, N});
                 return;
             }
-            auto& node = it->second;
-            if (node.distance > distance) {
-                node.distance = distance;
-                node.dir = dir;
-                node.prev = prev;
+            if (node->distance > distance) {
+                node->distance = distance;
+                node->dir = dir;
+                node->prev = prev;
                 openlist.push({distance, N});
                 return;
             }
