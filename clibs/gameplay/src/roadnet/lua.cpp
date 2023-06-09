@@ -35,7 +35,7 @@ namespace roadnet::lua {
             map.insert_or_assign(l, m);
             lua_pop(L, 1);
         }
-        w.updateMap(std::move(map));
+        w.updateMap(map);
         return 0;
     }
 

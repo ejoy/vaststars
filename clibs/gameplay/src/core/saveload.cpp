@@ -226,11 +226,13 @@ namespace lua_world {
 
         backup_scope(L, f, "roadnet", [&](){
             auto& rw = w.rw;
-            file_write(f, rw.straightLorry);
-            file_write(f, rw.lorryFreeList);
-            file_write(f, rw.lorryVec);
-            file_write(f, rw.map);
             file_write(f, rw.crossAry);
+            file_write(f, rw.straightAry);
+            file_write(f, rw.endpointAry);
+            file_write(f, rw.straightLorry);
+            file_write(f, rw.straightCoord);
+            file_write(f, rw.lorryVec);
+            file_write(f, rw.lorryFreeList);
         });
 
         fclose(f);
@@ -294,12 +296,14 @@ namespace lua_world {
 
         restore_scope(L, f, "roadnet", [&](){
             auto& rw = w.rw;
+            file_read(f, rw.crossAry);
+            file_read(f, rw.straightAry);
+            file_read(f, rw.endpointAry);
             file_read(f, rw.straightLorry);
-            file_read(f, rw.lorryFreeList);
+            file_read(f, rw.straightCoord);
             file_read(f, rw.lorryVec);
-            file_read(f, rw.map);
-            rw.reloadMap();
-            file_read(f, rw.crossAry); // rw.reloadMap() will generate the crossAry, so it must be restored after rw.reloadMap()
+            file_read(f, rw.lorryFreeList);
+            rw.routeCached.clear();
         }, [&](){
             //TODO
         });

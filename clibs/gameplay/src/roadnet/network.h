@@ -24,8 +24,8 @@ namespace roadnet {
     class network {
     public:
         network() = default;
-        void             updateMap(flatmap<loction, uint8_t>&& mapData);
-        uint32_t         reloadMap();
+        void             updateMap(flatmap<loction, uint8_t> const& map);
+        uint32_t         reloadMap(flatmap<loction, uint8_t> const& map);
         lorryid          createLorry(world& w, uint16_t classid);
         void             destroyLorry(world& w, lorryid id);
         void             update(uint64_t ti);
@@ -43,7 +43,6 @@ namespace roadnet {
         dynarray<map_coord>             straightCoord;
         std::vector<lorry>              lorryVec;
         std::vector<lorryid>            lorryFreeList;
-        flatmap<loction, uint8_t>       map;
         flatmap<route_key, route_value> routeCached;
     };
 }

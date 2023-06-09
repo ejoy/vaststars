@@ -280,7 +280,7 @@ namespace roadnet {
         }
     }
 
-    void network::updateMap(flatmap<loction, uint8_t>&& mapData) {
+    void network::updateMap(flatmap<loction, uint8_t> const& map) {
         //dynarray<std::optional<map_coord>> lorryWhere;
         //lorryWhere.reset(lorryVec.size());
         //for (uint16_t i = 0; i < crossAry.size(); ++i) {
@@ -304,8 +304,7 @@ namespace roadnet {
         //    }
         //}
 
-        map = std::move(mapData);
-        uint32_t genLorryOffset = reloadMap();
+        uint32_t genLorryOffset = reloadMap(map);
         if(genLorryOffset > 0) {
             straightLorry.reset(genLorryOffset);
             lorryVec.clear();
@@ -330,9 +329,9 @@ namespace roadnet {
         {}
     };
 
-    static void setEndpoint(network& w, flatmap<loction, roadid>& crossMap, std::vector<straightData>& straightVec, loction loc, direction a, direction b, uint16_t endpointId, uint16_t straightId) {
-        auto na = findNeighbor(w.map, loc, a);
-        auto nb = findNeighbor(w.map, loc, b);
+    static void setEndpoint(network& w, flatmap<loction, uint8_t> const& map, flatmap<loction, roadid>& crossMap, std::vector<straightData>& straightVec, loction loc, direction a, direction b, uint16_t endpointId, uint16_t straightId) {
+        auto na = findNeighbor(map, loc, a);
+        auto nb = findNeighbor(map, loc, b);
         if (na.l.y == nb.l.y) {
             assert(loc.y != na.l.y);
             assert(na.l.x != nb.l.x);
@@ -386,7 +385,7 @@ namespace roadnet {
         ep.neighbor = straight2.id;
     }
 
-    uint32_t network::reloadMap() {
+    uint32_t network::reloadMap(flatmap<loction, uint8_t> const& map) {
         flatmap<loction, roadid> crossMap;
         std::vector<straightData> straightVec;
 
@@ -486,12 +485,12 @@ namespace roadnet {
             if (m & MapRoad::Endpoint) {
                 auto rawm = m & 0xF;
                 switch (rawm) {
-                case mask(L'║'): setEndpoint(*this, crossMap, straightVec, loc, direction::t, direction::b, endpointId, genStraightId); break;
-                case mask(L'═'): setEndpoint(*this, crossMap, straightVec, loc, direction::l, direction::r, endpointId, genStraightId); break;
-                case mask(L'╔'): setEndpoint(*this, crossMap, straightVec, loc, direction::r, direction::b, endpointId, genStraightId); break;
-                case mask(L'╚'): setEndpoint(*this, crossMap, straightVec, loc, direction::r, direction::t, endpointId, genStraightId); break;
-                case mask(L'╗'): setEndpoint(*this, crossMap, straightVec, loc, direction::l, direction::b, endpointId, genStraightId); break;
-                case mask(L'╝'): setEndpoint(*this, crossMap, straightVec, loc, direction::l, direction::t, endpointId, genStraightId); break;
+                case mask(L'║'): setEndpoint(*this, map, crossMap, straightVec, loc, direction::t, direction::b, endpointId, genStraightId); break;
+                case mask(L'═'): setEndpoint(*this, map, crossMap, straightVec, loc, direction::l, direction::r, endpointId, genStraightId); break;
+                case mask(L'╔'): setEndpoint(*this, map, crossMap, straightVec, loc, direction::r, direction::b, endpointId, genStraightId); break;
+                case mask(L'╚'): setEndpoint(*this, map, crossMap, straightVec, loc, direction::r, direction::t, endpointId, genStraightId); break;
+                case mask(L'╗'): setEndpoint(*this, map, crossMap, straightVec, loc, direction::l, direction::b, endpointId, genStraightId); break;
+                case mask(L'╝'): setEndpoint(*this, map, crossMap, straightVec, loc, direction::l, direction::t, endpointId, genStraightId); break;
                 default: assert(false); break;
                 }
                 endpointId++;
