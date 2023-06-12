@@ -155,13 +155,11 @@
                 prototype_name = " ",
                 detail_panel_status_icon = "textures/work_status_icon/normal.texture",
                 detail_panel_status_desc = "正常工作",
-                show_chest = false,
                 chest_list = {},
-                show_minner = false,
                 progress = "0%",
                 recipe_inputs = {},
                 recipe_ouputs = {},
-                show_assemble = false,
+                show_type = "",
                 recipe_name = " ",
                 guide_progress = 0,
                 areaid = 0
@@ -207,13 +205,13 @@
                 </div>
                 <div style="width:94%; margin-left: 3%; margin-right: 3%; border-bottom: 0.1vmin #6d6d6d;" />
                 <!--箱子中当前物品-->
-                <div style="width:90%; margin-left: 3%; margin-right: 3%; flex-direction: row; justify-content: flex-start; align-items: center; flex-wrap: wrap;" data-if = "show_chest" data-event-click="onLongPress(3)">
+                <div style="width:90%; margin-left: 3%; margin-right: 3%; flex-direction: row; justify-content: flex-start; align-items: center; flex-wrap: wrap;" data-if = "show_type=='chest'" data-event-click="onLongPress(3)">
                     <div data-for = "chest : chest_list" class="small-item1" style="margin: 0.5vmin;" data-style-background-image="chest.icon">
                         <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0);">{{chest.count}}</div>
                     </div>
                 </div>
                 <!--采矿机底部显示进度-->
-                <div style="top: 1vmin; height: 8vmin; margin-left: 3%; margin-right: 3%; flex-direction: column; justify-content: flex-start; align-items: center;" data-if = "show_minner" data-event-click="onLongPress(4)">
+                <div style="top: 1vmin; height: 8vmin; margin-left: 3%; margin-right: 3%; flex-direction: column; justify-content: flex-start; align-items: center;" data-if = "show_type=='minner'" data-event-click="onLongPress(4)">
                     <div class="column" style="justify-content: flex-start; width: 100%; height:50%;">
                         <div class="progress_bar" data-style-width="progress"/>
                         <div class="indicator" data-style-left="progress"/>
@@ -228,7 +226,7 @@
                     </div>
                 </div>
                 <!--组装机类型底部显示进度-->
-                <div style="top: 1vmin; margin-left: 3%; margin-right: 3%; flex-direction: column; justify-content: center; align-items: center;" data-if = "show_assemble" data-event-click="onLongPress(5)">
+                <div style="top: 1vmin; margin-left: 3%; margin-right: 3%; flex-direction: column; justify-content: center; align-items: center;" data-if = "show_type=='assemble'" data-event-click="onLongPress(5)">
                     <div class="column" style="width:100%; justify-content: space-evenly; align-items: center;">
                         <!--组装机进料栏-->
                         <div class="row" style="width: 100%; justify-content: flex-start; flex-wrap: wrap;">
@@ -308,10 +306,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="column" style="justify-content: flex-start; width: 50vmin; height: 10vmin;">
-                    <div class="progress_bar" data-style-width="progress"/>
-                    <div class="indicator" style='width: 1vmin;' data-style-left="progress"/>
-                    <div style="text-align: center; font-size: 7vmin; top: -210%;">{{progress}}</div>
+                <div class="column" style="justify-content: flex-start; width: 50vmin; height: 18vmin;">
+                    <div style="text-align: center; font-size: 8vmin;">{{recipe_name}}</div>
+                    <div class="progress_bar" style="height: 7vmin;" data-style-width="progress"/>
+                    <div class="indicator" style='top: -7.5vmin; height: 8vmin; width: 1vmin;' data-style-left="progress"/>
+                    <div style="text-align: center; font-size: 6vmin; top: -15.5vmin;">{{progress}}</div>
                 </div>
                 <div class="column" style="width: 18vmin; justify-content: space-evenly; align-items: center;">
                     <div class="small-item1" style="width: 15vmin; height: 15vmin; border: 0.3vmin rgb(89, 73, 39);" data-style-background-image="it.icon" data-for="recipe_ouputs">

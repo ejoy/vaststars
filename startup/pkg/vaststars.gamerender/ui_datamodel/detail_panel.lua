@@ -158,13 +158,17 @@ local function get_property(e, typeobject)
     get_display_info(e, typeobject, t)
     local chest_component = iprototype.get_chest_component(typeobject.name)
     if iprototype.check_types(typeobject.name, CHEST_LIST_TYPES) and chest_component then
-        -- the items display is shown in two rows, with list0 for the first row and list1 for the second row (five items per row, up to ten items in total)
-        local chest_list = {}
-        for _, slot in pairs(ichest.collect_item(gameplay_core.get_world(), e[chest_component])) do
-            local typeobject_item = assert(iprototype.queryById(slot.item))
-            chest_list[#chest_list + 1] = {icon = typeobject_item.icon, count = ichest.get_amount(slot)}
+        if chest_component == 'hub' then
+        elseif chest_component == 'station' then
+        else
+            -- the items display is shown in two rows, with list0 for the first row and list1 for the second row (five items per row, up to ten items in total)
+            local chest_list = {}
+            for _, slot in pairs(ichest.collect_item(gameplay_core.get_world(), e[chest_component])) do
+                local typeobject_item = assert(iprototype.queryById(slot.item))
+                chest_list[#chest_list + 1] = {icon = typeobject_item.icon, count = ichest.get_amount(slot)}
+            end
+            t.chest_list = #chest_list > 0 and chest_list or nil
         end
-        t.chest_list = #chest_list > 0 and chest_list or nil
     end
     if e.fluidbox then
         local name = "无"
@@ -269,9 +273,9 @@ local function get_entity_property_list(object_id, recipe_inputs, recipe_ouputs)
                 property_list.progress = itypes.progress_str(progress, total_progress)
             end
             if e.mining then
-                property_list.is_minner = true
+                property_list.show_type = "minner"
             else
-                property_list.is_assemble = true
+                property_list.show_type = "assemble"
             end
         end
     elseif e.laboratory then
@@ -294,12 +298,13 @@ local update_interval = 10 --update per 25 frame
 local counter = 1
 local function update_property_list(datamodel, property_list)
     datamodel.chest_list = property_list.chest_list or {}
-    datamodel.show_chest = #datamodel.chest_list > 0
+    datamodel.show_type = property_list.show_type
+    if #datamodel.chest_list > 0 then
+        datamodel.show_type = "chest"
+    end
     datamodel.progress = property_list.progress or "0%"
     datamodel.recipe_inputs = property_list.recipe_inputs or {}
     datamodel.recipe_ouputs = property_list.recipe_ouputs or {}
-    datamodel.show_minner = property_list.is_minner
-    datamodel.show_assemble = property_list.is_assemble
     datamodel.recipe_name = property_list.recipe_name
     local status = property_list.status or 3
     datamodel.detail_panel_status_icon = detail_panel_status_icon[status]
@@ -336,7 +341,7 @@ local function update_model(mdl)
     model_euler[2] = model_euler[2] + 1
     iom.set_rotation(e, math3d.quaternion{math.rad(model_euler[1]), math.rad(model_euler[2]), math.rad(model_euler[3])})
 end
-
+local camera_dist
 function M:create(object_id)
     counter = update_interval
     local object = assert(objects:get(object_id))
@@ -358,6 +363,7 @@ function M:create(object_id)
     model_ready = false
     model_euler = nil
     model_inst = nil
+    camera_dist = typeobject.camera_distance
     return datamodel
 end
 
@@ -394,11 +400,13 @@ function M:stage_ui_update(datamodel, object_id)
     local gid = iUiRt.get_group_id("detail_scene")
     if gid and not model_inst then
         iUiRt.close_ui_rt("detail_scene")
+        local clear_color = 0xff
+        local focus_distance = 10
         model_inst = iUiRt.create_new_rt("detail_scene",
-            "/pkg/vaststars.resources/prefabs/plane_rt.prefab",
+            -- "/pkg/vaststars.resources/prefabs/plane_rt.prefab",
             "/pkg/vaststars.resources/light_rt.prefab",
             model_path,
-            {s = {1,1,1}, t = {0, 0, 0}})
+            {s = {1,1,1}, t = {0, 0, 0}}, camera_dist)
         model_ready = true
     end
 
