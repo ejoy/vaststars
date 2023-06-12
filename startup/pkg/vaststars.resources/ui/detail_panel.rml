@@ -307,7 +307,7 @@
                     </div>
                 </div>
                 <div class="column" style="justify-content: flex-start; width: 50vmin; height: 18vmin;">
-                    <div style="text-align: center; font-size: 8vmin;">{{recipe_name}}</div>
+                    <div style="color: rgb(246, 142, 14); text-align: center; font-size: 8vmin;">{{recipe_name}}</div>
                     <div class="progress_bar" style="height: 7vmin;" data-style-width="progress"/>
                     <div class="indicator" style='top: -7.5vmin; height: 8vmin; width: 1vmin;' data-style-left="progress"/>
                     <div style="text-align: center; font-size: 6vmin; top: -15.5vmin;">{{progress}}</div>
