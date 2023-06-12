@@ -2834,7 +2834,452 @@ prototype "电子研究" {
   time = "5s"
 }
 
+
+prototype "科研中心" {
+  desc = "研究可以开展大规模研发的设施",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    unlock_recipe = {"科研中心1"},
+    unlock_item = {"科研中心I"},
+  },
+  prerequisites = {"电子研究"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+    {"电子科技包", 1},
+  },
+  count = 15,
+  time = "10s"
+}
+
+
+prototype "信号处理" {
+  desc = "研究电子信号传输机制",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    -- unlock_recipe = {"数据线1"},
+    unlock_item = {"数据线"},
+  },
+  prerequisites = {"科研中心"},
+  ingredients = {
+    {"气候科技包", 1},
+    {"电子科技包", 1},
+  },
+  count = 30,
+  time = "10s"
+}
   
+
+prototype "计算元件" {
+  desc = "服务于计算的电路集群",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    -- unlock_recipe = {"数据线1"},
+    unlock_item = {"运算电路"},
+  },
+  prerequisites = {"信号处理"},
+  ingredients = {
+    {"气候科技包", 1},
+    {"电子科技包", 1},
+  },
+  count = 70,
+  time = "10s"
+}
+
+prototype "水能利用" {
+  desc = "研究淡水生产的工艺",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    -- unlock_recipe = {"淡水沸腾","淡水过滤"},
+  },
+  prerequisites = {"计算元件"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+    {"电子科技包", 1},
+  },
+  count = 40,
+  time = "10s"
+}
+
+prototype "优化" {
+  desc = "研究提高生产效率的插件",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    -- unlock_recipe = {"数据线1"},
+    unlock_item = {"效能插件","产能插件","速度插件"},
+  },
+  prerequisites = {"水能利用"},
+  ingredients = {
+    {"电子科技包", 1},
+  },
+  count = 100,
+  time = "15s"
+}
+
+prototype "氮化学" {
+  desc = "研究含氮的化合物生产",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    -- unlock_recipe = {"数据线1"},
+    unlock_item = {"氨气"},
+  },
+  prerequisites = {"优化"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+    {"电子科技包", 1},
+  },
+  count = 60,
+  time = "15s"
+}
+
+prototype "广播" {
+  desc = "研究提高生产效率的插件",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    -- unlock_recipe = {"数据线1"},
+    unlock_item = {"广播塔"},
+  },
+  prerequisites = {"氮化学"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+    {"电子科技包", 1},
+  },
+  count = 60,
+  time = "15s"
+}
+
+prototype "玻璃制造" {
+  desc = "研究更高效生产玻璃的工艺",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+
+  },
+  prerequisites = {"广播"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+    {"电子科技包", 1},
+  },
+  count = 90,
+  time = "15s"
+}
+
+prototype "建筑材料" {
+  desc = "研究更高效生产玻璃的工艺",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    unlock_item = {"混凝土"},
+  },
+  prerequisites = {"玻璃制造"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+    {"电子科技包", 1},
+  },
+  count = 150,
+  time = "15s"
+}
+
+prototype "地热" {
+  desc = "研究开发地热资源的装置",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    unlock_item = {"地热井I"},
+  },
+  prerequisites = {"建筑材料"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+    {"电子科技包", 1},
+  },
+  count = 120,
+  time = "20s"
+}
+
+prototype "太阳能" {
+  desc = "研究利用太阳能发电的装置",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+
+  },
+  prerequisites = {"地热"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+    {"电子科技包", 1},
+  },
+  count = 150,
+  time = "20s"
+}
+
+prototype "硫磺处理" {
+  desc = "研究利用太阳能发电的装置",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    unlock_item = {"硫酸"},
+  },
+  prerequisites = {"太阳能"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+  },
+  count = 120,
+  time = "20s"
+}
+
+prototype "化学研究" {
+  desc = "对化学反应进行深度研究",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    -- unlock_recipe = {"化学科技包1"},
+    unlock_item = {"化学科技包"},
+  },
+  prerequisites = {"硫磺处理"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+    {"电子科技包", 1},
+  },
+  sign_desc = {
+    { desc = "该科技是火星探索的前沿科技，它可以引导更多的科技研究", icon = "textures/science/important.texture"},
+  },
+  sign_icon = "textures/science/tech-important.texture",
+  count = 250,
+  time = "30s"
+}
+
+prototype "钠处理" {
+  desc = "研究利用太阳能发电的装置",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+
+  },
+  prerequisites = {"化学研究"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+    {"电子科技包", 1},
+    {"化学科技包", 1},
+  },
+  count = 120,
+  time = "20s"
+}
+
+prototype "高温分解" {
+  desc = "研究利用太阳能发电的装置",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    -- unlock_recipe = {"甲烷2"},
+  },
+  prerequisites = {"钠处理"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"电子科技包", 1},
+    {"化学科技包", 1},
+  },
+  count = 200,
+  time = "30s"
+}
+
+prototype "电池存储" {
+  desc = "研究利用太阳能发电的装置",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    -- unlock_recipe = {"甲烷2"},
+  },
+  prerequisites = {"高温分解"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+    {"电子科技包", 1},
+    {"化学科技包", 1},
+  },
+  count = 450,
+  time = "30s"
+}
+
+prototype "复合材料" {
+  desc = "多种材料组合成多相材料",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    unlock_item = {"纤维玻璃"},
+  },
+  prerequisites = {"电池存储"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+    {"化学科技包", 1},
+  },
+  count = 550,
+  time = "30s"
+}
+
+prototype "高温测试" {
+  desc = "研究能够耐高温的材料",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    unlock_item = {"隔热板"},
+  },
+  prerequisites = {"复合材料"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+    {"电子科技包", 1},
+    {"化学科技包", 1},
+  },
+  count = 700,
+  time = "35s"
+}
+
+prototype "高压化学" {
+  desc = "在高压环境下合成物质的工艺",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+
+  },
+  prerequisites = {"高温测试"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+    {"电子科技包", 1},
+    {"化学科技包", 1},
+  },
+  count = 1000,
+  time = "35s"
+}
+
+prototype "微型化" {
+  desc = "研究更加精密的电容元器件",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+
+  },
+  prerequisites = {"高压化学"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+    {"电子科技包", 1},
+    {"化学科技包", 1},
+  },
+  count = 3400,
+  time = "40s"
+}
+
+prototype "火箭化学" {
+  desc = "研究可供火箭运行的燃料",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    unlock_item = {"火箭燃料"},
+  },
+  prerequisites = {"微型化"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+    {"电子科技包", 1},
+    {"化学科技包", 1},
+  },
+  count = 3500,
+  time = "40s"
+}
+
+prototype "火箭控制" {
+  desc = "研究控制火箭运行的仪器",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    unlock_item = {"火箭控制器"},
+  },
+  prerequisites = {"火箭化学"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+    {"电子科技包", 1},
+    {"化学科技包", 1},
+  },
+  count = 4000,
+  time = "40s"
+}
+
+prototype "火箭架构" {
+  desc = "研究组成火箭外部框架",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    unlock_item = {"火箭区段"},
+  },
+  prerequisites = {"火箭控制"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+    {"电子科技包", 1},
+    {"化学科技包", 1},
+  },
+  count = 4200,
+  time = "40s"
+}
+
+prototype "火箭保护" {
+  desc = "研究保护火箭前端的特殊材料",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    unlock_item = {"整流罩"},
+  },
+  prerequisites = {"火箭架构"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+    {"电子科技包", 1},
+    {"化学科技包", 1},
+  },
+  count = 5000,
+  time = "40s"
+}
 -- prototype "维修破损空气过滤器" {
 --   desc = "将破损的机器修复会大大节省建设时间和资源",
 --   icon = "textures/construct/industry.texture",

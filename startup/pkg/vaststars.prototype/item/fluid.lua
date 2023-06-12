@@ -200,3 +200,36 @@ prototype "润滑油" {
     max_temperature = 200,
     item_description = "一种化工液体",
 }
+
+prototype "氨气" {
+    type = {"fluid"},
+    catagory = {"普通气体"},
+    icon = "textures/fluid/lubricant.texture",
+    color = {0.1, 0.8, 0.1, 1},
+    heat_capacity = "0.05KJ",
+    default_temperature = 25,
+    max_temperature = 100,
+    item_description = "一种化工液体",
+}
+
+prototype "硫酸" {
+    type = {"fluid"},
+    catagory = {"化学液体"},
+    icon = "textures/fluid/liquid-hydrochloric.texture",
+    color = {0.75, 0.75, 0.75, 1},
+    heat_capacity = "0.08kJ",
+    default_temperature = 25,
+    max_temperature = 100,
+    item_description = "一种化工液体",
+}
+
+prototype "火箭燃料" {
+    type = {"fluid"},
+    catagory = {"化学液体"},
+    icon = "textures/fluid/liquid-hydrochloric.texture",
+    color = {0.75, 0.75, 0.75, 1},
+    heat_capacity = "0.08kJ",
+    default_temperature = 25,
+    max_temperature = 200,
+    item_description = "一种化工液体",
+}

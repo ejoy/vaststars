@@ -19,6 +19,7 @@ prototype "指挥中心" {
     power_supply_distance = 9,
     power = "100kW",
     priority = "primary",
+    camera_distance = 100,
     teardown = false,
     crossing = {
         connections = {
@@ -70,6 +71,7 @@ prototype "科研中心I" {
     power = "150kW",
     speed = "100%",
     show_arc_menu = false,
+    camera_distance = 100,
     priority = "secondary",
     inputs = {
         "地质科技包",
@@ -306,6 +308,7 @@ prototype "出货车站" {
     },
     move = false,
     teardown = false,
+    camera_distance = 100,
 }
 
 --收货车站需要设置送货类型
@@ -335,4 +338,5 @@ prototype "收货车站" {
     },
     move = false,
     teardown = false,
+    camera_distance = 100,
 }

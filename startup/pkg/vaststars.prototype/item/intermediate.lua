@@ -293,7 +293,7 @@ prototype "坩埚" {
     pile = "2x2x4",
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/crucible.texture",
-    item_description = "一种硅制加工品",
+    item_description = "一种耐高温的加工容器",
     group = {"器件"},
 }
 
@@ -313,17 +313,17 @@ prototype "电容" {
     pile = "2x2x4",
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/capacitor.texture",
-    item_description = "一种高弹性聚合物材料",
+    item_description = "可存储电荷的电子元器件",
     group = {"器件"},
 }
 
 prototype "绝缘线" {
     type = {"item"},
-    stack = 8,
+    stack = 12,
     pile = "2x2x4",
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/insulated-wire.texture",
-    item_description = "一种高弹性聚合物材料",
+    item_description = "外围包裹一层不导电材料的导线",
     group = {"器件"},
 }
 
@@ -333,10 +333,140 @@ prototype "逻辑电路" {
     pile = "2x2x4",
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
-    item_description = "一种高弹性聚合物材料",
+    item_description = "由逻辑元器件组成的电路板",
     group = {"器件"},
 }
 
+prototype "数据线" {
+    type = {"item"},
+    stack = 12,
+    pile = "2x2x4",
+    pile_model = "prefabs/stackeditems/iron-ingot.prefab",
+    icon = "textures/construct/insulated-wire.texture",
+    item_description = "高速传输数据的导线",
+    group = {"器件"},
+}
+
+prototype "运算电路" {
+    type = {"item"},
+    stack = 8,
+    pile = "2x2x4",
+    pile_model = "prefabs/stackeditems/iron-ingot.prefab",
+    icon = "textures/construct/logic-circuit.texture",
+    item_description = "由运算元器件组成的电路板",
+    group = {"器件"},
+}
+
+prototype "效能插件" {
+    type = {"item"},
+    stack = 8,
+    pile = "2x2x4",
+    pile_model = "prefabs/stackeditems/iron-ingot.prefab",
+    icon = "textures/construct/logic-circuit.texture",
+    item_description = "降低建筑能耗的插件",
+    group = {"器件"},
+}
+
+prototype "产能插件" {
+    type = {"item"},
+    stack = 8,
+    pile = "2x2x4",
+    pile_model = "prefabs/stackeditems/iron-ingot.prefab",
+    icon = "textures/construct/logic-circuit.texture",
+    item_description = "提高建筑产能的插件",
+    group = {"器件"},
+}
+
+prototype "速度插件" {
+    type = {"item"},
+    stack = 8,
+    pile = "2x2x4",
+    pile_model = "prefabs/stackeditems/iron-ingot.prefab",
+    icon = "textures/construct/logic-circuit.texture",
+    item_description = "提高建筑生产速度的插件",
+    group = {"器件"},
+}
+
+prototype "广播塔" {
+    type = {"item"},
+    stack = 8,
+    pile = "2x2x4",
+    pile_model = "prefabs/stackeditems/iron-ingot.prefab",
+    icon = "textures/construct/logic-circuit.texture",
+    item_description = "广播插件功效的建筑",
+    group = {"物流"},
+}
+
+prototype "混凝土" {
+    type = {"item"},
+    stack = 8,
+    pile = "2x2x4",
+    pile_model = "prefabs/stackeditems/iron-ingot.prefab",
+    icon = "textures/construct/logic-circuit.texture",
+    item_description = "耐压高硬度的建筑材料",
+    group = {"物流"},
+}
+
+prototype "电池" {
+    type = {"item"},
+    stack = 8,
+    pile = "2x2x4",
+    pile_model = "prefabs/stackeditems/iron-ingot.prefab",
+    icon = "textures/construct/logic-circuit.texture",
+    item_description = "存储电能的器件",
+    group = {"器件"},
+}
+
+prototype "纤维玻璃" {
+    type = {"item"},
+    stack = 8,
+    pile = "2x2x4",
+    pile_model = "prefabs/stackeditems/iron-ingot.prefab",
+    icon = "textures/construct/logic-circuit.texture",
+    item_description = "使用高强度复合材料的玻璃",
+    group = {"器件"},
+}
+
+prototype "隔热板" {
+    type = {"item"},
+    stack = 8,
+    pile = "2x2x4",
+    pile_model = "prefabs/stackeditems/iron-ingot.prefab",
+    icon = "textures/construct/logic-circuit.texture",
+    item_description = "用于隔热的材料",
+    group = {"器件"},
+}
+
+prototype "火箭控制器" {
+    type = {"item"},
+    stack = 12,
+    pile = "2x2x4",
+    pile_model = "prefabs/stackeditems/iron-ingot.prefab",
+    icon = "textures/construct/logic-circuit.texture",
+    item_description = "控制火箭的传感器组合",
+    group = {"器件"},
+}
+
+prototype "火箭区段" {
+    type = {"item"},
+    stack = 12,
+    pile = "2x2x4",
+    pile_model = "prefabs/stackeditems/iron-ingot.prefab",
+    icon = "textures/construct/logic-circuit.texture",
+    item_description = "组成火箭的金属躯壳",
+    group = {"器件"},
+}
+
+prototype "整流罩" {
+    type = {"item"},
+    stack = 4,
+    pile = "2x2x4",
+    pile_model = "prefabs/stackeditems/iron-ingot.prefab",
+    icon = "textures/construct/logic-circuit.texture",
+    item_description = "保护火箭顶端的特殊装置",
+    group = {"器件"},
+}
+------------------------------------------------
 prototype "地质科技包" {
     type = {"item"},
     stack = 8,
@@ -371,6 +501,17 @@ prototype "机械科技包" {
 }
 
 prototype "电子科技包" {
+    type = {"item"},
+    stack = 8,
+    pile = "4x4x4",
+    pile_model = "prefabs/stackeditems/iron-ingot.prefab",
+    icon = "textures/recipe/electrical-pack.texture",
+    tech_icon = "textures/science/pinkbox.texture",
+    item_description = "一种科技研究包",
+    group = {"器件"},
+}
+
+prototype "化学科技包" {
     type = {"item"},
     stack = 8,
     pile = "4x4x4",

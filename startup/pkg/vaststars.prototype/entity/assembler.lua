@@ -13,6 +13,7 @@ prototype "组装机I" {
     rotate_on_build = true,
     priority = "secondary",
     maxslot = "8",
+    camera_distance = 100,
     craft_category = {"金属小型制造","物流小型制造","物流中型制造","物流大型制造","生产中型制造","生产大型制造","生产手工制造","器件小型制造","器件中型制造","建筑打印"},
     fluidboxes = {
         input = {
@@ -49,6 +50,7 @@ prototype "组装机II" {
     power = "150kW",
     priority = "secondary",
     maxslot = "8",
+    camera_distance = 100,
     craft_category = {"金属小型制造","物流小型制造","物流中型制造","物流大型制造","生产中型制造","生产大型制造","生产手工制造","器件小型制造","器件中型制造","建筑打印"},
     fluidboxes = {
         input = {
@@ -86,6 +88,7 @@ prototype "铸造厂I" {
     priority = "secondary",
     craft_category = {"金属锻造"},
     maxslot = "8",
+    camera_distance = 100,
     fluidboxes = {
         input = {
             {

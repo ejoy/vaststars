@@ -66,6 +66,7 @@ prototype "无人机仓库I" {
     drone_count = 1,
     power_supply_area = "6x6",
     power_supply_distance = 8,
+    camera_distance = 100,
 }
 
 prototype "无人机仓库II" {
@@ -81,4 +82,5 @@ prototype "无人机仓库II" {
     drone_count = 1,
     power_supply_area = "6x6",
     power_supply_distance = 8,
+    camera_distance = 100,
 }

@@ -9,6 +9,7 @@ prototype "液罐I" {
     show_arc_menu = false,
     type = {"building", "fluidbox"},
     area = "3x3",
+    camera_distance = 100,
     fluidbox = {
         capacity = 15000,
         height = 100,
@@ -30,6 +31,7 @@ prototype "气罐I" {
     show_arc_menu = false,
     type = {"building", "fluidbox"},
     area = "3x3",
+    camera_distance = 100,
     fluidbox = {
         capacity = 15000,
         height = 100,
@@ -58,6 +60,7 @@ prototype "地下水挖掘机" {
     io_shelf = false,
     building_base = false,
     maxslot = "8",
+    camera_distance = 100,
     fluidboxes = {
         input = {},
         output = {
@@ -88,6 +91,7 @@ prototype "核子挖掘机" {
     io_shelf = false,
     building_base = false,
     maxslot = "8",
+    camera_distance = 100,
     fluidboxes = {
         input = {},
         output = {
@@ -113,6 +117,7 @@ prototype "压力泵I" {
     show_arc_menu = false,
     power = "10kW",
     drain = "300W",
+    camera_distance = 100,
     priority = "secondary",
     fluidbox = {
         capacity = 500,
@@ -135,6 +140,7 @@ prototype "烟囱I" {
     rotate_on_build = true,
     craft_category = {"流体气体排泄"},
     speed = "100%",
+    camera_distance = 100,
     show_arc_menu = false,
     fluidbox = {
         capacity = 1000,
@@ -155,6 +161,7 @@ prototype "排水口I" {
     rotate_on_build = true,
     craft_category = {"流体液体排泄"},
     speed = "100%",
+    camera_distance = 100,
     show_arc_menu = false,
     fluidbox = {
         capacity = 1000,
@@ -179,6 +186,7 @@ prototype "空气过滤器I" {
     priority = "secondary",
     recipe = "空气过滤",
     maxslot = "8",
+    camera_distance = 100,
     fluidboxes = {
         input = {},
         output = {
@@ -268,6 +276,7 @@ prototype "管道1-X型" {
     show_arc_menu = false,
     type = {"building","fluidbox","pipe"},
     area = "1x1",
+    camera_distance = 100,
     fluidbox = {
         capacity = 100,
         height = 100,
@@ -351,6 +360,7 @@ prototype "地下管1-JI型" {
     building_direction = {"N", "E", "S", "W"},
     type = {"building","fluidbox","pipe_to_ground"},
     area = "1x1",
+    camera_distance = 100,
     fluidbox = {
         capacity = 100,
         height = 100,
