@@ -3,6 +3,8 @@ local world = ecs.world
 local w     = world.w
 local iterrain          = ecs.require "terrain"
 local ipl               = ecs.import.interface "ant.render|ipolyline"
+local math3d            = require "math3d"
+local LINE_COLOR        = {1.0, 0.0, 0.0, 0.7}--math3d.constant("v4", {1.0, 0.0, 0.0, 0.7})
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
 local M ={}
@@ -26,7 +28,7 @@ local function get_line(pole1, pole2)
     pos2 = pos2 or iterrain:get_position_by_coord(pole2.x, pole2.y, pole2.w, pole2.h)
     pos2[2] = pos2[2] + pole_height
     return pos1, pos2
-    -- return iline_entity.create_lines({pos1, pos2}, 80, {1.0, 0.0, 0.0, 0.7}, RENDER_LAYER.WIRE)
+    -- return iline_entity.create_lines({pos1, pos2}, 80, LINE_COLOR, RENDER_LAYER.WIRE)
 end
 
 function M.update_temp_line(temp_pole)
@@ -49,7 +51,7 @@ function M.update_temp_line(temp_pole)
         end
     end
     if #lines_data > 0 then
-        temp_lines = ipl.add_linelist(lines_data, 80, {1.0, 0.0, 0.0, 0.7}, nil, nil, RENDER_LAYER.WIRE)
+        temp_lines = ipl.add_linelist(lines_data, 80, LINE_COLOR, nil, nil, RENDER_LAYER.WIRE)
     end
 end
 
@@ -67,7 +69,7 @@ function M.update_line(pole_lines)
         end
     end
     if #lines_data > 0 then
-        lines = ipl.add_linelist(lines_data, 80, {1.0, 0.0, 0.0, 0.7}, nil, nil, RENDER_LAYER.WIRE)
+        lines = ipl.add_linelist(lines_data, 80, LINE_COLOR, nil, nil, RENDER_LAYER.WIRE)
     end
 end
 
