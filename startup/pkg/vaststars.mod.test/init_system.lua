@@ -40,16 +40,67 @@ local create_list = {}
 local update_list = {}
 local delete_list = {}
 function S.init_world()
+--[[     local pos1 = math3d.vector(-1, 0, -1)
+    local pos2 = math3d.vector(-1, 0, 1)
+    local pos3 = math3d.vector(1, 0, -1)
+    local pos4 = math3d.vector(1, 0, 1) ]]
+--[[     local pos1 = math3d.vector(0, 0, 0)
+    local pos2 = math3d.vector(0, 0, 1)
+    local pos3 = math3d.vector(1, 0, 0)
+    local pos4 = math3d.vector(1, 0, 1)
+    local uv1 = math3d.vector(0, 1, 0)
+    local uv2 = math3d.vector(0, 0, 0)
+    local uv3 = math3d.vector(1, 1, 0)
+    local uv4 = math3d.vector(1, 0, 0)
+    local edge1 = math3d.sub(pos2, pos3)
+    local edge2 = math3d.sub(pos1, pos3)
+    local d1 = math3d.sub(uv2, uv3)
+    local d2 = math3d.sub(uv1, uv3)
+    local f = 1 / ((math3d.index(d1, 1) * math3d.index(d2, 2)) - (math3d.index(d2, 1) * math3d.index(d1, 2)) )
+    local x = f * (math3d.index(d2, 2) * math3d.index(edge1, 1) -math3d.index(d1, 2) * math3d.index(edge2, 1) )
+    local y = f * (math3d.index(d2, 2) * math3d.index(edge1, 2) -math3d.index(d1, 2) * math3d.index(edge2, 2) )
+    local z = f * (math3d.index(d2, 2) * math3d.index(edge1, 3) -math3d.index(d1, 2) * math3d.index(edge2, 3) )
+ ]]
+
     local mq = w:first("main_queue camera_ref:in")
     local eyepos = math3d.vector(0, 100, -50)
     local camera_ref<close> = w:entity(mq.camera_ref)
     iom.set_position(camera_ref, eyepos)
     local dir = math3d.normalize(math3d.sub(mc.ZERO_PT, eyepos))
     iom.set_direction(camera_ref, dir)
-
     iterrain.gen_terrain_field(256, 256, 128)
-
-    local crack_color = math3d.vector(0, 0, 1, 1)
+--[[       ecs.create_entity{
+        policy = {
+            "ant.scene|scene_object",
+            "ant.render|render",
+            "ant.general|name"
+        },
+        data = {
+            name = "test_road",
+            scene = {t = {-40, 0, 0}},
+            mesh  = "/pkg/mod.road/assets/shapes/road_I.glb|meshes/Plane_P1.meshbin",
+            material    = "/pkg/mod.road/assets/shapes/road_I.glb|materials/Material.001.material",
+            visible_state = "main_view|selectable",
+            render_layer = "background",
+        },
+    }  
+    
+    ecs.create_entity{
+        policy = {
+            "ant.scene|scene_object",
+            "ant.render|render",
+            "ant.general|name"
+        },
+        data = {
+            name = "test_road",
+            scene = {t = {-20, 0, 0}, r = { axis = {0,1,0}, r = math.rad(180) }},
+            mesh  = "/pkg/mod.road/assets/shapes/road_I.glb|meshes/Plane_P1.meshbin",
+            material    = "/pkg/mod.road/assets/shapes/road_I.glb|materials/Material.001.material",
+            visible_state = "main_view|selectable",
+            render_layer = "background",
+        },
+    }  ]]
+--[[     local crack_color = math3d.vector(0, 0, 1, 1)
     local crack_emissive = math3d.vector(0, 0, 2, 1)
     ecs.create_entity{
         policy = {
@@ -84,8 +135,8 @@ function S.init_world()
                 imaterial.set_property(ee, "u_emissive_factor", math3d.vector(crack_emissive))
             end
         },
-    } 
---[[      local x, y = 0, 0
+    }  ]]
+      local x, y = 0, 0
     for _, shape in ipairs({"I", "L", "T", "U", "X", "O"}) do
         y = y + 2
         x = 0
@@ -111,9 +162,9 @@ function S.init_world()
             end
         end
     end
-    iroad.update_roadnet_group(1000, create_list)   ]]
+    --iroad.update_roadnet_group(1000, create_list)   
  
---[[     local density = 0.5
+--[[      local density = 0.5
     local width, height, offset, UNIT = 256, 256, 128, 10
     local scale_table = {
         big = 1.0,
@@ -126,7 +177,7 @@ function S.init_world()
      local open_area = {
         {x = -128, z = 128, w = 256, h = 256}
     }   
-    istonemountain.create_sm_entity(density, width, height, offset, UNIT, scale_table, stone_area, open_area)     ]] 
+    istonemountain.create_sm_entity(density, width, height, offset, UNIT, scale_table, {}, {})     ]]
     --create_mark()
 
 --[[      printer_eid = ecs.create_entity {
@@ -168,20 +219,46 @@ local kb_mb = world:sub{"keyboard"}
 local tf_table = {}
 local remove_id
 function S:data_changed()
+--[[     for e in w:select "name:in bounding:in" do
+        if e.name == "test_road" then
+            local center, extent = math3d.aabb_center_extents(e.bounding.scene_aabb)
+            local t = 1 
+        end
+    end ]]
     for _, key, press in kb_mb:unpack() do
         if key == "J" and press == 0 then
-            local width, height = 20, 20
-            iroad.set_args(width, height)
             create_list = {
                 [1] = {
                     layers = {
-                        road = {type  = 1, shape = "I", dir = "N"},
-                        mark = {type  = 1, shape = "I", dir = "N"}
+                        road = {type  = 1, shape = "U", dir = "N"},
+                        mark = {type  = 1, shape = "U", dir = "N"}
                     },
+                    
                     x = 0, y = 0 --leftbottom
+                },
+                [2] = {
+                    layers = {
+                        road = {type  = 1, shape = "I", dir = "S"},
+                        mark = {type  = 1, shape = "I", dir = "S"}
+                    },
+                    x = 20, y = 0 --leftbottom
+                },
+                [3] = {
+                    layers = {
+                        road = {type  = 2, shape = "L", dir = "E"},
+                        --mark = {type  = 1, shape = "L", dir = "E"}
+                    },
+                    x = 40, y = 0 --leftbottom
+                },
+                [4] = {
+                    layers = {
+                        road = {type  = 3, shape = "T", dir = "W"},
+                        --mark = {type  = 1, shape = "T", dir = "W"}
+                    },
+                    x = 60, y = 0 --leftbottom
                 }
             }
-            iroad.update_roadnet_group(1000, {})
+            iroad.update_roadnet_group(0, create_list, "background")
 --[[              local x, y = -5, -5
             for _, shape in ipairs({"I", "L", "T", "U", "X", "O"}) do
                 y = y + 2
@@ -228,8 +305,21 @@ function S:data_changed()
                 }
             } ]]
         elseif key == "K" and press == 0 then
-
-            iroad.update_roadnet_group(1000, {})
+            create_list = {
+                [1] = {
+                    layers = {
+                        road = {type  = 1, shape = "T", dir = "N"},
+                    },
+                    x = 0, y = 0 --leftbottom
+                },
+                [2] = {
+                    layers = {
+                        road = {type  = 1, shape = "T", dir = "S"},
+                    },
+                    x = 20, y = 0 --leftbottom
+                },
+            }
+            iroad.update_roadnet_group(0, create_list)
         elseif key == "L" and press == 0 then
 
             local rect = {x = 5, z = 5, w = 5, h = 5}

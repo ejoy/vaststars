@@ -5,7 +5,7 @@ compress:
 maxsize: 512x512
 mipmap: 0
 colorspace: sRGB
-path: /pkg/mod.road/assets/shapes/mark_alpha.dds
+path:/pkg/mod.road/assets/shapes/rx_color.png
 sampler:
   MAG: POINT
   MIN: POINT

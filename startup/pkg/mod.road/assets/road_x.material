@@ -8,16 +8,14 @@ fx:
     subsurface: off
     DRAW_INDIRECT: 1
 properties:
-  u_metallic_roughness_factor1: {0.2, 1.0, 0.1, 0.6}  #xy: sand, zw: stone
-  u_metallic_roughness_factor2: {0.1, 0.8, 0.1, 0.8}  #xy: cement
   s_basecolor:
     stage: 0
-    texture: /pkg/mod.road/assets/textures/basecolor.texture
-  s_normal:
+    texture: /pkg/mod.road/assets/textures/rx_color.texture
+  s_metallic_roughness:
     stage: 1
-    texture: /pkg/mod.road/assets/textures/normal.texture
+    texture: /pkg/mod.road/assets/textures/rx_metallic_roughness.texture
   s_mark_alpha:
-    stage: 2
+    stage: 3
     texture: /pkg/mod.road/assets/textures/mark_alpha.texture
 state: 
   ALPHA_REF: 0

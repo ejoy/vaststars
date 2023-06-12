@@ -1,0 +1,25 @@
+fx:
+  fs: /pkg/mod.road/assets/shaders/fs_road.sc
+  vs: /pkg/mod.road/assets/shaders/vs_road.sc
+  setting:
+    lighting: on
+    shadow_cast: off
+    shadow_receive: on
+    subsurface: off
+    DRAW_INDIRECT: 1
+properties:
+  s_basecolor:
+    stage: 0
+    texture: /pkg/mod.road/assets/textures/ru_color.texture
+  s_metallic_roughness:
+    stage: 1
+    texture: /pkg/mod.road/assets/textures/ru_metallic_roughness.texture
+  s_mark_alpha:
+    stage: 3
+    texture: /pkg/mod.road/assets/textures/mark_alpha.texture
+state: 
+  ALPHA_REF: 0
+  CULL: CCW
+  DEPTH_TEST: GREATER
+  MSAA: true
+  WRITE_MASK: RGBAZ

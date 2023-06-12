@@ -55,7 +55,6 @@ void main()
 	v_idx		= vec4(road_type, road_shape, mark_type, mark_shape);
 	v_normal	= mul(wm, mediump vec4(0.0, 1.0, 0.0, 0.0)).xyz;
 	v_tangent	= mul(wm, mediump vec4(1.0, 0.0, 0.0, 0.0)).xyz;
-
 	v_posWS = posWS;
 	v_posWS.w = mul(u_view, v_posWS).z;
 }

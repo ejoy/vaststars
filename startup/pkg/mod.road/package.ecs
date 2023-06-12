@@ -1,7 +1,7 @@
 import "@ant.render"
 
 component "road".type "lua"
-
+component "road_type".type "lua"
 system "init_system"
     .implement "road.lua"
     .require_policy "ant.render|draw_indirect"
@@ -19,3 +19,4 @@ interface "iroad"
 policy "road"
     .require_system "mod.road|init_system"
     .component "road"
+    .component "road_type"

@@ -5,11 +5,11 @@ compress:
 maxsize: 1024x1024
 mipmap: 0
 normalmap: true
-path: /pkg/mod.road/assets/shapes/normal.dds
+path: /pkg/mod.road/assets/shapes/road_normal.dds
 sampler:
-  MAG: LINEAR
-  MIN: LINEAR
-  MIP: LINEAR
+  MAG: POINT
+  MIN: POINT
+  MIP: POINT
   U: WRAP
   V: WRAP
 type: texture

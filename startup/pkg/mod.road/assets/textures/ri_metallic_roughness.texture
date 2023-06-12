@@ -4,8 +4,8 @@ compress:
   windows: BC3
 maxsize: 512x512
 mipmap: 0
-colorspace: sRGB
-path: /pkg/mod.road/assets/shapes/mark_alpha.dds
+colorspace: linear
+path:/pkg/mod.road/assets/shapes/ri_rm.png
 sampler:
   MAG: POINT
   MIN: POINT
