@@ -47,10 +47,34 @@ local function min_distance_y(e) return e.y - (e.sd - (e.h + 1)//2) end
 local function max_distance_y(e) return e.y + e.h - 1 + (e.sd - (e.h + 1)//2) end
 
 local function contain(e, x, y)
-    if x < min_distance_x(e) or x > max_distance_x(e) or y < min_distance_y(e) or y > max_distance_y(e) then
-        return false
+    if not e.center then
+        local center = {}
+        if e.w%2 == 0 then
+            local cx = e.x + e.w//2 - 1
+            local cy = e.y + e.h//2 - 1
+            center[#center + 1] = {cx, cy}
+            center[#center + 1] = {cx + 1, cy}
+            center[#center + 1] = {cx, cy + 1}
+            center[#center + 1] = {cx + 1, cy + 1}
+        else
+            center[#center + 1] = {e.x + e.w//2, e.y + e.h//2}
+        end
+        e.center = center
+        e.max_dist = e.sd * e.sd
     end
-    return true
+    for _, c in ipairs(e.center) do
+        local dx, dy = math.abs(x - c[1]), math.abs(y - c[2])
+        dx = dx > 0 and dx + 1 or dx
+        dy = dy > 0 and dy + 1 or dy
+        if (dx * dx + dy * dy) <= e.max_dist then
+            return true
+        end
+    end
+    return false
+    -- if x < min_distance_x(e) or x > max_distance_x(e) or y < min_distance_y(e) or y > max_distance_y(e) then
+    --     return false
+    -- end
+    -- return true
 end
 
 local function can_connect(e0, e1)

@@ -49,8 +49,8 @@ local focus_on_building_mb = mailbox:sub {"focus_on_building"}
 local on_pickup_object_mb = mailbox:sub {"on_pickup_object"}
 local inventory_mb = mailbox:sub {"inventory"}
 local switch_concise_mode_mb = mailbox:sub {"switch_concise_mode"}
-local pickup_gesture_mb = world:sub {"pickup_gesture"}
-local pickup_long_press_gesture_mb = world:sub {"pickup_long_press_gesture"}
+local gesture_mb = world:sub{"gesture", "tap"}
+local long_press_gesture_mb = world:sub{"gesture", "long_press"}
 local gesture_pan_mb = world:sub {"gesture", "pan"}
 local focus_tips_event = world:sub {"focus_tips"}
 local ipower = ecs.require "power"
@@ -417,8 +417,8 @@ function M:stage_camera_usage(datamodel)
         end
     end
 
-    -- 点击其它建筑 或 拖动时, 将弹出窗口隐藏
-    for _, _, x, y in pickup_gesture_mb:unpack() do
+    for _, _, v in gesture_mb:unpack() do
+        local x, y = v.x, v.y
         if not handle_pickup then
             goto continue
         end
@@ -446,7 +446,8 @@ function M:stage_camera_usage(datamodel)
         ::continue::
     end
 
-    for _, _, x, y in pickup_long_press_gesture_mb:unpack() do
+    for _, _, v in long_press_gesture_mb:unpack() do
+        local x, y = v.x, v.y
         if not handle_pickup then
             goto continue
         end

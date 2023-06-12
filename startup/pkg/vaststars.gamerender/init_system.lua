@@ -8,14 +8,9 @@ local terrain = ecs.require "terrain"
 local gameplay_core = require "gameplay.core"
 local NOTHING <const> = require "debugger".nothing
 local TERRAIN_ONLY <const> = require "debugger".terrain_only
-
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
 local camera_zoom_mb = world:sub {"camera_zoom"}
-local pickup_gesture_mb = world:sub {"pickup_gesture"}
 local icamera_controller = ecs.import.interface "vaststars.gamerender|icamera_controller"
-local math3d = require "math3d"
-local YAXIS_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
-local PLANES <const> = {YAXIS_PLANE}
 local iefk = ecs.require "engine.efk"
 local iroadnet = ecs.require "roadnet"
 local imain_menu_manager = ecs.require "main_menu_manager"
@@ -99,16 +94,5 @@ function m:camera_usage()
 
     for _ in camera_zoom_mb:unpack() do
         iui.redirect("building_arc_menu.rml", "lost_focus")
-    end
-
-    -- for debug
-    for _, _, x, y in pickup_gesture_mb:unpack() do
-        if terrain.init then
-            local pos = icamera_controller.screen_to_world(x, y, {PLANES[1]})
-            local coord = terrain:get_coord_by_position(pos[1])
-            if coord then
-                log.info(("pickup coord: (%s, %s)"):format(coord[1], coord[2]))
-            end
-        end
     end
 end

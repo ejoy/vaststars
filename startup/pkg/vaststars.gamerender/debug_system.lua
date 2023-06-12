@@ -6,6 +6,12 @@ local debug_sys = ecs.system "debug_system"
 local kb_mb = world:sub{"keyboard"}
 local gameplay_core = require "gameplay.core"
 local export_startup = ecs.require "export_startup"
+local gesture_mb = world:sub{"gesture", "tap"}
+local math3d = require "math3d"
+local YAXIS_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
+local PLANES <const> = {YAXIS_PLANE}
+local terrain = ecs.require "terrain"
+local icamera_controller = ecs.import.interface "vaststars.gamerender|icamera_controller"
 
 function debug_sys:init_world()
 end
@@ -24,6 +30,17 @@ function debug_sys:ui_update()
 
         if key == "S" and press == 0 then
             export_startup()
+        end
+    end
+
+    for _, _, v in gesture_mb:unpack() do
+        local x, y = v.x, v.y
+        if terrain.init then
+            local pos = icamera_controller.screen_to_world(x, y, {PLANES[1]})
+            local coord = terrain:get_coord_by_position(pos[1])
+            if coord then
+                log.info(("gesture tap coord: (%s, %s)"):format(coord[1], coord[2]))
+            end
         end
     end
 end
