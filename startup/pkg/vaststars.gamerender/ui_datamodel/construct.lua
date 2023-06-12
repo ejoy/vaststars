@@ -2,9 +2,7 @@ local ecs, mailbox = ...
 local world = ecs.world
 
 local math3d = require "math3d"
-local YAXIS_PLANE_B <const> = math3d.constant("v4", {0, 1, 0, 0})
-local YAXIS_PLANE_T <const> = math3d.constant("v4", {0, 1, 0, 20})
-local PLANES <const> = {YAXIS_PLANE_T, YAXIS_PLANE_B}
+local PLANES <const> = {math3d.constant("v4", {0, 1, 0, 0})}
 local icamera_controller = ecs.interface "icamera_controller"
 local gameplay_core = require "gameplay.core"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
@@ -49,8 +47,8 @@ local focus_on_building_mb = mailbox:sub {"focus_on_building"}
 local on_pickup_object_mb = mailbox:sub {"on_pickup_object"}
 local inventory_mb = mailbox:sub {"inventory"}
 local switch_concise_mode_mb = mailbox:sub {"switch_concise_mode"}
-local gesture_mb = world:sub{"gesture", "tap"}
-local long_press_gesture_mb = world:sub{"gesture", "long_press"}
+local gesture_tap_mb = world:sub{"gesture", "tap"}
+local gesture_long_press_mb = world:sub{"gesture", "long_press"}
 local gesture_pan_mb = world:sub {"gesture", "pan"}
 local focus_tips_event = world:sub {"focus_tips"}
 local ipower = ecs.require "power"
@@ -417,7 +415,7 @@ function M:stage_camera_usage(datamodel)
         end
     end
 
-    for _, _, v in gesture_mb:unpack() do
+    for _, _, v in gesture_tap_mb:unpack() do
         local x, y = v.x, v.y
         if not handle_pickup then
             goto continue
@@ -446,7 +444,7 @@ function M:stage_camera_usage(datamodel)
         ::continue::
     end
 
-    for _, _, v in long_press_gesture_mb:unpack() do
+    for _, _, v in gesture_long_press_mb:unpack() do
         local x, y = v.x, v.y
         if not handle_pickup then
             goto continue

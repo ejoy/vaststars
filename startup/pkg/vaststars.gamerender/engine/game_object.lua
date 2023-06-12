@@ -91,7 +91,7 @@ local __get_hitch_children ; do
     local hitch_group_id = 10000 -- see also: terrain.lua -> TERRAIN_MAX_GROUP_ID
 
     local function __cache_prefab_info(template)
-        local effects = {auto_play = {}, work = {}, idle = {}}
+        local effects = {auto_play = {}, work = {}, idle = {}, low_power = {}}
         local slots = {}
         local animations = {}
         for _, v in ipairs(template) do
@@ -107,6 +107,8 @@ local __get_hitch_children ; do
                         effects.work[#effects.work+1] = t
                     elseif v.data.name:match("^idle.*$") then
                         effects.idle[#effects.idle+1] = t
+                    elseif v.data.name:match("^low_power.*$") then
+                        effects.low_power[#effects.low_power+1] = t
                     else
                         log.error("unknown efk", v.data.name)
                     end
@@ -333,16 +335,20 @@ function igame_object.create(init)
     end
 
     -- special for hitch
-    local effects = {auto_play = {}, work = {}, idle = {}, keyevent = {}}
+    local effects = {auto_play = {}, work = {}, idle = {}, low_power = {}, keyevent = {}}
     for _, v in ipairs(children.effects.auto_play) do
-        effects.auto_play[#effects.auto_play + 1] = __create_efk_object(v.efk, v.srt,  hitch_entity_object.id, init.group_id, true)
+        effects.auto_play[#effects.auto_play + 1] = __create_efk_object(v.efk, v.srt, hitch_entity_object.id, init.group_id, true)
     end
     for _, v in ipairs(children.effects.work) do
-        effects.work[#effects.work + 1] = __create_efk_object(v.efk, v.srt,  hitch_entity_object.id, init.group_id, false)
+        effects.work[#effects.work + 1] = __create_efk_object(v.efk, v.srt, hitch_entity_object.id, init.group_id, false)
     end
     for _, v in ipairs(children.effects.idle) do
-        effects.idle[#effects.idle + 1] = __create_efk_object(v.efk, v.srt,  hitch_entity_object.id, init.group_id, false)
+        effects.idle[#effects.idle + 1] = __create_efk_object(v.efk, v.srt, hitch_entity_object.id, init.group_id, false)
     end
+    for _, v in ipairs(children.effects.low_power) do
+        effects.low_power[#effects.low_power + 1] = __create_efk_object(v.efk, v.srt, hitch_entity_object.id, init.group_id, false)
+    end
+
     local keyevent = effects.keyevent;
     for animname, effect in pairs(children.keyeffects) do
         local efks = {}

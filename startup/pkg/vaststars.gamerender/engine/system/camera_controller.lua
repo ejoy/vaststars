@@ -8,7 +8,6 @@ local mathpkg = import_package "ant.math"
 local mu, mc = mathpkg.util, mathpkg.constant
 local irq = ecs.import.interface "ant.render|irenderqueue"
 local ic = ecs.import.interface "ant.camera|icamera"
-local platform = require "bee.platform"
 local create_queue = require("utility.queue")
 local hierarchy = require "hierarchy"
 local animation = hierarchy.animation

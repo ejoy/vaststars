@@ -6,7 +6,7 @@ local debug_sys = ecs.system "debug_system"
 local kb_mb = world:sub{"keyboard"}
 local gameplay_core = require "gameplay.core"
 local export_startup = ecs.require "export_startup"
-local gesture_mb = world:sub{"gesture", "tap"}
+local gesture_tap_mb = world:sub{"gesture", "tap"}
 local math3d = require "math3d"
 local YAXIS_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
 local PLANES <const> = {YAXIS_PLANE}
@@ -33,7 +33,7 @@ function debug_sys:ui_update()
         end
     end
 
-    for _, _, v in gesture_mb:unpack() do
+    for _, _, v in gesture_tap_mb:unpack() do
         local x, y = v.x, v.y
         if terrain.init then
             local pos = icamera_controller.screen_to_world(x, y, {PLANES[1]})
