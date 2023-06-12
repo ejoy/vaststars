@@ -1302,6 +1302,7 @@ local t = {
 	"/pkg/vaststars.resources/ui/login.rml",
 	"/pkg/vaststars.resources/ui/lua/building_arc_menu_handler.lua",
 	"/pkg/vaststars.resources/ui/lua/building_arc_menu_spec.lua",
+	"/pkg/vaststars.resources/ui/lua/building_arc_menu_texts.lua",
 	"/pkg/vaststars.resources/ui/lua/popup_bound.lua",
 	"/pkg/vaststars.resources/ui/lua/statistics.lua",
 	"/pkg/vaststars.resources/ui/lua/tracedoc.lua",
