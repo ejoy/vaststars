@@ -2,17 +2,17 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 local math3d    = require "math3d"
-local mc = import_package "ant.math".constant
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local objects = require "objects"
 local ims = ecs.import.interface "ant.motion_sampler|imotion_sampler"
 local ltween = require "motion.tween"
-local entity_remove = world:sub {"gameplay", "remove_entity"}
 local imotion = ecs.require "imotion"
 local drone_sys = ecs.system "drone_system"
 local gameplay_core = require "gameplay.core"
 local global = require "global"
 local terrain = ecs.require "terrain"
+local irl = ecs.import.interface "ant.render|irender_layer"
+local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
 -- enum defined in c 
 local STATUS_HAS_ERROR = 1
@@ -130,6 +130,16 @@ local function create_drone(homepos)
     local motion_y = imotion.create_motion_object(nil, nil, math3d.vector(0, math3d.index(homepos, 2), 0), motion_xz)
     task.motion_y = motion_y
     task.prefab = imotion.sampler_group:create_instance("/pkg/vaststars.resources/prefabs/drone.prefab", motion_y)
+    task.prefab.on_ready = function(self)
+        for _, eid in ipairs(self.tag["*"]) do
+            local e <close> = w:entity(eid, "render_object?update")
+            if e.render_object then
+                irl.set_layer(e, RENDER_LAYER.DRONE)
+            end
+        end
+    end
+    world:create_object(task.prefab)
+
     return task
 end
 

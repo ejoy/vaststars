@@ -40,7 +40,7 @@ local function create_heap(mesh, srt, dim3, gap3, count)
                 interval = gap3,
             },
             indirect = "HEAP_MESH",
-            -- render_layer = RENDER_LAYER.HEAP_ITEM, -- TODO: render layer
+            render_layer = RENDER_LAYER.HEAP_ITEM,
         },
     }, events)
 end
