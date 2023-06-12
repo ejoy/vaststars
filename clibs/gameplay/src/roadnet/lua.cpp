@@ -11,6 +11,9 @@ namespace roadnet::lua {
         auto& w = *(world*)lua_touserdata(L, idx);
         return w.rw;
     }
+    static world& get_world(lua_State* L, int idx = 1) {
+        return *(world*)lua_touserdata(L, idx);
+    }
 
     static loction get_loction(lua_State* L, int idx) {
         auto v = luaL_checkinteger(L, idx);
@@ -157,6 +160,12 @@ namespace roadnet::lua {
         }
         return 1;
     }
+    static int remove_lorry(lua_State* L) {
+        auto& w = get_world(L);
+        auto& network = get_network(L);
+        network.destroyLorry(w, (lorryid)luaL_checkinteger(L, 2));
+        return 0;
+    }
 }
 
 extern "C" int
@@ -165,6 +174,7 @@ luaopen_vaststars_roadnet_core(lua_State* L) {
         { "reset", roadnet::lua::reset },
         { "each_lorry", roadnet::lua::each_lorry },
         { "endpoint_loction", roadnet::lua::endpoint_loction },
+        { "remove_lorry", roadnet::lua::remove_lorry},
         { NULL, NULL },
     };
     luaL_newlib(L, l);

@@ -14,6 +14,7 @@ local prefab_slots = require("engine.prefab_parser").slots
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local gameplay_core = require "gameplay.core"
 local drone_depot_sys = ecs.system "drone_depot_systme"
+local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
 local events = {}
 events["obj_motion"] = function(_, e, method, ...)
@@ -38,7 +39,8 @@ local function create_heap(mesh, srt, dim3, gap3, count)
                 curHeapNum = count,
                 interval = gap3,
             },
-            indirect = "HEAP_MESH"
+            indirect = "HEAP_MESH",
+            -- render_layer = RENDER_LAYER.HEAP_ITEM, -- TODO: render layer
         },
     }, events)
 end
