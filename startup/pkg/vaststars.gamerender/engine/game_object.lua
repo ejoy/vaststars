@@ -148,7 +148,7 @@ local __get_hitch_children ; do
         local slots, effects, animations = __cache_prefab_info(template)
 
         set_efk_auto_play(template, false)
-        log.info(("game_object.new_instance: %s"):format(table.concat({hitch_group_id, prefab, material_type, require("math3d").tostring(color), tostring(animation_name), tostring(final_frame)}, " "))) -- TODO: remove this line
+        -- log.info(("game_object.new_instance: %s"):format(table.concat({hitch_group_id, prefab, material_type, require("math3d").tostring(color), tostring(animation_name), tostring(final_frame)}, " "))) -- TODO: remove this line
 
         local inner = { tags = {} } -- tag -> eid
         local prefab_instance = g:create_instance(template)

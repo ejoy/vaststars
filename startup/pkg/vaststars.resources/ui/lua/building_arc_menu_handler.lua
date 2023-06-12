@@ -1,4 +1,5 @@
 local spec = require "lua.building_arc_menu_spec"
+local texts = require "lua.building_arc_menu_texts"
 
 local positions <const> = {
     [1] = {
@@ -54,10 +55,12 @@ return function(start)
         return
     end
 
+    local text = texts[start.prototype_name] or {}
+
     start.buttons = {}
     if start.pickup_item then
         local v = setmetatable({}, {__index = DEFAULT})
-        v.text = "收取成品"
+        v.text = text.pickup_item or "收取成品"
         v.message = "pickup_item"
         v.number = start.pickup_item_count
         v.show_number = true
@@ -135,13 +138,11 @@ return function(start)
 
     if start.place_item then
         local v = setmetatable({}, {__index = DEFAULT})
-        v.text = "放置原料"
+        v.text = text.place_item or "放置原料"
         v.message = "place_item"
         v.background_image = "textures/cmdcenter/item-out.texture"
         start.buttons[#start.buttons + 1] = v
     end
-
-
 
     -- console.log("#start.buttons", #start.buttons)
     if #start.buttons > 0 then

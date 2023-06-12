@@ -25,16 +25,6 @@ end
 
 local roadbits = setmetatable({}, mt)
 
-local MapRoad <const> = {
-    Left         = 1 << 0,
-    Top          = 1 << 1,
-    Right        = 1 << 2,
-    Bottom       = 1 << 3,
-    Endpoint     = 1 << 4,
-    NoHorizontal = 1 << 5,
-    NoVertical   = 1 << 6,
-}
-
 local Direction <const> = {
     ["N"] = 0,
     ["E"] = 1,
@@ -47,12 +37,30 @@ local E <const> = 1
 local S <const> = 2
 local W <const> = 3
 
--- see also roadnet/network.h - MapRoad 
+-- see also clibs\gameplay\src\roadnet\network.cpp - enum class MapRoad
+local MapRoad <const> = {
+    Left         = 1 << 0,
+    Top          = 1 << 1,
+    Right        = 1 << 2,
+    Bottom       = 1 << 3,
+    Endpoint     = 1 << 4,
+    NoHorizontal = 1 << 5,
+    NoVertical   = 1 << 6,
+}
+
+-- see also clibs\gameplay\src\roadnet\type.h - enum class direction
+local RoadDirection = {
+    l = 0,
+    t = 1,
+    r = 2,
+    b = 3,
+}
+
 local DirectionToMapRoad <const> = {
-    [0] = 1,
-    [1] = 2,
-    [2] = 3,
-    [3] = 0,
+    [N] = RoadDirection.t,
+    [E] = RoadDirection.r,
+    [S] = RoadDirection.b,
+    [W] = RoadDirection.l,
 }
 
 local function pack(x, y)
@@ -226,8 +234,9 @@ local function repair(world, map, road_cache)
         if mask ~= m then
             map[coord] = m
 
-            local r = assert(world.entity[road_cache[coord]])
-            r.road.mask = m
+            local e = assert(world.entity[road_cache[coord]])
+            e.road.mask = m
+            e.road_changed = true
         end
     end
     return map

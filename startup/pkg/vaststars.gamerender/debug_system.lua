@@ -7,6 +7,9 @@ local kb_mb = world:sub{"keyboard"}
 local gameplay_core = require "gameplay.core"
 local export_startup = ecs.require "export_startup"
 
+function debug_sys:init_world()
+end
+
 function debug_sys:ui_update()
     for _, key, press in kb_mb:unpack() do
         if key == "T" and press == 0 then

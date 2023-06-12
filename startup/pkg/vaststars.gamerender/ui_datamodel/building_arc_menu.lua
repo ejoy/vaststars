@@ -30,7 +30,6 @@ local global = require "global"
 local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 local iobject = ecs.require "object"
 local igameplay = ecs.interface "igameplay"
-local icamera_controller = ecs.interface "icamera_controller"
 local interval_call = ecs.require "engine.interval_call"
 
 local function __show_set_item(typeobject)
@@ -72,7 +71,7 @@ local __lorry_factory_update = interval_call(800, function(datamodel, object_id)
     datamodel.lorry_factory_dec_lorry = lorry_factory_dec_lorry
 end)
 
-local __drone_depot_update = interval_call(800, function(datamodel, object_id)
+local function __drone_depot_update(datamodel, object_id)
     local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if not e then
@@ -89,7 +88,9 @@ local __drone_depot_update = interval_call(800, function(datamodel, object_id)
     local item_typeobject = iprototype.queryById(c.item)
     datamodel.drone_depot_icon = item_typeobject.icon
     datamodel.drone_depot_count = c.amount
-end)
+end
+
+local __drone_depot_update_interval = interval_call(800, __drone_depot_update)
 
 local __station_update = function(datamodel, object_id)
     local object = assert(objects:get(object_id))
@@ -240,6 +241,7 @@ function M:create(object_id, object_position, ui_x, ui_y)
     }
 
     __station_update(datamodel, object_id)
+    __drone_depot_update(datamodel, object_id)
     return datamodel
 end
 
@@ -295,7 +297,7 @@ function M:stage_ui_update(datamodel, object_id)
     end
 
     __lorry_factory_update(datamodel, object_id)
-    __drone_depot_update(datamodel, object_id)
+    __drone_depot_update_interval(datamodel, object_id)
     __station_update_interval(datamodel, object_id)
     __moveable_count_update(datamodel, object_id)
 
