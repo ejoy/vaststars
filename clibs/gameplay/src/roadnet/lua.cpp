@@ -163,7 +163,7 @@ namespace roadnet::lua {
     static int remove_lorry(lua_State* L) {
         auto& w = get_world(L);
         auto& network = get_network(L);
-        network.destroyLorry(w, (lorryid)luaL_checkinteger(L, 2));
+        network.destroyLorry(w, (lorryid)(uint16_t)luaL_checkinteger(L, 2));
         return 0;
     }
 }
