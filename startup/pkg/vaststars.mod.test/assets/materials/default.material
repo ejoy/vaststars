@@ -2,7 +2,7 @@ fx:
   fs: /pkg/vaststars.mod.test/shaders/pbr/fs_pbr.sc
   setting:
     ALPHAMODE_OPAQUE: 1
-    PACK_TANGENT_FRAME: 0
+    PACK_TANGENT_TO_QUAT: 0
   vs: /pkg/vaststars.mod.test/shaders/pbr/vs_pbr.sc
 properties:
   u_basecolor_factor: {1, 1, 1, 1}
