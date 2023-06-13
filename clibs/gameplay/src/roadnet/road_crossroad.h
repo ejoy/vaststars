@@ -52,7 +52,6 @@ namespace roadnet::road {
         bool hasNeighbor(direction dir) const;
         void setNeighbor(direction dir, straightid id);
         void setRevNeighbor(direction dir, straightid id);
-        lorryid& waitingLorry(network& w, direction dir);
         bool allowed(direction from, direction to) const;
     };
 }

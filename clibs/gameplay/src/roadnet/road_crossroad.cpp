@@ -70,10 +70,6 @@ namespace roadnet::road {
         rev_neighbor[(uint8_t)dir] = id;
     }
 
-    lorryid& crossroad::waitingLorry(network& w, direction dir) {
-        return w.StraightRoad(rev_neighbor[(size_t)dir]).waitingLorry(w);
-    }
-
     void crossroad::update(network& w, uint64_t ti) {
         for (size_t i = 0; i < 2; ++i) {
             lorryid id = cross_lorry[i];
@@ -95,7 +91,8 @@ namespace roadnet::road {
             if (!rev_neighbor[i]) {
                 continue;
             }
-            lorryid id = waitingLorry(w, direction(i));
+            auto& straight = w.StraightRoad(rev_neighbor[(size_t)i]);
+            lorryid id = straight.waitingLorry(w);
             if (!id) {
                 continue;
             }
@@ -130,7 +127,7 @@ namespace roadnet::road {
                 }
                 idx = 0;
             }
-            waitingLorry(w, direction(i)) = lorryid::invalid();
+            straight.waitingLorry(w) = lorryid::invalid();
             cross_lorry[idx] = id;
             cross_status[idx] = type;
             l.entry(roadtype::cross);
