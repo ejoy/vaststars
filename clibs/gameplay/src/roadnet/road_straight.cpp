@@ -1,5 +1,6 @@
 #include "roadnet/road_straight.h"
 #include "roadnet/network.h"
+#include <bee/nonstd/unreachable.h>
 
 namespace roadnet::road {
     void straight::init(straightid id, uint16_t len, direction dir, crossid neighbor) {
@@ -50,7 +51,7 @@ namespace roadnet::road {
         return w.LorryInRoad(lorryOffset);
     }
     loction straight::waitingLoction(network& w) const {
-        return w.LorryInCoord(coordOffset);
+        return w.LorryInCoord(coordOffset).get_loction();
     }
     map_coord straight::getCoord(network& w, uint16_t offset) {
         offset = (len-1) - offset;

@@ -1,7 +1,6 @@
 #include <lua.hpp>
 #include <string>
-#include <map>
-#include "roadnet/coord.h"
+#include "roadnet/type.h"
 #include "roadnet/network.h"
 #include "core/world.h"
 #include <bee/nonstd/bit.h>
@@ -23,8 +22,7 @@ namespace roadnet::lua {
     }
 
     static void push_map_coord(lua_State* L, map_coord& c) {
-        uint32_t v = std::bit_cast<uint32_t>(c);
-        lua_pushinteger(L, v);
+        lua_pushinteger(L, c.get_value());
     }
 
     static int reset(lua_State* L) {
@@ -117,7 +115,7 @@ namespace roadnet::lua {
             }
             auto lorryid = std::get<0>(*res);
             auto& l = w.Lorry(lorryid);
-            lua_pushinteger(L, lorryid.id);
+            lua_pushinteger(L, lorryid.get_index());
             lua_pushinteger(L, l.get_classid());
             auto [item_classid, item_amount] = l.get_item();
             lua_pushinteger(L, item_classid);

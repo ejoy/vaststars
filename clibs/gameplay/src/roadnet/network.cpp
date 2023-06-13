@@ -543,10 +543,12 @@ namespace roadnet {
     }
     road::straight& network::StraightRoad(straightid id) {
         assert(id != straightid::invalid());
+        assert(id.get_index() < straightAry.size());
         return straightAry[id.get_index()];
     }
     road::crossroad& network::CrossRoad(crossid id) {
         assert(id != crossid::invalid());
+        assert(id.get_index() < crossAry.size());
         return crossAry[id.get_index()];
     }
     lorryid& network::LorryInRoad(uint32_t index) {
@@ -556,11 +558,13 @@ namespace roadnet {
         return straightCoord[index];
     }
     lorry& network::Lorry(lorryid id) {
-        assert(id.id < lorryVec.size());
-        return lorryVec[id.id];
+        assert(id != lorryid::invalid());
+        assert(id.get_index() < lorryVec.size());
+        return lorryVec[id.get_index()];
     }
     road::endpoint& network::Endpoint(endpointid id) {
-        assert(id.id < endpointAry.size());
-        return endpointAry[id.id];
+        assert(id != endpointid::invalid());
+        assert(id.get_index() < endpointAry.size());
+        return endpointAry[id.get_index()];
     }
 }

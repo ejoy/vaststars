@@ -1,10 +1,10 @@
 #pragma once
 
 #include <stdint.h>
-#include <optional>
 #include "roadnet/road_crossroad.h"
 #include "roadnet/road_straight.h"
 #include "roadnet/road_endpoint.h"
+#include "roadnet/lorry.h"
 #include "util/dynarray.h"
 #include "flatmap.h"
 

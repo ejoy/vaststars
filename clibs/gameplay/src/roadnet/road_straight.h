@@ -1,10 +1,6 @@
 #pragma once
 
-#include <map>
-#include <list>
-#include "roadnet/road.h"
-#include "roadnet/lorry.h"
-#include "roadnet/coord.h"
+#include "roadnet/type.h"
 
 namespace roadnet {
     class network;
@@ -36,5 +32,4 @@ namespace roadnet::road {
         loction waitingLoction(network& w) const;
         map_coord getCoord(network& w, uint16_t offset);
     };
-    static_assert(std::is_trivial_v<straight>);
 }

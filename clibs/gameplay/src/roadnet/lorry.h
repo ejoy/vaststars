@@ -1,8 +1,7 @@
 #pragma once
 
 #include "roadnet/type.h"
-#include "roadnet/coord.h"
-#include <vector>
+#include <utility>
 
 struct world;
 struct lua_State;

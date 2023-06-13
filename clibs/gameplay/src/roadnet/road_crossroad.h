@@ -1,8 +1,10 @@
 #pragma once
 
-#include "roadnet/road.h"
-#include "roadnet/coord.h"
-#include "roadnet/lorry.h"
+#include "roadnet/type.h"
+
+namespace roadnet {
+    class network;
+}
 
 namespace roadnet::road {
     constexpr cross_type crossType(direction from, direction to) {

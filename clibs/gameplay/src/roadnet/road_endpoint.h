@@ -1,11 +1,6 @@
 #pragma once
 
 #include "roadnet/type.h"
-#include "roadnet/coord.h"
-#include <list>
-#include <map>
-#include <vector>
-#include <functional>
 #include <optional>
 
 namespace roadnet {
@@ -23,5 +18,4 @@ namespace roadnet::road {
         void setOut(network& w);
         std::optional<uint16_t> distance(network& w, road::endpoint const& to) const;
     };
-    static_assert(std::is_trivial_v<endpoint>);
 }
