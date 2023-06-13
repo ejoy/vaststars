@@ -572,6 +572,7 @@ local t = {
 	"/pkg/ant.resources/shaders/pbr/common.sh",
 	"/pkg/ant.resources/shaders/pbr/ibl.sh",
 	"/pkg/ant.resources/shaders/pbr/ibl/common.sh",
+	"/pkg/ant.resources/shaders/pbr/ibl/sh_util.sh",
 	"/pkg/ant.resources/shaders/pbr/indirect_lighting.sh",
 	"/pkg/ant.resources/shaders/pbr/input_attributes.sh",
 	"/pkg/ant.resources/shaders/pbr/lighting.sh",
