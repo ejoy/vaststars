@@ -13,7 +13,7 @@ prototype "化工厂I" {
     rotate_on_build = true,
     priority = "secondary",
     maxslot = "8",
-    camera_distance = 40,
+    camera_distance = 75,
     craft_category = {"器件基础化工","流体基础化工"},
     fluidboxes = {
         input = {

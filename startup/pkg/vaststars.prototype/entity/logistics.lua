@@ -71,7 +71,7 @@ prototype "科研中心I" {
     power = "150kW",
     speed = "100%",
     show_arc_menu = false,
-    camera_distance = 100,
+    camera_distance = 75,
     priority = "secondary",
     inputs = {
         "地质科技包",
@@ -308,7 +308,7 @@ prototype "出货车站" {
     },
     move = false,
     teardown = false,
-    camera_distance = 100,
+    camera_distance = 90,
 }
 
 --收货车站需要设置送货类型
@@ -338,5 +338,5 @@ prototype "收货车站" {
     },
     move = false,
     teardown = false,
-    camera_distance = 100,
+    camera_distance = 90,
 }
