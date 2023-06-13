@@ -181,14 +181,14 @@ prototype "科研中心I" {
     type = {"item"},
     group = {"物流"},
     stack = 10,
-    item_description = "研究科技技术的中心",
+    item_description = "研究科技的设施",
 }
 
 prototype "出货车站" {
     type = {"item"},
     group = {"物流"},
     stack = 10,
-    item_description = "负责送货的车站",
+    item_description = "负责出货的车站",
 }
 
 prototype "收货车站" {
@@ -202,14 +202,14 @@ prototype "电解厂I" {
     type = {"item"},
     group = {"化工"},
     stack = 10,
-    item_description = "使用电能电离液体的工厂",
+    item_description = "用电能电解液体的工厂",
 }
 
 prototype "太阳能板I" {
     type = {"item"},
     group = {"物流"},
     stack = 10,
-    item_description = "用来收集太阳能发电的装置",
+    item_description = "可收集太阳能并发电的装置",
 }
 
 prototype "蓄电池I" {
@@ -223,7 +223,7 @@ prototype "水电站I" {
     type = {"item"},
     group = {"化工"},
     stack = 10,
-    item_description = "处理水的工厂",
+    item_description = "处理液体的工厂",
 }
 
 prototype "砖石公路-X型" {
