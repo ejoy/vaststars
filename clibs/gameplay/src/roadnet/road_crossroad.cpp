@@ -51,16 +51,16 @@ namespace roadnet::road {
     }
 
     bool crossroad::hasNeighbor(direction dir) const {
-        return neighbor[(uint8_t)dir] != roadid::invalid();
+        return neighbor[(uint8_t)dir] != straightid::invalid();
     }
 
-    void crossroad::setNeighbor(direction dir, roadid id) {
+    void crossroad::setNeighbor(direction dir, straightid id) {
         assert(!hasNeighbor(dir));
         neighbor[(uint8_t)dir] = id;
     }
 
-    void crossroad::setRevNeighbor(direction dir, roadid id) {
-        assert(rev_neighbor[(uint8_t)dir] == roadid::invalid());
+    void crossroad::setRevNeighbor(direction dir, straightid id) {
+        assert(rev_neighbor[(uint8_t)dir] == straightid::invalid());
         rev_neighbor[(uint8_t)dir] = id;
     }
 

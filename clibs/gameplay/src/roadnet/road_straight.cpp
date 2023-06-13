@@ -2,7 +2,7 @@
 #include "roadnet/network.h"
 
 namespace roadnet::road {
-    void straight::init(roadid id, uint16_t len, direction dir, roadid neighbor) {
+    void straight::init(straightid id, uint16_t len, direction dir, crossid neighbor) {
         this->id = id;
         this->len = len;
         this->dir = dir;
@@ -25,8 +25,8 @@ namespace roadnet::road {
     bool straight::tryEntry(network& w, lorryid l)  {
         return tryEntry(w, l, len-1);
     }
-    void straight::setNeighbor(roadid id) {
-        assert(neighbor == roadid::invalid());
+    void straight::setNeighbor(crossid id) {
+        assert(neighbor == crossid::invalid());
         neighbor = id;
     }
     bool straight::hasLorry(network& w, uint16_t offset) {

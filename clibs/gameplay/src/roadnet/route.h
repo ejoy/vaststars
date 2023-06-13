@@ -7,5 +7,5 @@
 namespace roadnet {
     class network;
     struct route_value;
-    bool route(network& w, roadid S, roadid E, route_value& val);
+    bool route(network& w, straightid S, straightid E, route_value& val);
 }

@@ -14,8 +14,8 @@ namespace roadnet {
 
 namespace roadnet::road {
     struct endpoint {
-        roadid neighbor;
-        roadid rev_neighbor;
+        straightid neighbor;
+        straightid rev_neighbor;
         loction loc;
         lorryid& waitingLorry(network& w);
         bool isReady(network& w);

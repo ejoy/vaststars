@@ -10,8 +10,8 @@
 
 namespace roadnet {
     struct route_key {
-        roadid S;
-        roadid E;
+        straightid S;
+        straightid E;
         bool operator==(const route_key& rhs) const {
             return S == rhs.S && E == rhs.E;
         }
@@ -29,8 +29,8 @@ namespace roadnet {
         lorryid          createLorry(world& w, uint16_t classid);
         void             destroyLorry(world& w, lorryid id);
         void             update(uint64_t ti);
-        road::straight&  StraightRoad(roadid id);
-        road::crossroad& CrossRoad(roadid id);
+        road::straight&  StraightRoad(straightid id);
+        road::crossroad& CrossRoad(crossid id);
         lorry&           Lorry(lorryid id);
         lorryid&         LorryInRoad(uint32_t index);
         map_coord        LorryInCoord(uint32_t index);

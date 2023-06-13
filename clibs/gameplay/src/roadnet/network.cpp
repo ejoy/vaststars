@@ -313,13 +313,13 @@ namespace roadnet {
     }
 
     struct straightData {
-        roadid    id;
-        uint16_t  len;
-        loction   loc;
-        direction start_dir;
-        direction finish_dir;
-        roadid neighbor; // the next crossroad along this straight road
-        straightData(roadid id, uint16_t len, loction loc, direction start_dir, direction finish_dir, roadid neighbor)
+        straightid id;
+        uint16_t   len;
+        loction    loc;
+        direction  start_dir;
+        direction  finish_dir;
+        crossid neighbor; // the next crossroad along this straight road
+        straightData(straightid id, uint16_t len, loction loc, direction start_dir, direction finish_dir, crossid neighbor)
             : id(id)
             , len(len)
             , loc(loc)
@@ -329,7 +329,7 @@ namespace roadnet {
         {}
     };
 
-    static void setEndpoint(network& w, flatmap<loction, uint8_t> const& map, flatmap<loction, roadid>& crossMap, std::vector<straightData>& straightVec, loction loc, direction a, direction b, uint16_t endpointId) {
+    static void setEndpoint(network& w, flatmap<loction, uint8_t> const& map, flatmap<loction, crossid>& crossMap, std::vector<straightData>& straightVec, loction loc, direction a, direction b, uint16_t endpointId) {
         auto na = findNeighbor(map, loc, a);
         auto nb = findNeighbor(map, loc, b);
         if (na.l == nb.l) {
@@ -365,17 +365,17 @@ namespace roadnet {
         assert(cross_b);
 
         straightData& straight1 = straightVec.emplace_back(
-            roadid {roadtype::straight, (uint16_t)straightVec.size()},
+            straightid {(uint16_t)straightVec.size()},
             (nb.n + 1) * road::straight::N,
             nb.l,
             reverse(nb.dir),
             reverse(b),
-            roadid::invalid()
+            crossid::invalid()
         );
         w.CrossRoad(*cross_b).setNeighbor(reverse(nb.dir), straight1.id);
         ep.rev_neighbor = straight1.id;
         straightData& straight2 = straightVec.emplace_back(
-            roadid {roadtype::straight, (uint16_t)straightVec.size()},
+            straightid {(uint16_t)straightVec.size()},
             na.n * road::straight::N + 1,
             loc,
             a,
@@ -387,7 +387,7 @@ namespace roadnet {
     }
 
     uint32_t network::reloadMap(flatmap<loction, uint8_t> const& map) {
-        flatmap<loction, roadid> crossMap;
+        flatmap<loction, crossid> crossMap;
         std::vector<straightData> straightVec;
 
         routeCached.clear();
@@ -400,7 +400,7 @@ namespace roadnet {
         for (auto const& [loc, m] : map) {
             if (isCross(m)) {
                 assert(!(m & MapRoad::Endpoint));
-                roadid id { roadtype::cross, genCrossId++ };
+                crossid id { genCrossId++ };
                 crossMap.insert_or_assign(loc, id);
             }
             else if (m & MapRoad::Endpoint) {
@@ -436,7 +436,7 @@ namespace roadnet {
                     if (loc == result.l && dir == reverse(result.dir)) {
                         assert(result.n > 0);
                         straightData& straight = straightVec.emplace_back(
-                            roadid {roadtype::straight, (uint16_t)straightVec.size()},
+                            straightid {(uint16_t)straightVec.size()},
                             result.n * road::straight::N + 1,
                             loc,
                             dir,
@@ -451,10 +451,10 @@ namespace roadnet {
                         if (!(neighbor_m & MapRoad::Endpoint)) {
                             auto res = crossMap.find(result.l);
                             assert(res);
-                            roadid neighbor_id = *res;
+                            crossid neighbor_id = *res;
                             road::crossroad& neighbor = CrossRoad(neighbor_id);
                             straightData& straight1 = straightVec.emplace_back(
-                                roadid {roadtype::straight, (uint16_t)straightVec.size()},
+                                straightid {(uint16_t)straightVec.size()},
                                 result.n * road::straight::N + 1,
                                 loc,
                                 dir,
@@ -464,7 +464,7 @@ namespace roadnet {
                             crossroad.setNeighbor(dir, straight1.id);
                             neighbor.setRevNeighbor(reverse(result.dir), straight1.id);
                             straightData& straight2 = straightVec.emplace_back(
-                                roadid {roadtype::straight, (uint16_t)straightVec.size()},
+                                straightid {(uint16_t)straightVec.size()},
                                 result.n * road::straight::N + 1,
                                 result.l,
                                 reverse(result.dir),
@@ -542,14 +542,12 @@ namespace roadnet {
         ary_call(*this, ti, crossAry, &road::crossroad::update);
         ary_call(*this, ti, straightAry, &road::straight::update);
     }
-    road::straight& network::StraightRoad(roadid id) {
-        assert(id != roadid::invalid());
-        assert(id.get_type() == roadtype::straight);
+    road::straight& network::StraightRoad(straightid id) {
+        assert(id != straightid::invalid());
         return straightAry[id.get_index()];
     }
-    road::crossroad& network::CrossRoad(roadid id) {
-        assert(id != roadid::invalid());
-        assert(id.get_type() == roadtype::cross);
+    road::crossroad& network::CrossRoad(crossid id) {
+        assert(id != crossid::invalid());
         return crossAry[id.get_index()];
     }
     lorryid& network::LorryInRoad(uint32_t index) {

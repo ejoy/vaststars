@@ -26,7 +26,7 @@ namespace roadnet {
             std::unreachable();
         }
     }
-    void lorry::go(roadid ending, uint16_t item_classid, uint16_t item_amount) {
+    void lorry::go(straightid ending, uint16_t item_classid, uint16_t item_amount) {
         this->status = status::normal;
         this->ending = ending;
         this->item_classid = item_classid;
@@ -39,7 +39,7 @@ namespace roadnet {
             --progress;
         }
     }
-    bool lorry::next_direction(network& w, roadid C, direction& dir) {
+    bool lorry::next_direction(network& w, straightid C, direction& dir) {
         if (status != status::normal) {
             return false;
         }

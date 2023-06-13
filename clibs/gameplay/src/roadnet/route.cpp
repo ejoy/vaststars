@@ -10,32 +10,32 @@ namespace roadnet {
     constexpr uint16_t kCrossDistance = 4;
 
     struct dijkstraContext {
-        using dijkstraVisit = std::pair<uint16_t, roadid>;
+        using dijkstraVisit = std::pair<uint16_t, straightid>;
         using dijkstraQueue = std::priority_queue<dijkstraVisit, std::vector<dijkstraVisit>, std::greater<>>;
         struct dijkstraNode {
-            uint16_t  distance;
-            roadid    prev;
-            direction dir;
+            uint16_t   distance;
+            straightid prev;
+            direction  dir;
         };
-        using dijkstraResult = flatmap<roadid, dijkstraNode>;
+        using dijkstraResult = flatmap<straightid, dijkstraNode>;
         dijkstraQueue  openlist;
         dijkstraResult results;
 
-        uint16_t get_distance(roadid N) const {
+        uint16_t get_distance(straightid N) const {
             auto node = results.find(N);
             if (!node) {
                 return (uint16_t)-1;
             }
             return node->distance;
         }
-        std::optional<dijkstraNode> get(roadid N) const {
+        std::optional<dijkstraNode> get(straightid N) const {
             auto node = results.find(N);
             if (!node) {
                 return std::nullopt;
             }
             return *node;
         }
-        void set(roadid N, roadid prev, direction dir, uint16_t distance) {
+        void set(straightid N, straightid prev, direction dir, uint16_t distance) {
             auto node = results.find(N);
             if (!node) {
                 results.insert_or_assign(N, dijkstraNode {
@@ -66,15 +66,13 @@ namespace roadnet {
         }
     }
 
-    static roadid next_road(network& w, roadid C, direction dir) {
-        assert(C.get_type() == roadtype::straight);
-        roadid N = w.StraightRoad(C).neighbor;
-        roadid Next = w.CrossRoad(N).neighbor[(uint8_t)dir];
-        assert(Next.get_type() == roadtype::straight);
+    static straightid next_road(network& w, straightid C, direction dir) {
+        crossid N = w.StraightRoad(C).neighbor;
+        straightid Next = w.CrossRoad(N).neighbor[(uint8_t)dir];
         return Next;
     }
 
-    static bool buildResult(network& w, dijkstraContext& ctx, roadid S, roadid E, route_value& val) {
+    static bool buildResult(network& w, dijkstraContext& ctx, straightid S, straightid E, route_value& val) {
         for (auto C = E;;) {
             if (auto node = ctx.get(C)) {
                 C = node->prev;
@@ -96,28 +94,24 @@ namespace roadnet {
         }
     }
 
-    static bool dijkstra(network& w, roadid S, roadid E, route_value& val) {
-        assert(S.get_type() == roadtype::straight && E.get_type() == roadtype::straight);
+    static bool dijkstra(network& w, straightid S, straightid E, route_value& val) {
         dijkstraContext ctx;
         ctx.openlist.push({0, S});
         while (!ctx.openlist.empty()) {
             auto [distance, G] = ctx.openlist.top();
             ctx.openlist.pop();
-            assert(G.get_type() == roadtype::straight);
             if (distance > ctx.get_distance(G)) {
                 continue;
             }
             auto& straight = w.StraightRoad(G);
-            roadid Cross = straight.neighbor;
+            crossid Cross = straight.neighbor;
             if (Cross) {
-                assert(Cross.get_type() == roadtype::cross);
                 direction prev = reverse(straight.dir);
                 auto& cross = w.CrossRoad(Cross);
                 for (uint8_t i = 0; i < 4; ++i) {
                     direction dir = (direction)i;
-                    roadid Next = cross.neighbor[i];
+                    straightid Next = cross.neighbor[i];
                     if (Next && cross.allowed(prev, dir)) {
-                        assert(Next.get_type() == roadtype::straight);
                         auto& straight = w.StraightRoad(Next);
                         ctx.set(Next, G, dir, distance + straight.len + kCrossDistance);
                     }
@@ -130,7 +124,7 @@ namespace roadnet {
         return false;
     }
 
-    bool route(network& w, roadid S, roadid E, route_value& val) {
+    bool route(network& w, straightid S, straightid E, route_value& val) {
         route_key key { S, E };
         if (auto pval = w.routeCached.find(key)) {
             val = *pval;
