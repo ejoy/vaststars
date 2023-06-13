@@ -60,13 +60,13 @@ prototype "管道1-X型" {
 prototype "地下管1-JI型" {
     type = {"item"},
     group = {"化工"},
-    stack = 100,
+    stack = 102,
     item_description = "从地下传输液体或气体的管道",
 }
 
 prototype "地下管2-JI型" {
     type = {"item"},
     group = {"化工"},
-    stack = 100,
+    stack = 103,
     item_description = "从地下传输液体或气体的管道",
 }
