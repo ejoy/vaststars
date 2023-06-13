@@ -24,8 +24,7 @@ namespace roadnet {
     class network {
     public:
         network() = default;
-        void             updateMap(flatmap<loction, uint8_t> const& map);
-        uint32_t         reloadMap(flatmap<loction, uint8_t> const& map);
+        void             updateMap(world& w, flatmap<loction, uint8_t> const& map);
         lorryid          createLorry(world& w, uint16_t classid);
         void             destroyLorry(world& w, lorryid id);
         void             update(uint64_t ti);

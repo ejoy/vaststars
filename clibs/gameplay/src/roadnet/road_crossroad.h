@@ -10,6 +10,12 @@ namespace roadnet::road {
     constexpr cross_type crossType(direction from, direction to) {
         return (cross_type)(((uint8_t)from << 2) | (uint8_t)to);
     }
+    constexpr direction crossFrom(cross_type type) {
+        return direction(((uint8_t)type >> 2) & 0x3);
+    }
+    constexpr direction crossTo(cross_type type) {
+        return direction((uint8_t)type & 0x3);
+    }
     constexpr uint16_t crossTypeMask(direction from, direction to) {
         return 1 << (uint16_t)crossType(from, to);
     }
@@ -52,8 +58,12 @@ namespace roadnet::road {
         loction getLoction(network& w) const;
         void update(network& w, uint64_t ti);
         bool hasNeighbor(direction dir) const;
+        bool hasRevNeighbor(direction dir) const;
         void setNeighbor(direction dir, straightid id);
         void setRevNeighbor(direction dir, straightid id);
         bool allowed(direction from, direction to) const;
+        bool insertLorry(network& w, lorryid lorryId, map_coord coord);
+        bool insertLorry0(network& w, lorryid lorryId, cross_type type);
+        bool insertLorry1(network& w, lorryid lorryId, cross_type type);
     };
 }

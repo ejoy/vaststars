@@ -1,5 +1,6 @@
 ﻿#include "roadnet/road_crossroad.h"
 #include "roadnet/network.h"
+#include <bee/nonstd/unreachable.h>
 #include <assert.h>
 
 namespace roadnet::road {
@@ -58,6 +59,10 @@ namespace roadnet::road {
 
     bool crossroad::hasNeighbor(direction dir) const {
         return neighbor[(uint8_t)dir] != straightid::invalid();
+    }
+
+    bool crossroad::hasRevNeighbor(direction dir) const {
+        return rev_neighbor[(uint8_t)dir] != straightid::invalid();
     }
 
     void crossroad::setNeighbor(direction dir, straightid id) {
@@ -135,6 +140,55 @@ namespace roadnet::road {
     }
 
     bool crossroad::allowed(direction from, direction to) const {
-        return (ban & (1 << (uint16_t)crossType(from, to))) == 0;
+        return (ban & crossTypeMask(from, to)) == 0;
+    }
+
+    bool crossroad::insertLorry0(network& w, lorryid lorryId, cross_type type) {
+        direction from = direction((uint8_t)type >> 2);
+        if (!hasRevNeighbor(from)) {
+            return false;
+        }
+        auto& straight = w.StraightRoad(rev_neighbor[(size_t)from]);
+        if (straight.waitingLorry(w)) {
+            return false;
+        }
+        straight.waitingLorry(w) = lorryId;
+        return true;
+    }
+
+    bool crossroad::insertLorry1(network& w, lorryid lorryId, cross_type type) {
+        if (cross_lorry[0] && cross_lorry[1]) {
+            return false;
+        }
+        bool has_lorry = cross_lorry[0] || cross_lorry[1];
+        size_t empty_idx = cross_lorry[0]? 1: 0;
+        size_t lorry_idx = cross_lorry[0]? 0: 1;
+        uint8_t from_v = (uint8_t)crossFrom(type);
+        uint8_t to_v = (uint8_t)crossTo(type);
+        for (uint8_t j = 0; j < 4; ++j) {
+            for (uint8_t i = 0; i < 4; ++i) {
+                direction from = direction((from_v + i) % 4);
+                direction to = direction((to_v + j) % 4);
+                if (hasNeighbor(to) && hasRevNeighbor(from) && allowed(from, to)) {
+                    if (!has_lorry || !isCross(cross_status[lorry_idx], crossType(from, to))) {
+                        cross_lorry[empty_idx] = lorryId;
+                        cross_status[empty_idx] = crossType(from, to);
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    bool crossroad::insertLorry(network& w, lorryid lorryId, map_coord where) {
+        switch ((map_index)where.z) {
+        case map_index::w0:
+            return insertLorry0(w, lorryId, (cross_type)where.w);
+        case map_index::w1:
+            return insertLorry1(w, lorryId, (cross_type)where.w);
+        default:
+            std::unreachable();
+        }
     }
 }

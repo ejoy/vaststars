@@ -64,4 +64,20 @@ namespace roadnet::road {
         }
         return coord;
     }
+
+    bool straight::insertLorry(network& w, lorryid lorryId, uint16_t offset, map_index index) {
+        uint8_t z;
+        switch ((map_index)index) {
+        case map_index::w0: z = 0; break;
+        case map_index::w1: z = 1; break;
+        default:
+            std::unreachable();
+        }
+        uint32_t o = lorryOffset + ((len-1) - offset * N + z);
+        if (!w.LorryInRoad(o)) {
+            return false;
+        }
+        w.LorryInRoad(o) = lorryId;
+        return true;
+    }
 }

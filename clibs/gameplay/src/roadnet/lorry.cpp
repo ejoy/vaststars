@@ -33,6 +33,10 @@ namespace roadnet {
         this->item_amount = item_amount;
     }
     void lorry::reset(world& w) {
+        classid = 0;
+    }
+    bool lorry::invaild() const noexcept {
+        return classid == 0;
     }
     void lorry::update(network& w, uint64_t ti) {
         if (progress != 0) {
@@ -51,7 +55,7 @@ namespace roadnet {
         status = status::error;
         return false;
     }
-    bool lorry::ready() {
+    bool lorry::ready() const noexcept {
         if (status != status::normal) {
             return false;
         }

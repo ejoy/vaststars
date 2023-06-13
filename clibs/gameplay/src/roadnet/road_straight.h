@@ -31,5 +31,6 @@ namespace roadnet::road {
         lorryid& waitingLorry(network& w);
         loction waitingLoction(network& w) const;
         map_coord getCoord(network& w, uint16_t offset);
+        bool insertLorry(network& w, lorryid lorryId, uint16_t offset, map_index index);
     };
 }
