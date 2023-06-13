@@ -12,7 +12,7 @@ prototype "熔炼炉I" {
     power = "75kW",
     priority = "secondary",
     craft_category = {"金属冶炼"},
-    camera_distance = 100,
+    camera_distance = 40,
     fluidboxes = {
         input = {
             {
@@ -49,7 +49,7 @@ prototype "熔炼炉II" {
     power = "150kW",
     priority = "secondary",
     craft_category = {"金属冶炼"},
-    camera_distance = 100,
+    camera_distance = 40,
     fluidboxes = {
         input = {
             {
@@ -87,7 +87,7 @@ prototype "粉碎机I" {
     drain = "3kW",
     priority = "secondary",
     craft_category = {"矿石粉碎"},
-    camera_distance = 100,
+    camera_distance = 60,
     maxslot = "8",
 }
 
@@ -102,7 +102,7 @@ prototype "浮选器I" {
     drain = "6kW",
     priority = "secondary",
     craft_category = {"矿石浮选"},
-    camera_distance = 100,
+    camera_distance = 40,
     maxslot = "8",
     fluidboxes = {
         input = {
