@@ -358,7 +358,6 @@ namespace roadnet {
         }
         assert(na.n > 0);
         auto& ep = w.endpointAry[endpointId];
-        ep.loc = loc;
         auto cross_a = crossMap.find(na.l);
         auto cross_b = crossMap.find(nb.l);
         assert(cross_a);
@@ -553,7 +552,7 @@ namespace roadnet {
     lorryid& network::LorryInRoad(uint32_t index) {
         return straightLorry[index];
     }
-    map_coord network::LorryInCoord(uint32_t index) {
+    map_coord network::LorryInCoord(uint32_t index) const {
         return straightCoord[index];
     }
     lorry& network::Lorry(lorryid id) {

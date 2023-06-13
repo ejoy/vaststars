@@ -3,6 +3,10 @@
 #include "roadnet/route.h"
 
 namespace roadnet::road {
+    loction endpoint::getLoction(network& w) const {
+        return w.StraightRoad(rev_neighbor).waitingLoction(w);
+    }
+
     lorryid& endpoint::waitingLorry(network& w) {
         return w.StraightRoad(rev_neighbor).waitingLorry(w);
     }

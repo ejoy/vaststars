@@ -47,6 +47,7 @@ namespace roadnet::road {
         cross_type cross_status[2];
         uint16_t   ban = 0;
         roadnet::loction loc;
+        loction getLoction(network& w) const;
         void update(network& w, uint64_t ti);
         bool hasNeighbor(direction dir) const;
         void setNeighbor(direction dir, straightid id);

@@ -33,7 +33,7 @@ namespace roadnet {
         road::crossroad& CrossRoad(crossid id);
         lorry&           Lorry(lorryid id);
         lorryid&         LorryInRoad(uint32_t index);
-        map_coord        LorryInCoord(uint32_t index);
+        map_coord        LorryInCoord(uint32_t index) const;
         road::endpoint&  Endpoint(endpointid id);
 
         dynarray<road::crossroad>       crossAry;

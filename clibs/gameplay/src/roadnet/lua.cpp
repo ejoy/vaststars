@@ -66,7 +66,7 @@ namespace roadnet::lua {
                 auto& road = w.crossAry[road_idx];
                 auto id = road.cross_lorry[entry_idx];
                 if (id) {
-                    map_coord coord {road.loc, map_index::w1, road.cross_status[entry_idx]};
+                    map_coord coord {road.getLoction(w), map_index::w1, road.cross_status[entry_idx]};
                     return std::make_tuple(id, coord);
                 }
             }
@@ -154,7 +154,7 @@ namespace roadnet::lua {
         lua_createtable(L, 0, (int)w.endpointAry.size());
         lua_Integer n = 0;
         for (const auto& ep : w.endpointAry) {
-            lua_pushinteger(L, ep.loc.id);
+            lua_pushinteger(L, ep.getLoction(w).id);
             lua_pushinteger(L, n++);
             lua_rawset(L, -3);
         }

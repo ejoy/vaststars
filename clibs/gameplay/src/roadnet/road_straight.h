@@ -33,6 +33,7 @@ namespace roadnet::road {
         bool hasLorry(network& w, uint16_t offset);
         void delLorry(network& w, uint16_t offset);
         lorryid& waitingLorry(network& w);
+        loction waitingLoction(network& w) const;
         map_coord getCoord(network& w, uint16_t offset);
     };
     static_assert(std::is_trivial_v<straight>);

@@ -50,6 +50,12 @@ namespace roadnet::road {
         return (CrossMap[(uint8_t)a] & (1 << (uint16_t)b)) != 0;
     }
 
+    loction crossroad::getLoction(network& w) const {
+        return loc;
+        //TODO
+        //return w.StraightRoad(rev_neighbor).waitingLoction(w);
+    }
+
     bool crossroad::hasNeighbor(direction dir) const {
         return neighbor[(uint8_t)dir] != straightid::invalid();
     }

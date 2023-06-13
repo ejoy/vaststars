@@ -49,6 +49,9 @@ namespace roadnet::road {
     lorryid& straight::waitingLorry(network& w) {
         return w.LorryInRoad(lorryOffset);
     }
+    loction straight::waitingLoction(network& w) const {
+        return w.LorryInCoord(coordOffset);
+    }
     map_coord straight::getCoord(network& w, uint16_t offset) {
         offset = (len-1) - offset;
         auto coord = w.LorryInCoord(coordOffset + offset / N);
