@@ -7,8 +7,6 @@ local chest = require "vaststars.chest.core"
 local roadnet = require "vaststars.roadnet.core"
 local luaecs = import_package "ant.luaecs"
 
-local perf -- = {}
-
 local function pipeline(world, cworld, name)
     local p = status.pipelines[name]
     if not p then
@@ -35,21 +33,12 @@ local function pipeline(world, cworld, name)
             end
         end
     end
-    if perf then
-        local f, time = cworld.system_perf_solve(cworld, world, funcs)
-        perf[name] = {
-            symbol = symbols,
-            time = time,
-        }
-        return f
-    end
     return cworld.system_solve(cworld, world, funcs)
 end
 
 return function ()
     local world = {}
     local ecs = luaecs.world()
-    local timer = dofile(package.searchpath("timer", package.path))
     local components = {}
     for _, c in ipairs(status.components) do
         assert(c.type == nil)
@@ -100,67 +89,18 @@ return function ()
     local pipeline_backup = pipeline(world, cworld, "backup")
     local pipeline_restore = pipeline(world, cworld, "restore")
 
-    local perf_frame = 0
-    local function perf_print(per)
-        local t = {}
-        for _, v in pairs(perf) do
-            local time = v.time
-            for i, name in ipairs(v.symbol) do
-                t[#t+1] = {name, time[i]}
-            end
-        end
-        table.sort(t, function (a, b)
-            return a[2] > b[2]
-        end)
-        local s = {
-            "",
-            "cpu stat"
-        }
-        for _, v in ipairs(t) do
-            local m = v[2] / per
-            if m >= 0.01 then
-                s[#s+1] = ("\t%s - %.02fms"):format(v[1], m)
-            end
-        end
-        print(table.concat(s, "\n"))
-    end
-
-    local function perf_reset()
-        for _, v in pairs(perf) do
-            local time = v.time
-            for i = 1, #time do
-                time[i] = 0
-            end
-        end
-    end
-
-    function world:perf_print()
-        if not perf then
-            return
-        end
-        local skip <const> = 0
-        local delta <const> = 100
-        perf_frame = perf_frame + 1
-        if perf_frame <= skip then
-            perf_reset()
-            return
-        elseif perf_frame % delta ~= 0 then
-            return
-        end
-        perf_print(perf_frame)
-    end
-
     function world:update()
-        self:perf_print()
         pipeline_update()
-        timer.update(1)
         ecs:visitor_update()
         ecs:update()
+        self.frame = self.frame + 1
     end
     function world:build()
         pipeline_clean()
+        ecs:visitor_update()
         ecs:update()
         pipeline_build()
+        ecs:visitor_update()
         ecs:update()
     end
     function world:backup(rootdir)
@@ -271,14 +211,8 @@ return function ()
         return roadnet.each_lorry(cworld, ...)
     end
 
-    function world:wait(...)
-        return timer.wait(...)
-    end
-    function world:loop(...)
-        return timer.loop(...)
-    end
-    function world:now(...)
-        return timer.now(...)
+    function world:now()
+        return self.frame
     end
 
     return world
