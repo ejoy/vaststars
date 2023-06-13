@@ -47,6 +47,7 @@ local function get_property_list(entity)
     table.sort(prop_list, function(a, b) return a.pos < b.pos end)
     r.prop_list = prop_list
     r.chest_list = entity.chest_list
+    r.is_chest = entity.is_chest
     r.status = entity.status
     return r
 end
@@ -158,17 +159,20 @@ local function get_property(e, typeobject)
     get_display_info(e, typeobject, t)
     local chest_component = iprototype.get_chest_component(typeobject.name)
     if iprototype.check_types(typeobject.name, CHEST_LIST_TYPES) and chest_component then
+        local chest_list = {}
         if chest_component == 'hub' then
+            chest_list[#chest_list + 1] = {icon = 'textures/building_pic/small_pic_goods_station1.texture', name = "Goods", count = 0}
         elseif chest_component == 'station' then
+            chest_list[#chest_list + 1] = {icon = 'textures/building_pic/small_pic_goods_station1.texture', name = "Goods", count = 0}
         else
             -- the items display is shown in two rows, with list0 for the first row and list1 for the second row (five items per row, up to ten items in total)
-            local chest_list = {}
             for _, slot in pairs(ichest.collect_item(gameplay_core.get_world(), e[chest_component])) do
                 local typeobject_item = assert(iprototype.queryById(slot.item))
                 chest_list[#chest_list + 1] = {icon = typeobject_item.icon, count = ichest.get_amount(slot)}
             end
-            t.chest_list = #chest_list > 0 and chest_list or nil
+            t.is_chest = true
         end
+        t.chest_list = chest_list
     end
     if e.fluidbox then
         local name = "无"
@@ -300,7 +304,14 @@ local function update_property_list(datamodel, property_list)
     datamodel.chest_list = property_list.chest_list or {}
     datamodel.show_type = property_list.show_type
     if #datamodel.chest_list > 0 then
-        datamodel.show_type = "chest"
+        if property_list.is_chest then
+            datamodel.show_type = "chest"
+        else
+            datamodel.show_type = "goods"
+            local item = datamodel.chest_list[1]
+            datamodel.goods_icon = item.icon
+            datamodel.goods_desc = item.name .. "X" .. item.count
+        end
     end
     datamodel.progress = property_list.progress or "0%"
     datamodel.recipe_inputs = property_list.recipe_inputs or {}

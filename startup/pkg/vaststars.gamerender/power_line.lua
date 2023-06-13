@@ -4,7 +4,7 @@ local w     = world.w
 local iterrain          = ecs.require "terrain"
 local ipl               = ecs.import.interface "ant.render|ipolyline"
 local math3d            = require "math3d"
-local LINE_COLOR        = {1.0, 0.0, 0.0, 0.7}--math3d.constant("v4", {1.0, 0.0, 0.0, 0.7})
+local LINE_COLOR <const> = {1.0, 0.0, 0.0, 0.7}--math3d.constant("v4", {1.0, 0.0, 0.0, 0.7})
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
 local M ={}
