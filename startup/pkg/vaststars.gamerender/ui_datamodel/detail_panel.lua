@@ -360,13 +360,19 @@ function M:create(object_id)
     if not e then
         return {}
     end
-
-    local typeobject = iprototype.queryByName(object.prototype_name)
+    local typeobject
+    local redirect
+    if string.find(object.prototype_name, "管道1-") == 1 then
+        typeobject = iprototype.queryByName("管道1-X型")
+        redirect = true
+    else
+        typeobject = iprototype.queryByName(object.prototype_name)
+    end
     local datamodel = {
         object_id = object_id,
         icon = typeobject.icon,
         desc = typeobject.item_description,
-        prototype_name = iprototype.show_prototype_name(typeobject)
+        prototype_name = iprototype.show_prototype_name(redirect and iprototype.queryByName(object.prototype_name) or typeobject)
     }
     last_inputs, last_ouputs = update_property_list(datamodel, get_entity_property_list(object_id))
     preinput = {}
