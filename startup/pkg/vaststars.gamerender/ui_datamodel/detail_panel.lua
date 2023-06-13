@@ -168,7 +168,7 @@ local function get_property(e, typeobject)
             -- the items display is shown in two rows, with list0 for the first row and list1 for the second row (five items per row, up to ten items in total)
             for _, slot in pairs(ichest.collect_item(gameplay_core.get_world(), e[chest_component])) do
                 local typeobject_item = assert(iprototype.queryById(slot.item))
-                chest_list[#chest_list + 1] = {icon = typeobject_item.icon, count = ichest.get_amount(slot)}
+                chest_list[#chest_list + 1] = {icon = typeobject_item.icon, name = "", count = ichest.get_amount(slot)}
             end
             t.is_chest = true
         end
@@ -287,9 +287,10 @@ local function get_entity_property_list(object_id, recipe_inputs, recipe_ouputs)
         local items = {}
         for i, value in ipairs(current_inputs) do
             local slot = ichest.chest_get(gameplay_core.get_world(), e.chest, i)
-            items[#items+1] = {icon = value.icon, count = slot.amount or 0}
+            items[#items+1] = {icon = value.icon, name = "", count = slot.amount or 0}
         end
         property_list.chest_list = items
+        property_list.is_chest = true
     end
     return property_list
 end
