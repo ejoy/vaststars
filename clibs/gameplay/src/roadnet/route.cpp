@@ -1,6 +1,7 @@
 ﻿#include "roadnet/route.h"
 #include "roadnet/network.h"
 #include "flatmap.h"
+#include <bee/nonstd/unreachable.h>
 #include <optional>
 #include <queue>
 #include <assert.h>
@@ -61,7 +62,7 @@ namespace roadnet {
         case direction::t: return direction::b;
         case direction::r: return direction::l;
         case direction::b: return direction::t;
-        case direction::n: default: return direction::n;
+        default: std::unreachable();
         }
     }
 

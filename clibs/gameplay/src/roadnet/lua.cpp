@@ -49,7 +49,7 @@ namespace roadnet::lua {
         status status = status::cross;
         uint32_t index = 0;
         uint16_t straightId = 0;
-        using result_type = std::optional<std::tuple<lorryid, map_coord>>;
+        using result_type = std::tuple<lorryid, map_coord>;
         result_type next_cross(roadnet::network& w) {
             static constexpr int N = 2;
             for (;;) {
@@ -73,7 +73,7 @@ namespace roadnet::lua {
             for (;;) {
                 if (index >= w.straightLorry.size()) {
                     status = status::finish;
-                    return std::nullopt;
+                    return {};
                 }
                 auto& id = w.straightLorry[index];
                 if (id) {
@@ -100,7 +100,7 @@ namespace roadnet::lua {
                 return next_straight(w);
             default:
             case status::finish:
-                return std::nullopt;
+                return {};
             }
         }
         static eachlorry& get(lua_State* L, int idx) {
@@ -109,18 +109,17 @@ namespace roadnet::lua {
         static int next(lua_State* L) {
             auto& w = get_network(L, lua_upvalueindex(2));
             eachlorry& self = get(L, lua_upvalueindex(1));
-            auto res = self.next(w);
-            if (!res) {
+            auto [lorryid, coord] = self.next(w);
+            if (!lorryid) {
                 return 0;
             }
-            auto lorryid = std::get<0>(*res);
             auto& l = w.Lorry(lorryid);
             lua_pushinteger(L, lorryid.get_index());
             lua_pushinteger(L, l.get_classid());
             auto [item_classid, item_amount] = l.get_item();
             lua_pushinteger(L, item_classid);
             lua_pushinteger(L, item_amount);
-            push_map_coord(L, std::get<1>(*res));
+            push_map_coord(L, coord);
             auto [progress, maxprogress] = l.get_progress();
             lua_pushinteger(L, progress);
             lua_pushinteger(L, maxprogress);

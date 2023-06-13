@@ -1,4 +1,5 @@
 ﻿#include "roadnet/network.h"
+#include <bee/nonstd/unreachable.h>
 #include <cassert>
 #include <cstdio>
 
@@ -31,7 +32,7 @@ namespace roadnet {
         case direction::t: return direction::b;
         case direction::r: return direction::l;
         case direction::b: return direction::t;
-        case direction::n: default: return direction::n;
+        default: std::unreachable();
         }
     }
 
@@ -41,7 +42,7 @@ namespace roadnet {
         case direction::t: loc.y -= 1; break;
         case direction::r: loc.x += 1; break;
         case direction::b: loc.y += 1; break;
-        case direction::n: default: break;
+        default: std::unreachable();
         }
         return loc;
     }
@@ -183,52 +184,7 @@ namespace roadnet {
         }
         printf("Invalid road type: (%d,%d) %d\n", l.x, l.y, m);
         assert(false);
-        return direction::n;
-    }
-
-    static constexpr direction straightDirection(uint8_t m, uint8_t z) {
-        switch (m & 0xF) {
-        case mask(L'║'):
-            return (z & 0x10)
-                ? direction::t
-                : direction::b
-                ;
-        case mask(L'═'):
-            return (z & 0x10)
-                ? direction::r
-                : direction::l
-                ;
-        case mask(L'>'):
-            return direction::l;
-        case mask(L'v'):
-            return direction::t;
-        case mask(L'<'):
-            return direction::r;
-        case mask(L'^'):
-            return direction::b;
-        case mask(L'╔'):
-            return (z & 0x10)
-                ? direction::r
-                : direction::b
-                ;
-        case mask(L'╚'):
-            return (z & 0x10)
-                ? direction::t
-                : direction::r
-                ;
-        case mask(L'╗'):
-            return (z & 0x10)
-                ? direction::b
-                : direction::l
-                ;
-        case mask(L'╝'):
-            return (z & 0x10)
-                ? direction::l
-                : direction::t
-                ;
-        default: break;
-        }
-        return direction::n;
+        return dir;
     }
 
     static uint8_t getMapBits(const flatmap<loction, uint8_t>& map, const loction& l) {

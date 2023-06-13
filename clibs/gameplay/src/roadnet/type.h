@@ -5,12 +5,11 @@
 #include <compare>
 
 namespace roadnet {
-    enum class direction {
+    enum class direction: uint8_t {
         l = 0,
         t,
         r,
         b,
-        n,
     };
 
     enum class roadtype: uint8_t {
