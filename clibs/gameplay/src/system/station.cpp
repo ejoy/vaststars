@@ -151,7 +151,7 @@ static int lupdate(lua_State *L) {
             continue;
         }
         if (auto pconsumer = find_consumer(w, chestslot.item, ep)) {
-            ep.setOutForce(w.rw);
+            ep.setOut(w.rw);
             auto& target_ep = w.rw.Endpoint(pconsumer->ptr->endpoint);
             l.go(target_ep.rev_neighbor, chestslot.item, chestslot.amount);
             chestslot.amount = 0;
@@ -192,7 +192,7 @@ static int lupdate(lua_State *L) {
         chestslot.amount = l.get_item_amount();
         station.lorry--;
         goto_producer(w, s.producers, *producer_idx, l, ep);
-        ep.setOutForce(w.rw);
+        ep.setOut(w.rw);
     }
     for (auto& v : ecs_api::select<ecs::lorry_factory, ecs::assembling, ecs::chest>(w.ecs)) {
         auto& lorry_factory = v.get<ecs::lorry_factory>();
@@ -223,7 +223,7 @@ static int lupdate(lua_State *L) {
         roadnet::lorryid lorryId = w.rw.createLorry(w, chestslot.item);
         auto& l = w.rw.Lorry(lorryId);
         goto_producer(w, s.producers, *producer_idx, l, ep);
-        ep.setOutForce(w.rw, lorryId);
+        ep.setOut(w.rw, lorryId);
     }
     return 0;
 }

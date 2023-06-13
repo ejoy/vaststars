@@ -19,10 +19,8 @@ namespace roadnet::road {
         loction loc;
         lorryid& waitingLorry(network& w);
         bool isReady(network& w);
-        bool setOut(network& w, lorryid id);
-        bool setOut(network& w);
-        void setOutForce(network& w, lorryid id);
-        void setOutForce(network& w);
+        void setOut(network& w, lorryid id);
+        void setOut(network& w);
         std::optional<uint16_t> distance(network& w, road::endpoint const& to) const;
     };
     static_assert(std::is_trivial_v<endpoint>);
