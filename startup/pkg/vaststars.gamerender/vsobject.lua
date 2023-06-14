@@ -24,18 +24,18 @@ local function remove(self)
 end
 
 local function update(self, t)
-    self.type = t.type or self.type
     self.prototype_name = t.prototype_name or self.prototype_name
     local typeobject = iprototype.queryByName(self.prototype_name)
 
-    self.state = t.state or self.state or "opaque"
-    self.color = t.color or self.color or CONSTRUCT_COLOR_INVALID
-    self.animation_name = t.animation_name or self.animation_name
-    self.final_frame = t.final_frame or self.final_frame or false
-    self.emissive_color = t.emissive_color or self.emissive_color
-    self.outline_scale = t.outline_scale or self.outline_scale
-
-    self.game_object:update(typeobject.model, self.state, self.color, self.animation_name, self.final_frame, self.emissive_color, self.outline_scale)
+    self.game_object:update {
+        prefab = typeobject.model,
+        state = t.state,
+        color = t.color,
+        animation_name = t.animation_name,
+        final_frame = t.final_frame,
+        emissive_color = t.emissive_color,
+        outline_scale = t.outline_scale
+    }
 end
 
 local function has_animation(self, animation_name)

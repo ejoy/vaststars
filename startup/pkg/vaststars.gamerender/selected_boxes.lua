@@ -5,7 +5,6 @@ local w = world.w
 local mc = import_package "ant.math".constant
 local math3d = require "math3d"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
-local coord_system = ecs.require "terrain"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local irl = ecs.import.interface "ant.render|irender_layer"
 local imaterial = ecs.import.interface "ant.asset|imaterial"
@@ -84,10 +83,10 @@ local LINE_QUATERNIONS <const> = {
 }
 
 local LINE_SCALE <const> = {
-    function(w, h) return math3d.ref(math3d.vector((w-1)*2, 1, 1)) end, -- top
-    function(w, h) return math3d.ref(math3d.vector((w-1)*2, 1, 1)) end, -- bottom
-    function(w, h) return math3d.ref(math3d.vector((h-1)*2, 1, 1)) end, -- left
-    function(w, h) return math3d.ref(math3d.vector((h-1)*2, 1, 1)) end, -- right
+    function(w, h) return math3d.vector((w-1)*2, 1, 1) end, -- top
+    function(w, h) return math3d.vector((w-1)*2, 1, 1) end, -- bottom
+    function(w, h) return math3d.vector((h-1)*2, 1, 1) end, -- left
+    function(w, h) return math3d.vector((h-1)*2, 1, 1) end, -- right
 }
 
 local LINE_OFFSET <const> = {
@@ -116,11 +115,11 @@ end
 function mt:set_position(center)
     self.center = center
     for idx, o in pairs(self.corners) do
-        local position = math3d.ref(math3d.muladd(CORNER_DIRECTIONS[idx], self.corner_offset, self.center))
+        local position = math3d.live(math3d.muladd(CORNER_DIRECTIONS[idx], self.corner_offset, self.center))
         o:send("obj_motion", "set_position", position)
     end
     for idx, o in pairs(self.lines) do
-        local position = math3d.ref(math3d.add(math3d.muladd(LINE_DIRECTIONS[idx], self.line_offset, self.center), LINE_OFFSET[idx]))
+        local position = math3d.live(math3d.add(math3d.muladd(LINE_DIRECTIONS[idx], self.line_offset, self.center), LINE_OFFSET[idx]))
         o:send("obj_motion", "set_position", position)
     end
 end
@@ -137,8 +136,8 @@ function mt:set_wh(w, h)
 
     local width = (w - 1) * 10
     local height = (h - 1) * 10
-    self.corner_offset = math3d.ref(math3d.vector(width / 2, 0, height / 2))
-    self.line_offset = math3d.ref(math3d.vector(w * 10 / 2, 0, h * 10 / 2))
+    self.corner_offset.v = math3d.vector(width / 2, 0, height / 2)
+    self.line_offset.v = math3d.vector(w * 10 / 2, 0, h * 10 / 2)
     self.w = w
     self.h = h
 
@@ -146,7 +145,7 @@ function mt:set_wh(w, h)
         self.corners[idx] = create_object(self.prefabs[1], {
             s = mc.ONE,
             r = CORNER_QUATERNIONS[idx],
-            t = math3d.ref(math3d.muladd(CORNER_DIRECTIONS[idx], self.corner_offset, self.center)),
+            t = math3d.live(math3d.muladd(CORNER_DIRECTIONS[idx], self.corner_offset, self.center)),
         })
         if mc.NULL ~= self.color then
             self.corners[idx]:send("set_color", self.color)
@@ -157,9 +156,9 @@ function mt:set_wh(w, h)
         for idx, f in ipairs(LINE_CHECK) do
             if f(w, h) then
                 self.lines[idx] = create_object(self.prefabs[2], {
-                    s = LINE_SCALE[idx](w, h),
+                    s = math3d.live(LINE_SCALE[idx](w, h)),
                     r = LINE_QUATERNIONS[idx],
-                    t = math3d.ref(math3d.add(math3d.muladd(LINE_DIRECTIONS[idx], self.line_offset, self.center), LINE_OFFSET[idx])),
+                    t = math3d.live(math3d.add(math3d.muladd(LINE_DIRECTIONS[idx], self.line_offset, self.center), LINE_OFFSET[idx])),
                 })
                 if mc.NULL ~= self.color then
                     self.lines[idx]:send("set_color", self.color)
@@ -170,24 +169,23 @@ function mt:set_wh(w, h)
 end
 
 function mt:set_color(color)
-    self.color = color
+    self.color.v = math3d.vector(color)
     for _, o in pairs(self.corners) do
-        o:send("set_color", color)
+        o:send("set_color", math3d.live(color))
     end
     for _, o in pairs(self.lines) do
-        o:send("set_color", color)
+        o:send("set_color", math3d.live(color))
     end
 end
 
 function mt:set_color_transition(color, duration)
     local t = 0
-    local origin_color = self.color
-    self.color = color
+    local from = self.color
+    local to = color
 
     iupdate.add(function()
         t = t + DELTA_TIME
-        local c = math3d.ref(math3d.lerp(origin_color, color, t/duration))
-        self:set_color(c)
+        self:set_color(math3d.lerp(from, to, t/duration))
         return t < duration
     end)
 end
@@ -202,7 +200,7 @@ return function(prefabs, center, color, w, h)
         line_offset = math3d.ref(math3d.vector(w * 10 / 2, 0, h * 10 / 2)),
         lines = {},
         center = center,
-        color = color,
+        color = math3d.ref(color),
         prefabs = prefabs,
         w = w,
         h = h,
@@ -212,7 +210,7 @@ return function(prefabs, center, color, w, h)
         M.corners[idx] = create_object(prefabs[1], {
             s = mc.ONE,
             r = CORNER_QUATERNIONS[idx],
-            t = math3d.ref(math3d.muladd(CORNER_DIRECTIONS[idx], M.corner_offset, M.center)),
+            t = math3d.live(math3d.muladd(CORNER_DIRECTIONS[idx], M.corner_offset, M.center)),
         })
         if mc.NULL ~= color then
             M.corners[idx]:send("set_color", color)
@@ -223,9 +221,9 @@ return function(prefabs, center, color, w, h)
         for idx, f in ipairs(LINE_CHECK) do
             if f(w, h) then
                 M.lines[idx] = create_object(prefabs[2], {
-                    s = LINE_SCALE[idx](w, h),
+                    s = math3d.live(LINE_SCALE[idx](w, h)),
                     r = LINE_QUATERNIONS[idx],
-                    t = math3d.ref(math3d.add(math3d.muladd(LINE_DIRECTIONS[idx], M.line_offset, M.center), LINE_OFFSET[idx])),
+                    t = math3d.live(math3d.add(math3d.muladd(LINE_DIRECTIONS[idx], M.line_offset, M.center), LINE_OFFSET[idx])),
                 })
                 if mc.NULL ~= color then
                     M.lines[idx]:send("set_color", color)

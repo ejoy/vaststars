@@ -171,13 +171,10 @@ function terrain:reset_mineral(map)
         local srt = {r = ROTATORS[math.random(1, 4)], t = self:get_position_by_coord(x, y, MINERAL_WIDTH, MINERAL_HEIGHT)}
         self.eids[#self.eids+1] = igame_object.create {
             prefab = prefab,
-            effect = nil,
             group_id = self:get_group_id(x, y),
             state = "opaque",
             color = COLOR_INVALID,
             srt = srt,
-            parent = nil,
-            slot = nil,
             render_layer = RENDER_LAYER.MINERAL
         }
     end

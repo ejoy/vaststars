@@ -112,14 +112,23 @@ local function __get_or_create_lorry(lorry_id, classid, mask, x, y, toward, offs
         return lorry
     end
 
+    if classid == 0 then
+        log.error("lorry classid is 0")
+        return
+    end
+
     if lorry then
+        assert(false, "lorry upgrades are not supported")
         lorry:remove()
     end
 
-    --
     local start = iprototype_cache.get("lorry_manager").start
     local prototype_name, dir = mask_to_prototype_name_dir(mask)
     local road_srt = {s = mc.ONE, r = ROTATORS[dir], t = math3d.vector(iterrain:get_position_by_coord(x, y, ROAD_TILE_WIDTH_SCALE, ROAD_TILE_HEIGHT_SCALE))}
+    if not rawget(start, prototype_name) then
+        log.error(("can not found start keyframes(%s, %s)"):format(prototype_name, dir))
+        return
+    end
     local srt = start[prototype_name]
     local road_mat = math3d.matrix {s = road_srt.s, r = road_srt.r, t = road_srt.t}
     local mat = math3d.matrix {s = srt.s, r = srt.r, t = srt.t}
@@ -127,10 +136,10 @@ local function __get_or_create_lorry(lorry_id, classid, mask, x, y, toward, offs
     local s, r, t = math3d.srt(mat)
     local last_srt = {s = math3d.ref(s), r = math3d.ref(r), t = math3d.ref(t)}
 
-    local typeobject = iprototype.queryById(classid)
+    local typeobject = assert(iprototype.queryById(classid))
     local kfs = __gen_keyframes(last_srt, mask, x, y, toward, offset)
     assert(kfs[1])
-    lorry = create_lorry("/pkg/vaststars.resources/" .. typeobject.model, kfs[1].s, kfs[1].r, kfs[1].t, motion_events)
+    lorry = create_lorry(typeobject.model, kfs[1].s, kfs[1].r, kfs[1].t, motion_events)
     lorry.classid = classid
     lorry.last_srt = last_srt
     lorries[lorry_id] = lorry
@@ -154,6 +163,9 @@ handlers.straight = function(lorry_id, classid, item_classid, item_amount, mask,
     assert(offset == 0 or offset == 1)
 
     local lorry = __get_or_create_lorry(lorry_id, classid, mask, x, y, toward, offset)
+    if not lorry then
+        return
+    end
     lorry:motion_opt("update_keyframes_on_change", mask, x, y, toward, offset, lorry.last_srt)
     lorry:motion_opt("set_ratio", maxprogress - progress, maxprogress)
     lorry:set_item(item_classid, item_amount)
@@ -164,6 +176,9 @@ handlers.cross = function(lorry_id, classid, item_classid, item_amount, mask, x,
     assert(offset == 0 or offset == 1)
 
     local lorry = __get_or_create_lorry(lorry_id, classid, mask, x, y, toward, offset)
+    if not lorry then
+        return
+    end
     lorry:motion_opt("update_keyframes_on_change", mask, x, y, toward, offset, lorry.last_srt)
     lorry:motion_opt("set_ratio", maxprogress - progress, maxprogress)
     lorry:set_item(item_classid, item_amount)
@@ -191,7 +206,21 @@ local function clear()
     lorries = {}
 end
 
+local function get(lorry_id)
+    return lorries[lorry_id]
+end
+
+local function remove(lorry_id)
+    local lorry = lorries[lorry_id]
+    if lorry then
+        lorry:remove()
+        lorries[lorry_id] = nil
+    end
+end
+
 return {
     update = update,
     clear = clear,
+    get = get,
+    remove = remove
 }

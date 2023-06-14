@@ -109,6 +109,8 @@ policy "render_updates"
     .require_system "road_system"
     .require_system "chimney_system"
 
+policy "game"
+    .require_system "pick_object_sys"
 ----------------------------------------------------
 ----------------------------------------------------
 system "init_system"
@@ -116,6 +118,7 @@ system "init_system"
     .require_policy "engine_utils"
     .require_policy "render_updates"
     .require_policy "mod"
+    .require_policy "game"
     .implement "init_system.lua"
     .method "init_world"
     .method "gameplay_update"
@@ -195,6 +198,13 @@ interface "igameplay"
     .method "remove_entity"
     .method "update_chimney_recipe"
 
+system "pick_object_sys"
+    .implement "pick_object_system.lua"
+    .method "update_world"
+
+interface "ipick_object"
+    .implement "pick_object_system.lua"
+    .method "blur_pick"
 ----------------------------------------------------
 ----------------------------------------------------
 -- render_updates

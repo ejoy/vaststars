@@ -37,7 +37,7 @@ local function pipeline(world, cworld, name)
 end
 
 return function ()
-    local world = {}
+    local world = {frame = 0}
     local ecs = luaecs.world()
     local components = {}
     for _, c in ipairs(status.components) do
@@ -206,14 +206,15 @@ return function ()
         roadnet.reset(cworld, ...)
         self._endpoints = roadnet.endpoint_loction(cworld)
     end
-
     function world:roadnet_each_lorry(...)
         return roadnet.each_lorry(cworld, ...)
+    end
+    function world:roadnet_remove_lorry(...)
+        return roadnet.remove_lorry(cworld, ...)
     end
 
     function world:now()
         return self.frame
     end
-
     return world
 end

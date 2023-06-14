@@ -16,7 +16,9 @@ function entity_object_sys:scene_update()
         local event_type = msg[4]
         local e <close> = w:entity(msg[5])
         local f = assert(events[event_type])
-        f(object, e, table.unpack(msg, 6))
+        if e then
+            f(object, e, table.unpack(msg, 6))
+        end
     end
 
     for _, eid in entity_object_remove_mb:unpack() do
@@ -31,7 +33,9 @@ function ientity_object.create(eid, events)
     end
 
     function outer:remove()
-        world:pub {"entity_object_remove", eid}
+        assert(self.id ~= 0, "entity_object already removed")
+        world:pub {"entity_object_remove", self.id}
+        self.id = 0
     end
     return outer
 end

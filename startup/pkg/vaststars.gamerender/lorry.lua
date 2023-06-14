@@ -10,6 +10,7 @@ local ivs = ecs.import.interface "ant.scene|ivisible_state"
 local mathpkg = import_package "ant.math"
 local mc = mathpkg.constant
 local irl = ecs.import.interface "ant.render|irender_layer"
+local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 
 local prefab_slots = require("engine.prefab_parser").slots
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
@@ -42,18 +43,13 @@ local function __create_motion_object(s, r, t, events)
 end
 
 local function __create_lorry_object(prefab, parent)
-    local p = sampler_group:create_instance(prefab, parent)
-    function p:on_ready()
-        for _, eid in ipairs(self.tag["*"]) do
-            local e <close> = w:entity(eid, "render_object?update")
-            if e.render_object then
-                irl.set_layer(e, RENDER_LAYER.LORRY)
-            end
-        end
-    end
-    function p:on_message()
-    end
-    return world:create_object(p)
+    return igame_object.create {
+        prefab = prefab,
+        group_id = 0,
+        state = "opaque",
+        parent = parent,
+        render_layer = RENDER_LAYER.LORRY,
+    }
 end
 
 local function __create_shadow_object(parent)
@@ -113,10 +109,10 @@ local function create(prefab, s, r, t, motion_events)
 
     local outer = {objs = {}, item_classid = 0, item_amount = 0}
     local motion_obj = __create_motion_object(s, r, t, motion_events)
-    local prefab_obj = __create_lorry_object(prefab, motion_obj.id)
+    local lorry_obj = __create_lorry_object(prefab, motion_obj.id)
     local shadow_obj = __create_shadow_object(motion_obj.id)
     outer.objs[#outer.objs + 1] = motion_obj
-    outer.objs[#outer.objs + 1] = prefab_obj
+    outer.objs[#outer.objs + 1] = lorry_obj
     outer.objs[#outer.objs + 1] = shadow_obj
 
     function outer:remove()
@@ -145,13 +141,21 @@ local function create(prefab, s, r, t, motion_events)
 
         local typeobject = iprototype.queryById(item_classid)
         assert(typeobject.pile_model)
-        local slots = prefab_slots(prefab)
+        local slots = prefab_slots(RESOURCES_BASE_PATH:format(prefab))
         assert(slots.item)
 
         self.objs[ITEM_INDEX] = __create_item_object(RESOURCES_BASE_PATH:format(typeobject.pile_model), motion_obj.id, slots.item.scene)
     end
     function outer:motion_opt(...)
         motion_obj:send(...)
+    end
+    function outer:set_outline(b)
+        self.b = b
+        if self.b then
+            lorry_obj:update {state = "outline", outline_scale = 1.0}
+        else
+            lorry_obj:update {state = "opaque"}
+        end
     end
     return outer
 end

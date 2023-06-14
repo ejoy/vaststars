@@ -268,7 +268,6 @@ local igame_object = ecs.interface "igame_object"
 --[[
 init = {
     prefab, -- the relative path to the prefab file
-    effect, -- the relative path to the effect file
     group_id, -- the group id of the hitch, used to cull the hitch
     state, -- "translucent", "opaque", "opacity"
     color,
@@ -295,14 +294,15 @@ function igame_object.create(init)
         "ant.scene|hitch_object",
     }
 
+    local srt = init.srt or {}
     local hitch_entity_object = ientity_object.create(ecs.group(init.group_id):create_entity{
         policy = policy,
         data = {
             name = init.prefab, -- for debug
             scene = {
-                s = init.srt.s,
-                t = init.srt.t,
-                r = init.srt.r,
+                s = srt.s,
+                t = srt.t,
+                r = srt.r,
                 parent = init.parent,
             },
             hitch = {
@@ -317,11 +317,24 @@ function igame_object.create(init)
         self.hitch_entity_object:remove()
     end
 
-    local function update(self, prefab_file_name, state, color, animation_name, final_frame, emissive_color, outline_scale)
-        children.instance:send("detach_hitch", hitch_entity_object.id)
-        children = __get_hitch_children(RESOURCES_BASE_PATH:format(prefab_file_name), state, color, animation_name, final_frame, emissive_color, init.render_layer, outline_scale)
-        children.instance:send("attach_hitch", hitch_entity_object.id)
+    -- prefab_file_name, state, color, animation_name, final_frame, emissive_color, outline_scale
+    local function update(self, t)
+        for k, v in pairs(t) do
+            self.__cache[k] = v or self.__cache[k]
+        end
 
+        children.instance:send("detach_hitch", hitch_entity_object.id)
+        children = __get_hitch_children(
+            RESOURCES_BASE_PATH:format(self.__cache.prefab),
+            self.__cache.state,
+            self.__cache.color,
+            self.__cache.animation_name,
+            self.__cache.final_frame,
+            self.__cache.emissive_color,
+            self.__cache.render_layer,
+            self.__cache.outline_scale
+        )
+        children.instance:send("attach_hitch", hitch_entity_object.id)
         self.hitch_entity_object:send("group", children.hitch_group_id)
     end
     local function has_animation(self, animation_name)
@@ -370,6 +383,7 @@ function igame_object.create(init)
     children.instance:send("attach_hitch", hitch_entity_object.id)
 
     local outer = {
+        __cache = init,
         group_id = init.group_id,
         hitch_entity_object = hitch_entity_object,
         srt_modifier = imodifier.create_bone_modifier(

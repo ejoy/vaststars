@@ -232,6 +232,7 @@
                 guide_progress = 0,
                 construct_menu = {},
                 cur_construct_menu = "",
+                remove_lorry = false,
             })
             function start.clickButton(event, ...)
                 ui_sys.pub {...}
@@ -300,6 +301,11 @@
                     </div>
                 </div>
             </div>
+
+            <workbutton data-event-click="clickButton('remove_lorry')" style = "position: absolute; left: 138.50vmin; top: 81vmin;" data-if = "remove_lorry">
+                <div class="workbutton-bg" style = "background-image: textures/construct/power.texture" />
+                <div class="workbutton-text" >删除小车</div>
+            </workbutton>
         </div>
     </body>
 </rml>

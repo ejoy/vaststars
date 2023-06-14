@@ -319,12 +319,12 @@ function M:restore(index)
 
     terrain:reset_mineral(mineral_map)
 
-    igameplay.build_world()
-    iroadnet:editor_build()
-
     iscience.update_tech_list(gameplay_core.get_world())
     debugger.set_free_mode(gameplay_core.get_storage().game_mode == "free")
     restore_world()
+
+    igameplay.build_world()
+    iroadnet:editor_build()
 
     iui.open({"construct.rml"})
     iui.open({"message_pop.rml"})

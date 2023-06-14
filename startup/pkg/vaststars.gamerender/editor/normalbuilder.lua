@@ -382,7 +382,7 @@ local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobjec
                 end
             end
         end
-        o:set_color(color)
+        o:set_color_transition(color, 400)
     end
 end
 

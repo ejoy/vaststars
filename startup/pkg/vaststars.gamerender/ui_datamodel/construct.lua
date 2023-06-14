@@ -31,7 +31,9 @@ local construct_menu_cfg = import_package "vaststars.prototype"("construct_menu"
 local ichest = require "gameplay.interface.chest"
 local create_event_handler = require "ui_datamodel.common.event_handler"
 local ipower_line = ecs.require "power_line"
-local imountain = ecs.require "engine.mountain"
+local iupdate = ecs.import.interface "vaststars.gamerender|iupdate"
+local ipick_object = ecs.import.interface "vaststars.gamerender|ipick_object"
+local lorry_manager = ecs.require "lorry_manager"
 
 local rotate_mb = mailbox:sub {"rotate"}
 local build_mb = mailbox:sub {"build"}
@@ -43,19 +45,28 @@ local help_mb = mailbox:sub {"help"}
 local move_md = mailbox:sub {"move"}
 local teardown_mb = mailbox:sub {"teardown"}
 local construct_entity_mb = mailbox:sub {"construct_entity"}
-local focus_on_building_mb = mailbox:sub {"focus_on_building"}
-local on_pickup_object_mb = mailbox:sub {"on_pickup_object"}
 local inventory_mb = mailbox:sub {"inventory"}
 local switch_concise_mode_mb = mailbox:sub {"switch_concise_mode"}
 local gesture_tap_mb = world:sub{"gesture", "tap"}
 local gesture_long_press_mb = world:sub{"gesture", "long_press"}
 local gesture_pan_mb = world:sub {"gesture", "pan"}
 local focus_tips_event = world:sub {"focus_tips"}
+local remove_lorry_mb = mailbox:sub {"remove_lorry"}
+
 local ipower = ecs.require "power"
 local audio = import_package "ant.audio"
+local now = require "engine.time".now
+
+local CLASS = {
+    Lorry = 1,
+    Object = 2,
+    Mineral = 3,
+    Mountain = 4,
+}
 
 local builder, builder_datamodel, builder_ui
 local excluded_pickup_id -- object id
+local pick_lorry_id
 local handle_pickup = true
 
 local event_handler = create_event_handler(
@@ -77,7 +88,7 @@ local event_handler = create_event_handler(
     end
 )
 
-local function __on_pickup_building(datamodel, object)
+local function __on_pick_building(datamodel, object)
     if not excluded_pickup_id or excluded_pickup_id == object.id then
         audio.play("event:/construct/construct4_big")
         if idetail.show(object.id) then
@@ -91,7 +102,7 @@ local function __on_pickup_building(datamodel, object)
     end
 end
 
-local function __on_pickup_mineral(datamodel, mineral)
+local function __on_pick_mineral(datamodel, mineral)
     iui.close "detail_panel.rml"
     iui.close "building_arc_menu.rml"
     local typeobject = iprototype.queryByName(mineral)
@@ -103,6 +114,13 @@ local function __on_pickup_ground(datamodel)
     iui.open({"main_menu.rml"})
     gameplay_core.world_update = false
     return true
+end
+
+local function __unpick_lorry(lorry_id)
+    local lorry = lorry_manager.get(lorry_id)
+    if lorry then
+        lorry:set_outline(false)
+    end
 end
 
 local function __get_construct_menu()
@@ -233,6 +251,7 @@ function M:stage_ui_update(datamodel)
         if not builder:confirm(builder_datamodel) then
             __clean(datamodel)
             __switch_status("default", function()
+                gameplay_core.world_update = true
                 __clean(datamodel)
             end)
         end
@@ -241,14 +260,15 @@ function M:stage_ui_update(datamodel)
     for _ in quit_mb:unpack() do
         __clean(datamodel)
         __switch_status("default", function()
+            gameplay_core.world_update = true
             __clean(datamodel)
-            igameplay.build_world()
         end)
     end
 
     for _ in guide_on_going_mb:unpack() do
         __clean(datamodel)
         __switch_status("default", function()
+            gameplay_core.world_update = true
             __clean(datamodel)
         end)
     end
@@ -393,47 +413,68 @@ function M:stage_camera_usage(datamodel)
         end
     end
 
-    local function __get_mineral(x, y)
-        for _, pos in ipairs(icamera_controller.screen_to_world(x, y, PLANES)) do
-            local coord = terrain:get_coord_by_position(pos)
-            if coord then
-                local r = terrain:get_mineral_tiles(coord[1], coord[2])
-                if r then
-                    return r
-                end
-            end
-        end
-
-        for _, pos in ipairs(icamera_controller.screen_to_world(x, y, PLANES)) do
-            local coord = terrain:get_coord_by_position(pos)
-            if coord then
-                local r = imountain:has_mountain(coord[1], coord[2])
-                if r then
-                    return assert(iprototype.queryFirstByType("mountain")).name
-                end
-            end
-        end
-    end
-
     for _, _, v in gesture_tap_mb:unpack() do
         local x, y = v.x, v.y
         if not handle_pickup then
             goto continue
         end
 
-        local object = __get_building(x, y)
-        local mineral = __get_mineral(x, y)
-        if object then -- object may be nil, such as when user click on empty space
-            if __on_pickup_building(datamodel, object) then
-                leave = false
+        for _, pos in ipairs(icamera_controller.screen_to_world(x, y, PLANES)) do
+            local coord = terrain:get_coord_by_position(pos)
+            if coord then
+                local o = ipick_object.blur_pick(coord[1], coord[2])
+                if o and o.class == CLASS.Lorry then
+                    if pick_lorry_id then
+                        __unpick_lorry(pick_lorry_id)
+                    end
+                    idetail.unselected()
+                    datamodel.is_concise_mode = false
+
+                    pick_lorry_id = o.id
+
+                    o.lorry:set_outline(true)
+                    local t = now()
+                    local lorry_id = o.id
+                    iupdate.add(function()
+                        if t + 2000 > now() then
+                            return true
+                        end
+                        __unpick_lorry(lorry_id)
+                        datamodel.remove_lorry = false
+                        return false
+                    end)
+                    datamodel.remove_lorry = true
+                elseif o and o.class == CLASS.Object then
+                    if __on_pick_building(datamodel, o.object) then
+                        __unpick_lorry(pick_lorry_id)
+                        datamodel.remove_lorry = false
+                        pick_lorry_id = nil
+                        leave = false
+                    end
+                elseif o and o.class == CLASS.Mineral then
+                    if __on_pick_mineral(datamodel, o.mineral) then
+                        __unpick_lorry(pick_lorry_id)
+                        datamodel.remove_lorry = false
+                        pick_lorry_id = nil
+                        leave = false
+                    end
+                elseif o and o.class == CLASS.Mountain then
+                    if __on_pick_mineral(datamodel, o.mountain) then
+                        __unpick_lorry(pick_lorry_id)
+                        datamodel.remove_lorry = false
+                        pick_lorry_id = nil
+                        leave = false
+                    end
+                else
+                    __unpick_lorry(pick_lorry_id)
+                    datamodel.remove_lorry = false
+                    pick_lorry_id = nil
+
+                    idetail.unselected()
+                    datamodel.is_concise_mode = false
+                end
+                break
             end
-        elseif mineral then
-            if __on_pickup_mineral(datamodel, mineral) then
-                leave = false
-            end
-        else
-            idetail.unselected()
-            datamodel.is_concise_mode = false
         end
 
         if leave then
@@ -568,23 +609,6 @@ function M:stage_camera_usage(datamodel)
         end
     end
 
-    for _, _, _, object_id in on_pickup_object_mb:unpack() do
-        local object = assert(objects:get(object_id))
-        __on_pickup_building(datamodel, object)
-    end
-
-    local function focus_on_position_cb(object_id)
-        return function()
-            iui.redirect("construct.rml", "on_pickup_object", object_id)
-        end
-    end
-    for _, _, _, object_id in focus_on_building_mb:unpack() do
-        local object = assert(objects:get(object_id))
-        local typeobject = iprototype.queryByName(object.prototype_name)
-        local w, h = iprototype.unpackarea(typeobject.area)
-        icamera_controller.focus_on_position(coord_system:get_position_by_coord(object.x, object.y, w, h), focus_on_position_cb(object_id))
-    end
-
     for _ in inventory_mb:unpack() do
         for _, object in objects:all() do -- TODO: optimize
             local typeobject = iprototype.queryByName(object.prototype_name)
@@ -597,6 +621,26 @@ function M:stage_camera_usage(datamodel)
 
     for _ in switch_concise_mode_mb:unpack() do
         datamodel.is_concise_mode = not datamodel.is_concise_mode
+    end
+
+    for _ in remove_lorry_mb:unpack() do
+        if pick_lorry_id then
+            gameplay_core.get_world():roadnet_remove_lorry(pick_lorry_id)
+            lorry_manager.remove(pick_lorry_id)
+
+            __unpick_lorry(pick_lorry_id)
+            pick_lorry_id = nil
+            datamodel.remove_lorry = false
+
+            -- local object = assert(objects:get(object_id))
+            -- local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+            -- assert(e.assembling.recipe ~= 0)
+
+            -- local _, results = assembling_common.get(gameplay_core.get_world(), e)
+            -- assert(results and results[1])
+            -- local multiple = results[1].limit + 1
+            -- iassembling.set_option(gameplay_core.get_world(), e, {ingredientsLimit = multiple, resultsLimit = multiple})    
+        end
     end
 
     iobject.flush()
