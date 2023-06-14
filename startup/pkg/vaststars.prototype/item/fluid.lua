@@ -191,6 +191,17 @@ prototype "丁二烯" {
     item_description = "一种化工气体",
 }
 
+prototype "氦气" {
+    type = {"fluid"},
+    catagory = {"普通气体"},
+    icon = "textures/fluid/gas-butadiene.texture",
+    color = {1, 1, 1, 1},
+    heat_capacity = "0.05KJ",
+    default_temperature = 25,
+    max_temperature = 200,
+    item_description = "一种化工气体",
+}
+
 prototype "润滑油" {
     type = {"fluid"},
     catagory = {"化学液体"},
@@ -214,6 +225,17 @@ prototype "氨气" {
 }
 
 prototype "硫酸" {
+    type = {"fluid"},
+    catagory = {"化学液体"},
+    icon = "textures/fluid/liquid-hydrochloric.texture",
+    color = {0.75, 0.75, 0.75, 1},
+    heat_capacity = "0.08kJ",
+    default_temperature = 25,
+    max_temperature = 100,
+    item_description = "一种化工液体",
+}
+
+prototype "四氯化钛" {
     type = {"fluid"},
     catagory = {"化学液体"},
     icon = "textures/fluid/liquid-hydrochloric.texture",

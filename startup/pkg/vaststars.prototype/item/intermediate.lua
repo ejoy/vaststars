@@ -231,6 +231,26 @@ prototype "氢氧化钠" {
     group = {"化工"},
 }
 
+prototype "金红石" {
+    type = {"item"},
+    stack = 12,
+    pile = "4x4x4",
+    pile_model = "prefabs/stackeditems/gravel.prefab",
+    icon = "textures/construct/coal.texture",
+    item_description = "含钛化合物的矿石",
+    group = {"金属"},
+}
+
+prototype "钛板" {
+    type = {"item"},
+    stack = 12,
+    pile = "4x4x4",
+    pile_model = "prefabs/stackeditems/gravel.prefab",
+    icon = "textures/construct/coal.texture",
+    item_description = "钛制材料锻造加工成的钛板",
+    group = {"金属"},
+}
+
 -- prototype "石头" {
 --     type = {"item"},
 --     stack = 10,
