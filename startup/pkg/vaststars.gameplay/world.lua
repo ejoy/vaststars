@@ -37,7 +37,10 @@ local function pipeline(world, cworld, name)
 end
 
 return function ()
-    local world = {frame = 0}
+    local world = {
+        _frame = 0,
+        _dirty = 0,
+    }
     local ecs = luaecs.world()
     local components = {}
     for _, c in ipairs(status.components) do
@@ -88,12 +91,19 @@ return function ()
     local pipeline_build = pipeline(world, cworld, "build")
     local pipeline_backup = pipeline(world, cworld, "backup")
     local pipeline_restore = pipeline(world, cworld, "restore")
-
+    
+    function world:dirty(flags)
+        self._dirty = self._dirty & flags
+    end
     function world:update()
+        if self._dirty ~= 0 then
+            self._dirty = 0
+            self:build()
+        end
         pipeline_update()
         ecs:visitor_update()
         ecs:update()
-        self.frame = self.frame + 1
+        self._frame = self._frame + 1
     end
     function world:build()
         pipeline_clean()
@@ -214,7 +224,7 @@ return function ()
     end
 
     function world:now()
-        return self.frame
+        return self._frame
     end
     return world
 end
