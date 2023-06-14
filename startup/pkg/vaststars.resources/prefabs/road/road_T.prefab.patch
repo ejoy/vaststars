@@ -72,7 +72,7 @@ data:
   slot:
     follow_flag: 1
   tag:
-    empty1
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -104,7 +104,7 @@ data:
   slot:
     follow_flag: 1
   tag:
-    empty3
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -120,7 +120,7 @@ data:
   slot:
     follow_flag: 1
   tag:
-    empty4
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -152,7 +152,7 @@ data:
   slot:
     follow_flag: 1
   tag:
-    empty6
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -168,7 +168,7 @@ data:
   slot:
     follow_flag: 1
   tag:
-    empty1
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -216,7 +216,7 @@ data:
   slot:
     follow_flag: 1
   tag:
-    empty1
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -232,7 +232,7 @@ data:
   slot:
     follow_flag: 1
   tag:
-    empty4
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -280,7 +280,7 @@ data:
   slot:
     follow_flag: 1
   tag:
-    empty1
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -296,7 +296,7 @@ data:
     follow_flag: 1
     joint_name: None
   tag:
-    slot1
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -325,7 +325,7 @@ data:
     follow_flag: 1
     joint_name: None
   tag:
-    slot3
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -355,7 +355,7 @@ data:
     follow_flag: 1
     joint_name: None
   tag:
-    slot5
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -370,7 +370,7 @@ data:
     follow_flag: 1
     joint_name: None
   tag:
-    slot6
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -399,7 +399,7 @@ data:
     follow_flag: 1
     joint_name: None
   tag:
-    slot2
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -429,7 +429,7 @@ data:
     follow_flag: 1
     joint_name: None
   tag:
-    slot4
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -443,7 +443,7 @@ data:
     follow_flag: 1
     joint_name: None
   tag:
-    slot5
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -472,7 +472,7 @@ data:
     follow_flag: 1
     joint_name: None
   tag:
-    slot7
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -502,7 +502,7 @@ data:
     follow_flag: 1
     joint_name: None
   tag:
-    slot9
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag

@@ -8,7 +8,7 @@ data:
   slot:
     follow_flag: 1
   tag:
-    ""
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -38,7 +38,7 @@ data:
   slot:
     follow_flag: 1
   tag:
-    hitch5
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -68,7 +68,7 @@ data:
   slot:
     follow_flag: 1
   tag:
-    ""
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag

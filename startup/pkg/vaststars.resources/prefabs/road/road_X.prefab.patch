@@ -68,7 +68,7 @@ data:
   scene:
     r: {0, -0.7071067690849304, 0, 0.7071067690849304}
     s: {1, 1, 1}
-    t: {7.5 0, 3.5}
+    t: {7.5, 0, 3.5}
   slot:
     follow_flag: 1
   tag:
@@ -84,7 +84,7 @@ data:
   scene:
     r: {0, -0.7071067690849304, 0, 0.7071067690849304}
     s: {1, 1, 1}
-    t: {-7.5 0, 3.5}
+    t: {-7.5, 0, 3.5}
   slot:
     follow_flag: 1
   tag:
@@ -100,7 +100,7 @@ data:
   scene:
     r: {0, 0.7071067690849304, 0, 0.7071067690849304}
     s: {1, 1, 1}
-    t: {-7.5 0, -3.5}
+    t: {-7.5, 0, -3.5}
   slot:
     follow_flag: 1
   tag:
@@ -116,7 +116,7 @@ data:
   scene:
     r: {0, 0.7071067690849304, 0, 0.7071067690849304}
     s: {1, 1, 1}
-    t: {7.5 0, -3.5}
+    t: {7.5, 0, -3.5}
   slot:
     follow_flag: 1
   tag:
@@ -136,7 +136,7 @@ data:
   slot:
     follow_flag: 1
   tag:
-    empty15
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -164,11 +164,11 @@ data:
   scene:
     r: {0, 0.7071067690849304, 0, 0.7071067690849304}
     s: {1, 1, 1}
-    t: {7.5 0, -3.5}
+    t: {7.5, 0, -3.5}
   slot:
     follow_flag: 1
   tag:
-    empty17
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -184,7 +184,7 @@ data:
   slot:
     follow_flag: 1
   tag:
-    empty18
+    ""
 policy:
   ant.general|name
   ant.general|tag
@@ -200,7 +200,7 @@ data:
   slot:
     follow_flag: 1
   tag:
-    empty19
+    ""
 policy:
   ant.general|name
   ant.general|tag
@@ -212,11 +212,11 @@ data:
   scene:
     r: {0, -0.7071067690849304, 0, 0.7071067690849304}
     s: {1, 1, 1}
-    t: {-7.5 0, 3.5}
+    t: {-7.5, 0, 3.5}
   slot:
     follow_flag: 1
   tag:
-    empty20
+    ""
 policy:
   ant.general|name
   ant.general|tag
@@ -232,7 +232,7 @@ data:
   slot:
     follow_flag: 1
   tag:
-    empty21
+    ""
 policy:
   ant.general|name
   ant.general|tag
@@ -248,7 +248,7 @@ data:
   slot:
     follow_flag: 1
   tag:
-    empty22
+    ""
 policy:
   ant.general|name
   ant.general|tag
@@ -260,11 +260,11 @@ data:
   scene:
     r: {0, 0.7071067690849304, 0, 0.7071067690849304}
     s: {1, 1, 1}
-    t: {7.5 0, -3.5}
+    t: {7.5, 0, -3.5}
   slot:
     follow_flag: 1
   tag:
-    empty23
+    ""
 policy:
   ant.general|name
   ant.general|tag
@@ -280,7 +280,7 @@ data:
   slot:
     follow_flag: 1
   tag:
-    empty24
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -308,11 +308,11 @@ data:
   scene:
     r: {0, -0.7071067690849304, 0, 0.7071067690849304}
     s: {1, 1, 1}
-    t: {-7.5 0, 3.5}
+    t: {-7.5, 0, 3.5}
   slot:
     follow_flag: 1
   tag:
-    empty26
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -324,11 +324,11 @@ data:
   scene:
     r: {0, -0.7071067690849304, 0, 0.7071067690849304}
     s: {1, 1, 1}
-    t: {7.5 0, 3.5}
+    t: {7.5, 0, 3.5}
   slot:
     follow_flag: 1
   tag:
-    empty27
+    ""
 policy:
   ant.general|name
   ant.general|tag
@@ -360,7 +360,7 @@ data:
   slot:
     follow_flag: 1
   tag:
-    empty29
+    ""
 policy:
   ant.general|name
   ant.general|tag
@@ -372,11 +372,11 @@ data:
   scene:
     r: {0, -0.7071067690849304, 0, 0.7071067690849304}
     s: {1, 1, 1}
-    t: {7.5 0, 3.5}
+    t: {7.5, 0, 3.5}
   slot:
     follow_flag: 1
   tag:
-    empty30
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -408,7 +408,7 @@ data:
   slot:
     follow_flag: 1
   tag:
-    empty32
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -420,11 +420,11 @@ data:
   scene:
     r: {0, 0.7071067690849304, 0, 0.7071067690849304}
     s: {1, 1, 1}
-    t: {-7.5 0, -3.5}
+    t: {-7.5, 0, -3.5}
   slot:
     follow_flag: 1
   tag:
-    empty33
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -456,7 +456,7 @@ data:
   slot:
     follow_flag: 1
   tag:
-    empty35
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -468,11 +468,11 @@ data:
   scene:
     r: {0, 0.7071067690849304, 0, 0.7071067690849304}
     s: {1, 1, 1}
-    t: {-7.5 0, -3.5}
+    t: {-7.5, 0, -3.5}
   slot:
     follow_flag: 1
   tag:
-    empty36
+    ""
 policy:
   ant.general|name
   ant.general|tag
@@ -504,7 +504,7 @@ data:
   slot:
     follow_flag: 1
   tag:
-    empty38
+    ""
 policy:
   ant.general|name
   ant.general|tag
@@ -519,7 +519,7 @@ data:
     follow_flag: 1
     joint_name: None
   tag:
-    slot1
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -548,7 +548,7 @@ data:
     follow_flag: 1
     joint_name: None
   tag:
-    slot3
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -572,13 +572,13 @@ policy:
 data:
   name: path_b2b_5
   scene:
-    r: {-0, 1, -0, -4.371138828673793e-08}
+    r: {0, 1, 0, -4.371138828673793e-08}
     t: {-3.5, 0, -7.5}
   slot:
     follow_flag: 1
     joint_name: None
   tag:
-    slot2
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -593,7 +593,7 @@ data:
     follow_flag: 1
     joint_name: None
   tag:
-    slot3
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -622,7 +622,7 @@ data:
     follow_flag: 1
     joint_name: None
   tag:
-    slot5
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -651,7 +651,7 @@ data:
     follow_flag: 1
     joint_name: None
   tag:
-    slot7
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -661,12 +661,12 @@ data:
   name: path_l2l_1
   scene:
     r: {0, 0.7071067690849304, 0, 0.7071067690849304}
-    t: {-7.5 0, -3.5}
+    t: {-7.5, 0, -3.5}
   slot:
     follow_flag: 1
     joint_name: None
   tag:
-    slot8
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -695,7 +695,7 @@ data:
     follow_flag: 1
     joint_name: None
   tag:
-    slot10
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -720,12 +720,12 @@ data:
   name: path_l2l_5
   scene:
     r: {0, -0.7071067690849304, 0, 0.7071067690849304}
-    t: {-7.5 0, 3.5}
+    t: {-7.5, 0, 3.5}
   slot:
     follow_flag: 1
     joint_name: None
   tag:
-    slot12
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -735,12 +735,12 @@ data:
   name: path_r2r_1
   scene:
     r: {0, -0.7071067690849304, 0, 0.7071067690849304}
-    t: {7.5 0, 3.5}
+    t: {7.5, 0, 3.5}
   slot:
     follow_flag: 1
     joint_name: None
   tag:
-    slot13
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -764,12 +764,12 @@ policy:
 data:
   name: path_r2r_3
   scene:
-    r: {-0, 1, -0, -4.371138828673793e-08}
+    r: {0, 1, 0, -4.371138828673793e-08}
   slot:
     follow_flag: 1
     joint_name: None
   tag:
-    slot15
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
@@ -794,12 +794,12 @@ data:
   name: path_r2r_5
   scene:
     r: {0, 0.7071067690849304, 0, 0.7071067690849304}
-    t: {7.5 0, -3.5}
+    t: {7.5, 0, -3.5}
   slot:
     follow_flag: 1
     joint_name: None
   tag:
-    slot17
+    no_arrow
 policy:
   ant.general|name
   ant.general|tag
