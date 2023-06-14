@@ -66,12 +66,6 @@ namespace roadnet {
         }
     }
 
-    static straightid next_road(network& w, straightid C, direction dir) {
-        crossid N = w.StraightRoad(C).neighbor;
-        straightid Next = w.CrossRoad(N).neighbor[(uint8_t)dir];
-        return Next;
-    }
-
     static bool buildResult(network& w, dijkstraContext& ctx, straightid S, straightid E, route_value& val) {
         for (auto C = E;;) {
             if (auto node = ctx.get(C)) {

@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 #include <assert.h>
+#include <memory.h>
 #include <compare>
 
 namespace roadnet {

@@ -78,17 +78,6 @@ namespace roadnet {
         }
     }
 
-    static constexpr bool isValidCrossType(uint8_t m, cross_type t) {
-        if ((uint8_t)t < 16) {
-            // cross
-            return m & ((1 << ((uint8_t)t & 0x03)) | (1 << (((uint8_t)t >> 2) & 0x03)));
-        }
-        else {
-            // in / out
-            return m & (1 << ((uint8_t)t & 0x03));
-        }
-    }
-
     static constexpr bool isCross(uint8_t m) {
         switch (m & 0xF) {
         case mask(L' '):
@@ -216,7 +205,7 @@ namespace roadnet {
     }
 
     static void walkToNeighbor(const flatmap<loction, uint8_t>& map, loction l, direction dir, std::function<void(map_coord)> func) {
-        for (uint16_t i = 0; ; ++i) {
+        for (;;) {
             l = move(l, dir);
             uint8_t m = getMapBits(map, l);
             direction prev_dir = reverse(dir);
@@ -404,7 +393,6 @@ namespace roadnet {
                     continue;
                 }
                 assert(lorryStatusAry[i].exist);
-                auto where = lorryStatusAry[i].coord;
                 auto ending = lorry.get_ending();
                 auto loc = endpointRevMap.find(ending);
                 assert(loc);
@@ -600,8 +588,6 @@ namespace roadnet {
                     }
                 }
                 else {
-                    auto& straight_i0 = StraightRoad(roadGrid->id0);
-                    auto& straight_i1 = StraightRoad(roadGrid->id1);
                     direction dir0 = direction(roadGrid->direction0);
                     direction dir1 = direction(roadGrid->direction1);
                     direction from = road::crossFrom((cross_type)s.coord.w);
