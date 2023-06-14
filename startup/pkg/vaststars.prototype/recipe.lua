@@ -2083,6 +2083,21 @@ prototype "碎石挖掘" {
     description = "采集碎石",
 }
 
+prototype "铝矿挖掘" {
+    type = { "recipe" },
+    category = "矿石开采",
+    --recipe_group =  "金属",
+    recipe_order =  23,
+    recipe_icon =  "textures/construct/gravel.texture",
+    ingredients = {
+    },
+    results = {
+        {"铝矿石", 1},
+    },
+    time = "2s",
+    description = "采集铝矿石",
+}
+
 prototype "绝缘线1" {
     type = { "recipe" },
     category = "器件小型制造",
