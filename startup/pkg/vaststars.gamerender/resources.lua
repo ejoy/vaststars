@@ -1190,6 +1190,8 @@ local t = {
 	"/pkg/vaststars.resources/prefabs/pipe-center.prefab",
 	"/pkg/vaststars.resources/prefabs/pipe-joint.prefab",
 	"/pkg/vaststars.resources/prefabs/pipe/pipe_I.prefab",
+	"/pkg/vaststars.resources/prefabs/pipe/pipe_Io.prefab",
+	"/pkg/vaststars.resources/prefabs/pipe/pipe_Io.prefab.patch",
 	"/pkg/vaststars.resources/prefabs/pipe/pipe_JI.prefab",
 	"/pkg/vaststars.resources/prefabs/pipe/pipe_JU.prefab",
 	"/pkg/vaststars.resources/prefabs/pipe/pipe_L.prefab",
