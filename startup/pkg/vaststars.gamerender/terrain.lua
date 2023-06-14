@@ -7,8 +7,6 @@ local math3d = require "math3d"
 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
-local MINERAL_WIDTH <const> = 7
-local MINERAL_HEIGHT <const> = 7
 
 -- three-dimensional axial
 -- z
@@ -149,27 +147,32 @@ function terrain:reset_mineral(map)
         eid:remove()
     end
 
-    self.mineral_map = {}
-    self.mineral_tiles = {}
-    self.mineral_source = map
+    self.mineral = {}
+    self.mineral_cache = {}
 
     for c, mineral in pairs(map) do
         local x, y = c:match("^(%d+),(%d+)$")
         x, y = tonumber(x), tonumber(y)
-        self.mineral_map[_hash(x, y)] = mineral
 
-        for i = 0, MINERAL_WIDTH - 1 do
-            for j = 0, MINERAL_HEIGHT - 1 do
-                self.mineral_tiles[_hash(x + i, y + j)] = mineral
+        local typeobject = iprototype.queryByName(mineral)
+        local errmsg <const> = "%s is defined as a type of mineral, but no corresponding mineral model is configured."
+        local mineral_model = assert(assert(typeobject).mineral_model, errmsg:format(mineral))
+
+        local w, h = typeobject.mineral_area:match("^(%d+)x(%d+)$")
+        w, h = tonumber(w), tonumber(h)
+
+        local hash = _hash(x, y)
+        self.mineral[hash] = {x = x, y = y, w = w, h = h, mineral = mineral}
+
+        for i = 0, w - 1 do
+            for j = 0, h - 1 do
+                self.mineral_cache[_hash(x + i, y + j)] = hash
             end
         end
 
-        local errmsg <const> = "%s is defined as a type of mineral, but no corresponding mineral model is configured."
-        local prefab = assert(assert(iprototype.queryByName(mineral)).mineral_model, errmsg:format(mineral))
-
-        local srt = {r = ROTATORS[math.random(1, 4)], t = self:get_position_by_coord(x, y, MINERAL_WIDTH, MINERAL_HEIGHT)}
+        local srt = {r = ROTATORS[math.random(1, 4)], t = self:get_position_by_coord(x, y, w, h)}
         self.eids[#self.eids+1] = igame_object.create {
-            prefab = prefab,
+            prefab = mineral_model,
             group_id = self:get_group_id(x, y),
             state = "opaque",
             srt = srt,
@@ -179,11 +182,24 @@ function terrain:reset_mineral(map)
 end
 
 function terrain:get_mineral(x, y)
-    return self.mineral_map[_hash(x, y)]
+    local hash = self.mineral_cache[_hash(x, y)]
+    if not hash then
+        return
+    end
+    return assert(self.mineral[hash]).mineral
 end
 
-function terrain:get_mineral_tiles(x, y)
-    return self.mineral_tiles[_hash(x, y)]
+function terrain:can_place_on_mineral(x, y, w, h)
+    local mid_x, mid_y = x + w // 2, y + h // 2
+    local hash = self.mineral_cache[_hash(mid_x, mid_y)]
+    local m = self.mineral[hash]
+    if not m then
+        return false
+    end
+    if mid_x ~= m.x + m.w // 2 or mid_y ~= m.y + m.h // 2 then
+        return false
+    end
+    return true, m.mineral
 end
 
 function terrain:enable_terrain(x, y)

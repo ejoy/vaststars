@@ -338,28 +338,16 @@ local function new_entity(self, datamodel, typeobject)
 end
 
 -- TODO: duplicate from builder.lua
-local function _get_mineral_recipe(prototype_name, x, y, dir)
+local function _get_mineral_recipe(prototype_name, x, y, w, h)
     local typeobject = iprototype.queryByName(prototype_name)
-    local w, h = iprototype.rotate_area(typeobject.area, dir)
-
     if not iprototype.has_type(typeobject.type, "mining") then
         return
     end
-    local found
-    for i = 0, w - 1 do
-        for j = 0, h - 1 do
-            local mineral = terrain:get_mineral(x + i, y + j) -- TODO: maybe have multiple minerals in the area
-            if mineral then
-                found = mineral
-            end
-        end
-    end
-
-    if not found then
+    local succ, mineral = terrain:can_place_on_mineral(x, y, w, h)
+    if not succ then
         return
     end
-
-    return imining.get_mineral_recipe(prototype_name, found)
+    return imining.get_mineral_recipe(prototype_name, mineral)
 end
 
 local function __align(object)
@@ -467,7 +455,7 @@ local function touch_move(self, datamodel, delta_vec)
         __show_nearby_buildings_selected_boxes(self, x, y, pickup_object.dir, typeobject)
     end
 
-    pickup_object.recipe = _get_mineral_recipe(pickup_object.prototype_name, lx, ly, pickup_object.dir) -- TODO: maybe set recipt according to entity type?
+    pickup_object.recipe = _get_mineral_recipe(pickup_object.prototype_name, x, y, w, h)
 
     -- update temp pole
     if typeobject.power_supply_area and typeobject.power_supply_distance then

@@ -85,10 +85,4 @@ function roadnet:editor_del(layer_name, x, y)
     iroad:del(layer_name, x, y)
 end
 
-function roadnet:editor_build()
-    -- TDDO: we should not clear all the lorries directly. We should place them in the corresponding positions of the roadnet as much as possible.
-	--local lorry_manager = ecs.require "lorry_manager" -- init_system.lua require "lorry_manager" & "roadnet"
-    --lorry_manager.clear()
-end
-
 return roadnet

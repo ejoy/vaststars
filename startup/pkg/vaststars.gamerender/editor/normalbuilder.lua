@@ -141,29 +141,16 @@ local __get_neighbor_fluid_types; do
 end
 
 -- TODO: duplicate from builder.lua
-local function _get_mineral_recipe(prototype_name, x, y, dir)
+local function _get_mineral_recipe(prototype_name, x, y, w, h)
     local typeobject = iprototype.queryByName(prototype_name)
-    local w, h = iprototype.rotate_area(typeobject.area, dir)
-
     if not iprototype.has_type(typeobject.type, "mining") then
         return
     end
-    local found
-
-    local MINERAL_WIDTH <const> = 7 -- TODO: remove hard codes
-    local MINERAL_HEIGHT <const> = 7
-    local mx = x - (MINERAL_WIDTH - w) // 2
-    local my = y - (MINERAL_HEIGHT - h) // 2
-    local mineral = terrain:get_mineral(mx, my) -- TODO: maybe have multiple minerals in the area
-    if mineral then
-        found = mineral
-    end
-
-    if not found then
+    local succ, mineral = terrain:can_place_on_mineral(x, y, w, h)
+    if not succ then
         return
     end
-
-    return imining.get_mineral_recipe(prototype_name, found)
+    return imining.get_mineral_recipe(prototype_name, mineral)
 end
 
 local function __new_entity(self, datamodel, typeobject, position, x, y, dir)
@@ -211,7 +198,8 @@ local function __new_entity(self, datamodel, typeobject, position, x, y, dir)
     end
 
     __show_self_selected_boxes(self, position, typeobject, dir, valid)
-    local recipe = _get_mineral_recipe(typeobject.name, x, y, dir) -- TODO: maybe set recipt according to entity type?
+    local w, h = iprototype.rotate_area(typeobject.area, dir)
+    local recipe = _get_mineral_recipe(typeobject.name, x, y, w, h)
     if recipe then
         local recipe_typeobject = iprototype.queryByName(recipe)
         if recipe_typeobject then
@@ -539,7 +527,7 @@ local function touch_move(self, datamodel, delta_vec)
         end
     end
 
-    pickup_object.recipe = _get_mineral_recipe(pickup_object.prototype_name, lx, ly, pickup_object.dir) -- TODO: maybe set recipt according to entity type?
+    pickup_object.recipe = _get_mineral_recipe(pickup_object.prototype_name, lx, ly, w, h)
     if pickup_object.recipe then
         local recipe_typeobject = iprototype.queryByName(pickup_object.recipe)
         if recipe_typeobject then

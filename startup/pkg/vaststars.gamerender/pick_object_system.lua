@@ -3,13 +3,13 @@ local world = ecs.world
 local w = world.w
 
 local gameplay_core = require "gameplay.core"
-local lorry_manager = ecs.require "lorry_manager"
 local pick_object_sys = ecs.system "pick_object_sys"
 local ipick_object = ecs.interface "ipick_object"
 local objects = require "objects"
 local terrain = ecs.require "terrain"
 local imountain = ecs.require "engine.mountain"
 local iprototype = require "gameplay.interface.prototype"
+local ilorry = ecs.import.interface "vaststars.gamerender|ilorry"
 
 local ROAD_TILE_WIDTH_SCALE <const> = 2
 local ROAD_TILE_HEIGHT_SCALE <const> = 2
@@ -36,7 +36,7 @@ local function __push_object(lorries, x, y, objs)
     local lorry_ids = lorries[__pack(x, y)]
     if lorry_ids then
         for _, lorry_id in ipairs(lorry_ids) do
-            local lorry = lorry_manager.get(lorry_id)
+            local lorry = ilorry.get(lorry_id)
             if lorry then
                 objs[#objs + 1] = {class = CLASS.Lorry, id = lorry_id, lorry = lorry}
             end
@@ -50,7 +50,7 @@ local function __push_object(lorries, x, y, objs)
         objs[#objs + 1] = {class = CLASS.Object, id = o.id, object = o}
     end
 
-    o = terrain:get_mineral_tiles(x, y)
+    o = terrain:get_mineral(x, y)
     if o then
         objs[#objs + 1] = {class = CLASS.Mineral, id = math.maxinteger, mineral = o}
     end
