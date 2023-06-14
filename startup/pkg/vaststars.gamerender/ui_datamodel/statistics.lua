@@ -201,11 +201,13 @@ function M:stage_ui_update(datamodel)
         g:enable "view_visible"
         g:enable "scene_update"
         local qe = w:first(queuename .." render_target:in")
-        local rt = qe.render_target
-        local vr = rt.view_rect
-        canvas_size_w, canvas_size_h = vr.w, vr.h
-        line_step = canvas_size_w / (line_count - 1)
-        create_grid(8, 10)
+        if qe then
+            local rt = qe.render_target
+            local vr = rt.view_rect
+            canvas_size_w, canvas_size_h = vr.w, vr.h
+            line_step = canvas_size_w / (line_count - 1)
+            create_grid(8, 10)
+        end
     end
 
     for _, _, _, type, value in statistics_mb:unpack() do
