@@ -345,6 +345,24 @@ namespace roadnet {
         }
     }
 
+    void network::cleanMap(world& w) {
+        routeCached.clear();
+
+        crossAry.clear();
+        straightAry.clear();
+        endpointAry.clear();
+        straightLorry.clear();
+        straightCoord.clear();
+
+        for (uint16_t i = 0; i < lorryVec.size(); ++i) {
+            auto& lorry = lorryVec[i];
+            if (lorry.invaild()) {
+                continue;
+            }
+            destroyLorry(w, lorryid{i});
+        }
+    }
+
     void network::updateMap(world& w, flatmap<loction, uint8_t> const& map) {
         routeCached.clear();
 

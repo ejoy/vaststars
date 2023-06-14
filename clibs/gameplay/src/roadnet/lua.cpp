@@ -27,6 +27,10 @@ namespace roadnet::lua {
 
     static int reset(lua_State* L) {
         auto& w = get_network(L);
+        if (lua_gettop(L) == 1) {
+            w.cleanMap(get_world(L));
+            return 0;
+        }
         luaL_checktype(L, 2, LUA_TTABLE);
         flatmap<loction, uint8_t> map;
         lua_pushnil(L);
