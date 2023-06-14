@@ -58,11 +58,12 @@ prototype "铁矿石" {
     pile = "4x4x4",
     gap3 = "0.05x0.05x0.05",
     pile_model = "prefabs/stackeditems/iron-ore.prefab",
-    mineral_model = "prefabs/mineral/ground-iron-ore.prefab",
     icon = "textures/construct/ore-Fe.texture",
     item_description = "含铁的矿石",
     group = {"金属"},
+    mineral_model = "prefabs/mineral/ground-iron-ore.prefab",
     mineral_name = "铁矿",
+    mineral_area = "3x3",
 }
 
 prototype "铝矿石" {
@@ -70,11 +71,12 @@ prototype "铝矿石" {
     stack = 12,
     pile = "4x4x4",
     pile_model = "prefabs/stackeditems/gravel.prefab",
-    mineral_model = "prefabs/mineral/ground-aluminum.prefab",
     icon = "textures/construct/ore-Al.texture",
     item_description = "含铝的矿石",
     group = {"金属"},
+    mineral_model = "prefabs/mineral/ground-aluminum.prefab",
     mineral_name = "铝矿",
+    mineral_area = "3x3",
 }
 
 prototype "碾碎铁矿石" {
@@ -161,11 +163,12 @@ prototype "碎石" {
     stack = 12,
     pile = "2x2x3",
     pile_model = "prefabs/stackeditems/gravel.prefab",
-    mineral_model = "prefabs/mineral/ground-gravel.prefab",
     icon = "textures/construct/gravel.texture",
     item_description = "伴生在矿物里的碎石",
     group = {"金属"},
+    mineral_model = "prefabs/mineral/ground-gravel.prefab",
     mineral_name = "石矿",
+    mineral_area = "3x3",
 }
 
 prototype "石砖" {

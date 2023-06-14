@@ -33,7 +33,7 @@ local create_event_handler = require "ui_datamodel.common.event_handler"
 local ipower_line = ecs.require "power_line"
 local iupdate = ecs.import.interface "vaststars.gamerender|iupdate"
 local ipick_object = ecs.import.interface "vaststars.gamerender|ipick_object"
-local lorry_manager = ecs.require "lorry_manager"
+local ilorry = ecs.import.interface "vaststars.gamerender|ilorry"
 
 local rotate_mb = mailbox:sub {"rotate"}
 local build_mb = mailbox:sub {"build"}
@@ -117,7 +117,7 @@ local function __on_pickup_ground(datamodel)
 end
 
 local function __unpick_lorry(lorry_id)
-    local lorry = lorry_manager.get(lorry_id)
+    local lorry = ilorry.get(lorry_id)
     if lorry then
         lorry:set_outline(false)
     end
@@ -626,7 +626,7 @@ function M:stage_camera_usage(datamodel)
     for _ in remove_lorry_mb:unpack() do
         if pick_lorry_id then
             gameplay_core.get_world():roadnet_remove_lorry(pick_lorry_id)
-            lorry_manager.remove(pick_lorry_id)
+            ilorry.remove(pick_lorry_id)
 
             __unpick_lorry(pick_lorry_id)
             pick_lorry_id = nil

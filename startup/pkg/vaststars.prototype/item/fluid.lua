@@ -177,6 +177,7 @@ prototype "地热气" {
     item_description = "一种化工气体",
     mineral_model = "prefabs/mineral/ground-geothermal.prefab",
     mineral_name = "地热",
+    mineral_area = "3x3",
 }
 
 prototype "丁二烯" {

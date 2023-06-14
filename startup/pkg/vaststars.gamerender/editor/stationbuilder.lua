@@ -602,7 +602,6 @@ local function complete(self, object_id, datamodel)
 
     iroad.set_change(gameplay_core.get_world())
     igameplay.build_world()
-    iroadnet:editor_build()
     self.super.complete(self, object_id)
 
     local object = assert(objects:get(object_id))

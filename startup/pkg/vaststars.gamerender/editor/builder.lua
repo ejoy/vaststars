@@ -35,30 +35,25 @@ local function check_construct_detector(self, prototype_name, x, y, dir, exclude
                 if iroad.get(gameplay_core.get_world(), x + i, y + j) then
                     return false
                 end
+
+                if not found_mineral then
+                    found_mineral = terrain:get_mineral(x + i, y + j)
+                end
             end
         end
 
-        local MINERAL_WIDTH <const> = 7 -- TODO: remove hard codes
-        local MINERAL_HEIGHT <const> = 7
-        local mx = x - (MINERAL_WIDTH - w) // 2
-        local my = y - (MINERAL_HEIGHT - h) // 2
-        local mineral = terrain:get_mineral(mx, my) -- TODO: maybe have multiple minerals in the area
-        if mineral then
-            found_mineral = mineral
+        if not iprototype.has_type(typeobject.type, "mining") then
+            return (found_mineral == nil)
         end
 
-        if iprototype.has_type(typeobject.type, "mining") then -- TODO: special case for mining
-            if not found_mineral then
-                return false
-            end
-
-            if not imining.get_mineral_recipe(prototype_name, found_mineral) then
-                return false
-            end
+        if not found_mineral then
+            return false
         else
-            if found_mineral then -- can not construct in the area with mineral
+            local succ, mineral = terrain:can_place_on_mineral(x, y, w, h)
+            if not succ then
                 return false
             end
+            return imining.get_mineral_recipe(prototype_name, mineral)
         end
     end
 

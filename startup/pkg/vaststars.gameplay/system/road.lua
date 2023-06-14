@@ -323,7 +323,11 @@ function m.build(world)
     map = repair(world, map, road_cache)
     mark_invalid(world, map, road_cache, building)
 
-    world:roadnet_reset(map)
+    if not next(map) then
+        world:roadnet_reset()
+    else
+        world:roadnet_reset(map)
+    end
 
     for v in ecs:select "station:update eid:in" do
         local key = endpoint_keys[v.eid]

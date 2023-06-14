@@ -324,7 +324,6 @@ function M:restore(index)
     restore_world()
 
     igameplay.build_world()
-    iroadnet:editor_build()
 
     iui.open({"construct.rml"})
     iui.open({"message_pop.rml"})
@@ -385,7 +384,6 @@ function M:restart(mode, game_template)
 
     restore_world()
     igameplay.build_world()
-    iroadnet:editor_build()
 
     iui.open({"construct.rml"})
     iui.open({"message_pop.rml"})

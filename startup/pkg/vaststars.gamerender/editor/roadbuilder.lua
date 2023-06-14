@@ -799,7 +799,6 @@ local function confirm(self, datamodel)
 
     igameplay.build_world()
     iroadnet:clear("indicator")
-    iroadnet:editor_build()
 
     datamodel.show_finish_laying = false
     datamodel.show_cancel = false

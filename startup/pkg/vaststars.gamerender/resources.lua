@@ -904,7 +904,6 @@ local t = {
 	"/pkg/vaststars.gamerender/init_system.lua",
 	"/pkg/vaststars.gamerender/inspect.lua",
 	"/pkg/vaststars.gamerender/lorry.lua",
-	"/pkg/vaststars.gamerender/lorry_manager.lua",
 	"/pkg/vaststars.gamerender/main.lua",
 	"/pkg/vaststars.gamerender/main_menu_manager.lua",
 	"/pkg/vaststars.gamerender/object.lua",
