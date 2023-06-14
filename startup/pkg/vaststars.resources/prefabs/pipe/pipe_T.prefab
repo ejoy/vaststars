@@ -8,8 +8,8 @@ policy:
 ---
 data:
   material: /pkg/vaststars.resources/glb/pipe/pipe_T.glb|materials/Material.001.material
-  mesh: /pkg/vaststars.resources/glb/pipe/pipe_T.glb|meshes/zhuti.004_P1.meshbin
-  name: zhuti.II.003
+  mesh: /pkg/vaststars.resources/glb/pipe/pipe_T.glb|meshes/zhuti.030_P1.meshbin
+  name: zhuti.II.020
   scene:
     r: {0, 0.7071067094802856, 0, 0.7071069478988647}
   visible_state: main_view|selectable|cast_shadow
