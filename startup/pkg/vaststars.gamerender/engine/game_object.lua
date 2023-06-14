@@ -10,6 +10,8 @@ local iani = ecs.import.interface "ant.animation|ianimation"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
+local math3d = require "math3d"
+local COLOR_INVALID <const> = math3d.constant "null"
 local prefab_parse = require("engine.prefab_parser").parse
 local replace_material = require("engine.prefab_parser").replace_material
 local irl = ecs.import.interface "ant.render|irender_layer"
@@ -279,6 +281,7 @@ init = {
 }
 --]]
 function igame_object.create(init)
+    init.color = init.color or COLOR_INVALID
     local children = __get_hitch_children(RESOURCES_BASE_PATH:format(init.prefab), init.state, init.color, init.animation_name, init.final_frame, init.emissive_color, init.render_layer, init.outline_scale)
     local hitch_events = {}
     hitch_events["group"] = function(_, e, group)

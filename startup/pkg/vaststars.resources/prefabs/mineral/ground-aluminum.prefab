@@ -7,21 +7,11 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  material: /pkg/vaststars.resources/glb/mineral/ground-iron-ore.glb|materials/Material.004.material
-  mesh: /pkg/vaststars.resources/glb/mineral/ground-iron-ore.glb|meshes/Plane.002_P1.meshbin
-  name: Plane.002
-  scene: {}
-  visible_state: main_view|selectable|cast_shadow
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  material: /pkg/vaststars.resources/prefabs/mineral/ground-aluminum-Material.002_clr.material
-  mesh: /pkg/vaststars.resources/glb/mineral/ground-iron-ore.glb|meshes/Plane.004_P1.meshbin
-  name: tie
-  scene: {}
+  material: /pkg/vaststars.resources/materials/mineral/ground-aluminum.material
+  mesh: /pkg/vaststars.resources/glb/mineral/ground-iron-ore.glb|meshes/rock.001_P1.meshbin
+  name: rock.001
+  scene:
+    s: {3.3657338619232178, 3.3657338619232178, 3.3657338619232178}
   visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:

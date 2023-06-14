@@ -5,7 +5,6 @@ local w     = world.w
 local iprototype = require "gameplay.interface.prototype"
 local math3d = require "math3d"
 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
-local COLOR_INVALID <const> = math3d.constant "null"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local MINERAL_WIDTH <const> = 7
@@ -173,7 +172,6 @@ function terrain:reset_mineral(map)
             prefab = prefab,
             group_id = self:get_group_id(x, y),
             state = "opaque",
-            color = COLOR_INVALID,
             srt = srt,
             render_layer = RENDER_LAYER.MINERAL
         }
