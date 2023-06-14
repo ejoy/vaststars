@@ -74,6 +74,7 @@ prototype "铝矿石" {
     icon = "textures/construct/ore-Al.texture",
     item_description = "含铝的矿石",
     group = {"金属"},
+    mineral_name = "铝矿",
 }
 
 prototype "碾碎铁矿石" {

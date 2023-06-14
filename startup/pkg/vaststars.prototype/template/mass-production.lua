@@ -5725,7 +5725,8 @@ local mineral = {
   ["73,91"] = "铁矿石",
   ["89,163"] = "铁矿石",
   ["91,100"] = "碎石",
-  ["91,201"] = "地热气"
+  ["91,201"] = "地热气",
+  ["129,98"] = "铝矿石",
 }
 local function prepare(world)
     local prototype = import_package "vaststars.gameplay".prototype
