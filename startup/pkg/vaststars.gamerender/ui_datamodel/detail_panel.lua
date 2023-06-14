@@ -312,7 +312,7 @@ local function update_property_list(datamodel, property_list)
             datamodel.show_type = "goods"
             local item = datamodel.chest_list[1]
             datamodel.goods_icon = item.icon
-            datamodel.goods_desc = item.name .. "X" .. item.count
+            datamodel.goods_desc = item.name .. " X " .. item.count
         end
     end
     datamodel.progress = property_list.progress or "0%"
