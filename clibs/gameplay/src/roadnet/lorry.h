@@ -27,6 +27,8 @@ namespace roadnet {
         uint16_t get_item_amount() const { return item_amount; }
         uint16_t get_classid() const { return classid; }
         std::pair<uint16_t, uint16_t> get_item() const { return {item_classid, item_amount}; }
+        void set_ending(straightid ending) { this->ending = ending; }
+        straightid get_ending() const { return ending; }
     private:
         straightid ending;
         uint16_t classid;

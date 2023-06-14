@@ -261,8 +261,26 @@ namespace roadnet {
         uint16_t   offset1:    14;
         uint16_t   direction1:  2;
     };
+    static_assert(sizeof(straightGrid) == sizeof(uint64_t));
 
-    static void setEndpoint(network& w, flatmap<loction, uint8_t> const& map, flatmap<loction, crossid>& crossMap, std::vector<straightData>& straightVec, loction loc, direction a, direction b, uint16_t endpointId) {
+    struct lorryStatus {
+        bool exist = false;
+        map_coord coord;
+        loction endpoint;
+    };
+
+    struct updateMapStatus {
+        flatmap<loction, crossid> crossMap;
+        flatmap<loction, straightGrid> straightMap;
+        flatmap<loction, straightid> endpointMap;
+        std::vector<straightData> straightVec;
+        uint16_t genCrossId = 0;
+        uint32_t genStraightLorryOffset = 0;
+        uint32_t genStraightCoordOffset = 0;
+        uint16_t genEndpoint = 0;
+    };
+
+    static void setEndpoint(network& w, flatmap<loction, uint8_t> const& map, updateMapStatus& status, loction loc, direction a, direction b, uint16_t endpointId) {
         auto na = findNeighbor(map, loc, a);
         auto nb = findNeighbor(map, loc, b);
         if (na.l == nb.l) {
@@ -291,13 +309,13 @@ namespace roadnet {
         }
         assert(na.n > 0);
         auto& ep = w.endpointAry[endpointId];
-        auto cross_a = crossMap.find(na.l);
-        auto cross_b = crossMap.find(nb.l);
+        auto cross_a = status.crossMap.find(na.l);
+        auto cross_b = status.crossMap.find(nb.l);
         assert(cross_a);
         assert(cross_b);
 
-        straightData& straight1 = straightVec.emplace_back(
-            straightid {(uint16_t)straightVec.size()},
+        straightData& straight1 = status.straightVec.emplace_back(
+            straightid {(uint16_t)status.straightVec.size()},
             (nb.n + 1) * road::straight::N,
             nb.l,
             reverse(nb.dir),
@@ -306,8 +324,8 @@ namespace roadnet {
         );
         w.CrossRoad(*cross_b).setNeighbor(reverse(nb.dir), straight1.id);
         ep.rev_neighbor = straight1.id;
-        straightData& straight2 = straightVec.emplace_back(
-            straightid {(uint16_t)straightVec.size()},
+        straightData& straight2 = status.straightVec.emplace_back(
+            straightid {(uint16_t)status.straightVec.size()},
             na.n * road::straight::N + 1,
             loc,
             a,
@@ -316,19 +334,23 @@ namespace roadnet {
         );
         w.CrossRoad(*cross_a).setRevNeighbor(reverse(na.dir), straight2.id);
         ep.neighbor = straight2.id;
+
+        status.endpointMap.insert_or_assign(loc, ep.rev_neighbor);
     }
 
-    static void insertLorry01(network& nw, world& w, straightGrid& grid, lorryid lorryId, map_index z) {
-        if (!nw.StraightRoad(grid.id0).insertLorry(nw, lorryId, grid.offset0, z)) {
-            if (!nw.StraightRoad(grid.id1).insertLorry(nw, lorryId, grid.offset1, z)) {
+    static void insertLorry01(network& nw, world& w, straightGrid& grid, lorryid lorryId, uint8_t z) {
+        assert(z == 0 || z == 1);
+        if (!nw.StraightRoad(grid.id0).insertLorry(nw, lorryId, grid.offset0, (map_index)z)) {
+            if (!nw.StraightRoad(grid.id1).insertLorry(nw, lorryId, grid.offset1, (map_index)(1-z))) {
                 nw.destroyLorry(w, lorryId);
             }
         }
     }
 
-    static void insertLorry10(network& nw, world& w, straightGrid& grid, lorryid lorryId, map_index z) {
-        if (!nw.StraightRoad(grid.id1).insertLorry(nw, lorryId, grid.offset1, z)) {
-            if (!nw.StraightRoad(grid.id0).insertLorry(nw, lorryId, grid.offset0, z)) {
+    static void insertLorry10(network& nw, world& w, straightGrid& grid, lorryid lorryId, uint8_t z) {
+        assert(z == 0 || z == 1);
+        if (!nw.StraightRoad(grid.id1).insertLorry(nw, lorryId, grid.offset1, (map_index)z)) {
+            if (!nw.StraightRoad(grid.id0).insertLorry(nw, lorryId, grid.offset0, (map_index)(1-z))) {
                 nw.destroyLorry(w, lorryId);
             }
         }
@@ -337,62 +359,77 @@ namespace roadnet {
     void network::updateMap(world& w, flatmap<loction, uint8_t> const& map) {
         routeCached.clear();
 
-        static_assert(sizeof(straightGrid) == sizeof(uint64_t));
-        flatmap<loction, crossid> crossMap;
-        flatmap<loction, straightGrid> straightMap;
-        std::vector<straightData> straightVec;
-        uint16_t genCrossId = 0;
-        uint32_t genStraightLorryOffset = 0;
-        uint32_t genStraightCoordOffset = 0;
-        uint16_t genEndpoint = 0;
-
         // step.1
-        //dynarray<std::optional<map_coord>> lorryWhere;
-        //lorryWhere.reset(lorryVec.size());
-        //for (uint16_t i = 0; i < crossAry.size(); ++i) {
-        //    auto const& cross = crossAry[i];
-        //    for (size_t j = 0; j < 2; ++j) {
-        //        if (cross.cross_lorry[j]) {
-        //            map_coord coord {cross.getLoction(*this), map_index::w1, cross.cross_status[j]};
-        //            lorryWhere[cross.cross_lorry[j].get_index()] = coord;
-        //        }
-        //    }
-        //}
-        //uint16_t straightId = 0;
-        //for (size_t i = 0; i < straightLorry.size(); ++i) {
-        //    auto id = straightLorry[i];
-        //    if (id) {
-        //        for (;;) {
-        //            auto& straight = straightAry[straightId];
-        //            uint32_t offset = (uint32_t)i - straight.lorryOffset;
-        //            if (offset >= straight.len) {
-        //                straightId++;
-        //                continue;
-        //            }
-        //            map_coord coord = straight.getCoord(*this, offset);
-        //            lorryWhere[id.get_index()] = coord;
-        //            break;
-        //        }
-        //    }
-        //}
+        dynarray<lorryStatus> lorryStatusAry;
+        lorryStatusAry.reset(lorryVec.size());
+        for (uint16_t i = 0; i < crossAry.size(); ++i) {
+            auto const& cross = crossAry[i];
+            for (size_t j = 0; j < 2; ++j) {
+                if (cross.cross_lorry[j]) {
+                    map_coord coord {cross.getLoction(*this), map_index::w1, cross.cross_status[j]};
+                    auto& s = lorryStatusAry[cross.cross_lorry[j].get_index()];
+                    s.exist = true;
+                    s.coord = coord;
+                }
+            }
+        }
+        uint16_t straightId = 0;
+        for (size_t i = 0; i < straightLorry.size(); ++i) {
+            auto id = straightLorry[i];
+            if (id) {
+                for (;;) {
+                    auto& straight = straightAry[straightId];
+                    uint32_t offset = (uint32_t)i - straight.lorryOffset;
+                    if (offset >= straight.len) {
+                        straightId++;
+                        continue;
+                    }
+                    map_coord coord = straight.getCoord(*this, offset);
+                    auto& status = lorryStatusAry[id.get_index()];
+                    status.exist = true;
+                    status.coord = coord;
+                    break;
+                }
+            }
+        }
+        {
+            flatmap<straightid, loction> endpointRevMap;
+            for (uint16_t i = 0; i < endpointAry.size(); ++i) {
+                auto& ep = endpointAry[i];
+                endpointRevMap.insert_or_assign(ep.rev_neighbor, ep.getLoction(*this));
+            }
+            for (uint16_t i = 0; i < lorryStatusAry.size(); ++i) {
+                auto& lorry = lorryVec[i];
+                if (lorry.invaild()) {
+                    continue;
+                }
+                assert(lorryStatusAry[i].exist);
+                auto where = lorryStatusAry[i].coord;
+                auto ending = lorry.get_ending();
+                auto loc = endpointRevMap.find(ending);
+                assert(loc);
+                lorryStatusAry[i].endpoint = *loc;
+            }
+        }
 
+        updateMapStatus status;
         // step.2
         for (auto const& [loc, m] : map) {
             if (isCross(m)) {
                 assert(!(m & MapRoad::Endpoint));
-                crossid id { genCrossId++ };
-                bool ok = crossMap.insert(loc, id);
+                crossid id { status.genCrossId++ };
+                bool ok = status.crossMap.insert(loc, id);
                 assert(ok);
             }
             else if (m & MapRoad::Endpoint) {
-                genEndpoint++;
+                status.genEndpoint++;
             }
         }
-        assert(crossMap.size() != 0);
+        assert(status.crossMap.size() != 0);
 
         // step.3
-        crossAry.reset(genCrossId);
-        for (auto const& [loc, id]: crossMap) {
+        crossAry.reset(status.genCrossId);
+        for (auto const& [loc, id]: status.crossMap) {
             road::crossroad& crossroad = CrossRoad(id);
             crossroad.loc = loc;
             uint8_t m = getMapBits(map, loc);
@@ -414,8 +451,8 @@ namespace roadnet {
 
                     if (loc == result.l && dir == reverse(result.dir)) {
                         assert(result.n > 0);
-                        straightData& straight = straightVec.emplace_back(
-                            straightid {(uint16_t)straightVec.size()},
+                        straightData& straight = status.straightVec.emplace_back(
+                            straightid {(uint16_t)status.straightVec.size()},
                             result.n * road::straight::N + 1,
                             loc,
                             dir,
@@ -428,12 +465,12 @@ namespace roadnet {
                     else {
                         auto neighbor_m = result.m;
                         if (!(neighbor_m & MapRoad::Endpoint)) {
-                            auto res = crossMap.find(result.l);
+                            auto res = status.crossMap.find(result.l);
                             assert(res);
                             crossid neighbor_id {*res};
                             road::crossroad& neighbor = CrossRoad(neighbor_id);
-                            straightData& straight1 = straightVec.emplace_back(
-                                straightid {(uint16_t)straightVec.size()},
+                            straightData& straight1 = status.straightVec.emplace_back(
+                                straightid {(uint16_t)status.straightVec.size()},
                                 result.n * road::straight::N + 1,
                                 loc,
                                 dir,
@@ -442,8 +479,8 @@ namespace roadnet {
                             );
                             crossroad.setNeighbor(dir, straight1.id);
                             neighbor.setRevNeighbor(reverse(result.dir), straight1.id);
-                            straightData& straight2 = straightVec.emplace_back(
-                                straightid {(uint16_t)straightVec.size()},
+                            straightData& straight2 = status.straightVec.emplace_back(
+                                straightid {(uint16_t)status.straightVec.size()},
                                 result.n * road::straight::N + 1,
                                 result.l,
                                 reverse(result.dir),
@@ -459,18 +496,18 @@ namespace roadnet {
         }
 
         // step.4
-        endpointAry.reset(genEndpoint);
+        endpointAry.reset(status.genEndpoint);
         uint16_t endpointId = 0;
         for (auto const& [loc, m] : map) {
             if (m & MapRoad::Endpoint) {
                 auto rawm = m & 0xF;
                 switch (rawm) {
-                case mask(L'║'): setEndpoint(*this, map, crossMap, straightVec, loc, direction::t, direction::b, endpointId); break;
-                case mask(L'═'): setEndpoint(*this, map, crossMap, straightVec, loc, direction::l, direction::r, endpointId); break;
-                case mask(L'╔'): setEndpoint(*this, map, crossMap, straightVec, loc, direction::r, direction::b, endpointId); break;
-                case mask(L'╚'): setEndpoint(*this, map, crossMap, straightVec, loc, direction::r, direction::t, endpointId); break;
-                case mask(L'╗'): setEndpoint(*this, map, crossMap, straightVec, loc, direction::l, direction::b, endpointId); break;
-                case mask(L'╝'): setEndpoint(*this, map, crossMap, straightVec, loc, direction::l, direction::t, endpointId); break;
+                case mask(L'║'): setEndpoint(*this, map, status, loc, direction::t, direction::b, endpointId); break;
+                case mask(L'═'): setEndpoint(*this, map, status, loc, direction::l, direction::r, endpointId); break;
+                case mask(L'╔'): setEndpoint(*this, map, status, loc, direction::r, direction::b, endpointId); break;
+                case mask(L'╚'): setEndpoint(*this, map, status, loc, direction::r, direction::t, endpointId); break;
+                case mask(L'╗'): setEndpoint(*this, map, status, loc, direction::l, direction::b, endpointId); break;
+                case mask(L'╝'): setEndpoint(*this, map, status, loc, direction::l, direction::t, endpointId); break;
                 default: assert(false); break;
                 }
                 endpointId++;
@@ -478,26 +515,25 @@ namespace roadnet {
         }
 
         // step.5
-        straightAry.reset(straightVec.size());
-        for (auto& data: straightVec) {
+        straightAry.reset(status.straightVec.size());
+        for (auto& data: status.straightVec) {
             road::straight& straight = StraightRoad(data.id);
             size_t length = data.len;
             straight.init(data.id, (uint16_t)length, data.finish_dir, data.neighbor);
-            straight.setLorryOffset(genStraightLorryOffset);
-            straight.setCoordOffset(genStraightCoordOffset);
-            genStraightLorryOffset += (uint16_t)length;
-            genStraightCoordOffset += (uint16_t)(length / road::straight::N + 1);
+            straight.setLorryOffset(status.genStraightLorryOffset);
+            straight.setCoordOffset(status.genStraightCoordOffset);
+            status.genStraightLorryOffset += (uint16_t)length;
+            status.genStraightCoordOffset += (uint16_t)(length / road::straight::N + 1);
         }
-        straightCoord.reset(genStraightCoordOffset);
+        straightCoord.reset(status.genStraightCoordOffset);
         size_t i = 0;
-        for (auto& straight: straightVec) {
+        for (auto& straight: status.straightVec) {
             uint16_t offset = 0;
             walkToNeighbor(map, straight.loc, straight.start_dir, [&](map_coord coord) {
-                straightCoord[i + offset++] = coord;
-                if (!crossMap.find(coord.get_loction())) {
+                if (!status.crossMap.find(coord.get_loction())) {
                     direction from = road::crossFrom((cross_type)coord.w);
                     direction to = road::crossTo((cross_type)coord.w);
-                    auto grid = straightMap.find(coord.get_loction());
+                    auto grid = status.straightMap.find(coord.get_loction());
                     if (grid) {
                         grid->id1 = straight.id;
                         grid->offset1 = offset;
@@ -505,82 +541,89 @@ namespace roadnet {
                         assert(grid->direction1 == (uint16_t)from);
                     }
                     else {
-                        straightMap.insert_or_assign(coord.get_loction(), straightGrid{
+                        status.straightMap.insert_or_assign(coord.get_loction(), straightGrid {
                             straight.id,
                             {},
                             offset,
                             (uint16_t)from,
                             0,
                             (uint16_t)to,
-                            });
+                        });
                     }
                 }
+                straightCoord[i + offset++] = coord;
             });
             i += offset;
         }
         assert(i == straightCoord.size());
-        straightLorry.reset(genStraightLorryOffset);
+        straightLorry.reset(status.genStraightLorryOffset);
 
         // step.6
-        lorryVec.clear();
-        lorryFreeList.clear();
-        //for (uint16_t i = 0; i < lorryWhere.size(); ++i) {
-        //    auto& lorry = lorryVec[i];
-        //    if (lorry.invaild()) {
-        //        continue;
-        //    }
-        //    assert(lorryWhere[i]);
-        //    auto where = *lorryWhere[i];
-        //    auto loc = where.get_loction();
-        //    auto m = getMapBits(map, loc);
-        //    if (m == 0) {
-        //        destroyLorry(w, lorryid{i});
-        //        continue;
-        //    }
-        //    if (isCross(m)) {
-        //        auto roadId = crossMap.find(loc);
-        //        assert(roadId);
-        //        auto& cross = CrossRoad(*roadId);
-        //        if (!cross.insertLorry(*this, lorryid{i}, where)) {
-        //            destroyLorry(w, lorryid{i});
-        //            continue;
-        //        }
-        //    }
-        //    else {
-        //        auto roadGrid = straightMap.find(loc);
-        //        assert(roadGrid);
-        //        if (!roadGrid->id1) {
-        //            auto& straight = StraightRoad(roadGrid->id0);
-        //            if (!straight.insertLorry(*this, lorryid{i}, roadGrid->offset0, (map_index)where.z)) {
-        //                destroyLorry(w, lorryid{i});
-        //                continue;
-        //            }
-        //        }
-        //        else {
-        //            auto& straight_i0 = StraightRoad(roadGrid->id0);
-        //            auto& straight_i1 = StraightRoad(roadGrid->id1);
-        //            direction dir0 = direction(roadGrid->direction0);
-        //            direction dir1 = direction(roadGrid->direction1);
-        //            direction from = road::crossFrom((cross_type)where.w);
-        //            direction to = road::crossTo((cross_type)where.w);
-        //            if (to == dir1) {
-        //                insertLorry01(*this, w, *roadGrid, lorryid{i}, (map_index)where.z);
-        //            }
-        //            else if (to == dir0) {
-        //                insertLorry10(*this, w, *roadGrid, lorryid{i}, (map_index)where.z);
-        //            }
-        //            else if (from == dir0) {
-        //                insertLorry01(*this, w, *roadGrid, lorryid{i}, (map_index)where.z);
-        //            }
-        //            else if (from == dir1) {
-        //                insertLorry10(*this, w, *roadGrid, lorryid{i}, (map_index)where.z);
-        //            }
-        //            else {
-        //                insertLorry01(*this, w, *roadGrid, lorryid{i}, (map_index)where.z);
-        //            }
-        //        }
-        //    }
-        //}
+        for (uint16_t i = 0; i < lorryStatusAry.size(); ++i) {
+            auto& lorry = lorryVec[i];
+            if (lorry.invaild()) {
+                continue;
+            }
+            auto& s = lorryStatusAry[i];
+            assert(s.exist);
+            if (auto ep = status.endpointMap.find(s.endpoint)) {
+                //TODO: endpoint changed
+                Lorry(lorryid{i}).set_ending(*ep);
+            }
+            else {
+                destroyLorry(w, lorryid{i});
+                continue;
+            }
+            auto loc = s.coord.get_loction();
+            auto m = getMapBits(map, loc);
+            if (m == 0) {
+                destroyLorry(w, lorryid{i});
+                continue;
+            }
+            if (isCross(m)) {
+                auto roadId = status.crossMap.find(loc);
+                assert(roadId);
+                auto& cross = CrossRoad(*roadId);
+                if (!cross.insertLorry(*this, lorryid{i}, s.coord)) {
+                    destroyLorry(w, lorryid{i});
+                    continue;
+                }
+            }
+            else {
+                auto roadGrid = status.straightMap.find(loc);
+                assert(roadGrid);
+                if (!roadGrid->id1) {
+                    auto& straight = StraightRoad(roadGrid->id0);
+                    if (!straight.insertLorry(*this, lorryid{i}, roadGrid->offset0, (map_index)s.coord.z)) {
+                        destroyLorry(w, lorryid{i});
+                        continue;
+                    }
+                }
+                else {
+                    auto& straight_i0 = StraightRoad(roadGrid->id0);
+                    auto& straight_i1 = StraightRoad(roadGrid->id1);
+                    direction dir0 = direction(roadGrid->direction0);
+                    direction dir1 = direction(roadGrid->direction1);
+                    direction from = road::crossFrom((cross_type)s.coord.w);
+                    direction to = road::crossTo((cross_type)s.coord.w);
+                    if (to == dir1) {
+                        insertLorry01(*this, w, *roadGrid, lorryid{i}, s.coord.z);
+                    }
+                    else if (to == dir0) {
+                        insertLorry10(*this, w, *roadGrid, lorryid{i}, s.coord.z);
+                    }
+                    else if (from == dir0) {
+                        insertLorry01(*this, w, *roadGrid, lorryid{i}, s.coord.z);
+                    }
+                    else if (from == dir1) {
+                        insertLorry10(*this, w, *roadGrid, lorryid{i}, s.coord.z);
+                    }
+                    else {
+                        insertLorry01(*this, w, *roadGrid, lorryid{i}, s.coord.z);
+                    }
+                }
+            }
+        }
     }
 
     lorryid network::createLorry(world& w, uint16_t classid) {

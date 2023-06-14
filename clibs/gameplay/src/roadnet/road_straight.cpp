@@ -73,8 +73,8 @@ namespace roadnet::road {
         default:
             std::unreachable();
         }
-        uint32_t o = lorryOffset + ((len-1) - offset * N + z);
-        if (!w.LorryInRoad(o)) {
+        uint32_t o = lorryOffset + ((len-1) - offset * N - z);
+        if (w.LorryInRoad(o)) {
             return false;
         }
         w.LorryInRoad(o) = lorryId;
