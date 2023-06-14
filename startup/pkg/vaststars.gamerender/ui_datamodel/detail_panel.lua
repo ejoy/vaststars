@@ -158,7 +158,7 @@ local function get_property(e, typeobject)
     -- 显示建筑详细信息
     get_display_info(e, typeobject, t)
     local chest_component = iprototype.get_chest_component(typeobject.name)
-    if chest_component then
+    if iprototype.check_types(typeobject.name, CHEST_LIST_TYPES) and chest_component then
         local chest_list = {}
         if iprototype.has_types(typeobject.type, "station", "hub") then
             local c = ichest.chest_get(gameplay_core.get_world(), e[chest_component], 1)
@@ -167,7 +167,6 @@ local function get_property(e, typeobject)
                 chest_list[#chest_list + 1] = {icon = typeobject_item.icon, name = typeobject_item.name, count = ichest.get_amount(c)}
             end
         else
-            -- the items display is shown in two rows, with list0 for the first row and list1 for the second row (five items per row, up to ten items in total)
             for _, slot in pairs(ichest.collect_item(gameplay_core.get_world(), e[chest_component])) do
                 local typeobject_item = assert(iprototype.queryById(slot.item))
                 chest_list[#chest_list + 1] = {icon = typeobject_item.icon, name = "", count = ichest.get_amount(slot)}
