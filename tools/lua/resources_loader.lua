@@ -65,7 +65,7 @@ local function _package_files(root)
         "^/pkg/ant.bake/materials/bake_lighting.material$",
         "^/pkg/vaststars.mod.test/.*$",
         ".*mars_pumpjack.*",
-        "^/pkg/ant.resources/materials/ibl/*.material$",
+        "^/pkg/ant.resources/materials/ibl/.*%.material$",
     }
 
     local function _skip_ext(f)
