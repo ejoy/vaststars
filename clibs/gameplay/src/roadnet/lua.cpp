@@ -193,7 +193,7 @@ luaopen_vaststars_roadnet_core(lua_State* L) {
         { "endpoint_loction", roadnet::lua::endpoint_loction },
         { "each_lorry", NULL },
         { "lorry", NULL },
-        { "remove_lorry", roadnet::lua::remove_lorry},
+        { "remove_lorry", roadnet::lua::remove_lorry },
         { NULL, NULL },
     };
     luaL_newlib(L, lib);
@@ -207,8 +207,8 @@ luaopen_vaststars_roadnet_core(lua_State* L) {
     new (storage) roadnet::lua::eachlorry;
     if (luaL_newmetatable(L, "roadnet::each_lorry")) {
         static luaL_Reg mt[] = {
-            {"__gc", roadnet::lua::eachlorry::gc},
-            {NULL, NULL},
+            { "__gc", roadnet::lua::eachlorry::gc },
+            { NULL, NULL },
         };
         luaL_setfuncs(L, mt, 0);
     }

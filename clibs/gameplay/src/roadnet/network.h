@@ -43,6 +43,7 @@ namespace roadnet {
         dynarray<map_coord>             straightCoord;
         std::vector<lorry>              lorryVec;
         std::vector<lorryid>            lorryFreeList;
+        std::vector<lorryid>            lorryWaitList;
         flatmap<route_key, route_value> routeCached;
     };
 }

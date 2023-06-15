@@ -645,9 +645,11 @@ namespace roadnet {
     void network::destroyLorry(world& w, lorryid id) {
         auto& lorry = Lorry(id);
         lorry.reset(w);
-        lorryFreeList.push_back(id);
+        lorryWaitList.push_back(id);
     }
     void network::update(uint64_t ti) {
+        lorryFreeList.insert(std::end(lorryFreeList), std::begin(lorryWaitList), std::end(lorryWaitList));
+        lorryWaitList.clear();
         ary_call(*this, ti, lorryVec, &lorry::update);
         ary_call(*this, ti, crossAry, &road::cross::update);
         ary_call(*this, ti, straightAry, &road::straight::update);
