@@ -216,8 +216,11 @@ return function ()
         roadnet.reset(cworld, ...)
         self._endpoints = roadnet.endpoint_loction(cworld)
     end
-    function world:roadnet_each_lorry(...)
-        return roadnet.each_lorry(cworld, ...)
+    function world:roadnet_each_lorry()
+        return roadnet.each_lorry(cworld)
+    end
+    function world:roadnet_lorry(id)
+        return roadnet.lorry(cworld, id)
     end
     function world:roadnet_remove_lorry(...)
         return roadnet.remove_lorry(cworld, ...)

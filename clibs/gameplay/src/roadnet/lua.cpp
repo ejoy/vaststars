@@ -21,10 +21,6 @@ namespace roadnet::lua {
         return {x,y};
     }
 
-    static void push_map_coord(lua_State* L, map_coord& c) {
-        lua_pushinteger(L, c.get_value());
-    }
-
     static int reset(lua_State* L) {
         auto& w = get_network(L);
         if (lua_gettop(L) == 1) {
@@ -54,6 +50,11 @@ namespace roadnet::lua {
         uint32_t index = 0;
         uint16_t straightId = 0;
         using result_type = std::tuple<lorryid, map_coord>;
+        void reset() {
+            status = status::cross;
+            index = 0;
+            straightId = 0;
+        }
         result_type next_cross(roadnet::network& w) {
             static constexpr int N = 2;
             for (;;) {
@@ -117,37 +118,53 @@ namespace roadnet::lua {
             if (!lorryid) {
                 return 0;
             }
-            auto& l = w.Lorry(lorryid);
             lua_pushinteger(L, lorryid.get_index());
-            lua_pushinteger(L, l.get_classid());
-            auto [item_classid, item_amount] = l.get_item();
-            lua_pushinteger(L, item_classid);
-            lua_pushinteger(L, item_amount);
-            push_map_coord(L, coord);
-            auto [progress, maxprogress] = l.get_progress();
-            lua_pushinteger(L, progress);
-            lua_pushinteger(L, maxprogress);
-            return 7;
+            lua_pushinteger(L, coord.get_value());
+            return 2;
         }
         static int gc(lua_State* L) {
             get(L, 1).~eachlorry();
             return 0;
         }
     };
-    static int each_lorry(lua_State* L) {
-        void* storage = lua_newuserdatauv(L, sizeof(eachlorry), 0);
-        new (storage) eachlorry;
-        if (luaL_newmetatable(L, "roadnet::each_lorry")) {
-            static luaL_Reg mt[] = {
-                {"__gc", eachlorry::gc},
-                {NULL, NULL},
-            };
-            luaL_setfuncs(L, mt, 0);
+    static int sync_lorry(lua_State* L) {
+        auto& w = get_network(L);
+        lua_Integer n = luaL_len(L, lua_upvalueindex(1));
+        if (n < (lua_Integer)w.lorryVec.size()) {
+            ptrdiff_t diff = w.lorryVec.size() - n;
+            for (ptrdiff_t i = 0; i < diff; ++i) {
+                lua_createtable(L, 0, 5);
+                lua_rawseti(L, lua_upvalueindex(1), n+1+i);
+            }
         }
-        lua_setmetatable(L, -2);
-        lua_pushvalue(L, -1);
+        return 0;
+    }
+    static int each_lorry(lua_State* L) {
+        sync_lorry(L);
+        eachlorry& self = eachlorry::get(L, lua_upvalueindex(2));
+        self.reset();
+        lua_pushvalue(L, lua_upvalueindex(2));
         lua_pushvalue(L, 1);
         lua_pushcclosure(L, eachlorry::next, 2);
+        return 1;
+    }
+    static int lorry(lua_State* L) {
+        auto& w = get_network(L);
+        lorryid lorryId = (uint16_t)luaL_checkinteger(L, 2);
+        auto& l = w.Lorry(lorryId);
+        auto [item_classid, item_amount] = l.get_item();
+        auto [progress, maxprogress] = l.get_progress();
+        lua_rawgeti(L, lua_upvalueindex(1), lorryId.get_index() + 1);
+        lua_pushinteger(L, l.get_classid());
+        lua_setfield(L, -2, "classid");
+        lua_pushinteger(L, item_classid);
+        lua_setfield(L, -2, "item");
+        lua_pushinteger(L, item_amount);
+        lua_setfield(L, -2, "amount");
+        lua_pushinteger(L, progress);
+        lua_setfield(L, -2, "progress");
+        lua_pushinteger(L, maxprogress);
+        lua_setfield(L, -2, "maxprogress");
         return 1;
     }
     static int endpoint_loction(lua_State* L) {
@@ -171,13 +188,31 @@ namespace roadnet::lua {
 
 extern "C" int
 luaopen_vaststars_roadnet_core(lua_State* L) {
-    luaL_Reg l[] = {
+    luaL_Reg lib[] = {
         { "reset", roadnet::lua::reset },
-        { "each_lorry", roadnet::lua::each_lorry },
         { "endpoint_loction", roadnet::lua::endpoint_loction },
+        { "each_lorry", NULL },
+        { "lorry", NULL },
         { "remove_lorry", roadnet::lua::remove_lorry},
         { NULL, NULL },
     };
-    luaL_newlib(L, l);
+    luaL_newlib(L, lib);
+    luaL_Reg lorry_lib[] = {
+        { "each_lorry", roadnet::lua::each_lorry },
+        { "lorry", roadnet::lua::lorry },
+        { NULL, NULL },
+    };
+    lua_newtable(L);
+    void* storage = lua_newuserdatauv(L, sizeof(roadnet::lua::eachlorry), 0);
+    new (storage) roadnet::lua::eachlorry;
+    if (luaL_newmetatable(L, "roadnet::each_lorry")) {
+        static luaL_Reg mt[] = {
+            {"__gc", roadnet::lua::eachlorry::gc},
+            {NULL, NULL},
+        };
+        luaL_setfuncs(L, mt, 0);
+    }
+    lua_setmetatable(L, -2);
+    luaL_setfuncs(L, lorry_lib, 2);
     return 1;
 }
