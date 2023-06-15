@@ -311,7 +311,7 @@ namespace roadnet {
             reverse(b),
             crossid::invalid()
         );
-        w.Cross(*cross_b).setNeighbor(reverse(nb.dir), straight1.id);
+        w.CrossRoad(*cross_b).setNeighbor(reverse(nb.dir), straight1.id);
         ep.rev_neighbor = straight1.id;
         straightData& straight2 = status.straightVec.emplace_back(
             straightid {(uint16_t)status.straightVec.size()},
@@ -321,7 +321,7 @@ namespace roadnet {
             na.dir,
             *cross_a
         );
-        w.Cross(*cross_a).setRevNeighbor(reverse(na.dir), straight2.id);
+        w.CrossRoad(*cross_a).setRevNeighbor(reverse(na.dir), straight2.id);
         ep.neighbor = straight2.id;
 
         status.endpointMap.insert_or_assign(loc, ep.rev_neighbor);
@@ -436,7 +436,7 @@ namespace roadnet {
         // step.3
         crossAry.reset(status.genCrossId);
         for (auto const& [loc, id]: status.crossMap) {
-            road::cross& cross = Cross(id);
+            road::cross& cross = CrossRoad(id);
             cross.loc = loc;
             uint8_t m = getMapBits(map, loc);
             if (m & MapRoad::NoHorizontal) {
@@ -474,7 +474,7 @@ namespace roadnet {
                             auto res = status.crossMap.find(result.l);
                             assert(res);
                             crossid neighbor_id {*res};
-                            road::cross& neighbor = Cross(neighbor_id);
+                            road::cross& neighbor = CrossRoad(neighbor_id);
                             straightData& straight1 = status.straightVec.emplace_back(
                                 straightid {(uint16_t)status.straightVec.size()},
                                 result.n * road::straight::N + 1,
@@ -589,7 +589,7 @@ namespace roadnet {
             if (isCross(m)) {
                 auto roadId = status.crossMap.find(loc);
                 assert(roadId);
-                auto& cross = Cross(*roadId);
+                auto& cross = CrossRoad(*roadId);
                 if (!cross.insertLorry(*this, lorryid{i}, s.coord)) {
                     destroyLorry(w, lorryid{i});
                     continue;
@@ -659,7 +659,7 @@ namespace roadnet {
         assert(id.get_index() < straightAry.size());
         return straightAry[id.get_index()];
     }
-    road::cross& network::Cross(crossid id) {
+    road::cross& network::CrossRoad(crossid id) {
         assert(id != crossid::invalid());
         assert(id.get_index() < crossAry.size());
         return crossAry[id.get_index()];
