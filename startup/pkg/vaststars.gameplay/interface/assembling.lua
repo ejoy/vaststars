@@ -125,12 +125,11 @@ end
 
 local function del_recipe(e)
     local assembling = e.assembling
-    local chest = e.chest
     assembling.progress = 0
     assembling.status = STATUS_IDLE
     assembling.recipe = 0
-    chest.fluidbox_in = 0
-    chest.fluidbox_out = 0
+    assembling.fluidbox_in = 0
+    assembling.fluidbox_out = 0
 end
 
 local function set_recipe(world, e, pt, recipe_name, fluids, option)
@@ -161,11 +160,11 @@ local function set_recipe(world, e, pt, recipe_name, fluids, option)
     chest.chest = world:container_create(items)
     if fluids and pt.fluidboxes then
         local fluidbox_in, fluidbox_out = createFluidBox(fluids, recipe)
-        chest.fluidbox_in = fluidbox_in
-        chest.fluidbox_out = fluidbox_out
+        assembling.fluidbox_in = fluidbox_in
+        assembling.fluidbox_out = fluidbox_out
     else
-        chest.fluidbox_in = 0
-        chest.fluidbox_out = 0
+        assembling.fluidbox_in = 0
+        assembling.fluidbox_out = 0
     end
 end
 

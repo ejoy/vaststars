@@ -18,7 +18,7 @@ local function isFluidId(id)
     return false
 end
 
-local function createChest(world, chest, s)
+local function createChest(world, s)
     local container_in = {}
     for idx = 2, #s//2 do
         local id = string.unpack("<I2", s, 2*idx-1)
@@ -29,19 +29,15 @@ local function createChest(world, chest, s)
             limit = 2,
         }
     end
-    chest.chest = world:container_create(table.concat(container_in))
+    return world:container_create(table.concat(container_in))
 end
 
 function c:ctor(init, pt)
     local world = self
-    local chest = {
-        fluidbox_in = 0,
-        fluidbox_out = 0,
-        lorry = 0xffff,
-    }
-    createChest(world, chest, pt.inputs)
     local e = {
-        chest = chest,
+        chest = {
+            chest = createChest(world, pt.inputs)
+        },
         laboratory = {
             tech = 0,
             speed = math.floor(pt.speed * 100),

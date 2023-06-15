@@ -12,8 +12,6 @@ component "building" {
 
 component "chest" {
     "chest:word",
-    "fluidbox_in:word",
-    "fluidbox_out:word",
 }
 
 component "inventory" {
@@ -67,6 +65,8 @@ component "assembling" {
     "progress:int",
     "recipe:word",
     "speed:word",
+    "fluidbox_in:word",
+    "fluidbox_out:word",
     "status:byte",
 }
 

@@ -133,7 +133,7 @@ lupdate(lua_State *L) {
 				uint16_t fluid = fb.in[i].fluid;
 				if (fluid != 0) {
 					auto& f = w.fluidflows[fluid];
-					uint8_t index = ((c2.fluidbox_in >> (i*4)) & 0xF) - 1;
+					uint8_t index = ((a.fluidbox_in >> (i*4)) & 0xF) - 1;
 					fluid_state state;
 					if (f.query(fb.in[i].id, state)) {
 						chest::set_fluid(w, container::index::from(c2.chest), index, state.volume / f.multiple);
@@ -144,7 +144,7 @@ lupdate(lua_State *L) {
 				uint16_t fluid = fb.out[i].fluid;
 				if (fluid != 0) {
 					auto& f = w.fluidflows[fluid];
-					uint8_t index = ((c2.fluidbox_out >> (i*4)) & 0xF) - 1;
+					uint8_t index = ((a.fluidbox_out >> (i*4)) & 0xF) - 1;
 					fluid_state state;
 					if (f.query(fb.out[i].id, state)) {
 						chest::set_fluid(w, container::index::from(c2.chest), index, state.volume / f.multiple);
