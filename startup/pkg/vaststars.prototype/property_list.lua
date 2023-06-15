@@ -155,7 +155,7 @@ local property_list = {
 	},
 	["weights"] = {
 		icon = "textures/property/delivery-truck-req.texture",
-		desc = "优先级",
+		desc = "供货权重",
 		value = "$weights$",
 		pos = 30,
 	},
