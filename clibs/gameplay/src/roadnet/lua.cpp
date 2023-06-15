@@ -39,7 +39,6 @@ namespace roadnet::lua {
         }
         auto endpointMap = w.updateMap(get_world(L), map);
         lua_createtable(L, 0, (int)endpointMap.size());
-        lua_Integer n = 0;
         for (const auto& [loc, ep] : endpointMap) {
             lua_pushinteger(L, loc.id);
             lua_pushinteger(L, std::bit_cast<uint32_t>(ep));

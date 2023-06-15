@@ -34,7 +34,7 @@ local TYPENAMES <const> = {
 
 local function TypeName(components, typename)
     if components[typename] then
-        return "struct "..typename
+        return typename
     end
     return TYPENAMES[typename] or typename
 end

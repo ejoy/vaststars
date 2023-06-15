@@ -405,7 +405,7 @@ namespace roadnet {
             }
             assert(lorryStatusAry[i].exist);
             auto ending = lorry.get_ending();
-            lorryStatusAry[i].endpoint = straightAry[i].waitingLoction(*this);
+            lorryStatusAry[i].endpoint = StraightRoad(ending).waitingLoction(*this);
         }
 
         updateMapStatus status;
