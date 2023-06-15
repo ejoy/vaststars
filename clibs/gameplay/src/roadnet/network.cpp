@@ -19,7 +19,7 @@ namespace roadnet {
     }
 
     template <typename T, typename F>
-    static void ary_call(network& w, uint64_t ti, T& ary, F func) {
+    static void array_call(network& w, uint64_t ti, T& ary, F func) {
         size_t N = ary.size();
         for (size_t i = 0; i < N; ++i) {
             (ary[i].*func)(w, ti);
@@ -650,9 +650,9 @@ namespace roadnet {
     void network::update(uint64_t ti) {
         lorryFreeList.insert(std::end(lorryFreeList), std::begin(lorryWaitList), std::end(lorryWaitList));
         lorryWaitList.clear();
-        ary_call(*this, ti, lorryVec, &lorry::update);
-        ary_call(*this, ti, crossAry, &road::cross::update);
-        ary_call(*this, ti, straightAry, &road::straight::update);
+        array_call(*this, ti, lorryVec, &lorry::update);
+        array_call(*this, ti, crossAry, &road::cross::update);
+        array_call(*this, ti, straightAry, &road::straight::update);
     }
     road::straight& network::StraightRoad(straightid id) {
         assert(id != straightid::invalid());
@@ -664,20 +664,20 @@ namespace roadnet {
         assert(id.get_index() < crossAry.size());
         return crossAry[id.get_index()];
     }
-    lorryid& network::LorryInRoad(uint32_t index) {
-        return straightLorry[index];
-    }
-    map_coord network::LorryInCoord(uint32_t index) const {
-        return straightCoord[index];
+    road::endpoint& network::Endpoint(endpointid id) {
+        assert(id != endpointid::invalid());
+        assert(id.get_index() < endpointAry.size());
+        return endpointAry[id.get_index()];
     }
     lorry& network::Lorry(lorryid id) {
         assert(id != lorryid::invalid());
         assert(id.get_index() < lorryVec.size());
         return lorryVec[id.get_index()];
     }
-    road::endpoint& network::Endpoint(endpointid id) {
-        assert(id != endpointid::invalid());
-        assert(id.get_index() < endpointAry.size());
-        return endpointAry[id.get_index()];
+    lorryid& network::LorryInRoad(uint32_t index) {
+        return straightLorry[index];
+    }
+    map_coord network::LorryInCoord(uint32_t index) const {
+        return straightCoord[index];
     }
 }
