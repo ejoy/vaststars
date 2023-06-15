@@ -756,7 +756,6 @@ local t = {
 	"/pkg/mod.road/assets/road_x.material",
 	"/pkg/mod.road/assets/shapes/mark_alpha.dds",
 	"/pkg/mod.road/assets/textures/mark_alpha.texture",
-	"/pkg/mod.road/assets/textures/normal.texture",
 	"/pkg/mod.road/assets/textures/ri_color.texture",
 	"/pkg/mod.road/assets/textures/ri_metallic_roughness.texture",
 	"/pkg/mod.road/assets/textures/rl_color.texture",
