@@ -155,8 +155,14 @@ local property_list = {
 	},
 	["weights"] = {
 		icon = "textures/property/delivery-truck-req.texture",
-		desc = "需求车辆",
+		desc = "优先级",
 		value = "$weights$",
+		pos = 30,
+	},
+	["maxlorry"] = {
+		icon = "textures/property/delivery-truck-req.texture",
+		desc = "需求车辆",
+		value = "$maxlorry$",
 		pos = 30,
 	},
 	["lorry"] = {

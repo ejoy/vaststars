@@ -140,7 +140,7 @@ local building_detail_config = {
 		"lorry",
 	},
 	["收货车站"] = {
-		"weights",
+		"maxlorry",
 		"lorry",
 	},
 }
