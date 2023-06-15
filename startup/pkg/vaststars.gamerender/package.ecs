@@ -193,7 +193,7 @@ interface "igame_object"
 
 interface "igameplay"
     .implement "gameplay_system.lua"
-    .method "build_world"
+    .method "dirty"
     .method "create_entity"
     .method "remove_entity"
     .method "update_chimney_recipe"

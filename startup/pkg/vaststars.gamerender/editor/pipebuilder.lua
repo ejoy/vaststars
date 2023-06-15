@@ -25,6 +25,7 @@ local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_box"
 local global = require "global"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
+local DIRTY_FLUIDFLOW <const> = require("gameplay.interface.constant").DIRTY_FLUIDFLOW
 
 local REMOVE <const> = {}
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
@@ -825,7 +826,7 @@ local function confirm(self, datamodel)
         igameplay.remove_entity(obj.gameplay_eid)
     end
 
-    igameplay.build_world()
+    igameplay.dirty(DIRTY_FLUIDFLOW)
 end
 
 local function cancel(self, datamodel)

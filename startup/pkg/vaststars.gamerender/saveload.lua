@@ -9,6 +9,7 @@ local debugger = require "debugger"
 local CUSTOM_ARCHIVING <const> = require "debugger".custom_archiving
 local iprototype_cache = require "gameplay.prototype_cache.init"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
+local DIRTY_ALL <const> = require("gameplay.interface.constant").DIRTY_ALL
 
 local archival_base_dir
 if CUSTOM_ARCHIVING then
@@ -323,7 +324,7 @@ function M:restore(index)
     debugger.set_free_mode(gameplay_core.get_storage().game_mode == "free")
     restore_world()
 
-    igameplay.build_world()
+    igameplay.dirty(DIRTY_ALL)
 
     iui.open({"construct.rml"})
     iui.open({"message_pop.rml"})
@@ -383,7 +384,7 @@ function M:restart(mode, game_template)
     end
 
     restore_world()
-    igameplay.build_world()
+    igameplay.dirty(DIRTY_ALL)
 
     iui.open({"construct.rml"})
     iui.open({"message_pop.rml"})

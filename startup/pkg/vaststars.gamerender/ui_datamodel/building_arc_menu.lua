@@ -31,6 +31,8 @@ local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 local iobject = ecs.require "object"
 local igameplay = ecs.interface "igameplay"
 local interval_call = ecs.require "engine.interval_call"
+local DIRTY_STATION <const> = require("gameplay.interface.constant").DIRTY_STATION
+local DIRTY_CHEST <const> = require("gameplay.interface.constant").DIRTY_CHEST
 
 local function __show_set_item(typeobject)
     return iprototype.has_type(typeobject.type, "hub") or iprototype.has_type(typeobject.type, "station")
@@ -348,7 +350,7 @@ function M:stage_ui_update(datamodel, object_id)
         local object = assert(objects:get(object_id))
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
         e.station.weights = e.station.weights + 1
-        igameplay.build_world()
+        igameplay.dirty(DIRTY_STATION)
     end
 
     for _, _, _, message in ui_click_mb:unpack() do
@@ -429,7 +431,7 @@ function M:stage_ui_update(datamodel, object_id)
             assert(false)
         end
 
-        igameplay.build_world()
+        igameplay.dirty(DIRTY_CHEST)
         ::continue::
     end
 
@@ -495,7 +497,7 @@ function M:stage_ui_update(datamodel, object_id)
             assert(false)
         end
 
-        igameplay.build_world()
+        igameplay.dirty(DIRTY_CHEST)
         ::continue::
     end
 

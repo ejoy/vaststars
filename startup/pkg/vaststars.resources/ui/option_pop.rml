@@ -53,6 +53,7 @@
                 archival_files = {},
                 show_archival_files = false,
                 info = false,
+                debug = false,
             })
 
             function start.clickButton(event, ...)
@@ -86,9 +87,9 @@
                             <div class="middle-bg" style='background-image: "textures/road/forbidden.texture";'/>
                             <div class = "recipe-name-text" style="font-size: 5.73vmin;">返回游戏</div>
                         </button>
-                        <button class = "button-style" style="background-color:rgb(253, 0, 0);">
+                        <button class = "button-style" style="background-color:rgb(253, 0, 0);" data-event-click = "clickButton('debug')">
                             <div class="middle-bg" style='background-image: "textures/road/forbidden.texture";'/>
-                            <div class = "recipe-name-text" style="font-size: 5.73vmin;">调试模式</div>
+                            <div class = "recipe-name-text" style="font-size: 5.73vmin;">{{debug == false ? '调试开启' : '调试关闭'}}</div>
                         </button>
                         <button class = "button-style" style="background-color: rgb(52, 207, 115)" data-event-click = "clickButton('back_to_main_menu')">
                             <div class="middle-bg" style='background-image: "textures/road/forbidden.texture";'/>

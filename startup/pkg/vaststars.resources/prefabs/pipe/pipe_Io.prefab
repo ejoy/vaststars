@@ -17,3 +17,16 @@ mount: 1
 policy:
   ant.general|name
   ant.render|render
+---
+data:
+  material: /pkg/vaststars.resources/glb/pipe/pipe_Io.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/pipe/pipe_Io.glb|meshes/zhuti.025_P1.meshbin
+  name: zhuti.II.017
+  scene:
+    r: {0, 0, 0, 1}
+    s: {1.4595030546188354, 1.4595030546188354, 1.4595030546188354}
+  visible_state: main_view|selectable|cast_shadow
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render

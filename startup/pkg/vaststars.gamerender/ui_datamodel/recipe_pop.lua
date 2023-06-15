@@ -23,6 +23,8 @@ local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local itask = ecs.require "task"
 local iprototype_cache = require "gameplay.prototype_cache.init"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
+local DIRTY_FLUIDFLOW <const> = require("gameplay.interface.constant").DIRTY_FLUIDFLOW
+local DIRTY_ASSEMBLING <const> = require("gameplay.interface.constant").DIRTY_ASSEMBLING
 
 -- TODO：duplicate code with builder.lua
 local function _update_neighbor_fluidbox(object)
@@ -73,7 +75,7 @@ local function _update_neighbor_fluidbox(object)
         end
         ::continue::
     end
-    igameplay.build_world()
+    igameplay.dirty(DIRTY_FLUIDFLOW)
 end
 
 local function _show_object_recipe(datamodel, object_id)
@@ -204,7 +206,7 @@ function M:stage_ui_update(datamodel, object_id)
             object.fluid_name = irecipe.get_init_fluids(recipe_typeobject) or {} -- recipe may not have fluid
 
             _update_neighbor_fluidbox(object)
-            igameplay.build_world()
+            igameplay.dirty(DIRTY_ASSEMBLING)
 
             iui.call_datamodel_method("building_arc_menu.rml", "update", object_id)
             object.recipe = recipe_name
@@ -223,7 +225,7 @@ function M:stage_ui_update(datamodel, object_id)
         iui.call_datamodel_method("building_arc_menu.rml", "update", object_id)
 
         _update_neighbor_fluidbox(object)
-        igameplay.build_world()
+        igameplay.dirty(DIRTY_ASSEMBLING)
     end
 end
 

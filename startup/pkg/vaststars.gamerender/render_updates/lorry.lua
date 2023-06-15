@@ -144,7 +144,13 @@ function lorry_sys:gameworld_update()
 
     local new_lorries = {}
     local x, y, offset, toward, mask
-    for lorry_id, classid, item_classid, item_amount, mc, progress, maxprogress in gameplay_world:roadnet_each_lorry() do
+    for lorry_id, mc in gameplay_world:roadnet_each_lorry() do
+        local lorry = gameplay_world:roadnet_lorry(lorry_id)
+        local classid = lorry.classid
+        local item_classid = lorry.item
+        local item_amount = lorry.amount
+        local progress = lorry.progress
+        local maxprogress = lorry.maxprogress
         x = mc & 0xFF
         y = (mc >> 8) & 0xFF
         x, y = x * ROAD_TILE_WIDTH_SCALE, y * ROAD_TILE_HEIGHT_SCALE

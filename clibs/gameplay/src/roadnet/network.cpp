@@ -19,7 +19,7 @@ namespace roadnet {
     }
 
     template <typename T, typename F>
-    static void ary_call(network& w, uint64_t ti, T& ary, F func) {
+    static void array_call(network& w, uint64_t ti, T& ary, F func) {
         size_t N = ary.size();
         for (size_t i = 0; i < N; ++i) {
             (ary[i].*func)(w, ti);
@@ -311,7 +311,7 @@ namespace roadnet {
             reverse(b),
             crossid::invalid()
         );
-        w.Cross(*cross_b).setNeighbor(reverse(nb.dir), straight1.id);
+        w.CrossRoad(*cross_b).setNeighbor(reverse(nb.dir), straight1.id);
         ep.rev_neighbor = straight1.id;
         straightData& straight2 = status.straightVec.emplace_back(
             straightid {(uint16_t)status.straightVec.size()},
@@ -321,7 +321,7 @@ namespace roadnet {
             na.dir,
             *cross_a
         );
-        w.Cross(*cross_a).setRevNeighbor(reverse(na.dir), straight2.id);
+        w.CrossRoad(*cross_a).setRevNeighbor(reverse(na.dir), straight2.id);
         ep.neighbor = straight2.id;
 
         status.endpointMap.insert_or_assign(loc, ep.rev_neighbor);
@@ -436,7 +436,7 @@ namespace roadnet {
         // step.3
         crossAry.reset(status.genCrossId);
         for (auto const& [loc, id]: status.crossMap) {
-            road::cross& cross = Cross(id);
+            road::cross& cross = CrossRoad(id);
             cross.loc = loc;
             uint8_t m = getMapBits(map, loc);
             if (m & MapRoad::NoHorizontal) {
@@ -474,7 +474,7 @@ namespace roadnet {
                             auto res = status.crossMap.find(result.l);
                             assert(res);
                             crossid neighbor_id {*res};
-                            road::cross& neighbor = Cross(neighbor_id);
+                            road::cross& neighbor = CrossRoad(neighbor_id);
                             straightData& straight1 = status.straightVec.emplace_back(
                                 straightid {(uint16_t)status.straightVec.size()},
                                 result.n * road::straight::N + 1,
@@ -589,7 +589,7 @@ namespace roadnet {
             if (isCross(m)) {
                 auto roadId = status.crossMap.find(loc);
                 assert(roadId);
-                auto& cross = Cross(*roadId);
+                auto& cross = CrossRoad(*roadId);
                 if (!cross.insertLorry(*this, lorryid{i}, s.coord)) {
                     destroyLorry(w, lorryid{i});
                     continue;
@@ -645,37 +645,39 @@ namespace roadnet {
     void network::destroyLorry(world& w, lorryid id) {
         auto& lorry = Lorry(id);
         lorry.reset(w);
-        lorryFreeList.push_back(id);
+        lorryWaitList.push_back(id);
     }
     void network::update(uint64_t ti) {
-        ary_call(*this, ti, lorryVec, &lorry::update);
-        ary_call(*this, ti, crossAry, &road::cross::update);
-        ary_call(*this, ti, straightAry, &road::straight::update);
+        lorryFreeList.insert(std::end(lorryFreeList), std::begin(lorryWaitList), std::end(lorryWaitList));
+        lorryWaitList.clear();
+        array_call(*this, ti, lorryVec, &lorry::update);
+        array_call(*this, ti, crossAry, &road::cross::update);
+        array_call(*this, ti, straightAry, &road::straight::update);
     }
     road::straight& network::StraightRoad(straightid id) {
         assert(id != straightid::invalid());
         assert(id.get_index() < straightAry.size());
         return straightAry[id.get_index()];
     }
-    road::cross& network::Cross(crossid id) {
+    road::cross& network::CrossRoad(crossid id) {
         assert(id != crossid::invalid());
         assert(id.get_index() < crossAry.size());
         return crossAry[id.get_index()];
     }
-    lorryid& network::LorryInRoad(uint32_t index) {
-        return straightLorry[index];
-    }
-    map_coord network::LorryInCoord(uint32_t index) const {
-        return straightCoord[index];
+    road::endpoint& network::Endpoint(endpointid id) {
+        assert(id != endpointid::invalid());
+        assert(id.get_index() < endpointAry.size());
+        return endpointAry[id.get_index()];
     }
     lorry& network::Lorry(lorryid id) {
         assert(id != lorryid::invalid());
         assert(id.get_index() < lorryVec.size());
         return lorryVec[id.get_index()];
     }
-    road::endpoint& network::Endpoint(endpointid id) {
-        assert(id != endpointid::invalid());
-        assert(id.get_index() < endpointAry.size());
-        return endpointAry[id.get_index()];
+    lorryid& network::LorryInRoad(uint32_t index) {
+        return straightLorry[index];
+    }
+    map_coord network::LorryInCoord(uint32_t index) const {
+        return straightCoord[index];
     }
 }

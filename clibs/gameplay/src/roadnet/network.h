@@ -30,19 +30,20 @@ namespace roadnet {
         void             destroyLorry(world& w, lorryid id);
         void             update(uint64_t ti);
         road::straight&  StraightRoad(straightid id);
-        road::cross&     Cross(crossid id);
+        road::cross&     CrossRoad(crossid id);
+        road::endpoint&  Endpoint(endpointid id);
         lorry&           Lorry(lorryid id);
         lorryid&         LorryInRoad(uint32_t index);
         map_coord        LorryInCoord(uint32_t index) const;
-        road::endpoint&  Endpoint(endpointid id);
 
-        dynarray<road::cross>       crossAry;
+        dynarray<road::cross>           crossAry;
         dynarray<road::straight>        straightAry;
         dynarray<road::endpoint>        endpointAry;
         dynarray<lorryid>               straightLorry;
         dynarray<map_coord>             straightCoord;
         std::vector<lorry>              lorryVec;
         std::vector<lorryid>            lorryFreeList;
+        std::vector<lorryid>            lorryWaitList;
         flatmap<route_key, route_value> routeCached;
     };
 }

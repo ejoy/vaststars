@@ -13,6 +13,7 @@ local MULTIPLE <const> = require "debugger".multiple
 local m = {}
 m.world_update = false
 m.multiple = MULTIPLE or 1
+m._dirty = 0
 
 function m.select(...)
     return world.ecs:select(...)
@@ -157,9 +158,17 @@ function m.restart()
     world = __create_gameplay_world()
 end
 
-function m.get_storage()
+function m.get_storage(key, defvalue)
     world.storage = world.storage or {}
-    return world.storage
+    if not key then
+        return world.storage
+    else
+        if world.storage[key] == nil then
+            return defvalue
+        else
+            return world.storage[key]
+        end
+    end
 end
 
 return m

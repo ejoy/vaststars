@@ -22,6 +22,7 @@ local coord_system = ecs.require "terrain"
 local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_box"
 local global = require "global"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
+local DIRTY_FLUIDFLOW <const> = require("gameplay.interface.constant").DIRTY_FLUIDFLOW
 
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
 local STATE_NONE  <const> = 0
@@ -789,7 +790,7 @@ local function __complete(self)
     end
 
     if needbuild then
-        igameplay.build_world()
+        igameplay.dirty(DIRTY_FLUIDFLOW)
     end
 end
 

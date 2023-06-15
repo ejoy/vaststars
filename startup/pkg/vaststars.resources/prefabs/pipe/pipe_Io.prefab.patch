@@ -11,16 +11,3 @@ policy:
   ant.general|name
   ant.general|tag
   ant.animation|slot
----
-data:
-  name: prefab1
-  scene:
-    t: {0, 0, 0}
-mount: 1
-policy:
-  ant.general|name
-  ant.scene|scene_object
----
-editor: false
-mount: 4
-prefab: /pkg/vaststars.resources/glb/pipe/pipe_Io_water.glb|mesh.prefab

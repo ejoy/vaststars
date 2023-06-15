@@ -17,6 +17,8 @@ local imain_menu_manager = ecs.require "main_menu_manager"
 local icanvas = ecs.require "engine.canvas"
 local audio = import_package "ant.audio"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
+local rhwi = import_package "ant.hwi"
+
 local m = ecs.system 'init_system'
 
 iRmlUi.set_prefix "/pkg/vaststars.resources/ui/"
@@ -43,7 +45,9 @@ function m:init_world()
         return
     end
 
-    icanvas.create(icanvas.types().ICON, gameplay_core.get_storage().info or true, 10)
+    rhwi.set_debug(gameplay_core.get_storage("debug", true) and {"TEXT"} or {})
+
+    icanvas.create(icanvas.types().ICON, gameplay_core.get_storage("info", true), 10)
     icanvas.create(icanvas.types().BUILDING_BASE, true, 0.01)
     icanvas.create(icanvas.types().PICKUP_ICON, false, 10)
     icanvas.create(icanvas.types().ROAD_ENTRANCE_MARKER, false, 0.02)
@@ -70,6 +74,11 @@ function m:gameplay_update()
     iroadnet:update()
     if gameplay_core.world_update then
         gameplay_core.update()
+        if gameplay_core._dirty ~= 0 then
+            gameplay_core._dirty = 0
+            world:pipeline_func "gameworld_prepare" ()
+            world:pipeline_func "gameworld_build" ()
+        end
     end
 end
 

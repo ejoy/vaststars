@@ -142,10 +142,8 @@ function igameplay.update_chimney_recipe(object) -- TODO: better way to do this?
     end
 end
 
-function igameplay.build_world()
+function igameplay.dirty(flags)
     gameplay_core.world_update = true
-
-    world:pipeline_func "gameworld_prepare" ()
-    gameplay_core.get_world():build()
-    world:pipeline_func "gameworld_build" ()
+    gameplay_core._dirty = gameplay_core._dirty | flags
+    gameplay_core.get_world():dirty(flags)
 end
