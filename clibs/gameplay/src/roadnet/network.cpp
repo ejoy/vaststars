@@ -231,7 +231,7 @@ namespace roadnet {
         loction    loc;
         direction  start_dir;
         direction  finish_dir;
-        crossid neighbor; // the next crossroad along this straight road
+        crossid neighbor; // the next cross along this straight road
         straightData(straightid id, uint16_t len, loction loc, direction start_dir, direction finish_dir, crossid neighbor)
             : id(id)
             , len(len)
@@ -311,7 +311,7 @@ namespace roadnet {
             reverse(b),
             crossid::invalid()
         );
-        w.CrossRoad(*cross_b).setNeighbor(reverse(nb.dir), straight1.id);
+        w.Cross(*cross_b).setNeighbor(reverse(nb.dir), straight1.id);
         ep.rev_neighbor = straight1.id;
         straightData& straight2 = status.straightVec.emplace_back(
             straightid {(uint16_t)status.straightVec.size()},
@@ -321,7 +321,7 @@ namespace roadnet {
             na.dir,
             *cross_a
         );
-        w.CrossRoad(*cross_a).setRevNeighbor(reverse(na.dir), straight2.id);
+        w.Cross(*cross_a).setRevNeighbor(reverse(na.dir), straight2.id);
         ep.neighbor = straight2.id;
 
         status.endpointMap.insert_or_assign(loc, ep.rev_neighbor);
@@ -436,23 +436,23 @@ namespace roadnet {
         // step.3
         crossAry.reset(status.genCrossId);
         for (auto const& [loc, id]: status.crossMap) {
-            road::crossroad& crossroad = CrossRoad(id);
-            crossroad.loc = loc;
+            road::cross& cross = Cross(id);
+            cross.loc = loc;
             uint8_t m = getMapBits(map, loc);
             if (m & MapRoad::NoHorizontal) {
-                crossroad.ban |= road::LeftTurn;
-                crossroad.ban |= road::UTurn;
-                crossroad.ban |= road::Horizontal;
+                cross.ban |= road::LeftTurn;
+                cross.ban |= road::UTurn;
+                cross.ban |= road::Horizontal;
             }
             if (m & MapRoad::NoVertical) {
-                crossroad.ban |= road::LeftTurn;
-                crossroad.ban |= road::UTurn;
-                crossroad.ban |= road::Vertical;
+                cross.ban |= road::LeftTurn;
+                cross.ban |= road::UTurn;
+                cross.ban |= road::Vertical;
             }
     
             for (uint8_t i = 0; i < 4; ++i) {
                 direction dir = (direction)i;
-                if (m & (1 << i) && !crossroad.hasNeighbor(dir)) {
+                if (m & (1 << i) && !cross.hasNeighbor(dir)) {
                     auto result = findNeighbor(map, loc, dir);
 
                     if (loc == result.l && dir == reverse(result.dir)) {
@@ -465,8 +465,8 @@ namespace roadnet {
                             result.dir,
                             id
                         );
-                        crossroad.setNeighbor(dir, straight.id);
-                        crossroad.setRevNeighbor(reverse(result.dir), straight.id);
+                        cross.setNeighbor(dir, straight.id);
+                        cross.setRevNeighbor(reverse(result.dir), straight.id);
                     }
                     else {
                         auto neighbor_m = result.m;
@@ -474,7 +474,7 @@ namespace roadnet {
                             auto res = status.crossMap.find(result.l);
                             assert(res);
                             crossid neighbor_id {*res};
-                            road::crossroad& neighbor = CrossRoad(neighbor_id);
+                            road::cross& neighbor = Cross(neighbor_id);
                             straightData& straight1 = status.straightVec.emplace_back(
                                 straightid {(uint16_t)status.straightVec.size()},
                                 result.n * road::straight::N + 1,
@@ -483,7 +483,7 @@ namespace roadnet {
                                 result.dir,
                                 neighbor_id
                             );
-                            crossroad.setNeighbor(dir, straight1.id);
+                            cross.setNeighbor(dir, straight1.id);
                             neighbor.setRevNeighbor(reverse(result.dir), straight1.id);
                             straightData& straight2 = status.straightVec.emplace_back(
                                 straightid {(uint16_t)status.straightVec.size()},
@@ -494,7 +494,7 @@ namespace roadnet {
                                 id
                             );
                             neighbor.setNeighbor(reverse(result.dir), straight2.id);
-                            crossroad.setRevNeighbor(dir, straight2.id);
+                            cross.setRevNeighbor(dir, straight2.id);
                         }
                     }
                 }
@@ -589,7 +589,7 @@ namespace roadnet {
             if (isCross(m)) {
                 auto roadId = status.crossMap.find(loc);
                 assert(roadId);
-                auto& cross = CrossRoad(*roadId);
+                auto& cross = Cross(*roadId);
                 if (!cross.insertLorry(*this, lorryid{i}, s.coord)) {
                     destroyLorry(w, lorryid{i});
                     continue;
@@ -649,7 +649,7 @@ namespace roadnet {
     }
     void network::update(uint64_t ti) {
         ary_call(*this, ti, lorryVec, &lorry::update);
-        ary_call(*this, ti, crossAry, &road::crossroad::update);
+        ary_call(*this, ti, crossAry, &road::cross::update);
         ary_call(*this, ti, straightAry, &road::straight::update);
     }
     road::straight& network::StraightRoad(straightid id) {
@@ -657,7 +657,7 @@ namespace roadnet {
         assert(id.get_index() < straightAry.size());
         return straightAry[id.get_index()];
     }
-    road::crossroad& network::CrossRoad(crossid id) {
+    road::cross& network::Cross(crossid id) {
         assert(id != crossid::invalid());
         assert(id.get_index() < crossAry.size());
         return crossAry[id.get_index()];

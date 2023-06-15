@@ -48,7 +48,7 @@ namespace roadnet::road {
     ;
     static_assert((UTurn | LeftTurn | RightTurn | Horizontal | Vertical) == 0xFFFF);
 
-    struct crossroad {
+    struct cross {
         straightid neighbor[4] = {};
         straightid rev_neighbor[4] = {};
         lorryid    cross_lorry[2] = {};

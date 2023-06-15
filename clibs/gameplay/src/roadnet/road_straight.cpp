@@ -37,8 +37,8 @@ namespace roadnet::road {
         w.LorryInRoad(lorryOffset + offset) = lorryid::invalid();
     }
     void straight::update(network& w, uint64_t ti) {
-        // The last offset of straight(0) is the waiting area of crossroad, driven by crossroad.
-        // see also: crossroad::waitingLorry()
+        // The last offset of straight(0) is the waiting area of cross, driven by cross.
+        // see also: cross::waitingLorry()
         for (uint16_t i = 1; i < len; ++i) {
             if (lorryid l = w.LorryInRoad(lorryOffset+i)) {
                 if (w.Lorry(l).ready() && tryEntry(w, l, i-1)) {

@@ -101,7 +101,7 @@ namespace roadnet {
             crossid Cross = straight.neighbor;
             if (Cross) {
                 direction prev = reverse(straight.dir);
-                auto& cross = w.CrossRoad(Cross);
+                auto& cross = w.Cross(Cross);
                 for (uint8_t i = 0; i < 4; ++i) {
                     direction dir = (direction)i;
                     straightid Next = cross.neighbor[i];

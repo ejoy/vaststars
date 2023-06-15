@@ -1,4 +1,4 @@
-﻿#include "roadnet/road_crossroad.h"
+﻿#include "roadnet/road_cross.h"
 #include "roadnet/network.h"
 #include <bee/nonstd/unreachable.h>
 #include <assert.h>
@@ -51,31 +51,31 @@ namespace roadnet::road {
         return (CrossMap[(uint8_t)a] & (1 << (uint16_t)b)) != 0;
     }
 
-    loction crossroad::getLoction(network& w) const {
+    loction cross::getLoction(network& w) const {
         return loc;
         //TODO
         //return w.StraightRoad(rev_neighbor).waitingLoction(w);
     }
 
-    bool crossroad::hasNeighbor(direction dir) const {
+    bool cross::hasNeighbor(direction dir) const {
         return neighbor[(uint8_t)dir] != straightid::invalid();
     }
 
-    bool crossroad::hasRevNeighbor(direction dir) const {
+    bool cross::hasRevNeighbor(direction dir) const {
         return rev_neighbor[(uint8_t)dir] != straightid::invalid();
     }
 
-    void crossroad::setNeighbor(direction dir, straightid id) {
+    void cross::setNeighbor(direction dir, straightid id) {
         assert(!hasNeighbor(dir));
         neighbor[(uint8_t)dir] = id;
     }
 
-    void crossroad::setRevNeighbor(direction dir, straightid id) {
+    void cross::setRevNeighbor(direction dir, straightid id) {
         assert(rev_neighbor[(uint8_t)dir] == straightid::invalid());
         rev_neighbor[(uint8_t)dir] = id;
     }
 
-    void crossroad::update(network& w, uint64_t ti) {
+    void cross::update(network& w, uint64_t ti) {
         for (size_t i = 0; i < 2; ++i) {
             lorryid id = cross_lorry[i];
             if (!id) {
@@ -139,11 +139,11 @@ namespace roadnet::road {
         }
     }
 
-    bool crossroad::allowed(direction from, direction to) const {
+    bool cross::allowed(direction from, direction to) const {
         return (ban & crossTypeMask(from, to)) == 0;
     }
 
-    bool crossroad::insertLorry0(network& w, lorryid lorryId, cross_type type) {
+    bool cross::insertLorry0(network& w, lorryid lorryId, cross_type type) {
         direction from = direction((uint8_t)type >> 2);
         if (!hasRevNeighbor(from)) {
             return false;
@@ -156,7 +156,7 @@ namespace roadnet::road {
         return true;
     }
 
-    bool crossroad::insertLorry1(network& w, lorryid lorryId, cross_type type) {
+    bool cross::insertLorry1(network& w, lorryid lorryId, cross_type type) {
         if (cross_lorry[0] && cross_lorry[1]) {
             return false;
         }
@@ -181,7 +181,7 @@ namespace roadnet::road {
         return false;
     }
 
-    bool crossroad::insertLorry(network& w, lorryid lorryId, map_coord where) {
+    bool cross::insertLorry(network& w, lorryid lorryId, map_coord where) {
         switch ((map_index)where.z) {
         case map_index::w0:
             return insertLorry0(w, lorryId, (cross_type)where.w);

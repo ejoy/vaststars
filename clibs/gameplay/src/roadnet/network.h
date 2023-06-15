@@ -1,7 +1,7 @@
 #pragma once
 
 #include <stdint.h>
-#include "roadnet/road_crossroad.h"
+#include "roadnet/road_cross.h"
 #include "roadnet/road_straight.h"
 #include "roadnet/road_endpoint.h"
 #include "roadnet/lorry.h"
@@ -30,13 +30,13 @@ namespace roadnet {
         void             destroyLorry(world& w, lorryid id);
         void             update(uint64_t ti);
         road::straight&  StraightRoad(straightid id);
-        road::crossroad& CrossRoad(crossid id);
+        road::cross&     Cross(crossid id);
         lorry&           Lorry(lorryid id);
         lorryid&         LorryInRoad(uint32_t index);
         map_coord        LorryInCoord(uint32_t index) const;
         road::endpoint&  Endpoint(endpointid id);
 
-        dynarray<road::crossroad>       crossAry;
+        dynarray<road::cross>       crossAry;
         dynarray<road::straight>        straightAry;
         dynarray<road::endpoint>        endpointAry;
         dynarray<lorryid>               straightLorry;
