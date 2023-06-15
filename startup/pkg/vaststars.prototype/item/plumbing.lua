@@ -33,14 +33,14 @@ prototype "烟囱I" {
     type = {"item"},
     group = {"化工"},
     stack = 10,
-    item_description = "用来排放无害气体的装置",
+    item_description = "用来排放气体的装置",
 }
 
 prototype "排水口I" {
     type = {"item"},
     group = {"化工"},
     stack = 10,
-    item_description = "用来排放无害液体的装置",
+    item_description = "用来排放液体的装置",
 }
 
 prototype "空气过滤器I" {
@@ -54,19 +54,19 @@ prototype "管道1-X型" {
     type = {"item"},
     group = {"化工"},
     stack = 100,
-    item_description = "在地上传输液体或气体的管道",
+    item_description = "放置在地上传输液体或气体的管道",
 }
 
 prototype "地下管1-JI型" {
     type = {"item"},
     group = {"化工"},
     stack = 102,
-    item_description = "从地下传输液体或气体的管道",
+    item_description = "放置在地下传输液体或气体的管道",
 }
 
 prototype "地下管2-JI型" {
     type = {"item"},
     group = {"化工"},
     stack = 103,
-    item_description = "从地下传输液体或气体的管道",
+    item_description = "放置在地下传输液体或气体的管道",
 }
