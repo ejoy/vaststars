@@ -4,12 +4,18 @@
 #include <map>
 #include <vector>
 
-struct station_ref {
-    ecs::station* ptr;
+struct station_producer_ref {
+    ecs::station_producer* station;
+    ecs::endpoint* endpoint;
 };
 
-using station_vector = std::vector<station_ref>;
-using station_map = std::map<uint16_t, station_vector>;
+struct station_consumer_ref {
+    ecs::station_consumer* station;
+    ecs::endpoint* endpoint;
+};
+
+using station_vector = std::vector<station_producer_ref>;
+using station_map = std::map<uint16_t, std::vector<station_consumer_ref>>;
 
 struct station_mgr {
     station_vector producers;

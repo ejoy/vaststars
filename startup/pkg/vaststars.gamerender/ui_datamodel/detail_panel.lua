@@ -238,9 +238,13 @@ local function get_property(e, typeobject)
         end
     end
 
-    if e.station then
-        t.values['weights'] = e.station.weights
-        t.values['lorry'] = e.station.lorry
+    if e.station_consumer then
+        t.values['maxlorry'] = e.station_consumer.maxlorry
+        t.values['lorry'] = e.station_consumer.lorry
+    end
+    if e.station_producer then
+        t.values['weights'] = e.station_producer.weights
+        t.values['lorry'] = e.station_producer.lorry
     end
     return t
 end

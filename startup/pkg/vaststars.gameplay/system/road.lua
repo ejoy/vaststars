@@ -310,33 +310,33 @@ function m.build(world)
         road_cache[key] = v.eid
     end
 
-    for v in ecs:select "station:update building:in eid:in" do
+    for v in ecs:select "endpoint building:in eid:in" do
         build_road(world, v.eid, v.building, map, road_cache, endpoint_keys)
     end
 
     local building
-    for v in ecs:select "lorry_factory:update building:in eid:in" do
+    for v in ecs:select "lorry_factory building:in eid:in" do
         building = v.building
-        build_road(world, v.eid, v.building, map, road_cache, endpoint_keys)
     end
 
     map = repair(world, map, road_cache)
     mark_invalid(world, map, road_cache, building)
 
-    if not next(map) then
-        world:roadnet_reset()
-    else
-        world:roadnet_reset(map)
-    end
+    local endpoints = world:roadnet_reset(map)
 
-    for v in ecs:select "station:update eid:in" do
+    for v in ecs:select "endpoint:update eid:in" do
         local key = endpoint_keys[v.eid]
-        v.station.endpoint = key and (world._endpoints[key] or 0xFFFF) or 0xFFFF
-    end
-
-    for v in ecs:select "lorry_factory:update eid:in" do
-        local key = endpoint_keys[v.eid]
-        v.lorry_factory.endpoint = key and (world._endpoints[key] or 0xFFFF) or 0xFFFF
+        if key then
+            local ep = endpoints[key]
+            if ep then
+                v.endpoint.neighbor = (ep >> 0) & 0xFFFF
+                v.endpoint.rev_neighbor = (ep >> 16) & 0xFFFF
+                goto continue
+            end
+        end
+        v.endpoint.neighbor = 0xFFFF
+        v.endpoint.rev_neighbor = 0xFFFF
+        ::continue::
     end
 
     ecs:clear "road_cache"

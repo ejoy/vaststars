@@ -1,4 +1,7 @@
-local component = require "register.component"
+local def = require "register.component"
+
+local component = def.component
+local type = def.type
 
 component "building" {
     "x:byte",
@@ -18,20 +21,24 @@ component "inventory" {
 }
 
 component "station_producer" {
-}
-
-component "station_consumer" {
-}
-
-component "station" {
-    "endpoint:word",
     "chest:word",
     "weights:byte",
     "lorry:byte",
 }
 
-component "lorry_factory" {
-    "endpoint:word",
+component "station_consumer" {
+    "chest:word",
+    "maxlorry:byte",
+    "lorry:byte",
+}
+
+component "lorry_factory" {}
+
+type "roadnet::straightid" ("word")
+
+component "endpoint" {
+    "neighbor:roadnet::straightid",
+    "rev_neighbor:roadnet::straightid",
 }
 
 component "hub" {

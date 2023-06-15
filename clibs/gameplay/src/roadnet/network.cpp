@@ -1,4 +1,5 @@
 ﻿#include "roadnet/network.h"
+#include "core/world.h"
 #include <bee/nonstd/unreachable.h>
 #include <cassert>
 #include <cstdio>
@@ -261,15 +262,14 @@ namespace roadnet {
     struct updateMapStatus {
         flatmap<loction, crossid> crossMap;
         flatmap<loction, straightGrid> straightMap;
-        flatmap<loction, straightid> endpointMap;
+        flatmap<loction, ecs::endpoint> endpointMap;
         std::vector<straightData> straightVec;
         uint16_t genCrossId = 0;
         uint32_t genStraightLorryOffset = 0;
         uint32_t genStraightCoordOffset = 0;
-        uint16_t genEndpoint = 0;
     };
 
-    static void setEndpoint(network& w, flatmap<loction, uint8_t> const& map, updateMapStatus& status, loction loc, direction a, direction b, uint16_t endpointId) {
+    static void setEndpoint(network& w, flatmap<loction, uint8_t> const& map, updateMapStatus& status, loction loc, direction a, direction b) {
         auto na = findNeighbor(map, loc, a);
         auto nb = findNeighbor(map, loc, b);
         if (na.l == nb.l) {
@@ -297,7 +297,7 @@ namespace roadnet {
             assert(false);
         }
         assert(na.n > 0);
-        auto& ep = w.endpointAry[endpointId];
+        ecs::endpoint ep;
         auto cross_a = status.crossMap.find(na.l);
         auto cross_b = status.crossMap.find(nb.l);
         assert(cross_a);
@@ -324,7 +324,7 @@ namespace roadnet {
         w.CrossRoad(*cross_a).setRevNeighbor(reverse(na.dir), straight2.id);
         ep.neighbor = straight2.id;
 
-        status.endpointMap.insert_or_assign(loc, ep.rev_neighbor);
+        status.endpointMap.insert_or_assign(loc, ep);
     }
 
     static void insertLorry01(network& nw, world& w, straightGrid& grid, lorryid lorryId, uint8_t z) {
@@ -350,7 +350,6 @@ namespace roadnet {
 
         crossAry.clear();
         straightAry.clear();
-        endpointAry.clear();
         straightLorry.clear();
         straightCoord.clear();
 
@@ -363,7 +362,7 @@ namespace roadnet {
         }
     }
 
-    void network::updateMap(world& w, flatmap<loction, uint8_t> const& map) {
+    flatmap<loction, ecs::endpoint> network::updateMap(world& w, flatmap<loction, uint8_t> const& map) {
         routeCached.clear();
 
         // step.1
@@ -399,23 +398,14 @@ namespace roadnet {
                 }
             }
         }
-        {
-            flatmap<straightid, loction> endpointRevMap;
-            for (uint16_t i = 0; i < endpointAry.size(); ++i) {
-                auto& ep = endpointAry[i];
-                endpointRevMap.insert_or_assign(ep.rev_neighbor, ep.getLoction(*this));
+        for (uint16_t i = 0; i < lorryStatusAry.size(); ++i) {
+            auto& lorry = lorryVec[i];
+            if (lorry.invaild()) {
+                continue;
             }
-            for (uint16_t i = 0; i < lorryStatusAry.size(); ++i) {
-                auto& lorry = lorryVec[i];
-                if (lorry.invaild()) {
-                    continue;
-                }
-                assert(lorryStatusAry[i].exist);
-                auto ending = lorry.get_ending();
-                auto loc = endpointRevMap.find(ending);
-                assert(loc);
-                lorryStatusAry[i].endpoint = *loc;
-            }
+            assert(lorryStatusAry[i].exist);
+            auto ending = lorry.get_ending();
+            lorryStatusAry[i].endpoint = straightAry[i].waitingLoction(*this);
         }
 
         updateMapStatus status;
@@ -426,9 +416,6 @@ namespace roadnet {
                 crossid id { status.genCrossId++ };
                 bool ok = status.crossMap.insert(loc, id);
                 assert(ok);
-            }
-            else if (m & MapRoad::Endpoint) {
-                status.genEndpoint++;
             }
         }
         assert(status.crossMap.size() != 0);
@@ -502,18 +489,17 @@ namespace roadnet {
         }
 
         // step.4
-        endpointAry.reset(status.genEndpoint);
         uint16_t endpointId = 0;
         for (auto const& [loc, m] : map) {
             if (m & MapRoad::Endpoint) {
                 auto rawm = m & 0xF;
                 switch (rawm) {
-                case mask(L'║'): setEndpoint(*this, map, status, loc, direction::t, direction::b, endpointId); break;
-                case mask(L'═'): setEndpoint(*this, map, status, loc, direction::l, direction::r, endpointId); break;
-                case mask(L'╔'): setEndpoint(*this, map, status, loc, direction::r, direction::b, endpointId); break;
-                case mask(L'╚'): setEndpoint(*this, map, status, loc, direction::r, direction::t, endpointId); break;
-                case mask(L'╗'): setEndpoint(*this, map, status, loc, direction::l, direction::b, endpointId); break;
-                case mask(L'╝'): setEndpoint(*this, map, status, loc, direction::l, direction::t, endpointId); break;
+                case mask(L'║'): setEndpoint(*this, map, status, loc, direction::t, direction::b); break;
+                case mask(L'═'): setEndpoint(*this, map, status, loc, direction::l, direction::r); break;
+                case mask(L'╔'): setEndpoint(*this, map, status, loc, direction::r, direction::b); break;
+                case mask(L'╚'): setEndpoint(*this, map, status, loc, direction::r, direction::t); break;
+                case mask(L'╗'): setEndpoint(*this, map, status, loc, direction::l, direction::b); break;
+                case mask(L'╝'): setEndpoint(*this, map, status, loc, direction::l, direction::t); break;
                 default: assert(false); break;
                 }
                 endpointId++;
@@ -574,7 +560,7 @@ namespace roadnet {
             assert(s.exist);
             if (auto ep = status.endpointMap.find(s.endpoint)) {
                 //TODO: endpoint changed
-                Lorry(lorryid{i}).set_ending(*ep);
+                Lorry(lorryid{i}).set_ending(ep->rev_neighbor);
             }
             else {
                 destroyLorry(w, lorryid{i});
@@ -628,6 +614,9 @@ namespace roadnet {
                 }
             }
         }
+
+        // step.7
+        return std::move(status.endpointMap);
     }
 
     lorryid network::createLorry(world& w, uint16_t classid) {
@@ -663,11 +652,6 @@ namespace roadnet {
         assert(id != crossid::invalid());
         assert(id.get_index() < crossAry.size());
         return crossAry[id.get_index()];
-    }
-    road::endpoint& network::Endpoint(endpointid id) {
-        assert(id != endpointid::invalid());
-        assert(id.get_index() < endpointAry.size());
-        return endpointAry[id.get_index()];
     }
     lorry& network::Lorry(lorryid id) {
         assert(id != lorryid::invalid());

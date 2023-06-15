@@ -3,29 +3,29 @@
 #include "roadnet/route.h"
 
 namespace roadnet::road {
-    loction endpoint::getLoction(network& w) const {
-        return w.StraightRoad(rev_neighbor).waitingLoction(w);
+    loction endpointGetLoction(network& w, ecs::endpoint const& ep) {
+        return w.StraightRoad(ep.rev_neighbor).waitingLoction(w);
     }
 
-    lorryid& endpoint::waitingLorry(network& w) {
-        return w.StraightRoad(rev_neighbor).waitingLorry(w);
+    lorryid& endpointWaitingLorry(network& w, ecs::endpoint const& ep) {
+        return w.StraightRoad(ep.rev_neighbor).waitingLorry(w);
     }
-    bool endpoint::isReady(network& w) {
-        return w.StraightRoad(neighbor).canEntry(w);
+    bool endpointIsReady(network& w, ecs::endpoint const& ep) {
+        return w.StraightRoad(ep.neighbor).canEntry(w);
     }
-    void endpoint::setOut(network& w, lorryid id) {
-        bool ok = w.StraightRoad(neighbor).tryEntry(w, id);
+    void endpointSetOut(network& w, ecs::endpoint const& ep, lorryid id) {
+        bool ok = w.StraightRoad(ep.neighbor).tryEntry(w, id);
         (void)ok;
         assert(ok);
     }
-    void endpoint::setOut(network& w) {
-        auto& id = waitingLorry(w);
-        setOut(w, id);
+    void endpointSetOut(network& w, ecs::endpoint const& ep) {
+        auto& id = endpointWaitingLorry(w, ep);
+        endpointSetOut(w, ep, id);
         id = lorryid::invalid();
     }
-    std::optional<uint16_t> endpoint::distance(network& w, road::endpoint const& to) const {
+    std::optional<uint16_t> endpointDistance(network& w, ecs::endpoint const& from, ecs::endpoint const& to) {
         route_value val;
-        if (!route(w, neighbor, to.rev_neighbor, val)) {
+        if (!route(w, from.neighbor, to.rev_neighbor, val)) {
             return std::nullopt;
         }
         return (uint16_t)val.n;

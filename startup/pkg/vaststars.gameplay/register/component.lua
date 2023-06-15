@@ -3,7 +3,7 @@ local status = require "status"
 local function ExtraSyntax(components, c)
 	local r = {}
 	for _, field in ipairs(c) do
-		local name, typename, n = field:match "^([%w_]+):(%w+)%[(%d+)%]$"
+		local name, typename, n = field:match "^([%w_]+):([^%]]+)%[(%d+)%]$"
 		if name then
 			local usertype = components[typename]
 			if usertype then
@@ -19,12 +19,9 @@ local function ExtraSyntax(components, c)
 				end
 			end
 		else
-			local usertype = components[typename]
-			if usertype then
-				for _, userfield in ipairs(usertype) do
-					local uname, utypename = userfield:match "^([%w_]+):(%w+)$"
-					r[#r+1] = ("%s_%s:%s"):format(name, uname, utypename)
-				end
+			name, typename = field:match "^([%w_]+):(.+)$"
+			if components[typename] then
+				r[#r+1] = ("%s:%s"):format(name, components[typename])
 			else
 				r[#r+1] = field
 			end
@@ -33,7 +30,9 @@ local function ExtraSyntax(components, c)
 	return r
 end
 
-return function (name)
+local def = {}
+
+function def.component(name)
 	return function (object)
 		local components = status.components
 		object = ExtraSyntax(components, object)
@@ -42,3 +41,12 @@ return function (name)
 		components[#components+1] = object
 	end
 end
+
+function def.type(name)
+	return function (object)
+		local components = status.components
+		components[name] = object
+	end
+end
+
+return def

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "roadnet/type.h"
+#include "util/component.h"
 #include <optional>
 
 namespace roadnet {
@@ -8,14 +9,10 @@ namespace roadnet {
 }
 
 namespace roadnet::road {
-    struct endpoint {
-        straightid neighbor;
-        straightid rev_neighbor;
-        loction getLoction(network& w) const;
-        lorryid& waitingLorry(network& w);
-        bool isReady(network& w);
-        void setOut(network& w, lorryid id);
-        void setOut(network& w);
-        std::optional<uint16_t> distance(network& w, road::endpoint const& to) const;
-    };
+    loction endpointGetLoction(network& w, ecs::endpoint const& ep);
+    lorryid& endpointWaitingLorry(network& w, ecs::endpoint const& ep);
+    bool endpointIsReady(network& w, ecs::endpoint const& ep);
+    void endpointSetOut(network& w, ecs::endpoint const& ep, lorryid id);
+    void endpointSetOut(network& w, ecs::endpoint const& ep);
+    std::optional<uint16_t> endpointDistance(network& w, ecs::endpoint const& from, ecs::endpoint const& to);
 }

@@ -4,15 +4,21 @@ end
 
 local function loadComponents(filename)
     local components = {}
-    local function component(name)
+    local def = {}
+    function def.component(name)
         return function (object)
             object.name = name
             components[name] = object
             components[#components+1] = object
         end
     end
+    function def.type(name)
+        return function (object)
+            components[name] = object
+        end
+    end
     local env = {
-        require = function () return component end
+        require = function () return def end
     }
     assert(loadfile(filename, "t", env))()
     return components
@@ -30,7 +36,7 @@ local function TypeName(components, typename)
     if components[typename] then
         return "struct "..typename
     end
-    return assert(TYPENAMES[typename])
+    return TYPENAMES[typename] or typename
 end
 
 local function writeEntityH(components)
@@ -42,6 +48,7 @@ local function writeEntityH(components)
     write "#pragma once"
     write ""
     write "#include \"ecs/select.h\""
+    write "#include \"util/component_user.h\""
     write "#include <stdint.h>"
     write ""
     write "namespace vaststars {"
@@ -59,9 +66,9 @@ local function writeEntityH(components)
         else
             write("struct "..c.name.." {")
             for _, field in ipairs(c) do
-                local name, typename, n = field:match "^([%w_]+):(%w+)%[(%d+)%]$"
+                local name, typename, n = field:match "^([%w_]+):([^%]]+)%[(%d+)%]$"
                 if name == nil then
-                    name, typename = field:match "^([%w_]+):(%w+)$"
+                    name, typename = field:match "^([%w_]+):(.+)$"
                 end
                 if n then
                     write(("\t%s %s[%s];"):format(TypeName(components, typename), name, n))
