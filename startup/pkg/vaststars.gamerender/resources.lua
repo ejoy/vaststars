@@ -1212,7 +1212,7 @@ local t = {
 	"/pkg/vaststars.resources/prefabs/road/road_U.prefab.patch",
 	"/pkg/vaststars.resources/prefabs/road/road_X.prefab",
 	"/pkg/vaststars.resources/prefabs/road/road_X.prefab.patch",
-	"/pkg/vaststars.resources/prefabs/road/roadside_arrow.prefab",
+	"/pkg/vaststars.resources/prefabs/road/road_arrow.prefab",
 	"/pkg/vaststars.resources/prefabs/rock.prefab",
 	"/pkg/vaststars.resources/prefabs/selected-box-animation.prefab",
 	"/pkg/vaststars.resources/prefabs/selected-box-no-animation-line.prefab",

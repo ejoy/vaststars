@@ -34,6 +34,7 @@ local iroad = gameplay.interface "road"
 local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_box"
 local create_selected_boxes = ecs.require "selected_boxes"
 local vsobject_manager = ecs.require "vsobject_manager"
+local DIRTY_BUILDING <const> = require("gameplay.interface.constant").DIRTY_BUILDING
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -487,7 +488,7 @@ local function confirm(self, datamodel)
     objects:set(object, "CONSTRUCTED")
     objects:coord_update(object)
 
-    igameplay.build_world()
+    igameplay.dirty(DIRTY_BUILDING)
 
     local building = global.buildings[object.id]
     if building then

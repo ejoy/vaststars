@@ -36,6 +36,7 @@ local iroad = gameplay.interface "road"
 local ROAD_TILE_SCALE_WIDTH <const> = 2
 local ROAD_TILE_SCALE_HEIGHT <const> = 2
 local SPRITE_COLOR = import_package "vaststars.prototype".load("sprite_color")
+local DIRTY_ROADNET <const> = require("gameplay.interface.constant").DIRTY_ROADNET
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -601,7 +602,7 @@ local function complete(self, object_id, datamodel)
     ieditor:revert_changes({"TEMPORARY"})
 
     iroad.set_change(gameplay_core.get_world())
-    igameplay.build_world()
+    igameplay.dirty(DIRTY_ROADNET)
     self.super.complete(self, object_id)
 
     local object = assert(objects:get(object_id))

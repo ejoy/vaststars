@@ -6,6 +6,7 @@ local restore_mb = mailbox:sub {"restore"}
 local restart_mb = mailbox:sub {"restart"}
 local close_mb = mailbox:sub {"close"}
 local info_mb = mailbox:sub {"info"}
+local debug_mb = mailbox:sub {"debug"}
 local back_to_main_menu_mb = mailbox:sub {"back_to_main_menu"}
 
 local saveload = ecs.require "saveload"
@@ -13,6 +14,8 @@ local gameplay_core = require "gameplay.core"
 local icanvas = ecs.require "engine.canvas"
 local new_game = ecs.require "main_menu_manager".new_game
 local imain_menu_manager = ecs.require "main_menu_manager"
+local rhwi = import_package "ant.hwi"
+
 ---------------
 local M = {}
 function M:create()
@@ -21,14 +24,10 @@ function M:create()
         archival_files[#archival_files+1] = v.dir
     end
 
-    local info = true
-    local storage = gameplay_core.get_storage()
-    if storage.info ~= nil then
-        info = storage.info
-    end
     return {
         archival_files = archival_files,
-        info = info,
+        info = gameplay_core.get_storage("info", true),
+        debug = gameplay_core.get_storage("debug", true),
     }
 end
 
@@ -58,11 +57,15 @@ function M:stage_camera_usage()
 
     for _ in info_mb:unpack() do
         local storage = gameplay_core.get_storage()
-        if storage.info == nil then
-            storage.info = true
-        end
-        storage.info = not storage.info
+        storage.info = not gameplay_core.get_storage("info", true)
         icanvas.show(icanvas.types().ICON, storage.info)
+        world:pub {"rmlui_message_close", "option_pop.rml"}
+    end
+
+    for _ in debug_mb:unpack() do
+        local storage = gameplay_core.get_storage()
+        storage.debug = not gameplay_core.get_storage("debug", true)
+        rhwi.set_debug(storage.debug and {"TEXT"} or {})
         world:pub {"rmlui_message_close", "option_pop.rml"}
     end
 

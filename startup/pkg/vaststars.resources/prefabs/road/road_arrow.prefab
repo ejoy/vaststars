@@ -1,0 +1,20 @@
+---
+data:
+  name: Scene
+  scene: {}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  material: /pkg/vaststars.resources/glb/road/road_arrow.glb|materials/Material.009.material
+  mesh: /pkg/vaststars.resources/glb/road/road_arrow.glb|meshes/Plane.010_P1.meshbin
+  name: Plane.010
+  scene:
+    s: {1.0967979431152344, 1.0967979431152344, 1.0967979431152344}
+    t: {0, 2, 0}
+  visible_state: main_view|selectable|cast_shadow
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render

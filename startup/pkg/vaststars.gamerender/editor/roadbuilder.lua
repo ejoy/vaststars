@@ -32,6 +32,7 @@ local iroad = gameplay.interface "road"
 local icamera_controller = ecs.interface "icamera_controller"
 local ROAD_TILE_SCALE_WIDTH <const> = 2
 local ROAD_TILE_SCALE_HEIGHT <const> = 2
+local DIRTY_ROADNET <const> = require("gameplay.interface.constant").DIRTY_ROADNET
 
 -- To distinguish between "batch construction" and "batch teardown" in the touch_end event.
 local STATE_NONE  <const> = 0
@@ -797,7 +798,7 @@ local function confirm(self, datamodel)
         end
     end
 
-    igameplay.build_world()
+    igameplay.dirty(DIRTY_ROADNET)
     iroadnet:clear("indicator")
 
     datamodel.show_finish_laying = false

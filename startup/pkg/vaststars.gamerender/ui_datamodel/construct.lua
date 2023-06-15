@@ -52,6 +52,7 @@ local gesture_long_press_mb = world:sub{"gesture", "long_press"}
 local gesture_pan_mb = world:sub {"gesture", "pan"}
 local focus_tips_event = world:sub {"focus_tips"}
 local remove_lorry_mb = mailbox:sub {"remove_lorry"}
+local DIRTY_BUILDING <const> = require("gameplay.interface.constant").DIRTY_BUILDING
 
 local ipower = ecs.require "power"
 local audio = import_package "ant.audio"
@@ -541,7 +542,7 @@ function M:stage_camera_usage(datamodel)
         end
 
         igameplay.remove_entity(object.gameplay_eid)
-        igameplay.build_world()
+        igameplay.dirty(DIRTY_BUILDING)
 
         if typeobject.power_network_link or typeobject.power_supply_distance then
             ipower:build_power_network(gw)

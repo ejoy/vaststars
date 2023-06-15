@@ -11,6 +11,7 @@ local itask = ecs.require "task"
 local item_unlocked = ecs.require "ui_datamodel.common.item_unlocked".is_unlocked
 local iprototype_cache = require "gameplay.prototype_cache.init"
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
+local DIRTY_CHEST <const> = require("gameplay.interface.constant").DIRTY_CHEST
 
 local function __get_categories()
     return iprototype_cache.get("drone_depot").category_cache
@@ -88,7 +89,7 @@ function M:stage_ui_update(datamodel, object_id, interface)
         local e = gameplay_core.get_entity(assert(objects:get(object_id).gameplay_eid))
         local gameplay_world = gameplay_core.get_world()
         interface.set_first_item(gameplay_world, e, item.name)
-        igameplay.build_world()
+        igameplay.dirty(DIRTY_CHEST)
 
         itask.update_progress("set_item", item.name)
     end

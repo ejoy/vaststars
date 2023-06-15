@@ -10,6 +10,7 @@ local ifluidbox = gameplay.interface "fluidbox"
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local gameplay_core = require "gameplay.core"
 local fluidbox_sys = ecs.system "fluidbox_system"
+local DIRTY_FLUIDFLOW <const> = require("gameplay.interface.constant").DIRTY_FLUIDFLOW
 
 local DIRECTION <const> = {
     N = 0,
@@ -155,6 +156,6 @@ function fluidbox_sys:gameworld_update()
         need_build = true
     end
     if need_build then
-        igameplay.build_world()
+        igameplay.dirty(DIRTY_FLUIDFLOW)
     end
 end
