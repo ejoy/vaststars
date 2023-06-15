@@ -64,7 +64,7 @@ local function exclude_from_open_area(ix, iz, areas)
     if not areas then return true end
     for _, area in pairs(areas) do
         local ox, oz, ww, hh = area.x + offset, area.z + offset, area.w, area.h
-        local lw, rw, lh, rh = math.max(0, ox - remove_offset), math.min(width, ox + ww + remove_offset), math.max(0, oz - hh - remove_offset), math.min(width, oz + remove_offset)
+        local lw, rw, lh, rh = math.max(0, ox - remove_offset), math.min(width, ox + ww + remove_offset), math.max(0, oz - remove_offset), math.min(width, oz + hh + remove_offset)
         if ix >= lw and ix <= rw and iz >= lh and iz <= rh then
             return false
         end
@@ -193,27 +193,32 @@ local function get_center()
     end 
 
         -- pre-defined stone_area
-        for _, stone in pairs(stone_area) do
-            local iy, ix = stone.z + offset, stone.x + offset
-            local cur_index = ix + iy * width + 1
-            local offset_x = iy
-            local offset_y = ix
-            local seed = iy * ix
-            local e = terrain_module.noise(ix - 1, iy - 1, freq, depth, seed, offset_y, offset_x)
-            sm_table[cur_index] = {}
-            local cur_center
-            if e <= m_clamp then
-                cur_center = 2 -- m 1+1
-            else
-                cur_center = 3-- b 2+1
+        for _, sa in pairs(stone_area) do
+            local sx, sz, sw, sh = sa.x, sa.z, sa.w, sa.h
+            for ih = 0, sh - 1 do
+                for iw = 0, sw - 1 do
+                    local iy, ix = sz + ih + offset, sx + iw + offset
+                    local cur_index = ix + iy * width + 1
+                    local offset_x = iy
+                    local offset_y = ix
+                    local seed = iy * ix
+                    local e = terrain_module.noise(ix - 1, iy - 1, freq, depth, seed, offset_y, offset_x)
+                    sm_table[cur_index] = {}
+                    local cur_center
+                    if e <= m_clamp then
+                        cur_center = 2 -- m 1+1
+                    else
+                        cur_center = 3-- b 2+1
+                    end
+                    if cur_center == 3 then
+                        sm_table[cur_index][1] = {}
+                        sm_table[cur_index].center_stone = {t = 1, idx = 1} -- big 1
+                    else
+                        sm_table[cur_index][2] = {}
+                        sm_table[cur_index].center_stone = {t = 2, idx = 1} -- middle 1
+                    end 
+                end
             end
-            if cur_center == 3 then
-                sm_table[cur_index][1] = {}
-                sm_table[cur_index].center_stone = {t = 1, idx = 1} -- big 1
-            else
-                sm_table[cur_index][2] = {}
-                sm_table[cur_index].center_stone = {t = 2, idx = 1} -- middle 1
-            end 
         end
   --sm_table[1].center_stone = {t = 1, idx = 1}
   for idx = 1, width * height do
