@@ -92,13 +92,14 @@ static int lbuild(lua_State *L) {
     auto& s = w.stations;
 
     s.consumers.clear();
-    for (auto& v : ecs_api::select<ecs::station_consumer, ecs::endpoint>(w.ecs)) {
+    for (auto& v : ecs_api::select<ecs::station_consumer, ecs::endpoint, ecs::chest>(w.ecs)) {
         auto& station = v.get<ecs::station_consumer>();
         auto& endpoint = v.get<ecs::endpoint>();
+        auto& chest = v.get<ecs::chest>();
         if (!endpoint.neighbor || !endpoint.rev_neighbor) {
             continue;
         }
-        auto& chestslot = chest::array_at(w, container::index::from(station.chest), 0);
+        auto& chestslot = chest::array_at(w, container::index::from(chest.chest), 0);
         auto& consumers = s.consumers[chestslot.item];
         consumers.emplace_back(station_consumer_ref{&station, &endpoint});
     }
@@ -131,9 +132,10 @@ static int lupdate(lua_State *L) {
         return 0;
     }
     bool producer_changed = false;
-    for (auto& v : ecs_api::select<ecs::station_producer, ecs::endpoint>(w.ecs)) {
+    for (auto& v : ecs_api::select<ecs::station_producer, ecs::endpoint, ecs::chest>(w.ecs)) {
         auto& station = v.get<ecs::station_producer>();
         auto& endpoint = v.get<ecs::endpoint>();
+        auto& chest = v.get<ecs::chest>();
         if (!endpoint.neighbor || !endpoint.rev_neighbor) {
             continue;
         }
@@ -145,7 +147,7 @@ static int lupdate(lua_State *L) {
         if (!roadnet::lorryReady(l) || !roadnet::endpointIsReady(w.rw, endpoint)) {
             continue;
         }
-        auto& chestslot = chest::array_at(w, container::index::from(station.chest), 0);
+        auto& chestslot = chest::array_at(w, container::index::from(chest.chest), 0);
         if (chestslot.item == 0) {
             continue;
         }
@@ -165,9 +167,10 @@ static int lupdate(lua_State *L) {
         producer_sort(s.producers);
     }
 
-    for (auto& v : ecs_api::select<ecs::station_consumer, ecs::endpoint>(w.ecs)) {
+    for (auto& v : ecs_api::select<ecs::station_consumer, ecs::endpoint, ecs::chest>(w.ecs)) {
         auto& station = v.get<ecs::station_consumer>();
         auto& endpoint = v.get<ecs::endpoint>();
+        auto& chest = v.get<ecs::chest>();
         if (!endpoint.neighbor || !endpoint.rev_neighbor) {
             continue;
         }
@@ -179,7 +182,7 @@ static int lupdate(lua_State *L) {
         if (!roadnet::lorryReady(l) || !roadnet::endpointIsReady(w.rw, endpoint)) {
             continue;
         }
-        auto& chestslot = chest::array_at(w, container::index::from(station.chest), 0);
+        auto& chestslot = chest::array_at(w, container::index::from(chest.chest), 0);
         if (chestslot.item == 0) {
             continue;
         }

@@ -23,10 +23,12 @@ function c:ctor(init, pt)
     }
     local chest = world:container_create(table.concat(c))
     return {
+        chest = {
+            chest = chest,
+        },
         station_producer = {
             weights = pt.weights,
             lorry = 0,
-            chest = chest
         },
         endpoint = {
             neighbor = 0xffff,

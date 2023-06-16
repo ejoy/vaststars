@@ -15,13 +15,11 @@ component "chest" {
 }
 
 component "station_producer" {
-    "chest:word",
     "weights:byte",
     "lorry:byte",
 }
 
 component "station_consumer" {
-    "chest:word",
     "maxlorry:byte",
     "lorry:byte",
 }
