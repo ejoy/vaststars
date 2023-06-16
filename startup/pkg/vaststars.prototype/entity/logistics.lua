@@ -8,7 +8,7 @@ prototype "指挥中心" {
     construct_detector = {"exclusive"},
     craft_category = {"基地制造"},
     chest_type = "red",
-    type = {"building", "consumer", "assembling", "base", "inventory", "lorry_factory"},
+    type = {"building", "consumer", "assembling", "base", "lorry_factory"},
     speed = "50%",
     maxslot = "8",
     recipe_init_limit = {ingredientsLimit = 0, resultsLimit = 0},
@@ -294,7 +294,8 @@ prototype "出货车站" {
     weights = 1,
     crossing = {
         connections = {
-            {type="station", position={0,0,"S"}},
+            {type="station", position={1,1,"S"}},
+            {type="station", position={1,2,"S"}},
         },
     },
     endpoint = {
@@ -305,8 +306,6 @@ prototype "出货车站" {
         {position={0, 2}, dir = "N"},
         {position={2, 2}, dir = "N"},
     },
-    move = false,
-    teardown = false,
     camera_distance = 90,
 }
 
@@ -323,7 +322,8 @@ prototype "收货车站" {
     maxlorry = 1,
     crossing = {
         connections = {
-            {type="station", position={0,0,"S"}},
+            {type="station", position={1,1,"S"}},
+            {type="station", position={1,2,"S"}},
         },
     },
     endpoint = {
@@ -334,7 +334,5 @@ prototype "收货车站" {
         {position={0, 2}, dir = "N"},
         {position={2, 2}, dir = "N"},
     },
-    move = false,
-    teardown = false,
     camera_distance = 90,
 }

@@ -14,10 +14,6 @@ component "chest" {
     "chest:word",
 }
 
-component "inventory" {
-    "chest:word",
-}
-
 component "station_producer" {
     "chest:word",
     "weights:byte",
@@ -136,16 +132,16 @@ component "wind_turbine" {
 }
 
 component "base" {
+    "chest:word",
 }
+component "base_changed" {}
 
 component "fluidbox_changed" {}
 
 --
+component "station_changed" {}
 component "endpoint_road" {}
 component "building_new" {}
 component "building_changed" {}
-component "inventory_changed" {}
 component "road_changed" {}
 component "auto_set_recipe" {}
-component "roadnet_changed" {}
-component "road_invalid" {}

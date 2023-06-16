@@ -20,7 +20,7 @@ local assembling_common = require "ui_datamodel.common.assembling"
 local show_detail_mb = mailbox:sub {"show_detail"}
 local close_detail_mb = mailbox:sub {"close_detail"}
 local UPS <const> = require("gameplay.interface.constant").UPS
-local CHEST_LIST_TYPES <const> = {"chest", "station", "hub"}
+local CHEST_LIST_TYPES <const> = {"chest", "station_producer", "station_consumer", "hub"}
 local queuename = "detail_scene_queue"
 local function format_vars(fmt, vars)
     return string.gsub(fmt, "%$([%w%._]+)%$", vars)
@@ -160,7 +160,7 @@ local function get_property(e, typeobject)
     local chest_component = iprototype.get_chest_component(typeobject.name)
     if iprototype.check_types(typeobject.name, CHEST_LIST_TYPES) and chest_component then
         local chest_list = {}
-        if iprototype.has_types(typeobject.type, "station", "hub") then
+        if iprototype.has_types(typeobject.type, "station_producer", "station_consumer", "hub") then
             local c = ichest.chest_get(gameplay_core.get_world(), e[chest_component], 1)
             if c then
                 local typeobject_item = assert(iprototype.queryById(c.item))

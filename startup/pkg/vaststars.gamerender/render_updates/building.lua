@@ -69,7 +69,7 @@ end
 function building_sys:gameworld_update()
     local gameplay_world = gameplay_core.get_world()
 
-    for e in gameplay_world.ecs:select "building_new:in building:in eid:in" do
+    for e in gameplay_world.ecs:select "building_new building:in eid:in" do
         -- object may not have been fully created yet
         local object = objects:coord(e.building.x, e.building.y)
         if not object then

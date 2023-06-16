@@ -370,7 +370,7 @@ local function __construct_entity(typeobject)
         builder_datamodel = iui.open({"construct_road_or_pipe.rml", "construct_road_or_pipe.lua"})
         builder = create_pipetogroundbuilder()
         builder:new_entity(builder_datamodel, typeobject)
-    elseif iprototype.has_type(typeobject.type, "station") then
+    elseif iprototype.has_types(typeobject.type, "station_producer", "station_consumer") then
         builder_ui = "construct_building.rml"
         builder_datamodel = iui.open({"construct_building.rml"})
         builder = create_station_builder()

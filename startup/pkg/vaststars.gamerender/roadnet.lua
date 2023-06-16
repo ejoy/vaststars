@@ -4,7 +4,6 @@ local w = world.w
 
 local iroad = ecs.require "engine.road"
 local imountain = ecs.require "engine.mountain"
-local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 
 local WIDTH <const> = 256 -- coordinate value range: [0, WIDTH - 1]
 local HEIGHT <const> = 256 -- coordinate value range: [0, HEIGHT - 1]

@@ -31,7 +31,6 @@ funcs["road"] = DO_NOTHING
 funcs["lorry_factory"] = DO_NOTHING
 funcs["wind_turbine"] = DO_NOTHING
 funcs["accumulator"] = DO_NOTHING
-funcs["inventory"] = DO_NOTHING
 funcs["auto_set_recipe"] = DO_NOTHING
 
 funcs["building"] = function (export_data, e)
@@ -40,10 +39,10 @@ funcs["building"] = function (export_data, e)
     export_data.x = e.building.x
     export_data.y = e.building.y
 
-    gameplay_core.extend(e, "inventory?in")
-    if e.inventory then
+    gameplay_core.extend(e, "base?in")
+    if e.base then
         local items = {}
-        for _, slot in pairs(ichest.collect_item(gameplay_core.get_world(), e.inventory)) do
+        for _, slot in pairs(ichest.collect_item(gameplay_core.get_world(), e.base)) do
             items[#items+1] = {iprototype.queryById(slot.item).name, slot.amount}
         end
 
@@ -106,9 +105,20 @@ funcs["hub"] = function (export_data, e)
     return export_data
 end
 
-funcs["station"] = function (export_data, e)
-    gameplay_core.extend(e, "station?in")
-    local slot = ichest.chest_get(gameplay_core.get_world(), e.station, 1)
+funcs["station_producer"] = function (export_data, e)
+    gameplay_core.extend(e, "station_producer?in")
+    local slot = ichest.chest_get(gameplay_core.get_world(), e.station_producer, 1)
+    if not slot then
+        return export_data
+    end
+    local typeobject = assert(iprototype.queryById(slot.item))
+    export_data.item = typeobject.name
+    return export_data
+end
+
+funcs["station_consumer"] = function (export_data, e)
+    gameplay_core.extend(e, "station_consumer?in")
+    local slot = ichest.chest_get(gameplay_core.get_world(), e.station_consumer, 1)
     if not slot then
         return export_data
     end

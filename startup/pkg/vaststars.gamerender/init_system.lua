@@ -86,7 +86,7 @@ function m:gameworld_end()
     local gameplay_world = gameplay_core.get_world()
     gameplay_world.ecs:clear "building_new"
     gameplay_world.ecs:clear "building_changed"
-    gameplay_world.ecs:clear "roadnet_changed"
+    gameplay_world.ecs:clear "base_changed"
 end
 
 function m:camera_usage()

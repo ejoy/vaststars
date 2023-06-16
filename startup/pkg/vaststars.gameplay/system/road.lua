@@ -172,8 +172,6 @@ local function build_road(world, building_eid, building, map, road_cache, endpoi
 end
 
 function m.prototype_restore(world)
-    iroad.set_change(world)
-
     roadbits = setmetatable({}, mt)
     for _, pt in pairs(prototype.all()) do
         if is_roadid(pt) then
@@ -242,59 +240,14 @@ local function repair(world, map, road_cache)
     return map
 end
 
-local function mark_neighbor(valid, map, x, y)
-    local m = map[pack(x, y)]
-    for dir = 0, 3 do
-        if not check(m, dir) then
-            goto continue
-        end
-
-        local dx, dy = move(dir)
-        dx, dy = x + dx, y + dy
-        local key = pack(dx, dy)
-        if valid[key] then
-            goto continue
-        end
-
-        local neighbor_mask = map[key]
-        if neighbor_mask then
-            valid[key] = true
-            mark_neighbor(valid, map, dx, dy)
-        end
-        ::continue::
-    end
-end
-
-local function mark_invalid(world, map, road_cache, building)
-    local pt = query(building.prototype)
-
-    local valid = {}
-    for _, e in ipairs(pt.affected_roads) do
-        local dx, dy = rotate(e.position, building.direction, pt.area)
-        dx, dy = (building.x + dx) // ROAD_TILE_WIDTH_SCALE, (building.y + dy) // ROAD_TILE_HEIGHT_SCALE
-        local key = pack(dx, dy)
-        local m = map[key]
-        if m then
-            valid[key] = true
-            mark_neighbor(valid, map, dx, dy)
-        end
-    end
-
-    for coord in pairs(map) do
-        if not valid[coord] then
-            local r = assert(world.entity[road_cache[coord]])
-            r.road_invalid = true
-        end
-    end
-end
+local DIRTY_ROADNET <const> = 1 << 4
 
 function m.build(world)
     local ecs = world.ecs
 
-    if not ecs:first("roadnet_changed:in") then
+    if world._dirty & DIRTY_ROADNET == 0 then
         return
     end
-    ecs:clear "road_invalid"
 
     local map = {}
     local road_cache = {}
@@ -314,14 +267,7 @@ function m.build(world)
         build_road(world, v.eid, v.building, map, road_cache, endpoint_keys)
     end
 
-    local building
-    for v in ecs:select "lorry_factory building:in eid:in" do
-        building = v.building
-    end
-
     map = repair(world, map, road_cache)
-    mark_invalid(world, map, road_cache, building)
-
     local endpoints = world:roadnet_reset(map)
 
     for v in ecs:select "endpoint:update eid:in" do

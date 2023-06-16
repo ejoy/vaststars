@@ -91,14 +91,14 @@ return function ()
     local pipeline_build = pipeline(world, cworld, "build")
     local pipeline_backup = pipeline(world, cworld, "backup")
     local pipeline_restore = pipeline(world, cworld, "restore")
-    
+
     function world:dirty(flags)
         self._dirty = self._dirty | flags
     end
     function world:update()
         if self._dirty ~= 0 then
-            self._dirty = 0
             self:build()
+            self._dirty = 0
         end
         pipeline_update()
         ecs:visitor_update()

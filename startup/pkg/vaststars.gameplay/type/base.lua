@@ -58,10 +58,10 @@ function task:init()
     }
 end
 
-local inventory = type "inventory"
+local base = type "base"
     .chest_type "chest_type"
 
-function inventory:ctor(init, pt)
+function base:ctor(init, pt)
     local world = self
     local items = {}
     for _, v in ipairs(init.items or {}) do
@@ -73,9 +73,9 @@ function inventory:ctor(init, pt)
     end
 
     return {
-        inventory = {
+        base = {
             chest = world:container_create(table.concat(items)),
         },
-        inventory_changed = true,
+        base_changed = true,
     }
 end

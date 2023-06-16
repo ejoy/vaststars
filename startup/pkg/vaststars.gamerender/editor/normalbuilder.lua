@@ -312,7 +312,7 @@ local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobjec
                     color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                 end
             else
-                if iprototype.has_type(typeobject.type, "station") then
+                if iprototype.has_types(typeobject.type, "station_producer", "station_consumer") then
                     if otypeobject.supply_area then
                         local aw, ah = iprototype.unpackarea(otypeobject.area)
                         local sw, sh = iprototype.unpackarea(otypeobject.supply_area)
@@ -355,7 +355,7 @@ local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobjec
                     color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                 end
             else
-                if iprototype.has_type(typeobject.type, "station") then
+                if iprototype.has_types(typeobject.type, "station_producer", "station_consumer") then
                     if otypeobject.supply_area then
                         local aw, ah = iprototype.unpackarea(otypeobject.area)
                         local sw, sh = iprototype.unpackarea(otypeobject.supply_area)

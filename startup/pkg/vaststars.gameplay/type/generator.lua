@@ -15,10 +15,3 @@ function c2:ctor(init, pt)
         wind_turbine = true
     }
 end
-
-local c3 = type "base"
-function c3:ctor(init, pt)
-    return {
-        base = true,
-    }
-end

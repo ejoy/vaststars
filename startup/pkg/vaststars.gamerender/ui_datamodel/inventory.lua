@@ -63,7 +63,7 @@ local function get_inventory(object_id)
     local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if e then
-        local items = ichest.collect_item(gameplay_core.get_world(), e.inventory)
+        local items = ichest.collect_item(gameplay_core.get_world(), e.base)
         for _, slot in pairs(items) do
             local typeobject_item = assert(iprototype.queryById(slot.item))
 

@@ -14,11 +14,11 @@ function road_sys:gameworld_build()
     iroadnet:clear("road")
 
     local world = gameplay_core.get_world()
-    for e in world.ecs:select "road:in road_invalid?in endpoint_road:absent" do
+    for e in world.ecs:select "road:in endpoint_road:absent" do
         local mask = e.road.mask
         local x, y = e.road.x * ROAD_TILE_WIDTH_SCALE, e.road.y * ROAD_TILE_HEIGHT_SCALE
         local shape, dir = iroadnet_converter.mask_to_shape_dir(mask)
-        iroadnet:editor_set("road", e.road_invalid and "remove" or "normal", x, y, shape, dir)
+        iroadnet:editor_set("road", "normal", x, y, shape, dir)
     end
 
     iroadnet:update()

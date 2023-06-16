@@ -164,7 +164,7 @@ local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobjec
                     color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                 end
             else
-                if iprototype.has_type(typeobject.type, "station") then
+                if iprototype.has_types(typeobject.type, "station_producer", "station_consumer") then
                     if otypeobject.supply_area then
                         local aw, ah = iprototype.unpackarea(otypeobject.area)
                         local sw, sh = iprototype.unpackarea(otypeobject.supply_area)
@@ -207,7 +207,7 @@ local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobjec
                     color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                 end
             else
-                if iprototype.has_type(typeobject.type, "station") then
+                if iprototype.has_types(typeobject.type, "station_producer", "station_consumer") then
                     if otypeobject.supply_area then
                         local aw, ah = iprototype.unpackarea(otypeobject.area)
                         local sw, sh = iprototype.unpackarea(otypeobject.supply_area)
@@ -589,7 +589,6 @@ local function confirm(self, datamodel)
     return self:complete(pickup_object.id, datamodel)
 end
 
-local iroadnet = ecs.require "roadnet"
 local function complete(self, object_id, datamodel)
     if self.grid_entity then
         self.grid_entity:remove()
@@ -601,7 +600,6 @@ local function complete(self, object_id, datamodel)
     icanvas.remove_item(icanvas.types().ROAD_ENTRANCE_MARKER, 0)
     ieditor:revert_changes({"TEMPORARY"})
 
-    iroad.set_change(gameplay_core.get_world())
     igameplay.dirty(DIRTY_ROADNET)
     self.super.complete(self, object_id)
 
