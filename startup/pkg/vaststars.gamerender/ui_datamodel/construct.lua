@@ -436,14 +436,14 @@ function M:stage_camera_usage(datamodel)
                     o.lorry:set_outline(true)
                     local t = now()
                     local lorry_id = o.id
-                    iupdate.add(function()
-                        if t + 2000 > now() then
-                            return true
-                        end
-                        __unpick_lorry(lorry_id)
-                        datamodel.remove_lorry = false
-                        return false
-                    end)
+                    -- iupdate.add(function()
+                    --     if t + 2000 > now() then
+                    --         return true
+                    --     end
+                    --     __unpick_lorry(lorry_id)
+                    --     datamodel.remove_lorry = false
+                    --     return false
+                    -- end)
                     datamodel.remove_lorry = true
                 elseif o and o.class == CLASS.Object then
                     if __on_pick_building(datamodel, o.object) then
