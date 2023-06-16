@@ -140,6 +140,7 @@ local function create(prefab, s, r, t, motion_events)
         end
 
         local typeobject = iprototype.queryById(item_classid)
+        assert(typeobject, ("item_classid %d not found"):format(item_classid))
         assert(typeobject.pile_model)
         local slots = prefab_slots(RESOURCES_BASE_PATH:format(prefab))
         assert(slots.item)

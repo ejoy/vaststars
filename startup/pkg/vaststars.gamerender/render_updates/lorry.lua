@@ -147,7 +147,7 @@ function lorry_sys:gameworld_update()
     for e in gameplay_world.ecs:select "lorry:in lorry_removed:absent eid:in" do
         local lorry = e.lorry
         local classid = lorry.classid
-        local item_classid = lorry.item_item
+        local item_classid = lorry.item_classid
         local item_amount = lorry.item_amount
         local progress = lorry.progress
         local maxprogress = lorry.maxprogress
