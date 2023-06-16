@@ -85,7 +85,6 @@ namespace roadnet {
     enum class lorry_status: uint8_t {
         normal,
         error,
-        fatal,
     };
 
     struct objectid {

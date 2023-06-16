@@ -544,7 +544,7 @@ namespace roadnet {
             auto& s = lorryStatusAry[e.getid()];
             if (auto ep = status.endpointMap.find(s.endpoint)) {
                 //TODO: endpoint changed
-                Lorry(w, lorryid{(uint16_t)e.getid()}).ending = ep->rev_neighbor;
+                lorryGo(lorry, ep->rev_neighbor, lorry.item_classid, lorry.item_amount);
             }
             else {
                 destroyLorry(w, e);

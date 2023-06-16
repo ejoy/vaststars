@@ -47,9 +47,6 @@ namespace roadnet {
         return false;
     }
     bool lorryReady(ecs::lorry const& l) noexcept {
-        if (l.status != lorry_status::normal) {
-            return false;
-        }
         return l.progress == 0;
     }
 }
