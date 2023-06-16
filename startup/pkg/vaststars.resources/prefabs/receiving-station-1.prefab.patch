@@ -182,7 +182,7 @@ policy:
 data:
   name: shelf
   scene:
-    t: {0, 10, 0}
+    t: {0, 19, 0}
   slot:
     follow_flag: 1
     joint_name: None
