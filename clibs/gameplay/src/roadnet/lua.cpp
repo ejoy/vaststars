@@ -29,8 +29,7 @@ namespace roadnet::lua {
             lua_pop(L, 1);
         }
         w.rw.rebuildMap(w, map);
-        lua_createtable(L, 0, 0);
-        return 1;
+        return 0;
     }
 }
 
