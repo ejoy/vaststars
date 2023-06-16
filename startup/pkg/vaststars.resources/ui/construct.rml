@@ -216,14 +216,6 @@
                 color:rgb(255,255,255);
                 -webkit-text-stroke: 0.26vmin rgb(0,0,0);
             }
-            .black-bg {
-                position: absolute;
-                width:40vmin;
-                height:24vmin;
-                left:0vmin; 
-                top: 0.5vmin;
-                background-color: #000;
-            }
         </style>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
@@ -261,10 +253,6 @@
     <body style = "pointer-events: none; justify-content: center; align-items: center;">
 
         <div class = "safe-area" data-model="start">    
-
-            <!-- black background -->
-            <div  class = "black-bg" data-if="false"/>
-
             <!-- 帮助按钮 -->
             <button  class = "main-menu-button" style="border: 0.00vmin; position: absolute; left:-6.7vmin; top: -4vmin;" data-event-click="clickButton('help')" data-if = "!is_concise_mode && guide_progress >= 10">
                 <div class = "menu-button-pic" style='width:9vmin; height:9vmin; background-image:"textures/common/help.texture"'/>
