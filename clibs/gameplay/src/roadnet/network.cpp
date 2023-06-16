@@ -477,7 +477,6 @@ namespace roadnet {
         }
 
         // step.4
-        uint16_t endpointId = 0;
         for (auto const& [loc, m] : map) {
             if (m & MapRoad::Endpoint) {
                 auto rawm = m & 0xF;
@@ -490,7 +489,6 @@ namespace roadnet {
                 case mask(L'╝'): setEndpoint(*this, map, status, loc, direction::l, direction::t); break;
                 default: assert(false); break;
                 }
-                endpointId++;
             }
         }
 

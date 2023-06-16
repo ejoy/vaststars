@@ -6,10 +6,6 @@
 #include <bee/nonstd/bit.h>
 
 namespace roadnet::lua {
-    static roadnet::network& get_network(lua_State* L, int idx = 1) {
-        auto& w = *(world*)lua_touserdata(L, idx);
-        return w.rw;
-    }
     static world& get_world(lua_State* L, int idx = 1) {
         return *(world*)lua_touserdata(L, idx);
     }
