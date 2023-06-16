@@ -123,6 +123,7 @@ prototype "碳化铝" {
     type = {"item"},
     stack = 12,
     pile = "4x2x4",
+    pile_model = "prefabs/stackeditems/iron-ore.prefab",
     icon = "textures/construct/aluminium-carbide.texture",
     item_description = "氧化铝燃烧后的剩余物",
     group = {"金属"},
