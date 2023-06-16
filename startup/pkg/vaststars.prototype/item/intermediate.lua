@@ -231,6 +231,16 @@ prototype "氢氧化钠" {
     group = {"化工"},
 }
 
+prototype "钠" {
+    type = {"item"},
+    stack = 13,
+    pile = "4x4x4",
+    pile_model = "prefabs/stackeditems/gravel.prefab",
+    icon = "textures/construct/coal.texture",
+    item_description = "一种化工原料",
+    group = {"化工"},
+}
+
 prototype "金红石" {
     type = {"item"},
     stack = 12,

@@ -89,6 +89,44 @@ prototype "铝矿石浮选" {
     description = "使用氧化铝和石墨烧制铝板",
 }
 
+prototype "四氯化钛1" {
+    type = { "recipe" },
+    category = "金属冶炼",
+    recipe_group =  "金属",
+    recipe_order =  11,
+    recipe_icon =  "textures/construct/plate-Fe.texture",
+    ingredients = {
+        {"氯气", 80},
+        {"石墨", 7},
+        {"金红石", 4},
+    },
+    results = {
+        {"四氯化钛", 15},
+        {"废料", 2},
+    },
+    time = "10s",
+    description = "铁矿石通过金属冶炼获得铁板",
+}
+
+prototype "钛板" {
+    type = { "recipe" },
+    category = "矿石浮选",
+    recipe_group =  "金属",
+    recipe_order =  14,
+    recipe_icon =  "textures/construct/aluminum-hydroxide.texture",
+    ingredients = {
+        {"氦气", 1},
+        {"钠", 6},
+        {"四氯化钛", 10},
+    },
+    results = {
+        {"钛板", 1},
+        {"废水", 4},
+    },
+    time = "5s",
+    description = "使用氧化铝和石墨烧制铝板",
+}
+
 prototype "氧化铝" {
     type = { "recipe" },
     category = "金属冶炼",
@@ -350,6 +388,41 @@ prototype "铁齿轮" {
     },
     time = "6s",
     description = "使用铁制品加工铁齿轮",
+}
+
+prototype "玻璃纤维1" {
+    type = { "recipe" },
+    category = "金属冶炼",
+    recipe_group =  "金属",
+    recipe_order =  11,
+    recipe_icon =  "textures/construct/plate-Fe.texture",
+    ingredients = {
+        {"纯水", 20},
+        {"玻璃", 4},
+    },
+    results = {
+        {"玻璃纤维", 3},
+        {"蒸汽", 50},
+    },
+    time = "15s",
+    description = "铁矿石通过金属冶炼获得铁板",
+}
+
+prototype "隔热板1" {
+    type = { "recipe" },
+    category = "金属冶炼",
+    recipe_group =  "金属",
+    recipe_order =  11,
+    recipe_icon =  "textures/construct/plate-Fe.texture",
+    ingredients = {
+        {"玻璃纤维", 4},
+        {"硅板", 5},
+    },
+    results = {
+        {"隔热板", 1},
+    },
+    time = "15s",
+    description = "铁矿石通过金属冶炼获得铁板",
 }
 
 prototype "混凝土" {
@@ -1057,6 +1130,41 @@ prototype "维修组装机" {
     },
     time = "5s",
     description = "修复损坏的组装机",
+}
+
+prototype "火箭区段1" {
+    type = { "recipe" },
+    category = "生产大型制造",
+    recipe_group =  "加工",
+    recipe_order =  64,
+    recipe_icon =  "textures/construct/flotation-cell.texture",
+    ingredients = {
+        {"钢板", 20},
+        {"铝板", 30},
+        {"隔热板", 10},
+    },
+    results = {
+        {"火箭区段", 1},
+    },
+    time = "25s",
+    description = "将矿石浮沉进行筛选",
+}
+
+prototype "整流罩1" {
+    type = { "recipe" },
+    category = "生产大型制造",
+    recipe_group =  "加工",
+    recipe_order =  64,
+    recipe_icon =  "textures/construct/flotation-cell.texture",
+    ingredients = {
+        {"隔热板", 100},
+        {"钛板", 200},
+    },
+    results = {
+        {"整流罩", 1},
+    },
+    time = "60s",
+    description = "将矿石浮沉进行筛选",
 }
 
 prototype "维修铁制电线杆" {
@@ -2131,6 +2239,25 @@ prototype "电子科技包1" {
     description = "电子元件制造电子科技包",
 }
 
+prototype "化学科技包1" {
+    type = { "recipe" },
+    category = "器件中型制造",
+    recipe_group =  "器件",
+    recipe_order =  85,
+    recipe_icon =  "textures/recipe/electrical-pack.texture",
+    ingredients = {
+        {"润滑油", 5},
+        {"硫酸", 18},
+        {"混凝土", 6},
+        {"氨气", 50},
+    },
+    results = {
+        {"化学科技包", 2},
+    },
+    time = "12s",
+    description = "化工材料制造化学科技包",
+}
+
 prototype "石铁矿挖掘" {
     type = { "recipe" },
     category = "金属冶炼",
@@ -2211,8 +2338,8 @@ prototype "绝缘线1" {
 
 prototype "电容1" {
     type = { "recipe" },
-    category = "金属锻造",
-    recipe_group =  "金属",
+    category = "器件小型制造",
+    recipe_group =  "器件",
     recipe_order =  72,
     recipe_icon =  "textures/construct/capacitor.texture",
     ingredients = {
@@ -2226,6 +2353,44 @@ prototype "电容1" {
     },
     time = "5s",
     description = "生产电子元器件电容",
+}
+
+prototype "电容2" {
+    type = { "recipe" },
+    category = "器件小型制造",
+    recipe_group =  "器件",
+    recipe_order =  72,
+    recipe_icon =  "textures/construct/capacitor.texture",
+    ingredients = {
+        {"石墨", 5},
+        {"氧化铝", 5},
+        {"塑料", 15},
+        {"氦气", 3},
+    },
+    results = {
+        {"电容", 15}
+    },
+    time = "20s",
+    description = "生产电子元器件电容",
+}
+
+prototype "金红石1" {
+    type = { "recipe" },
+    category = "矿石浮选",
+    recipe_group =  "化工",
+    recipe_order =  50,
+    recipe_icon =  "textures/construct/pumpjack1.texture",
+    ingredients = {
+        {"硫酸", 12},
+        {"沙子", 5},
+    },
+    results = {
+        {"二氧化碳", 5},
+        {"废水", 10},
+        {"金红石", 1},
+    },
+    time = "3s",
+    description = "排水设施和压力泵制造抽水泵",
 }
 
 prototype "逻辑电路1" {
@@ -2332,6 +2497,24 @@ prototype "产能插件1" {
         {"产能插件", 1},
     },
     time = "4s",
+    description = "生产可以传输数据的导线",
+}
+
+prototype "火箭控制器1" {
+    type = { "recipe" },
+    category = "器件小型制造",
+    recipe_group =  "器件",
+    recipe_order =  70,
+    recipe_icon =  "textures/construct/insulated-wire.texture",
+    ingredients = {
+        {"速度插件", 5},
+        {"产能插件", 5},
+        {"效能插件", 5},
+    },
+    results = {
+        {"火箭控制器", 1},
+    },
+    time = "20s",
     description = "生产可以传输数据的导线",
 }
 
@@ -2470,6 +2653,23 @@ prototype "一氧化碳转石墨" {
     description = "一氧化碳转石墨",
 }
 
+prototype "甲烷转石墨" {
+    type = { "recipe" },
+    category = "器件基础化工",
+    recipe_group =  "器件",
+    recipe_order =  10,
+    recipe_icon =  "textures/fluid/gas.texture",
+    ingredients = {
+        {"甲烷", 50},
+    },
+    results = {
+        {"石墨", 2},
+        {"氢气", 60},
+    },
+    time = "2s",
+    description = "甲烷转石墨",
+}
+
 prototype "盐酸" {
     type = { "recipe" },
     category = "流体基础化工",
@@ -2521,6 +2721,26 @@ prototype "氨气" {
     description = "氮气和氢气合成氨气",
 }
 
+prototype "火箭燃料1" {
+    type = { "recipe" },
+    category = "流体基础化工",
+    recipe_group =  "化工",
+    recipe_order =  34,
+    recipe_icon =  "textures/fluid/gas-ch4.texture",
+    ingredients = {
+        {"铝丝", 20},
+        {"氧气", 300},
+        {"盐酸", 200},
+        {"氨气", 180},
+    },
+    results = {
+        {"火箭燃料", 3},
+        {"废水", 200},
+    },
+    time = "30s",
+    description = "二氧化碳转甲烷",
+}
+
 prototype "地下卤水电解1" {
     type = { "recipe" },
     category = "电解",
@@ -2552,6 +2772,24 @@ prototype "地下卤水电解2" {
     results = {
         {"氯气", 20},
         {"氢氧化钠", 1},
+    },
+    time = "1s",
+    description = "卤水电解成氯气和氢氧化钠",
+}
+
+prototype "氢氧化钠电解" {
+    type = { "recipe" },
+    category = "电解",
+    recipe_group =  "化工",
+    recipe_order =  16,
+    recipe_icon =  "textures/fluid/brine-electrolysis-na.texture",
+    ingredients = {
+        {"氢氧化钠", 4},
+    },
+    results = {
+        {"纯水", 15},
+        {"氧气", 30},
+        {"钠", 3},   
     },
     time = "1s",
     description = "卤水电解成氯气和氢氧化钠",
@@ -2695,6 +2933,25 @@ prototype "塑料2" {
     },
     time = "4s",
     description = "化工原料合成塑料",
+}
+
+prototype "电池1" {
+    type = { "recipe" },
+    category = "器件基础化工",
+    recipe_group =  "器件",
+    recipe_order =  21,
+    recipe_icon =  "textures/construct/processor.texture",
+    ingredients = {
+        {"硫酸", 16},
+        {"铝板", 3},
+        {"石墨", 2},
+        {"钠", 2},
+    },
+    results = {
+        {"电池", 1},
+    },
+    time = "10s",
+    description = "化工原料合成电池",
 }
 
 prototype "酸碱中和" {
