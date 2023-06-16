@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include "roadnet/road_cross.h"
 #include "roadnet/road_straight.h"
-#include "roadnet/road_endpoint.h"
+#include "roadnet/endpoint.h"
 #include "roadnet/lorry.h"
 #include "util/dynarray.h"
 #include "flatmap.h"
@@ -31,7 +31,7 @@ namespace roadnet {
         void             update(uint64_t ti);
         road::straight&  StraightRoad(straightid id);
         road::cross&     CrossRoad(crossid id);
-        lorry&           Lorry(lorryid id);
+        ecs::lorry&      Lorry(lorryid id);
         lorryid&         LorryInRoad(uint32_t index);
         map_coord        LorryInCoord(uint32_t index) const;
 
@@ -39,7 +39,7 @@ namespace roadnet {
         dynarray<road::straight>        straightAry;
         dynarray<lorryid>               straightLorry;
         dynarray<map_coord>             straightCoord;
-        std::vector<lorry>              lorryVec;
+        std::vector<ecs::lorry>         lorryVec;
         std::vector<lorryid>            lorryFreeList;
         std::vector<lorryid>            lorryWaitList;
         flatmap<route_key, route_value> routeCached;

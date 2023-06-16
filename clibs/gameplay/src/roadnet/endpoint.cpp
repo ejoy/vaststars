@@ -1,8 +1,8 @@
-#include "roadnet/road_endpoint.h"
+#include "roadnet/endpoint.h"
 #include "roadnet/network.h"
 #include "roadnet/route.h"
 
-namespace roadnet::road {
+namespace roadnet {
     loction endpointGetLoction(network& w, ecs::endpoint const& ep) {
         return w.StraightRoad(ep.rev_neighbor).waitingLoction(w);
     }

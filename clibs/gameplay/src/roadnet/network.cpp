@@ -20,10 +20,20 @@ namespace roadnet {
     }
 
     template <typename T, typename F>
+        requires (std::is_member_function_pointer_v<F>)
     static void array_call(network& w, uint64_t ti, T& ary, F func) {
         size_t N = ary.size();
         for (size_t i = 0; i < N; ++i) {
             (ary[i].*func)(w, ti);
+        }
+    }
+
+    template <typename T, typename F>
+        requires (!std::is_member_function_pointer_v<F>)
+    static void array_call(network& w, uint64_t ti, T& ary, F func) {
+        size_t N = ary.size();
+        for (size_t i = 0; i < N; ++i) {
+            func(ary[i], w, ti);
         }
     }
 
@@ -355,7 +365,7 @@ namespace roadnet {
 
         for (uint16_t i = 0; i < lorryVec.size(); ++i) {
             auto& lorry = lorryVec[i];
-            if (lorry.invaild()) {
+            if (lorryInvaild(lorry)) {
                 continue;
             }
             destroyLorry(w, lorryid{i});
@@ -400,12 +410,11 @@ namespace roadnet {
         }
         for (uint16_t i = 0; i < lorryStatusAry.size(); ++i) {
             auto& lorry = lorryVec[i];
-            if (lorry.invaild()) {
+            if (lorryInvaild(lorry)) {
                 continue;
             }
             assert(lorryStatusAry[i].exist);
-            auto ending = lorry.get_ending();
-            lorryStatusAry[i].endpoint = StraightRoad(ending).waitingLoction(*this);
+            lorryStatusAry[i].endpoint = StraightRoad(lorry.ending).waitingLoction(*this);
         }
 
         updateMapStatus status;
@@ -553,14 +562,14 @@ namespace roadnet {
         // step.6
         for (uint16_t i = 0; i < lorryStatusAry.size(); ++i) {
             auto& lorry = lorryVec[i];
-            if (lorry.invaild()) {
+            if (lorryInvaild(lorry)) {
                 continue;
             }
             auto& s = lorryStatusAry[i];
             assert(s.exist);
             if (auto ep = status.endpointMap.find(s.endpoint)) {
                 //TODO: endpoint changed
-                Lorry(lorryid{i}).set_ending(ep->rev_neighbor);
+                Lorry(lorryid{i}).ending = ep->rev_neighbor;
             }
             else {
                 destroyLorry(w, lorryid{i});
@@ -623,23 +632,23 @@ namespace roadnet {
         if (!lorryFreeList.empty()) {
             auto lorryId = lorryFreeList.back();
             lorryFreeList.pop_back();
-            Lorry(lorryId).init(w, classid);
+            lorryInit(Lorry(lorryId), w, classid);
             return lorryId;
         }
         lorryid lorryId((uint16_t)lorryVec.size());
         lorryVec.emplace_back();
-        Lorry(lorryId).init(w, classid);
+        lorryInit(Lorry(lorryId), w, classid);
         return lorryId;
     }
     void network::destroyLorry(world& w, lorryid id) {
         auto& lorry = Lorry(id);
-        lorry.reset(w);
+        lorryReset(lorry, w);
         lorryWaitList.push_back(id);
     }
     void network::update(uint64_t ti) {
         lorryFreeList.insert(std::end(lorryFreeList), std::begin(lorryWaitList), std::end(lorryWaitList));
         lorryWaitList.clear();
-        array_call(*this, ti, lorryVec, &lorry::update);
+        array_call(*this, ti, lorryVec, &lorryUpdate);
         array_call(*this, ti, crossAry, &road::cross::update);
         array_call(*this, ti, straightAry, &road::straight::update);
     }
@@ -653,7 +662,7 @@ namespace roadnet {
         assert(id.get_index() < crossAry.size());
         return crossAry[id.get_index()];
     }
-    lorry& network::Lorry(lorryid id) {
+    ecs::lorry& network::Lorry(lorryid id) {
         assert(id != lorryid::invalid());
         assert(id.get_index() < lorryVec.size());
         return lorryVec[id.get_index()];

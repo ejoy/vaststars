@@ -6,9 +6,6 @@
 
 namespace roadnet {
     class network;
-}
-
-namespace roadnet::road {
     loction endpointGetLoction(network& w, ecs::endpoint const& ep);
     lorryid& endpointWaitingLorry(network& w, ecs::endpoint const& ep);
     bool endpointIsReady(network& w, ecs::endpoint const& ep);

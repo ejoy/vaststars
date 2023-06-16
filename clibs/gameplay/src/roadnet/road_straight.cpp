@@ -18,7 +18,7 @@ namespace roadnet::road {
     bool straight::tryEntry(network& w, lorryid l, uint16_t offset) {
         if (!hasLorry(w, offset)) {
             w.LorryInRoad(lorryOffset + offset) = l;
-            w.Lorry(l).entry(roadtype::straight);
+            lorryEntry(w.Lorry(l), roadtype::straight);
             return true;
         }
         return false;
@@ -41,7 +41,7 @@ namespace roadnet::road {
         // see also: cross::waitingLorry()
         for (uint16_t i = 1; i < len; ++i) {
             if (lorryid l = w.LorryInRoad(lorryOffset+i)) {
-                if (w.Lorry(l).ready() && tryEntry(w, l, i-1)) {
+                if (lorryReady(w.Lorry(l)) && tryEntry(w, l, i-1)) {
                     delLorry(w, i);
                 }
             }

@@ -29,10 +29,22 @@ component "station_consumer" {
 component "lorry_factory" {}
 
 type "roadnet::straightid" ("word")
+type "enum roadnet::lorry_status" ("byte")
 
 component "endpoint" {
     "neighbor:roadnet::straightid",
     "rev_neighbor:roadnet::straightid",
+}
+
+component "lorry" {
+    "ending:roadnet::straightid",
+    "classid:word",
+    "item_classid:word",
+    "item_amount:word",
+    "progress:byte",
+    "maxprogress:byte",
+    "time:byte",
+    "status:enum roadnet::lorry_status",
 }
 
 component "hub" {

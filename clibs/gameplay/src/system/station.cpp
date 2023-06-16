@@ -2,6 +2,7 @@
 #include "core/world.h"
 #include "core/capacitance.h"
 #include "util/prototype.h"
+#include "roadnet/lorry.h"
 #include "luaecs.h"
 #include <lua.hpp>
 #include <bee/nonstd/unreachable.h>
@@ -36,16 +37,16 @@ static void producer_update(station_vector& producers, size_t idx) {
 
 static std::optional<size_t> find_producer(world& w, station_vector& producers, const ecs::endpoint& from) {
     for (size_t i = 0; i < producers.size(); ++i) {
-        if (roadnet::road::endpointDistance(w.rw, from, *producers[i].endpoint)) {
+        if (roadnet::endpointDistance(w.rw, from, *producers[i].endpoint)) {
             return i;
         }
     }
     return std::nullopt;
 }
 
-static void goto_producer(world& w, station_vector& producers, size_t producer_idx, roadnet::lorry& l, ecs::endpoint& ep) {
+static void goto_producer(world& w, station_vector& producers, size_t producer_idx, ecs::lorry& l, ecs::endpoint& ep) {
     auto& producer = producers[producer_idx];
-    l.go(producer.endpoint->rev_neighbor, 0, 0);
+    lorryGo(l, producer.endpoint->rev_neighbor, 0, 0);
     producer_update(producers, producer_idx);
 }
 
@@ -60,7 +61,7 @@ static std::optional<station_consumer_ref> find_consumer(world& w, uint16_t item
     for (size_t i = 0; i < consumers.size(); ++i) {
         auto& consumer = consumers[i];
         if (consumer.station->lorry < consumer.station->maxlorry) {
-            if (auto distance = roadnet::road::endpointDistance(w.rw, from, *consumer.endpoint)) {
+            if (auto distance = roadnet::endpointDistance(w.rw, from, *consumer.endpoint)) {
                 if (*distance < min_distance) {
                     min_distance = *distance;
                     min_consumer = consumer;
@@ -136,12 +137,12 @@ static int lupdate(lua_State *L) {
         if (!endpoint.neighbor || !endpoint.rev_neighbor) {
             continue;
         }
-        auto lorryId = roadnet::road::endpointWaitingLorry(w.rw, endpoint);
+        auto lorryId = roadnet::endpointWaitingLorry(w.rw, endpoint);
         if (!lorryId) {
             continue;
         }
         auto& l = w.rw.Lorry(lorryId);
-        if (!l.ready() || !roadnet::road::endpointIsReady(w.rw, endpoint)) {
+        if (!roadnet::lorryReady(l) || !roadnet::endpointIsReady(w.rw, endpoint)) {
             continue;
         }
         auto& chestslot = chest::array_at(w, container::index::from(station.chest), 0);
@@ -152,8 +153,8 @@ static int lupdate(lua_State *L) {
             continue;
         }
         if (auto pconsumer = find_consumer(w, chestslot.item, endpoint)) {
-            roadnet::road::endpointSetOut(w.rw, endpoint);
-            l.go(pconsumer->endpoint->rev_neighbor, chestslot.item, chestslot.amount);
+            roadnet::endpointSetOut(w.rw, endpoint);
+            lorryGo(l, pconsumer->endpoint->rev_neighbor, chestslot.item, chestslot.amount);
             chestslot.amount = 0;
             station.lorry--;
             pconsumer->station->lorry++;
@@ -170,12 +171,12 @@ static int lupdate(lua_State *L) {
         if (!endpoint.neighbor || !endpoint.rev_neighbor) {
             continue;
         }
-        auto lorryId = roadnet::road::endpointWaitingLorry(w.rw, endpoint);
+        auto lorryId = roadnet::endpointWaitingLorry(w.rw, endpoint);
         if (!lorryId) {
             continue;
         }
         auto& l = w.rw.Lorry(lorryId);
-        if (!l.ready() || !roadnet::road::endpointIsReady(w.rw, endpoint)) {
+        if (!roadnet::lorryReady(l) || !roadnet::endpointIsReady(w.rw, endpoint)) {
             continue;
         }
         auto& chestslot = chest::array_at(w, container::index::from(station.chest), 0);
@@ -189,17 +190,17 @@ static int lupdate(lua_State *L) {
         if (!producer_idx) {
             continue;
         }
-        chestslot.amount = l.get_item_amount();
+        chestslot.amount = l.item_amount;
         station.lorry--;
         goto_producer(w, s.producers, *producer_idx, l, endpoint);
-        roadnet::road::endpointSetOut(w.rw, endpoint);
+        roadnet::endpointSetOut(w.rw, endpoint);
     }
     for (auto& v : ecs_api::select<ecs::lorry_factory, ecs::endpoint, ecs::assembling, ecs::chest>(w.ecs)) {
         auto& endpoint = v.get<ecs::endpoint>();
         if (!endpoint.neighbor || !endpoint.rev_neighbor) {
             continue;
         }
-        if (!roadnet::road::endpointIsReady(w.rw, endpoint)) {
+        if (!roadnet::endpointIsReady(w.rw, endpoint)) {
             continue;
         }
         auto& assembling = v.get<ecs::assembling>();
@@ -222,7 +223,7 @@ static int lupdate(lua_State *L) {
         roadnet::lorryid lorryId = w.rw.createLorry(w, chestslot.item);
         auto& l = w.rw.Lorry(lorryId);
         goto_producer(w, s.producers, *producer_idx, l, endpoint);
-        roadnet::road::endpointSetOut(w.rw, endpoint, lorryId);
+        roadnet::endpointSetOut(w.rw, endpoint, lorryId);
     }
     return 0;
 }

@@ -159,18 +159,16 @@ namespace roadnet::lua {
         auto& w = get_network(L);
         lorryid lorryId = (uint16_t)luaL_checkinteger(L, 2);
         auto& l = w.Lorry(lorryId);
-        auto [item_classid, item_amount] = l.get_item();
-        auto [progress, maxprogress] = l.get_progress();
         lua_rawgeti(L, lua_upvalueindex(1), lorryId.get_index() + 1);
-        lua_pushinteger(L, l.get_classid());
+        lua_pushinteger(L, l.classid);
         lua_setfield(L, -2, "classid");
-        lua_pushinteger(L, item_classid);
+        lua_pushinteger(L, l.item_classid);
         lua_setfield(L, -2, "item");
-        lua_pushinteger(L, item_amount);
+        lua_pushinteger(L, l.item_amount);
         lua_setfield(L, -2, "amount");
-        lua_pushinteger(L, progress);
+        lua_pushinteger(L, l.progress);
         lua_setfield(L, -2, "progress");
-        lua_pushinteger(L, maxprogress);
+        lua_pushinteger(L, l.maxprogress);
         lua_setfield(L, -2, "maxprogress");
         return 1;
     }

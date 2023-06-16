@@ -86,6 +86,12 @@ namespace roadnet {
     };
     static_assert(sizeof(map_coord) == 3*sizeof(uint8_t));
 
+    enum class lorry_status: uint8_t {
+        normal,
+        error,
+        fatal,
+    };
+
     struct objectid {
         uint16_t index;
 
