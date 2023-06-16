@@ -360,14 +360,16 @@ namespace roadnet {
         if (create) {
             int id = entity_new(w.ecs, ecs_api::component_id<ecs::lorry>, NULL);
             assert(id == 0);
+            entity_enable_tag(w.ecs, ecs_api::component_id<ecs::lorry>, id, ecs_api::component_id<ecs::lorry_removed>);
+            entity_enable_tag(w.ecs, ecs_api::component_id<ecs::lorry>, id, ecs_api::component_id<ecs::lorry_free>);
         }
+        refresh(w);
+    }
+
+    void network::refresh(world& w) {
         ecs_api::entity<ecs::lorry> e(*w.ecs);
         bool ok = e.init(0);
         assert(ok);
-        if (create) {
-            e.enable_tag<ecs::lorry_removed>();
-            e.enable_tag<ecs::lorry_free>();
-        }
         lorryAry = &e.get<ecs::lorry>();
     }
 
@@ -613,6 +615,7 @@ namespace roadnet {
         }
         int id = entity_new(w.ecs, ecs_api::component_id<ecs::lorry>, NULL);
         assert(id >= 0);
+        refresh(w);
         lorryid lorryId {(uint16_t)id};
         lorryInit(Lorry(w, lorryId), w, classid);
         return lorryId;
