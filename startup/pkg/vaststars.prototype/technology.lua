@@ -1557,7 +1557,7 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "放置出货车站" {
-    desc = "放置1座修路站",
+    desc = "放置1座出货车站",
     icon = "textures/construct/industry.texture",
     type = { "task" },
     task = {"select_entity", 0, "出货车站"},
@@ -1590,7 +1590,7 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "放置收货车站" {
-    desc = "放置1座修路站",
+    desc = "放置1座收货车站",
     icon = "textures/construct/industry.texture",
     type = { "task" },
     task = {"select_entity", 0, "收货车站"},

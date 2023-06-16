@@ -447,24 +447,6 @@ prototype "混凝土" {
     description = "使用铁制品加工铁齿轮",
 }
 
-prototype "物流中心1" {
-    type = { "recipe" },
-    category = "物流大型制造",
-    --recipe_group =  "物流",
-    recipe_order =  52,
-    recipe_icon =  "textures/construct/logisitic1.texture",
-    ingredients = {
-        {"蒸汽发电机I", 1},
-        {"物流需求站", 1},
-        {"砖石公路-X型", 10},
-    },
-    results = {
-        {"物流中心I", 1},
-    },
-    time = "5s",
-    description = "发电设施和车载设备制造物流中心",
-}
-
 prototype "小铁制箱子1" {
     type = { "recipe" },
     category = "物流中型制造",

@@ -65,39 +65,11 @@ prototype "仓库" {
     item_description = "贮藏物品的容器",
 }
 
-prototype "物流需求站" {
-    type = {"item"},
-    group = {"物流"},
-    stack = 1,
-    item_description = "将货物从运输车卸载到货站",
-}
-
 prototype "无人机仓库I" {
     type = {"item"},
     group = {"物流"},
     stack = 10,
     item_description = "使用无人机运输并储存货物的仓库",
-}
-
-prototype "建造中心" {
-    type = {"item"},
-    group = {"物流"},
-    stack = 10,
-    item_description = "用来建造建筑的场所",
-}
-
-prototype "修路站" {
-    type = {"item"},
-    group = {"物流"},
-    stack = 10,
-    item_description = "用来建造道路的场所",
-}
-
-prototype "修管站" {
-    type = {"item"},
-    group = {"物流"},
-    stack = 10,
-    item_description = "用来建造管道的场所",
 }
 
 prototype "采矿机I" {
@@ -154,13 +126,6 @@ prototype "浮选器I" {
     group = {"加工"},
     stack = 10,
     item_description = "用于浮沉矿石进行分离的机器",
-}
-
-prototype "物流中心I" {
-    type = {"item"},
-    group = {"物流"},
-    stack = 10,
-    item_description = "派遣和停靠运输车辆的物流车站",
 }
 
 prototype "风力发电机I" {
