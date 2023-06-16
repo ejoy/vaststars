@@ -28,15 +28,6 @@ namespace roadnet {
         }
     }
 
-    template <typename T, typename F>
-        requires (!std::is_member_function_pointer_v<F>)
-    static void array_call(network& w, uint64_t ti, T& ary, F func) {
-        size_t N = ary.size();
-        for (size_t i = 0; i < N; ++i) {
-            func(ary[i], w, ti);
-        }
-    }
-
     static constexpr direction reverse(direction dir) {
         switch (dir) {
         case direction::l: return direction::r;
