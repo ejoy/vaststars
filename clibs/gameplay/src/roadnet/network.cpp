@@ -576,8 +576,7 @@ namespace roadnet {
             auto& s = status.lorryStatusAry[e.getid()];
             if (auto ep = status.endpointMap.find(s.endpoint)) {
                 //TODO: endpoint changed
-                (*ep)->lorry++;
-                lorryGo(lorry, (*ep)->rev_neighbor, lorry.item_classid, lorry.item_amount);
+                lorryGo(lorry, **ep, lorry.item_classid, lorry.item_amount);
             }
             else {
                 destroyLorry(w, e);
@@ -633,6 +632,10 @@ namespace roadnet {
         }
     }
 
+    lorryid network::getLorryId(ecs::lorry& l) {
+        return lorryid {uint16_t(&l - lorryAry)};
+    }
+
     lorryid network::createLorry(world& w, uint16_t classid) {
         ecs_api::entity<ecs::lorry_free, ecs::lorry> e(*w.ecs);
         e.next();
@@ -641,7 +644,7 @@ namespace roadnet {
             e.disable_tag<ecs::lorry_removed>();
             e.disable_tag<ecs::lorry_free>();
             lorryInit(l, w, classid);
-            return lorryid {uint16_t(&l - lorryAry)};
+            return getLorryId(l);
         }
         int id = entity_new(w.ecs, ecs_api::component_id<ecs::lorry>, NULL);
         assert(id >= 0);
@@ -651,13 +654,64 @@ namespace roadnet {
         return lorryId;
     }
     void network::destroyLorry(world& w, lorry_entity& l) {
-        lorryReset(l.get<ecs::lorry>(), w);
         l.enable_tag<ecs::lorry_removed>();
+    }
+    void network::updateRemoveLorry(world& w, size_t n) {
+        flatset<lorryid> lorryWillRemove;
+        flatmap<straightid, uint8_t> endpointWillReset;
+        lorryWillRemove.reserve(n);
+        endpointWillReset.reserve(n);
+        size_t sz = 0;
+        for (auto& e : ecs_api::select<ecs::lorry_willremove, ecs::lorry>(w.ecs)) {
+            e.enable_tag<ecs::lorry_removed>();
+            auto& lorry = e.get<ecs::lorry>();
+            lorryWillRemove.insert(getLorryId(lorry));
+            if (auto res = endpointWillReset.find(lorry.ending)) {
+                *res++;
+            }
+            else {
+                endpointWillReset.insert_or_assign(lorry.ending, 1);
+            }
+        }
+
+        for (auto& e : ecs_api::select<ecs::endpoint>(w.ecs)) {
+            auto& endpoint = e.get<ecs::endpoint>();
+            if (auto res = endpointWillReset.find(endpoint.rev_neighbor)) {
+                assert(endpoint.lorry >= *res);
+                endpoint.lorry -= *res;
+                endpointWillReset.erase(endpoint.rev_neighbor);
+            }
+        }
+
+        for (size_t i = 0; i < straightLorry.size(); ++i) {
+            if (straightLorry[i] && lorryWillRemove.contains(straightLorry[i])) {
+                straightLorry[i] = {};
+                lorryWillRemove.erase(straightLorry[i]);
+            }
+        }
+
+        for (size_t i = 0; i < crossAry.size(); ++i) {
+            auto& cross = crossAry[i];
+            if (cross.cross_lorry[0] && lorryWillRemove.contains(cross.cross_lorry[0])) {
+                cross.cross_lorry[0] = {};
+                lorryWillRemove.erase(cross.cross_lorry[0]);
+            }
+            if (cross.cross_lorry[1] && lorryWillRemove.contains(cross.cross_lorry[1])) {
+                cross.cross_lorry[1] = {};
+                lorryWillRemove.erase(cross.cross_lorry[1]);
+            }
+        }
+
+        ecs_api::clear_type<ecs::lorry_willremove>(w.ecs);
     }
     void network::update(world& w, uint64_t ti) {
         using namespace ecs_api::flags;
         for (auto& e : ecs_api::select<ecs::lorry_removed, ecs::lorry_free(absent)>(w.ecs)) {
             e.enable_tag<ecs::lorry_free>();
+        }
+        auto n = ecs_api::count<ecs::lorry_willremove>(w.ecs);
+        if (n > 0) {
+            updateRemoveLorry(w, n);
         }
         for (auto& e : ecs_api::select<ecs::lorry, ecs::lorry_removed(absent)>(w.ecs)) {
             lorryUpdate(e.get<ecs::lorry>(), *this, ti);

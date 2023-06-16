@@ -49,6 +49,7 @@ component "lorry" {
 
 component "lorry_free" {}
 component "lorry_removed" {}
+component "lorry_willremove" {}
 
 component "hub" {
     "id:word",

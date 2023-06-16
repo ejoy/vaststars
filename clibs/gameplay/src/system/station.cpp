@@ -25,7 +25,6 @@ static void producer_update(station_vector& producers, size_t idx) {
     endpoint.lorry++;
     auto it = std::lower_bound(producers.begin(), producers.end(), new_ref, std::less<station_producer_ref> {});
     auto old_it = producers.begin() + idx;
-    old_it->endpoint->lorry++;
     if (old_it == it) {
     }
     else if (old_it < it) {
@@ -47,8 +46,8 @@ static std::optional<size_t> find_producer(world& w, station_vector& producers, 
 
 static void goto_producer(world& w, station_vector& producers, size_t producer_idx, ecs::lorry& l, ecs::endpoint& ep) {
     auto& producer = producers[producer_idx];
-    lorryGo(l, producer.endpoint->rev_neighbor, 0, 0);
     producer_update(producers, producer_idx);
+    roadnet::lorryGo(l, *producer.endpoint, 0, 0);
 }
 
 static std::optional<station_consumer_ref> find_consumer(world& w, uint16_t item, const ecs::endpoint& from) {
@@ -157,10 +156,9 @@ static int lupdate(lua_State *L) {
         }
         if (auto pconsumer = find_consumer(w, chestslot.item, endpoint)) {
             roadnet::endpointSetOut(w, endpoint);
-            lorryGo(l, pconsumer->endpoint->rev_neighbor, chestslot.item, chestslot.amount);
+            roadnet::lorryGo(l, *pconsumer->endpoint, chestslot.item, chestslot.amount);
             chestslot.amount = 0;
             endpoint.lorry--;
-            pconsumer->endpoint->lorry++;
             producer_changed = true;
         }
     }

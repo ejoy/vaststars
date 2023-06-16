@@ -32,16 +32,12 @@ namespace roadnet::lua {
         lua_createtable(L, 0, 0);
         return 1;
     }
-    static int remove_lorry(lua_State* L) {
-        return 0;
-    }
 }
 
 extern "C" int
 luaopen_vaststars_roadnet_core(lua_State* L) {
     luaL_Reg lib[] = {
         { "reset", roadnet::lua::reset },
-        { "remove_lorry", roadnet::lua::remove_lorry },
         { NULL, NULL },
     };
     luaL_newlib(L, lib);

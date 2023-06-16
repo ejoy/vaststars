@@ -626,7 +626,7 @@ function M:stage_camera_usage(datamodel)
 
     for _ in remove_lorry_mb:unpack() do
         if pick_lorry_id then
-            gameplay_core.get_world():roadnet_remove_lorry(pick_lorry_id)
+            gameplay_core.get_world().entity[pick_lorry_id].lorry_willremove = true
             ilorry.remove(pick_lorry_id)
 
             __unpick_lorry(pick_lorry_id)

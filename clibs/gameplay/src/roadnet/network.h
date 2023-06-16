@@ -33,12 +33,15 @@ namespace roadnet {
         void             rebuildMap(world& w, flatmap<loction, uint8_t> const& map);
         lorryid          createLorry(world& w, uint16_t classid);
         void             destroyLorry(world& w, lorry_entity& l);
+        void             removeLorry(world& w, lorryid l);
         void             update(world& w, uint64_t ti);
+        void             updateRemoveLorry(world& w, size_t n);
         road::straight&  StraightRoad(straightid id);
         road::cross&     CrossRoad(crossid id);
         ecs::lorry&      Lorry(world& w, lorryid id);
         lorryid&         LorryInRoad(uint32_t index);
         map_coord        LorryInCoord(uint32_t index) const;
+        lorryid          getLorryId(ecs::lorry& l);
 
         dynarray<road::cross>           crossAry;
         dynarray<road::straight>        straightAry;

@@ -20,14 +20,14 @@ namespace roadnet {
         l.y = y;
         l.z = z;
     }
-    void lorryGo(ecs::lorry& l, straightid ending, uint16_t item_classid, uint16_t item_amount) {
+    void lorryGo(ecs::lorry& l, ecs::endpoint& ending, uint16_t item_classid, uint16_t item_amount) {
         l.status = lorry_status::normal;
-        l.ending = ending;
+        l.ending = ending.rev_neighbor;
         l.item_classid = item_classid;
         l.item_amount = item_amount;
+        ending.lorry++;
     }
     void lorryReset(ecs::lorry& l, world& w) {
-        l.classid = 0;
     }
     void lorryUpdate(ecs::lorry& l, network& w, uint64_t ti) {
         if (l.progress != 0) {

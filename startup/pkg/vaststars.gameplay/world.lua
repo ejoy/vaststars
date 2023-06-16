@@ -221,9 +221,6 @@ return function ()
     function world:roadnet_lorry(id)
         return roadnet.lorry(cworld, id)
     end
-    function world:roadnet_remove_lorry(...)
-        return roadnet.remove_lorry(cworld, ...)
-    end
 
     function world:now()
         return self._frame
