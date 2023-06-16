@@ -6,11 +6,6 @@
 
 struct world;
 
-namespace roadnet::road {
-    struct cross;
-    struct straight;
-}
-
 namespace roadnet {
     class network;
     void lorryInit(ecs::lorry& l, world& w, uint16_t classid);
