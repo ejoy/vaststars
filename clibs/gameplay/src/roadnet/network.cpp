@@ -215,21 +215,21 @@ namespace roadnet {
         }
     }
 
-    static void walkToNeighbor(const flatmap<loction, uint8_t>& map, loction l, direction dir, std::function<void(map_coord)> func) {
+    static void walkToNeighbor(const flatmap<loction, uint8_t>& map, loction l, direction dir, std::function<void(loction, map_index, cross_type)> func) {
         for (;;) {
             l = move(l, dir);
             uint8_t m = getMapBits(map, l);
             direction prev_dir = reverse(dir);
             if (isCross(m)) {
                 cross_type type = road::crossType(prev_dir, dir);
-                func({l, map_index::unset, type});
+                func(l, map_index::unset, type);
                 return;
             }
             direction next_dir = next_direction(l, m, prev_dir);
             cross_type type = road::crossType(prev_dir, next_dir);
-            func({l, map_index::unset, type});
+            func(l, map_index::unset, type);
             if (m & MapRoad::Endpoint) {
-                func({}); //TODO: remove it
+                func({}, map_index::invaild, cross_type::ll); //TODO: remove it
                 return;
             }
             dir = next_dir;
@@ -264,8 +264,6 @@ namespace roadnet {
     static_assert(sizeof(straightGrid) == sizeof(uint64_t));
 
     struct lorryStatus {
-        bool exist = false;
-        map_coord coord;
         loction endpoint;
     };
 
@@ -337,77 +335,62 @@ namespace roadnet {
         status.endpointMap.insert_or_assign(loc, ep);
     }
 
-    static void insertLorry01(network& nw, world& w, straightGrid& grid, lorry_entity& l, uint8_t z) {
-        assert(z == 0 || z == 1);
+    static void insertLorry01(network& nw, world& w, straightGrid& grid, lorry_entity& l, map_index z) {
+        assert(z == map_index::w0 || z == map_index::w1);
         lorryid lorryId {uint16_t(l.getid())};
-        if (!nw.StraightRoad(grid.id0).insertLorry(nw, lorryId, grid.offset0, (map_index)z)) {
-            if (!nw.StraightRoad(grid.id1).insertLorry(nw, lorryId, grid.offset1, (map_index)(1-z))) {
+        if (!nw.StraightRoad(grid.id0).insertLorry(nw, lorryId, grid.offset0, z)) {
+            if (!nw.StraightRoad(grid.id1).insertLorry(nw, lorryId, grid.offset1, (map_index)(1-(uint8_t)z))) {
                 nw.destroyLorry(w, l);
             }
         }
     }
 
-    static void insertLorry10(network& nw, world& w, straightGrid& grid, lorry_entity& l, uint8_t z) {
-        assert(z == 0 || z == 1);
+    static void insertLorry10(network& nw, world& w, straightGrid& grid, lorry_entity& l, map_index z) {
+        assert(z == map_index::w0 || z == map_index::w1);
         lorryid lorryId {uint16_t(l.getid())};
-        if (!nw.StraightRoad(grid.id1).insertLorry(nw, lorryId, grid.offset1, (map_index)z)) {
-            if (!nw.StraightRoad(grid.id0).insertLorry(nw, lorryId, grid.offset0, (map_index)(1-z))) {
+        if (!nw.StraightRoad(grid.id1).insertLorry(nw, lorryId, grid.offset1, z)) {
+            if (!nw.StraightRoad(grid.id0).insertLorry(nw, lorryId, grid.offset0, (map_index)(1-(uint8_t)z))) {
                 nw.destroyLorry(w, l);
             }
         }
     }
 
-    void network::cleanMap(world& w) {
-        routeCached.clear();
-
-        crossAry.clear();
-        straightAry.clear();
-        straightLorry.clear();
-        straightCoord.clear();
-
-        using namespace ecs_api::flags;
-        for (auto& e : ecs_api::select<ecs::lorry, ecs::lorry_removed(absent)>(w.ecs)) {
-            destroyLorry(w, e);
+    void network::init(world& w) {
+        bool create = ecs_api::count<ecs::lorry>(w.ecs) == 0;
+        if (create) {
+            int id = entity_new(w.ecs, ecs_api::component_id<ecs::lorry>, NULL);
+            assert(id == 0);
         }
+        ecs_api::entity<ecs::lorry> e(*w.ecs);
+        bool ok = e.init(0);
+        assert(ok);
+        if (create) {
+            e.enable_tag<ecs::lorry_removed>();
+            e.enable_tag<ecs::lorry_free>();
+        }
+        lorryAry = &e.get<ecs::lorry>();
     }
 
     flatmap<loction, ecs::endpoint> network::updateMap(world& w, flatmap<loction, uint8_t> const& map) {
+        init(w);
+
+        using namespace ecs_api::flags;
         routeCached.clear();
+
+        if (map.empty()) {
+            crossAry.clear();
+            straightAry.clear();
+            straightLorry.clear();
+            straightCoord.clear();
+            for (auto& e : ecs_api::select<ecs::lorry, ecs::lorry_removed(absent)>(w.ecs)) {
+                destroyLorry(w, e);
+            }
+            return {};
+        }
 
         // step.1
         dynarray<lorryStatus> lorryStatusAry;
         lorryStatusAry.reset(ecs_api::count<ecs::lorry>(w.ecs));
-        for (uint16_t i = 0; i < crossAry.size(); ++i) {
-            auto const& cross = crossAry[i];
-            for (size_t j = 0; j < 2; ++j) {
-                if (cross.cross_lorry[j]) {
-                    map_coord coord {cross.getLoction(*this), map_index::w1, cross.cross_status[j]};
-                    auto& s = lorryStatusAry[cross.cross_lorry[j].get_index()];
-                    s.exist = true;
-                    s.coord = coord;
-                }
-            }
-        }
-        uint16_t straightId = 0;
-        for (size_t i = 0; i < straightLorry.size(); ++i) {
-            auto id = straightLorry[i];
-            if (id) {
-                for (;;) {
-                    auto& straight = straightAry[straightId];
-                    uint32_t offset = (uint32_t)i - straight.lorryOffset;
-                    if (offset >= straight.len) {
-                        straightId++;
-                        continue;
-                    }
-                    map_coord coord = straight.getCoord(*this, offset);
-                    auto& status = lorryStatusAry[id.get_index()];
-                    status.exist = true;
-                    status.coord = coord;
-                    break;
-                }
-            }
-        }
-        using namespace ecs_api::flags;
         for (auto& e : ecs_api::select<ecs::lorry, ecs::lorry_removed(absent)>(w.ecs)) {
             auto& lorry = e.get<ecs::lorry>();
             lorryStatusAry[e.getid()].endpoint = StraightRoad(lorry.ending).waitingLoction(*this);
@@ -526,11 +509,11 @@ namespace roadnet {
         size_t straightCoordOffset = 0;
         for (auto& straight: status.straightVec) {
             uint16_t offset = 0;
-            walkToNeighbor(map, straight.loc, straight.start_dir, [&](map_coord coord) {
-                if (!status.crossMap.find(coord.get_loction())) {
-                    direction from = road::crossFrom((cross_type)coord.w);
-                    direction to = road::crossTo((cross_type)coord.w);
-                    auto grid = status.straightMap.find(coord.get_loction());
+            walkToNeighbor(map, straight.loc, straight.start_dir, [&](loction l, map_index i, cross_type ct) {
+                if (!status.crossMap.find(l)) {
+                    direction from = road::crossFrom(ct);
+                    direction to = road::crossTo(ct);
+                    auto grid = status.straightMap.find(l);
                     if (grid) {
                         grid->id1 = straight.id;
                         grid->offset1 = offset;
@@ -538,7 +521,7 @@ namespace roadnet {
                         assert(grid->direction1 == (uint16_t)from);
                     }
                     else {
-                        status.straightMap.insert_or_assign(coord.get_loction(), straightGrid {
+                        status.straightMap.insert_or_assign(l, straightGrid {
                             straight.id,
                             {},
                             offset,
@@ -548,7 +531,7 @@ namespace roadnet {
                         });
                     }
                 }
-                straightCoord[straightCoordOffset + offset++] = coord;
+                straightCoord[straightCoordOffset + offset++] = {l, i, ct};
             });
             straightCoordOffset += offset;
         }
@@ -559,7 +542,6 @@ namespace roadnet {
         for (auto& e : ecs_api::select<ecs::lorry, ecs::lorry_removed(absent)>(w.ecs)) {
             auto& lorry = e.get<ecs::lorry>();
             auto& s = lorryStatusAry[e.getid()];
-            assert(s.exist);
             if (auto ep = status.endpointMap.find(s.endpoint)) {
                 //TODO: endpoint changed
                 Lorry(w, lorryid{(uint16_t)e.getid()}).ending = ep->rev_neighbor;
@@ -568,7 +550,7 @@ namespace roadnet {
                 destroyLorry(w, e);
                 continue;
             }
-            auto loc = s.coord.get_loction();
+            loction loc {lorry.x, lorry.y};
             auto m = getMapBits(map, loc);
             if (m == 0) {
                 destroyLorry(w, e);
@@ -578,7 +560,7 @@ namespace roadnet {
                 auto roadId = status.crossMap.find(loc);
                 assert(roadId);
                 auto& cross = CrossRoad(*roadId);
-                if (!cross.insertLorry(*this, lorryid{(uint16_t)e.getid()}, s.coord)) {
+                if (!cross.insertLorry(*this, lorryid{(uint16_t)e.getid()}, map_coord::get_map_index(lorry.z), map_coord::get_cross_type(lorry.z))) {
                     destroyLorry(w, e);
                     continue;
                 }
@@ -588,7 +570,7 @@ namespace roadnet {
                 assert(roadGrid);
                 if (!roadGrid->id1) {
                     auto& straight = StraightRoad(roadGrid->id0);
-                    if (!straight.insertLorry(*this, lorryid{(uint16_t)e.getid()}, roadGrid->offset0, (map_index)s.coord.z)) {
+                    if (!straight.insertLorry(*this, lorryid{(uint16_t)e.getid()}, roadGrid->offset0, map_coord::get_map_index(lorry.z))) {
                         destroyLorry(w, e);
                         continue;
                     }
@@ -596,22 +578,22 @@ namespace roadnet {
                 else {
                     direction dir0 = direction(roadGrid->direction0);
                     direction dir1 = direction(roadGrid->direction1);
-                    direction from = road::crossFrom((cross_type)s.coord.w);
-                    direction to = road::crossTo((cross_type)s.coord.w);
+                    direction from = road::crossFrom(map_coord::get_cross_type(lorry.z));
+                    direction to = road::crossTo(map_coord::get_cross_type(lorry.z));
                     if (to == dir1) {
-                        insertLorry01(*this, w, *roadGrid, e, s.coord.z);
+                        insertLorry01(*this, w, *roadGrid, e, map_coord::get_map_index(lorry.z));
                     }
                     else if (to == dir0) {
-                        insertLorry10(*this, w, *roadGrid, e, s.coord.z);
+                        insertLorry10(*this, w, *roadGrid, e, map_coord::get_map_index(lorry.z));
                     }
                     else if (from == dir0) {
-                        insertLorry01(*this, w, *roadGrid, e, s.coord.z);
+                        insertLorry01(*this, w, *roadGrid, e, map_coord::get_map_index(lorry.z));
                     }
                     else if (from == dir1) {
-                        insertLorry10(*this, w, *roadGrid, e, s.coord.z);
+                        insertLorry10(*this, w, *roadGrid, e, map_coord::get_map_index(lorry.z));
                     }
                     else {
-                        insertLorry01(*this, w, *roadGrid, e, s.coord.z);
+                        insertLorry01(*this, w, *roadGrid, e, map_coord::get_map_index(lorry.z));
                     }
                 }
             }
@@ -621,21 +603,15 @@ namespace roadnet {
         return std::move(status.endpointMap);
     }
 
-    static lorryid getLorryId(world& w, ecs::lorry& l) {
-        ecs_api::entity<ecs::lorry> e(*w.ecs);
-        bool ok = e.init(0);
-        assert(ok);
-        auto& start = e.get<ecs::lorry>();
-        return lorryid {uint16_t(&l - &start)};
-    }
-
     lorryid network::createLorry(world& w, uint16_t classid) {
         ecs_api::entity<ecs::lorry_free, ecs::lorry> e(*w.ecs);
         e.next();
         if (!e.invalid()) {
             auto& l = e.get<ecs::lorry>();
+            e.disable_tag<ecs::lorry_removed>();
+            e.disable_tag<ecs::lorry_free>();
             lorryInit(l, w, classid);
-            return getLorryId(w, l);
+            return lorryid {uint16_t(&l - lorryAry)};
         }
         int id = entity_new(w.ecs, ecs_api::component_id<ecs::lorry>, NULL);
         assert(id >= 0);
@@ -670,10 +646,8 @@ namespace roadnet {
     }
     ecs::lorry& network::Lorry(world& w, lorryid id) {
         assert(id != lorryid::invalid());
-        ecs_api::entity<ecs::lorry> e(*w.ecs);
-        bool ok = e.init(id.get_index());
-        assert(ok);
-        return e.get<ecs::lorry>();
+        assert(id.get_index() < ecs_api::count<ecs::lorry>(w.ecs));
+        return lorryAry[id.get_index()];
     }
     lorryid& network::LorryInRoad(uint32_t index) {
         return straightLorry[index];

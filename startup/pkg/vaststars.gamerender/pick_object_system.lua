@@ -73,12 +73,11 @@ function ipick_object.blur_pick(x, y)
 
     local dx, dy
     local lorries = {}
-    for lorry_id, mc in gameplay_world:roadnet_each_lorry() do
-        dx, dy = mc & 0xFF, (mc >> 8) & 0xFF
-        dx, dy = dx * ROAD_TILE_WIDTH_SCALE, dy * ROAD_TILE_HEIGHT_SCALE
+    for e in gameplay_world.ecs:select "lorry:in lorry_removed:absent eid:in" do
+        dx, dy = e.lorry.x * ROAD_TILE_WIDTH_SCALE, e.lorry.y * ROAD_TILE_HEIGHT_SCALE
         local coord = __pack(dx, dy)
         lorries[coord] = lorries[coord] or {}
-        lorries[coord][#lorries[coord] + 1] = lorry_id
+        lorries[coord][#lorries[coord] + 1] = e.eid
     end
 
     local objs = {}

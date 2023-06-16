@@ -13,11 +13,6 @@ namespace roadnet {
         b,
     };
 
-    enum class roadtype: uint8_t {
-        straight,
-        cross,
-    };
-
     enum class cross_type: uint8_t {
         ll=0, lt, lr, lb,
         tl,   tt, tr, tb,
@@ -56,33 +51,34 @@ namespace roadnet {
     };
 
     struct map_coord {
-        uint8_t x;
-        uint8_t y;
-        uint8_t z: 4;
-        uint8_t w: 4;
         constexpr map_coord() noexcept
             : x(0)
             , y(0)
             , z((uint8_t)map_index::invaild)
-            , w(0)
         { }
-        constexpr map_coord(loction loc, map_index z, cross_type w) noexcept
+        constexpr map_coord(loction loc, map_index i, cross_type ct) noexcept
             : x(loc.x)
             , y(loc.y)
-            , z((uint8_t)z)
-            , w((uint8_t)w)
+            , z(make_z(i, ct))
         { }
-        void set(map_index z) noexcept {
-            this->z = (uint8_t)z;
-        }
-        uint32_t get_value() const noexcept {
-            uint32_t v = 0;
-            memcpy(&v, this, sizeof(map_coord));
-            return v;
+        void set(map_index i) noexcept {
+            z = ((uint8_t)i & 0x0F) | (z & 0xF0);
         }
         loction get_loction() const noexcept {
             return {x,y};
         }
+        static constexpr uint8_t make_z(map_index i, cross_type ct) {
+            return ((uint8_t)i & 0x0F) | ((uint8_t)ct << 4);
+        }
+        static constexpr cross_type get_cross_type(uint8_t z) noexcept {
+            return cross_type(z >> 4);
+        }
+        static constexpr map_index get_map_index(uint8_t z) noexcept {
+            return map_index(z & 0x0F);
+        }
+        uint8_t x;
+        uint8_t y;
+        uint8_t z;
     };
     static_assert(sizeof(map_coord) == 3*sizeof(uint8_t));
 

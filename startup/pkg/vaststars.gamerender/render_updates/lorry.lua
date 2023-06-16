@@ -144,21 +144,21 @@ function lorry_sys:gameworld_update()
 
     local new_lorries = {}
     local x, y, offset, toward, mask
-    for lorry_id, mc in gameplay_world:roadnet_each_lorry() do
-        local lorry = gameplay_world:roadnet_lorry(lorry_id)
+    for e in gameplay_world.ecs:select "lorry:in lorry_removed:absent eid:in" do
+        local lorry = e.lorry
         local classid = lorry.classid
-        local item_classid = lorry.item
-        local item_amount = lorry.amount
+        local item_classid = lorry.item_item
+        local item_amount = lorry.item_amount
         local progress = lorry.progress
         local maxprogress = lorry.maxprogress
-        x = mc & 0xFF
-        y = (mc >> 8) & 0xFF
+        x = lorry.x
+        y = lorry.y & 0xFF
         x, y = x * ROAD_TILE_WIDTH_SCALE, y * ROAD_TILE_HEIGHT_SCALE
-        offset = (mc >> 16) & 0xF
-        toward = (mc >> 20) & 0xF
+        offset = (lorry.z >> 0) & 0xF
+        toward = (lorry.z >> 4) & 0xF
         mask = assert(iroad.get(gameplay_core.get_world(), x, y))
 
-        local lorry = lorries[lorry_id]
+        local lorry = lorries[e.eid]
         if not lorry then
             lorry = __create_lorry(classid, mask, x, y, toward, offset)
             if not lorry then
@@ -174,8 +174,8 @@ function lorry_sys:gameworld_update()
         lorry:motion_opt("set_ratio", maxprogress - progress, maxprogress)
         lorry:set_item(item_classid, item_amount)
 
-        new_lorries[lorry_id] = lorry
-        lorries[lorry_id] = nil
+        new_lorries[e.eid] = lorry
+        lorries[e.eid] = nil
         ::continue::
     end
 

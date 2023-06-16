@@ -64,7 +64,7 @@ namespace roadnet::road {
         void setNeighbor(direction dir, straightid id);
         void setRevNeighbor(direction dir, straightid id);
         bool allowed(direction from, direction to) const;
-        bool insertLorry(network& w, lorryid lorryId, map_coord coord);
+        bool insertLorry(network& w, lorryid lorryId, map_index i, cross_type ct);
         bool insertLorry0(network& w, lorryid lorryId, cross_type type);
         bool insertLorry1(network& w, lorryid lorryId, cross_type type);
     };

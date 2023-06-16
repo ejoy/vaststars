@@ -136,7 +136,8 @@ namespace roadnet::road {
             straight.waitingLorry(w.rw) = lorryid::invalid();
             cross_lorry[idx] = id;
             cross_status[idx] = type;
-            lorryEntry(l, roadtype::cross);
+            auto loc = getLoction(w.rw);
+            lorryEntry(l, loc.x, loc.y, map_coord::make_z(map_index::w1, cross_status[idx]));
         }
     }
 
@@ -182,12 +183,12 @@ namespace roadnet::road {
         return false;
     }
 
-    bool cross::insertLorry(network& w, lorryid lorryId, map_coord where) {
-        switch ((map_index)where.z) {
+    bool cross::insertLorry(network& w, lorryid lorryId, map_index i, cross_type ct) {
+        switch (i) {
         case map_index::w0:
-            return insertLorry0(w, lorryId, (cross_type)where.w);
+            return insertLorry0(w, lorryId, ct);
         case map_index::w1:
-            return insertLorry1(w, lorryId, (cross_type)where.w);
+            return insertLorry1(w, lorryId, ct);
         default:
             std::unreachable();
         }

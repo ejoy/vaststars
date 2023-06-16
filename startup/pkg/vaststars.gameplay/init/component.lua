@@ -43,6 +43,9 @@ component "lorry" {
     "maxprogress:byte",
     "time:byte",
     "status:enum roadnet::lorry_status",
+    "x:byte",
+    "y:byte",
+    "z:byte",
 }
 
 component "lorry_free" {}

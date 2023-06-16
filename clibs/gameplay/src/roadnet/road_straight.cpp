@@ -10,22 +10,17 @@ namespace roadnet::road {
         this->dir = dir;
         this->neighbor = neighbor;
     }
-    bool straight::canEntry(network& w, uint16_t offset)  {
-        return !hasLorry(w, offset);
-    }
     bool straight::canEntry(network& w)  {
-        return canEntry(w, len-1);
+        return !hasLorry(w, len-1);
     }
-    bool straight::tryEntry(world& w, lorryid l, uint16_t offset) {
-        if (!hasLorry(w.rw, offset)) {
-            w.rw.LorryInRoad(lorryOffset + offset) = l;
-            lorryEntry(w.rw.Lorry(w, l), roadtype::straight);
+    bool straight::tryEntry(world& w, lorryid l)  {
+        if (!hasLorry(w.rw, len-1)) {
+            w.rw.LorryInRoad(lorryOffset + len-1) = l;
+            auto coord = getCoord(w.rw, len-1);
+            lorryEntry(w.rw.Lorry(w, l), coord.x, coord.y, coord.z);
             return true;
         }
         return false;
-    }
-    bool straight::tryEntry(world& w, lorryid l)  {
-        return tryEntry(w, l, len-1);
     }
     void straight::setNeighbor(crossid id) {
         assert(neighbor == crossid::invalid());
@@ -38,11 +33,14 @@ namespace roadnet::road {
         w.LorryInRoad(lorryOffset + offset) = lorryid::invalid();
     }
     void straight::update(world& w, uint64_t ti) {
-        // The last offset of straight(0) is the waiting area of cross, driven by cross.
-        // see also: cross::waitingLorry()
         for (uint16_t i = 1; i < len; ++i) {
-            if (lorryid l = w.rw.LorryInRoad(lorryOffset+i)) {
-                if (lorryReady(w.rw.Lorry(w, l)) && tryEntry(w, l, i-1)) {
+            if (lorryid lorryId = w.rw.LorryInRoad(lorryOffset+i)) {
+                auto offset = i-1;
+                auto& l = w.rw.Lorry(w, lorryId);
+                if (lorryReady(l) && !hasLorry(w.rw, offset)) {
+                    w.rw.LorryInRoad(lorryOffset + offset) = lorryId;
+                    auto coord = getCoord(w.rw, offset);
+                    lorryEntry(l, coord.x, coord.y, coord.z);
                     delLorry(w.rw, i);
                 }
             }

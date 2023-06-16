@@ -14,17 +14,11 @@ namespace roadnet {
         l.status = lorry_status::normal;
         l.time = 1000 / speed;
     }
-    void lorryEntry(ecs::lorry& l, roadtype type) {
-        switch (type) {
-        case roadtype::cross:
-            l.maxprogress = l.progress = l.time;
-            break;
-        case roadtype::straight:
-            l.maxprogress = l.progress = l.time;
-            break;
-        default:
-            std::unreachable();
-        }
+    void lorryEntry(ecs::lorry& l, uint8_t x, uint8_t y, uint8_t z) {
+        l.maxprogress = l.progress = l.time;
+        l.x = x;
+        l.y = y;
+        l.z = z;
     }
     void lorryGo(ecs::lorry& l, straightid ending, uint16_t item_classid, uint16_t item_amount) {
         l.status = lorry_status::normal;
@@ -57,8 +51,5 @@ namespace roadnet {
             return false;
         }
         return l.progress == 0;
-    }
-    bool lorryInvaild(ecs::lorry const& l) noexcept {
-        return l.classid == 0;
     }
 }

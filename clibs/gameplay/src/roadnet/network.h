@@ -28,7 +28,7 @@ namespace roadnet {
     class network {
     public:
         network() = default;
-        void cleanMap(world& w);
+        void             init(world& w);
         flatmap<loction, ecs::endpoint> updateMap(world& w, flatmap<loction, uint8_t> const& map);
         lorryid          createLorry(world& w, uint16_t classid);
         void             destroyLorry(world& w, lorry_entity& l);
@@ -43,6 +43,7 @@ namespace roadnet {
         dynarray<road::straight>        straightAry;
         dynarray<lorryid>               straightLorry;
         dynarray<map_coord>             straightCoord;
+        ecs::lorry*                     lorryAry;
         flatmap<route_key, route_value> routeCached;
     };
 }
