@@ -4,6 +4,7 @@ local prototype = require "prototype"
 local c = type "station_consumer"
     .chest_type "chest_type"
     .maxlorry "integer"
+    .endpoint "position"
 
 function c:ctor(init, pt)
     local world = self
@@ -28,11 +29,11 @@ function c:ctor(init, pt)
         },
         station_consumer = {
             maxlorry = pt.maxlorry,
-            lorry = 0,
         },
         endpoint = {
             neighbor = 0xffff,
             rev_neighbor = 0xffff,
+            lorry = 0,
         }
     }
 end

@@ -30,7 +30,7 @@ namespace roadnet {
         network() = default;
         void             init(world& w);
         void             refresh(world& w);
-        flatmap<loction, ecs::endpoint> updateMap(world& w, flatmap<loction, uint8_t> const& map);
+        void             rebuildMap(world& w, flatmap<loction, uint8_t> const& map);
         lorryid          createLorry(world& w, uint16_t classid);
         void             destroyLorry(world& w, lorry_entity& l);
         void             update(world& w, uint64_t ti);

@@ -241,6 +241,7 @@ namespace prototype {
     PROTOTYPE(count, uint16_t)
     PROTOTYPE(area, uint16_t)
     PROTOTYPE(supply_area, uint16_t)
+    PROTOTYPE(endpoint, uint16_t)
     PROTOTYPE(ingredients, std::string_view)
     PROTOTYPE(results, std::string_view)
     PROTOTYPE(inputs, std::string_view)

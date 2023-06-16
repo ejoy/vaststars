@@ -1,5 +1,6 @@
 local type = require "register.type"
 local c = type "lorry_factory"
+    .endpoint "position"
 
 function c:ctor(init, pt)
     return {
@@ -7,6 +8,7 @@ function c:ctor(init, pt)
         endpoint = {
             neighbor = 0xffff,
             rev_neighbor = 0xffff,
+            lorry = 0,
         }
     }
 end

@@ -26,7 +26,8 @@ prototype "指挥中心" {
             {type="lorry_factory", position={2,4,"S"}},
         },
     },
-    endpoint = {
+    endpoint = "3,4",
+    endpoint_road = {
         {position={1, 4}, prototype = "砖石公路-L型", dir = "E", mask={}},
         {position={3, 4}, prototype = "砖石公路-L型", dir = "S", mask={"Endpoint"}},
     },
@@ -298,7 +299,8 @@ prototype "出货车站" {
             {type="station", position={1,2,"S"}},
         },
     },
-    endpoint = {
+    endpoint = "2,0",
+    endpoint_road = {
         {position={0, 0}, prototype = "砖石公路-L型", dir = "E", mask={}},
         {position={2, 0}, prototype = "砖石公路-L型", dir = "S", mask={"Endpoint"}},
     },
@@ -326,7 +328,8 @@ prototype "收货车站" {
             {type="station", position={1,2,"S"}},
         },
     },
-    endpoint = {
+    endpoint = "2,0",
+    endpoint_road = {
         {position={0, 0}, prototype = "砖石公路-L型", dir = "E", mask={}},
         {position={2, 0}, prototype = "砖石公路-L型", dir = "S", mask={"Endpoint"}},
     },

@@ -109,7 +109,7 @@ local function check(bits, dir)
     return (bits & (1 << (DirectionToMapRoad[dir]))) ~= 0
 end
 
-local function build_road(world, building_eid, building, map, road_cache, endpoint_keys)
+local function build_road(world, building_eid, building, map, road_cache)
     local ecs = world.ecs
     local pt = query(building.prototype)
 
@@ -142,7 +142,7 @@ local function build_road(world, building_eid, building, map, road_cache, endpoi
         e.road_changed = true
     end
 
-    for _, e in ipairs(pt.endpoint) do
+    for _, e in ipairs(pt.endpoint_road) do
         local dx, dy = rotate(e.position, building.direction, pt.area)
         local key = pack((building.x + dx) // ROAD_TILE_WIDTH_SCALE, (building.y + dy) // ROAD_TILE_HEIGHT_SCALE)
         local id = prototype.queryByName(e.prototype).id -- TODO: remove prototype
@@ -152,10 +152,6 @@ local function build_road(world, building_eid, building, map, road_cache, endpoi
         map[key] = roadbits[id][dir]
         for _, m in ipairs(e.mask) do
             map[key] = map[key] | MapRoad[m]
-
-            if m == "Endpoint" then
-                endpoint_keys[building_eid] = key
-            end
         end
 
         road_cache[key] = ecs:new {
@@ -251,7 +247,6 @@ function m.build(world)
 
     local map = {}
     local road_cache = {}
-    local endpoint_keys = {}
 
     for v in ecs:select "endpoint_road:in eid:in" do
         ecs:remove(v.eid)
@@ -264,26 +259,11 @@ function m.build(world)
     end
 
     for v in ecs:select "endpoint building:in eid:in" do
-        build_road(world, v.eid, v.building, map, road_cache, endpoint_keys)
+        build_road(world, v.eid, v.building, map, road_cache)
     end
 
     map = repair(world, map, road_cache)
-    local endpoints = world:roadnet_reset(map)
-
-    for v in ecs:select "endpoint:update eid:in" do
-        local key = endpoint_keys[v.eid]
-        if key then
-            local ep = endpoints[key]
-            if ep then
-                v.endpoint.neighbor = (ep >> 0) & 0xFFFF
-                v.endpoint.rev_neighbor = (ep >> 16) & 0xFFFF
-                goto continue
-            end
-        end
-        v.endpoint.neighbor = 0xFFFF
-        v.endpoint.rev_neighbor = 0xFFFF
-        ::continue::
-    end
+    world:roadnet_reset(map)
 
     ecs:clear "road_cache"
     ecs:new {

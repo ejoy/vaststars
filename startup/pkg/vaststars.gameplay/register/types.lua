@@ -112,6 +112,22 @@ register_unit("size", "integer", function(s)
 	return v
 end)
 
+register_unit("position", "integer", function(s)
+	if type(s) ~= "string" then
+		return nil, "Need position *,*"
+	end
+	local x, y = s:match "(%d),(%d)"
+	if not x then
+		return nil, "Need size *,*"
+	end
+	x = x + 0
+	y = y + 0
+	assert(x >= 0 and x < 256)
+	assert(y >= 0 and y < 256)
+	local v = y << 8 | x
+	return v
+end)
+
 register_unit("text", "string", function(s)
 	-- todo : localization
 	assert(type(s) == "string")

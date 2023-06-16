@@ -10,7 +10,7 @@
 template <>
 struct std::less<station_producer_ref> {
     constexpr bool operator()(const station_producer_ref& a, const station_producer_ref& b) const {
-        return ((uint32_t)a.station->lorry * b.station->weights) < ((uint32_t)b.station->lorry * a.station->weights);
+        return ((uint32_t)a.endpoint->lorry * b.station->weights) < ((uint32_t)b.endpoint->lorry * a.station->weights);
     }
 };
 
@@ -19,12 +19,13 @@ static void producer_sort(station_vector& producers) {
 }
 
 static void producer_update(station_vector& producers, size_t idx) {
-    auto new_value = *producers[idx].station;
-    station_producer_ref new_ref { &new_value };
-    new_value.lorry++;
+    auto station = *producers[idx].station;
+    auto endpoint = *producers[idx].endpoint;
+    station_producer_ref new_ref { &station, &endpoint };
+    endpoint.lorry++;
     auto it = std::lower_bound(producers.begin(), producers.end(), new_ref, std::less<station_producer_ref> {});
     auto old_it = producers.begin() + idx;
-    old_it->station->lorry++;
+    old_it->endpoint->lorry++;
     if (old_it == it) {
     }
     else if (old_it < it) {
@@ -60,7 +61,7 @@ static std::optional<station_consumer_ref> find_consumer(world& w, uint16_t item
     auto& consumers = it->second;
     for (size_t i = 0; i < consumers.size(); ++i) {
         auto& consumer = consumers[i];
-        if (consumer.station->lorry < consumer.station->maxlorry) {
+        if (consumer.endpoint->lorry < consumer.station->maxlorry) {
             if (auto distance = roadnet::endpointDistance(w.rw, from, *consumer.endpoint)) {
                 if (*distance < min_distance) {
                     min_distance = *distance;
@@ -158,8 +159,8 @@ static int lupdate(lua_State *L) {
             roadnet::endpointSetOut(w, endpoint);
             lorryGo(l, pconsumer->endpoint->rev_neighbor, chestslot.item, chestslot.amount);
             chestslot.amount = 0;
-            station.lorry--;
-            pconsumer->station->lorry++;
+            endpoint.lorry--;
+            pconsumer->endpoint->lorry++;
             producer_changed = true;
         }
     }
@@ -194,7 +195,7 @@ static int lupdate(lua_State *L) {
             continue;
         }
         chestslot.amount = l.item_amount;
-        station.lorry--;
+        endpoint.lorry--;
         goto_producer(w, s.producers, *producer_idx, l, endpoint);
         roadnet::endpointSetOut(w, endpoint);
     }

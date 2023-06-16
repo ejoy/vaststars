@@ -16,12 +16,10 @@ component "chest" {
 
 component "station_producer" {
     "weights:byte",
-    "lorry:byte",
 }
 
 component "station_consumer" {
     "maxlorry:byte",
-    "lorry:byte",
 }
 
 component "lorry_factory" {}
@@ -32,6 +30,7 @@ type "enum roadnet::lorry_status" ("byte")
 component "endpoint" {
     "neighbor:roadnet::straightid",
     "rev_neighbor:roadnet::straightid",
+    "lorry:byte",
 }
 
 component "lorry" {

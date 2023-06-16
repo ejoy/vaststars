@@ -28,13 +28,8 @@ namespace roadnet::lua {
             map.insert_or_assign(l, m);
             lua_pop(L, 1);
         }
-        auto endpointMap = w.rw.updateMap(w, map);
-        lua_createtable(L, 0, (int)endpointMap.size());
-        for (const auto& [loc, ep] : endpointMap) {
-            lua_pushinteger(L, loc.id);
-            lua_pushinteger(L, std::bit_cast<uint32_t>(ep));
-            lua_rawset(L, -3);
-        }
+        w.rw.rebuildMap(w, map);
+        lua_createtable(L, 0, 0);
         return 1;
     }
     static int remove_lorry(lua_State* L) {
