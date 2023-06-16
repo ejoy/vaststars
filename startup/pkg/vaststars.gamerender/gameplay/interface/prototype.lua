@@ -228,10 +228,9 @@ local CHEST_COMPONENT <const> = {
     ["assembling"] = "chest",
     ["chest"] = "chest",
     ["laboratory"] = "chest",
-    ["station_producer"] = "station_producer",
-    ["station_consumer"] = "station_consumer",
+    ["station_producer"] = "chest",
+    ["station_consumer"] = "chest",
     ["hub"] = "hub",
-    ["base"] = "base",
 }
 
 local PICKUP_TYPES <const> = {

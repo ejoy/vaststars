@@ -194,4 +194,16 @@ for _, classify in ipairs {"in1","in2","in3","in4","out1","out2","out3"} do
 	end
 end
 
+property_list.converter = {}
+property_list.converter["weights"] = function(v)
+	local t <const> = {
+		[1] = "最低",
+		[2] = "低",
+		[3] = "中",
+		[4] = "高",
+		[5] = "最高",
+	}
+	return t[v] or "未知"
+end
+
 return property_list

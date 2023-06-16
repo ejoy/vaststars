@@ -291,7 +291,7 @@ prototype "出货车站" {
     chest_type = "blue",
     building_base = false,
     area = "4x2",
-    weights = 1,
+    weights = 3,
     crossing = {
         connections = {
             {type="station", position={1,1,"S"}},

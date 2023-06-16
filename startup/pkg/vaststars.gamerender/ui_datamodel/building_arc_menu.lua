@@ -33,6 +33,7 @@ local igameplay = ecs.interface "igameplay"
 local interval_call = ecs.require "engine.interval_call"
 local DIRTY_STATION <const> = require("gameplay.interface.constant").DIRTY_STATION
 local DIRTY_CHEST <const> = require("gameplay.interface.constant").DIRTY_CHEST
+local MAX_STATION_WEIGHTS <const> = require("gameplay.interface.constant").MAX_STATION_WEIGHTS
 
 local function __show_set_item(typeobject)
     return iprototype.has_type(typeobject.type, "hub") or iprototype.has_types(typeobject.type, "station_producer", "station_consumer")
@@ -352,11 +353,10 @@ function M:stage_ui_update(datamodel, object_id)
     for _ in station_weight_increase_mb:unpack() do
         local object = assert(objects:get(object_id))
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
-        local chest_component = iprototype.get_chest_component(object.prototype_name)
-        if chest_component == "station_producer" then
-            e[chest_component].weights = e[chest_component].weights + 1
-        elseif chest_component == "station_consumer" then
-            e[chest_component].maxlorry = e[chest_component].maxlorry + 1
+        if e.station_producer then
+            e.station_producer.weights = math.min(e.station_producer.weights + 1, MAX_STATION_WEIGHTS)
+        else
+            e.station_consumer.maxlorry = e.station_producer.maxlorry + 1
         end
 
         igameplay.dirty(DIRTY_STATION)

@@ -21,7 +21,6 @@ local show_detail_mb = mailbox:sub {"show_detail"}
 local close_detail_mb = mailbox:sub {"close_detail"}
 local UPS <const> = require("gameplay.interface.constant").UPS
 local CHEST_LIST_TYPES <const> = {"chest", "station_producer", "station_consumer", "hub"}
-local queuename = "detail_scene_queue"
 local function format_vars(fmt, vars)
     return string.gsub(fmt, "%$([%w%._]+)%$", vars)
 end
@@ -33,6 +32,10 @@ local function get_property_list(entity)
         local cfg = property_list[property_name]
         if not cfg then
             goto continue
+        end
+
+        if property_list.converter[property_name] then
+            entity.values[property_name] = property_list.converter[property_name](entity.values[property_name])
         end
 
         local t = {}
