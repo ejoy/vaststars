@@ -1,5 +1,6 @@
 ﻿#include "roadnet/road_cross.h"
 #include "roadnet/network.h"
+#include "core/world.h"
 #include <bee/nonstd/unreachable.h>
 #include <assert.h>
 
@@ -75,18 +76,18 @@ namespace roadnet::road {
         rev_neighbor[(uint8_t)dir] = id;
     }
 
-    void cross::update(network& w, uint64_t ti) {
+    void cross::update(world& w, uint64_t ti) {
         for (size_t i = 0; i < 2; ++i) {
             lorryid id = cross_lorry[i];
             if (!id) {
                 continue;
             }
-            auto& l = w.Lorry(id);
+            auto& l = w.rw.Lorry(w, id);
             if (!lorryReady(l)) {
                 continue;
             }
             cross_type t = cross_status[i];
-            auto& road = w.StraightRoad(neighbor[(uint8_t)t & 0x03u]);
+            auto& road = w.rw.StraightRoad(neighbor[(uint8_t)t & 0x03u]);
             if (road.tryEntry(w, id)) {
                 cross_lorry[i] = lorryid::invalid();
             }
@@ -96,12 +97,12 @@ namespace roadnet::road {
             if (!rev_neighbor[i]) {
                 continue;
             }
-            auto& straight = w.StraightRoad(rev_neighbor[(size_t)i]);
-            lorryid id = straight.waitingLorry(w);
+            auto& straight = w.rw.StraightRoad(rev_neighbor[(size_t)i]);
+            lorryid id = straight.waitingLorry(w.rw);
             if (!id) {
                 continue;
             }
-            auto& l = w.Lorry(id);
+            auto& l = w.rw.Lorry(w, id);
             if (!lorryReady(l)) {
                 continue;
             }
@@ -109,10 +110,10 @@ namespace roadnet::road {
                 continue;
             }
             direction out;
-            if (!lorryNextDirection(l, w, rev_neighbor[i], out)) {
+            if (!lorryNextDirection(l, w.rw, rev_neighbor[i], out)) {
                 continue;
             }
-            if (!w.StraightRoad(neighbor[(uint8_t)out]).canEntry(w)) {
+            if (!w.rw.StraightRoad(neighbor[(uint8_t)out]).canEntry(w.rw)) {
                 continue;
             }
             cross_type type = crossType(direction(i), out);
@@ -132,7 +133,7 @@ namespace roadnet::road {
                 }
                 idx = 0;
             }
-            straight.waitingLorry(w) = lorryid::invalid();
+            straight.waitingLorry(w.rw) = lorryid::invalid();
             cross_lorry[idx] = id;
             cross_status[idx] = type;
             lorryEntry(l, roadtype::cross);

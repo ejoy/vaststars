@@ -22,7 +22,7 @@ namespace roadnet::lua {
     }
 
     static int reset(lua_State* L) {
-        auto& w = get_network(L);
+        auto& w = get_world(L);
         luaL_checktype(L, 2, LUA_TTABLE);
         flatmap<loction, uint8_t> map;
         lua_pushnil(L);
@@ -33,11 +33,11 @@ namespace roadnet::lua {
             lua_pop(L, 1);
         }
         if (map.empty()) {
-            w.cleanMap(get_world(L));
+            w.rw.cleanMap(w);
             lua_newtable(L);
             return 1;
         }
-        auto endpointMap = w.updateMap(get_world(L), map);
+        auto endpointMap = w.rw.updateMap(w, map);
         lua_createtable(L, 0, (int)endpointMap.size());
         for (const auto& [loc, ep] : endpointMap) {
             lua_pushinteger(L, loc.id);
@@ -135,10 +135,11 @@ namespace roadnet::lua {
         }
     };
     static int sync_lorry(lua_State* L) {
-        auto& w = get_network(L);
+        auto& w = get_world(L);
         lua_Integer n = luaL_len(L, lua_upvalueindex(1));
-        if (n < (lua_Integer)w.lorryVec.size()) {
-            ptrdiff_t diff = w.lorryVec.size() - n;
+        size_t lorryCount = ecs_api::count<ecs::lorry>(w.ecs);
+        if (n < (lua_Integer)lorryCount) {
+            ptrdiff_t diff = lorryCount - n;
             for (ptrdiff_t i = 0; i < diff; ++i) {
                 lua_createtable(L, 0, 5);
                 lua_rawseti(L, lua_upvalueindex(1), n+1+i);
@@ -156,9 +157,9 @@ namespace roadnet::lua {
         return 1;
     }
     static int lorry(lua_State* L) {
-        auto& w = get_network(L);
+        auto& w = get_world(L);
         lorryid lorryId = (uint16_t)luaL_checkinteger(L, 2);
-        auto& l = w.Lorry(lorryId);
+        auto& l = w.rw.Lorry(w, lorryId);
         lua_rawgeti(L, lua_upvalueindex(1), lorryId.get_index() + 1);
         lua_pushinteger(L, l.classid);
         lua_setfield(L, -2, "classid");

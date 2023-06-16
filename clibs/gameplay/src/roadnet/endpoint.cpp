@@ -1,6 +1,7 @@
 #include "roadnet/endpoint.h"
 #include "roadnet/network.h"
 #include "roadnet/route.h"
+#include "core/world.h"
 
 namespace roadnet {
     loction endpointGetLoction(network& w, ecs::endpoint const& ep) {
@@ -13,13 +14,13 @@ namespace roadnet {
     bool endpointIsReady(network& w, ecs::endpoint const& ep) {
         return w.StraightRoad(ep.neighbor).canEntry(w);
     }
-    void endpointSetOut(network& w, ecs::endpoint const& ep, lorryid id) {
-        bool ok = w.StraightRoad(ep.neighbor).tryEntry(w, id);
+    void endpointSetOut(world& w, ecs::endpoint const& ep, lorryid id) {
+        bool ok = w.rw.StraightRoad(ep.neighbor).tryEntry(w, id);
         (void)ok;
         assert(ok);
     }
-    void endpointSetOut(network& w, ecs::endpoint const& ep) {
-        auto& id = endpointWaitingLorry(w, ep);
+    void endpointSetOut(world& w, ecs::endpoint const& ep) {
+        auto& id = endpointWaitingLorry(w.rw, ep);
         endpointSetOut(w, ep, id);
         id = lorryid::invalid();
     }

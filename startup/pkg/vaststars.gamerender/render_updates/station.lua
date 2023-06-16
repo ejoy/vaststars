@@ -104,8 +104,8 @@ local function __create_station_shelf(building_srt, e, item_id, item_count)
     }
 end
 
-local function __get_item(gameplay_world, station)
-    local slot = ichest.chest_get(gameplay_world, station, 1)
+local function __get_item(gameplay_world, chest)
+    local slot = ichest.chest_get(gameplay_world, chest, 1)
     if not slot then
         return 0, 0
     end
@@ -114,7 +114,7 @@ end
 
 function station_sys:gameworld_update()
     local gameplay_world = gameplay_core.get_world()
-    for e in gameplay_world.ecs:select "station_consumer:in building:in eid:in" do
+    for e in gameplay_world.ecs:select "station_consumer:in chest:in building:in eid:in" do
         -- object may not have been fully created yet
         local object = objects:coord(e.building.x, e.building.y)
         if not object then
@@ -122,7 +122,7 @@ function station_sys:gameworld_update()
         end
 
         local station_shelf = assert(global.buildings[object.id]).station_shelf
-        local item_id, item_count = __get_item(gameplay_world, e.station_consumer)
+        local item_id, item_count = __get_item(gameplay_world, e.chest)
         if not station_shelf or station_shelf.item_id ~= item_id then
             if station_shelf then
                 station_shelf:remove()
@@ -133,7 +133,7 @@ function station_sys:gameworld_update()
         station_shelf:update_heap_count(item_count)
         ::continue::
     end
-    for e in gameplay_world.ecs:select "station_producer:in building:in eid:in" do
+    for e in gameplay_world.ecs:select "station_producer:in chest:in building:in eid:in" do
         -- object may not have been fully created yet
         local object = objects:coord(e.building.x, e.building.y)
         if not object then
@@ -141,7 +141,7 @@ function station_sys:gameworld_update()
         end
 
         local station_shelf = assert(global.buildings[object.id]).station_shelf
-        local item_id, item_count = __get_item(gameplay_world, e.station_producer)
+        local item_id, item_count = __get_item(gameplay_world, e.chest)
         if not station_shelf or station_shelf.item_id ~= item_id then
             if station_shelf then
                 station_shelf:remove()

@@ -1,5 +1,6 @@
 #include "roadnet/road_straight.h"
 #include "roadnet/network.h"
+#include "core/world.h"
 #include <bee/nonstd/unreachable.h>
 
 namespace roadnet::road {
@@ -15,15 +16,15 @@ namespace roadnet::road {
     bool straight::canEntry(network& w)  {
         return canEntry(w, len-1);
     }
-    bool straight::tryEntry(network& w, lorryid l, uint16_t offset) {
-        if (!hasLorry(w, offset)) {
-            w.LorryInRoad(lorryOffset + offset) = l;
-            lorryEntry(w.Lorry(l), roadtype::straight);
+    bool straight::tryEntry(world& w, lorryid l, uint16_t offset) {
+        if (!hasLorry(w.rw, offset)) {
+            w.rw.LorryInRoad(lorryOffset + offset) = l;
+            lorryEntry(w.rw.Lorry(w, l), roadtype::straight);
             return true;
         }
         return false;
     }
-    bool straight::tryEntry(network& w, lorryid l)  {
+    bool straight::tryEntry(world& w, lorryid l)  {
         return tryEntry(w, l, len-1);
     }
     void straight::setNeighbor(crossid id) {
@@ -36,13 +37,13 @@ namespace roadnet::road {
     void straight::delLorry(network& w, uint16_t offset) {
         w.LorryInRoad(lorryOffset + offset) = lorryid::invalid();
     }
-    void straight::update(network& w, uint64_t ti) {
+    void straight::update(world& w, uint64_t ti) {
         // The last offset of straight(0) is the waiting area of cross, driven by cross.
         // see also: cross::waitingLorry()
         for (uint16_t i = 1; i < len; ++i) {
-            if (lorryid l = w.LorryInRoad(lorryOffset+i)) {
-                if (lorryReady(w.Lorry(l)) && tryEntry(w, l, i-1)) {
-                    delLorry(w, i);
+            if (lorryid l = w.rw.LorryInRoad(lorryOffset+i)) {
+                if (lorryReady(w.rw.Lorry(w, l)) && tryEntry(w, l, i-1)) {
+                    delLorry(w.rw, i);
                 }
             }
         }

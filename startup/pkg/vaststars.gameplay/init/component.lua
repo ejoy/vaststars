@@ -45,6 +45,9 @@ component "lorry" {
     "status:enum roadnet::lorry_status",
 }
 
+component "lorry_free" {}
+component "lorry_removed" {}
+
 component "hub" {
     "id:word",
     "chest:word",
