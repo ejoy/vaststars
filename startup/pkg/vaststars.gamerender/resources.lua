@@ -1150,8 +1150,6 @@ local t = {
 	"/pkg/vaststars.resources/prefabs/gas-tank-1.prefab",
 	"/pkg/vaststars.resources/prefabs/geothermal-plant.prefab",
 	"/pkg/vaststars.resources/prefabs/goods-gate.prefab",
-	"/pkg/vaststars.resources/prefabs/goods-station-1.prefab",
-	"/pkg/vaststars.resources/prefabs/goods-station-1.prefab.patch",
 	"/pkg/vaststars.resources/prefabs/headquater-1.prefab",
 	"/pkg/vaststars.resources/prefabs/headquater-1.prefab.patch",
 	"/pkg/vaststars.resources/prefabs/hydro-plant-1.prefab",
