@@ -106,7 +106,6 @@ namespace roadnet {
         }
     };
     using lorryid = objectid;
-    using endpointid = objectid;
     using straightid = objectid;
     using crossid = objectid;
 }
