@@ -8,6 +8,8 @@ local iprototype = require "gameplay.interface.prototype"
 local vsobject_manager = ecs.require "vsobject_manager"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local itask = ecs.require "task"
+local icamera_controller = ecs.interface "icamera_controller"
+local math3d = require "math3d"
 
 local set_recipe_mb = mailbox:sub {"set_recipe"}
 local set_item_mb = mailbox:sub {"set_item"}
@@ -31,6 +33,7 @@ local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 local iobject = ecs.require "object"
 local igameplay = ecs.interface "igameplay"
 local interval_call = ecs.require "engine.interval_call"
+
 local DIRTY_STATION <const> = require("gameplay.interface.constant").DIRTY_STATION
 local DIRTY_CHEST <const> = require("gameplay.interface.constant").DIRTY_CHEST
 local MAX_STATION_WEIGHTS <const> = require("gameplay.interface.constant").MAX_STATION_WEIGHTS
@@ -413,7 +416,11 @@ function M:stage_ui_update(datamodel, object_id)
                     message[#message + 1] = {icon = assert(typeobject.icon), name = typeobject.name, count = available}
                 end
             end
-
+            if #message > 1 then
+                local p = icamera_controller.world_to_screen(object.srt.t)
+                local ui_x, ui_y = iui.convert_coord(math3d.index(p, 1), math3d.index(p, 2))
+                iui.send {"message_pop", "item", {left = 400, top = 400, items = message}}
+            end
             iui.close("detail_panel.rml")
             world:pub {"rmlui_message_close", "building_arc_menu.rml"}
 

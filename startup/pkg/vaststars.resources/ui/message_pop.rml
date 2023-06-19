@@ -189,6 +189,7 @@
                     parent.appendChild(child)
                 end,
                 ["item"] = function(...)
+                    console.log("----show item----")
                     local parent = document.getElementById('pop_root')
                     local child = document.createElement "div"
                     child.addEventListener('animationend', function(event)
