@@ -42,7 +42,7 @@
                 flex-direction: column;
                 justify-content: flex-start;
                 /*align-items: center;*/
-                animation: 4s cubic-out 0s slideup;
+                /* animation: 4s cubic-out 0s slideup; */
             }
             .item-teleport-send {
                 pointer-events: none;
@@ -104,6 +104,20 @@
                 }
                 100% { 
                     transform: translateY(-200px); 
+                    opacity: 0;
+                }
+            }
+            @keyframes slidedown {
+                0% {
+                     transform: translateY(0px); 
+                     opacity: 1;
+                }
+                50% {
+                     transform: translateY(200px); 
+                     opacity: 1;
+                }
+                100% { 
+                    transform: translateY(200px); 
                     opacity: 0;
                 }
             }
@@ -189,7 +203,6 @@
                     parent.appendChild(child)
                 end,
                 ["item"] = function(...)
-                    console.log("----show item----")
                     local parent = document.getElementById('pop_root')
                     local child = document.createElement "div"
                     child.addEventListener('animationend', function(event)
@@ -200,8 +213,14 @@
                     child.className = "item-collect-panel"
                     local param = ...
                     child.style.left = (param.left - 100) .. 'px'
-                    child.style.top = (param.top - #param.items * 50) .. 'px'
-                    --child.style.border = '2px rgb(255,0,0)'
+                    if param.action == "up" then
+                        child.style.animation = '4s cubic-out 0s slideup'
+                        child.style.top = (param.top - #param.items * 50) .. 'px'
+                    elseif param.action == "down" then
+                        child.style.animation = '4s cubic-out 0s slidedown'
+                        child.style.top = (param.top - #param.items * 50 - 200) .. 'px'
+                    end
+                    --child.style.border = '4px rgb(0,255,0)'
                     child.style.position = 'absolute'
                     for _, it in ipairs(param.items) do
                         local item = document.createElement "div"
