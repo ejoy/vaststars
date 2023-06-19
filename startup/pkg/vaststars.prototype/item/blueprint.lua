@@ -91,16 +91,6 @@ local prototype = gameplay.register.prototype
 --     item_description = "用来抓取货物的机械装置",
 -- }
 
--- prototype "破损物流中心" {
---     type = {"item"},
---     stack = 50,
---     pile = "2x2x4",
---     pile_model = "prefabs/stackeditems/iron-ore.prefab",
---     icon = "textures/construct/broken-logisitic.texture",
---     group = {"加工"},
---     item_description = "用来抓取货物的机械装置",
--- }
-
 prototype "破损运输车辆" {
     type = {"item"},
     stack = 50,
@@ -321,16 +311,6 @@ prototype "蓄电池框架" {
     item_description = "用于建造蓄电池的框架",
 }
 
-prototype "物流中心框架" {
-    type = {"item"},
-    stack = 4,
-    pile = "2x2x4",
-    pile_model = "prefabs/stackeditems/iron-ore.prefab",
-    icon = "textures/construct/broken-logisitic.texture",
-    group = {"加工"},
-    item_description = "用于建造物流中心的框架",
-}
-
 prototype "车辆厂框架" {
     type = {"item"},
     stack = 4,
@@ -341,26 +321,6 @@ prototype "车辆厂框架" {
     item_description = "用于建造车辆厂的框架",
 }
 
-prototype "修路站框架" {
-    type = {"item"},
-    stack = 4,
-    pile = "2x2x4",
-    pile_model = "prefabs/stackeditems/iron-ore.prefab",
-    icon = "textures/construct/road-builder.texture",
-    group = {"加工"},
-    item_description = "用于建造修路站的框架",
-}
-
-prototype "修管站框架" {
-    type = {"item"},
-    stack = 4,
-    pile = "2x2x4",
-    pile_model = "prefabs/stackeditems/iron-ore.prefab",
-    icon = "textures/construct/pipe-builder.texture",
-    group = {"加工"},
-    item_description = "用于建造修管站的框架",
-}
-
 prototype "科研中心框架" {
     type = {"item"},
     stack = 4,
@@ -369,16 +329,6 @@ prototype "科研中心框架" {
     icon = "textures/construct/broken-lab.texture",
     group = {"加工"},
     item_description = "用于建造科研中心的框架",
-}
-
-prototype "建造中心框架" {
-    type = {"item"},
-    stack = 4,
-    pile = "2x2x4",
-    pile_model = "prefabs/stackeditems/iron-ore.prefab",
-    icon = "textures/construct/broken-assembler.texture",
-    group = {"加工"},
-    item_description = "用于建造建造中心的框架",
 }
 
 prototype "排水口框架" {

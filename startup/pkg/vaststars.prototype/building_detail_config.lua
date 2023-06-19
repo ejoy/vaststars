@@ -70,9 +70,6 @@ local building_detail_config = {
 		"power_supply_area",
 		"power_supply_distance",
 	},
-	["物流中心"] = {
-		"truck",
-	},
 	["机器爪"] = {
 		"work_power",
 	},

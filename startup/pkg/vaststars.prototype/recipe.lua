@@ -658,23 +658,6 @@ prototype "地热井1" {
     description = "生产可挖掘地热资源的装置",
 }
 
-prototype "建造中心" {
-    type = { "recipe" },
-    category = "框架打印",
-    --recipe_group =  "加工",
-    recipe_order =  72,
-    recipe_icon =  "textures/construct/assembler1.texture",
-    ingredients = {
-        {"修路站", 2},
-        {"修管站", 2},
-    },
-    results = {
-        {"建造中心框架", 1},
-    },
-    time = "5s",
-    description = "制造建造中心",
-}
-
 prototype "蒸汽发电机1" {
     type = { "recipe" },
     category = "生产中型制造",
@@ -1187,23 +1170,6 @@ prototype "维修太阳能板" {
     description = "修复损坏的太阳能板",
 }
 
-prototype "维修物流中心" {
-    type = { "recipe" },
-    category = "生产手工制造",
-    --recipe_group =  "加工",
-    recipe_order =  126,
-    recipe_icon =  "textures/construct/broken-logisitic.texture",
-    ingredients = {
-        {"碎石", 3},
-        {"物流中心框架", 1},
-    },
-    results = {
-        {"物流中心I", 1},
-    },
-    time = "5s",
-    description = "修复损坏的物流中心",
-}
-
 prototype "维修运输汽车" {
     type = { "recipe" },
     category = "生产手工制造",
@@ -1268,22 +1234,6 @@ prototype "车辆装配" {
 --     },
 --     time = "10s",
 --     description = "打印采矿机",
--- }
-
--- prototype "物流中心打印" {
---     type = { "recipe" },
---     category = "框架打印",
---     recipe_group =  "物流",
---     recipe_order =  52,
---     recipe_icon =  "textures/construct/logisitic1.texture",
---     ingredients = {
---         {"物流中心框架", 1},
---     },
---     results = {
---         {"物流中心I", 1},
---     },
---     time = "5s",
---     description = "打印可给运输车辆充电的物流中心",
 -- }
 
 -- prototype "电线杆打印" {
@@ -1452,22 +1402,6 @@ prototype "车辆装配" {
 --     description = "打印粉碎机",
 -- }
 
--- prototype "建造中心打印" {
---     type = { "recipe" },
---     category = "框架打印",
---     recipe_group =  "加工",
---     recipe_order =  56,
---     recipe_icon =  "textures/construct/broken-lab.texture",
---     ingredients = {
---         {"建造中心框架", 1},
---     },
---     results = {
---         {"建造中心", 1},
---     },
---     time = "5s",
---     description = "打印建造中心",
--- }
-
 -- prototype "太阳能板打印" {
 --     type = { "recipe" },
 --     category = "框架打印",
@@ -1616,38 +1550,6 @@ prototype "车辆装配" {
 --     description = "打印抽水的装置",
 -- }
 
--- prototype "修路站打印" {
---     type = { "recipe" },
---     category = "框架打印",
---     recipe_group =  "物流",
---     recipe_order =  54,
---     recipe_icon =  "textures/construct/road-builder.texture",
---     ingredients = {
---         {"修路站框架", 1},
---     },
---     results = {
---         {"修路站", 1},
---     },
---     time = "5s",
---     description = "打印可建造道路的装置",
--- }
-
--- prototype "修管站打印" {
---     type = { "recipe" },
---     category = "框架打印",
---     recipe_group =  "化工",
---     recipe_order =  55,
---     recipe_icon =  "textures/construct/pipe-builder.texture",
---     ingredients = {
---         {"修管站框架", 1},
---     },
---     results = { 
---         {"修管站", 1},
---     },
---     time = "5s",
---     description = "打印可建造管道的装置",
--- }
-
 prototype "砖石公路打印" {
     type = { "recipe" },
     category = "框架打印",
@@ -1747,22 +1649,6 @@ prototype "采矿机打印" {
     },
     time = "10s",
     description = "打印采矿机",
-}
-
-prototype "物流中心打印" {
-    type = { "recipe" },
-    category = "建筑打印",
-    --recipe_group =  "物流",
-    recipe_order =  52,
-    recipe_icon =  "textures/construct/logisitic1.texture",
-    ingredients = {
-        {"电动机I", 1},
-    },
-    results = {
-        {"物流中心I", 1},
-    },
-    time = "5s",
-    description = "打印可给运输车辆充电的物流中心",
 }
 
 prototype "电线杆打印" {
@@ -2099,40 +1985,6 @@ prototype "地下水挖掘机打印" {
     time = "10s",
     description = "打印可挖掘地下水的装置",
 }
-
-prototype "修路站打印" {
-    type = { "recipe" },
-    category = "物流中型制造",
-    --recipe_group =  "加工",
-    recipe_order =  101,
-    recipe_icon =  "textures/construct/road-builder.texture",
-    ingredients = {
-        {"石砖", 15},
-    },
-    results = {
-        {"修路站框架", 1},
-    },
-    time = "15s",
-    description = "修建修路站",
-}
-
-
-prototype "修管站打印" {
-    type = { "recipe" },
-    category = "物流中型制造",
-    --recipe_group =  "加工",
-    recipe_order =  55,
-    recipe_icon =  "textures/construct/pipe-builder.texture",
-    ingredients = {
-        {"电动机I", 1},
-    },
-    results = { 
-        {"修管站框架", 1},
-    },
-    time = "5s",
-    description = "打印可建造管道的装置",
-}
-
 -------------------------------------------
 
 
