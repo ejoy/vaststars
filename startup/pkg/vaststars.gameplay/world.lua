@@ -95,23 +95,23 @@ return function ()
     function world:dirty(flags)
         self._dirty = self._dirty | flags
     end
-    function world:update()
-        if self._dirty ~= 0 then
-            self:build()
-            self._dirty = 0
-        end
-        pipeline_update()
-        ecs:visitor_update()
-        ecs:update()
-        self._frame = self._frame + 1
-    end
-    function world:build()
+    local function build()
         pipeline_clean()
         ecs:visitor_update()
         ecs:update()
         pipeline_build()
         ecs:visitor_update()
         ecs:update()
+    end
+    function world:update()
+        if self._dirty ~= 0 then
+            build()
+            self._dirty = 0
+        end
+        pipeline_update()
+        ecs:visitor_update()
+        ecs:update()
+        self._frame = self._frame + 1
     end
     function world:backup(rootdir)
         local fs = require "bee.filesystem"
@@ -211,17 +211,9 @@ return function ()
     function world:container_place(c, item, amount)
         chest.place(cworld, c.chest, item, amount)
     end
-
     function world:roadnet_reset(...)
         return roadnet.reset(cworld, ...)
     end
-    function world:roadnet_each_lorry()
-        return roadnet.each_lorry(cworld)
-    end
-    function world:roadnet_lorry(id)
-        return roadnet.lorry(cworld, id)
-    end
-
     function world:now()
         return self._frame
     end
