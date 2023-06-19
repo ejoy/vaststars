@@ -819,7 +819,7 @@ prototype "烟囱1" {
 
 prototype "压力泵1" {
     type = { "recipe" },
-    category = "器件中型制造",
+    category = "生产中型制造",
     recipe_group =  "化工",
     recipe_order =  40,
     recipe_icon =  "textures/construct/pump1.texture",
@@ -836,7 +836,7 @@ prototype "压力泵1" {
 
 prototype "地下水挖掘机" {
     type = { "recipe" },
-    category = "器件中型制造",
+    category = "生产中型制造",
     recipe_group =  "化工",
     recipe_order =  50,
     recipe_icon =  "textures/construct/pumpjack1.texture",
@@ -1077,7 +1077,7 @@ prototype "太阳能板1" {
         {"太阳能板I", 1},
     },
     time = "8s",
-    description = "机械装置和电动机制造科研中心",
+    description = "制造可以将太阳能转化成电能的硅板",
 }
 
 prototype "维修组装机" {
@@ -1114,7 +1114,7 @@ prototype "火箭区段1" {
         {"火箭区段", 1},
     },
     time = "25s",
-    description = "将矿石浮沉进行筛选",
+    description = "生产可以拼接成完整火箭的区段",
 }
 
 prototype "整流罩1" {
@@ -1131,7 +1131,7 @@ prototype "整流罩1" {
         {"整流罩", 1},
     },
     time = "60s",
-    description = "将矿石浮沉进行筛选",
+    description = "生产保护火箭头部的金属装置",
 }
 
 prototype "维修铁制电线杆" {
@@ -2236,13 +2236,13 @@ prototype "逻辑电路1" {
     recipe_order =  74,
     recipe_icon =  "textures/construct/logic-circuit.texture",
     ingredients = {
-        {"石墨", 1},
-        {"铝丝", 4},
+        {"电容", 1},
+        {"铝丝", 3},
         {"塑料", 3},
         {"硅板", 3},
     },
     results = {
-        {"逻辑电路", 3},
+        {"逻辑电路", 2},
     },
     time = "5s",
     description = "生产电子元器件逻辑电路",
@@ -2255,13 +2255,13 @@ prototype "运算电路1" {
     recipe_order =  74,
     recipe_icon =  "textures/construct/logic-circuit.texture",
     ingredients = {
-        {"石墨", 1},
-        {"铝丝", 3},
-        {"塑料", 3},
+        {"电容", 2},
+        {"铝丝", 2},
+        {"塑料", 2},
         {"硅板", 2},
     },
     results = {
-        {"运算电路", 1},
+        {"运算电路", 3},
     },
     time = "5s",
     description = "生产电子元器件逻辑电路",
@@ -2755,20 +2755,18 @@ prototype "塑料1" {
 
 prototype "塑料2" {
     type = { "recipe" },
-    category = "器件基础化工",
+    category = "矿石浮选",
     recipe_group =  "器件",
     recipe_order =  21,
     recipe_icon =  "textures/construct/processor.texture",
     ingredients = {
-        {"甲烷", 20},
-        {"氧气", 20},
-        {"氯气", 20},
+        {"乙烯", 20},
+        {"丁二烯", 15},
     },
     results = {
-        {"塑料", 1},
-        {"盐酸", 25},
+        {"塑料", 4},
     },
-    time = "4s",
+    time = "8s",
     description = "化工原料合成塑料",
 }
 
