@@ -73,11 +73,17 @@ function ipick_object.blur_pick(x, y)
 
     local dx, dy
     local lorries = {}
-    for e in gameplay_world.ecs:select "lorry:in lorry_removed:absent eid:in" do
+    for e in gameplay_world.ecs:select "lorry:in eid:in" do
+        local lorry = e.lorry
+        local classid = lorry.classid
+        if classid == 0 then
+            goto continue
+        end
         dx, dy = e.lorry.x * ROAD_TILE_WIDTH_SCALE, e.lorry.y * ROAD_TILE_HEIGHT_SCALE
         local coord = __pack(dx, dy)
         lorries[coord] = lorries[coord] or {}
         lorries[coord][#lorries[coord] + 1] = e.eid
+        ::continue::
     end
 
     local objs = {}

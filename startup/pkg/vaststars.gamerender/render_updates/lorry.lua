@@ -144,9 +144,12 @@ function lorry_sys:gameworld_update()
 
     local new_lorries = {}
     local x, y, offset, toward, mask
-    for e in gameplay_world.ecs:select "lorry:in lorry_removed:absent eid:in" do
+    for e in gameplay_world.ecs:select "lorry:in eid:in" do
         local lorry = e.lorry
         local classid = lorry.classid
+        if classid == 0 then
+            goto continue
+        end
         local item_classid = lorry.item_classid
         local item_amount = lorry.item_amount
         local progress = lorry.progress

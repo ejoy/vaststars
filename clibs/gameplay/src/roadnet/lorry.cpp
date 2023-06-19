@@ -5,6 +5,9 @@
 #include "util/prototype.h"
 
 namespace roadnet {
+    void lorryInit(ecs::lorry& l) {
+        l.classid = 0;
+    }
     void lorryInit(ecs::lorry& l, world& w, uint16_t classid) {
         auto speed = prototype::get<"speed">(w, classid);
         l.classid = classid;
@@ -12,6 +15,12 @@ namespace roadnet {
         l.item_amount = 0;
         l.status = lorry_status::normal;
         l.time = 1000 / speed;
+    }
+    void lorryDestroy(ecs::lorry& l) {
+        l.classid = 0;
+    }
+    bool lorryInvalid(ecs::lorry& l) {
+        return l.classid == 0;
     }
     void lorryEntry(ecs::lorry& l, uint8_t x, uint8_t y, uint8_t z) {
         l.maxprogress = l.progress = l.time;

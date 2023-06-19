@@ -22,7 +22,7 @@ namespace roadnet {
         uint16_t n : 14;
     };
 
-    using lorry_entity = ecs_api::entity<ecs::lorry, ecs::lorry_removed(ecs_api::flags::absent)>;
+    using lorry_entity = ecs_api::entity<ecs::lorry>;
 
     class network {
     public:
