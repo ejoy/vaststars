@@ -1,9 +1,7 @@
 #include <lua.hpp>
-#include <string>
 #include "roadnet/type.h"
 #include "roadnet/network.h"
 #include "core/world.h"
-#include <bee/nonstd/bit.h>
 
 namespace roadnet::lua {
     static world& get_world(lua_State* L, int idx = 1) {

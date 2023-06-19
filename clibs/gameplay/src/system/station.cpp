@@ -3,6 +3,7 @@
 #include "core/capacitance.h"
 #include "util/prototype.h"
 #include "roadnet/lorry.h"
+#include "roadnet/endpoint.h"
 #include "luaecs.h"
 #include <lua.hpp>
 #include <bee/nonstd/unreachable.h>

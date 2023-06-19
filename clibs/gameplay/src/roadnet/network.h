@@ -3,8 +3,7 @@
 #include <stdint.h>
 #include "roadnet/road_cross.h"
 #include "roadnet/road_straight.h"
-#include "roadnet/endpoint.h"
-#include "roadnet/lorry.h"
+#include "util/component.h"
 #include "util/dynarray.h"
 #include "flatmap.h"
 

@@ -1,5 +1,6 @@
 #include "roadnet/road_straight.h"
 #include "roadnet/network.h"
+#include "roadnet/lorry.h"
 #include "core/world.h"
 #include <bee/nonstd/unreachable.h>
 

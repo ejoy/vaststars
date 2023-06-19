@@ -1,9 +1,8 @@
 #pragma once
 
 #include <stdint.h>
-#include <assert.h>
-#include <memory.h>
 #include <compare>
+#include <type_traits>
 
 namespace roadnet {
     enum class direction: uint8_t {

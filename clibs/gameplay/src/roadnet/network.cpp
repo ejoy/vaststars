@@ -1,9 +1,9 @@
 ﻿#include "roadnet/network.h"
 #include "core/world.h"
+#include "roadnet/lorry.h"
 #include "util/prototype.h"
 #include <bee/nonstd/unreachable.h>
 #include <cassert>
-#include <cstdio>
 
 namespace roadnet {
     enum class MapRoad: uint8_t {

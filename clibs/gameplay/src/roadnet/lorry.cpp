@@ -3,7 +3,6 @@
 #include "roadnet/route.h"
 #include "core/world.h"
 #include "util/prototype.h"
-#include <bee/nonstd/unreachable.h>
 
 namespace roadnet {
     void lorryInit(ecs::lorry& l, world& w, uint16_t classid) {

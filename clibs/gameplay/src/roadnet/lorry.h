@@ -2,7 +2,6 @@
 
 #include "roadnet/type.h"
 #include "util/component.h"
-#include <utility>
 
 struct world;
 
