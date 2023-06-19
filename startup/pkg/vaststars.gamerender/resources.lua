@@ -1525,7 +1525,6 @@ local t = {
 	"/pkg/vaststars.resources/ui/textures/construct/iron-wire.texture",
 	"/pkg/vaststars.resources/ui/textures/construct/iron.texture",
 	"/pkg/vaststars.resources/ui/textures/construct/iron_stick.texture",
-	"/pkg/vaststars.resources/ui/textures/construct/joystick.texture",
 	"/pkg/vaststars.resources/ui/textures/construct/lab.texture",
 	"/pkg/vaststars.resources/ui/textures/construct/large-chest.texture",
 	"/pkg/vaststars.resources/ui/textures/construct/liquid-tank.texture",
