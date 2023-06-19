@@ -111,17 +111,22 @@ local function create_drone(homepos)
                 local ey <close> = w:entity(self.motion_y)
                 ims.set_duration(ey, -1)
             end
-            if not hasitem and self.item then
+            if not hasitem then
                 self:destroy_item()
             end
         end,
+        set_item = function (self, item)
+            self:destroy_item()
+            self.item = item
+        end,
         destroy_item = function (self)
-            if self.item then
-                for _, eid in ipairs(self.item.tag["*"]) do
-                    w:remove(eid)
-                end
-                self.item = nil
+            if not self.item then
+                return
             end
+            for _, eid in ipairs(self.item.tag["*"]) do
+                w:remove(eid)
+            end
+            self.item = nil
         end,
         destroy = function (self)
             for _, eid in ipairs(self.prefab.tag["*"]) do
@@ -243,7 +248,7 @@ function drone_sys:gameworld_update()
                                 iom.set_scale(re, math3d.vector(1.5, 1.5, 1.5))
                             end
                             world:create_object(item_prefab)
-                            current.item = item_prefab
+                            current:set_item(item_prefab)
                         end
                         drone_task[#drone_task + 1] = {flyid, current, from, to}
                     end
