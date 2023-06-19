@@ -151,9 +151,7 @@ function lorry_sys:gameworld_update()
         local item_amount = lorry.item_amount
         local progress = lorry.progress
         local maxprogress = lorry.maxprogress
-        x = lorry.x
-        y = lorry.y & 0xFF
-        x, y = x * ROAD_TILE_WIDTH_SCALE, y * ROAD_TILE_HEIGHT_SCALE
+        x, y = lorry.x * ROAD_TILE_WIDTH_SCALE, lorry.y * ROAD_TILE_HEIGHT_SCALE
         offset = (lorry.z >> 0) & 0xF
         toward = (lorry.z >> 4) & 0xF
         mask = assert(iroad.get(gameplay_core.get_world(), x, y))

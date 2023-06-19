@@ -416,10 +416,10 @@ function M:stage_ui_update(datamodel, object_id)
                     message[#message + 1] = {icon = assert(typeobject.icon), name = typeobject.name, count = available}
                 end
             end
-            if #message > 1 then
+            if #message > 0 then
                 local p = icamera_controller.world_to_screen(object.srt.t)
                 local ui_x, ui_y = iui.convert_coord(math3d.index(p, 1), math3d.index(p, 2))
-                iui.send {"message_pop", "item", {left = 400, top = 400, items = message}}
+                iui.send("message_pop.rml", "item", {left = 400, top = 400, items = message})
             end
             iui.close("detail_panel.rml")
             world:pub {"rmlui_message_close", "building_arc_menu.rml"}
