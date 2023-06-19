@@ -5,6 +5,18 @@ local entities = { {
     x = 125,
     y = 118
   }, {
+    dir = "N",
+    item = "运输车框架",
+    prototype_name = "无人机仓库I",
+    x = 131,
+    y = 122
+  }, {
+    dir = "N",
+    items = {{ "运输车框架", 50 }},
+    prototype_name = "机头残骸",
+    x = 133,
+    y = 121
+  }, {
     dir = "W",
     items = {},
     prototype_name = "机头残骸",

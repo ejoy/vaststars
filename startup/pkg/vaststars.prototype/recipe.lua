@@ -89,7 +89,7 @@ prototype "铝矿石浮选" {
     description = "使用氧化铝和石墨烧制铝板",
 }
 
-prototype "四氯化钛1" {
+prototype "四氯化钛" {
     type = { "recipe" },
     category = "金属冶炼",
     recipe_group =  "金属",
