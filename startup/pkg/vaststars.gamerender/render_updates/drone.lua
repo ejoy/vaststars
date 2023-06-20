@@ -129,6 +129,7 @@ local function create_drone(homepos)
             self.item = nil
         end,
         destroy = function (self)
+            self:destroy_item()
             for _, eid in ipairs(self.prefab.tag["*"]) do
                 w:remove(eid)
             end
