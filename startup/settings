@@ -10,6 +10,8 @@ _windows:
 debug:
   show_bounding: false
 graphic:
+  ibl:
+    irradiance_bandnum: 3
   curve_world:
     curve_rate: 0.11999999731779099
     distance: 100
