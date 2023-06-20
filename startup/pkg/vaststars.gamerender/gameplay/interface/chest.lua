@@ -188,6 +188,11 @@ function M.get_inventory_item_count(world, item)
     end
 
     local e = world.ecs:first("base:in")
+    if not e then
+        log.error("can not get base")
+        return 0
+    end
+
     for i = 1, 256 do
         local slot = world:container_get(e.base, i)
         if not slot then

@@ -12,6 +12,8 @@ local create_queue = require("utility.queue")
 local hierarchy = require "hierarchy"
 local animation = hierarchy.animation
 local skeleton = hierarchy.skeleton
+local math_max = math.max
+local math_min = math.min
 
 local MOVE_SPEED <const> = 8.0
 local PAN_SPEED = 2.5
@@ -45,21 +47,32 @@ local CAMERA_DEFAULT_YAIXS <const> = CAMERA_DEFAULT.t[2]
 local CAMERA_YAIXS_MIN <const> = CAMERA_DEFAULT_YAIXS - 280
 local CAMERA_YAIXS_MAX <const> = CAMERA_DEFAULT_YAIXS + 150
 
+local CAMERA_XAIXS_MIN <const> = -1000
+local CAMERA_XAIXS_MAX <const> = 1000
+local CAMERA_ZAIXS_MIN <const> = -1450
+local CAMERA_ZAIXS_MAX <const> = 800
+
 local cam_cmd_queue = create_queue()
 local cam_motion_matrix_queue = create_queue()
+
+local function __clamp(v, min, max)
+    return math_max(min, math_min(v, max))
+end
 
 local function zoom(factor, x, y)
     local mq = w:first("main_queue camera_ref:in render_target:in")
     local ce <close> = w:entity(mq.camera_ref)
 
-    local position = iom.get_position(ce)
+    local pos = iom.get_position(ce)
     local target = icamera_controller.screen_to_world(x, y, PLANES)[1]
-    local dir = math3d.normalize(math3d.sub(target, position))
-    local position = math3d.muladd(dir, factor * MOVE_SPEED, position)
+    local dir = math3d.normalize(math3d.sub(target, pos))
+    local pos = math3d.muladd(dir, factor * MOVE_SPEED, pos)
 
-    local y = math3d.index(position, 2)
+    local y = math3d.index(pos, 2)
     if y >= CAMERA_YAIXS_MIN and y <= CAMERA_YAIXS_MAX then
-        iom.set_position(ce, position)
+        pos = math3d.set_index(pos, 1, __clamp(math3d.index(pos, 1), CAMERA_XAIXS_MIN, CAMERA_XAIXS_MAX))
+        pos = math3d.set_index(pos, 3, __clamp(math3d.index(pos, 3), CAMERA_ZAIXS_MIN, CAMERA_ZAIXS_MAX))
+        iom.set_position(ce, pos)
         world:pub {"camera_zoom"}
     end
 end
@@ -206,9 +219,16 @@ local __handle_drop_camera; do
 
         if last_position and position then
             local current = icamera_controller.screen_to_world(position.x, position.y, PLANES)[1]
-            local delta = math3d.ref(math3d.sub(last_position, current))
-            iom.move_delta(ce, delta)
-            world:pub {"dragdrop_camera", delta}
+            local delta_vec = math3d.sub(last_position, current)
+            w:extend(ce, "scene:in")
+            local scene = ce.scene
+            local pos = math3d.add(scene.t, delta_vec)
+
+            pos = math3d.set_index(pos, 1, __clamp(math3d.index(pos, 1), CAMERA_XAIXS_MIN, CAMERA_XAIXS_MAX))
+            pos = math3d.set_index(pos, 3, __clamp(math3d.index(pos, 3), CAMERA_ZAIXS_MIN, CAMERA_ZAIXS_MAX))
+
+            iom.set_position(ce, pos)
+            world:pub {"dragdrop_camera", math3d.ref(delta_vec)}
         end
     end
 end
