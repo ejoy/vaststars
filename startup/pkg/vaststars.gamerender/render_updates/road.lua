@@ -6,19 +6,16 @@ local gameplay_core = require "gameplay.core"
 local road_sys = ecs.system "road_system"
 local iroadnet_converter = require "roadnet_converter"
 local iroadnet = ecs.require "roadnet"
-
-local ROAD_TILE_WIDTH_SCALE <const> = 2
-local ROAD_TILE_HEIGHT_SCALE <const> = 2
+local iprototype = require "gameplay.interface.prototype"
 
 function road_sys:gameworld_build()
     iroadnet:clear("road")
 
     local world = gameplay_core.get_world()
-    for e in world.ecs:select "road:in endpoint_road:absent" do
-        local mask = e.road.mask
-        local x, y = e.road.x * ROAD_TILE_WIDTH_SCALE, e.road.y * ROAD_TILE_HEIGHT_SCALE
-        local shape, dir = iroadnet_converter.mask_to_shape_dir(mask)
-        iroadnet:editor_set("road", "normal", x, y, shape, dir)
+    for e in world.ecs:select "road:in endpoint_road:absent building:in" do
+        local typeobject = iprototype.queryById(e.building.prototype)
+        local shape, dir = iroadnet_converter.to_shape(typeobject.name), iprototype.dir_tostring(e.building.direction)
+        iroadnet:editor_set("road", "normal", e.building.x, e.building.y, shape, dir)
     end
 
     iroadnet:update()

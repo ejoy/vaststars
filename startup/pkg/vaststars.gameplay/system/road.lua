@@ -1,7 +1,6 @@
 local system = require "register.system"
 local prototype = require "prototype"
 local query = prototype.queryById
-local iroad = require "interface.road"
 
 local ROAD_TILE_WIDTH_SCALE <const> = 2
 local ROAD_TILE_HEIGHT_SCALE <const> = 2
@@ -24,6 +23,7 @@ local function is_roadid(pt)
 end
 
 local roadbits = setmetatable({}, mt)
+local roadbits_rev = setmetatable({}, mt)
 
 local Direction <const> = {
     ["N"] = 0,
@@ -109,7 +109,7 @@ local function check(bits, dir)
     return (bits & (1 << (DirectionToMapRoad[dir]))) ~= 0
 end
 
-local function build_road(world, building_eid, building, map, road_cache)
+local function build_road(world, building, map, eid_cache)
     local ecs = world.ecs
     local pt = query(building.prototype)
 
@@ -120,61 +120,73 @@ local function build_road(world, building_eid, building, map, road_cache)
         affected_roads_mask = MapRoad.NoHorizontal
     end
 
-    local roads = {}
     for _, e in ipairs(pt.affected_roads) do
         local dx, dy = rotate(e.position, building.direction, pt.area)
-        local key = pack((building.x + dx) // ROAD_TILE_WIDTH_SCALE, (building.y + dy) // ROAD_TILE_HEIGHT_SCALE)
-
-        if not map[key] then
-            return
+        dx, dy = building.x + dx, building.y + dy
+        local mapkey = pack(dx//ROAD_TILE_WIDTH_SCALE, dy//ROAD_TILE_HEIGHT_SCALE)
+        local key = pack(dx//ROAD_TILE_WIDTH_SCALE*ROAD_TILE_WIDTH_SCALE, dy//ROAD_TILE_HEIGHT_SCALE*ROAD_TILE_HEIGHT_SCALE) -- TODO: optimize
+        if not map[mapkey] then
+            goto continue
         end
+
         local dir = (Direction[e.dir] + building.direction) % 4
-        roads[key] = open(map[key], dir)
-        roads[key] = roads[key] | affected_roads_mask
-    end
+        map[mapkey] = open(map[mapkey], dir)
+        map[mapkey] = map[mapkey] | affected_roads_mask
 
-    for key, mask in pairs(roads) do
-        map[key] = mask
-
-        local eid = assert(road_cache[key])
+        local eid = assert(eid_cache[key])
         local e = assert(world.entity[eid])
-        e.road.mask = mask
-        e.road_changed = true
+        local pt = prototype.queryById(e.building.prototype)
+        local f = roadbits_rev[pt.building_category][map[mapkey] & 0xf]
+        e.building.prototype = f.prototype
+        e.building.direction = f.direction
+        e.building_changed = true
+        ::continue::
     end
 
     for _, e in ipairs(pt.endpoint_road) do
         local dx, dy = rotate(e.position, building.direction, pt.area)
-        local key = pack((building.x + dx) // ROAD_TILE_WIDTH_SCALE, (building.y + dy) // ROAD_TILE_HEIGHT_SCALE)
-        local id = prototype.queryByName(e.prototype).id -- TODO: remove prototype
+        dx, dy = building.x + dx, building.y + dy
+        local mapkey = pack(dx//ROAD_TILE_WIDTH_SCALE, dy//ROAD_TILE_HEIGHT_SCALE)
+        local key = pack(dx, dy)
+        local pt = prototype.queryByName(e.prototype) -- TODO remove e.prototype
 
-        assert(not map[key])
+        assert(not map[mapkey])
         local dir = (Direction[e.dir]+ building.direction) % 4
-        map[key] = roadbits[id][dir]
+        map[mapkey] = roadbits[pt.id][dir]
         for _, m in ipairs(e.mask) do
-            map[key] = map[key] | MapRoad[m]
+            map[mapkey] = map[mapkey] | MapRoad[m]
         end
 
-        road_cache[key] = ecs:new {
-            road = {
-                x = (building.x + dx) // ROAD_TILE_WIDTH_SCALE,
-                y = (building.y + dy) // ROAD_TILE_HEIGHT_SCALE,
-                mask = map[key],
-                classid = id,
+        assert(rawget(roadbits_rev, pt.building_category) ~= nil)
+        assert(rawget(roadbits_rev[pt.building_category], map[mapkey] & 0xf) ~= nil)
+        local f = roadbits_rev[pt.building_category][map[mapkey] & 0xf]
+        eid_cache[key] = ecs:new {
+            building = {
+                x = dx,
+                y = dy,
+                prototype = f.prototype,
+                direction = f.direction,
             },
+            road = true,
             endpoint_road = true,
-            road_changed = true,
+            building_changed = true,
         }
     end
 end
 
 function m.prototype_restore(world)
     roadbits = setmetatable({}, mt)
+    roadbits_rev = setmetatable({}, mt)
+
     for _, pt in pairs(prototype.all()) do
         if is_roadid(pt) then
             for _, dir in pairs(pt.building_direction) do
                 local bits = calc_roadbits(pt, Direction[dir])
                 assert(rawget(roadbits[pt.id], dir) == nil)
                 roadbits[pt.id][Direction[dir]] = bits
+
+                assert(rawget(roadbits_rev[pt.building_category], bits) == nil)
+                roadbits_rev[pt.building_category][bits] = { prototype = pt.id, direction = Direction[dir] }
             end
         end
     end
@@ -204,7 +216,7 @@ local function reverse(d)
     end
 end
 
-local function repair(world, map, road_cache)
+local function repair(world, map, eid_cache)
     local m
     for coord, mask in pairs(map) do
         m = mask
@@ -228,9 +240,15 @@ local function repair(world, map, road_cache)
         if mask ~= m then
             map[coord] = m
 
-            local e = assert(world.entity[road_cache[coord]])
-            e.road.mask = m
-            e.road_changed = true
+            local x, y = unpack(coord)
+            local key = pack(x*ROAD_TILE_WIDTH_SCALE, y*ROAD_TILE_HEIGHT_SCALE)
+            local e = assert(world.entity[eid_cache[key]])
+            local pt = assert(prototype.queryById(e.building.prototype))
+            local f = roadbits_rev[pt.building_category][map[coord] & 0xf]
+
+            e.building.prototype = f.prototype
+            e.building.direction = f.direction
+            e.building_changed = true
         end
     end
     return map
@@ -246,27 +264,23 @@ function m.build(world)
     end
 
     local map = {}
-    local road_cache = {}
+    local eid_cache = {}
 
     for v in ecs:select "endpoint_road:in eid:in" do
         ecs:remove(v.eid)
     end
 
-    for v in ecs:select "road:in eid:in REMOVED:absent" do
-        local key = pack(v.road.x, v.road.y)
-        map[key] = v.road.mask
-        road_cache[key] = v.eid
+    for v in ecs:select "road:in building:in eid:in REMOVED:absent" do
+        local key =  pack(v.building.x, v.building.y)
+        local mapkey = pack(v.building.x//ROAD_TILE_WIDTH_SCALE, v.building.y//ROAD_TILE_HEIGHT_SCALE)
+        map[mapkey] = roadbits[v.building.prototype][v.building.direction]
+        eid_cache[key] = v.eid
     end
 
     for v in ecs:select "endpoint building:in eid:in" do
-        build_road(world, v.eid, v.building, map, road_cache)
+        build_road(world, v.building, map, eid_cache)
     end
 
-    map = repair(world, map, road_cache)
+    map = repair(world, map, eid_cache)
     world:roadnet_reset(map)
-
-    ecs:clear "road_cache"
-    ecs:new {
-        road_cache = road_cache,
-    }
 end

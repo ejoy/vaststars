@@ -60,9 +60,6 @@ prototype "科研中心I" {
 }
 
 prototype "砖石公路-I型" {
-    model = "prefabs/road/road_I.prefab",
-    show_prototype_name = "砖石公路-I型",
-    icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     building_category = 4,
     building_direction = {"N", "E"},
@@ -79,9 +76,6 @@ prototype "砖石公路-I型" {
 }
 
 prototype "砖石公路-L型" {
-    model = "prefabs/road/road_L.prefab",
-    show_prototype_name = "砖石公路-I型",
-    icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     building_category = 4,
     building_direction = {"N", "E", "S", "W"},
@@ -98,9 +92,6 @@ prototype "砖石公路-L型" {
 }
 
 prototype "砖石公路-T型" {
-    model = "prefabs/road/road_T.prefab",
-    show_prototype_name = "砖石公路-I型",
-    icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     building_category = 4,
     building_direction = {"N", "E", "S", "W"},
@@ -112,6 +103,35 @@ prototype "砖石公路-T型" {
             {type="none", position={0,0,"E"}},
             {type="none", position={0,0,"S"}},
             {type="none", position={0,0,"W"}},
+        },
+    },
+    building_base = false,
+}
+
+prototype "砖石公路-O型" {
+    construct_detector = {"exclusive"},
+    building_category = 4,
+    building_direction = {"N"},
+    track = "O",
+    type = {"building", "road"},
+    area = "2x2",
+    crossing = {
+        connections = {
+        }
+    },
+    building_base = false,
+}
+
+prototype "砖石公路-U型" {
+    construct_detector = {"exclusive"},
+    building_category = 4,
+    building_direction = {"N", "E", "S", "W"},
+    track = "U",
+    type = {"building", "road"},
+    area = "2x2",
+    crossing = {
+        connections = {
+            {type="none", position={0,0,"N"}},
         },
     },
     building_base = false,
@@ -133,41 +153,6 @@ prototype "砖石公路-X型" {
             {type="none", position={0,0,"E"}},
             {type="none", position={0,0,"S"}},
             {type="none", position={0,0,"W"}},
-        },
-    },
-    building_base = false,
-}
-
-prototype "砖石公路-O型" {
-    model = "prefabs/road/road_O.prefab",
-    show_prototype_name = "砖石公路-I型",
-    icon = "textures/construct/road1.texture",
-    construct_detector = {"exclusive"},
-    building_category = 4,
-    building_direction = {"N"},
-    track = "O",
-    type = {"building", "road"},
-    area = "2x2",
-    crossing = {
-        connections = {
-        }
-    },
-    building_base = false,
-}
-
-prototype "砖石公路-U型" {
-    model = "prefabs/road/road_U.prefab",
-    show_prototype_name = "砖石公路-I型",
-    icon = "textures/construct/road1.texture",
-    construct_detector = {"exclusive"},
-    building_category = 4,
-    building_direction = {"N", "E", "S", "W"},
-    track = "U",
-    type = {"building", "road"},
-    area = "2x2",
-    crossing = {
-        connections = {
-            {type="none", position={0,0,"N"}},
         },
     },
     building_base = false,

@@ -49,11 +49,6 @@ return function ()
         components[#components+1] = c.name
     end
 
-    ecs:register {
-        name = "road_cache",
-        type = "lua",
-    }
-
     local context = ecs:context(components)
     local cworld = vaststars.create_world(context)
     world.ecs = ecs

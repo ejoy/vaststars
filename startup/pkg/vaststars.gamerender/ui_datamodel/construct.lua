@@ -458,6 +458,9 @@ function M:stage_camera_usage(datamodel)
                         datamodel.remove_lorry = false
                         pick_lorry_id = nil
                         leave = false
+
+                        idetail.unselected()
+                        datamodel.is_concise_mode = false
                     end
                 elseif o and o.class == CLASS.Mountain then
                     if __on_pick_mineral(datamodel, o.mountain) then
@@ -465,6 +468,9 @@ function M:stage_camera_usage(datamodel)
                         datamodel.remove_lorry = false
                         pick_lorry_id = nil
                         leave = false
+
+                        idetail.unselected()
+                        datamodel.is_concise_mode = false
                     end
                 else
                     __unpick_lorry(pick_lorry_id)
@@ -627,7 +633,6 @@ function M:stage_camera_usage(datamodel)
     for _ in remove_lorry_mb:unpack() do
         if pick_lorry_id then
             gameplay_core.get_world().entity[pick_lorry_id].lorry_willremove = true
-            ilorry.remove(pick_lorry_id)
 
             __unpick_lorry(pick_lorry_id)
             pick_lorry_id = nil

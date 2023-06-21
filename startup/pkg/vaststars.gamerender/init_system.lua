@@ -71,12 +71,11 @@ function m:gameplay_update()
         return
     end
 
-    iroadnet:update()
     if gameplay_core.world_update then
         gameplay_core.update()
         if gameplay_core._dirty ~= 0 then
             gameplay_core._dirty = 0
-            world:pipeline_func "gameworld_prepare" ()
+            world:pipeline_func "gameworld_prebuild" ()
             world:pipeline_func "gameworld_build" ()
         end
     end

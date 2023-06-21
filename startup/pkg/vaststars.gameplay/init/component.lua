@@ -127,12 +127,7 @@ component "pump" {
 component "mining" {
 }
 
-component "road" {
-    "x:byte",
-    "y:byte",
-    "mask:byte",
-    "classid:word",
-}
+component "road" {}
 
 component "save_fluidflow" {
 	"fluid:word",
@@ -159,5 +154,4 @@ component "station_changed" {}
 component "endpoint_road" {}
 component "building_new" {}
 component "building_changed" {}
-component "road_changed" {}
 component "auto_set_recipe" {}

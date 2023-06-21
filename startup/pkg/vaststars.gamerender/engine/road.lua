@@ -104,7 +104,7 @@ function road:set(layer_name, shape_type, x, y, shape, dir)
                 [inner_layer_names[layer_name]] = {
                     type = inner_shape[shape_type],
                     shape = shape,
-                    dir = dir,
+                    dir = assert(dir),
                 },
             }
         }
@@ -112,7 +112,7 @@ function road:set(layer_name, shape_type, x, y, shape, dir)
         v.layers[inner_layer_names[layer_name]] = {
             type = inner_shape[shape_type],
             shape = shape,
-            dir = dir,
+            dir = assert(dir),
         }
     end
 
