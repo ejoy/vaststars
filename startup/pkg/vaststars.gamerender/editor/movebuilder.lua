@@ -29,8 +29,7 @@ local create_pickup_icon_chimney = ecs.require "pickup_icon_chimney".create
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local terrain = ecs.require "terrain"
 local gameplay_core = require "gameplay.core"
-local gameplay = import_package "vaststars.gameplay"
-local iroad = gameplay.interface "road"
+local ibuilding = ecs.import.interface "vaststars.gamerender|ibuilding"
 local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_box"
 local create_selected_boxes = ecs.require "selected_boxes"
 local vsobject_manager = ecs.require "vsobject_manager"
@@ -394,7 +393,7 @@ local function touch_move(self, datamodel, delta_vec)
         for _, dir in ipairs(ALL_DIR) do
             local _, dx, dy = _get_road_entrance_position(typeobject, lx, ly, dir)
             if dx and dy then
-                if iroad.get(gameplay_core.get_world(), dx, dy) then
+                if ibuilding.get(dx, dy) then
                     t[#t+1] = dir
                 end
             end

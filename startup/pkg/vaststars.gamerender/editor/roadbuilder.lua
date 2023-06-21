@@ -27,8 +27,7 @@ local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 local REMOVE <const> = {}
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
-local gameplay = import_package "vaststars.gameplay"
-local iroad = gameplay.interface "road"
+local ibuilding = ecs.import.interface "vaststars.gamerender|ibuilding"
 local icamera_controller = ecs.interface "icamera_controller"
 local ROAD_TILE_SCALE_WIDTH <const> = 2
 local ROAD_TILE_SCALE_HEIGHT <const> = 2
@@ -56,20 +55,19 @@ local function _get_object(self, x, y, cache_names)
     for i = 0, ROAD_TILE_SCALE_WIDTH - 1 do
         for j = 0, ROAD_TILE_SCALE_HEIGHT - 1 do
             local object = objects:coord(x + i, y + j, cache_names)
-            local mask = iroad.get(gameplay_core.get_world(), x, y, true)
+            local road_object = ibuilding.get(x, y)
             if object then
-                assert(not mask, ("road overlaps with the building(%s,%s) %s"):format(x, y, object.prototype_name))
+                assert(not road_object, ("road overlaps with the building(%s,%s) %s"):format(x, y, object.prototype_name))
                 return object
             end
 
-            if mask then
-                local prototype_name, dir = iroadnet_converter.mask_to_prototype_name_dir(mask)
+            if road_object then
                 return {
                     id = iobject.new_object_id(),
                     x = x,
                     y = y,
-                    prototype_name = prototype_name,
-                    dir = dir,
+                    prototype_name = road_object.prototype,
+                    dir = road_object.direction,
                 }
             end
         end
@@ -257,6 +255,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
         ::continue::
     end
 
+    iroadnet:update()
     datamodel.show_finish_laying = State.succ
 end
 
@@ -787,12 +786,13 @@ local function confirm(self, datamodel)
     for coord, mask in pairs(self.pending) do
         local x, y = unpackcoord(coord)
         if mask == REMOVE then
-            iroad.remove(gameplay_core.get_world(), x, y)
+            ibuilding.remove(x, y)
             iroadnet:editor_del("road", x, y)
         else
             c = c + 1
 
-            iroad.set(gameplay_core.get_world(), x, y, iprototype.queryByName(prototype_name).id, mask)
+            local prototype_name, dir = iroadnet_converter.mask_to_prototype_name_dir(mask) -- TODO: optimize
+            ibuilding.set(x, y, prototype_name, dir)
             local shape, dir = iroadnet_converter.mask_to_shape_dir(mask)
             iroadnet:editor_set("road", "normal", x, y, shape, dir)
         end
@@ -854,11 +854,12 @@ local function finish_laying(self, datamodel)
     for coord, mask in pairs(self.temporary_map) do
         local x, y = unpackcoord(coord)
         local shape, dir = iroadnet_converter.mask_to_shape_dir(mask)
-        local m = iroad.get(gameplay_core.get_world(), x, y)
-        if not m then
+        local road_object = ibuilding.get(x, y)
+        if not road_object then
             iroadnet:editor_set("road", "modify", x, y, shape, dir)
             self.pending[coord] = mask
         else
+            local m = iroadnet_converter.prototype_name_dir_to_mask(road_object.prototype, road_object.direction)
             if mask ~= m then
                 iroadnet:editor_set("road", "modify", x, y, shape, dir)
                 self.pending[coord] = mask
@@ -874,12 +875,13 @@ local function place_one(self, datamodel)
     local coord_indicator = self.coord_indicator
     local x, y = coord_indicator.x, coord_indicator.y
     local coord = packcoord(x, y)
-    assert(not iroad.get(gameplay_core.get_world(), x, y))
+    assert(not ibuilding.get(x, y))
 
     datamodel.show_confirm = true
 
     assert(x % 2 == 0 and y % 2 == 0)
-    iroad.set(gameplay_core.get_world(), x, y, iprototype.queryByName(self.coord_indicator.prototype_name).id, 0)
+    local prototype_name, dir = iroadnet_converter.mask_to_prototype_name_dir(0)
+    ibuilding.set(x, y, prototype_name, dir)
 
     self.pending[coord] = 0 -- {"砖石公路-O型", "N"}
 
@@ -1141,20 +1143,20 @@ local function remove_one(self, datamodel)
     if self.pending[coord] and self.pending[coord] ~= REMOVE then
         self.pending[coord] = nil
 
-        local mask = iroad.get(gameplay_core.get_world(), x, y)
-        if mask then
-            local shape, dir = iroadnet_converter.mask_to_shape_dir(mask)
-            iroadnet:editor_set("road", "remove", x, y, shape, dir)
+        local road_object = ibuilding.get(x, y)
+        if road_object then
+            local shape = iroadnet_converter.to_shape(road_object.prototype)
+            iroadnet:editor_set("road", "remove", x, y, shape, road_object.direction)
 
             self.pending[coord] = REMOVE
         else
             _road_teardown(self, x, y)
         end
     else
-        local mask = iroad.get(gameplay_core.get_world(), x, y)
-        if mask then
-            local shape, dir = iroadnet_converter.mask_to_shape_dir(mask)
-            iroadnet:editor_set("road", "remove", x, y, shape, dir)
+        local road_object = ibuilding.get(x, y)
+        if road_object then
+            local shape = iroadnet_converter.to_shape(road_object.prototype)
+            iroadnet:editor_set("road", "remove", x, y, shape, road_object.direction)
 
             self.pending[coord] = REMOVE
         else
@@ -1195,20 +1197,20 @@ local function finish_teardown(self, datamodel)
         if self.pending[coord] and self.pending[coord] ~= REMOVE then
             self.pending[coord] = nil
 
-            local mask = iroad.get(gameplay_core.get_world(), x, y)
-            if mask then
-                local shape, dir = iroadnet_converter.mask_to_shape_dir(mask)
-                iroadnet:editor_set("road", "remove", x, y, shape, dir)
+            local road_object = ibuilding.get(x, y)
+            if road_object then
+                local shape = iroadnet_converter.to_shape(road_object.prototype)
+                iroadnet:editor_set("road", "remove", x, y, shape, road_object.direction)
 
                 self.pending[coord] = REMOVE
             else
                 _road_teardown(self, x, y)
             end
         else
-            local mask = iroad.get(gameplay_core.get_world(), x, y)
-            if mask then
-                local shape, dir = iroadnet_converter.mask_to_shape_dir(mask)
-                iroadnet:editor_set("road", "remove", x, y, shape, dir)
+            local road_object = ibuilding.get(x, y)
+            if road_object then
+                local shape = iroadnet_converter.to_shape(road_object.prototype)
+                iroadnet:editor_set("road", "remove", x, y, shape, road_object.direction)
 
                 self.pending[coord] = REMOVE
             else

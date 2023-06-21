@@ -106,8 +106,8 @@ funcs["hub"] = function (export_data, e)
 end
 
 funcs["station_producer"] = function (export_data, e)
-    gameplay_core.extend(e, "station_producer?in")
-    local slot = ichest.chest_get(gameplay_core.get_world(), e.station_producer, 1)
+    gameplay_core.extend(e, "chest?in")
+    local slot = ichest.chest_get(gameplay_core.get_world(), e.chest, 1)
     if not slot then
         return export_data
     end
@@ -117,8 +117,8 @@ funcs["station_producer"] = function (export_data, e)
 end
 
 funcs["station_consumer"] = function (export_data, e)
-    gameplay_core.extend(e, "station_consumer?in")
-    local slot = ichest.chest_get(gameplay_core.get_world(), e.station_consumer, 1)
+    gameplay_core.extend(e, "chest?in")
+    local slot = ichest.chest_get(gameplay_core.get_world(), e.chest, 1)
     if not slot then
         return export_data
     end
@@ -145,7 +145,7 @@ return function()
     log.info("export entity")
 
     local r = {}
-    for v in gameplay_core.select("building:in") do
+    for v in gameplay_core.select("building:in road:absent") do
         local building = v.building
         local typeobject = iprototype.queryById(building.prototype)
         local prototype_name, export_data = typeobject.name, {}
@@ -159,12 +159,14 @@ return function()
     end
 
     local roads = {}
-    for v in gameplay_core.select("road:in endpoint_road:absent") do
+    for v in gameplay_core.select("building:in road:in endpoint_road:absent") do
         local e = {}
-        e.x = v.road.x
-        e.y = v.road.y
-        e.mask = v.road.mask & 0x0f
-        e.prototype = iprototype.queryById(v.road.classid).name
+        e = {
+            x = v.building.x,
+            y = v.building.y,
+            prototype = iprototype.queryById(v.building.prototype).name,
+            direction = iprototype.dir_tostring(v.building.direction),
+        }
         roads[#roads+1] = e
     end
 

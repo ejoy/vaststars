@@ -31,12 +31,11 @@ local ichest = require "gameplay.interface.chest"
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local terrain = ecs.require "terrain"
 local gameplay_core = require "gameplay.core"
-local gameplay = import_package "vaststars.gameplay"
-local iroad = gameplay.interface "road"
 local ROAD_TILE_SCALE_WIDTH <const> = 2
 local ROAD_TILE_SCALE_HEIGHT <const> = 2
 local SPRITE_COLOR = import_package "vaststars.prototype".load("sprite_color")
 local DIRTY_ROADNET <const> = require("gameplay.interface.constant").DIRTY_ROADNET
+local ibuilding = ecs.import.interface "vaststars.gamerender|ibuilding"
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -341,9 +340,9 @@ local function __show_road_entrance_marker(self, typeobject)
     end
 
     local coords = {}
-    for coord, mask in pairs(iroad.all(gameplay_core.get_world())) do
-        local x, y = iprototype.unpackcoord(coord)
-        local prototype_name, dir = iroadnet_converter.mask_to_prototype_name_dir(mask)
+    for e in gameplay_core.get_world().ecs:select "road:in building:in eid:in" do
+        local x, y = e.building.x, e.building.y
+        local prototype_name, dir = iprototype.queryById(e.building.prototype).name, iprototype.dir_tostring(e.building.dir)
         local dirs = _get_connections_dir(prototype_name, dir)
         for _, d in ipairs(ALL_DIR) do
             if dirs[d] then
@@ -651,7 +650,7 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
                 goto continue
             end
 
-            local mask = iroad.get(gameplay_core.get_world(), dx//2*2, dy//2*2)
+            local mask = ibuilding.get(dx//2*2, dy//2*2)
             if not mask then
                 return false
             end
@@ -674,7 +673,7 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
             --         goto continue
             --     end
 
-            --     local mask = iroad.get(gameplay_core.get_world(), lx//2*2, ly//2*2)
+            --     local mask = ibuilding.get(lx//2*2, ly//2*2)
             --     if not mask then
             --         return false
             --     end

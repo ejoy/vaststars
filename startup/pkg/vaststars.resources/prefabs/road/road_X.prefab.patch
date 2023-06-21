@@ -804,3 +804,30 @@ policy:
   ant.general|name
   ant.general|tag
   ant.animation|slot
+---
+data:
+  name: path_start
+  scene:
+    r: {0, -0.7071067690849304, 0, 0.7071067690849304}
+    s: {1, 1, 1}
+    t: {10, 0, 3.5}
+  slot:
+    follow_flag: 1
+  tag:
+    empty9
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+  ant.scene|scene_object
+---
+data:
+  name: prefab1
+  scene: {}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+editor: false
+mount: 56
+prefab: /pkg/vaststars.resources/camera_construct.prefab

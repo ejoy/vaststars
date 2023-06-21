@@ -1219,6 +1219,25 @@ prototype "车辆装配" {
     description = "制造运输汽车",
 }
 
+prototype "运输车框架" {
+    type = { "recipe" },
+    category = "基地制造",
+    recipe_group =  "加工",
+    recipe_order =  128,
+    recipe_icon =  "textures/construct/broken-truck.texture",
+    ingredients = {
+        {"齿轮", 4},
+        {"橡胶", 4},
+        {"铁板", 2},
+        {"电动机I", 1},   
+    },
+    results = {
+        {"运输车框架", 1},
+    },
+    time = "5s",
+    description = "制造运输汽车",
+}
+
 ------------------打印-------------------
 -- prototype "采矿机打印" {
 --     type = { "recipe" },

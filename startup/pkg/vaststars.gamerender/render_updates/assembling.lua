@@ -374,7 +374,7 @@ local function __find_neighbor_fluid(gameplay_world, x, y, dir, ground)
     end
 end
 
-function assembling_sys:gameworld_prepare()
+function assembling_sys:gameworld_prebuild()
     local gameplay_world = gameplay_core.get_world()
     for e in gameplay_world.ecs:select "auto_set_recipe:in assembling:update building:in chest:update fluidboxes:update" do
         local object = assert(objects:coord(e.building.x, e.building.y))
