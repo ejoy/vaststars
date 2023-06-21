@@ -185,7 +185,7 @@ function lorry_sys:gameworld_update()
             goto continue
         end
 
-        x, y = l.x * ROAD_TILE_WIDTH_SCALE, l.y * ROAD_TILE_HEIGHT_SCALE
+        x, y = l.x, l.y
         offset, toward = (l.z >> 0) & 0xF, (l.z >> 4) & 0xF
         item_classid, item_amount = l.item_classid, l.item_amount
         progress, maxprogress = l.progress, l.maxprogress

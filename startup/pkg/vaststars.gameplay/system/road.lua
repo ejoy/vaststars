@@ -2,9 +2,6 @@ local system = require "register.system"
 local prototype = require "prototype"
 local query = prototype.queryById
 
-local ROAD_TILE_WIDTH_SCALE <const> = 2
-local ROAD_TILE_HEIGHT_SCALE <const> = 2
-
 local m = system "road"
 
 local mt = {}
@@ -66,23 +63,23 @@ local function pack(x, y)
     return (y << 8)|x
 end
 
-local function rotate(x, y, direction, area)
+local function buildingPostion(x, y, building, area)
+    local direction = building.direction
     local w, h = area >> 8, area & 0xFF
+    local dx, dy
     w = w - 1
     h = h - 1
     if direction == N then
-        return x, y
+        dx, dy = x, y
     elseif direction == E then
-        return h - y, x
+        dx, dy = h - y - 1, x
     elseif direction == S then
-        return w - x, h - y
+        dx, dy = w - x - 1, h - y - 1
     elseif direction == W then
-        return y, w - x
+        dx, dy = y, w - x - 1
     end
-end
-
-local function buildingPostion(x, y, building, area)
-    local dx, dy = rotate(x, y, building.direction, area)
+    assert((building.x + dx) % 2 == 0)
+    assert((building.y + dy) % 2 == 0)
     return building.x + dx, building.y + dy
 end
 
@@ -132,9 +129,12 @@ function m.build(world)
             return rotateMask(mask, building.direction)
         end
         local eid_cache = {}
-        for e in ecs:select "road building:in eid:in REMOVED:absent" do
-            local key = pack(e.building.x, e.building.y)
-            eid_cache[key] = e.eid
+        for v in ecs:select "road building:in eid:in REMOVED:absent" do
+            local building = v.building
+            local pt = query(building.prototype)
+            local dx, dy = buildingPostion(0, 0, building, pt.area)
+            local key = pack(dx, dy)
+            eid_cache[key] = v.eid
         end
         for v in ecs:select "endpoint building:in eid:in REMOVED:absent" do
             local building = v.building
@@ -164,7 +164,7 @@ function m.build(world)
             for i = 1, #pt.road, 4 do
                 local x, y, mask = string.unpack("<I1I1I2", pt.road, i)
                 local dx, dy = buildingPostion(x, y, building, pt.area)
-                local mapkey = pack(dx//ROAD_TILE_WIDTH_SCALE, dy//ROAD_TILE_HEIGHT_SCALE)
+                local mapkey = pack(dx, dy)
                 assert(not map[mapkey])
                 map[mapkey] = rotateMask(mask, building.direction)
             end
@@ -183,7 +183,7 @@ function m.build(world)
             for i = 1, #pt.road, 4 do
                 local x, y, mask = string.unpack("<I1I1I2", pt.road, i)
                 local dx, dy = buildingPostion(x, y, building, pt.area)
-                local mapkey = pack(dx//ROAD_TILE_WIDTH_SCALE, dy//ROAD_TILE_HEIGHT_SCALE)
+                local mapkey = pack(dx, dy)
                 if not map[mapkey] then
                     map[mapkey] = rotateMask(mask, building.direction)
                     if endpoint_x == x and endpoint_y == y then

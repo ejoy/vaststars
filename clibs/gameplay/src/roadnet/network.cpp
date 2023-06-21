@@ -6,6 +6,8 @@
 #include <cassert>
 
 namespace roadnet {
+    constexpr uint8_t kRoadSize = 2;
+
     enum class MapRoad: uint8_t {
         Left         = 1 << 0,
         Top          = 1 << 1,
@@ -41,10 +43,10 @@ namespace roadnet {
 
     static constexpr loction move(loction loc, direction dir) {
         switch (dir) {
-        case direction::l: loc.x -= 1; break;
-        case direction::t: loc.y -= 1; break;
-        case direction::r: loc.x += 1; break;
-        case direction::b: loc.y += 1; break;
+        case direction::l: loc.x -= kRoadSize; break;
+        case direction::t: loc.y -= kRoadSize; break;
+        case direction::r: loc.x += kRoadSize; break;
+        case direction::b: loc.y += kRoadSize; break;
         default: std::unreachable();
         }
         return loc;
@@ -381,27 +383,37 @@ namespace roadnet {
     }
 
     static loction buildingLoction(world& world, ecs::building& b, loction l) {
-        constexpr int kRoadScale = 2;
         uint16_t area = prototype::get<"area">(world, b.prototype);
         uint8_t w = area >> 8;
         uint8_t h = area & 0xFF;
         assert(w > 0 && h > 0);
         w--;
         h--;
+        uint8_t x, y;
         
         switch (b.direction) {
         case 0: // N
-            return { uint8_t((b.x + l.x) / kRoadScale),       uint8_t((b.y + l.y) / kRoadScale) };
+            x = uint8_t(b.x + l.x);
+            y = uint8_t(b.y + l.y);
+            break;
         case 1: // E
-            return { uint8_t((b.x + (h - l.y)) / kRoadScale), uint8_t((b.y + l.x) / kRoadScale) };
+            x = uint8_t(b.x + (h - l.y - 1));
+            y = uint8_t(b.y + l.x);
+            break;
         case 2: // S
-            return { uint8_t((b.x + (w - l.x)) / kRoadScale), uint8_t((b.y + (h - l.y)) / kRoadScale) };
+            x = uint8_t(b.x + (w - l.x - 1));
+            y = uint8_t(b.y + (h - l.y - 1));
+            break;
         case 3: // W
-            return { uint8_t((b.x + l.y) / kRoadScale),       uint8_t((b.y + (w - l.x)) / kRoadScale) };
+            x = uint8_t(b.x + l.y);
+            y = uint8_t(b.y + (w - l.x - 1));
+            break;
         default:
             assert(false);
-            return {};
+            break;
         }
+        assert(x % 2 == 0 && y % 2 == 0);
+        return { x, y };
     }
 
     void network::rebuildMap(world& w, flatmap<loction, uint8_t> const& map) {
