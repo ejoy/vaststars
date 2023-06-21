@@ -5,6 +5,7 @@ local c = type "station_producer"
     .chest_type "chest_type"
     .weights "integer"
     .endpoint "position"
+    .road "network"
 
 function c:ctor(init, pt)
     local world = self

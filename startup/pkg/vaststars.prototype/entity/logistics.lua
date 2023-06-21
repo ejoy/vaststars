@@ -27,13 +27,9 @@ prototype "指挥中心" {
         },
     },
     endpoint = "3,4",
-    endpoint_road = {
-        {position={1, 4}, prototype = "砖石公路-L型", dir = "E", mask={}},
-        {position={3, 4}, prototype = "砖石公路-L型", dir = "S", mask={"Endpoint"}},
-    },
-    affected_roads = {
-        {position={1, 6}, dir = "N"},
-        {position={3, 6}, dir = "N"},
+    road = {
+        "1,4,╔╗",
+        "1,6,╩╩",
     },
     move = false,
     io_shelf = false,
@@ -72,6 +68,9 @@ prototype "砖石公路-I型" {
             {type="none", position={0,0,"S"}},
         },
     },
+    road = {
+        "0,0,║",
+    },
     building_base = false,
 }
 
@@ -87,6 +86,9 @@ prototype "砖石公路-L型" {
             {type="none", position={0,0,"N"}},
             {type="none", position={0,0,"E"}},
         },
+    },
+    road = {
+        "0,0,╚",
     },
     building_base = false,
 }
@@ -105,6 +107,9 @@ prototype "砖石公路-T型" {
             {type="none", position={0,0,"W"}},
         },
     },
+    road = {
+        "0,0,╦",
+    },
     building_base = false,
 }
 
@@ -118,6 +123,8 @@ prototype "砖石公路-O型" {
     crossing = {
         connections = {
         }
+    },
+    road = {
     },
     building_base = false,
 }
@@ -133,6 +140,9 @@ prototype "砖石公路-U型" {
         connections = {
             {type="none", position={0,0,"N"}},
         },
+    },
+    road = {
+        "0,0,v",
     },
     building_base = false,
 }
@@ -155,6 +165,9 @@ prototype "砖石公路-X型" {
             {type="none", position={0,0,"W"}},
         },
     },
+    road = {
+        "0,0,╬",
+    },
     building_base = false,
 }
 
@@ -176,13 +189,9 @@ prototype "出货车站" {
         },
     },
     endpoint = "2,0",
-    endpoint_road = {
-        {position={0, 0}, prototype = "砖石公路-L型", dir = "E", mask={}},
-        {position={2, 0}, prototype = "砖石公路-L型", dir = "S", mask={"Endpoint"}},
-    },
-    affected_roads = {
-        {position={0, 2}, dir = "N"},
-        {position={2, 2}, dir = "N"},
+    road = {
+        "0,0,╔╗",
+        "0,2,╩╩",
     },
     camera_distance = 90,
 }
@@ -205,13 +214,9 @@ prototype "收货车站" {
         },
     },
     endpoint = "2,0",
-    endpoint_road = {
-        {position={0, 0}, prototype = "砖石公路-L型", dir = "E", mask={}},
-        {position={2, 0}, prototype = "砖石公路-L型", dir = "S", mask={"Endpoint"}},
-    },
-    affected_roads = {
-        {position={0, 2}, dir = "N"},
-        {position={2, 2}, dir = "N"},
+    road = {
+        "0,0,╔╗",
+        "0,2,╩╩",
     },
     camera_distance = 90,
 }
