@@ -67,10 +67,6 @@ local function pack(x, y)
     return (y << 8)|x
 end
 
-local function unpack(coord)
-    return coord & 0xFF, coord >> 8
-end
-
 local function rotate(position, direction, area)
     local w, h = area >> 8, area & 0xFF
     local x, y = position[1], position[2]
@@ -100,17 +96,7 @@ local function open(bits, dir)
     return bits | (1 << (DirectionToMapRoad[dir]))
 end
 
-local function close(bits, dir)
-    assert(bits & (1 << (DirectionToMapRoad[dir])) ~= 0)
-    return bits & ~(1 << (DirectionToMapRoad[dir]))
-end
-
-local function check(bits, dir)
-    return (bits & (1 << (DirectionToMapRoad[dir]))) ~= 0
-end
-
 local function build_road(world, building, map, eid_cache)
-    local ecs = world.ecs
     local pt = query(building.prototype)
 
     local affected_roads_mask = 0
@@ -147,7 +133,6 @@ local function build_road(world, building, map, eid_cache)
         local dx, dy = rotate(e.position, building.direction, pt.area)
         dx, dy = building.x + dx, building.y + dy
         local mapkey = pack(dx//ROAD_TILE_WIDTH_SCALE, dy//ROAD_TILE_HEIGHT_SCALE)
-        local key = pack(dx, dy)
         local pt = prototype.queryByName(e.prototype) -- TODO remove e.prototype
 
         assert(not map[mapkey])
@@ -156,10 +141,6 @@ local function build_road(world, building, map, eid_cache)
         for _, m in ipairs(e.mask) do
             map[mapkey] = map[mapkey] | MapRoad[m]
         end
-
-        assert(rawget(roadbits_rev, pt.building_category) ~= nil)
-        assert(rawget(roadbits_rev[pt.building_category], map[mapkey] & 0xf) ~= nil)
-        local f = roadbits_rev[pt.building_category][map[mapkey] & 0xf]
     end
 end
 
@@ -179,68 +160,6 @@ function m.prototype_restore(world)
             end
         end
     end
-end
-
-local function move(d)
-    if d == N then
-        return 0, -1
-    elseif d == E then
-        return 1, 0
-    elseif d == S then
-        return 0, 1
-    elseif d == W then
-        return -1, 0
-    end
-end
-
-local function reverse(d)
-    if d == N then
-        return S
-    elseif d == E then
-        return W
-    elseif d == S then
-        return N
-    elseif d == W then
-        return E
-    end
-end
-
-local function repair(world, map, eid_cache)
-    local m
-    for coord, mask in pairs(map) do
-        m = mask
-        local x, y = unpack(coord)
-        for dir = 0, 3 do
-            if check(m, dir) then
-                local dx, dy = move(dir)
-                dx, dy = x + dx, y + dy
-
-                local neighbor_mask = map[pack(dx, dy)]
-                if not neighbor_mask then
-                    m = close(m, dir)
-                else
-                    if not check(neighbor_mask, reverse(dir)) then
-                        m = close(m, dir)
-                    end
-                end
-            end
-        end
-
-        if mask ~= m then
-            map[coord] = m
-
-            local x, y = unpack(coord)
-            local key = pack(x*ROAD_TILE_WIDTH_SCALE, y*ROAD_TILE_HEIGHT_SCALE)
-            local e = assert(world.entity[eid_cache[key]])
-            local pt = assert(prototype.queryById(e.building.prototype))
-            local f = roadbits_rev[pt.building_category][map[coord] & 0xf]
-
-            e.building.prototype = f.prototype
-            e.building.direction = f.direction
-            e.building_changed = true
-        end
-    end
-    return map
 end
 
 local DIRTY_ROADNET <const> = 1 << 4
@@ -266,6 +185,5 @@ function m.build(world)
         build_road(world, v.building, map, eid_cache)
     end
 
-    map = repair(world, map, eid_cache)
     world:roadnet_reset(map)
 end

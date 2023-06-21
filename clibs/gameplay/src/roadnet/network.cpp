@@ -50,6 +50,10 @@ namespace roadnet {
         return loc;
     }
 
+    static constexpr bool hasDirection(uint8_t m, direction dir) {
+        return (m & (1 << (uint8_t)dir)) != 0;
+    }
+
     static constexpr uint8_t makeMask(const char* maskstr) {
         uint8_t m = 0;
         m |= maskstr[0] != '_'? (1 << (uint8_t)direction::l): 0;
@@ -192,17 +196,26 @@ namespace roadnet {
     };
     static NeighborResult findNeighbor(const flatmap<loction, uint8_t>& map, loction l, direction dir) {
         uint16_t n = 0;
-        loction ln = l;
-        direction nd = dir;
         for (;;) {
-            ln = move(ln, nd);
-            uint8_t m = getMapBits(map, ln);
-            if (isCross(m) || (m & MapRoad::Endpoint)) {
-                return {ln, nd, n, m};
+            loction next = move(l, dir);
+            uint8_t m = getMapBits(map, next);
+            if (!hasDirection(m, reverse(dir))) {
+                uint8_t curm = getMapBits(map, l);
+                if (isCross(curm) || (curm & MapRoad::Endpoint)) {
+                    assert(n == 0);
+                    return {l, dir, n, curm};
+                }
+                dir = next_direction(l, curm, dir);
+                next = move(l, dir);
+                m = getMapBits(map, next);
             }
-            assert(ln != l);
-            nd = reverse(nd);
-            nd = next_direction(ln, m, nd);
+            if (isCross(m) || (m & MapRoad::Endpoint)) {
+                return {next, dir, n, m};
+            }
+            assert(next != l);
+            l = next;
+            dir = reverse(dir);
+            dir = next_direction(next, m, dir);
             n++;
         }
     }
@@ -273,6 +286,7 @@ namespace roadnet {
     static void setEndpoint(network& w, flatmap<loction, uint8_t> const& map, updateMapStatus& status, loction loc, direction a, direction b) {
         auto na = findNeighbor(map, loc, a);
         auto nb = findNeighbor(map, loc, b);
+        assert (loc != na.l && loc != nb.l);
         if (na.l == nb.l) {
             assert(false);
         }
@@ -470,19 +484,24 @@ namespace roadnet {
                 direction dir = (direction)i;
                 if (m & (1 << i) && !cross.hasNeighbor(dir)) {
                     auto result = findNeighbor(map, loc, dir);
-
-                    if (loc == result.l && dir == reverse(result.dir)) {
-                        assert(result.n > 0);
-                        straightData& straight = status.straightVec.emplace_back(
-                            straightid {(uint16_t)status.straightVec.size()},
-                            result.n * road::straight::N + 1,
-                            loc,
-                            dir,
-                            result.dir,
-                            id
-                        );
-                        cross.setNeighbor(dir, straight.id);
-                        cross.setRevNeighbor(reverse(result.dir), straight.id);
+                    if (loc == result.l) {
+                        if (result.n == 0) {
+                            // nothing to do
+                        }
+                        else {
+                            assert(result.n > 0);
+                            assert(dir == reverse(result.dir));
+                            straightData& straight = status.straightVec.emplace_back(
+                                straightid {(uint16_t)status.straightVec.size()},
+                                result.n * road::straight::N + 1,
+                                loc,
+                                dir,
+                                result.dir,
+                                id
+                            );
+                            cross.setNeighbor(dir, straight.id);
+                            cross.setRevNeighbor(reverse(result.dir), straight.id);
+                        }
                     }
                     else {
                         auto neighbor_m = result.m;
