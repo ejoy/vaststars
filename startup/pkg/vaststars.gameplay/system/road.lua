@@ -160,17 +160,6 @@ local function build_road(world, building, map, eid_cache)
         assert(rawget(roadbits_rev, pt.building_category) ~= nil)
         assert(rawget(roadbits_rev[pt.building_category], map[mapkey] & 0xf) ~= nil)
         local f = roadbits_rev[pt.building_category][map[mapkey] & 0xf]
-        eid_cache[key] = ecs:new {
-            building = {
-                x = dx,
-                y = dy,
-                prototype = f.prototype,
-                direction = f.direction,
-            },
-            road = true,
-            endpoint_road = true,
-            building_changed = true,
-        }
     end
 end
 
@@ -265,10 +254,6 @@ function m.build(world)
 
     local map = {}
     local eid_cache = {}
-
-    for v in ecs:select "endpoint_road:in eid:in" do
-        ecs:remove(v.eid)
-    end
 
     for v in ecs:select "road:in building:in eid:in REMOVED:absent" do
         local key =  pack(v.building.x, v.building.y)

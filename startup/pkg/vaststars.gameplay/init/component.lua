@@ -151,7 +151,6 @@ component "fluidbox_changed" {}
 
 --
 component "station_changed" {}
-component "endpoint_road" {}
 component "building_new" {}
 component "building_changed" {}
 component "auto_set_recipe" {}

@@ -103,7 +103,7 @@ local building_cache = {}
 function building_sys:gameworld_build()
     building_cache = {}
     local gameplay_world = gameplay_core.get_world()
-    for e in gameplay_world.ecs:select "building:in road:in endpoint_road:absent eid:in" do
+    for e in gameplay_world.ecs:select "building:in road:in eid:in" do
         building_cache[iprototype.packcoord(e.building.x, e.building.y)] = {
             eid = e.eid,
             x = e.building.x,
