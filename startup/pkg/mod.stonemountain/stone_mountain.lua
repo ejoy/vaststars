@@ -736,14 +736,14 @@ end
 function ism.get_sm_rect_intersect(area)
     local minx, maxx, minz, maxz = area.x, area.x + area.w, area.z - area.h, area.z
     local intersect_rect_table = {}
-    for _, rect in pairs(sm_rect_table) do
+    for rect_idx, rect in pairs(sm_rect_table) do
         local rminx, rmaxx, rminz, rmaxz = rect.x, rect.x + rect.w, rect.z - rect.h, rect.z
         local intersect = true
         if rminx > maxx or rmaxx < minx or rminz > maxz or rmaxz < minz then
             intersect = false
         end
         if intersect then
-            intersect_rect_table[#intersect_rect_table+1] = rect
+            intersect_rect_table[#intersect_rect_table+1] = {idx = rect_idx, rect = rect}
         end
     end
     return intersect_rect_table 
@@ -752,10 +752,10 @@ end
 function ism.get_sm_rect_inside(area)
     local minx, maxx, minz, maxz = area.x, area.x + area.w, area.z - area.h, area.z
     local inside_rect_table = {}
-    for _, rect in pairs(sm_rect_table) do
+    for rect_idx, rect in pairs(sm_rect_table) do
         local rminx, rmaxx, rminz, rmaxz = rect.x, rect.x + rect.w, rect.z - rect.h, rect.z
         if rminx > minx and rmaxx < maxx and rminz > minz and rmaxz < maxz then
-            inside_rect_table[#inside_rect_table+1] = rect
+            inside_rect_table[#inside_rect_table+1] = {idx = rect_idx, rect = rect}
         end 
 
     end
