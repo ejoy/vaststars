@@ -316,7 +316,7 @@ function M:restore(index)
 
     clean()
     local renderData = {}
-    for v in gameplay_core.select("road:in building:in") do
+    for v in gameplay_core.select("road building:in") do
         local typeobject = iprototype.queryById(v.building.prototype)
         local shape, dir = iroadnet_converter.to_shape(typeobject.name)
         renderData[iprototype.packcoord(v.building.x, v.building.y)] = {v.building.x, v.building.y, "normal", shape, dir}

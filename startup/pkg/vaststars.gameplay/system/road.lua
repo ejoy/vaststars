@@ -255,7 +255,7 @@ function m.build(world)
     local map = {}
     local eid_cache = {}
 
-    for v in ecs:select "road:in building:in eid:in REMOVED:absent" do
+    for v in ecs:select "road building:in eid:in REMOVED:absent" do
         local key =  pack(v.building.x, v.building.y)
         local mapkey = pack(v.building.x//ROAD_TILE_WIDTH_SCALE, v.building.y//ROAD_TILE_HEIGHT_SCALE)
         map[mapkey] = roadbits[v.building.prototype][v.building.direction]
