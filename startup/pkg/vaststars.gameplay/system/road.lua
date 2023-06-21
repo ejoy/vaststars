@@ -129,14 +129,14 @@ function m.build(world)
             return rotateMask(mask, building.direction)
         end
         local eid_cache = {}
-        for v in ecs:select "road building:in eid:in REMOVED:absent" do
+        for v in ecs:select "road building:in eid:in" do
             local building = v.building
             local pt = query(building.prototype)
             local dx, dy = buildingPostion(0, 0, building, pt.area)
             local key = pack(dx, dy)
             eid_cache[key] = v.eid
         end
-        for v in ecs:select "endpoint building:in eid:in REMOVED:absent" do
+        for v in ecs:select "endpoint building:in eid:in" do
             local building = v.building
             local pt = query(building.prototype)
             for i = 1, #pt.road, 4 do
@@ -158,7 +158,7 @@ function m.build(world)
 
     do
         local map = {}
-        for v in ecs:select "road building:in eid:in REMOVED:absent" do
+        for v in ecs:select "road building:in" do
             local building = v.building
             local pt = query(building.prototype)
             for i = 1, #pt.road, 4 do
@@ -169,7 +169,7 @@ function m.build(world)
                 map[mapkey] = rotateMask(mask, building.direction)
             end
         end
-        for v in ecs:select "endpoint building:in eid:in REMOVED:absent" do
+        for v in ecs:select "endpoint building:in" do
             local building = v.building
             local pt = query(building.prototype)
             local affected_roads_mask = 0
@@ -178,17 +178,12 @@ function m.build(world)
             else
                 affected_roads_mask = MapRoad.NoHorizontal
             end
-            local endpoint_x = (pt.endpoint >> 0) & 0xF
-            local endpoint_y = (pt.endpoint >> 8) & 0xF
             for i = 1, #pt.road, 4 do
                 local x, y, mask = string.unpack("<I1I1I2", pt.road, i)
                 local dx, dy = buildingPostion(x, y, building, pt.area)
                 local mapkey = pack(dx, dy)
                 if not map[mapkey] then
                     map[mapkey] = rotateMask(mask, building.direction)
-                    if endpoint_x == x and endpoint_y == y then
-                        map[mapkey] = map[mapkey] | MapRoad.Endpoint
-                    end
                 else
                     map[mapkey] = map[mapkey] | rotateMask(mask, building.direction) | affected_roads_mask
                 end

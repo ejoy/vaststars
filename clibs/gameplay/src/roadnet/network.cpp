@@ -13,7 +13,6 @@ namespace roadnet {
         Top          = 1 << 1,
         Right        = 1 << 2,
         Bottom       = 1 << 3,
-        Endpoint     = 1 << 4,
         NoHorizontal = 1 << 5,
         NoVertical   = 1 << 6,
     };
@@ -195,53 +194,8 @@ namespace roadnet {
         direction dir;
         uint16_t  n;
         uint8_t   m;
+        bool      isEndpoint;
     };
-    static NeighborResult findNeighbor(const flatmap<loction, uint8_t>& map, loction l, direction dir) {
-        uint16_t n = 0;
-        for (;;) {
-            loction next = move(l, dir);
-            uint8_t m = getMapBits(map, next);
-            if (!hasDirection(m, reverse(dir))) {
-                uint8_t curm = getMapBits(map, l);
-                if (isCross(curm) || (curm & MapRoad::Endpoint)) {
-                    assert(n == 0);
-                    return {l, dir, n, curm};
-                }
-                dir = next_direction(l, curm, dir);
-                next = move(l, dir);
-                m = getMapBits(map, next);
-            }
-            if (isCross(m) || (m & MapRoad::Endpoint)) {
-                return {next, dir, n, m};
-            }
-            assert(next != l);
-            l = next;
-            dir = reverse(dir);
-            dir = next_direction(next, m, dir);
-            n++;
-        }
-    }
-
-    static void walkToNeighbor(const flatmap<loction, uint8_t>& map, loction l, direction dir, std::function<void(loction, map_index, cross_type)> func) {
-        for (;;) {
-            l = move(l, dir);
-            uint8_t m = getMapBits(map, l);
-            direction prev_dir = reverse(dir);
-            if (isCross(m)) {
-                cross_type type = road::crossType(prev_dir, dir);
-                func(l, map_index::unset, type);
-                return;
-            }
-            direction next_dir = next_direction(l, m, prev_dir);
-            cross_type type = road::crossType(prev_dir, next_dir);
-            func(l, map_index::unset, type);
-            if (m & MapRoad::Endpoint) {
-                func({}, map_index::invaild, cross_type::ll); //TODO: remove it
-                return;
-            }
-            dir = next_dir;
-        }
-    }
 
     struct straightData {
         straightid id;
@@ -285,9 +239,67 @@ namespace roadnet {
         uint32_t genStraightCoordOffset = 0;
     };
 
+    static bool isEndpoint(updateMapStatus& status, loction loc) {
+        return status.endpointMap.contains(loc);
+    }
+
+    static NeighborResult findNeighbor(updateMapStatus& status, const flatmap<loction, uint8_t>& map, loction l, direction dir) {
+        uint16_t n = 0;
+        for (;;) {
+            loction next = move(l, dir);
+            uint8_t m = getMapBits(map, next);
+            if (!hasDirection(m, reverse(dir))) {
+                uint8_t curm = getMapBits(map, l);
+                if (isCross(curm)) {
+                    assert(n == 0);
+                    return {l, dir, n, curm, false};
+                }
+                if (isEndpoint(status, l)) {
+                    assert(n == 0);
+                    return {l, dir, n, curm, true};
+                }
+                dir = next_direction(l, curm, dir);
+                next = move(l, dir);
+                m = getMapBits(map, next);
+            }
+            if (isCross(m)) {
+                return {next, dir, n, m, false};
+            }
+            if (isEndpoint(status, next)) {
+                return {next, dir, n, m, true};
+            }
+            assert(next != l);
+            l = next;
+            dir = reverse(dir);
+            dir = next_direction(next, m, dir);
+            n++;
+        }
+    }
+
+    static void walkToNeighbor(updateMapStatus& status, const flatmap<loction, uint8_t>& map, loction l, direction dir, std::function<void(loction, map_index, cross_type)> func) {
+        for (;;) {
+            l = move(l, dir);
+            uint8_t m = getMapBits(map, l);
+            direction prev_dir = reverse(dir);
+            if (isCross(m)) {
+                cross_type type = road::crossType(prev_dir, dir);
+                func(l, map_index::unset, type);
+                return;
+            }
+            direction next_dir = next_direction(l, m, prev_dir);
+            cross_type type = road::crossType(prev_dir, next_dir);
+            func(l, map_index::unset, type);
+            if (isEndpoint(status, l)) {
+                func({}, map_index::invaild, cross_type::ll); //TODO: remove it
+                return;
+            }
+            dir = next_dir;
+        }
+    }
+
     static void setEndpoint(network& w, flatmap<loction, uint8_t> const& map, updateMapStatus& status, loction loc, direction a, direction b) {
-        auto na = findNeighbor(map, loc, a);
-        auto nb = findNeighbor(map, loc, b);
+        auto na = findNeighbor(status, map, loc, a);
+        auto nb = findNeighbor(status, map, loc, b);
         assert (loc != na.l && loc != nb.l);
         if (na.l == nb.l) {
             assert(false);
@@ -467,7 +479,7 @@ namespace roadnet {
         // step.2
         for (auto const& [loc, m] : map) {
             if (isCross(m)) {
-                assert(!(m & MapRoad::Endpoint));
+                assert(!isEndpoint(status, loc));
                 crossid id { status.genCrossId++ };
                 bool ok = status.crossMap.insert(loc, id);
                 assert(ok);
@@ -495,7 +507,7 @@ namespace roadnet {
             for (uint8_t i = 0; i < 4; ++i) {
                 direction dir = (direction)i;
                 if (m & (1 << i) && !cross.hasNeighbor(dir)) {
-                    auto result = findNeighbor(map, loc, dir);
+                    auto result = findNeighbor(status, map, loc, dir);
                     if (loc == result.l) {
                         if (result.n == 0) {
                             // nothing to do
@@ -516,8 +528,7 @@ namespace roadnet {
                         }
                     }
                     else {
-                        auto neighbor_m = result.m;
-                        if (!(neighbor_m & MapRoad::Endpoint)) {
+                        if (!result.isEndpoint) {
                             auto res = status.crossMap.find(result.l);
                             assert(res);
                             crossid neighbor_id {*res};
@@ -549,18 +560,18 @@ namespace roadnet {
         }
 
         // step.4
-        for (auto const& [loc, m] : map) {
-            if (m & MapRoad::Endpoint) {
-                auto rawm = m & 0xF;
-                switch (rawm) {
-                case mask(L'║'): setEndpoint(*this, map, status, loc, direction::t, direction::b); break;
-                case mask(L'═'): setEndpoint(*this, map, status, loc, direction::l, direction::r); break;
-                case mask(L'╔'): setEndpoint(*this, map, status, loc, direction::r, direction::b); break;
-                case mask(L'╚'): setEndpoint(*this, map, status, loc, direction::r, direction::t); break;
-                case mask(L'╗'): setEndpoint(*this, map, status, loc, direction::l, direction::b); break;
-                case mask(L'╝'): setEndpoint(*this, map, status, loc, direction::l, direction::t); break;
-                default: assert(false); break;
-                }
+        for (auto const& [loc, _] : status.endpointMap) {
+            auto m = map.find(loc);
+            assert(m);
+            auto rawm = *m & 0xF;
+            switch (rawm) {
+            case mask(L'║'): setEndpoint(*this, map, status, loc, direction::t, direction::b); break;
+            case mask(L'═'): setEndpoint(*this, map, status, loc, direction::l, direction::r); break;
+            case mask(L'╔'): setEndpoint(*this, map, status, loc, direction::r, direction::b); break;
+            case mask(L'╚'): setEndpoint(*this, map, status, loc, direction::r, direction::t); break;
+            case mask(L'╗'): setEndpoint(*this, map, status, loc, direction::l, direction::b); break;
+            case mask(L'╝'): setEndpoint(*this, map, status, loc, direction::l, direction::t); break;
+            default: assert(false); break;
             }
         }
 
@@ -579,7 +590,7 @@ namespace roadnet {
         size_t straightCoordOffset = 0;
         for (auto& straight: status.straightVec) {
             uint16_t offset = 0;
-            walkToNeighbor(map, straight.loc, straight.start_dir, [&](loction l, map_index i, cross_type ct) {
+            walkToNeighbor(status, map, straight.loc, straight.start_dir, [&](loction l, map_index i, cross_type ct) {
                 if (!status.crossMap.find(l)) {
                     direction from = road::crossFrom(ct);
                     direction to = road::crossTo(ct);
