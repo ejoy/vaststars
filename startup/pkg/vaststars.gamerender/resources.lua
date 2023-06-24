@@ -671,7 +671,6 @@ local t = {
 	"/pkg/ant.serialize/watch.lua",
 	"/pkg/ant.service/main.lua",
 	"/pkg/ant.service/package.lua",
-	"/pkg/ant.settings/default.lua",
 	"/pkg/ant.settings/main.lua",
 	"/pkg/ant.settings/package.lua",
 	"/pkg/ant.settings/registry.lua",
