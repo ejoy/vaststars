@@ -159,8 +159,10 @@ end
 
 function list_meta:on_pan(event)
     local target_pos = (self.direction == 0) and (self.pos + event.dx) or (self.pos + event.dy)
-    local min_pos = (self.direction == 0) and (self.view.clientWidth - self.panel.clientWidth) or self.view.clientHeight - self.panel.clientHeight 
-    if target_pos > 0 or target_pos < min_pos then
+    if not self.min_pos then
+        self.min_pos = (self.direction == 0) and (self.view.clientWidth - self.panel.clientWidth) or self.view.clientHeight - self.panel.clientHeight 
+    end
+    if target_pos > 0 or target_pos < self.min_pos then
         return
     end
     self.pos = target_pos
