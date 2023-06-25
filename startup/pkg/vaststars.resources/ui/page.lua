@@ -30,6 +30,7 @@ function page_meta.create(document, e, item_init, item_update, detail_renderer, 
     end
     e.appendChild(panel)
     panel.className = "pagestyle"
+    panel.className = panel.className .. " notransition"
     -- panel.addEventListener('mousedown', function(event) page:on_mousedown(event) end)
     -- panel.addEventListener('mousemove', function(event) page:on_drag(event) end)
     -- panel.addEventListener('mouseup', function(event) page:on_mouseup(event) end)
