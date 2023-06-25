@@ -13,8 +13,8 @@ namespace roadnet {
         Top          = 1 << 1,
         Right        = 1 << 2,
         Bottom       = 1 << 3,
-        NoHorizontal = 1 << 5,
-        NoVertical   = 1 << 6,
+        NoHorizontal = 1 << 4,
+        NoVertical   = 1 << 5,
     };
 
     static bool operator&(uint8_t v, MapRoad m) {
@@ -438,19 +438,63 @@ namespace roadnet {
         uint8_t mask;
     };
 
-    static uint8_t roadMask(uint8_t m, direction dir) {
-        return ((m << (uint8_t)dir) | (m >> (4-(uint8_t)dir))) & 0xF;
-    }
-
-    static uint8_t endpointMask(uint8_t m, direction dir) {
-        m = roadMask(m, dir);
-        switch (m) {
-        case mask(L'╠'): m = m | MapRoad::NoHorizontal; break;
-        case mask(L'╦'): m = m | MapRoad::NoVertical; break;
-        case mask(L'╣'): m = m | MapRoad::NoHorizontal; break;
-        case mask(L'╩'): m = m | MapRoad::NoVertical;  break;
+    static uint8_t rotateMask(uint8_t m, direction dir) {
+        uint8_t v = 0;
+        if (m & MapRoad::Left) {
+            switch (dir) {
+            case direction::l: v = v | MapRoad::Left; break;
+            case direction::t: v = v | MapRoad::Top; break;
+            case direction::r: v = v | MapRoad::Right; break;
+            case direction::b: v = v | MapRoad::Bottom; break;
+            default: std::unreachable();
+            }
         }
-        return m;
+        if (m & MapRoad::Top) {
+            switch (dir) {
+            case direction::b: v = v | MapRoad::Left; break;
+            case direction::l: v = v | MapRoad::Top; break;
+            case direction::t: v = v | MapRoad::Right; break;
+            case direction::r: v = v | MapRoad::Bottom; break;
+            default: std::unreachable();
+            }
+        }
+        if (m & MapRoad::Right) {
+            switch (dir) {
+            case direction::r: v = v | MapRoad::Left; break;
+            case direction::b: v = v | MapRoad::Top; break;
+            case direction::l: v = v | MapRoad::Right; break;
+            case direction::t: v = v | MapRoad::Bottom; break;
+            default: std::unreachable();
+            }
+        }
+        if (m & MapRoad::Bottom) {
+            switch (dir) {
+            case direction::t: v = v | MapRoad::Left; break;
+            case direction::r: v = v | MapRoad::Top; break;
+            case direction::b: v = v | MapRoad::Right; break;
+            case direction::l: v = v | MapRoad::Bottom; break;
+            default: std::unreachable();
+            }
+        }
+        if (m & MapRoad::NoHorizontal) {
+            switch (dir) {
+            case direction::l: v = v | MapRoad::NoHorizontal; break;
+            case direction::t: v = v | MapRoad::NoVertical; break;
+            case direction::r: v = v | MapRoad::NoHorizontal; break;
+            case direction::b: v = v | MapRoad::NoVertical; break;
+            default: std::unreachable();
+            }
+        }
+        if (m & MapRoad::NoVertical) {
+            switch (dir) {
+            case direction::l: v = v | MapRoad::NoVertical; break;
+            case direction::t: v = v | MapRoad::NoHorizontal; break;
+            case direction::r: v = v | MapRoad::NoVertical; break;
+            case direction::b: v = v | MapRoad::NoHorizontal; break;
+            default: std::unreachable();
+            }
+        }
+        return v;
     }
 
     void network::rebuildMap(world& w) {
@@ -463,7 +507,7 @@ namespace roadnet {
             auto& building = e.get<ecs::building>();
             for (auto const& pt : prototype::get_span<"road", road_prototype>(w, building.prototype)) {
                 auto loc = buildingLoction(w, building, {pt.x, pt.y});
-                uint8_t mask = roadMask(pt.mask, (direction)building.direction);
+                uint8_t mask = rotateMask(pt.mask, (direction)building.direction);
                 auto [found, slot] = status.map.find_or_insert(loc);
                 assert(!found);
                 *slot = mask;
@@ -480,7 +524,7 @@ namespace roadnet {
             status.endpointMap.insert_or_assign(loc, &endpoint);
             for (auto const& pt : prototype::get_span<"road", road_prototype>(w, building.prototype)) {
                 auto loc = buildingLoction(w, building, {pt.x, pt.y});
-                uint8_t mask = endpointMask(pt.mask, (direction)building.direction);
+                uint8_t mask = rotateMask(pt.mask, (direction)building.direction);
                 auto [found, slot] = status.map.find_or_insert(loc);
                 if (found) {
                     *slot |= mask;
