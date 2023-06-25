@@ -193,7 +193,7 @@ static int lupdate(lua_State *L) {
         }
         auto& chest = v.get<ecs::chest>();
         auto& chestslot = chest::array_at(w, container::index::from(chest.chest), 0);
-        if (chestslot.amount == 0 || chestslot.limit == 0) {
+        if (chestslot.item == 0 || chestslot.amount == 0) {
             continue;
         }
         auto producer_idx = find_producer(w, s.producers, endpoint);
@@ -201,7 +201,6 @@ static int lupdate(lua_State *L) {
             continue;
         }
         chestslot.amount--;
-        chestslot.limit--;
         roadnet::lorryid lorryId = w.rw.createLorry(w, chestslot.item);
         auto& l = w.rw.Lorry(w, lorryId);
         goto_producer(w, s.producers, *producer_idx, l, endpoint);
