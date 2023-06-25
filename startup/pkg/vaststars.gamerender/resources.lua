@@ -803,7 +803,7 @@ local t = {
 	"/pkg/vaststars.gameplay/register/types.lua",
 	"/pkg/vaststars.gameplay/status.lua",
 	"/pkg/vaststars.gameplay/system/fluidflow.lua",
-	"/pkg/vaststars.gameplay/system/road.lua",
+	"/pkg/vaststars.gameplay/system/luaecs.lua",
 	"/pkg/vaststars.gameplay/system/saveload.lua",
 	"/pkg/vaststars.gameplay/type/assembling.lua",
 	"/pkg/vaststars.gameplay/type/base.lua",
