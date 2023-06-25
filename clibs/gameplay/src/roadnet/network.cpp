@@ -333,7 +333,6 @@ namespace roadnet {
         else {
             assert(false);
         }
-        assert(na.n > 0);
         auto epInfo = status.endpointMap.find(loc);
         assert(epInfo);
         auto cross_a = status.crossMap.find(na.l);
