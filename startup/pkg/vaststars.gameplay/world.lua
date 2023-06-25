@@ -4,7 +4,6 @@ local status = require "status"
 local prototype = require "prototype"
 local vaststars = require "vaststars.world.core"
 local chest = require "vaststars.chest.core"
-local roadnet = require "vaststars.roadnet.core"
 local luaecs = import_package "ant.luaecs"
 
 local function pipeline(world, cworld, name)
@@ -39,7 +38,6 @@ end
 return function ()
     local world = {
         _frame = 0,
-        _dirty = 0,
     }
     local ecs = luaecs.world()
     local components = {}
@@ -88,7 +86,7 @@ return function ()
     local pipeline_restore = pipeline(world, cworld, "restore")
 
     function world:dirty(flags)
-        self._dirty = self._dirty | flags
+        cworld:set_dirty(flags)
     end
     local function build()
         pipeline_clean()
@@ -99,9 +97,9 @@ return function ()
         ecs:update()
     end
     function world:update()
-        if self._dirty ~= 0 then
+        if cworld:is_dirty() then
             build()
-            self._dirty = 0
+            cworld:reset_dirty()
         end
         pipeline_update()
         ecs:visitor_update()
@@ -205,9 +203,6 @@ return function ()
     end
     function world:container_place(c, item, amount)
         chest.place(cworld, c.chest, item, amount)
-    end
-    function world:roadnet_reset(...)
-        return roadnet.reset(cworld, ...)
     end
     function world:now()
         return self._frame

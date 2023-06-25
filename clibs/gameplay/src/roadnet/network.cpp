@@ -497,7 +497,7 @@ namespace roadnet {
         return v;
     }
 
-    void network::rebuildMap(world& w) {
+    void network::build(world& w) {
         init(w);
         routeCached.clear();
 
