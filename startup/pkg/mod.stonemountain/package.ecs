@@ -10,7 +10,11 @@ system "stone_mountain"
 interface "istonemountain"
     .implement "stone_mountain.lua"
     .method "create_sm_entity"
-    .method "create_random_sm"
+    .method "get_sm_rect_inside"
+    .method "get_sm_rect_intersect"
+    .method "get_sm_grid"
+    .method "exist_sm"
+    .method "get_sm_group"
 
 component "stonemountain".type "lua"
 
