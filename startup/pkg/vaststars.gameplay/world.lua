@@ -96,7 +96,7 @@ return function ()
         self._frame = self._frame + 1
     end
     function world:backup(rootdir)
-        assert(!cworld:is_dirty())
+        assert(not cworld:is_dirty())
         local fs = require "bee.filesystem"
         fs.create_directories(rootdir)
         world.storage_path = rootdir
