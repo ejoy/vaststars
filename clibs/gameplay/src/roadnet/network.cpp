@@ -521,7 +521,11 @@ namespace roadnet {
             endpoint.neighbor = 0xffff;
             endpoint.rev_neighbor = 0xffff;
             endpoint.lorry = 0;
-            status.endpointMap.insert_or_assign(loc, &endpoint);
+            {
+                auto [found, slot] = status.endpointMap.find_or_insert(loc);
+                assert(!found);
+                *slot = &endpoint;
+            }
             for (auto const& pt : prototype::get_span<"road", road_prototype>(w, building.prototype)) {
                 auto loc = buildingLoction(w, building, {pt.x, pt.y});
                 uint8_t mask = rotateMask(pt.mask, (direction)building.direction);
