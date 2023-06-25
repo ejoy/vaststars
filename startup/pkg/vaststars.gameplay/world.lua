@@ -4,7 +4,6 @@ local status = require "status"
 local prototype = require "prototype"
 local vaststars = require "vaststars.world.core"
 local chest = require "vaststars.chest.core"
-local roadnet = require "vaststars.roadnet.core"
 local luaecs = import_package "ant.luaecs"
 
 local function pipeline(world, cworld, name)
@@ -39,7 +38,6 @@ end
 return function ()
     local world = {
         _frame = 0,
-        _dirty = 0,
     }
     local ecs = luaecs.world()
     local components = {}
@@ -82,30 +80,19 @@ return function ()
     world.pipeline = pipeline
 
     local pipeline_update = pipeline(world, cworld, "update")
-    local pipeline_clean = pipeline(world, cworld, "clean")
     local pipeline_build = pipeline(world, cworld, "build")
     local pipeline_backup = pipeline(world, cworld, "backup")
     local pipeline_restore = pipeline(world, cworld, "restore")
 
     function world:dirty(flags)
-        self._dirty = self._dirty | flags
-    end
-    local function build()
-        pipeline_clean()
-        ecs:visitor_update()
-        ecs:update()
-        pipeline_build()
-        ecs:visitor_update()
-        ecs:update()
+        cworld:set_dirty(flags)
     end
     function world:update()
-        if self._dirty ~= 0 then
-            build()
-            self._dirty = 0
+        if cworld:is_dirty() then
+            pipeline_build()
+            cworld:reset_dirty()
         end
         pipeline_update()
-        ecs:visitor_update()
-        ecs:update()
         self._frame = self._frame + 1
     end
     function world:backup(rootdir)
@@ -205,9 +192,6 @@ return function ()
     end
     function world:container_place(c, item, amount)
         chest.place(cworld, c.chest, item, amount)
-    end
-    function world:roadnet_reset(...)
-        return roadnet.reset(cworld, ...)
     end
     function world:now()
         return self._frame

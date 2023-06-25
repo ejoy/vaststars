@@ -17,7 +17,6 @@ local ilaboratory = require "gameplay.interface.laboratory"
 local ichest = require "gameplay.interface.chest"
 local building_detail = import_package "vaststars.prototype"("building_detail_config")
 local assembling_common = require "ui_datamodel.common.assembling"
-local show_detail_mb = mailbox:sub {"show_detail"}
 local close_detail_mb = mailbox:sub {"close_detail"}
 local UPS <const> = require("gameplay.interface.constant").UPS
 local CHEST_LIST_TYPES <const> = {"chest", "station_producer", "station_consumer", "hub"}
@@ -396,7 +395,7 @@ local function get_delta(last, current, input)
     local autodirty = false
     local dirty = false
     for index, value in ipairs(current) do
-        local d = last and (value.count - last[index].count) or value.count
+        local d = (last and last[index]) and (value.count - last[index].count) or value.count
         if input then
             if d < 0 and not autodirty then
                 autodirty = true
@@ -434,17 +433,6 @@ function M:stage_ui_update(datamodel, object_id)
         model_ready = true
     end
 
-    for _, _, _, area_id in show_detail_mb:unpack() do
-        if area_id == 0 then
-            local object = assert(objects:get(object_id))
-            idetail.selected(object)
-            local p = icamera_controller.world_to_screen(object.srt.t)
-            local ui_x, ui_y = iui.convert_coord(math3d.index(p, 1), math3d.index(p, 2))
-            iui.open({"building_arc_menu.rml"}, object_id, {math3d.index(object.srt.t, 1, 2, 3)}, ui_x, ui_y)
-        else
-            iui.close("building_arc_menu.rml")
-        end
-    end
     local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     local current_inputs, current_ouputs

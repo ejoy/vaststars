@@ -13,6 +13,7 @@ prototype "化工厂I" {
     rotate_on_build = true,
     priority = "secondary",
     maxslot = "8",
+    allow_set_recipt = true,
     camera_distance = 75,
     craft_category = {"器件基础化工","流体基础化工"},
     fluidboxes = {
@@ -76,6 +77,7 @@ prototype "蒸馏厂I" {
     priority = "secondary",
     craft_category = {"过滤"},
     maxslot = "8",
+    allow_set_recipt = true,
     camera_distance = 100,
     fluidboxes = {
         input = {
@@ -140,6 +142,7 @@ prototype "电解厂I" {
     priority = "secondary",
     craft_category = {"电解"},
     maxslot = "8",
+    allow_set_recipt = true,
     camera_distance = 100,
     fluidboxes = {
         input = {
@@ -193,6 +196,7 @@ prototype "水电站I" {
     priority = "secondary",
     craft_category = {"流体液体处理"},
     maxslot = "8",
+    allow_set_recipt = true,
     camera_distance = 100,
     fluidboxes = {
         input = {

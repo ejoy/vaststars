@@ -3,7 +3,6 @@ local world = ecs.world
 local w = world.w
 
 local gameplay_core = require "gameplay.core"
-local pick_object_sys = ecs.system "pick_object_sys"
 local ipick_object = ecs.interface "ipick_object"
 local objects = require "objects"
 local terrain = ecs.require "terrain"
@@ -18,47 +17,65 @@ local CLASS = {
     Mountain = 4,
 }
 
+local mt = {}
+mt.__index = function (t, k)
+    t[k] = {}
+    return t[k]
+end
+
 local pointer = 0
 local last_x, last_y
-
-function pick_object_sys:update_world()
-
-end
 
 local function __pack(x, y)
     assert(x & 0xFF == x and y & 0xFF == y)
     return x | (y<<8)
 end
 
-local function __push_object(lorries, x, y, objs, duplicates)
+local function __distance(x1, y1, x2, y2)
+    return (x1 - x2) ^ 2 + (y1 - y2) ^ 2
+end
+
+local function __push_object(lorries, pick_x, pick_y, x, y, status)
     local lorry_ids = lorries[__pack(x, y)]
     if lorry_ids then
         for _, lorry_id in ipairs(lorry_ids) do
             local lorry = ilorry.get(lorry_id)
             if lorry then
-                objs[#objs + 1] = {class = CLASS.Lorry, id = lorry_id, lorry = lorry, x = x, y = y}
+                status.lorry[lorry_id] = {class = CLASS.Lorry, id = lorry_id, x = x, y = y, lorry = lorry}
             end
         end
     end
 
-    local o
+    local o, id
 
     o = objects:coord(x, y)
-    if o and not duplicates[o.id] then
-        objs[#objs + 1] = {class = CLASS.Object, id = o.id, object = o, x = x, y = y}
-        duplicates[o.id] = true
-    end
-
-    o = terrain:get_mineral(x, y)
     if o then
-        objs[#objs + 1] = {class = CLASS.Mineral, id = math.maxinteger, mineral = o, x = x, y = y}
+        local building = status.building[o.id]
+        if not building then
+            status.building[o.id] = {class = CLASS.Object, id = o.id, x = x, y = y, object = o}
+        else
+            if __distance(pick_x, pick_y, x, y) < __distance(pick_x, pick_y, building.x, building.y) then
+                building.x, building.y = x, y
+            end
+        end
     end
 
-    if imountain:has_mountain(x, y) then
-        objs[#objs + 1] = {class = CLASS.Mountain, id = math.maxinteger, mountain = assert(iprototype.queryFirstByType("mountain")).name, x = x, y = y}
+    o, id = terrain:get_mineral(x, y)
+    if o then
+        local mineral = status.mineral[o.id]
+        if not mineral then
+            status.mineral[id] = {class = CLASS.Mineral, id = id, x = x, y = y, mineral = o}
+        else
+            if __distance(pick_x, pick_y, x, y) < __distance(pick_x, pick_y, mineral.x, mineral.y) then
+                mineral.x, mineral.y = x, y
+            end
+        end
     end
 
-    return objs
+    id = imountain:get_mountain(x, y)
+    if id then
+        status.mountain[id] = {class = CLASS.Mountain, id = id, x = x, y = y, mountain = assert(iprototype.queryFirstByType("mountain")).name}
+    end
 end
 
 function ipick_object.blur_pick(x, y)
@@ -85,10 +102,15 @@ function ipick_object.blur_pick(x, y)
     end
 
     local objs = {}
-    local duplicates = {}
+    local status = setmetatable({}, mt)
     for dx = x - 1, x + 1 do
         for dy = y - 1, y + 1 do
-            objs = __push_object(lorries, dx, dy, objs, duplicates)
+            __push_object(lorries, x, y, dx, dy, status)
+        end
+    end
+    for _, v in pairs(status) do
+        for _, obj in pairs(v) do
+            objs[#objs + 1] = obj
         end
     end
     table.sort(objs, function(a, b)

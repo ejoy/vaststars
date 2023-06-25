@@ -30,6 +30,7 @@ struct world {
     hub_mgr hubs;
     station_mgr stations;
     uint64_t time = 0;
+    uint64_t dirty = 0;
 };
 
 struct world& getworld(lua_State* L);

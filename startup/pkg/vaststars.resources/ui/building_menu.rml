@@ -1,0 +1,94 @@
+<rml>
+    <head>
+        <style>
+            body {
+                font: 100% "微软雅黑";
+            }
+            .safe-area {
+                width: 92%;
+                height: 93%;
+                pointer-events: none;
+            }
+            .building-button-container {
+                flex-direction: row-reverse;
+                align-items: flex-start;
+                transform-origin: 100% 100%;
+                width: 37.08%;
+                height: 65.27%;
+                padding: 0vmin;
+                margin: 0vmin;
+                position: absolute;
+                top: 34.73%;
+                left: 62.92%;
+                pointer-events: none;
+            }
+            .building-button {
+                position: absolute;
+                background-size: cover;
+            }
+            .building-button:active {
+                transform: scale(1.2);
+            }
+            .layout {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                pointer-events: none;
+            }
+        </style>
+        <style path = "common/building_style.rcss"/>
+        <script type="text/x-lua" >
+            local ui_sys = require "ui_system"
+            local handler = require "lua.building_menu_handler"
+            local start = ui_sys.createDataMode("start", {
+                object_id = 0,
+                prototype_name = "",
+                guide_progress = 0,
+                buttons = {},
+            })
+
+            function start.clickButton(event, command, disabled)
+                if command == "" or disabled == true then
+                    return
+                end
+                ui_sys.pub {command, start.object_id}
+                ui_sys.pub {"ui_click", command}
+            end
+
+            ui_sys.addEventListener({
+                ["leave"] = function()
+                    ui_sys.pub {"close", start.object_id}
+                    ui_sys.close()
+                end,
+            })
+
+            ui_sys.mapping(start, {
+                {
+                    function(_)
+                        handler(start)
+                    end,
+                    "show_set_recipe", "show_set_item",
+                    "drone_depot_icon", "station_item_icon",
+                    "lorry_factory_icon", "lorry_factory_count", "lorry_factory_inc_lorry", "lorry_factory_dec_lorry",
+                    "guide_progress", "pickup_item_count",
+                    "station_weight_increase",
+                }
+            })
+        </script>
+    </head>
+    <body style = "pointer-events: none; justify-content: center; align-items: center;">
+        <div class = "safe-area" data-model="start">    
+            <div class = "layout">
+                <div class = "building-button-container" data-style-transform = "it.outer_transform" data-for = "buttons">
+                    <div style = "pointer-events: none; width: 18.23vmin; height: 72.655%; margin-top: 9.115vmin; margin-bottom: 9.115vmin; background-image: textures/building-menu/line.texture; background-size: contain;" data-style-transform = "it.line_transform" data-style-margin-right = "it.line_margin_right" />
+                    <div class = "building-button" style = "pointer-events: none; width: 18.23vmin; height: 18.23vmin;" data-style-transform = "it.inner_transform">
+                        <div class = "building-button" style = "width: 18.23vmin; height: 18.23vmin;" data-style-background-image = "it.background_image" data-event-click = "clickButton(it.command)" />
+                    </div>
+                </div>
+                <div class = "building-button-container" style = "align-items: flex-end;" data-event-click = "clickButton('unselected')">
+                    <div class = "building-button" style = "width: 18.23vmin; height: 18.23vmin; background-image: textures/building-menu/close.texture; background-size: cover;" />
+                </div>
+            </div>
+        </div>
+    </body>
+</rml>

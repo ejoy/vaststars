@@ -30,7 +30,7 @@ function guide_sys:gameworld_update()
     if run_guide then
         -- hide pop ui
         iui.close("detail_panel.rml")
-        iui.close("building_arc_menu.rml")
+        iui.close("building_menu.rml")
         iui.redirect("construct.rml", "guide_on_going")
         iui.redirect("help_panel.rml", "guide_on_going")
 

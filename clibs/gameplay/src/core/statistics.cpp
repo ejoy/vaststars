@@ -4,11 +4,13 @@
 
 template <typename Key, typename Mapped>
 void flatmap_increase(flatmap<Key, Mapped>& m, Key const& key, Mapped mapped) {
-    if (auto iter = m.find(key); iter) {
-        *iter += mapped;
-        return;
+    auto [found, slot] = m.find_or_insert(key);
+    if (found) {
+        *slot = mapped;
     }
-    m.insert_or_assign(key, std::move(mapped));
+    else {
+        *slot += mapped;
+    }
 }
 
 template <typename Key, typename Mapped>

@@ -167,8 +167,8 @@
                 }
             }
             .safe-area {
-                width: 87%;
-                height: 100%;
+                width: 92%;
+                height: 93%;
                 pointer-events: none;
             }
             .progress-num {
@@ -197,17 +197,6 @@
                 height:3.4vmin;
                 background-size: cover;
             }
-            .panel-switch {
-                height: 6.9vmin;
-                width: 16.6vmin;
-                background-image: "textures/common/arrow.texture";
-                background-size: cover;
-                transform: rotate(270deg);
-                border: 0vmin #fff; 
-                left: 95%; 
-                top: 40%;
-                background-color: transparent;
-            }
             .item-num {
                 position: absolute;
                 font-size: 5vmin;
@@ -215,6 +204,32 @@
                 top:-1.5vmin;
                 color:rgb(255,255,255);
                 -webkit-text-stroke: 0.26vmin rgb(0,0,0);
+            }
+            .building-button-container {
+                flex-direction: row-reverse;
+                align-items: flex-start;
+                transform-origin: 100% 100%;
+                width: 37.08%;
+                height: 65.27%;
+                padding: 0vmin;
+                margin: 0vmin;
+                position: absolute;
+                top: 34.73%;
+                left: 62.92%;
+                pointer-events: none;
+            }
+            .building-button {
+                position: absolute;
+                background-size: cover;
+            }
+            .building-button:active {
+                transform: scale(1.2);
+            }
+            .layout {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                pointer-events: none;
             }
         </style>
         <script type="text/x-lua" >
@@ -233,9 +248,16 @@
                 construct_menu = {},
                 cur_construct_menu = "",
                 remove_lorry = false,
+                status = "normal",
+                focus_building_icon = "none"
             })
+
             function start.clickButton(event, ...)
+                console.log(...)
                 ui_sys.pub {...}
+            end
+            function start.clickConstruct(event, ...)
+                start.is_concise_mode = not start.is_concise_mode
             end
             function start.clickShowConstructMenuDetail(event, construct_menu)
                 start.cur_construct_menu = construct_menu
@@ -251,7 +273,6 @@
         </script>
     </head>
     <body style = "pointer-events: none; justify-content: center; align-items: center;">
-
         <div class = "safe-area" data-model="start">    
             <!-- 帮助按钮 -->
             <button  class = "main-menu-button" style="border: 0.00vmin; position: absolute; left:-6.7vmin; top: -4vmin;" data-event-click="clickButton('help')" data-if = "!is_concise_mode && guide_progress >= 10">
@@ -280,33 +301,45 @@
             </div>
 
             <!-- right-side construction menu -->
-            <workbutton class = "panel-switch" data-event-click="clickButton('switch_concise_mode')" />
-            <div style = "pointer-events: none; position: absolute; right:0vmin; width: 98vmax; height: 97vmin; flex-direction: row-reverse;" data-if="is_concise_mode">
-                <div style = "width: 16.00vmin; height: 80.00vmin; flex-direction: column; justify-content: space-between;">
-                    <workbutton data-event-click="clickShowConstructMenuDetail(it.name)" data-for = "construct_menu" data-style-background-color="cur_construct_menu == it.name ? 'rgb(0, 176, 80)' : 'rgb(246, 142, 14)'">
-                        <div class="workbutton-bg" data-style-background-image = "it.icon" />
-                        <div class="workbutton-text" >{{it.name}}</div>
-                    </workbutton>
+            <div class = "layout">
+                <div style = "pointer-events: none; position: absolute; right:0vmin; width: 98vmax; height: 97vmin; flex-direction: row-reverse;" data-if="is_concise_mode">
+                    <div style = "width: 16.00vmin; height: 80.00vmin; flex-direction: column; justify-content: space-between;">
+                        <workbutton data-event-click="clickShowConstructMenuDetail(it.name)" data-for = "construct_menu" data-style-background-color="cur_construct_menu == it.name ? 'rgb(0, 176, 80)' : 'rgb(246, 142, 14)'">
+                            <div class="workbutton-bg" data-style-background-image = "it.icon" />
+                            <div class="workbutton-text" >{{it.name}}</div>
+                        </workbutton>
+                    </div>
+
+                    <!-- separator -->
+                    <div style = "width: 2.67vmin;" />
+
+                    <div style = "flex-direction: row; flex-wrap: wrap; width: 30.13vmin; height: 80.00vmin; background-color: rgb(44, 32, 18); border: 0.40vmin rgb(89, 73, 39); border-radius: 0.67vmin;" data-if="cur_construct_menu == it.name" data-for = "construct_menu">
+                        <div class="tools-container" data-for = "menu, menu_id : it.detail">
+                            <button class="tools-button" data-event-click="clickButton('construct_entity', menu.prototype_name)">
+                                <div class="workbutton-bg" data-style-background-image = "menu.icon" />
+                                <div class="tools-button-title">{{menu.show_prototype_name}}</div>
+                                <div class="item-num">{{menu.count}}</div>
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- separator -->
-                <div style = "width: 2.67vmin;" />
+                <workbutton data-event-click="clickButton('remove_lorry')" style = "position: absolute; left: 138.50vmin; top: 81vmin;" data-if = "false">
+                    <div class="workbutton-bg" style = 'background-image: "textures/construct/power.texture"' />
+                    <div class="workbutton-text" >删除小车</div>
+                </workbutton>
+            </div>
 
-                <div style = "flex-direction: row; flex-wrap: wrap; width: 30.13vmin; height: 80.00vmin; background-color: rgb(44, 32, 18); border: 0.40vmin rgb(89, 73, 39); border-radius: 0.67vmin;" data-if="cur_construct_menu == it.name" data-for = "construct_menu">
-                    <div class="tools-container" data-for = "menu, menu_id : it.detail">
-                        <button class="tools-button" data-event-click="clickButton('construct_entity', menu.prototype_name)">
-                            <div class="workbutton-bg" data-style-background-image = "menu.icon" />
-                            <div class="tools-button-title">{{menu.show_prototype_name}}</div>
-                            <div class="item-num">{{menu.count}}</div>
-                        </button>
+            <div class = "layout">
+                <div class = "building-button-container" style = "align-items: flex-end;">
+                    <div class = "building-button" style = "width: 27.41vmin; height: 27.41vmin; background-image: textures/construct/construct.texture;" data-event-click = "clickButton('construct')" data-if = "status == 'normal'" />
+                </div>
+                <div class = "building-button-container" style = "align-items: flex-end;">
+                    <div class = "building-button" style = "width: 27.41vmin; height: 27.41vmin; background-image: textures/construct/building-background.texture; align-items: center; justify-content: center;" data-event-click = "clickButton('selected')" data-if = "status == 'focus'">
+                        <div data-style-background-image = "focus_building_icon" style = "background-size: cover; width: 128px; height: 128px;" />
                     </div>
                 </div>
             </div>
-
-            <workbutton data-event-click="clickButton('remove_lorry')" style = "position: absolute; left: 138.50vmin; top: 81vmin;" data-if = "remove_lorry">
-                <div class="workbutton-bg" style = 'background-image: "textures/construct/power.texture"' />
-                <div class="workbutton-text" >删除小车</div>
-            </workbutton>
         </div>
     </body>
 </rml>

@@ -29,7 +29,7 @@ prototype "指挥中心" {
     endpoint = "3,4",
     road = {
         "1,4,╔╗",
-        "1,6,╩╩",
+        "1,6,╨╨",
     },
     move = false,
     io_shelf = false,
@@ -191,7 +191,7 @@ prototype "出货车站" {
     endpoint = "2,0",
     road = {
         "0,0,╔╗",
-        "0,2,╩╩",
+        "0,2,╨╨",
     },
     camera_distance = 90,
 }
@@ -216,7 +216,7 @@ prototype "收货车站" {
     endpoint = "2,0",
     road = {
         "0,0,╔╗",
-        "0,2,╩╩",
+        "0,2,╨╨",
     },
     camera_distance = 90,
 }

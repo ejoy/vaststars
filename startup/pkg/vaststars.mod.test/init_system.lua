@@ -69,6 +69,7 @@ function S.init_world()
     local dir = math3d.normalize(math3d.sub(mc.ZERO_PT, eyepos))
     iom.set_direction(camera_ref, dir)
     iterrain.gen_terrain_field(256, 256, 128)
+    iterrain.gen_terrain_field(256, 256, 128)
 --[[       ecs.create_entity{
         policy = {
             "ant.scene|scene_object",
@@ -169,7 +170,7 @@ function S.init_world()
     istonemountain.create_sm_entity(idx_string)
     --istonemountain.create_sm_entity_config(config, width, height, offset, UNIT)    
     --create_mark()
-    
+
 --[[      printer_eid = ecs.create_entity {
         policy = {
             "ant.render|render",

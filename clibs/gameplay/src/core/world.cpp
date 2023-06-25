@@ -83,6 +83,24 @@ namespace lua_world {
         return 1;
     }
 
+    static int set_dirty(lua_State* L) {
+        auto& w = getworld(L);
+        w.dirty |= (uint64_t)luaL_checkinteger(L, 2);
+        return 0;
+    }
+
+    static int is_dirty(lua_State* L) {
+        auto& w = getworld(L);
+        lua_pushboolean(L, w.dirty != 0);
+        return 1;
+    }
+
+    static int reset_dirty(lua_State* L) {
+        auto& w = getworld(L);
+        w.dirty = 0;
+        return 0;
+    }
+
     static int
     reset(lua_State* L) {
         auto& w = getworld(L);
@@ -377,6 +395,9 @@ namespace lua_world {
                 { "backup_chest", backup_chest },
                 { "restore_chest", restore_chest },
                 // misc
+                {"set_dirty", set_dirty},
+                {"is_dirty", is_dirty},
+                {"reset_dirty", reset_dirty},
                 {"reset", reset},
                 {"prototype_bind", prototype_bind},
                 {"system_solve", system_solve},

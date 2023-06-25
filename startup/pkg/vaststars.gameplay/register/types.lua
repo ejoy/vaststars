@@ -133,6 +133,8 @@ local L <const> = 1 << 0
 local T <const> = 1 << 1
 local R <const> = 1 << 2
 local B <const> = 1 << 3
+local H <const> = 1 << 4
+local V <const> = 1 << 5
 local RoadMask <const> = {
 	[utf8.codepoint '║'] = _|T|_|B,
 	[utf8.codepoint '═'] = L|_|R|_,
@@ -149,6 +151,10 @@ local RoadMask <const> = {
 	[utf8.codepoint 'v'] = _|T|_|_,
 	[utf8.codepoint '<'] = _|_|R|_,
 	[utf8.codepoint '^'] = _|_|_|B,
+	[utf8.codepoint '╞'] = _|T|R|B|H|_,
+	[utf8.codepoint '╥'] = L|_|R|B|_|V,
+	[utf8.codepoint '╨'] = L|T|R|_|_|V,
+	[utf8.codepoint '╡'] = L|T|_|B|H|_,
 }
 
 register_unit("network", "string", function(s)
@@ -163,7 +169,7 @@ register_unit("network", "string", function(s)
 		assert(y >= 0 and y < 256)
 		for _, c in utf8.codes(m) do
 			assert(x >= 0 and x < 256)
-			r[#r+1] = string.pack("<I1I1I2", x, y, RoadMask[c])
+			r[#r+1] = string.pack("<I1I1I1", x, y, RoadMask[c])
 			x = x + 2
 		end
 	end

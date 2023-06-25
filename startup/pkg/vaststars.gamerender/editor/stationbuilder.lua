@@ -172,6 +172,8 @@ local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobjec
                         else
                             color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                         end
+                    else
+                        color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                     end
                 else
                     color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
@@ -215,6 +217,8 @@ local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobjec
                         else
                             color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                         end
+                    else
+                        color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                     end
                 else
                     color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
@@ -342,7 +346,7 @@ local function __show_road_entrance_marker(self, typeobject)
     local coords = {}
     for e in gameplay_core.get_world().ecs:select "road:in building:in eid:in" do
         local x, y = e.building.x, e.building.y
-        local prototype_name, dir = iprototype.queryById(e.building.prototype).name, iprototype.dir_tostring(e.building.dir)
+        local prototype_name, dir = iprototype.queryById(e.building.prototype).name, iprototype.dir_tostring(e.building.direction)
         local dirs = _get_connections_dir(prototype_name, dir)
         for _, d in ipairs(ALL_DIR) do
             if dirs[d] then
