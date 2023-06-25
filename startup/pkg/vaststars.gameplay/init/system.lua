@@ -1,3 +1,4 @@
+require "system.luaecs"
 require "system.fluidflow"
 require "system.saveload"
 

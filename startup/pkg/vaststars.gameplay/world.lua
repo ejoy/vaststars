@@ -80,7 +80,6 @@ return function ()
     world.pipeline = pipeline
 
     local pipeline_update = pipeline(world, cworld, "update")
-    local pipeline_clean = pipeline(world, cworld, "clean")
     local pipeline_build = pipeline(world, cworld, "build")
     local pipeline_backup = pipeline(world, cworld, "backup")
     local pipeline_restore = pipeline(world, cworld, "restore")
@@ -88,22 +87,12 @@ return function ()
     function world:dirty(flags)
         cworld:set_dirty(flags)
     end
-    local function build()
-        pipeline_clean()
-        ecs:visitor_update()
-        ecs:update()
-        pipeline_build()
-        ecs:visitor_update()
-        ecs:update()
-    end
     function world:update()
         if cworld:is_dirty() then
-            build()
+            pipeline_build()
             cworld:reset_dirty()
         end
         pipeline_update()
-        ecs:visitor_update()
-        ecs:update()
         self._frame = self._frame + 1
     end
     function world:backup(rootdir)
