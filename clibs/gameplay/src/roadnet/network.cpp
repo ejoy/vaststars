@@ -232,6 +232,7 @@ namespace roadnet {
     };
 
     struct updateMapStatus {
+        flatmap<loction, uint8_t> map;
         flatmap<loction, crossid> crossMap;
         flatmap<loction, straightGrid> straightMap;
         flatmap<loction, ecs::endpoint*> endpointMap;
@@ -246,13 +247,13 @@ namespace roadnet {
         return status.endpointMap.contains(loc);
     }
 
-    static NeighborResult findNeighbor(updateMapStatus& status, const flatmap<loction, uint8_t>& map, loction l, direction dir) {
+    static NeighborResult findNeighbor(updateMapStatus& status, loction l, direction dir) {
         uint16_t n = 0;
         for (;;) {
             loction next = move(l, dir);
-            uint8_t m = getMapBits(map, next);
+            uint8_t m = getMapBits(status.map, next);
             if (!hasDirection(m, reverse(dir))) {
-                uint8_t curm = getMapBits(map, l);
+                uint8_t curm = getMapBits(status.map, l);
                 if (isCross(curm)) {
                     assert(n == 0);
                     return {l, dir, n, curm, false};
@@ -263,7 +264,7 @@ namespace roadnet {
                 }
                 dir = next_direction(l, curm, dir);
                 next = move(l, dir);
-                m = getMapBits(map, next);
+                m = getMapBits(status.map, next);
             }
             if (isCross(m)) {
                 return {next, dir, n, m, false};
@@ -279,10 +280,10 @@ namespace roadnet {
         }
     }
 
-    static void walkToNeighbor(updateMapStatus& status, const flatmap<loction, uint8_t>& map, loction l, direction dir, std::function<void(loction, map_index, cross_type)> func) {
+    static void walkToNeighbor(updateMapStatus& status, loction l, direction dir, std::function<void(loction, map_index, cross_type)> func) {
         for (;;) {
             l = move(l, dir);
-            uint8_t m = getMapBits(map, l);
+            uint8_t m = getMapBits(status.map, l);
             direction prev_dir = reverse(dir);
             if (isCross(m)) {
                 cross_type type = road::crossType(prev_dir, dir);
@@ -300,9 +301,9 @@ namespace roadnet {
         }
     }
 
-    static void setEndpoint(network& w, flatmap<loction, uint8_t> const& map, updateMapStatus& status, loction loc, direction a, direction b) {
-        auto na = findNeighbor(status, map, loc, a);
-        auto nb = findNeighbor(status, map, loc, b);
+    static void setEndpoint(network& w, updateMapStatus& status, loction loc, direction a, direction b) {
+        auto na = findNeighbor(status, loc, a);
+        auto nb = findNeighbor(status, loc, b);
         assert (loc != na.l && loc != nb.l);
         if (na.l == nb.l) {
             assert(false);
@@ -454,60 +455,20 @@ namespace roadnet {
 
     void network::rebuildMap(world& w) {
         init(w);
-
         routeCached.clear();
-        flatmap<loction, uint8_t> map;
 
-        // step.0
+        // step.1
+        updateMapStatus status;
         for (auto& e : ecs_api::select<ecs::road, ecs::building>(w.ecs)) {
             auto& building = e.get<ecs::building>();
             for (auto const& pt : prototype::get_span<"road", road_prototype>(w, building.prototype)) {
                 auto loc = buildingLoction(w, building, {pt.x, pt.y});
                 uint8_t mask = roadMask(pt.mask, (direction)building.direction);
-                auto [found, slot] = map.find_or_insert(loc);
+                auto [found, slot] = status.map.find_or_insert(loc);
                 assert(!found);
                 *slot = mask;
             }
         }
-
-        for (auto& e : ecs_api::select<ecs::endpoint, ecs::building>(w.ecs)) {
-            auto& building = e.get<ecs::building>();
-            for (auto const& pt : prototype::get_span<"road", road_prototype>(w, building.prototype)) {
-                auto loc = buildingLoction(w, building, {pt.x, pt.y});
-                uint8_t mask = endpointMask(pt.mask, (direction)building.direction);
-                auto [found, slot] = map.find_or_insert(loc);
-                if (found) {
-                    *slot |= mask;
-                }
-                else {
-                    *slot = mask;
-                }
-            }
-        }
-
-        if (map.empty()) {
-            for (auto& e : ecs_api::select<ecs::endpoint>(w.ecs)) {
-                auto& endpoint = e.get<ecs::endpoint>();
-                endpoint.neighbor = 0xffff;
-                endpoint.rev_neighbor = 0xffff;
-                endpoint.lorry = 0;
-            }
-            for (auto& e : ecs_api::select<ecs::lorry>(w.ecs)) {
-                auto& lorry = e.get<ecs::lorry>();
-                if (lorryInvalid(lorry)) {
-                    continue;
-                }
-                destroyLorry(w, e);
-            }
-            crossAry.clear();
-            straightAry.clear();
-            straightLorry.clear();
-            straightCoord.clear();
-            return;
-        }
-
-        // step.1
-        updateMapStatus status;
         for (auto& e : ecs_api::select<ecs::endpoint, ecs::building>(w.ecs)) {
             auto& endpoint = e.get<ecs::endpoint>();
             auto& building = e.get<ecs::building>();
@@ -517,8 +478,18 @@ namespace roadnet {
             endpoint.rev_neighbor = 0xffff;
             endpoint.lorry = 0;
             status.endpointMap.insert_or_assign(loc, &endpoint);
+            for (auto const& pt : prototype::get_span<"road", road_prototype>(w, building.prototype)) {
+                auto loc = buildingLoction(w, building, {pt.x, pt.y});
+                uint8_t mask = endpointMask(pt.mask, (direction)building.direction);
+                auto [found, slot] = status.map.find_or_insert(loc);
+                if (found) {
+                    *slot |= mask;
+                }
+                else {
+                    *slot = mask;
+                }
+            }
         }
-
         status.lorryStatusAry.reset(ecs_api::count<ecs::lorry>(w.ecs));
         for (auto& e : ecs_api::select<ecs::lorry>(w.ecs)) {
             auto& lorry = e.get<ecs::lorry>();
@@ -529,7 +500,7 @@ namespace roadnet {
         }
 
         // step.2
-        for (auto const& [loc, m] : map) {
+        for (auto const& [loc, m] : status.map) {
             if (isCross(m)) {
                 assert(!isEndpoint(status, loc));
                 crossid id { status.genCrossId++ };
@@ -537,14 +508,13 @@ namespace roadnet {
                 assert(ok);
             }
         }
-        assert(status.crossMap.size() != 0);
 
         // step.3
         crossAry.reset(status.genCrossId);
         for (auto const& [loc, id]: status.crossMap) {
             road::cross& cross = CrossRoad(id);
             cross.loc = loc;
-            uint8_t m = getMapBits(map, loc);
+            uint8_t m = getMapBits(status.map, loc);
             if (m & MapRoad::NoHorizontal) {
                 cross.ban |= road::LeftTurn;
                 cross.ban |= road::UTurn;
@@ -559,7 +529,7 @@ namespace roadnet {
             for (uint8_t i = 0; i < 4; ++i) {
                 direction dir = (direction)i;
                 if (m & (1 << i) && !cross.hasNeighbor(dir)) {
-                    auto result = findNeighbor(status, map, loc, dir);
+                    auto result = findNeighbor(status, loc, dir);
                     if (loc == result.l) {
                         if (result.n == 0) {
                             // nothing to do
@@ -613,16 +583,16 @@ namespace roadnet {
 
         // step.4
         for (auto const& [loc, _] : status.endpointMap) {
-            auto m = map.find(loc);
+            auto m = status.map.find(loc);
             assert(m);
             auto rawm = *m & 0xF;
             switch (rawm) {
-            case mask(L'║'): setEndpoint(*this, map, status, loc, direction::t, direction::b); break;
-            case mask(L'═'): setEndpoint(*this, map, status, loc, direction::l, direction::r); break;
-            case mask(L'╔'): setEndpoint(*this, map, status, loc, direction::r, direction::b); break;
-            case mask(L'╚'): setEndpoint(*this, map, status, loc, direction::r, direction::t); break;
-            case mask(L'╗'): setEndpoint(*this, map, status, loc, direction::l, direction::b); break;
-            case mask(L'╝'): setEndpoint(*this, map, status, loc, direction::l, direction::t); break;
+            case mask(L'║'): setEndpoint(*this, status, loc, direction::t, direction::b); break;
+            case mask(L'═'): setEndpoint(*this, status, loc, direction::l, direction::r); break;
+            case mask(L'╔'): setEndpoint(*this, status, loc, direction::r, direction::b); break;
+            case mask(L'╚'): setEndpoint(*this, status, loc, direction::r, direction::t); break;
+            case mask(L'╗'): setEndpoint(*this, status, loc, direction::l, direction::b); break;
+            case mask(L'╝'): setEndpoint(*this, status, loc, direction::l, direction::t); break;
             default: assert(false); break;
             }
         }
@@ -642,7 +612,7 @@ namespace roadnet {
         size_t straightCoordOffset = 0;
         for (auto& straight: status.straightVec) {
             uint16_t offset = 0;
-            walkToNeighbor(status, map, straight.loc, straight.start_dir, [&](loction l, map_index i, cross_type ct) {
+            walkToNeighbor(status, straight.loc, straight.start_dir, [&](loction l, map_index i, cross_type ct) {
                 if (!status.crossMap.find(l)) {
                     direction from = road::crossFrom(ct);
                     direction to = road::crossTo(ct);
@@ -687,7 +657,7 @@ namespace roadnet {
                 continue;
             }
             loction loc {lorry.x, lorry.y};
-            auto m = getMapBits(map, loc);
+            auto m = getMapBits(status.map, loc);
             if (m == 0) {
                 destroyLorry(w, e);
                 continue;
