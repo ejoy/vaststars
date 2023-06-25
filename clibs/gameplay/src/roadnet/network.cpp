@@ -230,12 +230,15 @@ namespace roadnet {
     struct lorryStatus {
         loction endpoint;
     };
+    struct endpointStatus {
+        ecs::endpoint* endpoint;
+    };
 
     struct updateMapStatus {
         flatmap<loction, uint8_t> map;
         flatmap<loction, crossid> crossMap;
         flatmap<loction, straightGrid> straightMap;
-        flatmap<loction, ecs::endpoint*> endpointMap;
+        flatmap<loction, endpointStatus> endpointMap;
         dynarray<lorryStatus> lorryStatusAry;
         std::vector<straightData> straightVec;
         uint16_t genCrossId = 0;
@@ -330,8 +333,8 @@ namespace roadnet {
             assert(false);
         }
         assert(na.n > 0);
-        auto ep = status.endpointMap.find(loc);
-        assert(ep);
+        auto epInfo = status.endpointMap.find(loc);
+        assert(epInfo);
         auto cross_a = status.crossMap.find(na.l);
         auto cross_b = status.crossMap.find(nb.l);
         assert(cross_a);
@@ -346,7 +349,7 @@ namespace roadnet {
             crossid::invalid()
         );
         w.CrossRoad(*cross_b).setNeighbor(reverse(nb.dir), straight1.id);
-        (*ep)->rev_neighbor = straight1.id;
+        epInfo->endpoint->rev_neighbor = straight1.id;
         straightData& straight2 = status.straightVec.emplace_back(
             straightid {(uint16_t)status.straightVec.size()},
             na.n * road::straight::N + 1,
@@ -356,7 +359,7 @@ namespace roadnet {
             *cross_a
         );
         w.CrossRoad(*cross_a).setRevNeighbor(reverse(na.dir), straight2.id);
-        (*ep)->neighbor = straight2.id;
+        epInfo->endpoint->neighbor = straight2.id;
     }
 
     static void insertLorry01(network& nw, world& w, straightGrid& grid, lorry_entity& l, map_index z) {
@@ -524,7 +527,7 @@ namespace roadnet {
             {
                 auto [found, slot] = status.endpointMap.find_or_insert(loc);
                 assert(!found);
-                *slot = &endpoint;
+                *slot = { &endpoint };
             }
             for (auto const& pt : prototype::get_span<"road", road_prototype>(w, building.prototype)) {
                 auto loc = buildingLoction(w, building, {pt.x, pt.y});
@@ -698,7 +701,7 @@ namespace roadnet {
             auto& s = status.lorryStatusAry[e.getid()];
             if (auto ep = status.endpointMap.find(s.endpoint)) {
                 //TODO: endpoint changed
-                lorryGo(lorry, **ep, lorry.item_classid, lorry.item_amount);
+                lorryGo(lorry, *ep->endpoint, lorry.item_classid, lorry.item_amount);
             }
             else {
                 destroyLorry(w, e);
