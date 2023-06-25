@@ -73,21 +73,6 @@ static std::optional<station_consumer_ref> find_consumer(world& w, uint16_t item
     return min_consumer;
 }
 
-static std::optional<uint8_t> recipeFirstOutput(world& w, uint16_t recipe) {
-    if (recipe == 0) {
-        return std::nullopt;
-    }
-    auto const& ingredients = prototype::get<"ingredients", recipe_items>(w, recipe);
-    auto const& results = prototype::get<"results", recipe_items>(w, recipe);
-    if (results.n == 0) {
-        return std::nullopt;
-    }
-    if (ingredients.n >= (std::numeric_limits<uint8_t>::max)()) {
-        return std::nullopt;
-    }
-    return (uint8_t)ingredients.n;
-}
-
 static int lbuild(lua_State *L) {
     auto& w = getworld(L);
     auto& s = w.stations;
@@ -198,7 +183,7 @@ static int lupdate(lua_State *L) {
         goto_producer(w, s.producers, *producer_idx, l, endpoint);
         roadnet::endpointSetOut(w, endpoint);
     }
-    for (auto& v : ecs_api::select<ecs::lorry_factory, ecs::endpoint, ecs::assembling, ecs::chest>(w.ecs)) {
+    for (auto& v : ecs_api::select<ecs::lorry_factory, ecs::endpoint, ecs::chest>(w.ecs)) {
         auto& endpoint = v.get<ecs::endpoint>();
         if (!endpoint.neighbor || !endpoint.rev_neighbor) {
             continue;
@@ -206,14 +191,8 @@ static int lupdate(lua_State *L) {
         if (!roadnet::endpointIsReady(w.rw, endpoint)) {
             continue;
         }
-        auto& assembling = v.get<ecs::assembling>();
-        auto slot_opt = recipeFirstOutput(w, assembling.recipe);
-        if (!slot_opt) {
-            continue;
-        }
-        auto& slot = *slot_opt;
         auto& chest = v.get<ecs::chest>();
-        auto& chestslot = chest::array_at(w, container::index::from(chest.chest), slot);
+        auto& chestslot = chest::array_at(w, container::index::from(chest.chest), 0);
         if (chestslot.amount == 0 || chestslot.limit == 0) {
             continue;
         }

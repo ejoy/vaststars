@@ -32,7 +32,6 @@ namespace roadnet {
         void             build(world& w);
         lorryid          createLorry(world& w, uint16_t classid);
         void             destroyLorry(world& w, lorry_entity& l);
-        void             removeLorry(world& w, lorryid l);
         void             update(world& w, uint64_t ti);
         void             updateRemoveLorry(world& w, size_t n);
         road::straight&  StraightRoad(straightid id);
