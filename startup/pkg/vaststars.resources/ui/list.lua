@@ -39,9 +39,10 @@ function list_meta.create(document, e, item_init, item_update, detail_renderer, 
     end
     panel.style.alignItems = 'center'
     panel.style.justifyContent = 'flex-start'
-    panel.addEventListener('mousedown', function(event) list:on_mousedown(event) end)
-    panel.addEventListener('mousemove', function(event) list:on_drag(event) end)
-    panel.addEventListener('mouseup', function(event) list:on_mouseup(event) end)
+    -- panel.addEventListener('mousedown', function(event) list:on_mousedown(event) end)
+    -- panel.addEventListener('mousemove', function(event) list:on_drag(event) end)
+    -- panel.addEventListener('mouseup', function(event) list:on_mouseup(event) end)
+    panel.addEventListener('pan', function(event) list:on_pan(event) end)
     e.appendChild(panel)
     list.panel = panel
     list.view = e
@@ -152,6 +153,21 @@ function list_meta:show_detail(it, show)
             self.detail = nil
             iteminfo.detail = false
         end
+    end
+end
+
+function list_meta:on_pan(event)
+    local target_pos = (self.direction == 0) and (self.pos + event.dx) or (self.pos + event.dy)
+    local min_pos = (self.direction == 0) and (self.view.clientWidth - self.panel.clientWidth) or self.view.clientHeight - self.panel.clientHeight 
+    if target_pos > 0 or target_pos < min_pos then
+        return
+    end
+    self.pos = target_pos
+    local e = self.panel
+    if self.direction == 0 then
+        e.style.left = tostring(math.floor(self.pos)) .. 'px'
+    else
+        e.style.top = tostring(math.floor(self.pos)) .. 'px'
     end
 end
 

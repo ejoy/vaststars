@@ -30,9 +30,10 @@ function page_meta.create(document, e, item_init, item_update, detail_renderer, 
     end
     e.appendChild(panel)
     panel.className = "pagestyle"
-    panel.addEventListener('mousedown', function(event) page:on_mousedown(event) end)
-    panel.addEventListener('mousemove', function(event) page:on_drag(event) end)
-    panel.addEventListener('mouseup', function(event) page:on_mouseup(event) end)
+    -- panel.addEventListener('mousedown', function(event) page:on_mousedown(event) end)
+    -- panel.addEventListener('mousemove', function(event) page:on_drag(event) end)
+    -- panel.addEventListener('mouseup', function(event) page:on_mouseup(event) end)
+    panel.addEventListener('pan', function(event) page:on_pan(event) end)
     panel.style.height = page.height
     panel.style.flexDirection = 'row'
     panel.style.alignItems = 'flex-start'
@@ -249,6 +250,18 @@ function page_meta:show_detail(item_index, show)
             map.detail = false
         end
     end
+end
+
+function page_meta:on_pan(event)
+    if self.page_count < 2 then
+        return
+    end
+    local target_pos = self.pos + event.dx
+    if target_pos > 0 or target_pos < (1 - self.page_count) * self.panel.childNodes[1].clientWidth then
+        return
+    end
+    self.pos = target_pos
+    self.panel.style.left = tostring(math.floor(self.pos)) .. 'px'
 end
 
 function page_meta:on_mousedown(event)
