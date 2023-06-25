@@ -232,6 +232,7 @@ namespace roadnet {
     };
     struct endpointStatus {
         ecs::endpoint* endpoint;
+        bool changed;
     };
 
     struct updateMapStatus {
@@ -527,7 +528,16 @@ namespace roadnet {
             {
                 auto [found, slot] = status.endpointMap.find_or_insert(loc);
                 assert(!found);
-                *slot = { &endpoint };
+                slot->endpoint = &endpoint;
+                if (e.sibling<ecs::building_new>()) {
+                    slot->changed = true;
+                }
+                else if (e.sibling<ecs::building_changed>()) {
+                    slot->changed = true;
+                }
+                else if (e.sibling<ecs::station_changed>()) {
+                    slot->changed = true;
+                }
             }
             for (auto const& pt : prototype::get_span<"road", road_prototype>(w, building.prototype)) {
                 auto loc = buildingLoction(w, building, {pt.x, pt.y});
@@ -699,8 +709,7 @@ namespace roadnet {
                 continue;
             }
             auto& s = status.lorryStatusAry[e.getid()];
-            if (auto ep = status.endpointMap.find(s.endpoint)) {
-                //TODO: endpoint changed
+            if (auto ep = status.endpointMap.find(s.endpoint); ep && !ep->changed) {
                 lorryGo(lorry, *ep->endpoint, lorry.item_classid, lorry.item_amount);
             }
             else {
