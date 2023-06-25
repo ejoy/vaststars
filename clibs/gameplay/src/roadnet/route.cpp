@@ -36,22 +36,10 @@ namespace roadnet {
             return *node;
         }
         void set(straightid N, straightid prev, direction dir, uint16_t distance) {
-            auto node = results.find(N);
-            if (!node) {
-                results.insert_or_assign(N, dijkstraNode {
-                    distance,
-                    prev,
-                    dir,
-                });
+            auto [found, node] = results.find_or_insert(N);
+            if (!found || node->distance > distance) {
+                *node = dijkstraNode { distance, prev, dir };
                 openlist.push({distance, N});
-                return;
-            }
-            if (node->distance > distance) {
-                node->distance = distance;
-                node->dir = dir;
-                node->prev = prev;
-                openlist.push({distance, N});
-                return;
             }
         }
     };

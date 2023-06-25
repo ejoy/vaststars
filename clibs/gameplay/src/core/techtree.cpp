@@ -41,22 +41,13 @@ bool techtree_mgr::research_set(world& w,uint16_t techid, uint16_t val) {
 bool techtree_mgr::research_add(uint16_t techid, uint16_t max, uint16_t inc) {
     assert(inc != 0);
     bool finish = false;
-    auto iter = progress.find(techid);
-    if (!iter) {
-        if (inc >= max) {
-            inc = max;
-            finish = true;
-        }
-        progress.insert_or_assign(techid, std::move(inc));
+    auto [found, slot] = progress.find_or_insert(techid);
+    uint32_t value = found? ((uint32_t)*slot + inc): inc;
+    if (value >= max) {
+        value = max;
+        finish = true;
     }
-    else {
-        uint32_t value = (uint32_t)*iter + inc;
-        if (value >= max) {
-            value = max;
-            finish = true;
-        }
-        *iter = value;
-    }
+    *slot = value;
     if (finish) {
         researched.insert(techid);
         cache.erase(techid);

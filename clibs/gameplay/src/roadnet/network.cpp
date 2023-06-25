@@ -463,8 +463,10 @@ namespace roadnet {
             auto& building = e.get<ecs::building>();
             for (auto const& pt : prototype::get_span<"road", road_prototype>(w, building.prototype)) {
                 auto loc = buildingLoction(w, building, {pt.x, pt.y});
-                assert(!map.contains(loc));
-                map.insert_or_assign(loc, roadMask(pt.mask, (direction)building.direction));
+                uint8_t mask = roadMask(pt.mask, (direction)building.direction);
+                auto [found, slot] = map.find_or_insert(loc);
+                assert(!found);
+                *slot = mask;
             }
         }
 
@@ -472,9 +474,14 @@ namespace roadnet {
             auto& building = e.get<ecs::building>();
             for (auto const& pt : prototype::get_span<"road", road_prototype>(w, building.prototype)) {
                 auto loc = buildingLoction(w, building, {pt.x, pt.y});
-                auto old = map.find(loc);
-                uint8_t mask = old? *old: 0;
-                map.insert_or_assign(loc, mask | endpointMask(pt.mask, (direction)building.direction));
+                uint8_t mask = endpointMask(pt.mask, (direction)building.direction);
+                auto [found, slot] = map.find_or_insert(loc);
+                if (found) {
+                    *slot |= mask;
+                }
+                else {
+                    *slot = mask;
+                }
             }
         }
 
@@ -639,22 +646,22 @@ namespace roadnet {
                 if (!status.crossMap.find(l)) {
                     direction from = road::crossFrom(ct);
                     direction to = road::crossTo(ct);
-                    auto grid = status.straightMap.find(l);
-                    if (grid) {
+                    auto [found, grid] = status.straightMap.find_or_insert(l);
+                    if (found) {
                         grid->id1 = straight.id;
                         grid->offset1 = offset;
                         assert(grid->direction0 == (uint16_t)to);
                         assert(grid->direction1 == (uint16_t)from);
                     }
                     else {
-                        status.straightMap.insert_or_assign(l, straightGrid {
+                        *grid = straightGrid {
                             straight.id,
                             {},
                             offset,
                             (uint16_t)from,
                             0,
                             (uint16_t)to,
-                        });
+                        };
                     }
                 }
                 straightCoord[straightCoordOffset + offset++] = {l, i, ct};
@@ -764,11 +771,12 @@ namespace roadnet {
             e.enable_tag<ecs::lorry_removed>();
             lorryDestroy(lorry);
             lorryWillRemove.insert(getLorryId(lorry));
-            if (auto res = endpointWillReset.find(lorry.ending)) {
-                *res++;
+            auto [found, slot] = endpointWillReset.find_or_insert(lorry.ending);
+            if (found) {
+                *slot++;
             }
             else {
-                endpointWillReset.insert_or_assign(lorry.ending, 1);
+                *slot = 1;
             }
         }
 
