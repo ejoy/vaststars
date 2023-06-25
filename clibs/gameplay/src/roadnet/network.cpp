@@ -20,6 +20,9 @@ namespace roadnet {
     static bool operator&(uint8_t v, MapRoad m) {
         return v & (uint8_t)m;
     }
+    static uint8_t operator|(uint8_t v, MapRoad m) {
+        return v | (uint8_t)m;
+    }
 
     template <typename T, typename F>
         requires (std::is_member_function_pointer_v<F>)
@@ -428,10 +431,52 @@ namespace roadnet {
         return { x, y };
     }
 
-    void network::rebuildMap(world& w, flatmap<loction, uint8_t> const& map) {
+    struct road_prototype {
+        uint8_t x;
+        uint8_t y;
+        uint8_t mask;
+    };
+
+    static uint8_t roadMask(uint8_t m, direction dir) {
+        return ((m << (uint8_t)dir) | (m >> (4-(uint8_t)dir))) & 0xF;
+    }
+
+    static uint8_t endpointMask(uint8_t m, direction dir) {
+        m = roadMask(m, dir);
+        switch (m) {
+        case mask(L'╠'): m = m | MapRoad::NoHorizontal; break;
+        case mask(L'╦'): m = m | MapRoad::NoVertical; break;
+        case mask(L'╣'): m = m | MapRoad::NoHorizontal; break;
+        case mask(L'╩'): m = m | MapRoad::NoVertical;  break;
+        }
+        return m;
+    }
+
+    void network::rebuildMap(world& w) {
         init(w);
 
         routeCached.clear();
+        flatmap<loction, uint8_t> map;
+
+        // step.0
+        for (auto& e : ecs_api::select<ecs::road, ecs::building>(w.ecs)) {
+            auto& building = e.get<ecs::building>();
+            for (auto const& pt : prototype::get_span<"road", road_prototype>(w, building.prototype)) {
+                auto loc = buildingLoction(w, building, {pt.x, pt.y});
+                assert(!map.contains(loc));
+                map.insert_or_assign(loc, roadMask(pt.mask, (direction)building.direction));
+            }
+        }
+
+        for (auto& e : ecs_api::select<ecs::endpoint, ecs::building>(w.ecs)) {
+            auto& building = e.get<ecs::building>();
+            for (auto const& pt : prototype::get_span<"road", road_prototype>(w, building.prototype)) {
+                auto loc = buildingLoction(w, building, {pt.x, pt.y});
+                auto old = map.find(loc);
+                uint8_t mask = old? *old: 0;
+                map.insert_or_assign(loc, mask | endpointMask(pt.mask, (direction)building.direction));
+            }
+        }
 
         if (map.empty()) {
             for (auto& e : ecs_api::select<ecs::endpoint>(w.ecs)) {

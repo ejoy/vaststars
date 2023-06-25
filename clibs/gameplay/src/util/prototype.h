@@ -161,6 +161,26 @@ namespace prototype {
                 }
             }, storage);
         }
+
+        template <typename R>
+        std::span<const R> get_span(world& w, uint16_t id, const char* name) {
+            return std::visit([&](auto&& arg)->std::span<const R> {
+                using T = std::decay_t<decltype(arg)>;
+                if constexpr (std::is_same_v<T, std::string_view>) {
+                    if (arg.size() % sizeof(R) != 0) {
+                        error(w, "[%d].%s invalid type.", id, name);
+                        std::unreachable();
+                    }
+                    auto first = reinterpret_cast<R const*>(arg.data());
+                    auto last  = reinterpret_cast<R const*>(arg.data()+arg.size());
+                    return std::span<const R>(first, last);
+                }
+                else {
+                    error(w, "[%d].%s invalid type.", id, name);
+                    std::unreachable();
+                }
+            }, storage);
+        }
     };
 
     struct cache {
@@ -226,6 +246,18 @@ namespace prototype {
         }
     }
 
+    template <string_literal str, typename T>
+    std::span<const T> get_span(world& w, uint16_t id) {
+        cache* c = w.P;
+        uint32_t cid = (key<str>::id<<16) | id;
+        auto& s = c->s[inthash(cid)];
+        if (s.k != cid) {
+            fetch_value(w, c, id, str.value, s.v);
+            s.k = cid;
+        }
+        return s.v.get_span<T>(w, id, str.value);
+    }
+
 #define PROTOTYPE(NAME, TYPE) \
     template <> struct key<#NAME> { \
         using type = TYPE; \
@@ -242,6 +274,7 @@ namespace prototype {
     PROTOTYPE(area, uint16_t)
     PROTOTYPE(supply_area, uint16_t)
     PROTOTYPE(endpoint, uint16_t)
+    PROTOTYPE(road, std::string_view)
     PROTOTYPE(ingredients, std::string_view)
     PROTOTYPE(results, std::string_view)
     PROTOTYPE(inputs, std::string_view)

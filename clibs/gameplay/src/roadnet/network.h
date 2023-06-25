@@ -29,7 +29,7 @@ namespace roadnet {
         network() = default;
         void             init(world& w);
         void             refresh(world& w);
-        void             rebuildMap(world& w, flatmap<loction, uint8_t> const& map);
+        void             rebuildMap(world& w);
         lorryid          createLorry(world& w, uint16_t classid);
         void             destroyLorry(world& w, lorry_entity& l);
         void             removeLorry(world& w, lorryid l);

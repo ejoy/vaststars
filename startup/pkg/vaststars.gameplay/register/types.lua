@@ -163,7 +163,7 @@ register_unit("network", "string", function(s)
 		assert(y >= 0 and y < 256)
 		for _, c in utf8.codes(m) do
 			assert(x >= 0 and x < 256)
-			r[#r+1] = string.pack("<I1I1I2", x, y, RoadMask[c])
+			r[#r+1] = string.pack("<I1I1I1", x, y, RoadMask[c])
 			x = x + 2
 		end
 	end

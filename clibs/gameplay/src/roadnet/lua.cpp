@@ -17,16 +17,7 @@ namespace roadnet::lua {
 
     static int reset(lua_State* L) {
         auto& w = get_world(L);
-        luaL_checktype(L, 2, LUA_TTABLE);
-        flatmap<loction, uint8_t> map;
-        lua_pushnil(L);
-        while (lua_next(L, 2)) {
-            auto l = get_loction(L, -2);
-            uint8_t m = (uint8_t)luaL_checkinteger(L, -1);
-            map.insert_or_assign(l, m);
-            lua_pop(L, 1);
-        }
-        w.rw.rebuildMap(w, map);
+        w.rw.rebuildMap(w);
         return 0;
     }
 }
