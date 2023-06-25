@@ -1,18 +1,17 @@
 local entities = { {
     dir = "N",
     prototype_name = "指挥中心",
-    recipe = "车辆装配",
     x = 125,
     y = 118
   }, {
     dir = "N",
-    item = "运输车框架",
+    item = "运输车辆I",
     prototype_name = "无人机仓库I",
     x = 131,
     y = 122
   }, {
     dir = "N",
-    items = {{ "运输车框架", 50 }},
+    items = {{ "运输车辆I", 50 }},
     prototype_name = "机头残骸",
     x = 133,
     y = 121

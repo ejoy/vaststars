@@ -7,20 +7,15 @@ prototype "指挥中心" {
     background = "textures/build_background/pic_headquater.texture",
     construct_detector = {"exclusive"},
     craft_category = {"基地制造"},
-    chest_type = "red",
-    type = {"building", "consumer", "assembling", "base", "lorry_factory"},
+    item = "运输车辆I", -- lorry_factory
+    type = {"building", "base", "lorry_factory"},
     speed = "50%",
     maxslot = "8",
-    recipe_init_limit = {ingredientsLimit = 0, resultsLimit = 0},
-    recipe = "车辆装配",
     area = "6x6",
-    building_base = false,
-    power_supply_area = "8x8",
-    power_supply_distance = 9,
-    power = "100kW",
-    priority = "primary",
     camera_distance = 100,
     teardown = false,
+    move = false,
+    building_base = false,
     crossing = {
         connections = {
             {type="lorry_factory", position={2,4,"S"}},
@@ -31,9 +26,6 @@ prototype "指挥中心" {
         "1,4,╔╗",
         "1,6,╨╨",
     },
-    move = false,
-    io_shelf = false,
-    assembling_icon = false,
 }
 
 prototype "科研中心I" {
@@ -45,7 +37,7 @@ prototype "科研中心I" {
     area = "3x3",
     power = "150kW",
     speed = "100%",
-    show_arc_menu = false,
+    building_menu = false,
     camera_distance = 75,
     priority = "secondary",
     inputs = {

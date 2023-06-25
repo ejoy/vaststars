@@ -12,8 +12,9 @@ function M.chest_pickup(world, ...)
     return world:container_pickup(...)
 end
 
-function M.chest_place(world, ...)
-    return world:container_place(...)
+function M.chest_place(world, c, item, amount)
+    world:container_place(c, item, amount)
+    return true, amount
 end
 
 function M.collect_item(world, e)
@@ -61,9 +62,8 @@ local function __get_item_stack(item)
     return typeobject.stack or 0
 end
 
-local function __rebuild_chest(world, e, new_item)
+local function __rebuild_chest(world, e, chest_type, new_item)
     world.ecs:extend(e, "building:in")
-    local typeobject = iprototype.queryById(e.building.prototype)
 
     local r = {}
     for i = 1, 256 do
@@ -73,7 +73,7 @@ local function __rebuild_chest(world, e, new_item)
         end
         if slot.item ~= 0 then
             r[#r+1] = world:chest_slot {
-                type = typeobject.chest_type,
+                type = chest_type,
                 item = slot.item,
                 amount = slot.amount,
             }
@@ -81,7 +81,7 @@ local function __rebuild_chest(world, e, new_item)
     end
 
     r[#r+1] = world:chest_slot {
-        type = typeobject.chest_type,
+        type = chest_type,
         item = new_item,
         amount = 0,
         limit = __get_item_stack(new_item),
@@ -99,7 +99,7 @@ function M.move_to_inventory(world, chest, item, count)
     local e = world.ecs:first("base:update base_changed?update")
     local slot = M.first_item(world, e.base, item)
     if not slot then
-        __rebuild_chest(world, e, item)
+        __rebuild_chest(world, e, "red", item)
         slot = M.first_item(world, e.base, item)
         assert(slot)
     end

@@ -58,14 +58,13 @@ function task:init()
 end
 
 local base = type "base"
-    .chest_type "chest_type"
 
 function base:ctor(init, pt)
     local world = self
     local items = {}
     for _, v in ipairs(init.items or {}) do
         items[#items+1] = world:chest_slot {
-            type = pt.chest_type,
+            type = "red",
             item = v[1],
             amount = v[2],
         }

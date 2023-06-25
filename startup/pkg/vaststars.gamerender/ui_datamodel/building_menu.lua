@@ -49,19 +49,15 @@ local __lorry_factory_update = interval_call(800, function(datamodel, object_id)
     if not e then
         return
     end
-    local typeobject = iprototype.queryByName(object.prototype_name)
     local lorry_factory_inc_lorry, lorry_factory_dec_lorry = false, false
     local lorry_factory_icon, lorry_factory_count = "", 0
-    if iprototype.has_type(typeobject.type, "lorry_factory") then
-        if e.assembling.recipe ~= 0 then
-            lorry_factory_inc_lorry = true
-            lorry_factory_dec_lorry = true
-
-            local _, results = assembling_common.get(gameplay_core.get_world(), e)
-            assert(results and results[1])
-            lorry_factory_icon = results[1].icon
-            lorry_factory_count = results[1].limit
-        end
+    if e.lorry_factory then
+        assert(e.chest)
+        lorry_factory_inc_lorry = true
+        lorry_factory_dec_lorry = false
+        local slot = assert(ichest.chest_get(gameplay_core.get_world(), e.chest, 1))
+        lorry_factory_icon = iprototype.queryById(slot.item).icon
+        lorry_factory_count = slot.count
     end
     datamodel.lorry_factory_icon = lorry_factory_icon
     datamodel.lorry_factory_count = lorry_factory_count
@@ -306,19 +302,32 @@ function M:stage_ui_update(datamodel, object_id)
     for _ in lorry_factory_inc_lorry_mb:unpack() do
         local object = assert(objects:get(object_id))
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
-        assert(e.assembling.recipe ~= 0)
 
-        local _, results = assembling_common.get(gameplay_core.get_world(), e)
-        assert(results and results[1])
-        local multiple = results[1].limit + 1
-        iassembling.set_option(gameplay_core.get_world(), e, {ingredientsLimit = multiple, resultsLimit = multiple})
+        local component = "chest"
+        local slot = ichest.chest_get(gameplay_core.get_world(), e[component], 1)
+        if not slot then
+            print("item not set yet")
+            goto continue
+        end
+        local c = ichest.get_amount(slot)
+        if slot.limit <= c then
+            print("item already full")
+            goto continue
+        end
+        if not ichest.inventory_pickup(gameplay_core.get_world(), slot.item, 1) then
+            print("failed to place")
+            goto continue
+        end
+        local succ = ichest.chest_place(gameplay_core.get_world(), e[component], slot.item, 1)
+        if not succ then
+            print("failed to place")
+            goto continue
+        end
+
+        ::continue::
     end
 
     for _ in lorry_factory_stop_build_mb:unpack() do
-        local object = assert(objects:get(object_id))
-        local e = gameplay_core.get_entity(assert(object.gameplay_eid))
-        assert(e.assembling.recipe ~= 0)
-        iassembling.set_option(gameplay_core.get_world(), e, {ingredientsLimit = 0, resultsLimit = 0})
     end
 
     for _ in station_weight_increase_mb:unpack() do

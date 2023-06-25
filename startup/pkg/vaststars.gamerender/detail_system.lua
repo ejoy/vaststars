@@ -89,7 +89,7 @@ function idetail.show(object_id)
     local typeobject = iprototype.queryByName(object.prototype_name)
 
     idetail.selected(object)
-    if typeobject.show_arc_menu ~= false then
+    if typeobject.building_menu ~= false then
         iui.open({"building_menu.rml"}, object_id)
         iui.close("building_menu_longpress.rml")
     end
