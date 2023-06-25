@@ -44,8 +44,22 @@ local function buildingPostion(x, y, building, area)
     return building.x + dx, building.y + dy
 end
 
-local function rotateMask(mask, dir)
+local function roadMask(mask, dir)
     return ((mask << dir) | (mask >> (4-dir))) & 0xF
+end
+
+local function endpointMask(mask, dir)
+    mask = roadMask(mask, dir)
+    if    mask == 0xF - MapRoad.Left then
+        mask = mask & MapRoad.NoHorizontal
+    elseif mask == 0xF - MapRoad.Top then
+        mask = mask & MapRoad.NoVertical
+    elseif mask == 0xF - MapRoad.Right then
+        mask = mask & MapRoad.NoHorizontal
+    elseif mask == 0xF - MapRoad.Bottom then
+        mask = mask & MapRoad.NoVertical
+    end
+    return mask
 end
 
 local DIRTY_ROADNET <const> = 1 << 4
@@ -66,27 +80,17 @@ function m.build(world)
             local dx, dy = buildingPostion(x, y, building, pt.area)
             local mapkey = pack(dx, dy)
             assert(not map[mapkey])
-            map[mapkey] = rotateMask(mask, building.direction)
+            map[mapkey] = roadMask(mask, building.direction)
         end
     end
     for v in ecs:select "endpoint building:in" do
         local building = v.building
         local pt = query(building.prototype)
-        local affected_roads_mask = 0
-        if building.direction == N or building.direction == S then
-            affected_roads_mask = MapRoad.NoVertical
-        else
-            affected_roads_mask = MapRoad.NoHorizontal
-        end
         for i = 1, #pt.road, 4 do
             local x, y, mask = string.unpack("<I1I1I2", pt.road, i)
             local dx, dy = buildingPostion(x, y, building, pt.area)
             local mapkey = pack(dx, dy)
-            if not map[mapkey] then
-                map[mapkey] = rotateMask(mask, building.direction)
-            else
-                map[mapkey] = map[mapkey] | rotateMask(mask, building.direction) | affected_roads_mask
-            end
+            map[mapkey] = (map[mapkey] or 0) | endpointMask(mask, building.direction)
         end
     end
     world:roadnet_reset(map)
