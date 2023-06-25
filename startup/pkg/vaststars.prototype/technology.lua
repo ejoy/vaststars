@@ -863,56 +863,6 @@ local prototype = gameplay.register.prototype
       { desc = "放置2台组装机", icon = "textures/construct/industry.texture"},
     },
   }
-
-  -- prototype "科技包产线搭建" {
-  --   desc = "选择地质科技包配方",
-  --   icon = "textures/construct/industry.texture",
-  --   type = { "task" },
-  --   task = {"unknown", 0, 3},
-  --   task_params = {recipe = "地质科技包1"},
-  --   count = 1,
-  --   prerequisites = {"放置组装机"},
-  --   tips_pic = {
-  --     "textures/task_tips_pic/task_produce_geopack3.texture",
-  --     "textures/task_tips_pic/task_produce_geopack4.texture",
-  --     "textures/task_tips_pic/task_produce_geopack5.texture",
-  --     "textures/task_tips_pic/task_produce_geopack6.texture",
-  --   },
-  --   sign_desc = {
-  --     { desc = "在组装机里选择地质科技包配方", icon = "textures/construct/industry.texture"},
-  --   },
-  -- }
-
-  -- prototype "第三个无人机仓库I" {
-  --   desc = "再放置1个无人机仓库I",
-  --   icon = "textures/construct/industry.texture",
-  --   type = { "task" },
-  --   task = {"select_entity", 0, "无人机仓库I"},
-  --   prerequisites = {"科技包产线搭建"},
-  --   count = 3,
-  --   tips_pic = {
-  --     "textures/task_tips_pic/task_place_pole1.texture",
-  --     "textures/task_tips_pic/task_place_pole2.texture",
-  --   },
-  --   sign_desc = {
-  --     { desc = "放置总共3个无人机仓库I", icon = "textures/construct/industry.texture"},
-  --   },
-  -- }
-
-  -- prototype "仓库地质科技包设置" {
-  --   desc = "仓库地质科技包设置",
-  --   icon = "textures/construct/industry.texture",
-  --   type = { "task" },
-  --   task = {"unknown", 0, 5},                          
-  --   count = 1,
-  --   prerequisites = {"第三个无人机仓库I"},
-  --   tips_pic = {
-  --     "textures/task_tips_pic/task_place_logistics.texture",
-  --   },
-  --   sign_desc = {
-  --     { desc = "新放置的无人机仓库I选择存储地质科技包", icon = "textures/construct/industry.texture"},
-  --   },
-  -- }
   
   prototype "组装机生产" {
     desc = "自动化生产科技包用于科技研究",
@@ -947,25 +897,6 @@ local prototype = gameplay.register.prototype
     count = 8,
     time = "1s"
   }
-
-  -- prototype "石砖产线搭建" {
-  --   desc = "选择地质科技包配方",
-  --   icon = "textures/construct/industry.texture",
-  --   type = { "task" },
-  --   task = {"unknown", 0, 3},
-  --   task_params = {recipe = "石砖"},
-  --   count = 1,
-  --   prerequisites = {"石头处理1"},
-  --   tips_pic = {
-  --     "textures/task_tips_pic/task_produce_geopack3.texture",
-  --     "textures/task_tips_pic/task_produce_geopack4.texture",
-  --     "textures/task_tips_pic/task_produce_geopack5.texture",
-  --     "textures/task_tips_pic/task_produce_geopack6.texture",
-  --   },
-  --   sign_desc = {
-  --     { desc = "在组装机里选择石砖配方", icon = "textures/construct/industry.texture"},
-  --   },
-  -- }
 
   prototype "生产石砖" {
     desc = "挖掘足够的碎石可以开始进行锻造",
@@ -1557,7 +1488,7 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "放置出货车站" {
-    desc = "放置1座修路站",
+    desc = "放置1座出货车站",
     icon = "textures/construct/industry.texture",
     type = { "task" },
     task = {"select_entity", 0, "出货车站"},
@@ -1590,7 +1521,7 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "放置收货车站" {
-    desc = "放置1座修路站",
+    desc = "放置1座收货车站",
     icon = "textures/construct/industry.texture",
     type = { "task" },
     task = {"select_entity", 0, "收货车站"},

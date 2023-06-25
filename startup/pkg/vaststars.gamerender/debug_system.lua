@@ -22,7 +22,7 @@ function debug_sys:ui_update()
             local gameplay_world = gameplay_core.get_world()
             print(("current tick value of the gameplay world is: %d"):format(gameplay_world:now()))
 
-            for e in gameplay_world.ecs:select "building:in eid:in solar_panel:in" do
+            for e in gameplay_world.ecs:select "building:in road:absent eid:in solar_panel:in" do
                 print(("solar panel %d efficiency: %f"):format(e.eid, e.solar_panel.efficiency))
                 break
             end

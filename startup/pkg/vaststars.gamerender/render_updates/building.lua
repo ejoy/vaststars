@@ -13,6 +13,7 @@ local fs = require "filesystem"
 local building_base_cfg = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/config/canvas/building-base.cfg")):read "a")
 local building_sys = ecs.system "building_system"
 local gameplay_core = require "gameplay.core"
+local ibuilding = ecs.interface "ibuilding"
 
 local DIRECTION <const> = {
     N = 0,
@@ -68,8 +69,7 @@ end
 
 function building_sys:gameworld_update()
     local gameplay_world = gameplay_core.get_world()
-
-    for e in gameplay_world.ecs:select "building_new:in building:in eid:in" do
+    for e in gameplay_world.ecs:select "building_new building:in road:absent eid:in" do
         -- object may not have been fully created yet
         local object = objects:coord(e.building.x, e.building.y)
         if not object then
@@ -89,11 +89,53 @@ function building_sys:gameworld_update()
         ::continue::
     end
 
-    for e in gameplay_world.ecs:select "building_changed building:in" do
+    for e in gameplay_world.ecs:select "building_changed building:in road:absent" do
         local object = assert(objects:coord(e.building.x, e.building.y))
         local typeobject = iprototype.queryById(e.building.prototype)
         object.prototype_name = typeobject.name
         object.dir = DIRECTION[e.building.direction]
         objects:set(object, EDITOR_CACHE_NAMES[1])
     end
+end
+
+local building_cache = {}
+
+function building_sys:gameworld_build()
+    building_cache = {}
+    local gameplay_world = gameplay_core.get_world()
+    for e in gameplay_world.ecs:select "road building:in eid:in" do
+        building_cache[iprototype.packcoord(e.building.x, e.building.y)] = {
+            eid = e.eid,
+            x = e.building.x,
+            y = e.building.y,
+            prototype = iprototype.queryById(e.building.prototype).name,
+            direction = iprototype.dir_tostring(e.building.direction),
+        }
+    end
+end
+
+function ibuilding.get(x, y)
+    return building_cache[iprototype.packcoord(x, y)]
+end
+
+function ibuilding.remove(x, y)
+    local gameplay_world = gameplay_core.get_world()
+    local coord = iprototype.packcoord(x, y)
+    local building = building_cache[coord]
+    gameplay_world.ecs:remove(building.eid)
+
+    building_cache[coord] = nil
+end
+
+function ibuilding.set(x, y, prototype_name, direction)
+    local e = {
+        building = {
+            x = x,
+            y = y,
+            prototype = iprototype.queryByName(prototype_name).id,
+            direction = iprototype.dir_tonumber(direction),
+        },
+        road = true,
+    }
+    gameplay_core.get_world().ecs:new(e)
 end

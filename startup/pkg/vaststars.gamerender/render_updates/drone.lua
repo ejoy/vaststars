@@ -5,6 +5,7 @@ local math3d    = require "math3d"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local objects = require "objects"
 local ims = ecs.import.interface "ant.motion_sampler|imotion_sampler"
+local iprototype = require "gameplay.interface.prototype"
 local ltween = require "motion.tween"
 local imotion = ecs.require "imotion"
 local drone_sys = ecs.system "drone_system"
@@ -35,6 +36,7 @@ local function create_drone(homepos)
         flyid = 0,
         gohome = function (self, flyid, from, to)
             if self.to_home then return end
+            self:destroy_item()
             self:flyto(flyid, fly_height, from, to, true, 1.0)
             self.to_home = true
             -- print("----gohome----", math3d.index(to, 1, 2, 3))
@@ -78,7 +80,7 @@ local function create_drone(homepos)
             end
             self.running = true
         end,
-        update = function (self, step)
+        update = function (self, step, hasitem)
             if not self.running then
                 return
             end
@@ -108,15 +110,26 @@ local function create_drone(homepos)
                 ims.set_duration(exz, -1)
                 local ey <close> = w:entity(self.motion_y)
                 ims.set_duration(ey, -1)
-                if self.item then
-                    for _, eid in ipairs(self.item.tag["*"]) do
-                        w:remove(eid)
-                    end
-                    self.item = nil
-                end
+            end
+            if not hasitem then
+                self:destroy_item()
             end
         end,
+        set_item = function (self, item)
+            self:destroy_item()
+            self.item = item
+        end,
+        destroy_item = function (self)
+            if not self.item then
+                return
+            end
+            for _, eid in ipairs(self.item.tag["*"]) do
+                w:remove(eid)
+            end
+            self.item = nil
+        end,
         destroy = function (self)
+            self:destroy_item()
             for _, eid in ipairs(self.prefab.tag["*"]) do
                 w:remove(eid)
             end
@@ -227,6 +240,17 @@ function drone_sys:gameworld_update()
                     if get_berth(drone.next) == BERTH_HOME then
                         current:gohome(flyid, from, get_home_pos(to))
                     else
+                        if drone.item ~= 0 then
+                            local typeobject_item = iprototype.queryById(drone.item)
+                            local item_prefab = imotion.sampler_group:create_instance("/pkg/vaststars.resources/" .. typeobject_item.pile_model, current.prefab.tag["*"][1])
+                            item_prefab.on_ready = function(inst)
+                                local re <close> = w:entity(inst.tag["*"][1])
+                                iom.set_position(re, math3d.vector(0.0, -4.0, 0.0))
+                                iom.set_scale(re, math3d.vector(1.5, 1.5, 1.5))
+                            end
+                            world:create_object(item_prefab)
+                            current:set_item(item_prefab)
+                        end
                         drone_task[#drone_task + 1] = {flyid, current, from, to}
                     end
                 elseif get_berth(drone.prev) == BERTH_HOME and not current.to_home then
@@ -236,7 +260,7 @@ function drone_sys:gameworld_update()
                     current:gohome(flyid, math3d.set_index(dst, 2, item_height), get_home_pos(dst))
                 end
             else
-                current:update(drone.maxprogress > 0 and (drone.maxprogress - drone.progress) / drone.maxprogress or 0)
+                current:update(drone.maxprogress > 0 and (drone.maxprogress - drone.progress) / drone.maxprogress or 0, drone.item ~= 0)
             end
         end
         ::continue::

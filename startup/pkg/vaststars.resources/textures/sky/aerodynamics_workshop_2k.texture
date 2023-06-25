@@ -3,6 +3,7 @@ normalmap: false
 equirect: true
 path: /pkg/vaststars.resources/textures/cubemap/aerodynamics_workshop_2k.hdr
 mipmap: 0
+build_irradianceSH: true
 sampler:
   MAG: LINEAR
   MIN: LINEAR

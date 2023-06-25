@@ -16,8 +16,6 @@ function c:ctor(init, pt)
 
     local chest = {
         chest = world:container_create(table.concat(items)),
-        fluidbox_in = 0,
-        fluidbox_out = 0,
     }
     return {
         chest = chest

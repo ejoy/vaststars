@@ -151,165 +151,165 @@ local entities = { {
   y = 108
 } }
 local road = { {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 62,
-  y = 62
+  direction = "S",
+  prototype = "砖石公路-T型",
+  x = 124,
+  y = 124
 }, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 63,
-  y = 62
+  direction = "E",
+  prototype = "砖石公路-I型",
+  x = 126,
+  y = 124
 }, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 64,
-  y = 62
+  direction = "E",
+  prototype = "砖石公路-I型",
+  x = 128,
+  y = 124
 }, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 65,
-  y = 62
+  direction = "E",
+  prototype = "砖石公路-I型",
+  x = 130,
+  y = 124
 }, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 66,
-  y = 62
+  direction = "E",
+  prototype = "砖石公路-I型",
+  x = 132,
+  y = 124
 }, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 67,
-  y = 62
+  direction = "E",
+  prototype = "砖石公路-I型",
+  x = 134,
+  y = 124
 }, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 68,
-  y = 62
+  direction = "E",
+  prototype = "砖石公路-I型",
+  x = 136,
+  y = 124
 }, {
-  mask = 7,
-  prototype = "砖石公路-X型",
-  x = 69,
-  y = 62
+  direction = "S",
+  prototype = "砖石公路-T型",
+  x = 138,
+  y = 124
 }, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 70,
-  y = 62
+  direction = "E",
+  prototype = "砖石公路-I型",
+  x = 140,
+  y = 124
 }, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 71,
-  y = 62
+  direction = "E",
+  prototype = "砖石公路-I型",
+  x = 142,
+  y = 124
 }, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 72,
-  y = 62
+  direction = "E",
+  prototype = "砖石公路-I型",
+  x = 144,
+  y = 124
 }, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 73,
-  y = 62
+  direction = "E",
+  prototype = "砖石公路-I型",
+  x = 146,
+  y = 124
 }, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 74,
-  y = 62
+  direction = "E",
+  prototype = "砖石公路-I型",
+  x = 148,
+  y = 124
 }, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 75,
-  y = 62
+  direction = "E",
+  prototype = "砖石公路-I型",
+  x = 150,
+  y = 124
 }, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 76,
-  y = 62
+  direction = "E",
+  prototype = "砖石公路-I型",
+  x = 152,
+  y = 124
 }, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 77,
-  y = 62
+  direction = "N",
+  prototype = "砖石公路-T型",
+  x = 154,
+  y = 124
 }, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 78,
-  y = 62
+  direction = "N",
+  prototype = "砖石公路-T型",
+  x = 156,
+  y = 124
 }, {
-  mask = 1,
-  prototype = "砖石公路-X型",
-  x = 79,
-  y = 62
+  direction = "W",
+  prototype = "砖石公路-U型",
+  x = 158,
+  y = 124
 }, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 69,
-  y = 56
+  direction = "N",
+  prototype = "砖石公路-I型",
+  x = 138,
+  y = 112
 }, {
-  mask = 11,
-  prototype = "砖石公路-X型",
-  x = 69,
-  y = 60
+  direction = "E",
+  prototype = "砖石公路-T型",
+  x = 138,
+  y = 120
 }, {
-  mask = 15,
+  direction = "N",
   prototype = "砖石公路-X型",
-  x = 61,
-  y = 62
+  x = 122,
+  y = 124
 }, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 69,
-  y = 58
+  direction = "N",
+  prototype = "砖石公路-I型",
+  x = 138,
+  y = 116
 }, {
-  mask = 13,
-  prototype = "砖石公路-X型",
-  x = 60,
-  y = 62
+  direction = "N",
+  prototype = "砖石公路-T型",
+  x = 120,
+  y = 124
 }, {
-  mask = 11,
-  prototype = "砖石公路-X型",
-  x = 69,
-  y = 55
+  direction = "E",
+  prototype = "砖石公路-T型",
+  x = 138,
+  y = 110
 }, {
-  mask = 4,
-  prototype = "砖石公路-X型",
-  x = 58,
-  y = 62
+  direction = "E",
+  prototype = "砖石公路-U型",
+  x = 116,
+  y = 124
 }, {
-  mask = 5,
-  prototype = "砖石公路-X型",
-  x = 59,
-  y = 62
+  direction = "E",
+  prototype = "砖石公路-I型",
+  x = 118,
+  y = 124
 }, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 69,
-  y = 57
+  direction = "N",
+  prototype = "砖石公路-I型",
+  x = 138,
+  y = 114
 }, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 69,
-  y = 61
+  direction = "N",
+  prototype = "砖石公路-I型",
+  x = 138,
+  y = 122
 }, {
-  mask = 11,
-  prototype = "砖石公路-X型",
-  x = 69,
-  y = 59
+  direction = "E",
+  prototype = "砖石公路-T型",
+  x = 138,
+  y = 118
 }, {
-  mask = 11,
-  prototype = "砖石公路-X型",
-  x = 69,
-  y = 54
+  direction = "E",
+  prototype = "砖石公路-T型",
+  x = 138,
+  y = 108
 }, {
-  mask = 10,
-  prototype = "砖石公路-X型",
-  x = 69,
-  y = 53
+  direction = "N",
+  prototype = "砖石公路-I型",
+  x = 138,
+  y = 106
 }, {
-  mask = 8,
-  prototype = "砖石公路-X型",
-  x = 69,
-  y = 52
+  direction = "S",
+  prototype = "砖石公路-U型",
+  x = 138,
+  y = 104
 } }
 local mineral = {
   ["102,62"] = "铁矿石",

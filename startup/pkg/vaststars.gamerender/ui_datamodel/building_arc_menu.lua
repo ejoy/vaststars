@@ -8,6 +8,8 @@ local iprototype = require "gameplay.interface.prototype"
 local vsobject_manager = ecs.require "vsobject_manager"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local itask = ecs.require "task"
+local icamera_controller = ecs.interface "icamera_controller"
+local math3d = require "math3d"
 
 local set_recipe_mb = mailbox:sub {"set_recipe"}
 local set_item_mb = mailbox:sub {"set_item"}
@@ -31,11 +33,13 @@ local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 local iobject = ecs.require "object"
 local igameplay = ecs.interface "igameplay"
 local interval_call = ecs.require "engine.interval_call"
+
 local DIRTY_STATION <const> = require("gameplay.interface.constant").DIRTY_STATION
 local DIRTY_CHEST <const> = require("gameplay.interface.constant").DIRTY_CHEST
+local MAX_STATION_WEIGHTS <const> = require("gameplay.interface.constant").MAX_STATION_WEIGHTS
 
 local function __show_set_item(typeobject)
-    return iprototype.has_type(typeobject.type, "hub") or iprototype.has_type(typeobject.type, "station")
+    return iprototype.has_type(typeobject.type, "hub") or iprototype.has_types(typeobject.type, "station_producer", "station_consumer")
 end
 
 local function __show_set_recipe(typeobject)
@@ -101,10 +105,11 @@ local __station_update = function(datamodel, object_id)
         return
     end
     local typeobject = iprototype.queryByName(object.prototype_name)
-    if not iprototype.has_type(typeobject.type, "station") then
+    if not iprototype.has_types(typeobject.type, "station_producer", "station_consumer") then
         return
     end
-    local c = ichest.chest_get(gameplay_core.get_world(), e.station, 1)
+    local chest_component = iprototype.get_chest_component(object.prototype_name)
+    local c = ichest.chest_get(gameplay_core.get_world(), e[chest_component], 1)
     if not c then
         return
     end
@@ -130,8 +135,9 @@ local function __get_moveable_count(object_id)
             return 0
         end
         return count
-    elseif iprototype.has_type(typeobject.type, "station") then
-        local slot = ichest.chest_get(gameplay_core.get_world(), e.station, 1)
+    elseif iprototype.has_types(typeobject.type, "station_producer", "station_consumer") then
+        local chest_component = iprototype.get_chest_component(object.prototype_name)
+        local slot = ichest.chest_get(gameplay_core.get_world(), e[chest_component], 1)
         if not slot then
             return 0
         end
@@ -259,10 +265,10 @@ local function __get_hub_first_item(gameplay_world, e)
 end
 
 local function __set_station_first_item(gameplay_world, e, prototype_name)
-    local station = e.station
-    gameplay_world:container_destroy(station)
-
     local typeobject = iprototype.queryById(e.building.prototype)
+    local chest_component = iprototype.get_chest_component(typeobject.name)
+    gameplay_world:container_destroy(e[chest_component])
+
     local typeobject_item = iprototype.queryByName(prototype_name)
     local c = {}
     c[#c+1] = gameplay_world:chest_slot {
@@ -270,13 +276,14 @@ local function __set_station_first_item(gameplay_world, e, prototype_name)
         item = typeobject_item.id,
         limit = typeobject_item.stack,
     }
-    station.chest = gameplay_world:container_create(table.concat(c))
-
-    e.chest.chest = station.chest
+    e[chest_component].chest = gameplay_world:container_create(table.concat(c))
+    e.station_changed = true
 end
 
 local function __get_station_first_item(gameplay_world, e)
-    local slot = ichest.chest_get(gameplay_world, e.station, 1)
+    local typeobject = iprototype.queryById(e.building.prototype)
+    local chest_component = iprototype.get_chest_component(typeobject.name)
+    local slot = ichest.chest_get(gameplay_world, e[chest_component], 1)
     if slot then
         return slot.item
     end
@@ -314,7 +321,7 @@ function M:stage_ui_update(datamodel, object_id)
         if iprototype.has_type(typeobject.type, "hub") then
             interface.get_first_item = __get_hub_first_item
             interface.set_first_item = __set_hub_first_item
-        elseif iprototype.has_type(typeobject.type, "station") then
+        elseif iprototype.has_types(typeobject.type, "station_producer", "station_consumer") then
             interface.get_first_item = __get_station_first_item
             interface.set_first_item = __set_station_first_item
         else
@@ -349,7 +356,12 @@ function M:stage_ui_update(datamodel, object_id)
     for _ in station_weight_increase_mb:unpack() do
         local object = assert(objects:get(object_id))
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
-        e.station.weights = e.station.weights + 1
+        if e.station_producer then
+            e.station_producer.weights = math.min(e.station_producer.weights + 1, MAX_STATION_WEIGHTS)
+        else
+            e.station_consumer.maxlorry = e.station_producer.maxlorry + 1
+        end
+
         igameplay.dirty(DIRTY_STATION)
     end
 
@@ -359,6 +371,8 @@ function M:stage_ui_update(datamodel, object_id)
 
     for _, _, _, object_id in pickup_item_mb:unpack() do
         local object = assert(objects:get(object_id))
+        local sp = icamera_controller.world_to_screen(object.srt.t)
+        local sp_x, sp_y = math3d.index(sp, 1), math3d.index(sp, 2)
         local typeobject = iprototype.queryByName(object.prototype_name)
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
         if iprototype.has_type(typeobject.type, "assembling") then
@@ -367,31 +381,42 @@ function M:stage_ui_update(datamodel, object_id)
                 print("recipe not set yet")
                 goto continue
             end
-            if not ichest.move_to_inventory(gameplay_core.get_world(), e.chest, results[1].id, results[1].count) then
+            local succ, available = ichest.move_to_inventory(gameplay_core.get_world(), e.chest, results[1].id, results[1].count)
+            if not succ then
                 print("failed to move to the inventory")
                 goto continue
             end
+            local typeitem = iprototype.queryById(results[1].id)
+            iui.send("message_pop.rml", "item", {action = "up", left = sp_x, top = sp_y, items = {{icon = assert(typeitem.icon), name = typeitem.name, count = available}}})
             print("success")
-        elseif iprototype.has_type(typeobject.type, "station") then
-            local slot = ichest.chest_get(gameplay_core.get_world(), e.station, 1)
+        elseif iprototype.has_types(typeobject.type, "station_producer", "station_consumer") then
+            local chest_component = iprototype.get_chest_component(object.prototype_name)
+            local slot = ichest.chest_get(gameplay_core.get_world(), e[chest_component], 1)
             if not slot then
                 print("item not set yet")
                 goto continue
             end
-            if not ichest.move_to_inventory(gameplay_core.get_world(), e.station, slot.item, ichest.get_amount(slot)) then
+            local succ, available = ichest.move_to_inventory(gameplay_core.get_world(), e[chest_component], slot.item, ichest.get_amount(slot))
+            if not succ then
                 print("failed to move to the inventory")
                 goto continue
             end
+            local typeitem = iprototype.queryById(slot.item)
+            iui.send("message_pop.rml", "item", {action = "up", left = sp_x, top = sp_y, items = {{icon = assert(typeitem.icon), name = typeitem.name, count = available}}})
+            e.station_changed = true
         elseif iprototype.has_type(typeobject.type, "hub") then
             local slot = ichest.chest_get(gameplay_core.get_world(), e.hub, 1)
             if not slot then
                 print("item not set yet")
                 goto continue
             end
-            if not ichest.move_to_inventory(gameplay_core.get_world(), e.hub, slot.item, ichest.get_amount(slot)) then
+            local succ, available = ichest.move_to_inventory(gameplay_core.get_world(), e.hub, slot.item, ichest.get_amount(slot))
+            if not succ then
                 print("failed to pickup")
                 goto continue
             end
+            local typeitem = iprototype.queryById(slot.item)
+            iui.send("message_pop.rml", "item", {action = "up", left = sp_x, top = sp_y, items = {{icon = assert(typeitem.icon), name = typeitem.name, count = available}}})
         elseif iprototype.has_type(typeobject.type, "chest") then
             local items = ichest.collect_item(gameplay_core.get_world(), e.chest)
             local message = {}
@@ -402,7 +427,9 @@ function M:stage_ui_update(datamodel, object_id)
                     message[#message + 1] = {icon = assert(typeobject.icon), name = typeobject.name, count = available}
                 end
             end
-
+            if #message > 0 then
+                iui.send("message_pop.rml", "item", {action = "up", left = sp_x, top = sp_y, items = message})
+            end
             iui.close("detail_panel.rml")
             world:pub {"rmlui_message_close", "building_arc_menu.rml"}
 
@@ -437,10 +464,13 @@ function M:stage_ui_update(datamodel, object_id)
 
     for _, _, _, object_id in place_item_mb:unpack() do
         local object = assert(objects:get(object_id))
+        local sp = icamera_controller.world_to_screen(object.srt.t)
+        local sp_x, sp_y = math3d.index(sp, 1), math3d.index(sp, 2)
         local typeobject = iprototype.queryByName(object.prototype_name)
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
         if iprototype.has_type(typeobject.type, "assembling") then
             local ingredients = assembling_common.get(gameplay_core.get_world(), e)
+            local message = {}
             for idx, ingredient in ipairs(ingredients) do
                 if ingredient.demand_count > ingredient.count then
                     if not ichest.inventory_pickup(gameplay_core.get_world(), ingredient.id, ingredient.demand_count - ingredient.count) then
@@ -448,12 +478,17 @@ function M:stage_ui_update(datamodel, object_id)
                     end
 
                     gameplay_core.get_world():container_set(e.chest, idx, {amount = ingredient.demand_count})
+                    local typeitem = iprototype.queryById(ingredient.id)
+                    message[#message + 1] = {icon = assert(typeitem.icon), name = typeitem.name, count = ingredient.demand_count}
                 end
             end
+            if #message > 0 then
+                iui.send("message_pop.rml", "item", {action = "down", left = sp_x, top = sp_y, items = message})
+            end
             print("success")
-        elseif iprototype.has_type(typeobject.type, "station") then
-            local component = "station"
-            local slot = ichest.chest_get(gameplay_core.get_world(), e[component], 1)
+        elseif iprototype.has_types(typeobject.type, "station_producer", "station_consumer") then
+            local chest_component = iprototype.get_chest_component(object.prototype_name)
+            local slot = ichest.chest_get(gameplay_core.get_world(), e[chest_component], 1)
             if not slot then
                 print("item not set yet")
                 goto continue
@@ -468,10 +503,14 @@ function M:stage_ui_update(datamodel, object_id)
                 print("failed to place")
                 goto continue
             end
-            if not ichest.chest_place(gameplay_core.get_world(), e[component], slot.item, slot.limit - c) then
+            local succ, available = ichest.chest_place(gameplay_core.get_world(), e[chest_component], slot.item, slot.limit - c)
+            if not succ then
                 print("failed to place")
                 goto continue
             end
+            local typeitem = iprototype.queryById(slot.item)
+            iui.send("message_pop.rml", "item", {action = "down", left = sp_x, top = sp_y, items = {{icon = assert(typeitem.icon), name = typeitem.name, count = available}}})
+            e.station_changed = true
         elseif iprototype.has_type(typeobject.type, "hub") then
             local component = "hub"
             local slot = ichest.chest_get(gameplay_core.get_world(), e[component], 1)
@@ -489,10 +528,13 @@ function M:stage_ui_update(datamodel, object_id)
                 print("failed to place")
                 goto continue
             end
-            if not ichest.chest_place(gameplay_core.get_world(), e[component], slot.item, slot.limit - c) then
+            local succ, available = ichest.chest_place(gameplay_core.get_world(), e[component], slot.item, slot.limit - c)
+            if not succ then
                 print("failed to place")
                 goto continue
             end
+            local typeitem = iprototype.queryById(slot.item)
+            iui.send("message_pop.rml", "item", {action = "down", left = sp_x, top = sp_y, items = {{icon = assert(typeitem.icon), name = typeitem.name, count = available}}})
         else
             assert(false)
         end

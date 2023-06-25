@@ -334,7 +334,7 @@ function M:build_power_network(gw, exclude_eid)
     self:clear_all_temp_pole()
     local powerpole = {}
     local capacitance = {}
-    for v in gameplay_core.select("eid:in building:in capacitance?in") do
+    for v in gameplay_core.select("eid:in building:in road:absent capacitance?in") do
         if v.eid == exclude_eid then
             goto continue
         end

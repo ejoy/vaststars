@@ -1,5 +1,7 @@
 #include "roadnet/road_straight.h"
 #include "roadnet/network.h"
+#include "roadnet/lorry.h"
+#include "core/world.h"
 #include <bee/nonstd/unreachable.h>
 
 namespace roadnet::road {
@@ -9,22 +11,17 @@ namespace roadnet::road {
         this->dir = dir;
         this->neighbor = neighbor;
     }
-    bool straight::canEntry(network& w, uint16_t offset)  {
-        return !hasLorry(w, offset);
-    }
     bool straight::canEntry(network& w)  {
-        return canEntry(w, len-1);
+        return !hasLorry(w, len-1);
     }
-    bool straight::tryEntry(network& w, lorryid l, uint16_t offset) {
-        if (!hasLorry(w, offset)) {
-            w.LorryInRoad(lorryOffset + offset) = l;
-            w.Lorry(l).entry(roadtype::straight);
+    bool straight::tryEntry(world& w, lorryid l)  {
+        if (!hasLorry(w.rw, len-1)) {
+            w.rw.LorryInRoad(lorryOffset + len-1) = l;
+            auto coord = getCoord(w.rw, len-1);
+            lorryEntry(w.rw.Lorry(w, l), coord.x, coord.y, coord.z);
             return true;
         }
         return false;
-    }
-    bool straight::tryEntry(network& w, lorryid l)  {
-        return tryEntry(w, l, len-1);
     }
     void straight::setNeighbor(crossid id) {
         assert(neighbor == crossid::invalid());
@@ -36,13 +33,16 @@ namespace roadnet::road {
     void straight::delLorry(network& w, uint16_t offset) {
         w.LorryInRoad(lorryOffset + offset) = lorryid::invalid();
     }
-    void straight::update(network& w, uint64_t ti) {
-        // The last offset of straight(0) is the waiting area of cross, driven by cross.
-        // see also: cross::waitingLorry()
+    void straight::update(world& w, uint64_t ti) {
         for (uint16_t i = 1; i < len; ++i) {
-            if (lorryid l = w.LorryInRoad(lorryOffset+i)) {
-                if (w.Lorry(l).ready() && tryEntry(w, l, i-1)) {
-                    delLorry(w, i);
+            if (lorryid lorryId = w.rw.LorryInRoad(lorryOffset+i)) {
+                auto offset = i-1;
+                auto& l = w.rw.Lorry(w, lorryId);
+                if (lorryReady(l) && !hasLorry(w.rw, offset)) {
+                    w.rw.LorryInRoad(lorryOffset + offset) = lorryId;
+                    auto coord = getCoord(w.rw, offset);
+                    lorryEntry(l, coord.x, coord.y, coord.z);
+                    delLorry(w.rw, i);
                 }
             }
         }

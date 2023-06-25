@@ -108,7 +108,7 @@ local function restore_world()
     local all_object = {}
     local map = {} -- coord -> id
     local fluidbox_map = {} -- coord -> id -- only for fluidbox
-    for v in gameplay_core.select("eid:in building:in fluidbox?in fluidboxes?in assembling?in") do
+    for v in gameplay_core.select("eid:in building:in road:absent fluidbox?in fluidboxes?in assembling?in") do
         local e = v.building
         local typeobject = iprototype.queryById(e.prototype)
         local fluid_name = ""
@@ -145,6 +145,7 @@ local function restore_world()
             end
         end
 
+        assert(iprototype.has_type(typeobject.type, "road") == false)
         all_object[v.eid] = {
             prototype_name = typeobject.name,
             dir = iprototype.dir_tostring(e.direction),
@@ -309,12 +310,14 @@ function M:restore(index)
     self.running = true
     gameplay_core.restore(archival_dir)
     iprototype_cache.reload()
+    world:pipeline_func "prototype" ()
 
     clean()
     local renderData = {}
-    for v in gameplay_core.select("road:in endpoint_road:absent") do
-        local shape, dir = iroadnet_converter.mask_to_shape_dir(v.road.mask) -- TODO: remove this
-        renderData[iprototype.packcoord(v.road.x * 2, v.road.y * 2)] = {v.road.x * 2, v.road.y * 2, "normal", shape, dir}
+    for v in gameplay_core.select("road building:in") do
+        local typeobject = iprototype.queryById(v.building.prototype)
+        local shape, dir = iroadnet_converter.to_shape(typeobject.name)
+        renderData[iprototype.packcoord(v.building.x, v.building.y)] = {v.building.x, v.building.y, "normal", shape, dir}
     end
     iroadnet:init(renderData, true)
 
@@ -335,6 +338,7 @@ end
 function M:restart(mode, game_template)
     gameplay_core.restart()
     iprototype_cache.reload()
+    world:pipeline_func "prototype" ()
 
     self.running = true
     local cw = gameplay_core.get_world()
@@ -362,18 +366,20 @@ function M:restart(mode, game_template)
     end
     local renderData = {}
     for _, road in ipairs(game_template_road) do
+        local typeobject = assert(iprototype.queryByName(road.prototype))
         local e = {
-            road = {
+            building = {
                 x = road.x,
                 y = road.y,
-                mask = road.mask,
-                classid = iprototype.queryByName(road.prototype).id
-            }
+                prototype = typeobject.id,
+                direction = iprototype.dir_tonumber(road.direction),
+            },
+            road = true,
         }
         gameplay_core.get_world().ecs:new(e)
 
-        local shape, dir = iroadnet_converter.mask_to_shape_dir(road.mask) -- TODO: remove this
-        renderData[iprototype.packcoord(road.x * 2, road.y * 2)] = {road.x * 2, road.y * 2, "normal", shape, dir}
+        local shape, dir = iroadnet_converter.to_shape(typeobject.name), road.direction
+        renderData[iprototype.packcoord(road.x, road.y)] = {road.x, road.y, "normal", shape, dir}
     end
     iroadnet:init(renderData, true)
 

@@ -23,8 +23,7 @@ local ichest = require "gameplay.interface.chest"
 local create_selected_boxes = ecs.require "selected_boxes"
 local terrain = ecs.require "terrain"
 local gameplay_core = require "gameplay.core"
-local gameplay = import_package "vaststars.gameplay"
-local iroad = gameplay.interface "road"
+local ibuilding = ecs.import.interface "vaststars.gamerender|ibuilding"
 local create_pickup_icon_chimney = ecs.require "pickup_icon_chimney".create
 
 -- TODO: duplicate from roadbuilder.lua
@@ -312,7 +311,7 @@ local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobjec
                     color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                 end
             else
-                if iprototype.has_type(typeobject.type, "station") then
+                if iprototype.has_types(typeobject.type, "station_producer", "station_consumer") then
                     if otypeobject.supply_area then
                         local aw, ah = iprototype.unpackarea(otypeobject.area)
                         local sw, sh = iprototype.unpackarea(otypeobject.supply_area)
@@ -355,7 +354,7 @@ local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobjec
                     color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                 end
             else
-                if iprototype.has_type(typeobject.type, "station") then
+                if iprototype.has_types(typeobject.type, "station_producer", "station_consumer") then
                     if otypeobject.supply_area then
                         local aw, ah = iprototype.unpackarea(otypeobject.area)
                         local sw, sh = iprototype.unpackarea(otypeobject.supply_area)
@@ -610,7 +609,7 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
                 goto continue
             end
 
-            if iroad.get(gameplay_core.get_world(), dx, dy) then
+            if ibuilding.get(dx, dy) then
                 valid = true
                 break
             end

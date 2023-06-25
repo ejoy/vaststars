@@ -1,10 +1,15 @@
 local type = require "register.type"
 local c = type "lorry_factory"
+    .endpoint "position"
+    .road "network"
 
 function c:ctor(init, pt)
     return {
-        lorry_factory = {
-            endpoint = 0xffff,
+        lorry_factory = true,
+        endpoint = {
+            neighbor = 0xffff,
+            rev_neighbor = 0xffff,
+            lorry = 0,
         }
     }
 end

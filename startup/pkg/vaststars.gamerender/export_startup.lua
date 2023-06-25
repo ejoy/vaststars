@@ -31,7 +31,6 @@ funcs["road"] = DO_NOTHING
 funcs["lorry_factory"] = DO_NOTHING
 funcs["wind_turbine"] = DO_NOTHING
 funcs["accumulator"] = DO_NOTHING
-funcs["inventory"] = DO_NOTHING
 funcs["auto_set_recipe"] = DO_NOTHING
 
 funcs["building"] = function (export_data, e)
@@ -40,10 +39,10 @@ funcs["building"] = function (export_data, e)
     export_data.x = e.building.x
     export_data.y = e.building.y
 
-    gameplay_core.extend(e, "inventory?in")
-    if e.inventory then
+    gameplay_core.extend(e, "base?in")
+    if e.base then
         local items = {}
-        for _, slot in pairs(ichest.collect_item(gameplay_core.get_world(), e.inventory)) do
+        for _, slot in pairs(ichest.collect_item(gameplay_core.get_world(), e.base)) do
             items[#items+1] = {iprototype.queryById(slot.item).name, slot.amount}
         end
 
@@ -106,9 +105,20 @@ funcs["hub"] = function (export_data, e)
     return export_data
 end
 
-funcs["station"] = function (export_data, e)
-    gameplay_core.extend(e, "station?in")
-    local slot = ichest.chest_get(gameplay_core.get_world(), e.station, 1)
+funcs["station_producer"] = function (export_data, e)
+    gameplay_core.extend(e, "chest?in")
+    local slot = ichest.chest_get(gameplay_core.get_world(), e.chest, 1)
+    if not slot then
+        return export_data
+    end
+    local typeobject = assert(iprototype.queryById(slot.item))
+    export_data.item = typeobject.name
+    return export_data
+end
+
+funcs["station_consumer"] = function (export_data, e)
+    gameplay_core.extend(e, "chest?in")
+    local slot = ichest.chest_get(gameplay_core.get_world(), e.chest, 1)
     if not slot then
         return export_data
     end
@@ -135,7 +145,7 @@ return function()
     log.info("export entity")
 
     local r = {}
-    for v in gameplay_core.select("building:in") do
+    for v in gameplay_core.select("building:in road:absent") do
         local building = v.building
         local typeobject = iprototype.queryById(building.prototype)
         local prototype_name, export_data = typeobject.name, {}
@@ -149,12 +159,14 @@ return function()
     end
 
     local roads = {}
-    for v in gameplay_core.select("road:in endpoint_road:absent") do
+    for v in gameplay_core.select("building:in road:in") do
         local e = {}
-        e.x = v.road.x
-        e.y = v.road.y
-        e.mask = v.road.mask & 0x0f
-        e.prototype = iprototype.queryById(v.road.classid).name
+        e = {
+            x = v.building.x,
+            y = v.building.y,
+            prototype = iprototype.queryById(v.building.prototype).name,
+            direction = iprototype.dir_tostring(v.building.direction),
+        }
         roads[#roads+1] = e
     end
 

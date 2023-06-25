@@ -9,11 +9,11 @@
 #define STATUS_WORKING 2
 
 static void
-sync_input_fluidbox(world& w, ecs::chest& c2, ecs::fluidboxes& fb) {
+sync_input_fluidbox(world& w, ecs::assembling& assembling, ecs::chest& c2, ecs::fluidboxes& fb) {
 	for (size_t i = 0; i < 4; ++i) {
 		uint16_t fluid = fb.in[i].fluid;
 		if (fluid != 0) {
-			uint8_t index = ((c2.fluidbox_in >> (i*4)) & 0xF) - 1;
+			uint8_t index = ((assembling.fluidbox_in >> (i*4)) & 0xF) - 1;
 			uint16_t value = chest::get_fluid(w, container::index::from(c2.chest), index);
 			w.fluidflows[fluid].set(fb.in[i].id, value);
 		}
@@ -21,11 +21,11 @@ sync_input_fluidbox(world& w, ecs::chest& c2, ecs::fluidboxes& fb) {
 }
 
 static void
-sync_output_fluidbox(world& w, ecs::chest& c2, ecs::fluidboxes& fb) {
+sync_output_fluidbox(world& w, ecs::assembling& assembling, ecs::chest& c2, ecs::fluidboxes& fb) {
 	for (size_t i = 0; i < 3; ++i) {
 		uint16_t fluid = fb.out[i].fluid;
 		if (fluid != 0) {
-			uint8_t index = ((c2.fluidbox_out >> (i*4)) & 0xF) - 1;
+			uint8_t index = ((assembling.fluidbox_out >> (i*4)) & 0xF) - 1;
 			uint16_t value = chest::get_fluid(w, container::index::from(c2.chest), index);
 			w.fluidflows[fluid].set(fb.out[i].id, value);
 		}
@@ -40,9 +40,9 @@ static bool assembling_update(world& w, ecs::assembling& assembling, ecs::chest&
             }
             w.stat.finish_recipe(w, assembling.recipe);
             assembling.status = STATUS_IDLE;
-            if (chest.fluidbox_out != 0) {
+            if (assembling.fluidbox_out != 0) {
                 if (fb) {
-                    sync_output_fluidbox(w, chest, *fb);
+                    sync_output_fluidbox(w, assembling, chest, *fb);
                 }
             }
         }
@@ -53,9 +53,9 @@ static bool assembling_update(world& w, ecs::assembling& assembling, ecs::chest&
             auto time = prototype::get<"time">(w, assembling.recipe);
             assembling.progress += time * 100;
             assembling.status = STATUS_DONE;
-            if (chest.fluidbox_in != 0) {
+            if (assembling.fluidbox_in != 0) {
                 if (fb) {
-                    sync_input_fluidbox(w, chest, *fb);
+                    sync_input_fluidbox(w, assembling, chest, *fb);
                 }
             }
         }

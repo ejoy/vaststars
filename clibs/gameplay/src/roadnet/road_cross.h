@@ -2,6 +2,8 @@
 
 #include "roadnet/type.h"
 
+struct world;
+
 namespace roadnet {
     class network;
 }
@@ -56,13 +58,13 @@ namespace roadnet::road {
         uint16_t   ban = 0;
         roadnet::loction loc;
         loction getLoction(network& w) const;
-        void update(network& w, uint64_t ti);
+        void update(world& w, uint64_t ti);
         bool hasNeighbor(direction dir) const;
         bool hasRevNeighbor(direction dir) const;
         void setNeighbor(direction dir, straightid id);
         void setRevNeighbor(direction dir, straightid id);
         bool allowed(direction from, direction to) const;
-        bool insertLorry(network& w, lorryid lorryId, map_coord coord);
+        bool insertLorry(network& w, lorryid lorryId, map_index i, cross_type ct);
         bool insertLorry0(network& w, lorryid lorryId, cross_type type);
         bool insertLorry1(network& w, lorryid lorryId, cross_type type);
     };

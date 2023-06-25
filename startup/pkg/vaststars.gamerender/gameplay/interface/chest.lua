@@ -67,7 +67,7 @@ local function __rebuild_chest(world, e, new_item)
 
     local r = {}
     for i = 1, 256 do
-        local slot = world:container_get(e.inventory, i)
+        local slot = world:container_get(e.base, i)
         if not slot then
             break
         end
@@ -87,20 +87,20 @@ local function __rebuild_chest(world, e, new_item)
         limit = __get_item_stack(new_item),
     }
 
-    if e.inventory and e.inventory.chest ~= InvalidChest then
-        world:container_destroy(e.inventory)
+    if e.base and e.base.chest ~= InvalidChest then
+        world:container_destroy(e.base)
     end
-    e.inventory.chest = world:container_create(table.concat(r))
+    e.base.chest = world:container_create(table.concat(r))
 end
 
 -- item count
 -- this function assumes that there are already enough items in the chest
 function M.move_to_inventory(world, chest, item, count)
-    local e = world.ecs:first("inventory:update inventory_changed?update")
-    local slot = M.first_item(world, e.inventory, item)
+    local e = world.ecs:first("base:update base_changed?update")
+    local slot = M.first_item(world, e.base, item)
     if not slot then
         __rebuild_chest(world, e, item)
-        slot = M.first_item(world, e.inventory, item)
+        slot = M.first_item(world, e.base, item)
         assert(slot)
     end
 
@@ -123,16 +123,16 @@ function M.move_to_inventory(world, chest, item, count)
         return false
     end
 
-    M.chest_place(world, e.inventory, item, available)
-    e.inventory_changed = true
+    M.chest_place(world, e.base, item, available)
+    e.base_changed = true
     world.ecs:submit(e)
     return true, available
 end
 
 function M.get_moveable_count(world, item, count)
     local stack = __get_item_stack(item)
-    local e = world.ecs:first("inventory:in")
-    local slot = M.collect_item(world, e.inventory)[item]
+    local e = world.ecs:first("base:in")
+    local slot = M.collect_item(world, e.base)[item]
     if not slot then
         return true, math.min(stack, count)
     end
@@ -173,9 +173,9 @@ function M.inventory_pickup(world, ...)
         return true
     end
 
-    local e = world.ecs:first("inventory:update inventory_changed?update")
-    e.inventory_changed = true
-    local res = M.chest_pickup(world, e.inventory, ...)
+    local e = world.ecs:first("base:update base_changed?update")
+    e.base_changed = true
+    local res = M.chest_pickup(world, e.base, ...)
     if res then
         world.ecs:submit(e)
     end
@@ -187,9 +187,14 @@ function M.get_inventory_item_count(world, item)
         return 99999
     end
 
-    local e = world.ecs:first("inventory:in")
+    local e = world.ecs:first("base:in")
+    if not e then
+        log.error("can not get base")
+        return 0
+    end
+
     for i = 1, 256 do
-        local slot = world:container_get(e.inventory, i)
+        local slot = world:container_get(e.base, i)
         if not slot then
             break
         end

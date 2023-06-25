@@ -7,7 +7,7 @@
 static int
 lupdate(lua_State *L) {
     auto& w = getworld(L);
-    w.rw.update(w.time);
+    w.rw.update(w, w.time);
     return 0;
 }
 

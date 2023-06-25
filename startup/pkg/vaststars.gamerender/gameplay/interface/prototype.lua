@@ -218,23 +218,25 @@ local CHEST_TYPES <const> = {
     "assembling",
     "chest",
     "laboratory",
-    "station",
+    "station_producer",
+    "station_consumer",
     "hub",
-    "inventory",
+    "base",
 }
 
 local CHEST_COMPONENT <const> = {
     ["assembling"] = "chest",
     ["chest"] = "chest",
     ["laboratory"] = "chest",
-    ["station"] = "chest",
+    ["station_producer"] = "chest",
+    ["station_consumer"] = "chest",
     ["hub"] = "hub",
-    ["inventory"] = "inventory",
 }
 
 local PICKUP_TYPES <const> = {
     "assembling",
-    "station",
+    "station_producer",
+    "station_consumer",
     "hub",
     "chest",
 }
@@ -242,7 +244,8 @@ local PICKUP_TYPES <const> = {
 local PLACE_TYPES <const> = {
     "assembling",
     "laboratory",
-    "station",
+    "station_producer",
+    "station_consumer",
     "hub",
 }
 

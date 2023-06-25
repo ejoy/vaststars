@@ -68,7 +68,7 @@ function S.init_world()
     iom.set_position(camera_ref, eyepos)
     local dir = math3d.normalize(math3d.sub(mc.ZERO_PT, eyepos))
     iom.set_direction(camera_ref, dir)
-    iterrain.gen_terrain_field(256, 256, 128)
+    iterrain.gen_terrain_field(64, 64, 32)
 --[[       ecs.create_entity{
         policy = {
             "ant.scene|scene_object",

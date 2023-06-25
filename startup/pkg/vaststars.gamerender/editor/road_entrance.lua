@@ -77,7 +77,7 @@ return function(srt, state)
 
     local M = {}
 
-    M.arrow = createPrefabInst("/pkg/vaststars.resources/prefabs/road/roadside_arrow.prefab", srt.t)
+    M.arrow = createPrefabInst("/pkg/vaststars.resources/prefabs/road/station_indicator.prefab", srt.t)
     M.arrow:send("material", "set_property", "u_basecolor_factor", arrow_color)
 
     return setmetatable(M, mt)

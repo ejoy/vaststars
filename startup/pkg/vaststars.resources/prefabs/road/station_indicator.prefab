@@ -1,0 +1,19 @@
+---
+data:
+  name: Scene
+  scene: {}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  material: /pkg/vaststars.resources/glb/road/station_indicator.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/road/station_indicator.glb|meshes/Plane.001_P1.meshbin
+  name: Plane.001
+  scene:
+    t: {0, 3.786857843399048, 0}
+  visible_state: main_view|selectable|cast_shadow
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render

@@ -49,11 +49,6 @@ return function ()
         components[#components+1] = c.name
     end
 
-    ecs:register {
-        name = "road_cache",
-        type = "lua",
-    }
-
     local context = ecs:context(components)
     local cworld = vaststars.create_world(context)
     world.ecs = ecs
@@ -91,27 +86,27 @@ return function ()
     local pipeline_build = pipeline(world, cworld, "build")
     local pipeline_backup = pipeline(world, cworld, "backup")
     local pipeline_restore = pipeline(world, cworld, "restore")
-    
+
     function world:dirty(flags)
         self._dirty = self._dirty | flags
     end
-    function world:update()
-        if self._dirty ~= 0 then
-            self._dirty = 0
-            self:build()
-        end
-        pipeline_update()
-        ecs:visitor_update()
-        ecs:update()
-        self._frame = self._frame + 1
-    end
-    function world:build()
+    local function build()
         pipeline_clean()
         ecs:visitor_update()
         ecs:update()
         pipeline_build()
         ecs:visitor_update()
         ecs:update()
+    end
+    function world:update()
+        if self._dirty ~= 0 then
+            build()
+            self._dirty = 0
+        end
+        pipeline_update()
+        ecs:visitor_update()
+        ecs:update()
+        self._frame = self._frame + 1
     end
     function world:backup(rootdir)
         local fs = require "bee.filesystem"
@@ -211,21 +206,9 @@ return function ()
     function world:container_place(c, item, amount)
         chest.place(cworld, c.chest, item, amount)
     end
-
     function world:roadnet_reset(...)
-        roadnet.reset(cworld, ...)
-        self._endpoints = roadnet.endpoint_loction(cworld)
+        return roadnet.reset(cworld, ...)
     end
-    function world:roadnet_each_lorry()
-        return roadnet.each_lorry(cworld)
-    end
-    function world:roadnet_lorry(id)
-        return roadnet.lorry(cworld, id)
-    end
-    function world:roadnet_remove_lorry(...)
-        return roadnet.remove_lorry(cworld, ...)
-    end
-
     function world:now()
         return self._frame
     end

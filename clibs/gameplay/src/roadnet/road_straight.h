@@ -2,6 +2,8 @@
 
 #include "roadnet/type.h"
 
+struct world;
+
 namespace roadnet {
     class network;
 }
@@ -18,11 +20,9 @@ namespace roadnet::road {
         direction dir;
 
         void init(straightid id, uint16_t len, direction dir, crossid neighbor);
-        void update(network& w, uint64_t ti);
-        bool canEntry(network& w, uint16_t offset);
+        void update(world& w, uint64_t ti);
         bool canEntry(network& w);
-        bool tryEntry(network& w, lorryid l, uint16_t offset);
-        bool tryEntry(network& w, lorryid l);
+        bool tryEntry(world& w, lorryid l);
         void setNeighbor(crossid id);
         void setLorryOffset(uint32_t offset) { lorryOffset = offset; }
         void setCoordOffset(uint32_t offset) { coordOffset = offset; }

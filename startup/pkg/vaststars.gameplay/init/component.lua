@@ -1,4 +1,7 @@
-local component = require "register.component"
+local def = require "register.component"
+
+local component = def.component
+local type = def.type
 
 component "building" {
     "x:byte",
@@ -9,30 +12,44 @@ component "building" {
 
 component "chest" {
     "chest:word",
-    "fluidbox_in:word",
-    "fluidbox_out:word",
-}
-
-component "inventory" {
-    "chest:word",
 }
 
 component "station_producer" {
+    "weights:byte",
 }
 
 component "station_consumer" {
+    "maxlorry:byte",
 }
 
-component "station" {
-    "endpoint:word",
-    "chest:word",
-    "weights:byte",
+component "lorry_factory" {}
+
+type "roadnet::straightid" ("word")
+type "enum roadnet::lorry_status" ("byte")
+
+component "endpoint" {
+    "neighbor:roadnet::straightid",
+    "rev_neighbor:roadnet::straightid",
     "lorry:byte",
 }
 
-component "lorry_factory" {
-    "endpoint:word",
+component "lorry" {
+    "ending:roadnet::straightid",
+    "classid:word",
+    "item_classid:word",
+    "item_amount:word",
+    "progress:byte",
+    "maxprogress:byte",
+    "time:byte",
+    "status:enum roadnet::lorry_status",
+    "x:byte",
+    "y:byte",
+    "z:byte",
 }
+
+component "lorry_free" {}
+component "lorry_removed" {}
+component "lorry_willremove" {}
 
 component "hub" {
     "id:word",
@@ -60,6 +77,8 @@ component "assembling" {
     "progress:int",
     "recipe:word",
     "speed:word",
+    "fluidbox_in:word",
+    "fluidbox_out:word",
     "status:byte",
 }
 
@@ -108,12 +127,7 @@ component "pump" {
 component "mining" {
 }
 
-component "road" {
-    "x:byte",
-    "y:byte",
-    "mask:byte",
-    "classid:word",
-}
+component "road" {}
 
 component "save_fluidflow" {
 	"fluid:word",
@@ -129,16 +143,14 @@ component "wind_turbine" {
 }
 
 component "base" {
+    "chest:word",
 }
+component "base_changed" {}
 
 component "fluidbox_changed" {}
 
 --
-component "endpoint_road" {}
+component "station_changed" {}
 component "building_new" {}
 component "building_changed" {}
-component "inventory_changed" {}
-component "road_changed" {}
 component "auto_set_recipe" {}
-component "roadnet_changed" {}
-component "road_invalid" {}

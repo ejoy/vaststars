@@ -228,12 +228,8 @@ namespace lua_world {
             auto& rw = w.rw;
             file_write(f, rw.crossAry);
             file_write(f, rw.straightAry);
-            file_write(f, rw.endpointAry);
             file_write(f, rw.straightLorry);
             file_write(f, rw.straightCoord);
-            file_write(f, rw.lorryVec);
-            file_write(f, rw.lorryFreeList);
-            file_write(f, rw.lorryWaitList);
         });
 
         fclose(f);
@@ -299,12 +295,8 @@ namespace lua_world {
             auto& rw = w.rw;
             file_read(f, rw.crossAry);
             file_read(f, rw.straightAry);
-            file_read(f, rw.endpointAry);
             file_read(f, rw.straightLorry);
             file_read(f, rw.straightCoord);
-            file_read(f, rw.lorryVec);
-            file_read(f, rw.lorryFreeList);
-            file_read(f, rw.lorryWaitList);
             rw.routeCached.clear();
         }, [&](){
             //TODO

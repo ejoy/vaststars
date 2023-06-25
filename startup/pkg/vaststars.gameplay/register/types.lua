@@ -112,15 +112,67 @@ register_unit("size", "integer", function(s)
 	return v
 end)
 
+register_unit("position", "integer", function(s)
+	if type(s) ~= "string" then
+		return nil, "Need position *,*"
+	end
+	local x, y = s:match "(%d),(%d)"
+	if not x then
+		return nil, "Need size *,*"
+	end
+	x = x + 0
+	y = y + 0
+	assert(x >= 0 and x < 256)
+	assert(y >= 0 and y < 256)
+	local v = y << 8 | x
+	return v
+end)
+
+local _ <const> = 0
+local L <const> = 1 << 0
+local T <const> = 1 << 1
+local R <const> = 1 << 2
+local B <const> = 1 << 3
+local RoadMask <const> = {
+	[utf8.codepoint '║'] = _|T|_|B,
+	[utf8.codepoint '═'] = L|_|R|_,
+	[utf8.codepoint '╔'] = _|_|R|B,
+	[utf8.codepoint '╠'] = _|T|R|B,
+	[utf8.codepoint '╚'] = _|T|R|_,
+	[utf8.codepoint '╦'] = L|_|R|B,
+	[utf8.codepoint '╬'] = L|T|R|B,
+	[utf8.codepoint '╩'] = L|T|R|_,
+	[utf8.codepoint '╗'] = L|_|_|B,
+	[utf8.codepoint '╣'] = L|T|_|B,
+	[utf8.codepoint '╝'] = L|T|_|_,
+	[utf8.codepoint '>'] = L|_|_|_,
+	[utf8.codepoint 'v'] = _|T|_|_,
+	[utf8.codepoint '<'] = _|_|R|_,
+	[utf8.codepoint '^'] = _|_|_|B,
+}
+
+register_unit("network", "string", function(s)
+	local r = {}
+	for _, t in ipairs(s) do
+		local x, y, m = t:match "(%d),(%d),(.*)"
+		if not x then
+			return nil, "invalid road format"
+		end
+		x = x + 0
+		y = y + 0
+		assert(y >= 0 and y < 256)
+		for _, c in utf8.codes(m) do
+			assert(x >= 0 and x < 256)
+			r[#r+1] = string.pack("<I1I1I2", x, y, RoadMask[c])
+			x = x + 2
+		end
+	end
+	return table.concat(r)
+end)
+
 register_unit("text", "string", function(s)
 	-- todo : localization
 	assert(type(s) == "string")
-	return s
-end)
-
-register_unit("station_type", "string", function(s)
-	assert(type(s) == "string")
-	assert(s == "station_consumer" or s == "station_producer")
 	return s
 end)
 

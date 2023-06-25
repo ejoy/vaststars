@@ -1,7 +1,6 @@
 #pragma once
 
 #include "roadnet/type.h"
-#include <vector>
 
 namespace roadnet {
     class network;

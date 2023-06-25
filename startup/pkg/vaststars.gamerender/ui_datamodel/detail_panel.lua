@@ -20,8 +20,7 @@ local assembling_common = require "ui_datamodel.common.assembling"
 local show_detail_mb = mailbox:sub {"show_detail"}
 local close_detail_mb = mailbox:sub {"close_detail"}
 local UPS <const> = require("gameplay.interface.constant").UPS
-local CHEST_LIST_TYPES <const> = {"chest", "station", "hub"}
-local queuename = "detail_scene_queue"
+local CHEST_LIST_TYPES <const> = {"chest", "station_producer", "station_consumer", "hub"}
 local function format_vars(fmt, vars)
     return string.gsub(fmt, "%$([%w%._]+)%$", vars)
 end
@@ -33,6 +32,10 @@ local function get_property_list(entity)
         local cfg = property_list[property_name]
         if not cfg then
             goto continue
+        end
+
+        if property_list.converter[property_name] then
+            entity.values[property_name] = property_list.converter[property_name](entity.values[property_name])
         end
 
         local t = {}
@@ -160,7 +163,7 @@ local function get_property(e, typeobject)
     local chest_component = iprototype.get_chest_component(typeobject.name)
     if iprototype.check_types(typeobject.name, CHEST_LIST_TYPES) and chest_component then
         local chest_list = {}
-        if iprototype.has_types(typeobject.type, "station", "hub") then
+        if iprototype.has_types(typeobject.type, "station_producer", "station_consumer", "hub") then
             local c = ichest.chest_get(gameplay_core.get_world(), e[chest_component], 1)
             if c then
                 local typeobject_item = assert(iprototype.queryById(c.item))
@@ -238,9 +241,13 @@ local function get_property(e, typeobject)
         end
     end
 
-    if e.station then
-        t.values['weights'] = e.station.weights
-        t.values['lorry'] = e.station.lorry
+    if e.station_consumer then
+        t.values['maxlorry'] = e.station_consumer.maxlorry
+        t.values['lorry'] = e.endpoint.lorry
+    end
+    if e.station_producer then
+        t.values['weights'] = e.station_producer.weights
+        t.values['lorry'] = e.endpoint.lorry
     end
     return t
 end

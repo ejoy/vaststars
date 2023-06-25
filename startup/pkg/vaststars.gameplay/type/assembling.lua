@@ -16,13 +16,13 @@ function c:ctor(init, pt)
     local e = {
         chest = {
             chest = InvalidChest,
-            fluidbox_in = 0,
-            fluidbox_out = 0,
         },
         assembling = {
             progress = 0,
             recipe = 0,
             speed = math.floor(pt.speed * 100),
+            fluidbox_in = 0,
+            fluidbox_out = 0,
             status = STATUS_IDLE,
         },
     }

@@ -370,7 +370,7 @@ local function __construct_entity(typeobject)
         builder_datamodel = iui.open({"construct_road_or_pipe.rml", "construct_road_or_pipe.lua"})
         builder = create_pipetogroundbuilder()
         builder:new_entity(builder_datamodel, typeobject)
-    elseif iprototype.has_type(typeobject.type, "station") then
+    elseif iprototype.has_types(typeobject.type, "station_producer", "station_consumer") then
         builder_ui = "construct_building.rml"
         builder_datamodel = iui.open({"construct_building.rml"})
         builder = create_station_builder()
@@ -436,14 +436,14 @@ function M:stage_camera_usage(datamodel)
                     o.lorry:set_outline(true)
                     local t = now()
                     local lorry_id = o.id
-                    iupdate.add(function()
-                        if t + 2000 > now() then
-                            return true
-                        end
-                        __unpick_lorry(lorry_id)
-                        datamodel.remove_lorry = false
-                        return false
-                    end)
+                    -- iupdate.add(function()
+                    --     if t + 2000 > now() then
+                    --         return true
+                    --     end
+                    --     __unpick_lorry(lorry_id)
+                    --     datamodel.remove_lorry = false
+                    --     return false
+                    -- end)
                     datamodel.remove_lorry = true
                 elseif o and o.class == CLASS.Object then
                     if __on_pick_building(datamodel, o.object) then
@@ -458,6 +458,9 @@ function M:stage_camera_usage(datamodel)
                         datamodel.remove_lorry = false
                         pick_lorry_id = nil
                         leave = false
+
+                        idetail.unselected()
+                        datamodel.is_concise_mode = false
                     end
                 elseif o and o.class == CLASS.Mountain then
                     if __on_pick_mineral(datamodel, o.mountain) then
@@ -465,6 +468,9 @@ function M:stage_camera_usage(datamodel)
                         datamodel.remove_lorry = false
                         pick_lorry_id = nil
                         leave = false
+
+                        idetail.unselected()
+                        datamodel.is_concise_mode = false
                     end
                 else
                     __unpick_lorry(pick_lorry_id)
@@ -626,8 +632,7 @@ function M:stage_camera_usage(datamodel)
 
     for _ in remove_lorry_mb:unpack() do
         if pick_lorry_id then
-            gameplay_core.get_world():roadnet_remove_lorry(pick_lorry_id)
-            ilorry.remove(pick_lorry_id)
+            gameplay_core.get_world().entity[pick_lorry_id].lorry_willremove = true
 
             __unpick_lorry(pick_lorry_id)
             pick_lorry_id = nil
