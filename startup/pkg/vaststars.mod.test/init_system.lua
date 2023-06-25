@@ -69,7 +69,6 @@ function S.init_world()
     local dir = math3d.normalize(math3d.sub(mc.ZERO_PT, eyepos))
     iom.set_direction(camera_ref, dir)
     iterrain.gen_terrain_field(256, 256, 128)
-    iterrain.gen_terrain_field(256, 256, 128)
 --[[       ecs.create_entity{
         policy = {
             "ant.scene|scene_object",
@@ -164,11 +163,21 @@ function S.init_world()
         end
     end
     --iroad.update_roadnet_group(1000, create_list)   
-    local density = 0.9
-    local width, height, offset, UNIT = 256+10, 256+10, 128+10/2, 10
-    local idx_string = istonemountain.create_random_sm(density, width, height, offset, UNIT)
-    istonemountain.create_sm_entity(idx_string)
-    --istonemountain.create_sm_entity_config(config, width, height, offset, UNIT)    
+ 
+--[[      local density = 0.5
+    local width, height, offset, UNIT = 256, 256, 128, 10
+    local scale_table = {
+        big = 1.0,
+        middle = 0.6,
+        small = 0.01
+    }
+      local stone_area = {
+        {x = 0, z = 0},
+    }
+     local open_area = {
+        {x = -128, z = 128, w = 256, h = 256}
+    }   
+    istonemountain.create_sm_entity(density, width, height, offset, UNIT, scale_table, {}, {})     ]]
     --create_mark()
 
 --[[      printer_eid = ecs.create_entity {

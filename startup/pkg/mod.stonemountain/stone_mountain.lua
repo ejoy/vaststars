@@ -18,7 +18,8 @@ local icompute = ecs.import.interface "ant.render|icompute"
 local terrain_module = require "terrain"
 local ism = ecs.interface "istonemountain"
 local sm_sys = ecs.system "stone_mountain"
-local ratio, width, height = 0.70, 256, 256
+local sm_material
+local ratio, width, height, section_size = 0.5, 256, 256, 32
 local freq, depth, unit, offset = 4, 4, 10, 0
 local remove_offset = 3
 local is_build_sm = false
@@ -264,7 +265,108 @@ local function get_count()
             end
         end
     end
-    return string.pack(("B"):rep(width * height), table.unpack(idx_table))
+
+
+end
+
+local function get_map()
+    for sm_idx, _ in pairs(sm_table) do
+        for mesh_idx = 1, 4 do
+            mesh_to_sm_table[mesh_idx][sm_idx] = {}   
+        end
+        sm_bms_to_mesh_table[sm_idx] = {}
+        local iy = (sm_idx - 1) // width
+        local ix = (sm_idx - 1) % width
+        for size_idx = 1, 3 do
+            if not sm_bms_to_mesh_table[sm_idx][size_idx] then
+                sm_bms_to_mesh_table[sm_idx][size_idx] = {}
+            end
+            local count_sum = sm_table[sm_idx][size_idx].c
+            if not count_sum then
+                count_sum = 0
+            end
+            for count_idx = 1, count_sum do
+                local mesh_idx = (sm_idx + iy + ix + count_idx + size_idx) % 4 + 1
+                sm_bms_to_mesh_table[sm_idx][size_idx][count_idx] = mesh_idx
+                if not mesh_to_sm_table[mesh_idx][sm_idx][size_idx] then
+                    mesh_to_sm_table[mesh_idx][sm_idx][size_idx] = {} 
+                end
+                mesh_to_sm_table[mesh_idx][sm_idx][size_idx][count_idx] = true
+            end     
+        end
+    end   
+end
+
+local function get_final_map()
+    local fmt = "ffff"
+    for sm_idx, _ in pairs(sm_table) do
+        local vb = {[1] = 0, [2] = 0, [3] = 0, [4] = 0}
+        local vm = {[1] = 0, [2] = 0, [3] = 0, [4] = 0}
+        local vs = {[1] = 0, [2] = 0, [3] = 0, [4] = 0}
+        for mesh_idx = 1, 4 do
+            mesh_to_sm_table[mesh_idx][sm_idx] = {}   
+        end
+        if not sm_bms_to_mesh_table[sm_idx] then -- new sm_idx
+            sm_bms_to_mesh_table[sm_idx] = {}
+            local iy = (sm_idx - 1) // width
+            local ix = (sm_idx - 1) % width
+            for size_idx = 1, 3 do
+                if sm_table[sm_idx][size_idx].s then
+                    local mesh_idx = (sm_idx + iy + ix + size_idx) % 4 + 1
+                    if not mesh_to_sm_table[mesh_idx][sm_idx][size_idx] then
+                        mesh_to_sm_table[mesh_idx][sm_idx][size_idx] = {} 
+                    end
+                    sm_bms_to_mesh_table[sm_idx][size_idx] = mesh_idx
+                    mesh_to_sm_table[mesh_idx][sm_idx][size_idx] = true                    
+                end
+            end
+        else -- origin sm_table
+            -- find mesh_idx of big middle small
+            local b_mesh_idx, m_mesh_idx, s_mesh_idx
+            if sm_table[sm_idx][1] then
+                b_mesh_idx = sm_bms_to_mesh_table[sm_idx][1][1]
+            end
+            if sm_table[sm_idx][2].s then
+                local middle_origin = sm_table[sm_idx][2].origin
+                m_mesh_idx = sm_bms_to_mesh_table[middle_origin.sm_idx][middle_origin.size_idx][middle_origin.count_idx]
+            end
+            if sm_table[sm_idx][3].s then
+                local small_origin = sm_table[sm_idx][3].origin
+                s_mesh_idx = sm_bms_to_mesh_table[small_origin.sm_idx][small_origin.size_idx][small_origin.count_idx]
+            end
+            sm_bms_to_mesh_table[sm_idx] = {}
+            if b_mesh_idx then
+                sm_bms_to_mesh_table[sm_idx][1] = b_mesh_idx
+                mesh_to_sm_table[b_mesh_idx][sm_idx] = {}
+                mesh_to_sm_table[b_mesh_idx][sm_idx][1] = true
+            end
+            if m_mesh_idx then
+                sm_bms_to_mesh_table[sm_idx][2] = m_mesh_idx
+                mesh_to_sm_table[m_mesh_idx][sm_idx] = {}
+                mesh_to_sm_table[m_mesh_idx][sm_idx][2] = true
+            end
+            if s_mesh_idx then
+                sm_bms_to_mesh_table[sm_idx][3] = s_mesh_idx
+                mesh_to_sm_table[s_mesh_idx][sm_idx] = {}
+                mesh_to_sm_table[s_mesh_idx][sm_idx][3] = true
+            end
+        end
+        for mesh_idx = 1, 4 do
+            if mesh_to_sm_table[mesh_idx][sm_idx][1] then
+                vb[mesh_idx] = 1
+            end
+            if mesh_to_sm_table[mesh_idx][sm_idx][2] then
+                vm[mesh_idx] = 1
+            end
+            if mesh_to_sm_table[mesh_idx][sm_idx][3] then
+                vs[mesh_idx] = 1
+            end
+        end
+        sm_table[sm_idx].mesh_visibility = {}
+        for mesh_idx = 1, 4 do
+            sm_table[sm_idx].mesh_visibility[mesh_idx] = fmt:pack(table.unpack({vb[mesh_idx], vm[mesh_idx], vs[mesh_idx], 0}))
+        end
+    end     
 end
 
 local function get_scale()
@@ -303,14 +405,29 @@ local function get_scale()
     end
 end
 
-function ism.create_sm_entity(idx_string)
-    open_sm = true
-    for iz = 0, height - 1 do
-        for ix = 0, width - 1 do
-            local idx = iz * width + ix + 1
-            local is_sm = string.unpack(("B"), idx_string, idx)
-            if is_sm == 1 then
-                sm_table[(iz << 16) + ix] = {}
+local function get_rotation()
+    for sm_idx, _ in pairs(sm_table) do
+        if sm_table[sm_idx] then
+            local iy = (sm_idx - 1) // width
+            local ix = (sm_idx - 1) % width
+            for size_idx = 1, 3 do
+                local count_sum = sm_table[sm_idx][size_idx].c
+                sm_table[sm_idx][size_idx].temp_rotation_table = {}
+                local temp_rotation_table = sm_table[sm_idx][size_idx].temp_rotation_table
+                if not count_sum then
+                    count_sum = 0
+                end
+                for count_idx = 1, count_sum do
+                    local offset_x = iy * size_idx * count_idx
+                    local offset_y = ix * size_idx * count_idx
+                    local seed = sm_idx * size_idx * count_idx
+                    local e = terrain_module.noise(ix, iy, freq + size_idx, depth + size_idx, seed, offset_y, offset_x) * 2 - 1
+                    if size_idx == 1 then
+                        sm_table[sm_idx][size_idx].r = e
+                    else
+                        temp_rotation_table[count_idx] = e
+                    end
+                end
             end
         end
     end
@@ -423,13 +540,84 @@ local function get_translation()
     local sm_s_table = {}
 
     for sm_idx, _ in pairs(sm_table) do
-        local ix, iz = sm_idx & 65535, sm_idx >> 16
-        local seed, offset_y, offset_x = iz * ix + 1, iz + 1, ix + 1
-        local s_noise = terrain_module.noise(ix, iz, freq * 2, depth * 2, seed * 2, offset_y * 2, offset_x * 2) * 0.064 + 0.064 * 1.5
-        local r_noise = math.floor(terrain_module.noise(ix, iz, freq * 3, depth * 3, seed * 3, offset_y * 3, offset_x * 3) * 360)
-        local mesh_noise = (sm_idx) % 4 + 1
-        local tx, tz = (ix + 0.5 - offset) * unit, (iz + 0.5 - offset) * unit
-        sm_table[sm_idx] = {[1] = {s = s_noise, r = r_noise, tx = tx, tz = tz, m = mesh_noise}}
+        local size_idx = 3
+        local count_sum = sm_table[sm_idx][size_idx].c
+        if not count_sum then
+            count_sum = 0
+        end
+        for count_idx = 1, count_sum do
+            local scale = sm_table[sm_idx][size_idx].temp_scale_table[count_idx]
+            local mesh_idx = sm_bms_to_mesh_table[sm_idx][size_idx][count_idx]
+            local iy = sm_idx // width + 1
+            local ix = sm_idx % width + 1
+            local inter_idx = (size_idx * iy * ix * count_idx + iy + ix + count_idx) % 16 + 1
+            local inter_center
+            local extent = {}
+            if inter_idx <= 8 then
+                inter_center = sm_table[sm_idx].b_inter_table[inter_idx]
+                extent.x, extent.z = mesh_aabb_table[mesh_idx].extent[1] * scale, mesh_aabb_table[mesh_idx].extent[3] * scale  -- radius
+            else
+                inter_idx = inter_idx - 8
+                inter_center = sm_table[sm_idx].m_inter_table[inter_idx]
+                extent.x, extent.z =  sm_table[sm_idx].outer_extent.x,  sm_table[sm_idx].outer_extent.z
+            end
+            local inter_range = get_inter_range(inter_idx, extent)
+            local offset_x = iy * size_idx
+            local offset_y = ix * size_idx
+            local seedx = sm_idx * size_idx * count_idx * ix
+            local seedz = sm_idx * size_idx * count_idx * iy
+            local lb_x, ub_x = inter_range[1].lb, inter_range[1].ub
+            local lb_z, ub_z = inter_range[2].lb, inter_range[2].ub
+            local ex = terrain_module.noise(ix, iy, freq, depth - 1, seedx, offset_x, offset_x) * (ub_x - lb_x) + lb_x
+            local ez = terrain_module.noise(ix, iy, freq - 1, depth, seedz, offset_y, offset_y) * (ub_z - lb_z) + lb_z
+            local inter_x = ex + inter_center.x
+            local inter_z = ez + inter_center.z
+            local grid_x   = math.floor(inter_x // unit + offset)
+            local grid_z   = math.floor(inter_z // unit + offset)
+            local s_idx = grid_x - 1 + (grid_z - 1) * width + 1
+            if not sm_table[s_idx] and not sm_m_table[s_idx] then
+                sm_s_table[s_idx]={[1] = {}, [2] = {}, [3] = {}}
+                sm_s_table[s_idx][3].s = sm_table[sm_idx][size_idx].temp_scale_table[count_idx]
+                sm_s_table[s_idx][3].r = sm_table[sm_idx][size_idx].temp_rotation_table[count_idx]
+                sm_s_table[s_idx][3].t = {x = inter_x, z = inter_z}
+                sm_s_table[s_idx][3].origin = {sm_idx = sm_idx, size_idx = size_idx, count_idx = count_idx}
+            elseif sm_table[s_idx] then
+                sm_table[s_idx][3].t = {x = inter_x, z = inter_z}
+                sm_table[s_idx][3].origin = {sm_idx = sm_idx, size_idx = size_idx, count_idx = count_idx}
+            else
+                sm_m_table[s_idx][3].s = sm_table[sm_idx][size_idx].temp_scale_table[count_idx]
+                sm_m_table[s_idx][3].r = sm_table[sm_idx][size_idx].temp_rotation_table[count_idx]
+                sm_m_table[s_idx][3].t = {x = inter_x, z = inter_z}
+                sm_m_table[s_idx][3].origin = {sm_idx = sm_idx, size_idx = size_idx, count_idx = count_idx}             
+            end
+        end
+    end 
+
+    for sm_idx, m_stone in pairs(sm_m_table) do
+        sm_table[sm_idx] = m_stone
+    end  
+
+    for sm_idx, s_stone in pairs(sm_s_table) do
+        sm_table[sm_idx] = s_stone
+    end
+    get_final_map()
+end
+
+function ism.create_sm_entity(r, ww, hh, off, un, scale, sa, oa, f, d)
+    open_sm = true
+    if scale then
+        scale_table.b, scale_table.m, scale_table.s = scale.big, scale.middle, scale.small
+    end
+    stone_area = sa
+    open_area = oa
+    ratio, width, height= r, ww, hh
+    if off then offset = off end
+    if un then un = unit end
+    if f then freq = f end
+    if d then depth = d end
+    section_size = math.min(math.max(1, width > 4 and width//4 or width//2), 32)
+    for center_idx = 1, width * height do
+        sm_table[center_idx] = {[1] = {}, [2] = {}, [3] = {}} -- b m s
     end
 end
 
@@ -607,7 +795,7 @@ end
 function sm_sys:entity_init()
     for e in w:select "INIT stonemountain:update render_object?update indirect?update" do
         local stonemountain = e.stonemountain
-        local max_num = 3000
+        local max_num = 1000
         local draw_indirect_eid = ecs.create_entity {
             policy = {
                 "ant.render|compute_policy",
@@ -683,7 +871,7 @@ function sm_sys:data_changed()
         if stonemountain_num > 0 then
             local de <close> = w:entity(stonemountain.draw_indirect_eid, "draw_indirect:in dispatch:in")
             local idb_handle, itb_handle = de.draw_indirect.idb_handle, de.draw_indirect.itb_handle
-            local instance_memory_buffer = get_instance_memory_buffer(stonemountain_info, 3000)
+            local instance_memory_buffer = get_instance_memory_buffer(stonemountain_info, 1000)
             bgfx.update(itb_handle, 0, instance_memory_buffer)
             local instance_params = math3d.vector(0, e.render_object.vb_num, 0, e.render_object.ib_num)
             local indirect_params = math3d.vector(stonemountain_num, 0, 0, 0)
