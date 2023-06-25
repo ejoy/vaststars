@@ -17,7 +17,7 @@ local icompute = ecs.import.interface "ant.render|icompute"
 local terrain_module = require "terrain"
 local ism = ecs.interface "istonemountain"
 local sm_sys = ecs.system "stone_mountain"
-local ratio, width, height = 0.60, 256, 256
+local ratio, width, height = 0.70, 256, 256
 local freq, depth, unit, offset = 4, 4, 10, 0
 local main_viewid = viewidmgr.get "csm_fb"
 local open_area = {}
@@ -50,7 +50,7 @@ local function generate_sm_config()
             end
         end
     end
-    return string.pack(("i"):rep(width * height), table.unpack(idx_table))
+    return string.pack(("B"):rep(width * height), table.unpack(idx_table))
 end
 
 function ism.create_random_sm(d, ww, hh, off, un)
@@ -66,9 +66,9 @@ function ism.create_sm_entity(idx_string)
     for iz = 0, height - 1 do
         for ix = 0, width - 1 do
             local idx = iz * width + ix + 1
-            local is_sm = string.unpack(("i"), idx_string, idx)
+            local is_sm = string.unpack(("B"), idx_string, idx)
             if is_sm == 1 then
-                sm_table[(ix << 8) + iz] = {}
+                sm_table[(iz << 16) + ix] = {}
             end
         end
     end
@@ -77,7 +77,7 @@ end
 
 local function get_1x1_srt()
     for sm_idx, _ in pairs(sm_table) do
-        local ix, iz = sm_idx >> 8, sm_idx & 255
+        local ix, iz = sm_idx & 65535, sm_idx >> 16
         local seed, offset_y, offset_x = iz * ix + 1, iz + 1, ix + 1
         local s_noise = terrain_module.noise(ix, iz, freq * 2, depth * 2, seed * 2, offset_y * 2, offset_x * 2) * 0.064 + 0.064 * 1.5
         local r_noise = math.floor(terrain_module.noise(ix, iz, freq * 3, depth * 3, seed * 3, offset_y * 3, offset_x * 3) * 360)
@@ -153,7 +153,7 @@ end
 function sm_sys:entity_init()
     for e in w:select "INIT stonemountain:update render_object?update indirect?update" do
         local stonemountain = e.stonemountain
-        local max_num = 2500
+        local max_num = 3000
         local draw_indirect_eid = ecs.create_entity {
             policy = {
                 "ant.render|compute_policy",
@@ -229,7 +229,7 @@ function sm_sys:data_changed()
         if stonemountain_num > 0 then
             local de <close> = w:entity(stonemountain.draw_indirect_eid, "draw_indirect:in dispatch:in")
             local idb_handle, itb_handle = de.draw_indirect.idb_handle, de.draw_indirect.itb_handle
-            local instance_memory_buffer = get_instance_memory_buffer(stonemountain_info, 2500)
+            local instance_memory_buffer = get_instance_memory_buffer(stonemountain_info, 3000)
             bgfx.update(itb_handle, 0, instance_memory_buffer)
             local instance_params = math3d.vector(0, e.render_object.vb_num, 0, e.render_object.ib_num)
             local indirect_params = math3d.vector(stonemountain_num, 0, 0, 0)
