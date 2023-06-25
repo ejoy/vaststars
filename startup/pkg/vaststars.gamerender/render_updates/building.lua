@@ -128,6 +128,12 @@ function ibuilding.remove(x, y)
 end
 
 function ibuilding.set(x, y, prototype_name, direction)
+    local coord = iprototype.packcoord(x, y)
+    local building = building_cache[coord]
+    if building then
+        gameplay_core.get_world().ecs:remove(building.eid)
+        building_cache[coord] = nil
+    end
     local e = {
         building = {
             x = x,
@@ -138,4 +144,11 @@ function ibuilding.set(x, y, prototype_name, direction)
         road = true,
     }
     gameplay_core.get_world().ecs:new(e)
+    building_cache[iprototype.packcoord(x, y)] = {
+        eid = e.eid,
+        x = x,
+        y = y,
+        prototype = prototype_name,
+        direction = direction,
+    }
 end
