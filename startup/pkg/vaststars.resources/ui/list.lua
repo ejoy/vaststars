@@ -172,67 +172,67 @@ function list_meta:on_pan(event)
     end
 end
 
-function list_meta:on_mousedown(event)
-    if not self.item_width then
-        local childNodes = self.panel.childNodes
-        self.item_count = #childNodes
-        for _, it in ipairs(childNodes) do
-            if not self.item_width then
-                self.item_width = it.clientWidth
-                self.item_height = it.clientHeight
-                break
-            end
-        end
-    end
-    local pos = ((self.direction == 0) and event.x or event.y)
-    if not pos and event.targetTouches and #event.targetTouches > 0 then
-        pos = (self.direction == 0) and event.targetTouches[1].x or event.targetTouches[1].y
-    end
-    self.drag.mouse_pos = pos
-    self.drag.anchor = self.pos
-    self.oldClassName = self.panel.className
-    self.panel.className = self.panel.className .. " notransition"
-end
+-- function list_meta:on_mousedown(event)
+--     if not self.item_width then
+--         local childNodes = self.panel.childNodes
+--         self.item_count = #childNodes
+--         for _, it in ipairs(childNodes) do
+--             if not self.item_width then
+--                 self.item_width = it.clientWidth
+--                 self.item_height = it.clientHeight
+--                 break
+--             end
+--         end
+--     end
+--     local pos = ((self.direction == 0) and event.x or event.y)
+--     if not pos and event.targetTouches and #event.targetTouches > 0 then
+--         pos = (self.direction == 0) and event.targetTouches[1].x or event.targetTouches[1].y
+--     end
+--     self.drag.mouse_pos = pos
+--     self.drag.anchor = self.pos
+--     self.oldClassName = self.panel.className
+--     self.panel.className = self.panel.className .. " notransition"
+-- end
 
-function list_meta:on_mouseup(event)
-    local item_count = self.item_count
-    local min = (self.direction == 0) and (self.view.clientWidth - item_count * self.item_width) or (self.view.clientHeight - item_count * self.item_height)
-    if min > 0 then
-        min = 0
-    end
-    local adjust = false
-    if self.pos > 0 then
-        self.pos = 0
-        adjust = true  
-    elseif self.pos < min then
-        self.pos = min
-        adjust = true
-    end
-    self.panel.className = self.oldClassName
-    if adjust then
-        if self.direction == 0 then
-            self.panel.style.left = tostring(self.pos) .. 'px'
-        else
-            self.panel.style.top = tostring(self.pos) .. 'px'
-        end
-    end
-end
+-- function list_meta:on_mouseup(event)
+--     local item_count = self.item_count
+--     local min = (self.direction == 0) and (self.view.clientWidth - item_count * self.item_width) or (self.view.clientHeight - item_count * self.item_height)
+--     if min > 0 then
+--         min = 0
+--     end
+--     local adjust = false
+--     if self.pos > 0 then
+--         self.pos = 0
+--         adjust = true  
+--     elseif self.pos < min then
+--         self.pos = min
+--         adjust = true
+--     end
+--     self.panel.className = self.oldClassName
+--     if adjust then
+--         if self.direction == 0 then
+--             self.panel.style.left = tostring(self.pos) .. 'px'
+--         else
+--             self.panel.style.top = tostring(self.pos) .. 'px'
+--         end
+--     end
+-- end
 
-function list_meta:on_drag(event)
-    local pos = (self.direction == 0) and event.x or event.y
-    if not pos and event.targetTouches and #event.targetTouches > 0 then
-        pos = (self.direction == 0) and event.targetTouches[1].x or event.targetTouches[1].y
-    end
-    if event.button or event.targetTouches then
-        self.drag.delta = pos - self.drag.mouse_pos
-        self.pos = self.drag.anchor + self.drag.delta
-        local e = self.panel
-        if self.direction == 0 then
-            e.style.left = tostring(math.floor(self.pos)) .. 'px'
-        else
-            e.style.top = tostring(math.floor(self.pos)) .. 'px'
-        end
-    end
-end
+-- function list_meta:on_drag(event)
+--     local pos = (self.direction == 0) and event.x or event.y
+--     if not pos and event.targetTouches and #event.targetTouches > 0 then
+--         pos = (self.direction == 0) and event.targetTouches[1].x or event.targetTouches[1].y
+--     end
+--     if event.button or event.targetTouches then
+--         self.drag.delta = pos - self.drag.mouse_pos
+--         self.pos = self.drag.anchor + self.drag.delta
+--         local e = self.panel
+--         if self.direction == 0 then
+--             e.style.left = tostring(math.floor(self.pos)) .. 'px'
+--         else
+--             e.style.top = tostring(math.floor(self.pos)) .. 'px'
+--         end
+--     end
+-- end
 
 return list_meta

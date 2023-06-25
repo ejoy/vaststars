@@ -262,58 +262,63 @@ function page_meta:on_pan(event)
         return
     end
     self.pos = target_pos
+    local page_index = math.floor(-target_pos / self.page_width) + 1
+    if page_index ~= self.current_page then
+        self.current_page = page_index
+        self:update_footer_status()
+    end
     self.panel.style.left = tostring(math.floor(self.pos)) .. 'px'
 end
 
-function page_meta:on_mousedown(event)
-    local posx = event.x
-    if not posx and event.targetTouches and #event.targetTouches > 0 then
-        posx = event.targetTouches[1].x
-    end
-    self.drag.mouse_pos = posx
-    self.drag.anchor = self.pos
-    self.oldClassName = self.panel.className
-    self.panel.className = self.panel.className .. " notransition"
-end
+-- function page_meta:on_mousedown(event)
+--     local posx = event.x
+--     if not posx and event.targetTouches and #event.targetTouches > 0 then
+--         posx = event.targetTouches[1].x
+--     end
+--     self.drag.mouse_pos = posx
+--     self.drag.anchor = self.pos
+--     self.oldClassName = self.panel.className
+--     self.panel.className = self.panel.className .. " notransition"
+-- end
 
-function page_meta:on_mouseup(event)
-    local old_value = self.current_page
-    if self.drag.delta < -100 then
-        self.current_page = self.current_page + 1
-        if self.current_page > self.page_count then
-            self.current_page = self.page_count
-        end
-    elseif self.drag.delta > 100 then
-        self.current_page = self.current_page - 1
-        if self.current_page < 1 then
-            self.current_page = 1
-        end
-    end
-    if old_value ~= self.current_page then
-        self:update_footer_status()
-    end
-    self.panel.className = self.oldClassName
-    if not self.panel.childNodes[1] then
-        return
-    end
-    self.pos = (1 - self.current_page) * self.panel.childNodes[1].clientWidth
-    self.panel.style.left = tostring(self.pos) .. 'px'
-    return old_value ~= self.current_page
-end
+-- function page_meta:on_mouseup(event)
+--     local old_value = self.current_page
+--     if self.drag.delta < -100 then
+--         self.current_page = self.current_page + 1
+--         if self.current_page > self.page_count then
+--             self.current_page = self.page_count
+--         end
+--     elseif self.drag.delta > 100 then
+--         self.current_page = self.current_page - 1
+--         if self.current_page < 1 then
+--             self.current_page = 1
+--         end
+--     end
+--     if old_value ~= self.current_page then
+--         self:update_footer_status()
+--     end
+--     self.panel.className = self.oldClassName
+--     if not self.panel.childNodes[1] then
+--         return
+--     end
+--     self.pos = (1 - self.current_page) * self.panel.childNodes[1].clientWidth
+--     self.panel.style.left = tostring(self.pos) .. 'px'
+--     return old_value ~= self.current_page
+-- end
 
-function page_meta:on_drag(event)
-    local posx = event.x
-    if not posx and event.targetTouches and #event.targetTouches > 0 then
-        posx = event.targetTouches[1].x
-    end
-    if event.button or event.targetTouches then
-        self.drag.delta = posx - self.drag.mouse_pos
-        self.pos = self.drag.anchor + self.drag.delta
-        local e = self.panel
-        e.style.left = tostring(math.floor(self.pos)) .. 'px'
-    else
-        self.drag.delta = 0
-    end
-end
+-- function page_meta:on_drag(event)
+--     local posx = event.x
+--     if not posx and event.targetTouches and #event.targetTouches > 0 then
+--         posx = event.targetTouches[1].x
+--     end
+--     if event.button or event.targetTouches then
+--         self.drag.delta = posx - self.drag.mouse_pos
+--         self.pos = self.drag.anchor + self.drag.delta
+--         local e = self.panel
+--         e.style.left = tostring(math.floor(self.pos)) .. 'px'
+--     else
+--         self.drag.delta = 0
+--     end
+-- end
 
 return page_meta
