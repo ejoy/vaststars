@@ -31,6 +31,7 @@ local CANVAS_BUILD <const> = {
             materials = {
                 "/pkg/vaststars.resources/materials/canvas/recipes.material",
                 "/pkg/vaststars.resources/materials/canvas/fluids.material",
+                "/pkg/vaststars.resources/materials/canvas/no-power.material",
             }
         },
         {
@@ -53,6 +54,7 @@ local CANVAS_BUILD <const> = {
             render_layer = RENDER_LAYER.ICON_CONTENT,
             materials = {
                 "/pkg/vaststars.resources/materials/canvas/fluids.material",
+                "/pkg/vaststars.resources/materials/canvas/no-power.material",
             }
         },
         {

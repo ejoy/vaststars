@@ -327,8 +327,6 @@ function M:restore(index)
     debugger.set_free_mode(gameplay_core.get_storage().game_mode == "free")
     restore_world()
 
-    igameplay.dirty(DIRTY_ALL)
-
     iui.open({"construct.rml"})
     iui.open({"message_pop.rml"})
     print("restore success", archival_dir)
