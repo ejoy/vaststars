@@ -59,12 +59,6 @@ function ism.create_random_sm(d, ww, hh, off, un)
     if off then offset = off end
     if un then unit = un end
     return generate_sm_config()
-function ism.create_random_sm(d, ww, hh, off, un)
-    ratio = ratio + (1 - d) / 10
-    width, height =  ww, hh
-    if off then offset = off end
-    if un then unit = un end
-    return generate_sm_config()
 end
 
 function ism.create_sm_entity(idx_string)
@@ -81,7 +75,6 @@ function ism.create_sm_entity(idx_string)
 end
 
 
-local function get_1x1_srt()
 local function get_1x1_srt()
     for sm_idx, _ in pairs(sm_table) do
         local ix, iz = sm_idx & 65535, sm_idx >> 16
