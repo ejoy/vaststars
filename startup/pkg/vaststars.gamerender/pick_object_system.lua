@@ -11,8 +11,6 @@ local imountain = ecs.require "engine.mountain"
 local iprototype = require "gameplay.interface.prototype"
 local ilorry = ecs.import.interface "vaststars.gamerender|ilorry"
 
-local ROAD_TILE_WIDTH_SCALE <const> = 2
-local ROAD_TILE_HEIGHT_SCALE <const> = 2
 local CLASS = {
     Lorry = 1,
     Object = 2,
@@ -79,7 +77,7 @@ function ipick_object.blur_pick(x, y)
         if classid == 0 then
             goto continue
         end
-        dx, dy = e.lorry.x * ROAD_TILE_WIDTH_SCALE, e.lorry.y * ROAD_TILE_HEIGHT_SCALE
+        dx, dy = e.lorry.x, e.lorry.y
         local coord = __pack(dx, dy)
         lorries[coord] = lorries[coord] or {}
         lorries[coord][#lorries[coord] + 1] = e.eid

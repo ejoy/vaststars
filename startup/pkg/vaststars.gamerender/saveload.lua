@@ -10,8 +10,6 @@ local CUSTOM_ARCHIVING <const> = require "debugger".custom_archiving
 local iprototype_cache = require "gameplay.prototype_cache.init"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local DIRTY_ALL <const> = require("gameplay.interface.constant").DIRTY_ALL
-local ROAD_TILE_WIDTH_SCALE <const> = 2
-local ROAD_TILE_HEIGHT_SCALE <const> = 2
 
 local archival_base_dir
 if CUSTOM_ARCHIVING then

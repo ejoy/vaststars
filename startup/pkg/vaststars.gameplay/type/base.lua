@@ -6,7 +6,6 @@ type "item"
 
 type "fluid"
 
-type "road"
 type "pipe"
 type "pipe_to_ground"
 type "mountain"
