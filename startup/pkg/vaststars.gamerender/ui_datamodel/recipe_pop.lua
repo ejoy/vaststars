@@ -208,7 +208,7 @@ function M:stage_ui_update(datamodel, object_id)
             _update_neighbor_fluidbox(object)
             igameplay.dirty(DIRTY_ASSEMBLING)
 
-            iui.call_datamodel_method("building_arc_menu.rml", "update", object_id)
+            iui.call_datamodel_method("building_menu.rml", "update", object_id)
             object.recipe = recipe_name
             itask.update_progress("set_recipe", recipe_name)
         end
@@ -222,7 +222,7 @@ function M:stage_ui_update(datamodel, object_id)
         object.recipe = ""
         object.fluid_name = {}
 
-        iui.call_datamodel_method("building_arc_menu.rml", "update", object_id)
+        iui.call_datamodel_method("building_menu.rml", "update", object_id)
 
         _update_neighbor_fluidbox(object)
         igameplay.dirty(DIRTY_ASSEMBLING)

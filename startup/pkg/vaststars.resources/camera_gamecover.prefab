@@ -2,7 +2,6 @@
 data:
   camera:
     frustum:
-      aspect: 2
       f: 1200
       n: -200
       l: -161

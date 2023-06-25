@@ -169,7 +169,6 @@
 
             function start.onLongPress(event, areaid)
                 start.areaid = (start.areaid == areaid) and 0 or areaid
-                ui_sys.pub {"show_detail", start.areaid}
             end
 
             ui_sys.addEventListener({

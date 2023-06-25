@@ -40,9 +40,13 @@ function M:create(width, height, offset, unit)
     ism.create_sm_entity(MOUNTAIN.density, width, height, offset, unit, MOUNTAIN.scale, __coords_to_positions(MOUNTAIN.mountain_coords, offset, width, height), __rects_to_positions(MOUNTAIN.excluded_rects, offset, width, height))
 end
 
-function M:has_mountain(x, y)
+function M:get_mountain(x, y)
     local c = __logic_to_render(x, y, self._offset, self._width, self._height)
-    return ism.exist_sm({{x = c[1], z = c[2], w = 1, h = 1}})
+    local r = ism.get_sm_rect_intersect({x = c[1], z = c[2], w = 1, h = 1})
+    if #r == 0 then
+        return
+    end
+    return r[1].idx
 end
 
 return M

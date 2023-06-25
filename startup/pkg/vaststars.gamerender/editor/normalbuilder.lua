@@ -320,6 +320,8 @@ local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobjec
                         else
                             color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                         end
+                    else
+                        color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                     end
                 else
                     color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
@@ -363,6 +365,8 @@ local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobjec
                         else
                             color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                         end
+                    else
+                        color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                     end
                 else
                     color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS

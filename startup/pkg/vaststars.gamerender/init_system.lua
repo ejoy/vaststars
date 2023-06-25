@@ -101,6 +101,6 @@ function m:camera_usage()
     end
 
     for _ in camera_zoom_mb:unpack() do
-        iui.redirect("building_arc_menu.rml", "lost_focus")
+        iui.redirect("building_menu.rml", "lost_focus")
     end
 end

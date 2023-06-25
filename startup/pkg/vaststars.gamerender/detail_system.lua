@@ -83,19 +83,15 @@ end
 function idetail.show(object_id)
     iui.close "help_panel.rml"
     iui.close "mine_detail_panel.rml"
-    iui.open({"detail_panel.rml"}, object_id)
 
     --
     local object = assert(objects:get(object_id))
     local typeobject = iprototype.queryByName(object.prototype_name)
 
     idetail.selected(object)
-
-    local p = icamera_controller.world_to_screen(object.srt.t)
-    local ui_x, ui_y = iui.convert_coord(math3d.index(p, 1), math3d.index(p, 2))
-
     if typeobject.show_arc_menu ~= false then
-        iui.open({"building_arc_menu.rml"}, object_id, {math3d.index(object.srt.t, 1, 2, 3)}, ui_x, ui_y)
+        iui.open({"building_menu.rml"}, object_id)
+        iui.close("building_menu_longpress.rml")
     end
 
     do
@@ -189,19 +185,32 @@ do
         temp_objects = {}
     end
 
-    function idetail.selected(object)
+    function idetail.focus(object_id)
         idetail.unselected()
 
-        local object_id = object.id
         local vsobject = assert(vsobject_manager:get(object_id))
         vsobject:update({state = "outline", outline_scale = 1.0})
         temp_objects[#temp_objects+1] = {
             remove = function (self)
-                local vsobject = assert(vsobject_manager:get(object_id))
-                vsobject:update({state = "opaque"})
+                local vsobject = vsobject_manager:get(object_id)
+                if vsobject then
+                    vsobject:update({state = "opaque"})
+                end
             end
         }
 
+        vsobject:modifier("start", {name = "talk", forwards = true})
+        temp_objects[#temp_objects+1] = {
+            remove = function (self)
+                local vsobject = vsobject_manager:get(object_id)
+                if vsobject then
+                    vsobject:modifier("start", {name = "over", forwards = true})
+                end
+            end
+        }
+    end
+
+    function idetail.selected(object)
         local typeobject = iprototype.queryByName(object.prototype_name)
         local color = SPRITE_COLOR.SELECTED_OUTLINE
 

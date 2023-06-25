@@ -53,9 +53,11 @@ local gesture_pan_mb = world:sub {"gesture", "pan"}
 local focus_tips_event = world:sub {"focus_tips"}
 local remove_lorry_mb = mailbox:sub {"remove_lorry"}
 local DIRTY_BUILDING <const> = require("gameplay.interface.constant").DIRTY_BUILDING
+local construct_mb = mailbox:sub {"construct"}
+local selected_mb = mailbox:sub {"selected"}
+local unselected_mb = mailbox:sub {"unselected"}
 
 local ipower = ecs.require "power"
-local audio = import_package "ant.audio"
 local now = require "engine.time".now
 
 local CLASS = {
@@ -69,6 +71,7 @@ local builder, builder_datamodel, builder_ui
 local excluded_pickup_id -- object id
 local pick_lorry_id
 local handle_pickup = true
+local selected_obj
 
 local event_handler = create_event_handler(
     mailbox,
@@ -89,29 +92,45 @@ local event_handler = create_event_handler(
     end
 )
 
-local function __on_pick_building(datamodel, object)
-    if not excluded_pickup_id or excluded_pickup_id == object.id then
-        audio.play("event:/construct/construct4_big")
-        if idetail.show(object.id) then
-            local prototype_name = object.prototype_name
-            local typeobject = iprototype.queryByName(prototype_name)
-            if iprototype.has_types(typeobject.type, "base") then
-                datamodel.is_concise_mode = true
-            end
-            return true
+local function __on_pick_object(datamodel, o)
+    local object = o.object
+    if datamodel.status == "normal" or datamodel.status == "focus" then
+        local prototype_name = object.prototype_name
+        local typeobject = iprototype.queryByName(prototype_name)
+        datamodel.status = "focus"
+        datamodel.focus_building_icon = typeobject.icon
+
+        selected_obj = o
+        idetail.focus(object.id)
+        iui.open({"detail_panel.rml"}, object.id)
+
+    elseif datamodel.status == "selected" then
+        if o.class == CLASS.Object then
+            local object = o.object
+            idetail.show(object.id)
+            selected_obj = o
+            idetail.focus(object.id)
         end
+    end
+end
+
+local function __on_pick_building(datamodel, o)
+    local object = o.object
+    if not excluded_pickup_id or excluded_pickup_id == object.id then
+        __on_pick_object(datamodel, o)
+        return true
     end
 end
 
 local function __on_pick_mineral(datamodel, mineral)
     iui.close "detail_panel.rml"
-    iui.close "building_arc_menu.rml"
+    iui.close "building_menu.rml"
     local typeobject = iprototype.queryByName(mineral)
     iui.open({"mine_detail_panel.rml"}, typeobject.icon, typeobject.mineral_name or typeobject.name)
     return true
 end
 
-local function __on_pickup_ground(datamodel)
+local function __on_pick_ground(datamodel)
     iui.open({"main_menu.rml"})
     gameplay_core.world_update = false
     return true
@@ -200,6 +219,7 @@ function M:create()
         ingredient_icons = {},
         show_ingredient = false,
         construct_menu = __get_construct_menu(),
+        status = "normal",
     }
 end
 
@@ -349,7 +369,7 @@ local function close_focus_tips(tech_node)
 end
 
 local function __construct_entity(typeobject)
-    iui.close("building_arc_menu.rml")
+    iui.close("building_menu.rml")
     iui.close("detail_panel.rml")
     idetail.unselected()
     gameplay_core.world_update = false
@@ -391,13 +411,11 @@ function M:stage_camera_usage(datamodel)
         end
     end
 
-    local gesture_pan_changed = false
     for _ in gesture_pan_mb:unpack() do
         if builder then
             builder:touch_end(builder_datamodel)
             self:flush()
         end
-        gesture_pan_changed = true
     end
 
     local leave = true
@@ -414,7 +432,10 @@ function M:stage_camera_usage(datamodel)
         end
     end
 
+    local gesture_changed = false
     for _, _, v in gesture_tap_mb:unpack() do
+        gesture_changed = true
+
         local x, y = v.x, v.y
         if not handle_pickup then
             goto continue
@@ -446,11 +467,13 @@ function M:stage_camera_usage(datamodel)
                     -- end)
                     datamodel.remove_lorry = true
                 elseif o and o.class == CLASS.Object then
-                    if __on_pick_building(datamodel, o.object) then
+                    if __on_pick_building(datamodel, o) then
                         __unpick_lorry(pick_lorry_id)
                         datamodel.remove_lorry = false
                         pick_lorry_id = nil
                         leave = false
+
+                        datamodel.is_concise_mode = false
                     end
                 elseif o and o.class == CLASS.Mineral then
                     if __on_pick_mineral(datamodel, o.mineral) then
@@ -483,12 +506,6 @@ function M:stage_camera_usage(datamodel)
                 break
             end
         end
-
-        if leave then
-            world:pub {"ui_message", "leave"}
-            leave = false
-            break
-        end
         ::continue::
     end
 
@@ -508,23 +525,22 @@ function M:stage_camera_usage(datamodel)
                     goto continue1
                 end
 
-                iui.close("building_arc_menu.rml")
+                iui.close("building_menu.rml")
                 idetail.selected(object)
 
-                local p = icamera_controller.world_to_screen(object.srt.t)
-                local ui_x, ui_y = iui.convert_coord(math3d.index(p, 1), math3d.index(p, 2))
-                iui.open({"building_md_arc_menu.rml"}, object.id, {math3d.index(object.srt.t, 1, 2, 3)}, ui_x, ui_y)
+                iui.open({"building_menu_longpress.rml"}, object.id)
+                datamodel.status = "selected"
             end
             ::continue1::
         else
             idetail.unselected()
-            __on_pickup_ground(datamodel)
+            __on_pick_ground(datamodel)
         end
         ::continue::
     end
 
     for _, _, _, object_id in teardown_mb:unpack() do
-        iui.close("building_md_arc_menu.rml")
+        iui.close("building_menu_longpress.rml")
         iui.close("detail_panel.rml")
         idetail.unselected()
 
@@ -566,7 +582,9 @@ function M:stage_camera_usage(datamodel)
         ::continue::
     end
 
-    if gesture_pan_changed and leave then
+    if gesture_changed and leave then
+        selected_obj = nil
+        datamodel.status = "normal"
         idetail.unselected()
         world:pub {"ui_message", "leave"}
     end
@@ -590,7 +608,7 @@ function M:stage_camera_usage(datamodel)
     for _, _, _, item in construct_entity_mb:unpack() do
         local typeobject = iprototype.queryByName(item)
         if ichest.get_inventory_item_count(gameplay_core.get_world(), typeobject.id) >= 1 then
-            iui.close("building_arc_menu.rml")
+            iui.close("building_menu.rml")
             iui.close("detail_panel.rml")
             idetail.unselected()
             gameplay_core.world_update = false
@@ -637,16 +655,28 @@ function M:stage_camera_usage(datamodel)
             __unpick_lorry(pick_lorry_id)
             pick_lorry_id = nil
             datamodel.remove_lorry = false
-
-            -- local object = assert(objects:get(object_id))
-            -- local e = gameplay_core.get_entity(assert(object.gameplay_eid))
-            -- assert(e.assembling.recipe ~= 0)
-
-            -- local _, results = assembling_common.get(gameplay_core.get_world(), e)
-            -- assert(results and results[1])
-            -- local multiple = results[1].limit + 1
-            -- iassembling.set_option(gameplay_core.get_world(), e, {ingredientsLimit = multiple, resultsLimit = multiple})    
         end
+    end
+
+    for _ in construct_mb:unpack() do
+        datamodel.is_concise_mode = not datamodel.is_concise_mode
+    end
+
+    for _ in selected_mb:unpack() do
+        if selected_obj then
+            datamodel.status = "selected"
+            __on_pick_object(datamodel, selected_obj)
+        else
+            log.error("no target selected")
+        end
+    end
+
+    for _ in unselected_mb:unpack() do
+        selected_obj = nil
+        datamodel.status = "normal"
+        idetail.unselected()
+        iui.close "detail_panel.rml"
+        iui.close "building_menu.rml"
     end
 
     iobject.flush()
