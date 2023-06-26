@@ -336,7 +336,7 @@
                 </div>
                 <div class = "building-button-container" style = "align-items: flex-end;">
                     <div class = "building-button" style = "width: 27.41vmin; height: 27.41vmin; background-image: textures/construct/building-background.texture; align-items: center; justify-content: center;" data-event-click = "clickButton('selected')" data-if = "status == 'focus'">
-                        <div data-style-background-image = "focus_building_icon" style = "background-size: cover; width: 128px; height: 128px;" />
+                        <div data-style-background-image = "focus_building_icon" style = "background-size: cover; width: 17.06vmin; height: 17.06vmin;" />
                     </div>
                 </div>
             </div>
