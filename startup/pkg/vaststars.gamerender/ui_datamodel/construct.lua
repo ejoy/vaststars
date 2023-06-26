@@ -108,8 +108,9 @@ local function __on_pick_object(datamodel, o)
             icamera_controller.focus_on_position(object.srt.t)
 
             idetail.show(object.id)
-            selected_obj = o
             idetail.focus(object.id)
+            idetail.selected(object)
+            selected_obj = o
         end
     end
     iui.open({"detail_panel.rml"}, object.id)

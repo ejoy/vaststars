@@ -880,9 +880,6 @@ local function place_one(self, datamodel)
     datamodel.show_confirm = true
 
     assert(x % 2 == 0 and y % 2 == 0)
-    local prototype_name, dir = iroadnet_converter.mask_to_prototype_name_dir(0)
-    ibuilding.set(x, y, prototype_name, dir)
-
     self.pending[coord] = 0 -- {"砖石公路-O型", "N"}
 
     _builder_init(self, datamodel)

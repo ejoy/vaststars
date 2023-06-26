@@ -304,6 +304,7 @@ end
 function icamera_controller.focus_on_position(position, callback)
     cam_cmd_queue:push {{"focus_on_position", position}}
     if callback then
+        cam_cmd_queue:push {{"callback", function() world:pub {"dragdrop_camera" } end}}
         cam_cmd_queue:push {{"callback", callback}}
     end
 end
@@ -311,10 +312,12 @@ end
 function icamera_controller.toggle_view(v, callback)
     cam_cmd_queue:push {{"toggle_view", v}}
     if callback then
+        cam_cmd_queue:push {{"callback", function() world:pub {"dragdrop_camera" } end}}
         cam_cmd_queue:push {{"callback", callback}}
     end
 end
 
+-- for debug
 function icamera_controller.set_camera_srt(s, r, t, callback)
     cam_cmd_queue:push {{"set_camera_srt", s, r, t}}
     if callback then
