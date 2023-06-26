@@ -37,7 +37,6 @@ prototype "科研中心I" {
     area = "3x3",
     power = "150kW",
     speed = "100%",
-    building_menu = false,
     camera_distance = 75,
     priority = "secondary",
     inputs = {

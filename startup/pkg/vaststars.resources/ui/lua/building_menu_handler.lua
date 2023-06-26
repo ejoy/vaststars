@@ -147,10 +147,33 @@ return function(start)
         start.buttons[#start.buttons + 1] = v
     end
 
+    if start.station_weight_decrease then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.command = "station_weight_decrease"
+        v.background_image = "textures/building-menu/station-weight-decrease.texture"
+        start.buttons[#start.buttons + 1] = v
+    end
+
+    if start.station_lorry_increase then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.command = "station_lorry_increase"
+        v.background_image = "textures/building-menu/station-lorry-increase.texture"
+        start.buttons[#start.buttons + 1] = v
+    end
+
+    if start.station_lorry_decrease then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.command = "station_lorry_decrease"
+        v.background_image = "textures/building-menu/station-lorry-decrease.texture"
+        start.buttons[#start.buttons + 1] = v
+    end
+
     if start.place_item then
         local v = setmetatable({}, {__index = DEFAULT})
         v.command = "place_item"
         v.background_image = "textures/building-menu/place-item.texture"
+        v.number = start.place_item_count
+        v.show_number = true
         start.buttons[#start.buttons + 1] = v
     end
 

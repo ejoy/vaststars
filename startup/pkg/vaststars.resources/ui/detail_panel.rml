@@ -199,7 +199,7 @@
                             <!-- proprety & value -->
                             <div style = "flex-direction: column; justify-content: center; align-items: flex-start;">
                                 <div style = "color:#adadad; padding-bottom: 0.75vmin; flex-direction:row; justify-content: center; align-items:center; height: 4vmin; font-size: 3.2vmin; text-align: center;">{{property.desc}}</div>
-                                <div style = "text-align: center; width: 100%; height: 4.00vmin; font-size: 2.8vmin;">{{property.value}}</div>
+                                <div style = "text-align: center; width: 100%; height: 4.00vmin; font-size: 2.8vmin;" data-style-color = "property.color">{{property.value}}</div>
                             </div>
                         </div>
                     </div>

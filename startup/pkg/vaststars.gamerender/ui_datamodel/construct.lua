@@ -102,16 +102,17 @@ local function __on_pick_object(datamodel, o)
 
         selected_obj = o
         idetail.focus(object.id)
-        iui.open({"detail_panel.rml"}, object.id)
-
     elseif datamodel.status == "selected" then
         if o.class == CLASS.Object then
             local object = o.object
+            icamera_controller.focus_on_position(object.srt.t)
+
             idetail.show(object.id)
             selected_obj = o
             idetail.focus(object.id)
         end
     end
+    iui.open({"detail_panel.rml"}, object.id)
 end
 
 local function __on_pick_building(datamodel, o)
@@ -525,6 +526,7 @@ function M:stage_camera_usage(datamodel)
                     goto continue1
                 end
 
+                idetail.focus(object.id)
                 iui.close("building_menu.rml")
                 idetail.selected(object)
 

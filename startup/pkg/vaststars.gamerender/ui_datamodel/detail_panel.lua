@@ -33,14 +33,16 @@ local function get_property_list(entity)
             goto continue
         end
 
+        local color = "#ffffff"
         if property_list.converter[property_name] then
-            entity.values[property_name] = property_list.converter[property_name](entity.values[property_name])
+            entity.values[property_name], color = property_list.converter[property_name](entity.values[property_name])
         end
 
         local t = {}
         t.icon = cfg.icon
         t.desc = cfg.desc
         t.value = cfg.value and format_vars(cfg.value, entity.values) or ""
+        t.color = color
         t.pos = cfg.pos
 
         prop_list[#prop_list + 1] = t

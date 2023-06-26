@@ -91,8 +91,10 @@ function idetail.show(object_id)
     idetail.selected(object)
     if typeobject.building_menu ~= false then
         iui.open({"building_menu.rml"}, object_id)
-        iui.close("building_menu_longpress.rml")
+    else
+        iui.close("building_menu.rml")
     end
+    iui.close("building_menu_longpress.rml")
 
     do
         local vsobject = assert(vsobject_manager:get(object.id), ("(%s) vsobject not found"):format(object.prototype_name))

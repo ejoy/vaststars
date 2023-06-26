@@ -147,6 +147,24 @@ function M.get_moveable_count(world, item, count)
     return true, available
 end
 
+function M.get_placeable_count(world, item, count)
+    local stack = __get_item_stack(item)
+    local e = world.ecs:first("base:in")
+    local slot = M.collect_item(world, e.base)[item]
+    if not slot then
+        return true, math.min(0, count)
+    end
+
+    local existing = M.get_amount(slot)
+    if existing >= stack then
+        log.debug(("get_placeable_count: %s %s >= %s"):format(item, existing, stack))
+        return false
+    end
+
+    local available = math.min(stack - count, existing)
+    return true, available
+end
+
 function M.can_move_to_inventory(world, chest)
     local slots = M.collect_item(world, chest)
     for _, slot in pairs(slots) do

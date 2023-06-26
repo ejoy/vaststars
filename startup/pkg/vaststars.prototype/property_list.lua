@@ -197,13 +197,17 @@ end
 property_list.converter = {}
 property_list.converter["weights"] = function(v)
 	local t <const> = {
-		[1] = "最低",
-		[2] = "低",
-		[3] = "中",
-		[4] = "高",
-		[5] = "最高",
+		[1] = {"最低", "#ff0000"},
+		[2] = {"低", "#ff8000"},
+		[3] = {"中", "#ffff00"},
+		[4] = {"高", "#00ff00"},
+		[5] = {"最高", "#00ffff"},
 	}
-	return t[v] or "未知"
+	if t[v] then
+		return t[v][1], t[v][2]
+	else
+		return "未知", "#ffffff"
+	end
 end
 
 return property_list

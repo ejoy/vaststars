@@ -70,19 +70,22 @@
                     "show_set_recipe", "show_set_item",
                     "drone_depot_icon", "station_item_icon",
                     "lorry_factory_icon", "lorry_factory_count", "lorry_factory_inc_lorry", "lorry_factory_dec_lorry",
-                    "guide_progress", "pickup_item_count",
+                    "guide_progress", "pickup_item_count", "place_item_count",
                     "station_weight_increase",
                 }
             })
         </script>
     </head>
     <body style = "pointer-events: none; justify-content: center; align-items: center;">
-        <div class = "safe-area" data-model="start">    
+        <div class = "safe-area" data-model="start">
             <div class = "layout">
                 <div class = "building-button-container" data-style-transform = "it.outer_transform" data-for = "buttons">
                     <div style = "pointer-events: none; width: 18.23vmin; height: 72.655%; margin-top: 9.115vmin; margin-bottom: 9.115vmin; background-image: textures/building-menu/line.texture; background-size: contain;" data-style-transform = "it.line_transform" data-style-margin-right = "it.line_margin_right" />
                     <div class = "building-button" style = "pointer-events: none; width: 18.23vmin; height: 18.23vmin;" data-style-transform = "it.inner_transform">
-                        <div class = "building-button" style = "width: 18.23vmin; height: 18.23vmin;" data-style-background-image = "it.background_image" data-event-click = "clickButton(it.command)" />
+                        <div class = "building-button" style = "width: 18.23vmin; height: 18.23vmin;" data-style-background-image = "it.background_image" data-event-click = "clickButton(it.command)">
+                            <!-- left: 41.15%; top: 60.28; -webkit-text-stroke: 0.2vmin #000; -->
+                            <div data-if = "it.show_number" style = "top: 54.50%; left: 40.00%; width: 14.80%; height: 11.55%; font-size: 0.65em; text-align: center; align-items: center; -webkit-text-stroke: 0.2vmin rgb(63, 60, 63);">{{it.number}}</div>
+                        </div>
                     </div>
                 </div>
                 <div class = "building-button-container" style = "align-items: flex-end;" data-event-click = "clickButton('unselected')">
