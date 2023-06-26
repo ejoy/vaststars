@@ -36,6 +36,15 @@ static void producer_update(station_vector& producers, size_t idx) {
     }
 }
 
+static std::optional<size_t> find_producer(world& w, station_vector& producers, const ecs::starting& from) {
+    for (size_t i = 0; i < producers.size(); ++i) {
+        if (roadnet::endpointDistance(w.rw, from, *producers[i].endpoint)) {
+            return i;
+        }
+    }
+    return std::nullopt;
+}
+
 static std::optional<size_t> find_producer(world& w, station_vector& producers, const ecs::endpoint& from) {
     for (size_t i = 0; i < producers.size(); ++i) {
         if (roadnet::endpointDistance(w.rw, from, *producers[i].endpoint)) {
@@ -45,7 +54,7 @@ static std::optional<size_t> find_producer(world& w, station_vector& producers, 
     return std::nullopt;
 }
 
-static void goto_producer(world& w, station_vector& producers, size_t producer_idx, ecs::lorry& l, ecs::endpoint& ep) {
+static void goto_producer(world& w, station_vector& producers, size_t producer_idx, ecs::lorry& l) {
     auto& producer = producers[producer_idx];
     producer_update(producers, producer_idx);
     roadnet::lorryGo(l, *producer.endpoint, 0, 0);
@@ -180,15 +189,15 @@ static int lupdate(lua_State *L) {
         }
         chestslot.amount = l.item_amount;
         endpoint.lorry--;
-        goto_producer(w, s.producers, *producer_idx, l, endpoint);
+        goto_producer(w, s.producers, *producer_idx, l);
         roadnet::endpointSetOut(w, endpoint);
     }
-    for (auto& v : ecs_api::select<ecs::lorry_factory, ecs::endpoint, ecs::chest>(w.ecs)) {
-        auto& endpoint = v.get<ecs::endpoint>();
-        if (!endpoint.neighbor) {
+    for (auto& v : ecs_api::select<ecs::lorry_factory, ecs::starting, ecs::chest>(w.ecs)) {
+        auto& starting = v.get<ecs::starting>();
+        if (!starting.neighbor) {
             continue;
         }
-        if (!roadnet::endpointIsReady(w.rw, endpoint)) {
+        if (!roadnet::startingIsReady(w.rw, starting)) {
             continue;
         }
         auto& chest = v.get<ecs::chest>();
@@ -196,15 +205,15 @@ static int lupdate(lua_State *L) {
         if (chestslot.item == 0 || chestslot.amount == 0) {
             continue;
         }
-        auto producer_idx = find_producer(w, s.producers, endpoint);
+        auto producer_idx = find_producer(w, s.producers, starting);
         if (!producer_idx) {
             continue;
         }
         chestslot.amount--;
         roadnet::lorryid lorryId = w.rw.createLorry(w, chestslot.item);
         auto& l = w.rw.Lorry(w, lorryId);
-        goto_producer(w, s.producers, *producer_idx, l, endpoint);
-        roadnet::endpointSetOut(w, endpoint, lorryId);
+        goto_producer(w, s.producers, *producer_idx, l);
+        roadnet::startingSetOut(w, starting, lorryId);
     }
     return 0;
 }

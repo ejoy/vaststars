@@ -21,10 +21,10 @@ prototype "指挥中心" {
             {type="lorry_factory", position={2,4,"S"}},
         },
     },
-    endpoint = "3,4",
+    starting = "3,4",
     road = {
-        "1,4,╔╗",
-        "1,6,╨╨",
+        "1,4,╔══",
+        "1,6,╨",
     },
 }
 

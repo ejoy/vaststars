@@ -27,6 +27,10 @@ component "lorry_factory" {}
 type "roadnet::straightid" ("word")
 type "enum roadnet::lorry_status" ("byte")
 
+component "starting" {
+    "neighbor:roadnet::straightid",
+}
+
 component "endpoint" {
     "neighbor:roadnet::straightid",
     "rev_neighbor:roadnet::straightid",

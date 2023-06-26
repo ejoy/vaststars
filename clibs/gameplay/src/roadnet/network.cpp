@@ -192,12 +192,18 @@ namespace roadnet {
         return res ? *res : 0;
     }
 
+    enum class NeighborType {
+        Cross,
+        Starting,
+        Endpoint,
+    };
+
     struct NeighborResult {
-        loction   l;
-        direction dir;
-        uint16_t  n;
-        uint8_t   m;
-        bool      isEndpoint;
+        loction      l;
+        direction    dir;
+        uint16_t     n;
+        uint8_t      m;
+        NeighborType type;
     };
 
     struct straightData {
@@ -230,6 +236,9 @@ namespace roadnet {
     struct lorryStatus {
         loction endpoint;
     };
+    struct startingStatus {
+        ecs::starting* starting;
+    };
     struct endpointStatus {
         ecs::endpoint* endpoint;
         bool changed;
@@ -239,6 +248,7 @@ namespace roadnet {
         flatmap<loction, uint8_t> map;
         flatmap<loction, crossid> crossMap;
         flatmap<loction, straightGrid> straightMap;
+        flatmap<loction, startingStatus> startingMap;
         flatmap<loction, endpointStatus> endpointMap;
         dynarray<lorryStatus> lorryStatusAry;
         std::vector<straightData> straightVec;
@@ -246,6 +256,10 @@ namespace roadnet {
         uint32_t genStraightLorryOffset = 0;
         uint32_t genStraightCoordOffset = 0;
     };
+
+    static bool isStarting(updateMapStatus& status, loction loc) {
+        return status.startingMap.contains(loc);
+    }
 
     static bool isEndpoint(updateMapStatus& status, loction loc) {
         return status.endpointMap.contains(loc);
@@ -260,21 +274,28 @@ namespace roadnet {
                 uint8_t curm = getMapBits(status.map, l);
                 if (isCross(curm)) {
                     assert(n == 0);
-                    return {l, dir, n, curm, false};
+                    return {l, dir, n, curm, NeighborType::Cross};
                 }
                 if (isEndpoint(status, l)) {
                     assert(n == 0);
-                    return {l, dir, n, curm, true};
+                    return {l, dir, n, curm, NeighborType::Endpoint};
+                }
+                if (isStarting(status, next)) {
+                    assert(n == 0);
+                    return {l, dir, n, m, NeighborType::Starting};
                 }
                 dir = next_direction(l, curm, dir);
                 next = move(l, dir);
                 m = getMapBits(status.map, next);
             }
             if (isCross(m)) {
-                return {next, dir, n, m, false};
+                return {next, dir, n, m, NeighborType::Cross};
             }
             if (isEndpoint(status, next)) {
-                return {next, dir, n, m, true};
+                return {next, dir, n, m, NeighborType::Endpoint};
+            }
+            if (isStarting(status, next)) {
+                return {next, dir, n, m, NeighborType::Starting};
             }
             assert(next != l);
             l = next;
@@ -297,12 +318,37 @@ namespace roadnet {
             direction next_dir = next_direction(l, m, prev_dir);
             cross_type type = road::crossType(prev_dir, next_dir);
             func(l, map_index::unset, type);
-            if (isEndpoint(status, l)) {
+            if (isStarting(status, l) || isEndpoint(status, l)) {
                 func({}, map_index::invaild, cross_type::ll); //TODO: remove it
                 return;
             }
             dir = next_dir;
         }
+    }
+
+    static void setStarting(network& w, updateMapStatus& status, loction loc, direction a, direction b) {
+        auto na = findNeighbor(status, loc, a);
+        auto nb = findNeighbor(status, loc, b);
+        if (na.l == loc) {
+            std::swap(na, nb);
+            std::swap(a, b);
+        }
+        assert(nb.l == loc && na.n != loc);
+        auto stInfo = status.startingMap.find(loc);
+        assert(stInfo);
+        auto cross_a = status.crossMap.find(na.l);
+        assert(cross_a);
+
+        straightData& straight = status.straightVec.emplace_back(
+            straightid {(uint16_t)status.straightVec.size()},
+            na.n * road::straight::N + 1,
+            loc,
+            a,
+            na.dir,
+            *cross_a
+        );
+        w.CrossRoad(*cross_a).setRevNeighbor(reverse(na.dir), straight.id);
+        stInfo->starting->neighbor = straight.id;
     }
 
     static void setEndpoint(network& w, updateMapStatus& status, loction loc, direction a, direction b) {
@@ -516,15 +562,38 @@ namespace roadnet {
                 *slot = mask;
             }
         }
+        for (auto& e : ecs_api::select<ecs::starting, ecs::building>(w.ecs)) {
+            auto& starting = e.get<ecs::starting>();
+            auto& building = e.get<ecs::building>();
+            starting.neighbor = 0xffff;
+            {
+                uint16_t l = prototype::get<"starting">(w, building.prototype);
+                auto loc = buildingLoction(w, building, std::bit_cast<loction>(l));
+                auto [found, slot] = status.startingMap.find_or_insert(loc);
+                assert(!found);
+                slot->starting = &starting;
+            }
+            for (auto const& pt : prototype::get_span<"road", road_prototype>(w, building.prototype)) {
+                auto loc = buildingLoction(w, building, {pt.x, pt.y});
+                uint8_t mask = rotateMask(pt.mask, (direction)building.direction);
+                auto [found, slot] = status.map.find_or_insert(loc);
+                if (found) {
+                    *slot |= mask;
+                }
+                else {
+                    *slot = mask;
+                }
+            }
+        }
         for (auto& e : ecs_api::select<ecs::endpoint, ecs::building>(w.ecs)) {
             auto& endpoint = e.get<ecs::endpoint>();
             auto& building = e.get<ecs::building>();
-            uint16_t l = prototype::get<"endpoint">(w, building.prototype);
-            auto loc = buildingLoction(w, building, std::bit_cast<loction>(l));
             endpoint.neighbor = 0xffff;
             endpoint.rev_neighbor = 0xffff;
             endpoint.lorry = 0;
             {
+                uint16_t l = prototype::get<"endpoint">(w, building.prototype);
+                auto loc = buildingLoction(w, building, std::bit_cast<loction>(l));
                 auto [found, slot] = status.endpointMap.find_or_insert(loc);
                 assert(!found);
                 slot->endpoint = &endpoint;
@@ -562,7 +631,7 @@ namespace roadnet {
         // step.2
         for (auto const& [loc, m] : status.map) {
             if (isCross(m)) {
-                assert(!isEndpoint(status, loc));
+                assert(!isStarting(status, loc) && !isEndpoint(status, loc));
                 crossid id { status.genCrossId++ };
                 bool ok = status.crossMap.insert(loc, id);
                 assert(ok);
@@ -610,7 +679,7 @@ namespace roadnet {
                         }
                     }
                     else {
-                        if (!result.isEndpoint) {
+                        if (result.type == NeighborType::Cross) {
                             auto res = status.crossMap.find(result.l);
                             assert(res);
                             crossid neighbor_id {*res};
@@ -642,6 +711,20 @@ namespace roadnet {
         }
 
         // step.4
+        for (auto const& [loc, _] : status.startingMap) {
+            auto m = status.map.find(loc);
+            assert(m);
+            auto rawm = *m & 0xF;
+            switch (rawm) {
+            case mask(L'║'): setStarting(*this, status, loc, direction::t, direction::b); break;
+            case mask(L'═'): setStarting(*this, status, loc, direction::l, direction::r); break;
+            case mask(L'╔'): setStarting(*this, status, loc, direction::r, direction::b); break;
+            case mask(L'╚'): setStarting(*this, status, loc, direction::r, direction::t); break;
+            case mask(L'╗'): setStarting(*this, status, loc, direction::l, direction::b); break;
+            case mask(L'╝'): setStarting(*this, status, loc, direction::l, direction::t); break;
+            default: assert(false); break;
+            }
+        }
         for (auto const& [loc, _] : status.endpointMap) {
             auto m = status.map.find(loc);
             assert(m);

@@ -2,7 +2,7 @@ local type = require "register.type"
 local prototype = require "prototype"
 
 local c = type "lorry_factory"
-    .endpoint "position"
+    .starting "position"
     .road "network"
 
 function c:ctor(init, pt)
@@ -22,10 +22,8 @@ function c:ctor(init, pt)
         chest = {
             chest = world:container_create(table.concat(items)),
         },
-        endpoint = {
+        starting = {
             neighbor = 0xffff,
-            rev_neighbor = 0xffff,
-            lorry = 0,
         },
     }
 end
