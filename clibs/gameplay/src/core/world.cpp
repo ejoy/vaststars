@@ -91,7 +91,8 @@ namespace lua_world {
 
     static int is_dirty(lua_State* L) {
         auto& w = getworld(L);
-        lua_pushboolean(L, w.dirty != 0);
+        uint64_t mask = (uint64_t)luaL_optinteger(L, 2, (lua_Integer)(uint64_t)-1);
+        lua_pushboolean(L, (w.dirty & mask) != 0);
         return 1;
     }
 
