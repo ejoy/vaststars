@@ -265,7 +265,7 @@ function page_meta:on_pan(event)
         return
     end
     self.pos = target_pos
-    local page_index = math.floor(math.abs(target_pos) / self.page_width) + 1
+    local page_index = math.floor(math.abs(target_pos - 0.5 * self.page_width) / self.page_width) + 1
     if page_index ~= self.current_page then
         self.current_page = page_index
         self:update_footer_status()
