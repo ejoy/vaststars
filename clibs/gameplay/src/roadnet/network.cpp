@@ -9,12 +9,14 @@ namespace roadnet {
     constexpr uint8_t kRoadSize = 2;
 
     enum class MapRoad: uint8_t {
-        Left         = 1 << 0,
-        Top          = 1 << 1,
-        Right        = 1 << 2,
-        Bottom       = 1 << 3,
-        NoHorizontal = 1 << 4,
-        NoVertical   = 1 << 5,
+        Left    = 1 << 0,
+        Top     = 1 << 1,
+        Right   = 1 << 2,
+        Bottom  = 1 << 3,
+        NoNorth = 1 << 4,
+        NoEast  = 1 << 5,
+        NoSouth = 1 << 6,
+        NoWest  = 1 << 7,
     };
 
     static bool operator&(uint8_t v, MapRoad m) {
@@ -488,62 +490,12 @@ namespace roadnet {
     };
 
     static uint8_t rotateMask(uint8_t m, direction dir) {
-        uint8_t v = 0;
-        if (m & MapRoad::Left) {
-            switch (dir) {
-            case direction::l: v = v | MapRoad::Left; break;
-            case direction::t: v = v | MapRoad::Top; break;
-            case direction::r: v = v | MapRoad::Right; break;
-            case direction::b: v = v | MapRoad::Bottom; break;
-            default: std::unreachable();
-            }
-        }
-        if (m & MapRoad::Top) {
-            switch (dir) {
-            case direction::b: v = v | MapRoad::Left; break;
-            case direction::l: v = v | MapRoad::Top; break;
-            case direction::t: v = v | MapRoad::Right; break;
-            case direction::r: v = v | MapRoad::Bottom; break;
-            default: std::unreachable();
-            }
-        }
-        if (m & MapRoad::Right) {
-            switch (dir) {
-            case direction::r: v = v | MapRoad::Left; break;
-            case direction::b: v = v | MapRoad::Top; break;
-            case direction::l: v = v | MapRoad::Right; break;
-            case direction::t: v = v | MapRoad::Bottom; break;
-            default: std::unreachable();
-            }
-        }
-        if (m & MapRoad::Bottom) {
-            switch (dir) {
-            case direction::t: v = v | MapRoad::Left; break;
-            case direction::r: v = v | MapRoad::Top; break;
-            case direction::b: v = v | MapRoad::Right; break;
-            case direction::l: v = v | MapRoad::Bottom; break;
-            default: std::unreachable();
-            }
-        }
-        if (m & MapRoad::NoHorizontal) {
-            switch (dir) {
-            case direction::l: v = v | MapRoad::NoHorizontal; break;
-            case direction::t: v = v | MapRoad::NoVertical; break;
-            case direction::r: v = v | MapRoad::NoHorizontal; break;
-            case direction::b: v = v | MapRoad::NoVertical; break;
-            default: std::unreachable();
-            }
-        }
-        if (m & MapRoad::NoVertical) {
-            switch (dir) {
-            case direction::l: v = v | MapRoad::NoVertical; break;
-            case direction::t: v = v | MapRoad::NoHorizontal; break;
-            case direction::r: v = v | MapRoad::NoVertical; break;
-            case direction::b: v = v | MapRoad::NoHorizontal; break;
-            default: std::unreachable();
-            }
-        }
-        return v;
+        uint8_t v1 = (m >> 0) & 0xF;
+        uint8_t v2 = (m >> 4) & 0xF;
+        uint8_t shift = (uint8_t)dir;
+        v1 = ((v1 << shift) & 0xF) | ((v1 >> (4 - shift)) & 0xF);
+        v2 = ((v2 << shift) & 0xF) | ((v2 >> (4 - shift)) & 0xF);
+        return v1 | (v2 << 4);
     }
 
     void network::build(world& w) {
@@ -644,15 +596,17 @@ namespace roadnet {
             road::cross& cross = CrossRoad(id);
             cross.loc = loc;
             uint8_t m = getMapBits(status.map, loc);
-            if (m & MapRoad::NoHorizontal) {
-                cross.ban |= road::LeftTurn;
-                cross.ban |= road::UTurn;
-                cross.ban |= road::Horizontal;
+            if (m & MapRoad::NoNorth) {
+                cross.ban |= road::NoNorth;
             }
-            if (m & MapRoad::NoVertical) {
-                cross.ban |= road::LeftTurn;
-                cross.ban |= road::UTurn;
-                cross.ban |= road::Vertical;
+            if (m & MapRoad::NoEast) {
+                cross.ban |= road::NoEast;
+            }
+            if (m & MapRoad::NoSouth) {
+                cross.ban |= road::NoSouth;
+            }
+            if (m & MapRoad::NoWest) {
+                cross.ban |= road::NoWest;
             }
     
             for (uint8_t i = 0; i < 4; ++i) {
