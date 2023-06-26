@@ -16,8 +16,13 @@ namespace roadnet {
         l.status = lorry_status::normal;
         l.time = 1000 / speed;
     }
-    void lorryDestroy(ecs::lorry& l) {
+    void lorryDestroy(ecs::lorry& l, world& w) {
+        assert(l.classid != 0);
         l.classid = 0;
+        if (l.item_classid != 0 && l.item_amount != 0) {
+            l.item_classid = 0;
+            l.item_amount = 0;
+        }
     }
     bool lorryInvalid(ecs::lorry& l) {
         return l.classid == 0;
@@ -28,14 +33,19 @@ namespace roadnet {
         l.y = y;
         l.z = z;
     }
-    void lorryGo(ecs::lorry& l, ecs::endpoint& ending, uint16_t item_classid, uint16_t item_amount) {
-        l.status = lorry_status::normal;
-        l.ending = ending.rev_neighbor;
+    void lorryItemReset(ecs::lorry& l) {
+        l.item_classid = 0;
+        l.item_amount = 0;
+    }
+    void lorryItemSet(ecs::lorry& l, uint16_t item_classid, uint16_t item_amount) {
+        assert(l.item_classid == 0 && l.item_amount == 0);
         l.item_classid = item_classid;
         l.item_amount = item_amount;
-        ending.lorry++;
     }
-    void lorryReset(ecs::lorry& l, world& w) {
+    void lorryGo(ecs::lorry& l, ecs::endpoint& ending) {
+        l.status = lorry_status::normal;
+        l.ending = ending.rev_neighbor;
+        ending.lorry++;
     }
     void lorryUpdate(ecs::lorry& l, network& w, uint64_t ti) {
         if (l.progress != 0) {

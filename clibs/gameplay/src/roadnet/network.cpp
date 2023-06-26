@@ -1,4 +1,4 @@
-#include "roadnet/network.h"
+﻿#include "roadnet/network.h"
 #include "core/world.h"
 #include "roadnet/lorry.h"
 #include "util/prototype.h"
@@ -777,7 +777,7 @@ namespace roadnet {
             }
             auto& s = status.lorryStatusAry[e.getid()];
             if (auto ep = status.endpointMap.find(s.endpoint); ep && !ep->changed) {
-                lorryGo(lorry, *ep->endpoint, lorry.item_classid, lorry.item_amount);
+                lorryGo(lorry, *ep->endpoint);
             }
             else {
                 destroyLorry(w, e);
@@ -854,7 +854,7 @@ namespace roadnet {
     }
     void network::destroyLorry(world& w, lorry_entity& l) {
         l.enable_tag<ecs::lorry_removed>();
-        lorryDestroy(l.get<ecs::lorry>());
+        lorryDestroy(l.get<ecs::lorry>(), w);
     }
     void network::updateRemoveLorry(world& w, size_t n) {
         flatset<lorryid> lorryWillRemove;
@@ -865,7 +865,7 @@ namespace roadnet {
         for (auto& e : ecs_api::select<ecs::lorry_willremove, ecs::lorry>(w.ecs)) {
             auto& lorry = e.get<ecs::lorry>();
             e.enable_tag<ecs::lorry_removed>();
-            lorryDestroy(lorry);
+            lorryDestroy(lorry, w);
             lorryWillRemove.insert(getLorryId(lorry));
             auto [found, slot] = endpointWillReset.find_or_insert(lorry.ending);
             if (found) {
