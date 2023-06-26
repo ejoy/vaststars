@@ -4,10 +4,6 @@
 #include "core/world.h"
 
 namespace roadnet {
-    loction endpointGetLoction(network& w, ecs::endpoint const& ep) {
-        return w.StraightRoad(ep.rev_neighbor).waitingLoction(w);
-    }
-
     lorryid& endpointWaitingLorry(network& w, ecs::endpoint const& ep) {
         return w.StraightRoad(ep.rev_neighbor).waitingLorry(w);
     }

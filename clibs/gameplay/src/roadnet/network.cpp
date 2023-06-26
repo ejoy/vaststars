@@ -811,10 +811,12 @@ namespace roadnet {
 
         for (auto& e : ecs_api::select<ecs::endpoint>(w.ecs)) {
             auto& endpoint = e.get<ecs::endpoint>();
-            if (auto res = endpointWillReset.find(endpoint.rev_neighbor)) {
-                assert(endpoint.lorry >= *res);
-                endpoint.lorry -= *res;
-                endpointWillReset.erase(endpoint.rev_neighbor);
+            if (endpoint.rev_neighbor) {
+                if (auto res = endpointWillReset.find(endpoint.rev_neighbor)) {
+                    assert(endpoint.lorry >= *res);
+                    endpoint.lorry -= *res;
+                    endpointWillReset.erase(endpoint.rev_neighbor);
+                }
             }
         }
 

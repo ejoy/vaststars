@@ -185,7 +185,7 @@ static int lupdate(lua_State *L) {
     }
     for (auto& v : ecs_api::select<ecs::lorry_factory, ecs::endpoint, ecs::chest>(w.ecs)) {
         auto& endpoint = v.get<ecs::endpoint>();
-        if (!endpoint.neighbor || !endpoint.rev_neighbor) {
+        if (!endpoint.neighbor) {
             continue;
         }
         if (!roadnet::endpointIsReady(w.rw, endpoint)) {
