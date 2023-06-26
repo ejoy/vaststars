@@ -445,14 +445,17 @@ namespace roadnet {
         }
     }
 
+    lorryid network::getLorryId(ecs::lorry& l) {
+        return lorryid {uint16_t(&l - lorryAry)};
+    }
+
     void network::init(world& w) {
         bool create = ecs_api::count<ecs::lorry>(w.ecs) == 0;
         if (create) {
-            ecs::lorry l;
-            lorryInit(l);
-            int id = entity_new(w.ecs, ecs_api::component_id<ecs::lorry>, &l);
-            assert(id == 0);
-            entity_enable_tag(w.ecs, ecs_api::component_id<ecs::lorry>, id, ecs_api::component_id<ecs::lorry_free>);
+            auto e = ecs_api::create_entity<ecs::lorry>(w.ecs);
+            assert(!e.invalid());
+            lorryInit(e.get<ecs::lorry>());
+            e.enable_tag<ecs::lorry_free>();
         }
         refresh(w);
     }
@@ -830,25 +833,24 @@ namespace roadnet {
         }
     }
 
-    lorryid network::getLorryId(ecs::lorry& l) {
-        return lorryid {uint16_t(&l - lorryAry)};
-    }
-
     lorryid network::createLorry(world& w, uint16_t classid) {
-        ecs_api::entity<ecs::lorry_free, ecs::lorry> e(*w.ecs);
-        e.next();
-        if (!e.invalid()) {
-            auto& l = e.get<ecs::lorry>();
-            e.disable_tag<ecs::lorry_free>();
-            lorryInit(l, w, classid);
-            return getLorryId(l);
+        {
+            ecs_api::entity<ecs::lorry_free, ecs::lorry> e(*w.ecs);
+            e.next();
+            if (!e.invalid()) {
+                auto& l = e.get<ecs::lorry>();
+                e.disable_tag<ecs::lorry_free>();
+                lorryInit(l, w, classid);
+                return getLorryId(l);
+            }
         }
-        int id = entity_new(w.ecs, ecs_api::component_id<ecs::lorry>, NULL);
-        assert(id >= 0);
-        refresh(w);
-        lorryid lorryId {(uint16_t)id};
-        lorryInit(Lorry(w, lorryId), w, classid);
-        return lorryId;
+        {
+            auto e = ecs_api::create_entity<ecs::lorry>(w.ecs);
+            assert(!e.invalid());
+            lorryInit(e.get<ecs::lorry>(), w, classid);
+            refresh(w);
+            return lorryid {(uint16_t)e.getid()};
+        }
     }
     void network::destroyLorry(world& w, lorry_entity& l) {
         l.enable_tag<ecs::lorry_removed>();
