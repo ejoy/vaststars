@@ -1193,7 +1193,7 @@ prototype "车辆装配" {
     recipe_order =  128,
     recipe_icon =  "textures/construct/truck.texture",
     ingredients = {
-        {"齿轮", 4},
+        {"铁齿轮", 4},
         {"橡胶", 4},
         {"铁板", 2},
         {"电动机I", 1},
@@ -1811,7 +1811,7 @@ prototype "粉碎机打印" {
     recipe_icon =  "textures/construct/broken-hydroplant.texture",
     ingredients = {
         {"采矿机I", 1},
-        {"齿轮", 4},
+        {"铁齿轮", 4},
     },
     results = {
         {"粉碎机I", 1},
