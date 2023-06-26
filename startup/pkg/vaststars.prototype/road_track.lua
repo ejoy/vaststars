@@ -7,6 +7,25 @@ local CROSS_TYPE <const> = {
 
 MODEL = "/pkg/vaststars.resources/prefabs/road/road_X.prefab"
 
+START = {
+    [CROSS_TYPE.ll] = "path_start_l",
+    [CROSS_TYPE.lt] = "path_start_l",
+    [CROSS_TYPE.lr] = "path_start_l",
+    [CROSS_TYPE.lb] = "path_start_l",
+    [CROSS_TYPE.tl] = "path_start_t",
+    [CROSS_TYPE.tt] = "path_start_t",
+    [CROSS_TYPE.tr] = "path_start_t",
+    [CROSS_TYPE.tb] = "path_start_t",
+    [CROSS_TYPE.rl] = "path_start_r",
+    [CROSS_TYPE.rt] = "path_start_r",
+    [CROSS_TYPE.rr] = "path_start_r",
+    [CROSS_TYPE.rb] = "path_start_r",
+    [CROSS_TYPE.bl] = "path_start_b",
+    [CROSS_TYPE.bt] = "path_start_b",
+    [CROSS_TYPE.br] = "path_start_b",
+    [CROSS_TYPE.bb] = "path_start_b",
+}
+
 TRACKS = {
     [CROSS_TYPE.bt] = {
         [0] = {'path_b2t_1'},

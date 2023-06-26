@@ -1,7 +1,7 @@
 local entities = { {
     dir = "N",
     prototype_name = "指挥中心",
-    x = 125,
+    x = 124,
     y = 118
   }, {
     dir = "N",
@@ -3920,8 +3920,8 @@ local entities = { {
     y = 177
   } }
 local road = { {
-  direction = "W",
-  prototype = "砖石公路-T型",
+  direction = "N",
+  prototype = "砖石公路-I型",
   x = 66,
   y = 92
 }, {
@@ -3950,8 +3950,8 @@ local road = { {
   x = 66,
   y = 112
 }, {
-  direction = "E",
-  prototype = "砖石公路-T型",
+  direction = "N",
+  prototype = "砖石公路-I型",
   x = 66,
   y = 116
 }, {
@@ -4325,13 +4325,13 @@ local road = { {
   x = 130,
   y = 124
 }, {
-  direction = "S",
-  prototype = "砖石公路-T型",
+  direction = "E",
+  prototype = "砖石公路-I型",
   x = 128,
   y = 124
 }, {
-  direction = "S",
-  prototype = "砖石公路-T型",
+  direction = "E",
+  prototype = "砖石公路-I型",
   x = 126,
   y = 124
 }, {
@@ -4350,13 +4350,13 @@ local road = { {
   x = 120,
   y = 124
 }, {
-  direction = "N",
-  prototype = "砖石公路-T型",
+  direction = "E",
+  prototype = "砖石公路-I型",
   x = 118,
   y = 124
 }, {
-  direction = "N",
-  prototype = "砖石公路-T型",
+  direction = "E",
+  prototype = "砖石公路-I型",
   x = 116,
   y = 124
 }, {
@@ -4410,8 +4410,8 @@ local road = { {
   x = 66,
   y = 90
 }, {
-  direction = "W",
-  prototype = "砖石公路-T型",
+  direction = "N",
+  prototype = "砖石公路-I型",
   x = 66,
   y = 94
 }, {
@@ -4440,8 +4440,8 @@ local road = { {
   x = 66,
   y = 114
 }, {
-  direction = "E",
-  prototype = "砖石公路-T型",
+  direction = "N",
+  prototype = "砖石公路-I型",
   x = 66,
   y = 118
 }, {
@@ -4455,8 +4455,8 @@ local road = { {
   x = 66,
   y = 124
 }, {
-  direction = "N",
-  prototype = "砖石公路-T型",
+  direction = "E",
+  prototype = "砖石公路-I型",
   x = 74,
   y = 126
 }, {
@@ -5215,8 +5215,8 @@ local road = { {
   x = 106,
   y = 126
 }, {
-  direction = "N",
-  prototype = "砖石公路-T型",
+  direction = "E",
+  prototype = "砖石公路-I型",
   x = 76,
   y = 126
 }, {

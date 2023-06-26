@@ -806,7 +806,7 @@ policy:
   ant.animation|slot
 ---
 data:
-  name: path_start
+  name: path_start_r
   scene:
     r: {0, -0.7071067690849304, 0, 0.7071067690849304}
     s: {1, 1, 1}
@@ -822,12 +822,47 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  name: prefab1
-  scene: {}
+  name: path_start_t
+  scene:
+    r: {0, 1, 0, -4.371138828673793e-08}
+    s: {1, 1, 1}
+    t: {-3.5, 0, 10}
+  slot:
+    follow_flag: 1
+  tag:
+    empty9
 policy:
   ant.general|name
+  ant.general|tag
+  ant.animation|slot
   ant.scene|scene_object
 ---
-editor: false
-mount: 56
-prefab: /pkg/vaststars.resources/camera_construct.prefab
+data:
+  name: path_start_l
+  scene:
+    r: {0, 0.7071067690849304, 0, 0.7071067690849304}
+    s: {1, 1, 1}
+    t: {-10, 0, -3.5}
+  slot:
+    follow_flag: 1
+  tag:
+    no_arrow
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+  ant.scene|scene_object
+---
+data:
+  name: path_start_b
+  scene:
+    t: {3.5, 0, -10}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    no_arrow
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot

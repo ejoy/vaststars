@@ -15,6 +15,7 @@ local prefab_slots = require("engine.prefab_parser").slots
 local prefab_root = require("engine.prefab_parser").root
 local CONFIG <const> = import_package "vaststars.prototype".load("road_track")
 local ROAD_TRACKS <const> = CONFIG.TRACKS
+local START_SLOTS <const> = CONFIG.START
 local ROAD_TRACK_MODEL <const> = CONFIG.MODEL
 
 local ROAD_TILE_WIDTH_SCALE <const> = 2
@@ -27,7 +28,7 @@ local ROAD_DIRECTION = {
     [4] = "none",
 }
 
-local start_srt
+local start_srts = {}
 local cache = {}
 local lorries = {}
 
@@ -94,6 +95,8 @@ end
 
 local function __create_lorry(classid, x, y, toward, offset)
     local road_srt = {s = mc.ONE, t = math3d.vector(iterrain:get_position_by_coord(x, y, ROAD_TILE_WIDTH_SCALE, ROAD_TILE_HEIGHT_SCALE))}
+    local start_srt = start_srts[toward]
+
     local s, r, t = math3d.srt(
         math3d.mul(
             math3d.matrix {s = road_srt.s, r = road_srt.r, t = road_srt.t},
@@ -153,24 +156,26 @@ function lorry_sys:prototype_restore()
         end
     end
 
-    local init = assert(slots["path_start"])
-    local slot_srt = {
-        s = math3d.vector(init.scene.s),
-        r = math3d.quaternion(init.scene.r),
-        t = math3d.vector(init.scene.t),
-    }
+    for toward, slot_name in pairs(START_SLOTS) do
+        local s = assert(slots[slot_name])
+        local slot_srt = {
+            s = math3d.vector(s.scene.s),
+            r = math3d.quaternion(s.scene.r),
+            t = math3d.vector(s.scene.t),
+        }
 
-    local s, r, t = math3d.srt(
-        math3d.mul(
-            math3d.matrix(root_srt),
-            math3d.matrix(slot_srt)
+        local s, r, t = math3d.srt(
+            math3d.mul(
+                math3d.matrix(root_srt),
+                math3d.matrix(slot_srt)
+            )
         )
-    )
-    start_srt = {
-        s = math3d.ref(s),
-        r = math3d.ref(r),
-        t = math3d.ref(t),
-    }
+        start_srts[toward] = {
+            s = math3d.ref(s),
+            r = math3d.ref(r),
+            t = math3d.ref(t),
+        }
+    end
 end
 
 function lorry_sys:gameworld_update()
