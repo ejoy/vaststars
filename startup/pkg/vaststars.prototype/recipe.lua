@@ -1186,53 +1186,20 @@ prototype "维修运输汽车" {
     description = "修复损坏的运输汽车",
 }
 
-prototype "运输汽车制造" {
-    type = { "recipe" },
-    category = "生产手工制造",
-    recipe_group =  "加工",
-    recipe_order =  128,
-    recipe_icon =  "textures/construct/broken-truck.texture",
-    ingredients = {
-        {"电动机I", 1},
-        {"铁板", 2},
-    },
-    results = {
-        {"运输车框架", 1},
-    },
-    time = "6s",
-    description = "制造运输车框架",
-}
-
 prototype "车辆装配" {
     type = { "recipe" },
-    category = "基地制造",
+    category = "生产中型制造",
     recipe_group =  "加工",
     recipe_order =  128,
-    recipe_icon =  "textures/construct/broken-truck.texture",
-    ingredients = {
-        {"运输车框架", 1},
-    },
-    results = {
-        {"运输车辆I", 1},
-    },
-    time = "4s",
-    description = "制造运输汽车",
-}
-
-prototype "运输车框架" {
-    type = { "recipe" },
-    category = "基地制造",
-    recipe_group =  "加工",
-    recipe_order =  128,
-    recipe_icon =  "textures/construct/broken-truck.texture",
+    recipe_icon =  "textures/construct/truck.texture",
     ingredients = {
         {"齿轮", 4},
         {"橡胶", 4},
         {"铁板", 2},
-        {"电动机I", 1},   
+        {"电动机I", 1},
     },
     results = {
-        {"运输车框架", 1},
+        {"运输车辆I", 1},
     },
     time = "5s",
     description = "制造运输汽车",
