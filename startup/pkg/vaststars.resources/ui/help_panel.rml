@@ -10,6 +10,7 @@
             .panel1 {
                 width: 87%;
                 height: 100%;
+                top: 3.6vmin;
                 pointer-events: none;
                 animation: 0.5s linear 0s pannelmovement;
             }
