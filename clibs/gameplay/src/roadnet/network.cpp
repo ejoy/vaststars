@@ -1,4 +1,4 @@
-﻿#include "roadnet/network.h"
+#include "roadnet/network.h"
 #include "core/world.h"
 #include "roadnet/lorry.h"
 #include "util/prototype.h"
@@ -288,7 +288,6 @@ namespace roadnet {
                     return {l, dir, n, m, NeighborType::Starting};
                 }
                 dir = next_direction(l, curm, dir);
-                n++;
                 continue;
             }
             if (isCross(m)) {
@@ -319,7 +318,7 @@ namespace roadnet {
                     return;
                 }
                 dir = next_direction(l, curm, dir);
-                func(next, map_index::unset, road::crossType(dir, dir));
+                func(l, map_index::invaild, road::crossType(dir, dir));
                 continue;
             }
             if (isCross(m)) {
@@ -329,7 +328,7 @@ namespace roadnet {
             direction next_dir = next_direction(next, m, prev_dir);
             func(next, map_index::unset, road::crossType(prev_dir, next_dir));
             if (isStarting(status, next) || isEndpoint(status, next)) {
-                func({}, map_index::invaild, cross_type::ll); //TODO: remove it
+                func({}, map_index::unset, cross_type::ll); //TODO: remove it
                 return;
             }
             l = next;
@@ -727,7 +726,19 @@ namespace roadnet {
             assert(StraightRoad(data.id).coordOffset == straightCoordOffset);
             uint16_t offset = 0;
             walkToNeighbor(status, data.loc, data.start_dir, [&](loction l, map_index i, cross_type ct) {
-                if (!status.crossMap.find(l)) {
+                if (i == map_index::invaild) {
+                    i = map_index::unset;
+                    offset--;
+                    direction from = road::crossFrom(ct);
+                    direction to = road::crossTo(ct);
+                    auto [found, grid] = status.straightMap.find_or_insert(l);
+                    assert(found);
+                    grid->id0 = data.id;
+                    grid->offset0 = offset;
+                    grid->direction0 = (uint16_t)from;
+                    grid->direction1 = (uint16_t)to;
+                }
+                else if (!status.crossMap.find(l)) {
                     direction from = road::crossFrom(ct);
                     direction to = road::crossTo(ct);
                     auto [found, grid] = status.straightMap.find_or_insert(l);
