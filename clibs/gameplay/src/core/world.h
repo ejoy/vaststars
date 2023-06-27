@@ -18,11 +18,12 @@ namespace prototype {
     struct cache;
 }
 
-constexpr uint64_t kDirtyUnknown   = 1 << 1;
-constexpr uint64_t kDirtyRoadnet   = 1 << 2;
-constexpr uint64_t kDirtyFluidflow = 1 << 3;
-constexpr uint64_t kDirtyHub       = 1 << 4;
-constexpr uint64_t kDirtyTech      = 1 << 5;
+constexpr uint64_t kDirtyRoadnet         = 1 << 1;
+constexpr uint64_t kDirtyFluidflow       = 1 << 2;
+constexpr uint64_t kDirtyHub             = 1 << 3;
+constexpr uint64_t kDirtyStationProducer = 1 << 4;
+constexpr uint64_t kDirtyStationConsumer = 1 << 5;
+constexpr uint64_t kDirtyTech            = 1 << 6;
 
 struct world {
     ecs_context* ecs;

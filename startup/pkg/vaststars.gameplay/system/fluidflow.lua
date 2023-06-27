@@ -2,6 +2,8 @@ local system = require "register.system"
 local prototype = require "prototype"
 local query = prototype.queryById
 
+local DirtyFluidflow       <const> = 1 << 2
+
 local m = system "fluidflow"
 
 local mt = {}
@@ -275,6 +277,9 @@ local function teardown(w, fluid, id)
 end
 
 function m.clean(world)
+    if not world._cworld:is_dirty(DirtyFluidflow) then
+        return
+    end
     local ecs = world.ecs
     for v in ecs:select "REMOVED fluidbox:in" do
         local fluid = v.fluidbox.fluid
@@ -300,6 +305,9 @@ function m.clean(world)
 end
 
 function m.build(world)
+    if not world._cworld:is_dirty(DirtyFluidflow) then
+        return
+    end
     local ecs = world.ecs
     builder_init()
     for v in ecs:select "fluidbox:update building:in fluidbox_changed?in eid:in" do

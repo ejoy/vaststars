@@ -141,6 +141,9 @@ static void GoHome(world& w, ecs::drone& drone, const hub_mgr::hub_info& info);
 static int
 lbuild(lua_State *L) {
     auto& w = getworld(L);
+    if (!(w.dirty & kDirtyHub)) {
+        return 0;
+    }
     auto& b = w.hubs;
     b.chests.clear();
     std::map<uint16_t, flatmap<uint16_t, hub_mgr::berth>> globalmap;

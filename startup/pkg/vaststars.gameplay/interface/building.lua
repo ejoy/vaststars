@@ -1,12 +1,11 @@
 local m = {}
 
-local DirtyUnknown   <const> = 1 << 1
-local DirtyRoadnet   <const> = 1 << 2
-local DirtyFluidflow <const> = 1 << 3
-local DirtyHub       <const> = 1 << 4
-local DirtyTech      <const> = 1 << 5
-local DirtyStationProducer <const> = 1 << 6
-local DirtyStationConsumer <const> = 1 << 7
+local DirtyRoadnet         <const> = 1 << 1
+local DirtyFluidflow       <const> = 1 << 2
+local DirtyHub             <const> = 1 << 3
+local DirtyStationProducer <const> = 1 << 4
+local DirtyStationConsumer <const> = 1 << 5
+local DirtyTech            <const> = 1 << 6
 
 local DIRTY <const> = {
     roadnet = DirtyRoadnet,
@@ -23,26 +22,30 @@ local DIRECTION <const> = {
     W = 3, West  = 3,
 }
 
+local function dirty(world, flags)
+    world._cworld:set_dirty(flags)
+end
+
 local function dirty_changed_entity(world, e)
     if e.road or e.endpoint or e.starting then
-        world:dirty(DirtyRoadnet)
+        dirty(world, DirtyRoadnet)
     end
     if e.fluidbox or e.fluidboxes then
         e.fluidbox_changed = true
-        world:dirty(DirtyFluidflow)
+        dirty(world, DirtyFluidflow)
     end
     if e.chest or e.hub then
-        world:dirty(DirtyHub)
+        dirty(world, DirtyHub)
     end
 end
 
 local function dirty_entity(world, e)
     dirty_changed_entity(world, e)
     if e.station_producer then
-        world:dirty(DirtyStationProducer)
+        dirty(world, DirtyStationProducer)
     end
     if e.station_consumer then
-        world:dirty(DirtyStationConsumer)
+        dirty(world, DirtyStationConsumer)
     end
 end
 
@@ -51,7 +54,7 @@ function m.create(world, e)
 end
 
 function m.dirty(world, what)
-    world:dirty(DIRTY[what])
+    dirty(world, DIRTY[what])
 end
 
 function m.move(world, e, x, y)

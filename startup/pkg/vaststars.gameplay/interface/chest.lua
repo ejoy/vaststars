@@ -103,12 +103,19 @@ function m.assembling_set(world, e, recipe, option, maxslot)
     assembling_set(world, e, recipe, option, maxslot)
 end
 
+local function station_dirty(world, e)
+    iBuilding.dirty(world, "hub")
+    if e.station_consumer then
+        iBuilding.dirty(world, "station_consumer")
+    end
+end
+
 local function station_reset(world, e)
     local chest = e.chest
     if chest.chest ~= InvalidChest then
         world:container_destroy(chest)
         chest.chest = InvalidChest
-        iBuilding.dirty(world, "hub")
+        station_dirty(world, e)
     end
 end
 
@@ -121,7 +128,7 @@ local function station_set(world, e, item, limit)
             amount = 0,
             limit = limit,
         }}
-        iBuilding.dirty(world, "hub")
+        station_dirty(world, e)
         return
     end
     local slot = world:container_get(chest, 1)
@@ -137,7 +144,7 @@ local function station_set(world, e, item, limit)
     slot.amount = 0
     slot.limit = limit
     world:container_set(chest, 1, slot)
-    iBuilding.dirty(world, "hub")
+    station_dirty(world, e)
 end
 
 function m.station_set(world, e, item)

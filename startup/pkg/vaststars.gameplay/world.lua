@@ -87,7 +87,6 @@ return function ()
     local pipeline_restore = pipeline(world, cworld, "restore")
 
     function world:dirty(flags)
-        cworld:set_dirty(flags)
     end
     function world:update()
         if cworld:is_dirty() then

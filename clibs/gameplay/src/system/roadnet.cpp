@@ -7,9 +7,10 @@
 static int
 lbuild(lua_State *L) {
 	auto& w = getworld(L);
-	if (w.dirty & kDirtyRoadnet) {
-		w.rw.build(w);
+	if (!(w.dirty & kDirtyRoadnet)) {
+		return 0;
 	}
+	w.rw.build(w);
 	return 0;
 }
 

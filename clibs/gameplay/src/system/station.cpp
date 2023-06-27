@@ -87,36 +87,40 @@ static int lbuild(lua_State *L) {
     auto& w = getworld(L);
     auto& s = w.stations;
 
-    s.consumers.clear();
-    for (auto& v : ecs_api::select<ecs::station_consumer, ecs::endpoint, ecs::chest>(w.ecs)) {
-        auto& station = v.get<ecs::station_consumer>();
-        auto& endpoint = v.get<ecs::endpoint>();
-        auto& chest = v.get<ecs::chest>();
-        if (!endpoint.neighbor || !endpoint.rev_neighbor) {
-            continue;
-        }
-        auto& chestslot = chest::array_at(w, container::index::from(chest.chest), 0);
-        auto& consumers = s.consumers[chestslot.item];
-        consumers.emplace_back(station_consumer_ref{&station, &endpoint});
-    }
-
-    s.producers.clear();
-    size_t sz = ecs_api::count<ecs::station_producer>(w.ecs);
-    if (sz != 0) {
-        size_t i = 0;
-        s.producers.resize(sz);
-        for (auto& v : ecs_api::select<ecs::station_producer, ecs::endpoint>(w.ecs)) {
-            auto& station = v.get<ecs::station_producer>();
+    if (w.dirty & kDirtyStationConsumer) {
+        s.consumers.clear();
+        for (auto& v : ecs_api::select<ecs::station_consumer, ecs::endpoint, ecs::chest>(w.ecs)) {
+            auto& station = v.get<ecs::station_consumer>();
             auto& endpoint = v.get<ecs::endpoint>();
+            auto& chest = v.get<ecs::chest>();
             if (!endpoint.neighbor || !endpoint.rev_neighbor) {
                 continue;
             }
-            s.producers[i].station = &station;
-            s.producers[i].endpoint = &endpoint;
-            i++;
+            auto& chestslot = chest::array_at(w, container::index::from(chest.chest), 0);
+            auto& consumers = s.consumers[chestslot.item];
+            consumers.emplace_back(station_consumer_ref{&station, &endpoint});
         }
-        s.producers.resize(i);
-        producer_sort(s.producers);
+    }
+
+    if (w.dirty & kDirtyStationProducer) {
+        s.producers.clear();
+        size_t sz = ecs_api::count<ecs::station_producer>(w.ecs);
+        if (sz != 0) {
+            size_t i = 0;
+            s.producers.resize(sz);
+            for (auto& v : ecs_api::select<ecs::station_producer, ecs::endpoint>(w.ecs)) {
+                auto& station = v.get<ecs::station_producer>();
+                auto& endpoint = v.get<ecs::endpoint>();
+                if (!endpoint.neighbor || !endpoint.rev_neighbor) {
+                    continue;
+                }
+                s.producers[i].station = &station;
+                s.producers[i].endpoint = &endpoint;
+                i++;
+            }
+            s.producers.resize(i);
+            producer_sort(s.producers);
+        }
     }
     return 0;
 }
