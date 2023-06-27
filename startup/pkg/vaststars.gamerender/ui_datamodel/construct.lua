@@ -25,7 +25,6 @@ local selected_boxes = ecs.require "selected_boxes"
 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local COLOR_INVALID <const> = math3d.constant "null"
-local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local COLOR_GREEN = math3d.constant("v4", {0.3, 1, 0, 1})
 local construct_menu_cfg = import_package "vaststars.prototype"("construct_menu")
 local ichest = require "gameplay.interface.chest"
@@ -35,6 +34,7 @@ local iupdate = ecs.import.interface "vaststars.gamerender|iupdate"
 local ipick_object = ecs.import.interface "vaststars.gamerender|ipick_object"
 local ilorry = ecs.import.interface "vaststars.gamerender|ilorry"
 local gameplay = import_package "vaststars.gameplay"
+local ibuilding = gameplay.interface "building"
 
 local rotate_mb = mailbox:sub {"rotate"}
 local build_mb = mailbox:sub {"build"}
@@ -53,7 +53,6 @@ local gesture_long_press_mb = world:sub{"gesture", "long_press"}
 local gesture_pan_mb = world:sub {"gesture", "pan"}
 local focus_tips_event = world:sub {"focus_tips"}
 local remove_lorry_mb = mailbox:sub {"remove_lorry"}
-local DIRTY_BUILDING <const> = require("gameplay.interface.constant").DIRTY_BUILDING
 local construct_mb = mailbox:sub {"construct"}
 local selected_mb = mailbox:sub {"selected"}
 local unselected_mb = mailbox:sub {"unselected"}
@@ -568,9 +567,7 @@ function M:stage_camera_usage(datamodel)
         end
 
         local gameworld = gameplay_core.get_world()
-        local building = gameplay.interface "building"
-        building.destroy(gameworld, gameworld.entity[object.gameplay_eid])
-        igameplay.dirty(DIRTY_BUILDING)
+        ibuilding.destroy(gameworld, gameworld.entity[object.gameplay_eid])
 
         if typeobject.power_network_link or typeobject.power_supply_distance then
             ipower:build_power_network(gw)

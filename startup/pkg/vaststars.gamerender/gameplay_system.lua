@@ -141,9 +141,3 @@ function igameplay.update_chimney_recipe(object) -- TODO: better way to do this?
         end
     end
 end
-
-function igameplay.dirty(flags)
-    gameplay_core.world_update = true
-    gameplay_core._dirty = gameplay_core._dirty | flags
-    gameplay_core.get_world():dirty(flags)
-end

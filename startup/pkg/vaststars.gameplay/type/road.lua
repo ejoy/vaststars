@@ -1,4 +1,10 @@
 local type = require "register.type"
 
-type "road"
+local c = type "road"
     .road "network"
+
+function c:ctor(init, pt)
+    return {
+        road = true,
+    }
+end

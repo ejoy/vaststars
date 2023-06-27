@@ -16,7 +16,6 @@ local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local gameplay_core = require "gameplay.core"
 local ibuilding = ecs.import.interface "vaststars.gamerender|ibuilding"
-local DIRTY_BUILDING <const> = require("gameplay.interface.constant").DIRTY_BUILDING
 
 local function check_construct_detector(self, prototype_name, x, y, dir, exclude_object_id)
     dir = dir or DEFAULT_DIR
@@ -100,7 +99,6 @@ local function complete(self, object_id)
 
     objects:remove(object_id, "CONFIRM")
     objects:set(object, "CONSTRUCTED")
-    igameplay.dirty(DIRTY_BUILDING)
 
     -- TODO: duplicate code
     local gw = gameplay_core.get_world()

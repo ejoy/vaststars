@@ -13,7 +13,7 @@ local MULTIPLE <const> = require "debugger".multiple
 local m = {}
 m.world_update = false
 m.multiple = MULTIPLE or 1
-m._dirty = 0
+m.system_changed_flags = 0
 
 function m.select(...)
     return world.ecs:select(...)
@@ -169,6 +169,10 @@ function m.get_storage(key, defvalue)
             return world.storage[key]
         end
     end
+end
+
+function m.set_changed(flag)
+    m.system_changed_flags = m.system_changed_flags | flag
 end
 
 return m

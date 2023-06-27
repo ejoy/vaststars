@@ -86,8 +86,6 @@ return function ()
     local pipeline_backup = pipeline(world, cworld, "backup")
     local pipeline_restore = pipeline(world, cworld, "restore")
 
-    function world:dirty(flags)
-    end
     function world:update()
         if cworld:is_dirty() then
             pipeline_build()

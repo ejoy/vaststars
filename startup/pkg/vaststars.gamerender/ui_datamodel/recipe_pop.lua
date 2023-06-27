@@ -19,12 +19,10 @@ local terrain = ecs.require "terrain"
 local itypes = require "gameplay.interface.types"
 local recipe_unlocked = ecs.require "ui_datamodel.common.recipe_unlocked".recipe_unlocked
 local iflow_connector = require "gameplay.interface.flow_connector"
-local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local itask = ecs.require "task"
 local iprototype_cache = require "gameplay.prototype_cache.init"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
-local DIRTY_FLUIDFLOW <const> = require("gameplay.interface.constant").DIRTY_FLUIDFLOW
-local DIRTY_ASSEMBLING <const> = require("gameplay.interface.constant").DIRTY_ASSEMBLING
+local CHANGED_FLAG_ASSEMBLING <const> = require("gameplay.interface.constant").CHANGED_FLAG_ASSEMBLING
 
 -- TODO：duplicate code with builder.lua
 local function _update_neighbor_fluidbox(object)
@@ -75,7 +73,6 @@ local function _update_neighbor_fluidbox(object)
         end
         ::continue::
     end
-    igameplay.dirty(DIRTY_FLUIDFLOW)
 end
 
 local function _show_object_recipe(datamodel, object_id)
@@ -206,11 +203,12 @@ function M:stage_ui_update(datamodel, object_id)
             object.fluid_name = irecipe.get_init_fluids(recipe_typeobject) or {} -- recipe may not have fluid
 
             _update_neighbor_fluidbox(object)
-            igameplay.dirty(DIRTY_ASSEMBLING)
 
             iui.call_datamodel_method("building_menu.rml", "update", object_id)
             object.recipe = recipe_name
             itask.update_progress("set_recipe", recipe_name)
+
+            gameplay_core.set_changed(CHANGED_FLAG_ASSEMBLING)
         end
     end
 
@@ -225,7 +223,6 @@ function M:stage_ui_update(datamodel, object_id)
         iui.call_datamodel_method("building_menu.rml", "update", object_id)
 
         _update_neighbor_fluidbox(object)
-        igameplay.dirty(DIRTY_ASSEMBLING)
     end
 end
 

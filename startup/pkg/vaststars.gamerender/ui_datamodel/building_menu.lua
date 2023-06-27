@@ -36,9 +36,9 @@ local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 local iobject = ecs.require "object"
 local igameplay = ecs.interface "igameplay"
 local interval_call = ecs.require "engine.interval_call"
+local gameplay = import_package "vaststars.gameplay"
+local istation = gameplay.interface "station"
 
-local DIRTY_STATION <const> = require("gameplay.interface.constant").DIRTY_STATION
-local DIRTY_CHEST <const> = require("gameplay.interface.constant").DIRTY_CHEST
 local MIN_STATION_WEIGHTS <const> = require("gameplay.interface.constant").MIN_STATION_WEIGHTS
 local MAX_STATION_WEIGHTS <const> = require("gameplay.interface.constant").MAX_STATION_WEIGHTS
 
@@ -296,19 +296,7 @@ local function __get_hub_first_item(gameplay_world, e)
 end
 
 local function __set_station_first_item(gameplay_world, e, item)
-    local typeobject = iprototype.queryById(e.building.prototype)
-    local chest_component = iprototype.get_chest_component(typeobject.name)
-    gameplay_world:container_destroy(e[chest_component])
-
-    local typeobject_item = iprototype.queryById(item)
-    local c = {}
-    c[#c+1] = {
-        type = typeobject.chest_type,
-        item = typeobject_item.id,
-        limit = typeobject_item.stack,
-    }
-    e[chest_component].chest = gameplay_world:container_create(c)
-    e.station_changed = true
+    istation.set_item(gameplay_world, e, item)
 end
 
 local function __get_station_first_item(gameplay_world, e)
@@ -400,29 +388,25 @@ function M:stage_ui_update(datamodel, object_id)
     for _ in station_weight_increase_mb:unpack() do
         local object = assert(objects:get(object_id))
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
-        e.station_producer.weights = math.min(e.station_producer.weights + 1, MAX_STATION_WEIGHTS)
-        igameplay.dirty(DIRTY_STATION)
+        istation.set_weights(gameplay_core.get_world(), e, math.min(e.station_producer.weights + 1, MAX_STATION_WEIGHTS))
     end
 
     for _ in station_weight_decrease_mb:unpack() do
         local object = assert(objects:get(object_id))
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
-        e.station_producer.weights = math.max(e.station_producer.weights - 1, MIN_STATION_WEIGHTS)
-        igameplay.dirty(DIRTY_STATION)
+        istation.set_weights(gameplay_core.get_world(), e, math.max(e.station_producer.weights - 1, MIN_STATION_WEIGHTS))
     end
 
     for _ in station_lorry_increase_mb:unpack() do
         local object = assert(objects:get(object_id))
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
-        e.station_consumer.maxlorry = e.station_consumer.maxlorry + 1
-        igameplay.dirty(DIRTY_STATION)
+        istation.set_maxlorry(gameplay_core.get_world(), e, e.station_consumer.maxlorry + 1)
     end
 
     for _ in station_lorry_decrease_mb:unpack() do
         local object = assert(objects:get(object_id))
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
-        e.station_consumer.maxlorry = math.max(e.station_consumer.maxlorry - 1, 0)
-        igameplay.dirty(DIRTY_STATION)
+        istation.set_maxlorry(gameplay_core.get_world(), e, math.max(e.station_consumer.maxlorry - 1, 0))
     end
 
     for _, _, _, message in ui_click_mb:unpack() do
@@ -518,7 +502,6 @@ function M:stage_ui_update(datamodel, object_id)
             assert(false)
         end
 
-        igameplay.dirty(DIRTY_CHEST)
         ::continue::
     end
 
@@ -626,7 +609,6 @@ function M:stage_ui_update(datamodel, object_id)
             assert(false)
         end
 
-        igameplay.dirty(DIRTY_CHEST)
         ::continue::
     end
 

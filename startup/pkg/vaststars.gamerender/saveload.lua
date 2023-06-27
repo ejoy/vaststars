@@ -9,7 +9,7 @@ local debugger = require "debugger"
 local CUSTOM_ARCHIVING <const> = require "debugger".custom_archiving
 local iprototype_cache = require "gameplay.prototype_cache.init"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
-local DIRTY_ALL <const> = require("gameplay.interface.constant").DIRTY_ALL
+local CHANGED_FLAG_ALL <const> = require("gameplay.interface.constant").CHANGED_FLAG_ALL
 
 local archival_base_dir
 if CUSTOM_ARCHIVING then
@@ -364,19 +364,8 @@ function M:restart(mode, game_template)
     end
     local renderData = {}
     for _, road in ipairs(game_template_road) do
-        local typeobject = assert(iprototype.queryByName(road.prototype))
-        local e = {
-            building = {
-                x = road.x,
-                y = road.y,
-                prototype = typeobject.id,
-                direction = iprototype.dir_tonumber(road.direction),
-            },
-            road = true,
-        }
-        gameplay_core.get_world().ecs:new(e)
-
-        local shape, dir = iroadnet_converter.to_shape(typeobject.name), road.direction
+        igameplay.create_entity(road)
+        local shape, dir = iroadnet_converter.to_shape(road.prototype_name), road.dir
         renderData[iprototype.packcoord(road.x, road.y)] = {road.x, road.y, "normal", shape, dir}
     end
     iroadnet:init(renderData, true)
@@ -388,7 +377,7 @@ function M:restart(mode, game_template)
     end
 
     restore_world()
-    igameplay.dirty(DIRTY_ALL)
+    gameplay_core.set_changed(CHANGED_FLAG_ALL)
 
     iui.open({"construct.rml"})
     iui.open({"message_pop.rml"})

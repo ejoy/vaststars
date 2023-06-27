@@ -22,7 +22,6 @@ local math3d = require "math3d"
 local gameplay_core = require "gameplay.core"
 local ichest = require "gameplay.interface.chest"
 local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_box"
-local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 local REMOVE <const> = {}
@@ -31,7 +30,7 @@ local ibuilding = ecs.import.interface "vaststars.gamerender|ibuilding"
 local icamera_controller = ecs.interface "icamera_controller"
 local ROAD_TILE_SCALE_WIDTH <const> = 2
 local ROAD_TILE_SCALE_HEIGHT <const> = 2
-local DIRTY_ROADNET <const> = require("gameplay.interface.constant").DIRTY_ROADNET
+local CHANGED_FLAG_ROADNET <const> = require("gameplay.interface.constant").CHANGED_FLAG_ROADNET
 
 -- To distinguish between "batch construction" and "batch teardown" in the touch_end event.
 local STATE_NONE  <const> = 0
@@ -778,7 +777,6 @@ local function confirm(self, datamodel)
         self.grid_entity = nil
     end
 
-    local prototype_name = self.coord_indicator.prototype_name
     iobject.remove(self.coord_indicator)
     self.coord_indicator = nil
 
@@ -798,7 +796,7 @@ local function confirm(self, datamodel)
         end
     end
 
-    igameplay.dirty(DIRTY_ROADNET)
+    gameplay_core.set_changed(CHANGED_FLAG_ROADNET)
     iroadnet:clear("indicator")
 
     datamodel.show_finish_laying = false

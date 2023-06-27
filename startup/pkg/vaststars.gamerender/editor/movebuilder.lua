@@ -23,18 +23,16 @@ local global = require "global"
 local create_sprite = ecs.require "sprite"
 local SPRITE_COLOR = import_package "vaststars.prototype".load("sprite_color")
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
-local ientity = require "gameplay.interface.entity"
 local create_pickup_icon = ecs.require "pickup_icon".create
 local create_pickup_icon_chimney = ecs.require "pickup_icon_chimney".create
-local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local terrain = ecs.require "terrain"
 local gameplay_core = require "gameplay.core"
 local ibuilding = ecs.import.interface "vaststars.gamerender|ibuilding"
 local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_box"
 local create_selected_boxes = ecs.require "selected_boxes"
 local vsobject_manager = ecs.require "vsobject_manager"
-local DIRTY_BUILDING <const> = require("gameplay.interface.constant").DIRTY_BUILDING
 local gameplay = import_package "vaststars.gameplay"
+local igameplay_building = gameplay.interface "building"
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -491,7 +489,7 @@ local function confirm(self, datamodel)
     objects:set(object, "CONSTRUCTED")
     objects:coord_update(object)
 
-    igameplay.dirty(DIRTY_BUILDING)
+    igameplay_building.move(gameplay_core.get_world(), e, object.x, object.y)
 
     local building = global.buildings[object.id]
     if building then

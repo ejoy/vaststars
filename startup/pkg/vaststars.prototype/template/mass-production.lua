@@ -3919,1802 +3919,1802 @@ local entities = { {
     x = 178,
     y = 177
   } }
-local road = { {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 66,
-  y = 92
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 66,
-  y = 96
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 66,
-  y = 100
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 66,
-  y = 104
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 66,
-  y = 108
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 66,
-  y = 112
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 66,
-  y = 116
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 66,
-  y = 120
-}, {
-  direction = "N",
-  prototype = "砖石公路-L型",
-  x = 74,
-  y = 156
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 84,
-  y = 160
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 86,
-  y = 160
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 88,
-  y = 160
-}, {
-  direction = "N",
-  prototype = "砖石公路-X型",
-  x = 90,
-  y = 160
-}, {
-  direction = "N",
-  prototype = "砖石公路-X型",
-  x = 92,
-  y = 160
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 94,
-  y = 160
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 96,
-  y = 160
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 98,
-  y = 160
-}, {
-  direction = "S",
-  prototype = "砖石公路-T型",
-  x = 100,
-  y = 160
-}, {
-  direction = "S",
-  prototype = "砖石公路-T型",
-  x = 102,
-  y = 160
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 104,
-  y = 160
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 106,
-  y = 160
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 108,
-  y = 160
-}, {
-  direction = "S",
-  prototype = "砖石公路-T型",
-  x = 110,
-  y = 160
-}, {
-  direction = "S",
-  prototype = "砖石公路-T型",
-  x = 112,
-  y = 160
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 118,
-  y = 156
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 142,
-  y = 132
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 132,
-  y = 156
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 146,
-  y = 132
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 148,
-  y = 132
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 150,
-  y = 132
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 152,
-  y = 132
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 154,
-  y = 132
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 156,
-  y = 132
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 162,
-  y = 124
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 160,
-  y = 132
-}, {
-  direction = "N",
-  prototype = "砖石公路-T型",
-  x = 162,
-  y = 132
-}, {
-  direction = "N",
-  prototype = "砖石公路-T型",
-  x = 164,
-  y = 132
-}, {
-  direction = "N",
-  prototype = "砖石公路-T型",
-  x = 166,
-  y = 132
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 172,
-  y = 124
-}, {
-  direction = "N",
-  prototype = "砖石公路-T型",
-  x = 170,
-  y = 132
-}, {
-  direction = "N",
-  prototype = "砖石公路-T型",
-  x = 172,
-  y = 132
-}, {
-  direction = "N",
-  prototype = "砖石公路-T型",
-  x = 174,
-  y = 132
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 180,
-  y = 124
-}, {
-  direction = "N",
-  prototype = "砖石公路-T型",
-  x = 182,
-  y = 124
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 184,
-  y = 124
-}, {
-  direction = "S",
-  prototype = "砖石公路-U型",
-  x = 192,
-  y = 112
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 188,
-  y = 124
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 190,
-  y = 124
-}, {
-  direction = "W",
-  prototype = "砖石公路-L型",
-  x = 192,
-  y = 124
-}, {
-  direction = "W",
-  prototype = "砖石公路-T型",
-  x = 182,
-  y = 176
-}, {
-  direction = "E",
-  prototype = "砖石公路-T型",
-  x = 192,
-  y = 168
-}, {
-  direction = "E",
-  prototype = "砖石公路-T型",
-  x = 192,
-  y = 176
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 74,
-  y = 154
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 136,
-  y = 152
-}, {
-  direction = "S",
-  prototype = "砖石公路-T型",
-  x = 122,
-  y = 152
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 120,
-  y = 152
-}, {
-  direction = "W",
-  prototype = "砖石公路-T型",
-  x = 118,
-  y = 152
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 140,
-  y = 128
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 140,
-  y = 136
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 140,
-  y = 140
-}, {
-  direction = "W",
-  prototype = "砖石公路-T型",
-  x = 140,
-  y = 144
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 140,
-  y = 148
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 130,
-  y = 162
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 132,
-  y = 164
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 132,
-  y = 168
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 192,
-  y = 116
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 186,
-  y = 124
-}, {
-  direction = "S",
-  prototype = "砖石公路-L型",
-  x = 76,
-  y = 156
-}, {
-  direction = "S",
-  prototype = "砖石公路-L型",
-  x = 178,
-  y = 158
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 178,
-  y = 124
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 176,
-  y = 124
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 174,
-  y = 124
-}, {
-  direction = "N",
-  prototype = "砖石公路-T型",
-  x = 170,
-  y = 124
-}, {
-  direction = "N",
-  prototype = "砖石公路-T型",
-  x = 168,
-  y = 124
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 152,
-  y = 124
-}, {
-  direction = "N",
-  prototype = "砖石公路-T型",
-  x = 140,
-  y = 124
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 138,
-  y = 124
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 136,
-  y = 124
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 134,
-  y = 124
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 132,
-  y = 124
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 130,
-  y = 124
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 128,
-  y = 124
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 126,
-  y = 124
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 124,
-  y = 124
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 122,
-  y = 124
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 120,
-  y = 124
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 118,
-  y = 124
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 116,
-  y = 124
-}, {
-  direction = "E",
-  prototype = "砖石公路-L型",
-  x = 114,
-  y = 124
-}, {
-  direction = "W",
-  prototype = "砖石公路-L型",
-  x = 140,
-  y = 152
-}, {
-  direction = "W",
-  prototype = "砖石公路-T型",
-  x = 140,
-  y = 132
-}, {
-  direction = "E",
-  prototype = "砖石公路-T型",
-  x = 192,
-  y = 164
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 192,
-  y = 172
-}, {
-  direction = "N",
-  prototype = "砖石公路-T型",
-  x = 168,
-  y = 132
-}, {
-  direction = "W",
-  prototype = "砖石公路-T型",
-  x = 132,
-  y = 172
-}, {
-  direction = "N",
-  prototype = "砖石公路-T型",
-  x = 176,
-  y = 132
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 192,
-  y = 160
-}, {
-  direction = "S",
-  prototype = "砖石公路-U型",
-  x = 66,
-  y = 90
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 66,
-  y = 94
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 66,
-  y = 98
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 66,
-  y = 102
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 66,
-  y = 106
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 66,
-  y = 110
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 66,
-  y = 114
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 66,
-  y = 118
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 66,
-  y = 122
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 66,
-  y = 124
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 74,
-  y = 126
-}, {
-  direction = "N",
-  prototype = "砖石公路-T型",
-  x = 74,
-  y = 138
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 74,
-  y = 142
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 74,
-  y = 146
-}, {
-  direction = "W",
-  prototype = "砖石公路-T型",
-  x = 74,
-  y = 150
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 76,
-  y = 150
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 78,
-  y = 150
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 80,
-  y = 150
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 82,
-  y = 150
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 84,
-  y = 150
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 86,
-  y = 150
-}, {
-  direction = "S",
-  prototype = "砖石公路-T型",
-  x = 88,
-  y = 150
-}, {
-  direction = "S",
-  prototype = "砖石公路-T型",
-  x = 90,
-  y = 150
-}, {
-  direction = "N",
-  prototype = "砖石公路-T型",
-  x = 92,
-  y = 150
-}, {
-  direction = "N",
-  prototype = "砖石公路-T型",
-  x = 94,
-  y = 150
-}, {
-  direction = "S",
-  prototype = "砖石公路-T型",
-  x = 96,
-  y = 150
-}, {
-  direction = "S",
-  prototype = "砖石公路-T型",
-  x = 98,
-  y = 150
-}, {
-  direction = "S",
-  prototype = "砖石公路-T型",
-  x = 100,
-  y = 150
-}, {
-  direction = "S",
-  prototype = "砖石公路-T型",
-  x = 102,
-  y = 150
-}, {
-  direction = "S",
-  prototype = "砖石公路-T型",
-  x = 104,
-  y = 150
-}, {
-  direction = "S",
-  prototype = "砖石公路-T型",
-  x = 106,
-  y = 150
-}, {
-  direction = "N",
-  prototype = "砖石公路-T型",
-  x = 108,
-  y = 150
-}, {
-  direction = "N",
-  prototype = "砖石公路-T型",
-  x = 110,
-  y = 150
-}, {
-  direction = "S",
-  prototype = "砖石公路-T型",
-  x = 112,
-  y = 150
-}, {
-  direction = "S",
-  prototype = "砖石公路-T型",
-  x = 114,
-  y = 150
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 118,
-  y = 154
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 118,
-  y = 158
-}, {
-  direction = "N",
-  prototype = "砖石公路-L型",
-  x = 118,
-  y = 162
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 140,
-  y = 126
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 140,
-  y = 130
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 140,
-  y = 134
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 132,
-  y = 154
-}, {
-  direction = "W",
-  prototype = "砖石公路-T型",
-  x = 132,
-  y = 158
-}, {
-  direction = "E",
-  prototype = "砖石公路-T型",
-  x = 132,
-  y = 162
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 132,
-  y = 166
-}, {
-  direction = "W",
-  prototype = "砖石公路-T型",
-  x = 132,
-  y = 170
-}, {
-  direction = "N",
-  prototype = "砖石公路-U型",
-  x = 132,
-  y = 174
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 142,
-  y = 158
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 144,
-  y = 158
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 146,
-  y = 158
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 148,
-  y = 158
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 150,
-  y = 158
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 152,
-  y = 158
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 154,
-  y = 158
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 156,
-  y = 158
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 158,
-  y = 158
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 160,
-  y = 158
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 162,
-  y = 158
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 164,
-  y = 158
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 168,
-  y = 158
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 192,
-  y = 114
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 172,
-  y = 158
-}, {
-  direction = "W",
-  prototype = "砖石公路-T型",
-  x = 182,
-  y = 158
-}, {
-  direction = "W",
-  prototype = "砖石公路-T型",
-  x = 192,
-  y = 158
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 194,
-  y = 158
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 196,
-  y = 158
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 198,
-  y = 158
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 200,
-  y = 158
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 202,
-  y = 158
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 204,
-  y = 158
-}, {
-  direction = "N",
-  prototype = "砖石公路-T型",
-  x = 206,
-  y = 158
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 192,
-  y = 174
-}, {
-  direction = "E",
-  prototype = "砖石公路-T型",
-  x = 192,
-  y = 170
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 192,
-  y = 166
-}, {
-  direction = "E",
-  prototype = "砖石公路-T型",
-  x = 192,
-  y = 162
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 176,
-  y = 158
-}, {
-  direction = "W",
-  prototype = "砖石公路-T型",
-  x = 192,
-  y = 122
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 158,
-  y = 132
-}, {
-  direction = "N",
-  prototype = "砖石公路-L型",
-  x = 76,
-  y = 160
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 78,
-  y = 160
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 80,
-  y = 160
-}, {
-  direction = "S",
-  prototype = "砖石公路-T型",
-  x = 154,
-  y = 124
-}, {
-  direction = "S",
-  prototype = "砖石公路-T型",
-  x = 156,
-  y = 124
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 158,
-  y = 124
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 160,
-  y = 124
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 164,
-  y = 124
-}, {
-  direction = "S",
-  prototype = "砖石公路-T型",
-  x = 166,
-  y = 124
-}, {
-  direction = "S",
-  prototype = "砖石公路-T型",
-  x = 128,
-  y = 152
-}, {
-  direction = "N",
-  prototype = "砖石公路-T型",
-  x = 132,
-  y = 152
-}, {
-  direction = "E",
-  prototype = "砖石公路-T型",
-  x = 118,
-  y = 160
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 138,
-  y = 152
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 116,
-  y = 160
-}, {
-  direction = "W",
-  prototype = "砖石公路-T型",
-  x = 192,
-  y = 120
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 140,
-  y = 158
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 114,
-  y = 160
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 82,
-  y = 160
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 126,
-  y = 152
-}, {
-  direction = "S",
-  prototype = "砖石公路-T型",
-  x = 124,
-  y = 152
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 134,
-  y = 152
-}, {
-  direction = "S",
-  prototype = "砖石公路-T型",
-  x = 130,
-  y = 152
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 74,
-  y = 144
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 74,
-  y = 148
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 74,
-  y = 140
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 170,
-  y = 158
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 166,
-  y = 158
-}, {
-  direction = "N",
-  prototype = "砖石公路-T型",
-  x = 178,
-  y = 132
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 132,
-  y = 160
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 128,
-  y = 162
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 144,
-  y = 132
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 74,
-  y = 152
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 76,
-  y = 158
-}, {
-  direction = "W",
-  prototype = "砖石公路-T型",
-  x = 182,
-  y = 134
-}, {
-  direction = "S",
-  prototype = "砖石公路-T型",
-  x = 184,
-  y = 134
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 192,
-  y = 118
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 134,
-  y = 158
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 136,
-  y = 158
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 138,
-  y = 158
-}, {
-  direction = "E",
-  prototype = "砖石公路-T型",
-  x = 140,
-  y = 138
-}, {
-  direction = "W",
-  prototype = "砖石公路-T型",
-  x = 140,
-  y = 142
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 140,
-  y = 150
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 140,
-  y = 146
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 122,
-  y = 162
-}, {
-  direction = "S",
-  prototype = "砖石公路-T型",
-  x = 124,
-  y = 162
-}, {
-  direction = "S",
-  prototype = "砖石公路-T型",
-  x = 126,
-  y = 162
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 120,
-  y = 162
-}, {
-  direction = "W",
-  prototype = "砖石公路-U型",
-  x = 188,
-  y = 134
-}, {
-  direction = "S",
-  prototype = "砖石公路-T型",
-  x = 186,
-  y = 134
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 174,
-  y = 158
-}, {
-  direction = "N",
-  prototype = "砖石公路-T型",
-  x = 208,
-  y = 158
-}, {
-  direction = "W",
-  prototype = "砖石公路-U型",
-  x = 210,
-  y = 158
-}, {
-  direction = "E",
-  prototype = "砖石公路-T型",
-  x = 182,
-  y = 164
-}, {
-  direction = "E",
-  prototype = "砖石公路-T型",
-  x = 182,
-  y = 166
-}, {
-  direction = "W",
-  prototype = "砖石公路-T型",
-  x = 182,
-  y = 168
-}, {
-  direction = "W",
-  prototype = "砖石公路-T型",
-  x = 182,
-  y = 170
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 182,
-  y = 172
-}, {
-  direction = "W",
-  prototype = "砖石公路-T型",
-  x = 182,
-  y = 174
-}, {
-  direction = "E",
-  prototype = "砖石公路-T型",
-  x = 182,
-  y = 160
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 182,
-  y = 162
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 148,
-  y = 124
-}, {
-  direction = "S",
-  prototype = "砖石公路-T型",
-  x = 142,
-  y = 124
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 150,
-  y = 124
-}, {
-  direction = "S",
-  prototype = "砖石公路-T型",
-  x = 144,
-  y = 124
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 146,
-  y = 124
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 108,
-  y = 126
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 78,
-  y = 126
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 110,
-  y = 126
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 80,
-  y = 126
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 112,
-  y = 126
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 82,
-  y = 126
-}, {
-  direction = "W",
-  prototype = "砖石公路-L型",
-  x = 114,
-  y = 126
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 84,
-  y = 126
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 86,
-  y = 126
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 88,
-  y = 126
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 90,
-  y = 126
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 92,
-  y = 126
-}, {
-  direction = "S",
-  prototype = "砖石公路-T型",
-  x = 94,
-  y = 126
-}, {
-  direction = "N",
-  prototype = "砖石公路-T型",
-  x = 96,
-  y = 126
-}, {
-  direction = "N",
-  prototype = "砖石公路-T型",
-  x = 98,
-  y = 126
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 100,
-  y = 126
-}, {
-  direction = "N",
-  prototype = "砖石公路-T型",
-  x = 102,
-  y = 126
-}, {
-  direction = "N",
-  prototype = "砖石公路-T型",
-  x = 104,
-  y = 126
-}, {
-  direction = "S",
-  prototype = "砖石公路-T型",
-  x = 106,
-  y = 126
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 76,
-  y = 126
-}, {
-  direction = "E",
-  prototype = "砖石公路-T型",
-  x = 192,
-  y = 154
-}, {
-  direction = "E",
-  prototype = "砖石公路-T型",
-  x = 192,
-  y = 156
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 182,
-  y = 154
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 182,
-  y = 140
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 182,
-  y = 144
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 182,
-  y = 148
-}, {
-  direction = "W",
-  prototype = "砖石公路-T型",
-  x = 182,
-  y = 152
-}, {
-  direction = "W",
-  prototype = "砖石公路-T型",
-  x = 182,
-  y = 156
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 182,
-  y = 126
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 182,
-  y = 130
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 182,
-  y = 138
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 182,
-  y = 142
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 182,
-  y = 146
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 182,
-  y = 150
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 182,
-  y = 128
-}, {
-  direction = "E",
-  prototype = "砖石公路-T型",
-  x = 182,
-  y = 132
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 182,
-  y = 136
-}, {
-  direction = "N",
-  prototype = "砖石公路-T型",
-  x = 180,
-  y = 132
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 182,
-  y = 178
-}, {
-  direction = "N",
-  prototype = "砖石公路-L型",
-  x = 182,
-  y = 180
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 190,
-  y = 180
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 184,
-  y = 180
-}, {
-  direction = "W",
-  prototype = "砖石公路-L型",
-  x = 192,
-  y = 180
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 186,
-  y = 180
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 188,
-  y = 180
-}, {
-  direction = "E",
-  prototype = "砖石公路-T型",
-  x = 192,
-  y = 178
-}, {
-  direction = "S",
-  prototype = "砖石公路-L型",
-  x = 192,
-  y = 152
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 190,
-  y = 152
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 184,
-  y = 152
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 186,
-  y = 152
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 188,
-  y = 152
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 70,
-  y = 126
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 72,
-  y = 126
-}, {
-  direction = "W",
-  prototype = "砖石公路-T型",
-  x = 66,
-  y = 126
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 68,
-  y = 126
-}, {
-  direction = "S",
-  prototype = "砖石公路-U型",
-  x = 166,
-  y = 112
-}, {
-  direction = "W",
-  prototype = "砖石公路-T型",
-  x = 166,
-  y = 116
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 166,
-  y = 118
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 166,
-  y = 120
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 166,
-  y = 122
-}, {
-  direction = "W",
-  prototype = "砖石公路-T型",
-  x = 166,
-  y = 114
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 78,
-  y = 138
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 80,
-  y = 138
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 82,
-  y = 138
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 84,
-  y = 138
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 86,
-  y = 138
-}, {
-  direction = "N",
-  prototype = "砖石公路-T型",
-  x = 88,
-  y = 138
-}, {
-  direction = "N",
-  prototype = "砖石公路-T型",
-  x = 90,
-  y = 138
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 92,
-  y = 138
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 94,
-  y = 138
-}, {
-  direction = "N",
-  prototype = "砖石公路-T型",
-  x = 96,
-  y = 138
-}, {
-  direction = "N",
-  prototype = "砖石公路-T型",
-  x = 98,
-  y = 138
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 100,
-  y = 138
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 102,
-  y = 138
-}, {
-  direction = "N",
-  prototype = "砖石公路-X型",
-  x = 104,
-  y = 138
-}, {
-  direction = "N",
-  prototype = "砖石公路-X型",
-  x = 106,
-  y = 138
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 108,
-  y = 138
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 110,
-  y = 138
-}, {
-  direction = "N",
-  prototype = "砖石公路-T型",
-  x = 112,
-  y = 138
-}, {
-  direction = "N",
-  prototype = "砖石公路-T型",
-  x = 114,
-  y = 138
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 116,
-  y = 138
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 118,
-  y = 138
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 120,
-  y = 138
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 122,
-  y = 138
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 124,
-  y = 138
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 126,
-  y = 138
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 128,
-  y = 138
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 130,
-  y = 138
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 132,
-  y = 138
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 134,
-  y = 138
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 136,
-  y = 138
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 138,
-  y = 138
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 76,
-  y = 138
-}, {
-  direction = "N",
-  prototype = "砖石公路-L型",
-  x = 178,
-  y = 160
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 180,
-  y = 160
-}, {
-  direction = "W",
-  prototype = "砖石公路-T型",
-  x = 94,
-  y = 120
-}, {
-  direction = "W",
-  prototype = "砖石公路-T型",
-  x = 94,
-  y = 122
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 94,
-  y = 124
-}, {
-  direction = "E",
-  prototype = "砖石公路-L型",
-  x = 94,
-  y = 118
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 106,
-  y = 124
-}, {
-  direction = "S",
-  prototype = "砖石公路-L型",
-  x = 106,
-  y = 118
-}, {
-  direction = "E",
-  prototype = "砖石公路-T型",
-  x = 106,
-  y = 120
-}, {
-  direction = "E",
-  prototype = "砖石公路-T型",
-  x = 106,
-  y = 122
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 102,
-  y = 118
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 96,
-  y = 118
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 104,
-  y = 118
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 98,
-  y = 118
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 100,
-  y = 118
-}, {
-  direction = "S",
-  prototype = "砖石公路-L型",
-  x = 118,
-  y = 150
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 116,
-  y = 150
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 66,
-  y = 134
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 66,
-  y = 136
-}, {
-  direction = "N",
-  prototype = "砖石公路-L型",
-  x = 66,
-  y = 138
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 66,
-  y = 128
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 66,
-  y = 130
-}, {
-  direction = "N",
-  prototype = "砖石公路-I型",
-  x = 66,
-  y = 132
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 68,
-  y = 138
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 72,
-  y = 138
-}, {
-  direction = "E",
-  prototype = "砖石公路-I型",
-  x = 70,
-  y = 138
-} }
+  local road = { {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 66,
+    y = 92
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 66,
+    y = 96
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 66,
+    y = 100
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 66,
+    y = 104
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 66,
+    y = 108
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 66,
+    y = 112
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 66,
+    y = 116
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 66,
+    y = 120
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-L型",
+    x = 74,
+    y = 156
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 84,
+    y = 160
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 86,
+    y = 160
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 88,
+    y = 160
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-X型",
+    x = 90,
+    y = 160
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-X型",
+    x = 92,
+    y = 160
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 94,
+    y = 160
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 96,
+    y = 160
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 98,
+    y = 160
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-T型",
+    x = 100,
+    y = 160
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-T型",
+    x = 102,
+    y = 160
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 104,
+    y = 160
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 106,
+    y = 160
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 108,
+    y = 160
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-T型",
+    x = 110,
+    y = 160
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-T型",
+    x = 112,
+    y = 160
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 118,
+    y = 156
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 142,
+    y = 132
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 132,
+    y = 156
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 146,
+    y = 132
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 148,
+    y = 132
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 150,
+    y = 132
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 152,
+    y = 132
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 154,
+    y = 132
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 156,
+    y = 132
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 162,
+    y = 124
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 160,
+    y = 132
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-T型",
+    x = 162,
+    y = 132
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-T型",
+    x = 164,
+    y = 132
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-T型",
+    x = 166,
+    y = 132
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 172,
+    y = 124
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-T型",
+    x = 170,
+    y = 132
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-T型",
+    x = 172,
+    y = 132
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-T型",
+    x = 174,
+    y = 132
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 180,
+    y = 124
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-T型",
+    x = 182,
+    y = 124
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 184,
+    y = 124
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-U型",
+    x = 192,
+    y = 112
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 188,
+    y = 124
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 190,
+    y = 124
+  }, {
+    dir = "W",
+    prototype_name = "砖石公路-L型",
+    x = 192,
+    y = 124
+  }, {
+    dir = "W",
+    prototype_name = "砖石公路-T型",
+    x = 182,
+    y = 176
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-T型",
+    x = 192,
+    y = 168
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-T型",
+    x = 192,
+    y = 176
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 74,
+    y = 154
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 136,
+    y = 152
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-T型",
+    x = 122,
+    y = 152
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 120,
+    y = 152
+  }, {
+    dir = "W",
+    prototype_name = "砖石公路-T型",
+    x = 118,
+    y = 152
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 140,
+    y = 128
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 140,
+    y = 136
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 140,
+    y = 140
+  }, {
+    dir = "W",
+    prototype_name = "砖石公路-T型",
+    x = 140,
+    y = 144
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 140,
+    y = 148
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 130,
+    y = 162
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 132,
+    y = 164
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 132,
+    y = 168
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 192,
+    y = 116
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 186,
+    y = 124
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-L型",
+    x = 76,
+    y = 156
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-L型",
+    x = 178,
+    y = 158
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 178,
+    y = 124
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 176,
+    y = 124
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 174,
+    y = 124
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-T型",
+    x = 170,
+    y = 124
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-T型",
+    x = 168,
+    y = 124
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 152,
+    y = 124
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-T型",
+    x = 140,
+    y = 124
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 138,
+    y = 124
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 136,
+    y = 124
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 134,
+    y = 124
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 132,
+    y = 124
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 130,
+    y = 124
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 128,
+    y = 124
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 126,
+    y = 124
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 124,
+    y = 124
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 122,
+    y = 124
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 120,
+    y = 124
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 118,
+    y = 124
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 116,
+    y = 124
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-L型",
+    x = 114,
+    y = 124
+  }, {
+    dir = "W",
+    prototype_name = "砖石公路-L型",
+    x = 140,
+    y = 152
+  }, {
+    dir = "W",
+    prototype_name = "砖石公路-T型",
+    x = 140,
+    y = 132
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-T型",
+    x = 192,
+    y = 164
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 192,
+    y = 172
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-T型",
+    x = 168,
+    y = 132
+  }, {
+    dir = "W",
+    prototype_name = "砖石公路-T型",
+    x = 132,
+    y = 172
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-T型",
+    x = 176,
+    y = 132
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 192,
+    y = 160
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-U型",
+    x = 66,
+    y = 90
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 66,
+    y = 94
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 66,
+    y = 98
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 66,
+    y = 102
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 66,
+    y = 106
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 66,
+    y = 110
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 66,
+    y = 114
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 66,
+    y = 118
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 66,
+    y = 122
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 66,
+    y = 124
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 74,
+    y = 126
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-T型",
+    x = 74,
+    y = 138
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 74,
+    y = 142
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 74,
+    y = 146
+  }, {
+    dir = "W",
+    prototype_name = "砖石公路-T型",
+    x = 74,
+    y = 150
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 76,
+    y = 150
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 78,
+    y = 150
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 80,
+    y = 150
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 82,
+    y = 150
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 84,
+    y = 150
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 86,
+    y = 150
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-T型",
+    x = 88,
+    y = 150
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-T型",
+    x = 90,
+    y = 150
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-T型",
+    x = 92,
+    y = 150
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-T型",
+    x = 94,
+    y = 150
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-T型",
+    x = 96,
+    y = 150
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-T型",
+    x = 98,
+    y = 150
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-T型",
+    x = 100,
+    y = 150
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-T型",
+    x = 102,
+    y = 150
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-T型",
+    x = 104,
+    y = 150
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-T型",
+    x = 106,
+    y = 150
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-T型",
+    x = 108,
+    y = 150
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-T型",
+    x = 110,
+    y = 150
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-T型",
+    x = 112,
+    y = 150
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-T型",
+    x = 114,
+    y = 150
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 118,
+    y = 154
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 118,
+    y = 158
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-L型",
+    x = 118,
+    y = 162
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 140,
+    y = 126
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 140,
+    y = 130
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 140,
+    y = 134
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 132,
+    y = 154
+  }, {
+    dir = "W",
+    prototype_name = "砖石公路-T型",
+    x = 132,
+    y = 158
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-T型",
+    x = 132,
+    y = 162
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 132,
+    y = 166
+  }, {
+    dir = "W",
+    prototype_name = "砖石公路-T型",
+    x = 132,
+    y = 170
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-U型",
+    x = 132,
+    y = 174
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 142,
+    y = 158
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 144,
+    y = 158
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 146,
+    y = 158
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 148,
+    y = 158
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 150,
+    y = 158
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 152,
+    y = 158
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 154,
+    y = 158
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 156,
+    y = 158
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 158,
+    y = 158
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 160,
+    y = 158
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 162,
+    y = 158
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 164,
+    y = 158
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 168,
+    y = 158
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 192,
+    y = 114
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 172,
+    y = 158
+  }, {
+    dir = "W",
+    prototype_name = "砖石公路-T型",
+    x = 182,
+    y = 158
+  }, {
+    dir = "W",
+    prototype_name = "砖石公路-T型",
+    x = 192,
+    y = 158
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 194,
+    y = 158
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 196,
+    y = 158
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 198,
+    y = 158
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 200,
+    y = 158
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 202,
+    y = 158
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 204,
+    y = 158
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-T型",
+    x = 206,
+    y = 158
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 192,
+    y = 174
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-T型",
+    x = 192,
+    y = 170
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 192,
+    y = 166
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-T型",
+    x = 192,
+    y = 162
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 176,
+    y = 158
+  }, {
+    dir = "W",
+    prototype_name = "砖石公路-T型",
+    x = 192,
+    y = 122
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 158,
+    y = 132
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-L型",
+    x = 76,
+    y = 160
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 78,
+    y = 160
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 80,
+    y = 160
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-T型",
+    x = 154,
+    y = 124
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-T型",
+    x = 156,
+    y = 124
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 158,
+    y = 124
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 160,
+    y = 124
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 164,
+    y = 124
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-T型",
+    x = 166,
+    y = 124
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-T型",
+    x = 128,
+    y = 152
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-T型",
+    x = 132,
+    y = 152
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-T型",
+    x = 118,
+    y = 160
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 138,
+    y = 152
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 116,
+    y = 160
+  }, {
+    dir = "W",
+    prototype_name = "砖石公路-T型",
+    x = 192,
+    y = 120
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 140,
+    y = 158
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 114,
+    y = 160
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 82,
+    y = 160
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 126,
+    y = 152
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-T型",
+    x = 124,
+    y = 152
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 134,
+    y = 152
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-T型",
+    x = 130,
+    y = 152
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 74,
+    y = 144
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 74,
+    y = 148
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 74,
+    y = 140
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 170,
+    y = 158
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 166,
+    y = 158
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-T型",
+    x = 178,
+    y = 132
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 132,
+    y = 160
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 128,
+    y = 162
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 144,
+    y = 132
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 74,
+    y = 152
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 76,
+    y = 158
+  }, {
+    dir = "W",
+    prototype_name = "砖石公路-T型",
+    x = 182,
+    y = 134
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-T型",
+    x = 184,
+    y = 134
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 192,
+    y = 118
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 134,
+    y = 158
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 136,
+    y = 158
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 138,
+    y = 158
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-T型",
+    x = 140,
+    y = 138
+  }, {
+    dir = "W",
+    prototype_name = "砖石公路-T型",
+    x = 140,
+    y = 142
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 140,
+    y = 150
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 140,
+    y = 146
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 122,
+    y = 162
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-T型",
+    x = 124,
+    y = 162
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-T型",
+    x = 126,
+    y = 162
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 120,
+    y = 162
+  }, {
+    dir = "W",
+    prototype_name = "砖石公路-U型",
+    x = 188,
+    y = 134
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-T型",
+    x = 186,
+    y = 134
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 174,
+    y = 158
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-T型",
+    x = 208,
+    y = 158
+  }, {
+    dir = "W",
+    prototype_name = "砖石公路-U型",
+    x = 210,
+    y = 158
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-T型",
+    x = 182,
+    y = 164
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-T型",
+    x = 182,
+    y = 166
+  }, {
+    dir = "W",
+    prototype_name = "砖石公路-T型",
+    x = 182,
+    y = 168
+  }, {
+    dir = "W",
+    prototype_name = "砖石公路-T型",
+    x = 182,
+    y = 170
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 182,
+    y = 172
+  }, {
+    dir = "W",
+    prototype_name = "砖石公路-T型",
+    x = 182,
+    y = 174
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-T型",
+    x = 182,
+    y = 160
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 182,
+    y = 162
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 148,
+    y = 124
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-T型",
+    x = 142,
+    y = 124
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 150,
+    y = 124
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-T型",
+    x = 144,
+    y = 124
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 146,
+    y = 124
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 108,
+    y = 126
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 78,
+    y = 126
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 110,
+    y = 126
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 80,
+    y = 126
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 112,
+    y = 126
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 82,
+    y = 126
+  }, {
+    dir = "W",
+    prototype_name = "砖石公路-L型",
+    x = 114,
+    y = 126
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 84,
+    y = 126
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 86,
+    y = 126
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 88,
+    y = 126
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 90,
+    y = 126
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 92,
+    y = 126
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-T型",
+    x = 94,
+    y = 126
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-T型",
+    x = 96,
+    y = 126
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-T型",
+    x = 98,
+    y = 126
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 100,
+    y = 126
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-T型",
+    x = 102,
+    y = 126
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-T型",
+    x = 104,
+    y = 126
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-T型",
+    x = 106,
+    y = 126
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 76,
+    y = 126
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-T型",
+    x = 192,
+    y = 154
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-T型",
+    x = 192,
+    y = 156
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 182,
+    y = 154
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 182,
+    y = 140
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 182,
+    y = 144
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 182,
+    y = 148
+  }, {
+    dir = "W",
+    prototype_name = "砖石公路-T型",
+    x = 182,
+    y = 152
+  }, {
+    dir = "W",
+    prototype_name = "砖石公路-T型",
+    x = 182,
+    y = 156
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 182,
+    y = 126
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 182,
+    y = 130
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 182,
+    y = 138
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 182,
+    y = 142
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 182,
+    y = 146
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 182,
+    y = 150
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 182,
+    y = 128
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-T型",
+    x = 182,
+    y = 132
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 182,
+    y = 136
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-T型",
+    x = 180,
+    y = 132
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 182,
+    y = 178
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-L型",
+    x = 182,
+    y = 180
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 190,
+    y = 180
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 184,
+    y = 180
+  }, {
+    dir = "W",
+    prototype_name = "砖石公路-L型",
+    x = 192,
+    y = 180
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 186,
+    y = 180
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 188,
+    y = 180
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-T型",
+    x = 192,
+    y = 178
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-L型",
+    x = 192,
+    y = 152
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 190,
+    y = 152
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 184,
+    y = 152
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 186,
+    y = 152
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 188,
+    y = 152
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 70,
+    y = 126
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 72,
+    y = 126
+  }, {
+    dir = "W",
+    prototype_name = "砖石公路-T型",
+    x = 66,
+    y = 126
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 68,
+    y = 126
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-U型",
+    x = 166,
+    y = 112
+  }, {
+    dir = "W",
+    prototype_name = "砖石公路-T型",
+    x = 166,
+    y = 116
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 166,
+    y = 118
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 166,
+    y = 120
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 166,
+    y = 122
+  }, {
+    dir = "W",
+    prototype_name = "砖石公路-T型",
+    x = 166,
+    y = 114
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 78,
+    y = 138
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 80,
+    y = 138
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 82,
+    y = 138
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 84,
+    y = 138
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 86,
+    y = 138
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-T型",
+    x = 88,
+    y = 138
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-T型",
+    x = 90,
+    y = 138
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 92,
+    y = 138
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 94,
+    y = 138
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-T型",
+    x = 96,
+    y = 138
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-T型",
+    x = 98,
+    y = 138
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 100,
+    y = 138
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 102,
+    y = 138
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-X型",
+    x = 104,
+    y = 138
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-X型",
+    x = 106,
+    y = 138
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 108,
+    y = 138
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 110,
+    y = 138
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-T型",
+    x = 112,
+    y = 138
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-T型",
+    x = 114,
+    y = 138
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 116,
+    y = 138
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 118,
+    y = 138
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 120,
+    y = 138
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 122,
+    y = 138
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 124,
+    y = 138
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 126,
+    y = 138
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 128,
+    y = 138
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 130,
+    y = 138
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 132,
+    y = 138
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 134,
+    y = 138
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 136,
+    y = 138
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 138,
+    y = 138
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 76,
+    y = 138
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-L型",
+    x = 178,
+    y = 160
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 180,
+    y = 160
+  }, {
+    dir = "W",
+    prototype_name = "砖石公路-T型",
+    x = 94,
+    y = 120
+  }, {
+    dir = "W",
+    prototype_name = "砖石公路-T型",
+    x = 94,
+    y = 122
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 94,
+    y = 124
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-L型",
+    x = 94,
+    y = 118
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 106,
+    y = 124
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-L型",
+    x = 106,
+    y = 118
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-T型",
+    x = 106,
+    y = 120
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-T型",
+    x = 106,
+    y = 122
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 102,
+    y = 118
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 96,
+    y = 118
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 104,
+    y = 118
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 98,
+    y = 118
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 100,
+    y = 118
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-L型",
+    x = 118,
+    y = 150
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 116,
+    y = 150
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 66,
+    y = 134
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 66,
+    y = 136
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-L型",
+    x = 66,
+    y = 138
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 66,
+    y = 128
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 66,
+    y = 130
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 66,
+    y = 132
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 68,
+    y = 138
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 72,
+    y = 138
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 70,
+    y = 138
+  } }
 local mineral = {
   ["102,62"] = "铁矿石",
   ["115,133"] = "碎石",

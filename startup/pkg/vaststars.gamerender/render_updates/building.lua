@@ -14,6 +14,7 @@ local building_base_cfg = datalist.parse(fs.open(fs.path("/pkg/vaststars.resourc
 local building_sys = ecs.system "building_system"
 local gameplay_core = require "gameplay.core"
 local ibuilding = ecs.interface "ibuilding"
+local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 
 local DIRECTION <const> = {
     N = 0,
@@ -134,18 +135,14 @@ function ibuilding.set(x, y, prototype_name, direction)
         gameplay_core.get_world().ecs:remove(building.eid)
         building_cache[coord] = nil
     end
-    local e = {
-        building = {
-            x = x,
-            y = y,
-            prototype = iprototype.queryByName(prototype_name).id,
-            direction = iprototype.dir_tonumber(direction),
-        },
-        road = true,
-    }
-    gameplay_core.get_world().ecs:new(e)
+    local eid = igameplay.create_entity({
+        x = x,
+        y = y,
+        prototype_name = prototype_name,
+        dir = direction,
+    })
     building_cache[iprototype.packcoord(x, y)] = {
-        eid = e.eid,
+        eid = eid,
         x = x,
         y = y,
         prototype = prototype_name,

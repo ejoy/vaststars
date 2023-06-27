@@ -28,13 +28,11 @@ local COLOR_GREEN = math3d.constant("v4", {0.3, 1, 0, 1})
 local COLOR_RED = math3d.constant("v4", {1, 0.03, 0, 1})
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 local ichest = require "gameplay.interface.chest"
-local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local terrain = ecs.require "terrain"
 local gameplay_core = require "gameplay.core"
 local ROAD_TILE_SCALE_WIDTH <const> = 2
 local ROAD_TILE_SCALE_HEIGHT <const> = 2
 local SPRITE_COLOR = import_package "vaststars.prototype".load("sprite_color")
-local DIRTY_ROADNET <const> = require("gameplay.interface.constant").DIRTY_ROADNET
 local ibuilding = ecs.import.interface "vaststars.gamerender|ibuilding"
 
 -- TODO: duplicate from roadbuilder.lua
@@ -603,7 +601,6 @@ local function complete(self, object_id, datamodel)
     icanvas.remove_item(icanvas.types().ROAD_ENTRANCE_MARKER, 0)
     ieditor:revert_changes({"TEMPORARY"})
 
-    igameplay.dirty(DIRTY_ROADNET)
     self.super.complete(self, object_id)
 
     local object = assert(objects:get(object_id))

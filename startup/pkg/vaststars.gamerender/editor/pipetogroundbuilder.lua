@@ -22,8 +22,6 @@ local coord_system = ecs.require "terrain"
 local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_box"
 local global = require "global"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
-local DIRTY_FLUIDFLOW <const> = require("gameplay.interface.constant").DIRTY_FLUIDFLOW
-
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
 local STATE_NONE  <const> = 0
 local STATE_START <const> = 1
@@ -743,7 +741,6 @@ local ientity = require "gameplay.interface.entity"
 local gameplay_core = require "gameplay.core"
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local function __complete(self)
-    local needbuild = false
     for object_id, object in objects:all("CONFIRM") do -- TODO: duplicate code, see also pipe_function_pop.lua
         -- TODO: special case for assembling machine
         local recipe
@@ -768,7 +765,6 @@ local function __complete(self)
                 end
             end
         end
-        needbuild = true
     end
     objects:commit("CONFIRM", "CONSTRUCTED")
     objects:clear("CONFIRM")
@@ -787,10 +783,6 @@ local function __complete(self)
 
         print("remove", obj.id, obj.x, obj.y)
         igameplay.remove_entity(obj.gameplay_eid)
-    end
-
-    if needbuild then
-        igameplay.dirty(DIRTY_FLUIDFLOW)
     end
 end
 
