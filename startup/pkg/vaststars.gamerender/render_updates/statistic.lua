@@ -7,7 +7,7 @@ local timer = ecs.import.interface "ant.timer|itimer"
 local gameplay_core = require "gameplay.core"
 local global = require "global"
 local entity_create = world:sub {"gameplay", "create_entity"}
-local entity_remove = world:sub {"gameplay", "remove_entity"}
+local entity_destroy = world:sub {"gameplay", "destroy_entity"}
 local iprototype = require "gameplay.interface.prototype"
 local statistic_sys = ecs.system "statistic_system"
 
@@ -67,7 +67,7 @@ local update = interval_call(500, function()
     for _, _, eid, cfg in entity_create:unpack() do
         statistic.pending_eid[eid] = cfg
     end
-    for _, _, eid in entity_remove:unpack() do
+    for _, _, eid in entity_destroy:unpack() do
         if statistic.power[eid] then
             local key = statistic.power[eid].cfg.name
             statistic.power_group[key].count = statistic.power_group[key].count -1

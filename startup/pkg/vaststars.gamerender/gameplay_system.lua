@@ -10,6 +10,8 @@ local terrain = ecs.require "terrain"
 local objects = require "objects"
 local EDITOR_CACHE_NAMES = {"CONFIRM", "CONSTRUCTED"}
 local ifluid = require "gameplay.interface.fluid"
+local gameplay = import_package "vaststars.gameplay"
+local igameplay_building = gameplay.interface "building"
 
 local funcs = {}
 funcs["chimney"] = function(object, typeobject)
@@ -121,9 +123,9 @@ function igameplay.create_entity(init)
     return eid
 end
 
-function igameplay.remove_entity(eid)
-    world:pub {"gameplay", "remove_entity", eid}
-    return gameplay_core.remove_entity(eid)
+function igameplay.destroy_entity(eid)
+    world:pub {"gameplay", "destroy_entity", eid}
+    return igameplay_building.destroy(gameplay_core.get_entity(eid))
 end
 
 function igameplay.update_chimney_recipe(object) -- TODO: better way to do this?

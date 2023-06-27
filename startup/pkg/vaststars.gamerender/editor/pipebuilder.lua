@@ -795,7 +795,7 @@ local function confirm(self, datamodel)
                 object.gameplay_eid = igameplay.create_entity(object)
             else
                 if old.prototype_name ~= object.prototype_name then
-                    igameplay.remove_entity(object.gameplay_eid)
+                    igameplay.destroy_entity(object.gameplay_eid)
                     object.gameplay_eid = igameplay.create_entity(object)
                 elseif old.dir ~= object.dir then
                     igameplay_building.rotate(gameplay_core.get_world(), gameplay_core.get_entity(object.gameplay_eid), object.dir)
@@ -823,7 +823,7 @@ local function confirm(self, datamodel)
         end
 
         print("remove", obj.id, obj.x, obj.y)
-        igameplay.remove_entity(obj.gameplay_eid)
+        igameplay.destroy_entity(obj.gameplay_eid)
     end
 end
 

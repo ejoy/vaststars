@@ -86,7 +86,7 @@ local function complete(self, object_id)
         object.recipe = recipe
     else
         if old.prototype_name ~= object.prototype_name then
-            igameplay.remove_entity(object.gameplay_eid)
+            igameplay.destroy_entity(object.gameplay_eid)
             object.gameplay_eid = igameplay.create_entity(object)
         elseif old.dir ~= object.dir then
             igameplay_building.rotate(gameplay_core.get_world(), gameplay_core.get_entity(object.gameplay_eid), object.dir)

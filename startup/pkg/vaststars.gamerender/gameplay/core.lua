@@ -35,11 +35,6 @@ function m.set_multiple(n)
     m.multiple = n
 end
 
-function m.remove_entity(eid)
-    print("remove_entity", eid)
-    world.ecs:remove(eid)
-end
-
 function m.is_researched(...)
     return world:is_researched(...)
 end
