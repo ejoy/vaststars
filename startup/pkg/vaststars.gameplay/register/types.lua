@@ -100,7 +100,7 @@ register_unit("size", "integer", function(s)
 	if type(s) ~= "string" then
 		return nil, "Need size *x*"
 	end
-	local w, h = s:match "(%d)x(%d)"
+	local w, h = s:match "(%d+)x(%d+)"
 	if not w then
 		return nil, "Need size *x*"
 	end
@@ -116,7 +116,7 @@ register_unit("position", "integer", function(s)
 	if type(s) ~= "string" then
 		return nil, "Need position *,*"
 	end
-	local x, y = s:match "(%d),(%d)"
+	local x, y = s:match "(%d+),(%d+)"
 	if not x then
 		return nil, "Need size *,*"
 	end
