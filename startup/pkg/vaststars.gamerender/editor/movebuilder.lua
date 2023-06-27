@@ -34,6 +34,7 @@ local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_bo
 local create_selected_boxes = ecs.require "selected_boxes"
 local vsobject_manager = ecs.require "vsobject_manager"
 local DIRTY_BUILDING <const> = require("gameplay.interface.constant").DIRTY_BUILDING
+local gameplay = import_package "vaststars.gameplay"
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -478,10 +479,11 @@ local function confirm(self, datamodel)
     ---
     local object = assert(objects:get(self.move_object_id))
     local e = gameplay_core.get_entity(object.gameplay_eid)
-    e.building.x = self.pickup_object.x
-    e.building.y = self.pickup_object.y
-    ientity:set_direction(gameplay_core.get_world(), e, self.pickup_object.dir)
     e.building_changed = true
+    local gameworld = gameplay_core.get_world()
+    local building = gameplay.interface "building"
+    building.move(gameworld, e, self.pickup_object.x, self.pickup_object.y)
+    building.rotate(gameworld, e, self.pickup_object.dir)
 
     iobject.coord(object, self.pickup_object.x, self.pickup_object.y, coord_system)
     object.dir = self.pickup_object.dir

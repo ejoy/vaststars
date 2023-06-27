@@ -34,6 +34,7 @@ local ipower_line = ecs.require "power_line"
 local iupdate = ecs.import.interface "vaststars.gamerender|iupdate"
 local ipick_object = ecs.import.interface "vaststars.gamerender|ipick_object"
 local ilorry = ecs.import.interface "vaststars.gamerender|ilorry"
+local gameplay = import_package "vaststars.gameplay"
 
 local rotate_mb = mailbox:sub {"rotate"}
 local build_mb = mailbox:sub {"build"}
@@ -566,7 +567,9 @@ function M:stage_camera_usage(datamodel)
             end
         end
 
-        igameplay.remove_entity(object.gameplay_eid)
+        local gameworld = gameplay_core.get_world()
+        local building = gameplay.interface "building"
+        building.destroy(gameworld, gameworld.entity[object.gameplay_eid])
         igameplay.dirty(DIRTY_BUILDING)
 
         if typeobject.power_network_link or typeobject.power_supply_distance then
