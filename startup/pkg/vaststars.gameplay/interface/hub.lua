@@ -1,25 +1,7 @@
-local prototype = require "prototype"
-local building = require "interface.building"
+local iChest = require "interface.chest"
 
 local function set_item(world, e, item)
-    local hub = e.hub
-    world:container_destroy(hub)
-
-    local typeobject = prototype.queryByName(item)
-    assert(typeobject and typeobject.pile, "Invalid item: " .. item)
-
-    local w, h, d = typeobject.pile:match("(%d+)x(%d+)x(%d+)")
-    assert(w and h and d, "Invalid pile: " .. typeobject.pile)
-    local capacity = w * h * d
-
-    local c = {}
-    c[#c+1] = {
-        type = "blue",
-        item = typeobject.id,
-        limit = capacity,
-    }
-    hub.chest = world:container_create(c)
-    building.dirty(world, "hub")
+    iChest.hub_set(world, e, item)
 end
 
 return {

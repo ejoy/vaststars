@@ -118,14 +118,30 @@ register_unit("position", "integer", function(s)
 	end
 	local x, y = s:match "(%d+),(%d+)"
 	if not x then
-		return nil, "Need size *,*"
+		return nil, "Need position *,*"
 	end
 	x = x + 0
 	y = y + 0
 	assert(x >= 0 and x < 256)
 	assert(y >= 0 and y < 256)
-	local v = y << 8 | x
-	return v
+	return y << 8 | x
+end)
+
+register_unit("volume", "integer", function(s)
+	if type(s) ~= "string" then
+		return nil, "Need volume *x*x*"
+	end
+	local w, h, d = s:match "(%d+)x(%d+)x(%d+)"
+	if not w then
+		return nil, "Need volume *,*"
+	end
+	w = w + 0
+	h = h + 0
+	d = d + 0
+	assert(w >= 0 and w < 256)
+	assert(h >= 0 and h < 256)
+	assert(d >= 0 and d < 256)
+	return (w*h*d) | w << 24 | h << 32 | d << 40
 end)
 
 local _ <const> = 0

@@ -88,7 +88,7 @@ function M:stage_ui_update(datamodel, object_id, interface)
         local item = __get_items(datamodel.category_index)[item_index]
         local e = gameplay_core.get_entity(assert(objects:get(object_id).gameplay_eid))
         local gameplay_world = gameplay_core.get_world()
-        interface.set_first_item(gameplay_world, e, item.name)
+        interface.set_first_item(gameplay_world, e, item.id)
         igameplay.dirty(DIRTY_CHEST)
 
         itask.update_progress("set_item", item.name)

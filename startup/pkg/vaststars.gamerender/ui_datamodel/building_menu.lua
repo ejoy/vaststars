@@ -284,8 +284,8 @@ function M:create(object_id)
     return datamodel
 end
 
-local function __set_hub_first_item(gameplay_world, e, prototype_name)
-    ihub.set_item(gameplay_world, e, prototype_name)
+local function __set_hub_first_item(gameplay_world, e, item)
+    ihub.set_item(gameplay_world, e, item)
 end
 
 local function __get_hub_first_item(gameplay_world, e)
@@ -295,12 +295,12 @@ local function __get_hub_first_item(gameplay_world, e)
     end
 end
 
-local function __set_station_first_item(gameplay_world, e, prototype_name)
+local function __set_station_first_item(gameplay_world, e, item)
     local typeobject = iprototype.queryById(e.building.prototype)
     local chest_component = iprototype.get_chest_component(typeobject.name)
     gameplay_world:container_destroy(e[chest_component])
 
-    local typeobject_item = iprototype.queryByName(prototype_name)
+    local typeobject_item = iprototype.queryById(item)
     local c = {}
     c[#c+1] = {
         type = typeobject.chest_type,

@@ -1,9 +1,6 @@
 local type = require "register.type"
 local prototype = require "prototype"
 
-type "item"
-    .stack "integer"
-
 type "fluid"
 
 type "pipe"

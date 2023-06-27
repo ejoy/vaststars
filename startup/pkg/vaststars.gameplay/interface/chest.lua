@@ -103,32 +103,30 @@ function m.assembling_set(world, e, recipe, option, maxslot)
     assembling_set(world, e, recipe, option, maxslot)
 end
 
-local function station_dirty(world, e)
+local function chest_dirty(world, e)
     iBuilding.dirty(world, "hub")
     if e.station_consumer then
         iBuilding.dirty(world, "station_consumer")
     end
 end
 
-local function station_reset(world, e)
-    local chest = e.chest
+local function chest_reset(world, e, chest)
     if chest.chest ~= InvalidChest then
         world:container_destroy(chest)
         chest.chest = InvalidChest
-        station_dirty(world, e)
+        chest_dirty(world, e)
     end
 end
 
-local function station_set(world, e, item, limit)
-    local chest = e.chest
+local function chest_set(world, e, chest, item, type, limit)
     if chest.chest == InvalidChest then
         chest.chest = world:container_create {{
-            type = e.station_producer and "blue" or "red",
             item = item,
-            amount = 0,
+            type = type,
             limit = limit,
+            amount = 0,
         }}
-        station_dirty(world, e)
+        chest_dirty(world, e)
         return
     end
     local slot = world:container_get(chest, 1)
@@ -141,19 +139,28 @@ local function station_set(world, e, item, limit)
         return
     end
     slot.item = item
-    slot.amount = 0
     slot.limit = limit
+    slot.amount = 0
     world:container_set(chest, 1, slot)
-    station_dirty(world, e)
+    chest_dirty(world, e)
 end
 
 function m.station_set(world, e, item)
     if item == nil then
-        station_reset(world, e)
+        chest_reset(world, e, e.chest)
         return
     end
     local limit = query(item).stack
-    station_set(world, e, item, limit)
+    chest_set(world, e, e.chest, item, e.station_producer and "blue" or "red", limit)
+end
+
+function m.hub_set(world, e, item)
+    if item == nil then
+        chest_reset(world, e, e.hub)
+        return
+    end
+    local limit = query(item).pile & 0xffffff
+    chest_set(world, e, e.hub, item, "blue", limit)
 end
 
 return m
