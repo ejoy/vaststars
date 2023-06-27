@@ -37,6 +37,78 @@ prototype "蒸汽发电机I" {
     }
 }
 
+prototype "蒸汽发电机II" {
+    model = "prefabs/turbine-1.prefab",
+    icon = "textures/building_pic/small_pic_turbine.texture",
+    background = "textures/build_background/pic_turbine.texture",
+    construct_detector = {"exclusive"},
+    type = {"building", "generator", "fluidboxes","assembling","auto_set_recipe"},
+    area = "3x5",
+    rotate_on_build = true,
+    io_shelf = false,
+    assembling_icon = false,
+    building_menu = false,
+    power = "2.4MW",
+    priority = "secondary",
+    -- recipe = "蒸汽发电",
+    craft_category = {"流体发电"},
+    maxslot = "8",
+    power_supply_area = "3x5",
+    power_supply_distance = 0,
+    camera_distance = 95,
+    fluidboxes = {
+        input = {
+            {
+                capacity = 100,
+                height = 100,
+                base_level = -100,
+                connections = {
+                    {type="input-output", position={1,0,"N"}},
+                    {type="input-output", position={1,4,"S"}},
+                }
+            },
+        },
+        output = {
+        },
+    }
+}
+
+prototype "蒸汽发电机III" {
+    model = "prefabs/turbine-1.prefab",
+    icon = "textures/building_pic/small_pic_turbine.texture",
+    background = "textures/build_background/pic_turbine.texture",
+    construct_detector = {"exclusive"},
+    type = {"building", "generator", "fluidboxes","assembling","auto_set_recipe"},
+    area = "3x5",
+    rotate_on_build = true,
+    io_shelf = false,
+    assembling_icon = false,
+    building_menu = false,
+    power = "6MW",
+    priority = "secondary",
+    -- recipe = "蒸汽发电",
+    craft_category = {"流体发电"},
+    maxslot = "8",
+    power_supply_area = "3x5",
+    power_supply_distance = 0,
+    camera_distance = 95,
+    fluidboxes = {
+        input = {
+            {
+                capacity = 100,
+                height = 100,
+                base_level = -100,
+                connections = {
+                    {type="input-output", position={1,0,"N"}},
+                    {type="input-output", position={1,4,"S"}},
+                }
+            },
+        },
+        output = {
+        },
+    }
+}
+
 prototype "风力发电机I" {
     model = "prefabs/wind-turbine-1.prefab",
     icon = "textures/building_pic/small_pic_wind_turbine.texture",
@@ -66,6 +138,34 @@ prototype "太阳能板I" {
     camera_distance = 70,
 }
 
+prototype "太阳能板II" {
+    model = "prefabs/solar-panel-1.prefab",
+    icon = "textures/building_pic/small_pic_solar_panel.texture",
+    construct_detector = {"exclusive"},
+    type = {"building","generator","solar_panel"},
+    area = "3x3",
+    power = "450kW",
+    priority = "primary",
+    building_menu = false,
+    power_supply_area = "3x3",
+    power_supply_distance = 0,
+    camera_distance = 70,
+}
+
+prototype "太阳能板III" {
+    model = "prefabs/solar-panel-1.prefab",
+    icon = "textures/building_pic/small_pic_solar_panel.texture",
+    construct_detector = {"exclusive"},
+    type = {"building","generator","solar_panel"},
+    area = "3x3",
+    power = "600kW",
+    priority = "primary",
+    building_menu = false,
+    power_supply_area = "3x3",
+    power_supply_distance = 0,
+    camera_distance = 70,
+}
+
 prototype "蓄电池I" {
     model = "prefabs/accumulator-1.prefab",
     icon = "textures/building_pic/small_pic_accumulator.texture",
@@ -74,6 +174,38 @@ prototype "蓄电池I" {
 	power = "400kW",
 	charge_power = "100kW",
 	capacitance = "10MJ",
+    area = "2x2",
+    priority = "secondary",
+    building_menu = false,
+    power_supply_area = "2x2",
+    power_supply_distance = 0,
+    camera_distance = 55,
+}
+
+prototype "蓄电池II" {
+    model = "prefabs/accumulator-1.prefab",
+    icon = "textures/building_pic/small_pic_accumulator.texture",
+    construct_detector = {"exclusive"},
+    type = {"building", "accumulator"},
+	power = "600kW",
+	charge_power = "200kW",
+	capacitance = "30MJ",
+    area = "2x2",
+    priority = "secondary",
+    building_menu = false,
+    power_supply_area = "2x2",
+    power_supply_distance = 0,
+    camera_distance = 55,
+}
+
+prototype "蓄电池III" {
+    model = "prefabs/accumulator-1.prefab",
+    icon = "textures/building_pic/small_pic_accumulator.texture",
+    construct_detector = {"exclusive"},
+    type = {"building", "accumulator"},
+	power = "800kW",
+	charge_power = "250kW",
+	capacitance = "60MJ",
     area = "2x2",
     priority = "secondary",
     building_menu = false,

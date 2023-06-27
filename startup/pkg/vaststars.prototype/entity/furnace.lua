@@ -8,8 +8,8 @@ prototype "熔炼炉I" {
     construct_detector = {"exclusive"},
     type = {"building", "assembling", "consumer","fluidboxes"},
     area = "3x3",
-    speed = "25%",
-    power = "75kW",
+    speed = "100%",
+    power = "300kW",
     priority = "secondary",
     allow_set_recipt = true,
     craft_category = {"金属冶炼"},
@@ -46,8 +46,46 @@ prototype "熔炼炉II" {
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling","fluidboxes"},
     area = "3x3",
-    speed = "50%",
-    power = "150kW",
+    speed = "200%",
+    power = "600kW",
+    priority = "secondary",
+    allow_set_recipt = true,
+    craft_category = {"金属冶炼"},
+    camera_distance = 62,
+    fluidboxes = {
+        input = {
+            {
+                capacity = 500,
+                height = 100,
+                base_level = -100,
+                connections = {
+                    {type="input", position={1,0,"N"}},
+                }
+            },
+        },
+        output = {
+            {
+                capacity = 500,
+                height = 100,
+                base_level = 100,
+                connections = {
+                    {type="output", position={1,2,"S"}},
+                }
+            },
+        },
+    },
+    maxslot = "8",
+}
+
+prototype "熔炼炉III" {
+    model = "prefabs/furnace-1.prefab",
+    icon = "textures/building_pic/small_pic_furnace.texture",
+    background = "textures/build_background/pic_furnace.texture",
+    construct_detector = {"exclusive"},
+    type = {"building", "consumer", "assembling","fluidboxes"},
+    area = "3x3",
+    speed = "400%",
+    power = "1MW",
     priority = "secondary",
     allow_set_recipt = true,
     craft_category = {"金属冶炼"},

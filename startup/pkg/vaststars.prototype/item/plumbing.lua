@@ -15,7 +15,7 @@ prototype "气罐I" {
     item_description = "专门贮藏气体的容器",
 }
 
-prototype "地下水挖掘机" {
+prototype "地下水挖掘机I" {
     type = {"item"},
     group = {"化工"},
     stack = 10,

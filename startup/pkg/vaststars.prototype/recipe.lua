@@ -834,7 +834,7 @@ prototype "压力泵1" {
     description = "管道和电机制造压力泵",
 }
 
-prototype "地下水挖掘机" {
+prototype "地下水挖掘机1" {
     type = { "recipe" },
     category = "生产中型制造",
     recipe_group =  "化工",
@@ -845,7 +845,7 @@ prototype "地下水挖掘机" {
         {"压力泵I", 1},
     },
     results = {
-        {"地下水挖掘机", 1},
+        {"地下水挖掘机I", 1},
     },
     time = "5s",
     description = "排水设施和压力泵制造抽水泵",

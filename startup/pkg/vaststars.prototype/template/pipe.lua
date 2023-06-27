@@ -24,7 +24,7 @@ local entities = { {
     y = 122
   }, {
     dir = "W",
-    items = { { "化工厂I", 3 }, { "地下水挖掘机", 4 }, { "电解厂I", 1 }, { "空气过滤器I", 4 } },
+    items = { { "化工厂I", 3 }, { "地下水挖掘机I", 4 }, { "电解厂I", 1 }, { "空气过滤器I", 4 } },
     prototype_name = "机头残骸",
     x = 125,
     y = 108
@@ -74,7 +74,7 @@ local entities = { {
       input = {},
       output = { "地下卤水" }
     },
-    prototype_name = "地下水挖掘机",
+    prototype_name = "地下水挖掘机I",
     recipe = "离岸抽水",
     x = 119,
     y = 126
@@ -84,7 +84,7 @@ local entities = { {
       input = {},
       output = { "地下卤水" }
     },
-    prototype_name = "地下水挖掘机",
+    prototype_name = "地下水挖掘机I",
     recipe = "离岸抽水",
     x = 119,
     y = 130
@@ -94,7 +94,7 @@ local entities = { {
       input = {},
       output = { "地下卤水" }
     },
-    prototype_name = "地下水挖掘机",
+    prototype_name = "地下水挖掘机I",
     recipe = "离岸抽水",
     x = 119,
     y = 134
@@ -104,7 +104,7 @@ local entities = { {
       input = {},
       output = { "地下卤水" }
     },
-    prototype_name = "地下水挖掘机",
+    prototype_name = "地下水挖掘机I",
     recipe = "离岸抽水",
     x = 119,
     y = 138
@@ -114,7 +114,7 @@ local entities = { {
       input = {},
       output = { "地下卤水" }
     },
-    prototype_name = "地下水挖掘机",
+    prototype_name = "地下水挖掘机I",
     recipe = "离岸抽水",
     x = 119,
     y = 142
@@ -124,7 +124,7 @@ local entities = { {
       input = {},
       output = { "地下卤水" }
     },
-    prototype_name = "地下水挖掘机",
+    prototype_name = "地下水挖掘机I",
     recipe = "离岸抽水",
     x = 119,
     y = 146

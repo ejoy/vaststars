@@ -1755,7 +1755,7 @@ prototype "气候研究" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"气候科技包1","空气过滤器打印","地下水挖掘机打印"},
-    unlock_item = {"气候科技包","空气过滤器I","地下水挖掘机"},
+    unlock_item = {"气候科技包","空气过滤器I","地下水挖掘机I"},
   },
   prerequisites = {"物流学2"},
   ingredients = {
@@ -1840,7 +1840,7 @@ prototype "建造地下水挖掘机" {
   desc = "生产科技包用于科技研究",
   icon = "textures/construct/industry.texture",
   type = { "task" },
-  task = {"stat_production", 0, "地下水挖掘机"},
+  task = {"stat_production", 0, "地下水挖掘机I"},
   prerequisites = {"采水研究"},
   count = 1,
   tips_pic = {
@@ -2299,7 +2299,7 @@ prototype "地下水净化" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    unlock_recipe = {"地下卤水净化","地下水挖掘机","水电站1"},
+    unlock_recipe = {"地下卤水净化","地下水挖掘机1","水电站1"},
   },
   prerequisites = {"蒸馏1"},
   ingredients = {

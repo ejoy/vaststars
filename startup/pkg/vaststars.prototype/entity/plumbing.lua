@@ -23,6 +23,50 @@ prototype "液罐I" {
     }
 }
 
+prototype "液罐II" {
+    model = "prefabs/gas-tank-1.prefab",
+    icon = "textures/building_pic/small_pic_tank.texture",
+    construct_detector = {"exclusive"},
+    storage_tank = true,
+    building_menu = false,
+    type = {"building", "fluidbox"},
+    area = "3x3",
+    camera_distance = 72,
+    fluidbox = {
+        capacity = 30000,
+        height = 100,
+        base_level = 0,
+        connections = {
+            {type="input-output", position={1,0,"N"}},
+            {type="input-output", position={2,1,"E"}},
+            {type="input-output", position={1,2,"S"}},
+            {type="input-output", position={0,1,"W"}},
+        }
+    }
+}
+
+prototype "液罐III" {
+    model = "prefabs/gas-tank-1.prefab",
+    icon = "textures/building_pic/small_pic_tank.texture",
+    construct_detector = {"exclusive"},
+    storage_tank = true,
+    building_menu = false,
+    type = {"building", "fluidbox"},
+    area = "3x3",
+    camera_distance = 72,
+    fluidbox = {
+        capacity = 60000,
+        height = 100,
+        base_level = 0,
+        connections = {
+            {type="input-output", position={1,0,"N"}},
+            {type="input-output", position={2,1,"E"}},
+            {type="input-output", position={1,2,"S"}},
+            {type="input-output", position={0,1,"W"}},
+        }
+    }
+}
+
 prototype "气罐I" {
     model = "prefabs/gas-tank-1.prefab",
     icon = "textures/building_pic/small_pic_tank.texture",
@@ -45,14 +89,47 @@ prototype "气罐I" {
     }
 }
 
-prototype "地下水挖掘机" {
+prototype "地下水挖掘机I" {
     model = "prefabs/mars-pumpjack.prefab",
     icon = "textures/building_pic/small_pic_offshore.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "3x3",
     rotate_on_build = true,
-    power = "6kW",
+    power = "50kW",
+    speed = "100%",
+    assembling_icon = false,
+    priority = "secondary",
+    recipe = "离岸抽水",
+    building_menu = false,
+    io_shelf = false,
+    building_base = false,
+    maxslot = "8",
+    camera_distance = 72,
+    fluidboxes = {
+        input = {},
+        output = {
+            {
+                capacity = 1200,
+                height = 100,
+                base_level = 150,
+                connections = {
+                    {type="output", position={2,1,"E"}},
+                }
+            }
+        }
+    }
+}
+
+prototype "地下水挖掘机II" {
+    model = "prefabs/mars-pumpjack.prefab",
+    icon = "textures/building_pic/small_pic_offshore.texture",
+    construct_detector = {"exclusive"},
+    type = {"building", "consumer", "assembling", "fluidboxes"},
+    area = "3x3",
+    rotate_on_build = true,
+    power = "200kW",
+    speed = "400%",
     assembling_icon = false,
     priority = "secondary",
     recipe = "离岸抽水",

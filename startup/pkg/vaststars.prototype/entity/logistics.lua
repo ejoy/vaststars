@@ -36,7 +36,7 @@ prototype "科研中心I" {
     background = "textures/build_background/pic_lab.texture",
     construct_detector = {"exclusive"},
     area = "3x3",
-    power = "150kW",
+    power = "100kW",
     speed = "100%",
     camera_distance = 75,
     priority = "secondary",
@@ -46,6 +46,43 @@ prototype "科研中心I" {
         "机械科技包",
     },
 }
+
+prototype "科研中心II" {
+    type = {"building", "consumer","laboratory"},
+    model = "prefabs/lab-1.prefab",
+    icon = "textures/building_pic/small_pic_lab.texture",
+    background = "textures/build_background/pic_lab.texture",
+    construct_detector = {"exclusive"},
+    area = "3x3",
+    power = "250kW",
+    speed = "200%",
+    camera_distance = 75,
+    priority = "secondary",
+    inputs = {
+        "地质科技包",
+        "气候科技包",
+        "机械科技包",
+    },
+}
+
+prototype "科研中心III" {
+    type = {"building", "consumer","laboratory"},
+    model = "prefabs/lab-1.prefab",
+    icon = "textures/building_pic/small_pic_lab.texture",
+    background = "textures/build_background/pic_lab.texture",
+    construct_detector = {"exclusive"},
+    area = "3x3",
+    power = "500kW",
+    speed = "400%",
+    camera_distance = 75,
+    priority = "secondary",
+    inputs = {
+        "地质科技包",
+        "气候科技包",
+        "机械科技包",
+    },
+}
+
 
 prototype "砖石公路-I型" {
     construct_detector = {"exclusive"},
