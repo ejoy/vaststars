@@ -28,7 +28,7 @@ local SURFACE_HEIGHT <const> = 0
 local TILE_SIZE <const> = 10
 local WIDTH <const> = 256 -- coordinate value range: [0, WIDTH - 1]
 local HEIGHT <const> = 256
-local GRID_WIDTH <const> = (10 + 5) * 4
+local GRID_WIDTH <const> = (10 + 10) * 4
 local GRID_HEIGHT <const> = 52
 assert(GRID_WIDTH % 2 == 0 and GRID_HEIGHT % 2 == 0)
 local TERRAIN_MAX_GROUP_ID = 10000

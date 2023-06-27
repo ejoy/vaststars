@@ -5,48 +5,77 @@ local w     = world.w
 local MOUNTAIN = import_package "vaststars.prototype".load("mountain")
 local ism = ecs.import.interface "mod.stonemountain|istonemountain"
 
-local function __logic_to_render(x, y, offset, width, height)
-    x, y = x, height - y - 1
-    x, y = x - offset, y - offset
-    return {x, y}
+local UNIT <const> = 10
+local BORDER <const> = 5
+local MAP_WIDTH <const> = 256
+local MAP_HEIGHT <const> = 256
+local WIDTH <const> = MAP_WIDTH + BORDER * 2
+local HEIGHT <const> = MAP_HEIGHT + BORDER * 2
+local OFFSET <const> = WIDTH // 2
+assert(OFFSET == HEIGHT // 2)
+
+local MIN_X <const> = -BORDER + 1
+local MAX_X <const> = MAP_WIDTH + BORDER
+local MIN_Y <const> = -BORDER + 1
+local MAX_Y <const> = MAP_HEIGHT + BORDER
+
+-- local function __coord2idx(x, y)
+--     return (MAX_Y - y) * (MAX_X - MIN_X + 1) + (x - MIN_X + 1)
+-- end
+
+local function __idx2coord(v)
+    local x = (v - 1) % (MAX_X - MIN_X + 1) + MIN_X
+    local y = MAX_Y - math.floor((v - 1) / (MAX_X - MIN_X + 1))
+    return x, y
 end
 
-local function __coords_to_positions(t, offset, width, height)
-    local r = {}
-    for _, v in ipairs(t) do
-        local c = __logic_to_render(v[1], v[2], offset, width, height)
-        table.insert(r, {x = c[1], z = c[2]})
-    end
-    return r
-end
-
-local function __rects_to_positions(t, offset, width, height)
-    local r = {}
-    for _, v in ipairs(t) do
-        local c1 = __logic_to_render(v[1], v[2], offset, width, height)
-        local c2 = __logic_to_render(v[3], v[4], offset, width, height)
-        local w, h = math.abs(c2[1] - c1[1]), math.abs(c2[2] - c1[2])
-        table.insert(r, {x = c1[1], z = c1[2], w = w, h = h})
-    end
-    return r
+local mt = {}
+mt.__index = function (t, k)
+    t[k] = setmetatable({}, mt)
+    return t[k]
 end
 
 local M = {}
+local cache = setmetatable({}, mt)
 
-function M:create(width, height, offset, unit)
-    self._offset = offset
-    self._width = width
-    self._height = height
-    ism.create_sm_entity(MOUNTAIN.density, width, height, offset, unit, MOUNTAIN.scale, __coords_to_positions(MOUNTAIN.mountain_coords, offset, width, height), __rects_to_positions(MOUNTAIN.excluded_rects, offset, width, height))
+function M:create()
+    local idx_string = ism.create_random_sm(MOUNTAIN.density, WIDTH, HEIGHT, OFFSET, UNIT)
+    for i = 1, #idx_string do
+        local c = string.unpack("B", idx_string, i)
+        local x, y = __idx2coord(i)
+        cache[x][y] = c
+    end
+
+    for _, v in ipairs(MOUNTAIN.excluded_rects) do
+        local x1, y1, w, h = v[1], v[2], v[3], v[4]
+        for x = x1, x1 + w - 1 do
+            for y = y1, y1 + h - 1 do
+                cache[x][y] = 0
+            end
+        end
+    end
+
+    for _, v in ipairs(MOUNTAIN.mountain_coords) do
+        local x1, y1, w, h = v[1], v[2], v[3], v[4]
+        for x = x1, x1 + w - 1 do
+            for y = y1, y1 + h - 1 do
+                cache[x][y] = 1
+            end
+        end
+    end
+
+    local t = {}
+    for i = 1, WIDTH * HEIGHT do
+        local x, y = __idx2coord(i)
+        t[i] = cache[x][y]
+    end
+
+    local s = string.pack(("B"):rep(WIDTH * HEIGHT), table.unpack(t))
+    ism.create_sm_entity(s)
 end
 
 function M:get_mountain(x, y)
-    local c = __logic_to_render(x, y, self._offset, self._width, self._height)
-    local r = ism.get_sm_rect_intersect({x = c[1], z = c[2], w = 1, h = 1})
-    if #r == 0 then
-        return
-    end
-    return r[1].idx
+    return (cache[x][y] == 1)
 end
 
 return M
