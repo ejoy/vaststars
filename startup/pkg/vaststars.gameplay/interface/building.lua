@@ -5,11 +5,15 @@ local DirtyRoadnet   <const> = 1 << 2
 local DirtyFluidflow <const> = 1 << 3
 local DirtyHub       <const> = 1 << 4
 local DirtyTech      <const> = 1 << 5
+local DirtyStationProducer <const> = 1 << 6
+local DirtyStationConsumer <const> = 1 << 7
 
 local DIRTY <const> = {
     roadnet = DirtyRoadnet,
     fluidflow = DirtyFluidflow,
     hub = DirtyHub,
+    station_producer = DirtyStationProducer,
+    station_consumer = DirtyStationConsumer,
 }
 
 local DIRECTION <const> = {
@@ -19,7 +23,7 @@ local DIRECTION <const> = {
     W = 3, West  = 3,
 }
 
-local function dirty_entity(world, e)
+local function dirty_changed_entity(world, e)
     if e.road or e.endpoint or e.starting then
         world:dirty(DirtyRoadnet)
     end
@@ -29,6 +33,16 @@ local function dirty_entity(world, e)
     end
     if e.chest or e.hub then
         world:dirty(DirtyHub)
+    end
+end
+
+local function dirty_entity(world, e)
+    dirty_changed_entity(world, e)
+    if e.station_producer then
+        world:dirty(DirtyStationProducer)
+    end
+    if e.station_consumer then
+        world:dirty(DirtyStationConsumer)
     end
 end
 
@@ -45,7 +59,7 @@ function m.move(world, e, x, y)
     if building.x ~= x or building.y ~= y then
         building.x = x
         building.y = y
-        dirty_entity(world, e)
+        dirty_changed_entity(world, e)
     end
 end
 
@@ -54,7 +68,7 @@ function m.rotate(world, e, dir)
     local d = assert(DIRECTION[dir])
     if building.direction ~= d then
         building.direction = d
-        dirty_entity(world, e)
+        dirty_changed_entity(world, e)
     end
 end
 

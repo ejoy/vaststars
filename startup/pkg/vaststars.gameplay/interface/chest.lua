@@ -140,12 +140,12 @@ local function station_set(world, e, item, limit)
     iBuilding.dirty(world, "hub")
 end
 
-function m.station_set(world, e, item, limit)
+function m.station_set(world, e, item)
     if item == nil then
         station_reset(world, e)
         return
     end
-    assert(limit)
+    local limit = query(item).stack
     station_set(world, e, item, limit)
 end
 
