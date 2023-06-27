@@ -200,8 +200,8 @@ property_list.converter["weights"] = function(v)
 		[1] = {"最低", "#ff0000"},
 		[2] = {"低", "#ff8000"},
 		[3] = {"中", "#ffff00"},
-		[4] = {"高", "#00ff00"},
-		[5] = {"最高", "#00ffff"},
+		[4] = {"高", "#00ffff"},
+		[5] = {"最高", "#00ff00"},
 	}
 	if t[v] then
 		return t[v][1], t[v][2]
