@@ -123,13 +123,6 @@ end
 
 function igameplay.remove_entity(eid)
     world:pub {"gameplay", "remove_entity", eid}
-
-    local e = gameplay_core.get_entity(eid)
-    if e.chest then
-        if e.chest.index ~= nil then
-            gameplay_core.get_world():container_rollback(e.chest)
-        end
-    end
     return gameplay_core.remove_entity(eid)
 end
 
