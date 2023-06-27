@@ -7,7 +7,8 @@ local DirtyHub       <const> = 1 << 4
 local DirtyTech      <const> = 1 << 5
 
 local DIRTY <const> = {
-    hub = DirtyHub
+    hub = DirtyHub,
+    fluidbox = DirtyFluidflow,
 }
 
 local DIRECTION <const> = {
