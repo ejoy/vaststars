@@ -92,7 +92,7 @@ local function complete(self, object_id)
             ientity:set_direction(gameplay_core.get_world(), gameplay_core.get_entity(object.gameplay_eid), object.dir)
         elseif old.fluid_name ~= object.fluid_name then
             if iprototype.has_type(iprototype.queryByName(object.prototype_name).type, "fluidbox") then -- TODO: object may be fluidboxes
-                ifluid:update_fluidbox(gameplay_core.get_entity(object.gameplay_eid), object.fluid_name)
+                ifluid:update_fluidbox(gameplay_core.get_world(), gameplay_core.get_entity(object.gameplay_eid), object.fluid_name)
                 igameplay.update_chimney_recipe(object)
             end
         end

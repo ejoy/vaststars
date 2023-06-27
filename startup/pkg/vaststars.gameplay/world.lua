@@ -5,6 +5,7 @@ local prototype = require "prototype"
 local vaststars = require "vaststars.world.core"
 local chest = require "vaststars.chest.core"
 local luaecs = import_package "ant.luaecs"
+local building = require "interface.building"
 
 local function pipeline(world, cworld, name)
     local p = status.pipelines[name]
@@ -72,6 +73,7 @@ return function ()
                     end
                 end
             end
+            building.create(self, obj)
             return ecs:new(obj)
         end
     end

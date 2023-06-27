@@ -1,18 +1,14 @@
 local m = {}
 
-local DirtyUnknown   <const> = 1 << 1;
-local DirtyRoadnet   <const> = 1 << 2;
-local DirtyFluidflow <const> = 1 << 3;
-local DirtyHub       <const> = 1 << 4;
-local DirtyTech      <const> = 1 << 5;
+local DirtyUnknown   <const> = 1 << 1
+local DirtyRoadnet   <const> = 1 << 2
+local DirtyFluidflow <const> = 1 << 3
+local DirtyHub       <const> = 1 << 4
+local DirtyTech      <const> = 1 << 5
 
-local function dirty_entity(world, e)
-    if e.road or e.endpoint or e.starting then
-        world:dirty(DirtyRoadnet)
-    else
-        world:dirty(DirtyUnknown)
-    end
-end
+local DIRTY <const> = {
+    hub = DirtyHub
+}
 
 local DIRECTION <const> = {
     N = 0, North = 0,
@@ -20,6 +16,27 @@ local DIRECTION <const> = {
     S = 2, South = 2,
     W = 3, West  = 3,
 }
+
+local function dirty_entity(world, e)
+    if e.road or e.endpoint or e.starting then
+        world:dirty(DirtyRoadnet)
+    end
+    if e.fluidbox or e.fluidboxes then
+        e.fluidbox_changed = true
+        world:dirty(DirtyFluidflow)
+    end
+    if e.chest or e.hub then
+        world:dirty(DirtyHub)
+    end
+end
+
+function m.create(world, e)
+    dirty_entity(world, e)
+end
+
+function m.dirty(world, what)
+    world:dirty(DIRTY[what])
+end
 
 function m.move(world, e, x, y)
     local building = e.building
@@ -35,9 +52,6 @@ function m.rotate(world, e, dir)
     local d = assert(DIRECTION[dir])
     if building.direction ~= d then
         building.direction = d
-        if e.fluidbox or e.fluidboxes then
-            e.fluidbox_changed = true
-        end
         dirty_entity(world, e)
     end
 end

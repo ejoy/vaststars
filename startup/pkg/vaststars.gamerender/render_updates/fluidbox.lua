@@ -97,7 +97,7 @@ local function __update_neighbor_fluid_type(gameplay_world, e, typeobject)
             local neighbor = assert(gameplay_world.entity[neighbor_object.gameplay_eid])
             if neighbor.fluidbox then
                 print("update fluidbox", neighbor.building.x, neighbor.building.y, fluid)
-                ifluidbox.update_fluidbox(neighbor, fluid)
+                ifluidbox.update_fluidbox(gameplay_world, neighbor, fluid)
                 __update_neighbor_fluid_type(gameplay_world, neighbor, iprototype.queryById(neighbor.building.prototype))
                 need_build = true
             end
@@ -134,7 +134,7 @@ local function __update_fluid_type(gameplay_world)
             assert(__length(fluids) <= 1)
             if __length(fluids) == 1 then
                 local fluid = next(fluids)
-                ifluidbox.update_fluidbox(e, fluid)
+                ifluidbox.update_fluidbox(gameplay_world, e, fluid)
                 print("update fluidbox", e.building.x, e.building.y, fluid)
                 __update_neighbor_fluid_type(gameplay_world, e, typeobject)
                 need_build = true

@@ -1,4 +1,5 @@
 local prototype = require "prototype"
+local building = require "interface.building"
 
 local function fluidId(name)
     local what = prototype.queryByName(name)
@@ -8,7 +9,7 @@ local function fluidId(name)
     return 0
 end
 
-local function update_fluidboxes(e, pt, fluids)
+local function update_fluidboxes(world, e, pt, fluids)
     if not e.fluidboxes then
         return
     end
@@ -32,17 +33,19 @@ local function update_fluidboxes(e, pt, fluids)
             fluidboxes[classify.."_fluid"] = id
             fluidboxes[classify.."_id"] = 0
             e.fluidbox_changed = true
+            building.dirty(world, "fluidbox")
         end
     end
 end
 
 
-local function update_fluidbox(e, fluid)
+local function update_fluidbox(world, e, fluid)
     assert(e.fluidbox ~= nil)
     if e.fluidbox.fluid ~= fluid then
         e.fluidbox.fluid = fluid
         e.fluidbox.id = 0
         e.fluidbox_changed = true
+        building.dirty(world, "fluidbox")
     end
 end
 

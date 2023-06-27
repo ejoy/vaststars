@@ -1,4 +1,5 @@
 local prototype = require "prototype"
+local building = require "interface.building"
 
 local function set_item(world, e, item)
     local hub = e.hub
@@ -18,6 +19,7 @@ local function set_item(world, e, item)
         limit = capacity,
     }
     hub.chest = world:container_create(table.concat(c))
+    building.dirty(world, "hub")
 end
 
 return {

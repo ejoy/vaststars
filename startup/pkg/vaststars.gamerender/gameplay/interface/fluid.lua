@@ -34,14 +34,14 @@ function M:need_set_fluid(prototype_name)
     return #typeobject.fluidbox.connections > 0
 end
 
-function M:update_fluidbox(e, fluid_name)
+function M:update_fluidbox(gameplay_world, e, fluid_name)
     assert(e.fluidbox or e.fluidboxes)
     assert(type(fluid_name) == "string")
     local typeobject = iprototype.queryByName(fluid_name)
     if not typeobject then
-        ifluidbox.update_fluidbox(e, 0)
+        ifluidbox.update_fluidbox(gameplay_world, e, 0)
     else
-        ifluidbox.update_fluidbox(e, typeobject.id)
+        ifluidbox.update_fluidbox(gameplay_world, e, typeobject.id)
     end
 end
 

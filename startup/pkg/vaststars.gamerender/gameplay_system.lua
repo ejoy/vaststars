@@ -101,7 +101,7 @@ funcs["fluidbox"] = function (object, typeobject)
         if not recipe then
             return object
         end
-        ifluid:update_fluidbox(e, fluid_name)
+        ifluid:update_fluidbox(gameplay_core.get_world(), e, fluid_name)
     end
     return object
 end

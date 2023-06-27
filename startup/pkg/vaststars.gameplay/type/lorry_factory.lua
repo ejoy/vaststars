@@ -16,7 +16,6 @@ function c:ctor(init, pt)
             limit = typeobject.stack,
         }
     }
-
     return {
         lorry_factory = true,
         chest = {

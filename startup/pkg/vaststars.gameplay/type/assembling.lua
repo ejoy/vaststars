@@ -30,7 +30,7 @@ function c:ctor(init, pt)
         e.fluidboxes = {}
     end
     if recipe_name == nil then
-        fluidbox.update_fluidboxes(e, pt, init.fluids)
+        fluidbox.update_fluidboxes(self, e, pt, init.fluids)
     else
         assembling.set_recipe(self, e, pt, recipe_name, init.fluids, pt.recipe_init_limit)
     end
