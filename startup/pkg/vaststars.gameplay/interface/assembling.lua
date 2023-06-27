@@ -6,8 +6,6 @@ local iChest = require "interface.chest"
 local STATUS_IDLE <const> = 0
 local STATUS_DONE <const> = 1
 
-local InvalidChest <const> = 0
-
 local function isFluidId(id)
     local pt = query(id)
     for _, t in ipairs(pt.type) do
@@ -67,63 +65,6 @@ local function createFluidBox(init, recipe)
     return fluidbox_in, fluidbox_out
 end
 
-local function resetItems(world, recipe, chest, option, maxslot)
-    local ingredients_n <const> = #recipe.ingredients//4 - 1
-    local results_n <const> = #recipe.results//4 - 1
-    local hash = {}
-    local olditems = {}
-    local newitems = {}
-    if chest.chest ~= InvalidChest then
-        for i = 1, 256 do
-            local slot = world:container_get(chest, i)
-            if not slot then
-                break
-            end
-            if slot.type ~= "none" then
-                assert(not olditems[slot.item])
-                olditems[i] = slot
-                hash[slot.item] = i
-            end
-        end
-    end
-    local count = #olditems
-    local function create_slot(type, id, limit)
-        local o = {}
-        if hash[id] then
-            local i = hash[id]
-            o = olditems[i]
-            olditems[i] = nil
-            hash[id] = nil
-        end
-        newitems[#newitems+1] = {
-            type = type,
-            item = id,
-            limit = limit,
-            amount = o.amount,
-            lock_item = type ~= "blue" and o.lock_item or nil,
-            lock_space = o.lock_space,
-        }
-    end
-    for idx = 1, ingredients_n do
-        local id, n = string.unpack("<I2I2", recipe.ingredients, 4*idx+1)
-        create_slot(isFluidId(id) and "none" or "blue", id, n * option.ingredientsLimit)
-    end
-    for idx = 1, results_n do
-        local id, n = string.unpack("<I2I2", recipe.results, 4*idx+1)
-        create_slot(isFluidId(id) and "none" or "red", id, n * option.resultsLimit)
-    end
-    for i = count, 1, -1 do
-        if #newitems > maxslot + ingredients_n then
-            break
-        end
-        local v = olditems[i]
-        if v and v.type == "red" then
-            create_slot(v.type, v.item, v.amount)
-        end
-    end
-    return newitems
-end
-
 local function del_recipe(world, e)
     local assembling = e.assembling
     assembling.progress = 0
@@ -131,7 +72,7 @@ local function del_recipe(world, e)
     assembling.recipe = 0
     assembling.fluidbox_in = 0
     assembling.fluidbox_out = 0
-    iChest.reset(world, e)
+    iChest.assembling_set(world, e)
 end
 
 local function set_recipe(world, e, pt, recipe_name, fluids, option)
@@ -141,11 +82,6 @@ local function set_recipe(world, e, pt, recipe_name, fluids, option)
         del_recipe(world, e)
         return
     end
-    option = option or {
-        ingredientsLimit = 2,
-        resultsLimit = 2,
-    }
-
     local assembling = e.assembling
     local recipe = assert(prototype.queryByName(recipe_name), "unknown recipe: "..recipe_name)
     if assembling.recipe == recipe.id then
@@ -154,8 +90,7 @@ local function set_recipe(world, e, pt, recipe_name, fluids, option)
     assembling.recipe = recipe.id
     assembling.progress = 0
     assembling.status = STATUS_IDLE
-    local items = resetItems(world, recipe, e.chest, option, pt.maxslot)
-    iChest.reset(world, e, items)
+    iChest.assembling_set(world, e, recipe, option, pt.maxslot)
     if fluids and pt.fluidboxes then
         local fluidbox_in, fluidbox_out = createFluidBox(fluids, recipe)
         assembling.fluidbox_in = fluidbox_in

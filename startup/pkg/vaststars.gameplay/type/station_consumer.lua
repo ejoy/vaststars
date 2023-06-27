@@ -2,7 +2,6 @@ local type = require "register.type"
 local prototype = require "prototype"
 
 local c = type "station_consumer"
-    .chest_type "chest_type"
     .maxlorry "integer"
     .endpoint "position"
     .road "network"
@@ -16,14 +15,12 @@ function c:ctor(init, pt)
         item = typeobject.id
         stack = typeobject.stack
     end
-    local c = {}
-    c[#c+1] = {
-        type = pt.chest_type,
+    local chest = world:container_create {{
+        type = "red",
         item = item,
         amount = 0,
         limit = stack,
-    }
-    local chest = world:container_create(c)
+    }}
     return {
         chest = {
             chest = chest,

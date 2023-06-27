@@ -8,18 +8,16 @@ local c = type "lorry_factory"
 function c:ctor(init, pt)
     local world = self
     local typeobject = prototype.queryByName(pt.item)
-    local items = {
-        {
-            type = "red",
-            item = typeobject.id,
-            amount = 0,
-            limit = typeobject.stack,
-        }
-    }
+    local chest = world:container_create {{
+        type = "red",
+        item = typeobject.id,
+        amount = 0,
+        limit = typeobject.stack,
+    }}
     return {
         lorry_factory = true,
         chest = {
-            chest = world:container_create(items),
+            chest = chest,
         },
         starting = {
             neighbor = 0xffff,
