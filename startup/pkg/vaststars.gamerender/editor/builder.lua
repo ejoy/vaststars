@@ -6,7 +6,6 @@ local objects = require "objects"
 local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 local ieditor = ecs.require "editor.editor"
 local ifluid = require "gameplay.interface.fluid"
-local ientity = require "gameplay.interface.entity"
 local imining = require "gameplay.interface.mining"
 local iobject = ecs.require "object"
 local terrain = ecs.require "terrain"
@@ -16,6 +15,8 @@ local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local gameplay_core = require "gameplay.core"
 local ibuilding = ecs.import.interface "vaststars.gamerender|ibuilding"
+local gameplay = import_package "vaststars.gameplay"
+local igameplay_building = gameplay.interface "building"
 
 local function check_construct_detector(self, prototype_name, x, y, dir, exclude_object_id)
     dir = dir or DEFAULT_DIR
@@ -88,7 +89,7 @@ local function complete(self, object_id)
             igameplay.remove_entity(object.gameplay_eid)
             object.gameplay_eid = igameplay.create_entity(object)
         elseif old.dir ~= object.dir then
-            ientity:set_direction(gameplay_core.get_world(), gameplay_core.get_entity(object.gameplay_eid), object.dir)
+            igameplay_building.rotate(gameplay_core.get_world(), gameplay_core.get_entity(object.gameplay_eid), object.dir)
         elseif old.fluid_name ~= object.fluid_name then
             if iprototype.has_type(iprototype.queryByName(object.prototype_name).type, "fluidbox") then -- TODO: object may be fluidboxes
                 ifluid:update_fluidbox(gameplay_core.get_world(), gameplay_core.get_entity(object.gameplay_eid), object.fluid_name)

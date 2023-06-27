@@ -18,13 +18,14 @@ local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 local igrid_entity = ecs.require "engine.grid_entity"
 local coord_system = ecs.require "terrain"
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
-local ientity = require "gameplay.interface.entity"
 local gameplay_core = require "gameplay.core"
 local math3d = require "math3d"
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_box"
 local global = require "global"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
+local gameplay = import_package "vaststars.gameplay"
+local igameplay_building = gameplay.interface "building"
 
 local REMOVE <const> = {}
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
@@ -797,7 +798,7 @@ local function confirm(self, datamodel)
                     igameplay.remove_entity(object.gameplay_eid)
                     object.gameplay_eid = igameplay.create_entity(object)
                 elseif old.dir ~= object.dir then
-                    ientity:set_direction(gameplay_core.get_world(), gameplay_core.get_entity(object.gameplay_eid), object.dir)
+                    igameplay_building.rotate(gameplay_core.get_world(), gameplay_core.get_entity(object.gameplay_eid), object.dir)
                 elseif old.fluid_name ~= object.fluid_name then
                     if iprototype.has_type(iprototype.queryByName(object.prototype_name).type, "fluidbox") then
                         ifluid:update_fluidbox(gameplay_core.get_world(), gameplay_core.get_entity(object.gameplay_eid), object.fluid_name)
