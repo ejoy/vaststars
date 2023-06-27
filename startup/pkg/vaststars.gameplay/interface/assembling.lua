@@ -168,22 +168,6 @@ local function set_recipe(world, e, pt, recipe_name, fluids, option)
     end
 end
 
-local function set_option(world, e, option)
-    local assembling = e.assembling
-    local recipe = assert(prototype.queryById(assembling.recipe), "unknown recipe: ".. assembling.recipe)
-    local ingredients_n <const> = #recipe.ingredients//4 - 1
-    local results_n <const> = #recipe.results//4 - 1
-
-    for idx = 1, ingredients_n do
-        local _, n = string.unpack("<I2I2", recipe.ingredients, 4*idx+1)
-        world:container_set(e.chest, idx, {limit = n * option.ingredientsLimit})
-    end
-    for idx = 1, results_n do
-        local _, n = string.unpack("<I2I2", recipe.results, 4*idx+1)
-        world:container_set(e.chest, ingredients_n + idx, {limit = n * option.resultsLimit})
-    end
-end
-
 local function set_direction(_, e, dir)
     local DIRECTION <const> = {
         N = 0, North = 0,
@@ -199,30 +183,7 @@ local function set_direction(_, e, dir)
     end
 end
 
-local function what_status(e)
-    --TODO
-    --  disabled
-    --  no_minable_resources
-    if e.capacitance.network == 0 then
-        return "no_power"
-    end
-    local a = e.assembling
-    if a.recipe == 0 then
-        return "idle"
-    end
-    if a.progress <= 0 then
-        if a.status == STATUS_IDLE then
-            return "insufficient_input"
-        elseif a.status == STATUS_DONE then
-            return "full_output"
-        end
-    end
-    return "working"
-end
-
 return {
     set_recipe = set_recipe,
-    set_option = set_option,
     set_direction = set_direction,
-    what_status = what_status,
 }
