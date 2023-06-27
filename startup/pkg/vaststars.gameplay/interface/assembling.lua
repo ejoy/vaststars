@@ -101,22 +101,6 @@ local function set_recipe(world, e, pt, recipe_name, fluids, option)
     end
 end
 
-local function set_direction(_, e, dir)
-    local DIRECTION <const> = {
-        N = 0, North = 0,
-        E = 1, East  = 1,
-        S = 2, South = 2,
-        W = 3, West  = 3,
-    }
-    local d = assert(DIRECTION[dir])
-    local building = e.building
-    if building.direction ~= d then
-        building.direction = d
-        e.fluidbox_changed = true
-    end
-end
-
 return {
     set_recipe = set_recipe,
-    set_direction = set_direction,
 }
