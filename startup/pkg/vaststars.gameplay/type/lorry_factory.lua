@@ -9,7 +9,7 @@ function c:ctor(init, pt)
     local world = self
     local typeobject = prototype.queryByName(pt.item)
     local items = {
-        world:chest_slot {
+        {
             type = "red",
             item = typeobject.id,
             amount = 0,
@@ -19,7 +19,7 @@ function c:ctor(init, pt)
     return {
         lorry_factory = true,
         chest = {
-            chest = world:container_create(table.concat(items)),
+            chest = world:container_create(items),
         },
         starting = {
             neighbor = 0xffff,

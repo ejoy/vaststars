@@ -17,19 +17,19 @@ function c:ctor(init, pt)
         assert(w and h and d, "Invalid pile: " .. typeobject.pile)
         local capacity = w * h * d
 
-        c[#c+1] = world:chest_slot {
+        c[#c+1] = {
             type = "blue",
             item = typeobject.id,
             limit = capacity,
         }
     else
-        c[#c+1] = world:chest_slot {
+        c[#c+1] = {
             type = "blue",
             item = 0,
             limit = 0,
         }
     end
-    chest = world:container_create(table.concat(c))
+    chest = world:container_create(c)
 
     return {
         hub = {

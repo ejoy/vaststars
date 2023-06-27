@@ -13,12 +13,12 @@ local function set_item(world, e, item)
     local capacity = w * h * d
 
     local c = {}
-    c[#c+1] = world:chest_slot {
+    c[#c+1] = {
         type = "blue",
         item = typeobject.id,
         limit = capacity,
     }
-    hub.chest = world:container_create(table.concat(c))
+    hub.chest = world:container_create(c)
     building.dirty(world, "hub")
 end
 

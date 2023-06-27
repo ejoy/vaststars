@@ -17,13 +17,13 @@ function c:ctor(init, pt)
         stack = typeobject.stack
     end
     local c = {}
-    c[#c+1] = world:chest_slot {
+    c[#c+1] = {
         type = pt.chest_type,
         item = item,
         amount = 0,
         limit = stack,
     }
-    local chest = world:container_create(table.concat(c))
+    local chest = world:container_create(c)
     return {
         chest = {
             chest = chest,

@@ -72,7 +72,7 @@ local function __rebuild_chest(world, e, chest_type, new_item)
             break
         end
         if slot.item ~= 0 then
-            r[#r+1] = world:chest_slot {
+            r[#r+1] = {
                 type = chest_type,
                 item = slot.item,
                 amount = slot.amount,
@@ -80,7 +80,7 @@ local function __rebuild_chest(world, e, chest_type, new_item)
         end
     end
 
-    r[#r+1] = world:chest_slot {
+    r[#r+1] = {
         type = chest_type,
         item = new_item,
         amount = 0,
@@ -90,7 +90,7 @@ local function __rebuild_chest(world, e, chest_type, new_item)
     if e.base and e.base.chest ~= InvalidChest then
         world:container_destroy(e.base)
     end
-    e.base.chest = world:container_create(table.concat(r))
+    e.base.chest = world:container_create(r)
 end
 
 -- item count

@@ -161,7 +161,7 @@ return function ()
         green = 2,
         none = 3,
     }
-    function world:chest_slot(t)
+    local function chest_slot(t)
         assert(t.type)
         assert(t.item)
         local id = t.item
@@ -179,8 +179,12 @@ return function ()
         )
     end
 
-    function world:container_create(info)
-        return chest.create(cworld, info)
+    function world:container_create(items)
+        local t = {}
+        for _, item in ipairs(items) do
+            t[#t+1] = chest_slot(item)
+        end
+        return chest.create(cworld, table.concat(t))
     end
     function world:container_destroy(c)
         return chest.destroy(cworld, c.chest)

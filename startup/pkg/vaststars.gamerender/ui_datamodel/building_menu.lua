@@ -302,12 +302,12 @@ local function __set_station_first_item(gameplay_world, e, prototype_name)
 
     local typeobject_item = iprototype.queryByName(prototype_name)
     local c = {}
-    c[#c+1] = gameplay_world:chest_slot {
+    c[#c+1] = {
         type = typeobject.chest_type,
         item = typeobject_item.id,
         limit = typeobject_item.stack,
     }
-    e[chest_component].chest = gameplay_world:container_create(table.concat(c))
+    e[chest_component].chest = gameplay_world:container_create(c)
     e.station_changed = true
 end
 

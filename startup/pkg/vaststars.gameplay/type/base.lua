@@ -63,7 +63,7 @@ function base:ctor(init, pt)
     local world = self
     local items = {}
     for _, v in ipairs(init.items or {}) do
-        items[#items+1] = world:chest_slot {
+        items[#items+1] = {
             type = "red",
             item = v[1],
             amount = v[2],
@@ -72,7 +72,7 @@ function base:ctor(init, pt)
 
     return {
         base = {
-            chest = world:container_create(table.concat(items)),
+            chest = world:container_create(items),
         },
         base_changed = true,
     }

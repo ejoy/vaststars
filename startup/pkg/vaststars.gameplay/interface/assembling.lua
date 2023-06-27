@@ -1,7 +1,7 @@
 local prototype = require "prototype"
 local query = require "prototype".queryById
-local fluidbox = require "interface.fluidbox"
-local building = require "interface.building"
+local iFluidbox = require "interface.fluidbox"
+local iChest = require "interface.chest"
 
 local STATUS_IDLE <const> = 0
 local STATUS_DONE <const> = 1
@@ -95,7 +95,7 @@ local function resetItems(world, recipe, chest, option, maxslot)
             olditems[i] = nil
             hash[id] = nil
         end
-        newitems[#newitems+1] = world:chest_slot {
+        newitems[#newitems+1] = {
             type = type,
             item = id,
             limit = limit,
@@ -121,7 +121,7 @@ local function resetItems(world, recipe, chest, option, maxslot)
             create_slot(v.type, v.item, v.amount)
         end
     end
-    return table.concat(newitems)
+    return newitems
 end
 
 local function del_recipe(world, e)
@@ -131,11 +131,11 @@ local function del_recipe(world, e)
     assembling.recipe = 0
     assembling.fluidbox_in = 0
     assembling.fluidbox_out = 0
-    building.dirty(world, "hub")
+    iChest.reset(world, e)
 end
 
 local function set_recipe(world, e, pt, recipe_name, fluids, option)
-    fluidbox.update_fluidboxes(world, e, pt, fluids)
+    iFluidbox.update_fluidboxes(world, e, pt, fluids)
 
     if recipe_name == nil then
         del_recipe(world, e)
@@ -154,13 +154,8 @@ local function set_recipe(world, e, pt, recipe_name, fluids, option)
     assembling.recipe = recipe.id
     assembling.progress = 0
     assembling.status = STATUS_IDLE
-    local chest = e.chest
-    local items = resetItems(world, recipe, chest, option, pt.maxslot)
-    if chest.chest ~= InvalidChest then
-        world:container_destroy(chest)
-    end
-    chest.chest = world:container_create(items)
-    building.dirty(world, "hub")
+    local items = resetItems(world, recipe, e.chest, option, pt.maxslot)
+    iChest.reset(world, e, items)
     if fluids and pt.fluidboxes then
         local fluidbox_in, fluidbox_out = createFluidBox(fluids, recipe)
         assembling.fluidbox_in = fluidbox_in
