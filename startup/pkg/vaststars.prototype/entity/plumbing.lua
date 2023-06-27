@@ -229,6 +229,27 @@ prototype "烟囱I" {
     }
 }
 
+prototype "烟囱II" {
+    model = "prefabs/chimney-1.prefab",
+    icon = "textures/building_pic/small_pic_pump.texture",
+    construct_detector = {"exclusive"},
+    type = {"building", "fluidbox", "chimney"},
+    area = "2x2",
+    rotate_on_build = true,
+    craft_category = {"流体气体排泄"},
+    speed = "500%",
+    camera_distance = 70,
+    building_menu = false,
+    fluidbox = {
+        capacity = 1000,
+        height = 100,
+        base_level = 10,
+        connections = {
+            {type="input", position={1,1,"S"}},
+        }
+    }
+}
+
 prototype "排水口I" {
     model = "prefabs/mars-outfall.prefab",
     icon = "textures/building_pic/small_pic_mars_outfall.texture",
@@ -238,6 +259,27 @@ prototype "排水口I" {
     rotate_on_build = true,
     craft_category = {"流体液体排泄"},
     speed = "100%",
+    camera_distance = 89,
+    building_menu = false,
+    fluidbox = {
+        capacity = 1000,
+        height = 100,
+        base_level = 10,
+        connections = {
+            {type="input", position={1,2,"S"}},
+        }
+    }
+}
+
+prototype "排水口II" {
+    model = "prefabs/mars-outfall.prefab",
+    icon = "textures/building_pic/small_pic_mars_outfall.texture",
+    construct_detector = {"exclusive"},
+    type = {"building", "fluidbox", "chimney"},
+    area = "3x3",
+    rotate_on_build = true,
+    craft_category = {"流体液体排泄"},
+    speed = "500%",
     camera_distance = 89,
     building_menu = false,
     fluidbox = {
@@ -260,6 +302,65 @@ prototype "空气过滤器I" {
     io_shelf = false,
     power = "50kW",
     drain = "1.5kW",
+    speed = "100%",
+    priority = "secondary",
+    recipe = "空气过滤",
+    maxslot = "8",
+    camera_distance = 100,
+    fluidboxes = {
+        input = {},
+        output = {
+            {
+                capacity = 100,
+                height = 200,
+                base_level = 150,
+                connections = {
+                    {type="output", position={1,1,"S"}},
+                }
+            }
+        },
+    }
+}
+
+prototype "空气过滤器II" {
+    model = "prefabs/chimney-1.prefab",
+    icon = "textures/building_pic/small_pic_outfall.texture",
+    construct_detector = {"exclusive"},
+    type = {"building", "consumer", "assembling", "fluidboxes"},
+    area = "2x2",
+    rotate_on_build = true,
+    io_shelf = false,
+    power = "150kW",
+    speed = "300%",
+    priority = "secondary",
+    recipe = "空气过滤",
+    maxslot = "8",
+    camera_distance = 100,
+    fluidboxes = {
+        input = {},
+        output = {
+            {
+                capacity = 100,
+                height = 200,
+                base_level = 150,
+                connections = {
+                    {type="output", position={1,1,"S"}},
+                }
+            }
+        },
+    }
+}
+
+prototype "空气过滤器III" {
+    model = "prefabs/chimney-1.prefab",
+    icon = "textures/building_pic/small_pic_outfall.texture",
+    construct_detector = {"exclusive"},
+    type = {"building", "consumer", "assembling", "fluidboxes"},
+    area = "2x2",
+    rotate_on_build = true,
+    io_shelf = false,
+    power = "500kW",
+    speed = "800%",
     priority = "secondary",
     recipe = "空气过滤",
     maxslot = "8",

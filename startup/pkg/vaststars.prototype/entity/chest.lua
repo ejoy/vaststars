@@ -92,7 +92,7 @@ prototype "无人机仓库III" {
     construct_detector = {"exclusive"},
     type = {"building", "hub"},
     area = "2x2",
-    supply_area = "8x8",
+    supply_area = "10x10",
     slots = 1,
     drone_entity = "无人机",
     drone_count = 4,
