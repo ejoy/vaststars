@@ -788,6 +788,7 @@ local t = {
 	"/pkg/vaststars.gameplay/init/system.lua",
 	"/pkg/vaststars.gameplay/init/type.lua",
 	"/pkg/vaststars.gameplay/interface/assembling.lua",
+	"/pkg/vaststars.gameplay/interface/building.lua",
 	"/pkg/vaststars.gameplay/interface/chimney.lua",
 	"/pkg/vaststars.gameplay/interface/fluidbox.lua",
 	"/pkg/vaststars.gameplay/interface/hub.lua",
