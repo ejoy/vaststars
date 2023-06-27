@@ -1,7 +1,10 @@
 local m = {}
 
-local DirtyUnknown <const> = 1 << 1
-local DirtyRoadnet <const> = 1 << 4
+local DirtyUnknown   <const> = 1 << 1;
+local DirtyRoadnet   <const> = 1 << 2;
+local DirtyFluidflow <const> = 1 << 3;
+local DirtyHub       <const> = 1 << 4;
+local DirtyTech      <const> = 1 << 5;
 
 local function dirty_entity(world, e)
     if e.road or e.endpoint or e.starting then

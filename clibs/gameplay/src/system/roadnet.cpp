@@ -4,8 +4,6 @@
 #include "core/world.h"
 #include "roadnet/network.h"
 
-constexpr uint64_t kDirtyRoadnet = 1 << 4;
-
 static int
 lbuild(lua_State *L) {
 	auto& w = getworld(L);

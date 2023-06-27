@@ -119,6 +119,9 @@ laboratory_update(world& w, ecs_api::entity<ecs::laboratory, ecs::chest, ecs::ca
 static int
 lbuild(lua_State *L) {
     auto& w = getworld(L);
+    if (!(w.dirty & kDirtyTech)) {
+        return 0;
+    }
     for (auto& v : ecs_api::select<ecs::laboratory, ecs::chest, ecs::building>(w.ecs)) {
         auto& building = v.get<ecs::building>();
         auto& l = v.get<ecs::laboratory>();
