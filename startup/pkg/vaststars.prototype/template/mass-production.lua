@@ -805,7 +805,7 @@ local entities = { {
       input = {},
       output = { "地下卤水" }
     },
-    prototype_name = "地下水挖掘机",
+    prototype_name = "地下水挖掘机I",
     recipe = "离岸抽水",
     x = 166,
     y = 154
@@ -2894,7 +2894,7 @@ local entities = { {
       input = {},
       output = { "地下卤水" }
     },
-    prototype_name = "地下水挖掘机",
+    prototype_name = "地下水挖掘机I",
     recipe = "离岸抽水",
     x = 40,
     y = 173
@@ -2904,7 +2904,7 @@ local entities = { {
       input = {},
       output = { "地下卤水" }
     },
-    prototype_name = "地下水挖掘机",
+    prototype_name = "地下水挖掘机I",
     recipe = "离岸抽水",
     x = 34,
     y = 173
@@ -2914,7 +2914,7 @@ local entities = { {
       input = {},
       output = { "地下卤水" }
     },
-    prototype_name = "地下水挖掘机",
+    prototype_name = "地下水挖掘机I",
     recipe = "离岸抽水",
     x = 46,
     y = 173
