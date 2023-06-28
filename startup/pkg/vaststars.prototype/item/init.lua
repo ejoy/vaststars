@@ -9,7 +9,8 @@ local prototype = gameplay.register.prototype
 
 prototype "任务" {
     type = {"item"},
-    stack = 10,
+    stack = 0,
+    backpack_stack = 0,
     tech_icon = "",
     group = {},
     icon = "",
