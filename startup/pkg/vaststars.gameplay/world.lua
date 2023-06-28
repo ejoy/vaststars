@@ -1,11 +1,11 @@
 require "register.types"
 
+local luaecs = import_package "ant.luaecs"
 local status = require "status"
 local prototype = require "prototype"
-local vaststars = require "vaststars.world.core"
-local chest = require "vaststars.chest.core"
-local luaecs = import_package "ant.luaecs"
-local building = require "interface.building"
+local cWorld = require "vaststars.world.core"
+local cChest = require "vaststars.chest.core"
+local iBuilding = require "interface.building"
 
 local function pipeline(world, cworld, name)
     local p = status.pipelines[name]
@@ -49,7 +49,7 @@ return function ()
     end
 
     local context = ecs:context(components)
-    local cworld = vaststars.create_world(context)
+    local cworld = cWorld.create_world(context)
     world.ecs = ecs
     world._cworld = cworld
     world._context = context
@@ -73,7 +73,7 @@ return function ()
                     end
                 end
             end
-            building.create(self, obj)
+            iBuilding.create(self, obj)
             return ecs:new(obj)
         end
     end
@@ -148,16 +148,16 @@ return function ()
         return cworld:fluidflow_query(fluid, id)
     end
     function world:container_get(c, i)
-        return chest.get(cworld, c.chest, i)
+        return cChest.get(cworld, c.chest, i)
     end
     function world:container_set(c, i, t)
-        return chest.set(cworld, c.chest, i, t)
+        return cChest.set(cworld, c.chest, i, t)
     end
     function world:container_pickup(c, item, amount)
-        return chest.pickup(cworld, c.chest, item, amount)
+        return cChest.pickup(cworld, c.chest, item, amount)
     end
     function world:container_place(c, item, amount)
-        chest.place(cworld, c.chest, item, amount)
+        cChest.place(cworld, c.chest, item, amount)
     end
     function world:now()
         return self._frame
