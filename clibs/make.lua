@@ -126,7 +126,10 @@ lm:exe "vaststars" {
     msvc = {
         defines = "LUA_BUILD_AS_DLL",
     },
-    sources = "vaststars_modules.c"
+    sources = {
+        "vaststars_modules.c",
+        "../runtime/win32/vaststars.rc"
+    }
 }
 
 lm:exe "vaststars_rt" {
@@ -141,5 +144,8 @@ lm:exe "vaststars_rt" {
         LuaInclude,
         Antdir .. "runtime/common",
     },
-    sources = "vaststars_modules.c"
+    sources = {
+        "vaststars_modules.c",
+        "../runtime/win32/vaststars.rc"
+    }
 }
