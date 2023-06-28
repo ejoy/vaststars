@@ -1,4 +1,5 @@
 #include <lua.hpp>
+#include <binding/binding.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -15,26 +16,10 @@ extern "C" {
 #endif
 
 namespace lua_world {
-    template <typename T, typename R>
-    T checklimit(lua_State* L, int idx, R const& r) {
-        if (r < std::numeric_limits<T>::lowest() || r >(std::numeric_limits<T>::max)()) {
-            luaL_argerror(L, idx, "limit exceeded");
-        }
-        return (T)r;
-    }
-    template <typename T>
-    T checkinteger(lua_State* L, int idx) {
-        return checklimit<T>(L, idx, luaL_checkinteger(L, idx));
-    }
-    template <typename T>
-    T optinteger(lua_State* L, int idx, lua_Integer def) {
-        return checklimit<T>(L, idx, luaL_optinteger(L, idx, def));
-    }
-
     static int
     is_researched(lua_State* L) {
         auto& w = getworld(L);
-        uint16_t techid = checkinteger<uint16_t>(L, 2);
+        uint16_t techid = bee::lua::checkinteger<uint16_t>(L, 2);
         lua_pushboolean(L, w.techtree.is_researched(techid));
         return 1;
     }
@@ -58,7 +43,7 @@ namespace lua_world {
             if (lua_rawgeti(L, 2, i) == LUA_TNIL) {
                 break;
             }
-            q.push_back(checkinteger<uint16_t>(L, -1));
+            q.push_back(bee::lua::checkinteger<uint16_t>(L, -1));
         }
         w.techtree.queue_set(q);
         return 0;
@@ -67,7 +52,7 @@ namespace lua_world {
     static int
     research_progress(lua_State* L) {
         auto& w = getworld(L);
-        uint16_t techid = checkinteger<uint16_t>(L, 2);
+        uint16_t techid = bee::lua::checkinteger<uint16_t>(L, 2);
         if (lua_gettop(L) == 2) {
             uint16_t progress = w.techtree.get_progress(techid);
             if (progress == 0) {
@@ -76,7 +61,7 @@ namespace lua_world {
             lua_pushinteger(L, progress);
             return 1;
         }
-        uint16_t value = checkinteger<uint16_t>(L, 3);
+        uint16_t value = bee::lua::checkinteger<uint16_t>(L, 3);
         bool ok = w.techtree.research_set(w, techid, value);
         lua_pushboolean(L, ok);
         return 1;
@@ -84,13 +69,13 @@ namespace lua_world {
 
     static int set_dirty(lua_State* L) {
         auto& w = getworld(L);
-        w.dirty |= (uint64_t)luaL_checkinteger(L, 2);
+        w.dirty |= bee::lua::checkinteger<uint64_t>(L, 2);
         return 0;
     }
 
     static int is_dirty(lua_State* L) {
         auto& w = getworld(L);
-        uint64_t mask = (uint64_t)luaL_optinteger(L, 2, (lua_Integer)(uint64_t)-1);
+        uint64_t mask = bee::lua::optinteger<uint64_t, (uint64_t)-1>(L, 2);
         lua_pushboolean(L, (w.dirty & mask) != 0);
         return 1;
     }
@@ -123,8 +108,6 @@ namespace lua_world {
 
     int backup_world(lua_State* L);
     int restore_world(lua_State* L);
-    int backup_chest(lua_State* L);
-    int restore_chest(lua_State* L);
 
     constexpr static intptr_t LuaFunction = 0x7000000000000000;
 
@@ -254,8 +237,6 @@ namespace lua_world {
                 // saveload
                 { "backup_world", backup_world },
                 { "restore_world", restore_world },
-                { "backup_chest", backup_chest },
-                { "restore_chest", restore_chest },
                 // misc
                 {"set_dirty", set_dirty},
                 {"is_dirty", is_dirty},

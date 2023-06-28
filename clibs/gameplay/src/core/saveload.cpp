@@ -305,11 +305,4 @@ namespace lua_world {
         fclose(f);
         return 0;
     }
-
-    int backup_chest(lua_State* L) {
-        return 0;
-    }
-    int restore_chest(lua_State* L) {
-        return 0;
-    }
 }
