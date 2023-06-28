@@ -22,9 +22,6 @@ namespace roadnet {
     static bool operator&(uint8_t v, MapRoad m) {
         return v & (uint8_t)m;
     }
-    static uint8_t operator|(uint8_t v, MapRoad m) {
-        return v | (uint8_t)m;
-    }
 
     template <typename T, typename F>
         requires (std::is_member_function_pointer_v<F>)
@@ -861,7 +858,6 @@ namespace roadnet {
         flatmap<straightid, uint8_t> endpointWillReset;
         lorryWillRemove.reserve(n);
         endpointWillReset.reserve(n);
-        size_t sz = 0;
         for (auto& e : ecs_api::select<ecs::lorry_willremove, ecs::lorry>(w.ecs)) {
             auto& lorry = e.get<ecs::lorry>();
             e.enable_tag<ecs::lorry_removed>();
@@ -869,7 +865,7 @@ namespace roadnet {
             lorryWillRemove.insert(getLorryId(lorry));
             auto [found, slot] = endpointWillReset.find_or_insert(lorry.ending);
             if (found) {
-                *slot++;
+                *slot += 1;
             }
             else {
                 *slot = 1;
