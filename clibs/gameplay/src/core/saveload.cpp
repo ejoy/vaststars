@@ -242,6 +242,8 @@ namespace lua_world {
         luaL_checktype(L, 3, LUA_TTABLE);
         lua_settop(L, 3);
 
+        w.fluidflows.clear();
+    
         restore_scope(L, f, "time", [&](){
             file_read(f, w.time);
         }, [&](){

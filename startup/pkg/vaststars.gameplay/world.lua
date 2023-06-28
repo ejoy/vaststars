@@ -104,7 +104,6 @@ return function ()
     end
     function world:restore(rootdir)
         world.storage_path = rootdir
-        cworld:reset()
         pipeline_restore()
         cworld:reset_dirty()
     end

@@ -86,13 +86,6 @@ namespace lua_world {
         return 0;
     }
 
-    static int
-    reset(lua_State* L) {
-        auto& w = getworld(L);
-        w.fluidflows.clear();
-        return 0;
-    }
-
     static int prototype_bind(lua_State* L) {
         auto& w = getworld(L);
         prototype::bind(w, L, 2);
@@ -241,7 +234,6 @@ namespace lua_world {
                 {"set_dirty", set_dirty},
                 {"is_dirty", is_dirty},
                 {"reset_dirty", reset_dirty},
-                {"reset", reset},
                 {"prototype_bind", prototype_bind},
                 {"system_solve", system_solve},
                 {"system_perf_solve", system_perf_solve},
