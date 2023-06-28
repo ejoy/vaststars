@@ -133,7 +133,6 @@ static int lupdate(lua_State *L) {
     }
     bool producer_changed = false;
     for (auto& v : ecs_api::select<ecs::station_producer, ecs::endpoint, ecs::chest>(w.ecs)) {
-        auto& station = v.get<ecs::station_producer>();
         auto& endpoint = v.get<ecs::endpoint>();
         auto& chest = v.get<ecs::chest>();
         if (!endpoint.neighbor || !endpoint.rev_neighbor) {
@@ -168,7 +167,6 @@ static int lupdate(lua_State *L) {
     }
 
     for (auto& v : ecs_api::select<ecs::station_consumer, ecs::endpoint, ecs::chest>(w.ecs)) {
-        auto& station = v.get<ecs::station_consumer>();
         auto& endpoint = v.get<ecs::endpoint>();
         auto& chest = v.get<ecs::chest>();
         if (!endpoint.neighbor || !endpoint.rev_neighbor) {
