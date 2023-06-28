@@ -60,23 +60,7 @@ return function ()
     pipeline(world, cworld, "prototype")()
 
     function world:create_entity(type)
-        return function (init)
-            local typeobject = assert(prototype.queryByName(type), "unknown entity: " .. type)
-            local types = typeobject.type
-            local obj = {}
-            for i = 1, #types do
-                local funcs = status.typefuncs[types[i]]
-                if funcs and funcs.ctor then
-                    for k, v in pairs(funcs.ctor(world, init, typeobject)) do
-                        if obj[k] == nil then
-                            obj[k] = v
-                        end
-                    end
-                end
-            end
-            iBuilding.create(self, obj)
-            return ecs:new(obj)
-        end
+        return iBuilding.create(self, type)
     end
 
     world.entity = ecs:visitor_create()

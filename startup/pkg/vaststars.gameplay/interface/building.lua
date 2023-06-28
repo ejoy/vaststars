@@ -1,3 +1,6 @@
+local status = require "status"
+local prototype = require "prototype"
+
 local m = {}
 
 local DirtyRoadnet         <const> = 1 << 1
@@ -49,8 +52,24 @@ local function dirty_entity(world, e)
     end
 end
 
-function m.create(world, e)
-    dirty_entity(world, e)
+function m.create(world, type)
+    return function (init)
+        local typeobject = assert(prototype.queryByName(type), "unknown entity: " .. type)
+        local types = typeobject.type
+        local obj = {}
+        for i = 1, #types do
+            local funcs = status.typefuncs[types[i]]
+            if funcs and funcs.ctor then
+                for k, v in pairs(funcs.ctor(world, init, typeobject)) do
+                    if obj[k] == nil then
+                        obj[k] = v
+                    end
+                end
+            end
+        end
+        dirty_entity(world, obj)
+        return world.ecs:new(obj)
+    end
 end
 
 function m.dirty(world, what)
