@@ -42,6 +42,8 @@ graphic:
       threshold: 2.200000047683716
     fxaa:
       enable: true
+    taa:
+      enable: nil
   render:
     clear: CDS
     clear_color: 255
