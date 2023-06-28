@@ -1,4 +1,5 @@
 local iBuilding = require "interface.building"
+local iBackpack = require "interface.backpack"
 local cChest = require "vaststars.chest.core"
 local prototype = require "prototype"
 
@@ -42,16 +43,22 @@ function m.create(world, items)
     return cChest.create(world._cworld, table.concat(t))
 end
 
-function m.destroy(world, chest)
-    return cChest.destroy(world._cworld, chest.chest)
+local function chest_destroy(world, chest, recycle)
+    return cChest.destroy(world._cworld, chest.chest, recycle)
 end
 
-local function assembling_reset(world, e)
-    local chest = e.chest
+local function chest_dirty(world, e)
+    iBuilding.dirty(world, "hub")
+    if e.station_consumer then
+        iBuilding.dirty(world, "station_consumer")
+    end
+end
+
+local function chest_reset(world, e, chest)
     if chest.chest ~= InvalidChest then
-        m.destroy(world, chest)
+        chest_destroy(world, chest, true)
         chest.chest = InvalidChest
-        iBuilding.dirty(world, "hub")
+        chest_dirty(world, e)
     end
 end
 
@@ -124,39 +131,24 @@ end
 
 local function assembling_set(world, e, recipe, option, maxslot)
     local chest = e.chest
-    if chest.chest ~= InvalidChest then
-        m.destroy(world, chest)
-    end
     option = option or {
         ingredientsLimit = 2,
         resultsLimit = 2,
     }
     local items = resetItems(world, recipe, chest, option, maxslot)
+    if chest.chest ~= InvalidChest then
+        chest_destroy(world, chest, false)
+    end
     chest.chest = m.create(world, items)
     iBuilding.dirty(world, "hub")
 end
 
 function m.assembling_set(world, e, recipe, option, maxslot)
     if recipe == nil then
-        assembling_reset(world, e)
+        chest_reset(world, e, e.chest)
         return
     end
     assembling_set(world, e, recipe, option, maxslot)
-end
-
-local function chest_dirty(world, e)
-    iBuilding.dirty(world, "hub")
-    if e.station_consumer then
-        iBuilding.dirty(world, "station_consumer")
-    end
-end
-
-local function chest_reset(world, e, chest)
-    if chest.chest ~= InvalidChest then
-        m.destroy(world, chest)
-        chest.chest = InvalidChest
-        chest_dirty(world, e)
-    end
 end
 
 local function chest_set(world, e, chest, item, type, limit)

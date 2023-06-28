@@ -2,6 +2,7 @@
 #include "roadnet/network.h"
 #include "roadnet/route.h"
 #include "core/world.h"
+#include "core/backpack.h"
 #include "util/prototype.h"
 
 namespace roadnet {
@@ -18,8 +19,10 @@ namespace roadnet {
     }
     void lorryDestroy(ecs::lorry& l, world& w) {
         assert(l.classid != 0);
+        backpack_place(w, l.classid, 1);
         l.classid = 0;
         if (l.item_classid != 0 && l.item_amount != 0) {
+            backpack_place(w, l.item_classid, l.item_amount);
             l.item_classid = 0;
             l.item_amount = 0;
         }

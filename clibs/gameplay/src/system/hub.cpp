@@ -3,6 +3,7 @@
 #include "luaecs.h"
 #include "core/world.h"
 #include "core/capacitance.h"
+#include "core/backpack.h"
 #include <bee/nonstd/unreachable.h>
 #include <math.h>
 #include <algorithm>
@@ -130,6 +131,10 @@ static void AssertStatus(ecs::drone& drone, drone_status status) {
 static void CheckHasHome(world& w, ecs::drone& drone, std::function<void(world&, ecs::drone&, hub_mgr::hub_info const&)> f) {
     auto it = w.hubs.hubs.find(drone.home);
     if (it == w.hubs.hubs.end()) {
+        if (drone.item != 0) {
+            backpack_place(w, drone.item, 1);
+            drone.item = 0;
+        }
         SetStatus(drone, drone_status::has_error);
         return;
     }
@@ -588,6 +593,7 @@ static bool FindTaskOnlyMov1(world& w, ecs::drone& drone, hub_mgr::hub_info cons
 
 static void FindTaskOnlyMov2(world& w, ecs::drone& drone, hub_mgr::hub_info const& info) {
     if (info.item != drone.item) {
+        backpack_place(w, drone.item, 1);
         drone.item = 0;
         GoHome(w, drone, info);
         return;

@@ -4,6 +4,7 @@
 #include <assert.h>
 #include "core/chest.h"
 #include "core/world.h"
+#include "core/backpack.h"
 #include "util/prototype.h"
 
 container::slot& chest::array_at(world& w, container::index start, uint8_t offset) {
@@ -45,7 +46,14 @@ container::index chest::create(world& w, container::slot* data, container::size_
     return start;
 }
 
-void chest::destroy(world& w, container::index c) {
+void chest::destroy(world& w, container::index c, bool recycle) {
+    if (recycle) {
+        for (auto& s: chest::array_slice(w, c)) {
+            if (s.item != 0 && s.amount != 0) {
+                backpack_place(w, s.item, s.amount);
+            }
+        }
+    }
     w.container.free_array(c, chest::size(w, c));
 }
 
@@ -175,7 +183,8 @@ static int
 ldestroy(lua_State* L) {
     auto& w = getworld(L);
     uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
-    chest::destroy(w, container::index::from(index));
+    bool recycle = lua_toboolean(L, 3);
+    chest::destroy(w, container::index::from(index), recycle);
     return 0;
 }
 
