@@ -1,5 +1,6 @@
 local type = require "register.type"
 local prototype = require "prototype"
+local iChest = require "interface.chest"
 
 local c = type "station_consumer"
     .maxlorry "integer"
@@ -15,12 +16,12 @@ function c:ctor(init, pt)
         item = typeobject.id
         stack = typeobject.stack
     end
-    local chest = world:container_create {{
+    local chest = iChest.create(world, {{
         type = "red",
         item = item,
         amount = 0,
         limit = stack,
-    }}
+    }})
     return {
         chest = {
             chest = chest,

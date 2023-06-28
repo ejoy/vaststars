@@ -1,4 +1,5 @@
 local type = require "register.type"
+local iChest = require "interface.chest"
 
 local c = type "chest"
     .chest_type "chest_type"
@@ -15,7 +16,7 @@ function c:ctor(init, pt)
     end
 
     local chest = {
-        chest = world:container_create(items),
+        chest = iChest.create(world, items),
     }
     return {
         chest = chest

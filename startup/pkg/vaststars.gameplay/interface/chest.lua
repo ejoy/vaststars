@@ -1,21 +1,62 @@
 local iBuilding = require "interface.building"
-local query = require "prototype".queryById
+local cChest = require "vaststars.chest.core"
+local prototype = require "prototype"
 
 local m = {}
 
 local InvalidChest <const> = 0
 
+local CHEST_TYPE <const> = {
+    [0] = 0,
+    [1] = 1,
+    [2] = 2,
+    [3] = 3,
+    red = 0,
+    blue = 1,
+    green = 2,
+    none = 3,
+}
+local function chest_slot(t)
+    assert(t.type)
+    assert(t.item)
+    local id = t.item
+    if type(id) == "string" then
+        id = prototype.queryByName(id).id
+    end
+    return string.pack("<I1I1I2I2I2I2I2",
+        CHEST_TYPE[t.type],
+        0,
+        id,
+        t.amount or 0,
+        t.limit or 2,
+        t.lock_item or 0,
+        t.lock_space or 0
+    )
+end
+
+function m.create(world, items)
+    local t = {}
+    for _, item in ipairs(items) do
+        t[#t+1] = chest_slot(item)
+    end
+    return cChest.create(world._cworld, table.concat(t))
+end
+
+function m.destroy(world, chest)
+    return cChest.destroy(world._cworld, chest.chest)
+end
+
 local function assembling_reset(world, e)
     local chest = e.chest
     if chest.chest ~= InvalidChest then
-        world:container_destroy(chest)
+        m.destroy(world, chest)
         chest.chest = InvalidChest
         iBuilding.dirty(world, "hub")
     end
 end
 
 local function isFluidId(id)
-    local pt = query(id)
+    local pt = prototype.queryById(id)
     for _, t in ipairs(pt.type) do
         if t == "fluid" then
             return true
@@ -84,14 +125,14 @@ end
 local function assembling_set(world, e, recipe, option, maxslot)
     local chest = e.chest
     if chest.chest ~= InvalidChest then
-        world:container_destroy(chest)
+        m.destroy(world, chest)
     end
     option = option or {
         ingredientsLimit = 2,
         resultsLimit = 2,
     }
     local items = resetItems(world, recipe, chest, option, maxslot)
-    chest.chest = world:container_create(items)
+    chest.chest = m.create(world, items)
     iBuilding.dirty(world, "hub")
 end
 
@@ -112,7 +153,7 @@ end
 
 local function chest_reset(world, e, chest)
     if chest.chest ~= InvalidChest then
-        world:container_destroy(chest)
+        m.destroy(world, chest)
         chest.chest = InvalidChest
         chest_dirty(world, e)
     end
@@ -120,12 +161,12 @@ end
 
 local function chest_set(world, e, chest, item, type, limit)
     if chest.chest == InvalidChest then
-        chest.chest = world:container_create {{
+        chest.chest = m.create(world, {{
             item = item,
             type = type,
             limit = limit,
             amount = 0,
-        }}
+        }})
         chest_dirty(world, e)
         return
     end
@@ -150,7 +191,7 @@ function m.station_set(world, e, item)
         chest_reset(world, e, e.chest)
         return
     end
-    local limit = query(item).stack
+    local limit = prototype.queryById(item).stack
     chest_set(world, e, e.chest, item, e.station_producer and "blue" or "red", limit)
 end
 
@@ -159,7 +200,7 @@ function m.hub_set(world, e, item)
         chest_reset(world, e, e.hub)
         return
     end
-    local limit = query(item).pile & 0xffffff
+    local limit = prototype.queryById(item).pile & 0xffffff
     chest_set(world, e, e.hub, item, "blue", limit)
 end
 

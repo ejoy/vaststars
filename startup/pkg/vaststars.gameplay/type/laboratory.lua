@@ -1,5 +1,6 @@
 local type = require "register.type"
 local prototype = require "prototype"
+local iChest = require "interface.chest"
 
 local c = type "laboratory"
     .inputs "itemtypes"
@@ -29,7 +30,7 @@ local function createChest(world, s)
             limit = 2,
         }
     end
-    return world:container_create(container_in)
+    return iChest.create(world, container_in)
 end
 
 function c:ctor(init, pt)

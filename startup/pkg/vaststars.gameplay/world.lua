@@ -147,45 +147,6 @@ return function ()
     function world:fluidflow_query(fluid, id)
         return cworld:fluidflow_query(fluid, id)
     end
-
-    local CHEST_TYPE <const> = {
-        [0] = 0,
-        [1] = 1,
-        [2] = 2,
-        [3] = 3,
-        red = 0,
-        blue = 1,
-        green = 2,
-        none = 3,
-    }
-    local function chest_slot(t)
-        assert(t.type)
-        assert(t.item)
-        local id = t.item
-        if type(id) == "string" then
-            id = prototype.queryByName(id).id
-        end
-        return string.pack("<I1I1I2I2I2I2I2",
-            CHEST_TYPE[t.type],
-            0,
-            id,
-            t.amount or 0,
-            t.limit or 2,
-            t.lock_item or 0,
-            t.lock_space or 0
-        )
-    end
-
-    function world:container_create(items)
-        local t = {}
-        for _, item in ipairs(items) do
-            t[#t+1] = chest_slot(item)
-        end
-        return chest.create(cworld, table.concat(t))
-    end
-    function world:container_destroy(c)
-        return chest.destroy(cworld, c.chest)
-    end
     function world:container_get(c, i)
         return chest.get(cworld, c.chest, i)
     end

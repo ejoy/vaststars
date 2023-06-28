@@ -1,5 +1,6 @@
 local type = require "register.type"
 local prototype = require "prototype"
+local iChest = require "interface.chest"
 
 local c = type "lorry_factory"
     .starting "position"
@@ -8,12 +9,12 @@ local c = type "lorry_factory"
 function c:ctor(init, pt)
     local world = self
     local typeobject = prototype.queryByName(pt.item)
-    local chest = world:container_create {{
+    local chest = iChest.create(world, {{
         type = "red",
         item = typeobject.id,
         amount = 0,
         limit = typeobject.stack,
-    }}
+    }})
     return {
         lorry_factory = true,
         chest = {

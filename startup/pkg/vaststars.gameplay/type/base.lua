@@ -1,5 +1,5 @@
 local type = require "register.type"
-local prototype = require "prototype"
+local iChest = require "interface.chest"
 
 type "fluid"
 
@@ -69,7 +69,7 @@ function base:ctor(init, pt)
 
     return {
         base = {
-            chest = world:container_create(items),
+            chest = iChest.create(world, items),
         },
         base_changed = true,
     }
