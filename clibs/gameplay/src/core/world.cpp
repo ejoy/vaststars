@@ -102,7 +102,7 @@ namespace lua_world {
     int backup_world(lua_State* L);
     int restore_world(lua_State* L);
 
-    constexpr static intptr_t LuaFunction = 0x7000000000000000;
+    constexpr static intptr_t LuaFunction = 0;
 
     static int system_call(lua_State* L) {
         intptr_t* list = (intptr_t*)lua_touserdata(L, lua_upvalueindex(4));
