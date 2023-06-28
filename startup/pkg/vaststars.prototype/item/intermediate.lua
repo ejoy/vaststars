@@ -155,7 +155,7 @@ prototype "铝板" {
 prototype "铝棒" {
     type = {"item"},
     stack = 12,
-    pile = "2x2x4",
+    pile = "4x1x4",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ore.prefab",
     icon = "textures/construct/iron_stick.texture",
@@ -311,7 +311,7 @@ prototype "沙子" {
 prototype "塑料" {
     type = {"item"},
     stack = 12,
-    pile = "2x2x4",
+    pile = "4x1x4",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-gear.prefab",
     icon = "textures/construct/plastic.texture",
@@ -322,7 +322,7 @@ prototype "塑料" {
 prototype "电动机I" {
     type = {"item"},
     stack = 8,
-    pile = "2x2x4",
+    pile = "4x1x4",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-gear.prefab",
     icon = "textures/construct/electric-motor.texture",
@@ -344,7 +344,7 @@ prototype "铁齿轮" {
 prototype "玻璃" {
     type = {"item"},
     stack = 8,
-    pile = "2x2x4",
+    pile = "4x1x4",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-gear.prefab",
     icon = "textures/construct/glass.texture",
@@ -355,7 +355,7 @@ prototype "玻璃" {
 prototype "坩埚" {
     type = {"item"},
     stack = 4,
-    pile = "2x2x4",
+    pile = "4x1x4",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/crucible.texture",
@@ -366,7 +366,7 @@ prototype "坩埚" {
 prototype "橡胶" {
     type = {"item"},
     stack = 8,
-    pile = "2x2x4",
+    pile = "4x1x4",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/rubber.texture",
@@ -377,7 +377,7 @@ prototype "橡胶" {
 prototype "电容" {
     type = {"item"},
     stack = 8,
-    pile = "2x2x4",
+    pile = "4x1x4",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/capacitor.texture",
@@ -388,7 +388,7 @@ prototype "电容" {
 prototype "绝缘线" {
     type = {"item"},
     stack = 12,
-    pile = "2x2x4",
+    pile = "4x1x4",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/insulated-wire.texture",
@@ -399,7 +399,7 @@ prototype "绝缘线" {
 prototype "逻辑电路" {
     type = {"item"},
     stack = 8,
-    pile = "2x2x4",
+    pile = "4x1x4",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
@@ -410,7 +410,7 @@ prototype "逻辑电路" {
 prototype "数据线" {
     type = {"item"},
     stack = 12,
-    pile = "2x2x4",
+    pile = "4x1x4",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/insulated-wire.texture",
@@ -421,7 +421,7 @@ prototype "数据线" {
 prototype "运算电路" {
     type = {"item"},
     stack = 8,
-    pile = "2x2x4",
+    pile = "4x1x4",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
@@ -432,7 +432,7 @@ prototype "运算电路" {
 prototype "效能插件" {
     type = {"item"},
     stack = 8,
-    pile = "2x2x4",
+    pile = "4x1x4",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
@@ -443,7 +443,7 @@ prototype "效能插件" {
 prototype "产能插件" {
     type = {"item"},
     stack = 8,
-    pile = "2x2x4",
+    pile = "4x1x4",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
@@ -454,7 +454,7 @@ prototype "产能插件" {
 prototype "速度插件" {
     type = {"item"},
     stack = 8,
-    pile = "2x2x4",
+    pile = "4x1x4",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
@@ -465,7 +465,7 @@ prototype "速度插件" {
 prototype "广播塔" {
     type = {"item"},
     stack = 8,
-    pile = "2x2x4",
+    pile = "4x1x4",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
@@ -476,7 +476,7 @@ prototype "广播塔" {
 prototype "混凝土" {
     type = {"item"},
     stack = 8,
-    pile = "2x2x4",
+    pile = "4x1x4",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
@@ -487,7 +487,7 @@ prototype "混凝土" {
 prototype "电池" {
     type = {"item"},
     stack = 8,
-    pile = "2x2x4",
+    pile = "4x1x4",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
@@ -498,7 +498,7 @@ prototype "电池" {
 prototype "纤维玻璃" {
     type = {"item"},
     stack = 8,
-    pile = "2x2x4",
+    pile = "4x1x4",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
@@ -509,7 +509,7 @@ prototype "纤维玻璃" {
 prototype "隔热板" {
     type = {"item"},
     stack = 8,
-    pile = "2x2x4",
+    pile = "4x1x4",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
@@ -520,7 +520,7 @@ prototype "隔热板" {
 prototype "火箭控制器" {
     type = {"item"},
     stack = 12,
-    pile = "2x2x4",
+    pile = "4x1x4",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
@@ -531,7 +531,7 @@ prototype "火箭控制器" {
 prototype "火箭区段" {
     type = {"item"},
     stack = 12,
-    pile = "2x2x4",
+    pile = "4x1x4",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
@@ -542,7 +542,7 @@ prototype "火箭区段" {
 prototype "整流罩" {
     type = {"item"},
     stack = 4,
-    pile = "2x2x4",
+    pile = "4x1x4",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
@@ -689,7 +689,7 @@ prototype "无人机" {
 prototype "运输车框架" {
     type = {"item"},
     stack = 12,
-    pile = "2x2x4",
+    pile = "4x1x4",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/broken-truck.texture",
