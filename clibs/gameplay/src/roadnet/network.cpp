@@ -587,12 +587,11 @@ namespace roadnet {
             }
         }
         status.lorryStatusAry.reset(ecs_api::count<ecs::lorry>(w.ecs));
-        for (auto& e : ecs_api::select<ecs::lorry>(w.ecs)) {
-            auto& lorry = e.get<ecs::lorry>();
+        for (auto& lorry : ecs_api::array<ecs::lorry>(w.ecs)) {
             if (lorryInvalid(lorry)) {
                 continue;
             }
-            status.lorryStatusAry[e.getid()].endpoint = StraightRoad(lorry.ending).waitingLoction(*this);
+            status.lorryStatusAry[getLorryId(lorry).get_index()].endpoint = StraightRoad(lorry.ending).waitingLoction(*this);
         }
 
         // step.2
@@ -872,8 +871,7 @@ namespace roadnet {
             }
         }
 
-        for (auto& e : ecs_api::select<ecs::endpoint>(w.ecs)) {
-            auto& endpoint = e.get<ecs::endpoint>();
+        for (auto& endpoint : ecs_api::array<ecs::endpoint>(w.ecs)) {
             if (endpoint.rev_neighbor) {
                 if (auto res = endpointWillReset.find(endpoint.rev_neighbor)) {
                     assert(endpoint.lorry >= *res);
@@ -913,8 +911,7 @@ namespace roadnet {
         if (n > 0) {
             updateRemoveLorry(w, n);
         }
-        for (auto& e : ecs_api::select<ecs::lorry>(w.ecs)) {
-            auto& lorry = e.get<ecs::lorry>();
+        for (auto& lorry : ecs_api::array<ecs::lorry>(w.ecs)) {
             if (lorryInvalid(lorry)) {
                 continue;
             }

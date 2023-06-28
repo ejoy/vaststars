@@ -249,8 +249,7 @@ lbuild(lua_State *L) {
     }
     b.hubs = std::move(hubs);
 
-    for (auto& v : ecs_api::select<ecs::drone>(w.ecs)) {
-        auto& drone = v.get<ecs::drone>();
+    for (auto& drone : ecs_api::array<ecs::drone>(w.ecs)) {
         auto status = (drone_status)drone.status;
         switch (status) {
         case drone_status::has_error:
@@ -709,8 +708,7 @@ static void Update(world& w, ecs::drone& drone) {
 static int
 lupdate(lua_State *L) {
     auto& w = getworld(L);
-    for (auto& v : ecs_api::select<ecs::drone>(w.ecs)) {
-        auto& drone = v.get<ecs::drone>();
+    for (auto& drone : ecs_api::array<ecs::drone>(w.ecs)) {
         switch ((drone_status)drone.status) {
         case drone_status::at_home:
             CheckHasHome(w, drone, +[](world& w, ecs::drone& drone, hub_mgr::hub_info const& info) {
