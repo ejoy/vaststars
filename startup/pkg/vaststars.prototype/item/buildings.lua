@@ -8,7 +8,7 @@ prototype "指挥中心" {
     group = {"物流"},
     stack = 1,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 1,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "存储材料和装配运输汽车的核心建筑",
 }
@@ -17,7 +17,7 @@ prototype "组装机I" {
     group = {"加工"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "用来打印工业产品或建筑框架的设备",
 }
@@ -27,7 +27,7 @@ prototype "组装机II" {
     group = {"加工"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "用来打印工业产品或建筑框架的设备",
 }
@@ -37,7 +37,7 @@ prototype "组装机III" {
     group = {"加工"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "用来打印工业产品或建筑框架的设备",
 }
@@ -47,7 +47,7 @@ prototype "熔炼炉I" {
     group = {"加工"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "用来熔炼矿石和精炼金属的设备",
 }
@@ -57,7 +57,7 @@ prototype "熔炼炉II" {
     group = {"加工"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "用来熔炼矿石和精炼金属的设备",
 }
@@ -67,7 +67,7 @@ prototype "熔炼炉III" {
     group = {"加工"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "用来熔炼矿石和精炼金属的设备",
 }
@@ -77,7 +77,7 @@ prototype "小铁制箱子I" {
     group = {"物流"},
     stack = 5,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     item_description = "贮藏物品的容器",
 }
 
@@ -86,7 +86,7 @@ prototype "小铁制箱子II" {
     group = {"物流"},
     stack = 5,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     item_description = "贮藏物品的容器",
 }
 
@@ -95,7 +95,7 @@ prototype "大铁制箱子I" {
     group = {"物流"},
     stack = 5,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     item_description = "贮藏物品的容器",
 }
 
@@ -104,7 +104,7 @@ prototype "仓库" {
     group = {"物流"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     item_description = "贮藏物品的容器",
 }
 
@@ -113,7 +113,7 @@ prototype "无人机仓库I" {
     group = {"物流"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "使用无人机运输并储存货物的仓库",
 }
@@ -123,7 +123,7 @@ prototype "无人机仓库II" {
     group = {"物流"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "使用无人机运输并储存货物的仓库",
 }
@@ -133,7 +133,7 @@ prototype "无人机仓库III" {
     group = {"物流"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "使用无人机运输并储存货物的仓库",
 }
@@ -143,7 +143,7 @@ prototype "采矿机I" {
     group = {"加工"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "用来挖掘地面矿物资源的设备",
 }
@@ -153,7 +153,7 @@ prototype "采矿机II" {
     group = {"加工"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "用来挖掘地面矿物资源的设备",
 }
@@ -163,7 +163,7 @@ prototype "采矿机III" {
     group = {"加工"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "用来挖掘地面矿物资源的设备",
 }
@@ -173,7 +173,7 @@ prototype "蒸汽发电机I" {
     group = {"物流"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "将蒸汽的热能转换成电能的设备",
 }
@@ -183,7 +183,7 @@ prototype "蒸汽发电机II" {
     group = {"物流"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "将蒸汽的热能转换成电能的设备",
 }
@@ -193,7 +193,7 @@ prototype "蒸汽发电机III" {
     group = {"物流"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "将蒸汽的热能转换成电能的设备",
 }
@@ -203,7 +203,7 @@ prototype "化工厂I" {
     group = {"化工"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "从事化学工业和处理化学原料的工厂",
 }
@@ -213,7 +213,7 @@ prototype "化工厂II" {
     group = {"化工"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "从事化学工业和处理化学原料的工厂",
 }
@@ -223,7 +223,7 @@ prototype "化工厂III" {
     group = {"化工"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "从事化学工业和处理化学原料的工厂",
 }
@@ -233,7 +233,7 @@ prototype "铸造厂I" {
     group = {"加工"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "铸造金属的工厂",
 }
@@ -243,7 +243,7 @@ prototype "蒸馏厂I" {
     group = {"化工"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "使用蒸馏方式对液态原料精加工的工厂",
 }
@@ -253,7 +253,7 @@ prototype "蒸馏厂II" {
     group = {"化工"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "使用蒸馏方式对液态原料精加工的工厂",
 }
@@ -263,7 +263,7 @@ prototype "蒸馏厂III" {
     group = {"化工"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "使用蒸馏方式对液态原料精加工的工厂",
 }
@@ -273,7 +273,7 @@ prototype "粉碎机I" {
     group = {"加工"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "用于粉碎矿石或其他固体的设备",
 }
@@ -283,7 +283,7 @@ prototype "粉碎机II" {
     group = {"加工"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "用于粉碎矿石或其他固体的设备",
 }
@@ -293,7 +293,7 @@ prototype "粉碎机III" {
     group = {"加工"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "用于粉碎矿石或其他固体的设备",
 }
@@ -303,7 +303,7 @@ prototype "浮选器I" {
     group = {"加工"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "用于浮沉矿石进行分离的机器",
 }
@@ -313,7 +313,7 @@ prototype "浮选器II" {
     group = {"加工"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "用于浮沉矿石进行分离的机器",
 }
@@ -323,7 +323,7 @@ prototype "浮选器III" {
     group = {"加工"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "用于浮沉矿石进行分离的机器",
 }
@@ -334,7 +334,7 @@ prototype "风力发电机I" {
     group = {"物流"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "利用风能转换电能的装置",
 }
@@ -344,7 +344,7 @@ prototype "铁制电线杆" {
     group = {"物流"},
     stack = 25,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "用于传输电力的铁制电杆",
 }
@@ -354,7 +354,7 @@ prototype "远程电线杆" {
     group = {"物流"},
     stack = 25,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "用于传输电力的铁制电杆",
 }
@@ -364,7 +364,7 @@ prototype "广域电线杆" {
     group = {"物流"},
     stack = 25,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "用于传输电力的铁制电杆",
 }
@@ -374,7 +374,7 @@ prototype "科研中心I" {
     group = {"物流"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "用于科学研究与试验设计的设施",
 }
@@ -384,7 +384,7 @@ prototype "科研中心II" {
     group = {"物流"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "用于科学研究与试验设计的设施",
 }
@@ -394,7 +394,7 @@ prototype "科研中心III" {
     group = {"物流"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "用于科学研究与试验设计的设施",
 }
@@ -404,7 +404,7 @@ prototype "出货车站" {
     group = {"物流"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "给运输车提供货物的车站",
 }
@@ -414,7 +414,7 @@ prototype "收货车站" {
     group = {"物流"},
     stack = 8,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "从运输车收取货物的车站",
 }
@@ -424,7 +424,7 @@ prototype "电解厂I" {
     group = {"化工"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "用电化学反应处理液体的工厂",
 }
@@ -434,7 +434,7 @@ prototype "电解厂II" {
     group = {"化工"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "用电化学反应处理液体的工厂",
 }
@@ -444,7 +444,7 @@ prototype "电解厂III" {
     group = {"化工"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "用电化学反应处理液体的工厂",
 }
@@ -454,7 +454,7 @@ prototype "太阳能板I" {
     group = {"物流"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "收集太阳能并利用光电效应发电的装置",
 }
@@ -464,7 +464,7 @@ prototype "太阳能板II" {
     group = {"物流"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "收集太阳能并利用光电效应发电的装置",
 }
@@ -474,7 +474,7 @@ prototype "太阳能板III" {
     group = {"物流"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "收集太阳能并利用光电效应发电的装置",
 }
@@ -484,7 +484,7 @@ prototype "蓄电池I" {
     group = {"物流"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "可充电和放电的蓄电装置",
 }
@@ -494,7 +494,7 @@ prototype "蓄电池II" {
     group = {"物流"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "可充电和放电的蓄电装置",
 }
@@ -504,7 +504,7 @@ prototype "蓄电池III" {
     group = {"物流"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "可充电和放电的蓄电装置",
 }
@@ -514,7 +514,7 @@ prototype "水电站I" {
     group = {"化工"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "处理气液的工厂",
 }
@@ -524,7 +524,7 @@ prototype "水电站II" {
     group = {"化工"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "处理气液的工厂",
 }
@@ -534,7 +534,7 @@ prototype "水电站III" {
     group = {"化工"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "处理气液的工厂",
 }
@@ -544,7 +544,7 @@ prototype "砖石公路-X型" {
     group = {"物流"},
     stack = 100,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "供车辆行驶的砖石公路",
 }
@@ -557,7 +557,7 @@ prototype "运输车辆I" {
     capacitance = "10MJ",
     speed = 63,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/truck.texture",
     model = "prefabs/lorry-1.prefab",
@@ -568,7 +568,7 @@ prototype "换热器I" {
     group = {"物流"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "将水变成蒸汽的机器",
 }
@@ -578,7 +578,7 @@ prototype "地热井I" {
     group = {"物流"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "通过地下钻探获取地热资源的装置",
 }
@@ -588,7 +588,7 @@ prototype "锅炉I" {
     group = {"物流"},
     stack = 10,
     pile = "4x1x4",
-    backpack_stack = 16,
+    backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "通过加热将水变成蒸汽的装置",
 }
@@ -598,7 +598,7 @@ prototype "热管1-X型" {
     group = {"物流"},
     stack = 50,
     pile = "4x4x4",
-    backpack_stack = 64,
+    backpack_stack = 100,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "传导热量的特殊管道",
 }
