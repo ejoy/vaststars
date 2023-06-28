@@ -1,4 +1,5 @@
 local system = require "register.system"
+local cFluidflow = require "vaststars.fluidflow.core"
 local prototype = require "prototype"
 local query = prototype.queryById
 
@@ -111,14 +112,14 @@ end
 
 local function builder_build(world, fluid, id, fluidbox)
     if id ~= 0 then
-        world._cworld:fluidflow_rebuild(fluid, id)
+        cFluidflow.rebuild(world._cworld, fluid, id)
         return
     end
     local pumping_speed = fluidbox.pumping_speed
     if pumping_speed then
         pumping_speed = pumping_speed // UPS
     end
-    return world._cworld:fluidflow_build(fluid, fluidbox.capacity, fluidbox.height, fluidbox.base_level, pumping_speed)
+    return cFluidflow.build(world._cworld, fluid, fluidbox.capacity, fluidbox.height, fluidbox.base_level, pumping_speed)
 end
 
 local function builder_restore(world, fluid, id, fluidbox)
@@ -126,7 +127,7 @@ local function builder_restore(world, fluid, id, fluidbox)
     if pumping_speed then
         pumping_speed = pumping_speed // UPS
     end
-    return world._cworld:fluidflow_restore(fluid, id, fluidbox.capacity, fluidbox.height, fluidbox.base_level, pumping_speed)
+    return cFluidflow.restore(world._cworld, fluid, id, fluidbox.capacity, fluidbox.height, fluidbox.base_level, pumping_speed)
 end
 
 local function connect(connects, a_id, a_type, b_id, b_type)
@@ -266,13 +267,13 @@ end
 local function builder_finish(world)
     for fluid, c in pairs(builder) do
         builder_groud(c)
-        world._cworld:fluidflow_connect(fluid, c.connects)
+        cFluidflow.connect(world._cworld, fluid, c.connects)
     end
 end
 
 local function teardown(w, fluid, id)
     if id ~= 0 then
-        w._cworld:fluidflow_teardown(fluid, id)
+        cFluidflow.teardown(w._cworld, fluid, id)
     end
 end
 
@@ -373,7 +374,7 @@ function m.backup_start(world)
         if fluid == 0 or id == 0 then
             return
         end
-        local volume = world:fluidflow_query(fluid, id).volume
+        local volume = cFluidflow.query(world._cworld, fluid, id).volume
         ecs:new {
             save_fluidflow = {
                 fluid = fluid,
@@ -432,7 +433,7 @@ function m.restore_finish(world)
     builder_finish(world)
     for v in ecs:select "save_fluidflow:in" do
         local sav = v.save_fluidflow
-        world._cworld:fluidflow_set(sav.fluid, sav.id, sav.volume, 1)
+        cFluidflow.set(world._cworld, sav.fluid, sav.id, sav.volume, 1)
     end
     ecs:clear "save_fluidflow"
 end

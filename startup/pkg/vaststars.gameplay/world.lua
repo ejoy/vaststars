@@ -5,6 +5,7 @@ local status = require "status"
 local prototype = require "prototype"
 local cWorld = require "vaststars.world.core"
 local cChest = require "vaststars.chest.core"
+local cFluidflow = require "vaststars.fluidflow.core"
 local iBuilding = require "interface.building"
 
 local function pipeline(world, cworld, name)
@@ -145,7 +146,7 @@ return function ()
     end
 
     function world:fluidflow_query(fluid, id)
-        return cworld:fluidflow_query(fluid, id)
+        return cFluidflow.query(cworld, fluid, id)
     end
     function world:container_get(c, i)
         return cChest.get(cworld, c.chest, i)

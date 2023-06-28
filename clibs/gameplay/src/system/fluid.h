@@ -21,6 +21,6 @@ struct fluidflow {
 
     fluidflow_network* network;
     uint16_t maxid = 0;
-    static const int multiple = 100;
+    static constexpr int multiple = 100;
     std::vector<uint16_t> freelist;
 };

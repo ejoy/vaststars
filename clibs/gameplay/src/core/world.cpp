@@ -12,7 +12,6 @@ extern "C" {
 
 #if defined(_WIN32)
     #include <windows.h>
-#else
 #endif
 
 namespace lua_world {
@@ -119,136 +118,6 @@ namespace lua_world {
     destroy(lua_State* L) {
         auto& w = getworld(L);
         w.~world();
-        return 0;
-    }
-    
-    static int
-    fluidflow_build(lua_State *L) {
-        auto& w = getworld(L);
-        uint16_t fluid = checkinteger<uint16_t>(L, 2);
-        int capacity = checkinteger<int>(L, 3);
-        int height =  checkinteger<int>(L, 4);
-        int base_level = checkinteger<int>(L, 5);
-        int pumping_speed = optinteger<int>(L, 6, 0);
-        fluid_box box {
-            .capacity = capacity,
-            .height = height,
-            .base_level = base_level,
-            .pumping_speed = pumping_speed,
-        };
-        uint16_t id = w.fluidflows[fluid].build(&box);
-        if (id == 0) {
-            return luaL_error(L, "fluidflow build failed.");
-        }
-        lua_pushinteger(L, id);
-        return 1;
-    }
-
-    static int
-    fluidflow_rebuild(lua_State *L) {
-        auto& w = getworld(L);
-        uint16_t fluid = checkinteger<uint16_t>(L, 2);
-        uint16_t id = checkinteger<uint16_t>(L, 3);
-        w.fluidflows[fluid].rebuild(id);
-        return 0;
-    }
-
-    static int
-    fluidflow_restore(lua_State *L) {
-        auto& w = getworld(L);
-        uint16_t fluid = checkinteger<uint16_t>(L, 2);
-        uint16_t id = checkinteger<uint16_t>(L, 3);
-        int capacity =  checkinteger<int>(L, 4);
-        int height =  checkinteger<int>(L, 5);
-        int base_level =  checkinteger<int>(L, 6);
-        int pumping_speed = optinteger<int>(L, 7, 0);
-        fluid_box box {
-            .capacity = capacity,
-            .height = height,
-            .base_level = base_level,
-            .pumping_speed = pumping_speed,
-        };
-        bool ok = w.fluidflows[fluid].restore(id, &box);
-        if (!ok) {
-            return luaL_error(L, "fluidflow restore failed.");
-        }
-        return 0;
-    }
-
-    static int
-    fluidflow_teardown(lua_State *L) {
-        auto& w = getworld(L);
-        uint16_t fluid = checkinteger<uint16_t>(L, 2);
-        uint16_t id = checkinteger<uint16_t>(L, 3);
-        bool ok = w.fluidflows[fluid].teardown(id);
-        if (!ok) {
-            return luaL_error(L, "fluidflow teardown failed.");
-        }
-        return 0;
-    }
-
-    static int
-    fluidflow_connect(lua_State *L) {
-        auto& w = getworld(L);
-        uint16_t fluid = checkinteger<uint16_t>(L, 2);
-        fluidflow& flow = w.fluidflows[fluid];
-        luaL_checktype(L, 3, LUA_TTABLE);
-        lua_Integer n = luaL_len(L, 3);
-        for (lua_Integer i = 1; i+2 <= n; i += 3) {
-            lua_rawgeti(L, 3, i);
-            lua_rawgeti(L, 3, i+1);
-            lua_rawgeti(L, 3, i+2);
-            uint16_t from = checkinteger<uint16_t>(L, -3);
-            uint16_t to = checkinteger<uint16_t>(L, -2);
-            bool oneway = !!lua_toboolean(L, -1);
-            bool ok =  flow.connect(from, to, oneway);
-            if (!ok) {
-                return luaL_error(L, "fluidflow connect failed.");
-            }
-            lua_pop(L, 3);
-        }
-        return 0;
-    }
-
-    static int
-    fluidflow_query(lua_State *L) {
-        auto& w = getworld(L);
-        uint16_t fluid = checkinteger<uint16_t>(L, 2);
-
-        auto& f = w.fluidflows[fluid];
-        uint16_t id = checkinteger<uint16_t>(L, 3);
-        fluid_state state;
-        if (!f.query(id, state)) {
-            return luaL_error(L, "fluidflow query failed.");
-        }
-        lua_createtable(L, 0, 7);
-        lua_pushinteger(L, f.multiple);
-        lua_setfield(L, -2, "multiple");
-        lua_pushinteger(L, state.volume);
-        lua_setfield(L, -2, "volume");
-        lua_pushinteger(L, state.flow);
-        lua_setfield(L, -2, "flow");
-        lua_pushinteger(L, state.box.capacity);
-        lua_setfield(L, -2, "capacity");
-        lua_pushinteger(L, state.box.height);
-        lua_setfield(L, -2, "height");
-        lua_pushinteger(L, state.box.base_level);
-        lua_setfield(L, -2, "base_level");
-        lua_pushinteger(L, state.box.pumping_speed);
-        lua_setfield(L, -2, "pumping_speed");
-        return 1;
-    }
-
-    static int
-    fluidflow_set(lua_State *L) {
-        auto& w = getworld(L);
-        uint16_t fluid = checkinteger<uint16_t>(L, 2);
-
-        auto& f = w.fluidflows[fluid];
-        uint16_t id = checkinteger<uint16_t>(L, 3);
-        int value = checkinteger<int>(L, 4);
-        int multiple = optinteger<int>(L, 5, f.multiple);
-        f.set(id, value, multiple);
         return 0;
     }
 
@@ -382,14 +251,6 @@ namespace lua_world {
                 {"is_researched", is_researched},
                 {"research_queue", research_queue},
                 {"research_progress", research_progress},
-                // fluidflow
-                { "fluidflow_build", fluidflow_build },
-                { "fluidflow_restore", fluidflow_restore },
-                { "fluidflow_teardown", fluidflow_teardown },
-                { "fluidflow_connect", fluidflow_connect },
-                { "fluidflow_query", fluidflow_query },
-                { "fluidflow_set", fluidflow_set },
-                { "fluidflow_rebuild", fluidflow_rebuild },
                 // saveload
                 { "backup_world", backup_world },
                 { "restore_world", restore_world },
