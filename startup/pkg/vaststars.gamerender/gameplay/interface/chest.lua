@@ -46,7 +46,6 @@ function M.first_item(world, e, item)
 end
 
 function M.get_amount(slot)
-    -- return slot.amount - slot.lock_item
     return slot.amount
 end
 
@@ -63,11 +62,16 @@ local function __get_item_stack(item)
     return typeobject.stack or 0
 end
 
+local function __get_backpack_stack(item)
+    local typeobject = assert(iprototype.queryById(item))
+    return typeobject.backpack_stack or 0
+end
+
 -- item count
 -- this function assumes that there are already enough items in the chest
 function M.move_to_inventory(world, chest, item, count)
     local existing = iBackpack.query(world, item)
-    local stack = __get_item_stack(item)
+    local stack = __get_backpack_stack(item)
     if existing >= stack then
         return false
     end
@@ -93,7 +97,7 @@ function M.move_to_inventory(world, chest, item, count)
 end
 
 function M.get_moveable_count(world, item, count)
-    local stack = __get_item_stack(item)
+    local stack = __get_backpack_stack(item)
     local existing = iBackpack.query(world, item)
     if existing >= stack then
         log.debug(("get_moveable_count: %s %s >= %s"):format(item, existing, stack))
