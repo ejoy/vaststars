@@ -10,6 +10,24 @@ prototype "液罐I" {
     item_description = "专门贮藏液体的容器",
 }
 
+prototype "液罐II" {
+    type = {"item"},
+    group = {"化工"},
+    stack = 10,
+    pile = "4x1x4",
+    backpack_stack = 20,
+    item_description = "专门贮藏液体的容器",
+}
+
+prototype "液罐III" {
+    type = {"item"},
+    group = {"化工"},
+    stack = 10,
+    pile = "4x1x4",
+    backpack_stack = 20,
+    item_description = "专门贮藏液体的容器",
+}
+
 prototype "气罐I" {
     type = {"item"},
     group = {"化工"},
@@ -20,6 +38,15 @@ prototype "气罐I" {
 }
 
 prototype "地下水挖掘机I" {
+    type = {"item"},
+    group = {"化工"},
+    stack = 10,
+    pile = "4x1x4",
+    backpack_stack = 20,
+    item_description = "从水源抽取水的装置",
+}
+
+prototype "地下水挖掘机II" {
     type = {"item"},
     group = {"化工"},
     stack = 10,
@@ -46,6 +73,15 @@ prototype "烟囱I" {
     item_description = "用来排放气体的装置",
 }
 
+prototype "烟囱II" {
+    type = {"item"},
+    group = {"化工"},
+    stack = 10,
+    pile = "4x1x4",
+    backpack_stack = 20,
+    item_description = "用来排放气体的装置",
+}
+
 prototype "排水口I" {
     type = {"item"},
     group = {"化工"},
@@ -55,7 +91,34 @@ prototype "排水口I" {
     item_description = "用来排放液体的装置",
 }
 
+prototype "排水口II" {
+    type = {"item"},
+    group = {"化工"},
+    stack = 10,
+    pile = "4x1x4",
+    backpack_stack = 20,
+    item_description = "用来排放液体的装置",
+}
+
 prototype "空气过滤器I" {
+    type = {"item"},
+    group = {"化工"},
+    stack = 10,
+    pile = "4x1x4",
+    backpack_stack = 20,
+    item_description = "抽取空气的装置",
+}
+
+prototype "空气过滤器II" {
+    type = {"item"},
+    group = {"化工"},
+    stack = 10,
+    pile = "4x1x4",
+    backpack_stack = 20,
+    item_description = "抽取空气的装置",
+}
+
+prototype "空气过滤器III" {
     type = {"item"},
     group = {"化工"},
     stack = 10,

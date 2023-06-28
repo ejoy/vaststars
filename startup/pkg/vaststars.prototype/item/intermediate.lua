@@ -330,6 +330,28 @@ prototype "电动机I" {
     group = {"器件"},
 }
 
+prototype "电动机II" {
+    type = {"item"},
+    stack = 8,
+    pile = "4x1x4",
+    backpack_stack = 25,
+    pile_model = "prefabs/stackeditems/iron-gear.prefab",
+    icon = "textures/construct/electric-motor.texture",
+    item_description = "一种机械加工品",
+    group = {"器件"},
+}
+
+prototype "电动机III" {
+    type = {"item"},
+    stack = 8,
+    pile = "4x1x4",
+    backpack_stack = 25,
+    pile_model = "prefabs/stackeditems/iron-gear.prefab",
+    icon = "textures/construct/electric-motor.texture",
+    item_description = "一种机械加工品",
+    group = {"器件"},
+}
+
 prototype "铁齿轮" {
     type = {"item"},
     stack = 8,

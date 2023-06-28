@@ -542,12 +542,31 @@ prototype "采矿机2" {
     ingredients = {
         {"碳化铝", 2},
         {"钢板", 5},
+        {"电动机II", 1},
         {"采矿机I", 1},
     },
     results = {
         {"采矿机II", 1},
     },
     time = "10s",
+    description = "使用铁制品和电动机制造采矿机",
+}
+
+prototype "采矿机3" {
+    type = { "recipe" },
+    category = "生产中型制造",
+    recipe_group =  "加工",
+    recipe_order =  40,
+    recipe_icon =  "textures/construct/miner.texture",
+    ingredients = {
+        {"钛板", 4},
+        {"电动机III", 1},
+        {"采矿机II", 1},
+    },
+    results = {
+        {"采矿机III", 1},
+    },
+    time = "20s",
     description = "使用铁制品和电动机制造采矿机",
 }
 
@@ -583,6 +602,24 @@ prototype "熔炼炉2" {
         {"熔炼炉II", 1},
     },
     time = "15s",
+    description = "使用铁制品和石砖制造熔炼炉",
+}
+
+prototype "熔炼炉3" {
+    type = { "recipe" },
+    category = "生产中型制造",
+    recipe_group =  "加工",
+    recipe_order =  51,
+    recipe_icon =  "textures/construct/furnace2.texture",
+    ingredients = {
+        {"钛板", 5},
+        {"空气过滤器II", 1},
+        {"熔炼炉II", 1},
+    },
+    results = {
+        {"熔炼炉III", 1},
+    },
+    time = "30s",
     description = "使用铁制品和石砖制造熔炼炉",
 }
 
@@ -649,7 +686,7 @@ prototype "地热井1" {
         {"铝板", 20},
         {"铝棒", 10},
         {"管道1-X型", 30},
-        {"地下水挖掘机", 3},
+        {"地下水挖掘机I", 3},
     },
     results = {
         {"地热井I", 1},
@@ -771,7 +808,7 @@ prototype "水电站1" {
     recipe_icon =  "textures/construct/hydroplant.texture",
     ingredients = {
         {"蒸馏厂I", 1},
-        {"地下水挖掘机", 1},
+        {"地下水挖掘机I", 1},
     },
     results = {
         {"水电站I", 1},
@@ -1966,7 +2003,7 @@ prototype "地下水挖掘机打印" {
         {"压力泵I", 1},
     },
     results = {
-        {"地下水挖掘机", 1},
+        {"地下水挖掘机I", 1},
     },
     time = "10s",
     description = "打印可挖掘地下水的装置",
