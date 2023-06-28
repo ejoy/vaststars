@@ -137,12 +137,6 @@ return function ()
     function world:container_set(c, i, t)
         return cChest.set(cworld, c.chest, i, t)
     end
-    function world:container_pickup(c, item, amount)
-        return cChest.pickup(cworld, c.chest, item, amount)
-    end
-    function world:container_place(c, item, amount)
-        cChest.place(cworld, c.chest, item, amount)
-    end
     function world:now()
         return self._frame
     end

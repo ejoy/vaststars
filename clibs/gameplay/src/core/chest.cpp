@@ -146,25 +146,6 @@ container::slot* chest::find_item(world& w, container::index c, uint16_t item) {
     return nullptr;
 }
 
-bool chest::pickup(world& w, container::index c, uint16_t item, uint16_t amount) {
-    if (auto s = find_item(w, c, item)) {
-        if (amount + s->lock_item > s->amount) {
-            return false;
-        }
-        s->amount -= amount;
-        return true;
-    }
-    return false;
-}
-
-bool chest::place(world& w, container::index c, uint16_t item, uint16_t amount) {
-    if (auto s = find_item(w, c, item)) {
-        s->amount += amount;
-        return true;
-    }
-    return false;
-}
-
 static int
 lcreate(lua_State* L) {
     auto& w = getworld(L);
@@ -266,27 +247,6 @@ lset(lua_State* L) {
     return 0;
 }
 
-static int
-lpickup(lua_State* L) {
-    auto& w = getworld(L);
-    uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
-    uint16_t item = (uint16_t)luaL_checkinteger(L, 3);
-    uint16_t amount = (uint16_t)luaL_checkinteger(L, 4);
-    bool ok = chest::pickup(w, container::index::from(index), item, amount);
-    lua_pushboolean(L, ok);
-    return 1;
-}
-
-static int
-lplace(lua_State* L) {
-    auto& w = getworld(L);
-    uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
-    uint16_t item = (uint16_t)luaL_checkinteger(L, 3);
-    uint16_t amount = (uint16_t)luaL_checkinteger(L, 4);
-    chest::place(w, container::index::from(index), item, amount);
-    return 0;
-}
-
 extern "C" int
 luaopen_vaststars_chest_core(lua_State *L) {
     luaL_checkversion(L);
@@ -295,8 +255,6 @@ luaopen_vaststars_chest_core(lua_State *L) {
         { "destroy", ldestroy },
         { "get", lget },
         { "set", lset },
-        { "pickup", lpickup },
-        { "place", lplace },
         { NULL, NULL },
     };
     luaL_newlib(L, l);

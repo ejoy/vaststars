@@ -257,10 +257,6 @@ namespace chest {
     void     limit(world& w, container::index c, const uint16_t* r, uint16_t n);
     uint16_t size(world& w, container::index c);
 
-    // for lua api
-    bool pickup(world& w, container::index c, uint16_t item, uint16_t amount);
-    bool place(world& w, container::index c, uint16_t item, uint16_t amount);
-
     // for trading
     container::slot* find_item(world& w, container::index c, uint16_t item);
 }
