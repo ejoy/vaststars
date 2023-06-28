@@ -72,7 +72,7 @@ local function isFluidId(id)
     return false
 end
 
-local function resetItems(world, recipe, chest, option, maxslot)
+local function assembling_reset_items(world, recipe, chest, option, maxslot)
     local ingredients_n <const> = #recipe.ingredients//4 - 1
     local results_n <const> = #recipe.results//4 - 1
     local hash = {}
@@ -80,7 +80,7 @@ local function resetItems(world, recipe, chest, option, maxslot)
     local newitems = {}
     if chest.chest ~= InvalidChest then
         for i = 1, 256 do
-            local slot = world:container_get(chest, i)
+            local slot = cChest.get(world._cworld, chest, 1)
             if not slot then
                 break
             end
@@ -118,12 +118,13 @@ local function resetItems(world, recipe, chest, option, maxslot)
         create_slot(isFluidId(id) and "none" or "red", id, n * option.resultsLimit)
     end
     for i = count, 1, -1 do
-        if #newitems > maxslot + ingredients_n then
-            break
-        end
         local v = olditems[i]
-        if v and v.type == "red" then
-            create_slot(v.type, v.item, v.amount)
+        if #newitems > maxslot + ingredients_n then
+            iBackpack.place(world, v.item, v.amount)
+        else
+            if v and v.type == "red" then
+                create_slot(v.type, v.item, v.amount)
+            end
         end
     end
     return newitems
@@ -135,7 +136,7 @@ local function assembling_set(world, e, recipe, option, maxslot)
         ingredientsLimit = 2,
         resultsLimit = 2,
     }
-    local items = resetItems(world, recipe, chest, option, maxslot)
+    local items = assembling_reset_items(world, recipe, chest, option, maxslot)
     if chest.chest ~= InvalidChest then
         chest_destroy(world, chest, false)
     end
@@ -154,27 +155,29 @@ end
 local function chest_set(world, e, chest, item, type, limit)
     if chest.chest == InvalidChest then
         chest.chest = m.create(world, {{
-            item = item,
             type = type,
+            item = item,
             limit = limit,
             amount = 0,
         }})
         chest_dirty(world, e)
         return
     end
-    local slot = world:container_get(chest, 1)
+    local slot = cChest.get(world._cworld, chest, 1)
     assert(slot)
     if slot.item == item then
         if slot.limit ~= limit then
-            slot.limit = limit
-            world:container_set(chest, 1, slot)
+            cChest.set(world._cworld, chest.chest, 1, {
+                limit = limit,
+            })
         end
         return
     end
-    slot.item = item
-    slot.limit = limit
-    slot.amount = 0
-    world:container_set(chest, 1, slot)
+    cChest.set(world._cworld, chest.chest, 1, {
+        item = item,
+        limit = limit,
+        amount = 0,
+    })
     chest_dirty(world, e)
 end
 
