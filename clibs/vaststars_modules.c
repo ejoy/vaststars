@@ -45,6 +45,7 @@ static void loadmodules(lua_State* L) {
     CORE(chest)
     CORE(world)
     CORE(version)
+    CORE(backpack)
 }
 
 LUALIB_API void luaL_openlibs (lua_State *L) {

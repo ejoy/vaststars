@@ -10,6 +10,11 @@ component "building" {
     "direction:byte",	-- 0:North 1:East 2:South 3:West
 }
 
+component "backpack" {
+    "item:word",
+    "amount:word",
+}
+
 component "chest" {
     "chest:word",
 }

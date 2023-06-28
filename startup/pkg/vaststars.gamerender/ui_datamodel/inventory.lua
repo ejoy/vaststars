@@ -13,6 +13,7 @@ local click_item_mb = mailbox:sub {"click_item"}
 local to_chest_mb = mailbox:sub {"to_chest"}
 local to_headquater_mb = mailbox:sub {"to_headquater"}
 local iworld = require "gameplay.interface.world"
+local iBackpack = import_package "vaststars.gameplay".interface "backpack"
 
 local item_id_to_info = {}
 local recipe_to_category = {}
@@ -63,8 +64,7 @@ local function get_inventory(object_id)
     local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if e then
-        local items = ichest.collect_item(gameplay_core.get_world(), e.base)
-        for _, slot in pairs(items) do
+        for _, slot in pairs(iBackpack.all()) do
             local typeobject_item = assert(iprototype.queryById(slot.item))
 
             local t = {}
@@ -72,7 +72,7 @@ local function get_inventory(object_id)
             t.name = typeobject_item.name
             t.icon = typeobject_item.icon
             t.category = typeobject_item.group
-            t.count = ichest.get_amount(slot)
+            t.count = slot.amount
             inventory[#inventory+1] = t
         end
     end
