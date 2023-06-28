@@ -25,6 +25,7 @@ local terrain = ecs.require "terrain"
 local gameplay_core = require "gameplay.core"
 local ibuilding = ecs.import.interface "vaststars.gamerender|ibuilding"
 local create_pickup_icon_chimney = ecs.require "pickup_icon_chimney".create
+local ibackpack = require "gameplay.interface.backpack"
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -587,9 +588,9 @@ local function complete(self, object_id, datamodel)
 
     local object = assert(objects:get(object_id))
     local typeobject = iprototype.queryByName(object.prototype_name)
-    assert(ichest.inventory_pickup(gameplay_core.get_world(), typeobject.id, 1))
+    assert(ibackpack.pickup(gameplay_core.get_world(), typeobject.id, 1))
 
-    local continue_construct = ichest.get_inventory_item_count(gameplay_core.get_world(), typeobject.id) > 0
+    local continue_construct = ibackpack.query(gameplay_core.get_world(), typeobject.id) > 0
     if not continue_construct then
         return false
     else

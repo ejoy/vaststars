@@ -224,15 +224,6 @@ local CHEST_TYPES <const> = {
     "base",
 }
 
-local CHEST_COMPONENT <const> = {
-    ["assembling"] = "chest",
-    ["chest"] = "chest",
-    ["laboratory"] = "chest",
-    ["station_producer"] = "chest",
-    ["station_consumer"] = "chest",
-    ["hub"] = "hub",
-}
-
 local PICKUP_TYPES <const> = {
     "assembling",
     "station_producer",
@@ -265,15 +256,6 @@ end
 
 function M.has_chest(prototype_name)
     return __check_types(prototype_name, CHEST_TYPES)
-end
-
-function M.get_chest_component(prototype_name)
-    local typeobject = assert(M.queryByName(prototype_name))
-    for t, c in pairs(CHEST_COMPONENT) do
-        if M.has_type(typeobject.type, t) then
-            return c
-        end
-    end
 end
 
 function M.has_pickup(prototype_name)

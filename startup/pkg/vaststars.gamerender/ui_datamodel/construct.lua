@@ -35,6 +35,7 @@ local ipick_object = ecs.import.interface "vaststars.gamerender|ipick_object"
 local ilorry = ecs.import.interface "vaststars.gamerender|ilorry"
 local gameplay = import_package "vaststars.gameplay"
 local ibuilding = gameplay.interface "building"
+local ibackpack = require "gameplay.interface.backpack"
 
 local rotate_mb = mailbox:sub {"rotate"}
 local build_mb = mailbox:sub {"build"}
@@ -155,7 +156,7 @@ local function __get_construct_menu()
 
         for _, prototype_name in ipairs(menu.detail) do
             local typeobject = assert(iprototype.queryByName(prototype_name))
-            local count = ichest.get_inventory_item_count(gameplay_core.get_world(), typeobject.id)
+            local count = ibackpack.query(gameplay_core.get_world(), typeobject.id)
             m.detail[#m.detail + 1] = {
                 show_prototype_name = iprototype.show_prototype_name(typeobject),
                 prototype_name = prototype_name,
@@ -551,18 +552,20 @@ function M:stage_camera_usage(datamodel)
         local gw = gameplay_core.get_world()
         local typeobject = iprototype.queryByName(object.prototype_name)
 
-        local chest_component = iprototype.get_chest_component(object.prototype_name)
+        local e = gameplay_core.get_entity(object.gameplay_eid)
+        local chest_component = ichest.get_chest_component(e)
         if chest_component then
-            local e = gameplay_core.get_entity(object.gameplay_eid)
-            if not ichest.can_move_to_inventory(gameplay_core.get_world(), e[chest_component]) then
+            if not ibackpack.can_move_to_backpack(gameplay_core.get_world(), e[chest_component]) then
                 log.error("can not teardown")
                 goto continue
             end
 
-            -- TODO: optimize
-            local slots = ichest.collect_item(gameplay_core.get_world(), e[chest_component])
-            for _, slot in pairs(slots) do
-                ichest.move_to_inventory(gameplay_core.get_world(), e[chest_component], slot.item, ichest.get_amount(slot))
+            for i = 1, ichest.MAX_SLOT do
+                local slot = gameplay_core.get_world():container_get(e.chest, i)
+                if not slot then
+                    break
+                end
+                ibackpack.move_to_backpack(gameplay_core.get_world(), e.chest, i)
             end
         end
 
@@ -610,7 +613,7 @@ function M:stage_camera_usage(datamodel)
 
     for _, _, _, item in construct_entity_mb:unpack() do
         local typeobject = iprototype.queryByName(item)
-        if ichest.get_inventory_item_count(gameplay_core.get_world(), typeobject.id) >= 1 then
+        if ibackpack.query(gameplay_core.get_world(), typeobject.id) >= 1 then
             iui.close("building_menu.rml")
             iui.close("detail_panel.rml")
             idetail.unselected()

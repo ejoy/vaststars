@@ -23,7 +23,6 @@ local datalist = require "datalist"
 local fs = require "filesystem"
 local ROAD_ENTRANCE_MARKER_CFG = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/config/canvas/road-entrance-marker.cfg")):read "a")
 local math3d = require "math3d"
-local iroadnet_converter = require "roadnet_converter"
 local COLOR_GREEN = math3d.constant("v4", {0.3, 1, 0, 1})
 local COLOR_RED = math3d.constant("v4", {1, 0.03, 0, 1})
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
@@ -34,6 +33,7 @@ local ROAD_TILE_SCALE_WIDTH <const> = 2
 local ROAD_TILE_SCALE_HEIGHT <const> = 2
 local SPRITE_COLOR = import_package "vaststars.prototype".load("sprite_color")
 local ibuilding = ecs.import.interface "vaststars.gamerender|ibuilding"
+local ibackpack = require "gameplay.interface.backpack"
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -605,9 +605,9 @@ local function complete(self, object_id, datamodel)
 
     local object = assert(objects:get(object_id))
     local typeobject = iprototype.queryByName(object.prototype_name)
-    assert(ichest.inventory_pickup(gameplay_core.get_world(), typeobject.id, 1))
+    assert(ibackpack.pickup(gameplay_core.get_world(), typeobject.id, 1))
 
-    local continue_construct = ichest.get_inventory_item_count(gameplay_core.get_world(), typeobject.id) > 0
+    local continue_construct = ibackpack.query(gameplay_core.get_world(), typeobject.id) > 0
     if not continue_construct then
         return false
     else

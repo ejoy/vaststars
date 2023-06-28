@@ -20,7 +20,6 @@ local coord_system = ecs.require "terrain"
 local iroadnet = ecs.require "roadnet"
 local math3d = require "math3d"
 local gameplay_core = require "gameplay.core"
-local ichest = require "gameplay.interface.chest"
 local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_box"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
@@ -31,6 +30,7 @@ local icamera_controller = ecs.interface "icamera_controller"
 local ROAD_TILE_SCALE_WIDTH <const> = 2
 local ROAD_TILE_SCALE_HEIGHT <const> = 2
 local CHANGED_FLAG_ROADNET <const> = require("gameplay.interface.constant").CHANGED_FLAG_ROADNET
+local ibackpack = require "gameplay.interface.backpack"
 
 -- To distinguish between "batch construction" and "batch teardown" in the touch_end event.
 local STATE_NONE  <const> = 0
@@ -807,7 +807,7 @@ local function confirm(self, datamodel)
     task.update_progress("road_laying", c)
 
     local typeobject = iprototype.queryByName("砖石公路-X型")
-    local continue_construct = ichest.get_inventory_item_count(gameplay_core.get_world(), typeobject.id) > 0
+    local continue_construct = ibackpack.query(gameplay_core.get_world(), typeobject.id) > 0
     if not continue_construct then
         gameplay_core.world_update = true
         return false

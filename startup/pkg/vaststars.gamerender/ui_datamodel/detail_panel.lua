@@ -161,7 +161,7 @@ local function get_property(e, typeobject)
     }
     -- 显示建筑详细信息
     get_display_info(e, typeobject, t)
-    local chest_component = iprototype.get_chest_component(typeobject.name)
+    local chest_component = ichest.get_chest_component(e)
     if iprototype.check_types(typeobject.name, CHEST_LIST_TYPES) and chest_component then
         local chest_list = {}
         if iprototype.has_types(typeobject.type, "station_producer", "station_consumer", "hub") then

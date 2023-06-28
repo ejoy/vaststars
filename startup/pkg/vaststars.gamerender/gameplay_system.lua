@@ -125,7 +125,7 @@ end
 
 function igameplay.destroy_entity(eid)
     world:pub {"gameplay", "destroy_entity", eid}
-    return igameplay_building.destroy(gameplay_core.get_entity(eid))
+    return igameplay_building.destroy(gameplay_core.get_world(), gameplay_core.get_entity(eid))
 end
 
 function igameplay.update_chimney_recipe(object) -- TODO: better way to do this?
