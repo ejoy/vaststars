@@ -4,8 +4,8 @@ local luaecs = import_package "ant.luaecs"
 local status = require "status"
 local prototype = require "prototype"
 local cWorld = require "vaststars.world.core"
-local cChest = require "vaststars.chest.core"
 local cFluidflow = require "vaststars.fluidflow.core"
+local iChest = require "interface.chest"
 local iBuilding = require "interface.building"
 
 local function pipeline(world, cworld, name)
@@ -132,10 +132,10 @@ return function ()
         return cFluidflow.query(cworld, fluid, id)
     end
     function world:container_get(c, i)
-        return cChest.get(cworld, c.chest, i)
+        return iChest.get(self, c, i)
     end
     function world:container_set(c, i, t)
-        return cChest.set(cworld, c.chest, i, t)
+        return iChest.set(self, c, i, t)
     end
     function world:now()
         return self._frame

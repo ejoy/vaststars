@@ -200,4 +200,11 @@ function m.hub_set(world, e, item)
     chest_set(world, e, e.hub, item, "blue", limit)
 end
 
+function m.get(world, c, i)
+    return cChest.get(world._cworld, c.chest, i)
+end
+function m.set(world, c, i, t)
+    return cChest.set(world._cworld, c.chest, i, t)
+end
+
 return m
