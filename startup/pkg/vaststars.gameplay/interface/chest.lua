@@ -22,6 +22,7 @@ local function chest_slot(t)
     assert(t.item)
     local id = t.item
     if type(id) == "string" then
+        assert(prototype.queryByName(id), ("item %s not found"):format(id))
         id = prototype.queryByName(id).id
     end
     return string.pack("<I1I1I2I2I2I2I2",
