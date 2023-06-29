@@ -1017,7 +1017,7 @@ prototype "无人机仓库1" {
     recipe_icon =  "textures/construct/crusher1.texture",
     ingredients = {
         -- {"铁丝", 4},
-        {"电动机I", 2},
+        {"电动机I", 1},
         {"石砖", 4},
     },
     results = {
@@ -1035,7 +1035,7 @@ prototype "无人机仓库2" {
     recipe_icon =  "textures/construct/crusher1.texture",
     ingredients = {
         {"铝棒", 2},
-        {"钢齿轮", 1},
+        {"钢齿轮", 4},
         {"无人机仓库I", 1},
     },
     results = {
