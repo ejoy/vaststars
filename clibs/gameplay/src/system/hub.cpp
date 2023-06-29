@@ -367,7 +367,7 @@ static void Move(world& w, ecs::drone& drone, hub_mgr::berth target) {
     uint32_t dx = (x1>x2)? (x1-x2): (x2-x1);
     uint32_t dy = (y1>y2)? (y1-y2): (y2-y1);
     float z = sqrt((float)dx*(float)dx+(float)dy*(float)dy) / 2.f;
-    auto speed = prototype::get<"speed">(w, drone.classid);
+    auto speed = prototype::get<"speed">(w, drone.prototype);
     drone.maxprogress = drone.progress = uint16_t(z*1000/speed);
 }
 

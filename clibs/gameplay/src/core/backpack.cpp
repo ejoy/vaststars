@@ -33,12 +33,12 @@ void safe_add_assgin(uint16_t& v, T a, uint16_t limit) {
 static void array_erase(ecs::backpack* it, ecs::backpack* end) {
     ecs::backpack* back = end - 1;
     for (; it != back; ++it) {
-        if (it->item == 0) {
+        if (it->prototype == 0) {
             return;
         }
         *it = *(it + 1);
     }
-    back->item = 0;
+    back->prototype = 0;
     back->amount = 0;
 }
 
@@ -47,7 +47,7 @@ bool backpack_pickup(world& w, uint16_t item, uint16_t amount) {
     auto [begin, end] = ecs_api::array<ecs::backpack>(w.ecs);
     for (auto it = begin; it != end; ++it) {
         auto& bp = *it;
-        if (bp.item == item) {
+        if (bp.prototype == item) {
             if (amount > bp.amount) {
                 return false;
             }
@@ -57,7 +57,7 @@ bool backpack_pickup(world& w, uint16_t item, uint16_t amount) {
             }
             return true;
         }
-        else if (bp.item == 0) {
+        else if (bp.prototype == 0) {
             break;
         }
     }
@@ -67,28 +67,28 @@ bool backpack_pickup(world& w, uint16_t item, uint16_t amount) {
 void backpack_place(world& w, uint16_t item, uint16_t amount) {
     assert(item != 0);
     for (auto& bp : ecs_api::array<ecs::backpack>(w.ecs)) {
-        if (bp.item == item) {
+        if (bp.prototype == item) {
             safe_add_assgin(bp.amount, amount, kMaxItemAmount);
             return;
         }
-        else if (bp.item == 0) {
-            bp.item = item;
+        else if (bp.prototype == 0) {
+            bp.prototype = item;
             safe_assgin(bp.amount, amount, kMaxItemAmount);
             return;
         }
     }
     auto e = ecs_api::create_entity<ecs::backpack>(w.ecs);
     auto& bp = e.get<ecs::backpack>();
-    bp.item = item;
+    bp.prototype = item;
     safe_assgin(bp.amount, amount, kMaxItemAmount);
 }
 
 uint16_t backpack_query(world& w, uint16_t item) {
     for (auto& bp : ecs_api::array<ecs::backpack>(w.ecs)) {
-        if (bp.item == item) {
+        if (bp.prototype == item) {
             return bp.amount;
         }
-        else if (bp.item == 0) {
+        else if (bp.prototype == 0) {
             break;
         }
     }

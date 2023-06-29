@@ -90,7 +90,7 @@ function ipick_object.blur_pick(x, y)
     local lorries = {}
     for e in gameplay_world.ecs:select "lorry:in eid:in" do
         local lorry = e.lorry
-        local classid = lorry.classid
+        local classid = lorry.prototype
         if classid == 0 then
             goto continue
         end

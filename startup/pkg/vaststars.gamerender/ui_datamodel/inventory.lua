@@ -65,7 +65,7 @@ local function get_inventory(object_id)
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if e then
         for _, slot in pairs(iBackpack.all(gameplay_core.get_world())) do
-            local typeobject_item = assert(iprototype.queryById(slot.item))
+            local typeobject_item = assert(iprototype.queryById(slot.prototype))
 
             local t = {}
             t.id = typeobject_item.id

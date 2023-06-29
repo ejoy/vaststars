@@ -5,19 +5,20 @@ local component = def.component
 local tag = function (what)
     component(what) {}
 end
+local mainkey = component
 
 type "roadnet::straightid" ("word")
 type "enum roadnet::lorry_status" ("byte")
 
-component "building" {
+mainkey "building" {
+    "prototype:word",
     "x:byte",
     "y:byte",
-    "prototype:word",
     "direction:byte",	-- 0:North 1:East 2:South 3:West
 }
 
-component "backpack" {
-    "item:word",
+mainkey "backpack" {
+    "prototype:word",
     "amount:word",
 }
 
@@ -45,10 +46,10 @@ component "endpoint" {
     "lorry:byte",
 }
 
-component "lorry" {
+mainkey "lorry" {
+    "prototype:word",
     "ending:roadnet::straightid",
-    "classid:word",
-    "item_classid:word",
+    "item_prototype:word",
     "item_amount:word",
     "progress:byte",
     "maxprogress:byte",
@@ -73,12 +74,12 @@ component "hub" {
 -- | unused(5bit) | type(2bit) | chest(4bit) | slot(3bit) | y(9bit) | x(9bit) |
 -- 32            27           25            21           18         9         0
 --
-component "drone" {
+mainkey "drone" {
+    "prototype:word",
+    "home:word",
     "prev:dword",
     "next:dword",
     "mov2:dword",
-    "home:word",
-    "classid:word",
     "maxprogress:word",
     "progress:word",
     "item:word",

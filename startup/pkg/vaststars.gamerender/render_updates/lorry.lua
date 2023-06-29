@@ -185,14 +185,14 @@ function lorry_sys:gameworld_update()
     local x, y, offset, toward, item_classid, item_amount, progress, maxprogress, lorry
     for e in gameplay_world.ecs:select "lorry:in eid:in" do
         local l = e.lorry
-        local classid = l.classid
+        local classid = l.prototype
         if classid == 0 then
             goto continue
         end
 
         x, y = l.x, l.y
         offset, toward = (l.z >> 0) & 0xF, (l.z >> 4) & 0xF
-        item_classid, item_amount = l.item_classid, l.item_amount
+        item_classid, item_amount = l.item_prototype, l.item_amount
         progress, maxprogress = l.progress, l.maxprogress
 
         assert(toward >= 0 and toward <= 0xf)

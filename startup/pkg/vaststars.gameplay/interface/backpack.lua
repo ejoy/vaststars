@@ -20,7 +20,7 @@ function m.all(world)
     local t = {}
     for i = 1, n do
         local bp = ecs:object("backpack", i)
-        if bp.item == 0 then
+        if bp.prototype == 0 then
             break
         end
         t[i] = bp
