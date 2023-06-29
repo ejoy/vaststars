@@ -1,7 +1,13 @@
 local def = require "register.component"
 
-local component = def.component
 local type = def.type
+local component = def.component
+local tag = function (what)
+    component(what) {}
+end
+
+type "roadnet::straightid" ("word")
+type "enum roadnet::lorry_status" ("byte")
 
 component "building" {
     "x:byte",
@@ -27,10 +33,7 @@ component "station_consumer" {
     "maxlorry:byte",
 }
 
-component "lorry_factory" {}
-
-type "roadnet::straightid" ("word")
-type "enum roadnet::lorry_status" ("byte")
+tag "lorry_factory"
 
 component "starting" {
     "neighbor:roadnet::straightid",
@@ -56,9 +59,9 @@ component "lorry" {
     "z:byte",
 }
 
-component "lorry_free" {}
-component "lorry_removed" {}
-component "lorry_willremove" {}
+tag "lorry_free"
+tag "lorry_removed"
+tag "lorry_willremove"
 
 component "hub" {
     "id:word",
@@ -111,14 +114,9 @@ component "chimney" {
     "status:byte",
 }
 
-component "consumer" {
-}
-
-component "generator" {
-}
-
-component "accumulator" {
-}
+tag "consumer"
+tag "generator"
+tag "accumulator"
 
 component "fluidbox" {
     "fluid:word",
@@ -130,13 +128,9 @@ component "fluidboxes" {
     "out:fluidbox[3]",
 }
 
-component "pump" {
-}
-
-component "mining" {
-}
-
-component "road" {}
+tag "pump"
+tag "mining"
+tag "road"
 
 component "save_fluidflow" {
 	"fluid:word",
@@ -148,17 +142,13 @@ component "solar_panel" {
     "efficiency:byte"
 }
 
-component "wind_turbine" {
-}
-
-component "base" {
-}
-
-component "fluidbox_changed" {}
+tag "wind_turbine"
+tag "base"
+tag "fluidbox_changed"
 
 --
-component "base_changed" {}
-component "station_changed" {}
-component "building_new" {}
-component "building_changed" {}
-component "auto_set_recipe" {}
+tag "base_changed"
+tag "station_changed"
+tag "building_new"
+tag "building_changed"
+tag "auto_set_recipe"
