@@ -458,7 +458,7 @@ namespace roadnet {
     }
 
     void network::refresh(world& w) {
-        ecs_api::entity<ecs::lorry> e(*w.ecs);
+        ecs_api::entity<ecs::lorry> e(w.ecs);
         bool ok = e.init(0);
         assert(ok);
         lorryAry = &e.get<ecs::lorry>();
@@ -831,7 +831,7 @@ namespace roadnet {
 
     lorryid network::createLorry(world& w, uint16_t classid) {
         {
-            ecs_api::entity<ecs::lorry_free, ecs::lorry> e(*w.ecs);
+            ecs_api::entity<ecs::lorry_free, ecs::lorry> e(w.ecs);
             e.next();
             if (!e.invalid()) {
                 auto& l = e.get<ecs::lorry>();
