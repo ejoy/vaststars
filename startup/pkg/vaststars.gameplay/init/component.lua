@@ -152,13 +152,12 @@ component "wind_turbine" {
 }
 
 component "base" {
-    "chest:word",
 }
-component "base_changed" {}
 
 component "fluidbox_changed" {}
 
 --
+component "base_changed" {}
 component "station_changed" {}
 component "building_new" {}
 component "building_changed" {}

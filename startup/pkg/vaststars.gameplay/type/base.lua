@@ -57,20 +57,8 @@ end
 local base = type "base"
 
 function base:ctor(init, pt)
-    local world = self
-    local items = {}
-    for _, v in ipairs(init.items or {}) do
-        items[#items+1] = {
-            type = "red",
-            item = v[1],
-            amount = v[2],
-        }
-    end
-
     return {
-        base = {
-            chest = iChest.create(world, items),
-        },
+        base = true,
         base_changed = true,
     }
 end
