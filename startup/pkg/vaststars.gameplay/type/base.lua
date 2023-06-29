@@ -1,5 +1,4 @@
 local type = require "register.type"
-local iChest = require "interface.chest"
 
 type "fluid"
 
