@@ -396,7 +396,18 @@ prototype "橡胶" {
     group = {"器件"},
 }
 
-prototype "电容" {
+prototype "电容I" {
+    type = {"item"},
+    stack = 8,
+    pile = "4x1x4",
+    backpack_stack = 25,
+    pile_model = "prefabs/stackeditems/iron-ingot.prefab",
+    icon = "textures/construct/capacitor.texture",
+    item_description = "可存储电荷的电子元器件",
+    group = {"器件"},
+}
+
+prototype "电容II" {
     type = {"item"},
     stack = 8,
     pile = "4x1x4",
@@ -451,7 +462,7 @@ prototype "运算电路" {
     group = {"器件"},
 }
 
-prototype "效能插件" {
+prototype "效能插件I" {
     type = {"item"},
     stack = 8,
     pile = "4x1x4",
@@ -462,7 +473,30 @@ prototype "效能插件" {
     group = {"器件"},
 }
 
-prototype "产能插件" {
+prototype "效能插件II" {
+    type = {"item"},
+    stack = 8,
+    pile = "4x1x4",
+    backpack_stack = 25,
+    pile_model = "prefabs/stackeditems/iron-ingot.prefab",
+    icon = "textures/construct/logic-circuit.texture",
+    item_description = "降低建筑能耗的插件",
+    group = {"器件"},
+}
+
+prototype "效能插件III" {
+    type = {"item"},
+    stack = 8,
+    pile = "4x1x4",
+    backpack_stack = 25,
+    pile_model = "prefabs/stackeditems/iron-ingot.prefab",
+    icon = "textures/construct/logic-circuit.texture",
+    item_description = "降低建筑能耗的插件",
+    group = {"器件"},
+}
+
+
+prototype "产能插件I" {
     type = {"item"},
     stack = 8,
     pile = "4x1x4",
@@ -473,7 +507,29 @@ prototype "产能插件" {
     group = {"器件"},
 }
 
-prototype "速度插件" {
+prototype "产能插件II" {
+    type = {"item"},
+    stack = 8,
+    pile = "4x1x4",
+    backpack_stack = 25,
+    pile_model = "prefabs/stackeditems/iron-ingot.prefab",
+    icon = "textures/construct/logic-circuit.texture",
+    item_description = "提高建筑产能的插件",
+    group = {"器件"},
+}
+
+prototype "产能插件III" {
+    type = {"item"},
+    stack = 8,
+    pile = "4x1x4",
+    backpack_stack = 25,
+    pile_model = "prefabs/stackeditems/iron-ingot.prefab",
+    icon = "textures/construct/logic-circuit.texture",
+    item_description = "提高建筑产能的插件",
+    group = {"器件"},
+}
+
+prototype "速度插件I" {
     type = {"item"},
     stack = 8,
     pile = "4x1x4",
@@ -484,7 +540,40 @@ prototype "速度插件" {
     group = {"器件"},
 }
 
-prototype "广播塔" {
+prototype "速度插件II" {
+    type = {"item"},
+    stack = 8,
+    pile = "4x1x4",
+    backpack_stack = 25,
+    pile_model = "prefabs/stackeditems/iron-ingot.prefab",
+    icon = "textures/construct/logic-circuit.texture",
+    item_description = "提高建筑生产速度的插件",
+    group = {"器件"},
+}
+
+prototype "速度插件III" {
+    type = {"item"},
+    stack = 8,
+    pile = "4x1x4",
+    backpack_stack = 25,
+    pile_model = "prefabs/stackeditems/iron-ingot.prefab",
+    icon = "textures/construct/logic-circuit.texture",
+    item_description = "提高建筑生产速度的插件",
+    group = {"器件"},
+}
+
+prototype "广播塔I" {
+    type = {"item"},
+    stack = 8,
+    pile = "4x1x4",
+    backpack_stack = 25,
+    pile_model = "prefabs/stackeditems/iron-ingot.prefab",
+    icon = "textures/construct/logic-circuit.texture",
+    item_description = "广播插件功效的建筑",
+    group = {"物流"},
+}
+
+prototype "广播塔II" {
     type = {"item"},
     stack = 8,
     pile = "4x1x4",
@@ -506,7 +595,40 @@ prototype "混凝土" {
     group = {"物流"},
 }
 
-prototype "电池" {
+prototype "处理器I" {
+    type = {"item"},
+    stack = 8,
+    pile = "4x1x4",
+    backpack_stack = 25,
+    pile_model = "prefabs/stackeditems/iron-ingot.prefab",
+    icon = "textures/construct/logic-circuit.texture",
+    item_description = "具有集成电路的电子元件",
+    group = {"器件"},
+}
+
+prototype "处理器II" {
+    type = {"item"},
+    stack = 8,
+    pile = "4x1x4",
+    backpack_stack = 25,
+    pile_model = "prefabs/stackeditems/iron-ingot.prefab",
+    icon = "textures/construct/logic-circuit.texture",
+    item_description = "具有集成电路的电子元件",
+    group = {"器件"},
+}
+
+prototype "电池I" {
+    type = {"item"},
+    stack = 8,
+    pile = "4x1x4",
+    backpack_stack = 25,
+    pile_model = "prefabs/stackeditems/iron-ingot.prefab",
+    icon = "textures/construct/logic-circuit.texture",
+    item_description = "存储电能的器件",
+    group = {"器件"},
+}
+
+prototype "电池II" {
     type = {"item"},
     stack = 8,
     pile = "4x1x4",
@@ -525,6 +647,17 @@ prototype "纤维玻璃" {
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
     item_description = "使用高强度复合材料的玻璃",
+    group = {"器件"},
+}
+
+prototype "石墨烯" {
+    type = {"item"},
+    stack = 8,
+    pile = "4x1x4",
+    backpack_stack = 25,
+    pile_model = "prefabs/stackeditems/iron-ingot.prefab",
+    icon = "textures/construct/logic-circuit.texture",
+    item_description = "使用提取高强度石墨材料",
     group = {"器件"},
 }
 
@@ -621,6 +754,18 @@ prototype "电子科技包" {
 }
 
 prototype "化学科技包" {
+    type = {"item"},
+    stack = 8,
+    pile = "4x4x4",
+    backpack_stack = 100,
+    pile_model = "prefabs/stackeditems/iron-ingot.prefab",
+    icon = "textures/recipe/electrical-pack.texture",
+    tech_icon = "textures/science/pinkbox.texture",
+    item_description = "一种科技研究包",
+    group = {"器件"},
+}
+
+prototype "物理科技包" {
     type = {"item"},
     stack = 8,
     pile = "4x4x4",

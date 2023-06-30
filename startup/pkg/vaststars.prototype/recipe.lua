@@ -665,7 +665,7 @@ prototype "广播塔1" {
     recipe_order =  72,
     recipe_icon =  "textures/construct/assembler1.texture",
     ingredients = {
-        {"电容", 1},
+        {"电容I", 1},
         {"铁制电线杆", 1},
         {"铝板", 2},
     },
@@ -2087,7 +2087,7 @@ prototype "电子科技包1" {
     recipe_order =  85,
     recipe_icon =  "textures/recipe/electrical-pack.texture",
     ingredients = {
-        {"电容", 1},
+        {"电容I", 1},
         {"绝缘线", 2},
         {"润滑油", 5},
     },
@@ -2208,7 +2208,7 @@ prototype "电容1" {
         {"铝板", 2},
     },
     results = {
-        {"电容", 2}
+        {"电容I", 2}
     },
     time = "5s",
     description = "生产电子元器件电容",
@@ -2221,13 +2221,12 @@ prototype "电容2" {
     recipe_order =  72,
     recipe_icon =  "textures/construct/capacitor.texture",
     ingredients = {
-        {"石墨", 5},
-        {"氧化铝", 5},
         {"塑料", 15},
-        {"氦气", 3},
+        {"氦气", 6},
+        {"电容I", 2},
     },
     results = {
-        {"电容", 15}
+        {"电容II", 2}
     },
     time = "20s",
     description = "生产电子元器件电容",
@@ -2259,7 +2258,7 @@ prototype "逻辑电路1" {
     recipe_order =  74,
     recipe_icon =  "textures/construct/logic-circuit.texture",
     ingredients = {
-        {"电容", 1},
+        {"电容I", 1},
         {"铝丝", 3},
         {"塑料", 3},
         {"硅板", 3},
@@ -2278,7 +2277,7 @@ prototype "运算电路1" {
     recipe_order =  74,
     recipe_icon =  "textures/construct/logic-circuit.texture",
     ingredients = {
-        {"电容", 2},
+        {"电容I", 2},
         {"铝丝", 2},
         {"塑料", 2},
         {"硅板", 2},
@@ -2298,7 +2297,7 @@ prototype "数据线1" {
     recipe_icon =  "textures/construct/insulated-wire.texture",
     ingredients = {
         {"绝缘线", 5},
-        {"电容", 2},
+        {"电容I", 2},
     },
     results = {
         {"数据线", 2},
@@ -2335,7 +2334,7 @@ prototype "效能插件1" {
         {"逻辑电路", 1},
     },
     results = {
-        {"效能插件", 1},
+        {"效能插件I", 1},
     },
     time = "8s",
     description = "生产可以传输数据的导线",
@@ -2366,9 +2365,9 @@ prototype "火箭控制器1" {
     recipe_order =  70,
     recipe_icon =  "textures/construct/insulated-wire.texture",
     ingredients = {
-        {"速度插件", 5},
-        {"产能插件", 5},
-        {"效能插件", 5},
+        {"速度插件III", 1},
+        {"产能插件III", 1},
+        {"效能插件III", 1},
     },
     results = {
         {"火箭控制器", 1},
