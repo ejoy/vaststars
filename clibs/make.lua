@@ -71,7 +71,7 @@ end
 if lm.os == "macos" then
     lm:lib "vaststars_rt_lib" {
         deps = {
-            "ant_editor",
+            "ant_runtime",
             "ant_links",
             "bootstrap_lua",
             modules
