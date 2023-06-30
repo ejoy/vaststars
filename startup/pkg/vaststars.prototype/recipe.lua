@@ -377,6 +377,43 @@ prototype "电动机1" {
     description = "铁制品和塑料打造初级电动机",
 }
 
+prototype "电动机2" {
+    type = { "recipe" },
+    recipe_craft_category = "器件中型制造",
+    recipe_category =  "器件",
+    recipe_order =  52,
+    recipe_icon =  "textures/construct/electric-motor.texture",
+    ingredients = {
+        {"钢齿轮", 1},
+        {"绝缘线", 3},
+        {"润滑油", 6},
+        {"电动机I", 1},
+    },
+    results = {
+        {"电动机II", 1},
+    },
+    time = "12s",
+    description = "铁制品和塑料打造初级电动机",
+}
+
+prototype "电动机3" {
+    type = { "recipe" },
+    recipe_craft_category = "器件中型制造",
+    recipe_category =  "器件",
+    recipe_order =  52,
+    recipe_icon =  "textures/construct/electric-motor.texture",
+    ingredients = {
+        {"钛板", 4},
+        {"铝丝", 8},
+        {"电动机II", 1},
+    },
+    results = {
+        {"电动机III", 1},
+    },
+    time = "16s",
+    description = "铁制品和塑料打造初级电动机",
+}
+
 prototype "铁齿轮" {
     type = { "recipe" },
     recipe_craft_category = "金属小型制造",
@@ -513,6 +550,41 @@ prototype "铁制电线杆" {
         {"铁制电线杆", 1},
     },
     time = "2s",
+    description = "导电材料制造电线杆",
+}
+
+prototype "远程电线杆" {
+    type = { "recipe" },
+    recipe_craft_category = "物流中型制造",
+    recipe_category =  "物流",
+    recipe_order =  30,
+    recipe_icon =  "textures/construct/electric-pole1.texture",
+    ingredients = {
+        {"绝缘线", 4},
+        {"铝丝", 3},
+        {"铁制电线杆", 1},
+    },
+    results = {
+        {"远程电线杆", 1},
+    },
+    time = "4s",
+    description = "导电材料制造电线杆",
+}
+
+prototype "广域电线杆" {
+    type = { "recipe" },
+    recipe_craft_category = "物流中型制造",
+    recipe_category =  "物流",
+    recipe_order =  30,
+    recipe_icon =  "textures/construct/electric-pole1.texture",
+    ingredients = {
+        {"混凝土", 8},
+        {"铁制电线杆", 4},
+    },
+    results = {
+        {"广域电线杆", 1},
+    },
+    time = "10s",
     description = "导电材料制造电线杆",
 }
 
@@ -670,7 +742,7 @@ prototype "广播塔1" {
         {"铝板", 2},
     },
     results = {
-        {"广播塔", 1},
+        {"广播塔I", 1},
     },
     time = "20s",
     description = "生产可广播性能信号的装置",
