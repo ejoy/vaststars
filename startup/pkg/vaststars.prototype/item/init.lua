@@ -12,7 +12,7 @@ prototype "任务" {
     stack = 0,
     backpack_stack = 0,
     tech_icon = "",
-    item_category = {},
+    item_category = "",
     icon = "",
 }
 
@@ -21,5 +21,5 @@ prototype "山丘" {
     icon = "textures/construct/alumina.texture",
     item_description = "地面上的沙丘",
     stack = 0,
-    item_category = {},
+    item_category = "",
 }

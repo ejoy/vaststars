@@ -23,7 +23,7 @@ return function ()
                 id = typeobject.id,
                 name = typeobject.name,
                 icon = typeobject.icon,
-                category = assert(typeobject.item_category[1]),
+                category = assert(typeobject.item_category),
                 desc = typeobject.item_description,
             }
 
