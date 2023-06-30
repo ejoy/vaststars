@@ -207,7 +207,7 @@ lbuild(lua_State *L) {
         }
         return 0;
     };
-    for (auto& v : ecs_api::select<ecs::hub, ecs::building, ecs::eid>(w.ecs)) {
+    for (auto& v : ecs_api::select<ecs::hub, ecs::building>(w.ecs)) {
         auto& hub = v.get<ecs::hub>();
         auto& chestslot = chest::array_at(w, container::index::from(hub.chest), 0);
         auto& building = v.get<ecs::building>();
