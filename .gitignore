@@ -17,3 +17,4 @@ clibs/gameplay/src/util/component.h
 /startup/log.txt
 /startup/mod
 /startup/pkg/vaststars.resources/glb/test_*.glb
+*.plist
