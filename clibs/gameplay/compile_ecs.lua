@@ -104,7 +104,7 @@ local function writeEntityH(components)
     write "\tstatic constexpr bool tag = true; \\"
     write "};"
     write ""
-    write "template <> struct component_meta<ecs::eid> { \\"
+    write "template <> struct component_meta<ecs::eid> {"
     write "\tstatic constexpr unsigned int id = 0xFFFFFFFF;"
     write "\tstatic constexpr char name[] = \"eid\";"
     write "\tstatic constexpr bool tag = false;"
