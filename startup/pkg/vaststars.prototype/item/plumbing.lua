@@ -3,7 +3,7 @@ local prototype = gameplay.register.prototype
 
 prototype "液罐I" {
     type = {"item"},
-    group = {"化工"},
+    item_category = {"化工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -12,7 +12,7 @@ prototype "液罐I" {
 
 prototype "液罐II" {
     type = {"item"},
-    group = {"化工"},
+    item_category = {"化工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -21,7 +21,7 @@ prototype "液罐II" {
 
 prototype "液罐III" {
     type = {"item"},
-    group = {"化工"},
+    item_category = {"化工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -30,7 +30,7 @@ prototype "液罐III" {
 
 prototype "气罐I" {
     type = {"item"},
-    group = {"化工"},
+    item_category = {"化工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -39,7 +39,7 @@ prototype "气罐I" {
 
 prototype "地下水挖掘机I" {
     type = {"item"},
-    group = {"化工"},
+    item_category = {"化工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -48,7 +48,7 @@ prototype "地下水挖掘机I" {
 
 prototype "地下水挖掘机II" {
     type = {"item"},
-    group = {"化工"},
+    item_category = {"化工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -57,7 +57,7 @@ prototype "地下水挖掘机II" {
 
 prototype "压力泵I" {
     type = {"item"},
-    group = {"化工"},
+    item_category = {"化工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -66,7 +66,7 @@ prototype "压力泵I" {
 
 prototype "烟囱I" {
     type = {"item"},
-    group = {"化工"},
+    item_category = {"化工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -75,7 +75,7 @@ prototype "烟囱I" {
 
 prototype "烟囱II" {
     type = {"item"},
-    group = {"化工"},
+    item_category = {"化工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -84,7 +84,7 @@ prototype "烟囱II" {
 
 prototype "排水口I" {
     type = {"item"},
-    group = {"化工"},
+    item_category = {"化工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -93,7 +93,7 @@ prototype "排水口I" {
 
 prototype "排水口II" {
     type = {"item"},
-    group = {"化工"},
+    item_category = {"化工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -102,7 +102,7 @@ prototype "排水口II" {
 
 prototype "空气过滤器I" {
     type = {"item"},
-    group = {"化工"},
+    item_category = {"化工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -111,7 +111,7 @@ prototype "空气过滤器I" {
 
 prototype "空气过滤器II" {
     type = {"item"},
-    group = {"化工"},
+    item_category = {"化工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -120,7 +120,7 @@ prototype "空气过滤器II" {
 
 prototype "空气过滤器III" {
     type = {"item"},
-    group = {"化工"},
+    item_category = {"化工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -129,7 +129,7 @@ prototype "空气过滤器III" {
 
 prototype "管道1-X型" {
     type = {"item"},
-    group = {"化工"},
+    item_category = {"化工"},
     stack = 50,
     pile = "4x4x4",
     backpack_stack = 100,
@@ -138,7 +138,7 @@ prototype "管道1-X型" {
 
 prototype "地下管1-JI型" {
     type = {"item"},
-    group = {"化工"},
+    item_category = {"化工"},
     stack = 50,
     pile = "4x4x4",
     backpack_stack = 100,
@@ -147,7 +147,7 @@ prototype "地下管1-JI型" {
 
 prototype "地下管2-JI型" {
     type = {"item"},
-    group = {"化工"},
+    item_category = {"化工"},
     stack = 50,
     pile = "4x4x4",
     backpack_stack = 100,

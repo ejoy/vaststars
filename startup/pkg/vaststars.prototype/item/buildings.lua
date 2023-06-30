@@ -5,7 +5,7 @@ local prototype = gameplay.register.prototype
 
 prototype "指挥中心" {
     type = {"item"},
-    group = {"物流"},
+    item_category = {"物流"},
     stack = 1,
     pile = "4x1x4",
     backpack_stack = 1,
@@ -14,7 +14,7 @@ prototype "指挥中心" {
 }
 prototype "组装机I" {
     type = {"item"},
-    group = {"加工"},
+    item_category = {"加工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -24,7 +24,7 @@ prototype "组装机I" {
 
 prototype "组装机II" {
     type = {"item"},
-    group = {"加工"},
+    item_category = {"加工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -34,7 +34,7 @@ prototype "组装机II" {
 
 prototype "组装机III" {
     type = {"item"},
-    group = {"加工"},
+    item_category = {"加工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -44,7 +44,7 @@ prototype "组装机III" {
 
 prototype "熔炼炉I" {
     type = {"item"},
-    group = {"加工"},
+    item_category = {"加工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -54,7 +54,7 @@ prototype "熔炼炉I" {
 
 prototype "熔炼炉II" {
     type = {"item"},
-    group = {"加工"},
+    item_category = {"加工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -64,7 +64,7 @@ prototype "熔炼炉II" {
 
 prototype "熔炼炉III" {
     type = {"item"},
-    group = {"加工"},
+    item_category = {"加工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -74,7 +74,7 @@ prototype "熔炼炉III" {
 
 prototype "小铁制箱子I" {
     type = {"item"},
-    group = {"物流"},
+    item_category = {"物流"},
     stack = 5,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -83,7 +83,7 @@ prototype "小铁制箱子I" {
 
 prototype "小铁制箱子II" {
     type = {"item"},
-    group = {"物流"},
+    item_category = {"物流"},
     stack = 5,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -92,7 +92,7 @@ prototype "小铁制箱子II" {
 
 prototype "大铁制箱子I" {
     type = {"item"},
-    group = {"物流"},
+    item_category = {"物流"},
     stack = 5,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -101,7 +101,7 @@ prototype "大铁制箱子I" {
 
 prototype "仓库" {
     type = {"item"},
-    group = {"物流"},
+    item_category = {"物流"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -110,7 +110,7 @@ prototype "仓库" {
 
 prototype "无人机仓库I" {
     type = {"item"},
-    group = {"物流"},
+    item_category = {"物流"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -120,7 +120,7 @@ prototype "无人机仓库I" {
 
 prototype "无人机仓库II" {
     type = {"item"},
-    group = {"物流"},
+    item_category = {"物流"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -130,7 +130,7 @@ prototype "无人机仓库II" {
 
 prototype "无人机仓库III" {
     type = {"item"},
-    group = {"物流"},
+    item_category = {"物流"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -140,7 +140,7 @@ prototype "无人机仓库III" {
 
 prototype "采矿机I" {
     type = {"item"},
-    group = {"加工"},
+    item_category = {"加工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -150,7 +150,7 @@ prototype "采矿机I" {
 
 prototype "采矿机II" {
     type = {"item"},
-    group = {"加工"},
+    item_category = {"加工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -160,7 +160,7 @@ prototype "采矿机II" {
 
 prototype "采矿机III" {
     type = {"item"},
-    group = {"加工"},
+    item_category = {"加工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -170,7 +170,7 @@ prototype "采矿机III" {
 
 prototype "蒸汽发电机I" {
     type = {"item"},
-    group = {"物流"},
+    item_category = {"物流"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -180,7 +180,7 @@ prototype "蒸汽发电机I" {
 
 prototype "蒸汽发电机II" {
     type = {"item"},
-    group = {"物流"},
+    item_category = {"物流"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -190,7 +190,7 @@ prototype "蒸汽发电机II" {
 
 prototype "蒸汽发电机III" {
     type = {"item"},
-    group = {"物流"},
+    item_category = {"物流"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -200,7 +200,7 @@ prototype "蒸汽发电机III" {
 
 prototype "化工厂I" {
     type = {"item"},
-    group = {"化工"},
+    item_category = {"化工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -210,7 +210,7 @@ prototype "化工厂I" {
 
 prototype "化工厂II" {
     type = {"item"},
-    group = {"化工"},
+    item_category = {"化工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -220,7 +220,7 @@ prototype "化工厂II" {
 
 prototype "化工厂III" {
     type = {"item"},
-    group = {"化工"},
+    item_category = {"化工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -230,7 +230,7 @@ prototype "化工厂III" {
 
 prototype "铸造厂I" {
     type = {"item"},
-    group = {"加工"},
+    item_category = {"加工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -240,7 +240,7 @@ prototype "铸造厂I" {
 
 prototype "蒸馏厂I" {
     type = {"item"},
-    group = {"化工"},
+    item_category = {"化工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -250,7 +250,7 @@ prototype "蒸馏厂I" {
 
 prototype "蒸馏厂II" {
     type = {"item"},
-    group = {"化工"},
+    item_category = {"化工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -260,7 +260,7 @@ prototype "蒸馏厂II" {
 
 prototype "蒸馏厂III" {
     type = {"item"},
-    group = {"化工"},
+    item_category = {"化工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -270,7 +270,7 @@ prototype "蒸馏厂III" {
 
 prototype "粉碎机I" {
     type = {"item"},
-    group = {"加工"},
+    item_category = {"加工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -280,7 +280,7 @@ prototype "粉碎机I" {
 
 prototype "粉碎机II" {
     type = {"item"},
-    group = {"加工"},
+    item_category = {"加工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -290,7 +290,7 @@ prototype "粉碎机II" {
 
 prototype "粉碎机III" {
     type = {"item"},
-    group = {"加工"},
+    item_category = {"加工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -300,7 +300,7 @@ prototype "粉碎机III" {
 
 prototype "浮选器I" {
     type = {"item"},
-    group = {"加工"},
+    item_category = {"加工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -310,7 +310,7 @@ prototype "浮选器I" {
 
 prototype "浮选器II" {
     type = {"item"},
-    group = {"加工"},
+    item_category = {"加工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -320,7 +320,7 @@ prototype "浮选器II" {
 
 prototype "浮选器III" {
     type = {"item"},
-    group = {"加工"},
+    item_category = {"加工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -331,7 +331,7 @@ prototype "浮选器III" {
 
 prototype "风力发电机I" {
     type = {"item"},
-    group = {"物流"},
+    item_category = {"物流"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -341,7 +341,7 @@ prototype "风力发电机I" {
 
 prototype "铁制电线杆" {
     type = {"item"},
-    group = {"物流"},
+    item_category = {"物流"},
     stack = 25,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -351,7 +351,7 @@ prototype "铁制电线杆" {
 
 prototype "远程电线杆" {
     type = {"item"},
-    group = {"物流"},
+    item_category = {"物流"},
     stack = 25,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -361,7 +361,7 @@ prototype "远程电线杆" {
 
 prototype "广域电线杆" {
     type = {"item"},
-    group = {"物流"},
+    item_category = {"物流"},
     stack = 25,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -371,7 +371,7 @@ prototype "广域电线杆" {
 
 prototype "科研中心I" {
     type = {"item"},
-    group = {"物流"},
+    item_category = {"物流"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -381,7 +381,7 @@ prototype "科研中心I" {
 
 prototype "科研中心II" {
     type = {"item"},
-    group = {"物流"},
+    item_category = {"物流"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -391,7 +391,7 @@ prototype "科研中心II" {
 
 prototype "科研中心III" {
     type = {"item"},
-    group = {"物流"},
+    item_category = {"物流"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -401,7 +401,7 @@ prototype "科研中心III" {
 
 prototype "出货车站" {
     type = {"item"},
-    group = {"物流"},
+    item_category = {"物流"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -411,7 +411,7 @@ prototype "出货车站" {
 
 prototype "收货车站" {
     type = {"item"},
-    group = {"物流"},
+    item_category = {"物流"},
     stack = 8,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -421,7 +421,7 @@ prototype "收货车站" {
 
 prototype "电解厂I" {
     type = {"item"},
-    group = {"化工"},
+    item_category = {"化工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -431,7 +431,7 @@ prototype "电解厂I" {
 
 prototype "电解厂II" {
     type = {"item"},
-    group = {"化工"},
+    item_category = {"化工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -441,7 +441,7 @@ prototype "电解厂II" {
 
 prototype "电解厂III" {
     type = {"item"},
-    group = {"化工"},
+    item_category = {"化工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -451,7 +451,7 @@ prototype "电解厂III" {
 
 prototype "太阳能板I" {
     type = {"item"},
-    group = {"物流"},
+    item_category = {"物流"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -461,7 +461,7 @@ prototype "太阳能板I" {
 
 prototype "太阳能板II" {
     type = {"item"},
-    group = {"物流"},
+    item_category = {"物流"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -471,7 +471,7 @@ prototype "太阳能板II" {
 
 prototype "太阳能板III" {
     type = {"item"},
-    group = {"物流"},
+    item_category = {"物流"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -481,7 +481,7 @@ prototype "太阳能板III" {
 
 prototype "蓄电池I" {
     type = {"item"},
-    group = {"物流"},
+    item_category = {"物流"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -491,7 +491,7 @@ prototype "蓄电池I" {
 
 prototype "蓄电池II" {
     type = {"item"},
-    group = {"物流"},
+    item_category = {"物流"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -501,7 +501,7 @@ prototype "蓄电池II" {
 
 prototype "蓄电池III" {
     type = {"item"},
-    group = {"物流"},
+    item_category = {"物流"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -511,7 +511,7 @@ prototype "蓄电池III" {
 
 prototype "水电站I" {
     type = {"item"},
-    group = {"化工"},
+    item_category = {"化工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -521,7 +521,7 @@ prototype "水电站I" {
 
 prototype "水电站II" {
     type = {"item"},
-    group = {"化工"},
+    item_category = {"化工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -531,7 +531,7 @@ prototype "水电站II" {
 
 prototype "水电站III" {
     type = {"item"},
-    group = {"化工"},
+    item_category = {"化工"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -541,7 +541,7 @@ prototype "水电站III" {
 
 prototype "砖石公路-X型" {
     type = {"item"},
-    group = {"物流"},
+    item_category = {"物流"},
     stack = 100,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -551,7 +551,7 @@ prototype "砖石公路-X型" {
 
 prototype "运输车辆I" {
     type = {"item"},
-    group = {"物流"},
+    item_category = {"物流"},
     stack = 50,
     item_description = "在道路上行驶并运输货物的交通工具",
     capacitance = "10MJ",
@@ -565,7 +565,7 @@ prototype "运输车辆I" {
 
 prototype "换热器I" {
     type = {"item"},
-    group = {"物流"},
+    item_category = {"物流"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -575,7 +575,7 @@ prototype "换热器I" {
 
 prototype "地热井I" {
     type = {"item"},
-    group = {"物流"},
+    item_category = {"物流"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -585,7 +585,7 @@ prototype "地热井I" {
 
 prototype "锅炉I" {
     type = {"item"},
-    group = {"物流"},
+    item_category = {"物流"},
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
@@ -595,7 +595,7 @@ prototype "锅炉I" {
 
 prototype "热管1-X型" {
     type = {"item"},
-    group = {"物流"},
+    item_category = {"物流"},
     stack = 50,
     pile = "4x4x4",
     backpack_stack = 100,

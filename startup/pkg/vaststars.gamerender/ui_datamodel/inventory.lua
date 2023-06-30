@@ -71,7 +71,7 @@ local function get_inventory(object_id)
             t.id = typeobject_item.id
             t.name = typeobject_item.name
             t.icon = typeobject_item.icon
-            t.category = typeobject_item.group
+            t.category = typeobject_item.item_category
             t.count = slot.amount
             inventory[#inventory+1] = t
         end

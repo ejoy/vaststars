@@ -164,7 +164,7 @@ local function chest_set(world, e, chest, item, type, limit)
         chest_dirty(world, e)
         return
     end
-    local slot = cChest.get(world._cworld, chest, 1)
+    local slot = cChest.get(world._cworld, chest.chest, 1)
     assert(slot)
     if slot.item == item then
         if slot.limit ~= limit then
