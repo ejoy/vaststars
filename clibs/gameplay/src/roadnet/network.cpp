@@ -458,10 +458,9 @@ namespace roadnet {
     }
 
     void network::refresh(world& w) {
-        ecs_api::entity<ecs::lorry> e(w.ecs);
-        bool ok = e.init(0);
-        assert(ok);
-        lorryAry = &e.get<ecs::lorry>();
+        auto [first, last] = ecs_api::array<ecs::lorry>(w.ecs);
+        assert(first);
+        lorryAry = first;
     }
 
     static loction buildingLoction(world& world, ecs::building& b, loction l) {
@@ -831,8 +830,7 @@ namespace roadnet {
 
     lorryid network::createLorry(world& w, uint16_t classid) {
         {
-            ecs_api::entity<ecs::lorry_free, ecs::lorry> e(w.ecs);
-            e.next();
+            auto e = ecs_api::first_entity<ecs::lorry_free, ecs::lorry>(w.ecs);
             if (!e.invalid()) {
                 auto& l = e.get<ecs::lorry>();
                 e.disable_tag<ecs::lorry_free>();
