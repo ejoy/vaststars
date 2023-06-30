@@ -289,7 +289,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = GP6WLPM75Q;
+				DEVELOPMENT_TEAM = 4RAW2LR6Q4;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -306,7 +306,7 @@
 				LIBRARY_SEARCH_PATHS = ../../../bin/macos/debug;
 				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = (
-					"-lvaststars",
+					"-lvaststars_rt_lib",
 					"-lbgfx-lib",
 					"-lstdc++",
 				);
@@ -325,7 +325,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = GP6WLPM75Q;
+				DEVELOPMENT_TEAM = 4RAW2LR6Q4;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -342,7 +342,7 @@
 				LIBRARY_SEARCH_PATHS = ../../../bin/macos/release;
 				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = (
-					"-lvaststars",
+					"-lvaststars_rt_lib",
 					"-lbgfx-lib",
 					"-lstdc++",
 				);

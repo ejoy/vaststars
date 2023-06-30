@@ -100,6 +100,7 @@ if lm.os == "windows" then
         lm.compiler == "msvc" and EnableSanitize and "copy_asan",
         "vaststars_rt",
         "vaststars",
+        "vaststars_rt_lib",
     }
     return
 end
