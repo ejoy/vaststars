@@ -67,14 +67,14 @@ static int
 lupdate(lua_State *L) {
     auto& w = getworld(L);
     for (auto& v : ecs_api::select<ecs::assembling, ecs::chest, ecs::building>(w.ecs)) {
-        bool is_consumer = v.sibling<ecs::consumer>();
-        bool is_generator = v.sibling<ecs::generator>();
+        bool is_consumer = v.component<ecs::consumer>();
+        bool is_generator = v.component<ecs::generator>();
         ecs::assembling& assembling = v.get<ecs::assembling>();
         if (is_consumer && is_generator) {
             continue;
         }
         else if (is_consumer) {
-            auto capacitance = v.sibling<ecs::capacitance>();
+            auto capacitance = v.component<ecs::capacitance>();
             if (!capacitance) {
                 continue;
             }
@@ -85,7 +85,7 @@ lupdate(lua_State *L) {
             if (assembling.recipe == 0) {
                 continue;
             }
-            if (!assembling_update(w, assembling, v.get<ecs::chest>(), v.sibling<ecs::fluidboxes>())) {
+            if (!assembling_update(w, assembling, v.get<ecs::chest>(), v.component<ecs::fluidboxes>())) {
                 continue;
             }
             if (!consumer.cost_power()) {
@@ -94,14 +94,14 @@ lupdate(lua_State *L) {
             assembling.progress -= assembling.speed;
         }
         else if (is_generator) {
-            auto capacitance = v.sibling<ecs::capacitance>();
+            auto capacitance = v.component<ecs::capacitance>();
             if (!capacitance) {
                 continue;
             }
             if (assembling.recipe == 0) {
                 continue;
             }
-            if (!assembling_update(w, assembling, v.get<ecs::chest>(), v.sibling<ecs::fluidboxes>())) {
+            if (!assembling_update(w, assembling, v.get<ecs::chest>(), v.component<ecs::fluidboxes>())) {
                 continue;
             }
             auto generator = get_generator(w, v, *capacitance);
@@ -114,7 +114,7 @@ lupdate(lua_State *L) {
             if (assembling.recipe == 0) {
                 continue;
             }
-            if (!assembling_update(w, assembling, v.get<ecs::chest>(), v.sibling<ecs::fluidboxes>())) {
+            if (!assembling_update(w, assembling, v.get<ecs::chest>(), v.component<ecs::fluidboxes>())) {
                 continue;
             }
             assembling.progress -= assembling.speed;

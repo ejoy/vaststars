@@ -179,7 +179,7 @@ powergrid_run(world& w, powergrid pg[]) {
 			continue;
 		}
 		ecs::building& building = v.get<ecs::building>();
-		if (v.sibling<ecs::consumer>()) {
+		if (v.component<ecs::consumer>()) {
 			// It's a consumer, charge capacitance
 			if (c.shortage > 0) {
 				auto priority = prototype::get<"priority", power_priority>(w, building.prototype);
@@ -203,7 +203,7 @@ powergrid_run(world& w, powergrid pg[]) {
 				}
 			}
 		}
-		else if (v.sibling<ecs::generator>()) {
+		else if (v.component<ecs::generator>()) {
 			// It's a generator, and must be not a consumer
 			auto priority = prototype::get<"priority", power_priority>(w, building.prototype);
 			float eff = pg[c.network].generator_efficiency[std::to_underlying(priority)];
@@ -216,7 +216,7 @@ powergrid_run(world& w, powergrid pg[]) {
 				continue;
 			}
 		}
-		else if (pg[c.network].accumulator_efficiency != 0 && v.sibling<ecs::accumulator>()) {
+		else if (pg[c.network].accumulator_efficiency != 0 && v.component<ecs::accumulator>()) {
 			float eff = pg[c.network].accumulator_efficiency;
 			if (eff > 0) {
 				// discharge

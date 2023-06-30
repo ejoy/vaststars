@@ -157,7 +157,7 @@ lbuild(lua_State *L) {
         auto& building = v.get<ecs::building>();
         uint16_t area = prototype::get<"area">(w, building.prototype);
         building_rect r(building, area);
-        if (auto phub = v.sibling<ecs::hub>()) {
+        if (auto phub = v.component<ecs::hub>()) {
             auto& hub = *phub;
             auto& chestslot = chest::array_at(w, container::index::from(hub.chest), 0);
             auto item = chestslot.item;
@@ -169,7 +169,7 @@ lbuild(lua_State *L) {
             b.chests.insert_or_assign(r.hash(), hub.chest);
             used_id.insert(hub.id);
         }
-        else if (auto pchest = v.sibling<ecs::chest>()) {
+        else if (auto pchest = v.component<ecs::chest>()) {
             auto& chest = *pchest;
             b.chests.insert_or_assign(r.hash(), chest.chest);
             auto c = container::index::from(chest.chest);

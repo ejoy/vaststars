@@ -564,13 +564,13 @@ namespace roadnet {
                 auto [found, slot] = status.endpointMap.find_or_insert(loc);
                 assert(!found);
                 slot->endpoint = &endpoint;
-                if (e.sibling<ecs::building_new>()) {
+                if (e.component<ecs::building_new>()) {
                     slot->changed = true;
                 }
-                else if (e.sibling<ecs::building_changed>()) {
+                else if (e.component<ecs::building_changed>()) {
                     slot->changed = true;
                 }
-                else if (e.sibling<ecs::station_changed>()) {
+                else if (e.component<ecs::station_changed>()) {
                     slot->changed = true;
                 }
             }
