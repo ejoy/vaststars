@@ -1,5 +1,6 @@
 local iBackpack = import_package "vaststars.gameplay".interface "backpack"
 local iprototype = require "gameplay.interface.prototype"
+local ichest = require "gameplay.interface.chest"
 local debugger = require "debugger"
 
 local M = {}
@@ -53,8 +54,11 @@ function M.get_moveable_count(world, item, count)
 end
 
 function M.can_move_to_backpack(world, chest)
-    local slots = M.collect_item(world, chest)
-    for _, slot in pairs(slots) do
+    for i = 1, ichest.MAX_SLOT do
+        local slot = world:container_get(chest, i)
+        if not slot then
+            break
+        end
         if slot.type == "unknown" then
             goto continue
         end

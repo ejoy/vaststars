@@ -105,7 +105,9 @@ function ipick_object.blur_pick(x, y)
     local status = setmetatable({}, mt)
     for dx = x - 1, x + 1 do
         for dy = y - 1, y + 1 do
-            __push_object(lorries, x, y, dx, dy, status)
+            if dx & 0xFF == dx and dy & 0xFF == dy then
+                __push_object(lorries, x, y, dx, dy, status)
+            end
         end
     end
     for _, v in pairs(status) do

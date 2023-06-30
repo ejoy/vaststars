@@ -564,7 +564,7 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
                 goto continue
             end
 
-            if iroad.get(gameplay_core.get_world(), dx, dy) then
+            if ibuilding.get(dx, dy) then
                 valid = true
                 break
             end

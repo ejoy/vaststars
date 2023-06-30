@@ -12,7 +12,7 @@ if not exist "%exe%" (
 	set titlemsg=release
 )
 
-%current_dir%%exe% %param%
+%current_dir%%exe% %param% %1
 
 popd
 pause
