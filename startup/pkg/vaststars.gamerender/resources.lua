@@ -657,6 +657,8 @@ local t = {
 	"/pkg/ant.rmlui/materials/font_shadow_cr.material",
 	"/pkg/ant.rmlui/materials/image.material",
 	"/pkg/ant.rmlui/materials/image_cr.material",
+	"/pkg/ant.rmlui/materials/image_cr_gray.material",
+	"/pkg/ant.rmlui/materials/image_gray.material",
 	"/pkg/ant.rmlui/package.ecs",
 	"/pkg/ant.rmlui/package.lua",
 	"/pkg/ant.rmlui/rmlui_system.lua",
