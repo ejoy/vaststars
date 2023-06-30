@@ -4,8 +4,8 @@ local itypes = require "gameplay.interface.types"
 return function()
     local recipe_category = {}
     for _, typeobject in pairs(iprototype.each_type "recipe") do
-        recipe_category[typeobject.category] = recipe_category[typeobject.category] or {}
-        local t = recipe_category[typeobject.category]
+        recipe_category[typeobject.recipe_craft_category] = recipe_category[typeobject.recipe_craft_category] or {}
+        local t = recipe_category[typeobject.recipe_craft_category]
         t[#t+1] = typeobject
     end
 

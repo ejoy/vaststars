@@ -195,6 +195,7 @@ local function __handle_camera_motion()
             local mq = w:first("main_queue camera_ref:in")
             local e <close> = w:entity(mq.camera_ref)
             iom.set_srt(e, math3d.srt(mat))
+            world:pub {"dragdrop_camera"}
         end
     end
 end
@@ -304,7 +305,6 @@ end
 function icamera_controller.focus_on_position(position, callback)
     cam_cmd_queue:push {{"focus_on_position", position}}
     if callback then
-        cam_cmd_queue:push {{"callback", function() world:pub {"dragdrop_camera" } end}}
         cam_cmd_queue:push {{"callback", callback}}
     end
 end
@@ -312,7 +312,6 @@ end
 function icamera_controller.toggle_view(v, callback)
     cam_cmd_queue:push {{"toggle_view", v}}
     if callback then
-        cam_cmd_queue:push {{"callback", function() world:pub {"dragdrop_camera" } end}}
         cam_cmd_queue:push {{"callback", callback}}
     end
 end

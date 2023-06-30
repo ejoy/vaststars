@@ -27,15 +27,15 @@ for _, typeobject in pairs(iprototype.each_type("recipe")) do
             item_id_to_info[id][#item_id_to_info[id]+1] = {icon = assert(typeobject.recipe_icon), element = irecipe.get_elements(typeobject.ingredients), recipe_id = typeobject.id, time = itypes.time(typeobject.time)}
         end
     end
-    recipe_to_category[typeobject.id] = typeobject.category
+    recipe_to_category[typeobject.id] = typeobject.recipe_craft_category
 end
 
 for _, typeobject in pairs(iprototype.each_type("building")) do
     if iprototype.has_type(typeobject.type, "assembling") then
         if typeobject.recipe then -- 固定配方的组装机
             local typeobject_recipe = assert(iprototype.queryByName(typeobject.recipe))
-            category_to_entity[typeobject_recipe.category] = category_to_entity[typeobject_recipe.category] or {}
-            table.insert(category_to_entity[typeobject_recipe.category], {id = typeobject.id, icon = typeobject.icon})
+            category_to_entity[typeobject_recipe.recipe_craft_category] = category_to_entity[typeobject_recipe.recipe_craft_category] or {}
+            table.insert(category_to_entity[typeobject_recipe.recipe_craft_category], {id = typeobject.id, icon = typeobject.icon})
         else
             if not typeobject.craft_category then
                 log.error(("%s dont have craft_category"):format(typeobject.name))
