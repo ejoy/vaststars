@@ -2310,7 +2310,7 @@ prototype "物流车站1" {
   time = "10s"
 }
 
-prototype "地下水净化" {
+prototype "地下水净化1" {
   desc = "火星地下开采卤水进行过滤净化工艺",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
@@ -2334,7 +2334,7 @@ prototype "过滤" {
   effects = {
     unlock_recipe = {"空气过滤器1"},
   },
-  prerequisites = {"地下水净化"},
+  prerequisites = {"地下水净化1"},
   ingredients = {
     {"气候科技包", 1},
     {"机械科技包", 1},
@@ -2465,7 +2465,7 @@ prototype "浮选1" {
     unlock_recipe = {"浮选器1"},
     unlock_item = {"浮选器I"},
   },
-  prerequisites = {"矿物处理1","地下水净化"},
+  prerequisites = {"矿物处理1","地下水净化1"},
   ingredients = {
     {"地质科技包", 1},
     {"气候科技包", 1},
@@ -2868,25 +2868,6 @@ prototype "太阳能存储1" {
   time = "15s"
 }
 
-prototype "批量生产1" {
-  desc = "研究大规模生产的技术",
-  type = { "tech" },
-  icon = "textures/science/tech-research.texture",
-  effects = {
-    unlock_recipe = {"组装机2","采矿机2"},
-    unlock_item = {"组装机II","采矿机II"},
-
-  },
-  prerequisites = {"废料回收1","太阳能存储1"},
-  ingredients = {
-    {"地质科技包", 1},
-    {"气候科技包", 1},
-    {"机械科技包", 1},
-  },
-  count = 80,
-  time = "10s"
-}
-
 prototype "电子研究" {
   desc = "对电子设备进行深度研究",
   type = { "tech" },
@@ -2895,7 +2876,7 @@ prototype "电子研究" {
     unlock_recipe = {"电子科技包1"},
     unlock_item = {"电子科技包"},
   },
-  prerequisites = {"批量生产1","电子器件"},
+  prerequisites = {"电子器件","电力传输2"},
   ingredients = {
     {"地质科技包", 1},
     {"气候科技包", 1},
@@ -2909,6 +2890,25 @@ prototype "电子研究" {
   time = "5s"
 }
 
+---------------------------化学研究---------------------------
+prototype "电磁学2" {
+  desc = "研究大规模生产的技术",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    unlock_recipe = {"电动机2"},
+    unlock_item = {"电动机II"},
+
+  },
+  prerequisites = {"电子研究"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"机械科技包", 1},
+    {"电子科技包", 1},
+  },
+  count = 30,
+  time = "10s"
+}
 
 prototype "科研中心" {
   desc = "研究可以开展大规模研发的设施",
@@ -2930,12 +2930,28 @@ prototype "科研中心" {
 }
 
 
+prototype "科技大跃进" {
+  desc = "生产科技包用于科技研究",
+  icon = "textures/construct/industry.texture",
+  type = { "task" },
+  task = {"stat_production", 0, "科研中心I"},
+  prerequisites = {"科研中心"},
+  count = 3,
+  tips_pic = {
+    "textures/task_tips_pic/task_produce_plastic.texture",
+  },
+  sign_desc = {
+    { desc = "用组装机生产3个科研中心", icon = "textures/construct/industry.texture"},
+  },
+}
+
+
 prototype "信号处理" {
   desc = "研究电子信号传输机制",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    -- unlock_recipe = {"数据线1"},
+    unlock_recipe = {"数据线1"},
     unlock_item = {"数据线"},
   },
   prerequisites = {"科研中心"},
@@ -2953,7 +2969,7 @@ prototype "计算元件" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    -- unlock_recipe = {"数据线1"},
+    unlock_recipe = {"运算电路1"},
     unlock_item = {"运算电路"},
   },
   prerequisites = {"信号处理"},
@@ -2965,12 +2981,47 @@ prototype "计算元件" {
   time = "10s"
 }
 
+prototype "电解2" {
+  desc = "服务于计算的电路集群",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    unlock_recipe = {"电解厂2"},
+    unlock_item = {"电解厂II"},
+  },
+  prerequisites = {"计算元件"},
+  ingredients = {
+    {"气候科技包", 1},
+    {"电子科技包", 1},
+  },
+  count = 80,
+  time = "15s"
+}
+
+prototype "挖掘2" {
+  desc = "服务于计算的电路集群",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    unlock_recipe = {"采矿机2"},
+    unlock_item = {"采矿机II"},
+  },
+  prerequisites = {"计算元件"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"机械科技包", 1},
+    {"电子科技包", 1},
+  },
+  count = 50,
+  time = "15s"
+}
+
 prototype "水能利用" {
   desc = "研究淡水生产的工艺",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    -- unlock_recipe = {"淡水沸腾","淡水过滤"},
+    unlock_recipe = {"淡水沸腾","淡水过滤"},
   },
   prerequisites = {"计算元件"},
   ingredients = {
@@ -2980,23 +3031,143 @@ prototype "水能利用" {
     {"电子科技包", 1},
   },
   count = 40,
-  time = "10s"
+  time = "15s"
 }
 
-prototype "优化" {
+prototype "自动化2" {
+  desc = "服务于计算的电路集群",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    unlock_recipe = {"组装机2"},
+    unlock_item = {"组装机II"},
+  },
+  prerequisites = {"水能利用"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"机械科技包", 1},
+    {"电子科技包", 1},
+  },
+  count = 60,
+  time = "15s"
+}
+
+prototype "发电机2" {
+  desc = "服务于计算的电路集群",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    unlock_recipe = {"蒸汽发电机2"},
+    unlock_item = {"蒸汽发电机II"},
+  },
+  prerequisites = {"自动化2"},
+  ingredients = {
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+    {"电子科技包", 1},
+  },
+  count = 70,
+  time = "25s"
+}
+
+prototype "优化1" {
   desc = "研究提高生产效率的插件",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    -- unlock_recipe = {"数据线1"},
-    unlock_item = {"效能插件","产能插件","速度插件"},
+    unlock_recipe = {"效能插件1","速度插件1","产能插件1"},
+    unlock_item = {"效能插件I","速度插件I","产能插件I"},
   },
-  prerequisites = {"水能利用"},
+  prerequisites = {"发电机2"},
   ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+    {"电子科技包", 1},
+  },
+  count = 150,
+  time = "15s"
+}
+
+prototype "广播1" {
+  desc = "研究提高生产效率的插件",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    unlock_recipe = {"广播塔1"},
+    unlock_item = {"广播塔I"},
+  },
+  prerequisites = {"发电机2"},
+  ingredients = {
+    {"气候科技包", 1},
+    {"机械科技包", 1},
     {"电子科技包", 1},
   },
   count = 100,
-  time = "15s"
+  time = "20s"
+}
+
+prototype "效能提升" {
+  desc = "生产科技包用于科技研究",
+  icon = "textures/construct/industry.texture",
+  type = { "task" },
+  task = {"stat_production", 0, "效能插件I"},
+  prerequisites = {"优化1","广播1"},
+  count = 5,
+  tips_pic = {
+    "textures/task_tips_pic/task_produce_plastic.texture",
+  },
+  sign_desc = {
+    { desc = "用组装机生产5个效能插件I", icon = "textures/construct/industry.texture"},
+  },
+}
+
+prototype "速度提升" {
+  desc = "生产科技包用于科技研究",
+  icon = "textures/construct/industry.texture",
+  type = { "task" },
+  task = {"stat_production", 0, "速度插件I"},
+  prerequisites = {"优化1","广播1"},
+  count = 5,
+  tips_pic = {
+    "textures/task_tips_pic/task_produce_plastic.texture",
+  },
+  sign_desc = {
+    { desc = "用组装机生产5个速度插件I", icon = "textures/construct/industry.texture"},
+  },
+}
+
+prototype "产能提升" {
+  desc = "生产科技包用于科技研究",
+  icon = "textures/construct/industry.texture",
+  type = { "task" },
+  task = {"stat_production", 0, "产能插件I"},
+  prerequisites = {"优化1","广播1"},
+  count = 5,
+  tips_pic = {
+    "textures/task_tips_pic/task_produce_plastic.texture",
+  },
+  sign_desc = {
+    { desc = "用组装机生产5个产能插件I", icon = "textures/construct/industry.texture"},
+  },
+}
+
+prototype "矿物处理2" {
+  desc = "研究含氮的化合物生产",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    unlock_recipe = {"粉碎机2"},
+    unlock_item = {"粉碎机II"},
+  },
+  prerequisites = {"优化1","广播1"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"机械科技包", 1},
+    {"电子科技包", 1},
+  },
+  count = 60,
+  time = "25s"
 }
 
 prototype "氮化学" {
@@ -3004,10 +3175,10 @@ prototype "氮化学" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    -- unlock_recipe = {"数据线1"},
+    unlock_recipe = {"氨气"},
     unlock_item = {"氨气"},
   },
-  prerequisites = {"优化"},
+  prerequisites = {"矿物处理2"},
   ingredients = {
     {"地质科技包", 1},
     {"气候科技包", 1},
@@ -3018,13 +3189,27 @@ prototype "氮化学" {
   time = "15s"
 }
 
-prototype "广播" {
-  desc = "研究提高生产效率的插件",
+prototype "氨制造" {
+  desc = "生产科技包用于科技研究",
+  icon = "textures/construct/industry.texture",
+  type = { "task" },
+  task = {"stat_production", 0, "氨气"},
+  prerequisites = {"氮化学"},
+  count = 500,
+  tips_pic = {
+    "textures/task_tips_pic/task_produce_plastic.texture",
+  },
+  sign_desc = {
+    { desc = "用组装机生产5个速度插件I", icon = "textures/construct/industry.texture"},
+  },
+}
+
+prototype "气候学2" {
+  desc = "研究含氮的化合物生产",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    -- unlock_recipe = {"数据线1"},
-    unlock_item = {"广播塔I"},
+    unlock_recipe = {"气候科技包2"},
   },
   prerequisites = {"氮化学"},
   ingredients = {
@@ -3042,9 +3227,9 @@ prototype "玻璃制造" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-
+    unlock_recipe = {"玻璃2"},
   },
-  prerequisites = {"广播"},
+  prerequisites = {"气候学2"},
   ingredients = {
     {"地质科技包", 1},
     {"气候科技包", 1},
@@ -3073,11 +3258,68 @@ prototype "建筑材料" {
   time = "15s"
 }
 
-prototype "地热" {
+prototype "电力传输3" {
+  desc = "研究更高效生产玻璃的工艺",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    unlock_recipe = {"广域电线杆"},
+    unlock_item = {"广域电线杆"},
+  },
+  prerequisites = {"建筑材料"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+    {"电子科技包", 1},
+  },
+  count = 150,
+  time = "12s"
+}
+
+prototype "电力传输3" {
+  desc = "研究更高效生产玻璃的工艺",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    unlock_recipe = {"广域电线杆"},
+    unlock_item = {"广域电线杆"},
+  },
+  prerequisites = {"建筑材料"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+    {"电子科技包", 1},
+  },
+  count = 150,
+  time = "12s"
+}
+
+prototype "地下水净化2" {
+  desc = "研究更高效生产玻璃的工艺",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    unlock_recipe = {"水电站2","地下水挖掘机2"},
+    unlock_item = {"水电站II","地下水挖掘机II"},
+  },
+  prerequisites = {"电力传输3"},
+  ingredients = {
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+    {"电子科技包", 1},
+  },
+  count = 160,
+  time = "30s"
+}
+
+prototype "地热1" {
   desc = "研究开发地热资源的装置",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
+    unlock_recipe = {"地热井1"},
     unlock_item = {"地热井I"},
   },
   prerequisites = {"建筑材料"},
@@ -3091,14 +3333,15 @@ prototype "地热" {
   time = "20s"
 }
 
-prototype "太阳能" {
+prototype "太阳能1" {
   desc = "研究利用太阳能发电的装置",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-
+    unlock_recipe = {"太阳能板1"},
+    unlock_item = {"太阳能板I"},
   },
-  prerequisites = {"地热"},
+  prerequisites = {"建筑材料"},
   ingredients = {
     {"地质科技包", 1},
     {"气候科技包", 1},
@@ -3109,6 +3352,40 @@ prototype "太阳能" {
   time = "20s"
 }
 
+prototype "铺设太阳能板" {
+  desc = "放置1台采矿机",
+  icon = "textures/construct/industry.texture",
+  type = {"task" },
+  task = {"select_entity", 0, "太阳能板I"},
+  prerequisites = {"太阳能1"},
+  count = 20,
+  tips_pic = {
+    "textures/task_tips_pic/task_place_logistics.texture",
+  },
+  sign_desc = {
+    { desc = "放置20个太阳能板I", icon = "textures/construct/industry.texture"},
+  },
+}
+
+prototype "蒸馏2" {
+  desc = "研究利用太阳能发电的装置",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    unlock_recipe = {"蒸馏厂2"},
+    unlock_item = {"蒸馏厂II"},
+  },
+  prerequisites = {"太阳能1"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+    {"电子科技包", 1},
+  },
+  count = 170,
+  time = "30s"
+}
+
 prototype "硫磺处理" {
   desc = "研究利用太阳能发电的装置",
   type = { "tech" },
@@ -3116,7 +3393,7 @@ prototype "硫磺处理" {
   effects = {
     unlock_item = {"硫酸"},
   },
-  prerequisites = {"太阳能"},
+  prerequisites = {"太阳能1"},
   ingredients = {
     {"地质科技包", 1},
     {"气候科技包", 1},
@@ -3126,15 +3403,87 @@ prototype "硫磺处理" {
   time = "20s"
 }
 
+prototype "硫酸生产" {
+  desc = "生产科技包用于科技研究",
+  icon = "textures/construct/industry.texture",
+  type = { "task" },
+  task = {"stat_production", 0, "硫酸"},
+  prerequisites = {"硫磺处理"},
+  count = 500,
+  tips_pic = {
+    "textures/task_tips_pic/task_produce_plastic.texture",
+  },
+  sign_desc = {
+    { desc = "用化工厂生产500个单位硫酸", icon = "textures/construct/industry.texture"},
+  },
+}
+
+prototype "过滤2" {
+  desc = "研究利用太阳能发电的装置",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    unlock_recipe = {"空气过滤器2"},
+    unlock_item = {"空气过滤器II"},
+  },
+  prerequisites = {"硫磺处理"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+    {"电子科技包", 1},
+  },
+  count = 200,
+  time = "30s"
+}
+
+prototype "浮选2" {
+  desc = "研究利用太阳能发电的装置",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    unlock_recipe = {"浮选器2"},
+    unlock_item = {"浮选器II"},
+  },
+  prerequisites = {"硫磺处理"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+    {"电子科技包", 1},
+  },
+  count = 200,
+  time = "30s"
+}
+
+prototype "化学工程2" {
+  desc = "研究利用太阳能发电的装置",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    unlock_recipe = {"化工厂2"},
+    unlock_item = {"化工厂II"},
+  },
+  prerequisites = {"硫磺处理"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+    {"电子科技包", 1},
+  },
+  count = 200,
+  time = "30s"
+}
+
 prototype "化学研究" {
   desc = "对化学反应进行深度研究",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    -- unlock_recipe = {"化学科技包1"},
+    unlock_recipe = {"化学科技包1"},
     unlock_item = {"化学科技包"},
   },
-  prerequisites = {"硫磺处理"},
+  prerequisites = {"过滤2","浮选2","化学工程2"},
   ingredients = {
     {"地质科技包", 1},
     {"气候科技包", 1},
