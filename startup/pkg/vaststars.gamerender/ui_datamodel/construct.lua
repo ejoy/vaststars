@@ -561,11 +561,11 @@ function M:stage_camera_usage(datamodel)
             end
 
             for i = 1, ichest.MAX_SLOT do
-                local slot = gameplay_core.get_world():container_get(e.chest, i)
+                local slot = gameplay_core.get_world():container_get(e[chest_component], i)
                 if not slot then
                     break
                 end
-                ibackpack.move_to_backpack(gameplay_core.get_world(), e.chest, i)
+                ibackpack.move_to_backpack(gameplay_core.get_world(), e[chest_component], i)
             end
         end
 
