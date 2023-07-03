@@ -11,8 +11,6 @@ $input v_texcoord0 v_normal v_tangent v_posWS
 #include "common/constants.sh"
 #include "common/uvmotion.sh"
 #include "pbr/lighting.sh"
-#include "pbr/indirect_lighting.sh"
-#include "pbr/pbr.sh"
 
 #include "pbr/attribute_define.sh"
 

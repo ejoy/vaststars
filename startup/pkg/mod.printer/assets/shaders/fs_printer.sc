@@ -12,8 +12,6 @@ $input v_texcoord0 OUTPUT_WORLDPOS OUTPUT_NORMAL OUTPUT_TANGENT OUTPUT_LIGHTMAP_
 #include "common/constants.sh"
 #include "common/uvmotion.sh"
 #include "pbr/lighting.sh"
-#include "pbr/indirect_lighting.sh"
-#include "pbr/pbr.sh"
 
 #define v_distanceVS v_posWS.w
 #ifdef ENABLE_SHADOW
