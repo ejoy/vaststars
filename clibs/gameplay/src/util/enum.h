@@ -1,5 +1,5 @@
-#include <array>
-#include <cstdint>
+#pragma once
+
 #include <type_traits>
 #include <string_view>
 
@@ -39,4 +39,4 @@ constexpr auto enum_count() noexcept {
 }
 
 template <typename E>
-inline static constexpr auto enum_count_v = enum_count<E>();
+static constexpr auto enum_count_v = enum_count<E>();
