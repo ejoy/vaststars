@@ -730,9 +730,27 @@ prototype "组装机2" {
     description = "机械原料制造组装机",
 }
 
-prototype "广播塔1" {
+prototype "组装机3" {
     type = { "recipe" },
     recipe_craft_category = "生产中型制造",
+    recipe_category =  "加工",
+    recipe_order =  71,
+    recipe_icon =  "textures/construct/assembler2.texture",
+    ingredients = {
+        {"铝板", 6},
+        {"无人机仓库II", 1},
+        {"组装机II", 1},
+    },
+    results = {
+        {"组装机III", 1},
+    },
+    time = "24s",
+    description = "机械原料制造组装机",
+}
+
+prototype "广播塔1" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
     recipe_order =  72,
     recipe_icon =  "textures/construct/assembler1.texture",
@@ -748,9 +766,44 @@ prototype "广播塔1" {
     description = "生产可广播性能信号的装置",
 }
 
+prototype "广播塔2" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "加工",
+    recipe_order =  72,
+    recipe_icon =  "textures/construct/assembler1.texture",
+    ingredients = {
+        {"广域电线杆", 1},
+        {"玻璃纤维", 4},
+        {"广播塔I", 1},
+    },
+    results = {
+        {"广播塔II", 1},
+    },
+    time = "30s",
+    description = "生产可广播性能信号的装置",
+}
+
+prototype "广播塔3" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "加工",
+    recipe_order =  72,
+    recipe_icon =  "textures/construct/assembler1.texture",
+    ingredients = {
+        {"电动机III", 1},
+        {"广播塔II", 1},
+    },
+    results = {
+        {"广播塔III", 1},
+    },
+    time = "40s",
+    description = "生产可广播性能信号的装置",
+}
+
 prototype "地热井1" {
     type = { "recipe" },
-    recipe_craft_category = "生产中型制造",
+    recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
     recipe_order =  72,
     recipe_icon =  "textures/construct/assembler1.texture",
@@ -767,9 +820,44 @@ prototype "地热井1" {
     description = "生产可挖掘地热资源的装置",
 }
 
+prototype "地热井2" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "加工",
+    recipe_order =  72,
+    recipe_icon =  "textures/construct/assembler1.texture",
+    ingredients = {
+        {"采矿机II", 1},
+        {"地热井I", 1},
+    },
+    results = {
+        {"地热井II", 1},
+    },
+    time = "10s",
+    description = "生产可挖掘地热资源的装置",
+}
+
+prototype "地热井3" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "加工",
+    recipe_order =  72,
+    recipe_icon =  "textures/construct/assembler1.texture",
+    ingredients = {
+        {"效能插件I", 2},
+        {"采矿机III", 1},
+        {"地热井II", 1},
+    },
+    results = {
+        {"地热井III", 1},
+    },
+    time = "15s",
+    description = "生产可挖掘地热资源的装置",
+}
+
 prototype "蒸汽发电机1" {
     type = { "recipe" },
-    recipe_craft_category = "生产中型制造",
+    recipe_craft_category = "生产大型制造",
     recipe_category =  "化工",
     recipe_order =  120,
     recipe_icon =  "textures/construct/turbine1.texture",
@@ -778,6 +866,43 @@ prototype "蒸汽发电机1" {
         {"铁齿轮", 1},
         {"铁板", 8},
         {"电动机I", 1},
+    },
+    results = {
+        {"蒸汽发电机I", 1},
+    },
+    time = "8s",
+    description = "管道和机械原料制造蒸汽发电机",
+}
+
+prototype "蒸汽发电机2" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "化工",
+    recipe_order =  120,
+    recipe_icon =  "textures/construct/turbine1.texture",
+    ingredients = {
+        {"电容I", 2},
+        {"钢齿轮", 4},
+        {"电动机II", 2},
+        {"蒸汽发电机I", 1},
+    },
+    results = {
+        {"蒸汽发电机II", 1},
+    },
+    time = "8s",
+    description = "管道和机械原料制造蒸汽发电机",
+}
+
+prototype "蒸汽发电机3" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "化工",
+    recipe_order =  120,
+    recipe_icon =  "textures/construct/turbine1.texture",
+    ingredients = {
+        {"钛板", 12},
+        {"电动机III", 1},
+        {"蒸汽发电机II", 2},
     },
     results = {
         {"蒸汽发电机I", 1},
@@ -805,7 +930,7 @@ prototype "风力发电机1" {
 
 prototype "液罐1" {
     type = { "recipe" },
-    recipe_craft_category = "器件中型制造",
+    recipe_craft_category = "生产大型制造",
     recipe_category =  "化工",
     recipe_order =  22,
     recipe_icon =  "textures/construct/liquid-tank.texture",
@@ -820,21 +945,41 @@ prototype "液罐1" {
     description = "制造可装载液体资源的容器",
 }
 
-prototype "气罐1" {
+prototype "液罐2" {
     type = { "recipe" },
-    recipe_craft_category = "器件中型制造",
-    --recipe_category =  "化工",
-    recipe_order =  23,
-    recipe_icon =  "textures/construct/gas-tank.texture",
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "化工",
+    recipe_order =  22,
+    recipe_icon =  "textures/construct/liquid-tank.texture",
     ingredients = {
         {"管道1-X型", 6},
-        -- {"铁棒", 1},
+        {"钢板", 5},
+        {"塑料", 3},
+        {"液罐I", 1},
     },
     results = {
-        {"气罐I", 1},
+        {"液罐II", 1},
     },
-    time = "5s",
-    description = "制造可装载气体资源的容器",
+    time = "8s",
+    description = "制造可装载液体资源的容器",
+}
+
+prototype "液罐3" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "化工",
+    recipe_order =  22,
+    recipe_icon =  "textures/construct/liquid-tank.texture",
+    ingredients = {
+        {"管道1-X型", 6},
+        {"玻璃纤维", 4},
+        {"液罐II", 1},
+    },
+    results = {
+        {"液罐III", 1},
+    },
+    time = "8s",
+    description = "制造可装载液体资源的容器",
 }
 
 prototype "化工厂1" {
@@ -852,6 +997,42 @@ prototype "化工厂1" {
         {"化工厂I", 1},
     },
     time = "15s",
+    description = "液体容器和加工设备制造化工厂",
+}
+
+prototype "化工厂2" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "化工",
+    recipe_order =  80,
+    recipe_icon =  "textures/construct/chemistry2.texture",
+    ingredients = {
+        {"科研中心I", 1},
+        {"蒸馏厂II", 1},
+        {"化工厂I", 1},
+    },
+    results = {
+        {"化工厂II", 1},
+    },
+    time = "20s",
+    description = "液体容器和加工设备制造化工厂",
+}
+
+prototype "化工厂3" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "化工",
+    recipe_order =  80,
+    recipe_icon =  "textures/construct/chemistry2.texture",
+    ingredients = {
+        {"科研中心II", 1},
+        {"浮选器II", 1},
+        {"化工厂II", 1},
+    },
+    results = {
+        {"化工厂III", 1},
+    },
+    time = "30s",
     description = "液体容器和加工设备制造化工厂",
 }
 
@@ -889,6 +1070,42 @@ prototype "水电站1" {
     description = "蒸馏设施和地下水挖掘机制造水电站",
 }
 
+prototype "水电站2" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "化工",
+    recipe_order =  70,
+    recipe_icon =  "textures/construct/hydroplant.texture",
+    ingredients = {
+        {"液罐II", 1},
+        {"化工厂I", 1},
+        {"水电站I", 1},
+    },
+    results = {
+        {"水电站II", 1},
+    },
+    time = "10s",
+    description = "蒸馏设施和地下水挖掘机制造水电站",
+}
+
+prototype "水电站3" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "化工",
+    recipe_order =  70,
+    recipe_icon =  "textures/construct/hydroplant.texture",
+    ingredients = {
+        {"化工厂II", 1},
+        {"浮选器II", 1},
+        {"水电站II", 1},
+    },
+    results = {
+        {"水电站III", 1},
+    },
+    time = "20s",
+    description = "蒸馏设施和地下水挖掘机制造水电站",
+}
+
 prototype "蒸馏厂1" {
     type = { "recipe" },
     recipe_craft_category = "生产大型制造",
@@ -907,10 +1124,43 @@ prototype "蒸馏厂1" {
     description = "液体容器和熔炼设备制造蒸馏厂",
 }
 
+prototype "蒸馏厂2" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "化工",
+    recipe_order =  62,
+    recipe_icon =  "textures/construct/distillery.texture",
+    ingredients = {
+        {"熔炼炉II", 1},
+        {"蒸馏厂I", 1},
+    },
+    results = {
+        {"蒸馏厂II", 1},
+    },
+    time = "8s",
+    description = "液体容器和熔炼设备制造蒸馏厂",
+}
+
+prototype "蒸馏厂3" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "化工",
+    recipe_order =  62,
+    recipe_icon =  "textures/construct/distillery.texture",
+    ingredients = {
+        {"水电站II", 1},
+        {"蒸馏厂II", 1},
+    },
+    results = {
+        {"蒸馏厂III", 1},
+    },
+    time = "15s",
+    description = "液体容器和熔炼设备制造蒸馏厂",
+}
 
 prototype "烟囱1" {
     type = { "recipe" },
-    recipe_craft_category = "生产中型制造",
+    recipe_craft_category = "生产大型制造",
     recipe_category =  "化工",
     recipe_order =  65,
     recipe_icon =  "textures/construct/chimney2.texture",
@@ -921,6 +1171,24 @@ prototype "烟囱1" {
     },
     results = {
         {"烟囱I", 1},
+    },
+    time = "4s",
+    description = "铁制品和管道制造烟囱",
+}
+
+prototype "烟囱2" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "化工",
+    recipe_order =  65,
+    recipe_icon =  "textures/construct/chimney2.texture",
+    ingredients = {
+        {"混凝土", 10},
+        {"钢板", 4},
+        {"烟囱I", 2},
+    },
+    results = {
+        {"烟囱II", 1},
     },
     time = "4s",
     description = "铁制品和管道制造烟囱",
@@ -960,6 +1228,23 @@ prototype "地下水挖掘机1" {
     description = "排水设施和压力泵制造抽水泵",
 }
 
+prototype "地下水挖掘机2" {
+    type = { "recipe" },
+    recipe_craft_category = "生产中型制造",
+    recipe_category =  "化工",
+    recipe_order =  50,
+    recipe_icon =  "textures/construct/pumpjack1.texture",
+    ingredients = {
+        {"混凝土", 10},
+        {"地下水挖掘机I", 1},
+    },
+    results = {
+        {"地下水挖掘机II", 1},
+    },
+    time = "10s",
+    description = "排水设施和压力泵制造抽水泵",
+}
+
 prototype "空气过滤器1" {
     type = { "recipe" },
     recipe_craft_category = "生产大型制造",
@@ -977,6 +1262,40 @@ prototype "空气过滤器1" {
     description = "压力泵和发电设施制造空气过滤器",
 }
 
+prototype "空气过滤器2" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "化工",
+    recipe_order =  60,
+    recipe_icon =  "textures/construct/air-filter1.texture",
+    ingredients = {
+        {"蒸汽发电机II", 1},
+        {"空气过滤器I", 2},
+    },
+    results = {
+        {"空气过滤器II", 1},
+    },
+    time = "12s",
+    description = "压力泵和发电设施制造空气过滤器",
+}
+
+prototype "空气过滤器3" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "化工",
+    recipe_order =  60,
+    recipe_icon =  "textures/construct/air-filter1.texture",
+    ingredients = {
+        {"烟囱II", 2},
+        {"空气过滤器II", 2},
+    },
+    results = {
+        {"空气过滤器III", 1},
+    },
+    time = "30s",
+    description = "压力泵和发电设施制造空气过滤器",
+}
+
 prototype "排水口1" {
     type = { "recipe" },
     recipe_craft_category = "生产大型制造",
@@ -989,6 +1308,23 @@ prototype "排水口1" {
     },
     results = {
         {"排水口I", 1},
+    },
+    time = "5s",
+    description = "管道制造排水口",
+}
+
+prototype "排水口2" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "化工",
+    recipe_order =  56,
+    recipe_icon =  "textures/construct/outfall.texture",
+    ingredients = {
+        {"混凝土", 10},
+        {"排水口I", 1},
+    },
+    results = {
+        {"排水口II", 1},
     },
     time = "5s",
     description = "管道制造排水口",
@@ -1069,7 +1405,6 @@ prototype "粉碎机1" {
     recipe_order =  60,
     recipe_icon =  "textures/construct/crusher1.texture",
     ingredients = {
-        -- {"铁丝", 4},
         {"铁板", 4},
         {"石砖", 8},
         {"采矿机I", 1},
@@ -1081,6 +1416,41 @@ prototype "粉碎机1" {
     description = "石砖和采矿机制造粉碎机",
 }
 
+prototype "粉碎机2" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "加工",
+    recipe_order =  60,
+    recipe_icon =  "textures/construct/crusher1.texture",
+    ingredients = {
+        {"绝缘线", 6},
+        {"采矿机I", 1},
+        {"粉碎机I", 1},   
+    },
+    results = {
+        {"粉碎机II", 1},
+    },
+    time = "10s",
+    description = "石砖和采矿机制造粉碎机",
+}
+
+prototype "粉碎机3" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "加工",
+    recipe_order =  60,
+    recipe_icon =  "textures/construct/crusher1.texture",
+    ingredients = {
+        {"采矿机III", 1},
+        {"粉碎机II", 1},
+    },
+    results = {
+        {"粉碎机III", 1},
+    },
+    time = "20s",
+    description = "石砖和采矿机制造粉碎机",
+}
+
 prototype "无人机仓库1" {
     type = { "recipe" },
     recipe_craft_category = "生产大型制造",
@@ -1088,7 +1458,6 @@ prototype "无人机仓库1" {
     recipe_order =  60,
     recipe_icon =  "textures/construct/crusher1.texture",
     ingredients = {
-        -- {"铁丝", 4},
         {"电动机I", 1},
         {"石砖", 4},
     },
@@ -1117,6 +1486,24 @@ prototype "无人机仓库2" {
     description = "石砖和采矿机制造粉碎机",
 }
 
+prototype "无人机仓库3" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "加工",
+    recipe_order =  60,
+    recipe_icon =  "textures/construct/crusher1.texture",
+    ingredients = {
+        {"电动机II", 4},
+        {"钛板", 8},
+        {"无人机仓库II", 1},
+    },
+    results = {
+        {"无人机仓库III", 1},
+    },
+    time = "24s",
+    description = "石砖和采矿机制造粉碎机",
+}
+
 prototype "电解厂1" {
     type = { "recipe" },
     recipe_craft_category = "生产大型制造",
@@ -1134,10 +1521,44 @@ prototype "电解厂1" {
     description = "液体容器和电传输设备制造电解厂",
 }
 
+prototype "电解厂2" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "化工",
+    recipe_order =  90,
+    recipe_icon =  "textures/construct/electrolysis1.texture",
+    ingredients = {
+        {"远程电线杆", 4},
+        {"电解厂I", 1},
+    },
+    results = {
+        {"电解厂II", 1},
+    },
+    time = "20s",
+    description = "液体容器和电传输设备制造电解厂",
+}
+
+prototype "电解厂3" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "化工",
+    recipe_order =  90,
+    recipe_icon =  "textures/construct/electrolysis1.texture",
+    ingredients = {
+        {"广域电线杆", 4},
+        {"电解厂II", 1},
+    },
+    results = {
+        {"电解厂III", 1},
+    },
+    time = "25s",
+    description = "液体容器和电传输设备制造电解厂",
+}
+
 prototype "浮选器1" {
     type = { "recipe" },
     recipe_craft_category = "生产大型制造",
-    --recipe_category =  "加工",
+    recipe_category =  "加工",
     recipe_order =  64,
     recipe_icon =  "textures/construct/flotation-cell.texture",
     ingredients = {
@@ -1151,6 +1572,40 @@ prototype "浮选器1" {
     description = "将矿石浮沉进行筛选",
 }
 
+prototype "浮选器2" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "加工",
+    recipe_order =  64,
+    recipe_icon =  "textures/construct/flotation-cell.texture",
+    ingredients = {
+        {"化工厂I", 1},
+        {"浮选器I", 1},
+    },
+    results = {
+        {"浮选器II", 1},
+    },
+    time = "16s",
+    description = "将矿石浮沉进行筛选",
+}
+
+prototype "浮选器3" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "加工",
+    recipe_order =  64,
+    recipe_icon =  "textures/construct/flotation-cell.texture",
+    ingredients = {
+        {"粉碎机II", 1},
+        {"水电站II", 1},
+        {"浮选器II", 1},
+    },
+    results = {
+        {"浮选器III", 1},
+    },
+    time = "20s",
+    description = "将矿石浮沉进行筛选",
+}
 
 prototype "科研中心1" {
     type = { "recipe" },
@@ -1167,6 +1622,40 @@ prototype "科研中心1" {
         {"科研中心I", 1},
     },
     time = "20s",
+    description = "机械装置和电动机制造科研中心",
+}
+
+prototype "科研中心2" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "加工",
+    recipe_order =  80,
+    recipe_icon =  "textures/property/research-packs.texture",
+    ingredients = {
+        {"化工厂II", 1},
+        {"广播塔I", 1},
+    },
+    results = {
+        {"科研中心II", 1},
+    },
+    time = "30s",
+    description = "机械装置和电动机制造科研中心",
+}
+
+prototype "科研中心3" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "加工",
+    recipe_order =  80,
+    recipe_icon =  "textures/property/research-packs.texture",
+    ingredients = {
+        {"组装机III", 1},
+        {"科研中心II", 2},
+    },
+    results = {
+        {"科研中心III", 1},
+    },
+    time = "40s",
     description = "机械装置和电动机制造科研中心",
 }
 
@@ -1187,6 +1676,127 @@ prototype "太阳能板1" {
     },
     time = "8s",
     description = "制造可以将太阳能转化成电能的硅板",
+}
+
+prototype "太阳能板2" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "加工",
+    recipe_order =  80,
+    recipe_icon =  "textures/property/research-packs.texture",
+    ingredients = {
+        {"钛板", 4},
+        {"硅板", 4},
+        {"太阳能板I", 1},
+    },
+    results = {
+        {"太阳能板II", 1},
+    },
+    time = "25s",
+    description = "制造可以将太阳能转化成电能的硅板",
+}
+
+prototype "太阳能板3" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "加工",
+    recipe_order =  80,
+    recipe_icon =  "textures/property/research-packs.texture",
+    ingredients = {
+        {"玻璃纤维", 4},
+        {"太阳能板II", 2},
+    },
+    results = {
+        {"太阳能板III", 1},
+    },
+    time = "25s",
+    description = "制造可以将太阳能转化成电能的硅板",
+}
+
+prototype "蓄电池1" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "加工",
+    recipe_order =  80,
+    recipe_icon =  "textures/property/research-packs.texture",
+    ingredients = {
+        {"电容I", 2},
+        {"铝板", 2},
+        {"橡胶", 1},
+    },
+    results = {
+        {"蓄电池I", 1},
+    },
+    time = "4s",
+    description = "制造可存储电能和输出电能的蓄电池",
+}
+
+prototype "蓄电池2" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "加工",
+    recipe_order =  80,
+    recipe_icon =  "textures/property/research-packs.texture",
+    ingredients = {
+        {"电容II", 4},
+        {"玻璃纤维", 4},
+        {"蓄电池I", 3},
+    },
+    results = {
+        {"蓄电池II", 1},
+    },
+    time = "8s",
+    description = "制造可存储电能和输出电能的蓄电池",
+}
+
+prototype "蓄电池3" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "加工",
+    recipe_order =  80,
+    recipe_icon =  "textures/property/research-packs.texture",
+    ingredients = {
+        {"蓄电池II", 3},
+    },
+    results = {
+        {"蓄电池III", 1},
+    },
+    time = "20s",
+    description = "制造可存储电能和输出电能的蓄电池",
+}
+
+prototype "出货车站" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "物流",
+    recipe_order =  80,
+    recipe_icon =  "textures/property/research-packs.texture",
+    ingredients = {
+        {"电动机I", 1},
+        {"石砖", 4},
+    },
+    results = {
+        {"出货车站", 1},
+    },
+    time = "8s",
+    description = "向运输车辆装载货物的车站",
+}
+
+prototype "收货车站" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "物流",
+    recipe_order =  80,
+    recipe_icon =  "textures/property/research-packs.texture",
+    ingredients = {
+        {"电动机I", 1},
+        {"石砖", 4},
+    },
+    results = {
+        {"收货车站", 1},
+    },
+    time = "8s",
+    description = "从运输车辆卸下货物的车站",
 }
 
 prototype "维修组装机" {
@@ -2188,6 +2798,25 @@ prototype "化学科技包1" {
     time = "25s",
     description = "化工材料制造化学科技包",
 }
+
+prototype "物理科技包1" {
+    type = { "recipe" },
+    recipe_craft_category = "器件中型制造",
+    recipe_category =  "器件",
+    recipe_order =  85,
+    recipe_icon =  "textures/recipe/electrical-pack.texture",
+    ingredients = {
+        {"科研中心II", 1},
+        {"组装机III", 1},
+        {"蒸汽发电机II", 1},
+    },
+    results = {
+        {"物理科技包", 10},
+    },
+    time = "400s",
+    description = "物理设备制造物理科技包",
+}
+
 
 prototype "石铁矿挖掘" {
     type = { "recipe" },
