@@ -1925,335 +1925,42 @@ prototype "车辆装配" {
 }
 
 ------------------打印-------------------
--- prototype "采矿机打印" {
---     type = { "recipe" },
---     recipe_craft_category = "框架打印",
---     recipe_category =  "金属",
---     recipe_order =  52,
---     recipe_icon =  "textures/construct/broken-miner.texture",
---     ingredients = {
---         {"采矿机框架", 1},
---     },
---     results = {
---         {"采矿机I", 1},
---     },
---     time = "10s",
---     description = "打印采矿机",
--- }
+prototype "处理器1" {
+    type = { "recipe" },
+    recipe_craft_category = "器件小型制造",
+    recipe_category =  "加工",
+    recipe_order =  128,
+    recipe_icon =  "textures/construct/truck.texture",
+    ingredients = {
+        {"盐酸", 5},
+        {"数据线", 2},
+        {"玻璃纤维", 1},
+    },
+    results = {
+        {"处理器I", 1},
+    },
+    time = "6s",
+    description = "制造运输汽车",
+}
 
--- prototype "电线杆打印" {
---     type = { "recipe" },
---     recipe_craft_category = "框架打印",
---     recipe_category =  "物流",
---     recipe_order =  54,
---     recipe_icon =  "textures/construct/broken-electric-pole1.texture",
---     ingredients = {
---         {"电线杆框架", 1},
---     },
---     results = {
---         {"铁制电线杆", 1},
---     },
---     time = "2s",
---     description = "打印可导电的电线杆",
--- }
+prototype "处理器2" {
+    type = { "recipe" },
+    recipe_craft_category = "器件小型制造",
+    recipe_category =  "加工",
+    recipe_order =  128,
+    recipe_icon =  "textures/construct/truck.texture",
+    ingredients = {
+        {"氦气", 8},
+        {"石墨烯", 1},
+        {"处理器I", 1},
+    },
+    results = {
+        {"处理器II", 1},
+    },
+    time = "15s",
+    description = "制造运输汽车",
+}
 
--- prototype "烟囱打印" {
---     type = { "recipe" },
---     recipe_craft_category = "框架打印",
---     recipe_category =  "物流",
---     recipe_order =  54,
---     recipe_icon =  "textures/construct/broken-electric-pole1.texture",
---     ingredients = {
---         {"烟囱框架", 1},
---     },
---     results = {
---         {"烟囱I", 1},
---     },
---     time = "6s",
---     description = "打印排气的烟囱",
--- }
-
--- prototype "排水口打印" {
---     type = { "recipe" },
---     recipe_craft_category = "框架打印",
---     recipe_category =  "物流",
---     recipe_order =  54,
---     recipe_icon =  "textures/construct/broken-electric-pole1.texture",
---     ingredients = {
---         {"排水口框架", 1},
---     },
---     results = {
---         {"排水口I", 1},
---     },
---     time = "6s",
---     description = "打印排气的烟囱",
--- }
-
-
--- prototype "无人机仓库I打印" {
---     type = { "recipe" },
---     recipe_craft_category = "框架打印",
---     recipe_category =  "物流",
---     recipe_order =  55,
---     recipe_icon =  "textures/construct/broken-drone-depot.texture",
---     ingredients = {
---         {"无人机仓库I框架", 1},
---         {"碎石", 2},
---     },
---     results = {
---         {"无人机仓库I", 1},
---     },
---     time = "12s",
---     description = "打印无人机仓库I",
--- }
-
--- prototype "出货车站打印" {
---     type = { "recipe" },
---     recipe_craft_category = "框架打印",
---     recipe_category =  "物流",
---     recipe_order =  56,
---     recipe_icon =  "textures/construct/broken-goodsstation-output.texture",
---     ingredients = {
---         {"石砖", 8},
---         {"出货车站框架", 1},
---     },
---     results = {
---         {"出货车站", 1},
---     },
---     time = "8s",
---     description = "打印出货车站",
--- }
-
--- prototype "液罐打印" {
---     type = { "recipe" },
---     recipe_craft_category = "框架打印",
---     recipe_category =  "物流",
---     recipe_order =  56,
---     recipe_icon =  "textures/construct/broken-goodsstation-output.texture",
---     ingredients = {
---         {"液罐框架", 1},
---     },
---     results = {
---         {"液罐I", 1},
---     },
---     time = "8s",
---     description = "打印液罐",
--- }
-
--- prototype "收货车站打印" {
---     type = { "recipe" },
---     recipe_craft_category = "框架打印",
---     recipe_category =  "物流",
---     recipe_order =  57,
---     recipe_icon =  "textures/construct/broken-goodsstation-input.texture",
---     ingredients = {
---         {"石砖", 8},
---         {"收货车站框架", 1},
---     },
---     results = {
---         {"收货车站", 1},
---     },
---     time = "8s",
---     description = "打印收货车站",
--- }
-
--- prototype "熔炼炉打印" {
---     type = { "recipe" },
---     recipe_craft_category = "框架打印",
---     recipe_category =  "金属",
---     recipe_order =  56,
---     recipe_icon =  "textures/construct/broken-furnace.texture",
---     ingredients = {
---         {"铁矿石", 10},
---         {"熔炼炉框架", 1},
---     },
---     results = {
---         {"熔炼炉I", 1},
---     },
---     time = "12s",
---     description = "打印熔炼炉",
--- }
-
--- prototype "科研中心打印" {
---     type = { "recipe" },
---     recipe_craft_category = "框架打印",
---     recipe_category =  "加工",
---     recipe_order =  56,
---     recipe_icon =  "textures/construct/broken-lab.texture",
---     ingredients = {
---         {"科研中心框架", 1},
---         {"碎石", 20},
---     },
---     results = {
---         {"科研中心I", 1},
---     },
---     time = "15s",
---     description = "打印科研中心",
--- }
-
--- prototype "粉碎机心打印" {
---     type = { "recipe" },
---     recipe_craft_category = "框架打印",
---     recipe_category =  "加工",
---     recipe_order =  56,
---     recipe_icon =  "textures/construct/broken-lab.texture",
---     ingredients = {
---         {"粉碎机框架", 1},
---     },
---     results = {
---         {"粉碎机I", 1},
---     },
---     time = "15s",
---     description = "打印粉碎机",
--- }
-
--- prototype "太阳能板打印" {
---     type = { "recipe" },
---     recipe_craft_category = "框架打印",
---     recipe_category =  "器件",
---     recipe_order =  56,
---     recipe_icon =  "textures/construct/broken-solar-panel.texture",
---     ingredients = {
---         {"石砖", 8},
---         {"太阳能板框架", 1},
---     },
---     results = {
---         {"太阳能板I", 1},
---     },
---     time = "10s",
---     description = "打印利用太阳能发电的装置",
--- }
-
--- prototype "蓄电池打印" {
---     type = { "recipe" },
---     recipe_craft_category = "框架打印",
---     recipe_category =  "器件",
---     recipe_order =  54,
---     recipe_icon =  "textures/construct/broken-grid-battery.texture",
---     ingredients = {
---         {"蓄电池框架", 1},
---     },
---     results = {
---         {"蓄电池I", 1},
---     },
---     time = "5s",
---     description = "打印可存储电能的电池",
--- }
-
--- prototype "水电站打印" {
---     type = { "recipe" },
---     recipe_craft_category = "框架打印",
---     recipe_category =  "化工",
---     recipe_order =  54,
---     recipe_icon =  "textures/construct/broken-hydroplant.texture",
---     ingredients = {
---         {"水电站框架", 1},
---     },
---     results = {
---         {"水电站I", 1},
---     },
---     time = "15s",
---     description = "打印可处理液体的装置",
--- }
-
--- prototype "电解厂打印" {
---     type = { "recipe" },
---     recipe_craft_category = "框架打印",
---     recipe_category =  "化工",
---     recipe_order =  54,
---     recipe_icon =  "textures/construct/broken-electrolysis1.texture",
---     ingredients = {
---         {"电解厂框架", 1},
---     },
---     results = {
---         {"电解厂I", 1},
---     },
---     time = "5s",
---     description = "打印可电解液体的工厂",
--- }
-
--- prototype "化工厂打印" {
---     type = { "recipe" },
---     recipe_craft_category = "框架打印",
---     recipe_category =  "化工",
---     recipe_order =  54,
---     recipe_icon =  "textures/construct/broken-chemistry2.texture",
---     ingredients = {
---         {"化工厂框架", 1},
---     },
---     results = {
---         {"化工厂I", 1},
---     },
---     time = "5s",
---     description = "打印可处理化工原料的工厂",
--- }
-
--- prototype "组装机打印" {
---     type = { "recipe" },
---     recipe_craft_category = "框架打印",
---     recipe_category =  "加工",
---     recipe_order =  54,
---     recipe_icon =  "textures/construct/broken-assembler.texture",
---     ingredients = {
---         {"组装机框架", 1},
---         {"碎石", 5},
---     },
---     results = {
---         {"组装机I", 1},
---     },
---     time = "5s",
---     description = "打印可组装元件的工厂",
--- }
-
--- prototype "空气过滤器打印" {
---     type = { "recipe" },
---     recipe_craft_category = "框架打印",
---     recipe_category =  "化工",
---     recipe_order =  54,
---     recipe_icon =  "textures/construct/broken-air-filter1.texture",
---     ingredients = {
---         {"空气过滤器框架", 1},
---         {"电动机I", 1},
---     },
---     results = {
---         {"空气过滤器I", 1},
---     },
---     time = "8s",
---     description = "打印可过滤空气的装置",
--- }
-
--- prototype "地下水挖掘机打印" {
---     type = { "recipe" },
---     recipe_craft_category = "框架打印",
---     recipe_category =  "化工",
---     recipe_order =  54,
---     recipe_icon =  "textures/construct/broken-pump.texture",
---     ingredients = {
---         {"地下水挖掘机框架", 1},
---         {"电动机I", 1},
---     },
---     results = {
---         {"地下水挖掘机", 1},
---     },
---     time = "8s",
---     description = "打印可挖掘地下水的装置",
--- }
-
--- prototype "压力泵打印" {
---     type = { "recipe" },
---     recipe_craft_category = "框架打印",
---     recipe_category =  "化工",
---     recipe_order =  54,
---     recipe_icon =  "textures/construct/broken-pump.texture",
---     ingredients = {
---         {"压力泵框架", 1},
---     },
---     results = {
---         {"压力泵I", 1},
---     },
---     time = "8s",
---     description = "打印抽水的装置",
--- }
 
 prototype "砖石公路打印" {
     type = { "recipe" },
@@ -3018,10 +2725,44 @@ prototype "速度插件1" {
         {"运算电路", 1},
     },
     results = {
-        {"速度插件", 1},
+        {"速度插件I", 1},
+    },
+    time = "8s",
+    description = "加快生产速度的插件",
+}
+
+prototype "速度插件2" {
+    type = { "recipe" },
+    recipe_craft_category = "器件小型制造",
+    recipe_category =  "器件",
+    recipe_order =  70,
+    recipe_icon =  "textures/construct/insulated-wire.texture",
+    ingredients = {
+        {"处理器I", 1},
+        {"速度插件I", 1},
+    },
+    results = {
+        {"速度插件II", 1},
     },
     time = "12s",
-    description = "生产可以传输数据的导线",
+    description = "加快生产速度的插件",
+}
+
+prototype "速度插件3" {
+    type = { "recipe" },
+    recipe_craft_category = "器件小型制造",
+    recipe_category =  "器件",
+    recipe_order =  70,
+    recipe_icon =  "textures/construct/insulated-wire.texture",
+    ingredients = {
+        {"处理器II", 2},
+        {"速度插件II", 2},
+    },
+    results = {
+        {"速度插件III", 1},
+    },
+    time = "15s",
+    description = "加快生产速度的插件",
 }
 
 prototype "效能插件1" {
@@ -3037,8 +2778,42 @@ prototype "效能插件1" {
     results = {
         {"效能插件I", 1},
     },
-    time = "8s",
-    description = "生产可以传输数据的导线",
+    time = "12s",
+    description = "降低建筑电能消耗的插件",
+}
+
+prototype "效能插件2" {
+    type = { "recipe" },
+    recipe_craft_category = "器件小型制造",
+    recipe_category =  "器件",
+    recipe_order =  70,
+    recipe_icon =  "textures/construct/insulated-wire.texture",
+    ingredients = {
+        {"电池I", 1},
+        {"效能插件I", 1},
+    },
+    results = {
+        {"效能插件II", 1},
+    },
+    time = "20s",
+    description = "降低建筑电能消耗的插件",
+}
+
+prototype "效能插件3" {
+    type = { "recipe" },
+    recipe_craft_category = "器件小型制造",
+    recipe_category =  "器件",
+    recipe_order =  70,
+    recipe_icon =  "textures/construct/insulated-wire.texture",
+    ingredients = {
+        {"电池II", 2},
+        {"效能插件II", 2},
+    },
+    results = {
+        {"效能插件III", 1},
+    },
+    time = "30s",
+    description = "降低建筑电能消耗的插件",
 }
 
 prototype "产能插件1" {
@@ -3053,9 +2828,45 @@ prototype "产能插件1" {
         {"运算电路", 1},
     },
     results = {
-        {"产能插件", 1},
+        {"产能插件I", 1},
     },
     time = "16s",
+    description = "生产可以传输数据的导线",
+}
+
+prototype "产能插件2" {
+    type = { "recipe" },
+    recipe_craft_category = "器件小型制造",
+    recipe_category =  "器件",
+    recipe_order =  70,
+    recipe_icon =  "textures/construct/insulated-wire.texture",
+    ingredients = {
+        {"效能插件II", 1},
+        {"速度插件II", 1},
+        {"产能插件I", 1},
+    },
+    results = {
+        {"产能插件II", 1},
+    },
+    time = "20s",
+    description = "生产可以传输数据的导线",
+}
+
+prototype "产能插件3" {
+    type = { "recipe" },
+    recipe_craft_category = "器件小型制造",
+    recipe_category =  "器件",
+    recipe_order =  70,
+    recipe_icon =  "textures/construct/insulated-wire.texture",
+    ingredients = {
+        {"效能插件III", 1},
+        {"速度插件III", 1},
+        {"产能插件II", 1},
+    },
+    results = {
+        {"产能插件III", 1},
+    },
+    time = "30s",
     description = "生产可以传输数据的导线",
 }
 
@@ -3506,10 +3317,47 @@ prototype "电池1" {
         {"钠", 2},
     },
     results = {
-        {"电池", 1},
+        {"电池I", 1},
     },
     time = "10s",
     description = "化工原料合成电池",
+}
+
+prototype "电池2" {
+    type = { "recipe" },
+    recipe_craft_category = "器件基础化工",
+    recipe_category =  "器件",
+    recipe_order =  21,
+    recipe_icon =  "textures/construct/processor.texture",
+    ingredients = {
+        {"电容II", 2},
+        {"石墨烯", 2},
+        {"电池I", 2},
+    },
+    results = {
+        {"电池II", 1},
+    },
+    time = "12s",
+    description = "化工原料合成电池",
+}
+
+prototype "石墨烯" {
+    type = { "recipe" },
+    recipe_craft_category = "器件基础化工",
+    recipe_category =  "器件",
+    recipe_order =  21,
+    recipe_icon =  "textures/construct/processor.texture",
+    ingredients = {
+        {"氦气", 15},
+        {"盐酸", 10},
+        {"石墨", 3},
+    },
+    results = {
+        {"废水", 12},
+        {"石墨烯", 1},
+    },
+    time = "24s",
+    description = "用石墨分离出单层结构的新材料",
 }
 
 prototype "酸碱中和" {
