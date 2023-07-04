@@ -4367,6 +4367,7 @@ prototype "火箭化学" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
+    unlock_recipe = {"火箭燃料1"},
     unlock_item = {"火箭燃料"},
   },
   prerequisites = {"广播3"},
@@ -4387,6 +4388,7 @@ prototype "火箭控制" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
+    unlock_recipe = {"火箭控制器1"},
     unlock_item = {"火箭控制器"},
   },
   prerequisites = {"火箭化学"},
@@ -4407,6 +4409,7 @@ prototype "火箭架构" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
+    unlock_recipe = {"火箭区段1"},
     unlock_item = {"火箭区段"},
   },
   prerequisites = {"火箭化学"},
@@ -4427,6 +4430,7 @@ prototype "火箭保护" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
+    unlock_recipe = {"整流罩1"},
     unlock_item = {"整流罩"},
   },
   prerequisites = {"火箭化学"},
