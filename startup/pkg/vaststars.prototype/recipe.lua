@@ -737,7 +737,7 @@ prototype "组装机3" {
     recipe_order =  71,
     recipe_icon =  "textures/construct/assembler2.texture",
     ingredients = {
-        {"铝板", 6},
+        {"钛板", 6},
         {"无人机仓库II", 1},
         {"组装机II", 1},
     },
