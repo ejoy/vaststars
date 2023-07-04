@@ -1303,8 +1303,6 @@ local t = {
 	"/pkg/vaststars.resources/ui/construct_road_or_pipe.rml",
 	"/pkg/vaststars.resources/ui/detail_panel.rml",
 	"/pkg/vaststars.resources/ui/font/msyh.ttc",
-	"/pkg/vaststars.resources/ui/font/msyhbd.ttc",
-	"/pkg/vaststars.resources/ui/font/msyhl.ttc",
 	"/pkg/vaststars.resources/ui/font/simsun.ttc",
 	"/pkg/vaststars.resources/ui/guide_pop.rml",
 	"/pkg/vaststars.resources/ui/help_panel.rml",
