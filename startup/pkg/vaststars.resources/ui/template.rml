@@ -60,7 +60,7 @@
         </script>
     </head>
     <body style = "background-color: black;">
-        <div class="item-container-region"  data-model="start">
+        <div class="item-container-region">
             <div class="recipe-panel" style = "flex-direction: column; height: 100%;">
                 <!-- 标题栏 -->
                 <div class = "recipe-name-block">

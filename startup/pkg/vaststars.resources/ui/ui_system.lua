@@ -51,7 +51,7 @@ end
 
 function M.createDataMode(name, init)
     local doc = tracedoc.new(init)
-    local datamodel = window.createModel(name)(init)
+    local datamodel = window.createModel(init)
     datamodel.mapping = nil
 
     window.addEventListener("message", function(event)
