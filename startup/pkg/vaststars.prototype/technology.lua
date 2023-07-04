@@ -168,125 +168,6 @@ local prototype = gameplay.register.prototype
     },
   }
 
-
-  -- prototype "电线杆打印预备" {
-  --   desc = "选择电线杆框架",
-  --   icon = "textures/construct/industry.texture",
-  --   type = { "task" },
-  --   task = {"unknown", 0, 3},
-  --   task_params = {recipe = "电线杆打印"},
-  --   count = 1,
-  --   prerequisites = {"石矿放置采矿机"},
-  --   tips_pic = {
-  --     "textures/task_tips_pic/task_place_logistics.texture",
-  --   },
-  --   guide_focus = {
-  --     {
-  --       prefab = "prefabs/selected-box-no-animation.prefab",
-  --       x = 121,
-  --       y = 122,
-  --       w = 5.5,
-  --       h = 5.5,
-  --       show_arrow = true,
-  --     },
-  --     {
-  --       camera_x = 121,
-  --       camera_y = 122,
-  --     },
-  --   },
-  --   sign_desc = {
-  --     { desc = "建造中心选择电线杆打印", icon = "textures/construct/industry.texture"},
-  --   },
-  -- }
-
-  -- prototype "机翼残骸传送" {
-  --   desc = "收集废墟物资准备传送",
-  --   icon = "textures/construct/industry.texture",
-  --   type = { "task" },
-  --   task = {"unknown", 0, 6},
-  --   task_params = {ui = "item_transfer_subscribe", building = "机翼残骸"},
-  --   count = 1,
-  --   prerequisites = {"电线杆打印预备"},
-  --   guide_focus = {
-  --     {
-  --       prefab = "prefabs/selected-box-no-animation.prefab",
-  --       x = 134,
-  --       y = 123,
-  --       w = 2.5,
-  --       h = 2.5,
-  --       show_arrow = true,
-  --     },
-  --     {
-  --       camera_x = 134,
-  --       camera_y = 123,
-  --     },
-  --   },
-  --   tips_pic = {
-  --     "textures/task_tips_pic/task_place_logistics.texture",
-  --   },
-  --   sign_desc = {
-  --     { desc = "收集废墟物资准备传送", icon = "textures/construct/industry.texture"},
-  --   },
-  -- }
-
-  -- prototype "电线杆传送接收" {
-  --   desc = "建造中心接收废墟的物资传送",
-  --   icon = "textures/construct/industry.texture",
-  --   type = { "task" },
-  --   task = {"unknown", 0, 6},
-  --   task_params = {ui = "item_transfer_place", building = "建造中心"},
-  --   count = 1,
-  --   prerequisites = {"机翼残骸传送"},
-  --   guide_focus = {
-  --     {
-  --       prefab = "prefabs/selected-box-no-animation.prefab",
-  --       x = 121,
-  --       y = 122,
-  --       w = 5.5,
-  --       h = 5.5,
-  --       show_arrow = true,
-  --     },
-  --     {
-  --       camera_x = 121,
-  --       camera_y = 122,
-  --     },
-  --   },
-  --   tips_pic = {
-  --     "textures/task_tips_pic/task_place_logistics.texture",
-  --   },
-  --   sign_desc = {
-  --     { desc = "建造中心接收废墟的物资传送", icon = "textures/construct/industry.texture"},
-  --   },
-  -- }
-
--- prototype "建造电线杆" {
---     desc = "建造5个电线杆",
---     icon = "textures/construct/industry.texture",
---     type = { "task" },
---     task = {"stat_consumption", 0, "电线杆框架"},
---     prerequisites = {"电线杆传送接收"},
---     count = 5,
---     guide_focus = {
---       {
---         prefab = "prefabs/selected-box-no-animation.prefab",
---         x = 121,
---         y = 122,
---         w = 5.5,
---         h = 5.5,
---       },
---       {
---         camera_x = 121,
---         camera_y = 122,
---       },
---     },
---     tips_pic = {
---       "textures/task_tips_pic/task_place_logistics.texture",
---     },
---     sign_desc = {
---       { desc = "在“建造中心”打印4个电线杆", icon = "textures/construct/industry.texture"},
---     },
---   }
-
   prototype "放置电线杆" {
     desc = "放置2个铁制电线杆",
     icon = "textures/construct/industry.texture",
@@ -303,34 +184,6 @@ local prototype = gameplay.register.prototype
       "textures/task_tips_pic/task_place_pole2.texture",
     },
     guide_focus = {
-      -- {
-      --   prefab = "prefabs/selected-box-no-animation.prefab",
-      --   x = 117,
-      --   y = 115,
-      --   w = 1.5,
-      --   h = 1.5,
-      -- },
-      -- {
-      --   prefab = "prefabs/selected-box-no-animation.prefab",
-      --   x = 117,
-      --   y = 123,
-      --   w = 1.5,
-      --   h = 1.5,
-      -- },
-      -- {
-      --   prefab = "prefabs/selected-box-no-animation.prefab",
-      --   x = 117,
-      --   y = 131,
-      --   w = 1.5,
-      --   h = 1.5,
-      -- },
-      -- {
-      --   prefab = "prefabs/selected-box-no-animation.prefab",
-      --   x = 123,
-      --   y = 115,
-      --   w = 2,
-      --   h = 2,
-      -- },
       {
         prefab = "prefabs/selected-box-no-animation.prefab",
         x = 127,
@@ -349,175 +202,7 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  -- prototype "无人机仓库I打印预备" {
-  --   desc = "选择无人机仓库I框架",
-  --   icon = "textures/construct/industry.texture",
-  --   type = { "task" },
-  --   task = {"unknown", 0, 3},
-  --   task_params = {recipe = "无人机仓库I打印"},
-  --   count = 1,
-  --   prerequisites = {"放置电线杆"},
-  --   tips_pic = {
-  --     "textures/task_tips_pic/task_place_logistics.texture",
-  --   },
-  --   guide_focus = {
-  --     {
-  --       prefab = "prefabs/selected-box-no-animation.prefab",
-  --       x = 121,
-  --       y = 122,
-  --       w = 5.5,
-  --       h = 5.5,
-  --       show_arrow = true,
-  --     },
-  --     {
-  --       camera_x = 121,
-  --       camera_y = 122,
-  --     },
-  --   },
-  --   sign_desc = {
-  --     { desc = "建造中心选择无人机仓库I打印", icon = "textures/construct/industry.texture"},
-  --   },
-  -- }
-
-  -- prototype "机头残骸传送" {
-  --   desc = "收集废墟物资准备传送",
-  --   icon = "textures/construct/industry.texture",
-  --   type = { "task" },
-  --   task = {"unknown", 0, 6},
-  --   task_params = {ui = "item_transfer_subscribe", building = "机头残骸"},
-  --   count = 1,
-  --   prerequisites = {"无人机仓库I打印预备"},
-  --   guide_focus = {
-  --     {
-  --       prefab = "prefabs/selected-box-no-animation.prefab",
-  --       x = 126,
-  --       y = 109,
-  --       w = 2,
-  --       h = 2,
-  --       show_arrow = true,
-  --     },
-  --     {
-  --       camera_x = 126,
-  --       camera_y = 109,
-  --     },
-  --   },
-  --   tips_pic = {
-  --     "textures/task_tips_pic/task_place_logistics.texture",
-  --   },
-  --   sign_desc = {
-  --     { desc = "收集废墟物资准备传送", icon = "textures/construct/industry.texture"},
-  --   },
-  -- }
-
-  -- prototype "无人机仓库I传送接收" {
-  --   desc = "建造中心接收废墟的物资传送",
-  --   icon = "textures/construct/industry.texture",
-  --   type = { "task" },
-  --   task = {"unknown", 0, 6},
-  --   task_params = {ui = "item_transfer_place", building = "建造中心"},
-  --   count = 1,
-  --   prerequisites = {"机头残骸传送"},
-  --   guide_focus = {
-  --     {
-  --       prefab = "prefabs/selected-box-no-animation.prefab",
-  --       x = 121,
-  --       y = 122,
-  --       w = 5.5,
-  --       h = 5.5,
-  --       show_arrow = true,
-  --     },
-  --     {
-  --       camera_x = 121,
-  --       camera_y = 122,
-  --     },
-  --   },
-  --   tips_pic = {
-  --     "textures/task_tips_pic/task_place_logistics.texture",
-  --   },
-  --   sign_desc = {
-  --     { desc = "建造中心接收废墟的物资传送", icon = "textures/construct/industry.texture"},
-  --   },
-  -- }
-
-  -- prototype "采矿机传送" {
-  --   desc = "收集废墟物资准备传送",
-  --   icon = "textures/construct/industry.texture",
-  --   type = { "task" },
-  --   task = {"unknown", 0, 6},
-  --   task_params = {ui = "item_transfer_subscribe", building = "采矿机I"},
-  --   count = 1,
-  --   prerequisites = {"无人机仓库I传送接收"},
-  --   guide_focus = {
-  --     {
-  --       prefab = "prefabs/selected-box-no-animation.prefab",
-  --       x = 115,
-  --       y = 129,
-  --       w = 3.5,
-  --       h = 3.5,
-  --       show_arrow = true,
-  --     },
-  --     {
-  --       camera_x = 115,
-  --       camera_y = 129,
-  --     },
-  --   },
-  --   tips_pic = {
-  --     "textures/task_tips_pic/task_place_logistics.texture",
-  --   },
-  --   sign_desc = {
-  --     { desc = "无人机仓库I传送接收", icon = "textures/construct/industry.texture"},
-  --   },
-  -- }
-
-  -- prototype "碎石传送接收" {
-  --   desc = "建造中心接收废墟的物资传送",
-  --   icon = "textures/construct/industry.texture",
-  --   type = { "task" },
-  --   task = {"unknown", 0, 6},
-  --   task_params = {ui = "item_transfer_place", building = "建造中心"},
-  --   count = 1,
-  --   prerequisites = {"采矿机传送"},
-  --   guide_focus = {
-  --     {
-  --       prefab = "prefabs/selected-box-no-animation.prefab",
-  --       x = 121,
-  --       y = 122,
-  --       w = 5.5,
-  --       h = 5.5,
-  --       show_arrow = true,
-  --     },
-  --     {
-  --       camera_x = 121,
-  --       camera_y = 122,
-  --     },
-  --   },
-  --   tips_pic = {
-  --     "textures/task_tips_pic/task_place_logistics.texture",
-  --   },
-  --   sign_desc = {
-  --     { desc = "建造中心接收废墟的物资传送", icon = "textures/construct/industry.texture"},
-  --   },
-  -- }
-
-  --   prototype "建造无人机仓库I" {
-  --   desc = "建造1个无人机仓库I",
-  --   icon = "textures/construct/industry.texture",
-  --   type = { "task" },
-  --   task = {"stat_consumption", 0, "无人机仓库I框架"},
-  --   prerequisites = {"碎石传送接收"},
-  --   count = 1,
-  --   effects = {
-  --     -- unlock_item = {"碎石"},
-  --   },
-  --   tips_pic = {
-  --     "textures/task_tips_pic/task_place_logistics.texture",
-  --   },
-  --   sign_desc = {
-  --     { desc = "在“建造中心”打印1个无人机仓库I", icon = "textures/construct/industry.texture"},
-  --   },
-  -- }
-
-    prototype "放置无人机仓库" {
+  prototype "放置无人机仓库" {
     desc = "放置1个无人机仓库",
     icon = "textures/construct/industry.texture",
     type = { "task" },
@@ -618,132 +303,6 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  -- prototype "无人机仓库I传送" {
-  --   desc = "无人机仓库I传送设置",
-  --   icon = "textures/construct/industry.texture",
-  --   type = { "task" },
-  --   task = {"unknown", 0, 6},
-  --   task_params = {ui = "item_transfer_subscribe", building = "无人机仓库I"},
-  --   count = 1,
-  --   prerequisites = {"收集碎石"},
-  --   tips_pic = {
-  --     "textures/task_tips_pic/task_place_logistics.texture",
-  --   },
-  --   sign_desc = {
-  --     { desc = "无人机仓库I传送设置", icon = "textures/construct/industry.texture"},
-  --   },
-  -- }
-
-  -- prototype "更多无人机仓库I" {
-  --   desc = "再建造1个无人机仓库I",
-  --   icon = "textures/construct/industry.texture",
-  --   type = { "task" },
-  --   task = {"stat_consumption", 0, "无人机仓库I框架"},
-  --   prerequisites = {"无人机仓库I传送"},
-  --   count = 2,
-  --   guide_focus = {
-  --     {
-  --       prefab = "prefabs/selected-box-no-animation.prefab",
-  --       x = 126,
-  --       y = 109,
-  --       w = 2,
-  --       h = 2,
-  --       show_arrow = true,
-  --     },
-  --     {
-  --       camera_x = 121,
-  --       camera_y = 122,
-  --     },
-  --   },
-  --   tips_pic = {
-  --     "textures/task_tips_pic/task_place_logistics.texture",
-  --   },
-  --   sign_desc = {
-  --     { desc = "建造总共2个无人机仓库I", icon = "textures/construct/industry.texture"},
-  --   },
-  -- }
-
-  -- prototype "第二个无人机仓库I" {
-  --   desc = "再放置1个无人机仓库I",
-  --   icon = "textures/construct/industry.texture",
-  --   type = { "task" },
-  --   task = {"select_entity", 0, "无人机仓库I"},
-  --   prerequisites = {"更多无人机仓库I"},
-  --   count = 2,
-  --   tips_pic = {
-  --     "textures/task_tips_pic/task_place_pole1.texture",
-  --     "textures/task_tips_pic/task_place_pole2.texture",
-  --   },
-  --   guide_focus = {
-  --     {
-  --       prefab = "prefabs/selected-box-no-animation.prefab",
-  --       x = 118.5,
-  --       y = 126.5,
-  --       w = 2,
-  --       h = 2,
-  --     },
-  --     {
-  --       camera_x = 120,
-  --       camera_y = 128,
-  --     },
-  --   },
-  --   sign_desc = {
-  --     { desc = "放置总共2个无人机仓库I", icon = "textures/construct/industry.texture"},
-  --   },
-  -- }
-
-  -- prototype "仓库碎石设置" {
-  --   desc = "无人机仓库I选择碎石",
-  --   icon = "textures/construct/industry.texture",
-  --   type = { "task" },
-  --   task = {"unknown", 0, 5},                          
-  --   task_params = {item = "碎石"},
-  --   count = 1,
-  --   prerequisites = {"第二个无人机仓库I"},
-  --   tips_pic = {
-  --     "textures/task_tips_pic/task_place_logistics.texture",
-  --   },
-  --   sign_desc = {
-  --     { desc = "第二个无人机仓库I选择碎石", icon = "textures/construct/industry.texture"},
-  --   },
-  -- }
-
-  -- prototype "建造科研中心" {
-  --   desc = "建造一座科研中心",
-  --   icon = "textures/construct/industry.texture",
-  --   type = { "task" },
-  --   task = {"stat_consumption", 0, "科研中心框架"},
-  --   count = 1,
-  --   prerequisites = {"仓库碎石设置"},
-  --   guide_focus = {
-  --     {
-  --       prefab = "prefabs/selected-box-no-animation.prefab",
-  --       x = 114,
-  --       y = 121,
-  --       w = 2,
-  --       h = 2,
-  --       show_arrow = true,
-  --     },
-  --     {
-  --       prefab = "prefabs/selected-box-no-animation.prefab",
-  --       x = 121,
-  --       y = 122,
-  --       w = 5.5,
-  --       h = 5.5,
-  --     },
-  --     {
-  --       camera_x = 119,
-  --       camera_y = 125,
-  --     },
-  --   },
-  --   tips_pic = {
-  --     "textures/task_tips_pic/task_place_logistics.texture",
-  --   },
-  --   sign_desc = {
-  --     { desc = "机尾残骸里找寻科研中心框架，再前往建造中心打印一座科研中心", icon = "textures/construct/industry.texture"},
-  --   },
-  -- }
-
   prototype "放置科研中心" {
     desc = "放置可以研究火星科技的建筑",
     icon = "textures/construct/industry.texture",
@@ -791,46 +350,6 @@ local prototype = gameplay.register.prototype
     },
     sign_icon = "textures/science/tech-important.texture",
 }
-
-
-  --  prototype "建造组装机" {
-  --   desc = "建造组装机",
-  --   icon = "textures/construct/industry.texture",
-  --   type = { "task" },
-  --   task = {"stat_consumption", 0, "组装机框架"},
-  --   prerequisites = {"地质研究"},
-  --   effects = {
-  --     unlock_item = {"地质科技包"},
-  --   },
-  --   count = 2,
-  --   tips_pic = {
-  --     "textures/task_tips_pic/task_place_logistics.texture",
-  --   },
-  --   guide_focus = {
-  --     {
-  --       prefab = "prefabs/selected-box-no-animation.prefab",
-  --       x = 114,
-  --       y = 121,
-  --       w = 2,
-  --       h = 2,
-  --       show_arrow = true,
-  --     },
-  --     {
-  --       prefab = "prefabs/selected-box-no-animation.prefab",
-  --       x = 121,
-  --       y = 122,
-  --       w = 5.5,
-  --       h = 5.5,
-  --     },
-  --     {
-  --       camera_x = 122,
-  --       camera_y = 124,
-  --     },
-  --   },
-  --   sign_desc = {
-  --     { desc = "在“建造中心”建造2台组装机", icon = "textures/construct/industry.texture"},
-  --   },
-  -- }
 
   prototype "放置组装机" {
     desc = "放置组装机",
@@ -957,126 +476,6 @@ local prototype = gameplay.register.prototype
       { desc = "往建造中心运送石砖生产60段公路", icon = "textures/construct/industry.texture"},
     },
   }
-
-
-  -- prototype "电能扩充" {
-  --   desc = "掌握使用石砖制造道路的技术",
-  --   type = { "tech" },
-  --   icon = "textures/science/tech-research.texture",
-  --   effects = {
-
-  --   },
-  --   prerequisites = {"生产石砖"},
-  --   ingredients = {
-  --       {"地质科技包", 1},
-  --   },
-  --   count = 10,
-  --   time = "1.5s"
-  -- }
-
-  -- prototype "生产太阳能板" {
-  --   desc = "使用组装机生产6个太阳能板",
-  --   icon = "textures/construct/industry.texture",
-  --   type = { "task" },
-  --   task = {"stat_production", 0, "太阳能板I"},
-  --   prerequisites = {"电能扩充"},
-  --   count = 6,
-  --   tips_pic = {
-  --     "textures/task_tips_pic/task_produce_ore3.texture",
-  --   },
-  --   guide_focus = {
-  --     {
-  --       prefab = "prefabs/selected-box-no-animation.prefab",
-  --       x = 134,
-  --       y = 123,
-  --       w = 2.5,
-  --       h = 2.5,
-  --       show_arrow = true,
-  --     },
-  --     {
-  --       camera_x = 134,
-  --       camera_y = 123,
-  --     },
-  --   },
-  --   sign_desc = {
-  --     { desc = "在建造中心打印6个太阳能板", icon = "textures/construct/industry.texture"},
-  --   },
-  -- }
-
-
-
-  -- prototype "生产太阳能板" {
-  --   desc = "使用建造中心生产6个太阳能板",
-  --   icon = "textures/construct/industry.texture",
-  --   type = { "task" },
-  --   task = {"stat_production", 0, "太阳能板I"},
-  --   prerequisites = {"电能扩充"},
-  --   count = 6,
-  --   tips_pic = {
-  --     "textures/task_tips_pic/task_produce_ore3.texture",
-  --   },
-  --   guide_focus = {
-  --     {
-  --       prefab = "prefabs/selected-box-no-animation.prefab",
-  --       x = 134,
-  --       y = 123,
-  --       w = 2.5,
-  --       h = 2.5,
-  --       show_arrow = true,
-  --     },
-  --     {
-  --       camera_x = 134,
-  --       camera_y = 123,
-  --     },
-  --   },
-  --   sign_desc = {
-  --     { desc = "在建造中心打印6个太阳能板", icon = "textures/construct/industry.texture"},
-  --   },
-  -- }
-
-  --   prototype "放置太阳能板" {
-  --   desc = "放置6座太阳能板",
-  --   icon = "textures/construct/industry.texture",
-  --   type = { "task" },
-  --   task = {"select_entity", 0, "太阳能板I"},
-  --   prerequisites = {"电能扩充"},
-  --   count = 6,
-  --   tips_pic = {
-  --     "textures/task_tips_pic/task_place_logistics.texture",
-  --   },
-  --   sign_desc = {
-  --     { desc = "放置6个太阳能板", icon = "textures/construct/industry.texture"},
-  --   },
-  -- }
-
-  -- prototype "电力覆盖" {
-  --   desc = "放置10个电线杆",
-  --   icon = "textures/construct/industry.texture",
-  --   type = { "task" },
-  --   task = {"select_entity", 0, "铁制电线杆"},
-  --   prerequisites = {"放置太阳能板"},
-  --   count = 10,
-  --   guide_focus = {
-  --     {
-  --       prefab = "prefabs/selected-box-no-animation.prefab",
-  --       x = 109,
-  --       y = 136,
-  --       w = 4.5,
-  --       h = 4.5,
-  --       show_arrow = true,
-  --     },
-  --     {
-  --       camera_x = 107,
-  --       camera_y = 134,
-  --     },
-  --   },
-  --   tips_pic = {
-  --     "textures/task_tips_pic/task_place_logistics.texture",
-  --   },
-  --   sign_desc = {
-  --     { desc = "放置10个电线杆", icon = "textures/construct/industry.texture"},
-  --   },
-  -- }
 
   
   prototype "通向铁矿" {
@@ -1376,72 +775,6 @@ local prototype = gameplay.register.prototype
     },
   }
 
-
-  -- prototype "机尾残骸传送" {
-  --   desc = "收集废墟物资准备传送",
-  --   icon = "textures/construct/industry.texture",
-  --   type = { "task" },
-  --   task = {"unknown", 0, 6},
-  --   task_params = {ui = "item_transfer_subscribe", building = "机尾残骸"},
-  --   count = 1,
-  --   prerequisites = {"通向铁矿"},
-  --   effects = {
-  --     unlock_item = {"采矿机框架"},
-  --   },
-  --   guide_focus = {
-  --     {
-  --       prefab = "prefabs/selected-box-no-animation.prefab",
-  --       x = 111,
-  --       y = 121,
-  --       w = 2.5,
-  --       h = 2.5,
-  --       show_arrow = true,
-  --     },
-  --     {
-  --       camera_x = 121,
-  --       camera_y = 121,
-  --     },
-  --   },
-  --   tips_pic = {
-  --     "textures/task_tips_pic/task_place_logistics.texture",
-  --   },
-  --   sign_desc = {
-  --     { desc = "收集废墟物资准备传送", icon = "textures/construct/industry.texture"},
-  --   },
-  -- }
-
-  --   prototype "采矿机打印预备" {
-  --   desc = "选择采矿机框架",
-  --   icon = "textures/construct/industry.texture",
-  --   type = { "task" },
-  --   task = {"unknown", 0, 3},
-  --   task_params = {recipe = "采矿机打印"},
-  --   count = 1,
-  --   prerequisites = {"机尾残骸传送"},
-  --   tips_pic = {
-  --     "textures/task_tips_pic/task_place_logistics.texture",
-  --   },
-  --   sign_desc = {
-  --     { desc = "建造中心选择采矿机打印", icon = "textures/construct/industry.texture"},
-  --   },
-  -- }
-
-  -- prototype "采矿机传送启动" {
-  --   desc = "建造中心接收废墟的物资传送",
-  --   icon = "textures/construct/industry.texture",
-  --   type = { "task" },
-  --   task = {"unknown", 0, 6},
-  --   task_params = {ui = "item_transfer_place", building = "建造中心"},
-  --   count = 1,
-  --   prerequisites = {"采矿机打印预备"},
-  --   tips_pic = {
-  --     "textures/task_tips_pic/task_place_logistics.texture",
-  --   },
-  --   sign_desc = {
-  --     { desc = "建造中心接收废墟的物资传送", icon = "textures/construct/industry.texture"},
-  --   },
-  -- }
-
   prototype "铁矿放置采矿机" {
     desc = "放置1台采矿机",
     icon = "textures/construct/industry.texture",
@@ -1700,22 +1033,6 @@ local prototype = gameplay.register.prototype
     time = "5s"
   }
 
-  -- prototype "电磁学1" {
-  --   desc = "研究电能转换成机械能的基础供能装置",
-  --   type = { "tech" },
-  --   icon = "textures/science/tech-research.texture",
-  --   effects = {
-  --     unlock_recipe = {"电动机1"},
-  --     unlock_item = {"电动机I"},
-  --   },
-  --   prerequisites = {"机械运输"},
-  --   ingredients = {
-  --     {"地质科技包", 1},
-  --   },
-  --   count = 20,
-  --   time = "6s"
-  -- }
-
   prototype "量产运输车辆" {
     desc = "生产8辆运输车",
     icon = "textures/construct/industry.texture",
@@ -1749,7 +1066,7 @@ prototype "物流学2" {
   time = "6s"
 }
 
-prototype "气候研究" {
+prototype "气候研究1" {
   desc = "对火星大气成分进行标本采集和研究",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
@@ -1770,14 +1087,14 @@ prototype "气候研究" {
 }
 
 prototype "管道系统1" {
-  desc = "研究装载和运输液体或气体的管道",
+  desc = "研究装载和运输气液原料的管道",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"管道1","管道2","液罐打印"},
     unlock_item = {"液罐I","管道1-X型"},
   },
-  prerequisites = {"气候研究"},
+  prerequisites = {"气候研究1"},
   ingredients = {
       {"地质科技包", 1},
   },
@@ -1786,7 +1103,7 @@ prototype "管道系统1" {
 }
 
 prototype "生产管道" {
-  desc = "管道用于液体传输",
+  desc = "生产可以传输气液原料的管道",
   icon = "textures/construct/industry.texture",
   type = { "task" },
   task = {"stat_production", 0, "管道1-X型"},
@@ -1800,7 +1117,7 @@ prototype "生产管道" {
   },
 }
 
-prototype "排放" {
+prototype "排放1" {
   desc = "研究气体和液体的排放工艺",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
@@ -1824,7 +1141,7 @@ prototype "采水研究" {
     unlock_recipe = {"水电站打印"},
     unlock_item = {"水电站I"},
   },
-  prerequisites = {"排放"},
+  prerequisites = {"排放1"},
   ingredients = {
       {"地质科技包", 1},
   },
@@ -2093,7 +1410,7 @@ prototype "生产甲烷" {
   },
 }
 
-prototype "有机化学" {
+prototype "有机化学1" {
   desc = "研究碳化合物组成、结构和制备方法",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
@@ -2114,7 +1431,7 @@ prototype "生产乙烯" {
   icon = "textures/construct/industry.texture",
   type = { "task" },
   task = {"stat_production", 0, "乙烯"},
-  prerequisites = {"有机化学"},
+  prerequisites = {"有机化学1"},
   count = 1000,
   tips_pic = {
     "textures/task_tips_pic/task_produce_ch4.texture",
@@ -2158,7 +1475,7 @@ prototype "电磁学1" {
 
 --研究机械科技瓶
 prototype "机械研究" {
-  desc = "对适合在火星表面作业的机械装置进行改进和开发",
+  desc = "对可在火星表面作业的机械装置进行改进和开发",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -2179,7 +1496,7 @@ prototype "机械研究" {
 }
 
 prototype "生产机械科技包" {
-  desc = "生产科技包用于科技研究",
+  desc = "生产机械科技包用于科技研究",
   icon = "textures/construct/industry.texture",
   type = { "task" },
   task = {"stat_production", 0, "机械科技包"},
@@ -2212,7 +1529,7 @@ prototype "挖掘1" {
 }
 
 prototype "无人机运输1" {
-  desc = "使用无人机快速转移物品",
+  desc = "使用无人机快速运送物品",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -2227,7 +1544,7 @@ prototype "无人机运输1" {
 }
 
 prototype "蒸馏1" {
-  desc = "将液体混合物汽化进行成分分离的技术",
+  desc = "将液体混合物汽化并分离的技术",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -2279,7 +1596,7 @@ prototype "泵系统1" {
 }
 
 prototype "自动化1" {
-  desc = "使用3D打印技术快速复制物品",
+  desc = "使用3D打印技术复制物品",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -2295,7 +1612,7 @@ prototype "自动化1" {
 }
 
 prototype "物流车站1" {
-  desc = "使用3D打印技术快速复制物品",
+  desc = "研究供运输车辆装卸货物的物流点",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -2327,7 +1644,7 @@ prototype "地下水净化1" {
   time = "10s"
 }
 
-prototype "过滤" {
+prototype "过滤1" {
   desc = "火星地下开采卤水进行过滤净化工艺",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
@@ -2344,7 +1661,7 @@ prototype "过滤" {
 }
 
 prototype "炼钢" {
-  desc = "将铁再锻造成更坚硬金属的工艺",
+  desc = "将铁冶炼成更坚硬金属的工艺",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -2362,7 +1679,7 @@ prototype "炼钢" {
 }
 
 prototype "大炼钢铁" {
-  desc = "生产科技包用于科技研究",
+  desc = "生产更多的钢板",
   icon = "textures/construct/industry.texture",
   type = { "task" },
   task = {"stat_production", 0, "钢板"},
@@ -2394,7 +1711,7 @@ prototype "发电机1" {
 }
 
 prototype "矿物处理1" {
-  desc = "将矿物进行碾碎并收集的机械工艺",
+  desc = "将矿物进行碾碎并再加工的机械工艺",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -2411,7 +1728,7 @@ prototype "矿物处理1" {
 }
 
 prototype "矿石粉碎" {
-  desc = "生产科技包用于科技研究",
+  desc = "将碎石粉碎获得沙子",
   icon = "textures/construct/industry.texture",
   type = { "task" },
   task = {"stat_production", 0, "沙子"},
@@ -2426,7 +1743,7 @@ prototype "矿石粉碎" {
 }
 
 prototype "钢加工" {
-  desc = "钢制产品更多的铸造技术",
+  desc = "对钢板进行再加工获得钢齿轮",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -2443,7 +1760,7 @@ prototype "钢加工" {
 }
 
 prototype "打造钢齿轮" {
-  desc = "生产科技包用于科技研究",
+  desc = "生产更多的钢齿轮",
   icon = "textures/construct/industry.texture",
   type = { "task" },
   task = {"stat_production", 0, "钢齿轮"},
@@ -2458,7 +1775,7 @@ prototype "打造钢齿轮" {
 }
 
 prototype "浮选1" {
-  desc = "使用浮选对矿石实行筛选",
+  desc = "使用浮选设备对矿石实行筛选",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -2493,7 +1810,7 @@ prototype "硅处理" {
 }
 
 prototype "铁矿熔炼2" {
-  desc = "熔炼铁矿石冶炼成铁板的工艺",
+  desc = "将铁矿石冶炼成铁板的更高效工艺",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -2508,8 +1825,8 @@ prototype "铁矿熔炼2" {
   time = "8s"
 }
 
-prototype "能量存储1" {
-  desc = "更多的有机化学制取工业气体工艺",
+prototype "电解1" {
+  desc = "使用电化学手段制取工业气体",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -2526,13 +1843,13 @@ prototype "能量存储1" {
 }
 
 prototype "有机化学2" {
-  desc = "更多的有机化学制取工业气体工艺",
+  desc = "研究碳化合物组成、结构和制备方法",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"乙烯转丁二烯","纯水转蒸汽"},
   },
-  prerequisites = {"硅处理","能量存储1"},
+  prerequisites = {"硅处理","电解1"},
   ingredients = {
       {"气候科技包", 1},
       {"机械科技包", 1},
@@ -2542,7 +1859,7 @@ prototype "有机化学2" {
 }
 
 prototype "管道系统2" {
-  desc = "更多的有机化学制取工业气体工艺",
+  desc = "研究可储藏气液原料的装置",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -2559,8 +1876,8 @@ prototype "管道系统2" {
   time = "6s"
 }
 
-prototype "化学工程" {
-  desc = "使用大型设施生产化工产品",
+prototype "化学工程1" {
+  desc = "使用特殊设施生产化工产品",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -2585,7 +1902,7 @@ prototype "无机化学" {
     unlock_recipe = {"酸碱中和","碱性溶液","盐酸"},
     unlock_item = {"碱性溶液","盐酸"},
   },
-  prerequisites = {"化学工程"},
+  prerequisites = {"化学工程1"},
   ingredients = {
       {"地质科技包", 1},
       {"气候科技包", 1},
@@ -2596,7 +1913,7 @@ prototype "无机化学" {
 }
 
 prototype "废料回收1" {
-  desc = "回收工业废料",
+  desc = "将工业废料、矿石进行回收处理的工艺",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -2613,7 +1930,7 @@ prototype "废料回收1" {
 }
 
 prototype "石头处理3" {
-  desc = "获得将硅加工成坩埚的工艺",
+  desc = "研究可进行高温加工的特殊器皿",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -2631,7 +1948,7 @@ prototype "石头处理3" {
 }
 
 prototype "坩埚制造" {
-  desc = "生产科技包用于科技研究",
+  desc = "生产可高温加工的坩埚",
   icon = "textures/construct/industry.texture",
   type = { "task" },
   task = {"stat_production", 0, "坩埚"},
@@ -2646,7 +1963,7 @@ prototype "坩埚制造" {
 }
 
 prototype "有机化学3" {
-  desc = "更多的有机化学制取工业气体工艺",
+  desc = "研究碳化合物组成、结构和制备方法",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -2663,7 +1980,7 @@ prototype "有机化学3" {
 }
 
 prototype "无人机运输2" {
-  desc = "研究更便捷的存储方式",
+  desc = "使用无人机快速运送物品",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -2731,7 +2048,7 @@ prototype "硅生产" {
 }
 
 prototype "硅板制造" {
-  desc = "生产科技包用于科技研究",
+  desc = "生产大量的硅板",
   icon = "textures/construct/industry.texture",
   type = { "task" },
   task = {"stat_production", 0, "硅板"},
@@ -2782,7 +2099,7 @@ prototype "铝加工" {
 }
 
 prototype "铝丝制造" {
-  desc = "生产科技包用于科技研究",
+  desc = "生产铝制的金属丝",
   icon = "textures/construct/industry.texture",
   type = { "task" },
   task = {"stat_production", 0, "铝丝"},
@@ -2797,7 +2114,7 @@ prototype "铝丝制造" {
 }
 
 prototype "沸腾实验" {
-  desc = "生产精密的电子元器件",
+  desc = "通过加热液体获取蒸汽的工艺",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -2833,7 +2150,7 @@ prototype "电子器件1" {
 }
 
 prototype "电力传输2" {
-  desc = "生产精密的电子元器件",
+  desc = "将电能远距离传输的技术",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -2851,7 +2168,7 @@ prototype "电力传输2" {
 }
 
 prototype "太阳能存储1" {
-  desc = "生产精密的电子元器件",
+  desc = "研究将太阳能板转化的电能进行储存的电池",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -2869,7 +2186,7 @@ prototype "太阳能存储1" {
 }
 
 prototype "电子研究" {
-  desc = "对电子设备进行深度研究",
+  desc = "研究由电能作用的材料或设备",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -2892,7 +2209,7 @@ prototype "电子研究" {
 
 ---------------------------化学研究---------------------------
 prototype "电磁学2" {
-  desc = "研究大规模生产的技术",
+  desc = "研究电能转换成机械能的基础供能装置",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -2931,7 +2248,7 @@ prototype "研究设施1" {
 
 
 prototype "科技大跃进" {
-  desc = "生产科技包用于科技研究",
+  desc = "生产更多的科研中心I",
   icon = "textures/construct/industry.texture",
   type = { "task" },
   task = {"stat_production", 0, "科研中心I"},
@@ -2947,7 +2264,7 @@ prototype "科技大跃进" {
 
 
 prototype "信号处理" {
-  desc = "研究电子信号传输机制",
+  desc = "研究电子信号传输介质",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -2965,7 +2282,7 @@ prototype "信号处理" {
   
 
 prototype "计算元件" {
-  desc = "服务于计算的电路集群",
+  desc = "研究可进行复杂计算的电路集群",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -2982,7 +2299,7 @@ prototype "计算元件" {
 }
 
 prototype "电解2" {
-  desc = "服务于计算的电路集群",
+  desc = "使用电化学手段制取工业气体",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -2999,7 +2316,7 @@ prototype "电解2" {
 }
 
 prototype "挖掘2" {
-  desc = "服务于计算的电路集群",
+  desc = "研究对火星岩石的开采技术",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -3017,7 +2334,7 @@ prototype "挖掘2" {
 }
 
 prototype "水能利用" {
-  desc = "研究淡水生产的工艺",
+  desc = "研究淡水处理的工艺",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -3035,7 +2352,7 @@ prototype "水能利用" {
 }
 
 prototype "自动化2" {
-  desc = "服务于计算的电路集群",
+  desc = "使用3D打印技术复制物品",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -3053,7 +2370,7 @@ prototype "自动化2" {
 }
 
 prototype "发电机2" {
-  desc = "服务于计算的电路集群",
+  desc = "使用蒸汽作为工质将热能转为机械能的发电装置",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -3090,7 +2407,7 @@ prototype "优化1" {
 }
 
 prototype "广播1" {
-  desc = "研究提高生产效率的插件",
+  desc = "研究可影响周边生产设施工作效率的装置",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -3108,7 +2425,7 @@ prototype "广播1" {
 }
 
 prototype "效能提升" {
-  desc = "生产科技包用于科技研究",
+  desc = "生产可以降低机器能耗的插件",
   icon = "textures/construct/industry.texture",
   type = { "task" },
   task = {"stat_production", 0, "效能插件I"},
@@ -3123,7 +2440,7 @@ prototype "效能提升" {
 }
 
 prototype "速度提升" {
-  desc = "生产科技包用于科技研究",
+  desc = "生产可以加速机器生产的插件",
   icon = "textures/construct/industry.texture",
   type = { "task" },
   task = {"stat_production", 0, "速度插件I"},
@@ -3138,7 +2455,7 @@ prototype "速度提升" {
 }
 
 prototype "产能提升" {
-  desc = "生产科技包用于科技研究",
+  desc = "生产可以提高机器产能的插件",
   icon = "textures/construct/industry.texture",
   type = { "task" },
   task = {"stat_production", 0, "产能插件I"},
@@ -3153,7 +2470,7 @@ prototype "产能提升" {
 }
 
 prototype "矿物处理2" {
-  desc = "研究含氮的化合物生产",
+  desc = "将矿物进行碾碎并再加工的机械工艺",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -3190,7 +2507,7 @@ prototype "氮化学" {
 }
 
 prototype "氨制造" {
-  desc = "生产科技包用于科技研究",
+  desc = "生产工业气体氨气",
   icon = "textures/construct/industry.texture",
   type = { "task" },
   task = {"stat_production", 0, "氨气"},
@@ -3204,8 +2521,8 @@ prototype "氨制造" {
   },
 }
 
-prototype "气候学2" {
-  desc = "研究含氮的化合物生产",
+prototype "气候研究2" {
+  desc = "对火星大气成分进行标本采集和研究",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -3229,7 +2546,7 @@ prototype "玻璃制造" {
   effects = {
     unlock_recipe = {"玻璃2"},
   },
-  prerequisites = {"气候学2"},
+  prerequisites = {"气候研究2"},
   ingredients = {
     {"地质科技包", 1},
     {"气候科技包", 1},
@@ -3241,7 +2558,7 @@ prototype "玻璃制造" {
 }
 
 prototype "建筑材料" {
-  desc = "研究更高效生产玻璃的工艺",
+  desc = "研究可以用于建材的新型材料",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -3259,7 +2576,7 @@ prototype "建筑材料" {
 }
 
 prototype "电力传输3" {
-  desc = "研究更高效生产玻璃的工艺",
+  desc = "将电能远距离传输的技术",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -3278,7 +2595,7 @@ prototype "电力传输3" {
 }
 
 prototype "地下水净化2" {
-  desc = "研究更高效生产玻璃的工艺",
+  desc = "火星地下开采卤水进行过滤净化工艺",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -3334,7 +2651,7 @@ prototype "太阳能1" {
 }
 
 prototype "铺设太阳能板" {
-  desc = "放置1台采矿机",
+  desc = "铺设更多的太阳能板",
   icon = "textures/construct/industry.texture",
   type = {"task" },
   task = {"select_entity", 0, "太阳能板I"},
@@ -3349,7 +2666,7 @@ prototype "铺设太阳能板" {
 }
 
 prototype "蒸馏2" {
-  desc = "研究利用太阳能发电的装置",
+  desc = "将液体混合物汽化并分离的技术",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -3368,7 +2685,7 @@ prototype "蒸馏2" {
 }
 
 prototype "硫磺处理" {
-  desc = "研究利用太阳能发电的装置",
+  desc = "加工含硫地热气获得其他化工品的工艺",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -3385,7 +2702,7 @@ prototype "硫磺处理" {
 }
 
 prototype "硫酸生产" {
-  desc = "生产科技包用于科技研究",
+  desc = "生产大量的硫酸",
   icon = "textures/construct/industry.texture",
   type = { "task" },
   task = {"stat_production", 0, "硫酸"},
@@ -3400,7 +2717,7 @@ prototype "硫酸生产" {
 }
 
 prototype "过滤2" {
-  desc = "研究利用太阳能发电的装置",
+  desc = "火星地下开采卤水进行过滤净化工艺",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -3419,7 +2736,7 @@ prototype "过滤2" {
 }
 
 prototype "浮选2" {
-  desc = "研究利用太阳能发电的装置",
+  desc = "使用浮选设备对矿石实行筛选",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -3438,7 +2755,7 @@ prototype "浮选2" {
 }
 
 prototype "化学工程2" {
-  desc = "研究利用太阳能发电的装置",
+  desc = "使用特殊设施生产化工产品",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -3483,7 +2800,7 @@ prototype "化学研究" {
 ---------------------------------物流研究-------------------------------------
 
 prototype "钠处理" {
-  desc = "研究利用太阳能发电的装置",
+  desc = "研究获取钠原料的工艺",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -3522,7 +2839,7 @@ prototype "空气分离工艺2" {
 }
 
 prototype "氦气生产" {
-  desc = "生产科技包用于科技研究",
+  desc = "生产更多的氦气",
   icon = "textures/construct/industry.texture",
   type = { "task" },
   task = {"stat_production", 0, "氦气"},
@@ -3537,7 +2854,7 @@ prototype "氦气生产" {
 }
 
 prototype "排放2" {
-  desc = "研究利用太阳能发电的装置",
+  desc = "研究气体和液体的排放工艺",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -3557,7 +2874,7 @@ prototype "排放2" {
 }
 
 prototype "钛生产1" {
-  desc = "研究利用太阳能发电的装置",
+  desc = "研究可以提取钛原料的工艺",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -3577,7 +2894,7 @@ prototype "钛生产1" {
 }
 
 prototype "高温分解" {
-  desc = "研究利用太阳能发电的装置",
+  desc = "研究在高温下化合石墨的工艺",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -3594,8 +2911,8 @@ prototype "高温分解" {
   time = "30s"
 }
 
-prototype "电池存储" {
-  desc = "研究利用太阳能发电的装置",
+prototype "电池存储1" {
+  desc = "研究可以储存和释放电能的元件",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -3615,11 +2932,11 @@ prototype "电池存储" {
 }
 
 prototype "电池制造" {
-  desc = "生产科技包用于科技研究",
+  desc = "生产更多的电池元件",
   icon = "textures/construct/industry.texture",
   type = { "task" },
   task = {"stat_production", 0, "电池I"},
-  prerequisites = {"电池存储"},
+  prerequisites = {"电池存储1"},
   count = 20,
   tips_pic = {
     "textures/task_tips_pic/task_produce_plastic.texture",
@@ -3637,7 +2954,7 @@ prototype "复合材料" {
     unlock_recipe = {"玻璃纤维1"},
     unlock_item = {"玻璃纤维"},
   },
-  prerequisites = {"电池存储"},
+  prerequisites = {"电池存储1"},
   ingredients = {
     {"地质科技包", 1},
     {"气候科技包", 1},
@@ -3649,7 +2966,7 @@ prototype "复合材料" {
 }
 
 prototype "太阳能存储2" {
-  desc = "多种材料组合成多相材料",
+  desc = "研究将太阳能板转化的电能进行储存的电池",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -3669,7 +2986,7 @@ prototype "太阳能存储2" {
 }
 
 prototype "钛生产2" {
-  desc = "研究利用太阳能发电的装置",
+  desc = "研究可以提取钛原料的工艺",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -3689,7 +3006,7 @@ prototype "钛生产2" {
 }
 
 prototype "钛板生产" {
-  desc = "生产科技包用于科技研究",
+  desc = "生产更多的钛板",
   icon = "textures/construct/industry.texture",
   type = { "task" },
   task = {"stat_production", 0, "钛板"},
@@ -3704,7 +3021,7 @@ prototype "钛板生产" {
 }
 
 prototype "无人机运输3" {
-  desc = "研究利用太阳能发电的装置",
+  desc = "使用无人机快速运送物品",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -3724,7 +3041,7 @@ prototype "无人机运输3" {
 }
 
 prototype "自动化3" {
-  desc = "研究利用太阳能发电的装置",
+  desc = "使用3D打印技术复制物品",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -3744,7 +3061,7 @@ prototype "自动化3" {
 }
 
 prototype "挖掘3" {
-  desc = "研究利用太阳能发电的装置",
+  desc = "研究对火星岩石的开采技术",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -3764,7 +3081,7 @@ prototype "挖掘3" {
 }
 
 prototype "电子器件2" {
-  desc = "研究利用太阳能发电的装置",
+  desc = "生产精密的电子元器件",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -3784,7 +3101,7 @@ prototype "电子器件2" {
 }
 
 prototype "广播2" {
-  desc = "研究利用太阳能发电的装置",
+  desc = "研究可影响周边生产设施工作效率的装置",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -3804,7 +3121,7 @@ prototype "广播2" {
 }
 
 prototype "优化2" {
-  desc = "研究利用太阳能发电的装置",
+  desc = "研究提高生产效率的插件",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -3824,7 +3141,7 @@ prototype "优化2" {
 }
 
 prototype "矿物处理3" {
-  desc = "研究利用太阳能发电的装置",
+  desc = "将矿物进行碾碎并再加工的机械工艺",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -3864,7 +3181,7 @@ prototype "太阳能2" {
 }
 
 prototype "管道系统3" {
-  desc = "研究利用太阳能发电的装置",
+  desc = "研究可储藏气液原料的装置",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -3883,7 +3200,7 @@ prototype "管道系统3" {
 }
 
 prototype "地热2" {
-  desc = "研究利用太阳能发电的装置",
+  desc = "研究开发地热资源的装置",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -3903,7 +3220,7 @@ prototype "地热2" {
 }
 
 prototype "研究设施2" {
-  desc = "研究利用太阳能发电的装置",
+  desc = "研究可以开展大规模研发的设施",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -3943,7 +3260,7 @@ prototype "高温防护" {
 }
 
 prototype "物理研究" {
-  desc = "在高压环境下合成物质的工艺",
+  desc = "研究物质结构以及基本运动规律",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -3964,7 +3281,7 @@ prototype "物理研究" {
 
 --------------------------------------rocket-------------------------------------
 prototype "电磁学3" {
-  desc = "研究更加精密的电容元器件",
+  desc = "研究电能转换成机械能的基础供能装置",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -3985,7 +3302,7 @@ prototype "电磁学3" {
 }
 
 prototype "研究设施3" {
-  desc = "研究更加精密的电容元器件",
+  desc = "研究可以开展大规模研发的设施",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -4006,7 +3323,7 @@ prototype "研究设施3" {
 }
 
 prototype "石墨分离" {
-  desc = "研究更加精密的电容元器件",
+  desc = "研究将石墨分离成单层材料的工艺",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -4027,7 +3344,7 @@ prototype "石墨分离" {
 }
 
 prototype "地下水净化3" {
-  desc = "研究更加精密的电容元器件",
+  desc = "火星地下开采卤水进行过滤净化工艺",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -4048,7 +3365,7 @@ prototype "地下水净化3" {
 }
 
 prototype "过滤3" {
-  desc = "研究更加精密的电容元器件",
+  desc = "火星地下开采卤水进行过滤净化工艺",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -4069,7 +3386,7 @@ prototype "过滤3" {
 }
 
 prototype "冶金学3" {
-  desc = "研究更加精密的电容元器件",
+  desc = "研究工业高温熔炼的装置",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -4090,7 +3407,7 @@ prototype "冶金学3" {
 }
 
 prototype "浮选3" {
-  desc = "研究更加精密的电容元器件",
+  desc = "使用浮选设备对矿石实行筛选",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -4111,7 +3428,7 @@ prototype "浮选3" {
 }
 
 prototype "蒸馏3" {
-  desc = "研究更加精密的电容元器件",
+  desc = "将液体混合物汽化并分离的技术",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -4132,7 +3449,7 @@ prototype "蒸馏3" {
 }
 
 prototype "发电机3" {
-  desc = "研究更加精密的电容元器件",
+  desc = "使用蒸汽作为工质将热能转为机械能的发电装置",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -4174,7 +3491,7 @@ prototype "微型化" {
 }
 
 prototype "电池存储2" {
-  desc = "研究更加精密的电容元器件",
+  desc = "研究可以储存和释放电能的小型装置",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -4195,7 +3512,7 @@ prototype "电池存储2" {
 }
 
 prototype "电解3" {
-  desc = "研究更加精密的电容元器件",
+  desc = "使用电化学手段制取工业气体",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -4237,7 +3554,7 @@ prototype "电子器件3" {
 }
 
 prototype "地热3" {
-  desc = "研究更加精密的电容元器件",
+  desc = "研究开发地热资源的装置",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -4258,7 +3575,7 @@ prototype "地热3" {
 }
 
 prototype "化学工程3" {
-  desc = "研究更加精密的电容元器件",
+  desc = "使用特殊设施生产化工产品",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -4279,7 +3596,7 @@ prototype "化学工程3" {
 }
 
 prototype "太阳能3" {
-  desc = "研究更加精密的电容元器件",
+  desc = "研究利用太阳能发电的装置",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -4300,7 +3617,7 @@ prototype "太阳能3" {
 }
 
 prototype "优化3" {
-  desc = "研究更加精密的电容元器件",
+  desc = "研究提高生产效率的插件",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -4321,7 +3638,7 @@ prototype "优化3" {
 }
 
 prototype "太阳能存储3" {
-  desc = "研究更加精密的电容元器件",
+  desc = "研究将太阳能板转化的电能进行储存的电池",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
@@ -4342,7 +3659,7 @@ prototype "太阳能存储3" {
 }
 
 prototype "广播3" {
-  desc = "研究更加精密的电容元器件",
+  desc = "研究可影响周边生产设施工作效率的装置",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
