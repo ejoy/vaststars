@@ -163,10 +163,12 @@ function S.init_world()
         end
     end
     --iroad.update_roadnet_group(1000, create_list)   
-    local density = 0.9
+    
+--[[     local density = 0.9
     local width, height, offset, UNIT = 256+10, 256+10, 128+10/2, 10
     local idx_string = istonemountain.create_random_sm(density, width, height, offset, UNIT)
-    istonemountain.create_sm_entity(idx_string)
+    istonemountain.create_sm_entity(idx_string) ]]
+
     --istonemountain.create_sm_entity_config(config, width, height, offset, UNIT)    
     --create_mark()
     

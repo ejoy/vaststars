@@ -1,6 +1,6 @@
 fx:
-  fs: /pkg/ant.resources/shaders/pbr/fs_pbr.sc
-  vs: /pkg/ant.resources/shaders/pbr/vs_pbr.sc
+  fs: /pkg/ant.resources/shaders/dynamic_material/fs_default.sc
+  vs: /pkg/ant.resources/shaders/dynamic_material/vs_default.sc
   setting:
     ALPHAMODE_OPAQUE: 1
     DRAW_INDIRECT: 1

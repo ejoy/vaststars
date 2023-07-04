@@ -1,14 +1,17 @@
+vs_code: "\n#include \"tf/tf_vs_func.sh\"\n"
+fs_code: "\n#include \"tf/tf_fs_func.sh\"\n"
 fx:
-  vs: /pkg/mod.translucent_plane/assets/shaders/vs_translucent_plane.sc
-  fs: /pkg/mod.translucent_plane/assets/shaders/fs_translucent_plane.sc
+  fs: /pkg/ant.resources/shaders/dynamic_material/fs_default.sc
+  vs: /pkg/ant.resources/shaders/dynamic_material/vs_default.sc
   setting:
     ALPHAMODE_OPAQUE: 1
+    HAS_BASECOLOR_TEXTURE: 1
     lighting: on
     shadow_cast: on
     shadow_receive: on
     subsurface: off
 properties:
-  s_corner:
+  s_basecolor:
     stage: 0
     texture: /pkg/mod.translucent_plane/assets/textures/corner.texture
   u_colorTable: {0, 0, 0, 0} 

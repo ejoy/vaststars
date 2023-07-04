@@ -11,7 +11,7 @@ local declmgr   = renderpkg.declmgr
 local bgfx      = require "bgfx"
 local math3d    = require "math3d"
 local terrain_module = require "terrain"
-local layout_name<const>    = declmgr.correct_layout "p3|t20|t21|t22"
+local layout_name<const>    = declmgr.correct_layout "p3|t20|t42"
 local layout                = declmgr.get(layout_name)
 local noise1 = {}
 local terrain_width, terrain_height, unit, origin_offset_width, origin_offset_height
