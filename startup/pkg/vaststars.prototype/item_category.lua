@@ -1,27 +1,8 @@
 local item_category = {
-    {
-        category = "全部",
-        icon = "textures/construct/industry.texture",
-    },
-    {
-        category = "金属",
-        icon = "textures/construct/steel-beam.texture",
-    },
-    {
-        category = "物流",
-        icon = "textures/construct/logisitic1.texture",
-    },
-    {
-        category = "器件",
-        icon = "textures/construct/plastic.texture",
-    },
-    {
-        category = "加工",
-        icon = "textures/construct/assembler.texture",
-    },
-    {
-        category = "化工",
-        icon = "textures/construct/chemistry2.texture",
-    },
+    "金属",
+    "物流",
+    "器件",
+    "加工",
+    "化工",
 }
 return item_category

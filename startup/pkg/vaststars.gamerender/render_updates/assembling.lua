@@ -379,10 +379,11 @@ function assembling_sys:gameworld_prebuild()
     for e in gameplay_world.ecs:select "auto_set_recipe:in assembling:update building:in chest:update fluidboxes:update" do
         local object = assert(objects:coord(e.building.x, e.building.y))
         local typeobject = iprototype.queryById(e.building.prototype)
-        local _, recipes = next(iprototype_cache.get("recipe_pop")[typeobject.name])
+        local recipes = iprototype_cache.get("recipe_config")[typeobject.name]
         local cache = {}
         for _, recipe in ipairs(recipes) do
-            local ingredients = recipe.ingredients
+            local typeobject_recipe = iprototype.queryByName(recipe.name)
+            local ingredients = irecipe.get_elements(typeobject_recipe.ingredients)
             assert(#ingredients == 1)
             cache[ingredients[1].name] = recipe.name
         end

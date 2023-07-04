@@ -26,7 +26,6 @@ local math3d = require "math3d"
 local COLOR_GREEN = math3d.constant("v4", {0.3, 1, 0, 1})
 local COLOR_RED = math3d.constant("v4", {1, 0.03, 0, 1})
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
-local ichest = require "gameplay.interface.chest"
 local terrain = ecs.require "terrain"
 local gameplay_core = require "gameplay.core"
 local ROAD_TILE_SCALE_WIDTH <const> = 2

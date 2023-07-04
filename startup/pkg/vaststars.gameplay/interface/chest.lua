@@ -81,7 +81,7 @@ local function assembling_reset_items(world, recipe, chest, option, maxslot)
     local newitems = {}
     if chest.chest ~= InvalidChest then
         for i = 1, 256 do
-            local slot = cChest.get(world._cworld, chest.chest, 1)
+            local slot = cChest.get(world._cworld, chest.chest, i)
             if not slot then
                 break
             end

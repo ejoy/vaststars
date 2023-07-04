@@ -1,0 +1,194 @@
+<rml>
+    <head>
+        <style path = "common.rcss"/>
+        <style>
+            caption-container {
+                height: 17.50vmin;
+                width: 100%;
+            }
+            caption-line {
+                height: 0.15vmin;
+                background-image: "textures/common/caption-line.texture";
+                background-size: 100% 100%;
+            }
+            caption {
+                height: 0.15vmin;
+                width: 111.44vmin;
+            }
+            left-box {
+                width: 53.81vmax;
+                height: 78.34vmin;
+                background-image: "textures/common/square-grid.texture";
+                background-size: 100% 100%;
+                background-lattice: 4.28%;
+                align-items: center; 
+            }
+            item {
+                margin-right: -1.58vmax;
+                margin-bottom: -1.5vmax;
+                width: 8.99vmax;
+                height: 19.47vmin;
+                background-size: 100% 100%;
+                justify-content: center; align-items: center;
+            }
+            item:active {
+                background-image: "textures/item-config/item-active.texture";
+            }
+            new {
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                font-size: 4vmin;
+                color: rgb(0, 255, 21);
+                -webkit-text-stroke: 1px #000;
+            }
+            item-list {
+                left: 0vmin;
+                top: 2.41vmin;
+                width: 100%;
+                height: 93.00%;
+                border-radius: 5.00vmin;
+                overflow: scroll;
+            }
+            item-category {
+                margin-top: 6.50vmin;
+                width: 100%;
+                height: 2.00vmin;
+                align-items: center;
+            }
+            item-category-text {
+                margin-right: 4vmin;
+            }
+            item-category-text:last-child {
+                margin-right: 0vmin;
+            }
+            right-box {
+                margin-left: 0.93vmax;
+                width: 27.68vmax;
+                height: 84.34vmin;
+                background-image: "textures/item-config/right-box-bg.texture";
+                background-size: 100% 100%;
+            }
+            item-name-container {
+                margin-top: 46.49vmin;
+                width: 100%;
+                height: 5.60vmin;
+                font-size: 6.60vmin;
+            }
+            item-desc-container {
+                margin-top: 2.93vmin;
+                margin-left: 6.10%;
+                margin-right: 4.03%;
+                margin-bottom: 2.93vmin;
+                width: 89.33%;
+                height: 13.73vmin;
+                font-size: 4.00vmin;
+                word-break: break-word;
+            }
+            button-container {
+                width: 100%;
+                height: 12.56vmin;
+                align-items: center;
+            }
+        </style>
+        <script type="text/x-lua" >
+            local ui_sys = require "ui_system"
+            local start = ui_sys.createDataMode("start", {
+                items = {},
+                item_name = "",
+                item_icon = "",
+                item_desc = "",
+            })
+
+            function start.clickButton(event, ...)
+                ui_sys.pub {...}
+            end
+
+            function start.clickClose()
+                ui_sys.close()
+            end
+
+            function init()
+                local e = assert(document.getElementById "item-list")
+                e.addEventListener("pan", function(param)
+                    e.scrollTop = e.scrollTop - (param.vy * 0.045)
+                end)
+            end
+
+            function start.clickSetItem(event)
+                ui_sys.pub {"set_item"}
+                ui_sys.close()
+            end
+
+            window.setTimeout(function()
+                local list = assert(document.getElementById "item-list")
+                local id = ("%s:%s"):format(start.category_idx, start.item_idx)
+                local e = document.getElementById(id)
+                if e then
+                    list.scrollTop = 0
+                    repeat
+                        list.scrollTop = list.scrollTop + e.clientTop
+                        e = e.parentNode
+                    until e == list
+                else
+                    console.log(id .. " can not found element")
+                end
+            end, 200)
+        </script>
+    </head>
+    <body style = "pointer-events: none; justify-content: center; align-items: center; background-image: textures/item-config/bg.texture; background-size: 100% 100%;" onload="init()">
+        <caption-container>
+            <caption-line style = "position: absolute; left: 24.26vmax; top: 12.89vmin; width: 15.34vmax;" />
+            <caption style = "position: absolute; left: 41.18vmax; top: 7.89vmin; width: 17.58vmax; height: 10vmin; font-size: 7vmin; justify-content: center; align-items: center;">设 置 物 品</caption>
+            <caption-line style = "position: absolute; left: 60.54vmax; top: 12.89vmin; width: 15.34vmax;" />
+        </caption-container>
+        <div class = "safe-area" style = "align-items: center;" data-model="start">
+            <div style = "position: absolute; margin-left: -3.89vmax; margin-top: -12.28vmin; top: 0; left: 0; width: 100vmax; height: 100vmin;" data-event-click = "clickClose()" />
+            <flex-row>
+                <left-box>
+                    <item-list id = "item-list">
+                        <div style = "width: 100%; align-items: center;" data-for = "c, c_index : items">
+                            <div style = "position: absolute; left: 0vmin; top: 0vmin; background-image: textures/item-config/category-bg.texture; width: 23.50vmax; height: 23.13vmin; background-size: 100% 100%;" />
+                            <div style = "margin-left: 5.58vmin; margin-top: 2.58vmin; width: 100%; flex-direction: row; font-size: 4.20vmin;">{{c.category}}</div>
+                            <div style = "margin-left: -2.20vmax; margin-top: -2.58vmin; width: 96.40%; flex-direction: row; flex-wrap: wrap;">
+                                <div data-for = "i, i_index : c.items">
+                                    <item data-attr-id = "i.id" data-event-click = "clickButton('click_item', c_index+1, i_index+1)" data-style-background-image = "i.selected ? 'textures/item-config/item-active.texture' : 'none'">
+                                        <div data-style-background-image = "i.icon" style = "width: 6.91vmax; height: 14.95vmin; background-size: 100% 100%; background-color: rgb(61, 61, 61);">
+                                            <new data-if = "i.new">新</new>
+                                        </div>
+                                    </item>
+                                </div>
+                            </div>
+                        </div>
+                    </item-list>
+                    <item-category>
+                        <flex-row>
+                            <item-category-text style = "font-size: 3vmin;" data-for = "c : items">
+                                {{c.category}}
+                            </item-category-text>
+                        </flex-row>
+                    </item-category>
+                </left-box>
+                <right-box>
+                    <div data-style-background-image = "item_icon" style = "position: absolute; top: 1.71vmin; left: 5.11vmax; width: 18.43vmax; height: 39.71vmin; background-size: 100% 100%;" data-if = "item_icon != ''" />
+                    <div style = "position: absolute; position: absolute; top: 1.71vmin; left: 5.11vmax; width: 18.43vmax; height: 39.71vmin; background-image: textures/item-config/icon-frame.texture; background-size: 100% 100%;" />
+                    <item-name-container>
+                        <div style = "margin-left: 1.76vmax; margin-top: -1.50vmin;" data-if = "item_name != ''">
+                            {{item_name}}
+                        </div>
+                    </item-name-container>
+                    <item-desc-container>
+                        <div style = "margin-top: -1.00vmin;" data-if = "item_desc != ''">
+                            {{item_desc}}
+                        </div>
+                    </item-desc-container>
+                    <button-container style = "justify-content: center; align-items: center;">
+                        <button-confirm style = "justify-content: center; align-items: center; font-size: 7.00vmin;" data-event-click = "clickSetItem()">
+                            <div style = "margin-top: -2vmin;">确定</div>
+                        </button-confirm>
+                    </button-container>
+                </right-box>
+            </flex-row>
+        </div>
+    </body>
+</rml>

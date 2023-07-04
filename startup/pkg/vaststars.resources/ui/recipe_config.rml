@@ -1,0 +1,238 @@
+<rml>
+    <head>
+        <style path = "common.rcss"/>
+        <style>
+            caption-container {
+                height: 17.50vmin;
+                width: 100%;
+                pointer-events: none;
+            }
+            caption-line {
+                height: 0.15vmin;
+                background-image: "textures/common/caption-line.texture";
+                background-size: 100% 100%;
+            }
+            caption {
+                height: 0.15vmin;
+                width: 111.44vmin;
+            }
+            left-box {
+                width: 53.81vmax;
+                height: 78.34vmin;
+                background-image: "textures/common/square-grid.texture";
+                background-size: 100% 100%;
+                background-lattice: 4.28%;
+                align-items: center;
+            }
+            recipe {
+                margin-right: -1.58vmax;
+                margin-bottom: -1.5vmax;
+                width: 8.99vmax;
+                height: 19.47vmin;
+                background-size: 100% 100%;
+                justify-content: center;
+                align-items: center;
+            }
+            recipe:active {
+                background-image: "textures/recipe-config/recipe-active.texture";
+            }
+            new {
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                font-size: 4vmin;
+                color: rgb(0, 255, 21);
+                -webkit-text-stroke: 1px #000;
+            }
+            recipe-list {
+                left: 0vmin;
+                top: 2.41vmin;
+                width: 100%;
+                height: 93.00%;
+                border-radius: 5.00vmin;
+                overflow: scroll;
+            }
+            recipe-category {
+                margin-top: 6.50vmin;
+                width: 100%;
+                height: 2.00vmin;
+                align-items: center;
+            }
+            recipe-category-text {
+                margin-right: 4vmin;
+            }
+            recipe-category-text:last-child {
+                margin-right: 0vmin;
+            }
+            right-box {
+                margin-left: 0.93vmax;
+                width: 27.68vmax;
+                height: 84.34vmin;
+                background-image: "textures/recipe-config/right-box-bg.texture";
+                background-size: 100% 100%;
+            }
+            recipe-ingredients-container {
+                margin-left: 1.07vmax;
+                margin-top: 21.41vmin;
+                width: 88.74%;
+                height: 20vmin;
+            }
+            recipe-results-container {
+                margin-left: 1.07vmax;
+                margin-top: 5.37vmin;
+                width: 88.74%;
+                height: 20vmin;
+            }
+            button-container {
+                width: 100%;
+                height: 17.46vmin;
+                align-items: center;
+            }
+            cancel-button {
+                width: 21.88vmax;
+                height: 13.16vmin;
+                background-image: "textures/recipe-config/cancel.texture";
+                background-size: 100% 100%;
+            }
+            cancel-button:active {
+                background-image: "textures/recipe-config/cancel-active.texture";
+            }
+        </style>
+        <script type="text/x-lua" >
+            local ui_sys = require "ui_system"
+            local start = ui_sys.createDataMode("start", {
+                object_id = 0,
+                recipes = {},
+                recipe_name = "",
+                recipe_time = "",
+                recipe_ingredients = {},
+                recipe_results = {},
+                recipe_icon = "",
+                confirm = false,
+                category_idx = 0,
+                recipe_idx = 0,
+            })
+
+            function start.clickButton(event, ...)
+                ui_sys.pub {...}
+            end
+
+            function start.clickClose()
+                ui_sys.close()
+            end
+
+            function start.clickClearRecipe(event)
+                ui_sys.pub {"clear_recipe"}
+                ui_sys.close()
+            end
+
+            function start.clickConfirm(event)
+                ui_sys.pub {"set_recipe", start.object_id}
+                ui_sys.close()
+            end
+
+            function init()
+                local e = assert(document.getElementById "recipe-list")
+                e.addEventListener("pan", function(param)
+                    e.scrollTop = e.scrollTop - (param.vy * 0.045)
+                end)
+            end
+
+            window.setTimeout(function()
+                local list = assert(document.getElementById "recipe-list")
+                local id = ("%s:%s"):format(start.category_idx, start.recipe_idx)
+                local e = document.getElementById(id)
+                if e then
+                    list.scrollTop = 0
+                    repeat
+                        list.scrollTop = list.scrollTop + e.clientTop
+                        e = e.parentNode
+                    until e == list
+                else
+                    console.log(id .. " can not found element")
+                end
+            end, 200)
+        </script>
+    </head>
+    <body style = "justify-content: center; align-items: center; background-image: textures/recipe-config/bg.texture; background-size: 100% 100%;" onload="init()">
+        <caption-container>
+            <caption-line style = "position: absolute; pointer-events: none; left: 24.26vmax; top: 12.89vmin; width: 15.34vmax;" />
+            <caption style = "position: absolute; pointer-events: none; left: 41.18vmax; top: 7.89vmin; width: 17.58vmax; height: 10vmin; font-size: 7vmin; justify-content: center; align-items: center;">生 产 预 览</caption>
+            <caption-line style = "position: absolute; pointer-events: none; left: 60.54vmax; top: 12.89vmin; width: 15.34vmax;" />
+        </caption-container>
+        <div data-model="start">
+            <div style = "position: absolute; margin-left: -8.26vmax; margin-top: -10.50vmin; top: 0; left: 0; width: 100vmax; height: 100vmin;" data-event-click = "clickClose()" />
+            <div class = "safe-area" style = "align-items: center;">
+                <flex-row>
+                    <left-box>
+                        <recipe-list id = "recipe-list">
+                            <div style = "width: 100%; align-items: center;" data-for = "c, c_index : recipes">
+                                <div style = "position: absolute; left: 0vmin; top: 0vmin; background-image: textures/recipe-config/category-bg.texture; width: 23.50vmax; height: 23.13vmin; background-size: 100% 100%;" />
+                                <div style = "margin-left: 5.58vmin; margin-top: 2.58vmin; width: 100%; flex-direction: row; font-size: 4.20vmin;">{{c.category}}</div>
+                                <div style = "margin-left: -2.20vmax; margin-top: -2.58vmin; width: 96.40%; flex-direction: row; flex-wrap: wrap;">
+                                    <div data-for = "r, r_index : c.recipes">
+                                        <recipe data-attr-id = "r.id"
+                                            data-event-click = "clickButton('click_recipe', c_index+1, r_index+1)" data-style-background-image = "r.selected ? 'textures/recipe-config/recipe-active.texture' : 'none'">
+                                                <div data-style-background-image = "r.icon" style = "width: 6.91vmax; height: 14.95vmin; background-size: 100% 100%; background-color: rgb(61, 61, 61);">
+                                                    <new data-if = "r.new">新</new>
+                                                </div>
+                                        </recipe>
+                                    </div>
+                                </div>
+                            </div>
+                        </recipe-list>
+                        <recipe-category>
+                            <flex-row>
+                                <recipe-category-text style = "font-size: 3vmin;" data-for = "c : recipes">
+                                    {{c.category}}
+                                </recipe-category-text>
+                            </flex-row>
+                        </recipe-category>
+                    </left-box>
+                    <right-box>
+                        <div style = "position: absolute; top: 1.25vmin; left: 3.42vmax; width: 7.19vmax; height: 15.57vmin; justify-content: center; align-items: center;">
+                            <div data-style-background-image = "recipe_icon" style = "width: 6.91vmax; height: 14.95vmin; background-size: 100% 100%;" data-if = "recipe_icon != ''" />
+                        </div>
+                        <div style = "position: absolute; top: 1.25vmin; left: 3.42vmax; width: 7.19vmax; height: 15.57vmin; background-image: textures/recipe-config/icon-frame.texture; background-size: 100% 100%;" />
+                        <div style = "position: absolute; margin-top: -1.50vmin; margin-left: 0.80vmax; top: 3.70vmin; left: 10.65vmax; width: 16.60vmax; height: 5.12vmin; text-align: right; font-size: 5.50vmin;" data-if = "recipe_name != ''">
+                            {{recipe_name}}
+                        </div>
+                        <div style = "position: absolute; top: 14.49vmin; left: 20.00vmax; width: 10vmax; height: 5.12vmin; justify-content: center; align-items: center; font-size: 4.50vmin;" data-if = "recipe_time != ''">
+                            {{recipe_time}}
+                        </div>
+                        <recipe-ingredients-container>
+                            <div style = "margin-top: -1vmin; font-size: 4.20vmin;">原料</div>
+                            <line style = "width: 93.88%;" />
+                            <div style = "width: 100%; height: 9.00vmax; flex-direction: row; flex-wrap: wrap;">
+                                <div data-for = "recipe_ingredients" style = "margin-left: 0.31vmax; margin-top: 0.31vmax; flex-direction: row;">
+                                    <div data-style-background-image = "it.icon" style = "width: 3.45vmax; height: 7.47vmin; background-size: 100% 100%;" />
+                                    <div style = "width: 8.50vmax; height: 6.94vmin;">
+                                        <div style = "width: 100%; height: 50%; font-size: 3.20vmin;">{{it.name}}</div>
+                                        <div style = "width: 100%; height: 50%; font-size: 3.20vmin;">{{it.count}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </recipe-ingredients-container>
+                        <recipe-results-container>
+                            <div style = "margin-top: -1vmin; font-size: 4.20vmin;">成品</div>
+                            <line style = "width: 93.88%;" />
+                            <div style = "width: 100%; height: 9.00vmax; flex-direction: row; flex-wrap: wrap;">
+                                <div data-for = "recipe_results" style = "margin-left: 0.31vmax; margin-top: 0.31vmax; flex-direction: row;">
+                                    <div data-style-background-image = "it.icon" style = "width: 3.45vmax; height: 7.47vmin; background-size: 100% 100%;" />
+                                    <div style = "width: 8.50vmax; height: 6.94vmin;">
+                                        <div style = "width: 100%; height: 50%; font-size: 3.20vmin;">{{it.name}}</div>
+                                        <div style = "width: 100%; height: 50%; font-size: 3.20vmin;">{{it.count}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </recipe-results-container>
+                        <button-container>
+                            <button-confirm style = "margin-top: 4.5vmin; justify-content: center; align-items: center; font-size: 6.00vmin;" data-if = "confirm" data-event-click = "clickConfirm()">开始生产</button-confirm>
+                            <cancel-button style = "margin-top: 4.5vmin; justify-content: center; align-items: center; font-size: 6.00vmin;" data-if = "!confirm" data-event-click = "clickClearRecipe()">结束生产</cancel-button>
+                        </button-container>
+                    </right-box>
+                </flex-row>
+            </div>
+        </div>
+    </body>
+</rml>

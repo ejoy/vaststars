@@ -2,7 +2,7 @@ local ecs, mailbox = ...
 local world = ecs.world
 local w = world.w
 
-local item_category = import_package "vaststars.prototype"("item_category")
+local ITEM_CATEGORY <const> = import_package "vaststars.prototype"("item_category")
 local gameplay_core = require "gameplay.core"
 local ichest = require "gameplay.interface.chest"
 local iprototype = require "gameplay.interface.prototype"
@@ -90,11 +90,18 @@ function M:create(object_id)
     local object = assert(objects:get(object_id))
     local typeobject = iprototype.queryByName(object.prototype_name)
 
+    local res = {}
+    for _, category in ipairs(ITEM_CATEGORY) do
+        res[#res+1] = {
+            category = category,
+        }
+    end
+
     return {
         object_id = object_id, -- for update
         prototype_name = iprototype.show_prototype_name(typeobject),
         background = typeobject.background,
-        item_category = item_category,
+        item_category = res,
         inventory = get_inventory(object_id),
         is_headquater = (typeobject.headquater == true),
         item_prototype_name = "",

@@ -407,18 +407,22 @@ local function __construct_entity(typeobject)
 end
 
 function M:stage_camera_usage(datamodel)
+    local dragdrop_delta
     for _, delta in dragdrop_camera_mb:unpack() do
-        if builder then
-            builder:touch_move(builder_datamodel, delta)
-            self:flush()
-        end
+        dragdrop_delta = delta
+    end
+    if dragdrop_delta and builder then
+        builder:touch_move(builder_datamodel, dragdrop_delta)
+        self:flush()
     end
 
+    local gesture_pan
     for _ in gesture_pan_mb:unpack() do
-        if builder then
-            builder:touch_end(builder_datamodel)
-            self:flush()
-        end
+        gesture_pan = true
+    end
+    if gesture_pan and builder then
+        builder:touch_end(builder_datamodel)
+        self:flush()
     end
 
     local leave = true

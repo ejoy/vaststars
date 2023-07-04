@@ -1,0 +1,24 @@
+body {
+    font: 100% "微软雅黑";
+}
+
+.safe-area {
+    width: 92%;
+    height: 93%;
+    pointer-events: none;
+}
+
+flex-row {
+    flex-direction: row;
+    pointer-events: none;
+}
+
+button-confirm {
+    width: 21.88vmax;
+    height: 13.16vmin;
+    background-image: "textures/common/button-confirm.texture";
+    background-size: 100% 100%;
+}
+button-confirm:active {
+    background-image: "textures/common/button-confirm-active.texture";
+}

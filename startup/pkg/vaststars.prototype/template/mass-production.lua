@@ -3980,13 +3980,13 @@ local entities = { {
     x = 88,
     y = 160
   }, {
-    dir = "N",
-    prototype_name = "砖石公路-X型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 90,
     y = 160
   }, {
-    dir = "N",
-    prototype_name = "砖石公路-X型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 92,
     y = 160
   }, {
@@ -4005,13 +4005,13 @@ local entities = { {
     x = 98,
     y = 160
   }, {
-    dir = "S",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 100,
     y = 160
   }, {
-    dir = "S",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 102,
     y = 160
   }, {
@@ -4030,13 +4030,13 @@ local entities = { {
     x = 108,
     y = 160
   }, {
-    dir = "S",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 110,
     y = 160
   }, {
-    dir = "S",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 112,
     y = 160
   }, {
@@ -4095,18 +4095,18 @@ local entities = { {
     x = 160,
     y = 132
   }, {
-    dir = "N",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 162,
     y = 132
   }, {
-    dir = "N",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 164,
     y = 132
   }, {
-    dir = "N",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 166,
     y = 132
   }, {
@@ -4115,18 +4115,18 @@ local entities = { {
     x = 172,
     y = 124
   }, {
-    dir = "N",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 170,
     y = 132
   }, {
-    dir = "N",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 172,
     y = 132
   }, {
-    dir = "N",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 174,
     y = 132
   }, {
@@ -4165,18 +4165,18 @@ local entities = { {
     x = 192,
     y = 124
   }, {
-    dir = "W",
-    prototype_name = "砖石公路-T型",
+    dir = "N",
+    prototype_name = "砖石公路-I型",
     x = 182,
     y = 176
   }, {
-    dir = "E",
-    prototype_name = "砖石公路-T型",
+    dir = "N",
+    prototype_name = "砖石公路-I型",
     x = 192,
     y = 168
   }, {
-    dir = "E",
-    prototype_name = "砖石公路-T型",
+    dir = "N",
+    prototype_name = "砖石公路-I型",
     x = 192,
     y = 176
   }, {
@@ -4190,8 +4190,8 @@ local entities = { {
     x = 136,
     y = 152
   }, {
-    dir = "S",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 122,
     y = 152
   }, {
@@ -4220,8 +4220,8 @@ local entities = { {
     x = 140,
     y = 140
   }, {
-    dir = "W",
-    prototype_name = "砖石公路-T型",
+    dir = "N",
+    prototype_name = "砖石公路-I型",
     x = 140,
     y = 144
   }, {
@@ -4280,13 +4280,13 @@ local entities = { {
     x = 174,
     y = 124
   }, {
-    dir = "N",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 170,
     y = 124
   }, {
-    dir = "N",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 168,
     y = 124
   }, {
@@ -4375,8 +4375,8 @@ local entities = { {
     x = 140,
     y = 132
   }, {
-    dir = "E",
-    prototype_name = "砖石公路-T型",
+    dir = "N",
+    prototype_name = "砖石公路-I型",
     x = 192,
     y = 164
   }, {
@@ -4385,18 +4385,18 @@ local entities = { {
     x = 192,
     y = 172
   }, {
-    dir = "N",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 168,
     y = 132
   }, {
-    dir = "W",
-    prototype_name = "砖石公路-T型",
+    dir = "N",
+    prototype_name = "砖石公路-I型",
     x = 132,
     y = 172
   }, {
-    dir = "N",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 176,
     y = 132
   }, {
@@ -4510,73 +4510,73 @@ local entities = { {
     x = 86,
     y = 150
   }, {
-    dir = "S",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 88,
     y = 150
   }, {
-    dir = "S",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 90,
     y = 150
   }, {
-    dir = "N",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 92,
     y = 150
   }, {
-    dir = "N",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 94,
     y = 150
   }, {
-    dir = "S",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 96,
     y = 150
   }, {
-    dir = "S",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 98,
     y = 150
   }, {
-    dir = "S",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 100,
     y = 150
   }, {
-    dir = "S",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 102,
     y = 150
   }, {
-    dir = "S",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 104,
     y = 150
   }, {
-    dir = "S",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 106,
     y = 150
   }, {
-    dir = "N",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 108,
     y = 150
   }, {
-    dir = "N",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 110,
     y = 150
   }, {
-    dir = "S",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 112,
     y = 150
   }, {
-    dir = "S",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 114,
     y = 150
   }, {
@@ -4630,8 +4630,8 @@ local entities = { {
     x = 132,
     y = 166
   }, {
-    dir = "W",
-    prototype_name = "砖石公路-T型",
+    dir = "N",
+    prototype_name = "砖石公路-I型",
     x = 132,
     y = 170
   }, {
@@ -4715,8 +4715,8 @@ local entities = { {
     x = 172,
     y = 158
   }, {
-    dir = "W",
-    prototype_name = "砖石公路-T型",
+    dir = "N",
+    prototype_name = "砖石公路-I型",
     x = 182,
     y = 158
   }, {
@@ -4755,8 +4755,8 @@ local entities = { {
     x = 204,
     y = 158
   }, {
-    dir = "N",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 206,
     y = 158
   }, {
@@ -4765,8 +4765,8 @@ local entities = { {
     x = 192,
     y = 174
   }, {
-    dir = "E",
-    prototype_name = "砖石公路-T型",
+    dir = "N",
+    prototype_name = "砖石公路-I型",
     x = 192,
     y = 170
   }, {
@@ -4775,8 +4775,8 @@ local entities = { {
     x = 192,
     y = 166
   }, {
-    dir = "E",
-    prototype_name = "砖石公路-T型",
+    dir = "N",
+    prototype_name = "砖石公路-I型",
     x = 192,
     y = 162
   }, {
@@ -4785,8 +4785,8 @@ local entities = { {
     x = 176,
     y = 158
   }, {
-    dir = "W",
-    prototype_name = "砖石公路-T型",
+    dir = "N",
+    prototype_name = "砖石公路-I型",
     x = 192,
     y = 122
   }, {
@@ -4810,13 +4810,13 @@ local entities = { {
     x = 80,
     y = 160
   }, {
-    dir = "S",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 154,
     y = 124
   }, {
-    dir = "S",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 156,
     y = 124
   }, {
@@ -4840,8 +4840,8 @@ local entities = { {
     x = 166,
     y = 124
   }, {
-    dir = "S",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 128,
     y = 152
   }, {
@@ -4865,8 +4865,8 @@ local entities = { {
     x = 116,
     y = 160
   }, {
-    dir = "W",
-    prototype_name = "砖石公路-T型",
+    dir = "N",
+    prototype_name = "砖石公路-I型",
     x = 192,
     y = 120
   }, {
@@ -4890,8 +4890,8 @@ local entities = { {
     x = 126,
     y = 152
   }, {
-    dir = "S",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 124,
     y = 152
   }, {
@@ -4900,8 +4900,8 @@ local entities = { {
     x = 134,
     y = 152
   }, {
-    dir = "S",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 130,
     y = 152
   }, {
@@ -4930,8 +4930,8 @@ local entities = { {
     x = 166,
     y = 158
   }, {
-    dir = "N",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 178,
     y = 132
   }, {
@@ -4965,8 +4965,8 @@ local entities = { {
     x = 182,
     y = 134
   }, {
-    dir = "S",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 184,
     y = 134
   }, {
@@ -4995,8 +4995,8 @@ local entities = { {
     x = 140,
     y = 138
   }, {
-    dir = "W",
-    prototype_name = "砖石公路-T型",
+    dir = "N",
+    prototype_name = "砖石公路-I型",
     x = 140,
     y = 142
   }, {
@@ -5015,13 +5015,13 @@ local entities = { {
     x = 122,
     y = 162
   }, {
-    dir = "S",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 124,
     y = 162
   }, {
-    dir = "S",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 126,
     y = 162
   }, {
@@ -5035,8 +5035,8 @@ local entities = { {
     x = 188,
     y = 134
   }, {
-    dir = "S",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 186,
     y = 134
   }, {
@@ -5045,8 +5045,8 @@ local entities = { {
     x = 174,
     y = 158
   }, {
-    dir = "N",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 208,
     y = 158
   }, {
@@ -5055,23 +5055,23 @@ local entities = { {
     x = 210,
     y = 158
   }, {
-    dir = "E",
-    prototype_name = "砖石公路-T型",
+    dir = "N",
+    prototype_name = "砖石公路-I型",
     x = 182,
     y = 164
   }, {
-    dir = "E",
-    prototype_name = "砖石公路-T型",
+    dir = "N",
+    prototype_name = "砖石公路-I型",
     x = 182,
     y = 166
   }, {
-    dir = "W",
-    prototype_name = "砖石公路-T型",
+    dir = "N",
+    prototype_name = "砖石公路-I型",
     x = 182,
     y = 168
   }, {
-    dir = "W",
-    prototype_name = "砖石公路-T型",
+    dir = "N",
+    prototype_name = "砖石公路-I型",
     x = 182,
     y = 170
   }, {
@@ -5080,8 +5080,8 @@ local entities = { {
     x = 182,
     y = 172
   }, {
-    dir = "W",
-    prototype_name = "砖石公路-T型",
+    dir = "N",
+    prototype_name = "砖石公路-I型",
     x = 182,
     y = 174
   }, {
@@ -5100,8 +5100,8 @@ local entities = { {
     x = 148,
     y = 124
   }, {
-    dir = "S",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 142,
     y = 124
   }, {
@@ -5110,8 +5110,8 @@ local entities = { {
     x = 150,
     y = 124
   }, {
-    dir = "S",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 144,
     y = 124
   }, {
@@ -5185,13 +5185,13 @@ local entities = { {
     x = 94,
     y = 126
   }, {
-    dir = "N",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 96,
     y = 126
   }, {
-    dir = "N",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 98,
     y = 126
   }, {
@@ -5200,13 +5200,13 @@ local entities = { {
     x = 100,
     y = 126
   }, {
-    dir = "N",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 102,
     y = 126
   }, {
-    dir = "N",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 104,
     y = 126
   }, {
@@ -5220,13 +5220,13 @@ local entities = { {
     x = 76,
     y = 126
   }, {
-    dir = "E",
-    prototype_name = "砖石公路-T型",
+    dir = "N",
+    prototype_name = "砖石公路-I型",
     x = 192,
     y = 154
   }, {
-    dir = "E",
-    prototype_name = "砖石公路-T型",
+    dir = "N",
+    prototype_name = "砖石公路-I型",
     x = 192,
     y = 156
   }, {
@@ -5255,8 +5255,8 @@ local entities = { {
     x = 182,
     y = 152
   }, {
-    dir = "W",
-    prototype_name = "砖石公路-T型",
+    dir = "N",
+    prototype_name = "砖石公路-I型",
     x = 182,
     y = 156
   }, {
@@ -5305,8 +5305,8 @@ local entities = { {
     x = 182,
     y = 136
   }, {
-    dir = "N",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 180,
     y = 132
   }, {
@@ -5345,8 +5345,8 @@ local entities = { {
     x = 188,
     y = 180
   }, {
-    dir = "E",
-    prototype_name = "砖石公路-T型",
+    dir = "N",
+    prototype_name = "砖石公路-I型",
     x = 192,
     y = 178
   }, {
@@ -5400,8 +5400,8 @@ local entities = { {
     x = 166,
     y = 112
   }, {
-    dir = "W",
-    prototype_name = "砖石公路-T型",
+    dir = "N",
+    prototype_name = "砖石公路-I型",
     x = 166,
     y = 116
   }, {
@@ -5420,8 +5420,8 @@ local entities = { {
     x = 166,
     y = 122
   }, {
-    dir = "W",
-    prototype_name = "砖石公路-T型",
+    dir = "N",
+    prototype_name = "砖石公路-I型",
     x = 166,
     y = 114
   }, {
@@ -5450,13 +5450,13 @@ local entities = { {
     x = 86,
     y = 138
   }, {
-    dir = "N",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 88,
     y = 138
   }, {
-    dir = "N",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 90,
     y = 138
   }, {
@@ -5470,13 +5470,13 @@ local entities = { {
     x = 94,
     y = 138
   }, {
-    dir = "N",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 96,
     y = 138
   }, {
-    dir = "N",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 98,
     y = 138
   }, {
@@ -5490,13 +5490,13 @@ local entities = { {
     x = 102,
     y = 138
   }, {
-    dir = "N",
-    prototype_name = "砖石公路-X型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 104,
     y = 138
   }, {
-    dir = "N",
-    prototype_name = "砖石公路-X型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 106,
     y = 138
   }, {
@@ -5510,13 +5510,13 @@ local entities = { {
     x = 110,
     y = 138
   }, {
-    dir = "N",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 112,
     y = 138
   }, {
-    dir = "N",
-    prototype_name = "砖石公路-T型",
+    dir = "E",
+    prototype_name = "砖石公路-I型",
     x = 114,
     y = 138
   }, {
@@ -5595,13 +5595,13 @@ local entities = { {
     x = 180,
     y = 160
   }, {
-    dir = "W",
-    prototype_name = "砖石公路-T型",
+    dir = "N",
+    prototype_name = "砖石公路-I型",
     x = 94,
     y = 120
   }, {
-    dir = "W",
-    prototype_name = "砖石公路-T型",
+    dir = "N",
+    prototype_name = "砖石公路-I型",
     x = 94,
     y = 122
   }, {
@@ -5625,13 +5625,13 @@ local entities = { {
     x = 106,
     y = 118
   }, {
-    dir = "E",
-    prototype_name = "砖石公路-T型",
+    dir = "N",
+    prototype_name = "砖石公路-I型",
     x = 106,
     y = 120
   }, {
-    dir = "E",
-    prototype_name = "砖石公路-T型",
+    dir = "N",
+    prototype_name = "砖石公路-I型",
     x = 106,
     y = 122
   }, {

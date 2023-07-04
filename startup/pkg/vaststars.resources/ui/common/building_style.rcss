@@ -488,12 +488,6 @@ workbutton {
 	top: -10px; 
 	right: -20px;
 }
-.button-close {
-	width: 9.33vmin;
-	height: 9.33vmin;
-	background-image: "textures/common/delete.texture";
-	background-size: cover;
-}
 .change-arrow-pic {
 	width: 2.67vmin;
 	height: 2.00vmin;

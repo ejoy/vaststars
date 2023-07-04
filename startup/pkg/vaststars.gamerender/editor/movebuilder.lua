@@ -33,6 +33,8 @@ local create_selected_boxes = ecs.require "selected_boxes"
 local vsobject_manager = ecs.require "vsobject_manager"
 local gameplay = import_package "vaststars.gameplay"
 local igameplay_building = gameplay.interface "building"
+local ROAD_TILE_SCALE_WIDTH <const> = 2
+local ROAD_TILE_SCALE_HEIGHT <const> = 2
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -330,7 +332,11 @@ local function new_entity(self, datamodel, typeobject)
     self.pickup_object.APPEAR = true
 
     if not self.grid_entity then
-        self.grid_entity = igrid_entity.create("polyline_grid", coord_system.tile_width, coord_system.tile_height, coord_system.tile_size, {t = __calc_grid_position(self, typeobject)})
+        if iprototype.has_types(typeobject.type, "station_producer", "station_consumer") then
+            self.grid_entity = igrid_entity.create("polyline_grid", terrain._width // ROAD_TILE_SCALE_WIDTH, terrain._height // ROAD_TILE_SCALE_HEIGHT, terrain.tile_size * ROAD_TILE_SCALE_WIDTH, {t = __calc_grid_position(self, typeobject)})
+        else
+            self.grid_entity = igrid_entity.create("polyline_grid", coord_system.tile_width, coord_system.tile_height, coord_system.tile_size, {t = __calc_grid_position(self, typeobject)})
+        end
         self.grid_entity:show(true)
     end
 

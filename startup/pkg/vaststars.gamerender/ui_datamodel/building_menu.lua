@@ -320,7 +320,7 @@ function M:stage_ui_update(datamodel, object_id)
     __moveable_count_update(datamodel, object_id)
 
     for _, _, _, object_id in set_recipe_mb:unpack() do
-        iui.open({"recipe_pop.rml"}, object_id)
+        iui.open({"recipe_config.rml"}, object_id)
     end
 
     for _, _, _, object_id in set_item_mb:unpack() do
@@ -336,7 +336,7 @@ function M:stage_ui_update(datamodel, object_id)
         else
             assert(false)
         end
-        iui.open({"drone_depot.rml"}, object_id, interface)
+        iui.open({"item_config.rml"}, object_id, interface)
     end
 
     for _, _, _, object_id in close_mb:unpack() do

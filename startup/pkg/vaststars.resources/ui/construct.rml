@@ -1,15 +1,7 @@
 <rml>
     <head>
+        <style path = "common.rcss"/>
         <style>
-            body {
-                font: 100% "宋体";
-            }
-            div {
-                font: 100% "微软雅黑";
-            }
-            .nopointer {
-                pointer-events: none;
-            }
             button {
                 width: 28.00vmin;
                 height: 28.00vmin;
@@ -165,11 +157,6 @@
                 to {
                     transform: rotate(-10deg);
                 }
-            }
-            .safe-area {
-                width: 92%;
-                height: 93%;
-                pointer-events: none;
             }
             .progress-num {
                 width:100%; 
