@@ -69,10 +69,10 @@
         </style>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
-            local start = ui_sys.createDataMode("start", {
+            local start = ui_sys.createDataMode {
                 guide_progress = 0,
                 tech_count = 0,
-            })
+            }
             function start.clickButton(event, ...)
                 audio.play "event:/ui/button1"
                 ui_sys.pub {...}
@@ -80,7 +80,7 @@
         </script>
     </head>
     <body>
-        <div style="background-color: rgba(0, 0, 0, 240); flex-direction: row; justify-content: center; align-items: center; align-content: space-between; width: 100%; height: 100%;" data-model="start">
+        <div style="background-color: rgba(0, 0, 0, 240); flex-direction: row; justify-content: center; align-items: center; align-content: space-between; width: 100%; height: 100%;">
             <div style="width: 100%; height: 100%; position:absolute; left:0; top:0;" data-event-click = "clickButton('quit')" />
             <command-center-button data-event-click = "clickButton('inventory')">
                 <command-center-button />

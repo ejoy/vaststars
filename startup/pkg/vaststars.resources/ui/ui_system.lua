@@ -49,7 +49,7 @@ function M.addEventListener(event_funcs)
     end)
 end
 
-function M.createDataMode(name, init)
+function M.createDataMode(init)
     local doc = tracedoc.new(init)
     local datamodel = window.createModel(init)
     datamodel.mapping = nil

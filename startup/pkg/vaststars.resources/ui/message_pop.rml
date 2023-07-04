@@ -178,10 +178,10 @@
         <style path = "common/listpage_style.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
-            local start = ui_sys.createDataMode("start", {
+            local start = ui_sys.createDataMode {
                 left = "0vmin",
                 top = "0vmin",
-            })
+            }
             ui_sys.addEventListener({
                 ["message"] = function(...)
                     local param = ...
@@ -259,6 +259,6 @@
         </script>
     </head>
     <body style="pointer-events: none;">
-        <div id = "pop_root" style="position: absolute; pointer-events: none; width:100%; height:100%;" data-model="start"/>
+        <div id = "pop_root" style="position: absolute; pointer-events: none; width:100%; height:100%;" />
     </body>
 </rml>

@@ -4,88 +4,6 @@
             body {
                 font: 100% "宋体";
             }
-            .warning-panel {
-                pointer-events: none;
-                background-color: rgb(44, 32, 18);
-                border: 0.2vmin rgb(89, 73, 39);
-                border-radius: 0.67vmin;
-                margin:auto 0.3em;
-                width: 35%;
-                height: 11%;
-                justify-content: space-evenly;
-                flex-direction: row;
-                animation: 3s cubic-out 0s slideup;
-            }
-            .warning-message {
-                pointer-events: none;
-                width: 95%;
-                height: 100%;
-                font-size: 4vmin;
-                text-align: left;
-                word-break: break-all;
-            }
-            .warning-icon {
-                pointer-events: none;
-                position: absolute;
-                left: -1vmin;
-                top:-3vmin;
-                width: 2.8vmin;
-                height: 7.6vmin;
-                background-size: cover;
-                background-image: "textures/common/exclamation2.texture";
-            }
-            .item-collect-panel {
-                pointer-events: none;
-                border-radius: 0.67vmin;
-                margin:auto 0.3em;
-                width: 45%;
-                height: 11%;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                animation: 4s cubic-out 0s slideup;
-            }
-            .materials {
-                pointer-events: none;
-                flex-direction: row;
-                align-items: center;
-                background-size: cover;
-            }
-            .materials-item {
-                pointer-events: none;
-                flex-direction: row;
-                justify-content: flex-start;
-                align-items: center;
-            }
-            .materials-icon {
-                pointer-events: none;
-                width: 4.67vmin;
-                height: 4.67vmin;
-                background-color: rgb(250, 205, 9);;
-                flex-direction: row;
-                justify-content: flex-start;
-                align-items: center;
-                background-size: cover;
-                background-image: "textures/construct/chemistry1.texture";
-            }
-            .materials-name {
-                pointer-events: none;
-                padding-bottom: 0.3em;
-                padding-left: 0.2em;
-                padding-right:0.2em;
-                font-size: 4.73vmin;
-                text-align: center;
-                -webkit-text-stroke: 0.15vmin #000;
-            }
-            .materials-num {
-                pointer-events: none;
-                padding-bottom: 0.3em;
-                padding-right:1em;
-                font-size: 4.73vmin;
-                text-align: left;
-                color: rgb(79, 250, 0);
-                -webkit-text-stroke: 0.15vmin #000;
-            }
             .accomplished {
                 position: absolute;
                 right: 1vmin; 
@@ -94,20 +12,6 @@
                 -webkit-text-stroke: 0.3vmin rgb(0,0,0);
                 opacity: 0;
                 animation: 3s sine-in-out 0s enlarge;
-            }
-            @keyframes slideup {
-                0% {
-                     bottom: 30%; 
-                     opacity: 1;
-                }
-                50% {
-                     bottom: 60%; 
-                     opacity: 1;
-                }
-                100% { 
-                    bottom: 60%; 
-                    opacity: 0;
-                }
             }
             @keyframes enlarge {
                 0% {
@@ -132,12 +36,12 @@
         <style path = "common/listpage_style.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
-            local start = ui_sys.createDataMode("start", {
+            local start = ui_sys.createDataMode {
                 message = "none",
                 items = {},
                 left = "0vmin",
                 top = "0vmin",
-            })
+            }
             window.setTimeout(function()
                 ui_sys.pub {"close"}
                 ui_sys.close()
@@ -155,7 +59,7 @@
         </script>
     </head>
     <body style = "pointer-events: none;">
-        <div style="position: absolute; height: 100%;" data-style-left="left" data-style-top="top" data-model="start">
+        <div style="position: absolute; height: 100%;" data-style-left="left" data-style-top="top">
             <!-- 科研完成动画 -->
             <div class="accomplished">任务完成</div>
         </div>

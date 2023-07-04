@@ -40,12 +40,12 @@
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local handler = require "lua.building_menu_handler"
-            local start = ui_sys.createDataMode("start", {
+            local start = ui_sys.createDataMode {
                 object_id = 0,
                 prototype_name = "",
                 guide_progress = 0,
                 buttons = {},
-            })
+            }
 
             function start.clickButton(event, command, disabled)
                 if command == "" or disabled == true then
@@ -77,7 +77,7 @@
         </script>
     </head>
     <body style = "pointer-events: none; justify-content: center; align-items: center;">
-        <div class = "safe-area" data-model="start">
+        <div class = "safe-area">
             <div class = "layout">
                 <div class = "building-button-container" data-style-transform = "it.outer_transform" data-for = "buttons">
                     <div style = "pointer-events: none; width: 18.23vmin; height: 72.655%; margin-top: 9.115vmin; margin-bottom: 9.115vmin; background-image: textures/building-menu/line.texture; background-size: contain;" data-style-transform = "it.line_transform" data-style-margin-right = "it.line_margin_right" />

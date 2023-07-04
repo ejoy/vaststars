@@ -17,14 +17,14 @@
         <style path = "common/building_style.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
-            local start = ui_sys.createDataMode("start", {
+            local start = ui_sys.createDataMode {
                 filename = "",
                 progress = "0%",
-            })
+            }
         </script>
     </head>
     <body style = "background-color: black;">
-        <div class="item-container-region"  data-model="start" style = "align-items: center;">
+        <div class="item-container-region" style = "align-items: center;">
             <div class="column" style="justify-content: center; width: 80%; height:10vmin;">
                 <div class="progress-bar-block" style = "width: 100%; height:80%;">
                     <div class="progress-background" style ="background-color: green; width: 50%;" data-style-width = "progress" />

@@ -1,5 +1,5 @@
 local ui_sys = require "ui_system"
-local start = ui_sys.createDataMode("start", {
+local start = ui_sys.createDataMode {
     items = {},
     total = 0,
     total_str = "",
@@ -7,7 +7,7 @@ local start = ui_sys.createDataMode("start", {
     percent_str = "100%;",
     label_x = {},
     label_y = {}
-})
+}
 
 function start.ClickBuilding(event)
     start.show = not start.show

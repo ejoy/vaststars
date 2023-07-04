@@ -117,7 +117,7 @@
         </style>
         <script type="text/x-lua">
             local ui_sys = require "ui_system"
-            local start = ui_sys.createDataMode("start", {
+            local start = ui_sys.createDataMode {
                 object_id = 0,
                 background = "",
                 is_headquater = false,
@@ -135,7 +135,7 @@
                 show = false,
                 guide_progress = 0,
                 item_index = 0,
-            })
+            }
 
             local function update_category(category)
                 start.sub_inventory = {}
@@ -218,7 +218,7 @@
         </script>
     </head>
     <body>
-        <div class="item-container-region"  data-model="start">
+        <div class="item-container-region">
             <div class="panel" style = "width: 50%;">
                 <div class="column" style="width:100%; height:100%;" data-if="!show_item_info">
                     <!-- 指挥中心标题 start -->

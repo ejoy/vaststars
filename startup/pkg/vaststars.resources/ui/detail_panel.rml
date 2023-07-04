@@ -146,7 +146,7 @@
         <style path = "common/building_style.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
-            local start = ui_sys.createDataMode("start", {
+            local start = ui_sys.createDataMode {
                 object_id = 0,
                 property_list = {},
                 icon = "",
@@ -165,7 +165,7 @@
                 goods_desc = "",
                 guide_progress = 0,
                 areaid = 0
-            })
+            }
 
             function start.onLongPress(event, areaid)
                 start.areaid = (start.areaid == areaid) and 0 or areaid
@@ -180,7 +180,7 @@
         </script>
     </head>
     <body style = "pointer-events: none; justify-content: center; align-items: center;">
-        <div data-model="start" class="panel1" style="flex-direction: row; justify-content: flex-start; align-items: center;">
+        <div class="panel1" style="flex-direction: row; justify-content: flex-start; align-items: center;">
             <!-- detail panel begin -->
             <div style = 'margin-top: 7vmin; margin-bottom: 7vmin; width: 30vmin; height: 86vmin; background-lattice: 30%; background-image: "textures/detail/background.texture"; background-size: 100% 100%;'>
                 <!-- title -->

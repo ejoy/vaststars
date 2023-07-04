@@ -43,7 +43,7 @@
         </style>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
-            local start = ui_sys.createDataMode("start", {
+            local start = ui_sys.createDataMode {
                 buttons = {},
                 show_start_teardown = false,
                 show_start_laying = false,
@@ -51,7 +51,7 @@
                 show_remove_one = false,
                 show_finish_teardown = false,
                 show_finish_laying = false,
-            })
+            }
 
             start.clickButton = function(event, message)
                 ui_sys.pub {message}
@@ -100,7 +100,7 @@
         </script>
     </head>
     <body style = "pointer-events: none;">
-        <div data-model="start" style = "pointer-events: none; width: 100%; height:100%;">
+        <div style = "pointer-events: none; width: 100%; height:100%;">
             <div style = "pointer-events: none; position: absolute; width: 100%; height:100%;">
                 <button class = "back-button" data-event-click="clickButton('quit')"/>
             </div>

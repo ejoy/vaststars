@@ -93,12 +93,12 @@
         </style>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
-            local start = ui_sys.createDataMode("start", {
+            local start = ui_sys.createDataMode {
                 items = {},
                 item_name = "",
                 item_icon = "",
                 item_desc = "",
-            })
+            }
 
             function start.clickButton(event, ...)
                 ui_sys.pub {...}
@@ -142,7 +142,7 @@
             <caption style = "position: absolute; left: 41.18vmax; top: 7.89vmin; width: 17.58vmax; height: 10vmin; font-size: 7vmin; justify-content: center; align-items: center;">设 置 物 品</caption>
             <caption-line style = "position: absolute; left: 60.54vmax; top: 12.89vmin; width: 15.34vmax;" />
         </caption-container>
-        <div class = "safe-area" style = "align-items: center;" data-model="start">
+        <div class = "safe-area" style = "align-items: center;">
             <div style = "position: absolute; margin-left: -3.89vmax; margin-top: -12.28vmin; top: 0; left: 0; width: 100vmax; height: 100vmin;" data-event-click = "clickClose()" />
             <flex-row>
                 <left-box>

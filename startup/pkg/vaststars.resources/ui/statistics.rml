@@ -173,7 +173,7 @@
         <script type="text/x-lua" path = "lua/statistics.lua" />
     </head>
     <body>
-        <div class="item-container-region"  data-model="start">
+        <div class="item-container-region">
             <!-- 左边面板 begin -->
             <div class="panel" style="width: 75%;">
                 <div class="header" id = "item-name-block">

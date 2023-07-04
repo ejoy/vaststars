@@ -100,7 +100,7 @@
         </style>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
-            local start = ui_sys.createDataMode("start", {
+            local start = ui_sys.createDataMode {
                 object_id = 0,
                 recipes = {},
                 recipe_name = "",
@@ -111,7 +111,7 @@
                 confirm = false,
                 category_idx = 0,
                 recipe_idx = 0,
-            })
+            }
 
             function start.clickButton(event, ...)
                 ui_sys.pub {...}
@@ -160,7 +160,7 @@
             <caption style = "position: absolute; pointer-events: none; left: 41.18vmax; top: 7.89vmin; width: 17.58vmax; height: 10vmin; font-size: 7vmin; justify-content: center; align-items: center;">生 产 预 览</caption>
             <caption-line style = "position: absolute; pointer-events: none; left: 60.54vmax; top: 12.89vmin; width: 15.34vmax;" />
         </caption-container>
-        <div data-model="start">
+        <div>
             <div style = "position: absolute; margin-left: -8.26vmax; margin-top: -10.50vmin; top: 0; left: 0; width: 100vmax; height: 100vmin;" data-event-click = "clickClose()" />
             <div class = "safe-area" style = "align-items: center;">
                 <flex-row>

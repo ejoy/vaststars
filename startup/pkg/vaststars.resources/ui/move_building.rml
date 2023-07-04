@@ -23,12 +23,12 @@
         </style>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
-            local start = ui_sys.createDataMode("start", {
+            local start = ui_sys.createDataMode {
                 buttons = {},
                 show_quit = false,
                 show_confirm = false,
                 show_rotate = false,
-            })
+            }
 
             start.buttons[#start.buttons+1] = {name = "取消", show_var = "show_quit", show = false, param = "quit", background_color = "rgb(105, 112, 8)", background_image = "textures/cmdcenter/yellow_arrow.texture"}
             start.buttons[#start.buttons+1] = {name = "旋转建筑", show_var = "show_rotate", show = false, param = "rotate", background_color = "rgb(105, 112, 8)", background_image = "textures/construct/rotate.texture"}
@@ -64,7 +64,7 @@
         </script>
     </head>
     <body style = "pointer-events: none;">
-        <div class="button-container" data-model="start" style = "pointer-events: none;">
+        <div class="button-container" style = "pointer-events: none;">
             <button style="width: 22.00vmin; height: 16.00vmin;" data-style-background-color = "it.background_color" data-event-click="clickButton(it.param)" data-for = "it : buttons" data-if = "it.show">
                 <div style="margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-size:cover;" data-style-background-image = "it.background_image" />
                 <div style="font-size: 85%;">{{it.name}}</div>

@@ -102,13 +102,13 @@
         <style path = "common/listpage_style.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
-            local start = ui_sys.createDataMode("start", {
+            local start = ui_sys.createDataMode {
                 items = {},
                 task_name = " ",
                 task_desc = " ",
                 current_count = 0,
                 total_count = 100
-            })
+            }
 
             function start.clickConfirm(event)
                 ui_sys.pub {"close_taskui"}
@@ -150,7 +150,7 @@
         </script>
     </head>
     <body>
-        <div class="item-container-region"  style="width:100%;  background-color: rgb(0,0,0); justify-content: center;" data-model="start">
+        <div class="item-container-region" style="width:100%;  background-color: rgb(0,0,0); justify-content: center;">
             <div class="recipe-panel" style = "flex-direction: column; height: 80%;">
                 <!-- 标题栏 -->
                 <div class = "recipe-name-block">

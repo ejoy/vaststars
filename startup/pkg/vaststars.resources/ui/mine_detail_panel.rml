@@ -35,7 +35,7 @@
         <style path = "common/building_style.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
-            local start = ui_sys.createDataMode("start", {
+            local start = ui_sys.createDataMode {
                 object_id = 0,
                 property_list = {},
                 icon = "",
@@ -50,7 +50,7 @@
                 show_assemble = false,
                 recipe_name = " ",
                 guide_progress = 0,
-            })
+            }
 
             ui_sys.addEventListener({
                 ["leave"] = function()
@@ -60,7 +60,7 @@
         </script>
     </head>
     <body style = "pointer-events: none; justify-content: center; align-items: center;">
-        <div data-model="start" class="panel1" style="flex-direction: column; justify-content:flex-start;">
+        <div class="panel1" style="flex-direction: column; justify-content:flex-start;">
             <!-- detail panel begin -->
             <div style = 'overflow: hidden; position: absolute; left: 0.13vmin; top: 7vmin; width: 30.00vmin; height: 72.33vmin; background-lattice: 30%; background-image: "textures/detail/background.texture"; background-size: 100% 100%; flex-direction: column; justify-content: flex-start;'>
                 <!-- title -->

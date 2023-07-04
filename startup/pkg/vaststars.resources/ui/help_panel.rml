@@ -109,13 +109,13 @@
         <style path = "common/building_style.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
-            local start = ui_sys.createDataMode("start", {
+            local start = ui_sys.createDataMode {
                 helps = {},
                 collapse = false,
                 current_help = "",
                 current_content = {},
                 guide_progress = 0
-            })
+            }
             function start.clickHelp(event, index)
                 start.current_help = start.helps[index+1].name
                 start.current_content = start.helps[index+1].content
@@ -131,8 +131,7 @@
         </script>
     </head>
     <body style = "pointer-events: none; justify-content: center; align-items: center;">
-        <div data-model="start" class="panel1" style="flex-direction: column; justify-content:flex-start;">
-
+        <div class="panel1" style="flex-direction: column; justify-content:flex-start;">
             <!-- 帮助条目 start -->
             <div class="help-panel" data-if="current_help == ''">
                 <div class="help-title-block" style="margin-bottom: 0.3vmin;" data-event-click="clickHelp(it_index)" data-if="guide_progress >= it.guide_progress" data-for = "it : helps">

@@ -321,7 +321,7 @@
         <style path = "common/listpage_style.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
-            local start = ui_sys.createDataMode("start", {
+            local start = ui_sys.createDataMode {
                 show_finish = false,
                 current_icon = "none",
                 current_desc = "none",
@@ -330,7 +330,7 @@
                 return_title = " ",
                 current_tech = {},
                 techitems = {},
-            })
+            }
             start.selected_tech = nil
             start.selected_recipe = nil
 
@@ -545,7 +545,7 @@
         </script>
     </head>
     <body>
-        <div class="item-container-region" data-model="start">
+        <div class="item-container-region">
             <div class="panel" style="width: 45%;">
                 <div class="header" id = "item-name-block">
                     <button class = "back-button" data-event-click="clickReturn()"/>
