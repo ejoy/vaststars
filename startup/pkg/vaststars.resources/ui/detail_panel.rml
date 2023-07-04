@@ -2,10 +2,10 @@
     <head>
         <style>
             body {
-                font: 100% "宋体";
+                font: "阿里巴巴普惠体";
             }
             div {
-                font: 120% "微软雅黑";
+                font: 120% "阿里巴巴普惠体";
             }
             .small-item1 {
                 margin:0 0.075vmin;

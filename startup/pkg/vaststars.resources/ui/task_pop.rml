@@ -2,7 +2,7 @@
     <head>
         <style>
             body {
-                font: 100% "宋体";
+                font: "阿里巴巴普惠体";
             }
             .recipe-panel {
                 background-color: rgb(112, 183, 241);

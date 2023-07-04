@@ -2,7 +2,7 @@
     <head>
         <style>
             body {
-                font: 100% "微软雅黑";
+                font: "阿里巴巴普惠体";
             }
             .button-container {
                 display: flex;

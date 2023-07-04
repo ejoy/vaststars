@@ -2,7 +2,7 @@
     <head>
         <style>
             body {
-                font: 100% "宋体";
+                font: "阿里巴巴普惠体";
             }
             .guide-speech-block {
                 margin-left: 10vmin;
