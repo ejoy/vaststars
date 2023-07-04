@@ -3922,7 +3922,7 @@ prototype "研究设施2" {
   time = "30s"
 }
 
-prototype "高温测试" {
+prototype "高温防护" {
   desc = "研究能够耐高温的材料",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
@@ -3950,7 +3950,7 @@ prototype "物理研究" {
     unlock_recipe = {"物理科技包1"},
     unlock_item = {"物理科技包"},
   },
-  prerequisites = {"高温测试"},
+  prerequisites = {"高温防护"},
   ingredients = {
     {"地质科技包", 1},
     {"气候科技包", 1},
