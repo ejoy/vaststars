@@ -1,7 +1,7 @@
 fx:
   shader_type: "CUSTOM"
-  vs_code: "\n#include \"road_vs_func.sh\"\n"
-  fs_code: "\n#include \"road_fs_func.sh\"\n"
+  vs_code: "road_vs_func.sh"
+  fs_code: "road_fs_func.sh"
   setting:
     lighting: on
     shadow_cast: off

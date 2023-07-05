@@ -1,7 +1,7 @@
 fx:
   shader_type: "CUSTOM"
-  vs_code: "\n#include \"terrain_vs_func.sh\"\n"
-  fs_code: "\n#include \"terrain_fs_func.sh\"\n"
+  vs_code: "terrain_vs_func.sh"
+  fs_code: "terrain_fs_func.sh"
   setting:
     lighting: on
     HAS_TERRAIN_BASECOLOR_ARRAY_TEXTURE: 1
