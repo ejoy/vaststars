@@ -1,12 +1,20 @@
 fx:
-  fs: /pkg/mod.road/assets/shaders/fs_road.sc
-  vs: /pkg/mod.road/assets/shaders/vs_road.sc
+  shader_type: "CUSTOM"
+  vs_code: "road_vs_func.sh"
+  fs_code: "road_fs_func.sh"
   setting:
     lighting: on
     shadow_cast: off
     shadow_receive: on
     subsurface: off
+    HAS_BASECOLOR_TEXTURE: 1
+    HAS_METALLIC_ROUGHNESS_TEXTURE: 1
+    HAS_MARK_ALPHA_TEXTURE: 1
     DRAW_INDIRECT: 1
+    USER_ATTR: 1
+    INPUT_USER_ATTR_0: 1
+    OUTPUT_USER_ATTR_0: 1
+    OUTPUT_USER_ATTR_1: 1
 properties:
   s_basecolor:
     stage: 0
