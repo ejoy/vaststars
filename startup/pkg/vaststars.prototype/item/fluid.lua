@@ -20,7 +20,7 @@ prototype "氮气" {
     heat_capacity = "0.08kJ",
     default_temperature = 25,
     max_temperature = 100,
-    item_description = "一种纯净气体",
+    item_description = "一种无色无味的气体,化学式N2",
 }
 
 prototype "氧气" {
@@ -31,7 +31,7 @@ prototype "氧气" {
     heat_capacity = "0.08kJ",
     default_temperature = 25,
     max_temperature = 100,
-    item_description = "一种纯净气体",
+    item_description = "一种无色无味的气体,化学式O2",
 }
 
 prototype "氢气" {
@@ -42,7 +42,7 @@ prototype "氢气" {
     heat_capacity = "0.08kJ",
     default_temperature = 25,
     max_temperature = 100,
-    item_description = "一种纯净气体",
+    item_description = "一种无色无味易燃的气体,化学式H2",
 }
 
 prototype "乙烯" {
@@ -53,7 +53,7 @@ prototype "乙烯" {
     heat_capacity = "0.08kJ",
     default_temperature = 25,
     max_temperature = 100,
-    item_description = "一种化工气体",
+    item_description = "一种无色易燃的气体,化学式C2H4",
 }
 
 prototype "甲烷" {
@@ -64,7 +64,7 @@ prototype "甲烷" {
     heat_capacity = "0.08kJ",
     default_temperature = 25,
     max_temperature = 100,
-    item_description = "一种化工气体",
+    item_description = "一种无色无味易燃的气体,化学式CH4",
 }
 
 prototype "二氧化碳" {
@@ -75,7 +75,7 @@ prototype "二氧化碳" {
     heat_capacity = "0.08kJ",
     default_temperature = 25,
     max_temperature = 100,
-    item_description = "一种纯净气体",
+    item_description = "一种无色无味的气体,化学式CO2",
 }
 
 prototype "一氧化碳" {
@@ -86,7 +86,7 @@ prototype "一氧化碳" {
     heat_capacity = "0.08kJ",
     default_temperature = 25,
     max_temperature = 100,
-    item_description = "一种化工气体",
+    item_description = "一种无色无味的气体,化学式CO",
 }
 
 prototype "氯气" {
@@ -97,7 +97,7 @@ prototype "氯气" {
     heat_capacity = "0.08kJ",
     default_temperature = 25,
     max_temperature = 100,
-    item_description = "一种纯净气体",
+    item_description = "一种黄绿色有刺激性气味的气体,化学式CL2",
 }
 
 prototype "地下卤水" {
@@ -108,7 +108,7 @@ prototype "地下卤水" {
     heat_capacity = "0.08kJ",
     default_temperature = 15,
     max_temperature = 100,
-    item_description = "地壳深处的固态水",
+    item_description = "蕴藏在地壳深处的天然盐水",
 }
 
 prototype "纯水" {
@@ -119,7 +119,7 @@ prototype "纯水" {
     heat_capacity = "0.08kJ",
     default_temperature = 15,
     max_temperature = 100,
-    item_description = "一种纯净的液体",
+    item_description = "一种无色无味的液体,化学式H2O",
 }
 
 prototype "废水" {
@@ -130,7 +130,7 @@ prototype "废水" {
     heat_capacity = "0.08kJ",
     default_temperature = 20,
     max_temperature = 100,
-    item_description = "一种混合物组成的液体",
+    item_description = "工业生产中使用过的水，包含各种污染物",
 }
 
 prototype "盐酸" {
@@ -141,7 +141,7 @@ prototype "盐酸" {
     heat_capacity = "0.08kJ",
     default_temperature = 25,
     max_temperature = 100,
-    item_description = "一种化工液体",
+    item_description = "一种无色有刺激性气味的液体,化学式HCL",
 }
 
 prototype "碱性溶液" {
@@ -152,7 +152,7 @@ prototype "碱性溶液" {
     heat_capacity = "0.08kJ",
     default_temperature = 25,
     max_temperature = 100,
-    item_description = "一种化工液体",
+    item_description = "一种PH值大于7的溶液",
 }
 
 prototype "蒸汽" {
@@ -163,7 +163,7 @@ prototype "蒸汽" {
     heat_capacity = "0.05KJ",
     default_temperature = 165,
     max_temperature = 200,
-    item_description = "一种化工气体",
+    item_description = "水加热到沸点时产生的气体",
 }
 
 prototype "地热气" {
@@ -174,7 +174,7 @@ prototype "地热气" {
     heat_capacity = "1KJ",
     default_temperature = 165,
     max_temperature = 200,
-    item_description = "一种化工气体",
+    item_description = "因地下深处热量而产生的蒸汽",
     mineral_model = "prefabs/mineral/ground-geothermal.prefab",
     mineral_name = "地热",
     mineral_area = "3x3",
@@ -188,7 +188,7 @@ prototype "丁二烯" {
     heat_capacity = "0.05KJ",
     default_temperature = 25,
     max_temperature = 200,
-    item_description = "一种化工气体",
+    item_description = "一种无色有轻微刺激性气味的气体,化学式C4H6",
 }
 
 prototype "氦气" {
@@ -199,7 +199,7 @@ prototype "氦气" {
     heat_capacity = "0.05KJ",
     default_temperature = 25,
     max_temperature = 200,
-    item_description = "一种化工气体",
+    item_description = "一种无色无味的气体,化学式He2",
 }
 
 prototype "润滑油" {
@@ -210,7 +210,7 @@ prototype "润滑油" {
     heat_capacity = "0.05KJ",
     default_temperature = 25,
     max_temperature = 200,
-    item_description = "一种化工液体",
+    item_description = "一种用于减少运动部件之间摩擦和磨损的液体",
 }
 
 prototype "氨气" {
@@ -221,7 +221,7 @@ prototype "氨气" {
     heat_capacity = "0.05KJ",
     default_temperature = 25,
     max_temperature = 100,
-    item_description = "一种化工液体",
+    item_description = "一种无色有刺激性气味的气体,化学式NH3",
 }
 
 prototype "硫酸" {
@@ -232,7 +232,7 @@ prototype "硫酸" {
     heat_capacity = "0.08kJ",
     default_temperature = 25,
     max_temperature = 100,
-    item_description = "一种化工液体",
+    item_description = "一种高度腐蚀性和强酸,化学式为H2SO4",
 }
 
 prototype "四氯化钛" {
@@ -243,7 +243,7 @@ prototype "四氯化钛" {
     heat_capacity = "0.08kJ",
     default_temperature = 25,
     max_temperature = 100,
-    item_description = "一种化工液体",
+    item_description = "一种无色液体,化学式TiCL4",
 }
 
 prototype "火箭燃料" {
@@ -254,5 +254,5 @@ prototype "火箭燃料" {
     heat_capacity = "0.08kJ",
     default_temperature = 25,
     max_temperature = 200,
-    item_description = "一种化工液体",
+    item_description = "用于推动火箭和航天器的推进剂",
 }
