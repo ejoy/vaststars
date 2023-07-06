@@ -624,7 +624,7 @@ prototype "电池I" {
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
-    item_description = "存储电能的器件",
+    item_description = "将化学能转化为电能并储存起来的器件",
     item_category = "器件",
 }
 
@@ -635,18 +635,18 @@ prototype "电池II" {
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
-    item_description = "存储电能的器件",
+    item_description = "将化学能转化为电能并储存起来的器件",
     item_category = "器件",
 }
 
-prototype "纤维玻璃" {
+prototype "玻璃纤维" {
     type = {"item"},
     stack = 8,
     pile = "4x1x4",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
-    item_description = "使用高强度复合材料的玻璃",
+    item_description = "由细小的玻璃纤维编织而成的高强度材料",
     item_category = "器件",
 }
 
@@ -657,7 +657,7 @@ prototype "石墨烯" {
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
-    item_description = "使用提取高强度石墨材料",
+    item_description = "具有高电导率、高热导率、高强度和柔韧性的碳原子组成的二维材料",
     item_category = "器件",
 }
 
@@ -668,7 +668,7 @@ prototype "隔热板" {
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
-    item_description = "用于隔热的材料",
+    item_description = "用于保护火箭在发射和再入大气层过程中遭受极端温度的材料",
     item_category = "器件",
 }
 
@@ -679,7 +679,7 @@ prototype "火箭控制器" {
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
-    item_description = "控制火箭的传感器组合",
+    item_description = "负责控制和调节火箭在发射、飞行和着陆过程中各种功能和参数的设备",
     item_category = "器件",
 }
 
@@ -690,18 +690,18 @@ prototype "火箭区段" {
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
-    item_description = "组成火箭的金属躯壳",
+    item_description = "火箭在发射和飞行过程中执行特定功能的一个部分",
     item_category = "器件",
 }
 
-prototype "整流罩" {
+prototype "火箭整流罩" {
     type = {"item"},
     stack = 4,
     pile = "4x1x4",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
-    item_description = "保护火箭顶端的特殊装置",
+    item_description = "火箭在穿越大气层过程中围绕有效载荷部分的一种保护结构",
     item_category = "器件",
 }
 ------------------------------------------------
@@ -713,7 +713,7 @@ prototype "地质科技包" {
     pile_model = "prefabs/stackeditems/geology-pack.prefab",
     icon = "textures/recipe/geology-pack.texture",
     tech_icon = "textures/science/graybox.texture",
-    item_description = "一种科技研究包",
+    item_description = "用于收集、分析和解释地质调查数据",
     item_category = "器件",
 }
 
@@ -725,7 +725,7 @@ prototype "气候科技包" {
     pile_model = "prefabs/stackeditems/geology-pack.prefab",
     icon = "textures/recipe/climatology-pack.texture",
     tech_icon = "textures/science/bluebox.texture",
-    item_description = "一种科技研究包",
+    item_description = "用于收集、分析和解释气候变化数据",
     item_category = "器件",
 }
 
@@ -737,7 +737,7 @@ prototype "机械科技包" {
     pile_model = "prefabs/stackeditems/geology-pack.prefab",
     icon = "textures/recipe/mechanical-pack.texture",
     tech_icon = "textures/science/redbox.texture",
-    item_description = "一种科技研究包",
+    item_description = "用于收集、分析和解释机械过程数据",
     item_category = "器件",
 }
 
@@ -749,7 +749,7 @@ prototype "电子科技包" {
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/recipe/electrical-pack.texture",
     tech_icon = "textures/science/pinkbox.texture",
-    item_description = "一种科技研究包",
+    item_description = "用于收集、分析和解释电器工作数据",
     item_category = "器件",
 }
 
@@ -761,7 +761,7 @@ prototype "化学科技包" {
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/recipe/electrical-pack.texture",
     tech_icon = "textures/science/pinkbox.texture",
-    item_description = "一种科技研究包",
+    item_description = "用于收集、分析和解释化学反应数据",
     item_category = "器件",
 }
 
@@ -773,7 +773,7 @@ prototype "物理科技包" {
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/recipe/electrical-pack.texture",
     tech_icon = "textures/science/pinkbox.texture",
-    item_description = "一种科技研究包",
+    item_description = "用于收集、分析和解释物理实验数据",
     item_category = "器件",
 }
 
@@ -784,11 +784,11 @@ prototype "废料" {
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/fluid/liquid.texture",
-    item_description = "一种废弃固体",
+    item_description = "指各种工业产生的任何废弃的固体材料",
     item_category = "器件",
 }
 
-prototype "铜片" {
+prototype "铜板" {
     type = {"item"},
     stack = 8,
     pile = "4x4x4",
@@ -796,7 +796,7 @@ prototype "铜片" {
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/steel-beam.texture",
     item_category = "金属",
-    item_description = "用来抓取货物的机械装置",
+    item_description = "铜制材料锻造加工成的板状材料",
 }
 prototype "铜丝" {
     type = {"item"},
@@ -806,7 +806,7 @@ prototype "铜丝" {
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/iron-wire.texture",
     item_category = "金属",
-    item_description = "用来抓取货物的机械装置",
+    item_description = "铜制材料锻造加工成的丝状材料",
 }
 
 prototype "电路板" {
@@ -817,7 +817,7 @@ prototype "电路板" {
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/processor.texture",
     item_category = "器件",
-    item_description = "用来抓取货物的机械装置",
+    item_description = "由绝缘材料制成并且安装电子元件的板",
 }
 
 prototype "核铀燃料" {
@@ -828,7 +828,7 @@ prototype "核铀燃料" {
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/coal.texture",
     item_category = "器件",
-    item_description = "用来抓取货物的机械装置",
+    item_description = "用于核反应堆产生核能的铀-235",
 }
 
 prototype "用尽的核铀燃料" {
@@ -839,29 +839,7 @@ prototype "用尽的核铀燃料" {
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/coal.texture",
     item_category = "器件",
-    item_description = "用来抓取货物的机械装置",
-}
-
-prototype "无人机" {
-    type = {"item"},
-    stack = 4,
-    pile = "4x4x4",
-    backpack_stack = 100,
-    pile_model = "prefabs/stackeditems/iron-ingot.prefab",
-    icon = "textures/construct/drone1.texture",
-    item_description = "用来抓取货物的机械装置",
-    item_category = "器件",
-}
-
-prototype "运输车框架" {
-    type = {"item"},
-    stack = 12,
-    pile = "4x1x4",
-    backpack_stack = 25,
-    pile_model = "prefabs/stackeditems/iron-ingot.prefab",
-    icon = "textures/construct/broken-truck.texture",
-    item_description = "用来装配运输车的框架",
-    item_category = "加工",
+    item_description = "核能发电生产的副产品",
 }
 --------------------------
 prototype "海藻" {

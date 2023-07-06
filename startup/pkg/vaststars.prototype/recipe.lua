@@ -1836,7 +1836,7 @@ prototype "火箭区段1" {
     description = "生产可以拼接成完整火箭的区段",
 }
 
-prototype "整流罩1" {
+prototype "火箭整流罩1" {
     type = { "recipe" },
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
@@ -1847,7 +1847,7 @@ prototype "整流罩1" {
         {"钛板", 200},
     },
     results = {
-        {"整流罩", 1},
+        {"火箭整流罩", 1},
     },
     time = "60s",
     description = "生产保护火箭头部的金属装置",

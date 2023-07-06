@@ -829,7 +829,6 @@ local prototype = gameplay.register.prototype
     count = 1,
     effects = {
       unlock_recipe = {"车辆装配"},
-      unlock_item = {"运输车框架"},
     },
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
@@ -3747,8 +3746,8 @@ prototype "火箭保护" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    unlock_recipe = {"整流罩1"},
-    unlock_item = {"整流罩"},
+    unlock_recipe = {"火箭整流罩1"},
+    unlock_item = {"火箭整流罩"},
   },
   prerequisites = {"火箭化学"},
   ingredients = {
