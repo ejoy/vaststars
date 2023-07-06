@@ -9,7 +9,7 @@ local mineral = {
 }
 
 return {
-  name = "矿区模式",
+  name = "矿区测试",
   entities = entities,
   road = road,
   mineral = mineral,
