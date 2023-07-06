@@ -66,7 +66,10 @@ local function _package_files(root)
         "^/pkg/vaststars.mod.test/.*$",
         ".*mars_pumpjack.*",
         "^/pkg/ant.resources/materials/ibl/.*%.material$",
-        "/pkg/mod.road/assets/textures/normal.texture"
+        "/pkg/mod.road/assets/textures/normal.texture",
+        "/pkg/ant.terrain/assets/shaders/water.sh",
+        "/pkg/ant.terrain/assets/water.material",
+        "/pkg/ant.terrain/assets/water2.material"
     }
 
     local function _skip_ext(f)

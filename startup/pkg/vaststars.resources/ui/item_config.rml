@@ -139,7 +139,7 @@
     <body style = "pointer-events: none; justify-content: center; align-items: center; background-image: textures/item-config/bg.texture; background-size: 100% 100%;" onload="init()">
         <caption-container>
             <caption-line style = "position: absolute; left: 24.26vmax; top: 12.89vmin; width: 15.34vmax;" />
-            <caption style = "position: absolute; left: 41.18vmax; top: 7.89vmin; width: 17.58vmax; height: 10vmin; font-size: 7vmin; justify-content: center; align-items: center;">设 置 物 品</caption>
+            <caption style = "position: absolute; left: 41.18vmax; top: 7.89vmin; width: 17.58vmax; height: 10vmin; font-size: 6.50vmin; justify-content: center; align-items: center;">设 置 物 品</caption>
             <caption-line style = "position: absolute; left: 60.54vmax; top: 12.89vmin; width: 15.34vmax;" />
         </caption-container>
         <div class = "safe-area" style = "align-items: center;">

@@ -77,8 +77,7 @@ function M:create(object_id, interface)
             datamodel.item_idx = item_idx
         end
 
-        assert(type(typeobject.icon) == "string")
-        assert(typeobject.icon ~= "")
+        assert(typeobject.icon and type(typeobject.icon) == "string" and typeobject.icon ~= "", ("item(%s) icon is invalid."):format(typeobject.name))
         res[category_idx].items[item_idx] = {
             id = ("%s:%s"):format(category_idx, item_idx),
             name = typeobject.name,
