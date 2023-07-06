@@ -184,7 +184,7 @@
                     </item-desc-container>
                     <button-container style = "justify-content: center; align-items: center;">
                         <button-confirm style = "justify-content: center; align-items: center; font-size: 7.00vmin;" data-event-click = "clickSetItem()">
-                            <div style = "margin-top: -2vmin;">确定</div>
+                            <div style = "margin-top: 0vmin;">确定</div>
                         </button-confirm>
                     </button-container>
                 </right-box>
