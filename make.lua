@@ -120,7 +120,7 @@ if lm.os == "android" then
 end
 
 lm:default {
-    "vaststars_rt_lib",
+    "vaststars_rt_static",
     "vaststars_rt",
     "vaststars",
 }

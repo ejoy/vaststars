@@ -5,7 +5,7 @@ lm:import "version/make.lua"
 
 lm:copy "bootstrap_lua" {
     input = "bootstrap.lua",
-    output = "../"..lm.bindir.."/main.lua",
+    output = "../" .. lm.bindir .. "/main.lua",
 }
 
 local modules = {
@@ -45,13 +45,13 @@ if lm.os == "android" then
     elseif arch == "x86_64" then
         jniDir = "x86_64"
     else
-        error("unknown arch:"..tostring(arch))
+        error("unknown arch:" .. tostring(arch))
     end
 
     lm:dll "vaststars" {
         basename = "libvaststars",
         crt = "static",
-        bindir = "runtime/android/app/src/main/jniLibs/"..jniDir,
+        bindir = "runtime/android/app/src/main/jniLibs/" .. jniDir,
         deps = {
             "ant_runtime",
             "ant_links",
@@ -69,7 +69,7 @@ if lm.os == "android" then
 end
 
 if lm.os == "macos" then
-    lm:lib "vaststars_rt_lib" {
+    lm:lib "vaststars_rt_static" {
         deps = {
             "ant_runtime",
             "ant_links",
