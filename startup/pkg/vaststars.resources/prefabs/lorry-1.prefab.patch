@@ -21,7 +21,8 @@ policy:
 data:
   name: item
   scene:
-    t: {0, 2, 0}
+    s: {1.5, 1.5, 1.5}
+    t: {0, 3.7491300106048584, -1.5}
   slot:
     follow_flag: 1
     joint_name: None
