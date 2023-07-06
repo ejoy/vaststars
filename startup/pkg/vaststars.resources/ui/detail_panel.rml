@@ -233,8 +233,8 @@
                         <div class="row" style="width: 100%; justify-content: flex-start; flex-wrap: wrap;">
                             <div class="small-item1" style="width:7vmin; height:7vmin; border: 0.3vmin rgb(0, 217, 255);" data-style-background-image="it.icon" data-for="recipe_inputs">
                                 <div class ="item-count-combination">
-                                    <div class="item-count-new" data-style-font-size="it.count > 99 ? '2.5vmin' : '3.2vmin'" data-style-color="it.count < it.demand_count ? 'rgb(255,255,255)' : 'rgb(0,255,0)'">{{it.count}}</div>
-                                    <div class="item-count-new" data-style-font-size="it.demand_count > 99 ? '2vmin' : '2.7vmin'">/{{it.demand_count}}</div>
+                                    <div class="item-count-new" data-style-font-size="it.count > 99 ? '2vmin' : '2.7vmin'" data-style-color="it.count < it.demand_count ? 'rgb(255,255,255)' : 'rgb(0,255,0)'">{{it.count}}</div>
+                                    <div class="item-count-new" data-style-font-size="it.demand_count > 99 ? '1.5vmin' : '2.2vmin'">/{{it.demand_count}}</div>
                                 </div>
                             </div>
                         </div>
@@ -249,8 +249,8 @@
                         <div class="row" style="width: 100%; justify-content: flex-end; flex-wrap: wrap;">
                             <div class="small-item1" style="width:7vmin; height:7vmin; border: 0.3vmin rgb(89, 73, 39);" data-style-background-image="it.icon" data-for="recipe_ouputs">
                                 <div class ="item-count-combination">
-                                    <div class="item-count-new" data-style-font-size="it.count > 99 ? '2.5vmin' : '3.2vmin'" data-style-color="it.count < it.output_count ? 'rgb(255,255,255)' : 'rgb(0,255,0)'">{{it.count}}</div>
-                                    <div class="item-count-new" data-style-font-size="it.output_count > 99 ? '2vmin' : '2.7vmin'">/{{it.output_count}}</div>
+                                    <div class="item-count-new" data-style-font-size="it.count > 99 ? '2vmin' : '2.7vmin'" data-style-color="it.count < it.output_count ? 'rgb(255,255,255)' : 'rgb(0,255,0)'">{{it.count}}</div>
+                                    <div class="item-count-new" data-style-font-size="it.output_count > 99 ? '1.5vmin' : '2.2vmin'">/{{it.output_count}}</div>
                                 </div>
                             </div>
                         </div>
@@ -308,8 +308,8 @@
                 <div class="column" style="width: 18vmin; justify-content: space-evenly; align-items: center;">
                     <div class="small-item1" style="width: 15vmin; height: 15vmin; border: 0.3vmin rgb(0, 217, 255);" data-style-background-image="it.icon" data-for="recipe_inputs">
                         <div class ="item-count-combination">
-                            <div class="item-count-new" data-style-font-size="it.count > 99 ? '5vmin' : '6.4vmin'" data-style-color="it.count < it.demand_count ? 'rgb(255,255,255)' : 'rgb(0,255,0)'">{{it.count}}</div>
-                            <div class="item-count-new" data-style-font-size="it.demand_count > 99 ? '4vmin' : '5.4vmin'">/{{it.demand_count}}</div>
+                            <div class="item-count-new" data-style-font-size="it.count > 99 ? '4vmin' : '5.4vmin'" data-style-color="it.count < it.demand_count ? 'rgb(255,255,255)' : 'rgb(0,255,0)'">{{it.count}}</div>
+                            <div class="item-count-new" data-style-font-size="it.demand_count > 99 ? '3vmin' : '4.4vmin'">/{{it.demand_count}}</div>
                         </div>
                     </div>
                 </div>
@@ -322,8 +322,8 @@
                 <div class="column" style="width: 18vmin; justify-content: space-evenly; align-items: center;">
                     <div class="small-item1" style="width: 15vmin; height: 15vmin; border: 0.3vmin rgb(89, 73, 39);" data-style-background-image="it.icon" data-for="recipe_ouputs">
                         <div class ="item-count-combination">
-                            <div class="item-count-new" data-style-font-size="it.count > 99 ? '5vmin' : '6.4vmin'" data-style-color="it.count < it.output_count ? 'rgb(255,255,255)' : 'rgb(0,255,0)'">{{it.count}}</div>
-                            <div class="item-count-new" data-style-font-size="it.output_count > 99 ? '4vmin' : '5.4vmin'">/{{it.output_count}}</div>
+                            <div class="item-count-new" data-style-font-size="it.count > 99 ? '4vmin' : '5.4vmin'" data-style-color="it.count < it.output_count ? 'rgb(255,255,255)' : 'rgb(0,255,0)'">{{it.count}}</div>
+                            <div class="item-count-new" data-style-font-size="it.output_count > 99 ? '3vmin' : '4.4vmin'">/{{it.output_count}}</div>
                         </div>
                     </div>
                 </div>
