@@ -50,7 +50,7 @@ local prototype = gameplay.register.prototype
     icon = "textures/construct/industry.texture",
     type = {"task" },
     task = {"select_entity", 0, "采矿机I"},
-    prerequisites = {"建造采矿机"},
+    prerequisites = {"迫降火星"},
     count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
@@ -1463,7 +1463,7 @@ prototype "电磁学1" {
     unlock_recipe = {"电动机1"},
     unlock_item = {"电动机I"},
   },
-  prerequisites = {"生产塑料","排放"},
+  prerequisites = {"生产塑料","排放1"},
   ingredients = {
     {"地质科技包", 1},
     {"气候科技包", 1},
@@ -1815,7 +1815,7 @@ prototype "铁矿熔炼2" {
   effects = {
     unlock_recipe = {"铁板2"},
   },
-  prerequisites = {"打造钢齿轮","空气过滤技术"},
+  prerequisites = {"打造钢齿轮"},
   ingredients = {
       {"地质科技包", 1},
       {"机械科技包", 1},
@@ -1832,7 +1832,7 @@ prototype "电解1" {
     unlock_recipe = {"电解厂1"},
     unlock_item = {"电解厂I"},
   },
-  prerequisites = {"空气过滤技术"},
+  prerequisites = {"铁矿熔炼2"},
   ingredients = {
       {"气候科技包", 1},
       {"机械科技包", 1},
@@ -1969,7 +1969,7 @@ prototype "有机化学3" {
     unlock_recipe = {"橡胶"},
     unlock_item = {"橡胶"},
   },
-  prerequisites = {"化学工程"},
+  prerequisites = {"化学工程1"},
   ingredients = {
       {"气候科技包", 1},
       {"机械科技包", 1},
@@ -2192,7 +2192,7 @@ prototype "电子研究" {
     unlock_recipe = {"电子科技包1"},
     unlock_item = {"电子科技包"},
   },
-  prerequisites = {"电子器件","电力传输2"},
+  prerequisites = {"电子器件1","电力传输2"},
   ingredients = {
     {"地质科技包", 1},
     {"气候科技包", 1},
