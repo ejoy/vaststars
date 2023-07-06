@@ -57,7 +57,7 @@
             local start = ui_sys.createDataMode {
                 show_continue_game = false,
             }
-            function start.clickButton(event, ...)
+            function start.clickButton(...)
                 audio.play "event:/ui/button1"
                 ui_sys.pub {...}
             end

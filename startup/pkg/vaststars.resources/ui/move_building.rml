@@ -35,8 +35,8 @@
             start.buttons[#start.buttons+1] = {name = "确认", show_var = "show_confirm", show = false, param = "build", background_color = "rgb(105, 112, 8)", background_image = "textures/construct/confirm.texture"}
             start("buttons")
 
-            function start.clickButton(event, param)
-                ui_sys.pub {param}
+            function start.clickButton(...)
+                ui_sys.pub {...}
             end
 
             local function getMappingParam(var)

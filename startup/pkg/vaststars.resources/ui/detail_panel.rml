@@ -167,7 +167,7 @@
                 areaid = 0
             }
 
-            function start.onLongPress(event, areaid)
+            function start.onLongPress(areaid)
                 start.areaid = (start.areaid == areaid) and 0 or areaid
             end
 

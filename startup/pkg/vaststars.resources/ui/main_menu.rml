@@ -73,7 +73,7 @@
                 guide_progress = 0,
                 tech_count = 0,
             }
-            function start.clickButton(event, ...)
+            function start.clickButton(...)
                 audio.play "event:/ui/button1"
                 ui_sys.pub {...}
             end

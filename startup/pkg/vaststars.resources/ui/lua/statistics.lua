@@ -9,11 +9,11 @@ local start = ui_sys.createDataMode {
     label_y = {}
 }
 
-function start.ClickBuilding(event)
+function start.ClickBuilding()
     start.show = not start.show
 end
 
-function start.ClickBack(event)
+function start.ClickBack()
     start.show_item_info = false
     start.show = false
 end
@@ -24,15 +24,15 @@ local function update_category()
     -- <!-- tag page end -->
 end
 
-function start.clickReturn(event)
+function start.clickReturn()
     ui_sys.close()
 end
 
-function start.onFilterType(event, type)
+function start.onFilterType(type)
     ui_sys.pub {"statistics", "filter_type", type}
 end
 
-function start.onChartType(event, type)
+function start.onChartType(type)
     ui_sys.pub {"statistics", "chart_type", type}
 end
 

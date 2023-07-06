@@ -116,16 +116,16 @@
                 current_content = {},
                 guide_progress = 0
             }
-            function start.clickHelp(event, index)
+            function start.clickHelp(index)
                 start.current_help = start.helps[index+1].name
                 start.current_content = start.helps[index+1].content
             end
             
-            function start.clickReturnMenu(event)
+            function start.clickReturnMenu()
                 start.current_help = ''
             end
 
-            function start.clickCollapse(event, iscollapse)
+            function start.clickCollapse(iscollapse)
                 start.collapse = iscollapse
             end
         </script>
