@@ -207,8 +207,8 @@
                                 <div data-for = "recipe_ingredients" style = "margin-left: 0.31vmax; margin-top: 0.31vmax; flex-direction: row;">
                                     <div data-style-background-image = "it.icon" style = "width: 3.45vmax; height: 7.47vmin; background-size: 100% 100%;" />
                                     <div style = "width: 8.50vmax; height: 6.94vmin;">
-                                        <div style = "width: 100%; height: 50%; font-size: 3.20vmin;">{{it.name}}</div>
-                                        <div style = "width: 100%; height: 50%; font-size: 3.20vmin;">{{it.count}}</div>
+                                        <div style = "width: 100%; height: 50%; font-size: 3.20vmin; -webkit-text-stroke: 0.08vmin #fff;">{{it.name}}</div>
+                                        <div style = "width: 100%; height: 50%; font-size: 3.00vmin;">x {{it.count}}</div>
                                     </div>
                                 </div>
                             </div>
@@ -216,19 +216,19 @@
                         <recipe-results-container>
                             <div style = "margin-top: -1vmin; font-size: 4.20vmin;">成品</div>
                             <line style = "width: 93.88%;" />
-                            <div style = "width: 100%; height: 9.00vmax; flex-direction: row; flex-wrap: wrap;">
+                            <div style = "width: 100%; height: 9.00vmax; flex-direction: row; flex-wrap: wrap;">x
                                 <div data-for = "recipe_results" style = "margin-left: 0.31vmax; margin-top: 0.31vmax; flex-direction: row;">
                                     <div data-style-background-image = "it.icon" style = "width: 3.45vmax; height: 7.47vmin; background-size: 100% 100%;" />
                                     <div style = "width: 8.50vmax; height: 6.94vmin;">
-                                        <div style = "width: 100%; height: 50%; font-size: 3.20vmin;">{{it.name}}</div>
-                                        <div style = "width: 100%; height: 50%; font-size: 3.20vmin;">{{it.count}}</div>
+                                        <div style = "width: 100%; height: 50%; font-size: 3.20vmin; -webkit-text-stroke: 0.08vmin #fff;">{{it.name}}</div>
+                                        <div style = "width: 100%; height: 50%; font-size: 3.00vmin;">x {{it.count}}</div>
                                     </div>
                                 </div>
                             </div>
                         </recipe-results-container>
                         <button-container>
-                            <button-confirm style = "margin-top: 4.5vmin; justify-content: center; align-items: center; font-size: 6.00vmin;" data-if = "confirm" data-event-click = "clickConfirm()">开始生产</button-confirm>
-                            <cancel-button style = "margin-top: 4.5vmin; justify-content: center; align-items: center; font-size: 6.00vmin;" data-if = "!confirm" data-event-click = "clickClearRecipe()">结束生产</cancel-button>
+                            <button-confirm style = "margin-top: 4.5vmin; justify-content: center; align-items: center; font-size: 5.80vmin;" data-if = "confirm" data-event-click = "clickConfirm()">开始生产</button-confirm>
+                            <cancel-button style = "margin-top: 4.5vmin; justify-content: center; align-items: center; font-size: 5.80vmin;" data-if = "!confirm" data-event-click = "clickClearRecipe()">结束生产</cancel-button>
                         </button-container>
                     </right-box>
                 </flex-row>
