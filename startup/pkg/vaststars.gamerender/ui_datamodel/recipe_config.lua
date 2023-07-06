@@ -137,16 +137,17 @@ function M:create(object_id)
         local category_idx = assert(cache[recipe.recipe_category])
         local recipe_idx = #res[category_idx].recipes+1
 
+        local new = (not storage.recipe_picked_flag[recipe.name]) and true or false
         if datamodel.recipe_name == recipe.name then
-            datamodel.category_idx = category_idx
-            datamodel.recipe_idx = recipe_idx
+            __mark_recipe_flag(datamodel.recipe_name)
+            new = false
         end
 
         res[category_idx].recipes[recipe_idx] = {
             id = ("%s:%s"):format(category_idx, recipe_idx), -- for rml
             name = recipe.name,
             icon = recipe.icon,
-            new = (not storage.recipe_picked_flag[recipe.name]) and true or false,
+            new = new,
             selected = (datamodel.recipe_name == recipe.name) and true or false,
         }
         ::continue::
@@ -156,12 +157,14 @@ function M:create(object_id)
     for _, r in ipairs(res) do
         if #r.recipes > 0 then
             table.insert(datamodel.recipes, r)
+            for recipe_idx, recipe in ipairs(r.recipes) do
+                if recipe.name == datamodel.recipe_name then
+                    datamodel.category_idx = #datamodel.recipes
+                    datamodel.recipe_idx = recipe_idx
+                end
+            end
         end
     end
-
-    local recipe_name = datamodel.recipes[datamodel.category_idx].recipes[datamodel.recipe_idx].name
-    __mark_recipe_flag(recipe_name)
-    __set_recipe_value(datamodel, datamodel.category_idx, datamodel.recipe_idx, "new", false)
 
     return datamodel
 end
