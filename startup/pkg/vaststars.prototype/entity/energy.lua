@@ -390,7 +390,7 @@ prototype "地热井III" {
     construct_detector = {"exclusive"},
     type = {"building", "assembling", "fluidboxes","mining"},
     priority = "secondary",
-    area = "5x5",
+    area = "5x5", 
     rotate_on_build = true,
     io_shelf = false,
     building_menu = false,

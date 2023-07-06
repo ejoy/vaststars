@@ -75,7 +75,7 @@ prototype "熔炼炉III" {
 prototype "小铁制箱子I" {
     type = {"item"},
     item_category = "物流",
-    stack = 5,
+    stack = 5, 
     pile = "4x1x4",
     backpack_stack = 20,
     pile_model = "prefabs/stackeditems/gravel.prefab",
