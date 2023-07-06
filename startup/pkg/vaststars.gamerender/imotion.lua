@@ -12,7 +12,6 @@ local motion = {}
 function motion.create_motion_object(s, r, t, parent, ev)
     if not motion.sampler_group then
         local sampler_group = ims.sampler_group()
-        sampler_group:enable "view_visible"
         sampler_group:enable "scene_update"
         motion.sampler_group = sampler_group
     end

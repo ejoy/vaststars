@@ -250,7 +250,6 @@ local function create_road_group(gid, update_list, render_layer)
     local road_info_table = get_road_info_table(update_list)
     local road_mesh = build_mesh()
     local g = ecs.group(gid)
-    ecs.group(gid):enable "view_visible"
     ecs.group(gid):enable "scene_update"
     for road_idx = 1, #road_info_table do
         local road_info = road_info_table[road_idx]
@@ -283,9 +282,8 @@ end
 
 local function update_road_group(gid, update_list)
     local road_table = get_road_info_table(update_list)
-    ecs.group(gid):enable "view_visible"
     ecs.group(gid):enable "scene_update"
-    local select_tag = "road view_visible:in scene_update:in road:update road_type:in"
+    local select_tag = "road scene_update scene_update:in road:update road_type:in"
     ecs.group_flush()
     for e in w:select(select_tag) do
         if e.road.gid == gid then

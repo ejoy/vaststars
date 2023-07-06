@@ -198,7 +198,6 @@ function M:stage_ui_update(datamodel)
     local gid = iUiRt.get_group_id("statistic_chart")
     if gid and canvas_size_w == 0 then
         local g = ecs.group(gid)
-        g:enable "view_visible"
         g:enable "scene_update"
         local qe = w:first(queuename .." render_target:in")
         if qe then
