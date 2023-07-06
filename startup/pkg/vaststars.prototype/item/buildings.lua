@@ -78,6 +78,7 @@ prototype "小铁制箱子I" {
     stack = 5,
     pile = "4x1x4",
     backpack_stack = 20,
+    pile_model = "prefabs/stackeditems/gravel.prefab",
     item_description = "贮藏物品的容器",
 }
 
@@ -87,6 +88,7 @@ prototype "小铁制箱子II" {
     stack = 5,
     pile = "4x1x4",
     backpack_stack = 20,
+    pile_model = "prefabs/stackeditems/gravel.prefab",
     item_description = "贮藏物品的容器",
 }
 
@@ -96,6 +98,7 @@ prototype "大铁制箱子I" {
     stack = 5,
     pile = "4x1x4",
     backpack_stack = 20,
+    pile_model = "prefabs/stackeditems/gravel.prefab",
     item_description = "贮藏物品的容器",
 }
 
@@ -105,6 +108,7 @@ prototype "仓库" {
     stack = 10,
     pile = "4x1x4",
     backpack_stack = 20,
+    pile_model = "prefabs/stackeditems/gravel.prefab",
     item_description = "贮藏物品的容器",
 }
 
@@ -198,7 +202,7 @@ prototype "蒸汽发电机III" {
     item_description = "将蒸汽的热能转化成机械能用于发电的设备",
 }
 
-prototype "化设施I" {
+prototype "化工厂I" {
     type = {"item"},
     item_category = "化工",
     stack = 10,
@@ -208,7 +212,7 @@ prototype "化设施I" {
     item_description = "进行化学过程以生产化学产品的设施",
 }
 
-prototype "化设施II" {
+prototype "化工厂II" {
     type = {"item"},
     item_category = "化工",
     stack = 10,
@@ -218,7 +222,7 @@ prototype "化设施II" {
     item_description = "进行化学过程以生产化学产品的设施",
 }
 
-prototype "化设施III" {
+prototype "化工厂III" {
     type = {"item"},
     item_category = "化工",
     stack = 10,

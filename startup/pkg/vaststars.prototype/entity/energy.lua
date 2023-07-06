@@ -351,3 +351,65 @@ prototype "地热井I" {
         },
     },
 }
+
+prototype "地热井II" {
+    model = "prefabs/geothermal-plant.prefab",
+    icon = "textures/building_pic/small_pic_geothermal_plant.texture",
+    background = "textures/build_background/pic_distillery.texture",
+    construct_detector = {"exclusive"},
+    type = {"building", "assembling", "fluidboxes","mining"},
+    priority = "secondary",
+    area = "5x5",
+    rotate_on_build = true,
+    io_shelf = false,
+    building_menu = false,
+    building_base = false,
+    mining_category = {"地热处理"},
+    maxslot = "8",
+    camera_distance = 96,
+    fluidboxes = {
+        input = {
+        },
+        output = {
+            {
+                capacity = 1000,
+                height = 100,
+                base_level = 150,
+                connections = {
+                    {type="output", position={2,4,"S"}},
+                }
+            },
+        },
+    },
+}
+
+prototype "地热井III" {
+    model = "prefabs/geothermal-plant.prefab",
+    icon = "textures/building_pic/small_pic_geothermal_plant.texture",
+    background = "textures/build_background/pic_distillery.texture",
+    construct_detector = {"exclusive"},
+    type = {"building", "assembling", "fluidboxes","mining"},
+    priority = "secondary",
+    area = "5x5",
+    rotate_on_build = true,
+    io_shelf = false,
+    building_menu = false,
+    building_base = false,
+    mining_category = {"地热处理"},
+    maxslot = "8",
+    camera_distance = 96,
+    fluidboxes = {
+        input = {
+        },
+        output = {
+            {
+                capacity = 1000,
+                height = 100,
+                base_level = 150,
+                connections = {
+                    {type="output", position={2,4,"S"}},
+                }
+            },
+        },
+    },
+}

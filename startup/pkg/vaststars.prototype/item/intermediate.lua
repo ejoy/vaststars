@@ -9,7 +9,7 @@ prototype "铁板" {
     gap3 = "0.05x0.05x0.05",
     pile_model = "prefabs/stackeditems/iron-gear.prefab",
     icon = "textures/construct/plate-Fe.texture",
-    item_description = "铁制材料锻造加工成的铁板",
+    item_description = "铁制材料锻造加工成的板状材料",
     item_category = "金属",
 }
 
@@ -20,7 +20,7 @@ prototype "铁丝" {
     backpack_stack = 50,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/iron-wire.texture",
-    item_description = "铁制材料锻造加工成的铁丝",
+    item_description = "铁制材料锻造加工成的丝状材料",
     item_category = "金属",
 }
 
@@ -31,7 +31,7 @@ prototype "铁棒" {
     backpack_stack = 50,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/iron_stick.texture",
-    item_description = "铁制材料锻造加工成的铁棒",
+    item_description = "铁制材料锻造加工成的棒状材料",
     item_category = "金属",
 }
 
@@ -42,7 +42,7 @@ prototype "钢板" {
     backpack_stack = 50,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/steel-beam.texture",
-    item_description = "铁板锻造加工成的钢板",
+    item_description = "钢制材料锻造加工成的板状材料",
     item_category = "金属",
 }
 
@@ -53,7 +53,7 @@ prototype "钢齿轮" {
     backpack_stack = 50,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/steel-gear.texture",
-    item_description = "一种钢制加工品",
+    item_description = "由钢制成在旋转轴之间传递动力的机械部件",
     item_category = "金属",
 }
 
@@ -65,7 +65,7 @@ prototype "铁矿石" {
     gap3 = "0.05x0.05x0.05",
     pile_model = "prefabs/stackeditems/iron-ore.prefab",
     icon = "textures/construct/ore-Fe.texture",
-    item_description = "含铁的矿石",
+    item_description = "可以提取铁的矿物",
     item_category = "金属",
     mineral_model = "prefabs/mineral/ground-iron-ore.prefab",
     mineral_name = "铁矿",
@@ -79,7 +79,7 @@ prototype "铝矿石" {
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/gravel.prefab",
     icon = "textures/construct/ore-Al.texture",
-    item_description = "含铝的矿石",
+    item_description = "可以提取铝的矿物",
     item_category = "金属",
     mineral_model = "prefabs/mineral/ground-aluminum.prefab",
     mineral_name = "铝矿",
@@ -115,7 +115,7 @@ prototype "氢氧化铝" {
     backpack_stack = 50,
     pile_model = "prefabs/stackeditems/gravel.prefab",
     icon = "textures/construct/aluminum-hydroxide.texture",
-    item_description = "含铝的化合物",
+    item_description = "一种白色结晶粉末,分子式Al(OH)3",
     item_category = "化工",
 }
 
@@ -126,7 +126,7 @@ prototype "氧化铝" {
     backpack_stack = 50,
     pile_model = "prefabs/stackeditems/iron-ore.prefab",
     icon = "textures/construct/alumina.texture",
-    item_description = "含铝的氧化物",
+    item_description = "一种白色固体,分子式Al2O3",
     item_category = "金属",
 }
 
@@ -137,7 +137,7 @@ prototype "碳化铝" {
     backpack_stack = 50,
     pile_model = "prefabs/stackeditems/iron-ore.prefab",
     icon = "textures/construct/aluminium-carbide.texture",
-    item_description = "氧化铝燃烧后的剩余物",
+    item_description = "一种淡黄棕色固体,分子式Al4C3",
     item_category = "金属",
 }
 
@@ -148,7 +148,7 @@ prototype "铝板" {
     backpack_stack = 50,
     pile_model = "prefabs/stackeditems/iron-ore.prefab",
     icon = "textures/construct/plate-Al.texture",
-    item_description = "一种高弹性聚合物材料",
+    item_description = "铝制材料锻造加工成的板状材料",
     item_category = "金属",
 }
 
@@ -159,7 +159,7 @@ prototype "铝棒" {
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ore.prefab",
     icon = "textures/construct/iron_stick.texture",
-    item_description = "铝制材料锻造加工成的铝棒",
+    item_description = "铝制材料锻造加工成的棒状材料",
     item_category = "金属",
 }
 
@@ -170,7 +170,7 @@ prototype "铝丝" {
     backpack_stack = 50,
     pile_model = "prefabs/stackeditems/iron-ore.prefab",
     icon = "textures/construct/iron-wire.texture",
-    item_description = "铝制材料锻造加工成的铝丝",
+    item_description = "铝制材料锻造加工成的丝状材料",
     item_category = "金属",
 }
 
@@ -181,7 +181,7 @@ prototype "碎石" {
     backpack_stack = 50,
     pile_model = "prefabs/stackeditems/gravel.prefab",
     icon = "textures/construct/gravel.texture",
-    item_description = "伴生在矿物里的碎石",
+    item_description = "伴生在矿物里的小块石头",
     item_category = "金属",
     mineral_model = "prefabs/mineral/ground-gravel.prefab",
     mineral_name = "石矿",
@@ -195,7 +195,7 @@ prototype "石砖" {
     backpack_stack = 50,
     pile_model = "prefabs/stackeditems/iron-gear.prefab",
     icon = "textures/construct/stone-brick.texture",
-    item_description = "石头制成的砖头",
+    item_description = "由天然石材制成的建筑材料",
     item_category = "物流",
 }
 
@@ -206,7 +206,7 @@ prototype "石墨" {
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/iron-gear.prefab",
     icon = "textures/construct/coal.texture",
-    item_description = "一种化工原料",
+    item_description = "一种高热导率、高电导率、低摩擦的碳材料",
     item_category = "化工",
 }
 
@@ -217,7 +217,7 @@ prototype "硅" {
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/gravel.prefab",
     icon = "textures/construct/ore-Si.texture",
-    item_description = "沙子中提炼的原料",
+    item_description = "一种坚硬脆性的结晶固体,分子式Si",
     item_category = "化工",
 }
 
@@ -228,7 +228,7 @@ prototype "硅板" {
     backpack_stack = 50,
     pile_model = "prefabs/stackeditems/gravel.prefab",
     icon = "textures/construct/plate-Si.texture",
-    item_description = "硅制成的硅板",
+    item_description = "硅制材料锻造加工成的板状材料",
     item_category = "器件",
 }
 
@@ -250,7 +250,7 @@ prototype "氢氧化钠" {
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/gravel.prefab",
     icon = "textures/construct/coal.texture",
-    item_description = "一种化工原料",
+    item_description = "一种白色固体,化学式为NaOH",
     item_category = "化工",
 }
 
@@ -261,7 +261,7 @@ prototype "钠" {
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/gravel.prefab",
     icon = "textures/construct/coal.texture",
-    item_description = "一种化工原料",
+    item_description = "一种银白色固体,化学式为Na",
     item_category = "化工",
 }
 
@@ -272,7 +272,7 @@ prototype "金红石" {
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/gravel.prefab",
     icon = "textures/construct/coal.texture",
-    item_description = "含钛化合物的矿石",
+    item_description = "一种褐红的针状晶形,化学式为TiO2",
     item_category = "金属",
 }
 
@@ -283,7 +283,7 @@ prototype "钛板" {
     backpack_stack = 50,
     pile_model = "prefabs/stackeditems/gravel.prefab",
     icon = "textures/construct/coal.texture",
-    item_description = "钛制材料锻造加工成的钛板",
+    item_description = "钛制材料锻造加工成的板状材料",
     item_category = "金属",
 }
 
@@ -304,7 +304,7 @@ prototype "沙子" {
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/gravel.prefab",
     icon = "textures/construct/sand.texture",
-    item_description = "伴生在矿物里的沙子",
+    item_description = "由细碎的岩石和矿物颗粒组成的颗粒状材料",
     item_category = "金属",
 }
 
@@ -315,7 +315,7 @@ prototype "塑料" {
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-gear.prefab",
     icon = "textures/construct/plastic.texture",
-    item_description = "一种化工成品",
+    item_description = "一种由聚合物制成的合成材料",
     item_category = "器件",
 }
 
@@ -326,7 +326,7 @@ prototype "电动机I" {
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-gear.prefab",
     icon = "textures/construct/electric-motor.texture",
-    item_description = "一种机械加工品",
+    item_description = "一种将电能转化为机械能的设备",
     item_category = "器件",
 }
 
@@ -337,7 +337,7 @@ prototype "电动机II" {
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-gear.prefab",
     icon = "textures/construct/electric-motor.texture",
-    item_description = "一种机械加工品",
+    item_description = "一种将电能转化为机械能的设备",
     item_category = "器件",
 }
 
@@ -348,7 +348,7 @@ prototype "电动机III" {
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-gear.prefab",
     icon = "textures/construct/electric-motor.texture",
-    item_description = "一种机械加工品",
+    item_description = "一种将电能转化为机械能的设备",
     item_category = "器件",
 }
 
@@ -359,7 +359,7 @@ prototype "铁齿轮" {
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/iron-gear.prefab",
     icon = "textures/construct/iron-gear.texture",
-    item_description = "一种铁制加工品",
+    item_description = "由铁制成在旋转轴之间传递动力的机械部件",
     item_category = "金属",
 }
 
@@ -370,7 +370,7 @@ prototype "玻璃" {
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-gear.prefab",
     icon = "textures/construct/glass.texture",
-    item_description = "一种硅制加工品",
+    item_description = "一种坚硬、透明或半透明的物质",
     item_category = "金属",
 }
 
@@ -381,7 +381,7 @@ prototype "坩埚" {
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/crucible.texture",
-    item_description = "一种耐高温的加工容器",
+    item_description = "一种由石墨制成耐高温的加工容器",
     item_category = "器件",
 }
 
@@ -403,7 +403,7 @@ prototype "电容I" {
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/capacitor.texture",
-    item_description = "可存储电荷的电子元器件",
+    item_description = "一种用于存储和释放电能的电子元件",
     item_category = "器件",
 }
 
@@ -414,7 +414,7 @@ prototype "电容II" {
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/capacitor.texture",
-    item_description = "可存储电荷的电子元器件",
+    item_description = "一种用于存储和释放电能的电子元件",
     item_category = "器件",
 }
 
@@ -425,7 +425,7 @@ prototype "绝缘线" {
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/insulated-wire.texture",
-    item_description = "外围包裹一层不导电材料的导线",
+    item_description = "由保护性绝缘材料包裹的电导体",
     item_category = "器件",
 }
 
@@ -436,7 +436,7 @@ prototype "逻辑电路" {
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
-    item_description = "由逻辑元器件组成的电路板",
+    item_description = "用于执行逻辑操作和处理数字信息的电路",
     item_category = "器件",
 }
 
@@ -447,7 +447,7 @@ prototype "数据线" {
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/insulated-wire.texture",
-    item_description = "高速传输数据的导线",
+    item_description = "用于在电子设备之间传输数字数据的电缆",
     item_category = "器件",
 }
 
@@ -458,7 +458,7 @@ prototype "运算电路" {
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
-    item_description = "由运算元器件组成的电路板",
+    item_description = "一种用于对输入数据进行数学运算的电路",
     item_category = "器件",
 }
 
@@ -469,7 +469,7 @@ prototype "效能插件I" {
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
-    item_description = "降低建筑能耗的插件",
+    item_description = "降低机器电能消耗的模块",
     item_category = "器件",
 }
 
@@ -480,7 +480,7 @@ prototype "效能插件II" {
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
-    item_description = "降低建筑能耗的插件",
+    item_description = "降低机器电能消耗的模块",
     item_category = "器件",
 }
 
@@ -491,7 +491,7 @@ prototype "效能插件III" {
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
-    item_description = "降低建筑能耗的插件",
+    item_description = "降低机器电能消耗的模块",
     item_category = "器件",
 }
 
@@ -503,7 +503,7 @@ prototype "产能插件I" {
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
-    item_description = "提高建筑产能的插件",
+    item_description = "提高机器生产能力的模块",
     item_category = "器件",
 }
 
@@ -514,7 +514,7 @@ prototype "产能插件II" {
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
-    item_description = "提高建筑产能的插件",
+    item_description = "提高机器生产能力的模块",
     item_category = "器件",
 }
 
@@ -525,7 +525,7 @@ prototype "产能插件III" {
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
-    item_description = "提高建筑产能的插件",
+    item_description = "提高机器生产能力的模块",
     item_category = "器件",
 }
 
@@ -536,7 +536,7 @@ prototype "速度插件I" {
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
-    item_description = "提高建筑生产速度的插件",
+    item_description = "提高机器生产速度的模块",
     item_category = "器件",
 }
 
@@ -547,7 +547,7 @@ prototype "速度插件II" {
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
-    item_description = "提高建筑生产速度的插件",
+    item_description = "提高机器生产速度的模块",
     item_category = "器件",
 }
 
@@ -558,7 +558,7 @@ prototype "速度插件III" {
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
-    item_description = "提高建筑生产速度的插件",
+    item_description = "提高机器生产速度的模块",
     item_category = "器件",
 }
 
@@ -569,7 +569,7 @@ prototype "广播塔I" {
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
-    item_description = "广播插件功效的建筑",
+    item_description = "将插件功效传导到周边其他机器的设施",
     item_category = "物流",
 }
 
@@ -580,7 +580,7 @@ prototype "广播塔II" {
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
-    item_description = "广播插件功效的建筑",
+    item_description = "将插件功效传导到周边其他机器的设施",
     item_category = "物流",
 }
 
@@ -591,7 +591,7 @@ prototype "混凝土" {
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
-    item_description = "耐压高硬度的建筑材料",
+    item_description = "由多种材料组成具有高强度、耐久度的建筑材料",
     item_category = "物流",
 }
 
@@ -602,7 +602,7 @@ prototype "处理器I" {
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
-    item_description = "具有集成电路的电子元件",
+    item_description = "负责执行指令和进行计算的核心组件",
     item_category = "器件",
 }
 
@@ -613,7 +613,7 @@ prototype "处理器II" {
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/logic-circuit.texture",
-    item_description = "具有集成电路的电子元件",
+    item_description = "负责执行指令和进行计算的核心组件",
     item_category = "器件",
 }
 
