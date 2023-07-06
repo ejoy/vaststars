@@ -73,16 +73,17 @@
                 margin-top: 46.49vmin;
                 width: 100%;
                 height: 5.60vmin;
-                font-size: 6.60vmin;
+                font-size: 4.60vmin;
             }
             item-desc-container {
                 margin-top: 2.93vmin;
                 margin-left: 6.10%;
                 margin-right: 4.03%;
                 margin-bottom: 2.93vmin;
+                color:rgb(235,235,235);
                 width: 89.33%;
                 height: 13.73vmin;
-                font-size: 4.00vmin;
+                font-size: 3.60vmin;
                 word-break: break-word;
             }
             button-container {
@@ -173,7 +174,7 @@
                     <div data-style-background-image = "item_icon" style = "position: absolute; top: 1.71vmin; left: 5.11vmax; width: 18.43vmax; height: 39.71vmin; background-size: 100% 100%;" data-if = "item_icon != ''" />
                     <div style = "position: absolute; position: absolute; top: 1.71vmin; left: 5.11vmax; width: 18.43vmax; height: 39.71vmin; background-image: textures/item-config/icon-frame.texture; background-size: 100% 100%;" />
                     <item-name-container>
-                        <div style = "margin-left: 1.76vmax; margin-top: -1.50vmin;" data-if = "item_name != ''">
+                        <div style = "margin-left: 1.76vmax; margin-top: -1.50vmin; -webkit-text-stroke: 0.08vmin #fff;" data-if = "item_name != ''">
                             {{item_name}}
                         </div>
                     </item-name-container>
