@@ -9,7 +9,7 @@ fx:
     HAS_NORMAL_TEXTURE: 1
     HAS_BASECOLOR_TEXTURE: 1
 properties:
-  u_pbr_factor: {1, 1, 0, 0}  #metallic, roughness, alpha_cutoff, occlusion strength
+  u_pbr_factor: {0.1, 0.8, 0, 0}  #metallic, roughness, alpha_cutoff, occlusion strength
   s_basecolor:
     stage: 0
     texture: /pkg/mod.crack/assets/textures/color.texture

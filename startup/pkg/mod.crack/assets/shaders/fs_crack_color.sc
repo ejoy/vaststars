@@ -57,7 +57,7 @@ vec2 parallax_mapping(vec2 uv, vec3 view_dir, float num_layers)
     vec2 current_uv = uv;
     float current_height = texture2D(s_height, current_uv).r;
     for(int i = 0; i < num_layers; ++i){
-        current_uv -= delta_uv;
+        current_uv += delta_uv;
         current_height = texture2D(s_height, current_uv).r;
         current_layer_height += layer_height;
         if(current_layer_height >= current_height){
