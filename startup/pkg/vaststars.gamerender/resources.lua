@@ -643,6 +643,7 @@ local t = {
 	"/pkg/ant.rmlui/core/contextManager.lua",
 	"/pkg/ant.rmlui/core/datamodel/api.lua",
 	"/pkg/ant.rmlui/core/datamodel/event.lua",
+	"/pkg/ant.rmlui/core/datamodel/for.lua",
 	"/pkg/ant.rmlui/core/datamodel/modifier.lua",
 	"/pkg/ant.rmlui/core/datamodel/text.lua",
 	"/pkg/ant.rmlui/core/environment.lua",
