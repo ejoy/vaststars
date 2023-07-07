@@ -81,7 +81,7 @@
                         </button> 
                         <button class = "button-style" style="background-color:rgb(0, 160, 235);" data-event-click = "clickButton('info')">
                             <div class="middle-bg" style='background-image: "textures/science/book.texture";'/>
-                            <div class = "recipe-name-text" style="font-size: 5.73vmin;">{{info == false ? '提示开启' : '提示关闭'}}</div>
+                            <div class = "recipe-name-text" style="font-size: 5.73vmin;">{{info == false and '提示开启' or '提示关闭'}}</div>
                         </button>
                         <button class = "button-style" style="background-color:rgb(253, 0, 0);" data-event-click = "clickButton('close')">
                             <div class="middle-bg" style='background-image: "textures/road/forbidden.texture";'/>
@@ -89,7 +89,7 @@
                         </button>
                         <button class = "button-style" style="background-color:rgb(253, 0, 0);" data-event-click = "clickButton('debug')">
                             <div class="middle-bg" style='background-image: "textures/road/forbidden.texture";'/>
-                            <div class = "recipe-name-text" style="font-size: 5.73vmin;">{{debug == false ? '调试开启' : '调试关闭'}}</div>
+                            <div class = "recipe-name-text" style="font-size: 5.73vmin;">{{debug == false and '调试开启' or '调试关闭'}}</div>
                         </button>
                         <button class = "button-style" style="background-color: rgb(52, 207, 115)" data-event-click = "clickButton('back_to_main_menu')">
                             <div class="middle-bg" style='background-image: "textures/road/forbidden.texture";'/>

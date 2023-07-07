@@ -72,7 +72,7 @@
     </head>
     <body style = "pointer-events: none;">
         <div class="button-container" style = "pointer-events: none;">
-            <button style="width: 22.00vmin; height: 16.00vmin;" data-style-background-color = "it.enabled ? it.background_color : 'rgb(117,112,112)'" data-event-click="clickButton(it.param, it.enabled)" data-for = "it : buttons" data-if = "it.show">
+            <button style="width: 22.00vmin; height: 16.00vmin;" data-style-background-color = "it.enabled and it.background_color or 'rgb(117,112,112)'" data-event-click="clickButton(it.param, it.enabled)" data-for = "it : buttons" data-if = "it.show">
                 <div style="margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-size:cover;" data-style-background-image = "it.background_image" />
                 <div style="font-size: 85%;">{{it.name}}</div>
             </button>

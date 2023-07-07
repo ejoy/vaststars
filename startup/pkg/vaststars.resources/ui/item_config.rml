@@ -153,7 +153,7 @@
                             <div style = "margin-left: 5.58vmin; margin-top: 2.58vmin; width: 100%; flex-direction: row; font-size: 4.20vmin;">{{c.category}}</div>
                             <div style = "margin-left: -2.20vmax; margin-top: -2.58vmin; width: 96.40%; flex-direction: row; flex-wrap: wrap;">
                                 <div data-for = "i, i_index : c.items">
-                                    <item data-attr-id = "i.id" data-event-click = "clickButton('click_item', c_index, i_index)" data-style-background-image = "i.selected ? 'textures/item-config/item-active.texture' : 'none'">
+                                    <item data-attr-id = "i.id" data-event-click = "clickButton('click_item', c_index, i_index)" data-style-background-image = "i.selected and 'textures/item-config/item-active.texture' or 'none'">
                                         <div data-style-background-image = "i.icon" style = "width: 6.91vmax; height: 14.95vmin; background-size: 100% 100%; background-color: rgb(61, 61, 61);">
                                             <new data-if = "i.new">新</new>
                                         </div>
