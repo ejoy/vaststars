@@ -53,8 +53,8 @@
                 show_finish_laying = false,
             }
 
-            start.clickButton = function(message)
-                ui_sys.pub {message}
+            start.clickButton = function(...)
+                ui_sys.pub {...}
             end
 
             start.clickConfirm = function()

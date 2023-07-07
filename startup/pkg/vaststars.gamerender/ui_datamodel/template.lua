@@ -16,10 +16,11 @@ function M:create()
         else
             assert(tostring(v:extension()) == ".lua")
             local filename = "template." .. v:stem():string()
-            local name = import_package("vaststars.prototype")(filename).name or "undef"
-            templates[#templates + 1] = {name = name, filename = filename}
+            local f = import_package("vaststars.prototype")(filename)
+            templates[#templates + 1] = {order = f.order or 0, name = f.name or "undef", filename = filename}
         end
     end
+    table.sort(templates, function(a, b) return a.order < b.order end)
 
     return {
         templates = templates
