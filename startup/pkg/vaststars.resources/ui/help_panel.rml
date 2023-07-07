@@ -142,7 +142,7 @@
             <!-- 帮助条目 end -->
 
             <!-- 帮助内容 start -->
-            <div class="help-panel" data-if="!collapse && current_help != ''">
+            <div class="help-panel" data-if="not collapse and current_help ~= ''">
                 <div class="help-title-block">
                     <div class="help-book" data-event-click="clickReturnMenu()"/>
                     <div class="help-title" style="pointer-events: none;">{{current_help}}</div>
@@ -158,7 +158,7 @@
 
 
             <!-- 帮助收起 start -->
-            <div class="help-title-block2" data-if="current_help != '' && collapse">
+            <div class="help-title-block2" data-if="current_help ~= '' and collapse">
                 <div class="help-title-block" style="height: 100%;">
                     <div class="help-book" data-event-click="clickReturnMenu()"/>
                     <div class="help-title" style="pointer-events: none;">{{current_help}}</div>

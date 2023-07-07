@@ -220,7 +220,7 @@
     <body>
         <div class="item-container-region">
             <div class="panel" style = "width: 50%;">
-                <div class="column" style="width:100%; height:100%;" data-if="!show_item_info">
+                <div class="column" style="width:100%; height:100%;" data-if="not show_item_info">
                     <!-- 指挥中心标题 start -->
                     <div class="header" id = "item-name-block">
                         <button class = "back-button" data-event-click="clickClose()" />
@@ -433,12 +433,12 @@
             </div>
             <div class="panel" style= "flex-direction: column; width: 50%;">
                 <!-- 制造舱按钮 start -->
-                <div class="header" id = "item-name-block" style="justify-content: flex-end;" data-if = "is_headquater && guide_progress >= 25" >
+                <div class="header" id = "item-name-block" style="justify-content: flex-end;" data-if = "is_headquater and guide_progress >= 25" >
                     <div class = "menu-title" style="text-align: right; width: 70%;" >制造舱</div>
                     <button class = "recipe-change-button" data-event-click="clickManual()"/>  
                 </div>
                 <!-- 制造舱按钮 end -->
-                <div class="header" id = "item-name-block" style="justify-content: flex-end;" data-if = "!(is_headquater && guide_progress >= 25)"/>
+                <div class="header" id = "item-name-block" style="justify-content: flex-end;" data-if = "not (is_headquater and guide_progress >= 25)"/>
 
                 <!-- 指挥中心物品栏 start -->
                 <!-- tag page begin -->

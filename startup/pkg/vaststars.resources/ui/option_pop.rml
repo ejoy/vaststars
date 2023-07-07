@@ -75,7 +75,7 @@
                             <div class="middle-bg" style='background-image: "textures/science/book.texture";'/>
                             <div class = "recipe-name-text" style="font-size: 5.73vmin;">保存游戏</div>
                         </button>
-                        <button class = "button-style" style="background-color:rgb(52, 207, 115);" data-event-click = "show_archival_files = !show_archival_files">
+                        <button class = "button-style" style="background-color:rgb(52, 207, 115);" data-event-click = "show_archival_files = not show_archival_files">
                             <div class="middle-bg" style='background-image: "textures/construct/work.texture";'/>
                             <div class = "recipe-name-text" style="font-size: 5.73vmin;">读取游戏</div>
                         </button> 
