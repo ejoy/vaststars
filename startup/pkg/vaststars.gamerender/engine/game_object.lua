@@ -377,8 +377,8 @@ function igame_object.create(init)
     -- for _, animname, effectname, hitchs in animation_keyevent:unpack() do
     --     for eid, _ in pairs(hitchs) do
     --         local effect = efks[eid][animname][effectname]
-    --         local e <close> = w:entity(eid, "scene_update?in")
-    --         if e.scene_update and effect then
+    --         local e <close> = w:entity(eid, "view_visible?in")
+    --         if e.view_visible and effect then
     --             iefk.play(effect)
     --         end
     --     end

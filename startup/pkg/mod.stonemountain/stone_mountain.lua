@@ -114,6 +114,7 @@ local function create_sm_entity()
         local mesh_address = mesh_table[mesh_idx]
         local gid = sm_group[mesh_idx]
         local g = ecs.group(gid)
+        ecs.group(gid):enable "view_visible"
         ecs.group(gid):enable "scene_update"
         g:create_entity {
             policy = {
