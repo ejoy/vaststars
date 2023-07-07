@@ -161,7 +161,6 @@ local __get_hitch_children ; do
 
         hitch_group_id = hitch_group_id + 1
         local g = ecs.group(hitch_group_id)
-        g:enable "scene_update"
 
         local template = prefab_parse(prefab)
         if material_type == "translucent" then

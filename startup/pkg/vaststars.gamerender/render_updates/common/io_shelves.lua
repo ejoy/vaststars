@@ -23,7 +23,6 @@ mt.__index = mt
 
 local function __create_instance(group_id, prefab, mat)
     local g = ecs.group(group_id)
-    ecs.group(group_id):enable "scene_update"
     local prefab_instance = g:create_instance(prefab)
     function prefab_instance:on_ready()
         local e <close> = w:entity(self.tag["*"][1])
