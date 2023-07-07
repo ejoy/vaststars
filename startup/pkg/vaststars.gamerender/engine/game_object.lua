@@ -186,12 +186,6 @@ local __get_hitch_children ; do
 
         local inner = { tags = {} } -- tag -> eid
         local prefab_instance = g:create_instance(template)
-        function prefab_instance:on_init()
-            for _, eid in ipairs(self.tag["*"]) do
-                local e <close> = w:entity(eid, "scene_update_once?out")
-                e.scene_update_once = true
-            end
-        end
         function prefab_instance:on_ready()
             for _, eid in ipairs(self.tag["*"]) do
                 local e <close> = w:entity(eid, "tag?in anim_ctrl?in render_object?update")
