@@ -209,7 +209,7 @@ prototype "化工厂I" {
     pile = "4x1x4",
     backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
-    item_description = "进行化学过程以生产化学产品的设施",
+    item_description = "通过化学反应以生产化学产品的设施",
 }
 
 prototype "化工厂II" {
@@ -219,7 +219,7 @@ prototype "化工厂II" {
     pile = "4x1x4",
     backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
-    item_description = "进行化学过程以生产化学产品的设施",
+    item_description = "通过化学反应以生产化学产品的设施",
 }
 
 prototype "化工厂III" {
@@ -229,7 +229,7 @@ prototype "化工厂III" {
     pile = "4x1x4",
     backpack_stack = 20,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
-    item_description = "进行化学过程以生产化学产品的设施",
+    item_description = "通过化学反应以生产化学产品的设施",
 }
 
 prototype "铸造厂I" {

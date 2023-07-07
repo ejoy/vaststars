@@ -45,7 +45,7 @@
                 buttons = {},
             }
 
-            function start.clickButton(event, command)
+            function start.clickButton(command)
                 if command == "" then
                     return
                 end

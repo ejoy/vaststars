@@ -47,7 +47,7 @@
                 buttons = {},
             }
 
-            function start.clickButton(event, command, disabled)
+            function start.clickButton(command, disabled)
                 if command == "" or disabled == true then
                     return
                 end

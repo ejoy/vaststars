@@ -239,14 +239,14 @@
                 focus_building_icon = "none"
             }
 
-            function start.clickButton(event, ...)
+            function start.clickButton(...)
                 console.log(...)
                 ui_sys.pub {...}
             end
-            function start.clickConstruct(event, ...)
+            function start.clickConstruct(...)
                 start.is_concise_mode = not start.is_concise_mode
             end
-            function start.clickShowConstructMenuDetail(event, construct_menu)
+            function start.clickShowConstructMenuDetail(construct_menu)
                 start.cur_construct_menu = construct_menu
             end
             ui_sys.mapping(start, {
@@ -301,7 +301,7 @@
                     <div style = "width: 2.67vmin;" />
 
                     <div style = "flex-direction: row; flex-wrap: wrap; width: 30.13vmin; height: 80.00vmin; background-color: rgb(44, 32, 18); border: 0.40vmin rgb(89, 73, 39); border-radius: 0.67vmin;" data-if="cur_construct_menu == it.name" data-for = "construct_menu">
-                        <div class="tools-container" data-for = "menu, menu_id : it.detail">
+                        <div class="tools-container" data-for = "menu : it.detail">
                             <button class="tools-button" data-event-click="clickButton('construct_entity', menu.prototype_name)">
                                 <div class="workbutton-bg" data-style-background-image = "menu.icon" />
                                 <div class="tools-button-title">{{menu.show_prototype_name}}</div>

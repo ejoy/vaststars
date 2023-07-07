@@ -35,7 +35,7 @@
             start.buttons[#start.buttons+1] = {name = "修建", bind_var = "show_confirm", enabled = true, show = false, always_show = true, param = "build", background_color = "rgb(19,175,240)", background_image = "textures/construct/confirm.texture"}
             start("buttons")
 
-            function start.clickButton(event, param, enabled)
+            function start.clickButton(param, enabled)
                 if enabled then
                     ui_sys.pub {param}
                 end

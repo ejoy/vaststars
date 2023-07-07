@@ -156,11 +156,11 @@
                 -- <!-- tag page end -->
             end
 
-            function start.clickClose(event)
+            function start.clickClose()
                 ui_sys.close()
             end
 
-            function start.clickCategory(event, category)
+            function start.clickCategory(category)
                 start.cur_item_category = category
                 start.item_index = nil
                 update_category(category)

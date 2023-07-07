@@ -68,7 +68,7 @@
                 richtext = true,
             }
 
-            function start.click(event)
+            function start.click()
                 ui_sys.pub {"story_click"}
                 if start.count == start.total_count then
                     ui_sys.close()

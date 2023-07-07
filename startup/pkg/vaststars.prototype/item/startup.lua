@@ -1,9 +1,8 @@
 local entities = { {
   dir = "N",
-  items = { { "铁矿石", 5 }, { "碎石", 2 }, { "铁板", 1 } },
+  items = {},
   prototype_name = "指挥中心",
-  recipe = "车辆装配",
-  x = 125,
+  x = 124,
   y = 120
 }, {
   dir = "N",

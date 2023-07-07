@@ -113,7 +113,7 @@
                 recipe_idx = 0,
             }
 
-            function start.clickButton(event, ...)
+            function start.clickButton(...)
                 ui_sys.pub {...}
             end
 
@@ -121,12 +121,12 @@
                 ui_sys.close()
             end
 
-            function start.clickClearRecipe(event)
+            function start.clickClearRecipe()
                 ui_sys.pub {"clear_recipe"}
                 ui_sys.close()
             end
 
-            function start.clickConfirm(event)
+            function start.clickConfirm()
                 ui_sys.pub {"set_recipe", start.object_id}
                 ui_sys.close()
             end
@@ -172,7 +172,7 @@
                                 <div style = "margin-left: -2.20vmax; margin-top: -2.58vmin; width: 96.40%; flex-direction: row; flex-wrap: wrap;">
                                     <div data-for = "r, r_index : c.recipes">
                                         <recipe data-attr-id = "r.id"
-                                            data-event-click = "clickButton('click_recipe', c_index+1, r_index+1)" data-style-background-image = "r.selected ? 'textures/recipe-config/recipe-active.texture' : 'none'">
+                                            data-event-click = "clickButton('click_recipe', c_index, r_index)" data-style-background-image = "r.selected ? 'textures/recipe-config/recipe-active.texture' : 'none'">
                                                 <div data-style-background-image = "r.icon" style = "width: 6.91vmax; height: 14.95vmin; background-size: 100% 100%; background-color: rgb(61, 61, 61);">
                                                     <new data-if = "r.new">新</new>
                                                 </div>

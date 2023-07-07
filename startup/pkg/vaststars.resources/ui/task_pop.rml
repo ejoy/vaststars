@@ -110,7 +110,7 @@
                 total_count = 100
             }
 
-            function start.clickConfirm(event)
+            function start.clickConfirm()
                 ui_sys.pub {"close_taskui"}
                 ui_sys.close()
             end
