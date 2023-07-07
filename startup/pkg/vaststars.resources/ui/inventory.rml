@@ -453,7 +453,7 @@
                 <!-- 物品栏分类页签 start -->
                 <div class = "tab-container" style="flex-grow: 1;">
                     <div data-for = "item_category" style = "justify-content: center; align-items: center; flex-basis: 30%; height: 49%;">
-                        <workbutton data-event-click="clickCategory(it.category)" style = "width: 100%;" data-style-background-color="it.category == cur_item_category ? 'rgb(0,176,80)' : 'rgb(246, 142, 14)'">
+                        <workbutton data-event-click="clickCategory(it.category)" style = "width: 100%;" data-style-background-color="it.category == cur_item_category and 'rgb(0,176,80)' or 'rgb(246, 142, 14)'">
                             <div class="catalog-desc">{{it.category}}</div>
                         </workbutton>
                     </div>
