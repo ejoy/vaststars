@@ -291,7 +291,7 @@
             <div class = "layout">
                 <div style = "pointer-events: none; position: absolute; right:0vmin; width: 98vmax; height: 97vmin; flex-direction: row-reverse;" data-if="is_concise_mode">
                     <div style = "width: 16.00vmin; height: 80.00vmin; flex-direction: column; justify-content: space-between;">
-                        <workbutton data-event-click="clickShowConstructMenuDetail(it.name)" data-for = "construct_menu" data-style-background-color="cur_construct_menu == it.name ? 'rgb(0, 176, 80)' : 'rgb(246, 142, 14)'">
+                        <workbutton data-event-click="clickShowConstructMenuDetail(it.name)" data-for = "construct_menu" data-style-background-color="cur_construct_menu == it.name and 'rgb(0, 176, 80)' or 'rgb(246, 142, 14)'">
                             <div class="workbutton-bg" data-style-background-image = "it.icon" />
                             <div class="workbutton-text" >{{it.name}}</div>
                         </workbutton>
