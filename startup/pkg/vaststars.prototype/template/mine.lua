@@ -13,4 +13,5 @@ return {
   entities = entities,
   road = road,
   mineral = mineral,
+  order = 2,
 }

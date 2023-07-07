@@ -357,5 +357,6 @@ return {
   road = road,
   mineral = mineral,
   prepare = prepare,
+  order = 6,
 }
   
