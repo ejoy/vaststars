@@ -261,7 +261,7 @@
                 <div style="width:90%; margin-left: 3%; margin-right: 3%; flex-direction: column; justify-content: flex-start; align-items: center;" data-if = "show_type=='goods'" data-event-click="onLongPress(6)">
                     <!--div style="text-align: center; font-size: 3vmin; color: #adadad; margin-bottom: 5vmin;">存放货物</div-->
                     <div class="small-item1" style="margin: 0.5vmin; height: 8vmin; width: 8vmin; margin-top: 8vmin;" data-style-background-image="goods_icon"/>
-                    <div style="text-align: center; font-size: 4vmin;">{{goods_desc}}</div>
+                    <div style="text-align: center; font-size: 3.5vmin;">{{goods_desc}}</div>
                 </div>
             </div>
             <!-- detail panel end -->
