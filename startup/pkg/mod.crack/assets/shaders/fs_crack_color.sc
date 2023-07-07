@@ -95,7 +95,7 @@ void main()
         discard;
     }
     float crack_alpha = 1 - texture2D(s_basecolor, uv).r;
-    if(crack_alpha == 0){
+    if(crack_alpha < 0.3){
         discard;
     }
     vec4 basecolor = u_crack_color;
