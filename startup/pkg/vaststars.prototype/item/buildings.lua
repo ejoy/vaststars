@@ -546,9 +546,9 @@ prototype "水电站III" {
 prototype "砖石公路-X型" {
     type = {"item"},
     item_category = "物流",
-    stack = 100,
+    stack = 20,
     pile = "4x1x4",
-    backpack_stack = 20,
+    backpack_stack = 100,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "供车辆行驶的砖石公路",
 }
@@ -561,7 +561,7 @@ prototype "运输车辆I" {
     capacitance = "10MJ",
     speed = 63,
     pile = "4x1x4",
-    backpack_stack = 20,
+    backpack_stack = 50,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/truck.texture",
     model = "prefabs/lorry-1.prefab",
