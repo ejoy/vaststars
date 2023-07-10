@@ -17,7 +17,8 @@ function page_meta.create(document, e, item_init, item_update, detail_renderer, 
         item_update     = item_update,
         detail_renderer = detail_renderer,
         document        = document,
-        data_for        = data_for
+        data_for        = data_for,
+        page_count = 0,
     }
     setmetatable(page, page_meta)
     e.style.overflow = 'hidden'
