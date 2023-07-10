@@ -457,7 +457,7 @@
                             <detaillist direction='1' width='100%' height='100%'/>
                         </div>
                     </div>
-                    <button-confirm data-if="not current_running" style="width: 40vmin; height: 10vmin; align-self: flex-end;" data-event-click="startSwitch()">
+                    <button-confirm data-if="not current_running and not show_finish" style="width: 40vmin; height: 10vmin; align-self: flex-end;" data-event-click="startSwitch()">
                         <div style="margin-top: 1.5vmin; font-size: 6vmin; text-align: center;">{{current_button_str}}</div>
                     </button-confirm>
                 </div>
