@@ -449,7 +449,7 @@
                         <div style="margin-left: 10vmin; margin-top: 0.8vmin; font-size: 5vmin; color: black;">{{current_tech.name}}</div>
                         <div class="recipe-des-text" style="margin-left: 2vmin; margin-top: 1vmin;">{{current_tech.desc}}</div>
                         <div style="margin-left: 2vmin; flex-direction: row; justify-content: flex-start; align-items: center;" data-if="sub_icon ~=' '">
-                            <div style='width: 6vmin; height: 6vmin; background-size: cover;' data-style-background-image="sub_icon"/>
+                            <div style='width: 4.66vmin; height: 4vmin; background-size: cover;' data-style-background-image="sub_icon"/>
                             <div style="width: 90%; color: rgb(241,157,52); font-size: 3vmin; word-break: break-all;">{{sub_desc}}</div>
                         </div>
                         <div style='margin-left: 5%; margin-right: 5%; width: 90%; height: 0.1vmin; background-image: "textures/common/caption-line.texture"; background-size: cover;'/>

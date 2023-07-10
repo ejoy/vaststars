@@ -1765,7 +1765,7 @@ prototype "蓄电池3" {
     description = "制造可存储电能和输出电能的蓄电池",
 }
 
-prototype "出货车站" {
+prototype "出货车站打印" {
     type = { "recipe" },
     recipe_craft_category = "生产大型制造",
     recipe_category =  "物流",
@@ -1782,7 +1782,7 @@ prototype "出货车站" {
     description = "向运输车辆装载货物的车站",
 }
 
-prototype "收货车站" {
+prototype "收货车站打印" {
     type = { "recipe" },
     recipe_craft_category = "生产大型制造",
     recipe_category =  "物流",
@@ -2111,15 +2111,14 @@ prototype "车站打印" {
     description = "打印车站",
 }
 
-prototype "出货车站打印" {
+prototype "出货车站维修" {
     type = { "recipe" },
     recipe_craft_category = "建筑打印",
     recipe_category =  "物流",
     recipe_order =  56,
     recipe_icon =  "textures/construct/broken-logisitic.texture",
     ingredients = {
-        {"电动机I", 1},
-        {"石砖", 4},
+        {"出货车站框架", 1},
     },
     results = {
         {"出货车站", 1},
@@ -2128,15 +2127,14 @@ prototype "出货车站打印" {
     description = "打印出货车站",
 }
 
-prototype "收货车站打印" {
+prototype "收货车站维修" {
     type = { "recipe" },
     recipe_craft_category = "建筑打印",
     recipe_category =  "物流",
     recipe_order =  56,
     recipe_icon =  "textures/construct/broken-logisitic.texture",
     ingredients = {
-        {"电动机I", 1},
-        {"石砖", 4},
+        {"收货车站框架", 1},
     },
     results = {
         {"收货车站", 1},
