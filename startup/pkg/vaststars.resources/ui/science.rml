@@ -223,7 +223,7 @@
                 --    ingredient_items = [[<div class="research-req" style='margin-top: 1vmin; margin-right: 5vmin; width: 4vmin; height: 4vmin;'/>]]
                 end
                 local statestr = item_data.running and [[<div class="icon-researching">研究中...</div>]] or ""
-                local sign = item_data.sign_icon and [[<div style='margin-left: 0.5vmin; margin-right: 0.5vmin; background-size: 100% 100%; width: 4vmin; height: 4.46vmin; background-image:"textures/science/key_sign.texture";'/>]] or [[<div style='margin-left: 0.5vmin; margin-right: 0.5vmin; width: 6%; height: 4vmin;'/>]]
+                local sign = item_data.sign_icon and [[<div style='margin-left: 0.5vmin; margin-right: 0.5vmin; background-size: 100% 100%; width: 4.46vmin; height: 4vmin; background-image:"textures/science/key_sign.texture";'/>]] or [[<div style='margin-left: 0.5vmin; margin-right: 0.5vmin; width: 6%; height: 4vmin;'/>]]
                 local item_icon = item_data.task and "textures/science/task.texture" or "textures/science/tech.texture"
                 local percent = (item_data.progress * 100) // item_data.count
                 local highlight = start.selected_index == index and [[<div style='position:absolute; top: -1vmin; left: -1vmin; width: 71.5vmin; height: 13vmin; background-image:"textures/science/item_bg_highlight.texture"; background-size: 100% 100%;'/>]] or ""
