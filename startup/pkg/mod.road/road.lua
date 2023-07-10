@@ -246,7 +246,7 @@ local function get_road_info_table(update_list)
 end
 
 local function create_road_group(gid, update_list, render_layer)
-    if not render_layer then render_layer = "foreground" end
+    if not render_layer then render_layer = "background" end
     local road_info_table = get_road_info_table(update_list)
     local road_mesh = build_mesh()
     local g = ecs.group(gid)
