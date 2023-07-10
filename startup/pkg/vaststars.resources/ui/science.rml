@@ -234,7 +234,7 @@
                         <div class="item-bg" style='width: 14%%; background-image:"%s";'/>
                         <div style="margin-left: 1vmin; margin-right: 1vmin; width: 75%%; flex-direction: column; align-items:center;">
                             <div style="margin-right: 0vmin; height: 45%%; flex-direction: row;">
-                                <div style="width: 50%%; font-size: 4vmin; text-align: center;">%s</div>
+                                <div style="width: 50%%; font-size: 4vmin; text-align: left;">%s</div>
                                 <div style="width: 50%%; flex-direction: row; justify-content: flex-end;">
                                     %s
                                 </div>
@@ -346,8 +346,8 @@
                 elseif detail.name then
                     htmlstr = htmlstr .. ([[
                         <div style='margin-top: -2vmin; margin-right: 1.5vmin; flex-direction: column; justify-content: flex-start; align-items: flex-end;'>
-                            <div style='text-align: right; font-size: 3vmin;'>解锁配方：%s</div>
-                            <div style='text-align: right; font-size: 2vmin; color: rgb(241,157,52);'>%s</div>
+                            <div style='text-align: right; font-size: 3vmin; color: rgb(241,157,52);'>解锁配方：%s</div>
+                            <div style='text-align: right; font-size: 2vmin;'>%s</div>
                         </div>
                     ]]):format(detail.name, detail.desc)
                 end
