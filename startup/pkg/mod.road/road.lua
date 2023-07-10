@@ -250,10 +250,9 @@ local function create_road_group(gid, update_list, render_layer)
     local road_info_table = get_road_info_table(update_list)
     local road_mesh = build_mesh()
     local g = ecs.group(gid)
-    ecs.group(gid):enable "view_visible"
     for road_idx = 1, #road_info_table do
         local road_info = road_info_table[road_idx]
-        if #road_info ~= 0 then
+        --if #road_info ~= 0 then
             g:create_entity{
                 policy = {
                     "ant.scene|scene_object",
@@ -276,15 +275,15 @@ local function create_road_group(gid, update_list, render_layer)
                     end
                 },
             }       
-        end
+        --end
     end
+    g:enable "view_visible"
+    ecs.group_flush()
 end
 
 local function update_road_group(gid, update_list)
     local road_table = get_road_info_table(update_list)
-    ecs.group(gid):enable "view_visible"
-    local select_tag = "road view_visible road:update road_type:in"
-    ecs.group_flush()
+    local select_tag = "view_visible road:update road_type:in"
     for e in w:select(select_tag) do
         if e.road.gid == gid then
             local road_info = road_table[e.road_type]
