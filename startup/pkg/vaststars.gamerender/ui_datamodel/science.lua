@@ -23,9 +23,16 @@ local function get_techlist(tech_list)
             simple_ingredients[#simple_ingredients + 1] = {icon = assert(ingredient.tech_icon), count = ingredient.count}
         end
         local detail = {}
+        local sub_icon = ' '
+        local sub_desc = ' '
         if value.sign_desc then
             for _, desc in ipairs(value.sign_desc) do
-                detail[#detail+1] = desc
+                if desc.name then
+                    detail[#detail+1] = desc
+                else
+                    sub_icon = desc.icon
+                    sub_desc = desc.desc
+                end
             end
         end
         if value.effects and value.effects.unlock_recipe then
@@ -62,13 +69,15 @@ local function get_techlist(tech_list)
             name = name,
             icon = assert(value.icon),
             desc = value.desc or " ",
+            sub_icon = sub_icon,
+            sub_desc = sub_desc,
             sign_icon = value.sign_icon,
             detail = detail,
             ingredients = simple_ingredients,
             count = value.count,
             time = value.time,
             task = value.task and true or false,
-            progress = (progress > 0) and ((progress * 100) // value.count) or progress,
+            progress = progress, --(progress > 0) and ((progress * 100) // value.count) or progress,
             running = #queue > 0 and queue[1] == name or false,
             new = global.science.tech_picked_flag[name] or false
         }
@@ -100,6 +109,8 @@ function M:create(object_id)
         current_tech = current_tech,
         current_desc = current_tech.desc,
         current_icon = current_tech.icon,
+        sub_icon = current_tech.sub_icon,
+        sub_desc = current_tech.sub_desc,
         current_running = current_tech.running,
         current_button_str = get_button_str(current_tech)
     }
@@ -114,6 +125,8 @@ function M:stage_ui_update(datamodel)
         datamodel.current_tech = tech
         datamodel.current_desc = tech.desc
         datamodel.current_icon = tech.icon
+        datamodel.sub_desc = tech.sub_desc
+        datamodel.sub_icon = tech.sub_icon
         datamodel.current_running = tech.running
         datamodel.current_button_str = get_button_str(tech)
     end

@@ -142,7 +142,7 @@ function list_meta:show_detail(it, show)
         return
     end
     if show then
-        if not iteminfo.detail then
+        if not iteminfo.detail and self.detail_renderer then
             self.detail = self.detail_renderer(iteminfo.index)
             iteminfo.item.parentNode.appendChild(self.detail, iteminfo.index)
             iteminfo.detail = true

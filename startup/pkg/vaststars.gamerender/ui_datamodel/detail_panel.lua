@@ -135,12 +135,14 @@ local function get_display_info(e, typeobject, t)
                     local function format(value, u)
                         local v0, v1 = math.modf(value)
                         if v1 > 0 then
-                            return string.format("%.2f", value) .. u
+                            return string.format("%.1f", value) .. u
                         else
                             return string.format("%d", v0) .. u
                         end
                     end
-                    total = format(current, unit) .. "/" .. format(total, unit)
+                    -- total = format(current, unit) .. "/" .. format(total, unit)
+                    local total_format = string.format("%d", math.floor(total + 0.05)) .. unit
+                    total = ((current == total) and total_format or format(current, unit)) .. "/" .. total_format
                 elseif cn == "speed" then
                     total = total * 100
                 end

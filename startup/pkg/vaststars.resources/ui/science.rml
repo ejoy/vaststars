@@ -4,69 +4,41 @@
             body {
                 font: "阿里巴巴普惠体";
             }
-            .small-button {
-                margin: 0.00vmin;
-                opacity: 1;
-                background-color: rgb(246, 237, 189);
-                background-size: cover;
-                border: 0.27vmin rgba(84,130,53,255);
-                border-radius: 1.07vmin;
-                width: 8.00vmin;
-                height: 8.00vmin;
-            }
              /*标题栏和返回按键  */
             .item-research {
                 margin: 0.5vmin 0;
                 flex-direction: row;
-                align-items:center;
-                justify-content:flex-start;
-                background-color: rgb(204,219,11);
-                border: 0.27vmin rgb(89, 73, 39);
-                background-size:cover;
-                border-radius: 0.67vmin;
-                width: 70vmin;
-                height: 10.00vmin;
+                align-items: center;
+                justify-content: flex-start;
+                background-image:"textures/science/item_bg_dark.texture"; 
+                background-size: 100% 100%;
+                width: 63.7vmin;
+                height: 10vmin;
                 font-size: 3.40vmin;
             }
-            .item-research-title {
-                text-align: center;
-                background-color: rgb(246, 237, 189);
-                border-radius: 0.67vmin;
-                color:rgb(73, 60, 32);
-                -webkit-text-stroke: 0.07vmin rgb(73, 60, 32);
-                width: 11.33vmin;
-                margin: 0.00vmin;
+            .item-detail {
+                flex-direction: row;
+                align-items: center;
+                justify-content: flex-start;
+                /* border: 2px red; */
+                background-image: "textures/science/right_item_bg0.texture";
+                background-size: 100% 100%;
+                width: 61.5vmin;
+                height: 10vmin;
             }
             .item-bg {
-                width: 9.8vmin;
-                height: 9.8vmin;
+                width: 9vmin;
+                height: 9vmin;
                 background-size: cover;
             }
             .item-title-new {
-                text-align: left;
+                text-align: right;
                 border-radius: 0.67vmin;
                 color:rgb(255, 255, 255);
                 -webkit-text-stroke: 0.2vmin rgb(0, 0, 0);
                 width: 85%;
                 word-break: break-all;
-                font-size: 4.5vmin;
-            }
-            /*分割线*/
-            #item-recipe-region {
-                justify-content: space-between; 
-                align-items:center; 
-                height: 100%; 
-                width: 100%;
-            }
-            #item-recipe-title {
-                width: 100%; 
-                height: 15%; 
-            }
-            .item-recipe-image {
-                margin: auto;
-                width: 13.07vmin;  
-                height: 13.07vmin;  
-                background-size:cover;
+                font-size: 3vmin;
             }
             .item-recipe-info {
                 margin: auto;
@@ -74,35 +46,6 @@
                 width: 13.07vmin;  
                 height: 13.07vmin;  
                 background-size:cover;
-            }
-            .item-recipe-desc {
-                margin: 1rem auto; 
-                width:80%;
-                height:75%;
-                justify-content: flex-start;
-                font-size: 4.50vmin;
-                word-break: break-word;
-            }
-            .item-recipe-desc-extra {
-                padding-right: 1vmin; 
-                justify-content: flex-start;
-                font-size: 4.50vmin;
-                word-break: break-word;
-                text-align: right;
-            }
-            .item-recipe-extra-icon {
-                background-image: "textures/science/spark.texture";
-                background-size: cover;
-                width:4vmin;
-                height:4vmin;
-            }
-            .recipe-container {
-                border: 0.13vmin rgb(89, 73, 39); 
-                width: 100%; 
-                height: 80%; 
-                justify-content: flex-start;
-                flex-direction: row;
-                align-items: center;
             }
             .research-req-container {
                 border: 0.13vmin rgb(89, 73, 39); 
@@ -112,55 +55,6 @@
                 flex-direction: column;
                 align-items: center;
             }
-            .recipe-queue {
-                border: 0.13vmin rgb(89, 73, 39); 
-                width: 100%; 
-                height: 12%; 
-                justify-content: flex-start;
-                flex-direction: row;
-                align-items: center;
-            }
-            .recipe-item {
-                flex-direction: column;
-                align-items:center;
-                justify-content:flex-start;
-                background-color: rgb(250, 205, 9);
-                border: 0.27vmin rgb(89, 73, 39);
-                background-size:cover;
-                width: 12.00vmin;
-                height: 12.00vmin;
-                font-size: 4.50vmin;
-            }
-            .recipe-item-bg {
-                width: 8.00vmin;
-                height: 8.00vmin;
-                background-size: cover;
-            }
-            .recipe-item-title {
-                text-align: center;
-                border-radius: 0.67vmin;
-                background-color: rgb(246, 237, 189);
-                border-radius: 0.67vmin;
-                color:rgb(73, 60, 32);
-                -webkit-text-stroke: 0.07vmin rgb(73, 60, 32);
-                width: 11.33vmin;
-                margin: 0.00vmin;
-            }
-            .recipe-title-block {
-                width: 100%;
-                height:10%;
-                align-items: center;
-                flex-direction: column;
-                justify-content: flex-start;
-            }
-            .recipe-name-text {
-                width: 100%;
-                /*padding-bottom: 0.25em;*/
-                font-size: 4.5vmin;
-                text-align: center;
-                -webkit-text-stroke: 0.05em rgb(0,0,0);
-                background-color: rgb(203, 118, 24);
-            }
             .recipe-des-text {
                 width: 90%;
                 height: 10%;
@@ -168,40 +62,6 @@
                 text-align: left;
                 -webkit-text-stroke: 0.05em rgb(0,0,0);
                 word-break: break-all;
-            }
-            .recipe-content-block {
-                width: 100%;
-                height:90%;
-                align-items: center;
-                flex-direction: column;
-                justify-content: center;
-            }
-            .recipe-req-block {
-                width: 100%;
-                height:90%;
-                flex-direction: column;
-                justify-content: center;
-                align-items: flex-end;
-            }
-            .recipe-req-num {
-                text-align: center;
-                font-size: 4.0vmin;
-            }
-            .recipe-queue-item-block {
-                padding-top: 0.5em;
-                flex-direction: row;
-                width:70%; 
-                height:100%;
-                align-items:flex-start; 
-                justify-content: space-around;
-            }
-            .icon-sign {
-                position:absolute;
-                bottom:0.05vmin;
-                right:0.05vmin;
-                width: 6vmin;
-                height: 6vmin;
-                background-size: cover;
             }
             .icon-researching {
                 position:absolute;
@@ -213,12 +73,6 @@
                 -webkit-text-stroke: 1px rgb(0, 0, 0);
                 animation:0.65s linear 0s infinite alternate scalesize;
             }
-            .progress-background-new {
-                justify-content: flex-start;
-                height: 100%;
-                background-image: "textures/science/progress.texture";
-                background-size: cover;
-            }
             .research-req {
                 flex-direction: row;
                 justify-content: flex-end;
@@ -229,83 +83,46 @@
                 width:50%;
                 height:35%;
             }
-            .recipe-info-block {
-                flex-direction: column;
-                justify-content: flex-start;
-                align-items: center;
-                width:90%;
-                height:100px;
-                border: 0.13vmin rgb(89, 73, 39);
-                background-color: dimgrey;
-            }
-            .recipe-info-desc-block {
-                flex-direction: row;
-                justify-content: flex-start;
-                align-items: flex-start;
-                text-align: center;
-                width:100%;
-                height:40%;
-                font-size: 3vmin;
-            }
-            .recipe-info-desc-title
-            {
-                width:15%;
-                font-size: 3.5vmin;
-                text-align: center;
-                -webkit-text-stroke: 0.05em rgb(0,0,0);
-                background-color: rgb(203, 118, 24);
-            }
-            .recipe-info-desc
-            {
-                padding-left:1vmin;
-                width: 85%;
-                font-size: 3.2vmin;
-                text-align: left;
-                word-break: break-all;
-            }
-            .recipe-item-info-block
-            {
-                flex-direction: row;
-                justify-content: flex-start;
-                align-items: center;
-                width:100%;
-                height:60%;
-            }
             .small-item-new {
-                margin:0.05em;
-                flex-direction: column;
-                align-items:flex-start;
-                justify-content:flex-start;
-                background-color: rgb(250, 205, 9);
-                border: 0.27vmin rgb(89, 73, 39);
-                background-size:cover;
-                width: 7.70vmin;
-                height: 7.70vmin;
-                font-size: 2.00vmin;
+                margin: 0.2vmin;
+                /* flex-direction: column; */
+                /* align-items:flex-start; */
+                /* justify-content:flex-start; */
+                /* background-color: rgb(250, 205, 9); */
+                /* border: 1px red; */
+                background-size: cover;
+                width: 6vmin;
+                height: 6vmin;
+                /* font-size: 2.00vmin; */
             }
             .small-arrow {
-                width: 9.90vmin;
-                height: 7.70vmin;
-                margin:0 0.5vmin;
-                background-image: "textures/exchange/right_arrow.texture";
+                width: 5vmin;
+                height: 2.5vmin;
+                /* margin:0 0.5vmin; */
+                background-image: "textures/science/dir.texture";
                 background-size: cover;
             }
-            .small-name {
-                position: absolute;
-                width: 100%;
-                bottom: 0;
-                background-color: rgba(46, 46, 45, 150);
-                border-radius: 0.5vmin;
-                text-align: center;
-                font-size: 2vmin;
-                -webkit-text-stroke: 0.05em rgb(0,0,0);
-            }
             .recipe-time {
-                position:absolute; 
+                /* position:absolute; 
                 left: 3.5vmin; 
-                top: 1.7vmin; 
+                top: 1.7vmin;  */
                 text-align: center; 
-                font-size: 3.3vmin; 
+                font-size: 2.5vmin; 
+            }
+            .progress_bar {
+                align-self: flex-start;
+                background-image: "textures/science/progress_bar.texture";
+                background-size: cover;
+                width: 100%;
+                height: 100%;
+            }
+            .indicator {
+                align-self: flex-start;
+                background-image: "textures/science/indicator.texture";
+                background-size: 100% 100%;
+                top: -110%;
+                width: 0.5vmin;
+                height: 120%;
             }
             @keyframes scalesize {
                 from {
@@ -317,6 +134,7 @@
             }
             
         </style>
+        <style path = "common.rcss"/>
         <style path = "common/building_style.rcss" />
         <style path = "common/listpage_style.rcss"/>
         <script type="text/x-lua" >
@@ -325,27 +143,38 @@
                 show_finish = false,
                 current_icon = "none",
                 current_desc = "none",
+                sub_icon = ' ',
+                sub_desc = ' ',
                 current_running = false,
                 current_button_str = "开始",
                 return_title = " ",
                 current_tech = {},
                 techitems = {},
             }
+            start.selected_index = -1
             start.selected_tech = nil
+            start.selected_recipe_index = -1
             start.selected_recipe = nil
 
             local function unselect_tech()
                 if start.selected_tech then
-                    start.selected_tech.style.border = '0px green'
                     start.selected_tech = nil
+                    local index = start.selected_index
+                    start.selected_index = -1
+                    if index > 0 then
+                        start.list:on_dirty(index)
+                    end
                 end
             end
 
             local function unselect_recipe()
                 if start.selected_recipe then
-                    start.detaillist:show_detail(start.selected_recipe, false)
-                    start.selected_recipe.style.border = '0px green'
                     start.selected_recipe = nil
+                    local index = start.selected_recipe_index
+                    start.selected_recipe_index = -1
+                    if index > 0 then
+                        start.detaillist:on_dirty(index)
+                    end
                 end
             end
 
@@ -362,13 +191,13 @@
                     return
                 end
                 unselect_tech()
-                item.style.border = select_style_border
                 clickTech(index)
                 start.selected_tech = item
+                start.selected_index = index
                 if start.techitems[index].new then
                     start.techitems[index].new = false
-                    start.list:on_dirty(index)
                 end
+                start.list:on_dirty(index)
             end
 
             local function tech_item_init(item, index)
@@ -379,8 +208,8 @@
             local function tech_item_update(item, index)
                 local item_data = start.techitems[index]
                 local ingredient_items = ""
+                local ingredient_count = 0
                 if not item_data.task then
-                    local ingredient_count = 0
                     for _, ingredient in ipairs(item_data.ingredients) do
                         if ingredient_count == 0 then
                             ingredient_count = ingredient.count
@@ -388,19 +217,38 @@
                         ingredient_items = ingredient_items .. ([[<div class="property-icon" style='background-image:"%s";'/>]]):format(ingredient.icon)
                     end
                     if ingredient_count > 0 then
-                        ingredient_items = [[<div class="research-req">]] .. ingredient_items .. ([[<div style="padding-bottom:0.5vmin; font-size: 3.5vmin; text-align: center; -webkit-text-stroke: 0.15vmin rgb(0, 0, 0);">X %d</div></div>]]):format(ingredient_count * item_data.count)
+                        ingredient_items = [[<div class="research-req" style='margin-top: 1vmin; margin-right: 5vmin;'>]] .. ingredient_items .. "</div>"--([[<div style="padding-bottom:0.5vmin; font-size: 3.5vmin; text-align: center; -webkit-text-stroke: 0.15vmin rgb(0, 0, 0);">X %d</div></div>]]):format(ingredient_count * item_data.count)
                     end
-                else
-                    ingredient_items = [[<div class="research-req" style='background-size: cover; width: 4vmin; height: 4vmin; background-image:"textures/science/task.texture";'/>]]
+                --else
+                --    ingredient_items = [[<div class="research-req" style='margin-top: 1vmin; margin-right: 5vmin; width: 4vmin; height: 4vmin;'/>]]
                 end
-                local sign = item_data.sign_icon and ([[<div class="icon-sign" style='background-image:"%s";'/>]]):format(item_data.sign_icon) or ""
                 local statestr = item_data.running and [[<div class="icon-researching">研究中...</div>]] or ""
+                local sign = item_data.sign_icon and [[<div style='margin-left: 0.5vmin; margin-right: 0.5vmin; background-size: cover; width: 6%; height: 4vmin; background-image:"textures/science/key_sign.texture";'/>]] or [[<div style='margin-left: 0.5vmin; margin-right: 0.5vmin; width: 6%; height: 4vmin;'/>]]
+                local item_icon = item_data.task and "textures/science/task.texture" or "textures/science/tech.texture"
+                local percent = (item_data.progress * 100) // item_data.count
+                local highlight = start.selected_index == index and [[<div style='position:absolute; top: -1vmin; left: -1vmin; width: 65.25vmin; height: 12vmin; background-image:"textures/science/item_bg_highlight.texture"; background-size: 100% 100%;'/>]] or ""
+                -- local show_indicator = (item_data.progress == item_data.count) and 'false' or 'true'
                 item.outerHTML = ([[
-                <div class="progress-background-new" style="position:absolute; left:0; width: %d%%;"/>
-                <div class="item-bg" style='background-image:"%s";'/>
-                <!--新科技条目添加新-->
-                <div class="icon-researching" style="color: rgb(0, 255, 34);" data-if="%s">新</div>
-                <div class="item-title-new">%s</div>]]):format(item_data.progress, item_data.icon, tostring(item_data.new), item_data.name) .. ingredient_items .. statestr .. sign
+                    <div style="flex-direction: row; align-items:center;">
+                        %s
+                        <div class="item-bg" style='width: 14%%; background-image:"%s";'/>
+                        <div style="margin-left: 1vmin; margin-right: 1vmin; width: 75%%; flex-direction: column; align-items:center;">
+                            <div style="height: 45%%; flex-direction: row;">
+                                <div style="width: 50%%; font-size: 4vmin; text-align: center;">%s</div>
+                                <div style="width: 50%%; flex-direction: row; justify-content: flex-end;">
+                                    %s
+                                </div>
+                            </div>
+                            <div style="width: 95%%; height: 45%%; flex-direction: column;">
+                                <div class="progress_bar" style="height: 4.5vmin; width: %d%%;"/>
+                                <div class="indicator" style='top: -4.5vmin; height: 4.5vmin; width: 1vmin; left: %d%%;'/>
+                                <div style="text-align: center; font-size: 4vmin; top: -9vmin;">%d/%d</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="icon-researching" style="color: rgb(0, 255, 34);" data-if="%s">新</div>
+                    %s
+                ]]):format(sign, item_icon, item_data.name, ingredient_items, percent, percent, item_data.progress, item_data.count, tostring(item_data.new), highlight)
                 item.removeEventListener('click')
                 item.addEventListener('click', function(event) start.click_tech_item(item, index) end)
             end
@@ -414,76 +262,102 @@
                     return
                 end
                 unselect_recipe()
-                item.style.border = select_style_border
+                start.selected_recipe_index = index
                 start.selected_recipe = item
-                local detail = start.current_tech.detail[index]
-                if detail.name then
-                    start.detaillist:show_detail(index, true)
-                end
+                start.detaillist:on_dirty(index)
                 clickRecipe(index)
             end
 
             local function detail_item_init(item, index)
-                item.className = "item-research"
-                item.style.width = '90%'
-                item.removeEventListener('click')
-                item.addEventListener('click', function(event) start.click_detail_item(item, index) end)
-            end
-
-            local function detail_item_update(item, index)
-                local detail = start.current_tech.detail[index]
-                local htmlstr = ([[<div class="item-bg" style='background-image:"%s";'/>]]):format(detail.icon)
-                if detail.name then
-                    htmlstr = htmlstr .. ([[<div class="item-title-new">解锁配方："%s"</div>]]):format(detail.name)
-                    item.style.backgroundColor = 'rgb(114,87,4)'
-                elseif detail.desc then
-                    htmlstr = htmlstr .. ([[<div class="item-title-new">%s</div>]]):format(detail.desc)
-                    item.style.backgroundColor = 'rgb(112,48,160)'
+                if not start.current_tech then
+                    return
                 end
-                item.outerHTML = htmlstr
+                local detail = start.current_tech.detail[index]
+                if not detail.name then
+                    return
+                end
+                item.className = "item-detail"
                 item.removeEventListener('click')
                 item.addEventListener('click', function(event) start.click_detail_item(item, index) end)
             end
 
             local function pop_item_renderer(index)
-                local item = document.createElement "div"
-                local detail = start.current_tech.detail[index]
-                if not detail then
-                    return item
+                if not start.current_tech then
+                    return ""
                 end
-                local inoutstr = ""
+                local detail = start.current_tech.detail[index]
+                if not detail or not detail.input or not detail.output then
+                    return ""
+                end
+                local margin_top = '0'
+                local margin_left = '0'
+                local inoutstr = [[
+                    <div style='flex-direction:row; justify-content: center; align-items: center; width: 32vmin; height: 13vmin;'>
+                    <div style='width: 13vmin; height: 13vmin; flex-direction:row;justify-content:center;align-items:center;flex-wrap: wrap;'>]]
+                if #detail.input == 1 then
+                    margin_top = '7vmin'
+                    margin_left = '0.6vmin'
+                elseif #detail.input == 2 then
+                    margin_top = '7vmin'
+                end
                 for _, idata in ipairs(detail.input) do
                     inoutstr = inoutstr .. ([[
-                    <div class="small-item-new" style='background-image: "%s";'>
-                        <div class="item-count">%d</div>
-                        <div class="small-name">%s</div>
-                    </div>
-                    ]]):format(idata.icon, idata.count, idata.name)
+                    <div class="small-item-new" style='margin-top: %s; margin-left: %s; background-image: "%s";'/>
+                    ]]):format(margin_top, margin_left, idata.icon)
                 end
-                inoutstr = inoutstr .. ([[<div class="small-arrow"><div class="recipe-time">%s</div></div>]]):format(detail.time)
+                inoutstr = inoutstr .. "</div>"
+                inoutstr = inoutstr .. ([[<div style='margin-left: 1vmin; margin-right: 1vmin; height: 6vmin; flex-direction:column;justify-content:flex-start;align-items:center;'><div class="recipe-time">%s</div><div class="small-arrow"/></div>]]):format(detail.time)
+                inoutstr = inoutstr .. "<div style='width: 13vmin; height: 13vmin; flex-direction:row;justify-content:center;align-items:center;flex-wrap: wrap;'>"
+                margin_top = '0'
+                margin_left = '0'
+                if #detail.output == 1 then
+                    margin_top = '7vmin'
+                    margin_left = '0.6vmin'
+                elseif #detail.output == 2 then
+                    margin_top = '7vmin'
+                end
                 for _, outdata in ipairs(detail.output) do
                     inoutstr = inoutstr .. ([[
-                    <div class="small-item-new" style='background-image: "%s";'>
-                        <div class="item-count">%d</div>
-                        <div class="small-name">%s</div>
-                    </div>
-                    ]]):format(outdata.icon, outdata.count, outdata.name)
+                    <div class="small-item-new" style='margin-top: %s; margin-left: %s; background-image: "%s";'/>
+                    ]]):format(margin_top, margin_left, outdata.icon)
                 end
-                item.outerHTML = ([[
-                <div class="recipe-info-block">
-                    <div class="recipe-info-desc-block">
-                        <div class="recipe-info-desc-title">配方信息</div>
-                        <div class="recipe-info-desc">%s</div>
-                    </div>
-                    <div class="recipe-item-info-block">
-                        %s
-                    </div>
-                </div>
-                ]]):format(detail.desc, inoutstr)
-                return item
+                inoutstr = inoutstr .. "</div></div>"
+                return inoutstr
             end
+
+            local function detail_item_update(item, index)
+                if not start.current_tech then
+                    return
+                end
+                local selected = (start.selected_recipe_index == index)
+                item.style.backgroundImage = selected and 'textures/science/right_item_bg1.texture' or 'textures/science/right_item_bg0.texture'
+                item.style.height = selected and '13.1vmin' or '10vmin'
+                local detail = start.current_tech.detail[index]
+                if not detail then
+                    return
+                end
+                if not detail.name then
+                    return
+                end
+                local htmlstr = ([[<div style='width:61.5vmin;flex-direction:row;justify-content:space-between;align-items:center;'><div class="item-bg" style='margin-top: %s; margin-left: 2vmin; width: 8vmin; height: 8vmin; background-image:"%s";'/>]]):format(selected and '-3vmin' or '0vmin', detail.icon)
+                if selected then
+                    htmlstr = htmlstr .. pop_item_renderer(index)
+                elseif detail.name then
+                    htmlstr = htmlstr .. ([[
+                        <div style='margin-top: -2vmin; flex-direction: column; justify-content: flex-start; align-items: flex-end;'>
+                            <div style='text-align: right; font-size: 3vmin;'>解锁配方：%s</div>
+                            <div style='text-align: right; font-size: 2vmin; color: rgb(241,157,52);'>%s</div>
+                        </div>
+                    ]]):format(detail.name, detail.desc)
+                end
+                htmlstr = htmlstr .. '</div>'
+                item.outerHTML = htmlstr
+                item.removeEventListener('click')
+                item.addEventListener('click', function(event) start.click_detail_item(item, index) end)
+            end
+
             window.customElements.define("detaillist", function(e)
-                start.detaillist = listclass.create(document, e, detail_item_init, detail_item_update, pop_item_renderer)
+                start.detaillist = listclass.create(document, e, detail_item_init, detail_item_update)
             end)
             ui_sys.mapping(start, {
                 {
@@ -528,8 +402,10 @@
                     ui_sys.close()
                 end
             end
-            function start.clickReturn()
-                onclose()
+            function start.clickReturn(event)
+                if event.target == event.current then
+                    onclose()
+                end
             end
             function start.startSwitch()
                 ui_sys.pub {"switch"}
@@ -545,62 +421,44 @@
         </script>
     </head>
     <body>
-        <div class="item-container-region">
-            <div class="panel" style="width: 45%;">
-                <div class="header" id = "item-name-block">
-                    <button class = "back-button" data-event-click="clickReturn()"/>
-                    <div class = "menu-title">{{return_title}}</div>
-                    <!-- 已研究科技浏览界面按钮-->
-                    <button data-if="not show_finish" class="item-recipe-info" style="position: absolute;top:0.3vmin; right: 0.3vmin; background-color: transparent;"  data-event-click="showFinish()"/>
-                </div>
-
-                <!-- 科技条目 start -->
-                <list direction='1' width='100%' height='90%'/>
-                <!-- 科技条目 end -->
+        <!--div style='position: absolute; width: 100%; height: 100%; background-image: "textures/science/bg.texture"; background-size: cover;' data-event-click="clickReturn()"/-->
+        <div style='width: 100%; height: 100%; flex-direction: column; align-items: center; background-image: "textures/science/bg.texture"; background-size: cover;' data-event-click="clickReturn(ev)">
+            <div style="width: 60%; flex-direction: row; justify-content: center; align-items: center;">
+                <div style='margin: 1vmin; width: 20vmin; height: 0.2vmin; background-image: "textures/common/caption-line.texture"; background-size: cover;'/>
+                <div style='font-size: 6vmin; text-align: center;'>科技研究</div>
+                <div style='margin: 1vmin; width: 20vmin; height: 0.2vmin; background-image: "textures/common/caption-line.texture"; background-size: cover;'/>
             </div>
-            <div class="panel" style="width: 45%;">
-                <div class="column" id ="item-recipe-region">
-                    <div class="column" style="width: 100%; height: 88%;">
-                        <div class="recipe-name-text">其他信息</div>
-                        <div class="recipe-des-text">{{current_tech.desc}}</div>
-                        <div style="flex-direction: column; width:100%; height:100%;">
+            <div style="height: 90%; flex-direction: row; justify-content: center;">
+                <div style="margin: 1vmin; flex-direction: column; width: 40%; height: 100%;">
+                    <div style='margin: 1vmin; width: 100%; height: 90%; background-image: "textures/common/square-grid.texture"; background-size: 100% 100%; background-lattice: 4.28%;'>
+                        <!--button class = "back-button" data-event-click="clickReturn(event)"/-->
+                        <!-- 已研究科技浏览界面按钮-->
+                        <!--button data-if="not show_finish" class="item-recipe-info" style="position: absolute; top:0.3vmin; right: 0.3vmin; background-color: transparent;"  data-event-click="showFinish()"/-->
+                        <!-- 科技条目 start -->
+                        <list direction='1' width='100%' height='95%' style="margin-top: 1vmin; margin-bottom: 1vmin;"/>
+                        <!-- 科技条目 end -->
+                    </div>
+                    <div style="flex-direction: row; justify-content: flex-end;" data-event-click="showFinish()">
+                        <div style='width: 5vmin; height: 5vmin; background-size: cover; background-image: "textures/science/history.texture";'/>
+                        <div style="font-size: 5vmin;">科研历史</div>
+                    </div>
+                </div>
+                <div style='margin: 1vmin; flex-direction: column; width: 40%; height: 100%; background-image: "textures/science/right_panel_bg.texture"; background-size: cover;'>
+                    <div style="flex-direction: column; justify-content: flex-start; height: 88%;">
+                        <div style="margin-left: 10vmin; margin-top: 0.8vmin; font-size: 5vmin; color: black;">{{current_tech.name}}</div>
+                        <div class="recipe-des-text" style="margin-left: 4vmin; margin-top: 1vmin;">{{current_tech.desc}}</div>
+                        <div style="margin-left: 4vmin; flex-direction: row; justify-content: flex-start; align-items: center;" data-if="sub_icon ~=' '">
+                            <div style='width: 6vmin; height: 6vmin; background-size: cover;' data-style-background-image="sub_icon"/>
+                            <div style="color: rgb(241,157,52);">{{sub_desc}}</div>
+                        </div>
+                        <div style='margin-left: 5%; margin-right: 5%; width: 90%; height: 0.1vmin; background-image: "textures/common/caption-line.texture"; background-size: cover;'/>
+                        <div style="margin-top: 1vmin; flex-direction: column; width:100%; height:100%;">
                             <detaillist direction='1' width='100%' height='100%'/>
                         </div>
-                     </div>
-
-                    <div class="recipe-queue" style="justify-content: flex-end;border: 0px; padding:0 2vmin 2vmin 0;">
-                        <!-- 研究队列 start --> 
-                        <div class = "recipe-queue-item-block" data-if="false">
-                            <div class="column" style="justify-content:center;">
-                                <div style="font-size: 3.33vmin;">研究</div>
-                                <div style="font-size: 3.33vmin;">队列</div>
-                            </div>
-                            <div class="column" style="align-items:flex-start; justify-content: flex-start;">
-                                <button class="small-button" style='background-color: rgb(92, 184, 92); background-image:"textures/science/hand.texture";'/>
-                                <div style="font-size: 2.40vmin;">21m23s</div>
-                            </div>
-                            <div class="column" style="align-items:flex-start; justify-content: flex-start;">
-                                <button class="small-button" style='background-color: rgb(92, 184, 92); background-image:"textures/science/hand.texture";'/>
-                            </div>
-                            <div class="column" style="justify-content:flex-start;">
-                                <button class="small-button" style='background-image:"textures/science/add.texture";'/>
-                            </div>
-                            <div class="column" style="justify-content:flex-start;">
-                                <button class="small-button" style='background-image:"textures/science/add.texture";'/>
-                            </div>
-                            <div class="column" style="justify-content:flex-start;">
-                                <button class="small-button" style='background-image:"textures/science/add.texture";'/>
-                            </div>
-                        </div>
-                        <!-- 研究队列 end --> 
-
-                        <!-- 开始研究按钮 start --> 
-                        <button data-if="not current_running" class="column" style="justify-content:center; width: 35%; height:100%; background-color:rgb(0,176,240);" data-event-click="startSwitch()">
-                            <div style="font-size: 6.00vmin; text-align: center;">{{current_button_str}}</div>
-                        </button>
-                        <!-- 开始研究按钮 end --> 
                     </div>
-                    
+                    <button-confirm data-if="not current_running" style="width: 40vmin; height: 10vmin; align-self: flex-end;" data-event-click="startSwitch()">
+                        <div style="margin-top: 1.5vmin; font-size: 6vmin; text-align: center;">{{current_button_str}}</div>
+                    </button-confirm>
                 </div>
             </div>
         </div>
