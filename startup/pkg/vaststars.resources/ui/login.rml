@@ -72,7 +72,7 @@
                     <div class = "button-text1" style="font-size: 5.73vmin;">继续游戏</div>
                 </button>
                 <button class = "button-style"  data-event-click = "clickButton('start_mode', 'adventure')">
-                    <div class="middle-bg" style='background-image: "textures/science/book.texture";'/>
+                    <div class="middle-bg" style='background-image: "textures/road_net/big_bag.texture";'/>
                     <div class = "button-text1" style="font-size: 5.73vmin;">冒险模式</div>
                 </button>
                 <button class = "button-style"  data-event-click = "clickButton('start_mode', 'free')">
