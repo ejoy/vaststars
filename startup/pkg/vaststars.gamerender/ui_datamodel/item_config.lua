@@ -72,11 +72,6 @@ function M:create(object_id, interface)
         local category_idx = assert(cache[typeobject.item_category])
         local item_idx = #res[category_idx].items+1
 
-        if item == typeobject.id then
-            datamodel.category_idx = category_idx
-            datamodel.item_idx = item_idx
-        end
-
         assert(typeobject.icon and type(typeobject.icon) == "string" and typeobject.icon ~= "", ("item(%s) icon is invalid."):format(typeobject.name))
         res[category_idx].items[item_idx] = {
             id = ("%s:%s"):format(category_idx, item_idx),
@@ -87,11 +82,25 @@ function M:create(object_id, interface)
         }
         ::continue::
     end
-    datamodel.items = res
 
-    local item_name = datamodel.items[datamodel.category_idx].items[datamodel.item_idx].name
-    __mark_item_flag(item_name)
-    __set_item_value(datamodel, datamodel.category_idx, datamodel.item_idx, "new", false)
+    datamodel.items = {}
+    for _, r in ipairs(res) do
+        if #r.items > 0 then
+            table.insert(datamodel.items, r)
+            for item_idx, recipe in ipairs(r.items) do
+                if recipe.name == datamodel.item_name then
+                    assert(datamodel.category_idx == 0 and datamodel.item_idx == 0)
+
+                    datamodel.category_idx = #datamodel.items
+                    datamodel.item_idx = item_idx
+
+                    local item_name = datamodel.items[datamodel.category_idx].items[datamodel.item_idx].name
+                    __mark_item_flag(item_name)
+                    __set_item_value(datamodel, datamodel.category_idx, datamodel.item_idx, "new", false)
+                end
+            end
+        end
+    end
 
     return datamodel
 end
@@ -117,6 +126,9 @@ function M:stage_ui_update(datamodel, object_id, interface)
     for _ in set_item_mb:unpack() do
         local category_idx = datamodel.category_idx
         local item_idx = datamodel.item_idx
+        if category_idx == 0 and item_idx == 0 then
+            goto continue
+        end
 
         assert(datamodel.items[category_idx])
         assert(datamodel.items[category_idx].items[item_idx])
@@ -126,6 +138,7 @@ function M:stage_ui_update(datamodel, object_id, interface)
         local gameplay_world = gameplay_core.get_world()
         interface.set_first_item(gameplay_world, e, typeobject.id)
         itask.update_progress("set_item", name)
+        ::continue::
     end
 end
 

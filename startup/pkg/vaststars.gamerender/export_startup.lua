@@ -38,17 +38,6 @@ funcs["building"] = function (export_data, e)
     export_data.dir = iprototype.dir_tostring(e.building.direction)
     export_data.x = e.building.x
     export_data.y = e.building.y
-
-    gameplay_core.extend(e, "base?in")
-    if e.base then
-        local items = {}
-        for _, slot in pairs(ichest.collect_item(gameplay_core.get_world(), e.base)) do
-            items[#items+1] = {iprototype.queryById(slot.item).name, slot.amount}
-        end
-
-        export_data.items = items
-        return export_data
-    end
     return export_data
 end
 

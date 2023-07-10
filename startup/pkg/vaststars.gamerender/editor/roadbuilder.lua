@@ -12,6 +12,8 @@ local iflow_connector = require "gameplay.interface.flow_connector"
 local objects = require "objects"
 local terrain = ecs.require "terrain"
 local math_abs = math.abs
+local math_min = math.min
+local math_max = math.max
 local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 local task = ecs.require "task"
 local iroadnet_converter = require "roadnet_converter"
@@ -331,6 +333,9 @@ local function _builder_start(self, datamodel)
     local starting = _get_object(self, from_x, from_y, EDITOR_CACHE_NAMES)
     local dir, delta = iprototype.calc_dir(from_x, from_y, to_x, to_y)
 
+    local typeobject = iprototype.queryByName(prototype_name)
+    local c = ibackpack.query(gameplay_core.get_world(), typeobject.id) * 2
+
     local State = {
         succ = true,
         starting_connection = nil,
@@ -339,7 +344,9 @@ local function _builder_start(self, datamodel)
         from_y = from_y,
         to_x = to_x,
         to_y = to_y,
+        dec = 0,
     }
+
 
     if starting then
         -- starting object should at least have one connection, promised by _builder_init()
@@ -350,13 +357,12 @@ local function _builder_start(self, datamodel)
         end
 
         local succ
-        succ, to_x, to_y = terrain:move_coord(connection.x, connection.y, dir,
-            math_abs(to_x - connection.x),
-            math_abs(to_y - connection.y)
-        )
+        local dx, dy = math_min(math_abs(to_x - connection.x), c), math.min(math_abs(to_y - connection.y), c)
+        succ, to_x, to_y = terrain:move_coord(connection.x, connection.y, dir, dx, dy)
         if not succ then
             State.succ = false
         end
+        State.dec = math_max(dx, dy) // 2
 
         local ending = _get_object(self, to_x, to_y, EDITOR_CACHE_NAMES)
         if ending then
@@ -368,13 +374,14 @@ local function _builder_start(self, datamodel)
                     if another.dir ~= iprototype.reverse_dir(dir) then
                         goto continue
                     end
-                    succ, to_x, to_y = terrain:move_coord(connection.x, connection.y, dir,
-                        math_abs(another.x - connection.x),
-                        math_abs(another.y - connection.y)
-                    )
+
+                    local dx, dy = math_min(math_abs(another.x - connection.x), c), math_min(math_abs(another.y - connection.y), c)
+                    succ, to_x, to_y = terrain:move_coord(connection.x, connection.y, dir, dx, dy)
                     if not succ then
                         goto continue
                     end
+                    State.dec = math_max(dx, dy) // 2
+
                     if to_x == another.x and to_y == another.y then
                         State.ending_connection = another
                         _builder_end(self, datamodel, State, dir, delta)
@@ -400,13 +407,12 @@ local function _builder_start(self, datamodel)
 
         State.from_x, State.from_y = from_x, from_y
         local succ
-        succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir,
-            math_abs(to_x - from_x),
-            math_abs(to_y - from_y)
-        )
+        local dx, dy = math.min(math_abs(to_x - from_x), c), math.min(math_abs(to_y - from_y), c)
+        succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir, dx, dy)
         if not succ then
             State.succ = false
         end
+        State.dec = math_max(dx, dy) // 2
         State.to_x, State.to_y = to_x, to_y
 
         local ending = _get_object(self, to_x, to_y, EDITOR_CACHE_NAMES)
@@ -780,15 +786,34 @@ local function confirm(self, datamodel)
     iobject.remove(self.coord_indicator)
     self.coord_indicator = nil
 
-    local c = 0
+    local inc = 0
+    local dec = 0
+    for coord, mask in pairs(self.pending) do
+        if mask == REMOVE then
+            inc = inc + 1
+        else
+            local x, y = unpackcoord(coord)
+            if not ibuilding.get(x, y) then
+                dec = dec + 1
+            end
+        end
+    end
+    if inc > dec then
+        inc = inc - dec
+        dec = 0
+    else
+        dec = dec - inc
+        inc = 0
+    end
+
+    ibackpack.pickup(gameplay_core.get_world(), iprototype.queryByName("砖石公路-X型").id, dec)
+
     for coord, mask in pairs(self.pending) do
         local x, y = unpackcoord(coord)
         if mask == REMOVE then
             ibuilding.remove(x, y)
             iroadnet:editor_del("road", x, y)
         else
-            c = c + 1
-
             local prototype_name, dir = iroadnet_converter.mask_to_prototype_name_dir(mask) -- TODO: optimize
             ibuilding.set(x, y, prototype_name, dir)
             local shape, dir = iroadnet_converter.mask_to_shape_dir(mask)
@@ -796,6 +821,7 @@ local function confirm(self, datamodel)
         end
     end
 
+    iroadnet:update()
     gameplay_core.set_changed(CHANGED_FLAG_ROADNET)
     iroadnet:clear("indicator")
 
@@ -804,7 +830,7 @@ local function confirm(self, datamodel)
     datamodel.show_start_laying = false
     self.pending = {}
 
-    task.update_progress("road_laying", c)
+    task.update_progress("road_laying", dec)
 
     local typeobject = iprototype.queryByName("砖石公路-X型")
     local continue_construct = ibackpack.query(gameplay_core.get_world(), typeobject.id) > 0
