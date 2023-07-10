@@ -20,7 +20,7 @@
                 flex-direction: row;
                 align-items: center;
                 justify-content: flex-start;
-                border: 2px red;
+                /* border: 2px red; */
                 background-image: "textures/science/right_item_bg0.texture";
                 background-size: 100% 100%;
                 width: 61.5vmin;
