@@ -193,7 +193,7 @@ local function get_property(e, typeobject)
             local r = gameplay_core.fluidflow_query(e.fluidbox.fluid, e.fluidbox.id)
             if r then
                 volume = r.volume / r.multiple
-                capacity = r.capacity / r.multiple
+                capacity = math.floor(r.capacity / r.multiple)
                 flow = r.flow / r.multiple
             end
         end
@@ -228,10 +228,10 @@ local function get_property(e, typeobject)
                         -- only show out1 detail
                         add_property(t, "fluid_name", pt.name)
                         add_property(t, "fluid_volume", f.volume / f.multiple)
-                        add_property(t, "fluid_capacity", f.capacity / f.multiple)
+                        add_property(t, "fluid_capacity", math.floor(f.capacity / f.multiple))
                     end
                     add_property(t, "fluidboxes_" .. classify .. "_volume", f.volume / f.multiple)
-                    add_property(t, "fluidboxes_" .. classify .. "_capacity", f.capacity / f.multiple)
+                    add_property(t, "fluidboxes_" .. classify .. "_capacity", math.floor(f.capacity / f.multiple))
                     add_property(t, "fluidboxes_" .. classify .. "_flow", f.flow / f.multiple)
 
                     local fluidboxes_type, fluidboxes_index = classify:match("(%l*)(%d*)")

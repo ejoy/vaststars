@@ -12,8 +12,8 @@
                 justify-content: flex-start;
                 background-image:"textures/science/item_bg_dark.texture"; 
                 background-size: 100% 100%;
-                width: 63.7vmin;
-                height: 10vmin;
+                width: 70vmin;
+                height: 11vmin;
                 font-size: 3.40vmin;
             }
             .item-detail {
@@ -77,9 +77,9 @@
                 flex-direction: row;
                 justify-content: flex-end;
                 align-items: center;
-                position:absolute;
+                /* position:absolute;
                 right:1vmin;
-                top:0.2vmin;
+                top:0.2vmin; */
                 width:50%;
                 height:35%;
             }
@@ -217,7 +217,7 @@
                         ingredient_items = ingredient_items .. ([[<div class="property-icon" style='background-image:"%s";'/>]]):format(ingredient.icon)
                     end
                     if ingredient_count > 0 then
-                        ingredient_items = [[<div class="research-req" style='margin-top: 1vmin; margin-right: 5vmin;'>]] .. ingredient_items .. "</div>"--([[<div style="padding-bottom:0.5vmin; font-size: 3.5vmin; text-align: center; -webkit-text-stroke: 0.15vmin rgb(0, 0, 0);">X %d</div></div>]]):format(ingredient_count * item_data.count)
+                        ingredient_items = [[<div class="research-req" style='margin-top: 1vmin;'>]] .. ingredient_items .. "</div>"--([[<div style="padding-bottom:0.5vmin; font-size: 3.5vmin; text-align: center; -webkit-text-stroke: 0.15vmin rgb(0, 0, 0);">X %d</div></div>]]):format(ingredient_count * item_data.count)
                     end
                 --else
                 --    ingredient_items = [[<div class="research-req" style='margin-top: 1vmin; margin-right: 5vmin; width: 4vmin; height: 4vmin;'/>]]
@@ -226,14 +226,14 @@
                 local sign = item_data.sign_icon and [[<div style='margin-left: 0.5vmin; margin-right: 0.5vmin; background-size: 100% 100%; width: 4vmin; height: 4.46vmin; background-image:"textures/science/key_sign.texture";'/>]] or [[<div style='margin-left: 0.5vmin; margin-right: 0.5vmin; width: 6%; height: 4vmin;'/>]]
                 local item_icon = item_data.task and "textures/science/task.texture" or "textures/science/tech.texture"
                 local percent = (item_data.progress * 100) // item_data.count
-                local highlight = start.selected_index == index and [[<div style='position:absolute; top: -1vmin; left: -1vmin; width: 65.25vmin; height: 12vmin; background-image:"textures/science/item_bg_highlight.texture"; background-size: 100% 100%;'/>]] or ""
+                local highlight = start.selected_index == index and [[<div style='position:absolute; top: -1vmin; left: -1vmin; width: 71.5vmin; height: 13vmin; background-image:"textures/science/item_bg_highlight.texture"; background-size: 100% 100%;'/>]] or ""
                 -- local show_indicator = (item_data.progress == item_data.count) and 'false' or 'true'
                 item.outerHTML = ([[
                     <div style="flex-direction: row; align-items:center;">
                         %s
                         <div class="item-bg" style='width: 14%%; background-image:"%s";'/>
                         <div style="margin-left: 1vmin; margin-right: 1vmin; width: 75%%; flex-direction: column; align-items:center;">
-                            <div style="height: 45%%; flex-direction: row;">
+                            <div style="margin-right: 0vmin; height: 45%%; flex-direction: row;">
                                 <div style="width: 50%%; font-size: 4vmin; text-align: center;">%s</div>
                                 <div style="width: 50%%; flex-direction: row; justify-content: flex-end;">
                                     %s
@@ -259,6 +259,7 @@
 
             function start.click_detail_item(item, index)
                 if start.selected_recipe == item then
+                    unselect_recipe()
                     return
                 end
                 unselect_recipe()
@@ -344,7 +345,7 @@
                     htmlstr = htmlstr .. pop_item_renderer(index)
                 elseif detail.name then
                     htmlstr = htmlstr .. ([[
-                        <div style='margin-top: -2vmin; flex-direction: column; justify-content: flex-start; align-items: flex-end;'>
+                        <div style='margin-top: -2vmin; margin-right: 1.5vmin; flex-direction: column; justify-content: flex-start; align-items: flex-end;'>
                             <div style='text-align: right; font-size: 3vmin;'>解锁配方：%s</div>
                             <div style='text-align: right; font-size: 2vmin; color: rgb(241,157,52);'>%s</div>
                         </div>
@@ -429,7 +430,7 @@
                 <div style='margin: 1vmin; width: 20vmin; height: 0.2vmin; background-image: "textures/common/caption-line.texture"; background-size: cover;'/>
             </div>
             <div style="height: 90%; flex-direction: row; justify-content: center;">
-                <div style="margin: 1vmin; flex-direction: column; width: 40%; height: 100%;">
+                <div style="margin: 1.5vmin; flex-direction: column; width: 42%; height: 100%;">
                     <div style='margin: 1vmin; width: 100%; height: 90%; background-image: "textures/common/square-grid.texture"; background-size: 100% 100%; background-lattice: 4.28%;'>
                         <!--button class = "back-button" data-event-click="clickReturn(event)"/-->
                         <!-- 已研究科技浏览界面按钮-->
@@ -443,13 +444,13 @@
                         <div style="font-size: 5vmin;">科研历史</div>
                     </div>
                 </div>
-                <div style='margin: 1vmin; flex-direction: column; width: 40%; height: 100%; background-image: "textures/science/right_panel_bg.texture"; background-size: cover;'>
+                <div style='margin: 1.5vmin; flex-direction: column; width: 42%; height: 100%; background-image: "textures/science/right_panel_bg.texture"; background-size: cover;'>
                     <div style="flex-direction: column; justify-content: flex-start; height: 88%;">
                         <div style="margin-left: 10vmin; margin-top: 0.8vmin; font-size: 5vmin; color: black;">{{current_tech.name}}</div>
-                        <div class="recipe-des-text" style="margin-left: 4vmin; margin-top: 1vmin;">{{current_tech.desc}}</div>
-                        <div style="margin-left: 4vmin; flex-direction: row; justify-content: flex-start; align-items: center;" data-if="sub_icon ~=' '">
+                        <div class="recipe-des-text" style="margin-left: 2vmin; margin-top: 1vmin;">{{current_tech.desc}}</div>
+                        <div style="margin-left: 2vmin; flex-direction: row; justify-content: flex-start; align-items: center;" data-if="sub_icon ~=' '">
                             <div style='width: 6vmin; height: 6vmin; background-size: cover;' data-style-background-image="sub_icon"/>
-                            <div style="color: rgb(241,157,52);">{{sub_desc}}</div>
+                            <div style="width: 90%; color: rgb(241,157,52); font-size: 3vmin; word-break: break-all;">{{sub_desc}}</div>
                         </div>
                         <div style='margin-left: 5%; margin-right: 5%; width: 90%; height: 0.1vmin; background-image: "textures/common/caption-line.texture"; background-size: cover;'/>
                         <div style="margin-top: 1vmin; flex-direction: column; width:100%; height:100%;">

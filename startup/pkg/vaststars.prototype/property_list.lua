@@ -210,4 +210,21 @@ property_list.converter["weights"] = function(v)
 	end
 end
 
+property_list.converter["fluid_volume"] = function(v)
+	return string.format("%.1f", v)
+end
+
+property_list.converter["fluid_capacity"] = function(v)
+	return string.format("%d", math.floor(v))
+end
+
+for _, classify in ipairs {"in1","in2","in3","in4","out1","out2","out3"} do
+	property_list.converter["fluidboxes_" .. classify .. "_volume"] = function(v)
+		return string.format("%.1f", v)
+	end
+
+	property_list.converter["fluidboxes_" .. classify .. "_capacity"] = function(v)
+		return string.format("%d", math.floor(v))
+	end
+end
 return property_list
