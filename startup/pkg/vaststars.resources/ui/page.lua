@@ -18,7 +18,7 @@ function page_meta.create(document, e, item_init, item_update, detail_renderer, 
         detail_renderer = detail_renderer,
         document        = document,
         data_for        = data_for,
-        page_count = 0,
+        page_count      = 0,
     }
     setmetatable(page, page_meta)
     e.style.overflow = 'hidden'
@@ -105,9 +105,9 @@ function page_meta:init(item_count)
         return
     end
     local page_count = math.ceil(item_count / (self.row * self.col))
-    if self.page_count and self.page_count == page_count then
-        return
-    end
+    -- if self.page_count and self.page_count == page_count then
+    --     return
+    -- end
     self.page_count = page_count
     self.pages = {}
     self.container = {}
@@ -116,6 +116,7 @@ function page_meta:init(item_count)
     self.selected = nil
     self.detail = nil
     self.current_page = 1
+    self.panel:removeAllChild()
     for i = 1, self.page_count do
         local page_e = self.document.createElement "div"
         page_e.style.flexDirection = 'column'
@@ -170,13 +171,13 @@ function page_meta:init(item_count)
         self.index_map[#self.index_map + 1] = item_info
     end
     self:update_footer(page_count)
-    self.inited = true
+    -- self.inited = true
 end
 
 function page_meta:on_dirty_all(item_count)
-    if not self.inited then
+    -- if not self.inited then
         self:init(item_count)
-    end
+    -- end
     for index = 1, item_count do
         if not self.index_map[index] then
             break
@@ -186,7 +187,7 @@ function page_meta:on_dirty_all(item_count)
         self.item_update(item, index)
     end
 
-    local total_item_count = #self.index_map
+    local total_item_count = self.index_map and #self.index_map or 0
     for empty_idx = item_count + 1, total_item_count do
         local item = self.index_map[empty_idx].item
         item.outerHTML = ""
