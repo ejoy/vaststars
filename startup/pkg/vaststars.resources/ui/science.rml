@@ -10,7 +10,7 @@
                 flex-direction: row;
                 align-items: center;
                 justify-content: flex-start;
-                background-image:"textures/new_science/item_bg_dark.texture"; 
+                background-image:"textures/science/item_bg_dark.texture"; 
                 background-size: 100% 100%;
                 width: 63.7vmin;
                 height: 10vmin;
@@ -21,7 +21,7 @@
                 align-items: center;
                 justify-content: flex-start;
                 border: 2px red;
-                background-image: "textures/new_science/right_item_bg0.texture";
+                background-image: "textures/science/right_item_bg0.texture";
                 background-size: 100% 100%;
                 width: 61.5vmin;
                 height: 10vmin;
@@ -99,7 +99,7 @@
                 width: 5vmin;
                 height: 2.5vmin;
                 /* margin:0 0.5vmin; */
-                background-image: "textures/new_science/dir.texture";
+                background-image: "textures/science/dir.texture";
                 background-size: cover;
             }
             .recipe-time {
@@ -111,14 +111,14 @@
             }
             .progress_bar {
                 align-self: flex-start;
-                background-image: "textures/new_science/progress_bar.texture";
+                background-image: "textures/science/progress_bar.texture";
                 background-size: cover;
                 width: 100%;
                 height: 100%;
             }
             .indicator {
                 align-self: flex-start;
-                background-image: "textures/new_science/indicator.texture";
+                background-image: "textures/science/indicator.texture";
                 background-size: 100% 100%;
                 top: -110%;
                 width: 0.5vmin;
@@ -223,10 +223,10 @@
                 --    ingredient_items = [[<div class="research-req" style='margin-top: 1vmin; margin-right: 5vmin; width: 4vmin; height: 4vmin;'/>]]
                 end
                 local statestr = item_data.running and [[<div class="icon-researching">研究中...</div>]] or ""
-                local sign = item_data.sign_icon and [[<div style='margin-left: 0.5vmin; margin-right: 0.5vmin; background-size: cover; width: 6%; height: 4vmin; background-image:"textures/new_science/key_sign.texture";'/>]] or [[<div style='margin-left: 0.5vmin; margin-right: 0.5vmin; width: 6%; height: 4vmin;'/>]]
-                local item_icon = item_data.task and "textures/new_science/task.texture" or "textures/new_science/tech.texture"
+                local sign = item_data.sign_icon and [[<div style='margin-left: 0.5vmin; margin-right: 0.5vmin; background-size: cover; width: 6%; height: 4vmin; background-image:"textures/science/key_sign.texture";'/>]] or [[<div style='margin-left: 0.5vmin; margin-right: 0.5vmin; width: 6%; height: 4vmin;'/>]]
+                local item_icon = item_data.task and "textures/science/task.texture" or "textures/science/tech.texture"
                 local percent = (item_data.progress * 100) // item_data.count
-                local highlight = start.selected_index == index and [[<div style='position:absolute; top: -1vmin; left: -1vmin; width: 65.25vmin; height: 12vmin; background-image:"textures/new_science/item_bg_highlight.texture"; background-size: 100% 100%;'/>]] or ""
+                local highlight = start.selected_index == index and [[<div style='position:absolute; top: -1vmin; left: -1vmin; width: 65.25vmin; height: 12vmin; background-image:"textures/science/item_bg_highlight.texture"; background-size: 100% 100%;'/>]] or ""
                 -- local show_indicator = (item_data.progress == item_data.count) and 'false' or 'true'
                 item.outerHTML = ([[
                     <div style="flex-direction: row; align-items:center;">
@@ -330,7 +330,7 @@
                     return
                 end
                 local selected = (start.selected_recipe_index == index)
-                item.style.backgroundImage = selected and 'textures/new_science/right_item_bg1.texture' or 'textures/new_science/right_item_bg0.texture'
+                item.style.backgroundImage = selected and 'textures/science/right_item_bg1.texture' or 'textures/science/right_item_bg0.texture'
                 item.style.height = selected and '13.1vmin' or '10vmin'
                 local detail = start.current_tech.detail[index]
                 if not detail then
@@ -421,8 +421,8 @@
         </script>
     </head>
     <body>
-        <!--div style='position: absolute; width: 100%; height: 100%; background-image: "textures/new_science/bg.texture"; background-size: cover;' data-event-click="clickReturn()"/-->
-        <div style='width: 100%; height: 100%; flex-direction: column; align-items: center; background-image: "textures/new_science/bg.texture"; background-size: cover;' data-event-click="clickReturn(ev)">
+        <!--div style='position: absolute; width: 100%; height: 100%; background-image: "textures/science/bg.texture"; background-size: cover;' data-event-click="clickReturn()"/-->
+        <div style='width: 100%; height: 100%; flex-direction: column; align-items: center; background-image: "textures/science/bg.texture"; background-size: cover;' data-event-click="clickReturn(ev)">
             <div style="width: 60%; flex-direction: row; justify-content: center; align-items: center;">
                 <div style='margin: 1vmin; width: 20vmin; height: 0.2vmin; background-image: "textures/common/caption-line.texture"; background-size: cover;'/>
                 <div style='font-size: 6vmin; text-align: center;'>科技研究</div>
@@ -439,11 +439,11 @@
                         <!-- 科技条目 end -->
                     </div>
                     <div style="flex-direction: row; justify-content: flex-end;" data-event-click="showFinish()">
-                        <div style='width: 5vmin; height: 5vmin; background-size: cover; background-image: "textures/new_science/history.texture";'/>
+                        <div style='width: 5vmin; height: 5vmin; background-size: cover; background-image: "textures/science/history.texture";'/>
                         <div style="font-size: 5vmin;">科研历史</div>
                     </div>
                 </div>
-                <div style='margin: 1vmin; flex-direction: column; width: 40%; height: 100%; background-image: "textures/new_science/right_panel_bg.texture"; background-size: cover;'>
+                <div style='margin: 1vmin; flex-direction: column; width: 40%; height: 100%; background-image: "textures/science/right_panel_bg.texture"; background-size: cover;'>
                     <div style="flex-direction: column; justify-content: flex-start; height: 88%;">
                         <div style="margin-left: 10vmin; margin-top: 0.8vmin; font-size: 5vmin; color: black;">{{current_tech.name}}</div>
                         <div class="recipe-des-text" style="margin-left: 4vmin; margin-top: 1vmin;">{{current_tech.desc}}</div>
