@@ -756,7 +756,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "生产运输车辆",
+            "物流学1",
         },
 	},
 
