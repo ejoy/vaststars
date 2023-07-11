@@ -1964,7 +1964,7 @@ prototype "处理器2" {
 
 prototype "砖石公路打印" {
     type = { "recipe" },
-    recipe_craft_category = "框架打印",
+    recipe_craft_category = "物流小型制造",
     recipe_category =  "物流",
     recipe_order =  104,
     recipe_icon =  "textures/construct/road1.texture",

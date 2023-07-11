@@ -33,7 +33,6 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 4},
     effects = {
       -- unlock_recipe = {"采矿机打印"},
-      unlock_item = {"碎石"},
     },
     prerequisites = {""},
     count = 1,
@@ -243,7 +242,7 @@ local prototype = gameplay.register.prototype
       "textures/task_tips_pic/task_place_pole2.texture",
     },
     effects = {
-      -- unlock_item = {"碎石"},
+      unlock_item = {"碎石"},
     },
     -- guide_focus = {
     --   {
@@ -377,7 +376,7 @@ local prototype = gameplay.register.prototype
     sign_desc = {
       { desc = "该科技是一项前沿科技，可引导其他的科技研究", icon = "textures/science/key_sign.texture"},
     },
-    sign_icon = "textures/science/tech-key_sign.texture",
+    sign_icon = "textures/science/key_sign.texture",
 }
 
   prototype "放置组装机" {
@@ -483,6 +482,7 @@ local prototype = gameplay.register.prototype
     prerequisites = {"铁矿石开采"},
     effects = {
       unlock_recipe = {"砖石公路打印"},
+      unlock_item = {"砖石公路-X型"},
     },
     ingredients = {
         {"地质科技包", 1},
@@ -1108,7 +1108,7 @@ prototype "气候研究1" {
   sign_desc = {
     { desc = "该科技是一项前沿科技，可引导其他的科技研究", icon = "textures/science/key_sign.texture"},
   },
-  sign_icon = "textures/science/tech-key_sign.texture",
+  sign_icon = "textures/science/key_sign.texture",
   count = 12,
   time = "1.5s"
 }
@@ -1175,7 +1175,7 @@ prototype "采水研究" {
   sign_desc = {
     { desc = "该科技是一项前沿科技，可引导其他的科技研究", icon = "textures/science/key_sign.texture"},
   },
-  sign_icon = "textures/science/tech-key_sign.texture",
+  sign_icon = "textures/science/key_sign.texture",
   count = 12,
   time = "1.5s"
 }
@@ -1373,7 +1373,7 @@ prototype "地质研究2" {
   sign_desc = {
     { desc = "该科技是一项前沿科技，可引导其他的科技研究", icon = "textures/science/key_sign.texture"},
   },
-  sign_icon = "textures/science/tech-key_sign.texture",
+  sign_icon = "textures/science/key_sign.texture",
 }
 
 prototype "冶金学1" {
@@ -1519,7 +1519,7 @@ prototype "机械研究" {
   sign_desc = {
     { desc = "该科技是一项前沿科技，可引导其他的科技研究", icon = "textures/science/key_sign.texture"},
   },
-  sign_icon = "textures/science/tech-key_sign.texture",
+  sign_icon = "textures/science/key_sign.texture",
 }
 
 prototype "生产机械科技包" {
@@ -2230,7 +2230,7 @@ prototype "电子研究" {
   sign_desc = {
     { desc = "该科技是一项前沿科技，可引导其他的科技研究", icon = "textures/science/key_sign.texture"},
   },
-  sign_icon = "textures/science/tech-key_sign.texture",
+  sign_icon = "textures/science/key_sign.texture",
   count = 100,
   time = "5s"
 }
@@ -2819,7 +2819,7 @@ prototype "化学研究" {
   sign_desc = {
     { desc = "该科技是一项前沿科技，可引导其他的科技研究", icon = "textures/science/key_sign.texture"},
   },
-  sign_icon = "textures/science/tech-key_sign.texture",
+  sign_icon = "textures/science/key_sign.texture",
   count = 250,
   time = "30s"
 }
