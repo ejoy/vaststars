@@ -153,8 +153,8 @@ return function()
         e = {
             x = v.building.x,
             y = v.building.y,
-            prototype = iprototype.queryById(v.building.prototype).name,
-            direction = iprototype.dir_tostring(v.building.direction),
+            prototype_name = iprototype.queryById(v.building.prototype).name,
+            dir = iprototype.dir_tostring(v.building.direction),
         }
         roads[#roads+1] = e
     end
