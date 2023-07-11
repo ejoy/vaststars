@@ -6,10 +6,10 @@ template <typename Key, typename Mapped>
 void flatmap_increase(flatmap<Key, Mapped>& m, Key const& key, Mapped mapped) {
     auto [found, slot] = m.find_or_insert(key);
     if (found) {
-        *slot = mapped;
+        *slot += mapped;
     }
     else {
-        *slot += mapped;
+        *slot = mapped;
     }
 }
 
