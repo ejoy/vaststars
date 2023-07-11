@@ -33,7 +33,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 4},
     effects = {
       -- unlock_recipe = {"采矿机打印"},
-      -- unlock_item = {"采矿机框架"},
+      unlock_item = {"碎石"},
     },
     prerequisites = {""},
     count = 1,
@@ -45,6 +45,35 @@ local prototype = gameplay.register.prototype
     },
   }
 
+  -- prototype "生产运输车辆1" {
+  --   desc = "指挥中心建造4辆运输车辆",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "task" },
+  --   task = {"select_entity", 0, "运输车辆I"},
+  --   prerequisites = {"迫降火星"},
+  --   count = 4,
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_produce_ore3.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "指挥中心建造4辆运输车辆", icon = "textures/construct/industry.texture"},
+  --   },
+  --   -- guide_focus = {
+  --   --   {
+  --   --     prefab = "prefabs/selected-box-no-animation.prefab",
+  --   --     x = 128,
+  --   --     y = 122,
+  --   --     w = 5.5,
+  --   --     h = 5.5,
+  --   --     show_arrow = true,
+  --   --   },
+  --   --   {
+  --   --     camera_x = 121,
+  --   --     camera_y = 122,
+  --   --   },
+  --   -- },
+  -- }
+
   prototype "放置采矿机" {
     desc = "放置1台采矿机",
     icon = "textures/construct/industry.texture",
@@ -55,27 +84,27 @@ local prototype = gameplay.register.prototype
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
-    guide_focus = {
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 114,
-        y = 128,
-        w = 3.5,
-        h = 3.5,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 114,
-        y = 123.8,
-        w = 1.8,
-        h = 1.8,
-        show_arrow = true,
-      },
-      {
-        camera_x = 115,
-        camera_y = 125,
-      },
-    },
+    -- guide_focus = {
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 114,
+    --     y = 128,
+    --     w = 3.5,
+    --     h = 3.5,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 114,
+    --     y = 123.8,
+    --     w = 1.8,
+    --     h = 1.8,
+    --     show_arrow = true,
+    --   },
+    --   {
+    --     camera_x = 115,
+    --     camera_y = 125,
+    --   },
+    -- },
     sign_desc = {
       { desc = "在石矿上放置1个采矿机", icon = "textures/construct/industry.texture"},
     },
@@ -93,76 +122,76 @@ local prototype = gameplay.register.prototype
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
-    guide_focus = {
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 114,
-        y = 117.8,
-        w = 1.8,
-        h = 1.8,
-        show_arrow = true,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 110,
-        y = 124,
-        w = 3.5,
-        h = 3.5,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 118,
-        y = 124,
-        w = 3.5,
-        h = 3.5,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 114,
-        y = 124,
-        w = 3.5,
-        h = 3.5,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 114,
-        y = 132,
-        w = 3.5,
-        h = 3.5,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 110,
-        y = 132,
-        w = 3.5,
-        h = 3.5,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 118,
-        y = 132,
-        w = 3.5,
-        h = 3.5,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 110,
-        y = 128,
-        w = 3.5,
-        h = 3.5,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 118,
-        y = 128,
-        w = 3.5,
-        h = 3.5,
-      },
-      {
-        camera_x = 115,
-        camera_y = 125,
-      },
-    },
+    -- guide_focus = {
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 114,
+    --     y = 117.8,
+    --     w = 1.8,
+    --     h = 1.8,
+    --     show_arrow = true,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 110,
+    --     y = 124,
+    --     w = 3.5,
+    --     h = 3.5,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 118,
+    --     y = 124,
+    --     w = 3.5,
+    --     h = 3.5,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 114,
+    --     y = 124,
+    --     w = 3.5,
+    --     h = 3.5,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 114,
+    --     y = 132,
+    --     w = 3.5,
+    --     h = 3.5,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 110,
+    --     y = 132,
+    --     w = 3.5,
+    --     h = 3.5,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 118,
+    --     y = 132,
+    --     w = 3.5,
+    --     h = 3.5,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 110,
+    --     y = 128,
+    --     w = 3.5,
+    --     h = 3.5,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 118,
+    --     y = 128,
+    --     w = 3.5,
+    --     h = 3.5,
+    --   },
+    --   {
+    --     camera_x = 115,
+    --     camera_y = 125,
+    --   },
+    -- },
     sign_desc = {
       { desc = "在石矿上放置1个采矿机", icon = "textures/construct/industry.texture"},
     },
@@ -183,20 +212,20 @@ local prototype = gameplay.register.prototype
       "textures/task_tips_pic/task_place_pole1.texture",
       "textures/task_tips_pic/task_place_pole2.texture",
     },
-    guide_focus = {
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 127,
-        y = 115.8,
-        w = 1.8,
-        h = 1.8,
-        show_arrow = true,
-      },
-      {
-        camera_x = 125,
-        camera_y = 121,
-      },
-    },
+    -- guide_focus = {
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 127,
+    --     y = 115.8,
+    --     w = 1.8,
+    --     h = 1.8,
+    --     show_arrow = true,
+    --   },
+    --   {
+    --     camera_x = 125,
+    --     camera_y = 121,
+    --   },
+    -- },
     sign_desc = {
       { desc = "风力发电机附近放置2个铁制电线杆构成电网", icon = "textures/construct/industry.texture"},
     },
@@ -214,43 +243,43 @@ local prototype = gameplay.register.prototype
       "textures/task_tips_pic/task_place_pole2.texture",
     },
     effects = {
-      unlock_item = {"碎石"},
+      -- unlock_item = {"碎石"},
     },
-    guide_focus = {
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 127,
-        y = 127.8,
-        w = 1.8,
-        h = 1.8,
-        show_arrow = true,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 117.5,
-        y = 124.5,
-        w = 2.5,
-        h = 2.5,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 117.5,
-        y = 132.5,
-        w = 2.5,
-        h = 2.5,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 117.5,
-        y = 128.5,
-        w = 2.5,
-        h = 2.5,
-      },
-      {
-        camera_x = 120,
-        camera_y = 128,
-      },
-    },
+    -- guide_focus = {
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 127,
+    --     y = 127.8,
+    --     w = 1.8,
+    --     h = 1.8,
+    --     show_arrow = true,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 117.5,
+    --     y = 124.5,
+    --     w = 2.5,
+    --     h = 2.5,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 117.5,
+    --     y = 132.5,
+    --     w = 2.5,
+    --     h = 2.5,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 117.5,
+    --     y = 128.5,
+    --     w = 2.5,
+    --     h = 2.5,
+    --   },
+    --   {
+    --     camera_x = 120,
+    --     camera_y = 128,
+    --   },
+    -- },
     sign_desc = {
       { desc = "放置1个无人机仓库I", icon = "textures/construct/industry.texture"},
     },
@@ -313,20 +342,20 @@ local prototype = gameplay.register.prototype
     tips_pic = {
       "textures/task_tips_pic/task_click_build.texture",
     },
-    guide_focus = {
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 130,
-        y = 115.8,
-        w = 1.8,
-        h = 1.8,
-        show_arrow = true,
-      },
-      {
-        camera_x = 128,
-        camera_y = 121,
-      },
-    },
+    -- guide_focus = {
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 130,
+    --     y = 115.8,
+    --     w = 1.8,
+    --     h = 1.8,
+    --     show_arrow = true,
+    --   },
+    --   {
+    --     camera_x = 128,
+    --     camera_y = 121,
+    --   },
+    -- },
     sign_desc = {
       { desc = "放置1座科研中心", icon = "textures/construct/industry.texture"},
     },
@@ -346,9 +375,9 @@ local prototype = gameplay.register.prototype
     time = "2s",
     prerequisites = {"放置科研中心"},
     sign_desc = {
-      { desc = "该科技是火星探索的前沿科技，它可以引导更多的科技研究", icon = "textures/science/important.texture"},
+      { desc = "该科技是一项前沿科技，可引导其他的科技研究", icon = "textures/science/key_sign.texture"},
     },
-    sign_icon = "textures/science/tech-important.texture",
+    sign_icon = "textures/science/tech-key_sign.texture",
 }
 
   prototype "放置组装机" {
@@ -364,20 +393,20 @@ local prototype = gameplay.register.prototype
     tips_pic = {
       "textures/task_tips_pic/task_click_build.texture",
     },
-    guide_focus = {
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 130,
-        y = 127.8,
-        w = 1.8,
-        h = 1.8,
-        show_arrow = true,
-      },
-      {
-        camera_x = 128,
-        camera_y = 125,
-      },
-    },
+    -- guide_focus = {
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 130,
+    --     y = 127.8,
+    --     w = 1.8,
+    --     h = 1.8,
+    --     show_arrow = true,
+    --   },
+    --   {
+    --     camera_x = 128,
+    --     camera_y = 125,
+    --   },
+    -- },
     sign_desc = {
       { desc = "放置2台组装机", icon = "textures/construct/industry.texture"},
     },
@@ -491,316 +520,287 @@ local prototype = gameplay.register.prototype
       "textures/task_tips_pic/task_place_road2.texture",
       "textures/task_tips_pic/task_place_road3.texture",
     },
-    guide_focus = {
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 126,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 127,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 128,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 129,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 130,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 131,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 132,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 133,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 134,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 135,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 136,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 137,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 138,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 139,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 140,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 141,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 142,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 143,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 144,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 145,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 146,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 147,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 148,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 149,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 150,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 151,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 152,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 153,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 154,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 155,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 156,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 157,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 158,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 159,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 160,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 161,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 162,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 163,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 164,
-        y = 125,
-        w = 0.25,
-        h = 0.25,
-      },
-      {
-        camera_x = 125,
-        camera_y = 122,
-      },
-    },
+    -- guide_focus = {
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 126,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 127,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 128,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 129,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 130,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 131,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 132,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 133,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 134,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 135,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 136,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 137,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 138,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 139,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 140,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 141,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 142,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 143,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 144,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 145,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 146,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 147,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 148,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 149,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 150,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 151,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 152,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 153,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 154,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 155,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 156,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 157,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 158,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 159,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 160,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 161,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 162,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 163,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 164,
+    --     y = 125,
+    --     w = 0.25,
+    --     h = 0.25,
+    --   },
+    --   {
+    --     camera_x = 125,
+    --     camera_y = 122,
+    --   },
+    -- },
     sign_desc = {
       { desc = "修建道路从指挥中心到东边的铁矿", icon = "textures/construct/industry.texture"},
-    },
-  }
-
-  prototype "铁矿放置采矿机" {
-    desc = "放置1台采矿机",
-    icon = "textures/construct/industry.texture",
-    type = { "task" },
-    task = {"select_entity", 0, "采矿机I"},
-    prerequisites = {"通向铁矿"},
-    count = 2,
-    tips_pic = {
-      "textures/task_tips_pic/task_place_logistics.texture",
-    },
-    sign_desc = {
-      { desc = "在铁矿上放置1台采矿机", icon = "textures/construct/industry.texture"},
-    },
-    guide_focus = {
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 163,
-        y = 128,
-        w = 3.5,
-        h = 3.5,
-        show_arrow = true,
-      },
-      {
-        camera_x = 121,
-        camera_y = 122,
-      },
     },
   }
 
@@ -809,15 +809,43 @@ local prototype = gameplay.register.prototype
     type = { "tech" },
     icon = "textures/science/tech-research.texture",
     effects = {
-      unlock_recipe = {"出货车站打印","收货车站打印"},
-      unlock_item = {"出货车站","收货车站"},
+      unlock_recipe = {"出货车站维修","收货车站维修"},
     },
-    prerequisites = {"铁矿放置采矿机"},
+    prerequisites = {"通向铁矿"},
     ingredients = {
         {"地质科技包", 1},
     },
-    count = 10,
+    count = 30,
     time = "1s"
+  }
+
+  prototype "铁矿放置采矿机" {
+    desc = "放置1台采矿机",
+    icon = "textures/construct/industry.texture",
+    type = { "task" },
+    task = {"select_entity", 0, "采矿机I"},
+    prerequisites = {"物流学1"},
+    count = 2,
+    tips_pic = {
+      "textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "在铁矿上放置1台采矿机", icon = "textures/construct/industry.texture"},
+    },
+    -- guide_focus = {
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 163,
+    --     y = 128,
+    --     w = 3.5,
+    --     h = 3.5,
+    --     show_arrow = true,
+    --   },
+    --   {
+    --     camera_x = 121,
+    --     camera_y = 122,
+    --   },
+    -- },
   }
 
   prototype "放置出货车站" {
@@ -825,7 +853,7 @@ local prototype = gameplay.register.prototype
     icon = "textures/construct/industry.texture",
     type = { "task" },
     task = {"select_entity", 0, "出货车站"},
-    prerequisites = {"物流学1"},
+    prerequisites = {"铁矿放置采矿机"},
     count = 1,
     effects = {
       unlock_recipe = {"车辆装配"},
@@ -833,20 +861,20 @@ local prototype = gameplay.register.prototype
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
-    guide_focus = {
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 109,
-        y = 136,
-        w = 5,
-        h = 5,
-        show_arrow = true,
-      },
-      {
-        camera_x = 108,
-        camera_y = 130,
-      },
-    },
+    -- guide_focus = {
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 109,
+    --     y = 136,
+    --     w = 5,
+    --     h = 5,
+    --     show_arrow = true,
+    --   },
+    --   {
+    --     camera_x = 108,
+    --     camera_y = 130,
+    --   },
+    -- },
     sign_desc = {
       { desc = "搜索废墟传送至建造中心生产并放置1个出货车站", icon = "textures/construct/industry.texture"},
     },
@@ -857,65 +885,65 @@ local prototype = gameplay.register.prototype
     icon = "textures/construct/industry.texture",
     type = { "task" },
     task = {"select_entity", 0, "收货车站"},
-    prerequisites = {"物流学1"},
+    prerequisites = {"铁矿放置采矿机"},
     count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
-    guide_focus = {
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 109,
-        y = 136,
-        w = 5,
-        h = 5,
-        show_arrow = true,
-      },
-      {
-        camera_x = 108,
-        camera_y = 130,
-      },
-    },
+    -- guide_focus = {
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 109,
+    --     y = 136,
+    --     w = 5,
+    --     h = 5,
+    --     show_arrow = true,
+    --   },
+    --   {
+    --     camera_x = 108,
+    --     camera_y = 130,
+    --   },
+    -- },
     sign_desc = {
       { desc = "搜索废墟传送至建造中心生产并放置1个收货车站", icon = "textures/construct/industry.texture"},
     },
   }
 
-  prototype "生产运输车辆" {
-    desc = "指挥中心建造4辆运输车辆",
-    icon = "textures/construct/industry.texture",
-    type = { "task" },
-    task = {"stat_production", 0, "运输车辆I"},
-    prerequisites = {"放置出货车站","放置收货车站"},
-    count = 4,
-    tips_pic = {
-      "textures/task_tips_pic/task_produce_ore3.texture",
-    },
-    sign_desc = {
-      { desc = "指挥中心建造4辆运输车辆", icon = "textures/construct/industry.texture"},
-    },
-    guide_focus = {
-      {
-        prefab = "prefabs/selected-box-no-animation.prefab",
-        x = 128,
-        y = 122,
-        w = 5.5,
-        h = 5.5,
-        show_arrow = true,
-      },
-      {
-        camera_x = 121,
-        camera_y = 122,
-      },
-    },
-  }
+  -- prototype "生产运输车辆" {
+  --   desc = "指挥中心建造4辆运输车辆",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "task" },
+  --   task = {"stat_production", 0, "运输车辆I"},
+  --   prerequisites = {"放置出货车站","放置收货车站"},
+  --   count = 4,
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_produce_ore3.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "指挥中心建造4辆运输车辆", icon = "textures/construct/industry.texture"},
+  --   },
+  --   -- guide_focus = {
+  --   --   {
+  --   --     prefab = "prefabs/selected-box-no-animation.prefab",
+  --   --     x = 128,
+  --   --     y = 122,
+  --   --     w = 5.5,
+  --   --     h = 5.5,
+  --   --     show_arrow = true,
+  --   --   },
+  --   --   {
+  --   --     camera_x = 121,
+  --   --     camera_y = 122,
+  --   --   },
+  --   -- },
+  -- }
 
   prototype "生产铁矿石" {
     desc = "挖掘足够的铁矿石可以开始进行锻造",
     icon = "textures/construct/industry.texture",
     type = { "task" },
     task = {"stat_production", 0, "铁矿石"},
-    prerequisites = {"生产运输车辆"},
+    prerequisites = {"放置出货车站","放置收货车站"},
     count = 10,
     effects = {
       unlock_recipe = {"熔炼炉打印"},
@@ -1017,12 +1045,12 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "机械运输" {
+  prototype "车辆维修" {
     desc = "研究生产运输车辆工艺",
     type = { "tech" },
     icon = "textures/science/tech-research.texture",
     effects = {
-      unlock_recipe = {"运输汽车制造"},
+      unlock_recipe = {"维修运输汽车"},
     },
     prerequisites = {"生产铁齿轮"},
     ingredients = {
@@ -1037,7 +1065,7 @@ local prototype = gameplay.register.prototype
     icon = "textures/construct/industry.texture",
     type = { "task" },
     task = {"stat_production", 0, "运输车辆I"},
-    prerequisites = {"机械运输"},
+    prerequisites = {"车辆维修"},
     count = 8,
     tips_pic = {
       "textures/task_tips_pic/task_produce_ironplate1.texture",
@@ -1078,9 +1106,9 @@ prototype "气候研究1" {
       {"地质科技包", 1},
   },
   sign_desc = {
-    { desc = "该科技是火星探索的前沿科技，它可以引导更多的科技研究", icon = "textures/science/important.texture"},
+    { desc = "该科技是一项前沿科技，可引导其他的科技研究", icon = "textures/science/key_sign.texture"},
   },
-  sign_icon = "textures/science/tech-important.texture",
+  sign_icon = "textures/science/tech-key_sign.texture",
   count = 12,
   time = "1.5s"
 }
@@ -1145,9 +1173,9 @@ prototype "采水研究" {
       {"地质科技包", 1},
   },
   sign_desc = {
-    { desc = "该科技是火星探索的前沿科技，它可以引导更多的科技研究", icon = "textures/science/important.texture"},
+    { desc = "该科技是一项前沿科技，可引导其他的科技研究", icon = "textures/science/key_sign.texture"},
   },
-  sign_icon = "textures/science/tech-important.texture",
+  sign_icon = "textures/science/tech-key_sign.texture",
   count = 12,
   time = "1.5s"
 }
@@ -1343,9 +1371,9 @@ prototype "地质研究2" {
   time = "1.2s",
   prerequisites = {"碳处理2"},
   sign_desc = {
-    { desc = "该科技是火星探索的前沿科技，它可以引导更多的科技研究", icon = "textures/science/important.texture"},
+    { desc = "该科技是一项前沿科技，可引导其他的科技研究", icon = "textures/science/key_sign.texture"},
   },
-  sign_icon = "textures/science/tech-important.texture",
+  sign_icon = "textures/science/tech-key_sign.texture",
 }
 
 prototype "冶金学1" {
@@ -1489,9 +1517,9 @@ prototype "机械研究" {
   count = 12,
   time = "2s",
   sign_desc = {
-    { desc = "该科技是火星探索的前沿科技，它可以引导更多的科技研究", icon = "textures/science/important.texture"},
+    { desc = "该科技是一项前沿科技，可引导其他的科技研究", icon = "textures/science/key_sign.texture"},
   },
-  sign_icon = "textures/science/tech-important.texture",
+  sign_icon = "textures/science/tech-key_sign.texture",
 }
 
 prototype "生产机械科技包" {
@@ -1615,7 +1643,8 @@ prototype "物流车站1" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    unlock_recipe = {"出货车站","收货车站"},
+    unlock_recipe = {"出货车站打印","收货车站打印"},
+    unlock_item = {"出货车站","收货车站"},
   },
   prerequisites = {"自动化1"},
   ingredients = {
@@ -2199,9 +2228,9 @@ prototype "电子研究" {
     {"机械科技包", 1},
   },
   sign_desc = {
-    { desc = "该科技是火星探索的前沿科技，它可以引导更多的科技研究", icon = "textures/science/important.texture"},
+    { desc = "该科技是一项前沿科技，可引导其他的科技研究", icon = "textures/science/key_sign.texture"},
   },
-  sign_icon = "textures/science/tech-important.texture",
+  sign_icon = "textures/science/tech-key_sign.texture",
   count = 100,
   time = "5s"
 }
@@ -2788,9 +2817,9 @@ prototype "化学研究" {
     {"电子科技包", 1},
   },
   sign_desc = {
-    { desc = "该科技是火星探索的前沿科技，它可以引导更多的科技研究", icon = "textures/science/important.texture"},
+    { desc = "该科技是一项前沿科技，可引导其他的科技研究", icon = "textures/science/key_sign.texture"},
   },
-  sign_icon = "textures/science/tech-important.texture",
+  sign_icon = "textures/science/tech-key_sign.texture",
   count = 250,
   time = "30s"
 }
