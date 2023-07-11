@@ -363,7 +363,7 @@ local prototype = gameplay.register.prototype
   prototype "地质研究" {
     desc = "对火星地质结构进行标本采集和研究",
     type = { "tech" },
-    icon = "textures/science/tech-research.texture",
+    icon = "textures/science/book.texture",
     effects = {
       unlock_recipe = {"地质科技包1"},
       -- unlock_item = {"组装机框架"},
@@ -432,7 +432,7 @@ local prototype = gameplay.register.prototype
   prototype "石头处理1" {
     desc = "获得火星岩石加工成石砖的工艺",
     type = { "tech" },
-    icon = "textures/science/tech-research.texture",
+    icon = "textures/science/book.texture",
     effects = {
       unlock_recipe = {"石砖"},
       unlock_item = {"石砖"},
@@ -463,7 +463,7 @@ local prototype = gameplay.register.prototype
   prototype "铁矿石开采" {
     desc = "获得火星铁矿开采的能力",
     type = { "tech" },
-    icon = "textures/science/tech-research.texture",
+    icon = "textures/science/book.texture",
     effects = {
       unlock_item = {"铁矿石"},
     },
@@ -478,7 +478,7 @@ local prototype = gameplay.register.prototype
   prototype "公路研究" {
     desc = "掌握使用石砖制造公路的技术",
     type = { "tech" },
-    icon = "textures/science/tech-research.texture",
+    icon = "textures/science/book.texture",
     prerequisites = {"铁矿石开采"},
     effects = {
       unlock_recipe = {"砖石公路打印"},
@@ -508,13 +508,13 @@ local prototype = gameplay.register.prototype
 
   
   prototype "通向铁矿" {
-    desc = "修建35节公路",
+    desc = "修建15节公路",
     icon = "textures/construct/industry.texture",
     type = { "task" },
     task = {"unknown", 0, 1},
     task_params = {},
     prerequisites = {"建造公路"},
-    count = 35,
+    count = 15,
     tips_pic = {
       "textures/task_tips_pic/task_place_road1.texture",
       "textures/task_tips_pic/task_place_road2.texture",
@@ -807,7 +807,7 @@ local prototype = gameplay.register.prototype
   prototype "物流学1" {
     desc = "研究出货车站和收货车站建造工艺",
     type = { "tech" },
-    icon = "textures/science/tech-research.texture",
+    icon = "textures/science/book.texture",
     effects = {
       unlock_recipe = {"出货车站维修","收货车站维修"},
     },
@@ -960,7 +960,7 @@ local prototype = gameplay.register.prototype
   prototype "铁矿熔炼" {
     desc = "掌握熔炼铁矿石冶炼成铁板的工艺",
     type = { "tech" },
-    icon = "textures/science/tech-research.texture",
+    icon = "textures/science/book.texture",
     effects = {
       unlock_recipe = {"铁板1"},
       unlock_item = {"铁板"},
@@ -1013,7 +1013,7 @@ local prototype = gameplay.register.prototype
   prototype "铁加工1" {
     desc = "获得铁板加工铁齿轮的工艺",
     type = { "tech" },
-    icon = "textures/science/tech-research.texture",
+    icon = "textures/science/book.texture",
     effects = {
       unlock_recipe = {"铁齿轮"},
       unlock_item = {"铁齿轮"},
@@ -1048,7 +1048,7 @@ local prototype = gameplay.register.prototype
   prototype "车辆维修" {
     desc = "研究生产运输车辆工艺",
     type = { "tech" },
-    icon = "textures/science/tech-research.texture",
+    icon = "textures/science/book.texture",
     effects = {
       unlock_recipe = {"维修运输汽车"},
     },
@@ -1082,7 +1082,7 @@ local prototype = gameplay.register.prototype
 prototype "物流学2" {
   desc = "研究电能转换成机械能的基础供能装置",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
   },
   prerequisites = {"量产运输车辆"},
@@ -1096,7 +1096,7 @@ prototype "物流学2" {
 prototype "气候研究1" {
   desc = "对火星大气成分进行标本采集和研究",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"气候科技包1","空气过滤器打印","地下水挖掘机打印"},
     unlock_item = {"气候科技包","空气过滤器I","地下水挖掘机I"},
@@ -1116,7 +1116,7 @@ prototype "气候研究1" {
 prototype "管道系统1" {
   desc = "研究装载和运输气液原料的管道",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"管道1","管道2","液罐打印"},
     unlock_item = {"液罐I","管道1-X型"},
@@ -1147,7 +1147,7 @@ prototype "生产管道" {
 prototype "排放1" {
   desc = "研究气体和液体的排放工艺",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"烟囱打印","排水口打印","地下管1"},
     unlock_item = {"烟囱I","排水口I","地下管1-JI型"},
@@ -1163,7 +1163,7 @@ prototype "排放1" {
 prototype "采水研究" {
   desc = "对火星大气成分进行标本采集和研究",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"水电站打印"},
     unlock_item = {"水电站I"},
@@ -1252,7 +1252,7 @@ prototype "生产气候科技包" {
 prototype "电解" {
   desc = "科技的描述",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"地下卤水电解1","地下卤水电解2","电解厂打印"},
   },
@@ -1267,7 +1267,7 @@ prototype "电解" {
 prototype "空气分离工艺1" {
   desc = "获得火星大气分离出纯净气体的工艺",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"空气分离1"},
   },
@@ -1298,7 +1298,7 @@ prototype "收集空气" {
 prototype "碳处理1" {
   desc = "含碳气体化合成其他物质的工艺",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"二氧化碳转甲烷","化工厂打印"},
   },
@@ -1345,7 +1345,7 @@ prototype "生产二氧化碳" {
 prototype "碳处理2" {
   desc = "含碳气体化合成其他物质的工艺",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"甲烷转乙烯","二氧化碳转一氧化碳","一氧化碳转石墨"},
   },
@@ -1360,7 +1360,7 @@ prototype "碳处理2" {
 prototype "地质研究2" {
   desc = "对火星地质结构进行标本采集和研究",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"地质科技包2"},
   },
@@ -1379,7 +1379,7 @@ prototype "地质研究2" {
 prototype "冶金学1" {
   desc = "研究工业高温熔炼的装置",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"熔炼炉1"},
   },
@@ -1440,7 +1440,7 @@ prototype "生产甲烷" {
 prototype "有机化学1" {
   desc = "研究碳化合物组成、结构和制备方法",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"塑料1"},
   },
@@ -1486,7 +1486,7 @@ prototype "生产塑料" {
 prototype "电磁学1" {
   desc = "研究电能转换成机械能的基础供能装置",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"电动机1"},
     unlock_item = {"电动机I"},
@@ -1504,7 +1504,7 @@ prototype "电磁学1" {
 prototype "机械研究" {
   desc = "对可在火星表面作业的机械装置进行改进和开发",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"机械科技包1"},
     unlock_item = {"机械科技包"},
@@ -1541,7 +1541,7 @@ prototype "生产机械科技包" {
 prototype "挖掘1" {
   desc = "研究对火星岩石的开采技术",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"采矿机1"},
     unlock_item = {"采矿机I"},
@@ -1558,7 +1558,7 @@ prototype "挖掘1" {
 prototype "无人机运输1" {
   desc = "使用无人机快速运送物品",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"无人机仓库1"},
   },
@@ -1573,7 +1573,7 @@ prototype "无人机运输1" {
 prototype "蒸馏1" {
   desc = "将液体混合物汽化并分离的技术",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"蒸馏厂1"},
     unlock_item = {"蒸馏厂I"},
@@ -1590,7 +1590,7 @@ prototype "蒸馏1" {
 prototype "电力传输1" {
   desc = "将电能远距离传输的技术",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"铁制电线杆"},
     unlock_item = {"铁制电线杆"},
@@ -1608,7 +1608,7 @@ prototype "电力传输1" {
 prototype "泵系统1" {
   desc = "使用机械方式加快液体流动",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"压力泵1"},
     unlock_item = {"压力泵I"},
@@ -1625,7 +1625,7 @@ prototype "泵系统1" {
 prototype "自动化1" {
   desc = "使用3D打印技术复制物品",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"组装机1"},
     unlock_item = {"组装机I"},
@@ -1641,7 +1641,7 @@ prototype "自动化1" {
 prototype "物流车站1" {
   desc = "研究供运输车辆装卸货物的物流点",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"出货车站打印","收货车站打印"},
     unlock_item = {"出货车站","收货车站"},
@@ -1658,7 +1658,7 @@ prototype "物流车站1" {
 prototype "地下水净化1" {
   desc = "火星地下开采卤水进行过滤净化工艺",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"地下卤水净化","地下水挖掘机1","水电站1"},
   },
@@ -1675,7 +1675,7 @@ prototype "地下水净化1" {
 prototype "过滤1" {
   desc = "火星地下开采卤水进行过滤净化工艺",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"空气过滤器1"},
   },
@@ -1691,7 +1691,7 @@ prototype "过滤1" {
 prototype "炼钢" {
   desc = "将铁冶炼成更坚硬金属的工艺",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"钢板1"},
     unlock_item = {"钢板"},
@@ -1724,7 +1724,7 @@ prototype "大炼钢铁" {
 prototype "发电机1" {
   desc = "使用蒸汽作为工质将热能转为机械能的发电装置",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"蒸汽发电机1"},
     unlock_item = {"蒸汽发电机I"},
@@ -1741,7 +1741,7 @@ prototype "发电机1" {
 prototype "矿物处理1" {
   desc = "将矿物进行碾碎并再加工的机械工艺",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"粉碎机1","沙子1"},
     unlock_item = {"粉碎机I","沙子"},
@@ -1773,7 +1773,7 @@ prototype "矿石粉碎" {
 prototype "钢加工" {
   desc = "对钢板进行再加工获得钢齿轮",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"钢齿轮"},
     unlock_item = {"钢齿轮"},
@@ -1805,7 +1805,7 @@ prototype "打造钢齿轮" {
 prototype "浮选1" {
   desc = "使用浮选设备对矿石实行筛选",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"浮选器1"},
     unlock_item = {"浮选器I"},
@@ -1823,7 +1823,7 @@ prototype "浮选1" {
 prototype "硅处理" {
   desc = "从沙子中提炼硅的工艺",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"硅1","玻璃"},
     unlock_item = {"硅","玻璃"},
@@ -1840,7 +1840,7 @@ prototype "硅处理" {
 prototype "铁矿熔炼2" {
   desc = "将铁矿石冶炼成铁板的更高效工艺",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"铁板2"},
   },
@@ -1856,7 +1856,7 @@ prototype "铁矿熔炼2" {
 prototype "电解1" {
   desc = "使用电化学手段制取工业气体",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"电解厂1"},
     unlock_item = {"电解厂I"},
@@ -1873,7 +1873,7 @@ prototype "电解1" {
 prototype "有机化学2" {
   desc = "研究碳化合物组成、结构和制备方法",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"乙烯转丁二烯","纯水转蒸汽"},
   },
@@ -1889,7 +1889,7 @@ prototype "有机化学2" {
 prototype "管道系统2" {
   desc = "研究可储藏气液原料的装置",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"液罐2"},
     unlock_item = {"液罐II"},
@@ -1907,7 +1907,7 @@ prototype "管道系统2" {
 prototype "化学工程1" {
   desc = "使用特殊设施生产化工产品",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"化工厂1","纯水电解"},
     unlock_item = {"化工厂I"},
@@ -1925,7 +1925,7 @@ prototype "化学工程1" {
 prototype "无机化学" {
   desc = "使用无机化合物合成物质的工艺",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"酸碱中和","碱性溶液","盐酸"},
     unlock_item = {"碱性溶液","盐酸"},
@@ -1943,7 +1943,7 @@ prototype "无机化学" {
 prototype "废料回收1" {
   desc = "将工业废料、矿石进行回收处理的工艺",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"铁矿石回收","碎石回收","沙子回收","废料中和"},
   },
@@ -1960,7 +1960,7 @@ prototype "废料回收1" {
 prototype "石头处理3" {
   desc = "研究可进行高温加工的特殊器皿",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"坩埚"},
     unlock_item = {"坩埚"},
@@ -1993,7 +1993,7 @@ prototype "坩埚制造" {
 prototype "有机化学3" {
   desc = "研究碳化合物组成、结构和制备方法",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"橡胶"},
     unlock_item = {"橡胶"},
@@ -2010,7 +2010,7 @@ prototype "有机化学3" {
 prototype "无人机运输2" {
   desc = "使用无人机快速运送物品",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"无人机仓库2"},
     unlock_item = {"无人机仓库II"},
@@ -2027,7 +2027,7 @@ prototype "无人机运输2" {
 prototype "冶金学2" {
   desc = "研究工业高温熔炼的装置",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"熔炼炉2"},
     unlock_item = {"熔炼炉II"},
@@ -2044,7 +2044,7 @@ prototype "冶金学2" {
 prototype "铝生产" {
   desc = "加工铝矿的工艺",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"碾碎铝矿石","铝矿石浮选","氧化铝","铝板1"},
     unlock_item = {"铝板","碾碎铝矿石","氧化铝"},
@@ -2061,7 +2061,7 @@ prototype "铝生产" {
 prototype "硅生产" {
   desc = "将硅加工硅板的工艺",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"硅板1"},
     unlock_item = {"硅板"},
@@ -2093,7 +2093,7 @@ prototype "硅板制造" {
 prototype "润滑" {
   desc = "研究工业润滑油制作工艺",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"润滑油"},
     unlock_item = {"润滑油"},
@@ -2111,7 +2111,7 @@ prototype "润滑" {
 prototype "铝加工" {
   desc = "使用铝加工其他零器件的工艺",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"铝丝1","铝棒1"},
     unlock_item = {"铝丝","铝棒"},
@@ -2144,7 +2144,7 @@ prototype "铝丝制造" {
 prototype "沸腾实验" {
   desc = "通过加热液体获取蒸汽的工艺",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"换热器1","热管1","纯水沸腾","卤水沸腾"},
     unlock_item = {"换热器I","热管1-X型"},
@@ -2162,7 +2162,7 @@ prototype "沸腾实验" {
 prototype "电子器件1" {
   desc = "生产精密的电子元器件",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"电容1","绝缘线1","逻辑电路1"},
     unlock_item = {"电容I","绝缘线","逻辑电路"},
@@ -2180,7 +2180,7 @@ prototype "电子器件1" {
 prototype "电力传输2" {
   desc = "将电能远距离传输的技术",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"远程电线杆"},
     unlock_item = {"远程电线杆"},
@@ -2198,7 +2198,7 @@ prototype "电力传输2" {
 prototype "太阳能存储1" {
   desc = "研究将太阳能板转化的电能进行储存的电池",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"蓄电池1"},
     unlock_item = {"蓄电池I"},
@@ -2216,7 +2216,7 @@ prototype "太阳能存储1" {
 prototype "电子研究" {
   desc = "研究由电能作用的材料或设备",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"电子科技包1"},
     unlock_item = {"电子科技包"},
@@ -2239,7 +2239,7 @@ prototype "电子研究" {
 prototype "电磁学2" {
   desc = "研究电能转换成机械能的基础供能装置",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"电动机2"},
     unlock_item = {"电动机II"},
@@ -2258,7 +2258,7 @@ prototype "电磁学2" {
 prototype "研究设施1" {
   desc = "研究可以开展大规模研发的设施",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"科研中心1"},
     unlock_item = {"科研中心I"},
@@ -2294,7 +2294,7 @@ prototype "科技大跃进" {
 prototype "信号处理" {
   desc = "研究电子信号传输介质",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"数据线1"},
     unlock_item = {"数据线"},
@@ -2312,7 +2312,7 @@ prototype "信号处理" {
 prototype "计算元件" {
   desc = "研究可进行复杂计算的电路集群",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"运算电路1"},
     unlock_item = {"运算电路"},
@@ -2329,7 +2329,7 @@ prototype "计算元件" {
 prototype "电解2" {
   desc = "使用电化学手段制取工业气体",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"电解厂2"},
     unlock_item = {"电解厂II"},
@@ -2346,7 +2346,7 @@ prototype "电解2" {
 prototype "挖掘2" {
   desc = "研究对火星岩石的开采技术",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"采矿机2"},
     unlock_item = {"采矿机II"},
@@ -2364,7 +2364,7 @@ prototype "挖掘2" {
 prototype "水能利用" {
   desc = "研究淡水处理的工艺",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"淡水沸腾","淡水过滤"},
   },
@@ -2382,7 +2382,7 @@ prototype "水能利用" {
 prototype "自动化2" {
   desc = "使用3D打印技术复制物品",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"组装机2"},
     unlock_item = {"组装机II"},
@@ -2400,7 +2400,7 @@ prototype "自动化2" {
 prototype "发电机2" {
   desc = "使用蒸汽作为工质将热能转为机械能的发电装置",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"蒸汽发电机2"},
     unlock_item = {"蒸汽发电机II"},
@@ -2418,7 +2418,7 @@ prototype "发电机2" {
 prototype "优化1" {
   desc = "研究提高生产效率的插件",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"效能插件1","速度插件1","产能插件1"},
     unlock_item = {"效能插件I","速度插件I","产能插件I"},
@@ -2437,7 +2437,7 @@ prototype "优化1" {
 prototype "广播1" {
   desc = "研究可影响周边生产设施工作效率的装置",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"广播塔1"},
     unlock_item = {"广播塔I"},
@@ -2500,7 +2500,7 @@ prototype "产能提升" {
 prototype "矿物处理2" {
   desc = "将矿物进行碾碎并再加工的机械工艺",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"粉碎机2"},
     unlock_item = {"粉碎机II"},
@@ -2518,7 +2518,7 @@ prototype "矿物处理2" {
 prototype "氮化学" {
   desc = "研究含氮的化合物生产",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"氨气"},
     unlock_item = {"氨气"},
@@ -2552,7 +2552,7 @@ prototype "氨制造" {
 prototype "气候研究2" {
   desc = "对火星大气成分进行标本采集和研究",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"气候科技包2"},
   },
@@ -2570,7 +2570,7 @@ prototype "气候研究2" {
 prototype "玻璃制造" {
   desc = "研究更高效生产玻璃的工艺",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"玻璃2"},
   },
@@ -2588,7 +2588,7 @@ prototype "玻璃制造" {
 prototype "建筑材料" {
   desc = "研究可以用于建材的新型材料",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_item = {"混凝土"},
   },
@@ -2606,7 +2606,7 @@ prototype "建筑材料" {
 prototype "电力传输3" {
   desc = "将电能远距离传输的技术",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"广域电线杆"},
     unlock_item = {"广域电线杆"},
@@ -2625,7 +2625,7 @@ prototype "电力传输3" {
 prototype "地下水净化2" {
   desc = "火星地下开采卤水进行过滤净化工艺",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"水电站2","地下水挖掘机2"},
     unlock_item = {"水电站II","地下水挖掘机II"},
@@ -2643,7 +2643,7 @@ prototype "地下水净化2" {
 prototype "地热1" {
   desc = "研究开发地热资源的装置",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"地热井1"},
     unlock_item = {"地热井I"},
@@ -2662,7 +2662,7 @@ prototype "地热1" {
 prototype "太阳能1" {
   desc = "研究利用太阳能发电的装置",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"太阳能板1"},
     unlock_item = {"太阳能板I"},
@@ -2696,7 +2696,7 @@ prototype "铺设太阳能板" {
 prototype "蒸馏2" {
   desc = "将液体混合物汽化并分离的技术",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"蒸馏厂2"},
     unlock_item = {"蒸馏厂II"},
@@ -2715,7 +2715,7 @@ prototype "蒸馏2" {
 prototype "硫磺处理" {
   desc = "加工含硫地热气获得其他化工品的工艺",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_item = {"硫酸"},
   },
@@ -2747,7 +2747,7 @@ prototype "硫酸生产" {
 prototype "过滤2" {
   desc = "火星地下开采卤水进行过滤净化工艺",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"空气过滤器2"},
     unlock_item = {"空气过滤器II"},
@@ -2766,7 +2766,7 @@ prototype "过滤2" {
 prototype "浮选2" {
   desc = "使用浮选设备对矿石实行筛选",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"浮选器2"},
     unlock_item = {"浮选器II"},
@@ -2785,7 +2785,7 @@ prototype "浮选2" {
 prototype "化学工程2" {
   desc = "使用特殊设施生产化工产品",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"化工厂2"},
     unlock_item = {"化工厂II"},
@@ -2804,7 +2804,7 @@ prototype "化学工程2" {
 prototype "化学研究" {
   desc = "对化学反应进行深度研究",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"化学科技包1"},
     unlock_item = {"化学科技包"},
@@ -2830,7 +2830,7 @@ prototype "化学研究" {
 prototype "钠处理" {
   desc = "研究获取钠原料的工艺",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"氢氧化钠电解"},
     unlock_item = {"钠"},
@@ -2850,7 +2850,7 @@ prototype "钠处理" {
 prototype "空气分离工艺2" {
   desc = "研究利用太阳能发电的装置",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"空气分离2"},
     unlock_item = {"氦气"},
@@ -2884,7 +2884,7 @@ prototype "氦气生产" {
 prototype "排放2" {
   desc = "研究气体和液体的排放工艺",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"烟囱2","排水口2"},
     unlock_item = {"烟囱II","排水口II"},
@@ -2904,7 +2904,7 @@ prototype "排放2" {
 prototype "钛生产1" {
   desc = "研究可以提取钛原料的工艺",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"金红石1"},
     unlock_item = {"金红石"},
@@ -2924,7 +2924,7 @@ prototype "钛生产1" {
 prototype "高温分解" {
   desc = "研究在高温下化合石墨的工艺",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"甲烷转石墨"},
   },
@@ -2942,7 +2942,7 @@ prototype "高温分解" {
 prototype "电池存储1" {
   desc = "研究可以储存和释放电能的元件",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"电池1"},
     unlock_item = {"电池I"},
@@ -2977,7 +2977,7 @@ prototype "电池制造" {
 prototype "复合材料" {
   desc = "多种材料组合成多相材料",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"玻璃纤维1"},
     unlock_item = {"玻璃纤维"},
@@ -2996,7 +2996,7 @@ prototype "复合材料" {
 prototype "太阳能存储2" {
   desc = "研究将太阳能板转化的电能进行储存的电池",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"蓄电池2"},
     unlock_item = {"蓄电池II"},
@@ -3016,7 +3016,7 @@ prototype "太阳能存储2" {
 prototype "钛生产2" {
   desc = "研究可以提取钛原料的工艺",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"四氯化钛","钛板"},
     unlock_item = {"四氯化钛","钛板"},
@@ -3051,7 +3051,7 @@ prototype "钛板生产" {
 prototype "无人机运输3" {
   desc = "使用无人机快速运送物品",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"无人机仓库3"},
     unlock_item = {"无人机仓库III"},
@@ -3071,7 +3071,7 @@ prototype "无人机运输3" {
 prototype "自动化3" {
   desc = "使用3D打印技术复制物品",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"组装机3"},
     unlock_item = {"组装机III"},
@@ -3091,7 +3091,7 @@ prototype "自动化3" {
 prototype "挖掘3" {
   desc = "研究对火星岩石的开采技术",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"采矿机3"},
     unlock_item = {"采矿机III"},
@@ -3111,7 +3111,7 @@ prototype "挖掘3" {
 prototype "电子器件2" {
   desc = "生产精密的电子元器件",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"处理器1"},
     unlock_item = {"处理器I"},
@@ -3131,7 +3131,7 @@ prototype "电子器件2" {
 prototype "广播2" {
   desc = "研究可影响周边生产设施工作效率的装置",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"广播塔2"},
     unlock_item = {"广播塔II"},
@@ -3151,7 +3151,7 @@ prototype "广播2" {
 prototype "优化2" {
   desc = "研究提高生产效率的插件",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"效能插件2","速度插件2","产能插件2"},
     unlock_item = {"效能插件II","速度插件II","产能插件II"},
@@ -3171,7 +3171,7 @@ prototype "优化2" {
 prototype "矿物处理3" {
   desc = "将矿物进行碾碎并再加工的机械工艺",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"粉碎机3"},
     unlock_item = {"粉碎机III"},
@@ -3191,7 +3191,7 @@ prototype "矿物处理3" {
 prototype "太阳能2" {
   desc = "研究利用太阳能发电的装置",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"太阳能板2"},
     unlock_item = {"太阳能板II"},
@@ -3211,7 +3211,7 @@ prototype "太阳能2" {
 prototype "管道系统3" {
   desc = "研究可储藏气液原料的装置",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"液罐3"},
     unlock_item = {"液罐III"},
@@ -3230,7 +3230,7 @@ prototype "管道系统3" {
 prototype "地热2" {
   desc = "研究开发地热资源的装置",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"地热井2"},
     unlock_item = {"地热井II"},
@@ -3250,7 +3250,7 @@ prototype "地热2" {
 prototype "研究设施2" {
   desc = "研究可以开展大规模研发的设施",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"科研中心2"},
     unlock_item = {"科研中心II"},
@@ -3270,7 +3270,7 @@ prototype "研究设施2" {
 prototype "高温防护" {
   desc = "研究能够耐高温的材料",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"隔热板1"},
     unlock_item = {"隔热板"},
@@ -3290,7 +3290,7 @@ prototype "高温防护" {
 prototype "物理研究" {
   desc = "研究物质结构以及基本运动规律",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"物理科技包1"},
     unlock_item = {"物理科技包"},
@@ -3311,7 +3311,7 @@ prototype "物理研究" {
 prototype "电磁学3" {
   desc = "研究电能转换成机械能的基础供能装置",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"电动机3"},
     unlock_item = {"电动机III"},
@@ -3332,7 +3332,7 @@ prototype "电磁学3" {
 prototype "研究设施3" {
   desc = "研究可以开展大规模研发的设施",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"科研中心3"},
     unlock_item = {"科研中心III"},
@@ -3353,7 +3353,7 @@ prototype "研究设施3" {
 prototype "石墨分离" {
   desc = "研究将石墨分离成单层材料的工艺",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"石墨烯"},
     unlock_item = {"石墨烯"},
@@ -3374,7 +3374,7 @@ prototype "石墨分离" {
 prototype "地下水净化3" {
   desc = "火星地下开采卤水进行过滤净化工艺",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"水电站3"},
     unlock_item = {"水电站III"},
@@ -3395,7 +3395,7 @@ prototype "地下水净化3" {
 prototype "过滤3" {
   desc = "火星地下开采卤水进行过滤净化工艺",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"空气过滤器3"},
     unlock_item = {"空气过滤器III"},
@@ -3416,7 +3416,7 @@ prototype "过滤3" {
 prototype "冶金学3" {
   desc = "研究工业高温熔炼的装置",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"熔炼炉3"},
     unlock_item = {"熔炼炉III"},
@@ -3437,7 +3437,7 @@ prototype "冶金学3" {
 prototype "浮选3" {
   desc = "使用浮选设备对矿石实行筛选",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"浮选器3"},
     unlock_item = {"浮选器III"},
@@ -3458,7 +3458,7 @@ prototype "浮选3" {
 prototype "蒸馏3" {
   desc = "将液体混合物汽化并分离的技术",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"蒸馏厂3"},
     unlock_item = {"蒸馏厂III"},
@@ -3479,7 +3479,7 @@ prototype "蒸馏3" {
 prototype "发电机3" {
   desc = "使用蒸汽作为工质将热能转为机械能的发电装置",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"蒸汽发电机3"},
     unlock_item = {"蒸汽发电机III"},
@@ -3500,7 +3500,7 @@ prototype "发电机3" {
 prototype "微型化" {
   desc = "研究更加精密的电容元器件",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"电容2"},
     unlock_item = {"电容II"},
@@ -3521,7 +3521,7 @@ prototype "微型化" {
 prototype "电池存储2" {
   desc = "研究可以储存和释放电能的小型装置",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"电池2"},
     unlock_item = {"电池II"},
@@ -3542,7 +3542,7 @@ prototype "电池存储2" {
 prototype "电解3" {
   desc = "使用电化学手段制取工业气体",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"电解厂3"},
     unlock_item = {"电解厂III"},
@@ -3563,7 +3563,7 @@ prototype "电解3" {
 prototype "电子器件3" {
   desc = "研究更加精密的电容元器件",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"处理器2"},
     unlock_item = {"处理器II"},
@@ -3584,7 +3584,7 @@ prototype "电子器件3" {
 prototype "地热3" {
   desc = "研究开发地热资源的装置",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"地热井3"},
     unlock_item = {"地热井III"},
@@ -3605,7 +3605,7 @@ prototype "地热3" {
 prototype "化学工程3" {
   desc = "使用特殊设施生产化工产品",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"化工厂3"},
     unlock_item = {"化工厂III"},
@@ -3626,7 +3626,7 @@ prototype "化学工程3" {
 prototype "太阳能3" {
   desc = "研究利用太阳能发电的装置",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"太阳能板3"},
     unlock_item = {"太阳能板III"},
@@ -3647,7 +3647,7 @@ prototype "太阳能3" {
 prototype "优化3" {
   desc = "研究提高生产效率的插件",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"效能插件3","速度插件3","产能插件3"},
     unlock_item = {"效能插件III","速度插件III","产能插件III"},
@@ -3668,7 +3668,7 @@ prototype "优化3" {
 prototype "太阳能存储3" {
   desc = "研究将太阳能板转化的电能进行储存的电池",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"蓄电池3"},
     unlock_item = {"蓄电池III"},
@@ -3689,7 +3689,7 @@ prototype "太阳能存储3" {
 prototype "广播3" {
   desc = "研究可影响周边生产设施工作效率的装置",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"广播塔3"},
     unlock_item = {"广播塔III"},
@@ -3710,7 +3710,7 @@ prototype "广播3" {
 prototype "火箭化学" {
   desc = "研究可供火箭运行的燃料",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"火箭燃料1"},
     unlock_item = {"火箭燃料"},
@@ -3731,7 +3731,7 @@ prototype "火箭化学" {
 prototype "火箭控制" {
   desc = "研究控制火箭运行的仪器",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"火箭控制器1"},
     unlock_item = {"火箭控制器"},
@@ -3752,7 +3752,7 @@ prototype "火箭控制" {
 prototype "火箭架构" {
   desc = "研究组成火箭外部框架",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"火箭区段1"},
     unlock_item = {"火箭区段"},
@@ -3773,7 +3773,7 @@ prototype "火箭架构" {
 prototype "火箭保护" {
   desc = "研究保护火箭前端的特殊材料",
   type = { "tech" },
-  icon = "textures/science/tech-research.texture",
+  icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"火箭整流罩1"},
     unlock_item = {"火箭整流罩"},
