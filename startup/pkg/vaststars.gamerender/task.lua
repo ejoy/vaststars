@@ -20,7 +20,7 @@ function M.update_progress(custom_type_mapping, ...)
             goto continue
         end
 
-        local np = c.check(c.task_params, ...)
+        local np = c.check(c.task_params, progress, ...)
         if np ~= progress then
             local gwworld = gameplay_core.get_world()
             gwworld:research_progress(taskname, np)

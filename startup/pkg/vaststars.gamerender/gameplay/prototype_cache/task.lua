@@ -16,28 +16,28 @@ custom_type :
 --]]
 local custom_type_mapping = {
     [0] = {s = "undef", check = function() end}, -- TODO
-    [1] = {s = "road_laying", check = function(task_params, count) return count end},
+    [1] = {s = "road_laying", check = function(task_params, progress, count) return (progress or 0) + count end},
     [2] = {s = "lorry_count", check = function(task_params)
         return 0
     end, },
-    [3] = {s = "set_recipe", check = function(task_params, recipe_name)
+    [3] = {s = "set_recipe", check = function(task_params, progress, recipe_name)
         if task_params.recipe == recipe_name then
             return 1
         else
             return 0
         end
     end, },
-    [4] = {s = "auto_complete_task", check = function(task_params)
+    [4] = {s = "auto_complete_task", check = function(task_params, progress)
         return 1
     end, },
-    [5] = {s = "set_item", check = function(task_params, item_name)
+    [5] = {s = "set_item", check = function(task_params, progress, item_name)
         if task_params.item == item_name then
             return 1
         else
             return 0
         end
     end, },
-    [6] = {s = "click_ui", check = function(task_params, ui, building)
+    [6] = {s = "click_ui", check = function(task_params, progress, ui, building)
         if task_params.ui == ui and task_params.building == building then
             return 1
         else
