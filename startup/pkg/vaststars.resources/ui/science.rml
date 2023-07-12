@@ -439,9 +439,9 @@
                         <list direction='1' width='100%' height='95%' style="margin-top: 1vmin; margin-bottom: 1vmin;"/>
                         <!-- 科技条目 end -->
                     </div>
-                    <div style="flex-direction: row; justify-content: flex-end;" data-event-click="showFinish()">
+                    <div style="flex-direction: row; justify-content: flex-end; align-items: center;" data-event-click="showFinish()">
                         <div style='width: 5vmin; height: 5vmin; background-size: cover; background-image: "textures/science/history.texture";'/>
-                        <div style="font-size: 5vmin;">科研历史</div>
+                        <div style="margin-left: 1vmin; font-size: 5vmin;">科研历史</div>
                     </div>
                 </div>
                 <div style='margin: 1.5vmin; flex-direction: column; width: 42%; height: 100%; background-image: "textures/science/right_panel_bg.texture"; background-size: cover;'>
