@@ -1992,6 +1992,23 @@ prototype "有机化学3" {
   time = "8s"
 }
 
+prototype "物流学2" {
+  desc = "获得铁板加工铁齿轮的工艺",
+  type = { "tech" },
+  icon = "textures/science/book.texture",
+  effects = {
+    unlock_recipe = {"车辆装配"},
+    unlock_item = {"运输车辆I"},
+  },
+  prerequisites = {"有机化学3"},
+  ingredients = {
+      {"地质科技包", 1},
+      {"机械科技包", 1},
+  },
+  count = 30,
+  time = "5s"
+}
+
 prototype "无人机运输2" {
   desc = "使用无人机快速运送物品",
   type = { "tech" },
@@ -2000,7 +2017,7 @@ prototype "无人机运输2" {
     unlock_recipe = {"无人机仓库2"},
     unlock_item = {"无人机仓库II"},
   },
-  prerequisites = {"有机化学3","炼钢"},
+  prerequisites = {"有机化学3","物流学2"},
   ingredients = {
       {"气候科技包", 1},
       {"机械科技包", 1},
