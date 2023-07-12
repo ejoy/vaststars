@@ -348,7 +348,7 @@ prototype "铁制电线杆" {
     item_category = "物流",
     stack = 25,
     pile = "4x1x4",
-    backpack_stack = 20,
+    backpack_stack = 50,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "在一定距离内传输电力的铁制电线杆",
 }
