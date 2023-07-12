@@ -856,7 +856,6 @@ local prototype = gameplay.register.prototype
     prerequisites = {"铁矿放置采矿机"},
     count = 1,
     effects = {
-      unlock_recipe = {"车辆装配"},
     },
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
@@ -1061,12 +1060,12 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "量产运输车辆" {
-    desc = "生产8辆运输车",
+    desc = "生产4辆运输车",
     icon = "textures/construct/industry.texture",
     type = { "task" },
     task = {"stat_production", 0, "运输车辆I"},
     prerequisites = {"车辆维修"},
-    count = 8,
+    count = 4,
     tips_pic = {
       "textures/task_tips_pic/task_produce_ironplate1.texture",
       "textures/task_tips_pic/task_produce_ironplate2.texture",
@@ -1075,7 +1074,7 @@ local prototype = gameplay.register.prototype
       "textures/task_tips_pic/task_produce_ironplate5.texture",
     },
     sign_desc = {
-      { desc = "使用组装机生产8辆运输车", icon = "textures/construct/industry.texture"},
+      { desc = "使用组装机生产4辆运输车", icon = "textures/construct/industry.texture"},
     },
   }
 
