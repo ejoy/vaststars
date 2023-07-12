@@ -26,7 +26,7 @@ local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local COLOR_INVALID <const> = math3d.constant "null"
 local COLOR_GREEN = math3d.constant("v4", {0.3, 1, 0, 1})
-local construct_menu_cfg = import_package "vaststars.prototype"("construct_menu")
+local CONSTRUCT_MENU <const> = import_package "vaststars.prototype"("construct_menu")
 local ichest = require "gameplay.interface.chest"
 local create_event_handler = require "ui_datamodel.common.event_handler"
 local ipower_line = ecs.require "power_line"
@@ -57,6 +57,8 @@ local remove_lorry_mb = mailbox:sub {"remove_lorry"}
 local construct_mb = mailbox:sub {"construct"}
 local selected_mb = mailbox:sub {"selected"}
 local unselected_mb = mailbox:sub {"unselected"}
+local click_item_mb = mailbox:sub {"click_item"}
+local iUiRt = ecs.import.interface "ant.rmlui|iuirt"
 
 local ipower = ecs.require "power"
 local now = require "engine.time".now
@@ -73,6 +75,7 @@ local excluded_pickup_id -- object id
 local pick_lorry_id
 local handle_pickup = true
 local selected_obj
+local RenderTarget
 
 local event_handler = create_event_handler(
     mailbox,
@@ -147,27 +150,26 @@ local function __unpick_lorry(lorry_id)
 end
 
 local function __get_construct_menu()
-    local construct_menu = {}
-    for _, menu in ipairs(construct_menu_cfg) do
+    local res = {}
+    for _, menu in ipairs(CONSTRUCT_MENU) do
         local m = {}
-        m.name = menu.name
-        m.icon = menu.icon
-        m.detail = {}
+        m.category = menu.category
+        m.items = {}
 
-        for _, prototype_name in ipairs(menu.detail) do
+        for _, prototype_name in ipairs(menu.items) do
             local typeobject = assert(iprototype.queryByName(prototype_name))
             local count = ibackpack.query(gameplay_core.get_world(), typeobject.id)
-            m.detail[#m.detail + 1] = {
-                show_prototype_name = iprototype.show_prototype_name(typeobject),
-                prototype_name = prototype_name,
+            m.items[#m.items + 1] = {
+                name = prototype_name,
                 icon = typeobject.icon,
                 count = count,
+                selected = false,
             }
         end
 
-        construct_menu[#construct_menu+1] = m
+        res[#res+1] = m
     end
-    return construct_menu
+    return res
 end
 
 local status = "default"
@@ -212,6 +214,13 @@ end
 local M = {}
 
 function M:create()
+    local storage = gameplay_core.get_storage()
+    local shortcut = {}
+    for id, v in pairs(storage.shortcut or {}) do
+        local typeobject = iprototype.queryByName(v.prototype_name)
+        shortcut[id] = {prototype_name = v.prototype_name, icon = typeobject.icon, times = 0}
+    end
+
     return {
         is_concise_mode = false,
         show_tech_progress = false,
@@ -221,8 +230,11 @@ function M:create()
         current_tech_progress_detail = "0/0",  --当前科技进度(数量),
         ingredient_icons = {},
         show_ingredient = false,
+        category_idx = 0,
+        item_idx = 0,
         construct_menu = __get_construct_menu(),
         status = "normal",
+        shortcut = shortcut,
     }
 end
 
@@ -404,6 +416,15 @@ local function __construct_entity(typeobject)
         builder = create_normalbuilder(typeobject.id)
         builder:new_entity(builder_datamodel, typeobject)
     end
+end
+
+local function __set_item_value(datamodel, category_idx, item_idx, key, value)
+    if category_idx == 0 and item_idx == 0 then
+        return
+    end
+    assert(datamodel.construct_menu[category_idx])
+    assert(datamodel.construct_menu[category_idx].items[item_idx])
+    datamodel.construct_menu[category_idx].items[item_idx][key] = value
 end
 
 function M:stage_camera_usage(datamodel)
@@ -623,6 +644,17 @@ function M:stage_camera_usage(datamodel)
             idetail.unselected()
             gameplay_core.world_update = false
             handle_pickup = false
+            datamodel.is_concise_mode = false
+
+            local storage = gameplay_core.get_storage()
+            storage.shortcut = storage.shortcut or {}
+            for _, v in pairs(storage.shortcut) do
+                if v.prototype_name == item then
+                    v.times = v.times + 1
+                    break
+                end
+            end
+
             __switch_status("construct", function()
                 -- we may click the button repeatedly, so we need to clear the old model first
                 if builder then
@@ -687,6 +719,53 @@ function M:stage_camera_usage(datamodel)
         idetail.unselected()
         iui.close "detail_panel.rml"
         iui.close "building_menu.rml"
+    end
+
+    local function __found_shortcut_id(shortcut, prototype_name)
+        local min = math.maxinteger
+        local idx
+        for i = 1, 5 do
+            if not shortcut[i] then
+                return i
+            end
+            if shortcut[i].prototype_name == prototype_name then
+                return i
+            end
+            if min > shortcut[i].times then
+                idx = i
+                min = shortcut[i].times
+            end
+        end
+        return assert(idx)
+    end
+
+    for _, _, _, category_idx, item_idx in click_item_mb:unpack() do
+        __set_item_value(datamodel, datamodel.category_idx, datamodel.item_idx, "selected", false)
+        __set_item_value(datamodel, category_idx, item_idx, "selected", true)
+        datamodel.category_idx = category_idx
+        datamodel.item_idx = item_idx
+
+        local item_name = datamodel.construct_menu[category_idx].items[item_idx].name
+        local typeobject = iprototype.queryByName(item_name)
+        datamodel.item_name = iprototype.show_prototype_name(typeobject)
+        datamodel.item_desc = typeobject.item_description or ""
+
+        if RenderTarget then
+            iUiRt.close_ui_rt("item_model")
+        end
+
+        RenderTarget = iUiRt.create_new_rt("item_model",
+            "/pkg/vaststars.resources/light_rt.prefab",
+            "/pkg/vaststars.resources/" .. typeobject.model,
+            {s = {1, 1, 1}, t = {0, 0, 0}}, typeobject.camera_distance
+        )
+
+        local storage = gameplay_core.get_storage()
+        storage.shortcut = storage.shortcut or {}
+        local id = __found_shortcut_id(storage.shortcut, item_name)
+        storage.shortcut[id] = {prototype_name = item_name, times = 0}
+
+        datamodel.shortcut[id] = {prototype_name = item_name, icon = typeobject.icon,  times = 0}
     end
 
     iobject.flush()

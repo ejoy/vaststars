@@ -1,8 +1,7 @@
-local menu = {
+return {
     {
-        name = "电力",
-        icon = "textures/construct/power.texture",
-        detail = {
+        category = "电力",
+        items = {
             "铁制电线杆",
             "太阳能板I",
             "蓄电池I",
@@ -13,9 +12,8 @@ local menu = {
         }
     },
     {
-        name = "化工",
-        icon = "textures/construct/chemistry2.texture",
-        detail = {
+        category = "化工",
+        items = {
             "电解厂I",
             "水电站I",
             "蒸馏厂I",
@@ -23,18 +21,16 @@ local menu = {
         },
     },
     {
-        name = "加工",
-        icon = "textures/construct/assembler.texture",
-        detail = {
+        category = "加工",
+        items = {
             "组装机I",
             "熔炼炉I",
             "粉碎机I",
         },
     },
     {
-        name = "管道",
-        icon = "textures/construct/pipe.texture",
-        detail = {
+        category = "管道",
+        items = {
             "管道1-X型",
             "地下管1-JI型",
             "液罐I",
@@ -46,9 +42,8 @@ local menu = {
         },
     },
     {
-        name = "物流",
-        icon = "textures/construct/logisitic1.texture",
-        detail = {
+        category = "物流",
+        items = {
             "砖石公路-X型",
             "科研中心I",
             "采矿机I",
@@ -58,9 +53,8 @@ local menu = {
         },
     },
     {
-        name = "默认",
-        icon = "textures/construct/modify.texture",
-        detail = {
+        category = "默认",
+        items = {
             "铁制电线杆",
             "砖石公路-X型",
             "无人机仓库I", 
@@ -70,4 +64,3 @@ local menu = {
         },
     },
 }
-return menu

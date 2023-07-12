@@ -1,7 +1,7 @@
 ---
 data:
   efk:
-    auto_play: true
+    auto_play: false
     loop: true
     path: /pkg/vaststars.resources/effect/efk/distillery_fire.efk
     speed: 1
@@ -20,7 +20,7 @@ policy:
 ---
 data:
   efk:
-    auto_play: true
+    auto_play: false
     loop: true
     path: /pkg/vaststars.resources/effect/efk/hydro-plant_smoke.efk
     speed: 1
@@ -39,7 +39,7 @@ policy:
 ---
 data:
   efk:
-    auto_play: true
+    auto_play: false
     loop: true
     path: /pkg/vaststars.resources/effect/efk/hydro-plant_smoke.efk
     speed: 1
@@ -58,7 +58,7 @@ policy:
 ---
 data:
   efk:
-    auto_play: true
+    auto_play: false
     loop: true
     path: /pkg/vaststars.resources/effect/efk/distillery_fire.efk
     speed: 1
@@ -67,7 +67,7 @@ data:
   scene:
     r: {0, -0.1736481785774231, 0, 0.9848077297210693}
     s: {3, 3, 3}
-    t: {-0, 9.600000381469727, -0}
+    t: {0, 9.600000381469727, 0}
   tag:
     effect
 policy:
@@ -79,7 +79,7 @@ policy:
 data:
   name: shelf1
   scene:
-    r: {-0, 1, -0, -4.371138828673793e-08}
+    r: {0, 1, 0, -4.371138828673793e-08}
     t: {-12, 15, 17}
   slot:
     follow_flag: 1
@@ -94,7 +94,7 @@ policy:
 data:
   name: shelf2
   scene:
-    r: {-0, 1, -0, -4.371138828673793e-08}
+    r: {0, 1, 0, -4.371138828673793e-08}
     t: {0, 17.84029769897461, 17}
   slot:
     follow_flag: 1
@@ -109,7 +109,7 @@ policy:
 data:
   name: shelf3
   scene:
-    r: {-0, 1, -0, -4.371138828673793e-08}
+    r: {0, 1, 0, -4.371138828673793e-08}
     t: {12, 15, 17}
   slot:
     follow_flag: 1

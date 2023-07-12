@@ -2,107 +2,6 @@
     <head>
         <style path = "common.rcss"/>
         <style>
-            button {
-                width: 28.00vmin;
-                height: 28.00vmin;
-                text-align: center;
-                border-radius: 2.00vmin;
-                border: 0.53vmin white;
-                font-size: 4.00vmin;
-                transition: transform 0.15s elastic-out;
-                transform: scale(1.0);
-            }
-            button:active {
-                transform: scale(1.3);
-            }
-            button#work {
-                position: absolute;
-                top: 82.67vmin;
-                left: 158.67vmin;
-                width: 16.00vmin;
-                height: 16.00vmin;
-                margin: 0.00vmin;
-                font-size: 150%;
-            }
-            workbutton {
-                font-size: 3.20vmin;
-                flex-direction: column;
-                justify-content: flex-start;
-                align-items: center;
-                border-radius: 2.00vmin;
-                border: 0.26vmin rgb(89, 73, 39);
-                background-color: rgb(246, 142, 14);
-                height: 12.00vmin;
-                width: 12.00vmin;
-            }
-            .workbutton-bg {
-                margin: auto auto;
-                width: 7.67vmin;
-                height: 7.67vmin; 
-                background-size: cover;
-            }
-            .workbutton-text {
-                width: 100%;
-                text-align: center;
-                font-size: 3.5vmin;
-                -webkit-text-stroke: 0.2vmin #000;
-                color: rgb(221, 235, 26)
-            }
-            .tools-container {
-                justify-content: flex-start;
-                font-size: 50%;
-            }
-            .tools-button {
-                flex-direction: column;
-                align-items:flex-start;
-                justify-content:space-evenly;
-                background-color: rgb(250, 205, 9);
-                background-size:cover;
-                width: 12.00vmin;
-                height: 12.00vmin;
-                margin: 1.33vmin;
-                font-size: 2.40vmin;
-                border: 0.27vmin rgb(89, 73, 39);
-                align-items: center;
-            }
-            .tools-button-title {
-                background-color: rgb(246, 237, 189);
-                border-radius: 0.67vmin;
-                color:rgb(73, 60, 32);
-                -webkit-text-stroke: 0.07vmin rgb(39, 32, 17);
-                width: 10.67vmin;
-                margin: 0.00vmin;
-            }
-            .building-block {
-                width: 28vmin;
-                height: 40.00vmin;
-                flex-direction: column;
-                align-items: center;
-                justify-content: flex-start;
-                position: absolute; 
-                left:0vmin; 
-                top:10vmin;
-                z-index: 999;
-                border-radius: 1.33vmin;
-            }
-            .building-info {
-                flex-direction: row;
-                justify-content: flex-start;
-                margin: 0.1vmin;
-                width: 26vmin;
-                height: 8vmin;
-            }
-            .building-pic {
-                margin: 1vmin;
-                background-size: cover;
-                width: 5.67vmin;
-                height: 5.67vmin;
-            }
-            .building-num {
-                padding-top: 0.5vmin;
-                font-size: 5.00vmin;
-                -webkit-text-stroke: 0.3vmin #000;
-            }
             .main-menu-button {
                 margin : 0 0.5em;
                 width: 15.33vmin;
@@ -116,12 +15,6 @@
                 width: 12.67vmin;
                 height: 12.67vmin;
             }
-            .row {
-                flex-direction: row;
-            }
-            .column {
-                flex-direction: column;
-            }
             .progress-bar-block {
                 margin:0 0 0.05em 0;
                 justify-content: flex-start;
@@ -132,19 +25,6 @@
                 width: 60%;
                 height: 100%;
                 background-color: rgb(87, 238, 0);
-            }
-            .item {
-                flex-direction: column;
-                align-items:flex-start;
-                justify-content:flex-start;
-                background-color: rgb(250, 205, 9);
-                border: 0.27vmin rgb(89, 73, 39);
-                background-size:cover;
-                width: 12.00vmin;
-                height: 12.00vmin;
-                font-size: 2.40vmin;
-                border-radius: 1vmin;
-                margin-right: 0.2vmin;
             }
             p {
                 animation:0.5s linear 0s infinite alternate rotation;
@@ -184,14 +64,17 @@
                 height:3.4vmin;
                 background-size: cover;
             }
-            .item-num {
+            .button-container {
+                justify-content: flex-end;
+                align-items: flex-end;
+                width: 37.08%;
+                height: 65.27%;
                 position: absolute;
-                font-size: 5vmin;
-                left:0.2vmin;
-                top:-1.5vmin;
-                color:rgb(255,255,255);
-                -webkit-text-stroke: 0.26vmin rgb(0,0,0);
+                top: 34.73%;
+                left: 62.92%;
+                pointer-events: none;
             }
+
             .building-button-container {
                 flex-direction: row-reverse;
                 align-items: flex-start;
@@ -206,17 +89,46 @@
                 pointer-events: none;
             }
             .building-button {
-                position: absolute;
                 background-size: cover;
             }
             .building-button:active {
                 transform: scale(1.2);
             }
-            .layout {
-                width: 100%;
-                height: 100%;
+            construct-box {
                 position: absolute;
-                pointer-events: none;
+                left: 5.03vmax;
+                top: 0.62vmin;
+                width: 39.30vmax;
+                height: 98.52vmin;
+                background-image: "textures/construct/square-grid.texture";
+                background-size: 100% 100%;
+                background-lattice: 4.28%;
+            }
+            construct-list {
+                left: 0.86vmax;
+                top: 2.95vmin;
+                width: 39.00vmax;
+                height: 93.00vmin;
+                margin-left: -1vmax;
+                overflow: scroll;
+            }
+            item {
+                width: 16.40vmin;
+                height: 16.40vmin;
+                background-size: 100% 100%;
+                justify-content: center;
+                align-items: center;
+                margin-right: -1.57vmax;
+                margin-bottom: -1.57vmax;
+            }
+            item-detail {
+                position: absolute;
+                left: 62.35vmax;
+                top: 2.70vmin;
+                width: 31.92vmax;
+                height: 32.63vmin;
+                background-image: "textures/construct/item-detail.texture";
+                background-size: 100% 100%;
             }
         </style>
         <script type="text/x-lua" >
@@ -233,14 +145,29 @@
                 ingredient_icons = {},
                 guide_progress = 0,
                 construct_menu = {},
-                cur_construct_menu = "",
-                remove_lorry = false,
                 status = "normal",
-                focus_building_icon = "none"
+                focus_building_icon = "none",
+                item_name = "",
+                item_desc = "",
+                buttons = {},
+                shortcut = {}
             }
+            local TRANSFORM_DELTA <const> = 15
+            local LINE_MARGIN_RIGHT_DELTA <const> = -4
+            local LINE_TRANSFORM_DELTA <const> = -7
+            for i = 1, 5 do
+                start.buttons[i] = {
+                    prototype_name = "",
+                    icon = "",
+                    outer_transform = ("rotate(%sdeg)"):format(-TRANSFORM_DELTA * (i - 1)),
+                    inner_transform = ("rotate(%sdeg)"):format(TRANSFORM_DELTA * (i - 1)),
+                    line_margin_right = ("%svmin"):format(LINE_MARGIN_RIGHT_DELTA * (i - 1) + 11),
+                    line_transform = ("rotate(%sdeg)"):format(LINE_TRANSFORM_DELTA * (i - 1))
+                }
+            end
 
             function start.clickButton(...)
-                console.log(...)
+                -- console.log(...)
                 ui_sys.pub {...}
             end
             function start.clickConstruct(...)
@@ -252,80 +179,98 @@
             ui_sys.mapping(start, {
                 {
                     function()
-                        start.cur_construct_menu = ""
+                        for i = 1, 5 do
+                            local prototype_name = ""
+                            local icon = ""
+                            if start.shortcut[i] then
+                                prototype_name = start.shortcut[i].prototype_name
+                                icon = start.shortcut[i].icon
+                            end
+
+                            start.buttons[i] = {
+                                prototype_name = prototype_name,
+                                icon = icon,
+                                outer_transform = ("rotate(%sdeg)"):format(-TRANSFORM_DELTA * (i - 1)),
+                                inner_transform = ("rotate(%sdeg)"):format(TRANSFORM_DELTA * (i - 1)),
+                                line_margin_right = ("%svmin"):format(LINE_MARGIN_RIGHT_DELTA * (i - 1) + 11),
+                                line_transform = ("rotate(%sdeg)"):format(LINE_TRANSFORM_DELTA * (i - 1))
+                            }
+                        end
+                        start("buttons")
                     end,
-                    "is_concise_mode",
+                    "shortcut",
                 },
             })
+            function init()
+                local e = assert(document.getElementById "construct-list")
+                e.addEventListener("pan", function(param)
+                    e.scrollTop = e.scrollTop - (param.vy * 0.045)
+                end)
+            end
         </script>
     </head>
-    <body style = "pointer-events: none; justify-content: center; align-items: center;">
-        <div class = "safe-area">    
-            <!-- 帮助按钮 -->
-            <button  class = "main-menu-button" style="border: 0.00vmin; position: absolute; left:-6.7vmin; top: -4vmin;" data-event-click="clickButton('help')" data-if = "not is_concise_mode and guide_progress >= 10">
-                <div class = "menu-button-pic" style='width:9vmin; height:9vmin; background-image:"textures/common/help.texture"'/>
-            </button>
+    <body style = "pointer-events: none; justify-content: center; align-items: center;" onload="init()">
+        <!-- 帮助按钮 -->
+        <button  class = "main-menu-button" style="border: 0.00vmin; position: absolute; left:-6.7vmin; top: -4vmin;" data-event-click="clickButton('help')" data-if = "(not is_concise_mode) and guide_progress >= 10">
+            <div class = "menu-button-pic" style='width:9vmin; height:9vmin; background-image:"textures/common/help.texture"'/>
+        </button>
 
-            <!-- 右上角：当前科技进度 -->
-            <div data-if = "not is_concise_mode and show_tech_progress" style = "pointer-events: none; position: absolute; right:0vmin; top:0vmin;  width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-start; padding-top: 1vmin;">
-                <button style='background-color:rgb(204,219,11);  width: 16.00vmin; height: 16.00vmin; align-items: center;' data-event-click="clickButton('click_techortaskicon', is_task)">
-                    <div style="position:absolute; left:3.5vmin; bottom:2.7vmin; width: 50%; height: 50%; background-size:cover;" data-style-background-image="current_tech_icon"/>
+        <!-- 右上角：当前科技进度 -->
+        <div data-if = "not is_concise_mode and show_tech_progress" style = "pointer-events: none; position: absolute; right:0vmin; top:0vmin;  width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-start; padding-top: 1vmin;">
+            <button style='background-color:rgb(204,219,11);  width: 16.00vmin; height: 16.00vmin; align-items: center;' data-event-click="clickButton('click_techortaskicon', is_task)">
+                <div style="position:absolute; left:3.5vmin; bottom:2.7vmin; width: 50%; height: 50%; background-size:cover;" data-style-background-image="current_tech_icon"/>
                     <div style="-webkit-text-stroke: 0.3vmin rgb(39, 32, 17);font-size: 3.5vmin; word-break: break-all;">{{current_tech_name}}</div>
                     <div class="progress-bar-block" style = "position:absolute; bottom: -4.1vmin; width:100%; height:20%; border-radius: 0.3vmin; background-color: rgb(194, 194, 194);">
                         <div class="progress-background" data-style-width="current_tech_progress"/>
                         <!-- 右上角：当前科技进度数字标识x/y -->
                         <div class="progress-num">{{current_tech_progress_detail}}</div>
 
-                        <!-- 右上角：当前科技需要科技包图标 -->
-                        <div class="progress-item-block" data-if = "show_ingredient">
-                            <div class="progress-item" data-style-background-image = "it.icon" data-for = "ingredient_icons"/>
-                        </div>
-                    </div> 
-                    <p data-if="is_task" style="position: absolute; left:-1vmin; top:-0.75vmin;">
-                        <div style='width:2.8vmin; height:7.6vmin; background-image: "textures/common/exclamation2.texture"; background-size: cover;'/>
-                    </p>
-                </button>
+                    <!-- 右上角：当前科技需要科技包图标 -->
+                    <div class="progress-item-block" data-if = "show_ingredient">
+                        <div class="progress-item" data-style-background-image = "it.icon" data-for = "ingredient_icons"/>
+                    </div>
+                </div> 
+                <p data-if="is_task" style="position: absolute; left:-1vmin; top:-0.75vmin;">
+                    <div style='width:2.8vmin; height:7.6vmin; background-image: "textures/common/exclamation2.texture"; background-size: cover;'/>
+                </p>
+            </button>
+        </div>
+
+        <construct-box data-if="is_concise_mode">
+            <construct-list id = "construct-list">
+                <div style = "width: 100%; align-items: flex-start;" data-for = "c, c_index : construct_menu">
+                    <div style = "position: absolute; left: 0vmin; top: 0vmin; background-image: textures/item-config/category-bg.texture; width: 23.50vmax; height: 23.13vmin; background-size: 100% 100%;" />
+                    <div style = "margin-left: 5.58vmin; margin-top: 2.58vmin; width: 100%; flex-direction: row; font-size: 4.20vmin;">{{c.category}}</div>
+                    <div style = "flex-direction: row; flex-wrap: wrap;">
+                        <item data-event-click = "clickButton('click_item', c_index, i_index)" data-style-background-image = "i.selected and 'textures/item-config/item-active.texture' or 'none'" data-for = "i, i_index : c.items">
+                            <div data-style-background-image = "i.icon" style = "width: 6.91vmax; height: 6.91vmax; background-size: 100% 100%; background-color: rgb(61, 61, 61);" />
+                            <div style = "position: absolute; width: 6.91vmax; height: 6.91vmax; justify-content: flex-end; align-items: flex-end; font-size: 3.5vmin; color:rgb(255,255,255); -webkit-text-stroke: 0.26vmin rgb(0,0,0);">{{i.count}}</div>
+                        </item>
+                    </div>
+                </div>
+            </construct-list>
+        </construct-box>
+
+        <item-detail data-if="is_concise_mode">
+            <item-name style = "position: absolute; left: 15.20vmax; top: 2.94vmin; width: 13.21vmax; height: 4.67vmin; font-size: 4.67vmin;" data-if = "item_name ~= ''">{{item_name}}</item-name>
+            <item-desc style = "position: absolute; left: 15.73vmax; top: 9.26vmin; width: 13.21vmax; height: 12.61vmin; word-break: break-word; font-size: 3.00vmin;" data-if = "item_desc ~= ''">{{item_desc}}</item-desc>
+            <item-icon style = "position: absolute; left: 1.00vmax; top: 2.91vmin; width: 13.85vmax; height: 27.02vmin; background-image: <item_model>; background-size: 100% 100%;" />
+        </item-detail>
+
+        <div class = "building-button-container" data-style-transform = "it.outer_transform" data-for = "buttons" data-if="is_concise_mode">
+            <div style = "position: absolute; pointer-events: none; width: 18.23vmin; height: 52.655%; margin-top: 4.115vmin; margin-bottom: 9.115vmin; background-image: textures/building-menu/line.texture; background-size: contain;" data-style-transform = "it.line_transform" data-style-margin-right = "it.line_margin_right" />
+            <div class = "building-button" style = "position: absolute; pointer-events: none; margin-top: -5vmin; margin-right: 9vmin; width: 18.23vmin; height: 18.23vmin;" data-style-transform = "it.inner_transform">
+                <div class = "building-button" style = "position: absolute; width: 18.23vmin; height: 18.23vmin;" data-style-background-image = "it.icon ~= '' and 'textures/construct/building-bg.texture' or 'textures/construct/building-unknown.texture'" />
+                <div class = "building-button" style = "margin-top: 1vmin; margin-left: 2.0vmin; position: absolute; width: 14.70vmin; height: 14.70vmin; border-radius: 50%;" data-style-background-image = "it.icon" data-if = "it.icon ~= ''" data-event-click = "clickButton('construct_entity', it.prototype_name)" />
             </div>
+        </div>
 
-            <!-- right-side construction menu -->
-            <div class = "layout">
-                <div style = "pointer-events: none; position: absolute; right:0vmin; width: 98vmax; height: 97vmin; flex-direction: row-reverse;" data-if="is_concise_mode">
-                    <div style = "width: 16.00vmin; height: 80.00vmin; flex-direction: column; justify-content: space-between;">
-                        <workbutton data-event-click="clickShowConstructMenuDetail(it.name)" data-for = "construct_menu" data-style-background-color="cur_construct_menu == it.name and 'rgb(0, 176, 80)' or 'rgb(246, 142, 14)'">
-                            <div class="workbutton-bg" data-style-background-image = "it.icon" />
-                            <div class="workbutton-text" >{{it.name}}</div>
-                        </workbutton>
-                    </div>
-
-                    <!-- separator -->
-                    <div style = "width: 2.67vmin;" />
-
-                    <div style = "flex-direction: row; flex-wrap: wrap; width: 30.13vmin; height: 80.00vmin; background-color: rgb(44, 32, 18); border: 0.40vmin rgb(89, 73, 39); border-radius: 0.67vmin;" data-if="cur_construct_menu == it.name" data-for = "construct_menu">
-                        <div class="tools-container" data-for = "menu : it.detail">
-                            <button class="tools-button" data-event-click="clickButton('construct_entity', menu.prototype_name)">
-                                <div class="workbutton-bg" data-style-background-image = "menu.icon" />
-                                <div class="tools-button-title">{{menu.show_prototype_name}}</div>
-                                <div class="item-num">{{menu.count}}</div>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <workbutton data-event-click="clickButton('remove_lorry')" style = "position: absolute; left: 138.50vmin; top: 81vmin;" data-if = "false">
-                    <div class="workbutton-bg" style = 'background-image: "textures/construct/power.texture"' />
-                    <div class="workbutton-text" >删除小车</div>
-                </workbutton>
-            </div>
-
-            <div class = "layout">
-                <div class = "building-button-container" style = "align-items: flex-end;">
-                    <div class = "building-button" style = "width: 27.41vmin; height: 27.41vmin; background-image: textures/construct/construct.texture;" data-event-click = "clickButton('construct')" data-if = "status == 'normal'" />
-                </div>
-                <div class = "building-button-container" style = "align-items: flex-end;">
-                    <div class = "building-button" style = "width: 27.41vmin; height: 27.41vmin; background-image: textures/construct/building-background.texture; align-items: center; justify-content: center;" data-event-click = "clickButton('selected')" data-if = "status == 'focus'">
-                        <div data-style-background-image = "focus_building_icon" style = "background-size: cover; width: 17.06vmin; height: 17.06vmin;" />
-                    </div>
-                </div>
+        <div class = "button-container" data-if = "status == 'normal'">
+            <div class = "building-button" style = "margin-right: 8.00vmax; margin-bottom: 5.23vmin; width: 27.41vmin; height: 27.41vmin; background-image: textures/construct/construct.texture;" data-event-click = "clickButton('construct')" />
+        </div>
+        <div class = "button-container" data-if = "status == 'focus'">
+            <div class = "building-button" style = "margin-right: 8.00vmax; margin-bottom: 5.23vmin; width: 27.41vmin; height: 27.41vmin; background-image: textures/construct/building-background.texture; align-items: center; justify-content: center;" data-event-click = "clickButton('selected')">
+                <div data-style-background-image = "focus_building_icon" style = "background-size: cover; width: 17.06vmin; height: 17.06vmin;" />
             </div>
         </div>
     </body>
