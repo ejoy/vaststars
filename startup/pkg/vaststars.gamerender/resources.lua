@@ -662,6 +662,7 @@ local t = {
 	"/pkg/ant.rmlui/core/timer.lua",
 	"/pkg/ant.rmlui/core/windowManager.lua",
 	"/pkg/ant.rmlui/luadoc/rmlui.lua",
+	"/pkg/ant.rmlui/make.lua",
 	"/pkg/ant.rmlui/materials/debug_draw.material",
 	"/pkg/ant.rmlui/materials/font.material",
 	"/pkg/ant.rmlui/materials/font_cr.material",
