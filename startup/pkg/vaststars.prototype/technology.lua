@@ -978,7 +978,7 @@ local prototype = gameplay.register.prototype
     type = { "task" },
     task = {"select_entity", 0, "熔炼炉I"},
     prerequisites = {"生产铁矿石"},
-    count = 2,
+    count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_click_build.texture",
       "textures/task_tips_pic/task_produce_geopack1.texture",
@@ -986,7 +986,7 @@ local prototype = gameplay.register.prototype
       "textures/task_tips_pic/start_construct.texture",
     },
     sign_desc = {
-      { desc = "使用“建造”放置2台熔炼炉", icon = "textures/construct/industry.texture"},
+      { desc = "使用“建造”放置1台熔炼炉", icon = "textures/construct/industry.texture"},
     },
   }
   
@@ -1078,20 +1078,6 @@ local prototype = gameplay.register.prototype
     },
   }
 
-prototype "物流学2" {
-  desc = "研究电能转换成机械能的基础供能装置",
-  type = { "tech" },
-  icon = "textures/science/book.texture",
-  effects = {
-  },
-  prerequisites = {"量产运输车辆"},
-  ingredients = {
-    {"地质科技包", 1},
-  },
-  count = 20,
-  time = "6s"
-}
-
 prototype "气候研究1" {
   desc = "对火星大气成分进行标本采集和研究",
   type = { "tech" },
@@ -1100,7 +1086,7 @@ prototype "气候研究1" {
     unlock_recipe = {"气候科技包1","空气过滤器打印","地下水挖掘机打印"},
     unlock_item = {"气候科技包","空气过滤器I","地下水挖掘机I"},
   },
-  prerequisites = {"物流学2"},
+  prerequisites = {"量产运输车辆"},
   ingredients = {
       {"地质科技包", 1},
   },
