@@ -547,7 +547,7 @@ prototype "砖石公路-X型" {
     type = {"item"},
     item_category = "物流",
     stack = 20,
-    pile = "4x1x4",
+    pile = "4x2x4",
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     item_description = "供车辆行驶的砖石公路",

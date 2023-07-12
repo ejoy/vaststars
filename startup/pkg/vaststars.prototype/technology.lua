@@ -492,29 +492,29 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "建造公路" {
-    desc = "建造60段公路",
+    desc = "建造30段公路",
     icon = "textures/construct/industry.texture",
     type = { "task" },
     task = {"stat_production", 0, "砖石公路-X型"},
     prerequisites = {"公路研究"},
-    count = 60,
+    count = 30,
     tips_pic = {
       "textures/task_tips_pic/task_produce_ore3.texture",
     },
     sign_desc = {
-      { desc = "往建造中心运送石砖生产60段公路", icon = "textures/construct/industry.texture"},
+      { desc = "使用组装机生产30段公路", icon = "textures/construct/industry.texture"},
     },
   }
 
   
   prototype "通向铁矿" {
-    desc = "修建15节公路",
+    desc = "修建20节公路",
     icon = "textures/construct/industry.texture",
     type = { "task" },
     task = {"unknown", 0, 1},
     task_params = {},
     prerequisites = {"建造公路"},
-    count = 15,
+    count = 20,
     tips_pic = {
       "textures/task_tips_pic/task_place_road1.texture",
       "textures/task_tips_pic/task_place_road2.texture",
