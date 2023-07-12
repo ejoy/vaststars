@@ -10,7 +10,7 @@ local start = ui_sys.createDataMode("start", {
 
     select_index = "", -- begin or end
     select_endpoint_ids = {},
-}
+})
 
 local function show_error_tip(err)
     local error_tip_element_id = "id-div-error-tip"
