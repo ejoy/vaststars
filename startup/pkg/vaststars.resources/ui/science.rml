@@ -57,7 +57,7 @@
             }
             .recipe-des-text {
                 width: 90%;
-                height: 10%;
+                /* height: 10%; */
                 font-size: 4vmin;
                 text-align: left;
                 -webkit-text-stroke: 0.05em rgb(0,0,0);
@@ -452,7 +452,7 @@
                             <div style='width: 4.66vmin; height: 4vmin; background-size: cover;' data-style-background-image="sub_icon"/>
                             <div style="width: 90%; color: rgb(241,157,52); font-size: 3vmin; word-break: break-all;">{{sub_desc}}</div>
                         </div>
-                        <div style='margin-left: 5%; margin-right: 5%; width: 90%; height: 0.1vmin; background-image: "textures/common/caption-line.texture"; background-size: cover;'/>
+                        <div style='margin-top: 1vmin; margin-left: 5%; margin-right: 5%; width: 90%; height: 0.1vmin; background-image: "textures/common/caption-line.texture"; background-size: cover;'/>
                         <div style="margin-top: 1vmin; flex-direction: column; width:100%; height:100%;">
                             <detaillist direction='1' width='100%' height='100%'/>
                         </div>
