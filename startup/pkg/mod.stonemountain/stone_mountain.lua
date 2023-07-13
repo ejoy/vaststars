@@ -17,7 +17,10 @@ local icompute = ecs.import.interface "ant.render|icompute"
 local terrain_module = require "terrain"
 local ism = ecs.interface "istonemountain"
 local sm_sys = ecs.system "stone_mountain"
-local ratio, width, height = 0.70, 256, 256
+local ratio, width, height = 0.77, 256, 256
+local ratio_table = {
+    [1] = 0.88, [2] = 0.90, [3] = 0.92, [4] = 0.94
+}
 local freq, depth, unit, offset = 4, 4, 10, 0
 local main_viewid = viewidmgr.get "csm_fb"
 local open_area = {}
@@ -36,17 +39,46 @@ local mesh_table = {
 
 
 local function generate_sm_config()
+    local function update_idx_table(x, z, m, n, idx_table)
+        for oz = 0, n - 1 do
+            for ox = 0, m - 1 do
+                local xx, zz = ox + x, oz + z
+                local idx = 1 + zz * width + xx
+                if xx < width and zz < height then
+                    idx_table[idx] = 1
+                end
+            end
+        end        
+    end
     local idx_table = {}
-    local cnt = 0
     for iz = 0, height - 1 do
         for ix = 0, width - 1 do
-            local seed, offset_y, offset_x = iz * ix + 1, iz + 1, ix + 1
-            local noise = terrain_module.noise(ix, iz, freq, depth, seed, offset_y, offset_x)
-            if noise > ratio then
-                idx_table[#idx_table+1] = 1
-                cnt = cnt + 1
-            else
-                idx_table[#idx_table+1] = 0
+            for ri = 1, 4 do
+                local seed, offset_y, offset_x = iz * ix + ri, iz + ri, ix + ri
+                local noise = terrain_module.noise(ix, iz, freq, depth, seed, offset_y, offset_x)
+                if ri == 1 then -- 1x1
+                    local idx = 1 + iz * width + ix
+                    if noise > ratio_table[ri] then
+                        idx_table[idx] = 1
+                    elseif not idx_table[idx] then
+                        
+                        idx_table[idx] = 0
+                    end 
+                elseif ri == 2 then -- 2x2
+                    if noise > ratio_table[ri] then
+                        update_idx_table(ix, iz, 2, 2, idx_table)
+                    end                    
+                elseif ri == 3 then -- 3x3
+                    
+                    if noise > ratio_table[ri] then
+                        update_idx_table(ix, iz, 3, 3, idx_table)
+                    end
+                elseif ri == 4 then -- 4x4
+                    
+                    if noise > ratio_table[ri] then
+                        update_idx_table(ix, iz, 4, 4, idx_table)
+                    end 
+                end
             end
         end
     end
@@ -77,18 +109,115 @@ end
 
 local function get_1x1_srt()
     for sm_idx, _ in pairs(sm_table) do
+        if sm_table[sm_idx][1] then
+            local ix, iz = sm_idx & 65535, sm_idx >> 16
+            local seed, offset_y, offset_x = iz * ix + 1, iz + 1, ix + 1
+            local s_noise = terrain_module.noise(ix, iz, freq, depth, seed, offset_y, offset_x) * 0.064 + 0.064
+            local r_noise = math.floor(terrain_module.noise(ix, iz, freq, depth, seed, offset_y, offset_x) * 360) + math.random(-360, 360)
+            local mesh_noise = (sm_idx + math.random(0, 4)) % 4 + 1
+            local tx, tz = (ix + 0.5 - offset) * unit, (iz + 0.5 - offset) * unit
+            sm_table[sm_idx][1] = {s = s_noise, r = r_noise, tx = tx, tz = tz, m = mesh_noise}
+        end
+    end
+end
+
+local function get_2x2_srt()
+    for sm_idx, _ in pairs(sm_table) do
+        if sm_table[sm_idx][2] then
+            local ix, iz = sm_idx & 65535, sm_idx >> 16
+            local seed, offset_y, offset_x = iz * ix + 2, iz + 2, ix + 2
+            local s_noise = terrain_module.noise(ix, iz, freq, depth, seed, offset_y, offset_x) * 0.20 + 0.064
+            local r_noise = math.floor(terrain_module.noise(ix, iz, freq, depth, seed, offset_y, offset_x) * 360) + math.random(-360, 360)
+            local mesh_noise = (sm_idx + math.random(0, 4)) % 4 + 1
+            local tx, tz = (ix + 1 - offset) * unit, (iz + 1 - offset) * unit
+            sm_table[sm_idx][2] = {s = s_noise, r = r_noise, tx = tx, tz = tz, m = mesh_noise} 
+        end
+    end
+end
+
+local function get_3x3_srt()
+    for sm_idx, _ in pairs(sm_table) do
+        if sm_table[sm_idx][3] then
+            local ix, iz = sm_idx & 65535, sm_idx >> 16
+            local seed, offset_y, offset_x = iz * ix + 3, iz + 3, ix + 3
+            local s_noise = terrain_module.noise(ix, iz, freq, depth, seed, offset_y, offset_x) * 0.25 + 0.125
+            local r_noise = math.floor(terrain_module.noise(ix, iz, freq, depth, seed, offset_y, offset_x) * 360) + math.random(-360, 360)
+            local mesh_noise = (sm_idx + math.random(0, 4)) % 4 + 1
+            local tx, tz = (ix + 1.5 - offset) * unit, (iz + 1.5 - offset) * unit
+            sm_table[sm_idx][3] = {s = s_noise, r = r_noise, tx = tx, tz = tz, m = mesh_noise} 
+        end
+    end
+end
+
+local function get_4x4_srt()
+    for sm_idx, _ in pairs(sm_table) do
+        if sm_table[sm_idx][4] then
+            local ix, iz = sm_idx & 65535, sm_idx >> 16
+            local seed, offset_y, offset_x = iz * ix + 3, iz + 3, ix + 3
+            local s_noise = terrain_module.noise(ix, iz, freq, depth, seed, offset_y, offset_x) * 0.35 + 0.20
+            local r_noise = math.floor(terrain_module.noise(ix, iz, freq, depth, seed, offset_y, offset_x) * 360) + math.random(-360, 360)
+            local mesh_noise = (sm_idx + math.random(0, 4)) % 4 + 1
+            local tx, tz = (ix + 2 - offset) * unit, (iz + 2 - offset) * unit
+            sm_table[sm_idx][4] = {s = s_noise, r = r_noise, tx = tx, tz = tz, m = mesh_noise} 
+        end
+    end
+end
+
+local function set_sm_property()
+    local function has_block(x, z, m, n)
+        for oz = 0, n - 1 do
+            for ox = 0, m - 1 do
+                local ix, iz = x + ox, z + oz
+                if ix >= width or iz >= height then return nil end
+                local sm_idx = (iz << 16) + ix
+                if (not sm_table[sm_idx])then
+                    return nil
+                end
+            end
+        end
+        return true        
+    end
+
+    local function get_random(m, n, t)
+        local result_table = {}
+        local count = n
+        while count > 0 do
+            local idx = math.random(1, m)
+            if t[idx] then
+                count = count - 1
+                result_table[idx] = true
+                t[idx] = nil
+            end
+        end
+        return result_table
+    end
+
+    for sm_idx, _ in pairs(sm_table) do
         local ix, iz = sm_idx & 65535, sm_idx >> 16
-        local seed, offset_y, offset_x = iz * ix + 1, iz + 1, ix + 1
-        local s_noise = terrain_module.noise(ix, iz, freq * 2, depth * 2, seed * 2, offset_y * 2, offset_x * 2) * 0.064 + 0.064 * 1.5
-        local r_noise = math.floor(terrain_module.noise(ix, iz, freq * 3, depth * 3, seed * 3, offset_y * 3, offset_x * 3) * 360)
-        local mesh_noise = (sm_idx) % 4 + 1
-        local tx, tz = (ix + 0.5 - offset) * unit, (iz + 0.5 - offset) * unit
-        sm_table[sm_idx] = {[1] = {s = s_noise, r = r_noise, tx = tx, tz = tz, m = mesh_noise}}
+        local near_table = { [1] = {}}
+        if has_block(ix, iz, 2, 2) then near_table[2] = 2 end
+        if has_block(ix, iz, 3, 3) then near_table[3] = 3 end
+        if has_block(ix, iz, 4 ,4) then near_table[4] = 4 end
+--[[         local m = #near_table
+        local n = math.floor(terrain_module.noise(ix, iz, freq, depth, ix * iz, 0, 0) * m + 1)
+        local random_table = get_random(m, n, near_table) ]]
+        if #near_table > 1 then
+            if math.random(0, 1) > 0 then
+                near_table[1] = nil
+            end
+        end
+        for idx, _ in pairs(near_table) do
+            sm_table[sm_idx][idx] = {}
+        end
     end
 end
 
 local function make_sm_noise()
+    set_sm_property()
     get_1x1_srt()
+    get_2x2_srt()
+    get_3x3_srt()
+    get_4x4_srt()
 end
 
 function sm_sys:init()
@@ -102,8 +231,7 @@ local function create_sm_entity()
         {}, {}, {}, {}
     }
     for _, sms in pairs(sm_table)do
-        for sm_type = 1, #sms do
-            local sm = sms[sm_type]
+        for _, sm in pairs(sms) do
             local mesh_idx = sm.m
             stonemountain_info_table[mesh_idx][#stonemountain_info_table[mesh_idx]+1] = {
                 {sm.s, sm.r, sm.tx, sm.tz}
@@ -152,7 +280,7 @@ end
 function sm_sys:entity_init()
     for e in w:select "INIT stonemountain:update render_object?update indirect?update" do
         local stonemountain = e.stonemountain
-        local max_num = 3000
+        local max_num = 5000
         local draw_indirect_eid = ecs.create_entity {
             policy = {
                 "ant.render|compute_policy",
@@ -228,7 +356,7 @@ function sm_sys:data_changed()
         if stonemountain_num > 0 then
             local de <close> = w:entity(stonemountain.draw_indirect_eid, "draw_indirect:in dispatch:in")
             local idb_handle, itb_handle = de.draw_indirect.idb_handle, de.draw_indirect.itb_handle
-            local instance_memory_buffer = get_instance_memory_buffer(stonemountain_info, 3000)
+            local instance_memory_buffer = get_instance_memory_buffer(stonemountain_info, 5000)
             bgfx.update(itb_handle, 0, instance_memory_buffer)
             local instance_params = math3d.vector(0, e.render_object.vb_num, 0, e.render_object.ib_num)
             local indirect_params = math3d.vector(stonemountain_num, 0, 0, 0)
