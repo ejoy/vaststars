@@ -170,26 +170,23 @@
                 -- console.log(...)
                 ui_sys.pub {...}
             end
-            function start.clickConstruct(...)
-                start.is_concise_mode = not start.is_concise_mode
-            end
-            function start.clickShowConstructMenuDetail(construct_menu)
-                start.cur_construct_menu = construct_menu
-            end
             ui_sys.mapping(start, {
                 {
                     function()
                         for i = 1, 5 do
                             local prototype_name = ""
                             local icon = ""
+                            local selected = false
                             if start.shortcut[i] then
                                 prototype_name = start.shortcut[i].prototype_name
                                 icon = start.shortcut[i].icon
+                                selected = start.shortcut[i].selected
                             end
 
                             start.buttons[i] = {
                                 prototype_name = prototype_name,
                                 icon = icon,
+                                selected = selected,
                                 outer_transform = ("rotate(%sdeg)"):format(-TRANSFORM_DELTA * (i - 1)),
                                 inner_transform = ("rotate(%sdeg)"):format(TRANSFORM_DELTA * (i - 1)),
                                 line_margin_right = ("%svmin"):format(LINE_MARGIN_RIGHT_DELTA * (i - 1) + 11),
@@ -204,7 +201,7 @@
             function init()
                 local e = assert(document.getElementById "construct-list")
                 e.addEventListener("pan", function(param)
-                    e.scrollTop = e.scrollTop - (param.vy * 0.045)
+                    e.scrollTop = e.scrollTop - param.dy
                 end)
             end
         </script>
@@ -258,10 +255,17 @@
         </item-detail>
 
         <div class = "building-button-container" data-style-transform = "it.outer_transform" data-for = "buttons" data-if="is_concise_mode">
-            <div style = "position: absolute; pointer-events: none; width: 18.23vmin; height: 52.655%; margin-top: 4.115vmin; margin-bottom: 9.115vmin; background-image: textures/building-menu/line.texture; background-size: contain;" data-style-transform = "it.line_transform" data-style-margin-right = "it.line_margin_right" />
+            <div style = "position: absolute; pointer-events: none; width: 18.23vmin; height: 52.655%; margin-top: 4.115vmin; margin-bottom: 9.115vmin; background-size: contain;"
+                data-style-background-image = "it.selected and 'textures/construct/line-active.texture' or 'textures/building-menu/line.texture'"
+                data-style-transform = "it.line_transform" data-style-margin-right = "it.line_margin_right"/>
             <div class = "building-button" style = "position: absolute; pointer-events: none; margin-top: -5vmin; margin-right: 9vmin; width: 18.23vmin; height: 18.23vmin;" data-style-transform = "it.inner_transform">
                 <div class = "building-button" style = "position: absolute; width: 18.23vmin; height: 18.23vmin;" data-style-background-image = "it.icon ~= '' and 'textures/construct/building-bg.texture' or 'textures/construct/building-unknown.texture'" />
-                <div class = "building-button" style = "margin-top: 1vmin; margin-left: 2.0vmin; position: absolute; width: 14.70vmin; height: 14.70vmin; border-radius: 50%;" data-style-background-image = "it.icon" data-if = "it.icon ~= ''" data-event-click = "clickButton('construct_entity', it.prototype_name)" />
+                <div class = "building-button" style = "margin-top: 1vmin; margin-left: 2.0vmin; position: absolute; width: 14.70vmin; height: 14.70vmin; border-radius: 50%;" data-style-background-image = "it.icon" data-if = "it.icon ~= ''"/>
+                <div class = "building-button" style = "pointer-events: none; position: absolute; margin-top: -0.45vmin; margin-left: 0.25vmin; width: 18.23vmin; height: 18.23vmin; background-image: textures/construct/building-active.texture" data-if = "it.selected" />
+                <div class = "building-button" style = "margin-top: 1vmin; margin-left: 2.0vmin; position: absolute; width: 14.70vmin; height: 14.70vmin; border-radius: 50%;" 
+                    data-event-click = "clickButton('construct_entity', it.prototype_name)"
+                    data-event-long_press = "clickButton('long_press_shortcut', it_index)"
+                />
             </div>
         </div>
 

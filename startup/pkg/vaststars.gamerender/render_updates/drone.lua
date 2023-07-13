@@ -161,18 +161,6 @@ local function get_berth(lacation)
     return (lacation >> 5) & 0x03
 end
 
-local function create_item(item, parent)
-    local prefab = imotion.sampler_group:create_instance("/pkg/vaststars.resources/prefabs/rock.prefab", parent)
-    prefab.on_init = function(inst) end
-    prefab.on_ready = function(inst)
-        local e <close> = w:entity(inst.tag["*"][1])
-        iom.set_position(e, math3d.vector{0, -2.0, 0})
-    end
-    prefab.on_message = function(inst, ...) end
-    world:create_object(prefab)
-    return prefab
-end
-
 local function get_home_pos(pos)
     return math3d.add(math3d.set_index(pos, 2, 0), {6, 8, -6})
 end
@@ -201,7 +189,12 @@ local function __get_position(location)
     if not io_shelves then
         return math3d.set_index(object.srt.t, 2, item_height)
     end
-    return io_shelves:get_heap_position(idx+1)
+    local pos = io_shelves:get_heap_position(idx+1)
+    if not pos then
+        return math3d.set_index(object.srt.t, 2, item_height)
+    else
+        return pos
+    end
 end
 
 function drone_sys:gameworld_update()
