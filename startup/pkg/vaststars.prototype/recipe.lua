@@ -1350,7 +1350,7 @@ prototype "管道2" {
     type = { "recipe" },
     recipe_craft_category = "器件小型制造",
     recipe_category =  "化工",
-    recipe_order =  10,
+    recipe_order =  11,
     recipe_icon =  "textures/construct/pipe.texture",
     ingredients = {
         {"石砖", 8},
@@ -2395,6 +2395,60 @@ prototype "地下水挖掘机打印" {
     time = "10s",
     description = "打印可挖掘地下水的装置",
 }
+---------------------建筑维修----------------------
+prototype "空气过滤器维修" {
+    type = { "recipe" },
+    recipe_craft_category = "建筑打印",
+    recipe_category =  "加工",
+    recipe_order =  50,
+    recipe_icon =  "textures/construct/broken-air-filter1.texture",
+    ingredients = {
+        {"铁齿轮", 5},
+        {"空气过滤器框架", 1},
+    },
+    results = {
+        {"空气过滤器I", 1},
+    },
+    time = "5s",
+    description = "维修可过滤空气的装置",
+}
+
+prototype "地下水挖掘机维修" {
+    type = { "recipe" },
+    recipe_craft_category = "建筑打印",
+    recipe_category =  "加工",
+    recipe_order =  51,
+    recipe_icon =  "textures/construct/broken-air-filter1.texture",
+    ingredients = {
+        {"铁板", 5},
+        {"地下水挖掘机框架", 1},
+    },
+    results = {
+        {"地下水挖掘机I", 1},
+    },
+    time = "5s",
+    description = "维修可过滤空气的装置",
+}
+
+prototype "水电站维修" {
+    type = { "recipe" },
+    recipe_craft_category = "建筑打印",
+    recipe_category =  "加工",
+    recipe_order =  54,
+    recipe_icon =  "textures/construct/broken-hydroplant.texture",
+    ingredients = {
+        {"石砖", 16},
+        {"水电站框架", 1},
+    },
+    results = {
+        {"水电站I", 1},
+    },
+    time = "5s",
+    description = "打印可处理液体的装置",
+}
+
+
+
 -------------------------------------------
 
 
