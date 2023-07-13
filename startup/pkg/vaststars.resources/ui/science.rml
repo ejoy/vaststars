@@ -57,7 +57,7 @@
             }
             .recipe-des-text {
                 width: 90%;
-                height: 10%;
+                /* height: 10%; */
                 font-size: 4vmin;
                 text-align: left;
                 -webkit-text-stroke: 0.05em rgb(0,0,0);
@@ -207,6 +207,9 @@
             end
             local function tech_item_update(item, index)
                 local item_data = start.techitems[index]
+                if not item_data then
+                    return
+                end
                 local ingredient_items = ""
                 local ingredient_count = 0
                 if not item_data.task then
@@ -282,7 +285,7 @@
                 item.addEventListener('click', function(event) start.click_detail_item(item, index) end)
             end
 
-            local function pop_item_renderer(index)
+            local function select_item_renderer(index)
                 if not start.current_tech then
                     return ""
                 end
@@ -342,7 +345,7 @@
                 end
                 local htmlstr = ([[<div style='width:61.5vmin;flex-direction:row;justify-content:space-between;align-items:center;'><div class="item-bg" style='margin-top: %s; margin-left: 2vmin; width: 8vmin; height: 8vmin; background-image:"%s";'/>]]):format(selected and '-3vmin' or '0vmin', detail.icon)
                 if selected then
-                    htmlstr = htmlstr .. pop_item_renderer(index)
+                    htmlstr = htmlstr .. select_item_renderer(index)
                 elseif detail.name then
                     htmlstr = htmlstr .. ([[
                         <div style='margin-top: -2vmin; margin-right: 1.5vmin; flex-direction: column; justify-content: flex-start; align-items: flex-end;'>
@@ -432,16 +435,13 @@
             <div style="height: 90%; flex-direction: row; justify-content: center;">
                 <div style="margin: 1.5vmin; flex-direction: column; width: 42%; height: 100%;">
                     <div style='margin: 1vmin; width: 100%; height: 90%; background-image: "textures/common/square-grid.texture"; background-size: 100% 100%; background-lattice: 4.28%;'>
-                        <!--button class = "back-button" data-event-click="clickReturn(event)"/-->
-                        <!-- 已研究科技浏览界面按钮-->
-                        <!--button data-if="not show_finish" class="item-recipe-info" style="position: absolute; top:0.3vmin; right: 0.3vmin; background-color: transparent;"  data-event-click="showFinish()"/-->
                         <!-- 科技条目 start -->
                         <list direction='1' width='100%' height='95%' style="margin-top: 1vmin; margin-bottom: 1vmin;"/>
                         <!-- 科技条目 end -->
                     </div>
-                    <div style="flex-direction: row; justify-content: flex-end;" data-event-click="showFinish()">
+                    <div style="flex-direction: row; justify-content: flex-end; align-items: center;" data-event-click="showFinish()">
                         <div style='width: 5vmin; height: 5vmin; background-size: cover; background-image: "textures/science/history.texture";'/>
-                        <div style="font-size: 5vmin;">科研历史</div>
+                        <div style="margin-left: 1vmin; font-size: 5vmin;">科研历史</div>
                     </div>
                 </div>
                 <div style='margin: 1.5vmin; flex-direction: column; width: 42%; height: 100%; background-image: "textures/science/right_panel_bg.texture"; background-size: cover;'>
@@ -452,7 +452,7 @@
                             <div style='width: 4.66vmin; height: 4vmin; background-size: cover;' data-style-background-image="sub_icon"/>
                             <div style="width: 90%; color: rgb(241,157,52); font-size: 3vmin; word-break: break-all;">{{sub_desc}}</div>
                         </div>
-                        <div style='margin-left: 5%; margin-right: 5%; width: 90%; height: 0.1vmin; background-image: "textures/common/caption-line.texture"; background-size: cover;'/>
+                        <div style='margin-top: 1vmin; margin-left: 5%; margin-right: 5%; width: 90%; height: 0.1vmin; background-image: "textures/common/caption-line.texture"; background-size: cover;'/>
                         <div style="margin-top: 1vmin; flex-direction: column; width:100%; height:100%;">
                             <detaillist direction='1' width='100%' height='100%'/>
                         </div>

@@ -10,6 +10,7 @@ local CUSTOM_ARCHIVING <const> = require "debugger".custom_archiving
 local iprototype_cache = require "gameplay.prototype_cache.init"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local CHANGED_FLAG_ALL <const> = require("gameplay.interface.constant").CHANGED_FLAG_ALL
+local iBackpack = import_package "vaststars.gameplay".interface "backpack"
 
 local archival_base_dir
 if CUSTOM_ARCHIVING then
@@ -352,6 +353,7 @@ function M:restart(mode, game_template)
     game_template = game_template or "item.startup"
     local game_template_entities = import_package("vaststars.prototype")(game_template).entities
     local game_template_road = import_package("vaststars.prototype")(game_template).road
+    local game_template_backpack = import_package("vaststars.prototype")(game_template).backpack or {}
 
     --
     clean()
@@ -362,6 +364,7 @@ function M:restart(mode, game_template)
     for _, e in ipairs(game_template_entities) do
         igameplay.create_entity(e)
     end
+
     local renderData = {}
     for _, road in ipairs(game_template_road) do
         igameplay.create_entity(road)
@@ -370,6 +373,10 @@ function M:restart(mode, game_template)
     end
     iroadnet:init(renderData, true)
 
+    for _, e in ipairs(game_template_backpack) do
+        local typeobject = iprototype.queryByName(e.prototype_name)
+        iBackpack.place(gameplay_core.get_world(), typeobject.id, e.count)
+    end
 
     local prepare = import_package("vaststars.prototype")(game_template).prepare
     if prepare then

@@ -134,7 +134,7 @@
             function init()
                 local e = assert(document.getElementById "recipe-list")
                 e.addEventListener("pan", function(param)
-                    e.scrollTop = e.scrollTop - (param.vy * 0.045)
+                    e.scrollTop = e.scrollTop - param.dy
                 end)
             end
 
