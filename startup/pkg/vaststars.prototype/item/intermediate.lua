@@ -17,7 +17,7 @@ prototype "铁丝" {
     type = {"item"},
     stack = 12,
     pile = "4x2x4",
-    backpack_stack = 50,
+    backpack_stack = 100,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
     icon = "textures/construct/iron-wire.texture",
     item_description = "铁制材料锻造加工成的丝状材料",
@@ -70,6 +70,31 @@ prototype "铁矿石" {
     mineral_model = "prefabs/mineral/ground-iron-ore.prefab",
     mineral_name = "铁矿",
     mineral_area = "3x3",
+}
+
+prototype "碎石" {
+    type = {"item"},
+    stack = 12,
+    pile = "2x2x3",
+    backpack_stack = 100,
+    pile_model = "prefabs/stackeditems/gravel.prefab",
+    icon = "textures/construct/gravel.texture",
+    item_description = "伴生在矿物里的小块石头",
+    item_category = "金属",
+    mineral_model = "prefabs/mineral/ground-gravel.prefab",
+    mineral_name = "石矿",
+    mineral_area = "3x3",
+}
+
+prototype "石砖" {
+    type = {"item"},
+    stack = 12,
+    pile = "4x2x4",
+    backpack_stack = 50,
+    pile_model = "prefabs/stackeditems/iron-gear.prefab",
+    icon = "textures/construct/stone-brick.texture",
+    item_description = "由天然石材制成的建筑材料",
+    item_category = "物流",
 }
 
 prototype "铝矿石" {
@@ -167,36 +192,11 @@ prototype "铝丝" {
     type = {"item"},
     stack = 16,
     pile = "4x2x4",
-    backpack_stack = 50,
+    backpack_stack = 100,
     pile_model = "prefabs/stackeditems/iron-ore.prefab",
     icon = "textures/construct/iron-wire.texture",
     item_description = "铝制材料锻造加工成的丝状材料",
     item_category = "金属",
-}
-
-prototype "碎石" {
-    type = {"item"},
-    stack = 12,
-    pile = "2x2x3",
-    backpack_stack = 50,
-    pile_model = "prefabs/stackeditems/gravel.prefab",
-    icon = "textures/construct/gravel.texture",
-    item_description = "伴生在矿物里的小块石头",
-    item_category = "金属",
-    mineral_model = "prefabs/mineral/ground-gravel.prefab",
-    mineral_name = "石矿",
-    mineral_area = "3x3",
-}
-
-prototype "石砖" {
-    type = {"item"},
-    stack = 12,
-    pile = "4x2x4",
-    backpack_stack = 50,
-    pile_model = "prefabs/stackeditems/iron-gear.prefab",
-    icon = "textures/construct/stone-brick.texture",
-    item_description = "由天然石材制成的建筑材料",
-    item_category = "物流",
 }
 
 prototype "石墨" {
