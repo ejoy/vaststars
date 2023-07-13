@@ -7,8 +7,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  material: /pkg/vaststars.resources/glb/stackeditems/stack_iron-plate.glb|materials/Material.001_clr.material
-  mesh: /pkg/vaststars.resources/glb/stackeditems/stack_iron-plate.glb|meshes/Cube.011_P1.meshbin
+  material: /pkg/vaststars.resources/glb/stackeditems/stack-aluminium-plate.glb|materials/Material.001_clr.material
+  mesh: /pkg/vaststars.resources/glb/stackeditems/stack-aluminium-plate.glb|meshes/Cube.017_P1.meshbin
   name: Cube.014
   scene: {}
   visible_state: main_view|selectable|cast_shadow
