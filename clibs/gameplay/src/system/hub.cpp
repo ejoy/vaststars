@@ -143,12 +143,7 @@ static void CheckHasHome(world& w, ecs::drone& drone, std::function<void(world&,
 
 static void GoHome(world& w, ecs::drone& drone, const hub_mgr::hub_info& info);
 
-static int
-lbuild(lua_State *L) {
-    auto& w = getworld(L);
-    if (!(w.dirty & kDirtyHub)) {
-        return 0;
-    }
+static void rebuild(world& w) {
     auto& b = w.hubs;
     b.chests.clear();
     std::map<uint16_t, flatmap<uint16_t, hub_mgr::berth>> globalmap;
@@ -348,6 +343,20 @@ lbuild(lua_State *L) {
             std::unreachable();
         }
     }
+}
+
+static int lrestore_finish(lua_State* L) {
+    auto& w = getworld(L);
+    rebuild(w);
+    return 0;
+}
+
+static int lbuild(lua_State* L) {
+    auto& w = getworld(L);
+    if (!(w.dirty & kDirtyHub)) {
+        return 0;
+    }
+    rebuild(w);
     return 0;
 }
 
@@ -736,6 +745,7 @@ extern "C" int
 luaopen_vaststars_hub_system(lua_State *L) {
 	luaL_checkversion(L);
 	luaL_Reg l[] = {
+		{ "restore_finish", lrestore_finish },
 		{ "build", lbuild },
 		{ "update", lupdate },
 		{ NULL, NULL },

@@ -83,44 +83,58 @@ static std::optional<station_consumer_ref> find_consumer(world& w, uint16_t item
     return min_consumer;
 }
 
-static int lbuild(lua_State *L) {
-    auto& w = getworld(L);
+static void rebuild_consumers(world& w) {
     auto& s = w.stations;
+    s.consumers.clear();
+    for (auto& v : ecs_api::select<ecs::station_consumer, ecs::endpoint, ecs::chest>(w.ecs)) {
+        auto& station = v.get<ecs::station_consumer>();
+        auto& endpoint = v.get<ecs::endpoint>();
+        auto& chest = v.get<ecs::chest>();
+        if (!endpoint.neighbor || !endpoint.rev_neighbor) {
+            continue;
+        }
+        auto& chestslot = chest::array_at(w, container::index::from(chest.chest), 0);
+        auto& consumers = s.consumers[chestslot.item];
+        consumers.emplace_back(station_consumer_ref{&station, &endpoint});
+    }
+}
 
-    if (w.dirty & kDirtyStationConsumer) {
-        s.consumers.clear();
-        for (auto& v : ecs_api::select<ecs::station_consumer, ecs::endpoint, ecs::chest>(w.ecs)) {
-            auto& station = v.get<ecs::station_consumer>();
+static void rebuild_producers(world& w) {
+    auto& s = w.stations;
+    s.producers.clear();
+    size_t sz = ecs_api::count<ecs::station_producer>(w.ecs);
+    if (sz != 0) {
+        size_t i = 0;
+        s.producers.resize(sz);
+        for (auto& v : ecs_api::select<ecs::station_producer, ecs::endpoint>(w.ecs)) {
+            auto& station = v.get<ecs::station_producer>();
             auto& endpoint = v.get<ecs::endpoint>();
-            auto& chest = v.get<ecs::chest>();
             if (!endpoint.neighbor || !endpoint.rev_neighbor) {
                 continue;
             }
-            auto& chestslot = chest::array_at(w, container::index::from(chest.chest), 0);
-            auto& consumers = s.consumers[chestslot.item];
-            consumers.emplace_back(station_consumer_ref{&station, &endpoint});
+            s.producers[i].station = &station;
+            s.producers[i].endpoint = &endpoint;
+            i++;
         }
+        s.producers.resize(i);
+        producer_sort(s.producers);
     }
+}
 
+static int lrestore_finish(lua_State *L) {
+    auto& w = getworld(L);
+    rebuild_producers(w);
+    rebuild_consumers(w);
+    return 0;
+}
+
+static int lbuild(lua_State *L) {
+    auto& w = getworld(L);
+    if (w.dirty & kDirtyStationConsumer) {
+        rebuild_consumers(w);
+    }
     if (w.dirty & kDirtyStationProducer) {
-        s.producers.clear();
-        size_t sz = ecs_api::count<ecs::station_producer>(w.ecs);
-        if (sz != 0) {
-            size_t i = 0;
-            s.producers.resize(sz);
-            for (auto& v : ecs_api::select<ecs::station_producer, ecs::endpoint>(w.ecs)) {
-                auto& station = v.get<ecs::station_producer>();
-                auto& endpoint = v.get<ecs::endpoint>();
-                if (!endpoint.neighbor || !endpoint.rev_neighbor) {
-                    continue;
-                }
-                s.producers[i].station = &station;
-                s.producers[i].endpoint = &endpoint;
-                i++;
-            }
-            s.producers.resize(i);
-            producer_sort(s.producers);
-        }
+        rebuild_producers(w);
     }
     return 0;
 }
@@ -227,6 +241,7 @@ extern "C" int
 luaopen_vaststars_station_system(lua_State *L) {
     luaL_checkversion(L);
     luaL_Reg l[] = {
+		{ "restore_finish", lrestore_finish },
         { "build", lbuild },
         { "update", lupdate },
         { NULL, NULL },

@@ -8,7 +8,6 @@ local DirtyFluidflow       <const> = 1 << 2
 local DirtyHub             <const> = 1 << 3
 local DirtyStationProducer <const> = 1 << 4
 local DirtyStationConsumer <const> = 1 << 5
-local DirtyTech            <const> = 1 << 6
 
 local DIRTY <const> = {
     roadnet = DirtyRoadnet,

@@ -117,21 +117,6 @@ laboratory_update(world& w, ecs_api::entity<ecs::laboratory, ecs::chest, ecs::ca
 }
 
 static int
-lbuild(lua_State *L) {
-    auto& w = getworld(L);
-    if (!(w.dirty & kDirtyTech)) {
-        return 0;
-    }
-    for (auto& v : ecs_api::select<ecs::laboratory, ecs::chest, ecs::building>(w.ecs)) {
-        auto& building = v.get<ecs::building>();
-        auto& l = v.get<ecs::laboratory>();
-        auto& c2 = v.get<ecs::chest>();
-        laboratory_set_tech(w, building, l, c2, l.tech);
-    }
-    return 0;
-}
-
-static int
 lupdate(lua_State *L) {
     auto& w = getworld(L);
     bool updated = false;
@@ -161,7 +146,6 @@ extern "C" int
 luaopen_vaststars_laboratory_system(lua_State *L) {
 	luaL_checkversion(L);
 	luaL_Reg l[] = {
-		{ "build", lbuild },
 		{ "update", lupdate },
 		{ NULL, NULL },
 	};
