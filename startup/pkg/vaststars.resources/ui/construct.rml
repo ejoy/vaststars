@@ -244,7 +244,7 @@
                     <div style = "flex-direction: row; flex-wrap: wrap;">
                         <item data-event-click = "clickButton('click_item', c_index, i_index)" data-style-background-image = "i.selected and 'textures/item-config/item-active.texture' or 'none'" data-for = "i, i_index : c.items">
                             <div data-style-background-image = "i.icon" style = "width: 6.91vmax; height: 6.91vmax; background-size: 100% 100%; background-color: rgb(61, 61, 61);" />
-                            <div style = "position: absolute; width: 6.91vmax; height: 6.91vmax; justify-content: flex-end; align-items: flex-end; font-size: 3.5vmin; color:rgb(255,255,255); -webkit-text-stroke: 0.26vmin rgb(0,0,0);">{{i.count}}</div>
+                            <div style = "position: absolute; width: 6.91vmax; height: 6.91vmax; justify-content: flex-end; align-items: flex-end; font-size: 3.5vmin; color:rgb(255,255,255); -webkit-text-stroke: 0.26vmin rgb(0,0,0);" data-style-color = " i.count >0 and 'rgb(255,255,255)' or 'rgb(255,0,0)' ">{{i.count}}</div>
                         </item>
                     </div>
                 </div>
