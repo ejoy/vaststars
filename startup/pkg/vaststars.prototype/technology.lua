@@ -460,26 +460,11 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "铁矿石开采" {
-    desc = "获得火星铁矿开采的能力",
-    type = { "tech" },
-    icon = "textures/science/book.texture",
-    effects = {
-      unlock_item = {"铁矿石"},
-    },
-    prerequisites = {"生产石砖"},
-    ingredients = {
-        {"地质科技包", 1},
-    },
-    count = 8,
-    time = "1s"
-  }
-
   prototype "公路研究" {
     desc = "掌握使用石砖制造公路的技术",
     type = { "tech" },
     icon = "textures/science/book.texture",
-    prerequisites = {"铁矿石开采"},
+    prerequisites = {"生产石砖"},
     effects = {
       unlock_recipe = {"砖石公路打印"},
       unlock_item = {"砖石公路-X型"},
@@ -504,6 +489,22 @@ local prototype = gameplay.register.prototype
     sign_desc = {
       { desc = "使用组装机生产30段公路", icon = "textures/construct/industry.texture"},
     },
+  }
+
+
+  prototype "铁矿石开采" {
+    desc = "获得火星铁矿开采的能力",
+    type = { "tech" },
+    icon = "textures/science/book.texture",
+    effects = {
+      unlock_item = {"铁矿石"},
+    },
+    prerequisites = {"建造公路"},
+    ingredients = {
+        {"地质科技包", 1},
+    },
+    count = 8,
+    time = "1s"
   }
 
   
@@ -811,7 +812,7 @@ local prototype = gameplay.register.prototype
     effects = {
       unlock_recipe = {"出货车站维修","收货车站维修"},
     },
-    prerequisites = {"通向铁矿"},
+    prerequisites = {"通向铁矿","铁矿石开采"},
     ingredients = {
         {"地质科技包", 1},
     },

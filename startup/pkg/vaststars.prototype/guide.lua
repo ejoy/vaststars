@@ -670,7 +670,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "铁矿石开采",
+            "生产石砖",
         },
 	},
 
