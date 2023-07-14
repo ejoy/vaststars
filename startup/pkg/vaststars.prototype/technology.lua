@@ -810,7 +810,8 @@ local prototype = gameplay.register.prototype
     type = { "tech" },
     icon = "textures/science/book.texture",
     effects = {
-      unlock_recipe = {"出货车站维修","收货车站维修"},
+      unlock_recipe = {"维修出货车站","维修收货车站"},
+      unlock_item = {"出货车站框架","收货车站框架"},
     },
     prerequisites = {"通向铁矿","铁矿石开采"},
     ingredients = {
@@ -1015,14 +1016,30 @@ local prototype = gameplay.register.prototype
     type = { "tech" },
     icon = "textures/science/book.texture",
     effects = {
-      unlock_recipe = {"铁齿轮","铁棒"},
-      unlock_item = {"铁齿轮","铁棒"},
+      unlock_recipe = {"铁齿轮","铁棒","铁丝"},
+      unlock_item = {"铁齿轮","铁棒","铁丝"},
     },
     prerequisites = {"生产铁板"},
     ingredients = {
         {"地质科技包", 1},
     },
     count = 16,
+    time = "5s"
+  }
+
+  prototype "建筑维修1" {
+    desc = "获得维修机械的技术",
+    type = { "tech" },
+    icon = "textures/science/book.texture",
+    effects = {
+      unlock_recipe = {"维修无人机仓库","维修铁制电线杆"},
+      unlock_item = {"无人机仓库框架","电线杆框架"},
+    },
+    prerequisites = {"铁加工1"},
+    ingredients = {
+        {"地质科技包", 1},
+    },
+    count = 12,
     time = "5s"
   }
 
@@ -1052,7 +1069,7 @@ local prototype = gameplay.register.prototype
     effects = {
       unlock_recipe = {"维修运输汽车"},
     },
-    prerequisites = {"生产铁齿轮"},
+    prerequisites = {"生产铁齿轮","建筑维修1"},
     ingredients = {
         {"地质科技包", 1},
     },
@@ -1084,7 +1101,7 @@ prototype "气候研究1" {
   type = { "tech" },
   icon = "textures/science/book.texture",
   effects = {
-    unlock_recipe = {"气候科技包1","空气过滤器维修","地下水挖掘机维修"},
+    unlock_recipe = {"气候科技包1"},
     unlock_item = {"气候科技包"},
   },
   prerequisites = {"量产运输车辆"},
@@ -1097,6 +1114,22 @@ prototype "气候研究1" {
   sign_icon = "textures/science/key_sign.texture",
   count = 12,
   time = "1.5s"
+}
+
+prototype "建筑维修2" {
+  desc = "获得维修机械的技术",
+  type = { "tech" },
+  icon = "textures/science/book.texture",
+  effects = {
+    unlock_recipe = {"维修水电站","维修空气过滤器","维修地下水挖掘机","维修太阳能板"},
+    unlock_item = {"水电站框架","空气过滤器框架","地下水挖掘机框架","太阳能板框架"},
+  },
+  prerequisites = {"气候研究1"},
+  ingredients = {
+      {"气候科技包", 1},
+  },
+  count = 12,
+  time = "2s"
 }
 
 prototype "管道系统1" {
@@ -1151,8 +1184,6 @@ prototype "采水研究" {
   type = { "tech" },
   icon = "textures/science/book.texture",
   effects = {
-    unlock_recipe = {"水电站维修"},
-    -- unlock_item = {"水电站I"},
   },
   prerequisites = {"排放1"},
   ingredients = {
@@ -1166,12 +1197,13 @@ prototype "采水研究" {
   time = "1.5s"
 }
 
+
 prototype "建造地下水挖掘机" {
   desc = "生产科技包用于科技研究",
   icon = "textures/construct/industry.texture",
   type = { "task" },
   task = {"stat_production", 0, "地下水挖掘机I"},
-  prerequisites = {"采水研究"},
+  prerequisites = {"建筑维修2"},
   count = 1,
   tips_pic = {
     "textures/task_tips_pic/task_produce_climatepack2.texture",
@@ -1189,7 +1221,7 @@ prototype "建造水电站" {
   icon = "textures/construct/industry.texture",
   type = { "task" },
   task = {"stat_production", 0, "水电站I"},
-  prerequisites = {"采水研究"},
+  prerequisites = {"建筑维修2"},
   count = 1,
   tips_pic = {
     "textures/task_tips_pic/task_produce_climatepack2.texture",
@@ -1377,19 +1409,21 @@ prototype "冶金学1" {
   time = "4s"
 }
 
-prototype "维修化工厂" {
-  desc = "维修化工厂生成化工原料",
-  icon = "textures/construct/industry.texture",
-  type = { "task" },
-  task = {"stat_consumption", 0, "化工厂框架"},
-  prerequisites = {"碳处理2"},
-  count = 1,
-  tips_pic = {
-    "textures/task_tips_pic/task_repair_chemicalplant1.texture",
+prototype "建筑维修3" {
+  desc = "获得维修机械的技术",
+  type = { "tech" },
+  icon = "textures/science/book.texture",
+  effects = {
+    unlock_recipe = {"维修组装机","维修化工厂"},
+    unlock_item = {"化工厂框架","组装机框架"},
   },
-  sign_desc = {
-    { desc = "使用组装机维修1个破损化工厂", icon = "textures/construct/industry.texture"},
+  prerequisites = {"冶金学1"},
+  ingredients = {
+      {"地质科技包", 1},
+      {"气候科技包", 1},
   },
+  count = 12,
+  time = "3s"
 }
 
 prototype "放置化工厂" {
@@ -1397,7 +1431,7 @@ prototype "放置化工厂" {
   icon = "textures/construct/industry.texture",
   type = { "task" },
   task = {"select_entity", 0, "化工厂I"},
-  prerequisites = {"维修化工厂"},
+  prerequisites = {"建筑维修3"},
   count = 1,
   tips_pic = {
     "textures/task_tips_pic/task_click_build.texture",
@@ -1484,6 +1518,23 @@ prototype "电磁学1" {
   },
   count = 20,
   time = "6s"
+}
+
+prototype "建筑维修4" {
+  desc = "获得维修机械的技术",
+  type = { "tech" },
+  icon = "textures/science/book.texture",
+  effects = {
+    unlock_recipe = {"维修电解厂"},
+    unlock_item = {"电解厂框架"},
+  },
+  prerequisites = {"电磁学1"},
+  ingredients = {
+      {"地质科技包", 1},
+      {"气候科技包", 1},
+  },
+  count = 20,
+  time = "5s"
 }
 
 --研究机械科技瓶

@@ -357,7 +357,7 @@ local guide = {
     -- {
     --     name = "",
 	-- 	narrative = {
-    --         {"哔哩..采矿机顺利工作了，储藏碎石需要新的{/color:4bd0ff 无人机仓库I}，请将{/g 无人机仓库I框架}送往{/color:4bd0ff 建造中心}..哔哩(期待)", "textures/guide/guide-1.texture"},
+    --         {"哔哩..采矿机顺利工作了，储藏碎石需要新的{/color:4bd0ff 无人机仓库I}，请将{/g 无人机仓库框架}送往{/color:4bd0ff 建造中心}..哔哩(期待)", "textures/guide/guide-1.texture"},
     --     },
     --     narrative_end = {
     --         guide_progress = 35,

@@ -1799,25 +1799,6 @@ prototype "收货车站打印" {
     description = "从运输车辆卸下货物的车站",
 }
 
-prototype "维修组装机" {
-    type = { "recipe" },
-    recipe_craft_category = "生产手工制造",
-    --recipe_category =  "加工",
-    recipe_order =  118,
-    recipe_icon =  "textures/construct/broken-assembler.texture",
-    ingredients = {
-        -- {"铁丝", 6},
-        {"石砖", 8},
-        {"铁齿轮", 3},
-        {"组装机框架", 1},
-    },
-    results = {
-        {"组装机I", 1},
-    },
-    time = "5s",
-    description = "修复损坏的组装机",
-}
-
 prototype "火箭区段1" {
     type = { "recipe" },
     recipe_craft_category = "生产大型制造",
@@ -1851,58 +1832,6 @@ prototype "火箭整流罩1" {
     },
     time = "60s",
     description = "生产保护火箭头部的金属装置",
-}
-
-prototype "维修铁制电线杆" {
-    type = { "recipe" },
-    recipe_craft_category = "生产手工制造",
-    --recipe_category =  "加工",
-    recipe_order =  120,
-    recipe_icon =  "textures/construct/broken-electric-pole1.texture",
-    ingredients = {
-        -- {"铁棒", 2},
-        {"铁板", 2},
-        {"电线杆框架", 1},
-    },
-    results = {
-        {"铁制电线杆", 1},
-    },
-    time = "5s",
-    description = "修复损坏的铁制电线杆",
-}
-
-prototype "维修太阳能板" {
-    type = { "recipe" },
-    recipe_craft_category = "生产手工制造",
-    --recipe_category =  "加工",
-    recipe_order =  122,
-    recipe_icon =  "textures/construct/broken-solar-panel.texture",
-    ingredients = {
-        {"铁齿轮", 3},
-        {"石砖", 10},
-        {"太阳能板框架", 1},
-    },
-    results = {
-        {"太阳能板I", 1},
-    },
-    time = "5s",
-    description = "修复损坏的太阳能板",
-}
-
-prototype "维修运输汽车" {
-    type = { "recipe" },
-    recipe_craft_category = "生产手工制造",
-    recipe_category =  "加工",
-    recipe_order =  128,
-    recipe_icon =  "textures/construct/broken-truck.texture",
-    ingredients = {
-        {"破损运输车辆", 1},
-    },
-    results = {
-        {"运输车辆I", 1},
-    },
-    time = "4s",
-    description = "修复损坏的运输汽车",
 }
 
 prototype "车辆装配" {
@@ -2109,38 +2038,6 @@ prototype "车站打印" {
     },
     time = "5s",
     description = "打印车站",
-}
-
-prototype "出货车站维修" {
-    type = { "recipe" },
-    recipe_craft_category = "建筑打印",
-    recipe_category =  "物流",
-    recipe_order =  56,
-    recipe_icon =  "textures/construct/broken-logisitic.texture",
-    ingredients = {
-        {"出货车站框架", 1},
-    },
-    results = {
-        {"出货车站", 1},
-    },
-    time = "8s",
-    description = "打印出货车站",
-}
-
-prototype "收货车站维修" {
-    type = { "recipe" },
-    recipe_craft_category = "建筑打印",
-    recipe_category =  "物流",
-    recipe_order =  56,
-    recipe_icon =  "textures/construct/broken-logisitic.texture",
-    ingredients = {
-        {"收货车站框架", 1},
-    },
-    results = {
-        {"收货车站", 1},
-    },
-    time = "8s",
-    description = "打印收货车站",
 }
 
 prototype "熔炼炉打印" {
@@ -2396,7 +2293,24 @@ prototype "地下水挖掘机打印" {
     description = "打印可挖掘地下水的装置",
 }
 ---------------------建筑维修----------------------
-prototype "空气过滤器维修" {
+prototype "维修无人机仓库" {
+    type = { "recipe" },
+    recipe_craft_category = "建筑打印",
+    recipe_category =  "加工",
+    recipe_order =  50,
+    recipe_icon =  "textures/construct/broken-air-filter1.texture",
+    ingredients = {
+        {"铁棒", 5},
+        {"无人机仓库框架", 1},
+    },
+    results = {
+        {"无人机仓库I", 1},
+    },
+    time = "5s",
+    description = "维修破损的无人机仓库",
+}
+
+prototype "维修空气过滤器" {
     type = { "recipe" },
     recipe_craft_category = "建筑打印",
     recipe_category =  "加工",
@@ -2410,10 +2324,10 @@ prototype "空气过滤器维修" {
         {"空气过滤器I", 1},
     },
     time = "5s",
-    description = "维修可过滤空气的装置",
+    description = "维修破损的可过滤空气装置",
 }
 
-prototype "地下水挖掘机维修" {
+prototype "维修地下水挖掘机" {
     type = { "recipe" },
     recipe_craft_category = "建筑打印",
     recipe_category =  "加工",
@@ -2427,10 +2341,10 @@ prototype "地下水挖掘机维修" {
         {"地下水挖掘机I", 1},
     },
     time = "5s",
-    description = "维修可过滤空气的装置",
+    description = "维修破损的地下水挖掘装置",
 }
 
-prototype "水电站维修" {
+prototype "维修水电站" {
     type = { "recipe" },
     recipe_craft_category = "建筑打印",
     recipe_category =  "加工",
@@ -2444,11 +2358,146 @@ prototype "水电站维修" {
         {"水电站I", 1},
     },
     time = "5s",
-    description = "打印可处理液体的装置",
+    description = "维修破损的水电站",
 }
 
+prototype "维修组装机" {
+    type = { "recipe" },
+    recipe_craft_category = "生产手工制造",
+    recipe_category =  "加工",
+    recipe_order =  118,
+    recipe_icon =  "textures/construct/broken-assembler.texture",
+    ingredients = {
+        -- {"铁丝", 6},
+        {"石砖", 8},
+        {"铁齿轮", 3},
+        {"组装机框架", 1},
+    },
+    results = {
+        {"组装机I", 1},
+    },
+    time = "5s",
+    description = "修复破损的组装机",
+}
 
+prototype "维修铁制电线杆" {
+    type = { "recipe" },
+    recipe_craft_category = "生产手工制造",
+    recipe_category =  "加工",
+    recipe_order =  120,
+    recipe_icon =  "textures/construct/broken-electric-pole1.texture",
+    ingredients = {
+        {"铁丝", 2},
+        {"电线杆框架", 1},
+    },
+    results = {
+        {"铁制电线杆", 1},
+    },
+    time = "5s",
+    description = "修复破损的铁制电线杆",
+}
 
+prototype "维修太阳能板" {
+    type = { "recipe" },
+    recipe_craft_category = "生产手工制造",
+    recipe_category =  "加工",
+    recipe_order =  122,
+    recipe_icon =  "textures/construct/broken-solar-panel.texture",
+    ingredients = {
+        {"铁齿轮", 3},
+        {"石砖", 10},
+        {"太阳能板框架", 1},
+    },
+    results = {
+        {"太阳能板I", 1},
+    },
+    time = "5s",
+    description = "修复破损的太阳能板",
+}
+
+prototype "维修运输汽车" {
+    type = { "recipe" },
+    recipe_craft_category = "生产手工制造",
+    recipe_category =  "加工",
+    recipe_order =  128,
+    recipe_icon =  "textures/construct/broken-truck.texture",
+    ingredients = {
+        {"破损运输车辆", 1},
+    },
+    results = {
+        {"运输车辆I", 1},
+    },
+    time = "4s",
+    description = "修复破损的运输汽车",
+}
+
+prototype "维修出货车站" {
+    type = { "recipe" },
+    recipe_craft_category = "建筑打印",
+    recipe_category =  "加工",
+    recipe_order =  56,
+    recipe_icon =  "textures/construct/broken-logisitic.texture",
+    ingredients = {
+        {"石砖", 4},
+        {"出货车站框架", 1},
+    },
+    results = {
+        {"出货车站", 1},
+    },
+    time = "8s",
+    description = "维修破损的出货车站",
+}
+
+prototype "维修收货车站" {
+    type = { "recipe" },
+    recipe_craft_category = "建筑打印",
+    recipe_category =  "加工",
+    recipe_order =  56,
+    recipe_icon =  "textures/construct/broken-logisitic.texture",
+    ingredients = {
+        {"石砖", 4},
+        {"收货车站框架", 1},
+    },
+    results = {
+        {"收货车站", 1},
+    },
+    time = "8s",
+    description = "维修破损的收货车站",
+}
+
+prototype "维修化工厂" {
+    type = { "recipe" },
+    recipe_craft_category = "建筑打印",
+    recipe_category =  "加工",
+    recipe_order =  54,
+    recipe_icon =  "textures/construct/broken-chemistry2.texture",
+    ingredients = {
+        {"液罐I", 5},
+        {"化工厂框架", 1},
+    },
+    results = {
+        {"化工厂I", 1},
+    },
+    time = "5s",
+    description = "破损维修破损的化工厂",
+}
+
+prototype "维修电解厂" {
+    type = { "recipe" },
+    recipe_craft_category = "建筑打印",
+    recipe_category =  "加工",
+    recipe_order =  54,
+    recipe_icon =  "textures/construct/broken-chemistry2.texture",
+    ingredients = {
+        {"电动机I", 5},
+        {"电解厂框架", 1},
+    },
+    results = {
+        {"电解厂I", 1},
+    },
+    time = "5s",
+    description = "破损维修破损的电解厂",
+}
 -------------------------------------------
 
 
