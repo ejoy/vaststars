@@ -376,6 +376,17 @@ prototype "粉碎机框架" {
     item_description = "用于粉碎物品的框架",
 }
 
+prototype "蒸馏厂框架" {
+    type = {"item"},
+    stack = 4,
+    pile = "4x1x4",
+    backpack_stack = 16,
+    pile_model = "prefabs/stackeditems/iron-ore.prefab",
+    icon = "textures/construct/broken-assembler.texture",
+    item_category = "加工",
+    item_description = "用于蒸馏气体设施的框架",
+}
+
 prototype "烟囱框架" {
     type = {"item"},
     stack = 4,
