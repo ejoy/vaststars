@@ -12,7 +12,11 @@ local gameplay_core = require "gameplay.core"
 local daynight_sys = ecs.system "daynight_system"
 
 local daynight_update; do
-    if DAYNIGHT_DEBUG then
+    if DAYNIGHT_DEBUG == "" then
+        function daynight_update()
+            return false
+        end
+    elseif DAYNIGHT_DEBUG then
         local function parse(s)
             if type(s) ~= "string" or s == "" then
                 return s

@@ -274,7 +274,7 @@ function Inspector:putValue(v)
          end
 
          local mt = getmetatable(t)
-         if type(mt) == 'table' then
+         if type(mt) == 'table' and self.print_metatable then
             if seqLen + keysLen > 0 then puts(buf, ',') end
             tabify(self)
             puts(buf, '<metatable> = ')
@@ -307,7 +307,8 @@ function inspect.inspect(root, options)
    local newline = options.newline or '\n'
    local indent = options.indent or '  '
    local process = options.process
-   local print_reference = options.print_reference or true
+   local print_reference = options.print_reference or (options.print_reference == true)
+   local print_metatable = options.print_metatable or (options.print_metatable == true)
 
    if process then
       root = processRecursive(process, root, {}, {})
@@ -325,6 +326,7 @@ function inspect.inspect(root, options)
       newline = newline,
       indent = indent,
       print_reference = print_reference,
+      print_metatable = print_metatable,
    }, Inspector_mt)
 
    inspector:putValue(root)

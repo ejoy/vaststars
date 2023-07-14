@@ -228,7 +228,7 @@
                         </recipe-results-container>
                         <button-container>
                             <button-confirm style = "margin-top: 4.5vmin; justify-content: center; align-items: center; font-size: 5.80vmin;" data-if = "confirm" data-event-click = "clickConfirm()">开始生产</button-confirm>
-                            <cancel-button style = "margin-top: 4.5vmin; justify-content: center; align-items: center; font-size: 5.80vmin;" data-if = "not confirm" data-event-click = "clickClearRecipe()">结束生产</cancel-button>
+                            <cancel-button style = "margin-top: 4.5vmin; justify-content: center; align-items: center; font-size: 5.80vmin;" data-if = "not confirm and recipe_icon ~= ''" data-event-click = "clickClearRecipe()">结束生产</cancel-button>
                         </button-container>
                     </right-box>
                 </flex-row>

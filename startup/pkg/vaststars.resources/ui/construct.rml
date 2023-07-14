@@ -94,6 +94,38 @@
             .building-button:active {
                 transform: scale(1.2);
             }
+
+            building-button-0deg {
+                transform: rotate(0deg);
+            }
+            building-button-0deg:active {
+                transform: rotate(0deg) scale(1.2);
+            }
+            building-button-15deg {
+                transform: rotate(15deg);
+            }
+            building-button-15deg:active {
+                transform: rotate(15deg) scale(1.2);
+            }
+            building-button-30deg {
+                transform: rotate(30deg);
+            }
+            building-button-30deg:active {
+                transform: rotate(30deg) scale(1.2);
+            }
+            building-button-45deg {
+                transform: rotate(45deg);
+            }
+            building-button-45deg:active {
+                transform: rotate(45deg) scale(1.2);
+            }
+            building-button-60deg {
+                transform: rotate(60deg);
+            }
+            building-button-60deg:active {
+                transform: rotate(60deg) scale(1.2);
+            }
+
             construct-box {
                 position: absolute;
                 left: 5.03vmax;
@@ -160,9 +192,9 @@
                     prototype_name = "",
                     icon = "",
                     outer_transform = ("rotate(%sdeg)"):format(-TRANSFORM_DELTA * (i - 1)),
-                    inner_transform = ("rotate(%sdeg)"):format(TRANSFORM_DELTA * (i - 1)),
                     line_margin_right = ("%svmin"):format(LINE_MARGIN_RIGHT_DELTA * (i - 1) + 11),
-                    line_transform = ("rotate(%sdeg)"):format(LINE_TRANSFORM_DELTA * (i - 1))
+                    line_transform = ("rotate(%sdeg)"):format(LINE_TRANSFORM_DELTA * (i - 1)),
+                    class_name = ("building-button-%sdeg"):format(TRANSFORM_DELTA * (i - 1)),
                 }
             end
 
@@ -188,9 +220,9 @@
                                 icon = icon,
                                 selected = selected,
                                 outer_transform = ("rotate(%sdeg)"):format(-TRANSFORM_DELTA * (i - 1)),
-                                inner_transform = ("rotate(%sdeg)"):format(TRANSFORM_DELTA * (i - 1)),
                                 line_margin_right = ("%svmin"):format(LINE_MARGIN_RIGHT_DELTA * (i - 1) + 11),
-                                line_transform = ("rotate(%sdeg)"):format(LINE_TRANSFORM_DELTA * (i - 1))
+                                line_transform = ("rotate(%sdeg)"):format(LINE_TRANSFORM_DELTA * (i - 1)),
+                                class_name = ("building-button-%sdeg"):format(TRANSFORM_DELTA * (i - 1)),
                             }
                         end
                         start("buttons")
@@ -258,13 +290,15 @@
             <div style = "position: absolute; pointer-events: none; width: 18.23vmin; height: 52.655%; margin-top: 4.115vmin; margin-bottom: 9.115vmin; background-size: contain;"
                 data-style-background-image = "it.selected and 'textures/construct/line-active.texture' or 'textures/building-menu/line.texture'"
                 data-style-transform = "it.line_transform" data-style-margin-right = "it.line_margin_right"/>
-            <div class = "building-button" style = "position: absolute; pointer-events: none; margin-top: -5vmin; margin-right: 9vmin; width: 18.23vmin; height: 18.23vmin;" data-style-transform = "it.inner_transform">
-                <div class = "building-button" style = "position: absolute; width: 18.23vmin; height: 18.23vmin;" data-style-background-image = "it.icon ~= '' and 'textures/construct/building-bg.texture' or 'textures/construct/building-unknown.texture'" />
-                <div class = "building-button" style = "margin-top: 1vmin; margin-left: 2.0vmin; position: absolute; width: 14.70vmin; height: 14.70vmin; border-radius: 50%;" data-style-background-image = "it.icon" data-if = "it.icon ~= ''"/>
+            <div style = "position: absolute; pointer-events: none; margin-top: -5vmin; margin-right: 9vmin; width: 18.23vmin; height: 18.23vmin;" data-attr-class = "it.class_name .. ' building-button'">
+                <div class = "building-button" style = "position: absolute; width: 18.23vmin; height: 18.23vmin;" 
+                    data-style-background-image = "it.icon ~= '' and 'textures/construct/building-bg.texture' or 'textures/construct/building-unknown.texture'" />
+                <div class = "building-button" style = "margin-top: 1vmin; margin-left: 2.0vmin; position: absolute; width: 14.70vmin; height: 14.70vmin; border-radius: 50%;" 
+                    data-style-background-image = "it.icon" data-if = "it.icon ~= ''"/>
                 <div class = "building-button" style = "pointer-events: none; position: absolute; margin-top: -0.45vmin; margin-left: 0.25vmin; width: 18.23vmin; height: 18.23vmin; background-image: textures/construct/building-active.texture" data-if = "it.selected" />
                 <div class = "building-button" style = "margin-top: 1vmin; margin-left: 2.0vmin; position: absolute; width: 14.70vmin; height: 14.70vmin; border-radius: 50%;" 
                     data-event-click = "clickButton('construct_entity', it.prototype_name)"
-                    data-event-long_press = "clickButton('long_press_shortcut', it_index)"
+                    data-event-longpress = "clickButton('longpress_shortcut', it_index)"
                 />
             </div>
         </div>
