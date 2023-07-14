@@ -154,7 +154,9 @@ static void rebuild(world& w) {
         building_rect r(building, area);
         if (auto phub = v.component<ecs::hub>()) {
             auto& hub = *phub;
-            auto& chestslot = chest::array_at(w, container::index::from(hub.chest), 0);
+            auto c = container::index::from(hub.chest);
+            assert(c != container::kInvalidIndex);
+            auto& chestslot = chest::array_at(w, c, 0);
             auto item = chestslot.item;
             auto berth = create_berth(r, hub_mgr::berth_type::hub, 0);
             auto& map = globalmap[item];
@@ -166,8 +168,11 @@ static void rebuild(world& w) {
         }
         else if (auto pchest = v.component<ecs::chest>()) {
             auto& chest = *pchest;
-            b.chests.insert_or_assign(r.hash(), chest.chest);
             auto c = container::index::from(chest.chest);
+            if (c == container::kInvalidIndex) {
+                continue;
+            }
+            b.chests.insert_or_assign(r.hash(), chest.chest);
             auto slice = chest::array_slice(w, c);
             for (uint8_t i = 0; i < slice.size(); ++i) {
                 auto& chestslot = slice[i];
