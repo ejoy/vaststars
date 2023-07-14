@@ -10,26 +10,32 @@
 
 static void
 sync_input_fluidbox(world& w, ecs::assembling& assembling, ecs::chest& c2, ecs::fluidboxes& fb) {
-	for (size_t i = 0; i < 4; ++i) {
-		uint16_t fluid = fb.in[i].fluid;
-		if (fluid != 0) {
-			uint8_t index = ((assembling.fluidbox_in >> (i*4)) & 0xF) - 1;
-			uint16_t value = chest::get_fluid(w, container::index::from(c2.chest), index);
-			w.fluidflows[fluid].set(fb.in[i].id, value);
-		}
-	}
+    if (assembling.fluidbox_in == 0) {
+        return;
+    }
+    for (size_t i = 0; i < 4; ++i) {
+        uint16_t fluid = fb.in[i].fluid;
+        if (fluid != 0) {
+            uint8_t index = ((assembling.fluidbox_in >> (i*4)) & 0xF) - 1;
+            uint16_t value = chest::get_fluid(w, container::index::from(c2.chest), index);
+            w.fluidflows[fluid].set(fb.in[i].id, value);
+        }
+    }
 }
 
 static void
 sync_output_fluidbox(world& w, ecs::assembling& assembling, ecs::chest& c2, ecs::fluidboxes& fb) {
-	for (size_t i = 0; i < 3; ++i) {
-		uint16_t fluid = fb.out[i].fluid;
-		if (fluid != 0) {
-			uint8_t index = ((assembling.fluidbox_out >> (i*4)) & 0xF) - 1;
-			uint16_t value = chest::get_fluid(w, container::index::from(c2.chest), index);
-			w.fluidflows[fluid].set(fb.out[i].id, value);
-		}
-	}
+    if (assembling.fluidbox_out == 0) {
+        return;
+    }
+    for (size_t i = 0; i < 3; ++i) {
+        uint16_t fluid = fb.out[i].fluid;
+        if (fluid != 0) {
+            uint8_t index = ((assembling.fluidbox_out >> (i*4)) & 0xF) - 1;
+            uint16_t value = chest::get_fluid(w, container::index::from(c2.chest), index);
+            w.fluidflows[fluid].set(fb.out[i].id, value);
+        }
+    }
 }
 
 static bool assembling_update(world& w, ecs::assembling& assembling, ecs::chest& chest, ecs::fluidboxes* fb) {
@@ -40,10 +46,8 @@ static bool assembling_update(world& w, ecs::assembling& assembling, ecs::chest&
             }
             w.stat.finish_recipe(w, assembling.recipe);
             assembling.status = STATUS_IDLE;
-            if (assembling.fluidbox_out != 0) {
-                if (fb) {
-                    sync_output_fluidbox(w, assembling, chest, *fb);
-                }
+            if (fb) {
+                sync_output_fluidbox(w, assembling, chest, *fb);
             }
         }
         if (assembling.status == STATUS_IDLE) {
@@ -53,10 +57,8 @@ static bool assembling_update(world& w, ecs::assembling& assembling, ecs::chest&
             auto time = prototype::get<"time">(w, assembling.recipe);
             assembling.progress += time * 100;
             assembling.status = STATUS_DONE;
-            if (assembling.fluidbox_in != 0) {
-                if (fb) {
-                    sync_input_fluidbox(w, assembling, chest, *fb);
-                }
+            if (fb) {
+                sync_input_fluidbox(w, assembling, chest, *fb);
             }
         }
     }
@@ -125,11 +127,11 @@ lupdate(lua_State *L) {
 
 extern "C" int
 luaopen_vaststars_assembling_system(lua_State *L) {
-	luaL_checkversion(L);
-	luaL_Reg l[] = {
-		{ "update", lupdate },
-		{ NULL, NULL },
-	};
-	luaL_newlib(L, l);
-	return 1;
+    luaL_checkversion(L);
+    luaL_Reg l[] = {
+        { "update", lupdate },
+        { NULL, NULL },
+    };
+    luaL_newlib(L, l);
+    return 1;
 }
