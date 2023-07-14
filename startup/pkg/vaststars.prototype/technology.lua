@@ -1121,8 +1121,8 @@ prototype "建筑维修2" {
   type = { "tech" },
   icon = "textures/science/book.texture",
   effects = {
-    unlock_recipe = {"维修水电站","维修空气过滤器","维修地下水挖掘机","维修太阳能板"},
-    unlock_item = {"水电站框架","空气过滤器框架","地下水挖掘机框架","太阳能板框架"},
+    unlock_recipe = {"维修水电站","维修空气过滤器","维修地下水挖掘机","维修太阳能板","维修蒸馏厂"},
+    unlock_item = {"水电站框架","空气过滤器框架","地下水挖掘机框架","太阳能板框架","蒸馏厂框架"},
   },
   prerequisites = {"气候研究1"},
   ingredients = {
@@ -1178,25 +1178,6 @@ prototype "排放1" {
   count = 15,
   time = "2s"
 }
-
-prototype "采水研究" {
-  desc = "对火星大气成分进行标本采集和研究",
-  type = { "tech" },
-  icon = "textures/science/book.texture",
-  effects = {
-  },
-  prerequisites = {"排放1"},
-  ingredients = {
-      {"地质科技包", 1},
-  },
-  sign_desc = {
-    { desc = "该科技是一项前沿科技，可引导其他的科技研究", icon = "textures/science/key_sign.texture"},
-  },
-  sign_icon = "textures/science/key_sign.texture",
-  count = 12,
-  time = "1.5s"
-}
-
 
 prototype "建造地下水挖掘机" {
   desc = "生产科技包用于科技研究",
@@ -1272,7 +1253,7 @@ prototype "电解" {
   type = { "tech" },
   icon = "textures/science/book.texture",
   effects = {
-    unlock_recipe = {"地下卤水电解1","地下卤水电解2","电解厂打印"},
+    unlock_recipe = {"地下卤水电解1","地下卤水电解2"},
   },
   prerequisites = {"生产气候科技包"},
   ingredients = {
@@ -1318,7 +1299,7 @@ prototype "碳处理1" {
   type = { "tech" },
   icon = "textures/science/book.texture",
   effects = {
-    unlock_recipe = {"二氧化碳转甲烷","化工厂打印"},
+    unlock_recipe = {"二氧化碳转甲烷"},
   },
   prerequisites = {"电解","空气分离工艺1","放置太阳能板"},
   ingredients = {
@@ -1344,12 +1325,28 @@ prototype "生产氢气" {
   },
 }
 
+prototype "放置蒸馏厂" {
+  desc = "放置化工厂生产化工产品",
+  icon = "textures/construct/industry.texture",
+  type = { "task" },
+  task = {"select_entity", 0, "蒸馏厂I"},
+  prerequisites = {"建筑维修3","生产氢气"},
+  count = 1,
+  tips_pic = {
+    "textures/task_tips_pic/task_click_build.texture",
+    "textures/task_tips_pic/task_place_chemicalplant.texture",
+  },
+  sign_desc = {
+    { desc = "放置1座蒸馏厂", icon = "textures/construct/industry.texture"},
+  },
+}
+
 prototype "生产二氧化碳" {
   desc = "生产工业气体二氧化碳",
   icon = "textures/construct/industry.texture",
   type = { "task" },
   task = {"stat_production", 0, "二氧化碳"},
-  prerequisites = {"碳处理1"},
+  prerequisites = {"放置蒸馏厂"},
   count = 500,
   tips_pic = {
     "textures/task_tips_pic/task_produce_co21.texture",

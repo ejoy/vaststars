@@ -2368,9 +2368,7 @@ prototype "维修组装机" {
     recipe_order =  118,
     recipe_icon =  "textures/construct/broken-assembler.texture",
     ingredients = {
-        -- {"铁丝", 6},
-        {"石砖", 8},
-        {"铁齿轮", 3},
+        {"铁齿轮", 8},
         {"组装机框架", 1},
     },
     results = {
@@ -2465,6 +2463,23 @@ prototype "维修收货车站" {
     description = "维修破损的收货车站",
 }
 
+prototype "维修蒸馏厂" {
+    type = { "recipe" },
+    recipe_craft_category = "建筑打印",
+    recipe_category =  "加工",
+    recipe_order =  54,
+    recipe_icon =  "textures/construct/broken-chemistry2.texture",
+    ingredients = {
+        {"铁丝", 10},
+        {"蒸馏厂框架", 1},
+    },
+    results = {
+        {"蒸馏厂I", 1},
+    },
+    time = "5s",
+    description = "破损维修破损的电解厂",
+}
+
 prototype "维修化工厂" {
     type = { "recipe" },
     recipe_craft_category = "建筑打印",
@@ -2498,6 +2513,7 @@ prototype "维修电解厂" {
     time = "5s",
     description = "破损维修破损的电解厂",
 }
+
 -------------------------------------------
 
 

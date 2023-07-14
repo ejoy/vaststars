@@ -51,7 +51,7 @@ local construct_entity_mb = mailbox:sub {"construct_entity"}
 local inventory_mb = mailbox:sub {"inventory"}
 local switch_concise_mode_mb = mailbox:sub {"switch_concise_mode"}
 local gesture_tap_mb = world:sub{"gesture", "tap"}
-local gesture_long_press_mb = world:sub{"gesture", "long_press"}
+local gesture_longpress_mb = world:sub{"gesture", "longpress"}
 local gesture_pan_mb = world:sub {"gesture", "pan"}
 local focus_tips_event = world:sub {"focus_tips"}
 local remove_lorry_mb = mailbox:sub {"remove_lorry"}
@@ -59,7 +59,7 @@ local construct_mb = mailbox:sub {"construct"}
 local selected_mb = mailbox:sub {"selected"}
 local unselected_mb = mailbox:sub {"unselected"}
 local click_item_mb = mailbox:sub {"click_item"}
-local long_press_shortcut_mb = mailbox:sub {"long_press_shortcut"}
+local longpress_shortcut_mb = mailbox:sub {"longpress_shortcut"}
 local iUiRt = ecs.import.interface "ant.rmlui|iuirt"
 
 local ipower = ecs.require "power"
@@ -455,15 +455,12 @@ function M:stage_camera_usage(datamodel)
         self:flush()
     end
 
-    local gesture_pan
-    for _ in gesture_pan_mb:unpack() do
-        gesture_pan = true
+    for _, _, e in gesture_pan_mb:unpack() do
+        if e.state == "ended" and builder then
+            builder:touch_end(builder_datamodel)
+            self:flush()
+        end
     end
-    if gesture_pan and builder then
-        builder:touch_end(builder_datamodel)
-        self:flush()
-    end
-
     local leave = true
 
     local function __get_building(x, y)
@@ -478,9 +475,9 @@ function M:stage_camera_usage(datamodel)
         end
     end
 
-    local gesture_changed = false
+    local gesture_tap_changed = false
     for _, _, v in gesture_tap_mb:unpack() do
-        gesture_changed = true
+        gesture_tap_changed = true
 
         local x, y = v.x, v.y
         if not handle_pickup then
@@ -555,7 +552,7 @@ function M:stage_camera_usage(datamodel)
         ::continue::
     end
 
-    for _, _, v in gesture_long_press_mb:unpack() do
+    for _, _, v in gesture_longpress_mb:unpack() do
         local x, y = v.x, v.y
         if not handle_pickup then
             goto continue
@@ -631,7 +628,7 @@ function M:stage_camera_usage(datamodel)
         ::continue::
     end
 
-    if gesture_changed and leave then
+    if gesture_tap_changed and leave then
         selected_obj = nil
         datamodel.status = "normal"
         idetail.unselected()
@@ -780,7 +777,7 @@ function M:stage_camera_usage(datamodel)
         end
     end
 
-    for _, _, _, shortcut_id in long_press_shortcut_mb:unpack() do
+    for _, _, _, shortcut_id in longpress_shortcut_mb:unpack() do
         local shortcut
         shortcut = assert(datamodel.shortcut[datamodel.shortcut_id])
         shortcut.selected = false
