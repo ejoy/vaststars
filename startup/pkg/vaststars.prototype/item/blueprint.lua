@@ -233,7 +233,7 @@ prototype "电线杆框架" {
     item_description = "用于建造铁制电线杆的框架",
 }
 
-prototype "无人机仓库I框架" {
+prototype "无人机仓库框架" {
     type = {"item"},
     stack = 4,
     pile = "4x1x4",
