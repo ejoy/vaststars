@@ -1016,7 +1016,7 @@ local prototype = gameplay.register.prototype
     type = { "tech" },
     icon = "textures/science/book.texture",
     effects = {
-      unlock_recipe = {"铁齿轮","铁棒","铁丝"},
+      unlock_recipe = {"铁齿轮","铁棒1","铁丝1"},
       unlock_item = {"铁齿轮","铁棒","铁丝"},
     },
     prerequisites = {"生产铁板"},
