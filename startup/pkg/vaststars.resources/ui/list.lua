@@ -125,6 +125,8 @@ function list_meta:on_dirty_all(item_count)
     end
     self.index_map = index_map
     self.item_count = item_count
+    self.min_pos = nil
+    self.pos = 0
 end
 
 function list_meta:show_detail(it, show)
@@ -158,6 +160,16 @@ function list_meta:show_detail(it, show)
 end
 
 function list_meta:on_pan(event)
+    -- if event.state == 'began' then
+    --     self:on_panbegan(event)
+    -- elseif event.state == 'changed' then
+    --     self:on_panchanged(event)
+    -- elseif event.state == 'ended' then
+    --     self:on_panended(event)
+    -- end
+    if event.state == 'began' or event.state == 'ended' then
+        return
+    end
     local target_pos = (self.direction == 0) and (self.pos + event.dx) or (self.pos + event.dy)
     if not self.min_pos then
         self.min_pos = (self.direction == 0) and (self.view.clientWidth - self.panel.clientWidth) or self.view.clientHeight - self.panel.clientHeight 
@@ -174,7 +186,7 @@ function list_meta:on_pan(event)
     end
 end
 
--- function list_meta:on_mousedown(event)
+-- function list_meta:on_panbegan(event)
 --     if not self.item_width then
 --         local childNodes = self.panel.childNodes
 --         self.item_count = #childNodes
@@ -186,17 +198,13 @@ end
 --             end
 --         end
 --     end
---     local pos = ((self.direction == 0) and event.x or event.y)
---     if not pos and event.targetTouches and #event.targetTouches > 0 then
---         pos = (self.direction == 0) and event.targetTouches[1].x or event.targetTouches[1].y
---     end
---     self.drag.mouse_pos = pos
+--     self.drag.mouse_pos = ((self.direction == 0) and event.x or event.y)
 --     self.drag.anchor = self.pos
 --     self.oldClassName = self.panel.className
 --     self.panel.className = self.panel.className .. " notransition"
 -- end
 
--- function list_meta:on_mouseup(event)
+-- function list_meta:on_panended(event)
 --     local item_count = self.item_count
 --     local min = (self.direction == 0) and (self.view.clientWidth - item_count * self.item_width) or (self.view.clientHeight - item_count * self.item_height)
 --     if min > 0 then
@@ -220,20 +228,15 @@ end
 --     end
 -- end
 
--- function list_meta:on_drag(event)
+-- function list_meta:on_panchanged(event)
 --     local pos = (self.direction == 0) and event.x or event.y
---     if not pos and event.targetTouches and #event.targetTouches > 0 then
---         pos = (self.direction == 0) and event.targetTouches[1].x or event.targetTouches[1].y
---     end
---     if event.button or event.targetTouches then
---         self.drag.delta = pos - self.drag.mouse_pos
---         self.pos = self.drag.anchor + self.drag.delta
---         local e = self.panel
---         if self.direction == 0 then
---             e.style.left = tostring(math.floor(self.pos)) .. 'px'
---         else
---             e.style.top = tostring(math.floor(self.pos)) .. 'px'
---         end
+--     self.drag.delta = pos - self.drag.mouse_pos
+--     self.pos = self.drag.anchor + self.drag.delta
+--     local e = self.panel
+--     if self.direction == 0 then
+--         e.style.left = tostring(math.floor(self.pos)) .. 'px'
+--     else
+--         e.style.top = tostring(math.floor(self.pos)) .. 'px'
 --     end
 -- end
 
