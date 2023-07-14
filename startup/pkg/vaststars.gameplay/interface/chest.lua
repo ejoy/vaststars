@@ -55,8 +55,19 @@ local function chest_dirty(world, e)
     end
 end
 
-local function chest_reset(world, e, chest)
+local function assembling_reset(world, e, chest)
     if chest.chest ~= InvalidChest then
+        for i = 1, 256 do
+            local slot = cChest.get(world._cworld, chest.chest, i)
+            if not slot then
+                break
+            end
+            if slot.type ~= "none" then
+                assert(not olditems[slot.item])
+                olditems[i] = slot
+                hash[slot.item] = i
+            end
+        end
         chest_destroy(world, chest, true)
         chest.chest = InvalidChest
         chest_dirty(world, e)
@@ -86,9 +97,7 @@ local function assembling_reset_items(world, recipe, chest, option, maxslot)
                 break
             end
             if slot.type ~= "none" then
-                assert(not olditems[slot.item])
-                olditems[i] = slot
-                hash[slot.item] = i
+                iBackpack.place(world, slot.item, slot.amount)
             end
         end
     end
@@ -147,10 +156,21 @@ end
 
 function m.assembling_set(world, e, recipe, option, maxslot)
     if recipe == nil then
-        chest_reset(world, e, e.chest)
+        assembling_reset(world, e, e.chest)
         return
     end
     assembling_set(world, e, recipe, option, maxslot)
+end
+
+local function chest_reset(world, e, chest)
+    if chest.chest ~= InvalidChest then
+        local slot = cChest.get(world._cworld, chest.chest, 1)
+        assert(slot and slot.type ~= "none")
+        iBackpack.place(world, slot.item, slot.amount)
+        chest_destroy(world, chest, true)
+        chest.chest = InvalidChest
+        chest_dirty(world, e)
+    end
 end
 
 local function chest_set(world, e, chest, item, type, limit)
@@ -165,7 +185,7 @@ local function chest_set(world, e, chest, item, type, limit)
         return
     end
     local slot = cChest.get(world._cworld, chest.chest, 1)
-    assert(slot)
+    assert(slot and slot.type ~= "none")
     if slot.item == item then
         if slot.limit ~= limit then
             cChest.set(world._cworld, chest.chest, 1, {
@@ -174,6 +194,7 @@ local function chest_set(world, e, chest, item, type, limit)
         end
         return
     end
+    iBackpack.place(world, slot.item, slot.amount)
     cChest.set(world._cworld, chest.chest, 1, {
         item = item,
         limit = limit,
