@@ -418,20 +418,16 @@ local function get_delta(last, current, input)
 end
 
 function M:stage_ui_update(datamodel, object_id)
-    for _, _, _ in close_detail_mb:unpack() do
-        iUiRt.close_ui_rt("detail_scene")
-    end
+
     if model_ready and model_inst then
         update_model(model_inst)
     end
     local gid = iUiRt.get_group_id("detail_scene")
     if gid and not model_inst then
-        iUiRt.close_ui_rt("detail_scene")
+
         local clear_color = 0xff
         local focus_distance = 10
-        model_inst = iUiRt.create_new_rt("detail_scene",
-            -- "/pkg/vaststars.resources/prefabs/plane_rt.prefab",
-            "/pkg/vaststars.resources/light_rt.prefab",
+        model_inst = iUiRt.set_rt_prefab("detail_scene",
             model_path,
             {s = {1,1,1}, t = {0, 0, 0}}, camera_dist)
         model_ready = true

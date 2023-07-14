@@ -750,9 +750,6 @@ function M:stage_camera_usage(datamodel)
             datamodel.item_idx = 0
             datamodel.item_name = ""
             datamodel.item_desc = ""
-            if RenderTarget then
-                iUiRt.close_ui_rt("item_model")
-            end
 
             local storage = gameplay_core.get_storage()
             storage.shortcut = storage.shortcut or {}
@@ -770,12 +767,7 @@ function M:stage_camera_usage(datamodel)
             datamodel.item_name = iprototype.show_prototype_name(typeobject)
             datamodel.item_desc = typeobject.item_description or ""
 
-            if RenderTarget then
-                iUiRt.close_ui_rt("item_model")
-            end
-
-            RenderTarget = iUiRt.create_new_rt("item_model",
-                "/pkg/vaststars.resources/light_rt.prefab",
+            RenderTarget = iUiRt.set_rt_prefab("item_model",
                 "/pkg/vaststars.resources/" .. typeobject.model,
                 {s = {1, 1, 1}, t = {0, 0, 0}}, typeobject.camera_distance
             )
