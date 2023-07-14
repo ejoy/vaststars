@@ -12,19 +12,22 @@ public class GestureHandler implements GestureDetector.OnGestureListener, ScaleG
     private GestureDetectorCompat simple_detector;
     private ScaleGestureDetector scale_detector;
     private boolean scaling;
+    private boolean scrolling;
+
     private long nativeHandle;
 
     private native void nativeInitialize(long handle);
     private native void nativeDestroy(long handle);
     private native void nativeOnTap(long handle, float x, float y);
     private native void nativeOnLongPress(long handle, float x, float y);
-    private native void nativeOnPan(long handle, float x, float y, float dx, float dy, float vx, float vy);
+    private native void nativeOnPan(long handle, int state, float x, float y, float dx, float dy);
     private native void nativeOnPinch(long handle, int state, float x, float y, float velocity);
 
     public GestureHandler(Context context, long handle) {
         simple_detector = new GestureDetectorCompat(context, this);
         scale_detector = new ScaleGestureDetector(context, this);
         scaling = false;
+        scrolling = false;
         nativeHandle = handle;
         nativeInitialize(nativeHandle);
     }
@@ -35,6 +38,15 @@ public class GestureHandler implements GestureDetector.OnGestureListener, ScaleG
     public boolean onTouchEvent(MotionEvent event) {
         scale_detector.onTouchEvent(event);
         simple_detector.onTouchEvent(event);
+
+        if (event.getAction() == MotionEvent.ACTION_UP) {
+            if (scrolling) {
+                scrolling  = false;
+                final float x = event.getX(event1.getActionIndex());
+                final float y = event.getY(event1.getActionIndex());
+                nativeOnPan(nativeHandle, 2, x, y, 0, 0);
+            }
+        }
         return true;
     }
 
@@ -71,11 +83,15 @@ public class GestureHandler implements GestureDetector.OnGestureListener, ScaleG
         if (scaling) {
             return false;
         }
-        final float x1 = event1.getX(event1.getActionIndex());
-        final float y1 = event1.getY(event1.getActionIndex());
+        if (!scrolling) {
+            scrolling = true;
+            final float x1 = event1.getX(event1.getActionIndex());
+            final float y1 = event1.getY(event1.getActionIndex());
+            nativeOnPan(nativeHandle, 0, x1, y1, 0, 0);
+        }
         final float x2 = event2.getX(event2.getActionIndex());
         final float y2 = event2.getY(event2.getActionIndex());
-        nativeOnPan(nativeHandle, x2, y2, distanceX, distanceY, x2-x1, y2-y1);
+        nativeOnPan(nativeHandle, 1, x2, y2, distanceX, distanceY);
         return true;
     }
 
