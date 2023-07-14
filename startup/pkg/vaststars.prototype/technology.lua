@@ -1012,7 +1012,7 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "铁加工1" {
-    desc = "获得铁板加工铁齿轮的工艺",
+    desc = "获得铁板加工成更多铁成品的工艺",
     type = { "tech" },
     icon = "textures/science/book.texture",
     effects = {
@@ -1043,11 +1043,11 @@ local prototype = gameplay.register.prototype
     time = "5s"
   }
 
-  prototype "生产铁齿轮" {
+  prototype "生产铁棒" {
     desc = "铁板可以打造坚固器材，对于基地建设多多益善",
     icon = "textures/construct/industry.texture",
     type = { "task" },
-    task = {"stat_production", 0, "铁齿轮"},
+    task = {"stat_production", 0, "铁棒"},
     prerequisites = {"铁加工1"},
     count = 10,
     tips_pic = {
@@ -1058,7 +1058,7 @@ local prototype = gameplay.register.prototype
       "textures/task_tips_pic/task_produce_ironplate5.texture",
     },
     sign_desc = {
-      { desc = "使用组装机生产10个铁齿轮", icon = "textures/construct/industry.texture"},
+      { desc = "使用组装机生产10个铁棒", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -1069,7 +1069,7 @@ local prototype = gameplay.register.prototype
     effects = {
       unlock_recipe = {"维修运输汽车"},
     },
-    prerequisites = {"生产铁齿轮","建筑维修1"},
+    prerequisites = {"生产铁棒","建筑维修1"},
     ingredients = {
         {"地质科技包", 1},
     },
