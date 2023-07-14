@@ -42,6 +42,9 @@ graphic:
       threshold: 2.200000047683716
     fxaa:
       enable: true
+    tonemapping:
+      use_lut: true
+      lut_dim: 32
     taa:
       enable: nil
   render:

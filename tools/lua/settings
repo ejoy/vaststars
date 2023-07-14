@@ -29,6 +29,9 @@ graphic:
       threshold: 2.3
     fxaa:
       enable: true
+    tonemapping:
+      use_lut: true
+      lut_dim: 32
   render:
     clear: CDS
     clear_color: 255

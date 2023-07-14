@@ -32,6 +32,9 @@ graphic:
       threshold: 2.3
     fxaa:
       enable: true
+    tonemapping:
+      use_lut: true
+      lut_dim: 32
   shadow:
     bias: 0.003
     color: {0, 0, 0, 1}
