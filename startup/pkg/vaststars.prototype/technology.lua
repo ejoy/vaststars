@@ -1126,7 +1126,7 @@ prototype "建筑维修2" {
   },
   prerequisites = {"气候研究1"},
   ingredients = {
-      {"气候科技包", 1},
+      {"地质科技包", 1},
   },
   count = 12,
   time = "2s"
