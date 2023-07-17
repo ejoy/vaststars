@@ -563,7 +563,7 @@ prototype "运输车辆I" {
     pile = "4x1x4",
     backpack_stack = 50,
     pile_model = "prefabs/stackeditems/iron-ingot.prefab",
-    icon = "textures/construct/truck.texture",
+    icon = "textures/building_pic/small_pic_mars_truck.texture",
     model = "prefabs/lorry-1.prefab",
 }
 
