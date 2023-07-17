@@ -1179,11 +1179,11 @@ prototype "排放1" {
   time = "2s"
 }
 
-prototype "建造地下水挖掘机" {
+prototype "建造空气过滤器" {
   desc = "生产科技包用于科技研究",
   icon = "textures/construct/industry.texture",
   type = { "task" },
-  task = {"stat_production", 0, "地下水挖掘机I"},
+  task = {"stat_production", 0, "空气过滤器I"},
   prerequisites = {"建筑维修2"},
   count = 1,
   tips_pic = {
