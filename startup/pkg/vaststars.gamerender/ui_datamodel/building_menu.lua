@@ -429,8 +429,7 @@ function M:stage_ui_update(datamodel, object_id)
                 msgs[#msgs + 1] = {icon = assert(typeitem.icon), name = typeitem.name, count = available}
             end
 
-            iui.send("message_pop.rml", "item", {action = "up", left = sp_x, top = sp_y, items = {}})
-            print("success")
+            iui.send("message_pop.rml", "item", {action = "up", left = sp_x, top = sp_y, items = msgs})
         elseif iprototype.has_types(typeobject.type, "station_producer", "station_consumer", "hub") then
             local chest_component = ichest.get_chest_component(e)
             local slot = ichest.chest_get(gameplay_core.get_world(), e[chest_component], 1)
