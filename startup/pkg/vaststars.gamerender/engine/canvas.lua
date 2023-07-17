@@ -150,7 +150,7 @@ function M.create(canvas_type, show, yaxis)
             on_ready = function(e)
                 local infos = CANVAS_BUILD[canvas_type]
                 for _, info in ipairs(infos) do
-                    icas.build(e, info.render_layer, table.unpack(info.materials))
+                    icas.build(e, show, info.render_layer, table.unpack(info.materials))
                 end
             end,
         }

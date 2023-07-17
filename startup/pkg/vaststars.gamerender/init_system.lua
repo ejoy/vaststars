@@ -45,9 +45,9 @@ function m:init_world()
         return
     end
 
-    rhwi.set_debug(gameplay_core.get_storage("debug", true) and {"TEXT"} or {})
+    rhwi.set_debug(gameplay_core.settings_get("debug", true) and {"TEXT"} or {})
 
-    icanvas.create(icanvas.types().ICON, gameplay_core.get_storage("info", true), 10)
+    icanvas.create(icanvas.types().ICON, gameplay_core.settings_get("info", true), 10)
     icanvas.create(icanvas.types().BUILDING_BASE, true, 0.01)
     icanvas.create(icanvas.types().PICKUP_ICON, false, 10)
     icanvas.create(icanvas.types().ROAD_ENTRANCE_MARKER, false, 0.02)
