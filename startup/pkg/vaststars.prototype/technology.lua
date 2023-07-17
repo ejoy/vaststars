@@ -1193,7 +1193,7 @@ prototype "建造空气过滤器" {
     "textures/task_tips_pic/task_produce_climatepack5.texture",
   },
   sign_desc = {
-    { desc = "生产1个地下水挖掘机", icon = "textures/construct/industry.texture"},
+    { desc = "生产1个空气过滤器", icon = "textures/construct/industry.texture"},
   },
 }
 
@@ -1220,7 +1220,7 @@ prototype "生产气候科技包" {
   icon = "textures/construct/industry.texture",
   type = { "task" },
   task = {"stat_production", 0, "气候科技包"},
-  prerequisites = {"建造地下水挖掘机","建造水电站"},
+  prerequisites = {"建造空气过滤器","建造水电站"},
   count = 1,
   tips_pic = {
     "textures/task_tips_pic/task_produce_climatepack2.texture",
