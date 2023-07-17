@@ -56,6 +56,7 @@ local function chest_dirty(world, e)
 end
 
 local function assembling_reset(world, e, chest)
+    local olditems = {}
     if chest.chest ~= InvalidChest then
         for i = 1, 256 do
             local slot = cChest.get(world._cworld, chest.chest, i)
@@ -65,7 +66,6 @@ local function assembling_reset(world, e, chest)
             if slot.type ~= "none" then
                 assert(not olditems[slot.item])
                 olditems[i] = slot
-                hash[slot.item] = i
             end
         end
         chest_destroy(world, chest, true)
