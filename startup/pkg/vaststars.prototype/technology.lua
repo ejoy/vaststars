@@ -1171,7 +1171,7 @@ prototype "排放1" {
     unlock_recipe = {"烟囱打印","排水口打印","地下管1"},
     unlock_item = {"烟囱I","排水口I","地下管1-JI型"},
   },
-  prerequisites = {"生产管道"},
+  prerequisites = {"生产气候科技包"},
   ingredients = {
     {"气候科技包", 1},
   },
