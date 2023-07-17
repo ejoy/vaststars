@@ -65,7 +65,7 @@ function M:stage_camera_usage()
     for _ in debug_mb:unpack() do
         local debug = not gameplay_core.settings_get("debug", true)
         gameplay_core.settings_set("debug", debug)
-        rhwi.set_debug(debug and {"TEXT"} or {})
+        rhwi.set_profie(debug)
         world:pub {"rmlui_message_close", "option_pop.rml"}
     end
 

@@ -2564,7 +2564,7 @@ prototype "气候科技包1" {
     results = {
         {"气候科技包", 1},
     },
-    time = "8s",
+    time = "9s",
     description = "气候材料制造气候科技包",
 }
 
