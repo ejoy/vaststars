@@ -194,7 +194,9 @@ local function chest_set(world, e, chest, item, type, limit)
         end
         return
     end
-    iBackpack.place(world, slot.item, slot.amount)
+    if slot.item ~= 0 then
+        iBackpack.place(world, slot.item, slot.amount)
+    end
     cChest.set(world._cworld, chest.chest, 1, {
         item = item,
         limit = limit,

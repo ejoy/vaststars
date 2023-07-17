@@ -71,6 +71,7 @@ function M:stage_camera_usage()
 
     for _ in back_to_main_menu_mb:unpack() do
         world:pub {"rmlui_message_close", "option_pop.rml"}
+        world:pub {"rmlui_message_close", "main_menu.rml"}
         imain_menu_manager.back_to_main_menu()
     end
 end
