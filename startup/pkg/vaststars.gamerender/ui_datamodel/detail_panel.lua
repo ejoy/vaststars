@@ -447,7 +447,7 @@ function M:stage_ui_update(datamodel, object_id)
         end
         if #preinput > 0 and not input_auto then
             for index, input in ipairs(preinput) do
-                input.count = input.count + input_delta[index]
+                input.count = input.count + (input_delta[index] or 0)
             end
         end
         last_inputs, last_ouputs = current_inputs, current_ouputs
