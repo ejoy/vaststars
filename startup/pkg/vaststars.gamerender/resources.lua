@@ -553,7 +553,6 @@ local t = {
 	"/pkg/ant.resources/shaders/common/default_vs_func.sh",
 	"/pkg/ant.resources/shaders/common/default_vs_inputs_getter.sh",
 	"/pkg/ant.resources/shaders/common/default_vs_outputs_getter.sh",
-	"/pkg/ant.resources/shaders/common/inputs.sh",
 	"/pkg/ant.resources/shaders/common/lightdata.sh",
 	"/pkg/ant.resources/shaders/common/math.sh",
 	"/pkg/ant.resources/shaders/common/postprocess.sh",
