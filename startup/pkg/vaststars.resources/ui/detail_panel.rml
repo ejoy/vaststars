@@ -182,7 +182,7 @@
     <body style = "pointer-events: none; justify-content: center; align-items: center;">
         <div class="panel1" style="flex-direction: row; justify-content: flex-start; align-items: center;">
             <!-- detail panel begin -->
-            <div style = 'margin-top: 7vmin; margin-bottom: 7vmin; width: 30vmin; height: 86vmin; background-lattice: 30%; background-image: "textures/detail/background.texture"; background-size: 100% 100%;'>
+            <div style = 'margin-top: 7vmin; margin-bottom: 7vmin; width: 30vmin; height: 86vmin; background-lattice: 30% 30%; background-image: "textures/detail/background.texture"; background-size: 100% 100%;'>
                 <!-- title -->
                 <div style = "flex-direction: row; justify-content: center; align-items: center;">
                     <div data-style-background-image="icon" style = "width: 20vmin; height: 20vmin; background-size: cover;" data-event-click="onLongPress(1)"/>
