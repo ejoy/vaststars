@@ -817,8 +817,8 @@ local prototype = gameplay.register.prototype
     ingredients = {
         {"地质科技包", 1},
     },
-    count = 20,
-    time = "1s"
+    count = 12,
+    time = "2s"
   }
 
   prototype "铁矿放置采矿机" {

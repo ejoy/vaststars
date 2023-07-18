@@ -259,6 +259,7 @@ prototype "排水口I" {
     rotate_on_build = true,
     craft_category = {"流体液体排泄"},
     speed = "100%",
+    building_base = false,
     camera_distance = 89,
     building_menu = false,
     fluidbox = {
@@ -280,6 +281,7 @@ prototype "排水口II" {
     rotate_on_build = true,
     craft_category = {"流体液体排泄"},
     speed = "500%",
+    building_base = false,
     camera_distance = 89,
     building_menu = false,
     fluidbox = {
