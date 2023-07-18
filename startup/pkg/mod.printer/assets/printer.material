@@ -1,6 +1,6 @@
 fx:
-  vs: /pkg/ant.resources/shaders/pbr/vs_pbr.sc
-  fs: /pkg/mod.printer/assets/shaders/fs_printer.sc # shoule be replaced by printer's pixel shader
+  vs_code: "\n#include \"common/default_vs_func.sh\"\n"
+  fs_code: "\n#include \"printer_fs_func.sh\"\n"
   setting:
     ALPHAMODE_OPAQUE: 1
     lighting: on
