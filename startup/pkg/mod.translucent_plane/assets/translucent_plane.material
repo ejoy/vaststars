@@ -1,5 +1,4 @@
 fx:
-  shader_type: "CUSTOM"
   vs_code: "\n#include \"tf_vs_func.sh\"\n"
   fs_code: "\n#include \"tf_fs_func.sh\"\n"
   setting:

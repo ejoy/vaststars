@@ -1,5 +1,5 @@
 fx:
-  fs: /pkg/ant.resources/shaders/pbr/fs_pbr.sc
+  shader_type: PBR
   setting:
     ALPHAMODE_OPAQUE: 1
     lighting: on
@@ -7,7 +7,6 @@ fx:
     shadow_receive: on
     subsurface: off
     UV_MOTION: 1
-  vs: /pkg/ant.resources/shaders/pbr/vs_pbr.sc
 properties:
   s_basecolor:
     stage: 0

@@ -1,6 +1,5 @@
 fx:
   fs: /pkg/mod.crack/assets/shaders/fs_crack_color.sc
-  vs: /pkg/mod.crack/assets/shaders/vs_parallex_mapping.sc
   setting:
     lighting: on
     shadow_cast: off

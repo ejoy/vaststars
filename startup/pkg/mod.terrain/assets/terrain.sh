@@ -14,7 +14,7 @@ vec2 texture2DArrayBc5(sampler2DArray _sampler, vec3 _uv)
 
 mediump vec3 terrain_normal_from_tangent_frame(mat3 tbn, mediump vec2 texcoord, mediump float normal_idx)
 {
-	mediump vec3 normalTS = remap_normal(texture2DArrayBc5(s_normal, mediump vec3(texcoord, normal_idx)));
+	mediump vec3 normalTS = remap_normal(texture2DArrayBc5(s_normal_array, mediump vec3(texcoord, normal_idx)));
 	// same as: mul(transpose(tbn), normalTS)
     return normalize(mul(normalTS, tbn));
 }

@@ -1,16 +1,19 @@
-#include "common/inputs.sh"
+#include "common/default_inputs_define.sh"
 $input 	a_position a_texcoord0 INPUT_NORMAL INPUT_TANGENT
 $output v_texcoord0 v_normal v_tangent v_posWS
 #include <bgfx_shader.sh>
 #include "common/transform.sh"
+#include "common/default_inputs_structure.sh"
 
 void main()
 {
-	mat4 wm = get_world_matrix();
-	highp vec4 posWS = transformWS(wm, mediump vec4(a_position, 1.0));
-	gl_Position = mul(u_viewProj, posWS);
+	VSInput vs_input = (VSInput)0;
+	#include "common/default_vs_inputs_getter.sh"
+	mat4 wm = get_world_matrix(vs_input);
+	highp vec4 posWS = transform_pos(wm, a_position, gl_Position);
+
 	v_texcoord0 = a_texcoord0;
-	
+	//TODO: need to use vs_default.sc
 #	if PACK_TANGENT_TO_QUAT
 	const mediump vec4 quat = a_tangent;
 	mediump vec3 normal = quat_to_normal(quat);

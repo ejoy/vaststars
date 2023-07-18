@@ -1,5 +1,4 @@
 fx:
-  shader_type: "CUSTOM"
   vs_code: "\n#include \"terrain_vs_func.sh\"\n"
   fs_code: "\n#include \"terrain_fs_func.sh\"\n"
   setting:
@@ -14,13 +13,13 @@ fx:
 properties:
   u_metallic_roughness_factor1: {0.2, 1.0, 0.1, 0.6}  #xy: sand, zw: stone
   u_metallic_roughness_factor2: {0.1, 0.8, 0.0, 0.0}  #xy: cement
-  s_basecolor:
+  s_basecolor_array:
     stage: 0
     texture: /pkg/mod.terrain/assets/textures/shape_basecolor.texture
   s_height:
     stage: 1
     texture: /pkg/mod.terrain/assets/textures/shape_height.texture
-  s_normal:
+  s_normal_array:
     stage: 2
     texture: /pkg/mod.terrain/assets/textures/shape_normal.texture
 state: 

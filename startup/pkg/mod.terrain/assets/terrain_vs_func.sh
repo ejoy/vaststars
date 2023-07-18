@@ -5,9 +5,9 @@
 
 void CUSTOM_VS_FUNC(in VSInput vs_input, inout VSOutput vs_output)
 {
-    mat4 wm = u_model[0];
-	highp vec4 posWS = transformWS(wm, mediump vec4(vs_input.pos, 1.0));
-	vs_output.clip_pos = mul(u_viewProj, posWS);
+	mat4 wm = get_world_matrix(vs_input);
+	highp vec4 posWS = transform_pos(wm, vs_input.pos, vs_output.clip_pos);
+
 	vs_output.uv0 = vec4(vs_input.uv0.xy, 0, 0);
 	vs_output.user0 = vec4(vs_input.user0.zw, 0, 0);
     vs_output.user1 = vec4(vs_input.user0.xy, 0, 0);

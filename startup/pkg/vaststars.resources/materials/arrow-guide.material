@@ -1,5 +1,5 @@
 fx:
-  fs: /pkg/ant.resources/shaders/pbr/fs_pbr.sc
+  shader_type: PBR
   setting:
     ALPHAMODE_OPAQUE: 1
     GPU_SKINNING: 1
@@ -8,7 +8,6 @@ fx:
     shadow_cast: on
     shadow_receive: on
     subsurface: off
-  vs: /pkg/ant.resources/shaders/pbr/vs_pbr.sc
 properties:
   u_basecolor_factor: {1, 1, 1, 1}
   u_emissive_factor: {0.01294411439448595, 1, 0, 0}

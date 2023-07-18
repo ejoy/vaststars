@@ -28,8 +28,8 @@ void CUSTOM_FS_FUNC(in FSInput fs_input, inout FSOutput fs_output)
     vec2 terrain_uv    = fs_input.uv0;
     vec2 alpha_uv      = fs_input.user1.xy;
 
-    vec4 stone_basecolor   = texture2DArray(s_basecolor, vec3(terrain_uv, stone_color_idx));
-    vec4 sand_basecolor    = texture2DArray(s_basecolor, vec3(terrain_uv, sand_color_idx));
+    vec4 stone_basecolor   = texture2DArray(s_basecolor_array, vec3(terrain_uv, stone_color_idx));
+    vec4 sand_basecolor    = texture2DArray(s_basecolor_array, vec3(terrain_uv, sand_color_idx));
     float sand_height   = texture2DArray(s_height, vec3(terrain_uv, 0.0) );
     float stone_height  = texture2DArray(s_height, vec3(terrain_uv, 1.0) );
     float sand_alpha = texture2DArray(s_height, vec3(alpha_uv, 2.0) );
