@@ -1,0 +1,19 @@
+---
+data:
+  name: Scene
+  scene: {}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  material: /pkg/vaststars.resources/glb/stackeditems/stack-crush-iron-ore.glb|materials/Material.001_clr.material
+  mesh: /pkg/vaststars.resources/glb/stackeditems/stack-crush-iron-ore.glb|meshes/Cube.035_P1.meshbin
+  name: Cube.030
+  scene:
+    s: {0.8774663209915161, 0.8774663209915161, 0.8774663209915161}
+  visible_state: main_view|selectable|cast_shadow
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render

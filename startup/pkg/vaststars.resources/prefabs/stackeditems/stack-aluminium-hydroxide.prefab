@@ -1,0 +1,19 @@
+---
+data:
+  name: Scene
+  scene: {}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  material: /pkg/vaststars.resources/glb/stackeditems/stack-aluminium-hydroxide.glb|materials/Material.003.material
+  mesh: /pkg/vaststars.resources/glb/stackeditems/stack-aluminium-hydroxide.glb|meshes/Cube.044_P1.meshbin
+  name: Cube.030
+  scene:
+    s: {0.9361222982406616, 0.9361222982406616, 0.9361222982406616}
+  visible_state: main_view|selectable|cast_shadow
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
