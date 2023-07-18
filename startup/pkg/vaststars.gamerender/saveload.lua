@@ -328,6 +328,8 @@ function M:restore(index)
     iscience.update_tech_list(gameplay_core.get_world())
     debugger.set_free_mode(gameplay_core.get_storage().game_mode == "free")
     restore_world()
+    gameplay_core.set_changed(CHANGED_FLAG_ALL)
+    gameplay_core.world_update = true
 
     iui.open({"construct.rml"})
     iui.open({"message_pop.rml"})
