@@ -16,7 +16,7 @@ prototype "铁板" {
 prototype "铁丝" {
     type = {"item"},
     stack = 12,
-    pile = "4x2x4",
+    pile = "4x4x2",
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-iron-wire.prefab",
     icon = "textures/construct/iron-wire.texture",
@@ -27,7 +27,7 @@ prototype "铁丝" {
 prototype "铁棒" {
     type = {"item"},
     stack = 12,
-    pile = "4x2x4",
+    pile = "4x4x2",
     backpack_stack = 50,
     pile_model = "prefabs/stackeditems/stack-iron-plate.prefab",
     icon = "textures/construct/iron_stick.texture",
@@ -38,7 +38,7 @@ prototype "铁棒" {
 prototype "钢板" {
     type = {"item"},
     stack = 12,
-    pile = "4x2x4",
+    pile = "4x4x2",
     backpack_stack = 50,
     pile_model = "prefabs/stackeditems/stack-steel-plate.prefab",
     icon = "textures/construct/steel-beam.texture",
@@ -75,7 +75,7 @@ prototype "铁矿石" {
 prototype "碎石" {
     type = {"item"},
     stack = 12,
-    pile = "2x2x3",
+    pile = "2x3x2",
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-gravel.prefab",
     icon = "textures/construct/gravel.texture",
@@ -89,7 +89,7 @@ prototype "碎石" {
 prototype "石砖" {
     type = {"item"},
     stack = 12,
-    pile = "4x2x4",
+    pile = "4x4x2",
     backpack_stack = 50,
     pile_model = "prefabs/stackeditems/stack-stone-brick.prefab",
     icon = "textures/construct/stone-brick.texture",
@@ -136,7 +136,7 @@ prototype "碾碎铝矿石" {
 prototype "氢氧化铝" {
     type = {"item"},
     stack = 12,
-    pile = "4x2x4",
+    pile = "4x4x2",
     backpack_stack = 50,
     pile_model = "prefabs/stackeditems/stack-aluminium-hydroxide.prefab",
     icon = "textures/construct/aluminum-hydroxide.texture",
@@ -147,7 +147,7 @@ prototype "氢氧化铝" {
 prototype "氧化铝" {
     type = {"item"},
     stack = 12,
-    pile = "4x2x4",
+    pile = "4x4x2",
     backpack_stack = 50,
     pile_model = "prefabs/stackeditems/stack-aluminium-oxide.prefab",
     icon = "textures/construct/alumina.texture",
@@ -158,7 +158,7 @@ prototype "氧化铝" {
 prototype "碳化铝" {
     type = {"item"},
     stack = 12,
-    pile = "4x2x4",
+    pile = "4x4x2",
     backpack_stack = 50,
     pile_model = "prefabs/stackeditems/iron-ore.prefab",
     icon = "textures/construct/aluminium-carbide.texture",
@@ -169,7 +169,7 @@ prototype "碳化铝" {
 prototype "铝板" {
     type = {"item"},
     stack = 12,
-    pile = "4x2x4",
+    pile = "4x4x2",
     backpack_stack = 50,
     pile_model = "prefabs/stackeditems/stack-aluminium-plate.prefab",
     icon = "textures/construct/plate-Al.texture",
@@ -191,7 +191,7 @@ prototype "铝棒" {
 prototype "铝丝" {
     type = {"item"},
     stack = 16,
-    pile = "4x2x4",
+    pile = "4x4x2",
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-iron-wire.prefab",
     icon = "textures/construct/iron-wire.texture",
@@ -224,7 +224,7 @@ prototype "硅" {
 prototype "硅板" {
     type = {"item"},
     stack = 12,
-    pile = "4x2x4",
+    pile = "4x4x2",
     backpack_stack = 50,
     pile_model = "prefabs/stackeditems/stack-silicon-plate.prefab",
     icon = "textures/construct/plate-Si.texture",
@@ -279,7 +279,7 @@ prototype "金红石" {
 prototype "钛板" {
     type = {"item"},
     stack = 12,
-    pile = "4x2x4",
+    pile = "4x4x2",
     backpack_stack = 50,
     pile_model = "prefabs/stackeditems/stack-copper-plate.prefab",
     icon = "textures/construct/coal.texture",
