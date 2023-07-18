@@ -111,6 +111,7 @@
 
             function init()
                 local e = assert(document.getElementById "item-list")
+                e.scrollInsets(0, 0, 0, 200)
                 e.addEventListener("pan", function(param)
                     e.scrollTop = e.scrollTop - param.dy
                 end)

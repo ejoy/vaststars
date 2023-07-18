@@ -1,0 +1,18 @@
+---
+data:
+  name: Scene
+  scene: {}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  material: /pkg/vaststars.resources/glb/stackeditems/stack-electrical-pack.glb|materials/Material.005.material
+  mesh: /pkg/vaststars.resources/glb/stackeditems/stack-electrical-pack.glb|meshes/Cube.058_P1.meshbin
+  name: Cube.030
+  scene: {}
+  visible_state: main_view|selectable|cast_shadow
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render

@@ -309,6 +309,7 @@ function M:restore(index)
     end
 
     self.running = true
+    world:pipeline_func "gameworld_clean" ()
     gameplay_core.restore(archival_dir)
     iprototype_cache.reload()
     world:pipeline_func "prototype" ()
@@ -335,6 +336,7 @@ function M:restore(index)
 end
 
 function M:restart(mode, game_template)
+    world:pipeline_func "gameworld_clean" ()
     gameplay_core.restart()
     iprototype_cache.reload()
     world:pipeline_func "prototype" ()

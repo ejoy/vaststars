@@ -26,8 +26,8 @@ function M:create()
 
     return {
         archival_files = archival_files,
-        info = gameplay_core.get_storage("info", true),
-        debug = gameplay_core.get_storage("debug", true),
+        info = gameplay_core.settings_get("info", true),
+        debug = gameplay_core.settings_get("debug", true),
     }
 end
 
@@ -56,21 +56,22 @@ function M:stage_camera_usage()
     end
 
     for _ in info_mb:unpack() do
-        local storage = gameplay_core.get_storage()
-        storage.info = not gameplay_core.get_storage("info", true)
-        icanvas.show(icanvas.types().ICON, storage.info)
+        local info = not gameplay_core.settings_get("info", true)
+        gameplay_core.settings_set("info", info)
+        icanvas.show(icanvas.types().ICON, info)
         world:pub {"rmlui_message_close", "option_pop.rml"}
     end
 
     for _ in debug_mb:unpack() do
-        local storage = gameplay_core.get_storage()
-        storage.debug = not gameplay_core.get_storage("debug", true)
-        rhwi.set_debug(storage.debug and {"TEXT"} or {})
+        local debug = not gameplay_core.settings_get("debug", true)
+        gameplay_core.settings_set("debug", debug)
+        rhwi.set_profie(debug)
         world:pub {"rmlui_message_close", "option_pop.rml"}
     end
 
     for _ in back_to_main_menu_mb:unpack() do
         world:pub {"rmlui_message_close", "option_pop.rml"}
+        world:pub {"rmlui_message_close", "main_menu.rml"}
         imain_menu_manager.back_to_main_menu()
     end
 end

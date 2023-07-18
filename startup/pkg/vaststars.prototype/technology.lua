@@ -817,8 +817,8 @@ local prototype = gameplay.register.prototype
     ingredients = {
         {"地质科技包", 1},
     },
-    count = 20,
-    time = "1s"
+    count = 12,
+    time = "2s"
   }
 
   prototype "铁矿放置采矿机" {
@@ -1163,27 +1163,11 @@ prototype "生产管道" {
   },
 }
 
-prototype "排放1" {
-  desc = "研究气体和液体的排放工艺",
-  type = { "tech" },
-  icon = "textures/science/book.texture",
-  effects = {
-    unlock_recipe = {"烟囱打印","排水口打印","地下管1"},
-    unlock_item = {"烟囱I","排水口I","地下管1-JI型"},
-  },
-  prerequisites = {"生产管道"},
-  ingredients = {
-    {"气候科技包", 1},
-  },
-  count = 15,
-  time = "2s"
-}
-
-prototype "建造地下水挖掘机" {
+prototype "建造空气过滤器" {
   desc = "生产科技包用于科技研究",
   icon = "textures/construct/industry.texture",
   type = { "task" },
-  task = {"stat_production", 0, "地下水挖掘机I"},
+  task = {"stat_production", 0, "空气过滤器I"},
   prerequisites = {"建筑维修2"},
   count = 1,
   tips_pic = {
@@ -1193,7 +1177,7 @@ prototype "建造地下水挖掘机" {
     "textures/task_tips_pic/task_produce_climatepack5.texture",
   },
   sign_desc = {
-    { desc = "生产1个地下水挖掘机", icon = "textures/construct/industry.texture"},
+    { desc = "生产1个空气过滤器", icon = "textures/construct/industry.texture"},
   },
 }
 
@@ -1220,7 +1204,7 @@ prototype "生产气候科技包" {
   icon = "textures/construct/industry.texture",
   type = { "task" },
   task = {"stat_production", 0, "气候科技包"},
-  prerequisites = {"建造地下水挖掘机","建造水电站"},
+  prerequisites = {"建造空气过滤器","建造水电站"},
   count = 1,
   tips_pic = {
     "textures/task_tips_pic/task_produce_climatepack2.texture",
@@ -1231,6 +1215,22 @@ prototype "生产气候科技包" {
   sign_desc = {
     { desc = "使用水电站生产1个气候科技包", icon = "textures/construct/industry.texture"},
   },
+}
+
+prototype "排放1" {
+  desc = "研究气体和液体的排放工艺",
+  type = { "tech" },
+  icon = "textures/science/book.texture",
+  effects = {
+    unlock_recipe = {"烟囱打印","排水口打印","地下管1"},
+    unlock_item = {"烟囱I","排水口I","地下管1-JI型"},
+  },
+  prerequisites = {"生产气候科技包","生产管道"},
+  ingredients = {
+    {"气候科技包", 1},
+  },
+  count = 15,
+  time = "2s"
 }
 
   prototype "放置太阳能板" {
@@ -1248,6 +1248,21 @@ prototype "生产气候科技包" {
     },
   }
 
+  prototype "生产液罐" {
+    desc = "生产可以存储气液的容器",
+    icon = "textures/construct/industry.texture",
+    type = { "task" },
+    task = {"stat_production", 0, "液罐I"},
+    prerequisites = {"生产管道","生产气候科技包"},
+    count = 2,
+    tips_pic = {
+      "textures/task_tips_pic/task_produce_pipe1.texture",
+    },
+    sign_desc = {
+      { desc = "使用组装机生产2个液罐", icon = "textures/construct/industry.texture"},
+    },
+  }
+
 prototype "电解" {
   desc = "科技的描述",
   type = { "tech" },
@@ -1255,7 +1270,7 @@ prototype "电解" {
   effects = {
     unlock_recipe = {"地下卤水电解1","地下卤水电解2"},
   },
-  prerequisites = {"生产气候科技包"},
+  prerequisites = {"生产液罐"},
   ingredients = {
       {"气候科技包", 1},
   },
@@ -1460,6 +1475,7 @@ prototype "有机化学1" {
   icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"塑料1"},
+    unlock_item = {"塑料"},
   },
   prerequisites = {"生产甲烷"},
   ingredients = {

@@ -1,14 +1,39 @@
 local gameplay = import_package "vaststars.gameplay"
+local fs = require "bee.filesystem"
 
 local function __create_gameplay_world()
     local world = gameplay.createWorld()
     return world
 end
 
+local function __writeall(file, content)
+    local parent = fs.path(file):parent_path()
+    if not fs.exists(parent) then
+        fs.create_directories(parent)
+    end
+    local f <close> = assert(io.open(file, "wb"))
+    f:write(content)
+end
+
+local function __readall(file)
+    local f <close> = assert(io.open(file, "rb"))
+    return f:read "a"
+end
+
 local world = __create_gameplay_world()
 local irecipe = require "gameplay.interface.recipe"
 local iprototype = require "gameplay.interface.prototype"
 local MULTIPLE <const> = require "debugger".multiple
+
+local CUSTOM_ARCHIVING <const> = require "debugger".custom_archiving
+local ARCHIVAL_BASE_DIR
+if CUSTOM_ARCHIVING then
+    ARCHIVAL_BASE_DIR = (fs.exe_path():parent_path() / CUSTOM_ARCHIVING):lexically_normal():string()
+else
+    ARCHIVAL_BASE_DIR = (fs.app_path "vaststars" / "archiving/"):string()
+end
+local GLOBAL_SETTINGS_FILENAME <const> = ARCHIVAL_BASE_DIR .. "settings.json"
+local json = import_package "ant.json"
 
 local m = {}
 m.world_update = false
@@ -168,6 +193,26 @@ end
 
 function m.set_changed(flag)
     m.system_changed_flags = m.system_changed_flags | flag
+end
+
+function m.settings_get(k, def)
+    if not fs.exists(fs.path(GLOBAL_SETTINGS_FILENAME)) then
+        return def
+    end
+    local global_settings = json.decode(__readall(GLOBAL_SETTINGS_FILENAME))
+    if global_settings[k] == nil then
+        return def
+    end
+    return global_settings[k]
+end
+
+function m.settings_set(k, v)
+    local global_settings = {}
+    if fs.exists(fs.path(GLOBAL_SETTINGS_FILENAME)) then
+        global_settings = json.decode(__readall(GLOBAL_SETTINGS_FILENAME))
+    end
+    global_settings[k] = v
+    __writeall(GLOBAL_SETTINGS_FILENAME, json.encode(global_settings))
 end
 
 return m

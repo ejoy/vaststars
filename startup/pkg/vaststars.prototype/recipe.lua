@@ -2317,7 +2317,7 @@ prototype "维修空气过滤器" {
     recipe_order =  50,
     recipe_icon =  "textures/construct/broken-air-filter1.texture",
     ingredients = {
-        {"铁齿轮", 5},
+        {"铁棒", 5},
         {"空气过滤器框架", 1},
     },
     results = {
@@ -2334,7 +2334,7 @@ prototype "维修地下水挖掘机" {
     recipe_order =  51,
     recipe_icon =  "textures/construct/broken-air-filter1.texture",
     ingredients = {
-        {"铁板", 5},
+        {"铁齿轮", 5},
         {"地下水挖掘机框架", 1},
     },
     results = {
@@ -2564,7 +2564,7 @@ prototype "气候科技包1" {
     results = {
         {"气候科技包", 1},
     },
-    time = "8s",
+    time = "9s",
     description = "气候材料制造气候科技包",
 }
 

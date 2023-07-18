@@ -142,10 +142,10 @@ end
 
 function terrain:reset_mineral(map)
     --
-    self.eids = self.eids or {}
-    for _, eid in ipairs(self.eids) do
+    for _, eid in ipairs(self.eids or {}) do
         eid:remove()
     end
+    self.eids = {}
 
     self.mineral = {}
     self.mineral_cache = {}
