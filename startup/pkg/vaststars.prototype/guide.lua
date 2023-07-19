@@ -678,7 +678,7 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"修建{/g 公路}需要专用建筑——{/g 建造中心},让我们立即放置一座{/g 建造中心}..哔哗..(期待)", "textures/guide/guide-1.texture"},
+            {"石头可以用于铺设{/g 公路}进而开展更便捷的物流,让我们立即修建{/g 砖石公路}吧..哔哗..(期待)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
             guide_progress = 52,
