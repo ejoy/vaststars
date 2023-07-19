@@ -1279,12 +1279,12 @@ prototype "排放1" {
     },
   }
 
-prototype "电解" {
+prototype "电解水" {
   desc = "科技的描述",
   type = { "tech" },
   icon = "textures/science/book.texture",
   effects = {
-    unlock_recipe = {"地下卤水电解1","地下卤水电解2"},
+    unlock_recipe = {"地下卤水电解1"},
   },
   prerequisites = {"生产液罐"},
   ingredients = {
@@ -1301,7 +1301,7 @@ prototype "空气分离工艺1" {
   effects = {
     unlock_recipe = {"空气分离1"},
   },
-  prerequisites = {"电解"},
+  prerequisites = {"电解水"},
   ingredients = {
       {"气候科技包", 1},
   },
@@ -1332,7 +1332,7 @@ prototype "碳处理1" {
   effects = {
     unlock_recipe = {"二氧化碳转甲烷"},
   },
-  prerequisites = {"电解","空气分离工艺1","放置太阳能板"},
+  prerequisites = {"电解水","空气分离工艺1","放置太阳能板"},
   ingredients = {
       {"气候科技包", 1},
   },
@@ -1459,7 +1459,7 @@ prototype "放置化工厂" {
   icon = "textures/construct/industry.texture",
   type = { "task" },
   task = {"select_entity", 0, "化工厂I"},
-  prerequisites = {"建筑维修3"},
+  prerequisites = {"建筑维修3","生产氢气","生产二氧化碳"},
   count = 1,
   tips_pic = {
     "textures/task_tips_pic/task_click_build.texture",
@@ -1926,8 +1926,8 @@ prototype "电解1" {
   type = { "tech" },
   icon = "textures/science/book.texture",
   effects = {
-    unlock_recipe = {"电解厂1"},
-    unlock_item = {"电解厂I"},
+    unlock_recipe = {"电解厂1","地下卤水电解2"},
+    unlock_item = {"电解厂I","氢氧化钠"},
   },
   prerequisites = {"铁矿熔炼2"},
   ingredients = {
