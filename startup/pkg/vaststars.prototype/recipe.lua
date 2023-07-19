@@ -1458,7 +1458,7 @@ prototype "无人机仓库1" {
     recipe_order =  60,
     recipe_icon =  "textures/construct/crusher1.texture",
     ingredients = {
-        {"电动机I", 1},
+        {"电动机I", 2},
         {"石砖", 4},
     },
     results = {
