@@ -73,13 +73,9 @@
         <div class = "safe-area">    
             <div class = "layout">
                 <div class = "building-button-container" data-style-transform = "it.outer_transform" data-for = "buttons">
-                    <div style = "pointer-events: none; width: 18.23vmin; height: 72.655%; margin-top: 9.115vmin; margin-bottom: 9.115vmin; background-image: textures/building-menu/line.texture; background-size: contain;" data-style-transform = "it.line_transform" data-style-margin-right = "it.line_margin_right" />
                     <div class = "building-button" style = "pointer-events: none; width: 18.23vmin; height: 18.23vmin;" data-style-transform = "it.inner_transform">
                         <div class = "building-button" style = "width: 18.23vmin; height: 18.23vmin;" data-style-background-image = "it.background_image" data-event-click = "clickButton(it.command)" />
                     </div>
-                </div>
-                <div class = "building-button-container" style = "align-items: flex-end;" data-event-click = "clickButton('unselected')">
-                    <div class = "building-button" style = "width: 18.23vmin; height: 18.23vmin; background-image: textures/building-menu/close.texture; background-size: cover;" />
                 </div>
             </div>
         </div>

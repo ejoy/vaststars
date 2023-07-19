@@ -143,6 +143,7 @@ interface "iui"
     .method "redirect"
     .method "is_open"
     .method "broadcast"
+    .method "get_datamodel"
 
 system "camera_controller"
     .implement "engine/system/camera_controller.lua"

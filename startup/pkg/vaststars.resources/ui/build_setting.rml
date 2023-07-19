@@ -1,0 +1,235 @@
+<rml>
+    <head>
+        <style path = "common.rcss"/>
+        <style>
+        main-button {
+            width: 27.41vmin;
+            height: 27.41vmin;
+        }
+        main-button:active {
+            transform: scale(1.2);
+        }
+        button-pic {
+            width: 100%;
+            height: 100%;
+            background-size: 100% 100%;
+        }
+        buttons-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        button-container {
+            position: absolute;
+            width: 18.23vmin;
+            height: 65.27%;
+            transform-origin: 50% 9.115vmin;
+            pointer-events: none;
+        }
+        button {
+            width: 18.23vmin;
+            height: 18.23vmin;
+            position: absolute;
+            background-size: cover;
+            transform-origin: 50% 50%;
+        }
+        button-wrap {
+            width: 100%;
+            height: 100%;
+        }
+        button-wrap:active {
+            transform: scale(1.2);
+        }
+        button-pic {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: 100% 100%;
+        }
+        button-number {
+            position: absolute;
+            width: 1.50vmax;
+            height: 2vmin;
+            font-size: 2vmin;
+            text-align: center;
+            -webkit-text-stroke: 0.2vmin rgb(63, 60, 63);
+        }
+
+        construct-box {
+            position: absolute;
+            left: 5.03vmax;
+            top: 0.62vmin;
+            width: 39.30vmax;
+            height: 98.52vmin;
+            background-image: "textures/construct/square-grid.texture";
+            background-size: 100% 100%;
+            background-lattice: 4.28%;
+        }
+        construct-list {
+            left: 0.86vmax;
+            top: 2.95vmin;
+            width: 39.00vmax;
+            height: 93.00vmin;
+            margin-left: -1vmax;
+            overflow: scroll;
+        }
+        item {
+            width: 16.40vmin;
+            height: 16.40vmin;
+            background-size: 100% 100%;
+            justify-content: center;
+            align-items: center;
+            margin-right: -1.57vmax;
+            margin-bottom: -1.57vmax;
+        }
+        item-detail {
+            position: absolute;
+            left: 58.35vmax;
+            top: 2.70vmin;
+            width: 31.92vmax;
+            height: 32.63vmin;
+            background-image: "textures/construct/item-detail.texture";
+            background-size: 100% 100%;
+        }
+        </style>
+        <script type="text/x-lua" >
+            local ui_sys = require "ui_system"
+            local button_pos = require "lua.button_pos"
+            local start = ui_sys.createDataMode({
+                shortcut_buttons = {},
+                shortcut = {},
+                construct_menu = {},
+                item_name = "",
+                item_desc = "",
+                category_idx = 0,
+                item_idx = 0,
+                shortcut_id = 0,
+            })
+
+            for i = 1, 5 do
+                start.shortcut_buttons[i] = {
+                    prototype_name = "",
+                    icon = "",
+                    selected = false,
+                    transform = button_pos[i].transform,
+                    margin = button_pos[i].margin,
+                    transform_inner = button_pos[i].transform_inner,
+                    text_left = button_pos[i].text_left,
+                    text_top = button_pos[i].text_top,
+                }
+            end
+
+            function start.clickButton(...)
+                -- console.log(...)
+                ui_sys.pub {...}
+            end
+
+            ui_sys.mapping(start, {
+                {
+                    function()
+                        for i = 1, 5 do
+                            local prototype_name = ""
+                            local icon = ""
+                            local selected = false
+                            if start.shortcut[i] then
+                                prototype_name = start.shortcut[i].prototype_name
+                                icon = start.shortcut[i].icon
+                                selected = start.shortcut[i].selected
+                            end
+
+                            start.shortcut_buttons[i] = {
+                                prototype_name = prototype_name,
+                                icon = icon,
+                                selected = selected,
+                                transform = button_pos[i].transform,
+                                margin = button_pos[i].margin,
+                                transform_inner = button_pos[i].transform_inner,
+                                text_left = button_pos[i].text_left,
+                                text_top = button_pos[i].text_top,
+                            }
+                        end
+                        start("shortcut_buttons")
+                    end,
+                    "shortcut",
+                },
+                {
+                    function(start)
+                        window.flush()
+                        for _, list in ipairs(document.getElementsByTagName "construct-list") do
+                            local id = ("%s:%s"):format(start.category_idx, start.item_idx)
+                            local item = document.getElementById(id)
+                            if item then
+                                local clientTop = 0
+                                local e = item
+                                repeat
+                                    clientTop = clientTop + e.clientTop
+                                    e = e.parentNode
+                                until e == list
+
+                                if clientTop >= list.scrollTop and (clientTop + item.clientHeight) <= (list.scrollTop + list.clientHeight) then
+                                    return
+                                end
+
+                                list.scrollTop = clientTop
+                            end
+                        end
+                    end,
+                    "category_idx", "item_idx",
+                }
+            })
+
+            function init()
+                for _, e in ipairs(document.getElementsByTagName "construct-list") do
+                    console.log("init")
+                    e.scrollInsets(0, 0, 0, 200)
+                    e.addEventListener("pan", function(param)
+                        e.scrollTop = e.scrollTop - param.dy
+                    end)
+                end
+            end
+        </script>
+    </head>
+    <body style = "pointer-events: none; margin: 0 3.995vmax 0 4.715vmax;" onload="init()">
+        <div style = "margin: 0 0 0 -4.715vmax; position: absolute; width: 103.995vmax; height: 100%; background-color: rgba(128, 128, 128, 200);" />
+        <buttons-container>
+            <button-container data-style-transform = "it.transform" data-style-margin = "it.margin" data-for = "shortcut_buttons" >
+                <button>
+                    <button-wrap data-event-click = "clickButton('click_menu_button', it_index)" style = "border-radius: 50%;">
+                        <button-pic style = "background-image: textures/construct/building-bg.texture" data-style-transform = "it.transform_inner" />
+                        <button-pic style = "background-image: textures/construct/building-active.texture" data-if = "it.selected" />
+                        <button-pic style = "background-image: textures/construct/building-unknown.texture" data-if = "it.icon == ''" data-style-transform = "it.transform_inner" />
+                        <div style = "width: 100%; height: 100%; align-items: center; justify-content: center;">
+                            <button-pic style = "border-radius: 50%; width: 13.40vmin; height: 13.40vmin;" data-style-background-image = "it.icon" data-style-transform = "it.transform_inner" data-if = "it.icon ~= ''" />
+                        </div>
+                    </button-wrap>
+                </button>
+            </button-container>
+        </buttons-container>
+
+        <item-detail data-if="item_name ~= ''">
+            <item-name style = "position: absolute; left: 15.20vmax; top: 2.94vmin; width: 13.21vmax; height: 4.67vmin; font-size: 4.67vmin;" data-if = "item_name ~= ''">{{item_name}}</item-name>
+            <item-desc style = "position: absolute; left: 15.73vmax; top: 9.26vmin; width: 13.21vmax; height: 12.61vmin; word-break: break-word; font-size: 3.00vmin;" data-if = "item_desc ~= ''">{{item_desc}}</item-desc>
+            <item-icon style = "position: absolute; left: 1.00vmax; top: 2.91vmin; width: 13.85vmax; height: 27.02vmin; background-image: <item_model>; background-size: 100% 100%;" />
+        </item-detail>
+
+        <construct-box>
+            <construct-list>
+                <div style = "width: 100%; align-items: flex-start;" data-for = "c, c_index : construct_menu">
+                    <div style = "position: absolute; left: 0vmin; top: 0vmin; background-image: textures/item-config/category-bg.texture; width: 23.50vmax; height: 23.13vmin; background-size: 100% 100%;" />
+                    <div style = "margin-left: 5.58vmin; margin-top: 2.58vmin; width: 100%; flex-direction: row; font-size: 4.20vmin;">{{c.category}}</div>
+                    <div style = "flex-direction: row; flex-wrap: wrap;">
+                        <item data-attr-id = "i.id" data-event-click = "clickButton('click_item', c_index, i_index)" data-style-background-image = "i.selected and 'textures/item-config/item-active.texture' or 'none'" data-for = "i, i_index : c.items">
+                            <div data-style-background-image = "i.icon" style = "width: 6.91vmax; height: 6.91vmax; background-size: 100% 100%; background-color: rgb(61, 61, 61);" />
+                            <div style = "position: absolute; width: 6.91vmax; height: 6.91vmax; justify-content: flex-end; align-items: flex-end; font-size: 3.5vmin; color:rgb(255,255,255); -webkit-text-stroke: 0.26vmin rgb(0,0,0);" data-style-color = " i.count >0 and 'rgb(255,255,255)' or 'rgb(255,0,0)' ">{{i.count}}</div>
+                        </item>
+                    </div>
+                </div>
+            </construct-list>
+        </construct-box>
+
+        <main-button style = "left: 72.20vmax; top: 67.00vmin;" data-event-click = "clickButton('click_main_button')">
+            <button-pic style = "background-image: textures/build/main-button.texture;" />
+        </main-button>
+    </body>
+</rml>

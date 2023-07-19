@@ -1,0 +1,158 @@
+<rml>
+    <head>
+        <style path = "common.rcss"/>
+        <style>
+            main-button {
+                width: 27.41vmin;
+                height: 27.41vmin;
+            }
+            main-button:active {
+                transform: scale(1.2);
+            }
+            button-pic {
+                width: 100%;
+                height: 100%;
+                background-size: 100% 100%;
+            }
+            buttons-container {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+            }
+            button-container {
+                position: absolute;
+                width: 18.23vmin;
+                height: 65.27%;
+                transform-origin: 50% 9.115vmin;
+                pointer-events: none;
+            }
+            button {
+                width: 18.23vmin;
+                height: 18.23vmin;
+                position: absolute;
+                background-size: cover;
+                animation: 0.3s linear forwards slide-up;
+                transform-origin: 50% 50%;
+            }
+            button-wrap {
+                width: 100%;
+                height: 100%;
+            }
+            button-wrap:active {
+                transform: scale(1.2);
+            }
+            button-pic {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background-size: 100% 100%;
+            }
+            button-number {
+                position: absolute;
+                width: 1.50vmax;
+                height: 2vmin;
+                font-size: 2vmin;
+                text-align: center;
+                -webkit-text-stroke: 0.2vmin rgb(63, 60, 63);
+            }
+            @keyframes slide-up {
+                0% {
+                    transform: translateY(200%);
+                    opacity: 1;
+                }
+                70% {
+                    transform: translateY(-10%);
+                }
+                100% {
+                    transform: translateY(0%);
+                }
+            }
+        </style>
+        <script type="text/x-lua" >
+            local ui_sys = require "ui_system"
+            local button_pos = require "lua.button_pos"
+            local start = ui_sys.createDataMode {
+                shortcut_buttons = {},
+                shortcut = {},
+                main_button_icon = "",
+            }
+
+            for i = 1, 5 do
+                start.shortcut_buttons[i] = {
+                    prototype_name = "",
+                    icon = "",
+                    selected = false,
+                    unknown = false,
+                    transform = button_pos[i].transform,
+                    margin = button_pos[i].margin,
+                    transform_inner = button_pos[i].transform_inner,
+                    text_left = button_pos[i].text_left,
+                    text_top = button_pos[i].text_top,
+                }
+            end
+
+            function start.clickButton(...)
+                -- console.log(...)
+                ui_sys.pub {...}
+            end
+
+            ui_sys.mapping(start, {
+                {
+                    function()
+                        for i = 1, 5 do
+                            local prototype_name = ""
+                            local icon = ""
+                            local selected = false
+                            local unknown = false
+                            if start.shortcut[i] then
+                                prototype_name = start.shortcut[i].prototype_name
+                                icon = start.shortcut[i].icon
+                                selected = start.shortcut[i].selected
+                                unknown = start.shortcut[i].unknown
+                            end
+
+                            start.shortcut_buttons[i] = {
+                                prototype_name = prototype_name,
+                                icon = icon,
+                                selected = selected,
+                                unknown = unknown,
+                                transform = button_pos[i].transform,
+                                margin = button_pos[i].margin,
+                                transform_inner = button_pos[i].transform_inner,
+                                text_left = button_pos[i].text_left,
+                                text_top = button_pos[i].text_top,
+                            }
+                        end
+                        start("shortcut_buttons")
+                    end,
+                    "shortcut",
+                }
+            })
+        </script>
+    </head>
+    <body style = "pointer-events: none; margin: 0 3.995vmax 0 4.715vmax;">
+        <buttons-container>
+            <button-container data-style-transform = "it.transform" data-style-margin = "it.margin" data-for = "shortcut_buttons" >
+                <button>
+                    <button-wrap data-event-click = "clickButton('click_button', it_index)" style = "border-radius: 50%;">
+                        <button-pic style = "background-image: textures/construct/building-bg.texture" data-style-transform = "it.transform_inner" />
+                        <button-pic style = "background-image: textures/construct/building-active.texture" data-if = "it.selected" />
+                        <div style = "width: 100%; height: 100%; align-items: center; justify-content: center;">
+                            <button-pic style = "border-radius: 50%; width: 13.40vmin; height: 13.40vmin;" data-style-background-image = "it.icon" data-style-transform = "it.transform_inner" data-if = "it.icon ~= ''" />
+                        </div>
+                        <button-pic style = "background-image: textures/construct/building-unknown.texture" data-if = "it.unknown" data-style-transform = "it.transform_inner" />
+                    </button-wrap>
+                </button>
+            </button-container>
+        </buttons-container>
+
+        <main-button style = "left: 72.20vmax; top: 67.00vmin;" data-event-click = "clickButton('click_main_button')">
+            <button-pic style = "background-image: textures/build/main-button.texture;" />
+            <button-pic style = "background-image: textures/build/main-button-unknown.texture;" data-if = "main_button_icon == ''" />
+            <div style = "width: 100%; height: 100%; align-items: center; justify-content: center;">
+                <button-pic style = "width: 80%; height: 80%;" data-style-background-image = "main_button_icon" data-if = "main_button_icon ~= ''" />
+            </div>
+        </main-button>
+    </body>
+</rml>

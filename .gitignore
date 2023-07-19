@@ -2,7 +2,7 @@
 .log/
 .repo/
 .vs/
-build/
+/build/
 bin/
 pkg/ecs/ecs.lua
 .DS_Store

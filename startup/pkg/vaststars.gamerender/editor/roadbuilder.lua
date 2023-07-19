@@ -898,14 +898,16 @@ local function finish_laying(self, datamodel)
     end
     self.temporary_map = {}
 
-    return self:confirm(datamodel)
+    return confirm(self, datamodel)
 end
 
 local function place_one(self, datamodel)
     local coord_indicator = self.coord_indicator
     local x, y = coord_indicator.x, coord_indicator.y
     local coord = packcoord(x, y)
-    assert(not ibuilding.get(x, y))
+    if ibuilding.get(x, y) then
+        return
+    end
 
     datamodel.show_confirm = true
 
@@ -913,7 +915,7 @@ local function place_one(self, datamodel)
     self.pending[coord] = 0 -- {"砖石公路-O型", "N"}
 
     _builder_init(self, datamodel)
-    return self:confirm(datamodel)
+    return confirm(self, datamodel)
 end
 
 local function _road_teardown(self, x, y)
@@ -1192,7 +1194,7 @@ local function remove_one(self, datamodel)
     end
 
     _builder_init(self, datamodel)
-    return self:confirm(datamodel)
+    return confirm(self, datamodel)
 end
 local function start_teardown(self, datamodel)
     iroadnet:clear("indicator")
@@ -1246,7 +1248,7 @@ local function finish_teardown(self, datamodel)
         end
     end
     self.temporary_map = {}
-    return self:confirm(datamodel)
+    return confirm(self, datamodel)
 end
 
 local function clean(self, datamodel)
@@ -1298,7 +1300,7 @@ local function create()
     M.start_teardown = start_teardown
     M.finish_teardown = finish_teardown
     M.cancel = cancel
-    M.confirm = confirm
+    M.confirm = place_one
     M.clean = clean
 
     M.temporary_map = {}

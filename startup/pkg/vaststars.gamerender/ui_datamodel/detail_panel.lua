@@ -1,11 +1,8 @@
 local ecs, mailbox = ...
 local world = ecs.world
 local w = world.w
-local iui = ecs.import.interface "vaststars.gamerender|iui"
 local math3d = require "math3d"
 local iUiRt = ecs.import.interface "ant.rmlui|iuirt"
-local idetail = ecs.interface "idetail"
-local icamera_controller = ecs.import.interface "vaststars.gamerender|icamera_controller"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local property_list = import_package "vaststars.prototype"("property_list")
 local objects = require "objects"
@@ -17,7 +14,6 @@ local ilaboratory = require "gameplay.interface.laboratory"
 local ichest = require "gameplay.interface.chest"
 local building_detail = import_package "vaststars.prototype"("building_detail_config")
 local assembling_common = require "ui_datamodel.common.assembling"
-local close_detail_mb = mailbox:sub {"close_detail"}
 local UPS <const> = require("gameplay.interface.constant").UPS
 local CHEST_LIST_TYPES <const> = {"chest", "station_producer", "station_consumer", "hub"}
 local function format_vars(fmt, vars)
@@ -424,9 +420,6 @@ function M:stage_ui_update(datamodel, object_id)
     end
     local gid = iUiRt.get_group_id("detail_scene")
     if gid and not model_inst then
-
-        local clear_color = 0xff
-        local focus_distance = 10
         model_inst = iUiRt.set_rt_prefab("detail_scene",
             model_path,
             {s = {1,1,1}, t = {0, 0, 0}}, camera_dist)

@@ -230,6 +230,14 @@ function iui.open(...)
     return open(...)
 end
 
+function iui.get_datamodel(url)
+    local binding = window_bindings[url]
+    if not binding then
+        return
+    end
+    return binding.datamodel
+end
+
 function iui.close(url)
     close(url)
 end

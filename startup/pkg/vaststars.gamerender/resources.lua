@@ -1434,8 +1434,6 @@ local t = {
 	"/pkg/vaststars.resources/ui/textures/building-menu-longpress/line.texture",
 	"/pkg/vaststars.resources/ui/textures/building-menu-longpress/move.texture",
 	"/pkg/vaststars.resources/ui/textures/building-menu-longpress/teardown.texture",
-	"/pkg/vaststars.resources/ui/textures/building-menu/close.texture",
-	"/pkg/vaststars.resources/ui/textures/building-menu/line.texture",
 	"/pkg/vaststars.resources/ui/textures/building-menu/lorry-factory-dec-lorry.texture",
 	"/pkg/vaststars.resources/ui/textures/building-menu/lorry-factory-inc-lorry.texture",
 	"/pkg/vaststars.resources/ui/textures/building-menu/pickup-item.texture",

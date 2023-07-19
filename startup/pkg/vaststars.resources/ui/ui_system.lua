@@ -49,10 +49,11 @@ function M.addEventListener(event_funcs)
     end)
 end
 
-function M.createDataMode(init)
+function M.createDataMode(init, onload)
     local doc = tracedoc.new(init)
     local datamodel = window.createModel(init)
     datamodel.mapping = nil
+    datamodel.__first = true
 
     window.addEventListener("message", function(event)
         if not event.data then
@@ -87,6 +88,14 @@ function M.createDataMode(init)
             tracedoc.mapchange(doc, datamodel.mapping)
         end
         tracedoc.commit(doc)
+
+        if datamodel.__first then
+            datamodel.__first = false
+            if onload then
+                console.log("onload")
+                onload(datamodel)
+            end
+        end
     end)
 
     return datamodel

@@ -26,17 +26,15 @@ local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local COLOR_INVALID <const> = math3d.constant "null"
 local COLOR_GREEN = math3d.constant("v4", {0.3, 1, 0, 1})
-local CONSTRUCT_MENU <const> = import_package "vaststars.prototype"("construct_menu")
 local ichest = require "gameplay.interface.chest"
 local create_event_handler = require "ui_datamodel.common.event_handler"
 local ipower_line = ecs.require "power_line"
-local iupdate = ecs.import.interface "vaststars.gamerender|iupdate"
 local ipick_object = ecs.import.interface "vaststars.gamerender|ipick_object"
 local ilorry = ecs.import.interface "vaststars.gamerender|ilorry"
 local gameplay = import_package "vaststars.gameplay"
 local ibuilding = gameplay.interface "building"
 local ibackpack = require "gameplay.interface.backpack"
-local MAX_SHORTCUT_COUNT = 5
+local gesture_longpress_mb = world:sub{"gesture", "longpress"}
 
 local rotate_mb = mailbox:sub {"rotate"}
 local build_mb = mailbox:sub {"build"}
@@ -49,21 +47,14 @@ local move_md = mailbox:sub {"move"}
 local teardown_mb = mailbox:sub {"teardown"}
 local construct_entity_mb = mailbox:sub {"construct_entity"}
 local inventory_mb = mailbox:sub {"inventory"}
-local switch_concise_mode_mb = mailbox:sub {"switch_concise_mode"}
 local gesture_tap_mb = world:sub{"gesture", "tap"}
-local gesture_longpress_mb = world:sub{"gesture", "longpress"}
 local gesture_pan_mb = world:sub {"gesture", "pan"}
 local focus_tips_event = world:sub {"focus_tips"}
 local remove_lorry_mb = mailbox:sub {"remove_lorry"}
 local construct_mb = mailbox:sub {"construct"}
-local selected_mb = mailbox:sub {"selected"}
-local unselected_mb = mailbox:sub {"unselected"}
-local click_item_mb = mailbox:sub {"click_item"}
-local longpress_shortcut_mb = mailbox:sub {"longpress_shortcut"}
-local iUiRt = ecs.import.interface "ant.rmlui|iuirt"
-
+local click_focus_button_mb = mailbox:sub {"selected"}
+local longpress_focus_button_mb = mailbox:sub {"longpress_selected"}
 local ipower = ecs.require "power"
-local now = require "engine.time".now
 
 local CLASS = {
     Lorry = 1,
@@ -77,8 +68,8 @@ local excluded_pickup_id -- object id
 local pick_lorry_id
 local handle_pickup = true
 local selected_obj
-local RenderTarget
 
+-- TODO: remove this
 local event_handler = create_event_handler(
     mailbox,
     {
@@ -100,26 +91,40 @@ local event_handler = create_event_handler(
 
 local function __on_pick_object(datamodel, o)
     local object = o.object
-    if datamodel.status == "normal" or datamodel.status == "focus" then
-        local prototype_name = object.prototype_name
-        local typeobject = iprototype.queryByName(prototype_name)
-        datamodel.status = "focus"
-        datamodel.focus_building_icon = typeobject.icon
+    local prototype_name = object.prototype_name
+    local typeobject = iprototype.queryByName(prototype_name)
+    datamodel.focus_building_icon = typeobject.icon
 
+    iui.close("building_menu.rml")
+    iui.close("building_menu_longpress.rml")
+    iui.close("detail_panel.rml")
+    iui.close("mine_detail_panel.rml")
+
+    if datamodel.status == "normal" or datamodel.status == "focus" then
         selected_obj = o
         idetail.focus(object.id)
-    elseif datamodel.status == "selected" then
-        if o.class == CLASS.Object then
-            local object = o.object
-            icamera_controller.focus_on_position(object.srt.t)
+        datamodel.status = "focus"
+    else
+        iui.open({"detail_panel.rml"}, object.id)
 
-            idetail.show(object.id)
-            idetail.focus(object.id)
-            idetail.selected(object)
-            selected_obj = o
+        if o.class == CLASS.Object then
+            if selected_obj.id == o.id then
+                local object = o.object
+                icamera_controller.focus_on_position(object.srt.t)
+
+                idetail.show(object.id)
+                idetail.focus(object.id)
+                idetail.selected(object)
+                selected_obj = o
+            else
+                selected_obj = o
+                idetail.focus(object.id)
+                datamodel.status = "focus"
+            end
         end
+
+        iui.open({"detail_panel.rml"}, object.id)
     end
-    iui.open({"detail_panel.rml"}, object.id)
 end
 
 local function __on_pick_building(datamodel, o)
@@ -131,10 +136,18 @@ local function __on_pick_building(datamodel, o)
 end
 
 local function __on_pick_mineral(datamodel, mineral)
-    iui.close "detail_panel.rml"
-    iui.close "building_menu.rml"
+    iui.close("detail_panel.rml")
+    iui.close("mine_detail_panel.rml")
     local typeobject = iprototype.queryByName(mineral)
     iui.open({"mine_detail_panel.rml"}, typeobject.icon, typeobject.mineral_name or typeobject.name)
+    return true
+end
+
+local function __on_pick_lorry(datamodel, prototype)
+    iui.close("detail_panel.rml")
+    iui.close("mine_detail_panel.rml")
+    local typeobject = iprototype.queryById(prototype)
+    iui.open({"mine_detail_panel.rml"}, typeobject.icon, typeobject.name)
     return true
 end
 
@@ -177,6 +190,9 @@ local function __clean(datamodel)
     idetail.unselected()
     datamodel.is_concise_mode = false
     handle_pickup = true
+    datamodel.focus_building_icon = ""
+    iui.close("build.rml")
+    datamodel.status = "normal"
 end
 
 local function __get_new_tech_count(tech_list)
@@ -189,55 +205,10 @@ local function __get_new_tech_count(tech_list)
     return count
 end
 
-local function __get_construct_menu()
-    local res = {}
-    for _, menu in ipairs(CONSTRUCT_MENU) do
-        local m = {}
-        m.category = menu.category
-        m.items = {}
-
-        for _, prototype_name in ipairs(menu.items) do
-            local typeobject = assert(iprototype.queryByName(prototype_name))
-            local count = ibackpack.query(gameplay_core.get_world(), typeobject.id)
-            m.items[#m.items + 1] = {
-                name = prototype_name,
-                icon = typeobject.icon,
-                count = count,
-                selected = false,
-            }
-        end
-
-        res[#res+1] = m
-    end
-    return res
-end
-
 ---------------
 local M = {}
 
 function M:create()
-    local storage = gameplay_core.get_storage()
-    storage.shortcut = storage.shortcut or {}
-    local shortcut = {}
-
-    local min_times = math.maxinteger
-    local min_id = 1
-
-    for i = 1, MAX_SHORTCUT_COUNT do
-        local s = storage.shortcut[i]
-        if not s then
-            shortcut[i] = {prototype_name = "", icon = "", times = 0, selected = false}
-        else
-            local typeobject = iprototype.queryByName(s.prototype_name)
-            shortcut[i] = {prototype_name = s.prototype_name, icon = typeobject.icon, times = s.times, selected = false}
-            if s.times < min_times then
-                min_times = s.times
-                min_id = i
-            end
-        end
-    end
-    shortcut[min_id].selected = true
-
     return {
         is_concise_mode = false,
         show_tech_progress = false,
@@ -249,15 +220,8 @@ function M:create()
         show_ingredient = false,
         category_idx = 0,
         item_idx = 0,
-        construct_menu = __get_construct_menu(),
         status = "normal",
-        shortcut = shortcut,
-        shortcut_id = min_id,
     }
-end
-
-function M:update_construct_menu(datamodel)
-    datamodel.construct_menu = __get_construct_menu()
 end
 
 local current_techname = ""
@@ -301,13 +265,14 @@ function M:stage_ui_update(datamodel)
     end
 
     for _ in build_mb:unpack() do
-        assert(builder)
-        if not builder:confirm(builder_datamodel) then
-            __clean(datamodel)
-            __switch_status("default", function()
-                gameplay_core.world_update = true
+        if builder and builder.confirm then
+            if not builder:confirm(builder_datamodel) then
                 __clean(datamodel)
-            end)
+                __switch_status("default", function()
+                    gameplay_core.world_update = true
+                    __clean(datamodel)
+                end)
+            end
         end
     end
 
@@ -402,47 +367,37 @@ local function close_focus_tips(tech_node)
 end
 
 local function __construct_entity(typeobject)
-    iui.close("building_menu.rml")
     iui.close("detail_panel.rml")
+    iui.close("mine_detail_panel.rml")
     idetail.unselected()
     gameplay_core.world_update = false
-    handle_pickup = false
 
     if iprototype.has_type(typeobject.type, "road") then
         builder_ui = "construct_road_or_pipe.rml"
-        builder_datamodel = iui.open({"construct_road_or_pipe.rml", "construct_road_or_pipe.lua"})
+        builder_datamodel = iui.get_datamodel("construct.rml")
         builder = create_roadbuilder()
         builder:new_entity(builder_datamodel, typeobject)
     elseif iprototype.has_type(typeobject.type, "pipe") then
         builder_ui = "construct_road_or_pipe.rml"
-        builder_datamodel = iui.open({"construct_road_or_pipe.rml", "construct_road_or_pipe.lua"})
+        builder_datamodel = iui.get_datamodel("construct.rml")
         builder = create_pipebuilder()
         builder:new_entity(builder_datamodel, typeobject)
     elseif iprototype.has_type(typeobject.type, "pipe_to_ground") then
         builder_ui = "construct_road_or_pipe.rml"
-        builder_datamodel = iui.open({"construct_road_or_pipe.rml", "construct_road_or_pipe.lua"})
+        builder_datamodel = iui.get_datamodel("construct.rml")
         builder = create_pipetogroundbuilder()
         builder:new_entity(builder_datamodel, typeobject)
     elseif iprototype.has_types(typeobject.type, "station_producer", "station_consumer") then
         builder_ui = "construct_building.rml"
-        builder_datamodel = iui.open({"construct_building.rml"})
+        builder_datamodel = iui.get_datamodel("construct.rml")
         builder = create_station_builder()
         builder:new_entity(builder_datamodel, typeobject)
     else
         builder_ui = "construct_building.rml"
-        builder_datamodel = iui.open({"construct_building.rml"})
+        builder_datamodel = iui.get_datamodel("construct.rml")
         builder = create_normalbuilder(typeobject.id)
         builder:new_entity(builder_datamodel, typeobject)
     end
-end
-
-local function __set_item_value(datamodel, category_idx, item_idx, key, value)
-    if category_idx == 0 and item_idx == 0 then
-        return
-    end
-    assert(datamodel.construct_menu[category_idx])
-    assert(datamodel.construct_menu[category_idx].items[item_idx])
-    datamodel.construct_menu[category_idx].items[item_idx][key] = value
 end
 
 function M:stage_camera_usage(datamodel)
@@ -461,20 +416,8 @@ function M:stage_camera_usage(datamodel)
             self:flush()
         end
     end
+
     local leave = true
-
-    local function __get_building(x, y)
-        for _, pos in ipairs(icamera_controller.screen_to_world(x, y, PLANES)) do
-            local coord = terrain:get_coord_by_position(pos)
-            if coord then
-                local r = objects:coord(coord[1], coord[2], EDITOR_CACHE_NAMES)
-                if r then
-                    return r
-                end
-            end
-        end
-    end
-
     local gesture_tap_changed = false
     for _, _, v in gesture_tap_mb:unpack() do
         gesture_tap_changed = true
@@ -493,30 +436,19 @@ function M:stage_camera_usage(datamodel)
                         __unpick_lorry(pick_lorry_id)
                     end
                     idetail.unselected()
-                    datamodel.is_concise_mode = false
-
                     pick_lorry_id = o.id
 
-                    o.lorry:set_outline(true)
-                    local t = now()
-                    local lorry_id = o.id
-                    -- iupdate.add(function()
-                    --     if t + 2000 > now() then
-                    --         return true
-                    --     end
-                    --     __unpick_lorry(lorry_id)
-                    --     datamodel.remove_lorry = false
-                    --     return false
-                    -- end)
-                    datamodel.remove_lorry = true
+                    if __on_pick_lorry(datamodel, o.lorry.classid) then
+                        o.lorry:set_outline(true)
+                        datamodel.remove_lorry = true
+                        leave = false
+                    end
                 elseif o and o.class == CLASS.Object then
                     if __on_pick_building(datamodel, o) then
                         __unpick_lorry(pick_lorry_id)
                         datamodel.remove_lorry = false
                         pick_lorry_id = nil
                         leave = false
-
-                        datamodel.is_concise_mode = false
                     end
                 elseif o and o.class == CLASS.Mineral then
                     if __on_pick_mineral(datamodel, o.mineral) then
@@ -526,7 +458,6 @@ function M:stage_camera_usage(datamodel)
                         leave = false
 
                         idetail.unselected()
-                        datamodel.is_concise_mode = false
                     end
                 elseif o and o.class == CLASS.Mountain then
                     if __on_pick_mineral(datamodel, o.mountain) then
@@ -536,7 +467,6 @@ function M:stage_camera_usage(datamodel)
                         leave = false
 
                         idetail.unselected()
-                        datamodel.is_concise_mode = false
                     end
                 else
                     __unpick_lorry(pick_lorry_id)
@@ -544,12 +474,23 @@ function M:stage_camera_usage(datamodel)
                     pick_lorry_id = nil
 
                     idetail.unselected()
-                    datamodel.is_concise_mode = false
                 end
                 break
             end
         end
         ::continue::
+    end
+
+    local function __get_building(x, y)
+        for _, pos in ipairs(icamera_controller.screen_to_world(x, y, PLANES)) do
+            local coord = terrain:get_coord_by_position(pos)
+            if coord then
+                local r = objects:coord(coord[1], coord[2], EDITOR_CACHE_NAMES)
+                if r then
+                    return r
+                end
+            end
+        end
     end
 
     for _, _, v in gesture_longpress_mb:unpack() do
@@ -560,23 +501,7 @@ function M:stage_camera_usage(datamodel)
 
         leave = false
         local object = __get_building(x, y)
-        if object then -- object may be nil, such as when user click on empty space
-            if not excluded_pickup_id or excluded_pickup_id == object.id then
-                local prototype_name = object.prototype_name
-                local typeobject = iprototype.queryByName(prototype_name)
-                if typeobject.move == false and typeobject.teardown == false then
-                    goto continue1
-                end
-
-                idetail.focus(object.id)
-                iui.close("building_menu.rml")
-                idetail.selected(object)
-
-                iui.open({"building_menu_longpress.rml"}, object.id)
-                datamodel.status = "selected"
-            end
-            ::continue1::
-        else
+        if not object then
             idetail.unselected()
             __on_pick_ground(datamodel)
         end
@@ -586,6 +511,7 @@ function M:stage_camera_usage(datamodel)
     for _, _, _, object_id in teardown_mb:unpack() do
         iui.close("building_menu_longpress.rml")
         iui.close("detail_panel.rml")
+        iui.close("mine_detail_panel.rml")
         idetail.unselected()
 
         local object = assert(objects:get(object_id))
@@ -629,15 +555,16 @@ function M:stage_camera_usage(datamodel)
     end
 
     if gesture_tap_changed and leave then
-        selected_obj = nil
-        datamodel.status = "normal"
-        idetail.unselected()
+        __clean(datamodel)
+        __switch_status("default", function()
+            __clean(datamodel)
+            gameplay_core.world_update = true
+        end)
+
         world:pub {"ui_message", "leave"}
     end
 
     for _, _, _, object_id in move_md:unpack() do
-        datamodel.is_concise_mode = true
-        handle_pickup = false
         __switch_status("construct", function()
             assert(builder == nil)
 
@@ -657,31 +584,16 @@ function M:stage_camera_usage(datamodel)
         end
         local typeobject = iprototype.queryByName(name)
         if ibackpack.query(gameplay_core.get_world(), typeobject.id) >= 1 then
-            iui.close("building_menu.rml")
-            iui.close("detail_panel.rml")
             idetail.unselected()
             gameplay_core.world_update = false
-            handle_pickup = false
-            datamodel.is_concise_mode = false
 
-            local storage = gameplay_core.get_storage()
-            storage.shortcut = storage.shortcut or {}
-            for _, v in pairs(storage.shortcut) do
-                if v.prototype_name == name then
-                    v.times = v.times + 1
-                    break
-                end
+            -- we may click the button repeatedly, so we need to clear the old model first
+            if builder then
+                builder:clean(builder_datamodel)
+                builder, builder_datamodel = nil, nil
+                iui.close(builder_ui)
             end
-
-            __switch_status("construct", function()
-                -- we may click the button repeatedly, so we need to clear the old model first
-                if builder then
-                    builder:clean(builder_datamodel)
-                    builder, builder_datamodel = nil, nil
-                    iui.close(builder_ui)
-                end
-                __construct_entity(typeobject)
-            end)
+            __construct_entity(typeobject)
         end
         ::continue::
     end
@@ -705,10 +617,6 @@ function M:stage_camera_usage(datamodel)
         end
     end
 
-    for _ in switch_concise_mode_mb:unpack() do
-        datamodel.is_concise_mode = not datamodel.is_concise_mode
-    end
-
     for _ in remove_lorry_mb:unpack() do
         if pick_lorry_id then
             gameplay_core.get_world().entity[pick_lorry_id].lorry_willremove = true
@@ -720,72 +628,51 @@ function M:stage_camera_usage(datamodel)
     end
 
     for _ in construct_mb:unpack() do
-        datamodel.is_concise_mode = not datamodel.is_concise_mode
+        datamodel.is_concise_mode = true
+        __switch_status("construct", function()
+            iui.open({"build.rml"})
+            gameplay_core.world_update = false
+        end)
     end
 
-    for _ in selected_mb:unpack() do
-        if selected_obj then
-            datamodel.status = "selected"
-            __on_pick_object(datamodel, selected_obj)
+    for _ in click_focus_button_mb:unpack() do
+        if datamodel.status == "selected" then
+            iui.close("detail_panel.rml")
+            iui.close("mine_detail_panel.rml")
+            iui.close("building_menu.rml")
+            iui.close("building_menu_longpress.rml")
+            idetail.unselected()
+            datamodel.status = "normal"
+            datamodel.focus_building_icon = ""
         else
-            log.error("no target selected")
+            if selected_obj then
+                if datamodel.status == "focus" then
+                    datamodel.status = "selected"
+                end
+                __on_pick_object(datamodel, selected_obj)
+            else
+                log.error("no target selected")
+            end
         end
     end
 
-    for _ in unselected_mb:unpack() do
-        selected_obj = nil
-        datamodel.status = "normal"
-        idetail.unselected()
-        iui.close "detail_panel.rml"
-        iui.close "building_menu.rml"
-    end
+    for _ in longpress_focus_button_mb:unpack() do
+        assert(selected_obj)
+        local object = selected_obj.object
+        if not excluded_pickup_id or excluded_pickup_id == object.id then
+            idetail.focus(object.id)
+            iui.close("building_menu.rml")
+            idetail.selected(object)
 
-    for _, _, _, category_idx, item_idx in click_item_mb:unpack() do
-        if datamodel.category_idx == category_idx and datamodel.item_idx == item_idx then
-            __set_item_value(datamodel, category_idx, item_idx, "selected", false)
-            datamodel.category_idx = 0
-            datamodel.item_idx = 0
-            datamodel.item_name = ""
-            datamodel.item_desc = ""
+            local prototype_name = object.prototype_name
+            local typeobject = iprototype.queryByName(prototype_name)
+            if typeobject.move == false and typeobject.teardown == false then
+                goto continue
+            end
 
-            local storage = gameplay_core.get_storage()
-            storage.shortcut = storage.shortcut or {}
-            storage.shortcut[datamodel.shortcut_id] = nil
-
-            datamodel.shortcut[datamodel.shortcut_id] = {prototype_name = "", icon = "", times = 0, selected = true}
-        else
-            __set_item_value(datamodel, datamodel.category_idx, datamodel.item_idx, "selected", false)
-            __set_item_value(datamodel, category_idx, item_idx, "selected", true)
-            datamodel.category_idx = category_idx
-            datamodel.item_idx = item_idx
-
-            local item_name = datamodel.construct_menu[category_idx].items[item_idx].name
-            local typeobject = iprototype.queryByName(item_name)
-            datamodel.item_name = iprototype.show_prototype_name(typeobject)
-            datamodel.item_desc = typeobject.item_description or ""
-
-            RenderTarget = iUiRt.set_rt_prefab("item_model",
-                "/pkg/vaststars.resources/" .. typeobject.model,
-                {s = {1, 1, 1}, t = {0, 0, 0}}, typeobject.camera_distance
-            )
-
-            local storage = gameplay_core.get_storage()
-            storage.shortcut = storage.shortcut or {}
-            storage.shortcut[datamodel.shortcut_id] = {prototype_name = item_name, times = 0}
-
-            datamodel.shortcut[datamodel.shortcut_id] = {prototype_name = item_name, icon = typeobject.icon, times = 0, selected = true}
+            iui.open({"building_menu_longpress.rml"}, object.id)
         end
-    end
-
-    for _, _, _, shortcut_id in longpress_shortcut_mb:unpack() do
-        local shortcut
-        shortcut = assert(datamodel.shortcut[datamodel.shortcut_id])
-        shortcut.selected = false
-
-        shortcut = assert(datamodel.shortcut[shortcut_id])
-        shortcut.selected = true
-
-        datamodel.shortcut_id = shortcut_id
+        ::continue::
     end
 
     iobject.flush()

@@ -601,6 +601,63 @@ local function __calc_grid_position(building_position, typeobject)
     return math3d.ref(math3d.add(math3d.sub(building_position, originPosition), GRID_POSITION_OFFSET))
 end
 
+local function confirm(self, datamodel)
+    if self.grid_entity then
+        self.grid_entity:remove()
+        self.grid_entity = nil
+    end
+    iobject.remove(self.coord_indicator)
+    self.coord_indicator = nil
+
+    self:revert_changes({"TEMPORARY"})
+
+    datamodel.show_start_laying = false
+    datamodel.show_finish_laying = false
+    datamodel.show_cancel = false
+
+    local removed = {}
+    for coord, object in pairs(self.pending) do
+        if object == REMOVE then
+            removed[coord] = true
+        else
+            local object_id = object.id
+            local old = objects:get(object_id, {"CONSTRUCTED"})
+            if not old then
+                object.gameplay_eid = igameplay.create_entity(object)
+            else
+                if old.prototype_name ~= object.prototype_name then
+                    igameplay.destroy_entity(object.gameplay_eid)
+                    object.gameplay_eid = igameplay.create_entity(object)
+                elseif old.dir ~= object.dir then
+                    igameplay_building.rotate(gameplay_core.get_world(), gameplay_core.get_entity(object.gameplay_eid), object.dir)
+                elseif old.fluid_name ~= object.fluid_name then
+                    if iprototype.has_type(iprototype.queryByName(object.prototype_name).type, "fluidbox") then
+                        ifluid:update_fluidbox(gameplay_core.get_world(), gameplay_core.get_entity(object.gameplay_eid), object.fluid_name)
+                        igameplay.update_chimney_recipe(object)
+                    end
+                end
+            end
+        end
+    end
+    objects:commit("CONFIRM", "CONSTRUCTED")
+
+    for coord in pairs(removed) do
+        local x, y = iprototype.unpackcoord(coord)
+        local obj = assert(objects:coord(x, y))
+        iobject.remove(obj)
+        objects:remove(obj.id)
+        local building = global.buildings[obj.id]
+        if building then
+            for _, v in pairs(building) do
+                v:remove()
+            end
+        end
+
+        print("remove", obj.id, obj.x, obj.y)
+        igameplay.destroy_entity(obj.gameplay_eid)
+    end
+end
+
 --------------------------------------------------------------------------------------------------
 local function new_entity(self, datamodel, typeobject)
     self.typeobject = typeobject
@@ -715,7 +772,7 @@ local function finish_laying(self, datamodel)
     end
     objects:commit("TEMPORARY", "CONFIRM")
 
-    local ret = self:confirm(datamodel)
+    local ret = confirm(self, datamodel)
     self:new_entity(datamodel, self.typeobject)
     return ret
 end
@@ -724,8 +781,9 @@ local function place_one(self, datamodel)
     local coord_indicator = self.coord_indicator
     local x, y = coord_indicator.x, coord_indicator.y
     local object = _get_object(self, x, y, EDITOR_CACHE_NAMES)
-    assert(not object)
-
+    if object then
+        return
+    end
     local typeobject = iprototype.queryByName("管道1-O型")
 
     object = iobject.new {
@@ -744,7 +802,7 @@ local function place_one(self, datamodel)
 
     datamodel.show_confirm = true
 
-    local ret = self:confirm(datamodel)
+    local ret = confirm(self, datamodel)
     self:clean(self, datamodel)
 
     self:new_entity(datamodel, self.typeobject)
@@ -763,68 +821,11 @@ local function remove_one(self, datamodel)
 
     datamodel.show_confirm = true
 
-    local ret = self:confirm(datamodel)
+    local ret = confirm(self, datamodel)
     self:clean(self, datamodel)
 
     self:new_entity(datamodel, self.typeobject)
     return ret
-end
-
-local function confirm(self, datamodel)
-    if self.grid_entity then
-        self.grid_entity:remove()
-        self.grid_entity = nil
-    end
-    iobject.remove(self.coord_indicator)
-    self.coord_indicator = nil
-
-    self:revert_changes({"TEMPORARY"})
-
-    datamodel.show_start_laying = false
-    datamodel.show_finish_laying = false
-    datamodel.show_cancel = false
-
-    local removed = {}
-    for coord, object in pairs(self.pending) do
-        if object == REMOVE then
-            removed[coord] = true
-        else
-            local object_id = object.id
-            local old = objects:get(object_id, {"CONSTRUCTED"})
-            if not old then
-                object.gameplay_eid = igameplay.create_entity(object)
-            else
-                if old.prototype_name ~= object.prototype_name then
-                    igameplay.destroy_entity(object.gameplay_eid)
-                    object.gameplay_eid = igameplay.create_entity(object)
-                elseif old.dir ~= object.dir then
-                    igameplay_building.rotate(gameplay_core.get_world(), gameplay_core.get_entity(object.gameplay_eid), object.dir)
-                elseif old.fluid_name ~= object.fluid_name then
-                    if iprototype.has_type(iprototype.queryByName(object.prototype_name).type, "fluidbox") then
-                        ifluid:update_fluidbox(gameplay_core.get_world(), gameplay_core.get_entity(object.gameplay_eid), object.fluid_name)
-                        igameplay.update_chimney_recipe(object)
-                    end
-                end
-            end
-        end
-    end
-    objects:commit("CONFIRM", "CONSTRUCTED")
-
-    for coord in pairs(removed) do
-        local x, y = iprototype.unpackcoord(coord)
-        local obj = assert(objects:coord(x, y))
-        iobject.remove(obj)
-        objects:remove(obj.id)
-        local building = global.buildings[obj.id]
-        if building then
-            for _, v in pairs(building) do
-                v:remove()
-            end
-        end
-
-        print("remove", obj.id, obj.x, obj.y)
-        igameplay.destroy_entity(obj.gameplay_eid)
-    end
 end
 
 local function cancel(self, datamodel)
@@ -869,7 +870,7 @@ local function finish_teardown(self, datamodel)
     end
     objects:commit("TEMPORARY", "CONFIRM")
 
-    local ret = self:confirm(datamodel)
+    local ret = confirm(self, datamodel)
     self:clean(self, datamodel)
 
     self:new_entity(datamodel, self.typeobject)
@@ -910,7 +911,7 @@ local function create()
     M.new_entity = new_entity
     M.touch_move = touch_move
     M.touch_end = touch_end
-    M.confirm = confirm
+    M.confirm = place_one
 
     M.prototype_name = ""
     M.state = STATE_NONE
