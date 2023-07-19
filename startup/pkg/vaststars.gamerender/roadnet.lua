@@ -82,6 +82,7 @@ end
 
 function roadnet:editor_del(layer_name, x, y)
     iroad:del(layer_name, x, y)
+    self._layer_cache[layer_name][__pack(x, y)] = nil
 end
 
 return roadnet

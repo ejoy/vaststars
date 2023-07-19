@@ -49,7 +49,7 @@ local function _get_object(self, x, y, cache_names)
             x = x,
             y = y,
             prototype_name = prototype_name,
-            dir = dir,
+            dir = assert(dir),
         }
     end
 
@@ -68,7 +68,7 @@ local function _get_object(self, x, y, cache_names)
                     x = x,
                     y = y,
                     prototype_name = road_object.prototype,
-                    dir = road_object.direction,
+                    dir = assert(road_object.direction),
                 }
             end
         end
@@ -815,7 +815,13 @@ local function confirm(self, datamodel)
             iroadnet:editor_del("road", x, y)
         else
             local prototype_name, dir = iroadnet_converter.mask_to_prototype_name_dir(mask) -- TODO: optimize
-            ibuilding.set(x, y, prototype_name, dir)
+            ibuilding.set {
+                x = x,
+                y = y,
+                prototype_name = prototype_name,
+                dir = dir,
+                road = true,
+            }
             local shape, dir = iroadnet_converter.mask_to_shape_dir(mask)
             iroadnet:editor_set("road", "normal", x, y, shape, dir)
         end

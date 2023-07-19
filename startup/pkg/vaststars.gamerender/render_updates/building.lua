@@ -15,6 +15,8 @@ local building_sys = ecs.system "building_system"
 local gameplay_core = require "gameplay.core"
 local ibuilding = ecs.interface "ibuilding"
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
+local gameplay = import_package "vaststars.gameplay"
+local igameplay_building = gameplay.interface "building"
 
 local DIRECTION <const> = {
     N = 0,
@@ -123,29 +125,25 @@ function ibuilding.remove(x, y)
     local gameplay_world = gameplay_core.get_world()
     local coord = iprototype.packcoord(x, y)
     local building = building_cache[coord]
-    gameplay_world.ecs:remove(building.eid)
+    igameplay_building.destroy(gameplay_world, gameplay_world.entity[building.eid])
 
     building_cache[coord] = nil
 end
 
-function ibuilding.set(x, y, prototype_name, direction)
-    local coord = iprototype.packcoord(x, y)
+function ibuilding.set(init)
+    local coord = iprototype.packcoord(init.x, init.y)
     local building = building_cache[coord]
     if building then
-        gameplay_core.get_world().ecs:remove(building.eid)
+        local gameplay_world = gameplay_core.get_world()
+        igameplay_building.destroy(gameplay_world, gameplay_world.entity[building.eid])
         building_cache[coord] = nil
     end
-    local eid = igameplay.create_entity({
-        x = x,
-        y = y,
-        prototype_name = prototype_name,
-        dir = direction,
-    })
-    building_cache[iprototype.packcoord(x, y)] = {
+    local eid = igameplay.create_entity(init)
+    building_cache[iprototype.packcoord(init.x, init.y)] = {
         eid = eid,
-        x = x,
-        y = y,
-        prototype = prototype_name,
-        direction = direction,
+        x = init.x,
+        y = init.y,
+        prototype = init.prototype_name,
+        direction = init.direction,
     }
 end
