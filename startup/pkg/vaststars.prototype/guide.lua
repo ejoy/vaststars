@@ -92,7 +92,7 @@ local guide = {
         narrative_end = {
             guide_progress = 25,
             task = {
-                "无人机仓库设置",
+                "无人机仓库设置1",
             }
         },
         prerequisites = {
@@ -112,7 +112,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "无人机仓库设置",
+            "无人机仓库设置1",
         },
 	},
 
@@ -179,7 +179,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "放置组装机",
+            "无人机仓库设置2",
         },
 	},
     -- {

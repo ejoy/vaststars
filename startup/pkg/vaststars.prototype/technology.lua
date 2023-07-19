@@ -284,7 +284,7 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "无人机仓库设置" {
+  prototype "无人机仓库设置1" {
     desc = "无人机仓库选择碎石",
     icon = "textures/construct/industry.texture",
     type = { "task" },
@@ -306,7 +306,7 @@ local prototype = gameplay.register.prototype
     icon = "textures/construct/industry.texture",
     type = { "task" },
     task = {"stat_production", 0, "碎石"},
-    prerequisites = {"无人机仓库设置"},
+    prerequisites = {"无人机仓库设置1"},
     count = 12,
     tips_pic = {
       "textures/task_tips_pic/task_produce_ore3.texture",
@@ -411,12 +411,28 @@ local prototype = gameplay.register.prototype
     },
   }
   
+  prototype "无人机仓库设置2" {
+    desc = "无人机仓库选择碎石",
+    icon = "textures/construct/industry.texture",
+    type = { "task" },
+    task = {"unknown", 0, 5},                          
+    task_params = {item = "地质科技包"},
+    count = 1,
+    prerequisites = {"放置组装机"},
+    tips_pic = {
+      "textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "无人机仓库选择地质科技包", icon = "textures/construct/industry.texture"},
+    },
+  }
+
   prototype "组装机生产" {
     desc = "自动化生产科技包用于科技研究",
     icon = "textures/construct/industry.texture",
     type = { "task" },
     task = {"stat_production", 0, "地质科技包"},
-    prerequisites = {"放置组装机"},
+    prerequisites = {"无人机仓库设置2"},
     count = 8,
     tips_pic = {
       "textures/task_tips_pic/task_produce_geopack3.texture",
@@ -425,7 +441,7 @@ local prototype = gameplay.register.prototype
       "textures/task_tips_pic/task_produce_geopack6.texture",
     },
     sign_desc = {
-      { desc = "用无人机仓库I存储从组装机中生产的8个地质科技包", icon = "textures/construct/industry.texture"},
+      { desc = "使用组装机生产8个地质科技包", icon = "textures/construct/industry.texture"},
     },
   }
 
