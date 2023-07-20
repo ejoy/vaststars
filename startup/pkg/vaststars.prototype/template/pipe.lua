@@ -444,6 +444,12 @@ local entities = { {
     prototype_name = "铁制电线杆",
     x = 132,
     y = 155
+  } , {
+    dir = "E",
+    fluid_name = "",
+    prototype_name = "排水口I",
+    x = 136,
+    y = 134
   } }
 local road = {}
 
