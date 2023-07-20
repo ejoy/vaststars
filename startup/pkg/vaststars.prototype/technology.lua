@@ -1797,7 +1797,7 @@ prototype "矿物处理1" {
     unlock_recipe = {"粉碎机1","沙子1"},
     unlock_item = {"粉碎机I","沙子"},
   },
-  prerequisites = {"挖掘1","自动化1"},
+  prerequisites = {"挖掘1","自动化1","大炼钢铁"},
   ingredients = {
     {"地质科技包", 1},
     {"机械科技包", 1},
@@ -1878,7 +1878,7 @@ prototype "浮选1" {
     unlock_recipe = {"浮选器1"},
     unlock_item = {"浮选器I"},
   },
-  prerequisites = {"矿物处理1","地下水净化1"},
+  prerequisites = {"矿石粉碎","发电机1"},
   ingredients = {
     {"地质科技包", 1},
     {"气候科技包", 1},
