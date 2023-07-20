@@ -832,6 +832,7 @@ local guide = {
             }
         },
         prerequisites = {
+            "生产塑料",
         },
 	},
 
@@ -846,6 +847,23 @@ local guide = {
             }
         },
         prerequisites = {
+            "电磁学1",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
+            {"我们基地正在扩大,也随之带来更大的电力负荷,让我们放置{/color:4bd0ff 太阳能板}发电吧..哔哩(期待）", "textures/guide/guide-2.texture"},
+        },
+        narrative_end = {
+            guide_progress = 61,
+            task = {
+                "放置太阳能板",
+            }
+        },
+        prerequisites = {
+            "碳处理1",
         },
 	},
 
