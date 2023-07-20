@@ -173,6 +173,7 @@ local t = {
 	"/pkg/ant.ecs/event.lua",
 	"/pkg/ant.ecs/interface.lua",
 	"/pkg/ant.ecs/main.lua",
+	"/pkg/ant.ecs/make.lua",
 	"/pkg/ant.ecs/package.ecs",
 	"/pkg/ant.ecs/package.lua",
 	"/pkg/ant.ecs/policy.lua",
