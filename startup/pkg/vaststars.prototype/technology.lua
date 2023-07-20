@@ -1080,7 +1080,7 @@ local prototype = gameplay.register.prototype
     icon = "textures/science/book.texture",
     effects = {
       unlock_recipe = {"维修运输汽车"},
-      unlock_item = {"运输车辆I"},
+      unlock_item = {"运输车辆I","破损运输车辆"},
     },
     prerequisites = {"生产铁棒","建筑维修1"},
     ingredients = {
@@ -1141,8 +1141,8 @@ prototype "建筑维修2" {
   ingredients = {
       {"地质科技包", 1},
   },
-  count = 12,
-  time = "2s"
+  count = 14,
+  time = "5s"
 }
 
 prototype "管道系统1" {
