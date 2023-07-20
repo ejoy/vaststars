@@ -3530,7 +3530,7 @@ prototype "硫酸溶液" {
 
 prototype "钢板1" {
     type = { "recipe" },
-    recipe_craft_category = "器件中型制造",
+    recipe_craft_category = "金属冶炼",
     recipe_category =  "金属",
     recipe_order =  20,
     recipe_icon =  "textures/construct/steel-beam.texture",
