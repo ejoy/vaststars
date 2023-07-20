@@ -14,6 +14,8 @@ local ilaboratory = require "gameplay.interface.laboratory"
 local ichest = require "gameplay.interface.chest"
 local building_detail = import_package "vaststars.prototype"("building_detail_config")
 local assembling_common = require "ui_datamodel.common.assembling"
+local lost_focus_mb = mailbox:sub {"lost_focus"}
+
 local UPS <const> = require("gameplay.interface.constant").UPS
 local CHEST_LIST_TYPES <const> = {"chest", "station_producer", "station_consumer", "hub"}
 local function format_vars(fmt, vars)
@@ -414,6 +416,9 @@ local function get_delta(last, current, input)
 end
 
 function M:stage_ui_update(datamodel, object_id)
+    for _ in lost_focus_mb:unpack() do
+        world:pub {"rmlui_message_close", "detail_panel.rml"}
+    end
 
     if model_ready and model_inst then
         update_model(model_inst)

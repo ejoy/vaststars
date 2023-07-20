@@ -14,7 +14,6 @@ local math3d = require "math3d"
 local set_recipe_mb = mailbox:sub {"set_recipe"}
 local set_item_mb = mailbox:sub {"set_item"}
 local lorry_factory_inc_lorry_mb = mailbox:sub {"lorry_factory_inc_lorry"}
-local lorry_factory_stop_build_mb = mailbox:sub {"lorry_factory_stop_build"}
 local station_weight_increase_mb = mailbox:sub {"station_weight_increase"}
 local station_weight_decrease_mb = mailbox:sub {"station_weight_decrease"}
 local station_lorry_increase_mb = mailbox:sub {"station_lorry_increase"}
@@ -224,8 +223,6 @@ end, false)
 ---------------
 local M = {}
 function M:create(object_id)
-    lost_focus_mb:clear()
-
     local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if not e then
@@ -370,9 +367,6 @@ function M:stage_ui_update(datamodel, object_id)
         end
 
         ::continue::
-    end
-
-    for _ in lorry_factory_stop_build_mb:unpack() do
     end
 
     for _ in station_weight_increase_mb:unpack() do

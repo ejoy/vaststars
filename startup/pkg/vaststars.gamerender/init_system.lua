@@ -9,14 +9,12 @@ local gameplay_core = require "gameplay.core"
 local NOTHING <const> = require "debugger".nothing
 local TERRAIN_ONLY <const> = require "debugger".terrain_only
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
-local camera_zoom_mb = world:sub {"camera_zoom"}
 local icamera_controller = ecs.import.interface "vaststars.gamerender|icamera_controller"
 local iefk = ecs.require "engine.efk"
 local iroadnet = ecs.require "roadnet"
 local imain_menu_manager = ecs.require "main_menu_manager"
 local icanvas = ecs.require "engine.canvas"
 local audio = import_package "ant.audio"
-local iui = ecs.import.interface "vaststars.gamerender|iui"
 local rhwi = import_package "ant.hwi"
 
 local m = ecs.system 'init_system'
@@ -100,9 +98,5 @@ function m:camera_usage()
             terrain:enable_terrain(coord[1], coord[2])
         end
         ::continue::
-    end
-
-    for _ in camera_zoom_mb:unpack() do
-        iui.redirect("building_menu.rml", "lost_focus")
     end
 end

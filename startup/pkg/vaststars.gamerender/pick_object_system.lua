@@ -79,7 +79,7 @@ local function __push_object(lorries, pick_x, pick_y, x, y, status)
         status.mountain[id] = {class = CLASS.Mountain, id = id, x = x, y = y, mountain = assert(iprototype.queryFirstByType("mountain")).name}
     end
 
-    o = ibuilding.get(x//2*2, y//2*2)
+    o = ibuilding.get(x, y)
     if o then
         status.road[o.eid] = {class = CLASS.Road, id = o.eid, x = o.x, y = o.y, prototype_name = iprototype.queryByName(o.prototype).name}
     end

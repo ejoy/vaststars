@@ -47,14 +47,13 @@ local move_md = mailbox:sub {"move"}
 local teardown_mb = mailbox:sub {"teardown"}
 local construct_entity_mb = mailbox:sub {"construct_entity"}
 local inventory_mb = mailbox:sub {"inventory"}
-local gesture_tap_mb = world:sub{"gesture", "tap"}
-local gesture_pan_mb = world:sub {"gesture", "pan"}
 local focus_tips_event = world:sub {"focus_tips"}
-local remove_lorry_mb = mailbox:sub {"remove_lorry"}
 local construct_mb = mailbox:sub {"construct"}
 local click_focus_button_mb = mailbox:sub {"selected"}
 local longpress_focus_button_mb = mailbox:sub {"longpress_selected"}
 local ipower = ecs.require "power"
+local gesture_tap_mb = world:sub{"gesture", "tap"}
+local gesture_pan_mb = world:sub {"gesture", "pan"}
 
 local CLASS = {
     Lorry = 1,
@@ -67,7 +66,6 @@ local CLASS = {
 local builder, builder_datamodel, builder_ui
 local excluded_pickup_id -- object id
 local pick_lorry_id
-local handle_pickup = true
 local selected_obj
 
 -- TODO: remove this
@@ -196,7 +194,6 @@ local function __clean(datamodel)
     end
     idetail.unselected()
     datamodel.is_concise_mode = false
-    handle_pickup = true
     datamodel.focus_building_icon = ""
     iui.close("build.rml")
     datamodel.status = "normal"
@@ -418,6 +415,9 @@ function M:stage_camera_usage(datamodel)
     end
 
     for _, _, e in gesture_pan_mb:unpack() do
+        if e.state == "began" then
+            iui.broadcast("lost_focus")
+        end
         if e.state == "ended" and builder then
             builder:touch_end(builder_datamodel)
             self:flush()
@@ -430,9 +430,6 @@ function M:stage_camera_usage(datamodel)
         gesture_tap_changed = true
 
         local x, y = v.x, v.y
-        if not handle_pickup then
-            goto continue
-        end
 
         for _, pos in ipairs(icamera_controller.screen_to_world(x, y, PLANES)) do
             local coord = terrain:get_coord_by_position(pos)
@@ -447,20 +444,17 @@ function M:stage_camera_usage(datamodel)
 
                     if __on_pick_lorry(datamodel, o.lorry.classid) then
                         o.lorry:set_outline(true)
-                        datamodel.remove_lorry = true
                         leave = false
                     end
                 elseif o and o.class == CLASS.Object then
                     if __on_pick_building(datamodel, o) then
                         __unpick_lorry(pick_lorry_id)
-                        datamodel.remove_lorry = false
                         pick_lorry_id = nil
                         leave = false
                     end
                 elseif o and o.class == CLASS.Mineral then
                     if __on_pick_mineral(datamodel, o.mineral) then
                         __unpick_lorry(pick_lorry_id)
-                        datamodel.remove_lorry = false
                         pick_lorry_id = nil
                         leave = false
 
@@ -469,7 +463,6 @@ function M:stage_camera_usage(datamodel)
                 elseif o and o.class == CLASS.Mountain then
                     if __on_pick_mineral(datamodel, o.mountain) then
                         __unpick_lorry(pick_lorry_id)
-                        datamodel.remove_lorry = false
                         pick_lorry_id = nil
                         leave = false
 
@@ -478,7 +471,6 @@ function M:stage_camera_usage(datamodel)
                 elseif o and o.class == CLASS.Road then
                     if __on_pick_mineral(datamodel, o.prototype_name) then
                         __unpick_lorry(pick_lorry_id)
-                        datamodel.remove_lorry = false
                         pick_lorry_id = nil
                         leave = false
 
@@ -486,7 +478,6 @@ function M:stage_camera_usage(datamodel)
                     end
                 else
                     __unpick_lorry(pick_lorry_id)
-                    datamodel.remove_lorry = false
                     pick_lorry_id = nil
 
                     idetail.unselected()
@@ -494,7 +485,6 @@ function M:stage_camera_usage(datamodel)
                 break
             end
         end
-        ::continue::
     end
 
     local function __get_building(x, y)
@@ -511,17 +501,12 @@ function M:stage_camera_usage(datamodel)
 
     for _, _, v in gesture_longpress_mb:unpack() do
         local x, y = v.x, v.y
-        if not handle_pickup then
-            goto continue
-        end
-
         leave = false
         local object = __get_building(x, y)
         if not object then
             idetail.unselected()
             __on_pick_ground(datamodel)
         end
-        ::continue::
     end
 
     for _, _, _, object_id in teardown_mb:unpack() do
@@ -630,16 +615,6 @@ function M:stage_camera_usage(datamodel)
                 iui.open({"inventory.rml"}, object.id)
                 break
             end
-        end
-    end
-
-    for _ in remove_lorry_mb:unpack() do
-        if pick_lorry_id then
-            gameplay_core.get_world().entity[pick_lorry_id].lorry_willremove = true
-
-            __unpick_lorry(pick_lorry_id)
-            pick_lorry_id = nil
-            datamodel.remove_lorry = false
         end
     end
 
