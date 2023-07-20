@@ -1249,21 +1249,6 @@ prototype "排放1" {
   time = "2s"
 }
 
-  prototype "放置太阳能板" {
-    desc = "放置4座太阳能板",
-    icon = "textures/construct/industry.texture",
-    type = { "task" },
-    task = {"select_entity", 0, "太阳能板I"},
-    prerequisites = {"生产气候科技包"},
-    count = 4,
-    tips_pic = {
-      "textures/task_tips_pic/task_place_logistics.texture",
-    },
-    sign_desc = {
-      { desc = "放置4个太阳能板", icon = "textures/construct/industry.texture"},
-    },
-  }
-
   prototype "生产液罐" {
     desc = "生产可以存储气液的容器",
     icon = "textures/construct/industry.texture",
@@ -1332,12 +1317,27 @@ prototype "碳处理1" {
   effects = {
     unlock_recipe = {"二氧化碳转甲烷"},
   },
-  prerequisites = {"电解水","空气分离工艺1","放置太阳能板"},
+  prerequisites = {"电解水","空气分离工艺1"},
   ingredients = {
       {"气候科技包", 1},
   },
   count = 8,
   time = "2s"
+}
+
+prototype "放置太阳能板" {
+  desc = "放置4座太阳能板",
+  icon = "textures/construct/industry.texture",
+  type = { "task" },
+  task = {"select_entity", 0, "太阳能板I"},
+  prerequisites = {"碳处理1"},
+  count = 4,
+  tips_pic = {
+    "textures/task_tips_pic/task_place_logistics.texture",
+  },
+  sign_desc = {
+    { desc = "放置4个太阳能板进行发电", icon = "textures/construct/industry.texture"},
+  },
 }
 
 prototype "生产氢气" {
@@ -1361,7 +1361,7 @@ prototype "放置蒸馏厂" {
   icon = "textures/construct/industry.texture",
   type = { "task" },
   task = {"select_entity", 0, "蒸馏厂I"},
-  prerequisites = {"建筑维修3","生产氢气"},
+  prerequisites = {"建筑维修3","生产氢气","放置太阳能板"},
   count = 1,
   tips_pic = {
     "textures/task_tips_pic/task_click_build.texture",
