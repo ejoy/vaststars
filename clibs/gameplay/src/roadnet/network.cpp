@@ -470,8 +470,8 @@ namespace roadnet {
         assert(w > 0 && h > 0);
         w--;
         h--;
-        uint8_t x, y;
-        
+        uint8_t x;
+        uint8_t y;
         switch (b.direction) {
         case 0: // N
             x = uint8_t(b.x + l.x);
@@ -491,7 +491,7 @@ namespace roadnet {
             break;
         default:
             assert(false);
-            break;
+            return {};
         }
         assert(x % 2 == 0 && y % 2 == 0);
         return { x, y };

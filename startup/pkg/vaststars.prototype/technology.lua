@@ -962,10 +962,6 @@ local prototype = gameplay.register.prototype
     task = {"stat_production", 0, "铁矿石"},
     prerequisites = {"放置出货车站","放置收货车站"},
     count = 10,
-    effects = {
-      unlock_recipe = {"熔炼炉打印"},
-      unlock_item = {"熔炼炉I"},
-    },
     tips_pic = {
       "textures/task_tips_pic/task_produce_ore3.texture",
     },
@@ -1084,6 +1080,7 @@ local prototype = gameplay.register.prototype
     icon = "textures/science/book.texture",
     effects = {
       unlock_recipe = {"维修运输汽车"},
+      unlock_item = {"运输车辆I","破损运输车辆"},
     },
     prerequisites = {"生产铁棒","建筑维修1"},
     ingredients = {
@@ -1144,8 +1141,8 @@ prototype "建筑维修2" {
   ingredients = {
       {"地质科技包", 1},
   },
-  count = 12,
-  time = "2s"
+  count = 14,
+  time = "5s"
 }
 
 prototype "管道系统1" {
@@ -1413,7 +1410,7 @@ prototype "地质研究2" {
   ingredients = {
       {"地质科技包", 1},
   },
-  count = 10,
+  count = 12,
   time = "1.2s",
   prerequisites = {"碳处理2"},
   sign_desc = {
@@ -1428,12 +1425,13 @@ prototype "冶金学1" {
   icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"熔炼炉1"},
+    unlock_item = {"熔炼炉I"},
   },
   prerequisites = {"碳处理1"},
   ingredients = {
     {"地质科技包", 1},
   },
-  count = 10,
+  count = 16,
   time = "4s"
 }
 
@@ -1545,8 +1543,8 @@ prototype "电磁学1" {
     {"地质科技包", 1},
     {"气候科技包", 1},
   },
-  count = 20,
-  time = "6s"
+  count = 16,
+  time = "5s"
 }
 
 prototype "建筑维修4" {
@@ -1562,7 +1560,7 @@ prototype "建筑维修4" {
       {"地质科技包", 1},
       {"气候科技包", 1},
   },
-  count = 20,
+  count = 18,
   time = "5s"
 }
 
@@ -1580,8 +1578,8 @@ prototype "机械研究" {
     {"地质科技包", 1},
     {"气候科技包", 1},
   },
-  count = 12,
-  time = "2s",
+  count = 20,
+  time = "6s",
   sign_desc = {
     { desc = "该科技是一项前沿科技，可引导其他的科技研究", icon = "textures/science/key_sign.texture"},
   },
@@ -2081,7 +2079,6 @@ prototype "物流学2" {
   icon = "textures/science/book.texture",
   effects = {
     unlock_recipe = {"车辆装配"},
-    unlock_item = {"运输车辆I"},
   },
   prerequisites = {"有机化学3"},
   ingredients = {

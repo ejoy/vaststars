@@ -389,6 +389,7 @@ function M:restart(mode, game_template)
 
     restore_world()
     gameplay_core.set_changed(CHANGED_FLAG_ALL)
+    gameplay_core.world_update = true
 
     iui.open({"construct.rml"})
     iui.open({"message_pop.rml"})

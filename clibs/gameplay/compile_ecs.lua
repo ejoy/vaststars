@@ -88,34 +88,22 @@ local function writeEntityH(components)
     write "using namespace vaststars;"
     write ""
 
+    write "template <> struct ecs_api::component_meta<ecs::eid> {"
+    write "\tstatic constexpr unsigned id = 0xFFFFFFFF;"
+    write "};"
+    write "template <> struct ecs_api::component_meta<ecs::REMOVED> {"
+    write "\tstatic constexpr unsigned id = 0;"
+    write "};"
+    write ""
     write "namespace ecs_api {"
     write ""
     write "#define ECS_COMPONENT(NAME, ID) \\"
     write "template <> struct component_meta<ecs::NAME> { \\"
     write "\tstatic constexpr unsigned int id = ID; \\"
-    write "\tstatic constexpr char name[] = #NAME; \\"
-    write "\tstatic constexpr bool tag = false; \\"
     write "};"
     write ""
-    write "#define ECS_TAG(NAME, ID) \\"
-    write "template <> struct component_meta<ecs::NAME> { \\"
-    write "\tstatic constexpr unsigned int id = ID; \\"
-    write "\tstatic constexpr char name[] = #NAME; \\"
-    write "\tstatic constexpr bool tag = true; \\"
-    write "};"
-    write ""
-    write "template <> struct component_meta<ecs::eid> {"
-    write "\tstatic constexpr unsigned int id = 0xFFFFFFFF;"
-    write "\tstatic constexpr char name[] = \"eid\";"
-    write "\tstatic constexpr bool tag = false;"
-    write "};"
-    write("ECS_COMPONENT(REMOVED, 0)")
     for i, c in ipairs(components) do
-        if isTag(c) then
-            write(("ECS_TAG(%s,%d)"):format(c.name, i))
-        else
-            write(("ECS_COMPONENT(%s,%d)"):format(c.name, i))
-        end
+        write(("ECS_COMPONENT(%s,%d)"):format(c.name, i))
     end
     write ""
     write "#undef ECS_COMPONENT"

@@ -649,8 +649,8 @@ prototype "熔炼炉1" {
     recipe_order =  50,
     recipe_icon =  "textures/construct/furnace1.texture",
     ingredients = {
-        {"铁板", 3},
-        {"石砖", 4},
+        {"铁板", 6},
+        {"石砖", 8},
     },
     results = {
         {"熔炼炉I", 1},
@@ -2037,23 +2037,6 @@ prototype "车站打印" {
     },
     time = "5s",
     description = "打印车站",
-}
-
-prototype "熔炼炉打印" {
-    type = { "recipe" },
-    recipe_craft_category = "建筑打印",
-    recipe_category =  "加工",
-    recipe_order =  56,
-    recipe_icon =  "textures/construct/broken-furnace.texture",
-    ingredients = {
-        {"铁板", 8},
-        {"石砖", 8},
-    },
-    results = {
-        {"熔炼炉I", 1},
-    },
-    time = "8s",
-    description = "打印熔炼炉",
 }
 
 prototype "科研中心打印" {
