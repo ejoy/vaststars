@@ -3,6 +3,8 @@ fx:
   fs_code: "\n#include \"terrain_fs_func.sh\"\n"
   setting:
     lighting: on
+    WITH_NORMAL_ATTRIB: 1
+    WITH_TANGENT_ATTRIB: 1
     HAS_TERRAIN_BASECOLOR_ARRAY_TEXTURE: 1
     HAS_TERRAIN_HEIGHT_ARRAY_TEXTURE: 1
     HAS_TERRAIN_NORMAL_ARRAY_TEXTURE: 1

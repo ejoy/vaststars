@@ -6,6 +6,9 @@ fx:
     shadow_cast: on
     shadow_receive: on
     subsurface: off
+    PACK_TANGENT_TO_QUAT: 1
+    WITH_NORMAL_ATTRIB: 0
+    WITH_TANGENT_ATTRIB: 1
 properties:
   s_basecolor:
     stage: 0

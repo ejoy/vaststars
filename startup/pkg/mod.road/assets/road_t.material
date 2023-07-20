@@ -14,6 +14,7 @@ fx:
     INPUT_USER_ATTR_0: 1
     OUTPUT_USER_ATTR_0: 1
     OUTPUT_USER_ATTR_1: 1
+    WITH_CUSTOM_TANGENT_ATTRIB: 1
 properties:
   s_basecolor:
     stage: 0
