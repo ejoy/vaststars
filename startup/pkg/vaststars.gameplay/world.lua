@@ -43,13 +43,13 @@ return function ()
     }
     local ecs = luaecs.world()
     local components = {}
-    for _, c in ipairs(status.components) do
+    for i, c in ipairs(status.components) do
         assert(c.type == nil)
-        ecs:register(c)
-        components[#components+1] = c.name
+        local id = ecs:register(c)
+        assert(id == i)
     end
 
-    local context = ecs:context(components)
+    local context = ecs:context()
     local cworld = cWorld.create_world(context)
     world.ecs = ecs
     world._cworld = cworld
