@@ -1789,23 +1789,6 @@ prototype "大炼钢铁" {
   },
 }
 
-prototype "发电机1" {
-  desc = "使用蒸汽作为工质将热能转为机械能的发电装置",
-  type = { "tech" },
-  icon = "textures/science/book.texture",
-  effects = {
-    unlock_recipe = {"蒸汽发电机1"},
-    unlock_item = {"蒸汽发电机I"},
-  },
-  prerequisites = {"电力传输1","自动化1"},
-  ingredients = {
-    {"气候科技包", 1},
-    {"机械科技包", 1},
-  },
-  count = 8,
-  time = "15s"
-}
-
 prototype "矿物处理1" {
   desc = "将矿物进行碾碎并再加工的机械工艺",
   type = { "tech" },
@@ -1853,6 +1836,23 @@ prototype "钢加工" {
   },
   count = 16,
   time = "8s"
+}
+
+prototype "发电机1" {
+  desc = "使用蒸汽作为工质将热能转为机械能的发电装置",
+  type = { "tech" },
+  icon = "textures/science/book.texture",
+  effects = {
+    unlock_recipe = {"蒸汽发电机1"},
+    unlock_item = {"蒸汽发电机I"},
+  },
+  prerequisites = {"电力传输1","钢加工"},
+  ingredients = {
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+  },
+  count = 8,
+  time = "15s"
 }
 
 prototype "打造钢齿轮" {

@@ -862,10 +862,9 @@ prototype "蒸汽发电机1" {
     recipe_order =  120,
     recipe_icon =  "textures/construct/turbine1.texture",
     ingredients = {
-        {"管道1-X型", 2},
-        {"铁齿轮", 1},
-        {"铁板", 8},
-        {"电动机I", 1},
+        {"管道1-X型", 4},
+        {"钢齿轮", 4},
+        {"电动机I", 2},
     },
     results = {
         {"蒸汽发电机I", 1},
@@ -882,7 +881,7 @@ prototype "蒸汽发电机2" {
     recipe_icon =  "textures/construct/turbine1.texture",
     ingredients = {
         {"电容I", 2},
-        {"钢齿轮", 4},
+        {"铝棒", 4},
         {"电动机II", 2},
         {"蒸汽发电机I", 1},
     },
