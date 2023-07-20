@@ -649,8 +649,8 @@ prototype "熔炼炉1" {
     recipe_order =  50,
     recipe_icon =  "textures/construct/furnace1.texture",
     ingredients = {
-        {"铁板", 3},
-        {"石砖", 4},
+        {"铁板", 6},
+        {"石砖", 8},
     },
     results = {
         {"熔炼炉I", 1},
