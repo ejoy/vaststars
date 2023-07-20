@@ -107,7 +107,7 @@
                 height: 80vmin;
                 background-image: "textures/detail/tips_bg.texture";
                 background-size: 100% 100%;
-                background-lattice: 10%;
+                background-lattice: 9.89% 12.36% 9.89% 12.36%;
             }
             .progress_bar {
                 align-self: flex-start;
@@ -182,7 +182,7 @@
     <body style = "pointer-events: none; justify-content: center; align-items: center;">
         <div class="panel1" style="flex-direction: row; justify-content: flex-start; align-items: center;">
             <!-- detail panel begin -->
-            <div style = 'margin-top: 7vmin; margin-bottom: 7vmin; width: 13.86vmax; height: 86vmin; background-lattice: 32.98% 11.50% 32.98% 11.50%; background-image: "textures/detail/background.texture"; background-size: 100% 100%;'>
+            <div style = 'margin-top: 7vmin; margin-bottom: 7vmin; width: 17.10vmax; height: 86vmin; background-lattice: 32.97% 11.50% 32.97% 11.50%; background-image: "textures/detail/background.texture"; background-size: 100% 100%;'>
                 <!-- title -->
                 <div style = "flex-direction: row; justify-content: center; align-items: center;">
                     <div data-style-background-image="icon" style = "width: 20vmin; height: 20vmin; background-size: cover;" data-event-click="onLongPress(1)"/>

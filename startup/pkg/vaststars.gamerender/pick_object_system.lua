@@ -9,12 +9,14 @@ local terrain = ecs.require "terrain"
 local imountain = ecs.require "engine.mountain"
 local iprototype = require "gameplay.interface.prototype"
 local ilorry = ecs.import.interface "vaststars.gamerender|ilorry"
+local ibuilding = ecs.import.interface "vaststars.gamerender|ibuilding"
 
 local CLASS = {
     Lorry = 1,
     Object = 2,
     Mineral = 3,
     Mountain = 4,
+    Road = 5,
 }
 
 local mt = {}
@@ -75,6 +77,11 @@ local function __push_object(lorries, pick_x, pick_y, x, y, status)
     id = imountain:get_mountain(x, y)
     if id then
         status.mountain[id] = {class = CLASS.Mountain, id = id, x = x, y = y, mountain = assert(iprototype.queryFirstByType("mountain")).name}
+    end
+
+    o = ibuilding.get(x//2*2, y//2*2)
+    if o then
+        status.road[o.eid] = {class = CLASS.Road, id = o.eid, x = o.x, y = o.y, prototype_name = iprototype.queryByName(o.prototype).name}
     end
 end
 

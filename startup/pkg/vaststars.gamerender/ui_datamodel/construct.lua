@@ -61,6 +61,7 @@ local CLASS = {
     Object = 2,
     Mineral = 3,
     Mountain = 4,
+    Road = 5,
 }
 
 local builder, builder_datamodel, builder_ui
@@ -92,6 +93,12 @@ local event_handler = create_event_handler(
 local function __on_pick_object(datamodel, o)
     local object = o.object
     local prototype_name = object.prototype_name
+
+    if datamodel.is_concise_mode then
+        iui.open({"detail_panel.rml"}, object.id)
+        return
+    end
+
     local typeobject = iprototype.queryByName(prototype_name)
     datamodel.focus_building_icon = typeobject.icon
 
@@ -139,7 +146,7 @@ local function __on_pick_mineral(datamodel, mineral)
     iui.close("detail_panel.rml")
     iui.close("mine_detail_panel.rml")
     local typeobject = iprototype.queryByName(mineral)
-    iui.open({"mine_detail_panel.rml"}, typeobject.icon, typeobject.mineral_name or typeobject.name)
+    iui.open({"mine_detail_panel.rml"}, typeobject.icon, typeobject.mineral_name or iprototype.show_prototype_name(typeobject))
     return true
 end
 
@@ -461,6 +468,15 @@ function M:stage_camera_usage(datamodel)
                     end
                 elseif o and o.class == CLASS.Mountain then
                     if __on_pick_mineral(datamodel, o.mountain) then
+                        __unpick_lorry(pick_lorry_id)
+                        datamodel.remove_lorry = false
+                        pick_lorry_id = nil
+                        leave = false
+
+                        idetail.unselected()
+                    end
+                elseif o and o.class == CLASS.Road then
+                    if __on_pick_mineral(datamodel, o.prototype_name) then
                         __unpick_lorry(pick_lorry_id)
                         datamodel.remove_lorry = false
                         pick_lorry_id = nil
