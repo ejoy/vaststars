@@ -6,6 +6,10 @@ local assetmgr = import_package "ant.asset"
 local imaterial = ecs.import.interface "ant.asset|imaterial"
 local fs = require "filesystem"
 
+local function touch_res(r)
+    local _ = #r
+end
+
 local M = {}
 function M.load(filename)
     local handler = {
@@ -23,15 +27,15 @@ function M.load(filename)
                 for _, field in ipairs(prefab_resource) do
                     if d.data[field] then
                         if field == "material" then
-                            imaterial.load_res(d.data.material)
+                            touch_res(imaterial.load_res(d.data.material))
                             imaterial.unload_res(d.data.material)
                         elseif field == "animation" then
                             for _, v in pairs(d.data.animation) do
-                                length = #assetmgr.resource(v)
+                                touch_res(assetmgr.resource(v))
                                 local f <close> = fs.open(fs.path(v:match("^(.+%.).*$") .. "event"), "r")
                             end
                         else
-                            length = #assetmgr.resource(d.data[field])
+                            touch_res(assetmgr.resource(d.data[field]))
                         end
                     end
                 end
@@ -39,11 +43,10 @@ function M.load(filename)
             end
         end,
         ["texture"] = function (f)
-            length = #assetmgr.resource(f)
+            touch_res(assetmgr.resource(f))
         end,
         ["material"] = function (f)
-            local res = imaterial.load_res(f)
-            local obj = res.object
+            touch_res(imaterial.load_res(f))
         end
     }
 
