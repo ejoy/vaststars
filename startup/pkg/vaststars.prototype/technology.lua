@@ -1694,7 +1694,7 @@ prototype "自动化1" {
     unlock_recipe = {"组装机1"},
     unlock_item = {"组装机I"},
   },
-  prerequisites = {"挖掘1","电力传输1"},
+  prerequisites = {"蒸馏1","泵系统1","无人机运输1"},
   ingredients = {
     {"机械科技包", 1},
   },
