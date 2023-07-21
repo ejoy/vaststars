@@ -2056,22 +2056,6 @@ prototype "科研中心打印" {
     description = "打印科研中心",
 }
 
-prototype "太阳能板打印" {
-    type = { "recipe" },
-    recipe_craft_category = "建筑打印",
-    recipe_category =  "加工",
-    recipe_order =  56,
-    recipe_icon =  "textures/construct/broken-solar-panel.texture",
-    ingredients = {
-        {"硅", 15},
-    },
-    results = {
-        {"太阳能板I", 1},
-    },
-    time = "5s",
-    description = "打印利用太阳能发电的装置",
-}
-
 prototype "蓄电池打印" {
     type = { "recipe" },
     recipe_craft_category = "建筑打印",
@@ -2391,7 +2375,7 @@ prototype "维修太阳能板" {
     results = {
         {"太阳能板I", 1},
     },
-    time = "5s",
+    time = "10s",
     description = "修复破损的太阳能板",
 }
 

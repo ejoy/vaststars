@@ -1134,8 +1134,8 @@ prototype "建筑维修2" {
   type = { "tech" },
   icon = "textures/science/book.texture",
   effects = {
-    unlock_recipe = {"维修水电站","维修空气过滤器","维修地下水挖掘机","维修太阳能板","维修蒸馏厂"},
-    unlock_item = {"水电站框架","空气过滤器框架","地下水挖掘机框架","太阳能板框架","蒸馏厂框架"},
+    unlock_recipe = {"维修水电站","维修空气过滤器","维修地下水挖掘机","维修蒸馏厂"},
+    unlock_item = {"水电站框架","空气过滤器框架","地下水挖掘机框架","蒸馏厂框架"},
   },
   prerequisites = {"气候研究1"},
   ingredients = {
@@ -1230,6 +1230,22 @@ prototype "生产气候科技包" {
   },
 }
 
+prototype "收集空气" {
+  desc = "采集火星上的空气",
+  type = { "task" },
+  icon = "textures/construct/industry.texture",
+  task = {"stat_production", 1, "空气"},
+  prerequisites = {"建造空气过滤器","建造水电站"},
+  count = 20000,
+  tips_pic = {
+    "textures/task_tips_pic/task_produce_air1.texture",
+    "textures/task_tips_pic/task_produce_air2.texture",
+  },
+  sign_desc = {
+    { desc = "用空气过滤器生产20000单位空气", icon = "textures/construct/industry.texture",},
+  },
+}
+
 prototype "排放1" {
   desc = "研究气体和液体的排放工艺",
   type = { "tech" },
@@ -1291,22 +1307,6 @@ prototype "空气分离工艺1" {
   time = "1.5s"
 }
 
-prototype "收集空气" {
-  desc = "采集火星上的空气",
-  type = { "task" },
-  icon = "textures/construct/industry.texture",
-  task = {"stat_production", 1, "空气"},
-  prerequisites = {"空气分离工艺1"},
-  count = 20000,
-  tips_pic = {
-    "textures/task_tips_pic/task_produce_air1.texture",
-    "textures/task_tips_pic/task_produce_air2.texture",
-  },
-  sign_desc = {
-    { desc = "用空气过滤器生产20000单位空气", icon = "textures/construct/industry.texture",},
-  },
-}
-
 prototype "碳处理1" {
   desc = "含碳气体化合成其他物质的工艺",
   type = { "tech" },
@@ -1323,7 +1323,7 @@ prototype "碳处理1" {
 }
 
 prototype "放置太阳能板" {
-  desc = "放置4座太阳能板",
+  desc = "放置2座太阳能板",
   icon = "textures/construct/industry.texture",
   type = { "task" },
   task = {"select_entity", 0, "太阳能板I"},
@@ -1333,7 +1333,7 @@ prototype "放置太阳能板" {
     "textures/task_tips_pic/task_place_logistics.texture",
   },
   sign_desc = {
-    { desc = "放置4个太阳能板进行发电", icon = "textures/construct/industry.texture"},
+    { desc = "放置2个太阳能板进行发电", icon = "textures/construct/industry.texture"},
   },
 }
 
@@ -1440,8 +1440,8 @@ prototype "建筑维修3" {
   type = { "tech" },
   icon = "textures/science/book.texture",
   effects = {
-    unlock_recipe = {"维修组装机","维修化工厂"},
-    unlock_item = {"化工厂框架","组装机框架"},
+    unlock_recipe = {"维修组装机","维修化工厂","维修太阳能板"},
+    unlock_item = {"化工厂框架","组装机框架","太阳能板框架"},
   },
   prerequisites = {"冶金学1"},
   ingredients = {
