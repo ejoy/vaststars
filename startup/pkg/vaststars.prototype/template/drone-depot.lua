@@ -122,7 +122,19 @@ local entities = { {
     prototype_name = "无人机仓库I",
     x = 129,
     y = 136
-  }}
+  },  {
+    dir = "N",
+    item = "粉碎机框架",
+    prototype_name = "无人机仓库I",
+    x = 133,
+    y = 136
+  }, {
+    dir = "N",
+    item = "无人机仓库I",
+    prototype_name = "无人机仓库I",
+    x = 117,
+    y = 136
+  } }
 local road = {}
 
 local mineral = {
