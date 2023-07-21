@@ -1427,7 +1427,7 @@ prototype "冶金学1" {
     unlock_recipe = {"熔炼炉1"},
     unlock_item = {"熔炼炉I"},
   },
-  prerequisites = {"碳处理1"},
+  prerequisites = {"碳处理2"},
   ingredients = {
     {"地质科技包", 1},
   },
