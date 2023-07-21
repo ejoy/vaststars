@@ -165,6 +165,7 @@ local t = {
 	"/pkg/ant.debugger/remotedebug/thread.lua",
 	"/pkg/ant.debugger/remotedebug/utility.lua",
 	"/pkg/ant.debugger/socket.lua",
+	"/pkg/ant.ecs/component.lua",
 	"/pkg/ant.ecs/debug_system.lua",
 	"/pkg/ant.ecs/dummy.prefab",
 	"/pkg/ant.ecs/ecs.lua",
