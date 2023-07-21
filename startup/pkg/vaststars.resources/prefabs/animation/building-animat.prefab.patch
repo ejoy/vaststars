@@ -1,0 +1,43 @@
+---
+data:
+  name: slot1x1
+  scene:
+    s: {7, 7, 7}
+    t: {0, 6, 0}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    slot1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+---
+data:
+  name: slot3x3
+  scene:
+    s: {13, 13, 13}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    slot2
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+---
+data:
+  name: slot5x5
+  scene:
+    s: {20, 20, 20}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    slot3
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot

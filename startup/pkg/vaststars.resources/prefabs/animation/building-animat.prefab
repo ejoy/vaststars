@@ -1,0 +1,43 @@
+---
+data:
+  name: Scene
+  scene: {}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  meshskin: /pkg/vaststars.resources/glb/animation/building-animat.glb|meshes/Armature.001.skinbin
+  name: meshskin
+  scene: {}
+  skeleton: /pkg/vaststars.resources/glb/animation/building-animat.glb|animations/skeleton.ozz
+  skinning: true
+mount: 1
+policy:
+  ant.animation|meshskin
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  material: /pkg/vaststars.resources/glb/animation/building-animat.glb|materials/Material.003_skin_clr.material
+  mesh: /pkg/vaststars.resources/glb/animation/building-animat.glb|meshes/Cube_P1.meshbin
+  name: Cube
+  skinning: true
+  visible_state: main_view|selectable|cast_shadow
+policy:
+  ant.general|name
+  ant.render|skinrender
+---
+data:
+  anim_ctrl: {}
+  animation:
+    Armature.001Action: /pkg/vaststars.resources/glb/animation/building-animat.glb|animations/Armature.001Action.ozz
+    Armature.001Action.001: /pkg/vaststars.resources/glb/animation/building-animat.glb|animations/Armature.001Action.001.ozz
+    Armature.001Action.002: /pkg/vaststars.resources/glb/animation/building-animat.glb|animations/Armature.001Action.001.ozz
+    Armature.001Action.003: /pkg/vaststars.resources/glb/animation/building-animat.glb|animations/Armature.001Action.001.ozz
+  animation_birth: Armature.001Action
+  name: animation
+  skeleton: /pkg/vaststars.resources/glb/animation/building-animat.glb|animations/skeleton.ozz
+policy:
+  ant.animation|animation
+  ant.general|name

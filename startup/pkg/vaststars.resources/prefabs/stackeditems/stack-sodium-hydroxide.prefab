@@ -7,9 +7,9 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  material: /pkg/vaststars.resources/glb/stackeditems/stack-steel-gear.glb|materials/Material.001_clr.material
-  mesh: /pkg/vaststars.resources/glb/stackeditems/stack-steel-gear.glb|meshes/Cylinder.016_P1.meshbin
-  name: Cylinder.010
+  material: /pkg/vaststars.resources/glb/stackeditems/stack-sodium-hydroxide.glb|materials/Material.003.material
+  mesh: /pkg/vaststars.resources/glb/stackeditems/stack-sodium-hydroxide.glb|meshes/Cube.046_P1.meshbin
+  name: Cube.030
   scene: {}
   visible_state: main_view|selectable|cast_shadow
 mount: 1

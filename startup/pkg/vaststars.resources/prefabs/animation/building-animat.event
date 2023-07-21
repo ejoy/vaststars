@@ -1,0 +1,37 @@
+Armature.001Action.001:
+  ---
+  event_list:
+    ---
+    asset_path: /pkg/vaststars.resources/effect/efk/building-animat.efk
+    breakable: false
+    event_type: Effect
+    life_time: 2
+    link_info:
+      slot_eid: 123
+      slot_name: slot3x3
+    name: Effect2
+  time: 0.76
+Armature.001Action.002:
+  ---
+  event_list:
+    ---
+    asset_path: /pkg/vaststars.resources/effect/efk/building-animat.efk
+    event_type: Effect
+    life_time: 2
+    link_info:
+      slot_eid: 123
+      slot_name: slot3x3
+    name: Effect3
+  time: 0.76
+Armature.001Action.003:
+  ---
+  event_list:
+    ---
+    asset_path: /pkg/vaststars.resources/effect/efk/building-animat.efk
+    event_type: Effect
+    life_time: 2
+    link_info:
+      slot_eid: 124
+      slot_name: slot5x5
+    name: Effect2
+  time: 0.76
