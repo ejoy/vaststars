@@ -678,6 +678,30 @@ prototype "锅炉I" {
     item_description = "通过加热将水变成蒸汽的装置",
 }
 
+prototype "广播塔I" {
+    type = {"item"},
+    stack = 8,
+    pile = "4x1x4",
+    drone_depot_gap3 = "0.2x0.05x0.2",
+    backpack_stack = 25,
+    pile_model = "prefabs/stackeditems/iron-ingot.prefab",
+    icon = "textures/construct/logic-circuit.texture",
+    item_description = "将插件功效传导到周边其他机器的设施",
+    item_category = "物流",
+}
+
+prototype "广播塔II" {
+    type = {"item"},
+    stack = 8,
+    pile = "4x1x4",
+    drone_depot_gap3 = "0.2x0.05x0.2",
+    backpack_stack = 25,
+    pile_model = "prefabs/stackeditems/iron-ingot.prefab",
+    icon = "textures/construct/logic-circuit.texture",
+    item_description = "将插件功效传导到周边其他机器的设施",
+    item_category = "物流",
+}
+
 prototype "热管1-X型" {
     type = {"item"},
     item_category = "物流",

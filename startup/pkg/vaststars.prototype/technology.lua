@@ -2097,7 +2097,7 @@ prototype "无人机运输2" {
     unlock_recipe = {"无人机仓库2"},
     unlock_item = {"无人机仓库II"},
   },
-  prerequisites = {"有机化学3","物流学2"},
+  prerequisites = {"坩埚制造","物流学2"},
   ingredients = {
       {"气候科技包", 1},
       {"机械科技包", 1},
