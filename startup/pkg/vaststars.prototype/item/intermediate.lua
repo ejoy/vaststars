@@ -845,8 +845,8 @@ prototype "铜板" {
 prototype "铜丝" {
     type = {"item"},
     stack = 8,
-    pile = "4x4x4",
-    drone_depot_gap3 = "0.2x0.05x0.2",
+    pile = "4x4x2",
+    drone_depot_gap3 = "0.5x0.2x1",
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-copper-wire.prefab",
     icon = "textures/construct/iron-wire.texture",
