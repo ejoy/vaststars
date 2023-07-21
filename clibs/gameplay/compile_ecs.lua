@@ -53,21 +53,27 @@ local function writeEntityH(components)
     write ""
     write "constexpr int _component_start_id_ = __COUNTER__ + 2;"
     write ""
-    write "#define component(NAME, DECL) \\"
+    write "#define component_raw(NAME, DECL) \\"
     write "namespace vaststars::ecs { \\"
     write "using NAME = DECL; \\"
     write "} \\"
     write "template <> constexpr int ecs_api::component_id<vaststars::ecs::NAME> = __COUNTER__ - _component_start_id_;"
     write ""
-    write "#define tag(NAME) component(NAME, struct {})"
+    write "#define component(NAME, DECL) \\"
+    write "namespace vaststars::ecs { \\"
+    write "struct NAME DECL; \\"
+    write "} \\"
+    write "template <> constexpr int ecs_api::component_id<vaststars::ecs::NAME> = __COUNTER__ - _component_start_id_;"
     write ""
-    write "component(eid, uint64_t)"
+    write "#define tag(NAME) component(NAME, {})"
+    write ""
+    write "component_raw(eid, uint64_t)"
     write "tag(REMOVED)"
     for _, c in ipairs(components) do
         if isTag(c) then
             write(("tag(%s)"):format(c.name))
         else
-            write(("component(%s, struct {"):format(c.name))
+            write(("component(%s, {"):format(c.name))
             for _, field in ipairs(c) do
                 local name, typename, n = field:match "^([%w_]+):([^%]]+)%[(%d+)%]$"
                 if name == nil then
