@@ -51,20 +51,23 @@ local function writeEntityH(components)
     write "#include \"util/component_user.h\""
     write "#include <stdint.h>"
     write ""
-    write "namespace vaststars {"
+    write "constexpr int _component_start_id_ = __COUNTER__ + 2;"
     write ""
-    write "namespace ecs {"
+    write "#define component(NAME, DECL) \\"
+    write "namespace vaststars::ecs { \\"
+    write "using NAME = DECL; \\"
+    write "} \\"
+    write "template <> constexpr int ecs_api::component_id<vaststars::ecs::NAME> = __COUNTER__ - _component_start_id_;"
     write ""
-    write "using eid = uint64_t;"
-    write "struct REMOVED {};"
+    write "#define tag(NAME) component(NAME, struct {})"
     write ""
-
+    write "component(eid, uint64_t)"
+    write "tag(REMOVED)"
     for _, c in ipairs(components) do
         if isTag(c) then
-            write("struct "..c.name.." {};")
-            write ""
+            write(("tag(%s)"):format(c.name))
         else
-            write("struct "..c.name.." {")
+            write(("component(%s, struct {"):format(c.name))
             for _, field in ipairs(c) do
                 local name, typename, n = field:match "^([%w_]+):([^%]]+)%[(%d+)%]$"
                 if name == nil then
@@ -76,40 +79,17 @@ local function writeEntityH(components)
                     write(("\t%s %s;"):format(TypeName(components, typename), name))
                 end
             end
-            write "};"
-            write ""
+            write "})"
         end
     end
     write ""
-    write "}"
-    write ""
-    write "}"
+    write "#undef ecs_component"
+    write "#undef ecs_tag"
     write ""
     write "using namespace vaststars;"
+    write "static_assert(ecs_api::component_id<ecs::eid> == ecs_api::EntityID);"
     write ""
 
-    write "template <> struct ecs_api::component_meta<ecs::eid> {"
-    write "\tstatic constexpr unsigned id = 0xFFFFFFFF;"
-    write "};"
-    write "template <> struct ecs_api::component_meta<ecs::REMOVED> {"
-    write "\tstatic constexpr unsigned id = 0;"
-    write "};"
-    write ""
-    write "namespace ecs_api {"
-    write ""
-    write "#define ECS_COMPONENT(NAME, ID) \\"
-    write "template <> struct component_meta<ecs::NAME> { \\"
-    write "\tstatic constexpr unsigned int id = ID; \\"
-    write "};"
-    write ""
-    for i, c in ipairs(components) do
-        write(("ECS_COMPONENT(%s,%d)"):format(c.name, i))
-    end
-    write ""
-    write "#undef ECS_COMPONENT"
-    write ""
-    write "}"
-    write ""
 
     return table.concat(out, "\n")
 end
