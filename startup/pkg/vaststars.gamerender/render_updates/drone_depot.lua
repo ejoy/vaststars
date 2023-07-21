@@ -16,6 +16,13 @@ local gameplay_core = require "gameplay.core"
 local drone_depot_sys = ecs.system "drone_depot_systme"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
+local function __get_gap3(typeobject)
+    if typeobject.drone_depot_gap3 then
+        return {typeobject.drone_depot_gap3:match("([%d%.]+)x([%d%.]*)x([%d%.]*)")}
+    end
+    return typeobject.gap3 and {typeobject.gap3:match("([%d%.]+)x([%d%.]*)x([%d%.]*)")} or {0, 0, 0}
+end
+
 local events = {}
 events["obj_motion"] = function(_, e, method, ...)
     iom[method](e, ...)
@@ -56,7 +63,7 @@ local function create_shelf(building, item, count, building_srt)
     local meshbin = assert(prefab_meshbin("/pkg/vaststars.resources/" .. typeobject_item.pile_model))
     local pile = typeobject_item.pile
     local dim3 = { (pile>>24) & 0xff, (pile>>32) & 0xff, (pile>>40) & 0xff }
-    local gap3 = typeobject_item.gap3 and {typeobject_item.gap3:match("([%d%.]+)x([%d%.]*)x([%d%.]*)")} or {0, 0, 0}
+    local gap3 = __get_gap3(typeobject_item)
     local srt = math3d.mul(math3d.matrix({s = building_srt.s, r = building_srt.r, t = building_srt.t}), offset)
     local s, r, t = math3d.srt(srt)
     srt = {s = s, r = r, t = t}
