@@ -23,7 +23,8 @@ function M.load(filename)
                 for _, field in ipairs(prefab_resource) do
                     if d.data[field] then
                         if field == "material" then
-                            length = #imaterial.load_res(d.data.material)
+                            imaterial.load_res(d.data.material)
+                            imaterial.unload_res(d.data.material)
                         elseif field == "animation" then
                             for _, v in pairs(d.data.animation) do
                                 length = #assetmgr.resource(v, world)
