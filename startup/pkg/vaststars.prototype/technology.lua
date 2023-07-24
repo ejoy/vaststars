@@ -359,7 +359,6 @@ local prototype = gameplay.register.prototype
     icon = "textures/science/book.texture",
     effects = {
       unlock_recipe = {"地质科技包1"},
-      -- unlock_item = {"组装机框架"},
     },
     ingredients = {
     },
@@ -518,7 +517,7 @@ local prototype = gameplay.register.prototype
 
   
   prototype "通向铁矿" {
-    desc = "修建20节公路",
+    desc = "铺设20段公路",
     icon = "textures/construct/industry.texture",
     type = { "task" },
     task = {"unknown", 0, 1},
@@ -810,7 +809,7 @@ local prototype = gameplay.register.prototype
     --   },
     -- },
     sign_desc = {
-      { desc = "修建道路从指挥中心到东边的铁矿", icon = "textures/construct/industry.texture"},
+      { desc = "铺设道路从指挥中心到东边的铁矿", icon = "textures/construct/industry.texture"},
     },
   }
 
