@@ -145,11 +145,11 @@ workbutton {
 .item-count-combination {
 	flex-direction: row;
 	align-items: center;
-	justify-content: flex-start;
+	justify-content: flex-end;
 	width: 100%;
 	position: absolute;
-	top: -1vmin;
-	left: 0vmin;
+	bottom: -0.5vmin;
+	right: 0vmin;
 }
 .item-count-new {
 	font-size: 4vmin;
