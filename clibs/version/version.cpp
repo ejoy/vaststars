@@ -4,9 +4,10 @@
 
 extern "C" int
 luaopen_vaststars_version_core(lua_State *L) {
-    if (LUA_OK != luaL_loadbuffer(L, gEmbedVersionData, sizeof(gEmbedVersionData)-1, "=(version)")) {
-        return lua_error(L);
-    }
-    lua_call(L, 0, 1);
+    lua_createtable(L, 0, 2);
+    lua_pushlstring(L, gGameGitVersion, sizeof(gGameGitVersion)-1);
+    lua_setfield(L, -2, "game");
+    lua_pushlstring(L, gEngineGitVersion, sizeof(gEngineGitVersion)-1);
+    lua_setfield(L, -2, "engine");
     return 1;
 }

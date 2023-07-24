@@ -1,6 +1,6 @@
-local GameplayVersion = require "vaststars.version.core"
-local ScriptVersion = require "version"
+local version = require "vaststars.version.core"
 
-if GameplayVersion ~= ScriptVersion then
-    error(("gameplay (%s) and script (%s) mismatch."):format(GameplayVersion, ScriptVersion))
+if __ANT_RUNTIME__ then
+    print(("Game Core Version:   %s."):format(version.game))
+    print(("Engine Core Version: %s."):format(version.engine))
 end
