@@ -51,12 +51,6 @@
                 recipe_name = " ",
                 guide_progress = 0,
             }
-
-            ui_sys.addEventListener({
-                ["leave"] = function()
-                    ui_sys.close()
-                end,
-            })
         </script>
     </head>
     <body style = "pointer-events: none; justify-content: center; align-items: center;">

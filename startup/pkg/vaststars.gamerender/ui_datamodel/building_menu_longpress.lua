@@ -12,6 +12,8 @@ local copy_md = mailbox:sub {"copy"}
 
 local M = {}
 function M:create(object_id)
+    iui.register_leave("building_menu_longpress.rml")
+
     local object = assert(objects:get(object_id))
     local typeobject = iprototype.queryByName(object.prototype_name)
     assert(typeobject.move ~= false or typeobject.teardown ~= false)
@@ -29,7 +31,7 @@ end
 
 function M:stage_ui_update(datamodel, object_id)
     for _ in move_mb:unpack() do
-        iui.close("building_menu_longpress.rml")
+        iui.leave()
         iui.redirect("construct.rml", "move", object_id)
     end
     for _ in teardown_mb:unpack() do

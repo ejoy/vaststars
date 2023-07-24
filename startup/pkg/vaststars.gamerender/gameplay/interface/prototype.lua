@@ -191,12 +191,8 @@ function M.rotate_connection(position, direction, area)
     end
 end
 
-function M.show_prototype_name(typeobject)
-    if typeobject.show_prototype_name then
-        return typeobject.show_prototype_name
-    else
-        return typeobject.name
-    end
+function M.display_name(typeobject)
+    return typeobject.display_name and typeobject.display_name or typeobject.name
 end
 
 function M.is_pipe(prototype_name)

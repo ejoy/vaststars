@@ -84,7 +84,7 @@ function M:stage_ui_update(datamodel)
     for _, _, _, index in click_button_mb:unpack() do
         local shortcut = assert(datamodel.shortcut[index])
         if shortcut.unknown == true then
-            world:pub {"rmlui_message_close", "build.rml"}
+            iui.close("build.rml")
             iui.open({"build_setting.rml"})
         else
             if datamodel.shortcut_index ~= 0 then

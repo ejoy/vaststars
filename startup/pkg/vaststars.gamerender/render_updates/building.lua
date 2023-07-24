@@ -122,10 +122,11 @@ function ibuilding.get(x, y)
 end
 
 function ibuilding.remove(x, y)
+    print("remove building", x, y)
     local gameplay_world = gameplay_core.get_world()
     local coord = iprototype.packcoord(x, y)
     local building = building_cache[coord]
-    igameplay_building.destroy(gameplay_world, gameplay_world.entity[building.eid])
+    igameplay_building.destroy(gameplay_world, gameplay_world.entity[building.eid]) -- TODO: use igameplay.destroy_entity instead
 
     building_cache[coord] = nil
 end

@@ -1,6 +1,7 @@
 local ecs, mailbox = ...
 local world = ecs.world
 local w = world.w
+local iui = ecs.import.interface "vaststars.gamerender|iui"
 
 local resources_loader = ecs.require "ui_datamodel.common.resources_loader"
 local resources = require "resources"
@@ -28,7 +29,7 @@ function M:stage_camera_usage(datamodel)
         return
     end
     if current + 1 > #resources then
-        world:pub {"rmlui_message_close", "loading.rml"}
+        iui.close("loading.rml")
         datamodel.closed = true
         return
     end

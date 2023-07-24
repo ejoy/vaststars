@@ -29,10 +29,8 @@ function guide_sys:gameworld_update()
     end
     if run_guide then
         -- hide pop ui
-        iui.close("detail_panel.rml")
-        iui.close("building_menu.rml")
-        iui.redirect("construct.rml", "guide_on_going")
-        iui.redirect("help_panel.rml", "guide_on_going")
+        iui.leave()
+        iui.broadcast("guide_on_going")
 
         -- pop guide ui
         iui.open({"guide_pop.rml"}, guide)

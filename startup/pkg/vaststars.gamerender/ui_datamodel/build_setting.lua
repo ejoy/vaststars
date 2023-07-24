@@ -108,7 +108,7 @@ function M:create()
     if shortcut[min_id].prototype_name ~= "" then
         category_idx, item_idx = __get_construct_index(shortcut[min_id].prototype_name)
         local typeobject = iprototype.queryByName(shortcut[min_id].prototype_name)
-        item_name = iprototype.show_prototype_name(typeobject)
+        item_name = iprototype.display_name(typeobject)
         item_desc = typeobject.item_description or ""
     end
 
@@ -150,7 +150,7 @@ function M:stage_ui_update(datamodel)
 
             local item_name = datamodel.construct_menu[category_idx].items[item_idx].name
             local typeobject = iprototype.queryByName(item_name)
-            datamodel.item_name = iprototype.show_prototype_name(typeobject)
+            datamodel.item_name = iprototype.display_name(typeobject)
             datamodel.item_desc = typeobject.item_description or ""
 
             iUiRt.set_rt_prefab("item_model",
@@ -189,7 +189,7 @@ function M:stage_ui_update(datamodel)
             datamodel.item_idx = item_idx
 
             local typeobject = iprototype.queryByName(shortcut.prototype_name)
-            datamodel.item_name = iprototype.show_prototype_name(typeobject)
+            datamodel.item_name = iprototype.display_name(typeobject)
             datamodel.item_desc = typeobject.item_description or ""
         else
             datamodel.category_idx = 0
@@ -200,7 +200,7 @@ function M:stage_ui_update(datamodel)
     end
 
     for _ in click_main_button_mb:unpack() do
-        world:pub {"rmlui_message_close", "build_setting.rml"}
+        iui.close("build_setting.rml")
         iui.open({"build.rml"})
     end
 end

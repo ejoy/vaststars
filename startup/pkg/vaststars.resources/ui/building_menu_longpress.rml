@@ -52,13 +52,6 @@
                 ui_sys.pub {command, start.object_id}
             end
 
-            ui_sys.addEventListener({
-                ["leave"] = function()
-                    ui_sys.pub {"close", start.object_id}
-                    ui_sys.close()
-                end,
-            })
-
             ui_sys.mapping(start, {
                 {
                     function(_)

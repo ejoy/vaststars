@@ -62,6 +62,7 @@ prototype "钢齿轮" {
 }
 
 prototype "铁矿石" {
+    display_name = "铁矿",
     type = {"item"},
     stack = 12,
     pile = "4x4x4",
@@ -72,11 +73,11 @@ prototype "铁矿石" {
     item_description = "可以提取铁的矿物",
     item_category = "金属",
     mineral_model = "prefabs/mineral/ground-iron-ore.prefab",
-    mineral_name = "铁矿",
     mineral_area = "3x3",
 }
 
 prototype "碎石" {
+    display_name = "石矿",
     type = {"item"},
     stack = 12,
     pile = "2x3x2",
@@ -87,7 +88,6 @@ prototype "碎石" {
     item_description = "伴生在矿物里的小块石头",
     item_category = "金属",
     mineral_model = "prefabs/mineral/ground-gravel.prefab",
-    mineral_name = "石矿",
     mineral_area = "3x3",
 }
 
@@ -104,6 +104,7 @@ prototype "石砖" {
 }
 
 prototype "铝矿石" {
+    display_name = "铝矿",
     type = {"item"},
     stack = 12,
     pile = "4x4x4",
@@ -114,7 +115,6 @@ prototype "铝矿石" {
     item_description = "可以提取铝的矿物",
     item_category = "金属",
     mineral_model = "prefabs/mineral/ground-aluminum.prefab",
-    mineral_name = "铝矿",
     mineral_area = "3x3",
 }
 

@@ -99,7 +99,7 @@ function M:create(object_id)
 
     return {
         object_id = object_id, -- for update
-        prototype_name = iprototype.show_prototype_name(typeobject),
+        prototype_name = iprototype.display_name(typeobject),
         background = typeobject.background,
         item_category = res,
         inventory = get_inventory(object_id),
@@ -113,7 +113,7 @@ function M:stage_ui_update(datamodel)
     for _, _, _, prototype in click_item_mb:unpack() do
         local typeobject = iprototype.queryById(prototype)
         datamodel.show_item_info = true
-        datamodel.item_prototype_name = iprototype.show_prototype_name(typeobject)
+        datamodel.item_prototype_name = iprototype.display_name(typeobject)
         datamodel.item_info = item_id_to_info[tonumber(prototype)] or {}
         self:flush()
     end

@@ -22,13 +22,13 @@ end
 
 function M:stage_camera_usage(datamodel)
     for _ in continue_mb:unpack() do
-        world:pub {"rmlui_message_close", "login.rml"}
+        iui.close("login.rml")
         continue_game()
     end
 
     for _, _, _, mode in start_mode_mb:unpack() do
         debugger.set_free_mode(mode == "free")
-        world:pub {"rmlui_message_close", "login.rml"}
+        iui.close("login.rml")
         new_game(mode)
     end
 
@@ -37,12 +37,12 @@ function M:stage_camera_usage(datamodel)
     end
 
     for _ in load_archive_mb:unpack() do
-        world:pub {"rmlui_message_close", "login.rml"}
+        iui.close("login.rml")
         iui.open({"option_pop.rml"})
     end
 
     for _ in load_template_mb:unpack() do
-        world:pub {"rmlui_message_close", "login.rml"}
+        iui.close("login.rml")
         iui.open({"template.rml"})
     end
 end

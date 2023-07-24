@@ -167,6 +167,7 @@ prototype "蒸汽" {
 }
 
 prototype "地热气" {
+    display_name = "地热",
     type = {"fluid"},
     catagory = {"普通气体"},
     icon = "textures/fluid/gas-steam.texture",
@@ -176,7 +177,6 @@ prototype "地热气" {
     max_temperature = 200,
     item_description = "因地下深处热量而产生的蒸汽",
     mineral_model = "prefabs/mineral/ground-geothermal.prefab",
-    mineral_name = "地热",
     mineral_area = "3x3",
 }
 

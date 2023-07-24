@@ -257,6 +257,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
     end
 
     iroadnet:update()
+    self.to_x, self.to_y = to_x, to_y
     datamodel.show_finish_laying = State.succ
 end
 
@@ -524,7 +525,7 @@ local function _teardown_end(self, datamodel, State, dir, dir_delta)
         if x == to_x and y == to_y then
             break
         end
-        x, y = x + dir_delta.x, y + dir_delta.y
+        x, y = x + dir_delta.x * ROAD_TILE_SCALE_WIDTH, y + dir_delta.y * ROAD_TILE_SCALE_HEIGHT
     end
 
     if State.succ then
@@ -547,6 +548,8 @@ local function _teardown_end(self, datamodel, State, dir, dir_delta)
         end
     end
 
+    iroadnet:update()
+    self.to_x, self.to_y = to_x, to_y
     datamodel.show_finish_teardown = State.succ
 end
 
@@ -701,13 +704,9 @@ local function __align(object)
 end
 
 --------------------------------------------------------------------------------------------------
-local function new_entity(self, datamodel, typeobject)
+local function new_entity(self, datamodel, typeobject, x, y)
     local dir = DEFAULT_DIR
-    local x, y = iobject.central_coord(typeobject.name, dir, coord_system)
-    if not x or not y then
-        return
-    end
-    x, y = x - (x % ROAD_TILE_SCALE_WIDTH), y - (y % ROAD_TILE_SCALE_HEIGHT)
+    assert(x and y)
 
     if not self.grid_entity then
         self.grid_entity = igrid_entity.create("polyline_grid", terrain._width // ROAD_TILE_SCALE_WIDTH, terrain._height // ROAD_TILE_SCALE_HEIGHT, terrain.tile_size * ROAD_TILE_SCALE_WIDTH, {t = __calc_grid_position(typeobject, x, y)})
@@ -838,15 +837,9 @@ local function confirm(self, datamodel)
 
     task.update_progress("road_laying", dec)
 
-    local typeobject = iprototype.queryByName("砖石公路-X型")
-    local continue_construct = ibackpack.query(gameplay_core.get_world(), typeobject.id) > 0
-    if not continue_construct then
-        gameplay_core.world_update = true
-        return false
-    else
-        new_entity(self, datamodel, typeobject)
-        return true
-    end
+    local to_x, to_y = self.to_x, self.to_y
+    self.to_x, self.to_y = nil, nil
+    return to_x, to_y
 end
 
 local function start_laying(self, datamodel)
@@ -1009,7 +1002,7 @@ local function _teardown_end(self, datamodel, State, dir, dir_delta)
         if x == to_x and y == to_y then
             break
         end
-        x, y = x + dir_delta.x, y + dir_delta.y
+        x, y = x + dir_delta.x * ROAD_TILE_SCALE_WIDTH, y + dir_delta.y * ROAD_TILE_SCALE_HEIGHT
     end
 
     if State.succ then
@@ -1280,8 +1273,11 @@ local function clean(self, datamodel)
     self.pickup_components = {}
     iobject.remove(self.coord_indicator)
     self.coord_indicator = nil
+    self.to_x, self.to_y = nil, nil
     self.temporary_map = {}
     self.pending = {}
+
+    iroadnet:update()
 end
 
 local function create()
@@ -1306,6 +1302,8 @@ local function create()
     M.temporary_map = {}
     M.pending = {}
     M.pickup_components = {}
+    M.to_x = nil
+    M.to_y = nil
 
     return M
 end

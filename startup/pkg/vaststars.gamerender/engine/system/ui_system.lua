@@ -9,14 +9,17 @@ local table_unpack = table.unpack
 local fs = require "filesystem"
 
 local rmlui_message_mb = world:sub {"rmlui_message"}
-local rmlui_message_close_mb = world:sub {"rmlui_message_close"}
 local ui_message_mb = world:sub {"ui_message"}
 local ui_message_send_mb = world:sub {"ui_message_send"}
-local window_bindings = {} -- = {[url] = { w = xx, datamodel = xx, }, ...}
-local datamodel_changed = {}
+
+local windowBindings = {} -- = {[url] = { w = xx, datamodel = xx, }, ...}
+local changedWindows = {}
+local windowListeners = {}
+local closeWindows = {}
+local leaveWindows = {}
 local stage_ui_update = {}
 local stage_camera_usage = {}
-local datamodel_listener = {}
+
 local guide_progress = 0
 
 local _load_datamodel ; do
@@ -55,9 +58,10 @@ end
 local function open(uiData, ...)
     assert(type(uiData[1]) == "string")
     local url = uiData[1]
+    closeWindows[url] = nil
     local datamodel = uiData[2] or url:gsub("^(.*)%.rml$", "%1.lua")
 
-    local binding = window_bindings[url]
+    local binding = windowBindings[url]
     if binding then
         if binding.template then
             binding.param = {...}
@@ -66,7 +70,7 @@ local function open(uiData, ...)
             end
             binding.datamodel.guide_progress = guide_progress
             binding.template:flush()
-            datamodel_changed[url] = true
+            changedWindows[url] = true
         end
         return binding.datamodel
     end
@@ -87,7 +91,7 @@ local function open(uiData, ...)
 
         if res.event == "__CLOSE" then
             local close_url = res.ud[1] or url
-            world:pub {"rmlui_message_close", close_url}
+            closeWindows[close_url] = true
         elseif res.event == "__OPEN" then
             world:pub {"rmlui_message", res.event, table_unpack(res.ud)}
         elseif res.event == "__PUB" then
@@ -96,7 +100,7 @@ local function open(uiData, ...)
             world:pub {"rmlui_message", res.event, res.ud}
         end
     end)
-    window_bindings[url] = binding
+    windowBindings[url] = binding
 
     binding.template = _load_datamodel(url, datamodel)
     if not binding.template then
@@ -104,7 +108,7 @@ local function open(uiData, ...)
     end
 
     function binding.template:flush()
-        datamodel_changed[url] = nil
+        changedWindows[url] = nil
 
         if not tracedoc.changed(binding.datamodel) then
             return
@@ -116,8 +120,8 @@ local function open(uiData, ...)
         binding.window.postMessage(json:encode(ud))
 
         tracedoc.commit(binding.datamodel)
-        if datamodel_listener[url] then
-            datamodel_listener[url](binding.datamodel)
+        if windowListeners[url] then
+            windowListeners[url](binding.datamodel)
         end
     end
 
@@ -146,16 +150,7 @@ local function world_pub(msg)
 end
 
 local function close(url)
-    local binding = window_bindings[url]
-    if not binding then
-        log.warn(("can not found window `%s`"):format(url))
-        return
-    end
-    binding.window:close()
-    window_bindings[url] = nil
-    datamodel_changed[url] = nil
-    stage_ui_update[url] = nil
-    stage_camera_usage[url] = nil
+    closeWindows[url] = true
 end
 
 local ui_events = {
@@ -176,7 +171,7 @@ function ui_system.ui_update()
 
     -- world to rmlui
     for msg in ui_message_mb:each() do
-        for _, binding in pairs(window_bindings) do
+        for _, binding in pairs(windowBindings) do
             local ud = {}
             ud.event = msg[2]
             ud.ud = {table_unpack(msg, 3, #msg)}
@@ -185,25 +180,25 @@ function ui_system.ui_update()
     end
 
     for msg in ui_message_send_mb:each() do
-        local binding = window_bindings[msg[2]]
+        local binding = windowBindings[msg[2]]
         if binding then
             local ud = {}
             ud.event = msg[3]
             ud.ud = {table_unpack(msg, 4, #msg)}
-            window_bindings[msg[2]].window.postMessage(json:encode(ud))
+            windowBindings[msg[2]].window.postMessage(json:encode(ud))
         end
     end
 
     for url in pairs(stage_ui_update) do
-        local binding = window_bindings[url]
+        local binding = windowBindings[url]
         binding.template:stage_ui_update(binding.datamodel, table_unpack(binding.param))
         if tracedoc.changed(binding.datamodel) then
-            datamodel_changed[url] = true
+            changedWindows[url] = true
         end
     end
 
-    for url in pairs(datamodel_changed) do
-        local binding = window_bindings[url]
+    for url in pairs(changedWindows) do
+        local binding = windowBindings[url]
         if binding then
             binding.template:flush()
         end
@@ -212,17 +207,25 @@ end
 
 function ui_system.camera_usage()
     for url in pairs(stage_camera_usage) do
-        local binding = window_bindings[url]
+        local binding = windowBindings[url]
         binding.template:stage_camera_usage(binding.datamodel, table_unpack(binding.param))
         if tracedoc.changed(binding.datamodel) then
-            datamodel_changed[url] = true
+            changedWindows[url] = true
         end
     end
 
-    -- "close" will clean up window_bindings, so it must be placed at the end of the processing
-    for _, url in rmlui_message_close_mb:unpack() do
-        close(url)
+    -- "close" will clean up windowBindings, so it must be placed at the end of the processing
+    for url in pairs(closeWindows) do
+        local binding = windowBindings[url]
+        if binding then
+            binding.window:close()
+            windowBindings[url] = nil
+            changedWindows[url] = nil
+            stage_ui_update[url] = nil
+            stage_camera_usage[url] = nil
+        end
     end
+    closeWindows = {}
 end
 
 local iui = ecs.interface "iui"
@@ -231,7 +234,7 @@ function iui.open(...)
 end
 
 function iui.get_datamodel(url)
-    local binding = window_bindings[url]
+    local binding = windowBindings[url]
     if not binding then
         return
     end
@@ -243,17 +246,17 @@ function iui.close(url)
 end
 
 function iui.is_open(url)
-    return window_bindings[url] ~= nil
+    return windowBindings[url] ~= nil
 end
 
 function iui.send(url, event, ...)
-    if window_bindings[url] then
+    if windowBindings[url] then
         world:pub {"ui_message_send", url, event, ...}
     end
 end
 
 function iui.call_datamodel_method(url, event, ...)
-    local binding = window_bindings[url]
+    local binding = windowBindings[url]
     if not binding then
         return
     end
@@ -266,16 +269,16 @@ function iui.call_datamodel_method(url, event, ...)
 
     func(binding.template, binding.datamodel, ...)
     if tracedoc.changed(binding.datamodel) then
-        datamodel_changed[url] = true
+        changedWindows[url] = true
     end
 end
 
 function iui.set_guide_progress(progress)
     guide_progress = progress
-    for url, binding in pairs(window_bindings) do
+    for url, binding in pairs(windowBindings) do
         if binding.datamodel then -- not all ui has datamodel
             binding.datamodel.guide_progress = progress
-            datamodel_changed[url] = true
+            changedWindows[url] = true
         end
     end
 end
@@ -299,18 +302,30 @@ function iui.convert_coord(x, y)
 end
 
 function iui.redirect(url, ...)
-    if window_bindings[url] then
+    if windowBindings[url] then
         world:pub {"rmlui_message_pub", url, ...}
     end
 end
 
 function iui.broadcast(...)
-    for url in pairs(window_bindings) do
+    for url in pairs(windowBindings) do
         world:pub {"rmlui_message_pub", url, ...}
+    end
+end
+
+function iui.register_leave(url)
+    leaveWindows[url] = true
+end
+
+function iui.leave()
+    for url in pairs(windowBindings) do
+        if leaveWindows[url] then
+            iui.close(url)
+        end
     end
 end
 
 -- for debuger
 function iui.add_datamodel_listener(url, func)
-    datamodel_listener[url] = func
+    windowListeners[url] = func
 end

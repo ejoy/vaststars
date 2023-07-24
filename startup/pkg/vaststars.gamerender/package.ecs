@@ -110,6 +110,9 @@ policy "render_updates"
     .require_system "road_system"
     .require_system "chimney_system"
 
+policy "gameplay"
+    .require_system "pick_object_sys"
+
 ----------------------------------------------------
 ----------------------------------------------------
 system "init_system"
@@ -117,6 +120,7 @@ system "init_system"
     .require_policy "engine_utils"
     .require_policy "render_updates"
     .require_policy "mod"
+    .require_policy "gameplay"
     .implement "init_system.lua"
     .method "init_world"
     .method "gameplay_update"
@@ -144,6 +148,8 @@ interface "iui"
     .method "is_open"
     .method "broadcast"
     .method "get_datamodel"
+    .method "register_leave"
+    .method "leave"
 
 system "camera_controller"
     .implement "engine/system/camera_controller.lua"
@@ -184,6 +190,7 @@ interface "idetail"
     .implement "detail_system.lua"
     .method "show"
     .method "focus"
+    .method "focus_non_building"
     .method "selected"
     .method "unselected"
 
@@ -199,11 +206,13 @@ interface "igameplay"
 
 system "pick_object_sys"
     .implement "pick_object_system.lua"
-    .method "update_world"
+    .method "prototype_restore"
 
 interface "ipick_object"
     .implement "pick_object_system.lua"
     .method "blur_pick"
+    .method "pick_road"
+
 ----------------------------------------------------
 ----------------------------------------------------
 -- render_updates
@@ -294,6 +303,7 @@ interface "iing_res_motion"
 
 system "road_system"
     .implement "render_updates/road.lua"
+    .method "gameworld_prebuild"
     .method "gameworld_build"
 
 system "chimney_system"

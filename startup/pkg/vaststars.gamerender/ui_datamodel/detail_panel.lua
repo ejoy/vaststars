@@ -14,7 +14,7 @@ local ilaboratory = require "gameplay.interface.laboratory"
 local ichest = require "gameplay.interface.chest"
 local building_detail = import_package "vaststars.prototype"("building_detail_config")
 local assembling_common = require "ui_datamodel.common.assembling"
-local lost_focus_mb = mailbox:sub {"lost_focus"}
+local iui = ecs.import.interface "vaststars.gamerender|iui"
 
 local UPS <const> = require("gameplay.interface.constant").UPS
 local CHEST_LIST_TYPES <const> = {"chest", "station_producer", "station_consumer", "hub"}
@@ -364,6 +364,8 @@ local function update_model(mdl)
 end
 local camera_dist
 function M:create(object_id)
+    iui.register_leave("detail_panel.rml")
+
     counter = update_interval
     local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
@@ -380,7 +382,7 @@ function M:create(object_id)
         object_id = object_id,
         icon = typeobject.icon,
         desc = typeobject.item_description,
-        prototype_name = iprototype.show_prototype_name(typeobject)
+        prototype_name = iprototype.display_name(typeobject)
     }
     last_inputs, last_ouputs = update_property_list(datamodel, get_entity_property_list(object_id))
     preinput = {}
@@ -416,10 +418,6 @@ local function get_delta(last, current, input)
 end
 
 function M:stage_ui_update(datamodel, object_id)
-    for _ in lost_focus_mb:unpack() do
-        world:pub {"rmlui_message_close", "detail_panel.rml"}
-    end
-
     if model_ready and model_inst then
         update_model(model_inst)
     end

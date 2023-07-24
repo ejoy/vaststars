@@ -1,0 +1,38 @@
+fx:
+  fs: fs.sc
+  fs_code: "\n#include \"common/default_fs_func.sh\"\n"
+  setting:
+    ALPHAMODE_OPAQUE: 1
+    GPU_SKINNING: 1
+    PACK_TANGENT_TO_QUAT: 1
+    WITH_NORMAL_ATTRIB: 0
+    WITH_TANGENT_ATTRIB: 1
+    lighting: on
+    shadow_cast: on
+    shadow_receive: on
+    subsurface: off
+  shader_type: PBR
+  vs: vs.sc
+  vs_code: "\n#include \"common/default_vs_func.sh\"\n"
+properties:
+  s_basecolor:
+    stage: 0
+    texture: /pkg/vaststars.resources/glb/wind-turbine-1.glb|images/wind_turbine.texture
+  s_emissive:
+    stage: 3
+    texture: /pkg/vaststars.resources/glb/wind-turbine-1.glb|images/wind_turbine_light.texture
+  s_metallic_roughness:
+    stage: 1
+    texture: /pkg/vaststars.resources/glb/wind-turbine-1.glb|images/wind_turbine_Metallic-wind_turbine_Roughness.texture
+  s_normal:
+    stage: 2
+    texture: /pkg/vaststars.resources/glb/wind-turbine-1.glb|images/wind_turbine_normal.texture
+  u_basecolor_factor: {1, 1, 1, 1}
+  u_emissive_factor: {1, 1, 1, 0}
+  u_pbr_factor: {1, 1, 1, 1}
+state:
+  ALPHA_REF: 0
+  CULL: NONE
+  DEPTH_TEST: GREATER
+  MSAA: true
+  WRITE_MASK: RGBAZ

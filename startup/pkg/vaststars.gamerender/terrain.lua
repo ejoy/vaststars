@@ -186,7 +186,8 @@ function terrain:get_mineral(x, y)
     if not hash then
         return
     end
-    return assert(self.mineral[hash]).mineral, hash
+    local m = assert(self.mineral[hash])
+    return m, hash
 end
 
 function terrain:can_place_on_mineral(x, y, w, h)

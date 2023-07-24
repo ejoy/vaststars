@@ -85,6 +85,9 @@ prototype "科研中心III" {
 
 
 prototype "砖石公路-I型" {
+    display_name = "砖石公路",
+    construct_name = "砖石公路-X型",
+    icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     building_category = 4,
     building_direction = {"N", "E"},
@@ -104,6 +107,9 @@ prototype "砖石公路-I型" {
 }
 
 prototype "砖石公路-L型" {
+    display_name = "砖石公路",
+    construct_name = "砖石公路-X型",
+    icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     building_category = 4,
     building_direction = {"N", "E", "S", "W"},
@@ -123,6 +129,9 @@ prototype "砖石公路-L型" {
 }
 
 prototype "砖石公路-T型" {
+    display_name = "砖石公路",
+    construct_name = "砖石公路-X型",
+    icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     building_category = 4,
     building_direction = {"N", "E", "S", "W"},
@@ -143,6 +152,9 @@ prototype "砖石公路-T型" {
 }
 
 prototype "砖石公路-O型" {
+    display_name = "砖石公路",
+    construct_name = "砖石公路-X型",
+    icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     building_category = 4,
     building_direction = {"N"},
@@ -159,6 +171,9 @@ prototype "砖石公路-O型" {
 }
 
 prototype "砖石公路-U型" {
+    construct_name = "砖石公路-X型",
+    display_name = "砖石公路",
+    icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     building_category = 4,
     building_direction = {"N", "E", "S", "W"},
@@ -177,7 +192,8 @@ prototype "砖石公路-U型" {
 }
 
 prototype "砖石公路-X型" {
-    show_prototype_name = "砖石公路",
+    display_name = "砖石公路",
+    construct_name = "砖石公路-X型",
     model = "prefabs/road/road_X.prefab",
     icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},

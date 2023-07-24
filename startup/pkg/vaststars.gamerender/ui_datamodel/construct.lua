@@ -27,14 +27,12 @@ local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local COLOR_INVALID <const> = math3d.constant "null"
 local COLOR_GREEN = math3d.constant("v4", {0.3, 1, 0, 1})
 local ichest = require "gameplay.interface.chest"
-local create_event_handler = require "ui_datamodel.common.event_handler"
 local ipower_line = ecs.require "power_line"
 local ipick_object = ecs.import.interface "vaststars.gamerender|ipick_object"
 local ilorry = ecs.import.interface "vaststars.gamerender|ilorry"
-local gameplay = import_package "vaststars.gameplay"
-local ibuilding = gameplay.interface "building"
 local ibackpack = require "gameplay.interface.backpack"
 local gesture_longpress_mb = world:sub{"gesture", "longpress"}
+local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 
 local rotate_mb = mailbox:sub {"rotate"}
 local build_mb = mailbox:sub {"build"}
@@ -49,9 +47,15 @@ local construct_entity_mb = mailbox:sub {"construct_entity"}
 local inventory_mb = mailbox:sub {"inventory"}
 local focus_tips_event = world:sub {"focus_tips"}
 local construct_mb = mailbox:sub {"construct"}
-local click_focus_button_mb = mailbox:sub {"selected"}
-local longpress_focus_button_mb = mailbox:sub {"longpress_selected"}
 local ipower = ecs.require "power"
+local main_button_tap_mb = mailbox:sub {"main_button_tap"}
+local main_button_longpress_mb = mailbox:sub {"main_button_longpress"}
+local start_laying_mb = mailbox:sub {"start_laying"}
+local finish_laying_mb = mailbox:sub {"finish_laying"}
+local start_teardown_mb = mailbox:sub {"start_teardown"}
+local finish_teardown_mb = mailbox:sub {"finish_teardown"}
+local remove_one_mb = mailbox:sub {"remove_one"}
+
 local gesture_tap_mb = world:sub{"gesture", "tap"}
 local gesture_pan_mb = world:sub {"gesture", "pan"}
 
@@ -68,91 +72,45 @@ local excluded_pickup_id -- object id
 local pick_lorry_id
 local selected_obj
 
--- TODO: remove this
-local event_handler = create_event_handler(
-    mailbox,
-    {
-        "start_laying",
-        "finish_laying",
-        "start_teardown",
-        "finish_teardown",
-        "cancel",
-        "place_one",
-        "remove_one",
-        -- "quit", -- "quit" event is handled in the same way as construct building
-    },
-    function(event)
-        if builder then
-            builder[event](builder, builder_datamodel)
-        end
-    end
-)
-
-local function __on_pick_object(datamodel, o)
+local function __on_pick_building(datamodel, o)
     local object = o.object
-    local prototype_name = object.prototype_name
-
-    if datamodel.is_concise_mode then
-        iui.open({"detail_panel.rml"}, object.id)
+    if excluded_pickup_id and excluded_pickup_id == object.id then
         return
     end
 
-    local typeobject = iprototype.queryByName(prototype_name)
-    datamodel.focus_building_icon = typeobject.icon
-
-    iui.close("building_menu.rml")
-    iui.close("building_menu_longpress.rml")
-    iui.close("detail_panel.rml")
-    iui.close("mine_detail_panel.rml")
-
-    if datamodel.status == "normal" or datamodel.status == "focus" then
-        selected_obj = o
-        idetail.focus(object.id)
-        datamodel.status = "focus"
-    else
+    if datamodel.is_concise_mode then
         iui.open({"detail_panel.rml"}, object.id)
-
-        if o.class == CLASS.Object then
-            if selected_obj.id == o.id then
-                local object = o.object
-                icamera_controller.focus_on_position(object.srt.t)
-
-                idetail.show(object.id)
-                idetail.focus(object.id)
-                idetail.selected(object)
-                selected_obj = o
-            else
-                selected_obj = o
-                idetail.focus(object.id)
-                datamodel.status = "focus"
-            end
-        end
-
-        iui.open({"detail_panel.rml"}, object.id)
-    end
-end
-
-local function __on_pick_building(datamodel, o)
-    local object = o.object
-    if not excluded_pickup_id or excluded_pickup_id == object.id then
-        __on_pick_object(datamodel, o)
         return true
     end
-end
 
-local function __on_pick_mineral(datamodel, mineral)
-    iui.close("detail_panel.rml")
-    iui.close("mine_detail_panel.rml")
-    local typeobject = iprototype.queryByName(mineral)
-    iui.open({"mine_detail_panel.rml"}, typeobject.icon, typeobject.mineral_name or iprototype.show_prototype_name(typeobject))
+    local typeobject = iprototype.queryByName(object.prototype_name)
+    datamodel.focus_building_icon = typeobject.icon
+
+    selected_obj = o
+    datamodel.status = "focus"
+
+    idetail.focus(object.id)
     return true
 end
 
-local function __on_pick_lorry(datamodel, prototype)
-    iui.close("detail_panel.rml")
-    iui.close("mine_detail_panel.rml")
-    local typeobject = iprototype.queryById(prototype)
-    iui.open({"mine_detail_panel.rml"}, typeobject.icon, typeobject.name)
+local function __on_pick_non_building(datamodel, o, force)
+    local typeobject = iprototype.queryByName(o.name)
+
+    if datamodel.is_concise_mode and force ~= true then
+        iui.open({"non_building_detail_panel.rml"}, typeobject.icon, o.name)
+        return true
+    end
+
+    datamodel.focus_building_icon = typeobject.icon
+
+    selected_obj = o
+    datamodel.status = "focus"
+
+    if o.x and o.y and o.w and o.h then
+        idetail.focus_non_building(o.x, o.y, o.w, o.h)
+    else
+        idetail.unselected()
+    end
     return true
 end
 
@@ -195,7 +153,8 @@ local function __clean(datamodel)
     idetail.unselected()
     datamodel.is_concise_mode = false
     datamodel.focus_building_icon = ""
-    iui.close("build.rml")
+    iui.close("build.rml") -- TODO: remove this
+    iui.close("construct_road_or_pipe.rml")
     datamodel.status = "normal"
 end
 
@@ -260,8 +219,6 @@ function M:update_tech(datamodel, tech)
 end
 
 function M:stage_ui_update(datamodel)
-    event_handler()
-
     for _ in rotate_mb:unpack() do
         if builder then
             builder:rotate_pickup_object(builder_datamodel)
@@ -371,8 +328,6 @@ local function close_focus_tips(tech_node)
 end
 
 local function __construct_entity(typeobject)
-    iui.close("detail_panel.rml")
-    iui.close("mine_detail_panel.rml")
     idetail.unselected()
     gameplay_core.world_update = false
 
@@ -416,7 +371,7 @@ function M:stage_camera_usage(datamodel)
 
     for _, _, e in gesture_pan_mb:unpack() do
         if e.state == "began" then
-            iui.broadcast("lost_focus")
+            iui.leave()
         end
         if e.state == "ended" and builder then
             builder:touch_end(builder_datamodel)
@@ -427,6 +382,7 @@ function M:stage_camera_usage(datamodel)
     local leave = true
     local gesture_tap_changed = false
     for _, _, v in gesture_tap_mb:unpack() do
+        iui.leave()
         gesture_tap_changed = true
 
         local x, y = v.x, v.y
@@ -442,7 +398,7 @@ function M:stage_camera_usage(datamodel)
                     idetail.unselected()
                     pick_lorry_id = o.id
 
-                    if __on_pick_lorry(datamodel, o.lorry.classid) then
+                    if __on_pick_non_building(datamodel, o) then
                         o.lorry:set_outline(true)
                         leave = false
                     end
@@ -452,29 +408,11 @@ function M:stage_camera_usage(datamodel)
                         pick_lorry_id = nil
                         leave = false
                     end
-                elseif o and o.class == CLASS.Mineral then
-                    if __on_pick_mineral(datamodel, o.mineral) then
+                elseif o and (o.class == CLASS.Mineral or o.class == CLASS.Mountain or o.class == CLASS.Road)then
+                    if __on_pick_non_building(datamodel, o) then
                         __unpick_lorry(pick_lorry_id)
                         pick_lorry_id = nil
                         leave = false
-
-                        idetail.unselected()
-                    end
-                elseif o and o.class == CLASS.Mountain then
-                    if __on_pick_mineral(datamodel, o.mountain) then
-                        __unpick_lorry(pick_lorry_id)
-                        pick_lorry_id = nil
-                        leave = false
-
-                        idetail.unselected()
-                    end
-                elseif o and o.class == CLASS.Road then
-                    if __on_pick_mineral(datamodel, o.prototype_name) then
-                        __unpick_lorry(pick_lorry_id)
-                        pick_lorry_id = nil
-                        leave = false
-
-                        idetail.unselected()
                     end
                 else
                     __unpick_lorry(pick_lorry_id)
@@ -510,9 +448,7 @@ function M:stage_camera_usage(datamodel)
     end
 
     for _, _, _, object_id in teardown_mb:unpack() do
-        iui.close("building_menu_longpress.rml")
-        iui.close("detail_panel.rml")
-        iui.close("mine_detail_panel.rml")
+        iui.leave()
         idetail.unselected()
 
         local object = assert(objects:get(object_id))
@@ -536,8 +472,7 @@ function M:stage_camera_usage(datamodel)
             end
         end
 
-        local gameworld = gameplay_core.get_world()
-        ibuilding.destroy(gameworld, gameworld.entity[object.gameplay_eid])
+        igameplay.destroy_entity(object.gameplay_eid)
 
         if typeobject.power_network_link or typeobject.power_supply_distance then
             ipower:build_power_network(gw)
@@ -562,7 +497,7 @@ function M:stage_camera_usage(datamodel)
             gameplay_core.world_update = true
         end)
 
-        world:pub {"ui_message", "leave"}
+        iui.leave()
     end
 
     for _, _, _, object_id in move_md:unpack() do
@@ -626,33 +561,54 @@ function M:stage_camera_usage(datamodel)
         end)
     end
 
-    for _ in click_focus_button_mb:unpack() do
+    for _ in main_button_tap_mb:unpack() do
         if datamodel.status == "selected" then
-            iui.close("detail_panel.rml")
-            iui.close("mine_detail_panel.rml")
-            iui.close("building_menu.rml")
-            iui.close("building_menu_longpress.rml")
+            __unpick_lorry(pick_lorry_id)
+            iui.leave()
             idetail.unselected()
             datamodel.status = "normal"
             datamodel.focus_building_icon = ""
         else
             if selected_obj then
-                if datamodel.status == "focus" then
-                    datamodel.status = "selected"
+                datamodel.status = "selected"
+
+                if selected_obj.class == CLASS.Object then
+                    local object = selected_obj.object
+                    icamera_controller.focus_on_position(object.srt.t)
+
+                    idetail.show(object.id)
+                    idetail.selected(object)
+                    iui.open({"detail_panel.rml"}, object.id)
+                else
+                    if selected_obj.get_pos then
+                        icamera_controller.focus_on_position(selected_obj:get_pos())
+                    end
+
+                    if iprototype.is_road(selected_obj.name) or iprototype.is_pipe(selected_obj.name) or iprototype.is_pipe_to_ground(selected_obj.name) then
+                        datamodel.is_concise_mode = true
+                        datamodel.focus_building_icon = ""
+                        iui.open({"construct_road_or_pipe.rml"}, selected_obj.name, {show_start_laying = true})
+                    end
+
+                    local typeobject = iprototype.queryByName(selected_obj.name)
+                    iui.open({"non_building_detail_panel.rml"}, typeobject.icon, iprototype.display_name(typeobject))
                 end
-                __on_pick_object(datamodel, selected_obj)
             else
                 log.error("no target selected")
             end
         end
     end
 
-    for _ in longpress_focus_button_mb:unpack() do
+    for _ in main_button_longpress_mb:unpack() do
+        iui.leave()
+
         assert(selected_obj)
-        local object = selected_obj.object
-        if not excluded_pickup_id or excluded_pickup_id == object.id then
-            idetail.focus(object.id)
-            iui.close("building_menu.rml")
+        if selected_obj.class == CLASS.Object then
+            local object = selected_obj.object
+            if excluded_pickup_id and excluded_pickup_id == object.id then
+                goto continue
+            end
+
             idetail.selected(object)
 
             local prototype_name = object.prototype_name
@@ -662,8 +618,106 @@ function M:stage_camera_usage(datamodel)
             end
 
             iui.open({"building_menu_longpress.rml"}, object.id)
+        elseif selected_obj.class == CLASS.Road then
+            iui.open({"construct_road_or_pipe.rml"}, selected_obj.name, {show_remove_one = true, show_start_teardown = true})
         end
+
         ::continue::
+    end
+
+    for _, _, _, prototype_name in start_laying_mb:unpack() do
+        if iprototype.is_road(prototype_name) then
+            __switch_status("construct", function()
+                assert(selected_obj)
+                if selected_obj.get_pos then
+                    icamera_controller.focus_on_position(selected_obj:get_pos())
+                end
+
+                gameplay_core.world_update = false
+                local typeobject = iprototype.queryByName(prototype_name)
+                assert(typeobject.construct_name)
+                typeobject = iprototype.queryByName(typeobject.construct_name)
+                builder_ui = "construct_road_or_pipe.rml"
+                builder_datamodel = iui.get_datamodel("construct_road_or_pipe.rml")
+                builder_datamodel.is_concise_mode = true
+                builder = create_roadbuilder()
+                builder:new_entity(builder_datamodel, typeobject, selected_obj.x, selected_obj.y)
+                builder:start_laying(builder_datamodel)
+            end)
+        else
+            assert(false)
+        end
+    end
+
+    for _, _, _, prototype_name in start_teardown_mb:unpack() do
+        if iprototype.is_road(prototype_name) then
+            __switch_status("construct", function()
+                assert(selected_obj)
+                if selected_obj.get_pos then
+                    icamera_controller.focus_on_position(selected_obj:get_pos())
+                end
+
+                gameplay_core.world_update = false
+                local typeobject = iprototype.queryByName(prototype_name)
+                assert(typeobject.construct_name)
+                typeobject = iprototype.queryByName(typeobject.construct_name)
+                builder_ui = "construct_road_or_pipe.rml"
+                builder_datamodel = iui.get_datamodel("construct_road_or_pipe.rml")
+                builder_datamodel.is_concise_mode = true
+                builder_datamodel.show_remove_one = false
+                builder = create_roadbuilder()
+                builder:new_entity(builder_datamodel, typeobject, selected_obj.x, selected_obj.y)
+                builder:start_teardown(builder_datamodel)
+            end)
+        else
+            assert(false)
+        end
+    end
+
+    for _ in finish_laying_mb:unpack() do
+        assert(builder)
+        local to_x, to_y = builder:finish_laying(builder_datamodel)
+        __on_pick_non_building(datamodel, ipick_object.pick_road(to_x, to_y), true)
+
+        builder:clean(builder_datamodel)
+        builder, builder_datamodel = nil, nil
+
+        iui.open({"construct_road_or_pipe.rml"}, selected_obj.name, {show_start_laying = true})
+    end
+
+    for _ in finish_teardown_mb:unpack() do
+        assert(builder)
+        builder:finish_teardown(builder_datamodel)
+
+        __switch_status("default", function()
+            gameplay_core.world_update = true
+            __clean(datamodel)
+        end)
+    end
+
+    for _, _, _, prototype_name in remove_one_mb:unpack() do
+        if iprototype.is_road(prototype_name) then
+            assert(selected_obj)
+            if selected_obj.get_pos then
+                icamera_controller.focus_on_position(selected_obj:get_pos())
+            end
+
+            local typeobject = iprototype.queryByName(prototype_name)
+            assert(typeobject.construct_name)
+            typeobject = iprototype.queryByName(typeobject.construct_name)
+            builder_ui = "construct_road_or_pipe.rml"
+            builder_datamodel = iui.get_datamodel("construct_road_or_pipe.rml")
+            builder = create_roadbuilder()
+            builder:new_entity(builder_datamodel, typeobject, selected_obj.x, selected_obj.y)
+            builder:remove_one(builder_datamodel)
+
+            __switch_status("default", function()
+                gameplay_core.world_update = true
+                __clean(datamodel)
+            end)
+        else
+            assert(false)
+        end
     end
 
     iobject.flush()

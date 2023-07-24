@@ -5,7 +5,6 @@ local w = world.w
 local gameplay_core = require "gameplay.core"
 local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
-local vsobject_manager = ecs.require "vsobject_manager"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local itask = ecs.require "task"
 local icamera_controller = ecs.interface "icamera_controller"
@@ -19,12 +18,9 @@ local station_weight_decrease_mb = mailbox:sub {"station_weight_decrease"}
 local station_lorry_increase_mb = mailbox:sub {"station_lorry_increase"}
 local station_lorry_decrease_mb = mailbox:sub {"station_lorry_decrease"}
 
-local close_mb = mailbox:sub {"close"}
 local ui_click_mb = mailbox:sub {"ui_click"}
 local pickup_item_mb = mailbox:sub {"pickup_item"}
 local place_item_mb = mailbox:sub {"place_item"}
-local lost_focus_mb = mailbox:sub {"lost_focus"}
-local unselected_mb = mailbox:sub {"unselected"}
 
 local ichest = require "gameplay.interface.chest"
 local ibackpack = require "gameplay.interface.backpack"
@@ -44,84 +40,6 @@ local MAX_STATION_WEIGHTS <const> = require("gameplay.interface.constant").MAX_S
 local function __show_set_item(typeobject)
     return iprototype.has_types(typeobject.type, "station_producer", "station_consumer", "hub")
 end
-
-local __lorry_factory_update = interval_call(800, function(datamodel, object_id)
-    local object = assert(objects:get(object_id))
-    local e = gameplay_core.get_entity(assert(object.gameplay_eid))
-    if not e then
-        return
-    end
-    local lorry_factory_inc_lorry, lorry_factory_dec_lorry = false, false
-    local lorry_factory_icon, lorry_factory_count = "", 0
-    if e.lorry_factory then
-        assert(e.chest)
-        lorry_factory_inc_lorry = true
-        lorry_factory_dec_lorry = false
-        local slot = assert(ichest.chest_get(gameplay_core.get_world(), e.chest, 1))
-        lorry_factory_icon = iprototype.queryById(slot.item).icon
-        lorry_factory_count = slot.count
-    end
-    datamodel.lorry_factory_icon = lorry_factory_icon
-    datamodel.lorry_factory_count = lorry_factory_count
-    datamodel.lorry_factory_inc_lorry = lorry_factory_inc_lorry
-    datamodel.lorry_factory_dec_lorry = lorry_factory_dec_lorry
-end)
-
-local function __drone_depot_update(datamodel, object_id)
-    local object = assert(objects:get(object_id))
-    local e = gameplay_core.get_entity(assert(object.gameplay_eid))
-    if not e then
-        return
-    end
-    local typeobject = iprototype.queryByName(object.prototype_name)
-    if not iprototype.has_type(typeobject.type, "hub") then
-        return
-    end
-    local c = ichest.chest_get(gameplay_core.get_world(), e.hub, 1)
-    if not c then
-        return
-    end
-    local item_typeobject = iprototype.queryById(c.item)
-    datamodel.drone_depot_icon = item_typeobject.icon
-    datamodel.drone_depot_count = c.amount
-end
-
-local __drone_depot_update_interval = interval_call(800, __drone_depot_update)
-
-local __station_update = function(datamodel, object_id)
-    local object = assert(objects:get(object_id))
-    local e = gameplay_core.get_entity(assert(object.gameplay_eid))
-    if not e then
-        return
-    end
-    local typeobject = iprototype.queryByName(object.prototype_name)
-    if not iprototype.has_types(typeobject.type, "station_producer", "station_consumer") then
-        return
-    end
-    local chest_component = ichest.get_chest_component(e)
-    local c = ichest.chest_get(gameplay_core.get_world(), e[chest_component], 1)
-    if not c then
-        return
-    end
-
-    if e.station_producer then
-        datamodel.station_weight_increase = true
-        datamodel.station_weight_decrease = true
-        datamodel.station_lorry_increase = false
-        datamodel.station_lorry_decrease = false
-    else
-        datamodel.station_weight_increase = false
-        datamodel.station_weight_decrease = false
-        datamodel.station_lorry_increase = true
-        datamodel.station_lorry_decrease = true
-    end
-
-    local item_typeobject = iprototype.queryById(c.item)
-    datamodel.station_item_icon = item_typeobject.icon
-    datamodel.station_item_count = c.amount
-
-end
-local __station_update_interval = interval_call(800, __station_update)
 
 local function __get_moveable_count(object_id)
     local object = assert(objects:get(object_id))
@@ -223,6 +141,8 @@ end, false)
 ---------------
 local M = {}
 function M:create(object_id)
+    iui.register_leave("building_menu.rml")
+
     local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if not e then
@@ -231,6 +151,11 @@ function M:create(object_id)
     local typeobject = iprototype.queryByName(object.prototype_name)
     local show_set_recipe = typeobject.allow_set_recipt and true or false
     local show_set_item = __show_set_item(typeobject)
+    local lorry_factory_inc_lorry = false
+    local station_weight_increase = false
+    local station_weight_decrease = false
+    local station_lorry_increase = false
+    local station_lorry_decrease = false
 
     local pickup_item, place_item = false, false
     if iprototype.has_pickup(typeobject.name) then
@@ -243,22 +168,31 @@ function M:create(object_id)
         pickup_item = false
         place_item = false
     end
+    if e.lorry_factory then
+        lorry_factory_inc_lorry = true
+    end
+    if e.station_producer then
+        station_weight_increase = true
+        station_weight_decrease = true
+        station_lorry_increase = false
+        station_lorry_decrease = false
+    end
+    if e.station_consumer then
+        station_weight_increase = false
+        station_weight_decrease = false
+        station_lorry_increase = true
+        station_lorry_decrease = true
+    end
 
     local datamodel = {
         show_set_recipe = show_set_recipe,
         show_set_item = show_set_item,
-        lorry_factory_icon = "",
-        lorry_factory_count = 0,
-        lorry_factory_inc_lorry = false,
+        lorry_factory_inc_lorry = lorry_factory_inc_lorry,
         lorry_factory_dec_lorry = false,
-        drone_depot_icon = "",
-        drone_depot_count = 0,
-        station_item_icon = "",
-        station_item_count = 0,
-        station_weight_increase = false,
-        station_weight_decrease = false,
-        station_lorry_increase = false,
-        station_lorry_decrease = false,
+        station_weight_increase = station_weight_increase,
+        station_weight_decrease = station_weight_decrease,
+        station_lorry_increase = station_lorry_increase,
+        station_lorry_decrease = station_lorry_decrease,
         pickup_item = pickup_item,
         place_item = place_item,
         pickup_item_count = __get_moveable_count(object_id),
@@ -267,8 +201,6 @@ function M:create(object_id)
         prototype_name = object.prototype_name,
     }
 
-    __station_update(datamodel, object_id)
-    __drone_depot_update(datamodel, object_id)
     return datamodel
 end
 
@@ -300,7 +232,6 @@ function M:update(datamodel, object_id, recipe_name)
         return
     end
     datamodel.recipe_name = recipe_name
-    __lorry_factory_update(datamodel, object_id)
     return true
 end
 
@@ -311,9 +242,6 @@ function M:stage_ui_update(datamodel, object_id)
         assert(false)
     end
 
-    __lorry_factory_update(datamodel, object_id)
-    __drone_depot_update_interval(datamodel, object_id)
-    __station_update_interval(datamodel, object_id)
     __moveable_count_update(datamodel, object_id)
 
     for _, _, _, object_id in set_recipe_mb:unpack() do
@@ -334,11 +262,6 @@ function M:stage_ui_update(datamodel, object_id)
             assert(false)
         end
         iui.open({"item_config.rml"}, object_id, interface)
-    end
-
-    for _, _, _, object_id in close_mb:unpack() do
-        local vsobject = vsobject_manager:get(object_id)
-        vsobject:modifier("start", {name = "over", forwards = true})
     end
 
     for _ in lorry_factory_inc_lorry_mb:unpack() do
@@ -398,6 +321,7 @@ function M:stage_ui_update(datamodel, object_id)
     end
 
     for _, _, _, object_id in pickup_item_mb:unpack() do
+        iui.leave()
         local object = assert(objects:get(object_id))
         local sp = icamera_controller.world_to_screen(object.srt.t)
         local sp_x, sp_y = math3d.index(sp, 1), math3d.index(sp, 2)
@@ -459,8 +383,6 @@ function M:stage_ui_update(datamodel, object_id)
             if #message > 0 then
                 iui.send("message_pop.rml", "item", {action = "up", left = sp_x, top = sp_y, items = message})
             end
-            iui.close("detail_panel.rml")
-            world:pub {"rmlui_message_close", "building_menu.rml"}
 
             local items = ichest.collect_item(gameplay_core.get_world(), e.chest)
             if not next(items) then
@@ -566,14 +488,6 @@ function M:stage_ui_update(datamodel, object_id)
         end
 
         ::continue::
-    end
-
-    for _ in lost_focus_mb:unpack() do
-        world:pub {"rmlui_message_close", "building_menu.rml"}
-    end
-
-    for _ in unselected_mb:unpack() do
-        iui.redirect("construct.rml", "unselected")
     end
 end
 

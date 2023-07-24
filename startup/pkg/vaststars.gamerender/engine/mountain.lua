@@ -74,7 +74,7 @@ function M:create()
     ism.create_sm_entity(s)
 end
 
-function M:get_mountain(x, y)
+function M:has_mountain(x, y)
     return (cache[x][y] == 1)
 end
 

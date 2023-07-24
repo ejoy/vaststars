@@ -97,9 +97,7 @@ local function repair(world, map, road_cache)
     return map
 end
 
-function road_sys:gameworld_build()
-    iroadnet:clear("road")
-
+function road_sys:gameworld_prebuild()
     local road = {}
     local map = {}
     local world = gameplay_core.get_world()
@@ -109,7 +107,12 @@ function road_sys:gameworld_build()
         road[key] = e.eid
     end
     repair(world, map, road)
+end
 
+function road_sys:gameworld_build()
+    local world = gameplay_core.get_world()
+
+    iroadnet:clear("road")
     for e in world.ecs:select "road building:in REMOVED:absent" do
         local typeobject = iprototype.queryById(e.building.prototype)
         local shape, dir = iroadnet_converter.to_shape(typeobject.name), iprototype.dir_tostring(e.building.direction)

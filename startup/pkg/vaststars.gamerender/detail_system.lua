@@ -3,11 +3,9 @@ local world = ecs.world
 local w = world.w
 
 local iui = ecs.import.interface "vaststars.gamerender|iui"
-local math3d = require "math3d"
 local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
 local idetail = ecs.interface "idetail"
-local icamera_controller = ecs.import.interface "vaststars.gamerender|icamera_controller"
 local gameplay_core = require "gameplay.core"
 local create_selected_boxes = ecs.require "selected_boxes"
 local terrain = ecs.require "terrain"
@@ -81,20 +79,13 @@ local function __fluidbox_str(eid)
 end
 
 function idetail.show(object_id)
-    iui.close "help_panel.rml"
-    iui.close "mine_detail_panel.rml"
-
-    --
     local object = assert(objects:get(object_id))
     local typeobject = iprototype.queryByName(object.prototype_name)
 
     idetail.selected(object)
     if typeobject.building_menu ~= false then
         iui.open({"building_menu.rml"}, object_id)
-    else
-        iui.close("building_menu.rml")
     end
-    iui.close("building_menu_longpress.rml")
 
     do
         local vsobject = assert(vsobject_manager:get(object.id), ("(%s) vsobject not found"):format(object.prototype_name))
@@ -185,6 +176,19 @@ do
             o:remove()
         end
         temp_objects = {}
+    end
+
+    function idetail.focus_non_building(x, y, w, h)
+        idetail.unselected()
+
+        local pos = terrain:get_position_by_coord(x, y, w, h)
+        temp_objects[#temp_objects+1] = create_selected_boxes(
+            {
+                "/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab",
+                "/pkg/vaststars.resources/prefabs/selected-box-no-animation-line.prefab",
+            },
+            pos, SPRITE_COLOR.SELECTED_OUTLINE, w, h
+        )
     end
 
     function idetail.focus(object_id)

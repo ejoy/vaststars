@@ -170,13 +170,6 @@
             function start.onLongPress(areaid)
                 start.areaid = (start.areaid == areaid) and 0 or areaid
             end
-
-            ui_sys.addEventListener({
-                ["leave"] = function()
-                    ui_sys.pub {"close_detail"}
-                    ui_sys.close()
-                end,
-            })
         </script>
     </head>
     <body style = "pointer-events: none; justify-content: center; align-items: center;">

@@ -56,7 +56,7 @@ function M:stage_ui_update(datamodel)
 
     for _ in quit_mb:unpack() do
         gameplay_core.world_update = true
-        world:pub {"rmlui_message_close", "main_menu.rml"}
+        iui.close("main_menu.rml")
     end
 end
 

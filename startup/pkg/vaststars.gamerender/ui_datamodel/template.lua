@@ -5,6 +5,7 @@ local load_template_mb = mailbox:sub {"load_template"}
 local new_game = ecs.require "main_menu_manager".new_game
 local fs = require "filesystem"
 local debugger <const> = require "debugger"
+local iui = ecs.import.interface "vaststars.gamerender|iui"
 
 ---------------
 local M = {}
@@ -30,7 +31,7 @@ end
 function M:stage_camera_usage(datamodel)
     for _, _, _, filename in load_template_mb:unpack() do
         debugger.set_free_mode(true)
-        world:pub {"rmlui_message_close", "template.rml"}
+        iui.close("template.rml")
         new_game("free", filename)
     end
 end

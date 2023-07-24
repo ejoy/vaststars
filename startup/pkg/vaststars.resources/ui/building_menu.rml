@@ -55,21 +55,13 @@
                 ui_sys.pub {"ui_click", command}
             end
 
-            ui_sys.addEventListener({
-                ["leave"] = function()
-                    ui_sys.pub {"close", start.object_id}
-                    ui_sys.close()
-                end,
-            })
-
             ui_sys.mapping(start, {
                 {
                     function(_)
                         handler(start)
                     end,
                     "show_set_recipe", "show_set_item",
-                    "drone_depot_icon", "station_item_icon",
-                    "lorry_factory_icon", "lorry_factory_count", "lorry_factory_inc_lorry", "lorry_factory_dec_lorry",
+                    "lorry_factory_inc_lorry", "lorry_factory_dec_lorry",
                     "guide_progress", "pickup_item_count", "place_item_count",
                     "station_weight_increase",
                 }
