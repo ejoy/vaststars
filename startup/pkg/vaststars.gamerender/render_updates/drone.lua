@@ -172,6 +172,14 @@ local function remove_drone(eid)
     end
 end
 
+local function __get_drone_height(location)
+    local x, y = ((location >> 23) & 0x1FF) // 2, ((location >> 14) & 0x1FF) // 2
+    local object = objects:coord(x, y)
+    if object then
+        return iprototype.queryByName(object.prototype_name).drone_height
+    end
+end
+
 local function __get_position(location)
     local x, y = ((location >> 23) & 0x1FF) // 2, ((location >> 14) & 0x1FF) // 2
     local object = objects:coord(x, y)
@@ -228,7 +236,6 @@ function drone_sys:gameworld_update()
 
                     local from = __get_position(drone.prev)
                     local to = __get_position(drone.next)
-
                     -- status : go_home
                     --print("berth1:", e.eid, drone.maxprogress, drone.prev, drone.next, drone.progress)
                     if get_berth(drone.next) == BERTH_HOME then
@@ -246,7 +253,16 @@ function drone_sys:gameworld_update()
                             world:create_object(item_prefab)
                             current:set_item(item_prefab)
                         end
-                        drone_task[#drone_task + 1] = {flyid, current, from, to}
+                        local frome_height = __get_drone_height(drone.prev)
+                        local to_height = __get_drone_height(drone.next)
+                        local drone_height = fly_height
+                        if frome_height and drone_height < frome_height then
+                            fly_height = frome_height
+                        end
+                        if to_height and drone_height < to_height then
+                            drone_height = to_height
+                        end
+                        drone_task[#drone_task + 1] = {flyid, current, from, to, drone_height}
                     end
                 elseif get_berth(drone.prev) == BERTH_HOME and not current.to_home then
                     -- status : to_home
@@ -263,7 +279,7 @@ function drone_sys:gameworld_update()
     for _, task in ipairs(drone_task) do
         local flyid = task[1]
         local to = math3d.add(task[4], {same_dest_offset[flyid], 0, 0})
-        task[2]:flyto(flyid, fly_height, task[3], to, false)
+        task[2]:flyto(flyid, task[5], task[3], to, false)
         same_dest_offset[flyid] = same_dest_offset[flyid] + drone_offset
     end
 end
