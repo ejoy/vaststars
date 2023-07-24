@@ -69,7 +69,8 @@ local function _package_files(root)
         "/pkg/mod.road/assets/textures/normal.texture",
         "/pkg/ant.terrain/assets/shaders/water.sh",
         "/pkg/ant.terrain/assets/water.material",
-        "/pkg/ant.terrain/assets/water2.material"
+        "/pkg/ant.terrain/assets/water2.material",
+        "/pkg/ant.ecs/component.lua",
     }
 
     local function _skip_ext(f)
