@@ -409,12 +409,14 @@ function M:stage_camera_usage(datamodel)
                         leave = false
                     end
                 elseif o and o.class == CLASS.Object then
+                    idetail.unselected()
                     if __on_pick_building(datamodel, o) then
                         __unpick_lorry(pick_lorry_id)
                         pick_lorry_id = nil
                         leave = false
                     end
                 elseif o and (o.class == CLASS.Mineral or o.class == CLASS.Mountain or o.class == CLASS.Road)then
+                    idetail.unselected()
                     if __on_pick_non_building(datamodel, o) then
                         __unpick_lorry(pick_lorry_id)
                         pick_lorry_id = nil
@@ -456,6 +458,9 @@ function M:stage_camera_usage(datamodel)
     for _, _, _, object_id in teardown_mb:unpack() do
         iui.leave()
         idetail.unselected()
+        datamodel.status = "normal"
+        datamodel.focus_building_icon = ""
+        selected_obj = nil
 
         local object = assert(objects:get(object_id))
         local gw = gameplay_core.get_world()

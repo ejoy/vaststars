@@ -5,10 +5,15 @@ local w = world.w
 local iprototype = require "gameplay.interface.prototype"
 local assetmgr = import_package "ant.asset"
 local iterrain = ecs.require "terrain"
-local irecipe = require "gameplay.interface.recipe"
 local icanvas = ecs.require "engine.canvas"
 local math3d = require "math3d"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
+local gameplay_core = require "gameplay.core"
+local FLUIDBOXES_IO_TYPE <const> = {
+    ["in"] = "input",
+    ["out"] = "output",
+}
+local FLUIDBOXES <const> = {"in1","in2","in3","in4","out1","out2","out3"}
 
 local fs = require "filesystem"
 local datalist = require "datalist"
@@ -140,23 +145,22 @@ local function __create_fluid_indication_arrow(connection_x, connection_y, conne
     )
 end
 
-local function __create_icons(self, typeobject, recipe, building_srt, dir)
-    local recipe_typeobject = assert(iprototype.queryById(recipe))
-    local t = {
-        {"ingredients", "input"},
-        {"results", "output"},
-    }
-
+local function __create_icons(self, typeobject, gameplay_eid, building_srt, dir)
+    local e = assert(gameplay_core.get_entity(gameplay_eid))
     local begin_x, begin_y = __calc_begin_xy(building_srt.t[1], building_srt.t[3], iprototype.rotate_area(typeobject.area, dir))
 
-    for _, r in ipairs(t) do
-        for idx, v in ipairs(irecipe.get_elements(recipe_typeobject[r[1]])) do
-            if iprototype.is_fluid_id(v.id) then
-                local c = assert(typeobject.fluidboxes[r[2]][idx])
+    if e.fluidboxes then
+        for _, classify in ipairs(FLUIDBOXES) do
+            local iotype, idx = classify:match("^(%a+)(%d+)$")
+            iotype, idx = assert(FLUIDBOXES_IO_TYPE[iotype]), assert(tonumber(idx))
+
+            local fluid = e.fluidboxes[classify.."_fluid"]
+            if fluid ~= 0 then
+                local c = assert(typeobject.fluidboxes[iotype][idx])
                 local connection = assert(c.connections[1])
                 local connection_x, connection_y, connection_dir = iprototype.rotate_connection(connection.position, dir, typeobject.area)
-                __create_icon(v.id, begin_x, begin_y, connection_x, connection_y)
-                __create_fluid_indication_arrow(connection_x, connection_y, connection_dir, r[2], begin_x, begin_y)
+                __create_icon(fluid, begin_x, begin_y, connection_x, connection_y)
+                __create_fluid_indication_arrow(connection_x, connection_y, connection_dir, iotype, begin_x, begin_y)
             end
         end
     end
@@ -185,7 +189,7 @@ function mt:on_position_change(building_srt, dir)
     if dir ~= self.dir then
         icanvas.remove_item(icanvas.types().PICKUP_ICON, 0)
         obj:send("iom", "set_position", {0, 0, 0})
-        __create_icons(self, self.typeobject, self.recipe, building_srt, dir)
+        __create_icons(self, self.typeobject, self.gameplay_eid, building_srt, dir)
         self.dir = dir
     end
 end
@@ -194,7 +198,7 @@ function mt:on_status_change(status)
 end
 
 local m = {}
-function m.create(typeobject, dir, recipe, building_srt)
+function m.create(typeobject, dir, gameplay_eid, building_srt)
     local self = setmetatable({}, mt)
     self.typeobject = typeobject
     if not typeobject.fluidboxes then
@@ -202,9 +206,9 @@ function m.create(typeobject, dir, recipe, building_srt)
     end
 
     self.dir = dir
-    self.recipe = recipe
+    self.gameplay_eid = gameplay_eid
     self.position = building_srt.t
-    __create_icons(self, typeobject, recipe, building_srt, dir)
+    __create_icons(self, typeobject, gameplay_eid, building_srt, dir)
     icanvas.show(icanvas.types().PICKUP_ICON, true)
     return self
 end

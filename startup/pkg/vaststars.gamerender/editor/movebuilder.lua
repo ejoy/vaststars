@@ -297,7 +297,7 @@ local function __new_entity(self, datamodel, typeobject)
     }
 
     if e.assembling and e.assembling.recipe ~= 0 then
-        self.pickup_components.pickup_icon = create_pickup_icon(typeobject, dir, e.assembling.recipe, self.pickup_object.srt)
+        self.pickup_components.pickup_icon = create_pickup_icon(typeobject, dir, object.gameplay_eid, self.pickup_object.srt)
     end
     if e.chimney then
         self.pickup_components.pickup_icon_chimney = create_pickup_icon_chimney(dir, self.pickup_object.srt, typeobject)
