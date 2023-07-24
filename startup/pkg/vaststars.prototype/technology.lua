@@ -83,27 +83,20 @@ local prototype = gameplay.register.prototype
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
-    -- guide_focus = {
-    --   {
-    --     prefab = "prefabs/selected-box-no-animation.prefab",
-    --     x = 114,
-    --     y = 128,
-    --     w = 3.5,
-    --     h = 3.5,
-    --   },
-    --   {
-    --     prefab = "prefabs/selected-box-no-animation.prefab",
-    --     x = 114,
-    --     y = 123.8,
-    --     w = 1.8,
-    --     h = 1.8,
-    --     show_arrow = true,
-    --   },
-    --   {
-    --     camera_x = 115,
-    --     camera_y = 125,
-    --   },
-    -- },
+    guide_focus = {
+      {
+        prefab = "prefabs/selected-box-no-animation.prefab",
+        x = 116,
+        y = 134,
+        w = 3.2,
+        h = 3.2,
+        show_arrow = true,
+      },
+      {
+        camera_x = 115,
+        camera_y = 133,
+      },
+    },
     sign_desc = {
       { desc = "在石矿上放置1个采矿机", icon = "textures/construct/industry.texture"},
     },
@@ -192,7 +185,7 @@ local prototype = gameplay.register.prototype
     --   },
     -- },
     sign_desc = {
-      { desc = "在石矿上放置1个采矿机", icon = "textures/construct/industry.texture"},
+      { desc = "在采矿机附近上放置1个风力发电机", icon = "textures/construct/industry.texture"},
     },
   }
 
