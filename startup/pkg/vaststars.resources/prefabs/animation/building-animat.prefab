@@ -19,7 +19,7 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  material: /pkg/vaststars.resources/glb/animation/building-animat.glb|materials/Material.003_skin_clr.material
+  material: /pkg/vaststars.resources/glb/animation/building-animat.glb|materials/Material.003_cs.material
   mesh: /pkg/vaststars.resources/glb/animation/building-animat.glb|meshes/Cube_P1.meshbin
   name: Cube
   skinning: true
