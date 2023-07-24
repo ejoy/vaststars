@@ -98,7 +98,7 @@ local prototype = gameplay.register.prototype
       },
     },
     sign_desc = {
-      { desc = "在石矿上放置1个采矿机", icon = "textures/construct/industry.texture"},
+      { desc = "在石矿上放置1台采矿机", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -185,7 +185,7 @@ local prototype = gameplay.register.prototype
     --   },
     -- },
     sign_desc = {
-      { desc = "在采矿机附近上放置1个风力发电机", icon = "textures/construct/industry.texture"},
+      { desc = "在采矿机附近上放置1座风力发电机", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -219,7 +219,7 @@ local prototype = gameplay.register.prototype
     --   },
     -- },
     sign_desc = {
-      { desc = "风力发电机附近放置2个铁制电线杆构成电网", icon = "textures/construct/industry.texture"},
+      { desc = "风力发电机附近放置2根铁制电线杆构成电网", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -273,7 +273,7 @@ local prototype = gameplay.register.prototype
     --   },
     -- },
     sign_desc = {
-      { desc = "放置1个无人机仓库I", icon = "textures/construct/industry.texture"},
+      { desc = "放置1座无人机仓库I", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -305,7 +305,7 @@ local prototype = gameplay.register.prototype
       "textures/task_tips_pic/task_produce_ore3.texture",
     },
     sign_desc = {
-      { desc = "在碎石矿上放置挖矿机并挖掘12个碎石矿", icon = "textures/construct/industry.texture"},
+      { desc = "在石矿上放置挖矿机并挖掘12个碎石", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -320,7 +320,7 @@ local prototype = gameplay.register.prototype
       "textures/task_tips_pic/task_produce_ore3.texture",
     },
     sign_desc = {
-      { desc = "放置2个无人机平台收集达24个碎石矿", icon = "textures/construct/industry.texture"},
+      { desc = "放置2座无人机平台收集达24个碎石", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -1201,7 +1201,7 @@ prototype "建造水电站" {
     "textures/task_tips_pic/task_produce_climatepack5.texture",
   },
   sign_desc = {
-    { desc = "建造1个水电站", icon = "textures/construct/industry.texture"},
+    { desc = "建造1座水电站", icon = "textures/construct/industry.texture"},
   },
 }
 
@@ -1266,7 +1266,7 @@ prototype "排放1" {
       "textures/task_tips_pic/task_produce_pipe1.texture",
     },
     sign_desc = {
-      { desc = "使用组装机生产2个液罐", icon = "textures/construct/industry.texture"},
+      { desc = "使用组装机生产2座液罐", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -1316,7 +1316,7 @@ prototype "碳处理1" {
 }
 
 prototype "放置太阳能板" {
-  desc = "放置2座太阳能板",
+  desc = "放置2块太阳能板",
   icon = "textures/construct/industry.texture",
   type = { "task" },
   task = {"select_entity", 0, "太阳能板I"},
@@ -1326,7 +1326,7 @@ prototype "放置太阳能板" {
     "textures/task_tips_pic/task_place_logistics.texture",
   },
   sign_desc = {
-    { desc = "放置2个太阳能板进行发电", icon = "textures/construct/industry.texture"},
+    { desc = "放置2块太阳能板进行发电", icon = "textures/construct/industry.texture"},
   },
 }
 
@@ -2134,7 +2134,7 @@ prototype "铝生产" {
 }
 
 prototype "硅生产" {
-  desc = "将硅加工硅板的工艺",
+  desc = "将硅加工成硅板的工艺",
   type = { "tech" },
   icon = "textures/science/book.texture",
   effects = {
