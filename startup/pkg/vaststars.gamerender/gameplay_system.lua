@@ -111,7 +111,7 @@ end
 funcs["fluidboxes"] = funcs["fluidbox"]
 
 function igameplay.create_entity(init)
-    local typeobject = iprototype.queryByName(init.prototype_name)
+    local typeobject = assert(iprototype.queryByName(init.prototype_name), ("invalid prototype name: " .. init.prototype_name))
     for _, v in ipairs(typeobject.type) do
         if funcs[v] then
             init = funcs[v](init, typeobject)

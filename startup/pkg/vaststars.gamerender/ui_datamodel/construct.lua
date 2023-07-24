@@ -33,6 +33,9 @@ local ilorry = ecs.import.interface "vaststars.gamerender|ilorry"
 local ibackpack = require "gameplay.interface.backpack"
 local gesture_longpress_mb = world:sub{"gesture", "longpress"}
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
+local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
+local ROAD_TILE_SCALE_WIDTH <const> = 2
+local ROAD_TILE_SCALE_HEIGHT <const> = 2
 
 local rotate_mb = mailbox:sub {"rotate"}
 local build_mb = mailbox:sub {"build"}
@@ -332,10 +335,13 @@ local function __construct_entity(typeobject)
     gameplay_core.world_update = false
 
     if iprototype.has_type(typeobject.type, "road") then
+        local x, y = iobject.central_coord(typeobject.name, DEFAULT_DIR, coord_system)
+        x, y = x - (x % ROAD_TILE_SCALE_WIDTH), y - (y % ROAD_TILE_SCALE_HEIGHT)
+
         builder_ui = "construct_road_or_pipe.rml"
         builder_datamodel = iui.get_datamodel("construct.rml")
         builder = create_roadbuilder()
-        builder:new_entity(builder_datamodel, typeobject)
+        builder:new_entity(builder_datamodel, typeobject, x, y)
     elseif iprototype.has_type(typeobject.type, "pipe") then
         builder_ui = "construct_road_or_pipe.rml"
         builder_datamodel = iui.get_datamodel("construct.rml")
