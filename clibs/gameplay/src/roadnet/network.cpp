@@ -88,9 +88,14 @@ namespace roadnet {
         }
     }
 
-    static constexpr bool isCross(uint8_t m) {
+    enum class road_type {
+        invalid,
+        cross,
+        straight,
+    };
+
+    static constexpr road_type getRoadType(uint8_t m) {
         switch (m & 0xF) {
-        case mask(L' '):
         case mask(L'║'):
         case mask(L'═'):
         case mask(L'>'):
@@ -101,15 +106,21 @@ namespace roadnet {
         case mask(L'╚'):
         case mask(L'╗'):
         case mask(L'╝'):
-        default:
-            return false;
+            return road_type::straight;
         case mask(L'╠'):
         case mask(L'╦'):
         case mask(L'╬'):
         case mask(L'╩'):
         case mask(L'╣'):
-            return true;
+            return road_type::cross;
+        case mask(L' '):
+        default:
+            return road_type::invalid;
         }
+    }
+
+    static constexpr bool isCross(uint8_t m) {
+        return getRoadType(m) == road_type::cross;
     }
 
     static constexpr direction next_direction(loction l, uint8_t m, direction dir) {
@@ -780,50 +791,54 @@ namespace roadnet {
             }
             loction loc {lorry.x, lorry.y};
             auto m = getMapBits(status.map, loc);
-            if (m == 0) {
+            switch (getRoadType(m)) {
+            case road_type::invalid:
                 destroyLorry(w, e);
-                continue;
-            }
-            if (isCross(m)) {
+                break;
+            case road_type::cross: {
                 auto roadId = status.crossMap.find(loc);
                 assert(roadId);
                 auto& cross = CrossRoad(*roadId);
                 if (!cross.insertLorry(*this, getLorryId(lorry), map_coord::get_map_index(lorry.z), map_coord::get_cross_type(lorry.z))) {
                     destroyLorry(w, e);
-                    continue;
                 }
+                break;
             }
-            else {
-                auto roadGrid = status.straightMap.find(loc);
-                assert(roadGrid);
-                if (!roadGrid->id1) {
-                    auto& straight = StraightRoad(roadGrid->id0);
-                    if (!straight.insertLorry(*this, getLorryId(lorry), roadGrid->offset0, map_coord::get_map_index(lorry.z))) {
-                        destroyLorry(w, e);
-                        continue;
+            case road_type::straight: {
+                if (auto roadGrid = status.straightMap.find(loc)) {
+                    if (!roadGrid->id1) {
+                        auto& straight = StraightRoad(roadGrid->id0);
+                        if (!straight.insertLorry(*this, getLorryId(lorry), roadGrid->offset0, map_coord::get_map_index(lorry.z))) {
+                            destroyLorry(w, e);
+                        }
+                    }
+                    else {
+                        direction dir0 = direction(roadGrid->direction0);
+                        direction dir1 = direction(roadGrid->direction1);
+                        direction from = road::crossFrom(map_coord::get_cross_type(lorry.z));
+                        direction to = road::crossTo(map_coord::get_cross_type(lorry.z));
+                        if (to == dir1) {
+                            insertLorry01(*this, w, *roadGrid, e, map_coord::get_map_index(lorry.z));
+                        }
+                        else if (to == dir0) {
+                            insertLorry10(*this, w, *roadGrid, e, map_coord::get_map_index(lorry.z));
+                        }
+                        else if (from == dir0) {
+                            insertLorry01(*this, w, *roadGrid, e, map_coord::get_map_index(lorry.z));
+                        }
+                        else if (from == dir1) {
+                            insertLorry10(*this, w, *roadGrid, e, map_coord::get_map_index(lorry.z));
+                        }
+                        else {
+                            insertLorry01(*this, w, *roadGrid, e, map_coord::get_map_index(lorry.z));
+                        }
                     }
                 }
                 else {
-                    direction dir0 = direction(roadGrid->direction0);
-                    direction dir1 = direction(roadGrid->direction1);
-                    direction from = road::crossFrom(map_coord::get_cross_type(lorry.z));
-                    direction to = road::crossTo(map_coord::get_cross_type(lorry.z));
-                    if (to == dir1) {
-                        insertLorry01(*this, w, *roadGrid, e, map_coord::get_map_index(lorry.z));
-                    }
-                    else if (to == dir0) {
-                        insertLorry10(*this, w, *roadGrid, e, map_coord::get_map_index(lorry.z));
-                    }
-                    else if (from == dir0) {
-                        insertLorry01(*this, w, *roadGrid, e, map_coord::get_map_index(lorry.z));
-                    }
-                    else if (from == dir1) {
-                        insertLorry10(*this, w, *roadGrid, e, map_coord::get_map_index(lorry.z));
-                    }
-                    else {
-                        insertLorry01(*this, w, *roadGrid, e, map_coord::get_map_index(lorry.z));
-                    }
+                    destroyLorry(w, e);
                 }
+                break;
+            }
             }
         }
     }
