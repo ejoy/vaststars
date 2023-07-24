@@ -201,7 +201,7 @@
                 <!--箱子中当前物品-->
                 <div style="width:90%; margin-left: 3%; margin-right: 3%; flex-direction: row; justify-content: flex-start; align-items: center; flex-wrap: wrap;" data-if = "show_type=='chest'" data-event-click="onLongPress(3)">
                     <div data-for = "chest : chest_list" class="small-item1" style="margin: 0.5vmin;" data-style-background-image="chest.icon">
-                        <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0);">{{chest.count}}</div>
+                        <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0); font-size:2.8vmin;">{{chest.count}}</div>
                     </div>
                 </div>
                 <!--采矿机底部显示进度-->
