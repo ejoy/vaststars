@@ -1115,6 +1115,7 @@ local t = {
 	"/pkg/vaststars.resources/materials/canvas/road-entrance-marker.material",
 	"/pkg/vaststars.resources/materials/delivery-station-1.material",
 	"/pkg/vaststars.resources/materials/dotted_line.material",
+	"/pkg/vaststars.resources/materials/drone-depot.prefab-Material.002.material",
 	"/pkg/vaststars.resources/materials/game-cover.Material.001_skin_clr.material",
 	"/pkg/vaststars.resources/materials/game-cover.Material.002_skin.material",
 	"/pkg/vaststars.resources/materials/game-cover.images.BG.texture",
@@ -1132,6 +1133,7 @@ local t = {
 	"/pkg/vaststars.resources/materials/selected-box-no-animation.material",
 	"/pkg/vaststars.resources/materials/sky/skybox.material",
 	"/pkg/vaststars.resources/materials/translucent.material",
+	"/pkg/vaststars.resources/materials/wind-turbine-1.prefab-Material.001_skin.material",
 	"/pkg/vaststars.resources/package.lua",
 	"/pkg/vaststars.resources/prefabs/Material/mine_iron.material",
 	"/pkg/vaststars.resources/prefabs/Material/turbne.material",
@@ -1889,7 +1891,6 @@ local t = {
 	"/pkg/vaststars.resources/ui/ui_system.lua",
 	"/pkg/vaststars.version/main.lua",
 	"/pkg/vaststars.version/package.lua",
-	"/pkg/vaststars.version/version.lua",
 	"/pkg/vaststars.resources/glb/animation/Interact_build.glb|animation.prefab"
 }
 return t
