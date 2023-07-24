@@ -24,7 +24,8 @@ local BERTH_HOME = 3
 local drone_depot = {}
 local lookup_drones = {}
 local drone_offset = 6
-local fly_height = 20
+local default_fly_height = 20
+local fly_to_home_height = 15
 local item_height = 15
 local function create_drone(homepos)
     local task = {
@@ -34,7 +35,7 @@ local function create_drone(homepos)
         to_home = false,
         process = 0,
         flyid = 0,
-        gohome = function (self, flyid, from, to)
+        gohome = function (self, flyid, from, to, fly_height)
             if self.to_home then return end
             self:destroy_item()
             self:flyto(flyid, fly_height, from, to, true, 1.0)
@@ -172,7 +173,10 @@ local function remove_drone(eid)
     end
 end
 
-local function __get_drone_height(location)
+local function __get_fly_height(location)
+    if not location then
+        return
+    end
     local x, y = ((location >> 23) & 0x1FF) // 2, ((location >> 14) & 0x1FF) // 2
     local object = objects:coord(x, y)
     if object then
@@ -203,6 +207,19 @@ local function __get_position(location)
     else
         return pos
     end
+end
+
+local function get_fly_height(prev, next)
+    local frome_height = __get_fly_height(prev)
+    local to_height = __get_fly_height(next)
+    local fly_height = default_fly_height
+    if frome_height and fly_height < frome_height then
+        fly_height = frome_height
+    end
+    if to_height and fly_height < to_height then
+        fly_height = to_height
+    end
+    return fly_height
 end
 
 function drone_sys:gameworld_update()
@@ -236,10 +253,11 @@ function drone_sys:gameworld_update()
 
                     local from = __get_position(drone.prev)
                     local to = __get_position(drone.next)
+                    local fly_height = get_fly_height(drone.prev, drone.next)
                     -- status : go_home
                     --print("berth1:", e.eid, drone.maxprogress, drone.prev, drone.next, drone.progress)
                     if get_berth(drone.next) == BERTH_HOME then
-                        current:gohome(flyid, from, get_home_pos(to))
+                        current:gohome(flyid, from, get_home_pos(to), fly_height)
                     else
                         if drone.item ~= 0 then
                             local typeobject_item = iprototype.queryById(drone.item)
@@ -253,22 +271,13 @@ function drone_sys:gameworld_update()
                             world:create_object(item_prefab)
                             current:set_item(item_prefab)
                         end
-                        local frome_height = __get_drone_height(drone.prev)
-                        local to_height = __get_drone_height(drone.next)
-                        local drone_height = fly_height
-                        if frome_height and drone_height < frome_height then
-                            fly_height = frome_height
-                        end
-                        if to_height and drone_height < to_height then
-                            drone_height = to_height
-                        end
-                        drone_task[#drone_task + 1] = {flyid, current, from, to, drone_height}
+                        drone_task[#drone_task + 1] = {flyid, current, from, to, fly_height}
                     end
                 elseif get_berth(drone.prev) == BERTH_HOME and not current.to_home then
                     -- status : to_home
                     local dst = __get_position(drone.prev)
                     -- print("berth2:", get_berth(drone.prev), get_berth(drone.next))
-                    current:gohome(flyid, math3d.set_index(dst, 2, item_height), get_home_pos(dst))
+                    current:gohome(flyid, math3d.set_index(dst, 2, item_height), get_home_pos(dst), fly_to_home_height)
                 end
             else
                 current:update(drone.maxprogress > 0 and (drone.maxprogress - drone.progress) / drone.maxprogress or 0, drone.item ~= 0)
