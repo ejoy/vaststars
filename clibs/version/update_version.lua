@@ -1,4 +1,5 @@
 local output = ...
+local platform = require "bee.platform"
 local subprocess = require "bee.subprocess"
 
 local function GitVersion(path)
@@ -6,6 +7,7 @@ local function GitVersion(path)
         "git", "rev-parse", "HEAD",
         cwd = path,
         stdout = true,
+        searchPath = true,
     })
     local data = prog.stdout:read "a"
     assert(0 == prog:wait())
