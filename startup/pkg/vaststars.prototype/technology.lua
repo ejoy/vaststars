@@ -190,7 +190,7 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "放置电线杆" {
-    desc = "放置2个铁制电线杆",
+    desc = "放置2根铁制电线杆",
     icon = "textures/construct/industry.texture",
     type = { "task" },
     task = {"select_entity", 0, "铁制电线杆"},
@@ -224,7 +224,7 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "放置无人机仓库" {
-    desc = "放置1个无人机仓库",
+    desc = "放置1座无人机仓库",
     icon = "textures/construct/industry.texture",
     type = { "task" },
     task = {"select_entity", 0, "无人机仓库I"},
@@ -305,7 +305,7 @@ local prototype = gameplay.register.prototype
       "textures/task_tips_pic/task_produce_ore3.texture",
     },
     sign_desc = {
-      { desc = "在石矿上放置挖矿机并挖掘12个碎石", icon = "textures/construct/industry.texture"},
+      { desc = "在石矿上放置采矿机并挖掘12个碎石", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -454,7 +454,7 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "生产石砖" {
-    desc = "挖掘足够的碎石可以开始进行锻造",
+    desc = "挖掘足够的碎石进行深加工",
     icon = "textures/construct/industry.texture",
     type = { "task" },
     task = {"stat_production", 0, "石砖"},
@@ -885,7 +885,7 @@ local prototype = gameplay.register.prototype
     --   },
     -- },
     sign_desc = {
-      { desc = "搜索废墟传送至建造中心生产并放置1个出货车站", icon = "textures/construct/industry.texture"},
+      { desc = "生产并放置1座出货车站", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -914,7 +914,7 @@ local prototype = gameplay.register.prototype
     --   },
     -- },
     sign_desc = {
-      { desc = "搜索废墟传送至建造中心生产并放置1个收货车站", icon = "textures/construct/industry.texture"},
+      { desc = "生产并放置1座收货车站", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -958,7 +958,7 @@ local prototype = gameplay.register.prototype
       "textures/task_tips_pic/task_produce_ore3.texture",
     },
     sign_desc = {
-      { desc = "在铁矿上放置挖矿机并挖掘10个铁矿石", icon = "textures/construct/industry.texture"},
+      { desc = "在铁矿上放置采矿机并挖掘10个铁矿石", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -992,7 +992,7 @@ local prototype = gameplay.register.prototype
       "textures/task_tips_pic/start_construct.texture",
     },
     sign_desc = {
-      { desc = "使用“建造”放置1台熔炼炉", icon = "textures/construct/industry.texture"},
+      { desc = "放置1台熔炼炉", icon = "textures/construct/industry.texture"},
     },
   }
   
@@ -1011,12 +1011,12 @@ local prototype = gameplay.register.prototype
       "textures/task_tips_pic/task_produce_ironplate5.texture",
     },
     sign_desc = {
-      { desc = "使用熔炼炉生产4个铁板", icon = "textures/construct/industry.texture"},
+      { desc = "使用熔炼炉生产4块铁板", icon = "textures/construct/industry.texture"},
     },
   }
 
   prototype "铁加工1" {
-    desc = "获得铁板加工成更多铁成品的工艺",
+    desc = "获得更多铁成品的加工工艺",
     type = { "tech" },
     icon = "textures/science/book.texture",
     effects = {
@@ -1048,7 +1048,7 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "生产铁棒" {
-    desc = "铁板可以打造坚固器材，对于基地建设多多益善",
+    desc = "铁棒可打造长形组件也可加工成其他铁制品",
     icon = "textures/construct/industry.texture",
     type = { "task" },
     task = {"stat_production", 0, "铁棒"},
@@ -1169,7 +1169,7 @@ prototype "生产管道" {
 }
 
 prototype "建造空气过滤器" {
-  desc = "生产科技包用于科技研究",
+  desc = "建造可以过滤空气的装置",
   icon = "textures/construct/industry.texture",
   type = { "task" },
   task = {"stat_production", 0, "空气过滤器I"},
@@ -1270,7 +1270,7 @@ prototype "排放1" {
   }
 
 prototype "电解水" {
-  desc = "科技的描述",
+  desc = "对水通电产生电化学反应生成气体",
   type = { "tech" },
   icon = "textures/science/book.texture",
   effects = {
@@ -1346,7 +1346,7 @@ prototype "生产氢气" {
 }
 
 prototype "放置蒸馏厂" {
-  desc = "放置化工厂生产化工产品",
+  desc = "放置可以蒸馏并分离气液的工厂",
   icon = "textures/construct/industry.texture",
   type = { "task" },
   task = {"select_entity", 0, "蒸馏厂I"},
@@ -1445,7 +1445,7 @@ prototype "建筑维修3" {
 }
 
 prototype "放置化工厂" {
-  desc = "放置化工厂生产化工产品",
+  desc = "放置可以生产化工产品的工厂",
   icon = "textures/construct/industry.texture",
   type = { "task" },
   task = {"select_entity", 0, "化工厂I"},
@@ -1508,7 +1508,7 @@ prototype "生产乙烯" {
 }
 
 prototype "生产塑料" {
-  desc = "使用有机化学的科学成果生产质量轻、耐腐蚀的工业材料塑料",
+  desc = "用有机化学的原理生产质量轻、耐腐蚀的化工材料塑料",
   icon = "textures/construct/industry.texture",
   type = { "task" },
   task = {"stat_production", 0, "塑料"},
@@ -2066,7 +2066,7 @@ prototype "有机化学3" {
 }
 
 prototype "物流学2" {
-  desc = "获得铁板加工铁齿轮的工艺",
+  desc = "研究物流相关的建筑和机械",
   type = { "tech" },
   icon = "textures/science/book.texture",
   effects = {
