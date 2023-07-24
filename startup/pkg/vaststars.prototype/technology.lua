@@ -92,6 +92,13 @@ local prototype = gameplay.register.prototype
         h = 3.2,
         show_arrow = true,
       },
+      -- {
+      --   prefab = "prefabs/selected-box-no-animation.prefab",
+      --   x = 109,
+      --   y = 136,
+      --   w = 3.2,
+      --   h = 3.2,
+      -- },
       {
         camera_x = 115,
         camera_y = 133,
