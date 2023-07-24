@@ -14,6 +14,7 @@ prototype "化工厂I" {
     rotate_on_build = true,
     priority = "secondary",
     maxslot = "8",
+    drone_height = 22,
     allow_set_recipt = true,
     camera_distance = 75,
     craft_category = {"器件基础化工","流体基础化工"},
@@ -79,6 +80,7 @@ prototype "化工厂II" {
     rotate_on_build = true,
     priority = "secondary",
     maxslot = "8",
+    drone_height = 22,
     allow_set_recipt = true,
     camera_distance = 75,
     craft_category = {"器件基础化工","流体基础化工"},
@@ -144,6 +146,7 @@ prototype "化工厂III" {
     rotate_on_build = true,
     priority = "secondary",
     maxslot = "8",
+    drone_height = 22,
     allow_set_recipt = true,
     camera_distance = 75,
     craft_category = {"器件基础化工","流体基础化工"},
@@ -209,6 +212,7 @@ prototype "蒸馏厂I" {
     priority = "secondary",
     craft_category = {"过滤"},
     maxslot = "8",
+    drone_height = 22,
     allow_set_recipt = true,
     camera_distance = 100,
     fluidboxes = {
@@ -273,6 +277,7 @@ prototype "蒸馏厂II" {
     priority = "secondary",
     craft_category = {"过滤"},
     maxslot = "8",
+    drone_height = 22,
     allow_set_recipt = true,
     camera_distance = 100,
     fluidboxes = {
@@ -337,6 +342,7 @@ prototype "蒸馏厂III" {
     priority = "secondary",
     craft_category = {"过滤"},
     maxslot = "8",
+    drone_height = 22,
     allow_set_recipt = true,
     camera_distance = 100,
     fluidboxes = {
@@ -404,6 +410,7 @@ prototype "电解厂I" {
     priority = "secondary",
     craft_category = {"电解"},
     maxslot = "8",
+    drone_height = 22,
     allow_set_recipt = true,
     camera_distance = 100,
     fluidboxes = {
@@ -461,6 +468,7 @@ prototype "电解厂II" {
     priority = "secondary",
     craft_category = {"电解"},
     maxslot = "8",
+    drone_height = 22,
     allow_set_recipt = true,
     camera_distance = 100,
     fluidboxes = {
@@ -518,6 +526,7 @@ prototype "电解厂III" {
     priority = "secondary",
     craft_category = {"电解"},
     maxslot = "8",
+    drone_height = 22,
     allow_set_recipt = true,
     camera_distance = 100,
     fluidboxes = {

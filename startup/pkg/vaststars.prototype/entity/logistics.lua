@@ -209,6 +209,7 @@ prototype "出货车站" {
     type = {"building", "station_producer"},
     building_base = false,
     area = "4x2",
+    drone_height = 24,
     weights = 3,
     crossing = {
         connections = {
@@ -233,6 +234,7 @@ prototype "收货车站" {
     type = {"building", "station_consumer"},
     building_base = false,
     area = "4x2",
+    drone_height = 24,
     maxlorry = 1,
     crossing = {
         connections = {
