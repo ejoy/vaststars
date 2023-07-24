@@ -30,7 +30,7 @@ policy:
   ant.render|render
 ---
 data:
-  material: /pkg/vaststars.resources/glb/construction-center.glb|materials/Material.002_skin.material
+  material: /pkg/vaststars.resources/glb/construction-center.glb|materials/Material.002_s.material
   mesh: /pkg/vaststars.resources/glb/construction-center.glb|meshes/Plane.002_P1.meshbin
   name: Plane.002
   skinning: true

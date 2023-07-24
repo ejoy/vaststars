@@ -7,7 +7,7 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  material: /pkg/vaststars.resources/glb/lorry-1.glb|materials/Material.003_clr.material
+  material: /pkg/vaststars.resources/glb/lorry-1.glb|materials/Material.003_c.material
   mesh: /pkg/vaststars.resources/glb/lorry-1.glb|meshes/Cylinder_P1.meshbin
   name: Cylinder
   scene:
@@ -20,7 +20,7 @@ policy:
   ant.render|render
 ---
 data:
-  material: /pkg/vaststars.resources/glb/lorry-1.glb|materials/Material.007_clr.material
+  material: /pkg/vaststars.resources/glb/lorry-1.glb|materials/Material.007_c.material
   mesh: /pkg/vaststars.resources/glb/lorry-1.glb|meshes/Cylinder_P2.meshbin
   name: Cylinder
   scene:

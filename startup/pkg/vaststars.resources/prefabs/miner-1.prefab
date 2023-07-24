@@ -34,7 +34,7 @@ policy:
   ant.general|tag
 ---
 data:
-  material: /pkg/vaststars.resources/glb/miner-1.glb|materials/Material.002_skin.material
+  material: /pkg/vaststars.resources/glb/miner-1.glb|materials/Material.002_s.material
   mesh: /pkg/vaststars.resources/glb/miner-1.glb|meshes/Cylinder.001_P1.meshbin
   name: Cylinder.001
   skinning: true
@@ -47,7 +47,7 @@ policy:
   ant.general|tag
 ---
 data:
-  material: /pkg/vaststars.resources/glb/miner-1.glb|materials/Material.002_skin.material
+  material: /pkg/vaststars.resources/glb/miner-1.glb|materials/Material.002_s.material
   mesh: /pkg/vaststars.resources/glb/miner-1.glb|meshes/BezierCurve.001_P1.meshbin
   name: BezierCurve.001
   skinning: true
@@ -60,7 +60,7 @@ policy:
   ant.general|tag
 ---
 data:
-  material: /pkg/vaststars.resources/glb/miner-1.glb|materials/Material.002_skin.material
+  material: /pkg/vaststars.resources/glb/miner-1.glb|materials/Material.002_s.material
   mesh: /pkg/vaststars.resources/glb/miner-1.glb|meshes/Cylinder.005_P1.meshbin
   name: Cylinder.004
   skinning: true
@@ -73,7 +73,7 @@ policy:
   ant.general|tag
 ---
 data:
-  material: /pkg/vaststars.resources/glb/miner-1.glb|materials/Material.002_skin.material
+  material: /pkg/vaststars.resources/glb/miner-1.glb|materials/Material.002_s.material
   mesh: /pkg/vaststars.resources/glb/miner-1.glb|meshes/Plane_P1.meshbin
   name: Plane.004
   skinning: true

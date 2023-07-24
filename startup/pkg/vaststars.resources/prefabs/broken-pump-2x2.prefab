@@ -7,7 +7,7 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  material: /pkg/vaststars.resources/glb/broken-pump-2x2.glb|materials/Material.003_clr.material
+  material: /pkg/vaststars.resources/glb/broken-pump-2x2.glb|materials/Material.003_c.material
   mesh: /pkg/vaststars.resources/glb/broken-pump-2x2.glb|meshes/zhuti.007_P1.meshbin
   name: zhuti.021
   scene:
@@ -21,7 +21,7 @@ policy:
   ant.render|render
 ---
 data:
-  material: /pkg/vaststars.resources/glb/broken-pump-2x2.glb|materials/Material.002_clr.material
+  material: /pkg/vaststars.resources/glb/broken-pump-2x2.glb|materials/Material.002_c.material
   mesh: /pkg/vaststars.resources/glb/broken-pump-2x2.glb|meshes/zhuti.007_P2.meshbin
   name: zhuti.021
   scene:

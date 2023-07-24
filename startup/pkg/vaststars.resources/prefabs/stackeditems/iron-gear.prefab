@@ -7,7 +7,7 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  material: /pkg/vaststars.resources/glb/stackeditems/iron-gear.glb|materials/Material.001_clr.material
+  material: /pkg/vaststars.resources/glb/stackeditems/iron-gear.glb|materials/Material.001_c.material
   mesh: /pkg/vaststars.resources/glb/stackeditems/iron-gear.glb|meshes/Cylinder.001_P1.meshbin
   name: Cylinder
   scene: {}

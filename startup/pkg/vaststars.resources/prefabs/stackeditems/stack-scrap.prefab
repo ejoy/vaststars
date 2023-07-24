@@ -7,7 +7,7 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  material: /pkg/vaststars.resources/glb/stackeditems/stack-scrap.glb|materials/Material_clr.material
+  material: /pkg/vaststars.resources/glb/stackeditems/stack-scrap.glb|materials/Material_c.material
   mesh: /pkg/vaststars.resources/glb/stackeditems/stack-scrap.glb|meshes/Icosphere.003_P1.meshbin
   name: Icosphere.002
   scene:

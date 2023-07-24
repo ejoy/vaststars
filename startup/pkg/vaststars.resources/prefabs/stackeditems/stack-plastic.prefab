@@ -7,7 +7,7 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  material: /pkg/vaststars.resources/glb/stackeditems/stack-plastic.glb|materials/Material_clr.material
+  material: /pkg/vaststars.resources/glb/stackeditems/stack-plastic.glb|materials/Material_c.material
   mesh: /pkg/vaststars.resources/glb/stackeditems/stack-plastic.glb|meshes/Torus.002_P1.meshbin
   name: Torus.002
   scene: {}

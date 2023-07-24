@@ -7,7 +7,7 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  material: /pkg/vaststars.resources/glb/stackeditems/gravel.glb|materials/Material.006_clr.material
+  material: /pkg/vaststars.resources/glb/stackeditems/gravel.glb|materials/Material.006_c.material
   mesh: /pkg/vaststars.resources/glb/stackeditems/gravel.glb|meshes/Cube_P1.meshbin
   name: Cube
   scene: {}

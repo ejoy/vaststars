@@ -7,7 +7,7 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  material: /pkg/vaststars.resources/glb/stackeditems/stack-copper-wire.glb|materials/Material.001_clr.material
+  material: /pkg/vaststars.resources/glb/stackeditems/stack-copper-wire.glb|materials/Material.001_c.material
   mesh: /pkg/vaststars.resources/glb/stackeditems/stack-copper-wire.glb|meshes/Cylinder.016_P1.meshbin
   name: Cylinder.011
   scene: {}

@@ -19,7 +19,7 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  material: /pkg/vaststars.resources/glb/chemical-plant-1.glb|materials/Material_skin.material
+  material: /pkg/vaststars.resources/glb/chemical-plant-1.glb|materials/Material_s.material
   mesh: /pkg/vaststars.resources/glb/chemical-plant-1.glb|meshes/Cylinder.001_P1.meshbin
   name: Cylinder.001
   skinning: true

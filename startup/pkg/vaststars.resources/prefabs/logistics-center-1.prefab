@@ -22,7 +22,7 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material_skin.material
+  material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material_s.material
   mesh: /pkg/vaststars.resources/glb/logistics-center-1.glb|meshes/Plane.002_P1.meshbin
   name: Plane.002
   skinning: true
