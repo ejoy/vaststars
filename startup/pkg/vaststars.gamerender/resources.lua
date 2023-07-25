@@ -97,7 +97,7 @@ local t = {
 	"/pkg/ant.compile_resource/service/resource.lua",
 	"/pkg/ant.compile_resource/thread/compile.lua",
 	"/pkg/ant.compile_resource/thread/main.lua",
-	"/pkg/ant.compile_resource/thread/shader.lua",
+	"/pkg/ant.compile_resource/thread/material.lua",
 	"/pkg/ant.compile_resource/thread/texture.lua",
 	"/pkg/ant.console/console_system.lua",
 	"/pkg/ant.console/msg_system.lua",
