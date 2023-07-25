@@ -15,20 +15,35 @@ local guide = {
         },
         prerequisites = {},
 	},
+
 	{
         name = "",
 		narrative = {
-            {"哔哩..开采星球资源需要工具，附近的{/color:4bd0ff 建材箱}寻找{/g 采矿机}..哔哩..(期待)", "textures/guide/guide-2.texture"},
-            {"哔哩..{/g 采矿机}放置在{/g 石矿}上方，采矿机将开采石矿资源..哔哩..(期待)", "textures/guide/guide-1.texture"},
+            {"哔哩..开采星球资源需要大量物资，附近的{/color:4bd0ff 废墟堆}寻找{/g 有用物资}..哔哩..(期待)", "textures/guide/guide-2.texture"},
         },
         narrative_end = {
             pop_chapter = {"序章","迫降P4031"},
+            task = {
+                "搜索废墟",
+            },
+            guide_progress = 5,
+        },
+        prerequisites = {"迫降火星"},
+	},
+
+	{
+        name = "",
+		narrative = {
+            {"哔哩..{/color:4bd0ff 废墟堆}里获取{/g 采矿机},它可以帮助我们开采矿藏..哔哩..(兴奋)", "textures/guide/guide-3.texture"},
+            {"哔哩..{/g 采矿机}放置在{/g 石矿}上方，采矿机将开采石矿资源..哔哩..(期待)", "textures/guide/guide-1.texture"},
+        },
+        narrative_end = {
             task = {
                 "放置采矿机",
             },
             guide_progress = 5,
         },
-        prerequisites = {"迫降火星"},
+        prerequisites = {"搜索废墟"},
 	},
 
     {

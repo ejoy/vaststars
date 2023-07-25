@@ -17,13 +17,10 @@ local prototype = gameplay.register.prototype
   -- task_params = {item = "采矿机框架"},
 
   -- task = {"unknown", 0, 6},
-  -- task_params = {ui = "item_transfer_subscribe", building = "xxx"},    传送设置
+  -- task_params = {ui = "pickup_item", building = "xxx"},    收取物品
 
   -- task = {"unknown", 0, 6},
-  -- task_params = {ui = "item_transfer_unsubscribe", , building = "xxx"},  传送取消
-
-  -- task = {"unknown", 0, 6},
-  -- task_params = {ui = "item_transfer_place", , building = "xxx"},       传送启动
+  -- task_params = {ui = "place_item",  building = "xxx"},  放置物品
   
 
   prototype "迫降火星" {
@@ -73,12 +70,42 @@ local prototype = gameplay.register.prototype
   --   -- },
   -- }
 
+  prototype "搜索废墟" {
+    desc = "从废墟中搜索物资",
+    icon = "textures/construct/industry.texture",
+    type = {"task" },
+    task = {"unknown", 0, 6},
+    task_params = {ui = "pickup_item", building = "机身残骸"},
+    prerequisites = {"迫降火星"},
+    count = 1,
+    tips_pic = {
+      "textures/task_tips_pic/task_place_logistics.texture",
+    },
+    guide_focus = {
+      {
+        prefab = "prefabs/selected-box-no-animation.prefab",
+        x = 109,
+        y = 136,
+        w = 3.5,
+        h = 3.5,
+        show_arrow = true,
+      },
+      {
+        camera_x = 109,
+        camera_y = 136,
+      },
+    },
+    sign_desc = {
+      { desc = "搜索机身残骸获取有用物资", icon = "textures/construct/industry.texture"},
+    },
+  }
+
   prototype "放置采矿机" {
     desc = "放置1台采矿机",
     icon = "textures/construct/industry.texture",
     type = {"task" },
     task = {"select_entity", 0, "采矿机I"},
-    prerequisites = {"迫降火星"},
+    prerequisites = {"搜索废墟"},
     count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
