@@ -86,6 +86,9 @@ local function __on_pick_building(datamodel, o)
         return true
     end
 
+    iui.close("build.rml") -- TODO: remove this
+    iui.close("construct_road_or_pipe.rml")
+
     local typeobject = iprototype.queryByName(object.prototype_name)
     datamodel.focus_building_icon = typeobject.icon
 
@@ -596,7 +599,6 @@ function M:stage_camera_usage(datamodel)
                     end
 
                     if iprototype.is_road(selected_obj.name) or iprototype.is_pipe(selected_obj.name) or iprototype.is_pipe_to_ground(selected_obj.name) then
-                        datamodel.is_concise_mode = true
                         datamodel.focus_building_icon = ""
                         iui.open({"construct_road_or_pipe.rml"}, selected_obj.name, {show_start_laying = true})
                     end
@@ -650,6 +652,7 @@ function M:stage_camera_usage(datamodel)
                 typeobject = iprototype.queryByName(typeobject.construct_name)
                 builder_ui = "construct_road_or_pipe.rml"
                 builder_datamodel = iui.get_datamodel("construct_road_or_pipe.rml")
+                datamodel.is_concise_mode = true
                 builder_datamodel.is_concise_mode = true
                 builder = create_roadbuilder()
                 builder:new_entity(builder_datamodel, typeobject, selected_obj.x, selected_obj.y)
@@ -674,6 +677,7 @@ function M:stage_camera_usage(datamodel)
                 typeobject = iprototype.queryByName(typeobject.construct_name)
                 builder_ui = "construct_road_or_pipe.rml"
                 builder_datamodel = iui.get_datamodel("construct_road_or_pipe.rml")
+                datamodel.is_concise_mode = true
                 builder_datamodel.is_concise_mode = true
                 builder_datamodel.show_remove_one = false
                 builder = create_roadbuilder()

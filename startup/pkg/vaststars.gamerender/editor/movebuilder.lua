@@ -364,6 +364,12 @@ local function __align(object)
     if not coord then
         return object
     end
+
+    if iprototype.has_types(typeobject.type, "station_producer", "station_consumer") then
+        coord[1], coord[2] = coord[1] - (coord[1] % ROAD_TILE_SCALE_WIDTH), coord[2] - (coord[2] % ROAD_TILE_SCALE_HEIGHT)
+        position = math3d.ref(math3d.vector(coord_system:get_position_by_coord(coord[1], coord[2], iprototype.rotate_area(typeobject.area, object.dir))))
+    end
+
     object.srt.t = math3d.ref(math3d.vector(position))
     return object, coord[1], coord[2]
 end
