@@ -1,5 +1,6 @@
 local ecs, mailbox = ...
 local world = ecs.world
+local w = world.w
 
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local gameplay_core = require "gameplay.core"
@@ -11,6 +12,8 @@ local click_menu_button_mb = mailbox:sub {"click_menu_button"}
 local click_main_button_mb = mailbox:sub {"click_main_button"}
 local iUiRt = ecs.import.interface "ant.rmlui|iuirt"
 local ibackpack = require "gameplay.interface.backpack"
+local math3d = require "math3d"
+local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 
 local function __get_construct_menu()
     local res = {}
@@ -67,7 +70,23 @@ local function __get_construct_index(prototype_name)
     return 0, 0
 end
 
+local model_euler
+local function model_message_func(mdl)
+    local e <close> = w:entity(mdl.tag["*"][1])
+    if not e then
+        return
+    end
+    if not model_euler then
+        local r = iom.get_rotation(e)
+        local rad = math3d.tovalue(math3d.quat2euler(r))
+        model_euler = { math.deg(rad[1]), math.deg(rad[2]), math.deg(rad[3]) }
+    end
+    model_euler[2] = model_euler[2] + 1
+    iom.set_rotation(e, math3d.quaternion{math.rad(model_euler[1]), math.rad(model_euler[2]), math.rad(model_euler[3])})
+end
+
 local M = {}
+local model
 
 function M:create()
     local storage = gameplay_core.get_storage()
@@ -153,9 +172,9 @@ function M:stage_ui_update(datamodel)
             datamodel.item_name = iprototype.display_name(typeobject)
             datamodel.item_desc = typeobject.item_description or ""
 
-            iUiRt.set_rt_prefab("item_model",
+            model = iUiRt.set_rt_prefab("item_model",
                 "/pkg/vaststars.resources/" .. typeobject.model,
-                {s = {1, 1, 1}, t = {0, 0, 0}}, typeobject.camera_distance
+                {s = {1, 1, 1}, t = {0, 0, 0}}, typeobject.camera_distance, nil, model_message_func
             )
 
             __update_shortcur(datamodel.shortcut_id, item_name, typeobject.icon, os.time())
@@ -191,12 +210,21 @@ function M:stage_ui_update(datamodel)
             local typeobject = iprototype.queryByName(shortcut.prototype_name)
             datamodel.item_name = iprototype.display_name(typeobject)
             datamodel.item_desc = typeobject.item_description or ""
+
+            model = iUiRt.set_rt_prefab("item_model",
+                "/pkg/vaststars.resources/" .. typeobject.model,
+                {s = {1, 1, 1}, t = {0, 0, 0}}, typeobject.camera_distance, nil, model_message_func
+            )
         else
             datamodel.category_idx = 0
             datamodel.item_idx = 0
             datamodel.item_name = ""
             datamodel.item_desc = ""
         end
+    end
+
+    if model then
+        model:send("motion")
     end
 
     for _ in click_main_button_mb:unpack() do

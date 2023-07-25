@@ -715,6 +715,7 @@ local function new_entity(self, datamodel, typeobject, x, y)
 
     iobject.remove(self.coord_indicator)
 
+    self.typeobject = typeobject
     self.coord_indicator = iobject.new {
         prototype_name = typeobject.name,
         dir = dir,
@@ -1304,6 +1305,7 @@ local function create()
     M.pickup_components = {}
     M.to_x = nil
     M.to_y = nil
+    M.typeobject = nil
 
     return M
 end

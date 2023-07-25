@@ -81,8 +81,8 @@ local function __on_pick_building(datamodel, o)
         return
     end
 
+    iui.open({"detail_panel.rml"}, object.id)
     if datamodel.is_concise_mode then
-        iui.open({"detail_panel.rml"}, object.id)
         return true
     end
 
@@ -102,8 +102,8 @@ end
 local function __on_pick_non_building(datamodel, o, force)
     local typeobject = iprototype.queryByName(o.name)
 
+    iui.open({"non_building_detail_panel.rml"}, typeobject.icon, o.name)
     if datamodel.is_concise_mode and force ~= true then
-        iui.open({"non_building_detail_panel.rml"}, typeobject.icon, o.name)
         return true
     end
 
@@ -592,7 +592,6 @@ function M:stage_camera_usage(datamodel)
 
                     idetail.show(object.id)
                     idetail.selected(object)
-                    iui.open({"detail_panel.rml"}, object.id)
                 else
                     if selected_obj.get_pos then
                         icamera_controller.focus_on_position(selected_obj:get_pos())
@@ -693,11 +692,9 @@ function M:stage_camera_usage(datamodel)
         assert(builder)
         local to_x, to_y = builder:finish_laying(builder_datamodel)
         __on_pick_non_building(datamodel, ipick_object.pick_road(to_x, to_y), true)
-
         builder:clean(builder_datamodel)
-        builder, builder_datamodel = nil, nil
-
-        iui.open({"construct_road_or_pipe.rml"}, selected_obj.name, {show_start_laying = true})
+        builder:new_entity(builder_datamodel, builder.typeobject, to_x, to_y)
+        builder:start_laying(builder_datamodel)
     end
 
     for _ in finish_teardown_mb:unpack() do
