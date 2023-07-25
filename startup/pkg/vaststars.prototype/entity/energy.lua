@@ -121,7 +121,7 @@ prototype "风力发电机I" {
     power_network_link = true,
     power_supply_area = "11x11",
     power_supply_distance = 7,
-    camera_distance = 120,
+    camera_distance = 140,
 }
 
 prototype "太阳能板I" {
