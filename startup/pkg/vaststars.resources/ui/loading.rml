@@ -9,7 +9,6 @@
                 font-size: 3.73vmin;
                 text-align: center;
                 align-items: center;
-                position: absolute;
                 right:0;
                 bottom:-4vmin;
             }
@@ -18,7 +17,7 @@
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local start = ui_sys.createDataMode {
-                filename = "",
+                status = {},
                 progress = "0%",
             }
         </script>
@@ -28,9 +27,9 @@
             <div class="column" style="justify-content: center; width: 80%; height:10vmin;">
                 <div class="progress-bar-block" style = "width: 100%; height:80%;">
                     <div class="progress-background" style ="background-color: green; width: 50%;" data-style-width = "progress" />
+                    <div class = "percent-num" style="font-size: 8vmin; align-self: center;">{{progress}}</div>
                 </div> 
-                <div class = "percent-num" style="padding-top:1vmin; font-size: 8vmin;">{{progress}}</div>
-                <div class = "filename">{{filename}}</div>
+                <div class = "filename" data-for="filename : status" style="align-self: flex-start;">{{filename}}</div>
             </div>
         </div>
     </body>
