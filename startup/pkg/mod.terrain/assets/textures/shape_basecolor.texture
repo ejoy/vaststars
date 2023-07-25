@@ -1,7 +1,8 @@
-compress:
-  android: ASTC4x4
-  ios: ASTC4x4
-  windows: BC3
+# compress:
+#   android: ASTC4x4
+#   ios: ASTC4x4
+#   windows: BC3
+format: RGBA8
 maxsize: 512x512
 mipmap: 0
 colorspace: sRGB
