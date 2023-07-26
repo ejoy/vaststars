@@ -114,6 +114,12 @@ mountain_coords = {
     {145,51, 3, 3},
     {146,48, 2, 2},
     {147,50, 1, 1},
+    ------------------------------------
+    {177,95, 1, 1},
+    {178,94, 2, 2},
+    {179,96, 3, 3},
+    {180,93, 2, 2},
+    {181,95, 1, 1},
 }
 
 -- the first two numbers represent the x and y coordinates of the upper-left corner of the rectangle
