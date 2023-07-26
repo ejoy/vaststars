@@ -239,6 +239,7 @@ function M:stage_ui_update(datamodel)
             x, y = x - (x % ROAD_TILE_SCALE_WIDTH), y - (y % ROAD_TILE_SCALE_HEIGHT)
 
             builder:confirm(builder_datamodel)
+            builder:clean(builder_datamodel)
             builder:new_entity(builder_datamodel, builder.typeobject, x, y)
         end
     end
