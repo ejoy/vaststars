@@ -4,42 +4,27 @@
             body {
                 font: "阿里巴巴普惠体";
             }
-            .login-panel {
+            left-box {
+                position: absolute;
                 width: 100%;
                 height: 100%;
-            }
-            .main-panel {
-                position: absolute;  
-                width: 20%; 
-                height:65%; 
-                flex-direction: column; 
+                align-items: flex-start;
                 justify-content: flex-end;
-                align-items: center;
-                right:5vmin;
-                top:30vmin;
             }
-            .info-block {
+            right-box {
                 position: absolute;
-                width: 3%;
-                height:1%;
-                left:-16vmin;
-                bottom:-38vmin;
-                flex-direction: row;
-                justify-content: flex-start;
-                align-items: center;
+                width: 100%;
+                height: 100%;
+                flex-direction: column;
+                align-items: flex-end;
+                gap: 1.50vmin;
+                padding: 3.7vmin 5vmin 0 0;
+            }
+            info {
                 font-size: 2.5vmin;
-                text-align: center;
                 color: rgb(145, 141, 141);
             }
-            .button-text1 {
-                padding-bottom: 0.15em;
-                font-size: 3.73vmin;
-                text-align: center;
-                align-items: center;
-                color: rgb(166,166,166);
-            }
-            .button-style {
-                margin-bottom: 1vmin;
+            button {
                 flex-direction: row;
                 align-items: center;
                 justify-content: center;
@@ -50,8 +35,20 @@
                 border-radius: 2vmin;
                 background-size: cover;
             }
+            button:active {
+                transform: scale(1.3);
+            }
+            button-icon {
+              	width: 6.67vmin;
+                height: 6.67vmin;
+                background-size: cover;
+            }
+            button-text {
+                font-size: 5.73vmin;
+                text-align: center;
+                color: rgb(166,166,166);
+            }
         </style>
-        <style path = "common/building_style.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local start = ui_sys.createDataMode {
@@ -64,38 +61,38 @@
         </script>
     </head>
     <body>
-        <div class="login-panel" style = "flex-direction: column; height: 100%;">
-            <div class = "info-block">IN DEVELOPMENT</div>
-            <div class = "main-panel">
-                <button class = "button-style"  data-event-click = "clickButton('continue')" data-if = "show_continue_game">
-                    <div class="middle-bg" style='background-image: "textures/road/traffic.texture";width:8vmin; height:8vmin;'/>
-                    <div class = "button-text1" style="font-size: 5.73vmin;">继续游戏</div>
-                </button>
-                <button class = "button-style"  data-event-click = "clickButton('start_mode', 'adventure')">
-                    <div class="middle-bg" style='background-image: "textures/road_net/big_bag.texture";'/>
-                    <div class = "button-text1" style="font-size: 5.73vmin;">冒险模式</div>
-                </button>
-                <button class = "button-style"  data-event-click = "clickButton('start_mode', 'free')">
-                    <div class="middle-bg" style='background-image: "textures/construct/work.texture";'/>
-                    <div class = "button-text1" style="font-size: 5.73vmin;">自由模式</div>
-                </button> 
-                <button class = "button-style"  data-event-click = "clickButton('load_resources')">
-                    <div class="middle-bg" style='background-image: "textures/road_net/big_bag.texture"; width:6.7vmin; height:6.7vmin;'/>
-                    <div class = "button-text1" style="font-size: 5.73vmin;">加载资源</div>
-                </button> 
-                <button class = "button-style"  data-event-click = "clickButton('load_archive')">
-                    <div class="middle-bg" style='background-image: "textures/road/write.texture"; width:5.5vmin; height:5.5vmin;'/>
-                    <div class = "button-text1" style="font-size: 5.73vmin;">读取进度</div>
-                </button>
-                <button class = "button-style"  data-event-click = "clickButton('reboot')">
-                    <div class="middle-bg" style='background-image: "textures/character/health.texture"; width:7.5vmin; height:7.5vmin;'/>
-                    <div class = "button-text1" style="font-size: 5.73vmin;">重启游戏</div>
-                </button>
-                <button class = "button-style"  data-event-click = "clickButton('load_template')">
-                    <div class="middle-bg" style='background-image: "textures/character/health.texture"; width:7.5vmin; height:7.5vmin;'/>
-                    <div class = "button-text1" style="font-size: 5.73vmin;">测试模式</div>
-                </button>
-            </div>
-        </div>
+        <left-box>
+            <info>IN DEVELOPMENT</info>
+        </left-box>
+        <right-box>
+            <button data-event-click = "clickButton('continue')" data-if = "show_continue_game">
+                <button-icon style='background-image: "textures/road/traffic.texture";'/>
+                <button-text>继续游戏</button-text>
+            </button>
+            <button data-event-click = "clickButton('start_mode', 'adventure')">
+                <button-icon style='background-image: "textures/road_net/big_bag.texture";'/>
+                <button-text>冒险模式</button-text>
+            </button>
+            <button data-event-click = "clickButton('start_mode', 'free')">
+                <button-icon style='background-image: "textures/construct/work.texture";'/>
+                <button-text>自由模式</button-text>
+            </button> 
+            <button data-event-click = "clickButton('load_resources')">
+                <button-icon style='background-image: "textures/road_net/big_bag.texture";'/>
+                <button-text>加载资源</button-text>
+            </button> 
+            <button data-event-click = "clickButton('load_archive')">
+                <button-icon style='background-image: "textures/road/write.texture";'/>
+                <button-text>读取进度</button-text>
+            </button>
+            <button data-event-click = "clickButton('reboot')">
+                <button-icon style='background-image: "textures/character/health.texture";'/>
+                <button-text>重启游戏</button-text>
+            </button>
+            <button data-event-click = "clickButton('load_template')">
+                <button-icon style='background-image: "textures/character/health.texture";'/>
+                <button-text>测试模式</button-text>
+            </button>
+        </right-box>
     </body>
 </rml>
