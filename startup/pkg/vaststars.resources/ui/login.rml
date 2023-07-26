@@ -16,7 +16,7 @@
                 justify-content: flex-end;
                 align-items: center;
                 right:5vmin;
-                top:20vmin;
+                top:30vmin;
             }
             .info-block {
                 position: absolute;
