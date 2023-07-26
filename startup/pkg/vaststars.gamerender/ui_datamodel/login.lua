@@ -7,6 +7,7 @@ local start_mode_mb = mailbox:sub {"start_mode"}
 local load_resources_mb = mailbox:sub {"load_resources"}
 local load_archive_mb = mailbox:sub {"load_archive"}
 local continue_mb = mailbox:sub {"continue"}
+local reboot_mb = mailbox:sub {"reboot"}
 local load_template_mb = mailbox:sub {"load_template"}
 local new_game = ecs.require "main_menu_manager".new_game
 local continue_game = ecs.require "main_menu_manager".continue_game
@@ -30,6 +31,33 @@ function M:stage_camera_usage(datamodel)
         debugger.set_free_mode(mode == "free")
         iui.close("login.rml")
         new_game(mode)
+    end
+    
+    for _ in reboot_mb:unpack() do
+        local window = import_package "ant.window"
+        window.reboot {
+            import = {
+                "@vaststars.gamerender"
+            },
+            pipeline = {
+                "init",
+                "update",
+                "exit",
+            },
+            system = {
+                "vaststars.gamerender|init_system",
+            },
+            interface = {
+                "ant.objcontroller|iobj_motion",
+            },
+            policy = {
+                "ant.general|name",
+                "ant.scene|scene_object",
+                "ant.render|render",
+                "ant.render|render_queue",
+                "ant.objcontroller|pickup",
+            }
+        }
     end
 
     for _ in load_resources_mb:unpack() do
