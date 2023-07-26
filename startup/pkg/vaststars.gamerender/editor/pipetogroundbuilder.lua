@@ -673,6 +673,8 @@ end
 
 --------------------------------------------------------------------------------------------------
 local function new_entity(self, datamodel, typeobject)
+    self.typeobject = typeobject
+
     iobject.remove(self.coord_indicator)
     local dir = DEFAULT_DIR
 

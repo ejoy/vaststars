@@ -4,6 +4,8 @@ local w = world.w
 
 local gameplay_core = require "gameplay.core"
 local road_sys = ecs.system "road_system"
+local iroad = ecs.interface "iroad"
+
 local iroadnet_converter = require "roadnet_converter"
 local iroadnet = ecs.require "roadnet"
 local iprototype = require "gameplay.interface.prototype"
@@ -23,6 +25,11 @@ local N <const> = 0
 local E <const> = 1
 local S <const> = 2
 local W <const> = 3
+
+local function open(bits, dir)
+    assert(bits & (1 << dir) == 0)
+    return bits | (1 << dir)
+end
 
 local function close(bits, dir)
     assert(bits & (1 << dir) ~= 0)
@@ -120,4 +127,8 @@ function road_sys:gameworld_build()
     end
 
     iroadnet:update()
+end
+
+function iroad.open(...)
+    return open(...)
 end

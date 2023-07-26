@@ -19,7 +19,6 @@ local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local create_sprite = ecs.require "sprite"
 local SPRITE_COLOR = import_package "vaststars.prototype".load("sprite_color")
-local ichest = require "gameplay.interface.chest"
 local create_selected_boxes = ecs.require "selected_boxes"
 local terrain = ecs.require "terrain"
 local gameplay_core = require "gameplay.core"
@@ -379,6 +378,8 @@ local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobjec
 end
 
 local function new_entity(self, datamodel, typeobject)
+    self.typeobject = typeobject
+
     if typeobject.power_supply_area and typeobject.power_supply_distance and not typeobject.supply_area then
         local sprite_color = SPRITE_COLOR.POWER_SUPPLY_AREA
         for _, object in objects:all() do

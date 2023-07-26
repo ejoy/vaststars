@@ -233,13 +233,11 @@ function M:stage_ui_update(datamodel)
 
     for _ in build_mb:unpack() do
         if builder and builder.confirm then
-            if not builder:confirm(builder_datamodel) then
-                __clean(datamodel)
-                __switch_status("default", function()
-                    gameplay_core.world_update = true
-                    __clean(datamodel)
-                end)
-            end
+            local x, y = iobject.central_coord(builder.typeobject.name, DEFAULT_DIR, coord_system)
+            x, y = x - (x % ROAD_TILE_SCALE_WIDTH), y - (y % ROAD_TILE_SCALE_HEIGHT)
+
+            builder:confirm(builder_datamodel)
+            builder:new_entity(builder_datamodel, builder.typeobject, x, y)
         end
     end
 
@@ -341,20 +339,26 @@ local function __construct_entity(typeobject)
         local x, y = iobject.central_coord(typeobject.name, DEFAULT_DIR, coord_system)
         x, y = x - (x % ROAD_TILE_SCALE_WIDTH), y - (y % ROAD_TILE_SCALE_HEIGHT)
 
-        builder_ui = "construct_road_or_pipe.rml"
+        builder_ui = "construct_road_or_pipe.rml" -- TODO: remove this
         builder_datamodel = iui.get_datamodel("construct.rml")
         builder = create_roadbuilder()
         builder:new_entity(builder_datamodel, typeobject, x, y)
     elseif iprototype.has_type(typeobject.type, "pipe") then
-        builder_ui = "construct_road_or_pipe.rml"
+        local x, y = iobject.central_coord(typeobject.name, DEFAULT_DIR, coord_system)
+        x, y = x - (x % ROAD_TILE_SCALE_WIDTH), y - (y % ROAD_TILE_SCALE_HEIGHT)
+
+        builder_ui = "construct_road_or_pipe.rml" -- TODO: remove this
         builder_datamodel = iui.get_datamodel("construct.rml")
         builder = create_pipebuilder()
-        builder:new_entity(builder_datamodel, typeobject)
+        builder:new_entity(builder_datamodel, typeobject, x, y)
     elseif iprototype.has_type(typeobject.type, "pipe_to_ground") then
-        builder_ui = "construct_road_or_pipe.rml"
+        local x, y = iobject.central_coord(typeobject.name, DEFAULT_DIR, coord_system)
+        x, y = x - (x % ROAD_TILE_SCALE_WIDTH), y - (y % ROAD_TILE_SCALE_HEIGHT)
+
+        builder_ui = "construct_road_or_pipe.rml"  -- TODO: remove this
         builder_datamodel = iui.get_datamodel("construct.rml")
         builder = create_pipetogroundbuilder()
-        builder:new_entity(builder_datamodel, typeobject)
+        builder:new_entity(builder_datamodel, typeobject, x, y)
     elseif iprototype.has_types(typeobject.type, "station_producer", "station_consumer") then
         builder_ui = "construct_building.rml"
         builder_datamodel = iui.get_datamodel("construct.rml")
@@ -586,7 +590,7 @@ function M:stage_camera_usage(datamodel)
             if selected_obj then
                 datamodel.status = "selected"
 
-                if selected_obj.class == CLASS.Object then
+                if selected_obj.class == CLASS.Object and not iprototype.is_pipe(selected_obj.object.prototype_name) then -- TODO: optimize
                     local object = selected_obj.object
                     icamera_controller.focus_on_position(object.srt.t)
 
@@ -602,8 +606,10 @@ function M:stage_camera_usage(datamodel)
                         iui.open({"construct_road_or_pipe.rml"}, selected_obj.name, {show_start_laying = true})
                     end
 
-                    local typeobject = iprototype.queryByName(selected_obj.name)
-                    iui.open({"non_building_detail_panel.rml"}, typeobject.icon, iprototype.display_name(typeobject))
+                    if not iprototype.is_pipe(selected_obj.name) then
+                        local typeobject = iprototype.queryByName(selected_obj.name)
+                        iui.open({"non_building_detail_panel.rml"}, typeobject.icon, iprototype.display_name(typeobject))
+                    end
                 end
             else
                 log.error("no target selected")
@@ -638,61 +644,79 @@ function M:stage_camera_usage(datamodel)
     end
 
     for _, _, _, prototype_name in start_laying_mb:unpack() do
+        local create_builder
         if iprototype.is_road(prototype_name) then
-            __switch_status("construct", function()
-                assert(selected_obj)
-                if selected_obj.get_pos then
-                    icamera_controller.focus_on_position(selected_obj:get_pos())
-                end
-
-                gameplay_core.world_update = false
-                local typeobject = iprototype.queryByName(prototype_name)
-                assert(typeobject.construct_name)
-                typeobject = iprototype.queryByName(typeobject.construct_name)
-                builder_ui = "construct_road_or_pipe.rml"
-                builder_datamodel = iui.get_datamodel("construct_road_or_pipe.rml")
-                datamodel.is_concise_mode = true
-                builder_datamodel.is_concise_mode = true
-                builder = create_roadbuilder()
-                builder:new_entity(builder_datamodel, typeobject, selected_obj.x, selected_obj.y)
-                builder:start_laying(builder_datamodel)
-            end)
+            create_builder = create_roadbuilder
+        elseif iprototype.is_pipe(prototype_name) then
+            create_builder = create_pipebuilder
         else
             assert(false)
         end
+
+        __switch_status("construct", function()
+            assert(selected_obj)
+            if selected_obj.get_pos then
+                icamera_controller.focus_on_position(selected_obj:get_pos())
+            end
+
+            gameplay_core.world_update = false
+            local typeobject = iprototype.queryByName(prototype_name)
+            assert(typeobject.construct_name)
+            typeobject = iprototype.queryByName(typeobject.construct_name)
+            builder_ui = "construct_road_or_pipe.rml"
+            builder_datamodel = iui.get_datamodel("construct_road_or_pipe.rml")
+            datamodel.is_concise_mode = true
+            builder_datamodel.is_concise_mode = true
+            builder = create_builder()
+            builder:new_entity(builder_datamodel, typeobject, selected_obj.x, selected_obj.y)
+            builder:start_laying(builder_datamodel)
+        end)
     end
 
     for _, _, _, prototype_name in start_teardown_mb:unpack() do
+        local create_builder
         if iprototype.is_road(prototype_name) then
-            __switch_status("construct", function()
-                assert(selected_obj)
-                if selected_obj.get_pos then
-                    icamera_controller.focus_on_position(selected_obj:get_pos())
-                end
-
-                gameplay_core.world_update = false
-                local typeobject = iprototype.queryByName(prototype_name)
-                assert(typeobject.construct_name)
-                typeobject = iprototype.queryByName(typeobject.construct_name)
-                builder_ui = "construct_road_or_pipe.rml"
-                builder_datamodel = iui.get_datamodel("construct_road_or_pipe.rml")
-                datamodel.is_concise_mode = true
-                builder_datamodel.is_concise_mode = true
-                builder_datamodel.show_remove_one = false
-                builder = create_roadbuilder()
-                builder:new_entity(builder_datamodel, typeobject, selected_obj.x, selected_obj.y)
-                builder:start_teardown(builder_datamodel)
-            end)
+            create_builder = create_roadbuilder
+        elseif iprototype.is_pipe(prototype_name) then
+            create_builder = create_pipebuilder
         else
             assert(false)
         end
+
+        __switch_status("construct", function()
+            assert(selected_obj)
+            if selected_obj.get_pos then
+                icamera_controller.focus_on_position(selected_obj:get_pos())
+            end
+
+            gameplay_core.world_update = false
+            local typeobject = iprototype.queryByName(prototype_name)
+            assert(typeobject.construct_name)
+            typeobject = iprototype.queryByName(typeobject.construct_name)
+            builder_ui = "construct_road_or_pipe.rml"
+            builder_datamodel = iui.get_datamodel("construct_road_or_pipe.rml")
+            datamodel.is_concise_mode = true
+            builder_datamodel.is_concise_mode = true
+            builder_datamodel.show_remove_one = false
+            builder = create_builder()
+            builder:new_entity(builder_datamodel, typeobject, selected_obj.x, selected_obj.y)
+            builder:start_teardown(builder_datamodel)
+        end)
     end
 
     for _ in finish_laying_mb:unpack() do
         assert(builder)
         local to_x, to_y = builder:finish_laying(builder_datamodel)
-        __on_pick_non_building(datamodel, ipick_object.pick_road(to_x, to_y), true)
+        local obj
+        if iprototype.is_road(builder.typeobject.name) then
+            obj = ipick_object.pick_road(to_x, to_y)
+            __on_pick_non_building(datamodel, obj, true)
+        else
+            obj = ipick_object.pick_obj(to_x, to_y)
+            __on_pick_building(datamodel, obj)
+        end
         builder:clean(builder_datamodel)
+        print("finish_laying_mb", to_x, to_y)
         builder:new_entity(builder_datamodel, builder.typeobject, to_x, to_y)
         builder:start_laying(builder_datamodel)
     end
@@ -708,28 +732,26 @@ function M:stage_camera_usage(datamodel)
     end
 
     for _, _, _, prototype_name in remove_one_mb:unpack() do
-        if iprototype.is_road(prototype_name) then
-            assert(selected_obj)
-            if selected_obj.get_pos then
-                icamera_controller.focus_on_position(selected_obj:get_pos())
-            end
+        assert(iprototype.is_road(prototype_name) or iprototype.is_pipe(prototype_name))
 
-            local typeobject = iprototype.queryByName(prototype_name)
-            assert(typeobject.construct_name)
-            typeobject = iprototype.queryByName(typeobject.construct_name)
-            builder_ui = "construct_road_or_pipe.rml"
-            builder_datamodel = iui.get_datamodel("construct_road_or_pipe.rml")
-            builder = create_roadbuilder()
-            builder:new_entity(builder_datamodel, typeobject, selected_obj.x, selected_obj.y)
-            builder:remove_one(builder_datamodel)
-
-            __switch_status("default", function()
-                gameplay_core.world_update = true
-                __clean(datamodel)
-            end)
-        else
-            assert(false)
+        assert(selected_obj)
+        if selected_obj.get_pos then
+            icamera_controller.focus_on_position(selected_obj:get_pos())
         end
+
+        local typeobject = iprototype.queryByName(prototype_name)
+        assert(typeobject.construct_name)
+        typeobject = iprototype.queryByName(typeobject.construct_name)
+        builder_ui = "construct_road_or_pipe.rml"
+        builder_datamodel = iui.get_datamodel("construct_road_or_pipe.rml")
+        builder = create_roadbuilder()
+        builder:new_entity(builder_datamodel, typeobject, selected_obj.x, selected_obj.y)
+        builder:remove_one(builder_datamodel)
+
+        __switch_status("default", function()
+            gameplay_core.world_update = true
+            __clean(datamodel)
+        end)
     end
 
     iobject.flush()

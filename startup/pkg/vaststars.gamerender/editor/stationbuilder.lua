@@ -442,6 +442,8 @@ local function __calc_grid_position(typeobject, x, y)
 end
 
 local function new_entity(self, datamodel, typeobject)
+    self.typeobject = typeobject
+
     __new_entity(self, datamodel, typeobject)
     self.pickup_object.APPEAR = true
 

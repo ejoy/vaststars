@@ -72,7 +72,7 @@ local function __push_object(lorries, pick_x, pick_y, x, y, status)
     if o then
         local building = status.building[o.id]
         if not building then
-            status.building[o.id] = {class = CLASS.Object, id = o.id, dist_x = x, dist_y = y, object = o}
+            status.building[o.id] = {class = CLASS.Object, id = o.id, dist_x = x, dist_y = y, x = x, y = y, object = o, name = o.prototype_name}
         else
             if __distance(pick_x, pick_y, x, y) < __distance(pick_x, pick_y, building.dist_x, building.dist_y) then
                 building.dist_x, building.dist_y = x, y
@@ -84,7 +84,7 @@ local function __push_object(lorries, pick_x, pick_y, x, y, status)
     if o then
         local mineral = status.mineral[id]
         if not mineral then
-            status.mineral[id] = {class = CLASS.Mineral, id = id, dist_x = x, dist_y = y, name = o.mineral}
+            status.mineral[id] = {class = CLASS.Mineral, id = id, dist_x = x, dist_y = y, x = x, y = y, name = o.mineral}
         else
             if __distance(pick_x, pick_y, x, y) < __distance(pick_x, pick_y, mineral.dist_x, mineral.dist_y) then
                 mineral.dist_x, mineral.dist_y = x, y
@@ -99,6 +99,8 @@ local function __push_object(lorries, pick_x, pick_y, x, y, status)
             id = __pack(x, y),
             dist_x = x,
             dist_y = y,
+            x = x,
+            y = y,
         }
     end
 
@@ -148,6 +150,29 @@ function ipick_object.pick_road(x, y)
             return assert(terrain:get_position_by_coord(self.x, self.y, self.w, self.h))
         end,
     }
+end
+
+function ipick_object.pick_obj(x, y)
+    local o = objects:coord(x, y)
+    if o then
+        local typeobject = iprototype.queryByName(o.prototype_name)
+        local w, h = iprototype.unpackarea(typeobject.area)
+        return {
+            class = CLASS.Object,
+            name = o.prototype_name,
+            id = o.id,
+            dist_x = x,
+            dist_y = y,
+            object = o,
+            x = x,
+            y = y,
+            w = w,
+            h = h,
+            get_pos = function(self)
+                return assert(terrain:get_position_by_coord(self.x, self.y, self.w, self.h))
+            end,
+        }
+    end
 end
 
 function ipick_object.blur_pick(x, y)

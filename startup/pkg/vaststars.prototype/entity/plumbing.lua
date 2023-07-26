@@ -383,6 +383,7 @@ prototype "空气过滤器III" {
 }
 
 prototype "管道1-I型" {
+    construct_name = "管道1-X型",
     model = "prefabs/pipe/pipe_I.prefab",
     icon = "textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
@@ -405,6 +406,7 @@ prototype "管道1-I型" {
 }
 
 prototype "管道1-L型" {
+    construct_name = "管道1-X型",
     model = "prefabs/pipe/pipe_L.prefab",
     icon = "textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
@@ -426,6 +428,7 @@ prototype "管道1-L型" {
 }
 
 prototype "管道1-T型" {
+    construct_name = "管道1-X型",
     model = "prefabs/pipe/pipe_T.prefab",
     icon = "textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
@@ -448,6 +451,7 @@ prototype "管道1-T型" {
 }
 
 prototype "管道1-X型" {
+    construct_name = "管道1-X型",
     display_name = "管道I",
     model = "prefabs/pipe/pipe_X.prefab",
     icon = "textures/construct/pipe.texture",
@@ -473,6 +477,7 @@ prototype "管道1-X型" {
 }
 
 prototype "管道1-O型" {
+    construct_name = "管道1-X型",
     model = "prefabs/pipe/pipe_O.prefab",
     icon = "textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
@@ -492,6 +497,7 @@ prototype "管道1-O型" {
 }
 
 prototype "管道1-U型" {
+    construct_name = "管道1-X型",
     model = "prefabs/pipe/pipe_U.prefab",
     icon = "textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
@@ -512,6 +518,7 @@ prototype "管道1-U型" {
 }
 
 prototype "地下管1-JU型" {
+    construct_name = "地下管1-JU型",
     model = "prefabs/pipe/pipe_JU.prefab",
     icon = "textures/construct/underground-pipe1.texture",
     construct_detector = {"exclusive"},
@@ -532,6 +539,7 @@ prototype "地下管1-JU型" {
 }
 
 prototype "地下管1-JI型" {
+    construct_name = "地下管1-JU型",
     display_name = "地下管I",
     model = "prefabs/pipe/pipe_JI.prefab",
     icon = "textures/construct/underground-pipe1.texture",
@@ -555,6 +563,7 @@ prototype "地下管1-JI型" {
 }
 
 prototype "地下管2-JU型" {
+    construct_name = "地下管2-JU型",
     model = "prefabs/pipe/pipe_JU.prefab",
     icon = "textures/construct/underground-pipe1.texture",
     construct_detector = {"exclusive"},
@@ -575,6 +584,7 @@ prototype "地下管2-JU型" {
 }
 
 prototype "地下管2-JI型" {
+    construct_name = "地下管2-JU型",
     display_name = "地下管II",
     model = "prefabs/pipe/pipe_JI.prefab",
     icon = "textures/construct/underground-pipe1.texture",

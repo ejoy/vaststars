@@ -172,8 +172,6 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                     -- usually, the type of 'fluidbox' is a fluid tank.
                     if not iprototype.has_type(typeobject.type, "fluidbox") then
                         State.succ = false
-                    else
-                        _update_fluid_name(State, object.fluid_name, object.fluidflow_id)
                     end
                     map[coord] = {object.prototype_name, object.dir}
                 else
@@ -225,6 +223,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
         end
     end
 
+    self.to_x, self.to_y = to_x, to_y
     datamodel.show_finish_laying = State.succ
 end
 
@@ -659,15 +658,11 @@ local function confirm(self, datamodel)
 end
 
 --------------------------------------------------------------------------------------------------
-local function new_entity(self, datamodel, typeobject)
+local function new_entity(self, datamodel, typeobject, x, y)
+    assert(x and y)
     self.typeobject = typeobject
     iobject.remove(self.coord_indicator)
     local dir = DEFAULT_DIR
-
-    local x, y = iobject.central_coord(typeobject.name, dir, coord_system)
-    if not x or not y then
-        return
-    end
 
     self.coord_indicator = iobject.new {
         prototype_name = typeobject.name,
@@ -742,10 +737,6 @@ local function touch_end(self, datamodel)
 end
 
 local function start_laying(self, datamodel)
-    local x, y
-    self.coord_indicator, x, y = iobject.align(self.coord_indicator)
-    self.coord_indicator.x, self.coord_indicator.y = x, y
-
     self:revert_changes({"TEMPORARY"})
     datamodel.show_place_one = false
     datamodel.show_start_laying = false
@@ -772,9 +763,11 @@ local function finish_laying(self, datamodel)
     end
     objects:commit("TEMPORARY", "CONFIRM")
 
-    local ret = confirm(self, datamodel)
-    self:new_entity(datamodel, self.typeobject)
-    return ret
+    confirm(self, datamodel)
+
+    local to_x, to_y = self.to_x, self.to_y
+    self.to_x, self.to_y = nil, nil
+    return to_x, to_y
 end
 
 local function place_one(self, datamodel)
@@ -799,14 +792,16 @@ local function place_one(self, datamodel)
         group_id = 0,
     }
     objects:set(object, EDITOR_CACHE_NAMES[2])
+    self.pending[iprototype.packcoord(object.x, object.y)] = object
 
     datamodel.show_confirm = true
 
-    local ret = confirm(self, datamodel)
+    confirm(self, datamodel)
     self:clean(self, datamodel)
 
-    self:new_entity(datamodel, self.typeobject)
-    return ret
+    local to_x, to_y = self.to_x, self.to_y
+    self.to_x, self.to_y = nil, nil
+    return to_x, to_y
 end
 
 local function remove_one(self, datamodel)
@@ -839,10 +834,6 @@ local function cancel(self, datamodel)
 end
 
 local function start_teardown(self, datamodel)
-    local x, y
-    self.coord_indicator, x, y = iobject.align(self.coord_indicator)
-    self.coord_indicator.x, self.coord_indicator.y = x, y
-
     self:revert_changes({"TEMPORARY"})
     datamodel.show_start_teardown = false
     datamodel.show_start_laying = false
@@ -870,11 +861,14 @@ local function finish_teardown(self, datamodel)
     end
     objects:commit("TEMPORARY", "CONFIRM")
 
-    local ret = confirm(self, datamodel)
+    confirm(self, datamodel)
     self:clean(self, datamodel)
 
     self:new_entity(datamodel, self.typeobject)
-    return ret
+
+    local to_x, to_y = self.to_x, self.to_y
+    self.to_x, self.to_y = nil, nil
+    return to_x, to_y
 end
 
 local function clean(self, datamodel)
@@ -911,14 +905,13 @@ local function create()
     M.new_entity = new_entity
     M.touch_move = touch_move
     M.touch_end = touch_end
-    M.confirm = place_one
 
     M.prototype_name = ""
     M.state = STATE_NONE
     M.start_laying = start_laying
     M.cancel = cancel
     M.finish_laying = finish_laying
-    M.place_one = place_one
+    M.confirm = place_one
     M.remove_one = remove_one
     M.start_teardown = start_teardown
     M.finish_teardown = finish_teardown
@@ -926,6 +919,8 @@ local function create()
 
     M.pending = {}
     M.pickup_components = {}
+    M.to_x = nil
+    M.to_y = nil
     return M
 end
 return create

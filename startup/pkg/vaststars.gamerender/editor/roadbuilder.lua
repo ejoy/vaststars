@@ -29,6 +29,7 @@ local REMOVE <const> = {}
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
 local ibuilding = ecs.import.interface "vaststars.gamerender|ibuilding"
 local icamera_controller = ecs.interface "icamera_controller"
+local iroad = ecs.import.interface "vaststars.gamerender|iroad"
 local ROAD_TILE_SCALE_WIDTH <const> = 2
 local ROAD_TILE_SCALE_HEIGHT <const> = 2
 local CHANGED_FLAG_ROADNET <const> = require("gameplay.interface.constant").CHANGED_FLAG_ROADNET
@@ -895,6 +896,8 @@ local function finish_laying(self, datamodel)
     return confirm(self, datamodel)
 end
 
+
+
 local function place_one(self, datamodel)
     local coord_indicator = self.coord_indicator
     local x, y = coord_indicator.x, coord_indicator.y
@@ -907,6 +910,17 @@ local function place_one(self, datamodel)
 
     assert(x % 2 == 0 and y % 2 == 0)
     self.pending[coord] = 0 -- {"砖石公路-O型", "N"}
+
+    for _, dir in ipairs(iconstant.ALL_DIR) do
+        local dx, dy = iprototype.move_coord(x, y, dir, 2, 2)
+        local r = ibuilding.get(dx, dy)
+        if r then
+            self.pending[coord] = iroad.open(self.pending[coord], iprototype.dir_tonumber(dir))
+
+            local m = iroadnet_converter.prototype_name_dir_to_mask(r.prototype, r.direction)
+            self.pending[packcoord(dx, dy)] = iroad.open(m, iprototype.dir_tonumber(iprototype.reverse_dir(dir)))
+        end
+    end
 
     _builder_init(self, datamodel)
     return confirm(self, datamodel)
@@ -1292,7 +1306,6 @@ local function create()
     M.state = STATE_NONE
     M.start_laying = start_laying
     M.finish_laying = finish_laying
-    M.place_one = place_one
     M.remove_one = remove_one
     M.start_teardown = start_teardown
     M.finish_teardown = finish_teardown
