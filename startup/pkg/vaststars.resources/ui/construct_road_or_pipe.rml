@@ -112,8 +112,14 @@
             </button-container>
         </buttons-container>
 
-        <main-button style = "position: absolute; left: 72.20vmax; top: 67.00vmin; background-image: textures/construct/main-button-bg.texture; background-size: 100% 100%;" data-style-background-filter = "is_concise_mode and ((show_finish_laying or show_finish_teardown) and 'green' or 'red') or 'none'" data-event-click = "clickButton({'click_main_button'})">
-            <main-button-icon data-style-background-image = "main_button_icon" data-if = "main_button_icon ~= ''" data-style-background-filter = "is_concise_mode and ((show_finish_laying or show_finish_teardown) and 'green' or 'red') or 'none'" />
+        <main-button style = "position: absolute; left: 72.20vmax; top: 67.00vmin; background-image: textures/construct/main-button-bg.texture; background-size: 100% 100%;" data-style-background-filter = "(show_finish_laying or show_finish_teardown) and 'green' or 'red'" data-event-click = "clickButton({'click_main_button'})" data-if = "is_concise_mode">
+            <main-button-icon data-style-background-image = "main_button_icon" data-if = "main_button_icon ~= ''" data-style-background-filter = "(show_finish_laying or show_finish_teardown) and 'green' or 'red'"/>
+            <div style = "position: absolute; background-size: 100% 100%; width: 100%; height: 100%; background-image: textures/construct/main-button-active.texture;" />
+        </main-button>
+
+        <main-button style = "position: absolute; left: 72.20vmax; top: 67.00vmin; background-image: textures/construct/main-button-bg.texture; background-size: 100% 100%;" data-event-click = "clickButton({'quit'})" data-if = "not is_concise_mode">
+            <main-button-icon data-style-background-image = "main_button_icon" data-if = "main_button_icon ~= ''"/>
+            <div style = "position: absolute; background-size: 100% 100%; width: 100%; height: 100%; background-image: textures/construct/main-button-active.texture;" />
         </main-button>
     </body>
 </rml>

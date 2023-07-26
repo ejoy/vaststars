@@ -6,7 +6,7 @@ local iui = ecs.import.interface "vaststars.gamerender|iui"
 local create_event_handler = require "ui_datamodel.common.event_handler"
 local iprototype = require "gameplay.interface.prototype"
 local click_main_button_mb = mailbox:sub {"click_main_button"}
-
+local quit_mb = mailbox:sub {"quit"}
 ---------------
 local M = {}
 
@@ -54,6 +54,11 @@ function M:stage_ui_update(datamodel, prototype_name)
         elseif datamodel.show_finish_teardown then
             iui.redirect("construct.rml", "finish_teardown")
         end
+    end
+
+    for _ in quit_mb:unpack() do
+        iui.close("construct_road_or_pipe.rml")
+        iui.redirect("construct.rml", "unselected")
     end
 end
 

@@ -58,6 +58,7 @@ local finish_laying_mb = mailbox:sub {"finish_laying"}
 local start_teardown_mb = mailbox:sub {"start_teardown"}
 local finish_teardown_mb = mailbox:sub {"finish_teardown"}
 local remove_one_mb = mailbox:sub {"remove_one"}
+local unselected_mb = mailbox:sub {"unselected"}
 
 local gesture_tap_mb = world:sub{"gesture", "tap"}
 local gesture_pan_mb = world:sub {"gesture", "pan"}
@@ -90,6 +91,7 @@ local function __on_pick_building(datamodel, o)
     iui.close("construct_road_or_pipe.rml")
 
     local typeobject = iprototype.queryByName(object.prototype_name)
+
     datamodel.focus_building_icon = typeobject.icon
 
     selected_obj = o
@@ -417,6 +419,7 @@ function M:stage_camera_usage(datamodel)
                     end
                 elseif o and o.class == CLASS.Object then
                     idetail.unselected()
+                    iui.close("construct_road_or_pipe.rml") -- TODO: remove this
                     if __on_pick_building(datamodel, o) then
                         __unpick_lorry(pick_lorry_id)
                         pick_lorry_id = nil
@@ -424,6 +427,7 @@ function M:stage_camera_usage(datamodel)
                     end
                 elseif o and (o.class == CLASS.Mineral or o.class == CLASS.Mountain or o.class == CLASS.Road)then
                     idetail.unselected()
+                    iui.close("construct_road_or_pipe.rml") -- TODO: remove this
                     if __on_pick_non_building(datamodel, o) then
                         __unpick_lorry(pick_lorry_id)
                         pick_lorry_id = nil
@@ -615,6 +619,15 @@ function M:stage_camera_usage(datamodel)
                 log.error("no target selected")
             end
         end
+    end
+
+    for _ in unselected_mb:unpack() do
+        __unpick_lorry(pick_lorry_id)
+        iui.leave()
+        idetail.unselected()
+        datamodel.status = "normal"
+        datamodel.focus_building_icon = ""
+        selected_obj = nil
     end
 
     for _ in main_button_longpress_mb:unpack() do

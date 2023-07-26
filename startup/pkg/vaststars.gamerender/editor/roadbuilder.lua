@@ -912,7 +912,7 @@ local function place_one(self, datamodel)
     self.pending[coord] = 0 -- {"砖石公路-O型", "N"}
 
     for _, dir in ipairs(iconstant.ALL_DIR) do
-        local dx, dy = iprototype.move_coord(x, y, dir, 2, 2)
+        local dx, dy = iprototype.move_coord(x, y, dir, ROAD_TILE_SCALE_WIDTH, ROAD_TILE_SCALE_HEIGHT)
         local r = ibuilding.get(dx, dy)
         if r then
             self.pending[coord] = iroad.open(self.pending[coord], iprototype.dir_tonumber(dir))
