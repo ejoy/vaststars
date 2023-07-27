@@ -205,6 +205,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                 object.prototype_name = v[1]
                 object.dir = v[2]
                 object.srt.r = ROTATORS[object.dir]
+                object.fluid_name = State.fluid_name
             end
         else
             object = iobject.new {
@@ -788,7 +789,7 @@ local function place_one(self, datamodel)
             t = math3d.ref(math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, "N")))),
             r = ROTATORS["N"],
         },
-        fluid_name = 0,
+        fluid_name = '',
         group_id = 0,
     }
     objects:set(object, EDITOR_CACHE_NAMES[2])

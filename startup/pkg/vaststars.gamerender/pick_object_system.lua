@@ -34,7 +34,6 @@ local pointer = 0
 local last_x, last_y
 
 local function __pack(x, y)
-    assert(x & 0xFF == x and y & 0xFF == y)
     return x | (y<<8)
 end
 
@@ -54,13 +53,13 @@ local function __push_object(lorries, pick_x, pick_y, x, y, status)
             local lorry = ilorry.get(lorry_id)
             if lorry then
                 status.lorry[lorry_id] = {
-                    class = CLASS.Lorry,
                     name = iprototype.queryById(lorry.classid).name,
+                    get_pos = get_pos,
+                    class = CLASS.Lorry,
                     id = lorry_id,
                     dist_x = x,
                     dist_y = y,
                     lorry = lorry,
-                    get_pos = get_pos,
                 }
             end
         end
@@ -72,7 +71,7 @@ local function __push_object(lorries, pick_x, pick_y, x, y, status)
     if o then
         local building = status.building[o.id]
         if not building then
-            status.building[o.id] = {class = CLASS.Object, id = o.id, dist_x = x, dist_y = y, x = x, y = y, object = o, name = o.prototype_name}
+            status.building[o.id] = {class = CLASS.Object, id = o.id, dist_x = x, dist_y = y, x = o.x, y = o.y, object = o, name = o.prototype_name}
         else
             if __distance(pick_x, pick_y, x, y) < __distance(pick_x, pick_y, building.dist_x, building.dist_y) then
                 building.dist_x, building.dist_y = x, y

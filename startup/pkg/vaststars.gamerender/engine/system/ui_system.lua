@@ -190,27 +190,33 @@ function ui_system.ui_update()
     end
 
     for url in pairs(stage_ui_update) do
-        local binding = windowBindings[url]
-        binding.template:stage_ui_update(binding.datamodel, table_unpack(binding.param))
-        if tracedoc.changed(binding.datamodel) then
-            changedWindows[url] = true
+        if not closeWindows[url] then
+            local binding = windowBindings[url]
+            binding.template:stage_ui_update(binding.datamodel, table_unpack(binding.param))
+            if tracedoc.changed(binding.datamodel) then
+                changedWindows[url] = true
+            end
         end
     end
 
     for url in pairs(changedWindows) do
-        local binding = windowBindings[url]
-        if binding then
-            binding.template:flush()
+        if not closeWindows[url] then
+            local binding = windowBindings[url]
+            if binding then
+                binding.template:flush()
+            end
         end
     end
 end
 
 function ui_system.camera_usage()
     for url in pairs(stage_camera_usage) do
-        local binding = windowBindings[url]
-        binding.template:stage_camera_usage(binding.datamodel, table_unpack(binding.param))
-        if tracedoc.changed(binding.datamodel) then
-            changedWindows[url] = true
+        if not closeWindows[url] then
+            local binding = windowBindings[url]
+            binding.template:stage_camera_usage(binding.datamodel, table_unpack(binding.param))
+            if tracedoc.changed(binding.datamodel) then
+                changedWindows[url] = true
+            end
         end
     end
 
