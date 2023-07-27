@@ -25,7 +25,7 @@ iRmlUi.font_dir "/pkg/vaststars.resources/ui/font/"
 
 function m:init_world()
     bgfx.maxfps(FRAMES_PER_SECOND)
-    ecs.create_instance "/pkg/vaststars.resources/daynight.prefab"
+    --ecs.create_instance "/pkg/vaststars.resources/daynight.prefab"
     ecs.create_instance "/pkg/vaststars.resources/light.prefab"
 
     iefk.preload "/pkg/vaststars.resources/effect/efk/"
