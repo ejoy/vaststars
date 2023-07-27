@@ -239,8 +239,11 @@ function M:stage_ui_update(datamodel)
             x, y = x - (x % ROAD_TILE_SCALE_WIDTH), y - (y % ROAD_TILE_SCALE_HEIGHT)
 
             builder:confirm(builder_datamodel)
-            builder:clean(builder_datamodel)
-            builder:new_entity(builder_datamodel, builder.typeobject, x, y)
+
+            if builder.continue_construct ~= false then
+                builder:clean(builder_datamodel)
+                builder:new_entity(builder_datamodel, builder.typeobject, x, y)
+            end
         end
     end
 
@@ -525,7 +528,9 @@ function M:stage_camera_usage(datamodel)
 
     for _, _, _, object_id in move_md:unpack() do
         __switch_status("construct", function()
-            assert(builder == nil)
+            if builder then
+                builder:clean(builder_datamodel)
+            end
 
             local object = assert(objects:get(object_id))
             local typeobject = iprototype.queryByName(object.prototype_name)

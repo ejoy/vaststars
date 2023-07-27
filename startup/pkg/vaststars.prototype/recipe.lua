@@ -579,7 +579,7 @@ prototype "广域电线杆" {
     recipe_icon =  "textures/construct/electric-pole1.texture",
     ingredients = {
         {"混凝土", 8},
-        {"铁制电线杆", 4},
+        {"远程电线杆", 1},
     },
     results = {
         {"广域电线杆", 1},
@@ -599,7 +599,7 @@ prototype "采矿机1" {
         {"电动机I", 2},
     },
     results = {
-        {"采矿机I", 2},
+        {"采矿机I", 1},
     },
     time = "6s",
     description = "使用铁制品和电动机制造采矿机",
@@ -649,8 +649,8 @@ prototype "熔炼炉1" {
     recipe_order =  50,
     recipe_icon =  "textures/construct/furnace1.texture",
     ingredients = {
-        {"铁板", 6},
-        {"石砖", 8},
+        {"铁板", 8},
+        {"石砖", 12},
     },
     results = {
         {"熔炼炉I", 1},
