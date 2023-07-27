@@ -340,6 +340,7 @@ local function new_entity(self, datamodel, typeobject)
         self.grid_entity:show(true)
     end
 
+    self.typeobject = typeobject
     local object = assert(objects:get(self.move_object_id))
     ipower:build_power_network(gameplay_core.get_world(), object.gameplay_eid)
 end
@@ -698,6 +699,8 @@ local function create(move_object_id)
     M.move_object_id = move_object_id
     M.pickup_components = {}
     M.selected_boxes = {}
+    M.typeobject = nil
+    M.continue_construct = false
 
     return M
 end
