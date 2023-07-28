@@ -2577,7 +2577,7 @@ prototype "化学科技包1" {
     recipe_order =  85,
     recipe_icon =  "textures/recipe/electrical-pack.texture",
     ingredients = {
-        {"润滑油", 5},
+        {"橡胶", 5},
         {"硫酸", 18},
         {"混凝土", 6},
         {"氨气", 50},
