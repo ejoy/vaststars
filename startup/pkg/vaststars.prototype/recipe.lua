@@ -4015,7 +4015,7 @@ prototype "卤水沸腾" {
     recipe_order =  108,
     recipe_icon =  "textures/fluid/gas.texture",
     ingredients = {
-        {"地下卤水", 60},
+        {"地下卤水", 90},
     },
     results = {
         {"蒸汽", 60},
