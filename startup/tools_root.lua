@@ -44,11 +44,13 @@ local function init_setting()
 	}
 	cr.init_setting()
 	cr.set_setting("glb", stringify {
+		os = OS,
+		renderer = Renderer,
 		hd = HomogeneousDepth,
 		bl = OriginBottomLeft,
 	})
 	cr.set_setting("material", stringify {
-		os = BgfxOS[OS] or OS,
+		os = OS,
 		renderer = Renderer,
 		hd = HomogeneousDepth,
 		obl = OriginBottomLeft,
