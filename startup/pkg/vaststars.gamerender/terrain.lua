@@ -28,8 +28,8 @@ local SURFACE_HEIGHT <const> = 0
 local TILE_SIZE <const> = 10
 local WIDTH <const> = 256 -- coordinate value range: [0, WIDTH - 1]
 local HEIGHT <const> = 256
-local GRID_WIDTH <const> = (10 + 10) * 4
-local GRID_HEIGHT <const> = 52
+local GRID_WIDTH <const> = 92
+local GRID_HEIGHT <const> = 50
 assert(GRID_WIDTH % 2 == 0 and GRID_HEIGHT % 2 == 0)
 local TERRAIN_MAX_GROUP_ID = 10000
 
@@ -97,6 +97,7 @@ function terrain:get_group_id(x, y)
 end
 
 function terrain:create(width, height)
+    self.lock_group = false
     self.surface_height = SURFACE_HEIGHT
     self.tile_size = TILE_SIZE
     self.tile_width, self.tile_height = width or WIDTH, height or HEIGHT
@@ -204,6 +205,9 @@ function terrain:can_place_on_mineral(x, y, w, h)
 end
 
 function terrain:enable_terrain(x, y)
+    if self.lock_group == true then
+        return
+    end
     local function diff(t1, t2)
         local add, del = {}, {}
         for group_id in pairs(t1) do

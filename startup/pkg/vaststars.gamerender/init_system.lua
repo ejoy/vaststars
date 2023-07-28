@@ -9,6 +9,7 @@ local gameplay_core = require "gameplay.core"
 local NOTHING <const> = require "debugger".nothing
 local TERRAIN_ONLY <const> = require "debugger".terrain_only
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
+local camera_zoom_mb = world:sub {"camera_zoom"}
 local icamera_controller = ecs.import.interface "vaststars.gamerender|icamera_controller"
 local iefk = ecs.require "engine.efk"
 local iroadnet = ecs.require "roadnet"
@@ -89,14 +90,17 @@ function m:gameworld_end()
 end
 
 function m:camera_usage()
+    local camera_changed = false
     for _ in dragdrop_camera_mb:unpack() do
-        if not terrain.init then
-            goto continue
-        end
+        camera_changed = true
+    end
+    for _ in camera_zoom_mb:unpack() do
+        camera_changed = true
+    end
+    if camera_changed and terrain.init then
         local coord = terrain:align(icamera_controller.get_central_position(), 1, 1)
         if coord then
             terrain:enable_terrain(coord[1], coord[2])
         end
-        ::continue::
     end
 end
