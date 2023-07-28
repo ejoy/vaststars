@@ -82,6 +82,7 @@ local t = {
 	"/pkg/ant.compile_resource/editor/model/glb.lua",
 	"/pkg/ant.compile_resource/editor/model/math3d_pool.lua",
 	"/pkg/ant.compile_resource/editor/model/pack_vertex_data.lua",
+	"/pkg/ant.compile_resource/editor/model/patch.lua",
 	"/pkg/ant.compile_resource/editor/model/utility.lua",
 	"/pkg/ant.compile_resource/editor/parallel_task.lua",
 	"/pkg/ant.compile_resource/editor/subprocess.lua",
