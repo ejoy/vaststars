@@ -612,7 +612,7 @@ prototype "运输车辆I" {
     type = {"item"},
     item_category = "物流",
     stack = 50,
-    item_description = "在道路上行驶并运输货物的交通工具",
+    item_description = "行驶在公路上可运输货物的交通工具",
     capacitance = "10MJ",
     speed = 63,
     pile = "2x4x2",

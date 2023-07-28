@@ -48,15 +48,11 @@ local function __set_item_value(datamodel, category_idx, item_idx, key, value)
     datamodel.construct_menu[category_idx].items[item_idx][key] = value
 end
 
-local function __update_shortcur(index, prototype_name, icon, timestamp)
+local function __get_shortcur(index)
     local storage = gameplay_core.get_storage()
     storage.shortcut = storage.shortcut or {}
     storage.shortcut[index] = storage.shortcut[index] or {}
-
-    local shortcut = storage.shortcut[index]
-    shortcut.prototype_name = prototype_name
-    shortcut.icon = icon
-    shortcut.last_timestamp = timestamp
+    return storage.shortcut[index]
 end
 
 local function __get_construct_index(prototype_name)
@@ -177,7 +173,10 @@ function M:stage_ui_update(datamodel)
                 {s = {1, 1, 1}, t = {0, 0, 0}}, typeobject.camera_distance, nil, model_message_func
             )
 
-            __update_shortcur(datamodel.shortcut_id, item_name, typeobject.icon, os.time())
+            local data = __get_shortcur(datamodel.shortcut_id)
+            data.prototype_name = item_name
+            data.icon = typeobject.icon
+            data.last_timestamp = os.time()
 
             local shortcut = assert(datamodel.shortcut[datamodel.shortcut_id])
             shortcut.prototype_name = item_name
@@ -228,6 +227,9 @@ function M:stage_ui_update(datamodel)
     end
 
     for _ in click_main_button_mb:unpack() do
+        local shortcut = __get_shortcur(datamodel.shortcut_id)
+        shortcut.last_timestamp = os.time()
+
         iui.close("build_setting.rml")
         iui.open({"build.rml"})
     end

@@ -2507,11 +2507,11 @@ prototype "地质科技包2" {
     recipe_order =  81,
     recipe_icon =  "textures/recipe/geology-pack.texture",
     ingredients = {
-        {"碎石", 3},
-        {"铁矿石", 3},
+        {"碎石", 4},
+        {"铁矿石", 4},
     },
     results = {
-        {"地质科技包", 4},
+        {"地质科技包", 3},
     },
     time = "8s",
     description = "地质材料制造地质科技包",
@@ -2577,7 +2577,7 @@ prototype "化学科技包1" {
     recipe_order =  85,
     recipe_icon =  "textures/recipe/electrical-pack.texture",
     ingredients = {
-        {"润滑油", 5},
+        {"橡胶", 5},
         {"硫酸", 18},
         {"混凝土", 6},
         {"氨气", 50},
@@ -4015,7 +4015,7 @@ prototype "卤水沸腾" {
     recipe_order =  108,
     recipe_icon =  "textures/fluid/gas.texture",
     ingredients = {
-        {"地下卤水", 60},
+        {"地下卤水", 90},
     },
     results = {
         {"蒸汽", 60},
