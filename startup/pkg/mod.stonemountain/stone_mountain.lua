@@ -2,6 +2,8 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 local open_sm = false
+local fastio    = require "fastio"
+local datalist  = require "datalist"
 local idrawindirect = ecs.import.interface "ant.render|idrawindirect"
 local imaterial = ecs.import.interface "ant.asset|imaterial"
 local math3d 	= require "math3d"
@@ -17,6 +19,9 @@ local icompute = ecs.import.interface "ant.render|icompute"
 local terrain_module = require "terrain"
 local ism = ecs.interface "istonemountain"
 local sm_sys = ecs.system "stone_mountain"
+local vb_num, vb_size, vb2_size, ib_num, ib_size = 0, 0, 0, 0, 0
+local vb_handle, vb2_handle, ib_handle
+
 local ratio, width, height = 0.77, 256, 256
 local ratio_table = {
     [1] = 0.88, [2] = 0.90, [3] = 0.92, [4] = 0.94
@@ -30,10 +35,10 @@ local sm_group = {
 }
 
 local mesh_table = {
-    [1] = "/pkg/mod.stonemountain/assets/mountain1.glb|meshes/Cylinder.002_P1.meshbin",
-    [2] = "/pkg/mod.stonemountain/assets/mountain2.glb|meshes/Cylinder.004_P1.meshbin",
-    [3] = "/pkg/mod.stonemountain/assets/mountain3.glb|meshes/Cylinder_P1.meshbin",
-    [4] = "/pkg/mod.stonemountain/assets/mountain4.glb|meshes/Cylinder.021_P1.meshbin"
+    [1] = {filename = "/pkg/mod.stonemountain/assets/mountain1.glb|meshes/Cylinder.002_P1.meshbin"},
+    [2] = {filename = "/pkg/mod.stonemountain/assets/mountain2.glb|meshes/Cylinder.004_P1.meshbin"},
+    [3] = {filename = "/pkg/mod.stonemountain/assets/mountain3.glb|meshes/Cylinder_P1.meshbin"},
+    [4] = {filename = "/pkg/mod.stonemountain/assets/mountain4.glb|meshes/Cylinder.021_P1.meshbin"}
 }
 
 local sm_info_table = {
@@ -158,53 +163,89 @@ local function make_sm_noise()
     get_srt()
 end
 
-function sm_sys:init()
+local function load_mem(m, filename)
+    local function parent_path(v)
+        return v:match("^(.+)/[^/]*$")
+    end
+    local binname = m[1]
+    assert(type(binname) == "string" and (binname:match "%.[iv]bbin" or binname:match "%.[iv]b[2]bin"))
 
+    local data, err = fastio.readall_s(assetmgr.compile(parent_path(filename) .. "/" .. binname))
+    if not data then
+        error(("read file failed:%s, error:%s"):format(binname, err))
+    end
+    m[1] = data
 end
+
+function sm_sys:init()
+    local vb_memory, vb2_memory, ib_memory = '', '', ''
+    local vb_decl, vb2_decl = declmgr.get('p30NIf|T40nii').handle, declmgr.get('c40niu|t20NIf').handle
+    for idx = 1, 4 do
+        local mesh = mesh_table[idx]
+        local local_filename = assetmgr.compile(mesh.filename)
+        local mm = datalist.parse(fastio.readall_s(local_filename))
+        load_mem(mm.vb.memory,  mesh.filename)
+        load_mem(mm.vb2.memory, mesh.filename)
+        load_mem(mm.ib.memory,  mesh.filename)
+        vb_num, vb_size, vb2_size = vb_num + mm.vb.num, vb_size + mm.vb.memory[3], vb2_size + mm.vb2.memory[3]
+        ib_num, ib_size = ib_num + mm.ib.num, ib_size + mm.ib.memory[3]
+        mesh.vb_num, mesh.vb_size, mesh.vb2_size = mm.vb.num, mm.vb.memory[3], mm.vb2.memory[3]
+        mesh.ib_num, mesh.ib_size = mm.ib.num, mm.ib.memory[3]
+        vb_memory  = vb_memory .. mm.vb.memory[1]
+        vb2_memory = vb2_memory .. mm.vb2.memory[1]
+        ib_memory  = ib_memory .. mm.ib.memory[1]
+    end
+    vb_handle  = bgfx.create_vertex_buffer(bgfx.memory_buffer(table.unpack{vb_memory, 1, vb_size}), vb_decl)
+    vb2_handle = bgfx.create_vertex_buffer(bgfx.memory_buffer(table.unpack{vb2_memory, 1, vb2_size}), vb2_decl)
+    ib_handle  = bgfx.create_index_buffer(bgfx.memory_buffer(table.unpack{ib_memory, 1, ib_size}), '')
+end
+
 local kb_mb = world:sub{"keyboard"}
 
 
 local function create_sm_entity()
-    local stonemountain_info_table  = {
-        {}, {}, {}, {}
-    }
-    for _, sms in pairs(sm_table)do
-        for _, sm in pairs(sms) do
-            local mesh_idx = sm.m
-            stonemountain_info_table[mesh_idx][#stonemountain_info_table[mesh_idx]+1] = {
-                {sm.s, sm.r, sm.tx, sm.tz}
-            }
-        end
-    end
+    local mesh_number_table = {}
+
+    local stonemountain_info_table  = {}
     for mesh_idx = 1, 4 do
-        local mesh_address = mesh_table[mesh_idx]
-        local gid = sm_group[mesh_idx]
-        local g = ecs.group(gid)
-        ecs.group(gid):enable "view_visible"
-        g:create_entity {
-            policy = {
-                "ant.render|render",
-                "mod.stonemountain|stonemountain",
-                "ant.render|indirect"
-             },
-            data = {
-                scene         = {},
-                material      ="/pkg/mod.stonemountain/assets/pbr_sm.material", 
-                visible_state = "main_view|cast_shadow",
-                mesh          = mesh_address,
-                stonemountain = {
-                    group = sm_group[mesh_idx],
-                    stonemountain_info = stonemountain_info_table[mesh_idx],
-                },
-                render_layer = "foreground",
-                indirect = "STONE_MOUNTAIN",
-                on_ready = function(e)
-                    local draw_indirect_type = idrawindirect.get_draw_indirect_type("STONE_MOUNTAIN")
-                    imaterial.set_property(e, "u_draw_indirect_type", math3d.vector(draw_indirect_type))
-                end
-            }
-        }
+        local begin_num = #stonemountain_info_table
+        for _, sms in pairs(sm_table) do
+            if sms[mesh_idx] then
+                local sm = sms[mesh_idx]
+                stonemountain_info_table[#stonemountain_info_table+1] = {
+                    {sm.s, sm.r, sm.tx, sm.tz}
+                }               
+            end
+        end
+        mesh_number_table[mesh_idx] = #stonemountain_info_table - begin_num
     end
+    local gid = 40005
+    local g = ecs.group(gid)
+    ecs.group(gid):enable "view_visible"
+    g:create_entity {
+        policy = {
+            "ant.render|render",
+            "mod.stonemountain|stonemountain",
+            "ant.render|indirect"
+         },
+        data = {
+            scene         = {},
+            mesh =  mesh_table[1].filename,
+            material      ="/pkg/mod.stonemountain/assets/pbr_sm.material", 
+            visible_state = "main_view|cast_shadow",
+            stonemountain = {
+                group = gid,
+                stonemountain_info = stonemountain_info_table,
+                mesh_number = mesh_number_table
+            },
+            render_layer = "foreground",
+            indirect = "STONE_MOUNTAIN",
+            on_ready = function(e)
+                local draw_indirect_type = idrawindirect.get_draw_indirect_type("STONE_MOUNTAIN")
+                imaterial.set_property(e, "u_draw_indirect_type", math3d.vector(draw_indirect_type))
+            end
+        }
+    }
 end
 
 function sm_sys:stone_mountain()
@@ -215,17 +256,26 @@ function sm_sys:stone_mountain()
     end
 end
 
+local function update_ro(ro)
+    bgfx.destroy(ro.vb_handle)
+    bgfx.destroy(ro.vb2_handle)
+    bgfx.destroy(ro.ib_handle)
+    ro.vb_handle, ro.vb2_handle, ro.ib_handle = vb_handle, vb2_handle, ib_handle
+    ro.vb_num, ro.vb2_num, ro.ib_num = vb_num, vb_num, ib_num
+end
+
 function sm_sys:entity_init()
     for e in w:select "INIT stonemountain:update render_object?update indirect?update" do
+        update_ro(e.render_object)
         local stonemountain = e.stonemountain
-        local max_num = 5000
+        local max_num = 20000
         local draw_indirect_eid = ecs.create_entity {
             policy = {
                 "ant.render|compute_policy",
                 "ant.render|draw_indirect"
             },
             data = {
-                material    = "/pkg/ant.resources/materials/indirect/indirect.material",
+                material    = "/pkg/ant.resources/materials/stone_mountain/stone_mountain.material",
                 dispatch    = {
                     size    = {0, 0, 0},
                 },
@@ -271,13 +321,16 @@ local function get_instance_memory_buffer(stonemountain_info, max_num)
     return memory_buffer
 end
 
-local function create_stonemountain_compute(dispatch, stonemountain_num, indirect_buffer, instance_buffer, instance_params, indirect_params)
+local function create_stonemountain_compute(dispatch, stonemountain_num, indirect_buffer, instance_params, indirect_params, mesh_offset)
     dispatch.size[1] = math.floor((stonemountain_num - 1) / 64) + 1
     local m = dispatch.material
-    m.u_instance_params			= instance_params
-    m.u_indirect_params         = indirect_params
+    m.u_indirect_params			= indirect_params
+    m.u_instance_params1        = instance_params[1]
+    m.u_instance_params2        = instance_params[2]
+    m.u_instance_params3        = instance_params[3]
+    m.u_instance_params4        = instance_params[4]
+    m.u_mesh_offset             = mesh_offset
     m.indirect_buffer           = indirect_buffer
-    m.instance_buffer           = instance_buffer
     icompute.dispatch(main_viewid, dispatch)
 end
 
@@ -290,15 +343,23 @@ function sm_sys:data_changed()
         e.bounding.scene_aabb = mc.NULL
         local stonemountain = e.stonemountain
         local stonemountain_info = stonemountain.stonemountain_info
+        local mesh_number = stonemountain.mesh_number
+        local mesh_offset = math3d.vector(mesh_number[1], mesh_number[2], mesh_number[3])
         local stonemountain_num = #stonemountain_info
+        -- vertex offset / index offset / total index number
+        local instance_params = {
+            [1] = math3d.vector(0, 0, mesh_table[1].ib_num),
+            [2] = math3d.vector(mesh_table[1].vb_num, mesh_table[1].ib_num, mesh_table[2].ib_num),
+            [3] = math3d.vector(mesh_table[1].vb_num + mesh_table[2].vb_num, mesh_table[1].ib_num + mesh_table[2].ib_num, mesh_table[3].ib_num),
+            [4] = math3d.vector(vb_num - mesh_table[4].vb_num, ib_num - mesh_table[4].ib_num, mesh_table[4].ib_num),
+        }
         if stonemountain_num > 0 then
             local de <close> = w:entity(stonemountain.draw_indirect_eid, "draw_indirect:in dispatch:in")
             local idb_handle, itb_handle = de.draw_indirect.idb_handle, de.draw_indirect.itb_handle
-            local instance_memory_buffer = get_instance_memory_buffer(stonemountain_info, 5000)
+            local instance_memory_buffer = get_instance_memory_buffer(stonemountain_info, 20000)
             bgfx.update(itb_handle, 0, instance_memory_buffer)
-            local instance_params = math3d.vector(0, e.render_object.vb_num, 0, e.render_object.ib_num)
             local indirect_params = math3d.vector(stonemountain_num, 0, 0, 0)
-            create_stonemountain_compute(de.dispatch, stonemountain_num, idb_handle, itb_handle, instance_params, indirect_params)
+            create_stonemountain_compute(de.dispatch, stonemountain_num, idb_handle, instance_params, indirect_params, mesh_offset)
             e.render_object.idb_handle = idb_handle
             e.render_object.itb_handle = itb_handle
             e.render_object.draw_num = stonemountain_num

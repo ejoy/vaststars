@@ -1,3 +1,4 @@
+import "@ant.asset"
 system "stone_mountain"
     .implement "stone_mountain.lua"
     .method "init"

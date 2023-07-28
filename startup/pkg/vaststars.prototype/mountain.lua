@@ -12,7 +12,7 @@ local MAX_X <const> = MAP_WIDTH + BORDER
 local MIN_Y <const> = -BORDER + 1
 local MAX_Y <const> = MAP_HEIGHT + BORDER
 
-density = 0.3
+density = 0.1
 
 mountain_coords = {
     {MIN_X, MIN_Y, WIDTH, BORDER},
