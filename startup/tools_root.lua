@@ -2,6 +2,7 @@ dofile "/engine/bootstrap.lua"
 
 local fs = require "bee.filesystem"
 local cr = import_package "ant.compile_resource".fileserver()
+local datalist  = require "datalist"
 
 local function init_setting()
 	local function sortpairs(t)
@@ -81,15 +82,28 @@ local function dir(p)
 	end
 	return t
 end
- 
+
 local function readall(resource, file)
 	local f <close> = assert(fs.open(cr.compile_file(resource) / file, "rb"))
     return f:read "a"
 end
 
+local function get_material(prefab)
+	for _, v in pairs(prefab) do
+		if v.data and v.data.material then
+			local t = v.data.material
+			if #t > 1 then
+				return t[2]
+			else
+				return t[1]
+			end
+		end
+	end
+end
+
 for _, f in ipairs(dir(path)) do
-	local a = readall(f, "mesh.prefab")
-	local i = 0
+	local prefab = datalist.parse(readall(f, "mesh.prefab"))
+	local material = datalist.parse(readall(f, get_material(prefab) .. "/main.cfg"))
 end
 
 print "ok"
