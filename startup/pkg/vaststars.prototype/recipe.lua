@@ -6,7 +6,7 @@ prototype "铁板1" {
     recipe_craft_category = "金属冶炼",
     recipe_category =  "金属",
     recipe_order =  11,
-    recipe_icon =  "textures/construct/plate-Fe.texture",
+    item_icon = "textures/icons/recipe/plate-Fe-1.texture",
     ingredients = {
         {"铁矿石", 3},
     },
@@ -23,7 +23,7 @@ prototype "铁板2" {
     recipe_craft_category = "金属冶炼",
     recipe_category =  "金属",
     recipe_order =  12,
-    recipe_icon =  "textures/construct/plate-Fe.texture",
+    item_icon = "textures/icons/recipe/plate-Fe-2.texture",
     ingredients = {
         {"碾碎铁矿石", 8},
         {"石墨", 1}
@@ -41,7 +41,7 @@ prototype "碾碎铁矿石" {
     recipe_craft_category = "矿石粉碎",
     recipe_category =  "金属",
     recipe_order =  14,
-    recipe_icon =  "textures/construct/crush-ore-Fe.texture",
+    recipe_icon =  "textures/icons/recipe/crush-ore-Fe.texture",
     ingredients = {
         {"铁矿石", 8},
     },
@@ -58,7 +58,7 @@ prototype "碾碎铝矿石" {
     recipe_craft_category = "矿石粉碎",
     recipe_category =  "金属",
     recipe_order =  14,
-    recipe_icon =  "textures/construct/crush-ore-Al.texture",
+    recipe_icon =  "textures/icons/recipe/crush-ore-Al.texture",
     ingredients = {
         {"铝矿石", 7},
     },
@@ -76,7 +76,7 @@ prototype "铝矿石浮选" {
     recipe_craft_category = "矿石浮选",
     recipe_category =  "金属",
     recipe_order =  14,
-    recipe_icon =  "textures/construct/aluminum-hydroxide.texture",
+    recipe_icon =  "textures/icons/recipe/aluminum-floating.texture",
     ingredients = {
         {"碾碎铝矿石", 4},
         {"碱性溶液", 30}
@@ -94,7 +94,7 @@ prototype "四氯化钛" {
     recipe_craft_category = "金属冶炼",
     recipe_category =  "金属",
     recipe_order =  11,
-    recipe_icon =  "textures/construct/plate-Fe.texture",
+    recipe_icon =  "textures/icons/recipe/alumina.texture",
     ingredients = {
         {"氯气", 80},
         {"石墨", 7},
@@ -113,7 +113,7 @@ prototype "钛板" {
     recipe_craft_category = "矿石浮选",
     recipe_category =  "金属",
     recipe_order =  14,
-    recipe_icon =  "textures/construct/aluminum-hydroxide.texture",
+    recipe_icon =  "textures/icons/recipe/plate-Si.texture",
     ingredients = {
         {"氦气", 1},
         {"钠", 6},
@@ -132,7 +132,7 @@ prototype "氧化铝" {
     recipe_craft_category = "金属冶炼",
     recipe_category =  "金属",
     recipe_order =  16,
-    recipe_icon =  "textures/construct/alumina.texture",
+    recipe_icon =  "textures/icons/recipe/alumina.texture",
     ingredients = {
         {"氢氧化铝", 4},
     },
@@ -148,7 +148,7 @@ prototype "铝板1" {
     recipe_craft_category = "金属冶炼",
     recipe_category =  "金属",
     recipe_order =  18,
-    recipe_icon =  "textures/construct/plate-Al.texture",
+    recipe_icon =  "textures/icons/recipe/plate-Al-1.texture",
     ingredients = {
         {"氧化铝", 9},
         {"石墨", 5}
@@ -166,7 +166,7 @@ prototype "铝棒1" {
     recipe_craft_category = "器件中型制造",
     recipe_category =  "金属",
     recipe_order =  20,
-    recipe_icon =  "textures/construct/iron_stick.texture",
+    recipe_icon =  "textures/icons/recipe/aluminium-rod.texture",
     ingredients = {
         {"铝板", 4},
     },
@@ -182,7 +182,7 @@ prototype "铝丝1" {
     recipe_craft_category = "器件中型制造",
     recipe_category =  "金属",
     recipe_order =  22,
-    recipe_icon =  "textures/construct/iron-wire.texture",
+    recipe_icon =  "textures/icons/recipe/aluminium-rod.texture",
     ingredients = {
         {"铝棒", 5},
     },
@@ -198,7 +198,7 @@ prototype "铁棒1" {
     recipe_craft_category = "器件中型制造",
     recipe_category =  "金属",
     recipe_order =  13,
-    recipe_icon =  "textures/construct/iron_stick.texture",
+    recipe_icon =  "textures/icons/recipe/iron-rod.texture",
     ingredients = {
         {"铁板", 4},
     },
@@ -214,7 +214,7 @@ prototype "铁丝1" {
     recipe_craft_category = "器件中型制造",
     recipe_category =  "金属",
     recipe_order =  14,
-    recipe_icon =  "textures/construct/iron-wire.texture",
+    recipe_icon =  "textures/icons/recipe/iron-wire.texture",
     ingredients = {
         {"铁棒", 3},
     },
@@ -230,7 +230,7 @@ prototype "沙子1" {
     recipe_craft_category = "矿石粉碎",
     recipe_category =  "金属",
     recipe_order =  40,
-    recipe_icon =  "textures/construct/sand.texture",
+    recipe_icon =  "textures/icons/recipe/sand.texture",
     ingredients = {
         {"碎石", 5},
     },
@@ -246,7 +246,7 @@ prototype "石砖" {
     recipe_craft_category = "物流中型制造",
     recipe_category =  "物流",
     recipe_order =  100,
-    recipe_icon =  "textures/construct/stone-brick.texture",
+    recipe_icon =  "textures/icons/recipe/stone-brick.texture",
     ingredients = {
         {"碎石", 2},
     },
@@ -262,7 +262,7 @@ prototype "硅1" {
     recipe_craft_category = "矿石浮选",
     recipe_category =  "金属",
     recipe_order =  68,
-    recipe_icon =  "textures/construct/ore-Si.texture",
+    recipe_icon =  "textures/icons/recipe/ore-Si.texture",
     ingredients = {
         {"地下卤水", 60},
         {"沙子", 8},
@@ -280,7 +280,7 @@ prototype "玻璃1" {
     recipe_craft_category = "器件中型制造",
     recipe_category =  "器件",
     recipe_order =  70,
-    recipe_icon =  "textures/construct/glass.texture",
+    recipe_icon =  "textures/icons/recipe/glass.texture",
     ingredients = {
         {"硅", 3},
     },
@@ -296,7 +296,7 @@ prototype "玻璃2" {
     recipe_craft_category = "器件中型制造",
     recipe_category =  "器件",
     recipe_order =  70,
-    recipe_icon =  "textures/construct/glass.texture",
+    recipe_icon =  "textures/icons/recipe/glass.texture",
     ingredients = {
         {"硅", 5},
         {"氧化铝", 3},
@@ -314,7 +314,7 @@ prototype "坩埚" {
     recipe_craft_category = "器件中型制造",
     recipe_category =  "器件",
     recipe_order =  72,
-    recipe_icon =  "textures/construct/crucible.texture",
+    recipe_icon =  "textures/icons/recipe/crucible.texture",
     ingredients = {
         {"硅", 15},
     },
@@ -330,7 +330,7 @@ prototype "硅板1" {
     recipe_craft_category = "金属冶炼",
     recipe_category =  "金属",
     recipe_order =  68,
-    recipe_icon =  "textures/construct/plate-Si.texture",
+    recipe_icon =  "textures/icons/recipe/plate-Si.texture",
     ingredients = {
         {"硅", 5},
         {"石墨", 2},
@@ -347,7 +347,7 @@ prototype "橡胶" {
     recipe_craft_category = "矿石浮选",
     recipe_category =  "器件",
     recipe_order =  76,
-    recipe_icon =  "textures/construct/rubber.texture",
+    recipe_icon =  "textures/icons/recipe/rubber.texture",
     ingredients = {
         {"丁二烯", 15},
     },
@@ -363,7 +363,7 @@ prototype "电动机1" {
     recipe_craft_category = "器件中型制造",
     recipe_category =  "器件",
     recipe_order =  52,
-    recipe_icon =  "textures/construct/electric-motor.texture",
+    recipe_icon =  "textures/icons/recipe/electric-motor.texture",
     ingredients = {
         -- {"铁棒", 1},
         -- {"铁丝", 2},
@@ -382,7 +382,7 @@ prototype "电动机2" {
     recipe_craft_category = "器件中型制造",
     recipe_category =  "器件",
     recipe_order =  52,
-    recipe_icon =  "textures/construct/electric-motor.texture",
+    recipe_icon =  "textures/icons/recipe/electric-motor.texture",
     ingredients = {
         {"钢齿轮", 1},
         {"绝缘线", 3},
@@ -401,7 +401,7 @@ prototype "电动机3" {
     recipe_craft_category = "器件中型制造",
     recipe_category =  "器件",
     recipe_order =  52,
-    recipe_icon =  "textures/construct/electric-motor.texture",
+    recipe_icon =  "textures/icons/recipe/electric-motor.texture",
     ingredients = {
         {"钛板", 4},
         {"铝丝", 8},
@@ -419,7 +419,7 @@ prototype "铁齿轮" {
     recipe_craft_category = "金属小型制造",
     recipe_category =  "金属",
     recipe_order =  15,
-    recipe_icon =  "textures/construct/iron-gear.texture",
+    recipe_icon =  "textures/icons/recipe/iron-gear.texture",
     ingredients = {
         {"铁板", 4},
     },
@@ -435,7 +435,7 @@ prototype "玻璃纤维1" {
     recipe_craft_category = "器件中型制造",
     recipe_category =  "金属",
     recipe_order =  11,
-    recipe_icon =  "textures/construct/plate-Fe.texture",
+    recipe_icon =  "textures/icons/recipe/glass.texture",
     ingredients = {
         {"纯水", 20},
         {"玻璃", 4},
@@ -453,7 +453,7 @@ prototype "隔热板1" {
     recipe_craft_category = "器件中型制造",
     recipe_category =  "金属",
     recipe_order =  11,
-    recipe_icon =  "textures/construct/plate-Fe.texture",
+    recipe_icon =  "textures/icons/recipe/plate-Si.texture",
     ingredients = {
         {"玻璃纤维", 4},
         {"硅板", 5},
@@ -470,7 +470,7 @@ prototype "混凝土" {
     recipe_craft_category = "矿石浮选",
     recipe_category =  "物流",
     recipe_order =  15,
-    recipe_icon =  "textures/construct/iron-gear.texture",
+    recipe_icon =  "textures/icons/recipe/stone-brick.texture",
     ingredients = {
         {"纯水", 6},
         {"碎石", 4},
@@ -489,7 +489,7 @@ prototype "小铁制箱子1" {
     recipe_craft_category = "物流中型制造",
     --recipe_category =  "物流",
     recipe_order =  10,
-    recipe_icon =  "textures/construct/chest1.texture",
+    recipe_icon =  "textures/icons/recipe/stone-brick.texture",
     ingredients = {
         -- {"铁棒", 1},
         {"铁板", 10},
@@ -506,7 +506,7 @@ prototype "小铁制箱子2" {
     recipe_craft_category = "物流中型制造",
     --recipe_category =  "物流",
     recipe_order =  11,
-    recipe_icon =  "textures/construct/chest2.texture",
+    recipe_icon =  "textures/icons/recipe/stone-brick.texture",
     ingredients = {
         {"橡胶", 1},
         {"钢板", 6},
@@ -524,7 +524,7 @@ prototype "大铁制箱子1" {
     recipe_craft_category = "物流中型制造",
     --recipe_category =  "物流",
     recipe_order =  13,
-    recipe_icon =  "textures/construct/large-chest.texture",
+    recipe_icon =  "textures/icons/recipe/stone-brick.texture",
     ingredients = {
         {"铝板", 4},
         {"小铁制箱子II", 5},
@@ -541,7 +541,7 @@ prototype "铁制电线杆" {
     recipe_craft_category = "物流中型制造",
     recipe_category =  "物流",
     recipe_order =  30,
-    recipe_icon =  "textures/construct/electric-pole1.texture",
+    recipe_icon =  "textures/icons/recipe/iron-wire.texture",
     ingredients = {
         {"铁丝", 4},
         {"塑料", 1},
@@ -558,7 +558,7 @@ prototype "远程电线杆" {
     recipe_craft_category = "物流中型制造",
     recipe_category =  "物流",
     recipe_order =  30,
-    recipe_icon =  "textures/construct/electric-pole1.texture",
+    recipe_icon =  "textures/icons/recipe/iron-wire.texture",
     ingredients = {
         {"绝缘线", 4},
         {"铝丝", 3},
@@ -576,7 +576,7 @@ prototype "广域电线杆" {
     recipe_craft_category = "物流中型制造",
     recipe_category =  "物流",
     recipe_order =  30,
-    recipe_icon =  "textures/construct/electric-pole1.texture",
+    recipe_icon =  "textures/icons/recipe/iron-wire.texture",
     ingredients = {
         {"混凝土", 8},
         {"远程电线杆", 1},
@@ -593,7 +593,7 @@ prototype "采矿机1" {
     recipe_craft_category = "生产中型制造",
     recipe_category =  "加工",
     recipe_order =  40,
-    recipe_icon =  "textures/construct/miner.texture",
+    recipe_icon =  "textures/icons/recipe/miner-design.texture",
     ingredients = {
         {"铁齿轮", 3},
         {"电动机I", 2},
@@ -610,7 +610,7 @@ prototype "采矿机2" {
     recipe_craft_category = "生产中型制造",
     recipe_category =  "加工",
     recipe_order =  40,
-    recipe_icon =  "textures/construct/miner.texture",
+    recipe_icon =  "textures/icons/recipe/miner-design.texture",
     ingredients = {
         {"碳化铝", 2},
         {"钢板", 5},
@@ -629,7 +629,7 @@ prototype "采矿机3" {
     recipe_craft_category = "生产中型制造",
     recipe_category =  "加工",
     recipe_order =  40,
-    recipe_icon =  "textures/construct/miner.texture",
+    recipe_icon =  "textures/icons/recipe/miner-design.texture",
     ingredients = {
         {"钛板", 4},
         {"电动机III", 1},
@@ -647,7 +647,7 @@ prototype "熔炼炉1" {
     recipe_craft_category = "生产中型制造",
     recipe_category =  "加工",
     recipe_order =  50,
-    recipe_icon =  "textures/construct/furnace1.texture",
+    recipe_icon =  "textures/icons/recipe/furnace-design.texture",
     ingredients = {
         {"铁板", 8},
         {"石砖", 12},
@@ -664,7 +664,7 @@ prototype "熔炼炉2" {
     recipe_craft_category = "生产中型制造",
     recipe_category =  "加工",
     recipe_order =  51,
-    recipe_icon =  "textures/construct/furnace2.texture",
+    recipe_icon =  "textures/icons/recipe/furnace-design.texture",
     ingredients = {
         {"钢板", 4},
         {"坩埚", 2},
@@ -682,7 +682,7 @@ prototype "熔炼炉3" {
     recipe_craft_category = "生产中型制造",
     recipe_category =  "加工",
     recipe_order =  51,
-    recipe_icon =  "textures/construct/furnace2.texture",
+    recipe_icon =  "textures/icons/recipe/furnace-design.texture",
     ingredients = {
         {"钛板", 5},
         {"空气过滤器II", 1},
@@ -700,7 +700,7 @@ prototype "组装机1" {
     recipe_craft_category = "生产中型制造",
     recipe_category =  "加工",
     recipe_order =  70,
-    recipe_icon =  "textures/construct/assembler1.texture",
+    recipe_icon =  "textures/icons/recipe/assembler-design.texture",
     ingredients = {
         {"电动机I", 2},
         {"铁齿轮", 4},
@@ -717,7 +717,7 @@ prototype "组装机2" {
     recipe_craft_category = "生产中型制造",
     recipe_category =  "加工",
     recipe_order =  71,
-    recipe_icon =  "textures/construct/assembler2.texture",
+    recipe_icon =  "textures/icons/recipe/assembler-design.texture",
     ingredients = {
         {"钢板", 4},
         {"铝板", 4},
@@ -735,7 +735,7 @@ prototype "组装机3" {
     recipe_craft_category = "生产中型制造",
     recipe_category =  "加工",
     recipe_order =  71,
-    recipe_icon =  "textures/construct/assembler2.texture",
+    recipe_icon =  "textures/icons/recipe/assembler-design.texture",
     ingredients = {
         {"钛板", 6},
         {"无人机仓库II", 1},
@@ -753,7 +753,7 @@ prototype "广播塔1" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
     recipe_order =  72,
-    recipe_icon =  "textures/construct/assembler1.texture",
+    recipe_icon =  "textures/icons/recipe/assembler-design.texture",
     ingredients = {
         {"电容I", 1},
         {"铁制电线杆", 1},
@@ -771,7 +771,7 @@ prototype "广播塔2" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
     recipe_order =  72,
-    recipe_icon =  "textures/construct/assembler1.texture",
+    recipe_icon =  "textures/icons/recipe/assembler-design.texture",
     ingredients = {
         {"广域电线杆", 1},
         {"玻璃纤维", 4},
@@ -789,7 +789,7 @@ prototype "广播塔3" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
     recipe_order =  72,
-    recipe_icon =  "textures/construct/assembler1.texture",
+    recipe_icon =  "textures/icons/recipe/assembler-design.texture",
     ingredients = {
         {"电动机III", 1},
         {"广播塔II", 1},
@@ -806,7 +806,7 @@ prototype "地热井1" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
     recipe_order =  72,
-    recipe_icon =  "textures/construct/assembler1.texture",
+    recipe_icon =  "textures/icons/recipe/hydroplant-design.texture",
     ingredients = {
         {"铝板", 20},
         {"铝棒", 10},
@@ -825,7 +825,7 @@ prototype "地热井2" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
     recipe_order =  72,
-    recipe_icon =  "textures/construct/assembler1.texture",
+    recipe_icon =  "textures/icons/recipe/hydroplant-design.texture",
     ingredients = {
         {"采矿机II", 1},
         {"地热井I", 1},
@@ -842,7 +842,7 @@ prototype "地热井3" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
     recipe_order =  72,
-    recipe_icon =  "textures/construct/assembler1.texture",
+    recipe_icon =  "textures/icons/recipe/hydroplant-design.texture",
     ingredients = {
         {"效能插件I", 2},
         {"采矿机III", 1},
@@ -860,7 +860,7 @@ prototype "蒸汽发电机1" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "化工",
     recipe_order =  120,
-    recipe_icon =  "textures/construct/turbine1.texture",
+    recipe_icon =  "textures/icons/recipe/electrolysis-design.texture",
     ingredients = {
         {"管道1-X型", 4},
         {"钢齿轮", 4},
@@ -878,7 +878,7 @@ prototype "蒸汽发电机2" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "化工",
     recipe_order =  120,
-    recipe_icon =  "textures/construct/turbine1.texture",
+    recipe_icon =  "textures/icons/recipe/electrolysis-design.texture",
     ingredients = {
         {"电容I", 2},
         {"铝棒", 4},
@@ -897,7 +897,7 @@ prototype "蒸汽发电机3" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "化工",
     recipe_order =  120,
-    recipe_icon =  "textures/construct/turbine1.texture",
+    recipe_icon =  "textures/icons/recipe/electrolysis-design.texture",
     ingredients = {
         {"钛板", 12},
         {"电动机III", 1},
@@ -915,7 +915,7 @@ prototype "风力发电机1" {
     recipe_craft_category = "生产大型制造",
     --recipe_category =  "加工",
     recipe_order =  10,
-    recipe_icon =  "textures/construct/wind-turbine.texture",
+    recipe_icon =  "textures/icons/recipe/electrolysis-design.texture",
     ingredients = {
         {"铁制电线杆", 3},
         {"蒸汽发电机I", 2},
@@ -932,7 +932,7 @@ prototype "液罐1" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "化工",
     recipe_order =  22,
-    recipe_icon =  "textures/construct/liquid-tank.texture",
+    recipe_icon =  "textures/icons/recipe/furnace-design.texture",
     ingredients = {
         {"管道1-X型", 6},
         {"铁棒", 3},
@@ -949,7 +949,7 @@ prototype "液罐2" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "化工",
     recipe_order =  22,
-    recipe_icon =  "textures/construct/liquid-tank.texture",
+    recipe_icon =  "textures/icons/recipe/furnace-design.texture",
     ingredients = {
         {"管道1-X型", 6},
         {"钢板", 5},
@@ -968,7 +968,7 @@ prototype "液罐3" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "化工",
     recipe_order =  22,
-    recipe_icon =  "textures/construct/liquid-tank.texture",
+    recipe_icon =  "textures/icons/recipe/furnace-design.texture",
     ingredients = {
         {"管道1-X型", 6},
         {"玻璃纤维", 4},
@@ -986,7 +986,7 @@ prototype "化工厂1" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "化工",
     recipe_order =  80,
-    recipe_icon =  "textures/construct/chemistry2.texture",
+    recipe_icon =  "textures/icons/recipe/chemistry-design.texture",
     ingredients = {
         {"液罐I", 2},
         {"玻璃", 4},
@@ -1004,7 +1004,7 @@ prototype "化工厂2" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "化工",
     recipe_order =  80,
-    recipe_icon =  "textures/construct/chemistry2.texture",
+    recipe_icon =  "textures/icons/recipe/chemistry-design.texture",
     ingredients = {
         {"科研中心I", 1},
         {"蒸馏厂II", 1},
@@ -1022,7 +1022,7 @@ prototype "化工厂3" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "化工",
     recipe_order =  80,
-    recipe_icon =  "textures/construct/chemistry2.texture",
+    recipe_icon =  "textures/icons/recipe/chemistry-design.texture",
     ingredients = {
         {"科研中心II", 1},
         {"浮选器II", 1},
@@ -1040,7 +1040,7 @@ prototype "铸造厂1" {
     recipe_craft_category = "生产大型制造",
     --recipe_category =  "加工",
     recipe_order =  63,
-    recipe_icon =  "textures/construct/assembler.texture",
+    recipe_icon =  "textures/icons/recipe/chemistry-design.texture",
     ingredients = {
         {"铁板", 4},
         {"熔炼炉I", 1},
@@ -1057,7 +1057,7 @@ prototype "水电站1" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "化工",
     recipe_order =  70,
-    recipe_icon =  "textures/construct/hydroplant.texture",
+    recipe_icon =  "textures/icons/recipe/hydroplant-design.texture",
     ingredients = {
         {"蒸馏厂I", 1},
         {"地下水挖掘机I", 1},
@@ -1074,7 +1074,7 @@ prototype "水电站2" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "化工",
     recipe_order =  70,
-    recipe_icon =  "textures/construct/hydroplant.texture",
+    recipe_icon =  "textures/icons/recipe/hydroplant-design.texture",
     ingredients = {
         {"液罐II", 1},
         {"化工厂I", 1},
@@ -1092,7 +1092,7 @@ prototype "水电站3" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "化工",
     recipe_order =  70,
-    recipe_icon =  "textures/construct/hydroplant.texture",
+    recipe_icon =  "textures/icons/recipe/hydroplant-design.texture",
     ingredients = {
         {"化工厂II", 1},
         {"浮选器II", 1},
@@ -1110,7 +1110,7 @@ prototype "蒸馏厂1" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "化工",
     recipe_order =  62,
-    recipe_icon =  "textures/construct/distillery.texture",
+    recipe_icon =  "textures/icons/recipe/hydroplant-design.texture",
     ingredients = {
         {"烟囱I", 1},
         {"液罐I", 2},
@@ -1128,7 +1128,7 @@ prototype "蒸馏厂2" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "化工",
     recipe_order =  62,
-    recipe_icon =  "textures/construct/distillery.texture",
+    recipe_icon =  "textures/icons/recipe/hydroplant-design.texture",
     ingredients = {
         {"熔炼炉II", 1},
         {"蒸馏厂I", 1},
@@ -1145,7 +1145,7 @@ prototype "蒸馏厂3" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "化工",
     recipe_order =  62,
-    recipe_icon =  "textures/construct/distillery.texture",
+    recipe_icon =  "textures/icons/recipe/hydroplant-design.texture",
     ingredients = {
         {"水电站II", 1},
         {"蒸馏厂II", 1},
@@ -1162,7 +1162,7 @@ prototype "烟囱1" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "化工",
     recipe_order =  65,
-    recipe_icon =  "textures/construct/chimney2.texture",
+    recipe_icon =  "textures/icons/recipe/chemistry-design.texture",
     ingredients = {
         {"铁棒", 2},
         {"管道1-X型", 3},
@@ -1180,7 +1180,7 @@ prototype "烟囱2" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "化工",
     recipe_order =  65,
-    recipe_icon =  "textures/construct/chimney2.texture",
+    recipe_icon =  "textures/icons/recipe/chemistry-design.texture",
     ingredients = {
         {"混凝土", 10},
         {"钢板", 4},
@@ -1198,7 +1198,7 @@ prototype "压力泵1" {
     recipe_craft_category = "生产中型制造",
     recipe_category =  "化工",
     recipe_order =  40,
-    recipe_icon =  "textures/construct/pump1.texture",
+    recipe_icon =  "textures/icons/recipe/chemistry-design.texture",
     ingredients = {
         {"电动机I", 1},
         {"管道1-X型", 4},
@@ -1215,7 +1215,7 @@ prototype "地下水挖掘机1" {
     recipe_craft_category = "生产中型制造",
     recipe_category =  "化工",
     recipe_order =  50,
-    recipe_icon =  "textures/construct/pumpjack1.texture",
+    recipe_icon =  "textures/icons/recipe/water-excavator-design.texture",
     ingredients = {
         {"排水口I", 1},
         {"压力泵I", 1},
@@ -1232,7 +1232,7 @@ prototype "地下水挖掘机2" {
     recipe_craft_category = "生产中型制造",
     recipe_category =  "化工",
     recipe_order =  50,
-    recipe_icon =  "textures/construct/pumpjack1.texture",
+    recipe_icon =  "textures/icons/recipe/water-excavator-design.texture",
     ingredients = {
         {"混凝土", 10},
         {"地下水挖掘机I", 1},
@@ -1249,7 +1249,7 @@ prototype "空气过滤器1" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "化工",
     recipe_order =  60,
-    recipe_icon =  "textures/construct/air-filter1.texture",
+    recipe_icon =  "textures/icons/recipe/gas-separate.texture",
     ingredients = {
         {"塑料", 4},
         {"烟囱I", 1},
@@ -1266,7 +1266,7 @@ prototype "空气过滤器2" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "化工",
     recipe_order =  60,
-    recipe_icon =  "textures/construct/air-filter1.texture",
+    recipe_icon =  "textures/icons/recipe/gas-separate.texture",
     ingredients = {
         {"蒸汽发电机II", 1},
         {"空气过滤器I", 2},
@@ -1283,7 +1283,7 @@ prototype "空气过滤器3" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "化工",
     recipe_order =  60,
-    recipe_icon =  "textures/construct/air-filter1.texture",
+    recipe_icon =  "textures/icons/recipe/gas-separate.texture",
     ingredients = {
         {"烟囱II", 2},
         {"空气过滤器II", 2},
@@ -1300,7 +1300,7 @@ prototype "排水口1" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "化工",
     recipe_order =  56,
-    recipe_icon =  "textures/construct/outfall.texture",
+    recipe_icon =  "textures/icons/recipe/water-excavator-design.texture",
     ingredients = {
         {"管道1-X型", 5},
         {"地下管1-JI型", 1},
@@ -1317,7 +1317,7 @@ prototype "排水口2" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "化工",
     recipe_order =  56,
-    recipe_icon =  "textures/construct/outfall.texture",
+    recipe_icon =  "textures/icons/recipe/water-excavator-design.texture",
     ingredients = {
         {"混凝土", 10},
         {"排水口I", 1},
@@ -1334,7 +1334,7 @@ prototype "管道1" {
     recipe_craft_category = "器件小型制造",
     recipe_category =  "化工",
     recipe_order =  10,
-    recipe_icon =  "textures/construct/pipe.texture",
+    recipe_icon =  "textures/icons/recipe/iron-rod.texture",
     ingredients = {
         {"铁棒", 2},
     },
@@ -1350,7 +1350,7 @@ prototype "管道2" {
     recipe_craft_category = "器件小型制造",
     recipe_category =  "化工",
     recipe_order =  11,
-    recipe_icon =  "textures/construct/pipe.texture",
+    recipe_icon =  "textures/icons/recipe/iron-rod.texture",
     ingredients = {
         {"石砖", 8},
     },
@@ -1367,7 +1367,7 @@ prototype "地下管1" {
     recipe_craft_category = "器件小型制造",
     recipe_category =  "化工",
     recipe_order =  12,
-    recipe_icon =  "textures/construct/underground-pipe1.texture",
+    recipe_icon =  "textures/icons/recipe/iron-rod.texture",
     ingredients = {
         {"管道1-X型", 5},
         {"碎石", 2},
@@ -1384,7 +1384,7 @@ prototype "地下管2" {
     recipe_craft_category = "器件小型制造",
     recipe_category =  "化工",
     recipe_order =  14,
-    recipe_icon =  "textures/construct/underground-pipe1.texture",
+    recipe_icon =  "textures/icons/recipe/iron-rod.texture",
     ingredients = {
         {"地下管1-JI型", 1},
         {"钢板", 3},
@@ -1402,7 +1402,7 @@ prototype "粉碎机1" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
     recipe_order =  60,
-    recipe_icon =  "textures/construct/crusher1.texture",
+    recipe_icon =  "textures/icons/recipe/assembler-design.texture",
     ingredients = {
         {"铁板", 4},
         {"石砖", 8},
@@ -1420,7 +1420,7 @@ prototype "粉碎机2" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
     recipe_order =  60,
-    recipe_icon =  "textures/construct/crusher1.texture",
+    recipe_icon =  "textures/icons/recipe/assembler-design.texture",
     ingredients = {
         {"绝缘线", 6},
         {"采矿机I", 1},
@@ -1438,7 +1438,7 @@ prototype "粉碎机3" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
     recipe_order =  60,
-    recipe_icon =  "textures/construct/crusher1.texture",
+    recipe_icon =  "textures/icons/recipe/assembler-design.texture",
     ingredients = {
         {"采矿机III", 1},
         {"粉碎机II", 1},
@@ -1455,7 +1455,7 @@ prototype "无人机仓库1" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
     recipe_order =  60,
-    recipe_icon =  "textures/construct/crusher1.texture",
+    recipe_icon =  "textures/icons/recipe/drone-depot-design.texture",
     ingredients = {
         {"电动机I", 2},
         {"石砖", 4},
@@ -1472,7 +1472,7 @@ prototype "无人机仓库2" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
     recipe_order =  60,
-    recipe_icon =  "textures/construct/crusher1.texture",
+    recipe_icon =  "textures/icons/recipe/drone-depot-design.texture",
     ingredients = {
         {"铝棒", 2},
         {"钢齿轮", 4},
@@ -1490,7 +1490,7 @@ prototype "无人机仓库3" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
     recipe_order =  60,
-    recipe_icon =  "textures/construct/crusher1.texture",
+    recipe_icon =  "textures/icons/recipe/drone-depot-design.texture",
     ingredients = {
         {"电动机II", 4},
         {"钛板", 8},
@@ -1508,7 +1508,7 @@ prototype "电解厂1" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "化工",
     recipe_order =  90,
-    recipe_icon =  "textures/construct/electrolysis1.texture",
+    recipe_icon =  "textures/icons/recipe/electrolysis-design.texture",
     ingredients = {
         {"液罐I", 4},
         {"铁制电线杆", 8},
@@ -1525,7 +1525,7 @@ prototype "电解厂2" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "化工",
     recipe_order =  90,
-    recipe_icon =  "textures/construct/electrolysis1.texture",
+    recipe_icon =  "textures/icons/recipe/electrolysis-design.texture",
     ingredients = {
         {"远程电线杆", 4},
         {"电解厂I", 1},
@@ -1542,7 +1542,7 @@ prototype "电解厂3" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "化工",
     recipe_order =  90,
-    recipe_icon =  "textures/construct/electrolysis1.texture",
+    recipe_icon =  "textures/icons/recipe/electrolysis-design.texture",
     ingredients = {
         {"广域电线杆", 4},
         {"电解厂II", 1},
@@ -1559,7 +1559,7 @@ prototype "浮选器1" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
     recipe_order =  64,
-    recipe_icon =  "textures/construct/flotation-cell.texture",
+    recipe_icon =  "textures/icons/recipe/furnace-design.texture",
     ingredients = {
         {"粉碎机I", 1},
         {"水电站I", 1},
@@ -1576,7 +1576,7 @@ prototype "浮选器2" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
     recipe_order =  64,
-    recipe_icon =  "textures/construct/flotation-cell.texture",
+    recipe_icon =  "textures/icons/recipe/furnace-design.texture",
     ingredients = {
         {"化工厂I", 1},
         {"浮选器I", 1},
@@ -1593,7 +1593,7 @@ prototype "浮选器3" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
     recipe_order =  64,
-    recipe_icon =  "textures/construct/flotation-cell.texture",
+    recipe_icon =  "textures/icons/recipe/furnace-design.texture",
     ingredients = {
         {"粉碎机II", 1},
         {"水电站II", 1},
@@ -1611,7 +1611,7 @@ prototype "科研中心1" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
     recipe_order =  80,
-    recipe_icon =  "textures/property/research-packs.texture",
+    recipe_icon =  "textures/icons/recipe/lab-design.texture",
     ingredients = {
         {"玻璃", 8},
         {"铝棒", 8},
@@ -1629,7 +1629,7 @@ prototype "科研中心2" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
     recipe_order =  80,
-    recipe_icon =  "textures/property/research-packs.texture",
+    recipe_icon =  "textures/icons/recipe/lab-design.texture",
     ingredients = {
         {"化工厂II", 1},
         {"广播塔I", 1},
@@ -1646,7 +1646,7 @@ prototype "科研中心3" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
     recipe_order =  80,
-    recipe_icon =  "textures/property/research-packs.texture",
+    recipe_icon =  "textures/icons/recipe/lab-design.texture",
     ingredients = {
         {"组装机III", 1},
         {"科研中心II", 2},
@@ -1663,7 +1663,7 @@ prototype "太阳能板1" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
     recipe_order =  80,
-    recipe_icon =  "textures/property/research-packs.texture",
+    recipe_icon =  "textures/icons/recipe/solar-panel-design.texture",
     ingredients = {
         {"玻璃", 4},
         {"铝棒", 5},
@@ -1682,7 +1682,7 @@ prototype "太阳能板2" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
     recipe_order =  80,
-    recipe_icon =  "textures/property/research-packs.texture",
+    recipe_icon =  "textures/icons/recipe/solar-panel-design.texture",
     ingredients = {
         {"钛板", 4},
         {"硅板", 4},
@@ -1700,7 +1700,7 @@ prototype "太阳能板3" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
     recipe_order =  80,
-    recipe_icon =  "textures/property/research-packs.texture",
+    recipe_icon =  "textures/icons/recipe/solar-panel-design.texture",
     ingredients = {
         {"玻璃纤维", 4},
         {"太阳能板II", 2},
@@ -1717,7 +1717,7 @@ prototype "蓄电池1" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
     recipe_order =  80,
-    recipe_icon =  "textures/property/research-packs.texture",
+    recipe_icon =  "textures/icons/recipe/grid-battery-design.texture",
     ingredients = {
         {"电容I", 2},
         {"铝板", 2},
@@ -1735,7 +1735,7 @@ prototype "蓄电池2" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
     recipe_order =  80,
-    recipe_icon =  "textures/property/research-packs.texture",
+    recipe_icon =  "textures/icons/recipe/grid-battery-design.texture",
     ingredients = {
         {"电容II", 4},
         {"玻璃纤维", 4},
@@ -1753,7 +1753,7 @@ prototype "蓄电池3" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
     recipe_order =  80,
-    recipe_icon =  "textures/property/research-packs.texture",
+    recipe_icon =  "textures/icons/recipe/grid-battery-design.texture",
     ingredients = {
         {"蓄电池II", 3},
     },
@@ -1769,7 +1769,7 @@ prototype "出货车站打印" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "物流",
     recipe_order =  80,
-    recipe_icon =  "textures/property/research-packs.texture",
+    recipe_icon =  "textures/icons/recipe/goodsstation-out-design.texture",
     ingredients = {
         {"电动机I", 1},
         {"石砖", 4},
@@ -1786,7 +1786,7 @@ prototype "收货车站打印" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "物流",
     recipe_order =  80,
-    recipe_icon =  "textures/property/research-packs.texture",
+    recipe_icon =  "textures/icons/recipe/goodsstation-input-design.texture",
     ingredients = {
         {"电动机I", 1},
         {"石砖", 4},
@@ -1803,7 +1803,7 @@ prototype "火箭区段1" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
     recipe_order =  64,
-    recipe_icon =  "textures/construct/flotation-cell.texture",
+    recipe_icon =  "textures/icons/recipe/electric-motor.texture",
     ingredients = {
         {"钢板", 20},
         {"铝板", 30},
@@ -1821,7 +1821,7 @@ prototype "火箭整流罩1" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
     recipe_order =  64,
-    recipe_icon =  "textures/construct/flotation-cell.texture",
+    recipe_icon =  "textures/icons/recipe/electric-motor.texture",
     ingredients = {
         {"隔热板", 100},
         {"钛板", 200},
@@ -1838,7 +1838,7 @@ prototype "车辆装配" {
     recipe_craft_category = "生产中型制造",
     recipe_category =  "加工",
     recipe_order =  128,
-    recipe_icon =  "textures/construct/truck.texture",
+    recipe_icon =  "textures/icons/recipe/glass.texture",
     ingredients = {
         {"铁齿轮", 4},
         {"橡胶", 4},
@@ -1858,7 +1858,7 @@ prototype "处理器1" {
     recipe_craft_category = "器件小型制造",
     recipe_category =  "加工",
     recipe_order =  128,
-    recipe_icon =  "textures/construct/truck.texture",
+    recipe_icon =  "textures/icons/recipe/logic-circuit-1.texture",
     ingredients = {
         {"盐酸", 5},
         {"数据线", 2},
@@ -1876,7 +1876,7 @@ prototype "处理器2" {
     recipe_craft_category = "器件小型制造",
     recipe_category =  "加工",
     recipe_order =  128,
-    recipe_icon =  "textures/construct/truck.texture",
+    recipe_icon =  "textures/icons/recipe/logic-circuit-1.texture",
     ingredients = {
         {"氦气", 8},
         {"石墨烯", 1},
@@ -1895,7 +1895,7 @@ prototype "砖石公路打印" {
     recipe_craft_category = "物流小型制造",
     recipe_category =  "物流",
     recipe_order =  104,
-    recipe_icon =  "textures/construct/road1.texture",
+    recipe_icon =  "textures/icons/recipe/stone-brick.texture",
     ingredients = {
         {"石砖", 5},
     },
@@ -1911,7 +1911,7 @@ prototype "管道打印" {
     recipe_craft_category = "框架打印",
     recipe_category =  "化工",
     recipe_order =  10,
-    recipe_icon =  "textures/construct/pipe.texture",
+    recipe_icon =  "textures/icons/recipe/iron-rod.texture",
     ingredients = {
         {"铁板", 2},
     },
@@ -1923,348 +1923,297 @@ prototype "管道打印" {
 }
 
 ------------------框架-------------------
-prototype "初级建筑框架" {
-    type = { "recipe" },
-    recipe_craft_category = "建筑打印",
-    recipe_category =  "物流",
-    recipe_order =  52,
-    recipe_icon =  "textures/construct/broken-miner.texture",
-    ingredients = {
-        {"铁板", 4},
-        {"石砖", 4},
-    },
-    results = {
-        {"初级建筑框架", 1},
-    },
-    time = "3s",
-    description = "初级建筑框架",
-}
+-- prototype "采矿机打印" {
+--     type = { "recipe" },
+--     recipe_craft_category = "建筑打印",
+--     recipe_category =  "物流",
+--     recipe_order =  52,
+--     recipe_icon =  "textures/icons/recipe/broken-miner.texture",
+--     ingredients = {
+--         {"电动机I", 2},
+--         {"石砖", 4},
+--     },
+--     results = {
+--         {"采矿机I", 1},
+--     },
+--     time = "10s",
+--     description = "打印采矿机",
+-- }
 
-prototype "中级建筑框架" {
-    type = { "recipe" },
-    recipe_craft_category = "建筑打印",
-    recipe_category =  "物流",
-    recipe_order =  52,
-    recipe_icon =  "textures/construct/broken-miner.texture",
-    ingredients = {
-        {"电动机I", 2},
-        {"石砖", 4},
-    },
-    results = {
-        {"采矿机I", 1},
-    },
-    time = "6s",
-    description = "中级建筑框架",
-}
+-- prototype "电线杆打印" {
+--     type = { "recipe" },
+--     recipe_craft_category = "建筑打印",
+--     recipe_category =  "物流",
+--     recipe_order =  54,
+--     recipe_icon =  "textures/icons/recipe/broken-electric-pole1.texture",
+--     ingredients = {
+--         {"铁板", 3},
+--     },
+--     results = {
+--         {"铁制电线杆", 1},
+--     },
+--     time = "5s",
+--     description = "打印可导电的电线杆",
+-- }
 
-prototype "高级建筑框架" {
-    type = { "recipe" },
-    recipe_craft_category = "建筑打印",
-    recipe_category =  "物流",
-    recipe_order =  52,
-    recipe_icon =  "textures/construct/broken-miner.texture",
-    ingredients = {
-        {"电动机I", 2},
-        {"石砖", 4},
-    },
-    results = {
-        {"采矿机I", 1},
-    },
-    time = "12s",
-    description = "高级建筑框架",
-}
+-- prototype "无人机仓库I打印" {
+--     type = { "recipe" },
+--     recipe_craft_category = "建筑打印",
+--     recipe_category =  "物流",
+--     recipe_order =  55,
+--     recipe_icon =  "textures/icons/recipe/broken-drone-depot.texture",
+--     ingredients = {
+--         {"电动机I", 1},
+--     },
+--     results = {
+--         {"无人机仓库I", 1},
+--     },
+--     time = "5s",
+--     description = "打印无人机仓库I",
+-- }
 
-prototype "采矿机打印" {
-    type = { "recipe" },
-    recipe_craft_category = "建筑打印",
-    recipe_category =  "物流",
-    recipe_order =  52,
-    recipe_icon =  "textures/construct/broken-miner.texture",
-    ingredients = {
-        {"电动机I", 2},
-        {"石砖", 4},
-    },
-    results = {
-        {"采矿机I", 1},
-    },
-    time = "10s",
-    description = "打印采矿机",
-}
+-- prototype "车站打印" {
+--     type = { "recipe" },
+--     recipe_craft_category = "建筑打印",
+--     --recipe_category =  "物流",
+--     recipe_order =  56,
+--     recipe_icon =  "textures/icons/recipe/broken-logisitic.texture",
+--     ingredients = {
+--         {"电动机I", 1},
+--     },
+--     results = {
+--         {"车站框架", 1},
+--     },
+--     time = "5s",
+--     description = "打印车站",
+-- }
 
-prototype "电线杆打印" {
-    type = { "recipe" },
-    recipe_craft_category = "建筑打印",
-    recipe_category =  "物流",
-    recipe_order =  54,
-    recipe_icon =  "textures/construct/broken-electric-pole1.texture",
-    ingredients = {
-        {"铁板", 3},
-    },
-    results = {
-        {"铁制电线杆", 1},
-    },
-    time = "5s",
-    description = "打印可导电的电线杆",
-}
+-- prototype "科研中心打印" {
+--     type = { "recipe" },
+--     recipe_craft_category = "建筑打印",
+--     recipe_category =  "物流",
+--     recipe_order =  56,
+--     recipe_icon =  "textures/icons/recipe/broken-lab.texture",
+--     ingredients = {
+--         {"电动机I", 8},
+--         {"坩埚", 3},
+--     },
+--     results = {
+--         {"科研中心I", 1},
+--     },
+--     time = "5s",
+--     description = "打印科研中心",
+-- }
 
-prototype "无人机仓库I打印" {
-    type = { "recipe" },
-    recipe_craft_category = "建筑打印",
-    recipe_category =  "物流",
-    recipe_order =  55,
-    recipe_icon =  "textures/construct/broken-drone-depot.texture",
-    ingredients = {
-        {"电动机I", 1},
-    },
-    results = {
-        {"无人机仓库I", 1},
-    },
-    time = "5s",
-    description = "打印无人机仓库I",
-}
+-- prototype "蓄电池打印" {
+--     type = { "recipe" },
+--     recipe_craft_category = "建筑打印",
+--     recipe_category =  "加工",
+--     recipe_order =  54,
+--     recipe_icon =  "textures/icons/recipe/broken-grid-battery.texture",
+--     ingredients = {
+--         {"电动机I", 1},
+--         {"硅", 4},
+--     },
+--     results = {
+--         {"蓄电池I", 1},
+--     },
+--     time = "5s",
+--     description = "打印可存储电能的电池",
+-- }
 
-prototype "车站打印" {
-    type = { "recipe" },
-    recipe_craft_category = "建筑打印",
-    --recipe_category =  "物流",
-    recipe_order =  56,
-    recipe_icon =  "textures/construct/broken-logisitic.texture",
-    ingredients = {
-        {"电动机I", 1},
-    },
-    results = {
-        {"车站框架", 1},
-    },
-    time = "5s",
-    description = "打印车站",
-}
+-- prototype "水电站打印" {
+--     type = { "recipe" },
+--     recipe_craft_category = "建筑打印",
+--     recipe_category =  "化工",
+--     recipe_order =  54,
+--     recipe_icon =  "textures/icons/recipe/broken-hydroplant.texture",
+--     ingredients = {
+--         {"电动机I", 1},
+--         {"坩埚", 2},
+--     },
+--     results = {
+--         {"水电站I", 1},
+--     },
+--     time = "5s",
+--     description = "打印可处理液体的装置",
+-- }
 
-prototype "科研中心打印" {
-    type = { "recipe" },
-    recipe_craft_category = "建筑打印",
-    recipe_category =  "物流",
-    recipe_order =  56,
-    recipe_icon =  "textures/construct/broken-lab.texture",
-    ingredients = {
-        {"电动机I", 8},
-        {"坩埚", 3},
-    },
-    results = {
-        {"科研中心I", 1},
-    },
-    time = "5s",
-    description = "打印科研中心",
-}
+-- prototype "粉碎机打印" {
+--     type = { "recipe" },
+--     recipe_craft_category = "建筑打印",
+--     recipe_category =  "加工",
+--     recipe_order =  54,
+--     recipe_icon =  "textures/icons/recipe/broken-hydroplant.texture",
+--     ingredients = {
+--         {"采矿机I", 1},
+--         {"铁齿轮", 4},
+--     },
+--     results = {
+--         {"粉碎机I", 1},
+--     },
+--     time = "5s",
+--     description = "打印可粉碎物品的装置",
+-- }
 
-prototype "蓄电池打印" {
-    type = { "recipe" },
-    recipe_craft_category = "建筑打印",
-    recipe_category =  "加工",
-    recipe_order =  54,
-    recipe_icon =  "textures/construct/broken-grid-battery.texture",
-    ingredients = {
-        {"电动机I", 1},
-        {"硅", 4},
-    },
-    results = {
-        {"蓄电池I", 1},
-    },
-    time = "5s",
-    description = "打印可存储电能的电池",
-}
+-- prototype "电解厂打印" {
+--     type = { "recipe" },
+--     recipe_craft_category = "建筑打印",
+--     recipe_category =  "化工",
+--     recipe_order =  54,
+--     recipe_icon =  "textures/icons/recipe/broken-electrolysis1.texture",
+--     ingredients = {
+--         {"液罐I", 4},
+--         {"铁制电线杆", 8},
+--     },
+--     results = {
+--         {"电解厂I", 1},
+--     },
+--     time = "5s",
+--     description = "打印可电解液体的工厂",
+-- }
 
-prototype "水电站打印" {
-    type = { "recipe" },
-    recipe_craft_category = "建筑打印",
-    recipe_category =  "化工",
-    recipe_order =  54,
-    recipe_icon =  "textures/construct/broken-hydroplant.texture",
-    ingredients = {
-        {"电动机I", 1},
-        {"坩埚", 2},
-    },
-    results = {
-        {"水电站I", 1},
-    },
-    time = "5s",
-    description = "打印可处理液体的装置",
-}
+-- prototype "液罐打印" {
+--     type = { "recipe" },
+--     recipe_craft_category = "建筑打印",
+--     recipe_category =  "化工",
+--     recipe_order =  54,
+--     recipe_icon =  "textures/icons/recipe/broken-electrolysis1.texture",
+--     ingredients = {
+--         {"管道1-X型", 6},
+--     },
+--     results = {
+--         {"液罐I", 1},
+--     },
+--     time = "5s",
+--     description = "打印可电解液体的工厂",
+-- }
 
-prototype "粉碎机打印" {
-    type = { "recipe" },
-    recipe_craft_category = "建筑打印",
-    recipe_category =  "加工",
-    recipe_order =  54,
-    recipe_icon =  "textures/construct/broken-hydroplant.texture",
-    ingredients = {
-        {"采矿机I", 1},
-        {"铁齿轮", 4},
-    },
-    results = {
-        {"粉碎机I", 1},
-    },
-    time = "5s",
-    description = "打印可粉碎物品的装置",
-}
+-- prototype "化工厂打印" {
+--     type = { "recipe" },
+--     recipe_craft_category = "建筑打印",
+--     recipe_category =  "化工",
+--     recipe_order =  54,
+--     recipe_icon =  "textures/icons/recipe/broken-chemistry2.texture",
+--     ingredients = {
+--         {"液罐I", 12},
+--         {"组装机I", 1},
+--     },
+--     results = {
+--         {"化工厂I", 1},
+--     },
+--     time = "5s",
+--     description = "打印可处理化工原料的工厂",
+-- }
 
-prototype "电解厂打印" {
-    type = { "recipe" },
-    recipe_craft_category = "建筑打印",
-    recipe_category =  "化工",
-    recipe_order =  54,
-    recipe_icon =  "textures/construct/broken-electrolysis1.texture",
-    ingredients = {
-        {"液罐I", 4},
-        {"铁制电线杆", 8},
-    },
-    results = {
-        {"电解厂I", 1},
-    },
-    time = "5s",
-    description = "打印可电解液体的工厂",
-}
+-- prototype "组装机打印" {
+--     type = { "recipe" },
+--     recipe_craft_category = "建筑打印",
+--     recipe_category =  "加工",
+--     recipe_order =  54,
+--     recipe_icon =  "textures/icons/recipe/broken-assembler.texture",
+--     ingredients = {
+--         {"电动机I", 2},
+--         {"铁齿轮", 4},
+--     },
+--     results = {
+--         {"组装机I", 1},
+--     },
+--     time = "5s",
+--     description = "打印可组装元件的工厂",
+-- }
 
-prototype "液罐打印" {
-    type = { "recipe" },
-    recipe_craft_category = "建筑打印",
-    recipe_category =  "化工",
-    recipe_order =  54,
-    recipe_icon =  "textures/construct/broken-electrolysis1.texture",
-    ingredients = {
-        {"管道1-X型", 6},
-    },
-    results = {
-        {"液罐I", 1},
-    },
-    time = "5s",
-    description = "打印可电解液体的工厂",
-}
+-- prototype "空气过滤器打印" {
+--     type = { "recipe" },
+--     recipe_craft_category = "建筑打印",
+--     recipe_category =  "化工",
+--     recipe_order =  54,
+--     recipe_icon =  "textures/icons/recipe/broken-air-filter1.texture",
+--     ingredients = {
+--         {"塑料", 4},
+--         {"烟囱I", 1},
+--     },
+--     results = {
+--         {"空气过滤器I", 1},
+--     },
+--     time = "5s",
+--     description = "打印可过滤空气的装置",
+-- }
 
-prototype "化工厂打印" {
-    type = { "recipe" },
-    recipe_craft_category = "建筑打印",
-    recipe_category =  "化工",
-    recipe_order =  54,
-    recipe_icon =  "textures/construct/broken-chemistry2.texture",
-    ingredients = {
-        {"液罐I", 12},
-        {"组装机I", 1},
-    },
-    results = {
-        {"化工厂I", 1},
-    },
-    time = "5s",
-    description = "打印可处理化工原料的工厂",
-}
+-- prototype "烟囱打印" {
+--     type = { "recipe" },
+--     recipe_craft_category = "建筑打印",
+--     recipe_category =  "化工",
+--     recipe_order =  54,
+--     recipe_icon =  "textures/icons/recipe/broken-air-filter1.texture",
+--     ingredients = {
+--         {"石砖", 4},
+--         {"管道1-X型", 3},
+--     },
+--     results = {
+--         {"烟囱I", 1},
+--     },
+--     time = "5s",
+--     description = "打印可过滤空气的装置",
+-- }
 
-prototype "组装机打印" {
-    type = { "recipe" },
-    recipe_craft_category = "建筑打印",
-    recipe_category =  "加工",
-    recipe_order =  54,
-    recipe_icon =  "textures/construct/broken-assembler.texture",
-    ingredients = {
-        {"电动机I", 2},
-        {"铁齿轮", 4},
-    },
-    results = {
-        {"组装机I", 1},
-    },
-    time = "5s",
-    description = "打印可组装元件的工厂",
-}
+-- prototype "排水口打印" {
+--     type = { "recipe" },
+--     recipe_craft_category = "建筑打印",
+--     recipe_category =  "化工",
+--     recipe_order =  54,
+--     recipe_icon =  "textures/icons/recipe/broken-air-filter1.texture",
+--     ingredients = {
+--         {"管道1-X型", 5},
+--         {"地下管1-JI型", 1},
+--     },
+--     results = {
+--         {"排水口I", 1},
+--     },
+--     time = "8s",
+--     description = "打印可排泄液体的装置",
+-- }
 
-prototype "空气过滤器打印" {
-    type = { "recipe" },
-    recipe_craft_category = "建筑打印",
-    recipe_category =  "化工",
-    recipe_order =  54,
-    recipe_icon =  "textures/construct/broken-air-filter1.texture",
-    ingredients = {
-        {"塑料", 4},
-        {"烟囱I", 1},
-    },
-    results = {
-        {"空气过滤器I", 1},
-    },
-    time = "5s",
-    description = "打印可过滤空气的装置",
-}
+-- prototype "压力泵打印" {
+--     type = { "recipe" },
+--     recipe_craft_category = "建筑打印",
+--     recipe_category =  "化工",
+--     recipe_order =  40,
+--     recipe_icon =  "textures/icons/recipe/pump1.texture",
+--     ingredients = {
+--         {"电动机I", 1},
+--         {"管道1-X型", 4},
+--     },
+--     results = {
+--         {"压力泵I", 1},
+--     },
+--     time = "5s",
+--     description = "管道和电机制造压力泵",
+-- }
 
-prototype "烟囱打印" {
-    type = { "recipe" },
-    recipe_craft_category = "建筑打印",
-    recipe_category =  "化工",
-    recipe_order =  54,
-    recipe_icon =  "textures/construct/broken-air-filter1.texture",
-    ingredients = {
-        {"石砖", 4},
-        {"管道1-X型", 3},
-    },
-    results = {
-        {"烟囱I", 1},
-    },
-    time = "5s",
-    description = "打印可过滤空气的装置",
-}
-
-prototype "排水口打印" {
-    type = { "recipe" },
-    recipe_craft_category = "建筑打印",
-    recipe_category =  "化工",
-    recipe_order =  54,
-    recipe_icon =  "textures/construct/broken-air-filter1.texture",
-    ingredients = {
-        {"管道1-X型", 5},
-        {"地下管1-JI型", 1},
-    },
-    results = {
-        {"排水口I", 1},
-    },
-    time = "8s",
-    description = "打印可排泄液体的装置",
-}
-
-prototype "压力泵打印" {
-    type = { "recipe" },
-    recipe_craft_category = "建筑打印",
-    recipe_category =  "化工",
-    recipe_order =  40,
-    recipe_icon =  "textures/construct/pump1.texture",
-    ingredients = {
-        {"电动机I", 1},
-        {"管道1-X型", 4},
-    },
-    results = {
-        {"压力泵I", 1},
-    },
-    time = "5s",
-    description = "管道和电机制造压力泵",
-}
-
-prototype "地下水挖掘机打印" {
-    type = { "recipe" },
-    recipe_craft_category = "建筑打印",
-    recipe_category =  "化工",
-    recipe_order =  54,
-    recipe_icon =  "textures/construct/broken-pump.texture",
-    ingredients = {
-        {"排水口I", 1},
-        {"压力泵I", 1},
-    },
-    results = {
-        {"地下水挖掘机I", 1},
-    },
-    time = "10s",
-    description = "打印可挖掘地下水的装置",
-}
+-- prototype "地下水挖掘机打印" {
+--     type = { "recipe" },
+--     recipe_craft_category = "建筑打印",
+--     recipe_category =  "化工",
+--     recipe_order =  54,
+--     recipe_icon =  "textures/icons/recipe/broken-pump.texture",
+--     ingredients = {
+--         {"排水口I", 1},
+--         {"压力泵I", 1},
+--     },
+--     results = {
+--         {"地下水挖掘机I", 1},
+--     },
+--     time = "10s",
+--     description = "打印可挖掘地下水的装置",
+-- }
 ---------------------建筑维修----------------------
 prototype "维修无人机仓库" {
     type = { "recipe" },
     recipe_craft_category = "建筑打印",
     recipe_category =  "加工",
     recipe_order =  50,
-    recipe_icon =  "textures/construct/broken-air-filter1.texture",
+    recipe_icon =  "textures/icons/recipe/drone-depot-design.texture",
     ingredients = {
         {"铁棒", 5},
         {"无人机仓库框架", 1},
@@ -2281,7 +2230,7 @@ prototype "维修空气过滤器" {
     recipe_craft_category = "建筑打印",
     recipe_category =  "加工",
     recipe_order =  50,
-    recipe_icon =  "textures/construct/broken-air-filter1.texture",
+    recipe_icon =  "textures/icons/recipe/gas-separate.texture",
     ingredients = {
         {"铁棒", 5},
         {"空气过滤器框架", 1},
@@ -2298,7 +2247,7 @@ prototype "维修地下水挖掘机" {
     recipe_craft_category = "建筑打印",
     recipe_category =  "加工",
     recipe_order =  51,
-    recipe_icon =  "textures/construct/broken-air-filter1.texture",
+    recipe_icon =  "textures/icons/recipe/water-excavator-design.texture",
     ingredients = {
         {"铁齿轮", 5},
         {"地下水挖掘机框架", 1},
@@ -2315,7 +2264,7 @@ prototype "维修水电站" {
     recipe_craft_category = "建筑打印",
     recipe_category =  "加工",
     recipe_order =  54,
-    recipe_icon =  "textures/construct/broken-hydroplant.texture",
+    recipe_icon =  "textures/icons/recipe/hydroplant-design.texture",
     ingredients = {
         {"石砖", 16},
         {"水电站框架", 1},
@@ -2332,7 +2281,7 @@ prototype "维修组装机" {
     recipe_craft_category = "生产手工制造",
     recipe_category =  "加工",
     recipe_order =  118,
-    recipe_icon =  "textures/construct/broken-assembler.texture",
+    recipe_icon =  "textures/icons/recipe/assembler-design.texture",
     ingredients = {
         {"铁齿轮", 8},
         {"组装机框架", 1},
@@ -2349,7 +2298,7 @@ prototype "维修铁制电线杆" {
     recipe_craft_category = "生产手工制造",
     recipe_category =  "加工",
     recipe_order =  120,
-    recipe_icon =  "textures/construct/broken-electric-pole1.texture",
+    recipe_icon =  "textures/icons/recipe/iron-wire.texture",
     ingredients = {
         {"铁丝", 2},
         {"电线杆框架", 1},
@@ -2366,7 +2315,7 @@ prototype "维修太阳能板" {
     recipe_craft_category = "生产手工制造",
     recipe_category =  "加工",
     recipe_order =  122,
-    recipe_icon =  "textures/construct/broken-solar-panel.texture",
+    recipe_icon =  "textures/icons/recipe/solar-panel-design.texture",
     ingredients = {
         {"铁齿轮", 3},
         {"石砖", 10},
@@ -2384,7 +2333,7 @@ prototype "维修运输汽车" {
     recipe_craft_category = "生产手工制造",
     recipe_category =  "加工",
     recipe_order =  128,
-    recipe_icon =  "textures/construct/broken-truck.texture",
+    recipe_icon =  "textures/icons/recipe/steel-gear.texture",
     ingredients = {
         {"破损运输车辆", 1},
     },
@@ -2400,7 +2349,7 @@ prototype "维修出货车站" {
     recipe_craft_category = "建筑打印",
     recipe_category =  "加工",
     recipe_order =  56,
-    recipe_icon =  "textures/construct/broken-logisitic.texture",
+    recipe_icon =  "textures/icons/recipe/goodsstation-out-design.texture",
     ingredients = {
         {"石砖", 4},
         {"出货车站框架", 1},
@@ -2417,7 +2366,7 @@ prototype "维修收货车站" {
     recipe_craft_category = "建筑打印",
     recipe_category =  "加工",
     recipe_order =  56,
-    recipe_icon =  "textures/construct/broken-logisitic.texture",
+    recipe_icon =  "textures/icons/recipe/goodsstation-input-design.texture",
     ingredients = {
         {"石砖", 4},
         {"收货车站框架", 1},
@@ -2434,7 +2383,7 @@ prototype "维修蒸馏厂" {
     recipe_craft_category = "建筑打印",
     recipe_category =  "加工",
     recipe_order =  54,
-    recipe_icon =  "textures/construct/broken-chemistry2.texture",
+    recipe_icon =  "textures/icons/recipe/chemistry-design.texture",
     ingredients = {
         {"铁丝", 10},
         {"蒸馏厂框架", 1},
@@ -2451,7 +2400,7 @@ prototype "维修化工厂" {
     recipe_craft_category = "建筑打印",
     recipe_category =  "加工",
     recipe_order =  54,
-    recipe_icon =  "textures/construct/broken-chemistry2.texture",
+    recipe_icon =  "textures/icons/recipe/chemistry-design.texture",
     ingredients = {
         {"液罐I", 5},
         {"化工厂框架", 1},
@@ -2468,7 +2417,7 @@ prototype "维修电解厂" {
     recipe_craft_category = "建筑打印",
     recipe_category =  "加工",
     recipe_order =  54,
-    recipe_icon =  "textures/construct/broken-chemistry2.texture",
+    recipe_icon =  "textures/icons/recipe/electrolysis-design.texture",
     ingredients = {
         {"电动机I", 5},
         {"电解厂框架", 1},
@@ -2489,7 +2438,7 @@ prototype "地质科技包1" {
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
     recipe_order =  80,
-    recipe_icon =  "textures/recipe/geology-pack.texture",
+    recipe_icon =  "textures/icons/recipe/rubber.texture",
     ingredients = {
         {"碎石", 6},
     },
@@ -2505,7 +2454,7 @@ prototype "地质科技包2" {
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
     recipe_order =  81,
-    recipe_icon =  "textures/recipe/geology-pack.texture",
+    recipe_icon =  "textures/icons/recipe/rubber.texture",
     ingredients = {
         {"碎石", 4},
         {"铁矿石", 4},
@@ -2523,7 +2472,7 @@ prototype "气候科技包1" {
     recipe_craft_category = "流体液体处理",
     recipe_category =  "器件",
     recipe_order =  82,
-    recipe_icon =  "textures/recipe/climatology-pack.texture",
+    recipe_icon =  "textures/icons/recipe/rubber.texture",
     ingredients = {
         {"空气", 2200},
     },
@@ -2539,7 +2488,7 @@ prototype "机械科技包1" {
     recipe_craft_category = "器件中型制造",
     recipe_category =  "器件",
     recipe_order =  84,
-    recipe_icon =  "textures/recipe/mechanical-pack.texture",
+    recipe_icon =  "textures/icons/recipe/rubber.texture",
     ingredients = {
         {"电动机I", 1},
         {"塑料", 3},
@@ -2557,7 +2506,7 @@ prototype "电子科技包1" {
     recipe_craft_category = "器件中型制造",
     recipe_category =  "器件",
     recipe_order =  85,
-    recipe_icon =  "textures/recipe/electrical-pack.texture",
+    recipe_icon =  "textures/icons/recipe/rubber.texture",
     ingredients = {
         {"电容I", 1},
         {"绝缘线", 2},
@@ -2575,7 +2524,7 @@ prototype "化学科技包1" {
     recipe_craft_category = "器件中型制造",
     recipe_category =  "器件",
     recipe_order =  85,
-    recipe_icon =  "textures/recipe/electrical-pack.texture",
+    recipe_icon =  "textures/icons/recipe/rubber.texture",
     ingredients = {
         {"橡胶", 5},
         {"硫酸", 18},
@@ -2594,7 +2543,7 @@ prototype "物理科技包1" {
     recipe_craft_category = "器件中型制造",
     recipe_category =  "器件",
     recipe_order =  85,
-    recipe_icon =  "textures/recipe/electrical-pack.texture",
+    recipe_icon =  "textures/icons/recipe/rubber.texture",
     ingredients = {
         {"科研中心II", 1},
         {"组装机III", 1},
@@ -2613,7 +2562,7 @@ prototype "石铁矿挖掘" {
     recipe_craft_category = "金属冶炼",
     --recipe_category =  "金属",
     recipe_order =  20,
-    recipe_icon =  "textures/construct/ore-Fe.texture",
+    recipe_icon =  "textures/icons/recipe/rubber.texture",
     ingredients = {
     },
     results = {
@@ -2629,7 +2578,7 @@ prototype "铁矿石挖掘" {
     recipe_craft_category = "矿石开采",
     --recipe_category =  "金属",
     recipe_order =  21,
-    recipe_icon =  "textures/construct/ore-Fe.texture",
+    recipe_icon =  "textures/icons/recipe/rubber.texture",
     ingredients = {
     },
     results = {
@@ -2644,7 +2593,7 @@ prototype "碎石挖掘" {
     recipe_craft_category = "矿石开采",
     --recipe_category =  "金属",
     recipe_order =  22,
-    recipe_icon =  "textures/construct/gravel.texture",
+    recipe_icon =  "textures/icons/recipe/rubber.texture",
     ingredients = {
     },
     results = {
@@ -2659,7 +2608,7 @@ prototype "铝矿挖掘" {
     recipe_craft_category = "矿石开采",
     --recipe_category =  "金属",
     recipe_order =  23,
-    recipe_icon =  "textures/construct/gravel.texture",
+    recipe_icon =  "textures/icons/recipe/rubber.texture",
     ingredients = {
     },
     results = {
@@ -2674,7 +2623,7 @@ prototype "绝缘线1" {
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
     recipe_order =  70,
-    recipe_icon =  "textures/construct/insulated-wire.texture",
+    recipe_icon =  "textures/icons/recipe/insulated-wire-1.texture",
     ingredients = {
         {"橡胶", 2},
         {"铝丝", 3},
@@ -2691,7 +2640,7 @@ prototype "电容1" {
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
     recipe_order =  72,
-    recipe_icon =  "textures/construct/capacitor.texture",
+    recipe_icon =  "textures/icons/recipe/capacitor-1.texture",
     ingredients = {
         {"石墨", 1},
         {"氧化铝", 1},
@@ -2710,7 +2659,7 @@ prototype "电容2" {
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
     recipe_order =  72,
-    recipe_icon =  "textures/construct/capacitor.texture",
+    recipe_icon =  "textures/icons/recipe/capacitor-1.texture",
     ingredients = {
         {"塑料", 15},
         {"氦气", 6},
@@ -2728,7 +2677,7 @@ prototype "金红石1" {
     recipe_craft_category = "矿石浮选",
     recipe_category =  "化工",
     recipe_order =  50,
-    recipe_icon =  "textures/construct/pumpjack1.texture",
+    recipe_icon =  "textures/icons/recipe/capacitor-1.texture",
     ingredients = {
         {"硫酸", 12},
         {"沙子", 5},
@@ -2747,7 +2696,7 @@ prototype "逻辑电路1" {
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
     recipe_order =  74,
-    recipe_icon =  "textures/construct/logic-circuit.texture",
+    recipe_icon =  "textures/icons/recipe/logic-circuit-1.texture",
     ingredients = {
         {"电容I", 1},
         {"铝丝", 3},
@@ -2766,7 +2715,7 @@ prototype "运算电路1" {
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
     recipe_order =  74,
-    recipe_icon =  "textures/construct/logic-circuit.texture",
+    recipe_icon =  "textures/icons/recipe/logic-circuit-1.texture",
     ingredients = {
         {"电容I", 2},
         {"铝丝", 2},
@@ -2785,7 +2734,7 @@ prototype "数据线1" {
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
     recipe_order =  70,
-    recipe_icon =  "textures/construct/insulated-wire.texture",
+    recipe_icon =  "textures/icons/recipe/insulated-wire-1.texture",
     ingredients = {
         {"绝缘线", 5},
         {"电容I", 2},
@@ -2802,7 +2751,7 @@ prototype "速度插件1" {
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
     recipe_order =  70,
-    recipe_icon =  "textures/construct/insulated-wire.texture",
+    recipe_icon =  "textures/icons/recipe/insulated-wire-1.texture",
     ingredients = {
         {"数据线", 3},
         {"运算电路", 1},
@@ -2819,7 +2768,7 @@ prototype "速度插件2" {
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
     recipe_order =  70,
-    recipe_icon =  "textures/construct/insulated-wire.texture",
+    recipe_icon =  "textures/icons/recipe/insulated-wire-1.texture",
     ingredients = {
         {"处理器I", 1},
         {"速度插件I", 1},
@@ -2836,7 +2785,7 @@ prototype "速度插件3" {
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
     recipe_order =  70,
-    recipe_icon =  "textures/construct/insulated-wire.texture",
+    recipe_icon =  "textures/icons/recipe/insulated-wire-1.texture",
     ingredients = {
         {"处理器II", 2},
         {"速度插件II", 2},
@@ -2853,7 +2802,7 @@ prototype "效能插件1" {
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
     recipe_order =  70,
-    recipe_icon =  "textures/construct/insulated-wire.texture",
+    recipe_icon =  "textures/icons/recipe/insulated-wire-1.texture",
     ingredients = {
         {"数据线", 3},
         {"逻辑电路", 1},
@@ -2870,7 +2819,7 @@ prototype "效能插件2" {
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
     recipe_order =  70,
-    recipe_icon =  "textures/construct/insulated-wire.texture",
+    recipe_icon =  "textures/icons/recipe/insulated-wire-1.texture",
     ingredients = {
         {"电池I", 1},
         {"效能插件I", 1},
@@ -2887,7 +2836,7 @@ prototype "效能插件3" {
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
     recipe_order =  70,
-    recipe_icon =  "textures/construct/insulated-wire.texture",
+    recipe_icon =  "textures/icons/recipe/insulated-wire-1.texture",
     ingredients = {
         {"电池II", 2},
         {"效能插件II", 2},
@@ -2904,7 +2853,7 @@ prototype "产能插件1" {
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
     recipe_order =  70,
-    recipe_icon =  "textures/construct/insulated-wire.texture",
+    recipe_icon =  "textures/icons/recipe/insulated-wire-1.texture",
     ingredients = {
         {"数据线", 3},
         {"逻辑电路", 1},
@@ -2922,7 +2871,7 @@ prototype "产能插件2" {
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
     recipe_order =  70,
-    recipe_icon =  "textures/construct/insulated-wire.texture",
+    recipe_icon =  "textures/icons/recipe/insulated-wire-1.texture",
     ingredients = {
         {"效能插件II", 1},
         {"速度插件II", 1},
@@ -2940,7 +2889,7 @@ prototype "产能插件3" {
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
     recipe_order =  70,
-    recipe_icon =  "textures/construct/insulated-wire.texture",
+    recipe_icon =  "textures/icons/recipe/insulated-wire-1.texture",
     ingredients = {
         {"效能插件III", 1},
         {"速度插件III", 1},
@@ -2958,7 +2907,7 @@ prototype "火箭控制器1" {
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
     recipe_order =  70,
-    recipe_icon =  "textures/construct/insulated-wire.texture",
+    recipe_icon =  "textures/icons/recipe/insulated-wire-1.texture",
     ingredients = {
         {"速度插件III", 1},
         {"产能插件III", 1},
@@ -2976,7 +2925,7 @@ prototype "空气过滤" {
     recipe_craft_category = "过滤",
     --recipe_category =  "化工",
     recipe_order =  20,
-    recipe_icon =  "textures/construct/air-filter1.texture",
+    recipe_icon =  "textures/icons/recipe/gas-separate.texture",
     ingredients = {
     },
     results = {
@@ -2991,7 +2940,7 @@ prototype "地热采集" {
     recipe_craft_category = "地热处理",
     --recipe_category =  "化工",
     recipe_order =  20,
-    recipe_icon =  "textures/construct/air-filter1.texture",
+    recipe_icon =  "textures/icons/recipe/gas-separate.texture",
     ingredients = {
     },
     results = {
@@ -3006,7 +2955,7 @@ prototype "离岸抽水" {
     recipe_craft_category = "水泵",
     --recipe_category =  "化工",
     recipe_order =  10,
-    recipe_icon =  "textures/construct/hydroplant.texture",
+    recipe_icon =  "textures/icons/recipe/gas-separate.texture",
     ingredients = {
     },
     results = {
@@ -3022,7 +2971,7 @@ prototype "空气分离1" {
     recipe_craft_category = "过滤",
     recipe_category =  "化工",
     recipe_order =  11,
-    recipe_icon =  "textures/fluid/gas-seperate.texture",
+    recipe_icon =  "textures/icons/recipe/gas-separate.texture",
     ingredients = {
         {"空气", 150},
     },
@@ -3039,7 +2988,7 @@ prototype "空气分离2" {
     recipe_craft_category = "过滤",
     recipe_category =  "化工",
     recipe_order =  11,
-    recipe_icon =  "textures/fluid/gas-seperate.texture",
+    recipe_icon =  "textures/icons/recipe/gas-seperate.texture",
     ingredients = {
         {"空气", 100},
     },
@@ -3057,7 +3006,7 @@ prototype "二氧化碳转一氧化碳" {
     recipe_craft_category = "流体基础化工",
     recipe_category =  "化工",
     recipe_order =  31,
-    recipe_icon =  "textures/fluid/gas-co.texture",
+    recipe_icon =  "textures/icons/recipe/co22co.texture",
     ingredients = {
         {"二氧化碳", 40},
         {"氢气", 40},
@@ -3075,7 +3024,7 @@ prototype "二氧化碳转甲烷" {
     recipe_craft_category = "流体基础化工",
     recipe_category =  "化工",
     recipe_order =  34,
-    recipe_icon =  "textures/fluid/gas-ch4.texture",
+    recipe_icon =  "textures/icons/recipe/co22ch4.texture",
     ingredients = {
         {"二氧化碳", 32},
         {"氢气", 110},
@@ -3093,7 +3042,7 @@ prototype "一氧化碳转石墨" {
     recipe_craft_category = "器件基础化工",
     recipe_category =  "器件",
     recipe_order =  10,
-    recipe_icon =  "textures/fluid/gas.texture",
+    recipe_icon =  "textures/icons/recipe/co2graphite.texture",
     ingredients = {
         {"一氧化碳", 28},
         {"氢气", 36},
@@ -3111,7 +3060,7 @@ prototype "甲烷转石墨" {
     recipe_craft_category = "器件基础化工",
     recipe_category =  "器件",
     recipe_order =  10,
-    recipe_icon =  "textures/fluid/gas.texture",
+    recipe_icon =  "textures/icons/recipe/ch42ethene.texture",
     ingredients = {
         {"甲烷", 50},
     },
@@ -3128,7 +3077,7 @@ prototype "盐酸" {
     recipe_craft_category = "流体基础化工",
     recipe_category =  "化工",
     recipe_order =  60,
-    recipe_icon =  "textures/fluid/liquid-hydrochloric.texture",
+    recipe_icon =  "textures/icons/recipe/hydrochloric.texture",
     ingredients = {
         {"氯气", 30},
         {"氢气", 30},
@@ -3145,7 +3094,7 @@ prototype "润滑油" {
     recipe_craft_category = "流体基础化工",
     recipe_category =  "化工",
     recipe_order =  60,
-    recipe_icon =  "textures/fluid/lubricant.texture",
+    recipe_icon =  "textures/icons/recipe/lubricant.texture",
     ingredients = {
         {"硅板", 1},
         {"盐酸", 38},
@@ -3163,7 +3112,7 @@ prototype "氨气" {
     recipe_craft_category = "流体基础化工",
     recipe_category =  "化工",
     recipe_order =  60,
-    recipe_icon =  "textures/fluid/liquid-hydrochloric.texture",
+    recipe_icon =  "textures/icons/recipe/hydrochloric.texture",
     ingredients = {
         {"氮气", 8},
         {"氢气", 24},
@@ -3180,7 +3129,7 @@ prototype "火箭燃料1" {
     recipe_craft_category = "流体基础化工",
     recipe_category =  "化工",
     recipe_order =  34,
-    recipe_icon =  "textures/fluid/gas-ch4.texture",
+    recipe_icon =  "textures/icons/recipe/hydrochloric.texture",
     ingredients = {
         {"铝丝", 20},
         {"氧气", 300},
@@ -3200,7 +3149,7 @@ prototype "地下卤水电解1" {
     recipe_craft_category = "电解",
     recipe_category =  "化工",
     recipe_order =  15,
-    recipe_icon =  "textures/fluid/brine-electrolysis-gas.texture",
+    recipe_icon =  "textures/icons/recipe/brine-electrolysis-1.texture",
     ingredients = {
         {"地下卤水", 45},
     },
@@ -3219,7 +3168,7 @@ prototype "地下卤水电解2" {
     recipe_craft_category = "电解",
     recipe_category =  "化工",
     recipe_order =  16,
-    recipe_icon =  "textures/fluid/brine-electrolysis-na.texture",
+    recipe_icon =  "textures/icons/recipe/brine-electrolysis-2.texture",
     ingredients = {
         {"地下卤水", 40},
     },
@@ -3236,7 +3185,7 @@ prototype "氢氧化钠电解" {
     recipe_craft_category = "电解",
     recipe_category =  "化工",
     recipe_order =  16,
-    recipe_icon =  "textures/fluid/brine-electrolysis-na.texture",
+    recipe_icon =  "textures/icons/recipe/brine-electrolysis-2.texture",
     ingredients = {
         {"氢氧化钠", 4},
     },
@@ -3254,7 +3203,7 @@ prototype "地下卤水净化" {
     recipe_craft_category = "流体基础化工",
     recipe_category =  "化工",
     recipe_order =  15,
-    recipe_icon =  "textures/fluid/liquid-purify.texture",
+    recipe_icon =  "textures/icons/recipe/liquid-purify.texture",
     ingredients = {
         {"地下卤水", 100},
     },
@@ -3266,29 +3215,12 @@ prototype "地下卤水净化" {
     description = "卤水净化成纯水",
 }
 
-prototype "地下卤水电解-backup" {
-    type = { "recipe" },
-    recipe_craft_category = "电解",
-    --recipe_category =  "化工",
-    recipe_order =  15,
-    recipe_icon =  "textures/fluid/liquid-electrolysis.texture",
-    ingredients = {
-        {"纯水", 45},
-    },
-    results = {
-        {"氧气", 70},
-        {"氢气", 140},
-    },
-    time = "1s",
-    description = "纯水电解成氧气和氢气",
-}
-
 prototype "纯水电解" {
     type = { "recipe" },
     recipe_craft_category = "电解",
     recipe_category =  "化工",
     recipe_order =  15,
-    recipe_icon =  "textures/fluid/water-electrolysis.texture",
+    recipe_icon =  "textures/icons/recipe/water-electrolysis.texture",
     ingredients = {
         {"纯水", 45},
     },
@@ -3305,7 +3237,7 @@ prototype "甲烷转乙烯" {
     recipe_craft_category = "流体基础化工",
     recipe_category =  "化工",
     recipe_order =  36,
-    recipe_icon =  "textures/fluid/gas-ethene.texture",
+    recipe_icon =  "textures/icons/recipe/ch42ethene.texture",
     ingredients = {
         {"氧气", 40},
         {"甲烷", 40},
@@ -3323,7 +3255,7 @@ prototype "乙烯转丁二烯" {
     recipe_craft_category = "过滤",
     recipe_category =  "化工",
     recipe_order =  38,
-    recipe_icon =  "textures/fluid/gas-butadiene.texture",
+    recipe_icon =  "textures/icons/recipe/ethene2butadiene.texture",
     ingredients = {
         {"乙烯", 50},
         {"蒸汽", 150},
@@ -3341,7 +3273,7 @@ prototype "纯水转蒸汽" {
     recipe_craft_category = "流体换热处理",
     recipe_category =  "化工",
     recipe_order =  112,
-    recipe_icon =  "textures/fluid/gas.texture",
+    recipe_icon =  "textures/icons/recipe/water2steam.texture",
     ingredients = {
         {"纯水", 70},
     },
@@ -3357,7 +3289,7 @@ prototype "塑料1" {
     recipe_craft_category = "器件基础化工",
     recipe_category =  "器件",
     recipe_order =  20,
-    recipe_icon =  "textures/construct/plastic.texture",
+    recipe_icon =  "textures/icons/recipe/plastic-1.texture",
     ingredients = {
         {"乙烯", 30},
         {"氯气", 30},
@@ -3375,7 +3307,7 @@ prototype "塑料2" {
     recipe_craft_category = "矿石浮选",
     recipe_category =  "器件",
     recipe_order =  21,
-    recipe_icon =  "textures/construct/processor.texture",
+    recipe_icon =  "textures/icons/recipe/plastic-2.texture",
     ingredients = {
         {"乙烯", 20},
         {"丁二烯", 15},
@@ -3392,7 +3324,7 @@ prototype "电池1" {
     recipe_craft_category = "器件基础化工",
     recipe_category =  "器件",
     recipe_order =  21,
-    recipe_icon =  "textures/construct/processor.texture",
+    recipe_icon =  "textures/icons/recipe/capacitor-1.texture",
     ingredients = {
         {"硫酸", 16},
         {"铝板", 3},
@@ -3411,7 +3343,7 @@ prototype "电池2" {
     recipe_craft_category = "器件基础化工",
     recipe_category =  "器件",
     recipe_order =  21,
-    recipe_icon =  "textures/construct/processor.texture",
+    recipe_icon =  "textures/icons/recipe/capacitor-1.texture",
     ingredients = {
         {"电容II", 2},
         {"石墨烯", 2},
@@ -3429,7 +3361,7 @@ prototype "石墨烯" {
     recipe_craft_category = "器件基础化工",
     recipe_category =  "器件",
     recipe_order =  21,
-    recipe_icon =  "textures/construct/processor.texture",
+    recipe_icon =  "textures/icons/recipe/ore-Si.texture",
     ingredients = {
         {"氦气", 15},
         {"盐酸", 10},
@@ -3448,7 +3380,7 @@ prototype "酸碱中和" {
     recipe_craft_category = "流体液体处理",
     recipe_category =  "化工",
     recipe_order =  65,
-    recipe_icon =  "textures/fluid/liquid.texture",
+    recipe_icon =  "textures/icons/recipe/neutralization.texture",
     ingredients = {
         {"碱性溶液", 80},
         {"盐酸", 80},
@@ -3465,7 +3397,7 @@ prototype "碱性溶液" {
     recipe_craft_category = "流体液体处理",
     recipe_category =  "化工",
     recipe_order =  64,
-    recipe_icon =  "textures/fluid/liquid.texture",
+    recipe_icon =  "textures/icons/recipe/solution.texture",
     ingredients = {
         {"纯水", 80},
         {"氢氧化钠", 3},
@@ -3482,7 +3414,7 @@ prototype "硫酸溶液" {
     recipe_craft_category = "流体基础化工",
     recipe_category =  "化工",
     recipe_order =  64,
-    recipe_icon =  "textures/fluid/liquid.texture",
+    recipe_icon =  "textures/icons/recipe/neutralization.texture",
     ingredients = {
         {"氧气", 4},
         {"纯水", 16},
@@ -3500,7 +3432,7 @@ prototype "钢板1" {
     recipe_craft_category = "金属冶炼",
     recipe_category =  "金属",
     recipe_order =  20,
-    recipe_icon =  "textures/construct/steel-beam.texture",
+    recipe_icon =  "textures/icons/recipe/steel-beam.texture",
     ingredients = {
         {"铁板", 2},
         {"氧气", 30},
@@ -3519,7 +3451,7 @@ prototype "钢丝1" {
     recipe_craft_category = "器件中型制造",
     recipe_category =  "金属",
     recipe_order =  20,
-    recipe_icon =  "textures/construct/steel-beam.texture",
+    recipe_icon =  "textures/icons/recipe/steel-beam.texture",
     ingredients = {
         {"钢板", 3},
         {"润滑油", 1},
@@ -3536,7 +3468,7 @@ prototype "钢齿轮" {
     recipe_craft_category = "金属小型制造",
     recipe_category =  "金属",
     recipe_order =  22,
-    recipe_icon =  "textures/construct/steel-gear.texture",
+    recipe_icon =  "textures/icons/recipe/steel-gear.texture",
     ingredients = {
         {"钢板", 3},
     },
@@ -3552,7 +3484,7 @@ prototype "铁矿石回收" {
     recipe_craft_category = "矿石粉碎",
     recipe_category =  "金属",
     recipe_order =  104,
-    recipe_icon =  "textures/fluid/liquid.texture",
+    recipe_icon =  "textures/icons/recipe/ore-Fe-recycle.texture",
     ingredients = {
         {"碾碎铁矿石", 4},
     },
@@ -3568,7 +3500,7 @@ prototype "碎石回收" {
     recipe_craft_category = "矿石粉碎",
     recipe_category =  "金属",
     recipe_order =  106,
-    recipe_icon =  "textures/fluid/liquid.texture",
+    recipe_icon =  "textures/icons/recipe/gravel-recycle.texture",
     ingredients = {
         {"碎石", 4},
     },
@@ -3584,7 +3516,7 @@ prototype "铝矿石回收" {
     recipe_craft_category = "矿石粉碎",
     recipe_category =  "金属",
     recipe_order =  106,
-    recipe_icon =  "textures/fluid/liquid.texture",
+    recipe_icon =  "textures/icons/recipe/gravel-recycle.texture",
     ingredients = {
         {"铝矿石", 5},
     },
@@ -3600,7 +3532,7 @@ prototype "沙子回收" {
     recipe_craft_category = "流体液体处理",
     recipe_category =  "金属",
     recipe_order =  102,
-    recipe_icon =  "textures/fluid/liquid.texture",
+    recipe_icon =  "textures/icons/recipe/sand-recycle.texture",
     ingredients = {
         {"地下卤水", 80},
         {"沙子", 4},
@@ -3617,7 +3549,7 @@ prototype "废料中和" {
     recipe_craft_category = "矿石浮选",
     recipe_category =  "金属",
     recipe_order =  102,
-    recipe_icon =  "textures/fluid/liquid.texture",
+    recipe_icon =  "textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"盐酸", 10},
         {"废料", 1},
@@ -3635,7 +3567,7 @@ prototype "地下卤水排泄" {
     recipe_craft_category = "流体液体排泄",
     --recipe_category =  "化工",
     recipe_order =  101,
-    recipe_icon =  "textures/fluid/liquid.texture",
+    recipe_icon =  "textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"地下卤水", 100},
     },
@@ -3650,7 +3582,7 @@ prototype "纯水排泄" {
     recipe_craft_category = "流体液体排泄",
     --recipe_category =  "化工",
     recipe_order =  102,
-    recipe_icon =  "textures/fluid/liquid.texture",
+    recipe_icon =  "textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"纯水", 100},
     },
@@ -3665,7 +3597,7 @@ prototype "碱性溶液排泄" {
     recipe_craft_category = "流体液体排泄",
     --recipe_category =  "化工",
     recipe_order =  103,
-    recipe_icon =  "textures/fluid/liquid.texture",
+    recipe_icon =  "textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"碱性溶液", 100},
     },
@@ -3680,7 +3612,7 @@ prototype "盐酸排泄" {
     recipe_craft_category = "流体液体排泄",
     --recipe_category =  "化工",
     recipe_order =  104,
-    recipe_icon =  "textures/fluid/liquid.texture",
+    recipe_icon =  "textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"盐酸", 100},
     },
@@ -3695,7 +3627,7 @@ prototype "润滑油排泄" {
     recipe_craft_category = "流体液体排泄",
     --recipe_category =  "化工",
     recipe_order =  105,
-    recipe_icon =  "textures/fluid/liquid.texture",
+    recipe_icon =  "textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"润滑油", 100},
     },
@@ -3710,7 +3642,7 @@ prototype "氮气排泄" {
     recipe_craft_category = "流体气体排泄",
     --recipe_category =  "化工",
     recipe_order =  110,
-    recipe_icon =  "textures/fluid/gas.texture",
+    recipe_icon =  "textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"氮气", 100},
     },
@@ -3725,7 +3657,7 @@ prototype "氧气排泄" {
     recipe_craft_category = "流体气体排泄",
     --recipe_category =  "化工",
     recipe_order =  111,
-    recipe_icon =  "textures/fluid/gas.texture",
+    recipe_icon =  "textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"氧气", 100},
     },
@@ -3740,7 +3672,7 @@ prototype "二氧化碳排泄" {
     recipe_craft_category = "流体气体排泄",
     --recipe_category =  "化工",
     recipe_order =  112,
-    recipe_icon =  "textures/fluid/gas.texture",
+    recipe_icon =  "textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"二氧化碳", 100},
     },
@@ -3755,7 +3687,7 @@ prototype "氢气排泄" {
     recipe_craft_category = "流体气体排泄",
     --recipe_category =  "化工",
     recipe_order =  113,
-    recipe_icon =  "textures/fluid/gas.texture",
+    recipe_icon =  "textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"氢气", 100},
     },
@@ -3771,7 +3703,7 @@ prototype "蒸汽排泄" {
     recipe_craft_category = "流体气体排泄",
     --recipe_category =  "化工",
     recipe_order =  114,
-    recipe_icon =  "textures/fluid/gas.texture",
+    recipe_icon =  "textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"蒸汽", 100},
     },
@@ -3786,7 +3718,7 @@ prototype "甲烷排泄" {
     recipe_craft_category = "流体气体排泄",
     --recipe_category =  "化工",
     recipe_order =  115,
-    recipe_icon =  "textures/fluid/gas.texture",
+    recipe_icon =  "textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"甲烷", 100},
     },
@@ -3801,7 +3733,7 @@ prototype "废水排泄" {
     recipe_craft_category = "流体液体排泄",
     --recipe_category =  "化工",
     recipe_order =  116,
-    recipe_icon =  "textures/fluid/liquid-wastewater.texture",
+    recipe_icon =  "textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"废水", 100},
     },
@@ -3816,7 +3748,7 @@ prototype "氯气排泄" {
     recipe_craft_category = "流体气体排泄",
     --recipe_category =  "化工",
     recipe_order =  117,
-    recipe_icon =  "textures/fluid/gas.texture",
+    recipe_icon =  "textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"氯气", 100},
     },
@@ -3831,7 +3763,7 @@ prototype "一氧化碳排泄" {
     recipe_craft_category = "流体气体排泄",
     --recipe_category =  "化工",
     recipe_order =  117,
-    recipe_icon =  "textures/fluid/gas.texture",
+    recipe_icon =  "textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"一氧化碳", 100},
     },
@@ -3846,7 +3778,7 @@ prototype "丁二烯排泄" {
     recipe_craft_category = "流体气体排泄",
     --recipe_category =  "化工",
     recipe_order =  118,
-    recipe_icon =  "textures/fluid/gas.texture",
+    recipe_icon =  "textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"丁二烯", 100},
     },
@@ -3861,7 +3793,7 @@ prototype "蒸汽发电" {
     recipe_craft_category = "流体发电",
     recipe_category =  "化工",
     recipe_order =  119,
-    recipe_icon =  "textures/fluid/gas.texture",
+    recipe_icon =  "textures/icons/recipe/water-electrolysis.texture",
     ingredients = {
         {"蒸汽", 30},
     },
@@ -3876,7 +3808,7 @@ prototype "地热气发电" {
     recipe_craft_category = "流体发电",
     recipe_category =  "化工",
     recipe_order =  120,
-    recipe_icon =  "textures/fluid/gas.texture",
+    recipe_icon =  "textures/icons/recipe/water-electrolysis.texture",
     ingredients = {
         {"地热气", 30},
     },
@@ -3887,81 +3819,12 @@ prototype "地热气发电" {
 }
 
 ---------地下卤水生成矿物配方----------
-prototype "地下卤水分离铁" {
-    type = { "recipe" },
-    recipe_craft_category = "金属流体处理",
-    --recipe_category =  "金属",
-    recipe_order =  1,
-    -- recipe_icon =  "textures/construct/gravel.texture",
-    recipe_icon =  "textures/recipe/water2iron.texture",
-    ingredients = {
-        {"地下卤水", 100},
-    },
-    results = {
-        {"铁矿石", 2},
-        {"纯水", 50},
-    },
-    time = "3s",
-    description = "地下卤水中分离铁矿石",
-}
-
-prototype "地下卤水分离水藻" {
-    type = { "recipe" },
-    recipe_craft_category = "金属流体处理",
-    --recipe_category =  "金属",
-    recipe_order =  2,
-    recipe_icon =  "textures/construct/gravel.texture",
-    ingredients = {
-        {"地下卤水", 100},
-    },
-    results = {
-        {"海藻", 2},
-        {"沙子", 2},
-        {"纯水", 50},
-    },
-    time = "3s",
-    description = "地下卤水中分离水藻",
-}
-
-prototype "地下卤水分离石头" {
-    type = { "recipe" },
-    recipe_craft_category = "金属流体处理",
-    --recipe_category =  "金属",
-    recipe_order =  3,
-    -- recipe_icon =  "textures/construct/gravel.texture",
-    recipe_icon =  "textures/recipe/water2gravel.texture",
-    ingredients = {
-        {"地下卤水", 100},
-    },
-    results = {
-        {"碎石",2},
-    },
-    time = "3s",
-    description = "地下卤水中分离石头",
-}
-
-prototype "提炼纤维" {
-    type = { "recipe" },
-    recipe_craft_category = "器件中型制造",
-    --recipe_category =  "器件",
-    recipe_order =  26,
-    recipe_icon =  "textures/construct/industry.texture",
-    ingredients = {
-        {"海藻", 4},
-    },
-    results = {
-        {"纤维燃料", 1},
-    },
-    time = "2s",
-    description = "海藻加工成纤维燃料",
-}
-
 prototype "热管1" {
     type = { "recipe" },
     recipe_craft_category = "生产中型制造",
     recipe_category =  "加工",
     recipe_order =  16,
-    recipe_icon =  "textures/construct/industry.texture",
+    recipe_icon =  "textures/icons/recipe/gas-separate.texture",
     ingredients = {
         {"纯水", 100},
         {"铝板", 4},
@@ -3979,7 +3842,7 @@ prototype "换热器1" {
     recipe_craft_category = "生产中型制造",
     recipe_category =  "加工",
     recipe_order =  28,
-    recipe_icon =  "textures/construct/industry.texture",
+    recipe_icon =  "textures/icons/recipe/gas-separate.texture",
     ingredients = {
         {"热管1-X型", 4},
         {"液罐I", 1},
@@ -3997,7 +3860,7 @@ prototype "纯水沸腾" {
     recipe_craft_category = "流体换热处理",
     recipe_category =  "化工",
     recipe_order =  108,
-    recipe_icon =  "textures/fluid/gas.texture",
+    recipe_icon =  "textures/icons/recipe/water2steam.texture",
     ingredients = {
         {"纯水", 60},
     },
@@ -4013,7 +3876,7 @@ prototype "卤水沸腾" {
     recipe_craft_category = "流体换热处理",
     recipe_category =  "化工",
     recipe_order =  108,
-    recipe_icon =  "textures/fluid/gas.texture",
+    recipe_icon =  "textures/icons/recipe/brine2steam.texture",
     ingredients = {
         {"地下卤水", 90},
     },

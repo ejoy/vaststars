@@ -10,6 +10,7 @@ prototype "指挥中心" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 1,
+    item_icon = "textures/icons/item/hydroplant.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "存储材料和装配运输汽车的核心建筑",
 }
@@ -20,6 +21,7 @@ prototype "组装机I" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/assembler.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "自动打印并组装零部件的设备",
 }
@@ -31,6 +33,7 @@ prototype "组装机II" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/assembler.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "自动打印并组装零部件的设备",
 }
@@ -42,6 +45,7 @@ prototype "组装机III" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/assembler.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "自动打印并组装零部件的设备",
 }
@@ -53,6 +57,7 @@ prototype "熔炼炉I" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/furnace.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "高温熔炼矿石和精炼金属的设备",
 }
@@ -64,6 +69,7 @@ prototype "熔炼炉II" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/furnace.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "高温熔炼矿石和精炼金属的设备",
 }
@@ -75,6 +81,7 @@ prototype "熔炼炉III" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/furnace.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "高温熔炼矿石和精炼金属的设备",
 }
@@ -86,6 +93,7 @@ prototype "小铁制箱子I" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/furnace.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "贮藏物品的容器",
 }
@@ -97,6 +105,7 @@ prototype "小铁制箱子II" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/furnace.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "贮藏物品的容器",
 }
@@ -108,6 +117,7 @@ prototype "大铁制箱子I" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/furnace.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "贮藏物品的容器",
 }
@@ -119,6 +129,7 @@ prototype "仓库" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/furnace.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "贮藏物品的容器",
 }
@@ -130,6 +141,7 @@ prototype "无人机仓库I" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/drone-depot.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "使用无人机运输并储存货物的仓库",
 }
@@ -141,6 +153,7 @@ prototype "无人机仓库II" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/drone-depot.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "使用无人机运输并储存货物的仓库",
 }
@@ -152,6 +165,7 @@ prototype "无人机仓库III" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/drone-depot.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "使用无人机运输并储存货物的仓库",
 }
@@ -163,6 +177,7 @@ prototype "采矿机I" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/miner.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "挖掘、钻探地下矿物资源的设备",
 }
@@ -174,6 +189,7 @@ prototype "采矿机II" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/miner.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "挖掘、钻探地下矿物资源的设备",
 }
@@ -185,6 +201,7 @@ prototype "采矿机III" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/miner.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "挖掘、钻探地下矿物资源的设备",
 }
@@ -196,6 +213,7 @@ prototype "蒸汽发电机I" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/hydroplant.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "将蒸汽的热能转化成机械能用于发电的设备",
 }
@@ -207,6 +225,7 @@ prototype "蒸汽发电机II" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/hydroplant.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "将蒸汽的热能转化成机械能用于发电的设备",
 }
@@ -218,6 +237,7 @@ prototype "蒸汽发电机III" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/hydroplant.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "将蒸汽的热能转化成机械能用于发电的设备",
 }
@@ -229,6 +249,7 @@ prototype "化工厂I" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/chemistry.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "通过化学反应以生产化学产品的设施",
 }
@@ -240,6 +261,7 @@ prototype "化工厂II" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/chemistry.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "通过化学反应以生产化学产品的设施",
 }
@@ -251,6 +273,7 @@ prototype "化工厂III" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/chemistry.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "通过化学反应以生产化学产品的设施",
 }
@@ -262,6 +285,7 @@ prototype "铸造厂I" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/chemistry.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "铸造金属的设施",
 }
@@ -273,6 +297,7 @@ prototype "蒸馏厂I" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/chemistry.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "使用蒸馏方式对液态原料进行分离的设施",
 }
@@ -295,6 +320,7 @@ prototype "蒸馏厂III" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/chemistry.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "使用蒸馏方式对液态原料进行分离的设施",
 }
@@ -306,6 +332,7 @@ prototype "粉碎机I" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/assembler.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "施加机械力到物料上将其破碎成较小碎片的设备",
 }
@@ -317,6 +344,7 @@ prototype "粉碎机II" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/assembler.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "施加机械力到物料上将其破碎成较小碎片的设备",
 }
@@ -328,6 +356,7 @@ prototype "粉碎机III" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/assembler.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "施加机械力到物料上将其破碎成较小碎片的设备",
 }
@@ -339,6 +368,7 @@ prototype "浮选器I" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/assembler.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "通过浮沉矿石进行分离的机器",
 }
@@ -350,6 +380,7 @@ prototype "浮选器II" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/assembler.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "通过浮沉矿石进行分离的机器",
 }
@@ -361,6 +392,7 @@ prototype "浮选器III" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/assembler.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "通过浮沉矿石进行分离的机器",
 }
@@ -373,6 +405,7 @@ prototype "风力发电机I" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/assembler.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "利用风能转换电能的装置",
 }
@@ -384,6 +417,7 @@ prototype "铁制电线杆" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 50,
+    item_icon = "textures/icons/item/assembler.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "在一定距离内传输电力的铁制电线杆",
 }
@@ -395,6 +429,7 @@ prototype "远程电线杆" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/assembler.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "远程距离传输电力的电线杆",
 }
@@ -406,6 +441,7 @@ prototype "广域电线杆" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/assembler.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "在大面积区域内传输电力的电线杆",
 }
@@ -417,6 +453,7 @@ prototype "科研中心I" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/lab.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "致力于科学研究和开发活动的设施",
 }
@@ -428,6 +465,7 @@ prototype "科研中心II" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/lab.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "致力于科学研究和开发活动的设施",
 }
@@ -439,6 +477,7 @@ prototype "科研中心III" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/lab.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "致力于科学研究和开发活动的设施",
 }
@@ -450,6 +489,7 @@ prototype "出货车站" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/goodstation-output.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "给运输车提供货物的车站",
 }
@@ -461,6 +501,7 @@ prototype "收货车站" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/goodstation-input.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "从运输车收取货物的车站",
 }
@@ -472,6 +513,7 @@ prototype "电解厂I" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/electrolysis.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "用电化学反应处理原料的设施",
 }
@@ -483,6 +525,7 @@ prototype "电解厂II" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/electrolysis.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "用电化学反应处理原料的设施",
 }
@@ -494,6 +537,7 @@ prototype "电解厂III" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/electrolysis.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "用电化学反应处理原料的设施",
 }
@@ -505,6 +549,7 @@ prototype "太阳能板I" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/solar-panel.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "利用太阳能产生光电效应发电的装置",
 }
@@ -516,6 +561,7 @@ prototype "太阳能板II" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/solar-panel.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "利用太阳能产生光电效应发电的装置",
 }
@@ -527,6 +573,7 @@ prototype "太阳能板III" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/solar-panel.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "利用太阳能产生光电效应发电的装置",
 }
@@ -538,6 +585,7 @@ prototype "蓄电池I" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/grid-battery.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "化学能与电能互相转化并储存的装置",
 }
@@ -549,6 +597,7 @@ prototype "蓄电池II" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/grid-battery.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "化学能与电能互相转化并储存的装置",
 }
@@ -560,6 +609,7 @@ prototype "蓄电池III" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/grid-battery.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "化学能与电能互相转化并储存的装置",
 }
@@ -571,6 +621,7 @@ prototype "水电站I" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/hydroplant.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "大规模处理气液的设施",
 }
@@ -582,6 +633,7 @@ prototype "水电站II" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/hydroplant.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "大规模处理气液的设施",
 }
@@ -593,6 +645,7 @@ prototype "水电站III" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/hydroplant.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "大规模处理气液的设施",
 }
@@ -604,6 +657,7 @@ prototype "砖石公路-X型" {
     pile = "4x2x4",
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 100,
+    item_icon = "textures/icons/item/stone-brick.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "供车辆行驶的砖石公路",
 }
@@ -618,6 +672,7 @@ prototype "运输车辆I" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 50,
+    item_icon = "textures/icons/item/truck.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     icon = "textures/building_pic/small_pic_mars_truck.texture",
     model = "prefabs/lorry-1.prefab",
@@ -630,6 +685,7 @@ prototype "换热器I" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/truck.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "将水变成蒸汽的机器",
 }
@@ -641,6 +697,7 @@ prototype "地热井I" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/chemistry.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "通过地下钻探获取地热资源的装置",
 }
@@ -652,6 +709,7 @@ prototype "地热井II" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/chemistry.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "通过地下钻探获取地热资源的装置",
 }
@@ -663,6 +721,7 @@ prototype "地热井III" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/chemistry.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "通过地下钻探获取地热资源的装置",
 }
@@ -674,6 +733,7 @@ prototype "锅炉I" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/chemistry.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "通过加热将水变成蒸汽的装置",
 }
@@ -685,7 +745,7 @@ prototype "广播塔I" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/stack-iron-plate.prefab",
-    icon = "textures/construct/logic-circuit.texture",
+    item_icon = "textures/icons/item/chemistry.texture",
     item_description = "将插件功效传导到周边其他机器的设施",
     item_category = "物流",
 }
@@ -697,7 +757,7 @@ prototype "广播塔II" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/stack-iron-plate.prefab",
-    icon = "textures/construct/logic-circuit.texture",
+    item_icon = "textures/icons/item/chemistry.texture",
     item_description = "将插件功效传导到周边其他机器的设施",
     item_category = "物流",
 }
@@ -709,6 +769,7 @@ prototype "热管1-X型" {
     pile = "4x4x4",
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 100,
+    item_icon = "textures/icons/item/chemistry.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "传导热量的特殊管道",
 }

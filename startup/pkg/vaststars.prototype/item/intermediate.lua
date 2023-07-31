@@ -8,7 +8,7 @@ prototype "铁板" {
     backpack_stack = 50,
     drone_depot_gap3 = "0.2x0.05x0.2",
     pile_model = "prefabs/stackeditems/stack-iron-plate.prefab",
-    icon = "textures/construct/plate-Fe.texture",
+    item_icon = "textures/icons/item/iron-plate.texture",
     item_description = "铁制材料锻造加工成的板状材料",
     item_category = "金属",
 }
@@ -20,7 +20,7 @@ prototype "铁丝" {
     drone_depot_gap3 = "0.5x0.2x1",
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-iron-wire.prefab",
-    icon = "textures/construct/iron-wire.texture",
+    item_icon = "textures/icons/item/iron-wire.texture",
     item_description = "铁制材料锻造加工成的丝状材料",
     item_category = "金属",
 }
@@ -32,7 +32,7 @@ prototype "铁棒" {
     drone_depot_gap3 = "0.5x0.2x1",
     backpack_stack = 50,
     pile_model = "prefabs/stackeditems/stack-iron-plate.prefab",
-    icon = "textures/construct/iron_stick.texture",
+    item_icon = "textures/icons/item/iron-plate.texture",
     item_description = "铁制材料锻造加工成的棒状材料",
     item_category = "金属",
 }
@@ -44,7 +44,7 @@ prototype "钢板" {
     drone_depot_gap3 = "0.5x0.2x1",
     backpack_stack = 50,
     pile_model = "prefabs/stackeditems/stack-steel-plate.prefab",
-    icon = "textures/construct/steel-beam.texture",
+    item_icon = "textures/icons/item/steel-plate.texture",
     item_description = "钢制材料锻造加工成的板状材料",
     item_category = "金属",
 }
@@ -56,7 +56,7 @@ prototype "钢齿轮" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 50,
     pile_model = "prefabs/stackeditems/stack-steel-gear.prefab",
-    icon = "textures/construct/steel-gear.texture",
+    item_icon = "textures/icons/item/steel-gear.texture",
     item_description = "由钢制成在旋转轴之间传递动力的机械部件",
     item_category = "金属",
 }
@@ -69,7 +69,7 @@ prototype "铁矿石" {
     backpack_stack = 100,
     drone_depot_gap3 = "0.2x0.05x0.2",
     pile_model = "prefabs/stackeditems/stack-iron-ore.prefab",
-    icon = "textures/construct/ore-Fe.texture",
+    item_icon = "textures/icons/item/iron-ore.texture",
     item_description = "可以提取铁的矿物",
     item_category = "金属",
     mineral_model = "prefabs/mineral/ground-iron-ore.prefab",
@@ -84,7 +84,7 @@ prototype "碎石" {
     drone_depot_gap3 = "1x0.2x1",
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-gravel.prefab",
-    icon = "textures/construct/gravel.texture",
+    item_icon = "textures/icons/item/gravel.texture",
     item_description = "伴生在矿物里的小块石头",
     item_category = "金属",
     mineral_model = "prefabs/mineral/ground-gravel.prefab",
@@ -98,7 +98,7 @@ prototype "石砖" {
     drone_depot_gap3 = "0.5x0.2x1",
     backpack_stack = 50,
     pile_model = "prefabs/stackeditems/stack-stone-brick.prefab",
-    icon = "textures/construct/stone-brick.texture",
+    item_icon = "textures/icons/item/stone-brick.texture",
     item_description = "由天然石材制成的建筑材料",
     item_category = "物流",
 }
@@ -111,7 +111,7 @@ prototype "铝矿石" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-aluminium-ore.prefab",
-    icon = "textures/construct/ore-Al.texture",
+    item_icon = "textures/icons/item/aluminium-ore.texture",
     item_description = "可以提取铝的矿物",
     item_category = "金属",
     mineral_model = "prefabs/mineral/ground-aluminum.prefab",
@@ -125,7 +125,7 @@ prototype "碾碎铁矿石" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-crush-iron-ore.prefab",
-    icon = "textures/construct/crush-ore-Fe.texture",
+    item_icon = "textures/icons/item/crush-iron-ore.texture",
     item_description = "被粉碎的铁矿石",
     item_category = "金属",
 }
@@ -137,7 +137,7 @@ prototype "碾碎铝矿石" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-crush-aluminium-ore.prefab",
-    icon = "textures/construct/crush-ore-Al.texture",
+    item_icon = "textures/icons/item/crush-aluminium-ore.texture",
     item_description = "被粉碎的铝矿石",
     item_category = "金属",
 }
@@ -149,7 +149,7 @@ prototype "氢氧化铝" {
     drone_depot_gap3 = "0.5x0.2x1",
     backpack_stack = 50,
     pile_model = "prefabs/stackeditems/stack-aluminium-hydroxide.prefab",
-    icon = "textures/construct/aluminum-hydroxide.texture",
+    item_icon = "textures/icons/item/aluminum-hydroxide.texture",
     item_description = "一种白色结晶粉末,分子式Al(OH)3",
     item_category = "化工",
 }
@@ -161,7 +161,7 @@ prototype "氧化铝" {
     drone_depot_gap3 = "0.5x0.2x1",
     backpack_stack = 50,
     pile_model = "prefabs/stackeditems/stack-aluminium-oxide.prefab",
-    icon = "textures/construct/alumina.texture",
+    item_icon = "textures/icons/item/aluminium-oxide.texture",
     item_description = "一种白色固体,分子式Al2O3",
     item_category = "金属",
 }
@@ -173,7 +173,7 @@ prototype "碳化铝" {
     drone_depot_gap3 = "0.5x0.2x1",
     backpack_stack = 50,
     pile_model = "prefabs/stackeditems/iron-ore.prefab",
-    icon = "textures/construct/aluminium-carbide.texture",
+    item_icon = "textures/icons/item/aluminium-oxide.texture",
     item_description = "一种淡黄棕色固体,分子式Al4C3",
     item_category = "金属",
 }
@@ -185,7 +185,7 @@ prototype "铝板" {
     drone_depot_gap3 = "0.5x0.2x1",
     backpack_stack = 50,
     pile_model = "prefabs/stackeditems/stack-aluminium-plate.prefab",
-    icon = "textures/construct/plate-Al.texture",
+    item_icon = "textures/icons/item/aluminium-plate.texture",
     item_description = "铝制材料锻造加工成的板状材料",
     item_category = "金属",
 }
@@ -197,7 +197,7 @@ prototype "铝棒" {
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/stack-aluminium-rod.prefab",
-    icon = "textures/construct/iron_stick.texture",
+    item_icon = "textures/icons/item/aluminium-plate.texture",
     item_description = "铝制材料锻造加工成的棒状材料",
     item_category = "金属",
 }
@@ -209,7 +209,7 @@ prototype "铝丝" {
     drone_depot_gap3 = "0.5x0.2x1",
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-iron-wire.prefab",
-    icon = "textures/construct/iron-wire.texture",
+    item_icon = "textures/icons/item/copper-wire.texture",
     item_description = "铝制材料锻造加工成的丝状材料",
     item_category = "金属",
 }
@@ -221,7 +221,7 @@ prototype "石墨" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-graphite.prefab",
-    icon = "textures/construct/coal.texture",
+    item_icon = "textures/icons/item/graphite.texture",
     item_description = "一种高热导率、高电导率、低摩擦的碳材料",
     item_category = "化工",
 }
@@ -232,8 +232,8 @@ prototype "硅" {
     pile = "4x4x4",
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 100,
-    pile_model = "prefabs/stackeditems/stack-silicon.prefab",
-    icon = "textures/construct/ore-Si.texture",
+    pile_model = "prefabs/stackeditems/stack-silitem_icon.prefab",
+    item_icon = "textures/icons/item/silicon.texture",
     item_description = "一种坚硬脆性的结晶固体,分子式Si",
     item_category = "化工",
 }
@@ -244,8 +244,8 @@ prototype "硅板" {
     pile = "4x4x2",
     drone_depot_gap3 = "0.5x0.2x1",
     backpack_stack = 50,
-    pile_model = "prefabs/stackeditems/stack-silicon-plate.prefab",
-    icon = "textures/construct/plate-Si.texture",
+    pile_model = "prefabs/stackeditems/stack-silitem_icon-plate.prefab",
+    item_icon = "textures/icons/item/silicon-plate.texture",
     item_description = "硅制材料锻造加工成的板状材料",
     item_category = "器件",
 }
@@ -257,7 +257,7 @@ prototype "沙石矿" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-limestone.prefab",
-    icon = "textures/construct/gravel.texture",
+    item_icon = "textures/icons/item/limestone.texture",
     item_description = "含沙石的矿石",
     item_category = "金属",
 }
@@ -269,7 +269,7 @@ prototype "氢氧化钠" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-sodium-hydroxide.prefab",
-    icon = "textures/construct/coal.texture",
+    item_icon = "textures/icons/item/sodium-hydroxide.texture",
     item_description = "一种白色固体,化学式为NaOH",
     item_category = "化工",
 }
@@ -281,7 +281,7 @@ prototype "钠" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-gravel.prefab",
-    icon = "textures/construct/coal.texture",
+    item_icon = "textures/icons/item/silicon.texture",
     item_description = "一种银白色固体,化学式为Na",
     item_category = "化工",
 }
@@ -293,7 +293,7 @@ prototype "金红石" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-gravel.prefab",
-    icon = "textures/construct/coal.texture",
+    item_icon = "textures/icons/item/silicon.texture",
     item_description = "一种褐红的针状晶形,化学式为TiO2",
     item_category = "金属",
 }
@@ -305,7 +305,7 @@ prototype "钛板" {
     drone_depot_gap3 = "0.5x0.2x1",
     backpack_stack = 50,
     pile_model = "prefabs/stackeditems/stack-copper-plate.prefab",
-    icon = "textures/construct/coal.texture",
+    item_icon = "textures/icons/item/silicon-plate.texture",
     item_description = "钛制材料锻造加工成的板状材料",
     item_category = "金属",
 }
@@ -315,7 +315,7 @@ prototype "钛板" {
 --     stack = 10,
 --     pile = "4x4x4",
 --     pile_model = "prefabs/stackeditems/stack-gravel.prefab",
---     icon = "textures/construct/gravel.texture",
+--     item_icon = "textures/icons/item/gravel.texture",
 --     item_description = "一种矿石",
 --     item_category = "金属",
 -- }
@@ -327,7 +327,7 @@ prototype "沙子" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-sand.prefab",
-    icon = "textures/construct/sand.texture",
+    item_icon = "textures/icons/item/sand.texture",
     item_description = "由细碎的岩石和矿物颗粒组成的颗粒状材料",
     item_category = "金属",
 }
@@ -339,7 +339,7 @@ prototype "塑料" {
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/stack-plastic.prefab",
-    icon = "textures/construct/plastic.texture",
+    item_icon = "textures/icons/item/plastic.texture",
     item_description = "一种由聚合物制成的合成材料",
     item_category = "器件",
 }
@@ -351,7 +351,7 @@ prototype "电动机I" {
     backpack_stack = 25,
     drone_depot_gap3 = "0.65x0.2x0.65",
     pile_model = "prefabs/stackeditems/stack-motor.prefab",
-    icon = "textures/construct/electric-motor.texture",
+    item_icon = "textures/icons/item/motor.texture",
     item_description = "一种将电能转化为机械能的设备",
     item_category = "器件",
 }
@@ -363,7 +363,7 @@ prototype "电动机II" {
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/stack-motor.prefab",
-    icon = "textures/construct/electric-motor.texture",
+    item_icon = "textures/icons/item/motor.texture",
     item_description = "一种将电能转化为机械能的设备",
     item_category = "器件",
 }
@@ -375,7 +375,7 @@ prototype "电动机III" {
     backpack_stack = 25,
     drone_depot_gap3 = "0.65x0.2x0.65",
     pile_model = "prefabs/stackeditems/stack-motor.prefab",
-    icon = "textures/construct/electric-motor.texture",
+    item_icon = "textures/icons/item/motor.texture",
     item_description = "一种将电能转化为机械能的设备",
     item_category = "器件",
 }
@@ -387,7 +387,7 @@ prototype "铁齿轮" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-iron-gear.prefab",
-    icon = "textures/construct/iron-gear.texture",
+    item_icon = "textures/icons/item/iron-gear.texture",
     item_description = "由铁制成在旋转轴之间传递动力的机械部件",
     item_category = "金属",
 }
@@ -399,7 +399,7 @@ prototype "玻璃" {
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/stack-glass.prefab",
-    icon = "textures/construct/glass.texture",
+    item_icon = "textures/icons/item/glass.texture",
     item_description = "一种坚硬、透明或半透明的物质",
     item_category = "金属",
 }
@@ -411,7 +411,7 @@ prototype "坩埚" {
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/stack-crucible.prefab",
-    icon = "textures/construct/crucible.texture",
+    item_icon = "textures/icons/item/crucible.texture",
     item_description = "一种由石墨制成耐高温的加工容器",
     item_category = "器件",
 }
@@ -423,7 +423,7 @@ prototype "橡胶" {
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/stack-rubber.prefab",
-    icon = "textures/construct/rubber.texture",
+    item_icon = "textures/icons/item/rubber.texture",
     item_description = "一种高弹性聚合物材料",
     item_category = "器件",
 }
@@ -435,7 +435,7 @@ prototype "电容I" {
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/stack-capacitor.prefab",
-    icon = "textures/construct/capacitor.texture",
+    item_icon = "textures/icons/item/capacitor.texture",
     item_description = "一种用于存储和释放电能的电子元件",
     item_category = "器件",
 }
@@ -447,7 +447,7 @@ prototype "电容II" {
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/stack-capacitor.prefab",
-    icon = "textures/construct/capacitor.texture",
+    item_icon = "textures/icons/item/capacitor.texture",
     item_description = "一种用于存储和释放电能的电子元件",
     item_category = "器件",
 }
@@ -459,7 +459,7 @@ prototype "绝缘线" {
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/stack-insulated-wire.prefab",
-    icon = "textures/construct/insulated-wire.texture",
+    item_icon = "textures/icons/item/insulated-wire.texture",
     item_description = "由保护性绝缘材料包裹的电导体",
     item_category = "器件",
 }
@@ -471,7 +471,7 @@ prototype "逻辑电路" {
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/stack-logic-circuit.prefab",
-    icon = "textures/construct/logic-circuit.texture",
+    item_icon = "textures/icons/item/logic-circuit.texture",
     item_description = "用于执行逻辑操作和处理数字信息的电路",
     item_category = "器件",
 }
@@ -483,7 +483,7 @@ prototype "数据线" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/stack-iron-plate.prefab",
-    icon = "textures/construct/insulated-wire.texture",
+    item_icon = "textures/icons/item/insulated-wire.texture",
     item_description = "用于在电子设备之间传输数字数据的电缆",
     item_category = "器件",
 }
@@ -495,7 +495,7 @@ prototype "运算电路" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/stack-iron-plate.prefab",
-    icon = "textures/construct/logic-circuit.texture",
+    item_icon = "textures/icons/item/logic-circuit.texture",
     item_description = "一种用于对输入数据进行数学运算的电路",
     item_category = "器件",
 }
@@ -507,7 +507,7 @@ prototype "效能插件I" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/stack-green-electronic-circuit.prefab",
-    icon = "textures/construct/logic-circuit.texture",
+    item_icon = "textures/icons/item/green-electronic-circuit.texture",
     item_description = "降低机器电能消耗的模块",
     item_category = "器件",
 }
@@ -519,7 +519,7 @@ prototype "效能插件II" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/stack-green-electronic-circuit.prefab",
-    icon = "textures/construct/logic-circuit.texture",
+    item_icon = "textures/icons/item/green-electronic-circuit.texture",
     item_description = "降低机器电能消耗的模块",
     item_category = "器件",
 }
@@ -531,7 +531,7 @@ prototype "效能插件III" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/stack-green-electronic-circuit.prefab",
-    icon = "textures/construct/logic-circuit.texture",
+    item_icon = "textures/icons/item/green-electronic-circuit.texture",
     item_description = "降低机器电能消耗的模块",
     item_category = "器件",
 }
@@ -544,7 +544,7 @@ prototype "产能插件I" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/stack-red-electronic-circuit.prefab",
-    icon = "textures/construct/logic-circuit.texture",
+    item_icon = "textures/icons/item/red-electronic-circuit.texture",
     item_description = "提高机器生产能力的模块",
     item_category = "器件",
 }
@@ -556,7 +556,7 @@ prototype "产能插件II" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/stack-red-electronic-circuit.prefab",
-    icon = "textures/construct/logic-circuit.texture",
+    item_icon = "textures/icons/item/red-electronic-circuit.texture",
     item_description = "提高机器生产能力的模块",
     item_category = "器件",
 }
@@ -568,7 +568,7 @@ prototype "产能插件III" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/stack-red-electronic-circuit.prefab",
-    icon = "textures/construct/logic-circuit.texture",
+    item_icon = "textures/icons/item/red-electronic-circuit.texture",
     item_description = "提高机器生产能力的模块",
     item_category = "器件",
 }
@@ -580,7 +580,7 @@ prototype "速度插件I" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/stack-blue-electronic-circuit.prefab",
-    icon = "textures/construct/logic-circuit.texture",
+    item_icon = "textures/icons/item/blue-electronic-circuit.texture",
     item_description = "提高机器生产速度的模块",
     item_category = "器件",
 }
@@ -592,7 +592,7 @@ prototype "速度插件II" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/stack-blue-electronic-circuit.prefab",
-    icon = "textures/construct/logic-circuit.texture",
+    item_icon = "textures/icons/item/blue-electronic-circuit.texture",
     item_description = "提高机器生产速度的模块",
     item_category = "器件",
 }
@@ -604,7 +604,7 @@ prototype "速度插件III" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/stack-blue-electronic-circuit.prefab",
-    icon = "textures/construct/logic-circuit.texture",
+    item_icon = "textures/icons/item/blue-electronic-circuit.texture",
     item_description = "提高机器生产速度的模块",
     item_category = "器件",
 }
@@ -616,7 +616,7 @@ prototype "混凝土" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/stack-iron-plate.prefab",
-    icon = "textures/construct/logic-circuit.texture",
+    item_icon = "textures/icons/item/stone-brick.texture",
     item_description = "由多种材料组成具有高强度、耐久度的建筑材料",
     item_category = "物流",
 }
@@ -628,7 +628,7 @@ prototype "处理器I" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/stack-logic-circuit.prefab",
-    icon = "textures/construct/logic-circuit.texture",
+    item_icon = "textures/icons/item/logic-circuit.texture",
     item_description = "负责执行指令和进行计算的核心组件",
     item_category = "器件",
 }
@@ -640,7 +640,7 @@ prototype "处理器II" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/stack-logic-circuit.prefab",
-    icon = "textures/construct/logic-circuit.texture",
+    item_icon = "textures/icons/item/logic-circuit.texture",
     item_description = "负责执行指令和进行计算的核心组件",
     item_category = "器件",
 }
@@ -652,7 +652,7 @@ prototype "电池I" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/stack-iron-plate.prefab",
-    icon = "textures/construct/logic-circuit.texture",
+    item_icon = "textures/icons/item/capacitor.texture",
     item_description = "将化学能转化为电能并储存起来的器件",
     item_category = "器件",
 }
@@ -664,7 +664,7 @@ prototype "电池II" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/stack-iron-plate.prefab",
-    icon = "textures/construct/logic-circuit.texture",
+    item_icon = "textures/icons/item/capacitor.texture",
     item_description = "将化学能转化为电能并储存起来的器件",
     item_category = "器件",
 }
@@ -676,7 +676,7 @@ prototype "玻璃纤维" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/stack-iron-plate.prefab",
-    icon = "textures/construct/logic-circuit.texture",
+    item_icon = "textures/icons/item/glass.texture",
     item_description = "由细小的玻璃纤维编织而成的高强度材料",
     item_category = "器件",
 }
@@ -688,7 +688,7 @@ prototype "石墨烯" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/stack-iron-plate.prefab",
-    icon = "textures/construct/logic-circuit.texture",
+    item_icon = "textures/icons/item/silicon.texture",
     item_description = "具有高电导率、高热导率、高强度和柔韧性的碳原子组成的二维材料",
     item_category = "器件",
 }
@@ -700,7 +700,7 @@ prototype "隔热板" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/stack-iron-plate.prefab",
-    icon = "textures/construct/logic-circuit.texture",
+    item_icon = "textures/icons/item/silicon-plate.texture",
     item_description = "用于保护火箭在发射和再入大气层过程中遭受极端温度的材料",
     item_category = "器件",
 }
@@ -712,7 +712,7 @@ prototype "火箭控制器" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/stack-iron-plate.prefab",
-    icon = "textures/construct/logic-circuit.texture",
+    item_icon = "textures/icons/item/logic-circuit.texture",
     item_description = "负责控制和调节火箭在发射、飞行和着陆过程中各种功能和参数的设备",
     item_category = "器件",
 }
@@ -724,7 +724,7 @@ prototype "火箭区段" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/stack-iron-plate.prefab",
-    icon = "textures/construct/logic-circuit.texture",
+    item_icon = "textures/icons/item/logic-circuit.texture",
     item_description = "火箭在发射和飞行过程中执行特定功能的一个部分",
     item_category = "器件",
 }
@@ -736,7 +736,7 @@ prototype "火箭整流罩" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 25,
     pile_model = "prefabs/stackeditems/stack-iron-plate.prefab",
-    icon = "textures/construct/logic-circuit.texture",
+    item_icon = "textures/icons/item/logic-circuit.texture",
     item_description = "火箭在穿越大气层过程中围绕有效载荷部分的一种保护结构",
     item_category = "器件",
 }
@@ -748,8 +748,8 @@ prototype "地质科技包" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-geology-pack.prefab",
-    icon = "textures/recipe/geology-pack.texture",
-    tech_icon = "textures/science/graybox.texture",
+    item_icon = "textures/icons/item/green-electronic-circuit.texture",
+    tech_item_icon = "textures/science/graybox.texture",
     item_description = "用于收集、分析和解释地质调查数据",
     item_category = "器件",
 }
@@ -761,8 +761,8 @@ prototype "气候科技包" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-climatology-pack.prefab",
-    icon = "textures/recipe/climatology-pack.texture",
-    tech_icon = "textures/science/bluebox.texture",
+    item_icon = "textures/icons/item/blue-electronic-circuit.texture",
+    tech_item_icon = "textures/science/bluebox.texture",
     item_description = "用于收集、分析和解释气候变化数据",
     item_category = "器件",
 }
@@ -774,8 +774,8 @@ prototype "机械科技包" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-mechanical-pack.prefab",
-    icon = "textures/recipe/mechanical-pack.texture",
-    tech_icon = "textures/science/redbox.texture",
+    item_icon = "textures/icons/item/red-electronic-circuit.texture",
+    tech_item_icon = "textures/science/redbox.texture",
     item_description = "用于收集、分析和解释机械过程数据",
     item_category = "器件",
 }
@@ -787,8 +787,8 @@ prototype "电子科技包" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-electrical-pack.prefab",
-    icon = "textures/recipe/electrical-pack.texture",
-    tech_icon = "textures/science/pinkbox.texture",
+    item_icon = "textures/icons/item/blue-electronic-circuit.texture",
+    tech_item_icon = "textures/science/pinkbox.texture",
     item_description = "用于收集、分析和解释电器工作数据",
     item_category = "器件",
 }
@@ -800,8 +800,8 @@ prototype "化学科技包" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-chemical-pack.prefab",
-    icon = "textures/recipe/electrical-pack.texture",
-    tech_icon = "textures/science/pinkbox.texture",
+    item_icon = "textures/icons/item/green-electronic-circuit.texture",
+    tech_item_icon = "textures/science/pinkbox.texture",
     item_description = "用于收集、分析和解释化学反应数据",
     item_category = "器件",
 }
@@ -813,8 +813,8 @@ prototype "物理科技包" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-iron-plate.prefab",
-    icon = "textures/recipe/electrical-pack.texture",
-    tech_icon = "textures/science/pinkbox.texture",
+    item_icon = "textures/icons/item/red-electronic-circuit.texture",
+    tech_item_icon = "textures/science/pinkbox.texture",
     item_description = "用于收集、分析和解释物理实验数据",
     item_category = "器件",
 }
@@ -826,7 +826,7 @@ prototype "废料" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-scrap.prefab",
-    icon = "textures/fluid/liquid.texture",
+    item_icon = "textures/icons/item/scrap.texture",
     item_description = "指各种工业产生的任何废弃的固体材料",
     item_category = "器件",
 }
@@ -838,7 +838,7 @@ prototype "铜板" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-copper-plate.prefab",
-    icon = "textures/construct/steel-beam.texture",
+    item_icon = "textures/icons/item/copper-plate.texture",
     item_category = "金属",
     item_description = "铜制材料锻造加工成的板状材料",
 }
@@ -849,7 +849,7 @@ prototype "铜丝" {
     drone_depot_gap3 = "0.5x0.2x1",
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-copper-wire.prefab",
-    icon = "textures/construct/iron-wire.texture",
+    item_icon = "textures/icons/item/copper-wire.texture",
     item_category = "金属",
     item_description = "铜制材料锻造加工成的丝状材料",
 }
@@ -861,7 +861,7 @@ prototype "电路板" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-logic-circuit.prefab",
-    icon = "textures/construct/processor.texture",
+    item_icon = "textures/icons/item/logic-circuit.texture",
     item_category = "器件",
     item_description = "由绝缘材料制成并且安装电子元件的板",
 }
@@ -873,7 +873,7 @@ prototype "核铀燃料" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-iron-plate.prefab",
-    icon = "textures/construct/coal.texture",
+    item_icon = "textures/icons/item/logic-circuit.texture",
     item_category = "器件",
     item_description = "用于核反应堆产生核能的铀-235",
 }
@@ -885,7 +885,7 @@ prototype "用尽的核铀燃料" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-iron-plate.prefab",
-    icon = "textures/construct/coal.texture",
+    item_icon = "textures/icons/item/logic-circuit.texture",
     item_category = "器件",
     item_description = "核能发电生产的副产品",
 }
@@ -897,7 +897,7 @@ prototype "海藻" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-iron-plate.prefab",
-    icon = "textures/construct/seaweed.texture",
+    item_icon = "textures/icons/item/logic-circuit.texture",
     item_description = "一种植物",
     item_category = "器件",
 }
@@ -909,7 +909,7 @@ prototype "纤维燃料" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-iron-plate.prefab",
-    icon = "textures/construct/seaweed.texture",
+    item_icon = "textures/icons/item/logic-circuit.texture",
     item_description = "一种燃料",
     item_category = "器件",
 }

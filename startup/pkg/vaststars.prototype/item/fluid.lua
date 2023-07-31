@@ -4,7 +4,7 @@ local prototype = gameplay.register.prototype
 prototype "空气" {
     type = {"fluid"},
     catagory = {"普通气体"},
-    icon = "textures/fluid/gas-air.texture",
+    item_icon = "textures/icons/item/gas-air.texture",
     color = {1, 1, 1, 1},
     heat_capacity = "0.08kJ",
     default_temperature = 25,
@@ -15,7 +15,7 @@ prototype "空气" {
 prototype "氮气" {
     type = {"fluid"},
     catagory = {"普通气体"},
-    icon = "textures/fluid/gas-nitrogen.texture",
+    item_icon = "textures/icons/item/gas-nitrogen.texture",
     color = {0, 0, 2.5, 1},
     heat_capacity = "0.08kJ",
     default_temperature = 25,
@@ -26,7 +26,7 @@ prototype "氮气" {
 prototype "氧气" {
     type = {"fluid"},
     catagory = {"普通气体"},
-    icon = "textures/fluid/gas-oxygen.texture",
+    item_icon = "textures/icons/item/gas-oxygen.texture",
     color = {2.5, 0, 0, 1},
     heat_capacity = "0.08kJ",
     default_temperature = 25,
@@ -37,7 +37,7 @@ prototype "氧气" {
 prototype "氢气" {
     type = {"fluid"},
     catagory = {"普通气体"},
-    icon = "textures/fluid/gas-hydrogen.texture",
+    item_icon = "textures/icons/item/gas-hydrogen.texture",
     color = {0.9, 0.9, 0.9, 0.1},
     heat_capacity = "0.08kJ",
     default_temperature = 25,
@@ -48,7 +48,7 @@ prototype "氢气" {
 prototype "乙烯" {
     type = {"fluid"},
     catagory = {"化学气体"},
-    icon = "textures/fluid/gas-ethene.texture",
+    item_icon = "textures/icons/item/gas-ethene.texture",
     color = {2.5, 2.5, 2.5, 1},
     heat_capacity = "0.08kJ",
     default_temperature = 25,
@@ -59,7 +59,7 @@ prototype "乙烯" {
 prototype "甲烷" {
     type = {"fluid"},
     catagory = {"化学气体"},
-    icon = "textures/fluid/gas-ch4.texture",
+    item_icon = "textures/icons/item/gas-ch4.texture",
     color = {2.5, 2.5, 2.5, 1},
     heat_capacity = "0.08kJ",
     default_temperature = 25,
@@ -70,7 +70,7 @@ prototype "甲烷" {
 prototype "二氧化碳" {
     type = {"fluid"},
     catagory = {"普通气体"},
-    icon = "textures/fluid/gas-co2.texture",
+    item_icon = "textures/icons/item/gas-co2.texture",
     color = {2.5, 2.5, 2.5, 1},
     heat_capacity = "0.08kJ",
     default_temperature = 25,
@@ -81,7 +81,7 @@ prototype "二氧化碳" {
 prototype "一氧化碳" {
     type = {"fluid"},
     catagory = {"化学气体"},
-    icon = "textures/fluid/gas-co.texture",
+    item_icon = "textures/icons/item/gas-co.texture",
     color = {2.5, 2.5, 2.5, 1},
     heat_capacity = "0.08kJ",
     default_temperature = 25,
@@ -92,7 +92,7 @@ prototype "一氧化碳" {
 prototype "氯气" {
     type = {"fluid"},
     catagory = {"化学气体"},
-    icon = "textures/fluid/gas-chlorine.texture",
+    item_icon = "textures/icons/item/gas-chlorine.texture",
     color = {0, 2.5, 0, 1},
     heat_capacity = "0.08kJ",
     default_temperature = 25,
@@ -103,7 +103,7 @@ prototype "氯气" {
 prototype "地下卤水" {
     type = {"fluid"},
     catagory = {"普通液体"},
-    icon = "textures/fluid/liquid-groundwater.texture",
+    item_icon = "textures/icons/item/liquid-groundwater.texture",
     color = {0.3, 0.3, 0.3, 1},
     heat_capacity = "0.08kJ",
     default_temperature = 15,
@@ -114,7 +114,7 @@ prototype "地下卤水" {
 prototype "纯水" {
     type = {"fluid"},
     catagory = {"普通液体"},
-    icon = "textures/fluid/liquid-water.texture",
+    item_icon = "textures/icons/item/liquid-water.texture",
     color = {2.5, 2.5, 2.5, 1},
     heat_capacity = "0.08kJ",
     default_temperature = 15,
@@ -125,7 +125,7 @@ prototype "纯水" {
 prototype "废水" {
     type = {"fluid"},
     catagory = {"普通液体"},
-    icon = "textures/fluid/liquid-wastewater.texture",
+    item_icon = "textures/icons/item/liquid-wastewater.texture",
     color = {0.75, 0.75, 0, 1},
     heat_capacity = "0.08kJ",
     default_temperature = 20,
@@ -136,7 +136,7 @@ prototype "废水" {
 prototype "盐酸" {
     type = {"fluid"},
     catagory = {"化学液体"},
-    icon = "textures/fluid/liquid-hydrochloric.texture",
+    item_icon = "textures/icons/item/liquid-hydrochloric.texture",
     color = {0.75, 0.75, 0.75, 1},
     heat_capacity = "0.08kJ",
     default_temperature = 25,
@@ -147,7 +147,7 @@ prototype "盐酸" {
 prototype "碱性溶液" {
     type = {"fluid"},
     catagory = {"化学液体"},
-    icon = "textures/fluid/liquid-solution.texture",
+    item_icon = "textures/icons/item/liquid-solution.texture",
     color = {0.75, 0.75, 0.75, 1},
     heat_capacity = "0.08kJ",
     default_temperature = 25,
@@ -158,7 +158,7 @@ prototype "碱性溶液" {
 prototype "蒸汽" {
     type = {"fluid"},
     catagory = {"普通气体"},
-    icon = "textures/fluid/gas-steam.texture",
+    item_icon = "textures/icons/item/gas-steam.texture",
     color = {1, 1, 1, 1},
     heat_capacity = "0.05KJ",
     default_temperature = 165,
@@ -170,7 +170,7 @@ prototype "地热气" {
     display_name = "地热",
     type = {"fluid"},
     catagory = {"普通气体"},
-    icon = "textures/fluid/gas-steam.texture",
+    item_icon = "textures/icons/item/gas-steam.texture",
     color = {1, 1, 1, 1},
     heat_capacity = "1KJ",
     default_temperature = 165,
@@ -183,7 +183,7 @@ prototype "地热气" {
 prototype "丁二烯" {
     type = {"fluid"},
     catagory = {"普通气体"},
-    icon = "textures/fluid/gas-butadiene.texture",
+    item_icon = "textures/icons/item/gas-butadiene.texture",
     color = {1, 1, 1, 1},
     heat_capacity = "0.05KJ",
     default_temperature = 25,
@@ -194,7 +194,7 @@ prototype "丁二烯" {
 prototype "氦气" {
     type = {"fluid"},
     catagory = {"普通气体"},
-    icon = "textures/fluid/gas-butadiene.texture",
+    item_icon = "textures/icons/item/gas-butadiene.texture",
     color = {1, 1, 1, 1},
     heat_capacity = "0.05KJ",
     default_temperature = 25,
@@ -205,7 +205,7 @@ prototype "氦气" {
 prototype "润滑油" {
     type = {"fluid"},
     catagory = {"化学液体"},
-    icon = "textures/fluid/lubricant.texture",
+    item_icon = "textures/icons/item/liquid-lubricant.texture",
     color = {0.1, 0.8, 0.1, 1},
     heat_capacity = "0.05KJ",
     default_temperature = 25,
@@ -216,7 +216,7 @@ prototype "润滑油" {
 prototype "氨气" {
     type = {"fluid"},
     catagory = {"普通气体"},
-    icon = "textures/fluid/lubricant.texture",
+    item_icon = "textures/icons/item/gas-nitrogen.texture",
     color = {0.1, 0.8, 0.1, 1},
     heat_capacity = "0.05KJ",
     default_temperature = 25,
@@ -227,7 +227,7 @@ prototype "氨气" {
 prototype "硫酸" {
     type = {"fluid"},
     catagory = {"化学液体"},
-    icon = "textures/fluid/liquid-hydrochloric.texture",
+    item_icon = "textures/icons/item/liquid-hydrochloric.texture",
     color = {0.75, 0.75, 0.75, 1},
     heat_capacity = "0.08kJ",
     default_temperature = 25,
@@ -238,7 +238,7 @@ prototype "硫酸" {
 prototype "四氯化钛" {
     type = {"fluid"},
     catagory = {"化学液体"},
-    icon = "textures/fluid/liquid-hydrochloric.texture",
+    item_icon = "textures/icons/item/liquid-hydrochloric.texture",
     color = {0.75, 0.75, 0.75, 1},
     heat_capacity = "0.08kJ",
     default_temperature = 25,
@@ -249,7 +249,7 @@ prototype "四氯化钛" {
 prototype "火箭燃料" {
     type = {"fluid"},
     catagory = {"化学液体"},
-    icon = "textures/fluid/liquid-hydrochloric.texture",
+    item_icon = "textures/icons/item/liquid-hydrochloric.texture",
     color = {0.75, 0.75, 0.75, 1},
     heat_capacity = "0.08kJ",
     default_temperature = 25,

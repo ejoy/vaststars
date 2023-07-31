@@ -5,7 +5,7 @@ compress:
     windows: BC3
 noresize: true
 normalmap: false
-path: ../../../images/icons/item/sodium hydroxide.png
+path: ../../../images/icons/item/sodium-hydroxide.png
 sampler:
     MAG: LINEAR
     MIN: LINEAR
