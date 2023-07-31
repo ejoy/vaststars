@@ -75,7 +75,7 @@ local builder, builder_datamodel, builder_ui
 local excluded_pickup_id -- object id
 local pick_lorry_id
 local selected_obj
-
+local audio = import_package "ant.audio"
 local function __on_pick_building(datamodel, o)
     local object = o.object
     if excluded_pickup_id and excluded_pickup_id == object.id then
@@ -89,6 +89,8 @@ local function __on_pick_building(datamodel, o)
 
     iui.close("build.rml") -- TODO: remove this
     iui.close("construct_road_or_pipe.rml")
+
+    audio.play "event:/ui/click"
 
     local typeobject = iprototype.queryByName(object.prototype_name)
 
