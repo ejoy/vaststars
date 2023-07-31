@@ -2,7 +2,6 @@
 return {
     {
         "opacity",
-        {"MINERAL"},
         {"BUILDING_BASE", "ROAD"},
         {"TRANSLUCENT_PLANE"},
         {"BUILDING"},
@@ -10,6 +9,7 @@ return {
     },
     {
         "background",
+        {"MINERAL"},
         {"ICON"},
         {"ICON_CONTENT", "WIRE"},
     },

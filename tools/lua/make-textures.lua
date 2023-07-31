@@ -1,48 +1,38 @@
--- .\bin\msvc\release\vaststars.exe this.lua %*
-
 local fs = require "bee.filesystem"
-local dir = (fs.exe_path() / "../../../../"):lexically_normal():string()
-local ui_dir = ...
-if not ui_dir then
-    ui_dir = fs.path(dir .. [[startup\pkg\vaststars.resources\ui\]])
-else
-    ui_dir = fs.path(ui_dir)
-    print(ui_dir:string())
-end
 
-local ui_image_dir = ui_dir / [[image\]]
-local ui_texture_dir = ui_dir / [[textures\]]
-
-local function get_files(dir)
-    local r = {}
-    for v in fs.pairs(dir) do
-        if fs.is_directory(v) then
-            local t = get_files(v)
-            table.move(t, 1, #t, #r + 1, r)
-        else
-            r[#r+1] = v
+local function parseArguments(args)
+    local result = {}
+    for _, arg in ipairs(args) do
+        local key, value = arg:match("--([%w_]+)=(.*)")
+        if key and value then
+            result[key] = value
         end
     end
-    return r
+    return result
 end
 
-local function filter_extension(list, extensions)
-    local t = {}
-    for _, path in ipairs(list) do
-        for _, extension in ipairs(extensions) do
-            if path:equal_extension(extension) then
-                t[#t+1] = path
+local params = parseArguments({...})
+assert(params.images_dir, "need images_dir")
+assert(params.textures_dir, "need textures_dir")
+
+if params.remove_all then
+    print("cleaning textures")
+    fs.remove_all(params.textures_dir)
+end
+
+local function findAllImagesRecursively(directory, files)
+    for p in fs.pairs(directory) do
+        if fs.is_directory(p) then
+            findAllImagesRecursively(p, files)
+        else
+            if p:equal_extension ".png" then
+                files[#files + 1] = p
             end
         end
     end
-    return t
 end
 
-local function escape_magic(pattern)
-	return (pattern:gsub("%W", "%%%1"))
-end
-
-local texture_content <const> = [[
+local TEXTURE_CONTENT <const> = [[
 colorspace: sRGB
 compress:
     android: ASTC6x6
@@ -50,7 +40,7 @@ compress:
     windows: BC3
 noresize: true
 normalmap: false
-path: ../../image/%s
+path: %s
 sampler:
     MAG: LINEAR
     MIN: LINEAR
@@ -59,23 +49,20 @@ sampler:
 type: texture
 ]]
 
-local function gen_png_texture(png_list)
-    for _, v in ipairs(png_list) do
-        local s = ("^%s(.*)$"):format(escape_magic(ui_image_dir:string()))
-        local relative_png_file = v:string():match(s)
-        local absolute_texture_file = fs.path(ui_texture_dir) / fs.path(relative_png_file):replace_extension(".texture")
+local function generateTextures(images, imgDir, texDir)
+    for _, image in ipairs(images) do
+        local texturePath = fs.path(texDir) / fs.relative(image, fs.path(imgDir)):replace_extension("texture")
+        local relativePath = fs.relative(image, texturePath:parent_path()):string()
 
-        if not fs.exists(absolute_texture_file:parent_path()) then
-            fs.create_directories(absolute_texture_file:parent_path())
+        if not fs.exists(texturePath:parent_path()) then
+            fs.create_directories(texturePath:parent_path())
         end
 
-        local f = assert(io.open(absolute_texture_file:string(), 'wb'))
-        f:write(texture_content:format(relative_png_file))
-        f:close()
+        local file <close> = assert(io.open(texturePath:string(), 'wb'))
+        file:write(TEXTURE_CONTENT:format(relativePath))
     end
 end
 
-local lst = get_files(ui_dir)
-local png_list = filter_extension(lst, {".png"})
-
-gen_png_texture(png_list)
+local images = {}
+findAllImagesRecursively(params.images_dir, images)
+generateTextures(images, params.images_dir, params.textures_dir)
