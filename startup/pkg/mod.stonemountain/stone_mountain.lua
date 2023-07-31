@@ -260,9 +260,9 @@ function sm_sys:stone_mountain()
 end
 
 local function update_ro(ro)
-    bgfx.destroy(ro.vb_handle)
+--[[     bgfx.destroy(ro.vb_handle)
     bgfx.destroy(ro.vb2_handle)
-    bgfx.destroy(ro.ib_handle)
+    bgfx.destroy(ro.ib_handle) ]]
     ro.vb_handle, ro.vb2_handle, ro.ib_handle = vb_handle, vb2_handle, ib_handle
     ro.vb_num, ro.vb2_num, ro.ib_num = vb_num, vb_num, ib_num
 end
