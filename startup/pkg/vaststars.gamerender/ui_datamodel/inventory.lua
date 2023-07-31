@@ -35,14 +35,14 @@ for _, typeobject in pairs(iprototype.each_type("building")) do
         if typeobject.recipe then -- 固定配方的组装机
             local typeobject_recipe = assert(iprototype.queryByName(typeobject.recipe))
             category_to_entity[typeobject_recipe.recipe_craft_category] = category_to_entity[typeobject_recipe.recipe_craft_category] or {}
-            table.insert(category_to_entity[typeobject_recipe.recipe_craft_category], {id = typeobject.id, icon = typeobject.icon})
+            table.insert(category_to_entity[typeobject_recipe.recipe_craft_category], {id = typeobject.id, icon = typeobject.item_icon})
         else
             if not typeobject.craft_category then
                 log.error(("%s dont have craft_category"):format(typeobject.name))
             end
             for _, craft_category in ipairs(typeobject.craft_category or {}) do
                 category_to_entity[craft_category] = category_to_entity[craft_category] or {}
-                table.insert(category_to_entity[craft_category], {id = typeobject.id, icon = typeobject.icon})
+                table.insert(category_to_entity[craft_category], {id = typeobject.id, icon = typeobject.item_icon})
             end
         end
     end
@@ -70,7 +70,7 @@ local function get_inventory(object_id)
             local t = {}
             t.id = typeobject_item.id
             t.name = typeobject_item.name
-            t.icon = typeobject_item.icon
+            t.icon = typeobject_item.item_icon
             t.category = typeobject_item.item_category
             t.count = slot.amount
             inventory[#inventory+1] = t

@@ -28,7 +28,7 @@ local function __get_construct_menu()
             m.items[#m.items + 1] = {
                 id = ("%s:%s"):format(category_idx, item_idx),
                 name = prototype_name,
-                icon = typeobject.icon,
+                icon = typeobject.item_icon,
                 count = count,
                 selected = false,
             }
@@ -96,7 +96,7 @@ function M:create()
         else
             if s.prototype_name ~= "" then
                 local typeobject = iprototype.queryByName(s.prototype_name)
-                shortcut[i] = {prototype_name = s.prototype_name, icon = typeobject.icon, last_timestamp = s.last_timestamp or 0, selected = false}
+                shortcut[i] = {prototype_name = s.prototype_name, icon = typeobject.item_icon, last_timestamp = s.last_timestamp or 0, selected = false}
             else
                 shortcut[i] = {prototype_name = "", icon = "", last_timestamp = 0, selected = false}
             end
@@ -175,12 +175,12 @@ function M:stage_ui_update(datamodel)
 
             local data = __get_shortcur(datamodel.shortcut_id)
             data.prototype_name = item_name
-            data.icon = typeobject.icon
+            data.icon = typeobject.item_icon
             data.last_timestamp = os.time()
 
             local shortcut = assert(datamodel.shortcut[datamodel.shortcut_id])
             shortcut.prototype_name = item_name
-            shortcut.icon = typeobject.icon
+            shortcut.icon = typeobject.item_icon
             shortcut.selected = true
         end
     end

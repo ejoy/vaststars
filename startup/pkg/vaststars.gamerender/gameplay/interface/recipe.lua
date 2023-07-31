@@ -7,7 +7,7 @@ local function get_elements(s)
     for idx = 2, #s // 4 do
         local id, n = string.unpack("<I2I2", s, 4 * idx - 3)
         local typeobject = assert(iprototype.queryById(id), ("can not found id `%s`"):format(id))
-        r[#r+1] = {id = id, name = typeobject.name, count = n, icon = typeobject.icon, tech_icon = typeobject.tech_icon}
+        r[#r+1] = {id = id, name = typeobject.name, count = n, icon = typeobject.item_icon, tech_icon = typeobject.tech_icon}
     end
     return r
 end

@@ -41,7 +41,7 @@ function M:create()
             end
         else
             local typeobject = iprototype.queryByName(s.prototype_name)
-            shortcut[i] = {prototype_name = s.prototype_name, icon = typeobject.icon, last_timestamp = s.last_timestamp or 0, selected = false, unknown = false}
+            shortcut[i] = {prototype_name = s.prototype_name, icon = typeobject.item_icon, last_timestamp = s.last_timestamp or 0, selected = false, unknown = false}
         end
 
         if shortcut[i].last_timestamp < min_timestamp then

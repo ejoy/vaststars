@@ -56,9 +56,9 @@ end
 
 local function __draw_icon(id, x, y, fluid, multiple)
     local fluid_typeobject = iprototype.queryById(fluid)
-    local cfg = FLUIDS_CFG[fluid_typeobject.icon]
+    local cfg = FLUIDS_CFG[fluid_typeobject.item_icon]
     if not cfg then
-        assert(cfg, ("can not found `%s`"):format(fluid_typeobject.icon))
+        assert(cfg, ("can not found `%s`"):format(fluid_typeobject.item_icon))
         return
     end
 

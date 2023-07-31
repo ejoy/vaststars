@@ -41,7 +41,7 @@ function M:create(object_id, interface)
     if item and item ~= 0 then
         local typeobject = assert(iprototype.queryById(item))
         datamodel.item_name = typeobject.name
-        datamodel.item_icon = typeobject.icon
+        datamodel.item_icon = typeobject.item_icon
         datamodel.item_desc = typeobject.item_description
     end
 
@@ -72,11 +72,11 @@ function M:create(object_id, interface)
         local category_idx = assert(cache[typeobject.item_category])
         local item_idx = #res[category_idx].items+1
 
-        assert(typeobject.icon and type(typeobject.icon) == "string" and typeobject.icon ~= "", ("item(%s) icon is invalid."):format(typeobject.name))
+        assert(typeobject.item_icon and type(typeobject.item_icon) == "string" and typeobject.item_icon ~= "", ("item(%s) icon is invalid."):format(typeobject.name))
         res[category_idx].items[item_idx] = {
             id = ("%s:%s"):format(category_idx, item_idx),
             name = typeobject.name,
-            icon = typeobject.icon,
+            icon = typeobject.item_icon,
             new = (not storage.item_picked_flag[typeobject.name]) and true or false,
             selected = (datamodel.item_name == typeobject.name) and true or false,
         }
@@ -118,7 +118,7 @@ function M:stage_ui_update(datamodel, object_id, interface)
 
         local typeobject = iprototype.queryByName(item_name)
         datamodel.item_name = typeobject.name
-        datamodel.item_icon = typeobject.icon
+        datamodel.item_icon = typeobject.item_icon
         datamodel.item_desc = typeobject.item_description
         datamodel.confirm = true
     end

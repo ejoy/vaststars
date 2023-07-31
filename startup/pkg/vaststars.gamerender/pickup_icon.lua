@@ -78,9 +78,9 @@ local function __create_icon(fluid, begin_x, begin_y, connection_x, connection_y
     icanvas.add_item(icanvas.types().PICKUP_ICON, 0, icanvas.get_key(material_path, RENDER_LAYER.ICON), item1)
 
     local fluid_typeobject = iprototype.queryById(fluid)
-    local cfg = FLUIDS_CFG[fluid_typeobject.icon]
+    local cfg = FLUIDS_CFG[fluid_typeobject.item_icon]
     if not cfg then
-        assert(cfg, ("can not found `%s`"):format(fluid_typeobject.icon))
+        assert(cfg, ("can not found `%s`"):format(fluid_typeobject.item_icon))
         return
     end
 

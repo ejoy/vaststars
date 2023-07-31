@@ -1,6 +1,4 @@
 local iprototype = require "gameplay.interface.prototype"
-local iworld = require "gameplay.interface.world"
-local irecipe = require "gameplay.interface.recipe"
 
 local M = {}
 
@@ -9,7 +7,7 @@ local function get_elements(s)
     for idx = 2, #s // 2 do
         local id = string.unpack("<I2", s, 2 * idx - 1)
         local typeobject = assert(iprototype.queryById(id), ("can not found id `%s`"):format(id))
-        r[#r+1] = {id = id, name = typeobject.name, icon = typeobject.icon, tech_icon = typeobject.tech_icon, stack = typeobject.stack}
+        r[#r+1] = {id = id, name = typeobject.name, icon = typeobject.item_icon, tech_icon = typeobject.tech_icon, stack = typeobject.stack}
     end
     return r
 end

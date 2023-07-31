@@ -20,18 +20,18 @@ local function get(gameplay_world, e)
     for index, v in ipairs(irecipe.get_elements(recipe_typeobject.ingredients)) do
         local slot = ichest.chest_get(gameplay_world, e.chest, index)
         if slot then
-            ingredients[index] = {icon = v.icon, name = v.name, id = slot.item, count = ichest.get_amount(slot), limit = slot.limit, demand_count = v.count, state = "enough"}
+            ingredients[index] = {icon = v.item_icon, name = v.name, id = slot.item, count = ichest.get_amount(slot), limit = slot.limit, demand_count = v.count, state = "enough"}
         else
-            ingredients[index] = {icon = v.icon, name = v.name, id = 0, count = 0, limit = 0, demand_count = v.count, state = "enough"}
+            ingredients[index] = {icon = v.item_icon, name = v.name, id = 0, count = 0, limit = 0, demand_count = v.count, state = "enough"}
         end
     end
 
     for index, v in ipairs(irecipe.get_elements(recipe_typeobject.results)) do
         local slot = ichest.chest_get(gameplay_world, e.chest, #ingredients + index)
         if slot then
-            results[index] = {icon = v.icon, name = v.name, id = slot.item, limit = slot.limit, count = ichest.get_amount(slot), output_count = v.count, state = "enough"}
+            results[index] = {icon = v.item_icon, name = v.name, id = slot.item, limit = slot.limit, count = ichest.get_amount(slot), output_count = v.count, state = "enough"}
         else
-            results[index] = {icon = v.icon, name = v.name, id = 0, limit = 0, count = 0, output_count = v.count, state = "enough"}
+            results[index] = {icon = v.item_icon, name = v.name, id = 0, limit = 0, count = 0, output_count = v.count, state = "enough"}
         end
     end
 

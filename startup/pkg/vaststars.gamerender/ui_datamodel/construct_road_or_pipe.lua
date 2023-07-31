@@ -35,7 +35,7 @@ function M:create(prototype_name, kv)
         show_remove_one = false,
         show_start_teardown = false,
         show_finish_teardown = false,
-        main_button_icon = iprototype.queryByName(prototype_name).icon,
+        main_button_icon = iprototype.queryByName(prototype_name).item_icon,
     }
 
     for k, v in pairs(kv) do

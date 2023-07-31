@@ -168,12 +168,12 @@ local function get_property(e, typeobject)
             local c = ichest.chest_get(gameplay_core.get_world(), e[chest_component], 1)
             if c then
                 local typeobject_item = assert(iprototype.queryById(c.item))
-                chest_list[#chest_list + 1] = {icon = typeobject_item.icon, name = typeobject_item.name, count = ichest.get_amount(c)}
+                chest_list[#chest_list + 1] = {icon = typeobject_item.item_icon, name = typeobject_item.name, count = ichest.get_amount(c)}
             end
         else
             for _, slot in pairs(ichest.collect_item(gameplay_core.get_world(), e[chest_component])) do
                 local typeobject_item = assert(iprototype.queryById(slot.item))
-                chest_list[#chest_list + 1] = {icon = typeobject_item.icon, name = "", count = ichest.get_amount(slot)}
+                chest_list[#chest_list + 1] = {icon = typeobject_item.item_icon, name = "", count = ichest.get_amount(slot)}
             end
             t.is_chest = true
         end
@@ -319,7 +319,7 @@ local function update_property_list(datamodel, property_list)
         else
             datamodel.show_type = "goods"
             local item = datamodel.chest_list[1]
-            datamodel.goods_icon = item.icon
+            datamodel.goods_icon = item.item_icon
             datamodel.goods_desc = item.name .. " X " .. item.count
         end
     end

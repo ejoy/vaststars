@@ -92,7 +92,7 @@ local function __on_pick_building(datamodel, o)
 
     local typeobject = iprototype.queryByName(object.prototype_name)
 
-    datamodel.focus_building_icon = typeobject.icon
+    datamodel.focus_building_icon = typeobject.item_icon
 
     selected_obj = o
     datamodel.status = "focus"
@@ -104,12 +104,12 @@ end
 local function __on_pick_non_building(datamodel, o, force)
     local typeobject = iprototype.queryByName(o.name)
 
-    iui.open({"non_building_detail_panel.rml"}, typeobject.icon, o.name)
+    iui.open({"non_building_detail_panel.rml"}, typeobject.item_icon, o.name)
     if datamodel.is_concise_mode and force ~= true then
         return true
     end
 
-    datamodel.focus_building_icon = typeobject.icon
+    datamodel.focus_building_icon = typeobject.item_icon
 
     selected_obj = o
     datamodel.status = "focus"
@@ -618,7 +618,7 @@ function M:stage_camera_usage(datamodel)
 
                     if not iprototype.is_pipe(selected_obj.name) then
                         local typeobject = iprototype.queryByName(selected_obj.name)
-                        iui.open({"non_building_detail_panel.rml"}, typeobject.icon, iprototype.display_name(typeobject))
+                        iui.open({"non_building_detail_panel.rml"}, typeobject.item_icon, iprototype.display_name(typeobject))
                     end
                 end
             else

@@ -344,7 +344,7 @@ function M:stage_ui_update(datamodel, object_id)
                     goto continue
                 end
                 local typeitem = iprototype.queryById(results[1].id)
-                msgs[#msgs + 1] = {icon = assert(typeitem.icon), name = typeitem.name, count = available}
+                msgs[#msgs + 1] = {icon = assert(typeitem.item_icon), name = typeitem.name, count = available}
             end
 
             iui.send("message_pop.rml", "item", {action = "up", left = sp_x, top = sp_y, items = msgs})
@@ -361,7 +361,7 @@ function M:stage_ui_update(datamodel, object_id)
                 goto continue
             end
             local typeitem = iprototype.queryById(slot.item)
-            iui.send("message_pop.rml", "item", {action = "up", left = sp_x, top = sp_y, items = {{icon = assert(typeitem.icon), name = typeitem.name, count = available}}})
+            iui.send("message_pop.rml", "item", {action = "up", left = sp_x, top = sp_y, items = {{icon = assert(typeitem.item_icon), name = typeitem.name, count = available}}})
 
             if e.station_producer or e.station_consumer then
                 e.station_changed = true
@@ -377,7 +377,7 @@ function M:stage_ui_update(datamodel, object_id)
                 local succ, available = ibackpack.move_to_backpack(gameplay_core.get_world(), e.chest, i)
                 if succ then
                     local typeobject = iprototype.queryById(slot.item)
-                    message[#message + 1] = {icon = assert(typeobject.icon), name = typeobject.name, count = available}
+                    message[#message + 1] = {icon = assert(typeobject.item_icon), name = typeobject.name, count = available}
                 end
             end
             if #message > 0 then
@@ -421,7 +421,7 @@ function M:stage_ui_update(datamodel, object_id)
 
                     gameplay_core.get_world():container_set(e.chest, idx, {amount = ingredient.demand_count})
                     local typeitem = iprototype.queryById(ingredient.id)
-                    message[#message + 1] = {icon = assert(typeitem.icon), name = typeitem.name, count = ingredient.demand_count}
+                    message[#message + 1] = {icon = assert(typeitem.item_icon), name = typeitem.name, count = ingredient.demand_count}
                 end
             end
             if #message > 0 then
@@ -451,7 +451,7 @@ function M:stage_ui_update(datamodel, object_id)
                 goto continue
             end
             local typeitem = iprototype.queryById(slot.item)
-            iui.send("message_pop.rml", "item", {action = "down", left = sp_x, top = sp_y, items = {{icon = assert(typeitem.icon), name = typeitem.name, count = available}}})
+            iui.send("message_pop.rml", "item", {action = "down", left = sp_x, top = sp_y, items = {{icon = assert(typeitem.item_icon), name = typeitem.name, count = available}}})
 
             if e.station_producer or e.station_consumer then
                 e.station_changed = true
@@ -480,7 +480,7 @@ function M:stage_ui_update(datamodel, object_id)
                     break
                 end
                 local typeitem = iprototype.queryById(slot.item)
-                msgs[#msgs+1] = {icon = assert(typeitem.icon), name = typeitem.name, count = available}
+                msgs[#msgs+1] = {icon = assert(typeitem.item_icon), name = typeitem.name, count = available}
             end
             iui.send("message_pop.rml", "item", {action = "down", left = sp_x, top = sp_y, items = msgs})
         else
