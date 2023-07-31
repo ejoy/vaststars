@@ -2988,7 +2988,7 @@ prototype "空气分离2" {
     recipe_craft_category = "过滤",
     recipe_category =  "化工",
     recipe_order =  11,
-    recipe_icon =  "textures/icons/recipe/gas-seperate.texture",
+    recipe_icon =  "textures/icons/recipe/gas-separate.texture",
     ingredients = {
         {"空气", 100},
     },
