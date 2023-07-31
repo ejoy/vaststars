@@ -14,14 +14,15 @@ namespace roadnet::road {
     bool straight::canEntry(network& w)  {
         return !hasLorry(w, len-1);
     }
-    bool straight::tryEntry(world& w, lorryid l)  {
-        if (!hasLorry(w.rw, len-1)) {
-            w.rw.LorryInRoad(lorryOffset + len-1) = l;
-            auto coord = getCoord(w.rw, len-1);
-            lorryEntry(w.rw.Lorry(w, l), coord.x, coord.y, coord.z);
-            return true;
-        }
-        return false;
+    void straight::blink(world& w, lorryid l) {
+        w.rw.LorryInRoad(lorryOffset + len-1) = l;
+        auto coord = getCoord(w.rw, len-1);
+        lorryBlink(w.rw.Lorry(w, l), w, coord.x, coord.y, coord.z);
+    }
+    void straight::move(world& w, lorryid l) {
+        w.rw.LorryInRoad(lorryOffset + len-1) = l;
+        auto coord = getCoord(w.rw, len-1);
+        lorryMove(w.rw.Lorry(w, l), w, coord.x, coord.y, coord.z);
     }
     void straight::setNeighbor(crossid id) {
         assert(neighbor == crossid::invalid());
@@ -41,7 +42,7 @@ namespace roadnet::road {
                 if (lorryReady(l) && !hasLorry(w.rw, offset)) {
                     w.rw.LorryInRoad(lorryOffset + offset) = lorryId;
                     auto coord = getCoord(w.rw, offset);
-                    lorryEntry(l, coord.x, coord.y, coord.z);
+                    lorryMove(l, w, coord.x, coord.y, coord.z);
                     delLorry(w.rw, i);
                 }
             }

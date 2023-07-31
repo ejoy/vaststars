@@ -22,7 +22,8 @@ namespace roadnet::road {
         void init(straightid id, uint16_t len, direction dir, crossid neighbor);
         void update(world& w, uint64_t ti);
         bool canEntry(network& w);
-        bool tryEntry(world& w, lorryid l);
+        void blink(world& w, lorryid l);
+        void move(world& w, lorryid l);
         void setNeighbor(crossid id);
         void setLorryOffset(uint32_t offset) { lorryOffset = offset; }
         void setCoordOffset(uint32_t offset) { coordOffset = offset; }

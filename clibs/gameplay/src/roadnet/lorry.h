@@ -11,7 +11,8 @@ namespace roadnet {
     void lorryInit(ecs::lorry& l, world& w, uint16_t classid);
     void lorryDestroy(ecs::lorry& l, world& w);
     bool lorryInvalid(ecs::lorry& l);
-    void lorryEntry(ecs::lorry& l, uint8_t x, uint8_t y, uint8_t z);
+    void lorryBlink(ecs::lorry& l, world& w, uint8_t x, uint8_t y, uint8_t z);
+    void lorryMove(ecs::lorry& l, world& w, uint8_t x, uint8_t y, uint8_t z);
     void lorryItemReset(ecs::lorry& l);
     void lorryItemSet(ecs::lorry& l, uint16_t item, uint16_t amount);
     void lorryGo(ecs::lorry& l, ecs::endpoint& ending);

@@ -37,6 +37,7 @@ namespace roadnet {
         road::straight&  StraightRoad(straightid id);
         road::cross&     CrossRoad(crossid id);
         ecs::lorry&      Lorry(world& w, lorryid id);
+        lorry_entity     LorryEntity(world& w, ecs::lorry& lorry);
         lorryid&         LorryInRoad(uint32_t index);
         map_coord        LorryInCoord(uint32_t index) const;
         lorryid          getLorryId(ecs::lorry& l);

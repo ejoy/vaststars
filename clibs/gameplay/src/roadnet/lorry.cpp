@@ -30,11 +30,25 @@ namespace roadnet {
     bool lorryInvalid(ecs::lorry& l) {
         return l.prototype == 0;
     }
-    void lorryEntry(ecs::lorry& l, uint8_t x, uint8_t y, uint8_t z) {
-        l.maxprogress = l.progress = l.time;
+    void lorryBlink(ecs::lorry& l, world& w, uint8_t x, uint8_t y, uint8_t z) {
+        l.maxprogress = l.progress = 0;
+        l.prev_x = x;
+        l.prev_y = y;
+        l.prev_z = z;
         l.x = x;
         l.y = y;
         l.z = z;
+        w.rw.LorryEntity(w, l).enable_tag<ecs::lorry_changed>();
+    }
+    void lorryMove(ecs::lorry& l, world& w, uint8_t x, uint8_t y, uint8_t z) {
+        l.maxprogress = l.progress = l.time;
+        l.prev_x = l.x;
+        l.prev_y = l.y;
+        l.prev_z = l.z;
+        l.x = x;
+        l.y = y;
+        l.z = z;
+        w.rw.LorryEntity(w, l).enable_tag<ecs::lorry_changed>();
     }
     void lorryItemReset(ecs::lorry& l) {
         l.item_prototype = 0;
