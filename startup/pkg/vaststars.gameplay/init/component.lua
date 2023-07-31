@@ -58,8 +58,12 @@ mainkey "lorry" {
     "x:byte",
     "y:byte",
     "z:byte",
+    "prev_x:byte",
+    "prev_y:byte",
+    "prev_z:byte",
 }
 
+tag "lorry_changed"
 tag "lorry_free"
 tag "lorry_removed"
 tag "lorry_willremove"

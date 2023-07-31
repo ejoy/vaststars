@@ -8,9 +8,7 @@ namespace roadnet {
         return w.StraightRoad(st.neighbor).canEntry(w);
     }
     void startingSetOut(world& w, ecs::starting const& st, lorryid id) {
-        bool ok = w.rw.StraightRoad(st.neighbor).tryEntry(w, id);
-        (void)ok;
-        assert(ok);
+        w.rw.StraightRoad(st.neighbor).blink(w, id);
     }
 
     lorryid& endpointWaitingLorry(network& w, ecs::endpoint const& ep) {
@@ -21,9 +19,7 @@ namespace roadnet {
     }
     void endpointSetOut(world& w, ecs::endpoint const& ep) {
         auto& id = endpointWaitingLorry(w.rw, ep);
-        bool ok = w.rw.StraightRoad(ep.neighbor).tryEntry(w, id);
-        (void)ok;
-        assert(ok);
+        w.rw.StraightRoad(ep.neighbor).move(w, id);
         id = lorryid::invalid();
     }
     std::optional<uint16_t> endpointDistance(network& w, ecs::starting const& from, ecs::endpoint const& to) {

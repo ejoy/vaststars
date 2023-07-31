@@ -89,7 +89,8 @@ namespace roadnet::road {
             }
             cross_type t = cross_status[i];
             auto& road = w.rw.StraightRoad(neighbor[(uint8_t)t & 0x03u]);
-            if (road.tryEntry(w, id)) {
+            if (road.canEntry(w.rw)) {
+                road.move(w, id);
                 cross_lorry[i] = lorryid::invalid();
             }
         }
@@ -138,7 +139,7 @@ namespace roadnet::road {
             cross_lorry[idx] = id;
             cross_status[idx] = type;
             auto loc = getLoction(w.rw);
-            lorryEntry(l, loc.x, loc.y, map_coord::make_z(map_index::w1, cross_status[idx]));
+            lorryMove(l, w, loc.x, loc.y, map_coord::make_z(map_index::w1, cross_status[idx]));
         }
     }
 

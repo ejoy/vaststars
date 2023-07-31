@@ -949,6 +949,9 @@ namespace roadnet {
         assert(id.get_index() < ecs_api::count<ecs::lorry>(w.ecs));
         return lorryAry[id.get_index()];
     }
+    lorry_entity network::LorryEntity(world& w, ecs::lorry& lorry) {
+        return ecs_api::index_entity<ecs::lorry>(w.ecs, uint16_t(&lorry - lorryAry));
+    }
     lorryid& network::LorryInRoad(uint32_t index) {
         return straightLorry[index];
     }
