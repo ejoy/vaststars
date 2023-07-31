@@ -6,7 +6,7 @@ prototype "铁板1" {
     recipe_craft_category = "金属冶炼",
     recipe_category =  "金属",
     recipe_order =  11,
-    item_icon = "textures/icons/recipe/plate-Fe-1.texture",
+    recipe_icon = "textures/icons/recipe/plate-Fe-1.texture",
     ingredients = {
         {"铁矿石", 3},
     },
@@ -23,7 +23,7 @@ prototype "铁板2" {
     recipe_craft_category = "金属冶炼",
     recipe_category =  "金属",
     recipe_order =  12,
-    item_icon = "textures/icons/recipe/plate-Fe-2.texture",
+    recipe_icon = "textures/icons/recipe/plate-Fe-2.texture",
     ingredients = {
         {"碾碎铁矿石", 8},
         {"石墨", 1}
