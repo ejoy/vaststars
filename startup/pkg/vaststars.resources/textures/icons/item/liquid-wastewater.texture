@@ -5,7 +5,7 @@ compress:
     windows: BC3
 noresize: true
 normalmap: false
-path: ../../../images/icons/item/liquid-wasterwater.png
+path: ../../../images/icons/item/liquid-wastewater.png
 sampler:
     MAG: LINEAR
     MIN: LINEAR

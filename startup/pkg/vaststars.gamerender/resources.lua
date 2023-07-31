@@ -1396,7 +1396,7 @@ local t = {
 	"/pkg/vaststars.resources/textures/icons/item/liquid-hydrochloric.texture",
 	"/pkg/vaststars.resources/textures/icons/item/liquid-lubricant.texture",
 	"/pkg/vaststars.resources/textures/icons/item/liquid-solution.texture",
-	"/pkg/vaststars.resources/textures/icons/item/liquid-wasterwater.texture",
+	"/pkg/vaststars.resources/textures/icons/item/liquid-wastewater.texture",
 	"/pkg/vaststars.resources/textures/icons/item/liquid-water.texture",
 	"/pkg/vaststars.resources/textures/icons/item/logic-circuit.texture",
 	"/pkg/vaststars.resources/textures/icons/item/miner.texture",
