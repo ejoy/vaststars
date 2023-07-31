@@ -22,7 +22,7 @@ local sm_sys = ecs.system "stone_mountain"
 local vb_num, vb_size, vb2_size, ib_num, ib_size = 0, 0, 0, 0, 0
 local vb_handle, vb2_handle, ib_handle
 
-local ratio, width, height = 0.77, 256, 256
+local ratio, width, height = 0.80, 256, 256
 local ratio_table = {
     [1] = 0.88, [2] = 0.90, [3] = 0.92, [4] = 0.94
 }
@@ -30,10 +30,7 @@ local freq, depth, unit, offset = 4, 4, 10, 0
 local main_viewid = viewidmgr.get "csm_fb"
 
 local sm_table = {}
-local sm_group = {
-    [1] = 40001, [2] = 40002, [3] = 40003, [4] = 40004
-}
-
+local sm_group_table = {}
 local mesh_table = {
     [1] = {filename = "/pkg/mod.stonemountain/assets/mountain1.glb|meshes/Cylinder.002_P1.meshbin"},
     [2] = {filename = "/pkg/mod.stonemountain/assets/mountain2.glb|meshes/Cylinder.004_P1.meshbin"},
@@ -94,14 +91,17 @@ function ism.create_random_sm(d, ww, hh, off, un)
     return generate_sm_config()
 end
 
-function ism.create_sm_entity(idx_string)
+function ism.create_sm_entity(group_table)
     open_sm = true
     for iz = 0, height - 1 do
         for ix = 0, width - 1 do
             local idx = iz * width + ix + 1
-            local is_sm = string.unpack(("B"), idx_string, idx)
-            if is_sm == 1 then
-                sm_table[(iz << 16) + ix] = {}
+            --local is_sm = string.unpack(("B"), idx_string, idx)
+            local sm_group = group_table[idx]
+            if sm_group then
+                local sm_idx = (iz << 16) + ix
+                sm_table[sm_idx] = {}
+                sm_group_table[sm_idx] = sm_group
             end
         end
     end
@@ -202,50 +202,53 @@ end
 
 local kb_mb = world:sub{"keyboard"}
 
-
+-- stonemountain
+    -- group
+    -- mesh_number
+    -- sm_info
 local function create_sm_entity()
-    local mesh_number_table = {}
-
-    local stonemountain_info_table  = {}
-    for mesh_idx = 1, 4 do
-        local begin_num = #stonemountain_info_table
-        for _, sms in pairs(sm_table) do
-            if sms[mesh_idx] then
-                local sm = sms[mesh_idx]
-                stonemountain_info_table[#stonemountain_info_table+1] = {
-                    {sm.s, sm.r, sm.tx, sm.tz}
-                }               
+    local stonemountain = {}
+    for sm_idx, sms in pairs(sm_table) do
+        local group_id = sm_group_table[sm_idx]
+        local group = stonemountain[group_id]
+        if not group then
+            group = {mesh_number_table = {0, 0, 0, 0}, draw_number = 0, sm_info = {}}
+            stonemountain[group_id] = group
+        end
+        local mesh_number_table, sm_info = group.mesh_number_table, group.sm_info
+        for mesh_idx = 1, 4 do
+            local sm = sms[mesh_idx]
+            if sm then
+                local mesh_number = mesh_number_table[mesh_idx]
+                mesh_number = mesh_number + 1
+                sm_info[#sm_info+1] = {{sm.s, sm.r, sm.tx, sm.tz}}             
             end
         end
-        mesh_number_table[mesh_idx] = #stonemountain_info_table - begin_num
     end
-    local gid = 40005
-    local g = ecs.group(gid)
-    ecs.group(gid):enable "view_visible"
-    g:create_entity {
-        policy = {
-            "ant.render|render",
-            "mod.stonemountain|stonemountain",
-            "ant.render|indirect"
-         },
-        data = {
-            scene         = {},
-            mesh =  mesh_table[1].filename,
-            material      ="/pkg/mod.stonemountain/assets/pbr_sm.material", 
-            visible_state = "main_view|cast_shadow",
-            stonemountain = {
-                group = gid,
-                stonemountain_info = stonemountain_info_table,
-                mesh_number = mesh_number_table
-            },
-            render_layer = "foreground",
-            indirect = "STONE_MOUNTAIN",
-            on_ready = function(e)
-                local draw_indirect_type = idrawindirect.get_draw_indirect_type("STONE_MOUNTAIN")
-                imaterial.set_property(e, "u_draw_indirect_type", math3d.vector(draw_indirect_type))
-            end
+    for gid, sm_info in pairs(stonemountain) do
+        local g = ecs.group(gid)
+        ecs.group(gid):enable "view_visible"
+        g:create_entity {
+            policy = {
+                "ant.render|render",
+                "mod.stonemountain|stonemountain",
+                "ant.render|indirect"
+             },
+            data = {
+                scene         = {},
+                mesh =  mesh_table[1].filename,
+                material      ="/pkg/mod.stonemountain/assets/pbr_sm.material", 
+                visible_state = "main_view|cast_shadow",
+                stonemountain = sm_info,
+                render_layer = "foreground",
+                indirect = "STONE_MOUNTAIN",
+                on_ready = function(e)
+                    local draw_indirect_type = idrawindirect.get_draw_indirect_type("STONE_MOUNTAIN")
+                    imaterial.set_property(e, "u_draw_indirect_type", math3d.vector(draw_indirect_type))
+                end
+            }
         }
-    }
+    end
 end
 
 function sm_sys:stone_mountain()
@@ -342,9 +345,9 @@ function sm_sys:data_changed()
         end
         e.bounding.scene_aabb = mc.NULL
         local stonemountain = e.stonemountain
-        local stonemountain_info = stonemountain.stonemountain_info
-        local mesh_number = stonemountain.mesh_number
-        local mesh_offset = math3d.vector(mesh_number[1], mesh_number[2], mesh_number[3])
+        local stonemountain_info = stonemountain.sm_info
+        local mesh_number_table = stonemountain.mesh_number_table
+        local mesh_offset = math3d.vector(mesh_number_table[1], mesh_number_table[2], mesh_number_table[3])
         local stonemountain_num = #stonemountain_info
         -- vertex offset / index offset / total index number
         local instance_params = {
