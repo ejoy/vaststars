@@ -347,15 +347,28 @@ namespace roadnet {
     static void setStarting(network& w, updateMapStatus& status, loction loc, direction a, direction b) {
         auto na = findNeighbor(status, loc, a);
         auto nb = findNeighbor(status, loc, b);
-        if (na.l == loc) {
-            std::swap(na, nb);
-            std::swap(a, b);
+        if (na.type == NeighborType::Starting || nb.type == NeighborType::Starting) {
+            if (na.l == loc) {
+                std::swap(na, nb);
+                std::swap(a, b);
+            }
+            if (na.type != NeighborType::Cross) {
+                return;
+            }
+            assert(nb.l == loc && na.n != loc);
         }
-        if (na.type != NeighborType::Cross) {
-            return;
+        else if (na.type == NeighborType::Cross && nb.type == NeighborType::Cross) {
+            assert(na.l == nb.l);
+            assert(na.n == nb.n);
+            if (nb.dir == b) {
+                std::swap(na, nb);
+                std::swap(a, b);
+            }
+            assert(na.dir == a);
         }
-        assert(nb.type == NeighborType::Starting);
-        assert(nb.l == loc && na.n != loc);
+        else {
+            assert(false);
+        }
         auto stInfo = status.startingMap.find(loc);
         assert(stInfo);
         auto cross_a = status.crossMap.find(na.l);

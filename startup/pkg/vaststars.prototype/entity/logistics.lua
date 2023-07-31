@@ -21,7 +21,7 @@ prototype "指挥中心" {
             {type="lorry_factory", position={2,4,"S"}},
         },
     },
-    starting = "2,4",
+    starting = "2,2",
     road = {
         "2,2,║",
         "2,4,║",
