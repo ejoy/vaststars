@@ -4,191 +4,97 @@ local w = world.w
 
 local ITEM_CATEGORY <const> = import_package "vaststars.prototype"("item_category")
 local gameplay_core = require "gameplay.core"
-local ichest = require "gameplay.interface.chest"
 local iprototype = require "gameplay.interface.prototype"
-local itypes = require "gameplay.interface.types"
-local objects = require "objects"
-local irecipe = require "gameplay.interface.recipe"
-local click_item_mb = mailbox:sub {"click_item"}
-local to_chest_mb = mailbox:sub {"to_chest"}
-local to_headquater_mb = mailbox:sub {"to_headquater"}
-local iworld = require "gameplay.interface.world"
 local iBackpack = import_package "vaststars.gameplay".interface "backpack"
+local click_item_mb = mailbox:sub {"click_item"}
+local close_mb = mailbox:sub {"close"}
+local iui = ecs.import.interface "vaststars.gamerender|iui"
 
-local item_id_to_info = {}
-local recipe_to_category = {}
-local category_to_entity = {}
-for _, typeobject in pairs(iprototype.each_type("recipe")) do
-    for _, element in ipairs(irecipe.get_elements(typeobject.results)) do
-        local typeobject_element = assert(iprototype.queryById(element.id))
-        if iprototype.has_type(typeobject_element.type, "item") then
-            local id = typeobject_element.id
-            item_id_to_info[id] = item_id_to_info[id] or {}
-            item_id_to_info[id][#item_id_to_info[id]+1] = {icon = assert(typeobject.recipe_icon), element = irecipe.get_elements(typeobject.ingredients), recipe_id = typeobject.id, time = itypes.time(typeobject.time)}
-        end
+local function get_inventory()
+    local t = {}
+    for _, slot in pairs(iBackpack.all(gameplay_core.get_world())) do
+        local typeobject_item = assert(iprototype.queryById(slot.prototype))
+
+        local v = {}
+        v.id = typeobject_item.id
+        v.name = typeobject_item.name
+        v.icon = typeobject_item.icon
+        v.category = typeobject_item.item_category
+        v.count = slot.amount
+
+        t[v.category] = t[v.category] or {}
+        t[v.category][#t[v.category]+1] = v
     end
-    recipe_to_category[typeobject.id] = typeobject.recipe_craft_category
-end
 
-for _, typeobject in pairs(iprototype.each_type("building")) do
-    if iprototype.has_type(typeobject.type, "assembling") then
-        if typeobject.recipe then -- 固定配方的组装机
-            local typeobject_recipe = assert(iprototype.queryByName(typeobject.recipe))
-            category_to_entity[typeobject_recipe.recipe_craft_category] = category_to_entity[typeobject_recipe.recipe_craft_category] or {}
-            table.insert(category_to_entity[typeobject_recipe.recipe_craft_category], {id = typeobject.id, icon = typeobject.item_icon})
-        else
-            if not typeobject.craft_category then
-                log.error(("%s dont have craft_category"):format(typeobject.name))
-            end
-            for _, craft_category in ipairs(typeobject.craft_category or {}) do
-                category_to_entity[craft_category] = category_to_entity[craft_category] or {}
-                table.insert(category_to_entity[craft_category], {id = typeobject.id, icon = typeobject.item_icon})
-            end
-        end
+    for _, items in pairs(t) do
+        table.sort(items, function (a, b)
+            return a.id < b.id
+        end)
     end
-end
 
-for _, item_info in pairs(item_id_to_info) do
-    for _, recipe_info in ipairs(item_info) do
-        local recipe_id = recipe_info.recipe_id
-        local category = recipe_to_category[recipe_id]
-        if category then
-            recipe_info.entities = category_to_entity[category] or {}
-        end
-        recipe_info.recipe_id = nil
-    end
-end
-
-local function get_inventory(object_id)
     local inventory = {}
-    local object = assert(objects:get(object_id))
-    local e = gameplay_core.get_entity(assert(object.gameplay_eid))
-    if e then
-        for _, slot in pairs(iBackpack.all(gameplay_core.get_world())) do
-            local typeobject_item = assert(iprototype.queryById(slot.prototype))
-
-            local t = {}
-            t.id = typeobject_item.id
-            t.name = typeobject_item.name
-            t.icon = typeobject_item.item_icon
-            t.category = typeobject_item.item_category
-            t.count = slot.amount
-            inventory[#inventory+1] = t
+    for _, category in ipairs(ITEM_CATEGORY) do
+        if t[category] then
+            inventory[#inventory+1] = {category = category, items = t[category]}
         end
     end
     return inventory
 end
 
-local function update(datamodel, object_id)
-    datamodel.inventory = get_inventory(object_id)
+local function set_item_value(datamodel, category_idx, item_idx, key, value)
+    if category_idx == 0 and item_idx == 0 then
+        return
+    end
+    assert(datamodel.inventory[category_idx])
+    assert(datamodel.inventory[category_idx].items[item_idx])
+    datamodel.inventory[category_idx].items[item_idx][key] = value
 end
 
 ---------------
 local M = {}
 
-function M:create(object_id)
-    local object = assert(objects:get(object_id))
-    local typeobject = iprototype.queryByName(object.prototype_name)
-
-    local res = {}
-    for _, category in ipairs(ITEM_CATEGORY) do
-        res[#res+1] = {
-            category = category,
-        }
-    end
-
+function M:create()
     return {
-        object_id = object_id, -- for update
-        prototype_name = iprototype.display_name(typeobject),
-        background = typeobject.background,
-        item_category = res,
-        inventory = get_inventory(object_id),
-        is_headquater = (typeobject.headquater == true),
-        item_prototype_name = "",
-        max_slot_count = typeobject.slots,
+        category_idx = 0,
+        item_idx = 0,
+        item_name = "",
+        item_desc = "",
+        inventory = get_inventory(),
     }
 end
 
 function M:stage_ui_update(datamodel)
-    for _, _, _, prototype in click_item_mb:unpack() do
-        local typeobject = iprototype.queryById(prototype)
-        datamodel.show_item_info = true
-        datamodel.item_prototype_name = iprototype.display_name(typeobject)
-        datamodel.item_info = item_id_to_info[tonumber(prototype)] or {}
-        self:flush()
+    for _, _, _, category_idx, item_idx in click_item_mb:unpack() do
+        if datamodel.category_idx == category_idx and datamodel.item_idx == item_idx then
+            set_item_value(datamodel, category_idx, item_idx, "selected", false)
+            datamodel.category_idx = 0
+            datamodel.item_idx = 0 
+            datamodel.item_name = ""
+            datamodel.item_desc = ""
+            datamodel.item_icon = ""
+        else
+            set_item_value(datamodel, datamodel.category_idx, datamodel.item_idx, "selected", false)
+            set_item_value(datamodel, category_idx, item_idx, "selected", true)
+            datamodel.category_idx = category_idx
+            datamodel.item_idx = item_idx
+
+            local item_name = datamodel.inventory[category_idx].items[item_idx].name
+            local typeobject = iprototype.queryByName(item_name)
+            datamodel.item_name = iprototype.display_name(typeobject)
+            datamodel.item_desc = typeobject.item_description or ""
+            datamodel.item_icon = typeobject.icon
+        end
     end
 
-    for _, _, _, chest_object_id, prototype in to_chest_mb:unpack() do
-        local headquater_item_counts = iworld.inventory(gameplay_core.get_world())
-        if not headquater_item_counts[prototype] then
-            log.info(("can not found item `%s`"):format(prototype))
-            goto continue
-        end
-
-        local chest_object = objects:get(chest_object_id)
-        if not chest_object then
-            log.error(("can not found chest `%s`"):format(chest_object_id))
-            goto continue
-        end
-
-        local chest_e = gameplay_core.get_entity(chest_object.gameplay_eid)
-        if not chest_e then
-            log.error(("can not found chest `%s`"):format(chest_object_id))
-            goto continue
-        end
-
-        local items = ichest.collect_item(gameplay_core.get_world(), chest_e)
-        if not items[prototype] then
-            log.info(("can not found item `%s`"):format(prototype))
-            goto continue
-        end
-
-        --
-        local typeobject_item = iprototype.queryById(prototype)
-        if ichest.get_amount(items[prototype]) >= typeobject_item.stack then
-            log.info(("stack `%s`"):format(typeobject_item.stack))
-            goto continue
-        end
-
-        local pickup_count = math.min(typeobject_item.stack - ichest.get_amount(items[prototype]), headquater_item_counts[prototype])
-        iworld.base_container_pickup_place(gameplay_core.get_world(), chest_e, prototype, pickup_count, true)
-        self:flush()
-        ::continue::
+    for _ in close_mb:unpack() do
+        iui.close("inventory.rml")
     end
 
-    for _, _, _, chest_object_id, prototype in to_headquater_mb:unpack() do
-        local chest_object = objects:get(chest_object_id)
-        if not chest_object then
-            log.error(("can not found chest `%s`"):format(chest_object_id))
-            goto continue
-        end
-
-        local chest_e = gameplay_core.get_entity(chest_object.gameplay_eid)
-        if not chest_e then
-            log.error(("can not found chest `%s`"):format(chest_object_id))
-            goto continue
-        end
-
-        local items = ichest.collect_item(gameplay_core.get_world(), chest_e)
-        if not items[prototype] then
-            log.info(("can not found item `%s`"):format(prototype))
-            goto continue
-        end
-
-        local typeobject_item = iprototype.queryById(prototype)
-        local pickup_count = math.min(typeobject_item.stack, ichest.get_amount(items[prototype]))
-
-        iworld.base_container_pickup_place(gameplay_core.get_world(), chest_e, prototype, pickup_count, false)
-        self:flush()
-        ::continue::
-    end
-
-    update(datamodel, datamodel.object_id) -- TODO
     self:flush()
 end
 
 function M:update(datamodel)
-    update(datamodel, datamodel.object_id)
+    datamodel.inventory = get_inventory()
     self:flush()
 end
 
