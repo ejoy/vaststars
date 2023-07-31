@@ -85,6 +85,7 @@ mainkey "drone" {
     "item:word",
     "status:byte",
 }
+tag "drone_changed"
 
 component "assembling" {
     "progress:int",
