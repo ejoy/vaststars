@@ -1431,7 +1431,7 @@ local t = {
 	"/pkg/vaststars.resources/textures/icons/recipe/construction-design.texture",
 	"/pkg/vaststars.resources/textures/icons/recipe/crush-ore-Al.texture",
 	"/pkg/vaststars.resources/textures/icons/recipe/crush-ore-Fe.texture",
-	"/pkg/vaststars.resources/textures/icons/recipe/cucible.texture",
+	"/pkg/vaststars.resources/textures/icons/recipe/crucible.texture",
 	"/pkg/vaststars.resources/textures/icons/recipe/drone-depot-design.texture",
 	"/pkg/vaststars.resources/textures/icons/recipe/electric-motor.texture",
 	"/pkg/vaststars.resources/textures/icons/recipe/electrolysis-design.texture",
