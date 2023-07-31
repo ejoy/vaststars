@@ -4,6 +4,7 @@ local w     = world.w
 
 local MOUNTAIN = import_package "vaststars.prototype".load("mountain")
 local ism = ecs.import.interface "mod.stonemountain|istonemountain"
+local terrain = ecs.require "terrain"
 
 local UNIT <const> = 10
 local BORDER <const> = 5
@@ -67,11 +68,16 @@ function M:create()
     local t = {}
     for i = 1, WIDTH * HEIGHT do
         local x, y = __idx2coord(i)
-        t[i] = cache[x][y]
+        if cache[x][y] == 1 then
+            if x & 0xff ~= x or y & 0xff ~= y then
+                t[i] = 0
+            else
+                t[i] = terrain:get_group_id(x, y)
+            end
+        end
     end
 
-    local s = string.pack(("B"):rep(WIDTH * HEIGHT), table.unpack(t))
-    ism.create_sm_entity(s)
+    ism.create_sm_entity(t)
 end
 
 function M:has_mountain(x, y)
