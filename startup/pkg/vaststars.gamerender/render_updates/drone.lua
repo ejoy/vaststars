@@ -31,18 +31,18 @@ local function create_drone(homepos)
     local task = {
         running = false,
         duration = 0,
-        elapsed_time = 0,
+        elapsed = 0,
         to_home = false,
         process = 0,
         flyid = 0,
-        gohome = function (self, flyid, from, to, fly_height)
+        gohome = function (self, flyid, from, to, fly_height, duration)
             if self.to_home then return end
             self:destroy_item()
-            self:flyto(flyid, fly_height, from, to, true, 1.0)
+            self:flyto(flyid, fly_height, from, to, true, duration or 30)
             self.to_home = true
             -- print("----gohome----", math3d.index(to, 1, 2, 3))
         end,
-        flyto = function (self, flyid, height, from, to, home, duration)
+        flyto = function (self, flyid, height, from, to, home, duration, start)
             self.flyid = flyid
             if self.to_home and not home then
                 local exz <close> = w:entity(self.motion_xz)
@@ -51,8 +51,6 @@ local function create_drone(homepos)
                 local xpos = iom.get_position(ey)
                 from = math3d.vector {math3d.index(xzpos, 1), math3d.index(xpos, 2), math3d.index(xzpos, 3)}
                 self.to_home = false
-                ims.set_duration(exz, -1)
-                ims.set_duration(ey, -1)
             end
             -- print("----flyto----", home, from[1], from[2], from[3], to[1], to[2], to[3])
             local exz <close> = w:entity(self.motion_xz)
@@ -70,15 +68,8 @@ local function create_drone(homepos)
                 {t = math3d.vector({0, height, 0}), step = 0.9},
                 {t = math3d.vector({0, math3d.index(to, 2), 0}),  step = 1.0}
             )
-            if home then
-                self.duration = duration
-                local ms = duration * 1000
-                ims.set_duration(exz, ms)
-                ims.set_duration(ey, ms)
-            else
-                ims.set_ratio(exz, 0)
-                ims.set_ratio(ey, 0)
-            end
+            ims.set_duration(exz, duration, start or 0, true)
+            ims.set_duration(ey, duration, start or 0, true)
             self.running = true
         end,
         update = function (self, step, hasitem)
@@ -87,30 +78,20 @@ local function create_drone(homepos)
             end
             local finished = false
             if self.to_home then
-                --TODO: update framerate is 30
-                local elapsed_time = 1.0 / 30
-                self.elapsed_time = self.elapsed_time + elapsed_time
-                if self.elapsed_time >= self.duration then
+                --TODO: framerate is 30
+                local elapsed = 1--1.0 / 30
+                self.elapsed = self.elapsed + elapsed
+                if self.elapsed >= self.duration then
                     finished = true
                 end
             else
-                -- print("----update----", step)
-                local exz <close> = w:entity(self.motion_xz)
-                ims.set_ratio(exz, step)
-                local ey <close> = w:entity(self.motion_y)
-                ims.set_ratio(ey, step)
                 if step >= 1.0 then
                     finished = true
                 end
             end
-            
             if finished then
                 self.running = false
-                self.elapsed_time = 0
-                local exz <close> = w:entity(self.motion_xz)
-                ims.set_duration(exz, -1)
-                local ey <close> = w:entity(self.motion_y)
-                ims.set_duration(ey, -1)
+                self.elapsed = 0
             end
             if not hasitem then
                 self:destroy_item()
@@ -144,7 +125,6 @@ local function create_drone(homepos)
     local motion_y = imotion.create_motion_object(nil, nil, math3d.vector(0, math3d.index(homepos, 2), 0), motion_xz)
     task.motion_y = motion_y
     task.prefab = imotion.sampler_group:create_instance("/pkg/vaststars.resources/prefabs/drone.prefab", motion_y)
-    -- task.prefab = ecs.create_instance("/pkg/vaststars.resources/prefabs/drone.prefab", motion_y)
     task.prefab.on_ready = function(self)
         for _, eid in ipairs(self.tag["*"]) do
             local e <close> = w:entity(eid, "render_object?update")
@@ -229,9 +209,6 @@ function drone_sys:gameworld_update()
     for e in gameworld.ecs:select "drone:in eid:in" do
         local drone = e.drone
         assert(drone.prev ~= 0, "drone.prev == 0")
-        -- if (drone.prev ~= 0) and (drone.next ~= 0) and (drone.maxprogress ~= 0) and (drone.progress ~= 0) then
-        --     print(drone.status, drone.prev, drone.next, drone.maxprogress, drone.progress, drone.item)
-        -- end
         if drone.status == STATUS_HAS_ERROR then
             if lookup_drones[e.eid] then
                 remove_drone(e.eid)
@@ -255,13 +232,11 @@ function drone_sys:gameworld_update()
                     local to = __get_position(drone.next)
                     local fly_height = get_fly_height(drone.prev, drone.next)
                     -- status : go_home
-                    --print("berth1:", e.eid, drone.maxprogress, drone.prev, drone.next, drone.progress)
                     if get_berth(drone.next) == BERTH_HOME then
                         current:gohome(flyid, from, get_home_pos(to), fly_height)
                     else
                         if drone.item ~= 0 then
                             local typeobject_item = iprototype.queryById(drone.item)
-                            -- local item_prefab = ecs.create_instance("/pkg/vaststars.resources/" .. typeobject_item.pile_model, current.prefab.tag["*"][1])
                             local item_prefab = imotion.sampler_group:create_instance("/pkg/vaststars.resources/" .. typeobject_item.pile_model, current.prefab.tag["*"][1])
                             item_prefab.on_ready = function(inst)
                                 local re <close> = w:entity(inst.tag["*"][1])
@@ -271,13 +246,12 @@ function drone_sys:gameworld_update()
                             world:create_object(item_prefab)
                             current:set_item(item_prefab)
                         end
-                        drone_task[#drone_task + 1] = {flyid, current, from, to, fly_height}
+                        drone_task[#drone_task + 1] = {flyid, current, from, to, fly_height, drone.maxprogress, drone.maxprogress - drone.progress}
                     end
                 elseif get_berth(drone.prev) == BERTH_HOME and not current.to_home then
                     -- status : to_home
                     local dst = __get_position(drone.prev)
-                    -- print("berth2:", get_berth(drone.prev), get_berth(drone.next))
-                    current:gohome(flyid, math3d.set_index(dst, 2, item_height), get_home_pos(dst), fly_to_home_height)
+                    current:gohome(flyid, math3d.set_index(dst, 2, item_height), get_home_pos(dst), fly_to_home_height, 15)
                 end
             else
                 current:update(drone.maxprogress > 0 and (drone.maxprogress - drone.progress) / drone.maxprogress or 0, drone.item ~= 0)
@@ -288,7 +262,7 @@ function drone_sys:gameworld_update()
     for _, task in ipairs(drone_task) do
         local flyid = task[1]
         local to = math3d.add(task[4], {same_dest_offset[flyid], 0, 0})
-        task[2]:flyto(flyid, task[5], task[3], to, false)
+        task[2]:flyto(flyid, task[5], task[3], to, false, task[6], task[7])
         same_dest_offset[flyid] = same_dest_offset[flyid] + drone_offset
     end
 end
