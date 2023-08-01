@@ -26,6 +26,10 @@ local STATUS_WAIT_INPUT <const> = 4
 local STATUS_WAIT_OUTPUT <const> = 5
 local STATUS_SHORT_OF_POWER <const> = 6
 local STATUS_STACK_FULL <const> = 7
+local STATUS_CHARGE <const> = 8
+local STATUS_DISCHARGE <const> = 9
+local STATUS_NO_ENERGY <const> = 10
+local STATUS_STOP_DISCHARGE <const> = 11
 local detail_panel_status = {
     {desc = "断电停机", icon = "ui/textures/detail/stop.texture"},
     {desc = "待机空闲", icon = "ui/textures/detail/idle.texture"},
@@ -34,6 +38,10 @@ local detail_panel_status = {
     {desc = "等待出货", icon = "ui/textures/detail/idle.texture"},
     {desc = "供电不足", icon = "ui/textures/detail/idle.texture"},
     {desc = "存货已满", icon = "ui/textures/detail/idle.texture"},
+    {desc = "正常充电", icon = "ui/textures/detail/work.texture"},
+    {desc = "正常供电", icon = "ui/textures/detail/work.texture"},
+    {desc = "电量耗尽", icon = "ui/textures/detail/stop.texture"},
+    {desc = "停止供电", icon = "ui/textures/detail/idle.texture"},
 }
 
 local function format_vars(fmt, vars)
@@ -110,18 +118,25 @@ local function get_display_info(e, typeobject, t)
                     local current = 0
                     if cn == "power" or cn == "charge_power" then
                         local st = global.statistic["power"][e.eid]
-                        if st then
+                        if e.solar_panel then
+                            current = get_solar_panel_power(total) * UPS
+                            status = (e.solar_panel.efficiency > 0 and STATUS_DISCHARGE or STATUS_STOP_DISCHARGE)
+                        elseif st then
                             -- power is sum of 50 tick
                             current = st["power"] * (UPS / 50)
                             if typeobject.name == "蓄电池I" then
                                 if (cn == "charge_power" and e.capacitance.delta > 0) or (cn == "power" and e.capacitance.delta < 0) then
                                     current = 0
                                 end
-                            end
-                        elseif e.solar_panel then
-                            current = get_solar_panel_power(total) * UPS
-                            if current <= 0 then
-                                status = STATUS_NO_POWER
+                                if e.capacitance.delta > 0 then
+                                    status = STATUS_DISCHARGE
+                                elseif e.capacitance.delta < 0 then
+                                    status = STATUS_CHARGE
+                                elseif e.capacitance.shortage > 0 then
+                                    status = STATUS_NO_ENERGY
+                                else
+                                    status = STATUS_STOP_DISCHARGE
+                                end
                             end
                         end
                         if typeobject.drain then
