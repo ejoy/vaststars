@@ -34,7 +34,7 @@ function M:create()
 
     for i = 1, MAX_SHORTCUT_COUNT do
         local s = storage.shortcut[i]
-        if not s or (s and s.prototype_name == "") then
+        if not s or (s and s.prototype_name == "") or (s and s.prototype_name == nil) then
             shortcut[i] = __default_shortcut()
             if not first_unknown_idx then
                 first_unknown_idx = i

@@ -13,7 +13,7 @@ prototype "任务" {
     backpack_stack = 0,
     tech_icon = "",
     item_category = "",
-    icon = "",
+    item_icon = "",
 }
 
 prototype "山丘" {

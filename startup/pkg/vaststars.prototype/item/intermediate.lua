@@ -749,7 +749,7 @@ prototype "地质科技包" {
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-geology-pack.prefab",
     item_icon = "textures/icons/item/geology-pack.texture",
-    tech_item_icon = "textures/icons/item/geology-pack.texture",
+    tech_icon = "textures/icons/item/geology-pack.texture",
     item_description = "用于收集、分析和解释地质调查数据",
     item_category = "器件",
 }
@@ -762,7 +762,7 @@ prototype "气候科技包" {
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-climatology-pack.prefab",
     item_icon = "textures/icons/item/climatology-pack.texture",
-    tech_item_icon = "textures/icons/item/climatology-pack.texture",
+    tech_icon = "textures/icons/item/climatology-pack.texture",
     item_description = "用于收集、分析和解释气候变化数据",
     item_category = "器件",
 }
@@ -775,7 +775,7 @@ prototype "机械科技包" {
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-mechanical-pack.prefab",
     item_icon = "textures/icons/item/mechanical-pack.texture",
-    tech_item_icon = "textures/icons/item/mechanical-pack.texture",
+    tech_icon = "textures/icons/item/mechanical-pack.texture",
     item_description = "用于收集、分析和解释机械过程数据",
     item_category = "器件",
 }
@@ -788,7 +788,7 @@ prototype "电子科技包" {
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-electrical-pack.prefab",
     item_icon = "textures/icons/item/electrical-pack.texture",
-    tech_item_icon = "textures/icons/item/electrical-pack.texture",
+    tech_icon = "textures/icons/item/electrical-pack.texture",
     item_description = "用于收集、分析和解释电器工作数据",
     item_category = "器件",
 }
@@ -801,7 +801,7 @@ prototype "化学科技包" {
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-chemical-pack.prefab",
     item_icon = "textures/icons/item/chemical-pack.texture",
-    tech_item_icon = "textures/icons/item/chemical-pack.texture",
+    tech_icon = "textures/icons/item/chemical-pack.texture",
     item_description = "用于收集、分析和解释化学反应数据",
     item_category = "器件",
 }
@@ -814,7 +814,7 @@ prototype "物理科技包" {
     backpack_stack = 100,
     pile_model = "prefabs/stackeditems/stack-iron-plate.prefab",
     item_icon = "textures/icons/item/chemical-pack.texture",
-    tech_item_icon = "textures/icons/item/chemical-pack.texture",
+    tech_icon = "textures/icons/item/chemical-pack.texture",
     item_description = "用于收集、分析和解释物理实验数据",
     item_category = "器件",
 }

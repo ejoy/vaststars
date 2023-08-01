@@ -94,7 +94,7 @@ function M:create()
         if not s then
             shortcut[i] = {prototype_name = "", icon = "", last_timestamp = 0, selected = false}
         else
-            if s.prototype_name ~= "" then
+            if s.prototype_name ~= "" and s.prototype_name ~= nil then
                 local typeobject = iprototype.queryByName(s.prototype_name)
                 shortcut[i] = {prototype_name = s.prototype_name, icon = typeobject.item_icon, last_timestamp = s.last_timestamp or 0, selected = false}
             else

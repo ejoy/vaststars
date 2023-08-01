@@ -171,7 +171,7 @@
                     <div style="margin-top:10vmin; width: 80%; flex-direction: row; justify-content: flex-start; align-content: flex-start; flex-wrap: wrap;">
                         <button class="truck-block" data-for = "it:lorries" data-style-background-color="it.state == 2 ? 'rgb(246, 237, 189);' : it.state == 1 ? 'rgb(0, 255, 255);' : 'rgb(92, 184, 92);'">
                             <div class="truck-pic" data-style-width = "it.state == 2 ? '70%' : '80%'" data-style-height = "it.state == 2 ? '70%' : '80%'" 
-                                data-style-background-image = "it.state == 2 ? 'textures/cmdcenter/add.texture' : 'textures/construct/truck.texture'" 
+                                data-style-background-image = "it.state == 2 ? 'ui/textures/cmdcenter/add.texture' : 'ui/textures/construct/truck.texture'" 
                                 data-event-click = "clickButton(it_index + 1)" />
                         </button>
                     </div>
@@ -185,7 +185,7 @@
                     <div style=" margin-top:10vmin; width: 80%; flex-direction: row; justify-content: flex-start; align-content: flex-start; flex-wrap: wrap;">
                         <div class="truck-block" style="border:0.3vmin #ffff00;" data-for = "it:lorries">
                             <div class="truck-pic" data-style-width = "it.state == 2 ? '70%' : '80%'" data-style-height = "it.state == 2 ? '70%' : '80%'" 
-                                data-style-background-image = "'textures/road/car.texture'" 
+                                data-style-background-image = "'ui/textures/road/car.texture'" 
                                 data-event-click = "clickButton(it_index + 1)" />
                         </div>
                     </div>

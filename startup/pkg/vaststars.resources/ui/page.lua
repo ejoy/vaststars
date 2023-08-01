@@ -53,7 +53,7 @@ end
 
 function page_meta:update_footer_status()
     for index, e in ipairs(self.footer.childNodes) do
-        e.style.backgroundImage = (index == self.current_page) and 'textures/common/page1.texture' or 'textures/common/page0.texture'
+        e.style.backgroundImage = (index == self.current_page) and 'ui/textures/common/page1.texture' or 'ui/textures/common/page0.texture'
     end
 end
 

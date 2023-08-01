@@ -334,7 +334,7 @@
                     return
                 end
                 local selected = (start.selected_recipe_index == index)
-                item.style.backgroundImage = selected and 'ui/textures/science/right_item_bg1.texture' or 'textures/science/right_item_bg0.texture'
+                item.style.backgroundImage = selected and 'ui/textures/science/right_item_bg1.texture' or 'ui/textures/science/right_item_bg0.texture'
                 item.style.height = selected and '13.1vmin' or '10vmin'
                 local detail = start.current_tech.detail[index]
                 if not detail then
@@ -434,7 +434,7 @@
             </div>
             <div style="height: 90%; flex-direction: row; justify-content: center;">
                 <div style="margin: 1.5vmin; flex-direction: column; width: 42%; height: 100%;">
-                    <div style='margin: 1vmin; width: 100%; height: 90%; background-image: "ui/textures/common/square-grid.texture"; background-size: 100% 100%;'>
+                    <div style='margin: 1vmin; width: 100%; height: 90%; background-image: "ui/textures/common/square-grid.texture"; background-size: 100% 100%; background-lattice: 4.28% 4.28% 4.28% 4.28% 49.22% 49.22%;'>
                         <!-- 科技条目 start -->
                         <list direction='1' width='100%' height='95%' style="margin-top: 1vmin; margin-bottom: 1vmin;"/>
                         <!-- 科技条目 end -->
