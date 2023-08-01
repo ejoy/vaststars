@@ -2438,7 +2438,7 @@ prototype "地质科技包1" {
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
     recipe_order =  80,
-    recipe_icon =  "textures/icons/recipe/rubber.texture",
+    recipe_icon =  "textures/icons/recipe/geology-pack-1.texture",
     ingredients = {
         {"碎石", 6},
     },
@@ -2454,7 +2454,7 @@ prototype "地质科技包2" {
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
     recipe_order =  81,
-    recipe_icon =  "textures/icons/recipe/rubber.texture",
+    recipe_icon =  "textures/icons/recipe/geology-pack-2.texture",
     ingredients = {
         {"碎石", 4},
         {"铁矿石", 4},
@@ -2472,7 +2472,7 @@ prototype "气候科技包1" {
     recipe_craft_category = "流体液体处理",
     recipe_category =  "器件",
     recipe_order =  82,
-    recipe_icon =  "textures/icons/recipe/rubber.texture",
+    recipe_icon =  "textures/icons/recipe/climatology-pack-1.texture",
     ingredients = {
         {"空气", 2200},
     },
@@ -2488,7 +2488,7 @@ prototype "机械科技包1" {
     recipe_craft_category = "器件中型制造",
     recipe_category =  "器件",
     recipe_order =  84,
-    recipe_icon =  "textures/icons/recipe/rubber.texture",
+    recipe_icon =  "textures/icons/recipe/mechanical-pack-1.texture",
     ingredients = {
         {"电动机I", 1},
         {"塑料", 3},
@@ -2506,7 +2506,7 @@ prototype "电子科技包1" {
     recipe_craft_category = "器件中型制造",
     recipe_category =  "器件",
     recipe_order =  85,
-    recipe_icon =  "textures/icons/recipe/rubber.texture",
+    recipe_icon =  "textures/icons/recipe/electrical-pack-1.texture",
     ingredients = {
         {"电容I", 1},
         {"绝缘线", 2},
@@ -2524,7 +2524,7 @@ prototype "化学科技包1" {
     recipe_craft_category = "器件中型制造",
     recipe_category =  "器件",
     recipe_order =  85,
-    recipe_icon =  "textures/icons/recipe/rubber.texture",
+    recipe_icon =  "textures/icons/recipe/chemical-pack-1.texture",
     ingredients = {
         {"橡胶", 5},
         {"硫酸", 18},
@@ -2543,7 +2543,7 @@ prototype "物理科技包1" {
     recipe_craft_category = "器件中型制造",
     recipe_category =  "器件",
     recipe_order =  85,
-    recipe_icon =  "textures/icons/recipe/rubber.texture",
+    recipe_icon =  "textures/icons/recipe/chemical-pack-1.texture",
     ingredients = {
         {"科研中心II", 1},
         {"组装机III", 1},
