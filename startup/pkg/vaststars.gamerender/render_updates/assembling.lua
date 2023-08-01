@@ -122,26 +122,6 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
             local texture_x, texture_y, texture_w, texture_h
 
             if typeobject.assembling_icon ~= false then
-                material_path = "/pkg/vaststars.resources/materials/canvas/recipe-bg.material"
-                icon_w, icon_h = __get_texture_size(material_path)
-                texture_x, texture_y, texture_w, texture_h = 0, 0, icon_w, icon_h
-                draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x, y, icon_w, icon_h, 1.5)
-                icanvas.add_item(icanvas.types().ICON,
-                    object_id,
-                    icanvas.get_key(material_path, RENDER_LAYER.ICON),
-                    {
-                        texture = {
-                            rect = {
-                                x = texture_x,
-                                y = texture_y,
-                                w = texture_w,
-                                h = texture_h,
-                            },
-                        },
-                        x = draw_x, y = draw_y, w = draw_w, h = draw_h,
-                    }
-                )
-
                 local recipe_typeobject = assert(iprototype.queryById(recipe))
                 local cfg = RECIPES_CFG[recipe_typeobject.recipe_icon]
                 if not cfg then

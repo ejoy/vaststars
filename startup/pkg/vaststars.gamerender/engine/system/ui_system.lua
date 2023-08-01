@@ -59,7 +59,7 @@ local function open(uiData, ...)
     assert(type(uiData[1]) == "string")
     local url = uiData[1]
     closeWindows[url] = nil
-    local datamodel = uiData[2] or url:gsub("^(.*)%.rml$", "%1.lua")
+    local datamodel = uiData[2] or url:gsub("^.*/(.*)%.rml$", "%1.lua")
 
     local binding = windowBindings[url]
     if binding then

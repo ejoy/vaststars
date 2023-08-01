@@ -13,7 +13,7 @@ local event_handler = create_event_handler(
         "build",
     },
     function(event)
-        iui.redirect("construct.rml", event)
+        iui.redirect("ui/construct.rml", event)
     end
 )
 

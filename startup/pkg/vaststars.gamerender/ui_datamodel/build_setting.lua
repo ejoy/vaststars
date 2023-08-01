@@ -230,8 +230,8 @@ function M:stage_ui_update(datamodel)
         local shortcut = __get_shortcur(datamodel.shortcut_id)
         shortcut.last_timestamp = os.time()
 
-        iui.close("build_setting.rml")
-        iui.open({"build.rml"})
+        iui.close("ui/build_setting.rml")
+        iui.open({"ui/build.rml"})
     end
 end
 

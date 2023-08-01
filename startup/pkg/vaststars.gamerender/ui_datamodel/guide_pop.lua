@@ -32,7 +32,7 @@ function M:stage_ui_update(datamodel)
         else
             local chapter_text = guide_desc.narrative_end.pop_chapter
             if chapter_text then
-                iui.open({"chapter_pop.rml"}, chapter_text)
+                iui.open({"ui/chapter_pop.rml"}, chapter_text)
             end
             local task = guide_desc.narrative_end.task
             local game_world = gameplay_core.get_world()

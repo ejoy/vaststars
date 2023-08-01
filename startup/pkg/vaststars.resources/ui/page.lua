@@ -1,4 +1,3 @@
--- local platform = require 'bee.platform'
 local page_meta = {}
 page_meta.__index = page_meta
 

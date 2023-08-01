@@ -305,7 +305,7 @@ local function get_entity_property_list(object_id, recipe_inputs, recipe_ouputs)
 end
 
 ---------------
-local detail_panel_status_icon = {"textures/detail/stop.texture","textures/detail/idle.texture","textures/detail/work.texture"}
+local detail_panel_status_icon = {"ui/textures/detail/stop.texture","ui/textures/detail/idle.texture","ui/textures/detail/work.texture"}
 local detail_panel_status_desc = {"断电停机", "待机空闲", "正常工作"}
 local M = {}
 local update_interval = 10 --update per 25 frame
@@ -319,7 +319,7 @@ local function update_property_list(datamodel, property_list)
         else
             datamodel.show_type = "goods"
             local item = datamodel.chest_list[1]
-            datamodel.goods_icon = item.item_icon
+            datamodel.goods_icon = item.icon
             datamodel.goods_desc = item.name .. " X " .. item.count
         end
     end
@@ -364,7 +364,7 @@ local function update_model(mdl)
 end
 local camera_dist
 function M:create(object_id)
-    iui.register_leave("detail_panel.rml")
+    iui.register_leave("ui/detail_panel.rml")
 
     counter = update_interval
     local object = assert(objects:get(object_id))

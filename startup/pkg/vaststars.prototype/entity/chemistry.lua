@@ -3,8 +3,8 @@ local prototype = gameplay.register.prototype
 
 prototype "化工厂I" {
     model = "prefabs/chemical-plant-1.prefab",
-    icon = "textures/building_pic/small_pic_chemical_plant.texture",
-    background = "textures/build_background/pic_distillery.texture",
+    icon = "ui/textures/building_pic/small_pic_chemical_plant.texture",
+    background = "ui/textures/build_background/pic_distillery.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "3x3",
@@ -69,8 +69,8 @@ prototype "化工厂I" {
 
 prototype "化工厂II" {
     model = "prefabs/chemical-plant-1.prefab",
-    icon = "textures/building_pic/small_pic_chemical_plant.texture",
-    background = "textures/build_background/pic_distillery.texture",
+    icon = "ui/textures/building_pic/small_pic_chemical_plant.texture",
+    background = "ui/textures/build_background/pic_distillery.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "3x3",
@@ -135,8 +135,8 @@ prototype "化工厂II" {
 
 prototype "化工厂III" {
     model = "prefabs/chemical-plant-1.prefab",
-    icon = "textures/building_pic/small_pic_chemical_plant.texture",
-    background = "textures/build_background/pic_distillery.texture",
+    icon = "ui/textures/building_pic/small_pic_chemical_plant.texture",
+    background = "ui/textures/build_background/pic_distillery.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "3x3",
@@ -201,8 +201,8 @@ prototype "化工厂III" {
 
 prototype "蒸馏厂I" {
     model = "prefabs/distillery-1.prefab",
-    icon = "textures/building_pic/small_pic_distillery.texture",
-    background = "textures/build_background/pic_distillery.texture",
+    icon = "ui/textures/building_pic/small_pic_distillery.texture",
+    background = "ui/textures/build_background/pic_distillery.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "5x5",
@@ -266,8 +266,8 @@ prototype "蒸馏厂I" {
 
 prototype "蒸馏厂II" {
     model = "prefabs/distillery-1.prefab",
-    icon = "textures/building_pic/small_pic_distillery.texture",
-    background = "textures/build_background/pic_distillery.texture",
+    icon = "ui/textures/building_pic/small_pic_distillery.texture",
+    background = "ui/textures/build_background/pic_distillery.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "5x5",
@@ -331,8 +331,8 @@ prototype "蒸馏厂II" {
 
 prototype "蒸馏厂III" {
     model = "prefabs/distillery-1.prefab",
-    icon = "textures/building_pic/small_pic_distillery.texture",
-    background = "textures/build_background/pic_distillery.texture",
+    icon = "ui/textures/building_pic/small_pic_distillery.texture",
+    background = "ui/textures/build_background/pic_distillery.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "5x5",
@@ -397,8 +397,8 @@ prototype "蒸馏厂III" {
 
 prototype "电解厂I" {
     model = "prefabs/electrolyzer-1.prefab",
-    icon = "textures/building_pic/small_pic_electrolyzer.texture",
-    background = "textures/build_background/pic_electrolyzer.texture",
+    icon = "ui/textures/building_pic/small_pic_electrolyzer.texture",
+    background = "ui/textures/build_background/pic_electrolyzer.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "4x4",
@@ -455,8 +455,8 @@ prototype "电解厂I" {
 
 prototype "电解厂II" {
     model = "prefabs/electrolyzer-1.prefab",
-    icon = "textures/building_pic/small_pic_electrolyzer.texture",
-    background = "textures/build_background/pic_electrolyzer.texture",
+    icon = "ui/textures/building_pic/small_pic_electrolyzer.texture",
+    background = "ui/textures/build_background/pic_electrolyzer.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "4x4",
@@ -513,8 +513,8 @@ prototype "电解厂II" {
 
 prototype "电解厂III" {
     model = "prefabs/electrolyzer-1.prefab",
-    icon = "textures/building_pic/small_pic_electrolyzer.texture",
-    background = "textures/build_background/pic_electrolyzer.texture",
+    icon = "ui/textures/building_pic/small_pic_electrolyzer.texture",
+    background = "ui/textures/build_background/pic_electrolyzer.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "4x4",
@@ -571,8 +571,8 @@ prototype "电解厂III" {
 
 prototype "水电站I" {
     model = "prefabs/hydro-plant-1.prefab",
-    icon = "textures/building_pic/small_pic_hydro_plant.texture",
-    background = "textures/build_background/pic_hydro_plant.texture",
+    icon = "ui/textures/building_pic/small_pic_hydro_plant.texture",
+    background = "ui/textures/build_background/pic_hydro_plant.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "5x5",
@@ -626,8 +626,8 @@ prototype "水电站I" {
 
 prototype "水电站II" {
     model = "prefabs/hydro-plant-1.prefab",
-    icon = "textures/building_pic/small_pic_hydro_plant.texture",
-    background = "textures/build_background/pic_hydro_plant.texture",
+    icon = "ui/textures/building_pic/small_pic_hydro_plant.texture",
+    background = "ui/textures/build_background/pic_hydro_plant.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "5x5",
@@ -681,8 +681,8 @@ prototype "水电站II" {
 
 prototype "水电站III" {
     model = "prefabs/hydro-plant-1.prefab",
-    icon = "textures/building_pic/small_pic_hydro_plant.texture",
-    background = "textures/build_background/pic_hydro_plant.texture",
+    icon = "ui/textures/building_pic/small_pic_hydro_plant.texture",
+    background = "ui/textures/build_background/pic_hydro_plant.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "5x5",

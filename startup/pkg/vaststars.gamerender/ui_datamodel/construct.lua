@@ -82,13 +82,13 @@ local function __on_pick_building(datamodel, o)
         return
     end
 
-    iui.open({"detail_panel.rml"}, object.id)
+    iui.open({"ui/detail_panel.rml"}, object.id)
     if datamodel.is_concise_mode then
         return true
     end
 
-    iui.close("build.rml") -- TODO: remove this
-    iui.close("construct_road_or_pipe.rml")
+    iui.close("ui/build.rml") -- TODO: remove this
+    iui.close("ui/construct_road_or_pipe.rml")
 
     audio.play "event:/ui/click"
 
@@ -106,7 +106,7 @@ end
 local function __on_pick_non_building(datamodel, o, force)
     local typeobject = iprototype.queryByName(o.name)
 
-    iui.open({"non_building_detail_panel.rml"}, typeobject.item_icon, o.name)
+    iui.open({"ui/non_building_detail_panel.rml"}, typeobject.item_icon, o.name)
     if datamodel.is_concise_mode and force ~= true then
         return true
     end
@@ -125,7 +125,7 @@ local function __on_pick_non_building(datamodel, o, force)
 end
 
 local function __on_pick_ground(datamodel)
-    iui.open({"main_menu.rml"})
+    iui.open({"ui/main_menu.rml"})
     gameplay_core.world_update = false
     return true
 end
@@ -163,8 +163,8 @@ local function __clean(datamodel)
     idetail.unselected()
     datamodel.is_concise_mode = false
     datamodel.focus_building_icon = ""
-    iui.close("build.rml") -- TODO: remove this
-    iui.close("construct_road_or_pipe.rml")
+    iui.close("ui/build.rml") -- TODO: remove this
+    iui.close("ui/construct_road_or_pipe.rml")
     datamodel.status = "normal"
 end
 
@@ -273,10 +273,10 @@ function M:stage_ui_update(datamodel)
     end
 
     for _ in help_mb:unpack() do
-        if not iui.is_open("help_panel.rml") then
-            iui.open({"help_panel.rml"})
+        if not iui.is_open("ui/help_panel.rml") then
+            iui.open({"ui/help_panel.rml"})
         else
-            iui.close("help_panel.rml")
+            iui.close("ui/help_panel.rml")
         end
     end
 end
@@ -347,34 +347,34 @@ local function __construct_entity(typeobject)
         local x, y = iobject.central_coord(typeobject.name, DEFAULT_DIR, coord_system)
         x, y = x - (x % ROAD_TILE_SCALE_WIDTH), y - (y % ROAD_TILE_SCALE_HEIGHT)
 
-        builder_ui = "construct_road_or_pipe.rml" -- TODO: remove this
-        builder_datamodel = iui.get_datamodel("construct.rml")
+        builder_ui = "ui/construct_road_or_pipe.rml" -- TODO: remove this
+        builder_datamodel = iui.get_datamodel("ui/construct.rml")
         builder = create_roadbuilder()
         builder:new_entity(builder_datamodel, typeobject, x, y)
     elseif iprototype.has_type(typeobject.type, "pipe") then
         local x, y = iobject.central_coord(typeobject.name, DEFAULT_DIR, coord_system)
         x, y = x - (x % ROAD_TILE_SCALE_WIDTH), y - (y % ROAD_TILE_SCALE_HEIGHT)
 
-        builder_ui = "construct_road_or_pipe.rml" -- TODO: remove this
-        builder_datamodel = iui.get_datamodel("construct.rml")
+        builder_ui = "ui/construct_road_or_pipe.rml" -- TODO: remove this
+        builder_datamodel = iui.get_datamodel("ui/construct.rml")
         builder = create_pipebuilder()
         builder:new_entity(builder_datamodel, typeobject, x, y)
     elseif iprototype.has_type(typeobject.type, "pipe_to_ground") then
         local x, y = iobject.central_coord(typeobject.name, DEFAULT_DIR, coord_system)
         x, y = x - (x % ROAD_TILE_SCALE_WIDTH), y - (y % ROAD_TILE_SCALE_HEIGHT)
 
-        builder_ui = "construct_road_or_pipe.rml"  -- TODO: remove this
-        builder_datamodel = iui.get_datamodel("construct.rml")
+        builder_ui = "ui/construct_road_or_pipe.rml"  -- TODO: remove this
+        builder_datamodel = iui.get_datamodel("ui/construct.rml")
         builder = create_pipetogroundbuilder()
         builder:new_entity(builder_datamodel, typeobject, x, y)
     elseif iprototype.has_types(typeobject.type, "station_producer", "station_consumer") then
-        builder_ui = "construct_building.rml"
-        builder_datamodel = iui.get_datamodel("construct.rml")
+        builder_ui = "ui/construct_building.rml"
+        builder_datamodel = iui.get_datamodel("ui/construct.rml")
         builder = create_station_builder()
         builder:new_entity(builder_datamodel, typeobject)
     else
-        builder_ui = "construct_building.rml"
-        builder_datamodel = iui.get_datamodel("construct.rml")
+        builder_ui = "ui/construct_building.rml"
+        builder_datamodel = iui.get_datamodel("ui/construct.rml")
         builder = create_normalbuilder(typeobject.id)
         builder:new_entity(builder_datamodel, typeobject)
     end
@@ -425,7 +425,7 @@ function M:stage_camera_usage(datamodel)
                     end
                 elseif o and o.class == CLASS.Object then
                     idetail.unselected()
-                    iui.close("construct_road_or_pipe.rml") -- TODO: remove this
+                    iui.close("ui/construct_road_or_pipe.rml") -- TODO: remove this
                     if __on_pick_building(datamodel, o) then
                         __unpick_lorry(pick_lorry_id)
                         pick_lorry_id = nil
@@ -433,7 +433,7 @@ function M:stage_camera_usage(datamodel)
                     end
                 elseif o and (o.class == CLASS.Mineral or o.class == CLASS.Mountain or o.class == CLASS.Road)then
                     idetail.unselected()
-                    iui.close("construct_road_or_pipe.rml") -- TODO: remove this
+                    iui.close("ui/construct_road_or_pipe.rml") -- TODO: remove this
                     if __on_pick_non_building(datamodel, o) then
                         __unpick_lorry(pick_lorry_id)
                         pick_lorry_id = nil
@@ -537,8 +537,8 @@ function M:stage_camera_usage(datamodel)
             local object = assert(objects:get(object_id))
             local typeobject = iprototype.queryByName(object.prototype_name)
             idetail.unselected()
-            builder_ui = "move_building.rml"
-            builder_datamodel = iui.open({"move_building.rml"}, object.prototype_name)
+            builder_ui = "ui/move_building.rml"
+            builder_datamodel = iui.open({"ui/move_building.rml"}, object.prototype_name)
             builder = create_movebuilder(object_id)
             builder:new_entity(builder_datamodel, typeobject)
         end)
@@ -577,7 +577,7 @@ function M:stage_camera_usage(datamodel)
         for _, object in objects:all() do -- TODO: optimize
             local typeobject = iprototype.queryByName(object.prototype_name)
             if iprototype.has_type(typeobject.type, "base") then
-                iui.open({"inventory.rml"}, object.id)
+                iui.open({"ui/inventory.rml"}, object.id)
                 break
             end
         end
@@ -586,7 +586,7 @@ function M:stage_camera_usage(datamodel)
     for _ in construct_mb:unpack() do
         datamodel.is_concise_mode = true
         __switch_status("construct", function()
-            iui.open({"build.rml"})
+            iui.open({"ui/build.rml"})
             gameplay_core.world_update = false
         end)
     end
@@ -615,12 +615,12 @@ function M:stage_camera_usage(datamodel)
 
                     if iprototype.is_road(selected_obj.name) or iprototype.is_pipe(selected_obj.name) or iprototype.is_pipe_to_ground(selected_obj.name) then
                         datamodel.focus_building_icon = ""
-                        iui.open({"construct_road_or_pipe.rml"}, selected_obj.name, {show_start_laying = true})
+                        iui.open({"ui/construct_road_or_pipe.rml"}, selected_obj.name, {show_start_laying = true})
                     end
 
                     if not iprototype.is_pipe(selected_obj.name) then
                         local typeobject = iprototype.queryByName(selected_obj.name)
-                        iui.open({"non_building_detail_panel.rml"}, typeobject.item_icon, iprototype.display_name(typeobject))
+                        iui.open({"ui/non_building_detail_panel.rml"}, typeobject.item_icon, iprototype.display_name(typeobject))
                     end
                 end
             else
@@ -656,9 +656,9 @@ function M:stage_camera_usage(datamodel)
                 goto continue
             end
 
-            iui.open({"building_menu_longpress.rml"}, object.id)
+            iui.open({"ui/building_menu_longpress.rml"}, object.id)
         elseif selected_obj.class == CLASS.Road then
-            iui.open({"construct_road_or_pipe.rml"}, selected_obj.name, {show_remove_one = true, show_start_teardown = true})
+            iui.open({"ui/construct_road_or_pipe.rml"}, selected_obj.name, {show_remove_one = true, show_start_teardown = true})
         end
 
         ::continue::
@@ -684,8 +684,8 @@ function M:stage_camera_usage(datamodel)
             local typeobject = iprototype.queryByName(prototype_name)
             assert(typeobject.construct_name)
             typeobject = iprototype.queryByName(typeobject.construct_name)
-            builder_ui = "construct_road_or_pipe.rml"
-            builder_datamodel = iui.get_datamodel("construct_road_or_pipe.rml")
+            builder_ui = "ui/construct_road_or_pipe.rml"
+            builder_datamodel = iui.get_datamodel("ui/construct_road_or_pipe.rml")
             datamodel.is_concise_mode = true
             builder_datamodel.is_concise_mode = true
             builder = create_builder()
@@ -714,8 +714,8 @@ function M:stage_camera_usage(datamodel)
             local typeobject = iprototype.queryByName(prototype_name)
             assert(typeobject.construct_name)
             typeobject = iprototype.queryByName(typeobject.construct_name)
-            builder_ui = "construct_road_or_pipe.rml"
-            builder_datamodel = iui.get_datamodel("construct_road_or_pipe.rml")
+            builder_ui = "ui/construct_road_or_pipe.rml"
+            builder_datamodel = iui.get_datamodel("ui/construct_road_or_pipe.rml")
             datamodel.is_concise_mode = true
             builder_datamodel.is_concise_mode = true
             builder_datamodel.show_remove_one = false
@@ -763,8 +763,8 @@ function M:stage_camera_usage(datamodel)
         local typeobject = iprototype.queryByName(prototype_name)
         assert(typeobject.construct_name)
         typeobject = iprototype.queryByName(typeobject.construct_name)
-        builder_ui = "construct_road_or_pipe.rml"
-        builder_datamodel = iui.get_datamodel("construct_road_or_pipe.rml")
+        builder_ui = "ui/construct_road_or_pipe.rml"
+        builder_datamodel = iui.get_datamodel("ui/construct_road_or_pipe.rml")
         builder = create_roadbuilder()
         builder:new_entity(builder_datamodel, typeobject, selected_obj.x, selected_obj.y)
         builder:remove_one(builder_datamodel)

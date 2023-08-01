@@ -1,5 +1,5 @@
-local json = require "json"
-local tracedoc = require "lua.tracedoc"
+local json = require "ui.json"
+local tracedoc = require "ui.lua.tracedoc"
 
 local M = {}
 function M.world_pub(msg)

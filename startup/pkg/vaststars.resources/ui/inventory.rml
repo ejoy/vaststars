@@ -1,114 +1,126 @@
 <rml>
     <head>
-        <style path = "common.rcss"/>
+        <style path = "ui/common.rcss"/>
         <style>
-        main-button {
-            width: 29.90vmin;
-            height: 29.90vmin;
-        }
-        main-button:active {
-            transform: scale(1.2);
-        }
-        main-button-icon {
-            position: absolute;
-            transform: translate(-50%, -50%);
-            top: 50%;
-            left: 50%;
-            background-size: 100% 100%;
-            width: 58.49%;
-            height: 58.49%;
-        }
-        button-pic {
-            width: 100%;
-            height: 100%;
-            background-size: 100% 100%;
-        }
-        buttons-container {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-        button-container {
-            position: absolute;
-            width: 18.23vmin;
-            height: 65.27%;
-            transform-origin: 50% 9.115vmin;
-            pointer-events: none;
-        }
-        button {
-            width: 18.23vmin;
-            height: 18.23vmin;
-            position: absolute;
-            background-size: cover;
-            transform-origin: 50% 50%;
-        }
-        button-wrap {
-            width: 100%;
-            height: 100%;
-        }
-        button-wrap:active {
-            transform: scale(1.2);
-        }
-        button-pic {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-size: 100% 100%;
-        }
-        button-number {
-            position: absolute;
-            width: 1.50vmax;
-            height: 2vmin;
-            font-size: 2vmin;
-            text-align: center;
-            -webkit-text-stroke: 0.2vmin rgb(63, 60, 63);
-        }
+            main-button {
+                width: 29.90vmin;
+                height: 29.90vmin;
+            }
+            main-button:active {
+                transform: scale(1.2);
+            }
+            main-button-icon {
+                position: absolute;
+                transform: translate(-50%, -50%);
+                top: 50%;
+                left: 50%;
+                background-size: 100% 100%;
+                width: 58.49%;
+                height: 58.49%;
+            }
+            button-pic {
+                width: 100%;
+                height: 100%;
+                background-size: 100% 100%;
+            }
+            buttons-container {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+            }
+            button-container {
+                position: absolute;
+                width: 18.23vmin;
+                height: 65.27%;
+                transform-origin: 50% 9.115vmin;
+                pointer-events: none;
+            }
+            button {
+                width: 18.23vmin;
+                height: 18.23vmin;
+                position: absolute;
+                background-size: cover;
+                transform-origin: 50% 50%;
+            }
+            button-wrap {
+                width: 100%;
+                height: 100%;
+            }
+            button-wrap:active {
+                transform: scale(1.2);
+            }
+            button-pic {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background-size: 100% 100%;
+            }
+            button-number {
+                position: absolute;
+                width: 1.50vmax;
+                height: 2vmin;
+                font-size: 2vmin;
+                text-align: center;
+                -webkit-text-stroke: 0.2vmin rgb(63, 60, 63);
+            }
 
-        construct-box {
-            position: absolute;
-            left: 5.03vmax;
-            top: 0.62vmin;
-            width: 71.37vmin;
-            height: 98.52vmin;
-            background-image: "textures/construct/square-grid.texture";
-            background-size: 100% 100%;
-            background-lattice: 4.28%;
-        }
-        construct-list {
-            left: 1.86vmin;
-            top: 2.95vmin;
-            width: 71.37vmin;
-            height: 93.00vmin;
-            margin-left: -1vmax;
-            overflow: scroll;
-        }
-        item {
-            width: 16.40vmin;
-            height: 16.40vmin;
-            background-size: 100% 100%;
-            justify-content: center;
-            align-items: center;
-            margin-right: -2.57vmin;
-            margin-bottom: -2.57vmin;
-        }
-        item-detail {
-            position: absolute;
-            left: 58.35vmax;
-            top: 2.70vmin;
-            width: 31.92vmax;
-            height: 32.63vmin;
-            background-image: "textures/construct/item-detail.texture";
-            background-size: 100% 100%;
-        }
+            construct-box {
+                position: absolute;
+                left: 0vmax;
+                top: 0.62vmin;
+                width: 71.37vmin;
+                height: 98.52vmin;
+                background-image: "ui/textures/construct/square-grid.texture";
+                background-size: 100% 100%;
+                background-lattice: 6.88% 4.98% 6.88% 4.98% 49.22% 49.22%;
+            }
+            construct-list {
+                left: 1.86vmin;
+                top: 2.95vmin;
+                width: 71.37vmin;
+                height: 93.00vmin;
+                margin-left: -1vmax;
+                overflow: scroll;
+            }
+            item {
+                width: 16.40vmin;
+                height: 16.40vmin;
+                background-size: 100% 100%;
+                justify-content: center;
+                align-items: center;
+                margin-right: -2.57vmin;
+                margin-bottom: -2.57vmin;
+            }
+            item-detail {
+                position: absolute;
+                left: 57.55vmax;
+                top: 2.70vmin;
+                width: 31.92vmax;
+                height: 32.63vmin;
+                background-image: "ui/textures/construct/item-detail.texture";
+                background-size: 100% 100%;
+            }
+            item-source {
+                position: absolute;
+                left: 57.55vmax;
+                top: 31.00vmin;
+                width: 31.92vmax;
+                height: 68.07vmin;
+                background-image: "ui/textures/inventory/item-source-bg.texture";
+                background-size: 100% 100%;
+                background-lattice: 5.24% 11.21% 28.29% 5.26% 15.52% 67.12%;
+            }
         </style>
         <script type="text/x-lua" >
-            local ui_sys = require "ui_system"
-            local button_pos = require "lua.button_pos"
+            local ui_sys = require "ui.ui_system"
+            local button_pos = require "ui.lua.button_pos"
             local start = ui_sys.createDataMode({
                 inventory = {},
                 item_name = "",
                 item_desc = "",
+                item_ingredients = {},
+                item_assembling = {},
                 category_idx = 0,
                 item_idx = 0,
             })
@@ -162,10 +174,10 @@
         <construct-box>
             <construct-list>
                 <div style = "width: 100%; align-items: flex-start;" data-for = "c, c_index : inventory">
-                    <div style = "position: absolute; left: 0vmin; top: 0vmin; background-image: textures/item-config/category-bg.texture; width: 23.50vmax; height: 23.13vmin; background-size: 100% 100%;" />
+                    <div style = "position: absolute; left: 0vmin; top: 0vmin; background-image: ui/textures/item-config/category-bg.texture; width: 23.50vmax; height: 23.13vmin; background-size: 100% 100%;" />
                     <div style = "margin-left: 5.58vmin; margin-top: 2.58vmin; width: 100%; flex-direction: row; font-size: 4.20vmin;">{{c.category}}</div>
                     <div style = "flex-direction: row; flex-wrap: wrap;">
-                        <item data-attr-id = "i.id" data-event-click = "clickButton('click_item', c_index, i_index)" data-style-background-image = "i.selected and 'textures/item-config/item-active.texture' or 'none'" data-for = "i, i_index : c.items">
+                        <item data-attr-id = "i.id" data-event-click = "clickButton('click_item', c_index, i_index)" data-style-background-image = "i.selected and 'ui/textures/item-config/item-active.texture' or 'none'" data-for = "i, i_index : c.items">
                             <div data-style-background-image = "i.icon" style = "width: 12.50vmin; height: 12.50vmin; background-size: 100% 100%; background-color: rgb(61, 61, 61);" />
                             <div style = "position: absolute; width: 12.50vmin; height: 12.50vmin; justify-content: flex-end; align-items: flex-end; font-size: 3.5vmin; color:rgb(255,255,255); -webkit-text-stroke: 0.26vmin rgb(0,0,0);" data-style-color = " i.count >0 and 'rgb(255,255,255)' or 'rgb(255,0,0)' ">{{i.count}}</div>
                         </item>
@@ -179,5 +191,23 @@
             <item-desc style = "position: absolute; left: 15.73vmax; top: 9.26vmin; width: 13.21vmax; height: 12.61vmin; word-break: break-word; font-size: 3.00vmin;" data-if = "item_desc ~= ''">{{item_desc}}</item-desc>
             <item-icon style = "position: absolute; left: 1.00vmax; top: 2.91vmin; width: 13.85vmax; height: 27.02vmin; background-size: 100% 100%;" data-style-background-image = "item_icon" />
         </item-detail>
+
+        <item-source data-if="item_name ~= ''">
+            <div style = "position: absolute; left: 1vmax; top: 10.00vmin; width: 30.22vmax; height: 54.66vmin;">
+                <div style = "font-size: 5.00vmin;">来源</div>
+                <div style = "width: 100%;">
+                    <div style = "width: 80%; flex-direction: row; align-items: center; justify-content: center;" data-for = "item_ingredients">
+                        <div style = "width: 5.00vmin; height: 5.00vmin; background-size: 100% 100%;" data-style-background-image = "it.icon" />
+                        <div style = "margin-left: 1.00vmin; font-size: 3.00vmin;">{{it.name}}</div>
+                        <div style = "margin-left: 1.00vmin; font-size: 3.00vmin;">x</div>
+                        <div style = "margin-left: 1.00vmin; font-size: 3.00vmin;">{{it.count}}</div>
+                    </div>
+                </div>
+                <div style = "font-size: 5.00vmin;">生产</div>
+                <div style = "flex-direction: row; align-items: center; justify-content: center;">
+                    <div data-for = "item_assembling" style = "width: 5.00vmin; height: 5.00vmin; background-size: 100% 100%; gap: 1.50vmin;" data-style-background-image = "it.icon" />
+                </div>
+            </div>
+        </item-source>
     </body>
 </rml>

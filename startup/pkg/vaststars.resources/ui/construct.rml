@@ -1,6 +1,6 @@
 <rml>
     <head>
-        <style path = "common.rcss"/>
+        <style path = "ui/common.rcss"/>
         <style>
             main-button {
                 width: 29.90vmin;
@@ -82,7 +82,7 @@
             }
         </style>
         <script type="text/x-lua" >
-            local ui_sys = require "ui_system"
+            local ui_sys = require "ui.ui_system"
             local start = ui_sys.createDataMode {
                 is_concise_mode = false, -- in concise mode, the main menu in the lower left corner, technology progress button in the upper right corner and help button in the upper left corner are not displayed
                 show_tech_progress = false,     --是否显示科技进度
@@ -106,7 +106,7 @@
     <body style = "pointer-events: none; margin: 0 3.995vmax 0 4.715vmax;">
         <!-- 帮助按钮 -->
         <button  class = "main-menu-button" style="border: 0.00vmin; position: absolute; left:-6.7vmin; top: -4vmin;" data-event-click="clickButton('help')" data-if = "(not is_concise_mode) and guide_progress >= 10">
-            <div class = "menu-button-pic" style='width:9vmin; height:9vmin; background-image:"textures/common/help.texture"'/>
+            <div class = "menu-button-pic" style='width:9vmin; height:9vmin; background-image:"ui/textures/common/help.texture"'/>
         </button>
 
         <!-- 右上角：当前科技进度 -->
@@ -125,24 +125,24 @@
                     </div>
                 </div> 
                 <p data-if="is_task" style="position: absolute; left:-1vmin; top:-0.75vmin;">
-                    <div style='width:2.8vmin; height:7.6vmin; background-image: "textures/common/exclamation2.texture"; background-size: cover;'/>
+                    <div style='width:2.8vmin; height:7.6vmin; background-image: "ui/textures/common/exclamation2.texture"; background-size: cover;'/>
                 </p>
             </button>
         </div>
 
-        <main-button style = "position: absolute; left: 72.20vmax; top: 67.00vmin; background-image: textures/construct/main-button-bg.texture; background-size: 100% 100%;" data-event-click = "clickButton('construct')" 
+        <main-button style = "position: absolute; left: 72.20vmax; top: 67.00vmin; background-image: ui/textures/construct/main-button-bg.texture; background-size: 100% 100%;" data-event-click = "clickButton('construct')" 
             data-if = "not is_concise_mode and focus_building_icon == ''"
             >
-            <main-button-icon style = "background-image: textures/construct/main-button-construct.texture;" />
+            <main-button-icon style = "background-image: ui/textures/construct/main-button-construct.texture;" />
         </main-button>
 
-        <main-button style = "position: absolute; left: 72.20vmax; top: 67.00vmin; background-image: textures/construct/main-button-bg.texture; background-size: 100% 100%;"
+        <main-button style = "position: absolute; left: 72.20vmax; top: 67.00vmin; background-image: ui/textures/construct/main-button-bg.texture; background-size: 100% 100%;"
             data-event-click = "clickButton('main_button_tap')"
             data-event-longpress = "clickButton('main_button_longpress')"
             data-if = "focus_building_icon ~= ''"
             >
             <main-button-icon data-style-background-image = "focus_building_icon" />
-            <div style = "position: absolute; background-size: 100% 100%; width: 100%; height: 100%; background-image: textures/construct/main-button-active.texture;" />
+            <div style = "position: absolute; background-size: 100% 100%; width: 100%; height: 100%; background-image: ui/textures/construct/main-button-active.texture;" />
         </main-button>
     </body>
 </rml>

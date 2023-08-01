@@ -1,4 +1,3 @@
--- local platform = require 'bee.platform'
 local list_meta = {}
 list_meta.__index = list_meta
 

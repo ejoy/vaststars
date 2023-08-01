@@ -6,7 +6,7 @@ local prototype = gameplay.register.prototype
 --     stack = 10,
 --     pile = "4x1x4",
 --     pile_model = "prefabs/stackeditems/stack-iron-ore.prefab",
---     item_icon = "textures/construct/broken-hydroplant.texture",
+--     item_icon = "ui/textures/construct/broken-hydroplant.texture",
 --     item_category = "加工",
 --     item_description = "用来抓取货物的机械装置",
 -- }
@@ -16,7 +16,7 @@ local prototype = gameplay.register.prototype
 --     stack = 10,
 --     pile = "4x1x4",
 --     pile_model = "prefabs/stackeditems/stack-iron-ore.prefab",
---     item_icon = "textures/construct/broken-air-filter1.texture",
+--     item_icon = "ui/textures/construct/broken-air-filter1.texture",
 --     item_category = "加工",
 --     item_description = "用来抓取货物的机械装置",
 -- }
@@ -26,7 +26,7 @@ local prototype = gameplay.register.prototype
 --     stack = 50,
 --     pile = "4x1x4",
 --     pile_model = "prefabs/stackeditems/stack-iron-ore.prefab",
---     item_icon = "textures/construct/broken-pump.texture",
+--     item_icon = "ui/textures/construct/broken-pump.texture",
 --     item_category = "加工",
 --     item_description = "用来抓取货物的机械装置",
 -- }
@@ -36,7 +36,7 @@ local prototype = gameplay.register.prototype
 --     stack = 10,
 --     pile = "4x1x4",
 --     pile_model = "prefabs/stackeditems/stack-iron-ore.prefab",
---     item_icon = "textures/construct/broken-electrolysis1.texture",
+--     item_icon = "ui/textures/construct/broken-electrolysis1.texture",
 --     item_category = "加工",
 --     item_description = "用来抓取货物的机械装置",
 -- }
@@ -46,7 +46,7 @@ local prototype = gameplay.register.prototype
 --     stack = 10,
 --     pile = "4x1x4",
 --     pile_model = "prefabs/stackeditems/stack-iron-ore.prefab",
---     item_icon = "textures/construct/broken-chemistry2.texture",
+--     item_icon = "ui/textures/construct/broken-chemistry2.texture",
 --     item_category = "加工",
 --     item_description = "用来抓取货物的机械装置",
 -- }
@@ -56,7 +56,7 @@ local prototype = gameplay.register.prototype
 --     stack = 10,
 --     pile = "4x1x4",
 --     pile_model = "prefabs/stackeditems/stack-iron-ore.prefab",
---     item_icon = "textures/construct/broken-assembler.texture",
+--     item_icon = "ui/textures/construct/broken-assembler.texture",
 --     item_category = "加工",
 --     item_description = "用来抓取货物的机械装置",
 -- }
@@ -66,7 +66,7 @@ local prototype = gameplay.register.prototype
 --     stack = 50,
 --     pile = "4x1x4",
 --     pile_model = "prefabs/stackeditems/stack-iron-ore.prefab",
---     item_icon = "textures/construct/broken-electric-pole1.texture",
+--     item_icon = "ui/textures/construct/broken-electric-pole1.texture",
 --     item_category = "加工",
 --     item_description = "用来抓取货物的机械装置",
 -- }
@@ -76,7 +76,7 @@ local prototype = gameplay.register.prototype
 --     stack = 50,
 --     pile = "4x1x4",
 --     pile_model = "prefabs/stackeditems/stack-iron-ore.prefab",
---     item_icon = "textures/construct/broken-solar-panel.texture",
+--     item_icon = "ui/textures/construct/broken-solar-panel.texture",
 --     item_category = "加工",
 --     item_description = "用来抓取货物的机械装置",
 -- }
@@ -86,7 +86,7 @@ local prototype = gameplay.register.prototype
 --     stack = 50,
 --     pile = "4x1x4",
 --     pile_model = "prefabs/stackeditems/stack-iron-ore.prefab",
---     item_icon = "textures/construct/broken-grid-battery.texture",
+--     item_icon = "ui/textures/construct/broken-grid-battery.texture",
 --     item_category = "加工",
 --     item_description = "用来抓取货物的机械装置",
 -- }
@@ -106,7 +106,7 @@ prototype "破损运输车辆" {
 -- prototype "破损物流需求站" {
 --     type = {"item"},
 --     stack = 50,
---     item_icon = "textures/construct/broken-goodsstation-input.texture",
+--     item_icon = "ui/textures/construct/broken-goodsstation-input.texture",
 --     item_category = "加工",
 --     item_description = "用来抓取货物的机械装置",
 -- }

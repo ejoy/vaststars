@@ -38,24 +38,24 @@ end
 function M:stage_camera_usage()
     for _ in save_mb:unpack() do
         if saveload:backup() then
-            iui.close("option_pop.rml")
+            iui.close("ui/option_pop.rml")
         end
     end
 
     for _, _, _, index in restore_mb:unpack() do
         if imain_menu_manager.load_game(index) then
-            iui.close("option_pop.rml")
+            iui.close("ui/option_pop.rml")
         end
     end
 
     for _ in restart_mb:unpack() do
         new_game()
-        iui.close("option_pop.rml")
+        iui.close("ui/option_pop.rml")
     end
 
     for _ in close_mb:unpack() do
         if saveload.running then
-            iui.close("option_pop.rml")
+            iui.close("ui/option_pop.rml")
         end
     end
 
@@ -63,25 +63,25 @@ function M:stage_camera_usage()
         local info = not gameplay_core.settings_get("info", true)
         gameplay_core.settings_set("info", info)
         icanvas.show(icanvas.types().ICON, info)
-        iui.close("option_pop.rml")
+        iui.close("ui/option_pop.rml")
     end
 
     for _ in debug_mb:unpack() do
         local debug = not gameplay_core.settings_get("debug", true)
         gameplay_core.settings_set("debug", debug)
         rhwi.set_profie(debug)
-        iui.close("option_pop.rml")
+        iui.close("ui/option_pop.rml")
     end
 
     for _ in back_to_main_menu_mb:unpack() do
-        iui.close("option_pop.rml")
-        iui.close("main_menu.rml")
+        iui.close("ui/option_pop.rml")
+        iui.close("ui/main_menu.rml")
         imain_menu_manager.back_to_main_menu()
     end
 
     for _ in lock_group_mb:unpack() do
         terrain.lock_group = not terrain.lock_group
-        iui.close("option_pop.rml")
+        iui.close("ui/option_pop.rml")
     end
 end
 

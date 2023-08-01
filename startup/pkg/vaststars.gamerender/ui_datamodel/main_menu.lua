@@ -36,27 +36,27 @@ function M:stage_ui_update(datamodel)
         for _, object in objects:all() do -- TODO: optimize
             local typeobject = iprototype.queryByName(object.prototype_name)
             if iprototype.has_type(typeobject.type, "base") then
-                iui.open({"inventory.rml"}, object.id)
+                iui.open({"ui/inventory.rml"}, object.id)
                 break
             end
         end
     end
 
     for _ in research_tasks_mb:unpack() do
-        iui.open({"science.rml"})
+        iui.open({"ui/science.rml"})
     end
 
     for _ in statistical_data_mb:unpack() do
-        iui.open({"statistics.rml"})
+        iui.open({"ui/statistics.rml"})
     end
 
     for _ in game_settings_mb:unpack() do
-        iui.open({"option_pop.rml"})
+        iui.open({"ui/option_pop.rml"})
     end
 
     for _ in quit_mb:unpack() do
         gameplay_core.world_update = true
-        iui.close("main_menu.rml")
+        iui.close("ui/main_menu.rml")
     end
 end
 

@@ -22,7 +22,6 @@ local CANVAS_BUILD <const> = {
             materials = {
                 "/pkg/vaststars.resources/materials/canvas/no-power.material",
                 "/pkg/vaststars.resources/materials/canvas/no-recipe.material",
-                "/pkg/vaststars.resources/materials/canvas/recipe-bg.material",
                 "/pkg/vaststars.resources/materials/canvas/fluid-bg.material",
             }
         },

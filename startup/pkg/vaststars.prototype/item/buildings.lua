@@ -674,7 +674,7 @@ prototype "运输车辆I" {
     backpack_stack = 50,
     item_icon = "textures/icons/item/truck.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
-    icon = "textures/building_pic/small_pic_mars_truck.texture",
+    icon = "ui/textures/building_pic/small_pic_mars_truck.texture",
     model = "prefabs/lorry-1.prefab",
 }
 

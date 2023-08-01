@@ -1,6 +1,6 @@
 <rml>
     <head>
-        <style path = "common.rcss"/>
+        <style path = "ui/common.rcss"/>
         <style>
             caption-container {
                 height: 17.50vmin;
@@ -8,7 +8,7 @@
             }
             caption-line {
                 height: 0.15vmin;
-                background-image: "textures/common/caption-line.texture";
+                background-image: "ui/textures/common/caption-line.texture";
                 background-size: 100% 100%;
             }
             caption {
@@ -18,9 +18,9 @@
             left-box {
                 width: 53.81vmax;
                 height: 78.34vmin;
-                background-image: "textures/common/square-grid.texture";
+                background-image: "ui/textures/common/square-grid.texture";
                 background-size: 100% 100%;
-                background-lattice: 4.28%;
+                background-lattice: 4.22% 6.27% 4.22% 6.27% 49.22% 49.22%;
                 align-items: center; 
             }
             item {
@@ -32,7 +32,7 @@
                 justify-content: center; align-items: center;
             }
             item:active {
-                background-image: "textures/item-config/item-active.texture";
+                background-image: "ui/textures/item-config/item-active.texture";
             }
             new {
                 position: absolute;
@@ -66,7 +66,7 @@
                 margin-left: 0.93vmax;
                 width: 27.68vmax;
                 height: 84.34vmin;
-                background-image: "textures/item-config/right-box-bg.texture";
+                background-image: "ui/textures/item-config/right-box-bg.texture";
                 background-size: 100% 100%;
             }
             item-name-container {
@@ -93,7 +93,7 @@
             }
         </style>
         <script type="text/x-lua" >
-            local ui_sys = require "ui_system"
+            local ui_sys = require "ui.ui_system"
             local start = ui_sys.createDataMode {
                 items = {},
                 item_name = "",
@@ -138,7 +138,7 @@
             end, 200)
         </script>
     </head>
-    <body style = "pointer-events: none; justify-content: center; align-items: center; background-image: textures/item-config/bg.texture; background-size: 100% 100%;" onload="init()">
+    <body style = "pointer-events: none; justify-content: center; align-items: center; background-image: ui/textures/item-config/bg.texture; background-size: 100% 100%;" onload="init()">
         <caption-container>
             <caption-line style = "position: absolute; left: 24.26vmax; top: 12.89vmin; width: 15.34vmax;" />
             <caption style = "position: absolute; left: 41.18vmax; top: 7.89vmin; width: 17.58vmax; height: 10vmin; font-size: 6.50vmin; justify-content: center; align-items: center;">设 置 物 品</caption>
@@ -150,11 +150,11 @@
                 <left-box>
                     <item-list id = "item-list">
                         <div style = "width: 100%; align-items: center;" data-for = "c, c_index : items">
-                            <div style = "position: absolute; left: 0vmin; top: 0vmin; background-image: textures/item-config/category-bg.texture; width: 23.50vmax; height: 23.13vmin; background-size: 100% 100%;" />
+                            <div style = "position: absolute; left: 0vmin; top: 0vmin; background-image: ui/textures/item-config/category-bg.texture; width: 23.50vmax; height: 23.13vmin; background-size: 100% 100%;" />
                             <div style = "margin-left: 5.58vmin; margin-top: 2.58vmin; width: 100%; flex-direction: row; font-size: 4.20vmin;">{{c.category}}</div>
                             <div style = "margin-left: -2.20vmax; margin-top: -2.58vmin; width: 96.40%; flex-direction: row; flex-wrap: wrap;">
                                 <div data-for = "i, i_index : c.items">
-                                    <item data-attr-id = "i.id" data-event-click = "clickButton('click_item', c_index, i_index)" data-style-background-image = "i.selected and 'textures/item-config/item-active.texture' or 'none'">
+                                    <item data-attr-id = "i.id" data-event-click = "clickButton('click_item', c_index, i_index)" data-style-background-image = "i.selected and 'ui/textures/item-config/item-active.texture' or 'none'">
                                         <div data-style-background-image = "i.icon" style = "width: 6.91vmax; height: 14.95vmin; background-size: 100% 100%; background-color: rgb(61, 61, 61);">
                                             <new data-if = "i.new">新</new>
                                         </div>
@@ -173,7 +173,7 @@
                 </left-box>
                 <right-box>
                     <div data-style-background-image = "item_icon" style = "position: absolute; top: 1.71vmin; left: 5.11vmax; width: 18.43vmax; height: 39.71vmin; background-size: 100% 100%;" data-if = "item_icon ~= ''" />
-                    <div style = "position: absolute; position: absolute; top: 1.71vmin; left: 5.11vmax; width: 18.43vmax; height: 39.71vmin; background-image: textures/item-config/icon-frame.texture; background-size: 100% 100%;" />
+                    <div style = "position: absolute; position: absolute; top: 1.71vmin; left: 5.11vmax; width: 18.43vmax; height: 39.71vmin; background-image: ui/textures/item-config/icon-frame.texture; background-size: 100% 100%;" />
                     <item-name-container>
                         <div style = "margin-left: 1.76vmax; margin-top: -1.50vmin; -webkit-text-stroke: 0.08vmin #fff;" data-if = "item_name ~= ''">
                             {{item_name}}

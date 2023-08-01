@@ -84,7 +84,7 @@ function idetail.show(object_id)
 
     idetail.selected(object)
     if typeobject.building_menu ~= false then
-        iui.open({"building_menu.rml"}, object_id)
+        iui.open({"ui/building_menu.rml"}, object_id)
     end
 
     do

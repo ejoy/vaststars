@@ -50,7 +50,7 @@
             }
         </style>
         <script type="text/x-lua" >
-            local ui_sys = require "ui_system"
+            local ui_sys = require "ui.ui_system"
             local start = ui_sys.createDataMode {
                 show_continue_game = false,
             }
@@ -66,31 +66,31 @@
         </left-box>
         <right-box>
             <button data-event-click = "clickButton('continue')" data-if = "show_continue_game">
-                <button-icon style='background-image: "textures/road/traffic.texture";'/>
+                <button-icon style='background-image: "ui/textures/road/traffic.texture";'/>
                 <button-text>继续游戏</button-text>
             </button>
             <button data-event-click = "clickButton('start_mode', 'adventure')">
-                <button-icon style='background-image: "textures/road_net/big_bag.texture";'/>
+                <button-icon style='background-image: "ui/textures/road_net/big_bag.texture";'/>
                 <button-text>冒险模式</button-text>
             </button>
             <button data-event-click = "clickButton('start_mode', 'free')">
-                <button-icon style='background-image: "textures/construct/work.texture";'/>
+                <button-icon style='background-image: "ui/textures/construct/work.texture";'/>
                 <button-text>自由模式</button-text>
             </button> 
             <button data-event-click = "clickButton('load_resources')">
-                <button-icon style='background-image: "textures/road_net/big_bag.texture";'/>
+                <button-icon style='background-image: "ui/textures/road_net/big_bag.texture";'/>
                 <button-text>加载资源</button-text>
             </button> 
             <button data-event-click = "clickButton('load_archive')">
-                <button-icon style='background-image: "textures/road/write.texture";'/>
+                <button-icon style='background-image: "ui/textures/road/write.texture";'/>
                 <button-text>读取进度</button-text>
             </button>
             <button data-event-click = "clickButton('reboot')">
-                <button-icon style='background-image: "textures/character/health.texture";'/>
+                <button-icon style='background-image: "ui/textures/character/health.texture";'/>
                 <button-text>重启游戏</button-text>
             </button>
             <button data-event-click = "clickButton('load_template')">
-                <button-icon style='background-image: "textures/character/health.texture";'/>
+                <button-icon style='background-image: "ui/textures/character/health.texture";'/>
                 <button-text>测试模式</button-text>
             </button>
         </right-box>

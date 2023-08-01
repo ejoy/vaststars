@@ -98,10 +98,10 @@
                 animation: 3s sine-in-out 0s enlarge;
             }
         </style>
-        <style path = "common/building_style.rcss"/>
-        <style path = "common/listpage_style.rcss"/>
+        <style path = "ui/common/building_style.rcss"/>
+        <style path = "ui/common/listpage_style.rcss"/>
         <script type="text/x-lua" >
-            local ui_sys = require "ui_system"
+            local ui_sys = require "ui.ui_system"
             local start = ui_sys.createDataMode {
                 items = {},
                 task_name = " ",
@@ -132,7 +132,7 @@
                 page_item_update(item, index)
             end
 
-            local pageclass = require "page"
+            local pageclass = require "ui.page"
             window.customElements.define("page", function(e)
                 start.page = pageclass.create(document, e, page_item_init, page_item_update)
             end)
@@ -155,7 +155,7 @@
                 <!-- 标题栏 -->
                 <div class = "recipe-name-block">
                     <div class = "name-block">
-                        <div class = "small-bg" style='background-image: "textures/science/book.texture"; width:6vmin; height:6vmin;'/>
+                        <div class = "small-bg" style='background-image: "ui/textures/science/book.texture"; width:6vmin; height:6vmin;'/>
                         <div class = "recipe-name-text" style="-webkit-text-stroke: 0.2vmin rgb(0, 112, 192);">{{task_name}}</div>
                     </div>
                 </div>
@@ -174,7 +174,7 @@
                 </div>
                 <div class = "recipe-button-block">
                     <button class = "confirm-button" style="background-color:rgb(52, 207, 115); height: 10.00vmin;" data-event-click = "clickConfirm()">
-                        <div class="middle-bg" style='width: 7.67vmin; height: 7.67vmin; background-image: "textures/construct/work.texture";'/>
+                        <div class="middle-bg" style='width: 7.67vmin; height: 7.67vmin; background-image: "ui/textures/construct/work.texture";'/>
                         <div class = "recipe-name-text" style="font-size: 7.2vmin;">确定</div>
                     </button> 
                 </div>

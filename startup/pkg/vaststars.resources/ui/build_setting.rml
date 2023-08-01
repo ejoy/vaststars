@@ -1,6 +1,6 @@
 <rml>
     <head>
-        <style path = "common.rcss"/>
+        <style path = "ui/common.rcss"/>
         <style>
         main-button {
             width: 29.90vmin;
@@ -71,9 +71,9 @@
             top: 0.62vmin;
             width: 71.37vmin;
             height: 98.52vmin;
-            background-image: "textures/construct/square-grid.texture";
+            background-image: "ui/textures/construct/square-grid.texture";
             background-size: 100% 100%;
-            background-lattice: 4.28%;
+            background-lattice: 6.88% 4.98% 6.88% 4.98% 49.22% 49.22%;
         }
         construct-list {
             left: 1.86vmin;
@@ -98,13 +98,13 @@
             top: 2.70vmin;
             width: 31.92vmax;
             height: 32.63vmin;
-            background-image: "textures/construct/item-detail.texture";
+            background-image: "ui/textures/construct/item-detail.texture";
             background-size: 100% 100%;
         }
         </style>
         <script type="text/x-lua" >
-            local ui_sys = require "ui_system"
-            local button_pos = require "lua.button_pos"
+            local ui_sys = require "ui.ui_system"
+            local button_pos = require "ui.lua.button_pos"
             local start = ui_sys.createDataMode({
                 shortcut_buttons = {},
                 shortcut = {},
@@ -205,10 +205,10 @@
             <button-container data-style-transform = "it.transform" data-style-margin = "it.margin" data-for = "shortcut_buttons" >
                 <button>
                     <button-wrap data-event-click = "clickButton('click_menu_button', it_index)" style = "border-radius: 50%;">
-                        <button-pic style = "background-image: textures/construct/building-bg.texture" data-style-transform = "it.transform_inner" />
-                        <button-pic style = "background-image: textures/construct/building-active.texture" data-if = "it.selected" />
+                        <button-pic style = "background-image: ui/textures/construct/building-bg.texture" data-style-transform = "it.transform_inner" />
+                        <button-pic style = "background-image: ui/textures/construct/building-active.texture" data-if = "it.selected" />
                         <div style = "width: 100%; height: 100%; align-items: center; justify-content: center;">
-                            <button-pic style = "width: 9.96vmin; height: 9.96vmin; background-image: textures/build/main-button-unknown.texture;" data-if = "it.icon == ''" data-style-transform = "it.transform_inner" />
+                            <button-pic style = "width: 9.96vmin; height: 9.96vmin; background-image: ui/textures/build/main-button-unknown.texture;" data-if = "it.icon == ''" data-style-transform = "it.transform_inner" />
                             <button-pic style = "border-radius: 50%; width: 13.40vmin; height: 13.40vmin;" data-style-background-image = "it.icon" data-style-transform = "it.transform_inner" data-if = "it.icon ~= ''" />
                         </div>
                     </button-wrap>
@@ -225,10 +225,10 @@
         <construct-box>
             <construct-list>
                 <div style = "width: 100%; align-items: flex-start;" data-for = "c, c_index : construct_menu">
-                    <div style = "position: absolute; left: 0vmin; top: 0vmin; background-image: textures/item-config/category-bg.texture; width: 23.50vmax; height: 23.13vmin; background-size: 100% 100%;" />
+                    <div style = "position: absolute; left: 0vmin; top: 0vmin; background-image: ui/textures/item-config/category-bg.texture; width: 23.50vmax; height: 23.13vmin; background-size: 100% 100%;" />
                     <div style = "margin-left: 5.58vmin; margin-top: 2.58vmin; width: 100%; flex-direction: row; font-size: 4.20vmin;">{{c.category}}</div>
                     <div style = "flex-direction: row; flex-wrap: wrap;">
-                        <item data-attr-id = "i.id" data-event-click = "clickButton('click_item', c_index, i_index)" data-style-background-image = "i.selected and 'textures/item-config/item-active.texture' or 'none'" data-for = "i, i_index : c.items">
+                        <item data-attr-id = "i.id" data-event-click = "clickButton('click_item', c_index, i_index)" data-style-background-image = "i.selected and 'ui/textures/item-config/item-active.texture' or 'none'" data-for = "i, i_index : c.items">
                             <div data-style-background-image = "i.icon" style = "width: 12.50vmin; height: 12.50vmin; background-size: 100% 100%; background-color: rgb(61, 61, 61);" />
                             <div style = "position: absolute; width: 12.50vmin; height: 12.50vmin; justify-content: flex-end; align-items: flex-end; font-size: 3.5vmin; color:rgb(255,255,255); -webkit-text-stroke: 0.26vmin rgb(0,0,0);" data-style-color = " i.count >0 and 'rgb(255,255,255)' or 'rgb(255,0,0)' ">{{i.count}}</div>
                         </item>
@@ -237,8 +237,8 @@
             </construct-list>
         </construct-box>
 
-        <main-button style = "position: absolute; left: 72.20vmax; top: 67.00vmin; background-image: textures/construct/main-button-bg.texture; background-size: 100% 100%;" data-event-click = "clickButton('click_main_button')">
-            <main-button-icon style = "background-image: textures/build_setting/main-button-confirm.texture;" />
+        <main-button style = "position: absolute; left: 72.20vmax; top: 67.00vmin; background-image: ui/textures/construct/main-button-bg.texture; background-size: 100% 100%;" data-event-click = "clickButton('click_main_button')">
+            <main-button-icon style = "background-image: ui/textures/build_setting/main-button-confirm.texture;" />
         </main-button>
     </body>
 </rml>

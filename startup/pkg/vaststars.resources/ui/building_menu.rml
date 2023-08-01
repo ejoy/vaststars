@@ -36,10 +36,10 @@
                 pointer-events: none;
             }
         </style>
-        <style path = "common/building_style.rcss"/>
+        <style path = "ui/common/building_style.rcss"/>
         <script type="text/x-lua" >
-            local ui_sys = require "ui_system"
-            local handler = require "lua.building_menu_handler"
+            local ui_sys = require "ui.ui_system"
+            local handler = require "ui.lua.building_menu_handler"
             local start = ui_sys.createDataMode {
                 object_id = 0,
                 prototype_name = "",

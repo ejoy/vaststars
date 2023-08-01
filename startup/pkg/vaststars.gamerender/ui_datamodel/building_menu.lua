@@ -141,7 +141,7 @@ end, false)
 ---------------
 local M = {}
 function M:create(object_id)
-    iui.register_leave("building_menu.rml")
+    iui.register_leave("ui/building_menu.rml")
 
     local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
@@ -245,7 +245,7 @@ function M:stage_ui_update(datamodel, object_id)
     __moveable_count_update(datamodel, object_id)
 
     for _, _, _, object_id in set_recipe_mb:unpack() do
-        iui.open({"recipe_config.rml"}, object_id)
+        iui.open({"ui/recipe_config.rml"}, object_id)
     end
 
     for _, _, _, object_id in set_item_mb:unpack() do
@@ -261,7 +261,7 @@ function M:stage_ui_update(datamodel, object_id)
         else
             assert(false)
         end
-        iui.open({"item_config.rml"}, object_id, interface)
+        iui.open({"ui/item_config.rml"}, object_id, interface)
     end
 
     for _ in lorry_factory_inc_lorry_mb:unpack() do
@@ -347,7 +347,7 @@ function M:stage_ui_update(datamodel, object_id)
                 msgs[#msgs + 1] = {icon = assert(typeitem.item_icon), name = typeitem.name, count = available}
             end
 
-            iui.send("message_pop.rml", "item", {action = "up", left = sp_x, top = sp_y, items = msgs})
+            iui.send("ui/message_pop.rml", "item", {action = "up", left = sp_x, top = sp_y, items = msgs})
         elseif iprototype.has_types(typeobject.type, "station_producer", "station_consumer", "hub") then
             local chest_component = ichest.get_chest_component(e)
             local slot = ichest.chest_get(gameplay_core.get_world(), e[chest_component], 1)
@@ -361,7 +361,7 @@ function M:stage_ui_update(datamodel, object_id)
                 goto continue
             end
             local typeitem = iprototype.queryById(slot.item)
-            iui.send("message_pop.rml", "item", {action = "up", left = sp_x, top = sp_y, items = {{icon = assert(typeitem.item_icon), name = typeitem.name, count = available}}})
+            iui.send("ui/message_pop.rml", "item", {action = "up", left = sp_x, top = sp_y, items = {{icon = assert(typeitem.item_icon), name = typeitem.name, count = available}}})
 
             if e.station_producer or e.station_consumer then
                 e.station_changed = true
@@ -381,7 +381,7 @@ function M:stage_ui_update(datamodel, object_id)
                 end
             end
             if #message > 0 then
-                iui.send("message_pop.rml", "item", {action = "up", left = sp_x, top = sp_y, items = message})
+                iui.send("ui/message_pop.rml", "item", {action = "up", left = sp_x, top = sp_y, items = message})
             end
 
             local items = ichest.collect_item(gameplay_core.get_world(), e.chest)
@@ -425,7 +425,7 @@ function M:stage_ui_update(datamodel, object_id)
                 end
             end
             if #message > 0 then
-                iui.send("message_pop.rml", "item", {action = "down", left = sp_x, top = sp_y, items = message})
+                iui.send("ui/message_pop.rml", "item", {action = "down", left = sp_x, top = sp_y, items = message})
             end
             print("success")
         elseif iprototype.has_types(typeobject.type, "station_producer", "station_consumer", "hub") then
@@ -451,7 +451,7 @@ function M:stage_ui_update(datamodel, object_id)
                 goto continue
             end
             local typeitem = iprototype.queryById(slot.item)
-            iui.send("message_pop.rml", "item", {action = "down", left = sp_x, top = sp_y, items = {{icon = assert(typeitem.item_icon), name = typeitem.name, count = available}}})
+            iui.send("ui/message_pop.rml", "item", {action = "down", left = sp_x, top = sp_y, items = {{icon = assert(typeitem.item_icon), name = typeitem.name, count = available}}})
 
             if e.station_producer or e.station_consumer then
                 e.station_changed = true
@@ -482,7 +482,7 @@ function M:stage_ui_update(datamodel, object_id)
                 local typeitem = iprototype.queryById(slot.item)
                 msgs[#msgs+1] = {icon = assert(typeitem.item_icon), name = typeitem.name, count = available}
             end
-            iui.send("message_pop.rml", "item", {action = "down", left = sp_x, top = sp_y, items = msgs})
+            iui.send("ui/message_pop.rml", "item", {action = "down", left = sp_x, top = sp_y, items = msgs})
         else
             assert(false)
         end

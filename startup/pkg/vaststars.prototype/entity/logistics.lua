@@ -3,8 +3,8 @@ local prototype = gameplay.register.prototype
 
 prototype "指挥中心" {
     model = "prefabs/headquater-1.prefab",
-    icon = "textures/building_pic/small_pic_headquarter.texture",
-    background = "textures/build_background/pic_headquater.texture",
+    icon = "ui/textures/building_pic/small_pic_headquarter.texture",
+    background = "ui/textures/build_background/pic_headquater.texture",
     construct_detector = {"exclusive"},
     craft_category = {"基地制造"},
     item = "运输车辆I", -- lorry_factory
@@ -32,8 +32,8 @@ prototype "指挥中心" {
 prototype "科研中心I" {
     type = {"building", "consumer","laboratory"},
     model = "prefabs/lab-1.prefab",
-    icon = "textures/building_pic/small_pic_lab.texture",
-    background = "textures/build_background/pic_lab.texture",
+    icon = "ui/textures/building_pic/small_pic_lab.texture",
+    background = "ui/textures/build_background/pic_lab.texture",
     construct_detector = {"exclusive"},
     area = "3x3",
     power = "100kW",
@@ -50,8 +50,8 @@ prototype "科研中心I" {
 prototype "科研中心II" {
     type = {"building", "consumer","laboratory"},
     model = "prefabs/lab-1.prefab",
-    icon = "textures/building_pic/small_pic_lab.texture",
-    background = "textures/build_background/pic_lab.texture",
+    icon = "ui/textures/building_pic/small_pic_lab.texture",
+    background = "ui/textures/build_background/pic_lab.texture",
     construct_detector = {"exclusive"},
     area = "3x3",
     power = "250kW",
@@ -68,8 +68,8 @@ prototype "科研中心II" {
 prototype "科研中心III" {
     type = {"building", "consumer","laboratory"},
     model = "prefabs/lab-1.prefab",
-    icon = "textures/building_pic/small_pic_lab.texture",
-    background = "textures/build_background/pic_lab.texture",
+    icon = "ui/textures/building_pic/small_pic_lab.texture",
+    background = "ui/textures/build_background/pic_lab.texture",
     construct_detector = {"exclusive"},
     area = "3x3",
     power = "500kW",
@@ -87,7 +87,7 @@ prototype "科研中心III" {
 prototype "砖石公路-I型" {
     display_name = "砖石公路",
     construct_name = "砖石公路-X型",
-    icon = "textures/construct/road1.texture",
+    icon = "ui/textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     building_category = 4,
     building_direction = {"N", "E"},
@@ -109,7 +109,7 @@ prototype "砖石公路-I型" {
 prototype "砖石公路-L型" {
     display_name = "砖石公路",
     construct_name = "砖石公路-X型",
-    icon = "textures/construct/road1.texture",
+    icon = "ui/textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     building_category = 4,
     building_direction = {"N", "E", "S", "W"},
@@ -131,7 +131,7 @@ prototype "砖石公路-L型" {
 prototype "砖石公路-T型" {
     display_name = "砖石公路",
     construct_name = "砖石公路-X型",
-    icon = "textures/construct/road1.texture",
+    icon = "ui/textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     building_category = 4,
     building_direction = {"N", "E", "S", "W"},
@@ -154,7 +154,7 @@ prototype "砖石公路-T型" {
 prototype "砖石公路-O型" {
     display_name = "砖石公路",
     construct_name = "砖石公路-X型",
-    icon = "textures/construct/road1.texture",
+    icon = "ui/textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     building_category = 4,
     building_direction = {"N"},
@@ -173,7 +173,7 @@ prototype "砖石公路-O型" {
 prototype "砖石公路-U型" {
     construct_name = "砖石公路-X型",
     display_name = "砖石公路",
-    icon = "textures/construct/road1.texture",
+    icon = "ui/textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     building_category = 4,
     building_direction = {"N", "E", "S", "W"},
@@ -195,7 +195,7 @@ prototype "砖石公路-X型" {
     display_name = "砖石公路",
     construct_name = "砖石公路-X型",
     model = "prefabs/road/road_X.prefab",
-    icon = "textures/construct/road1.texture",
+    icon = "ui/textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     building_category = 4,
     building_direction = {"N"},
@@ -219,8 +219,8 @@ prototype "砖石公路-X型" {
 --出货车站需要设置送货类型以及需求车辆
 prototype "出货车站" {
     model = "prefabs/delivery-station-1.prefab",
-    icon = "textures/building_pic/small_pic_goods_station1.texture",
-    background = "textures/build_background/pic_chest.texture",
+    icon = "ui/textures/building_pic/small_pic_goods_station1.texture",
+    background = "ui/textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"building", "station_producer"},
     building_base = false,
@@ -245,8 +245,8 @@ prototype "出货车站" {
 --收货车站需要设置送货类型
 prototype "收货车站" {
     model = "prefabs/receiving-station-1.prefab",
-    icon = "textures/building_pic/small_pic_goods_station1.texture",
-    background = "textures/build_background/pic_chest.texture",
+    icon = "ui/textures/building_pic/small_pic_goods_station1.texture",
+    background = "ui/textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"building", "station_consumer"},
     building_base = false,

@@ -1,6 +1,6 @@
 <rml>
     <head>
-        <style path = "common.rcss"/>
+        <style path = "ui/common.rcss"/>
         <style>
             caption-container {
                 height: 17.50vmin;
@@ -9,7 +9,7 @@
             }
             caption-line {
                 height: 0.15vmin;
-                background-image: "textures/common/caption-line.texture";
+                background-image: "ui/textures/common/caption-line.texture";
                 background-size: 100% 100%;
             }
             caption {
@@ -19,10 +19,10 @@
             left-box {
                 width: 53.81vmax;
                 height: 78.34vmin;
-                background-image: "textures/common/square-grid.texture";
+                background-image: "ui/textures/common/square-grid.texture";
                 background-size: 100% 100%;
-                background-lattice: 4.28%;
-                align-items: center;
+                background-lattice: 4.22% 6.27% 4.22% 6.27% 49.22% 49.22%;
+                align-items: center; 
             }
             recipe {
                 margin-right: -1.58vmax;
@@ -34,7 +34,7 @@
                 align-items: center;
             }
             recipe:active {
-                background-image: "textures/recipe-config/recipe-active.texture";
+                background-image: "ui/textures/recipe-config/recipe-active.texture";
             }
             new {
                 position: absolute;
@@ -68,7 +68,7 @@
                 margin-left: 0.93vmax;
                 width: 27.68vmax;
                 height: 84.34vmin;
-                background-image: "textures/recipe-config/right-box-bg.texture";
+                background-image: "ui/textures/recipe-config/right-box-bg.texture";
                 background-size: 100% 100%;
             }
             recipe-ingredients-container {
@@ -91,15 +91,15 @@
             cancel-button {
                 width: 21.88vmax;
                 height: 13.16vmin;
-                background-image: "textures/recipe-config/cancel.texture";
+                background-image: "ui/textures/recipe-config/cancel.texture";
                 background-size: 100% 100%;
             }
             cancel-button:active {
-                background-image: "textures/recipe-config/cancel-active.texture";
+                background-image: "ui/textures/recipe-config/cancel-active.texture";
             }
         </style>
         <script type="text/x-lua" >
-            local ui_sys = require "ui_system"
+            local ui_sys = require "ui.ui_system"
             local start = ui_sys.createDataMode {
                 object_id = 0,
                 recipes = {},
@@ -155,7 +155,7 @@
             end, 200)
         </script>
     </head>
-    <body style = "justify-content: center; align-items: center; background-image: textures/recipe-config/bg.texture; background-size: 100% 100%;" onload="init()">
+    <body style = "justify-content: center; align-items: center; background-image: ui/textures/recipe-config/bg.texture; background-size: 100% 100%;" onload="init()">
         <caption-container>
             <caption-line style = "position: absolute; pointer-events: none; left: 24.26vmax; top: 12.89vmin; width: 15.34vmax;" />
             <caption style = "position: absolute; pointer-events: none; left: 41.18vmax; top: 7.89vmin; width: 17.58vmax; height: 10vmin; font-size: 6.50vmin; justify-content: center; align-items: center;">生 产 预 览</caption>
@@ -168,12 +168,12 @@
                     <left-box>
                         <recipe-list id = "recipe-list">
                             <div style = "width: 100%; align-items: center;" data-for = "c, c_index : recipes">
-                                <div style = "position: absolute; left: 0vmin; top: 0vmin; background-image: textures/recipe-config/category-bg.texture; width: 23.50vmax; height: 23.13vmin; background-size: 100% 100%;" />
+                                <div style = "position: absolute; left: 0vmin; top: 0vmin; background-image: ui/textures/recipe-config/category-bg.texture; width: 23.50vmax; height: 23.13vmin; background-size: 100% 100%;" />
                                 <div style = "margin-left: 5.58vmin; margin-top: 2.58vmin; width: 100%; flex-direction: row; font-size: 4.20vmin;">{{c.category}}</div>
                                 <div style = "margin-left: -2.20vmax; margin-top: -2.58vmin; width: 96.40%; flex-direction: row; flex-wrap: wrap;">
                                     <div data-for = "r, r_index : c.recipes">
                                         <recipe data-attr-id = "r.id"
-                                            data-event-click = "clickButton('click_recipe', c_index, r_index)" data-style-background-image = "r.selected and 'textures/recipe-config/recipe-active.texture' or 'none'">
+                                            data-event-click = "clickButton('click_recipe', c_index, r_index)" data-style-background-image = "r.selected and 'ui/textures/recipe-config/recipe-active.texture' or 'none'">
                                                 <div data-style-background-image = "r.icon" style = "width: 6.91vmax; height: 14.95vmin; background-size: 100% 100%; background-color: rgb(61, 61, 61);">
                                                     <new data-if = "r.new">新</new>
                                                 </div>
@@ -194,7 +194,7 @@
                         <div style = "position: absolute; top: 1.25vmin; left: 3.42vmax; width: 7.19vmax; height: 15.57vmin; justify-content: center; align-items: center;">
                             <div data-style-background-image = "recipe_icon" style = "width: 6.91vmax; height: 14.95vmin; background-size: 100% 100%;" data-if = "recipe_icon ~= ''" />
                         </div>
-                        <div style = "position: absolute; top: 1.25vmin; left: 3.42vmax; width: 7.19vmax; height: 15.57vmin; background-image: textures/recipe-config/icon-frame.texture; background-size: 100% 100%;" />
+                        <div style = "position: absolute; top: 1.25vmin; left: 3.42vmax; width: 7.19vmax; height: 15.57vmin; background-image: ui/textures/recipe-config/icon-frame.texture; background-size: 100% 100%;" />
                         <div style = "position: absolute; margin-top: -1.50vmin; margin-left: 0.80vmax; top: 3.70vmin; left: 10.65vmax; width: 16.60vmax; height: 5.12vmin; text-align: right; font-size: 4.00vmin; -webkit-text-stroke: 0.1vmin #252525;" data-if = "recipe_name ~= ''">
                             {{recipe_name}}
                         </div>

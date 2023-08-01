@@ -7,7 +7,7 @@ local iui = ecs.import.interface "vaststars.gamerender|iui"
 local M = {}
 
 function M:create(icon, name)
-    iui.register_leave("non_building_detail_panel.rml")
+    iui.register_leave("ui/non_building_detail_panel.rml")
 
     return {
         icon = icon,

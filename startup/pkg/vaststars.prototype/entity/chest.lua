@@ -3,8 +3,8 @@ local prototype = gameplay.register.prototype
 
 prototype "小铁制箱子I" {
     model = "prefabs/small-chest.prefab",
-    icon = "textures/building_pic/small_pic_chest.texture",
-    background = "textures/build_background/pic_chest.texture",
+    icon = "ui/textures/building_pic/small_pic_chest.texture",
+    background = "ui/textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"building", "chest"},
     chest_type = "red",
@@ -14,8 +14,8 @@ prototype "小铁制箱子I" {
 
 prototype "建材箱" {
     model = "prefabs/drop-box.prefab",
-    icon = "textures/building_pic/small_pic_chest.texture",
-    background = "textures/build_background/pic_chest.texture",
+    icon = "ui/textures/building_pic/small_pic_chest.texture",
+    background = "ui/textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"building", "chest"},
     chest_type = "red",
@@ -25,8 +25,8 @@ prototype "建材箱" {
 
 prototype "小铁制箱子II" {
     model = "prefabs/small-chest.prefab",
-    icon = "textures/building_pic/small_pic_chest.texture",
-    background = "textures/build_background/pic_chest.texture",
+    icon = "ui/textures/building_pic/small_pic_chest.texture",
+    background = "ui/textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"building"},
     area = "1x1",
@@ -35,8 +35,8 @@ prototype "小铁制箱子II" {
 
 prototype "大铁制箱子I" {
     model = "prefabs/small-chest.prefab",
-    icon = "textures/building_pic/small_pic_chest.texture",
-    background = "textures/build_background/pic_chest.texture",
+    icon = "ui/textures/building_pic/small_pic_chest.texture",
+    background = "ui/textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"building"},
     area = "2x2",
@@ -45,8 +45,8 @@ prototype "大铁制箱子I" {
 
 prototype "仓库" {
     model = "prefabs/small-chest.prefab",
-    icon = "textures/building_pic/small_pic_chest.texture",
-    background = "textures/build_background/pic_chest.texture",
+    icon = "ui/textures/building_pic/small_pic_chest.texture",
+    background = "ui/textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"building"},
     area = "5x5",
@@ -55,8 +55,8 @@ prototype "仓库" {
 
 prototype "无人机仓库I" {
     model = "prefabs/drone-depot.prefab",
-    icon = "textures/building_pic/small_pic_drone_depot.texture",
-    background = "textures/build_background/pic_chest.texture",
+    icon = "ui/textures/building_pic/small_pic_drone_depot.texture",
+    background = "ui/textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"building", "hub"},
     area = "2x2",
@@ -71,8 +71,8 @@ prototype "无人机仓库I" {
 
 prototype "无人机仓库II" {
     model = "prefabs/drone-depot.prefab",
-    icon = "textures/building_pic/small_pic_drone_depot.texture",
-    background = "textures/build_background/pic_chest.texture",
+    icon = "ui/textures/building_pic/small_pic_drone_depot.texture",
+    background = "ui/textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"building", "hub"},
     area = "2x2",
@@ -87,8 +87,8 @@ prototype "无人机仓库II" {
 
 prototype "无人机仓库III" {
     model = "prefabs/drone-depot.prefab",
-    icon = "textures/building_pic/small_pic_drone_depot.texture",
-    background = "textures/build_background/pic_chest.texture",
+    icon = "ui/textures/building_pic/small_pic_drone_depot.texture",
+    background = "ui/textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"building", "hub"},
     area = "2x2",

@@ -23,7 +23,7 @@ local event_handler = create_event_handler(
         "quit",
     },
     function(event, ...)
-        iui.redirect("construct.rml", event, ...)
+        iui.redirect("ui/construct.rml", event, ...)
     end
 )
 
@@ -50,15 +50,15 @@ function M:stage_ui_update(datamodel, prototype_name)
 
     for _ in click_main_button_mb:unpack() do
         if datamodel.show_finish_laying then
-            iui.redirect("construct.rml", "finish_laying")
+            iui.redirect("ui/construct.rml", "finish_laying")
         elseif datamodel.show_finish_teardown then
-            iui.redirect("construct.rml", "finish_teardown")
+            iui.redirect("ui/construct.rml", "finish_teardown")
         end
     end
 
     for _ in quit_mb:unpack() do
-        iui.close("construct_road_or_pipe.rml")
-        iui.redirect("construct.rml", "unselected")
+        iui.close("ui/construct_road_or_pipe.rml")
+        iui.redirect("ui/construct.rml", "unselected")
     end
 end
 

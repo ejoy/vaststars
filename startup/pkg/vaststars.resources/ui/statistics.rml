@@ -169,7 +169,7 @@
                 -webkit-text-stroke: 0.2vmin #000;
             }
         </style>
-        <style path = "common/building_style.rcss" />
+        <style path = "ui/common/building_style.rcss" />
         <script type="text/x-lua" path = "lua/statistics.lua" />
     </head>
     <body>

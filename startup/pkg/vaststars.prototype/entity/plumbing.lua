@@ -3,7 +3,7 @@ local prototype = gameplay.register.prototype
 
 prototype "液罐I" {
     model = "prefabs/gas-tank-1.prefab",
-    icon = "textures/building_pic/small_pic_gas_tank.texture",
+    icon = "ui/textures/building_pic/small_pic_gas_tank.texture",
     construct_detector = {"exclusive"},
     storage_tank = true,
     building_menu = false,
@@ -25,7 +25,7 @@ prototype "液罐I" {
 
 prototype "液罐II" {
     model = "prefabs/gas-tank-1.prefab",
-    icon = "textures/building_pic/small_pic_gas_tank.texture",
+    icon = "ui/textures/building_pic/small_pic_gas_tank.texture",
     construct_detector = {"exclusive"},
     storage_tank = true,
     building_menu = false,
@@ -47,7 +47,7 @@ prototype "液罐II" {
 
 prototype "液罐III" {
     model = "prefabs/gas-tank-1.prefab",
-    icon = "textures/building_pic/small_pic_gas_tank.texture",
+    icon = "ui/textures/building_pic/small_pic_gas_tank.texture",
     construct_detector = {"exclusive"},
     storage_tank = true,
     building_menu = false,
@@ -69,7 +69,7 @@ prototype "液罐III" {
 
 prototype "气罐I" {
     model = "prefabs/gas-tank-1.prefab",
-    icon = "textures/building_pic/small_pic_tank.texture",
+    icon = "ui/textures/building_pic/small_pic_tank.texture",
     construct_detector = {"exclusive"},
     storage_tank = true,
     building_menu = false,
@@ -91,7 +91,7 @@ prototype "气罐I" {
 
 prototype "地下水挖掘机I" {
     model = "prefabs/mars-pumpjack.prefab",
-    icon = "textures/building_pic/small_pic_offshore.texture",
+    icon = "ui/textures/building_pic/small_pic_offshore.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "3x3",
@@ -123,7 +123,7 @@ prototype "地下水挖掘机I" {
 
 prototype "地下水挖掘机II" {
     model = "prefabs/mars-pumpjack.prefab",
-    icon = "textures/building_pic/small_pic_offshore.texture",
+    icon = "ui/textures/building_pic/small_pic_offshore.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "3x3",
@@ -155,7 +155,7 @@ prototype "地下水挖掘机II" {
 
 prototype "核子挖掘机" {
     model = "prefabs/mars-pumpjack.prefab",
-    icon = "textures/building_pic/small_pic_offshore.texture",
+    icon = "ui/textures/building_pic/small_pic_offshore.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "3x3",
@@ -186,7 +186,7 @@ prototype "核子挖掘机" {
 
 prototype "压力泵I" {
     model = "prefabs/pump-1.prefab",
-    icon = "textures/building_pic/small_pic_pump.texture",
+    icon = "ui/textures/building_pic/small_pic_pump.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "fluidbox", "pump"},
     area = "1x2",
@@ -210,7 +210,7 @@ prototype "压力泵I" {
 
 prototype "烟囱I" {
     model = "prefabs/chimney-1.prefab",
-    icon = "textures/building_pic/small_pic_pump.texture",
+    icon = "ui/textures/building_pic/small_pic_pump.texture",
     construct_detector = {"exclusive"},
     type = {"building", "fluidbox", "chimney"},
     area = "2x2",
@@ -231,7 +231,7 @@ prototype "烟囱I" {
 
 prototype "烟囱II" {
     model = "prefabs/chimney-1.prefab",
-    icon = "textures/building_pic/small_pic_pump.texture",
+    icon = "ui/textures/building_pic/small_pic_pump.texture",
     construct_detector = {"exclusive"},
     type = {"building", "fluidbox", "chimney"},
     area = "2x2",
@@ -252,7 +252,7 @@ prototype "烟囱II" {
 
 prototype "排水口I" {
     model = "prefabs/mars-outfall.prefab",
-    icon = "textures/building_pic/small_pic_mars_outfall.texture",
+    icon = "ui/textures/building_pic/small_pic_mars_outfall.texture",
     construct_detector = {"exclusive"},
     type = {"building", "fluidbox", "chimney"},
     area = "3x3",
@@ -274,7 +274,7 @@ prototype "排水口I" {
 
 prototype "排水口II" {
     model = "prefabs/mars-outfall.prefab",
-    icon = "textures/building_pic/small_pic_mars_outfall.texture",
+    icon = "ui/textures/building_pic/small_pic_mars_outfall.texture",
     construct_detector = {"exclusive"},
     type = {"building", "fluidbox", "chimney"},
     area = "3x3",
@@ -296,7 +296,7 @@ prototype "排水口II" {
 
 prototype "空气过滤器I" {
     model = "prefabs/chimney-1.prefab",
-    icon = "textures/building_pic/small_pic_outfall.texture",
+    icon = "ui/textures/building_pic/small_pic_outfall.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "2x2",
@@ -326,7 +326,7 @@ prototype "空气过滤器I" {
 
 prototype "空气过滤器II" {
     model = "prefabs/chimney-1.prefab",
-    icon = "textures/building_pic/small_pic_outfall.texture",
+    icon = "ui/textures/building_pic/small_pic_outfall.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "2x2",
@@ -355,7 +355,7 @@ prototype "空气过滤器II" {
 
 prototype "空气过滤器III" {
     model = "prefabs/chimney-1.prefab",
-    icon = "textures/building_pic/small_pic_outfall.texture",
+    icon = "ui/textures/building_pic/small_pic_outfall.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "2x2",
@@ -385,7 +385,7 @@ prototype "空气过滤器III" {
 prototype "管道1-I型" {
     construct_name = "管道1-X型",
     model = "prefabs/pipe/pipe_I.prefab",
-    icon = "textures/construct/pipe.texture",
+    icon = "ui/textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
     building_category = 1,
     camera_distance = 30,
@@ -408,7 +408,7 @@ prototype "管道1-I型" {
 prototype "管道1-L型" {
     construct_name = "管道1-X型",
     model = "prefabs/pipe/pipe_L.prefab",
-    icon = "textures/construct/pipe.texture",
+    icon = "ui/textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
     building_category = 1,
     building_direction = {"N", "E", "S", "W"},
@@ -430,7 +430,7 @@ prototype "管道1-L型" {
 prototype "管道1-T型" {
     construct_name = "管道1-X型",
     model = "prefabs/pipe/pipe_T.prefab",
-    icon = "textures/construct/pipe.texture",
+    icon = "ui/textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
     building_category = 1,
     building_direction = {"N", "E", "S", "W"},
@@ -454,7 +454,7 @@ prototype "管道1-X型" {
     construct_name = "管道1-X型",
     display_name = "管道I",
     model = "prefabs/pipe/pipe_X.prefab",
-    icon = "textures/construct/pipe.texture",
+    icon = "ui/textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
     building_category = 1,
     building_direction = {"N"},
@@ -479,7 +479,7 @@ prototype "管道1-X型" {
 prototype "管道1-O型" {
     construct_name = "管道1-X型",
     model = "prefabs/pipe/pipe_O.prefab",
-    icon = "textures/construct/pipe.texture",
+    icon = "ui/textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
     building_category = 1,
     building_direction = {"N"},
@@ -499,7 +499,7 @@ prototype "管道1-O型" {
 prototype "管道1-U型" {
     construct_name = "管道1-X型",
     model = "prefabs/pipe/pipe_U.prefab",
-    icon = "textures/construct/pipe.texture",
+    icon = "ui/textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
     building_category = 1,
     building_direction = {"N", "E", "S", "W"},
@@ -520,7 +520,7 @@ prototype "管道1-U型" {
 prototype "地下管1-JU型" {
     construct_name = "地下管1-JU型",
     model = "prefabs/pipe/pipe_JU.prefab",
-    icon = "textures/construct/underground-pipe1.texture",
+    icon = "ui/textures/construct/underground-pipe1.texture",
     construct_detector = {"exclusive"},
     building_menu = false,
     building_category = 2,
@@ -542,7 +542,7 @@ prototype "地下管1-JI型" {
     construct_name = "地下管1-JU型",
     display_name = "地下管I",
     model = "prefabs/pipe/pipe_JI.prefab",
-    icon = "textures/construct/underground-pipe1.texture",
+    icon = "ui/textures/construct/underground-pipe1.texture",
     construct_detector = {"exclusive"},
     building_menu = false,
     building_category = 2,
@@ -565,7 +565,7 @@ prototype "地下管1-JI型" {
 prototype "地下管2-JU型" {
     construct_name = "地下管2-JU型",
     model = "prefabs/pipe/pipe_JU.prefab",
-    icon = "textures/construct/underground-pipe1.texture",
+    icon = "ui/textures/construct/underground-pipe1.texture",
     construct_detector = {"exclusive"},
     building_menu = false,
     building_category = 3,
@@ -587,7 +587,7 @@ prototype "地下管2-JI型" {
     construct_name = "地下管2-JU型",
     display_name = "地下管II",
     model = "prefabs/pipe/pipe_JI.prefab",
-    icon = "textures/construct/underground-pipe1.texture",
+    icon = "ui/textures/construct/underground-pipe1.texture",
     construct_detector = {"exclusive"},
     building_menu = false,
     building_category = 3,

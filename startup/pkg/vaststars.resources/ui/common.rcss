@@ -16,9 +16,9 @@ flex-row {
 button-confirm {
     width: 21.88vmax;
     height: 13.16vmin;
-    background-image: "textures/common/button-confirm.texture";
+    background-image: "ui/textures/common/button-confirm.texture";
     background-size: 100% 100%;
 }
 button-confirm:active {
-    background-image: "textures/common/button-confirm-active.texture";
+    background-image: "ui/textures/common/button-confirm-active.texture";
 }

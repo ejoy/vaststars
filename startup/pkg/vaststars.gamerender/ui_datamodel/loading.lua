@@ -51,7 +51,7 @@ function M:stage_camera_usage(datamodel)
         return
     end
     if status.current + 1 > #resources then
-        iui.close("loading.rml")
+        iui.close("ui/loading.rml")
         datamodel.closed = true
         return
     end

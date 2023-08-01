@@ -3,7 +3,7 @@ local prototype = gameplay.register.prototype
 
 prototype "铁制电线杆" {
     model = "prefabs/electric-pole-1.prefab",
-    icon = "textures/building_pic/small_pic_electricpole.texture",
+    icon = "ui/textures/building_pic/small_pic_electricpole.texture",
     construct_detector = {"exclusive"},
     power_network_link = true,
     type = {"building"},
@@ -16,7 +16,7 @@ prototype "铁制电线杆" {
 
 prototype "远程电线杆" {
     model = "prefabs/electric-pole-1.prefab",
-    icon = "textures/building_pic/small_pic_electricpole.texture",
+    icon = "ui/textures/building_pic/small_pic_electricpole.texture",
     construct_detector = {"exclusive"},
     power_network_link = true,
     type = {"building"},
@@ -29,7 +29,7 @@ prototype "远程电线杆" {
 
 prototype "广域电线杆" {
     model = "prefabs/electric-pole-1.prefab",
-    icon = "textures/building_pic/small_pic_electricpole.texture",
+    icon = "ui/textures/building_pic/small_pic_electricpole.texture",
     construct_detector = {"exclusive"},
     power_network_link = true,
     type = {"building"},

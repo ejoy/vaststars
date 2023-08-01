@@ -112,6 +112,7 @@ policy "render_updates"
 
 policy "gameplay"
     .require_system "pick_object_sys"
+    .require_system "prototype_cache_system"
 
 ----------------------------------------------------
 ----------------------------------------------------
@@ -314,3 +315,11 @@ interface "iroad"
 system "chimney_system"
     .implement "render_updates/chimney.lua"
     .method "gameworld_build"
+
+system "prototype_cache_system"
+    .implement "prototype_cache.lua"
+    .method "prototype_restore"
+
+interface "iprototype_cache"
+    .implement "prototype_cache.lua"
+    .method "get"

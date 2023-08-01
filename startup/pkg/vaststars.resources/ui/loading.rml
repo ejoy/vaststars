@@ -13,9 +13,9 @@
                 bottom:-4vmin;
             }
         </style>
-        <style path = "common/building_style.rcss"/>
+        <style path = "ui/common/building_style.rcss"/>
         <script type="text/x-lua" >
-            local ui_sys = require "ui_system"
+            local ui_sys = require "ui.ui_system"
             local start = ui_sys.createDataMode {
                 status = {},
                 progress = "0%",

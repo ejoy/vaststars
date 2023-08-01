@@ -9,6 +9,7 @@ local iBackpack = import_package "vaststars.gameplay".interface "backpack"
 local click_item_mb = mailbox:sub {"click_item"}
 local close_mb = mailbox:sub {"close"}
 local iui = ecs.import.interface "vaststars.gamerender|iui"
+local iprototype_cache = ecs.import.interface "vaststars.gamerender|iprototype_cache"
 
 local function get_inventory()
     local t = {}
@@ -19,11 +20,11 @@ local function get_inventory()
         v.id = typeobject_item.id
         v.name = typeobject_item.name
         v.icon = typeobject_item.icon
-        v.category = typeobject_item.item_category
         v.count = slot.amount
 
-        t[v.category] = t[v.category] or {}
-        t[v.category][#t[v.category]+1] = v
+        local category = typeobject_item.item_category
+        t[category] = t[category] or {}
+        t[category][#t[category]+1] = v
     end
 
     for _, items in pairs(t) do
@@ -59,6 +60,8 @@ function M:create()
         item_idx = 0,
         item_name = "",
         item_desc = "",
+        item_ingredients = {},
+        item_assembling = {},
         inventory = get_inventory(),
     }
 end
@@ -72,6 +75,8 @@ function M:stage_ui_update(datamodel)
             datamodel.item_name = ""
             datamodel.item_desc = ""
             datamodel.item_icon = ""
+            datamodel.item_ingredients = {}
+            datamodel.item_assembling = {}
         else
             set_item_value(datamodel, datamodel.category_idx, datamodel.item_idx, "selected", false)
             set_item_value(datamodel, category_idx, item_idx, "selected", true)
@@ -83,11 +88,31 @@ function M:stage_ui_update(datamodel)
             datamodel.item_name = iprototype.display_name(typeobject)
             datamodel.item_desc = typeobject.item_description or ""
             datamodel.item_icon = typeobject.icon
+
+            datamodel.item_ingredients = {}
+            for _, v in pairs(iprototype_cache.get("item_ingredients").item_ingredients[item_name] or {}) do
+                local typeobject = assert(iprototype.queryById(v.id))
+                local t = {
+                    name = iprototype.display_name(typeobject),
+                    icon = typeobject.item_icon,
+                    count = v.count,
+                }
+                datamodel.item_ingredients[#datamodel.item_ingredients+1] = t
+            end
+
+            datamodel.item_assembling = {}
+            for _, name in pairs(iprototype_cache.get("item_ingredients").item_assembling[item_name] or {}) do
+                local typeobject = assert(iprototype.queryByName(name))
+                local t = {
+                    icon = typeobject.icon,
+                }
+                datamodel.item_assembling[#datamodel.item_assembling+1] = t
+            end
         end
     end
 
     for _ in close_mb:unpack() do
-        iui.close("inventory.rml")
+        iui.close("ui/inventory.rml")
     end
 
     self:flush()

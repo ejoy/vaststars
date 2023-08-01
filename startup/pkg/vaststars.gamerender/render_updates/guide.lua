@@ -30,10 +30,10 @@ function guide_sys:gameworld_update()
     if run_guide then
         -- hide pop ui
         iui.leave()
-        iui.broadcast("guide_on_going")
+        iui.broadcast("ui/guide_on_going")
 
         -- pop guide ui
-        iui.open({"guide_pop.rml"}, guide)
+        iui.open({"ui/guide_pop.rml"}, guide)
         iguide.set_is_in_guide(true)
     end
 end

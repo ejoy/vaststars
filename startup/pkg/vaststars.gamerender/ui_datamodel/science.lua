@@ -20,7 +20,7 @@ local function get_techlist(tech_list)
         local simple_ingredients = {}
         local ingredients = irecipe.get_elements(value.ingredients)
         for _, ingredient in ipairs(ingredients) do
-            simple_ingredients[#simple_ingredients + 1] = {icon = assert(ingredient.tech_icon), count = ingredient.count}
+            simple_ingredients[#simple_ingredients + 1] = {icon = assert(ingredient.icon), count = ingredient.count}
         end
         local detail = {}
         local sub_icon = ' '
@@ -134,8 +134,8 @@ function M:stage_ui_update(datamodel)
     for _, _, _, index in click_tech_event:unpack() do
         global.science.tech_picked_flag[datamodel.techitems[index].name] = false
         set_current_tech(datamodel.techitems[index])
-        iui.call_datamodel_method("construct.rml", "update_tech")
-        iui.call_datamodel_method("main_menu.rml", "update_tech")
+        iui.call_datamodel_method("ui/construct.rml", "update_tech")
+        iui.call_datamodel_method("ui/main_menu.rml", "update_tech")
     end
 
     for _, _, _ in close_techui_event:unpack() do

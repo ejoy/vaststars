@@ -268,7 +268,7 @@ function M:restore(index)
     index = index or #archival_list
     if index > #archival_list then
         log.error(("Failed to restore `%s`"):format(index))
-        iui.open({"option_pop.rml"})
+        iui.open({"ui/option_pop.rml"})
         return false
     end
 
@@ -294,7 +294,7 @@ function M:restore(index)
         local version = json.decode(readall(archival_dir .. "/version"))
         if version.PROTOTYPE_VERSION ~= PROTOTYPE_VERSION then
             log.error(("Failed `%s` version `%s` current `%s`"):format(archival_relative_dir, archival_list[index].version, PROTOTYPE_VERSION))
-            iui.open({"option_pop.rml"})
+            iui.open({"ui/option_pop.rml"})
             return false
         else
             break
@@ -305,7 +305,7 @@ function M:restore(index)
 
     if index == 0 then
         log.error("Failed to restore")
-        iui.open({"option_pop.rml"})
+        iui.open({"ui/option_pop.rml"})
         return false
     end
 
@@ -332,8 +332,8 @@ function M:restore(index)
     gameplay_core.set_changed(CHANGED_FLAG_ALL)
     gameplay_core.world_update = true
 
-    iui.open({"construct.rml"})
-    iui.open({"message_pop.rml"})
+    iui.open({"ui/construct.rml"})
+    iui.open({"ui/message_pop.rml"})
     print("restore success", archival_dir)
     return true
 end
@@ -392,8 +392,8 @@ function M:restart(mode, game_template)
     gameplay_core.set_changed(CHANGED_FLAG_ALL)
     gameplay_core.world_update = true
 
-    iui.open({"construct.rml"})
-    iui.open({"message_pop.rml"})
+    iui.open({"ui/construct.rml"})
+    iui.open({"ui/message_pop.rml"})
     if mode then
         gameplay_core.get_storage().game_mode = mode
     end

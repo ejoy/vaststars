@@ -83,7 +83,7 @@
                 position: absolute;
                 left:12.5vmin;
                 bottom:5.5vmin;
-                background-image: "textures/exchange/right_arrow.texture";
+                background-image: "ui/textures/exchange/right_arrow.texture";
                 background-size: cover;
                 z-index: 100;
             }
@@ -105,20 +105,20 @@
                 margin-left: 10vmin;
                 width: 100vmin;
                 height: 80vmin;
-                background-image: "textures/detail/tips_bg.texture";
+                background-image: "ui/textures/detail/tips_bg.texture";
                 background-size: 100% 100%;
-                background-lattice: 9.89% 12.36% 9.89% 12.36%;
+                background-lattice: 9.89% 12.36% 9.89% 12.36% 49.22% 49.22%;
             }
             .progress_bar {
                 align-self: flex-start;
-                background-image: "textures/detail/progress_bar.texture";
+                background-image: "ui/textures/detail/progress_bar.texture";
                 background-size: cover;
                 width: 100%;
                 height: 100%;
             }
             .indicator {
                 align-self: flex-start;
-                background-image: "textures/detail/indicator.texture";
+                background-image: "ui/textures/detail/indicator.texture";
                 background-size: 100% 100%;
                 top: -110%;
                 width: 0.5vmin;
@@ -143,9 +143,9 @@
                 }
             }
         </style>
-        <style path = "common/building_style.rcss"/>
+        <style path = "ui/common/building_style.rcss"/>
         <script type="text/x-lua" >
-            local ui_sys = require "ui_system"
+            local ui_sys = require "ui.ui_system"
             local start = ui_sys.createDataMode {
                 object_id = 0,
                 property_list = {},
@@ -153,7 +153,7 @@
                 desc = "",
                 status_icon = "",
                 prototype_name = " ",
-                detail_panel_status_icon = "textures/work_status_icon/normal.texture",
+                detail_panel_status_icon = "ui/textures/work_status_icon/normal.texture",
                 detail_panel_status_desc = "正常工作",
                 chest_list = {},
                 progress = "0%",
@@ -175,7 +175,7 @@
     <body style = "pointer-events: none; justify-content: center; align-items: center;">
         <div class="panel1" style="flex-direction: row; justify-content: flex-start; align-items: center;">
             <!-- detail panel begin -->
-            <div style = 'margin-top: 7vmin; margin-bottom: 7vmin; width: 17.10vmax; height: 86vmin; background-lattice: 32.97% 11.50% 32.97% 11.50%; background-image: "textures/detail/background.texture"; background-size: 100% 100%;'>
+            <div style = 'margin-top: 7vmin; margin-bottom: 7vmin; width: 17.10vmax; height: 86vmin; background-lattice: 32.97% 11.50% 32.97% 11.50% 50% 50%; background-image: "ui/textures/detail/background.texture"; background-size: 100% 100%;'>
                 <!-- title -->
                 <div style = "flex-direction: row; justify-content: center; align-items: center;">
                     <div data-style-background-image="icon" style = "width: 20vmin; height: 20vmin; background-size: cover;" data-event-click="onLongPress(1)"/>

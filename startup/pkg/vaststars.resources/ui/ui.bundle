@@ -1,4 +1,4 @@
-s /pkg/vaststars.resources/ui/**/*.lua
-s /pkg/vaststars.resources/ui/**/*.rml
-s /pkg/vaststars.resources/ui/**/*.rcss
-s /pkg/vaststars.resources/ui/**/*.cfg
+s /pkg/vaststars.resources/**/*.lua
+s /pkg/vaststars.resources/**/*.rml
+s /pkg/vaststars.resources/**/*.rcss
+s /pkg/vaststars.resources/**/*.cfg

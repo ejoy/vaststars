@@ -3,8 +3,8 @@ local prototype = gameplay.register.prototype
 
 prototype "组装机I" {
     model = "prefabs/mars-assembling-machine.prefab",
-    icon = "textures/building_pic/small_pic_mars_assembling_machine.texture",
-    background = "textures/build_background/pic_mars_assembling_machine.texture",
+    icon = "ui/textures/building_pic/small_pic_mars_assembling_machine.texture",
+    background = "ui/textures/build_background/pic_mars_assembling_machine.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "3x3",
@@ -43,8 +43,8 @@ prototype "组装机I" {
 
 prototype "组装机II" {
     model = "prefabs/mars-assembling-machine.prefab",
-    icon = "textures/building_pic/small_pic_mars_assembling_machine.texture",
-    background = "textures/build_background/pic_mars_assembling_machine.texture",
+    icon = "ui/textures/building_pic/small_pic_mars_assembling_machine.texture",
+    background = "ui/textures/build_background/pic_mars_assembling_machine.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "3x3",
@@ -82,8 +82,8 @@ prototype "组装机II" {
 
 prototype "组装机III" {
     model = "prefabs/mars-assembling-machine.prefab",
-    icon = "textures/building_pic/small_pic_mars_assembling_machine.texture",
-    background = "textures/build_background/pic_mars_assembling_machine.texture",
+    icon = "ui/textures/building_pic/small_pic_mars_assembling_machine.texture",
+    background = "ui/textures/build_background/pic_mars_assembling_machine.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "3x3",
@@ -121,8 +121,8 @@ prototype "组装机III" {
 
 prototype "铸造厂I" {
     model = "prefabs/mars-assembling-machine.prefab",
-    icon = "textures/building_pic/small_pic_assemble.texture",
-    background = "textures/build_background/pic_assemble.texture",
+    icon = "ui/textures/building_pic/small_pic_assemble.texture",
+    background = "ui/textures/build_background/pic_assemble.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "3x3",

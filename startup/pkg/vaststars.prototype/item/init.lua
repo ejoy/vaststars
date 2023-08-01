@@ -18,7 +18,7 @@ prototype "任务" {
 
 prototype "山丘" {
     type = {"mountain"},
-    icon = "textures/construct/alumina.texture",
+    icon = "ui/textures/construct/alumina.texture",
     item_description = "地面上的沙丘",
     stack = 0,
     item_category = "",

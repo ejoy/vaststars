@@ -10,11 +10,11 @@
                 height: 22.12vmin;
             }
             command-center-button {
-                background-image: "textures/main-menu/command-center-normal.texture";
+                background-image: "ui/textures/main-menu/command-center-normal.texture";
                 background-size: cover;
             }
             command-center-button:active {
-                background-image: "textures/main-menu/command-center-pressed.texture";
+                background-image: "ui/textures/main-menu/command-center-pressed.texture";
                 background-size: cover;
             }
 
@@ -24,11 +24,11 @@
                 height: 22.12vmin;
             }
             research-tasks-button {
-                background-image: "textures/main-menu/research-tasks-normal.texture";
+                background-image: "ui/textures/main-menu/research-tasks-normal.texture";
                 background-size: cover;
             }
             research-tasks-button:active {
-                background-image: "textures/main-menu/research-tasks-pressed.texture";
+                background-image: "ui/textures/main-menu/research-tasks-pressed.texture";
                 background-size: cover;
             }
 
@@ -38,11 +38,11 @@
                 height: 22.12vmin;
             }
             statistical-data-button {
-                background-image: "textures/main-menu/statistical-data-normal.texture";
+                background-image: "ui/textures/main-menu/statistical-data-normal.texture";
                 background-size: cover;
             }
             statistical-data-button:active {
-                background-image: "textures/main-menu/statistical-data-pressed.texture";
+                background-image: "ui/textures/main-menu/statistical-data-pressed.texture";
                 background-size: cover;
             }
 
@@ -52,11 +52,11 @@
                 height: 22.12vmin;
             }
             game-settings-button {
-                background-image: "textures/main-menu/game-settings-normal.texture";
+                background-image: "ui/textures/main-menu/game-settings-normal.texture";
                 background-size: cover;
             }
             game-settings-button:active {
-                background-image: "textures/main-menu/game-settings-pressed.texture";
+                background-image: "ui/textures/main-menu/game-settings-pressed.texture";
                 background-size: cover;
             }
 
@@ -68,7 +68,7 @@
             }
         </style>
         <script type="text/x-lua" >
-            local ui_sys = require "ui_system"
+            local ui_sys = require "ui.ui_system"
             local start = ui_sys.createDataMode {
                 guide_progress = 0,
                 tech_count = 0,
@@ -92,7 +92,7 @@
             <research-tasks-button data-event-click = "clickButton('research_tasks')">
                 <research-tasks-button />
                 <button-text>科研任务</button-text>
-                <div data-if = "tech_count > 0" style='width:5vmin; height:5vmin; position:absolute; right:0; top:0; background-size: cover; background-image:"textures/work_status_icon/red_dot.texture"'>
+                <div data-if = "tech_count > 0" style='width:5vmin; height:5vmin; position:absolute; right:0; top:0; background-size: cover; background-image:"ui/textures/work_status_icon/red_dot.texture"'>
                     <div style="text-align:center; font-size:5vmin;">{{tech_count}}</div>
                 </div>
             </research-tasks-button>

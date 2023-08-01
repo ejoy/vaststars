@@ -68,7 +68,7 @@ function M:create()
     if max_idx then
         shortcut[max_idx].selected = true
         __update_shortcur_timestamp(max_idx)
-        iui.redirect("construct.rml", "construct_entity", shortcut[max_idx].prototype_name)
+        iui.redirect("ui/construct.rml", "construct_entity", shortcut[max_idx].prototype_name)
 
         main_button_icon = shortcut[max_idx].icon
     end
@@ -84,8 +84,8 @@ function M:stage_ui_update(datamodel)
     for _, _, _, index in click_button_mb:unpack() do
         local shortcut = assert(datamodel.shortcut[index])
         if shortcut.unknown == true then
-            iui.close("build.rml")
-            iui.open({"build_setting.rml"})
+            iui.close("ui/build.rml")
+            iui.open({"ui/build_setting.rml"})
         else
             if datamodel.shortcut_index ~= 0 then
                 datamodel.shortcut[datamodel.shortcut_index].selected = false
@@ -95,13 +95,13 @@ function M:stage_ui_update(datamodel)
             datamodel.shortcut[index].selected = true
             __update_shortcur_timestamp(index)
 
-            iui.redirect("construct.rml", "construct_entity", datamodel.shortcut[index].prototype_name)
+            iui.redirect("ui/construct.rml", "construct_entity", datamodel.shortcut[index].prototype_name)
             datamodel.main_button_icon = datamodel.shortcut[index].icon
         end
     end
 
     for _ in click_main_button_mb:unpack() do
-        iui.redirect("construct.rml", "build")
+        iui.redirect("ui/construct.rml", "build")
     end
 end
 
