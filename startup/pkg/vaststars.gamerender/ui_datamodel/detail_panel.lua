@@ -318,7 +318,7 @@ local function get_entity_property_list(object_id, recipe_inputs, recipe_ouputs)
         prolist.is_chest = true
     end
 
-    if e.assembling and e.assembling.status == 0 then
+    if e.assembling then
         local status
         for _, value in ipairs(prolist.recipe_ouputs) do
             if value.count >= value.output_count then
