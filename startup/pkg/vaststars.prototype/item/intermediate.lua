@@ -149,7 +149,7 @@ prototype "氢氧化铝" {
     drone_depot_gap3 = "0.5x0.2x1",
     backpack_stack = 50,
     pile_model = "prefabs/stackeditems/stack-aluminium-hydroxide.prefab",
-    item_icon = "textures/icons/item/aluminum-hydroxide.texture",
+    item_icon = "textures/icons/item/aluminium-hydroxide.texture",
     item_description = "一种白色结晶粉末,分子式Al(OH)3",
     item_category = "化工",
 }
