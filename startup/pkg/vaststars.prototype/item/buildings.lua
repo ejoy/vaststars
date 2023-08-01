@@ -309,6 +309,7 @@ prototype "蒸馏厂II" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
+    item_icon = "textures/icons/item/chemistry.texture",
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "使用蒸馏方式对液态原料进行分离的设施",
 }
