@@ -20,7 +20,7 @@ local function get_techlist(tech_list)
         local simple_ingredients = {}
         local ingredients = irecipe.get_elements(value.ingredients)
         for _, ingredient in ipairs(ingredients) do
-            simple_ingredients[#simple_ingredients + 1] = {icon = assert(ingredient.icon), count = ingredient.count}
+            simple_ingredients[#simple_ingredients + 1] = {icon = assert(ingredient.tech_icon), count = ingredient.count}
         end
         local detail = {}
         local sub_icon = ' '
