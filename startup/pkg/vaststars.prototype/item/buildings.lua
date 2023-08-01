@@ -773,3 +773,52 @@ prototype "热管1-X型" {
     pile_model = "prefabs/stackeditems/stack-building.prefab",
     item_description = "传导热量的特殊管道",
 }
+
+----------------------------------------
+prototype "机身残骸" {
+    type = {"item"},
+    item_category = "物流",
+    stack = 50,
+    pile = "4x4x4",
+    drone_depot_gap3 = "0.2x0.05x0.2",
+    backpack_stack = 100,
+    item_icon = "textures/icons/item/limestone.texture",
+    pile_model = "prefabs/stackeditems/stack-building.prefab",
+    item_description = "传导热量的特殊管道",
+}
+
+prototype "机翼残骸" {
+    type = {"item"},
+    item_category = "物流",
+    stack = 50,
+    pile = "4x4x4",
+    drone_depot_gap3 = "0.2x0.05x0.2",
+    backpack_stack = 100,
+    item_icon = "textures/icons/item/limestone.texture",
+    pile_model = "prefabs/stackeditems/stack-building.prefab",
+    item_description = "传导热量的特殊管道",
+}
+
+prototype "机头残骸" {
+    type = {"item"},
+    item_category = "物流",
+    stack = 50,
+    pile = "4x4x4",
+    drone_depot_gap3 = "0.2x0.05x0.2",
+    backpack_stack = 100,
+    item_icon = "textures/icons/item/limestone.texture",
+    pile_model = "prefabs/stackeditems/stack-building.prefab",
+    item_description = "传导热量的特殊管道",
+}
+
+prototype "机尾残骸" {
+    type = {"item"},
+    item_category = "物流",
+    stack = 50,
+    pile = "4x4x4",
+    drone_depot_gap3 = "0.2x0.05x0.2",
+    backpack_stack = 100,
+    item_icon = "textures/icons/item/limestone.texture",
+    pile_model = "prefabs/stackeditems/stack-building.prefab",
+    item_description = "传导热量的特殊管道",
+}
