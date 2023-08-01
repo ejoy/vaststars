@@ -310,9 +310,10 @@ local function get_entity_property_list(object_id, recipe_inputs, recipe_ouputs)
     elseif e.laboratory then
         local current_inputs = ilaboratory:get_elements(typeobject.inputs)
         local items = {}
+        local gw = gameplay_core.get_world()
         for i, value in ipairs(current_inputs) do
             local slot = ichest.chest_get(gameplay_core.get_world(), e.chest, i)
-            items[#items+1] = {icon = value.icon, name = "", count = slot.amount or 0}
+            items[#items+1] = {icon = value.icon, name = "", count = slot and slot.amount or 0, demand_count = gw:container_get(e.chest, 1).limit}
         end
         prolist.chest_list = items
         prolist.is_chest = true
@@ -338,9 +339,20 @@ local function get_entity_property_list(object_id, recipe_inputs, recipe_ouputs)
             prolist.status = status
         end
     elseif prolist.chest_list and #prolist.chest_list > 0 then
-        local iteminfo = prolist.chest_list[#prolist.chest_list]
-        if not entity.is_chest and iteminfo.count == iteminfo.max_count then
-            prolist.status = STATUS_STACK_FULL
+        if prolist.is_chest then
+            if e.laboratory then
+                for _, value in ipairs(prolist.chest_list) do
+                    if value.count < value.demand_count then
+                        prolist.status = STATUS_WAIT_INPUT
+                        break
+                    end
+                end
+            end
+        else
+            local iteminfo = prolist.chest_list[#prolist.chest_list]
+            if iteminfo.count == iteminfo.max_count then
+                prolist.status = STATUS_STACK_FULL
+            end
         end
     end
     return prolist
