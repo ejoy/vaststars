@@ -118,7 +118,7 @@
             }
         </style>
         <style path = "common/building_style.rcss"/>
-        <script type="text/x-lua" path = "lua/chest.lua" />
+        <script type="text/x-lua" path = "ui/lua/chest.lua" />
     </head>
     <body>
         <div class="item-container-region"  data-model="start">

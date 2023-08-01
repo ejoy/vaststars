@@ -101,6 +101,19 @@
             background-image: "ui/textures/construct/item-detail.texture";
             background-size: 100% 100%;
         }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
         </style>
         <script type="text/x-lua" >
             local ui_sys = require "ui.ui_system"
@@ -132,6 +145,13 @@
             function start.clickButton(...)
                 -- console.log(...)
                 ui_sys.pub {...}
+            end
+
+            function start.clickSpace()
+                for _, button in ipairs(document.getElementsByTagName "main-button") do
+                    button.style.animation = "none"
+                    button.style.animation = "0.3s linear forwards pulse"
+                end
             end
 
             ui_sys.mapping(start, {
@@ -200,7 +220,7 @@
         </script>
     </head>
     <body style = "pointer-events: none; margin: 0 3.995vmax 0 4.715vmax;" onload="init()">
-        <div style = "margin: 0 0 0 -4.715vmax; position: absolute; width: 103.995vmax; height: 100%; background-color: rgba(128, 128, 128, 200);" />
+        <div style = "margin: 0 0 0 -4.715vmax; position: absolute; width: 103.995vmax; height: 100%; background-color: rgba(128, 128, 128, 200);" data-event-click = "clickSpace()" />
         <buttons-container>
             <button-container data-style-transform = "it.transform" data-style-margin = "it.margin" data-for = "shortcut_buttons" >
                 <button>
