@@ -11,6 +11,7 @@ local itask = ecs.require "task"
 local item_unlocked = ecs.require "ui_datamodel.common.item_unlocked".is_unlocked
 local ITEM_CATEGORY <const> = import_package "vaststars.prototype"("item_category")
 local iprototype = require "gameplay.interface.prototype"
+local iui = ecs.import.interface "vaststars.gamerender|iui"
 
 local function __set_item_value(datamodel, category_idx, item_idx, key, value)
     if category_idx == 0 and item_idx == 0 then
@@ -126,19 +127,17 @@ function M:stage_ui_update(datamodel, object_id, interface)
     for _ in set_item_mb:unpack() do
         local category_idx = datamodel.category_idx
         local item_idx = datamodel.item_idx
-        if category_idx == 0 and item_idx == 0 then
-            goto continue
+        if not(category_idx == 0 and item_idx == 0) then
+            assert(datamodel.items[category_idx])
+            assert(datamodel.items[category_idx].items[item_idx])
+            local name = datamodel.items[category_idx].items[item_idx].name
+            local typeobject = assert(iprototype.queryByName(name))
+            local e = gameplay_core.get_entity(assert(objects:get(object_id).gameplay_eid))
+            local gameplay_world = gameplay_core.get_world()
+            interface.set_first_item(gameplay_world, e, typeobject.id)
+            itask.update_progress("set_item", name)
         end
-
-        assert(datamodel.items[category_idx])
-        assert(datamodel.items[category_idx].items[item_idx])
-        local name = datamodel.items[category_idx].items[item_idx].name
-        local typeobject = assert(iprototype.queryByName(name))
-        local e = gameplay_core.get_entity(assert(objects:get(object_id).gameplay_eid))
-        local gameplay_world = gameplay_core.get_world()
-        interface.set_first_item(gameplay_world, e, typeobject.id)
-        itask.update_progress("set_item", name)
-        ::continue::
+        iui.close("ui/item_config.rml")
     end
 end
 

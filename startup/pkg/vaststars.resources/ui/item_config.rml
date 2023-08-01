@@ -119,7 +119,6 @@
 
             function start.clickSetItem()
                 ui_sys.pub {"set_item"}
-                ui_sys.close()
             end
 
             window.setTimeout(function()

@@ -4,6 +4,8 @@ local w = world.w
 local gameplay_core = require "gameplay.core"
 local global = require "global"
 local close_taskui_event = mailbox:sub {"close_taskui"}
+local iui = ecs.import.interface "vaststars.gamerender|iui"
+
 local M = {}
 
 local function get_multiple(task)
@@ -31,6 +33,7 @@ end
 function M:stage_ui_update(datamodel)
     for _, _, _ in close_taskui_event:unpack() do
         gameplay_core.world_update = true
+        iui.close("ui/task_pop.rml")
     end
 
 end

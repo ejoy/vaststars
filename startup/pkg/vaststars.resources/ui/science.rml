@@ -403,7 +403,6 @@
                     ui_sys.pub {"show_list", "todo"}
                 else
                     ui_sys.pub {"close_techui"}
-                    ui_sys.close()
                 end
             end
             function start.clickReturn(event)

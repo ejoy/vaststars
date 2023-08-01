@@ -216,6 +216,8 @@ function M:stage_ui_update(datamodel, object_id)
 
             itask.update_progress("set_recipe", recipe_name)
         end
+
+        iui.close("ui/recipe_config.rml")
     end
 
     for _ in clear_recipe_mb:unpack() do
@@ -232,6 +234,8 @@ function M:stage_ui_update(datamodel, object_id)
 
         datamodel.category_idx = 0
         datamodel.recipe_idx = 0
+
+        iui.close("ui/recipe_config.rml")
     end
 end
 

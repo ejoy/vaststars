@@ -44,7 +44,6 @@
             }
             window.setTimeout(function()
                 ui_sys.pub {"close"}
-                ui_sys.close()
             end, 3000)
             ui_sys.mapping(start, {
                 {

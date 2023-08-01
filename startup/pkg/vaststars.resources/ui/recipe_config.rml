@@ -123,12 +123,10 @@
 
             function start.clickClearRecipe()
                 ui_sys.pub {"clear_recipe"}
-                ui_sys.close()
             end
 
             function start.clickConfirm()
                 ui_sys.pub {"set_recipe", start.object_id}
-                ui_sys.close()
             end
 
             function init()

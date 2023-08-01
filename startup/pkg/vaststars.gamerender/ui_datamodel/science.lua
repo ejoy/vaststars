@@ -140,6 +140,7 @@ function M:stage_ui_update(datamodel)
 
     for _, _, _ in close_techui_event:unpack() do
         gameplay_core.world_update = true
+        iui.close("ui/science.rml")
     end
     for _, _, _, list in show_list_event:unpack() do
         local items = get_techlist((list == "todo") and global.science.tech_list or global.science.finish_list)

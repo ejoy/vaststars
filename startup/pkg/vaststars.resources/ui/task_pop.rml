@@ -112,7 +112,6 @@
 
             function start.clickConfirm()
                 ui_sys.pub {"close_taskui"}
-                ui_sys.close()
             end
 
             local function page_item_update(item, index)
