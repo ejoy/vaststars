@@ -103,9 +103,9 @@
             }
             item-source {
                 position: absolute;
-                left: 57.55vmax;
+                left: 58.05vmax;
                 top: 31.00vmin;
-                width: 31.92vmax;
+                width: 31.02vmax;
                 height: 68.07vmin;
                 background-image: "ui/textures/inventory/item-source-bg.texture";
                 background-size: 100% 100%;

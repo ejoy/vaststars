@@ -19,7 +19,7 @@ local function get_inventory()
         local v = {}
         v.id = typeobject_item.id
         v.name = typeobject_item.name
-        v.icon = typeobject_item.icon
+        v.icon = typeobject_item.item_icon
         v.count = slot.amount
 
         local category = typeobject_item.item_category
@@ -87,7 +87,7 @@ function M:stage_ui_update(datamodel)
             local typeobject = iprototype.queryByName(item_name)
             datamodel.item_name = iprototype.display_name(typeobject)
             datamodel.item_desc = typeobject.item_description or ""
-            datamodel.item_icon = typeobject.icon
+            datamodel.item_icon = typeobject.item_icon
 
             datamodel.item_ingredients = {}
             for _, v in pairs(iprototype_cache.get("item_ingredients").item_ingredients[item_name] or {}) do
