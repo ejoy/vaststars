@@ -75,24 +75,23 @@ end
 
 local motion_events = {}
 -- key_frames = {s = xx, r = xx, t = xx, step = xx}, ...
-motion_events["update_keyframes_on_change"] = function(obj, e, x, y, toward, offset, last_srt)
-    if obj.x == x and obj.y == y and obj.toward == toward and obj.offset == offset then
-        return
+motion_events["update"] = function(obj, e, x, y, toward, offset, last_srt, maxprogress, progress)
+    if not (obj.x == x and obj.y == y and obj.toward == toward and obj.offset == offset) then
+        obj.x, obj.y, obj.toward, obj.offset = x, y, toward, offset
+        obj.last_srt = obj.last_srt or last_srt
+
+        local kfs = __gen_keyframes(obj.last_srt, x, y, toward, offset)
+        local last = kfs[#kfs]
+        obj.last_srt = {s = math3d.ref(last.s), r = math3d.ref(last.r), t = math3d.ref(last.t)}
+
+        ims.set_keyframes(e, table.unpack(kfs))
     end
-    obj.x, obj.y, obj.toward, obj.offset = x, y, toward, offset
-    obj.last_srt = obj.last_srt or last_srt
 
-    local kfs = __gen_keyframes(obj.last_srt, x, y, toward, offset)
-    local last = kfs[#kfs]
-    obj.last_srt = {s = math3d.ref(last.s), r = math3d.ref(last.r), t = math3d.ref(last.t)}
-
-    ims.set_keyframes(e, table.unpack(kfs))
+    if not (obj.maxprogress == maxprogress and obj.progress == progress) then
+        obj.maxprogress, obj.progress = maxprogress, progress
+        ims.set_duration(e, maxprogress, progress, true)
+    end
 end
-motion_events["set_ratio"] = function (_, e, progress, maxprogress)
-    assert(progress <= maxprogress)
-    ims.set_ratio(e, progress/maxprogress)
-end
-
 local function __create_lorry(classid, x, y, toward, offset)
     local road_srt = {s = mc.ONE, t = math3d.vector(iterrain:get_position_by_coord(x, y, ROAD_TILE_WIDTH_SCALE, ROAD_TILE_HEIGHT_SCALE))}
     local start_srt = start_srts[toward]
@@ -203,8 +202,7 @@ function lorry_sys:gameworld_update()
         if not lorry then
             lorry = __create_lorry(classid, x, y, toward, offset)
         end
-        lorry:motion_opt("update_keyframes_on_change", x, y, toward, offset, lorry.last_srt)
-        lorry:motion_opt("set_ratio", maxprogress - progress, maxprogress)
+        lorry:motion_opt("update", x, y, toward, offset, lorry.last_srt, maxprogress, maxprogress - progress, true)
         lorry:set_item(item_classid, item_amount)
 
         new_lorries[e.eid] = lorry
