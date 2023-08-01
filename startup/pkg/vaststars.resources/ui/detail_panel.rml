@@ -12,8 +12,8 @@
                 flex-direction: column;
                 align-items:center;
                 justify-content:flex-end;
-                background-color: rgb(252, 138, 0);
-                border: 0.2vmin rgb(89, 73, 39);
+                background-color: rgb(61, 61, 61);
+                border: 0.2vmin rgb(251, 177, 61);
                 background-size:cover;
                 width: 5.70vmin;
                 height: 5.70vmin;
@@ -240,7 +240,7 @@
 
                         <!--组装机成品栏-->
                         <div class="row" style="width: 100%; justify-content: flex-end; flex-wrap: wrap;">
-                            <div class="small-item1" style="width:7vmin; height:7vmin; border: 0.3vmin rgb(89, 73, 39);" data-style-background-image="it.icon" data-for="recipe_ouputs">
+                            <div class="small-item1" style="width:7vmin; height:7vmin;border: 0.3vmin rgb(251, 177, 61);" data-style-background-image="it.icon" data-for="recipe_ouputs">
                                 <div class ="item-count-combination">
                                     <div class="item-count-new" data-style-font-size="it.count > 99 and '2vmin' or '2.7vmin'" data-style-color="it.count < it.output_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">{{it.count}}</div>
                                     <div class="item-count-new" data-style-font-size="it.output_count > 99 and '1.5vmin' or '2.2vmin'">/{{it.output_count}}</div>
@@ -248,7 +248,7 @@
                             </div>
                         </div>
                     </div>
-                    <div style="height:122%; width: 105%; position: absolute; bottom:2vmin; border: 0.8vmin rgb(0, 217, 255); animation: 0.4s linear 0s infinite alternate enlarge3;" data-if="guide_progress == 15 or guide_progress == 20 or guide_progress == 26 or guide_progress == 27"/>
+                    <div style="height:122%; width: 105%; position: absolute; bottom:2vmin; border: 0.3vmin rgb(0, 217, 255); animation: 0.4s linear 0s infinite alternate enlarge3;" data-if="guide_progress == 15 or guide_progress == 20 or guide_progress == 26 or guide_progress == 27"/>
                 </div>
                 <!--无人机仓库/车站中当前物品-->
                 <div style="width:90%; margin-left: 3%; margin-right: 3%; flex-direction: column; justify-content: flex-start; align-items: center;" data-if = "show_type=='goods'" data-event-click="onLongPress(6)">
@@ -313,7 +313,7 @@
                     <div style="text-align: center; font-size: 6vmin; top: -15.5vmin;">{{progress}}</div>
                 </div>
                 <div class="column" style="width: 18vmin; justify-content: space-evenly; align-items: center;">
-                    <div class="small-item1" style="width: 15vmin; height: 15vmin; border: 0.3vmin rgb(89, 73, 39);" data-style-background-image="it.icon" data-for="recipe_ouputs">
+                    <div class="small-item1" style="width: 15vmin; height: 15vmin; border: 0.3vmin rgb(251, 177, 61);" data-style-background-image="it.icon" data-for="recipe_ouputs">
                         <div class ="item-count-combination">
                             <div class="item-count-new" data-style-font-size="it.count > 99 and '4vmin' or '5.4vmin'" data-style-color="it.count < it.output_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">{{it.count}}</div>
                             <div class="item-count-new" data-style-font-size="it.output_count > 99 and '3vmin' or '4.4vmin'">/{{it.output_count}}</div>
