@@ -202,6 +202,8 @@ local function get_fly_height(prev, next)
     return fly_height
 end
 
+local drone_to_remove = {}
+
 function drone_sys:gameworld_update()
     local gameworld = gameplay_core.get_world()
     local same_dest_offset = {}
@@ -211,7 +213,7 @@ function drone_sys:gameworld_update()
         assert(drone.prev ~= 0, "drone.prev == 0")
         if drone.status == STATUS_HAS_ERROR then
             if lookup_drones[e.eid] then
-                remove_drone(e.eid)
+                drone_to_remove[#drone_to_remove + 1] = e.eid
             end
             goto continue
         end
@@ -272,4 +274,14 @@ function drone_sys:gameworld_clean()
         drone:destroy()
     end
     lookup_drones = {}
+end
+
+function drone_sys:end_frame()
+    if #drone_to_remove == 0 then
+        return
+    end
+    for _, deid in ipairs(drone_to_remove) do
+        remove_drone(deid)
+    end
+    drone_to_remove = {}
 end

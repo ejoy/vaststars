@@ -18,6 +18,24 @@ local iui = ecs.import.interface "vaststars.gamerender|iui"
 
 local UPS <const> = require("gameplay.interface.constant").UPS
 local CHEST_LIST_TYPES <const> = {"chest", "station_producer", "station_consumer", "hub"}
+
+local STATUS_NO_POWER <const> = 1
+local STATUS_IDLE <const> = 2
+local STATUS_WORK <const> = 3
+local STATUS_WAIT_INPUT <const> = 4
+local STATUS_WAIT_OUTPUT <const> = 5
+local STATUS_SHORT_OF_POWER <const> = 6
+local STATUS_STACK_FULL <const> = 7
+local detail_panel_status = {
+    {desc = "断电停机", icon = "ui/textures/detail/stop.texture"},
+    {desc = "待机空闲", icon = "ui/textures/detail/idle.texture"},
+    {desc = "正常工作", icon = "ui/textures/detail/work.texture"},
+    {desc = "等待供料", icon = "ui/textures/detail/idle.texture"},
+    {desc = "等待出货", icon = "ui/textures/detail/idle.texture"},
+    {desc = "供电不足", icon = "ui/textures/detail/idle.texture"},
+    {desc = "存货已满", icon = "ui/textures/detail/idle.texture"},
+}
+
 local function format_vars(fmt, vars)
     return string.gsub(fmt, "%$([%w%._]+)%$", vars)
 end
@@ -76,7 +94,7 @@ local function get_display_info(e, typeobject, t)
         return
     end
     local values = t.values
-    local status = 3 --work status
+    local status = STATUS_WORK
     for _, propertyName in ipairs(detail) do
         local cfg = property_list[propertyName]
         if cfg.value then
@@ -103,14 +121,14 @@ local function get_display_info(e, typeobject, t)
                         elseif e.solar_panel then
                             current = get_solar_panel_power(total) * UPS
                             if current <= 0 then
-                                status = 1 --shundown status
+                                status = STATUS_NO_POWER
                             end
                         end
                         if typeobject.drain then
                             if current <= 0 then
-                                status = 1 --shundown status
+                                status = STATUS_NO_POWER
                             elseif current <= typeobject.drain * UPS then
-                                status = 2 --idle status
+                                status = STATUS_IDLE
                             end
                         end
                         total = total * UPS
@@ -168,12 +186,13 @@ local function get_property(e, typeobject)
             local c = ichest.chest_get(gameplay_core.get_world(), e[chest_component], 1)
             if c then
                 local typeobject_item = assert(iprototype.queryById(c.item))
-                chest_list[#chest_list + 1] = {icon = typeobject_item.item_icon, name = typeobject_item.name, count = ichest.get_amount(c)}
+                local gw = gameplay_core.get_world()
+                chest_list[#chest_list + 1] = {icon = typeobject_item.item_icon, name = typeobject_item.name, count = ichest.get_amount(c), max_count = (e.hub and gw:container_get(e.hub, 1).limit or typeobject_item.stack) }
             end
         else
             for _, slot in pairs(ichest.collect_item(gameplay_core.get_world(), e[chest_component])) do
                 local typeobject_item = assert(iprototype.queryById(slot.item))
-                chest_list[#chest_list + 1] = {icon = typeobject_item.item_icon, name = "", count = ichest.get_amount(slot)}
+                chest_list[#chest_list + 1] = {icon = typeobject_item.item_icon, name = "", count = ichest.get_amount(slot), max_count = typeobject_item.stack}
             end
             t.is_chest = true
         end
@@ -253,9 +272,6 @@ local function get_property(e, typeobject)
     return t
 end
 
-local STATUS_IDLE <const> = 0
-local STATUS_DONE <const> = 1
-
 local function get_entity_property_list(object_id, recipe_inputs, recipe_ouputs)
     local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
@@ -266,7 +282,7 @@ local function get_entity_property_list(object_id, recipe_inputs, recipe_ouputs)
     local typeobject = iprototype.queryByName(object.prototype_name)
 
     local entity = get_property(e, typeobject)
-    local property_list = get_property_list(entity)
+    local prolist = get_property_list(entity)
     if e.assembling then
         local total_progress = 0
         local progress = 0
@@ -274,21 +290,21 @@ local function get_entity_property_list(object_id, recipe_inputs, recipe_ouputs)
             local recipe_typeobject = assert(iprototype.queryById(e.assembling.recipe))
             total_progress = recipe_typeobject.time * 100
             progress = e.assembling.progress
-            property_list.recipe_name = recipe_typeobject.name
+            prolist.recipe_name = recipe_typeobject.name
             if recipe_inputs and recipe_ouputs then
-                property_list.recipe_inputs, property_list.recipe_ouputs = recipe_inputs, recipe_ouputs
+                prolist.recipe_inputs, prolist.recipe_ouputs = recipe_inputs, recipe_ouputs
             else
-                property_list.recipe_inputs, property_list.recipe_ouputs = assembling_common.get(gameplay_core.get_world(), e)
+                prolist.recipe_inputs, prolist.recipe_ouputs = assembling_common.get(gameplay_core.get_world(), e)
             end
-            if e.assembling.status == STATUS_IDLE then
-                property_list.progress = "0%"
+            if e.assembling.status == 0 then -- c status : idle
+                prolist.progress = "0%"
             else
-                property_list.progress = itypes.progress_str(progress, total_progress)
+                prolist.progress = itypes.progress_str(progress, total_progress)
             end
             if e.mining then
-                property_list.show_type = "minner"
+                prolist.show_type = "minner"
             else
-                property_list.show_type = "assemble"
+                prolist.show_type = "assemble"
             end
         end
     elseif e.laboratory then
@@ -298,15 +314,39 @@ local function get_entity_property_list(object_id, recipe_inputs, recipe_ouputs)
             local slot = ichest.chest_get(gameplay_core.get_world(), e.chest, i)
             items[#items+1] = {icon = value.icon, name = "", count = slot.amount or 0}
         end
-        property_list.chest_list = items
-        property_list.is_chest = true
+        prolist.chest_list = items
+        prolist.is_chest = true
     end
-    return property_list
+
+    if e.assembling and e.assembling.status == 0 then
+        local status
+        for _, value in ipairs(prolist.recipe_ouputs) do
+            if value.count >= value.output_count then
+                status = STATUS_WAIT_OUTPUT
+                break
+            end
+        end
+        if not status then
+            for _, value in ipairs(prolist.recipe_inputs) do
+                if value.count < value.demand_count then
+                    status = STATUS_WAIT_INPUT
+                    break
+                end
+            end
+        end
+        if status then
+            prolist.status = status
+        end
+    elseif prolist.chest_list and #prolist.chest_list > 0 then
+        local iteminfo = prolist.chest_list[#prolist.chest_list]
+        if not entity.is_chest and iteminfo.count == iteminfo.max_count then
+            prolist.status = STATUS_STACK_FULL
+        end
+    end
+    return prolist
 end
 
 ---------------
-local detail_panel_status_icon = {"ui/textures/detail/stop.texture","ui/textures/detail/idle.texture","ui/textures/detail/work.texture"}
-local detail_panel_status_desc = {"断电停机", "待机空闲", "正常工作"}
 local M = {}
 local update_interval = 10 --update per 25 frame
 local counter = 1
@@ -327,9 +367,9 @@ local function update_property_list(datamodel, property_list)
     datamodel.recipe_inputs = property_list.recipe_inputs or {}
     datamodel.recipe_ouputs = property_list.recipe_ouputs or {}
     datamodel.recipe_name = property_list.recipe_name
-    local status = property_list.status or 3
-    datamodel.detail_panel_status_icon = detail_panel_status_icon[status]
-    datamodel.detail_panel_status_desc = detail_panel_status_desc[status]
+    local status = property_list.status or STATUS_WORK
+    datamodel.detail_panel_status_icon = detail_panel_status[status].icon
+    datamodel.detail_panel_status_desc = detail_panel_status[status].desc
     datamodel.property_list = property_list.prop_list
     return property_list.recipe_inputs, property_list.recipe_ouputs
 end
