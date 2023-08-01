@@ -268,7 +268,7 @@ function M:stage_ui_update(datamodel)
     for _, _, _, is_task in click_techortaskicon_mb:unpack() do
         if gameplay_core.world_update and global.science.current_tech then
             gameplay_core.world_update = false
-            iui.open(is_task and {"task_pop.rml"} or {"science.rml"})
+            iui.open(is_task and {"ui/task_pop.rml"} or {"ui/science.rml"})
         end
     end
 
