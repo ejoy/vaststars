@@ -542,11 +542,11 @@ function M:stage_ui_update(datamodel, object_id)
         current_inputs, current_ouputs = assembling_common.get(gameplay_core.get_world(), e)
         local input_auto, input_dirty, input_delta = get_delta(last_inputs, current_inputs, true)
         local out_auto, output_dirty, _ = get_delta(last_ouputs, current_ouputs)
-        if input_auto then
-            preinput = copy_table(last_inputs)
-        elseif out_auto then
-            preinput = {}
-        end
+        -- if input_auto then
+        --     preinput = copy_table(last_inputs)
+        -- elseif out_auto then
+        --     preinput = {}
+        -- end
         if #preinput > 0 and not input_auto then
             for index, input in ipairs(preinput) do
                 input.count = input.count + (input_delta[index] or 0)
