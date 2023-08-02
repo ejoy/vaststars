@@ -142,7 +142,7 @@
                 text-align: left;
             }
             .y-text {
-                font-size: 3.0vmin;
+                font-size: 2.8vmin;
                 text-align: right;
             }
             .total-power {
@@ -186,7 +186,7 @@
                     <div class="total-power">
                         <div class="total-power-indicator" data-style-width="percent_str"/>
                         <div class="total-power-num" style="right: 0;">{{total_str}}</div>
-                        <div class="total-power-num" style="left: -8vmin; font-size: 3.4vmin; color: darkorange;">{{total_label}}</div>
+                        <div class="total-power-num" style="left: -8vmin; font-size: 2.7vmin; color: darkorange;">{{total_label}}</div>
                     </div>
 
                     <!-- 图表显示 -->
