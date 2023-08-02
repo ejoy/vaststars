@@ -252,9 +252,8 @@
                 </div>
                 <!--无人机仓库/车站中当前物品-->
                 <div style="width:90%; margin-left: 3%; margin-right: 3%; flex-direction: column; justify-content: flex-start; align-items: center;" data-if = "show_type=='goods'" data-event-click="onLongPress(6)">
-                    <!--div style="text-align: center; font-size: 3vmin; color: #adadad; margin-bottom: 5vmin;">存放货物</div-->
-                    <div class="small-item1" style="margin: 0.5vmin; height: 8vmin; width: 8vmin; margin-top: 8vmin;" data-style-background-image="goods_icon"/>
-                    <div style="text-align: center; font-size: 3.5vmin;">{{goods_desc}}</div>
+                    <div style="text-align: center; font-size: 3.5vmin; margin-top: 8vmin;">{{goods_desc}}</div>
+                    <div class="small-item1" style="margin: 0.5vmin; height: 8vmin; width: 8vmin;" data-style-background-image="goods_icon"/>
                 </div>
             </div>
             <!-- detail panel end -->
@@ -290,19 +289,25 @@
                     <div style="text-align: center; font-size: 6vmin; top: -220%; -webkit-text-stroke: 0.2vmin #000;">{{progress}}</div>
                 </div>
                 <div class="row" style="width: 80%; justify-content: flex-end;">
-                    <div class="small-item1" style="width: 15vmin; height: 15vmin;" data-style-background-image="it.icon" data-for="recipe_ouputs">
-                        <div class ="item-count-combination">
-                            <div class="item-count-new" style="font-size: 6vmin;">{{it.count}}</div>
+                    <div style='flex-direction: column; align-items: center;' data-for="recipe_ouputs">
+                        <div style='font-size: 6vmin'>{{it.name}}</div>
+                        <div class="small-item1" style="width: 15vmin; height: 15vmin;" data-style-background-image="it.icon">
+                            <div class ="item-count-combination">
+                                <div class="item-count-new" style="font-size: 6vmin;">{{it.count}}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="tips-bg" style='flex-direction: row; justify-content: center; align-items: center;' data-if="areaid==5.0">
                 <div class="column" style="width: 18vmin; justify-content: space-evenly; align-items: center;">
-                    <div class="small-item1" style="width: 15vmin; height: 15vmin; border: 0.3vmin rgb(0, 217, 255);" data-style-background-image="it.icon" data-for="recipe_inputs">
-                        <div class ="item-count-combination">
-                            <div class="item-count-new" data-style-font-size="it.count > 99 and '4vmin' or '5.4vmin'" data-style-color="it.count < it.demand_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">{{it.count}}</div>
-                            <div class="item-count-new" data-style-font-size="it.demand_count > 99 and '3vmin' or '4.4vmin'">/{{it.demand_count}}</div>
+                    <div style='flex-direction: column; align-items: center;' data-for="recipe_inputs">
+                        <div>{{it.name}}</div>
+                        <div class="small-item1" style="width: 15vmin; height: 15vmin; border: 0.3vmin rgb(0, 217, 255);" data-style-background-image="it.icon">
+                            <div class ="item-count-combination">
+                                <div class="item-count-new" data-style-font-size="it.count > 99 and '4vmin' or '5.4vmin'" data-style-color="it.count < it.demand_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">{{it.count}}</div>
+                                <div class="item-count-new" data-style-font-size="it.demand_count > 99 and '3vmin' or '4.4vmin'">/{{it.demand_count}}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -313,12 +318,21 @@
                     <div style="text-align: center; font-size: 6vmin; top: -15.5vmin;">{{progress}}</div>
                 </div>
                 <div class="column" style="width: 18vmin; justify-content: space-evenly; align-items: center;">
-                    <div class="small-item1" style="width: 15vmin; height: 15vmin; border: 0.3vmin rgb(251, 177, 61);" data-style-background-image="it.icon" data-for="recipe_ouputs">
-                        <div class ="item-count-combination">
-                            <div class="item-count-new" data-style-font-size="it.count > 99 and '4vmin' or '5.4vmin'" data-style-color="it.count < it.output_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">{{it.count}}</div>
-                            <div class="item-count-new" data-style-font-size="it.output_count > 99 and '3vmin' or '4.4vmin'">/{{it.output_count}}</div>
+                    <div style='flex-direction: column; align-items: center;' data-for="recipe_ouputs">
+                        <div>{{it.name}}</div>
+                        <div class="small-item1" style="width: 15vmin; height: 15vmin; border: 0.3vmin rgb(251, 177, 61);" data-style-background-image="it.icon">
+                            <div class ="item-count-combination">
+                                <div class="item-count-new" data-style-font-size="it.count > 99 and '4vmin' or '5.4vmin'" data-style-color="it.count < it.output_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">{{it.count}}</div>
+                                <div class="item-count-new" data-style-font-size="it.output_count > 99 and '3vmin' or '4.4vmin'">/{{it.output_count}}</div>
+                            </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="tips-bg" data-if="areaid==6.0">
+                <div style="flex-direction: column; justify-content: center; align-items: center;">
+                    <div style="text-align: center; font-size: 8vmin;">{{goods_desc}}</div>
+                    <div class="small-item1" style="height: 20vmin; width: 20vmin;" data-style-background-image="goods_icon"/>
                 </div>
             </div>
         </div>
