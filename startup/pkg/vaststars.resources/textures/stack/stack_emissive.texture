@@ -1,0 +1,14 @@
+path: /pkg/vaststars.resources/textures/stack/stack_emissive.png
+compress:
+  android: ASTC4x4
+  ios: ASTC4x4
+  windows: BC3
+maxsize: 32x32
+mipmap: 0
+sampler:
+  MAG: LINEAR
+  MIN: LINEAR
+  MIP: LINEAR
+  U: WRAP
+  V: WRAP
+type: texture

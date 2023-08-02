@@ -1,0 +1,3 @@
+material: /pkg/ant.resources/materials/pbr_heap.material
+properties:
+  u_pbr_factor: {0.800000011920929, 0.20000000298023224, 1, 1}

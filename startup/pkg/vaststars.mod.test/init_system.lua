@@ -34,33 +34,55 @@ function S.init()
         iom.set_direction(le, math3d.vector(0.2664446532726288, -0.25660401582717896, 0.14578714966773987, 0.9175552725791931))
     end
     world:create_object(p)
+
+    ecs.create_entity {
+        policy = {
+            "ant.render|render",
+            "ant.general|name",
+            "ant.render|heap_mesh",
+         },
+        data = {
+            name = "heap_items",
+            scene   = {},
+            material = "/pkg/vaststars.resources/materials/stack/stack-crush-iron-ore.material_instance",
+            visible_state = "main_view",
+            mesh = "/pkg/vaststars.resources/glb/stackeditems/stack-crush-iron-ore.glb|meshes/Cube.035_P1.meshbin",
+            heapmesh = {
+                curSideSize = {3, 3, 3},
+                curHeapNum = 27,
+                interval = {0.1, 0.1, 0.1},
+            },
+            indirect = "HEAP_MESH",
+        },
+    }
+
+    ecs.create_entity {
+        policy = {
+            "ant.render|render",
+            "ant.general|name",
+            "ant.render|heap_mesh",
+         },
+        data = {
+            name = "heap_items",
+            scene   = {t = {5, 0, 5}},
+            material = "/pkg/ant.resources/materials/pbr_heap_color.material",
+            visible_state = "main_view",
+            mesh = "/pkg/vaststars.resources/glb/stackeditems/stack-geology-pack.glb|meshes/Cube.035_P1.meshbin",
+            heapmesh = {
+                curSideSize = {3, 3, 3},
+                curHeapNum = 27,
+                interval = {0.1, 0.1, 0.1},
+            },
+            indirect = "HEAP_MESH",
+        },
+    }
 end
 
 local create_list = {}
 local update_list = {}
 local delete_list = {}
 function S.init_world()
---[[     local pos1 = math3d.vector(-1, 0, -1)
-    local pos2 = math3d.vector(-1, 0, 1)
-    local pos3 = math3d.vector(1, 0, -1)
-    local pos4 = math3d.vector(1, 0, 1) ]]
---[[     local pos1 = math3d.vector(0, 0, 0)
-    local pos2 = math3d.vector(0, 0, 1)
-    local pos3 = math3d.vector(1, 0, 0)
-    local pos4 = math3d.vector(1, 0, 1)
-    local uv1 = math3d.vector(0, 1, 0)
-    local uv2 = math3d.vector(0, 0, 0)
-    local uv3 = math3d.vector(1, 1, 0)
-    local uv4 = math3d.vector(1, 0, 0)
-    local edge1 = math3d.sub(pos2, pos3)
-    local edge2 = math3d.sub(pos1, pos3)
-    local d1 = math3d.sub(uv2, uv3)
-    local d2 = math3d.sub(uv1, uv3)
-    local f = 1 / ((math3d.index(d1, 1) * math3d.index(d2, 2)) - (math3d.index(d2, 1) * math3d.index(d1, 2)) )
-    local x = f * (math3d.index(d2, 2) * math3d.index(edge1, 1) -math3d.index(d1, 2) * math3d.index(edge2, 1) )
-    local y = f * (math3d.index(d2, 2) * math3d.index(edge1, 2) -math3d.index(d1, 2) * math3d.index(edge2, 2) )
-    local z = f * (math3d.index(d2, 2) * math3d.index(edge1, 3) -math3d.index(d1, 2) * math3d.index(edge2, 3) )
- ]]
+
 
     local mq = w:first("main_queue camera_ref:in")
     local eyepos = math3d.vector(0, 100, -50)
@@ -69,6 +91,8 @@ function S.init_world()
     local dir = math3d.normalize(math3d.sub(mc.ZERO_PT, eyepos))
     iom.set_direction(camera_ref, dir)
     iterrain.gen_terrain_field(256, 256, 128)
+
+
 --[[       ecs.create_entity{
         policy = {
             "ant.scene|scene_object",
