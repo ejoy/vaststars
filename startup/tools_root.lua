@@ -60,10 +60,6 @@ local function init_setting()
 		os = OS,
 		ext = TextureExtensions[Renderer],
 	})
-	cr.set_setting("png", stringify {
-		os = OS,
-		ext = TextureExtensions[Renderer],
-	})
 end
 init_setting()
 
@@ -83,8 +79,8 @@ local function dir(p)
 	return t
 end
 
-local function readall(resource, file)
-	local f <close> = assert(fs.open(cr.compile_file(resource) / file, "rb"))
+local function readall(resource)
+	local f <close> = assert(fs.open(cr.compile_file(resource:string()), "rb"))
     return f:read "a"
 end
 
@@ -102,7 +98,7 @@ local function get_material(prefab)
 end
 
 for _, f in ipairs(dir(path)) do
-	local prefab = datalist.parse(readall(f, "mesh.prefab"))
+	local prefab = datalist.parse(readall(f))
 	local material = datalist.parse(readall(f, get_material(prefab) .. "/main.cfg"))
 end
 
