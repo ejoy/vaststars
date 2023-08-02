@@ -84,7 +84,9 @@ local update = interval_call(500, function()
             if cfg.power then
                 if e.consumer or e.generator or e.accumulator then
                     local node = create_statistic_node(cfg, e.consumer)
-                    node.no_power_count = 0
+                    if e.consumer then
+                        node.no_power_count = 0
+                    end
                     statistic.power[eid] = node
                     local pg = statistic.power_group[cfg.name]
                     if not pg then
