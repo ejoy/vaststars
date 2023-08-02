@@ -4,7 +4,6 @@ local prototype = gameplay.register.prototype
 prototype "蒸汽发电机I" {
     model = "prefabs/turbine-1.prefab",
     icon = "ui/textures/building_pic/small_pic_turbine.texture",
-    background = "ui/textures/build_background/pic_turbine.texture",
     construct_detector = {"exclusive"},
     type = {"building", "generator", "fluidboxes","assembling","auto_set_recipe"},
     area = "3x5",
@@ -40,7 +39,6 @@ prototype "蒸汽发电机I" {
 prototype "蒸汽发电机II" {
     model = "prefabs/turbine-1.prefab",
     icon = "ui/textures/building_pic/small_pic_turbine.texture",
-    background = "ui/textures/build_background/pic_turbine.texture",
     construct_detector = {"exclusive"},
     type = {"building", "generator", "fluidboxes","assembling","auto_set_recipe"},
     area = "3x5",
@@ -76,7 +74,6 @@ prototype "蒸汽发电机II" {
 prototype "蒸汽发电机III" {
     model = "prefabs/turbine-1.prefab",
     icon = "ui/textures/building_pic/small_pic_turbine.texture",
-    background = "ui/textures/build_background/pic_turbine.texture",
     construct_detector = {"exclusive"},
     type = {"building", "generator", "fluidboxes","assembling","auto_set_recipe"},
     area = "3x5",
@@ -231,7 +228,6 @@ prototype "核反应堆" {
 prototype "换热器I" {
     model = "prefabs/boiler.prefab",
     icon = "ui/textures/building_pic/small_pic_boiler.texture",
-    background = "ui/textures/build_background/pic_distillery.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     power = "1.8MW",
@@ -288,7 +284,6 @@ prototype "热管1-X型" {
 prototype "锅炉I" {
     model = "prefabs/boiler.prefab",
     icon = "ui/textures/building_pic/small_pic_boiler.texture",
-    background = "ui/textures/build_background/pic_distillery.texture",
     construct_detector = {"exclusive"},
     type = {"building", "assembling", "fluidboxes"},
     priority = "secondary",
@@ -327,7 +322,6 @@ prototype "锅炉I" {
 prototype "地热井I" {
     model = "prefabs/geothermal-plant.prefab",
     icon = "ui/textures/building_pic/small_pic_geothermal_plant.texture",
-    background = "ui/textures/build_background/pic_distillery.texture",
     construct_detector = {"exclusive"},
     type = {"building", "assembling", "fluidboxes","mining"},
     priority = "secondary",
@@ -359,7 +353,6 @@ prototype "地热井I" {
 prototype "地热井II" {
     model = "prefabs/geothermal-plant.prefab",
     icon = "ui/textures/building_pic/small_pic_geothermal_plant.texture",
-    background = "ui/textures/build_background/pic_distillery.texture",
     construct_detector = {"exclusive"},
     type = {"building", "assembling", "fluidboxes","mining"},
     priority = "secondary",
@@ -391,7 +384,6 @@ prototype "地热井II" {
 prototype "地热井III" {
     model = "prefabs/geothermal-plant.prefab",
     icon = "ui/textures/building_pic/small_pic_geothermal_plant.texture",
-    background = "ui/textures/build_background/pic_distillery.texture",
     construct_detector = {"exclusive"},
     type = {"building", "assembling", "fluidboxes","mining"},
     priority = "secondary",
