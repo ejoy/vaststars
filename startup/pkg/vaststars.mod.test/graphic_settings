@@ -1,17 +1,5 @@
-_ios:
-  graphic:
-    api: metal
-_osx:
-  graphic:
-    api: metal
-_windows:
-  graphic:
-    api: d3d11
 graphic:
   inv_z: true
-  framebuffer:
-    scene_ratio: 1
-    ratio: 1
   curve_world:
     enable: false
     type: "cylinder"
@@ -53,5 +41,3 @@ graphic:
       {0.5, 1.0}
     stabilize: true
     type: inv_z
-debug:
-  show_bounding: false

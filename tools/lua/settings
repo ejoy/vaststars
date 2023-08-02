@@ -9,9 +9,6 @@ _windows:
     api: d3d11
 graphic:
   disable_cull: false
-  framebuffer:
-    ratio: 1
-    scene_ratio: 1
   curve_world:
     curve_rate: 0.11999999731779099
     dirVS: {0, 0, 1, 0}
