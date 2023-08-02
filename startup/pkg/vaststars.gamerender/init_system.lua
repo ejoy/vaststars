@@ -57,7 +57,8 @@ function m:init_world()
     audio.load {
         "/pkg/vaststars.resources/sounds/Master.strings.bank",
         "/pkg/vaststars.resources/sounds/Master.bank",
-        "/pkg/vaststars.resources/sounds/Construt.bank",
+        "/pkg/vaststars.resources/sounds/Building.bank",
+        "/pkg/vaststars.resources/sounds/Function.bank",
         "/pkg/vaststars.resources/sounds/UI.bank",
     }
 
