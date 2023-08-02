@@ -142,7 +142,9 @@ if err then
     error(false)
 end
 
-s[#s+1] = ([[%s"/pkg/vaststars.resources/glb/animation/Interact_build.glb|animation.prefab"]]):format("\t")
+s[#s+1] = ([[%s"/pkg/vaststars.resources/glb/animation/Interact_build.glb|materials/Material_s.material/vs.sc",]]):format("\t")
+s[#s+1] = ([[%s"/pkg/vaststars.resources/glb/animation/Interact_build.glb|materials/Material_s.material/fs.sc",]]):format("\t")
+
 s[#s+1] = "}"
 s[#s+1] = "return t"
 
