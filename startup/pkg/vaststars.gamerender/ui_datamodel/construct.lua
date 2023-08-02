@@ -245,6 +245,7 @@ function M:stage_ui_update(datamodel)
             x, y = x - (x % ROAD_TILE_SCALE_WIDTH), y - (y % ROAD_TILE_SCALE_HEIGHT)
 
             builder:confirm(builder_datamodel)
+            audio.play "event:/function/place"
 
             if builder.continue_construct ~= false then
                 builder:clean(builder_datamodel)

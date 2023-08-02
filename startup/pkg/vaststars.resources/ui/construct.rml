@@ -86,7 +86,7 @@
                 top: 1.17vmin;
                 width: 78.21vmin;
                 height: 7.48vmin;
-                gap: 1.50vmin;"
+                gap: 1.50vmin;
             }
         </style>
         <script type="text/x-lua" >
