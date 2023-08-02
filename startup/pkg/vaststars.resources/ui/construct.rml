@@ -80,6 +80,14 @@
                 height:3.4vmin;
                 background-size: cover;
             }
+            inventory-bar {
+                flex-direction: row;
+                left: 0vmax;
+                top: 1.17vmin;
+                width: 78.21vmin;
+                height: 7.48vmin;
+                gap: 1.50vmin;"
+            }
         </style>
         <script type="text/x-lua" >
             local ui_sys = require "ui.ui_system"
@@ -95,6 +103,7 @@
                 ingredient_icons = {},
                 guide_progress = 0,
                 focus_building_icon = "",
+                inventory_bar = {}
             }
 
             function start.clickButton(...)
@@ -104,10 +113,12 @@
         </script>
     </head>
     <body style = "pointer-events: none; margin: 0 3.995vmax 0 4.715vmax;">
-        <!-- 帮助按钮 -->
-        <button  class = "main-menu-button" style="border: 0.00vmin; position: absolute; left:-6.7vmin; top: -4vmin;" data-event-click="clickButton('help')" data-if = "(not is_concise_mode) and guide_progress >= 10">
-            <div class = "menu-button-pic" style='width:9vmin; height:9vmin; background-image:"ui/textures/common/help.texture"'/>
-        </button>
+        <inventory-bar data-event-click = "clickButton('inventory')">
+            <div data-for = "inventory_bar" style = "flex-direction: row;">
+                <div style = "width: 7.00vmin; height: 7.00vmin; background-size: 100% 100%; background-color: rgb(61, 61, 61);" data-style-background-image = "it.icon"/>
+                <div style = "font-size: 5.00vmin; margin-top: 0.50vmin; text-align: center;">{{it.count}}</div>
+            </div>
+        </inventory-bar>
 
         <!-- 右上角：当前科技进度 -->
         <div data-if = "not is_concise_mode and show_tech_progress" style = "pointer-events: none; position: absolute; right:0vmin; top:0vmin;  width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-start; padding-top: 1vmin;">

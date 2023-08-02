@@ -337,6 +337,7 @@ function M:stage_ui_update(datamodel, object_id)
             local ingredient_count = #ingredients
 
             local msgs = {}
+            local inventory_bar = {}
             for idx in ipairs(results) do
                 local succ, available = ibackpack.move_to_backpack(gameplay_core.get_world(), e.chest, ingredient_count + idx)
                 if not succ then
@@ -345,9 +346,15 @@ function M:stage_ui_update(datamodel, object_id)
                 end
                 local typeitem = iprototype.queryById(results[1].id)
                 msgs[#msgs + 1] = {icon = assert(typeitem.item_icon), name = typeitem.name, count = available}
+
+                if #inventory_bar < 4 then
+                    inventory_bar[#inventory_bar+1] = {icon = assert(typeitem.item_icon), count = available}
+                end
             end
 
             iui.send("ui/message_pop.rml", "item", {action = "up", left = sp_x, top = sp_y, items = msgs})
+            iui.call_datamodel_method("ui/construct.rml", "update_inventory_bar", inventory_bar)
+
         elseif iprototype.has_types(typeobject.type, "station_producer", "station_consumer", "hub") then
             local chest_component = ichest.get_chest_component(e)
             local slot = ichest.chest_get(gameplay_core.get_world(), e[chest_component], 1)
@@ -362,12 +369,14 @@ function M:stage_ui_update(datamodel, object_id)
             end
             local typeitem = iprototype.queryById(slot.item)
             iui.send("ui/message_pop.rml", "item", {action = "up", left = sp_x, top = sp_y, items = {{icon = assert(typeitem.item_icon), name = typeitem.name, count = available}}})
+            iui.call_datamodel_method("ui/construct.rml", "update_inventory_bar", {{icon = assert(typeitem.item_icon), count = available}})
 
             if e.station_producer or e.station_consumer then
                 e.station_changed = true
             end
         elseif iprototype.has_type(typeobject.type, "chest") then
             local message = {}
+            local inventory_bar = {}
             for i = 1, ichest.MAX_SLOT do
                 local slot = gameplay_core.get_world():container_get(e.chest, i)
                 if not slot then
@@ -378,11 +387,15 @@ function M:stage_ui_update(datamodel, object_id)
                 if succ then
                     local typeobject = iprototype.queryById(slot.item)
                     message[#message + 1] = {icon = assert(typeobject.item_icon), name = typeobject.name, count = available}
+                    if #inventory_bar < 4 then
+                        inventory_bar[#inventory_bar + 1] = {icon = assert(typeobject.item_icon), count = available}
+                    end
                 end
             end
             if #message > 0 then
                 iui.send("ui/message_pop.rml", "item", {action = "up", left = sp_x, top = sp_y, items = message})
             end
+            iui.call_datamodel_method("ui/construct.rml", "update_inventory_bar", inventory_bar)
 
             local items = ichest.collect_item(gameplay_core.get_world(), e.chest)
             if not next(items) then
@@ -413,6 +426,7 @@ function M:stage_ui_update(datamodel, object_id)
         if iprototype.has_type(typeobject.type, "assembling") then
             local ingredients = assembling_common.get(gameplay_core.get_world(), e)
             local message = {}
+            local inventory_bar = {}
             for idx, ingredient in ipairs(ingredients) do
                 if ingredient.demand_count > ingredient.count then
                     if not ibackpack.pickup(gameplay_core.get_world(), ingredient.id, ingredient.demand_count - ingredient.count) then
@@ -422,11 +436,15 @@ function M:stage_ui_update(datamodel, object_id)
                     gameplay_core.get_world():container_set(e.chest, idx, {amount = ingredient.demand_count})
                     local typeitem = iprototype.queryById(ingredient.id)
                     message[#message + 1] = {icon = assert(typeitem.item_icon), name = typeitem.name, count = ingredient.demand_count}
+                    if #inventory_bar < 4 then
+                        inventory_bar[#inventory_bar + 1] = {icon = assert(typeitem.item_icon), count = ingredient.demand_count}
+                    end
                 end
             end
             if #message > 0 then
                 iui.send("ui/message_pop.rml", "item", {action = "down", left = sp_x, top = sp_y, items = message})
             end
+            iui.call_datamodel_method("ui/construct.rml", "update_inventory_bar", inventory_bar)
             print("success")
         elseif iprototype.has_types(typeobject.type, "station_producer", "station_consumer", "hub") then
             local chest_component = ichest.get_chest_component(e)
@@ -452,6 +470,7 @@ function M:stage_ui_update(datamodel, object_id)
             end
             local typeitem = iprototype.queryById(slot.item)
             iui.send("ui/message_pop.rml", "item", {action = "down", left = sp_x, top = sp_y, items = {{icon = assert(typeitem.item_icon), name = typeitem.name, count = available}}})
+            iui.call_datamodel_method("ui/construct.rml", "update_inventory_bar", {{icon = assert(typeitem.item_icon), count = available}})
 
             if e.station_producer or e.station_consumer then
                 e.station_changed = true
@@ -459,6 +478,7 @@ function M:stage_ui_update(datamodel, object_id)
         elseif iprototype.has_type(typeobject.type, "laboratory") then
             local component = "chest"
             local msgs = {}
+            local inventory_bar = {}
             for i = 1, 256 do
                 local slot = ichest.chest_get(gameplay_core.get_world(), e[component], i)
                 if not slot then
@@ -481,8 +501,14 @@ function M:stage_ui_update(datamodel, object_id)
                 end
                 local typeitem = iprototype.queryById(slot.item)
                 msgs[#msgs+1] = {icon = assert(typeitem.item_icon), name = typeitem.name, count = available}
+
+                if #inventory_bar < 4 then
+                    inventory_bar[#inventory_bar+1] = {icon = assert(typeitem.item_icon), count = available}
+                end
             end
             iui.send("ui/message_pop.rml", "item", {action = "down", left = sp_x, top = sp_y, items = msgs})
+            iui.call_datamodel_method("ui/construct.rml", "update_inventory_bar", inventory_bar)
+
         else
             assert(false)
         end

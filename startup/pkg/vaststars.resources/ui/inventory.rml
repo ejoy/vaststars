@@ -170,7 +170,6 @@
     </head>
     <body style = "pointer-events: none; margin: 0 3.995vmax 0 4.715vmax;" onload="init()">
         <div style = "margin: 0 0 0 -4.715vmax; position: absolute; width: 103.995vmax; height: 100%; background-color: rgba(128, 128, 128, 200);" data-event-click = "clickButton('close')"/>
-
         <construct-box>
             <construct-list>
                 <div style = "width: 100%; align-items: flex-start;" data-for = "c, c_index : inventory">
@@ -187,9 +186,9 @@
         </construct-box>
 
         <item-detail data-if="item_name ~= ''">
-            <item-name style = "position: absolute; left: 15.20vmax; top: 2.94vmin; width: 13.21vmax; height: 4.67vmin; font-size: 4.67vmin;" data-if = "item_name ~= ''">{{item_name}}</item-name>
-            <item-desc style = "position: absolute; left: 15.73vmax; top: 9.26vmin; width: 13.21vmax; height: 12.61vmin; word-break: break-word; font-size: 3.00vmin;" data-if = "item_desc ~= ''">{{item_desc}}</item-desc>
-            <item-icon style = "position: absolute; left: 1.00vmax; top: 2.91vmin; width: 13.85vmax; height: 27.02vmin; background-size: 100% 100%;" data-style-background-image = "item_icon" />
+            <item-name style = "position: absolute; left: 15.20vmax; top: 2.94vmin; width: 13.21vmax; height: 4.67vmin; font-size: 4.67vmin; color: rgb(6, 20, 58);" data-if = "item_name ~= ''">{{item_name}}</item-name>
+            <item-desc style = "position: absolute; left: 15.73vmax; top: 9.26vmin; width: 13.21vmax; height: 12.61vmin; word-break: break-word; font-size: 3.00vmin; color: rgb(255, 174, 54);" data-if = "item_desc ~= ''">{{item_desc}}</item-desc>
+            <item-icon style = "position: absolute; left: 2.85vmax; top: 7.91vmin; width: 18.01vmin; height: 18.01vmin; background-size: 100% 100%; background-color: rgb(61, 61, 61);" data-style-background-image = "item_icon" />
         </item-detail>
 
         <item-source data-if="item_name ~= ''">

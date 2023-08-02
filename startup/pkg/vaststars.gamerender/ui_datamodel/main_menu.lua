@@ -33,13 +33,7 @@ end
 
 function M:stage_ui_update(datamodel)
     for _ in inventory_mb:unpack() do
-        for _, object in objects:all() do -- TODO: optimize
-            local typeobject = iprototype.queryByName(object.prototype_name)
-            if iprototype.has_type(typeobject.type, "base") then
-                iui.open({"ui/inventory.rml"}, object.id)
-                break
-            end
-        end
+        iui.open({"ui/inventory.rml"})
     end
 
     for _ in research_tasks_mb:unpack() do

@@ -228,6 +228,10 @@ function M:update_tech(datamodel, tech)
     end
 end
 
+function M:update_inventory_bar(datamodel, t)
+    datamodel.inventory_bar = t
+end
+
 function M:stage_ui_update(datamodel)
     for _ in rotate_mb:unpack() do
         if builder then
@@ -573,16 +577,6 @@ function M:stage_camera_usage(datamodel)
         end
     end
 
-    for _ in inventory_mb:unpack() do
-        for _, object in objects:all() do -- TODO: optimize
-            local typeobject = iprototype.queryByName(object.prototype_name)
-            if iprototype.has_type(typeobject.type, "base") then
-                iui.open({"ui/inventory.rml"}, object.id)
-                break
-            end
-        end
-    end
-
     for _ in construct_mb:unpack() do
         datamodel.is_concise_mode = true
         __switch_status("construct", function()
@@ -773,6 +767,10 @@ function M:stage_camera_usage(datamodel)
             gameplay_core.world_update = true
             __clean(datamodel)
         end)
+    end
+
+    for _ in inventory_mb:unpack() do
+        iui.open({"ui/inventory.rml"})
     end
 
     iobject.flush()
