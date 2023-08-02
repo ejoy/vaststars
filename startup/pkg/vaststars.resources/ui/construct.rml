@@ -155,5 +155,12 @@
             <main-button-icon data-style-background-image = "focus_building_icon" />
             <div style = "position: absolute; background-size: 100% 100%; width: 100%; height: 100%; background-image: ui/textures/construct/main-button-active.texture;" />
         </main-button>
+
+        <div style = "position: absolute; pointer-events: none; width: 100%; top: 80vmin; justify-content: center; align-items: center;">
+            <div style="width: 22.00vmin; height: 16.00vmin; background-color: rgb(105, 112, 8); text-align: center; font-size: 4.00vmin; border-radius: 2.00vmin; border: 0.53vmin white;" data-event-click="clickButton('rotate')" data-if = "show_rotate">
+                <div style="margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-size:cover; background-image: ui/textures/construct/rotate.texture" />
+                <div style="font-size: 85%;">旋转建筑</div>
+            </div>
+        </div>
     </body>
 </rml>
