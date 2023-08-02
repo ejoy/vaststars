@@ -8,3 +8,43 @@ file: images/logo2.texture
 op: replace
 path: /noresize
 value: true
+---
+file: materials/Material.001.material
+op: replace
+path: /fx/setting/lighting
+value: off
+---
+file: materials/Material.002.material
+op: replace
+path: /fx/setting/lighting
+value: off
+---
+file: materials/Material.001.material
+op: replace
+path: /properties/u_emissive_factor
+value: {0, 0, 0, 0}
+---
+file: materials/Material.002.material
+op: replace
+path: /properties/u_emissive_factor
+value: {0, 0, 0, 0}
+---
+file: materials/Material.001.material
+op: replace
+path: /properties/u_pbr_factor
+value: {0, 0.5, 0.5, 1}
+---
+file: materials/Material.002.material
+op: replace
+path: /properties/u_pbr_factor
+value: {0, 0.5, 0.5, 1}
+---
+file: materials/Material.001.material
+op: replace
+path: /state
+value: /pkg/ant.resources/materials/states/translucent.state
+---
+file: materials/Material.002.material
+op: replace
+path: /state
+value: /pkg/ant.resources/materials/states/translucent.state
