@@ -659,7 +659,7 @@ prototype "砖石公路-X型" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_stack = 100,
     item_icon = "textures/icons/item/stone-brick.texture",
-    pile_model = "glb/stackeditems/stack-building.glb|mesh.prefab",
+    pile_model = "glb/stackeditems/stack-stone-brick.glb|mesh.prefab",
     item_description = "供车辆行驶的砖石公路",
 }
 
