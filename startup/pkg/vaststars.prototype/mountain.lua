@@ -15,10 +15,6 @@ local MAX_Y <const> = MAP_HEIGHT + BORDER
 density = 0.1
 
 mountain_coords = {
-    {MIN_X, MIN_Y, WIDTH, BORDER},
-    {MIN_X, MIN_Y + BORDER, BORDER, HEIGHT - BORDER * 2},
-    {MAX_X - BORDER + 1, MIN_Y + BORDER, BORDER, HEIGHT - BORDER * 2},
-    {MIN_X, MAX_Y - BORDER + 1, WIDTH, BORDER},
     {153,101, 1, 1},
     {97,113, 1, 1},
     {92,110, 1, 1},

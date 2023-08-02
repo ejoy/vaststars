@@ -38,6 +38,7 @@ prototype "科研中心I" {
     area = "3x3",
     power = "100kW",
     speed = "100%",
+    sound = "building/lab",
     camera_distance = 75,
     priority = "secondary",
     inputs = {
@@ -56,6 +57,7 @@ prototype "科研中心II" {
     area = "3x3",
     power = "250kW",
     speed = "200%",
+    sound = "building/lab",
     camera_distance = 75,
     priority = "secondary",
     inputs = {
@@ -74,6 +76,7 @@ prototype "科研中心III" {
     area = "3x3",
     power = "500kW",
     speed = "400%",
+    sound = "building/lab",
     camera_distance = 75,
     priority = "secondary",
     inputs = {

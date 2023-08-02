@@ -45,9 +45,16 @@
                 buttons = {},
             }
 
+            local AUDIOS <const> = {
+                ["teardown"] = "event:/function/demolish",
+            }
+
             function start.clickButton(command)
                 if command == "" then
                     return
+                end
+                if AUDIOS[command] then
+                    audio.play(AUDIOS[command])
                 end
                 ui_sys.pub {command, start.object_id}
             end

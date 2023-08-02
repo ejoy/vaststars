@@ -62,6 +62,9 @@ function M.can_move_to_backpack(world, chest)
         if slot.type == "unknown" then
             goto continue
         end
+        if slot.itme == 0 then
+            goto continue
+        end
         local ok, count = M.get_moveable_count(world, slot.item, slot.amount)
         if not ok then
             log.debug(("can't move to backpack: %s %s"):format(slot.item, slot.amount))

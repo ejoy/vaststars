@@ -30,6 +30,7 @@ local STATUS_CHARGE <const> = 8
 local STATUS_DISCHARGE <const> = 9
 local STATUS_NO_ENERGY <const> = 10
 local STATUS_STOP_DISCHARGE <const> = 11
+local STATUS_POLE_OFFLINE <const> = 12
 local detail_panel_status = {
     {desc = "断电停机", icon = "ui/textures/detail/stop.texture"},
     {desc = "待机空闲", icon = "ui/textures/detail/idle.texture"},
@@ -42,7 +43,10 @@ local detail_panel_status = {
     {desc = "正常供电", icon = "ui/textures/detail/work.texture"},
     {desc = "电量耗尽", icon = "ui/textures/detail/stop.texture"},
     {desc = "停止供电", icon = "ui/textures/detail/idle.texture"},
+    {desc = "脱网连接", icon = "ui/textures/detail/idle.texture"},
 }
+-- optimize for pole status
+local pole_status = STATUS_WORK
 
 local function format_vars(fmt, vars)
     return string.gsub(fmt, "%$([%w%._]+)%$", vars)
@@ -369,6 +373,9 @@ local function get_entity_property_list(object_id, recipe_inputs, recipe_ouputs)
                 prolist.status = STATUS_STACK_FULL
             end
         end
+    
+    elseif typeobject.name == "铁制电线杆" then
+        prolist.status = pole_status
     end
     return prolist
 end
@@ -445,6 +452,25 @@ function M:create(object_id)
     else
         typeobject = iprototype.queryByName(object.prototype_name)
     end
+    if typeobject.name == "铁制电线杆" then
+        pole_status = STATUS_WORK
+        local found = false
+        for _, value in ipairs(global.power_network) do
+            for _, pole in ipairs(value.poles) do
+                if pole.eid == e.eid then
+                    found = true
+                    break
+                end
+            end
+            if found then
+                break
+            end
+        end
+        if not found then
+            pole_status = STATUS_POLE_OFFLINE
+        end
+    end
+
     local datamodel = {
         object_id = object_id,
         icon = typeobject.icon,
