@@ -1696,7 +1696,7 @@ prototype "电力传输1" {
 }
 
 prototype "泵系统1" {
-  desc = "使用机械方式加快液体流动",
+  desc = "使用机械方式加快流体流动",
   type = { "tech" },
   icon = "ui/textures/science/book.texture",
   effects = {

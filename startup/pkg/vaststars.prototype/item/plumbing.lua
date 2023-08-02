@@ -10,7 +10,7 @@ prototype "液罐I" {
     pile_model = "glb/stackeditems/stack-gravel.glb|mesh.prefab",
     item_icon = "textures/icons/item/hydroplant.texture",
     backpack_stack = 20,
-    item_description = "用于储存液体的容器",
+    item_description = "用于储存流体的容器",
 }
 
 prototype "液罐II" {
@@ -22,7 +22,7 @@ prototype "液罐II" {
     pile_model = "glb/stackeditems/stack-gravel.glb|mesh.prefab",
     item_icon = "textures/icons/item/hydroplant.texture",
     backpack_stack = 20,
-    item_description = "用于储存液体的容器",
+    item_description = "用于储存流体的容器",
 }
 
 prototype "液罐III" {
@@ -34,7 +34,7 @@ prototype "液罐III" {
     pile_model = "glb/stackeditems/stack-gravel.glb|mesh.prefab",
     item_icon = "textures/icons/item/hydroplant.texture",
     backpack_stack = 20,
-    item_description = "用于储存液体的容器",
+    item_description = "用于储存流体的容器",
 }
 
 prototype "气罐I" {
@@ -178,7 +178,7 @@ prototype "管道1-X型" {
     pile_model = "glb/stackeditems/stack-gravel.glb|mesh.prefab",
     item_icon = "textures/icons/item/capacitor.texture",
     backpack_stack = 100,
-    item_description = "放置在地上传输液体或气体的管道",
+    item_description = "放置在地上传输流体的管道",
 }
 
 prototype "地下管1-JI型" {
@@ -190,7 +190,7 @@ prototype "地下管1-JI型" {
     pile_model = "glb/stackeditems/stack-gravel.glb|mesh.prefab",
     item_icon = "textures/icons/item/capacitor.texture",
     backpack_stack = 100,
-    item_description = "放置在地下传输液体或气体的管道",
+    item_description = "放置在地下传输流体的管道",
 }
 
 prototype "地下管2-JI型" {
@@ -202,5 +202,5 @@ prototype "地下管2-JI型" {
     pile_model = "glb/stackeditems/stack-gravel.glb|mesh.prefab",
     item_icon = "textures/icons/item/capacitor.texture",
     backpack_stack = 100,
-    item_description = "放置在地下传输液体或气体的管道",
+    item_description = "放置在地下传输流体的管道",
 }

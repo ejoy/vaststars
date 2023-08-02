@@ -7,19 +7,19 @@ local property_list = {
 	},
 	["fluid_name"] = {
 		icon = "ui/textures/property/fluid-type.texture",
-		desc = "液体类型",
+		desc = "流体类型",
 		value = "$fluid_name$",
 		pos = 2,
 	},
 	["fluid_volume"] = {
 		icon = "ui/textures/property/fluid-volume.texture",
-		desc = "液体容量",
+		desc = "流体容量",
 		value = "$fluid_volume$/$fluid_capacity$",
 		pos = 3,
 	},
 	["fluid_rate"] = {
 		icon = "ui/textures/property/fluid-rate.texture",
-		desc = "液体流速",
+		desc = "流体流速",
 		value = "$fluid_flow$",
 		pos = 4,
 	},
