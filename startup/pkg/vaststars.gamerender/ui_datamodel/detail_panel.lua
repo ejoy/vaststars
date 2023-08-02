@@ -150,6 +150,8 @@ local function get_display_info(e, typeobject, t)
                                 status = STATUS_NO_POWER
                             elseif current <= typeobject.drain * UPS then
                                 status = STATUS_IDLE
+                            elseif st.no_power_count > 25 then
+                                status = STATUS_SHORT_OF_POWER
                             end
                         end
                         total = total * UPS
@@ -339,49 +341,53 @@ local function get_entity_property_list(object_id, recipe_inputs, recipe_ouputs)
         prolist.chest_list = items
         prolist.is_chest = true
     end
-
-    if e.assembling then
-        local status
-        if prolist.recipe_ouputs and prolist.recipe_inputs then
-            for _, value in ipairs(prolist.recipe_ouputs) do
-                if value.count >= value.output_count then
-                    status = STATUS_WAIT_OUTPUT
-                    break
-                end
-            end
-            if not status then
-                for _, value in ipairs(prolist.recipe_inputs) do
-                    if value.count < value.demand_count then
-                        status = STATUS_WAIT_INPUT
-                        break
-                    end
-                end
-            end
-        else
-            status = STATUS_NO_RECIPE
-        end
-        if status then
-            prolist.status = status
-        end
-    elseif prolist.chest_list and #prolist.chest_list > 0 then
-        if prolist.is_chest then
-            if e.laboratory then
-                for _, value in ipairs(prolist.chest_list) do
-                    if value.count < value.demand_count then
-                        prolist.status = STATUS_WAIT_INPUT
-                        break
-                    end
-                end
-            end
-        else
-            local iteminfo = prolist.chest_list[#prolist.chest_list]
-            if iteminfo.count == iteminfo.max_count then
-                prolist.status = STATUS_STACK_FULL
-            end
-        end
     
-    elseif typeobject.name == "铁制电线杆" then
+    --modify status
+    if typeobject.name == "铁制电线杆" then
         prolist.status = pole_status
+    else
+        if prolist.status ~= STATUS_NO_POWER then
+            if e.assembling then
+                local status
+                if prolist.recipe_ouputs and prolist.recipe_inputs then
+                    for _, value in ipairs(prolist.recipe_ouputs) do
+                        if value.count >= value.output_count then
+                            status = STATUS_WAIT_OUTPUT
+                            break
+                        end
+                    end
+                    if not status then
+                        for _, value in ipairs(prolist.recipe_inputs) do
+                            if value.count < value.demand_count then
+                                status = STATUS_WAIT_INPUT
+                                break
+                            end
+                        end
+                    end
+                else
+                    status = STATUS_NO_RECIPE
+                end
+                if status then
+                    prolist.status = status
+                end
+            elseif prolist.chest_list and #prolist.chest_list > 0 then
+                if prolist.is_chest then
+                    if e.laboratory then
+                        for _, value in ipairs(prolist.chest_list) do
+                            if value.count < value.demand_count then
+                                prolist.status = STATUS_WAIT_INPUT
+                                break
+                            end
+                        end
+                    end
+                else
+                    local iteminfo = prolist.chest_list[#prolist.chest_list]
+                    if iteminfo.count == iteminfo.max_count then
+                        prolist.status = STATUS_STACK_FULL
+                    end
+                end
+            end
+        end
     end
     return prolist
 end

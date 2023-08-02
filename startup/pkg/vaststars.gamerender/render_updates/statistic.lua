@@ -83,12 +83,14 @@ local update = interval_call(500, function()
         if e then
             if cfg.power then
                 if e.consumer or e.generator or e.accumulator then
-                    statistic.power[eid] = create_statistic_node(cfg, e.consumer)
+                    local node = create_statistic_node(cfg, e.consumer)
+                    node.no_power_count = 0
+                    statistic.power[eid] = node
                     local pg = statistic.power_group[cfg.name]
                     if not pg then
                         pg = {}
                         for filter, _ in pairs(filter_statistic) do
-                            local node = create_statistic_node(cfg, e.consumer)
+                            node = create_statistic_node(cfg, e.consumer)
                             node.max_index = 1
                             pg[filter] = node
                         end
@@ -116,6 +118,9 @@ local update = interval_call(500, function()
                 st.max_index = st.head
             end
         end
+        if st.no_power_count and st.head <= #st.frames and st.frames[st.head].power == 0 then
+            st.no_power_count = st.no_power_count + 1
+        end
         st.head = (st.head >= frame_period) and 1 or st.head + 1
         if st.head == st.tail then
             local fp = st.frames[st.tail]
@@ -130,7 +135,10 @@ local update = interval_call(500, function()
                         end
                     end
                 end
-                st.tail = (st.tail >= frame_period) and 1 or st.tail + 1 
+                if st.no_power_count and st.tail <= #st.frames and st.frames[st.tail].power == 0 then
+                    st.no_power_count = st.no_power_count - 1
+                end
+                st.tail = (st.tail >= frame_period) and 1 or st.tail + 1
             end
         end
     end
