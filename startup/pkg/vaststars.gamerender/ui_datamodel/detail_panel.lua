@@ -31,6 +31,7 @@ local STATUS_DISCHARGE <const> = 9
 local STATUS_NO_ENERGY <const> = 10
 local STATUS_STOP_DISCHARGE <const> = 11
 local STATUS_POLE_OFFLINE <const> = 12
+local STATUS_NO_RECIPE <const> = 13
 local detail_panel_status = {
     {desc = "断电停机", icon = "ui/textures/detail/stop.texture"},
     {desc = "待机空闲", icon = "ui/textures/detail/idle.texture"},
@@ -44,6 +45,7 @@ local detail_panel_status = {
     {desc = "电量耗尽", icon = "ui/textures/detail/stop.texture"},
     {desc = "停止供电", icon = "ui/textures/detail/idle.texture"},
     {desc = "脱网连接", icon = "ui/textures/detail/idle.texture"},
+    {desc = "无配方", icon = "ui/textures/detail/idle.texture"},
 }
 -- optimize for pole status
 local pole_status = STATUS_WORK
@@ -340,19 +342,23 @@ local function get_entity_property_list(object_id, recipe_inputs, recipe_ouputs)
 
     if e.assembling then
         local status
-        for _, value in ipairs(prolist.recipe_ouputs) do
-            if value.count >= value.output_count then
-                status = STATUS_WAIT_OUTPUT
-                break
-            end
-        end
-        if not status then
-            for _, value in ipairs(prolist.recipe_inputs) do
-                if value.count < value.demand_count then
-                    status = STATUS_WAIT_INPUT
+        if prolist.recipe_ouputs and prolist.recipe_inputs then
+            for _, value in ipairs(prolist.recipe_ouputs) do
+                if value.count >= value.output_count then
+                    status = STATUS_WAIT_OUTPUT
                     break
                 end
             end
+            if not status then
+                for _, value in ipairs(prolist.recipe_inputs) do
+                    if value.count < value.demand_count then
+                        status = STATUS_WAIT_INPUT
+                        break
+                    end
+                end
+            end
+        else
+            status = STATUS_NO_RECIPE
         end
         if status then
             prolist.status = status
