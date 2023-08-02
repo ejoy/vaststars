@@ -270,3 +270,48 @@ prototype "收货车站" {
     },
     camera_distance = 90,
 }
+
+prototype "广播塔I" {
+    type = {"building", "consumer"},
+    model = "prefabs/lab-1.prefab",
+    icon = "ui/textures/building_pic/small_pic_lab.texture",
+    background = "ui/textures/build_background/pic_lab.texture",
+    construct_detector = {"exclusive"},
+    area = "3x3",
+    power = "1MW",
+    speed = "100%",
+    module_slot = 1,
+    module_supply_area = "9x9",
+    camera_distance = 75,
+    priority = "secondary",
+}
+
+prototype "广播塔II" {
+    type = {"building", "consumer"},
+    model = "prefabs/lab-1.prefab",
+    icon = "ui/textures/building_pic/small_pic_lab.texture",
+    background = "ui/textures/build_background/pic_lab.texture",
+    construct_detector = {"exclusive"},
+    area = "3x3",
+    power = "2MW",
+    speed = "100%",
+    module_slot = 2,
+    module_supply_area = "13x13",
+    camera_distance = 75,
+    priority = "secondary",
+}
+
+prototype "广播塔III" {
+    type = {"building", "consumer"},
+    model = "prefabs/lab-1.prefab",
+    icon = "ui/textures/building_pic/small_pic_lab.texture",
+    background = "ui/textures/build_background/pic_lab.texture",
+    construct_detector = {"exclusive"},
+    area = "3x3",
+    power = "4MW",
+    speed = "125%",
+    module_slot = 3,
+    module_supply_area = "13x13",
+    camera_distance = 75,
+    priority = "secondary",
+}
