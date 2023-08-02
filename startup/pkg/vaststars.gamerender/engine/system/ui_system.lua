@@ -234,6 +234,9 @@ function ui_system.camera_usage()
     closeWindows = {}
 end
 
+function ui_system.exit()
+end
+
 local iui = ecs.interface "iui"
 function iui.open(...)
     return open(...)

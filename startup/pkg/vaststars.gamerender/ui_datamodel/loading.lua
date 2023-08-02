@@ -12,7 +12,7 @@ local WorkerNum <const> = 4
 local M = {}
 
 local function worker(index, status)
-    while true do
+    while not status.stop do
         status.current = status.current + 1
         local filename = resources[status.current]
         if status.current + 1 > #resources then
@@ -21,6 +21,7 @@ local function worker(index, status)
         status[index] = filename
         resources_loader.load(filename)
     end
+    status[index] = ""
 end
 
 local status
@@ -30,7 +31,7 @@ function M:create(load)
         load = true
     end
 
-    status = { current = 0 }
+    status = { current = 0, stop = false }
     local ltask = require "ltask"
     for i = 1, WorkerNum do
         status[i] = ""
@@ -59,6 +60,23 @@ function M:stage_camera_usage(datamodel)
         datamodel.status[i] = v
     end
     datamodel.progress = string.format("%d%%", math.floor(status.current / #resources * 100))
+end
+
+local function stopped()
+    for _, v in ipairs(status) do
+        if v ~= "" then
+            return
+        end
+    end
+    return true
+end
+
+function M:close()
+    local ltask = require "ltask"
+    status.stop = true
+    while not stopped() do
+        ltask.sleep(1)
+    end
 end
 
 return M
