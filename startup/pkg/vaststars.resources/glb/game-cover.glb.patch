@@ -1,0 +1,10 @@
+---
+file: images/BG.texture
+op: replace
+path: /noresize
+value: true
+---
+file: images/logo2.texture
+op: replace
+path: /noresize
+value: true
