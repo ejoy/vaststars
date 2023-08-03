@@ -349,23 +349,25 @@ local function get_entity_property_list(object_id, recipe_inputs, recipe_ouputs)
         if prolist.status ~= STATUS_NO_POWER then
             if e.assembling then
                 local status
-                if prolist.recipe_ouputs and prolist.recipe_inputs then
-                    for _, value in ipairs(prolist.recipe_ouputs) do
-                        if value.count >= value.output_count then
-                            status = STATUS_WAIT_OUTPUT
-                            break
-                        end
-                    end
-                    if not status then
-                        for _, value in ipairs(prolist.recipe_inputs) do
-                            if value.count < value.demand_count then
-                                status = STATUS_WAIT_INPUT
+                if e.assembling.recipe == 0 then
+                    status = STATUS_NO_RECIPE
+                else
+                    if prolist.recipe_ouputs and prolist.recipe_inputs then
+                        for _, value in ipairs(prolist.recipe_ouputs) do
+                            if value.count >= value.limit then
+                                status = STATUS_WAIT_OUTPUT
                                 break
                             end
                         end
+                        if not status and e.assembling.progress == 0 then
+                            for _, value in ipairs(prolist.recipe_inputs) do
+                                if value.count < value.demand_count then
+                                    status = STATUS_WAIT_INPUT
+                                    break
+                                end
+                            end
+                        end
                     end
-                else
-                    status = STATUS_NO_RECIPE
                 end
                 if status then
                     prolist.status = status
@@ -386,6 +388,14 @@ local function get_entity_property_list(object_id, recipe_inputs, recipe_ouputs)
                         prolist.status = STATUS_STACK_FULL
                     end
                 end
+            end
+        end
+        if e.chimney then
+            if e.chimney.recipe == 0 then
+                prolist.status = STATUS_NO_RECIPE
+            else
+                local r = gameplay_core.fluidflow_query(e.fluidbox.fluid, e.fluidbox.id)
+                prolist.status = (r and r.volume > 0) and STATUS_WORK or STATUS_WAIT_INPUT
             end
         end
     end
