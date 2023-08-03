@@ -173,7 +173,7 @@ prototype "铝棒1" {
     results = {
         {"铝棒", 5}
     },
-    time = "4s",
+    time = "8s",
     description = "使用铝板锻造铝棒",
 }
 
@@ -189,7 +189,7 @@ prototype "铝丝1" {
     results = {
         {"铝丝", 7}
     },
-    time = "5s",
+    time = "10s",
     description = "使用铝棒锻造铝丝",
 }
 
@@ -205,7 +205,7 @@ prototype "铁棒1" {
     results = {
         {"铁棒", 5}
     },
-    time = "4s",
+    time = "8s",
     description = "使用铁锭锻造铁棒",
 }
 
@@ -221,7 +221,7 @@ prototype "铁丝1" {
     results = {
         {"铁丝", 4}
     },
-    time = "4s",
+    time = "6s",
     description = "使用铁棒锻造铁丝",
 }
 
@@ -237,7 +237,7 @@ prototype "沙子1" {
     results = {
         {"沙子", 3},
     },
-    time = "4s",
+    time = "5s",
     description = "粉碎沙石矿获得更微小的原材料",
 }
 
@@ -253,7 +253,7 @@ prototype "石砖" {
     results = {
         {"石砖", 1},
     },
-    time = "3s",
+    time = "4s",
     description = "使用碎石炼制石砖",
 }
 
