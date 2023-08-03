@@ -100,6 +100,7 @@ local function get_solar_panel_power(total)
     end
 end
 
+local next_unit = { k = "M", M = "G" }
 local function get_display_info(e, typeobject, t)
     local key = string.match(typeobject.name, "([^%u%d]+)")
     local tname = key and key or typeobject.name
@@ -167,10 +168,9 @@ local function get_display_info(e, typeobject, t)
                         divisor = 1000000
                         unit = "M"
                     end
-                    unit = unit..((cn == "capacitance") and "J" or "W")
+                    
                     total = total / divisor
                     current = current / divisor
-
                     local function format(value, u)
                         local v0, v1 = math.modf(value)
                         if v1 > 0 then
@@ -180,7 +180,13 @@ local function get_display_info(e, typeobject, t)
                         end
                     end
                     -- total = format(current, unit) .. "/" .. format(total, unit)
-                    local total_format = string.format("%d", math.floor(total + 0.05)) .. unit
+                    local clamp_value = math.floor(total + 0.05)
+                    if clamp_value == 1000 then
+                        clamp_value = 1
+                        unit = next_unit[unit]
+                    end
+                    unit = unit..((cn == "capacitance") and "J" or "W")
+                    local total_format = string.format("%d", clamp_value) .. unit
                     total = ((current == total) and total_format or format(current, unit)) .. "/" .. total_format
                 elseif cn == "speed" then
                     total = total * 100
@@ -359,22 +365,6 @@ local function get_entity_property_list(object_id, recipe_inputs, recipe_ouputs)
                             status = STATUS_WAIT_OUTPUT
                         end
                     end
-                    -- if prolist.recipe_ouputs and prolist.recipe_inputs then
-                    --     for _, value in ipairs(prolist.recipe_ouputs) do
-                    --         if value.count >= value.limit then
-                    --             status = STATUS_WAIT_OUTPUT
-                    --             break
-                    --         end
-                    --     end
-                    --     if not status and e.assembling.progress == 0 then
-                    --         for _, value in ipairs(prolist.recipe_inputs) do
-                    --             if value.count < value.demand_count then
-                    --                 status = STATUS_WAIT_INPUT
-                    --                 break
-                    --             end
-                    --         end
-                    --     end
-                    -- end
                 end
                 if status then
                     prolist.status = status
