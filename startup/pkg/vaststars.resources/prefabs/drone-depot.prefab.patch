@@ -12,3 +12,32 @@ policy:
   ant.general|name
   ant.general|tag
   ant.animation|slot
+---
+data:
+  name: pile_left_slot
+  scene:
+    t: {0, 5, 2.700000047683716}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    slot1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+---
+data:
+  name: pile_right_slot
+  scene:
+    r: {0, 0, 0, 1}
+    t: {-5.400000095367432, 5, 2.700000047683716}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    slot2
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
