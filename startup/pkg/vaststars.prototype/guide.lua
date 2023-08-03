@@ -3,9 +3,9 @@ local guide = {
         name = "",
 		narrative = {
             {"哔哩..航天飞机迫降{/g 代号P4031}星球。机体受重创已四分五裂..(失望)", "ui/textures/guide/guide-6.texture"},
-            {"哔哩..哔哗..哔哩..启动大气分析协议中..P4031{/g 缺少氧气}..(失望)"},
-            {"哔哩..哔哗..哔哩..启动地质分析协议中..P4031{/g 石铁丰富}..(轻松)","ui/textures/guide/guide-1.texture"},
-            {"哔哩..哔哗..启动生存可靠性分析..存活概率为{/color:4bd0ff 0.04565%}..(失望)","ui/textures/guide/guide-4.texture"},
+            -- {"哔哩..哔哗..哔哩..启动大气分析协议中..P4031{/g 缺少氧气}..(失望)"},
+            -- {"哔哩..哔哗..哔哩..启动地质分析协议中..P4031{/g 石铁丰富}..(轻松)","ui/textures/guide/guide-1.texture"},
+            -- {"哔哩..哔哗..启动生存可靠性分析..存活概率为{/color:4bd0ff 0.04565%}..(失望)","ui/textures/guide/guide-4.texture"},
         },
         narrative_end = {
             task = {
@@ -67,8 +67,8 @@ local guide = {
         name = "",
 		narrative = {
             {"哔哩..基地的{/color:4bd0ff 用电设施}都需要{/g 电力}驱动，否则它们将无法工作..哔哩(无奈）", "ui/textures/guide/guide-6.texture"},
-            {"{/color:4bd0ff 风力发电机}可产生电力..哔哩..在其附近放置{/g 电线杆}可以形成{/color:4bd0ff 电网}..哔哩(期待)", "ui/textures/guide/guide-3.texture"},
-            {"当电线杆之间出现{/r 红色电线}时则表示成功连接，在其覆盖{/color:4bd0ff 蓝色范围}内就会提供电力(高兴)", "ui/textures/guide/guide-3.texture"},
+            -- {"{/color:4bd0ff 风力发电机}可产生电力..哔哩..在其附近放置{/g 电线杆}可以形成{/color:4bd0ff 电网}..哔哩(期待)", "ui/textures/guide/guide-3.texture"},
+            -- {"当电线杆之间出现{/r 红色电线}时则表示成功连接，在其覆盖{/color:4bd0ff 蓝色范围}内就会提供电力(高兴)", "ui/textures/guide/guide-3.texture"},
         },
         narrative_end = {
             guide_progress = 15,
