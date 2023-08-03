@@ -12,8 +12,6 @@ local WorkerNum <const> = 6
 local status
 
 local BlackList <const> = {
-    ["/pkg/ant.resources/materials/gamma_test.material"] = true,
-    ["/pkg/ant.resources/textures/default/1x1_normal.texture"] = true,
     ["/pkg/ant.resources/materials/omni_stencil.material"] = true,
     ["/pkg/ant.resources/materials/ibl/ibl_sample.material"] = true,
     ["/pkg/vaststars.mod.test"] = true,
