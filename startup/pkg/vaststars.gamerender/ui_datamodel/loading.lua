@@ -14,7 +14,8 @@ local status
 local BlackList <const> = {
     ["/pkg/vaststars.mod.test"] = true,
     ["/pkg/ant.bake"] = true,
-    ["/pkg/ant.resources.binary/meshes/cloud.glb"] = true,
+    ["/pkg/ant.resources.binary/test"] = true,
+    ["/pkg/ant.resources.binary/meshes"] = true,
 }
 
 local function status_addtask(task)
@@ -51,16 +52,14 @@ local function touch_res(r)
 end
 
 local function readall(path)
-    local realpath = assert(vfs.realpath(path))
-    local f <close> = assert(io.open(realpath))
+    local f <close> = assert(io.open(path))
     return f:read "a"
 end
 
 local handler = {}
 
-function handler.prefab(f)
-    local prefab_data = readall(f)
-    for _, e in ipairs(serialize.parse(f, prefab_data)) do
+local function parse_prefab(path, realpath)
+    for _, e in ipairs(serialize.parse(path, readall(realpath))) do
         if e.prefab then -- TODO: special case for prefab
             goto continue
         end
@@ -105,6 +104,29 @@ function handler.prefab(f)
     end
 end
 
+function handler.prefab(path)
+    local realpath = assert(vfs.realpath(path))
+    parse_prefab(path, realpath)
+end
+
+function handler.compiled_prefab(path)
+    local realpath = assert(assetmgr.compile(path))
+    parse_prefab(path, realpath)
+end
+
+function handler.glb(f)
+    status_addtask {
+        type = "compiled_prefab",
+        filename = f .. "|mesh.prefab",
+    }
+    if assetmgr.compile(f .. "|animation.prefab") then
+        status_addtask {
+            type = "compiled_prefab",
+            filename = f .. "|animation.prefab",
+        }
+    end
+end
+
 function handler.texture(f)
     assetmgr.load_texture(f)
 end
@@ -124,8 +146,6 @@ end
 
 local Extension <const> = {
     [".prefab"] = "prefab",
-    [".texture"] = "texture",
-    [".material"] = "material",
     [".lua"] = "file",
     [".ecs"] = "file",
     [".rcss"] = "file",
@@ -138,7 +158,7 @@ local Extension <const> = {
 local Resource <const> = {
     [".texture"] = "texture",
     [".material"] = "material",
-    [".glb"] = "",
+    [".glb"] = "glb",
 }
 
 function handler.dir(f)
@@ -146,12 +166,10 @@ function handler.dir(f)
         local ext = file:extension():string()
         if fs.is_directory(file) then
             if Resource[ext] then
-                if Resource[ext] ~= "" then
-                    status_addtask {
-                        type = Resource[ext],
-                        filename = file:string(),
-                    }
-                end
+                status_addtask {
+                    type = Resource[ext],
+                    filename = file:string(),
+                }
             else
                 status_addtask {
                     type = "dir",
@@ -159,7 +177,12 @@ function handler.dir(f)
                 }
             end
         else
-            if Extension[ext] then
+            if Resource[ext] then
+                status_addtask {
+                    type = Resource[ext],
+                    filename = file:string(),
+                }
+            elseif Extension[ext] then
                 status_addtask {
                     type = Extension[ext],
                     filename = file:string(),
