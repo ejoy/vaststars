@@ -237,7 +237,7 @@
         </buttons-container>
 
         <item-detail data-if="item_name ~= ''">
-            <item-name style = "position: absolute; left: 15.20vmax; top: 2.94vmin; width: 13.21vmax; height: 4.67vmin; font-size: 4.67vmin;" data-if = "item_name ~= ''">{{item_name}}</item-name>
+            <item-name style = "position: absolute; left: 15.20vmax; top: 2.94vmin; width: 13.21vmax; height: 4.67vmin; font-size: 4.67vmin; text-align: center;" data-if = "item_name ~= ''" data-style-font-size = "#item_name > 23 and '3.2vmin' or '3.8vmin'">{{item_name}}</item-name>
             <item-desc style = "position: absolute; left: 15.73vmax; top: 9.26vmin; width: 13.21vmax; height: 12.61vmin; word-break: break-word; font-size: 3.00vmin;" data-if = "item_desc ~= ''">{{item_desc}}</item-desc>
             <item-icon style = "position: absolute; left: 1.00vmax; top: 2.91vmin; width: 13.85vmax; height: 27.02vmin; background-image: <item_model>; background-size: 100% 100%;" />
         </item-detail>
