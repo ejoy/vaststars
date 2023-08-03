@@ -36,7 +36,7 @@ prototype "采矿机II" {
     speed = "125%",
     building_base = false,
     maxslot = "8",
-    camera_distance = 100,
+    camera_distance = 95,
 }
 
 prototype "采矿机III" {
@@ -55,5 +55,5 @@ prototype "采矿机III" {
     speed = "200%",
     building_base = false,
     maxslot = "8",
-    camera_distance = 100,
+    camera_distance = 95,
 }
