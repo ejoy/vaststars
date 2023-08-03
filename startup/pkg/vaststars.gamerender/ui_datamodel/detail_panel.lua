@@ -352,22 +352,29 @@ local function get_entity_property_list(object_id, recipe_inputs, recipe_ouputs)
                 if e.assembling.recipe == 0 then
                     status = STATUS_NO_RECIPE
                 else
-                    if prolist.recipe_ouputs and prolist.recipe_inputs then
-                        for _, value in ipairs(prolist.recipe_ouputs) do
-                            if value.count >= value.limit then
-                                status = STATUS_WAIT_OUTPUT
-                                break
-                            end
-                        end
-                        if not status and e.assembling.progress == 0 then
-                            for _, value in ipairs(prolist.recipe_inputs) do
-                                if value.count < value.demand_count then
-                                    status = STATUS_WAIT_INPUT
-                                    break
-                                end
-                            end
+                    if e.assembling.progress <= 0 then
+                        if e.assembling.status == 0 then
+                            status = STATUS_WAIT_INPUT
+                        elseif e.assembling.status == 1 then
+                            status = STATUS_WAIT_OUTPUT
                         end
                     end
+                    -- if prolist.recipe_ouputs and prolist.recipe_inputs then
+                    --     for _, value in ipairs(prolist.recipe_ouputs) do
+                    --         if value.count >= value.limit then
+                    --             status = STATUS_WAIT_OUTPUT
+                    --             break
+                    --         end
+                    --     end
+                    --     if not status and e.assembling.progress == 0 then
+                    --         for _, value in ipairs(prolist.recipe_inputs) do
+                    --             if value.count < value.demand_count then
+                    --                 status = STATUS_WAIT_INPUT
+                    --                 break
+                    --             end
+                    --         end
+                    --     end
+                    -- end
                 end
                 if status then
                     prolist.status = status
