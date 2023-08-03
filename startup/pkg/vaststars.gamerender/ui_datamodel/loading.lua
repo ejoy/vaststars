@@ -176,7 +176,7 @@ end
 
 local function worker(index)
     while not status_finish() do
-        local task = table.remove(status.pending)
+        local task = table.remove(status.pending, 1)
         if not task then
             ltask.sleep(1)
             goto continue
