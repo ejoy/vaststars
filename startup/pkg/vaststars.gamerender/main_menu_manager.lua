@@ -72,7 +72,7 @@ end
 local function back_to_main_menu()
     icamera_controller.set_camera_from_prefab("camera_gamecover.prefab")
     if not game_cover then
-        game_cover = createPrefabInst("/pkg/vaststars.resources/prefabs/game-cover.prefab")
+        game_cover = createPrefabInst("/pkg/vaststars.resources/glb/game-cover.glb|mesh.prefab")
     end
 
     gameplay_core.world_update = false
