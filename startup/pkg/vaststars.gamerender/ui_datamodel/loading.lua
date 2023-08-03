@@ -2,15 +2,26 @@ local ecs = ...
 
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local assetmgr = import_package "ant.asset"
+local serialize = import_package "ant.serialize"
 local vfs = require "vfs"
-local datalist  = require "datalist"
 local ltask = require "ltask"
+local fs = require "filesystem"
 
 local M = {}
 local WorkerNum <const> = 6
 local status
 
+local BlackList <const> = {
+    ["/pkg/ant.resources/materials/gamma_test.material"] = true,
+    ["/pkg/ant.resources/textures/default/1x1_normal.texture"] = true,
+    ["/pkg/vaststars.mod.test"] = true,
+    ["/pkg/ant.bake"] = true,
+}
+
 local function status_addtask(task)
+    if BlackList[task.filename] then
+        return
+    end
     status.pending[#status.pending+1] = task
 end
 
@@ -46,29 +57,46 @@ local handler = {}
 
 function handler.prefab(f)
     local prefab_data = readall(f)
-    for _, e in ipairs(datalist.parse(prefab_data)) do
+    for _, e in ipairs(serialize.parse(f, prefab_data)) do
         if e.prefab then -- TODO: special case for prefab
             goto continue
         end
         local data = e.data
         if data.material then
-            local m = assetmgr.load_material(data.material)
-            assetmgr.unload_material(m)
+            status_addtask {
+                type = "material",
+                filename = data.material,
+            }
         end
         if data.animation then
             for _, v in pairs(data.animation) do
-                touch_res(assetmgr.resource(v))
-                vfs.realpath(v:match("^(.+%.).*$") .. "event")
+                status_addtask {
+                    type = "resource",
+                    filename = v,
+                }
+                status_addtask {
+                    type = "file",
+                    filename = v:match("^(.+%.).*$") .. "event",
+                }
             end
         end
         if data.mesh then
-            touch_res(assetmgr.resource(data.mesh))
+            status_addtask {
+                type = "resource",
+                filename = data.mesh,
+            }
         end
         if data.meshskin then
-            touch_res(assetmgr.resource(data.meshskin))
+            status_addtask {
+                type = "resource",
+                filename = data.meshskin,
+            }
         end
         if data.skeleton then
-            touch_res(assetmgr.resource(data.skeleton))
+            status_addtask {
+                type = "resource",
+                filename = data.skeleton,
+            }
         end
         ::continue::
     end
@@ -83,26 +111,61 @@ function handler.material(f)
     assetmgr.unload_material(m)
 end
 
-local function dotask(filename)
-    local ext = filename:match(".*%.(.*)$")
-    log.info(("resources_loader|load %s"):format(filename))
-    if handler[ext] then
-        handler[ext](filename)
-    else
-        vfs.realpath(filename)
+function handler.resource(f)
+    touch_res(assetmgr.resource(f))
+end
+
+function handler.file(f)
+    vfs.realpath(f)
+end
+
+local Extension <const> = {
+    [".prefab"] = "prefab",
+    [".texture"] = "texture",
+    [".material"] = "material",
+    [".lua"] = "file",
+    [".ecs"] = "file",
+    [".rcss"] = "file",
+    [".rml"] = "file",
+    [".efk"] = "file",
+    [".ttf"] = "file",
+    [".patch"] = "file", --TODO: remove it
+}
+
+function handler.dir(f)
+    for file in fs.pairs(fs.path(f)) do
+        if fs.is_directory(file) then
+            status_addtask {
+                type = "dir",
+                filename = file:string(),
+            }
+        else
+            local ext = file:extension():string()
+            if Extension[ext] then
+                status_addtask {
+                    type = Extension[ext],
+                    filename = file:string(),
+                }
+            end
+        end
     end
+end
+
+local function dotask(task)
+    log.info(("resources_loader|load %s"):format(task.filename))
+    handler[task.type](task.filename)
 end
 
 local function worker(index)
     while not status_finish() do
-        local filename = table.remove(status.pending)
-        if not filename then
+        local task = table.remove(status.pending)
+        if not task then
             ltask.sleep(1)
             goto continue
         end
         status.loading = status.loading + 1
-        status[index] = filename
-        dotask(filename)
+        status[index] = task.filename
+        dotask(task)
         status.loaded = status.loaded + 1
         status.loading = status.loading - 1
         status[index] = " "
@@ -119,9 +182,26 @@ function M:create()
         stop = false,
     }
 
-    for _, v in ipairs(require "resources") do
-        status_addtask(v)
-    end
+    status_addtask {
+        type = "dir",
+        filename = "/",
+    }
+    status_addtask {
+        type = "file",
+        filename = "/settings",
+    }
+    status_addtask {
+        type = "file",
+        filename = "/graphic_settings",
+    }
+    status_addtask {
+        type = "file",
+        filename = "/pkg/ant.settings/default/graphic_settings",
+    }
+    status_addtask {
+        type = "file",
+        filename = "/pkg/ant.settings/default/settings",
+    }
 
     for i = 1, WorkerNum do
         status[i] = ""
