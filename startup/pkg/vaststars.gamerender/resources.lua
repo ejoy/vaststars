@@ -1321,8 +1321,6 @@ local t = {
 	"/pkg/vaststars.resources/prefabs/furnace-1.event",
 	"/pkg/vaststars.resources/prefabs/furnace-1.prefab",
 	"/pkg/vaststars.resources/prefabs/furnace-1.prefab.patch",
-	"/pkg/vaststars.resources/prefabs/game-cover.prefab",
-	"/pkg/vaststars.resources/prefabs/game-cover.prefab.patch",
 	"/pkg/vaststars.resources/prefabs/gas-tank-1.prefab",
 	"/pkg/vaststars.resources/prefabs/geothermal-plant.prefab",
 	"/pkg/vaststars.resources/prefabs/goods-gate.prefab",
