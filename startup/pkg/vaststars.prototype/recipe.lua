@@ -2584,7 +2584,7 @@ prototype "铁矿石挖掘" {
     results = {
         {"铁矿石", 1},
     },
-    time = "4s",
+    time = "3s",
     description = "采集铁矿石",
 }
 
