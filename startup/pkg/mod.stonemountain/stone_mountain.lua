@@ -216,18 +216,16 @@ local function create_sm_entity()
             stonemountain[group_id] = group
         end
         local mesh_number_table, sm_info = group.mesh_number_table, group.sm_info
-        for mesh_idx = 1, 4 do
-            local sm = sms[mesh_idx]
-            if sm then
-                local mesh_number = mesh_number_table[mesh_idx]
-                mesh_number = mesh_number + 1
-                sm_info[#sm_info+1] = {{sm.s, sm.r, sm.tx, sm.tz}}             
-            end
+        for _, sm in pairs(sms) do
+            local mesh_idx = sm.m
+            group.draw_number = group.draw_number + 1
+            mesh_number_table[mesh_idx] = mesh_number_table[mesh_idx] + 1
+            sm_info[#sm_info+1] = {{sm.s, sm.r, sm.tx, sm.tz}}  
         end
     end
     for gid, sm_info in pairs(stonemountain) do
         local g = ecs.group(gid)
-        ecs.group(gid):enable "view_visible"
+        --ecs.group(gid):enable "view_visible"
         g:create_entity {
             policy = {
                 "ant.render|render",
@@ -271,7 +269,7 @@ function sm_sys:entity_init()
     for e in w:select "INIT stonemountain:update render_object?update indirect?update" do
         update_ro(e.render_object)
         local stonemountain = e.stonemountain
-        local max_num = 20000
+        local max_num = 2000
         local draw_indirect_eid = ecs.create_entity {
             policy = {
                 "ant.render|compute_policy",
@@ -359,7 +357,7 @@ function sm_sys:data_changed()
         if stonemountain_num > 0 then
             local de <close> = w:entity(stonemountain.draw_indirect_eid, "draw_indirect:in dispatch:in")
             local idb_handle, itb_handle = de.draw_indirect.idb_handle, de.draw_indirect.itb_handle
-            local instance_memory_buffer = get_instance_memory_buffer(stonemountain_info, 20000)
+            local instance_memory_buffer = get_instance_memory_buffer(stonemountain_info, 2000)
             bgfx.update(itb_handle, 0, instance_memory_buffer)
             local indirect_params = math3d.vector(stonemountain_num, 0, 0, 0)
             create_stonemountain_compute(de.dispatch, stonemountain_num, idb_handle, instance_params, indirect_params, mesh_offset)
