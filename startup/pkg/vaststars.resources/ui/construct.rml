@@ -18,68 +18,6 @@
                 width: 58.49%;
                 height: 58.49%;
             }
-            .main-menu-button {
-                margin : 0 0.5em;
-                width: 15.33vmin;
-                height: 15.33vmin;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-            }
-            .menu-button-pic {
-                background-size: cover;
-                width: 12.67vmin;
-                height: 12.67vmin;
-            }
-            .progress-bar-block {
-                margin:0 0 0.05em 0;
-                justify-content: flex-start;
-                border: 0.13vmin #fff;
-            }
-            .progress-background {
-                justify-content: flex-start;
-                width: 60%;
-                height: 100%;
-                background-color: rgb(87, 238, 0);
-            }
-            p {
-                animation:0.5s linear 0s infinite alternate rotation;
-            }
-            @keyframes rotation {
-                from {
-                    transform: rotate(0);
-                }
-
-                to {
-                    transform: rotate(-10deg);
-                }
-            }
-            .progress-num {
-                width:100%; 
-                position:absolute; 
-                bottom:0; 
-                font-size: 3vmin; 
-                text-align: center;
-                -webkit-text-stroke: 0.2vmin #000;
-            }
-            .progress-item-block {
-                width:92%; 
-                height:3.2vmin;
-                position:absolute; 
-                left: 0.5vmin;
-                bottom:3.4vmin;
-                justify-content: center;
-                flex-direction: row;
-                align-items:center;
-                background-color: rgba(0,0,0,120);
-                border-radius: 1vmin;
-                border: 0.1vmin rgba(0,0,0,120);
-            }
-            .progress-item {
-                width:3.4vmin;
-                height:3.4vmin;
-                background-size: cover;
-            }
             inventory-bar {
                 flex-direction: row;
                 left: 0vmax;
@@ -87,6 +25,15 @@
                 width: 78.21vmin;
                 height: 7.48vmin;
                 gap: 1.50vmin;
+            }
+            tech-or-task-bar {
+                position: absolute;
+                left: 69.13vmax;
+                top: 1.17vmin;
+                width: 53.12vmin;
+                height: 16.28vmin;
+                background-image: ui/textures/construct/tech-or-task-bg.texture;
+                background-size: 100% 100%;
             }
         </style>
         <script type="text/x-lua" >
@@ -120,26 +67,25 @@
             </div>
         </inventory-bar>
 
-        <!-- 右上角：当前科技进度 -->
-        <div data-if = "not is_concise_mode and show_tech_progress" style = "pointer-events: none; position: absolute; right:0vmin; top:0vmin;  width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-start; padding-top: 1vmin;">
-            <button style='background-color:rgb(204,219,11);  width: 16.00vmin; height: 16.00vmin; align-items: center;' data-event-click="clickButton('click_techortaskicon', is_task)">
-                <div style="position:absolute; left:3.5vmin; bottom:2.7vmin; width: 50%; height: 50%; background-size:cover;" data-style-background-image="current_tech_icon"/>
-                    <div style="-webkit-text-stroke: 0.3vmin rgb(39, 32, 17);font-size: 3.5vmin; word-break: break-all;">{{current_tech_name}}</div>
-                    <div class="progress-bar-block" style = "position:absolute; bottom: -4.1vmin; width:100%; height:20%; border-radius: 0.3vmin; background-color: rgb(194, 194, 194);">
-                        <div class="progress-background" data-style-width="current_tech_progress"/>
-                        <!-- 右上角：当前科技进度数字标识x/y -->
-                        <div class="progress-num">{{current_tech_progress_detail}}</div>
-
-                    <!-- 右上角：当前科技需要科技包图标 -->
-                    <div class="progress-item-block" data-if = "show_ingredient">
-                        <div class="progress-item" data-style-background-image = "it.icon" data-for = "ingredient_icons"/>
+        <tech-or-task-bar style = "flex-direction: row; align-items: center; gap: 1vmin;" data-if = "not is_concise_mode and show_tech_progress">
+            <div style = "width: 16.28vmin; height: 16.28vmin; background-size: 100% 100%;" data-style-background-image="is_task and 'ui/textures/construct/task-icon.texture' or 'ui/textures/construct/tech-icon.texture'" />
+            <div style = "width: 23.00vmin; height: 15.90vmin; flex-direction: column;">
+                <div style = "width: 100%; height: 33.33%; font-size: 4.0vmin; justify-content: center; align-items: center;">{{current_tech_name}}</div>
+                <div style = "width: 100%; height: 33.33%;">
+                    <div style="position: absolute; width: 100%; height: 100%; background-image: ui/textures/construct/tech-or-task-progress-bg.texture; background-size: 100% 100%;" />
+                    <div style="position: absolute; width: 100%; height: 100%; justify-content: center; align-items: center;">
+                        <div style="position: absolute; width: 96.80%; height: 100%; flex-direction: row;">
+                            <div data-style-width="current_tech_progress" style = "flex-grow: 1;" />
+                            <div style="flex-grow: 99; height: 100%; background-image: ui/textures/construct/tech-or-task-progress-mask.texture; background-size: 100% 100%;" />
+                        </div>
                     </div>
-                </div> 
-                <p data-if="is_task" style="position: absolute; left:-1vmin; top:-0.75vmin;">
-                    <div style='width:2.8vmin; height:7.6vmin; background-image: "ui/textures/common/exclamation2.texture"; background-size: cover;'/>
-                </p>
-            </button>
-        </div>
+                    <div style="position: absolute; width: 100%; height: 100%; font-size: 3.0vmin; -webkit-text-stroke: 0.2vmin rgb(0, 0, 0); justify-content: center; align-items: center;">{{current_tech_progress_detail}}</div>
+                </div>
+                <div style = "width: 100%; height: 33.33%; flex-direction: row; align-items: center;">
+                    <div style = "width: 4.8vmin; height: 4.8vmin; background-size: 100% 100%;" data-style-background-image = "it.icon" data-for = "ingredient_icons"/>
+                </div>
+            </div>
+        </tech-or-task-bar>
 
         <main-button style = "position: absolute; left: 72.20vmax; top: 67.00vmin; background-image: ui/textures/construct/main-button-bg.texture; background-size: 100% 100%;" data-event-click = "clickButton('construct')" 
             data-if = "not is_concise_mode and focus_building_icon == ''"
