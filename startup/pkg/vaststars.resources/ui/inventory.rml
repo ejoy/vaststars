@@ -178,7 +178,7 @@
                     <div style = "flex-direction: row; flex-wrap: wrap;">
                         <item data-attr-id = "i.id" data-event-click = "clickButton('click_item', c_index, i_index)" data-style-background-image = "i.selected and 'ui/textures/item-config/item-active.texture' or 'none'" data-for = "i, i_index : c.items">
                             <div data-style-background-image = "i.icon" style = "width: 12.50vmin; height: 12.50vmin; background-size: 100% 100%; background-color: rgb(61, 61, 61);" />
-                            <div style = "position: absolute; width: 12.50vmin; height: 12.50vmin; justify-content: flex-end; align-items: flex-end; font-size: 3.5vmin; color:rgb(255,255,255); -webkit-text-stroke: 0.26vmin rgb(0,0,0);" data-style-color = " i.count >0 and 'rgb(255,255,255)' or 'rgb(255,0,0)' ">{{i.count}}</div>
+                            <div style = "position: absolute; width: 12.50vmin; height: 12.50vmin; justify-content: flex-end; align-items: flex-end; font-size: 3.2vmin; color:rgb(255,255,255); -webkit-text-stroke: 0.26vmin rgb(0,0,0);" data-style-color = " i.count >0 and 'rgb(255,255,255)' or 'rgb(255,0,0)' ">{{i.count}}</div>
                         </item>
                     </div>
                 </div>
@@ -186,7 +186,7 @@
         </construct-box>
 
         <item-detail data-if="item_name ~= ''">
-            <item-name style = "position: absolute; left: 15.20vmax; top: 2.94vmin; width: 13.21vmax; height: 4.67vmin; font-size: 4.67vmin; color: rgb(6, 20, 58);" data-if = "item_name ~= ''">{{item_name}}</item-name>
+            <item-name style = "position: absolute; left: 15.20vmax; top: 2.94vmin; width: 13.21vmax; height: 4.67vmin; font-size: 3.8vmin; color: rgb(255, 255, 255);" data-if = "item_name ~= ''">{{item_name}}</item-name>
             <item-desc style = "position: absolute; left: 15.73vmax; top: 9.26vmin; width: 13.21vmax; height: 12.61vmin; word-break: break-word; font-size: 3.00vmin; color: rgb(255, 174, 54);" data-if = "item_desc ~= ''">{{item_desc}}</item-desc>
             <item-icon style = "position: absolute; left: 2.85vmax; top: 7.91vmin; width: 18.01vmin; height: 18.01vmin; background-size: 100% 100%; background-color: rgb(61, 61, 61);" data-style-background-image = "item_icon" />
         </item-detail>
