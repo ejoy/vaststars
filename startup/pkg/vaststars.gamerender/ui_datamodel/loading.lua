@@ -14,6 +14,8 @@ local status
 local BlackList <const> = {
     ["/pkg/ant.resources/materials/gamma_test.material"] = true,
     ["/pkg/ant.resources/textures/default/1x1_normal.texture"] = true,
+    ["/pkg/ant.resources/materials/omni_stencil.material"] = true,
+    ["/pkg/ant.resources/materials/ibl/ibl_sample.material"] = true,
     ["/pkg/vaststars.mod.test"] = true,
     ["/pkg/ant.bake"] = true,
 }
@@ -22,7 +24,11 @@ local function status_addtask(task)
     if BlackList[task.filename] then
         return
     end
-    status.pending[#status.pending+1] = task
+    if task.type == "dir" then
+        table.insert(status.pending, 1, task)
+    else
+        table.insert(status.pending, task)
+    end
 end
 
 local function status_finish()
@@ -221,8 +227,8 @@ function M:stage_camera_usage(datamodel)
     for i, v in ipairs(status) do
         datamodel.status[i] = v
     end
-    local progress = status.loaded / (status.loading + #status.pending + status.loaded)
-    datamodel.progress = string.format("%d%%", math.floor(progress * 100))
+    datamodel.loaded = status.loaded
+    datamodel.total = status.loading + #status.pending + status.loaded
 end
 
 function M:close()
