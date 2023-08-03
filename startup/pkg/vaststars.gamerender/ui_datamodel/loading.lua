@@ -14,6 +14,7 @@ local status
 local BlackList <const> = {
     ["/pkg/vaststars.mod.test"] = true,
     ["/pkg/ant.bake"] = true,
+    ["/pkg/ant.resources.binary/meshes/cloud.glb"] = true,
 }
 
 local function status_addtask(task)
@@ -134,15 +135,30 @@ local Extension <const> = {
     [".patch"] = "file", --TODO: remove it
 }
 
+local Resource <const> = {
+    [".texture"] = "texture",
+    [".material"] = "material",
+    [".glb"] = "",
+}
+
 function handler.dir(f)
     for file in fs.pairs(fs.path(f)) do
+        local ext = file:extension():string()
         if fs.is_directory(file) then
-            status_addtask {
-                type = "dir",
-                filename = file:string(),
-            }
+            if Resource[ext] then
+                if Resource[ext] ~= "" then
+                    status_addtask {
+                        type = Resource[ext],
+                        filename = file:string(),
+                    }
+                end
+            else
+                status_addtask {
+                    type = "dir",
+                    filename = file:string(),
+                }
+            end
         else
-            local ext = file:extension():string()
             if Extension[ext] then
                 status_addtask {
                     type = Extension[ext],
