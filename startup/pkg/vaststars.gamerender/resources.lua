@@ -982,7 +982,6 @@ local t = {
 	"/pkg/vaststars.gamerender/ui_datamodel/common/event_handler.lua",
 	"/pkg/vaststars.gamerender/ui_datamodel/common/item_unlocked.lua",
 	"/pkg/vaststars.gamerender/ui_datamodel/common/recipe_unlocked.lua",
-	"/pkg/vaststars.gamerender/ui_datamodel/common/resources_loader.lua",
 	"/pkg/vaststars.gamerender/ui_datamodel/construct.lua",
 	"/pkg/vaststars.gamerender/ui_datamodel/construct_building.lua",
 	"/pkg/vaststars.gamerender/ui_datamodel/construct_road_or_pipe.lua",
