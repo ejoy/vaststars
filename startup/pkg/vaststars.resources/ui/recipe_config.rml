@@ -193,7 +193,7 @@
                             <div data-style-background-image = "recipe_icon" style = "width: 6.91vmax; height: 14.95vmin; background-size: 100% 100%;" data-if = "recipe_icon ~= ''" />
                         </div>
                         <div style = "position: absolute; top: 1.25vmin; left: 3.42vmax; width: 7.19vmax; height: 15.57vmin; background-image: ui/textures/recipe-config/icon-frame.texture; background-size: 100% 100%;" />
-                        <div style = "position: absolute; margin-top: -1.50vmin; margin-left: 0.80vmax; top: 3.70vmin; left: 10.65vmax; width: 16.60vmax; height: 5.12vmin; text-align: right; font-size: 4.00vmin; -webkit-text-stroke: 0.1vmin #252525;" data-if = "recipe_name ~= ''">
+                        <div style = "position: absolute; margin-top: -1.50vmin; margin-left: 0.80vmax; top: 3.70vmin; left: 10.65vmax; width: 16.60vmax; height: 5.12vmin; text-align: center; font-size: 4.00vmin; -webkit-text-stroke: 0.1vmin #252525;" data-style-font-size = "#recipe_name > 23 and '3.2vmin' or '3.8vmin'" data-if = "recipe_name ~= ''">
                             {{recipe_name}}
                         </div>
                         <div style = "position: absolute; top: 14.49vmin; left: 20.00vmax; width: 10vmax; height: 5.12vmin; justify-content: center; align-items: center; font-size: 4.50vmin;" data-if = "recipe_time ~= ''">
