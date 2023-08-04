@@ -148,8 +148,8 @@ workbutton {
 	justify-content: flex-end;
 	width: 100%;
 	position: absolute;
-	bottom: -0.5vmin;
-	right: 0vmin;
+	top: -0.5vmin;
+	right: 0.2vmin;
 }
 .item-count-new {
 	font-size: 4vmin;

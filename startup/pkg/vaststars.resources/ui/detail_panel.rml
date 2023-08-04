@@ -215,7 +215,7 @@
                     <div class="row" style="margin-top: 1vmin; width: 25%; align-self: flex-end;">
                         <div class="small-item1" style="width:7vmin; height:7vmin;" data-style-background-image="it.icon" data-for="recipe_ouputs">
                             <div class ="item-count-combination">
-                                <div class="item-count-new" style="font-size: 4vmin;">{{it.count}}</div>
+                                <div class="item-count-new" style="font-size: 4vmin;">x{{it.count}}</div>
                             </div>
                         </div>
                     </div>
@@ -227,7 +227,7 @@
                         <div class="row" style="width: 100%; justify-content: flex-start; flex-wrap: wrap;">
                             <div class="small-item1" style="width:7vmin; height:7vmin; border: 0.3vmin rgb(0, 217, 255);" data-style-background-image="it.icon" data-for="recipe_inputs">
                                 <div class ="item-count-combination">
-                                    <div class="item-count-new" data-style-font-size="it.count > 99 and '2vmin' or '2.7vmin'" data-style-color="it.count < it.demand_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">{{it.count}}</div>
+                                    <div class="item-count-new" data-style-font-size="it.count > 99 and '2vmin' or '2.7vmin'" data-style-color="it.count < it.demand_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">x{{it.count}}</div>
                                 </div>
                             </div>
                         </div>
@@ -242,7 +242,7 @@
                         <div class="row" style="width: 100%; justify-content: flex-end; flex-wrap: wrap;">
                             <div class="small-item1" style="width:7vmin; height:7vmin;border: 0.3vmin rgb(251, 177, 61);" data-style-background-image="it.icon" data-for="recipe_ouputs">
                                 <div class ="item-count-combination">
-                                    <div class="item-count-new" data-style-font-size="it.count > 99 and '2vmin' or '2.7vmin'" data-style-color="it.count < it.output_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">{{it.count}}</div>
+                                    <div class="item-count-new" data-style-font-size="it.count > 99 and '2vmin' or '2.7vmin'" data-style-color="it.count < it.output_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">x{{it.count}}</div>
                                 </div>
                             </div>
                         </div>
@@ -253,7 +253,7 @@
                 <div style="width:90%; margin-left: 3%; margin-right: 3%; flex-direction: column; justify-content: flex-start; align-items: center;" data-if = "show_type=='goods'" data-event-click="onLongPress(6)">
                     <div class="small-item1" style="margin: 0.5vmin; height: 8vmin; width: 8vmin; margin-top: 8vmin;" data-style-background-image="goods_icon">
                         <div class ="item-count-combination">
-                            <div class="item-count-new" data-style-font-size="goods_count > 99 and '2vmin' or '2.7vmin'">{{goods_count}}</div>
+                            <div class="item-count-new" data-style-font-size="goods_count > 99 and '2vmin' or '2.7vmin'">x{{goods_count}}</div>
                         </div>
                     </div>
                     <div style="text-align: center; font-size: 3.5vmin;">{{goods_desc}}</div>
@@ -295,7 +295,7 @@
                     <div style='flex-direction: column; align-items: center;' data-for="recipe_ouputs">
                         <div class="small-item1" style="width: 15vmin; height: 15vmin;" data-style-background-image="it.icon">
                             <div class ="item-count-combination">
-                                <div class="item-count-new" style="font-size: 6vmin;">{{it.count}}</div>
+                                <div class="item-count-new" style="font-size: 6vmin;">x{{it.count}}</div>
                             </div>
                         </div>
                         <div style='font-size: 6vmin'>{{it.name}}</div>
@@ -336,7 +336,7 @@
                 <div style="flex-direction: column; justify-content: center; align-items: center;">
                     <div class="small-item1" style="height: 20vmin; width: 20vmin;" data-style-background-image="goods_icon">
                         <div class ="item-count-combination">
-                            <div class="item-count-new" style="font-size: 5vmin;">{{goods_count}}</div>
+                            <div class="item-count-new" style="font-size: 5vmin;">x{{goods_count}}</div>
                         </div>
                     </div>
                     <div style="text-align: center; font-size: 8vmin;">{{goods_desc}}</div>
