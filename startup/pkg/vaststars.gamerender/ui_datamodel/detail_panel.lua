@@ -236,11 +236,13 @@ local function get_property(e, typeobject)
             local pt = iprototype.queryById(e.fluidbox.fluid)
             name = pt.name
 
-            local r = gameplay_core.fluidflow_query(e.fluidbox.fluid, e.fluidbox.id)
-            if r then
-                volume = r.volume / r.multiple
-                capacity = math.floor(r.capacity / r.multiple)
-                flow = r.flow / r.multiple
+            if e.fluidbox.id ~= 0 then
+                local r = gameplay_core.fluidflow_query(e.fluidbox.fluid, e.fluidbox.id)
+                if r then
+                    volume = r.volume / r.multiple
+                    capacity = math.floor(r.capacity / r.multiple)
+                    flow = r.flow / r.multiple
+                end
             end
         end
         t.values.fluid_name = name

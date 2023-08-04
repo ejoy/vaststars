@@ -69,7 +69,7 @@
             position: absolute;
             left: 5.03vmax;
             top: 0.62vmin;
-            width: 71.37vmin;
+            width: 76.37vmin;
             height: 98.52vmin;
             background-image: "ui/textures/construct/square-grid.texture";
             background-size: 100% 100%;
@@ -78,7 +78,7 @@
         construct-list {
             left: 1.86vmin;
             top: 2.95vmin;
-            width: 71.37vmin;
+            width: 75.37vmin;
             height: 93.00vmin;
             margin-left: -1vmax;
             overflow: scroll;
@@ -89,7 +89,7 @@
             background-size: 100% 100%;
             justify-content: center;
             align-items: center;
-            margin-right: -1.57vmin;
+            margin-right: -2.57vmin;
             margin-bottom: -0.57vmin;
         }
         item-detail {

@@ -73,7 +73,7 @@
                 <div style = "width: 100%; height: 33.33%; font-size: 4.0vmin; justify-content: center; align-items: center;">{{current_tech_name}}</div>
                 <div style = "width: 100%; height: 33.33%;">
                     <div style="position: absolute; width: 100%; height: 100%; background-image: ui/textures/construct/tech-or-task-progress-bg.texture; background-size: 100% 100%;" />
-                    <div style="position: absolute; height: 100%; overflow: hidden;" data-style-width = "current_tech_progress == '0%' and '0.01%' or current_tech_progress">
+                    <div style="position: absolute; height: 100%; overflow: hidden;" data-style-width = "current_tech_progress">
                         <div style="position: absolute; width: 23.00vmin; height: 100%; background-image: ui/textures/construct/tech-or-task-progress.texture; background-size: 100% 100%;" />
                     </div>
                     <div style="position: absolute; width: 100%; height: 100%; font-size: 3.0vmin; -webkit-text-stroke: 0.2vmin rgb(0, 0, 0); justify-content: center; align-items: center;">{{current_tech_progress_detail}}</div>

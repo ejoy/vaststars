@@ -385,11 +385,11 @@ prototype "空气过滤器III" {
 }
 
 prototype "管道1-I型" {
+    building_category = 1,
     construct_name = "管道1-X型",
     model = "prefabs/pipe/pipe_I.prefab",
     icon = "ui/textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
-    building_category = 1,
     camera_distance = 30,
     building_direction = {"N", "E"},
     building_menu = false,
@@ -408,11 +408,11 @@ prototype "管道1-I型" {
 }
 
 prototype "管道1-L型" {
+    building_category = 1,
     construct_name = "管道1-X型",
     model = "prefabs/pipe/pipe_L.prefab",
     icon = "ui/textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
-    building_category = 1,
     building_direction = {"N", "E", "S", "W"},
     building_menu = false,
     type = {"building","fluidbox","pipe"},
@@ -430,11 +430,11 @@ prototype "管道1-L型" {
 }
 
 prototype "管道1-T型" {
+    building_category = 1,
     construct_name = "管道1-X型",
     model = "prefabs/pipe/pipe_T.prefab",
     icon = "ui/textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
-    building_category = 1,
     building_direction = {"N", "E", "S", "W"},
     building_menu = false,
     type = {"building","fluidbox","pipe"},
@@ -453,12 +453,12 @@ prototype "管道1-T型" {
 }
 
 prototype "管道1-X型" {
+    building_category = 1,
     construct_name = "管道1-X型",
     display_name = "管道I",
     model = "prefabs/pipe/pipe_X.prefab",
     icon = "ui/textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
-    building_category = 1,
     building_direction = {"N"},
     building_menu = false,
     type = {"building","fluidbox","pipe"},
@@ -479,11 +479,11 @@ prototype "管道1-X型" {
 }
 
 prototype "管道1-O型" {
+    building_category = 1,
     construct_name = "管道1-X型",
     model = "prefabs/pipe/pipe_O.prefab",
     icon = "ui/textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
-    building_category = 1,
     building_direction = {"N"},
     building_menu = false,
     type = {"building","fluidbox","pipe"},
@@ -499,11 +499,11 @@ prototype "管道1-O型" {
 }
 
 prototype "管道1-U型" {
+    building_category = 1,
     construct_name = "管道1-X型",
     model = "prefabs/pipe/pipe_U.prefab",
     icon = "ui/textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
-    building_category = 1,
     building_direction = {"N", "E", "S", "W"},
     building_menu = false,
     type = {"building","fluidbox","pipe"},
@@ -520,12 +520,13 @@ prototype "管道1-U型" {
 }
 
 prototype "地下管1-JU型" {
+    building_category = 2,
     construct_name = "地下管1-JU型",
+    display_name = "地下管I",
     model = "prefabs/pipe/pipe_JU.prefab",
     icon = "ui/textures/construct/underground-pipe1.texture",
     construct_detector = {"exclusive"},
     building_menu = false,
-    building_category = 2,
     building_direction = {"N", "E", "S", "W"},
     type = {"building","fluidbox","pipe_to_ground"},
     area = "1x1",
@@ -541,13 +542,13 @@ prototype "地下管1-JU型" {
 }
 
 prototype "地下管1-JI型" {
+    building_category = 2,
     construct_name = "地下管1-JU型",
     display_name = "地下管I",
     model = "prefabs/pipe/pipe_JI.prefab",
     icon = "ui/textures/construct/underground-pipe1.texture",
     construct_detector = {"exclusive"},
     building_menu = false,
-    building_category = 2,
     building_direction = {"N", "E", "S", "W"},
     type = {"building","fluidbox","pipe_to_ground"},
     area = "1x1",
@@ -565,12 +566,13 @@ prototype "地下管1-JI型" {
 }
 
 prototype "地下管2-JU型" {
+    building_category = 3,
     construct_name = "地下管2-JU型",
+    display_name = "地下管II",
     model = "prefabs/pipe/pipe_JU.prefab",
     icon = "ui/textures/construct/underground-pipe1.texture",
     construct_detector = {"exclusive"},
     building_menu = false,
-    building_category = 3,
     building_direction = {"N", "E", "S", "W"},
     type = {"building","fluidbox","pipe_to_ground"},
     area = "1x1",
@@ -586,13 +588,13 @@ prototype "地下管2-JU型" {
 }
 
 prototype "地下管2-JI型" {
+    building_category = 3,
     construct_name = "地下管2-JU型",
     display_name = "地下管II",
     model = "prefabs/pipe/pipe_JI.prefab",
     icon = "ui/textures/construct/underground-pipe1.texture",
     construct_detector = {"exclusive"},
     building_menu = false,
-    building_category = 3,
     building_direction = {"N", "E", "S", "W"},
     type = {"building","fluidbox","pipe_to_ground"},
     area = "1x1",

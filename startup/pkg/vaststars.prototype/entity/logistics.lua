@@ -84,11 +84,11 @@ prototype "科研中心III" {
 
 
 prototype "砖石公路-I型" {
+    building_category = 4,
     display_name = "砖石公路",
     construct_name = "砖石公路-X型",
     icon = "ui/textures/construct/road1.texture",
     construct_detector = {"exclusive"},
-    building_category = 4,
     building_direction = {"N", "E"},
     track = "I",
     type = {"building", "road"},
@@ -106,11 +106,11 @@ prototype "砖石公路-I型" {
 }
 
 prototype "砖石公路-L型" {
+    building_category = 4,
     display_name = "砖石公路",
     construct_name = "砖石公路-X型",
     icon = "ui/textures/construct/road1.texture",
     construct_detector = {"exclusive"},
-    building_category = 4,
     building_direction = {"N", "E", "S", "W"},
     track = "L",
     type = {"building", "road"},
@@ -128,11 +128,11 @@ prototype "砖石公路-L型" {
 }
 
 prototype "砖石公路-T型" {
+    building_category = 4,
     display_name = "砖石公路",
     construct_name = "砖石公路-X型",
     icon = "ui/textures/construct/road1.texture",
     construct_detector = {"exclusive"},
-    building_category = 4,
     building_direction = {"N", "E", "S", "W"},
     track = "T",
     type = {"building", "road"},
@@ -151,11 +151,11 @@ prototype "砖石公路-T型" {
 }
 
 prototype "砖石公路-O型" {
+    building_category = 4,
     display_name = "砖石公路",
     construct_name = "砖石公路-X型",
     icon = "ui/textures/construct/road1.texture",
     construct_detector = {"exclusive"},
-    building_category = 4,
     building_direction = {"N"},
     track = "O",
     type = {"building", "road"},
@@ -170,11 +170,11 @@ prototype "砖石公路-O型" {
 }
 
 prototype "砖石公路-U型" {
+    building_category = 4,
     construct_name = "砖石公路-X型",
     display_name = "砖石公路",
     icon = "ui/textures/construct/road1.texture",
     construct_detector = {"exclusive"},
-    building_category = 4,
     building_direction = {"N", "E", "S", "W"},
     track = "U",
     type = {"building", "road"},
@@ -191,12 +191,12 @@ prototype "砖石公路-U型" {
 }
 
 prototype "砖石公路-X型" {
+    building_category = 4,
     display_name = "砖石公路",
     construct_name = "砖石公路-X型",
     model = "prefabs/road/road_X.prefab",
     icon = "ui/textures/construct/road1.texture",
     construct_detector = {"exclusive"},
-    building_category = 4,
     building_direction = {"N"},
     track = "X",
     type = {"building", "road"},

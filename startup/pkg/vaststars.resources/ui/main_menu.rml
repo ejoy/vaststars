@@ -4,40 +4,11 @@
             body {
                 font: "阿里巴巴普惠体";
             }
-            command-center-button {
-                flex-direction: column;
-                width: 22.12vmin;
-                height: 22.12vmin;
-            }
-            command-center-button {
-                background-image: "ui/textures/main-menu/command-center-normal.texture";
-                background-size: cover;
-            }
-            command-center-button:active {
-                background-image: "ui/textures/main-menu/command-center-pressed.texture";
-                background-size: cover;
-            }
-
-            research-tasks-button {
-                flex-direction: column;
-                width: 22.12vmin;
-                height: 22.12vmin;
-            }
-            research-tasks-button {
-                background-image: "ui/textures/main-menu/research-tasks-normal.texture";
-                background-size: cover;
-            }
-            research-tasks-button:active {
-                background-image: "ui/textures/main-menu/research-tasks-pressed.texture";
-                background-size: cover;
-            }
 
             statistical-data-button {
                 flex-direction: column;
                 width: 22.12vmin;
                 height: 22.12vmin;
-            }
-            statistical-data-button {
                 background-image: "ui/textures/main-menu/statistical-data-normal.texture";
                 background-size: cover;
             }
@@ -50,8 +21,6 @@
                 flex-direction: column;
                 width: 22.12vmin;
                 height: 22.12vmin;
-            }
-            game-settings-button {
                 background-image: "ui/textures/main-menu/game-settings-normal.texture";
                 background-size: cover;
             }
@@ -69,10 +38,7 @@
         </style>
         <script type="text/x-lua" >
             local ui_sys = require "ui.ui_system"
-            local start = ui_sys.createDataMode {
-                guide_progress = 0,
-                tech_count = 0,
-            }
+            local start = ui_sys.createDataMode {}
             function start.clickButton(...)
                 audio.play "event:/ui/button1"
                 ui_sys.pub {...}
@@ -80,31 +46,11 @@
         </script>
     </head>
     <body>
-        <div style="background-color: rgba(0, 0, 0, 240); flex-direction: row; justify-content: center; align-items: center; align-content: space-between; width: 100%; height: 100%;">
-            <div style="width: 100%; height: 100%; position:absolute; left:0; top:0;" data-event-click = "clickButton('quit')" />
-            <command-center-button data-event-click = "clickButton('inventory')">
-                <command-center-button />
-                <button-text>指挥中心</button-text>
-            </command-center-button>
-
-            <div style="width: 7.46vmin; height: 100%; pointer-events: none;" />
-
-            <research-tasks-button data-event-click = "clickButton('research_tasks')">
-                <research-tasks-button />
-                <button-text>科研任务</button-text>
-                <div data-if = "tech_count > 0" style='width:5vmin; height:5vmin; position:absolute; right:0; top:0; background-size: cover; background-image:"ui/textures/work_status_icon/red_dot.texture"'>
-                    <div style="text-align:center; font-size:5vmin;">{{tech_count}}</div>
-                </div>
-            </research-tasks-button>
-
-            <div style="width: 7.46vmin; height: 100%; pointer-events: none;" />
-
+        <div style="background-color: rgba(0, 0, 0, 240); flex-direction: row; justify-content: center; align-items: center; width: 100%; height: 100%; gap: 10vmax;" data-event-click = "clickButton('quit')">
             <statistical-data-button data-event-click = "clickButton('statistical_data')">
                 <statistical-data-button />
                 <button-text>统计数据</button-text>
             </statistical-data-button>
-
-            <div style="width: 7.46vmin; height: 100%; pointer-events: none;" />
 
             <game-settings-button data-event-click = "clickButton('game_settings')">
                 <game-settings-button />
