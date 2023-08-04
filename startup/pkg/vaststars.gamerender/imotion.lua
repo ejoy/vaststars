@@ -13,6 +13,7 @@ function motion.create_motion_object(s, r, t, parent, ev)
     if not motion.sampler_group then
         local sampler_group = ims.sampler_group()
         sampler_group:enable "view_visible"
+        ecs.group_flush "view_visible"
         motion.sampler_group = sampler_group
     end
     local m_eid = motion.sampler_group:create_entity {

@@ -234,6 +234,7 @@ function terrain:enable_terrain(x, y)
         print(("disable group id: %s"):format(group_id))
         ecs.group(group_id):disable "view_visible"
     end
+    ecs.group_flush "view_visible"
 end
 
 function terrain:verify_coord(x, y)

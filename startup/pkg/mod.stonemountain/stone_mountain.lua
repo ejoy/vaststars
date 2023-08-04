@@ -225,7 +225,6 @@ local function create_sm_entity()
     end
     for gid, sm_info in pairs(stonemountain) do
         local g = ecs.group(gid)
-        --ecs.group(gid):enable "view_visible"
         g:create_entity {
             policy = {
                 "ant.render|render",

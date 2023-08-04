@@ -104,6 +104,7 @@ local function create(prefab, s, r, t, motion_events)
     if not sampler_group then
         sampler_group = ims.sampler_group()
         sampler_group:enable "view_visible"
+        ecs.group_flush "view_visible"
     end
 
     local outer = {objs = {}, item_classid = 0, item_amount = 0}
