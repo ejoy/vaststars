@@ -224,7 +224,7 @@ function ui_system.camera_usage()
     for url in pairs(closeWindows) do
         local binding = windowBindings[url]
         if binding then
-            if binding.template.close then
+            if binding.template and binding.template.close then
                 binding.template:close(binding.datamodel)
             end
             binding.window:close()
@@ -239,7 +239,7 @@ end
 
 function ui_system.exit()
     for _, binding in pairs(windowBindings) do
-        if binding.template.close then
+        if binding.template and binding.template.close then
             binding.template:close(binding.datamodel)
         end
     end

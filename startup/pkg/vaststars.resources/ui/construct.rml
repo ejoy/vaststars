@@ -67,17 +67,14 @@
             </div>
         </inventory-bar>
 
-        <tech-or-task-bar style = "flex-direction: row; align-items: center; gap: 1vmin;" data-if = "not is_concise_mode and show_tech_progress">
+        <tech-or-task-bar style = "flex-direction: row; align-items: center; gap: 1vmin;" data-if = "not is_concise_mode and show_tech_progress" data-event-click="clickButton('click_techortaskicon', is_task)">
             <div style = "width: 16.28vmin; height: 16.28vmin; background-size: 100% 100%;" data-style-background-image="is_task and 'ui/textures/construct/task-icon.texture' or 'ui/textures/construct/tech-icon.texture'" />
             <div style = "width: 23.00vmin; height: 15.90vmin; flex-direction: column;">
                 <div style = "width: 100%; height: 33.33%; font-size: 4.0vmin; justify-content: center; align-items: center;">{{current_tech_name}}</div>
                 <div style = "width: 100%; height: 33.33%;">
                     <div style="position: absolute; width: 100%; height: 100%; background-image: ui/textures/construct/tech-or-task-progress-bg.texture; background-size: 100% 100%;" />
-                    <div style="position: absolute; width: 100%; height: 100%; justify-content: center; align-items: center;">
-                        <div style="position: absolute; width: 96.80%; height: 100%; flex-direction: row;">
-                            <div data-style-width="current_tech_progress" style = "flex-grow: 1;" />
-                            <div style="flex-grow: 99; height: 100%; background-image: ui/textures/construct/tech-or-task-progress-mask.texture; background-size: 100% 100%;" />
-                        </div>
+                    <div style="position: absolute; height: 100%; overflow: hidden;" data-style-width = "current_tech_progress == '0%' and '0.01%' or current_tech_progress">
+                        <div style="position: absolute; width: 23.00vmin; height: 100%; background-image: ui/textures/construct/tech-or-task-progress.texture; background-size: 100% 100%;" />
                     </div>
                     <div style="position: absolute; width: 100%; height: 100%; font-size: 3.0vmin; -webkit-text-stroke: 0.2vmin rgb(0, 0, 0); justify-content: center; align-items: center;">{{current_tech_progress_detail}}</div>
                 </div>
