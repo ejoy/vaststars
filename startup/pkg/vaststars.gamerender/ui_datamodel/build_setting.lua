@@ -27,6 +27,7 @@ local function __get_construct_menu()
             local count = ibackpack.query(gameplay_core.get_world(), typeobject.id)
             m.items[#m.items + 1] = {
                 id = ("%s:%s"):format(category_idx, item_idx),
+                prototype = typeobject.id,
                 name = iprototype.display_name(typeobject),
                 icon = typeobject.item_icon,
                 count = count,
@@ -55,10 +56,10 @@ local function __get_shortcur(index)
     return storage.shortcut[index]
 end
 
-local function __get_construct_index(prototype_name)
+local function __get_construct_index(prototype)
     for category_idx, menu in ipairs(CONSTRUCT_MENU) do
         for item_idx, item in ipairs(menu.items) do
-            if item == prototype_name then
+            if item == prototype then
                 return category_idx, item_idx
             end
         end
@@ -92,13 +93,13 @@ function M:create()
     for i = 1, MAX_SHORTCUT_COUNT do
         local s = storage.shortcut[i]
         if not s then
-            shortcut[i] = {prototype_name = "", icon = "", last_timestamp = 0, selected = false}
+            shortcut[i] = {prototype = 0, icon = "", last_timestamp = 0, selected = false}
         else
-            if s.prototype_name ~= "" and s.prototype_name ~= nil then
-                local typeobject = iprototype.queryByName(s.prototype_name)
-                shortcut[i] = {prototype_name = s.prototype_name, icon = typeobject.item_icon, last_timestamp = s.last_timestamp or 0, selected = false}
+            if s.prototype and s.prototype ~= 0 then
+                local typeobject = iprototype.queryById(s.prototype)
+                shortcut[i] = {prototype = s.prototype, icon = typeobject.item_icon, last_timestamp = s.last_timestamp or 0, selected = false}
             else
-                shortcut[i] = {prototype_name = "", icon = "", last_timestamp = 0, selected = false}
+                shortcut[i] = {prototype = 0, icon = "", last_timestamp = 0, selected = false}
             end
         end
     end
@@ -106,7 +107,7 @@ function M:create()
     local min_times = math.maxinteger
     local min_id = 1
     for i = 1, MAX_SHORTCUT_COUNT do
-        if shortcut[i].prototype_name == "" then
+        if shortcut[i].prototype == 0 then
             min_id = i
             break
         end
@@ -120,9 +121,9 @@ function M:create()
 
     local category_idx, item_idx = 0, 0
     local item_name, item_desc = "", ""
-    if shortcut[min_id].prototype_name ~= "" then
-        category_idx, item_idx = __get_construct_index(shortcut[min_id].prototype_name)
-        local typeobject = iprototype.queryByName(shortcut[min_id].prototype_name)
+    if shortcut[min_id].prototype ~= 0 then
+        category_idx, item_idx = __get_construct_index(shortcut[min_id].prototype)
+        local typeobject = iprototype.queryById(shortcut[min_id].prototype)
         item_name = iprototype.display_name(typeobject)
         item_desc = typeobject.item_description or ""
     end
@@ -156,15 +157,15 @@ function M:stage_ui_update(datamodel)
             storage.shortcut = storage.shortcut or {}
             storage.shortcut[datamodel.shortcut_id] = nil
 
-            datamodel.shortcut[datamodel.shortcut_id] = {prototype_name = "", icon = "", times = 0, selected = true}
+            datamodel.shortcut[datamodel.shortcut_id] = {prototype = 0, icon = "", times = 0, selected = true}
         else
             __set_item_value(datamodel, datamodel.category_idx, datamodel.item_idx, "selected", false)
             __set_item_value(datamodel, category_idx, item_idx, "selected", true)
             datamodel.category_idx = category_idx
             datamodel.item_idx = item_idx
 
-            local item_name = datamodel.construct_menu[category_idx].items[item_idx].name
-            local typeobject = iprototype.queryByName(item_name)
+            local prototype = datamodel.construct_menu[category_idx].items[item_idx].prototype
+            local typeobject = assert(iprototype.queryById(prototype))
             datamodel.item_name = iprototype.display_name(typeobject)
             datamodel.item_desc = typeobject.item_description or ""
 
@@ -174,12 +175,12 @@ function M:stage_ui_update(datamodel)
             )
 
             local data = __get_shortcur(datamodel.shortcut_id)
-            data.prototype_name = item_name
+            data.prototype = typeobject.id
             data.icon = typeobject.item_icon
             data.last_timestamp = os.time()
 
             local shortcut = assert(datamodel.shortcut[datamodel.shortcut_id])
-            shortcut.prototype_name = item_name
+            shortcut.prototype = prototype
             shortcut.icon = typeobject.item_icon
             shortcut.selected = true
         end
@@ -199,14 +200,14 @@ function M:stage_ui_update(datamodel)
             __set_item_value(datamodel, datamodel.category_idx, datamodel.item_idx, "selected", false)
         end
 
-        if shortcut.prototype_name ~= "" then
-            local category_idx, item_idx = __get_construct_index(shortcut.prototype_name)
+        if shortcut.prototype ~= 0 then
+            local category_idx, item_idx = __get_construct_index(shortcut.prototype)
             assert(category_idx ~= 0 and item_idx ~= 0)
             __set_item_value(datamodel, category_idx, item_idx, "selected", true)
             datamodel.category_idx = category_idx
             datamodel.item_idx = item_idx
 
-            local typeobject = iprototype.queryByName(shortcut.prototype_name)
+            local typeobject = iprototype.queryById(shortcut.prototype)
             datamodel.item_name = iprototype.display_name(typeobject)
             datamodel.item_desc = typeobject.item_description or ""
 

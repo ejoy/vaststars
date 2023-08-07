@@ -10,7 +10,7 @@ local MAX_SHORTCUT_COUNT <const> = 5
 local iprototype = require "gameplay.interface.prototype"
 
 local function __default_shortcut()
-    return {prototype_name = "", icon = "", last_timestamp = 0, selected = false, unknown = true}
+    return {prototype = 0, prototype_name = "", icon = "", last_timestamp = 0, selected = false, unknown = true}
 end
 
 local function __update_shortcur_timestamp(index)
@@ -34,14 +34,14 @@ function M:create()
 
     for i = 1, MAX_SHORTCUT_COUNT do
         local s = storage.shortcut[i]
-        if not s or (s and s.prototype_name == "") or (s and s.prototype_name == nil) then
+        if not s or (s and s.prototype == 0) or (s and s.prototype == nil) then
             shortcut[i] = __default_shortcut()
             if not first_unknown_idx then
                 first_unknown_idx = i
             end
         else
-            local typeobject = iprototype.queryByName(s.prototype_name)
-            shortcut[i] = {prototype_name = s.prototype_name, icon = typeobject.item_icon, last_timestamp = s.last_timestamp or 0, selected = false, unknown = false}
+            local typeobject = iprototype.queryById(s.prototype)
+            shortcut[i] = {prototype = typeobject.id, prototype_name = iprototype.display_name(typeobject), icon = typeobject.item_icon, last_timestamp = s.last_timestamp or 0, selected = false, unknown = false}
         end
 
         if shortcut[i].last_timestamp < min_timestamp then
@@ -68,7 +68,9 @@ function M:create()
     if max_idx then
         shortcut[max_idx].selected = true
         __update_shortcur_timestamp(max_idx)
-        iui.redirect("ui/construct.rml", "construct_entity", shortcut[max_idx].prototype_name)
+
+        local typeobject = iprototype.queryById(shortcut[max_idx].prototype)
+        iui.redirect("ui/construct.rml", "construct_entity", typeobject.name)
 
         main_button_icon = shortcut[max_idx].icon
     end
@@ -95,7 +97,8 @@ function M:stage_ui_update(datamodel)
             datamodel.shortcut[index].selected = true
             __update_shortcur_timestamp(index)
 
-            iui.redirect("ui/construct.rml", "construct_entity", datamodel.shortcut[index].prototype_name)
+            local typeobject = iprototype.queryById(datamodel.shortcut[index].prototype)
+            iui.redirect("ui/construct.rml", "construct_entity", typeobject.name)
             datamodel.main_button_icon = datamodel.shortcut[index].icon
         end
     end
