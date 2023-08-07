@@ -323,7 +323,7 @@ local prototype = gameplay.register.prototype
       "ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "无人机仓库选择碎石", icon = "ui/textures/construct/industry.texture"},
+      { desc = "无人机仓库物品设置为“碎石”", icon = "ui/textures/construct/industry.texture"},
     },
   }
 
@@ -438,7 +438,7 @@ local prototype = gameplay.register.prototype
   }
   
   prototype "无人机仓库设置2" {
-    desc = "无人机仓库选择碎石",
+    desc = "无人机仓库选择地质科技包",
     icon = "ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"unknown", 0, 5},                          
@@ -449,7 +449,7 @@ local prototype = gameplay.register.prototype
       "ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "无人机仓库选择地质科技包", icon = "ui/textures/construct/industry.texture"},
+      { desc = "无人机仓库物品设置为“地质科技包”", icon = "ui/textures/construct/industry.texture"},
     },
   }
 
@@ -1100,8 +1100,8 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "车辆维修" {
-    desc = "研究生产运输车辆工艺",
+  prototype "车辆修理" {
+    desc = "研究修理运输车辆工艺",
     type = { "tech" },
     icon = "ui/textures/science/book.texture",
     effects = {
@@ -1116,12 +1116,12 @@ local prototype = gameplay.register.prototype
     time = "5s"
   }
 
-  prototype "量产运输车辆" {
-    desc = "生产4辆运输车",
+  prototype "维修运输车辆" {
+    desc = "维修4辆运输车",
     icon = "ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"stat_production", 0, "运输车辆I"},
-    prerequisites = {"车辆维修"},
+    prerequisites = {"车辆修理"},
     count = 4,
     tips_pic = {
       "ui/textures/task_tips_pic/task_produce_ironplate1.texture",
@@ -1143,7 +1143,7 @@ prototype "气候研究1" {
     unlock_recipe = {"气候科技包1"},
     unlock_item = {"气候科技包"},
   },
-  prerequisites = {"量产运输车辆"},
+  prerequisites = {"维修运输车辆"},
   ingredients = {
       {"地质科技包", 1},
   },
@@ -1207,7 +1207,7 @@ prototype "建造空气过滤器" {
   icon = "ui/textures/construct/industry.texture",
   type = { "task" },
   task = {"stat_production", 0, "空气过滤器I"},
-  prerequisites = {"建筑维修2"},
+  prerequisites = {"建筑维修2","生产管道"},
   count = 1,
   tips_pic = {
     "ui/textures/task_tips_pic/task_produce_climatepack2.texture",
@@ -1220,12 +1220,12 @@ prototype "建造空气过滤器" {
   },
 }
 
-prototype "建造水电站" {
-  desc = "建造水电站用于处理液体",
+prototype "重修水电站" {
+  desc = "维修水电站用于处理液体",
   icon = "ui/textures/construct/industry.texture",
   type = { "task" },
   task = {"stat_production", 0, "水电站I"},
-  prerequisites = {"建筑维修2"},
+  prerequisites = {"建筑维修2","生产管道"},
   count = 1,
   tips_pic = {
     "ui/textures/task_tips_pic/task_produce_climatepack2.texture",
@@ -1234,7 +1234,7 @@ prototype "建造水电站" {
     "ui/textures/task_tips_pic/task_produce_climatepack5.texture",
   },
   sign_desc = {
-    { desc = "建造1座水电站", icon = "ui/textures/construct/industry.texture"},
+    { desc = "使用组装机维修1座水电站", icon = "ui/textures/construct/industry.texture"},
   },
 }
 
@@ -1243,7 +1243,7 @@ prototype "生产气候科技包" {
   icon = "ui/textures/construct/industry.texture",
   type = { "task" },
   task = {"stat_production", 0, "气候科技包"},
-  prerequisites = {"建造空气过滤器","建造水电站"},
+  prerequisites = {"建造空气过滤器","重修水电站"},
   count = 1,
   tips_pic = {
     "ui/textures/task_tips_pic/task_produce_climatepack2.texture",
@@ -1261,7 +1261,7 @@ prototype "收集空气" {
   type = { "task" },
   icon = "ui/textures/construct/industry.texture",
   task = {"stat_production", 1, "空气"},
-  prerequisites = {"建造空气过滤器","建造水电站"},
+  prerequisites = {"建造空气过滤器","重修水电站"},
   count = 20000,
   tips_pic = {
     "ui/textures/task_tips_pic/task_produce_air1.texture",
