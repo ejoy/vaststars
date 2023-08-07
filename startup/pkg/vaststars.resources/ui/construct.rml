@@ -83,6 +83,9 @@
                 </div>
             </div>
         </tech-or-task-bar>
+        <tech-or-task-bar style = "flex-direction: row; align-items: center; gap: 1vmin; left: 83.13vmax;" data-if = "not (not is_concise_mode and show_tech_progress)" data-event-click="clickButton('click_techortaskicon', is_task)">
+            <div style = "width: 16.28vmin; height: 16.28vmin; background-size: 100% 100%; background-image: ui/textures/construct/tech-icon.texture;" />
+        </tech-or-task-bar>
 
         <main-button style = "position: absolute; left: 72.20vmax; top: 67.00vmin; background-image: ui/textures/construct/main-button-bg.texture; background-size: 100% 100%;" data-event-click = "clickButton('construct')" 
             data-if = "not is_concise_mode and focus_building_icon == ''"

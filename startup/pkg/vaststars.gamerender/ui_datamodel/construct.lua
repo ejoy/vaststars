@@ -271,10 +271,8 @@ function M:stage_ui_update(datamodel)
     end
 
     for _ in click_techortaskicon_mb:unpack() do
-        if gameplay_core.world_update and global.science.current_tech then
-            gameplay_core.world_update = false
-            iui.open({"ui/science.rml"})
-        end
+        gameplay_core.world_update = false
+        iui.open({"ui/science.rml"})
     end
 
     for _ in help_mb:unpack() do
