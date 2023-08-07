@@ -437,18 +437,18 @@
                         <!-- 科技条目 start -->
                         <list direction='1' width='100%' height='95%' style="margin-top: 1vmin; margin-bottom: 1vmin;"/>
                         <!-- 科技条目 end -->
-                    </div>
-                    <div style="flex-direction: row; justify-content: flex-end; align-items: center;" data-event-click="showFinish()">
-                        <div style='width: 5vmin; height: 5vmin; background-size: cover; background-image: "ui/textures/science/history.texture";'/>
-                        <div style="margin-left: 1vmin; font-size: 5vmin;">科研历史</div>
+
+                        <!-- 研究中 start -->
+                        <div style = "position:absolute; right:0.1vmin; top:0.1vmin;  animation: 0.8s linear 0s infinite alternate scalesize; flex-direction: row; justify-content: flex-end; text-align: center; font-size: 3vmin; color: rgb(0,255,0);" data-if="false">研究中...</div>
+                        <!-- 研究中 end -->
                     </div>
                 </div>
                 <div style='margin: 1.5vmin; flex-direction: column; width: 42%; height: 100%; background-image: "ui/textures/science/right_panel_bg.texture"; background-size: cover;'>
                     <div style="flex-direction: column; justify-content: flex-start; height: 88%;">
                         <div style="margin-left: 10vmin; margin-top: 0.8vmin; font-size: 5vmin; color: black;">{{current_tech.name}}</div>
                         <div class="recipe-des-text" style="margin-left: 2vmin; margin-top: 1vmin;">{{current_tech.desc}}</div>
-                        <div style="margin-left: 2vmin; flex-direction: row; justify-content: flex-start; align-items: center;" data-if="sub_icon ~=' '">
-                            <div style='width: 4.66vmin; height: 4vmin; background-size: cover;' data-style-background-image="sub_icon"/>
+                        <div style="margin-left: 2vmin; flex-direction: row; justify-content: flex-start; align-items: center;">
+                            <!-- div style='width: 4.66vmin; height: 4vmin; background-size: cover;' data-style-background-image="sub_icon"/ -->
                             <div style="width: 90%; color: rgb(241,157,52); font-size: 3vmin; word-break: break-all;">{{sub_desc}}</div>
                         </div>
                         <div style='margin-top: 1vmin; margin-left: 5%; margin-right: 5%; width: 90%; height: 0.1vmin; background-image: "ui/textures/common/caption-line.texture"; background-size: cover;'/>
@@ -459,6 +459,10 @@
                     <button-confirm data-if="not current_running and not show_finish" style="width: 40vmin; height: 10vmin; align-self: flex-end;" data-event-click="startSwitch()">
                         <div style="margin-top: 1.5vmin; font-size: 6vmin; text-align: center;">{{current_button_str}}</div>
                     </button-confirm>
+                    <div style="position:absolute;left:1vmin; bottom:1vmin; flex-direction: row; justify-content: flex-start; align-items: center;" data-event-click="showFinish()">
+                        <div style='width: 5vmin; height: 5vmin; background-size: cover; background-image: "ui/textures/science/history.texture";'/>
+                        <div style="margin-left: 1vmin; font-size: 5vmin;">科研历史</div>
+                    </div>
                 </div>
             </div>
         </div>

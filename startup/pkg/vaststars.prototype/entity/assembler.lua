@@ -7,7 +7,7 @@ prototype "组装机I" {
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "3x3",
-    speed = "50%",
+    speed = "75%",
     power = "60kW",
     rotate_on_build = true,
     priority = "secondary",
