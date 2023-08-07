@@ -532,14 +532,6 @@ local function touch_move(self, datamodel, delta_vec)
         end
     end
 
-    pickup_object.recipe = _get_mineral_recipe(pickup_object.prototype_name, lx, ly, w, h)
-    if pickup_object.recipe then
-        local recipe_typeobject = iprototype.queryByName(pickup_object.recipe)
-        if recipe_typeobject then
-            pickup_object.fluid_name = irecipe.get_init_fluids(recipe_typeobject) or "" -- maybe no fluid in recipe
-        end
-    end
-
     -- the fluid type of the liquid container should be determined based on the surrounding fluid tanks when placing the fluid tank
     if iprototype.has_type(typeobject.type, "fluidbox") then
         local fluid_types = __get_neighbor_fluid_types(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir)
@@ -567,6 +559,16 @@ local function confirm(self, datamodel)
     end
 
     local typeobject = iprototype.queryByName(pickup_object.prototype_name)
+
+    local w, h = iprototype.rotate_area(typeobject.area, pickup_object.dir)
+    pickup_object.recipe = _get_mineral_recipe(pickup_object.prototype_name, pickup_object.x, pickup_object.y, w, h)
+    if pickup_object.recipe then
+        local recipe_typeobject = iprototype.queryByName(pickup_object.recipe)
+        if recipe_typeobject then
+            pickup_object.fluid_name = irecipe.get_init_fluids(recipe_typeobject) or "" -- maybe no fluid in recipe
+        end
+    end
+
     objects:set(pickup_object, "CONFIRM")
     pickup_object.PREPARE = true
 
