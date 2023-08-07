@@ -309,11 +309,13 @@
                     <div style='flex-direction: column; align-items: center;' data-for="recipe_inputs">
                         <div class="small-item1" style="width: 12vmin; height: 12vmin; border: 0.3vmin rgb(0, 217, 255);" data-style-background-image="it.icon">
                             <div class ="item-count-combination">
-                                <div class="item-count-new" data-style-font-size="it.count > 99 and '4vmin' or '5.4vmin'" data-style-color="it.count < it.demand_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">{{it.count}}</div>
-                                <div class="item-count-new" data-style-font-size="it.demand_count > 99 and '3vmin' or '4.4vmin'">/{{it.demand_count}}</div>
+                                <div class="item-count-new" data-style-font-size="it.count > 99 and '4vmin' or '5.4vmin'" data-style-color="it.count < it.demand_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">x{{it.count}}</div>
                             </div>
                         </div>
-                        <div style="margin-bottom: 1.25vmin; font-size: 3.25vmin;">{{it.name}}</div>
+                        <div style='flex-direction: row;'>
+                            <div style="margin-bottom: 1.25vmin; font-size: 3.25vmin;">{{it.name}}</div>
+                            <div style="font-size: 2.8vmin; color:#adadad; margin-left: 1vmin; align-self: baseline;" data-if="it.demand_count > 1">x{{it.demand_count}}</div>
+                        </div>
                     </div>
                 </div>
                 <div class="column" style="justify-content: flex-start; width: 50vmin; height: 18vmin;">
@@ -326,11 +328,13 @@
                     <div style='flex-direction: column; align-items: center;' data-for="recipe_ouputs">
                         <div class="small-item1" style="width: 12vmin; height: 12vmin; border: 0.3vmin rgb(251, 177, 61);" data-style-background-image="it.icon">
                             <div class ="item-count-combination">
-                                <div class="item-count-new" data-style-font-size="it.count > 99 and '4vmin' or '5.4vmin'" data-style-color="it.count < it.output_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">{{it.count}}</div>
-                                <div class="item-count-new" data-style-font-size="it.output_count > 99 and '3vmin' or '4.4vmin'">/{{it.output_count}}</div>
+                                <div class="item-count-new" data-style-font-size="it.count > 99 and '4vmin' or '5.4vmin'" data-style-color="it.count < it.output_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">x{{it.count}}</div>
                             </div>
                         </div>
-                        <div style="margin-bottom: 1.25vmin; font-size: 3.25vmin;">{{it.name}}</div>
+                        <div style='flex-direction: row;'>
+                            <div style="margin-bottom: 1.25vmin; font-size: 3.25vmin;">{{it.name}}</div>
+                            <div style="font-size: 2.8vmin; color:#adadad; margin-left: 1vmin; align-self: baseline;" data-if="it.output_count > 1">x{{it.output_count}}</div>
+                        </div>
                     </div>
                 </div>
             </div>
