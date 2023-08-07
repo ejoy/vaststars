@@ -58,9 +58,10 @@ local function __get_shortcur(index)
 end
 
 local function __get_construct_index(prototype)
+    local typeobject = assert(iprototype.queryById(prototype))
     for category_idx, menu in ipairs(CONSTRUCT_MENU) do
         for item_idx, item in ipairs(menu.items) do
-            if item == prototype then
+            if item == typeobject.name then
                 return category_idx, item_idx
             end
         end
