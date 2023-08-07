@@ -497,7 +497,8 @@ function M:create(object_id)
         object_id = object_id,
         icon = typeobject.icon,
         desc = typeobject.item_description,
-        prototype_name = iprototype.display_name(typeobject)
+        prototype_name = iprototype.display_name(typeobject),
+        areaid = 0
     }
     last_inputs, last_ouputs = update_property_list(datamodel, get_entity_property_list(object_id))
     preinput = {}
