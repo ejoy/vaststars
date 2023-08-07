@@ -9,7 +9,6 @@ local gameplay = import_package "vaststars.gameplay"
 local ifluidbox = gameplay.interface "fluidbox"
 local gameplay_core = require "gameplay.core"
 local fluidbox_sys = ecs.system "fluidbox_system"
-local CHANGED_FLAG_FLUIDFLOW <const> = require("gameplay.interface.constant").CHANGED_FLAG_FLUIDFLOW
 
 local DIRECTION <const> = {
     N = 0,
@@ -22,12 +21,47 @@ local DIRECTION <const> = {
     [3] = 'W',
 }
 
-local function __length(t)
+local PipeDirection <const> = {
+    ["N"] = 0,
+    ["E"] = 1,
+    ["S"] = 2,
+    ["W"] = 3,
+}
+
+local N <const> = 0
+local E <const> = 1
+local S <const> = 2
+local W <const> = 3
+
+local FluidboxCache = {}
+
+local function length(t)
     local n = 0
     for _ in pairs(t) do
         n = n + 1
     end
     return n
+end
+
+local function pack(x, y, dir)
+    return x << 16 | y << 8 | dir
+end
+
+local function rotate(position, direction, area)
+    local w, h = area >> 8, area & 0xFF
+    local x, y = position[1], position[2]
+    local dir = (PipeDirection[position[3]] + direction) % 4
+    w = w - 1
+    h = h - 1
+    if direction == N then
+        return x, y, dir
+    elseif direction == E then
+        return h - y, x, dir
+    elseif direction == S then
+        return w - x, h - y, dir
+    elseif direction == W then
+        return y, w - x, dir
+    end
 end
 
 local ifluid = require "gameplay.interface.fluid"
@@ -85,8 +119,6 @@ local function __find_neighbor_fluid(gameplay_world, x, y, dir, ground)
 end
 
 local function __update_neighbor_fluid_type(gameplay_world, e, typeobject)
-    local need_build = false
-
     assert(e.fluidbox.fluid ~= 0)
     local fluid = e.fluidbox.fluid
     for _, connection in ipairs(typeobject.fluidbox.connections) do
@@ -98,16 +130,13 @@ local function __update_neighbor_fluid_type(gameplay_world, e, typeobject)
                 print("update fluidbox", neighbor.building.x, neighbor.building.y, fluid)
                 ifluidbox.update_fluidbox(gameplay_world, neighbor, fluid)
                 __update_neighbor_fluid_type(gameplay_world, neighbor, iprototype.queryById(neighbor.building.prototype))
-                need_build = true
             end
         end
     end
-    return need_build
 end
 
-local function __update_fluid_type(gameplay_world)
-    local need_build = false
-
+function fluidbox_sys:gameworld_prebuild()
+    local gameplay_world = gameplay_core.get_world()
     local changed = {}
     for e in gameplay_world.ecs:select "building_new:in fluidbox:in eid:in" do
         changed[e.eid] = true
@@ -123,38 +152,90 @@ local function __update_fluid_type(gameplay_world)
             for _, connection in ipairs(typeobject.fluidbox.connections) do
                 local x, y, dir = iprototype.rotate_connection(connection.position, DIRECTION[e.building.direction], typeobject.area)
                 local neighbor_fluid_name = __find_neighbor_fluid(gameplay_world, e.building.x + x, e.building.y + y, dir, connection.ground)
-                if neighbor_fluid_name then
-                    if neighbor_fluid_name ~= "" then
-                        local neighbor_fluid = iprototype.queryByName(neighbor_fluid_name).id
-                        fluids[neighbor_fluid] = true
-                    end
+                print(e.building.x + x, e.building.y + y, neighbor_fluid_name)
+                if neighbor_fluid_name and neighbor_fluid_name ~= "" then
+                    local neighbor_fluid = iprototype.queryByName(neighbor_fluid_name).id
+                    fluids[neighbor_fluid] = true
                 end
             end
-            assert(__length(fluids) <= 1)
-            if __length(fluids) == 1 then
+            assert(length(fluids) <= 1)
+            if length(fluids) == 1 then
                 local fluid = next(fluids)
                 ifluidbox.update_fluidbox(gameplay_world, e, fluid)
                 print("update fluidbox", e.building.x, e.building.y, fluid)
                 __update_neighbor_fluid_type(gameplay_world, e, typeobject)
-                need_build = true
             end
         else
-            if __update_neighbor_fluid_type(gameplay_world, e, typeobject) then
-                need_build = true
+            __update_neighbor_fluid_type(gameplay_world, e, typeobject)
+        end
+    end
+end
+
+function fluidbox_sys:gameworld_build()
+    local gameplay_world = gameplay_core.get_world()
+    FluidboxCache = {}
+
+    for e in gameplay_world.ecs:select "fluidbox:in building:in" do
+        local typeobject = iprototype.queryById(e.building.prototype)
+        if iprototype.has_type(typeobject.type, "pipe") then
+            for _, dir in pairs(PipeDirection) do
+                assert(FluidboxCache[pack(e.building.x, e.building.y, dir)] == nil)
+                FluidboxCache[pack(e.building.x, e.building.y, dir)] = e.fluidbox.fluid
+            end
+        elseif iprototype.has_type(typeobject.type, "pipe_to_ground") then
+            local dir = (S + e.building.direction) % 4
+            assert(FluidboxCache[pack(e.building.x, e.building.y, dir)] == nil)
+            FluidboxCache[pack(e.building.x, e.building.y, dir)] = e.fluidbox.fluid
+        else
+            for _, c in ipairs(typeobject.fluidbox.connections) do
+                assert(not c.ground)
+                local dx, dy, dir = rotate(c.position, e.building.direction, typeobject.area)
+                local x = e.building.x + dx
+                local y = e.building.y + dy
+                assert(FluidboxCache[pack(x, y, dir)] == nil)
+                FluidboxCache[pack(x, y, dir)] = e.fluidbox.fluid
             end
         end
     end
-    return need_build
+
+    for e in gameplay_world.ecs:select "fluidboxes:in building:in" do
+        local typeobject = iprototype.queryById(e.building.prototype)
+
+        local inputs = typeobject.fluidboxes.input
+        for i = 1, #inputs do
+            local fluid = e.fluidboxes["in"..i.."_fluid"]
+            for _, c in ipairs(inputs[i].connections) do
+                local dx, dy, dir = rotate(c.position, e.building.direction, typeobject.area)
+                local x = e.building.x + dx
+                local y = e.building.y + dy
+                assert(FluidboxCache[pack(x, y, dir)] == nil)
+                FluidboxCache[pack(x, y, dir)] = fluid
+            end
+        end
+
+        local outputs = typeobject.fluidboxes.output
+        for i = 1, #outputs do
+            local fluid = e.fluidboxes["out"..i.."_fluid"]
+            for _, c in ipairs(outputs[i].connections) do
+                local dx, dy, dir = rotate(c.position, e.building.direction, typeobject.area)
+                local x = e.building.x + dx
+                local y = e.building.y + dy
+                assert(FluidboxCache[pack(x, y, dir)] == nil)
+                FluidboxCache[pack(x, y, dir)] = fluid
+            end
+        end
+    end
 end
 
-function fluidbox_sys:gameworld_update()
-    local gameplay_world = gameplay_core.get_world()
+function fluidbox_sys:gameworld_clean()
+    FluidboxCache = {}
+end
 
-    local need_build = false
-    if __update_fluid_type(gameplay_world) then
-        need_build = true
-    end
-    if need_build then
-        gameplay_core.set_changed(CHANGED_FLAG_FLUIDFLOW)
-    end
+function fluidbox_sys:exit()
+    FluidboxCache = {}
+end
+
+local ifluidbox = ecs.interface "ifluidbox"
+function ifluidbox.get(x, y, dir)
+    return FluidboxCache[pack(x, y, dir)]
 end

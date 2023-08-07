@@ -73,8 +73,8 @@ function m:gameplay_update()
 
     if gameplay_core.system_changed_flags ~= 0 then
         gameplay_core.system_changed_flags = 0
-        gameplay_core.update()
         world:pipeline_func "gameworld_prebuild" ()
+        gameplay_core.update()
         world:pipeline_func "gameworld_build" ()
     end
 

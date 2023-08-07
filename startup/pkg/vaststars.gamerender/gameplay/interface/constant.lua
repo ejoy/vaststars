@@ -4,6 +4,7 @@ local mc = mathpkg.constant
 
 local M = {}
 M.ALL_DIR = {'N', 'S', 'W', 'E'}
+M.ALL_DIR_NUM = {0, 1, 2, 3}
 M.DEFAULT_DIR = 'N'
 M.ROTATORS = {
     N = math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(0)})   )),

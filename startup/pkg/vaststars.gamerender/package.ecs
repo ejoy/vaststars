@@ -50,8 +50,10 @@ pipeline "gameworld"
     .stage "gameworld_update"
     .stage "gameworld_end"
 
-pipeline "gameworld_build"
+pipeline "gameworld_prebuild"
     .stage "gameworld_prebuild"
+
+pipeline "gameworld_build"
     .stage "gameworld_build"
 
 pipeline "gameworld_clean"
@@ -294,7 +296,14 @@ interface "ilorry"
 
 system "fluidbox_system"
     .implement "render_updates/fluidbox.lua"
-    .method "gameworld_update"
+    .method "gameworld_prebuild"
+    .method "gameworld_build"
+    .method "gameworld_clean"
+    .method "exit"
+
+interface "ifluidbox"
+    .implement "render_updates/fluidbox.lua"
+    .method "get"
 
 system "ing_res_motion_system"
     .implement "render_updates/ing_res_motion.lua"

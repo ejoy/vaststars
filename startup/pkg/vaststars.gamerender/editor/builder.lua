@@ -17,6 +17,7 @@ local gameplay_core = require "gameplay.core"
 local ibuilding = ecs.import.interface "vaststars.gamerender|ibuilding"
 local gameplay = import_package "vaststars.gameplay"
 local igameplay_building = gameplay.interface "building"
+local CHANGED_FLAG_BUILDING <const> = require("gameplay.interface.constant").CHANGED_FLAG_BUILDING
 
 local function check_construct_detector(self, prototype_name, x, y, dir, exclude_object_id)
     dir = dir or DEFAULT_DIR
@@ -100,6 +101,7 @@ local function complete(self, object_id)
 
     objects:remove(object_id, "CONFIRM")
     objects:set(object, "CONSTRUCTED")
+    gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
 
     -- TODO: duplicate code
     local gw = gameplay_core.get_world()

@@ -125,6 +125,16 @@ function M.reverse_dir(dir)
     return REVERSE[dir]
 end
 
+local REVERSE_NUM <const> = {
+    [DIRECTION.N] = DIRECTION.S,
+    [DIRECTION.E] = DIRECTION.W,
+    [DIRECTION.S] = DIRECTION.N,
+    [DIRECTION.W] = DIRECTION.E,
+}
+function M.reverse_dir_num(dir)
+    return REVERSE_NUM[dir]
+end
+
 function M.dir_tonumber(dir)
     return assert(DIRECTION[dir])
 end

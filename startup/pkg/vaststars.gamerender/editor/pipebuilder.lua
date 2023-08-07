@@ -7,6 +7,7 @@ local packcoord = iprototype.packcoord
 local unpackcoord = iprototype.unpackcoord
 local iconstant = require "gameplay.interface.constant"
 local ALL_DIR = iconstant.ALL_DIR
+local ALL_DIR_NUM = iconstant.ALL_DIR_NUM
 local ifluid = require "gameplay.interface.fluid"
 local iobject = ecs.require "object"
 local iprototype = require "gameplay.interface.prototype"
@@ -26,6 +27,10 @@ local global = require "global"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local gameplay = import_package "vaststars.gameplay"
 local igameplay_building = gameplay.interface "building"
+local ifluidbox = ecs.import.interface "vaststars.gamerender|ifluidbox"
+local iprototype_cache = ecs.import.interface "vaststars.gamerender|iprototype_cache"
+local CHANGED_FLAG_BUILDING <const> = require("gameplay.interface.constant").CHANGED_FLAG_BUILDING
+local CHANGED_FLAG_FLUIDFLOW <const> = require("gameplay.interface.constant").CHANGED_FLAG_FLUIDFLOW
 
 local REMOVE <const> = {}
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
@@ -34,6 +39,26 @@ local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
 local STATE_NONE  <const> = 0
 local STATE_START <const> = 1
 local STATE_TEARDOWN <const> = 2
+
+local function length(t)
+    local n = 0
+    for _ in pairs(t) do
+        n = n + 1
+    end
+    return n
+end
+
+local function countNeighboringFluids(x, y)
+    local fluids = {}
+    for _, dir in ipairs(ALL_DIR) do
+        local x, y = iprototype.move_coord(x, y, dir)
+        local fluid = ifluidbox.get(x, y, iprototype.dir_tonumber(iprototype.reverse_dir(dir)))
+        if fluid and fluid ~= 0 then
+            fluids[fluid] = true
+        end
+    end
+    return length(fluids)
+end
 
 local function _get_object(self, x, y, cache_names)
     local coord = iprototype.packcoord(x, y)
@@ -357,6 +382,11 @@ local function _builder_init(self, datamodel)
         datamodel.show_start_laying = false
     end
 
+    if countNeighboringFluids(coord_indicator.x, coord_indicator.y) > 1 then
+        datamodel.show_place_one = false
+        datamodel.show_start_laying = false
+    end
+
     for _, c in pairs(self.pickup_components) do
         c:on_status_change(datamodel.show_start_laying or datamodel.show_place_one)
     end
@@ -656,6 +686,8 @@ local function confirm(self, datamodel)
         print("remove", obj.id, obj.x, obj.y)
         igameplay.destroy_entity(obj.gameplay_eid)
     end
+
+    gameplay_core.set_changed(CHANGED_FLAG_BUILDING | CHANGED_FLAG_FLUIDFLOW)
 end
 
 --------------------------------------------------------------------------------------------------
@@ -778,11 +810,26 @@ local function place_one(self, datamodel)
     if object then
         return
     end
+    if countNeighboringFluids(x, y) > 1 then
+        return
+    end
+
+    --
+    local m = 0
+    for _, dir in ipairs(ALL_DIR_NUM) do
+        local dx, dy = iprototype.move_coord(x, y, iprototype.dir_tostring(dir))
+        local fluid = ifluidbox.get(dx, dy, iprototype.reverse_dir_num(dir))
+        if fluid then
+            m = m | (1 << dir)
+        end
+    end
+
     local typeobject = iprototype.queryByName("管道1-O型")
+    local prototype, dir = iprototype_cache.get("pipe").MaskToPrototypeDir(typeobject.building_category, m)
 
     object = iobject.new {
-        prototype_name = "管道1-O型",
-        dir = "N",
+        prototype_name = prototype,
+        dir = dir,
         x = x,
         y = y,
         srt = {
@@ -794,6 +841,26 @@ local function place_one(self, datamodel)
     }
     objects:set(object, EDITOR_CACHE_NAMES[2])
     self.pending[iprototype.packcoord(object.x, object.y)] = object
+    print("place_one", object.x, object.y, object.prototype_name)
+
+    --
+    for _, dir in ipairs(ALL_DIR_NUM) do
+        local dx, dy = iprototype.move_coord(x, y, iprototype.dir_tostring(dir))
+        local fluid = ifluidbox.get(dx, dy, iprototype.reverse_dir_num(dir))
+        if fluid then
+            local neighbor = assert(_get_object(self, dx, dy, EDITOR_CACHE_NAMES))
+            if iprototype.is_pipe(neighbor.prototype_name) then
+                local m = iprototype_cache.get("pipe").PrototypeDirToMask(neighbor.prototype_name, neighbor.dir)
+                m = m | (1 << iprototype.reverse_dir_num(dir))
+                local prototype, dir = iprototype_cache.get("pipe").MaskToPrototypeDir(typeobject.building_category, m)
+                local o = assert(objects:modify(dx, dy, {"CONFIRM", "CONSTRUCTED"}, iobject.clone))
+                o.prototype_name = prototype
+                o.dir = dir
+                self.pending[iprototype.packcoord(o.x, o.y)] = o
+                print("place_one", o.x, o.y, o.prototype_name)
+            end
+        end
+    end
 
     datamodel.show_confirm = true
 

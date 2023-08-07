@@ -27,7 +27,7 @@ local function __get_construct_menu()
             local count = ibackpack.query(gameplay_core.get_world(), typeobject.id)
             m.items[#m.items + 1] = {
                 id = ("%s:%s"):format(category_idx, item_idx),
-                name = prototype_name,
+                name = iprototype.display_name(typeobject),
                 icon = typeobject.item_icon,
                 count = count,
                 selected = false,
