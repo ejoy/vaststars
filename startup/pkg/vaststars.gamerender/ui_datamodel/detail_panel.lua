@@ -189,7 +189,7 @@ local function get_display_info(e, typeobject, t)
                     local total_format = string.format("%d", clamp_value) .. unit
                     total = ((current == total) and total_format or format(current, unit)) .. "/" .. total_format
                 elseif cn == "speed" then
-                    total = total * e.assembling.speed
+                    total = e.assembling.speed
                 end
             end
             if cn == "speed" or vn == "speed" then
