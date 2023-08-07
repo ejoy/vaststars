@@ -2335,6 +2335,7 @@ prototype "维修运输汽车" {
     recipe_order =  128,
     recipe_icon =  "textures/icons/recipe/steel-gear.texture",
     ingredients = {
+        {"铁棒", 1},
         {"破损运输车辆", 1},
     },
     results = {
