@@ -49,6 +49,7 @@ local detail_panel_status = {
 }
 -- optimize for pole status
 local pole_status = STATUS_WORK
+local power_statistic
 
 local function format_vars(fmt, vars)
     return string.gsub(fmt, "%$([%w%._]+)%$", vars)
@@ -124,7 +125,7 @@ local function get_display_info(e, typeobject, t)
                 if cn == "power" or cn == "capacitance" or cn == "charge_power" then
                     local current = 0
                     if cn == "power" or cn == "charge_power" then
-                        local st = global.statistic["power"][e.eid]
+                        local st = power_statistic--global.statistic["power"][e.eid]
                         if e.solar_panel then
                             current = get_solar_panel_power(total) * UPS
                             status = (e.solar_panel.efficiency > 0 and STATUS_DISCHARGE or STATUS_STOP_DISCHARGE)
@@ -403,7 +404,7 @@ end
 
 ---------------
 local M = {}
-local update_interval = 10 --update per 25 frame
+local update_interval = 3 --update per 25 frame
 local counter = 1
 local function update_property_list(datamodel, property_list)
     datamodel.chest_list = property_list.chest_list or {}
@@ -507,6 +508,15 @@ function M:create(object_id)
     model_euler = nil
     model_inst = nil
     camera_dist = typeobject.camera_distance
+    power_statistic = {
+        tail = 1,
+        head = 1,
+        frames = {},
+        drain = 0,
+        power = 0,
+        state = 0,
+        no_power_count = 0
+    }
     return datamodel
 end
 
@@ -533,6 +543,49 @@ local function get_delta(last, current, input)
     return autodirty, dirty, delta
 end
 
+local frame_period = 51
+local function step_frame_head(st)
+    if st.max_index then
+        if st.frames[st.max_index].power < st.frames[st.head].power then
+            st.max_index = st.head
+        end
+    end
+    if st.head <= #st.frames and st.frames[st.head].power == 0 then
+        st.no_power_count = st.no_power_count + 1
+    end
+    st.head = (st.head >= frame_period) and 1 or st.head + 1
+    if st.head == st.tail then
+        local fp = st.frames[st.tail]
+        if fp then
+            if st.tail <= #st.frames and st.frames[st.tail].power == 0 then
+                st.no_power_count = st.no_power_count - 1
+            end
+            st.power = st.power - fp.power
+            fp.power = 0
+            if st.max_index and st.max_index == st.tail then
+                st.max_index = 1
+                for index, frame in ipairs(st.frames) do
+                    if st.frames[st.max_index].power < frame.power then
+                        st.max_index = index
+                    end
+                end
+            end
+            st.tail = (st.tail >= frame_period) and 1 or st.tail + 1
+        end
+    end
+end
+local function update_power(power)
+    local st = power_statistic
+    local frame_power = math.abs(power)
+    st.power = st.power + frame_power
+    if not st.frames[st.head] then
+        st.frames[st.head] = {power = frame_power}
+    else
+        st.frames[st.head].power = st.frames[st.head].power + frame_power
+    end
+    step_frame_head(st)
+end
+
 function M:stage_ui_update(datamodel, object_id)
     if model_ready and model_inst then
         update_model(model_inst)
@@ -547,6 +600,10 @@ function M:stage_ui_update(datamodel, object_id)
 
     local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+    if e.capacitance then
+        update_power(e.capacitance.delta)
+    end
+
     local current_inputs, current_ouputs
     if e.assembling and e.assembling.recipe ~= 0 then
         current_inputs, current_ouputs = assembling_common.get(gameplay_core.get_world(), e)

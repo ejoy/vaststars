@@ -201,5 +201,5 @@ local update = interval_call(500, function()
 end)
 
 function statistic_sys:gameworld_update()
-    update()
+    --update()
 end
