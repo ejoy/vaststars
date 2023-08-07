@@ -224,8 +224,8 @@
                 <div style="top: 1vmin; margin-left: 3%; margin-right: 3%; flex-direction: column; justify-content: center; align-items: center;" data-if = "show_type=='assemble'" data-event-click="onLongPress(5)">
                     <div class="column" style="width:100%; justify-content: space-evenly; align-items: center;">
                         <!--组装机进料栏-->
-                        <div class="row" style="width: 100%; justify-content: flex-start; flex-wrap: wrap;">
-                            <div class="small-item1" style="width:7vmin; height:7vmin; border: 0.3vmin rgb(0, 217, 255);" data-style-background-image="it.icon" data-for="recipe_inputs">
+                        <div class="row" style="width: 100%; justify-content: flex-start; flex-wrap: wrap; margin-left: 1vmin;">
+                            <div class="small-item1" style="width:6.5vmin; height:6.5vmin; border: 0.3vmin rgb(0, 217, 255);" data-style-background-image="it.icon" data-for="recipe_inputs">
                                 <div class ="item-count-combination">
                                     <div class="item-count-new" data-style-font-size="it.count > 99 and '2vmin' or '2.7vmin'" data-style-color="it.count < it.demand_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">x{{it.count}}</div>
                                 </div>
@@ -239,8 +239,8 @@
                         </div>
 
                         <!--组装机成品栏-->
-                        <div class="row" style="width: 100%; justify-content: flex-end; flex-wrap: wrap;">
-                            <div class="small-item1" style="width:7vmin; height:7vmin;border: 0.3vmin rgb(251, 177, 61);" data-style-background-image="it.icon" data-for="recipe_ouputs">
+                        <div class="row" style="width: 100%; justify-content: flex-end; flex-wrap: wrap; margin-right: 1vmin;">
+                            <div class="small-item1" style="width:6.5vmin; height:6.5vmin;border: 0.3vmin rgb(251, 177, 61);" data-style-background-image="it.icon" data-for="recipe_ouputs">
                                 <div class ="item-count-combination">
                                     <div class="item-count-new" data-style-font-size="it.count > 99 and '2vmin' or '2.7vmin'" data-style-color="it.count < it.output_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">x{{it.count}}</div>
                                 </div>
@@ -285,6 +285,7 @@
                     </div>
                 </div>
             </div>
+            <!--采矿机-->
             <div class="tips-bg" data-if="areaid==4.0">
                 <div class="column" style="top: 5vmin; justify-content: center; width: 80%; height: 8vmin;">
                     <div class="progress_bar" data-style-width="progress"/>
@@ -302,16 +303,17 @@
                     </div>
                 </div>
             </div>
+            <!--组装机-->
             <div class="tips-bg" style='flex-direction: row; justify-content: center; align-items: center;' data-if="areaid==5.0">
                 <div class="column" style="width: 18vmin; justify-content: space-evenly; align-items: center;">
                     <div style='flex-direction: column; align-items: center;' data-for="recipe_inputs">
-                        <div class="small-item1" style="width: 15vmin; height: 15vmin; border: 0.3vmin rgb(0, 217, 255);" data-style-background-image="it.icon">
+                        <div class="small-item1" style="width: 12vmin; height: 12vmin; border: 0.3vmin rgb(0, 217, 255);" data-style-background-image="it.icon">
                             <div class ="item-count-combination">
                                 <div class="item-count-new" data-style-font-size="it.count > 99 and '4vmin' or '5.4vmin'" data-style-color="it.count < it.demand_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">{{it.count}}</div>
                                 <div class="item-count-new" data-style-font-size="it.demand_count > 99 and '3vmin' or '4.4vmin'">/{{it.demand_count}}</div>
                             </div>
                         </div>
-                        <div>{{it.name}}</div>
+                        <div style="margin-bottom: 1.25vmin; font-size: 3.25vmin;">{{it.name}}</div>
                     </div>
                 </div>
                 <div class="column" style="justify-content: flex-start; width: 50vmin; height: 18vmin;">
@@ -322,13 +324,13 @@
                 </div>
                 <div class="column" style="width: 18vmin; justify-content: space-evenly; align-items: center;">
                     <div style='flex-direction: column; align-items: center;' data-for="recipe_ouputs">
-                        <div class="small-item1" style="width: 15vmin; height: 15vmin; border: 0.3vmin rgb(251, 177, 61);" data-style-background-image="it.icon">
+                        <div class="small-item1" style="width: 12vmin; height: 12vmin; border: 0.3vmin rgb(251, 177, 61);" data-style-background-image="it.icon">
                             <div class ="item-count-combination">
                                 <div class="item-count-new" data-style-font-size="it.count > 99 and '4vmin' or '5.4vmin'" data-style-color="it.count < it.output_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">{{it.count}}</div>
                                 <div class="item-count-new" data-style-font-size="it.output_count > 99 and '3vmin' or '4.4vmin'">/{{it.output_count}}</div>
                             </div>
                         </div>
-                        <div>{{it.name}}</div>
+                        <div style="margin-bottom: 1.25vmin; font-size: 3.25vmin;">{{it.name}}</div>
                     </div>
                 </div>
             </div>
