@@ -42,6 +42,7 @@ static void loadmodules(lua_State* L) {
     SYSTEM(roadnet)
     SYSTEM(station)
     SYSTEM(hub)
+    SYSTEM(stat)
     CORE(chest)
     CORE(world)
     CORE(version)

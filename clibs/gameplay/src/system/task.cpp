@@ -28,7 +28,7 @@ struct task {
 
 
 uint64_t task::stat_production(world& w) const {
-    auto iter = w.stat.production.find(p1);
+    auto iter = w.stat._total.production.find(p1);
     if (iter) {
         return *iter;
     }
@@ -36,7 +36,7 @@ uint64_t task::stat_production(world& w) const {
 }
 
 uint64_t task::stat_consumption(world& w) const {
-    auto iter = w.stat.consumption.find(p1);
+    auto iter = w.stat._total.consumption.find(p1);
     if (iter) {
         return *iter;
     }
@@ -54,7 +54,11 @@ uint64_t task::select_entity(world& w) const {
 }
 
 uint64_t task::power_generator(world& w) const {
-    return w.stat.generate_power;
+    uint64_t sum = 0;
+    for (auto const& [_, v] : w.stat._total.generate_power) {
+        sum += v;
+    }
+    return sum;
 }
 
 uint64_t task::eval(world& w) const {
