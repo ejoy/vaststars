@@ -1,20 +1,18 @@
 ---
 data:
   name: Scene
-  scene:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 2, 0}
+  scene: {}
 policy:
   ant.general|name
   ant.scene|scene_object
 ---
 data:
-  material: /pkg/vaststars.resources/glb/electric-pole-1.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/electric-pole-1.glb|meshes/Cylinder.006_P1.meshbin
-  name: Cylinder.006
+  material: /pkg/vaststars.resources/glb/electric-pole-1.glb|materials/Material.001.material
+  mesh: /pkg/vaststars.resources/glb/electric-pole-1.glb|meshes/Torus.001_P1.meshbin
+  name: Torus.001
   scene:
-    r: {0, 0.866025447845459, 0, -0.4999999701976776}
+    s: {1.3427871465682983, 1.3427871465682983, 1.3427871465682983}
+    t: {0, 30.226160049438477, 0}
   visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:
