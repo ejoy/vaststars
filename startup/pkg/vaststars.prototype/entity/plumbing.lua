@@ -297,8 +297,8 @@ prototype "排水口II" {
 }
 
 prototype "空气过滤器I" {
-    model = "prefabs/chimney-1.prefab",
-    icon = "ui/textures/building_pic/small_pic_outfall.texture",
+    model = "prefabs/air-filter.prefab",
+    icon = "ui/textures/building_pic/small_pic_air_filter.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "2x2",
@@ -327,8 +327,8 @@ prototype "空气过滤器I" {
 }
 
 prototype "空气过滤器II" {
-    model = "prefabs/chimney-1.prefab",
-    icon = "ui/textures/building_pic/small_pic_outfall.texture",
+    model = "prefabs/air-filter.prefab",
+    icon = "ui/textures/building_pic/small_pic_air_filter.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "2x2",
@@ -356,8 +356,8 @@ prototype "空气过滤器II" {
 }
 
 prototype "空气过滤器III" {
-    model = "prefabs/chimney-1.prefab",
-    icon = "ui/textures/building_pic/small_pic_outfall.texture",
+    model = "prefabs/air-filter.prefab",
+    icon = "ui/textures/building_pic/small_pic_air_filter.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "2x2",
