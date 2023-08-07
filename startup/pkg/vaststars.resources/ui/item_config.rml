@@ -174,7 +174,7 @@
                     <div data-style-background-image = "item_icon" style = "position: absolute; top: 1.71vmin; left: 5.11vmax; width: 18.43vmax; height: 39.71vmin; background-size: 100% 100%;" data-if = "item_icon ~= ''" />
                     <div style = "position: absolute; position: absolute; top: 1.71vmin; left: 5.11vmax; width: 18.43vmax; height: 39.71vmin; background-image: ui/textures/item-config/icon-frame.texture; background-size: 100% 100%;" />
                     <item-name-container>
-                        <div style = "margin-left: 1.55vmax;margin-top: -1vmin; text-align: center; -webkit-text-stroke: 0.08vmin #fff; width:50%; height:5vmin;" data-if = "item_name ~= ''" data-style-font-size = "#item_name > 16 and '3.5vmin' or '4.6vmin'">
+                        <div style = "margin-left: 1.55vmax;margin-top: -1vmin; text-align: center; -webkit-text-stroke: 0.08vmin #fff; width:50%; font-size: 3.5vmin;">
                             {{item_name}}
                         </div>
                     </item-name-container>
