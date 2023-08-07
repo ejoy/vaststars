@@ -29,7 +29,7 @@ struct consumer_context {
         return cost(drain);
     }
     inline bool cost_power() {
-        return cost(power);
+        return cost(power - drain);
     }
 };
 

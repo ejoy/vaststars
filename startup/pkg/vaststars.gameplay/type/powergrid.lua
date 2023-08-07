@@ -31,6 +31,12 @@ local consumer = type "consumer"
 
 function consumer:init(object)
 	assert(object.power, "power is empty.")
+	if object.drain then
+		assert(object.drain <= object.power, "drain must be less than power.")
+		return {
+			capacitance = object.power * 2
+		}
+	end
 	return {
 		drain = object.power // 30,
 		capacitance = object.power * 2
