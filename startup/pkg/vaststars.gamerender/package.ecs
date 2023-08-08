@@ -219,15 +219,6 @@ interface "ipick_object"
     .method "pick_road"
     .method "pick_obj"
 
-system "power_check_system"
-    .implement "power_check_system.lua"
-    .method "gameworld_prebuild"
-    .method "gameworld_update"
-
-interface "ipower_check"
-    .implement "power_check_system.lua"
-    .method "is_powered_on"
-
 ----------------------------------------------------
 ----------------------------------------------------
 -- render_updates
@@ -336,6 +327,16 @@ interface "iroad"
 system "chimney_system"
     .implement "render_updates/chimney.lua"
     .method "gameworld_build"
+
+system "power_check_system"
+    .implement "power_check_system.lua"
+    .method "gameworld_prebuild"
+    .method "gameworld_update"
+    .method "gameworld_clean"
+
+interface "ipower_check"
+    .implement "power_check_system.lua"
+    .method "is_powered_on"
 
 system "prototype_cache_system"
     .implement "prototype_cache.lua"

@@ -6,16 +6,31 @@ local ipower_check = ecs.interface "ipower_check"
 local power_check_sys = ecs.system "power_check_system"
 local gameplay_core = require "gameplay.core"
 
-local mt = {}
-mt.__index = function (t, k)
-    return rawget(t, k) or 0
-end
-local counter = setmetatable({}, mt)
+local counter = {}
 
 function power_check_sys:gameworld_prebuild()
     local gameplay_world = gameplay_core.get_world()
     for e in gameplay_world.ecs:select "REMOVED consumer:in eid:in" do
         counter[e.eid] = nil
+    end
+
+    local changed = false
+    for _ in gameplay_world.ecs:select "building_changed" do
+        changed = true
+        break
+    end
+    for _ in gameplay_world.ecs:select "building_new" do
+        changed = true
+        break
+    end
+    for _ in gameplay_world.ecs:select "REMOVED building:in" do
+        changed = true
+        break
+    end
+    if changed then
+        for e in gameplay_world.ecs:select "consumer:in eid:in power_check?update" do
+            e.power_check = true
+        end
     end
 end
 
@@ -35,7 +50,7 @@ function power_check_sys:gameworld_update()
                 e.power_check = false
                 counter[e.eid] = nil
             elseif e.capacitance.delta == 0 then
-                counter[e.eid] = counter[e.eid] + 1
+                counter[e.eid] = (counter[e.eid] or 0) + 1
             else
                 assert(false)
             end
@@ -43,6 +58,10 @@ function power_check_sys:gameworld_update()
     end
 end
 
+function power_check_sys:gameworld_clean()
+    counter = {}
+end
+
 function ipower_check.is_powered_on(eid)
-    return counter[eid] < 15
+    return (counter[eid] or 0) < 15
 end
