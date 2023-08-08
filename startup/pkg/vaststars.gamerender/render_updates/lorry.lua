@@ -177,10 +177,17 @@ function lorry_sys:prototype_restore()
     end
 end
 
+function lorry_sys:gameworld_prebuild()
+    local gameplay_world = gameplay_core.get_world()
+    for e in gameplay_world.ecs:select "lorry:in REMOVED" do
+        local lorry = assert(lorries[e.eid])
+        lorry:remove()
+    end
+end
+
 function lorry_sys:gameworld_update()
     local gameplay_world = gameplay_core.get_world()
 
-    local new_lorries = {}
     local x, y, offset, toward, item_classid, item_amount, progress, maxprogress, lorry
     for e in gameplay_world.ecs:select "lorry:in eid:in" do
         local l = e.lorry
@@ -201,25 +208,17 @@ function lorry_sys:gameworld_update()
         lorry = lorries[e.eid]
         if not lorry then
             lorry = __create_lorry(classid, x, y, toward, offset)
+            lorries[e.eid] = lorry
         end
         lorry:motion_opt("update", x, y, toward, offset, lorry.last_srt, maxprogress, maxprogress - progress, true)
         lorry:set_item(item_classid, item_amount)
-
-        new_lorries[e.eid] = lorry
-        lorries[e.eid] = nil
         ::continue::
     end
-
-    for _, lorry in pairs(lorries) do
-        lorry:remove()
-    end
-
-    lorries = new_lorries
 end
 
 function lorry_sys:gameworld_clean()
-    for _, obj in pairs(lorries) do
-        obj:remove()
+    for _, lorry in pairs(lorries) do
+        lorry:remove()
     end
     lorries = {}
 end

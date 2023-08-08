@@ -12,67 +12,11 @@ local iprototype = require "gameplay.interface.prototype"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local iworld = require "gameplay.interface.world"
 local objects = require "objects"
-local ieditor = ecs.require "editor.editor"
-local ifluid = require "gameplay.interface.fluid"
-local terrain = ecs.require "terrain"
 local recipe_unlocked = ecs.require "ui_datamodel.common.recipe_unlocked".recipe_unlocked
-local iflow_connector = require "gameplay.interface.flow_connector"
 local itask = ecs.require "task"
 local iprototype_cache = require "gameplay.prototype_cache.init"
-local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local CHANGED_FLAG_ASSEMBLING <const> = require("gameplay.interface.constant").CHANGED_FLAG_ASSEMBLING
 local itypes = require "gameplay.interface.types"
-
--- TODO：duplicate code with builder.lua
-local function _update_neighbor_fluidbox(object)
-    local function is_connection(x1, y1, dir1, x2, y2, dir2)
-        local succ, dx1, dy1, dx2, dy2
-        succ, dx1, dy1 = terrain:move_coord(x1, y1, dir1, 1)
-        if not succ then
-            return false
-        end
-        succ, dx2, dy2 = terrain:move_coord(x2, y2, dir2, 1)
-        if not succ then
-            return false
-        end
-        return (dx1 == x2 and dy1 == y2) and (dx2 == x1 and dy2 == y1)
-    end
-
-    for _, fb in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
-        local succ, neighbor_x, neighbor_y = terrain:move_coord(fb.x, fb.y, fb.dir, 1)
-        if not succ then
-            goto continue
-        end
-        local neighbor = objects:coord(neighbor_x, neighbor_y)
-        if not neighbor then
-            goto continue
-        end
-        if not iprototype.is_pipe(neighbor.prototype_name) and not iprototype.is_pipe_to_ground(neighbor.prototype_name) then
-            goto continue
-        end
-        assert(type(neighbor.fluid_name) == "string") -- TODO：fluid_name should be string -- remove this assert
-        local prototype_name = iflow_connector.covers(neighbor.prototype_name, neighbor.dir)
-        for _, neighbor_fb in ipairs(ifluid:get_fluidbox(prototype_name, neighbor_x, neighbor_y, neighbor.dir, neighbor.fluid_name)) do
-            if is_connection(fb.x, fb.y, fb.dir, neighbor_fb.x, neighbor_fb.y, neighbor_fb.dir) then
-                if neighbor_fb.fluid_name ~= "" then
-                    local prototype_name, dir
-                    if neighbor.fluid_name ~= fb.fluid_name then
-                        prototype_name, dir = ieditor:refresh_pipe(neighbor.prototype_name, neighbor.dir, neighbor_fb.dir, false)
-                    else
-                        prototype_name, dir = ieditor:refresh_pipe(neighbor.prototype_name, neighbor.dir, neighbor_fb.dir, true)
-                    end
-                    if prototype_name and dir and (prototype_name ~= neighbor.prototype_name or dir ~= neighbor.dir) then
-                        neighbor.prototype_name = prototype_name
-                        neighbor.dir = dir
-                        neighbor.srt.r = ROTATORS[neighbor.dir]
-                    end
-                end
-                break -- should only have one fluidbox connected
-            end
-        end
-        ::continue::
-    end
-end
 
 local function __set_recipe_value(datamodel, category_idx, recipe_idx, key, value)
     if category_idx == 0 and recipe_idx == 0 then
@@ -210,7 +154,6 @@ function M:stage_ui_update(datamodel, object_id)
             object.fluid_name = irecipe.get_init_fluids(recipe_typeobject) or {} -- recipe may not have fluid
             object.recipe = recipe_name
 
-            _update_neighbor_fluidbox(object)
             iui.call_datamodel_method("ui/building_menu.rml", "update", object_id)
             gameplay_core.set_changed(CHANGED_FLAG_ASSEMBLING)
 
@@ -228,7 +171,6 @@ function M:stage_ui_update(datamodel, object_id)
         object.recipe = ""
         object.fluid_name = {}
 
-        _update_neighbor_fluidbox(object)
         iui.call_datamodel_method("ui/building_menu.rml", "update", object_id)
         gameplay_core.set_changed(CHANGED_FLAG_ASSEMBLING)
 

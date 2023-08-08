@@ -113,12 +113,6 @@ init_func["hub"] = function (pt, template)
 end
 
 local post_funcs = {}
-post_funcs["hub"] = function (pt, template)
-    -- TODO: deleting a hub requires the deletion of all drone entities that are linked to it
-    for _ = 1, pt.drone_count do
-         create(world, pt.drone_entity, template)
-    end
-end
 
 function m.create_entity(init)
     -- assert(not(init.x == 0 and init.y == 0))

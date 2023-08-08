@@ -9,6 +9,7 @@ local DIRECTION <const> = {
 
 local c = type "building"
     .area "size"
+    .power_supply_area "size"
 
 function c:ctor(init, pt)
     return {

@@ -115,7 +115,7 @@ local function complete(self, object_id)
             local capacitance = {}
             local e = v.building
             local typeobject = iprototype.queryById(e.prototype)
-            local aw, ah = iprototype.unpackarea(typeobject.area)
+            local aw, ah = iprototype.rotate_area(typeobject.area, iprototype.dir_tostring(e.direction))
             capacitance[#capacitance + 1] = {
                 targets = {},
                 power_network_link_target = 0,

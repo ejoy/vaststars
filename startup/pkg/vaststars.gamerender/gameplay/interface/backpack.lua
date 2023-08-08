@@ -7,7 +7,7 @@ local M = {}
 
 local function __get_backpack_stack(item)
     local typeobject = assert(iprototype.queryById(item))
-    return typeobject.backpack_stack or 0
+    return typeobject.backpack_limit or 0
 end
 
 function M.move_to_backpack(world, chest, idx)
@@ -62,7 +62,7 @@ function M.can_move_to_backpack(world, chest)
         if slot.type == "unknown" then
             goto continue
         end
-        if slot.itme == 0 then
+        if slot.item == 0 then
             goto continue
         end
         local ok, count = M.get_moveable_count(world, slot.item, slot.amount)

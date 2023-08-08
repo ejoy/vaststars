@@ -1,33 +1,29 @@
 local type = require "register.type"
 local prototype = require "prototype"
-local iChest = require "interface.chest"
+local iHub = require "interface.hub"
+
+local InvalidChest <const> = 0
 
 local c = type "hub"
     .supply_area "size"
 
 function c:ctor(init, pt)
     local world = self
-
-    local chest
-    local c = {}
-    if init.item then
-        c[#c+1] = {
-            type = "blue",
-            item = init.item,
-            limit = prototype.queryByName(init.item).pile & 0xffffff,
-        }
-    else
-        c[#c+1] = {
-            type = "blue",
-            item = 0,
-            limit = 0,
-        }
-    end
-    chest = iChest.create(world, c)
-    return {
+    local e = {
         hub = {
             id = 0,
-            chest = chest
+            chest = InvalidChest
         }
     }
+    if init.item then
+        local id = assert(prototype.queryByName(init.item), "Invalid item: " .. init.item).id
+        iHub.set_item(world, e, id)
+    end
+    for _ = 1, pt.drone_count do
+        world:create_entity(pt.drone_entity) {
+            x = init.x,
+            y = init.y,
+        }
+    end
+    return e
 end

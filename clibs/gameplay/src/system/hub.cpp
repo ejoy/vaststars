@@ -151,51 +151,55 @@ static void rebuild(world& w) {
     b.chests.clear();
     std::map<uint16_t, flatmap<uint16_t, hub_mgr::berth>> globalmap;
     flatset<uint16_t> used_id;
-    for (auto& v : ecs_api::select<ecs::building>(w.ecs)) {
+    for (auto& v : ecs_api::select<ecs::hub, ecs::building>(w.ecs)) {
+        auto& hub = v.get<ecs::hub>();
         auto& building = v.get<ecs::building>();
         uint16_t area = prototype::get<"area">(w, building.prototype);
         building_rect r(building, area);
-        if (auto phub = v.component<ecs::hub>()) {
-            auto& hub = *phub;
-            auto c = container::index::from(hub.chest);
-            assert(c != container::kInvalidIndex);
-            auto& chestslot = chest::array_at(w, c, 0);
+        auto c = container::index::from(hub.chest);
+        if (c == container::kInvalidIndex) {
+            continue;
+        }
+        auto& chestslot = chest::array_at(w, c, 0);
+        auto item = chestslot.item;
+        auto berth = create_berth(r, hub_mgr::berth_type::hub, 0);
+        auto& map = globalmap[item];
+        r.each([&](uint8_t x, uint8_t y) {
+            map.insert_or_assign(getxy(x, y), berth);
+        });
+        b.chests.insert_or_assign(r.hash(), hub.chest);
+        used_id.insert(hub.id);
+    }
+
+    for (auto& v : ecs_api::select<ecs::chest, ecs::building>(w.ecs)) {
+        auto& chest = v.get<ecs::chest>();
+        auto& building = v.get<ecs::building>();
+        uint16_t area = prototype::get<"area">(w, building.prototype);
+        building_rect r(building, area);
+        auto c = container::index::from(chest.chest);
+        if (c == container::kInvalidIndex) {
+            continue;
+        }
+        b.chests.insert_or_assign(r.hash(), chest.chest);
+        auto slice = chest::array_slice(w, c);
+        for (uint8_t i = 0; i < slice.size(); ++i) {
+            auto& chestslot = slice[i];
             auto item = chestslot.item;
-            auto berth = create_berth(r, hub_mgr::berth_type::hub, 0);
+            hub_mgr::berth_type type;
+            if (chestslot.type == container::slot::slot_type::red) {
+                type = hub_mgr::berth_type::chest_red;
+            }
+            else if (chestslot.type == container::slot::slot_type::blue) {
+                type = hub_mgr::berth_type::chest_blue;
+            }
+            else {
+                continue;
+            }
+            auto berth = create_berth(r, type, i);
             auto& map = globalmap[item];
             r.each([&](uint8_t x, uint8_t y) {
                 map.insert_or_assign(getxy(x, y), berth);
             });
-            b.chests.insert_or_assign(r.hash(), hub.chest);
-            used_id.insert(hub.id);
-        }
-        else if (auto pchest = v.component<ecs::chest>()) {
-            auto& chest = *pchest;
-            auto c = container::index::from(chest.chest);
-            if (c == container::kInvalidIndex) {
-                continue;
-            }
-            b.chests.insert_or_assign(r.hash(), chest.chest);
-            auto slice = chest::array_slice(w, c);
-            for (uint8_t i = 0; i < slice.size(); ++i) {
-                auto& chestslot = slice[i];
-                auto item = chestslot.item;
-                hub_mgr::berth_type type;
-                if (chestslot.type == container::slot::slot_type::red) {
-                    type = hub_mgr::berth_type::chest_red;
-                }
-                else if (chestslot.type == container::slot::slot_type::blue) {
-                    type = hub_mgr::berth_type::chest_blue;
-                }
-                else {
-                    continue;
-                }
-                auto berth = create_berth(r, type, i);
-                auto& map = globalmap[item];
-                r.each([&](uint8_t x, uint8_t y) {
-                    map.insert_or_assign(getxy(x, y), berth);
-                });
-            }
         }
     }
 
@@ -212,9 +216,21 @@ static void rebuild(world& w) {
     };
     for (auto& v : ecs_api::select<ecs::hub, ecs::building>(w.ecs)) {
         auto& hub = v.get<ecs::hub>();
-        auto& chestslot = chest::array_at(w, container::index::from(hub.chest), 0);
         auto& building = v.get<ecs::building>();
         uint16_t area = prototype::get<"area">(w, building.prototype);
+        hub_mgr::hub_info hub_info;
+        hub_info.self = create_berth({building, area}, hub_mgr::berth_type::home, 0);
+        auto c = container::index::from(hub.chest);
+        if (c == container::kInvalidIndex) {
+            hub_info.item = 0;
+            if (hub.id == 0) {
+                hub.id = create_hubid();
+                created_hub.insert_or_assign(getxy(building.x, building.y), hub.id);
+            }
+            hubs.emplace(hub.id, std::move(hub_info));
+            continue;
+        }
+        auto& chestslot = chest::array_at(w, c, 0);
         uint16_t supply_area = prototype::get<"supply_area">(w, building.prototype);
         building_rect r(building, area, supply_area);
         auto& map = globalmap[chestslot.item];
@@ -225,7 +241,6 @@ static void rebuild(world& w) {
                 set.insert(m);
             }
         });
-        hub_mgr::hub_info hub_info;
         for (auto h: set) {
             switch ((hub_mgr::berth_type)h.type) {
             case hub_mgr::berth_type::hub:
@@ -242,7 +257,6 @@ static void rebuild(world& w) {
                 break;
             }
         }
-        hub_info.self = create_berth({building, area}, hub_mgr::berth_type::home, 0);
         hub_info.item = hub_info.idle()? 0 : chestslot.item;
         if (hub.id == 0) {
             hub.id = create_hubid();

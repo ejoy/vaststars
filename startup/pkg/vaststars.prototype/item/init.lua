@@ -9,8 +9,9 @@ local prototype = gameplay.register.prototype
 
 prototype "任务" {
     type = {"item"},
-    stack = 0,
-    backpack_stack = 0,
+    station_limit = 0,
+    backpack_limit = 0,
+    pile = "0x0x0",
     tech_icon = "",
     item_category = "",
     item_icon = "",
@@ -20,6 +21,6 @@ prototype "山丘" {
     type = {"mountain"},
     icon = "ui/textures/construct/alumina.texture",
     item_description = "地面上的沙丘",
-    stack = 0,
+    station_limit = 0,
     item_category = "",
 }

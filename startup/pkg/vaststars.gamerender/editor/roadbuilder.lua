@@ -683,8 +683,8 @@ local function _teardown_start(self, datamodel)
     end
 end
 
-local function __calc_grid_position(typeobject, x, y)
-    local w, h = iprototype.unpackarea(typeobject.area)
+local function __calc_grid_position(typeobject, x, y, dir)
+    local w, h = iprototype.rotate_area(typeobject.area, dir)
     local _, originPosition = coord_system:align(math3d.vector {10, 0, -10}, w, h) -- TODO: remove hardcode
     local buildingPosition = coord_system:get_position_by_coord(x - (x % ROAD_TILE_SCALE_WIDTH), y - (y % ROAD_TILE_SCALE_HEIGHT), w, h)
     return math3d.ref(math3d.add(math3d.sub(buildingPosition, originPosition), GRID_POSITION_OFFSET))
@@ -710,7 +710,7 @@ local function new_entity(self, datamodel, typeobject, x, y)
     assert(x and y)
 
     if not self.grid_entity then
-        self.grid_entity = igrid_entity.create("polyline_grid", terrain._width // ROAD_TILE_SCALE_WIDTH, terrain._height // ROAD_TILE_SCALE_HEIGHT, terrain.tile_size * ROAD_TILE_SCALE_WIDTH, {t = __calc_grid_position(typeobject, x, y)})
+        self.grid_entity = igrid_entity.create("polyline_grid", terrain._width // ROAD_TILE_SCALE_WIDTH, terrain._height // ROAD_TILE_SCALE_HEIGHT, terrain.tile_size * ROAD_TILE_SCALE_WIDTH, {t = __calc_grid_position(typeobject, x, y, dir)})
     end
     self.grid_entity:show(true)
 
@@ -741,7 +741,7 @@ local function touch_move(self, datamodel, delta_vec)
     end
     if self.grid_entity then
         local typeobject = iprototype.queryByName(self.coord_indicator.prototype_name)
-        self.grid_entity:send("obj_motion", "set_position", __calc_grid_position(typeobject, self.coord_indicator.x, self.coord_indicator.y))
+        self.grid_entity:send("obj_motion", "set_position", __calc_grid_position(typeobject, self.coord_indicator.x, self.coord_indicator.y, self.coord_indicator.dir))
     end
     for _, c in pairs(self.pickup_components) do
         c:on_position_change(self.coord_indicator.srt, self.coord_indicator.dir)

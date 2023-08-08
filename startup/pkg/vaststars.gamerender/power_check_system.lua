@@ -10,25 +10,13 @@ local counter = {}
 
 function power_check_sys:gameworld_prebuild()
     local gameplay_world = gameplay_core.get_world()
-    for e in gameplay_world.ecs:select "REMOVED consumer:in eid:in" do
+    local gameplay_ecs = gameplay_world.ecs
+    for e in gameplay_ecs:select "REMOVED consumer:in eid:in" do
         counter[e.eid] = nil
     end
 
-    local changed = false
-    for _ in gameplay_world.ecs:select "building_changed" do
-        changed = true
-        break
-    end
-    for _ in gameplay_world.ecs:select "building_new" do
-        changed = true
-        break
-    end
-    for _ in gameplay_world.ecs:select "REMOVED building:in" do
-        changed = true
-        break
-    end
-    if changed then
-        for e in gameplay_world.ecs:select "consumer:in eid:in power_check?update" do
+    if gameplay_ecs:check "building_changed" or gameplay_ecs:check "building_new" or gameplay_ecs:check "REMOVED building:in" then
+        for e in gameplay_ecs:select "consumer:in eid:in power_check?update" do
             e.power_check = true
         end
     end

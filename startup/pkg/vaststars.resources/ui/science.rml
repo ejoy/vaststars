@@ -228,7 +228,7 @@
                 local statestr = item_data.running and [[<div class="icon-researching">研究中...</div>]] or ""
                 local sign = item_data.sign_icon and [[<div style='margin-left: 0.5vmin; margin-right: 0.5vmin; background-size: 100% 100%; width: 4.46vmin; height: 4vmin; background-image:"ui/textures/science/key_sign.texture";'/>]] or [[<div style='margin-left: 0.5vmin; margin-right: 0.5vmin; width: 6%; height: 4vmin;'/>]]
                 local item_icon = item_data.task and "ui/textures/science/task.texture" or "ui/textures/science/tech.texture"
-                local font_color = item_data.running and 'rgb(255,193,4)' or 'rgb(255, 255, 255)'
+                local font_color = item_data.running and 'rgb(0,255,0)' or 'rgb(255, 255, 255)'
                 local percent = (item_data.progress * 100) // item_data.count
                 local highlight = start.selected_index == index and [[<div style='position:absolute; top: -1vmin; left: -1vmin; width: 71.5vmin; height: 13vmin; background-image:"ui/textures/science/item_bg_highlight.texture"; background-size: 100% 100%;'/>]] or ""
                 -- local show_indicator = (item_data.progress == item_data.count) and 'false' or 'true'
