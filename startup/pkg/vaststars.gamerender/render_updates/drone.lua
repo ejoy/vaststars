@@ -36,11 +36,11 @@ local function create_drone(homepos)
         process = 0,
         flyid = 0,
         gohome = function (self, flyid, from, to, fly_height, duration)
-            if self.to_home then return end
+            -- fix move drone hub
+            -- if self.to_home then return end
             self:destroy_item()
             self:flyto(flyid, fly_height, from, to, true, duration or 30)
             self.to_home = true
-            -- print("----gohome----", math3d.index(to, 1, 2, 3))
         end,
         flyto = function (self, flyid, height, from, to, home, duration, start)
             self.flyid = flyid
@@ -52,7 +52,6 @@ local function create_drone(homepos)
                 from = math3d.vector {math3d.index(xzpos, 1), math3d.index(xpos, 2), math3d.index(xzpos, 3)}
                 self.to_home = false
             end
-            -- print("----flyto----", home, from[1], from[2], from[3], to[1], to[2], to[3])
             local exz <close> = w:entity(self.motion_xz)
             ims.set_tween(exz, ltween.type("Sine"), ltween.type("Sine"))
             ims.set_keyframes(exz,
@@ -61,7 +60,6 @@ local function create_drone(homepos)
             )
             local ey <close> = w:entity(self.motion_y)
             ims.set_tween(ey, ltween.type("Quartic"), ltween.type("Quartic"))
-            -- print("----height----", home, from[2], height, to[2])
             ims.set_keyframes(ey,
                 {t = math3d.vector({0, math3d.index(from, 2), 0}), step = 0.0},
                 {t = math3d.vector({0, height, 0}), step = 0.1},
