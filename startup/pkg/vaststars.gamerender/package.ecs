@@ -115,6 +115,7 @@ policy "render_updates"
 policy "gameplay"
     .require_system "pick_object_sys"
     .require_system "prototype_cache_system"
+    .require_system "power_check_system"
 
 ----------------------------------------------------
 ----------------------------------------------------
@@ -217,6 +218,15 @@ interface "ipick_object"
     .method "blur_pick"
     .method "pick_road"
     .method "pick_obj"
+
+system "power_check_system"
+    .implement "power_check_system.lua"
+    .method "gameworld_prebuild"
+    .method "gameworld_update"
+
+interface "ipower_check"
+    .implement "power_check_system.lua"
+    .method "is_powered_on"
 
 ----------------------------------------------------
 ----------------------------------------------------
