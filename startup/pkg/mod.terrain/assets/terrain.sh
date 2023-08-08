@@ -12,9 +12,18 @@ vec2 texture2DArrayBc5(sampler2DArray _sampler, vec3 _uv)
 #endif
 }
 
+vec2 texture2DArrayAstc(sampler2DArray _sampler, vec3 _uv)
+{
+	return texture2DArray(_sampler, _uv).ga;
+}
+
 mediump vec3 terrain_normal_from_tangent_frame(mat3 tbn, mediump vec2 texcoord, mediump float normal_idx)
 {
+#if BGFX_SHADER_LANGUAGE_METAL
+	mediump vec3 normalTS = remap_normal(texture2DArrayAstc(s_normal_array, mediump vec3(texcoord, normal_idx)));
+#else
 	mediump vec3 normalTS = remap_normal(texture2DArrayBc5(s_normal_array, mediump vec3(texcoord, normal_idx)));
+#endif
 	// same as: mul(transpose(tbn), normalTS)
     return normalize(mul(normalTS, tbn));
 }
