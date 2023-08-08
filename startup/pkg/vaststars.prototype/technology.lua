@@ -1260,7 +1260,7 @@ prototype "收集空气" {
   desc = "采集火星上的空气",
   type = { "task" },
   icon = "ui/textures/construct/industry.texture",
-  task = {"stat_production", 1, "空气"},
+  task = {"stat_production", 0, "空气"},
   prerequisites = {"建造空气过滤器","重修水电站"},
   count = 20000,
   tips_pic = {
