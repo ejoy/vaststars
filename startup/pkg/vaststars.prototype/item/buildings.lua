@@ -418,7 +418,7 @@ prototype "铁制电线杆" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 50,
-    item_icon = "textures/icons/item/assembler.texture",
+    item_icon = "textures/icons/item/electric-pole.texture",
     pile_model = "glb/stackeditems/stack-building.glb|mesh.prefab",
     item_description = "在一定距离内传输电力的铁制电线杆",
 }
@@ -430,7 +430,7 @@ prototype "远程电线杆" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
-    item_icon = "textures/icons/item/assembler.texture",
+    item_icon = "textures/icons/item/electric-pole.texture",
     pile_model = "glb/stackeditems/stack-building.glb|mesh.prefab",
     item_description = "远程距离传输电力的电线杆",
 }
@@ -442,7 +442,7 @@ prototype "广域电线杆" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_stack = 20,
-    item_icon = "textures/icons/item/assembler.texture",
+    item_icon = "textures/icons/item/electric-pole.texture",
     pile_model = "glb/stackeditems/stack-building.glb|mesh.prefab",
     item_description = "在大面积区域内传输电力的电线杆",
 }

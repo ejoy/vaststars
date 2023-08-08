@@ -140,7 +140,7 @@ prototype "空气过滤器I" {
     pile = "4x1x4",
     drone_depot_gap3 = "0.2x0.05x0.2",
     pile_model = "glb/stackeditems/stack-gravel.glb|mesh.prefab",
-    item_icon = "textures/icons/item/electrolysis.texture",
+    item_icon = "textures/icons/item/air-filter.texture",
     backpack_stack = 20,
     item_description = "抽取空气的装置",
 }
@@ -152,7 +152,7 @@ prototype "空气过滤器II" {
     pile = "4x1x4",
     drone_depot_gap3 = "0.2x0.05x0.2",
     pile_model = "glb/stackeditems/stack-gravel.glb|mesh.prefab",
-    item_icon = "textures/icons/item/electrolysis.texture",
+    item_icon = "textures/icons/item/air-filter.texture",
     backpack_stack = 20,
     item_description = "抽取空气的装置",
 }
@@ -164,7 +164,7 @@ prototype "空气过滤器III" {
     pile = "4x1x4",
     drone_depot_gap3 = "0.2x0.05x0.2",
     pile_model = "glb/stackeditems/stack-gravel.glb|mesh.prefab",
-    item_icon = "textures/icons/item/electrolysis.texture",
+    item_icon = "textures/icons/item/air-filter.texture",
     backpack_stack = 20,
     item_description = "抽取空气的装置",
 }
