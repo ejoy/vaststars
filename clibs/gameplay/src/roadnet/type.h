@@ -83,6 +83,8 @@ namespace roadnet {
 
     enum class lorry_status: uint8_t {
         normal,
+        wait,
+        clog,
         error,
     };
 
