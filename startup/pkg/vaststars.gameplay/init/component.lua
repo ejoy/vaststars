@@ -75,8 +75,8 @@ component "hub" {
 
 --
 -- prev/next/mov2
--- | unused(5bit) | type(2bit) | chest(4bit) | slot(3bit) | y(9bit) | x(9bit) |
--- 32            27           25            21           18         9         0
+-- | unused(5bit) | type(2bit) | chest(4bit) | unused(3bit) | y(9bit) | x(9bit) |
+-- 32            27           25            21             18         9         0
 --
 mainkey "drone" {
     "prototype:word",

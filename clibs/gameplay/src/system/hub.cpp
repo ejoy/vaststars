@@ -72,12 +72,12 @@ struct building_rect {
     uint32_t hash() const;
 };
 
-static hub_mgr::berth create_berth(building_rect const& r, hub_mgr::berth_type type, uint8_t chest_slot, uint8_t berth_slot = 0) {
+static hub_mgr::berth create_berth(building_rect const& r, hub_mgr::berth_type type, uint8_t chest_slot) {
     return {
         0
         , (uint32_t)type
         , chest_slot
-        , berth_slot
+        , 0
         , (uint32_t)r.y1+(uint32_t)r.y2
         , (uint32_t)r.x1+(uint32_t)r.x2
     };

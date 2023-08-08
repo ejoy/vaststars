@@ -14,10 +14,10 @@ struct hub_mgr {
         home,
     };
     struct berth {
-        uint32_t unused : 5;
+        uint32_t unused0 : 5;
         uint32_t type : 2;
         uint32_t chest_slot : 4;
-        uint32_t berth_slot : 3;
+        uint32_t unused1 : 3;
         uint32_t y : 9;
         uint32_t x : 9;
         inline uint32_t hash() const {
