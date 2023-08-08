@@ -1329,6 +1329,7 @@ prototype "排水口2" {
     description = "管道制造排水口",
 }
 
+
 prototype "管道1" {
     type = { "recipe" },
     recipe_craft_category = "器件小型制造",
@@ -1336,12 +1337,13 @@ prototype "管道1" {
     recipe_order =  10,
     recipe_icon =  "textures/icons/recipe/iron-rod.texture",
     ingredients = {
-        {"铁棒", 2},
+        {"石砖", 8},
     },
     results = {
-        {"管道1-X型", 2},
+        {"管道1-X型", 5},
+        {"碎石", 1},
     },
-    time = "2s",
+    time = "8s",
     description = "石砖制造管道",
 }
 
@@ -1352,13 +1354,12 @@ prototype "管道2" {
     recipe_order =  11,
     recipe_icon =  "textures/icons/recipe/iron-rod.texture",
     ingredients = {
-        {"石砖", 8},
+        {"铁棒", 2},
     },
     results = {
-        {"管道1-X型", 5},
-        {"碎石", 1},
+        {"管道1-X型", 2},
     },
-    time = "6s",
+    time = "4s",
     description = "石砖制造管道",
 }
 
