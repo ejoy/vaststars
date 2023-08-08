@@ -38,6 +38,7 @@ prototype "科研中心I" {
     speed = "100%",
     sound = "building/lab",
     camera_distance = 75,
+    drone_height = 42,
     priority = "secondary",
     inputs = {
         "地质科技包",

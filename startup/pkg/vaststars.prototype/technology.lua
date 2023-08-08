@@ -1176,7 +1176,7 @@ prototype "管道系统1" {
   type = { "tech" },
   icon = "ui/textures/science/book.texture",
   effects = {
-    unlock_recipe = {"管道1","管道2","液罐打印"},
+    unlock_recipe = {"管道1","管道2","液罐1"},
     unlock_item = {"液罐I","管道1-X型"},
   },
   prerequisites = {"气候研究1"},
@@ -1284,7 +1284,7 @@ prototype "排放1" {
   ingredients = {
     {"气候科技包", 1},
   },
-  count = 15,
+  count = 10,
   time = "2s"
 }
 
@@ -1310,11 +1310,11 @@ prototype "电解水" {
   effects = {
     unlock_recipe = {"地下卤水电解1"},
   },
-  prerequisites = {"生产液罐"},
+  prerequisites = {"生产液罐","排放1"},
   ingredients = {
       {"气候科技包", 1},
   },
-  count = 10,
+  count = 15,
   time = "2s"
 }
 
@@ -1354,7 +1354,7 @@ prototype "放置太阳能板" {
   type = { "task" },
   task = {"select_entity", 0, "太阳能板I"},
   prerequisites = {"碳处理1"},
-  count = 4,
+  count = 2,
   tips_pic = {
     "ui/textures/task_tips_pic/task_place_logistics.texture",
   },
