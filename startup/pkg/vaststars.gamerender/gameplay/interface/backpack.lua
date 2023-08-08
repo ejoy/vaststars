@@ -7,7 +7,7 @@ local M = {}
 
 local function __get_backpack_stack(item)
     local typeobject = assert(iprototype.queryById(item))
-    return typeobject.backpack_stack or 0
+    return typeobject.backpack_limit or 0
 end
 
 function M.move_to_backpack(world, chest, idx)

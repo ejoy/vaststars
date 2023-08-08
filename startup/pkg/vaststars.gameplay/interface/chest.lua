@@ -210,7 +210,7 @@ function m.station_set(world, e, item)
         chest_reset(world, e, e.chest)
         return
     end
-    local limit = prototype.queryById(item).stack
+    local limit = prototype.queryById(item).station_limit
     chest_set(world, e, e.chest, item, e.station_producer and "blue" or "red", limit)
 end
 

@@ -13,7 +13,7 @@ function c:ctor(init, pt)
         type = "red",
         item = typeobject.id,
         amount = 0,
-        limit = typeobject.stack,
+        limit = typeobject.station_limit,
     }})
     return {
         lorry_factory = true,
