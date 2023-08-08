@@ -101,6 +101,7 @@ local function get_solar_panel_power(total)
     end
 end
 
+local pre_unit = { G = "M", M = "k", k = "" }
 local next_unit = { k = "M", M = "G" }
 local function get_display_info(e, typeobject, t)
     local key = string.match(typeobject.name, "([^%u%d]+)")
@@ -160,19 +161,29 @@ local function get_display_info(e, typeobject, t)
                     elseif cn == "capacitance" then
                         current = total - e.capacitance.shortage
                     end
-                    local unit = "k"
-                    local divisor = 1000
-                    if total >= 1000000000 then
-                        divisor = 1000000000
-                        unit = "G"
-                    elseif total >= 1000000 then
-                        divisor = 1000000
-                        unit = "M"
+                    local function power_format(value, eu)
+                        local unit = "k"
+                        local divisor = 1000
+                        if value >= 999999990 then
+                            divisor = 1000000000
+                            unit = "G"
+                        elseif value >= 999990 then
+                            divisor = 1000000
+                            unit = "M"
+                        end
+                        value = value / divisor
+                        local clamp_value = math.floor(value + 0.05)
+                        if clamp_value == 1000 then
+                            clamp_value = 1
+                            unit = next_unit[unit]
+                        end
+                        return string.format("%d", clamp_value) .. unit .. eu
                     end
-                    
-                    total = total / divisor
-                    current = current / divisor
                     local function format(value, u)
+                        while value > 0 and value < 0.1 do
+                            value = value * 1000
+                            u = pre_unit[u]
+                        end
                         local v0, v1 = math.modf(value)
                         if v1 > 0 then
                             return string.format("%.1f", value) .. u
@@ -180,15 +191,8 @@ local function get_display_info(e, typeobject, t)
                             return string.format("%d", v0) .. u
                         end
                     end
-                    -- total = format(current, unit) .. "/" .. format(total, unit)
-                    local clamp_value = math.floor(total + 0.05)
-                    if clamp_value == 1000 then
-                        clamp_value = 1
-                        unit = next_unit[unit]
-                    end
-                    unit = unit..((cn == "capacitance") and "J" or "W")
-                    local total_format = string.format("%d", clamp_value) .. unit
-                    total = ((current == total) and total_format or format(current, unit)) .. "/" .. total_format
+                    local eu = (cn == "capacitance") and "J" or "W"
+                    total = power_format(current, eu) .. "/" .. power_format(total, eu)
                 elseif cn == "speed" then
                     total = e.assembling.speed
                 end
