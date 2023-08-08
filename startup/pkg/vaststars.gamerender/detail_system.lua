@@ -242,13 +242,13 @@ do
                     local otypeobject = iprototype.queryByName(o.prototype_name)
                     if otypeobject.power_supply_area then
                         local w, h = iprototype.rotate_area(otypeobject.area, o.dir)
-                        local ow, oh = otypeobject.power_supply_area:match("(%d+)x(%d+)")
+                        local ow, oh = iprototype.rotate_area(otypeobject.power_supply_area, o.dir)
                         temp_objects[#temp_objects+1] = create_sprite(o.x - (ow - w)//2, o.y - (oh - h)//2, ow, oh, o.dir, SPRITE_COLOR.POWER_SUPPLY_AREA)
                     end
                 end
             end
             local w, h = iprototype.rotate_area(typeobject.area, object.dir)
-            local ow, oh = typeobject.power_supply_area:match("(%d+)x(%d+)")
+            local ow, oh = iprototype.rotate_area(typeobject.power_supply_area, object.dir)
             temp_objects[#temp_objects+1] = create_sprite(object.x - (ow - w)//2, object.y - (oh - h)//2, ow, oh, object.dir, SPRITE_COLOR.POWER_SUPPLY_AREA_SELF)
         end
 

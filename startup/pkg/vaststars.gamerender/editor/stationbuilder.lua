@@ -130,7 +130,7 @@ local function __is_building_intersect(x1, y1, w1, h1, x2, y2, w2, h2)
 end
 
 local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject)
-    local nearby_buldings = __get_nearby_buldings(x, y, iprototype.unpackarea(typeobject.area))
+    local nearby_buldings = __get_nearby_buldings(x, y, iprototype.rotate_area(typeobject.area, dir))
     local w, h = iprototype.rotate_area(typeobject.area, dir)
 
     local redraw = {}
@@ -152,8 +152,8 @@ local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobjec
             color = SPRITE_COLOR.CONSTRUCT_OUTLINE_FARAWAY_BUILDINGS_INTERSECTION
         else
             if typeobject.supply_area then
-                local aw, ah = iprototype.unpackarea(typeobject.area)
-                local sw, sh = iprototype.unpackarea(typeobject.supply_area)
+                local aw, ah = iprototype.rotate_area(typeobject.area, object.dir)
+                local sw, sh = iprototype.rotate_area(typeobject.supply_area, object.dir)
                 if __is_building_intersect(x - (sw - aw) // 2, y - (sh - ah) // 2, sw, sh, object.x, object.y, ow, oh) then
                     color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
                 else
@@ -162,8 +162,8 @@ local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobjec
             else
                 if iprototype.has_types(typeobject.type, "station_producer", "station_consumer") then
                     if otypeobject.supply_area then
-                        local aw, ah = iprototype.unpackarea(otypeobject.area)
-                        local sw, sh = iprototype.unpackarea(otypeobject.supply_area)
+                        local aw, ah = iprototype.rotate_area(typeobject.area, object.dir)
+                        local sw, sh = iprototype.rotate_area(otypeobject.supply_area, object.dir)
                         if __is_building_intersect(x, y, ow, oh, object.x  - (sw - aw) // 2, object.y - (sh - ah) // 2, sw, sh) then
                             color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
                         else
@@ -197,8 +197,8 @@ local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobjec
             color = SPRITE_COLOR.CONSTRUCT_OUTLINE_FARAWAY_BUILDINGS_INTERSECTION
         else
             if typeobject.supply_area then
-                local aw, ah = iprototype.unpackarea(typeobject.area)
-                local sw, sh = iprototype.unpackarea(typeobject.supply_area)
+                local aw, ah = iprototype.rotate_area(typeobject.area, object.dir)
+                local sw, sh = iprototype.rotate_area(typeobject.supply_area, object.dir)
                 if __is_building_intersect(x - (sw - aw) // 2, y - (sh - ah) // 2, sw, sh, object.x, object.y, ow, oh) then
                     color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
                 else
@@ -207,8 +207,8 @@ local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobjec
             else
                 if iprototype.has_types(typeobject.type, "station_producer", "station_consumer") then
                     if otypeobject.supply_area then
-                        local aw, ah = iprototype.unpackarea(otypeobject.area)
-                        local sw, sh = iprototype.unpackarea(otypeobject.supply_area)
+                        local aw, ah = iprototype.rotate_area(typeobject.area, object.dir)
+                        local sw, sh = iprototype.rotate_area(otypeobject.supply_area, object.dir)
                         if __is_building_intersect(x, y, ow, oh, object.x  - (sw - aw) // 2, object.y - (sh - ah) // 2, sw, sh) then
                             color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
                         else
@@ -222,7 +222,7 @@ local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobjec
                 end
             end
         end
-        o:set_color(color)
+        o:set_color_transition(color, 400)
     end
 end
 
@@ -258,7 +258,7 @@ local function __new_entity(self, datamodel, typeobject)
     __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject)
 
     local road_entrance_position, road_entrance_dir = _get_road_entrance_position(typeobject, dir, self.pickup_object.srt.t)
-    local w, h = iprototype.unpackarea(typeobject.area)
+    local w, h = iprototype.rotate_area(typeobject.area, dir)
     local self_selected_boxes_position = coord_system:get_position_by_coord(x, y, w, h)
     if road_entrance_position then
         local srt = {t = road_entrance_position, r = ROTATORS[road_entrance_dir]}
@@ -434,8 +434,8 @@ local function __show_road_entrance_marker(self, typeobject)
     return min_coord
 end
 
-local function __calc_grid_position(typeobject, x, y)
-    local w, h = iprototype.unpackarea(typeobject.area)
+local function __calc_grid_position(typeobject, x, y, dir)
+    local w, h = iprototype.rotate_area(typeobject.area, dir)
     local _, originPosition = coord_system:align(math3d.vector {10, 0, -10}, w, h) -- TODO: remove hardcode
     local buildingPosition = coord_system:get_position_by_coord(x - (x % ROAD_TILE_SCALE_WIDTH), y - (y % ROAD_TILE_SCALE_HEIGHT), ROAD_TILE_SCALE_WIDTH, ROAD_TILE_SCALE_HEIGHT)
     return math3d.ref(math3d.add(math3d.sub(buildingPosition, originPosition), GRID_POSITION_OFFSET))
@@ -452,7 +452,7 @@ local function new_entity(self, datamodel, typeobject)
     icanvas.show(icanvas.types().ROAD_ENTRANCE_MARKER, true)
 
     if not self.grid_entity then
-        self.grid_entity = igrid_entity.create("polyline_grid", terrain._width // ROAD_TILE_SCALE_WIDTH, terrain._height // ROAD_TILE_SCALE_HEIGHT, terrain.tile_size * ROAD_TILE_SCALE_WIDTH, {t = __calc_grid_position(typeobject, self.pickup_object.x, self.pickup_object.y)})
+        self.grid_entity = igrid_entity.create("polyline_grid", terrain._width // ROAD_TILE_SCALE_WIDTH, terrain._height // ROAD_TILE_SCALE_HEIGHT, terrain.tile_size * ROAD_TILE_SCALE_WIDTH, {t = __calc_grid_position(typeobject, self.pickup_object.x, self.pickup_object.y, self.pickup_object.dir)})
         self.grid_entity:show(true)
     end
 end
@@ -484,7 +484,7 @@ local function touch_move(self, datamodel, delta_vec)
         local typeobject = iprototype.queryByName(self.pickup_object.prototype_name)
 
         if self.grid_entity then
-            self.grid_entity:send("obj_motion", "set_position", __calc_grid_position(typeobject, self.pickup_object.x, self.pickup_object.y))
+            self.grid_entity:send("obj_motion", "set_position", __calc_grid_position(typeobject, self.pickup_object.x, self.pickup_object.y, self.pickup_object.dir))
         end
 
         local road_entrance_position, road_entrance_dir = _get_road_entrance_position(typeobject, self.pickup_object.dir, self.pickup_object.srt.t)
@@ -559,8 +559,8 @@ local function touch_end(self, datamodel)
 
     -- update temp pole
     if typeobject.supply_area and typeobject.supply_distance then
-        local aw, ah = iprototype.unpackarea(typeobject.area)
-        local sw, sh = typeobject.supply_area:match("(%d+)x(%d+)")
+        local aw, ah = iprototype.rotate_area(typeobject.area, self.pickup_object.dir)
+        local sw, sh = iprototype.rotate_area(typeobject.supply_area, pickup_object.dir)
         ipower:merge_pole({power_network_link_target = 0, key = pickup_object.id, targets = {}, x = self.pickup_object.x, y = self.pickup_object.y, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.supply_distance, power_network_link = typeobject.power_network_link})
         ipower_line.update_temp_line(ipower:get_temp_pole())
     end
@@ -582,8 +582,8 @@ local function confirm(self, datamodel)
     datamodel.show_rotate = false
     --
     if typeobject.supply_area and typeobject.supply_distance then
-        local aw, ah = iprototype.unpackarea(typeobject.area)
-        local sw, sh = typeobject.supply_area:match("(%d+)x(%d+)")
+        local aw, ah = iprototype.rotate_area(typeobject.area, pickup_object.dir)
+        local sw, sh = iprototype.rotate_area(typeobject.supply_area, pickup_object.dir)
         ipower:merge_pole({power_network_link_target = 0, key = pickup_object.id, targets = {}, x = pickup_object.x, y = pickup_object.y, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.supply_distance, power_network_link = typeobject.power_network_link}, true)
         ipower_line.update_temp_line(ipower:get_temp_pole())
     end
@@ -642,7 +642,7 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
     end
 
     local typeobject = iprototype.queryByName(prototype_name)
-    local w, h = iprototype.unpackarea(typeobject.area)
+    local w, h = iprototype.rotate_area(typeobject.area, dir)
 
     if typeobject.crossing then
         local valid = false

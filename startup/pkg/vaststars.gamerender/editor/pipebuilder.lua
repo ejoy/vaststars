@@ -625,8 +625,8 @@ local function _teardown_start(self, datamodel)
     end
 end
 
-local function __calc_grid_position(building_position, typeobject)
-    local w, h = iprototype.unpackarea(typeobject.area)
+local function __calc_grid_position(building_position, typeobject, dir)
+    local w, h = iprototype.rotate_area(typeobject.area, dir)
     local _, originPosition = coord_system:align(math3d.vector(0, 0, 0), w, h)
     return math3d.ref(math3d.add(math3d.sub(building_position, originPosition), GRID_POSITION_OFFSET))
 end
@@ -711,7 +711,7 @@ local function new_entity(self, datamodel, typeobject, x, y)
     }
 
     if not self.grid_entity then
-        self.grid_entity = igrid_entity.create("polyline_grid", terrain._width, terrain._height, terrain.tile_size, {t = __calc_grid_position(self.coord_indicator.srt.t, typeobject)})
+        self.grid_entity = igrid_entity.create("polyline_grid", terrain._width, terrain._height, terrain.tile_size, {t = __calc_grid_position(self.coord_indicator.srt.t, typeobject, dir)})
     end
     self.grid_entity:show(true)
 
@@ -730,9 +730,9 @@ local function touch_move(self, datamodel, delta_vec)
     end
     if self.grid_entity then
         local typeobject = iprototype.queryByName(self.coord_indicator.prototype_name)
-        local w, h = iprototype.unpackarea(typeobject.area)
+        local w, h = iprototype.rotate_area(typeobject.area, self.coord_indicator.dir)
         local grid_position = coord_system:get_position_by_coord(self.coord_indicator.x, self.coord_indicator.y, w, h)
-        self.grid_entity:send("obj_motion", "set_position", __calc_grid_position(grid_position, typeobject))
+        self.grid_entity:send("obj_motion", "set_position", __calc_grid_position(grid_position, typeobject, self.coord_indicator.dir))
     end
     for _, c in pairs(self.pickup_components) do
         c:on_position_change(self.coord_indicator.srt, self.coord_indicator.dir)
@@ -751,9 +751,9 @@ local function touch_end(self, datamodel)
 
     if self.grid_entity then
         local typeobject = iprototype.queryByName(self.coord_indicator.prototype_name)
-        local w, h = iprototype.unpackarea(typeobject.area)
+        local w, h = iprototype.rotate_area(typeobject.area, self.coord_indicator.dir)
         local grid_position = coord_system:get_position_by_coord(self.coord_indicator.x, self.coord_indicator.y, w, h)
-        self.grid_entity:send("obj_motion", "set_position", __calc_grid_position(grid_position, typeobject))
+        self.grid_entity:send("obj_motion", "set_position", __calc_grid_position(grid_position, typeobject, self.coord_indicator.dir))
     end
 
     for _, c in pairs(self.pickup_components) do

@@ -155,7 +155,7 @@ function ipick_object.pick_obj(x, y)
     local o = objects:coord(x, y)
     if o then
         local typeobject = iprototype.queryByName(o.prototype_name)
-        local w, h = iprototype.unpackarea(typeobject.area)
+        local w, h = iprototype.rotate_area(typeobject.area, o.dir)
         return {
             class = CLASS.Object,
             name = o.prototype_name,

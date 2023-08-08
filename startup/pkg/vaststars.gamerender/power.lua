@@ -340,10 +340,10 @@ function M:build_power_network(gw, exclude_eid)
         end
         local e = v.building
         local typeobject = iprototype.queryById(e.prototype)
-        local aw, ah = iprototype.unpackarea(typeobject.area)
+        local aw, ah = iprototype.rotate_area(typeobject.area, iprototype.dir_tostring(e.direction))
         local sw, sh
         if typeobject.power_supply_area then
-            sw, sh = typeobject.power_supply_area:match("(%d+)x(%d+)")
+            sw, sh = iprototype.rotate_area(typeobject.power_supply_area, iprototype.dir_tostring(e.direction))
         end
         if v.capacitance then
             capacitance[#capacitance + 1] = {

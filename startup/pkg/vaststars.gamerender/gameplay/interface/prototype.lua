@@ -2,6 +2,10 @@ local gameplay = import_package "vaststars.gameplay"
 import_package "vaststars.prototype"
 local math_abs = math.abs
 
+local function unpackarea(area)
+    return area >> 8, area & 0xFF
+end
+
 local M = {}
 function M.queryById(...)
     return gameplay.prototype.queryById(...)
@@ -80,10 +84,6 @@ end
 
 function M.unpackcoord(coord)
     return coord & 0xFF, coord >> 8
-end
-
-function M.unpackarea(area)
-    return area >> 8, area & 0xFF
 end
 
 function M.is_fluid_id(id)
@@ -169,12 +169,13 @@ function M.calc_dir(x1, y1, x2, y2)
 end
 
 function M.rotate_area(area, dir)
-    local w, h = M.unpackarea(area)
+    local w, h = unpackarea(area)
     if dir == 'N' or dir == 'S' then
         return w, h
     elseif dir == 'E' or dir == 'W' then
         return h, w
     end
+    assert(false)
 end
 
 function M.move_coord(x, y, dir, dx, dy)
@@ -186,7 +187,7 @@ function M.move_coord(x, y, dir, dx, dy)
 end
 
 function M.rotate_connection(position, direction, area)
-    local w, h = M.unpackarea(area)
+    local w, h = unpackarea(area)
     local x, y = position[1], position[2]
     local dir = M.rotate_dir(position[3], direction)
     w, h = w - 1, h - 1

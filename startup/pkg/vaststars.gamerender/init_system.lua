@@ -84,10 +84,12 @@ function m:gameplay_update()
 end
 
 function m:gameworld_end()
-    local gameplay_world = gameplay_core.get_world()
-    gameplay_world.ecs:clear "building_new"
-    gameplay_world.ecs:clear "building_changed"
-    gameplay_world.ecs:clear "base_changed"
+    local gameplay_ecs = gameplay_core.get_world().ecs
+    gameplay_ecs:clear "building_new"
+    gameplay_ecs:clear "building_changed"
+    gameplay_ecs:clear "base_changed"
+    gameplay_ecs:clear "lorry_changed"
+    gameplay_ecs:clear "drone_changed"
 end
 
 function m:camera_usage()
