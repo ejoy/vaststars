@@ -11,7 +11,7 @@ prototype "铁制电线杆" {
     power_supply_area = "5x5",
     power_supply_distance = 9,
     building_menu = false,
-    camera_distance = 75,
+    camera_distance = 90,
 }
 
 prototype "远程电线杆" {
@@ -24,7 +24,7 @@ prototype "远程电线杆" {
     power_supply_area = "4x4",
     power_supply_distance = 36,
     building_menu = false,
-    camera_distance = 75,
+    camera_distance = 90,
 }
 
 prototype "广域电线杆" {
@@ -37,5 +37,5 @@ prototype "广域电线杆" {
     power_supply_area = "12x12",
     power_supply_distance = 24,
     building_menu = false,
-    camera_distance = 75,
+    camera_distance = 90,
 }

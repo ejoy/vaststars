@@ -4,6 +4,7 @@
 #include "util/component.h"
 
 struct world;
+struct lorry_entity;
 
 namespace roadnet {
     class network;
@@ -16,7 +17,7 @@ namespace roadnet {
     void lorryItemReset(ecs::lorry& l);
     void lorryItemSet(ecs::lorry& l, uint16_t item, uint16_t amount);
     void lorryGo(ecs::lorry& l, ecs::endpoint& ending);
-    void lorryUpdate(ecs::lorry& l, network& w, uint64_t ti);
+    void lorryUpdate(ecs_api::entity<ecs::lorry>& e, ecs::lorry& l);
     bool lorryNextDirection(ecs::lorry& l, network& w, straightid C, direction& dir);
     bool lorryReady(ecs::lorry const& l) noexcept;
 }

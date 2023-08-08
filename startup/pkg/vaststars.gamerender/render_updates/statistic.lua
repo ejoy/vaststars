@@ -170,32 +170,32 @@ local update = interval_call(500, function()
         end
     end
 
-    for eid, st in pairs(statistic.power) do
-        local e = gameplay_core.get_entity(eid)
-        if not e or not e.capacitance then
-            goto continue
-        end
-        upate_power(st, e.capacitance.delta)
-        ::continue::
-    end
-    --
-    local power_group = statistic.power_group
-    for filter, value in pairs(filter_statistic) do
-        local step = false
-        if value.elapsed > value.interval then
-            value.elapsed = value.elapsed - value.interval
-            step = true
-        end
-        for _, group in pairs(power_group) do
-            if step and group.count > 0 then
-                step_frame_head(group[filter])
-            end
-        end
-        if step then
-            step_frame_head(statistic.power_consumed[filter])
-            step_frame_head(statistic.power_generated[filter])
-        end
-    end
+    -- for eid, st in pairs(statistic.power) do
+    --     local e = gameplay_core.get_entity(eid)
+    --     if not e or not e.capacitance then
+    --         goto continue
+    --     end
+    --     upate_power(st, e.capacitance.delta)
+    --     ::continue::
+    -- end
+    -- --
+    -- local power_group = statistic.power_group
+    -- for filter, value in pairs(filter_statistic) do
+    --     local step = false
+    --     if value.elapsed > value.interval then
+    --         value.elapsed = value.elapsed - value.interval
+    --         step = true
+    --     end
+    --     for _, group in pairs(power_group) do
+    --         if step and group.count > 0 then
+    --             step_frame_head(group[filter])
+    --         end
+    --     end
+    --     if step then
+    --         step_frame_head(statistic.power_consumed[filter])
+    --         step_frame_head(statistic.power_generated[filter])
+    --     end
+    -- end
 
     return false
 end)

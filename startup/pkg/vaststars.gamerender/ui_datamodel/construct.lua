@@ -36,6 +36,7 @@ local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
 local ROAD_TILE_SCALE_WIDTH <const> = 2
 local ROAD_TILE_SCALE_HEIGHT <const> = 2
+local CHANGED_FLAG_BUILDING <const> = require("gameplay.interface.constant").CHANGED_FLAG_BUILDING
 
 local rotate_mb = mailbox:sub {"rotate"}
 local build_mb = mailbox:sub {"build"}
@@ -271,10 +272,8 @@ function M:stage_ui_update(datamodel)
     end
 
     for _ in click_techortaskicon_mb:unpack() do
-        if gameplay_core.world_update and global.science.current_tech then
-            gameplay_core.world_update = false
-            iui.open({"ui/science.rml"})
-        end
+        gameplay_core.world_update = false
+        iui.open({"ui/science.rml"})
     end
 
     for _ in help_mb:unpack() do
@@ -506,6 +505,7 @@ function M:stage_camera_usage(datamodel)
         end
 
         igameplay.destroy_entity(object.gameplay_eid)
+        gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
 
         if typeobject.power_network_link or typeobject.power_supply_distance then
             ipower:build_power_network(gw)

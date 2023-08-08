@@ -64,13 +64,17 @@ namespace roadnet {
         l.ending = ending.rev_neighbor;
         ending.lorry++;
     }
-    void lorryUpdate(ecs::lorry& l, network& w, uint64_t ti) {
+    void lorryUpdate(ecs_api::entity<ecs::lorry>& e, ecs::lorry& l) {
         if (l.progress != 0) {
             --l.progress;
+            if (l.progress == 0) {
+                l.status = lorry_status::wait;
+                e.enable_tag<ecs::lorry_changed>();
+            }
         }
     }
     bool lorryNextDirection(ecs::lorry& l, network& w, straightid C, direction& dir) {
-        if (l.status != lorry_status::normal) {
+        if (l.status != lorry_status::error) {
             return false;
         }
         route_value val;

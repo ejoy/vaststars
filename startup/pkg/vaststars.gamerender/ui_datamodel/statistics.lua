@@ -314,7 +314,7 @@ function M:stage_ui_update(datamodel)
             if #newitems <= 0 then
                 maxframepower = 0
             else
-                maxframepower = maxnode.frames[maxnode.max_index].power
+                maxframepower = maxnode.max_index <= #maxnode.frames and maxnode.frames[maxnode.max_index].power or 0
             end
             datamodel.total = maxnode.power
             local consumenode = global.statistic.power_consumed[filter_type]

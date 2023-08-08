@@ -22,6 +22,7 @@ local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local draw_fluid_icon = ecs.require "fluid_icon"
 local iprototype_cache = require "gameplay.prototype_cache.init"
 local ifluid = require "gameplay.interface.fluid"
+local ipower_check = ecs.import.interface "vaststars.gamerender|ipower_check"
 
 local ROTATORS <const> = {
     N = math.rad(0),
@@ -234,7 +235,7 @@ local function create_icon(object_id, e, building_srt)
     end
     local function update(self, e)
         local s
-        if not is_generator and global.statistic.power and global.statistic.power[e.eid] and global.statistic.power[e.eid].power == 0 then
+        if not is_generator and not ipower_check.is_powered_on(e.eid) then
             s = ICON_STATUS_NOPOWER
         else
             if e.assembling.recipe == 0 then
@@ -486,7 +487,7 @@ local update = interval_call(300, function()
         end
 
         local building = global.buildings[object.id]
-        if global.statistic.power and global.statistic.power[e.eid] and global.statistic.power[e.eid].power == 0 then
+        if not ipower_check.is_powered_on(e.eid) then
             if not building.consumer_icon then
                 building.consumer_icon = create_consumer_icon(object.id, object.srt)
             end

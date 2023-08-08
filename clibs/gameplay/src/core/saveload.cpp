@@ -151,6 +151,20 @@ namespace lua_world {
         file_read(f, t.data(), t.size());
     }
 
+    void file_write(FILE* f, const statistics::frame& frame) {
+        file_write(f, frame.production);
+        file_write(f, frame.consumption);
+        file_write(f, frame.generate_power);
+        file_write(f, frame.consume_power);
+    }
+
+    void file_read(FILE* f, statistics::frame& frame) {
+        file_read(f, frame.production);
+        file_read(f, frame.consumption);
+        file_read(f, frame.generate_power);
+        file_read(f, frame.consume_power);
+    }
+
     static void backup_scope(lua_State* L, FILE* f, const char* name, std::function<void()> func) {
         lua_Integer head = (lua_Integer)ftell(f);
         func();
@@ -199,8 +213,13 @@ namespace lua_world {
         });
 
         backup_scope(L, f, "stat", [&](){
-            file_write(f, w.stat.production);
-            file_write(f, w.stat.consumption);
+            file_write(f, w.stat._total);
+            for (auto& dataset : w.stat._dataset) {
+                file_write(f, dataset.pos);
+                for (auto& frame : dataset.data) {
+                    file_write(f, frame);
+                }
+            }
         });
 
         backup_scope(L, f, "techtree", [&](){
@@ -251,11 +270,15 @@ namespace lua_world {
         });
 
         restore_scope(L, f, "stat", [&](){
-            file_read(f, w.stat.production);
-            file_read(f, w.stat.consumption);
+            file_read(f, w.stat._total);
+            for (auto& dataset : w.stat._dataset) {
+                file_read(f, dataset.pos);
+                for (auto& frame : dataset.data) {
+                    file_read(f, frame);
+                }
+            }
         }, [&](){
-            w.stat.production.clear();
-            w.stat.consumption.clear();
+            w.stat._total.reset();
         });
 
         restore_scope(L, f, "techtree", [&](){

@@ -938,11 +938,12 @@ namespace roadnet {
         if (n > 0) {
             updateRemoveLorry(w, n);
         }
-        for (auto& lorry : ecs_api::array<ecs::lorry>(w.ecs)) {
+        for (auto& e : ecs_api::select<ecs::lorry>(w.ecs)) {
+            auto& lorry = e.get<ecs::lorry>();
             if (lorryInvalid(lorry)) {
                 continue;
             }
-            lorryUpdate(lorry, *this, ti);
+            lorryUpdate(e, lorry);
         }
         array_call(w, ti, crossAry, &road::cross::update);
         array_call(w, ti, straightAry, &road::straight::update);

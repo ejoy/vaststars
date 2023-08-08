@@ -89,13 +89,11 @@ lupdate(lua_State *L) {
             }
             ecs::chest& chest = v.get<ecs::chest>();
             ecs::fluidboxes* fb = v.component<ecs::fluidboxes>();
-            if (consumer.cost_power()) {
-                if (assembling_update(w, assembling, chest, fb)) {
-                    assembling.progress -= assembling.speed;
-                    assembling_update(w, assembling, chest, fb);
-                }
+            if (!assembling_update(w, assembling, chest, fb)) {
+                continue;
             }
-            else {
+            if (consumer.cost_power()) {
+                assembling.progress -= assembling.speed;
                 assembling_update(w, assembling, chest, fb);
             }
         }
@@ -109,14 +107,12 @@ lupdate(lua_State *L) {
             }
             ecs::chest& chest = v.get<ecs::chest>();
             ecs::fluidboxes* fb = v.component<ecs::fluidboxes>();
+            if (!assembling_update(w, assembling, chest, fb)) {
+                continue;
+            }
             auto generator = get_generator(w, v, *capacitance);
             if (generator.produce()) {
-                if (assembling_update(w, assembling, chest, fb)) {
-                    assembling.progress -= assembling.speed;
-                    assembling_update(w, assembling, chest, fb);
-                }
-            }
-            else {
+                assembling.progress -= assembling.speed;
                 assembling_update(w, assembling, chest, fb);
             }
         }
@@ -126,10 +122,11 @@ lupdate(lua_State *L) {
             }
             ecs::chest& chest = v.get<ecs::chest>();
             ecs::fluidboxes* fb = v.component<ecs::fluidboxes>();
-            if (assembling_update(w, assembling, chest, fb)) {
-                assembling.progress -= assembling.speed;
-                assembling_update(w, assembling, chest, fb);
+            if (!assembling_update(w, assembling, chest, fb)) {
+                continue;
             }
+            assembling.progress -= assembling.speed;
+            assembling_update(w, assembling, chest, fb);
         }
     }
     return 0;

@@ -228,6 +228,7 @@
                 local statestr = item_data.running and [[<div class="icon-researching">研究中...</div>]] or ""
                 local sign = item_data.sign_icon and [[<div style='margin-left: 0.5vmin; margin-right: 0.5vmin; background-size: 100% 100%; width: 4.46vmin; height: 4vmin; background-image:"ui/textures/science/key_sign.texture";'/>]] or [[<div style='margin-left: 0.5vmin; margin-right: 0.5vmin; width: 6%; height: 4vmin;'/>]]
                 local item_icon = item_data.task and "ui/textures/science/task.texture" or "ui/textures/science/tech.texture"
+                local font_color = item_data.running and 'rgb(255,193,4)' or 'rgb(255, 255, 255)'
                 local percent = (item_data.progress * 100) // item_data.count
                 local highlight = start.selected_index == index and [[<div style='position:absolute; top: -1vmin; left: -1vmin; width: 71.5vmin; height: 13vmin; background-image:"ui/textures/science/item_bg_highlight.texture"; background-size: 100% 100%;'/>]] or ""
                 -- local show_indicator = (item_data.progress == item_data.count) and 'false' or 'true'
@@ -237,7 +238,7 @@
                         <div class="item-bg" style='width: 14%%; background-image:"%s";'/>
                         <div style="margin-left: 1vmin; margin-right: 1vmin; width: 75%%; flex-direction: column; align-items:center;">
                             <div style="margin-right: 0vmin; height: 45%%; flex-direction: row;">
-                                <div style="width: 50%%; font-size: 4vmin; text-align: left;">%s</div>
+                                <div style="width: 50%%; font-size: 4vmin; text-align: left;" data-style-color = "'%s'">%s</div>
                                 <div style="width: 50%%; flex-direction: row; justify-content: flex-end;">
                                     %s
                                 </div>
@@ -251,7 +252,7 @@
                     </div>
                     <div class="icon-researching" style="color: rgb(0, 255, 34);" data-if="%s">新</div>
                     %s
-                ]]):format(sign, item_icon, item_data.name, ingredient_items, percent, percent, item_data.progress, item_data.count, tostring(item_data.new), highlight)
+                ]]):format(sign, item_icon, font_color, item_data.name, ingredient_items, percent, percent, item_data.progress, item_data.count, tostring(item_data.new), highlight)
                 item.removeEventListener('click')
                 item.addEventListener('click', function(event) start.click_tech_item(item, index) end)
             end
@@ -437,10 +438,6 @@
                         <!-- 科技条目 start -->
                         <list direction='1' width='100%' height='95%' style="margin-top: 1vmin; margin-bottom: 1vmin;"/>
                         <!-- 科技条目 end -->
-
-                        <!-- 研究中 start -->
-                        <div style = "position:absolute; right:0.1vmin; top:0.1vmin;  animation: 0.8s linear 0s infinite alternate scalesize; flex-direction: row; justify-content: flex-end; text-align: center; font-size: 3vmin; color: rgb(0,255,0);" data-if="false">研究中...</div>
-                        <!-- 研究中 end -->
                     </div>
                 </div>
                 <div style='margin: 1.5vmin; flex-direction: column; width: 42%; height: 100%; background-image: "ui/textures/science/right_panel_bg.texture"; background-size: cover;'>

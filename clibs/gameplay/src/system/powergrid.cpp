@@ -170,8 +170,7 @@ calc_efficiency(world& w, powergrid pgs[]) {
 
 static void
 powergrid_run(world& w, powergrid pg[]) {
-	uint64_t generate_power = 0;
-	uint64_t consume_power = 0;
+	auto& frame = w.stat.current();
 	for (auto& v : ecs_api::select<ecs::capacitance, ecs::building>(w.ecs)) {
 		ecs::capacitance& c = v.get<ecs::capacitance>();
 		if (c.network == 0 || !pg[c.network].active) {
@@ -198,7 +197,7 @@ powergrid_run(world& w, powergrid pg[]) {
 					}
 					c.delta = -(int32_t)power;
 					c.shortage -= power;
-					consume_power += power;
+					stat_add(frame.consume_power, building.prototype, (uint64_t)power);
 					continue;
 				}
 			}
@@ -212,7 +211,7 @@ powergrid_run(world& w, powergrid pg[]) {
 				uint32_t power = (uint32_t)((capacitance - c.shortage) * eff);
 				c.delta = power;
 				c.shortage += power;
-				generate_power += power;
+				stat_add(frame.generate_power, building.prototype, (uint64_t)power);
 				continue;
 			}
 		}
@@ -229,7 +228,7 @@ powergrid_run(world& w, powergrid pg[]) {
 				}
 				c.delta = power;
 				c.shortage += power;
-				generate_power += power;
+				stat_add(frame.generate_power, building.prototype, (uint64_t)power);
 				continue;
 			} else {
 				// charge
@@ -241,15 +240,12 @@ powergrid_run(world& w, powergrid pg[]) {
 				}
 				c.delta = -(int32_t)charge_power;
 				c.shortage -= charge_power;
-				consume_power += charge_power;
+				stat_add(frame.consume_power, building.prototype, (uint64_t)charge_power);
 				continue;
 			}
 		}
 		c.delta = 0;
 	}
-
-	w.stat.generate_power = generate_power;
-	w.stat.consume_power = consume_power;
 }
 
 static int
