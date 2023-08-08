@@ -1277,7 +1277,7 @@ prototype "排放1" {
   type = { "tech" },
   icon = "ui/textures/science/book.texture",
   effects = {
-    unlock_recipe = {"烟囱打印","排水口打印","地下管1"},
+    unlock_recipe = {"烟囱1","排水口1","地下管1"},
     unlock_item = {"烟囱I","排水口I","地下管1-JI型"},
   },
   prerequisites = {"生产气候科技包","生产管道"},
@@ -1363,19 +1363,52 @@ prototype "放置太阳能板" {
   },
 }
 
+prototype "放置电解厂" {
+  desc = "放置1座电解厂",
+  icon = "ui/textures/construct/industry.texture",
+  type = { "task" },
+  task = {"select_entity", 0, "电解厂I"},
+  prerequisites = {"放置太阳能板"},
+  count = 1,
+  tips_pic = {
+    "ui/textures/task_tips_pic/task_produce_h21.texture",
+    "ui/textures/task_tips_pic/task_produce_h22.texture",
+  },
+  sign_desc = {
+    { desc = "放置1座电解厂进行电解", icon = "ui/textures/construct/industry.texture"},
+  },
+}
+
+prototype "放置地下水挖掘机" {
+  desc = "放置1座地下水挖掘机",
+  icon = "ui/textures/construct/industry.texture",
+  type = { "task" },
+  task = {"select_entity", 0,  "地下水挖掘机I"},
+  prerequisites = {"放置电解厂"},
+  count = 1,
+  tips_pic = {
+    "ui/textures/task_tips_pic/task_produce_h21.texture",
+    "ui/textures/task_tips_pic/task_produce_h22.texture",
+  },
+  sign_desc = {
+    { desc = "放置1座地下水挖掘机与电解厂对应水口相连", icon = "ui/textures/construct/industry.texture"},
+  },
+}
+
+
 prototype "生产氢气" {
   desc = "生产工业气体氢气",
   icon = "ui/textures/construct/industry.texture",
   type = { "task" },
   task = {"stat_production", 0, "氢气"},
-  prerequisites = {"碳处理1"},
+  prerequisites = {"放置地下水挖掘机"},
   count = 500,
   tips_pic = {
     "ui/textures/task_tips_pic/task_produce_h21.texture",
     "ui/textures/task_tips_pic/task_produce_h22.texture",
   },
   sign_desc = {
-    { desc = "电解厂电解卤水生产500个单位氢气", icon = "ui/textures/construct/industry.texture"},
+    { desc = "电解厂电解卤水生产500个单位氢气,并使用液罐储存生产氢气", icon = "ui/textures/construct/industry.texture"},
   },
 }
 
