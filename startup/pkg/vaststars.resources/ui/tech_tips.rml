@@ -6,7 +6,7 @@
             }
             .accomplished {
                 position: absolute;
-                right: 1vmin; 
+                right: 15vmin; 
                 top: 2vmin;
                 color:chartreuse;
                 -webkit-text-stroke: 0.3vmin rgb(0,0,0);
