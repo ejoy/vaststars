@@ -1842,13 +1842,12 @@ prototype "车辆装配" {
     ingredients = {
         {"铁齿轮", 4},
         {"橡胶", 4},
-        {"铁板", 2},
         {"电动机I", 1},
     },
     results = {
         {"运输车辆I", 1},
     },
-    time = "5s",
+    time = "8s",
     description = "制造运输汽车",
 }
 
@@ -2336,7 +2335,7 @@ prototype "维修运输汽车" {
     recipe_icon =  "textures/icons/recipe/steel-gear.texture",
     ingredients = {
         {"铁棒", 1},
-        {"破损运输车辆", 1},
+        {"破损运输车辆", 1},q
     },
     results = {
         {"运输车辆I", 1},
