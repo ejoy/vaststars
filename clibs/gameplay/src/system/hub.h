@@ -1,6 +1,7 @@
 #pragma once
 
 #include "util/component.h"
+#include "system/building.h"
 #include "flatmap.h"
 #include <bee/nonstd/bit.h>
 #include <vector>
@@ -17,11 +18,11 @@ struct hub_mgr {
         uint32_t unused0 : 5;
         uint32_t type : 2;
         uint32_t chest_slot : 4;
-        uint32_t unused1 : 3;
-        uint32_t y : 9;
-        uint32_t x : 9;
-        inline uint32_t hash() const {
-            return std::bit_cast<uint32_t>(*this) & 0xFFFFC000;
+        uint32_t unused1 : 5;
+        uint32_t y : 8;
+        uint32_t x : 8;
+        inline uint16_t hash() const {
+            return ((uint16_t)x << 8) | (uint16_t)y;
         }
         inline bool operator==(const berth& rhs) const {
             return std::bit_cast<uint32_t>(*this) == std::bit_cast<uint32_t>(rhs);
@@ -32,16 +33,15 @@ struct hub_mgr {
     };
     static_assert(sizeof(berth) == sizeof(uint32_t));
     struct hub_info {
-        berth self;
         std::vector<berth> hub;
         std::vector<berth> chest_red;
         std::vector<berth> chest_blue;
         uint16_t item;
-        
+        building homeBuilding;
+        berth homeBerth;
         bool idle() const {
             return hub.size() <= 1 && chest_red.empty() && chest_blue.empty();
         }
     };
     std::map<uint16_t, hub_info> hubs;
-    flatmap<uint32_t, uint16_t> chests;
 };

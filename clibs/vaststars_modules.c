@@ -43,6 +43,7 @@ static void loadmodules(lua_State* L) {
     SYSTEM(station)
     SYSTEM(hub)
     SYSTEM(stat)
+    SYSTEM(building)
     CORE(chest)
     CORE(world)
     CORE(version)

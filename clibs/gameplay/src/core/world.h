@@ -8,6 +8,7 @@
 #include "system/fluid.h"
 #include "system/hub.h"
 #include "system/station.h"
+#include "system/building.h"
 #include "roadnet/network.h"
 #include <map>
 
@@ -34,6 +35,7 @@ struct world {
     statistics stat;
     roadnet::network rw;
     hub_mgr hubs;
+    flatmap<uint16_t, building> buildings;
     station_mgr stations;
     uint64_t time = 0;
     uint64_t dirty = 0;

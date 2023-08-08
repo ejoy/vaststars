@@ -155,7 +155,7 @@ local function __get_fly_height(location)
     if not location then
         return
     end
-    local x, y = ((location >> 23) & 0x1FF) // 2, ((location >> 14) & 0x1FF) // 2
+    local x, y = ((location >> 24) & 0xFF), (location >> 16) & 0xFF
     local object = objects:coord(x, y)
     if object then
         return iprototype.queryByName(object.prototype_name).drone_height
@@ -163,7 +163,7 @@ local function __get_fly_height(location)
 end
 
 local function __get_position(location)
-    local x, y = ((location >> 23) & 0x1FF) // 2, ((location >> 14) & 0x1FF) // 2
+    local x, y = ((location >> 24) & 0xFF), (location >> 16) & 0xFF
     local object = objects:coord(x, y)
     if not object then
         return math3d.vector(terrain:get_position_by_coord(x, y, 1, 1))

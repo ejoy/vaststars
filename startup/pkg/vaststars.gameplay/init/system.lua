@@ -5,6 +5,7 @@ require "system.saveload"
 local csystem = require "register.csystem"
 
 csystem "roadnet"
+csystem "building"
 csystem "station"
 csystem "generator"
 csystem "powergrid"
