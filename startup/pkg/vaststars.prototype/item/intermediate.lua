@@ -4,6 +4,8 @@ local prototype = gameplay.register.prototype
 prototype "铁板" {
     type = {"item"},
     stack = 12,
+    --pile = "4x4",   --物品需要填写： 长 X 高
+    --capacity = 32,  --物品需要填写容纳总量值
     pile = "4x4x4",
     backpack_stack = 50,
     drone_depot_gap3 = "0.2x0.05x0.2",
