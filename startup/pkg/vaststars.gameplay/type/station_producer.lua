@@ -1,6 +1,8 @@
 local type = require "register.type"
 local prototype = require "prototype"
-local iChest = require "interface.chest"
+local iStation = require "interface.station"
+
+local InvalidChest <const> = 0
 
 local c = type "station_producer"
     .weights "integer"
@@ -9,22 +11,9 @@ local c = type "station_producer"
 
 function c:ctor(init, pt)
     local world = self
-    local item = 0
-    local stack = 0
-    if init.item then
-        local typeobject = assert(prototype.queryByName(init.item), "Invalid item: " .. init.item)
-        item = typeobject.id
-        stack = typeobject.stack
-    end
-    local chest = iChest.create(world, {{
-        type = "blue",
-        item = item,
-        amount = 0,
-        limit = stack,
-    }})
-    return {
+    local e = {
         chest = {
-            chest = chest,
+            chest = InvalidChest,
         },
         station_producer = {
             weights = pt.weights,
@@ -35,4 +24,9 @@ function c:ctor(init, pt)
             lorry = 0,
         }
     }
+    if init.item then
+        local id = assert(prototype.queryByName(init.item), "Invalid item: " .. init.item).id
+        iStation.set_item(world, e, id)
+    end
+    return e
 end

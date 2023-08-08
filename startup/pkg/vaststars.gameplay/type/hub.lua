@@ -16,7 +16,7 @@ function c:ctor(init, pt)
         }
     }
     if init.item then
-        local id = prototype.queryByName(init.item).id
+        local id = assert(prototype.queryByName(init.item), "Invalid item: " .. init.item).id
         iHub.set_item(world, e, id)
     end
     for _ = 1, pt.drone_count do
