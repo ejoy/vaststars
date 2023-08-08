@@ -34,7 +34,7 @@ struct world {
     techtree_mgr techtree;
     statistics stat;
     roadnet::network rw;
-    hub_mgr hubs;
+    std::map<uint16_t, hub_cache> hubs;
     flatmap<uint16_t, building> buildings;
     station_mgr stations;
     uint64_t time = 0;
