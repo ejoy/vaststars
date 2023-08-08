@@ -486,17 +486,14 @@ local function confirm(self, datamodel)
     local e = gameplay_core.get_entity(object.gameplay_eid)
     e.building_changed = true
     local gameworld = gameplay_core.get_world()
-    local building = gameplay.interface "building"
-    building.move(gameworld, e, self.pickup_object.x, self.pickup_object.y)
-    building.rotate(gameworld, e, self.pickup_object.dir)
+    igameplay_building.move(gameworld, e, self.pickup_object.x, self.pickup_object.y)
+    igameplay_building.rotate(gameworld, e, self.pickup_object.dir)
 
     iobject.coord(object, self.pickup_object.x, self.pickup_object.y, coord_system)
     object.dir = self.pickup_object.dir
     object.srt.r = ROTATORS[object.dir]
     objects:set(object, "CONSTRUCTED")
     objects:coord_update(object)
-
-    igameplay_building.move(gameplay_core.get_world(), e, object.x, object.y)
 
     local building = global.buildings[object.id]
     if building then
