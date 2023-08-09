@@ -3,12 +3,12 @@ local type = require "register.type"
 local c = type "drone"
 
 function c:ctor(init, pt)
-    local home = (init.x << 8) | init.y
+    local home = (init.slot << 16) | (init.x << 8) | init.y
     return {
         drone = {
             prototype = pt.id,
-            home = 0,
-            prev = home,
+            home = home,
+            prev = 0,
             next = 0,
             mov2 = 0,
             maxprogress = 0,

@@ -71,7 +71,7 @@ struct building_rect {
     }
 };
 
-static hub_berth create_berth(ecs::building const& b, hub_berth::berth_type type, uint8_t chest_slot) {
+static hub_berth createBerth(ecs::building const& b, hub_berth::berth_type type, uint8_t chest_slot) {
     return {
         0
         , (uint32_t)type
@@ -114,6 +114,10 @@ static std::optional<uint8_t> ChestFindSlot(world& w, hub_berth const& berth, ui
 
 static uint16_t getxy(uint8_t x, uint8_t y) {
     return ((uint16_t)x << 8) | (uint16_t)y;
+}
+
+static uint32_t getHubKey(uint8_t x, uint8_t y, uint8_t slot) {
+    return ((uint32_t)slot << 16) | ((uint32_t)x << 8) | (uint32_t)y;
 }
 
 static void SetStatus(ecs::drone& drone, drone_status status) {
@@ -190,7 +194,6 @@ static HubSearcher createHubSearcher(world& w, hub_cache& info) {
 static void rebuild(world& w) {
     w.hub_time = 0;
     std::map<uint16_t, flatmap<uint16_t, hub_berth>> globalmap;
-    flatset<uint16_t> used_id;
     for (auto& v : ecs_api::select<ecs::hub, ecs::building>(w.ecs)) {
         auto& hub = v.get<ecs::hub>();
         auto& building = v.get<ecs::building>();
@@ -200,14 +203,16 @@ static void rebuild(world& w) {
         if (c == container::kInvalidIndex) {
             continue;
         }
-        auto& chestslot = chest::array_at(w, c, 0);
-        auto item = chestslot.item;
-        auto berth = create_berth(building, hub_berth::berth_type::hub, 0);
-        auto& map = globalmap[item];
-        r.each([&](uint8_t x, uint8_t y) {
-            map.insert_or_assign(getxy(x, y), berth);
-        });
-        used_id.insert(hub.id);
+        auto slice = chest::array_slice(w, c);
+        for (uint8_t i = 0; i < slice.size(); ++i) {
+            auto& chestslot = slice[i];
+            auto item = chestslot.item;
+            auto berth = createBerth(building, hub_berth::berth_type::hub, i);
+            auto& map = globalmap[item];
+            r.each([&](uint8_t x, uint8_t y) {
+                map.insert_or_assign(getxy(x, y), berth);
+            });
+        }
     }
 
     for (auto& v : ecs_api::select<ecs::chest, ecs::building>(w.ecs)) {
@@ -233,7 +238,7 @@ static void rebuild(world& w) {
             else {
                 continue;
             }
-            auto berth = create_berth(building, type, i);
+            auto berth = createBerth(building, type, i);
             auto& map = globalmap[item];
             r.each([&](uint8_t x, uint8_t y) {
                 map.insert_or_assign(getxy(x, y), berth);
@@ -241,72 +246,58 @@ static void rebuild(world& w) {
         }
     }
 
-    flatmap<uint16_t, uint16_t> created_hub;
-    std::map<uint16_t, hub_cache> hubs;
-    uint16_t maxid = 1;
-    auto create_hubid = [&]()->uint16_t {
-        for (; maxid <= (std::numeric_limits<uint16_t>::max)(); ++maxid) {
-            if (!hubs.contains(maxid) && !used_id.contains(maxid)) {
-                return maxid;
-            }
-        }
-        return 0;
-    };
+    w.hubs.clear();
     for (auto& v : ecs_api::select<ecs::hub, ecs::building>(w.ecs)) {
         auto& hub = v.get<ecs::hub>();
-        auto& building = v.get<ecs::building>();
-        uint16_t area = prototype::get<"area">(w, building.prototype);
-        hub_cache info;
-        info.homeBerth = create_berth(building, hub_berth::berth_type::home, 0);
-        auto homeBuilding = createBuildingCache(w, building, 0);
-        info.homeWidth = homeBuilding.w;
-        info.homeHeight = homeBuilding.h;
-
         auto c = container::index::from(hub.chest);
         if (c == container::kInvalidIndex) {
-            info.item = 0;
-            if (hub.id == 0) {
-                hub.id = create_hubid();
-                created_hub.insert_or_assign(getxy(building.x, building.y), hub.id);
-            }
-            hubs.emplace(hub.id, std::move(info));
             continue;
         }
-        auto& chestslot = chest::array_at(w, c, 0);
+        auto& building = v.get<ecs::building>();
+        uint16_t area = prototype::get<"area">(w, building.prototype);
+        auto homeBuilding = createBuildingCache(w, building, 0);
         uint16_t supply_area = prototype::get<"supply_area">(w, building.prototype);
         building_rect r(building, area, supply_area);
-        auto& map = globalmap[chestslot.item];
-        flatset<hub_berth> set;
-        r.each([&](uint8_t x, uint8_t y) {
-            if (auto pm = map.find(getxy(x, y))) {
-                auto m = *pm;
-                set.insert(m);
+        auto slice = chest::array_slice(w, c);
+        for (uint8_t i = 0; i < slice.size(); ++i) {
+            auto& chestslot = slice[i];
+            hub_cache info;
+            info.homeBerth = createBerth(building, hub_berth::berth_type::home, i);
+            info.homeWidth = homeBuilding.w;
+            info.homeHeight = homeBuilding.h;
+            if (chestslot.item == 0) {
+                info.item = 0;
+                w.hubs.emplace(getHubKey(building.x, building.y, i), info);
+                continue;
             }
-        });
-        for (auto h: set) {
-            switch ((hub_berth::berth_type)h.type) {
-            case hub_berth::berth_type::hub:
-                info.hub.emplace_back(h);
-                break;
-            case hub_berth::berth_type::chest_red:
-                info.chest_red.emplace_back(h);
-                break;
-            case hub_berth::berth_type::chest_blue:
-                info.chest_blue.emplace_back(h);
-                break;
-            default:
-                assert(false);
-                break;
+            auto& map = globalmap[chestslot.item];
+            flatset<hub_berth> set;
+            r.each([&](uint8_t x, uint8_t y) {
+                if (auto pm = map.find(getxy(x, y))) {
+                    auto m = *pm;
+                    set.insert(m);
+                }
+            });
+            for (auto h: set) {
+                switch ((hub_berth::berth_type)h.type) {
+                case hub_berth::berth_type::hub:
+                    info.hub.emplace_back(h);
+                    break;
+                case hub_berth::berth_type::chest_red:
+                    info.chest_red.emplace_back(h);
+                    break;
+                case hub_berth::berth_type::chest_blue:
+                    info.chest_blue.emplace_back(h);
+                    break;
+                default:
+                    assert(false);
+                    break;
+                }
             }
+            info.item = info.idle()? 0 : chestslot.item;
+            w.hubs.emplace(getHubKey(building.x, building.y, i), std::move(info));
         }
-        info.item = info.idle()? 0 : chestslot.item;
-        if (hub.id == 0) {
-            hub.id = create_hubid();
-            created_hub.insert_or_assign(getxy(building.x, building.y), hub.id);
-        }
-        hubs.emplace(hub.id, std::move(info));
     }
-    w.hubs = std::move(hubs);
 
     for (auto& e : ecs_api::select<ecs::drone>(w.ecs)) {
         auto& drone = e.get<ecs::drone>();
@@ -315,22 +306,14 @@ static void rebuild(world& w) {
         case drone_status::has_error:
             break;
         case drone_status::init:
-            if (auto p = created_hub.find(drone.prev)) {
-                drone.home = *p;
-                drone.prev = 0;
-                CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, ecs::drone& drone, hub_cache const& info) {
-                    drone.prev = std::bit_cast<uint32_t>(info.homeBerth);
-                    if (info.item == 0) {
-                        SetStatus(drone, drone_status::idle);
-                        return;
-                    }
-                    SetStatus(drone, drone_status::at_home);
-                });
-            }
-            else {
-                drone.prev = 0;
-                SetStatus(drone, drone_status::has_error);
-            }
+            CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, ecs::drone& drone, hub_cache const& info) {
+                drone.prev = std::bit_cast<uint32_t>(info.homeBerth);
+                if (info.item == 0) {
+                    SetStatus(drone, drone_status::idle);
+                    return;
+                }
+                SetStatus(drone, drone_status::at_home);
+            });
             e.enable_tag<ecs::drone_changed>();
             break;
         case drone_status::idle:

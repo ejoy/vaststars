@@ -69,24 +69,23 @@ tag "lorry_removed"
 tag "lorry_willremove"
 
 component "hub" {
-    "id:word",
     "chest:word",
 }
 
 --
 -- prev/next/mov2
--- | unused(5bit) | type(2bit) | chest(4bit) | unused(3bit) | y(9bit) | x(9bit) |
--- 32            27           25            21             18         9         0
+-- | unused(5bit) | type(2bit) | chest(4bit) | unused(3bit) | y(8bit) | x(8bit) |
+-- 32            27           25            21             16         8         0
 --
 mainkey "drone" {
     "prototype:word",
-    "home:word",
+    "item:word",
+    "home:dword",
     "prev:dword",
     "next:dword",
     "mov2:dword",
     "maxprogress:word",
     "progress:word",
-    "item:word",
     "status:byte",
 }
 tag "drone_changed"

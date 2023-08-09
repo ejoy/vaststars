@@ -1,7 +1,7 @@
 local iChest = require "interface.chest"
 
-local function set_item(world, e, item)
-    iChest.hub_set(world, e, item)
+local function set_item(world, e, items)
+    iChest.hub_set(world, e, items)
 end
 
 return {

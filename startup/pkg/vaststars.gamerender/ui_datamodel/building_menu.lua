@@ -205,7 +205,7 @@ function M:create(object_id)
 end
 
 local function __set_hub_first_item(gameplay_world, e, item)
-    ihub.set_item(gameplay_world, e, item)
+    ihub.set_item(gameplay_world, e, {item})
 end
 
 local function __get_hub_first_item(gameplay_world, e)
