@@ -25,6 +25,7 @@ building createBuildingCache(world& w, ecs::building& b, uint16_t chest) {
         std::unreachable();
     }
     return {
+        0, 0,
         chest,
         width,
         height,
