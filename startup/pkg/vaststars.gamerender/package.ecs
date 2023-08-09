@@ -35,7 +35,7 @@ pipeline "update"
     .pipeline "render"
     .pipeline "select"
     .pipeline "ui"
-    .pipeline "gameworld"
+    .stage "frame_update"
     .stage "end_frame"
     .stage "final"
 
@@ -45,7 +45,6 @@ pipeline "ui"
     .stage "ui_end"
 
 pipeline "gameworld"
-    .stage "gameplay_update"
     .stage "gameworld_start"
     .stage "gameworld_update"
     .stage "gameworld_end"
@@ -127,9 +126,9 @@ system "init_system"
     .require_policy "gameplay"
     .implement "init_system.lua"
     .method "init_world"
-    .method "gameplay_update"
     .method "gameworld_end"
     .method "camera_usage"
+    .method "frame_update"
 
 ----------------------------------------------------
 ----------------------------------------------------

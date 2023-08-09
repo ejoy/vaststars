@@ -66,23 +66,6 @@ function m:init_world()
     audio.play("event:/background")
 end
 
-function m:gameplay_update()
-    if NOTHING then
-        return
-    end
-
-    if gameplay_core.system_changed_flags ~= 0 then
-        gameplay_core.system_changed_flags = 0
-        world:pipeline_func "gameworld_prebuild" ()
-        gameplay_core.update()
-        world:pipeline_func "gameworld_build" ()
-    end
-
-    if gameplay_core.world_update then
-        gameplay_core.update()
-    end
-end
-
 function m:gameworld_end()
     local gameplay_ecs = gameplay_core.get_world().ecs
     gameplay_ecs:clear "building_new"
@@ -105,5 +88,24 @@ function m:camera_usage()
         if coord then
             terrain:enable_terrain(coord[1], coord[2])
         end
+    end
+end
+
+function m:frame_update()
+    if NOTHING then
+        return
+    end
+
+    if gameplay_core.system_changed_flags ~= 0 then
+        gameplay_core.system_changed_flags = 0
+        world:pipeline_func "gameworld_prebuild" ()
+        gameplay_core.update()
+        world:pipeline_func "gameworld_build" ()
+        -- world:pipeline_func "gameworld" () -- TODO: 
+    end
+
+    if gameplay_core.world_update then
+        gameplay_core.update()
+        world:pipeline_func "gameworld" ()
     end
 end
