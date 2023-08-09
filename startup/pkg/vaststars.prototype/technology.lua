@@ -2181,7 +2181,7 @@ prototype "铝生产" {
     {"地质科技包", 1},
     {"机械科技包", 1},
   },
-  count = 25,
+  count = 20,
   time = "8s"
 }
 
@@ -2198,7 +2198,7 @@ prototype "硅生产" {
     {"地质科技包", 1},
     {"机械科技包", 1},
   },
-  count = 60,
+  count = 20,
   time = "6s"
 }
 
@@ -2231,7 +2231,7 @@ prototype "润滑" {
     {"气候科技包", 1},
     {"机械科技包", 1},
   },
-  count = 60,
+  count = 20,
   time = "5s"
 }
 
@@ -2249,7 +2249,7 @@ prototype "铝加工" {
     {"气候科技包", 1},
     {"机械科技包", 1},
   },
-  count = 50,
+  count = 25,
   time = "8s"
 }
 
@@ -2282,7 +2282,7 @@ prototype "沸腾实验" {
     {"气候科技包", 1},
     {"机械科技包", 1},
   },
-  count = 30,
+  count = 15,
   time = "5s"
 }
 
@@ -2300,7 +2300,7 @@ prototype "电子器件1" {
     {"气候科技包", 1},
     {"机械科技包", 1},
   },
-  count = 80,
+  count = 40,
   time = "5s"
 }
 
@@ -2318,8 +2318,8 @@ prototype "电力传输2" {
     {"气候科技包", 1},
     {"机械科技包", 1},
   },
-  count = 60,
-  time = "12s"
+  count = 30,
+  time = "8s"
 }
 
 prototype "太阳能存储1" {
@@ -2336,7 +2336,7 @@ prototype "太阳能存储1" {
     {"气候科技包", 1},
     {"机械科技包", 1},
   },
-  count = 60,
+  count = 20,
   time = "15s"
 }
 
@@ -2358,8 +2358,8 @@ prototype "电子研究" {
     { desc = "该科技是一项前沿科技，可引导其他的科技研究", icon = "ui/textures/science/key_sign.texture"},
   },
   sign_icon = "ui/textures/science/key_sign.texture",
-  count = 100,
-  time = "5s"
+  count = 50,
+  time = "4s"
 }
 
 ---------------------------化学研究---------------------------
