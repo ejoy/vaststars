@@ -1,6 +1,7 @@
 local type = require "register.type"
 local prototype = require "prototype"
 local iHub = require "interface.hub"
+local iBuilding = require "interface.building"
 
 local InvalidChest <const> = 0
 
@@ -48,6 +49,8 @@ function c:ctor(init, pt)
             end
         end
         iHub.set_item(world, e, items)
+    else
+        iBuilding.dirty(world, "hub")
     end
     return e
 end
