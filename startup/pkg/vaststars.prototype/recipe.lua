@@ -2604,6 +2604,21 @@ prototype "碎石挖掘" {
     description = "采集碎石",
 }
 
+prototype "砂岩挖掘" {
+    type = { "recipe" },
+    recipe_craft_category = "矿石开采",
+    --recipe_category =  "金属",
+    recipe_order =  22,
+    recipe_icon =  "textures/icons/recipe/rubber.texture",
+    ingredients = {
+    },
+    results = {
+        {"砂岩", 1},
+    },
+    time = "2s",
+    description = "采集沙子",
+}
+
 prototype "铝矿挖掘" {
     type = { "recipe" },
     recipe_craft_category = "矿石开采",

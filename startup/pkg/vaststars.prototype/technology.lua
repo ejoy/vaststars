@@ -334,12 +334,12 @@ local prototype = gameplay.register.prototype
     type = { "task" },
     task = {"stat_production", 0, "碎石"},
     prerequisites = {"无人机仓库设置1"},
-    count = 12,
+    count = 20,
     tips_pic = {
       "ui/textures/task_tips_pic/task_produce_ore3.texture",
     },
     sign_desc = {
-      { desc = "在石矿上放置采矿机并挖掘12个碎石", icon = "ui/textures/construct/industry.texture"},
+      { desc = "在石矿上放置采矿机并挖掘20个碎石", icon = "ui/textures/construct/industry.texture"},
     },
   }
 
@@ -349,12 +349,12 @@ local prototype = gameplay.register.prototype
     type = { "task" },
     task = {"stat_production", 0, "碎石"},
     prerequisites = {"收集碎石"},
-    count = 24,
+    count = 30,
     tips_pic = {
       "ui/textures/task_tips_pic/task_produce_ore3.texture",
     },
     sign_desc = {
-      { desc = "放置2座无人机平台收集达24个碎石", icon = "ui/textures/construct/industry.texture"},
+      { desc = "放置2座无人机平台收集达30个碎石", icon = "ui/textures/construct/industry.texture"},
     },
   }
 
