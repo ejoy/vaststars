@@ -369,7 +369,7 @@ prototype "浮选器I" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_limit = 20,
-    item_icon = "textures/icons/item/assembler.texture",
+    item_icon = "textures/icons/item/flotation-cell-frame.texture",
     pile_model = "glb/stackeditems/stack-building.glb|mesh.prefab",
     item_description = "通过浮沉矿石进行分离的机器",
 }
@@ -381,7 +381,7 @@ prototype "浮选器II" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_limit = 20,
-    item_icon = "textures/icons/item/assembler.texture",
+    item_icon = "textures/icons/item/flotation-cell-frame.texture",
     pile_model = "glb/stackeditems/stack-building.glb|mesh.prefab",
     item_description = "通过浮沉矿石进行分离的机器",
 }
@@ -393,7 +393,7 @@ prototype "浮选器III" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_limit = 20,
-    item_icon = "textures/icons/item/assembler.texture",
+    item_icon = "textures/icons/item/flotation-cell-frame.texture",
     pile_model = "glb/stackeditems/stack-building.glb|mesh.prefab",
     item_description = "通过浮沉矿石进行分离的机器",
 }
@@ -406,7 +406,7 @@ prototype "风力发电机I" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_limit = 20,
-    item_icon = "textures/icons/item/assembler.texture",
+    item_icon = "textures/icons/item/wind-turbine.texture",
     pile_model = "glb/stackeditems/stack-building.glb|mesh.prefab",
     item_description = "利用风能转换电能的装置",
 }
@@ -658,7 +658,7 @@ prototype "砖石公路-X型" {
     pile = "4x2x4",
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 100,
-    item_icon = "textures/icons/item/stone-brick.texture",
+    item_icon = "textures/icons/item/road.texture",
     pile_model = "glb/stackeditems/stack-stone-brick.glb|mesh.prefab",
     item_description = "供车辆行驶的砖石公路",
 }
@@ -734,7 +734,7 @@ prototype "锅炉I" {
     pile = "2x4x2",
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_limit = 20,
-    item_icon = "textures/icons/item/chemistry.texture",
+    item_icon = "textures/icons/item/boiler-frame.texture",
     pile_model = "glb/stackeditems/stack-building.glb|mesh.prefab",
     item_description = "通过加热将水变成蒸汽的装置",
 }

@@ -167,6 +167,22 @@ local guide = {
     {
         name = "",
 		narrative = {
+           {"哔哩..铁矿下方有一处铝矿,再使用采矿机挖掘6个{/g 铝矿石}..哔哩..哔哗..(期待)", "ui/textures/guide/guide-1.texture"},
+        },
+        narrative_end = {
+            guide_progress = 10,
+            task = {
+                "收集铝矿石",
+            }
+        },
+        prerequisites = {
+            "收集铁矿石",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
             {"资源充足可开展科学研究。请在{/color:4bd0ff 电网覆盖}范围中放置一座{/g 科研中心}..哔哩..(期待)", "ui/textures/guide/guide-1.texture"},
         },
         narrative_end = {

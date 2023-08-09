@@ -8,7 +8,7 @@ prototype "液罐I" {
     pile = "4x1x4",
     drone_depot_gap3 = "0.2x0.05x0.2",
     pile_model = "glb/stackeditems/stack-gravel.glb|mesh.prefab",
-    item_icon = "textures/icons/item/hydroplant.texture",
+    item_icon = "textures/icons/item/storage-tank.texture",
     backpack_limit = 20,
     item_description = "用于储存流体的容器",
 }
@@ -20,7 +20,7 @@ prototype "液罐II" {
     pile = "4x1x4",
     drone_depot_gap3 = "0.2x0.05x0.2",
     pile_model = "glb/stackeditems/stack-gravel.glb|mesh.prefab",
-    item_icon = "textures/icons/item/hydroplant.texture",
+    item_icon = "textures/icons/item/storage-tank.texture",
     backpack_limit = 20,
     item_description = "用于储存流体的容器",
 }
@@ -32,7 +32,7 @@ prototype "液罐III" {
     pile = "4x1x4",
     drone_depot_gap3 = "0.2x0.05x0.2",
     pile_model = "glb/stackeditems/stack-gravel.glb|mesh.prefab",
-    item_icon = "textures/icons/item/hydroplant.texture",
+    item_icon = "textures/icons/item/storage-tank.texture",
     backpack_limit = 20,
     item_description = "用于储存流体的容器",
 }
@@ -92,7 +92,7 @@ prototype "烟囱I" {
     pile = "4x1x4",
     drone_depot_gap3 = "0.2x0.05x0.2",
     pile_model = "glb/stackeditems/stack-gravel.glb|mesh.prefab",
-    item_icon = "textures/icons/item/crucible.texture",
+    item_icon = "textures/icons/item/chimney.texture",
     backpack_limit = 20,
     item_description = "用于排放工业设施中烟气或废气的设施",
 }
@@ -104,7 +104,7 @@ prototype "烟囱II" {
     pile = "4x1x4",
     drone_depot_gap3 = "0.2x0.05x0.2",
     pile_model = "glb/stackeditems/stack-gravel.glb|mesh.prefab",
-    item_icon = "textures/icons/item/crucible.texture",
+    item_icon = "textures/icons/item/chimney.texture",
     backpack_limit = 20,
     item_description = "用于排放工业设施中烟气或废气的设施",
 }
@@ -116,7 +116,7 @@ prototype "排水口I" {
     pile = "4x1x4",
     drone_depot_gap3 = "0.2x0.05x0.2",
     pile_model = "glb/stackeditems/stack-gravel.glb|mesh.prefab",
-    item_icon = "textures/icons/item/crucible.texture",
+    item_icon = "textures/icons/item/outfall.texture",
     backpack_limit = 20,
     item_description = "用于排放多余水分或废水的装置",
 }
@@ -128,7 +128,7 @@ prototype "排水口II" {
     pile = "4x1x4",
     drone_depot_gap3 = "0.2x0.05x0.2",
     pile_model = "glb/stackeditems/stack-gravel.glb|mesh.prefab",
-    item_icon = "textures/icons/item/crucible.texture",
+    item_icon = "textures/icons/item/outfall.texture",
     backpack_limit = 20,
     item_description = "用于排放多余水分或废水的装置",
 }
@@ -176,7 +176,7 @@ prototype "管道1-X型" {
     pile = "4x4x4",
     drone_depot_gap3 = "0.2x0.05x0.2",
     pile_model = "glb/stackeditems/stack-gravel.glb|mesh.prefab",
-    item_icon = "textures/icons/item/capacitor.texture",
+    item_icon = "textures/icons/item/pipe.texture",
     backpack_limit = 100,
     item_description = "放置在地上传输流体的管道",
 }
@@ -188,7 +188,7 @@ prototype "地下管1-JI型" {
     pile = "4x4x4",
     drone_depot_gap3 = "0.2x0.05x0.2",
     pile_model = "glb/stackeditems/stack-gravel.glb|mesh.prefab",
-    item_icon = "textures/icons/item/capacitor.texture",
+    item_icon = "textures/icons/item/underground-pipe.texture",
     backpack_limit = 100,
     item_description = "放置在地下传输流体的管道",
 }
@@ -200,7 +200,7 @@ prototype "地下管2-JI型" {
     pile = "4x4x4",
     drone_depot_gap3 = "0.2x0.05x0.2",
     pile_model = "glb/stackeditems/stack-gravel.glb|mesh.prefab",
-    item_icon = "textures/icons/item/capacitor.texture",
+    item_icon = "textures/icons/item/underground-pipe.texture",
     backpack_limit = 100,
     item_description = "放置在地下传输流体的管道",
 }

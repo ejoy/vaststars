@@ -862,126 +862,6 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "物流学1" {
-    desc = "研究出货车站和收货车站建造工艺",
-    type = { "tech" },
-    icon = "ui/textures/science/book.texture",
-    effects = {
-      unlock_recipe = {"维修出货车站","维修收货车站"},
-      unlock_item = {"出货车站框架","收货车站框架"},
-    },
-    prerequisites = {"通向铁矿","铁矿石开采"},
-    ingredients = {
-        {"地质科技包", 1},
-    },
-    count = 5,
-    time = "3s"
-  }
-
-  prototype "放置出货车站" {
-    desc = "放置1座出货车站",
-    icon = "ui/textures/construct/industry.texture",
-    type = { "task" },
-    task = {"select_entity", 0, "出货车站"},
-    prerequisites = {"物流学1"},
-    count = 1,
-    effects = {
-    },
-    tips_pic = {
-      "ui/textures/task_tips_pic/task_place_logistics.texture",
-    },
-    -- guide_focus = {
-    --   {
-    --     prefab = "prefabs/selected-box-no-animation.prefab",
-    --     x = 109,
-    --     y = 136,
-    --     w = 5,
-    --     h = 5,
-    --     show_arrow = true,
-    --   },
-    --   {
-    --     camera_x = 108,
-    --     camera_y = 130,
-    --   },
-    -- },
-    sign_desc = {
-      { desc = "生产并放置1座出货车站", icon = "ui/textures/construct/industry.texture"},
-    },
-  }
-
-  prototype "放置收货车站" {
-    desc = "放置1座收货车站",
-    icon = "ui/textures/construct/industry.texture",
-    type = { "task" },
-    task = {"select_entity", 0, "收货车站"},
-    prerequisites = {"物流学1"},
-    count = 1,
-    tips_pic = {
-      "ui/textures/task_tips_pic/task_place_logistics.texture",
-    },
-    -- guide_focus = {
-    --   {
-    --     prefab = "prefabs/selected-box-no-animation.prefab",
-    --     x = 109,
-    --     y = 136,
-    --     w = 5,
-    --     h = 5,
-    --     show_arrow = true,
-    --   },
-    --   {
-    --     camera_x = 108,
-    --     camera_y = 130,
-    --   },
-    -- },
-    sign_desc = {
-      { desc = "生产并放置1座收货车站", icon = "ui/textures/construct/industry.texture"},
-    },
-  }
-
-  -- prototype "生产运输车辆" {
-  --   desc = "指挥中心建造4辆运输车辆",
-  --   icon = "ui/textures/construct/industry.texture",
-  --   type = { "task" },
-  --   task = {"stat_production", 0, "运输车辆I"},
-  --   prerequisites = {"放置出货车站","放置收货车站"},
-  --   count = 4,
-  --   tips_pic = {
-  --     "ui/textures/task_tips_pic/task_produce_ore3.texture",
-  --   },
-  --   sign_desc = {
-  --     { desc = "指挥中心建造4辆运输车辆", icon = "ui/textures/construct/industry.texture"},
-  --   },
-  --   -- guide_focus = {
-  --   --   {
-  --   --     prefab = "prefabs/selected-box-no-animation.prefab",
-  --   --     x = 128,
-  --   --     y = 122,
-  --   --     w = 5.5,
-  --   --     h = 5.5,
-  --   --     show_arrow = true,
-  --   --   },
-  --   --   {
-  --   --     camera_x = 121,
-  --   --     camera_y = 122,
-  --   --   },
-  --   -- },
-  -- }
-
-  -- prototype "生产铁矿石" {
-  --   desc = "挖掘足够的铁矿石可以开始进行锻造",
-  --   icon = "ui/textures/construct/industry.texture",
-  --   type = { "task" },
-  --   task = {"stat_production", 0, "铁矿石"},
-  --   prerequisites = {"放置出货车站","放置收货车站"},
-  --   count = 10,
-  --   tips_pic = {
-  --     "ui/textures/task_tips_pic/task_produce_ore3.texture",
-  --   },
-  --   sign_desc = {
-  --     { desc = "在铁矿上放置采矿机并挖掘10个铁矿石", icon = "ui/textures/construct/industry.texture"},
-  --   },
-  -- }
-
   prototype "铁矿熔炼" {
     desc = "掌握熔炼铁矿石冶炼成铁板的工艺",
     type = { "tech" },
@@ -990,7 +870,7 @@ local prototype = gameplay.register.prototype
       unlock_recipe = {"铁板T1"},
       unlock_item = {"铁板"},
     },
-    prerequisites = {"放置出货车站","放置收货车站"},
+    prerequisites = {"通向铁矿"},
     ingredients = {
         {"地质科技包", 1},
     },
@@ -1086,6 +966,82 @@ local prototype = gameplay.register.prototype
     },
   }
 
+  prototype "物流学1" {
+    desc = "研究出货车站和收货车站建造工艺",
+    type = { "tech" },
+    icon = "ui/textures/science/book.texture",
+    effects = {
+      unlock_recipe = {"维修出货车站","维修收货车站"},
+      unlock_item = {"出货车站框架","收货车站框架"},
+    },
+    prerequisites = {"生产铁棒"},
+    ingredients = {
+        {"地质科技包", 1},
+    },
+    count = 6,
+    time = "3s"
+  }
+
+  prototype "放置出货车站" {
+    desc = "放置1座出货车站",
+    icon = "ui/textures/construct/industry.texture",
+    type = { "task" },
+    task = {"select_entity", 0, "出货车站"},
+    prerequisites = {"物流学1"},
+    count = 1,
+    effects = {
+    },
+    tips_pic = {
+      "ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    -- guide_focus = {
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 109,
+    --     y = 136,
+    --     w = 5,
+    --     h = 5,
+    --     show_arrow = true,
+    --   },
+    --   {
+    --     camera_x = 108,
+    --     camera_y = 130,
+    --   },
+    -- },
+    sign_desc = {
+      { desc = "生产并放置1座出货车站", icon = "ui/textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "放置收货车站" {
+    desc = "放置1座收货车站",
+    icon = "ui/textures/construct/industry.texture",
+    type = { "task" },
+    task = {"select_entity", 0, "收货车站"},
+    prerequisites = {"物流学1"},
+    count = 1,
+    tips_pic = {
+      "ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    -- guide_focus = {
+    --   {
+    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     x = 109,
+    --     y = 136,
+    --     w = 5,
+    --     h = 5,
+    --     show_arrow = true,
+    --   },
+    --   {
+    --     camera_x = 108,
+    --     camera_y = 130,
+    --   },
+    -- },
+    sign_desc = {
+      { desc = "生产并放置1座收货车站", icon = "ui/textures/construct/industry.texture"},
+    },
+  }
+
   prototype "车辆修理" {
     desc = "研究修理运输车辆工艺",
     type = { "tech" },
@@ -1094,7 +1050,7 @@ local prototype = gameplay.register.prototype
       unlock_recipe = {"维修运输汽车"},
       unlock_item = {"运输车辆I","破损运输车辆"},
     },
-    prerequisites = {"生产铁棒","建筑维修1"},
+    prerequisites = {"放置出货车站","放置收货车站"},
     ingredients = {
         {"地质科技包", 1},
     },

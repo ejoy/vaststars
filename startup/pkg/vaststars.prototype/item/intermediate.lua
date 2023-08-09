@@ -830,8 +830,8 @@ prototype "物理科技包" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 100,
     pile_model = "glb/stackeditems/stack-iron-plate.glb|mesh.prefab",
-    item_icon = "textures/icons/item/chemical-pack.texture",
-    tech_icon = "textures/icons/item/chemical-pack.texture",
+    item_icon = "textures/icons/item/physical-pack.texture",
+    tech_icon = "textures/icons/item/physical-pack.texture",
     item_description = "用于收集、分析和解释物理实验数据",
     item_category = "器件",
 }
