@@ -15,7 +15,6 @@ function M:create(desc)
         speech = speech[1][1],
         avatar = speech[1][2],
         count = 1,
-        total_count = #speech
     }
 end
 
