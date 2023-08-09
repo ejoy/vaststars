@@ -74,7 +74,7 @@ namespace roadnet {
         }
     }
     bool lorryNextDirection(ecs::lorry& l, network& w, straightid C, direction& dir) {
-        if (l.status != lorry_status::error) {
+        if (l.status == lorry_status::error) {
             return false;
         }
         route_value val;
