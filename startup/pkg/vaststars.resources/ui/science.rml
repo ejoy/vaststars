@@ -23,8 +23,10 @@
                 /* border: 2px red; */
                 background-image: "ui/textures/science/right_item_bg0.texture";
                 background-size: 100% 100%;
-                width: 61.5vmin;
-                height: 10vmin;
+                /* width: 61.5vmin;
+                height: 10vmin; */
+                width: 73.8vmin;
+                height: 12vmin;
             }
             .item-bg {
                 width: 9vmin;
@@ -91,8 +93,8 @@
                 /* background-color: rgb(250, 205, 9); */
                 /* border: 1px red; */
                 background-size: cover;
-                width: 6vmin;
-                height: 6vmin;
+                width: 6.5vmin;
+                height: 6.5vmin;
                 /* font-size: 2.00vmin; */
             }
             .small-arrow {
@@ -107,7 +109,7 @@
                 left: 3.5vmin; 
                 top: 1.7vmin;  */
                 text-align: center; 
-                font-size: 2.5vmin; 
+                font-size: 3.5vmin; 
             }
             .progress_bar {
                 align-self: flex-start;
@@ -311,7 +313,7 @@
                     ]]):format(margin_top, margin_left, idata.icon)
                 end
                 inoutstr = inoutstr .. "</div>"
-                inoutstr = inoutstr .. ([[<div style='margin-left: 1vmin; margin-right: 1vmin; height: 6vmin; flex-direction:column;justify-content:flex-start;align-items:center;'><div class="recipe-time">%s</div><div class="small-arrow"/></div>]]):format(detail.time)
+                inoutstr = inoutstr .. ([[<div style='margin-left: 1vmin; margin-right: 1vmin; height: 7vmin; flex-direction:column;justify-content:flex-start;align-items:center;'><div class="recipe-time">%s</div><div class="small-arrow"/></div>]]):format(detail.time)
                 inoutstr = inoutstr .. "<div style='width: 13vmin; height: 13vmin; flex-direction:row;justify-content:center;align-items:center;flex-wrap: wrap;'>"
                 margin_top = '0'
                 margin_left = '0'
@@ -336,7 +338,7 @@
                 end
                 local selected = (start.selected_recipe_index == index)
                 item.style.backgroundImage = selected and 'ui/textures/science/right_item_bg1.texture' or 'ui/textures/science/right_item_bg0.texture'
-                item.style.height = selected and '13.1vmin' or '10vmin'
+                item.style.height = selected and '15.72vmin' or '12vmin'
                 local detail = start.current_tech.detail[index]
                 if not detail then
                     return
@@ -344,14 +346,14 @@
                 if not detail.name then
                     return
                 end
-                local htmlstr = ([[<div style='width:61.5vmin;flex-direction:row;justify-content:space-between;align-items:center;'><div class="item-bg" style='margin-top: %s; margin-left: 2vmin; width: 8vmin; height: 8vmin; background-image:"%s";'/>]]):format(selected and '-3vmin' or '0vmin', detail.icon)
+                local htmlstr = ([[<div style='width:73.8vmin;flex-direction:row;justify-content:space-between;align-items:center;'><div class="item-bg" style='margin-top: %s; margin-left: 2vmin; width: 9.6vmin; height: 9.6vmin; background-image:"%s";'/>]]):format(selected and '-3.7vmin' or '0vmin', detail.icon)
                 if selected then
                     htmlstr = htmlstr .. select_item_renderer(index)
                 elseif detail.name then
                     htmlstr = htmlstr .. ([[
-                        <div style='margin-top: -2vmin; margin-right: 1.5vmin; flex-direction: column; justify-content: flex-start; align-items: flex-end;'>
-                            <div style='text-align: right; font-size: 3vmin; color: rgb(241,157,52);'>解锁配方：%s</div>
-                            <div style='text-align: right; font-size: 2vmin;'>%s</div>
+                        <div style='margin-top: -4vmin; margin-right: 2vmin; flex-direction: column; justify-content: flex-start; align-items: flex-end;'>
+                            <div style='text-align: right; font-size: 3.9vmin; color: rgb(241,157,52);'>解锁配方：%s</div>
+                            <div style='text-align: right; font-size: 2.7vmin;'>%s</div>
                         </div>
                     ]]):format(detail.name, detail.desc)
                 end
@@ -448,7 +450,7 @@
                             <!-- div style='width: 4.66vmin; height: 4vmin; background-size: cover;' data-style-background-image="sub_icon"/ -->
                             <div style="width: 90%; color: rgb(241,157,52); font-size: 3vmin; word-break: break-all;">{{sub_desc}}</div>
                         </div>
-                        <div style='margin-top: 1vmin; margin-left: 5%; margin-right: 5%; width: 90%; height: 0.1vmin; background-image: "ui/textures/common/caption-line.texture"; background-size: cover;'/>
+                        <div style='margin-top: 1vmin; margin-left: 2%; margin-right: 2%; width: 96%; height: 0.1vmin; background-image: "ui/textures/common/caption-line.texture"; background-size: cover;'/>
                         <div style="margin-top: 1vmin; flex-direction: column; width:100%; height:100%;">
                             <detaillist direction='1' width='100%' height='100%'/>
                         </div>
