@@ -93,7 +93,11 @@ static void rebuild_consumers(world& w) {
         if (!endpoint.neighbor || !endpoint.rev_neighbor) {
             continue;
         }
-        auto& chestslot = chest::array_at(w, container::index::from(chest.chest), 0);
+        auto c = container::index::from(chest.chest);
+        if (c == container::kInvalidIndex) {
+            continue;
+        }
+        auto& chestslot = chest::array_at(w, c, 0);
         auto& consumers = s.consumers[chestslot.item];
         consumers.emplace_back(station_consumer_ref{&station, &endpoint});
     }
@@ -152,6 +156,10 @@ static int lupdate(lua_State *L) {
         if (!endpoint.neighbor || !endpoint.rev_neighbor) {
             continue;
         }
+        auto c = container::index::from(chest.chest);
+        if (c == container::kInvalidIndex) {
+            continue;
+        }
         auto lorryId = roadnet::endpointWaitingLorry(w.rw, endpoint);
         if (!lorryId) {
             continue;
@@ -160,7 +168,7 @@ static int lupdate(lua_State *L) {
         if (!roadnet::lorryReady(l) || !roadnet::endpointIsReady(w.rw, endpoint)) {
             continue;
         }
-        auto& chestslot = chest::array_at(w, container::index::from(chest.chest), 0);
+        auto& chestslot = chest::array_at(w, c, 0);
         if (chestslot.item == 0) {
             continue;
         }
@@ -186,6 +194,10 @@ static int lupdate(lua_State *L) {
         if (!endpoint.neighbor || !endpoint.rev_neighbor) {
             continue;
         }
+        auto c = container::index::from(chest.chest);
+        if (c == container::kInvalidIndex) {
+            continue;
+        }
         auto lorryId = roadnet::endpointWaitingLorry(w.rw, endpoint);
         if (!lorryId) {
             continue;
@@ -194,7 +206,7 @@ static int lupdate(lua_State *L) {
         if (!roadnet::lorryReady(l) || !roadnet::endpointIsReady(w.rw, endpoint)) {
             continue;
         }
-        auto& chestslot = chest::array_at(w, container::index::from(chest.chest), 0);
+        auto& chestslot = chest::array_at(w, c, 0);
         if (chestslot.item == 0) {
             continue;
         }
@@ -213,14 +225,18 @@ static int lupdate(lua_State *L) {
     }
     for (auto& v : ecs_api::select<ecs::lorry_factory, ecs::starting, ecs::chest>(w.ecs)) {
         auto& starting = v.get<ecs::starting>();
+        auto& chest = v.get<ecs::chest>();
         if (!starting.neighbor) {
+            continue;
+        }
+        auto c = container::index::from(chest.chest);
+        if (c == container::kInvalidIndex) {
             continue;
         }
         if (!roadnet::startingIsReady(w.rw, starting)) {
             continue;
         }
-        auto& chest = v.get<ecs::chest>();
-        auto& chestslot = chest::array_at(w, container::index::from(chest.chest), 0);
+        auto& chestslot = chest::array_at(w, c, 0);
         if (chestslot.item == 0 || chestslot.amount == 0) {
             continue;
         }
