@@ -18,6 +18,23 @@ prototype "铁板1" {
     description = "铁矿石通过金属冶炼获得铁板",
 }
 
+prototype "铁板T1" {
+    type = { "recipe" },
+    recipe_craft_category = "金属冶炼",
+    recipe_category =  "金属",
+    recipe_order =  11,
+    recipe_icon = "textures/icons/recipe/plate-Fe-1.texture",
+    ingredients = {
+        {"铁矿石", 5},
+    },
+    results = {
+        {"铁板", 2},
+        {"碎石", 1},
+    },
+    time = "8s",
+    description = "铁矿石通过金属冶炼获得铁板",
+}
+
 prototype "铁板2" {
     type = { "recipe" },
     recipe_craft_category = "金属冶炼",
@@ -205,7 +222,7 @@ prototype "铁棒1" {
     results = {
         {"铁棒", 5}
     },
-    time = "8s",
+    time = "4s",
     description = "使用铁锭锻造铁棒",
 }
 
@@ -377,6 +394,25 @@ prototype "电动机1" {
     description = "铁制品和塑料打造初级电动机",
 }
 
+prototype "电动机T1" {
+    type = { "recipe" },
+    recipe_craft_category = "器件中型制造",
+    recipe_category =  "器件",
+    recipe_order =  52,
+    recipe_icon =  "textures/icons/recipe/electric-motor.texture",
+    ingredients = {
+        {"铁棒", 1},
+        {"铁丝", 2},
+        {"铁板", 2},
+        {"塑料", 1},
+    },
+    results = {
+        {"电动机I", 1},
+    },
+    time = "8s",
+    description = "铁制品和塑料打造初级电动机",
+}
+
 prototype "电动机2" {
     type = { "recipe" },
     recipe_craft_category = "器件中型制造",
@@ -429,6 +465,24 @@ prototype "铁齿轮" {
     time = "4s",
     description = "使用铁制品加工铁齿轮",
 }
+
+prototype "铁齿轮T1" {
+    type = { "recipe" },
+    recipe_craft_category = "金属小型制造",
+    recipe_category =  "金属",
+    recipe_order =  15,
+    recipe_icon =  "textures/icons/recipe/iron-gear.texture",
+    ingredients = {
+        {"铁板", 4},
+        {"铁棒", 1},
+    },
+    results = {
+        {"铁齿轮", 2},
+    },
+    time = "4s",
+    description = "使用铁制品加工铁齿轮",
+}
+
 
 prototype "玻璃纤维1" {
     type = { "recipe" },
@@ -2450,6 +2504,24 @@ prototype "地质科技包1" {
     description = "地质材料制造地质科技包",
 }
 
+prototype "地质科技包T1" {
+    type = { "recipe" },
+    recipe_craft_category = "器件小型制造",
+    recipe_category =  "器件",
+    recipe_order =  80,
+    recipe_icon =  "textures/icons/recipe/geology-pack-1.texture",
+    ingredients = {
+        {"碎石", 2},
+        {"铁矿石", 2},
+        {"铝矿石", 2},
+    },
+    results = {
+        {"地质科技包", 1},
+    },
+    time = "15s",
+    description = "地质材料制造地质科技包",
+}
+
 prototype "地质科技包2" {
     type = { "recipe" },
     recipe_craft_category = "器件小型制造",
@@ -2457,11 +2529,13 @@ prototype "地质科技包2" {
     recipe_order =  81,
     recipe_icon =  "textures/icons/recipe/geology-pack-2.texture",
     ingredients = {
-        {"碎石", 4},
-        {"铁矿石", 4},
+        {"碎石", 1},
+        {"碾碎铁矿石", 1},
+        {"碾碎铝矿石", 1},
+        {"沙子", 1},
     },
     results = {
-        {"地质科技包", 3},
+        {"地质科技包", 2},
     },
     time = "8s",
     description = "地质材料制造地质科技包",
@@ -2476,6 +2550,41 @@ prototype "气候科技包1" {
     recipe_icon =  "textures/icons/recipe/climatology-pack-1.texture",
     ingredients = {
         {"空气", 2200},
+    },
+    results = {
+        {"气候科技包", 1},
+    },
+    time = "20s",
+    description = "气候材料制造气候科技包",
+}
+
+prototype "气候科技包T1" {
+    type = { "recipe" },
+    recipe_craft_category = "流体液体处理",
+    recipe_category =  "器件",
+    recipe_order =  82,
+    recipe_icon =  "textures/icons/recipe/climatology-pack-1.texture",
+    ingredients = {
+        {"空气", 3000},
+        {"地下卤水", 2000},
+    },
+    results = {
+        {"气候科技包", 1},
+    },
+    time = "25s",
+    description = "气候材料制造气候科技包",
+}
+
+prototype "气候科技包2" {
+    type = { "recipe" },
+    recipe_craft_category = "流体液体处理",
+    recipe_category =  "器件",
+    recipe_order =  82,
+    recipe_icon =  "textures/icons/recipe/climatology-pack-1.texture",
+    ingredients = {
+        {"地热气", 2},
+        {"废水", 40},
+        {"氮气", 80},
     },
     results = {
         {"气候科技包", 1},
@@ -2501,6 +2610,23 @@ prototype "机械科技包1" {
     description = "机械原料制造机械科技包",
 }
 
+
+prototype "机械科技包2" {
+    type = { "recipe" },
+    recipe_craft_category = "器件中型制造",
+    recipe_category =  "器件",
+    recipe_order =  84,
+    recipe_icon =  "textures/icons/recipe/mechanical-pack-1.texture",
+    ingredients = {
+        {"电动机III", 2},
+        {"钢板", 5},
+    },
+    results = {
+        {"机械科技包", 15},
+    },
+    time = "80s",
+    description = "机械原料制造机械科技包",
+}
 
 prototype "电子科技包1" {
     type = { "recipe" },

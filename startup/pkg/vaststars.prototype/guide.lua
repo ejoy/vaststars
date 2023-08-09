@@ -151,7 +151,7 @@ local guide = {
     {
         name = "",
 		narrative = {
-           {"哔哩..使用采矿机挖掘10个{/g 铁矿石}..哔哩..哔哗..(期待)", "ui/textures/guide/guide-1.texture"},
+           {"哔哩..使用采矿机挖掘6个{/g 铁矿石}..哔哩..哔哗..(期待)", "ui/textures/guide/guide-1.texture"},
         },
         narrative_end = {
             guide_progress = 10,
@@ -176,7 +176,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "收集铁矿石",
+            "收集铝矿石",
         },
 	},
 

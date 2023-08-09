@@ -273,12 +273,13 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "放置风力发电机" {
-    desc = "放置2台采矿机",
+    desc = "放置2台风力发电机",
     icon = "ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"select_entity", 0, "风力发电机I"},
     prerequisites = {"放置采矿机"},
     effects = {
+      unlock_item = {"铁矿石","铝矿石"},
     },
     count = 2,
     tips_pic = {
@@ -365,12 +366,27 @@ local prototype = gameplay.register.prototype
     type = { "task" },
     task = {"stat_production", 0, "铁矿石"},
     prerequisites = {"放置风力发电机"},
-    count = 8,
+    count = 6,
     tips_pic = {
       "ui/textures/task_tips_pic/task_produce_ore3.texture",
     },
     sign_desc = {
-      { desc = "使用无人机仓库收集12个碎石", icon = "ui/textures/construct/industry.texture"},
+      { desc = "收集6个铁矿石", icon = "ui/textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "收集铝矿石" {
+    desc = "挖掘足够的碎石可以开始进行锻造",
+    icon = "ui/textures/construct/industry.texture",
+    type = { "task" },
+    task = {"stat_production", 0, "铝矿石"},
+    prerequisites = {"收集铁矿石"},
+    count = 6,
+    tips_pic = {
+      "ui/textures/task_tips_pic/task_produce_ore3.texture",
+    },
+    sign_desc = {
+      { desc = "收集6个铝矿石", icon = "ui/textures/construct/industry.texture"},
     },
   }
 
@@ -379,7 +395,7 @@ local prototype = gameplay.register.prototype
     icon = "ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"select_entity", 0, "科研中心I"},
-    prerequisites = {"收集铁矿石"},
+    prerequisites = {"收集铝矿石"},
     count = 1,
     tips_pic = {
       "ui/textures/task_tips_pic/task_click_build.texture",
@@ -408,7 +424,7 @@ local prototype = gameplay.register.prototype
     type = { "tech" },
     icon = "ui/textures/science/book.texture",
     effects = {
-      unlock_recipe = {"地质科技包1"},
+      unlock_recipe = {"地质科技包T1"},
     },
     ingredients = {
     },
@@ -475,7 +491,7 @@ local prototype = gameplay.register.prototype
     type = { "task" },
     task = {"stat_production", 0, "地质科技包"},
     prerequisites = {"无人机仓库设置2"},
-    count = 8,
+    count = 5,
     tips_pic = {
       "ui/textures/task_tips_pic/task_produce_geopack3.texture",
       "ui/textures/task_tips_pic/task_produce_geopack4.texture",
@@ -483,7 +499,7 @@ local prototype = gameplay.register.prototype
       "ui/textures/task_tips_pic/task_produce_geopack6.texture",
     },
     sign_desc = {
-      { desc = "使用组装机生产8个地质科技包", icon = "ui/textures/construct/industry.texture"},
+      { desc = "使用组装机生产5个地质科技包", icon = "ui/textures/construct/industry.texture"},
     },
   }
 
@@ -548,23 +564,6 @@ local prototype = gameplay.register.prototype
       { desc = "使用组装机生产30段公路", icon = "ui/textures/construct/industry.texture"},
     },
   }
-
-
-  prototype "铁矿石开采" {
-    desc = "获得火星铁矿开采的能力",
-    type = { "tech" },
-    icon = "ui/textures/science/book.texture",
-    effects = {
-      unlock_item = {"铁矿石"},
-    },
-    prerequisites = {"建造公路"},
-    ingredients = {
-        {"地质科技包", 1},
-    },
-    count = 8,
-    time = "1s"
-  }
-
   
   prototype "通向铁矿" {
     desc = "铺设20段公路",
@@ -879,41 +878,12 @@ local prototype = gameplay.register.prototype
     time = "2s"
   }
 
-  prototype "铁矿放置采矿机" {
-    desc = "放置1台采矿机",
-    icon = "ui/textures/construct/industry.texture",
-    type = { "task" },
-    task = {"select_entity", 0, "采矿机I"},
-    prerequisites = {"物流学1"},
-    count = 2,
-    tips_pic = {
-      "ui/textures/task_tips_pic/task_place_logistics.texture",
-    },
-    sign_desc = {
-      { desc = "在铁矿上放置1台采矿机", icon = "ui/textures/construct/industry.texture"},
-    },
-    -- guide_focus = {
-    --   {
-    --     prefab = "prefabs/selected-box-no-animation.prefab",
-    --     x = 163,
-    --     y = 128,
-    --     w = 3.5,
-    --     h = 3.5,
-    --     show_arrow = true,
-    --   },
-    --   {
-    --     camera_x = 121,
-    --     camera_y = 122,
-    --   },
-    -- },
-  }
-
   prototype "放置出货车站" {
     desc = "放置1座出货车站",
     icon = "ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"select_entity", 0, "出货车站"},
-    prerequisites = {"铁矿放置采矿机"},
+    prerequisites = {"物流学1"},
     count = 1,
     effects = {
     },
@@ -944,7 +914,7 @@ local prototype = gameplay.register.prototype
     icon = "ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"select_entity", 0, "收货车站"},
-    prerequisites = {"铁矿放置采矿机"},
+    prerequisites = {"物流学1"},
     count = 1,
     tips_pic = {
       "ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -997,30 +967,30 @@ local prototype = gameplay.register.prototype
   --   -- },
   -- }
 
-  prototype "生产铁矿石" {
-    desc = "挖掘足够的铁矿石可以开始进行锻造",
-    icon = "ui/textures/construct/industry.texture",
-    type = { "task" },
-    task = {"stat_production", 0, "铁矿石"},
-    prerequisites = {"放置出货车站","放置收货车站"},
-    count = 10,
-    tips_pic = {
-      "ui/textures/task_tips_pic/task_produce_ore3.texture",
-    },
-    sign_desc = {
-      { desc = "在铁矿上放置采矿机并挖掘10个铁矿石", icon = "ui/textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "生产铁矿石" {
+  --   desc = "挖掘足够的铁矿石可以开始进行锻造",
+  --   icon = "ui/textures/construct/industry.texture",
+  --   type = { "task" },
+  --   task = {"stat_production", 0, "铁矿石"},
+  --   prerequisites = {"放置出货车站","放置收货车站"},
+  --   count = 10,
+  --   tips_pic = {
+  --     "ui/textures/task_tips_pic/task_produce_ore3.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "在铁矿上放置采矿机并挖掘10个铁矿石", icon = "ui/textures/construct/industry.texture"},
+  --   },
+  -- }
 
   prototype "铁矿熔炼" {
     desc = "掌握熔炼铁矿石冶炼成铁板的工艺",
     type = { "tech" },
     icon = "ui/textures/science/book.texture",
     effects = {
-      unlock_recipe = {"铁板1"},
+      unlock_recipe = {"铁板T1"},
       unlock_item = {"铁板"},
     },
-    prerequisites = {"生产铁矿石"},
+    prerequisites = {"放置出货车站","放置收货车站"},
     ingredients = {
         {"地质科技包", 1},
     },
@@ -1033,7 +1003,7 @@ local prototype = gameplay.register.prototype
     icon = "ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"select_entity", 0, "熔炼炉I"},
-    prerequisites = {"生产铁矿石"},
+    prerequisites = {"铁矿熔炼"},
     count = 1,
     tips_pic = {
       "ui/textures/task_tips_pic/task_click_build.texture",
@@ -1070,7 +1040,7 @@ local prototype = gameplay.register.prototype
     type = { "tech" },
     icon = "ui/textures/science/book.texture",
     effects = {
-      unlock_recipe = {"铁齿轮","铁棒1","铁丝1"},
+      unlock_recipe = {"铁齿轮T1","铁棒1","铁丝1"},
       unlock_item = {"铁齿轮","铁棒","铁丝"},
     },
     prerequisites = {"生产铁板"},
@@ -1156,7 +1126,7 @@ prototype "气候研究1" {
   type = { "tech" },
   icon = "ui/textures/science/book.texture",
   effects = {
-    unlock_recipe = {"气候科技包1"},
+    unlock_recipe = {"气候科技包T1"},
     unlock_item = {"气候科技包"},
   },
   prerequisites = {"维修运输车辆"},
@@ -1610,7 +1580,7 @@ prototype "电磁学1" {
   type = { "tech" },
   icon = "ui/textures/science/book.texture",
   effects = {
-    unlock_recipe = {"电动机1"},
+    unlock_recipe = {"电动机T1"},
     unlock_item = {"电动机I"},
   },
   prerequisites = {"生产塑料","排放1"},

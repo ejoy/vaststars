@@ -83,7 +83,7 @@ prototype "碎石" {
     type = {"item"},
     station_limit = 12,
     pile = "4x3x2",
-    drone_depot_gap3 = "1x0.2x1",
+    drone_depot_gap3 = "0.2x0.2x1",
     backpack_limit = 100,
     pile_model = "glb/stackeditems/stack-gravel.glb|mesh.prefab",
     item_icon = "textures/icons/item/gravel.texture",
