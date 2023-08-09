@@ -615,17 +615,6 @@ static bool FindTask(world& w, DroneEntity& e, ecs::drone& drone, hub_cache& inf
     return false;
 }
 
-static void FindTaskAtHome(world& w, DroneEntity& e, ecs::drone& drone, hub_cache& info) {
-    if (info.item == 0) {
-        SetStatus(drone, drone_status::idle);
-        return;
-    }
-    if (FindTask(w, e, drone, info)) {
-        return;
-    }
-    SetStatus(drone, drone_status::at_home);
-}
-
 static void FindTaskNotAtHome(world& w, DroneEntity& e, ecs::drone& drone, hub_cache& info) {
     if (info.item == 0) {
         GoHome(w, e, drone, info);
@@ -767,7 +756,14 @@ static void Arrival(world& w, DroneEntity& e, ecs::drone& drone) {
                 GoHome(w, e, drone, info);
                 return;
             }
-            FindTaskAtHome(w, e, drone, info);
+            if (info.item == 0) {
+                SetStatus(drone, drone_status::idle);
+                return;
+            }
+            if (FindTask(w, e, drone, info)) {
+                return;
+            }
+            SetStatus(drone, drone_status::at_home);
         });
         break;
     case drone_status::empty_task:
@@ -797,7 +793,11 @@ lupdate(lua_State *L) {
         switch ((drone_status)drone.status) {
         case drone_status::at_home:
             CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, ecs::drone& drone, hub_cache& info) {
-                FindTaskAtHome(w, e, drone, info);
+                if (info.item == 0) {
+                    SetStatus(drone, drone_status::idle);
+                    return;
+                }
+                FindTask(w, e, drone, info);
             });
             break;
         case drone_status::go_mov1:
