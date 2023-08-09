@@ -428,7 +428,7 @@ local prototype = gameplay.register.prototype
     },
     ingredients = {
     },
-    count = 10,
+    count = 8,
     time = "2s",
     prerequisites = {"放置科研中心"},
     sign_desc = {
@@ -515,8 +515,8 @@ local prototype = gameplay.register.prototype
     ingredients = {
         {"地质科技包", 1},
     },
-    count = 8,
-    time = "1s"
+    count = 4,
+    time = "3s"
   }
 
   prototype "生产石砖" {
@@ -546,8 +546,8 @@ local prototype = gameplay.register.prototype
     ingredients = {
         {"地质科技包", 1},
     },
-    count = 12,
-    time = "1.5s"
+    count = 5,
+    time = "3s"
   }
 
   prototype "建造公路" {
@@ -874,8 +874,8 @@ local prototype = gameplay.register.prototype
     ingredients = {
         {"地质科技包", 1},
     },
-    count = 12,
-    time = "2s"
+    count = 5,
+    time = "3s"
   }
 
   prototype "放置出货车站" {
@@ -994,8 +994,8 @@ local prototype = gameplay.register.prototype
     ingredients = {
         {"地质科技包", 1},
     },
-    count = 10,
-    time = "5s"
+    count = 5,
+    time = "4s"
   }
   
   prototype "放置熔炼炉" {
@@ -1047,8 +1047,8 @@ local prototype = gameplay.register.prototype
     ingredients = {
         {"地质科技包", 1},
     },
-    count = 16,
-    time = "5s"
+    count = 8,
+    time = "2s"
   }
 
   prototype "建筑维修1" {
@@ -1063,8 +1063,8 @@ local prototype = gameplay.register.prototype
     ingredients = {
         {"地质科技包", 1},
     },
-    count = 12,
-    time = "5s"
+    count = 4,
+    time = "4s"
   }
 
   prototype "生产铁棒" {
@@ -1098,8 +1098,8 @@ local prototype = gameplay.register.prototype
     ingredients = {
         {"地质科技包", 1},
     },
-    count = 16,
-    time = "5s"
+    count = 8,
+    time = "2s"
   }
 
   prototype "维修运输车辆" {
@@ -1137,8 +1137,8 @@ prototype "气候研究1" {
     { desc = "该科技是一项前沿科技，可引导其他的科技研究", icon = "ui/textures/science/key_sign.texture"},
   },
   sign_icon = "ui/textures/science/key_sign.texture",
-  count = 12,
-  time = "1.5s"
+  count = 8,
+  time = "5s"
 }
 
 prototype "建筑维修2" {
@@ -1153,8 +1153,8 @@ prototype "建筑维修2" {
   ingredients = {
       {"地质科技包", 1},
   },
-  count = 14,
-  time = "5s"
+  count = 6,
+  time = "4s"
 }
 
 prototype "管道系统1" {
@@ -1169,8 +1169,8 @@ prototype "管道系统1" {
   ingredients = {
       {"地质科技包", 1},
   },
-  count = 12,
-  time = "1s"
+  count = 8,
+  time = "4s"
 }
 
 prototype "生产管道" {
@@ -1270,7 +1270,7 @@ prototype "排放1" {
   ingredients = {
     {"气候科技包", 1},
   },
-  count = 10,
+  count = 3,
   time = "2s"
 }
 
@@ -1300,8 +1300,8 @@ prototype "电解水" {
   ingredients = {
       {"气候科技包", 1},
   },
-  count = 15,
-  time = "2s"
+  count = 4,
+  time = "4s"
 }
 
 prototype "空气分离工艺1" {
@@ -1315,8 +1315,8 @@ prototype "空气分离工艺1" {
   ingredients = {
       {"气候科技包", 1},
   },
-  count = 8,
-  time = "1.5s"
+  count = 4,
+  time = "5s"
 }
 
 prototype "碳处理1" {
@@ -1330,8 +1330,8 @@ prototype "碳处理1" {
   ingredients = {
       {"气候科技包", 1},
   },
-  count = 8,
-  time = "2s"
+  count = 5,
+  time = "4s"
 }
 
 prototype "放置太阳能板" {
@@ -1441,7 +1441,7 @@ prototype "碳处理2" {
   ingredients = {
       {"气候科技包", 1},
   },
-  count = 16,
+  count = 8,
   time = "2s"
 }
 
@@ -1455,8 +1455,8 @@ prototype "地质研究2" {
   ingredients = {
       {"地质科技包", 1},
   },
-  count = 12,
-  time = "1.2s",
+  count = 10,
+  time = "2s",
   prerequisites = {"碳处理2"},
   sign_desc = {
     { desc = "该科技是一项前沿科技，可引导其他的科技研究", icon = "ui/textures/science/key_sign.texture"},
@@ -1476,7 +1476,7 @@ prototype "冶金学1" {
   ingredients = {
     {"地质科技包", 1},
   },
-  count = 16,
+  count = 12,
   time = "4s"
 }
 
@@ -1493,7 +1493,7 @@ prototype "建筑维修3" {
       {"地质科技包", 1},
       {"气候科技包", 1},
   },
-  count = 12,
+  count = 6,
   time = "3s"
 }
 
@@ -1541,7 +1541,7 @@ prototype "有机化学1" {
     {"地质科技包", 1},
     {"气候科技包", 1},
   },
-  count = 12,
+  count = 6,
   time = "10s"
 }
 
@@ -1588,7 +1588,7 @@ prototype "电磁学1" {
     {"地质科技包", 1},
     {"气候科技包", 1},
   },
-  count = 16,
+  count = 6,
   time = "5s"
 }
 
@@ -1605,7 +1605,7 @@ prototype "建筑维修4" {
       {"地质科技包", 1},
       {"气候科技包", 1},
   },
-  count = 18,
+  count = 4,
   time = "5s"
 }
 
@@ -1623,8 +1623,8 @@ prototype "机械研究" {
     {"地质科技包", 1},
     {"气候科技包", 1},
   },
-  count = 20,
-  time = "6s",
+  count = 8,
+  time = "5s",
   sign_desc = {
     { desc = "该科技是一项前沿科技，可引导其他的科技研究", icon = "ui/textures/science/key_sign.texture"},
   },
@@ -1661,7 +1661,7 @@ prototype "挖掘1" {
     {"气候科技包", 1},
   },
   count = 8,
-  time = "7s"
+  time = "5s"
 }
 
 prototype "无人机运输1" {
@@ -1675,8 +1675,8 @@ prototype "无人机运输1" {
   ingredients = {
     {"机械科技包", 1},
   },
-  count = 6,
-  time = "8s"
+  count = 2,
+  time = "12s"
 }
 
 prototype "蒸馏1" {
@@ -1692,7 +1692,7 @@ prototype "蒸馏1" {
     {"气候科技包", 1},
     {"机械科技包", 1},
   },
-  count = 8,
+  count = 4,
   time = "7s"
 }
 
@@ -1727,7 +1727,7 @@ prototype "泵系统1" {
     {"气候科技包", 1},
     {"机械科技包", 1},
   },
-  count = 8,
+  count = 4,
   time = "6s"
 }
 
@@ -1743,7 +1743,7 @@ prototype "自动化1" {
   ingredients = {
     {"机械科技包", 1},
   },
-  count = 12,
+  count = 6,
   time = "8s"
 }
 
@@ -1760,7 +1760,7 @@ prototype "物流车站1" {
     {"地质科技包", 1},
     {"机械科技包", 1},
   },
-  count = 10,
+  count = 6,
   time = "10s"
 }
 
@@ -1778,8 +1778,8 @@ prototype "地下水净化1" {
     {"气候科技包", 1},
     {"机械科技包", 1},
   },
-  count = 8,
-  time = "10s"
+  count = 3,
+  time = "12s"
 }
 
 prototype "过滤1" {
@@ -1795,7 +1795,7 @@ prototype "过滤1" {
     {"气候科技包", 1},
     {"机械科技包", 1},
   },
-  count = 10,
+  count = 4,
   time = "10s"
 }
 
@@ -1813,7 +1813,7 @@ prototype "炼钢" {
     {"气候科技包", 1},
     {"机械科技包", 1},
   },
-  count = 10,
+  count = 4,
   time = "10s"
 }
 
@@ -1845,7 +1845,7 @@ prototype "矿物处理1" {
     {"地质科技包", 1},
     {"机械科技包", 1},
   },
-  count = 10,
+  count = 4,
   time = "10s"
 }
 
@@ -1877,7 +1877,7 @@ prototype "钢加工" {
     {"地质科技包", 1},
     {"机械科技包", 1},
   },
-  count = 16,
+  count = 4,
   time = "8s"
 }
 
@@ -1894,7 +1894,7 @@ prototype "发电机1" {
     {"气候科技包", 1},
     {"机械科技包", 1},
   },
-  count = 8,
+  count = 4,
   time = "15s"
 }
 
@@ -1927,7 +1927,7 @@ prototype "浮选1" {
     {"气候科技包", 1},
     {"机械科技包", 1},
   },
-  count = 16,
+  count = 5,
   time = "8s"
 }
 
@@ -1944,7 +1944,7 @@ prototype "硅处理" {
     {"地质科技包", 1},
     {"机械科技包", 1},
   },
-  count = 16,
+  count = 5,
   time = "8s"
 }
 
@@ -1960,7 +1960,7 @@ prototype "铁矿熔炼2" {
       {"地质科技包", 1},
       {"机械科技包", 1},
   },
-  count = 12,
+  count = 4,
   time = "8s"
 }
 
@@ -1977,7 +1977,7 @@ prototype "电解1" {
       {"气候科技包", 1},
       {"机械科技包", 1},
   },
-  count = 8,
+  count = 5,
   time = "12s"
 }
 
@@ -1993,7 +1993,7 @@ prototype "有机化学2" {
       {"气候科技包", 1},
       {"机械科技包", 1},
   },
-  count = 16,
+  count = 8,
   time = "8s"
 }
 
@@ -2011,8 +2011,8 @@ prototype "管道系统2" {
       {"气候科技包", 1},
       {"机械科技包", 1},
   },
-  count = 10,
-  time = "6s"
+  count = 6,
+  time = "10s"
 }
 
 prototype "化学工程1" {
@@ -2029,7 +2029,7 @@ prototype "化学工程1" {
       {"气候科技包", 1},
       {"机械科技包", 1},
   },
-  count = 10,
+  count = 6,
   time = "10s"
 }
 
@@ -2047,7 +2047,7 @@ prototype "无机化学" {
       {"气候科技包", 1},
       {"机械科技包", 1},
   },
-  count = 20,
+  count = 10,
   time = "5s"
 }
 
@@ -2064,7 +2064,7 @@ prototype "废料回收1" {
       {"气候科技包", 1},
       {"机械科技包", 1},
   },
-  count = 24,
+  count = 10,
   time = "6s"
 }
 
@@ -2082,7 +2082,7 @@ prototype "石头处理3" {
     {"气候科技包", 1},
     {"机械科技包", 1},
   },
-  count = 24,
+  count = 8,
   time = "8s"
 }
 
@@ -2114,7 +2114,7 @@ prototype "有机化学3" {
       {"气候科技包", 1},
       {"机械科技包", 1},
   },
-  count = 24,
+  count = 12,
   time = "8s"
 }
 
@@ -2130,7 +2130,7 @@ prototype "物流学2" {
       {"地质科技包", 1},
       {"机械科技包", 1},
   },
-  count = 30,
+  count = 20,
   time = "5s"
 }
 
@@ -2147,7 +2147,7 @@ prototype "无人机运输2" {
       {"气候科技包", 1},
       {"机械科技包", 1},
   },
-  count = 30,
+  count = 20,
   time = "8s"
 }
 
@@ -2164,7 +2164,7 @@ prototype "冶金学2" {
     {"地质科技包", 1},
     {"机械科技包", 1},
   },
-  count = 40,
+  count = 20,
   time = "6s"
 }
 
@@ -2181,8 +2181,8 @@ prototype "铝生产" {
     {"地质科技包", 1},
     {"机械科技包", 1},
   },
-  count = 40,
-  time = "6s"
+  count = 25,
+  time = "8s"
 }
 
 prototype "硅生产" {

@@ -778,22 +778,6 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"是时候开采这个星球的新资源——{/color:4bd0ff 铁矿}了，让我们在铁矿上再放置一台{/g 采矿机}吧..哔哗..(期待)", "ui/textures/guide/guide-2.texture"},
-        },
-        narrative_end = {
-            guide_progress = 55,
-            task = {
-                "铁矿放置采矿机",
-            }
-        },
-        prerequisites = {
-            "物流学1",
-        },
-	},
-
-    {
-        name = "",
-		narrative = {
             {"哔哩..哔哗..基地开始采集气液资源，{/g 管道}正是运输此类资源的关键..(高兴)", "ui/textures/guide/guide-3.texture"},
         },
         narrative_end = {
