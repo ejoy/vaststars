@@ -104,7 +104,7 @@ prototype "砂岩" {
     item_icon = "textures/icons/item/gravel.texture",
     item_description = "伴生在矿物里的小块石头",
     item_category = "金属",
-    mineral_model = "prefabs/mineral/ground-gravel.prefab",
+    mineral_model = "prefabs/mineral/sandstone.prefab",
     mineral_area = "3x3",
 }
 
