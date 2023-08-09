@@ -31,7 +31,6 @@ local iui = ecs.import.interface "vaststars.gamerender|iui"
 local PROTOTYPE_VERSION <const> = import_package("vaststars.prototype")("version")
 local global = require "global"
 local create_buildings = require "building_components"
-local mineral_map = import_package "vaststars.prototype"("map")
 
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local irq = ecs.import.interface "ant.render|irenderqueue"
@@ -324,7 +323,9 @@ function M:restore(index)
     end
     iroadnet:init(renderData, true)
 
-    terrain:reset_mineral(mineral_map)
+    local game_template = gameplay_core.get_storage().game_template or "item.startup"
+    local game_template_mineral = import_package("vaststars.prototype")(game_template).mineral
+    terrain:reset_mineral(game_template_mineral)
 
     iscience.update_tech_list(gameplay_core.get_world())
     debugger.set_free_mode(gameplay_core.get_storage().game_mode == "free")
@@ -356,6 +357,8 @@ function M:restart(mode, game_template)
     end
 
     game_template = game_template or "item.startup"
+    gameplay_core.get_storage().game_template = game_template
+
     local game_template_entities = import_package("vaststars.prototype")(game_template).entities
     local game_template_road = import_package("vaststars.prototype")(game_template).road
     local game_template_backpack = import_package("vaststars.prototype")(game_template).backpack or {}
@@ -363,7 +366,7 @@ function M:restart(mode, game_template)
     --
     clean()
     local game_template_mineral = import_package("vaststars.prototype")(game_template).mineral
-    terrain:reset_mineral(game_template_mineral or mineral_map)
+    terrain:reset_mineral(game_template_mineral)
 
     --
     for _, e in ipairs(game_template_entities) do
