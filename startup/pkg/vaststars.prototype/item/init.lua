@@ -12,6 +12,7 @@ prototype "任务" {
     station_limit = 0,
     backpack_limit = 0,
     pile = "0x0x0",
+    pile_model = "",
     tech_icon = "",
     item_category = "",
     item_icon = "",

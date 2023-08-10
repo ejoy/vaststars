@@ -38,7 +38,7 @@ function road:create(width, height, offset, layer_names, shape_types)
     for _, state in ipairs(shape_types) do
         self.shape_types[state] = true
     end
-    iterrain.gen_terrain_field(width, height, offset, UNIT)
+    iterrain.gen_terrain_field(width, height, offset, UNIT, RENDER_LAYER.TERRAIN)
 end
 
 function road:get_offset()

@@ -200,6 +200,11 @@ register_unit("text", "string", function(s)
 	return s
 end)
 
+register_unit("string", "string", function(s)
+	assert(type(s) == "string")
+	return s
+end)
+
 local function query(t, v)
 	if t == "raw" then
 		return tonumber(v)

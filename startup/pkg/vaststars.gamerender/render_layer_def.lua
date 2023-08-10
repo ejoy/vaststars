@@ -9,7 +9,7 @@ return {
     },
     {
         "background",
-        {"MINERAL"},
+        {"TERRAIN", "MINERAL"},
         {"ICON"},
         {"ICON_CONTENT", "WIRE"},
     },
