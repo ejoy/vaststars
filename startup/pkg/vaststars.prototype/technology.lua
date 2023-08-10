@@ -285,7 +285,7 @@ local prototype = gameplay.register.prototype
     icon = "ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"select_entity", 0, "风力发电机I"},
-    prerequisites = {"放置采矿机"},
+    prerequisites = {"放置采矿机2"},
     effects = {
       unlock_item = {"铁矿石","铝矿石"},
     },
