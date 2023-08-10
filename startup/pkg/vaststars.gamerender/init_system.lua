@@ -97,6 +97,7 @@ function m:frame_update()
     end
 
     if gameplay_core.system_changed_flags ~= 0 then
+        print("build world")
         gameplay_core.system_changed_flags = 0
         world:pipeline_func "gameworld_prebuild" ()
         gameplay_core.update()

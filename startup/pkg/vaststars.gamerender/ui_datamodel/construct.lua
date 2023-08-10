@@ -541,6 +541,8 @@ function M:stage_camera_usage(datamodel)
 
             local object = assert(objects:get(object_id))
             local typeobject = iprototype.queryByName(object.prototype_name)
+            gameplay_core.world_update = false
+
             idetail.unselected()
             builder_ui = "ui/move_building.rml"
             builder_datamodel = iui.open({"ui/move_building.rml"}, object.prototype_name)

@@ -50,10 +50,8 @@ function m.extend(...)
 end
 
 function m.update()
-    if m.world_update then
-        for _ = 1, m.multiple do
-            world:update()
-        end
+    for _ = 1, m.multiple do
+        world:update()
     end
 end
 

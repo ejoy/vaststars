@@ -62,7 +62,7 @@ function M:create(object_id, interface)
 
     for _, typeobject in pairs(iprototype.each_type("item")) do
         -- If the 'pile' field is not configured, it is usually a 'building' that cannot be placed in a drone depot.
-        if not typeobject.pile then
+        if not (typeobject.pile and typeobject.item_category ~= '') then
             goto continue
         end
 

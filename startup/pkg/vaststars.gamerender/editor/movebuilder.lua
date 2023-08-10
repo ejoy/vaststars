@@ -35,6 +35,7 @@ local gameplay = import_package "vaststars.gameplay"
 local igameplay_building = gameplay.interface "building"
 local ROAD_TILE_SCALE_WIDTH <const> = 2
 local ROAD_TILE_SCALE_HEIGHT <const> = 2
+local CHANGED_FLAG_BUILDING <const> = require("gameplay.interface.constant").CHANGED_FLAG_BUILDING
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -488,6 +489,7 @@ local function confirm(self, datamodel)
     local gameworld = gameplay_core.get_world()
     igameplay_building.move(gameworld, e, self.pickup_object.x, self.pickup_object.y)
     igameplay_building.rotate(gameworld, e, self.pickup_object.dir)
+    gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
 
     iobject.coord(object, self.pickup_object.x, self.pickup_object.y, coord_system)
     object.dir = self.pickup_object.dir
@@ -545,6 +547,7 @@ local function confirm(self, datamodel)
     ieditor:revert_changes({"TEMPORARY"})
     datamodel.show_confirm = false
     datamodel.show_rotate = false
+    datamodel.show_cancel = false
 
     return false
 end
