@@ -300,7 +300,7 @@
                 local margin_left = '0'
                 local inoutstr = [[
                     <div style='flex-direction:row; justify-content: center; align-items: center; width: 32vmin; height: 13vmin;'>
-                    <div style='width: 13vmin; height: 13vmin; flex-direction:row;justify-content:center;align-items:center;flex-wrap: wrap;'>]]
+                    <div style='width: 14vmin; height: 14vmin; flex-direction:row;justify-content:flex-start;align-items:center;flex-wrap: wrap;'>]]
                 if #detail.input == 1 then
                     margin_top = '7vmin'
                     margin_left = '0.6vmin'
@@ -314,7 +314,7 @@
                 end
                 inoutstr = inoutstr .. "</div>"
                 inoutstr = inoutstr .. ([[<div style='margin-left: 1vmin; margin-right: 1vmin; height: 7vmin; flex-direction:column;justify-content:flex-start;align-items:center;'><div class="recipe-time">%s</div><div class="small-arrow"/></div>]]):format(detail.time)
-                inoutstr = inoutstr .. "<div style='width: 13vmin; height: 13vmin; flex-direction:row;justify-content:center;align-items:center;flex-wrap: wrap;'>"
+                inoutstr = inoutstr .. "<div style='width: 14vmin; height: 14vmin; flex-direction:row;justify-content:flex-start;align-items:center;flex-wrap: wrap;'>"
                 margin_top = '0'
                 margin_left = '0'
                 if #detail.output == 1 then
