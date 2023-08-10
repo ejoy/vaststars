@@ -179,6 +179,7 @@ function drone_depot_sys:gameworld_update()
         if building.drone_depot_shelf then
             if not slot then
                 building.drone_depot_shelf:remove()
+                building.drone_depot_shelf = nil
             else
                 if building.drone_depot_shelf.item == slot.item then
                     if building.drone_depot_shelf.count ~= slot.amount then

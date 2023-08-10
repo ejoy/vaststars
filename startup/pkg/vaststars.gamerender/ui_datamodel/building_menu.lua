@@ -36,10 +36,21 @@ local istation = gameplay.interface "station"
 
 local MIN_STATION_WEIGHTS <const> = require("gameplay.interface.constant").MIN_STATION_WEIGHTS
 local MAX_STATION_WEIGHTS <const> = require("gameplay.interface.constant").MAX_STATION_WEIGHTS
+local PICKUP_TYPES <const> = {
+    "assembling",
+    "station_producer",
+    "station_consumer",
+    "hub",
+    "chest",
+}
 
-local function __show_set_item(typeobject)
-    return iprototype.has_types(typeobject.type, "station_producer", "station_consumer", "hub")
-end
+local PLACE_TYPES <const> = {
+    "assembling",
+    "station_producer",
+    "station_consumer",
+    "hub",
+    "laboratory",
+}
 
 local function __get_moveable_count(object_id)
     local object = assert(objects:get(object_id))
@@ -148,25 +159,27 @@ function M:create(object_id)
     if not e then
         return
     end
-    local typeobject = iprototype.queryByName(object.prototype_name)
-    local show_set_recipe = typeobject.allow_set_recipt and true or false
-    local show_set_item = __show_set_item(typeobject)
+    local typeobject = iprototype.queryById(e.building.prototype)
+
+    local show_set_recipe = false
+    local show_set_item = false
+    local show_set_item2 = false
     local lorry_factory_inc_lorry = false
     local station_weight_increase = false
     local station_weight_decrease = false
     local station_lorry_increase = false
     local station_lorry_decrease = false
-
     local pickup_item, place_item = false, false
-    if iprototype.has_pickup(typeobject.name) then
+
+    if iprototype.check_types(typeobject.name, PICKUP_TYPES) then
         pickup_item = true
     end
-    if iprototype.has_place(typeobject.name) then
+    if iprototype.check_types(typeobject.name, PLACE_TYPES) then
         place_item = true
     end
-    if iprototype.has_type(typeobject.type, "base") then -- special case for headquarter
-        pickup_item = false
-        place_item = false
+
+    if e.assembling then
+        show_set_recipe = typeobject.allow_set_recipt and true or false
     end
     if e.lorry_factory then
         lorry_factory_inc_lorry = true
@@ -174,19 +187,24 @@ function M:create(object_id)
     if e.station_producer then
         station_weight_increase = true
         station_weight_decrease = true
-        station_lorry_increase = false
-        station_lorry_decrease = false
+        show_set_item = true
     end
     if e.station_consumer then
-        station_weight_increase = false
-        station_weight_decrease = false
         station_lorry_increase = true
         station_lorry_decrease = true
+        show_set_item = true
+    end
+    if e.hub then
+        show_set_item = true
+        show_set_item2 = true
     end
 
     local datamodel = {
+        object_id = object_id,
+        prototype_name = typeobject.name,
         show_set_recipe = show_set_recipe,
         show_set_item = show_set_item,
+        show_set_item2 = show_set_item2,
         lorry_factory_inc_lorry = lorry_factory_inc_lorry,
         lorry_factory_dec_lorry = false,
         station_weight_increase = station_weight_increase,
@@ -197,8 +215,6 @@ function M:create(object_id)
         place_item = place_item,
         pickup_item_count = __get_moveable_count(object_id),
         place_item_count = __get_placeable_count(object_id),
-        object_id = object_id,
-        prototype_name = object.prototype_name,
     }
 
     return datamodel
@@ -334,21 +350,16 @@ function M:stage_ui_update(datamodel, object_id)
                 goto continue
             end
 
-            local ingredient_count = #ingredients
-
             local msgs = {}
             local inventory_bar = {}
             for idx in ipairs(results) do
-                local succ, available = ibackpack.move_to_backpack(gameplay_core.get_world(), e.chest, ingredient_count + idx)
-                if not succ then
-                    print("failed to move to the inventory")
-                    goto continue
-                end
-                local typeitem = iprototype.queryById(results[1].id)
-                msgs[#msgs + 1] = {icon = assert(typeitem.item_icon), name = typeitem.name, count = available}
-
-                if #inventory_bar < 4 then
-                    inventory_bar[#inventory_bar+1] = {icon = assert(typeitem.item_icon), count = available}
+                local succ, available = ibackpack.move_to_backpack(gameplay_core.get_world(), e.chest, #ingredients + idx)
+                if succ then
+                    local typeitem = iprototype.queryById(results[1].id)
+                    msgs[#msgs + 1] = {icon = assert(typeitem.item_icon), name = typeitem.name, count = available}
+                    if #inventory_bar < 4 then
+                        inventory_bar[#inventory_bar+1] = {icon = assert(typeitem.item_icon), count = available}
+                    end
                 end
             end
 
@@ -429,15 +440,13 @@ function M:stage_ui_update(datamodel, object_id)
             local inventory_bar = {}
             for idx, ingredient in ipairs(ingredients) do
                 if ingredient.demand_count > ingredient.count then
-                    if not ibackpack.pickup(gameplay_core.get_world(), ingredient.id, ingredient.demand_count - ingredient.count) then
-                        goto continue
-                    end
-
-                    gameplay_core.get_world():container_set(e.chest, idx, {amount = ingredient.demand_count})
-                    local typeitem = iprototype.queryById(ingredient.id)
-                    message[#message + 1] = {icon = assert(typeitem.item_icon), name = typeitem.name, count = ingredient.demand_count}
-                    if #inventory_bar < 4 then
-                        inventory_bar[#inventory_bar + 1] = {icon = assert(typeitem.item_icon), count = ingredient.demand_count}
+                    if ibackpack.pickup(gameplay_core.get_world(), ingredient.id, ingredient.demand_count - ingredient.count) then
+                        gameplay_core.get_world():container_set(e.chest, idx, {amount = ingredient.demand_count})
+                        local typeitem = iprototype.queryById(ingredient.id)
+                        message[#message + 1] = {icon = assert(typeitem.item_icon), name = typeitem.name, count = ingredient.demand_count}
+                        if #inventory_bar < 4 then
+                            inventory_bar[#inventory_bar + 1] = {icon = assert(typeitem.item_icon), count = ingredient.demand_count}
+                        end
                     end
                 end
             end

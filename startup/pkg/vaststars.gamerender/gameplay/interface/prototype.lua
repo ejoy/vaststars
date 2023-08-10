@@ -231,22 +231,6 @@ local CHEST_TYPES <const> = {
     "base",
 }
 
-local PICKUP_TYPES <const> = {
-    "assembling",
-    "station_producer",
-    "station_consumer",
-    "hub",
-    "chest",
-}
-
-local PLACE_TYPES <const> = {
-    "assembling",
-    "laboratory",
-    "station_producer",
-    "station_consumer",
-    "hub",
-}
-
 local function __check_types(prototype_name, types)
     local typeobject = assert(M.queryByName(prototype_name))
     for _, t in ipairs(types) do
@@ -265,12 +249,5 @@ function M.has_chest(prototype_name)
     return __check_types(prototype_name, CHEST_TYPES)
 end
 
-function M.has_pickup(prototype_name)
-    return __check_types(prototype_name, PICKUP_TYPES)
-end
-
-function M.has_place(prototype_name)
-    return __check_types(prototype_name, PLACE_TYPES)
-end
 
 return M

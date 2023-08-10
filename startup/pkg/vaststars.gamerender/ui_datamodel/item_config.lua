@@ -108,20 +108,32 @@ end
 
 function M:stage_ui_update(datamodel, object_id, interface)
     for _, _, _, category_idx, item_idx in click_item_mb:unpack() do
-        __set_item_value(datamodel, datamodel.category_idx, datamodel.item_idx, "selected", false)
-        __set_item_value(datamodel, category_idx, item_idx, "selected", true)
-        datamodel.category_idx = category_idx
-        datamodel.item_idx = item_idx
+        if category_idx == datamodel.category_idx and item_idx == datamodel.item_idx then
+            __set_item_value(datamodel, datamodel.category_idx, datamodel.item_idx, "selected", false)
 
-        local item_name = datamodel.items[category_idx].items[item_idx].name
-        __mark_item_flag(item_name)
-        __set_item_value(datamodel, category_idx, item_idx, "new", false)
+            datamodel.category_idx = 0
+            datamodel.item_idx = 0
 
-        local typeobject = iprototype.queryByName(item_name)
-        datamodel.item_name = typeobject.name
-        datamodel.item_icon = typeobject.item_icon
-        datamodel.item_desc = typeobject.item_description
-        datamodel.confirm = true
+            datamodel.item_name = ""
+            datamodel.item_icon = ""
+            datamodel.item_desc = ""
+            datamodel.confirm = true
+        else
+            __set_item_value(datamodel, datamodel.category_idx, datamodel.item_idx, "selected", false)
+            __set_item_value(datamodel, category_idx, item_idx, "selected", true)
+            datamodel.category_idx = category_idx
+            datamodel.item_idx = item_idx
+
+            local item_name = datamodel.items[category_idx].items[item_idx].name
+            __mark_item_flag(item_name)
+            __set_item_value(datamodel, category_idx, item_idx, "new", false)
+
+            local typeobject = iprototype.queryByName(item_name)
+            datamodel.item_name = typeobject.name
+            datamodel.item_icon = typeobject.item_icon
+            datamodel.item_desc = typeobject.item_description
+            datamodel.confirm = true
+        end
     end
 
     for _ in set_item_mb:unpack() do
@@ -136,6 +148,10 @@ function M:stage_ui_update(datamodel, object_id, interface)
             local gameplay_world = gameplay_core.get_world()
             interface.set_first_item(gameplay_world, e, typeobject.id)
             itask.update_progress("set_item", name)
+        else
+            local e = gameplay_core.get_entity(assert(objects:get(object_id).gameplay_eid))
+            local gameplay_world = gameplay_core.get_world()
+            interface.set_first_item(gameplay_world, e, 0)
         end
         iui.close("ui/item_config.rml")
     end
