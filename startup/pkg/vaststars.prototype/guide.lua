@@ -859,6 +859,23 @@ local guide = {
     {
         name = "",
 		narrative = {
+            {"我们基地正在扩大,也随之带来更大的电力负荷,让我们放置{/color:4bd0ff 太阳能板}发电吧..哔哩(期待）", "ui/textures/guide/guide-2.texture"},
+        },
+        narrative_end = {
+            guide_progress = 61,
+            task = {
+                "放置太阳能板",
+            }
+        },
+        prerequisites = {
+            "碳处理1",
+        },
+	},
+
+
+    {
+        name = "",
+		narrative = {
             {"{/g 化工厂}准备就绪，让我们正式进入化工生产..哔哩..哔哩..(高兴）", "ui/textures/guide/guide-3.texture"},
         },
         narrative_end = {
@@ -899,22 +916,6 @@ local guide = {
         },
         prerequisites = {
             "电磁学1",
-        },
-	},
-
-    {
-        name = "",
-		narrative = {
-            {"我们基地正在扩大,也随之带来更大的电力负荷,让我们放置{/color:4bd0ff 太阳能板}发电吧..哔哩(期待）", "ui/textures/guide/guide-2.texture"},
-        },
-        narrative_end = {
-            guide_progress = 61,
-            task = {
-                "放置太阳能板",
-            }
-        },
-        prerequisites = {
-            "碳处理1",
         },
 	},
 
