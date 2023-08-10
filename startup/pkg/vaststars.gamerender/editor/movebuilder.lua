@@ -168,8 +168,8 @@ local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobjec
             else
                 if iprototype.has_types(typeobject.type, "station_producer", "station_consumer") then
                     if otypeobject.supply_area then
-                        local aw, ah = iprototype.rotate_area(typeobject.area, object.dir)
-                        local sw, sh = iprototype.rotate_area(typeobject.supply_area, object.dir)
+                        local aw, ah = iprototype.rotate_area(otypeobject.area, object.dir)
+                        local sw, sh = iprototype.rotate_area(otypeobject.supply_area, object.dir)
                         if __is_building_intersect(x, y, ow, oh, object.x  - (sw - aw) // 2, object.y - (sh - ah) // 2, sw, sh) then
                             color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
                         else
@@ -213,8 +213,8 @@ local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobjec
             else
                 if iprototype.has_types(typeobject.type, "station_producer", "station_consumer") then
                     if otypeobject.supply_area then
-                        local aw, ah = iprototype.rotate_area(typeobject.area, object.dir)
-                        local sw, sh = iprototype.rotate_area(typeobject.supply_area, object.dir)
+                        local aw, ah = iprototype.rotate_area(otypeobject.area, object.dir)
+                        local sw, sh = iprototype.rotate_area(otypeobject.supply_area, object.dir)
                         if __is_building_intersect(x, y, ow, oh, object.x  - (sw - aw) // 2, object.y - (sh - ah) // 2, sw, sh) then
                             color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
                         else

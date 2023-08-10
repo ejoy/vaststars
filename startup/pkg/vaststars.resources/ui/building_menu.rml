@@ -68,7 +68,7 @@
                     function(_)
                         handler(start)
                     end,
-                    "show_set_recipe", "show_set_item",
+                    "show_set_recipe", "set_item_icon1", "set_item_icon2",
                     "lorry_factory_inc_lorry", "lorry_factory_dec_lorry",
                     "guide_progress", "pickup_item_count", "place_item_count",
                     "station_weight_increase",
@@ -81,8 +81,10 @@
             <div class = "layout">
                 <div class = "building-button-container" data-style-transform = "it.outer_transform" data-for = "buttons">
                     <div class = "building-button" style = "pointer-events: none; width: 18.23vmin; height: 18.23vmin;" data-style-transform = "it.inner_transform">
-                        <div class = "building-button" style = "width: 18.23vmin; height: 18.23vmin;" data-style-background-image = "it.background_image" data-event-click = "clickButton(it.command)">
-                            <div data-if = "it.show_number" style = "top: 56.90%; left: 39.00%; width: 15.80%; font-size: 0.65em; text-align: center; align-items: center; -webkit-text-stroke: 0.2vmin rgb(63, 60, 63);" data-style-color = "it.number == '+' and 'rgb(0,255,0)' or (it.number > 0 and 'rgb(0,255,0)' or 'rgb(255,255,255)')">{{it.number}}</div>
+                        <div class = "building-button" style = "width: 18.23vmin; height: 18.23vmin;" data-event-click = "clickButton(it.command)">
+                            <div style = "background-size: cover; position: absolute; width: 100%; height: 100%; background-image: ui/textures/building-menu/bg.texture;" data-if = "it.show_background" />
+                            <div style = "background-size: cover; position: absolute; width: 100%; height: 100%;" data-style-background-image = "it.background_image" />
+                            <div data-if = "it.show_number" style = "position: absolute; top: 56.90%; left: 39.00%; width: 15.80%; font-size: 0.65em; text-align: center; align-items: center; -webkit-text-stroke: 0.2vmin rgb(63, 60, 63);" data-style-color = "it.number == '+' and 'rgb(0,255,0)' or (it.number > 0 and 'rgb(0,255,0)' or 'rgb(255,255,255)')">{{it.number}}</div>
                         </div>
                     </div>
                 </div>

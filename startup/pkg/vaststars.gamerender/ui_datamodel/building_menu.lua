@@ -149,6 +149,23 @@ local __moveable_count_update = interval_call(800, function(datamodel, object_id
     return false
 end, false)
 
+local function getChestSlotItem(e)
+    local chest_component = ichest.get_chest_component(e)
+    if not chest_component then
+        return {}
+    end
+
+    local t = {}
+    for i = 1, ichest.MAX_SLOT do
+        local slot = gameplay_core.get_world():container_get(e[chest_component], i)
+        if not slot then
+            break
+        end
+        t[#t+1] = slot.item
+    end
+    return t
+end
+
 ---------------
 local M = {}
 function M:create(object_id)
@@ -162,8 +179,8 @@ function M:create(object_id)
     local typeobject = iprototype.queryById(e.building.prototype)
 
     local show_set_recipe = false
-    local show_set_item = false
-    local show_set_item2 = false
+    local set_item1, set_item2 = false, false
+    local set_item_icon1, set_item_icon2 = "", ""
     local lorry_factory_inc_lorry = false
     local station_weight_increase = false
     local station_weight_decrease = false
@@ -187,24 +204,32 @@ function M:create(object_id)
     if e.station_producer then
         station_weight_increase = true
         station_weight_decrease = true
-        show_set_item = true
+        set_item1 = true
+        local items = getChestSlotItem(e)
+        set_item_icon1 = (items[1] and items[1] ~= 0) and iprototype.queryById(items[1]).item_icon or ""
     end
     if e.station_consumer then
         station_lorry_increase = true
         station_lorry_decrease = true
-        show_set_item = true
+        set_item1 = true
+        local items = getChestSlotItem(e)
+        set_item_icon1 = (items[1] and items[1] ~= 0) and iprototype.queryById(items[1]).item_icon or ""
     end
     if e.hub then
-        show_set_item = true
-        show_set_item2 = true
+        local items = getChestSlotItem(e)
+        set_item1, set_item2 = items[1] ~= nil, items[2] ~= nil
+        set_item_icon1 = (items[1] and items[1] ~= 0) and iprototype.queryById(items[1]).item_icon or ""
+        set_item_icon2 = (items[2] and items[2] ~= 0) and iprototype.queryById(items[2]).item_icon or ""
     end
 
     local datamodel = {
         object_id = object_id,
         prototype_name = typeobject.name,
         show_set_recipe = show_set_recipe,
-        show_set_item = show_set_item,
-        show_set_item2 = show_set_item2,
+        set_item1 = set_item1,
+        set_item2 = set_item2,
+        set_item_icon1 = set_item_icon1,
+        set_item_icon2 = set_item_icon2,
         lorry_factory_inc_lorry = lorry_factory_inc_lorry,
         lorry_factory_dec_lorry = false,
         station_weight_increase = station_weight_increase,

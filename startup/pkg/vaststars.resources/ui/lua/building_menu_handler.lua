@@ -45,6 +45,7 @@ local DEFAULT <const> = {
     command = " ",
     number = -1,
     show_number = false,
+    show_background = false,
     disabled = false,
 }
 
@@ -119,10 +120,19 @@ return function(start)
         start.buttons[#start.buttons + 1] = v
     end
 
-    if start.show_set_item then
+    if start.set_item1 then
         local v = setmetatable({}, {__index = DEFAULT})
         v.command = "set_item"
-        v.background_image = "ui/textures/building-menu/set-item.texture"
+        v.show_background = start.set_item_icon1 ~= ""
+        v.background_image = start.set_item_icon1 == "" and "ui/textures/building-menu/set-item.texture" or start.set_item_icon1
+        start.buttons[#start.buttons + 1] = v
+    end
+
+    if start.set_item2 then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.command = "set_item2"
+        v.show_background = start.set_item_icon2 ~= ""
+        v.background_image = start.set_item_icon2 == "" and "ui/textures/building-menu/set-item.texture" or start.set_item_icon2
         start.buttons[#start.buttons + 1] = v
     end
 
