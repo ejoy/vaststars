@@ -842,15 +842,17 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"我们具备了提取空气中有用气体的能力..哔哩..(高兴)", "ui/textures/guide/guide-2.texture"},
+            --{"我们具备了提取空气中有用气体的能力..哔哩..(高兴)", "ui/textures/guide/guide-2.texture"},
             {"很多稀有气体可以用于工业生产，让我们开始研究{/g 空气分离}吧..哔哩..哔哩(高兴)", "ui/textures/guide/guide-3.texture"},
         },
         narrative_end = {
             guide_progress = 58,
             task = {
+                "空气分离工艺1",
             }
         },
         prerequisites = {
+            "电解水",
         },
 	},
 
@@ -866,6 +868,7 @@ local guide = {
             }
         },
         prerequisites = {
+            "放置化工厂",
         },
 	},
 
