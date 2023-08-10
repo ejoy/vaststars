@@ -1579,7 +1579,7 @@ prototype "机械研究" {
   type = { "tech" },
   icon = "ui/textures/science/book.texture",
   effects = {
-    unlock_recipe = {"机械科技包1"},
+    unlock_recipe = {"机械科技包T1"},
     unlock_item = {"机械科技包"},
   },
   prerequisites = {"电磁学1"},
@@ -1656,8 +1656,8 @@ prototype "蒸馏1" {
     {"气候科技包", 1},
     {"机械科技包", 1},
   },
-  count = 4,
-  time = "7s"
+  count = 6,
+  time = "5s"
 }
 
 prototype "电力传输1" {
@@ -1742,8 +1742,8 @@ prototype "地下水净化1" {
     {"气候科技包", 1},
     {"机械科技包", 1},
   },
-  count = 3,
-  time = "12s"
+  count = 4,
+  time = "8s"
 }
 
 prototype "过滤1" {
@@ -2264,7 +2264,7 @@ prototype "电子器件1" {
     {"气候科技包", 1},
     {"机械科技包", 1},
   },
-  count = 40,
+  count = 30,
   time = "5s"
 }
 
@@ -2282,7 +2282,7 @@ prototype "电力传输2" {
     {"气候科技包", 1},
     {"机械科技包", 1},
   },
-  count = 30,
+  count = 20,
   time = "8s"
 }
 

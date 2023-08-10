@@ -3,10 +3,11 @@ local prototype = gameplay.register.prototype
 
 prototype "铁板" {
     type = {"item"},
-    station_limit = 12,
+    station_limit = 16,
     --pile = "4x4",   --物品需要填写： 长 X 高
     --capacity = 32,  --物品需要填写容纳总量值
     pile = "4x4x4",
+    hub_limit = 64,
     backpack_limit = 50,
     drone_depot_gap3 = "0.2x0.05x0.2",
     pile_model = "glb/stackeditems/stack-iron-plate.glb|mesh.prefab",
@@ -17,8 +18,9 @@ prototype "铁板" {
 
 prototype "铁丝" {
     type = {"item"},
-    station_limit = 12,
+    station_limit = 16,
     pile = "4x4x2",
+    hub_limit = 32,
     drone_depot_gap3 = "0.5x0.2x1",
     backpack_limit = 100,
     pile_model = "glb/stackeditems/stack-iron-wire.glb|mesh.prefab",
@@ -29,8 +31,9 @@ prototype "铁丝" {
 
 prototype "铁棒" {
     type = {"item"},
-    station_limit = 12,
+    station_limit = 16,
     pile = "4x4x2",
+    hub_limit = 32,
     drone_depot_gap3 = "0.5x0.2x1",
     backpack_limit = 50,
     pile_model = "glb/stackeditems/stack-iron-plate.glb|mesh.prefab",
@@ -41,8 +44,9 @@ prototype "铁棒" {
 
 prototype "钢板" {
     type = {"item"},
-    station_limit = 12,
+    station_limit = 16,
     pile = "4x4x2",
+    hub_limit = 32,
     drone_depot_gap3 = "0.5x0.2x1",
     backpack_limit = 50,
     pile_model = "glb/stackeditems/stack-steel-plate.glb|mesh.prefab",
@@ -53,8 +57,9 @@ prototype "钢板" {
 
 prototype "钢齿轮" {
     type = {"item"},
-    station_limit = 12,
+    station_limit = 16,
     pile = "4x4x4",
+    hub_limit = 64,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 50,
     pile_model = "glb/stackeditems/stack-steel-gear.glb|mesh.prefab",
@@ -66,8 +71,9 @@ prototype "钢齿轮" {
 prototype "铁矿石" {
     display_name = "铁矿",
     type = {"item"},
-    station_limit = 12,
+    station_limit = 16,
     pile = "4x4x4",
+    hub_limit = 64,
     backpack_limit = 100,
     drone_depot_gap3 = "0.2x0.05x0.2",
     pile_model = "glb/stackeditems/stack-iron-ore.glb|mesh.prefab",
@@ -83,6 +89,7 @@ prototype "碎石" {
     type = {"item"},
     station_limit = 12,
     pile = "4x3x2",
+    hub_limit = 24,
     drone_depot_gap3 = "0.2x0.2x1",
     backpack_limit = 100,
     pile_model = "glb/stackeditems/stack-gravel.glb|mesh.prefab",
@@ -96,8 +103,9 @@ prototype "碎石" {
 prototype "砂岩" {
     display_name = "砂矿",
     type = {"item"},
-    station_limit = 12,
+    station_limit = 16,
     pile = "4x4x4",
+    hub_limit = 64,
     drone_depot_gap3 = "1x0.2x1",
     backpack_limit = 100,
     pile_model = "glb/stackeditems/stack-gravel.glb|mesh.prefab",
@@ -110,8 +118,9 @@ prototype "砂岩" {
 
 prototype "石砖" {
     type = {"item"},
-    station_limit = 12,
+    station_limit = 16,
     pile = "4x4x2",
+    hub_limit = 32,
     drone_depot_gap3 = "0.5x0.2x1",
     backpack_limit = 50,
     pile_model = "glb/stackeditems/stack-stone-brick.glb|mesh.prefab",
@@ -123,8 +132,9 @@ prototype "石砖" {
 prototype "铝矿石" {
     display_name = "铝矿",
     type = {"item"},
-    station_limit = 12,
+    station_limit = 16,
     pile = "4x4x2",
+    hub_limit = 32,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 100,
     pile_model = "glb/stackeditems/stack-aluminium-ore.glb|mesh.prefab",
@@ -137,8 +147,9 @@ prototype "铝矿石" {
 
 prototype "碾碎铁矿石" {
     type = {"item"},
-    station_limit = 24,
+    station_limit = 16,
     pile = "4x4x4",
+    hub_limit = 64,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 100,
     pile_model = "glb/stackeditems/stack-crush-iron-ore.glb|mesh.prefab",
@@ -149,8 +160,9 @@ prototype "碾碎铁矿石" {
 
 prototype "碾碎铝矿石" {
     type = {"item"},
-    station_limit = 24,
+    station_limit = 16,
     pile = "4x4x4",
+    hub_limit = 64,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 100,
     pile_model = "glb/stackeditems/stack-crush-aluminium-ore.glb|mesh.prefab",
@@ -161,8 +173,9 @@ prototype "碾碎铝矿石" {
 
 prototype "氢氧化铝" {
     type = {"item"},
-    station_limit = 12,
+    station_limit = 16,
     pile = "4x4x2",
+    hub_limit = 32,
     drone_depot_gap3 = "0.5x0.2x1",
     backpack_limit = 50,
     pile_model = "glb/stackeditems/stack-aluminium-hydroxide.glb|mesh.prefab",
@@ -173,8 +186,9 @@ prototype "氢氧化铝" {
 
 prototype "氧化铝" {
     type = {"item"},
-    station_limit = 12,
+    station_limit = 16,
     pile = "4x4x2",
+    hub_limit = 32,
     drone_depot_gap3 = "0.5x0.2x1",
     backpack_limit = 50,
     pile_model = "glb/stackeditems/stack-aluminium-oxide.glb|mesh.prefab",
@@ -185,8 +199,9 @@ prototype "氧化铝" {
 
 prototype "碳化铝" {
     type = {"item"},
-    station_limit = 12,
+    station_limit = 16,
     pile = "4x4x2",
+    hub_limit = 32,
     drone_depot_gap3 = "0.5x0.2x1",
     backpack_limit = 50,
     pile_model = "glb/stackeditems/iron-ore.glb|mesh.prefab",
@@ -197,8 +212,9 @@ prototype "碳化铝" {
 
 prototype "铝板" {
     type = {"item"},
-    station_limit = 12,
+    station_limit = 16,
     pile = "4x4x2",
+    hub_limit = 32,
     drone_depot_gap3 = "0.5x0.2x1",
     backpack_limit = 50,
     pile_model = "glb/stackeditems/stack-aluminium-plate.glb|mesh.prefab",
@@ -209,8 +225,9 @@ prototype "铝板" {
 
 prototype "铝棒" {
     type = {"item"},
-    station_limit = 12,
+    station_limit = 8,
     pile = "2x4x2",
+    hub_limit = 16,
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_limit = 25,
     pile_model = "glb/stackeditems/stack-aluminium-rod.glb|mesh.prefab",
@@ -223,6 +240,7 @@ prototype "铝丝" {
     type = {"item"},
     station_limit = 16,
     pile = "4x4x2",
+    hub_limit = 32,
     drone_depot_gap3 = "0.5x0.2x1",
     backpack_limit = 100,
     pile_model = "glb/stackeditems/stack-iron-wire.glb|mesh.prefab",
@@ -233,8 +251,9 @@ prototype "铝丝" {
 
 prototype "石墨" {
     type = {"item"},
-    station_limit = 12,
+    station_limit = 16,
     pile = "4x4x4",
+    hub_limit = 64,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 100,
     pile_model = "glb/stackeditems/stack-graphite.glb|mesh.prefab",
@@ -245,8 +264,9 @@ prototype "石墨" {
 
 prototype "硅" {
     type = {"item"},
-    station_limit = 20,
+    station_limit = 16,
     pile = "4x4x4",
+    hub_limit = 64,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 100,
     pile_model = "glb/stackeditems/stack-silitem_icon.glb|mesh.prefab",
@@ -257,8 +277,9 @@ prototype "硅" {
 
 prototype "硅板" {
     type = {"item"},
-    station_limit = 12,
+    station_limit = 16,
     pile = "4x4x2",
+    hub_limit = 32,
     drone_depot_gap3 = "0.5x0.2x1",
     backpack_limit = 50,
     pile_model = "glb/stackeditems/stack-silitem_icon-plate.glb|mesh.prefab",
@@ -269,8 +290,9 @@ prototype "硅板" {
 
 prototype "沙石矿" {
     type = {"item"},
-    station_limit = 12,
+    station_limit = 16,
     pile = "4x4x4",
+    hub_limit = 64,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 100,
     pile_model = "glb/stackeditems/stack-limestone.glb|mesh.prefab",
@@ -281,8 +303,9 @@ prototype "沙石矿" {
 
 prototype "氢氧化钠" {
     type = {"item"},
-    station_limit = 12,
+    station_limit = 16,
     pile = "4x4x4",
+    hub_limit = 64,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 100,
     pile_model = "glb/stackeditems/stack-sodium-hydroxide.glb|mesh.prefab",
@@ -295,6 +318,7 @@ prototype "钠" {
     type = {"item"},
     station_limit = 13,
     pile = "4x4x4",
+    hub_limit = 64,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 100,
     pile_model = "glb/stackeditems/stack-gravel.glb|mesh.prefab",
@@ -305,8 +329,9 @@ prototype "钠" {
 
 prototype "金红石" {
     type = {"item"},
-    station_limit = 12,
+    station_limit = 16,
     pile = "4x4x4",
+    hub_limit = 64,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 100,
     pile_model = "glb/stackeditems/stack-gravel.glb|mesh.prefab",
@@ -317,8 +342,9 @@ prototype "金红石" {
 
 prototype "钛板" {
     type = {"item"},
-    station_limit = 12,
+    station_limit = 16,
     pile = "4x4x2",
+    hub_limit = 32,
     drone_depot_gap3 = "0.5x0.2x1",
     backpack_limit = 50,
     pile_model = "glb/stackeditems/stack-copper-plate.glb|mesh.prefab",
@@ -339,8 +365,9 @@ prototype "钛板" {
 
 prototype "沙子" {
     type = {"item"},
-    station_limit = 12,
+    station_limit = 16,
     pile = "4x4x4",
+    hub_limit = 64,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 100,
     pile_model = "glb/stackeditems/stack-sand.glb|mesh.prefab",
@@ -351,8 +378,9 @@ prototype "沙子" {
 
 prototype "塑料" {
     type = {"item"},
-    station_limit = 12,
+    station_limit = 8,
     pile = "2x4x2",
+    hub_limit = 16,
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_limit = 25,
     pile_model = "glb/stackeditems/stack-plastic.glb|mesh.prefab",
@@ -365,6 +393,7 @@ prototype "电动机I" {
     type = {"item"},
     station_limit = 8,
     pile = "2x4x2",
+    hub_limit = 16,
     backpack_limit = 25,
     drone_depot_gap3 = "0.65x0.2x0.65",
     pile_model = "glb/stackeditems/stack-motor.glb|mesh.prefab",
@@ -377,6 +406,7 @@ prototype "电动机II" {
     type = {"item"},
     station_limit = 8,
     pile = "2x4x2",
+    hub_limit = 16,
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_limit = 25,
     pile_model = "glb/stackeditems/stack-motor.glb|mesh.prefab",
@@ -389,6 +419,7 @@ prototype "电动机III" {
     type = {"item"},
     station_limit = 8,
     pile = "2x4x2",
+    hub_limit = 16,
     backpack_limit = 25,
     drone_depot_gap3 = "0.65x0.2x0.65",
     pile_model = "glb/stackeditems/stack-motor.glb|mesh.prefab",
@@ -399,8 +430,9 @@ prototype "电动机III" {
 
 prototype "铁齿轮" {
     type = {"item"},
-    station_limit = 8,
+    station_limit = 16,
     pile = "4x4x4",
+    hub_limit = 64,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 100,
     pile_model = "glb/stackeditems/stack-iron-gear.glb|mesh.prefab",
@@ -413,6 +445,7 @@ prototype "玻璃" {
     type = {"item"},
     station_limit = 8,
     pile = "2x4x2",
+    hub_limit = 16,
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_limit = 25,
     pile_model = "glb/stackeditems/stack-glass.glb|mesh.prefab",
@@ -423,8 +456,9 @@ prototype "玻璃" {
 
 prototype "坩埚" {
     type = {"item"},
-    station_limit = 4,
+    station_limit = 8,
     pile = "2x4x2",
+    hub_limit = 16,
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_limit = 25,
     pile_model = "glb/stackeditems/stack-crucible.glb|mesh.prefab",
@@ -437,6 +471,7 @@ prototype "橡胶" {
     type = {"item"},
     station_limit = 8,
     pile = "2x4x2",
+    hub_limit = 16,
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_limit = 25,
     pile_model = "glb/stackeditems/stack-rubber.glb|mesh.prefab",
@@ -449,6 +484,7 @@ prototype "电容I" {
     type = {"item"},
     station_limit = 8,
     pile = "2x4x2",
+    hub_limit = 16,
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_limit = 25,
     pile_model = "glb/stackeditems/stack-capacitor.glb|mesh.prefab",
@@ -461,6 +497,7 @@ prototype "电容II" {
     type = {"item"},
     station_limit = 8,
     pile = "2x4x2",
+    hub_limit = 16,
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_limit = 25,
     pile_model = "glb/stackeditems/stack-capacitor.glb|mesh.prefab",
@@ -471,8 +508,9 @@ prototype "电容II" {
 
 prototype "绝缘线" {
     type = {"item"},
-    station_limit = 12,
+    station_limit = 8,
     pile = "2x4x2",
+    hub_limit = 16,
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_limit = 25,
     pile_model = "glb/stackeditems/stack-insulated-wire.glb|mesh.prefab",
@@ -485,6 +523,7 @@ prototype "逻辑电路" {
     type = {"item"},
     station_limit = 8,
     pile = "2x4x2",
+    hub_limit = 16,
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_limit = 25,
     pile_model = "glb/stackeditems/stack-logic-circuit.glb|mesh.prefab",
@@ -495,8 +534,9 @@ prototype "逻辑电路" {
 
 prototype "数据线" {
     type = {"item"},
-    station_limit = 12,
+    station_limit = 8,
     pile = "4x1x4",
+    hub_limit = 16,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 25,
     pile_model = "glb/stackeditems/stack-iron-plate.glb|mesh.prefab",
@@ -509,6 +549,7 @@ prototype "运算电路" {
     type = {"item"},
     station_limit = 8,
     pile = "4x1x4",
+    hub_limit = 16,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 25,
     pile_model = "glb/stackeditems/stack-iron-plate.glb|mesh.prefab",
@@ -521,6 +562,7 @@ prototype "效能插件I" {
     type = {"item"},
     station_limit = 8,
     pile = "4x1x4",
+    hub_limit = 16,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 25,
     pile_model = "glb/stackeditems/stack-green-electronic-circuit.glb|mesh.prefab",
@@ -533,6 +575,7 @@ prototype "效能插件II" {
     type = {"item"},
     station_limit = 8,
     pile = "4x1x4",
+    hub_limit = 16,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 25,
     pile_model = "glb/stackeditems/stack-green-electronic-circuit.glb|mesh.prefab",
@@ -545,6 +588,7 @@ prototype "效能插件III" {
     type = {"item"},
     station_limit = 8,
     pile = "4x1x4",
+    hub_limit = 16,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 25,
     pile_model = "glb/stackeditems/stack-green-electronic-circuit.glb|mesh.prefab",
@@ -558,6 +602,7 @@ prototype "产能插件I" {
     type = {"item"},
     station_limit = 8,
     pile = "4x1x4",
+    hub_limit = 16,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 25,
     pile_model = "glb/stackeditems/stack-red-electronic-circuit.glb|mesh.prefab",
@@ -570,6 +615,7 @@ prototype "产能插件II" {
     type = {"item"},
     station_limit = 8,
     pile = "4x1x4",
+    hub_limit = 16,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 25,
     pile_model = "glb/stackeditems/stack-red-electronic-circuit.glb|mesh.prefab",
@@ -582,6 +628,7 @@ prototype "产能插件III" {
     type = {"item"},
     station_limit = 8,
     pile = "4x1x4",
+    hub_limit = 16,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 25,
     pile_model = "glb/stackeditems/stack-red-electronic-circuit.glb|mesh.prefab",
@@ -594,6 +641,7 @@ prototype "速度插件I" {
     type = {"item"},
     station_limit = 8,
     pile = "4x1x4",
+    hub_limit = 16,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 25,
     pile_model = "glb/stackeditems/stack-blue-electronic-circuit.glb|mesh.prefab",
@@ -606,6 +654,7 @@ prototype "速度插件II" {
     type = {"item"},
     station_limit = 8,
     pile = "4x1x4",
+    hub_limit = 16,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 25,
     pile_model = "glb/stackeditems/stack-blue-electronic-circuit.glb|mesh.prefab",
@@ -618,6 +667,7 @@ prototype "速度插件III" {
     type = {"item"},
     station_limit = 8,
     pile = "4x1x4",
+    hub_limit = 16,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 25,
     pile_model = "glb/stackeditems/stack-blue-electronic-circuit.glb|mesh.prefab",
@@ -630,6 +680,7 @@ prototype "混凝土" {
     type = {"item"},
     station_limit = 8,
     pile = "4x1x4",
+    hub_limit = 16,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 25,
     pile_model = "glb/stackeditems/stack-iron-plate.glb|mesh.prefab",
@@ -642,6 +693,7 @@ prototype "处理器I" {
     type = {"item"},
     station_limit = 8,
     pile = "4x1x4",
+    hub_limit = 16,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 25,
     pile_model = "glb/stackeditems/stack-logic-circuit.glb|mesh.prefab",
@@ -654,6 +706,7 @@ prototype "处理器II" {
     type = {"item"},
     station_limit = 8,
     pile = "4x1x4",
+    hub_limit = 16,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 25,
     pile_model = "glb/stackeditems/stack-logic-circuit.glb|mesh.prefab",
@@ -666,6 +719,7 @@ prototype "电池I" {
     type = {"item"},
     station_limit = 8,
     pile = "4x1x4",
+    hub_limit = 16,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 25,
     pile_model = "glb/stackeditems/stack-iron-plate.glb|mesh.prefab",
@@ -678,6 +732,7 @@ prototype "电池II" {
     type = {"item"},
     station_limit = 8,
     pile = "4x1x4",
+    hub_limit = 16,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 25,
     pile_model = "glb/stackeditems/stack-iron-plate.glb|mesh.prefab",
@@ -690,6 +745,7 @@ prototype "玻璃纤维" {
     type = {"item"},
     station_limit = 8,
     pile = "4x1x4",
+    hub_limit = 16,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 25,
     pile_model = "glb/stackeditems/stack-iron-plate.glb|mesh.prefab",
@@ -702,6 +758,7 @@ prototype "石墨烯" {
     type = {"item"},
     station_limit = 8,
     pile = "4x1x4",
+    hub_limit = 16,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 25,
     pile_model = "glb/stackeditems/stack-iron-plate.glb|mesh.prefab",
@@ -714,6 +771,7 @@ prototype "隔热板" {
     type = {"item"},
     station_limit = 8,
     pile = "4x1x4",
+    hub_limit = 16,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 25,
     pile_model = "glb/stackeditems/stack-iron-plate.glb|mesh.prefab",
@@ -724,8 +782,9 @@ prototype "隔热板" {
 
 prototype "火箭控制器" {
     type = {"item"},
-    station_limit = 12,
+    station_limit = 8,
     pile = "4x1x4",
+    hub_limit = 16,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 25,
     pile_model = "glb/stackeditems/stack-iron-plate.glb|mesh.prefab",
@@ -736,8 +795,9 @@ prototype "火箭控制器" {
 
 prototype "火箭区段" {
     type = {"item"},
-    station_limit = 12,
+    station_limit = 8,
     pile = "4x1x4",
+    hub_limit = 16,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 25,
     pile_model = "glb/stackeditems/stack-iron-plate.glb|mesh.prefab",
@@ -748,8 +808,9 @@ prototype "火箭区段" {
 
 prototype "火箭整流罩" {
     type = {"item"},
-    station_limit = 4,
+    station_limit = 8,
     pile = "4x1x4",
+    hub_limit = 16,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 25,
     pile_model = "glb/stackeditems/stack-iron-plate.glb|mesh.prefab",
@@ -760,8 +821,9 @@ prototype "火箭整流罩" {
 ------------------------------------------------
 prototype "地质科技包" {
     type = {"item"},
-    station_limit = 8,
+    station_limit = 16,
     pile = "4x4x4",
+    hub_limit = 64,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 100,
     pile_model = "glb/stackeditems/stack-geology-pack.glb|mesh.prefab",
@@ -773,8 +835,9 @@ prototype "地质科技包" {
 
 prototype "气候科技包" {
     type = {"item"},
-    station_limit = 8,
+    station_limit = 16,
     pile = "4x4x4",
+    hub_limit = 64,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 100,
     pile_model = "glb/stackeditems/stack-climatology-pack.glb|mesh.prefab",
@@ -786,8 +849,9 @@ prototype "气候科技包" {
 
 prototype "机械科技包" {
     type = {"item"},
-    station_limit = 8,
+    station_limit = 16,
     pile = "4x4x4",
+    hub_limit = 64,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 100,
     pile_model = "glb/stackeditems/stack-mechanical-pack.glb|mesh.prefab",
@@ -799,8 +863,9 @@ prototype "机械科技包" {
 
 prototype "电子科技包" {
     type = {"item"},
-    station_limit = 8,
+    station_limit = 16,
     pile = "4x4x4",
+    hub_limit = 64,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 100,
     pile_model = "glb/stackeditems/stack-electrical-pack.glb|mesh.prefab",
@@ -812,8 +877,9 @@ prototype "电子科技包" {
 
 prototype "化学科技包" {
     type = {"item"},
-    station_limit = 8,
+    station_limit = 16,
     pile = "4x4x4",
+    hub_limit = 64,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 100,
     pile_model = "glb/stackeditems/stack-chemical-pack.glb|mesh.prefab",
@@ -825,11 +891,12 @@ prototype "化学科技包" {
 
 prototype "物理科技包" {
     type = {"item"},
-    station_limit = 8,
+    station_limit = 16,
     pile = "4x4x4",
+    hub_limit = 64,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 100,
-    pile_model = "glb/stackeditems/stack-iron-plate.glb|mesh.prefab",
+    pile_model = "glb/stackeditems/stack-physical-pack.glb|mesh.prefab",
     item_icon = "textures/icons/item/physical-pack.texture",
     tech_icon = "textures/icons/item/physical-pack.texture",
     item_description = "用于收集、分析和解释物理实验数据",
@@ -840,6 +907,7 @@ prototype "废料" {
     type = {"item"},
     station_limit = 16,
     pile = "4x4x4",
+    hub_limit = 64,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 100,
     pile_model = "glb/stackeditems/stack-scrap.glb|mesh.prefab",
@@ -850,8 +918,9 @@ prototype "废料" {
 
 prototype "铜板" {
     type = {"item"},
-    station_limit = 8,
+    station_limit = 16,
     pile = "4x4x4",
+    hub_limit = 64,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 100,
     pile_model = "glb/stackeditems/stack-copper-plate.glb|mesh.prefab",
@@ -861,8 +930,9 @@ prototype "铜板" {
 }
 prototype "铜丝" {
     type = {"item"},
-    station_limit = 8,
+    station_limit = 16,
     pile = "4x4x2",
+    hub_limit = 32,
     drone_depot_gap3 = "0.5x0.2x1",
     backpack_limit = 100,
     pile_model = "glb/stackeditems/stack-copper-wire.glb|mesh.prefab",
@@ -873,8 +943,9 @@ prototype "铜丝" {
 
 prototype "电路板" {
     type = {"item"},
-    station_limit = 8,
+    station_limit = 16,
     pile = "4x4x4",
+    hub_limit = 64,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 100,
     pile_model = "glb/stackeditems/stack-logic-circuit.glb|mesh.prefab",
@@ -885,8 +956,9 @@ prototype "电路板" {
 
 prototype "核铀燃料" {
 	type = { "item" },
-	station_limit = 50,
+	station_limit = 16,
     pile = "4x4x4",
+    hub_limit = 64,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 100,
     pile_model = "glb/stackeditems/stack-iron-plate.glb|mesh.prefab",
@@ -897,8 +969,9 @@ prototype "核铀燃料" {
 
 prototype "用尽的核铀燃料" {
 	type = { "item" },
-	station_limit = 50,
+	station_limit = 16,
     pile = "4x4x4",
+    hub_limit = 64,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 100,
     pile_model = "glb/stackeditems/stack-iron-plate.glb|mesh.prefab",
@@ -909,8 +982,9 @@ prototype "用尽的核铀燃料" {
 --------------------------
 prototype "海藻" {
 	type = { "item" },
-	station_limit = 50,
+	station_limit = 16,
     pile = "4x4x4",
+    hub_limit = 64,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 100,
     pile_model = "glb/stackeditems/stack-iron-plate.glb|mesh.prefab",
@@ -921,8 +995,9 @@ prototype "海藻" {
 
 prototype "纤维燃料" {
 	type = { "item" },
-	station_limit = 50,
+	station_limit = 16,
     pile = "4x4x4",
+    hub_limit = 64,
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 100,
     pile_model = "glb/stackeditems/stack-iron-plate.glb|mesh.prefab",

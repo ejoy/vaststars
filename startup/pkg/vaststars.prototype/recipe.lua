@@ -2610,6 +2610,23 @@ prototype "机械科技包1" {
     description = "机械原料制造机械科技包",
 }
 
+prototype "机械科技包T1" {
+    type = { "recipe" },
+    recipe_craft_category = "器件中型制造",
+    recipe_category =  "器件",
+    recipe_order =  84,
+    recipe_icon =  "textures/icons/recipe/mechanical-pack-1.texture",
+    ingredients = {
+        {"电动机I", 1},
+        {"铁齿轮", 3},
+    },
+    results = {
+        {"机械科技包", 1},
+    },
+    time = "15s",
+    description = "机械原料制造机械科技包",
+}
+
 
 prototype "机械科技包2" {
     type = { "recipe" },
