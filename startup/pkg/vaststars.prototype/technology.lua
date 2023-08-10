@@ -41,35 +41,6 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  -- prototype "生产运输车辆1" {
-  --   desc = "指挥中心建造4辆运输车辆",
-  --   icon = "ui/textures/construct/industry.texture",
-  --   type = { "task" },
-  --   task = {"select_entity", 0, "运输车辆I"},
-  --   prerequisites = {"迫降火星"},
-  --   count = 4,
-  --   tips_pic = {
-  --     "ui/textures/task_tips_pic/task_produce_ore3.texture",
-  --   },
-  --   sign_desc = {
-  --     { desc = "指挥中心建造4辆运输车辆", icon = "ui/textures/construct/industry.texture"},
-  --   },
-  --   -- guide_focus = {
-  --   --   {
-  --   --     prefab = "prefabs/selected-box-no-animation.prefab",
-  --   --     x = 128,
-  --   --     y = 122,
-  --   --     w = 5.5,
-  --   --     h = 5.5,
-  --   --     show_arrow = true,
-  --   --   },
-  --   --   {
-  --   --     camera_x = 121,
-  --   --     camera_y = 122,
-  --   --   },
-  --   -- },
-  -- }
-
   prototype "搜索废墟" {
     desc = "从废墟中搜索物资",
     icon = "ui/textures/construct/industry.texture",
@@ -100,12 +71,49 @@ local prototype = gameplay.register.prototype
     },
   }
 
+  prototype "放置采矿机1" {
+    desc = "放置1台采矿机",
+    icon = "ui/textures/construct/industry.texture",
+    type = {"task" },
+    task = {"select_entity", 0, "采矿机I"},
+    prerequisites = {"更多碎石"},
+    count = 1,
+    tips_pic = {
+      "ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    guide_focus = {
+      -- {
+      --   prefab = "prefabs/selected-box-no-animation.prefab",
+      --   x = 139,
+      --   y = 141,
+      --   w = 3.2,
+      --   h = 3.2,
+      --   show_arrow = true,
+      -- },
+      {
+        prefab = "prefabs/selected-box-no-animation.prefab",
+        x = 116,
+        y = 134,
+        w = 3.2,
+        h = 3.2,
+      },
+      {
+        camera_x = 116,
+        camera_y = 134,
+      },
+    },
+    sign_desc = {
+      { desc = "在石矿上放置1台采矿机", icon = "ui/textures/construct/industry.texture"},
+    },
+  }
+
+
   prototype "放置电线杆" {
-    desc = "放置2根铁制电线杆",
+    desc = "放置1根铁制电线杆",
     icon = "ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"select_entity", 0, "铁制电线杆"},
-    prerequisites = {"搜索废墟"},
+    prerequisites = {"放置采矿机1"},
     count = 2,
     effects = {
       --  unlock_recipe = {"无人机仓库I打印"},
@@ -115,22 +123,22 @@ local prototype = gameplay.register.prototype
       "ui/textures/task_tips_pic/task_place_pole1.texture",
       "ui/textures/task_tips_pic/task_place_pole2.texture",
     },
-    -- guide_focus = {
-    --   {
-    --     prefab = "prefabs/selected-box-no-animation.prefab",
-    --     x = 127,
-    --     y = 115.8,
-    --     w = 1.8,
-    --     h = 1.8,
-    --     show_arrow = true,
-    --   },
-    --   {
-    --     camera_x = 125,
-    --     camera_y = 121,
-    --   },
-    -- },
+    guide_focus = {
+      {
+        prefab = "prefabs/selected-box-no-animation.prefab",
+        x = 118,
+        y = 128,
+        w = 1.2,
+        h = 1.2,
+        show_arrow = true,
+      },
+      {
+        camera_x = 118,
+        camera_y = 128,
+      },
+    },
     sign_desc = {
-      { desc = "从风力发电机到采矿机放置2根铁制电线杆构成电网", icon = "ui/textures/construct/industry.texture"},
+      { desc = "从风力发电机到采矿机放置1根铁制电线杆构成电网", icon = "ui/textures/construct/industry.texture"},
     },
   }
 
@@ -236,7 +244,7 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "放置采矿机" {
+  prototype "放置采矿机2" {
     desc = "放置1台采矿机",
     icon = "ui/textures/construct/industry.texture",
     type = {"task" },

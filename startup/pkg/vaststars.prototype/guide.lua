@@ -34,6 +34,23 @@ local guide = {
     {
         name = "",
 		narrative = {
+          -- {"哔哩..基地的{/color:4bd0ff 电网}尚未铺设，所以当前采矿机{/r 断电停工}..哔哩..哔哗..(失望)", "ui/textures/guide/guide-6.texture"},
+            {"哔哩..{/g 采矿机}放置在{/g 石矿}上方..哔哩..(期待)", "ui/textures/guide/guide-1.texture"},
+        },
+        narrative_end = {
+            guide_progress = 10,
+            task = {
+                "放置采矿机1",
+            }
+        },
+        prerequisites = {
+            "搜索废墟",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
             {"哔哩..基地的{/color:4bd0ff 用电设施}都需要{/g 电力}驱动，否则它们将无法工作..哔哩(无奈）", "ui/textures/guide/guide-6.texture"},
             -- {"{/color:4bd0ff 风力发电机}可产生电力..哔哩..在其附近放置{/g 电线杆}可以形成{/color:4bd0ff 电网}..哔哩(期待)", "ui/textures/guide/guide-3.texture"},
             -- {"当电线杆之间出现{/r 红色电线}时则表示成功连接，在其覆盖{/color:4bd0ff 蓝色范围}内就会提供电力(高兴)", "ui/textures/guide/guide-3.texture"},
@@ -45,15 +62,15 @@ local guide = {
             }
         },
         prerequisites = {
-            "搜索废墟",
+            "放置采矿机1",
         },
 	},
 
     {
         name = "",
 		narrative = {
-            {"哔哩..采矿机通电正常运转。石矿里{/color:4bd0ff 碎石}将被开采出来..哔哩(期待)", "ui/textures/guide/guide-1.texture"},
-            {"哔哩..{/color:4bd0ff 碎石}存放需要仓库，{/color:4bd0ff 建材箱}里的{/g 无人机仓库I}正好适合....(轻松)", "ui/textures/guide/guide-1.texture"},
+           -- {"哔哩..采矿机通电正常运转。石矿里{/color:4bd0ff 碎石}将被开采出来..哔哩(期待)", "ui/textures/guide/guide-1.texture"},
+            {"哔哩..{/color:4bd0ff 碎石}存放需要仓库，{/color:4bd0ff 废墟}里的{/g 无人机仓库I}正好适合....(轻松)", "ui/textures/guide/guide-1.texture"},
         },
         narrative_end = {
             guide_progress = 20,
@@ -69,7 +86,7 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"哔哩..矿物采集进展非常顺利，存活概率大幅提升至{/color:4bd0ff 0.3244%}..(期待)", "ui/textures/guide/guide-2.texture"},
+           -- {"哔哩..矿物采集进展非常顺利，存活概率大幅提升至{/color:4bd0ff 0.3244%}..(期待)", "ui/textures/guide/guide-2.texture"},
             {"哔哩..在{/color:4bd0ff 无人机仓库I}中选择储存{/g 碎石}，无人机就会自动搬运物资了..哔哩(高兴)", "ui/textures/guide/guide-3.texture"},
         },
         narrative_end = {
@@ -102,7 +119,7 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"哔哩..{/g 1座}无人机仓库I最多容纳{/g 24块}碎石..(失望)", "ui/textures/guide/guide-6.texture"},
+            --{"哔哩..{/g 1座}无人机仓库I最多容纳{/g 24块}碎石..(失望)", "ui/textures/guide/guide-6.texture"},
             {"哔哩..要放置更多的{/color:4bd0ff 碎石}就需要更多的{/g 无人机仓库I},尝试收集更多碎石吧..哔哩(期待)", "ui/textures/guide/guide-1.texture"},
         },
         narrative_end = {
@@ -124,7 +141,7 @@ local guide = {
         },
         narrative_end = {
             task = {
-                "放置采矿机",
+                "放置采矿机2",
             },
             guide_progress = 5,
         },
@@ -144,7 +161,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "放置采矿机",
+            "放置采矿机2",
         },
 	},
 
@@ -216,7 +233,7 @@ local guide = {
         name = "",
 		narrative = {
             {"在组装机附近的{/color:4bd0ff 无人机仓库I}选择物品{/g 地质科技包}后，无人机就可以开始搬运了..哔哩..(期待)", "ui/textures/guide/guide-1.texture"},
-            {"记得建造{/g 无人机仓库I}来存储生产出来地{/g 地质科技包}..哔哩..(期待)", "ui/textures/guide/guide-1.texture"},
+            --{"记得建造{/g 无人机仓库I}来存储生产出来地{/g 地质科技包}..哔哩..(期待)", "ui/textures/guide/guide-1.texture"},
         },
         narrative_end = {
             pop_chapter = {"第一章","自动生产"},

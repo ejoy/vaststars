@@ -6,6 +6,12 @@ local entities = { {
   y = 120
 }, {
   dir = "N",
+  items = {},
+  prototype_name = "铁制电线杆",
+  x = 118,
+  y = 136
+}, {
+  dir = "N",
   items = { { "无人机仓库I", 8 } , { "采矿机I", 4 }, { "科研中心I", 2 },{ "铁制电线杆", 15 } },
   prototype_name = "机身残骸",
   x = 107,
@@ -28,13 +34,15 @@ local entities = { {
   prototype_name = "机头残骸",
   x = 125,
   y = 108
-}, {
-  dir = "N",
-  prototype_name = "采矿机I",
-  recipe = "碎石挖掘",
-  x = 115,
-  y = 133
-},{
+}, 
+-- {
+--   dir = "N",
+--   prototype_name = "采矿机I",
+--   recipe = "碎石挖掘",
+--   x = 115,
+--   y = 133
+-- },
+{
   dir = "N",
   prototype_name = "风力发电机I",
   x = 117,
