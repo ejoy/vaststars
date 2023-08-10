@@ -69,6 +69,7 @@ tag "lorry_removed"
 tag "lorry_willremove"
 
 component "hub" {
+    "id:word",
     "chest:word",
 }
 

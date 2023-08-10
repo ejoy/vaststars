@@ -116,8 +116,8 @@ static uint16_t getxy(uint8_t x, uint8_t y) {
     return ((uint16_t)x << 8) | (uint16_t)y;
 }
 
-static uint32_t getHubKey(uint8_t x, uint8_t y, uint8_t slot) {
-    return ((uint32_t)slot << 16) | ((uint32_t)x << 8) | (uint32_t)y;
+static uint32_t getHubKey(uint16_t id, uint8_t slot) {
+    return ((uint32_t)slot << 16) | (uint32_t)id;
 }
 
 static void SetStatus(ecs::drone& drone, drone_status status) {
@@ -194,6 +194,7 @@ static HubSearcher createHubSearcher(world& w, hub_cache& info) {
 static void rebuild(world& w) {
     w.hub_time = 0;
     std::map<uint16_t, flatmap<uint16_t, hub_berth>> globalmap;
+    flatset<uint16_t> used_id;
     for (auto& v : ecs_api::select<ecs::hub, ecs::building>(w.ecs)) {
         auto& hub = v.get<ecs::hub>();
         auto& building = v.get<ecs::building>();
@@ -213,6 +214,7 @@ static void rebuild(world& w) {
                 map.insert_or_assign(getxy(x, y), berth);
             });
         }
+        used_id.insert(hub.id);
     }
 
     for (auto& v : ecs_api::select<ecs::chest, ecs::building>(w.ecs)) {
@@ -246,7 +248,17 @@ static void rebuild(world& w) {
         }
     }
 
-    w.hubs.clear();
+    flatmap<uint16_t, uint16_t> created_hub;
+    std::map<uint32_t, hub_cache> hubs;
+    uint16_t maxid = 1;
+    auto create_hubid = [&]()->uint16_t {
+        for (; maxid <= (std::numeric_limits<uint16_t>::max)(); ++maxid) {
+            if (!hubs.contains(maxid) && !used_id.contains(maxid)) {
+                return maxid;
+            }
+        }
+        return 0;
+    };
     for (auto& v : ecs_api::select<ecs::hub, ecs::building>(w.ecs)) {
         auto& hub = v.get<ecs::hub>();
         auto c = container::index::from(hub.chest);
@@ -259,6 +271,10 @@ static void rebuild(world& w) {
         uint16_t supply_area = prototype::get<"supply_area">(w, building.prototype);
         building_rect r(building, area, supply_area);
         auto slice = chest::array_slice(w, c);
+        if (hub.id == 0) {
+            hub.id = create_hubid();
+            created_hub.insert_or_assign(getxy(building.x, building.y), hub.id);
+        }
         for (uint8_t i = 0; i < slice.size(); ++i) {
             auto& chestslot = slice[i];
             hub_cache info;
@@ -267,7 +283,7 @@ static void rebuild(world& w) {
             info.homeHeight = homeBuilding.h;
             if (chestslot.item == 0) {
                 info.item = 0;
-                w.hubs.emplace(getHubKey(building.x, building.y, i), info);
+                hubs.emplace(getHubKey(hub.id, i), info);
                 continue;
             }
             auto& map = globalmap[chestslot.item];
@@ -295,9 +311,10 @@ static void rebuild(world& w) {
                 }
             }
             info.item = info.idle()? 0 : chestslot.item;
-            w.hubs.emplace(getHubKey(building.x, building.y, i), std::move(info));
+            hubs.emplace(getHubKey(hub.id, i), std::move(info));
         }
     }
+    w.hubs = std::move(hubs);
 
     for (auto& e : ecs_api::select<ecs::drone>(w.ecs)) {
         auto& drone = e.get<ecs::drone>();
@@ -306,14 +323,20 @@ static void rebuild(world& w) {
         case drone_status::has_error:
             break;
         case drone_status::init:
-            CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, ecs::drone& drone, hub_cache const& info) {
-                drone.prev = std::bit_cast<uint32_t>(info.homeBerth);
-                if (info.item == 0) {
-                    SetStatus(drone, drone_status::idle);
-                    return;
-                }
-                SetStatus(drone, drone_status::at_home);
-            });
+            if (auto p = created_hub.find(drone.home & 0xFFFF)) {
+                drone.home = *p | (drone.home & 0xFFFF0000);
+                CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, ecs::drone& drone, hub_cache const& info) {
+                    drone.prev = std::bit_cast<uint32_t>(info.homeBerth);
+                    if (info.item == 0) {
+                        SetStatus(drone, drone_status::idle);
+                        return;
+                    }
+                    SetStatus(drone, drone_status::at_home);
+                });
+            }
+            else {
+                SetStatus(drone, drone_status::has_error);
+            }
             e.enable_tag<ecs::drone_changed>();
             break;
         case drone_status::idle:
