@@ -1367,7 +1367,7 @@ prototype "放置蒸馏厂" {
   icon = "ui/textures/construct/industry.texture",
   type = { "task" },
   task = {"select_entity", 0, "蒸馏厂I"},
-  prerequisites = {"建筑维修3","生产氢气","放置太阳能板"},
+  prerequisites = {"生产氢气","放置太阳能板"},
   count = 1,
   tips_pic = {
     "ui/textures/task_tips_pic/task_click_build.texture",
