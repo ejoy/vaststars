@@ -173,7 +173,7 @@ function drone_depot_sys:gameworld_update()
         end
 
         local building = global.buildings[object.id]
-        local slot = ichest.chest_get(world, e.hub, 1)
+        local slot = ichest.get(world, e.hub, 1)
 
         --
         if building.drone_depot_shelf then

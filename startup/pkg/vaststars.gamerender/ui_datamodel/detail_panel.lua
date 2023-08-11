@@ -217,7 +217,7 @@ local function get_property(e, typeobject)
     if iprototype.check_types(typeobject.name, CHEST_LIST_TYPES) and chest_component then
         local chest_list = {}
         if iprototype.has_types(typeobject.type, "station_producer", "station_consumer", "hub") then
-            local c = ichest.chest_get(gameplay_core.get_world(), e[chest_component], 1)
+            local c = ichest.get(gameplay_core.get_world(), e[chest_component], 1)
             if c then
                 local typeobject_item = assert(iprototype.queryById(c.item))
                 local gw = gameplay_core.get_world()
@@ -348,7 +348,7 @@ local function get_entity_property_list(object_id, recipe_inputs, recipe_ouputs)
         local items = {}
         local gw = gameplay_core.get_world()
         for i, value in ipairs(current_inputs) do
-            local slot = ichest.chest_get(gameplay_core.get_world(), e.chest, i)
+            local slot = ichest.get(gameplay_core.get_world(), e.chest, i)
             items[#items+1] = {icon = value.icon, name = "", count = slot and slot.amount or 0, demand_count = gw:container_get(e.chest, 1).limit}
         end
         prolist.chest_list = items

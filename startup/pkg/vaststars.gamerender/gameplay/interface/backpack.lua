@@ -3,6 +3,7 @@ local iprototype = require "gameplay.interface.prototype"
 local ichest = require "gameplay.interface.chest"
 local debugger = require "debugger"
 local math_min = math.min
+local MAX_AMOUNT <const> = 99999
 
 local M = {}
 
@@ -39,21 +40,17 @@ function M.move_to_backpack(world, chest, idx)
         lock_item = lock_item - (available - unlocked)
     end
 
-    world:container_set(chest, idx, { lock_item = lock_item, amount = slot.amount - available })
+    ichest.set(world, chest, idx, { lock_item = lock_item, amount = slot.amount - available })
     iBackpack.place(world, slot.item, available)
     set_base_changed(world)
     return available
 end
-
 
 function M.can_move_to_backpack(world, chest)
     for i = 1, ichest.MAX_SLOT do
         local slot = world:container_get(chest, i)
         if not slot then
             break
-        end
-        if slot.type == "unknown" then
-            goto continue
         end
         if slot.item == 0 then
             goto continue
@@ -79,13 +76,7 @@ function M.get_moveable_count(world, item, count)
 end
 
 function M.get_placeable_count(world, item, max_count)
-    local existing
-    if debugger.infinite_item then
-        existing = 99999
-    else
-        existing = iBackpack.query(world, item)
-    end
-
+    local existing = debugger.infinite_item and MAX_AMOUNT or iBackpack.query(world, item)
     return math_min(max_count, existing)
 end
 
@@ -101,10 +92,7 @@ function M.pickup(world, item, amount)
 end
 
 function M.query(world, item)
-    if debugger.infinite_item then
-        return 99999
-    end
-    return iBackpack.query(world, item)
+    return debugger.infinite_item and MAX_AMOUNT or iBackpack.query(world, item)
 end
 
 return M

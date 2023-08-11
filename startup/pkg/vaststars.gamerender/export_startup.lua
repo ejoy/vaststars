@@ -85,7 +85,7 @@ end
 
 funcs["hub"] = function (entity, e)
     gameplay_core.extend(e, "hub?in")
-    local slot = ichest.chest_get(gameplay_core.get_world(), e.hub, 1)
+    local slot = ichest.get(gameplay_core.get_world(), e.hub, 1)
     if not slot then
         return entity
     end
@@ -95,7 +95,7 @@ end
 
 funcs["station_producer"] = function (entity, e)
     gameplay_core.extend(e, "chest?in")
-    local slot = ichest.chest_get(gameplay_core.get_world(), e.chest, 1)
+    local slot = ichest.get(gameplay_core.get_world(), e.chest, 1)
     if not slot then
         return entity
     end

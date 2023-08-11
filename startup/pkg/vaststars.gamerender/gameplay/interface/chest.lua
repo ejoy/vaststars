@@ -19,7 +19,7 @@ function M.get_chest_component(e)
     end
 end
 
-function M.chest_get(world, ...)
+function M.get(world, ...)
     local c = world:container_get(...)
     if c and c.item == 0 then
         return
@@ -27,9 +27,16 @@ function M.chest_get(world, ...)
     return c
 end
 
-function M.set_amount(world, c, idx, amount)
-    world:container_set(c, idx, {amount = amount})
-    return true
+function M.get_amount(slot)
+    return slot.amount
+end
+
+function M.get_space(slot)
+    return slot.limit - slot.amount - slot.lock_space
+end
+
+function M.set(world, ...)
+    return world:container_set(...)
 end
 
 function M.collect_item(world, e)
@@ -46,11 +53,4 @@ function M.collect_item(world, e)
     return r
 end
 
-function M.get_amount(slot)
-    return slot.amount
-end
-
-function M.get_space(slot)
-    return slot.limit - slot.amount - slot.lock_space
-end
 return M

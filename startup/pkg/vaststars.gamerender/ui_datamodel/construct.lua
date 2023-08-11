@@ -490,17 +490,18 @@ function M:stage_camera_usage(datamodel)
         local e = gameplay_core.get_entity(object.gameplay_eid)
         local chest_component = ichest.get_chest_component(e)
         if chest_component then
-            if not ibackpack.can_move_to_backpack(gameplay_core.get_world(), e[chest_component]) then
+            local chest = e[chest_component]
+            if not ibackpack.can_move_to_backpack(gameplay_core.get_world(), chest) then
                 log.error("can not teardown")
                 goto continue
             end
 
             for i = 1, ichest.MAX_SLOT do
-                local slot = gameplay_core.get_world():container_get(e[chest_component], i)
+                local slot = gameplay_core.get_world():container_get(chest, i)
                 if not slot then
                     break
                 end
-                ibackpack.move_to_backpack(gameplay_core.get_world(), e[chest_component], i)
+                ibackpack.move_to_backpack(gameplay_core.get_world(), chest, i)
             end
         end
 

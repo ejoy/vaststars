@@ -18,7 +18,7 @@ local function get(gameplay_world, e)
     local ingredients = {}
     local results = {}
     for index, v in ipairs(irecipe.get_elements(recipe_typeobject.ingredients)) do
-        local slot = ichest.chest_get(gameplay_world, e.chest, index)
+        local slot = ichest.get(gameplay_world, e.chest, index)
         if slot then
             ingredients[index] = {icon = v.icon, name = v.name, id = slot.item, count = ichest.get_amount(slot), limit = slot.limit, demand_count = v.count, state = "enough"}
         else
@@ -27,7 +27,7 @@ local function get(gameplay_world, e)
     end
 
     for index, v in ipairs(irecipe.get_elements(recipe_typeobject.results)) do
-        local slot = ichest.chest_get(gameplay_world, e.chest, #ingredients + index)
+        local slot = ichest.get(gameplay_world, e.chest, #ingredients + index)
         if slot then
             results[index] = {icon = v.icon, name = v.name, id = slot.item, limit = slot.limit, count = ichest.get_amount(slot), output_count = v.count, state = "enough"}
         else

@@ -105,7 +105,7 @@ local function __create_station_shelf(building_srt, e, item_id, item_count)
 end
 
 local function __get_item(gameplay_world, chest)
-    local slot = ichest.chest_get(gameplay_world, chest, 1)
+    local slot = ichest.get(gameplay_world, chest, 1)
     if not slot then
         return 0, 0
     end
