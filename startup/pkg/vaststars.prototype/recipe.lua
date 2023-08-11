@@ -2355,7 +2355,7 @@ prototype "维修铁制电线杆" {
     recipe_order =  120,
     recipe_icon =  "textures/icons/recipe/iron-wire.texture",
     ingredients = {
-        {"铁丝", 2},
+        {"铁棍", 2},
         {"电线杆框架", 1},
     },
     results = {
