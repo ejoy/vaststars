@@ -7,11 +7,9 @@ local CHEST_COMPONENT <const> = {
     ["hub"] = "hub",
 }
 
-local M = {}
+local MAX_SLOT <const> = 256
 
-M.MAX_SLOT = 256
-
-function M.get_chest_component(e)
+local function get_chest_component(e)
     for name, chest_component in pairs(CHEST_COMPONENT) do
         if e[name] then
             return chest_component
@@ -19,7 +17,7 @@ function M.get_chest_component(e)
     end
 end
 
-function M.get(world, ...)
+local function get(world, ...)
     local c = world:container_get(...)
     if c and c.item == 0 then
         return
@@ -27,21 +25,21 @@ function M.get(world, ...)
     return c
 end
 
-function M.get_amount(slot)
+local function get_amount(slot)
     return slot.amount
 end
 
-function M.get_space(slot)
+local function get_space(slot)
     return slot.limit - slot.amount - slot.lock_space
 end
 
-function M.set(world, ...)
+local function set(world, ...)
     return world:container_set(...)
 end
 
-function M.collect_item(world, e)
+local function collect_item(world, e)
     local r = {}
-    for i = 1, M.MAX_SLOT do
+    for i = 1, MAX_SLOT do
         local slot = world:container_get(e, i)
         if not slot then
             break
@@ -53,4 +51,12 @@ function M.collect_item(world, e)
     return r
 end
 
-return M
+return {
+    MAX_SLOT = MAX_SLOT,
+    get_chest_component = get_chest_component,
+    get = get,
+    get_amount = get_amount,
+    get_space = get_space,
+    set = set,
+    collect_item = collect_item,
+}

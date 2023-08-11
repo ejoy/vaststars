@@ -11,7 +11,8 @@ local gameplay_core = require "gameplay.core"
 local work_state_sys = ecs.system "work_state_system"
 
 local EMISSIVE_COLOR_WORKING  = math3d.constant("v4", {0.0, 1.0, 0.0, 1})
-local EMISSIVE_COLOR_IDLE = math3d.constant("v4", {1.0, 1.0, 0.0, 1})
+local EMISSIVE_COLOR_LOWPOWER = math3d.constant("v4", {1.0, 0.9, 0.0, 1})
+local EMISSIVE_COLOR_IDLE = math3d.constant("v4", {1.0, 0.0, 0.0, 1})
 
 local STATUS_NONE <const> = 0
 local STATUS_WORKING <const> = 1

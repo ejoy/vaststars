@@ -10,13 +10,10 @@ data:
   scene:
     s: {15, 10, 15}
     t: {0, 0.5, 0}
-  tag:
-    effect
 policy:
   ant.general|name
   ant.scene|scene_object
   ant.efk|efk
-  ant.general|tag
 ---
 data:
   efk:
@@ -30,10 +27,7 @@ data:
     r: {0, 0, 0, 1}
     s: {10, 1, 10}
     t: {0, 0.5, 0}
-  tag:
-    effect
 policy:
   ant.general|name
   ant.scene|scene_object
   ant.efk|efk
-  ant.general|tag

@@ -10,13 +10,10 @@ data:
   scene:
     s: {3, 3, 3}
     t: {0, 9.600000381469727, 0}
-  tag:
-    effect
 policy:
   ant.general|name
   ant.scene|scene_object
   ant.efk|efk
-  ant.general|tag
 ---
 data:
   efk:
@@ -29,13 +26,10 @@ data:
   scene:
     s: {1.5, 1.5, 1.5}
     t: {-4.099999904632568, 30.5, -8}
-  tag:
-    effect
 policy:
   ant.general|name
   ant.scene|scene_object
   ant.efk|efk
-  ant.general|tag
 ---
 data:
   efk:
@@ -48,13 +42,10 @@ data:
   scene:
     s: {1.5, 1.5, 1.5}
     t: {3.4137206077575684, 30.49993896484375, -7.484030246734619}
-  tag:
-    effect
 policy:
   ant.general|name
   ant.scene|scene_object
   ant.efk|efk
-  ant.general|tag
 ---
 data:
   efk:
@@ -68,13 +59,10 @@ data:
     r: {0, -0.1736481785774231, 0, 0.9848077297210693}
     s: {3, 3, 3}
     t: {0, 9.600000381469727, 0}
-  tag:
-    effect
 policy:
   ant.general|name
   ant.scene|scene_object
   ant.efk|efk
-  ant.general|tag
 ---
 data:
   name: shelf1
@@ -84,11 +72,8 @@ data:
   slot:
     follow_flag: 1
     joint_name: None
-  tag:
-    slot1
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
 ---
 data:
@@ -99,11 +84,8 @@ data:
   slot:
     follow_flag: 1
     joint_name: None
-  tag:
-    slot2
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
 ---
 data:
@@ -114,11 +96,8 @@ data:
   slot:
     follow_flag: 1
     joint_name: None
-  tag:
-    slot3
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
 ---
 data:
@@ -128,11 +107,8 @@ data:
   slot:
     follow_flag: 1
     joint_name: None
-  tag:
-    slot4
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
 ---
 data:
@@ -142,11 +118,8 @@ data:
   slot:
     follow_flag: 1
     joint_name: None
-  tag:
-    slot5
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
 ---
 data:
@@ -156,9 +129,6 @@ data:
   slot:
     follow_flag: 1
     joint_name: None
-  tag:
-    slot6
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot

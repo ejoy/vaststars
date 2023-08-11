@@ -10,10 +10,7 @@ data:
   scene:
     s: {2, 2, 2}
     t: {0, 30.700000762939453, 0}
-  tag:
-    effect
 policy:
   ant.general|name
   ant.scene|scene_object
   ant.efk|efk
-  ant.general|tag

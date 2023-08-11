@@ -7,11 +7,8 @@ data:
     t: {3.5, 0, -5}
   slot:
     follow_flag: 1
-  tag:
-    empty7
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
 ---
@@ -23,11 +20,8 @@ data:
     t: {3.5, 0, 5}
   slot:
     follow_flag: 1
-  tag:
-    empty8
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
 ---
@@ -39,11 +33,8 @@ data:
     t: {-3.5, 0, 5}
   slot:
     follow_flag: 1
-  tag:
-    empty9
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
 ---
@@ -55,11 +46,8 @@ data:
     t: {-3.5, 0, -5}
   slot:
     follow_flag: 1
-  tag:
-    empty10
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
 ---
@@ -71,11 +59,8 @@ data:
     t: {5, 0, 3.5}
   slot:
     follow_flag: 1
-  tag:
-    empty11
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
 ---
@@ -87,11 +72,8 @@ data:
     t: {-5, 0, 3.5}
   slot:
     follow_flag: 1
-  tag:
-    empty12
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
 ---
@@ -103,11 +85,8 @@ data:
     t: {-5, 0, -3.5}
   slot:
     follow_flag: 1
-  tag:
-    empty13
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
 ---
@@ -119,11 +98,8 @@ data:
     t: {5, 0, -3.5}
   slot:
     follow_flag: 1
-  tag:
-    empty14
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
 ---
@@ -135,11 +111,8 @@ data:
     t: {3.5, 0, -7.5}
   slot:
     follow_flag: 1
-  tag:
-    no_arrow
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
 ---
@@ -151,11 +124,8 @@ data:
     t: {4, 0, -4.5}
   slot:
     follow_flag: 1
-  tag:
-    empty16
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
 ---
@@ -167,11 +137,8 @@ data:
     t: {7.5, 0, -3.5}
   slot:
     follow_flag: 1
-  tag:
-    no_arrow
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
 ---
@@ -183,11 +150,8 @@ data:
     t: {3.5, 0, -7.5}
   slot:
     follow_flag: 1
-  tag:
-    ""
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
 ---
@@ -199,11 +163,8 @@ data:
     t: {0, 0, 0}
   slot:
     follow_flag: 1
-  tag:
-    ""
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
 ---
@@ -215,11 +176,8 @@ data:
     t: {-7.5, 0, 3.5}
   slot:
     follow_flag: 1
-  tag:
-    ""
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
 ---
@@ -231,11 +189,8 @@ data:
     t: {-3.5, 0, 7.5}
   slot:
     follow_flag: 1
-  tag:
-    ""
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
 ---
@@ -247,11 +202,8 @@ data:
     t: {0, 0, 0}
   slot:
     follow_flag: 1
-  tag:
-    ""
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
 ---
@@ -263,11 +215,8 @@ data:
     t: {7.5, 0, -3.5}
   slot:
     follow_flag: 1
-  tag:
-    ""
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
 ---
@@ -279,11 +228,8 @@ data:
     t: {-3.5, 0, 7.5}
   slot:
     follow_flag: 1
-  tag:
-    no_arrow
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
 ---
@@ -295,11 +241,8 @@ data:
     t: {-4.5, 0, 4}
   slot:
     follow_flag: 1
-  tag:
-    empty25
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
 ---
@@ -311,11 +254,8 @@ data:
     t: {-7.5, 0, 3.5}
   slot:
     follow_flag: 1
-  tag:
-    no_arrow
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
 ---
@@ -327,11 +267,8 @@ data:
     t: {7.5, 0, 3.5}
   slot:
     follow_flag: 1
-  tag:
-    ""
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
 ---
@@ -343,11 +280,8 @@ data:
     t: {0, 0, 0}
   slot:
     follow_flag: 1
-  tag:
-    empty28
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
 ---
@@ -359,11 +293,8 @@ data:
     t: {-3.5, 0, -7.5}
   slot:
     follow_flag: 1
-  tag:
-    ""
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
 ---
@@ -375,11 +306,8 @@ data:
     t: {7.5, 0, 3.5}
   slot:
     follow_flag: 1
-  tag:
-    no_arrow
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
 ---
@@ -391,11 +319,8 @@ data:
     t: {4, 0, 4.5}
   slot:
     follow_flag: 1
-  tag:
-    empty31
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
 ---
@@ -407,11 +332,8 @@ data:
     t: {3.5, 0, 7.5}
   slot:
     follow_flag: 1
-  tag:
-    no_arrow
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
 ---
@@ -423,11 +345,8 @@ data:
     t: {-7.5, 0, -3.5}
   slot:
     follow_flag: 1
-  tag:
-    no_arrow
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
 ---
@@ -439,11 +358,8 @@ data:
     t: {-4, 0, -4.5}
   slot:
     follow_flag: 1
-  tag:
-    empty34
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
 ---
@@ -455,11 +371,8 @@ data:
     t: {-3.5, 0, -7.5}
   slot:
     follow_flag: 1
-  tag:
-    no_arrow
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
 ---
@@ -471,11 +384,8 @@ data:
     t: {-7.5, 0, -3.5}
   slot:
     follow_flag: 1
-  tag:
-    ""
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
 ---
@@ -487,11 +397,8 @@ data:
     t: {0, 0, 0}
   slot:
     follow_flag: 1
-  tag:
-    empty37
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
 ---
@@ -503,11 +410,8 @@ data:
     t: {3.5, 0, 7.5}
   slot:
     follow_flag: 1
-  tag:
-    ""
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
 ---
@@ -518,11 +422,8 @@ data:
   slot:
     follow_flag: 1
     joint_name: None
-  tag:
-    no_arrow
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
 ---
 data:
@@ -533,11 +434,8 @@ data:
   slot:
     follow_flag: 1
     joint_name: None
-  tag:
-    slot2
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
 ---
 data:
@@ -547,11 +445,8 @@ data:
   slot:
     follow_flag: 1
     joint_name: None
-  tag:
-    no_arrow
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
 ---
 data:
@@ -562,11 +457,8 @@ data:
   slot:
     follow_flag: 1
     joint_name: None
-  tag:
-    slot1
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
 ---
 data:
@@ -577,11 +469,8 @@ data:
   slot:
     follow_flag: 1
     joint_name: None
-  tag:
-    no_arrow
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
 ---
 data:
@@ -592,11 +481,8 @@ data:
   slot:
     follow_flag: 1
     joint_name: None
-  tag:
-    no_arrow
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
 ---
 data:
@@ -607,11 +493,8 @@ data:
   slot:
     follow_flag: 1
     joint_name: None
-  tag:
-    slot4
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
 ---
 data:
@@ -621,11 +504,8 @@ data:
   slot:
     follow_flag: 1
     joint_name: None
-  tag:
-    no_arrow
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
 ---
 data:
@@ -636,11 +516,8 @@ data:
   slot:
     follow_flag: 1
     joint_name: None
-  tag:
-    slot6
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
 ---
 data:
@@ -650,11 +527,8 @@ data:
   slot:
     follow_flag: 1
     joint_name: None
-  tag:
-    no_arrow
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
 ---
 data:
@@ -665,11 +539,8 @@ data:
   slot:
     follow_flag: 1
     joint_name: None
-  tag:
-    no_arrow
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
 ---
 data:
@@ -680,11 +551,8 @@ data:
   slot:
     follow_flag: 1
     joint_name: None
-  tag:
-    slot9
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
 ---
 data:
@@ -694,11 +562,8 @@ data:
   slot:
     follow_flag: 1
     joint_name: None
-  tag:
-    no_arrow
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
 ---
 data:
@@ -709,11 +574,8 @@ data:
   slot:
     follow_flag: 1
     joint_name: None
-  tag:
-    slot11
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
 ---
 data:
@@ -724,11 +586,8 @@ data:
   slot:
     follow_flag: 1
     joint_name: None
-  tag:
-    no_arrow
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
 ---
 data:
@@ -739,11 +598,8 @@ data:
   slot:
     follow_flag: 1
     joint_name: None
-  tag:
-    no_arrow
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
 ---
 data:
@@ -754,11 +610,8 @@ data:
   slot:
     follow_flag: 1
     joint_name: None
-  tag:
-    slot14
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
 ---
 data:
@@ -768,11 +621,8 @@ data:
   slot:
     follow_flag: 1
     joint_name: None
-  tag:
-    no_arrow
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
 ---
 data:
@@ -783,11 +633,8 @@ data:
   slot:
     follow_flag: 1
     joint_name: None
-  tag:
-    slot16
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
 ---
 data:
@@ -798,11 +645,8 @@ data:
   slot:
     follow_flag: 1
     joint_name: None
-  tag:
-    no_arrow
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
 ---
 data:
@@ -813,11 +657,8 @@ data:
     t: {10, 0, 3.5}
   slot:
     follow_flag: 1
-  tag:
-    empty9
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
 ---
@@ -829,11 +670,8 @@ data:
     t: {-3.5, 0, 10}
   slot:
     follow_flag: 1
-  tag:
-    empty9
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
 ---
@@ -845,11 +683,8 @@ data:
     t: {-10, 0, -3.5}
   slot:
     follow_flag: 1
-  tag:
-    no_arrow
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
 ---
@@ -860,9 +695,6 @@ data:
   slot:
     follow_flag: 1
     joint_name: None
-  tag:
-    no_arrow
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot

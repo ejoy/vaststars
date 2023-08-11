@@ -7,10 +7,7 @@ data:
     r: {0.3907310962677002, 0, 0, -0.9205048680305481}
     s: {1.2000000476837158, 1, 1}
     t: {0, 28, -8.399999618530273, 1}
-  tag:
-    effect
 policy:
   ant.general|name
   ant.scene|scene_object
   ant.efk|efk
-  ant.general|tag

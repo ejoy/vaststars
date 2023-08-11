@@ -7,11 +7,8 @@ data:
   slot:
     follow_flag: 1
     joint_name: None
-  tag:
-    slot4
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
 ---
 data:
@@ -22,11 +19,8 @@ data:
   slot:
     follow_flag: 1
     joint_name: None
-  tag:
-    slot5
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
 ---
 data:
@@ -37,11 +31,8 @@ data:
   slot:
     follow_flag: 1
     joint_name: None
-  tag:
-    slot6
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
 ---
 data:
@@ -52,11 +43,8 @@ data:
   slot:
     follow_flag: 1
     joint_name: None
-  tag:
-    slot7
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
 ---
 data:
@@ -67,11 +55,8 @@ data:
   slot:
     follow_flag: 1
     joint_name: None
-  tag:
-    slot8
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
 ---
 data:
@@ -82,11 +67,8 @@ data:
   slot:
     follow_flag: 1
     joint_name: None
-  tag:
-    slot9
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
 ---
 data:
@@ -96,9 +78,6 @@ data:
   slot:
     follow_flag: 1
     joint_name: None
-  tag:
-    slot1
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot

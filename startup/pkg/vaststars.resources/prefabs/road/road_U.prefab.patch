@@ -7,11 +7,8 @@ data:
     t: {-3.5, 0, 5}
   slot:
     follow_flag: 1
-  tag:
-    no_arrow
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
 ---
 data:
@@ -22,11 +19,8 @@ data:
     t: {-2.5, 0, 0.5}
   slot:
     follow_flag: 1
-  tag:
-    hitch5
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
 ---
 data:
@@ -37,11 +31,8 @@ data:
     t: {0, 0, -3}
   slot:
     follow_flag: 1
-  tag:
-    no_arrow
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
 ---
 data:
@@ -52,11 +43,8 @@ data:
     t: {2.5, 0, 0.5}
   slot:
     follow_flag: 1
-  tag:
-    ""
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
 ---
 data:
@@ -67,9 +55,6 @@ data:
     t: {3.5, 0, 5}
   slot:
     follow_flag: 1
-  tag:
-    no_arrow
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot

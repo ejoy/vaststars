@@ -224,7 +224,7 @@ local __get_hitch_children ; do
             prefab_proxy:send("material", "set_property", "u_basecolor_factor", color)
         end
         if emissive_color then -- see also: meno/u_emissive_factor
-            prefab_proxy:send("material_tag", "set_property", "u_emissive_factor", "u_emissive_factor", emissive_color)
+            prefab_proxy:send("material", "set_property", "u_emissive_factor", emissive_color)
         end
 
         cache[hash] = {prefab_file_name = prefab, instance = prefab_proxy, hitch_group_id = hitch_group_id, slots = slots, pose = iani.create_pose(), keyeffects = keyeffects, effects = effects, animations = animations}

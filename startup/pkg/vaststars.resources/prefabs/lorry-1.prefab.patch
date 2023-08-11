@@ -10,13 +10,10 @@ data:
   scene:
     s: {3, 3, 3}
     t: {0, 0, -3}
-  tag:
-    effect
 policy:
   ant.general|name
   ant.scene|scene_object
   ant.efk|efk
-  ant.general|tag
 ---
 data:
   name: item
@@ -26,9 +23,6 @@ data:
   slot:
     follow_flag: 1
     joint_name: None
-  tag:
-    slot1
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot

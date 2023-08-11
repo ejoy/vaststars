@@ -11,11 +11,8 @@ data:
     r: {0.09584575146436691, 0, 0, 0.9953961968421936}
     s: {2, 2, 1.5}
     t: {0, 26.799999237060547, 6.699999809265137}
-  tag:
-    effect
 mount: 3
 policy:
   ant.general|name
   ant.scene|scene_object
   ant.efk|efk
-  ant.general|tag

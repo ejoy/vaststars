@@ -7,9 +7,6 @@ data:
   slot:
     follow_flag: 1
     joint_name: None
-  tag:
-    effect
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot

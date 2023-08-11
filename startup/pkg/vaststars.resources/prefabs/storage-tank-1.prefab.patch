@@ -8,10 +8,7 @@ data:
   slot:
     follow_flag: 1
     joint_name: Bone
-  tag:
-    water_slot
 mount: 1
 policy:
   ant.general|name
-  ant.general|tag
   ant.animation|slot
