@@ -130,7 +130,7 @@ local prototype = gameplay.register.prototype
         y = 128,
         w = 1.2,
         h = 1.2,
-        -- show_arrow = true,
+        show_arrow = true,
       },
       {
         camera_x = 118,
