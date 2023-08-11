@@ -229,7 +229,7 @@ prototype "铁棒1" {
 prototype "铁丝1" {
     type = { "recipe" },
     recipe_craft_category = "器件中型制造",
-    recipe_category =  "金属",
+    --recipe_category =  "金属",
     recipe_order =  14,
     recipe_icon =  "textures/icons/recipe/iron-wire.texture",
     ingredients = {
@@ -597,7 +597,8 @@ prototype "铁制电线杆" {
     recipe_order =  30,
     recipe_icon =  "textures/icons/recipe/iron-wire.texture",
     ingredients = {
-        {"铁丝", 4},
+        {"铁棒", 4},
+        --{"铁丝", 4},
         {"塑料", 1},
     },
     results = {
