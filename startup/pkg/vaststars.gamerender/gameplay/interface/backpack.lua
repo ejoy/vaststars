@@ -2,56 +2,49 @@ local iBackpack = import_package "vaststars.gameplay".interface "backpack"
 local iprototype = require "gameplay.interface.prototype"
 local ichest = require "gameplay.interface.chest"
 local debugger = require "debugger"
+local math_min = math.min
 
 local M = {}
 
-local function __get_backpack_stack(item)
+local function get_backpack_limit(item)
     local typeobject = assert(iprototype.queryById(item))
     return typeobject.backpack_limit or 0
+end
+
+local function set_base_changed(world)
+    local e = world.ecs:first("base base_changed?out")
+    e.base_changed = true
+    world.ecs:submit(e)
 end
 
 function M.move_to_backpack(world, chest, idx)
     local slot = assert(world:container_get(chest, idx))
     if slot.item == 0 or slot.amount <= 0 then
-        return false
+        return 0
     end
 
     local existing = iBackpack.query(world, slot.item)
-    local stack = __get_backpack_stack(slot.item)
-    if existing >= stack then
-        return false
+    local limit = get_backpack_limit(slot.item)
+    if existing >= limit then
+        return 0
     end
 
-    local available = math.min(stack - existing, slot.amount)
+    local available = math_min(limit - existing, slot.amount)
     assert(available > 0)
 
     -- if the number of available items to take is insufficient, then forcibly unlock the specified count
     local lock_item = slot.lock_item
-    local unlocked = slot.amount - slot.lock_item
+    local unlocked = slot.amount - lock_item
     if available > unlocked then
-        lock_item = slot.lock_item - (available - unlocked)
+        lock_item = lock_item - (available - unlocked)
     end
 
-    world:container_set(chest, idx, {lock_item = lock_item, amount = slot.amount - available})
+    world:container_set(chest, idx, { lock_item = lock_item, amount = slot.amount - available })
     iBackpack.place(world, slot.item, available)
-
-    local e = world.ecs:first("base base_changed?out")
-    e.base_changed = true
-    world.ecs:submit(e)
-    return true, available
+    set_base_changed(world)
+    return available
 end
 
-function M.get_moveable_count(world, item, count)
-    local stack = __get_backpack_stack(item)
-    local existing = iBackpack.query(world, item)
-    if existing >= stack then
-        log.debug(("get_moveable_count: %s %s >= %s"):format(item, existing, stack))
-        return false
-    end
-
-    local available = math.min(stack - existing, count)
-    return true, available
-end
 
 function M.can_move_to_backpack(world, chest)
     for i = 1, ichest.MAX_SLOT do
@@ -65,11 +58,7 @@ function M.can_move_to_backpack(world, chest)
         if slot.item == 0 then
             goto continue
         end
-        local ok, count = M.get_moveable_count(world, slot.item, slot.amount)
-        if not ok then
-            log.debug(("can't move to backpack: %s %s"):format(slot.item, slot.amount))
-            return false
-        end
+        local count = M.get_moveable_count(world, slot.item, slot.amount)
         if count < slot.amount then
             log.debug(("can't move to backpack: %s %s < %s"):format(slot.item, count, slot.amount))
             return false
@@ -77,6 +66,16 @@ function M.can_move_to_backpack(world, chest)
         ::continue::
     end
     return true
+end
+
+function M.get_moveable_count(world, item, count)
+    local limit = get_backpack_limit(item)
+    local existing = iBackpack.query(world, item)
+    if existing >= limit then
+        return 0
+    end
+
+    return math_min(limit - existing, count)
 end
 
 function M.get_placeable_count(world, item, max_count)
@@ -87,8 +86,7 @@ function M.get_placeable_count(world, item, max_count)
         existing = iBackpack.query(world, item)
     end
 
-    local available = math.min(max_count, existing)
-    return available > 0, available
+    return math_min(max_count, existing)
 end
 
 function M.pickup(world, item, amount)
@@ -97,9 +95,7 @@ function M.pickup(world, item, amount)
     end
     local ok = iBackpack.pickup(world, item, amount)
     if ok then
-        local e = world.ecs:first("base base_changed?out")
-        e.base_changed = true
-        world.ecs:submit(e)
+        set_base_changed(world)
     end
     return ok
 end

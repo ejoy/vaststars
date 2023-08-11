@@ -66,33 +66,19 @@ local function __get_moveable_count(object_id)
             return "+"
         end
 
-        local count = 0
-        for i = 1, #results do
-            local succ, available = ibackpack.get_moveable_count(gameplay_core.get_world(), results[i].id, results[i].count)
-            if succ then
-                count = count + available
-            end
-        end
-        return count
+        return ibackpack.get_moveable_count(gameplay_core.get_world(), results[1].id, results[1].count)
     elseif iprototype.has_types(typeobject.type, "station_producer", "station_consumer", "hub") then
         local chest_component = ichest.get_chest_component(e)
         local slot = ichest.chest_get(gameplay_core.get_world(), e[chest_component], 1)
         if not slot then
             return 0
         end
-        local succ, count = ibackpack.get_moveable_count(gameplay_core.get_world(), slot.item, ichest.get_amount(slot))
-        if not succ then
-            return 0
-        end
-        return count
+        return ibackpack.get_moveable_count(gameplay_core.get_world(), slot.item, ichest.get_amount(slot))
     elseif iprototype.has_type(typeobject.type, "chest") then
         local count = 0
         local items = ichest.collect_item(gameplay_core.get_world(), e.chest)
         for _, slot in pairs(items) do
-            local succ, available = ibackpack.get_moveable_count(gameplay_core.get_world(), slot.item, ichest.get_amount(slot))
-            if succ then
-                count = count + available
-            end
+            count = count + ibackpack.get_moveable_count(gameplay_core.get_world(), slot.item, ichest.get_amount(slot))
         end
         return count
     else
@@ -112,30 +98,19 @@ local function __get_placeable_count(object_id)
         if #ingredients > 1 then
             return "+"
         end
-        local succ, count = ibackpack.get_placeable_count(gameplay_core.get_world(), ingredients[1].id, ingredients[1].demand_count - ingredients[1].count)
-        if not succ then
-            return 0
-        end
-        return count
+        return ibackpack.get_placeable_count(gameplay_core.get_world(), ingredients[1].id, ingredients[1].demand_count - ingredients[1].count)
     elseif iprototype.has_types(typeobject.type, "station_producer", "station_consumer", "hub") then
         local chest_component = ichest.get_chest_component(e)
         local slot = ichest.chest_get(gameplay_core.get_world(), e[chest_component], 1)
         if not slot then
             return 0
         end
-        local succ, count = ibackpack.get_placeable_count(gameplay_core.get_world(), slot.item, ichest.get_amount(slot))
-        if not succ then
-            return 0
-        end
-        return count
+        return ibackpack.get_placeable_count(gameplay_core.get_world(), slot.item, ichest.get_space(slot))
     elseif iprototype.has_types(typeobject.type, "chest", "laboratory") then
         local count = 0
         local items = ichest.collect_item(gameplay_core.get_world(), e.chest)
         for _, slot in pairs(items) do
-            local succ, available = ibackpack.get_placeable_count(gameplay_core.get_world(), slot.item, ichest.get_amount(slot))
-            if succ then
-                count = count + available
-            end
+            count = count + ibackpack.get_placeable_count(gameplay_core.get_world(), slot.item, ichest.get_space(slot))
         end
         return count
     else
@@ -324,7 +299,7 @@ function M:stage_ui_update(datamodel, object_id)
             print("failed to place")
             goto continue
         end
-        local succ = ichest.chest_place(gameplay_core.get_world(), e[component], 1, slot.amount + 1)
+        local succ = ichest.set_amount(gameplay_core.get_world(), e[component], 1, slot.amount + 1)
         if not succ then
             print("failed to place")
             goto continue
@@ -362,10 +337,8 @@ function M:stage_ui_update(datamodel, object_id)
     end
 
     for _, _, _, object_id in pickup_item_mb:unpack() do
-        iui.leave()
         local object = assert(objects:get(object_id))
-        local sp = icamera_controller.world_to_screen(object.srt.t)
-        local sp_x, sp_y = math3d.index(sp, 1), math3d.index(sp, 2)
+        local sp_x, sp_y = math3d.index(icamera_controller.world_to_screen(object.srt.t), 1, 2)
         local typeobject = iprototype.queryByName(object.prototype_name)
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
         if iprototype.has_type(typeobject.type, "assembling") then
@@ -377,13 +350,13 @@ function M:stage_ui_update(datamodel, object_id)
 
             local msgs = {}
             local inventory_bar = {}
-            for idx in ipairs(results) do
-                local succ, available = ibackpack.move_to_backpack(gameplay_core.get_world(), e.chest, #ingredients + idx)
-                if succ then
-                    local typeitem = iprototype.queryById(results[1].id)
-                    msgs[#msgs + 1] = {icon = assert(typeitem.item_icon), name = typeitem.name, count = available}
+            for i = 1, #results do
+                local available = ibackpack.move_to_backpack(gameplay_core.get_world(), e.chest, #ingredients + i)
+                if available > 0 then
+                    local typeitem = iprototype.queryById(results[i].id)
+                    msgs[#msgs + 1] = {icon = typeitem.item_icon, name = typeitem.name, count = available}
                     if #inventory_bar < 4 then
-                        inventory_bar[#inventory_bar+1] = {icon = assert(typeitem.item_icon), count = available}
+                        inventory_bar[#inventory_bar+1] = {icon = typeitem.item_icon, count = available}
                     end
                 end
             end
@@ -398,17 +371,15 @@ function M:stage_ui_update(datamodel, object_id)
                 print("item not set yet")
                 goto continue
             end
-            local succ, available = ibackpack.move_to_backpack(gameplay_core.get_world(), e[chest_component], 1)
-            if not succ then
-                print("failed to move to the inventory")
-                goto continue
-            end
-            local typeitem = iprototype.queryById(slot.item)
-            iui.send("ui/message_pop.rml", "item", {action = "up", left = sp_x, top = sp_y, items = {{icon = assert(typeitem.item_icon), name = typeitem.name, count = available}}})
-            iui.call_datamodel_method("ui/construct.rml", "update_inventory_bar", {{icon = assert(typeitem.item_icon), count = available}})
+            local available = ibackpack.move_to_backpack(gameplay_core.get_world(), e[chest_component], 1)
+            if available > 0 then
+                local typeitem = iprototype.queryById(slot.item)
+                iui.send("ui/message_pop.rml", "item", {action = "up", left = sp_x, top = sp_y, items = {{icon = assert(typeitem.item_icon), name = typeitem.name, count = available}}})
+                iui.call_datamodel_method("ui/construct.rml", "update_inventory_bar", {{icon = assert(typeitem.item_icon), count = available}})
 
-            if e.station_producer or e.station_consumer then
-                e.station_changed = true
+                if e.station_producer or e.station_consumer then
+                    e.station_changed = true
+                end
             end
         elseif iprototype.has_type(typeobject.type, "chest") then
             local message = {}
@@ -419,8 +390,8 @@ function M:stage_ui_update(datamodel, object_id)
                     break
                 end
 
-                local succ, available = ibackpack.move_to_backpack(gameplay_core.get_world(), e.chest, i)
-                if succ then
+                local available = ibackpack.move_to_backpack(gameplay_core.get_world(), e.chest, i)
+                if available > 0 then
                     local typeobject = iprototype.queryById(slot.item)
                     message[#message + 1] = {icon = assert(typeobject.item_icon), name = typeobject.name, count = available}
                     if #inventory_bar < 4 then
@@ -428,9 +399,7 @@ function M:stage_ui_update(datamodel, object_id)
                     end
                 end
             end
-            if #message > 0 then
-                iui.send("ui/message_pop.rml", "item", {action = "up", left = sp_x, top = sp_y, items = message})
-            end
+            iui.send("ui/message_pop.rml", "item", {action = "up", left = sp_x, top = sp_y, items = message})
             iui.call_datamodel_method("ui/construct.rml", "update_inventory_bar", inventory_bar)
 
             local items = ichest.collect_item(gameplay_core.get_world(), e.chest)
@@ -445,6 +414,8 @@ function M:stage_ui_update(datamodel, object_id)
                 end
 
                 igameplay.destroy_entity(object.gameplay_eid)
+                iui.leave()
+                iui.redirect("ui/construct.rml", "unselected")
             end
         else
             assert(false)
@@ -456,30 +427,31 @@ function M:stage_ui_update(datamodel, object_id)
     for _, _, _, object_id in place_item_mb:unpack() do
         local object = assert(objects:get(object_id))
         local sp = icamera_controller.world_to_screen(object.srt.t)
-        local sp_x, sp_y = math3d.index(sp, 1), math3d.index(sp, 2)
+        local sp_x, sp_y = math3d.index(sp, 1, 2)
         local typeobject = iprototype.queryByName(object.prototype_name)
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
         if iprototype.has_type(typeobject.type, "assembling") then
             local ingredients = assembling_common.get(gameplay_core.get_world(), e)
-            local message = {}
+            local msgs = {}
             local inventory_bar = {}
             for idx, ingredient in ipairs(ingredients) do
                 if ingredient.demand_count > ingredient.count then
-                    if ibackpack.pickup(gameplay_core.get_world(), ingredient.id, ingredient.demand_count - ingredient.count) then
+                    local exist = ibackpack.count(gameplay_core.get_world(), ingredient.id)
+                    local c = math.min(ingredient.demand_count - ingredient.count, exist)
+                    if ibackpack.pickup(gameplay_core.get_world(), ingredient.id, c) then
                         gameplay_core.get_world():container_set(e.chest, idx, {amount = ingredient.demand_count})
                         local typeitem = iprototype.queryById(ingredient.id)
-                        message[#message + 1] = {icon = assert(typeitem.item_icon), name = typeitem.name, count = ingredient.demand_count}
+                        msgs[#msgs + 1] = {icon = typeitem.item_icon, name = typeitem.name, count = c}
                         if #inventory_bar < 4 then
-                            inventory_bar[#inventory_bar + 1] = {icon = assert(typeitem.item_icon), count = ingredient.demand_count}
+                            inventory_bar[#inventory_bar + 1] = {icon = typeitem.item_icon, count = c}
                         end
                     end
                 end
             end
-            if #message > 0 then
-                iui.send("ui/message_pop.rml", "item", {action = "down", left = sp_x, top = sp_y, items = message})
+            if #msgs > 0 then
+                iui.send("ui/message_pop.rml", "item", {action = "down", left = sp_x, top = sp_y, items = msgs})
             end
             iui.call_datamodel_method("ui/construct.rml", "update_inventory_bar", inventory_bar)
-            print("success")
         elseif iprototype.has_types(typeobject.type, "station_producer", "station_consumer", "hub") then
             local chest_component = ichest.get_chest_component(e)
             local slot = ichest.chest_get(gameplay_core.get_world(), e[chest_component], 1)
@@ -488,23 +460,22 @@ function M:stage_ui_update(datamodel, object_id)
                 goto continue
             end
 
-            local c = ichest.get_amount(slot)
-            if slot.limit <= c then
-                print("item already full")
+            local c = ibackpack.get_placeable_count(gameplay_core.get_world(), slot.item, ichest.get_space(slot))
+            if c <= 0 then
                 goto continue
             end
-            if not ibackpack.pickup(gameplay_core.get_world(), slot.item, slot.limit - c) then
+            if not ibackpack.pickup(gameplay_core.get_world(), slot.item, c) then
                 print("failed to place")
                 goto continue
             end
-            local succ, available = ichest.chest_place(gameplay_core.get_world(), e[chest_component], 1, slot.limit)
+            local succ = ichest.set_amount(gameplay_core.get_world(), e[chest_component], 1, ichest.get_amount(slot) + c)
             if not succ then
                 print("failed to place")
                 goto continue
             end
             local typeitem = iprototype.queryById(slot.item)
-            iui.send("ui/message_pop.rml", "item", {action = "down", left = sp_x, top = sp_y, items = {{icon = assert(typeitem.item_icon), name = typeitem.name, count = available}}})
-            iui.call_datamodel_method("ui/construct.rml", "update_inventory_bar", {{icon = assert(typeitem.item_icon), count = available}})
+            iui.send("ui/message_pop.rml", "item", {action = "down", left = sp_x, top = sp_y, items = {{icon = typeitem.item_icon, name = typeitem.name, count = c}}})
+            iui.call_datamodel_method("ui/construct.rml", "update_inventory_bar", {{icon = typeitem.item_icon, count = c}})
 
             if e.station_producer or e.station_consumer then
                 e.station_changed = true
@@ -513,31 +484,24 @@ function M:stage_ui_update(datamodel, object_id)
             local component = "chest"
             local msgs = {}
             local inventory_bar = {}
-            for i = 1, 256 do
+            for i = 1, ichest.MAX_SLOT do
                 local slot = ichest.chest_get(gameplay_core.get_world(), e[component], i)
                 if not slot then
                     break
                 end
 
-                local c = ichest.get_amount(slot)
-                if slot.limit <= c then
-                    -- print("item already full")
-                    break
-                end
-                if not ibackpack.pickup(gameplay_core.get_world(), slot.item, slot.limit - c) then
-                    -- print("failed to place")
-                    break
-                end
-                local succ, available = ichest.chest_place(gameplay_core.get_world(), e[component], i, slot.limit)
-                if not succ then
-                    -- print("failed to place")
-                    break
-                end
-                local typeitem = iprototype.queryById(slot.item)
-                msgs[#msgs+1] = {icon = assert(typeitem.item_icon), name = typeitem.name, count = available}
+                local c = ibackpack.get_placeable_count(gameplay_core.get_world(), slot.item, ichest.get_space(slot))
+                if c > 0 and ibackpack.pickup(gameplay_core.get_world(), slot.item, c) then
+                    local succ = ichest.set_amount(gameplay_core.get_world(), e[component], i, ichest.get_amount(slot) + c)
+                    if not succ then
+                        break
+                    end
+                    local typeitem = iprototype.queryById(slot.item)
+                    msgs[#msgs+1] = {icon = typeitem.item_icon, name = typeitem.name, count = c}
 
-                if #inventory_bar < 4 then
-                    inventory_bar[#inventory_bar+1] = {icon = assert(typeitem.item_icon), count = available}
+                    if #inventory_bar < 4 then
+                        inventory_bar[#inventory_bar+1] = {icon = typeitem.item_icon, count = c}
+                    end
                 end
             end
             iui.send("ui/message_pop.rml", "item", {action = "down", left = sp_x, top = sp_y, items = msgs})

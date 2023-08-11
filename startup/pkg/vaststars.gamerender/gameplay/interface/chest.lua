@@ -1,5 +1,3 @@
-local iBackpack = import_package "vaststars.gameplay".interface "backpack"
-
 local CHEST_COMPONENT <const> = {
     ["assembling"] = "chest",
     ["chest"] = "chest",
@@ -29,9 +27,9 @@ function M.chest_get(world, ...)
     return c
 end
 
-function M.chest_place(world, c, idx, amount)
+function M.set_amount(world, c, idx, amount)
     world:container_set(c, idx, {amount = amount})
-    return true, amount
+    return true
 end
 
 function M.collect_item(world, e)
@@ -53,6 +51,6 @@ function M.get_amount(slot)
 end
 
 function M.get_space(slot)
-    return slot.limit - slot.amount + slot.lock_space
+    return slot.limit - slot.amount - slot.lock_space
 end
 return M

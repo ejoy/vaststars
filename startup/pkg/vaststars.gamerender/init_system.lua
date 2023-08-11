@@ -103,10 +103,10 @@ function m:frame_update()
         gameplay_core.update()
         world:pipeline_func "gameworld_build" ()
         -- world:pipeline_func "gameworld" () -- TODO: 
-    end
-
-    if gameplay_core.world_update then
-        gameplay_core.update()
-        world:pipeline_func "gameworld" ()
+    else
+        if gameplay_core.world_update then
+            gameplay_core.update()
+            world:pipeline_func "gameworld" ()
+        end
     end
 end
