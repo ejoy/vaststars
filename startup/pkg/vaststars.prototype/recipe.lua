@@ -2441,7 +2441,7 @@ prototype "维修蒸馏厂" {
     recipe_order =  54,
     recipe_icon =  "textures/icons/recipe/chemistry-design.texture",
     ingredients = {
-        {"铁棒", 10},
+        {"铁齿轮", 8},
         {"蒸馏厂框架", 1},
     },
     results = {
