@@ -604,7 +604,7 @@ prototype "铁制电线杆" {
     results = {
         {"铁制电线杆", 1},
     },
-    time = "2s",
+    time = "6s",
     description = "导电材料制造电线杆",
 }
 
