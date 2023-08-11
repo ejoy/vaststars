@@ -649,43 +649,74 @@ static bool FindTaskOnlyMov1(world& w, DroneEntity& e, ecs::drone& drone, hub_ca
     return false;
 }
 
-static void FindTaskOnlyMov2(world& w, DroneEntity& e, ecs::drone& drone, hub_cache& info) {
-    if (info.item != drone.item) {
-        backpack_place(w, drone.item, 1);
-        drone.item = 0;
-        GoHome(w, e, drone, info);
-        return;
-    }
+static bool FindTaskOnlyMov2(world& w, DroneEntity& e, ecs::drone& drone, hub_cache& info) {
     auto searcher = createHubSearcher(w, info);
     {
         auto blue = FindChestBlue(w, searcher);
         if (blue) {
             DoTaskOnlyMov2(w, e, drone, info, *blue);
-            return;
+            return true;
         }
     }
     {
         auto [min, _1, _2] = FindHub(w, searcher);
         if (min) {
             DoTaskOnlyMov2(w, e, drone, info, *min);
-            return;
+            return true;
         }
     }
     {
         auto blue = FindChestBlueForce(w, searcher);
         if (blue) {
             DoTaskOnlyMov2(w, e, drone, info, *blue);
-            return;
+            return true;
         }
     }
     {
         auto min = FindHubForce(w, searcher);
         if (min) {
             DoTaskOnlyMov2(w, e, drone, info, *min);
-            return;
+            return true;
         }
     }
-    assert(false);
+    return false;
+}
+
+static bool FindTaskOnlyMov2(world& w, DroneEntity& e, ecs::drone& drone, hub_cache& info, uint32_t mov1) {
+    auto searcher = createHubSearcher(w, info);
+    {
+        auto blue = FindChestBlue(w, searcher);
+        if (blue) {
+            DoTaskOnlyMov2(w, e, drone, info, *blue);
+            return true;
+        }
+    }
+    {
+        auto [min, _1, _2] = FindHub(w, searcher);
+        if (min) {
+            if (mov1 != std::bit_cast<uint32_t>(min->berth)) {
+                DoTaskOnlyMov2(w, e, drone, info, *min);
+                return true;
+            }
+        }
+    }
+    {
+        auto blue = FindChestBlueForce(w, searcher);
+        if (blue) {
+            DoTaskOnlyMov2(w, e, drone, info, *blue);
+            return true;
+        }
+    }
+    {
+        auto min = FindHubForce(w, searcher);
+        if (min) {
+            if (mov1 != std::bit_cast<uint32_t>(min->berth)) {
+                DoTaskOnlyMov2(w, e, drone, info, *min);
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 static void UnlockMov2(world& w, ecs::drone& drone, hub_cache const& info) {
@@ -719,7 +750,7 @@ static void Arrival(world& w, DroneEntity& e, ecs::drone& drone) {
             if (slot->lock_item > 0) {
                 slot->lock_item--;
             }
-            auto mov2Berth =  std::bit_cast<hub_berth>(drone.mov2);
+            auto mov2Berth = std::bit_cast<hub_berth>(drone.mov2);
             if (auto movBuilding = w.buildings.find(mov2Berth.hash())) {
                 slot->amount--;
                 drone.item = info.item;
@@ -732,7 +763,12 @@ static void Arrival(world& w, DroneEntity& e, ecs::drone& drone) {
                 drone.mov2 = 0;
             }
             else {
-                assert(false);
+                if (FindTaskOnlyMov2(w, e, drone, info, drone.next)) {
+                    slot->amount--;
+                    drone.item = info.item;
+                    return;
+                }
+                UnlockMov2(w, drone, info);
                 GoHome(w, e, drone, info);
             }
         });
@@ -742,7 +778,18 @@ static void Arrival(world& w, DroneEntity& e, ecs::drone& drone) {
         CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, ecs::drone& drone, hub_cache& info) {
             auto slot = ChestGetSlot(w, std::bit_cast<hub_berth>(drone.next));
             if (!slot || slot->item != drone.item) {
-                FindTaskOnlyMov2(w, e, drone, info);
+                if (info.item != drone.item) {
+                    backpack_place(w, drone.item, 1);
+                    drone.item = 0;
+                    GoHome(w, e, drone, info);
+                    return;
+                }
+                if (FindTaskOnlyMov2(w, e, drone, info)) {
+                    return;
+                }
+                backpack_place(w, drone.item, 1);
+                drone.item = 0;
+                GoHome(w, e, drone, info);
                 return;
             }
             if (slot->lock_space > 0) {
