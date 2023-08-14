@@ -3,7 +3,7 @@ local world = ecs.world
 local w = world.w
 
 local UPS <const> = require("gameplay.interface.constant").UPS
-local timer = ecs.import.interface "ant.timer|itimer"
+local timer = ecs.require "ant.timer|timer_system"
 local gameplay_core = require "gameplay.core"
 local global = require "global"
 local entity_create = world:sub {"gameplay", "create_entity"}

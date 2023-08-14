@@ -5,7 +5,6 @@ local w         = world.w
 local math3d    = require "math3d"
 local mathpkg = import_package "ant.math"
 local imaterial = ecs.import.interface "ant.asset|imaterial"
-local timer 	= ecs.import.interface "ant.timer|itimer"
 
 local printer_sys = ecs.system 'printer_system'
 local iprinter = ecs.interface "iprinter"
