@@ -5,9 +5,9 @@ local w = world.w
 local gameplay_core = require "gameplay.core"
 local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
-local iui = ecs.import.interface "vaststars.gamerender|iui"
+local iui = ecs.require "engine.system.ui_system"
 local itask = ecs.require "task"
-local icamera_controller = ecs.interface "icamera_controller"
+local icamera_controller = ecs.require "engine.system.camera_controller"
 local math3d = require "math3d"
 
 local set_recipe_mb = mailbox:sub {"set_recipe"}

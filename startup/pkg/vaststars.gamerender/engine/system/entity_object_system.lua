@@ -6,7 +6,7 @@ local entity_object_message_mb = world:sub {"entity_object_message"}
 local entity_object_remove_mb = world:sub {"entity_object_remove"}
 
 local entity_object_sys = ecs.system "entity_object_system"
-local ientity_object = ecs.interface "ientity_object"
+local ientity_object = {}
 
 -- why scene_update stage? because we may want to get world matrix of entity in events
 function entity_object_sys:scene_update()
@@ -37,3 +37,5 @@ function ientity_object.create(eid, events)
     end
     return outer
 end
+
+return ientity_object

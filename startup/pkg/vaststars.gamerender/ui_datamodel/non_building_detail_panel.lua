@@ -2,7 +2,7 @@ local ecs, mailbox = ...
 local world = ecs.world
 local w = world.w
 
-local iui = ecs.import.interface "vaststars.gamerender|iui"
+local iui = ecs.require "engine.system.ui_system"
 
 local M = {}
 

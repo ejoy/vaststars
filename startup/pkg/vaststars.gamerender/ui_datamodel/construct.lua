@@ -3,9 +3,9 @@ local world = ecs.world
 
 local math3d = require "math3d"
 local PLANES <const> = {math3d.constant("v4", {0, 1, 0, 0})}
-local icamera_controller = ecs.interface "icamera_controller"
+local icamera_controller = ecs.require "engine.system.camera_controller"
 local gameplay_core = require "gameplay.core"
-local iui = ecs.import.interface "vaststars.gamerender|iui"
+local iui = ecs.require "engine.system.ui_system"
 local iprototype = require "gameplay.interface.prototype"
 local irecipe = require "gameplay.interface.recipe"
 local create_normalbuilder = ecs.require "editor.normalbuilder"

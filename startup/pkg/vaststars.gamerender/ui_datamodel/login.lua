@@ -1,7 +1,7 @@
 local ecs, mailbox = ...
 local world = ecs.world
 
-local iui = ecs.import.interface "vaststars.gamerender|iui"
+local iui = ecs.require "engine.system.ui_system"
 
 local start_mode_mb = mailbox:sub {"start_mode"}
 local load_resources_mb = mailbox:sub {"load_resources"}

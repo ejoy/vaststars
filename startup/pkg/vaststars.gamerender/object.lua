@@ -5,7 +5,7 @@ local vsobject_manager = ecs.require "vsobject_manager"
 local iprototype = require "gameplay.interface.prototype"
 local math3d = require "math3d"
 local terrain = ecs.require "terrain"
-local icamera_controller = ecs.interface "icamera_controller"
+local icamera_controller = ecs.require "engine.system.camera_controller"
 local changeset = {}
 local removed = {}
 

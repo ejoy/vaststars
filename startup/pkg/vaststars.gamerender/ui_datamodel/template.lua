@@ -5,7 +5,7 @@ local load_template_mb = mailbox:sub {"load_template"}
 local new_game = ecs.require "main_menu_manager".new_game
 local fs = require "filesystem"
 local debugger <const> = require "debugger"
-local iui = ecs.import.interface "vaststars.gamerender|iui"
+local iui = ecs.require "engine.system.ui_system"
 
 ---------------
 local M = {}

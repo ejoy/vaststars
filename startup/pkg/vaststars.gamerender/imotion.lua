@@ -1,6 +1,6 @@
 local ecs = ...
 local ims = ecs.require "ant.motion_sampler|motion_sampler"
-local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
+local ientity_object = ecs.require "engine.system.entity_object_system"
 
 local events = {
     ["motion"] = function(_, e, method, ...)

@@ -6,7 +6,7 @@ local ientity = ecs.require "ant.render|components.entity"
 local imesh = ecs.require "ant.asset|mesh"
 local ivs = ecs.require "ant.render|visible_state"
 local imaterial = ecs.require "ant.asset|material"
-local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
+local ientity_object = ecs.require "engine.system.entity_object_system"
 local iom = ecs.require "ant.objcontroller|obj_motion"
 local MATH3D_NULL <const> = math3d.constant "null"
 

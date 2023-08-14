@@ -2,7 +2,7 @@ local ecs, mailbox = ...
 local world = ecs.world
 local w = world.w
 
-local iui = ecs.import.interface "vaststars.gamerender|iui"
+local iui = ecs.require "engine.system.ui_system"
 local create_event_handler = require "ui_datamodel.common.event_handler"
 
 local event_handler = create_event_handler(

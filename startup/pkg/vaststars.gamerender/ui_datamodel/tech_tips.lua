@@ -3,7 +3,7 @@ local world = ecs.world
 local w = world.w
 local close_mb = mailbox:sub {"close"}
 local iguide = require "gameplay.interface.guide"
-local iui = ecs.import.interface "vaststars.gamerender|iui"
+local iui = ecs.require "engine.system.ui_system"
 
 local M = {}
 

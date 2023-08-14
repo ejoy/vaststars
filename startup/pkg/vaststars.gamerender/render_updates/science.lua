@@ -4,7 +4,7 @@ local w = world.w
 
 local global = require "global"
 local iscience = require "gameplay.interface.science"
-local iui = ecs.import.interface "vaststars.gamerender|iui"
+local iui = ecs.require "engine.system.ui_system"
 local gameplay_core = require "gameplay.core"
 local science_sys = ecs.system "science_system"
 

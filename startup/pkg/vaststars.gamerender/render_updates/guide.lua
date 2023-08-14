@@ -3,7 +3,7 @@ local world = ecs.world
 local w = world.w
 
 local global = require "global"
-local iui = ecs.import.interface "vaststars.gamerender|iui"
+local iui = ecs.require "engine.system.ui_system"
 local iguide = require "gameplay.interface.guide"
 local guide_sys = ecs.system "guide_system"
 local gameplay_core = require "gameplay.core"

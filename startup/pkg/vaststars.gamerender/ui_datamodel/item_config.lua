@@ -11,7 +11,7 @@ local itask = ecs.require "task"
 local item_unlocked = ecs.require "ui_datamodel.common.item_unlocked".is_unlocked
 local ITEM_CATEGORY <const> = import_package "vaststars.prototype"("item_category")
 local iprototype = require "gameplay.interface.prototype"
-local iui = ecs.import.interface "vaststars.gamerender|iui"
+local iui = ecs.require "engine.system.ui_system"
 
 local function __set_item_value(datamodel, category_idx, item_idx, key, value)
     if category_idx == 0 and item_idx == 0 then

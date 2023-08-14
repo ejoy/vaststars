@@ -6,7 +6,7 @@ local w = world.w
 local ipl = ecs.require "ant.render|polyline.polyline"
 local ivs = ecs.require "ant.render|visible_state"
 local iom = ecs.require "ant.objcontroller|obj_motion"
-local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
+local ientity_object = ecs.require "engine.system.entity_object_system"
 local COLOR <const> = {0.0, 1.0, 0.0, 0.4}
 local LINE_WIDTH = 70
 

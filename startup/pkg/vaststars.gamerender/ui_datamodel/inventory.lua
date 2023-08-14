@@ -8,7 +8,7 @@ local iprototype = require "gameplay.interface.prototype"
 local iBackpack = import_package "vaststars.gameplay".interface "backpack"
 local click_item_mb = mailbox:sub {"click_item"}
 local close_mb = mailbox:sub {"close"}
-local iui = ecs.import.interface "vaststars.gamerender|iui"
+local iui = ecs.require "engine.system.ui_system"
 local iprototype_cache = ecs.import.interface "vaststars.gamerender|iprototype_cache"
 
 local function get_inventory()

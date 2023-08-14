@@ -245,7 +245,8 @@ function ui_system.exit()
     end
 end
 
-local iui = ecs.interface "iui"
+local iui = {}
+
 function iui.open(...)
     return open(...)
 end
@@ -346,3 +347,5 @@ end
 function iui.add_datamodel_listener(url, func)
     windowListeners[url] = func
 end
+
+return iui

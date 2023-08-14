@@ -11,7 +11,7 @@ local math3d = require "math3d"
 local YAXIS_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
 local PLANES <const> = {YAXIS_PLANE}
 local terrain = ecs.require "terrain"
-local icamera_controller = ecs.import.interface "vaststars.gamerender|icamera_controller"
+local icamera_controller = ecs.require "engine.system.camera_controller"
 
 function debug_sys:init_world()
 end

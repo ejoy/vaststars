@@ -3,7 +3,7 @@ local world = ecs.world
 local w = world.w
 
 local math3d = require "math3d"
-local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
+local ientity_object = ecs.require "engine.system.entity_object_system"
 local iprinter = ecs.import.interface "mod.printer|iprinter"
 local prefab_meshbin = require("engine.prefab_parser").meshbin
 local iprototype = require "gameplay.interface.prototype"

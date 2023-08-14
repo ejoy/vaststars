@@ -1,6 +1,6 @@
 local ecs = ...
 
-local iui = ecs.import.interface "vaststars.gamerender|iui"
+local iui = ecs.require "engine.system.ui_system"
 local assetmgr = import_package "ant.asset"
 local vfs = require "vfs"
 local ltask = require "ltask"

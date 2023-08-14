@@ -4,7 +4,7 @@ local w = world.w
 
 local math3d = require "math3d"
 local iom = ecs.require "ant.objcontroller|obj_motion"
-local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
+local ientity_object = ecs.require "engine.system.entity_object_system"
 local iprototype = require "gameplay.interface.prototype"
 local prefab_meshbin = require("engine.prefab_parser").meshbin
 local iheapmesh = ecs.require "ant.render|render_system.heap_mesh"

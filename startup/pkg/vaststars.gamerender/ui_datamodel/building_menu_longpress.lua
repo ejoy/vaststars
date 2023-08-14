@@ -4,7 +4,7 @@ local w = world.w
 
 local iprototype = require "gameplay.interface.prototype"
 local objects = require "objects"
-local iui = ecs.import.interface "vaststars.gamerender|iui"
+local iui = ecs.require "engine.system.ui_system"
 
 local move_mb = mailbox:sub {"move"}
 local teardown_mb = mailbox:sub {"teardown"}

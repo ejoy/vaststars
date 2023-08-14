@@ -5,7 +5,7 @@ local statistical_data_mb = mailbox:sub {"statistical_data"}
 local game_settings_mb = mailbox:sub {"game_settings"}
 local quit_mb = mailbox:sub {"quit"}
 
-local iui = ecs.import.interface "vaststars.gamerender|iui"
+local iui = ecs.require "engine.system.ui_system"
 local gameplay_core = require "gameplay.core"
 
 local M = {}

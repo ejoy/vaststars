@@ -2,11 +2,11 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local icamera_controller = ecs.import.interface "vaststars.gamerender|icamera_controller"
+local icamera_controller = ecs.require "engine.system.camera_controller"
 local saveload = ecs.require "saveload"
 local gameplay_core = require "gameplay.core"
 local iguide = require "gameplay.interface.guide"
-local iui = ecs.import.interface "vaststars.gamerender|iui"
+local iui = ecs.require "engine.system.ui_system"
 local iom = ecs.require "ant.objcontroller|obj_motion"
 local iani = ecs.require "ant.animation|controller.state_machine"
 local game_cover

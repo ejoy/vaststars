@@ -2,7 +2,7 @@ local ecs = ...
 local world = ecs.world
 
 local iprototype = require "gameplay.interface.prototype"
-local icamera_controller = ecs.interface "icamera_controller"
+local icamera_controller = ecs.require "engine.system.camera_controller"
 local create_builder = ecs.require "editor.builder"
 local ieditor = ecs.require "editor.editor"
 local objects = require "objects"

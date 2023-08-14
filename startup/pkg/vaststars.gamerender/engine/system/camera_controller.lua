@@ -21,7 +21,7 @@ local YAXIS_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
 local PLANES <const> = {YAXIS_PLANE}
 
 local camera_controller = ecs.system "camera_controller"
-local icamera_controller = ecs.interface "icamera_controller"
+local icamera_controller = {}
 
 local ui_message_move_camera_mb = world:sub {"ui_message", "move_camera"}
 local gesture_pinch = world:sub {"gesture", "pinch"}
@@ -320,3 +320,5 @@ function icamera_controller.set_camera_srt(s, r, t, callback)
         cam_cmd_queue:push {{"callback", callback}}
     end
 end
+
+return icamera_controller

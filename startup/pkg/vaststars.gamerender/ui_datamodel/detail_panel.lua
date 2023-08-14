@@ -14,7 +14,7 @@ local ilaboratory = require "gameplay.interface.laboratory"
 local ichest = require "gameplay.interface.chest"
 local building_detail = import_package "vaststars.prototype"("building_detail_config")
 local assembling_common = require "ui_datamodel.common.assembling"
-local iui = ecs.import.interface "vaststars.gamerender|iui"
+local iui = ecs.require "engine.system.ui_system"
 
 local UPS <const> = require("gameplay.interface.constant").UPS
 local CHEST_LIST_TYPES <const> = {"chest", "station_producer", "station_consumer", "hub"}

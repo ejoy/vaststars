@@ -3,7 +3,7 @@ local world = ecs.world
 local w = world.w
 
 local ims = ecs.require "ant.motion_sampler|motion_sampler"
-local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
+local ientity_object = ecs.require "engine.system.entity_object_system"
 local iprototype = require "gameplay.interface.prototype"
 local iom = ecs.require "ant.objcontroller|obj_motion"
 local ivs = ecs.require "ant.render|visible_state"

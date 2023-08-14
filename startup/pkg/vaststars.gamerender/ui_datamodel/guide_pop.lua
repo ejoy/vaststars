@@ -1,7 +1,7 @@
 local ecs, mailbox= ...
 local world = ecs.world
 local global = require "global"
-local iui = ecs.import.interface "vaststars.gamerender|iui"
+local iui = ecs.require "engine.system.ui_system"
 local iguide = require "gameplay.interface.guide"
 local story_click_mb = mailbox:sub {"story_click"}
 local gameplay_core = require "gameplay.core"

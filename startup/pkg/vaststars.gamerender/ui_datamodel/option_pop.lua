@@ -9,7 +9,7 @@ local info_mb = mailbox:sub {"info"}
 local debug_mb = mailbox:sub {"debug"}
 local back_to_main_menu_mb = mailbox:sub {"back_to_main_menu"}
 local lock_group_mb = mailbox:sub {"lock_group"}
-local iui = ecs.import.interface "vaststars.gamerender|iui"
+local iui = ecs.require "engine.system.ui_system"
 
 local saveload = ecs.require "saveload"
 local gameplay_core = require "gameplay.core"

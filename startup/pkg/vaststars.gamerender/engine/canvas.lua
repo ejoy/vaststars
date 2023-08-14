@@ -4,7 +4,7 @@ local w     = world.w
 
 local icas   = ecs.require "ant.terrain|canvas"
 local iterrain = ecs.require "terrain"
-local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
+local ientity_object = ecs.require "engine.system.entity_object_system"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local iom = ecs.require "ant.objcontroller|obj_motion"
 
