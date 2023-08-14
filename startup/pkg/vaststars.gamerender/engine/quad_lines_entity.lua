@@ -4,7 +4,7 @@ local world = ecs.world
 local w = world.w
 
 local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
-local ientity = ecs.import.interface "ant.render|ientity"
+local ientity = ecs.require "ant.render|components.entity"
 local constant = require "gameplay.interface.constant"
 local ROTATORS = constant.ROTATORS
 local iom = ecs.require "ant.objcontroller|obj_motion"

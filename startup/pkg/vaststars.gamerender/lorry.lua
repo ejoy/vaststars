@@ -53,7 +53,7 @@ local function __create_lorry_object(prefab, parent)
 end
 
 local function __create_shadow_object(parent)
-    local ientity = ecs.import.interface "ant.render|ientity"
+    local ientity = ecs.require "ant.render|components.entity"
     local minv, maxv = 1, 0
     local x, z = -5, -5
     local w = 10

@@ -2,7 +2,7 @@ local ecs = ...
 local world = ecs.world
 
 local math3d = require "math3d"
-local ientity = ecs.import.interface "ant.render|ientity"
+local ientity = ecs.require "ant.render|components.entity"
 local imesh = ecs.import.interface "ant.asset|imesh"
 local ivs = ecs.import.interface "ant.scene|ivisible_state"
 local imaterial = ecs.import.interface "ant.asset|imaterial"
