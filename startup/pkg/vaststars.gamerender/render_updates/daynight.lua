@@ -4,7 +4,7 @@ local w = world.w
 
 local DAYNIGHT_DEBUG <const> = require "debugger".daynight
 local DayTick <const> = require("gameplay.interface.constant").DayTick
-local idn = ecs.import.interface "ant.daynight|idaynight"
+local idn = ecs.require "ant.daynight|daynight"
 local gameplay_core = require "gameplay.core"
 
 local daynight_sys = ecs.system "daynight_system"

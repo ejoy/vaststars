@@ -3,7 +3,7 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local ipl = ecs.import.interface "ant.render|ipolyline"
+local ipl = ecs.require "ant.render|polyline.polyline"
 local ivs = ecs.require "ant.render|visible_state"
 local iom = ecs.require "ant.objcontroller|obj_motion"
 local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
