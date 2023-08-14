@@ -6,7 +6,7 @@ local icas   = ecs.import.interface "ant.terrain|icanvas"
 local iterrain = ecs.require "terrain"
 local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
-local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+local iom = ecs.require "ant.objcontroller|obj_motion"
 
 local types <const> = {
     BUILDING_BASE = 1,

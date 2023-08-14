@@ -7,7 +7,7 @@ local saveload = ecs.require "saveload"
 local gameplay_core = require "gameplay.core"
 local iguide = require "gameplay.interface.guide"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
-local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+local iom = ecs.require "ant.objcontroller|obj_motion"
 local iani = ecs.import.interface "ant.animation|ianimation"
 local game_cover
 

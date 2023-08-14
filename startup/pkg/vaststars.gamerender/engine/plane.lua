@@ -7,7 +7,7 @@ local imesh = ecs.import.interface "ant.asset|imesh"
 local ivs = ecs.import.interface "ant.scene|ivisible_state"
 local imaterial = ecs.import.interface "ant.asset|imaterial"
 local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
-local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+local iom = ecs.require "ant.objcontroller|obj_motion"
 local MATH3D_NULL <const> = math3d.constant "null"
 
 local gen_id do

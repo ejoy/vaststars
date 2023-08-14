@@ -64,7 +64,6 @@ pipeline "prototype"
 ----------------------------------------------------
 ----------------------------------------------------
 policy "engine"
-    .require_interface "ant.objcontroller|iobj_motion"
     .require_policy "ant.sky|skybox"
     .require_policy "ant.render|csm_queue"
     .require_policy "ant.render|skinrender"

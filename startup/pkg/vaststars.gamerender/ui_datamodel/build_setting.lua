@@ -13,7 +13,7 @@ local click_main_button_mb = mailbox:sub {"click_main_button"}
 local iUiRt = ecs.import.interface "ant.rmlui|iuirt"
 local ibackpack = require "gameplay.interface.backpack"
 local math3d = require "math3d"
-local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+local iom = ecs.require "ant.objcontroller|obj_motion"
 local ivs = ecs.import.interface "ant.scene|ivisible_state"
 
 local function __get_construct_menu()

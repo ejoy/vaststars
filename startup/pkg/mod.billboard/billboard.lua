@@ -1,7 +1,7 @@
 local ecs = ...
 local world = ecs.world
 local w = world.w
-local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+local iom = ecs.require "ant.objcontroller|obj_motion"
 local imaterial = ecs.import.interface "ant.asset|imaterial"
 local renderpkg = import_package "ant.render"
 local bb_sys = ecs.system "billboard_system"

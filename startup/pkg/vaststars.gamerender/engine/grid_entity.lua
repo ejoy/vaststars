@@ -5,7 +5,7 @@ local w = world.w
 
 local ipl = ecs.import.interface "ant.render|ipolyline"
 local ivs = ecs.import.interface "ant.scene|ivisible_state"
-local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+local iom = ecs.require "ant.objcontroller|obj_motion"
 local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
 local COLOR <const> = {0.0, 1.0, 0.0, 0.4}
 local LINE_WIDTH = 70

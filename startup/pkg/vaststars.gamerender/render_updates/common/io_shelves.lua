@@ -3,7 +3,7 @@ local world = ecs.world
 local w = world.w
 
 local math3d = require "math3d"
-local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+local iom = ecs.require "ant.objcontroller|obj_motion"
 local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
 local iprototype = require "gameplay.interface.prototype"
 local prefab_meshbin = require("engine.prefab_parser").meshbin

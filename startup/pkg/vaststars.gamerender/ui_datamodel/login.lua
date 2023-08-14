@@ -47,9 +47,6 @@ function M:stage_camera_usage(datamodel)
             system = {
                 "vaststars.gamerender|init_system",
             },
-            interface = {
-                "ant.objcontroller|iobj_motion",
-            },
             policy = {
                 "ant.general|name",
                 "ant.scene|scene_object",

@@ -23,7 +23,7 @@ local ibillboard = ecs.import.interface "mod.billboard|ibillboard"
 local iroad = ecs.import.interface "mod.road|iroad"
 local S = ecs.system "init_system"
 
-local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+local iom = ecs.require "ant.objcontroller|obj_motion"
 
 function S.init()
     --ecs.create_instance "/pkg/vaststars.mod.test/assets/skybox.prefab"

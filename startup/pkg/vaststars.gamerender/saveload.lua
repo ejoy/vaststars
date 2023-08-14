@@ -34,7 +34,7 @@ local create_buildings = require "building_components"
 
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local irq = ecs.import.interface "ant.render|irenderqueue"
-local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+local iom = ecs.require "ant.objcontroller|obj_motion"
 local ic = ecs.import.interface "ant.camera|icamera"
 local math3d = require "math3d"
 local iobject = ecs.require "object"
