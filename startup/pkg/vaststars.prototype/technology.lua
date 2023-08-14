@@ -364,7 +364,7 @@ local prototype = gameplay.register.prototype
     --   },
     -- },
     sign_desc = {
-      { desc = "在铁矿的采矿机附近上放置1座风力发电机对其供电", icon = "ui/textures/construct/industry.texture"},
+      { desc = "在铁矿采矿机的附近放置1座风力发电机对其供电", icon = "ui/textures/construct/industry.texture"},
     },
   }
 
@@ -1150,24 +1150,6 @@ prototype "碳处理2" {
   time = "2s"
 }
 
-prototype "地质研究2" {
-  desc = "对火星地质结构进行标本采集和研究",
-  type = { "tech" },
-  icon = "ui/textures/science/book.texture",
-  effects = {
-    unlock_recipe = {"地质科技包2"},
-  },
-  ingredients = {
-      {"地质科技包", 1},
-  },
-  count = 10,
-  time = "2s",
-  prerequisites = {"碳处理2"},
-  sign_desc = {
-    { desc = "该科技是一项前沿科技，可引导其他的科技研究", icon = "ui/textures/science/key_sign.texture"},
-  },
-  sign_icon = "ui/textures/science/key_sign.texture",
-}
 
 prototype "冶金学1" {
   desc = "研究工业高温熔炼的装置",
@@ -1567,6 +1549,25 @@ prototype "矿石粉碎" {
   sign_desc = {
     { desc = "用粉碎机生产20个沙子", icon = "ui/textures/construct/industry.texture"},
   },
+}
+
+prototype "地质研究2" {
+  desc = "对火星地质结构进行标本采集和研究",
+  type = { "tech" },
+  icon = "ui/textures/science/book.texture",
+  effects = {
+    unlock_recipe = {"地质科技包2"},
+  },
+  ingredients = {
+      {"地质科技包", 1},
+  },
+  count = 10,
+  time = "2s",
+  prerequisites = {"矿物处理1"},
+  sign_desc = {
+    { desc = "该科技是一项前沿科技，可引导其他的科技研究", icon = "ui/textures/science/key_sign.texture"},
+  },
+  sign_icon = "ui/textures/science/key_sign.texture",
 }
 
 prototype "钢加工" {
