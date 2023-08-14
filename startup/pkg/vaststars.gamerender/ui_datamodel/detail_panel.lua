@@ -215,22 +215,23 @@ local function get_property(e, typeobject)
     get_display_info(e, typeobject, t)
     local chest_component = ichest.get_chest_component(e)
     if iprototype.check_types(typeobject.name, CHEST_LIST_TYPES) and chest_component then
-        local chest_list = {}
-        if iprototype.has_types(typeobject.type, "station_producer", "station_consumer", "hub") then
-            local c = ichest.get(gameplay_core.get_world(), e[chest_component], 1)
-            if c then
-                local typeobject_item = assert(iprototype.queryById(c.item))
-                local gw = gameplay_core.get_world()
-                chest_list[#chest_list + 1] = {icon = typeobject_item.item_icon, name = typeobject_item.name, count = ichest.get_amount(c), max_count = (e.hub and gw:container_get(e.hub, 1).limit or typeobject_item.stack) }
+        local items = {}
+        for i = 1, ichest.MAX_SLOT do
+            local slot = ichest.get(gameplay_core.get_world(), e[chest_component], i)
+            if not slot then
+                break
             end
-        else
-            for _, slot in pairs(ichest.collect_item(gameplay_core.get_world(), e[chest_component])) do
+
+            local amount = ichest.get_amount(slot)
+            if slot.item ~= 0 and amount ~= 0 then
                 local typeobject_item = assert(iprototype.queryById(slot.item))
-                chest_list[#chest_list + 1] = {icon = typeobject_item.item_icon, name = "", count = ichest.get_amount(slot), max_count = typeobject_item.stack}
+                items[#items + 1] = {icon = typeobject_item.item_icon, name = typeobject_item.name, count = amount, max_count = slot.limit }
             end
+        end
+        if iprototype.has_type(typeobject.type, "chest") then
             t.is_chest = true
         end
-        t.chest_list = chest_list
+        t.chest_list = items
     end
     if e.fluidbox then
         local name = "无"

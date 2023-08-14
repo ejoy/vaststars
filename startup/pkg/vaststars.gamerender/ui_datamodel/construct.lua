@@ -230,7 +230,13 @@ function M:update_tech(datamodel, tech)
 end
 
 function M:update_inventory_bar(datamodel, t)
-    datamodel.inventory_bar = t
+    datamodel.inventory_bar = {}
+    for _, v in ipairs(t) do
+        datamodel.inventory_bar[#datamodel.inventory_bar + 1] = v
+        if #datamodel.inventory_bar >= 4 then
+            break
+        end
+    end
 end
 
 function M:stage_ui_update(datamodel)

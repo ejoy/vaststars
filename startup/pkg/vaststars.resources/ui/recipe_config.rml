@@ -100,6 +100,8 @@
         </style>
         <script type="text/x-lua" >
             local ui_sys = require "ui.ui_system"
+            local scrollToItem = require "ui.lua.scrolltoitem"
+
             local start = ui_sys.createDataMode {
                 object_id = 0,
                 recipes = {},
@@ -137,20 +139,15 @@
                 end)
             end
 
-            window.setTimeout(function()
-                local list = assert(document.getElementById "recipe-list")
-                local id = ("%s:%s"):format(start.category_idx, start.recipe_idx)
-                local e = document.getElementById(id)
-                if e then
-                    list.scrollTop = 0
-                    repeat
-                        list.scrollTop = list.scrollTop + e.clientTop
-                        e = e.parentNode
-                    until e == list
-                else
-                    console.log(id .. " can not found element")
-                end
-            end, 200)
+            ui_sys.mapping(start, {
+                {
+                    function(start)
+                        window.flush()
+                        scrollToItem("recipe-list", ("%s:%s"):format(start.category_idx, start.recipe_idx))
+                    end,
+                    "category_idx", "recipe_idx",
+                }
+            })
         </script>
     </head>
     <body style = "justify-content: center; align-items: center; background-image: ui/textures/recipe-config/bg.texture; background-size: 100% 100%;" onload="init()">

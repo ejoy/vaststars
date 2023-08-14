@@ -75,8 +75,16 @@ end
 funcs["chest"] = function (entity, e)
     gameplay_core.extend(e, "chest?in building?in")
     local items = {}
-    for _, slot in pairs(ichest.collect_item(gameplay_core.get_world(), e.chest)) do
-        items[#items+1] = {iprototype.queryById(slot.item).name, slot.amount}
+    for i = 1, ichest.MAX_SLOT do
+        local slot = ichest.get(gameplay_core.get_world(), e.chest, i)
+        if not slot then
+            break
+        end
+
+        local amount = ichest.get_amount(slot)
+        if slot.item ~= 0 and amount ~= 0 then
+            items[#items+1] = {iprototype.queryById(slot.item).name, amount}
+        end
     end
 
     entity.items = items

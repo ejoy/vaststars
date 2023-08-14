@@ -94,6 +94,8 @@
         </style>
         <script type="text/x-lua" >
             local ui_sys = require "ui.ui_system"
+            local scrollToItem = require "ui.lua.scrolltoitem"
+
             local start = ui_sys.createDataMode {
                 items = {},
                 item_name = "",
@@ -121,20 +123,15 @@
                 ui_sys.pub {"set_item"}
             end
 
-            window.setTimeout(function()
-                local list = assert(document.getElementById "item-list")
-                local id = ("%s:%s"):format(start.category_idx, start.item_idx)
-                local e = document.getElementById(id)
-                if e then
-                    list.scrollTop = 0
-                    repeat
-                        list.scrollTop = list.scrollTop + e.clientTop
-                        e = e.parentNode
-                    until e == list
-                else
-                    console.log(id .. " can not found element")
-                end
-            end, 200)
+            ui_sys.mapping(start, {
+                {
+                    function(start)
+                        window.flush()
+                        scrollToItem("item-list", ("%s:%s"):format(start.category_idx, start.item_idx))
+                    end,
+                    "category_idx", "item_idx",
+                }
+            })
         </script>
     </head>
     <body style = "pointer-events: none; justify-content: center; align-items: center; background-image: ui/textures/item-config/bg.texture; background-size: 100% 100%;" onload="init()">

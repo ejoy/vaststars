@@ -236,7 +236,7 @@ function m.hub_set(world, e, items)
             if item ~= 0 then
                 local limit = prototype.queryById(item).hub_limit
                 if slot.limit ~= limit then
-                    cChest.set(world._cworld, e.hub.chest, 1, {
+                    cChest.set(world._cworld, e.hub.chest, i, {
                         limit = limit,
                     })
                 end
@@ -245,7 +245,7 @@ function m.hub_set(world, e, items)
             if slot.item ~= 0 then
                 iBackpack.place(world, slot.item, slot.amount)
             end
-            cChest.set(world._cworld, e.hub.chest, 1, {
+            cChest.set(world._cworld, e.hub.chest, i, {
                 item = item,
                 limit = item ~= 0 and prototype.queryById(item).hub_limit or 0,
                 amount = 0,

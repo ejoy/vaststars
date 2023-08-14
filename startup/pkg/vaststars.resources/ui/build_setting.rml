@@ -117,6 +117,7 @@
         </style>
         <script type="text/x-lua" >
             local ui_sys = require "ui.ui_system"
+            local scrollToItem = require "ui.lua.scrolltoitem"
             local button_pos = require "ui.lua.button_pos"
             local start = ui_sys.createDataMode({
                 shortcut_buttons = {},
@@ -185,24 +186,7 @@
                 {
                     function(start)
                         window.flush()
-                        for _, list in ipairs(document.getElementsByTagName "construct-list") do
-                            local id = ("%s:%s"):format(start.category_idx, start.item_idx)
-                            local item = document.getElementById(id)
-                            if item then
-                                local clientTop = 0
-                                local e = item
-                                repeat
-                                    clientTop = clientTop + e.clientTop
-                                    e = e.parentNode
-                                until e == list
-
-                                if clientTop >= list.scrollTop and (clientTop + item.clientHeight) <= (list.scrollTop + list.clientHeight) then
-                                    return
-                                end
-
-                                list.scrollTop = clientTop
-                            end
-                        end
+                        scrollToItem("construct-list", ("%s:%s"):format(start.category_idx, start.item_idx))
                     end,
                     "category_idx", "item_idx",
                 }

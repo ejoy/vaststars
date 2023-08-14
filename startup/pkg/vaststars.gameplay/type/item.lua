@@ -6,6 +6,7 @@ local m = type "item"
     .hub_limit "integer"
     .pile "volume"
     .pile_model "string"
+    .item_icon "string"
 
 function m:preinit(object)
 	local w, h, d = object.pile:match "(%d+)x(%d+)x(%d+)"

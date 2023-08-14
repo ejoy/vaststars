@@ -38,7 +38,7 @@ function M:create(object_id, interface)
 
     local object = assert(objects:get(object_id))
     local e = assert(gameplay_core.get_entity(assert(object.gameplay_eid)))
-    local item = interface.get_first_item(gameplay_core.get_world(), e)
+    local item = interface.get_item(gameplay_core.get_world(), e)
     if item and item ~= 0 then
         local typeobject = assert(iprototype.queryById(item))
         datamodel.item_name = typeobject.name
@@ -73,7 +73,6 @@ function M:create(object_id, interface)
         local category_idx = assert(cache[typeobject.item_category])
         local item_idx = #res[category_idx].items+1
 
-        assert(typeobject.item_icon and type(typeobject.item_icon) == "string" and typeobject.item_icon ~= "", ("item(%s) icon is invalid."):format(typeobject.name))
         res[category_idx].items[item_idx] = {
             id = ("%s:%s"):format(category_idx, item_idx),
             name = typeobject.name,
@@ -146,13 +145,14 @@ function M:stage_ui_update(datamodel, object_id, interface)
             local typeobject = assert(iprototype.queryByName(name))
             local e = gameplay_core.get_entity(assert(objects:get(object_id).gameplay_eid))
             local gameplay_world = gameplay_core.get_world()
-            interface.set_first_item(gameplay_world, e, typeobject.id)
+            interface.set_item(gameplay_world, e, typeobject.id)
             itask.update_progress("set_item", name)
         else
             local e = gameplay_core.get_entity(assert(objects:get(object_id).gameplay_eid))
             local gameplay_world = gameplay_core.get_world()
-            interface.set_first_item(gameplay_world, e, 0)
+            interface.set_item(gameplay_world, e, 0)
         end
+        iui.call_datamodel_method("ui/building_menu.rml", "update_item_icon")
         iui.close("ui/item_config.rml")
     end
 end

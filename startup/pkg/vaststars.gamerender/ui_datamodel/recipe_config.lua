@@ -154,7 +154,6 @@ function M:stage_ui_update(datamodel, object_id)
             object.fluid_name = irecipe.get_init_fluids(recipe_typeobject) or {} -- recipe may not have fluid
             object.recipe = recipe_name
 
-            iui.call_datamodel_method("ui/building_menu.rml", "update", object_id)
             gameplay_core.set_changed(CHANGED_FLAG_ASSEMBLING)
 
             itask.update_progress("set_recipe", recipe_name)
@@ -171,7 +170,6 @@ function M:stage_ui_update(datamodel, object_id)
         object.recipe = ""
         object.fluid_name = {}
 
-        iui.call_datamodel_method("ui/building_menu.rml", "update", object_id)
         gameplay_core.set_changed(CHANGED_FLAG_ASSEMBLING)
 
         datamodel.category_idx = 0

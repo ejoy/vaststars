@@ -37,18 +37,17 @@ local function set(world, ...)
     return world:container_set(...)
 end
 
-local function collect_item(world, e)
-    local r = {}
+local function has_item(world, e)
     for i = 1, MAX_SLOT do
         local slot = world:container_get(e, i)
         if not slot then
-            break
+            return false
         end
         if slot.item ~= 0 and slot.amount ~= 0 then
-            r[slot.item] = slot
+            return true
         end
     end
-    return r
+    return false
 end
 
 return {
@@ -58,5 +57,5 @@ return {
     get_amount = get_amount,
     get_space = get_space,
     set = set,
-    collect_item = collect_item,
+    has_item = has_item,
 }
