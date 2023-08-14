@@ -340,9 +340,9 @@
                     </div>
                 </div>
             </div>
-            <div class="tips-bg" data-if="areaid==6.0">
+            <div class="tips-bg" style="flex-direction: row;" data-if="areaid==6.0">
                 <div style="flex-direction: column; justify-content: center; align-items: center;" data-for = "chest : chest_list">
-                    <div class="small-item1" style="height: 20vmin; width: 20vmin;" data-style-background-image="chest.icon">
+                    <div class="small-item1" style="margin: 1.5vmin; height: 20vmin; width: 20vmin;" data-style-background-image="chest.icon">
                         <div class ="item-count-combination">
                             <div class="item-count-new" style="font-size: 5vmin;">x{{chest.count}}</div>
                         </div>
