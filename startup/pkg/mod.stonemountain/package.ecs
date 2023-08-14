@@ -7,12 +7,6 @@ system "stone_mountain"
     .method "entity_remove"
     .method "data_changed"
 
-
-interface "istonemountain"
-    .implement "stone_mountain.lua"
-    .method "create_sm_entity"
-    .method "create_random_sm"
-
 component "stonemountain".type "lua"
 
 policy "stonemountain"

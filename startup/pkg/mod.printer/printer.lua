@@ -7,7 +7,7 @@ local mathpkg = import_package "ant.math"
 local imaterial = ecs.require "ant.asset|material"
 
 local printer_sys = ecs.system 'printer_system'
-local iprinter = ecs.interface "iprinter"
+local iprinter = {}
 local mc    = mathpkg.constant
 
 
@@ -69,3 +69,5 @@ function iprinter.update_printer_percent(eid, percent)
         end
     end    
 end
+
+return iprinter

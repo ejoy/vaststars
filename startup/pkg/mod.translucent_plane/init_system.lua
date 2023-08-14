@@ -10,7 +10,7 @@ local layout                = declmgr.get(layout_name)
 local init_sys = ecs.system 'init_system'
 local bgfx      = require "bgfx"
 local iplane_terrain  = ecs.require "mod.terrain|plane_terrain"
-local itp = ecs.interface "itranslucent_plane"
+local itp = {}
 local translucent_plane_material
 local tp_table = {}
 local NUM_QUAD_VERTICES<const> = 4
@@ -336,3 +336,5 @@ function init_sys:data_changed()
         intersect_table = {}
     end
 end
+
+return itp

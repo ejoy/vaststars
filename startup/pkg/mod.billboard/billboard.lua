@@ -5,7 +5,7 @@ local iom = ecs.require "ant.objcontroller|obj_motion"
 local imaterial = ecs.require "ant.asset|material"
 local renderpkg = import_package "ant.render"
 local bb_sys = ecs.system "billboard_system"
-local ibillboard = ecs.interface "ibillboard"
+local ibillboard = {}
 local math3d = require "math3d"
 local bgfx = require "bgfx"
 local sampler = renderpkg.sampler
@@ -112,3 +112,5 @@ function bb_sys:camera_usage()
         ro.worldmat = e.scene.worldmat
     end
 end
+
+return ibillboard

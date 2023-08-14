@@ -16,7 +16,7 @@ local bgfx 			= require "bgfx"
 local assetmgr  = import_package "ant.asset"
 local icompute = ecs.require "ant.render|compute.compute"
 local terrain_module = require "terrain"
-local ism = ecs.interface "istonemountain"
+local ism = {}
 local sm_sys = ecs.system "stone_mountain"
 local vb_num, vb_size, vb2_size, ib_num, ib_size = 0, 0, 0, 0, 0
 local vb_handle, vb2_handle, ib_handle
@@ -372,3 +372,5 @@ function sm_sys:data_changed()
         ::continue::
     end
 end
+
+return ism

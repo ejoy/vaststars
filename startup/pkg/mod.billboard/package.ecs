@@ -7,9 +7,3 @@ component "billboard"
 system "billboard_system"
     .implement "billboard.lua"
     .method "camera_usage"
-
-
-interface "ibillboard"
-    .implement "billboard.lua"
-    .method "create_billboard_base"
-    .method "remove_billboard_base"

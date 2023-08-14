@@ -2,7 +2,7 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local itp = ecs.import.interface "mod.translucent_plane|itranslucent_plane"
+local itp = ecs.require "mod.translucent_plane|init_system"
 local iroad = ecs.require "engine.road"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
