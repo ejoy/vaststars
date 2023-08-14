@@ -293,6 +293,10 @@ local function get_property(e, typeobject)
         t.values['weights'] = e.station_producer.weights
         t.values['lorry'] = e.endpoint.lorry
     end
+    if e.hub then
+        local typeobject = iprototype.queryById(e.building.prototype)
+        t.values['drone_count'] = typeobject.drone_count
+    end
     return t
 end
 

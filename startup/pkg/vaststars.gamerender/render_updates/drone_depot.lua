@@ -16,6 +16,24 @@ local gameplay_core = require "gameplay.core"
 local drone_depot_sys = ecs.system "drone_depot_systme"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
+local PILE_SLOT_NAMES <const> = {
+    [1] = {"pile_slot"},
+    [2] = {"pile_slot_1", "pile_slot_2"},
+}
+
+local DIM3_CONVERTERS <const> = {
+    [1] = function(item)
+        local typeobject_item = iprototype.queryById(item)
+        local pile = typeobject_item.pile
+        return { (pile>>24) & 0xff, (pile>>32) & 0xff, (pile>>40) & 0xff }
+    end,
+    [2] = function(item)
+        local typeobject_item = iprototype.queryById(item)
+        local pile = typeobject_item.pile
+        return { ((pile>>24) & 0xff) // 2, (pile>>32) & 0xff, (pile>>40) & 0xff }
+    end,
+}
+
 local function __get_gap3(typeobject)
     if typeobject.drone_depot_gap3 then
         return {typeobject.drone_depot_gap3:match("([%d%.]+)x([%d%.]*)x([%d%.]*)")}
@@ -52,22 +70,22 @@ local function create_heap(mesh, srt, dim3, gap3, count)
     }, events)
 end
 
-local function create_shelf(building, item, count, building_srt)
+local function create_shelf(building, item, count, building_srt, slot_name, pile_dim3)
     local typeobject_building = iprototype.queryById(building)
     local building_slots = prefab_slots("/pkg/vaststars.resources/" .. typeobject_building.model)
-    assert(building_slots["pile_slot"])
-    local scene = building_slots["pile_slot"].scene
+    assert(building_slots[slot_name])
+    local scene = building_slots[slot_name].scene
     local offset = math3d.ref(math3d.matrix {s = scene.s, r = scene.r, t = scene.t})
 
     local typeobject_item = iprototype.queryById(item)
     local meshbin = assert(prefab_meshbin("/pkg/vaststars.resources/" .. typeobject_item.pile_model))
-    local pile = typeobject_item.pile
-    local dim3 = { (pile>>24) & 0xff, (pile>>32) & 0xff, (pile>>40) & 0xff }
+    -- local pile = typeobject_item.pile
+    -- local dim3 = { (pile>>24) & 0xff, (pile>>32) & 0xff, (pile>>40) & 0xff }
     local gap3 = __get_gap3(typeobject_item)
     local srt = math3d.mul(math3d.matrix({s = building_srt.s, r = building_srt.r, t = building_srt.t}), offset)
     local s, r, t = math3d.srt(srt)
     srt = {s = s, r = r, t = t}
-    local heap = create_heap(meshbin[1].mesh, srt, dim3, gap3, count)
+    local heap = create_heap(meshbin[1].mesh, srt, pile_dim3, gap3, count)
 
     local res = {item = item, count = count, heap = heap, offset = offset}
     res.on_position_change = function (self, building_srt)
@@ -132,20 +150,20 @@ local function __draw_icon(object_id, x, y)
     )
 end
 
-local function create_icon(object_id, e)
+local function create_icon(object_id)
     local cache
 
     local function remove(self)
         cache = nil
         icanvas.remove_item(icanvas.types().ICON, object_id)
     end
-    local function update(self, building_srt, item)
-        if item == cache then
+    local function update(self, building_srt, show)
+        if show == cache then
             return
         end
-        cache = item
+        cache = show
 
-        if item ~= 0 then
+        if not show then
             remove(self)
             return
         end
@@ -173,38 +191,79 @@ function drone_depot_sys:gameworld_update()
         end
 
         local building = global.buildings[object.id]
-        local slot = ichest.get(world, e.hub, 1)
+        local not_set_item = true
+
+        local max_slot = 0
+        for i = 1, ichest.MAX_SLOT do
+            local slot = ichest.get(world, e.hub, i)
+            if not slot then
+                break
+            end
+            max_slot = max_slot + 1
+        end
 
         --
-        if building.drone_depot_shelf then
-            if not slot then
-                building.drone_depot_shelf:remove()
-                building.drone_depot_shelf = nil
-            else
-                if building.drone_depot_shelf.item == slot.item then
-                    if building.drone_depot_shelf.count ~= slot.amount then
-                        building.drone_depot_shelf:update(slot.amount)
+        local shelves = building.drone_depot_shelves
+        if shelves then
+            for i = 1, max_slot do
+                local slot = ichest.get(world, e.hub, i)
+                if not slot then
+                    break
+                end
+                if shelves[i] and shelves[i].item == slot.item then
+                    if shelves[i].count ~= slot.amount then
+                        shelves[i]:update(slot.amount)
                     end
                 else
-                    building.drone_depot_shelf:remove()
-                    building.drone_depot_shelf = create_shelf(e.building.prototype, slot.item, slot.amount, object.srt)
+                    if shelves[i] then
+                        shelves[i]:remove()
+                    end
+                    assert(PILE_SLOT_NAMES[max_slot] and PILE_SLOT_NAMES[max_slot][i])
+                    assert(DIM3_CONVERTERS[max_slot])
+                    shelves[i] = create_shelf(e.building.prototype, slot.item, slot.amount, object.srt, PILE_SLOT_NAMES[max_slot][i], DIM3_CONVERTERS[max_slot](slot.item))
                 end
+                not_set_item = false
+                i = i + 1
+            end
+            for i = max_slot + 1, #shelves do
+                if shelves[i] then
+                    shelves[i]:remove()
+                    shelves[i] = nil
+                end
+                i = i + 1
             end
         else
-            if slot then
-                building.drone_depot_shelf = create_shelf(e.building.prototype, slot.item, slot.amount, object.srt)
+            local t = {
+                remove = function(self)
+                    for i = 1, #self do
+                        self[i]:remove()
+                    end
+                end,
+                on_position_change = function(self, building_srt)
+                    for i = 1, #self do
+                        self[i]:on_position_change(building_srt)
+                    end
+                end,
+            }
+            for i = 1, ichest.MAX_SLOT do
+                local slot = ichest.get(world, e.hub, i)
+                if not slot then
+                    break
+                end
+                if slot.item ~= 0 then
+                    assert(PILE_SLOT_NAMES[max_slot] and PILE_SLOT_NAMES[max_slot][i])
+                    assert(DIM3_CONVERTERS[max_slot])
+                    t[i] = create_shelf(e.building.prototype, slot.item, slot.amount, object.srt, PILE_SLOT_NAMES[max_slot][i], DIM3_CONVERTERS[max_slot](slot.item))
+                end
+                not_set_item = false
             end
+
+            building.drone_depot_shelves = t
         end
 
         --
-        if not building.drone_depot_icon then
-            building.drone_depot_icon = create_icon(object.id, e)
-        end
-        if not slot then
-            building.drone_depot_icon:update(object.srt, 0)
-        else
-            building.drone_depot_icon:update(object.srt, slot.item)
-        end
+        building.drone_depot_icon = building.drone_depot_icon or create_icon(object.id)
+        building.drone_depot_icon:update(object.srt, not_set_item)
 
         ::continue::
     end

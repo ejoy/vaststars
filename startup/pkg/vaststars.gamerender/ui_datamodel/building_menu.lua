@@ -294,20 +294,11 @@ local function gen_set_item(idx)
             if not slot then
                 break
             end
-            if slot.item == 0 then
-                goto continue
-            end
-            items[#items+1] = slot.item
-            ::continue::
+            items[#items+1] = slot.item == 0 and item or slot.item
         end
+        assert(items[idx])
+        items[idx] = item
 
-        if #items < 1 or (#items == 1 and idx == 1) then
-            for i = 1, 2 do
-                items[i] = item
-            end
-        else
-            items[idx] = item
-        end
         ihub.set_item(gameplay_world, e, items)
     end
 end

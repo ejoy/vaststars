@@ -11,7 +11,7 @@ policy:
   ant.animation|slot
 ---
 data:
-  name: pile_left_slot
+  name: pile_slot_1
   scene:
     t: {0.25, 5, 2.700000047683716}
   slot:
@@ -22,7 +22,7 @@ policy:
   ant.animation|slot
 ---
 data:
-  name: pile_right_slot
+  name: pile_slot_2
   scene:
     r: {0, 0, 0, 1}
     t: {-5.550000190734863, 5, 2.700000047683716}

@@ -8,6 +8,22 @@ local InvalidChest <const> = 0
 local c = type "hub"
     .supply_area "size"
 
+function c:preinit(object)
+    local t = {}
+    for _, d in ipairs(object.drone) do
+        local _, id = d[1], d[2]
+        t[id] = true
+    end
+
+    local c = 0
+    for _ in pairs(t) do
+        c = c + 1
+    end
+    return {
+        drone_count = c
+    }
+end
+
 function c:ctor(init, pt)
     local world = self
     local e = {
