@@ -48,6 +48,11 @@ prototype "仓库" {
     slots = 60,
 }
 
+
+--{ "无人机", 1 }, 表示一个无人机带一种货物1
+--{ "无人机", 1 }, { "无人机", 2 },表示一个无人机带货物1，另外一个无人机带货物2
+--{ "无人机", 1 }, { "无人机", 1 },表示两个无人机带货物1
+
 prototype "无人机仓库I" {
     model = "prefabs/drone-depot.prefab",
     icon = "ui/textures/building_pic/small_pic_drone_depot.texture",
