@@ -13,7 +13,7 @@ policy:
 data:
   name: pile_left_slot
   scene:
-    t: {0, 5, 2.700000047683716}
+    t: {0.25, 5, 2.700000047683716}
   slot:
     follow_flag: 1
     joint_name: None
@@ -25,7 +25,7 @@ data:
   name: pile_right_slot
   scene:
     r: {0, 0, 0, 1}
-    t: {-5.400000095367432, 5, 2.700000047683716}
+    t: {-5.550000190734863, 5, 2.700000047683716}
   slot:
     follow_flag: 1
     joint_name: None
