@@ -2,7 +2,7 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local irl = ecs.import.interface "ant.render|irender_layer"
+local irl = ecs.require "ant.render|render_layer"
 local render_layer_def = require "render_layer_def"
 
 local RENDER_LAYER = {}

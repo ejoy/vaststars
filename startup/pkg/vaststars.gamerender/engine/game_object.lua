@@ -14,8 +14,8 @@ local math3d = require "math3d"
 local COLOR_INVALID <const> = math3d.constant "null"
 local prefab_parse = require("engine.prefab_parser").parse
 local replace_material = require("engine.prefab_parser").replace_material
-local irl = ecs.import.interface "ant.render|irender_layer"
-local imodifier = ecs.import.interface "ant.modifier|imodifier"
+local irl = ecs.require "ant.render|render_layer"
+local imodifier = ecs.require "ant.modifier|modifier"
 
 local function replace_outline_material(template, outline_scale)
     local res = {}

@@ -9,7 +9,7 @@ local iom = ecs.require "ant.objcontroller|obj_motion"
 local ivs = ecs.require "ant.render|visible_state"
 local mathpkg = import_package "ant.math"
 local mc = mathpkg.constant
-local irl = ecs.import.interface "ant.render|irender_layer"
+local irl = ecs.require "ant.render|render_layer"
 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 
 local prefab_slots = require("engine.prefab_parser").slots
