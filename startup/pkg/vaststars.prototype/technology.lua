@@ -1561,8 +1561,8 @@ prototype "地质研究2" {
   ingredients = {
       {"地质科技包", 1},
   },
-  count = 10,
-  time = "2s",
+  count = 20,
+  time = "5s",
   prerequisites = {"矿物处理1"},
   sign_desc = {
     { desc = "该科技是一项前沿科技，可引导其他的科技研究", icon = "ui/textures/science/key_sign.texture"},
