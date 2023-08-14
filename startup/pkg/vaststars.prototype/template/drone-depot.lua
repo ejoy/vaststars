@@ -138,26 +138,26 @@ local entities = { {
     dir = "N",
     items = {"碎石","铁板"},
     prototype_name = "无人机仓库II",
-    x = 126,
-    y = 146
+    x = 125,
+    y = 143
   },{
     dir = "N",
     items = {"碎石","碎石"},
     prototype_name = "无人机仓库II",
-    x = 126,
-    y = 149
+    x = 125,
+    y = 146
   },{
     dir = "W",
     items = { { "碎石", 100 }},
     prototype_name = "机翼残骸",
-    x = 122,
-    y = 147
+    x = 121,
+    y = 144
   }, {
     dir = "E",
     items = { { "铁板", 100 }},
     prototype_name = "机翼残骸",
-    x = 129,
-    y = 147
+    x = 128,
+    y = 144
   }, }
 local road = {}
 
