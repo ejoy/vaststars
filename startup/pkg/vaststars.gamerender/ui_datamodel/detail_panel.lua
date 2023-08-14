@@ -101,7 +101,6 @@ local function get_solar_panel_power(total)
     end
 end
 
-local pre_unit = { G = "M", M = "k", k = "" }
 local next_unit = { k = "M", M = "G" }
 local function get_display_info(e, typeobject, t)
     local key = string.match(typeobject.name, "([^%u%d]+)")
@@ -178,18 +177,6 @@ local function get_display_info(e, typeobject, t)
                             unit = next_unit[unit]
                         end
                         return string.format("%d", clamp_value) .. unit .. eu
-                    end
-                    local function format(value, u)
-                        while value > 0 and value < 0.1 do
-                            value = value * 1000
-                            u = pre_unit[u]
-                        end
-                        local v0, v1 = math.modf(value)
-                        if v1 > 0 then
-                            return string.format("%.1f", value) .. u
-                        else
-                            return string.format("%d", v0) .. u
-                        end
                     end
                     local eu = (cn == "capacitance") and "J" or "W"
                     total = power_format(current, eu) .. "/" .. power_format(total, eu)
@@ -415,15 +402,7 @@ local function update_property_list(datamodel, property_list)
     datamodel.chest_list = property_list.chest_list or {}
     datamodel.show_type = property_list.show_type
     if #datamodel.chest_list > 0 then
-        if property_list.is_chest then
-            datamodel.show_type = "chest"
-        else
-            datamodel.show_type = "goods"
-            local item = datamodel.chest_list[1]
-            datamodel.goods_icon = item.icon
-            datamodel.goods_count = item.count
-            datamodel.goods_desc = item.name
-        end
+        datamodel.show_type = property_list.is_chest and "chest" or "goods"
     end
     datamodel.progress = property_list.progress or "0%"
     datamodel.recipe_inputs = property_list.recipe_inputs or {}
