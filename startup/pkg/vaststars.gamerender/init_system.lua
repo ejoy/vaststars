@@ -3,7 +3,7 @@ local world = ecs.world
 
 local FRAMES_PER_SECOND <const> = 30
 local bgfx = require 'bgfx'
-local iRmlUi = ecs.import.interface "ant.rmlui|irmlui"
+local iRmlUi = ecs.require "ant.rmlui|rmlui_system"
 local terrain = ecs.require "terrain"
 local gameplay_core = require "gameplay.core"
 local NOTHING <const> = require "debugger".nothing

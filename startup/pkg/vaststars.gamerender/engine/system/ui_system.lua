@@ -2,7 +2,7 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local irmlui = ecs.import.interface "ant.rmlui|irmlui"
+local irmlui = ecs.require "ant.rmlui|rmlui_system"
 local json = require "engine.system.json"
 local tracedoc = require "utility.tracedoc"
 local table_unpack = table.unpack
