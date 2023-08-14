@@ -9,7 +9,7 @@ local layout_name<const>    = declmgr.correct_layout "p3|t20"
 local layout                = declmgr.get(layout_name)
 local init_sys = ecs.system 'init_system'
 local bgfx      = require "bgfx"
-local iplane_terrain  = ecs.import.interface "mod.terrain|iplane_terrain"
+local iplane_terrain  = ecs.require "mod.terrain|plane_terrain"
 local itp = ecs.interface "itranslucent_plane"
 local translucent_plane_material
 local tp_table = {}

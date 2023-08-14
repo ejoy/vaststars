@@ -2,7 +2,6 @@ import "@mod.terrain"
 
 system "init_system"
     .implement "init_system.lua"
-    .require_interface "mod.terrain|iplane_terrain"
     .method "init_world"
     .method "data_changed"
 
@@ -14,6 +13,5 @@ interface "itranslucent_plane"
 policy "translucent_plane"
     .require_system "mod.translucent_plane|init_system"
     .require_system "ant.render|postprocess_obj_system"
-    .require_interface "mod.terrain|iplane_terrain"
 
 component "breath".type "lua"

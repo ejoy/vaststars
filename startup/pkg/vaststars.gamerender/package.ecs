@@ -318,10 +318,6 @@ system "road_system"
     .method "gameworld_prebuild"
     .method "gameworld_build"
 
-interface "iroad"
-    .implement "render_updates/road.lua"
-    .method "open"
-
 system "chimney_system"
     .implement "render_updates/chimney.lua"
     .method "gameworld_build"

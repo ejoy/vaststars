@@ -4,7 +4,7 @@ local w = world.w
 
 local gameplay_core = require "gameplay.core"
 local road_sys = ecs.system "road_system"
-local iroad = ecs.interface "iroad"
+local iroad = {}
 
 local iroadnet_converter = require "roadnet_converter"
 local iroadnet = ecs.require "roadnet"
@@ -132,3 +132,5 @@ end
 function iroad.open(...)
     return open(...)
 end
+
+return iroad

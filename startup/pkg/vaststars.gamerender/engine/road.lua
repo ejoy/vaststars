@@ -2,9 +2,9 @@ local ecs   = ...
 local world = ecs.world
 local w     = world.w
 
-local iterrain  = ecs.import.interface "mod.terrain|iterrain"
+local iterrain  = ecs.require "mod.terrain|terrain_system"
 local UNIT <const> = 10
-local iroad = ecs.import.interface "mod.road|iroad"
+local iroad = ecs.require "mod.road|road"
 local ROAD_WIDTH, ROAD_HEIGHT = 20, 20
 local terrain  = ecs.require "terrain"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
