@@ -4,17 +4,16 @@ local w     = world.w
 
 local math3d = require "math3d"
 
-local mathpkg = import_package "ant.math"
-local mc = mathpkg.constant
-local iterrain  = ecs.require "mod.terrain|terrain_system"
-local istonemountain = ecs.require "mod.stonemountain|stone_mountain"
-local itp = ecs.require "mod.translucent_plane|init_system"
-local iroad = ecs.require "mod.road|road"
-local S = ecs.system "init_system"
-local iom = ecs.require "ant.objcontroller|obj_motion"
+local mathpkg   = import_package "ant.math"
+local mc        = mathpkg.constant
 
-local printer_percent = 1.0
-local printer_eid
+local iterrain      = ecs.require "mod.terrain|terrain_system"
+local istonemountain= ecs.require "mod.stonemountain|stone_mountain"
+local itp           = ecs.require "mod.translucent_plane|init_system"
+local iroad         = ecs.require "mod.road|road"
+local iom           = ecs.require "ant.objcontroller|obj_motion"
+
+local S = ecs.system "init_system"
 
 function S.init()
     --ecs.create_instance "/pkg/vaststars.mod.test/assets/skybox.prefab"

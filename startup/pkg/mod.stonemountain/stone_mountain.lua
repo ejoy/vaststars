@@ -11,7 +11,7 @@ local mathpkg	= import_package "ant.math"
 local mc		= mathpkg.constant
 local renderpkg = import_package "ant.render"
 local viewidmgr = renderpkg.viewidmgr
-local declmgr   = import_package "ant.render".declmgr
+local layoutmgr = import_package "ant.render".layoutmgr
 local bgfx 			= require "bgfx"
 local assetmgr  = import_package "ant.asset"
 local icompute = ecs.require "ant.render|compute.compute"
@@ -178,7 +178,7 @@ end
 
 function sm_sys:init()
     local vb_memory, vb2_memory, ib_memory = '', '', ''
-    local vb_decl, vb2_decl = declmgr.get('p30NIf|T40nii').handle, declmgr.get('c40niu|t20NIf').handle
+    local vb_decl, vb2_decl = layoutmgr.get('p30NIf|T40nii').handle, layoutmgr.get('c40niu|t20NIf').handle
     for idx = 1, 4 do
         local mesh = mesh_table[idx]
         local local_filename = assetmgr.compile(mesh.filename)

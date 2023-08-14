@@ -1,27 +1,24 @@
-local ecs = ...
+local ecs   = ...
 local world = ecs.world
-local w = world.w
-local iom = ecs.require "ant.objcontroller|obj_motion"
+local w     = world.w
+
 local imaterial = ecs.require "ant.asset|material"
-local renderpkg = import_package "ant.render"
+
 local bb_sys = ecs.system "billboard_system"
-local ibillboard = {}
-local math3d = require "math3d"
-local bgfx = require "bgfx"
-local sampler = renderpkg.sampler
-local declmgr= import_package "ant.render".declmgr
-local assetmgr      = import_package "ant.asset"
+
+local ibillboard = ecs.interface "ibillboard"
+
+local math3d    = require "math3d"
+local bgfx      = require "bgfx"
+
+local renderpkg = import_package "ant.render"
+local layoutmgr = renderpkg.layoutmgr
+local assetmgr  = import_package "ant.asset"
+
 local billboard_base_table = {}
-local mesh_vb_table = {
-    -1, -1,  0,  0,  1,
-    -1,  1,  0,  0,  0 ,
-     1, -1,  0,  1,  1,
-     1,  1,  0,  1,  0,
-}
 local cur_base_id = 1
 
-local layout    = declmgr.get "p3|t2"
-
+local layout    = layoutmgr.get "p3|t2"
 
 local function create_billboard_entity(srt, texture, render_layer)
     local eid = ecs.create_entity{
@@ -39,7 +36,12 @@ local function create_billboard_entity(srt, texture, render_layer)
                     start = 0,
                     num = 4,
                     handle = bgfx.create_vertex_buffer(
-                        bgfx.memory_buffer("fffff", mesh_vb_table),
+                        bgfx.memory_buffer("fffff", {
+                            -1, -1,  0,  0,  1,
+                            -1,  1,  0,  0,  0 ,
+                             1, -1,  0,  1,  1,
+                             1,  1,  0,  1,  0,
+                        }),
                         layout.handle
                     )
                 },

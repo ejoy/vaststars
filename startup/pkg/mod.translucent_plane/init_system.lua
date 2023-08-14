@@ -1,15 +1,20 @@
 local ecs       = ...
 local world     = ecs.world
 local w         = world.w
-local renderpkg = import_package "ant.render"
-local declmgr   = renderpkg.declmgr
-local math3d    = require "math3d"
-local imaterial = ecs.require "ant.asset|material"
-local layout_name<const>    = declmgr.correct_layout "p3|t20"
-local layout                = declmgr.get(layout_name)
-local init_sys = ecs.system 'init_system'
+
 local bgfx      = require "bgfx"
+local math3d    = require "math3d"
+
+local renderpkg = import_package "ant.render"
+local layoutmgr = renderpkg.layoutmgr
+
+local layout    = layoutmgr.get "p3|t20"
+
+local imaterial = ecs.require "ant.asset|material"
 local iplane_terrain  = ecs.require "mod.terrain|plane_terrain"
+
+local init_sys  = ecs.system 'init_system'
+
 local itp = {}
 local translucent_plane_material
 local tp_table = {}
