@@ -30,7 +30,7 @@ local entities = { {
     y = 108
   },{
     dir = "N",
-    item = "地质科技包",
+    items = {"地质科技包"},
     prototype_name = "无人机仓库I",
     x = 130,
     y = 123
@@ -47,7 +47,7 @@ local entities = { {
     y = 129
   }, {
     dir = "N",
-    item = "碎石",
+    items = {"碎石"},
     prototype_name = "无人机仓库I",
     x = 117,
     y = 127
@@ -65,7 +65,7 @@ local entities = { {
     y = 129
   }, {
     dir = "N",
-    item = "石砖",
+    items = {"石砖"},
     prototype_name = "无人机仓库I",
     x = 122,
     y = 127
@@ -82,7 +82,7 @@ local entities = { {
     y = 129
   }, {
     dir = "N",
-    item = "铁矿石",
+    items = {"铁矿石"},
     prototype_name = "无人机仓库I",
     x = 162,
     y = 127
@@ -100,37 +100,37 @@ local entities = { {
     y = 128
   }, {
     dir = "N",
-    item = "铁板",
+    items = {"铁板"},
     prototype_name = "无人机仓库I",
     x = 155,
     y = 127
   },{
     dir = "N",
-    item = "碎石",
+    items = {"碎石"},
     prototype_name = "无人机仓库I",
     x = 121,
     y = 136
   }, {
     dir = "N",
-    item = "铁板",
+    items = {"铁板"},
     prototype_name = "无人机仓库I",
     x = 125,
     y = 136
   }, {
     dir = "N",
-    item = "石砖",
+    items = {"石砖"},
     prototype_name = "无人机仓库I",
     x = 129,
     y = 136
   },  {
     dir = "N",
-    item = "粉碎机框架",
+    items = {"粉碎机框架"},
     prototype_name = "无人机仓库I",
     x = 133,
     y = 136
   }, {
     dir = "N",
-    item = "无人机仓库I",
+    items = {"无人机仓库I"},
     prototype_name = "无人机仓库I",
     x = 117,
     y = 136

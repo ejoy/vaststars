@@ -93,11 +93,16 @@ end
 
 funcs["hub"] = function (entity, e)
     gameplay_core.extend(e, "hub?in")
-    local slot = ichest.get(gameplay_core.get_world(), e.hub, 1)
-    if not slot then
-        return entity
+
+    local items = {}
+    for i = 1, ichest.MAX_SLOT do
+        local slot = ichest.get(gameplay_core.get_world(), e.hub, i)
+        if not slot then
+            break
+        end
+        items[#items+1] = slot.item == 0 and "" or assert(iprototype.queryById(slot.item)).name
     end
-    entity.item = assert(iprototype.queryById(slot.item)).name
+    entity.items = items
     return entity
 end
 

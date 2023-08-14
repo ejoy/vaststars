@@ -106,7 +106,7 @@ init_func["road"] = function (pt, template)
 end
 
 init_func["hub"] = function (pt, template)
-    template.item = template.item
+    template.items = template.items
     return template
 end
 
