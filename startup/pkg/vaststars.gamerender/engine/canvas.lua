@@ -2,7 +2,7 @@ local ecs   = ...
 local world = ecs.world
 local w     = world.w
 
-local icas   = ecs.import.interface "ant.terrain|icanvas"
+local icas   = ecs.require "ant.terrain|canvas"
 local iterrain = ecs.require "terrain"
 local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER

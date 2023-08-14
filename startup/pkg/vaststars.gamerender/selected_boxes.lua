@@ -8,7 +8,7 @@ local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local iom = ecs.require "ant.objcontroller|obj_motion"
 local irl = ecs.require "ant.render|render_layer"
 local imaterial = ecs.require "ant.asset|material"
-local iani = ecs.import.interface "ant.animation|ianimation"
+local iani = ecs.require "ant.animation|controller.state_machine"
 local iupdate = ecs.import.interface "vaststars.gamerender|iupdate"
 
 local DELTA_TIME <const> = require("gameplay.interface.constant").DELTA_TIME

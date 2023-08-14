@@ -3,7 +3,7 @@ local world = ecs.world
 local w = world.w
 
 local imaterial = ecs.require "ant.asset|material"
-local iani = ecs.import.interface "ant.animation|ianimation"
+local iani = ecs.require "ant.animation|controller.state_machine"
 
 local events = {}
 events["material"] = function(prefab, inner, method, ...)

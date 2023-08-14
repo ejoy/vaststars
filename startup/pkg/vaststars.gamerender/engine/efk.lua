@@ -1,7 +1,7 @@
 local ecs = ...
 local world = ecs.world
 local w = world.w
-local iefk = ecs.import.interface "ant.efk|iefk"
+local iefk = ecs.require "ant.efk|efk"
 local fs = require "filesystem"
 
 local function preload(path)

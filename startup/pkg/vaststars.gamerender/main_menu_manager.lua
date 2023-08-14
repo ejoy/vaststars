@@ -8,7 +8,7 @@ local gameplay_core = require "gameplay.core"
 local iguide = require "gameplay.interface.guide"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local iom = ecs.require "ant.objcontroller|obj_motion"
-local iani = ecs.import.interface "ant.animation|ianimation"
+local iani = ecs.require "ant.animation|controller.state_machine"
 local game_cover
 
 local function init(prefab)
