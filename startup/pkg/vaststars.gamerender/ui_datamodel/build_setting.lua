@@ -14,7 +14,7 @@ local iUiRt = ecs.import.interface "ant.rmlui|iuirt"
 local ibackpack = require "gameplay.interface.backpack"
 local math3d = require "math3d"
 local iom = ecs.require "ant.objcontroller|obj_motion"
-local ivs = ecs.import.interface "ant.scene|ivisible_state"
+local ivs = ecs.require "ant.render|visible_state"
 
 local function __get_construct_menu()
     local res = {}

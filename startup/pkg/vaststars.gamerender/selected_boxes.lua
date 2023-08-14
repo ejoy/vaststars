@@ -7,7 +7,7 @@ local math3d = require "math3d"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local iom = ecs.require "ant.objcontroller|obj_motion"
 local irl = ecs.import.interface "ant.render|irender_layer"
-local imaterial = ecs.import.interface "ant.asset|imaterial"
+local imaterial = ecs.require "ant.asset|material"
 local iani = ecs.import.interface "ant.animation|ianimation"
 local iupdate = ecs.import.interface "vaststars.gamerender|iupdate"
 

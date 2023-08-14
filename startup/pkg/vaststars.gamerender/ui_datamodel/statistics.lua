@@ -5,8 +5,8 @@ local bgfx          = require "bgfx"
 local math3d        = require "math3d"
 local iUiRt         = ecs.import.interface "ant.rmlui|iuirt"
 local ientity       = ecs.require "ant.render|components.entity"
-local imaterial     = ecs.import.interface "ant.asset|imaterial"
-local ivs		    = ecs.import.interface "ant.scene|ivisible_state"
+local imaterial     = ecs.require "ant.asset|material"
+local ivs		    = ecs.require "ant.render|visible_state"
 local global = require "global"
 local statistics_mb = mailbox:sub {"statistics"}
 

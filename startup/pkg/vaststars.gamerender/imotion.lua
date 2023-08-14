@@ -1,5 +1,5 @@
 local ecs = ...
-local ims = ecs.import.interface "ant.motion_sampler|imotion_sampler"
+local ims = ecs.require "ant.motion_sampler|motion_sampler"
 local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
 
 local events = {

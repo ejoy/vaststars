@@ -9,7 +9,7 @@ local constant = require "gameplay.interface.constant"
 local ROTATORS = constant.ROTATORS
 local iom = ecs.require "ant.objcontroller|obj_motion"
 local math3d = require "math3d"
-local ivs = ecs.import.interface "ant.scene|ivisible_state"
+local ivs = ecs.require "ant.render|visible_state"
 
 local delta_vec = {
     ['N'] = math3d.constant("v4", {0, 0, -5}),

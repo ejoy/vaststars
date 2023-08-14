@@ -12,7 +12,7 @@ local renderpkg = import_package "ant.render"
 local declmgr = renderpkg.declmgr
 
 local assetmgr = import_package "ant.asset"
-local imaterial = ecs.import.interface "ant.asset|imaterial"
+local imaterial = ecs.require "ant.asset|material"
 local iterrain  = ecs.import.interface "mod.terrain|iterrain"
 local iprinter = ecs.import.interface "mod.printer|iprinter"
 local printer_percent = 1.0

@@ -2,11 +2,11 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local ims = ecs.import.interface "ant.motion_sampler|imotion_sampler"
+local ims = ecs.require "ant.motion_sampler|motion_sampler"
 local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
 local iprototype = require "gameplay.interface.prototype"
 local iom = ecs.require "ant.objcontroller|obj_motion"
-local ivs = ecs.import.interface "ant.scene|ivisible_state"
+local ivs = ecs.require "ant.render|visible_state"
 local mathpkg = import_package "ant.math"
 local mc = mathpkg.constant
 local irl = ecs.import.interface "ant.render|irender_layer"

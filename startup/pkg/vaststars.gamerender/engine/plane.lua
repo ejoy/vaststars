@@ -3,9 +3,9 @@ local world = ecs.world
 
 local math3d = require "math3d"
 local ientity = ecs.require "ant.render|components.entity"
-local imesh = ecs.import.interface "ant.asset|imesh"
-local ivs = ecs.import.interface "ant.scene|ivisible_state"
-local imaterial = ecs.import.interface "ant.asset|imaterial"
+local imesh = ecs.require "ant.asset|mesh"
+local ivs = ecs.require "ant.render|visible_state"
+local imaterial = ecs.require "ant.asset|material"
 local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
 local iom = ecs.require "ant.objcontroller|obj_motion"
 local MATH3D_NULL <const> = math3d.constant "null"

@@ -33,7 +33,7 @@ end
 
 local prefab_parse = require("engine.prefab_parser").parse
 local replace_material = require("engine.prefab_parser").replace_material
-local imaterial = ecs.import.interface "ant.asset|imaterial"
+local imaterial = ecs.require "ant.asset|material"
 
 local function createPrefabInst(prefab, position)
     local template = prefab_parse(prefab)

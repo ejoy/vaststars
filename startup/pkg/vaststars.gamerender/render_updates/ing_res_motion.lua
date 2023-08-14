@@ -2,9 +2,9 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
--- local ims = ecs.import.interface "ant.motion_sampler|imotion_sampler"
+-- local ims = ecs.require "ant.motion_sampler|motion_sampler"
 local iom = ecs.require "ant.objcontroller|obj_motion"
-local ivs = ecs.import.interface "ant.scene|ivisible_state"
+local ivs = ecs.require "ant.render|visible_state"
 local imotion = ecs.require "imotion"
 local ltween = require "motion.tween"
 local ing_res_motion_sys = ecs.system "ing_res_motion_system"
