@@ -192,8 +192,8 @@
                             <div style = "width: 8.00vmin; height: 8.00vmin; background-size:cover;" data-style-background-image="property.icon" />
                             <!-- proprety & value -->
                             <div style = "flex-direction: column; justify-content: center; align-items: flex-start;">
-                                <div style = "color:#adadad; padding-bottom: 0.75vmin; flex-direction:row; justify-content: center; align-items:center; height: 4vmin; font-size: 3.2vmin; text-align: center;">{{property.desc}}</div>
-                                <div style = "text-align: center; width: 100%; height: 4.00vmin; font-size: 2.8vmin;" data-style-color = "property.color">{{property.value}}</div>
+                                <div style = "color:#adadad; padding-bottom: 0.75vmin; font-size: 3.2vmin; text-align: center;">{{property.desc}}</div>
+                                <div style = "text-align: center; font-size: 2.8vmin;" data-style-color = "property.color or 'rgb(255,255,255)'">{{property.value}}</div>
                             </div>
                         </div>
                     </div>
@@ -274,8 +274,8 @@
                     <div style = "margin-left: 10vmin; height: 22vmin; flex-direction: row; align-items: center; justify-content: flex-start;">
                         <div style = "width: 16.00vmin; height: 16.00vmin; background-size:cover;" data-style-background-image="property.icon" />
                         <div style = "flex-direction: column; justify-content: center; align-items: flex-start;">
-                            <div style = "color:#adadad; padding-bottom: 0.75vmin; flex-direction:row; justify-content: center; align-items:center; height: 8vmin; font-size: 8vmin; text-align: center;">{{property.desc}}</div>
-                            <div style = "text-align: center; width: 100%; height: 8vmin; font-size: 6vmin;">{{property.value}}</div>
+                            <div style = "color:#adadad; padding-bottom: 0.75vmin; font-size: 8vmin; text-align: center;">{{property.desc}}</div>
+                            <div style = "text-align: center; font-size: 6vmin;" data-style-color = "property.color or 'rgb(255,255,255)'">{{property.value}}</div>
                         </div>
                     </div>
                 </div>
@@ -341,13 +341,13 @@
                 </div>
             </div>
             <div class="tips-bg" data-if="areaid==6.0">
-                <div style="flex-direction: column; justify-content: center; align-items: center;">
-                    <div class="small-item1" style="height: 20vmin; width: 20vmin;" data-style-background-image="goods_icon">
+                <div style="flex-direction: column; justify-content: center; align-items: center;" data-for = "chest : chest_list">
+                    <div class="small-item1" style="height: 20vmin; width: 20vmin;" data-style-background-image="chest.icon">
                         <div class ="item-count-combination">
-                            <div class="item-count-new" style="font-size: 5vmin;">x{{goods_count}}</div>
+                            <div class="item-count-new" style="font-size: 5vmin;">x{{chest.count}}</div>
                         </div>
                     </div>
-                    <div style="text-align: center; font-size: 8vmin;">{{goods_desc}}</div>
+                    <div style="text-align: center; font-size: 8vmin;">{{chest.name}}</div>
                 </div>
             </div>
         </div>
