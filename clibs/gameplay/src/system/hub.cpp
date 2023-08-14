@@ -444,7 +444,6 @@ static void Move(world& w, DroneEntity& e, ecs::drone& drone, const HubSearcher:
     auto source = std::bit_cast<hub_berth>(drone.prev);
     auto sourceBuilding = w.buildings.find(source.hash());
     if (!sourceBuilding) {
-        assert(false);
         static building dummy {0,0,0};
         sourceBuilding = &dummy;
     }
