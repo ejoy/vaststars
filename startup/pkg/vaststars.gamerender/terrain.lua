@@ -4,7 +4,7 @@ local w     = world.w
 
 local iprototype = require "gameplay.interface.prototype"
 local math3d = require "math3d"
-local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
+local igame_object = ecs.require "engine.game_object"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 

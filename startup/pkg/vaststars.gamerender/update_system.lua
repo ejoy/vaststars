@@ -21,7 +21,10 @@ function update_sys:data_changed()
     end
 end
 
-local iupdate = ecs.interface "iupdate"
+local iupdate = {}
+
 function iupdate.add(f)
     q[gen_id()] = f
 end
+
+return iupdate

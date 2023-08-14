@@ -3,7 +3,7 @@ local world = ecs.world
 local w = world.w
 
 local math3d = require "math3d"
-local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
+local igame_object = ecs.require "engine.game_object"
 local iprototype = require "gameplay.interface.prototype"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local CONSTRUCT_COLOR_INVALID <const> = math3d.constant "null"

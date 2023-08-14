@@ -22,7 +22,7 @@ local SPRITE_COLOR = import_package "vaststars.prototype".load("sprite_color")
 local create_selected_boxes = ecs.require "selected_boxes"
 local terrain = ecs.require "terrain"
 local gameplay_core = require "gameplay.core"
-local ibuilding = ecs.import.interface "vaststars.gamerender|ibuilding"
+local ibuilding = ecs.require "render_updates.building"
 local create_pickup_icon_chimney = ecs.require "pickup_icon_chimney".create
 local ibackpack = require "gameplay.interface.backpack"
 

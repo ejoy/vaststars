@@ -54,7 +54,7 @@ function ing_res_motion_sys:gameworld_clean()
     motion_caches = {}
 end
 
-local iing_res_motion = ecs.interface "iing_res_motion"
+local iing_res_motion = {}
 
 function iing_res_motion.create(prefab, from, to, duration, repeat_count)
     local cache = motion_caches[prefab]
@@ -77,3 +77,5 @@ function iing_res_motion.create(prefab, from, to, duration, repeat_count)
     mobj.motion:send("motion", "set_tween", ltween.type("Linear"), ltween.type("Linear"))
     mobj.motion:send("motion", "set_keyframes", {t = from, step = 0.0}, {t = to,  step = 1.0})
 end
+
+return iing_res_motion

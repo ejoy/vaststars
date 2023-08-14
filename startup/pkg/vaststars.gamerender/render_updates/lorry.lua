@@ -3,7 +3,7 @@ local world = ecs.world
 local w = world.w
 
 local lorry_sys = ecs.system "lorry_system"
-local ilorry = ecs.interface "ilorry"
+local ilorry = {}
 local math3d = require "math3d"
 local iprototype = require "gameplay.interface.prototype"
 local iterrain = ecs.require "terrain"
@@ -226,3 +226,5 @@ end
 function ilorry.get(lorry_id)
     return lorries[lorry_id]
 end
+
+return ilorry

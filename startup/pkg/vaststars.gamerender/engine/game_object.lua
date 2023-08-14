@@ -259,7 +259,7 @@ local function __create_efk_object(efk, srt, parent, group_id, auto_play)
     }), efk_events)
 end
 
-local igame_object = ecs.interface "igame_object"
+local igame_object = {}
 --[[
 init = {
     prefab, -- the relative path to the prefab file
@@ -412,3 +412,5 @@ function igame_object.create(init)
     end
     return outer
 end
+
+return igame_object

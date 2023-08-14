@@ -9,7 +9,7 @@ local iBackpack = import_package "vaststars.gameplay".interface "backpack"
 local click_item_mb = mailbox:sub {"click_item"}
 local close_mb = mailbox:sub {"close"}
 local iui = ecs.require "engine.system.ui_system"
-local iprototype_cache = ecs.import.interface "vaststars.gamerender|iprototype_cache"
+local iprototype_cache = ecs.require "prototype_cache"
 
 local function get_inventory()
     local t = {}

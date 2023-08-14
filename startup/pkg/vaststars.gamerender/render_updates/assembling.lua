@@ -22,7 +22,7 @@ local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local draw_fluid_icon = ecs.require "fluid_icon"
 local iprototype_cache = require "gameplay.prototype_cache.init"
 local ifluid = require "gameplay.interface.fluid"
-local ipower_check = ecs.import.interface "vaststars.gamerender|ipower_check"
+local ipower_check = ecs.require "power_check_system"
 
 local ROTATORS <const> = {
     N = math.rad(0),

@@ -13,8 +13,8 @@ local fs = require "filesystem"
 local building_base_cfg = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/config/canvas/building-base.cfg")):read "a")
 local building_sys = ecs.system "building_system"
 local gameplay_core = require "gameplay.core"
-local ibuilding = ecs.interface "ibuilding"
-local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
+local ibuilding = {}
+local igameplay = ecs.require "gameplay_system"
 local gameplay = import_package "vaststars.gameplay"
 local igameplay_building = gameplay.interface "building"
 
@@ -148,3 +148,5 @@ function ibuilding.set(init)
         direction = init.dir,
     }
 end
+
+return ibuilding

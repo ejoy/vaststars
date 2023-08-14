@@ -10,7 +10,7 @@ local ivs = ecs.require "ant.render|visible_state"
 local mathpkg = import_package "ant.math"
 local mc = mathpkg.constant
 local irl = ecs.require "ant.render|render_layer"
-local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
+local igame_object = ecs.require "engine.game_object"
 
 local prefab_slots = require("engine.prefab_parser").slots
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER

@@ -31,7 +31,7 @@ local gameplay_core = require "gameplay.core"
 local ROAD_TILE_SCALE_WIDTH <const> = 2
 local ROAD_TILE_SCALE_HEIGHT <const> = 2
 local SPRITE_COLOR = import_package "vaststars.prototype".load("sprite_color")
-local ibuilding = ecs.import.interface "vaststars.gamerender|ibuilding"
+local ibuilding = ecs.require "render_updates.building"
 local ibackpack = require "gameplay.interface.backpack"
 
 -- TODO: duplicate from roadbuilder.lua

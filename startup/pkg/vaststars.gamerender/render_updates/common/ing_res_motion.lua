@@ -8,7 +8,7 @@ local shelf_matrices = require "render_updates.common.shelf_matrices"
 local get_shelf_matrices = shelf_matrices.get_shelf_matrices
 local get_heap_matrices = shelf_matrices.get_heap_matrices
 local iprototype = require "gameplay.interface.prototype"
-local iing_res_motion = ecs.import.interface "vaststars.gamerender|iing_res_motion"
+local iing_res_motion = ecs.require "render_updates.ing_res_motion"
 
 local mt = {}
 mt.__index = mt

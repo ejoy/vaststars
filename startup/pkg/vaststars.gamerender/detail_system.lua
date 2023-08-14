@@ -5,7 +5,7 @@ local w = world.w
 local iui = ecs.require "engine.system.ui_system"
 local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
-local idetail = ecs.interface "idetail"
+local idetail = {}
 local gameplay_core = require "gameplay.core"
 local create_selected_boxes = ecs.require "selected_boxes"
 local terrain = ecs.require "terrain"
@@ -288,3 +288,5 @@ do
         end
     end
 end
+
+return idetail

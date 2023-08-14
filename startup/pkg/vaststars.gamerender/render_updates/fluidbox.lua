@@ -235,7 +235,9 @@ function fluidbox_sys:exit()
     FluidboxCache = {}
 end
 
-local ifluidbox = ecs.interface "ifluidbox"
+local ifluidbox = {}
 function ifluidbox.get(x, y, dir)
     return FluidboxCache[pack(x, y, dir)]
 end
+
+return ifluidbox

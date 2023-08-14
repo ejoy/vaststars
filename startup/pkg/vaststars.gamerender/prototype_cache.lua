@@ -3,7 +3,7 @@ local world = ecs.world
 local w = world.w
 
 local prototype_cache_sys = ecs.system "prototype_cache_system"
-local iprototype_cache = ecs.interface "iprototype_cache"
+local iprototype_cache = {}
 local fs = require "filesystem"
 
 local cache = {}
@@ -20,3 +20,5 @@ end
 function iprototype_cache.get(key)
     return cache[key]
 end
+
+return iprototype_cache

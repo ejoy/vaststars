@@ -2,7 +2,7 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local ipower_check = ecs.interface "ipower_check"
+local ipower_check = {}
 local power_check_sys = ecs.system "power_check_system"
 local gameplay_core = require "gameplay.core"
 
@@ -53,3 +53,5 @@ end
 function ipower_check.is_powered_on(eid)
     return (counter[eid] or 0) < 15
 end
+
+return ipower_check

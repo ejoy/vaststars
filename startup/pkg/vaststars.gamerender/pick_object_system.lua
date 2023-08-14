@@ -3,13 +3,13 @@ local world = ecs.world
 local w = world.w
 
 local gameplay_core = require "gameplay.core"
-local ipick_object = ecs.interface "ipick_object"
+local ipick_object = {}
 local objects = require "objects"
 local terrain = ecs.require "terrain"
 local imountain = ecs.require "engine.mountain"
 local iprototype = require "gameplay.interface.prototype"
-local ilorry = ecs.import.interface "vaststars.gamerender|ilorry"
-local ibuilding = ecs.import.interface "vaststars.gamerender|ibuilding"
+local ilorry = ecs.require "render_updates.lorry"
+local ibuilding = ecs.require "render_updates.building"
 local pick_object_sys = ecs.system "pick_object_sys"
 local ROAD_TILE_SCALE_WIDTH <const> = 2
 local ROAD_TILE_SCALE_HEIGHT <const> = 2
@@ -234,3 +234,5 @@ function ipick_object.blur_pick(x, y)
     -- log.info("blur_pick", #objs, pointer)
     return objs[pointer]
 end
+
+return ipick_object

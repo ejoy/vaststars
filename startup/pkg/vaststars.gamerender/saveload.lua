@@ -32,7 +32,7 @@ local PROTOTYPE_VERSION <const> = import_package("vaststars.prototype")("version
 local global = require "global"
 local create_buildings = require "building_components"
 
-local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
+local igameplay = ecs.require "gameplay_system"
 local irq = ecs.require "ant.render|render_system.renderqueue"
 local iom = ecs.require "ant.objcontroller|obj_motion"
 local ic = ecs.require "ant.camera|camera"

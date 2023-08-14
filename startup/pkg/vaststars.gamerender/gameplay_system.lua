@@ -3,7 +3,7 @@ local world = ecs.world
 local w = world.w
 
 local gameplay_core = require "gameplay.core"
-local igameplay = ecs.interface "igameplay"
+local igameplay = {}
 local iprototype = require "gameplay.interface.prototype"
 local ichimney = require "gameplay.interface.chimney"
 local terrain = ecs.require "terrain"
@@ -136,3 +136,5 @@ function igameplay.update_chimney_recipe(object) -- TODO: better way to do this?
         end
     end
 end
+
+return igameplay
