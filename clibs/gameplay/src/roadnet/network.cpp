@@ -482,9 +482,9 @@ namespace roadnet {
     }
 
     void network::refresh(world& w) {
-        auto [first, last] = ecs_api::array<ecs::lorry>(w.ecs);
-        assert(first);
-        lorryAry = first;
+        auto view = ecs_api::array<ecs::lorry>(w.ecs);
+        assert(!view.empty());
+        lorryAry = view.data();
     }
 
     static loction buildingLoction(world& world, ecs::building& b, loction l) {

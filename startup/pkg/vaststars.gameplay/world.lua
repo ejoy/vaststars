@@ -65,10 +65,13 @@ return function ()
     world.entity = ecs:visitor_create()
     world.pipeline = pipeline
 
+    local pipeline_init = pipeline(world, cworld, "init")
     local pipeline_update = pipeline(world, cworld, "update")
     local pipeline_build = pipeline(world, cworld, "build")
     local pipeline_backup = pipeline(world, cworld, "backup")
     local pipeline_restore = pipeline(world, cworld, "restore")
+
+    pipeline_init()
 
     function world:update()
         if cworld:is_dirty() then

@@ -107,6 +107,17 @@ component "laboratory" {
     "uint8 status",
 }
 
+mainkey "powergrid" {
+    "uint64 consumer_power[2]",
+    "uint64 generator_power[2]",
+    "uint64 accumulator_output",
+    "uint64 accumulator_input",
+    "float consumer_efficiency[2]",
+    "float generator_efficiency[2]",
+    "float accumulator_efficiency",
+    "bool active",
+}
+
 component "capacitance" {
     "uint32 shortage",
     "int32 delta",

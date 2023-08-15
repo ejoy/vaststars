@@ -44,7 +44,9 @@ static void array_erase(ecs::backpack* it, ecs::backpack* end) {
 
 bool backpack_pickup(world& w, uint16_t item, uint16_t amount) {
     assert(item != 0);
-    auto [begin, end] = ecs_api::array<ecs::backpack>(w.ecs);
+    auto array_view = ecs_api::array<ecs::backpack>(w.ecs);
+    auto begin = &*array_view.begin();
+    auto end = &*array_view.end();
     for (auto it = begin; it != end; ++it) {
         auto& bp = *it;
         if (bp.prototype == item) {

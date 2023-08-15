@@ -1,13 +1,14 @@
 local EcsType <const> = {
-    int8   = "byte",
-    int16  = "word",
-    int32  = "int",
-    int64  = "int64",
-    uint8  = "byte",
-    uint16 = "word",
-    uint32 = "dword",
-    uint64 = "int64",
-    float  = "float",
+	int8   = "byte",
+	int16  = "word",
+	int32  = "int",
+	int64  = "int64",
+	uint8  = "byte",
+	uint16 = "word",
+	uint32 = "dword",
+	uint64 = "int64",
+	float  = "float",
+	bool   = "byte",
 }
 
 local function ExtraSyntax(c, types)

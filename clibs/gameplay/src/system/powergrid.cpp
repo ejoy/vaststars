@@ -13,20 +13,13 @@ enum class power_priority: uint8_t {
 };
 
 static constexpr size_t POWER_PRIORITY = enum_count_v<power_priority>;
-
-struct powergrid {
-    uint64_t consumer_power[POWER_PRIORITY] = {0};
-    uint64_t generator_power[POWER_PRIORITY] = {0};
-    uint64_t accumulator_output = 0;
-    uint64_t accumulator_input = 0;
-    float consumer_efficiency[POWER_PRIORITY] = {0};
-    float generator_efficiency[POWER_PRIORITY] = {0};
-    float accumulator_efficiency = 0.f;
-	bool active = false;
-};
+static_assert(std::extent_v<decltype(ecs::powergrid::consumer_power)> == POWER_PRIORITY);
+static_assert(std::extent_v<decltype(ecs::powergrid::generator_power)> == POWER_PRIORITY);
+static_assert(std::extent_v<decltype(ecs::powergrid::consumer_efficiency)> == POWER_PRIORITY);
+static_assert(std::extent_v<decltype(ecs::powergrid::generator_efficiency)> == POWER_PRIORITY);
 
 static void
-stat_consumer(world& w, powergrid pg[]) {
+stat_consumer(world& w, std::span<ecs::powergrid> pg) {
 	for (auto& v : ecs_api::select<ecs::consumer, ecs::capacitance, ecs::building>(w.ecs)) {
 		ecs::capacitance& c = v.get<ecs::capacitance>();
 		if (c.network == 0) {
@@ -42,7 +35,7 @@ stat_consumer(world& w, powergrid pg[]) {
 }
 
 static void
-stat_generator(world& w, powergrid pg[]) {
+stat_generator(world& w, std::span<ecs::powergrid> pg) {
 	for (auto& v : ecs_api::select<ecs::generator, ecs::capacitance, ecs::building>(w.ecs)) {
 		ecs::capacitance& c = v.get<ecs::capacitance>();
 		if (c.network == 0) {
@@ -57,7 +50,7 @@ stat_generator(world& w, powergrid pg[]) {
 }
 
 static void
-stat_accumulator(world& w, powergrid pg[]) {
+stat_accumulator(world& w, std::span<ecs::powergrid> pg) {
 	for (auto& v : ecs_api::select<ecs::accumulator, ecs::capacitance, ecs::building>(w.ecs)) {
 		ecs::capacitance& c = v.get<ecs::capacitance>();
 		if (c.network == 0) {
@@ -80,9 +73,9 @@ stat_accumulator(world& w, powergrid pg[]) {
 }
 
 static void
-calc_efficiency(world& w, powergrid pgs[]) {
+calc_efficiency(world& w, std::span<ecs::powergrid> pgs) {
 	for (int ii = 1; ii < 256; ++ii) {
-		powergrid& pg = pgs[ii];
+		ecs::powergrid& pg = pgs[ii];
 		if (!pg.active) {
 			break;
 		}
@@ -169,7 +162,7 @@ calc_efficiency(world& w, powergrid pgs[]) {
 }
 
 static void
-powergrid_run(world& w, powergrid pg[]) {
+powergrid_run(world& w, std::span<ecs::powergrid> pg) {
 	auto& frame = w.stat.current();
 	for (auto& v : ecs_api::select<ecs::capacitance, ecs::building>(w.ecs)) {
 		ecs::capacitance& c = v.get<ecs::capacitance>();
@@ -249,12 +242,31 @@ powergrid_run(world& w, powergrid pg[]) {
 }
 
 static int
-lupdate(lua_State *L) {
-	// step 1: init powergrid runtime struct
-    auto& w = getworld(L);
-	struct powergrid pg[256];
+linit(lua_State *L) {
+	auto& w = getworld(L);
+	struct ecs::powergrid init;
+	for (size_t i = 0; i < POWER_PRIORITY; ++i) {
+		init.consumer_power[i] = 0;
+		init.generator_power[i] = 0;
+		init.consumer_efficiency[i] = 0.f;
+		init.generator_efficiency[i] = 0.f;
+	}
+	init.accumulator_output = 0;
+	init.accumulator_input = 0;
+	init.accumulator_efficiency = 0.f;
+	init.active = false;
+	for (size_t i = 0; i < 256; ++i) {
+		ecs_api::create_entity<ecs::powergrid>(w.ecs, init);
+	}
+	return 0;
+}
 
-	// step 2: stat consumers in powergrid
+static int
+lupdate(lua_State *L) {
+	auto& w = getworld(L);
+	// step 1: init ecs::powergrid runtime struct
+	auto pg = ecs_api::array<ecs::powergrid>(w.ecs);
+	// step 2: stat consumers in ecs::powergrid
 	stat_consumer(w, pg);
 	// step 3: stat generators
 	stat_generator(w, pg);
@@ -262,17 +274,16 @@ lupdate(lua_State *L) {
 	stat_accumulator(w, pg);
 	// step 5: calc efficiency
 	calc_efficiency(w, pg);
-	// step 6: powergrid charge consumers' capacitance, and consume generators' capacitance
+	// step 6: ecs::powergrid charge consumers' capacitance, and consume generators' capacitance
 	powergrid_run(w, pg);
-
 	return 0;
 }
 
 extern "C" int
 luaopen_vaststars_powergrid_system(lua_State *L) {
 	luaL_checkversion(L);
-
 	luaL_Reg l[] = {
+		{ "init", linit },
 		{ "update", lupdate },
 		{ NULL, NULL },
 	};

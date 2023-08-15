@@ -12,6 +12,7 @@ local CppType <const> = {
     uint32 = "uint32_t",
     uint64 = "uint64_t",
     float  = "float",
+    bool   = "bool",
 }
 
 local function writeEntityH(components)
