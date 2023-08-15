@@ -32,6 +32,7 @@ data:
   anim_ctrl: {}
   animation:
     ArmatureAction: /pkg/vaststars.resources/glb/turbine-1.glb|animations/ArmatureAction.ozz
+    turbine_animat: /pkg/vaststars.resources/prefabs/animation/turbine_animat.anim
   animation_birth: ArmatureAction
   name: animation
   skeleton: /pkg/vaststars.resources/glb/turbine-1.glb|animations/skeleton.ozz
