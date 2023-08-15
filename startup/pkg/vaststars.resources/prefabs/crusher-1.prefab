@@ -19,12 +19,24 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  material: /pkg/vaststars.resources/glb/crusher-1.glb|materials/Material.material
+  material: /pkg/vaststars.resources/glb/crusher-1.glb|materials/Material_s.material
   mesh: /pkg/vaststars.resources/glb/crusher-1.glb|meshes/Cube_P1.meshbin
   name: Cube
-  scene: {}
+  skinning: true
   visible_state: main_view|selectable|cast_shadow
-mount: 1
 policy:
   ant.general|name
-  ant.render|render
+  ant.render|skinrender
+---
+data:
+  anim_ctrl: {}
+  animation:
+    ArmatureAction: /pkg/vaststars.resources/glb/crusher-1.glb|animations/ArmatureAction.ozz
+    low_power: /pkg/vaststars.resources/prefabs/animation/crusher_animat_low.anim
+    work: /pkg/vaststars.resources/prefabs/animation/crusher_animat.anim
+  animation_birth: ArmatureAction
+  name: animation
+  skeleton: /pkg/vaststars.resources/glb/crusher-1.glb|animations/skeleton.ozz
+policy:
+  ant.animation|animation
+  ant.general|name
