@@ -1,26 +1,26 @@
 local ecs   = ...
 local world = ecs.world
 local w     = world.w
-local imaterial = ecs.require "ant.asset|material"
-local init_system = ecs.system "init_system"
-local renderpkg = import_package "ant.render"
-local layoutmgr   = renderpkg.layoutmgr
+
 local bgfx      = require "bgfx"
 local math3d    = require "math3d"
---local layout_name<const>    = layoutmgr.correct_layout "p3|t20|t21|T3"
-local layout_name<const>    = layoutmgr.correct_layout "p3|t20|t22"
-local layout                = layoutmgr.get(layout_name)
-local width, height = 20, 20
-local road_material
-local group_table = {}
-local road_default_group = 30001
-local viewidmgr = renderpkg.viewidmgr
-local icompute = ecs.require "ant.render|compute.compute"
-local main_viewid = viewidmgr.get "csm_fb"
+
+local iroad         = ecs.interface "iroad"
+
+local init_system   = ecs.system "init_system"
+
+local imaterial     = ecs.require "ant.asset|material"
+local icompute      = ecs.require "ant.render|compute.compute"
 local idrawindirect = ecs.require "ant.render|draw_indirect_system"
 
-local iroad  = {}
+local renderpkg     = import_package "ant.render"
+local layoutmgr     = renderpkg.layoutmgr
+local layout        = layoutmgr.get "p3|t20|t22"
 
+local hwi                   = import_package "ant.hwi"
+local FIRST_viewid<const>   = hwi.viewid_get "csm_fb"
+
+local width, height = 20, 20
 local TERRAIN_TYPES<const> = {
     road1 = "1",
     road2 = "2",
@@ -143,7 +143,6 @@ local function create_road(road)
 end
 
 function init_system:init_world()
-    road_material = "/pkg/mod.road/assets/road.material"
 end
 
 local function create_road_instance_info(create_list)
@@ -336,7 +335,7 @@ local function create_road_compute(dispatch, road_num, indirect_buffer, instance
     m.u_indirect_params         = indirect_params
     m.indirect_buffer           = indirect_buffer
     m.instance_buffer           = instance_buffer
-    icompute.dispatch(main_viewid, dispatch)
+    icompute.dispatch(FIRST_viewid, dispatch)
 end
 
 local function get_instance_memory_buffer(road_info, max_num)

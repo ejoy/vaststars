@@ -4,17 +4,21 @@ local w = world.w
 local open_sm = false
 local fastio    = require "fastio"
 local datalist  = require "datalist"
-local idrawindirect = ecs.require "ant.render|draw_indirect_system"
-local imaterial = ecs.require "ant.asset|material"
 local math3d 	= require "math3d"
+local bgfx 		= require "bgfx"
+
+local idrawindirect = ecs.require "ant.render|draw_indirect_system"
+local imaterial     = ecs.require "ant.asset|material"
+local icompute      = ecs.require "ant.render|compute.compute"
+
 local mathpkg	= import_package "ant.math"
 local mc		= mathpkg.constant
-local renderpkg = import_package "ant.render"
-local viewidmgr = renderpkg.viewidmgr
+
+local hwi       = import_package "ant.hwi"
+local FIRST_viewid<const> = hwi.viewid_get "csm_fb"
+
 local layoutmgr = import_package "ant.render".layoutmgr
-local bgfx 			= require "bgfx"
 local assetmgr  = import_package "ant.asset"
-local icompute = ecs.require "ant.render|compute.compute"
 local terrain_module = require "terrain"
 local ism = {}
 local sm_sys = ecs.system "stone_mountain"
@@ -26,7 +30,7 @@ local ratio_table = {
     [1] = 0.88, [2] = 0.90, [3] = 0.92, [4] = 0.94
 }
 local freq, depth, unit, offset = 4, 4, 10, 0
-local main_viewid = viewidmgr.get "csm_fb"
+
 
 local sm_table = {}
 local sm_group_table = {}
@@ -330,7 +334,7 @@ local function create_stonemountain_compute(dispatch, stonemountain_num, indirec
     m.u_instance_params4        = instance_params[4]
     m.u_mesh_offset             = mesh_offset
     m.indirect_buffer           = indirect_buffer
-    icompute.dispatch(main_viewid, dispatch)
+    icompute.dispatch(FIRST_viewid, dispatch)
 end
 
 function sm_sys:data_changed()
