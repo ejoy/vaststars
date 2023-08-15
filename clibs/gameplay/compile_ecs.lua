@@ -2,42 +2,17 @@ local function isTag(c)
     return c.type == nil and c[1] == nil
 end
 
-local function loadComponents(filename)
-    local components = {}
-    local def = {}
-    function def.component(name)
-        return function (object)
-            object.name = name
-            components[name] = object
-            components[#components+1] = object
-        end
-    end
-    function def.type(name)
-        return function (object)
-            components[name] = object
-        end
-    end
-    local env = {
-        require = function () return def end
-    }
-    assert(loadfile(filename, "t", env))()
-    return components
-end
-
-local TYPENAMES <const> = {
-    int = "int32_t",
-    dword = "uint32_t",
-    word = "uint16_t",
-    byte = "uint8_t",
-    float = "float",
+local CppType <const> = {
+    int8   = "int8_t",
+    int16  = "int16_t",
+    int32  = "int32_t",
+    int64  = "int64_t",
+    uint8  = "uint8_t",
+    uint16 = "uint16_t",
+    uint32 = "uint32_t",
+    uint64 = "uint64_t",
+    float  = "float",
 }
-
-local function TypeName(components, typename)
-    if components[typename] then
-        return typename
-    end
-    return TYPENAMES[typename] or typename
-end
 
 local function writeEntityH(components)
     local out = {}
@@ -75,14 +50,10 @@ local function writeEntityH(components)
         else
             write(("component(%s, {"):format(c.name))
             for _, field in ipairs(c) do
-                local name, typename, n = field:match "^([%w_]+):([^%]]+)%[(%d+)%]$"
-                if name == nil then
-                    name, typename = field:match "^([%w_]+):(.+)$"
-                end
-                if n then
-                    write(("\t%s %s[%s];"):format(TypeName(components, typename), name, n))
+                if field.n then
+                    write(("\t%s %s[%s];"):format(CppType[field.typename] or field.typename, field.name, field.n))
                 else
-                    write(("\t%s %s;"):format(TypeName(components, typename), name))
+                    write(("\t%s %s;"):format(CppType[field.typename] or field.typename, field.name))
                 end
             end
             write "})"
@@ -96,10 +67,10 @@ local function writeEntityH(components)
     write "static_assert(ecs_api::component_id<ecs::eid> == ecs_api::EntityID);"
     write ""
 
-
     return table.concat(out, "\n")
 end
 
+local loadComponents = dofile "startup/pkg/vaststars.gameplay/init/component_load.lua"
 local components = loadComponents "startup/pkg/vaststars.gameplay/init/component.lua"
 local data = writeEntityH(components)
 

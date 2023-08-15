@@ -1,4 +1,4 @@
-local def = require "register.component"
+local def = ...
 
 local type = def.type
 local component = def.component
@@ -7,60 +7,60 @@ local tag = function (what)
 end
 local mainkey = component
 
-type "roadnet::straightid" ("word")
-type "enum roadnet::lorry_status" ("byte")
+type "roadnet::straightid" ("uint16")
+type "enum roadnet::lorry_status" ("uint8")
 
 mainkey "building" {
-    "prototype:word",
-    "x:byte",
-    "y:byte",
-    "direction:byte",	-- 0:North 1:East 2:South 3:West
+    "uint16 prototype",
+    "uint8 x",
+    "uint8 y",
+    "uint8 direction",	-- 0:North 1:East 2:South 3:West
 }
 
 mainkey "backpack" {
-    "prototype:word",
-    "amount:word",
+    "uint16 prototype",
+    "uint16 amount",
 }
 
 component "chest" {
-    "chest:word",
+    "uint16 chest",
 }
 
 component "station_producer" {
-    "weights:byte",
+    "uint8 weights",
 }
 
 component "station_consumer" {
-    "maxlorry:byte",
+    "uint8 maxlorry",
 }
 
 tag "lorry_factory"
 
 component "starting" {
-    "neighbor:roadnet::straightid",
+    "roadnet::straightid neighbor",
 }
 
 component "endpoint" {
-    "neighbor:roadnet::straightid",
-    "rev_neighbor:roadnet::straightid",
-    "lorry:byte",
+    "roadnet::straightid neighbor",
+    "roadnet::straightid rev_neighbor",
+    "uint8 lorry",
 }
 
 mainkey "lorry" {
-    "prototype:word",
-    "ending:roadnet::straightid",
-    "item_prototype:word",
-    "item_amount:word",
-    "progress:byte",
-    "maxprogress:byte",
-    "time:byte",
-    "status:enum roadnet::lorry_status",
-    "x:byte",
-    "y:byte",
-    "z:byte",
-    "prev_x:byte",
-    "prev_y:byte",
-    "prev_z:byte",
+    "uint16 prototype",
+    "roadnet::straightid ending",
+    "uint16 item_prototype",
+    "uint16 item_amount",
+    "uint8 progress",
+    "uint8 maxprogress",
+    "uint8 time",
+    "enum roadnet::lorry_status status",
+    "uint8 x",
+    "uint8 y",
+    "uint8 z",
+    "uint8 prev_x",
+    "uint8 prev_y",
+    "uint8 prev_z",
 }
 
 tag "lorry_changed"
@@ -69,8 +69,8 @@ tag "lorry_removed"
 tag "lorry_willremove"
 
 component "hub" {
-    "id:word",
-    "chest:word",
+    "uint16 id",
+    "uint16 chest",
 }
 
 --
@@ -79,45 +79,45 @@ component "hub" {
 -- 32            27           25            21             16         8         0
 --
 mainkey "drone" {
-    "prototype:word",
-    "item:word",
-    "home:dword",
-    "prev:dword",
-    "next:dword",
-    "mov2:dword",
-    "maxprogress:word",
-    "progress:word",
-    "status:byte",
+    "uint16 prototype",
+    "uint16 item",
+    "uint32 home",
+    "uint32 prev",
+    "uint32 next",
+    "uint32 mov2",
+    "uint16 maxprogress",
+    "uint16 progress",
+    "uint8 status",
 }
 tag "drone_changed"
 
 component "assembling" {
-    "progress:int",
-    "recipe:word",
-    "speed:word",
-    "fluidbox_in:word",
-    "fluidbox_out:word",
-    "status:byte",
+    "int32 progress",
+    "uint16 recipe",
+    "uint16 speed",
+    "uint16 fluidbox_in",
+    "uint16 fluidbox_out",
+    "uint8 status",
 }
 
 component "laboratory" {
-    "progress:int",
-    "tech:word",
-    "speed:word",
-    "status:byte",
+    "int32 progress",
+    "uint16 tech",
+    "uint16 speed",
+    "uint8 status",
 }
 
 component "capacitance" {
-    "shortage:dword",
-    "delta:int",
-    "network:byte"
+    "uint32 shortage",
+    "int32 delta",
+    "uint8 network"
 }
 
 component "chimney" {
-    "progress:int",
-    "recipe:word",
-    "speed:word",
-    "status:byte",
+    "int32 progress",
+    "uint16 recipe",
+    "uint16 speed",
+    "uint8 status",
 }
 
 tag "consumer"
@@ -125,13 +125,13 @@ tag "generator"
 tag "accumulator"
 
 component "fluidbox" {
-    "fluid:word",
-    "id:word",
+    "uint16 fluid",
+    "uint16 id",
 }
 
 component "fluidboxes" {
-    "in:fluidbox[4]",
-    "out:fluidbox[3]",
+    "fluidbox in[4]",
+    "fluidbox out[3]",
 }
 
 tag "pump"
@@ -139,13 +139,13 @@ tag "mining"
 tag "road"
 
 component "save_fluidflow" {
-	"fluid:word",
-	"id:word",
-	"volume:dword"
+	"uint16 fluid",
+	"uint16 id",
+	"uint32 volume"
 }
 
 component "solar_panel" {
-    "efficiency:byte"
+    "uint8 efficiency"
 }
 
 tag "wind_turbine"

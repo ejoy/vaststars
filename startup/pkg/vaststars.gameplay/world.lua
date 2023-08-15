@@ -42,8 +42,7 @@ return function ()
         _frame = 0,
     }
     local ecs = luaecs.world()
-    local components = {}
-    for i, c in ipairs(status.components) do
+    for i, c in ipairs(require "register.component") do
         assert(c.type == nil)
         local id = ecs:register(c)
         assert(id == i)

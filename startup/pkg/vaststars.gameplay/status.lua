@@ -4,6 +4,5 @@ return {
     unit = {},
     systems = {},
     csystems = {},
-    components = {},
     pipelines = {},
 }
