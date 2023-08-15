@@ -151,3 +151,20 @@ data:
 policy:
   ant.general|name
   ant.animation|slot
+---
+data:
+  efk:
+    auto_play: false
+    loop: false
+    path: /pkg/vaststars.resources/effect/efk/furnace_smoke.efk
+    speed: 1
+    visible: true
+  name: low_power
+  scene:
+    s: {4, 4, 4}
+    t: {0, 12, 0}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+  ant.efk|efk
+  ant.general|tag
