@@ -215,7 +215,7 @@
                     <div class="row" style="margin-top: 1vmin; width: 25%; align-self: flex-end;">
                         <div class="small-item1" style="width:7vmin; height:7vmin;" data-style-background-image="it.icon" data-for="recipe_ouputs">
                             <div class ="item-count-combination">
-                                <div class="item-count-new" style="font-size: 4vmin;">x{{it.count}}</div>
+                                <div class="item-count-new" style="font-size: 2.7vmin;">x{{it.count}}</div>
                             </div>
                         </div>
                     </div>
@@ -292,13 +292,13 @@
                 <div class="column" style="top: 5vmin; justify-content: center; width: 62vmin; height: 9vmin;">
                     <div class="progress_bar" data-style-width="progress"/>
                     <div class="indicator" style='width: 1vmin;' data-style-left="progress"/>
-                    <div style="text-align: center; font-size: 6vmin; top: -220%; -webkit-text-stroke: 0.2vmin #000;">{{progress}}</div>
+                    <div style="text-align: center; font-size: 5.4vmin; top: -220%; -webkit-text-stroke: 0.2vmin #000;">{{progress}}</div>
                 </div>
                 <div class="row" style="width: 80%; justify-content: flex-end;">
                     <div style='flex-direction: column; align-items: center;' data-for="recipe_ouputs">
                         <div class="small-item1" style="width: 15vmin; height: 15vmin;" data-style-background-image="it.icon">
                             <div class ="item-count-combination">
-                                <div class="item-count-new" style="font-size: 6vmin;">x{{it.count}}</div>
+                                <div class="item-count-new" style="font-size: 5.4vmin;">x{{it.count}}</div>
                             </div>
                         </div>
                         <div style='font-size: 6vmin'>{{it.name}}</div>
