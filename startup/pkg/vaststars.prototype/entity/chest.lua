@@ -59,8 +59,8 @@ prototype "无人机仓库I" {
     construct_detector = {"exclusive"},
     type = {"building", "hub", "consumer"},
     priority = "secondary",
-    power = "10kW",
-    capacitance = "20kJ",
+    power = "20kW",
+    capacitance = "40kJ",
     area = "2x2",
     supply_area = "6x6",
     drone = {
@@ -77,8 +77,8 @@ prototype "无人机仓库II" {
     construct_detector = {"exclusive"},
     type = {"building", "hub", "consumer"},
     priority = "secondary",
-    power = "20kW",
-    capacitance = "40kJ",
+    power = "40kW",
+    capacitance = "80kJ",
     area = "2x2",
     supply_area = "8x8",
     drone = {
@@ -96,8 +96,8 @@ prototype "无人机仓库III" {
     construct_detector = {"exclusive"},
     type = {"building", "hub", "consumer"},
     priority = "secondary",
-    power = "40kW",
-    capacitance = "80kJ",
+    power = "80kW",
+    capacitance = "160kJ",
     area = "2x2",
     supply_area = "10x10",
     drone = {
