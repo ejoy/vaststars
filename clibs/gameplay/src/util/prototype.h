@@ -268,6 +268,7 @@ namespace prototype {
     PROTOTYPE(drain, uint32_t)
     PROTOTYPE(charge_power, uint32_t)
     PROTOTYPE(capacitance, uint32_t)
+    PROTOTYPE(cost, uint32_t)
     PROTOTYPE(time, uint32_t)
     PROTOTYPE(speed, uint32_t)
     PROTOTYPE(count, uint16_t)

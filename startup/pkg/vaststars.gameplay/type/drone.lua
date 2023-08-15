@@ -1,6 +1,7 @@
 local type = require "register.type"
 
 local c = type "drone"
+    .cost "energy"
 
 function c:ctor(init, pt)
     local home = (init.slot << 16) | (init.x << 8) | init.y

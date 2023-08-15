@@ -36,10 +36,11 @@ struct hub_cache {
     std::vector<hub_berth> chest_red;
     std::vector<hub_berth> chest_blue;
     hub_berth homeBerth;
-    building homeBuilding;
     uint8_t homeWidth;
     uint8_t homeHeight;
     uint16_t item;
+    uint16_t prototype;
+    ecs::capacitance* capacitance;
     bool idle() const {
         return hub.size() <= 1 && chest_red.empty() && chest_blue.empty();
     }

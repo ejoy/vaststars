@@ -259,7 +259,7 @@ static void rebuild(world& w) {
         }
         return 0;
     };
-    for (auto& v : ecs_api::select<ecs::hub, ecs::building>(w.ecs)) {
+    for (auto& v : ecs_api::select<ecs::hub, ecs::building, ecs::capacitance>(w.ecs)) {
         auto& hub = v.get<ecs::hub>();
         auto c = container::index::from(hub.chest);
         if (c == container::kInvalidIndex) {
@@ -281,6 +281,8 @@ static void rebuild(world& w) {
             info.homeBerth = createBerth(building, hub_berth::berth_type::home, i);
             info.homeWidth = homeBuilding.w;
             info.homeHeight = homeBuilding.h;
+            info.prototype = building.prototype;
+            info.capacitance = &v.get<ecs::capacitance>();
             if (chestslot.item == 0) {
                 info.item = 0;
                 hubs.emplace(getHubKey(hub.id, i), info);
@@ -593,28 +595,41 @@ static void GoHome(world& w, DroneEntity& e, ecs::drone& drone, const hub_cache&
 }
 
 static bool FindTask(world& w, DroneEntity& e, ecs::drone& drone, hub_cache& info) {
+    auto consumer = consumer_context {
+        *info.capacitance,
+        prototype::get<"cost">(w, drone.prototype),
+        0,
+        prototype::get<"capacitance">(w, info.prototype),
+    };
+    if (!consumer.has()) {
+        return false;
+    }
     auto searcher = createHubSearcher(w, info);
     auto red = FindChestRed(w, searcher);
     auto blue = FindChestBlue(w, searcher);
     // red -> blue
     if (red && blue) {
         DoTask(w, e, drone, info, *red, *blue);
+        consumer.cost();
         return true;
     }
     auto [min, max, moveable] = FindHub(w, searcher);
     // red -> hub
     if (red && min) {
         DoTask(w, e, drone, info, *red, *min);
+        consumer.cost();
         return true;
     }
     // hub -> blue
     if (blue && max) {
         DoTask(w, e, drone, info, *max, *blue);
+        consumer.cost();
         return true;
     }
     // hub -> hub
     if (moveable) {
         DoTask(w, e, drone, info, *max, *min);
+        consumer.cost();
         return true;
     }
     return false;
