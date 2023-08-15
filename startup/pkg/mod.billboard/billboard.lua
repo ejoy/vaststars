@@ -6,8 +6,6 @@ local imaterial = ecs.require "ant.asset|material"
 
 local bb_sys = ecs.system "billboard_system"
 
-local ibillboard = ecs.interface "ibillboard"
-
 local math3d    = require "math3d"
 local bgfx      = require "bgfx"
 
@@ -60,6 +58,8 @@ local function create_billboard_entity(srt, texture, render_layer)
     }
     return eid
 end
+
+local ibillboard = {}
 
 function ibillboard.create_billboard_base(billboard_bases)
     local id_table = {}

@@ -5,8 +5,6 @@ local w     = world.w
 local bgfx      = require "bgfx"
 local math3d    = require "math3d"
 
-local iroad         = ecs.interface "iroad"
-
 local init_system   = ecs.system "init_system"
 
 local imaterial     = ecs.require "ant.asset|material"
@@ -19,6 +17,8 @@ local layout        = layoutmgr.get "p3|t20|t22"
 
 local hwi                   = import_package "ant.hwi"
 local FIRST_viewid<const>   = hwi.viewid_get "csm_fb"
+
+local iroad         = {}
 
 local width, height = 20, 20
 local TERRAIN_TYPES<const> = {
