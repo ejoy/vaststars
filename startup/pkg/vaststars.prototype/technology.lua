@@ -677,7 +677,7 @@ local prototype = gameplay.register.prototype
         {"地质科技包", 1},
     },
     count = 8,
-    time = "2s"
+    time = "3s"
   }
 
   prototype "建筑维修1" {
@@ -692,7 +692,7 @@ local prototype = gameplay.register.prototype
     ingredients = {
         {"地质科技包", 1},
     },
-    count = 4,
+    count = 6,
     time = "4s"
   }
 
@@ -727,8 +727,8 @@ local prototype = gameplay.register.prototype
     ingredients = {
         {"地质科技包", 1},
     },
-    count = 6,
-    time = "3s"
+    count = 8,
+    time = "4s"
   }
 
   prototype "放置出货车站" {
@@ -804,7 +804,7 @@ local prototype = gameplay.register.prototype
         {"地质科技包", 1},
     },
     count = 8,
-    time = "2s"
+    time = "4s"
   }
 
   prototype "维修运输车辆" {
@@ -858,7 +858,7 @@ prototype "建筑维修2" {
   ingredients = {
       {"地质科技包", 1},
   },
-  count = 6,
+  count = 10,
   time = "4s"
 }
 
@@ -874,7 +874,7 @@ prototype "管道系统1" {
   ingredients = {
       {"地质科技包", 1},
   },
-  count = 8,
+  count = 10,
   time = "4s"
 }
 
