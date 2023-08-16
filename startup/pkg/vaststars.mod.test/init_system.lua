@@ -20,7 +20,7 @@ function S.init()
     local p = ecs.create_instance  "/pkg/vaststars.mod.test/assets/light_directional.prefab"
     p.on_ready = function (e)
         local pid = e.tag["*"][1]
-        local le<close> = w:entity(pid)
+        local le<close> = world:entity(pid)
         iom.set_direction(le, math3d.vector(0.2664446532726288, -0.25660401582717896, 0.14578714966773987, 0.9175552725791931))
     end
     world:create_object(p)
@@ -76,7 +76,7 @@ function S.init_world()
 
     local mq = w:first("main_queue camera_ref:in")
     local eyepos = math3d.vector(0, 100, -50)
-    local camera_ref<close> = w:entity(mq.camera_ref)
+    local camera_ref<close> = world:entity(mq.camera_ref)
     iom.set_position(camera_ref, eyepos)
     local dir = math3d.normalize(math3d.sub(mc.ZERO_PT, eyepos))
     iom.set_direction(camera_ref, dir)
@@ -207,14 +207,14 @@ function S.init_world()
 
 --[[       create_instance("/pkg/vaststars.mod.test/assets/miner-1.glb|mesh.prefab",
     function (e)
-        local ee<close> = w:entity(e.tag['*'][1])
+        local ee<close> = world:entity(e.tag['*'][1])
         iom.set_scale(ee, 1)
         iom.set_position(ee, math3d.vector(200, 0, 0, 1))
     end)  ]]
 
 --[[     create_instance("/pkg/vaststars.mod.test/assets/miner-1.glb|mesh.prefab",
     function (e)
-        local ee<close> = w:entity(e.tag['*'][1])
+        local ee<close> = world:entity(e.tag['*'][1])
         iom.set_scale(ee, 1)
         iom.set_position(ee, math3d.vector(0, 0, 0, 1))
     end)   ]]

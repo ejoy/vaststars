@@ -187,7 +187,7 @@ local __get_hitch_children ; do
         local prefab_instance = g:create_instance(template)
         function prefab_instance:on_ready()
             for _, eid in ipairs(self.tag["*"]) do
-                local e <close> = w:entity(eid, "tag?in anim_ctrl?in render_object?update")
+                local e <close> = world:entity(eid, "tag?in anim_ctrl?in render_object?update")
                 if e.tag then
                     for _, tag in ipairs(e.tag) do
                         inner.tags[tag] = inner.tags[tag] or {}
@@ -370,7 +370,7 @@ function igame_object.create(init)
     -- for _, animname, effectname, hitchs in animation_keyevent:unpack() do
     --     for eid, _ in pairs(hitchs) do
     --         local effect = efks[eid][animname][effectname]
-    --         local e <close> = w:entity(eid, "view_visible?in")
+    --         local e <close> = world:entity(eid, "view_visible?in")
     --         if e.view_visible and effect then
     --             iefk.play(effect)
     --         end

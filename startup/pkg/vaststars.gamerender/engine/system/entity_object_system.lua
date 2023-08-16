@@ -14,7 +14,7 @@ function entity_object_sys:scene_update()
         local object = msg[2]
         local events = msg[3]
         local event_type = msg[4]
-        local e <close> = assert(w:entity(msg[5]), "entity has been removed")
+        local e <close> = assert(world:entity(msg[5]), "entity has been removed")
         local f = assert(events[event_type])
         f(object, e, table.unpack(msg, 6))
     end

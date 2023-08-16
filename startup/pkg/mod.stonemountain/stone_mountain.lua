@@ -357,7 +357,7 @@ function sm_sys:data_changed()
             [4] = math3d.vector(vb_num - mesh_table[4].vb_num, ib_num - mesh_table[4].ib_num, mesh_table[4].ib_num),
         }
         if stonemountain_num > 0 then
-            local de <close> = w:entity(stonemountain.draw_indirect_eid, "draw_indirect:in dispatch:in")
+            local de <close> = world:entity(stonemountain.draw_indirect_eid, "draw_indirect:in dispatch:in")
             local idb_handle, itb_handle = de.draw_indirect.idb_handle, de.draw_indirect.itb_handle
             local instance_memory_buffer = get_instance_memory_buffer(stonemountain_info, 2000)
             bgfx.update(itb_handle, 0, instance_memory_buffer)

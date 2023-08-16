@@ -54,11 +54,11 @@ end
 local function createPrefabInst(prefab)
     local p = ecs.create_instance(prefab)
     function p:on_ready()
-        local root <close> = w:entity(self.tag['*'][1])
+        local root <close> = world:entity(self.tag['*'][1])
         iom.set_position(root, {0, 0, 0})
 
         for _, eid in ipairs(self.tag['*']) do
-            local e <close> = w:entity(eid, "animation_birth?in")
+            local e <close> = world:entity(eid, "animation_birth?in")
             if e.animation_birth then
                 iani.play(self, {name = e.animation_birth, loop = true, speed = 1.0, manual = false})
             end

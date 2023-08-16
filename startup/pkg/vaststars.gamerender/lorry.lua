@@ -82,11 +82,11 @@ end
 local function __create_item_object(prefab, parent, offset_srt)
     local p = sampler_group:create_instance(prefab, parent)
     function p:on_ready()
-        local root <close> = w:entity(self.tag['*'][1])
+        local root <close> = world:entity(self.tag['*'][1])
         iom.set_srt(root, offset_srt.s or mc.ONE, offset_srt.r or mc.IDENTITY_QUAT, offset_srt.t or mc.ZERO_PT)
 
         for _, eid in ipairs(self.tag['*']) do
-            local e <close> = w:entity(eid, "visible_state?in render_object?in")
+            local e <close> = world:entity(eid, "visible_state?in render_object?in")
             if e.visible_state then
                 ivs.set_state(e, "cast_shadow", false)
             end

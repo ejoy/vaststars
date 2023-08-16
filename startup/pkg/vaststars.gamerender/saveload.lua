@@ -191,7 +191,7 @@ local function readall(file)
 end
 
 local function get_camera_setting()
-    local ce <close> = w:entity(irq.main_camera())
+    local ce <close> = world:entity(irq.main_camera())
     local t = {
         s = math3d.tovalue(iom.get_scale(ce)),
         r = math3d.tovalue(iom.get_rotation(ce)),
@@ -205,7 +205,7 @@ local M = {running = false}
 function M:restore_camera_setting()
     if fs.exists(fs.path(camera_setting_path)) then
         local camera_setting = json.decode(readall(camera_setting_path))
-        local ce <close> = w:entity(irq.main_camera())
+        local ce <close> = world:entity(irq.main_camera())
         iom.set_srt(ce, camera_setting.s, camera_setting.r, camera_setting.t)
         ic.set_frustum(ce, camera_setting.frustum)
     end

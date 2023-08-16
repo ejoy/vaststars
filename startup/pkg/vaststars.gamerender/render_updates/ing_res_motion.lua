@@ -14,7 +14,7 @@ local motion_caches = {}
 local function set_visible(inst, visible)
     local alleid = inst.tag["*"]
     for _, eid in ipairs(alleid) do
-        local e <close> = w:entity(eid, "visible_state?in")
+        local e <close> = world:entity(eid, "visible_state?in")
         if e.visible_state then
             ivs.set_state(e, "main_view", visible)
         end
@@ -67,7 +67,7 @@ function iing_res_motion.create(prefab, from, to, duration, repeat_count)
         m.duration = duration
         m.repeat_count = 1
         m.elapsed_time = 0
-        local e <close> = w:entity(m.motion.id)
+        local e <close> = world:entity(m.motion.id)
         iom.set_position(e, from)
         set_visible(m.inst, true)
         motions[#motions + 1] = m

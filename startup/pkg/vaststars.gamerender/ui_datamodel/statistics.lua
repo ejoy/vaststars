@@ -22,7 +22,7 @@ local filter_type = "5s"
 local chart_color_table = {}
 local function hide_chart()
     for _, eid in ipairs(chart_eid) do
-        local e <close> = w:entity(eid)
+        local e <close> = world:entity(eid)
         ivs.set_state(e, queuename, false)
     end
 end
@@ -91,7 +91,7 @@ local function update_vb(eid, points)
         vb[#vb + 1] = pt[2]
         vb[#vb + 1] = pt[3]
     end
-    local e <close> = w:entity(eid, "simplemesh:in")
+    local e <close> = world:entity(eid, "simplemesh:in")
     local mesh = e.simplemesh
     bgfx.update(mesh.vb.handle, 0, bgfx.memory_buffer("fff", vb));
 end
@@ -146,7 +146,7 @@ local function update_chart(group, total, color)
         end
     end
     if group.eid then
-        local e <close> = w:entity(group.eid)
+        local e <close> = world:entity(group.eid)
         ivs.set_state(e, queuename, curve_state[group.cfg.name])
         imaterial.set_property(e, "u_color", math3d.vector(color))
         update_vb(group.eid, line_list)

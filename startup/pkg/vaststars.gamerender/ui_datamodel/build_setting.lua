@@ -72,7 +72,7 @@ end
 local model_euler
 local function model_message_func(mdl, msg)
     if msg == "motion" then
-        local e <close> = w:entity(mdl.tag["*"][1])
+        local e <close> = world:entity(mdl.tag["*"][1])
         if not e then
             return
         end
@@ -85,7 +85,7 @@ local function model_message_func(mdl, msg)
         iom.set_rotation(e, math3d.quaternion{math.rad(model_euler[1]), math.rad(model_euler[2]), math.rad(model_euler[3])})
     elseif msg == "disable_cast_shadow" then
         for _, eid in ipairs(mdl.tag['*']) do
-            local e <close> = w:entity(eid, "visible_state?in render_object?in")
+            local e <close> = world:entity(eid, "visible_state?in render_object?in")
             if e.visible_state then
                 ivs.set_state(e, "cast_shadow", false)
             end

@@ -25,12 +25,12 @@ local function __create_instance(group_id, prefab, mat)
     local g = ecs.group(group_id)
     local prefab_instance = g:create_instance(prefab)
     function prefab_instance:on_ready()
-        local e <close> = w:entity(self.tag["*"][1])
+        local e <close> = world:entity(self.tag["*"][1])
         iom.set_srt(e, math3d.srt(mat))
     end
     function prefab_instance:on_message(msg, mat, group_id) -- TODO: group_id
         assert(msg == "on_position_change", "invalid message")
-        local e <close> = w:entity(self.tag["*"][1])
+        local e <close> = world:entity(self.tag["*"][1])
         iom.set_srt(e, math3d.srt(mat))
     end
     return world:create_object(prefab_instance)

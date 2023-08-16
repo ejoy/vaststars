@@ -16,11 +16,11 @@ local DELTA_TIME <const> = require("gameplay.interface.constant").DELTA_TIME
 local function create_object(prefab, srt)
     local p = ecs.create_instance(prefab)
     function p:on_ready()
-        local root <close> = w:entity(self.tag['*'][1])
+        local root <close> = world:entity(self.tag['*'][1])
         iom.set_srt(root, srt.s, srt.r, srt.t)
 
         for _, eid in ipairs(self.tag['*']) do
-            local e <close> = w:entity(eid, "render_object?in animation_birth?in")
+            local e <close> = world:entity(eid, "render_object?in animation_birth?in")
             if e.render_object then
                 irl.set_layer(e, RENDER_LAYER.SELECTED_BOXES)
             end
@@ -34,7 +34,7 @@ local function create_object(prefab, srt)
         if name == "set_color" then
             local color = ...
             for _, eid in ipairs(self.tag['*']) do
-                local e <close> = w:entity(eid, "material?in")
+                local e <close> = world:entity(eid, "material?in")
                 if e and e.material then
                     imaterial.set_property(e, "u_emissive_factor", color)
                     imaterial.set_property(e, "u_basecolor_factor", color)
@@ -42,7 +42,7 @@ local function create_object(prefab, srt)
             end
         elseif name == "obj_motion" then
             local method, s, r, t = ...
-            local root <close> = w:entity(self.tag['*'][1])
+            local root <close> = world:entity(self.tag['*'][1])
             if root then
                 iom[method](root, s, r, t)
             end

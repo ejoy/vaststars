@@ -439,7 +439,7 @@ local model_path
 local model_ready
 local model_euler
 local function update_model(mdl)
-    local e <close> = w:entity(mdl.tag["*"][1])
+    local e <close> = world:entity(mdl.tag["*"][1])
     if not model_euler then
         local r = iom.get_rotation(e)
         local rad = math3d.tovalue(math3d.quat2euler(r))

@@ -41,10 +41,10 @@ local function createPrefabInst(prefab, position)
 
     local p = ecs.create_instance(template)
     function p:on_ready()
-        local root <close> = w:entity(self.tag['*'][1])
+        local root <close> = world:entity(self.tag['*'][1])
         iom.set_position(root, math3d.vector(position))
         for _, eid in ipairs(self.tag['*']) do
-            local e <close> = w:entity(eid, "render_object?in")
+            local e <close> = world:entity(eid, "render_object?in")
             if e.render_object then
                 irl.set_layer(e, RENDER_LAYER.ROAD_ENTRANCE_ARROW)
             end
@@ -52,12 +52,12 @@ local function createPrefabInst(prefab, position)
     end
     function p:on_message(msg, method, ...)
         if msg == "obj_motion" then
-            local root <close> = w:entity(self.tag['*'][1])
+            local root <close> = world:entity(self.tag['*'][1])
             iom[method](root, ...)
         end
         if msg == "material" then
             for _, eid in ipairs(self.tag["*"]) do
-                local e <close> = w:entity(eid, "material?in")
+                local e <close> = world:entity(eid, "material?in")
                 if e.material then
                     imaterial[method](e, ...)
                 end
