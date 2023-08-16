@@ -15,15 +15,6 @@ events["material"] = function(prefab, inner, method, ...)
     end
 end
 
-events["material_tag"] = function(prefab, inner, method, tag, ...)
-    for _, eid in ipairs(inner.tags[tag] or {}) do
-        local e <close> = world:entity(eid, "material?in")
-        if e.material then
-            imaterial[method](e, ...)
-        end
-    end
-end
-
 events["attach_hitch"] = function(prefab, inner, ...)
     local has_anim = false
     for _, eid in ipairs(prefab.tag["*"]) do
