@@ -25,7 +25,7 @@ do
             --"eid",
             "REMOVED",
         }
-        for _, c in ipairs(status.components) do
+        for _, c in ipairs(require "register.component") do
             components[#components+1] = c.name
         end
         for _, name in ipairs(components) do
