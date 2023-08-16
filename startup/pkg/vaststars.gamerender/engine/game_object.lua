@@ -220,10 +220,10 @@ local __get_hitch_children ; do
             on_prefab_message(self, inner, ...)
         end
         local prefab_proxy = world:create_object(prefab_instance)
-        if material_type == "translucent" or material_type == "opacity" then
+        if (material_type == "translucent" or material_type == "opacity") and color then
             prefab_proxy:send("material", "set_property", "u_basecolor_factor", color)
         end
-        if emissive_color then -- see also: meno/u_emissive_factor
+        if (material_type == "translucent" or material_type == "opacity") and emissive_color then -- see also: meno/u_emissive_factor
             prefab_proxy:send("material", "set_property", "u_emissive_factor", emissive_color)
         end
 

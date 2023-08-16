@@ -675,7 +675,7 @@ local function clean(self, datamodel)
     end
 
     local vsobject = assert(vsobject_manager:get(self.move_object_id))
-    vsobject:update {state = "opaque", color = math3d.null, emissive_color = math3d.null}
+    vsobject:update {state = "opaque"}
 end
 
 local function create(move_object_id)
