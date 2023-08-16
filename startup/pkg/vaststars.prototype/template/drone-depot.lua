@@ -158,6 +158,11 @@ local entities = { {
     prototype_name = "机翼残骸",
     x = 128,
     y = 144
+  }, {
+    dir = "N",
+    prototype_name = "风力发电机I",
+    x = 125,
+    y = 140
   }, }
 local road = {}
 
