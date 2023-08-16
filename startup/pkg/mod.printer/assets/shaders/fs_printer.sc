@@ -29,7 +29,6 @@ void main()
     if(v_posWS.y > (u_building_topmost))
         discard;
     
-    #include "pbr/attributes_getter.sh"
     int building;
     if(v_posWS.y > u_building_topmost - u_building_offset){
         building = 1;
