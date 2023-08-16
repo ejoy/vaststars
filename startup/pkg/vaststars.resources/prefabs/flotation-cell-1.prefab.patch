@@ -1,0 +1,34 @@
+---
+data:
+  efk:
+    auto_play: false
+    loop: false
+    path: /pkg/vaststars.resources/effect/efk/flotation-cell_popo.efk
+    speed: 1
+    visible: true
+  name: work
+  scene:
+    s: {4, 4, 4}
+    t: {0, 3, 0}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+  ant.efk|efk
+  ant.general|tag
+---
+data:
+  efk:
+    auto_play: false
+    loop: false
+    path: /pkg/vaststars.resources/effect/efk/flotation-cell_popo_low.efk
+    speed: 1
+    visible: true
+  name: low_power
+  scene:
+    s: {4, 4, 4}
+    t: {0, 3, 0}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+  ant.efk|efk
+  ant.general|tag
