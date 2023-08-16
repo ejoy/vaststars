@@ -96,8 +96,8 @@ prototype "无人机仓库III" {
     construct_detector = {"exclusive"},
     type = {"building", "hub", "consumer"},
     priority = "secondary",
-    power = "120kW",
-    capacitance = "240kJ",
+    power = "240kW",
+    capacitance = "480kJ",
     area = "2x2",
     supply_area = "10x10",
     drone = {
