@@ -21,6 +21,7 @@ local function get_inventory()
         v.name = typeobject_item.name
         v.icon = typeobject_item.item_icon
         v.count = slot.amount
+        v.order = typeobject_item.item_order or 0
 
         local category = typeobject_item.item_category
         t[category] = t[category] or {}
@@ -29,7 +30,7 @@ local function get_inventory()
 
     for _, items in pairs(t) do
         table.sort(items, function (a, b)
-            return a.id < b.id
+            return a.order < b.order
         end)
     end
 

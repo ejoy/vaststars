@@ -155,8 +155,6 @@ local function create_icon(object_id)
     local cache_no_power
 
     local function remove(self)
-        cache_not_set_item = nil
-        cache_no_power = nil
         icanvas.remove_item(icanvas.types().ICON, object_id)
     end
     local function update(self, building_srt, not_set_item, no_power)

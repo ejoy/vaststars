@@ -79,8 +79,8 @@ local function dir(p)
 	return t
 end
 
-local function readall(resource)
-	local f <close> = assert(fs.open(cr.compile_file(resource:string()), "rb"))
+local function readall(resource, relative)
+	local f <close> = assert(io.open(cr.compile_file(resource:string()) .. relative, "rb"))
     return f:read "a"
 end
 
@@ -98,8 +98,8 @@ local function get_material(prefab)
 end
 
 for _, f in ipairs(dir(path)) do
-	local prefab = datalist.parse(readall(f))
-	local material = datalist.parse(readall(f, get_material(prefab) .. "/main.cfg"))
+	local prefab = datalist.parse(readall(f, "/mesh.prefab"))
+	-- local material = datalist.parse(readall(f, get_material(prefab) .. "/main.cfg"))
 end
 
 print "ok"
