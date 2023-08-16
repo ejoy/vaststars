@@ -74,6 +74,7 @@ data:
   anim_ctrl: {}
   animation:
     ArmatureAction: /pkg/vaststars.resources/glb/miner-1.glb|animations/ArmatureAction.ozz
+    low_power: /pkg/vaststars.resources/prefabs/animation/miner_Bone_low.anim
     work: /pkg/vaststars.resources/prefabs/animation/miner_Bone.anim
   animation_birth: ArmatureAction
   name: animation
