@@ -30,8 +30,9 @@ void safe_add_assgin(uint16_t& v, T a, uint16_t limit) {
     v = (uint16_t)s;
 }
 
-static void array_erase(ecs::backpack* it, ecs::backpack* end) {
-    ecs::backpack* back = end - 1;
+template <typename T>
+static void array_erase(T it, T end) {
+    auto back = end - 1;
     for (; it != back; ++it) {
         if (it->prototype == 0) {
             return;
@@ -45,9 +46,7 @@ static void array_erase(ecs::backpack* it, ecs::backpack* end) {
 bool backpack_pickup(world& w, uint16_t item, uint16_t amount) {
     assert(item != 0);
     auto array_view = ecs_api::array<ecs::backpack>(w.ecs);
-    auto begin = &*array_view.begin();
-    auto end = &*array_view.end();
-    for (auto it = begin; it != end; ++it) {
+    for (auto it = array_view.begin(); it != array_view.end(); ++it) {
         auto& bp = *it;
         if (bp.prototype == item) {
             if (amount > bp.amount) {
@@ -55,7 +54,7 @@ bool backpack_pickup(world& w, uint16_t item, uint16_t amount) {
             }
             bp.amount -= (uint16_t)amount;
             if (bp.amount == 0) {
-                array_erase(it, end);
+                array_erase(it, array_view.end());
             }
             return true;
         }
