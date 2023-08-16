@@ -62,9 +62,52 @@ return function ()
         return iBuilding.create(self, type)
     end
 
-    world.entity = ecs:visitor_create()
-    world.pipeline = pipeline
+    local visitor = {}
+    local function visitor_create()
+        local proxy_mt = {}
+        function proxy_mt:__index(name)
+            local eid = self.eid
+            local t = ecs:access(eid, name)
+            if type(t) ~= "table" or ecs:type(name) ~= "c" then
+                return t
+            end
+            local mt = {}
+            mt.__index = t
+            function mt:__newindex(k, v)
+                if t[k] ~= v then
+                    t[k] = v
+                    ecs:access(eid, name, t)
+                end
+            end
+            return setmetatable({}, mt)
+        end
+        function proxy_mt:__newindex(name, value)
+            ecs:access(self.eid, name, value)
+        end
+        local visitor_mt = {}
+        function visitor_mt:__index(eid)
+            if not ecs:exist(eid) then
+                return
+            end
+            local proxy = setmetatable({eid=eid}, proxy_mt)
+            visitor[eid] = proxy
+            return proxy
+        end
+        return setmetatable(visitor, visitor_mt)
+    end
+    function world:visitor_update()
+        for e in ecs:select "REMOVED eid:in" do
+            visitor[e.eid] = nil
+        end
+    end
+    function world:visitor_clear()
+        for eid in pairs(visitor) do
+            visitor[eid] = nil
+        end
+    end
+    world.entity = visitor_create()
 
+    world.pipeline = pipeline
     local pipeline_init = pipeline(world, cworld, "init")
     local pipeline_update = pipeline(world, cworld, "update")
     local pipeline_build = pipeline(world, cworld, "build")
@@ -142,5 +185,6 @@ return function ()
     function world:now()
         return self._frame
     end
+
     return world
 end
