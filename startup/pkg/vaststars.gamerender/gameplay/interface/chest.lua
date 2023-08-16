@@ -1,3 +1,5 @@
+local iprototype = require "gameplay.interface.prototype"
+
 local CHEST_COMPONENT <const> = {
     ["assembling"] = "chest",
     ["chest"] = "chest",
@@ -5,6 +7,15 @@ local CHEST_COMPONENT <const> = {
     ["station_producer"] = "chest",
     ["station_consumer"] = "chest",
     ["hub"] = "hub",
+}
+
+local CHEST_TYPES <const> = {
+    "assembling",
+    "chest",
+    "laboratory",
+    "station_producer",
+    "station_consumer",
+    "hub",
 }
 
 local MAX_SLOT <const> = 256
@@ -15,6 +26,10 @@ local function get_chest_component(e)
             return chest_component
         end
     end
+end
+
+local function has_chest(type)
+    return iprototype.has_types(type, table.unpack(CHEST_TYPES))
 end
 
 local function get(world, ...)
@@ -53,6 +68,7 @@ end
 return {
     MAX_SLOT = MAX_SLOT,
     get_chest_component = get_chest_component,
+    has_chest = has_chest,
     get = get,
     get_amount = get_amount,
     get_space = get_space,

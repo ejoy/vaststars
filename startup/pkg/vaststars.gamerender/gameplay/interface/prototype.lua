@@ -221,16 +221,6 @@ function M.is_road(prototype_name)
     return M.has_type(typeobject.type, "road")
 end
 
-local CHEST_TYPES <const> = {
-    "assembling",
-    "chest",
-    "laboratory",
-    "station_producer",
-    "station_consumer",
-    "hub",
-    "base",
-}
-
 local function __check_types(prototype_name, types)
     local typeobject = assert(M.queryByName(prototype_name))
     for _, t in ipairs(types) do
@@ -244,10 +234,5 @@ end
 function M.check_types(...)
     return __check_types(...)
 end
-
-function M.has_chest(prototype_name)
-    return __check_types(prototype_name, CHEST_TYPES)
-end
-
 
 return M

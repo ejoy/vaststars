@@ -200,7 +200,7 @@ register_unit("text", "string", function(s)
 	return s
 end)
 
-register_unit("string", "string", function(s)
+register_unit("path", "string", function(s)
 	assert(type(s) == "string")
 	return s
 end)

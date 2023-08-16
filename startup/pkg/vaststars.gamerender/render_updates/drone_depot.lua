@@ -79,8 +79,6 @@ local function create_shelf(building, item, count, building_srt, slot_name, pile
 
     local typeobject_item = iprototype.queryById(item)
     local meshbin = assert(prefab_meshbin("/pkg/vaststars.resources/" .. typeobject_item.pile_model))
-    -- local pile = typeobject_item.pile
-    -- local dim3 = { (pile>>24) & 0xff, (pile>>32) & 0xff, (pile>>40) & 0xff }
     local gap3 = __get_gap3(typeobject_item)
     local srt = math3d.mul(math3d.matrix({s = building_srt.s, r = building_srt.r, t = building_srt.t}), offset)
     local s, r, t = math3d.srt(srt)
@@ -193,45 +191,65 @@ function drone_depot_sys:gameworld_update()
         local building = global.buildings[object.id]
         local not_set_item = true
 
-        local max_slot = 0
+        local heap_count = 0
         for i = 1, ichest.MAX_SLOT do
-            local slot = ichest.get(world, e.hub, i)
+            local slot = world:container_get(e.hub, i)
             if not slot then
                 break
             end
-            max_slot = max_slot + 1
+
+            if slot.item ~= 0 then
+                heap_count = heap_count + 1
+                not_set_item = false
+            end
         end
 
         --
         local shelves = building.drone_depot_shelves
         if shelves then
-            for i = 1, max_slot do
-                local slot = ichest.get(world, e.hub, i)
-                if not slot then
-                    break
-                end
-                if shelves[i] and shelves[i].item == slot.item then
-                    if shelves[i].count ~= slot.amount then
-                        shelves[i]:update(slot.amount)
+            if shelves.heap_count == heap_count then
+                for i = 1, heap_count do
+                    local slot = world:container_get(e.hub, i)
+                    if not slot then
+                        break
                     end
-                else
+
+                    local amount = ichest.get_amount(slot)
+                    if shelves[i] and shelves[i].item == slot.item then
+                        if shelves[i].count ~= amount then
+                            shelves[i]:update(slot.amount)
+                        end
+                    else
+                        if shelves[i] then
+                            shelves[i]:remove()
+                        end
+                        shelves[i] = create_shelf(e.building.prototype, slot.item, slot.amount, object.srt, PILE_SLOT_NAMES[heap_count][i], DIM3_CONVERTERS[heap_count](slot.item))
+                    end
+                end
+            else
+                for i = 1, heap_count do
+                    local slot = world:container_get(e.hub, i)
+                    if not slot then
+                        break
+                    end
+
+                    local amount = ichest.get_amount(slot)
                     if shelves[i] then
                         shelves[i]:remove()
                     end
-                    assert(PILE_SLOT_NAMES[max_slot] and PILE_SLOT_NAMES[max_slot][i])
-                    assert(DIM3_CONVERTERS[max_slot])
-                    shelves[i] = create_shelf(e.building.prototype, slot.item, slot.amount, object.srt, PILE_SLOT_NAMES[max_slot][i], DIM3_CONVERTERS[max_slot](slot.item))
+                    shelves[i] = create_shelf(e.building.prototype, slot.item, amount, object.srt, PILE_SLOT_NAMES[heap_count][i], DIM3_CONVERTERS[heap_count](slot.item))
                 end
-                not_set_item = false
-                i = i + 1
             end
-            for i = max_slot + 1, #shelves do
-                if shelves[i] then
-                    shelves[i]:remove()
-                    shelves[i] = nil
+
+            if shelves.heap_count ~= heap_count then
+                for i = heap_count + 1, #shelves do
+                    if shelves[i] then
+                        shelves[i]:remove()
+                        shelves[i] = nil
+                    end
                 end
-                i = i + 1
             end
+            shelves.heap_count = heap_count
         else
             local t = {
                 remove = function(self)
@@ -244,6 +262,7 @@ function drone_depot_sys:gameworld_update()
                         self[i]:on_position_change(building_srt)
                     end
                 end,
+                heap_count = heap_count,
             }
             for i = 1, ichest.MAX_SLOT do
                 local slot = ichest.get(world, e.hub, i)
@@ -251,11 +270,10 @@ function drone_depot_sys:gameworld_update()
                     break
                 end
                 if slot.item ~= 0 then
-                    assert(PILE_SLOT_NAMES[max_slot] and PILE_SLOT_NAMES[max_slot][i])
-                    assert(DIM3_CONVERTERS[max_slot])
-                    t[i] = create_shelf(e.building.prototype, slot.item, slot.amount, object.srt, PILE_SLOT_NAMES[max_slot][i], DIM3_CONVERTERS[max_slot](slot.item))
+                    assert(PILE_SLOT_NAMES[heap_count] and PILE_SLOT_NAMES[heap_count][i])
+                    assert(DIM3_CONVERTERS[heap_count])
+                    t[i] = create_shelf(e.building.prototype, slot.item, slot.amount, object.srt, PILE_SLOT_NAMES[heap_count][i], DIM3_CONVERTERS[heap_count](slot.item))
                 end
-                not_set_item = false
             end
 
             building.drone_depot_shelves = t

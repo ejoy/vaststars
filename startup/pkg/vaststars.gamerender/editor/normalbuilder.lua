@@ -25,6 +25,7 @@ local gameplay_core = require "gameplay.core"
 local ibuilding = ecs.require "render_updates.building"
 local create_pickup_icon_chimney = ecs.require "pickup_icon_chimney".create
 local ibackpack = require "gameplay.interface.backpack"
+local ichest = require "gameplay.interface.chest"
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -385,7 +386,7 @@ local function new_entity(self, datamodel, typeobject)
         end
     end
 
-    if iprototype.has_chest(typeobject.name) then
+    if ichest.has_chest(typeobject.type) then
         local sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_OTHER
         for _, object in objects:all() do
             local otypeobject = iprototype.queryByName(object.prototype_name)

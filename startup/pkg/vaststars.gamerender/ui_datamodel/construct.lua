@@ -254,9 +254,11 @@ function M:stage_ui_update(datamodel)
             builder:confirm(builder_datamodel)
             audio.play "event:/function/place"
 
+            builder:clean(builder_datamodel)
             if builder.continue_construct ~= false then
-                builder:clean(builder_datamodel)
                 builder:new_entity(builder_datamodel, builder.typeobject, x, y)
+            else
+                builder = nil
             end
         end
     end

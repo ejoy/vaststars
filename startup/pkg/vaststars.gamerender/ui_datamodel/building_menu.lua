@@ -88,7 +88,7 @@ local function __get_moveable_count(object_id)
         local chest_component = ichest.get_chest_component(e)
         local c
         for i = 1, ichest.MAX_SLOT do
-            local slot = ichest.get(gameplay_world, e[chest_component], i)
+            local slot = gameplay_world:container_get(e[chest_component], i)
             if not slot then
                 break
             end
@@ -149,7 +149,7 @@ local function __get_placeable_count(object_id)
         local chest_component = ichest.get_chest_component(e)
         local c
         for i = 1, ichest.MAX_SLOT do
-            local slot = ichest.get(gameplay_world, e[chest_component], i)
+            local slot = gameplay_world:container_get(e[chest_component], i)
             if not slot then
                 break
             end
@@ -178,9 +178,8 @@ local function __get_placeable_count(object_id)
 end
 
 local __moveable_count_update = interval_call(300, function(datamodel, object_id)
-    datamodel.pickup_item_count = __get_moveable_count(object_id)
-    datamodel.place_item_count = __get_placeable_count(object_id)
-    return false
+    datamodel.pickup_item_count = datamodel.pickup_item and __get_moveable_count(object_id) or 0
+    datamodel.place_item_count = datamodel.place_item and __get_placeable_count(object_id) or 0
 end, false)
 
 local function getChestSlotItems(e)
@@ -273,8 +272,8 @@ function M:create(object_id)
         station_lorry_decrease = station_lorry_decrease,
         pickup_item = pickup_item,
         place_item = place_item,
-        pickup_item_count = __get_moveable_count(object_id),
-        place_item_count = __get_placeable_count(object_id),
+        pickup_item_count = pickup_item and __get_moveable_count(object_id) or 0,
+        place_item_count = place_item and __get_placeable_count(object_id) or 0,
     }
 
     return datamodel

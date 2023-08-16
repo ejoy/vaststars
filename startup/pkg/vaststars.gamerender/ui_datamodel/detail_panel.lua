@@ -200,11 +200,12 @@ local function get_property(e, typeobject)
     }
     -- 显示建筑详细信息
     get_display_info(e, typeobject, t)
+    local gameplay_world = gameplay_core.get_world()
     local chest_component = ichest.get_chest_component(e)
     if iprototype.check_types(typeobject.name, CHEST_LIST_TYPES) and chest_component then
         local items = {}
         for i = 1, ichest.MAX_SLOT do
-            local slot = ichest.get(gameplay_core.get_world(), e[chest_component], i)
+            local slot = gameplay_world:container_get(e[chest_component], i)
             if not slot then
                 break
             end

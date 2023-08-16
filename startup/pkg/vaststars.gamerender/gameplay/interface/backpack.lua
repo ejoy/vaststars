@@ -77,9 +77,12 @@ end
 local function backpack_to_chest(world, e, f)
     local chest = e[ichest.get_chest_component(e)]
     for idx = 1, ichest.MAX_SLOT do
-        local slot = ichest.get(world, chest, idx)
+        local slot = world:container_get(chest, idx)
         if not slot then
             break
+        end
+        if slot.item == 0 then
+            goto continue
         end
 
         local c = get_placeable_count(world, slot.item, ichest.get_space(slot))
@@ -98,9 +101,12 @@ end
 local function chest_to_backpack(world, e, f)
     local chest = e[ichest.get_chest_component(e)]
     for i = 1, ichest.MAX_SLOT do
-        local slot = ichest.get(world, chest, i)
+        local slot = world:container_get(chest, i)
         if not slot then
             break
+        end
+        if slot.item == 0 then
+            goto continue
         end
 
         local c = move_to_backpack(world, chest, i)
