@@ -211,6 +211,10 @@ property_list.converter["weights"] = function(v)
 	end
 end
 
+property_list.converter["power_supply_area"] = function(v)
+	return string.format("%sx%s", v >> 8, v & 0xFF)
+end
+
 property_list.converter["fluid_volume"] = function(v)
 	return string.format("%.1f", v)
 end

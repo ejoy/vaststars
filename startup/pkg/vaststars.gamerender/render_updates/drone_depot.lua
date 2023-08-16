@@ -15,6 +15,7 @@ local iom = ecs.require "ant.objcontroller|obj_motion"
 local gameplay_core = require "gameplay.core"
 local drone_depot_sys = ecs.system "drone_depot_systme"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
+local ipower_check = ecs.require "power_check_system"
 
 local PILE_SLOT_NAMES <const> = {
     [1] = {"pile_slot"},
@@ -106,6 +107,8 @@ local assetmgr = import_package "ant.asset"
 local iterrain = ecs.require "terrain"
 local icanvas = ecs.require "engine.canvas"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
+local NO_RECIPE_MATERIAL_PATH <const> = "/pkg/vaststars.resources/materials/canvas/no-recipe.material"
+local NO_POWER_MATERIAL_PATH <const> = "/pkg/vaststars.resources/materials/canvas/no-power.material"
 
 local function __get_texture_size(materialpath)
     local res = assetmgr.resource(materialpath)
@@ -126,8 +129,7 @@ local function __get_draw_rect(x, y, icon_w, icon_h, multiple)
     return draw_x, draw_y, draw_w, draw_h
 end
 
-local function __draw_icon(object_id, x, y)
-    local material_path = "/pkg/vaststars.resources/materials/canvas/no-recipe.material"
+local function __draw_icon(object_id, x, y, material_path)
     local icon_w, icon_h = __get_texture_size(material_path)
     local texture_x, texture_y, texture_w, texture_h = 0, 0, icon_w, icon_h
     local draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x, y, icon_w, icon_h, 1.5)
@@ -149,28 +151,36 @@ local function __draw_icon(object_id, x, y)
 end
 
 local function create_icon(object_id)
-    local cache
+    local cache_not_set_item
+    local cache_no_power
 
     local function remove(self)
-        cache = nil
+        cache_not_set_item = nil
+        cache_no_power = nil
         icanvas.remove_item(icanvas.types().ICON, object_id)
     end
-    local function update(self, building_srt, show)
-        if show == cache then
+    local function update(self, building_srt, not_set_item, no_power)
+        if not_set_item == cache_not_set_item and no_power == cache_no_power then
             return
         end
-        cache = show
+        cache_not_set_item = not_set_item
+        cache_no_power = no_power
 
-        if not show then
-            remove(self)
+        remove(self)
+
+        if not not_set_item and not no_power then
             return
         end
         local x, y = building_srt.t[1], building_srt.t[3]
-        __draw_icon(object_id, x, y)
+        if no_power then
+            __draw_icon(object_id, x, y, NO_POWER_MATERIAL_PATH)
+        else
+            __draw_icon(object_id, x, y, NO_RECIPE_MATERIAL_PATH)
+        end
     end
     local function on_position_change(self, building_srt)
         remove(self)
-        update(self, building_srt, cache)
+        update(self, building_srt, cache_not_set_item)
     end
     return {
         on_position_change = on_position_change,
@@ -280,8 +290,10 @@ function drone_depot_sys:gameworld_update()
         end
 
         --
+
+        local no_power = not ipower_check.is_powered_on(e.eid)
         building.drone_depot_icon = building.drone_depot_icon or create_icon(object.id)
-        building.drone_depot_icon:update(object.srt, not_set_item)
+        building.drone_depot_icon:update(object.srt, not_set_item, no_power)
 
         ::continue::
     end

@@ -479,7 +479,7 @@ local update = interval_call(300, function()
     end
 
     -- special handling for the display of the 'no power' icon on the laboratory
-    for e in gameplay_world.ecs:select "consumer:in assembling:absent building:in capacitance:in eid:in" do
+    for e in gameplay_world.ecs:select "consumer:in assembling:absent hub:absent building:in capacitance:in eid:in" do
         -- object may not have been fully created yet
         local object = objects:coord(e.building.x, e.building.y)
         if not object then
