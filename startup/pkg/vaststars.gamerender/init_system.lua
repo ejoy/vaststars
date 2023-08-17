@@ -21,7 +21,6 @@ local rhwi = import_package "ant.hwi"
 local m = ecs.system 'init_system'
 
 iRmlUi.set_prefix "/pkg/vaststars.resources/"
-iRmlUi.add_bundle "/pkg/vaststars.resources/ui/ui.bundle"
 iRmlUi.font_dir "/pkg/vaststars.resources/ui/font/"
 
 function m:init_world()
