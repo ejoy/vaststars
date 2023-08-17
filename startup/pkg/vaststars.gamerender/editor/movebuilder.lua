@@ -36,6 +36,7 @@ local igameplay_building = gameplay.interface "building"
 local ROAD_TILE_SCALE_WIDTH <const> = 2
 local ROAD_TILE_SCALE_HEIGHT <const> = 2
 local CHANGED_FLAG_BUILDING <const> = require("gameplay.interface.constant").CHANGED_FLAG_BUILDING
+local COLOR_INVALID <const> = math3d.constant "null"
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -675,7 +676,7 @@ local function clean(self, datamodel)
     end
 
     local vsobject = assert(vsobject_manager:get(self.move_object_id))
-    vsobject:update {state = "opaque"}
+    vsobject:update {state = "opaque", color = "null", emissive_color = "null"}
 end
 
 local function create(move_object_id)

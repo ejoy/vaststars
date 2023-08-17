@@ -223,7 +223,7 @@ local __get_hitch_children ; do
         if (material_type == "translucent" or material_type == "opacity") and color then
             prefab_proxy:send("material", "set_property", "u_basecolor_factor", color)
         end
-        if (material_type == "translucent" or material_type == "opacity") and emissive_color then -- see also: meno/u_emissive_factor
+        if emissive_color then -- see also: meno/u_emissive_factor
             prefab_proxy:send("material", "set_property", "u_emissive_factor", emissive_color)
         end
 
@@ -320,6 +320,13 @@ function igame_object.create(init)
     local function update(self, t)
         for k, v in pairs(t) do
             self.__cache[k] = v or self.__cache[k]
+        end
+
+        if self.__cache.color == "null" then
+            self.__cache.color = nil
+        end
+        if self.__cache.emissive_color == "null" then
+            self.__cache.emissive_color = nil
         end
 
         children.instance:send("detach_hitch", hitch_entity_object.id)
