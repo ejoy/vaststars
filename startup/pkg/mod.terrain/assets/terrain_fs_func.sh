@@ -13,12 +13,6 @@
 #include "pbr/input_attributes.sh"
 #include "terrain.sh"
 
-uniform vec4 u_metallic_roughness_factor1;
-uniform vec4 u_metallic_roughness_factor2;
-
-#define u_stone_metallic_factor     u_metallic_roughness_factor1.z
-#define u_stone_roughness_factor    u_metallic_roughness_factor1.w
-
 
 void CUSTOM_FS_FUNC(in FSInput fs_input, inout FSOutput fs_output)
 {
@@ -40,8 +34,8 @@ void CUSTOM_FS_FUNC(in FSInput fs_input, inout FSOutput fs_output)
     vec3 bitangent = cross(fs_input.normal, fs_input.tangent);
     mat3 tbn = mat3(fs_input.tangent, bitangent, fs_input.normal);
     vec3 stone_normal = terrain_normal_from_tangent_frame(tbn, terrain_uv, 1);
-    float roughness = u_stone_roughness_factor;
-    float metallic = u_stone_metallic_factor;
+    float roughness = u_roughness_factor;
+    float metallic = u_metallic_factor;
     input_attributes input_attribs = init_input_attributes(fs_input.normal, stone_normal, fs_input.pos, vec4(terrain_color, 1.0), fs_input.frag_coord, metallic, roughness);
     fs_output.color = compute_lighting(input_attribs); 
 }

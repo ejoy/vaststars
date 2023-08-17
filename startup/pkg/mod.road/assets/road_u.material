@@ -25,6 +25,7 @@ properties:
   s_mark_alpha:
     stage: 3
     texture: /pkg/mod.road/assets/textures/mark_alpha.texture
+    sampler: SAMPLER2DARRAY
 state: 
   ALPHA_REF: 0
   CULL: CCW
