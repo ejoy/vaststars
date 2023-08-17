@@ -71,7 +71,7 @@ local function to_mesh_buffer(vb, aabb)
     local numi = (numv // NUM_QUAD_VERTICES) * 6 --6 for one quad 2 triangles and 1 triangle for 3 indices
 
     return {
-        bounding = {aabb = aabb and math3d.ref(aabb) or nil},
+        bounding = {aabb = aabb},
         vb = {
             start = 0,
             num = numv,
@@ -170,9 +170,9 @@ local function build_mesh(sectionsize, sectionidx, cterrainfileds, width)
         local min_x, min_z = cterrainfileds:get_offset(sectionidx)
         local max_x, max_z = min_x + sectionsize, min_z + sectionsize
 
-        return to_mesh_buffer(vb, math3d.aabb(
-            math3d.mul(math3d.vector(min_x, 0, min_z), unit),
-            math3d.mul(math3d.vector(max_x, 0, max_z), unit)))
+        return to_mesh_buffer(vb, {
+            {min_x*unit, 0, min_z*unit},
+            {max_x*unit, 0, max_z*unit}})
     end
 end
 
