@@ -278,8 +278,9 @@ function igame_object.create(init)
     local children = __get_hitch_children(RESOURCES_BASE_PATH:format(init.prefab), init.state, init.color, init.animation_name, init.final_frame, init.emissive_color, init.render_layer, init.outline_scale)
     local hitch_events = {}
     hitch_events["group"] = function(_, e, group)
-        w:extend(e, "hitch:update")
+        w:extend(e, "hitch:update hitch_bounding?out")
         e.hitch.group = group
+        e.hitch_bounding = true
     end
     hitch_events["obj_motion"] = function(_, e, method, ...)
         iom[method](e, ...)
@@ -287,7 +288,7 @@ function igame_object.create(init)
 
     local policy = {
         "ant.general|name",
-        "ant.scene|hitch_object",
+        "ant.render|hitch_object",
     }
 
     local srt = init.srt or {}
@@ -303,7 +304,9 @@ function igame_object.create(init)
             },
             hitch = {
                 group = children.hitch_group_id,
+                hitch_bounding = true,
             },
+            visible_state = "main_view",
             scene_needchange = true,
         }
     }, hitch_events)
