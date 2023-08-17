@@ -17,11 +17,12 @@ local imain_menu_manager = ecs.require "main_menu_manager"
 local icanvas = ecs.require "engine.canvas"
 local audio = import_package "ant.audio"
 local rhwi = import_package "ant.hwi"
+local font = import_package "ant.font"
 
 local m = ecs.system 'init_system'
 
+font.import "/pkg/vaststars.resources/ui/font/Alibaba-PuHuiTi-Regular.ttf"
 iRmlUi.set_prefix "/pkg/vaststars.resources/"
-iRmlUi.font_dir "/pkg/vaststars.resources/ui/font/"
 
 function m:init_world()
     bgfx.maxfps(FRAMES_PER_SECOND)
