@@ -37,11 +37,8 @@ struct consumer_context {
     bool cost_power() {
         return cost(power);
     }
-    bool has() const {
+    bool has_power() const {
         return has(power);
-    }
-    bool cost() {
-        return cost(power);
     }
 };
 

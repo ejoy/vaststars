@@ -601,7 +601,7 @@ static bool FindTask(world& w, DroneEntity& e, ecs::drone& drone, hub_cache& inf
         0,
         prototype::get<"capacitance">(w, info.prototype),
     };
-    if (!consumer.has()) {
+    if (!consumer.has_power()) {
         return false;
     }
     auto searcher = createHubSearcher(w, info);
@@ -610,26 +610,26 @@ static bool FindTask(world& w, DroneEntity& e, ecs::drone& drone, hub_cache& inf
     // red -> blue
     if (red && blue) {
         DoTask(w, e, drone, info, *red, *blue);
-        consumer.cost();
+        consumer.cost_power();
         return true;
     }
     auto [min, max, moveable] = FindHub(w, searcher);
     // red -> hub
     if (red && min) {
         DoTask(w, e, drone, info, *red, *min);
-        consumer.cost();
+        consumer.cost_power();
         return true;
     }
     // hub -> blue
     if (blue && max) {
         DoTask(w, e, drone, info, *max, *blue);
-        consumer.cost();
+        consumer.cost_power();
         return true;
     }
     // hub -> hub
     if (moveable) {
         DoTask(w, e, drone, info, *max, *min);
-        consumer.cost();
+        consumer.cost_power();
         return true;
     }
     return false;
