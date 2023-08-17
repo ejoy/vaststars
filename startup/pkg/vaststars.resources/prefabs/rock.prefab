@@ -2,15 +2,13 @@
 data:
   name: Scene
   scene:
-    r: {0, 0, 0, 1}
     s: {2, 2, 2}
-    t: {0, 0, 0}
 policy:
   ant.general|name
   ant.scene|scene_object
 ---
 data:
-  material: "/pkg/vaststars.resources/glb/rock.glb|materials/材质.002.material"
+  material: /pkg/vaststars.resources/glb/rock.glb|materials/材质.002.material
   mesh: /pkg/vaststars.resources/glb/rock.glb|meshes/Cube_P1.meshbin
   name: Cube
   scene:
@@ -22,7 +20,7 @@ policy:
   ant.render|render
 ---
 data:
-  material: "/pkg/vaststars.resources/glb/rock.glb|materials/材质.003.material"
+  material: /pkg/vaststars.resources/glb/rock.glb|materials/材质.003.material
   mesh: /pkg/vaststars.resources/glb/rock.glb|meshes/Cube_P2.meshbin
   name: Cube
   scene:

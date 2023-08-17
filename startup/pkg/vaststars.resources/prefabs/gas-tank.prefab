@@ -11,7 +11,7 @@ data:
   mesh: /pkg/vaststars.resources/glb/gas-tank.glb|meshes/zhuti.001_P1.meshbin
   name: zhuti.004
   scene:
-    r: {0, 0, 0, 1}
+    r: {0, 0.7071065902709961, 0, 0.7071069478988647}
   visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:
@@ -23,7 +23,7 @@ data:
   mesh: /pkg/vaststars.resources/glb/gas-tank.glb|meshes/zhuti.002_P1.meshbin
   name: zhuti.001
   scene:
-    r: {0, 0, 0, 1}
+    r: {0, 0.7071065902709961, 0, 0.7071069478988647}
   visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:
@@ -35,7 +35,7 @@ data:
   mesh: /pkg/vaststars.resources/glb/gas-tank.glb|meshes/zhuti.003_P1.meshbin
   name: zhuti.002
   scene:
-    r: {0, 0, 0, 1}
+    r: {0, 0.7071065902709961, 0, 0.7071069478988647}
   visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:
@@ -47,8 +47,7 @@ data:
   mesh: /pkg/vaststars.resources/glb/gas-tank.glb|meshes/zhuti.004_P1.meshbin
   name: zhuti.003
   scene:
-    r: {0, 0, 0, 1}
-    t: {0, 0, 0}
+    r: {0, 0.7071065902709961, 0, 0.7071069478988647}
   visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:

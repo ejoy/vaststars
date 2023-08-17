@@ -319,7 +319,7 @@ local function open_focus_tips(tech_node)
                     srt = {
                         t = center,
                     },
-                    animation_name = "ArmatureAction",
+                    animation_name = "Armature.001Action",
                     final_frame = false,
                     render_layer = RENDER_LAYER.SELECTED_BOXES,
                 }))

@@ -2,8 +2,7 @@
 data:
   name: Scene
   scene:
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+    s: {2, 2, 2}
 policy:
   ant.general|name
   ant.scene|scene_object
@@ -11,9 +10,7 @@ policy:
 data:
   meshskin: /pkg/vaststars.resources/glb/arrow-guide.glb|meshes/Armature.001.skinbin
   name: meshskin
-  scene:
-    s: {2, 2, 2}
-    t: {0, 0, 0}
+  scene: {}
   skeleton: /pkg/vaststars.resources/glb/arrow-guide.glb|animations/skeleton.ozz
   skinning: true
 mount: 1
@@ -23,7 +20,7 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  material: /pkg/vaststars.resources/materials/arrow-guide.material
+  material: /pkg/vaststars.resources/glb/arrow-guide.glb|materials/Material.003_cs.material
   mesh: /pkg/vaststars.resources/glb/arrow-guide.glb|meshes/Cylinder_P1.meshbin
   name: Cylinder
   skinning: true
@@ -35,8 +32,8 @@ policy:
 data:
   anim_ctrl: {}
   animation:
-    ArmatureAction: /pkg/vaststars.resources/glb/arrow-guide.glb|animations/Armature.001Action.ozz
-  animation_birth: ArmatureAction
+    Armature.001Action: /pkg/vaststars.resources/glb/arrow-guide.glb|animations/Armature.001Action.ozz
+  animation_birth: Armature.001Action
   name: animation
   skeleton: /pkg/vaststars.resources/glb/arrow-guide.glb|animations/skeleton.ozz
 policy:

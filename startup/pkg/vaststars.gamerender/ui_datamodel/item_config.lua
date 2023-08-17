@@ -71,24 +71,28 @@ function M:create(object_id, interface)
         end
 
         local category_idx = assert(cache[typeobject.item_category])
-        local item_idx = #res[category_idx].items+1
-
-        res[category_idx].items[item_idx] = {
-            id = ("%s:%s"):format(category_idx, item_idx),
+        local items = res[category_idx].items
+        items[#items+1] = {
             name = typeobject.name,
             icon = typeobject.item_icon,
             new = (not storage.item_picked_flag[typeobject.name]) and true or false,
             selected = (datamodel.item_name == typeobject.name) and true or false,
+            order = typeobject.item_order,
         }
         ::continue::
     end
 
     datamodel.items = {}
-    for _, r in ipairs(res) do
+    for category_idx, r in ipairs(res) do
         if #r.items > 0 then
             table.insert(datamodel.items, r)
-            for item_idx, recipe in ipairs(r.items) do
-                if recipe.name == datamodel.item_name then
+            table.sort(r.items, function(a, b)
+                return a.order < b.order
+            end)
+
+            for item_idx, item in ipairs(r.items) do
+                item.id = ("%s:%s"):format(category_idx, item_idx)
+                if item.name == datamodel.item_name then
                     assert(datamodel.category_idx == 0 and datamodel.item_idx == 0)
 
                     datamodel.category_idx = #datamodel.items

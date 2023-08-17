@@ -1,0 +1,5 @@
+---
+file: materials/Material.002_s.material
+op: replace
+path: /state/DEPTH_TEST
+value: ALWAYS

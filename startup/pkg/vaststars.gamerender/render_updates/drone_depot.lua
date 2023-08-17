@@ -230,8 +230,11 @@ function drone_depot_sys:gameworld_update()
                     else
                         if shelves[i] then
                             shelves[i]:remove()
+                            shelves[i] = nil
                         end
-                        shelves[i] = create_shelf(e.building.prototype, slot.item, slot.amount, object.srt, PILE_SLOT_NAMES[heap_count][i], DIM3_CONVERTERS[heap_count](slot.item))
+                        if slot.item ~= 0 then
+                            shelves[i] = create_shelf(e.building.prototype, slot.item, slot.amount, object.srt, PILE_SLOT_NAMES[heap_count][i], DIM3_CONVERTERS[heap_count](slot.item))
+                        end
                     end
                 end
             else
@@ -244,8 +247,11 @@ function drone_depot_sys:gameworld_update()
                     local amount = ichest.get_amount(slot)
                     if shelves[i] then
                         shelves[i]:remove()
+                        shelves[i] = nil
                     end
-                    shelves[i] = create_shelf(e.building.prototype, slot.item, amount, object.srt, PILE_SLOT_NAMES[heap_count][i], DIM3_CONVERTERS[heap_count](slot.item))
+                    if slot.item ~= 0 then
+                        shelves[i] = create_shelf(e.building.prototype, slot.item, amount, object.srt, PILE_SLOT_NAMES[heap_count][i], DIM3_CONVERTERS[heap_count](slot.item))
+                    end
                 end
             end
 

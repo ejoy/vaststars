@@ -11,7 +11,6 @@ data:
   name: meshskin
   scene: {}
   skeleton: /pkg/vaststars.resources/glb/mars-assembling-machine.glb|animations/skeleton.ozz
-  skininfo: {}
   skinning: true
 mount: 1
 policy:
@@ -36,7 +35,6 @@ data:
   material: /pkg/vaststars.resources/glb/mars-assembling-machine.glb|materials/Material_s.material
   mesh: /pkg/vaststars.resources/glb/mars-assembling-machine.glb|meshes/Torus.004_P1.meshbin
   name: Torus.003
-  skininfo: {}
   skinning: true
   visible_state: main_view|selectable|cast_shadow
 policy:

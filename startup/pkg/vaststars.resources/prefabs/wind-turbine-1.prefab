@@ -19,7 +19,7 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  material: /pkg/vaststars.resources/materials/wind-turbine-1.prefab-Material.001_skin.material
+  material: /pkg/vaststars.resources/glb/wind-turbine-1.glb|materials/Material.001_s.material
   mesh: /pkg/vaststars.resources/glb/wind-turbine-1.glb|meshes/Plane.003_P1.meshbin
   name: Plane.003
   skinning: true

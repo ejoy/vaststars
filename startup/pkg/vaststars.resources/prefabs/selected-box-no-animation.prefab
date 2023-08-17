@@ -7,7 +7,7 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  material: /pkg/vaststars.resources/materials/selected-box-no-animation.material
+  material: /pkg/vaststars.resources/glb/selected-box-no-animation.glb|materials/Material.003.material
   mesh: /pkg/vaststars.resources/glb/selected-box-no-animation.glb|meshes/Plane.002_P1.meshbin
   name: Plane.001
   scene: {}
