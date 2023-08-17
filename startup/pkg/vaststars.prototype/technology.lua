@@ -929,12 +929,28 @@ prototype "重修水电站" {
   },
 }
 
+prototype "采集地下水" {
+  desc = "放置1座地下水挖掘机",
+  icon = "ui/textures/construct/industry.texture",
+  type = { "task" },
+  task = {"select_entity", 0,  "地下水挖掘机I"},
+  prerequisites = {"重修水电站"},
+  count = 1,
+  tips_pic = {
+    "ui/textures/task_tips_pic/task_produce_h21.texture",
+    "ui/textures/task_tips_pic/task_produce_h22.texture",
+  },
+  sign_desc = {
+    { desc = "放置1座地下水挖掘机与水电站对应水口相连", icon = "ui/textures/construct/industry.texture"},
+  },
+}
+
 prototype "生产气候科技包" {
   desc = "生产科技包用于科技研究",
   icon = "ui/textures/construct/industry.texture",
   type = { "task" },
   task = {"stat_production", 0, "气候科技包"},
-  prerequisites = {"建造空气过滤器","重修水电站"},
+  prerequisites = {"建造空气过滤器","采集地下水"},
   count = 1,
   tips_pic = {
     "ui/textures/task_tips_pic/task_produce_climatepack2.texture",
@@ -1076,7 +1092,7 @@ prototype "放置地下水挖掘机" {
   type = { "task" },
   task = {"select_entity", 0,  "地下水挖掘机I"},
   prerequisites = {"放置电解厂"},
-  count = 1,
+  count = 2,
   tips_pic = {
     "ui/textures/task_tips_pic/task_produce_h21.texture",
     "ui/textures/task_tips_pic/task_produce_h22.texture",

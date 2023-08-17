@@ -69,6 +69,7 @@ prototype "无人机仓库I" {
     power_supply_area = "6x6",
     power_supply_distance = 8,
     camera_distance = 45,
+    sound = "building/drone",
 }
 
 prototype "无人机仓库II" {
@@ -88,6 +89,7 @@ prototype "无人机仓库II" {
     power_supply_area = "6x6",
     power_supply_distance = 8,
     camera_distance = 45,
+    sound = "building/drone",
 }
 
 prototype "无人机仓库III" {
@@ -109,4 +111,5 @@ prototype "无人机仓库III" {
     power_supply_area = "6x6",
     power_supply_distance = 8,
     camera_distance = 45,
+    sound = "building/drone",
 }

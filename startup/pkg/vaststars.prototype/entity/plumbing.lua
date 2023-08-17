@@ -10,6 +10,7 @@ prototype "液罐I" {
     type = {"building", "fluidbox"},
     area = "3x3",
     camera_distance = 72,
+    sound = "building/hydro-plant",
     fluidbox = {
         capacity = 15000,
         height = 100,
@@ -32,6 +33,7 @@ prototype "液罐II" {
     type = {"building", "fluidbox"},
     area = "3x3",
     camera_distance = 72,
+    sound = "building/hydro-plant",
     fluidbox = {
         capacity = 30000,
         height = 100,
@@ -54,6 +56,7 @@ prototype "液罐III" {
     type = {"building", "fluidbox"},
     area = "3x3",
     camera_distance = 72,
+    sound = "building/hydro-plant",
     fluidbox = {
         capacity = 60000,
         height = 100,
@@ -98,7 +101,7 @@ prototype "地下水挖掘机I" {
     rotate_on_build = true,
     power = "50kW",
     speed = "100%",
-    sound = "building/geothermal",
+    sound = "building/hydro-plant",
     assembling_icon = false,
     priority = "secondary",
     recipe = "离岸抽水",
@@ -131,7 +134,7 @@ prototype "地下水挖掘机II" {
     rotate_on_build = true,
     power = "200kW",
     speed = "400%",
-    sound = "building/geothermal",
+    sound = "building/hydro-plant",
     assembling_icon = false,
     priority = "secondary",
     recipe = "离岸抽水",
