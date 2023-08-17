@@ -35,7 +35,7 @@ struct consumer_context {
         return cost(drain);
     }
     bool cost_power() {
-        return cost(power - drain);
+        return cost(power);
     }
     bool has() const {
         return has(power);
