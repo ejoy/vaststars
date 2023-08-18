@@ -11,11 +11,15 @@ local WorkerNum <const> = 6
 local status
 
 local BlackList <const> = {
-    ["/pkg/vaststars.mod.test"] = true,
     ["/pkg/ant.bake"] = true,
+    ["/pkg/ant.collision"] = true,
+    ["/pkg/ant.debugger"] = true,
+    ["/pkg/ant.editor"] = true,
+    ["/pkg/ant.imgui"] = true,
+    ["/pkg/ant.efk/efkbgfx/examples"] = true,
     ["/pkg/ant.resources.binary/test"] = true,
     ["/pkg/ant.resources.binary/meshes"] = true,
-    ["/pkg/ant.efk/efkbgfx/examples"] = true,
+    ["/pkg/vaststars.mod.test"] = true,
 }
 
 local function status_addtask(task)
