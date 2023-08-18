@@ -927,7 +927,7 @@ prototype "机身残骸" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 100,
     item_order = 100,
-    item_icon = "textures/icons/item/limestone.texture",
+    item_icon = "textures/icons/item/ruin.texture",
     pile_model = "glb/stackeditems/stack-building.glb|mesh.prefab",
     item_description = "传导热量的特殊管道",
 }
@@ -941,7 +941,7 @@ prototype "机翼残骸" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 100,
     item_order = 102,
-    item_icon = "textures/icons/item/limestone.texture",
+    item_icon = "textures/icons/item/ruin.texture",
     pile_model = "glb/stackeditems/stack-building.glb|mesh.prefab",
     item_description = "传导热量的特殊管道",
 }
@@ -955,7 +955,7 @@ prototype "机头残骸" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 100,
     item_order = 104,
-    item_icon = "textures/icons/item/limestone.texture",
+    item_icon = "textures/icons/item/ruin.texture",
     pile_model = "glb/stackeditems/stack-building.glb|mesh.prefab",
     item_description = "传导热量的特殊管道",
 }
@@ -969,7 +969,7 @@ prototype "机尾残骸" {
     drone_depot_gap3 = "0.2x0.05x0.2",
     backpack_limit = 100,
     item_order = 106,
-    item_icon = "textures/icons/item/limestone.texture",
+    item_icon = "textures/icons/item/ruin.texture",
     pile_model = "glb/stackeditems/stack-building.glb|mesh.prefab",
     item_description = "传导热量的特殊管道",
 }
