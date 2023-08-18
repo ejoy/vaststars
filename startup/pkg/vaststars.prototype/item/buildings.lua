@@ -12,7 +12,7 @@ prototype "指挥中心" {
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_limit = 1,
     item_order = 50,
-    item_icon = "textures/icons/item/hydroplant.texture",
+    item_icon = "textures/icons/item/headquater.texture",
     pile_model = "glb/stackeditems/stack-building.glb|mesh.prefab",
     item_description = "存储材料和装配运输汽车的核心建筑",
 }
@@ -249,7 +249,7 @@ prototype "蒸汽发电机I" {
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_limit = 20,
     item_order = 60,
-    item_icon = "textures/icons/item/hydroplant.texture",
+    item_icon = "textures/icons/item/turbine.texture",
     pile_model = "glb/stackeditems/stack-building.glb|mesh.prefab",
     item_description = "将蒸汽的热能转化成机械能用于发电的设备",
 }
@@ -263,7 +263,7 @@ prototype "蒸汽发电机II" {
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_limit = 20,
     item_order = 62,
-    item_icon = "textures/icons/item/hydroplant.texture",
+    item_icon = "textures/icons/item/turbine.texture",
     pile_model = "glb/stackeditems/stack-building.glb|mesh.prefab",
     item_description = "将蒸汽的热能转化成机械能用于发电的设备",
 }
@@ -277,7 +277,7 @@ prototype "蒸汽发电机III" {
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_limit = 20,
     item_order = 64,
-    item_icon = "textures/icons/item/hydroplant.texture",
+    item_icon = "textures/icons/item/turbine.texture",
     pile_model = "glb/stackeditems/stack-building.glb|mesh.prefab",
     item_description = "将蒸汽的热能转化成机械能用于发电的设备",
 }
@@ -347,7 +347,7 @@ prototype "蒸馏厂I" {
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_limit = 20,
     item_order = 74,
-    item_icon = "textures/icons/item/chemistry.texture",
+    item_icon = "textures/icons/item/distillery.texture",
     pile_model = "glb/stackeditems/stack-building.glb|mesh.prefab",
     item_description = "使用蒸馏方式对液态原料进行分离的设施",
 }
@@ -361,7 +361,7 @@ prototype "蒸馏厂II" {
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_limit = 20,
     item_order = 76,
-    item_icon = "textures/icons/item/chemistry.texture",
+    item_icon = "textures/icons/item/distillery.texture",
     pile_model = "glb/stackeditems/stack-building.glb|mesh.prefab",
     item_description = "使用蒸馏方式对液态原料进行分离的设施",
 }
@@ -375,7 +375,7 @@ prototype "蒸馏厂III" {
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_limit = 20,
     item_order = 78,
-    item_icon = "textures/icons/item/chemistry.texture",
+    item_icon = "textures/icons/item/distillery.texture",
     pile_model = "glb/stackeditems/stack-building.glb|mesh.prefab",
     item_description = "使用蒸馏方式对液态原料进行分离的设施",
 }
@@ -828,7 +828,7 @@ prototype "地热井I" {
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_limit = 20,
     item_order = 72,
-    item_icon = "textures/icons/item/chemistry.texture",
+    item_icon = "textures/icons/item/geothermal-plant.texture",
     pile_model = "glb/stackeditems/stack-building.glb|mesh.prefab",
     item_description = "通过地下钻探获取地热资源的装置",
 }
@@ -842,7 +842,7 @@ prototype "地热井II" {
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_limit = 20,
     item_order = 74,
-    item_icon = "textures/icons/item/chemistry.texture",
+    item_icon = "textures/icons/item/geothermal-plant.texture",
     pile_model = "glb/stackeditems/stack-building.glb|mesh.prefab",
     item_description = "通过地下钻探获取地热资源的装置",
 }
@@ -856,7 +856,7 @@ prototype "地热井III" {
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_limit = 20,
     item_order = 76,
-    item_icon = "textures/icons/item/chemistry.texture",
+    item_icon = "textures/icons/item/geothermal-plant.texture",
     pile_model = "glb/stackeditems/stack-building.glb|mesh.prefab",
     item_description = "通过地下钻探获取地热资源的装置",
 }
