@@ -5,7 +5,6 @@
 #include "pbr/attribute_uniforms.sh"
 #include "common/default_inputs_structure.sh"
 
-uniform vec4 u_colorTable;
 void CUSTOM_FS_FUNC(in FSInput fs_input, inout FSOutput fs_output)
 {
 	float corner_alpha = texture2D(s_basecolor, fs_input.uv0);
