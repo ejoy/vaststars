@@ -306,7 +306,7 @@ function igame_object.create(init)
                 group = children.hitch_group_id,
                 hitch_bounding = true,
             },
-            visible_state = "main_view",
+            visible_state = "main_view|cast_shadow|selectable",
             scene_needchange = true,
         }
     }, hitch_events)
