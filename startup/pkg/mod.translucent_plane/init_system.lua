@@ -56,7 +56,7 @@ local function to_mesh_buffer(vb, ib_handle, aabb)
     local numi = (numv // NUM_QUAD_VERTICES) * 6 --6 for one quad 2 triangles and 1 triangle for 3 indices
     if numv < 1 then return end
     return {
-        bounding = {aabb = aabb and math3d.ref(aabb) or nil},
+        bounding = {aabb = aabb },
         vb = {
             start = 0,
             num = numv,
@@ -114,9 +114,9 @@ local function get_aabb(grids)
             end 
         end
     end
-    local aabb_min = math3d.vector(minx * unit, 0, minz * unit)
-    local aabb_max = math3d.vector(minx * unit + unit, 0, minz * unit + unit)
-    return math3d.aabb(aabb_min, aabb_max)
+    local aabb_min = {minx * unit, 0, minz * unit}
+    local aabb_max = {minx * unit + unit, 0, minz * unit + unit}
+    return {aabb_min, aabb_max}
 end
 
 function init_sys:init_world()
