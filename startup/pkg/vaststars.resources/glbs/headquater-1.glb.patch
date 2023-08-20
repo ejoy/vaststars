@@ -1,0 +1,43 @@
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    efk:
+      auto_play: false
+      loop: false
+      path: /pkg/vaststars.resources/effects/headquater_light.efk
+      speed: 1
+      visible: true
+    name: work
+    scene:
+      s: {4, 3, 2}
+      t: {0, 18, 0}
+  mount: 1
+  policy:
+    ant.general|name
+    ant.scene|scene_object
+    ant.efk|efk
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    name: prefab1
+    scene:
+      t: {0, 0, -25}
+  mount: 1
+  policy:
+    ant.general|name
+    ant.scene|scene_object
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data: {}
+  editor: false
+  mount: 4
+  prefab: /pkg/vaststars.resources/glbs/goods-gate.glb|mesh.prefab

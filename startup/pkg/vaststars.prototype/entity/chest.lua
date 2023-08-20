@@ -2,7 +2,7 @@ local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype
 
 prototype "小铁制箱子I" {
-    model = "prefabs/small-chest.prefab",
+    model = "glbs/small-chest.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"building", "chest"},
@@ -12,7 +12,7 @@ prototype "小铁制箱子I" {
 }
 
 prototype "建材箱" {
-    model = "prefabs/drop-box.prefab",
+    model = "glbs/drop-box.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"building", "chest"},
@@ -22,7 +22,7 @@ prototype "建材箱" {
 }
 
 prototype "小铁制箱子II" {
-    model = "prefabs/small-chest.prefab",
+    model = "glbs/small-chest.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"building"},
@@ -31,7 +31,7 @@ prototype "小铁制箱子II" {
 }
 
 prototype "大铁制箱子I" {
-    model = "prefabs/small-chest.prefab",
+    model = "glbs/small-chest.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"building"},
@@ -40,7 +40,7 @@ prototype "大铁制箱子I" {
 }
 
 prototype "仓库" {
-    model = "prefabs/small-chest.prefab",
+    model = "glbs/small-chest.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"building"},
@@ -54,7 +54,7 @@ prototype "仓库" {
 --{ "无人机", 1 }, { "无人机", 1 },表示两个无人机带货物1
 
 prototype "无人机仓库I" {
-    model = "prefabs/drone-depot.prefab",
+    model = "glbs/drone-depot.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_drone_depot.texture",
     construct_detector = {"exclusive"},
     type = {"building", "hub", "consumer"},
@@ -73,7 +73,7 @@ prototype "无人机仓库I" {
 }
 
 prototype "无人机仓库II" {
-    model = "prefabs/drone-depot.prefab",
+    model = "glbs/drone-depot.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_drone_depot.texture",
     construct_detector = {"exclusive"},
     type = {"building", "hub", "consumer"},
@@ -93,7 +93,7 @@ prototype "无人机仓库II" {
 }
 
 prototype "无人机仓库III" {
-    model = "prefabs/drone-depot.prefab",
+    model = "glbs/drone-depot.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_drone_depot.texture",
     construct_detector = {"exclusive"},
     type = {"building", "hub", "consumer"},

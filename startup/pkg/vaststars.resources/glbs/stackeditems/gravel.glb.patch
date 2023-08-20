@@ -1,0 +1,10 @@
+---
+file: materials/Material.material
+op: replace
+path: /fx/setting/DRAW_INDIRECT
+value: 1
+---
+file: materials/Material.material
+op: replace
+path: /state/CULL
+value: NONE

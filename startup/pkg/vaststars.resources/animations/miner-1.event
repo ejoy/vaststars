@@ -1,0 +1,13 @@
+work:
+  ---
+  event_list:
+    ---
+    asset_path: /pkg/vaststars.resources/effects/miner_dust.efk
+    breakable: false
+    event_type: Effect
+    life_time: 2
+    link_info:
+      slot_eid: 139
+      slot_name: effect
+    name: Effect2
+  time: 0.44

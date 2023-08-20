@@ -2,7 +2,7 @@ local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype
 
 prototype "熔炼炉I" {
-    model = "prefabs/furnace-1.prefab",
+    model = "glbs/furnace-1.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_furnace.texture",
     construct_detector = {"exclusive"},
     type = {"building", "assembling", "consumer","fluidboxes"},
@@ -40,7 +40,7 @@ prototype "熔炼炉I" {
 }
 
 prototype "熔炼炉II" {
-    model = "prefabs/furnace-1.prefab",
+    model = "glbs/furnace-1.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_furnace.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling","fluidboxes"},
@@ -78,7 +78,7 @@ prototype "熔炼炉II" {
 }
 
 prototype "熔炼炉III" {
-    model = "prefabs/furnace-1.prefab",
+    model = "glbs/furnace-1.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_furnace.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling","fluidboxes"},
@@ -116,7 +116,7 @@ prototype "熔炼炉III" {
 }
 
 prototype "粉碎机I" {
-    model = "prefabs/crusher-1.prefab",
+    model = "glbs/crusher-1.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_crusher.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling"},
@@ -134,7 +134,7 @@ prototype "粉碎机I" {
 }
 
 prototype "粉碎机II" {
-    model = "prefabs/crusher-1.prefab",
+    model = "glbs/crusher-1.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_crusher.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling"},
@@ -152,7 +152,7 @@ prototype "粉碎机II" {
 }
 
 prototype "粉碎机III" {
-    model = "prefabs/crusher-1.prefab",
+    model = "glbs/crusher-1.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_crusher.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling"},
@@ -169,7 +169,7 @@ prototype "粉碎机III" {
 }
 
 prototype "浮选器I" {
-    model = "prefabs/flotation-cell-1.prefab",
+    model = "glbs/flotation-cell-1.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_flotation_cell.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
@@ -225,7 +225,7 @@ prototype "浮选器I" {
 }
 
 prototype "浮选器II" {
-    model = "prefabs/flotation-cell-1.prefab",
+    model = "glbs/flotation-cell-1.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_flotation_cell.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
@@ -281,7 +281,7 @@ prototype "浮选器II" {
 }
 
 prototype "浮选器III" {
-    model = "prefabs/flotation-cell-1.prefab",
+    model = "glbs/flotation-cell-1.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_flotation_cell.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},

@@ -1,0 +1,106 @@
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    name: shelf2
+    scene:
+      t: {0, 19.700000762939453, 11}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.general|name
+    ant.animation|slot
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    name: shelf3
+    scene:
+      t: {8.899999618530273, 19.700000762939453, 11}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.general|name
+    ant.animation|slot
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    name: shelf1
+    scene:
+      t: {-8.899999618530273, 19.700000762939453, 11}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.general|name
+    ant.animation|slot
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    name: shelf5
+    scene:
+      t: {0, 3.799999952316284, -13.199999809265137}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.general|name
+    ant.animation|slot
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    name: shelf6
+    scene:
+      t: {8.399999618530273, 3.799999952316284, -13.199999809265137}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.general|name
+    ant.animation|slot
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    name: shelf4
+    scene:
+      t: {-8.399999618530273, 3.799999952316284, -13.199999809265137}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.general|name
+    ant.animation|slot
+---
+file: mesh.prefab
+op: replace
+path: /5/data/animation/low_power
+value: /pkg/vaststars.resources/animations/mars-assembling-machine_animat_low.anim
+---
+file: mesh.prefab
+op: replace
+path: /5/data/animation/work
+value: /pkg/vaststars.resources/animations/mars-assembling-machine_animat.anim

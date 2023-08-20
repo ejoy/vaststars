@@ -1,0 +1,22 @@
+---
+file: mesh.prefab
+op: replace
+path: /1/data/scene
+value:
+    r: {0, 1, 0, -4.371138828673793e-08}
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    name: pile_slot
+    scene:
+      t: {-2.555568556772414e-08, 1.2999999523162842, -0.7076770067214966}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.general|name
+    ant.animation|slot

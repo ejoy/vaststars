@@ -2,7 +2,7 @@ local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype
 
 prototype "组装机I" {
-    model = "prefabs/mars-assembling-machine.prefab",
+    model = "glbs/mars-assembling-machine.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_mars_assembling_machine.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
@@ -42,7 +42,7 @@ prototype "组装机I" {
 }
 
 prototype "组装机II" {
-    model = "prefabs/mars-assembling-machine.prefab",
+    model = "glbs/mars-assembling-machine.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_mars_assembling_machine.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
@@ -81,7 +81,7 @@ prototype "组装机II" {
 }
 
 prototype "组装机III" {
-    model = "prefabs/mars-assembling-machine.prefab",
+    model = "glbs/mars-assembling-machine.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_mars_assembling_machine.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
@@ -120,7 +120,7 @@ prototype "组装机III" {
 }
 
 prototype "铸造厂I" {
-    model = "prefabs/mars-assembling-machine.prefab",
+    model = "glbs/mars-assembling-machine.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_assemble.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},

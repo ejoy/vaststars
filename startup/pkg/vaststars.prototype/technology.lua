@@ -54,7 +54,7 @@ local prototype = gameplay.register.prototype
     },
     guide_focus = {
       {
-        prefab = "prefabs/selected-box-no-animation.prefab",
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 109,
         y = 136,
         w = 3.5,
@@ -83,7 +83,7 @@ local prototype = gameplay.register.prototype
     },
     guide_focus = {
       -- {
-      --   prefab = "prefabs/selected-box-no-animation.prefab",
+      --   prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
       --   x = 139,
       --   y = 141,
       --   w = 3.2,
@@ -91,7 +91,7 @@ local prototype = gameplay.register.prototype
       --   show_arrow = true,
       -- },
       {
-        prefab = "prefabs/selected-box-no-animation.prefab",
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 116,
         y = 134,
         w = 3.2,
@@ -125,7 +125,7 @@ local prototype = gameplay.register.prototype
     },
     guide_focus = {
       {
-        prefab = "prefabs/selected-box-no-animation.prefab",
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 118,
         y = 128,
         w = 1.2,
@@ -159,7 +159,7 @@ local prototype = gameplay.register.prototype
     },
     -- guide_focus = {
     --   {
-    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
     --     x = 127,
     --     y = 127.8,
     --     w = 1.8,
@@ -167,21 +167,21 @@ local prototype = gameplay.register.prototype
     --     show_arrow = true,
     --   },
     --   {
-    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
     --     x = 117.5,
     --     y = 124.5,
     --     w = 2.5,
     --     h = 2.5,
     --   },
     --   {
-    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
     --     x = 117.5,
     --     y = 132.5,
     --     w = 2.5,
     --     h = 2.5,
     --   },
     --   {
-    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
     --     x = 117.5,
     --     y = 128.5,
     --     w = 2.5,
@@ -256,7 +256,7 @@ local prototype = gameplay.register.prototype
     },
     guide_focus = {
       {
-        prefab = "prefabs/selected-box-no-animation.prefab",
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 139,
         y = 141,
         w = 3.2,
@@ -264,7 +264,7 @@ local prototype = gameplay.register.prototype
         -- show_arrow = true,
       },
       -- {
-      --   prefab = "prefabs/selected-box-no-animation.prefab",
+      --   prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
       --   x = 109,
       --   y = 136,
       --   w = 3.2,
@@ -295,7 +295,7 @@ local prototype = gameplay.register.prototype
     },
     -- guide_focus = {
     --   {
-    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
     --     x = 114,
     --     y = 117.8,
     --     w = 1.8,
@@ -303,56 +303,56 @@ local prototype = gameplay.register.prototype
     --     show_arrow = true,
     --   },
     --   {
-    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
     --     x = 110,
     --     y = 124,
     --     w = 3.5,
     --     h = 3.5,
     --   },
     --   {
-    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
     --     x = 118,
     --     y = 124,
     --     w = 3.5,
     --     h = 3.5,
     --   },
     --   {
-    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
     --     x = 114,
     --     y = 124,
     --     w = 3.5,
     --     h = 3.5,
     --   },
     --   {
-    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
     --     x = 114,
     --     y = 132,
     --     w = 3.5,
     --     h = 3.5,
     --   },
     --   {
-    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
     --     x = 110,
     --     y = 132,
     --     w = 3.5,
     --     h = 3.5,
     --   },
     --   {
-    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
     --     x = 118,
     --     y = 132,
     --     w = 3.5,
     --     h = 3.5,
     --   },
     --   {
-    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
     --     x = 110,
     --     y = 128,
     --     w = 3.5,
     --     h = 3.5,
     --   },
     --   {
-    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
     --     x = 118,
     --     y = 128,
     --     w = 3.5,
@@ -410,7 +410,7 @@ local prototype = gameplay.register.prototype
     },
     -- guide_focus = {
     --   {
-    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
     --     x = 130,
     --     y = 115.8,
     --     w = 1.8,
@@ -460,7 +460,7 @@ local prototype = gameplay.register.prototype
     },
     -- guide_focus = {
     --   {
-    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
     --     x = 130,
     --     y = 127.8,
     --     w = 1.8,
@@ -588,14 +588,14 @@ local prototype = gameplay.register.prototype
     },
     -- guide_focus = {
     --   {
-    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
     --     x = 138,
     --     y = 125,
     --     w = 0.25,
     --     h = 0.25,
     --   },
     --   {
-    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
     --     x = 139,
     --     y = 125,
     --     w = 0.25,
@@ -745,7 +745,7 @@ local prototype = gameplay.register.prototype
     },
     -- guide_focus = {
     --   {
-    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
     --     x = 109,
     --     y = 136,
     --     w = 5,
@@ -774,7 +774,7 @@ local prototype = gameplay.register.prototype
     },
     -- guide_focus = {
     --   {
-    --     prefab = "prefabs/selected-box-no-animation.prefab",
+    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
     --     x = 109,
     --     y = 136,
     --     w = 5,

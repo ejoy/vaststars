@@ -36,7 +36,7 @@ function S.init()
             scene   = {},
             material = "/pkg/vaststars.resources/materials/stack/stack-crush-iron-ore.material_instance",
             visible_state = "main_view",
-            mesh = "/pkg/vaststars.resources/glb/stackeditems/stack-crush-iron-ore.glb|meshes/Cube.035_P1.meshbin",
+            mesh = "/pkg/vaststars.resources/glbs/stackeditems/stack-crush-iron-ore.glb|meshes/Cube.035_P1.meshbin",
             heapmesh = {
                 curSideSize = {3, 3, 3},
                 curHeapNum = 27,
@@ -57,7 +57,7 @@ function S.init()
             scene   = {t = {5, 0, 5}},
             material = "/pkg/ant.resources/materials/pbr_heap_color.material",
             visible_state = "main_view",
-            mesh = "/pkg/vaststars.resources/glb/stackeditems/stack-geology-pack.glb|meshes/Cube.035_P1.meshbin",
+            mesh = "/pkg/vaststars.resources/glbs/stackeditems/stack-geology-pack.glb|meshes/Cube.035_P1.meshbin",
             heapmesh = {
                 curSideSize = {3, 3, 3},
                 curHeapNum = 27,

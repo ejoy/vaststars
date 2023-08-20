@@ -2,7 +2,7 @@ local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype
 
 prototype "蒸汽发电机I" {
-    model = "prefabs/turbine-1.prefab",
+    model = "glbs/turbine-1.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_turbine.texture",
     construct_detector = {"exclusive"},
     type = {"building", "generator", "fluidboxes","assembling","auto_set_recipe"},
@@ -38,7 +38,7 @@ prototype "蒸汽发电机I" {
 }
 
 prototype "蒸汽发电机II" {
-    model = "prefabs/turbine-1.prefab",
+    model = "glbs/turbine-1.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_turbine.texture",
     construct_detector = {"exclusive"},
     type = {"building", "generator", "fluidboxes","assembling","auto_set_recipe"},
@@ -74,7 +74,7 @@ prototype "蒸汽发电机II" {
 }
 
 prototype "蒸汽发电机III" {
-    model = "prefabs/turbine-1.prefab",
+    model = "glbs/turbine-1.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_turbine.texture",
     construct_detector = {"exclusive"},
     type = {"building", "generator", "fluidboxes","assembling","auto_set_recipe"},
@@ -110,7 +110,7 @@ prototype "蒸汽发电机III" {
 }
 
 prototype "风力发电机I" {
-    model = "prefabs/wind-turbine-1.prefab",
+    model = "glbs/wind-turbine-1.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_wind_turbine.texture",
     construct_detector = {"exclusive"},
     type = {"building", "generator", "wind_turbine"},
@@ -125,7 +125,7 @@ prototype "风力发电机I" {
 }
 
 prototype "太阳能板I" {
-    model = "prefabs/solar-panel-1.prefab",
+    model = "glbs/solar-panel-1.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_solar_panel.texture",
     construct_detector = {"exclusive"},
     type = {"building","generator","solar_panel"},
@@ -139,7 +139,7 @@ prototype "太阳能板I" {
 }
 
 prototype "太阳能板II" {
-    model = "prefabs/solar-panel-1.prefab",
+    model = "glbs/solar-panel-1.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_solar_panel.texture",
     construct_detector = {"exclusive"},
     type = {"building","generator","solar_panel"},
@@ -153,7 +153,7 @@ prototype "太阳能板II" {
 }
 
 prototype "太阳能板III" {
-    model = "prefabs/solar-panel-1.prefab",
+    model = "glbs/solar-panel-1.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_solar_panel.texture",
     construct_detector = {"exclusive"},
     type = {"building","generator","solar_panel"},
@@ -167,7 +167,7 @@ prototype "太阳能板III" {
 }
 
 prototype "蓄电池I" {
-    model = "prefabs/accumulator-1.prefab",
+    model = "glbs/accumulator-1.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_accumulator.texture",
     construct_detector = {"exclusive"},
     type = {"building", "accumulator"},
@@ -184,7 +184,7 @@ prototype "蓄电池I" {
 }
 
 prototype "蓄电池II" {
-    model = "prefabs/accumulator-1.prefab",
+    model = "glbs/accumulator-1.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_accumulator.texture",
     construct_detector = {"exclusive"},
     type = {"building", "accumulator"},
@@ -201,7 +201,7 @@ prototype "蓄电池II" {
 }
 
 prototype "蓄电池III" {
-    model = "prefabs/accumulator-1.prefab",
+    model = "glbs/accumulator-1.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_accumulator.texture",
     construct_detector = {"exclusive"},
     type = {"building", "accumulator"},
@@ -218,7 +218,7 @@ prototype "蓄电池III" {
 }
 
 prototype "核反应堆" {
-    model = "prefabs/wind-turbine-1.prefab",
+    model = "glbs/wind-turbine-1.glb|mesh.prefab",
     icon = "ui/textures/construct/solar-panel.texture",
     construct_detector = {"exclusive"},
     type = {"building", "generator"},
@@ -229,7 +229,7 @@ prototype "核反应堆" {
 }
 
 prototype "换热器I" {
-    model = "prefabs/boiler.prefab",
+    model = "glbs/boiler.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_boiler.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
@@ -275,7 +275,7 @@ prototype "换热器I" {
 }
 
 prototype "热管1-X型" {
-    model = "prefabs/pipe/pipe_I.prefab",
+    model = "glbs/pipe/I.glb|mesh.prefab",
     icon = "ui/textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
     building_menu = false,
@@ -285,7 +285,7 @@ prototype "热管1-X型" {
 }
 
 prototype "锅炉I" {
-    model = "prefabs/boiler.prefab",
+    model = "glbs/boiler.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_boiler.texture",
     construct_detector = {"exclusive"},
     type = {"building", "assembling", "fluidboxes"},
@@ -323,7 +323,7 @@ prototype "锅炉I" {
 }
 
 prototype "地热井I" {
-    model = "prefabs/geothermal-plant.prefab",
+    model = "glbs/geothermal-plant.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_geothermal_plant.texture",
     construct_detector = {"exclusive"},
     type = {"building", "assembling", "fluidboxes","mining"},
@@ -354,7 +354,7 @@ prototype "地热井I" {
 }
 
 prototype "地热井II" {
-    model = "prefabs/geothermal-plant.prefab",
+    model = "glbs/geothermal-plant.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_geothermal_plant.texture",
     construct_detector = {"exclusive"},
     type = {"building", "assembling", "fluidboxes","mining"},
@@ -385,7 +385,7 @@ prototype "地热井II" {
 }
 
 prototype "地热井III" {
-    model = "prefabs/geothermal-plant.prefab",
+    model = "glbs/geothermal-plant.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_geothermal_plant.texture",
     construct_detector = {"exclusive"},
     type = {"building", "assembling", "fluidboxes","mining"},

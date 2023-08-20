@@ -1,6 +1,0 @@
----
-# resolve the problem of the drone docking board being invisible
-file: materials/Material.002.material
-op: replace
-path: /state/CULL
-value: NONE

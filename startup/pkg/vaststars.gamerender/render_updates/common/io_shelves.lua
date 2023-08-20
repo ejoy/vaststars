@@ -13,8 +13,8 @@ local get_shelf_matrices = shelf_matrices.get_shelf_matrices
 local get_heap_matrices = shelf_matrices.get_heap_matrices
 
 local PREFABS <const> = {
-    ["in"]  = "/pkg/vaststars.resources/prefabs/shelf-input.prefab",
-    ["out"] = "/pkg/vaststars.resources/prefabs/shelf-output.prefab",
+    ["in"]  = "/pkg/vaststars.resources/glbs/shelf-input.glb|mesh.prefab",
+    ["out"] = "/pkg/vaststars.resources/glbs/shelf-output.glb|mesh.prefab",
 }
 local HEAP_DIM3 <const> = {2, 4, 2}
 

@@ -1,0 +1,56 @@
+---
+file: mesh.prefab
+op: replace
+path: /4/data/animation/Armature.001Action.002
+value: /pkg/vaststars.resources/glbs/animation/building-animat.glb|animations/Armature.001Action.001.ozz
+---
+file: mesh.prefab
+op: replace
+path: /4/data/animation/Armature.001Action.003
+value: /pkg/vaststars.resources/glbs/animation/building-animat.glb|animations/Armature.001Action.001.ozz
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    name: slot1x1
+    scene:
+      s: {7, 7, 7}
+      t: {0, 6, 0}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  policy:
+    ant.general|name
+    ant.animation|slot
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    name: slot3x3
+    scene:
+      s: {13, 13, 13}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  policy:
+    ant.general|name
+    ant.animation|slot
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    name: slot5x5
+    scene:
+      s: {20, 20, 20}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  policy:
+    ant.general|name
+    ant.animation|slot

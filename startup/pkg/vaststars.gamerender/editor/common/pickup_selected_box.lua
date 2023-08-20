@@ -41,8 +41,8 @@ return function (position, typeobject, dir, valid)
     self.typeobject = typeobject
     self.selected_boxes = create_selected_boxes(
         {
-            "/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab",
-            "/pkg/vaststars.resources/prefabs/selected-box-no-animation-line.prefab",
+            "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
+            "/pkg/vaststars.resources/glbs/selected-box-no-animation-line.glb|mesh.prefab",
         },
         position, color, iprototype.rotate_area(typeobject.area, dir)
     )

@@ -2,7 +2,7 @@ local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype
 
 prototype "铁制电线杆" {
-    model = "prefabs/electric-pole-1.prefab",
+    model = "glbs/electric-pole-1.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_electricpole.texture",
     construct_detector = {"exclusive"},
     power_network_link = true,
@@ -15,7 +15,7 @@ prototype "铁制电线杆" {
 }
 
 prototype "远程电线杆" {
-    model = "prefabs/electric-pole-1.prefab",
+    model = "glbs/electric-pole-1.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_electricpole.texture",
     construct_detector = {"exclusive"},
     power_network_link = true,
@@ -28,7 +28,7 @@ prototype "远程电线杆" {
 }
 
 prototype "广域电线杆" {
-    model = "prefabs/electric-pole-1.prefab",
+    model = "glbs/electric-pole-1.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_electricpole.texture",
     construct_detector = {"exclusive"},
     power_network_link = true,

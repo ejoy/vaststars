@@ -184,8 +184,8 @@ do
         local pos = terrain:get_position_by_coord(x, y, w, h)
         temp_objects[#temp_objects+1] = create_selected_boxes(
             {
-                "/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab",
-                "/pkg/vaststars.resources/prefabs/selected-box-no-animation-line.prefab",
+                "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
+                "/pkg/vaststars.resources/glbs/selected-box-no-animation-line.glb|mesh.prefab",
             },
             pos, SPRITE_COLOR.SELECTED_OUTLINE, w, h
         )
@@ -258,8 +258,8 @@ do
             if neighbor then
                 temp_objects[#temp_objects+1] = create_selected_boxes(
                     {
-                        "/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab",
-                        "/pkg/vaststars.resources/prefabs/selected-box-no-animation-line.prefab",
+                        "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
+                        "/pkg/vaststars.resources/glbs/selected-box-no-animation-line.glb|mesh.prefab",
                     },
                     neighbor.srt.t, color, iprototype.rotate_area(typeobject.area, neighbor.dir)
                 )

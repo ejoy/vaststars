@@ -1,0 +1,55 @@
+---
+# resolve the problem of the drone docking board being invisible
+file: materials/Material.002.material
+op: replace
+path: /state/CULL
+value: NONE
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    name: pile_slot
+    scene:
+      t: {-2.700000047683716, 5, 2.700000047683716}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.general|name
+    ant.animation|slot
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    name: pile_slot_1
+    scene:
+      t: {0.25, 5, 2.700000047683716}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.general|name
+    ant.animation|slot
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    name: pile_slot_2
+    scene:
+      r: {0, 0, 0, 1}
+      t: {-5.550000190734863, 5, 2.700000047683716}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.general|name
+    ant.animation|slot

@@ -458,11 +458,9 @@ function M:create(object_id)
     if not e then
         return {}
     end
-    local typeobject
-    if string.find(object.prototype_name, "管道1-") == 1 then
-        typeobject = iprototype.queryByName("管道1-X型")
-    else
-        typeobject = iprototype.queryByName(object.prototype_name)
+    local typeobject = iprototype.queryByName(object.prototype_name)
+    if typeobject.base then
+        typeobject = iprototype.queryByName(typeobject.base)
     end
     if typeobject.name == "铁制电线杆" then
         pole_status = STATUS_WORK

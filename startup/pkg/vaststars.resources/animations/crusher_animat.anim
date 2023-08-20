@@ -1,0 +1,35 @@
+---
+duration: 0.6
+name: crusher_animat
+sample_ratio: 50
+skeleton: /pkg/vaststars.resources/glbs/crusher-1.glb|animations/skeleton.ozz
+target_anims:
+  ---
+  clips:
+    ---
+    amplitude_pos: 0
+    amplitude_rot: -360
+    direction: 2
+    random_amplitude: false
+    range: {0, 29}
+    repeat_count: 1
+    rot_axis: 2
+    tween: 1
+    type: 1
+  inherit: {false, false, false}
+  target_name: Bone
+  ---
+  clips:
+    ---
+    amplitude_pos: 0
+    amplitude_rot: 360
+    direction: 2
+    random_amplitude: false
+    range: {0, 29}
+    repeat_count: 1
+    rot_axis: 2
+    tween: 1
+    type: 1
+  inherit: {false, false, false}
+  target_name: Bone.001
+type: ske

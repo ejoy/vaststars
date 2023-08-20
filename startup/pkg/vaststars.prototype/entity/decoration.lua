@@ -2,7 +2,7 @@ local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype
 
 prototype "机身残骸" {
-    model = "prefabs/broken-assembling-3x3.prefab",
+    model = "glbs/broken-assembling-3x3.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_debris.texture",
     construct_detector = {"exclusive"},
     type = {"building", "chest"},
@@ -13,7 +13,7 @@ prototype "机身残骸" {
 }
 
 prototype "机翼残骸" {
-    model = "prefabs/broken-outfall-2x2.prefab",
+    model = "glbs/broken-outfall-2x2.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_debris.texture",
     construct_detector = {"exclusive"},
     type = {"building", "chest"},
@@ -24,7 +24,7 @@ prototype "机翼残骸" {
 }
 
 prototype "机头残骸" {
-    model = "prefabs/broken-outfall-2x2.prefab",
+    model = "glbs/broken-outfall-2x2.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_debris.texture",
     construct_detector = {"exclusive"},
     type = {"building", "chest"},
@@ -35,7 +35,7 @@ prototype "机头残骸" {
 }
 
 prototype "机尾残骸" {
-    model = "prefabs/broken-pump-2x2.prefab",
+    model = "glbs/broken-pump-2x2.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_debris.texture",
     construct_detector = {"exclusive"},
     type = {"building", "chest"},

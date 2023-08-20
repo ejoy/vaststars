@@ -5,7 +5,7 @@ local CROSS_TYPE <const> = {
     bl = 12, bt = 13, br = 14, bb = 15,
 }
 
-MODEL = "/pkg/vaststars.resources/prefabs/road/road_X.prefab"
+MODEL = "/pkg/vaststars.resources/glbs/road/X.glb|mesh.prefab"
 
 START = {
     [CROSS_TYPE.ll] = "path_start_l",

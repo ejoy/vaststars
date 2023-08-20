@@ -122,7 +122,7 @@ local function create_drone(homepos)
     task.motion_xz = motion_xz
     local motion_y = imotion.create_motion_object(nil, nil, math3d.vector(0, math3d.index(homepos, 2), 0), motion_xz)
     task.motion_y = motion_y
-    task.prefab = imotion.sampler_group:create_instance("/pkg/vaststars.resources/prefabs/drone.prefab", motion_y)
+    task.prefab = imotion.sampler_group:create_instance("/pkg/vaststars.resources/glbs/drone.glb|mesh.prefab", motion_y)
     task.prefab.on_ready = function(self)
         for _, eid in ipairs(self.tag["*"]) do
             local e <close> = world:entity(eid, "render_object?update")

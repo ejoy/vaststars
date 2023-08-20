@@ -1,0 +1,46 @@
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    name: effect
+    scene:
+      r: {0, 0, 0, 1}
+      s: {4, 4, 4}
+      t: {0, 0, 0}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.general|name
+    ant.animation|slot
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    name: shelf5
+    scene:
+      r: {0, 0, 0, 1}
+      s: {1, 1, 1}
+      t: {17.968830108642578, 15.485337257385254, 0}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.general|name
+    ant.animation|slot
+---
+file: mesh.prefab
+op: replace
+path: /8/data/animation/low_power
+value: /pkg/vaststars.resources/animations/miner_Bone_low.anim
+---
+file: mesh.prefab
+op: replace
+path: /8/data/animation/work
+value: /pkg/vaststars.resources/animations/miner_Bone.anim

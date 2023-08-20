@@ -1,0 +1,58 @@
+# aluminum
+---
+file: materials/Material.001.material
+op: copyfile
+value: materials/Material.001_aluminum.material
+---
+file: materials/Material.001_aluminum.material
+op: replace
+path: /properties/u_basecolor_factor
+value: {0.8038999999999999, 0.7255, 0.7176, 1}
+---
+file: materials/Material.001_aluminum.material
+op: replace
+path: /properties/u_emissive_factor
+value: {0, 0, 0, 1}
+---
+file: materials/Material.001_aluminum.material
+op: replace
+path: /properties/u_pbr_factor
+value: {0.800000011920929, 0.20000000298023224, 0.5, 1}
+---
+file: mesh.prefab
+op: copyfile
+value: aluminum.prefab
+---
+file: aluminum.prefab
+op: replace
+path: /2/data/material
+value: materials/Material.001_aluminum.material
+# iron-ore
+---
+file: materials/Material.001.material
+op: copyfile
+value: materials/Material.001_iron-ore.material
+---
+file: materials/Material.001_iron-ore.material
+op: replace
+path: /properties/u_basecolor_factor
+value: {0.9922, 0.4118, 0, 1}
+---
+file: materials/Material.001_iron-ore.material
+op: replace
+path: /properties/u_emissive_factor
+value: {0, 0, 0, 1}
+---
+file: materials/Material.001_iron-ore.material
+op: replace
+path: /properties/u_pbr_factor
+value: {0.800000011920929, 0.20000000298023224, 0.5, 1}
+---
+file: mesh.prefab
+op: copyfile
+value: iron-ore.prefab
+---
+file: iron-ore.prefab
+op: replace
+path: /2/data/material
+value: materials/Material.001_iron-ore.material

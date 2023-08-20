@@ -2,7 +2,7 @@ local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype
 
 prototype "指挥中心" {
-    model = "prefabs/headquater-1.prefab",
+    model = "glbs/headquater-1.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_headquarter.texture",
     construct_detector = {"exclusive"},
     craft_category = {"基地制造"},
@@ -30,7 +30,7 @@ prototype "指挥中心" {
 
 prototype "科研中心I" {
     type = {"building", "consumer","laboratory"},
-    model = "prefabs/lab-1.prefab",
+    model = "glbs/lab-1.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_lab.texture",
     construct_detector = {"exclusive"},
     area = "3x3",
@@ -52,7 +52,7 @@ prototype "科研中心I" {
 
 prototype "科研中心II" {
     type = {"building", "consumer","laboratory"},
-    model = "prefabs/lab-1.prefab",
+    model = "glbs/lab-1.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_lab.texture",
     construct_detector = {"exclusive"},
     area = "3x3",
@@ -70,7 +70,7 @@ prototype "科研中心II" {
 
 prototype "科研中心III" {
     type = {"building", "consumer","laboratory"},
-    model = "prefabs/lab-1.prefab",
+    model = "glbs/lab-1.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_lab.texture",
     construct_detector = {"exclusive"},
     area = "3x3",
@@ -88,9 +88,9 @@ prototype "科研中心III" {
 
 
 prototype "砖石公路-I型" {
+    base = "砖石公路-X型",
     building_category = 4,
     display_name = "砖石公路",
-    construct_name = "砖石公路-X型",
     icon = "ui/textures/building_pic/small_pic_road.texture",
     construct_detector = {"exclusive"},
     building_direction = {"N", "E"},
@@ -110,9 +110,9 @@ prototype "砖石公路-I型" {
 }
 
 prototype "砖石公路-L型" {
+    base = "砖石公路-X型",
     building_category = 4,
     display_name = "砖石公路",
-    construct_name = "砖石公路-X型",
     icon = "ui/textures/building_pic/small_pic_road.texture",
     construct_detector = {"exclusive"},
     building_direction = {"N", "E", "S", "W"},
@@ -132,9 +132,9 @@ prototype "砖石公路-L型" {
 }
 
 prototype "砖石公路-T型" {
+    base = "砖石公路-X型",
     building_category = 4,
     display_name = "砖石公路",
-    construct_name = "砖石公路-X型",
     icon = "ui/textures/building_pic/small_pic_road.texture",
     construct_detector = {"exclusive"},
     building_direction = {"N", "E", "S", "W"},
@@ -155,9 +155,9 @@ prototype "砖石公路-T型" {
 }
 
 prototype "砖石公路-O型" {
+    base = "砖石公路-X型",
     building_category = 4,
     display_name = "砖石公路",
-    construct_name = "砖石公路-X型",
     icon = "ui/textures/building_pic/small_pic_road.texture",
     construct_detector = {"exclusive"},
     building_direction = {"N"},
@@ -174,8 +174,8 @@ prototype "砖石公路-O型" {
 }
 
 prototype "砖石公路-U型" {
+    base = "砖石公路-X型",
     building_category = 4,
-    construct_name = "砖石公路-X型",
     display_name = "砖石公路",
     icon = "ui/textures/building_pic/small_pic_road.texture",
     construct_detector = {"exclusive"},
@@ -195,10 +195,10 @@ prototype "砖石公路-U型" {
 }
 
 prototype "砖石公路-X型" {
+    base = "砖石公路-X型",
     building_category = 4,
     display_name = "砖石公路",
-    construct_name = "砖石公路-X型",
-    model = "prefabs/road/road_X.prefab",
+    model = "glbs/road/X.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_road.texture",
     construct_detector = {"exclusive"},
     building_direction = {"N"},
@@ -221,7 +221,7 @@ prototype "砖石公路-X型" {
 
 --出货车站需要设置送货类型以及需求车辆
 prototype "出货车站" {
-    model = "prefabs/delivery-station-1.prefab",
+    model = "glbs/goods-station-1.glb|delivery-station-1.prefab",
     icon = "ui/textures/building_pic/small_pic_goods_station1.texture",
     construct_detector = {"exclusive"},
     type = {"building", "station_producer"},
@@ -246,7 +246,7 @@ prototype "出货车站" {
 
 --收货车站需要设置送货类型
 prototype "收货车站" {
-    model = "prefabs/receiving-station-1.prefab",
+    model = "glbs/goods-station-1.glb|receiving-station-1.prefab",
     icon = "ui/textures/building_pic/small_pic_goods_station1.texture",
     construct_detector = {"exclusive"},
     type = {"building", "station_consumer"},
@@ -271,7 +271,7 @@ prototype "收货车站" {
 
 prototype "广播塔I" {
     type = {"building", "consumer"},
-    model = "prefabs/lab-1.prefab",
+    model = "glbs/lab-1.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_lab.texture",
     construct_detector = {"exclusive"},
     area = "3x3",
@@ -285,7 +285,7 @@ prototype "广播塔I" {
 
 prototype "广播塔II" {
     type = {"building", "consumer"},
-    model = "prefabs/lab-1.prefab",
+    model = "glbs/lab-1.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_lab.texture",
     construct_detector = {"exclusive"},
     area = "3x3",
@@ -299,7 +299,7 @@ prototype "广播塔II" {
 
 prototype "广播塔III" {
     type = {"building", "consumer"},
-    model = "prefabs/lab-1.prefab",
+    model = "glbs/lab-1.glb|mesh.prefab",
     icon = "ui/textures/building_pic/small_pic_lab.texture",
     construct_detector = {"exclusive"},
     area = "3x3",

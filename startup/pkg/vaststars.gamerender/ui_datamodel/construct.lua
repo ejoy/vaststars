@@ -94,6 +94,9 @@ local function __on_pick_building(datamodel, o)
     audio.play "event:/ui/click"
 
     local typeobject = iprototype.queryByName(object.prototype_name)
+    if typeobject.base then
+        typeobject = iprototype.queryByName(typeobject.base)
+    end
 
     datamodel.focus_building_icon = typeobject.item_icon
 
@@ -106,8 +109,11 @@ end
 
 local function __on_pick_non_building(datamodel, o, force)
     local typeobject = iprototype.queryByName(o.name)
+    if typeobject.base then
+        typeobject = iprototype.queryByName(typeobject.base)
+    end
 
-    iui.open({"ui/non_building_detail_panel.rml"}, typeobject.item_icon, o.name)
+    iui.open({"ui/non_building_detail_panel.rml"}, typeobject.icon, iprototype.display_name(typeobject))
     if datamodel.is_concise_mode and force ~= true then
         return true
     end
@@ -314,7 +320,7 @@ local function open_focus_tips(tech_node)
                 prefab = assert(igame_object.create({
                     state = "opaque",
                     color = COLOR_INVALID,
-                    prefab = "prefabs/arrow-guide.prefab",
+                    prefab = "glbs/arrow-guide.glb|mesh.prefab",
                     group_id = 0,
                     srt = {
                         t = center,
@@ -688,8 +694,8 @@ function M:stage_camera_usage(datamodel)
 
             gameplay_core.world_update = false
             local typeobject = iprototype.queryByName(prototype_name)
-            assert(typeobject.construct_name)
-            typeobject = iprototype.queryByName(typeobject.construct_name)
+            assert(typeobject.base)
+            typeobject = iprototype.queryByName(typeobject.base)
             builder_ui = "ui/construct_road_or_pipe.rml"
             builder_datamodel = iui.get_datamodel("ui/construct_road_or_pipe.rml")
             datamodel.is_concise_mode = true
@@ -718,8 +724,8 @@ function M:stage_camera_usage(datamodel)
 
             gameplay_core.world_update = false
             local typeobject = iprototype.queryByName(prototype_name)
-            assert(typeobject.construct_name)
-            typeobject = iprototype.queryByName(typeobject.construct_name)
+            assert(typeobject.base)
+            typeobject = iprototype.queryByName(typeobject.base)
             builder_ui = "ui/construct_road_or_pipe.rml"
             builder_datamodel = iui.get_datamodel("ui/construct_road_or_pipe.rml")
             datamodel.is_concise_mode = true
@@ -767,8 +773,8 @@ function M:stage_camera_usage(datamodel)
         end
 
         local typeobject = iprototype.queryByName(prototype_name)
-        assert(typeobject.construct_name)
-        typeobject = iprototype.queryByName(typeobject.construct_name)
+        assert(typeobject.base)
+        typeobject = iprototype.queryByName(typeobject.base)
         builder_ui = "ui/construct_road_or_pipe.rml"
         builder_datamodel = iui.get_datamodel("ui/construct_road_or_pipe.rml")
         builder = create_roadbuilder()

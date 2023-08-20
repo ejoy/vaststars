@@ -29,7 +29,7 @@ function m:init_world()
     ecs.create_instance "/pkg/vaststars.resources/daynight.prefab"
     ecs.create_instance "/pkg/vaststars.resources/light.prefab"
 
-    iefk.preload "/pkg/vaststars.resources/effect/efk/"
+    iefk.preload "/pkg/vaststars.resources/effects/"
 
     if NOTHING then
         imain_menu_manager.init("camera_default.prefab")

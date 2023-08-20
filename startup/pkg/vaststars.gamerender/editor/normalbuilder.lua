@@ -70,8 +70,8 @@ local function __show_self_selected_boxes(self, position, typeobject, dir, valid
     if not self.self_selected_boxes then
         self.self_selected_boxes = create_selected_boxes(
             {
-                "/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab",
-                "/pkg/vaststars.resources/prefabs/selected-box-no-animation-line.prefab",
+                "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
+                "/pkg/vaststars.resources/glbs/selected-box-no-animation-line.glb|mesh.prefab",
             },
             position, color, iprototype.rotate_area(typeobject.area, dir)
         )
@@ -323,8 +323,8 @@ local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobjec
 
         self.selected_boxes[object_id] = create_selected_boxes(
             {
-                "/pkg/vaststars.resources/prefabs/selected-box-no-animation.prefab",
-                "/pkg/vaststars.resources/prefabs/selected-box-no-animation-line.prefab",
+                "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
+                "/pkg/vaststars.resources/glbs/selected-box-no-animation-line.glb|mesh.prefab",
             },
             object.srt.t, color, iprototype.rotate_area(otypeobject.area, object.dir)
         )

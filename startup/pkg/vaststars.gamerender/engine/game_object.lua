@@ -8,7 +8,6 @@ local game_object_event = ecs.require "engine.game_object_event"
 local ientity_object = ecs.require "engine.system.entity_object_system"
 local iani = ecs.require "ant.animation|controller.state_machine"
 local iom = ecs.require "ant.objcontroller|obj_motion"
-local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local math3d = require "math3d"
 local COLOR_INVALID <const> = math3d.constant "null"
@@ -16,6 +15,8 @@ local prefab_parse = require("engine.prefab_parser").parse
 local replace_material = require("engine.prefab_parser").replace_material
 local irl = ecs.require "ant.render|render_layer"
 local imodifier = ecs.require "ant.modifier|modifier"
+local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
+local ANIMATIONS_ROOT <const> = "/pkg/vaststars.resources/animations/"
 
 local function replace_outline_material(template, outline_scale)
     local res = {}
@@ -125,6 +126,12 @@ local __get_hitch_children ; do
         return slots, effects, animations
     end
 
+    local function getEventFileName(path)
+        local PATTERN <const> = "^.*/(.*)%.glb|.*%.prefab$"
+        local match = string.match(path, PATTERN)
+        return (match or assert(path:match("^.*/(.*)%.prefab$"))) .. ".event"
+    end
+
     local function __get_keyevent_effects(prefab, slots)
         local keyeffects = {}
         local function load_events(filename)
@@ -136,7 +143,7 @@ local __get_hitch_children ; do
             f:close()
             return datalist.parse(data)
         end
-        local keyframe_events = load_events(prefab:match("^(.*)%.prefab$") .. ".event")
+        local keyframe_events = load_events(ANIMATIONS_ROOT .. getEventFileName(prefab))
         for animname, keyevent in pairs(keyframe_events) do
             local efks = {}
             for _, ev in ipairs(keyevent) do
@@ -395,7 +402,7 @@ function igame_object.create(init)
         srt_modifier = imodifier.create_bone_modifier(
             hitch_entity_object.id,
             init.group_id,
-            "/pkg/vaststars.resources/glb/animation/Interact_build.glb|animation.prefab",
+            "/pkg/vaststars.resources/glbs/animation/Interact_build.glb|animation.prefab",
             "Bone"
         ),
     }
