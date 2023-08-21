@@ -6,5 +6,10 @@ value: 1
 ---
 file: materials/Material.material
 op: replace
+path: /properties/u_draw_indirect_type
+value: {0, 0, 0, 0}
+---
+file: materials/Material.material
+op: replace
 path: /state/CULL
 value: NONE

@@ -6,6 +6,11 @@ value: 1
 ---
 file: materials/Material.003.material
 op: replace
+path: /properties/u_draw_indirect_type
+value: {0, 0, 0, 0}
+---
+file: materials/Material.003.material
+op: replace
 path: /properties/s_basecolor
 value:
   stage: 0
