@@ -7,7 +7,7 @@ local ichest = require "gameplay.interface.chest"
 local global = require "global"
 local iprototype = require "gameplay.interface.prototype"
 local prefab_slots = require("engine.prefab_parser").slots
-local prefab_meshbin = require("engine.prefab_parser").meshbin
+local prefab_filterNodes = require("engine.prefab_parser").filterNodes
 local ientity_object = ecs.require "engine.system.entity_object_system"
 local iheapmesh = ecs.require "ant.render|render_system.heap_mesh"
 local iom = ecs.require "ant.objcontroller|obj_motion"
@@ -29,7 +29,7 @@ heap_events["set_srt"] = function(_, e, ...)
     iom.set_srt(e, __calc_heap_srt(...))
 end
 
-local function create_heap(meshbin, srt, dim3, gap3, count)
+local function create_heap(meshbin, material, srt, dim3, gap3, count)
     return ientity_object.create(ecs.create_entity {
         policy = {
             "ant.render|render",
@@ -39,7 +39,7 @@ local function create_heap(meshbin, srt, dim3, gap3, count)
         data = {
             name = "heap_items",
             scene = srt,
-            material = "/pkg/ant.resources/materials/pbr_heap.material",
+            material = material,
             visible_state = "main_view",
             mesh = meshbin,
             heapmesh = {
@@ -80,7 +80,7 @@ local function __create_station_shelf(building_srt, e, item_id, item_count)
     local prefab = "/pkg/vaststars.resources/" .. typeobject_item.pile_model
     local s, r, t = __calc_heap_srt(building_srt, slot.scene)
 
-    local heap = create_heap(prefab_meshbin(prefab)[1].mesh, {s = s, r = r, t = t}, HEAP_DIM3, gap3, item_count)
+    local heap = create_heap(prefab_filterNodes(prefab, "mesh")[1].mesh, prefab_filterNodes(prefab, "material")[1].material,  {s = s, r = r, t = t}, HEAP_DIM3, gap3, item_count)
 
     local function update_heap_count(self, c)
         if self.item_count == c then

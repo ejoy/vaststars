@@ -11,8 +11,8 @@ local iom = ecs.require "ant.objcontroller|obj_motion"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local math3d = require "math3d"
 local COLOR_INVALID <const> = math3d.constant "null"
-local prefab_parse = require("engine.prefab_parser").parse
-local replace_material = require("engine.prefab_parser").replace_material
+local prefabParser = require("engine.prefab_parser").parse
+local replaceMaterial = require("engine.prefab_parser").replaceMaterial
 local irl = ecs.require "ant.render|render_layer"
 local imodifier = ecs.require "ant.modifier|modifier"
 local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
@@ -169,11 +169,11 @@ local __get_hitch_children ; do
         hitch_group_id = hitch_group_id + 1
         local g = ecs.group(hitch_group_id)
 
-        local template = prefab_parse(prefab)
+        local template = prefabParser(prefab)
         if material_type == "translucent" then
-            template = replace_material(template, "/pkg/vaststars.resources/materials/translucent.material")
+            template = replaceMaterial(template, "/pkg/vaststars.resources/materials/translucent.material")
         elseif material_type == "opacity" then
-            template = replace_material(template, "/pkg/vaststars.resources/materials/opacity.material")
+            template = replaceMaterial(template, "/pkg/vaststars.resources/materials/opacity.material")
         elseif material_type == "outline" then
             template = replace_outline_material(template, outline_scale)
         elseif material_type == "opaque" then
@@ -181,7 +181,6 @@ local __get_hitch_children ; do
         else
             assert(false)
         end
-
 
         -- cache all slots & srt of the prefab
         local slots, effects, animations = __cache_prefab_info(template)

@@ -31,13 +31,13 @@ function mt:set_state(state)
     self.arrow:send("material", "set_property", "u_basecolor_factor", arrow_color)
 end
 
-local prefab_parse = require("engine.prefab_parser").parse
-local replace_material = require("engine.prefab_parser").replace_material
+local prefabParser = require("engine.prefab_parser").parse
+local replaceMaterial = require("engine.prefab_parser").replaceMaterial
 local imaterial = ecs.require "ant.asset|material"
 
 local function createPrefabInst(prefab, position)
-    local template = prefab_parse(prefab)
-    template = replace_material(template, "/pkg/vaststars.resources/materials/translucent.material")
+    local template = prefabParser(prefab)
+    template = replaceMaterial(template, "/pkg/vaststars.resources/materials/translucent.material")
 
     local p = ecs.create_instance(template)
     function p:on_ready()

@@ -6,7 +6,7 @@ local math3d = require "math3d"
 local iom = ecs.require "ant.objcontroller|obj_motion"
 local ientity_object = ecs.require "engine.system.entity_object_system"
 local iprototype = require "gameplay.interface.prototype"
-local prefab_meshbin = require("engine.prefab_parser").meshbin
+local prefab_filterNodes = require("engine.prefab_parser").filterNodes
 local iheapmesh = ecs.require "ant.render|render_system.heap_mesh"
 local shelf_matrices = require "render_updates.common.shelf_matrices"
 local get_shelf_matrices = shelf_matrices.get_shelf_matrices
@@ -66,8 +66,8 @@ local function __create_heap(heap_mat, item, amount)
     local typeobject_item = iprototype.queryById(item)
     assert(typeobject_item.pile_model, ("no pile model: %s"):format(typeobject_item.name))
     local prefab = "/pkg/vaststars.resources/" .. typeobject_item.pile_model
-    assert(prefab_meshbin(prefab)[1])
-    local meshbin = prefab_meshbin(prefab)[1].mesh
+    local meshbin = prefab_filterNodes(prefab, "mesh")[1].mesh
+    local material = prefab_filterNodes(prefab, "material")[1].material
     local gap3 = typeobject_item.gap3 and {typeobject_item.gap3:match("([%d%.]+)x([%d%.]*)x([%d%.]*)")} or {0, 0, 0}
     local s, r, t = math3d.srt(heap_mat)
 
@@ -80,7 +80,7 @@ local function __create_heap(heap_mat, item, amount)
         data = {
             name = "heap_items",
             scene   = {s = s, r = r, t = t},
-            material = "/pkg/ant.resources/materials/pbr_heap.material",
+            material = material,
             visible_state = "main_view",
             mesh = meshbin,
             heapmesh = {

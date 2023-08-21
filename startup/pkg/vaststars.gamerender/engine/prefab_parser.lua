@@ -1,4 +1,3 @@
-local fs = require "filesystem"
 local serialize = import_package "ant.serialize"
 local assetmgr = import_package "ant.asset"
 local mathpkg = import_package "ant.math"
@@ -17,26 +16,10 @@ local function read_file(filename)
 end
 
 local function parse(fullpath)
-    local template = serialize.parse(fullpath, read_file(fullpath))
-    local patch = fullpath .. ".patch"
-    -- duplicated code - ant.ecs/main.lua -> create_template()
-    if fs.exists(fs.path(patch)) then
-        local count = #template
-        for index, value in ipairs(serialize.parse(patch, read_file(patch))) do
-            if value.mount then
-                if value.mount ~= 1 then
-                    value.mount = count + index - 1
-                end
-            else
-                value.mount = 1
-            end
-            template[#template + 1] = value
-        end
-    end
-    return template
+    return serialize.parse(fullpath, read_file(fullpath))
 end
 
-local function replace_material(template, material_file)
+local function replaceMaterial(template, material_file)
     for _, v in ipairs(template) do
         for _, policy in ipairs(v.policy) do
             if policy == "ant.render|render" or policy == "ant.render|simplerender" or policy == "ant.render|skinrender" then
@@ -47,19 +30,20 @@ local function replace_material(template, material_file)
     return template
 end
 
-local meshbin ; do
-    local meshbin_caches = {}
-    function meshbin(fullpath)
-        if not meshbin_caches[fullpath] then
+local filterNodes ; do
+    local caches = {}
+    function filterNodes(fullpath, key)
+        caches[key] = caches[key] or {}
+        if not caches[key][fullpath] then
             local res = {}
             for _, v in ipairs(parse(fullpath)) do
-                if v.data and v.data.mesh then
+                if v.data and v.data[key] then
                     res[#res+1] = v.data
                 end
             end
-            meshbin_caches[fullpath] = res
+            caches[key][fullpath] = res
         end
-        return meshbin_caches[fullpath]
+        return caches[key][fullpath]
     end
 end
 
@@ -85,8 +69,8 @@ end
 
 return {
     parse = parse,
-    replace_material = replace_material,
-    meshbin = meshbin,
+    replaceMaterial = replaceMaterial,
+    filterNodes = filterNodes,
     slots = slots,
     root = root,
 }

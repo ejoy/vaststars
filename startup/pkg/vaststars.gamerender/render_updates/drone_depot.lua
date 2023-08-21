@@ -6,7 +6,7 @@ local math3d = require "math3d"
 local objects = require "objects"
 local global = require "global"
 local iprototype = require "gameplay.interface.prototype"
-local prefab_meshbin = require("engine.prefab_parser").meshbin
+local prefab_filterNodes = require("engine.prefab_parser").filterNodes
 local iheapmesh = ecs.require "ant.render|render_system.heap_mesh"
 local ientity_object = ecs.require "engine.system.entity_object_system"
 local ichest = require "gameplay.interface.chest"
@@ -47,7 +47,7 @@ events["obj_motion"] = function(_, e, method, ...)
     iom[method](e, ...)
 end
 
-local function create_heap(mesh, srt, dim3, gap3, count)
+local function create_heap(mesh, material, srt, dim3, gap3, count)
     return ientity_object.create(ecs.create_entity {
         policy = {
             "ant.render|render",
@@ -57,7 +57,7 @@ local function create_heap(mesh, srt, dim3, gap3, count)
         data = {
             name = "heap_items",
             scene   = srt,
-            material = "/pkg/ant.resources/materials/pbr_heap.material",
+            material = material,
             visible_state = "main_view",
             mesh = mesh,
             heapmesh = {
@@ -79,12 +79,12 @@ local function create_shelf(building, item, count, building_srt, slot_name, pile
     local offset = math3d.ref(math3d.matrix {s = scene.s, r = scene.r, t = scene.t})
 
     local typeobject_item = iprototype.queryById(item)
-    local meshbin = assert(prefab_meshbin("/pkg/vaststars.resources/" .. typeobject_item.pile_model))
+    local pile_model = "/pkg/vaststars.resources/" .. typeobject_item.pile_model
     local gap3 = __get_gap3(typeobject_item)
     local srt = math3d.mul(math3d.matrix({s = building_srt.s, r = building_srt.r, t = building_srt.t}), offset)
     local s, r, t = math3d.srt(srt)
     srt = {s = s, r = r, t = t}
-    local heap = create_heap(meshbin[1].mesh, srt, pile_dim3, gap3, count)
+    local heap = create_heap(prefab_filterNodes(pile_model, "mesh")[1].mesh, prefab_filterNodes(pile_model, "material")[1].material, srt, pile_dim3, gap3, count)
 
     local res = {item = item, count = count, heap = heap, offset = offset}
     res.on_position_change = function (self, building_srt)
