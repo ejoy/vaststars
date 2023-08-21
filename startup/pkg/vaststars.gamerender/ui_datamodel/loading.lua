@@ -119,17 +119,18 @@ else
         assetmgr.compile_file(vfs.realpath(f))
     end
     function handler.dir(f)
+        local lfs = require "bee.filesystem"
         for file in fs.pairs(fs.path(f)) do
-            if fs.is_directory(file) then
+            if lfs.is_directory(file:localpath()) then
+                status_addtask {
+                    type = "dir",
+                    filename = file:string(),
+                }
+            else
                 local ext = file:extension():string()
                 if Resource[ext] then
                     status_addtask {
                         type = "compile",
-                        filename = file:string(),
-                    }
-                else
-                    status_addtask {
-                        type = "dir",
                         filename = file:string(),
                     }
                 end
