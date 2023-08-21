@@ -57,6 +57,7 @@ local Resource <const> = {
 }
 
 local File <const> = {
+    [".settings"] = true,
     -- ecs
     [".prefab"] = true,
     [".ecs"] = true,
@@ -178,19 +179,19 @@ function M:create()
     }
     status_addtask {
         type = "file",
-        filename = "/settings",
+        filename = "/general.settings",
     }
     status_addtask {
         type = "file",
-        filename = "/graphic_settings",
+        filename = "/graphic.settings",
     }
     status_addtask {
         type = "file",
-        filename = "/pkg/ant.settings/default/graphic_settings",
+        filename = "/pkg/ant.settings/default/graphic.settings",
     }
     status_addtask {
         type = "file",
-        filename = "/pkg/ant.settings/default/settings",
+        filename = "/pkg/ant.settings/default/general.settings",
     }
 
     for i = 1, WorkerNum do
