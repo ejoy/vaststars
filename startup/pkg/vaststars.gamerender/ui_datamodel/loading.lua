@@ -12,7 +12,6 @@ local status
 
 local BlackList <const> = {
     ["/pkg/ant.bake"] = true,
-    ["/pkg/ant.collision"] = true,
     ["/pkg/ant.debugger"] = true,
     ["/pkg/ant.editor"] = true,
     ["/pkg/ant.imgui"] = true,
