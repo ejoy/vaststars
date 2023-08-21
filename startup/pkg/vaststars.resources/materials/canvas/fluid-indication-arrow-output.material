@@ -7,4 +7,5 @@ properties:
     stage: 0
     texture: /pkg/vaststars.resources/textures/canvas/fluid-indication-arrow-output.texture
   u_basecolor_factor: {2.0, 2.0, 2.0, 1.0}
+  u_emissive_factor: {0.0, 0.0, 0.0, 0.0}
 state: /pkg/ant.resources/materials/states/blend.state

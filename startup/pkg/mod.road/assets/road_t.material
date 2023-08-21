@@ -1,6 +1,6 @@
 fx:
-  vs_code: "\n#include \"road_vs_func.sh\"\n"
-  fs_code: "\n#include \"road_fs_func.sh\"\n"
+  vs_code: "#include \"road_vs_func.sh\""
+  fs_code: "#include \"road_fs_func.sh\""
   setting:
     lighting: on
     shadow_cast: off
@@ -26,6 +26,7 @@ properties:
     stage: 3
     texture: /pkg/mod.road/assets/textures/mark_alpha.texture
     sampler: SAMPLER2DARRAY
+  u_draw_indirect_type: {0, 0, 0, 0}
 state: 
   ALPHA_REF: 0
   CULL: CCW

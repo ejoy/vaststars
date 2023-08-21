@@ -11,6 +11,8 @@ fx:
     HAS_CRACK_HEIGHT_TEXTURE: 1
 properties:
   u_pbr_factor: {0.1, 0.8, 0, 0}  #metallic, roughness, alpha_cutoff, occlusion strength
+  u_emissive_factor: {0.0, 0.0, 0.0, 0.0}
+  u_basecolor_factor: {1.0, 1.0, 1.0, 1.0}
   s_basecolor:
     stage: 0
     texture: /pkg/mod.crack/assets/textures/color.texture

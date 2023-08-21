@@ -9,3 +9,4 @@ properties:
     texture: /pkg/vaststars.resources/textures/dotted_line.texture
   u_pbr_factor: {0.0, 0.0, 0.0, 0.0}  #x:metalic, y: roughness, z: mask
   u_basecolor_factor:  {0.8, 0.8, 0.8, 1}
+  u_emissive_factor: {0.0, 0.0, 0.0, 0.0}
