@@ -97,6 +97,7 @@ prototype "砖石公路-I型" {
     track = "I",
     type = {"building", "road"},
     area = "2x2",
+    camera_distance = 50,
     crossing = {
         connections = {
             {type="none", position={0,0,"N"}},
@@ -119,6 +120,7 @@ prototype "砖石公路-L型" {
     track = "L",
     type = {"building", "road"},
     area = "2x2",
+    camera_distance = 50,
     crossing = {
         connections = {
             {type="none", position={0,0,"N"}},
@@ -141,6 +143,7 @@ prototype "砖石公路-T型" {
     track = "T",
     type = {"building", "road"},
     area = "2x2",
+    camera_distance = 50,
     crossing = {
         connections = {
             {type="none", position={0,0,"E"}},
@@ -164,6 +167,7 @@ prototype "砖石公路-O型" {
     track = "O",
     type = {"building", "road"},
     area = "2x2",
+    camera_distance = 50,
     crossing = {
         connections = {
         }
@@ -183,6 +187,7 @@ prototype "砖石公路-U型" {
     track = "U",
     type = {"building", "road"},
     area = "2x2",
+    camera_distance = 50,
     crossing = {
         connections = {
             {type="none", position={0,0,"N"}},
@@ -205,6 +210,7 @@ prototype "砖石公路-X型" {
     track = "X",
     type = {"building", "road"},
     area = "2x2",
+    camera_distance = 50,
     crossing = {
         connections = {
             {type="none", position={0,0,"N"}},
