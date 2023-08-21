@@ -64,7 +64,6 @@ local File <const> = {
     -- script
     [".lua"] = true,
     -- ui
-    [".bundle"] = true,
     [".rcss"] = true,
     [".rml"] = true,
     -- effect
@@ -87,9 +86,6 @@ local File <const> = {
     [".ibbin"] = true,
     [".meshbin"] = true,
     [".skinbin"] = true,
-    --TODO: remove they
-    [".patch"] = true,
-    [""] = true,
 }
 
 local handler = {}
@@ -176,22 +172,6 @@ function M:create()
     status_addtask {
         type = "dir",
         filename = "/",
-    }
-    status_addtask {
-        type = "file",
-        filename = "/general.settings",
-    }
-    status_addtask {
-        type = "file",
-        filename = "/graphic.settings",
-    }
-    status_addtask {
-        type = "file",
-        filename = "/pkg/ant.settings/default/graphic.settings",
-    }
-    status_addtask {
-        type = "file",
-        filename = "/pkg/ant.settings/default/general.settings",
     }
 
     for i = 1, WorkerNum do
