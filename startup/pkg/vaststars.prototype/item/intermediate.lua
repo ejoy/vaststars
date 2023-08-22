@@ -148,7 +148,7 @@ prototype "钢齿轮" {
     pile = "4x4x4",
     hub_limit = 64,
     drone_depot_gap3 = "0.2x0.05x0.2",
-    backpack_limit = 50,
+    backpack_limit = 100,
     item_order = 12,
     pile_model = "glbs/stackeditems/steel-gear.glb|mesh.prefab",
     item_icon = "textures/icons/item/steel-gear.texture",
