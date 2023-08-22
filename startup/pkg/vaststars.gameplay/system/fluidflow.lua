@@ -90,7 +90,7 @@ local function calc_pipebits(pt, direction)
     return bits
 end
 
-function m.prototype_restore()
+function m.init()
     pipebits = setmetatable({}, mt)
     rev_pipebits = setmetatable({}, mt)
     for _, pt in pairs(prototype.all()) do
@@ -406,6 +406,7 @@ function m.backup_finish(world)
 end
 
 function m.restore_finish(world)
+    m.init()
     local ecs = world.ecs
     builder_init()
     for v in ecs:select "fluidbox:in building:in eid:in" do

@@ -92,6 +92,5 @@ do
         local prototype = require "prototype"
         local metafile = world.storage_path.."/prototype.json"
         prototype.restore(cworld, json.decode(readall(metafile)))
-        world.pipeline(world, cworld, "prototype")()
     end
 end
