@@ -189,9 +189,9 @@
                 <div style="height: 27vmin;" data-event-click="onLongPress(2)">
                     <div data-for = "property : property_list">
                         <div style = "width: 100%; height: 9vmin; flex-direction: row; align-items: center; justify-content: flex-start;">
-                            <div style = "width: 8.00vmin; height: 8.00vmin; background-size:cover;" data-style-background-image="property.icon" />
+                            <!-- div style = "width: 8.00vmin; height: 8.00vmin; background-size:cover;" data-style-background-image="property.icon" /-->
                             <!-- proprety & value -->
-                            <div style = "flex-direction: column; justify-content: center; align-items: flex-start;">
+                            <div style = "flex-direction: column; justify-content: center; align-items: center; width: 100%;">
                                 <div style = "color:#adadad; padding-bottom: 0.75vmin; font-size: 3.2vmin; text-align: center;">{{property.desc}}</div>
                                 <div style = "text-align: center; font-size: 2.8vmin;" data-style-color = "property.color or 'rgb(255,255,255)'">{{property.value}}</div>
                             </div>
