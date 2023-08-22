@@ -3,7 +3,6 @@ local world = ecs.world
 
 local FRAMES_PER_SECOND <const> = 30
 local bgfx = require 'bgfx'
-local iRmlUi = ecs.require "ant.rmlui|rmlui_system"
 local terrain = ecs.require "terrain"
 local gameplay_core = require "gameplay.core"
 local NOTHING <const> = require "debugger".nothing
@@ -22,7 +21,6 @@ local font = import_package "ant.font"
 local m = ecs.system 'init_system'
 
 font.import "/pkg/vaststars.resources/ui/font/Alibaba-PuHuiTi-Regular.ttf"
-iRmlUi.set_prefix ""
 
 function m:init_world()
     bgfx.maxfps(FRAMES_PER_SECOND)
