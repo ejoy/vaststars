@@ -91,9 +91,11 @@ local function __on_pick_building(datamodel, o)
     iui.close("ui/build.rml") -- TODO: remove this
     iui.close("ui/construct_road_or_pipe.rml")
 
-    audio.play "event:/ui/click"
-
     local typeobject = iprototype.queryByName(object.prototype_name)
+    if typeobject.sound then
+        audio.play("event:/" .. typeobject.sound)
+    end
+
     if typeobject.base then
         typeobject = iprototype.queryByName(typeobject.base)
     end
