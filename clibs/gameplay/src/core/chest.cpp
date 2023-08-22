@@ -187,7 +187,7 @@ lget(lua_State* L) {
     switch (s.type) {
     case container::slot::slot_type::red:   lua_pushstring(L, "red"); break;
     case container::slot::slot_type::blue:  lua_pushstring(L, "blue"); break;
-    case container::slot::slot_type::green: lua_pushstring(L, "green"); break;
+    case container::slot::slot_type::none:  lua_pushstring(L, "none"); break;
     default:                                lua_pushstring(L, "unknown"); break;
     }
     lua_setfield(L, -2, "type");
@@ -220,7 +220,7 @@ lset(lua_State* L) {
     }
     auto& r = chest::array_at(w, c, offset);
     if (LUA_TNIL != lua_getfield(L, 4, "type")) {
-        static const char *const opts[] = {"red", "blue", "green", NULL};
+        static const char *const opts[] = {"red", "blue", NULL};
         r.type = (container::slot::slot_type)luaL_checkoption(L, -1, NULL, opts);
     }
     lua_pop(L, 1);

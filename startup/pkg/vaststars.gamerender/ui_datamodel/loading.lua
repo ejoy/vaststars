@@ -19,6 +19,7 @@ local BlackList <const> = {
     ["/pkg/ant.resources.binary/test"] = true,
     ["/pkg/ant.resources.binary/meshes"] = true,
     ["/pkg/vaststars.mod.test"] = true,
+    ["/pkg/vaststars.tools"] = true,
 }
 
 local function status_addtask(task)

@@ -4,7 +4,8 @@
     ],
     "diagnostics.globals": [
         "import_package",
-        "log"
+        "log",
+        "__ANT_EDITOR__"
     ],
     "workspace.checkThirdParty": false
 }

@@ -9,7 +9,7 @@ local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local M ={}
 local temp_lines
 local lines
-local pole_height = 30
+local pole_height = 37.5
 local function get_line(pole1, pole2)
     if not pole1.power_network_link or not pole2.power_network_link then
         return

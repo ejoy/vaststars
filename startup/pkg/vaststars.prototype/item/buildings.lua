@@ -915,7 +915,7 @@ prototype "机身残骸" {
     item_order = 100,
     item_icon = "textures/icons/item/ruin.texture",
     pile_model = "glbs/stackeditems/building.glb|mesh.prefab",
-    item_description = "传导热量的特殊管道",
+    item_description = "损坏飞行器残留的机身组件",
 }
 
 prototype "机翼残骸" {
@@ -929,7 +929,7 @@ prototype "机翼残骸" {
     item_order = 102,
     item_icon = "textures/icons/item/ruin.texture",
     pile_model = "glbs/stackeditems/building.glb|mesh.prefab",
-    item_description = "传导热量的特殊管道",
+    item_description = "损坏飞行器残留的机翼组件",
 }
 
 prototype "机头残骸" {
@@ -943,7 +943,7 @@ prototype "机头残骸" {
     item_order = 104,
     item_icon = "textures/icons/item/ruin.texture",
     pile_model = "glbs/stackeditems/building.glb|mesh.prefab",
-    item_description = "传导热量的特殊管道",
+    item_description = "损坏飞行器残留的机头组件",
 }
 
 prototype "机尾残骸" {
@@ -957,5 +957,5 @@ prototype "机尾残骸" {
     item_order = 106,
     item_icon = "textures/icons/item/ruin.texture",
     pile_model = "glbs/stackeditems/building.glb|mesh.prefab",
-    item_description = "传导热量的特殊管道",
+    item_description = "损坏飞行器残留的机尾组件",
 }
