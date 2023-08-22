@@ -37,7 +37,7 @@ local imaterial = ecs.require "ant.asset|material"
 
 local function createPrefabInst(prefab, position)
     local template = prefabParser(prefab)
-    template = replaceMaterial(template, "/pkg/vaststars.resources/materials/translucent.material")
+    template = replaceMaterial(template, "/pkg/ant.resources/materials/translucent.material")
 
     local p = ecs.create_instance(template)
     function p:on_ready()

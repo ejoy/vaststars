@@ -171,7 +171,7 @@ local __get_hitch_children ; do
 
         local template = prefabParser(prefab)
         if material_type == "translucent" then
-            template = replaceMaterial(template, "/pkg/vaststars.resources/materials/translucent.material")
+            template = replaceMaterial(template, "/pkg/ant.resources/materials/translucent.material")
         elseif material_type == "opacity" then
             template = replaceMaterial(template, "/pkg/vaststars.resources/materials/opacity.material")
         elseif material_type == "outline" then
