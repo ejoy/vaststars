@@ -1,4 +1,4 @@
-local spec = require "ui.lua.building_menu_spec"
+local spec = require "lua.building_menu_spec"
 
 local TRANSFORM_DELTA <const> = 18
 local LINE_MARGIN_RIGHT_DELTA <const> = -2
@@ -66,23 +66,23 @@ end
 local function test(start, count)
     local buttons = {
         [1] = {
-            background_image = "ui/textures/building-menu/pickup-item.texture",
+            background_image = "/pkg/vaststars.resources/ui/textures/building-menu/pickup-item.texture",
             command = "-pickup-item",
         },
         [2] = {
-            background_image = "ui/textures/building-menu/place-item.texture",
+            background_image = "/pkg/vaststars.resources/ui/textures/building-menu/place-item.texture",
             command = "-place-item",
         },
         [3] = {
-            background_image = "ui/textures/building-menu/teardown.texture",
+            background_image = "/pkg/vaststars.resources/ui/textures/building-menu/teardown.texture",
             command = "-teardown",
         }, 
         [4] = {
-            background_image = "ui/textures/building-menu/move.texture",
+            background_image = "/pkg/vaststars.resources/ui/textures/building-menu/move.texture",
             command = "-move",
         },
         [5] = {
-            background_image = "ui/textures/building-menu/clone.texture",
+            background_image = "/pkg/vaststars.resources/ui/textures/building-menu/clone.texture",
             command = "-clone",
         },
     }
@@ -109,14 +109,14 @@ return function(start)
         v.command = "pickup_item"
         v.number = start.pickup_item_count
         v.show_number = true
-        v.background_image = "ui/textures/building-menu/pickup-item.texture"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/pickup-item.texture"
         start.buttons[#start.buttons + 1] = v
     end
 
     if start.show_set_recipe then
         local v = setmetatable({}, {__index = DEFAULT})
         v.command = "set_recipe"
-        v.background_image = "ui/textures/building-menu/set-recipe.texture"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/set-recipe.texture"
         start.buttons[#start.buttons + 1] = v
     end
 
@@ -124,7 +124,7 @@ return function(start)
         local v = setmetatable({}, {__index = DEFAULT})
         v.command = "set_item"
         v.show_background = start.set_item_icon1 ~= ""
-        v.background_image = start.set_item_icon1 == "" and "ui/textures/building-menu/set-item.texture" or start.set_item_icon1
+        v.background_image = start.set_item_icon1 == "" and "/pkg/vaststars.resources/ui/textures/building-menu/set-item.texture" or start.set_item_icon1
         start.buttons[#start.buttons + 1] = v
     end
 
@@ -132,56 +132,56 @@ return function(start)
         local v = setmetatable({}, {__index = DEFAULT})
         v.command = "set_item2"
         v.show_background = start.set_item_icon2 ~= ""
-        v.background_image = start.set_item_icon2 == "" and "ui/textures/building-menu/set-item.texture" or start.set_item_icon2
+        v.background_image = start.set_item_icon2 == "" and "/pkg/vaststars.resources/ui/textures/building-menu/set-item.texture" or start.set_item_icon2
         start.buttons[#start.buttons + 1] = v
     end
 
     if start.lorry_factory_dec_lorry then
         local v = setmetatable({}, {__index = DEFAULT})
         v.command = "lorry_factory_stop_build"
-        v.background_image = "ui/textures/building-menu/lorry-factory-dec-lorry.texture"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/lorry-factory-dec-lorry.texture"
         start.buttons[#start.buttons + 1] = v
     end
 
     if start.lorry_factory_inc_lorry then
         local v = setmetatable({}, {__index = DEFAULT})
         v.command = "lorry_factory_inc_lorry"
-        v.background_image = "ui/textures/building-menu/lorry-factory-inc-lorry.texture"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/lorry-factory-inc-lorry.texture"
         start.buttons[#start.buttons + 1] = v
     end
 
     if start.station_weight_increase then
         local v = setmetatable({}, {__index = DEFAULT})
         v.command = "station_weight_increase"
-        v.background_image = "ui/textures/building-menu/station-weight-increase.texture"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/station-weight-increase.texture"
         start.buttons[#start.buttons + 1] = v
     end
 
     if start.station_weight_decrease then
         local v = setmetatable({}, {__index = DEFAULT})
         v.command = "station_weight_decrease"
-        v.background_image = "ui/textures/building-menu/station-weight-decrease.texture"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/station-weight-decrease.texture"
         start.buttons[#start.buttons + 1] = v
     end
 
     if start.station_lorry_increase then
         local v = setmetatable({}, {__index = DEFAULT})
         v.command = "station_lorry_increase"
-        v.background_image = "ui/textures/building-menu/station-lorry-increase.texture"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/station-lorry-increase.texture"
         start.buttons[#start.buttons + 1] = v
     end
 
     if start.station_lorry_decrease then
         local v = setmetatable({}, {__index = DEFAULT})
         v.command = "station_lorry_decrease"
-        v.background_image = "ui/textures/building-menu/station-lorry-decrease.texture"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/station-lorry-decrease.texture"
         start.buttons[#start.buttons + 1] = v
     end
 
     if start.place_item then
         local v = setmetatable({}, {__index = DEFAULT})
         v.command = "place_item"
-        v.background_image = "ui/textures/building-menu/place-item.texture"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/place-item.texture"
         v.number = start.place_item_count
         v.show_number = true
         start.buttons[#start.buttons + 1] = v

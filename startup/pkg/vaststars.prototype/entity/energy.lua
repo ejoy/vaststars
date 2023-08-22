@@ -3,7 +3,7 @@ local prototype = gameplay.register.prototype
 
 prototype "蒸汽发电机I" {
     model = "glbs/turbine-1.glb|mesh.prefab",
-    icon = "ui/textures/building_pic/small_pic_turbine.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_turbine.texture",
     construct_detector = {"exclusive"},
     type = {"building", "generator", "fluidboxes","assembling","auto_set_recipe"},
     area = "3x5",
@@ -39,7 +39,7 @@ prototype "蒸汽发电机I" {
 
 prototype "蒸汽发电机II" {
     model = "glbs/turbine-1.glb|mesh.prefab",
-    icon = "ui/textures/building_pic/small_pic_turbine.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_turbine.texture",
     construct_detector = {"exclusive"},
     type = {"building", "generator", "fluidboxes","assembling","auto_set_recipe"},
     area = "3x5",
@@ -75,7 +75,7 @@ prototype "蒸汽发电机II" {
 
 prototype "蒸汽发电机III" {
     model = "glbs/turbine-1.glb|mesh.prefab",
-    icon = "ui/textures/building_pic/small_pic_turbine.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_turbine.texture",
     construct_detector = {"exclusive"},
     type = {"building", "generator", "fluidboxes","assembling","auto_set_recipe"},
     area = "3x5",
@@ -111,7 +111,7 @@ prototype "蒸汽发电机III" {
 
 prototype "风力发电机I" {
     model = "glbs/wind-turbine-1.glb|mesh.prefab",
-    icon = "ui/textures/building_pic/small_pic_wind_turbine.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_wind_turbine.texture",
     construct_detector = {"exclusive"},
     type = {"building", "generator", "wind_turbine"},
     area = "3x3",
@@ -126,7 +126,7 @@ prototype "风力发电机I" {
 
 prototype "太阳能板I" {
     model = "glbs/solar-panel-1.glb|mesh.prefab",
-    icon = "ui/textures/building_pic/small_pic_solar_panel.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_solar_panel.texture",
     construct_detector = {"exclusive"},
     type = {"building","generator","solar_panel"},
     area = "3x3",
@@ -140,7 +140,7 @@ prototype "太阳能板I" {
 
 prototype "太阳能板II" {
     model = "glbs/solar-panel-1.glb|mesh.prefab",
-    icon = "ui/textures/building_pic/small_pic_solar_panel.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_solar_panel.texture",
     construct_detector = {"exclusive"},
     type = {"building","generator","solar_panel"},
     area = "3x3",
@@ -154,7 +154,7 @@ prototype "太阳能板II" {
 
 prototype "太阳能板III" {
     model = "glbs/solar-panel-1.glb|mesh.prefab",
-    icon = "ui/textures/building_pic/small_pic_solar_panel.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_solar_panel.texture",
     construct_detector = {"exclusive"},
     type = {"building","generator","solar_panel"},
     area = "3x3",
@@ -168,7 +168,7 @@ prototype "太阳能板III" {
 
 prototype "蓄电池I" {
     model = "glbs/accumulator-1.glb|mesh.prefab",
-    icon = "ui/textures/building_pic/small_pic_accumulator.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_accumulator.texture",
     construct_detector = {"exclusive"},
     type = {"building", "accumulator"},
 	power = "400kW",
@@ -185,7 +185,7 @@ prototype "蓄电池I" {
 
 prototype "蓄电池II" {
     model = "glbs/accumulator-1.glb|mesh.prefab",
-    icon = "ui/textures/building_pic/small_pic_accumulator.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_accumulator.texture",
     construct_detector = {"exclusive"},
     type = {"building", "accumulator"},
 	power = "600kW",
@@ -202,7 +202,7 @@ prototype "蓄电池II" {
 
 prototype "蓄电池III" {
     model = "glbs/accumulator-1.glb|mesh.prefab",
-    icon = "ui/textures/building_pic/small_pic_accumulator.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_accumulator.texture",
     construct_detector = {"exclusive"},
     type = {"building", "accumulator"},
 	power = "800kW",
@@ -219,7 +219,7 @@ prototype "蓄电池III" {
 
 prototype "核反应堆" {
     model = "glbs/wind-turbine-1.glb|mesh.prefab",
-    icon = "ui/textures/construct/solar-panel.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/solar-panel.texture",
     construct_detector = {"exclusive"},
     type = {"building", "generator"},
     area = "3x3",
@@ -230,7 +230,7 @@ prototype "核反应堆" {
 
 prototype "换热器I" {
     model = "glbs/boiler.glb|mesh.prefab",
-    icon = "ui/textures/building_pic/small_pic_boiler.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_boiler.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     power = "1.8MW",
@@ -276,7 +276,7 @@ prototype "换热器I" {
 
 prototype "热管1-X型" {
     model = "glbs/pipe/I.glb|mesh.prefab",
-    icon = "ui/textures/construct/pipe.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
     building_menu = false,
     type = {"building"},
@@ -286,7 +286,7 @@ prototype "热管1-X型" {
 
 prototype "锅炉I" {
     model = "glbs/boiler.glb|mesh.prefab",
-    icon = "ui/textures/building_pic/small_pic_boiler.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_boiler.texture",
     construct_detector = {"exclusive"},
     type = {"building", "assembling", "fluidboxes"},
     priority = "secondary",
@@ -324,7 +324,7 @@ prototype "锅炉I" {
 
 prototype "地热井I" {
     model = "glbs/geothermal-plant.glb|mesh.prefab",
-    icon = "ui/textures/building_pic/small_pic_geothermal_plant.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_geothermal_plant.texture",
     construct_detector = {"exclusive"},
     type = {"building", "assembling", "fluidboxes","mining"},
     priority = "secondary",
@@ -355,7 +355,7 @@ prototype "地热井I" {
 
 prototype "地热井II" {
     model = "glbs/geothermal-plant.glb|mesh.prefab",
-    icon = "ui/textures/building_pic/small_pic_geothermal_plant.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_geothermal_plant.texture",
     construct_detector = {"exclusive"},
     type = {"building", "assembling", "fluidboxes","mining"},
     priority = "secondary",
@@ -386,7 +386,7 @@ prototype "地热井II" {
 
 prototype "地热井III" {
     model = "glbs/geothermal-plant.glb|mesh.prefab",
-    icon = "ui/textures/building_pic/small_pic_geothermal_plant.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_geothermal_plant.texture",
     construct_detector = {"exclusive"},
     type = {"building", "assembling", "fluidboxes","mining"},
     priority = "secondary",

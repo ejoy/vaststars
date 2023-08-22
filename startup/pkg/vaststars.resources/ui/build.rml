@@ -1,6 +1,6 @@
 <rml>
     <head>
-        <style path = "ui/common.rcss"/>
+        <style path = "/pkg/vaststars.resources/ui/common.rcss"/>
         <style>
             main-button {
                 width: 29.90vmin;
@@ -74,8 +74,8 @@
             }
         </style>
         <script type="text/x-lua" >
-            local ui_sys = require "ui.ui_system"
-            local button_pos = require "ui.lua.button_pos"
+            local ui_sys = require "lua.ui_system"
+            local button_pos = require "lua.button_pos"
             local start = ui_sys.createDataMode {
                 shortcut_buttons = {},
                 shortcut = {},
@@ -140,18 +140,18 @@
             <button-container data-style-transform = "it.transform" data-style-margin = "it.margin" data-for = "shortcut_buttons" >
                 <button>
                     <button-wrap data-event-click = "clickButton('click_button', it_index)" style = "border-radius: 50%;">
-                        <button-pic style = "background-image: ui/textures/construct/building-bg.texture" data-style-transform = "it.transform_inner" />
+                        <button-pic style = "background-image: /pkg/vaststars.resources/ui/textures/construct/building-bg.texture" data-style-transform = "it.transform_inner" />
                         <div style = "width: 100%; height: 100%; align-items: center; justify-content: center;">
                             <button-pic style = "border-radius: 50%; width: 13.40vmin; height: 13.40vmin;" data-style-background-image = "it.icon" data-style-transform = "it.transform_inner" data-if = "not it.unknown" />
-                            <button-pic style = "width: 9.96vmin; height: 9.96vmin; background-image: ui/textures/build/main-button-unknown.texture" data-if = "it.unknown" data-style-transform = "it.transform_inner" />
+                            <button-pic style = "width: 9.96vmin; height: 9.96vmin; background-image: /pkg/vaststars.resources/ui/textures/build/main-button-unknown.texture" data-if = "it.unknown" data-style-transform = "it.transform_inner" />
                         </div>
                     </button-wrap>
                 </button>
             </button-container>
         </buttons-container>
 
-        <main-button style = "position: absolute; left: 72.20vmax; top: 67.00vmin; background-image: ui/textures/construct/main-button-bg.texture; background-size: 100% 100%;" data-event-click = "clickButton('click_main_button')">
-            <main-button-icon style = "background-image: ui/textures/build/main-button-unknown.texture;" data-if = "main_button_icon == ''" />
+        <main-button style = "position: absolute; left: 72.20vmax; top: 67.00vmin; background-image: /pkg/vaststars.resources/ui/textures/construct/main-button-bg.texture; background-size: 100% 100%;" data-event-click = "clickButton('click_main_button')">
+            <main-button-icon style = "background-image: /pkg/vaststars.resources/ui/textures/build/main-button-unknown.texture;" data-if = "main_button_icon == ''" />
             <main-button-icon data-style-background-image = "main_button_icon" data-if = "main_button_icon ~= ''" />
         </main-button>
     </body>

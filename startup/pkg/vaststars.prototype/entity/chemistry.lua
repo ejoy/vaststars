@@ -3,7 +3,7 @@ local prototype = gameplay.register.prototype
 
 prototype "化工厂I" {
     model = "glbs/chemical-plant-1.glb|mesh.prefab",
-    icon = "ui/textures/building_pic/small_pic_chemical_plant.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_chemical_plant.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "3x3",
@@ -69,7 +69,7 @@ prototype "化工厂I" {
 
 prototype "化工厂II" {
     model = "glbs/chemical-plant-1.glb|mesh.prefab",
-    icon = "ui/textures/building_pic/small_pic_chemical_plant.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_chemical_plant.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "3x3",
@@ -135,7 +135,7 @@ prototype "化工厂II" {
 
 prototype "化工厂III" {
     model = "glbs/chemical-plant-1.glb|mesh.prefab",
-    icon = "ui/textures/building_pic/small_pic_chemical_plant.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_chemical_plant.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "3x3",
@@ -201,7 +201,7 @@ prototype "化工厂III" {
 
 prototype "蒸馏厂I" {
     model = "glbs/distillery-1.glb|mesh.prefab",
-    icon = "ui/textures/building_pic/small_pic_distillery.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_distillery.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "5x5",
@@ -266,7 +266,7 @@ prototype "蒸馏厂I" {
 
 prototype "蒸馏厂II" {
     model = "glbs/distillery-1.glb|mesh.prefab",
-    icon = "ui/textures/building_pic/small_pic_distillery.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_distillery.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "5x5",
@@ -331,7 +331,7 @@ prototype "蒸馏厂II" {
 
 prototype "蒸馏厂III" {
     model = "glbs/distillery-1.glb|mesh.prefab",
-    icon = "ui/textures/building_pic/small_pic_distillery.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_distillery.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "5x5",
@@ -397,7 +397,7 @@ prototype "蒸馏厂III" {
 
 prototype "电解厂I" {
     model = "glbs/electrolyzer-1.glb|mesh.prefab",
-    icon = "ui/textures/building_pic/small_pic_electrolyzer.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_electrolyzer.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "4x4",
@@ -455,7 +455,7 @@ prototype "电解厂I" {
 
 prototype "电解厂II" {
     model = "glbs/electrolyzer-1.glb|mesh.prefab",
-    icon = "ui/textures/building_pic/small_pic_electrolyzer.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_electrolyzer.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "4x4",
@@ -513,7 +513,7 @@ prototype "电解厂II" {
 
 prototype "电解厂III" {
     model = "glbs/electrolyzer-1.glb|mesh.prefab",
-    icon = "ui/textures/building_pic/small_pic_electrolyzer.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_electrolyzer.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "4x4",
@@ -571,7 +571,7 @@ prototype "电解厂III" {
 
 prototype "水电站I" {
     model = "glbs/hydro-plant-1.glb|mesh.prefab",
-    icon = "ui/textures/building_pic/small_pic_hydro_plant.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_hydro_plant.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "5x5",
@@ -626,7 +626,7 @@ prototype "水电站I" {
 
 prototype "水电站II" {
     model = "glbs/hydro-plant-1.glb|mesh.prefab",
-    icon = "ui/textures/building_pic/small_pic_hydro_plant.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_hydro_plant.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "5x5",
@@ -681,7 +681,7 @@ prototype "水电站II" {
 
 prototype "水电站III" {
     model = "glbs/hydro-plant-1.glb|mesh.prefab",
-    icon = "ui/textures/building_pic/small_pic_hydro_plant.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_hydro_plant.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "5x5",

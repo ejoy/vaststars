@@ -25,15 +25,15 @@ end
 
 function M:stage_ui_update(datamodel)
     for _ in quit_mb:unpack() do
-        iui.redirect("ui/construct.rml", "quit")
+        iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "quit")
     end
 
     for _ in build_mb:unpack() do
-        iui.redirect("ui/construct.rml", "build")
+        iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "build")
     end
 
     for _ in rotate_mb:unpack() do
-        iui.redirect("ui/construct.rml", "rotate")
+        iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "rotate")
     end
 
     for _, _, _, b in show_confirm_mb:unpack() do

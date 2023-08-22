@@ -76,8 +76,8 @@ local function back_to_main_menu()
     end
 
     gameplay_core.world_update = false
-    iui.close("ui/construct.rml")
-    iui.open({"ui/login.rml"})
+    iui.close("/pkg/vaststars.resources/ui/construct.rml")
+    iui.open({"/pkg/vaststars.resources/ui/login.rml"})
 end
 
 return {

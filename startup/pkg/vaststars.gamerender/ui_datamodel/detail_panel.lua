@@ -33,19 +33,19 @@ local STATUS_STOP_DISCHARGE <const> = 11
 local STATUS_POLE_OFFLINE <const> = 12
 local STATUS_NO_RECIPE <const> = 13
 local detail_panel_status = {
-    {desc = "断电停机", icon = "ui/textures/detail/stop.texture"},
-    {desc = "待机空闲", icon = "ui/textures/detail/idle.texture"},
-    {desc = "正常工作", icon = "ui/textures/detail/work.texture"},
-    {desc = "等待供料", icon = "ui/textures/detail/idle.texture"},
-    {desc = "等待出货", icon = "ui/textures/detail/idle.texture"},
-    {desc = "供电不足", icon = "ui/textures/detail/idle.texture"},
-    {desc = "存货已满", icon = "ui/textures/detail/idle.texture"},
-    {desc = "正常充电", icon = "ui/textures/detail/work.texture"},
-    {desc = "正常供电", icon = "ui/textures/detail/work.texture"},
-    {desc = "电量耗尽", icon = "ui/textures/detail/stop.texture"},
-    {desc = "停止供电", icon = "ui/textures/detail/idle.texture"},
-    {desc = "脱网连接", icon = "ui/textures/detail/idle.texture"},
-    {desc = "无配方", icon = "ui/textures/detail/idle.texture"},
+    {desc = "断电停机", icon = "/pkg/vaststars.resources/ui/textures/detail/stop.texture"},
+    {desc = "待机空闲", icon = "/pkg/vaststars.resources/ui/textures/detail/idle.texture"},
+    {desc = "正常工作", icon = "/pkg/vaststars.resources/ui/textures/detail/work.texture"},
+    {desc = "等待供料", icon = "/pkg/vaststars.resources/ui/textures/detail/idle.texture"},
+    {desc = "等待出货", icon = "/pkg/vaststars.resources/ui/textures/detail/idle.texture"},
+    {desc = "供电不足", icon = "/pkg/vaststars.resources/ui/textures/detail/idle.texture"},
+    {desc = "存货已满", icon = "/pkg/vaststars.resources/ui/textures/detail/idle.texture"},
+    {desc = "正常充电", icon = "/pkg/vaststars.resources/ui/textures/detail/work.texture"},
+    {desc = "正常供电", icon = "/pkg/vaststars.resources/ui/textures/detail/work.texture"},
+    {desc = "电量耗尽", icon = "/pkg/vaststars.resources/ui/textures/detail/stop.texture"},
+    {desc = "停止供电", icon = "/pkg/vaststars.resources/ui/textures/detail/idle.texture"},
+    {desc = "脱网连接", icon = "/pkg/vaststars.resources/ui/textures/detail/idle.texture"},
+    {desc = "无配方", icon = "/pkg/vaststars.resources/ui/textures/detail/idle.texture"},
 }
 -- optimize for pole status
 local pole_status = STATUS_WORK
@@ -450,7 +450,7 @@ local function update_model(mdl)
 end
 local camera_dist
 function M:create(object_id)
-    iui.register_leave("ui/detail_panel.rml")
+    iui.register_leave("/pkg/vaststars.resources/ui/detail_panel.rml")
 
     counter = update_interval
     local object = assert(objects:get(object_id))

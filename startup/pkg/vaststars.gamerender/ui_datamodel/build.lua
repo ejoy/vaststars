@@ -70,7 +70,7 @@ function M:create()
         __update_shortcur_timestamp(max_idx)
 
         local typeobject = iprototype.queryById(shortcut[max_idx].prototype)
-        iui.redirect("ui/construct.rml", "construct_entity", typeobject.name)
+        iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "construct_entity", typeobject.name)
 
         main_button_icon = shortcut[max_idx].icon
     end
@@ -86,8 +86,8 @@ function M:stage_ui_update(datamodel)
     for _, _, _, index in click_button_mb:unpack() do
         local shortcut = assert(datamodel.shortcut[index])
         if shortcut.unknown == true then
-            iui.close("ui/build.rml")
-            iui.open({"ui/build_setting.rml"})
+            iui.close("/pkg/vaststars.resources/ui/build.rml")
+            iui.open({"/pkg/vaststars.resources/ui/build_setting.rml"})
         else
             if datamodel.shortcut_index ~= 0 then
                 datamodel.shortcut[datamodel.shortcut_index].selected = false
@@ -98,13 +98,13 @@ function M:stage_ui_update(datamodel)
             __update_shortcur_timestamp(index)
 
             local typeobject = iprototype.queryById(datamodel.shortcut[index].prototype)
-            iui.redirect("ui/construct.rml", "construct_entity", typeobject.name)
+            iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "construct_entity", typeobject.name)
             datamodel.main_button_icon = datamodel.shortcut[index].icon
         end
     end
 
     for _ in click_main_button_mb:unpack() do
-        iui.redirect("ui/construct.rml", "build")
+        iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "build")
     end
 end
 

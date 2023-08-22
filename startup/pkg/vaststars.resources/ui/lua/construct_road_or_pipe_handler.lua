@@ -1,4 +1,4 @@
-local BUTTON_POS = require "ui.lua.button_pos"
+local BUTTON_POS = require "lua.button_pos"
 
 local DEFAULT_OFFSETS = {
     [1] = {
@@ -52,23 +52,23 @@ end
 local function test(start, count)
     local buttons = {
         [1] = {
-            icon = "ui/textures/building-menu/pickup-item.texture",
+            icon = "/pkg/vaststars.resources/ui/textures/building-menu/pickup-item.texture",
             params = "-pickup-item",
         },
         [2] = {
-            icon = "ui/textures/building-menu/place-item.texture",
+            icon = "/pkg/vaststars.resources/ui/textures/building-menu/place-item.texture",
             params = "-place-item",
         },
         [3] = {
-            icon = "ui/textures/building-menu/teardown.texture",
+            icon = "/pkg/vaststars.resources/ui/textures/building-menu/teardown.texture",
             params = "-teardown",
         }, 
         [4] = {
-            icon = "ui/textures/building-menu/move.texture",
+            icon = "/pkg/vaststars.resources/ui/textures/building-menu/move.texture",
             params = "-move",
         },
         [5] = {
-            icon = "ui/textures/building-menu/clone.texture",
+            icon = "/pkg/vaststars.resources/ui/textures/building-menu/clone.texture",
             params = "-clone",
         },
     }
@@ -88,21 +88,21 @@ return function(start)
     if start.show_start_laying then
         local v = setmetatable({}, {__index = DEFAULT})
         v.params = {"start_laying"}
-        v.icon = "ui/textures/common/road-mutiple-build.texture"
+        v.icon = "/pkg/vaststars.resources/ui/textures/common/road-mutiple-build.texture"
         start.buttons[#start.buttons + 1] = v
     end
 
     if start.show_remove_one then
         local v = setmetatable({}, {__index = DEFAULT})
         v.params = {"remove_one"}
-        v.icon = "ui/textures/common/road-disconnect.texture"
+        v.icon = "/pkg/vaststars.resources/ui/textures/common/road-disconnect.texture"
         start.buttons[#start.buttons + 1] = v
     end
 
     if start.show_start_teardown then
         local v = setmetatable({}, {__index = DEFAULT})
         v.params = {"start_teardown"}
-        v.icon = "ui/textures/common/road-mutiple-delete.texture"
+        v.icon = "/pkg/vaststars.resources/ui/textures/common/road-mutiple-delete.texture"
         start.buttons[#start.buttons + 1] = v
     end
 

@@ -244,8 +244,8 @@ function M:stage_ui_update(datamodel)
         local shortcut = __get_shortcur(datamodel.shortcut_id)
         shortcut.last_timestamp = os.time()
 
-        iui.close("ui/build_setting.rml")
-        iui.open({"ui/build.rml"})
+        iui.close("/pkg/vaststars.resources/ui/build_setting.rml")
+        iui.open({"/pkg/vaststars.resources/ui/build.rml"})
     end
 end
 

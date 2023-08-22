@@ -31,7 +31,7 @@ end
 function M:stage_camera_usage(datamodel)
     for _, _, _, filename in load_template_mb:unpack() do
         debugger.set_free_mode(true)
-        iui.close("ui/template.rml")
+        iui.close("/pkg/vaststars.resources/ui/template.rml")
         new_game("free", filename)
     end
 end

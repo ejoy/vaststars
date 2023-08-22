@@ -1,6 +1,6 @@
 <rml>
     <head>
-        <style path = "ui/common.rcss"/>
+        <style path = "/pkg/vaststars.resources/ui/common.rcss"/>
         <style>
             main-button {
                 width: 29.90vmin;
@@ -32,12 +32,12 @@
                 top: 1.17vmin;
                 width: 53.12vmin;
                 height: 16.28vmin;
-                background-image: ui/textures/construct/tech-or-task-bg.texture;
+                background-image: /pkg/vaststars.resources/ui/textures/construct/tech-or-task-bg.texture;
                 background-size: 100% 100%;
             }
         </style>
         <script type="text/x-lua" >
-            local ui_sys = require "ui.ui_system"
+            local ui_sys = require "lua.ui_system"
             local start = ui_sys.createDataMode {
                 is_concise_mode = false, -- in concise mode, the main menu in the lower left corner, technology progress button in the upper right corner and help button in the upper left corner are not displayed
                 show_tech_progress = false,     --是否显示科技进度
@@ -68,13 +68,13 @@
         </inventory-bar>
 
         <tech-or-task-bar style = "flex-direction: row; align-items: center; gap: 1vmin;" data-if = "not is_concise_mode and show_tech_progress" data-event-click="clickButton('click_techortaskicon', is_task)">
-            <div style = "width: 16.28vmin; height: 16.28vmin; background-size: 100% 100%;" data-style-background-image="is_task and 'ui/textures/construct/task-icon.texture' or 'ui/textures/construct/tech-icon.texture'" />
+            <div style = "width: 16.28vmin; height: 16.28vmin; background-size: 100% 100%;" data-style-background-image="is_task and '/pkg/vaststars.resources/ui/textures/construct/task-icon.texture' or '/pkg/vaststars.resources/ui/textures/construct/tech-icon.texture'" />
             <div style = "width: 23.00vmin; height: 15.90vmin; flex-direction: column;">
                 <div style = "width: 100%; height: 33.33%; font-size: 4.0vmin; justify-content: center; align-items: center;">{{current_tech_name}}</div>
                 <div style = "width: 100%; height: 33.33%;">
-                    <div style="position: absolute; width: 100%; height: 100%; background-image: ui/textures/construct/tech-or-task-progress-bg.texture; background-size: 100% 100%;" />
+                    <div style="position: absolute; width: 100%; height: 100%; background-image: /pkg/vaststars.resources/ui/textures/construct/tech-or-task-progress-bg.texture; background-size: 100% 100%;" />
                     <div style="position: absolute; height: 100%; overflow: hidden;" data-style-width = "current_tech_progress">
-                        <div style="position: absolute; width: 23.00vmin; height: 100%; background-image: ui/textures/construct/tech-or-task-progress.texture; background-size: 100% 100%;" />
+                        <div style="position: absolute; width: 23.00vmin; height: 100%; background-image: /pkg/vaststars.resources/ui/textures/construct/tech-or-task-progress.texture; background-size: 100% 100%;" />
                     </div>
                     <div style="position: absolute; width: 100%; height: 100%; font-size: 3.0vmin; -webkit-text-stroke: 0.2vmin rgb(0, 0, 0); justify-content: center; align-items: center;">{{current_tech_progress_detail}}</div>
                 </div>
@@ -84,27 +84,27 @@
             </div>
         </tech-or-task-bar>
         <tech-or-task-bar style = "flex-direction: row; align-items: center; gap: 1vmin; left: 83.13vmax;" data-if = "not (not is_concise_mode and show_tech_progress)" data-event-click="clickButton('click_techortaskicon', is_task)">
-            <div style = "width: 16.28vmin; height: 16.28vmin; background-size: 100% 100%; background-image: ui/textures/construct/tech-icon.texture;" />
+            <div style = "width: 16.28vmin; height: 16.28vmin; background-size: 100% 100%; background-image: /pkg/vaststars.resources/ui/textures/construct/tech-icon.texture;" />
         </tech-or-task-bar>
 
-        <main-button style = "position: absolute; left: 72.20vmax; top: 67.00vmin; background-image: ui/textures/construct/main-button-bg.texture; background-size: 100% 100%;" data-event-click = "clickButton('construct')" 
+        <main-button style = "position: absolute; left: 72.20vmax; top: 67.00vmin; background-image: /pkg/vaststars.resources/ui/textures/construct/main-button-bg.texture; background-size: 100% 100%;" data-event-click = "clickButton('construct')" 
             data-if = "not is_concise_mode and focus_building_icon == ''"
             >
-            <main-button-icon style = "background-image: ui/textures/construct/main-button-construct.texture;" />
+            <main-button-icon style = "background-image: /pkg/vaststars.resources/ui/textures/construct/main-button-construct.texture;" />
         </main-button>
 
-        <main-button style = "position: absolute; left: 72.20vmax; top: 67.00vmin; background-image: ui/textures/construct/main-button-bg.texture; background-size: 100% 100%;"
+        <main-button style = "position: absolute; left: 72.20vmax; top: 67.00vmin; background-image: /pkg/vaststars.resources/ui/textures/construct/main-button-bg.texture; background-size: 100% 100%;"
             data-event-click = "clickButton('main_button_tap')"
             data-event-longpress = "clickButton('main_button_longpress')"
             data-if = "focus_building_icon ~= ''"
             >
             <main-button-icon data-style-background-image = "focus_building_icon" />
-            <div style = "position: absolute; background-size: 100% 100%; width: 100%; height: 100%; background-image: ui/textures/construct/main-button-active.texture;" />
+            <div style = "position: absolute; background-size: 100% 100%; width: 100%; height: 100%; background-image: /pkg/vaststars.resources/ui/textures/construct/main-button-active.texture;" />
         </main-button>
 
         <div style = "position: absolute; pointer-events: none; width: 100%; top: 80vmin; justify-content: center; align-items: center;">
             <div style="width: 22.00vmin; height: 16.00vmin; background-color: rgb(105, 112, 8); text-align: center; font-size: 4.00vmin; border-radius: 2.00vmin; border: 0.53vmin white;" data-event-click="clickButton('rotate')" data-if = "show_rotate">
-                <div style="margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-size:cover; background-image: ui/textures/construct/rotate.texture" />
+                <div style="margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-size:cover; background-image: /pkg/vaststars.resources/ui/textures/construct/rotate.texture" />
                 <div style="font-size: 85%;">旋转建筑</div>
             </div>
         </div>

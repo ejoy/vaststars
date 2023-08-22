@@ -156,8 +156,8 @@ function M:stage_ui_update(datamodel, object_id, interface)
             local gameplay_world = gameplay_core.get_world()
             interface.set_item(gameplay_world, e, 0)
         end
-        iui.call_datamodel_method("ui/building_menu.rml", "update_item_icon")
-        iui.close("ui/item_config.rml")
+        iui.call_datamodel_method("/pkg/vaststars.resources/ui/building_menu.rml", "update_item_icon")
+        iui.close("/pkg/vaststars.resources/ui/item_config.rml")
     end
 end
 

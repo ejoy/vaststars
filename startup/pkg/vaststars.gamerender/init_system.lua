@@ -22,7 +22,7 @@ local font = import_package "ant.font"
 local m = ecs.system 'init_system'
 
 font.import "/pkg/vaststars.resources/ui/font/Alibaba-PuHuiTi-Regular.ttf"
-iRmlUi.set_prefix "/pkg/vaststars.resources/"
+iRmlUi.set_prefix ""
 
 function m:init_world()
     bgfx.maxfps(FRAMES_PER_SECOND)

@@ -113,7 +113,7 @@ function M:stage_ui_update(datamodel)
     end
 
     for _ in close_mb:unpack() do
-        iui.close("ui/inventory.rml")
+        iui.close("/pkg/vaststars.resources/ui/inventory.rml")
     end
 
     self:flush()

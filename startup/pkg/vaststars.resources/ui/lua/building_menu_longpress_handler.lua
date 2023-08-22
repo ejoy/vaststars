@@ -1,4 +1,4 @@
-local spec = require "ui.lua.building_menu_spec"
+local spec = require "lua.building_menu_spec"
 
 local TRANSFORM_DELTA <const> = 18
 local LINE_MARGIN_RIGHT_DELTA <const> = -2
@@ -69,21 +69,21 @@ return function(start)
     if start.teardown then
         local v = setmetatable({}, {__index = DEFAULT})
         v.command = "teardown"
-        v.background_image = "ui/textures/building-menu-longpress/teardown.texture"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/teardown.texture"
         start.buttons[#start.buttons + 1] = v
     end
 
     if start.move then
         local v = setmetatable({}, {__index = DEFAULT})
         v.command = "move"
-        v.background_image = "ui/textures/building-menu-longpress/move.texture"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/move.texture"
         start.buttons[#start.buttons + 1] = v
     end
 
     if start.copy then
         local v = setmetatable({}, {__index = DEFAULT})
         v.command = "copy"
-        v.background_image = "ui/textures/building-menu-longpress/clone.texture"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/clone.texture"
         start.buttons[#start.buttons + 1] = v
     end
 

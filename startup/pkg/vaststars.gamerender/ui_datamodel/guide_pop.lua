@@ -29,11 +29,11 @@ function M:stage_ui_update(datamodel)
             end
             datamodel.count = count
         else
-            iui.close("ui/guide_pop.rml")
+            iui.close("/pkg/vaststars.resources/ui/guide_pop.rml")
 
             local chapter_text = guide_desc.narrative_end.pop_chapter
             if chapter_text then
-                iui.open({"ui/chapter_pop.rml"}, chapter_text)
+                iui.open({"/pkg/vaststars.resources/ui/chapter_pop.rml"}, chapter_text)
             end
             local task = guide_desc.narrative_end.task
             local game_world = gameplay_core.get_world()

@@ -17,10 +17,10 @@ function science_sys:gameworld_update()
                 world:pub {"focus_tips", "close", science.current_tech}
             end
             iscience.update_tech_list(gameplay_world)
-            iui.call_datamodel_method("ui/construct.rml", "update_tech")
+            iui.call_datamodel_method("/pkg/vaststars.resources/ui/construct.rml", "update_tech")
             world:pub {"research_finished", science.current_tech.name}
             science.current_tech = nil
-            iui.open({"ui/tech_tips.rml"}, {left = 170, top = 0.5})
+            iui.open({"/pkg/vaststars.resources/ui/tech_tips.rml"}, {left = 170, top = 0.5})
         end
     end
     local queue = gameplay_world:research_queue()
@@ -30,7 +30,7 @@ function science_sys:gameworld_update()
         end
         if science.current_tech then
             science.current_tech.progress = gameplay_world:research_progress(queue[1]) or 0
-            iui.call_datamodel_method("ui/construct.rml", "update_tech", science.current_tech)
+            iui.call_datamodel_method("/pkg/vaststars.resources/ui/construct.rml", "update_tech", science.current_tech)
         end
     elseif science.current_tech then
         science.current_tech = nil

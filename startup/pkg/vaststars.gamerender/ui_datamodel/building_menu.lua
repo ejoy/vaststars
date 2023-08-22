@@ -203,7 +203,7 @@ end
 ---------------
 local M = {}
 function M:create(object_id)
-    iui.register_leave("ui/building_menu.rml")
+    iui.register_leave("/pkg/vaststars.resources/ui/building_menu.rml")
 
     local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
@@ -328,7 +328,7 @@ function M:stage_ui_update(datamodel, object_id)
     __moveable_count_update(datamodel, object_id)
 
     for _, _, _, object_id in set_recipe_mb:unpack() do
-        iui.open({"ui/recipe_config.rml"}, object_id)
+        iui.open({"/pkg/vaststars.resources/ui/recipe_config.rml"}, object_id)
     end
 
     for _, _, _, object_id in set_item_mb:unpack() do
@@ -343,7 +343,7 @@ function M:stage_ui_update(datamodel, object_id)
         else
             assert(false)
         end
-        iui.open({"ui/item_config.rml"}, object_id, interface)
+        iui.open({"/pkg/vaststars.resources/ui/item_config.rml"}, object_id, interface)
     end
 
     for _, _, _, object_id in set_item2_mb:unpack() do
@@ -355,7 +355,7 @@ function M:stage_ui_update(datamodel, object_id)
         else
             assert(false)
         end
-        iui.open({"ui/item_config.rml"}, object_id, interface)
+        iui.open({"/pkg/vaststars.resources/ui/item_config.rml"}, object_id, interface)
     end
 
     for _ in lorry_factory_inc_lorry_mb:unpack() do
@@ -440,7 +440,7 @@ function M:stage_ui_update(datamodel, object_id)
 
                     igameplay.destroy_entity(object.gameplay_eid)
                     iui.leave()
-                    iui.redirect("ui/construct.rml", "unselected")
+                    iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "unselected")
                 end
             end
         else
@@ -448,8 +448,8 @@ function M:stage_ui_update(datamodel, object_id)
         end
 
         local sp_x, sp_y = math3d.index(icamera_controller.world_to_screen(object.srt.t), 1, 2)
-        iui.send("ui/message_pop.rml", "item", {action = "up", left = sp_x, top = sp_y, items = msgs})
-        iui.call_datamodel_method("ui/construct.rml", "update_inventory_bar", msgs)
+        iui.send("/pkg/vaststars.resources/ui/message_pop.rml", "item", {action = "up", left = sp_x, top = sp_y, items = msgs})
+        iui.call_datamodel_method("/pkg/vaststars.resources/ui/construct.rml", "update_inventory_bar", msgs)
     end
 
     for _ in place_item_mb:unpack() do
@@ -478,8 +478,8 @@ function M:stage_ui_update(datamodel, object_id)
         end
 
         local sp_x, sp_y = math3d.index(icamera_controller.world_to_screen(object.srt.t), 1, 2)
-        iui.send("ui/message_pop.rml", "item", {action = "down", left = sp_x, top = sp_y, items = msgs})
-        iui.call_datamodel_method("ui/construct.rml", "update_inventory_bar", msgs)
+        iui.send("/pkg/vaststars.resources/ui/message_pop.rml", "item", {action = "down", left = sp_x, top = sp_y, items = msgs})
+        iui.call_datamodel_method("/pkg/vaststars.resources/ui/construct.rml", "update_inventory_bar", msgs)
     end
 end
 

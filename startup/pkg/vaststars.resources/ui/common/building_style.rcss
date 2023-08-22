@@ -46,7 +46,7 @@ button:active {
 	justify-content: flex-start;
 }
 .back-button {
-	background-image:"ui/textures/common/return.texture"; 
+	background-image:"/pkg/vaststars.resources/ui/textures/common/return.texture"; 
 	width: 14.67vmin; 
 	height: 14.67vmin; 
 	background-size:cover;
@@ -55,13 +55,13 @@ button:active {
 	top:0.8%; 
 	background-color: rgba(255, 255, 255, 0); 
 	border: 0.00vmin; 
-	background-image:"ui/textures/factory/seacher.texture"; 
+	background-image:"/pkg/vaststars.resources/ui/textures/factory/seacher.texture"; 
 	width: 13.07vmin; 
 	height: 13.07vmin; 
 	background-size:cover;
 }
 .recipe-change-button {
-	background-image:"ui/textures/assemble/wheel.texture"; 
+	background-image:"/pkg/vaststars.resources/ui/textures/assemble/wheel.texture"; 
 	width: 13.07vmin; 
 	height: 13.07vmin; 
 	background-size:cover;
@@ -161,7 +161,7 @@ workbutton {
 	background-size:cover;
 	width: 12.00vmin;
 	height: 12.00vmin;
-	background-image: "ui/textures/science/add.texture";
+	background-image: "/pkg/vaststars.resources/ui/textures/science/add.texture";
 }
 /*分割线*/
 .draw-line {
@@ -225,7 +225,7 @@ workbutton {
 	height: 10.67vmin;
 	background-color: rgb(191,144,0);
 	background-size: cover;
-	background-image: "ui/textures/construct/assembler.texture";
+	background-image: "/pkg/vaststars.resources/ui/textures/construct/assembler.texture";
 	border: 0.27vmin rgb(92, 184, 92);
 }
 /*进度条*/
@@ -233,7 +233,7 @@ workbutton {
 	width: 4.00vmin;
 	height: 4.00vmin;
 	background-size:cover;
-	background-image:"ui/textures/character/flash.texture";
+	background-image:"/pkg/vaststars.resources/ui/textures/character/flash.texture";
 
 }
 .progress-bar-block {
@@ -262,7 +262,7 @@ workbutton {
 	justify-content: space-between;
 	width: 10.67vmin;
 	height: 10.67vmin;
-	background-image:"ui/textures/science/book.texture";
+	background-image:"/pkg/vaststars.resources/ui/textures/science/book.texture";
 	background-size:cover;
 }
 .item-page-block {
@@ -317,7 +317,7 @@ workbutton {
 	width: 9.00vmin;
 	height: 9.00vmin;
 	font-size: 2.00vmin;
-	background-image: "ui/textures/construct/insert1.texture";
+	background-image: "/pkg/vaststars.resources/ui/textures/construct/insert1.texture";
 }
 /*物品按钮弹出框*/
 .exchange-title {
@@ -349,13 +349,13 @@ workbutton {
 	width: 8vmin;
 	height: 5.64vmin;
 	background-size: cover;
-	background-image: "ui/textures/exchange/left_arrow.texture";
+	background-image: "/pkg/vaststars.resources/ui/textures/exchange/left_arrow.texture";
 }
 .button-exchange-box {
 	width: 7.00vmin;
 	height: 7.00vmin;
 	background-size: cover;
-	background-image: "ui/textures/exchange/yellow_box.texture";
+	background-image: "/pkg/vaststars.resources/ui/textures/exchange/yellow_box.texture";
 }
 .exchange-region {
 	width: 100%;    
@@ -493,7 +493,7 @@ workbutton {
 	height: 2.00vmin;
 	transform: rotate(90deg);
 	background-size: cover; 
-	background-image: "ui/textures/exchange/right_arrow.texture";
+	background-image: "/pkg/vaststars.resources/ui/textures/exchange/right_arrow.texture";
 }
 @keyframes enlarge2 {
 	0% {

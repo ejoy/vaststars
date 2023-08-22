@@ -10,7 +10,7 @@ prototype "液罐I" {
     item_order = 40,
     drone_depot_gap3 = "0.2x0.05x0.2",
     pile_model = "glbs/stackeditems/gravel.glb|mesh.prefab",
-    item_icon = "textures/icons/item/storage-tank.texture",
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/storage-tank.texture",
     backpack_limit = 20,
     item_description = "用于储存流体的容器",
 }
@@ -24,7 +24,7 @@ prototype "液罐II" {
     item_order = 42,
     drone_depot_gap3 = "0.2x0.05x0.2",
     pile_model = "glbs/stackeditems/gravel.glb|mesh.prefab",
-    item_icon = "textures/icons/item/storage-tank.texture",
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/storage-tank.texture",
     backpack_limit = 20,
     item_description = "用于储存流体的容器",
 }
@@ -38,7 +38,7 @@ prototype "液罐III" {
     item_order = 43,
     drone_depot_gap3 = "0.2x0.05x0.2",
     pile_model = "glbs/stackeditems/gravel.glb|mesh.prefab",
-    item_icon = "textures/icons/item/storage-tank.texture",
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/storage-tank.texture",
     backpack_limit = 20,
     item_description = "用于储存流体的容器",
 }
@@ -52,7 +52,7 @@ prototype "气罐I" {
     item_order = 50,
     drone_depot_gap3 = "0.2x0.05x0.2",
     pile_model = "glbs/stackeditems/gravel.glb|mesh.prefab",
-    item_icon = "textures/icons/item/hydroplant.texture",
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/hydroplant.texture",
     backpack_limit = 20,
     item_description = "专门贮藏气体的容器",
 }
@@ -66,7 +66,7 @@ prototype "地下水挖掘机I" {
     item_order = 52,
     drone_depot_gap3 = "0.2x0.05x0.2",
     pile_model = "glbs/stackeditems/gravel.glb|mesh.prefab",
-    item_icon = "textures/icons/item/water-excavator.texture",
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/water-excavator.texture",
     backpack_limit = 20,
     item_description = "用于从含水层等地下水源中挖掘和提取水的机器",
 }
@@ -80,7 +80,7 @@ prototype "地下水挖掘机II" {
     item_order = 54,
     drone_depot_gap3 = "0.2x0.05x0.2",
     pile_model = "glbs/stackeditems/gravel.glb|mesh.prefab",
-    item_icon = "textures/icons/item/water-excavator.texture",
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/water-excavator.texture",
     backpack_limit = 20,
     item_description = "用于从含水层等地下水源中挖掘和提取水的机器",
 }
@@ -94,7 +94,7 @@ prototype "压力泵I" {
     item_order = 56,
     drone_depot_gap3 = "0.2x0.05x0.2",
     pile_model = "glbs/stackeditems/gravel.glb|mesh.prefab",
-    item_icon = "textures/icons/item/motor.texture",
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/motor.texture",
     backpack_limit = 20,
     item_description = "用于增加流体压力的机械设备",
 }
@@ -108,7 +108,7 @@ prototype "烟囱I" {
     item_order = 58,
     drone_depot_gap3 = "0.2x0.05x0.2",
     pile_model = "glbs/stackeditems/gravel.glb|mesh.prefab",
-    item_icon = "textures/icons/item/chimney.texture",
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/chimney.texture",
     backpack_limit = 20,
     item_description = "用于排放工业设施中烟气或废气的设施",
 }
@@ -122,7 +122,7 @@ prototype "烟囱II" {
     item_order = 60,
     drone_depot_gap3 = "0.2x0.05x0.2",
     pile_model = "glbs/stackeditems/gravel.glb|mesh.prefab",
-    item_icon = "textures/icons/item/chimney.texture",
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/chimney.texture",
     backpack_limit = 20,
     item_description = "用于排放工业设施中烟气或废气的设施",
 }
@@ -136,7 +136,7 @@ prototype "排水口I" {
     item_order = 62,
     drone_depot_gap3 = "0.2x0.05x0.2",
     pile_model = "glbs/stackeditems/gravel.glb|mesh.prefab",
-    item_icon = "textures/icons/item/outfall.texture",
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/outfall.texture",
     backpack_limit = 20,
     item_description = "用于排放多余水分或废水的装置",
 }
@@ -150,7 +150,7 @@ prototype "排水口II" {
     item_order = 64,
     drone_depot_gap3 = "0.2x0.05x0.2",
     pile_model = "glbs/stackeditems/gravel.glb|mesh.prefab",
-    item_icon = "textures/icons/item/outfall.texture",
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/outfall.texture",
     backpack_limit = 20,
     item_description = "用于排放多余水分或废水的装置",
 }
@@ -164,7 +164,7 @@ prototype "空气过滤器I" {
     item_order = 66,
     drone_depot_gap3 = "0.2x0.05x0.2",
     pile_model = "glbs/stackeditems/gravel.glb|mesh.prefab",
-    item_icon = "textures/icons/item/air-filter.texture",
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/air-filter.texture",
     backpack_limit = 20,
     item_description = "抽取空气的装置",
 }
@@ -178,7 +178,7 @@ prototype "空气过滤器II" {
     item_order = 68,
     drone_depot_gap3 = "0.2x0.05x0.2",
     pile_model = "glbs/stackeditems/gravel.glb|mesh.prefab",
-    item_icon = "textures/icons/item/air-filter.texture",
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/air-filter.texture",
     backpack_limit = 20,
     item_description = "抽取空气的装置",
 }
@@ -192,7 +192,7 @@ prototype "空气过滤器III" {
     item_order = 70,
     drone_depot_gap3 = "0.2x0.05x0.2",
     pile_model = "glbs/stackeditems/gravel.glb|mesh.prefab",
-    item_icon = "textures/icons/item/air-filter.texture",
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/air-filter.texture",
     backpack_limit = 20,
     item_description = "抽取空气的装置",
 }
@@ -206,7 +206,7 @@ prototype "管道1-X型" {
     item_order = 2,
     drone_depot_gap3 = "0.2x0.05x0.2",
     pile_model = "glbs/stackeditems/gravel.glb|mesh.prefab",
-    item_icon = "textures/icons/item/pipe.texture",
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/pipe.texture",
     backpack_limit = 100,
     item_description = "放置在地上传输流体的管道",
 }
@@ -220,7 +220,7 @@ prototype "地下管1-JI型" {
     item_order = 4,
     drone_depot_gap3 = "0.2x0.05x0.2",
     pile_model = "glbs/stackeditems/gravel.glb|mesh.prefab",
-    item_icon = "textures/icons/item/underground-pipe.texture",
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/underground-pipe.texture",
     backpack_limit = 100,
     item_description = "放置在地下传输流体的管道",
 }
@@ -234,7 +234,7 @@ prototype "地下管2-JI型" {
     item_order = 6,
     drone_depot_gap3 = "0.2x0.05x0.2",
     pile_model = "glbs/stackeditems/gravel.glb|mesh.prefab",
-    item_icon = "textures/icons/item/underground-pipe.texture",
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/underground-pipe.texture",
     backpack_limit = 100,
     item_description = "放置在地下传输流体的管道",
 }

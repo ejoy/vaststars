@@ -1,4 +1,5 @@
-local ui_sys = require "ui.ui_system"
+local ui_sys = require "lua.ui_system"
+
 local start = ui_sys.createDataMode {
     items = {},
     total = 0,
@@ -78,7 +79,7 @@ end
 
 local page_item_init = page_item_update
 
-local pageclass = require "ui.page"
+local pageclass = require "lua.page"
 window.customElements.define("page", function(e)
     start.page = pageclass.create(document, e, page_item_init, page_item_update)
 end)

@@ -188,7 +188,7 @@ end
 
 function M:stage_camera_usage(datamodel)
     if status_stopped() then
-        iui.close("ui/loading.rml")
+        iui.close("/pkg/vaststars.resources/ui/loading.rml")
         return
     end
     for i, v in ipairs(status) do
