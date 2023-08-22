@@ -53,7 +53,7 @@ public:
             blue,
             none,
         };
-        slot_type type = slot_type::red;
+        slot_type type = slot_type::none;
         uint8_t   eof;
         uint16_t  item = 0;
         uint16_t  amount = 0;
