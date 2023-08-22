@@ -1,8 +1,6 @@
 local system = require "register.system"
 local luaecs = import_package "ant.luaecs"
 local json = import_package "ant.json"
-local status = require "status"
-
 
 local function writeall(file, content)
     local f <close> = assert(io.open(file, "wb"))

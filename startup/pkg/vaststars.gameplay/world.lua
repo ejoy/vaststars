@@ -54,9 +54,6 @@ return function ()
     world._cworld = cworld
     world._context = context
 
-    --TOOD: 如果可以提前得知需要读档，这个操作是可以省略的
-    prototype.restore(cworld, {})
-
     function world:create_entity(type)
         return iBuilding.create(self, type)
     end
@@ -111,8 +108,6 @@ return function ()
     local pipeline_build = pipeline(world, cworld, "build")
     local pipeline_backup = pipeline(world, cworld, "backup")
     local pipeline_restore = pipeline(world, cworld, "restore")
-
-    pipeline_init()
 
     function world:update()
         if cworld:is_dirty() then
@@ -184,5 +179,9 @@ return function ()
         return self._frame
     end
 
+    --TOOD: 如果可以提前得知需要读档，这个操作是可以省略的
+    prototype.restore(cworld, {})
+
+    pipeline_init()
     return world
 end
