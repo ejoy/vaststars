@@ -51,7 +51,6 @@ public:
         enum class slot_type: uint8_t {
             red = 0,
             blue,
-            green,
             none,
         };
         slot_type type = slot_type::red;

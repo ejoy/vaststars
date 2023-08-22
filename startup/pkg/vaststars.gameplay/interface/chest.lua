@@ -14,8 +14,7 @@ local CHEST_TYPE <const> = {
     [3] = 3,
     red = 0,
     blue = 1,
-    green = 2,
-    none = 3,
+    none = 2,
 }
 local function chest_slot(t)
     assert(t.type)

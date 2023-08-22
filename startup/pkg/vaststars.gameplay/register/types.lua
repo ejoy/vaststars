@@ -308,7 +308,7 @@ local enum = {
 	chest_type = {
 		red = 0,
 		blue = 1,
-		green = 2,
+		none = 2,
 	},
 }
 
