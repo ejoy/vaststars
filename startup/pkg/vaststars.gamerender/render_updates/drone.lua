@@ -27,13 +27,83 @@ local drone_offset = 6
 local default_fly_height = 20
 local fly_to_home_height = 15
 local item_height = 15
-local function create_drone(homepos)
+local drone_queue = {}
+
+local function __get_location(location)
+    return (location >> 16) & 0xFFFF
+end
+
+local function __get_fly_height(location)
+    if not location then
+        return
+    end
+    local x, y = ((location >> 24) & 0xFF), (location >> 16) & 0xFF
+    local object = objects:coord(x, y)
+    if object then
+        return iprototype.queryByName(object.prototype_name).drone_height
+    end
+end
+
+local function __get_position(location)
+    local x, y = ((location >> 24) & 0xFF), (location >> 16) & 0xFF
+    local object = objects:coord(x, y)
+    if not object then
+        return math3d.vector(terrain:get_position_by_coord(x, y, 1, 1))
+    end
+
+    local idx = (location >> 7) & 0xF
+
+    local building = global.buildings[object.id]
+    if not building then
+        return math3d.set_index(object.srt.t, 2, item_height)
+    end
+    local io_shelves = building.io_shelves
+    if not io_shelves then
+        return math3d.set_index(object.srt.t, 2, item_height)
+    end
+    local pos = io_shelves:get_heap_position(idx+1)
+    if not pos then
+        return math3d.set_index(object.srt.t, 2, item_height)
+    else
+        return pos
+    end
+end
+
+local function get_berth(lacation)
+    return (lacation >> 5) & 0x03
+end
+
+local function get_home_pos(pos)
+    return math3d.add(math3d.set_index(pos, 2, 0), {6, 8, -6})
+end
+
+-- local function on_free_drone(location)
+--     local queue = drone_queue[location]
+--     local offset = 2
+--     local counter = -1
+--     for _, drone in ipairs(queue) do
+--         if drone.at_home then
+--             counter = counter + 1
+--             if counter > 0 then
+--                 local exz <close> = world:entity(drone.motion_xz)
+--                 local pos = iom:get_position(exz)
+--                 math3d.set_index(pos, 2, math3d.index(pos, 2) - counter * offset)
+--                 iom:set_position(pos)
+--             end
+--         end
+--     end
+-- end
+
+local function create_drone(at)
+    local homepos = get_home_pos(__get_position(at))
+    local location = __get_location(at)
     local task = {
-        running = false,
+        location = location,
+        flying = false,
         duration = 0,
         elapsed = 0,
         to_home = false,
-        process = 0,
+        at_home = false,
         flyid = 0,
         gohome = function (self, flyid, from, to, fly_height, duration)
             -- fix move drone hub
@@ -43,6 +113,7 @@ local function create_drone(homepos)
             self.to_home = true
         end,
         flyto = function (self, flyid, height, from, to, home, duration, start)
+            self.at_home = false
             self.flyid = flyid
             if self.to_home and not home then
                 local exz <close> = world:entity(self.motion_xz)
@@ -68,19 +139,19 @@ local function create_drone(homepos)
             )
             ims.set_duration(exz, duration, start or 0, true)
             ims.set_duration(ey, duration, start or 0, true)
-            self.running = true
+            self.flying = true
         end,
         update = function (self, step, hasitem)
-            if not self.running then
+            if not self.flying then
                 return
             end
             local finished = false
             if self.to_home then
-                --TODO: framerate is 30
-                local elapsed = 1--1.0 / 30
-                self.elapsed = self.elapsed + elapsed
+                self.elapsed = self.elapsed + 1
                 if self.elapsed >= self.duration then
                     finished = true
+                    self.home = true
+                    -- on_free_drone(self.lacation)
                 end
             else
                 if step >= 1.0 then
@@ -88,7 +159,7 @@ local function create_drone(homepos)
                 end
             end
             if finished then
-                self.running = false
+                self.flying = false
                 self.elapsed = 0
             end
             if not hasitem then
@@ -133,57 +204,18 @@ local function create_drone(homepos)
     end
     world:create_object(task.prefab)
 
+    -- if not drone_queue[location] then
+    --     drone_queue[location] = {}
+    -- end
+    -- local queue = drone_queue[location]
+    -- queue[#queue] = task
     return task
-end
-
-local function get_berth(lacation)
-    return (lacation >> 5) & 0x03
-end
-
-local function get_home_pos(pos)
-    return math3d.add(math3d.set_index(pos, 2, 0), {6, 8, -6})
 end
 
 local function remove_drone(eid)
     if lookup_drones[eid] then
         lookup_drones[eid]:destroy()
         lookup_drones[eid] = nil
-    end
-end
-
-local function __get_fly_height(location)
-    if not location then
-        return
-    end
-    local x, y = ((location >> 24) & 0xFF), (location >> 16) & 0xFF
-    local object = objects:coord(x, y)
-    if object then
-        return iprototype.queryByName(object.prototype_name).drone_height
-    end
-end
-
-local function __get_position(location)
-    local x, y = ((location >> 24) & 0xFF), (location >> 16) & 0xFF
-    local object = objects:coord(x, y)
-    if not object then
-        return math3d.vector(terrain:get_position_by_coord(x, y, 1, 1))
-    end
-
-    local idx = (location >> 7) & 0xF
-
-    local building = global.buildings[object.id]
-    if not building then
-        return math3d.set_index(object.srt.t, 2, item_height)
-    end
-    local io_shelves = building.io_shelves
-    if not io_shelves then
-        return math3d.set_index(object.srt.t, 2, item_height)
-    end
-    local pos = io_shelves:get_heap_position(idx+1)
-    if not pos then
-        return math3d.set_index(object.srt.t, 2, item_height)
-    else
-        return pos
     end
 end
 
@@ -216,7 +248,7 @@ function drone_sys:gameworld_update()
             goto continue
         end
         if not lookup_drones[e.eid] then
-            lookup_drones[e.eid] = create_drone(get_home_pos(__get_position(drone.prev)))
+            lookup_drones[e.eid] = create_drone(drone.prev)
         else
             local current = lookup_drones[e.eid]
             local flyid = drone.prev << 32 | drone.next
