@@ -1,7 +1,7 @@
 dofile "/engine/bootstrap.lua"
 
 local fs = require "bee.filesystem"
-local cr = import_package "ant.compile_resource".fileserver()
+local cr = import_package "ant.compile_resource"
 local datalist  = require "datalist"
 
 local function init_setting()
@@ -64,7 +64,7 @@ end
 init_setting()
 
 local basedir = (fs.current_path() / "../../"):lexically_normal()
-local path = basedir .. "startup/pkg/vaststars.resources/glb/stackeditems/"
+local path = basedir .. "startup/pkg/vaststars.resources/glbs/stackeditems/"
 
 local function dir(p)
 	local t = {}
