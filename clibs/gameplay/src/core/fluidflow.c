@@ -312,6 +312,7 @@ fluidflow_connect(struct fluidflow_network *net, int from, int to, int oneway) {
 
 static struct fluid_state *
 get_state(struct pipe *p, struct fluid_state *output) {
+	output->id = p->id;
 	output->volume = p->fluid;
 	output->flow = p->flow;
 	output->box.capacity = p->capacity;
@@ -319,15 +320,6 @@ get_state(struct pipe *p, struct fluid_state *output) {
 	output->box.base_level = p->base_level / FIXSHIFT;
 	output->box.pumping_speed = p->pumping_speed;
 	return output;
-}
-
-struct fluid_state *
-fluidflow_query(struct fluidflow_network *net, int id, struct fluid_state *output) {
-	// todo :  cache id map
-	int idx = find_id(net, id);
-	if (idx == PIPE_INVALID_CONNECTION)
-		return NULL;
-	return get_state(&net->p[idx], output);
 }
 
 static int
@@ -852,6 +844,31 @@ pump_fluid(struct fluidflow_network *net) {
 	for (i=0;i<net->pump_n;i++) {
 		net->p[i].fluid += net->p[i].flow;
 	}
+}
+
+int
+fluidflow_size(struct fluidflow_network *net) {
+	return net->pump_n + net->pipe_n;
+}
+
+struct fluid_state *
+fluidflow_index(struct fluidflow_network *net, int idx, struct fluid_state *output) {
+	if (idx >= fluidflow_size(net))
+		return NULL;
+	get_state(&net->p[idx], output);
+	output->blocking = is_blocking(net, idx);
+	return output;
+}
+
+struct fluid_state *
+fluidflow_query(struct fluidflow_network *net, int id, struct fluid_state *output) {
+	// todo :  cache id map
+	int idx = find_id(net, id);
+	if (idx == PIPE_INVALID_CONNECTION)
+		return NULL;
+	get_state(&net->p[idx], output);
+	output->blocking = is_blocking(net, idx);
+	return output;
 }
 
 void

@@ -14,7 +14,7 @@ fluidflow::~fluidflow() {
 	fluidflow_delete(network);
 }
 
-uint16_t fluidflow::build(struct fluid_box *box) {
+uint16_t fluidflow::create_id() {
 	uint16_t newid = 0;
 	if (freelist.empty()) {
 		if (maxid >= 0xFFFF) {
@@ -26,37 +26,19 @@ uint16_t fluidflow::build(struct fluid_box *box) {
 		newid = freelist.back();
 		freelist.pop_back();
 	}
-	box->capacity *= multiple;
-	box->height *= multiple;
-	box->base_level *= multiple;
-	box->pumping_speed *= multiple;
-	if (fluidflow_build(network, newid, box)) {
-		freelist.push_back(newid);
-		return 0;
-	}
 	return newid;
 }
 
-bool fluidflow::restore(uint16_t id, struct fluid_box *box) {
-	if (id <= maxid) {
-		freelist.erase(std::remove_if(freelist.begin(), freelist.end(),
-			[=](uint16_t x) {
-				return x == id;
-			}
-		), freelist.end());
-	}
-	else {
-		for (auto i = maxid + 1; i < id; ++i) {
-			freelist.push_back(i);
-		}
-		maxid = id;
-	}
+void fluidflow::remove_id(uint16_t id) {
+	freelist.push_back(id);
+}
+
+bool fluidflow::build(uint16_t id, struct fluid_box *box) {
 	box->capacity *= multiple;
 	box->height *= multiple;
 	box->base_level *= multiple;
 	box->pumping_speed *= multiple;
 	if (fluidflow_build(network, id, box)) {
-		freelist.push_back(id);
 		return false;
 	}
 	return true;
@@ -76,6 +58,17 @@ bool fluidflow::connect(int from, int to, bool oneway) {
 
 void fluidflow::dump() {
 	fluidflow_dump(network);
+}
+
+uint16_t fluidflow::size() const {
+	return (uint16_t)fluidflow_size(network);
+}
+
+bool fluidflow::index(int idx, fluid_state& state) {
+	if (!fluidflow_index(network, idx, &state)) {
+		return false;
+	}
+	return true;
 }
 
 bool fluidflow::query(int id, fluid_state& state) {
@@ -103,9 +96,8 @@ void fluidflow::set(int id, int fluid, int user_multiple) {
 	assert(r != -1);
 }
 
-static int
-lupdate(lua_State *L) {
-    auto& w = getworld(L);
+static int lupdate(lua_State* L) {
+	auto& w = getworld(L);
 	for (auto& [_,f] : w.fluidflows) {
 		f.update();
 	}

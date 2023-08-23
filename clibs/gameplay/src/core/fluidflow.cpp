@@ -18,33 +18,14 @@ static int fluidflow_build(lua_State *L) {
         .base_level = base_level,
         .pumping_speed = pumping_speed,
     };
-    uint16_t id = w.fluidflows[fluid].build(&box);
-    if (id == 0) {
+    auto& flow = w.fluidflows[fluid];
+    uint16_t id = flow.create_id();
+    if (!flow.build(id, &box)) {
+        flow.remove_id(id);
         return luaL_error(L, "fluidflow build failed.");
     }
     lua_pushinteger(L, id);
     return 1;
-}
-
-static int fluidflow_restore(lua_State *L) {
-    auto& w = getworld(L);
-    uint16_t fluid = bee::lua::checkinteger<uint16_t>(L, 2);
-    uint16_t id = bee::lua::checkinteger<uint16_t>(L, 3);
-    int capacity = bee::lua::checkinteger<int>(L, 4);
-    int height = bee::lua::checkinteger<int>(L, 5);
-    int base_level = bee::lua::checkinteger<int>(L, 6);
-    int pumping_speed = bee::lua::optinteger<int, 0>(L, 7);
-    fluid_box box {
-        .capacity = capacity,
-        .height = height,
-        .base_level = base_level,
-        .pumping_speed = pumping_speed,
-    };
-    bool ok = w.fluidflows[fluid].restore(id, &box);
-    if (!ok) {
-        return luaL_error(L, "fluidflow restore failed.");
-    }
-    return 0;
 }
 
 static int fluidflow_teardown(lua_State *L) {
@@ -89,13 +70,15 @@ static int fluidflow_query(lua_State *L) {
     if (!f.query(id, state)) {
         return luaL_error(L, "fluidflow query failed.");
     }
-    lua_createtable(L, 0, 7);
+    lua_createtable(L, 0, 8);
     lua_pushinteger(L, f.multiple);
     lua_setfield(L, -2, "multiple");
     lua_pushinteger(L, state.volume);
     lua_setfield(L, -2, "volume");
     lua_pushinteger(L, state.flow);
     lua_setfield(L, -2, "flow");
+    lua_pushboolean(L, state.blocking);
+    lua_setfield(L, -2, "blocking");
     lua_pushinteger(L, state.box.capacity);
     lua_setfield(L, -2, "capacity");
     lua_pushinteger(L, state.box.height);
@@ -123,7 +106,6 @@ luaopen_vaststars_fluidflow_core(lua_State *L) {
     luaL_checkversion(L);
     luaL_Reg l[] = {
         { "build", fluidflow_build },
-        { "restore", fluidflow_restore },
         { "teardown", fluidflow_teardown },
         { "connect", fluidflow_connect },
         { "query", fluidflow_query },

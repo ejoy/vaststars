@@ -118,14 +118,6 @@ local function builder_build(world, fluid, fluidbox)
     return cFluidflow.build(world._cworld, fluid, fluidbox.capacity, fluidbox.height, fluidbox.base_level, pumping_speed)
 end
 
-local function builder_restore(world, fluid, id, fluidbox)
-    local pumping_speed = fluidbox.pumping_speed
-    if pumping_speed then
-        pumping_speed = pumping_speed // UPS
-    end
-    return cFluidflow.restore(world._cworld, fluid, id, fluidbox.capacity, fluidbox.height, fluidbox.base_level, pumping_speed)
-end
-
 local function connect(connects, a_id, a_type, b_id, b_type)
     local from, to
     local oneway = true
@@ -353,62 +345,31 @@ function m.build(world)
     builder_finish(world)
 end
 
-function m.backup_start(world)
-    local ecs = world.ecs
-    local function save(fluid, id)
-        if fluid == 0 or id == 0 then
-            return
-        end
-        local volume = cFluidflow.query(world._cworld, fluid, id).volume
-        ecs:new {
-            save_fluidflow = {
-                fluid = fluid,
-                id = id,
-                volume = volume,
-            }
-        }
-    end
-    for v in ecs:select "fluidbox:in" do
-        local fluid = v.fluidbox.fluid
-        local id = v.fluidbox.id
-        save(fluid, id)
-    end
-    for v in ecs:select "fluidboxes:in" do
-        local fb = v.fluidboxes
-        save(fb.in1_fluid, fb.in1_id)
-        save(fb.in2_fluid, fb.in2_id)
-        save(fb.in3_fluid, fb.in3_id)
-        save(fb.in4_fluid, fb.in4_id)
-        save(fb.out1_fluid, fb.out1_id)
-        save(fb.out2_fluid, fb.out2_id)
-        save(fb.out3_fluid, fb.out3_id)
-    end
-end
-
-function m.backup_finish(world)
-    local ecs = world.ecs
-    ecs:clear "save_fluidflow"
-end
-
 function m.restore_finish(world)
     m.init()
     local ecs = world.ecs
     builder_init()
-    for v in ecs:select "fluidbox:in building:in eid:in" do
+    for v in ecs:select "fluidbox:update building:in eid:in" do
         local pt = query(v.building.prototype)
         local fluid = v.fluidbox.fluid
         local id = v.fluidbox.id
-        builder_restore(world, fluid, id, pt.fluidbox)
+        if id == 0 then
+            id = builder_build(world, fluid, pt.fluidbox)
+            v.fluidbox.id = id
+        end
         builder_connect_fluidbox(fluid, id, pt.fluidbox, v.eid, v.building, pt.area)
     end
-    for v in ecs:select "fluidboxes:in building:in" do
+    for v in ecs:select "fluidboxes:update building:in eid:in" do
         local pt = query(v.building.prototype)
         local function init_fluidflow(classify)
             for i, fluidbox in ipairs(pt.fluidboxes[classify.."put"]) do
                 local fluid = v.fluidboxes[classify..i.."_fluid"]
                 if fluid ~= 0 then
                     local id = v.fluidboxes[classify..i.."_id"]
-                    builder_restore(world, fluid, id, fluidbox)
+                    if id == 0 then
+                        id = builder_build(world, fluid, fluidbox)
+                        v.fluidboxes[classify..i.."_id"] = id
+                    end
                     builder_connect_fluidbox(fluid, id, fluidbox, v.eid, v.building, pt.area)
                 end
             end
@@ -417,9 +378,4 @@ function m.restore_finish(world)
         init_fluidflow "out"
     end
     builder_finish(world)
-    for v in ecs:select "save_fluidflow:in" do
-        local sav = v.save_fluidflow
-        cFluidflow.set(world._cworld, sav.fluid, sav.id, sav.volume, 1)
-    end
-    ecs:clear "save_fluidflow"
 end

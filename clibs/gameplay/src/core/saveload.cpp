@@ -6,6 +6,10 @@
 #include <unordered_map>
 #include <concepts>
 
+extern "C" {
+    #include "core/fluidflow.h"
+}
+
 namespace lua_world {
     template <typename T>
     T file_readv(FILE* f) {
@@ -251,6 +255,23 @@ namespace lua_world {
             file_write(f, rw.straightCoord);
         });
 
+        backup_scope(L, f, "fluidflow", [&](){
+            file_write(f, w.fluidflows.size());
+            fluid_state state;
+            for (auto& [fluid, flow] : w.fluidflows) {
+                file_write(f, fluid);
+                file_write(f, flow.size());
+                for (uint16_t idx = 0;; ++idx) {
+                    if (!flow.index(idx, state)) {
+                        break;
+                    }
+                    file_write(f, state);
+                }
+                file_write(f, flow.maxid);
+                file_write(f, flow.freelist);
+            }
+        });
+
         fclose(f);
         return 1;
     }
@@ -325,6 +346,27 @@ namespace lua_world {
             rw.routeCached.clear();
         }, [&](){
             //TODO
+        });
+
+        restore_scope(L, f, "fluidflow", [&](){
+            w.fluidflows.clear();
+            auto n = file_readv<size_t>(f);
+            for (size_t i = 0; i < n; ++i) {
+                auto fluid = file_readv<uint16_t>(f);
+                auto size = file_readv<uint16_t>(f);
+                auto& flow = w.fluidflows[fluid];
+                for (auto j = 0; j < size; ++j) {
+                    auto state = file_readv<fluid_state>(f);
+                    flow.build(state.id, &state.box);
+                    if (state.blocking) {
+                        flow.block(state.id);
+                    }
+                }
+                file_read(f, flow.maxid);
+                file_read(f, flow.freelist);
+            }
+        }, [&](){
+            w.fluidflows.clear();
         });
 
         fclose(f);
