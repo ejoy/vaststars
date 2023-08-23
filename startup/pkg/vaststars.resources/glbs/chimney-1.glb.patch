@@ -19,3 +19,24 @@ value:
     ant.general|name
     ant.scene|scene_object
     ant.efk|efk
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    efk:
+      auto_play: false
+      loop: false
+      path: /pkg/vaststars.resources/effects/chimney_smoke.efk
+      speed: 1
+      visible: true
+    name: low_power
+    scene:
+      s: {0.800000011920929, 0.800000011920929, 0.800000011920929}
+      t: {0, 20.100000381469727, 0}
+  mount: 1
+  policy:
+    ant.general|name
+    ant.scene|scene_object
+    ant.efk|efk

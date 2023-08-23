@@ -10,7 +10,7 @@ value:
       path: /pkg/vaststars.resources/effects/mars-outfall_s.efk
       speed: 1
       visible: true
-    name: root
+    name: work
     scene:
       r: {0.09584575146436691, 0, 0, 0.9953961968421936}
       s: {2, 2, 1.5}
@@ -20,3 +20,29 @@ value:
     ant.general|name
     ant.scene|scene_object
     ant.efk|efk
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    efk:
+      auto_play: false
+      loop: false
+      path: /pkg/vaststars.resources/effects/mars-outfall_s.efk
+      speed: 1
+      visible: true
+    name: low_power
+    scene:
+      s: {1, 1, 0.30000001192092896}
+      t: {0, 27.200000762939453, 1.899999976158142}
+  mount: 1
+  policy:
+    ant.general|name
+    ant.scene|scene_object
+    ant.efk|efk
+---
+file: mesh.prefab
+op: replace
+path: /1/data/scene/t
+value: {0, 0, 0}
