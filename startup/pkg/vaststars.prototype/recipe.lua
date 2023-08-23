@@ -67,7 +67,7 @@ prototype "碾碎铁矿石" {
         {"碎石", 1},
     },
     time = "6s",
-    description = "使用氧化铝和石墨烧制铝板",
+    description = "将铁矿石碾碎进行再加工",
 }
 
 prototype "碾碎铝矿石" {
@@ -85,7 +85,7 @@ prototype "碾碎铝矿石" {
         {"碾碎铁矿石", 1},
     },
     time = "5s",
-    description = "使用氧化铝和石墨烧制铝板",
+    description = "将铝矿石碾碎进行再加工",
 }
 
 prototype "铝矿石浮选" {
@@ -103,7 +103,7 @@ prototype "铝矿石浮选" {
         {"废水", 12},
     },
     time = "5s",
-    description = "使用氧化铝和石墨烧制铝板",
+    description = "使用浮选工艺将含铝矿物从矿石中分离出来",
 }
 
 prototype "四氯化钛" {
@@ -122,7 +122,7 @@ prototype "四氯化钛" {
         {"废料", 2},
     },
     time = "10s",
-    description = "铁矿石通过金属冶炼获得铁板",
+    description = "将金红石进行氯化反应产生四氯化钛",
 }
 
 prototype "钛板" {
@@ -141,7 +141,7 @@ prototype "钛板" {
         {"废水", 4},
     },
     time = "8s",
-    description = "使用氧化铝和石墨烧制铝板",
+    description = "将四氯化钛进行纯化获得钛",
 }
 
 prototype "氧化铝" {
@@ -157,7 +157,7 @@ prototype "氧化铝" {
         {"氧化铝", 3},
     },
     time = "2s",
-    description = "使用氧化铝和石墨烧制铝板",
+    description = "将氢氧化铝煅烧获得氧化铝",
 }
 
 prototype "铝板1" {
@@ -289,7 +289,7 @@ prototype "硅1" {
         {"硅", 6},
     },
     time = "5s",
-    description = "使用硅炼制玻璃",
+    description = "将沙子进行浮选获得硅",
 }
 
 prototype "玻璃1" {
@@ -499,7 +499,7 @@ prototype "玻璃纤维1" {
         {"蒸汽", 50},
     },
     time = "15s",
-    description = "铁矿石通过金属冶炼获得铁板",
+    description = "将玻璃进行高温加工获得玻璃纤维",
 }
 
 prototype "隔热板1" {
@@ -516,7 +516,7 @@ prototype "隔热板1" {
         {"隔热板", 1},
     },
     time = "15s",
-    description = "铁矿石通过金属冶炼获得铁板",
+    description = "将玻璃纤维和硅板进行高温加工获得隔热板",
 }
 
 prototype "混凝土" {
@@ -535,7 +535,7 @@ prototype "混凝土" {
         {"混凝土", 5},
     },
     time = "3s",
-    description = "使用铁制品加工铁齿轮",
+    description = "将水、石头、沙子按照一定比例混合再嵌入钢丝加工成混凝土",
 }
 
 prototype "小铁制箱子1" {
@@ -623,7 +623,7 @@ prototype "远程电线杆" {
         {"远程电线杆", 1},
     },
     time = "4s",
-    description = "导电材料制造电线杆",
+    description = "导电材料制造导电距离更远的电线杆",
 }
 
 prototype "广域电线杆" {
@@ -640,7 +640,7 @@ prototype "广域电线杆" {
         {"广域电线杆", 1},
     },
     time = "10s",
-    description = "导电材料制造电线杆",
+    description = "导电材料制造导电范围更大的电线杆",
 }
 
 prototype "采矿机1" {
@@ -764,7 +764,7 @@ prototype "组装机1" {
         {"组装机I", 1},
     },
     time = "6s",
-    description = "机械原料制造组装机",
+    description = "使用机械零件制造组装机",
 }
 
 prototype "组装机2" {
@@ -782,7 +782,7 @@ prototype "组装机2" {
         {"组装机II", 1},
     },
     time = "12s",
-    description = "机械原料制造组装机",
+    description = "使用机械零件制造组装机",
 }
 
 prototype "组装机3" {
@@ -800,7 +800,7 @@ prototype "组装机3" {
         {"组装机III", 1},
     },
     time = "24s",
-    description = "机械原料制造组装机",
+    description = "使用机械零件制造组装机",
 }
 
 prototype "广播塔1" {
@@ -996,7 +996,7 @@ prototype "液罐1" {
         {"液罐I", 1},
     },
     time = "6s",
-    description = "制造可装载液体资源的容器",
+    description = "制造可装载流体原料的容器",
 }
 
 prototype "液罐2" {
@@ -1015,7 +1015,7 @@ prototype "液罐2" {
         {"液罐II", 1},
     },
     time = "8s",
-    description = "制造可装载液体资源的容器",
+    description = "制造可装载流体原料的容器",
 }
 
 prototype "液罐3" {
@@ -1033,7 +1033,7 @@ prototype "液罐3" {
         {"液罐III", 1},
     },
     time = "8s",
-    description = "制造可装载液体资源的容器",
+    description = "制造可装载流体原料的容器",
 }
 
 prototype "化工厂1" {
@@ -1051,7 +1051,7 @@ prototype "化工厂1" {
         {"化工厂I", 1},
     },
     time = "15s",
-    description = "液体容器和加工设备制造化工厂",
+    description = "流体容器和加工设备制造化工厂",
 }
 
 prototype "化工厂2" {
@@ -1069,7 +1069,7 @@ prototype "化工厂2" {
         {"化工厂II", 1},
     },
     time = "20s",
-    description = "液体容器和加工设备制造化工厂",
+    description = "流体容器和加工设备制造化工厂",
 }
 
 prototype "化工厂3" {
@@ -1087,7 +1087,7 @@ prototype "化工厂3" {
         {"化工厂III", 1},
     },
     time = "30s",
-    description = "液体容器和加工设备制造化工厂",
+    description = "流体容器和加工设备制造化工厂",
 }
 
 prototype "铸造厂1" {
@@ -1279,7 +1279,7 @@ prototype "地下水挖掘机1" {
         {"地下水挖掘机I", 1},
     },
     time = "5s",
-    description = "排水设施和压力泵制造抽水泵",
+    description = "使用排水设施和泵制造地下水挖掘机",
 }
 
 prototype "地下水挖掘机2" {
@@ -1296,7 +1296,7 @@ prototype "地下水挖掘机2" {
         {"地下水挖掘机II", 1},
     },
     time = "10s",
-    description = "排水设施和压力泵制造抽水泵",
+    description = "制造性能更好的地下水挖掘机",
 }
 
 prototype "空气过滤器1" {
@@ -1313,7 +1313,7 @@ prototype "空气过滤器1" {
         {"空气过滤器I", 1},
     },
     time = "8s",
-    description = "压力泵和发电设施制造空气过滤器",
+    description = "塑料和排气设施制造空气过滤器",
 }
 
 prototype "空气过滤器2" {
@@ -1330,7 +1330,7 @@ prototype "空气过滤器2" {
         {"空气过滤器II", 1},
     },
     time = "12s",
-    description = "压力泵和发电设施制造空气过滤器",
+    description = "制造性能更好的空气过滤器",
 }
 
 prototype "空气过滤器3" {
@@ -1347,7 +1347,7 @@ prototype "空气过滤器3" {
         {"空气过滤器III", 1},
     },
     time = "30s",
-    description = "压力泵和发电设施制造空气过滤器",
+    description = "制造性能更好的空气过滤器",
 }
 
 prototype "排水口1" {
@@ -1381,7 +1381,7 @@ prototype "排水口2" {
         {"排水口II", 1},
     },
     time = "5s",
-    description = "管道制造排水口",
+    description = "制造排水能力更强的排水口",
 }
 
 
@@ -1415,7 +1415,7 @@ prototype "管道2" {
         {"管道1-X型", 2},
     },
     time = "4s",
-    description = "石砖制造管道",
+    description = "铁制原料制造管道",
 }
 
 prototype "地下管1" {
@@ -1432,7 +1432,7 @@ prototype "地下管1" {
         {"地下管1-JI型", 2},
     },
     time = "5s",
-    description = "管道和沙子制造地下管道",
+    description = "管道和碎石制造地下管道",
 }
 
 prototype "地下管2" {
@@ -1486,7 +1486,7 @@ prototype "粉碎机2" {
         {"粉碎机II", 1},
     },
     time = "10s",
-    description = "石砖和采矿机制造粉碎机",
+    description = "制造性能更好的粉碎机",
 }
 
 prototype "粉碎机3" {
@@ -1503,7 +1503,7 @@ prototype "粉碎机3" {
         {"粉碎机III", 1},
     },
     time = "20s",
-    description = "石砖和采矿机制造粉碎机",
+    description = "制造性能更好的粉碎机",
 }
 
 prototype "无人机仓库1" {
@@ -1520,7 +1520,7 @@ prototype "无人机仓库1" {
         {"无人机仓库I", 1},
     },
     time = "8s",
-    description = "石砖和采矿机制造粉碎机",
+    description = "石砖和电动机制造无人机仓库",
 }
 
 prototype "无人机仓库2" {
@@ -1538,7 +1538,7 @@ prototype "无人机仓库2" {
         {"无人机仓库II", 1},
     },
     time = "12s",
-    description = "石砖和采矿机制造粉碎机",
+    description = "制造运载能力更好的无人机仓库",
 }
 
 prototype "无人机仓库3" {
@@ -1556,7 +1556,7 @@ prototype "无人机仓库3" {
         {"无人机仓库III", 1},
     },
     time = "24s",
-    description = "石砖和采矿机制造粉碎机",
+    description = "制造运载能力更好的无人机仓库",
 }
 
 prototype "电解厂1" {
@@ -1573,7 +1573,7 @@ prototype "电解厂1" {
         {"电解厂I", 1},
     },
     time = "10s",
-    description = "液体容器和电传输设备制造电解厂",
+    description = "流体容器和电传输设备制造电解厂",
 }
 
 prototype "电解厂2" {
@@ -1590,7 +1590,7 @@ prototype "电解厂2" {
         {"电解厂II", 1},
     },
     time = "20s",
-    description = "液体容器和电传输设备制造电解厂",
+    description = "建造产能更大的电解厂",
 }
 
 prototype "电解厂3" {
@@ -1607,7 +1607,7 @@ prototype "电解厂3" {
         {"电解厂III", 1},
     },
     time = "25s",
-    description = "液体容器和电传输设备制造电解厂",
+    description = "建造产能更大的电解厂",
 }
 
 prototype "浮选器1" {
@@ -1624,7 +1624,7 @@ prototype "浮选器1" {
         {"浮选器I", 1},
     },
     time = "12s",
-    description = "将矿石浮沉进行筛选",
+    description = "组合粉碎和水处理设施加工成浮选器",
 }
 
 prototype "浮选器2" {
@@ -1641,7 +1641,7 @@ prototype "浮选器2" {
         {"浮选器II", 1},
     },
     time = "16s",
-    description = "将矿石浮沉进行筛选",
+    description = "建造性能更好的浮选器",
 }
 
 prototype "浮选器3" {
@@ -1659,7 +1659,7 @@ prototype "浮选器3" {
         {"浮选器III", 1},
     },
     time = "20s",
-    description = "将矿石浮沉进行筛选",
+    description = "建造性能更好的浮选器",
 }
 
 prototype "科研中心1" {
@@ -1677,7 +1677,7 @@ prototype "科研中心1" {
         {"科研中心I", 1},
     },
     time = "20s",
-    description = "机械装置和电动机制造科研中心",
+    description = "基础材料和无人机仓库制造科研中心",
 }
 
 prototype "科研中心2" {
@@ -1694,7 +1694,7 @@ prototype "科研中心2" {
         {"科研中心II", 1},
     },
     time = "30s",
-    description = "机械装置和电动机制造科研中心",
+    description = "建造研发效果更好的科研中心",
 }
 
 prototype "科研中心3" {
@@ -1711,7 +1711,7 @@ prototype "科研中心3" {
         {"科研中心III", 1},
     },
     time = "40s",
-    description = "机械装置和电动机制造科研中心",
+    description = "建造研发效果更好的科研中心",
 }
 
 prototype "太阳能板1" {
@@ -1923,7 +1923,7 @@ prototype "处理器1" {
         {"处理器I", 1},
     },
     time = "6s",
-    description = "制造运输汽车",
+    description = "制造作为中央处理单元的电子元件",
 }
 
 prototype "处理器2" {
@@ -1941,7 +1941,7 @@ prototype "处理器2" {
         {"处理器II", 1},
     },
     time = "15s",
-    description = "制造运输汽车",
+    description = "制造作为中央处理单元的电子元件",
 }
 
 
