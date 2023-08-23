@@ -5,16 +5,10 @@
 #include "roadnet/network.h"
 
 static int
-lrestore_finish(lua_State *L) {
-    auto& w = getworld(L);
-    w.rw.init(w);
-    return 0;
-}
-
-static int
 lbuild(lua_State *L) {
 	auto& w = getworld(L);
 	if (!(w.dirty & kDirtyRoadnet)) {
+		w.rw.refresh(w); // for restore
 		return 0;
 	}
 	w.rw.build(w);
@@ -33,7 +27,6 @@ extern "C" int
 luaopen_vaststars_roadnet_system(lua_State *L) {
 	luaL_checkversion(L);
 	luaL_Reg l[] = {
-		{ "restore_finish", lrestore_finish },
 		{ "build", lbuild },
 		{ "update", lupdate },
 		{ NULL, NULL },

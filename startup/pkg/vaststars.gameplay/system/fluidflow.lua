@@ -14,8 +14,6 @@ mt.__index = function (t, k)
 end
 
 local builder = {}
-local pipebits = setmetatable({}, mt)
-local rev_pipebits = setmetatable({}, mt)
 
 local N <const> = 0
 local E <const> = 1
@@ -88,22 +86,6 @@ local function calc_pipebits(pt, direction)
         bits = bits | ((c.ground and 2 or 1) << (dir * 2))
     end
     return bits
-end
-
-function m.init()
-    pipebits = setmetatable({}, mt)
-    rev_pipebits = setmetatable({}, mt)
-    for _, pt in pairs(prototype.all()) do
-        if is_pipeid(pt) then
-            for _, dir in pairs(pt.building_direction) do
-                local bits = calc_pipebits(pt, PipeDirection[dir])
-                assert(rawget(pipebits[pt.id], dir) == nil)
-                pipebits[pt.id][PipeDirection[dir]] = bits
-                assert(rawget(rev_pipebits[pt.building_category], bits) == nil)
-                rev_pipebits[pt.building_category][bits] = {id = pt.id, direction = PipeDirection[dir]}
-            end
-        end
-    end
 end
 
 local function builder_init()
@@ -257,7 +239,23 @@ local function builder_finish(world)
         builder_groud(c)
         cFluidflow.connect(world._cworld, fluid, c.connects)
     end
+    if next(builder) == nil then
+        return
+    end
     -- handling disconnected pipes
+    local pipebits = setmetatable({}, mt)
+    local rev_pipebits = setmetatable({}, mt)
+    for _, pt in pairs(prototype.all()) do
+        if is_pipeid(pt) then
+            for _, dir in pairs(pt.building_direction) do
+                local bits = calc_pipebits(pt, PipeDirection[dir])
+                assert(rawget(pipebits[pt.id], dir) == nil)
+                pipebits[pt.id][PipeDirection[dir]] = bits
+                assert(rawget(rev_pipebits[pt.building_category], bits) == nil)
+                rev_pipebits[pt.building_category][bits] = {id = pt.id, direction = PipeDirection[dir]}
+            end
+        end
+    end
     for _, c in pairs(builder) do
         for _, v in pairs(c.map) do
             local e = assert(world.entity[v.eid])
@@ -312,41 +310,6 @@ function m.build(world)
     if not world._cworld:is_dirty(DirtyFluidflow) then
         return
     end
-    local ecs = world.ecs
-    builder_init()
-    for v in ecs:select "fluidbox:update building:in eid:in" do
-        local pt = query(v.building.prototype)
-        local fluid = v.fluidbox.fluid
-        local id = v.fluidbox.id
-        if id == 0 then
-            id = builder_build(world, fluid, pt.fluidbox)
-            v.fluidbox.id = id
-        end
-        builder_connect_fluidbox(fluid, id, pt.fluidbox, v.eid, v.building, pt.area)
-    end
-    for v in ecs:select "fluidboxes:update building:in eid:in" do
-        local pt = query(v.building.prototype)
-        local function init_fluidflow(classify)
-            for i, fluidbox in ipairs(pt.fluidboxes[classify.."put"]) do
-                local fluid = v.fluidboxes[classify..i.."_fluid"]
-                if fluid ~= 0 then
-                    local id = v.fluidboxes[classify..i.."_id"]
-                    if id == 0 then
-                        id = builder_build(world, fluid, fluidbox)
-                        v.fluidboxes[classify..i.."_id"] = id
-                    end
-                    builder_connect_fluidbox(fluid, id, fluidbox, v.eid, v.building, pt.area)
-                end
-            end
-        end
-        init_fluidflow "in"
-        init_fluidflow "out"
-    end
-    builder_finish(world)
-end
-
-function m.restore_finish(world)
-    m.init()
     local ecs = world.ecs
     builder_init()
     for v in ecs:select "fluidbox:update building:in eid:in" do

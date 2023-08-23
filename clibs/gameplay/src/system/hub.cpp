@@ -419,12 +419,6 @@ static void rebuild(world& w) {
     }
 }
 
-static int lrestore_finish(lua_State* L) {
-    auto& w = getworld(L);
-    rebuild(w);
-    return 0;
-}
-
 static int lbuild(lua_State* L) {
     auto& w = getworld(L);
     if (!(w.dirty & kDirtyHub)) {
@@ -888,7 +882,6 @@ extern "C" int
 luaopen_vaststars_hub_system(lua_State *L) {
 	luaL_checkversion(L);
 	luaL_Reg l[] = {
-		{ "restore_finish", lrestore_finish },
 		{ "build", lbuild },
 		{ "update", lupdate },
 		{ NULL, NULL },

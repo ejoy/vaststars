@@ -29,24 +29,40 @@ local function dirty(world, flags)
 end
 
 local function dirty_changed_entity(world, e)
+    local flags = 0
     if e.road or e.endpoint or e.starting then
-        dirty(world, DirtyRoadnet)
+        flags = flags | DirtyRoadnet
     end
     if e.fluidbox or e.fluidboxes then
-        dirty(world, DirtyFluidflow)
+        flags = flags | DirtyFluidflow
     end
     if e.chest or e.hub then
-        dirty(world, DirtyHub)
+        flags = flags | DirtyHub
+    end
+    if flags ~= 0 then
+        dirty(world, flags)
     end
 end
 
 local function dirty_entity(world, e)
-    dirty_changed_entity(world, e)
+    local flags = 0
+    if e.road or e.endpoint or e.starting then
+        flags = flags | DirtyRoadnet
+    end
+    if e.fluidbox or e.fluidboxes then
+        flags = flags | DirtyFluidflow
+    end
+    if e.chest or e.hub then
+        flags = flags | DirtyHub
+    end
     if e.station_producer then
-        dirty(world, DirtyStationProducer)
+        flags = flags | DirtyStationProducer
     end
     if e.station_consumer then
-        dirty(world, DirtyStationConsumer)
+        flags = flags | DirtyStationConsumer
+    end
+    if flags ~= 0 then
+        dirty(world, flags)
     end
 end
 
@@ -72,6 +88,15 @@ end
 
 function m.dirty(world, what)
     dirty(world, DIRTY[what])
+end
+
+function m.dirty_restore(world)
+    dirty(world,
+          DirtyFluidflow
+        | DirtyHub
+        | DirtyStationProducer
+        | DirtyStationConsumer
+    )
 end
 
 function m.move(world, e, x, y)

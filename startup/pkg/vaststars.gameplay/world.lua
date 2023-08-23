@@ -127,7 +127,8 @@ return function ()
     function world:restore(rootdir)
         world.storage_path = rootdir
         pipeline_restore()
-        cworld:reset_dirty()
+        iBuilding.dirty_restore(self)
+        pipeline_build()
     end
 
     function world:is_researched(tech)
