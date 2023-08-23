@@ -23,7 +23,7 @@ prototype "山丘" {
     type = {"mountain"},
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_mountain.texture",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/mountain.texture",
-    item_description = "地面上的沙丘",
+    item_description = "星球表面的小山",
     station_limit = 0,
     item_category = "",
 }
