@@ -33,7 +33,6 @@ local function dirty_changed_entity(world, e)
         dirty(world, DirtyRoadnet)
     end
     if e.fluidbox or e.fluidboxes then
-        e.fluidbox_changed = true
         dirty(world, DirtyFluidflow)
     end
     if e.chest or e.hub then

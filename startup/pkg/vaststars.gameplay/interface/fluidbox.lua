@@ -32,7 +32,6 @@ local function update_fluidboxes(world, e, pt, fluids)
         if id ~= fluidboxes[classify.."_fluid"] then
             fluidboxes[classify.."_fluid"] = id
             fluidboxes[classify.."_id"] = 0
-            e.fluidbox_changed = true
             building.dirty(world, "fluidflow")
         end
     end
@@ -44,7 +43,6 @@ local function update_fluidbox(world, e, fluid)
     if e.fluidbox.fluid ~= fluid then
         e.fluidbox.fluid = fluid
         e.fluidbox.id = 0
-        e.fluidbox_changed = true
         building.dirty(world, "fluidflow")
     end
 end

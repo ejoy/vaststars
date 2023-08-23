@@ -161,7 +161,6 @@ component "solar_panel" {
 
 tag "wind_turbine"
 tag "base"
-tag "fluidbox_changed"
 
 --
 tag "base_changed"

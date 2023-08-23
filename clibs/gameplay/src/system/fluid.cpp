@@ -37,21 +37,6 @@ uint16_t fluidflow::build(struct fluid_box *box) {
 	return newid;
 }
 
-bool fluidflow::rebuild(uint16_t id) {
-	fluid_state state;
-	if (!fluidflow_query(network, id, &state)) {
-		return false;
-	}
-	int r;
-	r = fluidflow_teardown(network, id);
-	assert(r == 0); (void)r;
-	r = fluidflow_build(network, id, &state.box);
-	assert(r == 0); (void)r;
-	r = fluidflow_set(network, id, state.volume, 1);
-	assert(r != -1); (void)r;
-	return true;
-}
-
 bool fluidflow::restore(uint16_t id, struct fluid_box *box) {
 	if (id <= maxid) {
 		freelist.erase(std::remove_if(freelist.begin(), freelist.end(),

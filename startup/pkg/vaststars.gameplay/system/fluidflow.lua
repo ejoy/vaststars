@@ -110,11 +110,7 @@ local function builder_init()
     builder = {}
 end
 
-local function builder_build(world, fluid, id, fluidbox)
-    if id ~= 0 then
-        cFluidflow.rebuild(world._cworld, fluid, id)
-        return
-    end
+local function builder_build(world, fluid, fluidbox)
     local pumping_speed = fluidbox.pumping_speed
     if pumping_speed then
         pumping_speed = pumping_speed // UPS
@@ -269,6 +265,21 @@ local function builder_finish(world)
         builder_groud(c)
         cFluidflow.connect(world._cworld, fluid, c.connects)
     end
+    -- handling disconnected pipes
+    for _, c in pairs(builder) do
+        for _, v in pairs(c.map) do
+            local e = assert(world.entity[v.eid])
+            local pt = query(e.building.prototype)
+            if is_pipeid(pt) then
+                local bits = assert(pipebits[e.building.prototype][e.building.direction])
+                bits = bits & ~(3 << (v.conndir*2))
+                local r = assert(rev_pipebits[pt.building_category][bits])
+                e.building.prototype = r.id
+                e.building.direction = r.direction
+                e.building_changed = true
+            end
+        end
+    end
 end
 
 local function teardown(w, fluid, id)
@@ -311,36 +322,26 @@ function m.build(world)
     end
     local ecs = world.ecs
     builder_init()
-    for v in ecs:select "fluidbox:update building:in fluidbox_changed?in eid:in" do
+    for v in ecs:select "fluidbox:update building:in eid:in" do
         local pt = query(v.building.prototype)
         local fluid = v.fluidbox.fluid
         local id = v.fluidbox.id
-        if v.fluidbox_changed then
-            local newid = builder_build(world, fluid, id, pt.fluidbox)
-            if newid then
-                v.fluidbox.id = newid
-                id = newid
-            end
-        else
-            assert(id ~= 0)
+        if id == 0 then
+            id = builder_build(world, fluid, pt.fluidbox)
+            v.fluidbox.id = id
         end
         builder_connect_fluidbox(fluid, id, pt.fluidbox, v.eid, v.building, pt.area)
     end
-    for v in ecs:select "fluidboxes:update building:in fluidbox_changed?in eid:in" do
+    for v in ecs:select "fluidboxes:update building:in eid:in" do
         local pt = query(v.building.prototype)
         local function init_fluidflow(classify)
             for i, fluidbox in ipairs(pt.fluidboxes[classify.."put"]) do
                 local fluid = v.fluidboxes[classify..i.."_fluid"]
                 if fluid ~= 0 then
                     local id = v.fluidboxes[classify..i.."_id"]
-                    if v.fluidbox_changed then
-                        local newid = builder_build(world, fluid, id, fluidbox)
-                        if newid then
-                            v.fluidboxes[classify..i.."_id"] = newid
-                            id = newid
-                        end
-                    else
-                        assert(id ~= 0)
+                    if id == 0 then
+                        id = builder_build(world, fluid, fluidbox)
+                        v.fluidboxes[classify..i.."_id"] = id
                     end
                     builder_connect_fluidbox(fluid, id, fluidbox, v.eid, v.building, pt.area)
                 end
@@ -350,22 +351,6 @@ function m.build(world)
         init_fluidflow "out"
     end
     builder_finish(world)
-    ecs:clear "fluidbox_changed"
-    -- handling disconnected pipes
-    for _, c in pairs(builder) do
-        for _, v in pairs(c.map) do
-            local e = assert(world.entity[v.eid])
-            local pt = query(e.building.prototype)
-            if is_pipeid(pt) then
-                local bits = assert(pipebits[e.building.prototype][e.building.direction])
-                bits = bits & ~(3 << (v.conndir*2))
-                local r = assert(rev_pipebits[pt.building_category][bits])
-                e.building.prototype = r.id
-                e.building.direction = r.direction
-                e.building_changed = true
-            end
-        end
-    end
 end
 
 function m.backup_start(world)

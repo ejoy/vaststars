@@ -26,14 +26,6 @@ static int fluidflow_build(lua_State *L) {
     return 1;
 }
 
-static int fluidflow_rebuild(lua_State *L) {
-    auto& w = getworld(L);
-    uint16_t fluid = bee::lua::checkinteger<uint16_t>(L, 2);
-    uint16_t id = bee::lua::checkinteger<uint16_t>(L, 3);
-    w.fluidflows[fluid].rebuild(id);
-    return 0;
-}
-
 static int fluidflow_restore(lua_State *L) {
     auto& w = getworld(L);
     uint16_t fluid = bee::lua::checkinteger<uint16_t>(L, 2);
@@ -136,7 +128,6 @@ luaopen_vaststars_fluidflow_core(lua_State *L) {
         { "connect", fluidflow_connect },
         { "query", fluidflow_query },
         { "set", fluidflow_set },
-        { "rebuild", fluidflow_rebuild },
         { NULL, NULL },
     };
     luaL_newlib(L, l);
