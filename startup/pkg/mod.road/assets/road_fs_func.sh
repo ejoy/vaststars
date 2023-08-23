@@ -10,7 +10,7 @@
 #include "pbr/lighting.sh"
 #include "pbr/attribute_define.sh"
 #include "pbr/attribute_uniforms.sh"
-#include "common/default_inputs_structure.sh"
+#include "default/inputs_structure.sh"
 #include "road.sh"
 #include "pbr/input_attributes.sh"
 

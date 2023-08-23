@@ -1,5 +1,5 @@
 fx:
-  vs_code: "\n#include \"common/default_vs_func.sh\"\n"
+  vs_code: "\n#include \"default/vs_func.sh\"\n"
   fs_code: "\n#include \"printer_fs_func.sh\"\n"
   setting:
     ALPHAMODE_OPAQUE: 1

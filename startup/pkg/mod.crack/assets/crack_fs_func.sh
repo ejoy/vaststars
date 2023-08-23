@@ -11,7 +11,7 @@
 #include "pbr/lighting.sh"
 #include "pbr/indirect_lighting.sh"
 #include "postprocess/tonemapping.sh"
-#include "common/default_inputs_structure.sh"
+#include "default/inputs_structure.sh"
 #include "pbr/input_attributes.sh"
 
 vec2 parallax_mapping(vec2 uv, vec3 view_dir, float num_layers)

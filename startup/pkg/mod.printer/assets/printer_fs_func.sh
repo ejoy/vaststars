@@ -9,7 +9,7 @@
 #include "common/uvmotion.sh"
 #include "pbr/lighting.sh"
 #include "pbr/attribute_define.sh"
-#include "common/default_inputs_structure.sh"
+#include "default/inputs_structure.sh"
 #include "pbr/input_attributes.sh"
 
 uniform vec4 u_construct_color;
