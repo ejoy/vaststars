@@ -313,6 +313,7 @@ prototype "空气过滤器I" {
     priority = "secondary",
     recipe = "空气过滤",
     maxslot = "8",
+    sound = "building/air-filter",
     camera_distance = 100,
     fluidboxes = {
         input = {},
@@ -342,6 +343,7 @@ prototype "空气过滤器II" {
     priority = "secondary",
     recipe = "空气过滤",
     maxslot = "8",
+    sound = "building/air-filter",
     camera_distance = 100,
     fluidboxes = {
         input = {},
@@ -371,6 +373,7 @@ prototype "空气过滤器III" {
     priority = "secondary",
     recipe = "空气过滤",
     maxslot = "8",
+    sound = "building/air-filter",
     camera_distance = 100,
     fluidboxes = {
         input = {},
