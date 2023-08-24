@@ -2,14 +2,11 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local math3d = require "math3d"
 local igame_object = ecs.require "engine.game_object"
 local iprototype = require "gameplay.interface.prototype"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
-local CONSTRUCT_COLOR_INVALID <const> = math3d.constant "null"
 
 local function set_position(self, position)
-    assert(position)
     self.game_object:send("obj_motion", "set_position", position)
 end
 
@@ -26,15 +23,20 @@ end
 local function update(self, t)
     self.prototype_name = t.prototype_name or self.prototype_name
     local typeobject = iprototype.queryByName(self.prototype_name)
+    local model
+    if t.state == "translucent" then
+        model = assert(typeobject.model:match("(.*%.glb|).*%.prefab"))
+        model = model .. "translucent.prefab"
+    else
+        model = typeobject.model
+    end
 
     self.game_object:update {
-        prefab = typeobject.model,
-        state = t.state,
+        prefab = model,
         color = t.color,
         animation_name = t.animation_name,
         final_frame = t.final_frame,
         emissive_color = t.emissive_color,
-        outline_scale = t.outline_scale
     }
 end
 
@@ -57,8 +59,7 @@ return function (init)
     local game_object = assert(igame_object.create({
         prefab = typeobject.model,
         group_id = init.group_id,
-        state = "opaque",
-        color = CONSTRUCT_COLOR_INVALID,
+        color = init.color,
         srt = {r = ROTATORS[init.dir], t = init.position},
         parent = nil,
         slot = nil,

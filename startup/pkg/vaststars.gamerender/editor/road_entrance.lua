@@ -31,15 +31,13 @@ function mt:set_state(state)
     self.arrow:send("material", "set_property", "u_basecolor_factor", arrow_color)
 end
 
-local prefabParser = require("engine.prefab_parser").parse
-local replaceMaterial = require("engine.prefab_parser").replaceMaterial
 local imaterial = ecs.require "ant.asset|material"
 
 local function createPrefabInst(prefab, position)
-    local template = prefabParser(prefab)
-    template = replaceMaterial(template, "/pkg/ant.resources/materials/translucent.material")
+    prefab = assert(prefab:match("(.*%.glb|).*%.prefab"))
+    prefab = prefab .. "translucent.prefab"
 
-    local p = ecs.create_instance(template)
+    local p = ecs.create_instance(prefab)
     function p:on_ready()
         local root <close> = world:entity(self.tag['*'][1])
         iom.set_position(root, math3d.vector(position))

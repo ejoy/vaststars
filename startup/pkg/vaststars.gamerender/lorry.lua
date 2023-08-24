@@ -46,7 +46,6 @@ local function __create_lorry_object(prefab, parent)
     return igame_object.create {
         prefab = prefab,
         group_id = 0,
-        state = "opaque",
         parent = parent,
         render_layer = RENDER_LAYER.LORRY,
     }
@@ -149,14 +148,6 @@ local function create(prefab, s, r, t, motion_events)
     end
     function outer:motion_opt(...)
         motion_obj:send(...)
-    end
-    function outer:set_outline(b)
-        self.b = b
-        if self.b then
-            lorry_obj:update {state = "outline", outline_scale = 1.0}
-        else
-            lorry_obj:update {state = "opaque"}
-        end
     end
     return outer
 end

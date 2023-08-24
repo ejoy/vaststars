@@ -10,6 +10,7 @@ local gameplay_core = require "gameplay.core"
 local create_selected_boxes = ecs.require "selected_boxes"
 local terrain = ecs.require "terrain"
 local vsobject_manager = ecs.require "vsobject_manager"
+local audio = import_package "ant.audio"
 
 local function __get_capacitance(eid)
     local e = gameplay_core.get_entity(eid)
@@ -195,16 +196,6 @@ do
         idetail.unselected()
 
         local vsobject = assert(vsobject_manager:get(object_id))
-        vsobject:update({state = "outline", outline_scale = 1.0})
-        temp_objects[#temp_objects+1] = {
-            remove = function (self)
-                local vsobject = vsobject_manager:get(object_id)
-                if vsobject then
-                    vsobject:update({state = "opaque"})
-                end
-            end
-        }
-
         vsobject:modifier("start", {name = "talk", forwards = true})
         temp_objects[#temp_objects+1] = {
             remove = function (self)
@@ -219,6 +210,15 @@ do
     function idetail.selected(object)
         local typeobject = iprototype.queryByName(object.prototype_name)
         local color = SPRITE_COLOR.SELECTED_OUTLINE
+        if typeobject.sound then
+            audio.play_background("event:/" .. typeobject.sound)
+        end
+
+        temp_objects[#temp_objects+1] = {
+            remove = function (self)
+                audio.stop_background(true)
+            end
+        }
 
         --
         if typeobject.supply_area then

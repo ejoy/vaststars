@@ -6,7 +6,7 @@ local imaterial = ecs.require "ant.asset|material"
 local iani = ecs.require "ant.animation|controller.state_machine"
 
 local events = {}
-events["material"] = function(prefab, inner, method, ...)
+events["material"] = function(prefab, method, ...)
     for _, eid in ipairs(prefab.tag["*"]) do
         local e <close> = world:entity(eid, "material?in")
         if e.material then
@@ -15,7 +15,7 @@ events["material"] = function(prefab, inner, method, ...)
     end
 end
 
-events["attach_hitch"] = function(prefab, inner, ...)
+events["attach_hitch"] = function(prefab, ...)
     local has_anim = false
     for _, eid in ipairs(prefab.tag["*"]) do
         local e = world:entity(eid, "anim_ctrl?in")
@@ -30,7 +30,7 @@ events["attach_hitch"] = function(prefab, inner, ...)
     iani.attach_hitch(prefab, ...)
 end
 
-events["detach_hitch"] = function(prefab, inner, ...)
+events["detach_hitch"] = function(prefab, ...)
     local has_anim = false
     for _, eid in ipairs(prefab.tag["*"]) do
         local e = world:entity(eid, "anim_ctrl?in")

@@ -15,19 +15,14 @@ local function read_file(filename)
     return c
 end
 
-local function parse(fullpath)
-    return serialize.parse(fullpath, read_file(fullpath))
-end
-
-local function replaceMaterial(template, material_file)
-    for _, v in ipairs(template) do
-        for _, policy in ipairs(v.policy) do
-            if policy == "ant.render|render" or policy == "ant.render|simplerender" or policy == "ant.render|skinrender" then
-                v.data.material = material_file
-            end
+local parse ; do
+    local caches = {}
+    function parse(fullpath)
+        if not caches[fullpath] then
+            caches[fullpath] = serialize.parse(fullpath, read_file(fullpath))
         end
+        return caches[fullpath]
     end
-    return template
 end
 
 local filterNodes ; do
@@ -69,7 +64,6 @@ end
 
 return {
     parse = parse,
-    replaceMaterial = replaceMaterial,
     filterNodes = filterNodes,
     slots = slots,
     root = root,

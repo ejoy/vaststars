@@ -24,15 +24,15 @@ local coord_system = ecs.require "terrain"
 local selected_boxes = ecs.require "selected_boxes"
 local igame_object = ecs.require "engine.game_object"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
-local COLOR_INVALID <const> = math3d.constant "null"
 local COLOR_GREEN = math3d.constant("v4", {0.3, 1, 0, 1})
 local ichest = require "gameplay.interface.chest"
 local ipower_line = ecs.require "power_line"
 local ipick_object = ecs.require "pick_object_system"
-local ilorry = ecs.require "render_updates.lorry"
 local ibackpack = require "gameplay.interface.backpack"
 local gesture_longpress_mb = world:sub{"gesture", "longpress"}
 local igameplay = ecs.require "gameplay_system"
+local audio = import_package "ant.audio"
+
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
 local ROAD_TILE_SCALE_WIDTH <const> = 2
 local ROAD_TILE_SCALE_HEIGHT <const> = 2
@@ -76,7 +76,7 @@ local builder, builder_datamodel, builder_ui
 local excluded_pickup_id -- object id
 local pick_lorry_id
 local selected_obj
-local audio = import_package "ant.audio"
+
 local function __on_pick_building(datamodel, o)
     local object = o.object
     if excluded_pickup_id and excluded_pickup_id == object.id then
@@ -91,11 +91,9 @@ local function __on_pick_building(datamodel, o)
     iui.close("/pkg/vaststars.resources/ui/build.rml") -- TODO: remove this
     iui.close("/pkg/vaststars.resources/ui/construct_road_or_pipe.rml")
 
-    local typeobject = iprototype.queryByName(object.prototype_name)
-    if typeobject.sound then
-        audio.play("event:/" .. typeobject.sound)
-    end
+    audio.play "event:/ui/click"
 
+    local typeobject = iprototype.queryByName(object.prototype_name)
     if typeobject.base then
         typeobject = iprototype.queryByName(typeobject.base)
     end
@@ -140,10 +138,6 @@ local function __on_pick_ground(datamodel)
 end
 
 local function __unpick_lorry(lorry_id)
-    local lorry = ilorry.get(lorry_id)
-    if lorry then
-        lorry:set_outline(false)
-    end
 end
 
 local status = "default"
@@ -320,8 +314,6 @@ local function open_focus_tips(tech_node)
             local center = coord_system:get_position_by_coord(nd.x, nd.y, 1, 1)
             if nd.show_arrow then
                 prefab = assert(igame_object.create({
-                    state = "opaque",
-                    color = COLOR_INVALID,
                     prefab = "glbs/arrow-guide.glb|mesh.prefab",
                     group_id = 0,
                     srt = {
@@ -440,7 +432,6 @@ function M:stage_camera_usage(datamodel)
                     pick_lorry_id = o.id
 
                     if __on_pick_non_building(datamodel, o) then
-                        o.lorry:set_outline(true)
                         leave = false
                     end
                 elseif o and o.class == CLASS.Object then

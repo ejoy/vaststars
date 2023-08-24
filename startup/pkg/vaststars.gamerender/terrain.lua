@@ -176,7 +176,6 @@ function terrain:reset_mineral(map)
         self.eids[#self.eids+1] = igame_object.create {
             prefab = mineral_model,
             group_id = self:get_group_id(x, y),
-            state = "opaque",
             srt = srt,
             render_layer = RENDER_LAYER.MINERAL
         }
