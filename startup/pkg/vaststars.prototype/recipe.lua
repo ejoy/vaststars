@@ -2578,7 +2578,7 @@ prototype "气候科技包T1" {
 
 prototype "气候科技包2" {
     type = { "recipe" },
-    recipe_craft_category = "流体液体处理",
+    recipe_craft_category = "器件基础化工",
     recipe_category =  "器件",
     recipe_order =  82,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/climatology-pack-1.texture",
@@ -2666,7 +2666,7 @@ prototype "电子科技包1" {
 
 prototype "化学科技包1" {
     type = { "recipe" },
-    recipe_craft_category = "器件中型制造",
+    recipe_craft_category = "器件基础化工",
     recipe_category =  "器件",
     recipe_order =  85,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/chemical-pack-1.texture",
