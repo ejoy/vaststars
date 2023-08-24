@@ -1,6 +1,5 @@
 #ifndef __ROAD_SH__
 #define __ROAD_SH__
-#include "pbr/attribute_define.sh"
 
 vec3 blend(vec3 texture1, float a1, float d1, vec3 texture2, float a2, float d2){
     float depth = 0.2;

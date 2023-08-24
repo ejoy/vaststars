@@ -8,18 +8,34 @@
 #include "common/constants.sh"
 #include "common/uvmotion.sh"
 #include "pbr/lighting.sh"
-#include "pbr/attribute_define.sh"
+#include "pbr/material_info.sh"
 #include "default/inputs_structure.sh"
-#include "pbr/input_attributes.sh"
 #include "terrain.sh"
 
-
-void CUSTOM_FS_FUNC(in FSInput fs_input, inout FSOutput fs_output)
+material_info terrain_material_info_init(vec3 gnormal, vec3 normal, vec4 posWS, vec4 basecolor, vec4 fragcoord, vec4 metallic, vec4 roughness)
 {
-    float sand_color_idx  = fs_input.user0.x;
-    float stone_color_idx = fs_input.user0.y;
-    vec2 terrain_uv    = fs_input.uv0;
-    vec2 alpha_uv      = fs_input.user1.xy;
+    material_info mi  = (material_info)0;
+    mi.basecolor         = basecolor;
+    mi.posWS             = posWS.xyz;
+    mi.distanceVS        = posWS.w;
+    mi.V                 = normalize(u_eyepos.xyz - posWS.xyz);
+    mi.gN                = gnormal;  //geomtery normal
+    mi.N                 = normal;
+
+    mi.perceptual_roughness  = roughness;
+    mi.metallic              = metallic;
+    mi.occlusion         = 1.0;
+
+    mi.screen_uv         = calc_normalize_fragcoord(fragcoord.xy);
+    return mi;
+}
+
+void CUSTOM_FS_FUNC(in FSInput fsinput, inout FSOutput fsoutput)
+{
+    float sand_color_idx  = fsinput.user0.x;
+    float stone_color_idx = fsinput.user0.y;
+    vec2 terrain_uv    = fsinput.uv0;
+    vec2 alpha_uv      = fsinput.user1.xy;
 
     vec4 stone_basecolor   = texture2DArray(s_basecolor_array, vec3(terrain_uv, stone_color_idx));
     vec4 sand_basecolor    = texture2DArray(s_basecolor_array, vec3(terrain_uv, sand_color_idx));
@@ -29,13 +45,14 @@ void CUSTOM_FS_FUNC(in FSInput fs_input, inout FSOutput fs_output)
 
     vec3 terrain_color = blend_terrain_color(sand_basecolor.rgb, stone_basecolor.rgb, sand_height, sand_alpha);
 
-    fs_input.normal = normalize(fs_input.normal);
-    fs_input.tangent = normalize(fs_input.tangent);
-    vec3 bitangent = cross(fs_input.normal, fs_input.tangent);
-    mat3 tbn = mat3(fs_input.tangent, bitangent, fs_input.normal);
+    fsinput.normal = normalize(fsinput.normal);
+    fsinput.tangent = normalize(fsinput.tangent);
+    vec3 bitangent = cross(fsinput.normal, fsinput.tangent);
+    mat3 tbn = mat3(fsinput.tangent, bitangent, fsinput.normal);
     vec3 stone_normal = terrain_normal_from_tangent_frame(tbn, terrain_uv, 1);
     float roughness = u_roughness_factor;
     float metallic = u_metallic_factor;
-    input_attributes input_attribs = init_input_attributes(fs_input.normal, stone_normal, fs_input.pos, vec4(terrain_color, 1.0), fs_input.frag_coord, metallic, roughness);
-    fs_output.color = compute_lighting(input_attribs); 
+    material_info mi = terrain_material_info_init(fsinput.normal, stone_normal, fsinput.pos, vec4(terrain_color, 1.0), fsinput.frag_coord, metallic, roughness);
+    build_material_info(mi);
+    fsoutput.color = compute_lighting(mi); 
 }

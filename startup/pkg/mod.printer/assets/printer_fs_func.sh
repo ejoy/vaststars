@@ -8,36 +8,35 @@
 #include "common/constants.sh"
 #include "common/uvmotion.sh"
 #include "pbr/lighting.sh"
-#include "pbr/attribute_define.sh"
 #include "default/inputs_structure.sh"
-#include "pbr/input_attributes.sh"
 
 uniform vec4 u_construct_color;
 uniform vec4 u_printer_factor;
 #define u_building_offset   u_printer_factor.x
 #define u_building_topmost  u_printer_factor.y
 
-void CUSTOM_FS_FUNC(in FSInput fs_input, inout FSOutput fs_output)
+void CUSTOM_FS_FUNC(in FSInput fsinput, inout FSOutput fsoutput)
 {
-    if(fs_input.pos.y > (u_building_topmost))
+    if(fsinput.pos.y > (u_building_topmost))
         discard;
     
     int building;
-    if(fs_input.pos.y > u_building_topmost - u_building_offset){
+    if(fsinput.pos.y > u_building_topmost - u_building_offset){
         building = 1;
     } else{
         building = 0;
     }
 
     if(building) {
-        fs_output.color = u_construct_color;
+        fsoutput.color = u_construct_color;
     } else {
-        input_attributes input_attribs = (input_attributes)0;
-        build_fs_input_attribs(fs_input, input_attribs);
-        if (dot(input_attribs.N, input_attribs.V) < 0){
-            fs_output.color = u_construct_color;
+        material_info mi = (material_info)0;
+        init_material_info(fsinput, mi);
+        build_material_info(mi);
+        if (mi.NdotV < 0){
+            fsoutput.color = u_construct_color;
         } else {
-            fs_output.color = compute_lighting(input_attribs);
+            fsoutput.color = compute_lighting(mi);
         }
     }
 }

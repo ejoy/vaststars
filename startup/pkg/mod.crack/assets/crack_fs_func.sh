@@ -12,7 +12,7 @@
 #include "pbr/indirect_lighting.sh"
 #include "postprocess/tonemapping.sh"
 #include "default/inputs_structure.sh"
-#include "pbr/input_attributes.sh"
+#include "pbr/material_info.sh"
 
 vec2 parallax_mapping(vec2 uv, vec3 view_dir, float num_layers)
 {
@@ -44,26 +44,29 @@ vec2 parallax_mapping(vec2 uv, vec3 view_dir, float num_layers)
     return uv - p; */
 }
 
-void CUSTOM_FS_FUNC(in FSInput fs_input, inout FSOutput fs_output)
+void CUSTOM_FS_FUNC(in FSInput fsinput, inout FSOutput fsoutput)
 {
-    input_attributes input_attribs = (input_attributes)0;
-    build_fs_input_attribs(fs_input, input_attribs);
+    material_info mi = (material_info)0;
+    init_material_info(input, mi);
 
-    vec3 bitangent = cross(fs_input.normal, fs_input.tangent);
-    mat3 tbn = mat3(fs_input.tangent, bitangent, fs_input.normal);
+    // remember that, this tbn is transposed, so, all the transform: mul(tbn, v), should convert to: mul(v, tbn), same with mul(transpose(tbn), v)
+    mat3 tbn = mat3(mi.T, mi.B, mi.gN);
+
+    //view_dir is same with: mul(mi.V, tbn)
     vec3 tangent_view = mul(u_eyepos.xyz, tbn);
-    vec3 tangent_pos  = mul(fs_input.pos.xyz, tbn);
+    vec3 tangent_pos  = mul(fsinput.pos.xyz, tbn);
     vec3 view_dir = normalize(tangent_view - tangent_pos);
     float min_layers = 8.0;
     float max_layers = 32.0;
+
+    //TODO: transform tangent space vec3(0, 0, 1) to worldspace Z can simplify 'num_layers' calculation, and Z is inverse tbn's three column, mean's: Z = transpose(tbn)[2]
     float num_layers = mix(max_layers, min_layers, max(dot(vec3(0, 0, 1), view_dir), 0));
-    vec2 uv = parallax_mapping(fs_input.uv0, view_dir, num_layers);
+    vec2 uv = parallax_mapping(fsinput.uv0, view_dir, num_layers);
     if(uv.x > 1.0 || uv.y > 1.0 || uv.x < 0.0 || uv.y < 0.0){
         discard;
-    } 
-    input_attribs.basecolor = texture2D(s_basecolor, uv);
-    vec3 normal = normal_from_tangent_frame(tbn, uv);
-    input_attribs.gN = fs_input.normal;
+    }
 
-    fs_output.color = compute_lighting(input_attribs);
+    build_material_info(mi);
+
+    fsoutput.color = compute_lighting(mi);
 }

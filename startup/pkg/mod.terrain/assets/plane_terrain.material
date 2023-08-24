@@ -1,6 +1,6 @@
 fx:
-  vs_code: "\n#include \"terrain_vs_func.sh\"\n"
-  fs_code: "\n#include \"terrain_fs_func.sh\"\n"
+  vs_code: "#include \"terrain_vs_func.sh\""
+  fs_code: "#include \"terrain_fs_func.sh\""
   setting:
     lighting: on
     WITH_NORMAL_ATTRIB: 1

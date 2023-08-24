@@ -1,7 +1,5 @@
 #ifndef __TERRAIN_SH__
 #define __TERRAIN_SH__
-#include "pbr/attribute_define.sh"
-#include "pbr/attribute_uniforms.sh"
 
 vec2 texture2DArrayBc5(sampler2DArray _sampler, vec3 _uv)
 {

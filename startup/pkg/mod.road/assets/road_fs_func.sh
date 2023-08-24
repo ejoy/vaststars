@@ -8,23 +8,38 @@
 #include "common/constants.sh"
 #include "common/uvmotion.sh"
 #include "pbr/lighting.sh"
-#include "pbr/attribute_define.sh"
-#include "pbr/attribute_uniforms.sh"
 #include "default/inputs_structure.sh"
 #include "road.sh"
-#include "pbr/input_attributes.sh"
 
-void CUSTOM_FS_FUNC(in FSInput fs_input, inout FSOutput fs_output)
+material_info road_material_info_init(vec3 gnormal, vec3 normal, vec4 posWS, vec4 basecolor, vec4 fragcoord, vec4 metallic, vec4 roughness)
 {
-    float road_type  = fs_input.user0.x;
-    float road_shape = fs_input.user0.y;
-    float mark_type  = fs_input.user0.z;
-    float mark_shape = fs_input.user0.w;
+    material_info mi  = (material_info)0;
+    mi.basecolor         = basecolor;
+    mi.posWS             = posWS.xyz;
+    mi.distanceVS        = posWS.w;
+    mi.V                 = normalize(u_eyepos.xyz - posWS.xyz);
+    mi.gN                = gnormal;  //geomtery normal
+    mi.N                 = normal;
+
+    mi.perceptual_roughness  = roughness;
+    mi.metallic              = metallic;
+    mi.occlusion         = 1.0;
+
+    mi.screen_uv         = calc_normalize_fragcoord(fragcoord.xy);
+    return mi;
+}
+
+void CUSTOM_FS_FUNC(in FSInput fsinput, inout FSOutput fsoutput)
+{
+    float road_type  = fsinput.user0.x;
+    float road_shape = fsinput.user0.y;
+    float mark_type  = fsinput.user0.z;
+    float mark_shape = fsinput.user0.w;
 
 	//t0 1x1 road color/height/normal
 	//t1 1x1 mark color/alpha
-    const vec2 road_uv  = fs_input.uv0;
-    const vec2 mark_uv  = fs_input.user1.xy;
+    const vec2 road_uv  = fsinput.uv0;
+    const vec2 mark_uv  = fsinput.user1.xy;
 
     vec4 road_basecolor = texture2D(s_basecolor, vec3(road_uv, road_shape));
 
@@ -58,7 +73,8 @@ void CUSTOM_FS_FUNC(in FSInput fs_input, inout FSOutput fs_output)
         mediump vec4 mrSample = texture2D(s_metallic_roughness, road_uv);
         float roughness = mrSample.g;
         float metallic = mrSample.b;
-        input_attributes input_attribs = init_input_attributes(fs_input.normal, fs_input.normal, fs_input.pos, vec4(basecolor, 1.0), fs_input.frag_coord, metallic, roughness);
-        fs_output.color = compute_lighting(input_attribs);
+        material_info mi = road_material_info_init(fsinput.normal, fsinput.normal, fsinput.pos, vec4(basecolor, 1.0), fsinput.frag_coord, metallic, roughness);
+        build_material_info(mi);
+        fsoutput.color = compute_lighting(mi);
     }
 }
