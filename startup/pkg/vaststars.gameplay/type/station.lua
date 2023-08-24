@@ -4,7 +4,7 @@ local iStation = require "interface.station"
 
 local InvalidChest <const> = 0
 
-local c = type "station_consumer"
+local c = type "station"
     .endpoint "position"
     .road "network"
 
@@ -22,9 +22,13 @@ function c:ctor(init, pt)
             rev_neighbor = 0xffff,
         }
     }
-    if init.item then
-        local id = assert(prototype.queryByName(init.item), "Invalid item: " .. init.item).id
-        iStation.set_item(world, e, {{ "demand", id, 1 }})
+    if init.items then
+        local items = {}
+        for i, v in ipairs(init.items) do
+            local id = assert(prototype.queryByName(v[2]), "Invalid item: " .. v[2]).id
+            items[i] = { v[1], id, v[3] }
+        end
+        iStation.set_item(world, e, items)
     end
     return e
 end
