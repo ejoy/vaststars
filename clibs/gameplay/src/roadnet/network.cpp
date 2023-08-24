@@ -448,7 +448,7 @@ namespace roadnet {
 
     static void insertLorry01(network& nw, world& w, straightGrid& grid, lorry_entity& l, map_index z) {
         assert(z == map_index::w0 || z == map_index::w1);
-        lorryid lorryId {uint16_t(l.get_index())};
+        lorryid lorryId {uint16_t(l.get_index<ecs::lorry>())};
         if (!nw.StraightRoad(grid.id0).insertLorry(nw, lorryId, grid.offset0, z)) {
             if (!nw.StraightRoad(grid.id1).insertLorry(nw, lorryId, grid.offset1, (map_index)(1-(uint8_t)z))) {
                 nw.destroyLorry(w, l);
@@ -458,7 +458,7 @@ namespace roadnet {
 
     static void insertLorry10(network& nw, world& w, straightGrid& grid, lorry_entity& l, map_index z) {
         assert(z == map_index::w0 || z == map_index::w1);
-        lorryid lorryId {uint16_t(l.get_index())};
+        lorryid lorryId {uint16_t(l.get_index<ecs::lorry>())};
         if (!nw.StraightRoad(grid.id1).insertLorry(nw, lorryId, grid.offset1, z)) {
             if (!nw.StraightRoad(grid.id0).insertLorry(nw, lorryId, grid.offset0, (map_index)(1-(uint8_t)z))) {
                 nw.destroyLorry(w, l);
