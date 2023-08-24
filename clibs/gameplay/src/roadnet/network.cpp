@@ -244,7 +244,8 @@ namespace roadnet {
     static_assert(sizeof(straightGrid) == sizeof(uint64_t));
 
     struct lorryStatus {
-        loction endpoint;
+        loction ending;
+        loction mov2;
     };
     struct startingStatus {
         ecs::starting* starting;
@@ -580,7 +581,6 @@ namespace roadnet {
             auto& building = e.get<ecs::building>();
             endpoint.neighbor = 0xffff;
             endpoint.rev_neighbor = 0xffff;
-            endpoint.lorry = 0;
             {
                 uint16_t l = prototype::get<"endpoint">(w, building.prototype);
                 auto loc = buildingLoction(w, building, std::bit_cast<loction>(l));
@@ -614,7 +614,11 @@ namespace roadnet {
             if (lorryInvalid(lorry)) {
                 continue;
             }
-            status.lorryStatusAry[getLorryId(lorry).get_index()].endpoint = StraightRoad(lorry.ending).waitingLoction(*this);
+            auto& s = status.lorryStatusAry[getLorryId(lorry).get_index()];
+            s.ending = StraightRoad(lorry.ending).waitingLoction(*this);
+            if (lorry.target == lorry_target::mov1) {
+                s.mov2 = StraightRoad(lorry.mov2).waitingLoction(*this);
+            }
         }
 
         // step.2
@@ -794,13 +798,44 @@ namespace roadnet {
             if (lorryInvalid(lorry)) {
                 continue;
             }
-            auto& s = status.lorryStatusAry[getLorryId(lorry).get_index()];
-            if (auto ep = status.endpointMap.find(s.endpoint); ep && !ep->changed) {
-                lorryGo(lorry, *ep->endpoint);
+            switch (lorry.target) {
+            case lorry_target::mov1: {
+                auto& s = status.lorryStatusAry[getLorryId(lorry).get_index()];
+                if (auto ep1 = status.endpointMap.find(s.ending); ep1 && !ep1->changed) {
+                    if (auto ep2 = status.endpointMap.find(s.mov2); ep2 && !ep2->changed) {
+                        lorryGoMov1(lorry, lorry.item_prototype, *ep1->endpoint, *ep2->endpoint);
+                    }
+                }
+                else {
+                    destroyLorry(w, e);
+                    continue;
+                }
+                break;
             }
-            else {
-                destroyLorry(w, e);
-                continue;
+            case lorry_target::mov2: {
+                auto& s = status.lorryStatusAry[getLorryId(lorry).get_index()];
+                if (auto ep = status.endpointMap.find(s.ending); ep && !ep->changed) {
+                    lorryGoMov2(lorry, ep->endpoint->rev_neighbor, lorry.item_amount);
+                }
+                else {
+                    destroyLorry(w, e);
+                    continue;
+                }
+                break;
+            }
+            case lorry_target::home: {
+                auto& s = status.lorryStatusAry[getLorryId(lorry).get_index()];
+                if (auto ep = status.endpointMap.find(s.ending); ep && !ep->changed) {
+                    lorryGoHome(lorry, *ep->endpoint);
+                }
+                else {
+                    destroyLorry(w, e);
+                    continue;
+                }
+                break;
+            }
+            default:
+                std::unreachable();
             }
             loction loc {lorry.x, lorry.y};
             auto m = getMapBits(status.map, loc);
@@ -900,11 +935,7 @@ namespace roadnet {
 
         for (auto& endpoint : ecs_api::array<ecs::endpoint>(w.ecs)) {
             if (endpoint.rev_neighbor) {
-                if (auto res = endpointWillReset.find(endpoint.rev_neighbor)) {
-                    assert(endpoint.lorry >= *res);
-                    endpoint.lorry -= *res;
-                    endpointWillReset.erase(endpoint.rev_neighbor);
-                }
+                endpointWillReset.erase(endpoint.rev_neighbor);
             }
         }
 

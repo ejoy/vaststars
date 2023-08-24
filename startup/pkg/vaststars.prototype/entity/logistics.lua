@@ -6,8 +6,8 @@ prototype "指挥中心" {
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_headquarter.texture",
     construct_detector = {"exclusive"},
     craft_category = {"基地制造"},
-    item = "运输车辆I", -- lorry_factory
-    type = {"building", "base", "lorry_factory"},
+    item = "运输车辆I",
+    type = {"building", "base", "factory"},
     speed = "50%",
     maxslot = "8",
     area = "6x6",
@@ -17,7 +17,7 @@ prototype "指挥中心" {
     building_base = false,
     crossing = {
         connections = {
-            {type="lorry_factory", position={2,4,"S"}},
+            {type="factory", position={2,4,"S"}},
         },
     },
     starting = "2,2",

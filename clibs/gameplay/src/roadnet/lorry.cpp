@@ -50,19 +50,27 @@ namespace roadnet {
         l.z = z;
         w.rw.LorryEntity(w, l).enable_tag<ecs::lorry_changed>();
     }
-    void lorryItemReset(ecs::lorry& l) {
-        l.item_prototype = 0;
-        l.item_amount = 0;
-    }
-    void lorryItemSet(ecs::lorry& l, uint16_t item, uint16_t amount) {
-        assert(l.item_prototype == 0 && l.item_amount == 0);
+    void lorryGoMov1(ecs::lorry& l, uint16_t item, ecs::endpoint& mov1, ecs::endpoint& mov2) {
+        l.target = lorry_target::mov1;
+        l.status = lorry_status::normal;
+        l.ending = mov1.rev_neighbor;
+        l.mov2 = mov2.rev_neighbor;
         l.item_prototype = item;
+    }
+    void lorryGoMov2(ecs::lorry& l, roadnet::straightid mov2, uint16_t amount) {
+        l.target = lorry_target::mov2;
+        l.status = lorry_status::normal;
+        l.ending = mov2;
+        l.mov2 = {};
         l.item_amount = amount;
     }
-    void lorryGo(ecs::lorry& l, ecs::endpoint& ending) {
+    void lorryGoHome(ecs::lorry& l, ecs::endpoint& home) {
+        l.target = lorry_target::home;
         l.status = lorry_status::normal;
-        l.ending = ending.rev_neighbor;
-        ending.lorry++;
+        l.ending = home.rev_neighbor;
+        l.mov2 = {};
+        l.item_prototype = 0;
+        l.item_amount = 0;
     }
     void lorryUpdate(ecs_api::entity<ecs::lorry>& e, ecs::lorry& l) {
         if (l.progress != 0) {

@@ -232,7 +232,7 @@ function M:create(object_id)
     if e.assembling then
         show_set_recipe = typeobject.allow_set_recipt and true or false
     end
-    if e.lorry_factory then
+    if e.factory then
         lorry_factory_inc_lorry = true
     end
     if e.station_producer then

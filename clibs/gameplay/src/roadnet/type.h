@@ -87,6 +87,12 @@ namespace roadnet {
         error,
     };
 
+    enum class lorry_target: uint8_t {
+        mov1,
+        mov2,
+        home,
+    };
+
     struct objectid {
         uint16_t index;
 

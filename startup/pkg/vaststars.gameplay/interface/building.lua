@@ -3,18 +3,18 @@ local prototype = require "prototype"
 
 local m = {}
 
-local DirtyRoadnet         <const> = 1 << 1
-local DirtyFluidflow       <const> = 1 << 2
-local DirtyHub             <const> = 1 << 3
-local DirtyStationProducer <const> = 1 << 4
-local DirtyStationConsumer <const> = 1 << 5
+local DirtyRoadnet   <const> = 1 << 1
+local DirtyFluidflow <const> = 1 << 2
+local DirtyHub       <const> = 1 << 3
+local DirtyPark      <const> = 1 << 4
+local kDirtyStation  <const> = 1 << 5
 
 local DIRTY <const> = {
     roadnet = DirtyRoadnet,
     fluidflow = DirtyFluidflow,
     hub = DirtyHub,
-    station_producer = DirtyStationProducer,
-    station_consumer = DirtyStationConsumer,
+    park = DirtyPark,
+    station = kDirtyStation,
 }
 
 local DIRECTION <const> = {
@@ -39,6 +39,9 @@ local function dirty_changed_entity(world, e)
     if e.chest or e.hub then
         flags = flags | DirtyHub
     end
+    if e.station then
+        flags = flags | kDirtyStation
+    end
     if flags ~= 0 then
         dirty(world, flags)
     end
@@ -55,11 +58,11 @@ local function dirty_entity(world, e)
     if e.chest or e.hub then
         flags = flags | DirtyHub
     end
-    if e.station_producer then
-        flags = flags | DirtyStationProducer
+    if e.park then
+        flags = flags | DirtyPark
     end
-    if e.station_consumer then
-        flags = flags | DirtyStationConsumer
+    if e.station then
+        flags = flags | kDirtyStation
     end
     if flags ~= 0 then
         dirty(world, flags)
@@ -94,8 +97,8 @@ function m.dirty_restore(world)
     dirty(world,
           DirtyFluidflow
         | DirtyHub
-        | DirtyStationProducer
-        | DirtyStationConsumer
+        | DirtyPark
+        | kDirtyStation
     )
 end
 

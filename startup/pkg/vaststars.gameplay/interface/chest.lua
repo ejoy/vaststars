@@ -49,8 +49,8 @@ end
 
 local function chest_dirty(world, e)
     iBuilding.dirty(world, "hub")
-    if e.station_consumer then
-        iBuilding.dirty(world, "station_consumer")
+    if e.station then
+        iBuilding.dirty(world, "station")
     end
 end
 
@@ -95,7 +95,7 @@ local function assembling_reset_items(world, recipe, chest, option, maxslot)
             if not slot then
                 break
             end
-            if slot.type ~= "none" then
+            if slot.type ~= "none" and slot.amount > 0 then
                 iBackpack.place(world, slot.item, slot.amount)
             end
         end
@@ -129,7 +129,9 @@ local function assembling_reset_items(world, recipe, chest, option, maxslot)
     for i = count, 1, -1 do
         local v = olditems[i]
         if #newitems > maxslot + ingredients_n then
-            iBackpack.place(world, v.item, v.amount)
+            if v.amount > 0 then
+                iBackpack.place(world, v.item, v.amount)
+            end
         else
             if v and v.type == "red" then
                 create_slot(v.type, v.item, v.amount)
@@ -161,56 +163,68 @@ function m.assembling_set(world, e, recipe, option, maxslot)
     assembling_set(world, e, recipe, option, maxslot)
 end
 
-local function chest_reset(world, e, chest)
-    if chest.chest ~= InvalidChest then
-        local slot = cChest.get(world._cworld, chest.chest, 1)
-        assert(slot and slot.type ~= "none")
-        iBackpack.place(world, slot.item, slot.amount)
-        chest_destroy(world, chest, true)
-        chest.chest = InvalidChest
-        chest_dirty(world, e)
-    end
-end
-
-local function chest_set(world, e, chest, item, type, limit)
-    if chest.chest == InvalidChest then
-        chest.chest = m.create(world, {{
-            type = type,
-            item = item,
-            limit = limit,
-            amount = 0,
-        }})
-        chest_dirty(world, e)
-        return
-    end
-    local slot = cChest.get(world._cworld, chest.chest, 1)
-    assert(slot and slot.type ~= "none")
-    if slot.item == item then
-        if slot.limit ~= limit then
-            cChest.set(world._cworld, chest.chest, 1, {
-                limit = limit,
-            })
+function m.station_set(world, e, items)
+    local chest_items = {}
+    local station_items = {}
+    if e.station.chest ~= InvalidChest then
+        for i = 1, 256 do
+            local slot = cChest.get(world._cworld, e.station.chest, i)
+            if not slot then
+                break
+            end
+            if slot.amount > 0 then
+                station_items[slot.item] = slot.amount
+            end
         end
-        return
+        chest_destroy(world, e.station.chest, false)
+        e.station.chest = InvalidChest
+        chest_dirty(world, e)
     end
-    if slot.item ~= 0 then
-        iBackpack.place(world, slot.item, slot.amount)
+    if e.chest.chest ~= InvalidChest then
+        for i = 1, 256 do
+            local slot = cChest.get(world._cworld, e.station.chest, i)
+            if not slot then
+                break
+            end
+            if slot.amount > 0 then
+                chest_items[slot.item] = slot.amount
+            end
+        end
+        chest_destroy(world, e.chest.chest, false)
+        e.chest.chest = InvalidChest
+        chest_dirty(world, e)
     end
-    cChest.set(world._cworld, chest.chest, 1, {
-        item = item,
-        limit = limit,
-        amount = 0,
-    })
-    chest_dirty(world, e)
-end
-
-function m.station_set(world, e, item)
-    if item == nil then
-        chest_reset(world, e, e.chest)
-        return
+    if items ~= nil then
+        local chest_args = {}
+        local station_args = {}
+        for _, v in ipairs(items) do
+            local type, item, limit = v[1], v[2], v[3]
+            chest_args[#chest_args+1] = {
+                type = type == "supply" and "blue" or "red",
+                item = item,
+                limit = prototype.queryById(item).station_limit,
+                amount = chest_items[item] or 0,
+            }
+            station_args[#station_args+1] = {
+                type = type == "supply" and "red" or "blue",
+                item = item,
+                limit = limit,
+                amount = station_items[item] or 0,
+            }
+            chest_items[item] = nil
+            station_items[item] = nil
+        end
+        e.chest.chest = m.create(world, chest_args)
+        e.station.chest = m.create(world, station_args)
+        chest_dirty(world, e)
     end
-    local limit = prototype.queryById(item).station_limit
-    chest_set(world, e, e.chest, item, e.station_producer and "blue" or "red", limit)
+    for item, amount in pairs(station_items) do
+        local limit = prototype.queryById(item).station_limit
+        iBackpack.place(world, item, amount * limit)
+    end
+    for item, amount in pairs(chest_items) do
+        iBackpack.place(world, item, amount)
+    end
 end
 
 function m.hub_set(world, e, items)
@@ -241,7 +255,7 @@ function m.hub_set(world, e, items)
                 end
             end
         else
-            if slot.item ~= 0 then
+            if slot.item ~= 0 and slot.amount > 0 then
                 iBackpack.place(world, slot.item, slot.amount)
             end
             cChest.set(world._cworld, e.hub.chest, i, {

@@ -9,6 +9,7 @@ local mainkey = component
 
 type "roadnet::straightid" ("uint16")
 type "enum roadnet::lorry_status" ("uint8")
+type "enum roadnet::lorry_target" ("uint8")
 
 mainkey "building" {
     "uint16 prototype",
@@ -26,35 +27,35 @@ component "chest" {
     "uint16 chest",
 }
 
-component "station_producer" {
-    "uint8 weights",
-}
-
-component "station_consumer" {
-    "uint8 maxlorry",
-}
-
-tag "lorry_factory"
+tag "factory"
+tag "park"
+tag "station_consumer"
+tag "station_producer"
 
 component "starting" {
     "roadnet::straightid neighbor",
 }
 
+component "station" {
+    "uint16 chest",
+}
+
 component "endpoint" {
     "roadnet::straightid neighbor",
     "roadnet::straightid rev_neighbor",
-    "uint8 lorry",
 }
 
 mainkey "lorry" {
     "uint16 prototype",
     "roadnet::straightid ending",
+    "roadnet::straightid mov2",
     "uint16 item_prototype",
     "uint16 item_amount",
+    "enum roadnet::lorry_status status",
+    "enum roadnet::lorry_target target",
     "uint8 progress",
     "uint8 maxprogress",
     "uint8 time",
-    "enum roadnet::lorry_status status",
     "uint8 x",
     "uint8 y",
     "uint8 z",

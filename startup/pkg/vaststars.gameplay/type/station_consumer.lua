@@ -15,18 +15,17 @@ function c:ctor(init, pt)
         chest = {
             chest = InvalidChest,
         },
-        station_consumer = {
-            maxlorry = pt.maxlorry,
+        station = {
+            chest = InvalidChest,
         },
         endpoint = {
             neighbor = 0xffff,
             rev_neighbor = 0xffff,
-            lorry = 0,
         }
     }
     if init.item then
         local id = assert(prototype.queryByName(init.item), "Invalid item: " .. init.item).id
-        iStation.set_item(world, e, id)
+        iStation.set_item(world, e, {{ "demand", id, 1 }})
     end
     return e
 end
