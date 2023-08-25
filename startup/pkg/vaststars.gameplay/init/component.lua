@@ -29,8 +29,6 @@ component "chest" {
 
 tag "factory"
 tag "park"
-tag "station_consumer"
-tag "station_producer"
 
 component "starting" {
     "roadnet::straightid neighbor",
