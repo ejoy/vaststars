@@ -10,7 +10,7 @@ function c:ctor(init, pt)
     local world = self
     local typeobject = prototype.queryByName(pt.item)
     local chest = iChest.create(world, {{
-        type = "red",
+        type = "supply",
         item = typeobject.id,
         amount = 0,
         limit = typeobject.station_limit,

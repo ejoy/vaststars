@@ -185,10 +185,10 @@ lget(lua_State* L) {
     auto& s = chest::array_at(w, c, offset);
     lua_createtable(L, 0, 7);
     switch (s.type) {
-    case container::slot::slot_type::red:   lua_pushstring(L, "red"); break;
-    case container::slot::slot_type::blue:  lua_pushstring(L, "blue"); break;
-    case container::slot::slot_type::none:  lua_pushstring(L, "none"); break;
-    default:                                lua_pushstring(L, "unknown"); break;
+    case container::slot::slot_type::none:   lua_pushstring(L, "none"); break;
+    case container::slot::slot_type::supply: lua_pushstring(L, "supply"); break;
+    case container::slot::slot_type::demand: lua_pushstring(L, "demand"); break;
+    default:                                 lua_pushstring(L, "unknown"); break;
     }
     lua_setfield(L, -2, "type");
     lua_pushinteger(L, s.item);
@@ -220,7 +220,7 @@ lset(lua_State* L) {
     }
     auto& r = chest::array_at(w, c, offset);
     if (LUA_TNIL != lua_getfield(L, 4, "type")) {
-        static const char *const opts[] = {"red", "blue", NULL};
+        static const char *const opts[] = {"none", "supply", "demand", NULL};
         r.type = (container::slot::slot_type)luaL_checkoption(L, -1, NULL, opts);
     }
     lua_pop(L, 1);

@@ -25,7 +25,7 @@ local function createChest(world, s)
         local id = string.unpack("<I2", s, 2*idx-1)
         assert(not isFluidId(id))
         container_in[#container_in+1] = {
-            type = "blue",
+            type = "demand",
             item = id,
             limit = 2,
         }

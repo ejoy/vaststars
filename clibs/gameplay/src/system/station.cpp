@@ -1,5 +1,4 @@
-﻿#include "system/station.h"
-#include "core/world.h"
+﻿#include "core/world.h"
 #include "core/capacitance.h"
 #include "util/prototype.h"
 #include "roadnet/lorry.h"
@@ -34,12 +33,12 @@ static int lbuild(lua_State *L) {
                 auto& chest_s = chest::array_at(w, chest_c, i);
                 auto& station_s = chest::array_at(w, station_c, i);
                 if (station_s.item != 0) {
-                    if (station_s.type == container::slot::slot_type::red) {
+                    if (station_s.type == container::slot::slot_type::supply) {
                         for (uint16_t i = station_s.lock_item; i < station_s.amount; ++i) {
                             w.market.add_supply(v.get_index<ecs::endpoint>(), station_s.item);
                         }
                     }
-                    else if (station_s.type == container::slot::slot_type::blue) {
+                    else if (station_s.type == container::slot::slot_type::demand) {
                         for (uint16_t i = station_s.amount + station_s.lock_space; i < station_s.limit; ++i) {
                             w.market.add_demand(v.get_index<ecs::endpoint>(), station_s.item);
                         }
@@ -89,14 +88,14 @@ static int lupdate(lua_State *L) {
             auto& chest_s = chest::array_at(w, chest_c, i);
             auto& station_s = chest::array_at(w, station_c, i);
             if (chest_s.item != 0) {
-                if (chest_s.type == container::slot::slot_type::blue) {
+                if (chest_s.type == container::slot::slot_type::demand) {
                     if (chest_s.amount >= chest_s.limit && station_s.amount < station_s.limit) {
                         chest_s.amount -= chest_s.limit;
                         station_s.amount++;
                         w.market.add_supply(v.get_index<ecs::endpoint>(), chest_s.item);
                     }
                 }
-                else if (chest_s.type == container::slot::slot_type::red) {
+                else if (chest_s.type == container::slot::slot_type::supply) {
                     if (chest_s.amount == 0 && station_s.amount > 0) {
                         chest_s.amount += chest_s.limit;
                         station_s.amount--;
@@ -130,7 +129,7 @@ static int lupdate(lua_State *L) {
             for (uint8_t i = 0; i < (uint8_t)n; ++i) {
                 auto& chest_s = chest::array_at(w, chest_c, i);
                 auto& station_s = chest::array_at(w, station_c, i);
-                if (station_s.type == container::slot::slot_type::red && station_s.item == l.item_prototype && station_s.amount > 0) {
+                if (station_s.type == container::slot::slot_type::supply && station_s.item == l.item_prototype && station_s.amount > 0) {
                     station_s.amount--;
                     station_s.lock_item--;
                     roadnet::lorryGoMov2(l, l.mov2, chest_s.limit);
@@ -143,7 +142,7 @@ static int lupdate(lua_State *L) {
             for (uint8_t i = 0; i < (uint8_t)n; ++i) {
                 auto& chest_s = chest::array_at(w, chest_c, i);
                 auto& station_s = chest::array_at(w, station_c, i);
-                if (station_s.type == container::slot::slot_type::blue && station_s.item == l.item_prototype && station_s.amount < station_s.limit) {
+                if (station_s.type == container::slot::slot_type::demand && station_s.item == l.item_prototype && station_s.amount < station_s.limit) {
                     if (auto res = w.market.match(w, endpoint.neighbor)) {
                         station_s.amount++;
                         station_s.lock_space--;

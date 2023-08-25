@@ -49,9 +49,9 @@ public:
     };
     struct slot {
         enum class slot_type: uint8_t {
-            red = 0,
-            blue,
-            none,
+            none = 0,
+            supply,
+            demand,
         };
         slot_type type = slot_type::none;
         uint8_t   eof;

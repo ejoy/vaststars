@@ -11,10 +11,9 @@ local CHEST_TYPE <const> = {
     [0] = 0,
     [1] = 1,
     [2] = 2,
-    [3] = 3,
-    red = 0,
-    blue = 1,
-    none = 2,
+    none = 0,
+    supply = 1,
+    demand = 2,
 }
 local function chest_slot(t)
     assert(t.type)
@@ -114,17 +113,17 @@ local function assembling_reset_items(world, recipe, chest, option, maxslot)
             item = id,
             limit = limit,
             amount = o.amount,
-            lock_item = type ~= "blue" and o.lock_item or nil,
+            lock_item = type ~= "demand" and o.lock_item or nil,
             lock_space = o.lock_space,
         }
     end
     for idx = 1, ingredients_n do
         local id, n = string.unpack("<I2I2", recipe.ingredients, 4*idx+1)
-        create_slot(isFluidId(id) and "none" or "blue", id, n * option.ingredientsLimit)
+        create_slot(isFluidId(id) and "none" or "demand", id, n * option.ingredientsLimit)
     end
     for idx = 1, results_n do
         local id, n = string.unpack("<I2I2", recipe.results, 4*idx+1)
-        create_slot(isFluidId(id) and "none" or "red", id, n * option.resultsLimit)
+        create_slot(isFluidId(id) and "none" or "supply", id, n * option.resultsLimit)
     end
     for i = count, 1, -1 do
         local v = olditems[i]
@@ -133,7 +132,7 @@ local function assembling_reset_items(world, recipe, chest, option, maxslot)
                 iBackpack.place(world, v.item, v.amount)
             end
         else
-            if v and v.type == "red" then
+            if v and v.type == "supply" then
                 create_slot(v.type, v.item, v.amount)
             end
         end
@@ -200,13 +199,13 @@ function m.station_set(world, e, items)
         for _, v in ipairs(items) do
             local type, item, limit = v[1], v[2], v[3]
             chest_args[#chest_args+1] = {
-                type = type == "supply" and "blue" or "red",
+                type = type == "supply" and "demand" or "supply",
                 item = item,
                 limit = prototype.queryById(item).station_limit,
                 amount = chest_items[item] or 0,
             }
             station_args[#station_args+1] = {
-                type = type == "supply" and "red" or "blue",
+                type = type,
                 item = item,
                 limit = limit,
                 amount = station_items[item] or 0,
@@ -232,7 +231,7 @@ function m.hub_set(world, e, items)
         local info = {}
         for i, item in ipairs(items) do
             info[i] = {
-                type = "blue",
+                type = "demand",
                 item = item,
                 limit = item ~= 0 and prototype.queryById(item).hub_limit or 0,
                 amount = 0,

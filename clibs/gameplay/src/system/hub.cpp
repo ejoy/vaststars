@@ -231,10 +231,10 @@ static void rebuild(world& w) {
             auto& chestslot = slice[i];
             auto item = chestslot.item;
             hub_berth::berth_type type;
-            if (chestslot.type == container::slot::slot_type::red) {
+            if (chestslot.type == container::slot::slot_type::supply) {
                 type = hub_berth::berth_type::chest_red;
             }
-            else if (chestslot.type == container::slot::slot_type::blue) {
+            else if (chestslot.type == container::slot::slot_type::demand) {
                 type = hub_berth::berth_type::chest_blue;
             }
             else {
@@ -376,7 +376,7 @@ static void rebuild(world& w) {
                 auto mov1 = std::bit_cast<hub_berth>(drone.next);
                 auto mov2 = std::bit_cast<hub_berth>(drone.mov2);
                 if (auto slot = ChestGetSlot(w, mov1)) {
-                    if (slot->item != info.item || slot->type == container::slot::slot_type::blue) {
+                    if (slot->item != info.item || slot->type == container::slot::slot_type::demand) {
                         if (auto findshot = ChestFindSlot(w, mov1, info.item)) {
                             mov1.chest_slot = *findshot;
                             drone.next = std::bit_cast<uint32_t>(mov1);
@@ -384,7 +384,7 @@ static void rebuild(world& w) {
                         else {
                             // undo mov2
                             if (auto mov2slot = ChestGetSlot(w, mov2)) {
-                                if (slot->item == info.item && slot->type != container::slot::slot_type::red) {
+                                if (slot->item == info.item && slot->type != container::slot::slot_type::supply) {
                                     assert(mov2slot->lock_space > 0);
                                     mov2slot->lock_space--;
                                 }
@@ -395,7 +395,7 @@ static void rebuild(world& w) {
                     }
                 }
                 if (auto slot = ChestGetSlot(w, std::bit_cast<hub_berth>(drone.mov2))) {
-                    if (slot->item != info.item || slot->type == container::slot::slot_type::red) {
+                    if (slot->item != info.item || slot->type == container::slot::slot_type::supply) {
                         if (auto findshot = ChestFindSlot(w, mov2, info.item)) {
                             mov2.chest_slot = *findshot;
                             drone.mov2 = std::bit_cast<uint32_t>(mov2);

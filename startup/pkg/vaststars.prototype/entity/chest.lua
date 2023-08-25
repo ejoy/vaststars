@@ -6,7 +6,7 @@ prototype "小铁制箱子I" {
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"building", "chest"},
-    chest_type = "red",
+    chest_type = "supply",
     area = "1x1",
     slots = 10,
 }
@@ -16,7 +16,7 @@ prototype "建材箱" {
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"building", "chest"},
-    chest_type = "red",
+    chest_type = "supply",
     area = "1x1",
     slots = 10,
 }
