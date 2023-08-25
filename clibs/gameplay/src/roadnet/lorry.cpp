@@ -15,6 +15,7 @@ namespace roadnet {
         l.item_prototype = 0;
         l.item_amount = 0;
         l.status = lorry_status::normal;
+        l.target = lorry_target::home;
         l.time = 1000 / speed;
     }
     void lorryDestroy(ecs::lorry& l, world& w) {

@@ -51,6 +51,7 @@ static int lbuild(lua_State *L) {
 }
 
 static void startTask(world& w, ecs::lorry& l, market_match const& m) {
+    assert(l.target == roadnet::lorry_target::home);
     auto from_e = ecs_api::index_entity<ecs::endpoint>(w.ecs, m.from);
     auto from_s = from_e.component<ecs::station>();
     auto from_c = container::index::from(from_s->chest);
@@ -126,37 +127,51 @@ static int lupdate(lua_State *L) {
         container::size_type n = std::min(chest::size(w, station_c), chest::size(w, chest_c));
         switch (l.target) {
         case roadnet::lorry_target::mov1: {
+            bool valid = false;
             for (uint8_t i = 0; i < (uint8_t)n; ++i) {
                 auto& chest_s = chest::array_at(w, chest_c, i);
                 auto& station_s = chest::array_at(w, station_c, i);
-                if (station_s.type == container::slot::slot_type::supply && station_s.item == l.item_prototype && station_s.amount > 0) {
-                    station_s.amount--;
-                    station_s.lock_item--;
-                    roadnet::lorryGoMov2(l, l.mov2, chest_s.limit);
-                    break;
+                if (station_s.type == container::slot::slot_type::supply && station_s.item == l.item_prototype) {
+                    valid = true;
+                    if (station_s.amount > 0) {
+                        station_s.amount--;
+                        station_s.lock_item--;
+                        roadnet::lorryGoMov2(l, l.mov2, chest_s.limit);
+                        break;
+                    }
                 }
+            }
+            if (!valid) {
+                assert(false);
             }
             break;
         }
         case roadnet::lorry_target::mov2: {
+            bool valid = false;
             for (uint8_t i = 0; i < (uint8_t)n; ++i) {
                 auto& chest_s = chest::array_at(w, chest_c, i);
                 auto& station_s = chest::array_at(w, station_c, i);
-                if (station_s.type == container::slot::slot_type::demand && station_s.item == l.item_prototype && station_s.amount < station_s.limit) {
-                    if (auto res = w.market.match(w, endpoint.neighbor)) {
-                        station_s.amount++;
-                        station_s.lock_space--;
-                        startTask(w, l, *res);
-                        roadnet::endpointSetOut(w, endpoint);
+                if (station_s.type == container::slot::slot_type::demand && station_s.item == l.item_prototype) {
+                    valid = true;
+                    if (station_s.amount < station_s.limit) {
+                        if (auto res = w.market.match(w, endpoint.neighbor)) {
+                            station_s.amount++;
+                            station_s.lock_space--;
+                            startTask(w, l, *res);
+                            roadnet::endpointSetOut(w, endpoint);
+                        }
+                        else if (auto home = w.market.nearest_park(w, endpoint.neighbor); home != 0xffff) {
+                            station_s.amount++;
+                            station_s.lock_space--;
+                            auto endpoints = ecs_api::array<ecs::endpoint>(w.ecs);
+                            roadnet::lorryGoHome(l, endpoints[home]);
+                        }
+                        break;
                     }
-                    else if (auto home = w.market.nearest_park(w, endpoint.neighbor); home != 0xffff) {
-                        station_s.amount++;
-                        station_s.lock_space--;
-                        auto endpoints = ecs_api::array<ecs::endpoint>(w.ecs);
-                        roadnet::lorryGoHome(l, endpoints[home]);
-                    }
-                    break;
                 }
+            }
+            if (!valid) {
+                assert(false);
             }
             break;
         }
