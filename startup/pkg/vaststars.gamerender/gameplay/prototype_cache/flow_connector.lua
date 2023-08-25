@@ -56,6 +56,7 @@ return function ()
             local bits = 0
             for _, connection in ipairs(_get_connections(typeobject)) do
                 local dir = iprototype.rotate_dir(connection.position[3], entity_dir)
+                dir = iprototype.dir_tostring(dir) -- TODO: remove this
                 bits = bits | (1 << get_dir_bit(typeobject.building_category, dir, (connection.ground ~= nil) )) -- TODO: special case for pipe-to-ground
 
                 -- 
@@ -106,6 +107,7 @@ return function ()
         for _, connection in ipairs(_get_connections(typeobject)) do
             if connection.ground then
                 local dir = iprototype.rotate_dir(connection.position[3], entity_dir)
+                dir = iprototype.dir_tostring(dir) -- TODO: remove this
                 bits = bits | (1 << get_dir_bit(typeobject.building_category, dir, true))
             end
         end

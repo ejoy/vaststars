@@ -106,17 +106,19 @@ funcs["hub"] = function (entity, e)
     return entity
 end
 
-funcs["station_producer"] = function (entity, e)
+funcs["station"] = function (entity, e)
     gameplay_core.extend(e, "chest?in")
-    local slot = ichest.get(gameplay_core.get_world(), e.chest, 1)
-    if not slot then
-        return entity
+    local items = {}
+    for i = 1, ichest.MAX_SLOT do
+        local slot = ichest.get(gameplay_core.get_world(), e.station, i)
+        if not slot then
+            break
+        end
+        items[#items+1] = {slot.type, slot.item == 0 and "" or assert(iprototype.queryById(slot.item)).name, slot.limit}
     end
-    local typeobject = assert(iprototype.queryById(slot.item))
-    entity.item = typeobject.name
+    entity.items = items
     return entity
 end
-funcs["station_consumer"] = funcs["station_producer"]
 
 local function writeall(file, content)
     local f <close> = assert(io.open(file, "wb"))

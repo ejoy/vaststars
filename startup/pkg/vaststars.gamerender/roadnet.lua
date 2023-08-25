@@ -4,6 +4,7 @@ local w = world.w
 
 local iroad = ecs.require "engine.road"
 local imountain = ecs.require "engine.mountain"
+local iroadnet_converter = require "roadnet_converter"
 
 local WIDTH <const> = 256 -- coordinate value range: [0, WIDTH - 1]
 local HEIGHT <const> = 256 -- coordinate value range: [0, HEIGHT - 1]
@@ -73,14 +74,15 @@ function roadnet:update()
     iroad:flush()
 end
 
-function roadnet:editor_set(layer_name, shape_type, x, y, shape, dir)
+function roadnet:set(layer_name, shape_type, x, y, mask)
+    local shape, dir = iroadnet_converter.mask_to_shape_dir(mask)
     iroad:set(layer_name, shape_type, x, y, shape, dir)
 
     self._layer_cache[layer_name] = self._layer_cache[layer_name] or {}
     self._layer_cache[layer_name][__pack(x, y)] = true
 end
 
-function roadnet:editor_del(layer_name, x, y)
+function roadnet:del(layer_name, x, y)
     iroad:del(layer_name, x, y)
     self._layer_cache[layer_name][__pack(x, y)] = nil
 end

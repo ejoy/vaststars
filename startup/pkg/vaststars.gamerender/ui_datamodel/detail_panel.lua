@@ -17,7 +17,7 @@ local assembling_common = require "ui_datamodel.common.assembling"
 local iui = ecs.require "engine.system.ui_system"
 
 local UPS <const> = require("gameplay.interface.constant").UPS
-local CHEST_LIST_TYPES <const> = {"chest", "station_producer", "station_consumer", "hub"}
+local CHEST_LIST_TYPES <const> = {"chest", "station", "hub"}
 
 local STATUS_NO_POWER <const> = 1
 local STATUS_IDLE <const> = 2
@@ -284,15 +284,6 @@ local function get_property(e, typeobject)
                 end
             end
         end
-    end
-
-    if e.station_consumer then
-        t.values['maxlorry'] = e.station_consumer.maxlorry
-        t.values['lorry'] = e.endpoint.lorry
-    end
-    if e.station_producer then
-        t.values['weights'] = e.station_producer.weights
-        t.values['lorry'] = e.endpoint.lorry
     end
     if e.hub then
         local typeobject = iprototype.queryById(e.building.prototype)

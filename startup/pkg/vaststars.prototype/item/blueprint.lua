@@ -276,7 +276,7 @@ prototype "出货车站框架" {
     drone_depot_gap3 = "0.12x0.05x0.12",
     backpack_limit = 16,
     pile_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
-    item_icon = "/pkg/vaststars.resources/textures/icons/item/goodstation-output.texture",
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/goodstation-input.texture",
     item_category = "加工",
     item_order = 22,
     item_description = "用于建造出货车站的框架",

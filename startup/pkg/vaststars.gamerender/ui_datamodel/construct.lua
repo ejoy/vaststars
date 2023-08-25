@@ -34,8 +34,7 @@ local igameplay = ecs.require "gameplay_system"
 local audio = import_package "ant.audio"
 
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
-local ROAD_TILE_SCALE_WIDTH <const> = 2
-local ROAD_TILE_SCALE_HEIGHT <const> = 2
+local ROAD_SIZE <const> = 2
 local CHANGED_FLAG_BUILDING <const> = require("gameplay.interface.constant").CHANGED_FLAG_BUILDING
 
 local rotate_mb = mailbox:sub {"rotate"}
@@ -60,7 +59,6 @@ local start_teardown_mb = mailbox:sub {"start_teardown"}
 local finish_teardown_mb = mailbox:sub {"finish_teardown"}
 local remove_one_mb = mailbox:sub {"remove_one"}
 local unselected_mb = mailbox:sub {"unselected"}
-
 local gesture_tap_mb = world:sub{"gesture", "tap"}
 local gesture_pan_mb = world:sub {"gesture", "pan"}
 
@@ -243,25 +241,15 @@ end
 
 function M:stage_ui_update(datamodel)
     for _ in rotate_mb:unpack() do
-        if builder then
-            builder:rotate_pickup_object(builder_datamodel)
+        if builder and builder.rotate then
+            builder:rotate(builder_datamodel)
         end
     end
 
     for _ in build_mb:unpack() do
         if builder and builder.confirm then
-            local x, y = iobject.central_coord(builder.typeobject.name, DEFAULT_DIR, coord_system)
-            x, y = x - (x % ROAD_TILE_SCALE_WIDTH), y - (y % ROAD_TILE_SCALE_HEIGHT)
-
             builder:confirm(builder_datamodel)
             audio.play "event:/function/place"
-
-            builder:clean(builder_datamodel)
-            if builder.continue_construct ~= false then
-                builder:new_entity(builder_datamodel, builder.typeobject, x, y)
-            else
-                builder = nil
-            end
         end
     end
 
@@ -357,7 +345,7 @@ local function __construct_entity(typeobject)
 
     if iprototype.has_type(typeobject.type, "road") then
         local x, y = iobject.central_coord(typeobject.name, DEFAULT_DIR, coord_system)
-        x, y = x - (x % ROAD_TILE_SCALE_WIDTH), y - (y % ROAD_TILE_SCALE_HEIGHT)
+        x, y = x - (x % ROAD_SIZE), y - (y % ROAD_SIZE)
 
         builder_ui = "/pkg/vaststars.resources/ui/construct_road_or_pipe.rml" -- TODO: remove this
         builder_datamodel = iui.get_datamodel("/pkg/vaststars.resources/ui/construct.rml")
@@ -365,7 +353,7 @@ local function __construct_entity(typeobject)
         builder:new_entity(builder_datamodel, typeobject, x, y)
     elseif iprototype.has_type(typeobject.type, "pipe") then
         local x, y = iobject.central_coord(typeobject.name, DEFAULT_DIR, coord_system)
-        x, y = x - (x % ROAD_TILE_SCALE_WIDTH), y - (y % ROAD_TILE_SCALE_HEIGHT)
+        x, y = x - (x % ROAD_SIZE), y - (y % ROAD_SIZE)
 
         builder_ui = "/pkg/vaststars.resources/ui/construct_road_or_pipe.rml" -- TODO: remove this
         builder_datamodel = iui.get_datamodel("/pkg/vaststars.resources/ui/construct.rml")
@@ -373,13 +361,13 @@ local function __construct_entity(typeobject)
         builder:new_entity(builder_datamodel, typeobject, x, y)
     elseif iprototype.has_type(typeobject.type, "pipe_to_ground") then
         local x, y = iobject.central_coord(typeobject.name, DEFAULT_DIR, coord_system)
-        x, y = x - (x % ROAD_TILE_SCALE_WIDTH), y - (y % ROAD_TILE_SCALE_HEIGHT)
+        x, y = x - (x % ROAD_SIZE), y - (y % ROAD_SIZE)
 
         builder_ui = "/pkg/vaststars.resources/ui/construct_road_or_pipe.rml"  -- TODO: remove this
         builder_datamodel = iui.get_datamodel("/pkg/vaststars.resources/ui/construct.rml")
         builder = create_pipetogroundbuilder()
         builder:new_entity(builder_datamodel, typeobject, x, y)
-    elseif iprototype.has_types(typeobject.type, "station_producer", "station_consumer") then
+    elseif iprototype.has_types(typeobject.type, "station") then
         builder_ui = "/pkg/vaststars.resources/ui/construct_building.rml"
         builder_datamodel = iui.get_datamodel("/pkg/vaststars.resources/ui/construct.rml")
         builder = create_station_builder()
@@ -672,7 +660,7 @@ function M:stage_camera_usage(datamodel)
     for _, _, _, prototype_name in start_laying_mb:unpack() do
         local create_builder
         if iprototype.is_road(prototype_name) then
-            create_builder = create_roadbuilder
+            goto continue
         elseif iprototype.is_pipe(prototype_name) then
             create_builder = create_pipebuilder
         else
@@ -697,12 +685,13 @@ function M:stage_camera_usage(datamodel)
             builder:new_entity(builder_datamodel, typeobject, selected_obj.x, selected_obj.y)
             builder:start_laying(builder_datamodel)
         end)
+        ::continue::
     end
 
     for _, _, _, prototype_name in start_teardown_mb:unpack() do
         local create_builder
         if iprototype.is_road(prototype_name) then
-            create_builder = create_roadbuilder
+            goto continue
         elseif iprototype.is_pipe(prototype_name) then
             create_builder = create_pipebuilder
         else
@@ -728,23 +717,12 @@ function M:stage_camera_usage(datamodel)
             builder:new_entity(builder_datamodel, typeobject, selected_obj.x, selected_obj.y)
             builder:start_teardown(builder_datamodel)
         end)
+        ::continue::
     end
 
     for _ in finish_laying_mb:unpack() do
         assert(builder)
-        local to_x, to_y = builder:finish_laying(builder_datamodel)
-        local obj
-        if iprototype.is_road(builder.typeobject.name) then
-            obj = ipick_object.pick_road(to_x, to_y)
-            __on_pick_non_building(datamodel, obj, true)
-        else
-            obj = ipick_object.pick_obj(to_x, to_y)
-            __on_pick_building(datamodel, obj)
-        end
-        builder:clean(builder_datamodel)
-        print("finish_laying_mb", to_x, to_y)
-        builder:new_entity(builder_datamodel, builder.typeobject, to_x, to_y)
-        builder:start_laying(builder_datamodel)
+        builder:finish_laying(builder_datamodel)
     end
 
     for _ in finish_teardown_mb:unpack() do
@@ -771,8 +749,7 @@ function M:stage_camera_usage(datamodel)
         builder_ui = "/pkg/vaststars.resources/ui/construct_road_or_pipe.rml"
         builder_datamodel = iui.get_datamodel("/pkg/vaststars.resources/ui/construct_road_or_pipe.rml")
         builder = create_roadbuilder()
-        builder:new_entity(builder_datamodel, typeobject, selected_obj.x, selected_obj.y)
-        builder:remove_one(builder_datamodel)
+        builder:remove_one(builder_datamodel, selected_obj.x, selected_obj.y)
 
         __switch_status("default", function()
             gameplay_core.world_update = true

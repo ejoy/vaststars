@@ -227,15 +227,14 @@ prototype "砖石公路-X型" {
 
 --出货车站需要设置送货类型以及需求车辆
 prototype "出货车站" {
-    model = "glbs/goods-station-1.glb|delivery-station-1.prefab",
+    model = "glbs/goods-station-1.glb|mesh.prefab",
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_goods_station1.texture",
     construct_detector = {"exclusive"},
-    type = {"building", "station_producer"},
+    type = {"building", "station", "park"},
     building_base = false,
     rotate_on_build = true,
     area = "4x2",
     drone_height = 24,
-    weights = 3,
     crossing = {
         connections = {
             {type="station", position={1,1,"S"}},
@@ -252,15 +251,14 @@ prototype "出货车站" {
 
 --收货车站需要设置送货类型
 prototype "收货车站" {
-    model = "glbs/goods-station-1.glb|receiving-station-1.prefab",
+    model = "glbs/goods-station-1.glb|mesh.prefab",
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_goods_station1.texture",
     construct_detector = {"exclusive"},
-    type = {"building", "station_consumer"},
+    type = {"building", "station", "park"},
     building_base = false,
     rotate_on_build = true,
     area = "4x2",
     drone_height = 24,
-    maxlorry = 1,
     crossing = {
         connections = {
             {type="station", position={1,1,"S"}},

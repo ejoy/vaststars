@@ -129,14 +129,6 @@ local building_detail_config = {
 	["碎石矿"] = {
 		"mine_type",
 	},
-	["出货车站"] = {
-		"weights",
-		"lorry",
-	},
-	["收货车站"] = {
-		"maxlorry",
-		"lorry",
-	},
 }
 
 return building_detail_config

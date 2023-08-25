@@ -52,7 +52,7 @@ local function countNeighboringFluids(x, y)
     local fluids = {}
     for _, dir in ipairs(ALL_DIR) do
         local x, y = iprototype.move_coord(x, y, dir)
-        local fluid = ifluidbox.get(x, y, iprototype.dir_tonumber(iprototype.reverse_dir(dir)))
+        local fluid = ifluidbox.get(x, y, iprototype.reverse_dir(dir))
         if fluid and fluid ~= 0 then
             fluids[fluid] = true
         end
@@ -711,11 +711,10 @@ local function new_entity(self, datamodel, typeobject, x, y)
     }
 
     if not self.grid_entity then
-        self.grid_entity = igrid_entity.create("polyline_grid", terrain._width, terrain._height, terrain.tile_size, {t = __calc_grid_position(self.coord_indicator.srt.t, typeobject, dir)})
+        self.grid_entity = igrid_entity.create(terrain._width, terrain._height, terrain.tile_size, {t = __calc_grid_position(self.coord_indicator.srt.t, typeobject, dir)})
     end
-    self.grid_entity:show(true)
 
-    self.pickup_components[#self.pickup_components + 1] = create_pickup_selected_box(self.coord_indicator.srt.t, typeobject, dir, true)
+    self.pickup_components[#self.pickup_components + 1] = create_pickup_selected_box(self.coord_indicator.srt.t, typeobject.area, dir, true)
 
     --
     _builder_init(self, datamodel)
@@ -732,7 +731,7 @@ local function touch_move(self, datamodel, delta_vec)
         local typeobject = iprototype.queryByName(self.coord_indicator.prototype_name)
         local w, h = iprototype.rotate_area(typeobject.area, self.coord_indicator.dir)
         local grid_position = coord_system:get_position_by_coord(self.coord_indicator.x, self.coord_indicator.y, w, h)
-        self.grid_entity:send("obj_motion", "set_position", __calc_grid_position(grid_position, typeobject, self.coord_indicator.dir))
+        self.grid_entity:set_position(__calc_grid_position(grid_position, typeobject, self.coord_indicator.dir))
     end
     for _, c in pairs(self.pickup_components) do
         c:on_position_change(self.coord_indicator.srt, self.coord_indicator.dir)
@@ -753,7 +752,7 @@ local function touch_end(self, datamodel)
         local typeobject = iprototype.queryByName(self.coord_indicator.prototype_name)
         local w, h = iprototype.rotate_area(typeobject.area, self.coord_indicator.dir)
         local grid_position = coord_system:get_position_by_coord(self.coord_indicator.x, self.coord_indicator.y, w, h)
-        self.grid_entity:send("obj_motion", "set_position", __calc_grid_position(grid_position, typeobject, self.coord_indicator.dir))
+        self.grid_entity:set_position(__calc_grid_position(grid_position, typeobject, self.coord_indicator.dir))
     end
 
     for _, c in pairs(self.pickup_components) do
@@ -800,7 +799,8 @@ local function finish_laying(self, datamodel)
 
     local to_x, to_y = self.to_x, self.to_y
     self.to_x, self.to_y = nil, nil
-    return to_x, to_y
+
+    self:new_entity(datamodel, self.typeobject, to_x, to_y)
 end
 
 local function place_one(self, datamodel)
@@ -817,8 +817,8 @@ local function place_one(self, datamodel)
     --
     local m = 0
     for _, dir in ipairs(ALL_DIR_NUM) do
-        local dx, dy = iprototype.move_coord(x, y, iprototype.dir_tostring(dir))
-        local fluid = ifluidbox.get(dx, dy, iprototype.reverse_dir_num(dir))
+        local dx, dy = iprototype.move_coord(x, y, dir)
+        local fluid = ifluidbox.get(dx, dy, iprototype.reverse_dir(dir))
         if fluid then
             m = m | (1 << dir)
         end
@@ -845,13 +845,13 @@ local function place_one(self, datamodel)
 
     --
     for _, dir in ipairs(ALL_DIR_NUM) do
-        local dx, dy = iprototype.move_coord(x, y, iprototype.dir_tostring(dir))
-        local fluid = ifluidbox.get(dx, dy, iprototype.reverse_dir_num(dir))
+        local dx, dy = iprototype.move_coord(x, y, dir)
+        local fluid = ifluidbox.get(dx, dy, iprototype.reverse_dir(dir))
         if fluid then
             local neighbor = assert(_get_object(self, dx, dy, EDITOR_CACHE_NAMES))
             if iprototype.is_pipe(neighbor.prototype_name) then
                 local m = iprototype_cache.get("pipe").PrototypeDirToMask(neighbor.prototype_name, neighbor.dir)
-                m = m | (1 << iprototype.reverse_dir_num(dir))
+                m = m | (1 << iprototype.reverse_dir(dir))
                 local prototype, dir = iprototype_cache.get("pipe").MaskToPrototypeDir(typeobject.building_category, m)
                 local o = assert(objects:modify(dx, dy, {"CONFIRM", "CONSTRUCTED"}, iobject.clone))
                 o.prototype_name = prototype
@@ -866,27 +866,14 @@ local function place_one(self, datamodel)
 
     confirm(self, datamodel)
     self:clean(self, datamodel)
-
-    local to_x, to_y = self.to_x, self.to_y
-    self.to_x, self.to_y = nil, nil
-    return to_x, to_y
+    self:new_entity(datamodel, self.typeobject, x, y)
 end
 
-local function remove_one(self, datamodel)
-    local coord_indicator = self.coord_indicator
-    local x, y = coord_indicator.x, coord_indicator.y
+local function remove_one(self, datamodel, x, y)
     local coord = iprototype.packcoord(x, y)
-
-    local object = assert(objects:modify(x, y, {"CONFIRM", "CONSTRUCTED"}, iobject.clone))
-    -- TODO: mark the object for deletion
-
     self.pending[coord] = REMOVE
-
-    datamodel.show_confirm = true
-
     local ret = confirm(self, datamodel)
     self:clean(self, datamodel)
-
     self:new_entity(datamodel, self.typeobject)
     return ret
 end
@@ -936,7 +923,7 @@ local function finish_teardown(self, datamodel)
 
     local to_x, to_y = self.to_x, self.to_y
     self.to_x, self.to_y = nil, nil
-    return to_x, to_y
+    self:new_entity(datamodel, self.typeobject, to_x, to_y)
 end
 
 local function clean(self, datamodel)

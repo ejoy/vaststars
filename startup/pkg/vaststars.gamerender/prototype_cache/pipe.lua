@@ -15,7 +15,7 @@ return function()
             local m = 0
             for _, connection in ipairs(typeobject.fluidbox.connections) do
                 local dir = iprototype.rotate_dir(connection.position[3], entity_dir)
-                m = m | (1 << iprototype.dir_tonumber(dir))
+                m = m | (1 << dir)
             end
 
             assert(not accel[typeobject.building_category][m])

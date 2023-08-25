@@ -121,16 +121,18 @@ function road_sys:gameworld_build()
 
     iroadnet:clear("road")
     for e in world.ecs:select "road building:in REMOVED:absent" do
-        local typeobject = iprototype.queryById(e.building.prototype)
-        local shape, dir = iroadnet_converter.to_shape(typeobject.name), iprototype.dir_tostring(e.building.direction)
-        iroadnet:editor_set("road", "normal", e.building.x, e.building.y, shape, dir)
+        local mask = iroadnet_converter.prototype_name_dir_to_mask(iprototype.queryById(e.building.prototype).name, iprototype.dir_tostring(e.building.direction))
+        iroadnet:set("road", "normal", e.building.x, e.building.y, mask)
     end
-
     iroadnet:update()
 end
 
 function iroad.open(...)
     return open(...)
+end
+
+function iroad.check(...)
+    return check(...)
 end
 
 return iroad

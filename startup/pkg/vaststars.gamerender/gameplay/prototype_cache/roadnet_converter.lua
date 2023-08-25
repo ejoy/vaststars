@@ -18,7 +18,7 @@ return function()
         for _, dir in ipairs(pt.building_direction) do
             local v = 0
             for _, conn in ipairs(pt.crossing.connections) do
-                local dn = assert(iprototype.dir_tonumber(iprototype.rotate_dir(conn.position[3], dir)))
+                local dn = assert(iprototype.rotate_dir(conn.position[3], dir))
                 v = v | (1 << dn)
             end
 

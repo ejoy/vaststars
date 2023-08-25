@@ -57,7 +57,6 @@ local function clean()
     end
     global.buildings = create_buildings()
     objects:clear()
-    iroadnet:clear("indicator")
     iroadnet:clear("road")
 end
 
@@ -121,7 +120,7 @@ local function restore_world()
                 local typeobject_fluid = assert(iprototype.queryById(v.fluidbox.fluid))
                 fluid_name = typeobject_fluid.name
             end
-            local w, h = iprototype.rotate_area(typeobject.area, iprototype.dir_tostring(e.direction))
+            local w, h = iprototype.rotate_area(typeobject.area, e.direction)
             for i = 0, w - 1 do
                 for j = 0, h - 1 do
                     local coord = iprototype.packcoord(e.x + i, e.y + j)
@@ -155,7 +154,7 @@ local function restore_world()
             fluid_name = fluid_name,
         }
 
-        local w, h = iprototype.rotate_area(typeobject.area, iprototype.dir_tostring(e.direction))
+        local w, h = iprototype.rotate_area(typeobject.area, e.direction)
         for i = 0, w - 1 do
             for j = 0, h - 1 do
                 local coord = iprototype.packcoord(e.x + i, e.y + j)
@@ -358,10 +357,7 @@ function M:restart(mode, game_template)
 
     game_template = game_template or "item.startup"
     gameplay_core.get_storage().game_template = game_template
-
-    local game_template_entities = import_package("vaststars.prototype")(game_template).entities
-    local game_template_road = import_package("vaststars.prototype")(game_template).road
-    local game_template_backpack = import_package("vaststars.prototype")(game_template).backpack or {}
+    local config = import_package("vaststars.prototype")(game_template)
 
     --
     clean()
@@ -369,19 +365,19 @@ function M:restart(mode, game_template)
     terrain:reset_mineral(game_template_mineral)
 
     --
-    for _, e in ipairs(game_template_entities) do
+    for _, e in ipairs(config.entities or {}) do
         igameplay.create_entity(e)
     end
 
     local renderData = {}
-    for _, road in ipairs(game_template_road) do
+    for _, road in ipairs(config.road or {}) do
         igameplay.create_entity(road)
         local shape, dir = iroadnet_converter.to_shape(road.prototype_name), road.dir
         renderData[iprototype.packcoord(road.x, road.y)] = {road.x, road.y, "normal", shape, dir}
     end
     iroadnet:init(renderData, true)
 
-    for _, e in ipairs(game_template_backpack) do
+    for _, e in ipairs(config.backpack or {}) do
         local typeobject = iprototype.queryByName(e.prototype_name)
         iBackpack.place(gameplay_core.get_world(), typeobject.id, e.count)
     end

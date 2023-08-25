@@ -11,8 +11,7 @@ local iprototype = require "gameplay.interface.prototype"
 local ilorry = ecs.require "render_updates.lorry"
 local ibuilding = ecs.require "render_updates.building"
 local pick_object_sys = ecs.system "pick_object_sys"
-local ROAD_TILE_SCALE_WIDTH <const> = 2
-local ROAD_TILE_SCALE_HEIGHT <const> = 2
+local ROAD_SIZE <const> = 2
 
 local MountainName = ""
 
@@ -115,8 +114,8 @@ local function __push_object(lorries, pick_x, pick_y, x, y, status)
                 dist_y = o.y,
                 x = o.x,
                 y = o.y,
-                w = ROAD_TILE_SCALE_WIDTH,
-                h = ROAD_TILE_SCALE_HEIGHT,
+                w = ROAD_SIZE,
+                h = ROAD_SIZE,
                 get_pos = function(self)
                     return assert(terrain:get_position_by_coord(self.x, self.y, self.w, self.h))
                 end,
@@ -143,8 +142,8 @@ function ipick_object.pick_road(x, y)
         dist_y = o.y,
         x = o.x,
         y = o.y,
-        w = ROAD_TILE_SCALE_WIDTH,
-        h = ROAD_TILE_SCALE_HEIGHT,
+        w = ROAD_SIZE,
+        h = ROAD_SIZE,
         get_pos = function(self)
             return assert(terrain:get_position_by_coord(self.x, self.y, self.w, self.h))
         end,

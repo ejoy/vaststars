@@ -4,8 +4,7 @@ local CHEST_COMPONENT <const> = {
     ["assembling"] = "chest",
     ["chest"] = "chest",
     ["laboratory"] = "chest",
-    ["station_producer"] = "chest",
-    ["station_consumer"] = "chest",
+    ["station"] = "chest",
     ["hub"] = "hub",
 }
 
@@ -13,8 +12,7 @@ local CHEST_TYPES <const> = {
     "assembling",
     "chest",
     "laboratory",
-    "station_producer",
-    "station_consumer",
+    "station",
     "hub",
 }
 

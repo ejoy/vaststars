@@ -20,9 +20,6 @@ M.NightTick  =  50 * M.UPS + M.DuskTick;
 M.DawnTick   = 100 * M.UPS + M.NightTick;
 M.DayTick    = 250 * M.UPS + M.DawnTick;
 
-M.MIN_STATION_WEIGHTS = 1
-M.MAX_STATION_WEIGHTS = 5
-
 M.CHANGED_FLAG_ASSEMBLING = 1 << 0
 M.CHANGED_FLAG_BUILDING   = 1 << 1
 M.CHANGED_FLAG_CHIMNEY    = 1 << 2

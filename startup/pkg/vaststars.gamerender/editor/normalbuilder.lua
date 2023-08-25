@@ -303,7 +303,7 @@ local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobjec
                     color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                 end
             else
-                if iprototype.has_types(typeobject.type, "station_producer", "station_consumer") then
+                if iprototype.has_types(typeobject.type, "station") then
                     if otypeobject.supply_area then
                         local aw, ah = iprototype.rotate_area(typeobject.area, object.dir)
                         local sw, sh = iprototype.rotate_area(typeobject.supply_area, object.dir)
@@ -348,7 +348,7 @@ local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobjec
                     color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                 end
             else
-                if iprototype.has_types(typeobject.type, "station_producer", "station_consumer") then
+                if iprototype.has_types(typeobject.type, "station") then
                     if otypeobject.supply_area then
                         local aw, ah = iprototype.rotate_area(typeobject.area, object.dir)
                         local sw, sh = iprototype.rotate_area(typeobject.supply_area, object.dir)
@@ -414,8 +414,7 @@ local function new_entity(self, datamodel, typeobject)
     self.pickup_object.APPEAR = true
 
     if not self.grid_entity then
-        self.grid_entity = igrid_entity.create("polyline_grid", coord_system.tile_width, coord_system.tile_height, coord_system.tile_size, {t = __calc_grid_position(self, typeobject, dir)})
-        self.grid_entity:show(true)
+        self.grid_entity = igrid_entity.create(coord_system.tile_width, coord_system.tile_height, coord_system.tile_size, {t = __calc_grid_position(self, typeobject, dir)})
     end
 end
 
@@ -453,7 +452,7 @@ local function touch_move(self, datamodel, delta_vec)
     end
 
     if self.grid_entity then
-        self.grid_entity:send("obj_motion", "set_position", __calc_grid_position(self, typeobject, pickup_object.dir))
+        self.grid_entity:set_position(__calc_grid_position(self, typeobject, pickup_object.dir))
     end
 
     -- update temp pole
@@ -570,23 +569,15 @@ local function confirm(self, datamodel)
         ipower_line.update_temp_line(ipower:get_temp_pole())
     end
 
-    return self:complete(pickup_object.id, datamodel)
-end
-
-local function complete(self, object_id, datamodel)
     self.pickup_object = nil
-    self.super.complete(self, object_id)
+    self.super.complete(self, pickup_object.id)
 
-    local object = assert(objects:get(object_id))
-    local typeobject = iprototype.queryByName(object.prototype_name)
+    local typeobject = iprototype.queryByName(pickup_object.prototype_name)
     assert(ibackpack.pickup(gameplay_core.get_world(), typeobject.id, 1))
 
     local continue_construct = ibackpack.query(gameplay_core.get_world(), typeobject.id) > 0
-    if not continue_construct then
-        return false
-    else
+    if continue_construct then
         new_entity(self, datamodel, typeobject)
-        return true
     end
 end
 
@@ -620,13 +611,13 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
     return true
 end
 
-local function rotate_pickup_object(self, datamodel, dir, delta_vec)
+local function rotate(self, datamodel, dir, delta_vec)
     local pickup_object = assert(self.pickup_object)
 
     ieditor:revert_changes({"TEMPORARY"})
     dir = dir or iprototype.rotate_dir_times(pickup_object.dir, -1)
-    pickup_object.dir = dir
-    pickup_object.srt.r = ROTATORS[dir]
+    pickup_object.dir = iprototype.dir_tostring(dir)
+    pickup_object.srt.r = ROTATORS[pickup_object.dir]
 
     local x, y
     self.pickup_object, x, y = __align(self.pickup_object)
@@ -643,7 +634,7 @@ local function rotate_pickup_object(self, datamodel, dir, delta_vec)
     end
     local sprite_color
     local valid
-    if not self:check_construct_detector(typeobject.name, pickup_object.x, pickup_object.y, dir) then
+    if not self:check_construct_detector(typeobject.name, pickup_object.x, pickup_object.y, pickup_object.dir) then
         valid = false
         if typeobject.supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID
@@ -666,7 +657,7 @@ local function rotate_pickup_object(self, datamodel, dir, delta_vec)
     if self.sprite then
         self.sprite:remove()
     end
-    self.sprite = __create_self_sprite(typeobject, x, y, dir, sprite_color)
+    self.sprite = __create_self_sprite(typeobject, x, y, pickup_object.dir, sprite_color)
 end
 
 local function clean(self, datamodel)
@@ -716,10 +707,9 @@ local function create(item)
     M.touch_move = touch_move
     M.touch_end = touch_end
     M.confirm = confirm
-    M.rotate_pickup_object = rotate_pickup_object
+    M.rotate = rotate
     M.clean = clean
     M.check_construct_detector = check_construct_detector
-    M.complete = complete
     M.sprites = {}
     M.self_selected_boxes = nil
     M.selected_boxes = {}

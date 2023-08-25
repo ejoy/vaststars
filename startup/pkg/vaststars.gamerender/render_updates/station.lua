@@ -114,26 +114,7 @@ end
 
 function station_sys:gameworld_update()
     local gameplay_world = gameplay_core.get_world()
-    for e in gameplay_world.ecs:select "station_consumer:in chest:in building:in eid:in" do
-        -- object may not have been fully created yet
-        local object = objects:coord(e.building.x, e.building.y)
-        if not object then
-            goto continue
-        end
-
-        local station_shelf = assert(global.buildings[object.id]).station_shelf
-        local item_id, item_count = __get_item(gameplay_world, e.chest)
-        if not station_shelf or station_shelf.item_id ~= item_id then
-            if station_shelf then
-                station_shelf:remove()
-            end
-            station_shelf = __create_station_shelf(object.srt, e, item_id, item_count)
-            global.buildings[object.id].station_shelf = station_shelf
-        end
-        station_shelf:update_heap_count(item_count)
-        ::continue::
-    end
-    for e in gameplay_world.ecs:select "station_producer:in chest:in building:in eid:in" do
+    for e in gameplay_world.ecs:select "station:in chest:in building:in eid:in" do
         -- object may not have been fully created yet
         local object = objects:coord(e.building.x, e.building.y)
         if not object then

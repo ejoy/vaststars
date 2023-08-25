@@ -34,16 +34,6 @@ local property_list = {
 		desc = "货物需求",
 		pos = 6,
 	},
-	["truck"] = {
-		icon = "/pkg/vaststars.resources/ui/textures/property/delivery-truck.texture",
-		desc = "运输车数量",
-		pos = 7,
-	},
-	["truck_req"] = {
-		icon = "/pkg/vaststars.resources/ui/textures/property/delivery-truck-req.texture",
-		desc = "运输车需求",
-		pos = 8,
-	},
 	["drone"] = {
 		icon = "/pkg/vaststars.resources/ui/textures/property/drone.texture",
 		desc = "无人机数量",
@@ -154,24 +144,6 @@ local property_list = {
 		value = "$drone_count$",
 		pos = 29,
 	},
-	["weights"] = {
-		icon = "/pkg/vaststars.resources/ui/textures/property/delivery-truck-req.texture",
-		desc = "供货权重",
-		value = "$weights$",
-		pos = 30,
-	},
-	["maxlorry"] = {
-		icon = "/pkg/vaststars.resources/ui/textures/property/delivery-truck-req.texture",
-		desc = "需求车辆",
-		value = "$maxlorry$",
-		pos = 30,
-	},
-	["lorry"] = {
-		icon = "/pkg/vaststars.resources/ui/textures/property/delivery-truck.texture",
-		desc = "响应车辆",
-		value = "$lorry$",
-		pos = 31,
-	},
 }
 
 -- for debug
@@ -196,21 +168,6 @@ for _, classify in ipairs {"in1","in2","in3","in4","out1","out2","out3"} do
 end
 
 property_list.converter = {}
-property_list.converter["weights"] = function(v)
-	local t <const> = {
-		[1] = {"最低", "#ff0000"},
-		[2] = {"低", "#ff8000"},
-		[3] = {"中", "#ffff00"},
-		[4] = {"高", "#00ffff"},
-		[5] = {"最高", "#00ff00"},
-	}
-	if t[v] then
-		return t[v][1], t[v][2]
-	else
-		return "未知", "#ffffff"
-	end
-end
-
 property_list.converter["power_supply_area"] = function(v)
 	return string.format("%sx%s", v >> 8, v & 0xFF)
 end

@@ -313,7 +313,7 @@ function igame_object.create(init)
     for animname, effect in pairs(children.keyeffects) do
         local efks = {}
         for effectname, v in pairs(effect) do
-            efks[effectname] = __create_efk_object(v.efk, v.srt,  hitch_entity_object.id, init.group_id, false)
+            efks[effectname] = __create_efk_object(v.efk, v.srt, hitch_entity_object.id, init.group_id, false)
         end
     end
     -- TODO: sub animation keyevent

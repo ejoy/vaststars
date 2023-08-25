@@ -572,7 +572,7 @@ prototype "出货车站" {
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_limit = 20,
     item_order = 16,
-    item_icon = "/pkg/vaststars.resources/textures/icons/item/goodstation-output.texture",
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/goodstation-input.texture",
     pile_model = "glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "给运输车提供货物的车站",
 }

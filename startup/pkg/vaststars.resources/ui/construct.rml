@@ -18,6 +18,13 @@
                 width: 58.49%;
                 height: 58.49%;
             }
+            tool-button {
+                width: 16.00vmin;
+                height: 16.00vmin;
+            }
+            tool-button:active {
+                transform: scale(1.2);
+            }
             inventory-bar {
                 flex-direction: row;
                 left: 0vmax;
@@ -103,10 +110,7 @@
         </main-button>
 
         <div style = "position: absolute; pointer-events: none; width: 100%; top: 80vmin; justify-content: center; align-items: center;">
-            <div style="width: 22.00vmin; height: 16.00vmin; background-color: rgb(105, 112, 8); text-align: center; font-size: 4.00vmin; border-radius: 2.00vmin; border: 0.53vmin white;" data-event-click="clickButton('rotate')" data-if = "show_rotate">
-                <div style="margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-size:cover; background-image: /pkg/vaststars.resources/ui/textures/construct/rotate.texture" />
-                <div style="font-size: 85%;">旋转建筑</div>
-            </div>
+            <tool-button style="background-size:cover; background-image: /pkg/vaststars.resources/ui/textures/construct/rotate.texture;" data-event-click="clickButton('rotate')" data-if = "show_rotate" />
         </div>
     </body>
 </rml>

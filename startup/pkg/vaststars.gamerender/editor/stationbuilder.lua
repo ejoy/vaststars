@@ -28,8 +28,7 @@ local COLOR_RED = math3d.constant("v4", {1, 0.03, 0, 1})
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 local terrain = ecs.require "terrain"
 local gameplay_core = require "gameplay.core"
-local ROAD_TILE_SCALE_WIDTH <const> = 2
-local ROAD_TILE_SCALE_HEIGHT <const> = 2
+local ROAD_SIZE <const> = 2
 local SPRITE_COLOR = import_package "vaststars.prototype".load("sprite_color")
 local ibuilding = ecs.require "render_updates.building"
 local ibackpack = require "gameplay.interface.backpack"
@@ -49,27 +48,13 @@ local function _get_connections(prototype_name, x, y, dir)
     return r
 end
 
-local function __rotate_connection_direction(position, direction, area)
-    local dir = iprototype.rotate_dir(position[3], direction)
-
-    if dir == 'N' then
-        return 0, 1, dir
-    elseif dir == 'E' then
-        return 1, 0, dir
-    elseif dir == 'S' then
-        return 0, -1, dir
-    elseif dir == 'W' then
-        return -1, 0, dir
-    end
-end
-
 local function _get_road_entrance_position(typeobject, dir, position)
     if not typeobject.crossing then
         return
     end
 
     local conn  = typeobject.crossing.connections[1]
-    local ox, oy, ddir = __rotate_connection_direction(conn.position, dir, typeobject.area)
+    local ox, oy, ddir = iprototype.rotate_connection(conn.position, dir, typeobject.area)
     return math3d.ref(math3d.add(position, {ox * coord_system.tile_size / 2, 0, oy * coord_system.tile_size / 2})), ddir
 end
 
@@ -79,7 +64,7 @@ local function __align(prototype_name, dir)
     if not coord then
         return
     end
-    coord[1], coord[2] = coord[1] - (coord[1] % ROAD_TILE_SCALE_WIDTH), coord[2] - (coord[2] % ROAD_TILE_SCALE_HEIGHT)
+    coord[1], coord[2] = coord[1] - (coord[1] % ROAD_SIZE), coord[2] - (coord[2] % ROAD_SIZE)
     position = math3d.ref(math3d.vector(coord_system:get_position_by_coord(coord[1], coord[2], iprototype.rotate_area(typeobject.area, dir))))
 
     return position, coord[1], coord[2]
@@ -160,7 +145,7 @@ local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobjec
                     color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                 end
             else
-                if iprototype.has_types(typeobject.type, "station_producer", "station_consumer") then
+                if iprototype.has_types(typeobject.type, "station") then
                     if otypeobject.supply_area then
                         local aw, ah = iprototype.rotate_area(typeobject.area, object.dir)
                         local sw, sh = iprototype.rotate_area(otypeobject.supply_area, object.dir)
@@ -205,7 +190,7 @@ local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobjec
                     color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                 end
             else
-                if iprototype.has_types(typeobject.type, "station_producer", "station_consumer") then
+                if iprototype.has_types(typeobject.type, "station") then
                     if otypeobject.supply_area then
                         local aw, ah = iprototype.rotate_area(typeobject.area, object.dir)
                         local sw, sh = iprototype.rotate_area(otypeobject.supply_area, object.dir)
@@ -343,14 +328,14 @@ local function __show_road_entrance_marker(self, typeobject)
     local coords = {}
     for e in gameplay_core.get_world().ecs:select "road:in building:in eid:in" do
         local x, y = e.building.x, e.building.y
-        local prototype_name, dir = iprototype.queryById(e.building.prototype).name, iprototype.dir_tostring(e.building.direction)
-        local dirs = _get_connections_dir(prototype_name, dir)
+        local prototype_name = iprototype.queryById(e.building.prototype).name
+        local dirs = _get_connections_dir(prototype_name, e.building.direction)
         for _, d in ipairs(ALL_DIR) do
             if dirs[d] then
                 goto continue
             end
 
-            local succ, dx, dy = coord_system:move_coord(x, y, d, ROAD_TILE_SCALE_WIDTH, ROAD_TILE_SCALE_HEIGHT)
+            local succ, dx, dy = coord_system:move_coord(x, y, d, ROAD_SIZE, ROAD_SIZE)
             if not succ then
                 goto continue
             end
@@ -437,7 +422,7 @@ end
 local function __calc_grid_position(typeobject, x, y, dir)
     local w, h = iprototype.rotate_area(typeobject.area, dir)
     local _, originPosition = coord_system:align(math3d.vector {10, 0, -10}, w, h) -- TODO: remove hardcode
-    local buildingPosition = coord_system:get_position_by_coord(x - (x % ROAD_TILE_SCALE_WIDTH), y - (y % ROAD_TILE_SCALE_HEIGHT), ROAD_TILE_SCALE_WIDTH, ROAD_TILE_SCALE_HEIGHT)
+    local buildingPosition = coord_system:get_position_by_coord(x - (x % ROAD_SIZE), y - (y % ROAD_SIZE), ROAD_SIZE, ROAD_SIZE)
     return math3d.ref(math3d.add(math3d.sub(buildingPosition, originPosition), GRID_POSITION_OFFSET))
 end
 
@@ -452,27 +437,26 @@ local function new_entity(self, datamodel, typeobject)
     icanvas.show(icanvas.types().ROAD_ENTRANCE_MARKER, true)
 
     if not self.grid_entity then
-        self.grid_entity = igrid_entity.create("polyline_grid", terrain._width // ROAD_TILE_SCALE_WIDTH, terrain._height // ROAD_TILE_SCALE_HEIGHT, terrain.tile_size * ROAD_TILE_SCALE_WIDTH, {t = __calc_grid_position(typeobject, self.pickup_object.x, self.pickup_object.y, self.pickup_object.dir)})
-        self.grid_entity:show(true)
+        self.grid_entity = igrid_entity.create(terrain._width // ROAD_SIZE, terrain._height // ROAD_SIZE, terrain.tile_size * ROAD_SIZE, {t = __calc_grid_position(typeobject, self.pickup_object.x, self.pickup_object.y, self.pickup_object.dir)})
     end
 end
 
-local function rotate_pickup_object(self, datamodel, dir, delta_vec)
+local function rotate(self, datamodel, dir, delta_vec)
     local pickup_object = assert(self.pickup_object)
 
     ieditor:revert_changes({"TEMPORARY"})
     dir = dir or iprototype.rotate_dir_times(pickup_object.dir, -1)
 
     local typeobject = iprototype.queryByName(pickup_object.prototype_name)
-    pickup_object.dir = dir
-    pickup_object.srt.r = ROTATORS[dir]
+    pickup_object.dir = iprototype.dir_tostring(dir)
+    pickup_object.srt.r = ROTATORS[pickup_object.dir]
 
-    local road_entrance_position, ddir = _get_road_entrance_position(typeobject, dir, self.pickup_object.srt.t)
+    local road_entrance_position, ddir = _get_road_entrance_position(typeobject, pickup_object.dir, pickup_object.srt.t)
     if road_entrance_position then
         self.road_entrance:set_srt(mc.ONE, ROTATORS[ddir], road_entrance_position)
     end
 
-    local w, h = iprototype.rotate_area(typeobject.area, dir)
+    local w, h = iprototype.rotate_area(typeobject.area, pickup_object.dir)
     local self_selected_boxes_position = coord_system:get_position_by_coord(pickup_object.x, pickup_object.y, w, h)
     self.self_selected_boxes:set_position(self_selected_boxes_position)
     self.self_selected_boxes:set_wh(w, h)
@@ -484,7 +468,7 @@ local function touch_move(self, datamodel, delta_vec)
         local typeobject = iprototype.queryByName(self.pickup_object.prototype_name)
 
         if self.grid_entity then
-            self.grid_entity:send("obj_motion", "set_position", __calc_grid_position(typeobject, self.pickup_object.x, self.pickup_object.y, self.pickup_object.dir))
+            self.grid_entity:set_position(__calc_grid_position(typeobject, self.pickup_object.x, self.pickup_object.y, self.pickup_object.dir))
         end
 
         local road_entrance_position, road_entrance_dir = _get_road_entrance_position(typeobject, self.pickup_object.dir, self.pickup_object.srt.t)
@@ -507,7 +491,7 @@ local function touch_move(self, datamodel, delta_vec)
         if c then
             icanvas.show(icanvas.types().ROAD_ENTRANCE_MARKER, true)
             if c.dir ~= self.pickup_object.dir then
-                rotate_pickup_object(self, datamodel, c.dir)
+                rotate(self, datamodel, c.dir)
             end
             if not datamodel.show_confirm then
                 return
@@ -571,7 +555,7 @@ local function confirm(self, datamodel)
     local succ = self:check_construct_detector(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir)
     if not succ then
         log.info("can not construct")
-        return true
+        return
     end
 
     local typeobject = iprototype.queryByName(pickup_object.prototype_name)
@@ -588,32 +572,22 @@ local function confirm(self, datamodel)
         ipower_line.update_temp_line(ipower:get_temp_pole())
     end
 
-    return self:complete(pickup_object.id, datamodel)
-end
-
-local function complete(self, object_id, datamodel)
     if self.grid_entity then
         self.grid_entity:remove()
         self.grid_entity = nil
     end
-    iobject.remove(self.pickup_object)
-    self.pickup_object = nil
 
     icanvas.remove_item(icanvas.types().ROAD_ENTRANCE_MARKER, 0)
     ieditor:revert_changes({"TEMPORARY"})
 
-    self.super.complete(self, object_id)
+    self.super.complete(self, pickup_object.id)
+    self.pickup_object = nil
 
-    local object = assert(objects:get(object_id))
-    local typeobject = iprototype.queryByName(object.prototype_name)
+    local typeobject = iprototype.queryByName(pickup_object.prototype_name)
     assert(ibackpack.pickup(gameplay_core.get_world(), typeobject.id, 1))
-
     local continue_construct = ibackpack.query(gameplay_core.get_world(), typeobject.id) > 0
-    if not continue_construct then
-        return false
-    else
+    if continue_construct then
         new_entity(self, datamodel, typeobject)
-        return true
     end
 end
 
@@ -647,7 +621,7 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
     if typeobject.crossing then
         local valid = false
         for _, conn in ipairs(_get_connections(prototype_name, x, y, dir)) do
-            local succ, dx, dy = coord_system:move_coord(conn.x, conn.y, conn.dir, ROAD_TILE_SCALE_WIDTH, ROAD_TILE_SCALE_HEIGHT)
+            local succ, dx, dy = coord_system:move_coord(conn.x, conn.y, conn.dir, ROAD_SIZE, ROAD_SIZE)
             if not succ then
                 goto continue
             end
@@ -670,7 +644,7 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
             -- }
 
             -- for _, d in ipairs(deltas) do
-            --     local succ, lx, ly = coord_system:move_coord(dx, dy, d[1], d[2] * ROAD_TILE_SCALE_WIDTH, d[2] * ROAD_TILE_SCALE_HEIGHT)
+            --     local succ, lx, ly = coord_system:move_coord(dx, dy, d[1], d[2] * ROAD_SIZE, d[2] * ROAD_SIZE)
             --     if not succ then
             --         goto continue
             --     end
@@ -701,7 +675,7 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
     --         local dx, dy = x + i, y + j
     --         local c = {}
     --         for _, dir in ipairs(ALL_DIR) do
-    --             local succ, nx, ny = coord_system:move_coord(dx, dy, dir, ROAD_TILE_SCALE_WIDTH, ROAD_TILE_SCALE_HEIGHT)
+    --             local succ, nx, ny = coord_system:move_coord(dx, dy, dir, ROAD_SIZE, ROAD_SIZE)
     --             if not succ then
     --                 goto continue
     --             end
@@ -761,8 +735,7 @@ local function create()
     M.touch_move = touch_move
     M.touch_end = touch_end
     M.confirm = confirm
-    M.complete = complete
-    M.rotate_pickup_object = rotate_pickup_object
+    M.rotate = rotate
     M.clean = clean
     M.check_construct_detector = check_construct_detector
 

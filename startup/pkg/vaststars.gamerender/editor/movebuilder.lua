@@ -33,8 +33,7 @@ local create_selected_boxes = ecs.require "selected_boxes"
 local vsobject_manager = ecs.require "vsobject_manager"
 local gameplay = import_package "vaststars.gameplay"
 local igameplay_building = gameplay.interface "building"
-local ROAD_TILE_SCALE_WIDTH <const> = 2
-local ROAD_TILE_SCALE_HEIGHT <const> = 2
+local ROAD_SIZE <const> = 2
 local CHANGED_FLAG_BUILDING <const> = require("gameplay.interface.constant").CHANGED_FLAG_BUILDING
 
 -- TODO: duplicate from roadbuilder.lua
@@ -166,7 +165,7 @@ local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobjec
                     color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                 end
             else
-                if iprototype.has_types(typeobject.type, "station_producer", "station_consumer") then
+                if iprototype.has_types(typeobject.type, "station") then
                     if otypeobject.supply_area then
                         local aw, ah = iprototype.rotate_area(otypeobject.area, object.dir)
                         local sw, sh = iprototype.rotate_area(otypeobject.supply_area, object.dir)
@@ -211,7 +210,7 @@ local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobjec
                     color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                 end
             else
-                if iprototype.has_types(typeobject.type, "station_producer", "station_consumer") then
+                if iprototype.has_types(typeobject.type, "station") then
                     if otypeobject.supply_area then
                         local aw, ah = iprototype.rotate_area(otypeobject.area, object.dir)
                         local sw, sh = iprototype.rotate_area(otypeobject.supply_area, object.dir)
@@ -297,7 +296,7 @@ local function __new_entity(self, datamodel, typeobject)
     if e.chimney then
         self.pickup_components.pickup_icon_chimney = create_pickup_icon_chimney(dir, self.pickup_object.srt, typeobject)
     end
-    self.pickup_components.self_selected_box = create_pickup_selected_box(self.pickup_object.srt.t, typeobject, dir, datamodel.show_confirm and true or false)
+    self.pickup_components.self_selected_box = create_pickup_selected_box(self.pickup_object.srt.t, typeobject.area, dir, datamodel.show_confirm and true or false)
     __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject)
 
     if self.sprite then
@@ -327,12 +326,11 @@ local function new_entity(self, datamodel, typeobject)
     self.pickup_object.APPEAR = true
 
     if not self.grid_entity then
-        if iprototype.has_types(typeobject.type, "station_producer", "station_consumer") then
-            self.grid_entity = igrid_entity.create("polyline_grid", terrain._width // ROAD_TILE_SCALE_WIDTH, terrain._height // ROAD_TILE_SCALE_HEIGHT, terrain.tile_size * ROAD_TILE_SCALE_WIDTH, {t = __calc_grid_position(self, typeobject, self.pickup_object.dir)})
+        if iprototype.has_types(typeobject.type, "station") then
+            self.grid_entity = igrid_entity.create(terrain._width // ROAD_SIZE, terrain._height // ROAD_SIZE, terrain.tile_size * ROAD_SIZE, {t = __calc_grid_position(self, typeobject, self.pickup_object.dir)})
         else
-            self.grid_entity = igrid_entity.create("polyline_grid", coord_system.tile_width, coord_system.tile_height, coord_system.tile_size, {t = __calc_grid_position(self, typeobject, self.pickup_object.dir)})
+            self.grid_entity = igrid_entity.create(coord_system.tile_width, coord_system.tile_height, coord_system.tile_size, {t = __calc_grid_position(self, typeobject, self.pickup_object.dir)})
         end
-        self.grid_entity:show(true)
     end
 
     self.typeobject = typeobject
@@ -361,8 +359,8 @@ local function __align(object)
         return object
     end
 
-    if iprototype.has_types(typeobject.type, "station_producer", "station_consumer") then
-        coord[1], coord[2] = coord[1] - (coord[1] % ROAD_TILE_SCALE_WIDTH), coord[2] - (coord[2] % ROAD_TILE_SCALE_HEIGHT)
+    if iprototype.has_types(typeobject.type, "station") then
+        coord[1], coord[2] = coord[1] - (coord[1] % ROAD_SIZE), coord[2] - (coord[2] % ROAD_SIZE)
         position = math3d.ref(math3d.vector(coord_system:get_position_by_coord(coord[1], coord[2], iprototype.rotate_area(typeobject.area, object.dir))))
     end
 
@@ -406,12 +404,12 @@ local function touch_move(self, datamodel, delta_vec)
             end
         end
         if #t == 1 and t[1] ~= pickup_object.dir then
-            self:rotate_pickup_object(datamodel, t[1], delta_vec)
+            self:rotate(datamodel, t[1], delta_vec)
         end
     end
 
     if self.grid_entity then
-        self.grid_entity:send("obj_motion", "set_position", __calc_grid_position(self, typeobject, pickup_object.dir))
+        self.grid_entity:set_position(__calc_grid_position(self, typeobject, pickup_object.dir))
     end
 
     local sprite_color
@@ -514,7 +512,7 @@ local function confirm(self, datamodel)
         local e = gameplay_core.get_entity(object.gameplay_eid)
         if e.capacitance then
             local typeobject = iprototype.queryById(e.building.prototype)
-            local aw, ah = iprototype.rotate_area(typeobject.area, iprototype.dir_tostring(e.building.direction))
+            local aw, ah = iprototype.rotate_area(typeobject.area, e.building.direction)
             local capacitance = {}
             capacitance[#capacitance + 1] = {
                 targets = {},
@@ -548,12 +546,6 @@ local function confirm(self, datamodel)
     datamodel.show_confirm = false
     datamodel.show_rotate = false
     datamodel.show_cancel = false
-
-    return false
-end
-
-local function complete(self, object_id)
-    assert(false)
 end
 
 local function check_construct_detector(self, prototype_name, x, y, dir)
@@ -586,13 +578,13 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
     return true
 end
 
-local function rotate_pickup_object(self, datamodel, dir, delta_vec)
+local function rotate(self, datamodel, dir, delta_vec)
     local pickup_object = assert(self.pickup_object)
 
     ieditor:revert_changes({"TEMPORARY"})
     dir = dir or iprototype.rotate_dir_times(pickup_object.dir, -1)
-    pickup_object.dir = dir
-    pickup_object.srt.r = ROTATORS[dir]
+    pickup_object.dir = iprototype.dir_tostring(dir)
+    pickup_object.srt.r = ROTATORS[pickup_object.dir]
 
     local x, y
     self.pickup_object, x, y = __align(self.pickup_object)
@@ -614,7 +606,7 @@ local function rotate_pickup_object(self, datamodel, dir, delta_vec)
 
     local typeobject = iprototype.queryByName(pickup_object.prototype_name)
     local sprite_color
-    if not self:check_construct_detector(typeobject.name, pickup_object.x, pickup_object.y, dir) then
+    if not self:check_construct_detector(typeobject.name, pickup_object.x, pickup_object.y, pickup_object.dir) then
         if typeobject.supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID
         elseif typeobject.power_supply_area then
@@ -633,7 +625,7 @@ local function rotate_pickup_object(self, datamodel, dir, delta_vec)
     if self.sprite then
         self.sprite:remove()
     end
-    self.sprite = __create_self_sprite(typeobject, x, y, dir, sprite_color)
+    self.sprite = __create_self_sprite(typeobject, x, y, pickup_object.dir, sprite_color)
 
     local road_entrance_position, dx, dy, ddir = _get_road_entrance_position(typeobject, x, y, pickup_object.dir)
     if road_entrance_position then
@@ -686,8 +678,7 @@ local function create(move_object_id)
     M.touch_move = touch_move
     M.touch_end = touch_end
     M.confirm = confirm
-    M.complete = complete
-    M.rotate_pickup_object = rotate_pickup_object
+    M.rotate = rotate
     M.clean = clean
     M.check_construct_detector = check_construct_detector
     M.move_object_id = move_object_id

@@ -1,8 +1,5 @@
 local iprototype = require "gameplay.interface.prototype"
-local iconstant = require "gameplay.interface.constant"
 local iprototype_cache = require "gameplay.prototype_cache.init"
-
-local ALL_DIR = iconstant.ALL_DIR
 
 local _mask_to_shape_dir, _prototype_name_to_shape, _mask_to_prototype_name_dir, _prototype_name_dir_to_mask; do
     function _mask_to_shape_dir(mask)

@@ -139,13 +139,18 @@ function ibuilding.set(init)
         igameplay_building.destroy(gameplay_world, gameplay_world.entity[building.eid])
         building_cache[coord] = nil
     end
-    local eid = igameplay.create_entity(init)
+    local eid = igameplay.create_entity({
+        x = init.x,
+        y = init.y,
+        prototype_name = init.prototype_name,
+        dir = init.direction,
+    })
     building_cache[iprototype.packcoord(init.x, init.y)] = {
         eid = eid,
         x = init.x,
         y = init.y,
         prototype = init.prototype_name,
-        direction = init.dir,
+        direction = init.direction,
     }
 end
 

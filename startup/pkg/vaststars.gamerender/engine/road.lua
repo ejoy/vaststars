@@ -5,7 +5,8 @@ local w     = world.w
 local iterrain  = ecs.require "mod.terrain|terrain_system"
 local UNIT <const> = 10
 local iroad = ecs.require "mod.road|road"
-local ROAD_WIDTH, ROAD_HEIGHT = 20, 20
+local ROAD_SIZE = 2
+local ROAD_WIDTH, ROAD_HEIGHT = ROAD_SIZE * UNIT, ROAD_SIZE * UNIT
 local terrain  = ecs.require "terrain"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 

@@ -15,10 +15,10 @@ local DIRECTION <const> = {
     E = 1,
     S = 2,
     W = 3,
-    [0] = 'N',
-    [1] = 'E',
-    [2] = 'S',
-    [3] = 'W',
+    [0] = 0,
+    [1] = 1,
+    [2] = 2,
+    [3] = 3,
 }
 
 local PipeDirection <const> = {
@@ -237,7 +237,7 @@ end
 
 local ifluidbox = {}
 function ifluidbox.get(x, y, dir)
-    return FluidboxCache[pack(x, y, dir)]
+    return FluidboxCache[pack(x, y, DIRECTION[dir])]
 end
 
 return ifluidbox

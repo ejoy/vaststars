@@ -120,22 +120,6 @@ return function(start)
         start.buttons[#start.buttons + 1] = v
     end
 
-    if start.set_item1 then
-        local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "set_item"
-        v.show_background = start.set_item_icon1 ~= ""
-        v.background_image = start.set_item_icon1 == "" and "/pkg/vaststars.resources/ui/textures/building-menu/set-item.texture" or start.set_item_icon1
-        start.buttons[#start.buttons + 1] = v
-    end
-
-    if start.set_item2 then
-        local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "set_item2"
-        v.show_background = start.set_item_icon2 ~= ""
-        v.background_image = start.set_item_icon2 == "" and "/pkg/vaststars.resources/ui/textures/building-menu/set-item.texture" or start.set_item_icon2
-        start.buttons[#start.buttons + 1] = v
-    end
-
     if start.lorry_factory_dec_lorry then
         local v = setmetatable({}, {__index = DEFAULT})
         v.command = "lorry_factory_stop_build"
@@ -150,40 +134,19 @@ return function(start)
         start.buttons[#start.buttons + 1] = v
     end
 
-    if start.station_weight_increase then
-        local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "station_weight_increase"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/station-weight-increase.texture"
-        start.buttons[#start.buttons + 1] = v
-    end
-
-    if start.station_weight_decrease then
-        local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "station_weight_decrease"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/station-weight-decrease.texture"
-        start.buttons[#start.buttons + 1] = v
-    end
-
-    if start.station_lorry_increase then
-        local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "station_lorry_increase"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/station-lorry-increase.texture"
-        start.buttons[#start.buttons + 1] = v
-    end
-
-    if start.station_lorry_decrease then
-        local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "station_lorry_decrease"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/station-lorry-decrease.texture"
-        start.buttons[#start.buttons + 1] = v
-    end
-
     if start.place_item then
         local v = setmetatable({}, {__index = DEFAULT})
         v.command = "place_item"
         v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/place-item.texture"
         v.number = start.place_item_count
         v.show_number = true
+        start.buttons[#start.buttons + 1] = v
+    end
+
+    if start.set_item then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.command = "set_item"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/set-item.texture"
         start.buttons[#start.buttons + 1] = v
     end
 

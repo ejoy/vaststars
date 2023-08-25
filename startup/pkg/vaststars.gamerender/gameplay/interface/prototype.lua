@@ -96,47 +96,48 @@ local DIRECTION <const> = {
     E = 1,
     S = 2,
     W = 3,
+    [0] = 0, -- TODO: remove this
+    [1] = 1,
+    [2] = 2,
+    [3] = 3,
 }
-
-local DIRECTION_REV = {}
-for dir, v in pairs(DIRECTION) do
-    DIRECTION_REV[v] = dir
-end
-
-function M.rotate_dir(dir, rotate_dir, anticlockwise)
-    if anticlockwise == nil then
-        return DIRECTION_REV[(DIRECTION[dir] + DIRECTION[rotate_dir]) % 4]
-    else
-        return DIRECTION_REV[(DIRECTION[dir] - DIRECTION[rotate_dir]) % 4]
-    end
-end
-
-function M.rotate_dir_times(dir, times)
-    return DIRECTION_REV[(DIRECTION[dir] + times) % 4]
-end
 
 local REVERSE <const> = {
-    N = 'S',
-    E = 'W',
-    S = 'N',
-    W = 'E',
-}
-function M.reverse_dir(dir)
-    return REVERSE[dir]
-end
-
-local REVERSE_NUM <const> = {
     [DIRECTION.N] = DIRECTION.S,
     [DIRECTION.E] = DIRECTION.W,
     [DIRECTION.S] = DIRECTION.N,
     [DIRECTION.W] = DIRECTION.E,
+    N = 'S', -- TODO: remove this
+    E = 'W',
+    S = 'N',
+    W = 'E',
 }
-function M.reverse_dir_num(dir)
-    return REVERSE_NUM[dir]
+
+local N <const> = 0
+local E <const> = 1
+local S <const> = 2
+local W <const> = 3
+
+local DIRECTION_REV = {}
+for dir, v in pairs(DIRECTION) do
+    DIRECTION_REV[v] = dir
+    DIRECTION_REV[dir] = dir
 end
 
-function M.dir_tonumber(dir)
-    return assert(DIRECTION[dir])
+function M.rotate_dir(dir, rotate_dir, anticlockwise)
+    if anticlockwise == nil then
+        return (DIRECTION[dir] + DIRECTION[rotate_dir]) % 4
+    else
+        return (DIRECTION[dir] - DIRECTION[rotate_dir]) % 4
+    end
+end
+
+function M.rotate_dir_times(dir, times)
+    return (DIRECTION[dir] + times) % 4
+end
+
+function M.reverse_dir(dir)
+    return REVERSE[dir]
 end
 
 function M.dir_tostring(dir)
@@ -169,6 +170,7 @@ function M.calc_dir(x1, y1, x2, y2)
 end
 
 function M.rotate_area(area, dir)
+    dir = assert(DIRECTION_REV[dir]) -- TODO: remove this
     local w, h = unpackarea(area)
     if dir == 'N' or dir == 'S' then
         return w, h
@@ -181,25 +183,28 @@ end
 function M.move_coord(x, y, dir, dx, dy)
     dx = dx or 1
     dy = dy or dx
+    dir = assert(DIRECTION_REV[dir]) -- TODO: remove this
 
     local c = assert(dir_move_delta[dir])
     return x + c.x * dx, y + c.y * dy
 end
 
 function M.rotate_connection(position, direction, area)
+    direction = assert(DIRECTION[direction]) -- TODO: remove this
     local w, h = unpackarea(area)
     local x, y = position[1], position[2]
     local dir = M.rotate_dir(position[3], direction)
     w, h = w - 1, h - 1
-    if direction == 'N' then
-        return x, y, dir
-    elseif direction == 'E' then
-        return h - y, x, dir
-    elseif direction == 'S' then
-        return w - x, h - y, dir
-    elseif direction == 'W' then
-        return y, w - x, dir
+    if direction == N then
+        return x, y, assert(DIRECTION_REV[dir])
+    elseif direction == E then
+        return h - y, x, assert(DIRECTION_REV[dir])
+    elseif direction == S then
+        return w - x, h - y, assert(DIRECTION_REV[dir])
+    elseif direction == W then
+        return y, w - x, assert(DIRECTION_REV[dir])
     end
+    assert(false)
 end
 
 function M.display_name(typeobject)
