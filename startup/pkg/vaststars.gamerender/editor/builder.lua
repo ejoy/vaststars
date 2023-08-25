@@ -16,7 +16,6 @@ local igameplay = ecs.require "gameplay_system"
 local gameplay_core = require "gameplay.core"
 local ibuilding = ecs.require "render_updates.building"
 local gameplay = import_package "vaststars.gameplay"
-local igameplay_building = gameplay.interface "building"
 local CHANGED_FLAG_BUILDING <const> = require("gameplay.interface.constant").CHANGED_FLAG_BUILDING
 
 local function check_construct_detector(self, prototype_name, x, y, dir, exclude_object_id)
@@ -90,7 +89,7 @@ local function complete(self, object_id)
             igameplay.destroy_entity(object.gameplay_eid)
             object.gameplay_eid = igameplay.create_entity(object)
         elseif old.dir ~= object.dir then
-            igameplay_building.rotate(gameplay_core.get_world(), gameplay_core.get_entity(object.gameplay_eid), object.dir)
+            igameplay.rotate(object.gameplay_eid, object.dir)
         elseif old.fluid_name ~= object.fluid_name then
             if iprototype.has_type(iprototype.queryByName(object.prototype_name).type, "fluidbox") then -- TODO: object may be fluidboxes
                 ifluid:update_fluidbox(gameplay_core.get_world(), gameplay_core.get_entity(object.gameplay_eid), object.fluid_name)

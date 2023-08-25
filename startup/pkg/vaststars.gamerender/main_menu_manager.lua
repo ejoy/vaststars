@@ -4,20 +4,14 @@ local w = world.w
 
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local saveload = ecs.require "saveload"
-local gameplay_core = require "gameplay.core"
-local iguide = require "gameplay.interface.guide"
-local iui = ecs.require "engine.system.ui_system"
-local iom = ecs.require "ant.objcontroller|obj_motion"
-local iani = ecs.require "ant.animation|controller.state_machine"
 local window = import_package "ant.window"
-
-local game_cover
+local global = require "global"
 
 local function init(prefab)
     icamera_controller.set_camera_from_prefab(prefab)
 end
 
-local function rebot()
+local function rebot(system)
     window.reboot {
         import = {
             "@vaststars.gamerender"
@@ -28,7 +22,7 @@ local function rebot()
             "exit",
         },
         system = {
-            "vaststars.gamerender|init_system",
+            system,
         },
         policy = {
             "ant.general|name",
@@ -41,71 +35,25 @@ local function rebot()
 end
 
 local function new_game(mode, game_template)
-    rebot()
-    if game_cover then
-        game_cover:remove()
-        game_cover = nil
-    end
-    icamera_controller.set_camera_from_prefab("camera_default.prefab")
-    saveload:restart(mode, game_template)
-    iguide.world = gameplay_core.get_world()
-    iui.set_guide_progress(iguide.get_progress())
+    rebot("vaststars.gamerender|game_init_system")
+    global.startup_args = {"new_game", mode, game_template}
 end
 
 local function continue_game()
     if not saveload:restore() then
         return
     end
-    rebot()
-    iguide.world = gameplay_core.get_world()
-    iui.set_guide_progress(iguide.get_progress())
-    if game_cover then
-        game_cover:remove()
-        game_cover = nil
-    end
+    global.startup_args = {"continue_game"}
+    rebot("vaststars.gamerender|game_init_system")
 end
 
 local function load_game(index)
     if not saveload:restore(index) then
         return
     end
-    rebot()
-    iguide.world = gameplay_core.get_world()
-    iui.set_guide_progress(iguide.get_progress())
-    if game_cover then
-        game_cover:remove()
-        game_cover = nil
-    end
+    global.startup_args = {"load_game"}
+    rebot("vaststars.gamerender|game_init_system")
     return true
-end
-
-local function createPrefabInst(prefab)
-    local p = ecs.create_instance(prefab)
-    function p:on_ready()
-        local root <close> = world:entity(self.tag['*'][1])
-        iom.set_position(root, {0, 0, 0})
-
-        for _, eid in ipairs(self.tag['*']) do
-            local e <close> = world:entity(eid, "animation_birth?in")
-            if e.animation_birth then
-                iani.play(self, {name = e.animation_birth, loop = true, speed = 1.0, manual = false})
-            end
-        end
-    end
-    function p:on_message()
-    end
-    return world:create_object(p)
-end
-
-local function back_to_main_menu()
-    icamera_controller.set_camera_from_prefab("camera_gamecover.prefab")
-    if not game_cover then
-        game_cover = createPrefabInst("/pkg/vaststars.resources/glbs/game-cover.glb|mesh.prefab")
-    end
-
-    gameplay_core.world_update = false
-    iui.close("/pkg/vaststars.resources/ui/construct.rml")
-    iui.open({"/pkg/vaststars.resources/ui/login.rml"})
 end
 
 return {
@@ -114,5 +62,4 @@ return {
     load_game = load_game,
     new_game = new_game,
     continue_game = continue_game,
-    back_to_main_menu = back_to_main_menu,
 }

@@ -33,6 +33,7 @@ local create_selected_boxes = ecs.require "selected_boxes"
 local vsobject_manager = ecs.require "vsobject_manager"
 local gameplay = import_package "vaststars.gameplay"
 local igameplay_building = gameplay.interface "building"
+local igameplay = ecs.require "gameplay_system"
 local ROAD_SIZE <const> = 2
 local CHANGED_FLAG_BUILDING <const> = require("gameplay.interface.constant").CHANGED_FLAG_BUILDING
 
@@ -484,9 +485,8 @@ local function confirm(self, datamodel)
     local object = assert(objects:get(self.move_object_id))
     local e = gameplay_core.get_entity(object.gameplay_eid)
     e.building_changed = true
-    local gameworld = gameplay_core.get_world()
-    igameplay_building.move(gameworld, e, self.pickup_object.x, self.pickup_object.y)
-    igameplay_building.rotate(gameworld, e, self.pickup_object.dir)
+    igameplay.move(object.gameplay_eid, self.pickup_object.x, self.pickup_object.y)
+    igameplay.rotate(object.gameplay_eid, self.pickup_object.dir)
     gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
 
     iobject.coord(object, self.pickup_object.x, self.pickup_object.y, coord_system)

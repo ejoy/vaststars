@@ -128,6 +128,14 @@ function igameplay.destroy_entity(eid)
     return igameplay_building.destroy(gameplay_core.get_world(), gameplay_core.get_entity(eid))
 end
 
+function igameplay.rotate(eid, dir)
+    return igameplay_building.rotate(gameplay_core.get_world(), gameplay_core.get_entity(eid), dir)
+end
+
+function igameplay.move(eid, x, y)
+    igameplay_building.move(gameplay_core.get_world(), gameplay_core.get_entity(eid), x, y)
+end
+
 function igameplay.update_chimney_recipe(object) -- TODO: better way to do this?
     local typeobject = iprototype.queryByName(object.prototype_name)
     for _, v in ipairs(typeobject.type) do

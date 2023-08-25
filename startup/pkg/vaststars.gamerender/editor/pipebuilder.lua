@@ -26,7 +26,6 @@ local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_bo
 local global = require "global"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local gameplay = import_package "vaststars.gameplay"
-local igameplay_building = gameplay.interface "building"
 local ifluidbox = ecs.require "render_updates.fluidbox"
 local iprototype_cache = ecs.require "prototype_cache"
 local CHANGED_FLAG_BUILDING <const> = require("gameplay.interface.constant").CHANGED_FLAG_BUILDING
@@ -659,7 +658,7 @@ local function confirm(self, datamodel)
                     igameplay.destroy_entity(object.gameplay_eid)
                     object.gameplay_eid = igameplay.create_entity(object)
                 elseif old.dir ~= object.dir then
-                    igameplay_building.rotate(gameplay_core.get_world(), gameplay_core.get_entity(object.gameplay_eid), object.dir)
+                    igameplay.rotate(object.gameplay_eid, object.dir)
                 elseif old.fluid_name ~= object.fluid_name then
                     if iprototype.has_type(iprototype.queryByName(object.prototype_name).type, "fluidbox") then
                         ifluid:update_fluidbox(gameplay_core.get_world(), gameplay_core.get_entity(object.gameplay_eid), object.fluid_name)

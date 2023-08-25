@@ -25,8 +25,6 @@ local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
 local STATE_NONE  <const> = 0
 local STATE_START <const> = 1
-local gameplay = import_package "vaststars.gameplay"
-local igameplay_building = gameplay.interface "building"
 
 local function _show_dotted_line(self, from_x, from_y, to_x, to_y, dir, dir_delta)
     from_x, from_y = from_x + dir_delta.x, from_y + dir_delta.y
@@ -760,7 +758,7 @@ local function __complete(self)
                 igameplay.destroy_entity(object.gameplay_eid)
                 object.gameplay_eid = igameplay.create_entity(object)
             elseif old.dir ~= object.dir then
-                igameplay_building.rotate(gameplay_core.get_world(), gameplay_core.get_entity(object.gameplay_eid), object.dir)
+                igameplay.rotate(object.gameplay_eid, object.dir)
             elseif old.fluid_name ~= object.fluid_name then
                 if iprototype.has_type(iprototype.queryByName(object.prototype_name).type, "fluidbox") then -- TODO: object may be fluidboxes
                     ifluid:update_fluidbox(gameplay_core.get_world(), gameplay_core.get_entity(object.gameplay_eid), object.fluid_name)
