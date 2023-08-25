@@ -3,12 +3,11 @@ fx:
   fs_code: "#include \"terrain_fs_func.sh\""
   setting:
     lighting: on
-    WITH_NORMAL_ATTRIB: 1
-    WITH_TANGENT_ATTRIB: 1
     USER_ATTR: 1
     INPUT_USER_ATTR_0: 1
     OUTPUT_USER_ATTR_0: 1
     OUTPUT_USER_ATTR_1: 1
+    WITH_CUSTOM_TANGENT_ATTRIB: 1
 properties:
   u_pbr_factor: {0.1, 0.6, 0, 0}  #metallic, roughness, alpha_cutoff, occlusion strength
   u_emissive_factor: {0, 0, 0, 0}

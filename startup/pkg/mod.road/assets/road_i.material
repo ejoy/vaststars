@@ -6,8 +6,6 @@ fx:
     shadow_cast: off
     shadow_receive: on
     subsurface: off
-    HAS_BASECOLOR_TEXTURE: 1
-    HAS_METALLIC_ROUGHNESS_TEXTURE: 1
     HAS_MARK_ALPHA_TEXTURE: 1
     DRAW_INDIRECT: 1
     USER_ATTR: 1
