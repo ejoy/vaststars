@@ -14,20 +14,22 @@
 static void
 laboratory_set_tech(world& w, ecs::building& building, ecs::laboratory& l, ecs::chest& c2, uint16_t techid) {
     l.tech = techid;
-    std::vector<uint16_t> limit(chest::size(w, container::index::from(c2.chest)));
+    auto c = container::index::from(c2.chest);
+    auto n = chest::size(w, c);
+    std::vector<uint16_t> limit(n);
     if (techid == 0 || l.status == STATUS_INVALID) {
-        for (auto& v : limit) {
-            v = 2;
+        for (auto& s: chest::array_slice(w, c, 0, n)) {
+            s.limit = 2;
         }
     }
     else {
         auto& r = w.techtree.get_ingredients(w, building.prototype, techid);
         assert(r);
-        for (size_t i = 0; i < limit.size(); ++i) {
-            limit[i] = 2 * (std::max)((uint16_t)1, (*r)[i+1].amount);
+        for (size_t i = 0; i < n; ++i) {
+            auto& s = chest::array_at(w, c, i);
+            s.limit = 2 * (std::max)((uint16_t)1, (*r)[i+1].amount);
         }
     }
-    chest::limit(w, container::index::from(c2.chest), limit.data(), (uint16_t)limit.size());
 }
 
 static void
@@ -38,7 +40,14 @@ laboratory_next_tech(world& w, ecs::building& building, ecs::laboratory& l, ecs:
     if (l.tech) {
         auto& oldr = w.techtree.get_ingredients(w, building.prototype, l.tech);
         if (oldr) {
-            chest::recover(w, container::index::from(c2.chest), to_recipe(oldr));
+            auto c = container::index::from(c2.chest);
+            auto r = to_recipe(oldr);
+            size_t i = 0; 
+            for (auto& s: chest::array_slice(w, c, 0, r->n)) {
+                auto& t = r->items[i++];
+                assert(s.item == t.item);
+                s.amount += t.amount;
+            }
         }
     }
     if (!techid) {

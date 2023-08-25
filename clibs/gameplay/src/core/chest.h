@@ -240,6 +240,7 @@ namespace chest {
     container::slot& array_at(world& w, container::index c, uint8_t offset);
     std::span<container::slot> array_slice(world& w, container::index c, uint8_t offset, uint16_t size);
     std::span<container::slot> array_slice(world& w, container::index c);
+    uint16_t size(world& w, container::index c);
 
     // for fluidflow
     uint16_t get_fluid(world& w, container::index c, uint8_t offset);
@@ -252,10 +253,7 @@ namespace chest {
     // for laboratory
     bool     pickup(world& w, container::index c, const recipe_items* r, uint8_t offset = 0);
     bool     place(world& w, container::index c, const recipe_items* r, uint8_t offset = 0);
-    bool     recover(world& w, container::index c, const recipe_items* r);
-    void     limit(world& w, container::index c, const uint16_t* r, uint16_t n);
-    uint16_t size(world& w, container::index c);
 
-    // for trading
+    // for market
     container::slot* find_item(world& w, container::index c, uint16_t item);
 }

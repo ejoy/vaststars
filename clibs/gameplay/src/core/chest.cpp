@@ -115,22 +115,6 @@ bool chest::place(world& w, container::index c, const recipe_items* r, uint8_t o
     return true;
 }
 
-bool chest::recover(world& w, container::index c, const recipe_items* r) {
-    size_t i = 0;
-    for (auto& s: chest::array_slice(w, c, 0, r->n)) {
-        auto& t = r->items[i++];
-        assert(s.item == t.item);
-        s.amount += t.amount;
-    }
-    return true;
-}
-
-void chest::limit(world& w, container::index c, const uint16_t* r, uint16_t n) {
-    for (auto& s: chest::array_slice(w, c, 0, n)) {
-        s.limit = *r++;
-    }
-}
-
 uint16_t chest::size(world& w, container::index c) {
     assert(c != container::kInvalidIndex);
     auto& s = w.container.at(c);
