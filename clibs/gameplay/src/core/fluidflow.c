@@ -293,6 +293,19 @@ add_connection(struct fluidflow_network *net, int from_idx, int to_idx) {
 	return SUCC;
 }
 
+void
+fluidflow_resetconnect(struct fluidflow_network *net) {
+	int i, j;
+	for (i=0;i<net->pump_n+net->pipe_n;i++) {
+		struct pipe *p = &net->p[i];
+		for (j=0;j<PIPE_CONNECTION;j++) {
+			p->uplink[j] = PIPE_INVALID_CONNECTION;
+			p->downlink[j] = PIPE_INVALID_CONNECTION;
+			p->reservation[j] = 0;
+		}
+	}
+}
+
 int
 fluidflow_connect(struct fluidflow_network *net, int from, int to, int oneway) {
 	int from_idx = find_id(net, from);

@@ -235,11 +235,15 @@ local function builder_groud(c)
 end
 
 local function builder_finish(world)
+    local finish = true
     for fluid, c in pairs(builder) do
         builder_groud(c)
         cFluidflow.connect(world._cworld, fluid, c.connects)
+        if finish and next(c.map) ~= nil then
+            finish = false
+        end
     end
-    if next(builder) == nil then
+    if finish then
         return
     end
     -- handling disconnected pipes

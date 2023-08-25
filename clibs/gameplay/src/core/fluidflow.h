@@ -21,6 +21,7 @@ struct fluidflow_network * fluidflow_new();
 void fluidflow_delete(struct fluidflow_network *);
 int fluidflow_build(struct fluidflow_network *net, int id, struct fluid_box *box);
 int fluidflow_teardown(struct fluidflow_network *net, int id);
+void fluidflow_resetconnect(struct fluidflow_network *net);
 int fluidflow_connect(struct fluidflow_network *net, int from, int to, int oneway);
 void fluidflow_dump(struct fluidflow_network *net);
  

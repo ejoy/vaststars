@@ -52,6 +52,10 @@ bool fluidflow::teardown(int id) {
 	return false;
 }
 
+void fluidflow::resetconnect() {
+	fluidflow_resetconnect(network);
+}
+
 bool fluidflow::connect(int from, int to, bool oneway) {
 	return 0 == fluidflow_connect(network, from, to, oneway? 1: 0);
 }

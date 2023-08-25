@@ -32,9 +32,13 @@ static int fluidflow_teardown(lua_State *L) {
     auto& w = getworld(L);
     uint16_t fluid = bee::lua::checkinteger<uint16_t>(L, 2);
     uint16_t id = bee::lua::checkinteger<uint16_t>(L, 3);
-    bool ok = w.fluidflows[fluid].teardown(id);
+    fluidflow& flow = w.fluidflows[fluid];
+    bool ok = flow.teardown(id);
     if (!ok) {
         return luaL_error(L, "fluidflow teardown failed.");
+    }
+    if (flow.size() == 0) {
+        w.fluidflows.erase(fluid);
     }
     return 0;
 }
@@ -43,6 +47,7 @@ static int fluidflow_connect(lua_State *L) {
     auto& w = getworld(L);
     uint16_t fluid = bee::lua::checkinteger<uint16_t>(L, 2);
     fluidflow& flow = w.fluidflows[fluid];
+    flow.resetconnect();
     luaL_checktype(L, 3, LUA_TTABLE);
     lua_Integer n = luaL_len(L, 3);
     for (lua_Integer i = 1; i+2 <= n; i += 3) {

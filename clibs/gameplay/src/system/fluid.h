@@ -11,6 +11,7 @@ struct fluidflow {
     void remove_id(uint16_t id);
     bool build(uint16_t id, struct fluid_box *box);
     bool teardown(int id);
+    void resetconnect();
     bool connect(int from, int to, bool oneway);
     void dump();
     uint16_t size() const;
