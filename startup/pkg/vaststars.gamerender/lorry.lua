@@ -94,8 +94,6 @@ local function __create_item_object(prefab, parent, offset_srt)
             end
         end
     end
-    function p:on_message()
-    end
     return world:create_object(p)
 end
 

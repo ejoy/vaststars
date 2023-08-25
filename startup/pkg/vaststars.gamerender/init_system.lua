@@ -30,9 +30,7 @@ local function createPrefabInst(prefab)
             end
         end
     end
-    function p:on_message()
-    end
-    return world:create_object(p)
+    world:create_object(p)
 end
 
 function m:init_world()
