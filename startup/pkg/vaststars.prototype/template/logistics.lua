@@ -120,14 +120,14 @@ local entities = { {
   y = 114
 }, {
   dir = "S",
-  item = "碎石",
-  prototype_name = "出货车站",
+    items = {{"supply", "碎石", "10"}},
+    prototype_name = "出货车站",
   x = 120,
   y = 126
 }, {
   dir = "S",
-  item = "铁矿石",
-  prototype_name = "出货车站",
+    items = {{"supply", "铁矿石", "10"}},
+    prototype_name = "出货车站",
   x = 154,
   y = 126
 }, {
@@ -138,14 +138,14 @@ local entities = { {
   y = 126
 }, {
   dir = "W",
-  item = "铁矿石",
-  prototype_name = "收货车站",
+    items = {{"demand", "铁矿石", "10"}},
+    prototype_name = "收货车站",
   x = 136,
   y = 118
 }, {
   dir = "W",
-  item = "碎石",
-  prototype_name = "收货车站",
+    items = {{"demand", "碎石", "10"}},
+    prototype_name = "收货车站",
   x = 136,
   y = 108
 } }
