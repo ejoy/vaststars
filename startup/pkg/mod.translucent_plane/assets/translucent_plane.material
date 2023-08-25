@@ -1,9 +1,8 @@
 fx:
-  vs_code: "\n#include \"tf_vs_func.sh\"\n"
-  fs_code: "\n#include \"tf_fs_func.sh\"\n"
+  vs_code: "#include \"tf_vs_func.sh\""
+  fs_code: "#include \"tf_fs_func.sh\""
   setting:
     ALPHAMODE_OPAQUE: 1
-    HAS_BASECOLOR_TEXTURE: 1
     lighting: on
     shadow_cast: on
     shadow_receive: on
