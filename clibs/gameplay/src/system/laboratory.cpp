@@ -25,7 +25,7 @@ laboratory_set_tech(world& w, ecs::building& building, ecs::laboratory& l, ecs::
     else {
         auto& r = w.techtree.get_ingredients(w, building.prototype, techid);
         assert(r);
-        for (size_t i = 0; i < n; ++i) {
+        for (uint8_t i = 0; i < n; ++i) {
             auto& s = chest::array_at(w, c, i);
             s.limit = 2 * (std::max)((uint16_t)1, (*r)[i+1].amount);
         }
