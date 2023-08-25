@@ -9,13 +9,39 @@ local iguide = require "gameplay.interface.guide"
 local iui = ecs.require "engine.system.ui_system"
 local iom = ecs.require "ant.objcontroller|obj_motion"
 local iani = ecs.require "ant.animation|controller.state_machine"
+local window = import_package "ant.window"
+
 local game_cover
 
 local function init(prefab)
     icamera_controller.set_camera_from_prefab(prefab)
 end
 
+local function rebot()
+    window.reboot {
+        import = {
+            "@vaststars.gamerender"
+        },
+        pipeline = {
+            "init",
+            "update",
+            "exit",
+        },
+        system = {
+            "vaststars.gamerender|init_system",
+        },
+        policy = {
+            "ant.general|name",
+            "ant.scene|scene_object",
+            "ant.render|render",
+            "ant.render|render_queue",
+            "ant.objcontroller|pickup",
+        }
+    }
+end
+
 local function new_game(mode, game_template)
+    rebot()
     if game_cover then
         game_cover:remove()
         game_cover = nil
@@ -30,6 +56,7 @@ local function continue_game()
     if not saveload:restore() then
         return
     end
+    rebot()
     iguide.world = gameplay_core.get_world()
     iui.set_guide_progress(iguide.get_progress())
     if game_cover then
@@ -42,6 +69,7 @@ local function load_game(index)
     if not saveload:restore(index) then
         return
     end
+    rebot()
     iguide.world = gameplay_core.get_world()
     iui.set_guide_progress(iguide.get_progress())
     if game_cover then
@@ -82,6 +110,7 @@ end
 
 return {
     init = init,
+    rebot = rebot,
     load_game = load_game,
     new_game = new_game,
     continue_game = continue_game,

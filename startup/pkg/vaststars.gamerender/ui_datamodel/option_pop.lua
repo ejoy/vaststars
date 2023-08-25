@@ -76,6 +76,7 @@ function M:stage_camera_usage()
     for _ in back_to_main_menu_mb:unpack() do
         iui.close("/pkg/vaststars.resources/ui/option_pop.rml")
         iui.close("/pkg/vaststars.resources/ui/main_menu.rml")
+        imain_menu_manager.rebot()
         imain_menu_manager.back_to_main_menu()
     end
 
