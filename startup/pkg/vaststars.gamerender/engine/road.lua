@@ -25,7 +25,7 @@ local road = {}
 -- dir = "N" / "E" / "S" / "W"
 -- map = {{x, y, shape, dir}, ...}
 function road:create(width, height, offset, layer_names, shape_types)
-    iroad.set_args(ROAD_WIDTH, ROAD_HEIGHT)
+    --iroad.set_args(ROAD_WIDTH, ROAD_HEIGHT)
 
     assert(width == height)
     self._offset = {offset, offset}
@@ -84,7 +84,7 @@ function road:init(layer_name, map)
         self.cache[__pack(x, y)] = v
         t[#t+1] = v
     end
-    iroad.update_roadnet_group(0, t, RENDER_LAYER.ROAD)
+    --iroad.update_roadnet_group(0, t, RENDER_LAYER.ROAD)
 end
 
 -- shape = "I" / "U" / "L" / "T" / "O"
@@ -146,7 +146,7 @@ function road:flush()
         for _, v in pairs(self.cache) do
             t[#t+1] = v
         end
-        iroad.update_roadnet_group(0, t)
+        --iroad.update_roadnet_group(0, t)
     end
 end
 

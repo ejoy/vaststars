@@ -8,6 +8,12 @@ system "stone_mountain"
     .method "data_changed"
 
 component "stonemountain".type "lua"
+component "stonemountain_aabb".type "lua"
+
+policy "stonemountain_aabb"
+    .require_system "mod.stonemountain|stone_mountain"
+    .component "stonemountain_aabb"
+
 
 policy "stonemountain"
     .require_system "mod.stonemountain|stone_mountain"
