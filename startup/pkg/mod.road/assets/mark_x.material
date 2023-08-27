@@ -1,13 +1,11 @@
 fx:
   vs_code: "#include \"road_vs_func.sh\""
-  fs_code: "#include \"road_fs_func.sh\""
+  fs_code: "#include \"mark_fs_func.sh\""
   setting:
     lighting: on
     shadow_cast: off
     shadow_receive: on
     subsurface: off
-    HAS_BASECOLOR_TEXTURE: 1
-    HAS_METALLIC_ROUGHNESS_TEXTURE: 1
     HAS_MARK_ALPHA_TEXTURE: 1
     DRAW_INDIRECT: 1
     USER_ATTR: 1
@@ -15,17 +13,14 @@ fx:
     OUTPUT_USER_ATTR_0: 1
     WITH_CUSTOM_TANGENT_ATTRIB: 1
 properties:
-  s_basecolor:
+  s_alpha:
     stage: 0
-    texture: /pkg/mod.road/assets/textures/rx_color.texture
-  s_metallic_roughness:
-    stage: 1
-    texture: /pkg/mod.road/assets/textures/rx_metallic_roughness.texture
+    texture: /pkg/mod.road/assets/textures/mx_alpha.texture
   u_draw_indirect_type: {0, 0, 0, 0}
 state: 
   ALPHA_REF: 0
   CULL: CCW
-  DEPTH_TEST: GREATER
+  DEPTH_TEST: ALWAYS
   MSAA: true
   WRITE_MASK: RGBAZ
   BLEND_FUNC: "aA"

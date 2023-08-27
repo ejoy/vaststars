@@ -25,47 +25,6 @@ function S.init()
     end
     world:create_object(p)
 
-    ecs.create_entity {
-        policy = {
-            "ant.render|render",
-            "ant.general|name",
-            "ant.render|heap_mesh",
-         },
-        data = {
-            name = "heap_items",
-            scene   = {},
-            material = "/pkg/vaststars.resources/materials/stack/stack-crush-iron-ore.material_instance",
-            visible_state = "main_view",
-            mesh = "/pkg/vaststars.resources/glbs/stackeditems/stack-crush-iron-ore.glb|meshes/Cube.035_P1.meshbin",
-            heapmesh = {
-                curSideSize = {3, 3, 3},
-                curHeapNum = 27,
-                interval = {0.1, 0.1, 0.1},
-            },
-            indirect = "HEAP_MESH",
-        },
-    }
-
-    ecs.create_entity {
-        policy = {
-            "ant.render|render",
-            "ant.general|name",
-            "ant.render|heap_mesh",
-         },
-        data = {
-            name = "heap_items",
-            scene   = {t = {5, 0, 5}},
-            material = "/pkg/ant.resources/materials/pbr_heap_color.material",
-            visible_state = "main_view",
-            mesh = "/pkg/vaststars.resources/glbs/stackeditems/stack-geology-pack.glb|meshes/Cube.035_P1.meshbin",
-            heapmesh = {
-                curSideSize = {3, 3, 3},
-                curHeapNum = 27,
-                interval = {0.1, 0.1, 0.1},
-            },
-            indirect = "HEAP_MESH",
-        },
-    }
 end
 
 local create_list = {}
@@ -150,33 +109,41 @@ function S.init_world()
             end
         },
     }  ]]
-      local x, y = 0, 0
+    local x, y = 0, -100
     for _, shape in ipairs({"I", "L", "T", "U", "X", "O"}) do
-        y = y + 2
-        x = 0
+        y = y + 40
+        x = - 40
         for rtype = 1, 2 do
             for _, dir in ipairs({"N", "E", "S", "W"}) do
-                x = x + 2
-                
+                x = x + 40               
                 create_list[#create_list+1] = {
                     x = x, y = y,
                     layers = {
-                        road = {type  = rtype, shape = shape, dir = dir}
+                        road = {type  = rtype, shape = shape, dir = dir},
+                        mark = {type  = rtype, shape = shape, dir = dir}
                     }
-                }
-                update_list[#update_list+1] = {
-                    x = x, y = y,
-                    layers = {
-                        mark = {type  = 1, shape = shape, dir = dir}
-                    }
-                }
-                delete_list[#delete_list+1] = {
-                    x = x, y = y,
                 }
             end
         end
     end
-    --iroad.update_roadnet_group(1000, create_list)   
+    iroad.update_roadnet_group(1000, create_list, "translucent")
+--[[     create_list = {}
+    for _, shape in ipairs({"I", "L", "T", "U", "X", "O"}) do
+        y = y + 40
+        x = -40
+        for rtype = 1, 2 do
+            for _, dir in ipairs({"N", "E", "S", "W"}) do
+                x = x + 40         
+                create_list[#create_list+1] = {
+                    x = x, y = y,
+                    layers = {
+                        mark = {type  = rtype, shape = shape, dir = dir}
+                    }
+                }
+            end
+        end
+    end
+    iroad.update_roadnet_group(1001, create_list, "translucent")  ]]
     
 --[[     local density = 0.9
     local width, height, offset, UNIT = 256+10, 256+10, 128+10/2, 10

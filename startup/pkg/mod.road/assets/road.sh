@@ -12,7 +12,7 @@ vec3 blend(vec3 texture1, float a1, float d1, vec3 texture2, float a2, float d2)
 }
 
 
-vec3 calc_road_basecolor(vec4 road_basecolor, float road_type)
+vec3 calc_road_basecolor(vec3 road_basecolor, float road_type)
 {
     vec3 stop_color   = vec3(255.0/255,  37.0/255,  37.0/255);
     vec3 choose_color = vec3(228.0/255, 228.0/255, 228.0/255);
@@ -27,25 +27,32 @@ vec3 calc_road_basecolor(vec4 road_basecolor, float road_type)
     }  
 }
 
-vec3 calc_road_mark_blend_color(float road_type, vec4 road_basecolor, float mark_type, vec4 mark_basecolor, float mark_alpha)
+vec3 calc_mark_basecolor(float mark_type)
 {
-
-    if(road_type != 0.0 && mark_type != 0.0)
-    {
-        vec3 tmp_color = calc_road_basecolor(road_basecolor, road_type);
-        return blend(mark_basecolor.rgb, 1.0 - mark_alpha, 0.5, tmp_color, mark_alpha, 0.5); 
+    if(mark_type == 1){
+        return vec3(0.71484, 0, 0);
     }
-    else if(road_type != 0.0 && mark_type == 0.0)
-    {
-        return calc_road_basecolor(road_basecolor, road_type);
-    }
-    else if(road_type == 0.0 && mark_type != 0.0)
-    {
-        return mark_basecolor.rgb;
-    }
-    else
-    {
-        return road_basecolor.rgb;
+    else{
+        return vec3(1, 1, 1);
     }
 }
+
+material_info road_material_info_init(vec3 gnormal, vec3 normal, vec4 posWS, vec4 basecolor, vec4 fragcoord, vec4 metallic, vec4 roughness)
+{
+    material_info mi  = (material_info)0;
+    mi.basecolor         = basecolor;
+    mi.posWS             = posWS.xyz;
+    mi.distanceVS        = posWS.w;
+    mi.V                 = normalize(u_eyepos.xyz - posWS.xyz);
+    mi.gN                = gnormal;  //geomtery normal
+    mi.N                 = normal;
+
+    mi.perceptual_roughness  = roughness;
+    mi.metallic              = metallic;
+    mi.occlusion         = 1.0;
+
+    mi.screen_uv         = calc_normalize_fragcoord(fragcoord.xy);
+    return mi;
+}
+
 #endif //

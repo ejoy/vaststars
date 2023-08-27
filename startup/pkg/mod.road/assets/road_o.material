@@ -13,7 +13,6 @@ fx:
     USER_ATTR: 1
     INPUT_USER_ATTR_0: 1
     OUTPUT_USER_ATTR_0: 1
-    OUTPUT_USER_ATTR_1: 1
     WITH_CUSTOM_TANGENT_ATTRIB: 1
 properties:
   s_basecolor:
@@ -22,10 +21,6 @@ properties:
   s_metallic_roughness:
     stage: 1
     texture: /pkg/mod.road/assets/textures/ro_metallic_roughness.texture
-  s_mark_alpha:
-    stage: 3
-    texture: /pkg/mod.road/assets/textures/mark_alpha.texture
-    sampler: SAMPLER2DARRAY
   u_draw_indirect_type: {0, 0, 0, 0}
 state: 
   ALPHA_REF: 0
@@ -33,3 +28,5 @@ state:
   DEPTH_TEST: GREATER
   MSAA: true
   WRITE_MASK: RGBAZ
+  BLEND_FUNC: "aA"
+  BLEND_ENABLE: "i"
