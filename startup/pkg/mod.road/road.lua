@@ -295,7 +295,7 @@ end
 
 local function update_road_group(gid, update_list)
     local road_table, mark_table = get_srt_info_table(update_list)
-    local select_tag = "view_visible road:update road_type:in"
+    local select_tag = "view_visible road:update"
     for e in w:select(select_tag) do
         if e.road.gid == gid then
             if e.road.road_type then
