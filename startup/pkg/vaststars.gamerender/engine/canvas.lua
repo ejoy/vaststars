@@ -132,7 +132,7 @@ end
 local M = {}
 function M.create(canvas_type, show, yaxis)
     assert(rawget(cache, canvas_type) == nil)
-    cache[canvas_type] = ientity_object.create(ecs.create_entity {
+    cache[canvas_type] = ientity_object.create(world:create_entity {
         policy = {
             "ant.scene|scene_object",
             "ant.terrain|canvas",

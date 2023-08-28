@@ -1,4 +1,6 @@
 local ecs = ...
+local world = ecs.world
+
 local ims = ecs.require "ant.motion_sampler|motion_sampler"
 local ientity_object = ecs.require "engine.system.entity_object_system"
 
@@ -13,7 +15,7 @@ function motion.create_motion_object(s, r, t, parent, ev)
     if not motion.sampler_group then
         local sampler_group = ims.sampler_group()
         sampler_group:enable "view_visible"
-        ecs.group_flush "view_visible"
+        world:group_flush "view_visible"
         motion.sampler_group = sampler_group
     end
     local m_eid = motion.sampler_group:create_entity {

@@ -197,9 +197,9 @@ local filter_interval = {
 function M:stage_ui_update(datamodel)
     local gid = iUiRt.get_group_id("statistic_chart")
     if gid and canvas_size_w == 0 then
-        local g = ecs.group(gid)
+        local g = world:group(gid)
         g:enable "view_visible"
-        ecs.group_flush "view_visible"
+        world:group_flush "view_visible"
         local qe = w:first(queuename .." render_target:in")
         if qe then
             local rt = qe.render_target

@@ -22,7 +22,7 @@ local mt = {}
 mt.__index = mt
 
 local function __create_instance(group_id, prefab, mat)
-    local g = ecs.group(group_id)
+    local g = world:group(group_id)
     local prefab_instance = g:create_instance(prefab)
     function prefab_instance:on_ready()
         local e <close> = world:entity(self.tag["*"][1])
@@ -71,7 +71,7 @@ local function __create_heap(heap_mat, item, amount)
     local gap3 = typeobject_item.gap3 and {typeobject_item.gap3:match("([%d%.]+)x([%d%.]*)x([%d%.]*)")} or {0, 0, 0}
     local s, r, t = math3d.srt(heap_mat)
 
-    return ientity_object.create(ecs.create_entity {
+    return ientity_object.create(world:create_entity {
         policy = {
             "ant.render|render",
             "ant.general|name",

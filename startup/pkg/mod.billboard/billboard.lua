@@ -19,7 +19,7 @@ local cur_base_id = 1
 local layout    = layoutmgr.get "p3|t2"
 
 local function create_billboard_entity(srt, texture, render_layer)
-    local eid = ecs.create_entity{
+    local eid = world:create_entity {
         policy = {
             "ant.render|simplerender",
             "mod.billboard|billboard"

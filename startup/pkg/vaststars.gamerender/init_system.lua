@@ -20,7 +20,7 @@ bgfx.maxfps(FRAMES_PER_SECOND)
 font.import "/pkg/vaststars.resources/ui/font/Alibaba-PuHuiTi-Regular.ttf"
 
 local function createPrefabInst(prefab)
-    local p = ecs.create_instance(prefab)
+    local p = world:create_instance(prefab)
     function p:on_ready()
         local root <close> = world:entity(self.tag['*'][1])
         iom.set_position(root, {0, 0, 0})
@@ -41,8 +41,8 @@ function m:init_world()
         return
     end
 
-    ecs.create_instance "/pkg/vaststars.resources/daynight.prefab"
-    ecs.create_instance "/pkg/vaststars.resources/light.prefab"
+    world:create_instance "/pkg/vaststars.resources/daynight.prefab"
+    world:create_instance "/pkg/vaststars.resources/light.prefab"
     rhwi.set_profie(gameplay_core.settings_get("debug", true))
 
     -- audio test (Master.strings.bank must be first)

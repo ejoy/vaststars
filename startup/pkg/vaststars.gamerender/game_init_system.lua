@@ -22,8 +22,8 @@ local iefk = ecs.require "engine.efk"
 local m = ecs.system 'game_init_system'
 
 function m:init_world()
-    ecs.create_instance "/pkg/vaststars.resources/daynight.prefab"
-    ecs.create_instance "/pkg/vaststars.resources/light.prefab"
+    world:create_instance "/pkg/vaststars.resources/daynight.prefab"
+    world:create_instance "/pkg/vaststars.resources/light.prefab"
 
     iefk.preload "/pkg/vaststars.resources/effects/"
 

@@ -40,7 +40,7 @@ end
 
 local function create(material, property, color, srt, render_layer)
 	assert(color and color ~= MATH3D_NULL)
-    local eid = ecs.create_entity{
+    local eid = world:create_entity {
 		policy = {
 			"ant.render|simplerender",
 			"ant.general|name",

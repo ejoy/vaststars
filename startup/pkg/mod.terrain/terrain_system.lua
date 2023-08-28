@@ -37,7 +37,7 @@ function iterrain.gen_terrain_field(width, height, offset, unit, render_layer)
 end
 
 function terrain_sys:init()
-    ecs.create_entity{
+    world:create_entity {
         policy = {
             "ant.scene|scene_object",
             "ant.general|name",

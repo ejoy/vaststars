@@ -101,7 +101,7 @@ local __get_hitch_children ; do
         end
 
         hitch_group_id = hitch_group_id + 1
-        local g = ecs.group(hitch_group_id)
+        local g = world:group(hitch_group_id)
         local effects, animations = __cache_prefab_info(prefab)
 
         -- log.info(("game_object.new_instance: %s"):format(table.concat({hitch_group_id, prefab, require("math3d").tostring(color), tostring(animation_name), tostring(final_frame)}, " "))) -- TODO: remove this line
@@ -196,7 +196,7 @@ function igame_object.create(init)
     end
 
     local srt = init.srt or {}
-    local hitch_entity_object = ientity_object.create(ecs.group(init.group_id):create_entity{
+    local hitch_entity_object = ientity_object.create(world:group(init.group_id):create_entity{
         policy = {
             "ant.general|name",
             "ant.render|hitch_object",

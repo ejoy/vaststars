@@ -14,7 +14,7 @@ local iupdate = ecs.require "update_system"
 local DELTA_TIME <const> = require("gameplay.interface.constant").DELTA_TIME
 
 local function create_object(prefab, srt)
-    local p = ecs.create_instance(prefab)
+    local p = world:create_instance(prefab)
     function p:on_ready()
         local root <close> = world:entity(self.tag['*'][1])
         iom.set_srt(root, srt.s, srt.r, srt.t)

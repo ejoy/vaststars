@@ -227,7 +227,7 @@ local function create_sm_entity()
         end
     end
     for gid, sm_info in pairs(stonemountain) do
-        local g = ecs.group(gid)
+        local g = world:group(gid)
         g:create_entity {
             policy = {
                 "ant.render|render",
@@ -272,7 +272,7 @@ function sm_sys:entity_init()
         update_ro(e.render_object)
         local stonemountain = e.stonemountain
         local max_num = 2000
-        local draw_indirect_eid = ecs.create_entity {
+        local draw_indirect_eid = world:create_entity {
             policy = {
                 "ant.render|compute_policy",
                 "ant.render|draw_indirect"

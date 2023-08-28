@@ -233,7 +233,7 @@ function iplane_terrain.init_plane_terrain(st, render_layer)
                 
                 local terrain_mesh = build_mesh(ss, sectionidx, ctf, width)
                 if terrain_mesh then
-                    local eid; eid = ecs.create_entity{
+                    local eid; eid = world:create_entity {
                         policy = {
                             "ant.scene|scene_object",
                             "ant.render|simplerender",

@@ -16,8 +16,8 @@ local iom           = ecs.require "ant.objcontroller|obj_motion"
 local S = ecs.system "init_system"
 
 function S.init()
-    --ecs.create_instance "/pkg/vaststars.mod.test/assets/skybox.prefab"
-    local p = ecs.create_instance  "/pkg/vaststars.mod.test/assets/light_directional.prefab"
+    --world:create_instance "/pkg/vaststars.mod.test/assets/skybox.prefab"
+    local p = world:create_instance  "/pkg/vaststars.mod.test/assets/light_directional.prefab"
     p.on_ready = function (e)
         local pid = e.tag["*"][1]
         local le<close> = world:entity(pid)
@@ -42,7 +42,7 @@ function S.init_world()
     iterrain.gen_terrain_field(256, 256, 128)
 
 
---[[       ecs.create_entity{
+--[[       world:create_entity {
         policy = {
             "ant.scene|scene_object",
             "ant.render|render",
@@ -58,7 +58,7 @@ function S.init_world()
         },
     }  
     
-    ecs.create_entity{
+    world:create_entity {
         policy = {
             "ant.scene|scene_object",
             "ant.render|render",
@@ -75,7 +75,7 @@ function S.init_world()
     }  ]]
 --[[     local crack_color = math3d.vector(0, 0, 1, 1)
     local crack_emissive = math3d.vector(0, 0, 2, 1)
-    ecs.create_entity{
+    world:create_entity {
         policy = {
             "ant.scene|scene_object",
             "ant.render|render",
@@ -90,7 +90,7 @@ function S.init_world()
             render_layer = "background",
         },
     }
-    ecs.create_entity{
+    world:create_entity {
         policy = {
             "ant.scene|scene_object",
             "ant.render|render",
@@ -153,7 +153,7 @@ function S.init_world()
     --istonemountain.create_sm_entity_config(config, width, height, offset, UNIT)    
     --create_mark()
     
---[[      printer_eid = ecs.create_entity {
+--[[      printer_eid = world:create_entity {
         policy = {
             "ant.render|render",
             "ant.general|name",

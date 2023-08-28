@@ -57,7 +57,7 @@ local function __create_shadow_object(parent)
     local x, z = -5, -5
     local w = 10
     local h = 10
-    return ientity_object.create(ecs.create_entity {
+    return ientity_object.create(world:create_entity {
         policy = {
             "ant.render|simplerender",
             "ant.general|name",
@@ -101,7 +101,7 @@ local function create(prefab, s, r, t, motion_events)
     if not sampler_group then
         sampler_group = ims.sampler_group()
         sampler_group:enable "view_visible"
-        ecs.group_flush "view_visible"
+        world:group_flush "view_visible"
     end
 
     local outer = {objs = {}, item_classid = 0, item_amount = 0}

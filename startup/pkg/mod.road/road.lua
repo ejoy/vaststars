@@ -150,11 +150,11 @@ local function create_road_group(gid, update_list, render_layer)
     if not render_layer then render_layer = "background" end
     local road_info_table, mark_info_table = get_srt_info_table(update_list)
     local mesh = build_mesh()
-    local g = ecs.group(gid)
+    local g = world:group(gid)
     create_layer_entity(g, road_info_table, mesh, road_material_table)
     create_layer_entity(g, mark_info_table, mesh, mark_material_table)
     g:enable "view_visible"
-    ecs.group_flush "view_visible"
+    world:group_flush "view_visible"
 end
 
 local function update_road_group(gid, update_list)
@@ -179,7 +179,7 @@ function init_system:entity_init()
     for e in w:select "INIT road:update render_object?update indirect?update" do
         local road = e.road
         local max_num = 500
-        local draw_indirect_eid = ecs.create_entity {
+        local draw_indirect_eid = world:create_entity {
             policy = {
                 "ant.render|compute_policy",
                 "ant.render|draw_indirect"

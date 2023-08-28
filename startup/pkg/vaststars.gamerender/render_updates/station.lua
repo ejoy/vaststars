@@ -30,7 +30,7 @@ heap_events["set_srt"] = function(_, e, ...)
 end
 
 local function create_heap(meshbin, material, srt, dim3, gap3, count)
-    return ientity_object.create(ecs.create_entity {
+    return ientity_object.create(world:create_entity {
         policy = {
             "ant.render|render",
             "ant.general|name",

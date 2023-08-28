@@ -134,7 +134,7 @@ local function create_translucent_plane_entity(grids_num, grids, color, alpha, r
     local eid
     if plane_mesh then
         if alpha then
-            eid = ecs.create_entity{
+            eid = world:create_entity {
                 policy = {
                     "ant.scene|scene_object",
                     "ant.render|simplerender",
@@ -163,7 +163,7 @@ local function create_translucent_plane_entity(grids_num, grids, color, alpha, r
                 },
             }
         else
-            eid = ecs.create_entity{
+            eid = world:create_entity {
                 policy = {
                     "ant.scene|scene_object",
                     "ant.render|simplerender",

@@ -36,7 +36,7 @@ local function createPrefabInst(prefab, position)
     prefab = assert(prefab:match("(.*%.glb|).*%.prefab"))
     prefab = prefab .. "translucent.prefab"
 
-    local p = ecs.create_instance(prefab)
+    local p = world:create_instance(prefab)
     function p:on_ready()
         local root <close> = world:entity(self.tag['*'][1])
         iom.set_position(root, math3d.vector(position))
