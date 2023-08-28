@@ -219,7 +219,7 @@ local function get_indirect_params()
             local prev_mesh = mesh_table[mesh_idx-1]
             vb_offset, ib_offset = vb_offset + prev_mesh.vb_num, ib_offset + prev_mesh.ib_num
         end
-        indirect_params_table[mesh_idx] = {vb_offset, ib_offset, ib_num, 0}
+        indirect_params_table[mesh_idx] = math3d.vector(vb_offset, ib_offset, ib_num, 0)
     end
     return indirect_params_table
 end
@@ -262,9 +262,9 @@ local function create_sm_entity()
     for _, sms in pairs(sm_table) do
         for _, sm in pairs(sms) do
             local mesh_idx = sm.m
-            mesh_idx_table[#mesh_idx_table+1] = mesh_idx
+            mesh_idx_table[#mesh_idx_table+1] = math3d.vector(0, 0, 0, mesh_idx)
             stonemountain.draw_num = stonemountain.draw_num + 1
-            stonemountain.srt_info[#stonemountain.srt_info+1] = {{sm.s, sm.r, sm.tx, sm.tz}}  
+            stonemountain.srt_info[#stonemountain.srt_info+1] = math3d.vector(sm.s, sm.r, sm.tx, sm.tz)  
         end
     end
 
