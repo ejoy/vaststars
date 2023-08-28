@@ -6,7 +6,6 @@ fx:
     shadow_cast: off
     shadow_receive: on
     subsurface: off
-    HAS_MARK_ALPHA_TEXTURE: 1
     DRAW_INDIRECT: 1
     USER_ATTR: 1
     INPUT_USER_ATTR_0: 1

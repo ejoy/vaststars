@@ -14,7 +14,7 @@
 
 void CUSTOM_FS_FUNC(in FSInput fsinput, inout FSOutput fsoutput)
 {
-    float road_type  = fsinput.user0.x;
+    int road_type  = (int)fsinput.user0.x;
     const vec2 uv  = fsinput.uv0;
 
     vec4 road_basecolor = texture2D(s_basecolor, uv); 
