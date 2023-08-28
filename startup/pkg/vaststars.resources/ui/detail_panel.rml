@@ -288,8 +288,8 @@
             </div>
             <div class="tips-bg" data-if="areaid==3.0">
                 <div style="width:80%; flex-direction: row; justify-content: flex-start; align-items: center; flex-wrap: wrap;">
-                    <div data-for = "chest : chest_list" class="small-item1" style="margin: 1vmin; width: 18vmin; height: 18vmin;" data-style-background-image="chest.icon">
-                        <div style="font-size: 6.00vmin; -webkit-text-stroke:0.25vmin rgb(0, 0, 0);">{{chest.count}}</div>
+                    <div data-for = "chest : chest_list" class="small-item1" style="margin: 1vmin; width: 18vmin; height: 18vmin;" data-style-border = "chest.type == 'supply' and '0.3vmin rgb(255, 0, 0);' or (chest.type == 'demand' and '0.3vmin rgb(23, 176, 240);' or '0.2vmin rgb(255, 255, 255);')" data-style-background-image="chest.icon">
+                        <div style="font-size: 6.00vmin; -webkit-text-stroke:0.25vmin rgb(0, 0, 0);" data-if="chest.icon ~= ''">{{chest.count}}</div>
                     </div>
                 </div>
             </div>
