@@ -591,6 +591,20 @@ prototype "收货车站" {
     item_description = "从运输车收取货物的车站",
 }
 
+prototype "停车站" {
+    type = {"item"},
+    item_category = "物流",
+    station_limit = 8,
+    pile = "2x4x2",
+    hub_limit = 16,
+    drone_depot_gap3 = "0.65x0.2x0.65",
+    backpack_limit = 20,
+    item_order = 19,
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/goodstation-input.texture",
+    pile_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_description = "从运输车收取货物的车站",
+}
+
 prototype "电解厂I" {
     type = {"item"},
     item_category = "化工",
