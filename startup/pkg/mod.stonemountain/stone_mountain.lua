@@ -27,7 +27,7 @@ local vb_handle, vb2_handle, ib_handle
 
 local ratio, width, height = 0.80, 256, 256
 local ratio_table = {
-    [1] = 0.88, [2] = 0.90, [3] = 0.92, [4] = 0.94
+    0.88, 0.90, 0.92, 0.94
 }
 local freq, depth, unit, offset = 4, 4, 10, 0
 
@@ -35,10 +35,10 @@ local freq, depth, unit, offset = 4, 4, 10, 0
 local sm_table = {}
 local sm_group_table = {}
 local mesh_table = {
-    [1] = {filename = "/pkg/mod.stonemountain/assets/mountain1.glb|meshes/Cylinder.002_P1.meshbin"},
-    [2] = {filename = "/pkg/mod.stonemountain/assets/mountain2.glb|meshes/Cylinder.004_P1.meshbin"},
-    [3] = {filename = "/pkg/mod.stonemountain/assets/mountain3.glb|meshes/Cylinder_P1.meshbin"},
-    [4] = {filename = "/pkg/mod.stonemountain/assets/mountain4.glb|meshes/Cylinder.021_P1.meshbin"}
+    {filename = "/pkg/mod.stonemountain/assets/mountain1.glb|meshes/Cylinder.002_P1.meshbin"},
+    {filename = "/pkg/mod.stonemountain/assets/mountain2.glb|meshes/Cylinder.004_P1.meshbin"},
+    {filename = "/pkg/mod.stonemountain/assets/mountain3.glb|meshes/Cylinder_P1.meshbin"},
+    {filename = "/pkg/mod.stonemountain/assets/mountain4.glb|meshes/Cylinder.021_P1.meshbin"}
 }
 
 local sm_info_table = {
@@ -351,10 +351,10 @@ function sm_sys:data_changed()
         local stonemountain_num = #stonemountain_info
         -- vertex offset / index offset / total index number
         local instance_params = {
-            [1] = math3d.vector(0, 0, mesh_table[1].ib_num),
-            [2] = math3d.vector(mesh_table[1].vb_num, mesh_table[1].ib_num, mesh_table[2].ib_num),
-            [3] = math3d.vector(mesh_table[1].vb_num + mesh_table[2].vb_num, mesh_table[1].ib_num + mesh_table[2].ib_num, mesh_table[3].ib_num),
-            [4] = math3d.vector(vb_num - mesh_table[4].vb_num, ib_num - mesh_table[4].ib_num, mesh_table[4].ib_num),
+            math3d.vector(0, 0, mesh_table[1].ib_num),
+            math3d.vector(mesh_table[1].vb_num, mesh_table[1].ib_num, mesh_table[2].ib_num),
+            math3d.vector(mesh_table[1].vb_num + mesh_table[2].vb_num, mesh_table[1].ib_num + mesh_table[2].ib_num, mesh_table[3].ib_num),
+            math3d.vector(vb_num - mesh_table[4].vb_num, ib_num - mesh_table[4].ib_num, mesh_table[4].ib_num),
         }
         if stonemountain_num > 0 then
             local de <close> = world:entity(stonemountain.draw_indirect_eid, "draw_indirect:in dispatch:in")
