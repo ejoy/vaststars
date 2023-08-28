@@ -51,7 +51,6 @@ static int lbuild(lua_State *L) {
 }
 
 static void startTask(world& w, ecs::lorry& l, market_match const& m) {
-    assert(l.target == roadnet::lorry_target::home);
     auto from_e = ecs_api::index_entity<ecs::endpoint>(w.ecs, m.from);
     auto from_s = from_e.component<ecs::station>();
     auto from_c = container::index::from(from_s->chest);
@@ -198,6 +197,7 @@ static int lupdate(lua_State *L) {
             continue;
         }
         if (auto res = w.market.match(w, endpoint.neighbor)) {
+            assert(l.target == roadnet::lorry_target::home);
             startTask(w, l, *res);
             roadnet::endpointSetOut(w, endpoint);
         }
