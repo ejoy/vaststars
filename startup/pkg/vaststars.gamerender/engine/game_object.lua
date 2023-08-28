@@ -1,8 +1,6 @@
 local ecs = ...
 local world = ecs.world
 local w = world.w
-local fs = require "filesystem"
-local datalist  = require "datalist"
 local iefk = ecs.require "ant.efk|efk"
 local game_object_event = ecs.require "engine.game_object_event"
 local ientity_object = ecs.require "engine.system.entity_object_system"
@@ -13,7 +11,6 @@ local irl = ecs.require "ant.render|render_layer"
 local imodifier = ecs.require "ant.modifier|modifier"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
-local ANIMATIONS_BASE_PATH <const> = "/pkg/vaststars.resources/animations/"
 
 local function on_prefab_message(prefab, cmd, ...)
     local event = game_object_event[cmd]
@@ -62,21 +59,8 @@ local __get_hitch_children ; do
     local cache = {}
     local hitch_group_id = 10000 -- see also: terrain.lua -> TERRAIN_MAX_GROUP_ID
 
-    local function loadEvents(prefab)
-        local PATTERN <const> = "^.*/(.*)%.glb|.*%.prefab$"
-        local match = prefab:match(PATTERN)
-        local eventFile = (match or assert(prefab:match("^.*/(.*)%.prefab$"))) .. ".event"
-
-        local f <close> = fs.open(fs.path(ANIMATIONS_BASE_PATH .. eventFile))
-        if not f then
-            return {}
-        end
-        return datalist.parse(f:read "a")
-    end
-
     local function __cache_prefab_info(prefab)
         local effects = {auto_play = {}, work = {}, idle = {}, low_power = {}}
-        local slots = {}
         local animations = {}
 
         for _, v in ipairs(prefabParser(prefab)) do
@@ -84,9 +68,7 @@ local __get_hitch_children ; do
                 goto continue
             end
 
-            if v.data.slot then
-                slots[v.data.name] = v.data
-            elseif v.data.efk then
+            if v.data.efk then
                 local efk = v.data.efk
                 local t = {efk = efk, srt = v.data.scene}
                 if v.data.efk.auto_play then
@@ -108,22 +90,7 @@ local __get_hitch_children ; do
             ::continue::
         end
 
-        local keyeffects = {}
-        local keyframe_events = loadEvents(prefab)
-        for animname, keyevent in pairs(keyframe_events) do
-            local efks = {}
-            for _, ev in ipairs(keyevent) do
-                for _, evnode in ipairs(ev.event_list) do
-                    if evnode.event_type == "Effect" then
-                        local slot_name = evnode.link_info and evnode.link_info.slot_name or ""
-                        efks[evnode.name] = {efk = {path = evnode.asset_path}, srt = slots[slot_name] and slots[slot_name].scene or {}}
-                    end
-                end
-            end
-            keyeffects[animname] = efks
-        end
-
-        return slots, effects, animations, keyeffects, keyframe_events
+        return effects, animations
     end
 
     function __get_hitch_children(prefab, color, animation_name, final_frame, emissive_color, render_layer)
@@ -135,17 +102,13 @@ local __get_hitch_children ; do
 
         hitch_group_id = hitch_group_id + 1
         local g = ecs.group(hitch_group_id)
-        local slots, effects, animations, keyeffects, keyframe_events = __cache_prefab_info(prefab)
+        local effects, animations = __cache_prefab_info(prefab)
 
         -- log.info(("game_object.new_instance: %s"):format(table.concat({hitch_group_id, prefab, require("math3d").tostring(color), tostring(animation_name), tostring(final_frame)}, " "))) -- TODO: remove this line
         local prefab_instance = g:create_instance(prefab)
         function prefab_instance:on_ready()
             for _, eid in ipairs(self.tag["*"]) do
-                local e <close> = world:entity(eid, "anim_ctrl?in render_object?update")
-                if e.anim_ctrl then
-                    e.anim_ctrl.hitchs = {}
-                    e.anim_ctrl.keyframe_events = keyframe_events
-                end
+                local e <close> = world:entity(eid, "render_object?update")
                 if render_layer and e.render_object then
                     irl.set_layer(e, render_layer)
                 end
@@ -175,7 +138,7 @@ local __get_hitch_children ; do
             prefab_proxy:send("material", "set_property", "u_emissive_factor", emissive_color)
         end
 
-        cache[hash] = {prefab_file_name = prefab, instance = prefab_proxy, hitch_group_id = hitch_group_id, slots = slots, pose = iani.create_pose(), keyeffects = keyeffects, effects = effects, animations = animations}
+        cache[hash] = {prefab_file_name = prefab, instance = prefab_proxy, hitch_group_id = hitch_group_id, pose = iani.create_pose(), effects = effects, animations = animations}
         return cache[hash]
     end
 end
@@ -309,23 +272,6 @@ function igame_object.create(init)
     for _, v in ipairs(children.effects.low_power) do
         effects.low_power[#effects.low_power + 1] = __create_efk_object(v.efk, v.srt, hitch_entity_object.id, init.group_id, false)
     end
-
-    for animname, effect in pairs(children.keyeffects) do
-        local efks = {}
-        for effectname, v in pairs(effect) do
-            efks[effectname] = __create_efk_object(v.efk, v.srt, hitch_entity_object.id, init.group_id, false)
-        end
-    end
-    -- TODO: sub animation keyevent
-    -- for _, animname, effectname, hitchs in animation_keyevent:unpack() do
-    --     for eid, _ in pairs(hitchs) do
-    --         local effect = efks[eid][animname][effectname]
-    --         local e <close> = world:entity(eid, "view_visible?in")
-    --         if e.view_visible and effect then
-    --             iefk.play(effect)
-    --         end
-    --     end
-    -- end
     children.instance:send("attach_hitch", hitch_entity_object.id)
 
     local outer = {
