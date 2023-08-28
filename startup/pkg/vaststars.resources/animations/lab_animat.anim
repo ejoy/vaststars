@@ -1,6 +1,40 @@
 ---
+duration: 3
+name: lad_animat_low
+sample_ratio: 50
+skeleton: /pkg/vaststars.resources/glbs/lab-1.glb|animations/skeleton.ozz
+target_anims:
+  ---
+  clips:
+    ---
+    amplitude_pos: 0
+    amplitude_rot: 72
+    direction: 2
+    random_amplitude: false
+    range: {0, 149}
+    repeat_count: 1
+    rot_axis: 2
+    tween: 1
+    type: 1
+  inherit: {false, false, false}
+  target_name: Bone.002
+  ---
+  clips:
+    ---
+    amplitude_pos: 0
+    amplitude_rot: -72
+    direction: 2
+    random_amplitude: false
+    range: {0, 149}
+    repeat_count: 1
+    rot_axis: 2
+    tween: 1
+    type: 1
+  inherit: {false, false, false}
+  target_name: Bone.001
 type: ske
-duration: 3.6
+---
+duration: 3
 name: lab_animat
 sample_ratio: 50
 skeleton: /pkg/vaststars.resources/glbs/lab-1.glb|animations/skeleton.ozz
@@ -9,10 +43,10 @@ target_anims:
   clips:
     ---
     amplitude_pos: 0
-    amplitude_rot: 360
+    amplitude_rot: 0
     direction: 2
     random_amplitude: false
-    range: {0, 179}
+    range: {0, 149}
     repeat_count: 1
     rot_axis: 2
     tween: 1
@@ -23,10 +57,10 @@ target_anims:
   clips:
     ---
     amplitude_pos: 0
-    amplitude_rot: -1080
+    amplitude_rot: -72
     direction: 2
     random_amplitude: false
-    range: {0, 179}
+    range: {0, 149}
     repeat_count: 1
     rot_axis: 2
     tween: 1
@@ -37,13 +71,14 @@ target_anims:
   clips:
     ---
     amplitude_pos: 0
-    amplitude_rot: 3600
+    amplitude_rot: 72
     direction: 2
     random_amplitude: false
-    range: {0, 179}
+    range: {0, 149}
     repeat_count: 1
     rot_axis: 2
     tween: 1
     type: 1
   inherit: {false, false, false}
   target_name: Bone.002
+type: ske
