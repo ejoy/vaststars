@@ -6,13 +6,11 @@ local bgfx      = require "bgfx"
 local math3d    = require "math3d"
 local init_system   = ecs.system "init_system"
 local imaterial     = ecs.require "ant.asset|material"
-local icompute      = ecs.require "ant.render|compute.compute"
 local idrawindirect = ecs.require "ant.render|draw_indirect_system"
 local renderpkg     = import_package "ant.render"
 local layoutmgr     = renderpkg.layoutmgr
 local layout        = layoutmgr.get "p3|t20"
 local hwi                   = import_package "ant.hwi"
-local FIRST_viewid<const>   = hwi.viewid_get "csm_fb"
 local iroad         = {}
 local width, height = 20, 20
 
@@ -63,9 +61,9 @@ local function get_srt_info_table(update_list)
         local type, dir, shape = layer.type, rot_table[layer.dir][sd_info.rot_idx], sd_info.shape
         local current_info_table = info_table[shape+1]
         current_info_table[#current_info_table+1] = {
-            {instance.x, 0.1, instance.y, 0},
-            {dir, type, 0, 0},
-            {0, 0, 0, 0}
+            math3d.vector(instance.x, 0.1, instance.y, 0),
+            math3d.vector(dir, type, 0, 0),
+            math3d.vector(0, 0, 0, 0)
         }
     end
     local mt = {__index=function(t, k) local tt = {}; t[k] = tt; return tt end}
@@ -138,6 +136,7 @@ local function create_road_group(gid, update_list, render_layer)
                         visible_state = "main_view|selectable|pickup",
                         road = {srt_info = road_info, gid = gid, road_type = road_idx},
                         render_layer = render_layer,
+                        draw_indirect_ready = false,
                         indirect = "ROAD",
                         on_ready = function(e)
                             local draw_indirect_type = idrawindirect.get_draw_indirect_type("ROAD")
@@ -175,23 +174,22 @@ local function update_road_group(gid, update_list)
 end
 
 function init_system:entity_init()
-    for e in w:select "INIT road:update render_object?update indirect?update" do
+    for e in w:select "INIT road:update render_object?update indirect?update eid:in" do
         local road = e.road
-        local max_num = 500
+        local draw_num = #road.srt_info
         local draw_indirect_eid = world:create_entity {
             policy = {
-                "ant.render|compute_policy",
                 "ant.render|draw_indirect"
             },
             data = {
-                material    = "/pkg/ant.resources/materials/indirect/indirect.material",
-                dispatch    = {
-                    size    = {0, 0, 0},
-                },
-                compute = true,
                 draw_indirect = {
+                    target_eid = e.eid,
                     itb_flag = "r",
-                    max_num = max_num
+                    draw_num = draw_num,
+                    srt_table = e.road.srt_info,
+                    indirect_params_table = {math3d.vector(0, 0, 6, 0)},
+                    aabb_table = {math3d.aabb(math3d.vector(-10, 0, -10), math3d.vector(10, 0, 10))},
+                    indirect_type = "road"
                 },
                 on_ready = function()
                     road.ready = true
@@ -211,34 +209,9 @@ function init_system:entity_remove()
     end
 end
 
-local function create_road_compute(dispatch, road_num, indirect_buffer, instance_buffer, instance_params, indirect_params)
-    dispatch.size[1] = math.floor((road_num - 1) / 64) + 1
-    local m = dispatch.material
-    m.u_instance_params			= instance_params
-    m.u_indirect_params         = indirect_params
-    m.indirect_buffer           = indirect_buffer
-    m.instance_buffer           = instance_buffer
-    icompute.dispatch(FIRST_viewid, dispatch)
-end
-
-local function get_instance_memory_buffer(srt_info, max_num)
-    local draw_num = #srt_info
-    local fmt<const> = "ffff"
-    local memory_buffer = bgfx.memory_buffer(3 * 16 * max_num)
-    local memory_buffer_offset = 1
-    for srt_idx = 1, draw_num do
-        local instance_data = srt_info[srt_idx]
-        for data_idx = 1, #instance_data do
-            memory_buffer[memory_buffer_offset] = fmt:pack(table.unpack(instance_data[data_idx]))
-            memory_buffer_offset = memory_buffer_offset + 16
-        end
-    end
-    return memory_buffer
-end
-
 function init_system:data_changed()
-    for e in w:select "road:update render_object:update scene:in" do
-        if not e.road.ready then
+    for e in w:select "road:update render_object:update scene:in draw_indirect_ready:update" do
+        if e.draw_indirect_ready ~= true then
             goto continue
         end
         local road = e.road
@@ -246,13 +219,8 @@ function init_system:data_changed()
         local draw_num = 0
         if srt_info then draw_num = #srt_info end
         if draw_num > 0 then
-            local de <close> = world:entity(road.draw_indirect_eid, "draw_indirect:in dispatch:in")
+            local de <close> = world:entity(road.draw_indirect_eid, "draw_indirect:in")
             local idb_handle, itb_handle = de.draw_indirect.idb_handle, de.draw_indirect.itb_handle
-            local instance_memory_buffer = get_instance_memory_buffer(srt_info, 500)
-            bgfx.update(itb_handle, 0, instance_memory_buffer)
-            local instance_params = math3d.vector(0, e.render_object.vb_num, 0, e.render_object.ib_num)
-            local indirect_params = math3d.vector(draw_num, 0, 0, 0)
-            create_road_compute(de.dispatch, draw_num, idb_handle, itb_handle, instance_params, indirect_params)
             e.render_object.idb_handle = idb_handle
             e.render_object.itb_handle = itb_handle
             e.render_object.draw_num = draw_num
@@ -262,7 +230,7 @@ function init_system:data_changed()
             e.render_object.draw_num = 0
         end
 
-        e.road.ready = nil
+        e.draw_indirect_ready = false
         ::continue::
     end
 end

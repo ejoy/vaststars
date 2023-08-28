@@ -245,7 +245,8 @@ function sm_sys:entity_init()
                     mesh_idx_table = mesh_idx_table,
                     srt_table = stonemountain.srt_info,
                     draw_num = stonemountain.draw_num,
-                    indirect_params_table = get_indirect_params()
+                    indirect_params_table = get_indirect_params(),
+                    indirect_type = "stone_mountain"
                 },
             }
         }
@@ -264,7 +265,11 @@ local function create_sm_entity()
             local mesh_idx = sm.m
             mesh_idx_table[#mesh_idx_table+1] = math3d.vector(0, 0, 0, mesh_idx)
             stonemountain.draw_num = stonemountain.draw_num + 1
-            stonemountain.srt_info[#stonemountain.srt_info+1] = math3d.vector(sm.s, sm.r, sm.tx, sm.tz)  
+            stonemountain.srt_info[#stonemountain.srt_info+1] = {
+                math3d.vector(sm.s, sm.r, sm.tx, sm.tz),
+                math3d.vector(0, 0, 0, 0),
+                math3d.vector(0, 0, 0, 0)
+            } 
         end
     end
     world:create_entity {
