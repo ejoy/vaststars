@@ -3,7 +3,6 @@ local world = ecs.world
 local w = world.w
 
 local math3d = require "math3d"
-local coord_system = require "global".coord_system
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local iom = ecs.require "ant.objcontroller|obj_motion"
 local irl = ecs.require "ant.render|render_layer"

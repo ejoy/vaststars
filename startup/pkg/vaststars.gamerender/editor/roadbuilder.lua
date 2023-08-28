@@ -60,13 +60,12 @@ local function updateComponentsPosition(self)
 end
 
 local function __align(position, area, dir)
-    local coord_system = terrain
-    local coord = coord_system["align"](coord_system, position, iprototype.rotate_area(area, dir))
+    local coord = terrain:align(position, iprototype.rotate_area(area, dir))
     if not coord then
         return
     end
     coord[1], coord[2] = coord[1] - (coord[1] % ROAD_SIZE), coord[2] - (coord[2] % ROAD_SIZE)
-    local t = math3d.ref(math3d.vector(coord_system:get_position_by_coord(coord[1], coord[2], iprototype.rotate_area(area, dir))))
+    local t = math3d.ref(math3d.vector(terrain:get_position_by_coord(coord[1], coord[2], iprototype.rotate_area(area, dir))))
     return t, coord[1], coord[2]
 end
 

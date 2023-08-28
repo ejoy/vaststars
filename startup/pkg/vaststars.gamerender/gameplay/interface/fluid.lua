@@ -1,6 +1,4 @@
 local iprototype = require "gameplay.interface.prototype"
-local gameplay = import_package "vaststars.gameplay"
-local ifluidbox = gameplay.interface "fluidbox"
 
 local M = {}
 
@@ -23,25 +21,6 @@ do
     -- in -> input
     function M:iotype_to_classity(s)
         return iotype_to_classity[s]
-    end
-end
-
-function M:need_set_fluid(prototype_name)
-    local typeobject = iprototype.queryByName(prototype_name)
-    if not iprototype.has_type(typeobject.type, "fluidbox") then
-        return false
-    end
-    return #typeobject.fluidbox.connections > 0
-end
-
-function M:update_fluidbox(gameplay_world, e, fluid_name)
-    assert(e.fluidbox or e.fluidboxes)
-    assert(type(fluid_name) == "string")
-    local typeobject = iprototype.queryByName(fluid_name)
-    if not typeobject then
-        ifluidbox.update_fluidbox(gameplay_world, e, 0)
-    else
-        ifluidbox.update_fluidbox(gameplay_world, e, typeobject.id)
     end
 end
 

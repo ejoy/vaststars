@@ -7,38 +7,59 @@ mt.__index = function (t, k)
 end
 
 return function ()
-    local assembling_recipe = {}; do
-        local cache = setmetatable({}, mt)
+    local assembling_recipes = {}
+    local chimney_recipes = {}
+
+    do
+        local cache_a = setmetatable({}, mt)
+        local cache_c = setmetatable({}, mt)
 
         for _, v in pairs(iprototype.each_type "recipe") do
             if v.recipe_category then
-                local r = {
+                table.insert(cache_a[v.recipe_craft_category], {
                     name = v.name,
                     order = v.recipe_order,
                     icon = v.recipe_icon,
                     recipe_category = v.recipe_category,
-                }
-                table.insert(cache[v.recipe_craft_category], r)
+                })
+            else
+                table.insert(cache_c[v.recipe_craft_category], {
+                    name = v.name,
+                    order = v.recipe_order,
+                    icon = v.recipe_icon,
+                })
             end
         end
 
         for _, v in pairs(iprototype.each_type "building") do
-            if not (iprototype.has_type(v.type, "assembling") and v.craft_category )then
-                goto continue
+            if iprototype.has_type(v.type, "assembling") and v.craft_category then
+                assembling_recipes[v.name] = {}
+                for _, c in ipairs(v.craft_category) do
+                    table.move(cache_a[c], 1, #cache_a[c], #assembling_recipes[v.name] + 1, assembling_recipes[v.name])
+                end
+                for _, v in pairs(assembling_recipes[v.name]) do
+                    table.sort(v, function(a, b)
+                        return a.order < b.order
+                    end)
+                end
             end
 
-            assembling_recipe[v.name] = {}
-            for _, c in ipairs(v.craft_category) do
-                table.move(cache[c], 1, #cache[c], #assembling_recipe[v.name] + 1, assembling_recipe[v.name])
+            if iprototype.has_type(v.type, "chimney") and v.craft_category then
+                chimney_recipes[v.name] = {}
+                for _, c in ipairs(v.craft_category) do
+                    table.move(cache_c[c], 1, #cache_c[c], #chimney_recipes[v.name] + 1, chimney_recipes[v.name])
+                end
+                for _, v in pairs(chimney_recipes[v.name]) do
+                    table.sort(v, function(a, b)
+                        return a.order < b.order
+                    end)
+                end
             end
-            for _, v in pairs(assembling_recipe[v.name]) do
-                table.sort(v, function(a, b)
-                    return a.order < b.order
-                end)
-            end
-            ::continue::
         end
     end
 
-    return assembling_recipe
+    return {
+        assembling_recipes = assembling_recipes,
+        chimney_recipes = chimney_recipes,
+    }
 end

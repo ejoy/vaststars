@@ -48,7 +48,7 @@ local function __fluid_str(prefix, fluid, fluidbox_id, box_base_level, box_capac
     )
 end
 
-local function __fluidbox_str(eid)
+local function __get_detail_str(eid)
     local e = gameplay_core.get_entity(eid)
     if not e then
         return
@@ -74,6 +74,10 @@ local function __fluidbox_str(eid)
             local id = e.fluidboxes[classify.."_id"]
             res[#res+1] = __fluid_str(("fluidbox %s "):format(classify), fluid, id, box.base_level, box.capacity, box.height)
         end
+    end
+
+    if e.chimney then
+        res[#res+1] = "chimney recipe: " .. (e.chimney.recipe == 0 and 0 or iprototype.queryById(e.chimney.recipe).name)
     end
 
     return table.concat(res, "\n\t")
@@ -114,7 +118,7 @@ function idetail.show(object_id)
             object.y,
             __get_capacitance(object.gameplay_eid).network,
             __get_capacitance(object.gameplay_eid).delta,
-            __fluidbox_str(object.gameplay_eid)
+            __get_detail_str(object.gameplay_eid)
         ))
     end
     return true

@@ -26,6 +26,14 @@ local function get_chest_component(e)
     end
 end
 
+local function get_max_slot(typeobject)
+    if iprototype.has_types(typeobject.type, "station") then
+        return typeobject.supply_max + typeobject.demand_max
+    else
+        return MAX_SLOT
+    end 
+end
+
 local function has_chest(type)
     return iprototype.has_types(type, table.unpack(CHEST_TYPES))
 end
@@ -72,4 +80,5 @@ return {
     get_space = get_space,
     set = set,
     has_item = has_item,
+    get_max_slot = get_max_slot,
 }

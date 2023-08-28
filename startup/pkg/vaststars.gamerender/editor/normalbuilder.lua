@@ -13,7 +13,6 @@ local ipower = ecs.require "power"
 local ipower_line = ecs.require "power_line"
 local imining = require "gameplay.interface.mining"
 local math3d = require "math3d"
-local coord_system = ecs.require "terrain"
 local igrid_entity = ecs.require "engine.grid_entity"
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
@@ -224,15 +223,15 @@ local function __new_entity(self, datamodel, typeobject, position, x, y, dir)
 end
 
 local function __calc_grid_position(self, typeobject, dir)
-    local _, originPosition = coord_system:align(math3d.vector {0, 0, 0}, iprototype.rotate_area(typeobject.area, dir))
-    local buildingPosition = coord_system:get_position_by_coord(self.pickup_object.x, self.pickup_object.y, iprototype.rotate_area(typeobject.area, dir))
+    local _, originPosition = terrain:align(math3d.vector {0, 0, 0}, iprototype.rotate_area(typeobject.area, dir))
+    local buildingPosition = terrain:get_position_by_coord(self.pickup_object.x, self.pickup_object.y, iprototype.rotate_area(typeobject.area, dir))
     return math3d.ref(math3d.add(math3d.sub(buildingPosition, originPosition), GRID_POSITION_OFFSET))
 end
 
 local function __get_nearby_buldings(x, y, w, h)
     local r = {}
-    local begin_x, begin_y = coord_system:bound_coord(x - ((10 - w) // 2), y - ((10 - h) // 2))
-    local end_x, end_y = coord_system:bound_coord(x + ((10 - w) // 2) + w, y + ((10 - h) // 2) + h)
+    local begin_x, begin_y = terrain:bound_coord(x - ((10 - w) // 2), y - ((10 - h) // 2))
+    local end_x, end_y = terrain:bound_coord(x + ((10 - w) // 2) + w, y + ((10 - h) // 2) + h)
     for x = begin_x, end_x do
         for y = begin_y, end_y do
             local object = objects:coord(x, y)
@@ -401,12 +400,12 @@ local function new_entity(self, datamodel, typeobject)
     end
 
     local dir = DEFAULT_DIR
-    local x, y = iobject.central_coord(typeobject.name, dir, coord_system, 1)
+    local x, y = iobject.central_coord(typeobject.name, dir)
     if not x or not y then
         return
     end
 
-    local position = coord_system:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir))
+    local position = terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir))
 
     __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject)
 
@@ -414,14 +413,14 @@ local function new_entity(self, datamodel, typeobject)
     self.pickup_object.APPEAR = true
 
     if not self.grid_entity then
-        self.grid_entity = igrid_entity.create(coord_system.tile_width, coord_system.tile_height, coord_system.tile_size, {t = __calc_grid_position(self, typeobject, dir)})
+        self.grid_entity = igrid_entity.create(terrain.tile_width, terrain.tile_height, terrain.tile_size, {t = __calc_grid_position(self, typeobject, dir)})
     end
 end
 
 local function __align(object)
     assert(object)
     local typeobject = iprototype.queryByName(object.prototype_name)
-    local coord, position = coord_system:align(icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, object.dir))
+    local coord, position = terrain:align(icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, object.dir))
     if not coord then
         return object
     end
@@ -434,7 +433,7 @@ local function touch_move(self, datamodel, delta_vec)
         return
     end
     local pickup_object = self.pickup_object
-    iobject.move_delta(pickup_object, delta_vec, coord_system)
+    iobject.move_delta(pickup_object, delta_vec)
 
     local x, y
     self.pickup_object, x, y = __align(self.pickup_object)
@@ -591,7 +590,7 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
     if typeobject.crossing then
         local valid = false
         for _, conn in ipairs(_get_connections(prototype_name, x, y, dir)) do
-            local succ, dx, dy = coord_system:move_coord(conn.x, conn.y, conn.dir, 1)
+            local succ, dx, dy = terrain:move_coord(conn.x, conn.y, conn.dir, 1)
             if not succ then
                 goto continue
             end

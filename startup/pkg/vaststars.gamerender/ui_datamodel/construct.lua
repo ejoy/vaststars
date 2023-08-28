@@ -20,7 +20,7 @@ local terrain = ecs.require "terrain"
 local idetail = ecs.require "detail_system"
 local EDITOR_CACHE_NAMES = {"CONFIRM", "CONSTRUCTED"}
 local create_station_builder = ecs.require "editor.stationbuilder"
-local coord_system = ecs.require "terrain"
+local terrain = ecs.require "terrain"
 local selected_boxes = ecs.require "selected_boxes"
 local igame_object = ecs.require "engine.game_object"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
@@ -299,7 +299,7 @@ local function open_focus_tips(tech_node)
             end
 
             local prefab
-            local center = coord_system:get_position_by_coord(nd.x, nd.y, 1, 1)
+            local center = terrain:get_position_by_coord(nd.x, nd.y, 1, 1)
             if nd.show_arrow then
                 prefab = assert(igame_object.create({
                     prefab = "glbs/arrow-guide.glb|mesh.prefab",
@@ -320,7 +320,7 @@ local function open_focus_tips(tech_node)
             end
             tech_node.selected_tips[#tech_node.selected_tips + 1] = {selected_boxes({"/pkg/vaststars.resources/" .. nd.prefab}, center, COLOR_GREEN, nd.w, nd.h), prefab}
         elseif nd.camera_x and nd.camera_y then
-            icamera_controller.focus_on_position(coord_system:get_position_by_coord(nd.camera_x, nd.camera_y, width, height))
+            icamera_controller.focus_on_position(terrain:get_position_by_coord(nd.camera_x, nd.camera_y, width, height))
         end
     end
 end
@@ -344,7 +344,7 @@ local function __construct_entity(typeobject)
     gameplay_core.world_update = false
 
     if iprototype.has_type(typeobject.type, "road") then
-        local x, y = iobject.central_coord(typeobject.name, DEFAULT_DIR, coord_system)
+        local x, y = iobject.central_coord(typeobject.name, DEFAULT_DIR)
         x, y = x - (x % ROAD_SIZE), y - (y % ROAD_SIZE)
 
         builder_ui = "/pkg/vaststars.resources/ui/construct_road_or_pipe.rml" -- TODO: remove this
@@ -352,7 +352,7 @@ local function __construct_entity(typeobject)
         builder = create_roadbuilder()
         builder:new_entity(builder_datamodel, typeobject, x, y)
     elseif iprototype.has_type(typeobject.type, "pipe") then
-        local x, y = iobject.central_coord(typeobject.name, DEFAULT_DIR, coord_system)
+        local x, y = iobject.central_coord(typeobject.name, DEFAULT_DIR)
         x, y = x - (x % ROAD_SIZE), y - (y % ROAD_SIZE)
 
         builder_ui = "/pkg/vaststars.resources/ui/construct_road_or_pipe.rml" -- TODO: remove this
@@ -360,7 +360,7 @@ local function __construct_entity(typeobject)
         builder = create_pipebuilder()
         builder:new_entity(builder_datamodel, typeobject, x, y)
     elseif iprototype.has_type(typeobject.type, "pipe_to_ground") then
-        local x, y = iobject.central_coord(typeobject.name, DEFAULT_DIR, coord_system)
+        local x, y = iobject.central_coord(typeobject.name, DEFAULT_DIR)
         x, y = x - (x % ROAD_SIZE), y - (y % ROAD_SIZE)
 
         builder_ui = "/pkg/vaststars.resources/ui/construct_road_or_pipe.rml"  -- TODO: remove this

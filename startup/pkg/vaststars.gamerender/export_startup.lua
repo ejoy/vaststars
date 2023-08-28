@@ -32,6 +32,7 @@ funcs["factory"] = DO_NOTHING
 funcs["wind_turbine"] = DO_NOTHING
 funcs["accumulator"] = DO_NOTHING
 funcs["auto_set_recipe"] = DO_NOTHING
+funcs["park"] = DO_NOTHING
 
 funcs["building"] = function (entity, e)
     entity.prototype_name = iprototype.queryById(e.building.prototype).name
@@ -107,7 +108,7 @@ funcs["hub"] = function (entity, e)
 end
 
 funcs["station"] = function (entity, e)
-    gameplay_core.extend(e, "chest?in")
+    gameplay_core.extend(e, "station?in")
     local items = {}
     for i = 1, ichest.MAX_SLOT do
         local slot = ichest.get(gameplay_core.get_world(), e.station, i)

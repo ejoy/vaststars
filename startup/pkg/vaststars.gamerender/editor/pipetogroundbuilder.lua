@@ -10,7 +10,6 @@ local iobject = ecs.require "object"
 local iprototype = require "gameplay.interface.prototype"
 local iflow_connector = require "gameplay.interface.flow_connector"
 local objects = require "objects"
-local terrain = ecs.require "terrain"
 local math_abs = math.abs
 local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 local iquad_lines_entity = ecs.require "engine.quad_lines_entity" -- NOTE: different from pipe_builder
@@ -18,7 +17,7 @@ local dotted_line_material <const> = "/pkg/vaststars.resources/materials/dotted_
 local igrid_entity = ecs.require "engine.grid_entity"
 local math3d = require "math3d"
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
-local coord_system = ecs.require "terrain"
+local terrain = ecs.require "terrain"
 local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_box"
 local global = require "global"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
@@ -664,8 +663,8 @@ end
 
 local function __calc_grid_position(self, typeobject, x, y, dir)
     local w, h = iprototype.rotate_area(typeobject.area, dir)
-    local _, originPosition = coord_system:align(math3d.vector {0, 0, 0}, w, h)
-    local buildingPosition = coord_system:get_position_by_coord(x, y, w, h)
+    local _, originPosition = terrain:align(math3d.vector {0, 0, 0}, w, h)
+    local buildingPosition = terrain:get_position_by_coord(x, y, w, h)
     return math3d.ref(math3d.add(math3d.sub(buildingPosition, originPosition), GRID_POSITION_OFFSET))
 end
 
@@ -759,10 +758,6 @@ local function __complete(self)
                 object.gameplay_eid = igameplay.create_entity(object)
             elseif old.dir ~= object.dir then
                 igameplay.rotate(object.gameplay_eid, object.dir)
-            elseif old.fluid_name ~= object.fluid_name then
-                if iprototype.has_type(iprototype.queryByName(object.prototype_name).type, "fluidbox") then -- TODO: object may be fluidboxes
-                    ifluid:update_fluidbox(gameplay_core.get_world(), gameplay_core.get_entity(object.gameplay_eid), object.fluid_name)
-                end
             end
         end
     end

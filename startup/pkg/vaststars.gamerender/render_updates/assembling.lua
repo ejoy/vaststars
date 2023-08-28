@@ -23,6 +23,8 @@ local draw_fluid_icon = ecs.require "fluid_icon"
 local iprototype_cache = require "gameplay.prototype_cache.init"
 local ifluid = require "gameplay.interface.fluid"
 local ipower_check = ecs.require "power_check_system"
+local gameplay = import_package "vaststars.gameplay"
+local ichimney = gameplay.interface "chimney"
 
 local ROTATORS <const> = {
     N = math.rad(0),
@@ -360,7 +362,7 @@ function assembling_sys:gameworld_prebuild()
     for e in gameplay_world.ecs:select "auto_set_recipe:in assembling:update building:in chest:update fluidboxes:update" do
         local object = assert(objects:coord(e.building.x, e.building.y))
         local typeobject = iprototype.queryById(e.building.prototype)
-        local recipes = iprototype_cache.get("recipe_config")[typeobject.name]
+        local recipes = iprototype_cache.get("recipe_config").assembling_recipes[typeobject.name]
         local cache = {}
         for _, recipe in ipairs(recipes) do
             local typeobject_recipe = iprototype.queryByName(recipe.name)
@@ -376,6 +378,32 @@ function assembling_sys:gameworld_prebuild()
                     local pt = iprototype.queryByName(recipe_name)
                     if pt.id ~= e.assembling.recipe then
                         iworld.set_recipe(gameplay_core.get_world(), e, recipe_name, typeobject.recipe_init_limit)
+                    end
+                    break
+                end
+            end
+        end
+    end
+
+    for e in gameplay_world.ecs:select "auto_set_recipe:in chimney:update building:in" do
+        local object = assert(objects:coord(e.building.x, e.building.y))
+        local typeobject = iprototype.queryById(e.building.prototype)
+        local recipes = iprototype_cache.get("recipe_config").chimney_recipes[typeobject.name]
+        local cache = {}
+        for _, recipe in ipairs(recipes) do
+            local typeobject_recipe = iprototype.queryByName(recipe.name)
+            local ingredients = irecipe.get_elements(typeobject_recipe.ingredients)
+            assert(#ingredients == 1)
+            cache[ingredients[1].name] = recipe.name
+        end
+        for _, fb in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir)) do
+            local neighbor_fluid_name = __find_neighbor_fluid(gameplay_world, fb.x, fb.y, fb.dir)
+            if neighbor_fluid_name then
+                local recipe_name = cache[neighbor_fluid_name]
+                if recipe_name then
+                    local pt = iprototype.queryByName(recipe_name)
+                    if pt.id ~= e.chimney.recipe then
+                        ichimney.set_recipe(e, recipe_name)
                     end
                     break
                 end

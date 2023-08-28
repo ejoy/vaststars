@@ -82,7 +82,7 @@ local function get_property_list(entity)
     table.sort(prop_list, function(a, b) return a.pos < b.pos end)
     r.prop_list = prop_list
     r.chest_list = entity.chest_list
-    r.is_chest = entity.is_chest
+    r.show_type = entity.show_type
     r.status = entity.status
     return r
 end
@@ -203,21 +203,29 @@ local function get_property(e, typeobject)
     local gameplay_world = gameplay_core.get_world()
     local chest_component = ichest.get_chest_component(e)
     if iprototype.check_types(typeobject.name, CHEST_LIST_TYPES) and chest_component then
+        local max_slot = ichest.get_max_slot(typeobject)
         local items = {}
-        for i = 1, ichest.MAX_SLOT do
+        for i = 1, max_slot do
             local slot = gameplay_world:container_get(e[chest_component], i)
             if not slot then
                 break
             end
 
             local amount = ichest.get_amount(slot)
-            if slot.item ~= 0 and amount ~= 0 then
+            if slot.item ~= 0 then
                 local typeobject_item = assert(iprototype.queryById(slot.item))
-                items[#items + 1] = {icon = typeobject_item.item_icon, name = typeobject_item.name, count = amount, max_count = slot.limit }
+                items[#items + 1] = {icon = typeobject_item.item_icon, name = typeobject_item.name, count = amount, max_count = slot.limit, type = slot.type}
             end
         end
-        if iprototype.has_type(typeobject.type, "chest") then
-            t.is_chest = true
+        if iprototype.has_types(typeobject.type, "chest") then
+            t.show_type = "chest"
+        elseif iprototype.has_types(typeobject.type, "station") then
+            for _ = 1, max_slot - #items do
+                items[#items + 1] = {icon = "", name = "", count = 0, max_count = 0, type = "none"}
+            end
+            t.show_type = "station"
+        else
+            t.show_type = "goods"
         end
         t.chest_list = items
     end
@@ -336,7 +344,6 @@ local function get_entity_property_list(object_id, recipe_inputs, recipe_ouputs)
             items[#items+1] = {icon = value.icon, name = "", count = slot and slot.amount or 0, demand_count = gw:container_get(e.chest, 1).limit}
         end
         prolist.chest_list = items
-        prolist.is_chest = true
     end
     
     --modify status
@@ -361,13 +368,11 @@ local function get_entity_property_list(object_id, recipe_inputs, recipe_ouputs)
                     prolist.status = status
                 end
             elseif prolist.chest_list and #prolist.chest_list > 0 then
-                if prolist.is_chest then
-                    if e.laboratory then
-                        for _, value in ipairs(prolist.chest_list) do
-                            if value.count < value.demand_count then
-                                prolist.status = STATUS_WAIT_INPUT
-                                break
-                            end
+                if e.laboratory then
+                    for _, value in ipairs(prolist.chest_list) do
+                        if value.count < value.demand_count then
+                            prolist.status = STATUS_WAIT_INPUT
+                            break
                         end
                     end
                 else
@@ -397,9 +402,6 @@ local counter = 1
 local function update_property_list(datamodel, property_list)
     datamodel.chest_list = property_list.chest_list or {}
     datamodel.show_type = property_list.show_type
-    if #datamodel.chest_list > 0 then
-        datamodel.show_type = property_list.is_chest and "chest" or "goods"
-    end
     datamodel.progress = property_list.progress or "0%"
     datamodel.recipe_inputs = property_list.recipe_inputs or {}
     datamodel.recipe_ouputs = property_list.recipe_ouputs or {}

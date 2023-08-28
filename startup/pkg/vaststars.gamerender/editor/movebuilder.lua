@@ -6,14 +6,12 @@ local icamera_controller = ecs.require "engine.system.camera_controller"
 local create_builder = ecs.require "editor.builder"
 local ieditor = ecs.require "editor.editor"
 local objects = require "objects"
-local irecipe = require "gameplay.interface.recipe"
 local iobject = ecs.require "object"
 local ipower = ecs.require "power"
 local ipower_line = ecs.require "power_line"
 local imining = require "gameplay.interface.mining"
 local math3d = require "math3d"
 local iconstant = require "gameplay.interface.constant"
-local coord_system = ecs.require "terrain"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local ALL_DIR = iconstant.ALL_DIR
 local igrid_entity = ecs.require "engine.grid_entity"
@@ -31,8 +29,6 @@ local ibuilding = ecs.require "render_updates.building"
 local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_box"
 local create_selected_boxes = ecs.require "selected_boxes"
 local vsobject_manager = ecs.require "vsobject_manager"
-local gameplay = import_package "vaststars.gameplay"
-local igameplay_building = gameplay.interface "building"
 local igameplay = ecs.require "gameplay_system"
 local ROAD_SIZE <const> = 2
 local CHANGED_FLAG_BUILDING <const> = require("gameplay.interface.constant").CHANGED_FLAG_BUILDING
@@ -58,11 +54,11 @@ local function _get_road_entrance_position(typeobject, x, y, dir)
     end
     local connections = _get_connections(typeobject.name, x, y, dir)
     local conn = connections[1]
-    local succ, neighbor_x, neighbor_y = coord_system:move_coord(conn.x, conn.y, conn.dir, 1)
+    local succ, neighbor_x, neighbor_y = terrain:move_coord(conn.x, conn.y, conn.dir, 1)
     if not succ then
         return
     end
-    return coord_system:get_position_by_coord(neighbor_x, neighbor_y, 1, 1), neighbor_x, neighbor_y, conn.dir
+    return terrain:get_position_by_coord(neighbor_x, neighbor_y, 1, 1), neighbor_x, neighbor_y, conn.dir
 end
 
 local function __rotate_area(w, h, dir)
@@ -94,8 +90,8 @@ end
 
 local function __get_nearby_buldings(exclude_id, x, y, w, h)
     local r = {}
-    local begin_x, begin_y = coord_system:bound_coord(x - ((10 - w) // 2), y - ((10 - h) // 2))
-    local end_x, end_y = coord_system:bound_coord(x + ((10 - w) // 2) + w, y + ((10 - h) // 2) + h)
+    local begin_x, begin_y = terrain:bound_coord(x - ((10 - w) // 2), y - ((10 - h) // 2))
+    local end_x, end_y = terrain:bound_coord(x + ((10 - w) // 2) + w, y + ((10 - h) // 2) + h)
     for x = begin_x, end_x do
         for y = begin_y, end_y do
             local object = objects:coord(x, y)
@@ -237,11 +233,11 @@ local function __new_entity(self, datamodel, typeobject)
 
     iobject.remove(self.pickup_object)
     local dir = object.dir
-    local x, y = iobject.central_coord(typeobject.name, dir, coord_system, 1)
+    local x, y = iobject.central_coord(typeobject.name, dir)
     if not x or not y then
         return
     end
-    local building_positon = coord_system:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir))
+    local building_positon = terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir))
 
     local sprite_color
     if not self:check_construct_detector(typeobject.name, x, y, dir) then
@@ -261,17 +257,6 @@ local function __new_entity(self, datamodel, typeobject)
     end
     datamodel.show_rotate = (typeobject.rotate_on_build == true)
 
-    -- some assembling machine have default recipe
-    local fluid_name = ""
-    if typeobject.recipe then
-        local recipe_typeobject = iprototype.queryByName(typeobject.recipe)
-        if recipe_typeobject then
-            fluid_name = irecipe.get_init_fluids(recipe_typeobject) or "" -- maybe no fluid in recipe
-        else
-            fluid_name = ""
-        end
-    end
-
     local object = assert(objects:get(self.move_object_id))
     local vsobject = assert(vsobject_manager:get(self.move_object_id))
     vsobject:update {state = "translucent", color = SPRITE_COLOR.MOVE_SELF, emissive_color = SPRITE_COLOR.MOVE_SELF}
@@ -287,7 +272,6 @@ local function __new_entity(self, datamodel, typeobject)
             t = math3d.ref(math3d.vector(building_positon)),
             r = ROTATORS[dir],
         },
-        fluid_name = fluid_name,
         group_id = 0,
     }
 
@@ -317,8 +301,8 @@ local function __new_entity(self, datamodel, typeobject)
 end
 
 local function __calc_grid_position(self, typeobject, dir)
-    local _, originPosition = coord_system:align(math3d.vector {0, 0, 0}, iprototype.rotate_area(typeobject.area, dir))
-    local buildingPosition = coord_system:get_position_by_coord(self.pickup_object.x, self.pickup_object.y, iprototype.rotate_area(typeobject.area, dir))
+    local _, originPosition = terrain:align(math3d.vector {0, 0, 0}, iprototype.rotate_area(typeobject.area, dir))
+    local buildingPosition = terrain:get_position_by_coord(self.pickup_object.x, self.pickup_object.y, iprototype.rotate_area(typeobject.area, dir))
     return math3d.ref(math3d.add(math3d.sub(buildingPosition, originPosition), GRID_POSITION_OFFSET))
 end
 
@@ -330,7 +314,7 @@ local function new_entity(self, datamodel, typeobject)
         if iprototype.has_types(typeobject.type, "station") then
             self.grid_entity = igrid_entity.create(terrain._width // ROAD_SIZE, terrain._height // ROAD_SIZE, terrain.tile_size * ROAD_SIZE, {t = __calc_grid_position(self, typeobject, self.pickup_object.dir)})
         else
-            self.grid_entity = igrid_entity.create(coord_system.tile_width, coord_system.tile_height, coord_system.tile_size, {t = __calc_grid_position(self, typeobject, self.pickup_object.dir)})
+            self.grid_entity = igrid_entity.create(terrain.tile_width, terrain.tile_height, terrain.tile_size, {t = __calc_grid_position(self, typeobject, self.pickup_object.dir)})
         end
     end
 
@@ -355,14 +339,14 @@ end
 local function __align(object)
     assert(object)
     local typeobject = iprototype.queryByName(object.prototype_name)
-    local coord, position = coord_system:align(icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, object.dir))
+    local coord, position = terrain:align(icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, object.dir))
     if not coord then
         return object
     end
 
     if iprototype.has_types(typeobject.type, "station") then
         coord[1], coord[2] = coord[1] - (coord[1] % ROAD_SIZE), coord[2] - (coord[2] % ROAD_SIZE)
-        position = math3d.ref(math3d.vector(coord_system:get_position_by_coord(coord[1], coord[2], iprototype.rotate_area(typeobject.area, object.dir))))
+        position = math3d.ref(math3d.vector(terrain:get_position_by_coord(coord[1], coord[2], iprototype.rotate_area(typeobject.area, object.dir))))
     end
 
     object.srt.t = math3d.ref(math3d.vector(position))
@@ -374,7 +358,7 @@ local function touch_move(self, datamodel, delta_vec)
         return
     end
     local pickup_object = self.pickup_object
-    iobject.move_delta(pickup_object, delta_vec, coord_system)
+    iobject.move_delta(pickup_object, delta_vec)
 
     local x, y
     self.pickup_object, x, y = __align(self.pickup_object)
@@ -489,7 +473,7 @@ local function confirm(self, datamodel)
     igameplay.rotate(object.gameplay_eid, self.pickup_object.dir)
     gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
 
-    iobject.coord(object, self.pickup_object.x, self.pickup_object.y, coord_system)
+    iobject.coord(object, self.pickup_object.x, self.pickup_object.y)
     object.dir = self.pickup_object.dir
     object.srt.r = ROTATORS[object.dir]
     objects:set(object, "CONSTRUCTED")
@@ -558,7 +542,7 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
     if typeobject.crossing then
         local valid = false
         for _, conn in ipairs(_get_connections(prototype_name, x, y, dir)) do
-            local succ, dx, dy = coord_system:move_coord(conn.x, conn.y, conn.dir, 1)
+            local succ, dx, dy = terrain:move_coord(conn.x, conn.y, conn.dir, 1)
             if not succ then
                 goto continue
             end
@@ -599,7 +583,7 @@ local function rotate(self, datamodel, dir, delta_vec)
     for _, c in pairs(self.pickup_components) do
         c:on_position_change(self.pickup_object.srt, self.pickup_object.dir)
     end
-    local coord = coord_system:align(icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, dir))
+    local coord = terrain:align(icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, dir))
     if not coord then
         return
     end

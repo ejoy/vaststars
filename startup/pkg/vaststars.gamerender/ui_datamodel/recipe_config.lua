@@ -60,7 +60,7 @@ function M:create(object_id)
     storage.recipe_picked_flag = storage.recipe_picked_flag or {}
 
     local object = assert(objects:get(datamodel.object_id))
-    local recipes = iprototype_cache.get("recipe_config")[object.prototype_name]
+    local recipes = iprototype_cache.get("recipe_config").assembling_recipes[object.prototype_name]
 
     local cache = {}
     local res = {}

@@ -30,14 +30,12 @@ local istation = gameplay.interface "station"
 
 local PICKUP_TYPES <const> = {
     "assembling",
-    "station",
     "hub",
     "chest",
 }
 
 local PLACE_TYPES <const> = {
     "assembling",
-    "station",
     "hub",
     "laboratory",
 }

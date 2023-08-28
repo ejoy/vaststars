@@ -5,10 +5,10 @@ local w = world.w
 local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
 local terrain = ecs.require "terrain"
-local gameplay = import_package "vaststars.gameplay"
-local ifluidbox = gameplay.interface "fluidbox"
 local gameplay_core = require "gameplay.core"
 local fluidbox_sys = ecs.system "fluidbox_system"
+local gameplay = import_package "vaststars.gameplay"
+local igameplay_fluidbox = gameplay.interface "fluidbox"
 
 local DIRECTION <const> = {
     N = 0,
@@ -128,7 +128,7 @@ local function __update_neighbor_fluid_type(gameplay_world, e, typeobject)
             local neighbor = assert(gameplay_world.entity[neighbor_object.gameplay_eid])
             if neighbor.fluidbox then
                 print("update fluidbox", neighbor.building.x, neighbor.building.y, fluid)
-                ifluidbox.update_fluidbox(gameplay_world, neighbor, fluid)
+                igameplay_fluidbox.update_fluidbox(gameplay_world, neighbor, fluid)
                 __update_neighbor_fluid_type(gameplay_world, neighbor, iprototype.queryById(neighbor.building.prototype))
             end
         end
@@ -161,7 +161,7 @@ function fluidbox_sys:gameworld_prebuild()
             assert(length(fluids) <= 1)
             if length(fluids) == 1 then
                 local fluid = next(fluids)
-                ifluidbox.update_fluidbox(gameplay_world, e, fluid)
+                igameplay_fluidbox.update_fluidbox(gameplay_world, e, fluid)
                 print("update fluidbox", e.building.x, e.building.y, fluid)
                 __update_neighbor_fluid_type(gameplay_world, e, typeobject)
             end

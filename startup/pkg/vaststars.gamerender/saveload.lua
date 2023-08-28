@@ -46,15 +46,6 @@ local iroadnet = ecs.require "roadnet"
 local MAX_ARCHIVING_COUNT <const> = 9
 
 local function clean()
-    -- clean
-    for _, object in objects:all() do
-        iobject.remove(object)
-    end
-    for _, building in pairs(global.buildings) do
-        for _, o in pairs(building) do
-            o:remove()
-        end
-    end
     global.buildings = create_buildings()
     objects:clear()
     iroadnet:clear("road")
@@ -84,8 +75,6 @@ local function restore_world()
     end
     _debug()
 
-    local coord_system = require "global".coord_system
-
     --
     local function restore_object(gameplay_eid, prototype_name, dir, x, y, fluid_name)
         local typeobject = iprototype.queryByName(prototype_name)
@@ -95,7 +84,7 @@ local function restore_world()
             x = x,
             y = y,
             srt = {
-                t = math3d.ref(math3d.vector(coord_system:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)))),
+                t = math3d.ref(math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)))),
                 r = ROTATORS[dir],
             },
             fluid_name = fluid_name,
@@ -243,10 +232,6 @@ function M:backup()
     writeall(camera_setting_path, json.encode(get_camera_setting()))
     print("save success", archival_dir)
     return true
-end
-
-function M:clean()
-    clean()
 end
 
 function M:restore(index)

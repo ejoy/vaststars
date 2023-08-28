@@ -5,7 +5,6 @@ local iprototype = require "gameplay.interface.prototype"
 local objects = require "objects"
 local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 local ieditor = ecs.require "editor.editor"
-local ifluid = require "gameplay.interface.fluid"
 local imining = require "gameplay.interface.mining"
 local iobject = ecs.require "object"
 local terrain = ecs.require "terrain"
@@ -15,7 +14,6 @@ local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
 local igameplay = ecs.require "gameplay_system"
 local gameplay_core = require "gameplay.core"
 local ibuilding = ecs.require "render_updates.building"
-local gameplay = import_package "vaststars.gameplay"
 local CHANGED_FLAG_BUILDING <const> = require("gameplay.interface.constant").CHANGED_FLAG_BUILDING
 
 local function check_construct_detector(self, prototype_name, x, y, dir, exclude_object_id)
@@ -71,30 +69,15 @@ end
 local function complete(self, object_id)
     assert(object_id)
     local object = objects:get(object_id, {"CONFIRM"})
-
-    -- TODO: special case for assembling machine
-    -- The default recipe for the assembler is empty.
-    local recipe
-    local typeobject = iprototype.queryByName(object.prototype_name)
-    if iprototype.has_type(typeobject.type, "assembling") then
-        recipe = ""
-    end
-
     local old = objects:get(object_id, {"CONSTRUCTED"})
     if not old then
         object.gameplay_eid = igameplay.create_entity(object)
-        object.recipe = recipe
     else
         if old.prototype_name ~= object.prototype_name then
             igameplay.destroy_entity(object.gameplay_eid)
             object.gameplay_eid = igameplay.create_entity(object)
         elseif old.dir ~= object.dir then
             igameplay.rotate(object.gameplay_eid, object.dir)
-        elseif old.fluid_name ~= object.fluid_name then
-            if iprototype.has_type(iprototype.queryByName(object.prototype_name).type, "fluidbox") then -- TODO: object may be fluidboxes
-                ifluid:update_fluidbox(gameplay_core.get_world(), gameplay_core.get_entity(object.gameplay_eid), object.fluid_name)
-                igameplay.update_chimney_recipe(object)
-            end
         end
     end
 
@@ -104,6 +87,7 @@ local function complete(self, object_id)
 
     -- TODO: duplicate code
     local gw = gameplay_core.get_world()
+    local typeobject = iprototype.queryByName(object.prototype_name)
     if typeobject.power_network_link or typeobject.power_supply_distance then
         -- update power network
         ipower:build_power_network(gw)
