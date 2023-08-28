@@ -227,8 +227,7 @@ local function create_sm_entity()
         end
     end
     for gid, sm_info in pairs(stonemountain) do
-        local g = world:group(gid)
-        g:create_entity {
+        world:create_entity({
             policy = {
                 "ant.render|render",
                 "mod.stonemountain|stonemountain",
@@ -247,7 +246,7 @@ local function create_sm_entity()
                     imaterial.set_property(e, "u_draw_indirect_type", math3d.vector(draw_indirect_type))
                 end
             }
-        }
+        }, gid)
     end
 end
 

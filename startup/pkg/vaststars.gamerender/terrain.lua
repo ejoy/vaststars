@@ -228,11 +228,11 @@ function terrain:enable_terrain(x, y)
     self._enabled_group_id = new
     for _, group_id in ipairs(add) do
         print(("enable group id: %s"):format(group_id))
-        world:group(group_id):enable "view_visible"
+        world:group_enable_tag("view_visible", group_id)
     end
     for _, group_id in ipairs(del) do
         print(("disable group id: %s"):format(group_id))
-        world:group(group_id):disable "view_visible"
+        world:group_disable_tag("view_visible", group_id)
     end
     world:group_flush "view_visible"
 end

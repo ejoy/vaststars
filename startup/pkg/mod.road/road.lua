@@ -121,10 +121,10 @@ end
 local road_group = {}
 
 local function create_road_group(gid, update_list, render_layer)
-    local function create_layer_entity(g, info_table, mesh, material_table)
+    local function create_layer_entity(info_table, mesh, material_table)
         for road_idx = 1, #info_table do
             local road_info = info_table[road_idx]
-                g:create_entity{
+                world:create_entity({
                     policy = {
                         "ant.scene|scene_object",
                         "ant.render|simplerender",
@@ -144,16 +144,15 @@ local function create_road_group(gid, update_list, render_layer)
                             imaterial.set_property(e, "u_draw_indirect_type", math3d.vector(draw_indirect_type))
                         end
                     },
-                }       
+                }, gid)
         end
     end
     if not render_layer then render_layer = "background" end
     local road_info_table, mark_info_table = get_srt_info_table(update_list)
     local mesh = build_mesh()
-    local g = world:group(gid)
-    create_layer_entity(g, road_info_table, mesh, road_material_table)
-    create_layer_entity(g, mark_info_table, mesh, mark_material_table)
-    g:enable "view_visible"
+    create_layer_entity(road_info_table, mesh, road_material_table)
+    create_layer_entity(mark_info_table, mesh, mark_material_table)
+    world:group_enable_tag("view_visible", gid)
     world:group_flush "view_visible"
 end
 

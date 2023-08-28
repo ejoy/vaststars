@@ -101,11 +101,10 @@ local __get_hitch_children ; do
         end
 
         hitch_group_id = hitch_group_id + 1
-        local g = world:group(hitch_group_id)
         local effects, animations = __cache_prefab_info(prefab)
 
         -- log.info(("game_object.new_instance: %s"):format(table.concat({hitch_group_id, prefab, require("math3d").tostring(color), tostring(animation_name), tostring(final_frame)}, " "))) -- TODO: remove this line
-        local prefab_instance = g:create_instance(prefab)
+        local prefab_instance = world:create_instance(prefab, nil, hitch_group_id)
         function prefab_instance:on_ready()
             for _, eid in ipairs(self.tag["*"]) do
                 local e <close> = world:entity(eid, "render_object?update")
@@ -196,7 +195,7 @@ function igame_object.create(init)
     end
 
     local srt = init.srt or {}
-    local hitch_entity_object = ientity_object.create(world:group(init.group_id):create_entity{
+    local hitch_entity_object = ientity_object.create(world:create_entity({
         policy = {
             "ant.general|name",
             "ant.render|hitch_object",
@@ -216,7 +215,7 @@ function igame_object.create(init)
             visible_state = "main_view|cast_shadow|selectable",
             scene_needchange = true,
         }
-    }, hitch_events)
+    }, init.group_id), hitch_events)
 
     local function remove(self)
         children.instance:send("detach_hitch", hitch_entity_object.id)

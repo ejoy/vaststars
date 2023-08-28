@@ -22,8 +22,7 @@ local mt = {}
 mt.__index = mt
 
 local function __create_instance(group_id, prefab, mat)
-    local g = world:group(group_id)
-    local prefab_instance = g:create_instance(prefab)
+    local prefab_instance = world:create_instance(prefab, nil, group_id)
     function prefab_instance:on_ready()
         local e <close> = world:entity(self.tag["*"][1])
         iom.set_srt(e, math3d.srt(mat))

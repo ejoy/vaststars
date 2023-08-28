@@ -21,7 +21,7 @@ local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
 local sampler_group
 
 local function __create_motion_object(s, r, t, events)
-    return ientity_object.create(sampler_group:create_entity {
+    return ientity_object.create(world:create_entity({
         policy = {
             "ant.scene|scene_object",
             "ant.motion_sampler|motion_sampler",
@@ -39,7 +39,7 @@ local function __create_motion_object(s, r, t, events)
                 ims.set_tween(e, ltween.type("None"), ltween.type("None"))
             end
         }
-    }, events)
+    }, sampler_group), events)
 end
 
 local function __create_lorry_object(prefab, parent)
@@ -79,7 +79,7 @@ local function __create_shadow_object(parent)
 end
 
 local function __create_item_object(prefab, parent, offset_srt)
-    local p = sampler_group:create_instance(prefab, parent)
+    local p = world:create_instance(prefab, parent, sampler_group)
     function p:on_ready()
         local root <close> = world:entity(self.tag['*'][1])
         iom.set_srt(root, offset_srt.s or mc.ONE, offset_srt.r or mc.IDENTITY_QUAT, offset_srt.t or mc.ZERO_PT)
@@ -100,7 +100,7 @@ end
 local function create(prefab, s, r, t, motion_events)
     if not sampler_group then
         sampler_group = ims.sampler_group()
-        sampler_group:enable "view_visible"
+        world:group_enable_tag("view_visible", sampler_group)
         world:group_flush "view_visible"
     end
 
