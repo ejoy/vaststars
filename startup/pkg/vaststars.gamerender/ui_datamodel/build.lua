@@ -5,6 +5,7 @@ local iui = ecs.require "engine.system.ui_system"
 local gameplay_core = require "gameplay.core"
 local click_button_mb = mailbox:sub {"click_button"}
 local click_main_button_mb = mailbox:sub {"click_main_button"}
+local ibackpack = require "gameplay.interface.backpack"
 
 local MAX_SHORTCUT_COUNT <const> = 5
 local iprototype = require "gameplay.interface.prototype"
@@ -41,7 +42,15 @@ function M:create()
             end
         else
             local typeobject = iprototype.queryById(s.prototype)
-            shortcut[i] = {prototype = typeobject.id, prototype_name = iprototype.display_name(typeobject), icon = typeobject.item_icon, last_timestamp = s.last_timestamp or 0, selected = false, unknown = false}
+            shortcut[i] = {
+                prototype = typeobject.id,
+                prototype_name = iprototype.display_name(typeobject),
+                count = ibackpack.query(gameplay_core.get_world(), typeobject.id),
+                icon = typeobject.item_icon,
+                last_timestamp = s.last_timestamp or 0,
+                selected = false,
+                unknown = false
+            }
         end
 
         if shortcut[i].last_timestamp < min_timestamp then
