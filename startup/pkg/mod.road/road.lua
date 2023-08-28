@@ -4,188 +4,78 @@ local w     = world.w
 
 local bgfx      = require "bgfx"
 local math3d    = require "math3d"
-
 local init_system   = ecs.system "init_system"
-
 local imaterial     = ecs.require "ant.asset|material"
 local icompute      = ecs.require "ant.render|compute.compute"
 local idrawindirect = ecs.require "ant.render|draw_indirect_system"
-
 local renderpkg     = import_package "ant.render"
 local layoutmgr     = renderpkg.layoutmgr
 local layout        = layoutmgr.get "p3|t20"
-
 local hwi                   = import_package "ant.hwi"
 local FIRST_viewid<const>   = hwi.viewid_get "csm_fb"
-
 local iroad         = {}
-
 local width, height = 20, 20
-local TERRAIN_TYPES<const> = {
-    road1 = "1",
-    road2 = "2",
-    road3 = "3",
-    mark1 = "4",
-    mark2 = "5",
-    mark3 = "6"
-}
-
-local TERRAIN_DIRECTIONS<const> = {
-    N = "1",
-    E = "2",
-    S = "3",
-    W = "4",
-}
 
 local road_material_table = {
-    [1] = "/pkg/mod.road/assets/road_u.material",
-    [2] = "/pkg/mod.road/assets/road_i.material",
-    [3] = "/pkg/mod.road/assets/road_l.material",
-    [4] = "/pkg/mod.road/assets/road_t.material",
-    [5] = "/pkg/mod.road/assets/road_x.material",
-    [6] = "/pkg/mod.road/assets/road_o.material",
+    "/pkg/mod.road/assets/road_u.material",
+    "/pkg/mod.road/assets/road_i.material",
+    "/pkg/mod.road/assets/road_l.material",
+    "/pkg/mod.road/assets/road_t.material",
+    "/pkg/mod.road/assets/road_x.material",
+    "/pkg/mod.road/assets/road_o.material",
 }
 
 local mark_material_table = {
-    [1] = "/pkg/mod.road/assets/mark_u.material",
-    [2] = "/pkg/mod.road/assets/mark_i.material",
-    [3] = "/pkg/mod.road/assets/mark_l.material",
-    [4] = "/pkg/mod.road/assets/mark_t.material",
-    [5] = "/pkg/mod.road/assets/mark_x.material",
-    [6] = "/pkg/mod.road/assets/mark_o.material",
+    "/pkg/mod.road/assets/mark_u.material",
+    "/pkg/mod.road/assets/mark_i.material",
+    "/pkg/mod.road/assets/mark_l.material",
+    "/pkg/mod.road/assets/mark_t.material",
+    "/pkg/mod.road/assets/mark_x.material",
+    "/pkg/mod.road/assets/mark_o.material",
 }
 
-local function parse_terrain_type_dir(layers, tname)
-    local type, shape, dir = tname..layers[tname].type, layers[tname].shape, layers[tname].dir
-    local t<const> = assert(TERRAIN_TYPES[type])
-    local s<const> = shape or "D"
-    local d<const> = assert(TERRAIN_DIRECTIONS[dir])
-    return ("%s%s%s"):format(t, s, d)
-end
-
-local function parse_layer(t, s, d)
-    local pt, ps, pd
---[[     local u_table = {["1"] = 0, ["2"]= 90, ["3"] = 180, ["4"] = 270}
-    local i_table = {["1"] = 270, ["2"]= 0, ["3"] = 90, ["4"] = 180}
-    local l_table = {["1"] = 180, ["2"]= 270, ["3"] = 0, ["4"] = 90} ]]
-    local u_table = {["1"] = 0, ["2"]= 270, ["3"] = 180, ["4"] = 90}
-    local i_table = {["1"] = 270, ["2"]= 0, ["3"] = 90, ["4"] = 180}
-    local l_table = {["1"] = 180, ["2"]= 90, ["3"] = 0, ["4"] = 270}
-    if s == "U" then
-        ps, pd = 0, u_table[d]
-    elseif s == "I" then
-        ps, pd = 1, i_table[d]
-    elseif s == "L" then
-        ps, pd = 2, l_table[d]
-    elseif s == "T" then
-        ps, pd = 3, u_table[d]
-    elseif s == "X" then
-        ps, pd = 4, 0
-    elseif s == 'O' then    
-        ps, pd = 5, 0
-    else
-        ps, pd = 6, 0
-    end
-    pt = t
-    return pt, ps, pd                          
-end
+local rot_table = {['N'] = {0, 270, 180, 0}, ['E'] = {270, 0, 90, 0}, ['S'] = {180, 90, 0, 0}, ['W'] = {90, 80, 270, 0}}
+local shape_dir_table = {
+    ['U'] = {shape = 0, rot_idx = 1}, ['I'] = {shape = 1, rot_idx = 2}, ['L'] = {shape = 2, rot_idx = 3}, 
+    ['T'] = {shape = 3, rot_idx = 1}, ['X'] = {shape = 4, rot_idx = 4}, ['O'] = {shape = 5, rot_idx = 4}
+}
 
 local NUM_QUAD_VERTICES<const> = 4
 
-local function build_ib(max_plane)
-    do
-        local planeib = {}
-        planeib = {
-            0, 1, 2,
-            2, 3, 0,
-        }
-        local fmt<const> = ('I'):rep(#planeib)
-        local s = #fmt * 4
+local function build_ib(num_quad)
+    local b = {}
+    for ii=1, num_quad do
+        local offset = (ii-1) * 4
+        b[#b+1] = offset + 0
+        b[#b+1] = offset + 1
+        b[#b+1] = offset + 2
 
-
-        local m = bgfx.memory_buffer(s * max_plane)
-        for i=1, max_plane do
-            local mo = s * (i - 1) + 1
-            m[mo] = fmt:pack(table.unpack(planeib))
-            for ii = 1, #planeib do
-                planeib[ii]  = planeib[ii] + NUM_QUAD_VERTICES
-            end
-        end
-        return bgfx.create_index_buffer(m, "d")
+        b[#b+1] = offset + 2
+        b[#b+1] = offset + 3
+        b[#b+1] = offset + 0
     end
+    return bgfx.create_index_buffer(bgfx.memory_buffer("w", b))
 end
 
-local function get_road_info(road)
-    local t = {road.x, 0.1, road.y, 0}
-    local road_direction = road.road_direction or 0
-    local road_info = {
-        [1] = t,
-        [2] = {road_direction, road.road_type, 0, 0},
-        [3] = {0, 0, 0, 0},
-    }
-    return road_info
-end
-
-local function get_mark_info(road)
-    local t = {road.x, 0.1, road.y, 0}
-    local mark_direction = road.mark_direction or 0
-    local mark_info = {
-        [1] = t,
-        [2] = {mark_direction, road.mark_type, 0, 0},
-        [3] = {0, 0, 0, 0},
-    }
-    return mark_info
-end
-
-function init_system:init_world()
-end
-
-local function create_road_instance_info(create_list)
-    local road_info_table = {[1] = {}, [2] = {}, [3] = {}, [4] = {}, [5] = {}, [6] = {}}
-    local mark_info_table = {[1] = {}, [2] = {}, [3] = {}, [4] = {}, [5] = {}, [6] = {}}
-    for ii = 1, #create_list do
-        local cl = create_list[ii]
-        local layers = cl.layers
-        local road_layer, mark_layer
-        if layers and layers.road then road_layer = parse_terrain_type_dir(layers, "road") end
-        if layers and layers.mark then mark_layer = parse_terrain_type_dir(layers, "mark") end
-        local road = {
-            layers = {
-                [1] = road_layer,
-                [2] = mark_layer
-            },
-            x = cl.x,
-            y = cl.y
+local function get_srt_info_table(update_list)
+    local function get_layer_info(instance, layer, info_table)
+        local sd_info = shape_dir_table[layer.shape]
+        local type, dir, shape = layer.type, rot_table[layer.dir][sd_info.rot_idx], sd_info.shape
+        local current_info_table = info_table[shape+1]
+        current_info_table[#current_info_table+1] = {
+            {instance.x, 0.1, instance.y, 0},
+            {dir, type, 0, 0},
+            {0, 0, 0, 0}
         }
-        layers = road.layers
-        if not layers[1] then road.road_type, road.road_shape = 0, 0 end -- 0 not road 1 road 2 stop 3 building
-        if not layers[2] then road.mark_type, road.mark_shape = 0, 0 end -- 0 not mark 1 red 2 white
-        for i, layer in pairs(layers) do
-            local t, s, d
-            t = string.sub(layer, 1, 1)
-            s = string.sub(layer, 2, 2)
-            d = string.sub(layer, 3, 3)
-            local pt, ps, pd = parse_layer(t, s, d)
-            if i == 1 then
-                road.road_type = pt - 0
-                road.road_direction = pd
-                road.road_shape = ps
-            elseif i == 2 then
-                road.mark_type = pt - 3
-                road.mark_direction = pd
-                road.mark_shape = ps
-            end
-        end
-        if cl.layers.road then
-            local road_info = get_road_info(road)
-            local cur_road_info = road_info_table[road.road_shape + 1]
-            cur_road_info[#cur_road_info+1] = road_info
-        end
-        if cl.layers.mark then
-            local mark_info = get_mark_info(road)
-            local cur_mark_info = mark_info_table[road.mark_shape + 1]
-            cur_mark_info[#cur_mark_info+1] = mark_info
-        end
+    end
+    local mt = {__index=function(t, k) local tt = {}; t[k] = tt; return tt end}
+    local road_info_table = setmetatable({}, mt)
+    local mark_info_table = setmetatable({}, mt)
+    for ii = 1, #update_list do
+        local road_instance = update_list[ii]
+        local road_layer, mark_layer = road_instance.layers.road, road_instance.layers.mark
+        if road_layer then get_layer_info(road_instance, road_layer, road_info_table) end
+        if mark_layer then get_layer_info(road_instance, mark_layer, mark_info_table) end
     end
     return road_info_table, mark_info_table
 end
@@ -225,70 +115,44 @@ local function build_mesh()
 end
 
 function iroad.set_args(ww, hh)
-    if ww then width = ww end
-    if hh then height = hh end
+    width, height = ww, hh
 end
 
 local road_group = {}
 
-local function get_srt_info_table(update_list)
-    return create_road_instance_info(update_list)
-end
-
 local function create_road_group(gid, update_list, render_layer)
+    local function create_layer_entity(g, info_table, mesh, material_table)
+        for road_idx = 1, #info_table do
+            local road_info = info_table[road_idx]
+                g:create_entity{
+                    policy = {
+                        "ant.scene|scene_object",
+                        "ant.render|simplerender",
+                        "mod.road|road",
+                        "ant.render|indirect"
+                    },
+                    data = {
+                        scene = {},
+                        simplemesh  = mesh,
+                        material    = material_table[road_idx],
+                        visible_state = "main_view|selectable|pickup",
+                        road = {srt_info = road_info, gid = gid, road_type = road_idx},
+                        render_layer = render_layer,
+                        indirect = "ROAD",
+                        on_ready = function(e)
+                            local draw_indirect_type = idrawindirect.get_draw_indirect_type("ROAD")
+                            imaterial.set_property(e, "u_draw_indirect_type", math3d.vector(draw_indirect_type))
+                        end
+                    },
+                }       
+        end
+    end
     if not render_layer then render_layer = "background" end
     local road_info_table, mark_info_table = get_srt_info_table(update_list)
-    local road_mesh = build_mesh()
+    local mesh = build_mesh()
     local g = ecs.group(gid)
-    for road_idx = 1, #road_info_table do
-        local road_info = road_info_table[road_idx]
-            g:create_entity{
-                policy = {
-                    "ant.scene|scene_object",
-                    "ant.render|simplerender",
-                    "mod.road|road",
-                    "ant.render|indirect"
-                },
-                data = {
-                    scene = {},
-                    simplemesh  = road_mesh,
-                    material    = road_material_table[road_idx],
-                    visible_state = "main_view|selectable|pickup",
-                    road = {srt_info = road_info, gid = gid, road_type = road_idx},
-                    render_layer = render_layer,
-                    indirect = "ROAD",
-                    on_ready = function(e)
-                        local draw_indirect_type = idrawindirect.get_draw_indirect_type("ROAD")
-                        imaterial.set_property(e, "u_draw_indirect_type", math3d.vector(draw_indirect_type))
-                    end
-                },
-            }       
-    end
-
-    for mark_idx = 1, #mark_info_table do
-        local mark_info = mark_info_table[mark_idx]
-            g:create_entity{
-                policy = {
-                    "ant.scene|scene_object",
-                    "ant.render|simplerender",
-                    "mod.road|road",
-                    "ant.render|indirect"
-                },
-                data = {
-                    scene = {},
-                    simplemesh  = road_mesh,
-                    material    = mark_material_table[mark_idx],
-                    visible_state = "main_view|selectable|pickup",
-                    road = {srt_info = mark_info, gid = gid, mark_type = mark_idx},
-                    render_layer = render_layer,
-                    indirect = "ROAD",
-                    on_ready = function(e)
-                        local draw_indirect_type = idrawindirect.get_draw_indirect_type("ROAD")
-                        imaterial.set_property(e, "u_draw_indirect_type", math3d.vector(draw_indirect_type))
-                    end
-                },
-            }       
-    end
+    create_layer_entity(g, road_info_table, mesh, road_material_table)
+    create_layer_entity(g, mark_info_table, mesh, mark_material_table)
     g:enable "view_visible"
     ecs.group_flush "view_visible"
 end
