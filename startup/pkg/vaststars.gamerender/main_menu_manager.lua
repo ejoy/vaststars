@@ -40,18 +40,19 @@ local function new_game(mode, game_template)
 end
 
 local function continue_game()
-    if not saveload:restore() then
+    local index = saveload:get_restore_index()
+    if not index then
         return
     end
-    global.startup_args = {"continue_game"}
+    global.startup_args = {"continue_game", index}
     rebot("vaststars.gamerender|game_init_system")
 end
 
 local function load_game(index)
-    if not saveload:restore(index) then
+    if not saveload:check_restore_index(index) then
         return
     end
-    global.startup_args = {"load_game"}
+    global.startup_args = {"load_game", index}
     rebot("vaststars.gamerender|game_init_system")
     return true
 end

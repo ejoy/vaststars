@@ -5,16 +5,18 @@ local FRAMES_PER_SECOND <const> = 30
 local bgfx = require 'bgfx'
 local gameplay_core = require "gameplay.core"
 local icamera_controller = ecs.require "engine.system.camera_controller"
-local iefk = ecs.require "engine.efk"
 local audio = import_package "ant.audio"
 local rhwi = import_package "ant.hwi"
 local font = import_package "ant.font"
 local iom = ecs.require "ant.objcontroller|obj_motion"
 local iani = ecs.require "ant.animation|controller.state_machine"
 local iui = ecs.require "engine.system.ui_system"
+local NOTHING <const> = require "debugger".nothing
+local TERRAIN_ONLY <const> = require "debugger".terrain_only
 
 local m = ecs.system 'init_system'
 
+bgfx.maxfps(FRAMES_PER_SECOND)
 font.import "/pkg/vaststars.resources/ui/font/Alibaba-PuHuiTi-Regular.ttf"
 
 local function createPrefabInst(prefab)
@@ -34,12 +36,13 @@ local function createPrefabInst(prefab)
 end
 
 function m:init_world()
-    bgfx.maxfps(FRAMES_PER_SECOND)
+    if NOTHING or TERRAIN_ONLY then
+        ecs.require "main_menu_manager".new_game()
+        return
+    end
+
     ecs.create_instance "/pkg/vaststars.resources/daynight.prefab"
     ecs.create_instance "/pkg/vaststars.resources/light.prefab"
-
-    iefk.preload "/pkg/vaststars.resources/effects/"
-
     rhwi.set_profie(gameplay_core.settings_get("debug", true))
 
     -- audio test (Master.strings.bank must be first)

@@ -234,63 +234,77 @@ function M:backup()
     return true
 end
 
-function M:restore(index)
-    self:restore_camera_setting()
-
-    --
-    if not fs.exists(fs.path(archiving_list_path)) then
-        self:restart()
-        return true
-    end
+function M:check_restore_index(index)
     local archival_list = json.decode(readall(archiving_list_path))
     if #archival_list <= 0 then
-        self:restart()
-        return true
-    end
-
-    index = index or #archival_list
-    if index > #archival_list then
-        log.error(("Failed to restore `%s`"):format(index))
-        iui.open({"/pkg/vaststars.resources/ui/option_pop.rml"})
         return false
     end
 
-    local archival_dir
+    local archival_relative_dir = archival_list[index].dir
+    local archival_dir = archival_base_dir .. ("%s"):format(archival_relative_dir)
+
+    if not fs.exists(fs.path(archival_dir)) then
+        log.warn(("`%s` not exists"):format(archival_relative_dir))
+        archival_list[index] = nil
+        index = index - 1
+        return false
+    end
+
+    if not fs.exists(fs.path(archival_dir .. "/version")) then
+        log.warn(("`%s` not exists"):format(archival_dir .. "/version"))
+        archival_list[index] = nil
+        index = index - 1
+        return false
+    end
+
+    local version = json.decode(readall(archival_dir .. "/version"))
+    if version.PROTOTYPE_VERSION ~= PROTOTYPE_VERSION then
+        log.error(("Failed `%s` version `%s` current `%s`"):format(archival_relative_dir, archival_list[index].version, PROTOTYPE_VERSION))
+        return false
+    else
+        return true
+    end
+end
+
+function M:get_restore_index()
+    if not fs.exists(fs.path(archiving_list_path)) then
+        return
+    end
+
+    local archival_list = json.decode(readall(archiving_list_path))
+    if #archival_list <= 0 then
+        return
+    end
+
+    local index = #archival_list
     while index > 0 do
-        local archival_relative_dir = archival_list[index].dir
-        archival_dir = archival_base_dir .. ("%s"):format(archival_relative_dir)
-
-        if not fs.exists(fs.path(archival_dir)) then
-            log.warn(("`%s` not exists"):format(archival_relative_dir))
-            archival_list[index] = nil
-            index = index - 1
-            goto continue
-        end
-
-        if not fs.exists(fs.path(archival_dir .. "/version")) then
-            log.warn(("`%s` not exists"):format(archival_dir .. "/version"))
-            archival_list[index] = nil
-            index = index - 1
-            goto continue
-        end
-
-        local version = json.decode(readall(archival_dir .. "/version"))
-        if version.PROTOTYPE_VERSION ~= PROTOTYPE_VERSION then
-            log.error(("Failed `%s` version `%s` current `%s`"):format(archival_relative_dir, archival_list[index].version, PROTOTYPE_VERSION))
-            iui.open({"/pkg/vaststars.resources/ui/option_pop.rml"})
-            return false
-        else
+        local ok = self:check_restore_index(index)
+        if ok then
             break
         end
-
-        ::continue::
     end
 
     if index == 0 then
-        log.error("Failed to restore")
-        iui.open({"/pkg/vaststars.resources/ui/option_pop.rml"})
-        return false
+        return
     end
+    return index
+end
+
+function M:restore(index)
+    assert(fs.exists(fs.path(archiving_list_path)))
+    local archival_list = json.decode(readall(archiving_list_path))
+    assert(#archival_list > 0)
+    assert(#archival_list >= index)
+
+    local archival_relative_dir = archival_list[index].dir
+    local archival_dir = archival_base_dir .. ("%s"):format(archival_relative_dir)
+    assert(fs.exists(fs.path(archival_dir)))
+    assert(fs.exists(fs.path(archival_dir .. "/version")))
+
+    local version = json.decode(readall(archival_dir .. "/version"))
+    assert(version.PROTOTYPE_VERSION == PROTOTYPE_VERSION)
+
+    self:restore_camera_setting()
 
     self.running = true
     world:pipeline_func "gameworld_clean" ()
