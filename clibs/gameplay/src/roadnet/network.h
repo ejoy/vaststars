@@ -18,9 +18,11 @@ namespace roadnet {
         }
     };
     struct route_value {
-        uint16_t dir : 2;
-        uint16_t n : 14;
+        bool      vaild;
+        direction direction;
+        uint16_t  distance;
     };
+    static_assert(sizeof(route_value) == sizeof(uint32_t));
 
     using lorry_entity = ecs_api::entity<ecs::lorry>;
 

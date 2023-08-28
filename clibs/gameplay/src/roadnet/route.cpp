@@ -54,29 +54,27 @@ namespace roadnet {
         }
     }
 
-    static bool buildResult(network& w, dijkstraContext& ctx, straightid S, straightid E, route_value& val) {
+    static route_value buildResult(network& w, dijkstraContext& ctx, straightid S, straightid E) {
         for (auto C = E;;) {
-            if (auto node = ctx.get(C)) {
-                C = node->prev;
-                w.routeCached.insert_or_assign(route_key { C, E }, route_value {
-                    (uint16_t)node->dir,
-                    (uint16_t)node->distance,
-                });
-                if (C == S) {
-                    val = route_value {
-                        (uint16_t)node->dir,
-                        (uint16_t)node->distance,
-                    };
-                    return true;
-                }
-            }
-            else {
-                return false;
+            auto node = ctx.get(C);
+            assert(node);
+            C = node->prev;
+            w.routeCached.insert_or_assign(route_key { C, E }, route_value {
+                true,
+                node->dir,
+                node->distance,
+            });
+            if (C == S) {
+                return route_value {
+                    true,
+                    node->dir,
+                    node->distance,
+                };
             }
         }
     }
 
-    static bool dijkstra(network& w, straightid S, straightid E, route_value& val) {
+    static route_value dijkstra(network& w, straightid S, straightid E) {
         dijkstraContext ctx;
         ctx.openlist.push({0, S});
         while (!ctx.openlist.empty()) {
@@ -100,18 +98,41 @@ namespace roadnet {
                 }
             }
             if (G == E) {
-                return buildResult(w, ctx, S, E, val);
+                return buildResult(w, ctx, S, E);
             }
         }
-        return false;
+        for (auto const& [id, node] : ctx.results) {
+            w.routeCached.insert_or_assign(route_key { id, E }, route_value { false });
+        }
+        return { false };
     }
 
-    bool route(network& w, straightid S, straightid E, route_value& val) {
+    std::optional<direction> route_direction(network& w, straightid S, straightid E) {
         route_key key { S, E };
         if (auto pval = w.routeCached.find(key)) {
-            val = *pval;
-            return true;
+            if (!pval->vaild) {
+                return std::nullopt;
+            }
+            return pval->direction;
         }
-        return dijkstra(w, S, E, val);
+        route_value val = dijkstra(w, S, E);
+        if (!val.vaild) {
+            return std::nullopt;
+        }
+        return val.direction;
+    }
+    std::optional<uint16_t> route_distance(network& w, straightid S, straightid E) {
+        route_key key { S, E };
+        if (auto pval = w.routeCached.find(key)) {
+            if (!pval->vaild) {
+                return std::nullopt;
+            }
+            return pval->distance;
+        }
+        route_value val = dijkstra(w, S, E);
+        if (!val.vaild) {
+            return std::nullopt;
+        }
+        return val.distance;
     }
 }

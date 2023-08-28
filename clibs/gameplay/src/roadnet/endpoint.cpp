@@ -23,17 +23,9 @@ namespace roadnet {
         id = lorryid::invalid();
     }
     std::optional<uint16_t> endpointDistance(network& w, ecs::starting const& from, ecs::endpoint const& to) {
-        route_value val;
-        if (!route(w, from.neighbor, to.rev_neighbor, val)) {
-            return std::nullopt;
-        }
-        return (uint16_t)val.n;
+        return route_distance(w, from.neighbor, to.rev_neighbor);
     }
     std::optional<uint16_t> endpointDistance(network& w, ecs::endpoint const& from, ecs::endpoint const& to) {
-        route_value val;
-        if (!route(w, from.neighbor, to.rev_neighbor, val)) {
-            return std::nullopt;
-        }
-        return (uint16_t)val.n;
+        return route_distance(w, from.neighbor, to.rev_neighbor);
     }
 }

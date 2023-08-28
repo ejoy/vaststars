@@ -86,9 +86,8 @@ namespace roadnet {
         if (l.status == lorry_status::error) {
             return false;
         }
-        route_value val;
-        if (route(w, C, l.ending, val)) {
-            dir = (direction)val.dir;
+        if (auto direction = route_direction(w, C, l.ending)) {
+            dir = *direction;
             return true;
         }
         l.status = lorry_status::error;

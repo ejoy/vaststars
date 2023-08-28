@@ -106,9 +106,8 @@ void market::match_begin(world& w) {
             auto starting = endpoints[from].neighbor;
             for (auto const& [to, _] : m.demand) {
                 auto ending = endpoints[to].rev_neighbor;
-                roadnet::route_value val;
-                if (roadnet::route(w.rw, starting, ending, val)) {
-                    paths.emplace_back(from, to, (uint16_t)val.n);
+                if (auto distance = route_distance(w.rw, starting, ending)) {
+                    paths.emplace_back(from, to, *distance);
                 }
             }
         }
@@ -155,9 +154,8 @@ std::optional<market_match> market::match(world& w, roadnet::straightid pos) {
     }
     auto endpoints = ecs_api::array<ecs::endpoint>(w.ecs);
     for (auto& m : impl->matchs) {
-        roadnet::route_value val;
-        if (roadnet::route(w.rw, pos, endpoints[m.from].rev_neighbor, val)) {
-            m.dist2 = m.dist1 + (uint16_t)val.n;
+        if (auto distance = route_distance(w.rw, pos, endpoints[m.from].rev_neighbor)) {
+            m.dist2 = m.dist1 + *distance;
         }
         else {
             m.dist2 = 0xffff;
@@ -182,9 +180,8 @@ uint16_t market::nearest_park(world& w, roadnet::straightid pos) {
     park_sorts.reserve(impl->parks.size());
     for (auto id: impl->parks) {
         auto ending = endpoints[id].rev_neighbor;
-        roadnet::route_value val;
-        if (roadnet::route(w.rw, pos, ending, val)) {
-            park_sorts.emplace_back(id, (uint16_t)val.n);
+        if (auto distance = route_distance(w.rw, pos, ending)) {
+            park_sorts.emplace_back(id, *distance);
         }
     }
     if (park_sorts.empty()) {
@@ -205,12 +202,10 @@ bool market::relocate(world& w, uint16_t item, roadnet::straightid pos, uint16_t
             uint16_t min_distance = 0xFFFF;
             for (auto const& [to, _] : m.demand) {
                 auto ending = endpoints[to].rev_neighbor;
-                roadnet::route_value val;
-                if (roadnet::route(w.rw, pos, ending, val)) {
-                    uint16_t distance = (uint16_t)val.n;
-                    if (min_distance < distance) {
+                if (auto distance = route_distance(w.rw, pos, ending)) {
+                    if (min_distance < *distance) {
                         min_to = to;
-                        min_distance = distance;
+                        min_distance = *distance;
                     }
                 }
             }
