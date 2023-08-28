@@ -314,7 +314,7 @@ prototype "空气过滤器I" {
     recipe = "空气过滤",
     maxslot = "8",
     sound = "building/air-filter",
-    camera_distance = 100,
+    camera_distance = 90,
     fluidboxes = {
         input = {},
         output = {
@@ -344,7 +344,7 @@ prototype "空气过滤器II" {
     recipe = "空气过滤",
     maxslot = "8",
     sound = "building/air-filter",
-    camera_distance = 100,
+    camera_distance = 90,
     fluidboxes = {
         input = {},
         output = {
@@ -374,7 +374,7 @@ prototype "空气过滤器III" {
     recipe = "空气过滤",
     maxslot = "8",
     sound = "building/air-filter",
-    camera_distance = 100,
+    camera_distance = 90,
     fluidboxes = {
         input = {},
         output = {

@@ -13,6 +13,7 @@
 #include "postprocess/tonemapping.sh"
 #include "default/inputs_structure.sh"
 #include "pbr/material_info.sh"
+#include "pbr/material_default.sh"
 
 vec2 parallax_mapping(vec2 uv, vec3 view_dir, float num_layers)
 {
@@ -47,7 +48,7 @@ vec2 parallax_mapping(vec2 uv, vec3 view_dir, float num_layers)
 void CUSTOM_FS_FUNC(in FSInput fsinput, inout FSOutput fsoutput)
 {
     material_info mi = (material_info)0;
-    init_material_info(fsinput, mi);
+    default_init_material_info(fsinput, mi);
 
     // remember that, this tbn is transposed, so, all the transform: mul(tbn, v), should convert to: mul(v, tbn), same with mul(transpose(tbn), v)
     mat3 tbn = mat3(mi.T, mi.B, mi.gN);

@@ -12,6 +12,18 @@
 #include "default/inputs_structure.sh"
 #include "terrain.sh"
 
+#ifdef u_roughness_factor
+#error already define 'u_roughness_factor'
+#else
+#define u_roughness_factor  u_pbr_factor.y
+#endif 
+
+#ifdef u_metallic_factor
+#error already define 'u_metallic_factor'
+#else
+#define u_metallic_factor  u_pbr_factor.x
+#endif 
+
 material_info terrain_material_info_init(vec3 gnormal, vec3 normal, vec4 posWS, vec4 basecolor, vec4 fragcoord, vec4 metallic, vec4 roughness)
 {
     material_info mi  = (material_info)0;
@@ -50,9 +62,8 @@ void CUSTOM_FS_FUNC(in FSInput fsinput, inout FSOutput fsoutput)
     vec3 bitangent = cross(fsinput.normal, fsinput.tangent);
     mat3 tbn = mat3(fsinput.tangent, bitangent, fsinput.normal);
     vec3 stone_normal = terrain_normal_from_tangent_frame(tbn, terrain_uv, 1);
-    float roughness = u_roughness_factor;
-    float metallic = u_metallic_factor;
-    material_info mi = terrain_material_info_init(fsinput.normal, stone_normal, fsinput.pos, vec4(terrain_color, 1.0), fsinput.frag_coord, metallic, roughness);
+
+    material_info mi = terrain_material_info_init(fsinput.normal, stone_normal, fsinput.pos, vec4(terrain_color, 1.0), fsinput.frag_coord, u_metallic_factor, u_roughness_factor);
     build_material_info(mi);
     fsoutput.color = compute_lighting(mi); 
 }

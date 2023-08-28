@@ -10,6 +10,8 @@
 #include "pbr/lighting.sh"
 #include "default/inputs_structure.sh"
 
+#include "pbr/material_default.sh"
+
 uniform vec4 u_construct_color;
 uniform vec4 u_printer_factor;
 #define u_building_offset   u_printer_factor.x
@@ -31,7 +33,7 @@ void CUSTOM_FS_FUNC(in FSInput fsinput, inout FSOutput fsoutput)
         fsoutput.color = u_construct_color;
     } else {
         material_info mi = (material_info)0;
-        init_material_info(fsinput, mi);
+        default_init_material_info(fsinput, mi);
         build_material_info(mi);
         if (mi.NdotV < 0){
             fsoutput.color = u_construct_color;
