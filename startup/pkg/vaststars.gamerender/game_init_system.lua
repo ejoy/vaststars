@@ -1,19 +1,15 @@
 local ecs = ...
 local world = ecs.world
 
-local FRAMES_PER_SECOND <const> = 30
-local bgfx = require 'bgfx'
 local NOTHING <const> = require "debugger".nothing
 local TERRAIN_ONLY <const> = require "debugger".terrain_only
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
 local camera_zoom_mb = world:sub {"camera_zoom"}
 local icamera_controller = ecs.require "engine.system.camera_controller"
-local iefk = ecs.require "engine.efk"
 local imain_menu_manager = ecs.require "main_menu_manager"
 local icanvas = ecs.require "engine.canvas"
 local audio = import_package "ant.audio"
 local rhwi = import_package "ant.hwi"
-local font = import_package "ant.font"
 local gameplay_core = require "gameplay.core"
 local iguide = require "gameplay.interface.guide"
 local iui = ecs.require "engine.system.ui_system"
@@ -21,13 +17,11 @@ local terrain = ecs.require "terrain"
 local iroadnet = ecs.require "roadnet"
 local saveload = ecs.require "saveload"
 local global = require "global"
+local iefk = ecs.require "engine.efk"
 
 local m = ecs.system 'game_init_system'
 
-font.import "/pkg/vaststars.resources/ui/font/Alibaba-PuHuiTi-Regular.ttf"
-
 function m:init_world()
-    bgfx.maxfps(FRAMES_PER_SECOND)
     ecs.create_instance "/pkg/vaststars.resources/daynight.prefab"
     ecs.create_instance "/pkg/vaststars.resources/light.prefab"
 
@@ -62,19 +56,24 @@ function m:init_world()
     -- audio.play("event:/openui1")
     audio.play("event:/background")
 
+    terrain:create()
+    iroadnet:create()
+
     local args = global.startup_args
     if args[1] == "new_game" then
-        terrain:create()
-        iroadnet:create()
         icamera_controller.set_camera_from_prefab("camera_default.prefab")
         local mode, game_template = args[2], args[3]
         saveload:restart(mode, game_template)
         iguide.world = gameplay_core.get_world()
         iui.set_guide_progress(iguide.get_progress())
     elseif args[1] == "continue_game" then
+        local index = args[2]
+        saveload:restore(index)
         iguide.world = gameplay_core.get_world()
         iui.set_guide_progress(iguide.get_progress())
     elseif args[1] == "load_game" then
+        local index = args[2]
+        saveload:restore(index)
         iguide.world = gameplay_core.get_world()
         iui.set_guide_progress(iguide.get_progress())
     else
