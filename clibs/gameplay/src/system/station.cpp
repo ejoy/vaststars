@@ -137,6 +137,7 @@ static int lupdate(lua_State *L) {
                         station_s.amount--;
                         station_s.lock_item--;
                         roadnet::lorryGoMov2(l, l.mov2, chest_s.limit);
+                        roadnet::endpointSetOut(w, endpoint);
                         break;
                     }
                 }
@@ -165,6 +166,7 @@ static int lupdate(lua_State *L) {
                             station_s.lock_space--;
                             auto endpoints = ecs_api::array<ecs::endpoint>(w.ecs);
                             roadnet::lorryGoHome(l, endpoints[home]);
+                            roadnet::endpointSetOut(w, endpoint);
                         }
                         break;
                     }
