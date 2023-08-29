@@ -142,7 +142,7 @@ prototype "大铁制箱子I" {
     item_description = "贮藏物品的容器",
 }
 
-prototype "仓库" {
+prototype "仓库I" {
     type = {"item"},
     item_category = "物流",
     station_limit = 8,
@@ -151,9 +151,23 @@ prototype "仓库" {
     drone_depot_gap3 = "0.65x0.2x0.65",
     backpack_limit = 20,
     item_order = 70,
-    item_icon = "/pkg/vaststars.resources/textures/icons/item/furnace.texture",
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/construction.texture",
     pile_model = "glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "贮藏物品的容器",
+}
+
+prototype "无人机平台I" {
+    type = {"item"},
+    item_category = "物流",
+    station_limit = 8,
+    pile = "2x4x2",
+    hub_limit = 16,
+    drone_depot_gap3 = "0.65x0.2x0.65",
+    backpack_limit = 20,
+    item_order = 40,
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/drone-depot.texture",
+    pile_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_description = "使用无人机运输并储存货物的仓库",
 }
 
 prototype "无人机仓库I" {
