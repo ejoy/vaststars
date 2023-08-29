@@ -257,8 +257,8 @@ function M:stage_ui_update(datamodel, object_id)
 
     __moveable_count_update(datamodel, assert(object.gameplay_eid))
 
-    for _, _, _, object_id in set_recipe_mb:unpack() do
-        iui.open({"/pkg/vaststars.resources/ui/recipe_config.rml"}, object_id)
+    for _ in set_recipe_mb:unpack() do
+        iui.open({"/pkg/vaststars.resources/ui/recipe_config.rml"}, object.gameplay_eid)
     end
 
     for _, _, _, object_id in set_item_mb:unpack() do

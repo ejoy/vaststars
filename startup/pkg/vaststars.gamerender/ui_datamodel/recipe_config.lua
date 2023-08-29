@@ -11,7 +11,6 @@ local gameplay_core = require "gameplay.core"
 local iprototype = require "gameplay.interface.prototype"
 local iui = ecs.require "engine.system.ui_system"
 local iworld = require "gameplay.interface.world"
-local objects = require "objects"
 local recipe_unlocked = ecs.require "ui_datamodel.common.recipe_unlocked".recipe_unlocked
 local itask = ecs.require "task"
 local iprototype_cache = require "gameplay.prototype_cache.init"
@@ -36,12 +35,10 @@ end
 ---------------
 local M = {}
 
-function M:create(object_id)
-    local object = assert(objects:get(object_id))
-    local e = assert(gameplay_core.get_entity(assert(object.gameplay_eid)))
+function M:create(gameplay_eid)
+    local e = assert(gameplay_core.get_entity(gameplay_eid))
 
     local datamodel = {}
-    datamodel.object_id = object_id
     datamodel.category_idx = 0
     datamodel.recipe_idx = 0
 
@@ -59,8 +56,8 @@ function M:create(object_id)
     local storage = gameplay_core.get_storage()
     storage.recipe_picked_flag = storage.recipe_picked_flag or {}
 
-    local object = assert(objects:get(datamodel.object_id))
-    local recipes = iprototype_cache.get("recipe_config").assembling_recipes[object.prototype_name]
+    local typeobject = iprototype.queryById(e.building.prototype)
+    local recipes = iprototype_cache.get("recipe_config").assembling_recipes[typeobject.name]
 
     local cache = {}
     local res = {}
@@ -113,7 +110,7 @@ function M:create(object_id)
     return datamodel
 end
 
-function M:stage_ui_update(datamodel, object_id)
+function M:stage_ui_update(datamodel, gameplay_eid)
     for _, _, _, category_idx, recipe_idx in click_recipe_mb:unpack() do
         __set_recipe_value(datamodel, datamodel.category_idx, datamodel.recipe_idx, "selected", false)
         __set_recipe_value(datamodel, category_idx, recipe_idx, "selected", true)
@@ -134,28 +131,19 @@ function M:stage_ui_update(datamodel, object_id)
         datamodel.confirm = true
     end
 
-    for _, _, _, object_id in set_recipe_mb:unpack() do
+    for _ in set_recipe_mb:unpack() do
         local category_idx = datamodel.category_idx
         local recipe_idx = datamodel.recipe_idx
         assert(datamodel.recipes[category_idx])
         assert(datamodel.recipes[category_idx].recipes[recipe_idx])
         local recipe_name = datamodel.recipes[category_idx].recipes[recipe_idx].name
 
-        local object = assert(objects:get(object_id, {"CONSTRUCTED"}))
-        local typeobject = iprototype.queryByName(object.prototype_name)
-        local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+        local e = gameplay_core.get_entity(gameplay_eid)
+        local typeobject = iprototype.queryById(e.building.prototype)
         assert(e.assembling)
 
         if iworld.set_recipe(gameplay_core.get_world(), e, recipe_name, typeobject.recipe_init_limit) then
-            -- TODO viewport
-            local recipe_typeobject = iprototype.queryByName(recipe_name)
-            assert(recipe_typeobject, ("can not found recipe `%s`"):format(recipe_name))
-
-            object.fluid_name = irecipe.get_init_fluids(recipe_typeobject) or {} -- recipe may not have fluid
-            object.recipe = recipe_name
-
             gameplay_core.set_changed(CHANGED_FLAG_ASSEMBLING)
-
             itask.update_progress("set_recipe", recipe_name)
         end
 
@@ -163,13 +151,8 @@ function M:stage_ui_update(datamodel, object_id)
     end
 
     for _ in clear_recipe_mb:unpack() do
-        local object = assert(objects:get(object_id))
-        local e = gameplay_core.get_entity(assert(object.gameplay_eid))
-
+        local e = gameplay_core.get_entity(gameplay_eid)
         iworld.set_recipe(gameplay_core.get_world(), e, nil)
-        object.recipe = ""
-        object.fluid_name = {}
-
         gameplay_core.set_changed(CHANGED_FLAG_ASSEMBLING)
 
         datamodel.category_idx = 0
