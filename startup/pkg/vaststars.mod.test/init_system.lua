@@ -16,15 +16,14 @@ local iom           = ecs.require "ant.objcontroller|obj_motion"
 local S = ecs.system "init_system"
 
 function S.init()
-    --world:create_instance "/pkg/vaststars.mod.test/assets/skybox.prefab"
-    local p = world:create_instance  "/pkg/vaststars.mod.test/assets/light_directional.prefab"
-    p.on_ready = function (e)
-        local pid = e.tag["*"][1]
-        local le<close> = world:entity(pid)
-        iom.set_direction(le, math3d.vector(0.2664446532726288, -0.25660401582717896, 0.14578714966773987, 0.9175552725791931))
-    end
-    world:create_object(p)
-
+    world:create_instance {
+        prefab = "/pkg/vaststars.mod.test/assets/light_directional.prefab",
+        on_ready = function (p)
+            local pid = p.tag["*"][1]
+            local le<close> = world:entity(pid)
+            iom.set_direction(le, math3d.vector(0.2664446532726288, -0.25660401582717896, 0.14578714966773987, 0.9175552725791931))
+        end,
+    }
 end
 
 local create_list = {}

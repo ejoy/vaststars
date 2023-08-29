@@ -20,19 +20,19 @@ bgfx.maxfps(FRAMES_PER_SECOND)
 font.import "/pkg/vaststars.resources/ui/font/Alibaba-PuHuiTi-Regular.ttf"
 
 local function createPrefabInst(prefab)
-    local p = world:create_instance(prefab)
-    function p:on_ready()
-        local root <close> = world:entity(self.tag['*'][1])
-        iom.set_position(root, {0, 0, 0})
-
-        for _, eid in ipairs(self.tag['*']) do
-            local e <close> = world:entity(eid, "animation_birth?in")
-            if e.animation_birth then
-                iani.play(self, {name = e.animation_birth, loop = true, speed = 1.0, manual = false})
+    world:create_instance {
+        prefab = prefab,
+        on_ready = function (self)
+            local root <close> = world:entity(self.tag['*'][1])
+            iom.set_position(root, {0, 0, 0})
+            for _, eid in ipairs(self.tag['*']) do
+                local e <close> = world:entity(eid, "animation_birth?in")
+                if e.animation_birth then
+                    iani.play(self, {name = e.animation_birth, loop = true, speed = 1.0, manual = false})
+                end
             end
         end
-    end
-    world:create_object(p)
+    }
 end
 
 function m:init_world()
@@ -41,8 +41,12 @@ function m:init_world()
         return
     end
 
-    world:create_instance "/pkg/vaststars.resources/daynight.prefab"
-    world:create_instance "/pkg/vaststars.resources/light.prefab"
+    world:create_instance {
+        prefab = "/pkg/vaststars.resources/daynight.prefab",
+    }
+    world:create_instance {
+        prefab = "/pkg/vaststars.resources/light.prefab",
+    }
     rhwi.set_profie(gameplay_core.settings_get("debug", true))
 
     -- audio test (Master.strings.bank must be first)

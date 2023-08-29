@@ -22,17 +22,19 @@ local mt = {}
 mt.__index = mt
 
 local function __create_instance(group_id, prefab, mat)
-    local prefab_instance = world:create_instance(prefab, nil, group_id)
-    function prefab_instance:on_ready()
-        local e <close> = world:entity(self.tag["*"][1])
-        iom.set_srt(e, math3d.srt(mat))
-    end
-    function prefab_instance:on_message(msg, mat, group_id) -- TODO: group_id
-        assert(msg == "on_position_change", "invalid message")
-        local e <close> = world:entity(self.tag["*"][1])
-        iom.set_srt(e, math3d.srt(mat))
-    end
-    return world:create_object(prefab_instance)
+    return world:create_instance {
+        prefab = prefab,
+        group = group_id,
+        on_ready = function (self)
+            local e <close> = world:entity(self.tag["*"][1])
+            iom.set_srt(e, math3d.srt(mat))
+        end,
+        on_message = function (self, msg, mat, group_id) -- TODO: group_id
+            assert(msg == "on_position_change", "invalid message")
+            local e <close> = world:entity(self.tag["*"][1])
+            iom.set_srt(e, math3d.srt(mat))
+        end
+    }
 end
 
 local function __create_shelves(group_id, recipe, shelf_matrices)

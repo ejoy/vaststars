@@ -60,7 +60,11 @@ function iing_res_motion.create(prefab, from, to, duration, repeat_count)
     local cache = motion_caches[prefab]
     if not cache or #cache < 1 then
         local motion = imotion.create_motion_object(nil, nil, from, nil, true)
-        local inst = world:create_instance(prefab, motion.id, imotion.sampler_group)
+        local inst = world:create_instance {
+            prefab = prefab,
+            parent = motion.id,
+            group = imotion.sampler_group,
+        }
         motions[#motions + 1] = {prefab = prefab, inst = inst, duration = duration, repeat_count = repeat_count or 1, elapsed_time = 0, motion = motion }
     else
         local m = table.remove(cache, #cache)

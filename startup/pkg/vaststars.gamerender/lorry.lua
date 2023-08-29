@@ -79,22 +79,25 @@ local function __create_shadow_object(parent)
 end
 
 local function __create_item_object(prefab, parent, offset_srt)
-    local p = world:create_instance(prefab, parent, sampler_group)
-    function p:on_ready()
-        local root <close> = world:entity(self.tag['*'][1])
-        iom.set_srt(root, offset_srt.s or mc.ONE, offset_srt.r or mc.IDENTITY_QUAT, offset_srt.t or mc.ZERO_PT)
-
-        for _, eid in ipairs(self.tag['*']) do
-            local e <close> = world:entity(eid, "visible_state?in render_object?in")
-            if e.visible_state then
-                ivs.set_state(e, "cast_shadow", false)
-            end
-            if e.render_object then
-                irl.set_layer(e, RENDER_LAYER.LORRY_ITEM)
+    return world:create_instance {
+        prefab = prefab,
+        parent = parent,
+        group = sampler_group,
+        on_ready = function (self)
+            local root <close> = world:entity(self.tag['*'][1])
+            iom.set_srt(root, offset_srt.s or mc.ONE, offset_srt.r or mc.IDENTITY_QUAT, offset_srt.t or mc.ZERO_PT)
+    
+            for _, eid in ipairs(self.tag['*']) do
+                local e <close> = world:entity(eid, "visible_state?in render_object?in")
+                if e.visible_state then
+                    ivs.set_state(e, "cast_shadow", false)
+                end
+                if e.render_object then
+                    irl.set_layer(e, RENDER_LAYER.LORRY_ITEM)
+                end
             end
         end
-    end
-    return world:create_object(p)
+    }
 end
 
 local function create(prefab, s, r, t, motion_events)

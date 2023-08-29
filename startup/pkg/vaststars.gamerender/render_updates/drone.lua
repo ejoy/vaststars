@@ -193,16 +193,19 @@ local function create_drone(at)
     task.motion_xz = motion_xz
     local motion_y = imotion.create_motion_object(nil, nil, math3d.vector(0, math3d.index(homepos, 2), 0), motion_xz)
     task.motion_y = motion_y
-    task.prefab = world:create_instance("/pkg/vaststars.resources/glbs/drone.glb|mesh.prefab", motion_y, imotion.sampler_group)
-    task.prefab.on_ready = function(self)
-        for _, eid in ipairs(self.tag["*"]) do
-            local e <close> = world:entity(eid, "render_object?update")
-            if e.render_object then
-                irl.set_layer(e, RENDER_LAYER.DRONE)
+    task.prefab = world:create_instance {
+        prefab = "/pkg/vaststars.resources/glbs/drone.glb|mesh.prefab",
+        parent = motion_y,
+        group = imotion.sampler_group,
+        on_ready = function(self)
+            for _, eid in ipairs(self.tag["*"]) do
+                local e <close> = world:entity(eid, "render_object?update")
+                if e.render_object then
+                    irl.set_layer(e, RENDER_LAYER.DRONE)
+                end
             end
         end
-    end
-    world:create_object(task.prefab)
+    }
 
     -- if not drone_queue[location] then
     --     drone_queue[location] = {}
@@ -269,13 +272,16 @@ function drone_sys:gameworld_update()
                     else
                         if drone.item ~= 0 then
                             local typeobject_item = iprototype.queryById(drone.item)
-                            local item_prefab = world:create_instance("/pkg/vaststars.resources/" .. typeobject_item.pile_model, current.prefab.tag["*"][1], imotion.sampler_group)
-                            item_prefab.on_ready = function(inst)
-                                local re <close> = world:entity(inst.tag["*"][1])
-                                iom.set_position(re, math3d.vector(0.0, -4.0, 0.0))
-                                iom.set_scale(re, math3d.vector(1.5, 1.5, 1.5))
-                            end
-                            world:create_object(item_prefab)
+                            local item_prefab = world:create_instance {
+                                prefab = "/pkg/vaststars.resources/" .. typeobject_item.pile_model,
+                                parent = current.prefab.tag["*"][1],
+                                group = imotion.sampler_group,
+                                on_ready = function(inst)
+                                    local re <close> = world:entity(inst.tag["*"][1])
+                                    iom.set_position(re, math3d.vector(0.0, -4.0, 0.0))
+                                    iom.set_scale(re, math3d.vector(1.5, 1.5, 1.5))
+                                end
+                            }
                             current:set_item(item_prefab)
                         end
                         drone_task[#drone_task + 1] = {flyid, current, from, to, fly_height, drone.maxprogress, drone.maxprogress - drone.progress}

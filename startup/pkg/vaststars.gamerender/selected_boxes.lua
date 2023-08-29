@@ -14,41 +14,42 @@ local iupdate = ecs.require "update_system"
 local DELTA_TIME <const> = require("gameplay.interface.constant").DELTA_TIME
 
 local function create_object(prefab, srt)
-    local p = world:create_instance(prefab)
-    function p:on_ready()
-        local root <close> = world:entity(self.tag['*'][1])
-        iom.set_srt(root, srt.s, srt.r, srt.t)
-
-        for _, eid in ipairs(self.tag['*']) do
-            local e <close> = world:entity(eid, "render_object?in animation_birth?in")
-            if e.render_object then
-                irl.set_layer(e, RENDER_LAYER.SELECTED_BOXES)
-            end
-
-            if e.animation_birth then
-                iani.play(self, {name = e.animation_birth, loop = true, speed = 1.0, manual = false})
-            end
-        end
-    end
-    function p:on_message(name, ...)
-        if name == "set_color" then
-            local color = ...
+    return world:create_instance {
+        prefab = prefab,
+        on_ready = function (self)
+            local root <close> = world:entity(self.tag['*'][1])
+            iom.set_srt(root, srt.s, srt.r, srt.t)
+    
             for _, eid in ipairs(self.tag['*']) do
-                local e <close> = world:entity(eid, "material?in")
-                if e and e.material then
-                    imaterial.set_property(e, "u_emissive_factor", color)
-                    imaterial.set_property(e, "u_basecolor_factor", color)
+                local e <close> = world:entity(eid, "render_object?in animation_birth?in")
+                if e.render_object then
+                    irl.set_layer(e, RENDER_LAYER.SELECTED_BOXES)
+                end
+    
+                if e.animation_birth then
+                    iani.play(self, {name = e.animation_birth, loop = true, speed = 1.0, manual = false})
                 end
             end
-        elseif name == "obj_motion" then
-            local method, s, r, t = ...
-            local root <close> = world:entity(self.tag['*'][1])
-            if root then
-                iom[method](root, s, r, t)
+        end,
+        on_message = function (self, name, ...)
+            if name == "set_color" then
+                local color = ...
+                for _, eid in ipairs(self.tag['*']) do
+                    local e <close> = world:entity(eid, "material?in")
+                    if e and e.material then
+                        imaterial.set_property(e, "u_emissive_factor", color)
+                        imaterial.set_property(e, "u_basecolor_factor", color)
+                    end
+                end
+            elseif name == "obj_motion" then
+                local method, s, r, t = ...
+                local root <close> = world:entity(self.tag['*'][1])
+                if root then
+                    iom[method](root, s, r, t)
+                end
             end
         end
-    end
-    return world:create_object(p)
+    }
 end
 
 local mt = {}
@@ -105,10 +106,10 @@ local LINE_CHECK <const> = {
 
 function mt:remove()
     for _, v in pairs(self.corners) do
-        v:remove()
+        world:remove_instance(v)
     end
     for _, v in pairs(self.lines) do
-        v:remove()
+        world:remove_instance(v)
     end
 end
 
@@ -116,11 +117,11 @@ function mt:set_position(center)
     self.center = center
     for idx, o in pairs(self.corners) do
         local position = math3d.live(math3d.muladd(CORNER_DIRECTIONS[idx], self.corner_offset, self.center))
-        o:send("obj_motion", "set_position", position)
+        world:instance_message(o, "obj_motion", "set_position", position)
     end
     for idx, o in pairs(self.lines) do
         local position = math3d.live(math3d.add(math3d.muladd(LINE_DIRECTIONS[idx], self.line_offset, self.center), LINE_OFFSET[idx]))
-        o:send("obj_motion", "set_position", position)
+        world:instance_message(o, "obj_motion", "set_position", position)
     end
 end
 
@@ -148,7 +149,7 @@ function mt:set_wh(w, h)
             t = math3d.live(math3d.muladd(CORNER_DIRECTIONS[idx], self.corner_offset, self.center)),
         })
         if mc.NULL ~= self.color then
-            self.corners[idx]:send("set_color", self.color)
+            world:instance_message(self.corners[idx], "set_color", self.color)
         end
     end
 
@@ -161,7 +162,7 @@ function mt:set_wh(w, h)
                     t = math3d.live(math3d.add(math3d.muladd(LINE_DIRECTIONS[idx], self.line_offset, self.center), LINE_OFFSET[idx])),
                 })
                 if mc.NULL ~= self.color then
-                    self.lines[idx]:send("set_color", self.color)
+                    world:instance_message(self.lines[idx], "set_color", self.color)
                 end
             end
         end
@@ -171,10 +172,10 @@ end
 function mt:set_color(color)
     self.color.v = math3d.vector(color)
     for _, o in pairs(self.corners) do
-        o:send("set_color", math3d.live(color))
+        world:instance_message(o, "set_color", math3d.live(color))
     end
     for _, o in pairs(self.lines) do
-        o:send("set_color", math3d.live(color))
+        world:instance_message(o, "set_color", math3d.live(color))
     end
 end
 
@@ -213,7 +214,7 @@ return function(prefabs, center, color, w, h)
             t = math3d.live(math3d.muladd(CORNER_DIRECTIONS[idx], M.corner_offset, M.center)),
         })
         if mc.NULL ~= color then
-            M.corners[idx]:send("set_color", color)
+            world:instance_message(M.corners[idx], "set_color", color)
         end
     end
 
@@ -226,7 +227,7 @@ return function(prefabs, center, color, w, h)
                     t = math3d.live(math3d.add(math3d.muladd(LINE_DIRECTIONS[idx], M.line_offset, M.center), LINE_OFFSET[idx])),
                 })
                 if mc.NULL ~= color then
-                    M.lines[idx]:send("set_color", color)
+                    world:instance_message(M.lines[idx], "set_color", color)
                 end
             end
         end

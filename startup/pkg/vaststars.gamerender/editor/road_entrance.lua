@@ -36,32 +36,33 @@ local function createPrefabInst(prefab, position)
     prefab = assert(prefab:match("(.*%.glb|).*%.prefab"))
     prefab = prefab .. "translucent.prefab"
 
-    local p = world:create_instance(prefab)
-    function p:on_ready()
-        local root <close> = world:entity(self.tag['*'][1])
-        iom.set_position(root, math3d.vector(position))
-        for _, eid in ipairs(self.tag['*']) do
-            local e <close> = world:entity(eid, "render_object?in")
-            if e.render_object then
-                irl.set_layer(e, RENDER_LAYER.ROAD_ENTRANCE_ARROW)
-            end
-        end
-    end
-    function p:on_message(msg, method, ...)
-        if msg == "obj_motion" then
+    return world:create_instance {
+        prefab = prefab,
+        on_ready = function (self)
             local root <close> = world:entity(self.tag['*'][1])
-            iom[method](root, ...)
-        end
-        if msg == "material" then
-            for _, eid in ipairs(self.tag["*"]) do
-                local e <close> = world:entity(eid, "material?in")
-                if e.material then
-                    imaterial[method](e, ...)
+            iom.set_position(root, math3d.vector(position))
+            for _, eid in ipairs(self.tag['*']) do
+                local e <close> = world:entity(eid, "render_object?in")
+                if e.render_object then
+                    irl.set_layer(e, RENDER_LAYER.ROAD_ENTRANCE_ARROW)
+                end
+            end
+        end,
+        on_message = function (self, msg, method, ...)
+            if msg == "obj_motion" then
+                local root <close> = world:entity(self.tag['*'][1])
+                iom[method](root, ...)
+            end
+            if msg == "material" then
+                for _, eid in ipairs(self.tag["*"]) do
+                    local e <close> = world:entity(eid, "material?in")
+                    if e.material then
+                        imaterial[method](e, ...)
+                    end
                 end
             end
         end
-    end
-    return world:create_object(p)
+    }
 end
 
 return function(srt, state)
@@ -75,7 +76,7 @@ return function(srt, state)
     local M = {}
 
     M.arrow = createPrefabInst("/pkg/vaststars.resources/glbs/road/station_indicator.glb|mesh.prefab", srt.t)
-    M.arrow:send("material", "set_property", "u_basecolor_factor", arrow_color)
+    world:instance_message(M.arrow, "material", "set_property", "u_basecolor_factor", arrow_color)
 
     return setmetatable(M, mt)
 end

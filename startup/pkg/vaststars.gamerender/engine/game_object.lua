@@ -104,40 +104,42 @@ local __get_hitch_children ; do
         local effects, animations = __cache_prefab_info(prefab)
 
         -- log.info(("game_object.new_instance: %s"):format(table.concat({hitch_group_id, prefab, require("math3d").tostring(color), tostring(animation_name), tostring(final_frame)}, " "))) -- TODO: remove this line
-        local prefab_instance = world:create_instance(prefab, nil, hitch_group_id)
-        function prefab_instance:on_ready()
-            for _, eid in ipairs(self.tag["*"]) do
-                local e <close> = world:entity(eid, "render_object?update")
-                if render_layer and e.render_object then
-                    irl.set_layer(e, render_layer)
+        local prefab_instance = world:create_instance {
+            prefab = prefab,
+            group = hitch_group_id,
+            on_ready = function (self)
+                for _, eid in ipairs(self.tag["*"]) do
+                    local e <close> = world:entity(eid, "render_object?update")
+                    if render_layer and e.render_object then
+                        irl.set_layer(e, render_layer)
+                    end
                 end
-            end
-
-            animation_name = animation_name or "idle_start"
-            if final_frame == nil then
-                final_frame = true
-            end
-            if animations[animation_name] then
-                if final_frame then
-                    iani.play(self, {name = animation_name, loop = false, speed = 1.0, manual = true, forwards = true})
-                    iani.set_time(self, iani.get_duration(self, animation_name))
-                else
-                    iani.play(self, {name = animation_name, loop = true, speed = 1.0, manual = false})
+    
+                animation_name = animation_name or "idle_start"
+                if final_frame == nil then
+                    final_frame = true
                 end
+                if animations[animation_name] then
+                    if final_frame then
+                        iani.play(self, {name = animation_name, loop = false, speed = 1.0, manual = true, forwards = true})
+                        iani.set_time(self, iani.get_duration(self, animation_name))
+                    else
+                        iani.play(self, {name = animation_name, loop = true, speed = 1.0, manual = false})
+                    end
+                end
+            end,
+            on_message = function (self, ...)
+                on_prefab_message(self, ...)
             end
-        end
-        function prefab_instance:on_message(...)
-            on_prefab_message(self, ...)
-        end
-        local prefab_proxy = world:create_object(prefab_instance)
+        }
         if color then
-            prefab_proxy:send("material", "set_property", "u_basecolor_factor", color)
+            world:instance_message(prefab_instance, "material", "set_property", "u_basecolor_factor", color)
         end
         if emissive_color then
-            prefab_proxy:send("material", "set_property", "u_emissive_factor", emissive_color)
+            world:instance_message(prefab_instance, "material", "set_property", "u_emissive_factor", emissive_color)
         end
 
-        cache[hash] = {prefab_file_name = prefab, instance = prefab_proxy, hitch_group_id = hitch_group_id, pose = iani.create_pose(), effects = effects, animations = animations}
+        cache[hash] = {prefab_file_name = prefab, instance = prefab_instance, hitch_group_id = hitch_group_id, pose = iani.create_pose(), effects = effects, animations = animations}
         return cache[hash]
     end
 end
