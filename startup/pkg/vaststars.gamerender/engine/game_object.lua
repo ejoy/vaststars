@@ -218,7 +218,6 @@ function igame_object.create(init)
     }, init.group_id), hitch_events)
 
     local function remove(self)
-        children.instance:send("detach_hitch", hitch_entity_object.id)
         self.hitch_entity_object:remove()
     end
 
@@ -235,7 +234,6 @@ function igame_object.create(init)
             self.__cache.emissive_color = nil
         end
 
-        children.instance:send("detach_hitch", hitch_entity_object.id)
         children = __get_hitch_children(
             RESOURCES_BASE_PATH:format(self.__cache.prefab),
             self.__cache.color,
@@ -244,7 +242,6 @@ function igame_object.create(init)
             self.__cache.emissive_color,
             self.__cache.render_layer
         )
-        children.instance:send("attach_hitch", hitch_entity_object.id)
         self.hitch_entity_object:send("group", children.hitch_group_id)
     end
     local function has_animation(self, animation_name)
@@ -271,7 +268,6 @@ function igame_object.create(init)
     for _, v in ipairs(children.effects.low_power) do
         effects.low_power[#effects.low_power + 1] = __create_efk_object(v.efk, v.srt, hitch_entity_object.id, init.group_id, false)
     end
-    children.instance:send("attach_hitch", hitch_entity_object.id)
 
     local outer = {
         __cache = init,
