@@ -147,7 +147,7 @@ function road:flush()
         for _, v in pairs(self.cache) do
             t[#t+1] = v
         end
-        iroad.update_roadnet_group(0, t)
+        iroad.update_roadnet_group(0, t, RENDER_LAYER.ROAD)
     end
 end
 

@@ -11,6 +11,9 @@ local LINE_WIDTH <const> = 70
 local COLOR <const> = {0.0, 1.0, 0.0, 0.4}
 local MATERIAL <const> = "/pkg/vaststars.resources/materials/polylinelist.material"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
+local terrain = ecs.require "terrain"
+local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
+local icamera_controller = ecs.require "engine.system.camera_controller"
 
 local events = {}
 events["remove"] = function(_, e)
@@ -66,7 +69,17 @@ function M.create(width, height, unit, srt, pos_offset)
 			self.objects = {}
 		end,
 		on_position_change = function(self, srt)
-			local p = pos_offset and math3d.ref(math3d.add(srt.t, pos_offset)) or srt.t
+			local ROAD_SIZE = 2
+			local coord = terrain:align(icamera_controller.get_central_position(), ROAD_SIZE, ROAD_SIZE)
+			if not coord then
+				return
+			end
+
+			local _, originPosition = terrain:align(math3d.vector {10, 0, -10}, ROAD_SIZE, ROAD_SIZE)
+			coord[1], coord[2] = coord[1] - (coord[1] % ROAD_SIZE), coord[2] - (coord[2] % ROAD_SIZE)
+			local t = terrain:get_position_by_coord(coord[1], coord[2], ROAD_SIZE, ROAD_SIZE)
+			local p = math3d.live(math3d.add(math3d.sub(t, originPosition), GRID_POSITION_OFFSET))
+
 			for _, obj in ipairs(self.objects) do
 				obj:send("obj_motion", "set_position", p)
 			end
