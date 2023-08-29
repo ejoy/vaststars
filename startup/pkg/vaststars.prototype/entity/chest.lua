@@ -58,11 +58,11 @@ prototype "无人机平台I" {
     power = "20kW",
     capacitance = "40kJ",
     area = "1x1",
-    supply_area = "6x6",
+    supply_area = "5x5",
     drone = {
         { "无人机I", 1 },
     },
-    power_supply_area = "6x6",
+    power_supply_area = "5x5",
     power_supply_distance = 8,
     camera_distance = 35,
     sound = "building/drone",
