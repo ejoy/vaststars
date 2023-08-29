@@ -5,7 +5,7 @@ path: /-
 value:
   data:
     efk:
-      auto_play: false
+      auto_play: true
       loop: true
       path: /pkg/vaststars.resources/effects/distillery_fire.efk
       speed: 1
@@ -26,7 +26,7 @@ path: /-
 value:
   data:
     efk:
-      auto_play: false
+      auto_play: true
       loop: true
       path: /pkg/vaststars.resources/effects/hydro-plant_smoke.efk
       speed: 1
@@ -47,7 +47,7 @@ path: /-
 value:
   data:
     efk:
-      auto_play: false
+      auto_play: true
       loop: true
       path: /pkg/vaststars.resources/effects/hydro-plant_smoke.efk
       speed: 1
@@ -68,7 +68,7 @@ path: /-
 value:
   data:
     efk:
-      auto_play: false
+      auto_play: true
       loop: true
       path: /pkg/vaststars.resources/effects/distillery_fire.efk
       speed: 1

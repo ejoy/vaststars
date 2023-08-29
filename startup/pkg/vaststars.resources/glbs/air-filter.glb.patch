@@ -5,7 +5,7 @@ path: /-
 value:
   data:
     efk:
-      auto_play: false
+      auto_play: true
       loop: false
       path: /pkg/vaststars.resources/effects/air-filter_smoke.efk
       speed: 1
@@ -36,7 +36,7 @@ path: /-
 value:
   data:
     efk:
-      auto_play: false
+      auto_play: true
       loop: false
       path: /pkg/vaststars.resources/effects/air-filter_smoke_work.efk
       speed: 1
