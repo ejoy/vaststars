@@ -10,6 +10,11 @@ struct market_path {
     uint16_t from;
     uint16_t to;
     uint16_t distance;
+    market_path(uint16_t from, uint16_t to, uint16_t distance)
+        : from(from)
+        , to(to)
+        , distance(distance)
+    { }
     static bool sort(const market_path& a, const market_path& b) {
         return a.distance < b.distance;
     }
@@ -24,6 +29,10 @@ struct market_item {
 struct market_endpoint {
     uint16_t id;
     uint16_t distance;
+    market_endpoint(uint16_t id, uint16_t distance)
+        : id(id)
+        , distance(distance)
+    { }
     static bool sort(const market_endpoint& a, const market_endpoint& b) {
         return a.distance < b.distance;
     }
@@ -118,8 +127,8 @@ void market::match_begin(world& w) {
             if (supply_n && demand_n) {
                 auto min = std::min(*supply_n, *demand_n);
                 for (auto i = 0; i < min; ++i) {
-                    *supply_n--;
-                    *demand_n--;
+                    *supply_n -= 1;
+                    *demand_n -= 1;
                     impl->matchs.emplace_back(m.item, path.from, path.to, path.distance);
                 }
                 if (*supply_n == 0) {
@@ -213,7 +222,7 @@ bool market::relocate(world& w, uint16_t item, roadnet::straightid pos, uint16_t
                 return false;
             }
             auto demand_n = m.demand.find(min_to);
-            *demand_n--;
+            *demand_n -= 1;
             if (*demand_n == 0) {
                 m.demand.erase(min_to);
             }

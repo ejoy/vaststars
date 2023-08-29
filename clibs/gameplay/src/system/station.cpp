@@ -21,7 +21,6 @@ static int lbuild(lua_State *L) {
         w.market.reset_station();
         for (auto& v : ecs_api::select<ecs::station, ecs::endpoint, ecs::chest>(w.ecs)) {
             auto& station = v.get<ecs::station>();
-            auto& endpoint = v.get<ecs::endpoint>();
             auto& chest = v.get<ecs::chest>();
             auto station_c = container::index::from(station.chest);
             auto chest_c = container::index::from(chest.chest);
@@ -30,7 +29,6 @@ static int lbuild(lua_State *L) {
             }
             container::size_type n = std::min(chest::size(w, station_c), chest::size(w, chest_c));
             for (uint8_t i = 0; i < (uint8_t)n; ++i) {
-                auto& chest_s = chest::array_at(w, chest_c, i);
                 auto& station_s = chest::array_at(w, station_c, i);
                 if (station_s.item != 0) {
                     if (station_s.type == container::slot::slot_type::supply) {
@@ -76,7 +74,6 @@ static int lupdate(lua_State *L) {
     auto& w = getworld(L);
     for (auto& v : ecs_api::select<ecs::station, ecs::endpoint, ecs::chest>(w.ecs)) {
         auto& station = v.get<ecs::station>();
-        auto& endpoint = v.get<ecs::endpoint>();
         auto& chest = v.get<ecs::chest>();
         auto station_c = container::index::from(station.chest);
         auto chest_c = container::index::from(chest.chest);
@@ -149,7 +146,6 @@ static int lupdate(lua_State *L) {
         case roadnet::lorry_target::mov2: {
             bool valid = false;
             for (uint8_t i = 0; i < (uint8_t)n; ++i) {
-                auto& chest_s = chest::array_at(w, chest_c, i);
                 auto& station_s = chest::array_at(w, station_c, i);
                 if (station_s.type == container::slot::slot_type::demand && station_s.item == l.item_prototype) {
                     valid = true;
