@@ -169,6 +169,16 @@ local function __create_efk_object(efk, srt, parent, group_id, auto_play)
     }), efk_events)
 end
 
+local hitch_events = {}
+hitch_events["group"] = function(_, e, group)
+    w:extend(e, "hitch:update hitch_bounding?out")
+    e.hitch.group = group
+    e.hitch_bounding = true
+end
+hitch_events["obj_motion"] = function(_, e, method, ...)
+    iom[method](e, ...)
+end
+
 local igame_object = {}
 --[[
 init = {
@@ -184,16 +194,6 @@ init = {
 --]]
 function igame_object.create(init)
     local children = __get_hitch_children(RESOURCES_BASE_PATH:format(init.prefab), init.color, init.animation_name, init.final_frame, init.emissive_color, init.render_layer)
-    local hitch_events = {}
-    hitch_events["group"] = function(_, e, group)
-        w:extend(e, "hitch:update hitch_bounding?out")
-        e.hitch.group = group
-        e.hitch_bounding = true
-    end
-    hitch_events["obj_motion"] = function(_, e, method, ...)
-        iom[method](e, ...)
-    end
-
     local srt = init.srt or {}
     local hitch_entity_object = ientity_object.create(world:create_entity({
         policy = {

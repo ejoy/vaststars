@@ -40,10 +40,9 @@ local PLACE_TYPES <const> = {
     "laboratory",
 }
 
-local function __get_moveable_count(object_id)
-    local object = assert(objects:get(object_id))
-    local typeobject = iprototype.queryByName(object.prototype_name)
-    local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+local function __get_moveable_count(gameplay_eid)
+    local e = gameplay_core.get_entity(gameplay_eid)
+    local typeobject = iprototype.queryById(e.building.prototype)
     local gameplay_world = gameplay_core.get_world()
 
     if iprototype.has_type(typeobject.type, "assembling") then
@@ -97,10 +96,9 @@ local function __get_moveable_count(object_id)
     end
 end
 
-local function __get_placeable_count(object_id)
-    local object = assert(objects:get(object_id))
-    local typeobject = iprototype.queryByName(object.prototype_name)
-    local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+local function __get_placeable_count(gameplay_eid)
+    local e = gameplay_core.get_entity(assert(gameplay_eid))
+    local typeobject = iprototype.queryById(e.building.prototype)
     local gameplay_world = gameplay_core.get_world()
 
     if iprototype.has_type(typeobject.type, "assembling") then
@@ -165,9 +163,9 @@ local function __get_placeable_count(object_id)
     end
 end
 
-local __moveable_count_update = interval_call(300, function(datamodel, object_id)
-    datamodel.pickup_item_count = datamodel.pickup_item and __get_moveable_count(object_id) or 0
-    datamodel.place_item_count = datamodel.place_item and __get_placeable_count(object_id) or 0
+local __moveable_count_update = interval_call(300, function(datamodel, gameplay_eid)
+    datamodel.pickup_item_count = datamodel.pickup_item and __get_moveable_count(gameplay_eid) or 0
+    datamodel.place_item_count = datamodel.place_item and __get_placeable_count(gameplay_eid) or 0
 end, false)
 
 ---------------
@@ -212,8 +210,8 @@ function M:create(object_id)
         lorry_factory_dec_lorry = false,
         pickup_item = pickup_item,
         place_item = place_item,
-        pickup_item_count = pickup_item and __get_moveable_count(object_id) or 0,
-        place_item_count = place_item and __get_placeable_count(object_id) or 0,
+        pickup_item_count = pickup_item and __get_moveable_count(object.gameplay_eid) or 0,
+        place_item_count = place_item and __get_placeable_count(object.gameplay_eid) or 0,
         set_item = set_item,
     }
 
@@ -257,7 +255,7 @@ end
 function M:stage_ui_update(datamodel, object_id)
     local object = assert(objects:get(object_id))
 
-    __moveable_count_update(datamodel, object_id)
+    __moveable_count_update(datamodel, assert(object.gameplay_eid))
 
     for _, _, _, object_id in set_recipe_mb:unpack() do
         iui.open({"/pkg/vaststars.resources/ui/recipe_config.rml"}, object_id)
@@ -306,8 +304,8 @@ function M:stage_ui_update(datamodel, object_id)
 
     for _, _, _, object_id in pickup_item_mb:unpack() do
         local gameplay_world = gameplay_core.get_world()
-        local typeobject = iprototype.queryByName(object.prototype_name)
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+        local typeobject = iprototype.queryById(e.building.prototype)
 
         local msgs = {}
         if iprototype.has_type(typeobject.type, "assembling") then
@@ -321,10 +319,6 @@ function M:stage_ui_update(datamodel, object_id)
                 local item = iprototype.queryById(id)
                 msgs[#msgs + 1] = {icon = assert(item.item_icon), name = item.name, count = n}
             end)
-
-            if e.station and #msgs > 0 then
-                e.station_changed = true
-            end
 
             if iprototype.has_type(typeobject.type, "chest") then
                 local chest_component = ichest.get_chest_component(e)

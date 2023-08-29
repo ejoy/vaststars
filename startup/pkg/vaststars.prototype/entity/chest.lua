@@ -39,13 +39,33 @@ prototype "大铁制箱子I" {
     slots = 30,
 }
 
-prototype "仓库" {
-    model = "glbs/small-chest.glb|mesh.prefab",
+prototype "仓库I" {
+    model = "glbs/depot.glb|mesh.prefab",
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"building"},
-    area = "5x5",
-    slots = 60,
+    area = "1x1",
+    slots = 4,
+    camera_distance = 30,
+}
+
+prototype "无人机平台I" {
+    model = "glbs/drone-depot2.glb|mesh.prefab",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_drone_depot.texture",
+    construct_detector = {"exclusive"},
+    type = {"building", "hub", "consumer"},
+    priority = "secondary",
+    power = "20kW",
+    capacitance = "40kJ",
+    area = "1x1",
+    supply_area = "6x6",
+    drone = {
+        { "无人机I", 1 },
+    },
+    power_supply_area = "6x6",
+    power_supply_distance = 8,
+    camera_distance = 35,
+    sound = "building/drone",
 }
 
 

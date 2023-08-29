@@ -16,7 +16,6 @@ local create_pipetogroundbuilder = ecs.require "editor.pipetogroundbuilder"
 local objects = require "objects"
 local global = require "global"
 local iobject = ecs.require "object"
-local terrain = ecs.require "terrain"
 local idetail = ecs.require "detail_system"
 local EDITOR_CACHE_NAMES = {"CONFIRM", "CONSTRUCTED"}
 local create_station_builder = ecs.require "editor.stationbuilder"

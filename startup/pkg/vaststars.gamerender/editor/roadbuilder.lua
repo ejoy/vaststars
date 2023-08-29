@@ -163,6 +163,9 @@ end
 
 local function place(self, datamodel)
     local coord_indicator = self.coord_indicator
+    local typeobject = iprototype.queryByName(coord_indicator.prototype_name)
+    coord_indicator.srt.t, coord_indicator.x, coord_indicator.y = __align(icamera_controller.get_central_position(), typeobject.area, coord_indicator.dir)
+
     local x, y = coord_indicator.x, coord_indicator.y
     if not isValidRoadCoord(coord_indicator.x, coord_indicator.y, EDITOR_CACHE_NAMES) then
         return

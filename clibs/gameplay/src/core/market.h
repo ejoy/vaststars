@@ -19,6 +19,13 @@ struct market_match {
     uint16_t to;
     uint16_t dist1;
     uint16_t dist2;
+    market_match(uint16_t item, uint16_t from, uint16_t to, uint16_t dist1)
+        : item(item)
+        , from(from)
+        , to(to)
+        , dist1(dist1)
+        , dist2(0)
+    { }
     static bool sort1(const market_match& a, const market_match& b) {
         return a.dist1 < b.dist1;
     }
