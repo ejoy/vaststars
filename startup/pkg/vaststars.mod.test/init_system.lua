@@ -7,10 +7,10 @@ local math3d = require "math3d"
 local mathpkg   = import_package "ant.math"
 local mc        = mathpkg.constant
 
-local iterrain      = ecs.require "mod.terrain|terrain_system"
-local istonemountain= ecs.require "mod.stonemountain|stone_mountain"
-local itp           = ecs.require "mod.translucent_plane|init_system"
-local iroad         = ecs.require "mod.road|road"
+local iterrain      = ecs.require "ant.landform|terrain_system"
+local istonemountain= ecs.require "ant.landform|stone_mountain_system"
+local itp           = ecs.require "ant.landform|translucent_plane_system"
+local iroad         = ecs.require "ant.landform|road"
 local iom           = ecs.require "ant.objcontroller|obj_motion"
 
 local S = ecs.system "init_system"
@@ -51,8 +51,8 @@ function S.init_world()
         data = {
             name = "test_road",
             scene = {t = {-40, 0, 0}},
-            mesh  = "/pkg/mod.road/assets/shapes/road_I.glb|meshes/Plane_P1.meshbin",
-            material    = "/pkg/mod.road/assets/shapes/road_I.glb|materials/Material.001.material",
+            mesh  = "/pkg/ant.landform/assets/shapes/road_I.glb|meshes/Plane_P1.meshbin",
+            material    = "/pkg/ant.landform/assets/shapes/road_I.glb|materials/Material.001.material",
             visible_state = "main_view|selectable",
             render_layer = "background",
         },
@@ -67,8 +67,8 @@ function S.init_world()
         data = {
             name = "test_road",
             scene = {t = {-20, 0, 0}, r = { axis = {0,1,0}, r = math.rad(180) }},
-            mesh  = "/pkg/mod.road/assets/shapes/road_I.glb|meshes/Plane_P1.meshbin",
-            material    = "/pkg/mod.road/assets/shapes/road_I.glb|materials/Material.001.material",
+            mesh  = "/pkg/ant.landform/assets/shapes/road_I.glb|meshes/Plane_P1.meshbin",
+            material    = "/pkg/ant.landform/assets/shapes/road_I.glb|materials/Material.001.material",
             visible_state = "main_view|selectable",
             render_layer = "background",
         },

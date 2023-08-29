@@ -11,7 +11,7 @@ value:
   data:
     name: crack
     scene: {}
-    material: /pkg/mod.crack/assets/crack.material
+    material: /pkg/ant.landform/assets/materials/crack.material
     mesh: meshes/Plane_P1.meshbin
     visible_state: main_view|selectable
   policy:

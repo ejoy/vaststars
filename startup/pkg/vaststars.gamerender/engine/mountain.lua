@@ -3,7 +3,7 @@ local world = ecs.world
 local w     = world.w
 
 local MOUNTAIN = import_package "vaststars.prototype".load("mountain")
-local ism = ecs.require "mod.stonemountain|stone_mountain"
+local ism = ecs.require "ant.landform|stone_mountain_system"
 local terrain = ecs.require "terrain"
 
 local UNIT <const> = 10
