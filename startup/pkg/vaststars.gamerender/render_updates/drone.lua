@@ -89,7 +89,7 @@ local function create_drone(at)
         at_home = false,
         flyid = 0,
         gohome = function (self, flyid, from, to, fly_height, duration)
-            -- fix move drone hub
+            -- fix move drone airport
             -- if self.to_home then return end
             self:destroy_item()
             self:flyto(flyid, fly_height, from, to, true, duration or 30)
