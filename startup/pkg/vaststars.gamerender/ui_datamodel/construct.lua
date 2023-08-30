@@ -366,7 +366,7 @@ local function __construct_entity(typeobject)
         builder_datamodel = iui.get_datamodel("/pkg/vaststars.resources/ui/construct.rml")
         builder = create_pipetogroundbuilder()
         builder:new_entity(builder_datamodel, typeobject, x, y)
-    elseif iprototype.has_types(typeobject.type, "station") then
+    elseif iprototype.has_types(typeobject.type, "station", "park") then
         builder_ui = "/pkg/vaststars.resources/ui/construct_building.rml"
         builder_datamodel = iui.get_datamodel("/pkg/vaststars.resources/ui/construct.rml")
         builder = create_station_builder()

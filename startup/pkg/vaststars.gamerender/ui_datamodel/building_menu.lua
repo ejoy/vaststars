@@ -320,7 +320,7 @@ function M:stage_ui_update(datamodel, object_id)
                 msgs[#msgs + 1] = {icon = assert(item.item_icon), name = item.name, count = n}
             end)
 
-            if iprototype.has_type(typeobject.type, "chest") then
+            if typeobject.chest_destroy then
                 local chest_component = ichest.get_chest_component(e)
                 if not ichest.has_item(gameplay_world, e[chest_component]) then
                     iobject.remove(object)

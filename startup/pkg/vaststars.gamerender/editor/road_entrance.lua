@@ -17,7 +17,7 @@ function mt:remove()
 end
 
 function mt:set_srt(s, r, t)
-    self.arrow:send("obj_motion", "set_srt", s, r, t)
+    world:instance_message(self.arrow, "obj_motion", "set_srt", s, r, t)
 end
 
 function mt:set_state(state)
@@ -27,7 +27,7 @@ function mt:set_state(state)
     else
         arrow_color = ARROW_INVALID
     end
-    self.arrow:send("material", "set_property", "u_basecolor_factor", arrow_color)
+    world:instance_message(self.arrow, "material", "set_property", "u_basecolor_factor", arrow_color)
 end
 
 local imaterial = ecs.require "ant.asset|material"
