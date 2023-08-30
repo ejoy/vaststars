@@ -86,13 +86,19 @@ function m:init_world()
     global.startup_args = {}
 end
 
+local TAGS <const> = {
+    "building_new",
+    "building_changed",
+    "base_changed",
+    "lorry_changed",
+    "drone_changed",
+}
+
 function m:gameworld_end()
     local gameplay_ecs = gameplay_core.get_world().ecs
-    gameplay_ecs:clear "building_new"
-    gameplay_ecs:clear "building_changed"
-    gameplay_ecs:clear "base_changed"
-    gameplay_ecs:clear "lorry_changed"
-    gameplay_ecs:clear "drone_changed"
+    for _, tag in ipairs(TAGS) do
+        gameplay_ecs:clear(tag)
+    end
 end
 
 function m:camera_usage()

@@ -13,7 +13,7 @@ local mt = {}
 mt.__index = mt
 
 function mt:remove()
-    self.arrow:remove()
+    world:remove_instance(self.arrow)
 end
 
 function mt:set_srt(s, r, t)

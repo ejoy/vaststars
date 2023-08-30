@@ -79,14 +79,14 @@ local function __create_shadow_object(parent)
 end
 
 local function __create_item_object(prefab, parent, offset_srt)
-    return world:create_instance {
+    local outer = {instance = world:create_instance {
         prefab = prefab,
         parent = parent,
         group = sampler_group,
         on_ready = function (self)
             local root <close> = world:entity(self.tag['*'][1])
             iom.set_srt(root, offset_srt.s or mc.ONE, offset_srt.r or mc.IDENTITY_QUAT, offset_srt.t or mc.ZERO_PT)
-    
+
             for _, eid in ipairs(self.tag['*']) do
                 local e <close> = world:entity(eid, "visible_state?in render_object?in")
                 if e.visible_state then
@@ -97,7 +97,14 @@ local function __create_item_object(prefab, parent, offset_srt)
                 end
             end
         end
-    }
+    }}
+    function outer:remove()
+        world:remove_instance(self.instance)
+    end
+    function outer:send(...)
+        world:instance_message(self.instance, ...)
+    end
+    return outer
 end
 
 local function create(prefab, s, r, t, motion_events)

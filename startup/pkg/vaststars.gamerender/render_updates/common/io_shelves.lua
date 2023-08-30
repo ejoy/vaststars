@@ -137,7 +137,7 @@ function mt:remove()
     self._heap_counts = {}
 
     for _, o in pairs(self._shelves) do
-        o:remove()
+        world:remove_instance(o)
     end
     self._shelves = {}
     for _, o in pairs(self._heaps) do
@@ -152,7 +152,7 @@ function mt:on_position_change(building_srt, group_id)
     self._heap_positions = __get_heap_positions(self._heap_matrices)
 
     for idx, o in pairs(self._shelves) do
-        o:send("on_position_change", self._shelf_matrices[idx], group_id)
+        world:instance_message(o, "on_position_change", self._shelf_matrices[idx], group_id)
     end
     for idx, o in pairs(self._heaps) do
         o:send("on_position_change", self._heap_matrices[idx], group_id)

@@ -184,7 +184,7 @@ function M:stage_ui_update(datamodel)
                 "/pkg/vaststars.resources/" .. typeobject.model,
                 {s = {1, 1, 1}, t = {0, 0, 0}}, typeobject.camera_distance, nil, model_message_func
             )
-            model:send("disable_cast_shadow")
+            world:instance_message(model, "disable_cast_shadow")
 
             local data = __get_shortcur(datamodel.shortcut_id)
             data.prototype = typeobject.id
@@ -227,7 +227,7 @@ function M:stage_ui_update(datamodel)
                 "/pkg/vaststars.resources/" .. typeobject.model,
                 {s = {1, 1, 1}, t = {0, 0, 0}}, typeobject.camera_distance, nil, model_message_func
             )
-            model:send("disable_cast_shadow")
+            world:instance_message(model, "disable_cast_shadow")
         else
             datamodel.category_idx = 0
             datamodel.item_idx = 0
@@ -237,7 +237,7 @@ function M:stage_ui_update(datamodel)
     end
 
     if model then
-        model:send("motion")
+        world:instance_message(model, "motion")
     end
 
     for _ in click_main_button_mb:unpack() do
