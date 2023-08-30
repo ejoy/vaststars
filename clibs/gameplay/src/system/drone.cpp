@@ -1,5 +1,5 @@
 ﻿#include <lua.hpp>
-#include "system/hub.h"
+#include "system/drone.h"
 #include "luaecs.h"
 #include "core/world.h"
 #include "core/capacitance.h"
@@ -866,7 +866,7 @@ lupdate(lua_State *L) {
 }
 
 extern "C" int
-luaopen_vaststars_hub_system(lua_State *L) {
+luaopen_vaststars_drone_system(lua_State *L) {
 	luaL_checkversion(L);
 	luaL_Reg l[] = {
 		{ "build", lbuild },
