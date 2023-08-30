@@ -92,8 +92,8 @@ funcs["chest"] = function (entity, e)
     return entity
 end
 
-funcs["hub"] = function (entity, e)
-    gameplay_core.extend(e, "hub?in chest?in")
+funcs["airport"] = function (entity, e)
+    gameplay_core.extend(e, "airport?in chest?in")
 
     local items = {}
     for i = 1, ichest.MAX_SLOT do

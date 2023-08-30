@@ -17,17 +17,11 @@ local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
 -- enum defined in c 
 local STATUS_HAS_ERROR = 1
-local BERTH_HUB = 0
-local BERTH_RED = 1
-local BERTH_BLUE = 2
-local BERTH_HOME = 3
-local drone_depot = {}
 local lookup_drones = {}
 local drone_offset = 6
 local default_fly_height = 20
 local fly_to_home_height = 15
 local item_height = 15
-local drone_queue = {}
 
 local function __get_location(location)
     return (location >> 16) & 0xFFFF
@@ -51,7 +45,7 @@ local function __get_position(location)
         return math3d.vector(terrain:get_position_by_coord(x, y, 1, 1))
     end
 
-    local idx = (location >> 7) & 0xF
+    local chest_slot = (location >> 7) & 0xF
 
     local building = global.buildings[object.id]
     if not building then
@@ -61,7 +55,7 @@ local function __get_position(location)
     if not io_shelves then
         return math3d.set_index(object.srt.t, 2, item_height)
     end
-    local pos = io_shelves:get_heap_position(idx+1)
+    local pos = io_shelves:get_heap_position(chest_slot)
     if not pos then
         return math3d.set_index(object.srt.t, 2, item_height)
     else
@@ -69,30 +63,19 @@ local function __get_position(location)
     end
 end
 
-local function get_berth(lacation)
-    return (lacation >> 5) & 0x03
+local function __is_home(location)
+    local x, y = ((location >> 24) & 0xFF), (location >> 16) & 0xFF
+    local object = objects:coord(x, y)
+    if object then
+        local typeobject = iprototype.queryByName(object.prototype_name)
+        return iprototype.has_types(typeobject.type, "airport")
+    end
+    return false
 end
 
 local function get_home_pos(pos)
     return math3d.add(math3d.set_index(pos, 2, 0), {6, 8, -6})
 end
-
--- local function on_free_drone(location)
---     local queue = drone_queue[location]
---     local offset = 2
---     local counter = -1
---     for _, drone in ipairs(queue) do
---         if drone.at_home then
---             counter = counter + 1
---             if counter > 0 then
---                 local exz <close> = world:entity(drone.motion_xz)
---                 local pos = iom:get_position(exz)
---                 math3d.set_index(pos, 2, math3d.index(pos, 2) - counter * offset)
---                 iom:set_position(pos)
---             end
---         end
---     end
--- end
 
 local function create_drone(at)
     local homepos = get_home_pos(__get_position(at))
@@ -206,12 +189,6 @@ local function create_drone(at)
             end
         end
     }
-
-    -- if not drone_queue[location] then
-    --     drone_queue[location] = {}
-    -- end
-    -- local queue = drone_queue[location]
-    -- queue[#queue] = task
     return task
 end
 
@@ -267,7 +244,7 @@ function drone_sys:gameworld_update()
                     local to = __get_position(drone.next)
                     local fly_height = get_fly_height(drone.prev, drone.next)
                     -- status : go_home
-                    if get_berth(drone.next) == BERTH_HOME then
+                    if __is_home(drone.next) then
                         current:gohome(flyid, from, get_home_pos(to), fly_height)
                     else
                         if drone.item ~= 0 then
@@ -286,7 +263,7 @@ function drone_sys:gameworld_update()
                         end
                         drone_task[#drone_task + 1] = {flyid, current, from, to, fly_height, drone.maxprogress, drone.maxprogress - drone.progress}
                     end
-                elseif get_berth(drone.prev) == BERTH_HOME and not current.to_home then
+                elseif __is_home(drone.prev) and not current.to_home then
                     -- status : to_home
                     local dst = __get_position(drone.prev)
                     current:gohome(flyid, math3d.set_index(dst, 2, item_height), get_home_pos(dst), fly_to_home_height, 15)

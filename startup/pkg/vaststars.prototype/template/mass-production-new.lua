@@ -35,7 +35,7 @@ local entities = { {
     y = 131
   }, {
     dir = "N",
-    items = {"碎石"},
+    items = {{"碎石", 50}},
     prototype_name = "仓库I",
     x = 117,
     y = 130
@@ -93,7 +93,7 @@ local entities = { {
     y = 134
   }, {
     dir = "N",
-    items = {"石砖"},
+    items = {{"石砖", 50}},
     prototype_name = "仓库I",
     x = 97,
     y = 134
@@ -266,7 +266,7 @@ local entities = { {
     y = 158
   }, {
     dir = "N",
-    items = {"铁矿石"},
+    items = {{"铁矿石", 50}},
     prototype_name = "仓库I",
     x = 96,
     y = 159
@@ -326,7 +326,7 @@ local entities = { {
     y = 152
   }, {
     dir = "N",
-    items = {"碾碎铁矿石"},
+    items = {{"碾碎铁矿石", 50}},
     prototype_name = "仓库I",
     x = 97,
     y = 152
@@ -338,7 +338,7 @@ local entities = { {
     y = 152
   }, {
     dir = "N",
-    items = {"碾碎铁矿石"},
+    items = {{"碾碎铁矿石", 50}},
     prototype_name = "仓库I",
     x = 105,
     y = 152
@@ -350,7 +350,7 @@ local entities = { {
     y = 148
   }, {
     dir = "N",
-    items = {"碾碎铁矿石"},
+    items = {{"碾碎铁矿石", 50}},
     prototype_name = "仓库I",
     x = 108,
     y = 149
@@ -362,7 +362,7 @@ local entities = { {
     y = 148
   }, {
     dir = "N",
-    items = {"碾碎铁矿石"},
+    items = {{"碾碎铁矿石", 50}},
     prototype_name = "仓库I",
     x = 94,
     y = 149
@@ -374,7 +374,7 @@ local entities = { {
     y = 148
   }, {
     dir = "N",
-    items = {"碎石"},
+    items = {{"碎石", 50}},
     prototype_name = "仓库I",
     x = 92,
     y = 149
@@ -422,13 +422,13 @@ local entities = { {
     y = 143
   }, {
     dir = "N",
-    items = {"铁板"},
+    items = {{"铁板", 50}},
     prototype_name = "仓库I",
     x = 93,
     y = 143
   }, {
     dir = "N",
-    items = {"石墨"},
+    items = {{"石墨", 50}},
     prototype_name = "仓库I",
     x = 95,
     y = 143
@@ -464,13 +464,13 @@ local entities = { {
     y = 143
   }, {
     dir = "N",
-    items = {"铁板"},
+    items = {{"铁板", 50}},
     prototype_name = "仓库I",
     x = 109,
     y = 143
   }, {
     dir = "N",
-    items = {"石墨"},
+    items = {{"石墨", 50}},
     prototype_name = "仓库I",
     x = 107,
     y = 143
@@ -1515,7 +1515,7 @@ local entities = { {
     y = 160
   }, {
     dir = "N",
-    items = {"石墨"},
+    items = {{"石墨", 50}},
     prototype_name = "仓库I",
     x = 129,
     y = 161
@@ -1527,7 +1527,7 @@ local entities = { {
     y = 160
   }, {
     dir = "N",
-    items = {"石墨"},
+    items = {{"石墨", 50}},
     prototype_name = "仓库I",
     x = 122,
     y = 161
@@ -1639,7 +1639,7 @@ local entities = { {
     y = 167
   }, {
     dir = "N",
-    items = {"塑料"},
+    items = {{"塑料", 50}},
     prototype_name = "仓库I",
     x = 179,
     y = 165
@@ -1663,7 +1663,7 @@ local entities = { {
     y = 134
   }, {
     dir = "N",
-    items = {"铁齿轮"},
+    items = {{"铁齿轮", 50}},
     prototype_name = "仓库I",
     x = 107,
     y = 134
@@ -1681,7 +1681,7 @@ local entities = { {
     y = 130
   }, {
     dir = "N",
-    items = {"电动机I"},
+    items = {{"电动机I", 50}},
     prototype_name = "仓库I",
     x = 105,
     y = 132
@@ -3470,7 +3470,7 @@ local entities = { {
     y = 158
   }, {
     dir = "N",
-    items = {"铁矿石"},
+    items = {{"铁矿石", 50}},
     prototype_name = "仓库I",
     x = 106,
     y = 159
@@ -3782,7 +3782,7 @@ local entities = { {
     y = 148
   }, {
     dir = "N",
-    items = {"碎石"},
+    items = {{"碎石", 50}},
     prototype_name = "仓库I",
     x = 110,
     y = 149
@@ -3815,13 +3815,13 @@ local entities = { {
     y = 130
   }, {
     dir = "N",
-    items = {"碎石"},
+    items = {{"碎石", 50}},
     prototype_name = "仓库I",
     x = 99,
     y = 124
   }, {
     dir = "N",
-    items = {"地质科技包"},
+    items = {{"地质科技包", 50}},
     prototype_name = "仓库I",
     x = 102,
     y = 124
@@ -3872,13 +3872,13 @@ local entities = { {
     y = 122
   }, {
     dir = "N",
-    items = {"气候科技包"},
+    items = {{"气候科技包", 50}},
     prototype_name = "仓库I",
     x = 148,
     y = 122
   }, {
     dir = "N",
-    items = {"气候科技包"},
+    items = {{"气候科技包", 50}},
     prototype_name = "仓库I",
     x = 150,
     y = 122
@@ -3902,7 +3902,7 @@ local entities = { {
     y = 146
   }, {
     dir = "N",
-    items = {"碎石"},
+    items = {{"碎石", 50}},
     prototype_name = "仓库I",
     x = 102,
     y = 146
@@ -3926,13 +3926,13 @@ local entities = { {
     y = 148
   }, {
     dir = "N",
-    items = {"铁齿轮"},
+    items = {{"铁齿轮", 50}},
     prototype_name = "仓库I",
     x = 88,
     y = 142
   }, {
     dir = "N",
-    items = {"铁齿轮"},
+    items = {{"铁齿轮", 50}},
     prototype_name = "仓库I",
     x = 114,
     y = 142
@@ -3968,7 +3968,7 @@ local entities = { {
     y = 150
   }, {
     dir = "N",
-    items = {"碎石"},
+    items = {{"碎石", 50}},
     prototype_name = "仓库I",
     x = 122,
     y = 148
@@ -3986,7 +3986,7 @@ local entities = { {
     y = 145
   }, {
     dir = "N",
-    items = {"地质科技包"},
+    items = {{"地质科技包", 50}},
     prototype_name = "仓库I",
     x = 130,
     y = 148
@@ -4016,7 +4016,7 @@ local entities = { {
     y = 156
   }, {
     dir = "N",
-    items = {"碎石"},
+    items = {{"碎石", 50}},
     prototype_name = "仓库I",
     x = 102,
     y = 156

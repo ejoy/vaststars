@@ -264,7 +264,7 @@ function M:stage_ui_update(datamodel, object_id)
     for _, _, _, object_id in set_item_mb:unpack() do
         local typeobject = iprototype.queryByName(object.prototype_name)
         local interface = {}
-        if iprototype.has_type(typeobject.type, "hub") then
+        if iprototype.has_type(typeobject.type, "airport") then
             interface.get_item = gen_get_item(1)
             interface.set_item = gen_set_item(1)
         elseif iprototype.has_types(typeobject.type, "station") then

@@ -17,7 +17,7 @@ local assembling_common = require "ui_datamodel.common.assembling"
 local iui = ecs.require "engine.system.ui_system"
 
 local UPS <const> = require("gameplay.interface.constant").UPS
-local CHEST_LIST_TYPES <const> = {"chest", "station", "hub"}
+local CHEST_LIST_TYPES <const> = {"chest", "station", "airport"}
 
 local STATUS_NO_POWER <const> = 1
 local STATUS_IDLE <const> = 2

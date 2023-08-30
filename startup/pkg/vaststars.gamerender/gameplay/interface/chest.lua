@@ -5,7 +5,7 @@ local CHEST_COMPONENT <const> = {
     ["chest"] = "chest",
     ["laboratory"] = "chest",
     ["station"] = "chest",
-    ["hub"] = "hub",
+    ["airport"] = "chest",
 }
 
 local CHEST_TYPES <const> = {
@@ -13,7 +13,7 @@ local CHEST_TYPES <const> = {
     "chest",
     "laboratory",
     "station",
-    "hub",
+    "airport",
 }
 
 local MAX_SLOT <const> = 256

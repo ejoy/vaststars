@@ -105,7 +105,7 @@ init_func["road"] = function (pt, template)
     return template
 end
 
-init_func["hub"] = function (pt, template)
+init_func["airport"] = function (pt, template)
     template.items = template.items
     return template
 end
