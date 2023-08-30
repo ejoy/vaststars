@@ -309,6 +309,7 @@ local enum = {
 		none = 0,
 		supply = 1,
 		demand = 2,
+		transit = 3,
 	},
 }
 
