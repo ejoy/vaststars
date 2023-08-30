@@ -40,7 +40,7 @@
                 align-items: center;
                 justify-content: center;
                 width: 35.00vmin;
-                height:11.00vmin;
+                height:10.0vmin;
                 background-color: rgb(250, 205, 9);
                 border: 0.27vmin rgb(89, 73, 39);
                 background-size: cover;
