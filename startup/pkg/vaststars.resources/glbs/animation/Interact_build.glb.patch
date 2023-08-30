@@ -1,0 +1,32 @@
+---
+file: mesh.prefab
+op: remove
+path: /1
+---
+file: mesh.prefab
+op: remove
+path: /2
+---
+file: mesh.prefab
+op: remove
+path: /1/data/meshskin
+---
+file: mesh.prefab
+op: remove
+path: /1/data/skinning
+---
+file: mesh.prefab
+op: remove
+path: /1/data/scene
+---
+file: mesh.prefab
+op: remove
+path: /1/policy/2
+---
+file: mesh.prefab
+op: remove
+path: /1/policy/3
+---
+file: mesh.prefab
+op: remove
+path: /1/mount

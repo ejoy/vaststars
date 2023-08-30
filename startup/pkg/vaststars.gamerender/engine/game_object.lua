@@ -278,7 +278,7 @@ function igame_object.create(init)
         srt_modifier = imodifier.create_bone_modifier(
             hitch_entity_object.id,
             init.group_id,
-            "/pkg/vaststars.resources/glbs/animation/Interact_build.glb|animation.prefab",
+            "/pkg/vaststars.resources/glbs/animation/Interact_build.glb|mesh.prefab",
             "Bone"
         ),
     }
