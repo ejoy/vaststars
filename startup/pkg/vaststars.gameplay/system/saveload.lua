@@ -20,7 +20,7 @@ do
         local binfile = world.storage_path.."/ecs.bin"
         local writer = luaecs.writer(binfile)
         local components = {
-            --"eid",
+            "eid",
             "REMOVED",
         }
         for _, c in ipairs(require "register.component") do
@@ -46,7 +46,6 @@ do
             ecs:read_component(reader, meta.name, meta.offset, meta.stride, meta.n)
         end
         reader:close()
-        ecs:generate_eid()
     end
 end
 
