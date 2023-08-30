@@ -8,14 +8,8 @@
 #include <map>
 
 struct hub_berth {
-    enum struct berth_type: uint8_t {
-        hub,
-        chest_red,
-        chest_blue,
-        home,
-    };
-    uint32_t unused0 : 5;
-    uint32_t type : 2;
+    uint32_t unused0 : 4;
+    uint32_t type : 3;
     uint32_t chest_slot : 4;
     uint32_t unused1 : 5;
     uint32_t y : 8;

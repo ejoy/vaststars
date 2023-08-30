@@ -71,7 +71,7 @@ struct building_rect {
     }
 };
 
-static hub_berth createBerth(ecs::building const& b, hub_berth::berth_type type, uint8_t chest_slot) {
+static hub_berth createBerth(ecs::building const& b, container::slot::slot_type type, uint8_t chest_slot) {
     return {
         0
         , (uint32_t)type
@@ -213,20 +213,7 @@ static void rebuild(world& w) {
         for (uint8_t i = 0; i < slice.size(); ++i) {
             auto& chestslot = slice[i];
             auto item = chestslot.item;
-            hub_berth::berth_type type;
-            if (chestslot.type == container::slot::slot_type::supply) {
-                type = hub_berth::berth_type::chest_red;
-            }
-            else if (chestslot.type == container::slot::slot_type::demand) {
-                type = hub_berth::berth_type::chest_blue;
-            }
-            else if (chestslot.type == container::slot::slot_type::transit) {
-                type = hub_berth::berth_type::hub;
-            }
-            else {
-                continue;
-            }
-            auto berth = createBerth(building, type, i);
+            auto berth = createBerth(building, chestslot.type, i);
             auto& map = globalmap[item];
             r.each([&](uint8_t x, uint8_t y) {
                 map.insert_or_assign(getxy(x, y), berth);
@@ -265,7 +252,7 @@ static void rebuild(world& w) {
         for (uint8_t i = 0; i < slice.size(); ++i) {
             auto& chestslot = slice[i];
             hub_cache info;
-            info.homeBerth = createBerth(building, hub_berth::berth_type::home, i);
+            info.homeBerth = createBerth(building, container::slot::slot_type::none, i);
             info.homeWidth = homeBuilding.w;
             info.homeHeight = homeBuilding.h;
             info.prototype = building.prototype;
@@ -284,14 +271,14 @@ static void rebuild(world& w) {
                 }
             });
             for (auto h: set) {
-                switch ((hub_berth::berth_type)h.type) {
-                case hub_berth::berth_type::hub:
+                switch ((container::slot::slot_type)h.type) {
+                case container::slot::slot_type::transit:
                     info.hub.emplace_back(h);
                     break;
-                case hub_berth::berth_type::chest_red:
+                case container::slot::slot_type::supply:
                     info.chest_red.emplace_back(h);
                     break;
-                case hub_berth::berth_type::chest_blue:
+                case container::slot::slot_type::demand:
                     info.chest_blue.emplace_back(h);
                     break;
                 default:

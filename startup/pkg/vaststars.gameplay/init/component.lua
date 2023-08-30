@@ -73,8 +73,8 @@ component "airport" {
 
 --
 -- prev/next/mov2
--- | unused(5bit) | type(2bit) | chest(4bit) | unused(3bit) | y(8bit) | x(8bit) |
--- 32            27           25            21             16         8         0
+-- | unused(7bit) | chest(4bit) | unused(3bit) | y(8bit) | x(8bit) |
+-- 32            25            21             16         8         0
 --
 mainkey "drone" {
     "uint16 prototype",
