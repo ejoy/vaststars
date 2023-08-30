@@ -101,10 +101,10 @@ value:
 ---
 file: mesh.prefab
 op: replace
-path: /4/data/animation/low_power
+path: /2/data/animation/low_power
 value: /pkg/vaststars.resources/animations/crusher_animat_low.anim
 ---
 file: mesh.prefab
 op: replace
-path: /4/data/animation/work
+path: /2/data/animation/work
 value: /pkg/vaststars.resources/animations/crusher_animat.anim

@@ -22,12 +22,12 @@ value:
 ---
 file: mesh.prefab
 op: replace
-path: /4/data/animation/work
+path: /2/data/animation/work
 value: /pkg/vaststars.resources/animations/air-filter_animat.anim
 ---
 file: mesh.prefab
 op: replace
-path: /4/data/animation/low_power
+path: /2/data/animation/low_power
 value: /pkg/vaststars.resources/animations/air-filter_animat.anim
 ---
 file: mesh.prefab

@@ -99,7 +99,7 @@ value:
       visible: true
     name: root
     scene: {}
-  mount: 6
+  mount: 5
   policy:
     ant.general|name
     ant.scene|scene_object
@@ -135,7 +135,7 @@ value:
       visible: true
     name: root
     scene: {}
-  mount: 8
+  mount: 7
   policy:
     ant.general|name
     ant.scene|scene_object

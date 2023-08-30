@@ -136,14 +136,14 @@ local function create(prefab, s, r, t, motion_events)
 
         if item_classid == 0 or item_amount == 0 then
             if self.objs[ITEM_INDEX] then
-                self.objs[ITEM_INDEX]:remove()
+                world:remove_instance(self.objs[ITEM_INDEX])
                 self.objs[ITEM_INDEX] = nil
             end
             return
         end
 
         if self.objs[ITEM_INDEX] then
-            self.objs[ITEM_INDEX]:remove()
+            world:remove_instance(self.objs[ITEM_INDEX])
         end
 
         local typeobject = iprototype.queryById(item_classid)

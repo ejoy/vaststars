@@ -37,10 +37,10 @@ value:
 ---
 file: mesh.prefab
 op: replace
-path: /8/data/animation/low_power
+path: /2/data/animation/low_power
 value: /pkg/vaststars.resources/animations/miner_Bone_low.anim
 ---
 file: mesh.prefab
 op: replace
-path: /8/data/animation/work
+path: /2/data/animation/work
 value: /pkg/vaststars.resources/animations/miner_Bone.anim
