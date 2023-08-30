@@ -197,7 +197,8 @@ init = {
 function igame_object.create(init)
     local children = __get_hitch_children(RESOURCES_BASE_PATH:format(init.prefab), init.color, init.animation_name, init.final_frame, init.emissive_color, init.render_layer)
     local srt = init.srt or {}
-    local hitch_entity_object = ientity_object.create(world:create_entity({
+    local hitch_entity_object = ientity_object.create(world:create_entity {
+        group = init.group_id,
         policy = {
             "ant.general|name",
             "ant.render|hitch_object",
@@ -217,7 +218,7 @@ function igame_object.create(init)
             visible_state = "main_view|cast_shadow|selectable",
             scene_needchange = true,
         }
-    }, init.group_id), hitch_events)
+    }, hitch_events)
 
     local function remove(self)
         self.hitch_entity_object:remove()

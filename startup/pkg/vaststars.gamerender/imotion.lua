@@ -18,7 +18,8 @@ function motion.create_motion_object(s, r, t, parent, ev)
         world:group_flush "view_visible"
         motion.sampler_group = sampler_group
     end
-    local m_eid = world:create_entity({
+    local m_eid = world:create_entity {
+        group = motion.sampler_group,
         policy = {
             "ant.scene|scene_object",
             "ant.motion_sampler|motion_sampler",
@@ -34,7 +35,7 @@ function motion.create_motion_object(s, r, t, parent, ev)
             motion_sampler = {},
             name = "motion_sampler",
         }
-    }, motion.sampler_group)
+    }
     return ev and ientity_object.create(m_eid, events) or m_eid
 end
 return motion

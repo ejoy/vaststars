@@ -21,7 +21,8 @@ local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
 local sampler_group
 
 local function __create_motion_object(s, r, t, events)
-    return ientity_object.create(world:create_entity({
+    return ientity_object.create(world:create_entity {
+        group = sampler_group,
         policy = {
             "ant.scene|scene_object",
             "ant.motion_sampler|motion_sampler",
@@ -39,7 +40,7 @@ local function __create_motion_object(s, r, t, events)
                 ims.set_tween(e, ltween.type("None"), ltween.type("None"))
             end
         }
-    }, sampler_group), events)
+    }, events)
 end
 
 local function __create_lorry_object(prefab, parent)
