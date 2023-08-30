@@ -195,9 +195,9 @@ static void rebuild(world& w) {
     w.hub_time = 0;
     std::map<uint16_t, flatmap<uint16_t, hub_berth>> globalmap;
     flatset<uint16_t> used_id;
-    for (auto& v : ecs_api::select<ecs::hub>(w.ecs)) {
-        auto& hub = v.get<ecs::hub>();
-        used_id.insert(hub.id);
+    for (auto& v : ecs_api::select<ecs::airport>(w.ecs)) {
+        auto& airport = v.get<ecs::airport>();
+        used_id.insert(airport.id);
     }
 
     for (auto& v : ecs_api::select<ecs::chest, ecs::building>(w.ecs)) {
@@ -245,8 +245,8 @@ static void rebuild(world& w) {
         }
         return 0;
     };
-    for (auto& v : ecs_api::select<ecs::hub, ecs::chest, ecs::building, ecs::capacitance>(w.ecs)) {
-        auto& hub = v.get<ecs::hub>();
+    for (auto& v : ecs_api::select<ecs::airport, ecs::chest, ecs::building, ecs::capacitance>(w.ecs)) {
+        auto& airport = v.get<ecs::airport>();
         auto& chest = v.get<ecs::chest>();
         auto c = container::index::from(chest.chest);
         if (c == container::kInvalidIndex) {
@@ -258,9 +258,9 @@ static void rebuild(world& w) {
         uint16_t supply_area = prototype::get<"supply_area">(w, building.prototype);
         building_rect r(building, area, supply_area);
         auto slice = chest::array_slice(w, c);
-        if (hub.id == 0) {
-            hub.id = create_hubid();
-            created_hub.insert_or_assign(getxy(building.x, building.y), hub.id);
+        if (airport.id == 0) {
+            airport.id = create_hubid();
+            created_hub.insert_or_assign(getxy(building.x, building.y), airport.id);
         }
         for (uint8_t i = 0; i < slice.size(); ++i) {
             auto& chestslot = slice[i];
@@ -272,7 +272,7 @@ static void rebuild(world& w) {
             info.capacitance = &v.get<ecs::capacitance>();
             if (chestslot.item == 0) {
                 info.item = 0;
-                hubs.emplace(getHubKey(hub.id, i), info);
+                hubs.emplace(getHubKey(airport.id, i), info);
                 continue;
             }
             auto& map = globalmap[chestslot.item];
@@ -300,7 +300,7 @@ static void rebuild(world& w) {
                 }
             }
             info.item = info.idle()? 0 : chestslot.item;
-            hubs.emplace(getHubKey(hub.id, i), std::move(info));
+            hubs.emplace(getHubKey(airport.id, i), std::move(info));
         }
     }
     w.hubs = std::move(hubs);

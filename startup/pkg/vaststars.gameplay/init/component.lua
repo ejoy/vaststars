@@ -67,7 +67,7 @@ tag "lorry_free"
 tag "lorry_removed"
 tag "lorry_willremove"
 
-component "hub" {
+component "airport" {
     "uint16 id",
 }
 

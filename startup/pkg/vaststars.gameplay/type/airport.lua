@@ -5,7 +5,7 @@ local iBuilding = require "interface.building"
 
 local InvalidChest <const> = 0
 
-local c = type "hub"
+local c = type "airport"
     .supply_area "size"
 
 function c:preinit(object)
