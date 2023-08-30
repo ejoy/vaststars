@@ -5760,7 +5760,7 @@ local function prepare(world)
   end
 
 return {
-    name = "规模测试(旧）",
+    name = "规模测试(旧)",
     entities = entities,
     road = road,
     mineral = mineral,
