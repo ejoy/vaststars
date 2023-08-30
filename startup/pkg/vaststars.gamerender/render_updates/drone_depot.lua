@@ -189,7 +189,7 @@ end
 
 function drone_depot_sys:gameworld_update()
     local world = gameplay_core.get_world()
-    for e in world.ecs:select "hub chest:in building:in eid:in" do
+    for e in world.ecs:select "airport chest:in building:in eid:in" do
         -- object may not have been fully created yet
         local object = objects:coord(e.building.x, e.building.y)
         if not object then
