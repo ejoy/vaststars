@@ -518,8 +518,8 @@ local entities = { {
     y = 130
   }, {
     dir = "N",
-    items = {"碎石"},
-    prototype_name = "无人机平台I",
+    items = {{"碎石", 50}},
+    prototype_name = "仓库I",
     x = 97,
     y = 124
   }, {
@@ -3840,21 +3840,21 @@ local entities = { {
     y = 130
   }, {
     dir = "N",
-    items = {{"碎石", 50}},
-    prototype_name = "仓库I",
+    items = {"碎石"},
+    prototype_name = "无人机平台I",
     x = 99,
     y = 124
   }, {
     dir = "N",
     items = {{"地质科技包", 50}},
     prototype_name = "仓库I",
-    x = 102,
+    x = 104,
     y = 124
   }, {
     dir = "N",
     items = {"地质科技包"},
     prototype_name = "无人机平台I",
-    x = 104,
+    x = 102,
     y = 124
   }, {
     dir = "N",
