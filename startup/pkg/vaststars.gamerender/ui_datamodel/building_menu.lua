@@ -198,7 +198,7 @@ function M:create(object_id)
     if e.factory then
         lorry_factory_inc_lorry = true
     end
-    if e.hub or e.station then
+    if e.airport or e.station then
         set_item = true
     end
 

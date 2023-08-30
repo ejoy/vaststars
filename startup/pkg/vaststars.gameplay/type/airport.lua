@@ -27,7 +27,7 @@ end
 function c:ctor(init, pt)
     local world = self
     local e = {
-        hub = {
+        airport = {
             id = 0,
         },
         chest = {
