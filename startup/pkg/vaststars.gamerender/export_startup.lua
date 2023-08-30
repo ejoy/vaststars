@@ -93,11 +93,11 @@ funcs["chest"] = function (entity, e)
 end
 
 funcs["hub"] = function (entity, e)
-    gameplay_core.extend(e, "hub?in")
+    gameplay_core.extend(e, "hub?in chest?in")
 
     local items = {}
     for i = 1, ichest.MAX_SLOT do
-        local slot = ichest.get(gameplay_core.get_world(), e.hub, i)
+        local slot = ichest.get(gameplay_core.get_world(), e.chest, i)
         if not slot then
             break
         end

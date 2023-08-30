@@ -11,9 +11,11 @@ local CHEST_TYPE <const> = {
     [0] = 0,
     [1] = 1,
     [2] = 2,
+    [3] = 3,
     none = 0,
     supply = 1,
     demand = 2,
+    transit = 3,
 }
 local function chest_slot(t)
     assert(t.type)
@@ -227,28 +229,28 @@ function m.station_set(world, e, items)
 end
 
 function m.hub_set(world, e, items)
-    if e.hub.chest == InvalidChest then
+    if e.chest.chest == InvalidChest then
         local info = {}
         for i, item in ipairs(items) do
             info[i] = {
-                type = "demand",
+                type = "transit",
                 item = item,
                 limit = item ~= 0 and prototype.queryById(item).hub_limit or 0,
                 amount = 0,
             }
         end
-        e.hub.chest = m.create(world, info)
+        e.chest.chest = m.create(world, info)
         chest_dirty(world, e)
         return
     end
     for i, item in ipairs(items) do
-        local slot = cChest.get(world._cworld, e.hub.chest, i)
+        local slot = cChest.get(world._cworld, e.chest.chest, i)
         assert(slot and slot.type ~= "none")
         if slot.item == item then
             if item ~= 0 then
                 local limit = prototype.queryById(item).hub_limit
                 if slot.limit ~= limit then
-                    cChest.set(world._cworld, e.hub.chest, i, {
+                    cChest.set(world._cworld, e.chest.chest, i, {
                         limit = limit,
                     })
                 end
@@ -257,7 +259,7 @@ function m.hub_set(world, e, items)
             if slot.item ~= 0 and slot.amount > 0 then
                 iBackpack.place(world, slot.item, slot.amount)
             end
-            cChest.set(world._cworld, e.hub.chest, i, {
+            cChest.set(world._cworld, e.chest.chest, i, {
                 item = item,
                 limit = item ~= 0 and prototype.queryById(item).hub_limit or 0,
                 amount = 0,

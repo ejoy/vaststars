@@ -36,7 +36,7 @@ local function dirty_changed_entity(world, e)
     if e.fluidbox or e.fluidboxes then
         flags = flags | DirtyFluidflow
     end
-    if e.chest or e.hub then
+    if e.chest then
         flags = flags | DirtyHub
     end
     if e.station then
@@ -55,7 +55,7 @@ local function dirty_entity(world, e)
     if e.fluidbox or e.fluidboxes then
         flags = flags | DirtyFluidflow
     end
-    if e.chest or e.hub then
+    if e.chest then
         flags = flags | DirtyHub
     end
     if e.park then

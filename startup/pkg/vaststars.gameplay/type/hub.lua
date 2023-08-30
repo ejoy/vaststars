@@ -29,6 +29,8 @@ function c:ctor(init, pt)
     local e = {
         hub = {
             id = 0,
+        },
+        chest = {
             chest = InvalidChest
         }
     }

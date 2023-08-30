@@ -34,15 +34,6 @@ building createBuildingCache(world& w, ecs::building& b, uint16_t chest) {
 
 static void rebuild(world& w) {
     w.buildings.clear();
-    for (auto& v : ecs_api::select<ecs::hub, ecs::building>(w.ecs)) {
-        auto& hub = v.get<ecs::hub>();
-        auto c = container::index::from(hub.chest);
-        if (c == container::kInvalidIndex) {
-            continue;
-        }
-        auto& b = v.get<ecs::building>();
-        w.buildings.insert_or_assign(getxy(b.x, b.y), createBuildingCache(w, b, hub.chest));
-    }
     for (auto& v : ecs_api::select<ecs::chest, ecs::building>(w.ecs)) {
         auto& chest = v.get<ecs::chest>();
         auto c = container::index::from(chest.chest);

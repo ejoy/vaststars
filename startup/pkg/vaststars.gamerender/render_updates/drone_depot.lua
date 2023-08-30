@@ -189,7 +189,7 @@ end
 
 function drone_depot_sys:gameworld_update()
     local world = gameplay_core.get_world()
-    for e in world.ecs:select "hub:in building:in eid:in" do
+    for e in world.ecs:select "hub chest:in building:in eid:in" do
         -- object may not have been fully created yet
         local object = objects:coord(e.building.x, e.building.y)
         if not object then
@@ -201,7 +201,7 @@ function drone_depot_sys:gameworld_update()
 
         local heap_count = 0
         for i = 1, ichest.MAX_SLOT do
-            local slot = world:container_get(e.hub, i)
+            local slot = world:container_get(e.chest, i)
             if not slot then
                 break
             end
@@ -217,7 +217,7 @@ function drone_depot_sys:gameworld_update()
         if shelves then
             if shelves.heap_count == heap_count then
                 for i = 1, heap_count do
-                    local slot = world:container_get(e.hub, i)
+                    local slot = world:container_get(e.chest, i)
                     if not slot then
                         break
                     end
@@ -239,7 +239,7 @@ function drone_depot_sys:gameworld_update()
                 end
             else
                 for i = 1, heap_count do
-                    local slot = world:container_get(e.hub, i)
+                    local slot = world:container_get(e.chest, i)
                     if not slot then
                         break
                     end
@@ -279,7 +279,7 @@ function drone_depot_sys:gameworld_update()
                 heap_count = heap_count,
             }
             for i = 1, ichest.MAX_SLOT do
-                local slot = ichest.get(world, e.hub, i)
+                local slot = ichest.get(world, e.chest, i)
                 if not slot then
                     break
                 end

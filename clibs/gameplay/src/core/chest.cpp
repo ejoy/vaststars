@@ -169,10 +169,11 @@ lget(lua_State* L) {
     auto& s = chest::array_at(w, c, offset);
     lua_createtable(L, 0, 7);
     switch (s.type) {
-    case container::slot::slot_type::none:   lua_pushstring(L, "none"); break;
-    case container::slot::slot_type::supply: lua_pushstring(L, "supply"); break;
-    case container::slot::slot_type::demand: lua_pushstring(L, "demand"); break;
-    default:                                 lua_pushstring(L, "unknown"); break;
+    case container::slot::slot_type::none:    lua_pushstring(L, "none"); break;
+    case container::slot::slot_type::supply:  lua_pushstring(L, "supply"); break;
+    case container::slot::slot_type::demand:  lua_pushstring(L, "demand"); break;
+    case container::slot::slot_type::transit: lua_pushstring(L, "transit"); break;
+    default:                                  lua_pushstring(L, "unknown"); break;
     }
     lua_setfield(L, -2, "type");
     lua_pushinteger(L, s.item);

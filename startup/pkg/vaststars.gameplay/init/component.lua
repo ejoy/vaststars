@@ -69,7 +69,6 @@ tag "lorry_willremove"
 
 component "hub" {
     "uint16 id",
-    "uint16 chest",
 }
 
 --

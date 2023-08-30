@@ -52,6 +52,7 @@ public:
             none = 0,
             supply,
             demand,
+            transit,
         };
         slot_type type = slot_type::none;
         uint8_t   eof;
