@@ -65,7 +65,7 @@ local function writeEntityH(components)
     write "#undef tag"
     write ""
     write "using namespace vaststars;"
-    write "static_assert(ecs_api::component_id<ecs::eid> == ecs_api::EntityID);"
+    write "static_assert(ecs_api::component_id<ecs::eid> == ecs_api::COMPONENT::EID);"
     write ""
 
     return table.concat(out, "\n")
