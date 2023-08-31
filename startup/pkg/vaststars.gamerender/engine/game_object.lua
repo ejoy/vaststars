@@ -168,6 +168,7 @@ local function __create_efk_object(efk, srt, parent, group_id, auto_play)
             r = srt.r,
         },
         group_id = group_id,
+        visible = true,
     }), efk_events)
 end
 
