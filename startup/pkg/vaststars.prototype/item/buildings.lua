@@ -200,7 +200,7 @@ prototype "无人机仓库III" {
 
 prototype "无人机平台I" {
     type = {"item"},
-    item_category = "物流",
+    --item_category = "物流",
     station_limit = 8,
     pile = "2x4x2",
     hub_limit = 16,
@@ -214,7 +214,7 @@ prototype "无人机平台I" {
 
 prototype "无人机平台II" {
     type = {"item"},
-    item_category = "物流",
+    --item_category = "物流",
     station_limit = 8,
     pile = "2x4x2",
     hub_limit = 16,
@@ -228,7 +228,7 @@ prototype "无人机平台II" {
 
 prototype "无人机平台III" {
     type = {"item"},
-    item_category = "物流",
+    --item_category = "物流",
     station_limit = 8,
     pile = "2x4x2",
     hub_limit = 16,
