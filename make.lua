@@ -17,6 +17,12 @@ elseif lm.os == "macos" then
     lm.sys = "macos11.0"
 end
 
+lm:config "game_config" {
+    msvc = {
+        flags = "/utf-8",
+    },
+}
+
 lm.ios = {
     flags = {
         "-fembed-bitcode",
@@ -49,6 +55,10 @@ end)()
 lm.builddir = ("build/%s/%s"):format(plat, lm.mode)
 lm.bindir = ("bin/%s/%s"):format(plat, lm.mode)
 
+lm.configs = {
+    "game_config",
+}
+
 local EnableSanitize = false
 local EnableLog = false
 
@@ -63,12 +73,13 @@ if EnableSanitize then
         },
         gcc = {
             ldflags = "-fsanitize=address"
-        },  
+        },
         clang = {
             ldflags = "-fsanitize=address"
         }
     }
     lm.configs = {
+        "game_config",
         "sanitize"
     }
     lm:msvc_copydll "copy_asan" {
