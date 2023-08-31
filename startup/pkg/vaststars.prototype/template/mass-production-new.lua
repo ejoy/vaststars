@@ -567,6 +567,11 @@ local entities = { {
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
+    x = 184,
+    y = 167
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
     x = 107,
     y = 142
   }, {
