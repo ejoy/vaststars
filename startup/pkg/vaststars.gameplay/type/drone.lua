@@ -4,7 +4,7 @@ local c = type "drone"
     .cost "energy"
 
 function c:ctor(init, pt)
-    local home = (init.slot << 16) | (init.x << 8) | init.y
+    local home = (init.x << 8) | init.y
     return {
         drone = {
             prototype = pt.id,

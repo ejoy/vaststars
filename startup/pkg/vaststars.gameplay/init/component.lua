@@ -69,6 +69,7 @@ tag "lorry_willremove"
 
 component "airport" {
     "uint16 id",
+    "uint16 item",
 }
 
 --
@@ -77,14 +78,14 @@ component "airport" {
 -- 32            25            21             16         8         0
 --
 mainkey "drone" {
-    "uint16 prototype",
-    "uint16 item",
-    "uint32 home",
     "uint32 prev",
     "uint32 next",
     "uint32 mov2",
     "uint16 maxprogress",
     "uint16 progress",
+    "uint16 item",
+    "uint16 prototype",
+    "uint16 home",
     "uint8 status",
 }
 tag "drone_changed"

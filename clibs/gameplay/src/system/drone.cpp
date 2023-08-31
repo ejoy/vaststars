@@ -222,7 +222,7 @@ static void rebuild(world& w) {
     }
 
     flatmap<uint16_t, uint16_t> created_airport;
-    std::map<uint32_t, airport> airports;
+    std::map<uint16_t, airport> airports;
     uint16_t maxid = 1;
     auto create_hubid = [&]()->uint16_t {
         for (; maxid <= (std::numeric_limits<uint16_t>::max)(); ++maxid) {
@@ -232,63 +232,54 @@ static void rebuild(world& w) {
         }
         return 0;
     };
-    for (auto& v : ecs_api::select<ecs::airport, ecs::chest, ecs::building, ecs::capacitance>(w.ecs)) {
+    for (auto& v : ecs_api::select<ecs::airport, ecs::building, ecs::capacitance>(w.ecs)) {
         auto& airport = v.get<ecs::airport>();
-        auto& chest = v.get<ecs::chest>();
-        auto c = container::index::from(chest.chest);
-        if (c == container::kInvalidIndex) {
-            continue;
-        }
         auto& building = v.get<ecs::building>();
         uint16_t area = prototype::get<"area">(w, building.prototype);
         auto homeBuilding = createBuildingCache(w, building, 0);
         uint16_t supply_area = prototype::get<"supply_area">(w, building.prototype);
         building_rect r(building, area, supply_area);
-        auto slice = chest::array_slice(w, c);
         if (airport.id == 0) {
             airport.id = create_hubid();
             created_airport.insert_or_assign(getxy(building.x, building.y), airport.id);
         }
-        for (uint8_t i = 0; i < slice.size(); ++i) {
-            auto& chestslot = slice[i];
-            struct airport info;
-            info.homeBerth = createBerth(building, container::slot::slot_type::none, i);
-            info.homeWidth = homeBuilding.w;
-            info.homeHeight = homeBuilding.h;
-            info.prototype = building.prototype;
-            info.capacitance = &v.get<ecs::capacitance>();
-            if (chestslot.item == 0) {
-                info.item = 0;
-                airports.emplace(getHubKey(airport.id, i), info);
-                continue;
-            }
-            auto& map = globalmap[chestslot.item];
-            flatset<airport::berth> set;
-            r.each([&](uint8_t x, uint8_t y) {
-                if (auto pm = map.find(getxy(x, y))) {
-                    auto m = *pm;
-                    set.insert(m);
-                }
-            });
-            for (auto h: set) {
-                switch ((container::slot::slot_type)h.type) {
-                case container::slot::slot_type::transit:
-                    info.hub.emplace_back(h);
-                    break;
-                case container::slot::slot_type::supply:
-                    info.chest_red.emplace_back(h);
-                    break;
-                case container::slot::slot_type::demand:
-                    info.chest_blue.emplace_back(h);
-                    break;
-                default:
-                    assert(false);
-                    break;
-                }
-            }
-            info.item = info.idle()? 0 : chestslot.item;
-            airports.emplace(getHubKey(airport.id, i), std::move(info));
+        struct airport info;
+        info.homeBerth = createBerth(building, container::slot::slot_type::none, 0);
+        info.homeWidth = homeBuilding.w;
+        info.homeHeight = homeBuilding.h;
+        info.prototype = building.prototype;
+        info.capacitance = &v.get<ecs::capacitance>();
+        if (airport.item == 0) {
+            info.item = 0;
+            airports.emplace(airport.id, info);
+            continue;
         }
+        auto& map = globalmap[airport.item];
+        flatset<airport::berth> set;
+        r.each([&](uint8_t x, uint8_t y) {
+            if (auto pm = map.find(getxy(x, y))) {
+                auto m = *pm;
+                set.insert(m);
+            }
+        });
+        for (auto h: set) {
+            switch ((container::slot::slot_type)h.type) {
+            case container::slot::slot_type::transit:
+                info.hub.emplace_back(h);
+                break;
+            case container::slot::slot_type::supply:
+                info.chest_red.emplace_back(h);
+                break;
+            case container::slot::slot_type::demand:
+                info.chest_blue.emplace_back(h);
+                break;
+            default:
+                assert(false);
+                break;
+            }
+        }
+        info.item = info.idle()? 0 : airport.item;
+        airports.emplace(airport.id, std::move(info));
     }
     w.airports = std::move(airports);
 
@@ -299,8 +290,8 @@ static void rebuild(world& w) {
         case drone_status::has_error:
             break;
         case drone_status::init:
-            if (auto p = created_airport.find(drone.home & 0xFFFF)) {
-                drone.home = *p | (drone.home & 0xFFFF0000);
+            if (auto p = created_airport.find(drone.home)) {
+                drone.home = *p;
                 CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, ecs::drone& drone, airport const& info) {
                     drone.prev = std::bit_cast<uint32_t>(info.homeBerth);
                     if (info.item == 0) {

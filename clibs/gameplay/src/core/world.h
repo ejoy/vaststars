@@ -34,7 +34,7 @@ struct world {
     techtree_mgr techtree;
     statistics stat;
     roadnet::network rw;
-    std::map<uint32_t, airport> airports;
+    std::map<uint16_t, airport> airports;
     flatmap<uint16_t, building> buildings;
     market market;
     uint64_t time = 0;
