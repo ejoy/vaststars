@@ -235,19 +235,16 @@ static void rebuild(world& w) {
     for (auto& v : ecs_api::select<ecs::airport, ecs::building, ecs::capacitance>(w.ecs)) {
         auto& airport = v.get<ecs::airport>();
         auto& building = v.get<ecs::building>();
-        uint16_t area = prototype::get<"area">(w, building.prototype);
-        auto homeBuilding = createBuildingCache(w, building, 0);
-        uint16_t supply_area = prototype::get<"supply_area">(w, building.prototype);
-        building_rect r(building, area, supply_area);
         if (airport.id == 0) {
             airport.id = create_hubid();
             created_airport.insert_or_assign(getxy(building.x, building.y), airport.id);
         }
+        auto homeBuilding = createBuildingCache(w, building, 0);
         struct airport info;
-        info.homeBerth = createBerth(building, container::slot::slot_type::none, 0);
-        info.homeWidth = homeBuilding.w;
-        info.homeHeight = homeBuilding.h;
         info.prototype = building.prototype;
+        info.width = homeBuilding.w;
+        info.height = homeBuilding.h;
+        info.homeBerth = createBerth(building, container::slot::slot_type::none, 0);
         info.capacitance = &v.get<ecs::capacitance>();
         if (airport.item == 0) {
             info.item = 0;
@@ -256,7 +253,9 @@ static void rebuild(world& w) {
         }
         auto& map = globalmap[airport.item];
         flatset<airport::berth> set;
-        r.each([&](uint8_t x, uint8_t y) {
+        uint16_t area = prototype::get<"area">(w, building.prototype);
+        uint16_t supply_area = prototype::get<"supply_area">(w, building.prototype);
+        building_rect(building, area, supply_area).each([&](uint8_t x, uint8_t y) {
             if (auto pm = map.find(getxy(x, y))) {
                 auto m = *pm;
                 set.insert(m);
@@ -545,7 +544,7 @@ static std::optional<HubSearcher::Node> FindHubForce(world& w, const HubSearcher
 static void GoHome(world& w, DroneEntity& e, ecs::drone& drone, const airport& info) {
     assert((drone_status)drone.status != drone_status::at_home);
     SetStatus(drone, drone_status::go_home);
-    building homeBuilding {0,0, info.homeWidth, info.homeHeight};
+    building homeBuilding {0, 0, info.width, info.height};
     HubSearcher::Node node {
         info.homeBerth,
         &homeBuilding,

@@ -30,8 +30,8 @@ struct airport {
     std::vector<berth> chest_red;
     std::vector<berth> chest_blue;
     berth homeBerth;
-    uint8_t homeWidth;
-    uint8_t homeHeight;
+    uint8_t width;
+    uint8_t height;
     uint16_t item;
     uint16_t prototype;
     ecs::capacitance* capacitance;
