@@ -3683,6 +3683,11 @@ local entities = { {
     x = 201,
     y = 120
   }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 100,
+    y = 124
+  }, {
     dir = "E",
     items = {{"supply", "铁矿石", "10"}},
     prototype_name = "物流站",
