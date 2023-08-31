@@ -122,7 +122,6 @@ system "init_system"
     .require_policy "engine_utils"
     .require_policy "mod"
     .implement "init_system.lua"
-    .method "init_world"
 
 system "game_init_system"
     .require_policy "engine"
@@ -131,135 +130,87 @@ system "game_init_system"
     .require_policy "mod"
     .require_policy "gameplay"
     .implement "game_init_system.lua"
-    .method "init_world"
-    .method "gameworld_end"
-    .method "camera_usage"
-    .method "frame_update"
 
 ----------------------------------------------------
 ----------------------------------------------------
 -- engine_utils
 system "ui_system"
     .implement "engine/system/ui_system.lua"
-    .method "ui_update"
-    .method "camera_usage"
-    .method "exit"
 
 system "camera_controller"
     .implement "engine/system/camera_controller.lua"
-    .method "camera_usage"
 
 system "entity_object_system"
     .implement "engine/system/entity_object_system.lua"
-    .method "scene_update"
 
 system "debug_system"
     .implement "debug_system.lua"
-    .method "init_world"
-    .method "ui_update"
 
 system "update_system"
     .implement "update_system.lua"
-    .method "data_changed"
 
 system "pick_object_sys"
     .implement "pick_object_system.lua"
-    .method "prototype_restore"
 
 ----------------------------------------------------
 ----------------------------------------------------
 -- render_updates
 system "assembling_system"
     .implement "render_updates/assembling.lua"
-    .method "gameworld_prebuild"
-    .method "gameworld_build"
-    .method "gameworld_update"
 
 system "daynight_system"
     .implement "render_updates/daynight.lua"
-    .method "gameworld_update"
 
 system "building_system"
     .implement "render_updates/building.lua"
-    .method "gameworld_update"
-    .method "gameworld_build"
 
 system "inventory_system"
     .implement "render_updates/inventory.lua"
-    .method "gameworld_update"
 
 system "drone_system"
     .implement "render_updates/drone.lua"
-    .method "gameworld_update"
-    .method "gameworld_clean"
-    .method "end_frame"
 
 system "drone_depot_systme"
     .implement "render_updates/drone_depot.lua"
-    .method "gameworld_update"
 
 system "work_state_system"
     .implement "render_updates/work_state.lua"
-    .method "gameworld_update"
 
 system "task_system"
     .implement "render_updates/task.lua"
-    .method "gameworld_update"
 
 system "storage_tank_system"
     .implement "render_updates/storage_tank.lua"
-    .method "gameworld_build"
 
 system "statistic_system"
     .implement "render_updates/statistic.lua"
-    .method "gameworld_update"
 
 system "station_system"
     .implement "render_updates/station.lua"
-    .method "gameworld_update"
 
 system "guide_system"
     .implement "render_updates/guide.lua"
-    .method "gameworld_update"
 
 system "science_system"
     .implement "render_updates/science.lua"
-    .method "gameworld_update"
 
 system "lorry_system"
     .implement "render_updates/lorry.lua"
-    .method "prototype_restore"
-    .method "gameworld_prebuild"
-    .method "gameworld_update"
-    .method "gameworld_clean"
 
 system "fluidbox_system"
     .implement "render_updates/fluidbox.lua"
-    .method "gameworld_prebuild"
-    .method "gameworld_build"
-    .method "gameworld_clean"
-    .method "exit"
 
 system "ing_res_motion_system"
     .implement "render_updates/ing_res_motion.lua"
-    .method "gameworld_update"
-    .method "gameworld_clean"
 
 system "road_system"
     .implement "render_updates/road.lua"
-    .method "gameworld_prebuild"
-    .method "gameworld_build"
 
 system "chimney_system"
     .implement "render_updates/chimney.lua"
-    .method "gameworld_build"
 
 system "power_check_system"
     .implement "power_check_system.lua"
-    .method "gameworld_prebuild"
-    .method "gameworld_update"
-    .method "gameworld_clean"
 
 system "prototype_cache_system"
     .implement "prototype_cache.lua"
-    .method "prototype_restore"

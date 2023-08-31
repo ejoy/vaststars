@@ -6,4 +6,3 @@ component "billboard"
 
 system "billboard_system"
     .implement "billboard.lua"
-    .method "camera_usage"
