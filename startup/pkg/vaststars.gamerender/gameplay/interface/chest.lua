@@ -5,7 +5,6 @@ local CHEST_COMPONENT <const> = {
     ["chest"] = "chest",
     ["laboratory"] = "chest",
     ["station"] = "chest",
-    ["airport"] = "chest",
 }
 
 local CHEST_TYPES <const> = {
