@@ -1,5 +1,7 @@
 local lm = require "luamake"
 
+lm:required_version "1.4"
+
 lm.mode = "debug"
 lm.compile_commands = "build"
 lm.visibility = "default"
