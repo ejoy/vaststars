@@ -1456,7 +1456,7 @@ prototype "物流车站1" {
   icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
   effects = {
     unlock_recipe = {"出货车站打印","收货车站打印"},
-    unlock_item = {"出货车站","收货车站"},
+    unlock_item = {"物流站"},
   },
   prerequisites = {"自动化1"},
   ingredients = {
