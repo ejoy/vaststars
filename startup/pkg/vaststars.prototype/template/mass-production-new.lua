@@ -2005,6 +2005,41 @@ local entities = { {
     x = 163,
     y = 179
   }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 72,
+    y = 91
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 121,
+    y = 161
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 102,
+    y = 155
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 94,
+    y = 162
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 128,
+    y = 161
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 191,
+    y = 166
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 191,
+    y = 174
+  }, {
     dir = "W",
     fluid_name = "氧气",
     prototype_name = "管道1-T型",
