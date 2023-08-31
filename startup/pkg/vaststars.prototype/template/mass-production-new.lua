@@ -1762,10 +1762,15 @@ local entities = { {
     x = 189,
     y = 172
   }, {
-    dir = "S",
+    dir = "W",
     prototype_name = "停车站",
-    x = 90,
-    y = 128
+    x = 64,
+    y = 92
+  }, {
+    dir = "W",
+    prototype_name = "停车站",
+    x = 190,
+    y = 114
   }, {
     dir = "S",
     prototype_name = "停车站",
@@ -1776,16 +1781,6 @@ local entities = { {
     prototype_name = "停车站",
     x = 84,
     y = 140
-  }, {
-    dir = "S",
-    prototype_name = "停车站",
-    x = 112,
-    y = 152
-  },  {
-    dir = "S",
-    prototype_name = "停车站",
-    x = 88,
-    y = 152
   }, {
     dir = "E",
     fluid_name = "纯水",
