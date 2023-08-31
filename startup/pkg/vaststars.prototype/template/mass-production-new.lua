@@ -44,7 +44,7 @@ local entities = { {
     items = {"碎石"},
     prototype_name = "无人机平台I",
     x = 117,
-    y = 128
+    y = 129
   }, {
     dir = "N",
     prototype_name = "采矿机I",
