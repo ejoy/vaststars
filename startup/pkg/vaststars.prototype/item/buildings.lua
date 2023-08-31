@@ -605,9 +605,23 @@ prototype "科研中心III" {
     item_description = "致力于科学研究和开发活动的设施",
 }
 
-prototype "出货车站" {
+prototype "物流站" {
     type = {"item"},
     item_category = "物流",
+    station_limit = 8,
+    pile = "2x4x2",
+    hub_limit = 16,
+    drone_depot_gap3 = "0.65x0.2x0.65",
+    backpack_limit = 20,
+    item_order = 15,
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/goodstation-input.texture",
+    pile_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_description = "给运输车提供货物的车站",
+}
+
+prototype "出货车站" {
+    type = {"item"},
+    --item_category = "物流",
     station_limit = 8,
     pile = "2x4x2",
     hub_limit = 16,
@@ -621,7 +635,7 @@ prototype "出货车站" {
 
 prototype "收货车站" {
     type = {"item"},
-    item_category = "物流",
+    --item_category = "物流",
     station_limit = 8,
     pile = "2x4x2",
     hub_limit = 16,

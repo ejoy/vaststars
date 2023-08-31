@@ -277,6 +277,31 @@ prototype "收货车站" {
     camera_distance = 90,
 }
 
+prototype "物流站" {
+    model = "glbs/goods-station-1.glb|mesh.prefab",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_goods_station1.texture",
+    construct_detector = {"exclusive"},
+    type = {"building", "station"},
+    building_base = false,
+    rotate_on_build = true,
+    area = "4x2",
+    drone_height = 24,
+    crossing = {
+        connections = {
+            {type="station", position={1,1,"S"}},
+            {type="station", position={1,2,"S"}},
+        },
+    },
+    endpoint = "2,0",
+    road = {
+        "0,0,╔╗",
+        "0,2,╨╨",
+    },
+    supply_max = 4,
+    demand_max = 4,
+    camera_distance = 90,
+}
+
 prototype "停车站" {
     model = "glbs/goods-station-1.glb|mesh.prefab",
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_goods_station1.texture",
