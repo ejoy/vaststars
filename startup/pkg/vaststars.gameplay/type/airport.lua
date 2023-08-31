@@ -19,15 +19,11 @@ function c:ctor(init, pt)
         }
     end
     if init.items ~= nil then
-        if init.items[1] == nil or init.items[1] == "" then
-        else
-            local item_prototype = assert(prototype.queryByName(init.items[1]), "Invalid item: " .. init.items[1])
+        local name = init.items[1]
+        if name ~= nil and name ~= "" then
+            local item_prototype = assert(prototype.queryByName(name), "Invalid item: " .. name)
             e.airport.item = item_prototype.id
         end
-    elseif init.item == nil then
-    else
-        local item_prototype = assert(prototype.queryByName(init.item), "Invalid item: " .. init.item)
-        e.airport.item = item_prototype.id
     end
     return e
 end
