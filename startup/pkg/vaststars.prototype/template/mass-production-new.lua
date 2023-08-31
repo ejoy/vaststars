@@ -89,13 +89,13 @@ local entities = { {
     dir = "N",
     items = {"石砖"},
     prototype_name = "无人机平台I",
-    x = 96,
+    x = 97,
     y = 134
   }, {
     dir = "N",
     items = {{"石砖", 50}},
     prototype_name = "仓库I",
-    x = 97,
+    x = 98,
     y = 134
   }, {
     dir = "N",
@@ -137,7 +137,7 @@ local entities = { {
     dir = "N",
     items = {"石砖"},
     prototype_name = "无人机平台I",
-    x = 99,
+    x = 100,
     y = 134
   }, {
     dir = "N",
@@ -559,6 +559,31 @@ local entities = { {
     prototype_name = "铁制电线杆",
     x = 115,
     y = 147
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 115,
+    y = 142
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 107,
+    y = 142
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 99,
+    y = 142
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 91,
+    y = 142
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 102,
+    y = 162
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
