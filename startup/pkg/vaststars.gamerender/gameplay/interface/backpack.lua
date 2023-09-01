@@ -75,9 +75,8 @@ local function move_to_backpack(world, chest, idx)
 end
 
 local function backpack_to_chest(world, e, f)
-    local chest = e[ichest.get_chest_component(e)]
     for idx = 1, ichest.MAX_SLOT do
-        local slot = world:container_get(chest, idx)
+        local slot = world:container_get(e.chest, idx)
         if not slot then
             break
         end
@@ -91,7 +90,7 @@ local function backpack_to_chest(world, e, f)
         end
 
         assert(pickup(world, slot.item, c))
-        ichest.set(world, chest, idx, {amount = ichest.get_amount(slot) + c})
+        ichest.set(world, e.chest, idx, {amount = ichest.get_amount(slot) + c})
 
         f(slot.item, c)
         ::continue::
@@ -99,9 +98,8 @@ local function backpack_to_chest(world, e, f)
 end
 
 local function chest_to_backpack(world, e, f)
-    local chest = e[ichest.get_chest_component(e)]
     for i = 1, ichest.MAX_SLOT do
-        local slot = world:container_get(chest, i)
+        local slot = world:container_get(e.chest, i)
         if not slot then
             break
         end
@@ -109,7 +107,7 @@ local function chest_to_backpack(world, e, f)
             goto continue
         end
 
-        local c = move_to_backpack(world, chest, i)
+        local c = move_to_backpack(world, e.chest, i)
         if c <= 0 then
             goto continue
         end
@@ -126,7 +124,6 @@ local function backpack_to_assembling(world, e, f)
 
     local recipe = iprototype.queryById(e.assembling.recipe)
     local ingredients_n <const> = #recipe.ingredients//4 - 1
-    local chest = e[ichest.get_chest_component(e)]
 
     for idx = 1, ingredients_n do
         local id, n = string.unpack("<I2I2", recipe.ingredients, 4*idx+1)
@@ -134,7 +131,7 @@ local function backpack_to_assembling(world, e, f)
             goto continue
         end
 
-        local slot = assert(ichest.get(world, chest, idx))
+        local slot = assert(ichest.get(world, e.chest, idx))
         local amount = ichest.get_amount(slot)
         if amount >= n then
             goto continue
@@ -145,7 +142,7 @@ local function backpack_to_assembling(world, e, f)
             goto continue
         end
         assert(pickup(world, slot.item, c))
-        ichest.set(world, chest, idx, {amount = amount + c})
+        ichest.set(world, e.chest, idx, {amount = amount + c})
 
         f(id, c)
         ::continue::
@@ -156,18 +153,17 @@ local function assembling_to_backpack(world, e, f)
     if e.assembling.recipe == 0 then
         return
     end
-    local chest = e[ichest.get_chest_component(e)]
     local recipe = iprototype.queryById(e.assembling.recipe)
     local ingredients_n <const> = #recipe.ingredients//4 - 1
     local results_n <const> = #recipe.results//4 - 1
     for i = 1, results_n do
         local idx = ingredients_n + i
-        local slot = assert(ichest.get(world, chest, idx))
+        local slot = assert(ichest.get(world, e.chest, idx))
         if iprototype.is_fluid_id(slot.item) then
             goto continue
         end
 
-        local c = move_to_backpack(world, chest, idx)
+        local c = move_to_backpack(world, e.chest, idx)
         if c <= 0 then
             goto continue
         end

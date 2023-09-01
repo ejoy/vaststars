@@ -34,14 +34,9 @@ local function update(self, t)
     self.game_object:update {
         prefab = model,
         color = t.color,
-        animation_name = t.animation_name,
-        final_frame = t.final_frame,
+        workstatus = t.workstatus,
         emissive_color = t.emissive_color,
     }
-end
-
-local function has_animation(self, animation_name)
-    return self.game_object:has_animation(animation_name)
 end
 
 local function modifier(self, ...)
@@ -79,7 +74,6 @@ return function (init)
         set_dir = set_dir,
         remove = remove,
         modifier = modifier,
-        has_animation = has_animation,
     }
     return vsobject
 end

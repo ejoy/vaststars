@@ -45,7 +45,7 @@ local function __get_position(location)
         return math3d.vector(terrain:get_position_by_coord(x, y, 1, 1))
     end
 
-    local chest_slot = (location >> 8) & 0xFF
+    local slot = (location >> 8) & 0xFF
 
     local building = global.buildings[object.id]
     if not building then
@@ -55,7 +55,7 @@ local function __get_position(location)
     if not io_shelves then
         return math3d.set_index(object.srt.t, 2, item_height)
     end
-    local pos = io_shelves:get_heap_position(chest_slot)
+    local pos = io_shelves:get_heap_position(slot)
     if not pos then
         return math3d.set_index(object.srt.t, 2, item_height)
     else

@@ -1,16 +1,16 @@
 local ecs = ...
 local world = ecs.world
 local w = world.w
-local iefk = ecs.require "ant.efk|efk"
 local game_object_event = ecs.require "engine.game_object_event"
 local ientity_object = ecs.require "engine.system.entity_object_system"
 local iani = ecs.require "ant.animation|controller.state_machine"
 local iom = ecs.require "ant.objcontroller|obj_motion"
-local prefabParser = require("engine.prefab_parser").parse
 local irl = ecs.require "ant.render|render_layer"
 local imodifier = ecs.require "ant.modifier|modifier"
+local iefk = ecs.require "ant.efk|efk"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
+local ANIMATIONS_BASE_PATH <const> = "/pkg/vaststars.resources/animations/"
 
 local function on_prefab_message(prefab, cmd, ...)
     local event = game_object_event[cmd]
@@ -39,19 +39,17 @@ local __calc_param_hash ; do
 
     local prefab_hash = get_hash_func(0xff)
     local color_hash = get_hash_func(0xf)
-    local animation_name_hash = get_hash_func(0xff)
-    local final_frame_hash = get_hash_func(0x1)
+    local workstatus_hash = get_hash_func(0xf)
     local emissive_color_hash = get_hash_func(0xf)
     local render_layer_hash = get_hash_func(0xf)
 
-    function __calc_param_hash(prefab, color, animation_name, final_frame, emissive_color, render_layer)
+    function __calc_param_hash(prefab, color, workstatus, emissive_color, render_layer)
         local h1 = prefab_hash(prefab or 0) -- 8 bits
         local h2 = color_hash(color or 0) -- 4 bits
-        local h3 = animation_name_hash(animation_name or 0) -- 8 bits
-        local h4 = final_frame_hash(final_frame or 0) -- 1 bit
-        local h5 = emissive_color_hash(emissive_color or 0) -- 4 bits
-        local h6 = render_layer_hash(render_layer or 0) -- 4 bits
-        return h1 | h2 << 8 | h3 << 12 | h4 << 16 | h5 << 24 | h6 << 25
+        local h3 = workstatus_hash(workstatus or 0) -- 1 bits
+        local h4 = emissive_color_hash(emissive_color or 0) -- 4 bits
+        local h5 = render_layer_hash(render_layer or 0) -- 4 bits
+        return h1 | (h2 << 8) | (h3 << 12) | (h4 << 13) | (h5 << 17)
     end
 end
 
@@ -59,72 +57,69 @@ local __get_hitch_children ; do
     local cache = {}
     local hitch_group_id = 10000 -- see also: terrain.lua -> TERRAIN_MAX_GROUP_ID
 
-    local function __cache_prefab_info(prefab)
-        local effects = {auto_play = {}, work = {}, idle = {}, low_power = {}}
-        local animations = {}
+    local function playAnimation(prefab_inst, e, workstatus, group)
+        w:extend(e, "animation:in")
+        local start = workstatus .. "_start"
 
-        for _, v in ipairs(prefabParser(prefab)) do
-            if not v.data then
-                goto continue
-            end
-
-            if v.data.efk then
-                local efk = v.data.efk
-                local t = {efk = efk, srt = v.data.scene}
-                if v.data.efk.auto_play then
-                    effects.auto_play[#effects.auto_play+1] = t
-                elseif v.data.name:match("^work.*$") then
-                    effects.work[#effects.work+1] = t
-                elseif v.data.name:match("^idle.*$") then
-                    effects.idle[#effects.idle+1] = t
-                elseif v.data.name:match("^low_power.*$") then
-                    effects.low_power[#effects.low_power+1] = t
-                else
-                    log.error("unknown efk", prefab, v.data.name)
-                end
-            elseif v.data.animation then
-                for animation_name in pairs(v.data.animation) do
-                    animations[animation_name] = true
-                end
-            end
-            ::continue::
+        if e.animation[workstatus] then
+            iani.play(prefab_inst, {name = workstatus, loop = true, speed = 1.0, manual = false, group = group})
+        elseif e.animation[start] then
+            iani.play(prefab_inst, {name = start, loop = false, speed = 1.0, manual = true, forwards = true, group = group})
+            iani.set_time(prefab_inst, iani.get_duration(prefab_inst, start))
         end
-
-        return effects, animations
     end
 
-    function __get_hitch_children(prefab, color, animation_name, final_frame, emissive_color, render_layer)
+    local function playEfk(e, workstatus)
+        w:extend(e, "eid:in efk:in name:in")
+        if e.efk.auto_play then
+            return
+        end
+        if (workstatus == "work" and e.name:match("^work.*$")) or
+           (workstatus == "idle" and e.name:match("^idle.*$")) or
+           (workstatus == "low_power" and e.name:match("^low_power.*$")) then
+            iefk.play(e.eid)
+        else
+            print("unknown efk", e.name)
+        end
+    end
+
+    local function getEventFile(prefab)
+        local PATTERN <const> = "^.*/(.*)%.glb|.*%.prefab$"
+        local match = prefab:match(PATTERN)
+        local eventFile = (match or assert(prefab:match("^.*/(.*)%.prefab$"))) .. ".event"
+        return ANIMATIONS_BASE_PATH .. eventFile
+    end
+
+    function __get_hitch_children(prefab, color, workstatus, emissive_color, render_layer)
         render_layer = render_layer or RENDER_LAYER.BUILDING
-        local hash = __calc_param_hash(prefab, tostring(color), animation_name, final_frame, tostring(emissive_color), render_layer)
+        local hash = __calc_param_hash(prefab, tostring(color), workstatus, tostring(emissive_color), render_layer)
         if cache[hash] then
             return cache[hash]
         end
 
         hitch_group_id = hitch_group_id + 1
-        local effects, animations = __cache_prefab_info(prefab)
 
-        -- log.info(("game_object.new_instance: %s"):format(table.concat({hitch_group_id, prefab, require("math3d").tostring(color), tostring(animation_name), tostring(final_frame)}, " "))) -- TODO: remove this line
         local prefab_instance = world:create_instance {
             prefab = prefab,
             group = hitch_group_id,
             on_ready = function (self)
                 for _, eid in ipairs(self.tag["*"]) do
-                    local e <close> = world:entity(eid, "render_object?update")
+                    local e <close> = world:entity(eid, "render_object?update animation?in efk?in anim_ctrl?in")
                     if render_layer and e.render_object then
                         irl.set_layer(e, render_layer)
                     end
-                end
-    
-                animation_name = animation_name or "idle_start"
-                if final_frame == nil then
-                    final_frame = true
-                end
-                if animations[animation_name] then
-                    if final_frame then
-                        iani.play(self, {name = animation_name, loop = false, speed = 1.0, manual = true, forwards = true})
-                        iani.set_time(self, iani.get_duration(self, animation_name))
-                    else
-                        iani.play(self, {name = animation_name, loop = true, speed = 1.0, manual = false})
+
+                    if workstatus and e.animation then
+                        playAnimation(self, e, workstatus, hitch_group_id)
+                    end
+
+                    if workstatus and e.efk then
+                        playEfk(e, workstatus)
+                    end
+
+                    -- special handling for keyframe animations
+                    if e.anim_ctrl then
+                        iani.load_events(eid, getEventFile(prefab))
                     end
                 end
             end,
@@ -139,37 +134,9 @@ local __get_hitch_children ; do
             world:instance_message(prefab_instance, "material", "set_property", "u_emissive_factor", emissive_color)
         end
 
-        cache[hash] = {prefab_file_name = prefab, instance = prefab_instance, hitch_group_id = hitch_group_id, pose = iani.create_pose(), effects = effects, animations = animations}
+        cache[hash] = {prefab_file_name = prefab, instance = prefab_instance, hitch_group_id = hitch_group_id, pose = iani.create_pose()}
         return cache[hash]
     end
-end
-
-local efk_events = {}
-efk_events["play"] = function(o, e)
-    if not iefk.is_playing(o.id) then
-        iefk.play(o.id)
-    end
-end
-efk_events["stop"] = function(o, e)
-    if iefk.is_playing(o.id) then
-        iefk.stop(o.id, true)
-    end
-end
-
-local function __create_efk_object(efk, srt, parent, group_id, auto_play)
-    return ientity_object.create(iefk.create(efk.path, {
-        auto_play = auto_play,
-        loop = efk.loop or false,
-        speed = efk.speed or 1.0,
-        scene = {
-            parent = parent,
-            s = srt.s,
-            t = srt.t,
-            r = srt.r,
-        },
-        group_id = group_id,
-        visible = true,
-    }), efk_events)
 end
 
 local hitch_events = {}
@@ -190,13 +157,12 @@ init = {
     color,
     srt,
     parent, -- the parent of the hitch
-    animation_name,
     emissive_color,
     render_layer,
 }
 --]]
 function igame_object.create(init)
-    local children = __get_hitch_children(RESOURCES_BASE_PATH:format(init.prefab), init.color, init.animation_name, init.final_frame, init.emissive_color, init.render_layer)
+    local children = __get_hitch_children(RESOURCES_BASE_PATH:format(init.prefab), init.workstatus, init.color, init.emissive_color, init.render_layer)
     local srt = init.srt or {}
     local hitch_entity_object = ientity_object.create(world:create_entity {
         group = init.group_id,
@@ -225,7 +191,7 @@ function igame_object.create(init)
         self.hitch_entity_object:remove()
     end
 
-    -- prefab_file_name, color, animation_name, final_frame, emissive_color
+    -- prefab_file_name, color, emissive_color
     local function update(self, t)
         for k, v in pairs(t) do
             self.__cache[k] = v
@@ -241,36 +207,17 @@ function igame_object.create(init)
         children = __get_hitch_children(
             RESOURCES_BASE_PATH:format(self.__cache.prefab),
             self.__cache.color,
-            self.__cache.animation_name,
-            self.__cache.final_frame,
+            self.__cache.workstatus,
             self.__cache.emissive_color,
             self.__cache.render_layer
         )
         self.hitch_entity_object:send("group", children.hitch_group_id)
-    end
-    local function has_animation(self, animation_name)
-        return children.animations[animation_name] ~= nil
     end
     local function send(self, ...)
         self.hitch_entity_object:send(...)
     end
     local function modifier(self, opt, ...)
         imodifier[opt](self.srt_modifier, ...)
-    end
-
-    -- special for hitch
-    local effects = {auto_play = {}, work = {}, idle = {}, low_power = {}, keyevent = {}}
-    for _, v in ipairs(children.effects.auto_play) do
-        effects.auto_play[#effects.auto_play + 1] = __create_efk_object(v.efk, v.srt, hitch_entity_object.id, init.group_id, true)
-    end
-    for _, v in ipairs(children.effects.work) do
-        effects.work[#effects.work + 1] = __create_efk_object(v.efk, v.srt, hitch_entity_object.id, init.group_id, false)
-    end
-    for _, v in ipairs(children.effects.idle) do
-        effects.idle[#effects.idle + 1] = __create_efk_object(v.efk, v.srt, hitch_entity_object.id, init.group_id, false)
-    end
-    for _, v in ipairs(children.effects.low_power) do
-        effects.low_power[#effects.low_power + 1] = __create_efk_object(v.efk, v.srt, hitch_entity_object.id, init.group_id, false)
     end
 
     local outer = {
@@ -288,22 +235,9 @@ function igame_object.create(init)
     outer.remove = remove
     outer.update = update
     outer.send   = send
-    outer.has_animation = has_animation
     outer.on_work = function ()
-        for _, o in ipairs(effects.idle) do
-            o:send("stop")
-        end
-        for _, o in ipairs(effects.work) do
-            o:send("play")
-        end
     end
     outer.on_idle = function ()
-        for _, o in ipairs(effects.work) do
-            o:send("stop")
-        end
-        for _, o in ipairs(effects.idle) do
-            o:send("play")
-        end
     end
     return outer
 end

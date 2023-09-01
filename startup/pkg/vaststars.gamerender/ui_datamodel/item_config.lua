@@ -28,11 +28,10 @@ local function updateSlots(e, datamodel)
 
     local typeobject = iprototype.queryById(e.building.prototype)
     local gameplay_world = gameplay_core.get_world()
-    local chest_component = ichest.get_chest_component(e)
     local max_slot = ichest.get_max_slot(typeobject)
     local slots = {}
     for i = 1, max_slot do
-        local slot = gameplay_world:container_get(e[chest_component], i)
+        local slot = gameplay_world:container_get(e.chest, i)
         if not slot then
             break
         end

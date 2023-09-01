@@ -107,7 +107,7 @@ path: /-
 value:
   data:
     efk:
-      auto_play: true
+      auto_play: false
       loop: false
       path: /pkg/vaststars.resources/effects/furnace_smoke.efk
       speed: 1

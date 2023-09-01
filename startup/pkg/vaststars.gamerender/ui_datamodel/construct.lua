@@ -21,7 +21,9 @@ local EDITOR_CACHE_NAMES = {"CONFIRM", "CONSTRUCTED"}
 local create_station_builder = ecs.require "editor.stationbuilder"
 local terrain = ecs.require "terrain"
 local selected_boxes = ecs.require "selected_boxes"
-local igame_object = ecs.require "engine.game_object"
+local iani = ecs.require "ant.animation|controller.state_machine"
+local irl = ecs.require "ant.render|render_layer"
+local iom = ecs.require "ant.objcontroller|obj_motion"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local COLOR_GREEN = math3d.constant("v4", {0.3, 1, 0, 1})
 local ichest = require "gameplay.interface.chest"
@@ -300,15 +302,21 @@ local function open_focus_tips(tech_node)
             local prefab
             local center = terrain:get_position_by_coord(nd.x, nd.y, 1, 1)
             if nd.show_arrow then
-                prefab = assert(igame_object.create({
-                    prefab = "glbs/arrow-guide.glb|mesh.prefab",
-                    group_id = 0,
-                    srt = {
-                        t = center,
-                    },
-                    animation_name = "Armature.001Action",
-                    final_frame = false,
-                    render_layer = RENDER_LAYER.SELECTED_BOXES,
+                prefab = assert(world:create_instance({
+                    prefab = "/pkg/vaststars.resources/glbs/arrow-guide.glb|mesh.prefab",
+                    on_ready = function(self)
+                        for _, eid in ipairs(self.tag['*']) do
+                            local e <close> = world:entity(eid, "render_object?in animation_birth?in")
+                            if e.render_object then
+                                irl.set_layer(e, RENDER_LAYER.SELECTED_BOXES)
+                            end
+                        end
+
+                        local root <close> = world:entity(assert(self.tag['*'][1]))
+                        iom.set_position(root, center)
+
+                        iani.play(self, {name = "Armature.001Action", loop = true, speed = 1.0, manual = false})
+                    end,
                 }))
             end
             if nd.force then
@@ -330,8 +338,9 @@ local function close_focus_tips(tech_node)
         return
     end
     for _, tip in ipairs(selected_tips) do
-        for _, o in ipairs(tip) do
-            o:remove()
+        tip[1]:remove()
+        if tip[2] then
+            world:remove_instance(tip[2])
         end
     end
     tech_node.selected_tips = {}
@@ -482,20 +491,18 @@ function M:stage_camera_usage(datamodel)
         local typeobject = iprototype.queryByName(object.prototype_name)
 
         local e = gameplay_core.get_entity(object.gameplay_eid)
-        local chest_component = ichest.get_chest_component(e)
-        if chest_component then
-            local chest = e[chest_component]
-            if not ibackpack.can_move_to_backpack(gameplay_core.get_world(), chest) then
+        if e.chest then
+            if not ibackpack.can_move_to_backpack(gameplay_core.get_world(), e.chest) then
                 log.error("can not teardown")
                 goto continue
             end
 
             for i = 1, ichest.MAX_SLOT do
-                local slot = gameplay_core.get_world():container_get(chest, i)
+                local slot = gameplay_core.get_world():container_get(e.chest, i)
                 if not slot then
                     break
                 end
-                ibackpack.move_to_backpack(gameplay_core.get_world(), chest, i)
+                ibackpack.move_to_backpack(gameplay_core.get_world(), e.chest, i)
             end
         end
 

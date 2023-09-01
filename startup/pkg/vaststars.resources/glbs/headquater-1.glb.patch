@@ -5,7 +5,7 @@ path: /-
 value:
   data:
     efk:
-      auto_play: true
+      auto_play: false
       loop: false
       path: /pkg/vaststars.resources/effects/headquater_light.efk
       speed: 1

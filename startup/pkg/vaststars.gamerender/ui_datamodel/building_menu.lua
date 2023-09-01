@@ -19,8 +19,6 @@ local place_item_mb = mailbox:sub {"place_item"}
 
 local ichest = require "gameplay.interface.chest"
 local ibackpack = require "gameplay.interface.backpack"
-local gameplay = import_package "vaststars.gameplay"
-local ihub = gameplay.interface "hub"
 local global = require "global"
 local iobject = ecs.require "object"
 local igameplay = ecs.require "gameplay_system"
@@ -64,12 +62,11 @@ local function __get_moveable_count(gameplay_eid)
         local recipe = iprototype.queryById(e.assembling.recipe)
         local ingredients_n <const> = #recipe.ingredients//4 - 1
         local results_n <const> = #recipe.results//4 - 1
-        local chest_component = ichest.get_chest_component(e)
 
         local c
         for i = 1, results_n do
             local idx = ingredients_n + i
-            local slot = assert(ichest.get(gameplay_world, e[chest_component], idx))
+            local slot = assert(ichest.get(gameplay_world, e.chest, idx))
             if iprototype.is_fluid_id(slot.item) then
                 goto continue
             end
@@ -83,10 +80,9 @@ local function __get_moveable_count(gameplay_eid)
         return c or 0
 
     elseif iprototype.check_types(typeobject.name, PICKUP_TYPES) then
-        local chest_component = ichest.get_chest_component(e)
         local c
         for i = 1, ichest.MAX_SLOT do
-            local slot = gameplay_world:container_get(e[chest_component], i)
+            local slot = gameplay_world:container_get(e.chest, i)
             if not slot then
                 break
             end
@@ -134,8 +130,7 @@ local function __get_placeable_count(gameplay_eid)
             return 0
         end
 
-        local chest_component = ichest.get_chest_component(e)
-        local slot = assert(ichest.get(gameplay_world, e[chest_component], ingredient_idx))
+        local slot = assert(ichest.get(gameplay_world, e.chest, ingredient_idx))
         local available = ingredient_c - ichest.get_amount(slot)
         if available <= 0 then
             return 0
@@ -143,10 +138,9 @@ local function __get_placeable_count(gameplay_eid)
         return ibackpack.get_placeable_count(gameplay_world, ingredient, available)
 
     elseif iprototype.check_types(typeobject.name, PLACE_TYPES) then
-        local chest_component = ichest.get_chest_component(e)
         local c
         for i = 1, ichest.MAX_SLOT do
-            local slot = gameplay_world:container_get(e[chest_component], i)
+            local slot = gameplay_world:container_get(e.chest, i)
             if not slot then
                 break
             end
@@ -230,11 +224,10 @@ function M:create(object_id)
 end
 
 local function station_set_item(gameplay_world, e, type, item)
-    local chest = e[ichest.get_chest_component(e)]
     local items = {}
 
     for i = 1, ichest.get_max_slot(iprototype.queryById(e.building.prototype)) do
-        local slot = gameplay_world:container_get(chest, i)
+        local slot = gameplay_world:container_get(e.chest, i)
         if not slot then
             break
         end
@@ -247,11 +240,10 @@ local function station_set_item(gameplay_world, e, type, item)
 end
 
 local function station_remove_item(gameplay_world, e, slot_index)
-    local chest = e[ichest.get_chest_component(e)]
     local items = {}
 
     for i = 1, ichest.get_max_slot(iprototype.queryById(e.building.prototype)) do
-        local slot = gameplay_world:container_get(chest, i)
+        local slot = gameplay_world:container_get(e.chest, i)
         if not slot then
             break
         end
@@ -350,8 +342,7 @@ function M:stage_ui_update(datamodel, object_id)
             end)
 
             if typeobject.chest_destroy then
-                local chest_component = ichest.get_chest_component(e)
-                if not ichest.has_item(gameplay_world, e[chest_component]) then
+                if not ichest.has_item(gameplay_world, e.chest) then
                     iobject.remove(object)
                     objects:remove(object_id)
                     local building = global.buildings[object_id]
