@@ -20,13 +20,6 @@ local ichest = require "gameplay.interface.chest"
 local M = {}
 
 local function updateSlots(e, datamodel)
-    -- TODO: refactor
-    if e.airport then
-        local typeobject_item = iprototype.queryById(e.airport.item)
-        datamodel.slots = {{slot_index = 1, icon = typeobject_item.item_icon, name = typeobject_item.name, type = "supply", remove = false}}
-        return
-    end
-
     local typeobject = iprototype.queryById(e.building.prototype)
     local gameplay_world = gameplay_core.get_world()
     local max_slot = ichest.get_max_slot(typeobject)

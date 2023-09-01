@@ -311,7 +311,7 @@ local function get_property(e, typeobject)
     end
     if e.airport then
         local typeobject = iprototype.queryById(e.building.prototype)
-        t.values['drone_count'] = typeobject.drone_count
+        t.values['drone_count'] = #typeobject.drone
     end
     return t
 end

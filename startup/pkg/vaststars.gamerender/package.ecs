@@ -98,7 +98,6 @@ policy "render_updates"
     .require_system "building_system"
     .require_system "inventory_system"
     .require_system "drone_system"
-    .require_system "drone_depot_systme"
     .require_system "work_state_system"
     .require_system "task_system"
     .require_system "storage_tank_system"
@@ -170,9 +169,6 @@ system "inventory_system"
 
 system "drone_system"
     .implement "render_updates/drone.lua"
-
-system "drone_depot_systme"
-    .implement "render_updates/drone_depot.lua"
 
 system "work_state_system"
     .implement "render_updates/work_state.lua"
