@@ -1795,13 +1795,13 @@ local entities = { {
     items = {"塑料"},
     prototype_name = "无人机平台I",
     x = 184,
-    y = 172
+    y = 173
   }, {
     dir = "N",
     items = {"塑料"},
     prototype_name = "无人机平台I",
     x = 184,
-    y = 160
+    y = 161
   }, {
     dir = "N",
     items = {"电动机I"},

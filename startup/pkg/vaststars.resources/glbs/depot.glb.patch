@@ -4,9 +4,57 @@ op: add
 path: /-
 value:
   data:
-    name: pile_slot
+    name: pile_slot1
     scene:
-      t: {0, 3.817502021789551, 0}
+      t: {-1.5, 3.817502021789551, -1.5}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.general|name
+    ant.animation|slot
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    name: pile_slot2
+    scene:
+      t: {-1.5, 3.817502021789551, 1.5}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.general|name
+    ant.animation|slot
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    name: pile_slot3
+    scene:
+      t: {1.5, 3.817502021789551, -1.5}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.general|name
+    ant.animation|slot
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    name: pile_slot4
+    scene:
+      t: {1.5, 3.817502021789551, 1.5}
     slot:
       follow_flag: 1
       joint_name: None
