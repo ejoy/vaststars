@@ -30,15 +30,26 @@ local istation = gameplay.interface "station"
 
 local PICKUP_TYPES <const> = {
     "assembling",
-    "airport",
     "chest",
 }
 
 local PLACE_TYPES <const> = {
     "assembling",
-    "airport",
     "laboratory",
 }
+
+local SET_ITEM_COMPONENT <const> = {
+    "airport",
+    "station",
+}
+
+local function hasComponent(e, components)
+    for _, v in ipairs(components) do
+        if e[v] then
+            return true
+        end
+    end
+end
 
 local function __get_moveable_count(gameplay_eid)
     local e = gameplay_core.get_entity(gameplay_eid)
@@ -198,7 +209,7 @@ function M:create(object_id)
     if e.factory then
         lorry_factory_inc_lorry = true
     end
-    if e.airport or e.station then
+    if hasComponent(e, SET_ITEM_COMPONENT) then
         set_item = true
     end
 
@@ -218,38 +229,51 @@ function M:create(object_id)
     return datamodel
 end
 
-local function station_set_item(gameplay_world, e, item)
-    istation.set_item(gameplay_world, e, {{"supply", item, 1}})
-end
+local function station_set_item(gameplay_world, e, type, item)
+    local chest = e[ichest.get_chest_component(e)]
+    local items = {}
 
-local function gen_set_item(idx)
-    return function (gameplay_world, e, item)
-        local chest = e[ichest.get_chest_component(e)]
-        local items = {}
-
-        for i = 1, ichest.MAX_SLOT do
-            local slot = gameplay_world:container_get(chest, i)
-            if not slot then
-                break
-            end
-            items[#items+1] = slot.item == 0 and item or slot.item
-        end
-        assert(items[idx])
-        items[idx] = item
-
-        ihub.set_item(gameplay_world, e, items)
-    end
-end
-
-local function gen_get_item(idx)
-    return function(gameplay_world, e)
-        local chest_component = ichest.get_chest_component(e)
-        local slot = ichest.get(gameplay_world, e[chest_component], idx)
+    for i = 1, ichest.get_max_slot(iprototype.queryById(e.building.prototype)) do
+        local slot = gameplay_world:container_get(chest, i)
         if not slot then
-            return
+            break
         end
-        return slot.item
+        items[#items+1] = {slot.type, slot.item, slot.limit}
     end
+
+    local typeobject = iprototype.queryById(item)
+    items[#items+1] = {type, item, typeobject.station_limit}
+    istation.set_item(gameplay_world, e, items)
+end
+
+local function station_remove_item(gameplay_world, e, slot_index)
+    local chest = e[ichest.get_chest_component(e)]
+    local items = {}
+
+    for i = 1, ichest.get_max_slot(iprototype.queryById(e.building.prototype)) do
+        local slot = gameplay_world:container_get(chest, i)
+        if not slot then
+            break
+        end
+
+        if i ~= slot_index then
+            items[#items+1] = {slot.type, slot.item, slot.limit}
+        end
+    end
+
+    istation.set_item(gameplay_world, e, items)
+end
+
+local function airport_set_item(gameplay_world, e, _, item)
+    -- local items = {}
+    -- items[#items+1] = item
+    -- ihub.set_item(gameplay_world, e, items)
+end
+
+local function airport_remove_item(gameplay_world, e, _, _)
+    -- local items = {}
+    -- items[#items+1] = 0
+    -- ihub.set_item(gameplay_world, e, items)
 end
 
 function M:stage_ui_update(datamodel, object_id)
@@ -265,11 +289,16 @@ function M:stage_ui_update(datamodel, object_id)
         local typeobject = iprototype.queryByName(object.prototype_name)
         local interface = {}
         if iprototype.has_type(typeobject.type, "airport") then
-            interface.get_item = gen_get_item(1)
-            interface.set_item = gen_set_item(1)
+            interface.set_item = airport_set_item
+            interface.remove_item = airport_remove_item
+            interface.supply_button = false
+            interface.demand_button = true
+
         elseif iprototype.has_types(typeobject.type, "station") then
-            interface.get_item = gen_get_item(1)
             interface.set_item = station_set_item
+            interface.remove_item = station_remove_item
+            interface.supply_button = true
+            interface.demand_button = true
         else
             assert(false)
         end

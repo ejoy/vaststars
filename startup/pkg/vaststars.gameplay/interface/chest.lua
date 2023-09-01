@@ -177,7 +177,7 @@ function m.station_set(world, e, items)
                 station_items[slot.item] = slot.amount
             end
         end
-        chest_destroy(world, e.station.chest, false)
+        chest_destroy(world, e.station, false)
         e.station.chest = InvalidChest
         chest_dirty(world, e)
     end
@@ -191,7 +191,7 @@ function m.station_set(world, e, items)
                 chest_items[slot.item] = slot.amount
             end
         end
-        chest_destroy(world, e.chest.chest, false)
+        chest_destroy(world, e.chest, false)
         e.chest.chest = InvalidChest
         chest_dirty(world, e)
     end

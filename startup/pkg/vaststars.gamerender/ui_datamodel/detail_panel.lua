@@ -17,7 +17,7 @@ local assembling_common = require "ui_datamodel.common.assembling"
 local iui = ecs.require "engine.system.ui_system"
 
 local UPS <const> = require("gameplay.interface.constant").UPS
-local CHEST_LIST_TYPES <const> = {"chest", "station", "airport"}
+local CHEST_LIST_TYPES <const> = {"chest", "station"}
 
 local STATUS_NO_POWER <const> = 1
 local STATUS_IDLE <const> = 2
@@ -214,20 +214,30 @@ local function get_property(e, typeobject)
             local amount = ichest.get_amount(slot)
             if slot.item ~= 0 then
                 local typeobject_item = assert(iprototype.queryById(slot.item))
-                items[#items + 1] = {icon = typeobject_item.item_icon, name = typeobject_item.name, count = amount, max_count = slot.limit, type = slot.type}
+                items[#items + 1] = {slot_index = i, icon = typeobject_item.item_icon, name = typeobject_item.name, count = amount, max_count = slot.limit, type = slot.type}
             end
         end
         if iprototype.has_types(typeobject.type, "chest") then
             t.show_type = "chest"
         elseif iprototype.has_types(typeobject.type, "station") then
-            for _ = 1, max_slot - #items do
-                items[#items + 1] = {icon = "", name = "", count = 0, max_count = 0, type = "none"}
+            table.sort(items, function(a, b)
+                local v1 = a.type == "supply" and 0 or 1
+                local v2 = b.type == "supply" and 0 or 1
+                return v1 == v2 and a.slot_index < b.slot_index or v1 < v2
+            end)
+            for i = 1, max_slot - #items do
+                items[#items + 1] = {slot_index = i, icon = "", name = "", count = 0, max_count = 0, type = "none"}
             end
             t.show_type = "station"
         else
             t.show_type = "goods"
         end
         t.chest_list = items
+    end
+    if e.airport then
+        local typeobject_item = iprototype.queryById(e.airport.item)
+        t.chest_list = {{slot_index = 1, icon = typeobject_item.item_icon, name = typeobject_item.name, count = 0, max_count = 0, type = "none"}}
+        t.show_type = "goods"
     end
     if e.fluidbox then
         local name = "无"

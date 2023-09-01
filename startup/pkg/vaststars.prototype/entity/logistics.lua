@@ -246,8 +246,7 @@ prototype "出货车站" {
         "0,0,╔╗",
         "0,2,╨╨",
     },
-    supply_max = 4,
-    demand_max = 4,
+    max_slot = 8,
     camera_distance = 90,
 }
 
@@ -272,8 +271,7 @@ prototype "收货车站" {
         "0,0,╔╗",
         "0,2,╨╨",
     },
-    supply_max = 4,
-    demand_max = 4,
+    max_slot = 8,
     camera_distance = 90,
 }
 
@@ -297,8 +295,7 @@ prototype "物流站" {
         "0,0,╔╗",
         "0,2,╨╨",
     },
-    supply_max = 4,
-    demand_max = 4,
+    max_slot = 8,
     camera_distance = 90,
 }
 

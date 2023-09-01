@@ -1,10 +1,10 @@
 local iprototype = require "gameplay.interface.prototype"
 
 local CHEST_COMPONENT <const> = {
-    ["assembling"] = "chest",
-    ["chest"] = "chest",
-    ["laboratory"] = "chest",
-    ["station"] = "chest",
+    {"assembling", "chest"},
+    {"chest", "chest"},
+    {"laboratory", "chest"},
+    {"station", "chest"},
 }
 
 local CHEST_TYPES <const> = {
@@ -12,13 +12,13 @@ local CHEST_TYPES <const> = {
     "chest",
     "laboratory",
     "station",
-    "airport",
 }
 
 local MAX_SLOT <const> = 256
 
 local function get_chest_component(e)
-    for name, chest_component in pairs(CHEST_COMPONENT) do
+    for _, v in ipairs(CHEST_COMPONENT) do
+        local name, chest_component = v[1], v[2]
         if e[name] then
             return chest_component
         end
@@ -27,10 +27,10 @@ end
 
 local function get_max_slot(typeobject)
     if iprototype.has_types(typeobject.type, "station") then
-        return typeobject.supply_max + typeobject.demand_max
+        return typeobject.max_slot
     else
         return MAX_SLOT
-    end 
+    end
 end
 
 local function has_chest(type)

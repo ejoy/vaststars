@@ -5,47 +5,65 @@ local w = world.w
 local objects = require "objects"
 local gameplay_core = require "gameplay.core"
 
-local click_item_mb = mailbox:sub {"click_item"}
 local set_item_mb = mailbox:sub {"set_item"}
+local click_slot_mb = mailbox:sub {"click_slot"}
+local click_set_item_mb = mailbox:sub {"click_set_item"}
+local remove_slot_mb = mailbox:sub {"remove_slot"}
 local itask = ecs.require "task"
 local item_unlocked = ecs.require "ui_datamodel.common.item_unlocked".is_unlocked
 local ITEM_CATEGORY <const> = import_package "vaststars.prototype"("item_category")
 local iprototype = require "gameplay.interface.prototype"
-local iui = ecs.require "engine.system.ui_system"
-
-local function __set_item_value(datamodel, category_idx, item_idx, key, value)
-    if category_idx == 0 and item_idx == 0 then
-        return
-    end
-    assert(datamodel.items[category_idx])
-    assert(datamodel.items[category_idx].items[item_idx])
-    datamodel.items[category_idx].items[item_idx][key] = value
-end
-
-local function __mark_item_flag(item_name)
-    local storage = gameplay_core.get_storage()
-    storage.item_picked_flag = storage.item_picked_flag or {}
-    storage.item_picked_flag[item_name] = true
-end
+local ichest = require "gameplay.interface.chest"
 
 ---------------
 local M = {}
 
+local function updateSlots(e, datamodel)
+    -- TODO: refactor
+    if e.airport then
+        local typeobject_item = iprototype.queryById(e.airport.item)
+        datamodel.slots = {{slot_index = 1, icon = typeobject_item.item_icon, name = typeobject_item.name, type = "supply", remove = false}}
+        return
+    end
+
+    local typeobject = iprototype.queryById(e.building.prototype)
+    local gameplay_world = gameplay_core.get_world()
+    local chest_component = ichest.get_chest_component(e)
+    local max_slot = ichest.get_max_slot(typeobject)
+    local slots = {}
+    for i = 1, max_slot do
+        local slot = gameplay_world:container_get(e[chest_component], i)
+        if not slot then
+            break
+        end
+
+        if slot.item ~= 0 then
+            local typeobject_item = assert(iprototype.queryById(slot.item))
+            slots[#slots + 1] = {slot_index = i, icon = typeobject_item.item_icon, name = typeobject_item.name, type = slot.type, remove = false}
+        end
+    end
+    datamodel.disable = (#slots == max_slot)
+
+    for i = #slots + 1, max_slot do
+        slots[#slots + 1] = {slot_index = i, icon = "", name = "", type = ""}
+    end
+    table.sort(slots, function(a, b)
+        local v1 = a.type == "supply" and 0 or 1
+        local v2 = b.type == "supply" and 0 or 1
+        return v1 == v2 and a.slot_index < b.slot_index or v1 < v2
+    end)
+    datamodel.slots = slots
+end
+
 function M:create(object_id, interface)
-    local datamodel = {}
-    datamodel.category_idx = 0
-    datamodel.item_idx = 0
+    local datamodel = {
+        show_set_item = false,
+        set_type = "",
+        disable = true,
+    }
 
     local object = assert(objects:get(object_id))
     local e = assert(gameplay_core.get_entity(assert(object.gameplay_eid)))
-    local item = interface.get_item(gameplay_core.get_world(), e)
-    if item and item ~= 0 then
-        local typeobject = assert(iprototype.queryById(item))
-        datamodel.item_name = typeobject.name
-        datamodel.item_icon = typeobject.item_icon
-        datamodel.item_desc = typeobject.item_description
-    end
-
     local storage = gameplay_core.get_storage()
     storage.item_picked_flag = storage.item_picked_flag or {}
 
@@ -62,7 +80,8 @@ function M:create(object_id, interface)
 
     for _, typeobject in pairs(iprototype.each_type("item")) do
         -- If the 'pile' field is not configured, it is usually a 'building' that cannot be placed in a drone depot.
-        if not (typeobject.pile and typeobject.item_category ~= '') then
+        -- For certain special items, such as "任务" the item category is configured as ''.
+        if not (typeobject.pile and typeobject.item_category and typeobject.item_category ~= '') then
             goto continue
         end
 
@@ -76,7 +95,7 @@ function M:create(object_id, interface)
             name = typeobject.name,
             icon = typeobject.item_icon,
             new = (not storage.item_picked_flag[typeobject.name]) and true or false,
-            selected = (datamodel.item_name == typeobject.name) and true or false,
+            selected = false,
             order = typeobject.item_order,
         }
         ::continue::
@@ -92,71 +111,53 @@ function M:create(object_id, interface)
 
             for item_idx, item in ipairs(r.items) do
                 item.id = ("%s:%s"):format(category_idx, item_idx)
-                if item.name == datamodel.item_name then
-                    assert(datamodel.category_idx == 0 and datamodel.item_idx == 0)
-
-                    datamodel.category_idx = #datamodel.items
-                    datamodel.item_idx = item_idx
-
-                    local item_name = datamodel.items[datamodel.category_idx].items[datamodel.item_idx].name
-                    __mark_item_flag(item_name)
-                    __set_item_value(datamodel, datamodel.category_idx, datamodel.item_idx, "new", false)
-                end
             end
         end
     end
 
+    updateSlots(e, datamodel)
+
+    datamodel.supply_button = interface.supply_button
+    datamodel.demand_button = interface.demand_button
     return datamodel
 end
 
 function M:stage_ui_update(datamodel, object_id, interface)
-    for _, _, _, category_idx, item_idx in click_item_mb:unpack() do
-        if category_idx == datamodel.category_idx and item_idx == datamodel.item_idx then
-            __set_item_value(datamodel, datamodel.category_idx, datamodel.item_idx, "selected", false)
+    for _, _, _, category_idx, item_idx, set_type in set_item_mb:unpack() do
+        assert(datamodel.items[category_idx])
+        assert(datamodel.items[category_idx].items[item_idx])
+        local name = datamodel.items[category_idx].items[item_idx].name
+        local typeobject = assert(iprototype.queryByName(name))
+        local e = gameplay_core.get_entity(assert(objects:get(object_id).gameplay_eid))
+        local gameplay_world = gameplay_core.get_world()
+        interface.set_item(gameplay_world, e, set_type, typeobject.id)
+        itask.update_progress("set_item", name)
 
-            datamodel.category_idx = 0
-            datamodel.item_idx = 0
+        updateSlots(e, datamodel)
 
-            datamodel.item_name = ""
-            datamodel.item_icon = ""
-            datamodel.item_desc = ""
-            datamodel.confirm = true
-        else
-            __set_item_value(datamodel, datamodel.category_idx, datamodel.item_idx, "selected", false)
-            __set_item_value(datamodel, category_idx, item_idx, "selected", true)
-            datamodel.category_idx = category_idx
-            datamodel.item_idx = item_idx
+        datamodel.show_set_item = false
+        datamodel.set_type = ""
+    end
 
-            local item_name = datamodel.items[category_idx].items[item_idx].name
-            __mark_item_flag(item_name)
-            __set_item_value(datamodel, category_idx, item_idx, "new", false)
-
-            local typeobject = iprototype.queryByName(item_name)
-            datamodel.item_name = typeobject.name
-            datamodel.item_icon = typeobject.item_icon
-            datamodel.item_desc = typeobject.item_description
-            datamodel.confirm = true
+    for _, _, _, idx in click_slot_mb:unpack() do
+        local slot = assert(datamodel.slots[idx])
+        if slot.name ~= "" then
+            slot.remove = true
         end
     end
 
-    for _ in set_item_mb:unpack() do
-        local category_idx = datamodel.category_idx
-        local item_idx = datamodel.item_idx
-        if not(category_idx == 0 and item_idx == 0) then
-            assert(datamodel.items[category_idx])
-            assert(datamodel.items[category_idx].items[item_idx])
-            local name = datamodel.items[category_idx].items[item_idx].name
-            local typeobject = assert(iprototype.queryByName(name))
-            local e = gameplay_core.get_entity(assert(objects:get(object_id).gameplay_eid))
-            local gameplay_world = gameplay_core.get_world()
-            interface.set_item(gameplay_world, e, typeobject.id)
-            itask.update_progress("set_item", name)
-        else
-            local e = gameplay_core.get_entity(assert(objects:get(object_id).gameplay_eid))
-            local gameplay_world = gameplay_core.get_world()
-            interface.set_item(gameplay_world, e, 0)
-        end
-        iui.close("/pkg/vaststars.resources/ui/item_config.rml")
+    for _, _, _, type in click_set_item_mb:unpack() do
+        datamodel.show_set_item = true
+        datamodel.set_type = type
+    end
+
+    for _, _, _, idx in remove_slot_mb:unpack() do
+        local slot = assert(datamodel.slots[idx])
+        local e = gameplay_core.get_entity(assert(objects:get(object_id).gameplay_eid))
+        local gameplay_world = gameplay_core.get_world()
+        interface.remove_item(gameplay_world, e, slot.slot_index)
+
+        updateSlots(e, datamodel)
     end
 end
 

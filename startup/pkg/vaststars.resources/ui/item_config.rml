@@ -2,34 +2,162 @@
     <head>
         <style path = "/pkg/vaststars.resources/ui/common.rcss"/>
         <style>
-            caption-container {
-                height: 17.50vmin;
+            body::before {
+                position: absolute;
+                left: -4.715vmax;
                 width: 100%;
+                height: 100%;
+                background-image: /pkg/vaststars.resources/ui/textures/item-config/bg.texture;
+                background-size: cover;
+                z-index: -1;
+            }
+            header-container {
+                height: 13.05vmin;
+                width: 100%;
+                flex-direction: row;
+            }
+            content-container {
+                width: 100%;
+                height: 86.95%;
+                align-items: center;
+            }
+            caption-line-container {
+                width: 38.745vmax;
+                height: 100%;
+                align-items: center;
             }
             caption-line {
+                width: 15.34vmax;
                 height: 0.15vmin;
                 background-image: "/pkg/vaststars.resources/ui/textures/common/caption-line.texture";
                 background-size: 100% 100%;
             }
             caption {
-                height: 0.15vmin;
-                width: 111.44vmin;
+                height: 100%;
+                width: 22.51vmax;
             }
-            left-box {
-                width: 53.81vmax;
-                height: 78.34vmin;
+            frame {
+                width: 83.90vmax;
+                height: 82.30vmin;
+                background-image: "/pkg/vaststars.resources/ui/textures/common/square-grid.texture";
+                background-size: 100% 100%;
+                background-lattice: 4.22% 6.27% 4.22% 6.27% 49.22% 49.22%;
+                align-items: center; 
+                flex-direction: column;
+            }
+            icons-container {
+                width: 90%;
+                height: 54.00vmin;
+                margin: 5.50vmin 0 0 0.50vmax;
+                flex-direction: row;
+                column-gap: 3vmin;
+                row-gap: 1.5vmin;
+            }
+            icon-container {
+                width: 17.60vmax;
+                height: 26.32vmin;
+                background-image: "/pkg/vaststars.resources/ui/textures/item-config/icon-frame-grid.texture";
+                background-size: 100% 100%;
+                background-lattice: 13.09% 18.94% 19.23% 18.35% 40.00% 50.00%;
+                flex-direction: row;
+            }
+            icon-remove-container {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                align-items: center;
+                justify-content: center;
+            }
+            icon-remove {
+                width: 29.91vmin;
+                height: 29.91vmin;
+                background-size: 100% 100%;
+                background-image: "/pkg/vaststars.resources/ui/textures/item-config/remove.texture";
+            }
+            icon-left-lab {
+                width: 3.64vmax;
+                height: 26.32vmin;
+                background-size: 100% 100%;
+            }
+            icon-right-box {
+                width: 13.96vmax;
+                height: 25.86vmin;
+                flex-direction: column;
+            }
+            icon-pic {
+                width: 22.10vmin;
+                height: 22.10vmin;
+                background-size: 100% 100%;
+            }
+            icon-right-lab {
+                width: 12.45vmax;
+                height: 4.22vmin;
+                background-size: 100% 100%;
+                margin-left: 1.51vmax;
+                align-items: center;
+                justify-content: center;
+                font-size: 2.60vmin;
+                color: rgb(63, 63, 63);
+            }
+            buttons-container {
+                width: 90%;
+                flex-grow: 1;
+                flex-direction: row;
+                gap: 3.60vmax;
+            }
+            button {
+                width: 30.00vmax;
+                height: 15.03vmin;
+                background-size: 100% 100%;
+                background-lattice: 8.41% 33.16% 8.15% 32.12% 50.00% 50.00%;
+                margin: 3.90vmin 0 0 4.00vmax;
+                align-items: center;
+                justify-content: center;
+                font-size: 8.00vmin;
+            }
+            .supply-button {
+                -webkit-text-stroke: 0.5vmin rgb(32, 123, 4);
+                background-image: /pkg/vaststars.resources/ui/textures/item-config/button-grid-supply.texture;
+            }
+            .supply-button:active {
+                background-image: /pkg/vaststars.resources/ui/textures/item-config/button-grid-supply-active.texture;
+            }
+            .demand-button {
+                -webkit-text-stroke: 0.5vmin rgb(16, 53, 110);
+                background-image: /pkg/vaststars.resources/ui/textures/item-config/button-grid-demand.texture;
+            }
+            .demand-button:active {
+                background-image: /pkg/vaststars.resources/ui/textures/item-config/button-grid-demand-active.texture;
+            }
+            .disable-button {
+                -webkit-text-stroke: 0.5vmin rgb(207, 207, 207);
+                background-image: /pkg/vaststars.resources/ui/textures/item-config/button-grid-demand.texture;
+            }
+            .disable-button:active {
+                background-image: /pkg/vaststars.resources/ui/textures/item-config/button-grid-demand-active.texture;
+            }
+            item-box-frame {
+                width: 56.00vmax;
+                height: 90.58vmin;
                 background-image: "/pkg/vaststars.resources/ui/textures/common/square-grid.texture";
                 background-size: 100% 100%;
                 background-lattice: 4.22% 6.27% 4.22% 6.27% 49.22% 49.22%;
                 align-items: center; 
             }
+            item-box-list {
+                left: 0vmin;
+                top: 2.41vmin;
+                width: 100%;
+                height: 93.00%;
+                border-radius: 6.00vmin;
+                overflow: scroll;
+            }
             item {
-                margin-right: -1.58vmax;
-                margin-bottom: -1.5vmax;
-                width: 8.99vmax;
+                width: 19.47vmin;
                 height: 19.47vmin;
                 background-size: 100% 100%;
-                justify-content: center; align-items: center;
+                justify-content: center;
+                align-items: center;
             }
             item:active {
                 background-image: "/pkg/vaststars.resources/ui/textures/item-config/item-active.texture";
@@ -42,69 +170,57 @@
                 color: rgb(0, 255, 21);
                 -webkit-text-stroke: 1px #000;
             }
-            item-list {
-                left: 0vmin;
-                top: 2.41vmin;
-                width: 100%;
-                height: 93.00%;
-                border-radius: 5.00vmin;
-                overflow: scroll;
-            }
-            item-category {
-                margin-top: 6.50vmin;
-                width: 100%;
-                height: 2.00vmin;
-                align-items: center;
-            }
-            item-category-text {
-                margin-right: 4vmin;
-            }
-            item-category-text:last-child {
-                margin-right: 0vmin;
-            }
-            right-box {
-                margin-left: 0.93vmax;
-                width: 27.68vmax;
-                height: 84.34vmin;
-                background-image: "/pkg/vaststars.resources/ui/textures/item-config/right-box-bg.texture";
-                background-size: 100% 100%;
-            }
-            item-name-container {
-                margin-top: 46.49vmin;
-                width: 100%;
-                height: 5.60vmin;
-                font-size: 4.60vmin;
-            }
-            item-desc-container {
-                margin-top: 2.93vmin;
-                margin-left: 6.10%;
-                margin-right: 4.03%;
-                margin-bottom: 2.93vmin;
-                color:rgb(235,235,235);
-                width: 89.33%;
-                height: 13.73vmin;
-                font-size: 3.60vmin;
-                word-break: break-word;
-            }
-            button-container {
-                width: 100%;
-                height: 12.56vmin;
-                align-items: center;
-            }
         </style>
         <script type="text/x-lua" >
             local ui_sys = require "lua.ui_system"
             local scrollToItem = require "lua.scrolltoitem"
 
-            local start = ui_sys.createDataMode {
+            local start = ui_sys.createDataMode({
+                slots = {},
+                buttons = {},
                 items = {},
-                item_name = "",
-                item_icon = "",
-                item_desc = "",
-            }
+                show_set_item = false,
+                set_type = "",
+                disable = true,
+                supply_button = false,
+                demand_button = false,
+            }, function(start)
+                if start.supply_button then
+                    start.buttons[#start.buttons+1] = {
+                        class = "supply-button",
+                        text = "设 置 发 货",
+                        type = "supply",
+                    }
+                end
 
-            function start.clickButton(...)
-                ui_sys.pub {...}
+                if start.demand_button then
+                    start.buttons[#start.buttons+1] = {
+                        class = "demand-button",
+                        text = "设 置 收 货",
+                        type = "demand",
+                    }
+                end
+            end)
+
+            function start.clickIcon(c, i)
+                assert(start.set_type == "supply" or start.set_type == "demand", start.set_type)
+                ui_sys.pub {'set_item', c, i, start.set_type}
+            end
+
+            function start.clickSlot(i)
+                local slot = assert(start.slots[i])
+                if slot.remove then
+                    ui_sys.pub {'remove_slot', i}
+                    return
+                end
+                ui_sys.pub {'click_slot', i}
+            end
+
+            function start.clickSetItem(disable, type)
+                if disable then
+                    return
+                end
+                ui_sys.pub {'click_set_item', type}
             end
 
             function start.clickClose()
@@ -118,75 +234,54 @@
                     e.scrollTop = e.scrollTop - param.dy
                 end)
             end
-
-            function start.clickSetItem()
-                ui_sys.pub {"set_item"}
-            end
-
-            ui_sys.mapping(start, {
-                {
-                    function(start)
-                        window.flush()
-                        scrollToItem("item-list", ("%s:%s"):format(start.category_idx, start.item_idx))
-                    end,
-                    "category_idx", "item_idx",
-                }
-            })
         </script>
     </head>
-    <body style = "pointer-events: none; justify-content: center; align-items: center; background-image: /pkg/vaststars.resources/ui/textures/item-config/bg.texture; background-size: 100% 100%;" onload="init()">
-        <caption-container>
-            <caption-line style = "position: absolute; left: 24.26vmax; top: 12.89vmin; width: 15.34vmax;" />
-            <caption style = "position: absolute; left: 41.18vmax; top: 7.89vmin; width: 17.58vmax; height: 10vmin; font-size: 6.50vmin; justify-content: center; align-items: center;">设 置 物 品</caption>
-            <caption-line style = "position: absolute; left: 60.54vmax; top: 12.89vmin; width: 15.34vmax;" />
-        </caption-container>
-        <div class = "safe-area" style = "align-items: center;">
-            <div style = "position: absolute; margin-left: -3.89vmax; margin-top: -12.28vmin; top: 0; left: 0; width: 100vmax; height: 100vmin;" data-event-click = "clickClose()" />
-            <flex-row>
-                <left-box>
-                    <item-list id = "item-list">
-                        <div style = "width: 100%; align-items: center;" data-for = "c, c_index : items">
-                            <div style = "position: absolute; left: 0vmin; top: 0vmin; background-image: /pkg/vaststars.resources/ui/textures/item-config/category-bg.texture; width: 23.50vmax; height: 23.13vmin; background-size: 100% 100%;" />
-                            <div style = "margin-left: 5.58vmin; margin-top: 2.58vmin; width: 100%; flex-direction: row; font-size: 4.20vmin;">{{c.category}}</div>
-                            <div style = "margin-left: -2.20vmax; margin-top: -2.58vmin; width: 96.40%; flex-direction: row; flex-wrap: wrap;">
-                                <div data-for = "i, i_index : c.items">
-                                    <item data-attr-id = "i.id" data-event-click = "clickButton('click_item', c_index, i_index)" data-style-background-image = "i.selected and '/pkg/vaststars.resources/ui/textures/item-config/item-active.texture' or 'none'">
-                                        <div data-style-background-image = "i.icon" style = "width: 6.91vmax; height: 14.95vmin; background-size: 100% 100%; background-color: rgb(61, 61, 61);">
-                                            <new data-if = "i.new">新</new>
-                                        </div>
-                                    </item>
-                                </div>
+    <body style = "pointer-events: none; margin: 0 3.995vmax 0 4.715vmax; flex-direction: column;" onload="init()">
+        <header-container>
+            <caption-line-container style = "flex-direction: row-reverse;"><caption-line /></caption-line-container>
+            <caption style = "font-size: 6.50vmin; justify-content: center; align-items: center;">设 置 物 品</caption>
+            <caption-line-container style = "flex-direction: row;"><caption-line /></caption-line-container>
+        </header-container>
+        <div style = "position: absolute; top: 0; left: 0; width: 100vmax; height: 100vmin;" data-event-click = "clickClose()" />
+        <content-container style = "pointer-events: none; width: 100%; height: 100%;">
+            <frame>
+                <icons-container data-style-align-items = "#slots <= 4 and 'center' or 'flex-start'" data-style-flex-wrap = "#slots <= 4 and 'nowrap' or 'wrap'" >
+                    <icon-container data-for = "slots" data-event-click = "clickSlot(it_index)">
+                        <icon-left-lab data-style-background-image = "it.type == 'supply' and '/pkg/vaststars.resources/ui/textures/item-config/left-lab-supply.texture' or '/pkg/vaststars.resources/ui/textures/item-config/left-lab-demand.texture'" data-if = "it.type ~= ''" />
+                        <icon-right-box data-if = "it.icon ~= ''">
+                            <icon-pic data-style-background-image = "it.icon"/>
+                            <icon-right-lab data-style-background-image = "it.type == 'supply' and '/pkg/vaststars.resources/ui/textures/item-config/right-lab-supply.texture' or '/pkg/vaststars.resources/ui/textures/item-config/right-lab-demand.texture'">
+                                {{it.name}}
+                            </icon-right-lab>
+                        </icon-right-box>
+                        <icon-remove-container data-if = "it.icon ~= '' and it.remove == true"><icon-remove /></icon-remove-container>
+                    </icon-container>
+                </icons-container>
+                <buttons-container data-style-justify-content = "#buttons <= 1 and 'center' or 'flex-start'">
+                    <button data-for = "buttons" data-attr-class = "disable and 'disable-button' or it.class" data-event-click = "clickSetItem(disable, it.type)" data-style-filter = "disable and 'gray' or 'none'">
+                        {{it.text}}
+                    </button>
+                </buttons-container>
+            </frame>
+        </content-container>
+        <div style = "position: absolute; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 250); align-items: center; justify-content: center;" data-if = "show_set_item" data-event-click = "show_set_item = not show_set_item">
+            <item-box-frame>
+                <item-box-list id = "item-list">
+                    <div style = "width: 100%; align-items: center;" data-for = "c, c_index : items">
+                        <div style = "position: absolute; left: 0vmin; top: 0vmin; background-image: /pkg/vaststars.resources/ui/textures/item-config/category-bg.texture; width: 23.50vmax; height: 23.13vmin; background-size: 100% 100%;" />
+                        <div style = "margin-left: 5.58vmin; margin-top: 2.58vmin; width: 100%; flex-direction: row; font-size: 4.20vmin;">{{c.category}}</div>
+                        <div style = "margin-left: 0vmax; margin-top: -2.58vmin; width: 100%; flex-direction: row; flex-wrap: wrap; gap: -3.5vmin;">
+                            <div data-for = "i, i_index : c.items">
+                                <item data-attr-id = "i.id" data-event-click = "clickIcon(c_index, i_index)" data-style-background-image = "i.selected and '/pkg/vaststars.resources/ui/textures/item-config/item-active.texture' or 'none'">
+                                    <div data-style-background-image = "i.icon" style = "width: 14.95vmin; height: 14.95vmin; background-size: 100% 100%; background-color: rgb(61, 61, 61);">
+                                        <new data-if = "i.new">新</new>
+                                    </div>
+                                </item>
                             </div>
                         </div>
-                    </item-list>
-                    <item-category>
-                        <flex-row>
-                            <item-category-text style = "font-size: 3vmin;" data-for = "c : items">
-                                {{c.category}}
-                            </item-category-text>
-                        </flex-row>
-                    </item-category>
-                </left-box>
-                <right-box>
-                    <div data-style-background-image = "item_icon" style = "position: absolute; top: 1.71vmin; left: 5.11vmax; width: 18.43vmax; height: 39.71vmin; background-size: 100% 100%;" data-if = "item_icon ~= ''" />
-                    <div style = "position: absolute; position: absolute; top: 1.71vmin; left: 5.11vmax; width: 18.43vmax; height: 39.71vmin; background-image: /pkg/vaststars.resources/ui/textures/item-config/icon-frame.texture; background-size: 100% 100%;" />
-                    <item-name-container>
-                        <div style = "margin-left: 1.55vmax;margin-top: -1vmin; text-align: center; -webkit-text-stroke: 0.08vmin #fff; width:50%; font-size: 3.5vmin;">
-                            {{item_name}}
-                        </div>
-                    </item-name-container>
-                    <item-desc-container>
-                        <div style = "margin-top: -1.00vmin;" data-if = "item_desc ~= ''">
-                            {{item_desc}}
-                        </div>
-                    </item-desc-container>
-                    <button-container style = "justify-content: center; align-items: center;">
-                        <button-confirm style = "justify-content: center; align-items: center; font-size: 7.00vmin;" data-event-click = "clickSetItem()">
-                            <div style = "margin-top: 0vmin;">确定</div>
-                        </button-confirm>
-                    </button-container>
-                </right-box>
-            </flex-row>
+                    </div>
+                </item-box-list>
+            </item-box-frame>
         </div>
     </body>
 </rml>
