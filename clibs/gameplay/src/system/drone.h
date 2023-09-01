@@ -9,10 +9,9 @@
 
 struct airport {
     struct berth {
-        uint32_t unused0 : 4;
-        uint32_t type : 3;
-        uint32_t chest_slot : 4;
-        uint32_t unused1 : 5;
+        uint32_t unused0 : 7;
+        uint32_t slot : 4;
+        uint32_t unused2 : 5;
         uint32_t y : 8;
         uint32_t x : 8;
         inline uint16_t hash() const {

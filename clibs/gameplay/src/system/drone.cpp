@@ -95,7 +95,7 @@ enum class drone_status : uint8_t {
 
 static container::slot* ChestGetSlot(world& w, airport::berth const& berth) {
     if (auto building = w.buildings.find(berth.hash())) {
-        return &chest::array_at(w, container::index::from(building->chest), berth.chest_slot);
+        return &chest::array_at(w, container::index::from(building->chest), berth.slot);
     }
     return nullptr;
 }
@@ -193,7 +193,14 @@ static HubSearcher createHubSearcher(world& w, airport& info) {
 
 static void rebuild(world& w) {
     w.hub_time = 0;
-    std::map<uint16_t, flatmap<uint16_t, airport::berth>> globalmap;
+    struct mapinfo {
+        airport::berth berth;
+        container::slot::slot_type type;
+        bool operator==(const mapinfo& rhs) const {
+            return berth == rhs.berth && type == rhs.type;
+        }
+    };
+    std::map<uint16_t, flatmap<uint16_t, mapinfo>> globalmap;
     flatset<uint16_t> used_id;
     for (auto& v : ecs_api::select<ecs::airport>(w.ecs)) {
         auto& airport = v.get<ecs::airport>();
@@ -216,7 +223,7 @@ static void rebuild(world& w) {
             auto berth = createBerth(building, chestslot.type, i);
             auto& map = globalmap[item];
             r.each([&](uint8_t x, uint8_t y) {
-                map.insert_or_assign(getxy(x, y), berth);
+                map.insert_or_assign(getxy(x, y), mapinfo {berth, chestslot.type});
             });
         }
     }
@@ -252,25 +259,24 @@ static void rebuild(world& w) {
             continue;
         }
         auto& map = globalmap[airport.item];
-        flatset<airport::berth> set;
+        flatset<mapinfo> set;
         uint16_t area = prototype::get<"area">(w, building.prototype);
         uint16_t supply_area = prototype::get<"supply_area">(w, building.prototype);
         building_rect(building, area, supply_area).each([&](uint8_t x, uint8_t y) {
             if (auto pm = map.find(getxy(x, y))) {
-                auto m = *pm;
-                set.insert(m);
+                set.insert(*pm);
             }
         });
         for (auto h: set) {
-            switch ((container::slot::slot_type)h.type) {
+            switch (h.type) {
             case container::slot::slot_type::transit:
-                info.hub.emplace_back(h);
+                info.hub.emplace_back(h.berth);
                 break;
             case container::slot::slot_type::supply:
-                info.chest_red.emplace_back(h);
+                info.chest_red.emplace_back(h.berth);
                 break;
             case container::slot::slot_type::demand:
-                info.chest_blue.emplace_back(h);
+                info.chest_blue.emplace_back(h.berth);
                 break;
             default:
                 assert(false);
@@ -342,7 +348,7 @@ static void rebuild(world& w) {
                 if (auto slot = ChestGetSlot(w, mov1)) {
                     if (slot->item != info.item || slot->type == container::slot::slot_type::demand) {
                         if (auto findshot = ChestFindSlot(w, mov1, info.item)) {
-                            mov1.chest_slot = *findshot;
+                            mov1.slot = *findshot;
                             drone.next = std::bit_cast<uint32_t>(mov1);
                         }
                         else {
@@ -361,7 +367,7 @@ static void rebuild(world& w) {
                 if (auto slot = ChestGetSlot(w, std::bit_cast<airport::berth>(drone.mov2))) {
                     if (slot->item != info.item || slot->type == container::slot::slot_type::supply) {
                         if (auto findshot = ChestFindSlot(w, mov2, info.item)) {
-                            mov2.chest_slot = *findshot;
+                            mov2.slot = *findshot;
                             drone.mov2 = std::bit_cast<uint32_t>(mov2);
                         }
                         else {
@@ -474,7 +480,7 @@ static void DoTaskOnlyMov2(world& w, DroneEntity& e, ecs::drone& drone, const ai
 
 static std::optional<HubSearcher::Node> FindChestRed(world& w, const HubSearcher& searcher) {
     for (auto const& v : searcher.chest_pickup) {
-        auto& chestslot = chest::array_at(w, container::index::from(v.building->chest), v.berth.chest_slot);
+        auto& chestslot = chest::array_at(w, container::index::from(v.building->chest), v.berth.slot);
         if (chestslot.amount > chestslot.lock_item) {
             return v;
         }
@@ -484,7 +490,7 @@ static std::optional<HubSearcher::Node> FindChestRed(world& w, const HubSearcher
 
 static std::optional<HubSearcher::Node> FindChestBlue(world& w, const HubSearcher& searcher) {
     for (auto const& v : searcher.chest_place) {
-        auto& chestslot = chest::array_at(w, container::index::from(v.building->chest), v.berth.chest_slot);
+        auto& chestslot = chest::array_at(w, container::index::from(v.building->chest), v.berth.slot);
         if (chestslot.limit > chestslot.amount + chestslot.lock_space) {
             return v;
         }
@@ -503,7 +509,7 @@ static std::tuple<std::optional<HubSearcher::Node>, std::optional<HubSearcher::N
     std::optional<HubSearcher::Node> max;
     uint16_t maxAmount = 0;
     for (auto const& v : searcher.hub_pickup) {
-        auto& chestslot = chest::array_at(w, container::index::from(v.building->chest), v.berth.chest_slot);
+        auto& chestslot = chest::array_at(w, container::index::from(v.building->chest), v.berth.slot);
         auto amount = chestslot.amount - chestslot.lock_item;
         if ((!max || (amount > maxAmount)) && (amount > 0)) {
             max = v;
@@ -513,7 +519,7 @@ static std::tuple<std::optional<HubSearcher::Node>, std::optional<HubSearcher::N
     std::optional<HubSearcher::Node> min;
     uint16_t minAmount = 0;
     for (auto const& v : searcher.hub_place) {
-        auto& chestslot = chest::array_at(w, container::index::from(v.building->chest), v.berth.chest_slot);
+        auto& chestslot = chest::array_at(w, container::index::from(v.building->chest), v.berth.slot);
         auto amount = chestslot.amount + chestslot.lock_space;
         if ((!min || (amount < minAmount)) && (chestslot.limit > amount)) {
             min = v;
@@ -531,7 +537,7 @@ static std::optional<HubSearcher::Node> FindHubForce(world& w, const HubSearcher
     std::optional<HubSearcher::Node> min;
     uint16_t minAmount = 0;
     for (auto const& v : searcher.hub_place) {
-        auto& chestslot = chest::array_at(w, container::index::from(v.building->chest), v.berth.chest_slot);
+        auto& chestslot = chest::array_at(w, container::index::from(v.building->chest), v.berth.slot);
         auto amount = chestslot.amount + chestslot.lock_space;
         if ((!min || (amount < minAmount))) {
             min = v;
