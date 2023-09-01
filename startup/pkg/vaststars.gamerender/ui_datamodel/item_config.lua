@@ -8,6 +8,7 @@ local gameplay_core = require "gameplay.core"
 local set_item_mb = mailbox:sub {"set_item"}
 local click_slot_mb = mailbox:sub {"click_slot"}
 local click_set_item_mb = mailbox:sub {"click_set_item"}
+local cancel_set_item_mb = mailbox:sub {"cancel_set_item"}
 local remove_slot_mb = mailbox:sub {"remove_slot"}
 local itask = ecs.require "task"
 local item_unlocked = ecs.require "ui_datamodel.common.item_unlocked".is_unlocked
@@ -31,7 +32,7 @@ local function updateSlots(e, datamodel)
     local max_slot = ichest.get_max_slot(typeobject)
     local slots = {}
     for i = 1, max_slot do
-        local slot = gameplay_world:container_get(e.chest, i)
+        local slot = gameplay_world:container_get(e.station, i)
         if not slot then
             break
         end
@@ -148,6 +149,10 @@ function M:stage_ui_update(datamodel, object_id, interface)
     for _, _, _, type in click_set_item_mb:unpack() do
         datamodel.show_set_item = true
         datamodel.set_type = type
+    end
+
+    for _ in cancel_set_item_mb:unpack() do
+        datamodel.show_set_item = false
     end
 
     for _, _, _, idx in remove_slot_mb:unpack() do

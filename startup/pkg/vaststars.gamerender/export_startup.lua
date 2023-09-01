@@ -33,6 +33,7 @@ funcs["wind_turbine"] = DO_NOTHING
 funcs["accumulator"] = DO_NOTHING
 funcs["auto_set_recipe"] = DO_NOTHING
 funcs["park"] = DO_NOTHING
+funcs["airport"] = DO_NOTHING
 
 funcs["building"] = function (entity, e)
     entity.prototype_name = iprototype.queryById(e.building.prototype).name
@@ -88,21 +89,6 @@ funcs["chest"] = function (entity, e)
         end
     end
 
-    entity.items = items
-    return entity
-end
-
-funcs["airport"] = function (entity, e)
-    gameplay_core.extend(e, "airport?in chest?in")
-
-    local items = {}
-    for i = 1, ichest.MAX_SLOT do
-        local slot = ichest.get(gameplay_core.get_world(), e.chest, i)
-        if not slot then
-            break
-        end
-        items[#items+1] = slot.item == 0 and "" or assert(iprototype.queryById(slot.item)).name
-    end
     entity.items = items
     return entity
 end

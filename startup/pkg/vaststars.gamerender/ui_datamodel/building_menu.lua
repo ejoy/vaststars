@@ -37,7 +37,6 @@ local PLACE_TYPES <const> = {
 }
 
 local SET_ITEM_COMPONENT <const> = {
-    "airport",
     "station",
 }
 
@@ -227,7 +226,7 @@ local function station_set_item(gameplay_world, e, type, item)
     local items = {}
 
     for i = 1, ichest.get_max_slot(iprototype.queryById(e.building.prototype)) do
-        local slot = gameplay_world:container_get(e.chest, i)
+        local slot = gameplay_world:container_get(e.station, i)
         if not slot then
             break
         end
@@ -243,7 +242,7 @@ local function station_remove_item(gameplay_world, e, slot_index)
     local items = {}
 
     for i = 1, ichest.get_max_slot(iprototype.queryById(e.building.prototype)) do
-        local slot = gameplay_world:container_get(e.chest, i)
+        local slot = gameplay_world:container_get(e.station, i)
         if not slot then
             break
         end
@@ -254,18 +253,6 @@ local function station_remove_item(gameplay_world, e, slot_index)
     end
 
     istation.set_item(gameplay_world, e, items)
-end
-
-local function airport_set_item(gameplay_world, e, _, item)
-    -- local items = {}
-    -- items[#items+1] = item
-    -- ihub.set_item(gameplay_world, e, items)
-end
-
-local function airport_remove_item(gameplay_world, e, _, _)
-    -- local items = {}
-    -- items[#items+1] = 0
-    -- ihub.set_item(gameplay_world, e, items)
 end
 
 function M:stage_ui_update(datamodel, object_id)
@@ -280,13 +267,7 @@ function M:stage_ui_update(datamodel, object_id)
     for _, _, _, object_id in set_item_mb:unpack() do
         local typeobject = iprototype.queryByName(object.prototype_name)
         local interface = {}
-        if iprototype.has_type(typeobject.type, "airport") then
-            interface.set_item = airport_set_item
-            interface.remove_item = airport_remove_item
-            interface.supply_button = false
-            interface.demand_button = true
-
-        elseif iprototype.has_types(typeobject.type, "station") then
+        if iprototype.has_types(typeobject.type, "station") then
             interface.set_item = station_set_item
             interface.remove_item = station_remove_item
             interface.supply_button = true

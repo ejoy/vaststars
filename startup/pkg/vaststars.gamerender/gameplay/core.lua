@@ -105,11 +105,6 @@ init_func["road"] = function (pt, template)
     return template
 end
 
-init_func["airport"] = function (pt, template)
-    template.items = template.items
-    return template
-end
-
 local post_funcs = {}
 
 function m.create_entity(init)

@@ -204,21 +204,33 @@ local function get_property(e, typeobject)
     if iprototype.check_types(typeobject.name, CHEST_LIST_TYPES) and e.chest then
         local max_slot = ichest.get_max_slot(typeobject)
         local items = {}
-        for i = 1, max_slot do
-            local slot = gameplay_world:container_get(e.chest, i)
-            if not slot then
-                break
-            end
 
-            local amount = ichest.get_amount(slot)
-            if slot.item ~= 0 then
-                local typeobject_item = assert(iprototype.queryById(slot.item))
-                items[#items + 1] = {slot_index = i, icon = typeobject_item.item_icon, name = typeobject_item.name, count = amount, max_count = slot.limit, type = slot.type}
-            end
-        end
         if iprototype.has_types(typeobject.type, "chest") then
+            for i = 1, max_slot do
+                local slot = gameplay_world:container_get(e.chest, i)
+                if not slot then
+                    break
+                end
+                local amount = ichest.get_amount(slot)
+                if slot.item ~= 0 then
+                    local typeobject_item = assert(iprototype.queryById(slot.item))
+                    items[#items + 1] = {slot_index = i, icon = typeobject_item.item_icon, name = typeobject_item.name, count = amount, max_count = slot.limit, type = slot.type}
+                end
+            end
             t.show_type = "chest"
         elseif iprototype.has_types(typeobject.type, "station") then
+            for i = 1, max_slot do
+                local slot = gameplay_world:container_get(e.station, i)
+                if not slot then
+                    break
+                end
+
+                local amount = ichest.get_amount(slot)
+                if slot.item ~= 0 then
+                    local typeobject_item = assert(iprototype.queryById(slot.item))
+                    items[#items + 1] = {slot_index = i, icon = typeobject_item.item_icon, name = typeobject_item.name, count = amount, max_count = slot.limit, type = slot.type}
+                end
+            end
             table.sort(items, function(a, b)
                 local v1 = a.type == "supply" and 0 or 1
                 local v2 = b.type == "supply" and 0 or 1

@@ -223,6 +223,10 @@
                 ui_sys.pub {'click_set_item', type}
             end
 
+            function start.clickCancelSetItem()
+                ui_sys.pub {'cancel_set_item'}
+            end
+
             function start.clickClose()
                 ui_sys.close()
             end
@@ -264,7 +268,7 @@
                 </buttons-container>
             </frame>
         </content-container>
-        <div style = "position: absolute; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 250); align-items: center; justify-content: center;" data-if = "show_set_item" data-event-click = "show_set_item = not show_set_item">
+        <div style = "position: absolute; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 250); align-items: center; justify-content: center;" data-if = "show_set_item" data-event-click = "clickCancelSetItem()">
             <item-box-frame>
                 <item-box-list id = "item-list">
                     <div style = "width: 100%; align-items: center;" data-for = "c, c_index : items">
