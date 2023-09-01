@@ -195,8 +195,8 @@ local entities = { {
 }, {
   dir = "S",
   prototype_name = "停车站",
-  x = 126,
-  y = 126
+  x = 146,
+  y = 116
 }}
 local road = { {
   dir = "E",
@@ -332,11 +332,6 @@ local road = { {
   dir = "N",
   prototype_name = "砖石公路-I型",
   x = 138,
-  y = 114
-}, {
-  dir = "N",
-  prototype_name = "砖石公路-I型",
-  x = 138,
   y = 122
 }, {
   dir = "N",
@@ -358,6 +353,41 @@ local road = { {
   prototype_name = "砖石公路-U型",
   x = 138,
   y = 104
+}, {
+  dir = "W",
+  prototype_name = "砖石公路-T型",
+  x = 138,
+  y = 114
+}, {
+  dir = "E",
+  prototype_name = "砖石公路-I型",
+  x = 140,
+  y = 114
+}, {
+  dir = "E",
+  prototype_name = "砖石公路-I型",
+  x = 142,
+  y = 114
+}, {
+  dir = "E",
+  prototype_name = "砖石公路-I型",
+  x = 146,
+  y = 114
+}, {
+  dir = "W",
+  prototype_name = "砖石公路-U型",
+  x = 150,
+  y = 114
+}, {
+  dir = "E",
+  prototype_name = "砖石公路-I型",
+  x = 144,
+  y = 114
+}, {
+  dir = "E",
+  prototype_name = "砖石公路-I型",
+  x = 148,
+  y = 114
 } }
 local mineral = {
   ["102,62"] = "铁矿石",
