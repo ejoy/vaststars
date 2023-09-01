@@ -171,9 +171,9 @@ local entities = { {
     y = 132
   }, {
     dir = "N",
-    items = {"碎石"},
-    prototype_name = "无人机平台I",
-    x = 173,
+    items = {{"碎石", 0}},
+    prototype_name = "仓库I",
+    x = 172,
     y = 115
   }, {
     dir = "N",
