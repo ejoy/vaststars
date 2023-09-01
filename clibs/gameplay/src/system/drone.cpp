@@ -71,15 +71,6 @@ struct building_rect {
     }
 };
 
-static airport_berth createBerth(ecs::building const& b, uint8_t chest_slot) {
-    return {
-        0
-        , chest_slot
-        , b.y
-        , b.x
-    };
-}
-
 enum class drone_status : uint8_t {
     init,
     has_error,
@@ -191,7 +182,7 @@ static void rebuild(world& w) {
         airport_berth berth;
         container::slot::slot_type type;
         bool operator==(const mapinfo& rhs) const {
-            return berth.x == rhs.berth.x && berth.y == rhs.berth.y && berth.slot == rhs.berth.slot && type == rhs.type;
+            return berth == rhs.berth && type == rhs.type;
         }
     };
     std::map<uint16_t, flatmap<uint16_t, mapinfo>> globalmap;
@@ -214,7 +205,7 @@ static void rebuild(world& w) {
         for (uint8_t i = 0; i < slice.size(); ++i) {
             auto& chestslot = slice[i];
             auto item = chestslot.item;
-            auto berth = createBerth(building, i);
+            auto berth = airport_berth { building.x, building.y, i };
             auto& map = globalmap[item];
             r.each([&](uint8_t x, uint8_t y) {
                 map.insert_or_assign(getxy(x, y), mapinfo {berth, chestslot.type});
@@ -245,7 +236,7 @@ static void rebuild(world& w) {
         info.prototype = building.prototype;
         info.width = homeBuilding.w;
         info.height = homeBuilding.h;
-        info.homeBerth = createBerth(building, 0);
+        info.homeBerth = airport_berth { building.x, building.y, 0 };
         info.capacitance = &v.get<ecs::capacitance>();
         if (airport.item == 0) {
             info.item = 0;
@@ -307,7 +298,7 @@ static void rebuild(world& w) {
             break;
         case drone_status::idle:
             CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, ecs::drone& drone, airport const& info) {
-                if (std::bit_cast<uint32_t>(drone.prev) != std::bit_cast<uint32_t>(info.homeBerth)) {
+                if (drone.prev != info.homeBerth) {
                     GoHome(w, e, drone, info);
                     return;
                 }
@@ -318,7 +309,7 @@ static void rebuild(world& w) {
             break;
         case drone_status::at_home:
             CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, ecs::drone& drone, airport const& info) {
-                if (std::bit_cast<uint32_t>(drone.prev) != std::bit_cast<uint32_t>(info.homeBerth)) {
+                if (drone.prev != info.homeBerth) {
                     SetStatus(drone, drone_status::idle);
                     GoHome(w, e, drone, info);
                     return;
@@ -396,7 +387,7 @@ static void Arrival(world& w, DroneEntity& e, ecs::drone& drone);
 
 static void Move(world& w, DroneEntity& e, ecs::drone& drone, const HubSearcher::Node& target) {
     drone.next = std::bit_cast<airport_berth>(target.berth);
-    if (std::bit_cast<uint32_t>(drone.prev) == std::bit_cast<uint32_t>(drone.next)) {
+    if (drone.prev == drone.next) {
         drone.maxprogress = drone.progress = 0;
         Arrival(w, e, drone);
         return;
@@ -453,7 +444,6 @@ static void DoTaskOnlyMov1(world& w, DroneEntity& e, ecs::drone& drone, const ai
     //update drone
     mov1.building->pickup_time = w.hub_time;
     AssertStatus(drone, drone_status::go_mov1);
-    assert(std::bit_cast<uint32_t>(drone.mov2) != 0);
     Move(w, e, drone, mov1);
 }
 
@@ -468,7 +458,6 @@ static void DoTaskOnlyMov2(world& w, DroneEntity& e, ecs::drone& drone, const ai
     //update drone
     mov2.building->place_time = w.hub_time;
     AssertStatus(drone, drone_status::go_mov2);
-    assert(std::bit_cast<uint32_t>(drone.mov2) == 0);
     Move(w, e, drone, mov2);
 }
 
@@ -613,7 +602,7 @@ static bool FindTaskOnlyMov1(world& w, DroneEntity& e, ecs::drone& drone, airpor
     }
     auto [_1, max, _2] = FindHub(w, searcher);
     if (max) {
-        if (std::bit_cast<uint32_t>(drone.mov2) != std::bit_cast<uint32_t>(max->berth)) {
+        if (drone.mov2 != max->berth) {
             DoTaskOnlyMov1(w, e, drone, info, *max);
             return true;
         }
@@ -654,7 +643,7 @@ static bool FindTaskOnlyMov2(world& w, DroneEntity& e, ecs::drone& drone, airpor
     return false;
 }
 
-static bool FindTaskOnlyMov2(world& w, DroneEntity& e, ecs::drone& drone, airport& info, uint32_t mov1) {
+static bool FindTaskOnlyMov2(world& w, DroneEntity& e, ecs::drone& drone, airport& info, airport_berth mov1) {
     auto searcher = createHubSearcher(w, info);
     {
         auto blue = FindChestBlue(w, searcher);
@@ -666,7 +655,7 @@ static bool FindTaskOnlyMov2(world& w, DroneEntity& e, ecs::drone& drone, airpor
     {
         auto [min, _1, _2] = FindHub(w, searcher);
         if (min) {
-            if (mov1 != std::bit_cast<uint32_t>(min->berth)) {
+            if (mov1 != min->berth) {
                 DoTaskOnlyMov2(w, e, drone, info, *min);
                 return true;
             }
@@ -682,7 +671,7 @@ static bool FindTaskOnlyMov2(world& w, DroneEntity& e, ecs::drone& drone, airpor
     {
         auto min = FindHubForce(w, searcher);
         if (min) {
-            if (mov1 != std::bit_cast<uint32_t>(min->berth)) {
+            if (mov1 != min->berth) {
                 DoTaskOnlyMov2(w, e, drone, info, *min);
                 return true;
             }
@@ -693,7 +682,7 @@ static bool FindTaskOnlyMov2(world& w, DroneEntity& e, ecs::drone& drone, airpor
 
 static void UnlockMov2(world& w, ecs::drone& drone, airport const& info) {
     auto slot = ChestGetSlot(w, drone.mov2);
-    drone.mov2 = airport_berth {0,0,0,0};
+    drone.mov2 = airport_berth {0,0,0};
     if (slot && slot->item == drone.item) {
         if (slot->lock_space > 0) {
             slot->lock_space--;
@@ -732,10 +721,10 @@ static void Arrival(world& w, DroneEntity& e, ecs::drone& drone) {
                     movBuilding,
                 };
                 Move(w, e, drone, node);
-                drone.mov2 = airport_berth {0,0,0,0};
+                drone.mov2 = airport_berth {0,0,0};
             }
             else {
-                if (FindTaskOnlyMov2(w, e, drone, info, std::bit_cast<uint32_t>(drone.next))) {
+                if (FindTaskOnlyMov2(w, e, drone, info, drone.next)) {
                     slot->amount--;
                     drone.item = info.item;
                     return;
@@ -774,10 +763,10 @@ static void Arrival(world& w, DroneEntity& e, ecs::drone& drone) {
         break;
     }
     case drone_status::go_home:
-        drone.next = airport_berth {0,0,0,0};
+        drone.next = airport_berth {0,0,0};
         drone.maxprogress = 0;
         CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, ecs::drone& drone, airport& info) {
-            if (std::bit_cast<uint32_t>(drone.prev) != std::bit_cast<uint32_t>(info.homeBerth)) {
+            if (drone.prev != info.homeBerth) {
                 GoHome(w, e, drone, info);
                 return;
             }
