@@ -69,7 +69,6 @@ tag "lorry_willremove"
 
 component "airport" {
     "uint16 id",
-    "uint16 item",
 }
 
 type "airport_berth" {

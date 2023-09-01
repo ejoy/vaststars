@@ -233,11 +233,6 @@ local function get_property(e, typeobject)
         end
         t.chest_list = items
     end
-    if e.airport then
-        local typeobject_item = iprototype.queryById(e.airport.item)
-        t.chest_list = {{slot_index = 1, icon = typeobject_item.item_icon, name = typeobject_item.name, count = 0, max_count = 0, type = "none"}}
-        t.show_type = "goods"
-    end
     if e.fluidbox then
         local name = "无"
         local volume = 0

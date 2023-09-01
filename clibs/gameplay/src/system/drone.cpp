@@ -149,43 +149,46 @@ struct HubSearcher {
 static HubSearcher createHubSearcher(world& w, airport& info) {
     w.hub_time++;
     HubSearcher searcher;
-    searcher.hub_pickup.reserve(info.hub.size());
-    searcher.hub_place.reserve(info.hub.size());
-    searcher.chest_pickup.reserve(info.chest_red.size());
-    searcher.chest_place.reserve(info.chest_blue.size());
-    for (auto& berth : info.hub) {
+    auto& market = info.market.begin()->second; //TODO
+    searcher.hub_pickup.reserve(market.transit.size());
+    searcher.hub_place.reserve(market.transit.size());
+    searcher.chest_pickup.reserve(market.supply.size());
+    searcher.chest_place.reserve(market.demand.size());
+    for (auto& berth : market.supply) {
+        if (auto building = w.buildings.find(getxy(berth.x, berth.y))) {
+            searcher.chest_pickup.push_back({berth, building});
+        }
+    }
+    for (auto& berth : market.demand) {
+        if (auto building = w.buildings.find(getxy(berth.x, berth.y))) {
+            searcher.chest_place.push_back({berth, building});
+        }
+    }
+    for (auto& berth : market.transit) {
         if (auto building = w.buildings.find(getxy(berth.x, berth.y))) {
             searcher.hub_pickup.push_back({berth, building});
             searcher.hub_place.push_back({berth, building});
         }
     }
-    for (auto& berth : info.chest_red) {
-        if (auto building = w.buildings.find(getxy(berth.x, berth.y))) {
-            searcher.chest_pickup.push_back({berth, building});
-        }
-    }
-    for (auto& berth : info.chest_blue) {
-        if (auto building = w.buildings.find(getxy(berth.x, berth.y))) {
-            searcher.chest_place.push_back({berth, building});
-        }
-    }
-    std::sort(std::begin(searcher.hub_pickup), std::end(searcher.hub_pickup), HubSearcher::PickupSort);
-    std::sort(std::begin(searcher.hub_place), std::end(searcher.hub_place), HubSearcher::PlaceSort);
     std::sort(std::begin(searcher.chest_pickup), std::end(searcher.chest_pickup), HubSearcher::PickupSort);
     std::sort(std::begin(searcher.chest_place), std::end(searcher.chest_place), HubSearcher::PlaceSort);
+    std::sort(std::begin(searcher.hub_pickup), std::end(searcher.hub_pickup), HubSearcher::PickupSort);
+    std::sort(std::begin(searcher.hub_place), std::end(searcher.hub_place), HubSearcher::PlaceSort);
     return searcher;
 }
 
 static void rebuild(world& w) {
     w.hub_time = 0;
-    struct mapinfo {
-        airport_berth berth;
+    struct chestinfo {
+        uint16_t item;
         container::slot::slot_type type;
-        bool operator==(const mapinfo& rhs) const {
-            return berth == rhs.berth && type == rhs.type;
-        }
     };
-    std::map<uint16_t, flatmap<uint16_t, mapinfo>> globalmap;
+    struct mapinfo {
+        uint8_t x;
+        uint8_t y;
+        std::vector<chestinfo> chest;
+    };
+    std::map<uint16_t, mapinfo> globalmap;
     flatset<uint16_t> used_id;
     for (auto& v : ecs_api::select<ecs::airport>(w.ecs)) {
         auto& airport = v.get<ecs::airport>();
@@ -196,21 +199,19 @@ static void rebuild(world& w) {
         auto& chest = v.get<ecs::chest>();
         auto& building = v.get<ecs::building>();
         uint16_t area = prototype::get<"area">(w, building.prototype);
-        building_rect r(building, area);
         auto c = container::index::from(chest.chest);
         if (c == container::kInvalidIndex) {
             continue;
         }
-        auto slice = chest::array_slice(w, c);
-        for (uint8_t i = 0; i < slice.size(); ++i) {
-            auto& chestslot = slice[i];
-            auto item = chestslot.item;
-            auto berth = airport_berth { building.x, building.y, i };
-            auto& map = globalmap[item];
-            r.each([&](uint8_t x, uint8_t y) {
-                map.insert_or_assign(getxy(x, y), mapinfo {berth, chestslot.type});
-            });
+        mapinfo m;
+        m.x = building.x;
+        m.y = building.y;
+        for (auto& chestslot : chest::array_slice(w, c)) {
+            m.chest.emplace_back(chestslot.item, chestslot.type);
         }
+        building_rect(building, area).each([&](uint8_t x, uint8_t y) {
+            globalmap.insert_or_assign(getxy(x, y), m);
+        });
     }
 
     flatmap<uint16_t, uint16_t> created_airport;
@@ -238,37 +239,43 @@ static void rebuild(world& w) {
         info.height = homeBuilding.h;
         info.homeBerth = airport_berth { building.x, building.y, 0 };
         info.capacitance = &v.get<ecs::capacitance>();
-        if (airport.item == 0) {
-            info.item = 0;
-            airports.emplace(airport.id, info);
-            continue;
-        }
-        auto& map = globalmap[airport.item];
-        flatset<mapinfo> set;
+        std::map<uint16_t, mapinfo> set;
         uint16_t area = prototype::get<"area">(w, building.prototype);
         uint16_t supply_area = prototype::get<"supply_area">(w, building.prototype);
         building_rect(building, area, supply_area).each([&](uint8_t x, uint8_t y) {
-            if (auto pm = map.find(getxy(x, y))) {
-                set.insert(*pm);
+            auto pm = globalmap.find(getxy(x, y));
+            if (pm != globalmap.end()) {
+                auto& m = pm->second;
+                set.emplace(getxy(m.x, m.y), m);
             }
         });
-        for (auto h: set) {
-            switch (h.type) {
-            case container::slot::slot_type::transit:
-                info.hub.emplace_back(h.berth);
-                break;
-            case container::slot::slot_type::supply:
-                info.chest_red.emplace_back(h.berth);
-                break;
-            case container::slot::slot_type::demand:
-                info.chest_blue.emplace_back(h.berth);
-                break;
-            default:
-                assert(false);
-                break;
+        for (auto& [_, m]: set) {
+            for (uint8_t i = 0; i < (uint8_t)m.chest.size(); ++i) {
+                auto& slot = m.chest[i];
+                airport_berth berth {m.x, m.y, i};
+                switch (slot.type) {
+                case container::slot::slot_type::supply:
+                    info.market[slot.item].supply.emplace_back(berth);
+                    break;
+                case container::slot::slot_type::demand:
+                    info.market[slot.item].demand.emplace_back(berth);
+                    break;
+                case container::slot::slot_type::transit:
+                    info.market[slot.item].transit.emplace_back(berth);
+                    break;
+                default:
+                    break;
+                }
             }
         }
-        info.item = info.idle()? 0 : airport.item;
+        for (auto it = info.market.begin(); it != info.market.end();) {
+            if (it->second.active()) {
+                ++it;
+            }
+            else {
+                it = info.market.erase(it);
+            }
+        }
         airports.emplace(airport.id, std::move(info));
     }
     w.airports = std::move(airports);
@@ -284,7 +291,7 @@ static void rebuild(world& w) {
                 drone.home = *p;
                 CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, ecs::drone& drone, airport const& info) {
                     drone.prev = std::bit_cast<airport_berth>(info.homeBerth);
-                    if (info.item == 0) {
+                    if (info.market.empty()) {
                         SetStatus(drone, drone_status::idle);
                         return;
                     }
@@ -302,7 +309,7 @@ static void rebuild(world& w) {
                     GoHome(w, e, drone, info);
                     return;
                 }
-                if (info.item != 0) {
+                if (!info.market.empty()) {
                     SetStatus(drone, drone_status::at_home);
                 }
             });
@@ -314,7 +321,7 @@ static void rebuild(world& w) {
                     GoHome(w, e, drone, info);
                     return;
                 }
-                if (info.item == 0) {
+                if (info.market.empty()) {
                     SetStatus(drone, drone_status::idle);
                 }
             });
@@ -328,44 +335,7 @@ static void rebuild(world& w) {
             break;
         case drone_status::go_mov1:
             CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, ecs::drone& drone, airport const& info) {
-                auto mov1 = drone.next;
-                auto mov2 = drone.mov2;
-                if (auto slot = ChestGetSlot(w, mov1)) {
-                    if (slot->item != info.item || slot->type == container::slot::slot_type::demand) {
-                        if (auto findshot = ChestFindSlot(w, mov1, info.item)) {
-                            mov1.slot = *findshot;
-                            drone.next = std::bit_cast<airport_berth>(mov1);
-                        }
-                        else {
-                            // undo mov2
-                            if (auto mov2slot = ChestGetSlot(w, mov2)) {
-                                if (slot->item == info.item && slot->type != container::slot::slot_type::supply) {
-                                    assert(mov2slot->lock_space > 0);
-                                    mov2slot->lock_space--;
-                                }
-                            }
-                            SetStatus(drone, drone_status::empty_task);
-                            return;
-                        }
-                    }
-                }
-                if (auto slot = ChestGetSlot(w, drone.mov2)) {
-                    if (slot->item != info.item || slot->type == container::slot::slot_type::supply) {
-                        if (auto findshot = ChestFindSlot(w, mov2, info.item)) {
-                            mov2.slot = *findshot;
-                            drone.mov2 = std::bit_cast<airport_berth>(mov2);
-                        }
-                        else {
-                            // undo mov1
-                            if (auto mov1slot = ChestGetSlot(w, mov1)) {
-                                assert(mov1slot->lock_item > 0);
-                                mov1slot->lock_item--;
-                            }
-                            SetStatus(drone, drone_status::empty_task);
-                            return;
-                        }
-                    }
-                }
+                //TODO
             });
             break;
         default:
@@ -583,7 +553,7 @@ static bool FindTask(world& w, DroneEntity& e, ecs::drone& drone, airport& info)
 }
 
 static void FindTaskNotAtHome(world& w, DroneEntity& e, ecs::drone& drone, airport& info) {
-    if (info.item == 0) {
+    if (info.market.empty()) {
         GoHome(w, e, drone, info);
         return;
     }
@@ -695,10 +665,9 @@ static void Arrival(world& w, DroneEntity& e, ecs::drone& drone) {
     switch ((drone_status)drone.status) {
     case drone_status::go_mov1: {
         CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, ecs::drone& drone, airport& info) {
-            assert(info.item != 0);
             auto slot = ChestGetSlot(w, drone.next);
-            if (!slot || slot->item != info.item || slot->amount == 0) {
-                if (slot && slot->item == info.item && slot->amount == 0 && slot->lock_item > 0) {
+            if (!slot || slot->amount == 0) {
+                if (slot && slot->amount == 0 && slot->lock_item > 0) {
                     slot->lock_item--;
                 }
                 if (FindTaskOnlyMov1(w, e, drone, info)) {
@@ -714,7 +683,7 @@ static void Arrival(world& w, DroneEntity& e, ecs::drone& drone) {
             auto mov2Berth = drone.mov2;
             if (auto movBuilding = w.buildings.find(getxy(mov2Berth.x, mov2Berth.y))) {
                 slot->amount--;
-                drone.item = info.item;
+                drone.item = slot->item;
                 SetStatus(drone, drone_status::go_mov2);
                 HubSearcher::Node node {
                     mov2Berth,
@@ -726,7 +695,7 @@ static void Arrival(world& w, DroneEntity& e, ecs::drone& drone) {
             else {
                 if (FindTaskOnlyMov2(w, e, drone, info, drone.next)) {
                     slot->amount--;
-                    drone.item = info.item;
+                    drone.item = slot->item;
                     return;
                 }
                 UnlockMov2(w, drone, info);
@@ -739,12 +708,6 @@ static void Arrival(world& w, DroneEntity& e, ecs::drone& drone) {
         CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, ecs::drone& drone, airport& info) {
             auto slot = ChestGetSlot(w, drone.next);
             if (!slot || slot->item != drone.item) {
-                if (info.item != drone.item) {
-                    backpack_place(w, drone.item, 1);
-                    drone.item = 0;
-                    GoHome(w, e, drone, info);
-                    return;
-                }
                 if (FindTaskOnlyMov2(w, e, drone, info)) {
                     return;
                 }
@@ -770,7 +733,7 @@ static void Arrival(world& w, DroneEntity& e, ecs::drone& drone) {
                 GoHome(w, e, drone, info);
                 return;
             }
-            if (info.item == 0) {
+            if (info.market.empty()) {
                 SetStatus(drone, drone_status::idle);
                 return;
             }
@@ -807,7 +770,7 @@ lupdate(lua_State *L) {
         switch ((drone_status)drone.status) {
         case drone_status::at_home:
             CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, ecs::drone& drone, airport& info) {
-                if (info.item == 0) {
+                if (info.market.empty()) {
                     SetStatus(drone, drone_status::idle);
                     return;
                 }
