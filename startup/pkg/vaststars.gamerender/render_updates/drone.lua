@@ -23,29 +23,22 @@ local default_fly_height = 20
 local fly_to_home_height = 15
 local item_height = 15
 
-local function __get_location(location)
-    return (location >> 16) & 0xFFFF
+local function __get_location(x, y, slot)
+    return x << 24 | y << 16 | slot
 end
 
-local function __get_fly_height(location)
-    if not location then
-        return
-    end
-    local x, y = ((location >> 24) & 0xFF), (location >> 16) & 0xFF
+local function __get_fly_height(x, y)
     local object = objects:coord(x, y)
     if object then
         return iprototype.queryByName(object.prototype_name).drone_height
     end
 end
 
-local function __get_position(location)
-    local x, y = ((location >> 24) & 0xFF), (location >> 16) & 0xFF
+local function __get_position(x, y, slot)
     local object = objects:coord(x, y)
     if not object then
         return math3d.vector(terrain:get_position_by_coord(x, y, 1, 1))
     end
-
-    local slot = (location >> 8) & 0xFF
 
     local building = global.buildings[object.id]
     if not building then
@@ -63,8 +56,7 @@ local function __get_position(location)
     end
 end
 
-local function __is_home(location)
-    local x, y = ((location >> 24) & 0xFF), (location >> 16) & 0xFF
+local function __is_home(x, y)
     local object = objects:coord(x, y)
     if object then
         local typeobject = iprototype.queryByName(object.prototype_name)
@@ -77,9 +69,9 @@ local function get_home_pos(pos)
     return math3d.add(math3d.set_index(pos, 2, 0), {6, 8, -6})
 end
 
-local function create_drone(at)
-    local homepos = get_home_pos(__get_position(at))
-    local location = __get_location(at)
+local function create_drone(x, y, slot)
+    local homepos = get_home_pos(__get_position(x, y, slot))
+    local location = __get_location(x, y, slot)
     local task = {
         location = location,
         flying = false,
@@ -199,9 +191,9 @@ local function remove_drone(eid)
     end
 end
 
-local function get_fly_height(prev, next)
-    local frome_height = __get_fly_height(prev)
-    local to_height = __get_fly_height(next)
+local function get_fly_height(prev_x, prev_y, next_x, next_y)
+    local frome_height = __get_fly_height(prev_x, prev_y)
+    local to_height = __get_fly_height(next_x, next_y)
     local fly_height = default_fly_height
     if frome_height and fly_height < frome_height then
         fly_height = frome_height
@@ -220,7 +212,6 @@ function drone_sys:gameworld_update()
     local drone_task = {}
     for e in gameworld.ecs:select "drone:in eid:in" do
         local drone = e.drone
-        assert(drone.prev ~= 0, "drone.prev == 0")
         if drone.status == STATUS_HAS_ERROR then
             if lookup_drones[e.eid] then
                 drone_to_remove[#drone_to_remove + 1] = e.eid
@@ -228,10 +219,10 @@ function drone_sys:gameworld_update()
             goto continue
         end
         if not lookup_drones[e.eid] then
-            lookup_drones[e.eid] = create_drone(drone.prev)
+            lookup_drones[e.eid] = create_drone(drone.prev_x, drone.prev_y, drone.prev_slot)
         else
             local current = lookup_drones[e.eid]
-            local flyid = drone.prev << 32 | drone.next
+            local flyid = drone.prev_x | (drone.prev_y << 16) | (drone.prev_slot << 24) | (drone.next_x << 28) | (drone.next_y << 30) | (drone.next_slot << 32)
             if current.flyid ~= flyid or current.to_home then
                 if drone.maxprogress > 0 then
                     if not same_dest_offset[flyid] then
@@ -240,11 +231,11 @@ function drone_sys:gameworld_update()
                         same_dest_offset[flyid] = same_dest_offset[flyid] - (drone_offset / 2)
                     end
 
-                    local from = __get_position(drone.prev)
-                    local to = __get_position(drone.next)
-                    local fly_height = get_fly_height(drone.prev, drone.next)
+                    local from = __get_position(drone.prev_x, drone.prev_y, drone.prev_slot)
+                    local to = __get_position(drone.next_x, drone.next_y, drone.next_slot)
+                    local fly_height = get_fly_height(drone.prev_x, drone.prev_y, drone.next_x, drone.next_y)
                     -- status : go_home
-                    if __is_home(drone.next) then
+                    if __is_home(drone.next_x, drone.next_y) then
                         current:gohome(flyid, from, get_home_pos(to), fly_height)
                     else
                         if drone.item ~= 0 then
@@ -263,9 +254,9 @@ function drone_sys:gameworld_update()
                         end
                         drone_task[#drone_task + 1] = {flyid, current, from, to, fly_height, drone.maxprogress, drone.maxprogress - drone.progress}
                     end
-                elseif __is_home(drone.prev) and not current.to_home then
+                elseif __is_home(drone.prev_x, drone.prev_y) and not current.to_home then
                     -- status : to_home
-                    local dst = __get_position(drone.prev)
+                    local dst = __get_position(drone.prev_x, drone.prev_y, drone.prev_slot)
                     current:gohome(flyid, math3d.set_index(dst, 2, item_height), get_home_pos(dst), fly_to_home_height, 15)
                 end
             else
