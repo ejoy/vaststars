@@ -4131,7 +4131,7 @@ local entities = { {
     dir = "N",
     items = {{"碎石", 50}},
     prototype_name = "仓库I",
-    x = 122,
+    x = 123,
     y = 148
   }, {
     dir = "N",
@@ -4161,7 +4161,7 @@ local entities = { {
     dir = "N",
     items = {"碎石"},
     prototype_name = "无人机平台I",
-    x = 124,
+    x = 125,
     y = 148
   }, {
     dir = "N",
@@ -6040,6 +6040,6 @@ return {
     road = road,
     mineral = mineral,
     prepare = prepare,
-    order = 8,
+    order = 7,
 }
     
