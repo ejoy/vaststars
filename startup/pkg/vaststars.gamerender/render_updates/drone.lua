@@ -45,7 +45,7 @@ local function __get_position(location)
         return math3d.vector(terrain:get_position_by_coord(x, y, 1, 1))
     end
 
-    local chest_slot = (location >> 7) & 0xF
+    local chest_slot = (location >> 8) & 0xFF
 
     local building = global.buildings[object.id]
     if not building then

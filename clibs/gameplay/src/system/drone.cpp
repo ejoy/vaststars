@@ -71,14 +71,12 @@ struct building_rect {
     }
 };
 
-static airport::berth createBerth(ecs::building const& b, container::slot::slot_type type, uint8_t chest_slot) {
+static airport::berth createBerth(ecs::building const& b, uint8_t chest_slot) {
     return {
         0
-        , (uint32_t)type
         , chest_slot
-        , 0
-        , (uint32_t)b.y
-        , (uint32_t)b.x
+        , b.y
+        , b.x
     };
 }
 
@@ -220,7 +218,7 @@ static void rebuild(world& w) {
         for (uint8_t i = 0; i < slice.size(); ++i) {
             auto& chestslot = slice[i];
             auto item = chestslot.item;
-            auto berth = createBerth(building, chestslot.type, i);
+            auto berth = createBerth(building, i);
             auto& map = globalmap[item];
             r.each([&](uint8_t x, uint8_t y) {
                 map.insert_or_assign(getxy(x, y), mapinfo {berth, chestslot.type});
@@ -251,7 +249,7 @@ static void rebuild(world& w) {
         info.prototype = building.prototype;
         info.width = homeBuilding.w;
         info.height = homeBuilding.h;
-        info.homeBerth = createBerth(building, container::slot::slot_type::none, 0);
+        info.homeBerth = createBerth(building, 0);
         info.capacitance = &v.get<ecs::capacitance>();
         if (airport.item == 0) {
             info.item = 0;
