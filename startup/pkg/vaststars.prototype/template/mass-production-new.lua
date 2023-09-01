@@ -3440,45 +3440,75 @@ local entities = { {
     dir = "N",
     items = {"机械科技包"},
     prototype_name = "无人机平台I",
-    x = 165,
-    y = 136
-  }, {
-    dir = "N",
-    items = {"机械科技包"},
-    prototype_name = "无人机平台I",
-    x = 177,
-    y = 136
-  }, {
-    dir = "N",
-    items = {"地质科技包"},
-    prototype_name = "无人机平台I",
-    x = 171,
-    y = 136
+    x = 167,
+    y = 137
   }, {
     dir = "N",
     items = {"气候科技包"},
     prototype_name = "无人机平台I",
-    x = 167,
-    y = 136
+    x = 168,
+    y = 137
   }, {
     dir = "N",
     items = {"地质科技包"},
     prototype_name = "无人机平台I",
+    x = 169,
+    y = 137
+  }, {
+    dir = "N",
+    items = {{"机械科技包", 0}},
+    prototype_name = "仓库I",
+    x = 167,
+    y = 136
+  }, {
+    dir = "N",
+    items = {{"气候科技包", 0}},
+    prototype_name = "仓库I",
+    x = 168,
+    y = 136
+  },{
+    dir = "N",
+    items = {{"地质科技包", 0}},
+    prototype_name = "仓库I",
     x = 169,
     y = 136
   }, {
     dir = "N",
     items = {"地质科技包"},
     prototype_name = "无人机平台I",
-    x = 173,
-    y = 136
+    x = 174,
+    y = 137
   }, {
     dir = "N",
     items = {"气候科技包"},
     prototype_name = "无人机平台I",
     x = 175,
-    y = 136
+    y = 137
   }, {
+    dir = "N",
+    items = {"机械科技包"},
+    prototype_name = "无人机平台I",
+    x = 176,
+    y = 137
+  }, {
+    dir = "N",
+    items = {{"地质科技包", 0}},
+    prototype_name = "仓库I",
+    x = 174,
+    y = 136
+  },{
+    dir = "N",
+    items = {{"气候科技包", 0}},
+    prototype_name = "仓库I",
+    x = 175,
+    y = 136
+  },{
+    dir = "N",
+    items = {{"机械科技包", 0}},
+    prototype_name = "仓库I",
+    x = 176,
+    y = 136
+  },{
     dir = "N",
     prototype_name = "科研中心I",
     x = 165,
@@ -3503,6 +3533,11 @@ local entities = { {
     prototype_name = "铁制电线杆",
     x = 152,
     y = 151
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 172,
+    y = 139
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
