@@ -17,6 +17,7 @@ local function ExtraSyntax(c, types)
 		if field.n then
 			local usertype = types[field.typename]
 			if usertype then
+				assert(type(usertype) == "table")
 				for i = 1, tonumber(field.n) do
 					for _, userfield in ipairs(usertype) do
 						r[#r+1] = ("%s%d_%s:%s"):format(field.name, i, userfield.name, EcsType[userfield.typename])
@@ -28,8 +29,15 @@ local function ExtraSyntax(c, types)
 				end
 			end
 		else
-			if types[field.typename] then
-				r[#r+1] = ("%s:%s"):format(field.name, EcsType[types[field.typename]])
+			local usertype = types[field.typename]
+			if usertype then
+				if type(usertype) == "table" then
+					for _, ufield in ipairs(usertype) do
+						r[#r+1] = ("%s_%s:%s"):format(field.name, ufield.name, EcsType[ufield.typename])
+					end
+				else
+					r[#r+1] = ("%s:%s"):format(field.name, EcsType[usertype])
+				end
 			else
 				r[#r+1] = ("%s:%s"):format(field.name, EcsType[field.typename])
 			end

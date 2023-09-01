@@ -22,7 +22,23 @@ return function (filename)
     end
     function def.type(name)
         return function (object)
-            types[name] = object
+            if type(object) ~= "table" then
+                types[name] = object
+                return
+            end
+            local fields = { name = name }
+            for _, field in ipairs(object) do
+                local typename, name, n = field:match "^(.+)%s+([%w_]+)%[(%d+)%]$"
+                if name == nil then
+                    typename, name = field:match "^(.+)%s+([%w_]+)$"
+                end
+                fields[#fields+1] = {
+                    typename = typename,
+                    name = name,
+                    n = n,
+                }
+            end
+            types[name] = fields
         end
     end
     assert(loadfile(filename, "t", {}))(def)

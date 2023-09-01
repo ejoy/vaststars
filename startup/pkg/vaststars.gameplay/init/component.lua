@@ -72,19 +72,20 @@ component "airport" {
     "uint16 item",
 }
 
---
--- prev/next/mov2
--- | unused(7bit) | chest(4bit) | unused(3bit) | y(8bit) | x(8bit) |
--- 32            25            21             16         8         0
---
+type "airport_berth" {
+    "uint8 x",
+    "uint8 y",
+    "uint8 slot",
+}
+
 mainkey "drone" {
-    "uint32 prev",
-    "uint32 next",
-    "uint32 mov2",
     "uint16 maxprogress",
     "uint16 progress",
     "uint16 item",
     "uint16 prototype",
+    "airport_berth prev",
+    "airport_berth next",
+    "airport_berth mov2",
     "uint16 home",
     "uint8 status",
 }
