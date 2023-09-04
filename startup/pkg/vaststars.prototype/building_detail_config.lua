@@ -121,6 +121,7 @@ local building_detail_config = {
 		"power_supply_distance",
 	},
 	["无人机平台"] = {
+		"work_power",
 		"drone_count",
 	},
 	["铁矿"] = {
