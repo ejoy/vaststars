@@ -74,12 +74,13 @@ local __get_hitch_children ; do
         if e.efk.auto_play then
             return
         end
+        if not e.name:match("^work.*$") and not e.name:match("^idle.*$") and not e.name:match("^low_power.*$") then
+            print("unknown efk", e.name)
+        end
         if (workstatus == "work" and e.name:match("^work.*$")) or
            (workstatus == "idle" and e.name:match("^idle.*$")) or
            (workstatus == "low_power" and e.name:match("^low_power.*$")) then
             iefk.play(e.eid)
-        else
-            print("unknown efk", e.name)
         end
     end
 
