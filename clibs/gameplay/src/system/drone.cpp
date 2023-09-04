@@ -450,7 +450,6 @@ static void DoTaskOnlyMov2(world& w, DroneEntity& e, ecs::drone& drone, const ai
     }
     //update drone
     mov2.building->place_time = w.hub_time;
-    AssertStatus(drone, drone_status::go_mov2);
     Move(w, e, drone, mov2);
 }
 
