@@ -6,7 +6,6 @@ value:
   data:
     efk:
       auto_play: false
-      loop: false
       path: /pkg/vaststars.resources/effects/hydro-plant_smoke.efk
       speed: 1
     visible_state: main_queue
@@ -27,7 +26,6 @@ value:
   data:
     efk:
       auto_play: false
-      loop: false
       path: /pkg/vaststars.resources/effects/hydro-plant_smoke.efk
       speed: 1
     visible_state: main_queue
@@ -48,7 +46,6 @@ value:
   data:
     efk:
       auto_play: false
-      loop: false
       path: /pkg/vaststars.resources/effects/hydro-plant_smoke.efk
       speed: 1
     visible_state: main_queue
@@ -69,7 +66,6 @@ value:
   data:
     efk:
       auto_play: false
-      loop: false
       path: /pkg/vaststars.resources/effects/hydro-plant_smoke.efk
       speed: 1
     visible_state: main_queue
@@ -90,7 +86,6 @@ value:
   data:
     efk:
       auto_play: false
-      loop: false
       path: /pkg/vaststars.resources/effects/furnace_smoke.efk
       speed: 1
     visible_state: main_queue
@@ -209,7 +204,6 @@ value:
   data:
     efk:
       auto_play: false
-      loop: false
       path: /pkg/vaststars.resources/effects/furnace_smoke.efk
       speed: 1
     visible_state: main_queue

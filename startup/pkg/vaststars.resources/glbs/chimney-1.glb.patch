@@ -6,7 +6,6 @@ value:
   data:
     efk:
       auto_play: false
-      loop: false
       path: /pkg/vaststars.resources/effects/chimney_smoke.efk
       speed: 1
     visible_state:main_queue
@@ -27,7 +26,6 @@ value:
   data:
     efk:
       auto_play: false
-      loop: false
       path: /pkg/vaststars.resources/effects/chimney_smoke.efk
       speed: 1
     visible_state:main_queue

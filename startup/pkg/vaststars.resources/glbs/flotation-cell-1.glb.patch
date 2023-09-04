@@ -6,7 +6,6 @@ value:
   data:
     efk:
       auto_play: false
-      loop: false
       path: /pkg/vaststars.resources/effects/flotation-cell_popo.efk
       speed: 1
     visible_state:main_queue
@@ -27,7 +26,6 @@ value:
   data:
     efk:
       auto_play: false
-      loop: false
       path: /pkg/vaststars.resources/effects/flotation-cell_popo_low.efk
       speed: 1
     visible_state: main_queue

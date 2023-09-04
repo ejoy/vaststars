@@ -93,7 +93,6 @@ value:
   data:
     efk:
       auto_play: true
-      loop: true
       path: /pkg/vaststars.resources/effects/sandstorm2.efk
       speed: 1
     visible_state: main_queue
@@ -129,7 +128,6 @@ value:
   data:
     efk:
       auto_play: true
-      loop: true
       path: /pkg/vaststars.resources/effects/sandstorm2.efk
       speed: 1
     visible_state: main_queue
