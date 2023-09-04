@@ -7,6 +7,7 @@ value:
     efk:
       path: /pkg/vaststars.resources/effects/electrolyzer_lightning.efk
     name: work
+    visible_state: main_queue
     scene:
       r: {0.3907310962677002, 0, 0, -0.9205048680305481}
       s: {1.2000000476837158, 1, 1}

@@ -96,7 +96,7 @@ value:
       loop: true
       path: /pkg/vaststars.resources/effects/sandstorm2.efk
       speed: 1
-      visible: true
+    visible_state: main_queue
     name: root
     scene: {}
   mount: 5
@@ -132,7 +132,7 @@ value:
       loop: true
       path: /pkg/vaststars.resources/effects/sandstorm2.efk
       speed: 1
-      visible: true
+    visible_state: main_queue
     name: root
     scene: {}
   mount: 7

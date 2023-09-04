@@ -111,7 +111,7 @@ value:
       loop: false
       path: /pkg/vaststars.resources/effects/furnace_smoke.efk
       speed: 1
-      visible: true
+    visible_state: main_queue
     name: work
     scene:
       r: {0, 0, 0, 1}

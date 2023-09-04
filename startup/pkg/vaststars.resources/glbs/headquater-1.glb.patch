@@ -9,7 +9,7 @@ value:
       loop: false
       path: /pkg/vaststars.resources/effects/headquater_light.efk
       speed: 1
-      visible: true
+    visible_state: main_queue
     name: work
     scene:
       s: {4, 3, 2}
