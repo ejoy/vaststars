@@ -4005,7 +4005,7 @@ local entities = { {
     y = 146
   },{
     dir = "N",
-    items = {{"supply", "碎石", "10"}},
+    items = {{"supply", "碎石", "10"}, {"demand", "碾碎铁矿石", "10"}},
     prototype_name = "物流站",
     x = 100,
     y = 148
@@ -4022,6 +4022,12 @@ local entities = { {
     x = 112,
     y = 148
   }, {
+    dir = "N",
+    items = {{"碾碎铁矿石", 0}},
+    prototype_name = "仓库I",
+    x = 100,
+    y = 146
+  },{
     dir = "N",
     items = {{"铁齿轮", 50}},
     prototype_name = "仓库I",
