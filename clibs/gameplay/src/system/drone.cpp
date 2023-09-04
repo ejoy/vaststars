@@ -134,48 +134,25 @@ struct ChestSearcher {
         airport_berth berth;
         building* building;
     };
-    std::vector<Node> transit_pickup;
-    std::vector<Node> transit_place;
-    std::vector<Node> supply_pickup;
+    struct ItemNode: public Node {
+        uint16_t item;
+    };
+    struct AmountNode: public Node {
+        uint16_t amount;
+    };
     std::vector<Node> demand_place;
-    static bool PickupSort(const ChestSearcher::Node& a, const ChestSearcher::Node& b) {
+    std::vector<AmountNode> transit_pickup;
+    std::vector<AmountNode> transit_place;
+    static bool PickupTimeSort(const ChestSearcher::Node& a, const ChestSearcher::Node& b) {
         return a.building->pickup_time < b.building->pickup_time;
     }
-    static bool PlaceSort(const ChestSearcher::Node& a, const ChestSearcher::Node& b) {
+    static bool PlaceTimeSort(const ChestSearcher::Node& a, const ChestSearcher::Node& b) {
         return a.building->place_time < b.building->place_time;
     }
+    static bool AmountSort(const ChestSearcher::AmountNode& a, const ChestSearcher::AmountNode& b) {
+        return a.amount < b.amount;
+    }
 };
-
-static ChestSearcher createChestSearcher(world& w, airport& info) {
-    w.drone_time++;
-    ChestSearcher searcher;
-    auto& market = info.market.begin()->second; //TODO
-    searcher.transit_pickup.reserve(market.transit.size());
-    searcher.transit_place.reserve(market.transit.size());
-    searcher.supply_pickup.reserve(market.supply.size());
-    searcher.demand_place.reserve(market.demand.size());
-    for (auto& berth : market.supply) {
-        if (auto building = w.buildings.find(getxy(berth.x, berth.y))) {
-            searcher.supply_pickup.push_back({berth, building});
-        }
-    }
-    for (auto& berth : market.demand) {
-        if (auto building = w.buildings.find(getxy(berth.x, berth.y))) {
-            searcher.demand_place.push_back({berth, building});
-        }
-    }
-    for (auto& berth : market.transit) {
-        if (auto building = w.buildings.find(getxy(berth.x, berth.y))) {
-            searcher.transit_pickup.push_back({berth, building});
-            searcher.transit_place.push_back({berth, building});
-        }
-    }
-    std::sort(std::begin(searcher.supply_pickup), std::end(searcher.supply_pickup), ChestSearcher::PickupSort);
-    std::sort(std::begin(searcher.demand_place), std::end(searcher.demand_place), ChestSearcher::PlaceSort);
-    std::sort(std::begin(searcher.transit_pickup), std::end(searcher.transit_pickup), ChestSearcher::PickupSort);
-    std::sort(std::begin(searcher.transit_place), std::end(searcher.transit_place), ChestSearcher::PlaceSort);
-    return searcher;
-}
 
 static void rebuild(world& w) {
     w.drone_time = 0;
@@ -450,54 +427,6 @@ static void DoTaskOnlyMov2(world& w, DroneEntity& e, ecs::drone& drone, const ai
     Move(w, e, drone, mov2);
 }
 
-static std::optional<ChestSearcher::Node> FindChestRed(world& w, const ChestSearcher& searcher) {
-    for (auto const& v : searcher.supply_pickup) {
-        auto& chestslot = chest::array_at(w, container::index::from(v.building->chest), v.berth.slot);
-        if (chestslot.amount > chestslot.lock_item) {
-            return v;
-        }
-    }
-    return std::nullopt;
-}
-
-static std::optional<ChestSearcher::Node> FindChestBlue(world& w, const ChestSearcher& searcher) {
-    for (auto const& v : searcher.demand_place) {
-        auto& chestslot = chest::array_at(w, container::index::from(v.building->chest), v.berth.slot);
-        if (chestslot.limit > chestslot.amount + chestslot.lock_space) {
-            return v;
-        }
-    }
-    return std::nullopt;
-}
-
-static std::tuple<std::optional<ChestSearcher::Node>, std::optional<ChestSearcher::Node>, bool> FindHub(world& w, const ChestSearcher& searcher) {
-    std::optional<ChestSearcher::Node> max;
-    uint16_t maxAmount = 0;
-    for (auto const& v : searcher.transit_pickup) {
-        auto& chestslot = chest::array_at(w, container::index::from(v.building->chest), v.berth.slot);
-        auto amount = chestslot.amount - chestslot.lock_item;
-        if ((!max || (amount > maxAmount)) && (amount > 0)) {
-            max = v;
-            maxAmount = amount;
-        }
-    }
-    std::optional<ChestSearcher::Node> min;
-    uint16_t minAmount = 0;
-    for (auto const& v : searcher.transit_place) {
-        auto& chestslot = chest::array_at(w, container::index::from(v.building->chest), v.berth.slot);
-        auto amount = chestslot.amount + chestslot.lock_space;
-        if ((!min || (amount < minAmount)) && (chestslot.limit > amount)) {
-            min = v;
-            minAmount = amount;
-        }
-    }
-    bool moveable = false;
-    if (min) { 
-        moveable = minAmount + 2 <= maxAmount;
-    }
-    return {min, max, moveable};
-}
-
 static void GoHome(world& w, DroneEntity& e, ecs::drone& drone, const airport& info) {
     assert((drone_status)drone.status != drone_status::at_home);
     SetStatus(drone, drone_status::go_home);
@@ -519,32 +448,173 @@ static bool FindTask(world& w, DroneEntity& e, ecs::drone& drone, airport& info)
     if (!consumer.has_power()) {
         return false;
     }
-    auto searcher = createChestSearcher(w, info);
-    auto red = FindChestRed(w, searcher);
-    auto blue = FindChestBlue(w, searcher);
-    // red -> blue
-    if (red && blue) {
-        DoTask(w, e, drone, info, *red, *blue);
+    w.drone_time++;
+    std::map<uint16_t, ChestSearcher> searcher;
+    std::vector<ChestSearcher::ItemNode> searcher_array;
+    for (auto& [item, market] : info.market) {
+        std::vector<ChestSearcher::Node> supply_pickup;
+        ChestSearcher s;
+        for (auto& berth : market.supply) {
+            if (auto building = w.buildings.find(getxy(berth.x, berth.y))) {
+                auto& chestslot = chest::array_at(w, container::index::from(building->chest), berth.slot);
+                if (chestslot.amount > chestslot.lock_item) {
+                    supply_pickup.push_back({
+                        berth,
+                        building,
+                    });
+                }
+            }
+        }
+        for (auto& berth : market.demand) {
+            if (auto building = w.buildings.find(getxy(berth.x, berth.y))) {
+                auto& chestslot = chest::array_at(w, container::index::from(building->chest), berth.slot);
+                if (chestslot.limit > chestslot.amount + chestslot.lock_space) {
+                    s.demand_place.push_back({
+                        berth,
+                        building,
+                    });
+                }
+            }
+        }
+        for (auto& berth : market.transit) {
+            if (auto building = w.buildings.find(getxy(berth.x, berth.y))) {
+                auto& chestslot = chest::array_at(w, container::index::from(building->chest), berth.slot);
+                assert(chestslot.amount >= chestslot.lock_item);
+                if (chestslot.amount > chestslot.lock_item) {
+                    s.transit_pickup.push_back({
+                        berth,
+                        building,
+                        (uint16_t)(chestslot.amount - chestslot.lock_item),
+                    });
+                }
+                if (chestslot.limit > chestslot.amount + chestslot.lock_space) {
+                    s.transit_place.push_back({
+                        berth,
+                        building,
+                        (uint16_t)(chestslot.amount - chestslot.lock_item),
+                    });
+                }
+            }
+        }
+        if (s.demand_place.empty() && s.transit_place.empty()) {
+            continue;
+        }
+        if (supply_pickup.empty()) {
+            if (s.transit_pickup.empty()) {
+                continue;
+            }
+        }
+        else {
+            for (auto const& s : supply_pickup) {
+                searcher_array.emplace_back(ChestSearcher::ItemNode {
+                    s.berth,
+                    s.building,
+                    item
+                });
+            }
+        }
+        searcher.emplace(item, std::move(s));
+    }
+    if (!searcher_array.empty()) {
+        auto& supply = *std::min_element(std::begin(searcher_array), std::end(searcher_array), ChestSearcher::PickupTimeSort);
+        auto& suite = searcher[supply.item];
+        if (!suite.demand_place.empty()) {
+            auto& demand = *std::min_element(std::begin(suite.demand_place), std::end(suite.demand_place), ChestSearcher::PlaceTimeSort);
+            DoTask(w, e, drone, info, supply, demand);
+            consumer.cost_power();
+            return true;
+        }
+        if (!suite.transit_place.empty()) {
+            auto& transit = *std::min_element(std::begin(suite.transit_place), std::end(suite.transit_place), ChestSearcher::AmountSort);
+            DoTask(w, e, drone, info, supply, transit);
+            consumer.cost_power();
+            return true;
+        }
+        assert(false);
+        return false;
+    }
+    for (auto& [item, suite] : searcher) {
+        assert(!suite.transit_pickup.empty());
+        if (!suite.demand_place.empty()) {
+            for (auto const& s : suite.demand_place) {
+                searcher_array.emplace_back(ChestSearcher::ItemNode {
+                    s.berth,
+                    s.building,
+                    item
+                });
+            }
+        }
+    }
+    if (!searcher_array.empty()) {
+        auto& demand = *std::min_element(std::begin(searcher_array), std::end(searcher_array), ChestSearcher::PlaceTimeSort);
+        auto& suite = searcher[demand.item];
+        auto& transit = *std::max_element(std::begin(suite.transit_pickup), std::end(suite.transit_pickup), ChestSearcher::AmountSort);
+        DoTask(w, e, drone, info, transit, demand);
         consumer.cost_power();
         return true;
     }
-    auto [min, max, moveable] = FindHub(w, searcher);
-    // red -> hub
-    if (red && min) {
-        DoTask(w, e, drone, info, *red, *min);
+    for (auto& [item, suite] : searcher) {
+        assert(!suite.transit_place.empty());
+        auto& max_transit = *std::max_element(std::begin(suite.transit_pickup), std::end(suite.transit_pickup), ChestSearcher::AmountSort);
+        auto& min_transit = *std::min_element(std::begin(suite.transit_place), std::end(suite.transit_place), ChestSearcher::AmountSort);
+        if (min_transit.amount + 2 <= max_transit.amount) {
+            searcher_array.emplace_back(ChestSearcher::ItemNode {
+                max_transit.berth,
+                max_transit.building,
+                item
+            });
+        }
+    }
+    if (!searcher_array.empty()) {
+        auto& max_transit = *std::min_element(std::begin(searcher_array), std::end(searcher_array), ChestSearcher::PickupTimeSort);
+        auto& suite = searcher[max_transit.item];
+        auto& min_transit = *std::min_element(std::begin(suite.transit_place), std::end(suite.transit_place), ChestSearcher::AmountSort);
+        DoTask(w, e, drone, info, max_transit, min_transit);
         consumer.cost_power();
         return true;
     }
-    // hub -> blue
-    if (blue && max) {
-        DoTask(w, e, drone, info, *max, *blue);
-        consumer.cost_power();
+    return false;
+}
+
+static bool FindTaskOnlyMov2(world& w, DroneEntity& e, ecs::drone& drone, airport& info) {
+    auto it = info.market.find(drone.item);
+    if (it == info.market.end()) {
+        return false;
+    }
+    w.drone_time++;
+    auto& market = it->second;
+    std::vector<ChestSearcher::Node> demand_place;
+    for (auto& berth : market.demand) {
+        if (auto building = w.buildings.find(getxy(berth.x, berth.y))) {
+            auto& chestslot = chest::array_at(w, container::index::from(building->chest), berth.slot);
+            if (chestslot.limit > chestslot.amount + chestslot.lock_space) {
+                demand_place.push_back({
+                    berth,
+                    building,
+                });
+            }
+        }
+    }
+    if (!demand_place.empty()) {
+        auto& demand = *std::min_element(std::begin(demand_place), std::end(demand_place), ChestSearcher::PlaceTimeSort);
+        DoTaskOnlyMov2(w, e, drone, info, demand);
         return true;
     }
-    // hub -> hub
-    if (moveable) {
-        DoTask(w, e, drone, info, *max, *min);
-        consumer.cost_power();
+    std::vector<ChestSearcher::Node> transit_place;
+    for (auto& berth : market.transit) {
+        if (auto building = w.buildings.find(getxy(berth.x, berth.y))) {
+            auto& chestslot = chest::array_at(w, container::index::from(building->chest), berth.slot);
+            if (chestslot.limit > chestslot.amount + chestslot.lock_space) {
+                transit_place.push_back({
+                    berth,
+                    building,
+                });
+            }
+        }
+    }
+    if (!demand_place.empty()) {
+        auto& transit = *std::min_element(std::begin(transit_place), std::end(transit_place), ChestSearcher::PlaceTimeSort);
+        DoTaskOnlyMov2(w, e, drone, info, transit);
         return true;
     }
     return false;
@@ -559,21 +629,6 @@ static void FindTaskNotAtHome(world& w, DroneEntity& e, ecs::drone& drone, airpo
         return;
     }
     GoHome(w, e, drone, info);
-}
-
-static bool FindTaskOnlyMov2(world& w, DroneEntity& e, ecs::drone& drone, airport& info) {
-    auto searcher = createChestSearcher(w, info);
-    auto blue = FindChestBlue(w, searcher);
-    if (blue) {
-        DoTaskOnlyMov2(w, e, drone, info, *blue);
-        return true;
-    }
-    auto [min, _1, _2] = FindHub(w, searcher);
-    if (min) {
-        DoTaskOnlyMov2(w, e, drone, info, *min);
-        return true;
-    }
-    return false;
 }
 
 static void Arrival(world& w, DroneEntity& e, ecs::drone& drone) {
