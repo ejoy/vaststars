@@ -5,53 +5,49 @@ local w = world.w
 local ipower_check = {}
 local power_check_sys = ecs.system "power_check_system"
 local gameplay_core = require "gameplay.core"
+local iprototype = import_package "vaststars.gamerender"("gameplay.interface.prototype")
 
-local counter = {}
+local powerStatus = {}
 
-function power_check_sys:gameworld_prebuild()
-    local gameplay_world = gameplay_core.get_world()
-    local gameplay_ecs = gameplay_world.ecs
-    for e in gameplay_ecs:select "REMOVED consumer:in eid:in" do
-        counter[e.eid] = nil
+local function updateStatus(ecs)
+    local powergrids = {}
+    for e in ecs:select "powergrid:in" do
+        powergrids[#powergrids+1] = {e.powergrid.consumer_efficiency1, e.powergrid.consumer_efficiency2}
     end
 
-    if gameplay_ecs:check "building_changed" or gameplay_ecs:check "building_new" or gameplay_ecs:check "REMOVED building:in" then
-        for e in gameplay_ecs:select "consumer:in eid:in power_check?update" do
-            e.power_check = true
+    for e in ecs:select "capacitance:in building:in eid:in" do
+        local typeobject = iprototype.queryById(e.building.prototype)
+        local priority = typeobject.priority == "primary" and 1 or 2
+        if e.capacitance.network == 0 then
+            powerStatus[e.eid] = false
+        else
+            local powergrid = assert(powergrids[e.capacitance.network])
+            powerStatus[e.eid] = assert(powergrid[priority]) > 0
         end
     end
+end
+
+function power_check_sys:gameworld_build()
+    local gameplay_world = gameplay_core.get_world()
+    local ecs = gameplay_world.ecs
+    updateStatus(ecs)
 end
 
 function power_check_sys:gameworld_update()
     local gameplay_world = gameplay_core.get_world()
-    local now = gameplay_world:now()
+    local ecs = gameplay_world.ecs
 
-    if now % 60 == 0 then
-        for e in gameplay_world.ecs:select "consumer:in eid:in power_check?update" do
-            e.power_check = true
-        end
-    end
-
-    if now % 2 == 0 then
-        for e in gameplay_world.ecs:select "power_check:update eid:in capacitance:in" do
-            if e.capacitance.delta < 0 then
-                e.power_check = false
-                counter[e.eid] = nil
-            elseif e.capacitance.delta == 0 then
-                counter[e.eid] = (counter[e.eid] or 0) + 1
-            else
-                assert(false)
-            end
-        end
+    if gameplay_world:now() % 30 == 0 then
+        updateStatus(ecs)
     end
 end
 
 function power_check_sys:gameworld_clean()
-    counter = {}
+    powerStatus = {}
 end
 
 function ipower_check.is_powered_on(eid)
-    return (counter[eid] or 0) < 15
+    return powerStatus[eid]
 end
 
 return ipower_check
