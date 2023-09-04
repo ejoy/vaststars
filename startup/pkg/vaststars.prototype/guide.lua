@@ -75,7 +75,7 @@ local guide = {
         narrative_end = {
             guide_progress = 20,
             task = {
-                "放置无人机仓库",
+                "放置无人机平台",
             }
         },
         prerequisites = {
@@ -87,16 +87,33 @@ local guide = {
         name = "",
 		narrative = {
            -- {"哔哩..矿物采集进展非常顺利，存活概率大幅提升至{/color:4bd0ff 0.3244%}..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-2.texture"},
-            {"哔哩..在{/color:4bd0ff 无人机仓库I}中选择储存{/g 碎石}，无人机就会自动搬运物资了..哔哩(高兴)", "/pkg/vaststars.resources/ui/textures/guide/guide-3.texture"},
+            {"哔哩..放置一座可以储存货物的{/color:4bd0ff 仓库}..哔哩(高兴)", "/pkg/vaststars.resources/ui/textures/guide/guide-3.texture"},
         },
         narrative_end = {
             guide_progress = 25,
             task = {
-                "无人机仓库设置1",
+                "放置仓库",
             }
         },
         prerequisites = {
-            "放置无人机仓库",
+            "放置无人机平台",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
+           -- {"哔哩..矿物采集进展非常顺利，存活概率大幅提升至{/color:4bd0ff 0.3244%}..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-2.texture"},
+            {"哔哩..在{/color:4bd0ff 仓库I}中选择储存{/g 碎石}，无人机就会自动搬运物资了..哔哩(高兴)", "/pkg/vaststars.resources/ui/textures/guide/guide-3.texture"},
+        },
+        narrative_end = {
+            guide_progress = 25,
+            task = {
+                "仓库设置1",
+            }
+        },
+        prerequisites = {
+            "放置仓库",
         },
 	},
 
@@ -112,7 +129,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "无人机仓库设置1",
+            "无人机平台设置1",
         },
 	},
 

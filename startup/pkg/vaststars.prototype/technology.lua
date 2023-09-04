@@ -143,11 +143,11 @@ local prototype = gameplay.register.prototype
   }
 
 
-  prototype "放置无人机仓库" {
+  prototype "放置无人机平台" {
     desc = "放置1座无人机仓库",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
-    task = {"select_entity", 0, "无人机仓库I"},
+    task = {"select_entity", 0, "无人机平台I"},
     prerequisites = {"放置电线杆"},
     count = 1,
     tips_pic = {
@@ -193,18 +193,35 @@ local prototype = gameplay.register.prototype
     --   },
     -- },
     sign_desc = {
-      { desc = "放置1座无人机仓库I", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "放置1座无人机平台I", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
-  prototype "无人机仓库设置1" {
+  prototype "放置仓库" {
+    desc = "放置1座仓库",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = { "task" },
+    task = {"select_entity", 0, "仓库I"},
+    prerequisites = {"放置无人机平台"},
+    count = 1,
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_pole1.texture",
+    },
+    effects = {
+    },
+    sign_desc = {
+      { desc = "放置1座仓库I", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "仓库设置1" {
     desc = "无人机仓库选择碎石",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"unknown", 0, 5},                          
     task_params = {item = "碎石"},
     count = 1,
-    prerequisites = {"放置无人机仓库"},
+    prerequisites = {"放置仓库"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -219,7 +236,7 @@ local prototype = gameplay.register.prototype
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"stat_production", 0, "碎石"},
-    prerequisites = {"无人机仓库设置1"},
+    prerequisites = {"仓库设置1"},
     count = 12,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ore3.texture",
@@ -240,7 +257,7 @@ local prototype = gameplay.register.prototype
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ore3.texture",
     },
     sign_desc = {
-      { desc = "放置2座无人机平台收集达28个碎石", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "放置2座仓库收集达28个碎石", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -685,8 +702,8 @@ local prototype = gameplay.register.prototype
     type = { "tech" },
     icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
     effects = {
-      unlock_recipe = {"维修无人机仓库","维修铁制电线杆"},
-      unlock_item = {"无人机仓库框架","电线杆框架"},
+      unlock_recipe = {"维修无人机平台","维修铁制电线杆"},
+      unlock_item = {"无人机仓库平台","电线杆框架"},
     },
     prerequisites = {"铁加工1"},
     ingredients = {
@@ -720,8 +737,8 @@ local prototype = gameplay.register.prototype
     type = { "tech" },
     icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
     effects = {
-      unlock_recipe = {"维修出货车站","维修收货车站"},
-      unlock_item = {"出货车站框架","收货车站框架"},
+      unlock_recipe = {"维修停车站"},
+      unlock_item = {"停车站框架"},
     },
     prerequisites = {"生产铁棒"},
     ingredients = {
@@ -731,42 +748,42 @@ local prototype = gameplay.register.prototype
     time = "4s"
   }
 
-  prototype "放置出货车站" {
-    desc = "放置1座出货车站",
-    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-    type = { "task" },
-    task = {"select_entity", 0, "出货车站"},
-    prerequisites = {"物流学1"},
-    count = 1,
-    effects = {
-    },
-    tips_pic = {
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
-    },
-    -- guide_focus = {
-    --   {
-    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-    --     x = 109,
-    --     y = 136,
-    --     w = 5,
-    --     h = 5,
-    --     show_arrow = true,
-    --   },
-    --   {
-    --     camera_x = 108,
-    --     camera_y = 130,
-    --   },
-    -- },
-    sign_desc = {
-      { desc = "生产并放置1座出货车站", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "放置出货车站" {
+  --   desc = "放置1座出货车站",
+  --   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+  --   type = { "task" },
+  --   task = {"select_entity", 0, "出货车站"},
+  --   prerequisites = {"物流学1"},
+  --   count = 1,
+  --   effects = {
+  --   },
+  --   tips_pic = {
+  --     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+  --   },
+  --   -- guide_focus = {
+  --   --   {
+  --   --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+  --   --     x = 109,
+  --   --     y = 136,
+  --   --     w = 5,
+  --   --     h = 5,
+  --   --     show_arrow = true,
+  --   --   },
+  --   --   {
+  --   --     camera_x = 108,
+  --   --     camera_y = 130,
+  --   --   },
+  --   -- },
+  --   sign_desc = {
+  --     { desc = "生产并放置1座出货车站", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+  --   },
+  -- }
 
-  prototype "放置收货车站" {
+  prototype "放置停车站" {
     desc = "放置1座收货车站",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
-    task = {"select_entity", 0, "收货车站"},
+    task = {"select_entity", 0, "停车站"},
     prerequisites = {"物流学1"},
     count = 1,
     tips_pic = {
@@ -787,7 +804,7 @@ local prototype = gameplay.register.prototype
     --   },
     -- },
     sign_desc = {
-      { desc = "生产并放置1座收货车站", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "生产并放置1座停车站", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -799,7 +816,7 @@ local prototype = gameplay.register.prototype
       unlock_recipe = {"维修运输汽车"},
       unlock_item = {"运输车辆I","破损运输车辆"},
     },
-    prerequisites = {"放置出货车站","放置收货车站"},
+    prerequisites = {"放置停车站"},
     ingredients = {
         {"地质科技包", 1},
     },

@@ -206,6 +206,18 @@ prototype "无人机仓库框架" {
     backpack_limit = 16,
     item_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/drone-depot.texture",
+    --item_category = "加工",
+    item_order = 16,
+    item_description = "用于建造无人机仓库I的框架",
+}
+
+prototype "无人机平台框架" {
+    type = {"item"},
+    station_limit = 4,
+    hub_limit = 16,
+    backpack_limit = 16,
+    item_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/drone-depot.texture",
     item_category = "加工",
     item_order = 16,
     item_description = "用于建造无人机仓库I的框架",
@@ -242,12 +254,24 @@ prototype "出货车站框架" {
     backpack_limit = 16,
     item_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/goodstation-input.texture",
-    item_category = "加工",
+    --item_category = "加工",
     item_order = 22,
     item_description = "用于建造出货车站的框架",
 }
 
 prototype "收货车站框架" {
+    type = {"item"},
+    station_limit = 4,
+    hub_limit = 16,
+    backpack_limit = 16,
+    item_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/goodstation-input.texture",
+    --item_category = "加工",
+    item_order = 24,
+    item_description = "用于建造收货车站的框架",
+}
+
+prototype "停车站框架" {
     type = {"item"},
     station_limit = 4,
     hub_limit = 16,

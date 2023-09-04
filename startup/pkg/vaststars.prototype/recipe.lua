@@ -2263,7 +2263,7 @@ prototype "管道打印" {
 --     description = "打印可挖掘地下水的装置",
 -- }
 ---------------------建筑维修----------------------
-prototype "维修无人机仓库" {
+prototype "维修无人机平台" {
     type = { "recipe" },
     recipe_craft_category = "建筑打印",
     recipe_category =  "加工",
@@ -2271,7 +2271,7 @@ prototype "维修无人机仓库" {
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/drone-depot-design.texture",
     ingredients = {
         {"铁棒", 5},
-        {"无人机仓库框架", 1},
+        {"无人机平台框架", 1},
     },
     results = {
         {"无人机仓库I", 1},
@@ -2400,24 +2400,41 @@ prototype "维修运输汽车" {
     description = "修复破损的运输汽车",
 }
 
-prototype "维修出货车站" {
-    type = { "recipe" },
-    recipe_craft_category = "建筑打印",
-    recipe_category =  "加工",
-    recipe_order =  56,
-    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/goodsstation-out-design.texture",
-    ingredients = {
-        {"石砖", 4},
-        {"出货车站框架", 1},
-    },
-    results = {
-        {"出货车站", 1},
-    },
-    time = "8s",
-    description = "维修破损的出货车站",
-}
+-- prototype "维修出货车站" {
+--     type = { "recipe" },
+--     recipe_craft_category = "建筑打印",
+--     recipe_category =  "加工",
+--     recipe_order =  56,
+--     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/goodsstation-out-design.texture",
+--     ingredients = {
+--         {"石砖", 4},
+--         {"出货车站框架", 1},
+--     },
+--     results = {
+--         {"出货车站", 1},
+--     },
+--     time = "8s",
+--     description = "维修破损的出货车站",
+-- }
 
-prototype "维修收货车站" {
+-- prototype "维修收货车站" {
+--     type = { "recipe" },
+--     recipe_craft_category = "建筑打印",
+--     recipe_category =  "加工",
+--     recipe_order =  56,
+--     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/goodsstation-input-design.texture",
+--     ingredients = {
+--         {"石砖", 4},
+--         {"收货车站框架", 1},
+--     },
+--     results = {
+--         {"收货车站", 1},
+--     },
+--     time = "8s",
+--     description = "维修破损的收货车站",
+-- }
+
+prototype "维修停车站" {
     type = { "recipe" },
     recipe_craft_category = "建筑打印",
     recipe_category =  "加工",
@@ -2425,10 +2442,10 @@ prototype "维修收货车站" {
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/goodsstation-input-design.texture",
     ingredients = {
         {"石砖", 4},
-        {"收货车站框架", 1},
+        {"停车站框架", 1},
     },
     results = {
-        {"收货车站", 1},
+        {"停车站", 1},
     },
     time = "8s",
     description = "维修破损的收货车站",
