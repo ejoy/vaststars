@@ -18,8 +18,7 @@ local ROAD_TRACKS <const> = CONFIG.TRACKS
 local START_SLOTS <const> = CONFIG.START
 local ROAD_TRACK_MODEL <const> = CONFIG.MODEL
 
-local ROAD_TILE_WIDTH_SCALE <const> = 2
-local ROAD_TILE_HEIGHT_SCALE <const> = 2
+local ROAD_SIZE <const> = 2
 local ROAD_DIRECTION = {
     [0] = "left",
     [1] = "top",
@@ -33,7 +32,7 @@ local cache = {}
 local lorries = {}
 
 local function __gen_keyframes(last_srt, x, y, toward, offset)
-    local road_srt = {s = mc.ONE, t = math3d.vector(iterrain:get_position_by_coord(x, y, ROAD_TILE_WIDTH_SCALE, ROAD_TILE_HEIGHT_SCALE))}
+    local road_srt = {s = mc.ONE, t = math3d.vector(iterrain:get_position_by_coord(x, y, ROAD_SIZE, ROAD_SIZE))}
     if not rawget(cache[toward], offset) then
         assert(false, ("can not found track keyframes w(%s) from(%s) -> to(%s) offset(%s)"):format(
             toward, ROAD_DIRECTION[toward >> 0x2], ROAD_DIRECTION[toward & 0x3], offset))
@@ -93,7 +92,7 @@ motion_events["update"] = function(obj, e, x, y, toward, offset, last_srt, maxpr
     end
 end
 local function __create_lorry(classid, x, y, toward, offset)
-    local road_srt = {s = mc.ONE, t = math3d.vector(iterrain:get_position_by_coord(x, y, ROAD_TILE_WIDTH_SCALE, ROAD_TILE_HEIGHT_SCALE))}
+    local road_srt = {s = mc.ONE, t = math3d.vector(iterrain:get_position_by_coord(x, y, ROAD_SIZE, ROAD_SIZE))}
     local start_srt = start_srts[toward]
 
     local s, r, t = math3d.srt(

@@ -4,38 +4,18 @@ local w = world.w
 
 local math3d = require "math3d"
 local iom = ecs.require "ant.objcontroller|obj_motion"
-local ientity_object = ecs.require "engine.system.entity_object_system"
 local iprototype = require "gameplay.interface.prototype"
-local prefab_filterNodes = require("engine.prefab_parser").filterNodes
-local iheapmesh = ecs.require "ant.render|render_system.heap_mesh"
 local shelf_matrices = require "render_updates.common.shelf_matrices"
 local get_shelf_matrices = shelf_matrices.get_shelf_matrices
-local get_heap_matrices = shelf_matrices.get_heap_matrices
+local get_item_matrices = shelf_matrices.get_item_matrices
 
 local PREFABS <const> = {
     ["in"]  = "/pkg/vaststars.resources/glbs/shelf-input.glb|mesh.prefab",
     ["out"] = "/pkg/vaststars.resources/glbs/shelf-output.glb|mesh.prefab",
 }
-local HEAP_DIM3 <const> = {2, 4, 2}
 
 local mt = {}
 mt.__index = mt
-
-local function __create_instance(group_id, prefab, mat)
-    return world:create_instance {
-        prefab = prefab,
-        group = group_id,
-        on_ready = function (self)
-            local e <close> = world:entity(self.tag["*"][1])
-            iom.set_srt(e, math3d.srt(mat))
-        end,
-        on_message = function (self, msg, mat, group_id) -- TODO: group_id
-            assert(msg == "on_position_change", "invalid message")
-            local e <close> = world:entity(self.tag["*"][1])
-            iom.set_srt(e, math3d.srt(mat))
-        end
-    }
-end
 
 local function __create_shelves(group_id, recipe, shelf_matrices)
     local typeobject_recipe = iprototype.queryById(recipe)
@@ -43,119 +23,94 @@ local function __create_shelves(group_id, recipe, shelf_matrices)
 
     local objects = {}
     for idx, mat in pairs(shelf_matrices) do
-        local prefab
-        if idx <= ingredients_n then
-            prefab = PREFABS["in"]
-        else
-            prefab = PREFABS["out"]
-        end
-        objects[idx] = __create_instance(group_id, prefab, mat)
+        objects[idx] = world:create_instance {
+            prefab = (idx <= ingredients_n) and PREFABS["in"] or PREFABS["out"],
+            group = group_id,
+            on_ready = function (self)
+                local root <close> = world:entity(self.tag["*"][1])
+                iom.set_srt(root, math3d.srt(mat))
+            end,
+            on_message = function (self, event, mat, group_id) -- TODO: group_id
+                assert(event == "on_position_change", "invalid message")
+                local root <close> = world:entity(self.tag["*"][1])
+                iom.set_srt(root, math3d.srt(mat))
+            end
+        }
     end
     return objects
 end
 
-local heap_events = {}
-heap_events["on_position_change"] = function(_, e, mat, group_id) -- TODO: group_id
-    iom.set_srt(e, math3d.srt(mat))
-end
-
-heap_events["update_count"] = function (ud, e, item, count)
-    iheapmesh.update_heap_mesh_number(ud.id, count)
-end
-
-local function __create_heap(heap_mat, item, amount)
+local function __create_item(item_mat, item)
     local typeobject_item = iprototype.queryById(item)
-    assert(typeobject_item.pile_model, ("no pile model: %s"):format(typeobject_item.name))
-    local prefab = "/pkg/vaststars.resources/" .. typeobject_item.pile_model
-    local meshbin = prefab_filterNodes(prefab, "mesh")[1].mesh
-    local material = prefab_filterNodes(prefab, "material")[1].material
-    local gap3 = typeobject_item.gap3 and {typeobject_item.gap3:match("([%d%.]+)x([%d%.]*)x([%d%.]*)")} or {0, 0, 0}
-    local s, r, t = math3d.srt(heap_mat)
+    assert(typeobject_item.item_model, ("no pile model: %s"):format(typeobject_item.name))
+    local prefab = "/pkg/vaststars.resources/" .. typeobject_item.item_model
 
-    return ientity_object.create(world:create_entity {
-        policy = {
-            "ant.render|render",
-            "ant.general|name",
-            "ant.render|heap_mesh",
-         },
-        data = {
-            name = "heap_items",
-            scene   = {s = s, r = r, t = t},
-            material = material,
-            visible_state = "main_view",
-            mesh = meshbin,
-            heapmesh = {
-                curSideSize = HEAP_DIM3,
-                curHeapNum = amount,
-                interval = gap3,
-            },
-            indirect = "HEAP_MESH"
-        },
-    }, heap_events)
+    local s, r, t = math3d.srt(item_mat)
+    return world:create_instance {
+        prefab = prefab,
+        on_message = function (self, event, mat, group_id)
+            assert(event == "on_position_change", "invalid message")
+            local root <close> = world:entity(self.tag["*"][1])
+            iom.set_srt(root, math3d.srt(mat))
+        end,
+        on_ready = function (self)
+            local root <close> = world:entity(self.tag['*'][1])
+            iom.set_srt(root, s, r, t)
+        end
+    }
 end
 
-local function __create_heaps(heap_matrices, items)
-    local heaps = {}
+local function __create_items(item_matrices, items)
+    local items = {}
     for idx, item in pairs(items) do
-        assert(heap_matrices[idx])
-        heaps[idx] = __create_heap(heap_matrices[idx], item, 0)
+        assert(item_matrices[idx])
+        items[idx] = __create_item(item_matrices[idx], item)
     end
-    return heaps
+    return items
 end
 
-local function __get_heap_positions(heap_matrices)
+local function __get_item_positions(item_matrices)
     local positions = {}
-    for idx, mat in pairs(heap_matrices) do
+    for idx, mat in pairs(item_matrices) do
         positions[idx] = math3d.ref(math3d.index(mat, 4))
     end
     return positions
-end
-
---
-function mt:update_heap_count(idx, item, count)
-    assert(self._heaps[idx])
-    self._heap_counts[idx] = self._heap_counts[idx] or 0
-    if self._heap_counts[idx] ~= count then
-        self._heaps[idx]:send("update_count", item, count)
-        self._heap_counts[idx] = count
-    end
 end
 
 function mt:get_recipe()
     return self._recipe
 end
 
-function mt:get_heap_position(idx)
-    return self._heap_positions[idx]
+function mt:get_item_position(idx)
+    return self._item_positions[idx]
 end
 
 --
 function mt:remove()
     self._shelf_matrices = {}
-    self._heap_matrices = {}
-    self._heap_positions = {}
-    self._heap_counts = {}
+    self._item_matrices = {}
+    self._item_positions = {}
 
     for _, o in pairs(self._shelves) do
         world:remove_instance(o)
     end
     self._shelves = {}
-    for _, o in pairs(self._heaps) do
-        o:remove()
+    for _, o in pairs(self._items) do
+        world:remove_instance(o)
     end
-    self._heaps = {}
+    self._items = {}
 end
 
 function mt:on_position_change(building_srt, group_id)
     self._shelf_matrices = get_shelf_matrices(self._building, self._recipe, math3d.matrix(building_srt))
-    self._heap_matrices = get_heap_matrices(self._recipe, self._shelf_matrices)
-    self._heap_positions = __get_heap_positions(self._heap_matrices)
+    self._item_matrices = get_item_matrices(self._recipe, self._shelf_matrices)
+    self._item_positions = __get_item_positions(self._item_matrices)
 
     for idx, o in pairs(self._shelves) do
         world:instance_message(o, "on_position_change", self._shelf_matrices[idx], group_id)
     end
-    for idx, o in pairs(self._heaps) do
-        o:send("on_position_change", self._heap_matrices[idx], group_id)
+    for idx, o in pairs(self._items) do
+        world:instance_message(o, "on_position_change", self._item_matrices[idx], group_id)
     end
 end
 
@@ -166,13 +121,12 @@ function m.create(group_id, building, recipe, building_srt, items)
     self._recipe = recipe
 
     self._shelf_matrices = get_shelf_matrices(self._building, self._recipe, math3d.matrix(building_srt))
-    self._heap_matrices = get_heap_matrices(self._recipe, self._shelf_matrices)
-    self._heap_positions = __get_heap_positions(self._heap_matrices)
+    self._item_matrices = get_item_matrices(self._recipe, self._shelf_matrices)
+    self._item_positions = __get_item_positions(self._item_matrices)
 
     self._shelves = __create_shelves(group_id, self._recipe, self._shelf_matrices)
-    self._heaps = __create_heaps(self._heap_matrices, items)
+    self._items = __create_items(self._item_matrices, items)
 
-    self._heap_counts = {}
     return self
 end
 return m

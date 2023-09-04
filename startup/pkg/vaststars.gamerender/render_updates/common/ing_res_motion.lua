@@ -6,7 +6,7 @@ local math3d = require "math3d"
 
 local shelf_matrices = require "render_updates.common.shelf_matrices"
 local get_shelf_matrices = shelf_matrices.get_shelf_matrices
-local get_heap_matrices = shelf_matrices.get_heap_matrices
+local get_item_matrices = shelf_matrices.get_item_matrices
 local iprototype = require "gameplay.interface.prototype"
 local iing_res_motion = ecs.require "render_updates.ing_res_motion"
 
@@ -42,7 +42,7 @@ function mt:on_position_change(building_srt)
     local results_n <const> = #typeobject_recipe.results//4 - 1
 
     local shelf_matrices = get_shelf_matrices(self._building, self._recipe, math3d.matrix(building_srt))
-    local heap_matrices = get_heap_matrices(self._recipe, shelf_matrices)
+    local item_matrices = get_item_matrices(self._recipe, shelf_matrices)
 
     self._counts = {}
     self._motions = {}
@@ -51,11 +51,11 @@ function mt:on_position_change(building_srt)
         local id = string.unpack("<I2I2", typeobject_recipe.ingredients, 4*i+1)
         local typeobject_item = iprototype.queryById(id)
         if iprototype.has_type(typeobject_item.type, "item") then
-            assert(heap_matrices[idx])
-            local _, _, t = math3d.srt(heap_matrices[idx])
+            assert(item_matrices[idx])
+            local _, _, t = math3d.srt(item_matrices[idx])
             local to = math3d.ref(math3d.set_index(building_srt.t, 2, 10))
             self._motions[idx] = {
-                model = "/pkg/vaststars.resources/" .. typeobject_item.pile_model,
+                model = "/pkg/vaststars.resources/" .. typeobject_item.item_model,
                 from = math3d.ref(t),
                 to = to,
                 type = "in",
@@ -67,11 +67,11 @@ function mt:on_position_change(building_srt)
         local id = string.unpack("<I2I2", typeobject_recipe.results, 4*i+1)
         local typeobject_item = iprototype.queryById(id)
         if iprototype.has_type(typeobject_item.type, "item") then
-            assert(heap_matrices[idx])
-            local _, _, t = math3d.srt(heap_matrices[idx])
+            assert(item_matrices[idx])
+            local _, _, t = math3d.srt(item_matrices[idx])
             local from = math3d.ref(math3d.set_index(building_srt.t, 2, 10))
             self._motions[idx] = {
-                model = "/pkg/vaststars.resources/" .. typeobject_item.pile_model,
+                model = "/pkg/vaststars.resources/" .. typeobject_item.item_model,
                 from = from,
                 to = math3d.ref(t),
                 type = "out",

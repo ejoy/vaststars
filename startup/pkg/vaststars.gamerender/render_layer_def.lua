@@ -9,7 +9,7 @@ return {
         {"BUILDING_BASE", "ROAD", "GRID"},
         {"TRANSLUCENT_PLANE"},
         {"BUILDING"},
-        {"LORRY_SHADOW", "LORRY", "LORRY_ITEM", "HEAP_ITEM", "DRONE"},
+        {"LORRY_SHADOW", "LORRY", "LORRY_ITEM", "DRONE"},
         {"ICON"},
         {"ICON_CONTENT", "WIRE"},
     },

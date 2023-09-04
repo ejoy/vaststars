@@ -8,13 +8,8 @@ local CHEST_TYPES <const> = {
 }
 
 local MAX_SLOT <const> = 256
-
 local function get_max_slot(typeobject)
-    if iprototype.has_types(typeobject.type, "station") then
-        return typeobject.max_slot
-    else
-        return MAX_SLOT
-    end
+    return typeobject.max_slot and typeobject.max_slot or MAX_SLOT
 end
 
 local function has_chest(type)

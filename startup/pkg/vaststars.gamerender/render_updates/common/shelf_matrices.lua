@@ -56,7 +56,7 @@ local function get_shelf_matrices(building, recipe, building_mat)
     return matrices
 end
 
-local function get_heap_matrices(recipe, shelf_matrices)
+local function get_item_matrices(recipe, shelf_matrices)
     local typeobject_recipe = iprototype.queryById(recipe)
     local ingredients_n <const> = #typeobject_recipe.ingredients//4 - 1
     local results_n <const> = #typeobject_recipe.results//4 - 1
@@ -89,5 +89,5 @@ end
 
 return {
     get_shelf_matrices = get_shelf_matrices,
-    get_heap_matrices = get_heap_matrices,
+    get_item_matrices = get_item_matrices,
 }

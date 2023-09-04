@@ -2,9 +2,7 @@ local ecs, mailbox = ...
 local world = ecs.world
 local w = world.w
 
-local objects = require "objects"
 local gameplay_core = require "gameplay.core"
-
 local set_item_mb = mailbox:sub {"set_item"}
 local click_slot_mb = mailbox:sub {"click_slot"}
 local click_set_item_mb = mailbox:sub {"click_set_item"}
@@ -24,6 +22,8 @@ local function updateSlots(e, datamodel)
     local gameplay_world = gameplay_core.get_world()
     local max_slot = ichest.get_max_slot(typeobject)
     local slots = {}
+    local existing = {}
+
     for i = 1, max_slot do
         local slot = gameplay_world:container_get(e.station, i)
         if not slot then
@@ -33,6 +33,7 @@ local function updateSlots(e, datamodel)
         if slot.item ~= 0 then
             local typeobject_item = assert(iprototype.queryById(slot.item))
             slots[#slots + 1] = {slot_index = i, icon = typeobject_item.item_icon, name = typeobject_item.name, type = slot.type, remove = false}
+            existing[slot.item] = true
         end
     end
     datamodel.disable = (#slots == max_slot)
@@ -46,17 +47,11 @@ local function updateSlots(e, datamodel)
         return v1 == v2 and a.slot_index < b.slot_index or v1 < v2
     end)
     datamodel.slots = slots
+
+    return existing
 end
 
-function M:create(object_id, interface)
-    local datamodel = {
-        show_set_item = false,
-        set_type = "",
-        disable = true,
-    }
-
-    local object = assert(objects:get(object_id))
-    local e = assert(gameplay_core.get_entity(assert(object.gameplay_eid)))
+local function updateItems(datamodel, existing)
     local storage = gameplay_core.get_storage()
     storage.item_picked_flag = storage.item_picked_flag or {}
 
@@ -72,13 +67,17 @@ function M:create(object_id, interface)
     end
 
     for _, typeobject in pairs(iprototype.each_type("item")) do
-        -- If the 'pile' field is not configured, it is usually a 'building' that cannot be placed in a drone depot.
+        -- If the 'item_category' field is not configured, it usually means that it cannot be placed on this building through settings.
         -- For certain special items, such as "任务" the item category is configured as ''.
-        if not (typeobject.pile and typeobject.item_category and typeobject.item_category ~= '') then
+        if not (typeobject.item_category and typeobject.item_category ~= '') then
             goto continue
         end
 
         if not item_unlocked(typeobject.name) then
+            goto continue
+        end
+
+        if existing[typeobject.id] then
             goto continue
         end
 
@@ -94,10 +93,9 @@ function M:create(object_id, interface)
         ::continue::
     end
 
-    datamodel.items = {}
+    local items = {}
     for category_idx, r in ipairs(res) do
         if #r.items > 0 then
-            table.insert(datamodel.items, r)
             table.sort(r.items, function(a, b)
                 return a.order < b.order
             end)
@@ -105,28 +103,43 @@ function M:create(object_id, interface)
             for item_idx, item in ipairs(r.items) do
                 item.id = ("%s:%s"):format(category_idx, item_idx)
             end
+
+            table.insert(items, r)
         end
     end
+    datamodel.items = items
+end
 
-    updateSlots(e, datamodel)
+function M:create(gameplay_eid, interface)
+    local datamodel = {
+        show_set_item = false,
+        set_type = "",
+        disable = true,
+    }
+
+    local e = assert(gameplay_core.get_entity(gameplay_eid))
+
+    local existing = updateSlots(e, datamodel)
+    updateItems(datamodel, existing)
 
     datamodel.supply_button = interface.supply_button
     datamodel.demand_button = interface.demand_button
     return datamodel
 end
 
-function M:stage_ui_update(datamodel, object_id, interface)
+function M:stage_ui_update(datamodel, gameplay_eid, interface)
     for _, _, _, category_idx, item_idx, set_type in set_item_mb:unpack() do
         assert(datamodel.items[category_idx])
         assert(datamodel.items[category_idx].items[item_idx])
         local name = datamodel.items[category_idx].items[item_idx].name
         local typeobject = assert(iprototype.queryByName(name))
-        local e = gameplay_core.get_entity(assert(objects:get(object_id).gameplay_eid))
+        local e = gameplay_core.get_entity(gameplay_eid)
         local gameplay_world = gameplay_core.get_world()
         interface.set_item(gameplay_world, e, set_type, typeobject.id)
         itask.update_progress("set_item", name)
 
-        updateSlots(e, datamodel)
+        local existing = updateSlots(e, datamodel)
+        updateItems(datamodel, existing)
 
         datamodel.show_set_item = false
         datamodel.set_type = ""
@@ -150,11 +163,12 @@ function M:stage_ui_update(datamodel, object_id, interface)
 
     for _, _, _, idx in remove_slot_mb:unpack() do
         local slot = assert(datamodel.slots[idx])
-        local e = gameplay_core.get_entity(assert(objects:get(object_id).gameplay_eid))
+        local e = gameplay_core.get_entity(gameplay_eid)
         local gameplay_world = gameplay_core.get_world()
         interface.remove_item(gameplay_world, e, slot.slot_index)
 
-        updateSlots(e, datamodel)
+        local existing = updateSlots(e, datamodel)
+        updateItems(datamodel, existing)
     end
 end
 

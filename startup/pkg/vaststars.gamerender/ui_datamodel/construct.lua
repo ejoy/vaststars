@@ -601,7 +601,9 @@ function M:stage_camera_usage(datamodel)
             if selected_obj then
                 datamodel.status = "selected"
 
-                if selected_obj.class == CLASS.Object and not iprototype.is_pipe(selected_obj.object.prototype_name) then -- TODO: optimize
+                if selected_obj.class == CLASS.Lorry then
+                    iui.open({"/pkg/vaststars.resources/ui/building_menu.rml"}, pick_lorry_id)
+                elseif selected_obj.class == CLASS.Object and not iprototype.is_pipe(selected_obj.object.prototype_name) then -- TODO: optimize
                     local object = selected_obj.object
                     icamera_controller.focus_on_position(object.srt.t)
 

@@ -150,5 +150,12 @@ return function(start)
         start.buttons[#start.buttons + 1] = v
     end
 
+    if start.remove_lorry then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.command = "remove_lorry"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/lorry-factory-dec-lorry.texture"
+        start.buttons[#start.buttons + 1] = v
+    end
+
     show_buttons(start)
 end

@@ -85,11 +85,12 @@ end
 
 function idetail.show(object_id)
     local object = assert(objects:get(object_id))
+    local gameplay_eid = object.gameplay_eid
     local typeobject = iprototype.queryByName(object.prototype_name)
 
     idetail.selected(object)
     if typeobject.building_menu ~= false then
-        iui.open({"/pkg/vaststars.resources/ui/building_menu.rml"}, object_id)
+        iui.open({"/pkg/vaststars.resources/ui/building_menu.rml"}, gameplay_eid)
     end
 
     do
@@ -116,9 +117,9 @@ function idetail.show(object_id)
             object.dir,
             object.x,
             object.y,
-            __get_capacitance(object.gameplay_eid).network,
-            __get_capacitance(object.gameplay_eid).delta,
-            __get_detail_str(object.gameplay_eid)
+            __get_capacitance(gameplay_eid).network,
+            __get_capacitance(gameplay_eid).delta,
+            __get_detail_str(gameplay_eid)
         ))
     end
     return true

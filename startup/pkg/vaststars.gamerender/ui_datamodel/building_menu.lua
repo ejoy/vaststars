@@ -16,6 +16,7 @@ local lorry_factory_inc_lorry_mb = mailbox:sub {"lorry_factory_inc_lorry"}
 local ui_click_mb = mailbox:sub {"ui_click"}
 local pickup_item_mb = mailbox:sub {"pickup_item"}
 local place_item_mb = mailbox:sub {"place_item"}
+local remove_lorry_mb = mailbox:sub {"remove_lorry"}
 
 local ichest = require "gameplay.interface.chest"
 local ibackpack = require "gameplay.interface.backpack"
@@ -26,17 +27,17 @@ local interval_call = ecs.require "engine.interval_call"
 local gameplay = import_package "vaststars.gameplay"
 local istation = gameplay.interface "station"
 
-local PICKUP_TYPES <const> = {
+local PICKUP_COMPONENTS <const> = {
     "assembling",
     "chest",
 }
 
-local PLACE_TYPES <const> = {
+local PLACE_COMPONENTS <const> = {
     "assembling",
     "laboratory",
 }
 
-local SET_ITEM_COMPONENT <const> = {
+local SET_ITEM_COMPONENTS <const> = {
     "station",
 }
 
@@ -50,10 +51,9 @@ end
 
 local function __get_moveable_count(gameplay_eid)
     local e = gameplay_core.get_entity(gameplay_eid)
-    local typeobject = iprototype.queryById(e.building.prototype)
     local gameplay_world = gameplay_core.get_world()
 
-    if iprototype.has_type(typeobject.type, "assembling") then
+    if e.assembling then
         if e.assembling.recipe == 0 then
             return 0
         end
@@ -78,7 +78,7 @@ local function __get_moveable_count(gameplay_eid)
         end
         return c or 0
 
-    elseif iprototype.check_types(typeobject.name, PICKUP_TYPES) then
+    elseif hasComponent(e, PICKUP_COMPONENTS) then
         local c
         for i = 1, ichest.MAX_SLOT do
             local slot = gameplay_world:container_get(e.chest, i)
@@ -104,10 +104,9 @@ end
 
 local function __get_placeable_count(gameplay_eid)
     local e = gameplay_core.get_entity(assert(gameplay_eid))
-    local typeobject = iprototype.queryById(e.building.prototype)
     local gameplay_world = gameplay_core.get_world()
 
-    if iprototype.has_type(typeobject.type, "assembling") then
+    if e.assembling then
         if e.assembling.recipe == 0 then
             return 0
         end
@@ -136,7 +135,7 @@ local function __get_placeable_count(gameplay_eid)
         end
         return ibackpack.get_placeable_count(gameplay_world, ingredient, available)
 
-    elseif iprototype.check_types(typeobject.name, PLACE_TYPES) then
+    elseif hasComponent(e, PLACE_COMPONENTS) then
         local c
         for i = 1, ichest.MAX_SLOT do
             local slot = gameplay_world:container_get(e.chest, i)
@@ -174,49 +173,32 @@ end, false)
 
 ---------------
 local M = {}
-function M:create(object_id)
+function M:create(gameplay_eid)
     iui.register_leave("/pkg/vaststars.resources/ui/building_menu.rml")
 
-    local object = assert(objects:get(object_id))
-    local e = gameplay_core.get_entity(assert(object.gameplay_eid))
-    if not e then
-        return
-    end
-    local typeobject = iprototype.queryById(e.building.prototype)
+    local e = assert(gameplay_core.get_entity(gameplay_eid))
+    local typeobject = e.lorry and iprototype.queryById(e.lorry.item_prototype) or iprototype.queryById(e.building.prototype)
 
+    local set_item = hasComponent(e, SET_ITEM_COMPONENTS)
+    local pickup_item = hasComponent(e, PICKUP_COMPONENTS)
+    local place_item = hasComponent(e, PLACE_COMPONENTS)
+    local lorry_factory_inc_lorry = (e.factory == true)
     local show_set_recipe = false
-    local lorry_factory_inc_lorry = false
-    local pickup_item, place_item = false, false
-    local set_item = false
-
-    if iprototype.check_types(typeobject.name, PICKUP_TYPES) then
-        pickup_item = true
-    end
-    if iprototype.check_types(typeobject.name, PLACE_TYPES) then
-        place_item = true
-    end
-
     if e.assembling then
         show_set_recipe = typeobject.allow_set_recipt and true or false
     end
-    if e.factory then
-        lorry_factory_inc_lorry = true
-    end
-    if hasComponent(e, SET_ITEM_COMPONENT) then
-        set_item = true
-    end
 
     local datamodel = {
-        object_id = object_id,
         prototype_name = typeobject.name,
         show_set_recipe = show_set_recipe,
         lorry_factory_inc_lorry = lorry_factory_inc_lorry,
         lorry_factory_dec_lorry = false,
         pickup_item = pickup_item,
         place_item = place_item,
-        pickup_item_count = pickup_item and __get_moveable_count(object.gameplay_eid) or 0,
-        place_item_count = place_item and __get_placeable_count(object.gameplay_eid) or 0,
+        pickup_item_count = pickup_item and __get_moveable_count(gameplay_eid) or 0,
+        place_item_count = place_item and __get_placeable_count(gameplay_eid) or 0,
         set_item = set_item,
+        remove_lorry = (e.lorry ~= nil),
     }
 
     return datamodel
@@ -255,32 +237,27 @@ local function station_remove_item(gameplay_world, e, slot_index)
     istation.set_item(gameplay_world, e, items)
 end
 
-function M:stage_ui_update(datamodel, object_id)
-    local object = assert(objects:get(object_id))
+function M:stage_ui_update(datamodel, gameplay_eid)
+    local e = assert(gameplay_core.get_entity(gameplay_eid))
+    local typeobject = e.lorry and iprototype.queryById(e.lorry.item_prototype) or iprototype.queryById(e.building.prototype)
 
-    __moveable_count_update(datamodel, assert(object.gameplay_eid))
+    __moveable_count_update(datamodel, gameplay_eid)
 
     for _ in set_recipe_mb:unpack() do
-        iui.open({"/pkg/vaststars.resources/ui/recipe_config.rml"}, object.gameplay_eid)
+        iui.open({"/pkg/vaststars.resources/ui/recipe_config.rml"}, gameplay_eid)
     end
 
-    for _, _, _, object_id in set_item_mb:unpack() do
-        local typeobject = iprototype.queryByName(object.prototype_name)
+    for _ in set_item_mb:unpack() do
+        assert(hasComponent(e, SET_ITEM_COMPONENTS))
         local interface = {}
-        if iprototype.has_types(typeobject.type, "station") then
-            interface.set_item = station_set_item
-            interface.remove_item = station_remove_item
-            interface.supply_button = true
-            interface.demand_button = true
-        else
-            assert(false)
-        end
-        iui.open({"/pkg/vaststars.resources/ui/item_config.rml"}, object_id, interface)
+        interface.set_item = station_set_item
+        interface.remove_item = station_remove_item
+        interface.supply_button = true
+        interface.demand_button = true
+        iui.open({"/pkg/vaststars.resources/ui/item_config.rml"}, gameplay_eid, interface)
     end
 
     for _ in lorry_factory_inc_lorry_mb:unpack() do
-        local e = gameplay_core.get_entity(assert(object.gameplay_eid))
-
         local component = "chest"
         local slot = ichest.get(gameplay_core.get_world(), e[component], 1)
         if not slot then
@@ -301,22 +278,21 @@ function M:stage_ui_update(datamodel, object_id)
     end
 
     for _, _, _, message in ui_click_mb:unpack() do
-        itask.update_progress("click_ui", message, object.prototype_name)
+        itask.update_progress("click_ui", message, typeobject.name)
     end
 
-    for _, _, _, object_id in pickup_item_mb:unpack() do
+    for _ in pickup_item_mb:unpack() do
+        local object = assert(objects:coord(e.building.x, e.building.y))
         local gameplay_world = gameplay_core.get_world()
-        local e = gameplay_core.get_entity(assert(object.gameplay_eid))
-        local typeobject = iprototype.queryById(e.building.prototype)
 
         local msgs = {}
-        if iprototype.has_type(typeobject.type, "assembling") then
+        if e.assembling then
             ibackpack.assembling_to_backpack(gameplay_world, e, function(id, n)
                 local item = iprototype.queryById(id)
                 msgs[#msgs + 1] = {icon = item.item_icon, name = item.name, count = n}
             end)
 
-        elseif iprototype.check_types(typeobject.name, PICKUP_TYPES) then
+        elseif hasComponent(e, PICKUP_COMPONENTS) then
             ibackpack.chest_to_backpack(gameplay_world, e, function(id, n)
                 local item = iprototype.queryById(id)
                 msgs[#msgs + 1] = {icon = assert(item.item_icon), name = item.name, count = n}
@@ -325,15 +301,15 @@ function M:stage_ui_update(datamodel, object_id)
             if typeobject.chest_destroy then
                 if not ichest.has_item(gameplay_world, e.chest) then
                     iobject.remove(object)
-                    objects:remove(object_id)
-                    local building = global.buildings[object_id]
+                    objects:remove(object.id)
+                    local building = global.buildings[object.id]
                     if building then
                         for _, v in pairs(building) do
                             v:remove()
                         end
                     end
 
-                    igameplay.destroy_entity(object.gameplay_eid)
+                    igameplay.destroy_entity(gameplay_eid)
                     iui.leave()
                     iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "unselected")
                 end
@@ -348,18 +324,17 @@ function M:stage_ui_update(datamodel, object_id)
     end
 
     for _ in place_item_mb:unpack() do
+        local object = assert(objects:coord(e.building.x, e.building.y))
         local gameplay_world = gameplay_core.get_world()
-        local typeobject = iprototype.queryByName(object.prototype_name)
-        local e = gameplay_core.get_entity(assert(object.gameplay_eid))
 
         local msgs = {}
-        if iprototype.has_type(typeobject.type, "assembling") then
+        if e.assembling then
             ibackpack.backpack_to_assembling(gameplay_world, e, function(id, n)
                 local item = iprototype.queryById(id)
                 msgs[#msgs+1] = {icon = item.item_icon, name = item.name, count = n}
             end)
 
-        elseif iprototype.check_types(typeobject.name, PLACE_TYPES) then
+        elseif hasComponent(e, PLACE_COMPONENTS) then
             ibackpack.backpack_to_chest(gameplay_world, e, function(id, n)
                 local item = iprototype.queryById(id)
                 msgs[#msgs+1] = {icon = item.item_icon, name = item.name, count = n}
@@ -375,6 +350,12 @@ function M:stage_ui_update(datamodel, object_id)
         local sp_x, sp_y = math3d.index(icamera_controller.world_to_screen(object.srt.t), 1, 2)
         iui.send("/pkg/vaststars.resources/ui/message_pop.rml", "item", {action = "down", left = sp_x, top = sp_y, items = msgs})
         iui.call_datamodel_method("/pkg/vaststars.resources/ui/construct.rml", "update_inventory_bar", msgs)
+    end
+
+    for _ in remove_lorry_mb:unpack() do
+        e.lorry_willremove = true
+        iui.leave()
+        iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "unselected")
     end
 end
 

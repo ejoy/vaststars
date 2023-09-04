@@ -149,11 +149,11 @@ local function create(prefab, s, r, t, motion_events)
 
         local typeobject = iprototype.queryById(item_classid)
         assert(typeobject, ("item_classid %d not found"):format(item_classid))
-        assert(typeobject.pile_model)
+        assert(typeobject.item_model)
         local slots = prefab_slots(RESOURCES_BASE_PATH:format(prefab))
         assert(slots.item)
 
-        self.objs[ITEM_INDEX] = __create_item_object(RESOURCES_BASE_PATH:format(typeobject.pile_model), motion_obj.id, slots.item.scene)
+        self.objs[ITEM_INDEX] = __create_item_object(RESOURCES_BASE_PATH:format(typeobject.item_model), motion_obj.id, slots.item.scene)
     end
     function outer:motion_opt(...)
         motion_obj:send(...)

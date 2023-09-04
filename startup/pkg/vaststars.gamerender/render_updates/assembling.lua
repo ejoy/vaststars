@@ -493,7 +493,6 @@ local update = interval_call(300, function()
                 local slot = assert(gameplay_world:container_get(e.chest, idx))
                 local typeobject_item = iprototype.queryById(slot.item)
                 if iprototype.has_type(typeobject_item.type, "item") then
-                    io_shelves:update_heap_count(idx, slot.item, slot.amount)
                     ing_res_motion:update(idx, slot.item, slot.amount)
                 end
             end
