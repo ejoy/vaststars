@@ -1,14 +1,14 @@
 ---
 data:
-  material: /pkg/vaststars.resources/materials/sky/skybox.material
-  name: skybox_test
-  render_layer: background
+  material: /pkg/vaststars.resources/materials/sky/star_sky.material
+  name: starsky
+  render_layer: foreground
   scene: {}
-  simplemesh: false
-  skybox: true
+  simplemesh: true
+  starsky: true
   visible_state: main_view
 policy:
-  ant.sky|skybox
+  ant.starsky|starsky
   ant.render|simplerender
   ant.general|name
 ---

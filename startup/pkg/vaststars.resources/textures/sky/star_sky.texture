@@ -1,0 +1,11 @@
+colorspace: sRGB
+normalmap: false
+path: /pkg/vaststars.resources/textures/cubemap/star_sky.png
+mipmap: 0
+maxsize: 2048x2048
+sampler:
+  MAG: LINEAR
+  MIN: LINEAR
+  U: MIRROR
+  V: MIRROR
+type: texture
