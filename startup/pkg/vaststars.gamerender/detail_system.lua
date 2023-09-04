@@ -88,7 +88,7 @@ function idetail.show(object_id)
     local gameplay_eid = object.gameplay_eid
     local typeobject = iprototype.queryByName(object.prototype_name)
 
-    idetail.selected(object)
+    idetail.selected(object.gameplay_eid)
     if typeobject.building_menu ~= false then
         iui.open({"/pkg/vaststars.resources/ui/building_menu.rml"}, gameplay_eid)
     end
@@ -212,13 +212,17 @@ do
         }
     end
 
-    function idetail.selected(object)
-        local typeobject = iprototype.queryByName(object.prototype_name)
-        local color = SPRITE_COLOR.SELECTED_OUTLINE
+    function idetail.selected(gameplay_eid)
+        local e = assert(gameplay_core.get_entity(gameplay_eid))
+        local typeobject = e.lorry and iprototype.queryById(e.lorry.item_prototype) or iprototype.queryById(e.building.prototype)
+        local object
+        if e.building then
+            object = assert(objects:coord(e.building.x, e.building.y))
+        end
+
         if typeobject.sound then
             audio.play_background("event:/" .. typeobject.sound)
         end
-
         temp_objects[#temp_objects+1] = {
             remove = function (self)
                 audio.stop_background(true)
@@ -258,7 +262,7 @@ do
         end
 
         --
-        if iprototype.is_pipe_to_ground(object.prototype_name) then
+        if iprototype.is_pipe_to_ground(typeobject.name) then
             local neighbor, connection_dir = __find_ground_neighbor(object.prototype_name, object.x, object.y, object.dir)
             if neighbor then
                 temp_objects[#temp_objects+1] = create_selected_boxes(
@@ -266,7 +270,7 @@ do
                         "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
                         "/pkg/vaststars.resources/glbs/selected-box-no-animation-line.glb|mesh.prefab",
                     },
-                    neighbor.srt.t, color, iprototype.rotate_area(typeobject.area, neighbor.dir)
+                    neighbor.srt.t, SPRITE_COLOR.SELECTED_OUTLINE, iprototype.rotate_area(typeobject.area, neighbor.dir)
                 )
 
                 local quad_num

@@ -603,12 +603,13 @@ function M:stage_camera_usage(datamodel)
 
                 if selected_obj.class == CLASS.Lorry then
                     iui.open({"/pkg/vaststars.resources/ui/building_menu.rml"}, pick_lorry_id)
+                    idetail.selected(pick_lorry_id)
                 elseif selected_obj.class == CLASS.Object and not iprototype.is_pipe(selected_obj.object.prototype_name) then -- TODO: optimize
                     local object = selected_obj.object
                     icamera_controller.focus_on_position(object.srt.t)
 
                     idetail.show(object.id)
-                    idetail.selected(object)
+                    idetail.selected(object.gameplay_eid)
                 else
                     if selected_obj.get_pos then
                         icamera_controller.focus_on_position(selected_obj:get_pos())
@@ -649,7 +650,7 @@ function M:stage_camera_usage(datamodel)
                 goto continue
             end
 
-            idetail.selected(object)
+            idetail.selected(object.gameplay_eid)
 
             local prototype_name = object.prototype_name
             local typeobject = iprototype.queryByName(prototype_name)
