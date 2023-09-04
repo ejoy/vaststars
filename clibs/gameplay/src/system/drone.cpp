@@ -344,10 +344,8 @@ static void rebuild(world& w) {
                     || !slot1
                     || !slot2
                     || slot1->item != slot2->item
-                    || slot1->type != container::slot::slot_type::supply 
-                    || slot1->type != container::slot::slot_type::transit
-                    || slot2->type != container::slot::slot_type::demand
-                    || slot2->type != container::slot::slot_type::transit
+                    || (slot1->type != container::slot::slot_type::supply && slot1->type != container::slot::slot_type::transit)
+                    || (slot2->type != container::slot::slot_type::demand && slot2->type != container::slot::slot_type::transit)
                     || slot1->amount <= slot1->lock_item
                     || slot2->limit <= slot2->amount + slot2->lock_space
                 ) {
@@ -365,8 +363,7 @@ static void rebuild(world& w) {
                 if (0
                     || !slot2
                     || drone.item != slot2->item
-                    || slot2->type != container::slot::slot_type::demand
-                    || slot2->type != container::slot::slot_type::transit
+                    || (slot2->type != container::slot::slot_type::demand && slot2->type != container::slot::slot_type::transit)
                     || slot2->limit <= slot2->amount + slot2->lock_space
                 ) {
                     SetStatus(drone, drone_status::empty_task);
@@ -473,13 +470,6 @@ static std::optional<HubSearcher::Node> FindChestBlue(world& w, const HubSearche
     return std::nullopt;
 }
 
-static std::optional<HubSearcher::Node> FindChestBlueForce(world& w, const HubSearcher& searcher) {
-    for (auto const& v : searcher.chest_place) {
-        return v;
-    }
-    return std::nullopt;
-}
-
 static std::tuple<std::optional<HubSearcher::Node>, std::optional<HubSearcher::Node>, bool> FindHub(world& w, const HubSearcher& searcher) {
     std::optional<HubSearcher::Node> max;
     uint16_t maxAmount = 0;
@@ -506,20 +496,6 @@ static std::tuple<std::optional<HubSearcher::Node>, std::optional<HubSearcher::N
         moveable = minAmount + 2 <= maxAmount;
     }
     return {min, max, moveable};
-}
-
-static std::optional<HubSearcher::Node> FindHubForce(world& w, const HubSearcher& searcher) {
-    std::optional<HubSearcher::Node> min;
-    uint16_t minAmount = 0;
-    for (auto const& v : searcher.hub_place) {
-        auto& chestslot = chest::array_at(w, container::index::from(v.building->chest), v.berth.slot);
-        auto amount = chestslot.amount + chestslot.lock_space;
-        if ((!min || (amount < minAmount))) {
-            min = v;
-            minAmount = amount;
-        }
-    }
-    return min;
 }
 
 static void GoHome(world& w, DroneEntity& e, ecs::drone& drone, const airport& info) {
@@ -596,20 +572,6 @@ static bool FindTaskOnlyMov2(world& w, DroneEntity& e, ecs::drone& drone, airpor
     }
     {
         auto [min, _1, _2] = FindHub(w, searcher);
-        if (min) {
-            DoTaskOnlyMov2(w, e, drone, info, *min);
-            return true;
-        }
-    }
-    {
-        auto blue = FindChestBlueForce(w, searcher);
-        if (blue) {
-            DoTaskOnlyMov2(w, e, drone, info, *blue);
-            return true;
-        }
-    }
-    {
-        auto min = FindHubForce(w, searcher);
         if (min) {
             DoTaskOnlyMov2(w, e, drone, info, *min);
             return true;
