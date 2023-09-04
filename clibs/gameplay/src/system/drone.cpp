@@ -129,56 +129,56 @@ static void CheckHasHome(world& w, DroneEntity& e, ecs::drone& drone, std::funct
 
 static void GoHome(world& w, DroneEntity& e, ecs::drone& drone, const airport& info);
 
-struct HubSearcher {
+struct ChestSearcher {
     struct Node {
         airport_berth berth;
         building* building;
     };
-    std::vector<Node> hub_pickup;
-    std::vector<Node> hub_place;
-    std::vector<Node> chest_pickup;
-    std::vector<Node> chest_place;
-    static bool PickupSort(const HubSearcher::Node& a, const HubSearcher::Node& b) {
+    std::vector<Node> transit_pickup;
+    std::vector<Node> transit_place;
+    std::vector<Node> supply_pickup;
+    std::vector<Node> demand_place;
+    static bool PickupSort(const ChestSearcher::Node& a, const ChestSearcher::Node& b) {
         return a.building->pickup_time < b.building->pickup_time;
     }
-    static bool PlaceSort(const HubSearcher::Node& a, const HubSearcher::Node& b) {
+    static bool PlaceSort(const ChestSearcher::Node& a, const ChestSearcher::Node& b) {
         return a.building->place_time < b.building->place_time;
     }
 };
 
-static HubSearcher createHubSearcher(world& w, airport& info) {
-    w.hub_time++;
-    HubSearcher searcher;
+static ChestSearcher createChestSearcher(world& w, airport& info) {
+    w.drone_time++;
+    ChestSearcher searcher;
     auto& market = info.market.begin()->second; //TODO
-    searcher.hub_pickup.reserve(market.transit.size());
-    searcher.hub_place.reserve(market.transit.size());
-    searcher.chest_pickup.reserve(market.supply.size());
-    searcher.chest_place.reserve(market.demand.size());
+    searcher.transit_pickup.reserve(market.transit.size());
+    searcher.transit_place.reserve(market.transit.size());
+    searcher.supply_pickup.reserve(market.supply.size());
+    searcher.demand_place.reserve(market.demand.size());
     for (auto& berth : market.supply) {
         if (auto building = w.buildings.find(getxy(berth.x, berth.y))) {
-            searcher.chest_pickup.push_back({berth, building});
+            searcher.supply_pickup.push_back({berth, building});
         }
     }
     for (auto& berth : market.demand) {
         if (auto building = w.buildings.find(getxy(berth.x, berth.y))) {
-            searcher.chest_place.push_back({berth, building});
+            searcher.demand_place.push_back({berth, building});
         }
     }
     for (auto& berth : market.transit) {
         if (auto building = w.buildings.find(getxy(berth.x, berth.y))) {
-            searcher.hub_pickup.push_back({berth, building});
-            searcher.hub_place.push_back({berth, building});
+            searcher.transit_pickup.push_back({berth, building});
+            searcher.transit_place.push_back({berth, building});
         }
     }
-    std::sort(std::begin(searcher.chest_pickup), std::end(searcher.chest_pickup), HubSearcher::PickupSort);
-    std::sort(std::begin(searcher.chest_place), std::end(searcher.chest_place), HubSearcher::PlaceSort);
-    std::sort(std::begin(searcher.hub_pickup), std::end(searcher.hub_pickup), HubSearcher::PickupSort);
-    std::sort(std::begin(searcher.hub_place), std::end(searcher.hub_place), HubSearcher::PlaceSort);
+    std::sort(std::begin(searcher.supply_pickup), std::end(searcher.supply_pickup), ChestSearcher::PickupSort);
+    std::sort(std::begin(searcher.demand_place), std::end(searcher.demand_place), ChestSearcher::PlaceSort);
+    std::sort(std::begin(searcher.transit_pickup), std::end(searcher.transit_pickup), ChestSearcher::PickupSort);
+    std::sort(std::begin(searcher.transit_place), std::end(searcher.transit_place), ChestSearcher::PlaceSort);
     return searcher;
 }
 
 static void rebuild(world& w) {
-    w.hub_time = 0;
+    w.drone_time = 0;
     struct chestinfo {
         uint16_t item;
         container::slot::slot_type type;
@@ -389,7 +389,7 @@ static int lbuild(lua_State* L) {
 
 static void Arrival(world& w, DroneEntity& e, ecs::drone& drone);
 
-static void Move(world& w, DroneEntity& e, ecs::drone& drone, const HubSearcher::Node& target) {
+static void Move(world& w, DroneEntity& e, ecs::drone& drone, const ChestSearcher::Node& target) {
     drone.next = std::bit_cast<airport_berth>(target.berth);
     if (drone.prev == drone.next) {
         drone.maxprogress = drone.progress = 0;
@@ -414,7 +414,7 @@ static void Move(world& w, DroneEntity& e, ecs::drone& drone, const HubSearcher:
     e.enable_tag<ecs::drone_changed>();
 }
 
-static void DoTask(world& w, DroneEntity& e, ecs::drone& drone, const airport& info, const HubSearcher::Node& mov1, const HubSearcher::Node& mov2) {
+static void DoTask(world& w, DroneEntity& e, ecs::drone& drone, const airport& info, const ChestSearcher::Node& mov1, const ChestSearcher::Node& mov2) {
     {
         //lock mov1
         auto chestslot = ChestGetSlot(w, mov1.berth);
@@ -430,14 +430,14 @@ static void DoTask(world& w, DroneEntity& e, ecs::drone& drone, const airport& i
         chestslot->lock_space += 1;
     }
     //update drone
-    mov1.building->pickup_time = w.hub_time;
-    mov2.building->place_time = w.hub_time;
+    mov1.building->pickup_time = w.drone_time;
+    mov2.building->place_time = w.drone_time;
     SetStatus(drone, drone_status::go_mov1);
     drone.mov2 = std::bit_cast<airport_berth>(mov2.berth);
     Move(w, e, drone, mov1);
 }
 
-static void DoTaskOnlyMov2(world& w, DroneEntity& e, ecs::drone& drone, const airport& info, const HubSearcher::Node& mov2) {
+static void DoTaskOnlyMov2(world& w, DroneEntity& e, ecs::drone& drone, const airport& info, const ChestSearcher::Node& mov2) {
     {
         //lock mov2
         auto chestslot = ChestGetSlot(w, mov2.berth);
@@ -446,12 +446,12 @@ static void DoTaskOnlyMov2(world& w, DroneEntity& e, ecs::drone& drone, const ai
         chestslot->lock_space += 1;
     }
     //update drone
-    mov2.building->place_time = w.hub_time;
+    mov2.building->place_time = w.drone_time;
     Move(w, e, drone, mov2);
 }
 
-static std::optional<HubSearcher::Node> FindChestRed(world& w, const HubSearcher& searcher) {
-    for (auto const& v : searcher.chest_pickup) {
+static std::optional<ChestSearcher::Node> FindChestRed(world& w, const ChestSearcher& searcher) {
+    for (auto const& v : searcher.supply_pickup) {
         auto& chestslot = chest::array_at(w, container::index::from(v.building->chest), v.berth.slot);
         if (chestslot.amount > chestslot.lock_item) {
             return v;
@@ -460,8 +460,8 @@ static std::optional<HubSearcher::Node> FindChestRed(world& w, const HubSearcher
     return std::nullopt;
 }
 
-static std::optional<HubSearcher::Node> FindChestBlue(world& w, const HubSearcher& searcher) {
-    for (auto const& v : searcher.chest_place) {
+static std::optional<ChestSearcher::Node> FindChestBlue(world& w, const ChestSearcher& searcher) {
+    for (auto const& v : searcher.demand_place) {
         auto& chestslot = chest::array_at(w, container::index::from(v.building->chest), v.berth.slot);
         if (chestslot.limit > chestslot.amount + chestslot.lock_space) {
             return v;
@@ -470,10 +470,10 @@ static std::optional<HubSearcher::Node> FindChestBlue(world& w, const HubSearche
     return std::nullopt;
 }
 
-static std::tuple<std::optional<HubSearcher::Node>, std::optional<HubSearcher::Node>, bool> FindHub(world& w, const HubSearcher& searcher) {
-    std::optional<HubSearcher::Node> max;
+static std::tuple<std::optional<ChestSearcher::Node>, std::optional<ChestSearcher::Node>, bool> FindHub(world& w, const ChestSearcher& searcher) {
+    std::optional<ChestSearcher::Node> max;
     uint16_t maxAmount = 0;
-    for (auto const& v : searcher.hub_pickup) {
+    for (auto const& v : searcher.transit_pickup) {
         auto& chestslot = chest::array_at(w, container::index::from(v.building->chest), v.berth.slot);
         auto amount = chestslot.amount - chestslot.lock_item;
         if ((!max || (amount > maxAmount)) && (amount > 0)) {
@@ -481,9 +481,9 @@ static std::tuple<std::optional<HubSearcher::Node>, std::optional<HubSearcher::N
             maxAmount = amount;
         }
     }
-    std::optional<HubSearcher::Node> min;
+    std::optional<ChestSearcher::Node> min;
     uint16_t minAmount = 0;
-    for (auto const& v : searcher.hub_place) {
+    for (auto const& v : searcher.transit_place) {
         auto& chestslot = chest::array_at(w, container::index::from(v.building->chest), v.berth.slot);
         auto amount = chestslot.amount + chestslot.lock_space;
         if ((!min || (amount < minAmount)) && (chestslot.limit > amount)) {
@@ -502,7 +502,7 @@ static void GoHome(world& w, DroneEntity& e, ecs::drone& drone, const airport& i
     assert((drone_status)drone.status != drone_status::at_home);
     SetStatus(drone, drone_status::go_home);
     building homeBuilding {0, 0, info.width, info.height};
-    HubSearcher::Node node {
+    ChestSearcher::Node node {
         info.homeBerth,
         &homeBuilding,
     };
@@ -519,7 +519,7 @@ static bool FindTask(world& w, DroneEntity& e, ecs::drone& drone, airport& info)
     if (!consumer.has_power()) {
         return false;
     }
-    auto searcher = createHubSearcher(w, info);
+    auto searcher = createChestSearcher(w, info);
     auto red = FindChestRed(w, searcher);
     auto blue = FindChestBlue(w, searcher);
     // red -> blue
@@ -562,20 +562,16 @@ static void FindTaskNotAtHome(world& w, DroneEntity& e, ecs::drone& drone, airpo
 }
 
 static bool FindTaskOnlyMov2(world& w, DroneEntity& e, ecs::drone& drone, airport& info) {
-    auto searcher = createHubSearcher(w, info);
-    {
-        auto blue = FindChestBlue(w, searcher);
-        if (blue) {
-            DoTaskOnlyMov2(w, e, drone, info, *blue);
-            return true;
-        }
+    auto searcher = createChestSearcher(w, info);
+    auto blue = FindChestBlue(w, searcher);
+    if (blue) {
+        DoTaskOnlyMov2(w, e, drone, info, *blue);
+        return true;
     }
-    {
-        auto [min, _1, _2] = FindHub(w, searcher);
-        if (min) {
-            DoTaskOnlyMov2(w, e, drone, info, *min);
-            return true;
-        }
+    auto [min, _1, _2] = FindHub(w, searcher);
+    if (min) {
+        DoTaskOnlyMov2(w, e, drone, info, *min);
+        return true;
     }
     return false;
 }
@@ -599,7 +595,7 @@ static void Arrival(world& w, DroneEntity& e, ecs::drone& drone) {
             slot->amount--;
             drone.item = slot->item;
             SetStatus(drone, drone_status::go_mov2);
-            HubSearcher::Node node {
+            ChestSearcher::Node node {
                 mov2Berth,
                 movBuilding,
             };

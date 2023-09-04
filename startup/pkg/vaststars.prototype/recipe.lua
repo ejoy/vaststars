@@ -473,7 +473,7 @@ prototype "铁齿轮T1" {
     recipe_order =  15,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/iron-gear.texture",
     ingredients = {
-        {"铁板", 4},
+        {"铁板", 2},
         {"铁棒", 1},
     },
     results = {
