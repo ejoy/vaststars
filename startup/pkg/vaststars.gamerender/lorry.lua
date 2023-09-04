@@ -7,6 +7,8 @@ local ientity_object = ecs.require "engine.system.entity_object_system"
 local iprototype = require "gameplay.interface.prototype"
 local iom = ecs.require "ant.objcontroller|obj_motion"
 local ivs = ecs.require "ant.render|visible_state"
+local ig = ecs.require "ant.group|group"
+
 local mathpkg = import_package "ant.math"
 local mc = mathpkg.constant
 local irl = ecs.require "ant.render|render_layer"
@@ -111,8 +113,7 @@ end
 local function create(prefab, s, r, t, motion_events)
     if not sampler_group then
         sampler_group = ims.sampler_group()
-        world:group_enable_tag("view_visible", sampler_group)
-        world:group_flush "view_visible"
+        ig.enable(sampler_group, "view_visible", sampler_group)
     end
 
     local outer = {objs = {}, item_classid = 0, item_amount = 0}

@@ -7,6 +7,7 @@ local math3d = require "math3d"
 local igame_object = ecs.require "engine.game_object"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
+local ig = ecs.require "ant.group|group"
 
 -- three-dimensional axial
 -- z
@@ -31,7 +32,6 @@ local HEIGHT <const> = 256
 local GRID_WIDTH <const> = 92
 local GRID_HEIGHT <const> = 50
 assert(GRID_WIDTH % 2 == 0 and GRID_HEIGHT % 2 == 0)
-local TERRAIN_MAX_GROUP_ID = 10000
 
 local function _hash(x, y)
     assert(x & 0xFF == x and y & 0xFF == y)
@@ -121,20 +121,15 @@ function terrain:create(width, height)
     }
 
     local function gen_group_id()
-        local group_id = 0
-        local result = {}
-        local min_x, max_x = self._grid_bounds[1][1], self._grid_bounds[2][1]
-        local min_y, max_y = self._grid_bounds[1][2], self._grid_bounds[2][2]
-
-        for x = min_x, max_x do
-            for y = min_y, max_y do
-                group_id = group_id + 1
-                result[_hash(x, y)] = group_id
-            end
-        end
-        assert(group_id < TERRAIN_MAX_GROUP_ID)
-        return result
+        return setmetatable({}, {
+            __index = function (tt, k)
+                local o = "TERRAIN_GROUP_" .. k
+                local gid = ig.register(o)
+                tt[k] = gid
+                return gid
+        end})
     end
+
     self._group_id = gen_group_id()
     self._enabled_group_id = {}
 
@@ -226,15 +221,15 @@ function terrain:enable_terrain(x, y)
     local new = _get_screen_group_id(self, x, y)
     local add, del = diff(self._enabled_group_id, new)
     self._enabled_group_id = new
+    local go<close> = ig.obj "view_visible"
     for _, group_id in ipairs(add) do
         print(("enable group id: %s"):format(group_id))
-        world:group_enable_tag("view_visible", group_id)
+        go:enable(group_id, true)
     end
     for _, group_id in ipairs(del) do
         print(("disable group id: %s"):format(group_id))
-        world:group_disable_tag("view_visible", group_id)
+        go:enable(group_id, false)
     end
-    world:group_flush "view_visible"
 end
 
 function terrain:verify_coord(x, y)

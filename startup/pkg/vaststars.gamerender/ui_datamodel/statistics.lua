@@ -4,6 +4,7 @@ local w = world.w
 local bgfx          = require "bgfx"
 local math3d        = require "math3d"
 local iUiRt         = ecs.require "ant.rmlui|ui_rt_system"
+local ig            = ecs.require "ant.group|group"
 local ientity       = ecs.require "ant.render|components.entity"
 local imaterial     = ecs.require "ant.asset|material"
 local ivs		    = ecs.require "ant.render|visible_state"
@@ -197,8 +198,7 @@ local filter_interval = {
 function M:stage_ui_update(datamodel)
     local gid = iUiRt.get_group_id("statistic_chart")
     if gid and canvas_size_w == 0 then
-        world:group_enable_tag("view_visible", gid)
-        world:group_flush "view_visible"
+        ig.enalbe(gid, "view_visible", true)
         local qe = w:first(queuename .." render_target:in")
         if qe then
             local rt = qe.render_target

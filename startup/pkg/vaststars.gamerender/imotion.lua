@@ -1,7 +1,9 @@
 local ecs = ...
 local world = ecs.world
 
-local ims = ecs.require "ant.motion_sampler|motion_sampler"
+local ims   = ecs.require "ant.motion_sampler|motion_sampler"
+local ig    = ecs.require "ant.group|group"
+
 local ientity_object = ecs.require "engine.system.entity_object_system"
 
 local events = {
@@ -13,10 +15,9 @@ local events = {
 local motion = {}
 function motion.create_motion_object(s, r, t, parent, ev)
     if not motion.sampler_group then
-        local sampler_group = ims.sampler_group()
-        world:group_enable_tag("view_visible", sampler_group)
-        world:group_flush "view_visible"
-        motion.sampler_group = sampler_group
+        local gid = ims.sampler_group()
+        ig.enable(gid, "view_visible", true)
+        motion.sampler_group = gid
     end
     local m_eid = world:create_entity {
         group = motion.sampler_group,

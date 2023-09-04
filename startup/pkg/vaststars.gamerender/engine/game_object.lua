@@ -2,12 +2,13 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 local game_object_event = ecs.require "engine.game_object_event"
-local ientity_object = ecs.require "engine.system.entity_object_system"
-local iani = ecs.require "ant.animation|controller.state_machine"
-local iom = ecs.require "ant.objcontroller|obj_motion"
-local irl = ecs.require "ant.render|render_layer"
-local imodifier = ecs.require "ant.modifier|modifier"
-local iefk = ecs.require "ant.efk|efk"
+local ientity_object    = ecs.require "engine.system.entity_object_system"
+local iani              = ecs.require "ant.animation|controller.state_machine"
+local iom               = ecs.require "ant.objcontroller|obj_motion"
+local irl               = ecs.require "ant.render|render_layer"
+local ig                = ecs.require "ant.group|group"
+local imodifier         = ecs.require "ant.modifier|modifier"
+local iefk              = ecs.require "ant.efk|efk"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
 local ANIMATIONS_BASE_PATH <const> = "/pkg/vaststars.resources/animations/"
@@ -55,7 +56,7 @@ end
 
 local __get_hitch_children ; do
     local cache = {}
-    local hitch_group_id = 10000 -- see also: terrain.lua -> TERRAIN_MAX_GROUP_ID
+    local NEXT_HITCH_GROUP = 1
 
     local function playAnimation(prefab_inst, e, workstatus, group)
         w:extend(e, "animation:in")
@@ -98,7 +99,8 @@ local __get_hitch_children ; do
             return cache[hash]
         end
 
-        hitch_group_id = hitch_group_id + 1
+        local hitch_group_id = ig.register("HITCH_GROUP_" .. NEXT_HITCH_GROUP)
+        NEXT_HITCH_GROUP = NEXT_HITCH_GROUP + 1
 
         local prefab_instance = world:create_instance {
             prefab = prefab,
