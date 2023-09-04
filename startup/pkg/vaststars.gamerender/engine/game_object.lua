@@ -163,7 +163,7 @@ init = {
 }
 --]]
 function igame_object.create(init)
-    local children = __get_hitch_children(RESOURCES_BASE_PATH:format(init.prefab), init.workstatus, init.color, init.emissive_color, init.render_layer)
+    local children = __get_hitch_children(RESOURCES_BASE_PATH:format(init.prefab), init.color, init.workstatus or "idle", init.emissive_color, init.render_layer)
     local srt = init.srt or {}
     local hitch_entity_object = ientity_object.create(world:create_entity {
         group = init.group_id,
