@@ -471,18 +471,13 @@ namespace roadnet {
         return lorryid {uint16_t(&l - lorryAry)};
     }
 
-    void network::init(world& w) {
-        bool create = ecs_api::count<ecs::lorry>(w.ecs) == 0;
-        if (create) {
+    void network::refresh(world& w, bool check) {
+        if (check && ecs_api::count<ecs::lorry>(w.ecs) == 0) {
             auto e = ecs_api::create_entity<ecs::lorry>(w.ecs);
             assert(!e.invalid());
             lorryInit(e.get<ecs::lorry>());
             e.enable_tag<ecs::lorry_free>();
         }
-        refresh(w);
-    }
-
-    void network::refresh(world& w) {
         auto view = ecs_api::array<ecs::lorry>(w.ecs);
         assert(!view.empty());
         lorryAry = view.data();
@@ -538,7 +533,6 @@ namespace roadnet {
     }
 
     void network::build(world& w) {
-        init(w);
         routeCached.clear();
 
         // step.1
@@ -906,7 +900,7 @@ namespace roadnet {
             assert(!e.invalid());
             auto& l = e.get<ecs::lorry>();
             lorryInit(l, w, classid);
-            refresh(w);
+            refresh(w, false);
             return getLorryId(l);
         }
     }
