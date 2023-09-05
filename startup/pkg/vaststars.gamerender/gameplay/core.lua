@@ -118,6 +118,7 @@ function m.create_entity(init)
         items = init.items,
         item = init.item,
         recipe = init.recipe, -- for debugging
+        amount = init.amount,
     }
 
     local typeobject = iprototype.queryByName(init.prototype_name)
