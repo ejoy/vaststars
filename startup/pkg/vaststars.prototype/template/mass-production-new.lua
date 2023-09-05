@@ -1,6 +1,7 @@
 local entities = { {
     dir = "N",
     prototype_name = "指挥中心",
+    items = {{"运输车辆I", 50}},
     x = 124,
     y = 118
   }, {
@@ -5953,32 +5954,12 @@ local mineral = {
   ["93,203"] = "地热气",
   ["131,100"] = "铝矿石",
 }
-local function prepare(world)
-    local prototype = import_package "vaststars.gameplay".prototype
-    local e = assert(world.ecs:first("base eid:in"))
-    e = world.entity[e.eid]
-    local pt = prototype.queryByName("运输车辆I")
-    local slot, idx
-    for i = 1, 256 do
-        local s = world:container_get(e.chest, i)
-        if not s then
-            break
-        end
-        if s.item == pt.id then
-            slot, idx = s, i
-            break
-        end
-    end
-    assert(slot)
-    world:container_set(e.chest, idx, {amount = 60, limit = 60})
-  end
 
 return {
     name = "规模测试",
     entities = entities,
     road = road,
     mineral = mineral,
-    prepare = prepare,
     order = 7,
 }
     
