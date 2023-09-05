@@ -21,7 +21,7 @@ namespace prototype {
 
 constexpr uint64_t kDirtyRoadnet   = 1 << 1;
 constexpr uint64_t kDirtyFluidflow = 1 << 2;
-constexpr uint64_t kDirtyHub       = 1 << 3;
+constexpr uint64_t kDirtyChest     = 1 << 3;
 constexpr uint64_t kDirtyPark      = 1 << 4;
 constexpr uint64_t kDirtyStation   = 1 << 5;
 

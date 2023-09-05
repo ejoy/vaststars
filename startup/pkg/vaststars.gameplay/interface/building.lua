@@ -3,17 +3,17 @@ local prototype = require "prototype"
 
 local m = {}
 
-local DirtyRoadnet   <const> = 1 << 1
-local DirtyFluidflow <const> = 1 << 2
-local DirtyHub       <const> = 1 << 3
-local DirtyPark      <const> = 1 << 4
+local kDirtyRoadnet   <const> = 1 << 1
+local kDirtyFluidflow <const> = 1 << 2
+local kDirtyChest     <const> = 1 << 3
+local kDirtyPark      <const> = 1 << 4
 local kDirtyStation  <const> = 1 << 5
 
 local DIRTY <const> = {
-    roadnet = DirtyRoadnet,
-    fluidflow = DirtyFluidflow,
-    hub = DirtyHub,
-    park = DirtyPark,
+    roadnet = kDirtyRoadnet,
+    fluidflow = kDirtyFluidflow,
+    chest = kDirtyChest,
+    park = kDirtyPark,
     station = kDirtyStation,
 }
 
@@ -31,13 +31,13 @@ end
 local function dirty_changed_entity(world, e)
     local flags = 0
     if e.road or e.endpoint or e.starting then
-        flags = flags | DirtyRoadnet
+        flags = flags | kDirtyRoadnet
     end
     if e.fluidbox or e.fluidboxes then
-        flags = flags | DirtyFluidflow
+        flags = flags | kDirtyFluidflow
     end
     if e.chest then
-        flags = flags | DirtyHub
+        flags = flags | kDirtyChest
     end
     if e.station then
         flags = flags | kDirtyStation
@@ -50,16 +50,16 @@ end
 local function dirty_entity(world, e)
     local flags = 0
     if e.road or e.endpoint or e.starting then
-        flags = flags | DirtyRoadnet
+        flags = flags | kDirtyRoadnet
     end
     if e.fluidbox or e.fluidboxes then
-        flags = flags | DirtyFluidflow
+        flags = flags | kDirtyFluidflow
     end
     if e.chest then
-        flags = flags | DirtyHub
+        flags = flags | kDirtyChest
     end
     if e.park then
-        flags = flags | DirtyPark
+        flags = flags | kDirtyPark
     end
     if e.station then
         flags = flags | kDirtyStation
@@ -95,9 +95,9 @@ end
 
 function m.dirty_restore(world)
     dirty(world,
-          DirtyFluidflow
-        | DirtyHub
-        | DirtyPark
+          kDirtyFluidflow
+        | kDirtyChest
+        | kDirtyPark
         | kDirtyStation
     )
 end

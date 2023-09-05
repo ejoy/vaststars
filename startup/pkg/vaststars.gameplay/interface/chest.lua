@@ -49,7 +49,7 @@ local function chest_destroy(world, chest, recycle)
 end
 
 local function chest_dirty(world, e)
-    iBuilding.dirty(world, "hub")
+    iBuilding.dirty(world, "chest")
     if e.station then
         iBuilding.dirty(world, "station")
     end
@@ -153,7 +153,7 @@ local function assembling_set(world, e, recipe, option, maxslot)
         chest_destroy(world, chest, false)
     end
     chest.chest = m.create(world, items)
-    iBuilding.dirty(world, "hub")
+    iBuilding.dirty(world, "chest")
 end
 
 function m.assembling_set(world, e, recipe, option, maxslot)
@@ -226,47 +226,6 @@ function m.station_set(world, e, items)
     for item, amount in pairs(chest_items) do
         iBackpack.place(world, item, amount)
     end
-end
-
-function m.hub_set(world, e, items)
-    if e.chest.chest == InvalidChest then
-        local info = {}
-        for i, item in ipairs(items) do
-            info[i] = {
-                type = "transit",
-                item = item,
-                limit = item ~= 0 and prototype.queryById(item).hub_limit or 0,
-                amount = 0,
-            }
-        end
-        e.chest.chest = m.create(world, info)
-        chest_dirty(world, e)
-        return
-    end
-    for i, item in ipairs(items) do
-        local slot = cChest.get(world._cworld, e.chest.chest, i)
-        assert(slot and slot.type ~= "none")
-        if slot.item == item then
-            if item ~= 0 then
-                local limit = prototype.queryById(item).hub_limit
-                if slot.limit ~= limit then
-                    cChest.set(world._cworld, e.chest.chest, i, {
-                        limit = limit,
-                    })
-                end
-            end
-        else
-            if slot.item ~= 0 and slot.amount > 0 then
-                iBackpack.place(world, slot.item, slot.amount)
-            end
-            cChest.set(world._cworld, e.chest.chest, i, {
-                item = item,
-                limit = item ~= 0 and prototype.queryById(item).hub_limit or 0,
-                amount = 0,
-            })
-        end
-    end
-    chest_dirty(world, e)
 end
 
 function m.get(world, c, i)

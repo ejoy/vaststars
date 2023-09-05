@@ -3,7 +3,7 @@ local cFluidflow = require "vaststars.fluidflow.core"
 local prototype = require "prototype"
 local query = prototype.queryById
 
-local DirtyFluidflow       <const> = 1 << 2
+local kDirtyFluidflow       <const> = 1 << 2
 
 local m = system "fluidflow"
 
@@ -283,7 +283,7 @@ local function teardown(w, fluid, id)
 end
 
 function m.clean(world)
-    if not world._cworld:is_dirty(DirtyFluidflow) then
+    if not world._cworld:is_dirty(kDirtyFluidflow) then
         return
     end
     local ecs = world.ecs
@@ -311,7 +311,7 @@ function m.clean(world)
 end
 
 function m.build(world)
-    if not world._cworld:is_dirty(DirtyFluidflow) then
+    if not world._cworld:is_dirty(kDirtyFluidflow) then
         return
     end
     local ecs = world.ecs

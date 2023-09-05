@@ -357,7 +357,7 @@ static void rebuild(world& w) {
 
 static int lbuild(lua_State* L) {
     auto& w = getworld(L);
-    if (!(w.dirty & kDirtyHub)) {
+    if (!(w.dirty & kDirtyChest)) {
         return 0;
     }
     rebuild(w);
