@@ -28,6 +28,9 @@ function m:init_world()
     world:create_instance {
         prefab = "/pkg/vaststars.resources/light.prefab"
     }
+    world:create_instance {
+        prefab = "/pkg/vaststars.resources/sky.prefab"
+    }
 
     iefk.preload "/pkg/vaststars.resources/effects/"
 
