@@ -13,7 +13,7 @@ local prototype = gameplay.register.prototype
   --count = 1,
   --time是指1个count所需的时间
 
-  -- task = {"unknown", 0, 5},                          自定义任务，无人机仓库I指定选择物品
+  -- task = {"unknown", 0, 5},                          自定义任务，无人机平台I指定选择物品
   -- task_params = {item = "采矿机框架"},
 
   -- task = {"unknown", 0, 6},
@@ -116,8 +116,8 @@ local prototype = gameplay.register.prototype
     prerequisites = {"放置采矿机1"},
     count = 2,
     effects = {
-      --  unlock_recipe = {"无人机仓库I打印"},
-      --  unlock_item = {"无人机仓库I框架"},
+      --  unlock_recipe = {"无人机平台I打印"},
+      --  unlock_item = {"无人机平台I框架"},
     },
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_pole1.texture",
@@ -144,7 +144,7 @@ local prototype = gameplay.register.prototype
 
 
   prototype "放置无人机平台" {
-    desc = "放置1座无人机仓库",
+    desc = "放置1座无人机平台",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"select_entity", 0, "无人机平台I"},
@@ -215,7 +215,7 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "仓库设置1" {
-    desc = "无人机仓库选择碎石",
+    desc = "无人机平台选择碎石",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"unknown", 0, 5},                          
@@ -226,7 +226,7 @@ local prototype = gameplay.register.prototype
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "无人机仓库物品设置为“碎石”", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "无人机平台物品设置为“碎石”", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -242,7 +242,7 @@ local prototype = gameplay.register.prototype
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ore3.texture",
     },
     sign_desc = {
-      { desc = "使用无人机仓库收集12个碎石", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "使用无人机平台收集12个碎石", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -494,8 +494,8 @@ local prototype = gameplay.register.prototype
     },
   }
   
-  prototype "无人机仓库设置2" {
-    desc = "无人机仓库选择地质科技包",
+  prototype "无人机平台设置2" {
+    desc = "无人机平台选择地质科技包",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"unknown", 0, 5},                          
@@ -506,7 +506,7 @@ local prototype = gameplay.register.prototype
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "无人机仓库物品设置为“地质科技包”", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "无人机平台物品设置为“地质科技包”", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -515,7 +515,7 @@ local prototype = gameplay.register.prototype
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"stat_production", 0, "地质科技包"},
-    prerequisites = {"无人机仓库设置2"},
+    prerequisites = {"无人机平台设置2"},
     count = 5,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack3.texture",
@@ -703,7 +703,7 @@ local prototype = gameplay.register.prototype
     icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
     effects = {
       unlock_recipe = {"维修无人机平台","维修铁制电线杆"},
-      unlock_item = {"无人机仓库平台","电线杆框架"},
+      unlock_item = {"无人机平台平台","电线杆框架"},
     },
     prerequisites = {"铁加工1"},
     ingredients = {
@@ -1389,7 +1389,7 @@ prototype "无人机运输1" {
   type = { "tech" },
   icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
   effects = {
-    unlock_recipe = {"无人机仓库1"},
+    unlock_recipe = {"无人机平台1"},
   },
   prerequisites = {"生产机械科技包"},
   ingredients = {
@@ -1878,8 +1878,8 @@ prototype "无人机运输2" {
   type = { "tech" },
   icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
   effects = {
-    unlock_recipe = {"无人机仓库2"},
-    unlock_item = {"无人机仓库II"},
+    unlock_recipe = {"无人机平台2"},
+    unlock_item = {"无人机平台II"},
   },
   prerequisites = {"坩埚制造","物流学2"},
   ingredients = {
@@ -2919,8 +2919,8 @@ prototype "无人机运输3" {
   type = { "tech" },
   icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
   effects = {
-    unlock_recipe = {"无人机仓库3"},
-    unlock_item = {"无人机仓库III"},
+    unlock_recipe = {"无人机平台3"},
+    unlock_item = {"无人机平台III"},
   },
   prerequisites = {"钛生产2"},
   ingredients = {

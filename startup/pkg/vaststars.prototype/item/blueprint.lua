@@ -199,18 +199,6 @@ prototype "电线杆框架" {
     item_description = "用于建造铁制电线杆的框架",
 }
 
-prototype "无人机仓库框架" {
-    type = {"item"},
-    station_limit = 4,
-    hub_limit = 16,
-    backpack_limit = 16,
-    item_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
-    item_icon = "/pkg/vaststars.resources/textures/icons/item/drone-depot.texture",
-    --item_category = "加工",
-    item_order = 16,
-    item_description = "用于建造无人机仓库I的框架",
-}
-
 prototype "无人机平台框架" {
     type = {"item"},
     station_limit = 4,
@@ -220,7 +208,7 @@ prototype "无人机平台框架" {
     item_icon = "/pkg/vaststars.resources/textures/icons/item/drone-depot.texture",
     item_category = "加工",
     item_order = 16,
-    item_description = "用于建造无人机仓库I的框架",
+    item_description = "用于建造无人机平台I的框架",
 }
 
 prototype "压力泵框架" {

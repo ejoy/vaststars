@@ -70,7 +70,7 @@ local guide = {
         name = "",
 		narrative = {
            -- {"哔哩..采矿机通电正常运转。石矿里{/color:4bd0ff 碎石}将被开采出来..哔哩(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
-            {"哔哩..{/color:4bd0ff 碎石}存放需要仓库，{/color:4bd0ff 废墟}里的{/g 无人机仓库I}正好适合....(轻松)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
+            {"哔哩..{/color:4bd0ff 碎石}存放需要仓库，{/color:4bd0ff 废墟}里的{/g 无人机平台I}正好适合....(轻松)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
         },
         narrative_end = {
             guide_progress = 20,
@@ -136,8 +136,8 @@ local guide = {
     {
         name = "",
 		narrative = {
-            --{"哔哩..{/g 1座}无人机仓库I最多容纳{/g 24块}碎石..(失望)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
-            {"哔哩..要放置更多的{/color:4bd0ff 碎石}就需要更多的{/g 无人机仓库I},尝试收集更多碎石吧..哔哩(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
+            --{"哔哩..{/g 1座}无人机平台I最多容纳{/g 24块}碎石..(失望)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..要放置更多的{/color:4bd0ff 碎石}就需要更多的{/g 无人机平台I},尝试收集更多碎石吧..哔哩(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
         },
         narrative_end = {
             guide_progress = 28,
@@ -249,8 +249,8 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"在组装机附近的{/color:4bd0ff 无人机仓库I}选择物品{/g 地质科技包}后，无人机就可以开始搬运了..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
-            --{"记得建造{/g 无人机仓库I}来存储生产出来地{/g 地质科技包}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
+            {"在组装机附近的{/color:4bd0ff 无人机平台I}选择物品{/g 地质科技包}后，无人机就可以开始搬运了..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
+            --{"记得建造{/g 无人机平台I}来存储生产出来地{/g 地质科技包}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
         },
         narrative_end = {
             pop_chapter = {"第一章","自动生产"},
@@ -260,7 +260,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "无人机仓库设置2",
+            "无人机平台设置2",
         },
 	},
     -- {
@@ -438,12 +438,12 @@ local guide = {
     -- {
     --     name = "",
 	-- 	narrative = {
-    --         {"哔哩..采矿机顺利工作了，储藏碎石需要新的{/color:4bd0ff 无人机仓库I}，请将{/g 无人机仓库框架}送往{/color:4bd0ff 建造中心}..哔哩(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
+    --         {"哔哩..采矿机顺利工作了，储藏碎石需要新的{/color:4bd0ff 无人机平台I}，请将{/g 无人机平台框架}送往{/color:4bd0ff 建造中心}..哔哩(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
     --     },
     --     narrative_end = {
     --         guide_progress = 35,
     --         task = {
-    --             "无人机仓库I打印预备",
+    --             "无人机平台I打印预备",
     --         }
     --     },
     --     prerequisites = {
@@ -464,7 +464,7 @@ local guide = {
     --         }
     --     },
     --     prerequisites = {
-    --         "无人机仓库I打印预备",
+    --         "无人机平台I打印预备",
     --     },
 	-- },
 
@@ -476,7 +476,7 @@ local guide = {
     --     narrative_end = {
     --         guide_progress = 35,
     --         task = {
-    --             "无人机仓库I传送接收",
+    --             "无人机平台I传送接收",
     --         }
     --     },
     --     prerequisites = {
@@ -487,7 +487,7 @@ local guide = {
     -- {
     --     name = "",
 	-- 	narrative = {
-    --         {"哔哩..建造{/color:4bd0ff 无人机仓库I}还需要额外资源{/g 碎石}....(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
+    --         {"哔哩..建造{/color:4bd0ff 无人机平台I}还需要额外资源{/g 碎石}....(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
     --         {"哔哩..{/color:4bd0ff 采矿机}正好开采出需要的{/g 碎石}..请前往{/color:4bd0ff 采矿机}进行{/g 传送设置}..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
     --     },
     --     narrative_end = {
@@ -497,7 +497,7 @@ local guide = {
     --         }
     --     },
     --     prerequisites = {
-    --         "无人机仓库I传送接收",
+    --         "无人机平台I传送接收",
     --     },
 	-- },
 
@@ -521,12 +521,12 @@ local guide = {
     --     name = "",
 	-- 	narrative = {
     --         {"哔哩..我们终于将{/g 两种原料}传送了{/color:4bd0ff 指挥中心}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
-    --         {"哔哩..让我们开始建造第一个{/g 无人机仓库I}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
+    --         {"哔哩..让我们开始建造第一个{/g 无人机平台I}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
     --     },
     --     narrative_end = {
     --         guide_progress = 38,
     --         task = {
-    --             "建造无人机仓库I",
+    --             "建造无人机平台I",
     --         }
     --     },
     --     prerequisites = {
@@ -537,16 +537,16 @@ local guide = {
     -- {
     --     name = "",
 	-- 	narrative = {
-    --         {"哔哩..将新建的{/color:4bd0ff 无人机仓库I}放置在{/g 采矿机}旁边，让无人机仓库I储存{/color:4bd0ff 碎石}....(轻松)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
+    --         {"哔哩..将新建的{/color:4bd0ff 无人机平台I}放置在{/g 采矿机}旁边，让无人机平台I储存{/color:4bd0ff 碎石}....(轻松)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
     --     },
     --     narrative_end = {
     --         guide_progress = 39,
     --         task = {
-    --             "放置无人机仓库I",
+    --             "放置无人机平台I",
     --         }
     --     },
     --     prerequisites = {
-    --         "建造无人机仓库I",
+    --         "建造无人机平台I",
     --     },
 	-- },
 
@@ -555,16 +555,16 @@ local guide = {
     --     name = "",
 	-- 	narrative = {
     --         {"哔哩..矿物采集进展非常顺利，存活概率大幅提升至{/color:4bd0ff 0.3244%}..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-2.texture"},
-    --         {"哔哩..在{/color:4bd0ff 无人机仓库I}中选择储存{/g 碎石}，无人机就会自动搬运物资了..哔哩(高兴)", "/pkg/vaststars.resources/ui/textures/guide/guide-3.texture"},
+    --         {"哔哩..在{/color:4bd0ff 无人机平台I}中选择储存{/g 碎石}，无人机就会自动搬运物资了..哔哩(高兴)", "/pkg/vaststars.resources/ui/textures/guide/guide-3.texture"},
     --     },
     --     narrative_end = {
     --         guide_progress = 40,
     --         task = {
-    --             "无人机仓库I设置",
+    --             "无人机平台I设置",
     --         }
     --     },
     --     prerequisites = {
-    --         "放置无人机仓库I",
+    --         "放置无人机平台I",
     --     },
 	-- },
 
@@ -581,19 +581,19 @@ local guide = {
     --         }
     --     },
     --     prerequisites = {
-    --         "无人机仓库I设置",
+    --         "无人机平台I设置",
     --     },
 	-- },
 
     -- {
     --     name = "",
 	-- 	narrative = {
-    --         {"哔哩..我们可以尝试在{/color:4bd0ff 无人机仓库I}里进行{/g 传送设置}..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-2.texture"},
+    --         {"哔哩..我们可以尝试在{/color:4bd0ff 无人机平台I}里进行{/g 传送设置}..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-2.texture"},
     --     },
     --     narrative_end = {
     --         guide_progress = 42,
     --         task = {
-    --             "无人机仓库I传送",
+    --             "无人机平台I传送",
     --         }
     --     },
     --     prerequisites = {
@@ -604,40 +604,40 @@ local guide = {
     -- {
     --     name = "",
 	-- 	narrative = {
-    --         {"哔哩..我们采集了足够多的碎石，可以建造更多的{/g 无人机仓库I}..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-2.texture"},
+    --         {"哔哩..我们采集了足够多的碎石，可以建造更多的{/g 无人机平台I}..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-2.texture"},
     --     },
     --     narrative_end = {
     --         guide_progress = 43,
     --         task = {
-    --             "更多无人机仓库I",
+    --             "更多无人机平台I",
     --         }
     --     },
     --     prerequisites = {
-    --         "无人机仓库I传送",
+    --         "无人机平台I传送",
     --     },
 	-- },
 
     -- {
     --     name = "",
 	-- 	narrative = {
-    --         {"哔哩..储藏{/color:4bd0ff 相同物品}的{/g 无人机仓库I}在足够近的距离可相互传递物品..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-2.texture"},
-    --         {"哔哩..需要放置更多的{/g 无人机仓库I}，记得设置存储{/color:4bd0ff 物品类型}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-2.texture"},
+    --         {"哔哩..储藏{/color:4bd0ff 相同物品}的{/g 无人机平台I}在足够近的距离可相互传递物品..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-2.texture"},
+    --         {"哔哩..需要放置更多的{/g 无人机平台I}，记得设置存储{/color:4bd0ff 物品类型}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-2.texture"},
     --     },
     --     narrative_end = {
     --         guide_progress = 44,--10
     --         task = {
-    --             "第二个无人机仓库I",
+    --             "第二个无人机平台I",
     --         }
     --     },
     --     prerequisites = {
-    --         "更多无人机仓库I",
+    --         "更多无人机平台I",
     --     },
 	-- },
 
     -- {
     --     name = "",
 	-- 	narrative = {
-    --         {"让我们把新{/color:4bd0ff 无人机仓库I}储存类型也设置为{/g 碎石}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
+    --         {"让我们把新{/color:4bd0ff 无人机平台I}储存类型也设置为{/g 碎石}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
     --     },
     --     narrative_end = {
     --         guide_progress = 45,--10
@@ -646,7 +646,7 @@ local guide = {
     --         }
     --     },
     --     prerequisites = {
-    --         "第二个无人机仓库I",
+    --         "第二个无人机平台I",
     --     },
 	-- },
 
@@ -654,7 +654,7 @@ local guide = {
     --     name = "",
 	-- 	narrative = {
     --         {"我们需要对这个星球进行全面的科学考察，让我们建造一座{/g 科研中心}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
-    --         {"{/color:4bd0ff 科研中心框架}所在废墟已经被标注了，传送{/color:4bd0ff 碎石}可前往{/g 无人机仓库I}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
+    --         {"{/color:4bd0ff 科研中心框架}所在废墟已经被标注了，传送{/color:4bd0ff 碎石}可前往{/g 无人机平台I}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
     --     },
     --     narrative_end = {
     --         guide_progress = 46,--10
@@ -686,14 +686,14 @@ local guide = {
     -- {
     --     name = "",
 	-- 	narrative = {
-    --         {"现在需要一个{/g 无人机仓库I}来存储{/color:4bd0ff 组装机}生产的{/g 地质科技包}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
-    --         {"在组装机附近的{/color:4bd0ff 无人机仓库I}选择物品{/g 地质科技包}后，无人机就可以开始搬运了..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
+    --         {"现在需要一个{/g 无人机平台I}来存储{/color:4bd0ff 组装机}生产的{/g 地质科技包}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
+    --         {"在组装机附近的{/color:4bd0ff 无人机平台I}选择物品{/g 地质科技包}后，无人机就可以开始搬运了..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
     --     },
     --     narrative_end = {
     --         pop_chapter = {"第一章","自动生产"},
     --         guide_progress = 48,--10
     --         task = {
-    --             "第三个无人机仓库I",
+    --             "第三个无人机平台I",
     --         }
     --     },
     --     prerequisites = {

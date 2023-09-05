@@ -129,45 +129,9 @@ prototype "仓库I" {
     hub_limit = 16,
     backpack_limit = 20,
     item_order = 70,
-    item_icon = "/pkg/vaststars.resources/textures/icons/item/construction.texture",
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/depot.texture",
     item_model = "glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "贮藏物品的容器",
-}
-
-prototype "无人机仓库I" {
-    type = {"item"},
-    item_category = "物流",
-    station_limit = 8,
-    hub_limit = 16,
-    backpack_limit = 20,
-    item_order = 40,
-    item_icon = "/pkg/vaststars.resources/textures/icons/item/drone-depot.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
-    item_description = "使用无人机运输并储存货物的仓库",
-}
-
-prototype "无人机仓库II" {
-    type = {"item"},
-    item_category = "物流",
-    station_limit = 8,
-    hub_limit = 16,
-    backpack_limit = 20,
-    item_order = 42,
-    item_icon = "/pkg/vaststars.resources/textures/icons/item/drone-depot.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
-    item_description = "使用无人机运输并储存货物的仓库",
-}
-
-prototype "无人机仓库III" {
-    type = {"item"},
-    item_category = "物流",
-    station_limit = 8,
-    hub_limit = 16,
-    backpack_limit = 20,
-    item_order = 44,
-    item_icon = "/pkg/vaststars.resources/textures/icons/item/drone-depot.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
-    item_description = "使用无人机运输并储存货物的仓库",
 }
 
 prototype "无人机平台I" {

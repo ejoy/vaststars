@@ -793,7 +793,7 @@ prototype "组装机3" {
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/assembler-design.texture",
     ingredients = {
         {"钛板", 6},
-        {"无人机仓库II", 1},
+        {"无人机平台II", 1},
         {"组装机II", 1},
     },
     results = {
@@ -1506,7 +1506,25 @@ prototype "粉碎机3" {
     description = "制造性能更好的粉碎机",
 }
 
-prototype "无人机仓库1" {
+prototype "仓库1" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "加工",
+    recipe_order =  60,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/depot.texture",
+    ingredients = {
+        {"铁板", 6},
+        {"石砖", 4},
+    },
+    results = {
+        {"仓库I", 1},
+    },
+    time = "12s",
+    description = "石砖和铁板制造仓库",
+}
+
+
+prototype "无人机平台1" {
     type = { "recipe" },
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
@@ -1517,13 +1535,13 @@ prototype "无人机仓库1" {
         {"石砖", 4},
     },
     results = {
-        {"无人机仓库I", 1},
+        {"无人机平台I", 1},
     },
     time = "8s",
-    description = "石砖和电动机制造无人机仓库",
+    description = "石砖和电动机制造无人机平台",
 }
 
-prototype "无人机仓库2" {
+prototype "无人机平台2" {
     type = { "recipe" },
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
@@ -1532,16 +1550,16 @@ prototype "无人机仓库2" {
     ingredients = {
         {"铝棒", 2},
         {"钢齿轮", 4},
-        {"无人机仓库I", 1},
+        {"无人机平台I", 1},
     },
     results = {
-        {"无人机仓库II", 1},
+        {"无人机平台II", 1},
     },
     time = "12s",
-    description = "制造运载能力更好的无人机仓库",
+    description = "制造运载能力更好的无人机平台",
 }
 
-prototype "无人机仓库3" {
+prototype "无人机平台3" {
     type = { "recipe" },
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
@@ -1550,13 +1568,13 @@ prototype "无人机仓库3" {
     ingredients = {
         {"电动机II", 4},
         {"钛板", 8},
-        {"无人机仓库II", 1},
+        {"无人机平台II", 1},
     },
     results = {
-        {"无人机仓库III", 1},
+        {"无人机平台III", 1},
     },
     time = "24s",
-    description = "制造运载能力更好的无人机仓库",
+    description = "制造运载能力更好的无人机平台",
 }
 
 prototype "电解厂1" {
@@ -1671,13 +1689,13 @@ prototype "科研中心1" {
     ingredients = {
         {"玻璃", 8},
         {"铝棒", 8},
-        {"无人机仓库II", 4},
+        {"无人机平台II", 4},
     },
     results = {
         {"科研中心I", 1},
     },
     time = "20s",
-    description = "基础材料和无人机仓库制造科研中心",
+    description = "基础材料和无人机平台制造科研中心",
 }
 
 prototype "科研中心2" {
@@ -2011,7 +2029,7 @@ prototype "管道打印" {
 --     description = "打印可导电的电线杆",
 -- }
 
--- prototype "无人机仓库I打印" {
+-- prototype "无人机平台I打印" {
 --     type = { "recipe" },
 --     recipe_craft_category = "建筑打印",
 --     recipe_category =  "物流",
@@ -2021,10 +2039,10 @@ prototype "管道打印" {
 --         {"电动机I", 1},
 --     },
 --     results = {
---         {"无人机仓库I", 1},
+--         {"无人机平台I", 1},
 --     },
 --     time = "5s",
---     description = "打印无人机仓库I",
+--     description = "打印无人机平台I",
 -- }
 
 -- prototype "车站打印" {
@@ -2274,10 +2292,10 @@ prototype "维修无人机平台" {
         {"无人机平台框架", 1},
     },
     results = {
-        {"无人机仓库I", 1},
+        {"无人机平台I", 1},
     },
     time = "5s",
-    description = "维修破损的无人机仓库",
+    description = "维修破损的无人机平台",
 }
 
 prototype "维修空气过滤器" {

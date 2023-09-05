@@ -6,13 +6,13 @@ local entities = { {
     y = 120
   }, {
     dir = "N",
-    items = { { "收货车站", 2 }, { "出货车站", 2 }, { "铁制电线杆", 10 }, { "熔炼炉I", 2 }, { "无人机仓库I", 5 }, { "水电站I", 2 } },
+    items = { { "收货车站", 2 }, { "出货车站", 2 }, { "铁制电线杆", 10 }, { "熔炼炉I", 2 }, { "无人机平台I", 5 }, { "水电站I", 2 } },
     prototype_name = "机身残骸",
     x = 107,
     y = 134
   }, {
     dir = "S",
-    items = { { "无人机仓库I", 4 }, { "采矿机I", 2 }, { "科研中心I", 1 }, { "组装机I", 4 } },
+    items = { { "无人机平台I", 4 }, { "采矿机I", 2 }, { "科研中心I", 1 }, { "组装机I", 4 } },
     prototype_name = "机尾残骸",
     x = 110,
     y = 120
@@ -31,7 +31,7 @@ local entities = { {
   },{
     dir = "N",
     items = {"地质科技包"},
-    prototype_name = "无人机仓库I",
+    prototype_name = "无人机平台I",
     x = 130,
     y = 123
   }, {
@@ -48,7 +48,7 @@ local entities = { {
   }, {
     dir = "N",
     items = {"碎石"},
-    prototype_name = "无人机仓库I",
+    prototype_name = "无人机平台I",
     x = 117,
     y = 127
   }, {
@@ -66,7 +66,7 @@ local entities = { {
   }, {
     dir = "N",
     items = {"石砖"},
-    prototype_name = "无人机仓库I",
+    prototype_name = "无人机平台I",
     x = 122,
     y = 127
   }, {
@@ -83,7 +83,7 @@ local entities = { {
   }, {
     dir = "N",
     items = {"铁矿石"},
-    prototype_name = "无人机仓库I",
+    prototype_name = "无人机平台I",
     x = 162,
     y = 127
   }, {
@@ -101,49 +101,49 @@ local entities = { {
   }, {
     dir = "N",
     items = {"铁板"},
-    prototype_name = "无人机仓库I",
+    prototype_name = "无人机平台I",
     x = 155,
     y = 127
   },{
     dir = "N",
     items = {"碎石"},
-    prototype_name = "无人机仓库I",
+    prototype_name = "无人机平台I",
     x = 121,
     y = 136
   }, {
     dir = "N",
     items = {"铁板"},
-    prototype_name = "无人机仓库I",
+    prototype_name = "无人机平台I",
     x = 125,
     y = 136
   }, {
     dir = "N",
     items = {"石砖"},
-    prototype_name = "无人机仓库I",
+    prototype_name = "无人机平台I",
     x = 129,
     y = 136
   },  {
     dir = "N",
     items = {"粉碎机框架"},
-    prototype_name = "无人机仓库I",
+    prototype_name = "无人机平台I",
     x = 133,
     y = 136
   }, {
     dir = "N",
-    items = {"无人机仓库I"},
-    prototype_name = "无人机仓库I",
+    items = {"无人机平台I"},
+    prototype_name = "无人机平台I",
     x = 117,
     y = 136
   },{
     dir = "N",
     items = {"碎石","铁板"},
-    prototype_name = "无人机仓库II",
+    prototype_name = "无人机平台II",
     x = 125,
     y = 143
   },{
     dir = "N",
     items = {"碎石","碎石"},
-    prototype_name = "无人机仓库II",
+    prototype_name = "无人机平台II",
     x = 125,
     y = 146
   },{
