@@ -73,6 +73,12 @@ namespace roadnet {
         l.item_prototype = 0;
         l.item_amount = 0;
     }
+    void lorryTargetNone(ecs::lorry& l) {
+        l.target = lorry_target::home;
+        l.status = lorry_status::target_none;
+        l.ending = {};
+        l.mov2 = {};
+    }
     void lorryUpdate(ecs_api::entity<ecs::lorry>& e, ecs::lorry& l) {
         if (l.progress != 0) {
             --l.progress;
@@ -82,15 +88,15 @@ namespace roadnet {
             }
         }
     }
-    bool lorryNextDirection(ecs::lorry& l, network& w, straightid C, direction& dir) {
-        if (l.status == lorry_status::error) {
+    bool lorryNextDirection(ecs::lorry& l, world& w, straightid C, direction& dir) {
+        if (l.status == lorry_status::target_unreachable || l.status == lorry_status::target_none) {
             return false;
         }
-        if (auto direction = route_direction(w, C, l.ending)) {
+        if (auto direction = route_direction(w.rw, C, l.ending)) {
             dir = *direction;
             return true;
         }
-        l.status = lorry_status::error;
+        l.status = lorry_status::target_unreachable;
         return false;
     }
     bool lorryReady(ecs::lorry const& l) noexcept {

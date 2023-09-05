@@ -4,44 +4,50 @@
 #include "roadnet/lorry.h"
 #include "roadnet/endpoint.h"
 #include "luaecs.h"
+#include "flatmap.h"
 #include <lua.hpp>
 #include <bee/nonstd/unreachable.h>
 
-static int lbuild(lua_State *L) {
-    auto& w = getworld(L);
-    if (w.dirty & (kDirtyRoadnet | kDirtyPark)) {
-        w.market.reset_park();
-        for (auto& v : ecs_api::select<ecs::park>(w.ecs)) {
-            int id = v.component_index<ecs::endpoint>();
-            assert(id >= 0);
-            w.market.set_park(id);
+static bool station_valid_mov1(world& w, ecs::lorry&l, uint16_t mov1) {
+    for (auto& s : chest::array_slice(w, container::index::from(mov1))) {
+        if (s.item == l.item_prototype && s.type == container::slot::slot_type::supply) {
+            if (s.amount > s.lock_item) {
+                return true;
+            }
+            return false;
         }
     }
-    if (w.dirty & kDirtyStation) {
-        w.market.reset_station();
-        for (auto& v : ecs_api::select<ecs::station, ecs::endpoint>(w.ecs)) {
-            auto& station = v.get<ecs::station>();
-            auto c = container::index::from(station.chest);
-            if (c == container::kInvalidIndex) {
-                continue;
-            }
-            for (auto& s : chest::array_slice(w, c)) {
-                if (s.item != 0) {
-                    if (s.type == container::slot::slot_type::supply) {
-                        for (uint16_t i = s.lock_item; i < s.amount; ++i) {
-                            w.market.add_supply(v.get_index<ecs::endpoint>(), s.item);
-                        }
-                    }
-                    else if (s.type == container::slot::slot_type::demand) {
-                        for (uint16_t i = s.amount + s.lock_space; i < s.limit; ++i) {
-                            w.market.add_demand(v.get_index<ecs::endpoint>(), s.item);
-                        }
-                    }
-                }
-            }
+    return false;
+}
+
+static void station_lock_mov1(world& w, ecs::lorry&l, uint16_t mov1) {
+    for (auto& s : chest::array_slice(w, container::index::from(mov1))) {
+        if (s.item == l.item_prototype && s.type == container::slot::slot_type::supply) {
+            s.lock_item++;
+            return;
         }
     }
-    return 0;
+}
+
+static bool station_valid_mov2(world& w, ecs::lorry&l, uint16_t mov2) {
+    for (auto& s : chest::array_slice(w, container::index::from(mov2))) {
+        if (s.item == l.item_prototype && s.type == container::slot::slot_type::demand) {
+            if (s.limit > s.amount + s.lock_space) {
+                return true;
+            }
+            return false;
+        }
+    }
+    return false;
+}
+
+static void station_lock_mov2(world& w, ecs::lorry&l, uint16_t mov2) {
+    for (auto& s : chest::array_slice(w, container::index::from(mov2))) {
+        if (s.item == l.item_prototype && s.type == container::slot::slot_type::demand) {
+            s.lock_space++;
+            return;
+        }
+    }
 }
 
 static void startTask(world& w, ecs::lorry& l, market_match const& m) {
@@ -64,6 +70,178 @@ static void startTask(world& w, ecs::lorry& l, market_match const& m) {
         assert(false);
     }
     roadnet::lorryGoMov1(l, m.item, from_e.get<ecs::endpoint>(), to_e.get<ecs::endpoint>());
+}
+
+static void restartTask(world& w, ecs::lorry& l, uint16_t to) {
+    auto to_e   = ecs_api::index_entity<ecs::endpoint>(w.ecs, to);
+    auto to_s   = to_e.component<ecs::station>();
+    auto to_c   = container::index::from(to_s->chest);
+    if (auto s = chest::find_item(w, to_c, l.item_prototype)) {
+        s->lock_space++;
+    }
+    else {
+        assert(false);
+    }
+    roadnet::lorryGoMov2(l, to_e.get<ecs::endpoint>().rev_neighbor, l.item_amount);
+}
+
+static int lbuild(lua_State *L) {
+    auto& w = getworld(L);
+    if (w.dirty & (kDirtyRoadnet | kDirtyPark)) {
+        w.market.reset_park();
+        for (auto& v : ecs_api::select<ecs::park>(w.ecs)) {
+            int id = v.component_index<ecs::endpoint>();
+            assert(id >= 0);
+            w.market.set_park(id);
+        }
+    }
+    if (w.dirty & kDirtyStation) {
+        flatmap<roadnet::straightid, uint16_t>         stations;
+        flatmap<roadnet::lorryid, roadnet::straightid> lorrywhere;
+        for (auto& v : ecs_api::select<ecs::station, ecs::endpoint>(w.ecs)) {
+            auto& station = v.get<ecs::station>();
+            auto& endpoint = v.get<ecs::endpoint>();
+            auto c = container::index::from(station.chest);
+            if (c == container::kInvalidIndex) {
+                continue;
+            }
+            stations.insert_or_assign(endpoint.rev_neighbor, station.chest);
+            for (auto& s : chest::array_slice(w, c)) {
+                s.lock_item = 0;
+                s.lock_space = 0;
+            }
+        }
+        for (auto& e : ecs_api::select<ecs::lorry>(w.ecs)) {
+            auto& l = e.get<ecs::lorry>();
+            if (roadnet::lorryInvalid(l)) {
+                continue;
+            }
+            switch (l.target) {
+            case roadnet::lorry_target::mov1: {
+                auto mov1 = stations.find(l.ending);
+                auto mov2 = stations.find(l.mov2);
+                if (!mov1 || !mov2) {
+                    assert(false);
+                    break;
+                }
+                if (!station_valid_mov1(w, l, *mov1) || !station_valid_mov2(w, l, *mov2)) {
+                    roadnet::lorryTargetNone(l);
+                    lorrywhere.insert_or_assign(w.rw.getLorryId(l), roadnet::straightid {});
+                    break;
+                }
+                station_lock_mov1(w, l, *mov1);
+                station_lock_mov2(w, l, *mov2);
+                break;
+            }
+            case roadnet::lorry_target::mov2: {
+                auto mov2 = stations.find(l.ending);
+                if (!mov2) {
+                    assert(false);
+                    break;
+                }
+                if (!station_valid_mov2(w, l, *mov2)) {
+                    roadnet::lorryTargetNone(l);
+                    lorrywhere.insert_or_assign(w.rw.getLorryId(l), roadnet::straightid {});
+                    break;
+                }
+                station_lock_mov2(w, l, *mov2);
+                break;
+            }
+            case roadnet::lorry_target::home:
+                break;
+            default:
+                std::unreachable();
+            }
+        }
+        w.market.reset_station();
+        for (auto& v : ecs_api::select<ecs::station, ecs::endpoint>(w.ecs)) {
+            auto& station = v.get<ecs::station>();
+            auto c = container::index::from(station.chest);
+            if (c == container::kInvalidIndex) {
+                continue;
+            }
+            for (auto& s : chest::array_slice(w, c)) {
+                if (s.item == 0) {
+                    continue;
+                }
+                switch (s.type) {
+                case container::slot::slot_type::supply:
+                    for (uint16_t i = s.lock_item; i < s.amount; ++i) {
+                        w.market.add_supply(v.get_index<ecs::endpoint>(), s.item);
+                    }
+                    break;
+                case container::slot::slot_type::demand:
+                    for (uint16_t i = s.amount + s.lock_space; i < s.limit; ++i) {
+                        w.market.add_demand(v.get_index<ecs::endpoint>(), s.item);
+                    }
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+        if (!lorrywhere.empty()) {
+            for (auto const& cross : w.rw.crossAry) {
+                for (size_t i = 0; i < 2; ++i) {
+                    if (cross.cross_lorry[i] && lorrywhere.contains(cross.cross_lorry[i])) {
+                        auto t = cross.cross_status[i];
+                        auto C = cross.neighbor[(uint8_t)t & 0x03u];
+                        lorrywhere.insert_or_assign(cross.cross_lorry[i], C);
+                    }
+                }
+            }
+            uint16_t N = (uint16_t)w.rw.straightAry.size();
+            for (uint16_t id = 0; id < N; ++id) {
+                auto& straight = w.rw.straightAry[id];
+                for (uint16_t i = 1; i < straight.len; ++i) {
+                    if (roadnet::lorryid lorryId = w.rw.LorryInRoad(straight.lorryOffset+i)) {
+                        if (lorrywhere.contains(lorryId)) {
+                            lorrywhere.insert_or_assign(lorryId, roadnet::straightid{id});
+                        }
+                    }
+                }
+            }
+            w.market.match_begin(w);
+            for (auto& e : ecs_api::select<ecs::lorry>(w.ecs)) {
+                auto& l = e.get<ecs::lorry>();
+                if (roadnet::lorryInvalid(l)) {
+                    continue;
+                }
+                if (l.status != roadnet::lorry_status::target_none) {
+                    continue;
+                }
+                auto C = *lorrywhere.find(w.rw.getLorryId(l));
+                if (l.item_amount == 0) {
+                    l.item_prototype = 0;
+                    if (auto res = w.market.match(w, C)) {
+                        startTask(w, l, *res);
+                    }
+                    else if (auto home = w.market.nearest_park(w, C); home != 0xffff) {
+                        auto endpoints = ecs_api::array<ecs::endpoint>(w.ecs);
+                        roadnet::lorryGoHome(l, endpoints[home]);
+                    }
+                    else {
+                        //do nothing
+                    }
+                }
+                else {
+                    uint16_t to;
+                    if (auto res = w.market.relocate(w, l.item_prototype, C, to)) {
+                        restartTask(w, l, to);
+                    }
+                    else if (auto home = w.market.nearest_park(w, C); home != 0xffff) {
+                        auto endpoints = ecs_api::array<ecs::endpoint>(w.ecs);
+                        roadnet::lorryGoHome(l, endpoints[home]);
+                    }
+                    else {
+                        //do nothing
+                    }
+                }
+            }
+            w.market.match_end(w);
+        }
+    }
+    return 0;
 }
 
 static int lupdate(lua_State *L) {

@@ -112,7 +112,7 @@ namespace roadnet::road {
                 continue;
             }
             direction out;
-            if (!lorryNextDirection(l, w.rw, rev_neighbor[i], out)) {
+            if (!lorryNextDirection(l, w, rev_neighbor[i], out)) {
                 continue;
             }
             if (!w.rw.StraightRoad(neighbor[(uint8_t)out]).canEntry(w.rw)) {

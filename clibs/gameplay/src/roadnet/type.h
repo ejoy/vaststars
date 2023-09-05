@@ -84,7 +84,8 @@ namespace roadnet {
     enum class lorry_status: uint8_t {
         normal,
         wait,
-        error,
+        target_unreachable,
+        target_none,
     };
 
     enum class lorry_target: uint8_t {

@@ -17,7 +17,8 @@ namespace roadnet {
     void lorryGoMov1(ecs::lorry& l, uint16_t item, ecs::endpoint& mov1, ecs::endpoint& mov2);
     void lorryGoMov2(ecs::lorry& l, roadnet::straightid mov2, uint16_t amount);
     void lorryGoHome(ecs::lorry& l, ecs::endpoint& home);
+    void lorryTargetNone(ecs::lorry& l);
     void lorryUpdate(ecs_api::entity<ecs::lorry>& e, ecs::lorry& l);
-    bool lorryNextDirection(ecs::lorry& l, network& w, straightid C, direction& dir);
+    bool lorryNextDirection(ecs::lorry& l, world& w, straightid C, direction& dir);
     bool lorryReady(ecs::lorry const& l) noexcept;
 }
