@@ -1,0 +1,21 @@
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    efk:
+      auto_play: false
+      loop: false
+      path: /pkg/vaststars.resources/effects/broken_smoke.efk
+      speed: 1
+      visible: true
+    name: broken_smoke
+    scene:
+      s: {8, 8, 8}
+      t: {7.099999904632568, -2.200000047683716, 0}
+  mount: 1
+  policy:
+    ant.general|name
+    ant.scene|scene_object
+    ant.efk|efk
