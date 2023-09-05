@@ -94,7 +94,7 @@ prototype "气罐I" {
 
 prototype "地下水挖掘机I" {
     model = "glbs/mars-pumpjack.glb|mesh.prefab",
-    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_offshore.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_pumpjack.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "3x3",
@@ -127,7 +127,7 @@ prototype "地下水挖掘机I" {
 
 prototype "地下水挖掘机II" {
     model = "glbs/mars-pumpjack.glb|mesh.prefab",
-    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_offshore.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_pumpjack.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "3x3",
@@ -160,7 +160,7 @@ prototype "地下水挖掘机II" {
 
 prototype "核子挖掘机" {
     model = "glbs/mars-pumpjack.glb|mesh.prefab",
-    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_offshore.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_pumpjack.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "3x3",

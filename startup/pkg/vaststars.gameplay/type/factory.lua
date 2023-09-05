@@ -12,7 +12,7 @@ function c:ctor(init, pt)
     local chest = iChest.create(world, {{
         type = "supply",
         item = typeobject.id,
-        amount = 0,
+        amount = init.amount,
         limit = typeobject.station_limit,
     }})
     return {

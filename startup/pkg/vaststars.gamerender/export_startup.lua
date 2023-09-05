@@ -24,7 +24,6 @@ funcs["generator"] = DO_NOTHING
 funcs["inserter"] = DO_NOTHING
 funcs["pole"] = DO_NOTHING
 funcs["laboratory"] = DO_NOTHING
-funcs["base"] = DO_NOTHING
 funcs["mining"] = DO_NOTHING
 funcs["solar_panel"] = DO_NOTHING
 funcs["road"] = DO_NOTHING
@@ -34,6 +33,11 @@ funcs["accumulator"] = DO_NOTHING
 funcs["auto_set_recipe"] = DO_NOTHING
 funcs["park"] = DO_NOTHING
 funcs["airport"] = DO_NOTHING
+
+funcs["base"] = function(entity)
+    entity.items = {{"运输车辆I", 50}}
+    return entity
+end
 
 funcs["building"] = function (entity, e)
     entity.prototype_name = iprototype.queryById(e.building.prototype).name
@@ -159,32 +163,12 @@ local entities = %s
 local backpack = %s
 local road = %s
 local mineral = %s
-local function prepare(world)
-    local prototype = import_package "vaststars.gameplay".prototype
-    local e = assert(world.ecs:first("base eid:in"))
-    e = world.entity[e.eid]
-    local pt = prototype.queryByName("运输车辆I")
-    local slot, idx
-    for i = 1, 256 do
-        local s = world:container_get(e.chest, i)
-        if not s then
-            break
-        end
-        if s.item == pt.id then
-            slot, idx = s, i
-            break
-        end
-    end
-    assert(slot)
-    world:container_set(e.chest, idx, {amount = 1, limit = 50})
-  end
 
 return {
     entities = entities,
     backpack = backpack,
     road = road,
     mineral = mineral,
-    prepare = prepare,
 }
     ]]):format(
         inspect(entities),

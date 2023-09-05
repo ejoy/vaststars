@@ -29,8 +29,7 @@ namespace roadnet {
     class network {
     public:
         network() = default;
-        void             init(world& w);
-        void             refresh(world& w);
+        void             refresh(world& w, bool check);
         void             build(world& w);
         lorryid          createLorry(world& w, uint16_t classid);
         void             destroyLorry(world& w, lorry_entity& l);
