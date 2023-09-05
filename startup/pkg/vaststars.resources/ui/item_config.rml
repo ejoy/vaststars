@@ -116,7 +116,7 @@
                 font-size: 8.00vmin;
             }
             .supply-button {
-                -webkit-text-stroke: 0.5vmin rgb(32, 123, 4);
+                -webkit-text-stroke: 0.5vmin rgb(222, 85, 120);
                 background-image: /pkg/vaststars.resources/ui/textures/item-config/button-grid-supply.texture;
             }
             .supply-button:active {
