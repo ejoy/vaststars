@@ -215,7 +215,7 @@ prototype "压力泵I" {
 
 prototype "烟囱I" {
     model = "glbs/chimney-1.glb|mesh.prefab",
-    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_pump.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_chimney.texture",
     construct_detector = {"exclusive"},
     type = {"building", "fluidbox", "chimney", "auto_set_recipe"},
     area = "2x2",
@@ -236,7 +236,7 @@ prototype "烟囱I" {
 
 prototype "烟囱II" {
     model = "glbs/chimney-1.glb|mesh.prefab",
-    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_pump.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_chimney.texture",
     construct_detector = {"exclusive"},
     type = {"building", "fluidbox", "chimney", "auto_set_recipe"},
     area = "2x2",
