@@ -248,7 +248,7 @@ lpickup(lua_State* L) {
         return 0;
     }
     auto& s = chest::array_at(w, c, offset);
-    if (s.type == container::slot::slot_type::none) {
+    if (s.type == container::slot::slot_type::none || s.item == 0) {
         return 0;
     }
     if (n > s.amount)  {
@@ -280,7 +280,7 @@ lplace(lua_State* L) {
         return 0;
     }
     auto& s = chest::array_at(w, c, offset);
-    if (s.type == container::slot::slot_type::none) {
+    if (s.type == container::slot::slot_type::none || s.item == 0) {
         return 0;
     }
     if (s.amount + n > s.limit)  {

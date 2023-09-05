@@ -19,26 +19,22 @@ static int lbuild(lua_State *L) {
     }
     if (w.dirty & kDirtyStation) {
         w.market.reset_station();
-        for (auto& v : ecs_api::select<ecs::station, ecs::endpoint, ecs::chest>(w.ecs)) {
+        for (auto& v : ecs_api::select<ecs::station, ecs::endpoint>(w.ecs)) {
             auto& station = v.get<ecs::station>();
-            auto& chest = v.get<ecs::chest>();
-            auto station_c = container::index::from(station.chest);
-            auto chest_c = container::index::from(chest.chest);
-            if (station_c == container::kInvalidIndex || chest_c == container::kInvalidIndex) {
+            auto c = container::index::from(station.chest);
+            if (c == container::kInvalidIndex) {
                 continue;
             }
-            container::size_type n = std::min(chest::size(w, station_c), chest::size(w, chest_c));
-            for (uint8_t i = 0; i < (uint8_t)n; ++i) {
-                auto& station_s = chest::array_at(w, station_c, i);
-                if (station_s.item != 0) {
-                    if (station_s.type == container::slot::slot_type::supply) {
-                        for (uint16_t i = station_s.lock_item; i < station_s.amount; ++i) {
-                            w.market.add_supply(v.get_index<ecs::endpoint>(), station_s.item);
+            for (auto& s : chest::array_slice(w, c)) {
+                if (s.item != 0) {
+                    if (s.type == container::slot::slot_type::supply) {
+                        for (uint16_t i = s.lock_item; i < s.amount; ++i) {
+                            w.market.add_supply(v.get_index<ecs::endpoint>(), s.item);
                         }
                     }
-                    else if (station_s.type == container::slot::slot_type::demand) {
-                        for (uint16_t i = station_s.amount + station_s.lock_space; i < station_s.limit; ++i) {
-                            w.market.add_demand(v.get_index<ecs::endpoint>(), station_s.item);
+                    else if (s.type == container::slot::slot_type::demand) {
+                        for (uint16_t i = s.amount + s.lock_space; i < s.limit; ++i) {
+                            w.market.add_demand(v.get_index<ecs::endpoint>(), s.item);
                         }
                     }
                 }
