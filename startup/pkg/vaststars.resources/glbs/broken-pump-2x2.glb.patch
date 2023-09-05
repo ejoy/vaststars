@@ -9,7 +9,7 @@ value:
       loop: false
       path: /pkg/vaststars.resources/effects/broken_smoke.efk
       speed: 1
-      visible: true
+    visible_state: main_queue
     name: broken_smoke
     scene:
       s: {8, 8, 8}
