@@ -190,6 +190,7 @@ lget(lua_State* L) {
     lua_setfield(L, -2, "eof");
     return 1;
 }
+
 static int
 lset(lua_State* L) {
     auto& w = getworld(L);
@@ -232,6 +233,70 @@ lset(lua_State* L) {
     return 0;
 }
 
+static int
+lpickup(lua_State* L) {
+    auto& w = getworld(L);
+    uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
+    uint8_t offset = (uint8_t)(luaL_checkinteger(L, 3)-1);
+    uint16_t n = (uint16_t)(luaL_checkinteger(L, 4));
+    auto c = container::index::from(index);
+    if (c == container::kInvalidIndex) {
+        return 0;
+    }
+    auto& start = w.container.at(c);
+    if (start.eof - c.slot < offset) {
+        return 0;
+    }
+    auto& s = chest::array_at(w, c, offset);
+    if (s.type == container::slot::slot_type::none) {
+        return 0;
+    }
+    if (n > s.amount)  {
+        n = s.amount;
+        s.amount = 0;
+    }
+    else {
+        s.amount = s.amount - n;
+    }
+    if (s.amount < s.lock_item) {
+        w.dirty |= kDirtyChest;
+    }
+    lua_pushinteger(L, n);
+    return 1;
+}
+
+static int
+lplace(lua_State* L) {
+    auto& w = getworld(L);
+    uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
+    uint8_t offset = (uint8_t)(luaL_checkinteger(L, 3)-1);
+    uint16_t n = (uint16_t)(luaL_checkinteger(L, 4));
+    auto c = container::index::from(index);
+    if (c == container::kInvalidIndex) {
+        return 0;
+    }
+    auto& start = w.container.at(c);
+    if (start.eof - c.slot < offset) {
+        return 0;
+    }
+    auto& s = chest::array_at(w, c, offset);
+    if (s.type == container::slot::slot_type::none) {
+        return 0;
+    }
+    if (s.amount + n > s.limit)  {
+        n = s.limit - s.amount;
+        s.amount = s.limit;
+    }
+    else {
+        s.amount = s.amount + n;
+    }
+    if (s.lock_space + s.amount > s.limit) {
+        w.dirty |= kDirtyChest;
+    }
+    lua_pushinteger(L, n);
+    return 1;
+}
+
 extern "C" int
 luaopen_vaststars_chest_core(lua_State *L) {
     luaL_checkversion(L);
@@ -240,6 +305,8 @@ luaopen_vaststars_chest_core(lua_State *L) {
         { "destroy", ldestroy },
         { "get", lget },
         { "set", lset },
+        { "pickup", lpickup },
+        { "place", lplace },
         { NULL, NULL },
     };
     luaL_newlib(L, l);

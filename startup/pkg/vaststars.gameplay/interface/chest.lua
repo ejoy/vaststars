@@ -48,13 +48,6 @@ local function chest_destroy(world, chest, recycle)
     return cChest.destroy(world._cworld, chest.chest, recycle)
 end
 
-local function chest_dirty(world, e)
-    iBuilding.dirty(world, "chest")
-    if e.station then
-        iBuilding.dirty(world, "station")
-    end
-end
-
 local function assembling_reset(world, e, chest)
     local olditems = {}
     if chest.chest ~= InvalidChest then
@@ -70,7 +63,7 @@ local function assembling_reset(world, e, chest)
         end
         chest_destroy(world, chest, true)
         chest.chest = InvalidChest
-        chest_dirty(world, e)
+        iBuilding.dirty(world, "chest")
     end
 end
 
@@ -179,7 +172,7 @@ function m.station_set(world, e, items)
         end
         chest_destroy(world, e.station, false)
         e.station.chest = InvalidChest
-        chest_dirty(world, e)
+        iBuilding.dirty(world, "station")
     end
     if e.chest.chest ~= InvalidChest then
         for i = 1, 256 do
@@ -193,7 +186,7 @@ function m.station_set(world, e, items)
         end
         chest_destroy(world, e.chest, false)
         e.chest.chest = InvalidChest
-        chest_dirty(world, e)
+        iBuilding.dirty(world, "chest")
     end
     if items ~= nil then
         local chest_args = {}
@@ -217,7 +210,8 @@ function m.station_set(world, e, items)
         end
         e.chest.chest = m.create(world, chest_args)
         e.station.chest = m.create(world, station_args)
-        chest_dirty(world, e)
+        iBuilding.dirty(world, "chest")
+        iBuilding.dirty(world, "station")
     end
     for item, amount in pairs(station_items) do
         local limit = prototype.queryById(item).station_limit
@@ -228,9 +222,18 @@ function m.station_set(world, e, items)
     end
 end
 
+function m.chest_pickup(world, e, i, n)
+    return cChest.pickup(world._cworld, e.chest.chest, i, n)
+end
+
+function m.chest_place(world, e, i, n)
+    return cChest.place(world._cworld, e.chest.chest, i, n)
+end
+
 function m.get(world, c, i)
     return cChest.get(world._cworld, c.chest, i)
 end
+
 function m.set(world, c, i, t)
     return cChest.set(world._cworld, c.chest, i, t)
 end
