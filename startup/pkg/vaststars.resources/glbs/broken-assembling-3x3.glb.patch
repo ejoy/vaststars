@@ -5,7 +5,6 @@ path: /-
 value:
   data:
     efk:
-      auto_play: false
       loop: false
       path: /pkg/vaststars.resources/effects/broken_smoke.efk
       speed: 1

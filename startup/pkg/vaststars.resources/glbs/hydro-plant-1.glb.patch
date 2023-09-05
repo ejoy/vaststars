@@ -5,10 +5,9 @@ path: /-
 value:
   data:
     efk:
-      auto_play: false
       path: /pkg/vaststars.resources/effects/hydro-plant_smoke.efk
       speed: 1
-    visible_state: main_queue
+    visible_state:""
     name: work1
     scene:
       s: {2, 2, 2}
@@ -25,10 +24,9 @@ path: /-
 value:
   data:
     efk:
-      auto_play: false
       path: /pkg/vaststars.resources/effects/hydro-plant_smoke.efk
       speed: 1
-    visible_state: main_queue
+    visible_state:""
     name: work2
     scene:
       s: {2, 2, 2}
@@ -45,10 +43,9 @@ path: /-
 value:
   data:
     efk:
-      auto_play: false
       path: /pkg/vaststars.resources/effects/hydro-plant_smoke.efk
       speed: 1
-    visible_state: main_queue
+    visible_state:""
     name: work3
     scene:
       s: {2, 2, 2}
@@ -65,10 +62,9 @@ path: /-
 value:
   data:
     efk:
-      auto_play: false
       path: /pkg/vaststars.resources/effects/hydro-plant_smoke.efk
       speed: 1
-    visible_state: main_queue
+    visible_state:""
     name: work4
     scene:
       s: {2, 2, 2}
@@ -85,10 +81,9 @@ path: /-
 value:
   data:
     efk:
-      auto_play: false
       path: /pkg/vaststars.resources/effects/furnace_smoke.efk
       speed: 1
-    visible_state: main_queue
+    visible_state:""
     name: work
     scene:
       s: {6, 6, 6}
@@ -203,10 +198,9 @@ path: /-
 value:
   data:
     efk:
-      auto_play: false
       path: /pkg/vaststars.resources/effects/furnace_smoke.efk
       speed: 1
-    visible_state: main_queue
+    visible_state:""
     name: low_power
     scene:
       s: {4, 4, 4}

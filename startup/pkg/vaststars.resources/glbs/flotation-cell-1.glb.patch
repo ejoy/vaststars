@@ -5,10 +5,9 @@ path: /-
 value:
   data:
     efk:
-      auto_play: false
       path: /pkg/vaststars.resources/effects/flotation-cell_popo.efk
       speed: 1
-    visible_state:main_queue
+    visible_state:""
     name: work
     scene:
       s: {4, 4, 4}
@@ -25,10 +24,9 @@ path: /-
 value:
   data:
     efk:
-      auto_play: false
       path: /pkg/vaststars.resources/effects/flotation-cell_popo_low.efk
       speed: 1
-    visible_state: main_queue
+    visible_state:""
     name: low_power
     scene:
       s: {4, 4, 4}

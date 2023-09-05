@@ -5,7 +5,6 @@ path: /-
 value:
   data:
     efk:
-      auto_play: true
       path: /pkg/vaststars.resources/effects/mars-truck_smoke.efk
       speed: 1
     visible_state: main_queue

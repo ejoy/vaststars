@@ -5,10 +5,9 @@ path: /-
 value:
   data:
     efk:
-      auto_play: false
       path: /pkg/vaststars.resources/effects/mars-outfall_s.efk
       speed: 1
-    visible_state: main_queue
+    visible_state:""
     name: work
     scene:
       r: {0.09584575146436691, 0, 0, 0.9953961968421936}
@@ -26,10 +25,9 @@ path: /-
 value:
   data:
     efk:
-      auto_play: false
       path: /pkg/vaststars.resources/effects/mars-outfall_s.efk
       speed: 1
-    visible_state: main_queue
+    visible_state:""
     name: low_power
     scene:
       s: {1, 1, 0.30000001192092896}

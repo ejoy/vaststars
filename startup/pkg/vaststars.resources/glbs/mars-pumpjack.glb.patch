@@ -5,10 +5,9 @@ path: /-
 value:
   data:
     efk:
-      auto_play: false
       path: /pkg/vaststars.resources/effects/mars_Pumpjack_water.efk
       speed: 1
-    visible_state: main_queue
+    visible_state:""
     name: work
     scene:
       s: {15, 10, 15}

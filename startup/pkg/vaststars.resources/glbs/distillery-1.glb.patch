@@ -5,10 +5,9 @@ path: /-
 value:
   data:
     efk:
-      auto_play: false
       path: /pkg/vaststars.resources/effects/distillery_fire.efk
       speed: 1
-    visible_state:main_queue
+    visible_state:""
     name: work1
     scene:
       s: {3, 3, 3}
@@ -25,10 +24,9 @@ path: /-
 value:
   data:
     efk:
-      auto_play: false
       path: /pkg/vaststars.resources/effects/hydro-plant_smoke.efk
       speed: 1
-    visible_state:main_queue
+    visible_state:""
     name: work2
     scene:
       s: {1.5, 1.5, 1.5}
@@ -45,10 +43,9 @@ path: /-
 value:
   data:
     efk:
-      auto_play: false
       path: /pkg/vaststars.resources/effects/hydro-plant_smoke.efk
       speed: 1
-    visible_state:main_queue
+    visible_state:""
     name: work3
     scene:
       s: {1.5, 1.5, 1.5}
@@ -65,10 +62,9 @@ path: /-
 value:
   data:
     efk:
-      auto_play: false
       path: /pkg/vaststars.resources/effects/distillery_fire.efk
       speed: 1
-    visible_state:main_queue
+    visible_state:""
     name: work4
     scene:
       r: {0, -0.1736481785774231, 0, 0.9848077297210693}
