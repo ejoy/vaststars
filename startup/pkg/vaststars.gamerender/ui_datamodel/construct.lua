@@ -102,7 +102,7 @@ local function __on_pick_building(datamodel, o)
     selected_obj = o
     datamodel.status = "focus"
 
-    idetail.focus(object.id)
+    idetail.focus(assert(object.gameplay_eid))
     return true
 end
 

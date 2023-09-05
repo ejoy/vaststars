@@ -197,19 +197,37 @@ do
         )
     end
 
-    function idetail.focus(object_id)
+    function idetail.focus(gameplay_eid)
         idetail.unselected()
 
-        local vsobject = assert(vsobject_manager:get(object_id))
-        vsobject:modifier("start", {name = "talk", forwards = true})
-        temp_objects[#temp_objects+1] = {
-            remove = function (self)
-                local vsobject = vsobject_manager:get(object_id)
-                if vsobject then
-                    vsobject:modifier("start", {name = "over", forwards = true})
+        local e = assert(gameplay_core.get_entity(gameplay_eid))
+
+        do
+            local object = assert(objects:coord(e.building.x, e.building.y))
+            local vsobject = assert(vsobject_manager:get(object.id))
+            vsobject:modifier("start", {name = "talk", forwards = true})
+            temp_objects[#temp_objects+1] = {
+                remove = function (self)
+                    local vsobject = vsobject_manager:get(object.id)
+                    if vsobject then
+                        vsobject:modifier("start", {name = "over", forwards = true})
+                    end
                 end
-            end
-        }
+            }
+        end
+
+        do
+            local typeobject = iprototype.queryById(e.building.prototype)
+            local w, h = iprototype.rotate_area(typeobject.area, e.building.direction)
+            local pos = terrain:get_position_by_coord(e.building.x, e.building.y, w, h)
+            temp_objects[#temp_objects+1] = create_selected_boxes(
+                {
+                    "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
+                    "/pkg/vaststars.resources/glbs/selected-box-no-animation-line.glb|mesh.prefab",
+                },
+                pos, SPRITE_COLOR.SELECTED_OUTLINE, w, h
+            )
+        end
     end
 
     function idetail.selected(gameplay_eid)
