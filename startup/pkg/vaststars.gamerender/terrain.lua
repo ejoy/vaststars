@@ -230,6 +230,10 @@ function terrain:enable_terrain(x, y)
         print(("disable group id: %s"):format(group_id))
         go:enable(group_id, false)
     end
+
+    go:filter("render_object_visible", "render_object")
+    go:filter("hitch_visible", "hitch")
+    go:filter("efk_visible", "efk")
 end
 
 function terrain:verify_coord(x, y)
