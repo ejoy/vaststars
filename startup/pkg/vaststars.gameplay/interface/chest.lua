@@ -101,7 +101,7 @@ local function assembling_reset_items(world, recipe, chest, option, maxslot)
             type = type,
             item = id,
             limit = limit,
-            amount = o.amount,
+            amount = o.amount or 0,
         }
     end
     for idx = 1, ingredients_n do
