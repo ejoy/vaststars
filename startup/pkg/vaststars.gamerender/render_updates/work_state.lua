@@ -71,7 +71,6 @@ local update = interval_call(3000, function()
         end
 
         local vsobject = assert(vsobject_manager:get(object.id), ("(%s) vsobject not found"):format(object.prototype_name))
-        local game_object = vsobject.game_object
         buildings[object.id].workstatus = buildings[object.id].workstatus or create_workstatus()
         local workstatus = buildings[object.id].workstatus
         if current == workstatus:get() then
@@ -80,13 +79,9 @@ local update = interval_call(3000, function()
         workstatus:set(current)
 
         if current == STATUS_IDLE then
-            game_object.on_idle()
-            vsobject:update({emissive_color = EMISSIVE_COLOR_IDLE})
-            vsobject:update({workstatus = "idle"})
+            vsobject:update({workstatus = "idle", emissive_color = EMISSIVE_COLOR_IDLE})
         else
-            game_object.on_work()
-            vsobject:update({emissive_color = EMISSIVE_COLOR_WORKING})
-            vsobject:update({workstatus = "work"})
+            vsobject:update({workstatus = "work", emissive_color = EMISSIVE_COLOR_WORKING})
         end
         -- TODO: low_power
         ::continue::

@@ -359,7 +359,7 @@ end
 
 function assembling_sys:gameworld_prebuild()
     local gameplay_world = gameplay_core.get_world()
-    for e in gameplay_world.ecs:select "auto_set_recipe:in assembling:update building:in chest:update fluidboxes:update" do
+    for e in gameplay_world.ecs:select "auto_set_recipe:in assembling:update building:in chest:update fluidboxes:update REMOVED:absent" do
         local object = assert(objects:coord(e.building.x, e.building.y))
         local typeobject = iprototype.queryById(e.building.prototype)
         local recipes = iprototype_cache.get("recipe_config").assembling_recipes[typeobject.name]
@@ -385,7 +385,7 @@ function assembling_sys:gameworld_prebuild()
         end
     end
 
-    for e in gameplay_world.ecs:select "auto_set_recipe:in chimney:update building:in" do
+    for e in gameplay_world.ecs:select "auto_set_recipe:in chimney:update building:in REMOVED:absent" do
         local object = assert(objects:coord(e.building.x, e.building.y))
         local typeobject = iprototype.queryById(e.building.prototype)
         local recipes = iprototype_cache.get("recipe_config").chimney_recipes[typeobject.name]
