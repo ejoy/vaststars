@@ -214,6 +214,42 @@ function m.station_set(world, e, items)
     end
 end
 
+function m.chest_set(world, e, items)
+    local chest_items = {}
+    if e.chest.chest ~= InvalidChest then
+        for i = 1, 256 do
+            local slot = cChest.get(world._cworld, e.station.chest, i)
+            if not slot then
+                break
+            end
+            if slot.amount > 0 then
+                chest_items[slot.item] = slot.amount
+            end
+        end
+        chest_destroy(world, e.chest, false)
+        e.chest.chest = InvalidChest
+        iBuilding.dirty(world, "chest")
+    end
+    if items ~= nil then
+        local chest_args = {}
+        for _, v in ipairs(items) do
+            local type, item = v[1], v[2]
+            chest_args[#chest_args+1] = {
+                type = type,
+                item = item,
+                limit = prototype.queryById(item).hub_limit,
+                amount = chest_items[item] or 0,
+            }
+            chest_items[item] = nil
+        end
+        e.chest.chest = m.create(world, chest_args)
+        iBuilding.dirty(world, "chest")
+    end
+    for item, amount in pairs(chest_items) do
+        iBackpack.place(world, item, amount)
+    end
+end
+
 function m.chest_pickup(world, e, i, n)
     return cChest.pickup(world._cworld, e.chest.chest, i, n)
 end
