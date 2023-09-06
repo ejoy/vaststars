@@ -159,7 +159,7 @@
                 progress = "0%",
                 recipe_inputs = {},
                 recipe_ouputs = {},
-                show_type = "",
+                chest_style = "",
                 recipe_name = " ",
                 goods_icon = "",
                 goods_count = 0,
@@ -199,20 +199,20 @@
                     </div>
                 </div>
                 <div style="width:94%; margin-left: 3%; margin-right: 3%; border-bottom: 0.1vmin #6d6d6d;" />
-                <div style="width:90%; margin-left: 3%; margin-right: 3%; flex-direction: row; justify-content: flex-start; align-items: center; flex-wrap: wrap;" data-if = "show_type=='station'" data-event-click="onLongPress(3)">
+                <div style="width:90%; margin-left: 3%; margin-right: 3%; flex-direction: row; justify-content: flex-start; align-items: center; flex-wrap: wrap;" data-if = "chest_style=='station'" data-event-click="onLongPress(3)">
                     <div data-for = "chest : chest_list" class="small-item1" style="margin: 0.5vmin;" data-style-background-image="chest.icon ~= '' and chest.icon or 'none'" 
-                        data-style-border = "chest.type == 'supply' and '0.3vmin rgb(254, 98, 124);' or (chest.type == 'demand' and '0.3vmin rgb(78, 210, 223);' or '0.2vmin rgb(255, 255, 255);')">
+                        data-style-border = "chest.type == 'supply' and '0.3vmin rgb(254, 98, 124);' or ((chest.type == 'demand' or chest.type == 'transit') and '0.3vmin rgb(78, 210, 223);' or '0.2vmin rgb(255, 255, 255);')">
                         <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0); font-size:2.8vmin;" data-if="chest.icon ~= ''">{{chest.count}}</div>
                     </div>
                 </div>
                 <!--箱子中当前物品-->
-                <div style="width:90%; margin-left: 3%; margin-right: 3%; flex-direction: row; justify-content: flex-start; align-items: center; flex-wrap: wrap;" data-if = "show_type=='chest'" data-event-click="onLongPress(3)">
+                <div style="width:90%; margin-left: 3%; margin-right: 3%; flex-direction: row; justify-content: flex-start; align-items: center; flex-wrap: wrap;" data-if = "chest_style=='chest'" data-event-click="onLongPress(3)">
                     <div data-for = "chest : chest_list" class="small-item1" style="margin: 0.5vmin;" data-style-background-image="chest.icon">
                         <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0); font-size:2.8vmin;">{{chest.count}}</div>
                     </div>
                 </div>
                 <!--采矿机底部显示进度-->
-                <div style="top: 1vmin; height: 8vmin; margin-left: 3%; margin-right: 3%; flex-direction: column; justify-content: flex-start; align-items: center;" data-if = "show_type=='minner'" data-event-click="onLongPress(4)">
+                <div style="top: 1vmin; height: 8vmin; margin-left: 3%; margin-right: 3%; flex-direction: column; justify-content: flex-start; align-items: center;" data-if = "chest_style=='minner'" data-event-click="onLongPress(4)">
                     <div class="column" style="justify-content: flex-start; width: 27.5vmin; height: 4vmin;">
                         <div class="progress_bar" data-style-width="progress"/>
                         <div class="indicator" data-style-left="progress"/>
@@ -227,7 +227,7 @@
                     </div>
                 </div>
                 <!--组装机类型底部显示进度-->
-                <div style="top: 1vmin; margin-left: 3%; margin-right: 3%; flex-direction: column; justify-content: center; align-items: center;" data-if = "show_type=='assemble'" data-event-click="onLongPress(5)">
+                <div style="top: 1vmin; margin-left: 3%; margin-right: 3%; flex-direction: column; justify-content: center; align-items: center;" data-if = "chest_style=='assemble'" data-event-click="onLongPress(5)">
                     <div class="column" style="width:100%; justify-content: space-evenly; align-items: center;">
                         <!--组装机进料栏-->
                         <div class="row" style="width: 100%; justify-content: flex-start; flex-wrap: wrap; margin-left: 1vmin;">
@@ -254,17 +254,6 @@
                         </div>
                     </div>
                     <div style="height:122%; width: 105%; position: absolute; bottom:2vmin; border: 0.3vmin rgb(0, 217, 255); animation: 0.4s linear 0s infinite alternate enlarge3;" data-if="guide_progress == 15 or guide_progress == 20 or guide_progress == 26 or guide_progress == 27"/>
-                </div>
-                <!--无人机平台/车站中当前物品-->
-                <div style="width:90%; margin-left: 3%; margin-right: 3%; flex-direction: row; justify-content: center; align-items: center;" data-if = "show_type=='goods'" data-event-click="onLongPress(6)">
-                    <div style="flex-direction: column; justify-content: center; align-items: center;" data-for = "chest : chest_list">
-                        <div class="small-item1" style="margin: 0.5vmin; height: 8vmin; width: 8vmin; margin-top: 8vmin;" data-style-background-image="chest.icon">
-                            <div class ="item-count-combination">
-                                <div class="item-count-new" style="font-size: 2.7vmin">x{{chest.count}}</div>
-                            </div>
-                        </div>
-                        <div style="text-align: center; font-size: 3.5vmin;">{{chest.name}}</div>
-                    </div>
                 </div>
             </div>
             <!-- detail panel end -->

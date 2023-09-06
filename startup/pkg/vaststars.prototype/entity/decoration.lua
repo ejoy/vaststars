@@ -7,9 +7,10 @@ prototype "机身残骸" {
     construct_detector = {"exclusive"},
     type = {"building", "chest"},
     chest_type = "supply",
+    chest_style = "chest",
     chest_destroy = true,
+    set_item = false,
     area = "5x5",
-    slots = 21,
     building_base = false,
 }
 
@@ -19,9 +20,10 @@ prototype "机翼残骸" {
     construct_detector = {"exclusive"},
     type = {"building", "chest"},
     chest_type = "supply",
+    chest_style = "chest",
     chest_destroy = true,
+    set_item = false,
     area = "3x3",
-    slots = 39,
     building_base = false,
 }
 
@@ -31,9 +33,10 @@ prototype "机头残骸" {
     construct_detector = {"exclusive"},
     type = {"building", "chest"},
     chest_type = "supply",
+    chest_style = "chest",
     chest_destroy = true,
+    set_item = false,
     area = "3x3",
-    slots = 39,
     building_base = false,
 }
 
@@ -43,8 +46,9 @@ prototype "机尾残骸" {
     construct_detector = {"exclusive"},
     type = {"building", "chest"},
     chest_type = "supply",
+    chest_style = "chest",
     chest_destroy = true,
+    set_item = false,
     area = "3x3",
-    slots = 11,
     building_base = false,
 }

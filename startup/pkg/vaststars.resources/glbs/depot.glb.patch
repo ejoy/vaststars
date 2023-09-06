@@ -4,7 +4,7 @@ op: add
 path: /-
 value:
   data:
-    name: pile_slot1
+    name: item_slot_1
     scene:
       t: {-1.5, 3.817502021789551, -1.5}
     slot:
@@ -20,7 +20,7 @@ op: add
 path: /-
 value:
   data:
-    name: pile_slot2
+    name: item_slot_2
     scene:
       t: {-1.5, 3.817502021789551, 1.5}
     slot:
@@ -36,7 +36,7 @@ op: add
 path: /-
 value:
   data:
-    name: pile_slot3
+    name: item_slot_3
     scene:
       t: {1.5, 3.817502021789551, -1.5}
     slot:
@@ -52,7 +52,7 @@ op: add
 path: /-
 value:
   data:
-    name: pile_slot4
+    name: item_slot_4
     scene:
       t: {1.5, 3.817502021789551, 1.5}
     slot:

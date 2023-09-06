@@ -4,7 +4,7 @@ op: add
 path: /-
 value:
   data:
-    name: pile_slot
+    name: item_slot
     scene:
       t: {0, 1.2999999523162842, 0}
     slot:

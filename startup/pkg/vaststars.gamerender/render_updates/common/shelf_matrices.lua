@@ -65,8 +65,8 @@ local function get_item_matrices(recipe, shelf_matrices)
     local slots, slot_mat
 
     slots = prefab_slots(PREFABS["in"])
-    assert(slots["pile_slot"])
-    slot_mat = math3d.matrix(slots["pile_slot"].scene)
+    assert(slots["item_slot"])
+    slot_mat = math3d.matrix(slots["item_slot"].scene)
     for i = 1, ingredients_n do
         local idx = i
         if shelf_matrices[idx] then
@@ -75,8 +75,8 @@ local function get_item_matrices(recipe, shelf_matrices)
     end
 
     slots = prefab_slots(PREFABS["out"])
-    assert(slots["pile_slot"])
-    slot_mat = math3d.matrix(slots["pile_slot"].scene)
+    assert(slots["item_slot"])
+    slot_mat = math3d.matrix(slots["item_slot"].scene)
     for i = 1, results_n do
         local idx = i + ingredients_n
         if shelf_matrices[idx] then

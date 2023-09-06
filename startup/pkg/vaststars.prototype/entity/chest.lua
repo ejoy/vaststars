@@ -8,7 +8,6 @@ prototype "小铁制箱子I" {
     type = {"building", "chest"},
     chest_type = "supply",
     area = "1x1",
-    slots = 10,
 }
 
 prototype "建材箱" {
@@ -18,7 +17,6 @@ prototype "建材箱" {
     type = {"building", "chest"},
     chest_type = "supply",
     area = "1x1",
-    slots = 10,
 }
 
 prototype "小铁制箱子II" {
@@ -27,7 +25,6 @@ prototype "小铁制箱子II" {
     construct_detector = {"exclusive"},
     type = {"building"},
     area = "1x1",
-    slots = 20,
 }
 
 prototype "大铁制箱子I" {
@@ -36,7 +33,6 @@ prototype "大铁制箱子I" {
     construct_detector = {"exclusive"},
     type = {"building"},
     area = "2x2",
-    slots = 30,
 }
 
 prototype "仓库I" {
@@ -44,10 +40,11 @@ prototype "仓库I" {
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"building", "chest"},
+    chest_style = "station",
     chest_type = "transit",
     area = "1x1",
-    slots = 4,
     camera_distance = 30,
+    max_slot = 4,
 }
 
 prototype "无人机平台I" {

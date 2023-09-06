@@ -30,6 +30,7 @@ prototype "指挥中心" {
 
 prototype "科研中心I" {
     type = {"building", "consumer","laboratory"},
+    chest_style = "chest",
     model = "glbs/lab-1.glb|mesh.prefab",
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_lab.texture",
     construct_detector = {"exclusive"},
@@ -52,6 +53,7 @@ prototype "科研中心I" {
 
 prototype "科研中心II" {
     type = {"building", "consumer","laboratory"},
+    chest_style = "chest",
     model = "glbs/lab-1.glb|mesh.prefab",
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_lab.texture",
     construct_detector = {"exclusive"},
@@ -70,6 +72,7 @@ prototype "科研中心II" {
 
 prototype "科研中心III" {
     type = {"building", "consumer","laboratory"},
+    chest_style = "chest",
     model = "glbs/lab-1.glb|mesh.prefab",
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_lab.texture",
     construct_detector = {"exclusive"},
@@ -231,6 +234,7 @@ prototype "出货车站" {
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_goods_station1.texture",
     construct_detector = {"exclusive"},
     type = {"building", "station"},
+    chest_style = "station",
     building_base = false,
     rotate_on_build = true,
     area = "4x2",
@@ -256,6 +260,7 @@ prototype "收货车站" {
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_goods_station1.texture",
     construct_detector = {"exclusive"},
     type = {"building", "station"},
+    chest_style = "station",
     building_base = false,
     rotate_on_build = true,
     area = "4x2",
@@ -280,6 +285,7 @@ prototype "物流站" {
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_goods_station1.texture",
     construct_detector = {"exclusive"},
     type = {"building", "station"},
+    chest_style = "station",
     building_base = false,
     rotate_on_build = true,
     area = "4x2",

@@ -1,15 +1,15 @@
 ---
 file: materials/Material.material
 op: replace
-path: /fx/setting/DRAW_INDIRECT
-value: 1
+path: /fx/vs_code
+value: "#include \"rotator/rotator_vs_func.sh\""
 ---
 file: materials/Material.material
 op: replace
-path: /properties/u_draw_indirect_type
-value: {0, 0, 0, 0}
+path: /fx/setting/no_predepth
+value: true
 ---
 file: materials/Material.material
 op: replace
-path: /state/CULL
-value: NONE
+path: /properties/u_rotator_rate
+value: {1, 0, 0, 0}

@@ -218,7 +218,7 @@ function m.chest_set(world, e, items)
     local chest_items = {}
     if e.chest.chest ~= InvalidChest then
         for i = 1, 256 do
-            local slot = cChest.get(world._cworld, e.station.chest, i)
+            local slot = cChest.get(world._cworld, e.chest.chest, i)
             if not slot then
                 break
             end

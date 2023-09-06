@@ -25,7 +25,8 @@ local iobject = ecs.require "object"
 local igameplay = ecs.require "gameplay_system"
 local interval_call = ecs.require "engine.interval_call"
 local gameplay = import_package "vaststars.gameplay"
-local istation = gameplay.interface "station"
+local iGameplayStation = gameplay.interface "station"
+local iGameplayChest = gameplay.interface "chest"
 
 local PICKUP_COMPONENTS <const> = {
     "assembling",
@@ -39,6 +40,7 @@ local PLACE_COMPONENTS <const> = {
 
 local SET_ITEM_COMPONENTS <const> = {
     "station",
+    "chest",
 }
 
 local function hasComponent(e, components)
@@ -137,7 +139,7 @@ local function __get_placeable_count(gameplay_eid)
 
     elseif hasComponent(e, PLACE_COMPONENTS) then
         local c
-        for i = 1, ichest.MAX_SLOT do
+        for i = 1, ichest.get_max_slot(iprototype.queryById(e.building.prototype)) do
             local slot = gameplay_world:container_get(e.chest, i)
             if not slot then
                 break
@@ -179,7 +181,7 @@ function M:create(gameplay_eid)
     local e = assert(gameplay_core.get_entity(gameplay_eid))
     local typeobject = e.lorry and iprototype.queryById(e.lorry.item_prototype) or iprototype.queryById(e.building.prototype)
 
-    local set_item = hasComponent(e, SET_ITEM_COMPONENTS)
+    local set_item = hasComponent(e, SET_ITEM_COMPONENTS) and (typeobject.set_item ~= false)
     local pickup_item = hasComponent(e, PICKUP_COMPONENTS)
     local place_item = hasComponent(e, PLACE_COMPONENTS)
     local lorry_factory_inc_lorry = (e.factory == true)
@@ -217,7 +219,7 @@ local function station_set_item(gameplay_world, e, type, item)
 
     local typeobject = iprototype.queryById(item)
     items[#items+1] = {type, item, typeobject.station_limit}
-    istation.set_item(gameplay_world, e, items)
+    iGameplayStation.set_item(gameplay_world, e, items)
 end
 
 local function station_remove_item(gameplay_world, e, slot_index)
@@ -234,7 +236,39 @@ local function station_remove_item(gameplay_world, e, slot_index)
         end
     end
 
-    istation.set_item(gameplay_world, e, items)
+    iGameplayStation.set_item(gameplay_world, e, items)
+end
+
+local function chest_set_item(gameplay_world, e, type, item)
+    local items = {}
+    local typeobject = iprototype.queryById(e.building.prototype)
+    for i = 1, ichest.get_max_slot(typeobject) do
+        local slot = gameplay_world:container_get(e.chest, i)
+        if not slot then
+            break
+        end
+        items[#items+1] = {slot.type, slot.item}
+    end
+
+    items[#items+1] = {typeobject.chest_type, item}
+    iGameplayChest.chest_set(gameplay_world, e, items)
+end
+
+local function chest_remove_item(gameplay_world, e, slot_index)
+    local items = {}
+
+    for i = 1, ichest.get_max_slot(iprototype.queryById(e.building.prototype)) do
+        local slot = gameplay_world:container_get(e.chest, i)
+        if not slot then
+            break
+        end
+
+        if i ~= slot_index then
+            items[#items+1] = {slot.type, slot.item}
+        end
+    end
+
+    iGameplayChest.chest_set(gameplay_world, e, items)
 end
 
 function M:stage_ui_update(datamodel, gameplay_eid)
@@ -250,10 +284,16 @@ function M:stage_ui_update(datamodel, gameplay_eid)
     for _ in set_item_mb:unpack() do
         assert(hasComponent(e, SET_ITEM_COMPONENTS))
         local interface = {}
-        interface.set_item = station_set_item
-        interface.remove_item = station_remove_item
-        interface.supply_button = true
-        interface.demand_button = true
+        if e.station then
+            interface.set_item = station_set_item
+            interface.remove_item = station_remove_item
+            interface.supply_button = true
+            interface.demand_button = true
+        else
+            interface.set_item = chest_set_item
+            interface.remove_item = chest_remove_item
+            interface.demand_button = true
+        end
         iui.open({"/pkg/vaststars.resources/ui/item_config.rml"}, gameplay_eid, interface)
     end
 
