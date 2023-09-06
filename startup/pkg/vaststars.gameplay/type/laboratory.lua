@@ -27,6 +27,7 @@ local function createChest(world, s)
         container_in[#container_in+1] = {
             type = "demand",
             item = id,
+            amount = 0,
             limit = 2,
         }
     end

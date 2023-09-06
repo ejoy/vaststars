@@ -1,4 +1,5 @@
 local type = require "register.type"
+local prototype = require "prototype"
 local iChest = require "interface.chest"
 
 local c = type "chest"
@@ -7,12 +8,16 @@ local c = type "chest"
 function c:ctor(init, pt)
     local world = self
     local items = {}
-    for _, v in ipairs(init.items or {}) do
-        items[#items+1] = {
-            type = pt.chest_type,
-            item = v[1],
-            amount = v[2],
-        }
+    if init.items then
+        for _, v in ipairs(init.items) do
+            local typeobject = prototype.queryByName(v[1])
+            items[#items+1] = {
+                type = pt.chest_type,
+                item = typeobject.id,
+                amount = v[2],
+                limit = typeobject.hub_limit,
+            }
+        end
     end
 
     local chest = {

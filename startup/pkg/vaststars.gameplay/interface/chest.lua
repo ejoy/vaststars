@@ -18,21 +18,15 @@ local CHEST_TYPE <const> = {
     transit = 3,
 }
 local function chest_slot(t)
-    assert(t.type)
-    assert(t.item)
-    local id = t.item
-    if type(id) == "string" then
-        assert(prototype.queryByName(id), ("item %s not found"):format(id))
-        id = prototype.queryByName(id).id
-    end
+    assert(t.type and t.item and t.amount and t.limit)
     return string.pack("<I1I1I2I2I2I2I2",
         CHEST_TYPE[t.type],
         0,
-        id,
-        t.amount or 0,
-        t.limit or 2,
-        t.lock_item or 0,
-        t.lock_space or 0
+        t.item,
+        t.amount,
+        t.limit,
+        0, -- lock_item
+        0  -- lock_space
     )
 end
 
@@ -108,8 +102,6 @@ local function assembling_reset_items(world, recipe, chest, option, maxslot)
             item = id,
             limit = limit,
             amount = o.amount,
-            lock_item = type ~= "demand" and o.lock_item or nil,
-            lock_space = o.lock_space,
         }
     end
     for idx = 1, ingredients_n do
