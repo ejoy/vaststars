@@ -142,61 +142,6 @@ local prototype = gameplay.register.prototype
     },
   }
 
-
-  prototype "放置无人机平台" {
-    desc = "放置1座无人机平台",
-    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-    type = { "task" },
-    task = {"select_entity", 0, "无人机平台I"},
-    prerequisites = {"放置电线杆"},
-    count = 1,
-    tips_pic = {
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_pole1.texture",
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_pole2.texture",
-    },
-    effects = {
-      unlock_item = {"碎石"},
-    },
-    -- guide_focus = {
-    --   {
-    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-    --     x = 127,
-    --     y = 127.8,
-    --     w = 1.8,
-    --     h = 1.8,
-    --     show_arrow = true,
-    --   },
-    --   {
-    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-    --     x = 117.5,
-    --     y = 124.5,
-    --     w = 2.5,
-    --     h = 2.5,
-    --   },
-    --   {
-    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-    --     x = 117.5,
-    --     y = 132.5,
-    --     w = 2.5,
-    --     h = 2.5,
-    --   },
-    --   {
-    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-    --     x = 117.5,
-    --     y = 128.5,
-    --     w = 2.5,
-    --     h = 2.5,
-    --   },
-    --   {
-    --     camera_x = 120,
-    --     camera_y = 128,
-    --   },
-    -- },
-    sign_desc = {
-      { desc = "放置1座无人机平台I", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-    },
-  }
-
   prototype "放置仓库" {
     desc = "放置1座仓库",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
@@ -208,6 +153,7 @@ local prototype = gameplay.register.prototype
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_pole1.texture",
     },
     effects = {
+      unlock_item = {"碎石"},
     },
     sign_desc = {
       { desc = "放置1座仓库I", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
@@ -215,7 +161,7 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "仓库设置1" {
-    desc = "无人机平台选择碎石",
+    desc = "仓库选择碎石",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"unknown", 0, 5},                          
@@ -230,13 +176,30 @@ local prototype = gameplay.register.prototype
     },
   }
 
+  prototype "放置无人机平台" {
+    desc = "放置1座无人机平台",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = { "task" },
+    task = {"select_entity", 0, "无人机平台I"},
+    prerequisites = {"仓库设置1"},
+    count = 1,
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_pole1.texture",
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_pole2.texture",
+    },
+    effects = {
+    },
+    sign_desc = {
+      { desc = "放置1座无人机平台I", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
 
   prototype "收集碎石" {
     desc = "挖掘足够的碎石可以开始进行锻造",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"stat_production", 0, "碎石"},
-    prerequisites = {"仓库设置1"},
+    prerequisites = {"放置无人机平台"},
     count = 12,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ore3.texture",

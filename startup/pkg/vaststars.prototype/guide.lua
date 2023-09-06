@@ -69,23 +69,6 @@ local guide = {
     {
         name = "",
 		narrative = {
-           -- {"哔哩..采矿机通电正常运转。石矿里{/color:4bd0ff 碎石}将被开采出来..哔哩(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
-            {"哔哩..{/color:4bd0ff 碎石}存放需要仓库，{/color:4bd0ff 废墟}里的{/g 无人机平台I}正好适合....(轻松)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
-        },
-        narrative_end = {
-            guide_progress = 20,
-            task = {
-                "放置无人机平台",
-            }
-        },
-        prerequisites = {
-            "放置电线杆",
-        },
-	},
-
-    {
-        name = "",
-		narrative = {
            -- {"哔哩..矿物采集进展非常顺利，存活概率大幅提升至{/color:4bd0ff 0.3244%}..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-2.texture"},
             {"哔哩..放置一座可以储存货物的{/color:4bd0ff 仓库}..哔哩(高兴)", "/pkg/vaststars.resources/ui/textures/guide/guide-3.texture"},
         },
@@ -96,7 +79,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "放置无人机平台",
+            "放置电线杆",
         },
 	},
 
@@ -120,6 +103,25 @@ local guide = {
     {
         name = "",
 		narrative = {
+           -- {"哔哩..采矿机通电正常运转。石矿里{/color:4bd0ff 碎石}将被开采出来..哔哩(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
+            {"哔哩..{/color:4bd0ff 碎石}存放需要仓库，{/color:4bd0ff 废墟}里的{/g 无人机平台I}正好适合....(轻松)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
+        },
+        narrative_end = {
+            guide_progress = 20,
+            task = {
+                "放置无人机平台",
+            }
+        },
+        prerequisites = {
+            "仓库设置1",
+        },
+	},
+
+
+
+    {
+        name = "",
+		narrative = {
             {"哔哩..让我们采集足够{/g 碎石}资源吧..哔哩(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
         },
         narrative_end = {
@@ -129,7 +131,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "无人机平台设置1",
+            "放置无人机平台",
         },
 	},
 
