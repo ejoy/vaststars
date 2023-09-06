@@ -83,8 +83,7 @@ local __get_hitch_children ; do
         if (workstatus == "work" and e.name:match("^work.*$")) or
            (workstatus == "idle" and e.name:match("^idle.*$")) or
            (workstatus == "low_power" and e.name:match("^low_power.*$")) then
-            local ee <close> = world:entity(e.eid, "efk:in")
-            iefk.play(ee)
+            iefk.play(e)
         end
     end
 
