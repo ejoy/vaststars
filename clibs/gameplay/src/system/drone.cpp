@@ -662,12 +662,11 @@ static void Arrival(world& w, DroneEntity& e, ecs::drone& drone) {
     case drone_status::go_mov2: {
         CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, ecs::drone& drone, airport& info) {
             auto slot = ChestGetSlot(w, drone.next);
-            assert(slot 
-                && slot->item == drone.item
-                && (slot->type == container::slot::slot_type::demand || slot->type == container::slot::slot_type::transit)
-                && slot->limit >= slot->amount + slot->lock_space
-                && slot->lock_space > 0
-            );
+            assert(slot);
+            assert(slot->item == drone.item);
+            assert(slot->type == container::slot::slot_type::demand || slot->type == container::slot::slot_type::transit);
+            assert(slot->limit >= slot->amount + slot->lock_space);
+            assert(slot->lock_space > 0);
             slot->lock_space--;
             slot->amount++;
             drone.item = 0;

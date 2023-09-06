@@ -30,6 +30,7 @@ laboratory_set_tech(world& w, ecs::building& building, ecs::laboratory& l, ecs::
             s.limit = 2 * (std::max)((uint16_t)1, (*r)[i+1].amount);
         }
     }
+    w.dirty |= kDirtyChest;
 }
 
 static void
@@ -48,6 +49,7 @@ laboratory_next_tech(world& w, ecs::building& building, ecs::laboratory& l, ecs:
                 assert(s.item == t.item);
                 s.amount += t.amount;
             }
+            w.dirty |= kDirtyChest;
         }
     }
     if (!techid) {
