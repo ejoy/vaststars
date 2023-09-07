@@ -17,15 +17,39 @@ local function updateStatus(ecs)
             break
         end
         powergrids[i] = {
-            pg.consumer_efficiency1,
-            pg.consumer_efficiency2,
+            consumer = {
+                pg.consumer_efficiency1,
+                pg.consumer_efficiency2,
+            },
+            generator = {
+                pg.generator_efficiency1,
+                pg.generator_efficiency2,
+            },
+            accumulator = pg.accumulator_efficiency,
         }
     end
     for e in ecs:select "capacitance:in building:in eid:in" do
         local pg = powergrids[e.capacitance.network]
         if pg then
             local pt = iprototype.queryById(e.building.prototype)
-            powerStatus[e.eid] = pg[pt.priority+1] > 0
+            powerStatus[e.eid] = pg.consumer[pt.priority+1] > 0
+        else
+            powerStatus[e.eid] = false
+        end
+    end
+    for e in ecs:select "generator capacitance:in building:in eid:in" do
+        local pg = powergrids[e.capacitance.network]
+        if pg then
+            local pt = iprototype.queryById(e.building.prototype)
+            powerStatus[e.eid] = pg.generator[pt.priority+1] > 0
+        else
+            powerStatus[e.eid] = false
+        end
+    end
+    for e in ecs:select "accumulator capacitance:in eid:in" do
+        local pg = powergrids[e.capacitance.network]
+        if pg then
+            powerStatus[e.eid] = pg.accumulator > 0
         else
             powerStatus[e.eid] = false
         end
