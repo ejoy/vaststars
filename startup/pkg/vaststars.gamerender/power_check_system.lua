@@ -11,18 +11,23 @@ local powerStatus = {}
 
 local function updateStatus(ecs)
     local powergrids = {}
-    for e in ecs:select "powergrid:in" do
-        powergrids[#powergrids+1] = {e.powergrid.consumer_efficiency1, e.powergrid.consumer_efficiency2}
+    for i = 1, 255 do
+        local pg = ecs:object("powergrid", i+1)
+        if pg.active == 0 then
+            break
+        end
+        powergrids[i] = {
+            pg.consumer_efficiency1,
+            pg.consumer_efficiency2,
+        }
     end
-
     for e in ecs:select "capacitance:in building:in eid:in" do
-        local typeobject = iprototype.queryById(e.building.prototype)
-        local priority = typeobject.priority == "primary" and 1 or 2
-        if e.capacitance.network == 0 then
-            powerStatus[e.eid] = false
+        local pg = powergrids[e.capacitance.network]
+        if pg then
+            local pt = iprototype.queryById(e.building.prototype)
+            powerStatus[e.eid] = pg[pt.priority+1] > 0
         else
-            local powergrid = assert(powergrids[e.capacitance.network])
-            powerStatus[e.eid] = assert(powergrid[priority]) > 0
+            powerStatus[e.eid] = false
         end
     end
 end
