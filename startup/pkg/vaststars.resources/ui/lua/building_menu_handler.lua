@@ -134,19 +134,19 @@ return function(start)
         start.buttons[#start.buttons + 1] = v
     end
 
+    if start.set_item then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.command = "set_item"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/set-item.texture"
+        start.buttons[#start.buttons + 1] = v
+    end
+
     if start.place_item then
         local v = setmetatable({}, {__index = DEFAULT})
         v.command = "place_item"
         v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/place-item.texture"
         v.number = start.place_item_count
         v.show_number = true
-        start.buttons[#start.buttons + 1] = v
-    end
-
-    if start.set_item then
-        local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "set_item"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/set-item.texture"
         start.buttons[#start.buttons + 1] = v
     end
 
