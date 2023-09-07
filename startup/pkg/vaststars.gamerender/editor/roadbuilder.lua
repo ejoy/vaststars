@@ -25,6 +25,7 @@ local iroad = ecs.require "vaststars.gamerender|render_updates.road"
 local ROAD_SIZE <const> = 2
 local CHANGED_FLAG_ROADNET <const> = require("gameplay.interface.constant").CHANGED_FLAG_ROADNET
 local imountain = ecs.require "engine.mountain"
+local ibackpack = require "gameplay.interface.backpack"
 
 local function isValidRoadCoord(x, y, cache_names)
     for i = 0, ROAD_SIZE - 1 do
@@ -164,7 +165,7 @@ end
 local function place(self, datamodel)
     local coord_indicator = self.coord_indicator
     local typeobject = iprototype.queryByName(coord_indicator.prototype_name)
-    coord_indicator.srt.t, coord_indicator.x, coord_indicator.y = __align(icamera_controller.get_central_position(), typeobject.area, coord_indicator.dir)
+    coord_indicator.srt.t, coord_indicator.x, coord_indicator.y = __align(coord_indicator.srt.t, typeobject.area, coord_indicator.dir)
 
     local x, y = coord_indicator.x, coord_indicator.y
     if not isValidRoadCoord(coord_indicator.x, coord_indicator.y, EDITOR_CACHE_NAMES) then
@@ -201,6 +202,9 @@ local function place(self, datamodel)
     self:new_entity(datamodel, self.typeobject, dx, dy)
 
     icamera_controller.focus_on_position(terrain:get_position_by_coord(dx, dy, ROAD_SIZE, ROAD_SIZE))
+
+    ibackpack.pickup(gameplay_core.get_world(), typeobject.id, 1)
+    task.update_progress("road_laying", 1)
 end
 
 local function clean(self, datamodel)
