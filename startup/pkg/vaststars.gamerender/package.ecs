@@ -81,7 +81,6 @@ policy "engine"
     .require_system "ant.render|draw_indirect_system"
     .require_system "ant.terrain|canvas_system"
     .require_system "ant.render|hitch_system"
-    .require_system "ant.render|ibl_system"
     .require_system "ant.starsky|starsky_system"
 
 policy "mod"
