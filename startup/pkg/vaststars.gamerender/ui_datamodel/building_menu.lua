@@ -40,7 +40,6 @@ local PLACE_COMPONENTS <const> = {
 
 local SET_ITEM_COMPONENTS <const> = {
     "station",
-    "chest",
 }
 
 local function hasComponent(e, components)
@@ -51,8 +50,15 @@ local function hasComponent(e, components)
     end
 end
 
-local function __get_moveable_count(gameplay_eid)
-    local e = gameplay_core.get_entity(gameplay_eid)
+local function hasSetItem(e, typeobject)
+    return hasComponent(e, SET_ITEM_COMPONENTS) or (e.chest and typeobject.chest_type == "transit")
+end
+
+local function hasPlaceItem(e, typeobject)
+    return hasComponent(e, PLACE_COMPONENTS) or (e.chest and typeobject.chest_type == "transit")
+end
+
+local function __get_moveable_count(e)
     local gameplay_world = gameplay_core.get_world()
 
     if e.assembling then
@@ -104,8 +110,7 @@ local function __get_moveable_count(gameplay_eid)
     end
 end
 
-local function __get_placeable_count(gameplay_eid)
-    local e = gameplay_core.get_entity(assert(gameplay_eid))
+local function __get_placeable_count(e, typeobject)
     local gameplay_world = gameplay_core.get_world()
 
     if e.assembling then
@@ -137,7 +142,7 @@ local function __get_placeable_count(gameplay_eid)
         end
         return ibackpack.get_placeable_count(gameplay_world, ingredient, available)
 
-    elseif hasComponent(e, PLACE_COMPONENTS) then
+    elseif hasPlaceItem(e, typeobject) then
         local c
         for i = 1, ichest.get_max_slot(iprototype.queryById(e.building.prototype)) do
             local slot = gameplay_world:container_get(e.chest, i)
@@ -168,9 +173,9 @@ local function __get_placeable_count(gameplay_eid)
     end
 end
 
-local __moveable_count_update = interval_call(300, function(datamodel, gameplay_eid)
-    datamodel.pickup_item_count = datamodel.pickup_item and __get_moveable_count(gameplay_eid) or 0
-    datamodel.place_item_count = datamodel.place_item and __get_placeable_count(gameplay_eid) or 0
+local __moveable_count_update = interval_call(300, function(datamodel, e, typeobject)
+    datamodel.pickup_item_count = datamodel.pickup_item and __get_moveable_count(e) or 0
+    datamodel.place_item_count = datamodel.place_item and __get_placeable_count(e, typeobject) or 0
 end, false)
 
 ---------------
@@ -181,9 +186,9 @@ function M:create(gameplay_eid)
     local e = assert(gameplay_core.get_entity(gameplay_eid))
     local typeobject = e.lorry and iprototype.queryById(e.lorry.item_prototype) or iprototype.queryById(e.building.prototype)
 
-    local set_item = hasComponent(e, SET_ITEM_COMPONENTS) and (typeobject.set_item ~= false)
+    local set_item = hasSetItem(e, typeobject)
     local pickup_item = hasComponent(e, PICKUP_COMPONENTS)
-    local place_item = hasComponent(e, PLACE_COMPONENTS)
+    local place_item = hasPlaceItem(e, typeobject)
     local lorry_factory_inc_lorry = (e.factory == true)
     local show_set_recipe = false
     if e.assembling then
@@ -197,8 +202,8 @@ function M:create(gameplay_eid)
         lorry_factory_dec_lorry = false,
         pickup_item = pickup_item,
         place_item = place_item,
-        pickup_item_count = pickup_item and __get_moveable_count(gameplay_eid) or 0,
-        place_item_count = place_item and __get_placeable_count(gameplay_eid) or 0,
+        pickup_item_count = pickup_item and __get_moveable_count(e) or 0,
+        place_item_count = place_item and __get_placeable_count(e, typeobject) or 0,
         set_item = set_item,
         remove_lorry = (e.lorry ~= nil),
     }
@@ -275,14 +280,14 @@ function M:stage_ui_update(datamodel, gameplay_eid)
     local e = assert(gameplay_core.get_entity(gameplay_eid))
     local typeobject = e.lorry and iprototype.queryById(e.lorry.item_prototype) or iprototype.queryById(e.building.prototype)
 
-    __moveable_count_update(datamodel, gameplay_eid)
+    __moveable_count_update(datamodel, e, typeobject)
 
     for _ in set_recipe_mb:unpack() do
         iui.open({"/pkg/vaststars.resources/ui/recipe_config.rml"}, gameplay_eid)
     end
 
     for _ in set_item_mb:unpack() do
-        assert(hasComponent(e, SET_ITEM_COMPONENTS))
+        assert(hasSetItem(e, typeobject))
         local interface = {}
         if e.station then
             interface.set_item = station_set_item
@@ -374,7 +379,7 @@ function M:stage_ui_update(datamodel, gameplay_eid)
                 msgs[#msgs+1] = {icon = item.item_icon, name = item.name, count = n}
             end)
 
-        elseif hasComponent(e, PLACE_COMPONENTS) then
+        elseif hasPlaceItem(e, typeobject) then
             ibackpack.backpack_to_chest(gameplay_world, e, function(id, n)
                 local item = iprototype.queryById(id)
                 msgs[#msgs+1] = {icon = item.item_icon, name = item.name, count = n}

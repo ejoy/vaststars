@@ -282,6 +282,7 @@ function M:get_restore_index()
         if ok then
             break
         end
+        index = index - 1
     end
 
     if index == 0 then

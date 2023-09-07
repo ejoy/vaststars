@@ -237,7 +237,7 @@ local function create_icon(object_id, e, building_srt)
     end
     local function update(self, e)
         local s
-        if not is_generator and not ipower_check.is_powered_on(e.eid) then
+        if not is_generator and not ipower_check.is_powered_on(gameplay_core.get_world(), e) then
             s = ICON_STATUS_NOPOWER
         else
             if e.assembling.recipe == 0 then
@@ -514,7 +514,7 @@ local update = interval_call(300, function()
         end
 
         local building = global.buildings[object.id]
-        if not ipower_check.is_powered_on(e.eid) then
+        if not ipower_check.is_powered_on(gameplay_world, e) then
             if not building.consumer_icon then
                 building.consumer_icon = create_consumer_icon(object.id, object.srt)
             end

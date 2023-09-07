@@ -7,16 +7,15 @@ local power_check_sys = ecs.system "power_check_system"
 local gameplay_core = require "gameplay.core"
 local iprototype = import_package "vaststars.gamerender"("gameplay.interface.prototype")
 
-local powerStatus = {}
+local PowerGrids = {}
 
 local function updateStatus(ecs)
-    local powergrids = {}
     for i = 1, 255 do
         local pg = ecs:object("powergrid", i+1)
         if pg.active == 0 then
             break
         end
-        powergrids[i] = {
+        PowerGrids[i] = {
             consumer = {
                 pg.consumer_efficiency1,
                 pg.consumer_efficiency2,
@@ -27,32 +26,6 @@ local function updateStatus(ecs)
             },
             accumulator = pg.accumulator_efficiency,
         }
-    end
-    for e in ecs:select "consumer capacitance:in building:in eid:in" do
-        local pg = powergrids[e.capacitance.network]
-        if pg then
-            local pt = iprototype.queryById(e.building.prototype)
-            powerStatus[e.eid] = pg.consumer[pt.priority+1] > 0
-        else
-            powerStatus[e.eid] = false
-        end
-    end
-    for e in ecs:select "generator capacitance:in building:in eid:in" do
-        local pg = powergrids[e.capacitance.network]
-        if pg then
-            local pt = iprototype.queryById(e.building.prototype)
-            powerStatus[e.eid] = pg.generator[pt.priority+1] > 0
-        else
-            powerStatus[e.eid] = false
-        end
-    end
-    for e in ecs:select "accumulator capacitance:in eid:in" do
-        local pg = powergrids[e.capacitance.network]
-        if pg then
-            powerStatus[e.eid] = pg.accumulator > 0
-        else
-            powerStatus[e.eid] = false
-        end
     end
 end
 
@@ -72,11 +45,29 @@ function power_check_sys:gameworld_update()
 end
 
 function power_check_sys:gameworld_clean()
-    powerStatus = {}
+    PowerGrids = {}
 end
 
-function ipower_check.is_powered_on(eid)
-    return powerStatus[eid]
+function ipower_check.is_powered_on(world, e)
+    world.ecs:extend(e, "consumer?in generator?in accumulator?in")
+    if not e.capacitance and not e.generator and not e.accumulator then
+        return false
+    end
+
+    world.ecs:extend(e, "capacitance:in building:in")
+    local pg = PowerGrids[e.capacitance.network]
+    if pg then
+        local pt = iprototype.queryById(e.building.prototype)
+        if e.consumer then
+            return pg.consumer[pt.priority+1] > 0
+        elseif e.generator then
+            return pg.generator[pt.priority+1] > 0
+        elseif e.accumulator then
+            return pg.accumulator > 0
+        end
+    else
+        return false
+    end
 end
 
 return ipower_check

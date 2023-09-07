@@ -80,6 +80,10 @@ local function __get_detail_str(eid)
         res[#res+1] = "chimney recipe: " .. (e.chimney.recipe == 0 and 0 or iprototype.queryById(e.chimney.recipe).name)
     end
 
+    if e.capacitance then
+        res[#res+1] = "capacitance: network: " .. e.capacitance.network
+    end
+
     return table.concat(res, "\n\t")
 end
 

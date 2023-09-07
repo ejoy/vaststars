@@ -20,8 +20,15 @@ local global = require "global"
 local iefk = ecs.require "engine.efk"
 
 local m = ecs.system 'game_init_system'
+local gameworld_prebuild
+local gameworld_build
+local gameworld
 
 function m:init_world()
+    gameworld_prebuild = world:pipeline_func "gameworld_prebuild"
+    gameworld_build = world:pipeline_func "gameworld_build"
+    gameworld = world:pipeline_func "gameworld"
+
     world:create_instance {
         prefab = "/pkg/vaststars.resources/daynight.prefab"
     }
@@ -128,14 +135,13 @@ function m:frame_update()
     if gameplay_core.system_changed_flags ~= 0 then
         print("build world")
         gameplay_core.system_changed_flags = 0
-        world:pipeline_func "gameworld_prebuild" ()
+        gameworld_prebuild()
         gameplay_core.update()
-        world:pipeline_func "gameworld_build" ()
-        -- world:pipeline_func "gameworld" () -- TODO: 
+        gameworld_build()
     else
         if gameplay_core.world_update then
             gameplay_core.update()
-            world:pipeline_func "gameworld" ()
+            gameworld()
         end
     end
 end

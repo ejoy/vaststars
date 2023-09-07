@@ -17,7 +17,7 @@ local saveload = ecs.require "saveload"
 local M = {}
 function M:create()
     return {
-        show_continue_game = #saveload:get_archival_list() > 0
+        show_continue_game = (saveload:get_restore_index() ~= nil)
     }
 end
 

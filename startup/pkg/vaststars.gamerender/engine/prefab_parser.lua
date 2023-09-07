@@ -25,23 +25,6 @@ local parse ; do
     end
 end
 
-local filterNodes ; do
-    local caches = {}
-    function filterNodes(fullpath, key)
-        caches[key] = caches[key] or {}
-        if not caches[key][fullpath] then
-            local res = {}
-            for _, v in ipairs(parse(fullpath)) do
-                if v.data and v.data[key] then
-                    res[#res+1] = v.data
-                end
-            end
-            caches[key][fullpath] = res
-        end
-        return caches[key][fullpath]
-    end
-end
-
 local function slots(fullpath)
     local res = {}
     local t = parse(fullpath)
@@ -64,7 +47,6 @@ end
 
 return {
     parse = parse,
-    filterNodes = filterNodes,
     slots = slots,
     root = root,
 }
