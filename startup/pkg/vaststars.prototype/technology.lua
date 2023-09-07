@@ -209,27 +209,12 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "更多碎石" {
-    desc = "挖掘足够的碎石可以开始进行锻造",
-    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-    type = { "task" },
-    task = {"stat_production", 0, "碎石"},
-    prerequisites = {"收集碎石"},
-    count = 28,
-    tips_pic = {
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ore3.texture",
-    },
-    sign_desc = {
-      { desc = "放置2座仓库收集达28个碎石", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-    },
-  }
-
   prototype "放置采矿机2" {
     desc = "放置1台采矿机",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = {"task" },
     task = {"select_entity", 0, "采矿机I"},
-    prerequisites = {"更多碎石"},
+    prerequisites = {"收集碎石"},
     count = 2,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",

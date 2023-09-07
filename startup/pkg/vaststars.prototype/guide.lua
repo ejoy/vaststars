@@ -135,22 +135,22 @@ local guide = {
         },
 	},
 
-    {
-        name = "",
-		narrative = {
-            --{"哔哩..{/g 1座}无人机平台I最多容纳{/g 24块}碎石..(失望)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
-            {"哔哩..要放置更多的{/color:4bd0ff 碎石}就需要更多的{/g 无人机平台I},尝试收集更多碎石吧..哔哩(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
-        },
-        narrative_end = {
-            guide_progress = 28,
-            task = {
-                "更多碎石",
-            }
-        },
-        prerequisites = {
-            "收集碎石",
-        },
-	},
+    -- {
+    --     name = "",
+	-- 	narrative = {
+    --         --{"哔哩..{/g 1座}无人机平台I最多容纳{/g 24块}碎石..(失望)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+    --         {"哔哩..要放置更多的{/color:4bd0ff 碎石}就需要更多的{/g 无人机平台I},尝试收集更多碎石吧..哔哩(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
+    --     },
+    --     narrative_end = {
+    --         guide_progress = 28,
+    --         task = {
+    --             "更多碎石",
+    --         }
+    --     },
+    --     prerequisites = {
+    --         "收集碎石",
+    --     },
+	-- },
 
 	{
         name = "",
@@ -162,9 +162,9 @@ local guide = {
             task = {
                 "放置采矿机2",
             },
-            guide_progress = 5,
+            guide_progress = 28,
         },
-        prerequisites = {"更多碎石"},
+        prerequisites = {"收集碎石"},
 	},
 
     {
@@ -174,7 +174,7 @@ local guide = {
             {"哔哩..急需{/color:4bd0ff 供电设备}，请放置{/g 风力发电机}并放置在铁矿{/g 采矿机}周围。", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"}, 
         },
         narrative_end = {
-            guide_progress = 10,
+            guide_progress = 29,
             task = {
                 "放置风力发电机",
             }
@@ -190,7 +190,7 @@ local guide = {
            {"哔哩..使用采矿机挖掘6个{/g 铁矿石}..哔哩..哔哗..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
         },
         narrative_end = {
-            guide_progress = 10,
+            guide_progress = 29,
             task = {
                 "收集铁矿石",
             }
@@ -206,7 +206,7 @@ local guide = {
            {"哔哩..铁矿下方有一处铝矿,再使用采矿机挖掘6个{/g 铝矿石}..哔哩..哔哗..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
         },
         narrative_end = {
-            guide_progress = 10,
+            guide_progress = 29,
             task = {
                 "收集铝矿石",
             }
