@@ -262,7 +262,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "无人机平台设置2",
+            "仓库设置2",
         },
 	},
     -- {

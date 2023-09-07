@@ -442,8 +442,8 @@ local prototype = gameplay.register.prototype
     },
   }
   
-  prototype "无人机平台设置2" {
-    desc = "无人机平台选择地质科技包",
+  prototype "仓库设置2" {
+    desc = "仓库选择地质科技包",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"unknown", 0, 5},                          
@@ -454,7 +454,7 @@ local prototype = gameplay.register.prototype
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "无人机平台物品设置为“地质科技包”", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "仓库物品设置为“地质科技包”", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -463,7 +463,7 @@ local prototype = gameplay.register.prototype
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"stat_production", 0, "地质科技包"},
-    prerequisites = {"无人机平台设置2"},
+    prerequisites = {"仓库设置2"},
     count = 5,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack3.texture",
