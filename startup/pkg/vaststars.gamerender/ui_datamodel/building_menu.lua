@@ -28,6 +28,13 @@ local gameplay = import_package "vaststars.gameplay"
 local iGameplayStation = gameplay.interface "station"
 local iGameplayChest = gameplay.interface "chest"
 
+local CHEST_TYPE <const> = {
+    none = 0,
+    supply = 1,
+    demand = 2,
+    transit = 3,
+}
+
 local PICKUP_COMPONENTS <const> = {
     "assembling",
     "chest",
@@ -51,11 +58,11 @@ local function hasComponent(e, components)
 end
 
 local function hasSetItem(e, typeobject)
-    return hasComponent(e, SET_ITEM_COMPONENTS) or (e.chest and typeobject.chest_type == "transit")
+    return hasComponent(e, SET_ITEM_COMPONENTS) or (e.chest and typeobject.chest_type == CHEST_TYPE.transit)
 end
 
 local function hasPlaceItem(e, typeobject)
-    return hasComponent(e, PLACE_COMPONENTS) or (e.chest and typeobject.chest_type == "transit")
+    return hasComponent(e, PLACE_COMPONENTS) or (e.chest and typeobject.chest_type == CHEST_TYPE.transit)
 end
 
 local function __get_moveable_count(e)
