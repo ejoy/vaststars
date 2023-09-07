@@ -28,7 +28,7 @@ local function updateStatus(ecs)
             accumulator = pg.accumulator_efficiency,
         }
     end
-    for e in ecs:select "capacitance:in building:in eid:in" do
+    for e in ecs:select "consumer capacitance:in building:in eid:in" do
         local pg = powergrids[e.capacitance.network]
         if pg then
             local pt = iprototype.queryById(e.building.prototype)
