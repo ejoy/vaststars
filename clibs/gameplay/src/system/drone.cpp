@@ -196,7 +196,7 @@ static void rebuild(world& w) {
     flatmap<uint16_t, uint16_t> created_airport;
     std::map<uint16_t, airport> airports;
     uint16_t maxid = 1;
-    auto create_hubid = [&]()->uint16_t {
+    auto create_airport_id = [&]()->uint16_t {
         for (; maxid <= (std::numeric_limits<uint16_t>::max)(); ++maxid) {
             if (!airports.contains(maxid) && !used_id.contains(maxid)) {
                 return maxid;
@@ -208,7 +208,7 @@ static void rebuild(world& w) {
         auto& airport = v.get<ecs::airport>();
         auto& building = v.get<ecs::building>();
         if (airport.id == 0) {
-            airport.id = create_hubid();
+            airport.id = create_airport_id();
             created_airport.insert_or_assign(getxy(building.x, building.y), airport.id);
         }
         auto homeBuilding = createBuildingCache(w, building, 0);
