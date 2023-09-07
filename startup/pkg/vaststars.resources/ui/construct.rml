@@ -95,7 +95,7 @@
         </tech-or-task-bar>
 
         <main-button style = "position: absolute; left: 72.20vmax; top: 67.00vmin; background-image: /pkg/vaststars.resources/ui/textures/construct/main-button-bg.texture; background-size: 100% 100%;" data-event-click = "clickButton('construct')" 
-            data-if = "not is_concise_mode and focus_building_icon == ''"
+            data-if = "not is_concise_mode and focus_building_icon == '' and  guide_progress > 5"
             >
             <main-button-icon style = "background-image: /pkg/vaststars.resources/ui/textures/construct/main-button-construct.texture;" />
         </main-button>
