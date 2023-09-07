@@ -279,6 +279,7 @@
                                 <item data-attr-id = "i.id" data-event-click = "clickIcon(c_index, i_index)" data-style-background-image = "i.selected and '/pkg/vaststars.resources/ui/textures/item-config/item-active.texture' or 'none'">
                                     <div data-style-background-image = "i.icon" style = "width: 14.95vmin; height: 14.95vmin; background-size: 100% 100%; background-color: rgb(61, 61, 61);">
                                         <new data-if = "i.new">新</new>
+                                        <div style = "position: absolute; width: 12.50vmin; height: 18.00vmin; justify-content: flex-end; align-items: center; font-size: 2.15vmin; color:rgb(255, 166, 0); -webkit-text-stroke: 0.26vmin rgb(0,0,0);">{{i.name}}</div>
                                     </div>
                                 </item>
                             </div>

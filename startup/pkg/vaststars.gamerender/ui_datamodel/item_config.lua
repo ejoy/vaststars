@@ -110,6 +110,12 @@ local function updateItems(datamodel, existing)
     datamodel.items = items
 end
 
+local function markItem(item_name)
+    local storage = gameplay_core.get_storage()
+    storage.item_picked_flag = storage.item_picked_flag or {}
+    storage.item_picked_flag[item_name] = true
+end
+
 function M:create(gameplay_eid, interface)
     local datamodel = {
         show_set_item = false,
@@ -137,6 +143,7 @@ function M:stage_ui_update(datamodel, gameplay_eid, interface)
         local gameplay_world = gameplay_core.get_world()
         interface.set_item(gameplay_world, e, set_type, typeobject.id)
         itask.update_progress("set_item", name)
+        markItem(name)
 
         local existing = updateSlots(e, datamodel)
         updateItems(datamodel, existing)

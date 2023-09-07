@@ -28,11 +28,11 @@ local gameplay = import_package "vaststars.gameplay"
 local iGameplayStation = gameplay.interface "station"
 local iGameplayChest = gameplay.interface "chest"
 
-local CHEST_TYPE <const> = {
-    none = 0,
-    supply = 1,
-    demand = 2,
-    transit = 3,
+local CHEST_TYPE_CONVERT <const> = {
+    [0] = "none",
+    [1] = "supply",
+    [2] = "demand",
+    [3] = "transit",
 }
 
 local PICKUP_COMPONENTS <const> = {
@@ -58,11 +58,11 @@ local function hasComponent(e, components)
 end
 
 local function hasSetItem(e, typeobject)
-    return hasComponent(e, SET_ITEM_COMPONENTS) or (e.chest and typeobject.chest_type == CHEST_TYPE.transit)
+    return hasComponent(e, SET_ITEM_COMPONENTS) or (e.chest and CHEST_TYPE_CONVERT[typeobject.chest_type] == "transit")
 end
 
 local function hasPlaceItem(e, typeobject)
-    return hasComponent(e, PLACE_COMPONENTS) or (e.chest and typeobject.chest_type == CHEST_TYPE.transit)
+    return hasComponent(e, PLACE_COMPONENTS) or (e.chest and CHEST_TYPE_CONVERT[typeobject.chest_type] == "transit")
 end
 
 local function __get_moveable_count(e)
@@ -262,7 +262,7 @@ local function chest_set_item(gameplay_world, e, type, item)
         items[#items+1] = {slot.type, slot.item}
     end
 
-    items[#items+1] = {typeobject.chest_type, item}
+    items[#items+1] = {CHEST_TYPE_CONVERT[typeobject.chest_type], item}
     iGameplayChest.chest_set(gameplay_world, e, items)
 end
 

@@ -176,22 +176,20 @@ function lorry_sys:prototype_restore()
     end
 end
 
-function lorry_sys:gameworld_prebuild()
-    local gameplay_world = gameplay_core.get_world()
-    for e in gameplay_world.ecs:select "lorry:in REMOVED" do
-        local lorry = assert(lorries[e.eid])
-        lorry:remove()
-    end
-end
-
 function lorry_sys:gameworld_update()
-    local gameplay_world = gameplay_core.get_world()
+    local ecs = gameplay_core.get_world().ecs
 
-    local x, y, offset, toward, item_classid, item_amount, progress, maxprogress, lorry
-    for e in gameplay_world.ecs:select "lorry:in eid:in" do
-        local l = e.lorry
-        local classid = l.prototype
+    local l, classid, x, y, offset, toward, item_classid, item_amount, progress, maxprogress, lorry
+    for e in ecs:select "lorry:in eid:in" do
+        l = e.lorry
+        classid = l.prototype
+        lorry = lorries[e.eid]
+
         if classid == 0 then
+            if lorry then
+                lorry:remove()
+                lorries[e.eid] = nil
+            end
             goto continue
         end
 
@@ -204,7 +202,6 @@ function lorry_sys:gameworld_update()
         assert(progress <= maxprogress)
         assert(offset == 0 or offset == 1)
 
-        lorry = lorries[e.eid]
         if not lorry then
             lorry = __create_lorry(classid, x, y, toward, offset)
             lorries[e.eid] = lorry
