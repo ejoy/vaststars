@@ -5,8 +5,8 @@ local prototype = gameplay.register.prototype
 prototype "碎石" {
     display_name = "石矿",
     type = {"item"},
-    station_limit = 10,
-    hub_limit = 25,
+    station_limit = 15,
+    hub_limit = 60,
     backpack_limit = 100,
     item_order = 1,
     item_model = "glbs/stackeditems/gravel.glb|mesh.prefab",
