@@ -142,16 +142,12 @@ local function create_drone(x, y, slot)
             if not self.item then
                 return
             end
-            for _, eid in ipairs(self.item.tag["*"]) do
-                w:remove(eid)
-            end
+            world:remove_instance(self.item)
             self.item = nil
         end,
         destroy = function (self)
             self:destroy_item()
-            for _, eid in ipairs(self.prefab.tag["*"]) do
-                w:remove(eid)
-            end
+            world:remove_instance(self.prefab)
             w:remove(self.motion_y)
             w:remove(self.motion_xz)
         end,
