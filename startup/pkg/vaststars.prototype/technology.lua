@@ -419,7 +419,7 @@ local prototype = gameplay.register.prototype
       unlock_item = {"地质科技包"},
     },
     prerequisites = {"地质研究"},
-    count = 2,
+    count = 1,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_click_build.texture",
     },
@@ -438,7 +438,7 @@ local prototype = gameplay.register.prototype
     --   },
     -- },
     sign_desc = {
-      { desc = "放置2台组装机", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "放置1台组装机", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
   
@@ -728,7 +728,7 @@ local prototype = gameplay.register.prototype
   -- }
 
   prototype "放置物流站" {
-    desc = "放置1座收货车站",
+    desc = "放置1座物流站",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"select_entity", 0, "物流站"},
@@ -752,7 +752,7 @@ local prototype = gameplay.register.prototype
     --   },
     -- },
     sign_desc = {
-      { desc = "生产并放置1座停车站", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "在邻近矿区的公路边放置1座物流站", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 

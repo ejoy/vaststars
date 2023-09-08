@@ -1,7 +1,7 @@
 local entities = { {
   dir = "N",
   prototype_name = "指挥中心",
-  amount = 50,
+  amount = 0,
   x = 124,
   y = 120
 }, {
