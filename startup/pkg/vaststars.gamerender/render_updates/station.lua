@@ -11,6 +11,7 @@ local iom = ecs.require "ant.objcontroller|obj_motion"
 local math3d = require "math3d"
 local station_sys = ecs.system "station_system"
 local gameplay_core = require "gameplay.core"
+local terrain = ecs.require "terrain"
 
 local function calcItemSRT(building_srt, slot_srt)
     local building_mat = math3d.matrix {s = building_srt.s, r = building_srt.r, t = building_srt.t}
@@ -19,8 +20,9 @@ local function calcItemSRT(building_srt, slot_srt)
     return math3d.srt(mat)
 end
 
-local function createItemModel(prefab, s, r, t)
+local function createItemModel(prefab, x, y, building_srt, slot_srt)
     return world:create_instance {
+        group = terrain:get_group_id(x, y),
         prefab = prefab,
         on_message = function (self, event, ...)
             assert(event == "set_srt", "invalid message")
@@ -29,7 +31,7 @@ local function createItemModel(prefab, s, r, t)
         end,
         on_ready = function (self)
             local root <close> = world:entity(self.tag['*'][1])
-            iom.set_srt(root, s, r, t)
+            iom.set_srt(root, calcItemSRT(building_srt, slot_srt))
         end
     }
 end
@@ -55,7 +57,7 @@ local function createShelf(building_srt, e, item_id)
     local slot = assert(prefab_slots("/pkg/vaststars.resources/" .. typeobject_building.model).shelf)
     local typeobject_item = iprototype.queryById(item_id)
     local prefab = "/pkg/vaststars.resources/" .. typeobject_item.item_model
-    local item_model = createItemModel(prefab, calcItemSRT(building_srt, slot.scene))
+    local item_model = createItemModel(prefab, e.building.x, e.building.y, building_srt, slot.scene)
     local function remove()
         world:remove_instance(item_model)
     end

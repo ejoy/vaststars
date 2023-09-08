@@ -40,13 +40,14 @@ local function __create_shelves(group_id, recipe, shelf_matrices)
     return objects
 end
 
-local function __create_item(item_mat, item)
+local function __create_item(group_id, item_mat, item)
     local typeobject_item = iprototype.queryById(item)
     assert(typeobject_item.item_model, ("no pile model: %s"):format(typeobject_item.name))
     local prefab = "/pkg/vaststars.resources/" .. typeobject_item.item_model
 
     local s, r, t = math3d.srt(item_mat)
     return world:create_instance {
+        group = group_id,
         prefab = prefab,
         on_message = function (self, event, mat, group_id)
             assert(event == "on_position_change", "invalid message")
@@ -60,11 +61,11 @@ local function __create_item(item_mat, item)
     }
 end
 
-local function __create_items(item_matrices, items)
+local function __create_items(group_id, item_matrices, items)
     local items = {}
     for idx, item in pairs(items) do
         assert(item_matrices[idx])
-        items[idx] = __create_item(item_matrices[idx], item)
+        items[idx] = __create_item(group_id, item_matrices[idx], item)
     end
     return items
 end
@@ -125,7 +126,7 @@ function m.create(group_id, building, recipe, building_srt, items)
     self._item_positions = __get_item_positions(self._item_matrices)
 
     self._shelves = __create_shelves(group_id, self._recipe, self._shelf_matrices)
-    self._items = __create_items(self._item_matrices, items)
+    self._items = __create_items(group_id, self._item_matrices, items)
 
     return self
 end
