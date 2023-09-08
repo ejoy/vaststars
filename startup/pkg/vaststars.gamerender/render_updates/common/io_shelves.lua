@@ -62,12 +62,12 @@ local function __create_item(group_id, item_mat, item)
 end
 
 local function __create_items(group_id, item_matrices, items)
-    local items = {}
+    local t = {}
     for idx, item in pairs(items) do
         assert(item_matrices[idx])
-        items[idx] = __create_item(group_id, item_matrices[idx], item)
+        t[idx] = __create_item(group_id, item_matrices[idx], item)
     end
-    return items
+    return t
 end
 
 local function __get_item_positions(item_matrices)

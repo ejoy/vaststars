@@ -56,14 +56,14 @@ end
 
 local iing_res_motion = {}
 
-function iing_res_motion.create(prefab, from, to, duration, repeat_count)
+function iing_res_motion.create(group, prefab, from, to, duration, repeat_count)
     local cache = motion_caches[prefab]
     if not cache or #cache < 1 then
         local motion = imotion.create_motion_object(nil, nil, from, nil, true)
         local inst = world:create_instance {
             prefab = prefab,
             parent = motion.id,
-            group = imotion.sampler_group,
+            group = group,
         }
         motions[#motions + 1] = {prefab = prefab, inst = inst, duration = duration, repeat_count = repeat_count or 1, elapsed_time = 0, motion = motion }
     else

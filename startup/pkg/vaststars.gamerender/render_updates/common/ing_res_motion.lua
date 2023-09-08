@@ -22,11 +22,11 @@ function mt:update(idx, item, count)
     local m = assert(self._motions[idx])
     if m.type == "in" then
         if self._counts[idx] > count then
-            iing_res_motion.create(m.model, m.from, m.to, 1.0, self._counts[idx] - count)
+            iing_res_motion.create(self._group, m.model, m.from, m.to, 1.0, self._counts[idx] - count)
         end
     else
         if self._counts[idx] < count then
-            iing_res_motion.create(m.model, m.from, m.to, 1.0, count - self._counts[idx])
+            iing_res_motion.create(self._group, m.model, m.from, m.to, 1.0, count - self._counts[idx])
         end
     end
     self._counts[idx] = count
@@ -82,10 +82,11 @@ function mt:on_position_change(building_srt)
 end
 
 local m = {}
-function m.create(building, recipe, building_srt)
+function m.create(group, building, recipe, building_srt)
     local self = setmetatable({}, mt)
     self._recipe = recipe
     self._building = building
+    self._group = group
     self:on_position_change(building_srt)
 
     return self
