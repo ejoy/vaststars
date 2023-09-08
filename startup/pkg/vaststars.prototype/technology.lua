@@ -419,7 +419,7 @@ local prototype = gameplay.register.prototype
       unlock_item = {"地质科技包"},
     },
     prerequisites = {"地质研究"},
-    count = 2,
+    count = 1,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_click_build.texture",
     },
@@ -438,7 +438,7 @@ local prototype = gameplay.register.prototype
     --   },
     -- },
     sign_desc = {
-      { desc = "放置2台组装机", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "放置1台组装机", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
   
@@ -728,7 +728,7 @@ local prototype = gameplay.register.prototype
   -- }
 
   prototype "放置物流站" {
-    desc = "放置1座收货车站",
+    desc = "放置1座物流站",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"select_entity", 0, "物流站"},
@@ -752,7 +752,7 @@ local prototype = gameplay.register.prototype
     --   },
     -- },
     sign_desc = {
-      { desc = "生产并放置1座停车站", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "在邻近矿区的公路边放置1座物流站", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -894,12 +894,27 @@ prototype "重修水电站" {
   },
 }
 
+prototype "放置水电站" {
+  desc = "放置1座水电站",
+  icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+  type = { "task" },
+  task = {"select_entity", 0, "水电站I"},
+  prerequisites = {"重修水电站"},
+  count = 1,
+  tips_pic = {
+    "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+  },
+  sign_desc = {
+    { desc = "放置1座水电站", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+  },
+}
+
 prototype "采集地下水" {
   desc = "放置1座地下水挖掘机",
   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
   type = { "task" },
   task = {"select_entity", 0,  "地下水挖掘机I"},
-  prerequisites = {"重修水电站"},
+  prerequisites = {"放置水电站"},
   count = 1,
   tips_pic = {
     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_h21.texture",
@@ -933,7 +948,7 @@ prototype "收集空气" {
   type = { "task" },
   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
   task = {"stat_production", 0, "空气"},
-  prerequisites = {"建造空气过滤器","重修水电站"},
+  prerequisites = {"建造空气过滤器","放置水电站"},
   count = 20000,
   tips_pic = {
     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_air1.texture",

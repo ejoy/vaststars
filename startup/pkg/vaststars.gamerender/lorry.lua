@@ -28,7 +28,6 @@ local function __create_motion_object(s, r, t, events)
         policy = {
             "ant.scene|scene_object",
             "ant.motion_sampler|motion_sampler",
-            "ant.general|name",
         },
         data = {
             scene = {
@@ -37,7 +36,6 @@ local function __create_motion_object(s, r, t, events)
                 t = t,
             },
             motion_sampler = {},
-            name = "motion_sampler",
             on_ready = function(e)
                 ims.set_tween(e, ltween.type("None"), ltween.type("None"))
             end
@@ -63,7 +61,6 @@ local function __create_shadow_object(parent)
     return ientity_object.create(world:create_entity {
         policy = {
             "ant.render|simplerender",
-            "ant.general|name",
         },
         data = {
             simplemesh = ientity.create_mesh({"p3|t2", {
@@ -75,7 +72,6 @@ local function __create_shadow_object(parent)
             material = "/pkg/vaststars.resources/materials/lorry_shadow.material",
             scene = {t = {0, 0.1, 0}, parent = parent},
             visible_state = "main_view",
-            name = "lorry_shadow",
             render_layer = RENDER_LAYER.LORRY_SHADOW,
         }
     })

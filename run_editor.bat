@@ -2,8 +2,8 @@
 @chcp 65001 >nul
 
 set current_dir=%~dp0
-set cachedir=.\3rd\ant\tools\prefab_editor\.build
-set param=.\3rd\ant\tools\prefab_editor\main.lua
+set cachedir=.\3rd\ant\tools\editor\.build
+set param=.\3rd\ant\tools\editor\main.lua
 set mode=%1
 if not defined mode (
 	set mode=release

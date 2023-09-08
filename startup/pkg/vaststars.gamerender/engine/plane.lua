@@ -43,15 +43,13 @@ local function create(material, property, color, srt, render_layer)
     local eid = world:create_entity {
 		policy = {
 			"ant.render|simplerender",
-			"ant.general|name",
 		},
 		data = {
 			scene = { s = srt.s, r = srt.r, t = srt.t },
 			material = material,
 			visible_state = "main_view",
-			name = ("plane_%d"):format(gen_id()),
 			render_layer = render_layer or "translucent",
-			simplemesh = imesh.init_mesh(ientity.create_mesh({"p3|n3", plane_vb}, nil, math3d.ref(math3d.aabb({-0.5, 0, -0.5}, {0.5, 0, 0.5}))), true),
+			simplemesh = imesh.init_mesh(ientity.create_mesh({"p3|n3", plane_vb}, nil, math3d.live(math3d.aabb({-0.5, 0, -0.5}, {0.5, 0, 0.5}))), true),
 			on_ready = function (e)
 				ivs.set_state(e, "main_view", true)
                 imaterial.set_property(e, property, color)

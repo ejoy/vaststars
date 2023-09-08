@@ -65,7 +65,7 @@ local function hasPlaceItem(e, typeobject)
     return hasComponent(e, PLACE_COMPONENTS) or (e.chest and CHEST_TYPE_CONVERT[typeobject.chest_type] == "transit")
 end
 
-local function __get_moveable_count(e)
+local function getMoveableCount(e)
     local gameplay_world = gameplay_core.get_world()
 
     if e.assembling then
@@ -117,7 +117,7 @@ local function __get_moveable_count(e)
     end
 end
 
-local function __get_placeable_count(e, typeobject)
+local function getPlaceableCount(e, typeobject)
     local gameplay_world = gameplay_core.get_world()
 
     if e.assembling then
@@ -180,10 +180,10 @@ local function __get_placeable_count(e, typeobject)
     end
 end
 
-local __moveable_count_update = interval_call(300, function(datamodel, e, typeobject)
-    datamodel.pickup_item_count = datamodel.pickup_item and __get_moveable_count(e) or 0
-    datamodel.place_item_count = datamodel.place_item and __get_placeable_count(e, typeobject) or 0
-end, false)
+local updateMoveableCount = interval_call(300, function(datamodel, e, typeobject)
+    datamodel.pickup_item_count = datamodel.pickup_item and getMoveableCount(e) or 0
+    datamodel.place_item_count = datamodel.place_item and getPlaceableCount(e, typeobject) or 0
+end)
 
 ---------------
 local M = {}
@@ -209,8 +209,8 @@ function M:create(gameplay_eid)
         lorry_factory_dec_lorry = false,
         pickup_item = pickup_item,
         place_item = place_item,
-        pickup_item_count = pickup_item and __get_moveable_count(e) or 0,
-        place_item_count = place_item and __get_placeable_count(e, typeobject) or 0,
+        pickup_item_count = pickup_item and getMoveableCount(e) or 0,
+        place_item_count = place_item and getPlaceableCount(e, typeobject) or 0,
         set_item = set_item,
         remove_lorry = (e.lorry ~= nil),
     }
@@ -287,7 +287,7 @@ function M:stage_ui_update(datamodel, gameplay_eid)
     local e = assert(gameplay_core.get_entity(gameplay_eid))
     local typeobject = e.lorry and iprototype.queryById(e.lorry.item_prototype) or iprototype.queryById(e.building.prototype)
 
-    __moveable_count_update(datamodel, e, typeobject)
+    updateMoveableCount(datamodel, e, typeobject)
 
     for _ in set_recipe_mb:unpack() do
         iui.open({"/pkg/vaststars.resources/ui/recipe_config.rml"}, gameplay_eid)

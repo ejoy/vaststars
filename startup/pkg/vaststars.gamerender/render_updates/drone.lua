@@ -142,16 +142,12 @@ local function create_drone(x, y, slot)
             if not self.item then
                 return
             end
-            for _, eid in ipairs(self.item.tag["*"]) do
-                w:remove(eid)
-            end
+            world:remove_instance(self.item)
             self.item = nil
         end,
         destroy = function (self)
             self:destroy_item()
-            for _, eid in ipairs(self.prefab.tag["*"]) do
-                w:remove(eid)
-            end
+            world:remove_instance(self.prefab)
             w:remove(self.motion_y)
             w:remove(self.motion_xz)
         end,
@@ -164,7 +160,7 @@ local function create_drone(x, y, slot)
     task.prefab = world:create_instance {
         prefab = "/pkg/vaststars.resources/glbs/drone.glb|mesh.prefab",
         parent = motion_y,
-        group = imotion.sampler_group,
+        group = terrain:get_group_id(x, y),
         on_ready = function(self)
             for _, eid in ipairs(self.tag["*"]) do
                 local e <close> = world:entity(eid, "render_object?update")
@@ -236,7 +232,7 @@ function drone_sys:gameworld_update()
                             local item_prefab = world:create_instance {
                                 prefab = "/pkg/vaststars.resources/" .. typeobject_item.item_model,
                                 parent = current.prefab.tag["*"][1],
-                                group = imotion.sampler_group,
+                                group = current.prefab.group,
                                 on_ready = function(inst)
                                     local re <close> = world:entity(inst.tag["*"][1])
                                     iom.set_position(re, math3d.vector(0.0, -4.0, 0.0))

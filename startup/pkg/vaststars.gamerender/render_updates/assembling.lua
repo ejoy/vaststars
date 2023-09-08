@@ -426,6 +426,7 @@ function assembling_sys:gameworld_build()
         end
 
         local building = global.buildings[object.id]
+        local group = terrain:get_group_id(e.building.x, e.building.y)
 
         --
         if e.assembling.recipe == 0 then
@@ -451,10 +452,10 @@ function assembling_sys:gameworld_build()
             if io_shelves then
                 if io_shelves:get_recipe() ~= e.assembling.recipe then
                     io_shelves:remove()
-                    building.io_shelves = create_io_shelves(0, e.building.prototype, e.assembling.recipe, object.srt, items) -- TODO: group_id
+                    building.io_shelves = create_io_shelves(group, e.building.prototype, e.assembling.recipe, object.srt, items) -- TODO: group_id
                 end
             else
-                building.io_shelves = create_io_shelves(0, e.building.prototype, e.assembling.recipe, object.srt, items) -- TODO: group_id
+                building.io_shelves = create_io_shelves(group, e.building.prototype, e.assembling.recipe, object.srt, items) -- TODO: group_id
             end
         end
 
@@ -464,7 +465,7 @@ function assembling_sys:gameworld_build()
             building.ing_res_motion = nil
         end
         if e.assembling.recipe ~= 0 then
-            building.ing_res_motion = create_ing_res_motion(e.building.prototype, e.assembling.recipe, object.srt)
+            building.ing_res_motion = create_ing_res_motion(group, e.building.prototype, e.assembling.recipe, object.srt)
         end
         ::continue::
     end

@@ -9,7 +9,7 @@ set list=%list% startup\.log
 set list=%list% startup\.repo
 set list=%list% build
 set list=%list% bin
-set list=%list% 3rd\ant\tools\prefab_editor\.build
+set list=%list% 3rd\ant\tools\editor\.build
 set list=%list% 3rd\ant\bin
 set list=%list% 3rd\ant\build
 

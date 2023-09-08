@@ -42,7 +42,7 @@ end
 
 local M = {}
 function M.create(material)
-    local entity_object = ientity_object.create(ientity.create_quad_lines_entity("quads", {}, material, 10, 10.0, false, "translucent"), events)
+    local entity_object = ientity_object.create(ientity.create_quad_lines_entity({}, material, 10, 10.0, false, "translucent"), events)
     entity_object:send("init")
 
     local outer = {}

@@ -136,10 +136,8 @@ function M.create(canvas_type, show, yaxis)
         policy = {
             "ant.scene|scene_object",
             "ant.terrain|canvas",
-            "ant.general|name",
         },
         data = {
-            name = "canvas",
             scene = {
                 t = {0.0, yaxis or iterrain.surface_height + 10, 0.0},
             },

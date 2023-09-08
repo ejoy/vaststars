@@ -346,10 +346,10 @@ local function __align(object)
 
     if iprototype.has_types(typeobject.type, "station") then
         coord[1], coord[2] = coord[1] - (coord[1] % ROAD_SIZE), coord[2] - (coord[2] % ROAD_SIZE)
-        position = math3d.ref(math3d.vector(terrain:get_position_by_coord(coord[1], coord[2], iprototype.rotate_area(typeobject.area, object.dir))))
+        position = math3d.vector(terrain:get_position_by_coord(coord[1], coord[2], iprototype.rotate_area(typeobject.area, object.dir)))
     end
 
-    object.srt.t = math3d.ref(math3d.vector(position))
+    object.srt.t.v = math3d.vector(position)
     return object, coord[1], coord[2]
 end
 
