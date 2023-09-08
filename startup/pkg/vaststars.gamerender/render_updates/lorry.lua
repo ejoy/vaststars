@@ -80,10 +80,12 @@ motion_events["update"] = function(obj, e, x, y, toward, offset, last_srt, maxpr
         obj.last_srt = obj.last_srt or last_srt
 
         local kfs = __gen_keyframes(obj.last_srt, x, y, toward, offset)
-        local last = kfs[#kfs]
-        obj.last_srt = {s = math3d.ref(last.s), r = math3d.ref(last.r), t = math3d.ref(last.t)}
-
         ims.set_keyframes(e, table.unpack(kfs))
+
+        local last = kfs[#kfs]
+        obj.last_srt.s.v = last.s
+        obj.last_srt.r.q = last.r
+        obj.last_srt.t.v = last.t
     end
 
     if not (obj.maxprogress == maxprogress and obj.progress == progress) then
