@@ -20,12 +20,10 @@ op: remove
 path: /1/data/scene
 ---
 file: mesh.prefab
-op: remove
-path: /1/policy/2
----
-file: mesh.prefab
-op: remove
-path: /1/policy/3
+op: replace
+path: /1/policy
+value:
+    ant.animation|animation
 ---
 file: mesh.prefab
 op: remove
