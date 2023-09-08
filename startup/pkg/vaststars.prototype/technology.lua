@@ -727,11 +727,11 @@ local prototype = gameplay.register.prototype
   --   },
   -- }
 
-  prototype "放置停车站" {
+  prototype "放置物流站" {
     desc = "放置1座收货车站",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
-    task = {"select_entity", 0, "停车站"},
+    task = {"select_entity", 0, "物流站"},
     prerequisites = {"物流学1"},
     count = 1,
     tips_pic = {
@@ -764,7 +764,7 @@ local prototype = gameplay.register.prototype
       unlock_recipe = {"维修运输汽车"},
       unlock_item = {"运输车辆I","破损运输车辆"},
     },
-    prerequisites = {"放置停车站"},
+    prerequisites = {"放置物流站"},
     ingredients = {
         {"地质科技包", 1},
     },

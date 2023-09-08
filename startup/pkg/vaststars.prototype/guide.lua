@@ -251,7 +251,23 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"在组装机附近的{/color:4bd0ff 无人机平台I}选择物品{/g 地质科技包}后，无人机就可以开始搬运了..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
+            {"现在{/color:4bd0ff 仓库}里可以选择接收{/g 地质科技包}(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
+        },
+        narrative_end = {
+            guide_progress = 30,--10
+            task = {
+                "仓库设置2",
+            }
+        },
+        prerequisites = {
+            "放置组装机",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
+            {"使用组装机生产科研关键物品{/g 地质科技包}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
             --{"记得建造{/g 无人机平台I}来存储生产出来地{/g 地质科技包}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
         },
         narrative_end = {
