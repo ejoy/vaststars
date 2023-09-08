@@ -38,7 +38,9 @@ function m:init_world()
     world:create_instance {
         prefab = "/pkg/vaststars.resources/sky.prefab"
     }
-
+    world:create_instance {
+        prefab = "/pkg/vaststars.resources/pack_camera_aabb.prefab"
+    }
     iefk.preload "/pkg/vaststars.resources/effects/"
 
     if NOTHING then

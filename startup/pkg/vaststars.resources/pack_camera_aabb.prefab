@@ -1,0 +1,6 @@
+---
+data:
+  pack_camera_aabb: true
+  name: pack_camera_aabb
+policy:
+  ant.general|name
