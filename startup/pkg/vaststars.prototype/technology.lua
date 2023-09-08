@@ -894,12 +894,27 @@ prototype "重修水电站" {
   },
 }
 
+prototype "放置水电站" {
+  desc = "放置1座水电站",
+  icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+  type = { "task" },
+  task = {"select_entity", 0, "水电站I"},
+  prerequisites = {"重修水电站"},
+  count = 1,
+  tips_pic = {
+    "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+  },
+  sign_desc = {
+    { desc = "放置1座水电站", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+  },
+}
+
 prototype "采集地下水" {
   desc = "放置1座地下水挖掘机",
   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
   type = { "task" },
   task = {"select_entity", 0,  "地下水挖掘机I"},
-  prerequisites = {"重修水电站"},
+  prerequisites = {"放置水电站"},
   count = 1,
   tips_pic = {
     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_h21.texture",
