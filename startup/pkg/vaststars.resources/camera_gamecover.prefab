@@ -9,7 +9,6 @@ data:
       t: 82
       b: -82
       ortho: true
-  name: camera1
   scene:
     r:{0.0,0.0,0.0}
     t: {0, 0, -100}
@@ -22,5 +21,4 @@ data:
 tag:
   camera
 policy:
-  ant.general|name
   ant.camera|camera

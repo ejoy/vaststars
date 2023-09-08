@@ -45,10 +45,8 @@ function S.init_world()
         policy = {
             "ant.scene|scene_object",
             "ant.render|render",
-            "ant.general|name"
         },
         data = {
-            name = "test_road",
             scene = {t = {-40, 0, 0}},
             mesh  = "/pkg/ant.landform/assets/shapes/road_I.glb|meshes/Plane_P1.meshbin",
             material    = "/pkg/ant.landform/assets/shapes/road_I.glb|materials/Material.001.material",
@@ -61,10 +59,8 @@ function S.init_world()
         policy = {
             "ant.scene|scene_object",
             "ant.render|render",
-            "ant.general|name"
         },
         data = {
-            name = "test_road",
             scene = {t = {-20, 0, 0}, r = { axis = {0,1,0}, r = math.rad(180) }},
             mesh  = "/pkg/ant.landform/assets/shapes/road_I.glb|meshes/Plane_P1.meshbin",
             material    = "/pkg/ant.landform/assets/shapes/road_I.glb|materials/Material.001.material",
@@ -78,10 +74,8 @@ function S.init_world()
         policy = {
             "ant.scene|scene_object",
             "ant.render|render",
-            "ant.general|name"
         },
         data = {
-            name = "crack",
             scene = {t = {10, 0, 10}},
             mesh  = "/pkg/mod.crack/assets/shapes/crack.glb|meshes/Plane_P1.meshbin",
             material    = "/pkg/mod.crack/assets/crack.material",
@@ -93,10 +87,8 @@ function S.init_world()
         policy = {
             "ant.scene|scene_object",
             "ant.render|render",
-            "ant.general|name"
         },
         data = {
-            name = "crack_plane",
             scene = {t = {10, 0, 10}},
             mesh  = "/pkg/mod.crack/assets/shapes/crack.glb|meshes/Plane_P1.meshbin",
             material    = "/pkg/mod.crack/assets/crack_color.material",
@@ -155,11 +147,9 @@ function S.init_world()
 --[[      printer_eid = world:create_entity {
         policy = {
             "ant.render|render",
-            "ant.general|name",
             "mod.printer|printer",
         },
         data = {
-            name        = "printer_test",
             scene  = {s = 0.5, t = {0, 0, 0}},
             material    = "/pkg/mod.printer/assets/printer.material",
             visible_state = "main_view",

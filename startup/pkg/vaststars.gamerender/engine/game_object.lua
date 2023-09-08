@@ -172,11 +172,9 @@ function igame_object.create(init)
     local hitch_entity_object = ientity_object.create(world:create_entity {
         group = init.group_id,
         policy = {
-            "ant.general|name",
             "ant.render|hitch_object",
         },
         data = {
-            name = init.prefab, -- for debug
             scene = {
                 s = srt.s,
                 t = srt.t,

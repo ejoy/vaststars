@@ -1,7 +1,6 @@
 ---
 data:
   material: /pkg/vaststars.resources/materials/sky/star_sky.material
-  name: starsky
   render_layer: foreground
   scene: {}
   simplemesh: true
@@ -10,4 +9,3 @@ data:
 policy:
   ant.starsky|starsky
   ant.render|simplerender
-  ant.general|name
