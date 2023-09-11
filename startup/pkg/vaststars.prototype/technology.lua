@@ -948,7 +948,7 @@ prototype "收集空气" {
   type = { "task" },
   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
   task = {"stat_production", 0, "空气"},
-  prerequisites = {"建造空气过滤器","放置水电站"},
+  prerequisites = {"建造空气过滤器","采集地下水"},
   count = 20000,
   tips_pic = {
     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_air1.texture",
