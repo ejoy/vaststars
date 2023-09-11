@@ -7,11 +7,11 @@ value:
     efk:
       path: /pkg/vaststars.resources/effects/flotation-cell_popo.efk
       speed: 1
-    visible_state:""
     name: work
     scene:
       s: {4, 4, 4}
       t: {0, 3, 0}
+    visible_state: ""
   mount: 1
   policy:
     ant.general|name
@@ -26,13 +26,29 @@ value:
     efk:
       path: /pkg/vaststars.resources/effects/flotation-cell_popo_low.efk
       speed: 1
-    visible_state:""
     name: low_power
     scene:
       s: {4, 4, 4}
       t: {0, 3, 0}
+    visible_state: ""
   mount: 1
   policy:
     ant.general|name
     ant.scene|scene_object
     ant.efk|efk
+---
+file: mesh.prefab
+op: createfile
+path: hitch.prefab
+value:
+  ---
+  data:
+    hitch:
+      group: 0
+      hitch_bounding: true
+    scene: {}
+    scene_needchange: true
+    visible_state: main_view|cast_shadow|selectable
+  policy:
+    ant.render|hitch_object
+  tag: hitch

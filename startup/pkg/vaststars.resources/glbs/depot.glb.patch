@@ -4,7 +4,6 @@ op: add
 path: /-
 value:
   data:
-    name: item_slot_1
     scene:
       t: {-1.5, 3.817502021789551, -1.5}
     slot:
@@ -12,15 +11,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|item_slot_1
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: item_slot_2
     scene:
       t: {-1.5, 3.817502021789551, 1.5}
     slot:
@@ -28,15 +26,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|item_slot_2
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: item_slot_3
     scene:
       t: {1.5, 3.817502021789551, -1.5}
     slot:
@@ -44,15 +41,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|item_slot_3
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: item_slot_4
     scene:
       t: {1.5, 3.817502021789551, 1.5}
     slot:
@@ -60,5 +56,65 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|item_slot_4
+---
+file: mesh.prefab
+op: createfile
+path: hitch.prefab
+value:
+  ---
+  data:
+    hitch:
+      group: 0
+      hitch_bounding: true
+    scene: {}
+    scene_needchange: true
+    visible_state: main_view|cast_shadow|selectable
+  policy:
+    ant.render|hitch_object
+  tag: hitch
+  ---
+  data:
+    scene:
+      t: {-1.5, 3.817502021789551, -1.5}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag: slot|item_slot_1
+  ---
+  data:
+    scene:
+      t: {-1.5, 3.817502021789551, 1.5}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag: slot|item_slot_2
+  ---
+  data:
+    scene:
+      t: {1.5, 3.817502021789551, -1.5}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag: slot|item_slot_3
+  ---
+  data:
+    scene:
+      t: {1.5, 3.817502021789551, 1.5}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag: slot|item_slot_4

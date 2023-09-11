@@ -4,7 +4,6 @@ op: add
 path: /-
 value:
   data:
-    name: shelf
     scene:
       t: {0, 19, 0}
     slot:
@@ -12,9 +11,8 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
-# station
+  tag: slot|shelf
 ---
 file: materials/Material.011.material
 op: replace
@@ -30,3 +28,30 @@ file: materials/Material.011.material
 op: replace
 path: /state/CULL
 value: NONE
+---
+file: mesh.prefab
+op: createfile
+path: hitch.prefab
+value:
+  ---
+  data:
+    hitch:
+      group: 0
+      hitch_bounding: true
+    scene: {}
+    scene_needchange: true
+    visible_state: main_view|cast_shadow|selectable
+  policy:
+    ant.render|hitch_object
+  tag: hitch
+  ---
+  data:
+    scene:
+      t: {0, 19, 0}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag: slot|shelf

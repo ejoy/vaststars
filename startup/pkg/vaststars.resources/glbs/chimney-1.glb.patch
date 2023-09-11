@@ -7,11 +7,11 @@ value:
     efk:
       path: /pkg/vaststars.resources/effects/chimney_smoke.efk
       speed: 1
-    visible_state:""
     name: work
     scene:
       s: {2, 2, 2}
       t: {0, 30.700000762939453, 0}
+    visible_state: ""
   mount: 1
   policy:
     ant.general|name
@@ -26,13 +26,29 @@ value:
     efk:
       path: /pkg/vaststars.resources/effects/chimney_smoke.efk
       speed: 1
-    visible_state:""
     name: low_power
     scene:
       s: {0.800000011920929, 0.800000011920929, 0.800000011920929}
       t: {0, 20.100000381469727, 0}
+    visible_state: ""
   mount: 1
   policy:
     ant.general|name
     ant.scene|scene_object
     ant.efk|efk
+---
+file: mesh.prefab
+op: createfile
+path: hitch.prefab
+value:
+  ---
+  data:
+    hitch:
+      group: 0
+      hitch_bounding: true
+    scene: {}
+    scene_needchange: true
+    visible_state: main_view|cast_shadow|selectable
+  policy:
+    ant.render|hitch_object
+  tag: hitch

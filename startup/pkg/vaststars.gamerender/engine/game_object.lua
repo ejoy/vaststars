@@ -2,7 +2,6 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 local game_object_event = ecs.require "engine.game_object_event"
-local ientity_object    = ecs.require "engine.system.entity_object_system"
 local iani              = ecs.require "ant.animation|controller.state_machine"
 local iom               = ecs.require "ant.objcontroller|obj_motion"
 local irl               = ecs.require "ant.render|render_layer"
@@ -144,14 +143,20 @@ local __get_hitch_children ; do
     end
 end
 
-local hitch_events = {}
-hitch_events["group"] = function(_, e, group)
+local hitchEvents = {}
+hitchEvents["group"] = function(self, extraData, group)
+    local e <close> = world:entity(self.tag["hitch"][1])
     w:extend(e, "hitch:update hitch_bounding?out")
     e.hitch.group = group
     e.hitch_bounding = true
 end
-hitch_events["obj_motion"] = function(_, e, method, ...)
+hitchEvents["obj_motion"] = function(self, extraData, method, ...)
+    local e <close> = world:entity(self.tag["hitch"][1])
     iom[method](e, ...)
+end
+hitchEvents["modifier"] = function(self, extraData, method, ...)
+    assert(extraData.srt_modifier)
+    imodifier[method](extraData.srt_modifier, ...)
 end
 
 local igame_object = {}
@@ -167,31 +172,46 @@ init = {
 }
 --]]
 function igame_object.create(init)
-    local children = __get_hitch_children(RESOURCES_BASE_PATH:format(init.prefab), init.color, init.workstatus or "idle", init.emissive_color, init.render_layer)
+    local prefab = RESOURCES_BASE_PATH:format(init.prefab)
+    local glb = assert(prefab:match("^(.*%.glb)|.*%.prefab$"))
+    local hitchPrefab = glb .. "|hitch.prefab"
+
+    local children = __get_hitch_children(prefab, init.color, init.workstatus or "idle", init.emissive_color, init.render_layer)
     local srt = init.srt or {}
-    local hitch_entity_object = ientity_object.create(world:create_entity {
+
+    local extraData = {} -- special handling for srt_modifier: srt_modifier must be used after on_ready
+    local hitchObject = world:create_instance {
         group = init.group_id,
-        policy = {
-            "ant.render|hitch_object",
-        },
-        data = {
-            scene = {
-                s = srt.s,
-                t = srt.t,
-                r = srt.r,
-                parent = init.parent,
-            },
-            hitch = {
-                group = children.hitch_group_id,
-                hitch_bounding = true,
-            },
-            visible_state = "main_view|cast_shadow|selectable",
-            scene_needchange = true,
-        }
-    }, hitch_events)
+        prefab = hitchPrefab,
+        parent = init.parent,
+        on_ready = function(self)
+            local eid = self.tag["hitch"][1]
+            local root <close> = world:entity(eid)
+            if srt.s then
+                iom.set_scale(root, srt.s)
+            end
+            if srt.r then
+                iom.set_rotation(root, srt.r)
+            end
+            if srt.t then
+                iom.set_position(root, srt.t)
+            end
+            extraData.srt_modifier = imodifier.create_bone_modifier(
+                eid,
+                init.group_id,
+                "/pkg/vaststars.resources/glbs/animation/Interact_build.glb|mesh.prefab",
+                "Bone"
+            )
+
+            assert(hitchEvents["group"])(self, extraData, children.hitch_group_id)
+        end,
+        on_message = function(self, event, ...)
+            assert(hitchEvents[event])(self, extraData, ...)
+        end
+    }
 
     local function remove(self)
-        self.hitch_entity_object:remove()
+        world:remove_instance(self.hitchObject)
     end
 
     -- prefab_file_name, color, emissive_color
@@ -214,25 +234,19 @@ function igame_object.create(init)
             self.__cache.emissive_color,
             self.__cache.render_layer
         )
-        self.hitch_entity_object:send("group", children.hitch_group_id)
+        world:instance_message(self.hitchObject, "group", children.hitch_group_id)
     end
     local function send(self, ...)
-        self.hitch_entity_object:send(...)
+        world:instance_message(self.hitchObject, ...)
     end
-    local function modifier(self, opt, ...)
-        imodifier[opt](self.srt_modifier, ...)
+    local function modifier(self, method, ...)
+        world:instance_message(self.hitchObject, "modifier", method, ...)
     end
 
     local outer = {
         __cache = init,
         group_id = init.group_id,
-        hitch_entity_object = hitch_entity_object,
-        srt_modifier = imodifier.create_bone_modifier(
-            hitch_entity_object.id,
-            init.group_id,
-            "/pkg/vaststars.resources/glbs/animation/Interact_build.glb|mesh.prefab",
-            "Bone"
-        ),
+        hitchObject = hitchObject,
     }
     outer.modifier = modifier
     outer.remove = remove

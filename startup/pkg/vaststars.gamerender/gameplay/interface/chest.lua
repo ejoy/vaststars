@@ -1,4 +1,5 @@
 local iprototype = require "gameplay.interface.prototype"
+local iChest = import_package "vaststars.gameplay".interface "chest"
 
 local CHEST_TYPES <const> = {
     "assembling",
@@ -32,8 +33,12 @@ local function get_space(slot)
     return slot.limit - slot.amount - slot.lock_space
 end
 
-local function set(world, ...)
-    return world:container_set(...)
+local function pickup(world, ...)
+    iChest.chest_pickup(world, ...)
+end
+
+local function place(world, ...)
+    iChest.chest_place(world, ...)
 end
 
 local function has_item(world, e)
@@ -55,7 +60,8 @@ return {
     get = get,
     get_amount = get_amount,
     get_space = get_space,
-    set = set,
     has_item = has_item,
     get_max_slot = get_max_slot,
+    pickup = pickup,
+    place = place,
 }

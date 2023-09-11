@@ -8,3 +8,19 @@ file: mesh.prefab
 op: replace
 path: /2/data/animation/low_power
 value: /pkg/vaststars.resources/animations/lab_animat_low.anim
+---
+file: mesh.prefab
+op: createfile
+path: hitch.prefab
+value:
+  ---
+  data:
+    hitch:
+      group: 0
+      hitch_bounding: true
+    scene: {}
+    scene_needchange: true
+    visible_state: main_view|cast_shadow|selectable
+  policy:
+    ant.render|hitch_object
+  tag: hitch

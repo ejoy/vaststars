@@ -61,14 +61,7 @@ local function move_to_backpack(world, chest, idx)
     local available = math_min(limit - existing, slot.amount)
     assert(available > 0)
 
-    -- if the number of available items to take is insufficient, then forcibly unlock the specified count
-    local lock_item = slot.lock_item
-    local unlocked = slot.amount - lock_item
-    if available > unlocked then
-        lock_item = lock_item - (available - unlocked)
-    end
-
-    ichest.set(world, chest, idx, {lock_item = lock_item, amount = slot.amount - available})
+    ichest.pickup(world, chest, idx, available)
     iBackpack.place(world, slot.item, available)
     set_base_changed(world)
     return available
@@ -90,8 +83,7 @@ local function backpack_to_chest(world, e, f)
         end
 
         assert(pickup(world, slot.item, c))
-        ichest.set(world, e.chest, idx, {amount = ichest.get_amount(slot) + c})
-
+        ichest.place(world, e.chest, idx, c)
         f(slot.item, c)
         ::continue::
     end
@@ -142,7 +134,7 @@ local function backpack_to_assembling(world, e, f)
             goto continue
         end
         assert(pickup(world, slot.item, c))
-        ichest.set(world, e.chest, idx, {amount = amount + c})
+        ichest.place(world, e.chest, idx, c)
 
         f(id, c)
         ::continue::

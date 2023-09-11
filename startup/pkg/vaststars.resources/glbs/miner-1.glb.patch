@@ -4,7 +4,6 @@ op: add
 path: /-
 value:
   data:
-    name: effect
     scene:
       r: {0, 0, 0, 1}
       s: {4, 4, 4}
@@ -14,15 +13,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|effect
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: shelf5
     scene:
       r: {0, 0, 0, 1}
       s: {1, 1, 1}
@@ -32,8 +30,8 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|shelf5
 ---
 file: mesh.prefab
 op: replace
@@ -44,3 +42,45 @@ file: mesh.prefab
 op: replace
 path: /2/data/animation/work
 value: /pkg/vaststars.resources/animations/miner_Bone.anim
+---
+file: mesh.prefab
+op: createfile
+path: hitch.prefab
+value:
+  ---
+  data:
+    hitch:
+      group: 0
+      hitch_bounding: true
+    scene: {}
+    scene_needchange: true
+    visible_state: main_view|cast_shadow|selectable
+  policy:
+    ant.render|hitch_object
+  tag: hitch
+  ---
+  data:
+    scene:
+      r: {0, 0, 0, 1}
+      s: {4, 4, 4}
+      t: {0, 0, 0}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag: slot|effect
+  ---
+  data:
+    scene:
+      r: {0, 0, 0, 1}
+      s: {1, 1, 1}
+      t: {17.968830108642578, 15.485337257385254, 0}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag: slot|shelf5

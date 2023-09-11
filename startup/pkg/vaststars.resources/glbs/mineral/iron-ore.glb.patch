@@ -56,3 +56,19 @@ file: iron-ore.prefab
 op: replace
 path: /2/data/material
 value: materials/Material.001_iron-ore.material
+---
+file: mesh.prefab
+op: createfile
+path: hitch.prefab
+value:
+  ---
+  data:
+    hitch:
+      group: 0
+      hitch_bounding: true
+    scene: {}
+    scene_needchange: true
+    visible_state: main_view|cast_shadow|selectable
+  policy:
+    ant.render|hitch_object
+  tag: hitch

@@ -192,48 +192,6 @@ lget(lua_State* L) {
 }
 
 static int
-lset(lua_State* L) {
-    auto& w = getworld(L);
-    uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
-    uint8_t offset = (uint8_t)(luaL_checkinteger(L, 3)-1);
-    auto c = container::index::from(index);
-    if (c == container::kInvalidIndex) {
-        return 0;
-    }
-    auto& start = w.container.at(c);
-    if (start.eof - c.slot < offset) {
-        return 0;
-    }
-    auto& r = chest::array_at(w, c, offset);
-    if (LUA_TNIL != lua_getfield(L, 4, "type")) {
-        static const char *const opts[] = {"none", "supply", "demand", NULL};
-        r.type = (container::slot::slot_type)luaL_checkoption(L, -1, NULL, opts);
-    }
-    lua_pop(L, 1);
-    if (LUA_TNIL != lua_getfield(L, 4, "item")) {
-        r.item = (uint16_t)luaL_checkinteger(L, -1);
-    }
-    lua_pop(L, 1);
-    if (LUA_TNIL != lua_getfield(L, 4, "amount")) {
-        r.amount = (uint16_t)luaL_checkinteger(L, -1);
-    }
-    lua_pop(L, 1);
-    if (LUA_TNIL != lua_getfield(L, 4, "limit")) {
-        r.limit = (uint16_t)luaL_checkinteger(L, -1);
-    }
-    lua_pop(L, 1);
-    if (LUA_TNIL != lua_getfield(L, 4, "lock_item")) {
-        r.lock_item = (uint16_t)luaL_checkinteger(L, -1);
-    }
-    lua_pop(L, 1);
-    if (LUA_TNIL != lua_getfield(L, 4, "lock_space")) {
-        r.lock_space = (uint16_t)luaL_checkinteger(L, -1);
-    }
-    lua_pop(L, 1);
-    return 0;
-}
-
-static int
 lpickup(lua_State* L) {
     auto& w = getworld(L);
     uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
@@ -304,7 +262,6 @@ luaopen_vaststars_chest_core(lua_State *L) {
         { "create", lcreate },
         { "destroy", ldestroy },
         { "get", lget },
-        { "set", lset },
         { "pickup", lpickup },
         { "place", lplace },
         { NULL, NULL },

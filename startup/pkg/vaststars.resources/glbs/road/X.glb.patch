@@ -4,7 +4,6 @@ op: add
 path: /-
 value:
   data:
-    name: path_b2t_1
     scene:
       r: {0, 0, 0, 1}
       s: {1, 1, 1}
@@ -13,16 +12,15 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
     ant.scene|scene_object
+  tag: slot|path_b2t_1
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_b2t_2
     scene:
       r: {0, 0, 0, 1}
       s: {1, 1, 1}
@@ -31,16 +29,15 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
     ant.scene|scene_object
+  tag: slot|path_b2t_2
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_t2b_1
     scene:
       r: {0, 1, 0, -4.371138828673793e-08}
       s: {1, 1, 1}
@@ -49,16 +46,15 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
     ant.scene|scene_object
+  tag: slot|path_t2b_1
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_t2b_2
     scene:
       r: {0, 1, 0, -4.371138828673793e-08}
       s: {1, 1, 1}
@@ -67,16 +63,15 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
     ant.scene|scene_object
+  tag: slot|path_t2b_2
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_r2l_1
     scene:
       r: {0, -0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
@@ -85,16 +80,15 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
     ant.scene|scene_object
+  tag: slot|path_r2l_1
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_r2l_2
     scene:
       r: {0, -0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
@@ -103,16 +97,15 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
     ant.scene|scene_object
+  tag: slot|path_r2l_2
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_l2r_1
     scene:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
@@ -121,16 +114,15 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
     ant.scene|scene_object
+  tag: slot|path_l2r_1
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_l2r_2
     scene:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
@@ -139,16 +131,15 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
     ant.scene|scene_object
+  tag: slot|path_l2r_2
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_b2r_1
     scene:
       r: {0, 0, 0, 1}
       s: {1, 1, 1}
@@ -157,16 +148,15 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
     ant.scene|scene_object
+  tag: slot|path_b2r_1
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_b2r_2
     scene:
       r: {0, 0.3826834559440613, 0, 0.9238795042037964}
       s: {1, 1, 1}
@@ -175,16 +165,15 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
     ant.scene|scene_object
+  tag: slot|path_b2r_2
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_b2r_3
     scene:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
@@ -193,16 +182,15 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
     ant.scene|scene_object
+  tag: slot|path_b2r_3
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_b2l_1
     scene:
       r: {0, 0, 0, 1}
       s: {1, 1, 1}
@@ -211,16 +199,15 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
     ant.scene|scene_object
+  tag: slot|path_b2l_1
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_b2l_2
     scene:
       r: {0, -0.3826834559440613, 0, 0.9238795042037964}
       s: {1, 1, 1}
@@ -229,16 +216,15 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
     ant.scene|scene_object
+  tag: slot|path_b2l_2
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_b2l_3
     scene:
       r: {0, -0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
@@ -247,16 +233,15 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
     ant.scene|scene_object
+  tag: slot|path_b2l_3
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_t2r_1
     scene:
       r: {0, 1, 0, -4.371138828673793e-08}
       s: {1, 1, 1}
@@ -265,16 +250,15 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
     ant.scene|scene_object
+  tag: slot|path_t2r_1
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_t2r_2
     scene:
       r: {0, 0.9537169337272644, 0, 0.30070582032203674}
       s: {1, 1, 1}
@@ -283,16 +267,15 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
     ant.scene|scene_object
+  tag: slot|path_t2r_2
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_t2r_3
     scene:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
@@ -301,16 +284,15 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
     ant.scene|scene_object
+  tag: slot|path_t2r_3
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_t2l_1
     scene:
       r: {0, 1, 0, -4.371138828673793e-08}
       s: {1, 1, 1}
@@ -319,16 +301,15 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
     ant.scene|scene_object
+  tag: slot|path_t2l_1
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_t2l_2
     scene:
       r: {0, -0.9537169337272644, 0, 0.30070582032203674}
       s: {1, 1, 1}
@@ -337,16 +318,15 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
     ant.scene|scene_object
+  tag: slot|path_t2l_2
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_t2l_3
     scene:
       r: {0, -0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
@@ -355,16 +335,15 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
     ant.scene|scene_object
+  tag: slot|path_t2l_3
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_r2b_1
     scene:
       r: {0, -0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
@@ -373,16 +352,15 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
     ant.scene|scene_object
+  tag: slot|path_r2b_1
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_r2b_2
     scene:
       r: {0, -0.9537169337272644, 0, 0.30070582032203674}
       s: {1, 1, 1}
@@ -391,16 +369,15 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
     ant.scene|scene_object
+  tag: slot|path_r2b_2
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_r2b_3
     scene:
       r: {0, 1, 0, -4.371138828673793e-08}
       s: {1, 1, 1}
@@ -409,16 +386,15 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
     ant.scene|scene_object
+  tag: slot|path_r2b_3
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_r2t_1
     scene:
       r: {0, -0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
@@ -427,16 +403,15 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
     ant.scene|scene_object
+  tag: slot|path_r2t_1
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_r2t_2
     scene:
       r: {0, -0.3826834559440613, 0, 0.9238795042037964}
       s: {1, 1, 1}
@@ -445,16 +420,15 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
     ant.scene|scene_object
+  tag: slot|path_r2t_2
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_r2t_3
     scene:
       r: {0, 0, 0, 1}
       s: {1, 1, 1}
@@ -463,16 +437,15 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
     ant.scene|scene_object
+  tag: slot|path_r2t_3
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_l2b_1
     scene:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
@@ -481,16 +454,15 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
     ant.scene|scene_object
+  tag: slot|path_l2b_1
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_l2b_2
     scene:
       r: {0, 0.9238795042037964, 0, 0.3826834261417389}
       s: {1, 1, 1}
@@ -499,16 +471,15 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
     ant.scene|scene_object
+  tag: slot|path_l2b_2
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_l2b_3
     scene:
       r: {0, 1, 0, -4.371138828673793e-08}
       s: {1, 1, 1}
@@ -517,16 +488,15 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
     ant.scene|scene_object
+  tag: slot|path_l2b_3
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_l2t_1
     scene:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
@@ -535,16 +505,15 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
     ant.scene|scene_object
+  tag: slot|path_l2t_1
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_l2t_2
     scene:
       r: {0, 0.3826834559440613, 0, 0.9238795042037964}
       s: {1, 1, 1}
@@ -553,16 +522,15 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
     ant.scene|scene_object
+  tag: slot|path_l2t_2
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_l2t_3
     scene:
       r: {0, 0, 0, 1}
       s: {1, 1, 1}
@@ -571,16 +539,15 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
     ant.scene|scene_object
+  tag: slot|path_l2t_3
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_b2b_1
     scene:
       t: {3.5, 0, -7.5}
     slot:
@@ -588,15 +555,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|path_b2b_1
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_b2b_2
     scene:
       r: {0, -0.30070579051971436, 0, 0.9537169337272644}
       t: {2.5, 0, -4.5}
@@ -605,15 +571,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|path_b2b_2
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_b2b_3
     scene:
       r: {0, -0.7071067690849304, 0, 0.7071067690849304}
     slot:
@@ -621,15 +586,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|path_b2b_3
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_b2b_4
     scene:
       r: {0, -0.9537169337272644, 0, 0.30070582032203674}
       t: {-2.5, 0, -4.5}
@@ -638,15 +602,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|path_b2b_4
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_b2b_5
     scene:
       r: {0, 1, 0, -4.371138828673793e-08}
       t: {-3.5, 0, -7.5}
@@ -655,15 +618,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|path_b2b_5
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_t2t_1
     scene:
       r: {0, -1, 0, -4.371138828673793e-08}
       t: {-3.5, 0, 7.5}
@@ -672,15 +634,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|path_t2t_1
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_t2t_2
     scene:
       r: {0, 0.9537169337272644, 0, 0.30070582032203674}
       t: {-2.5, 0, 4.5}
@@ -689,15 +650,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|path_t2t_2
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_t2t_3
     scene:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
     slot:
@@ -705,15 +665,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|path_t2t_3
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_t2t_4
     scene:
       r: {0, 0.3826834559440613, 0, 0.9238795042037964}
       t: {2.5, 0, 4.5}
@@ -722,15 +681,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|path_t2t_4
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_t2t_5
     scene:
       t: {3.5, 0, 7.5}
     slot:
@@ -738,15 +696,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|path_t2t_5
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_l2l_1
     scene:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       t: {-7.5, 0, -3.5}
@@ -755,15 +712,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|path_l2l_1
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_l2l_2
     scene:
       r: {0, 0.3826834559440613, 0, 0.9238795042037964}
       t: {-4.5, 0, -2.5}
@@ -772,15 +728,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|path_l2l_2
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_l2l_3
     scene:
       r: {0, 0, 0, 1}
     slot:
@@ -788,15 +743,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|path_l2l_3
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_l2l_4
     scene:
       r: {0, -0.3826834559440613, 0, 0.9238795042037964}
       t: {-4.5, 0, 2.5}
@@ -805,15 +759,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|path_l2l_4
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_l2l_5
     scene:
       r: {0, -0.7071067690849304, 0, 0.7071067690849304}
       t: {-7.5, 0, 3.5}
@@ -822,15 +775,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|path_l2l_5
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_r2r_1
     scene:
       r: {0, -0.7071067690849304, 0, 0.7071067690849304}
       t: {7.5, 0, 3.5}
@@ -839,15 +791,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|path_r2r_1
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_r2r_2
     scene:
       r: {0, -0.9238795042037964, 0, 0.3826834261417389}
       t: {4.5, 0, 2.5}
@@ -856,15 +807,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|path_r2r_2
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_r2r_3
     scene:
       r: {0, 1, 0, -4.371138828673793e-08}
     slot:
@@ -872,15 +822,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|path_r2r_3
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_r2r_4
     scene:
       r: {0, 0.9238795042037964, 0, 0.3826834261417389}
       t: {4.5, 0, -2.5}
@@ -889,15 +838,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|path_r2r_4
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_r2r_5
     scene:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       t: {7.5, 0, -3.5}
@@ -906,15 +854,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|path_r2r_5
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_start_r
     scene:
       r: {0, -0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
@@ -923,16 +870,15 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
     ant.scene|scene_object
+  tag: slot|path_start_r
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_start_t
     scene:
       r: {0, 1, 0, -4.371138828673793e-08}
       s: {1, 1, 1}
@@ -941,16 +887,15 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
     ant.scene|scene_object
+  tag: slot|path_start_t
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_start_l
     scene:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
@@ -959,16 +904,15 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
     ant.scene|scene_object
+  tag: slot|path_start_l
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: path_start_b
     scene:
       t: {3.5, 0, -10}
     slot:
@@ -976,5 +920,5 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|path_start_b

@@ -7,11 +7,11 @@ value:
     efk:
       path: /pkg/vaststars.resources/effects/hydro-plant_smoke.efk
       speed: 1
-    visible_state:""
     name: work1
     scene:
       s: {2, 2, 2}
       t: {-8.439987182617188, 23.299999237060547, -9.138055801391602}
+    visible_state: ""
   mount: 1
   policy:
     ant.general|name
@@ -26,11 +26,11 @@ value:
     efk:
       path: /pkg/vaststars.resources/effects/hydro-plant_smoke.efk
       speed: 1
-    visible_state:""
     name: work2
     scene:
       s: {2, 2, 2}
       t: {8.663139343261719, 23.300060272216797, 8.26727294921875}
+    visible_state: ""
   mount: 1
   policy:
     ant.general|name
@@ -45,11 +45,11 @@ value:
     efk:
       path: /pkg/vaststars.resources/effects/hydro-plant_smoke.efk
       speed: 1
-    visible_state:""
     name: work3
     scene:
       s: {2, 2, 2}
       t: {8.903579711914062, 23.299938201904297, -8.594120025634766}
+    visible_state: ""
   mount: 1
   policy:
     ant.general|name
@@ -64,11 +64,11 @@ value:
     efk:
       path: /pkg/vaststars.resources/effects/hydro-plant_smoke.efk
       speed: 1
-    visible_state:""
     name: work4
     scene:
       s: {2, 2, 2}
       t: {-9.286720275878906, 23.299999237060547, 9.0322265625}
+    visible_state: ""
   mount: 1
   policy:
     ant.general|name
@@ -83,11 +83,11 @@ value:
     efk:
       path: /pkg/vaststars.resources/effects/furnace_smoke.efk
       speed: 1
-    visible_state:""
     name: work
     scene:
       s: {6, 6, 6}
       t: {0, 12.270214080810547, 0}
+    visible_state: ""
   mount: 1
   policy:
     ant.general|name
@@ -99,7 +99,6 @@ op: add
 path: /-
 value:
   data:
-    name: shelf1
     scene:
       r: {0, 1, 0, -4.371138828673793e-08}
       t: {-11, 12, 24.799999237060547}
@@ -108,15 +107,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|shelf1
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: shelf2
     scene:
       r: {0, 1, 0, -4.371138828673793e-08}
       t: {0, 12, 24.799999237060547}
@@ -125,15 +123,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|shelf2
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: shelf3
     scene:
       t: {11, 12, 24.799999237060547}
     slot:
@@ -141,15 +138,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|shelf3
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: shelf4
     scene:
       t: {-11, 12, -24.799999237060547}
     slot:
@@ -157,15 +153,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|shelf4
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: shelf5
     scene:
       t: {0, 12, -24.799999237060547}
     slot:
@@ -173,15 +168,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|shelf5
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: shelf6
     scene:
       t: {11, 12, -24.799999237060547}
     slot:
@@ -189,8 +183,8 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|shelf6
 ---
 file: mesh.prefab
 op: add
@@ -200,13 +194,97 @@ value:
     efk:
       path: /pkg/vaststars.resources/effects/furnace_smoke.efk
       speed: 1
-    visible_state:""
     name: low_power
     scene:
       s: {4, 4, 4}
       t: {0, 12, 0}
+    visible_state: ""
   mount: 1
   policy:
     ant.general|name
     ant.scene|scene_object
     ant.efk|efk
+---
+file: mesh.prefab
+op: createfile
+path: hitch.prefab
+value:
+  ---
+  data:
+    hitch:
+      group: 0
+      hitch_bounding: true
+    scene: {}
+    scene_needchange: true
+    visible_state: main_view|cast_shadow|selectable
+  policy:
+    ant.render|hitch_object
+  tag: hitch
+  ---
+  data:
+    scene:
+      r: {0, 1, 0, -4.371138828673793e-08}
+      t: {-11, 12, 24.799999237060547}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag: slot|shelf1
+  ---
+  data:
+    scene:
+      r: {0, 1, 0, -4.371138828673793e-08}
+      t: {0, 12, 24.799999237060547}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag: slot|shelf2
+  ---
+  data:
+    scene:
+      t: {11, 12, 24.799999237060547}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag: slot|shelf3
+  ---
+  data:
+    scene:
+      t: {-11, 12, -24.799999237060547}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag: slot|shelf4
+  ---
+  data:
+    scene:
+      t: {0, 12, -24.799999237060547}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag: slot|shelf5
+  ---
+  data:
+    scene:
+      t: {11, 12, -24.799999237060547}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag: slot|shelf6
