@@ -173,9 +173,6 @@ return function ()
     function world:container_get(c, i)
         return iChest.get(self, c, i)
     end
-    function world:container_set(c, i, t)
-        return iChest.set(self, c, i, t)
-    end
     function world:now()
         return self._frame
     end
