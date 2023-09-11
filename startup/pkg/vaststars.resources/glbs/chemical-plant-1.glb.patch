@@ -108,7 +108,6 @@ value:
   data:
     hitch:
       group: 0
-      hitch_bounding: true
     scene: {}
     visible_state: main_view|cast_shadow|selectable
   policy:
