@@ -859,20 +859,20 @@ local guide = {
         },
 	},
 
-    {
-        name = "",
-		narrative = {
-            {"合理的铺设管道让液体运输更加高效...哔哩..注意管道和机器液口的连接，耐心..和眼神..是关键(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-2.texture"},
-        },
-        narrative_end = {
-            guide_progress = 57,
-            task = {
-            }
-        },
-        prerequisites = {
-            "生产管道",
-        },
-	},
+    -- {
+    --     name = "",
+	-- 	narrative = {
+    --         {"合理的铺设管道让液体运输更加高效...哔哩..注意管道和机器液口的连接，耐心..和眼神..是关键(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-2.texture"},
+    --     },
+    --     narrative_end = {
+    --         guide_progress = 57,
+    --         task = {
+    --         }
+    --     },
+    --     prerequisites = {
+    --         "生产管道",
+    --     },
+	-- },
 
     {
         name = "",
