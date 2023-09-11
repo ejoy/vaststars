@@ -34,7 +34,7 @@ local function slots(fullpath)
             v.data.scene.r = v.data.scene.r or mc.IDENTITY_QUAT
             v.data.scene.t = v.data.scene.t or mc.ZERO_PT
 
-            local name = assert(v.tag:match("^slot|(.+)$"))
+            local name = assert(v.tag[1])
             res[name] = v.data
         end
     end

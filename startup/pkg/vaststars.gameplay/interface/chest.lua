@@ -251,11 +251,11 @@ function m.chest_set(world, e, items)
 end
 
 function m.chest_pickup(world, e, i, n)
-    return cChest.pickup(world._cworld, e.chest, i, n)
+    return cChest.pickup(world._cworld, e.chest.chest, i, n)
 end
 
 function m.chest_place(world, e, i, n)
-    return cChest.place(world._cworld, e.chest, i, n)
+    return cChest.place(world._cworld, e.chest.chest, i, n)
 end
 
 function m.get(world, c, i)

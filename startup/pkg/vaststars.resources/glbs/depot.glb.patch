@@ -12,7 +12,8 @@ value:
   mount: 1
   policy:
     ant.animation|slot
-  tag: slot|item_slot_1
+  tag:
+    item_slot_1
 ---
 file: mesh.prefab
 op: add
@@ -27,7 +28,8 @@ value:
   mount: 1
   policy:
     ant.animation|slot
-  tag: slot|item_slot_2
+  tag:
+    item_slot_2
 ---
 file: mesh.prefab
 op: add
@@ -42,7 +44,8 @@ value:
   mount: 1
   policy:
     ant.animation|slot
-  tag: slot|item_slot_3
+  tag:
+    item_slot_3
 ---
 file: mesh.prefab
 op: add
@@ -57,7 +60,8 @@ value:
   mount: 1
   policy:
     ant.animation|slot
-  tag: slot|item_slot_4
+  tag:
+    item_slot_4
 ---
 file: mesh.prefab
 op: createfile
@@ -69,11 +73,11 @@ value:
       group: 0
       hitch_bounding: true
     scene: {}
-    scene_needchange: true
     visible_state: main_view|cast_shadow|selectable
   policy:
     ant.render|hitch_object
-  tag: hitch
+  tag:
+    hitch
   ---
   data:
     scene:
@@ -84,7 +88,8 @@ value:
   mount: 1
   policy:
     ant.animation|slot
-  tag: slot|item_slot_1
+  tag:
+    item_slot_1
   ---
   data:
     scene:
@@ -95,7 +100,8 @@ value:
   mount: 1
   policy:
     ant.animation|slot
-  tag: slot|item_slot_2
+  tag:
+    item_slot_2
   ---
   data:
     scene:
@@ -106,7 +112,8 @@ value:
   mount: 1
   policy:
     ant.animation|slot
-  tag: slot|item_slot_3
+  tag:
+    item_slot_3
   ---
   data:
     scene:
@@ -117,4 +124,5 @@ value:
   mount: 1
   policy:
     ant.animation|slot
-  tag: slot|item_slot_4
+  tag:
+    item_slot_4

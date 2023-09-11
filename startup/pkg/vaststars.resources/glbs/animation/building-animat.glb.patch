@@ -22,7 +22,8 @@ value:
       joint_name: None
   policy:
     ant.animation|slot
-  tag: slot|slot1x1
+  tag:
+    slot1x1
 ---
 file: mesh.prefab
 op: add
@@ -36,7 +37,8 @@ value:
       joint_name: None
   policy:
     ant.animation|slot
-  tag: slot|slot3x3
+  tag:
+    slot3x3
 ---
 file: mesh.prefab
 op: add
@@ -50,4 +52,5 @@ value:
       joint_name: None
   policy:
     ant.animation|slot
-  tag: slot|slot5x5
+  tag:
+    slot5x5

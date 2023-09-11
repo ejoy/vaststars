@@ -90,7 +90,8 @@ value:
   mount: 1
   policy:
     ant.animation|slot
-  tag: slot|shelf1
+  tag:
+    shelf1
 ---
 file: mesh.prefab
 op: add
@@ -106,7 +107,8 @@ value:
   mount: 1
   policy:
     ant.animation|slot
-  tag: slot|shelf2
+  tag:
+    shelf2
 ---
 file: mesh.prefab
 op: add
@@ -122,7 +124,8 @@ value:
   mount: 1
   policy:
     ant.animation|slot
-  tag: slot|shelf3
+  tag:
+    shelf3
 ---
 file: mesh.prefab
 op: add
@@ -137,7 +140,8 @@ value:
   mount: 1
   policy:
     ant.animation|slot
-  tag: slot|shelf4
+  tag:
+    shelf4
 ---
 file: mesh.prefab
 op: add
@@ -152,7 +156,8 @@ value:
   mount: 1
   policy:
     ant.animation|slot
-  tag: slot|shelf5
+  tag:
+    shelf5
 ---
 file: mesh.prefab
 op: add
@@ -167,7 +172,8 @@ value:
   mount: 1
   policy:
     ant.animation|slot
-  tag: slot|shelf6
+  tag:
+    shelf6
 ---
 file: mesh.prefab
 op: createfile
@@ -179,11 +185,11 @@ value:
       group: 0
       hitch_bounding: true
     scene: {}
-    scene_needchange: true
     visible_state: main_view|cast_shadow|selectable
   policy:
     ant.render|hitch_object
-  tag: hitch
+  tag:
+    hitch
   ---
   data:
     scene:
@@ -195,7 +201,8 @@ value:
   mount: 1
   policy:
     ant.animation|slot
-  tag: slot|shelf1
+  tag:
+    shelf1
   ---
   data:
     scene:
@@ -207,7 +214,8 @@ value:
   mount: 1
   policy:
     ant.animation|slot
-  tag: slot|shelf2
+  tag:
+    shelf2
   ---
   data:
     scene:
@@ -219,7 +227,8 @@ value:
   mount: 1
   policy:
     ant.animation|slot
-  tag: slot|shelf3
+  tag:
+    shelf3
   ---
   data:
     scene:
@@ -230,7 +239,8 @@ value:
   mount: 1
   policy:
     ant.animation|slot
-  tag: slot|shelf4
+  tag:
+    shelf4
   ---
   data:
     scene:
@@ -241,7 +251,8 @@ value:
   mount: 1
   policy:
     ant.animation|slot
-  tag: slot|shelf5
+  tag:
+    shelf5
   ---
   data:
     scene:
@@ -252,4 +263,5 @@ value:
   mount: 1
   policy:
     ant.animation|slot
-  tag: slot|shelf6
+  tag:
+    shelf6

@@ -102,7 +102,6 @@ function idetail.show(object_id)
         local game_object = vsobject.game_object
         log.info(([[
         {
-            hitch_eid = %s,
             group_id = %s,
             id = %d,
             prototype_name = "%s",
@@ -114,7 +113,6 @@ function idetail.show(object_id)
         },
         %s
         ]]):format(
-            game_object.hitch_entity_object.id,
             game_object.group_id,
             object.id,
             object.prototype_name,

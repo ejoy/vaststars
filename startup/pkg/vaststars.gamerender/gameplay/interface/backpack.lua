@@ -46,8 +46,8 @@ local function get_placeable_count(world, item, count)
     return math_min(count, existing)
 end
 
-local function move_to_backpack(world, chest, idx)
-    local slot = assert(world:container_get(chest, idx))
+local function move_to_backpack(world, e, idx)
+    local slot = assert(world:container_get(e.chest, idx))
     if slot.item == 0 or slot.amount <= 0 then
         return 0
     end
@@ -61,7 +61,7 @@ local function move_to_backpack(world, chest, idx)
     local available = math_min(limit - existing, slot.amount)
     assert(available > 0)
 
-    ichest.pickup(world, chest, idx, available)
+    ichest.pickup(world, e, idx, available)
     iBackpack.place(world, slot.item, available)
     set_base_changed(world)
     return available
@@ -83,7 +83,7 @@ local function backpack_to_chest(world, e, f)
         end
 
         assert(pickup(world, slot.item, c))
-        ichest.place(world, e.chest, idx, c)
+        ichest.place(world, e, idx, c)
         f(slot.item, c)
         ::continue::
     end
@@ -99,7 +99,7 @@ local function chest_to_backpack(world, e, f)
             goto continue
         end
 
-        local c = move_to_backpack(world, e.chest, i)
+        local c = move_to_backpack(world, e, i)
         if c <= 0 then
             goto continue
         end
@@ -134,7 +134,7 @@ local function backpack_to_assembling(world, e, f)
             goto continue
         end
         assert(pickup(world, slot.item, c))
-        ichest.place(world, e.chest, idx, c)
+        ichest.place(world, e, idx, c)
 
         f(id, c)
         ::continue::
@@ -155,7 +155,7 @@ local function assembling_to_backpack(world, e, f)
             goto continue
         end
 
-        local c = move_to_backpack(world, e.chest, idx)
+        local c = move_to_backpack(world, e, idx)
         if c <= 0 then
             goto continue
         end
@@ -165,9 +165,9 @@ local function assembling_to_backpack(world, e, f)
     end
 end
 
-local function can_move_to_backpack(world, chest)
+local function can_move_to_backpack(world, e)
     for i = 1, ichest.MAX_SLOT do
-        local slot = world:container_get(chest, i)
+        local slot = world:container_get(e.chest, i)
         if not slot then
             break
         end

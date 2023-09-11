@@ -1,4 +1,3 @@
-# aluminum
 ---
 file: materials/Material.001.material
 op: copyfile
@@ -27,7 +26,6 @@ file: aluminum.prefab
 op: replace
 path: /2/data/material
 value: materials/Material.001_aluminum.material
-# iron-ore
 ---
 file: materials/Material.001.material
 op: copyfile
@@ -67,8 +65,8 @@ value:
       group: 0
       hitch_bounding: true
     scene: {}
-    scene_needchange: true
     visible_state: main_view|cast_shadow|selectable
   policy:
     ant.render|hitch_object
-  tag: hitch
+  tag:
+    hitch

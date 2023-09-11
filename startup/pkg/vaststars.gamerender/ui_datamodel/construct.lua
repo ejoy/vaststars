@@ -492,7 +492,7 @@ function M:stage_camera_usage(datamodel)
 
         local e = gameplay_core.get_entity(object.gameplay_eid)
         if e.chest then
-            if not ibackpack.can_move_to_backpack(gameplay_core.get_world(), e.chest) then
+            if not ibackpack.can_move_to_backpack(gameplay_core.get_world(), e) then
                 log.error("can not teardown")
                 goto continue
             end
@@ -502,7 +502,7 @@ function M:stage_camera_usage(datamodel)
                 if not slot then
                     break
                 end
-                ibackpack.move_to_backpack(gameplay_core.get_world(), e.chest, i)
+                ibackpack.move_to_backpack(gameplay_core.get_world(), e, i)
             end
         end
 
