@@ -756,7 +756,7 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "车辆修理" {
+  prototype "汽修技术" {
     desc = "研究修理运输车辆工艺",
     type = { "tech" },
     icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
@@ -777,7 +777,7 @@ local prototype = gameplay.register.prototype
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"stat_production", 0, "运输车辆I"},
-    prerequisites = {"车辆修理"},
+    prerequisites = {"汽修技术"},
     count = 4,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate1.texture",
