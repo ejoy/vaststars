@@ -4,7 +4,6 @@ op: add
 path: /-
 value:
   data:
-    name: shelf1
     scene:
       r: {0, 1, 0, -4.371138828673793e-08}
       t: {-11.399999618530273, 7.5, 11.399999618530273}
@@ -13,15 +12,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|shelf1
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: shelf2
     scene:
       r: {0, 1, 0, -4.371138828673793e-08}
       t: {0, 7.5, 15}
@@ -30,15 +28,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|shelf2
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: shelf3
     scene:
       r: {0, -1, 0, -4.371138828673793e-08}
       t: {11.399999618530273, 7.5, 11.399999618530273}
@@ -47,15 +44,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|shelf3
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: shelf4
     scene:
       r: {0, 0, 0, 1}
       t: {-11.399999618530273, 7.5, -11.399999618530273}
@@ -64,15 +60,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|shelf4
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: shelf5
     scene:
       r: {0, 0, 0, 1}
       t: {0, 7.5, -15}
@@ -81,15 +76,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|shelf5
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: shelf6
     scene:
       r: {0, 0, 0, 1}
       t: {11.399999618530273, 7.5, -11.399999618530273}
@@ -98,8 +92,8 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|shelf6
 ---
 file: mesh.prefab
 op: add
@@ -109,14 +103,102 @@ value:
     efk:
       path: /pkg/vaststars.resources/effects/furnace_smoke.efk
       speed: 1
-    visible_state:""
     name: work
     scene:
       r: {0, 0, 0, 1}
       s: {3.200000047683716, 3.200000047683716, 3.200000047683716}
       t: {0, 11.5, 0}
+    visible_state: ""
   mount: 1
   policy:
     ant.general|name
     ant.scene|scene_object
     ant.efk|efk
+---
+file: mesh.prefab
+op: createfile
+path: hitch.prefab
+value:
+  ---
+  data:
+    hitch:
+      group: 0
+      hitch_bounding: true
+    scene: {}
+    scene_needchange: true
+    visible_state: main_view|cast_shadow|selectable
+  policy:
+    ant.render|hitch_object
+  tag: hitch
+  ---
+  data:
+    scene:
+      r: {0, 1, 0, -4.371138828673793e-08}
+      t: {-11.399999618530273, 7.5, 11.399999618530273}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag: slot|shelf1
+  ---
+  data:
+    scene:
+      r: {0, 1, 0, -4.371138828673793e-08}
+      t: {0, 7.5, 15}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag: slot|shelf2
+  ---
+  data:
+    scene:
+      r: {0, -1, 0, -4.371138828673793e-08}
+      t: {11.399999618530273, 7.5, 11.399999618530273}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag: slot|shelf3
+  ---
+  data:
+    scene:
+      r: {0, 0, 0, 1}
+      t: {-11.399999618530273, 7.5, -11.399999618530273}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag: slot|shelf4
+  ---
+  data:
+    scene:
+      r: {0, 0, 0, 1}
+      t: {0, 7.5, -15}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag: slot|shelf5
+  ---
+  data:
+    scene:
+      r: {0, 0, 0, 1}
+      t: {11.399999618530273, 7.5, -11.399999618530273}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag: slot|shelf6

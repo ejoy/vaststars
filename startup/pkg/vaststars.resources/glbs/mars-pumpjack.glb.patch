@@ -7,11 +7,11 @@ value:
     efk:
       path: /pkg/vaststars.resources/effects/mars_Pumpjack_water.efk
       speed: 1
-    visible_state:""
     name: work
     scene:
       s: {15, 10, 15}
       t: {0, 0.5, 0}
+    visible_state: ""
   mount: 1
   policy:
     ant.general|name
@@ -27,3 +27,19 @@ file: mesh.prefab
 op: replace
 path: /2/data/animation/work
 value: /pkg/vaststars.resources/animations/mars-pumpjack_animat.anim
+---
+file: mesh.prefab
+op: createfile
+path: hitch.prefab
+value:
+  ---
+  data:
+    hitch:
+      group: 0
+      hitch_bounding: true
+    scene: {}
+    scene_needchange: true
+    visible_state: main_view|cast_shadow|selectable
+  policy:
+    ant.render|hitch_object
+  tag: hitch

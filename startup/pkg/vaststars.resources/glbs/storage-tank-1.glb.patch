@@ -4,7 +4,6 @@ op: add
 path: /-
 value:
   data:
-    name: water_slot
     scene:
       r: {0, 0, 0, 1}
       s: {1, 1, 1}
@@ -14,5 +13,34 @@ value:
       joint_name: Bone
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|water_slot
+---
+file: mesh.prefab
+op: createfile
+path: hitch.prefab
+value:
+  ---
+  data:
+    hitch:
+      group: 0
+      hitch_bounding: true
+    scene: {}
+    scene_needchange: true
+    visible_state: main_view|cast_shadow|selectable
+  policy:
+    ant.render|hitch_object
+  tag: hitch
+  ---
+  data:
+    scene:
+      r: {0, 0, 0, 1}
+      s: {1, 1, 1}
+      t: {0, -13, 0}
+    slot:
+      follow_flag: 1
+      joint_name: Bone
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag: slot|water_slot

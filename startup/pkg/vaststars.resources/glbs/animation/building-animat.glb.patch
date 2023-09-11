@@ -14,7 +14,6 @@ op: add
 path: /-
 value:
   data:
-    name: slot1x1
     scene:
       s: {7, 7, 7}
       t: {0, 6, 0}
@@ -22,35 +21,33 @@ value:
       follow_flag: 1
       joint_name: None
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|slot1x1
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: slot3x3
     scene:
       s: {13, 13, 13}
     slot:
       follow_flag: 1
       joint_name: None
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|slot3x3
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: slot5x5
     scene:
       s: {20, 20, 20}
     slot:
       follow_flag: 1
       joint_name: None
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|slot5x5

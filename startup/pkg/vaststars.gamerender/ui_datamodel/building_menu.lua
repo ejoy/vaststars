@@ -325,7 +325,7 @@ function M:stage_ui_update(datamodel, gameplay_eid)
             print("failed to place")
             goto continue
         end
-        ichest.set(gameplay_core.get_world(), e[component], 1, {amount = slot.amount + 1})
+        ichest.place(gameplay_core.get_world(), e[component], 1)
         ::continue::
     end
 

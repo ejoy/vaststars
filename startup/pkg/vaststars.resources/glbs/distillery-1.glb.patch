@@ -7,11 +7,11 @@ value:
     efk:
       path: /pkg/vaststars.resources/effects/distillery_fire.efk
       speed: 1
-    visible_state:""
     name: work1
     scene:
       s: {3, 3, 3}
       t: {0, 9.600000381469727, 0}
+    visible_state: ""
   mount: 1
   policy:
     ant.general|name
@@ -26,11 +26,11 @@ value:
     efk:
       path: /pkg/vaststars.resources/effects/hydro-plant_smoke.efk
       speed: 1
-    visible_state:""
     name: work2
     scene:
       s: {1.5, 1.5, 1.5}
       t: {-4.099999904632568, 30.5, -8}
+    visible_state: ""
   mount: 1
   policy:
     ant.general|name
@@ -45,11 +45,11 @@ value:
     efk:
       path: /pkg/vaststars.resources/effects/hydro-plant_smoke.efk
       speed: 1
-    visible_state:""
     name: work3
     scene:
       s: {1.5, 1.5, 1.5}
       t: {3.4137206077575684, 30.49993896484375, -7.484030246734619}
+    visible_state: ""
   mount: 1
   policy:
     ant.general|name
@@ -64,12 +64,12 @@ value:
     efk:
       path: /pkg/vaststars.resources/effects/distillery_fire.efk
       speed: 1
-    visible_state:""
     name: work4
     scene:
       r: {0, -0.1736481785774231, 0, 0.9848077297210693}
       s: {3, 3, 3}
       t: {0, 9.600000381469727, 0}
+    visible_state: ""
   mount: 1
   policy:
     ant.general|name
@@ -81,7 +81,6 @@ op: add
 path: /-
 value:
   data:
-    name: shelf1
     scene:
       r: {0, 1, 0, -4.371138828673793e-08}
       t: {-12, 15, 17}
@@ -90,15 +89,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|shelf1
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: shelf2
     scene:
       r: {0, 1, 0, -4.371138828673793e-08}
       t: {0, 17.84029769897461, 17}
@@ -107,15 +105,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|shelf2
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: shelf3
     scene:
       r: {0, 1, 0, -4.371138828673793e-08}
       t: {12, 15, 17}
@@ -124,15 +121,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|shelf3
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: shelf4
     scene:
       t: {-17, 15, -17}
     slot:
@@ -140,15 +136,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|shelf4
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: shelf5
     scene:
       t: {0, 11, -22}
     slot:
@@ -156,15 +151,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|shelf5
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: shelf6
     scene:
       t: {17, 15, -17}
     slot:
@@ -172,5 +166,90 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|shelf6
+---
+file: mesh.prefab
+op: createfile
+path: hitch.prefab
+value:
+  ---
+  data:
+    hitch:
+      group: 0
+      hitch_bounding: true
+    scene: {}
+    scene_needchange: true
+    visible_state: main_view|cast_shadow|selectable
+  policy:
+    ant.render|hitch_object
+  tag: hitch
+  ---
+  data:
+    scene:
+      r: {0, 1, 0, -4.371138828673793e-08}
+      t: {-12, 15, 17}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag: slot|shelf1
+  ---
+  data:
+    scene:
+      r: {0, 1, 0, -4.371138828673793e-08}
+      t: {0, 17.84029769897461, 17}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag: slot|shelf2
+  ---
+  data:
+    scene:
+      r: {0, 1, 0, -4.371138828673793e-08}
+      t: {12, 15, 17}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag: slot|shelf3
+  ---
+  data:
+    scene:
+      t: {-17, 15, -17}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag: slot|shelf4
+  ---
+  data:
+    scene:
+      t: {0, 11, -22}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag: slot|shelf5
+  ---
+  data:
+    scene:
+      t: {17, 15, -17}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag: slot|shelf6

@@ -3,9 +3,25 @@ file: mesh.prefab
 op: replace
 path: /1/data/scene
 value:
-    s : {2, 2, 2}
+  s: {2, 2, 2}
 ---
 file: mesh.prefab
 op: replace
 path: /3/data/visible_state
 value: main_view|selectable
+---
+file: mesh.prefab
+op: createfile
+path: hitch.prefab
+value:
+  ---
+  data:
+    hitch:
+      group: 0
+      hitch_bounding: true
+    scene: {}
+    scene_needchange: true
+    visible_state: main_view|cast_shadow|selectable
+  policy:
+    ant.render|hitch_object
+  tag: hitch

@@ -4,7 +4,6 @@ op: add
 path: /-
 value:
   data:
-    name: shelf2
     scene:
       t: {0, 19.700000762939453, 11}
     slot:
@@ -12,15 +11,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|shelf2
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: shelf3
     scene:
       t: {8.899999618530273, 19.700000762939453, 11}
     slot:
@@ -28,15 +26,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|shelf3
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: shelf1
     scene:
       t: {-8.899999618530273, 19.700000762939453, 11}
     slot:
@@ -44,15 +41,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|shelf1
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: shelf5
     scene:
       t: {0, 3.799999952316284, -13.199999809265137}
     slot:
@@ -60,15 +56,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|shelf5
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: shelf6
     scene:
       t: {8.399999618530273, 3.799999952316284, -13.199999809265137}
     slot:
@@ -76,15 +71,14 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|shelf6
 ---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
-    name: shelf4
     scene:
       t: {-8.399999618530273, 3.799999952316284, -13.199999809265137}
     slot:
@@ -92,8 +86,8 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|shelf4
 ---
 file: mesh.prefab
 op: replace
@@ -104,3 +98,85 @@ file: mesh.prefab
 op: replace
 path: /2/data/animation/work
 value: /pkg/vaststars.resources/animations/mars-assembling-machine_animat.anim
+---
+file: mesh.prefab
+op: createfile
+path: hitch.prefab
+value:
+  ---
+  data:
+    hitch:
+      group: 0
+      hitch_bounding: true
+    scene: {}
+    scene_needchange: true
+    visible_state: main_view|cast_shadow|selectable
+  policy:
+    ant.render|hitch_object
+  tag: hitch
+  ---
+  data:
+    scene:
+      t: {0, 19.700000762939453, 11}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag: slot|shelf2
+  ---
+  data:
+    scene:
+      t: {8.899999618530273, 19.700000762939453, 11}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag: slot|shelf3
+  ---
+  data:
+    scene:
+      t: {-8.899999618530273, 19.700000762939453, 11}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag: slot|shelf1
+  ---
+  data:
+    scene:
+      t: {0, 3.799999952316284, -13.199999809265137}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag: slot|shelf5
+  ---
+  data:
+    scene:
+      t: {8.399999618530273, 3.799999952316284, -13.199999809265137}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag: slot|shelf6
+  ---
+  data:
+    scene:
+      t: {-8.399999618530273, 3.799999952316284, -13.199999809265137}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag: slot|shelf4

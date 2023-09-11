@@ -12,8 +12,7 @@ local ing_res_motion_sys = ecs.system "ing_res_motion_system"
 local motions = {}
 local motion_caches = {}
 local function set_visible(inst, visible)
-    local alleid = inst.tag["*"]
-    for _, eid in ipairs(alleid) do
+    for _, eid in ipairs(inst.tag["*"]) do
         local e <close> = world:entity(eid, "visible_state?in")
         if e.visible_state then
             ivs.set_state(e, "main_view", visible)

@@ -7,11 +7,11 @@ value:
     efk:
       path: /pkg/vaststars.resources/effects/mars-truck_smoke.efk
       speed: 1
-    visible_state: main_queue
     name: work
     scene:
       s: {3, 3, 3}
       t: {0, 0, -3}
+    visible_state: main_queue
   mount: 1
   policy:
     ant.general|name
@@ -23,7 +23,6 @@ op: add
 path: /-
 value:
   data:
-    name: item
     scene:
       s: {1.5, 1.5, 1.5}
       t: {0, 3.7491300106048584, -1.5}
@@ -32,5 +31,33 @@ value:
       joint_name: None
   mount: 1
   policy:
-    ant.general|name
     ant.animation|slot
+  tag: slot|item
+---
+file: mesh.prefab
+op: createfile
+path: hitch.prefab
+value:
+  ---
+  data:
+    hitch:
+      group: 0
+      hitch_bounding: true
+    scene: {}
+    scene_needchange: true
+    visible_state: main_view|cast_shadow|selectable
+  policy:
+    ant.render|hitch_object
+  tag: hitch
+  ---
+  data:
+    scene:
+      s: {1.5, 1.5, 1.5}
+      t: {0, 3.7491300106048584, -1.5}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag: slot|item
