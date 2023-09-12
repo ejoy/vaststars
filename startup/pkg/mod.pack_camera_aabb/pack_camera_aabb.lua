@@ -44,10 +44,10 @@ function pca_sys:update_camera()
         ray_intersect_with_plane(CUSTOM_NPLANE)
         ray_intersect_with_plane(CUSTOM_FPLANE)
         local aabb_min, aabb_max = math3d.minmax(ipoints)
-        local update_aabb        = math3d.marked_aabb(aabb_min, aabb_max)
         math3d.unmark(pcae.bounding.scene_aabb)
-        pcae.bounding.scene_aabb = update_aabb
-        pcae.bounding.aabb       = update_aabb     
+        math3d.unmark(pcae.bounding.aabb)
+        pcae.bounding.scene_aabb = math3d.marked_aabb(aabb_min, aabb_max)
+        pcae.bounding.aabb       = math3d.marked_aabb(aabb_min, aabb_max)  
     end 
 end
 
