@@ -978,3 +978,18 @@ value:
     ant.animation|slot
   tag:
     path_start_b
+---
+file: mesh.prefab
+op: createfile
+path: hitch.prefab
+value:
+  ---
+  data:
+    hitch:
+      group: 0
+    scene: {}
+    visible_state: main_view|cast_shadow|selectable
+  policy:
+    ant.render|hitch_object
+  tag:
+    hitch
