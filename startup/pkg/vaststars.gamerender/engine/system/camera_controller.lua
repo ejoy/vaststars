@@ -114,7 +114,6 @@ local function __set_camera_from_prefab(prefab)
     local e <close> = world:entity(mq.camera_ref, "scene:update")
     iom.set_srt(e, c.scene.s or mc.ONE, c.scene.r, c.scene.t)
     ic.set_frustum(e, c.camera.frustum)
-    ic.set_pack_camera_aabb(e, c.pack_camera_aabb)
 end
 
 local function __set_camera_srt(s, r, t)
