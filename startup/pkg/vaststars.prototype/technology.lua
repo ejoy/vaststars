@@ -76,7 +76,7 @@ local prototype = gameplay.register.prototype
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = {"task" },
     task = {"select_entity", 0, "采矿机I"},
-    prerequisites = {"更多碎石"},
+    prerequisites = {"搜索废墟"},
     count = 1,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",

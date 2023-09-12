@@ -9,7 +9,6 @@ function c:ctor(init, pt)
     local e = {
         airport = {
             id = 0,
-            item = 0,
         }
     }
     for _, name in ipairs(pt.drone) do
@@ -17,13 +16,6 @@ function c:ctor(init, pt)
             x = init.x,
             y = init.y,
         }
-    end
-    if init.items ~= nil then
-        local name = init.items[1]
-        if name ~= nil and name ~= "" then
-            local item_prototype = assert(prototype.queryByName(name), "Invalid item: " .. name)
-            e.airport.item = item_prototype.id
-        end
     end
     return e
 end
