@@ -3,7 +3,6 @@ local world = ecs.world
 local w = world.w
 
 local irmlui = ecs.require "ant.rmlui|rmlui_system"
-local json = require "engine.system.json"
 local tracedoc = require "utility.tracedoc"
 local table_unpack = table.unpack
 local fs = require "filesystem"
@@ -83,12 +82,7 @@ local function open(uiData, ...)
             return
         end
 
-        local res, err = json:decode(event.data)
-        if not res then
-            error(("%s"):format(err))
-            return
-        end
-
+        local res = event.data
         if res.event == "__CLOSE" then
             local close_url = res.ud[1] or url
             closeWindows[close_url] = true
@@ -117,7 +111,7 @@ local function open(uiData, ...)
         local ud = {}
         ud.event = "__DATAMODEL"
         ud.ud = tracedoc.diff(binding.datamodel)
-        binding.window.postMessage(json:encode(ud))
+        binding.window.postMessage(ud)
 
         tracedoc.commit(binding.datamodel)
         if windowListeners[url] then
@@ -175,7 +169,7 @@ function ui_system.ui_update()
             local ud = {}
             ud.event = msg[2]
             ud.ud = {table_unpack(msg, 3, #msg)}
-            binding.window.postMessage(json:encode(ud))
+            binding.window.postMessage(ud)
         end
     end
 
@@ -185,7 +179,7 @@ function ui_system.ui_update()
             local ud = {}
             ud.event = msg[3]
             ud.ud = {table_unpack(msg, 4, #msg)}
-            windowBindings[msg[2]].window.postMessage(json:encode(ud))
+            windowBindings[msg[2]].window.postMessage(ud)
         end
     end
 
