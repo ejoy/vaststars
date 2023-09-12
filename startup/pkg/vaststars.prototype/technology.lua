@@ -948,7 +948,7 @@ prototype "收集空气" {
   type = { "task" },
   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
   task = {"stat_production", 0, "空气"},
-  prerequisites = {"建造空气过滤器","采集地下水"},
+  prerequisites = {"生产气候科技包"},
   count = 20000,
   tips_pic = {
     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_air1.texture",
@@ -1030,6 +1030,7 @@ prototype "碳处理1" {
   prerequisites = {"电解水","空气分离工艺1"},
   ingredients = {
       {"气候科技包", 1},
+      {"地质科技包", 1},
   },
   count = 5,
   time = "4s"
@@ -1141,6 +1142,7 @@ prototype "碳处理2" {
   prerequisites = {"生产氢气","生产二氧化碳"},
   ingredients = {
       {"气候科技包", 1},
+      {"地质科技包", 1},
   },
   count = 8,
   time = "2s"
@@ -1347,6 +1349,22 @@ prototype "挖掘1" {
   time = "5s"
 }
 
+
+prototype "仓库存储" {
+  desc = "使用仓库存储物品",
+  type = { "tech" },
+  icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
+  effects = {
+    unlock_recipe = {"仓库1"},
+  },
+  prerequisites = {"生产机械科技包"},
+  ingredients = {
+    {"机械科技包", 1},
+  },
+  count = 5,
+  time = "12s"
+}
+
 prototype "无人机运输1" {
   desc = "使用无人机快速运送物品",
   type = { "tech" },
@@ -1354,12 +1372,12 @@ prototype "无人机运输1" {
   effects = {
     unlock_recipe = {"无人机平台1"},
   },
-  prerequisites = {"生产机械科技包"},
+  prerequisites = {"仓库存储"},
   ingredients = {
     {"机械科技包", 1},
   },
-  count = 2,
-  time = "12s"
+  count = 4,
+  time = "15s"
 }
 
 prototype "蒸馏1" {

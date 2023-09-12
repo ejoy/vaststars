@@ -1,4 +1,3 @@
-local json = require "lua.json"
 local tracedoc = require "lua.tracedoc"
 
 local M = {}
@@ -6,28 +5,28 @@ function M.world_pub(msg)
     local ud = {}
     ud.event = "__WORLD_PUB"
     ud.ud = msg
-    window.extern.postMessage(json:encode(ud))
+    window.extern.postMessage(ud)
 end
 
 function M.pub(msg)
     local ud = {}
     ud.event = "__PUB"
     ud.ud = msg
-    window.extern.postMessage(json:encode(ud))
+    window.extern.postMessage(ud)
 end
 
 function M.open(url, ...)
     local ud = {}
     ud.event = "__OPEN"
     ud.ud = {url, ...}
-    window.extern.postMessage(json:encode(ud))
+    window.extern.postMessage(ud)
 end
 
 function M.close(url)
     local ud = {}
     ud.event = "__CLOSE"
     ud.ud = {url}
-    window.extern.postMessage(json:encode(ud))
+    window.extern.postMessage(ud)
 end
 
 function M.addEventListener(event_funcs)
@@ -36,16 +35,13 @@ function M.addEventListener(event_funcs)
             console.log("event data is nil")
             return
         end
-        local res, err = json:decode(event.data)
-        if res then
-            local func = event_funcs[res.event]
-            if not func then
-                return
-            end
-            func(table.unpack(res.ud))
+        local res = event.data
+        local func = event_funcs[res.event]
+        if not func then
             return
         end
-        error(('%s'):format(err))
+        func(table.unpack(res.ud))
+        return
     end)
 end
 
@@ -60,12 +56,7 @@ function M.createDataMode(init, onload)
             console.log("event data is nil")
             return
         end
-        local res, err = json:decode(event.data)
-        if not res then
-            error(('%s'):format(err))
-            return
-        end
-
+        local res = event.data
         if res.event ~= "__DATAMODEL" then
             return
         end

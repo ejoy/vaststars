@@ -94,6 +94,7 @@ prototype "气罐I" {
 
 prototype "地下水挖掘机I" {
     model = "glbs/mars-pumpjack.glb|mesh.prefab",
+    model_status = {work = true, low_power = true},
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_pumpjack.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
@@ -127,6 +128,7 @@ prototype "地下水挖掘机I" {
 
 prototype "地下水挖掘机II" {
     model = "glbs/mars-pumpjack.glb|mesh.prefab",
+    model_status = {work = true, low_power = true},
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_pumpjack.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
@@ -160,6 +162,7 @@ prototype "地下水挖掘机II" {
 
 prototype "核子挖掘机" {
     model = "glbs/mars-pumpjack.glb|mesh.prefab",
+    model_status = {work = true, low_power = true},
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_pumpjack.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
@@ -191,6 +194,7 @@ prototype "核子挖掘机" {
 
 prototype "压力泵I" {
     model = "glbs/pump-1.glb|mesh.prefab",
+    model_status = {work = true, low_power = true},
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_pump.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "fluidbox", "pump"},
@@ -215,6 +219,7 @@ prototype "压力泵I" {
 
 prototype "烟囱I" {
     model = "glbs/chimney-1.glb|mesh.prefab",
+    model_status = {work = true, low_power = true},
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_chimney.texture",
     construct_detector = {"exclusive"},
     type = {"building", "fluidbox", "chimney", "auto_set_recipe"},
@@ -236,6 +241,7 @@ prototype "烟囱I" {
 
 prototype "烟囱II" {
     model = "glbs/chimney-1.glb|mesh.prefab",
+    model_status = {work = true, low_power = true},
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_chimney.texture",
     construct_detector = {"exclusive"},
     type = {"building", "fluidbox", "chimney", "auto_set_recipe"},
@@ -257,6 +263,7 @@ prototype "烟囱II" {
 
 prototype "排水口I" {
     model = "glbs/mars-outfall.glb|mesh.prefab",
+    model_status = {work = true, low_power = true},
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_mars_outfall.texture",
     construct_detector = {"exclusive"},
     type = {"building", "fluidbox", "chimney", "auto_set_recipe"},
@@ -279,6 +286,7 @@ prototype "排水口I" {
 
 prototype "排水口II" {
     model = "glbs/mars-outfall.glb|mesh.prefab",
+    model_status = {work = true, low_power = true},
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_mars_outfall.texture",
     construct_detector = {"exclusive"},
     type = {"building", "fluidbox", "chimney", "auto_set_recipe"},
@@ -301,6 +309,7 @@ prototype "排水口II" {
 
 prototype "空气过滤器I" {
     model = "glbs/air-filter.glb|mesh.prefab",
+    model_status = {work = true, low_power = true},
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_air_filter.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
@@ -332,6 +341,7 @@ prototype "空气过滤器I" {
 
 prototype "空气过滤器II" {
     model = "glbs/air-filter.glb|mesh.prefab",
+    model_status = {work = true, low_power = true},
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_air_filter.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
@@ -362,6 +372,7 @@ prototype "空气过滤器II" {
 
 prototype "空气过滤器III" {
     model = "glbs/air-filter.glb|mesh.prefab",
+    model_status = {work = true, low_power = true},
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_air_filter.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},

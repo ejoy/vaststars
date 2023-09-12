@@ -3,6 +3,7 @@ local prototype = gameplay.register.prototype
 
 prototype "指挥中心" {
     model = "glbs/headquater-1.glb|mesh.prefab",
+    model_status = {work = true},
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_headquarter.texture",
     construct_detector = {"exclusive"},
     craft_category = {"基地制造"},
@@ -32,6 +33,7 @@ prototype "科研中心I" {
     type = {"building", "consumer","laboratory"},
     chest_style = "chest",
     model = "glbs/lab-1.glb|mesh.prefab",
+    model_status = {work = true, low_power = true},
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_lab.texture",
     construct_detector = {"exclusive"},
     area = "3x3",
@@ -55,6 +57,7 @@ prototype "科研中心II" {
     type = {"building", "consumer","laboratory"},
     chest_style = "chest",
     model = "glbs/lab-1.glb|mesh.prefab",
+    model_status = {work = true, low_power = true},
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_lab.texture",
     construct_detector = {"exclusive"},
     area = "3x3",
@@ -74,6 +77,7 @@ prototype "科研中心III" {
     type = {"building", "consumer","laboratory"},
     chest_style = "chest",
     model = "glbs/lab-1.glb|mesh.prefab",
+    model_status = {work = true, low_power = true},
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_lab.texture",
     construct_detector = {"exclusive"},
     area = "3x3",
@@ -331,6 +335,7 @@ prototype "停车站" {
 prototype "广播塔I" {
     type = {"building", "consumer"},
     model = "glbs/lab-1.glb|mesh.prefab",
+    model_status = {work = true, low_power = true},
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_lab.texture",
     construct_detector = {"exclusive"},
     area = "3x3",
@@ -345,6 +350,7 @@ prototype "广播塔I" {
 prototype "广播塔II" {
     type = {"building", "consumer"},
     model = "glbs/lab-1.glb|mesh.prefab",
+    model_status = {work = true, low_power = true},
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_lab.texture",
     construct_detector = {"exclusive"},
     area = "3x3",
@@ -359,6 +365,7 @@ prototype "广播塔II" {
 prototype "广播塔III" {
     type = {"building", "consumer"},
     model = "glbs/lab-1.glb|mesh.prefab",
+    model_status = {work = true, low_power = true},
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_lab.texture",
     construct_detector = {"exclusive"},
     area = "3x3",

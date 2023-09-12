@@ -36,11 +36,19 @@ value:
     shelf5
 ---
 file: mesh.prefab
+op: copyfile
+path: low_power.prefab
+---
+file: low_power.prefab
 op: replace
 path: /2/data/animation/low_power
 value: /pkg/vaststars.resources/animations/miner_Bone_low.anim
 ---
 file: mesh.prefab
+op: copyfile
+path: work.prefab
+---
+file: work.prefab
 op: replace
 path: /2/data/animation/work
 value: /pkg/vaststars.resources/animations/miner_Bone.anim

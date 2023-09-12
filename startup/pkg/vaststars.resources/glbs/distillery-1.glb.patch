@@ -1,5 +1,9 @@
 ---
 file: mesh.prefab
+op: copyfile
+path: work.prefab
+---
+file: work.prefab
 op: add
 path: /-
 value:
@@ -7,18 +11,18 @@ value:
     efk:
       path: /pkg/vaststars.resources/effects/distillery_fire.efk
       speed: 1
-    name: work1
     scene:
       s: {3, 3, 3}
       t: {0, 9.600000381469727, 0}
-    visible_state: ""
+    visible_state: main_queue
   mount: 1
   policy:
-    ant.general|name
     ant.scene|scene_object
     ant.efk|efk
+  tag:
+    work1
 ---
-file: mesh.prefab
+file: work.prefab
 op: add
 path: /-
 value:
@@ -26,18 +30,18 @@ value:
     efk:
       path: /pkg/vaststars.resources/effects/hydro-plant_smoke.efk
       speed: 1
-    name: work2
     scene:
       s: {1.5, 1.5, 1.5}
       t: {-4.099999904632568, 30.5, -8}
-    visible_state: ""
+    visible_state: main_queue
   mount: 1
   policy:
-    ant.general|name
     ant.scene|scene_object
     ant.efk|efk
+  tag:
+    work2
 ---
-file: mesh.prefab
+file: work.prefab
 op: add
 path: /-
 value:
@@ -45,18 +49,18 @@ value:
     efk:
       path: /pkg/vaststars.resources/effects/hydro-plant_smoke.efk
       speed: 1
-    name: work3
     scene:
       s: {1.5, 1.5, 1.5}
       t: {3.4137206077575684, 30.49993896484375, -7.484030246734619}
-    visible_state: ""
+    visible_state: main_queue
   mount: 1
   policy:
-    ant.general|name
     ant.scene|scene_object
     ant.efk|efk
+  tag:
+    work3
 ---
-file: mesh.prefab
+file: work.prefab
 op: add
 path: /-
 value:
@@ -64,17 +68,17 @@ value:
     efk:
       path: /pkg/vaststars.resources/effects/distillery_fire.efk
       speed: 1
-    name: work4
     scene:
       r: {0, -0.1736481785774231, 0, 0.9848077297210693}
       s: {3, 3, 3}
       t: {0, 9.600000381469727, 0}
-    visible_state: ""
+    visible_state: main_queue
   mount: 1
   policy:
-    ant.general|name
     ant.scene|scene_object
     ant.efk|efk
+  tag:
+    work4
 ---
 file: mesh.prefab
 op: add

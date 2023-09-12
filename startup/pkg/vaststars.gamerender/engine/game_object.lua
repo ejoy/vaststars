@@ -7,8 +7,6 @@ local iom               = ecs.require "ant.objcontroller|obj_motion"
 local irl               = ecs.require "ant.render|render_layer"
 local ig                = ecs.require "ant.group|group"
 local imodifier         = ecs.require "ant.modifier|modifier"
-local iefk              = ecs.require "ant.efk|efk"
-local ivs               = ecs.require "ant.render|visible_state"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
 local ANIMATIONS_BASE_PATH <const> = "/pkg/vaststars.resources/animations/"
@@ -70,22 +68,6 @@ local __get_hitch_children ; do
         end
     end
 
-    local function playEfk(e, workstatus)
-        w:extend(e, "eid:in efk:in name:in visible_state:in")
-        local auto_play = ivs.has_state(e, "main_queue")
-        if auto_play then
-            return
-        end
-        if not e.name:match("^work.*$") and not e.name:match("^idle.*$") and not e.name:match("^low_power.*$") then
-            print("unknown efk", e.name)
-        end
-        if (workstatus == "work" and e.name:match("^work.*$")) or
-           (workstatus == "idle" and e.name:match("^idle.*$")) or
-           (workstatus == "low_power" and e.name:match("^low_power.*$")) then
-            iefk.play(e)
-        end
-    end
-
     local function getEventFile(prefab)
         local PATTERN <const> = "^.*/(.*)%.glb|.*%.prefab$"
         local match = prefab:match(PATTERN)
@@ -115,10 +97,6 @@ local __get_hitch_children ; do
 
                     if workstatus and e.animation then
                         playAnimation(self, e, workstatus, hitch_group_id)
-                    end
-
-                    if workstatus and e.efk then
-                        playEfk(e, workstatus)
                     end
 
                     -- special handling for keyframe animations

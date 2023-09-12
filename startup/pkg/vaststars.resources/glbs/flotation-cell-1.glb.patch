@@ -1,5 +1,9 @@
 ---
 file: mesh.prefab
+op: copyfile
+path: work.prefab
+---
+file: work.prefab
 op: add
 path: /-
 value:
@@ -7,18 +11,22 @@ value:
     efk:
       path: /pkg/vaststars.resources/effects/flotation-cell_popo.efk
       speed: 1
-    name: work
     scene:
       s: {4, 4, 4}
       t: {0, 3, 0}
-    visible_state: ""
+    visible_state: main_queue
   mount: 1
   policy:
-    ant.general|name
     ant.scene|scene_object
     ant.efk|efk
+  tag:
+    work
 ---
 file: mesh.prefab
+op: copyfile
+path: low_power.prefab
+---
+file: low_power.prefab
 op: add
 path: /-
 value:
@@ -26,16 +34,16 @@ value:
     efk:
       path: /pkg/vaststars.resources/effects/flotation-cell_popo_low.efk
       speed: 1
-    name: low_power
     scene:
       s: {4, 4, 4}
       t: {0, 3, 0}
-    visible_state: ""
+    visible_state: main_queue
   mount: 1
   policy:
-    ant.general|name
     ant.scene|scene_object
     ant.efk|efk
+  tag:
+    low_power
 ---
 file: mesh.prefab
 op: createfile

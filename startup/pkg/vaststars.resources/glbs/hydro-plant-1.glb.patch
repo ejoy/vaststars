@@ -1,5 +1,9 @@
 ---
 file: mesh.prefab
+op: copyfile
+path: work.prefab
+---
+file: work.prefab
 op: add
 path: /-
 value:
@@ -7,18 +11,18 @@ value:
     efk:
       path: /pkg/vaststars.resources/effects/hydro-plant_smoke.efk
       speed: 1
-    name: work1
     scene:
       s: {2, 2, 2}
       t: {-8.439987182617188, 23.299999237060547, -9.138055801391602}
-    visible_state: ""
+    visible_state: main_queue
   mount: 1
   policy:
-    ant.general|name
     ant.scene|scene_object
     ant.efk|efk
+  tag:
+    work1
 ---
-file: mesh.prefab
+file: work.prefab
 op: add
 path: /-
 value:
@@ -26,18 +30,18 @@ value:
     efk:
       path: /pkg/vaststars.resources/effects/hydro-plant_smoke.efk
       speed: 1
-    name: work2
     scene:
       s: {2, 2, 2}
       t: {8.663139343261719, 23.300060272216797, 8.26727294921875}
-    visible_state: ""
+    visible_state: main_queue
   mount: 1
   policy:
-    ant.general|name
     ant.scene|scene_object
     ant.efk|efk
+  tag:
+    work2
 ---
-file: mesh.prefab
+file: work.prefab
 op: add
 path: /-
 value:
@@ -45,18 +49,18 @@ value:
     efk:
       path: /pkg/vaststars.resources/effects/hydro-plant_smoke.efk
       speed: 1
-    name: work3
     scene:
       s: {2, 2, 2}
       t: {8.903579711914062, 23.299938201904297, -8.594120025634766}
-    visible_state: ""
+    visible_state: main_queue
   mount: 1
   policy:
-    ant.general|name
     ant.scene|scene_object
     ant.efk|efk
+  tag:
+    work3
 ---
-file: mesh.prefab
+file: work.prefab
 op: add
 path: /-
 value:
@@ -64,18 +68,18 @@ value:
     efk:
       path: /pkg/vaststars.resources/effects/hydro-plant_smoke.efk
       speed: 1
-    name: work4
     scene:
       s: {2, 2, 2}
       t: {-9.286720275878906, 23.299999237060547, 9.0322265625}
-    visible_state: ""
+    visible_state: main_queue
   mount: 1
   policy:
-    ant.general|name
     ant.scene|scene_object
     ant.efk|efk
+  tag:
+    work4
 ---
-file: mesh.prefab
+file: work.prefab
 op: add
 path: /-
 value:
@@ -83,16 +87,16 @@ value:
     efk:
       path: /pkg/vaststars.resources/effects/furnace_smoke.efk
       speed: 1
-    name: work
     scene:
       s: {6, 6, 6}
       t: {0, 12.270214080810547, 0}
-    visible_state: ""
+    visible_state: main_queue
   mount: 1
   policy:
-    ant.general|name
     ant.scene|scene_object
     ant.efk|efk
+  tag:
+    work
 ---
 file: mesh.prefab
 op: add
@@ -193,6 +197,10 @@ value:
     shelf6
 ---
 file: mesh.prefab
+op: copyfile
+path: low_power.prefab
+---
+file: low_power.prefab
 op: add
 path: /-
 value:
@@ -200,16 +208,16 @@ value:
     efk:
       path: /pkg/vaststars.resources/effects/furnace_smoke.efk
       speed: 1
-    name: low_power
     scene:
       s: {4, 4, 4}
       t: {0, 12, 0}
-    visible_state: ""
+    visible_state: main_queue
   mount: 1
   policy:
-    ant.general|name
     ant.scene|scene_object
     ant.efk|efk
+  tag:
+    low_power
 ---
 file: mesh.prefab
 op: createfile
