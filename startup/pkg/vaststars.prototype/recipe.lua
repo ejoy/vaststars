@@ -1513,7 +1513,7 @@ prototype "仓库1" {
     recipe_order =  60,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/depot.texture",
     ingredients = {
-        {"铁板", 6},
+        {"铁齿轮", 4},
         {"石砖", 4},
     },
     results = {
