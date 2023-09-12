@@ -2,30 +2,40 @@ local ecs   = ...
 local world = ecs.world
 local w     = world.w
 
-local pca_sys = ecs.system "pack_camera_aabb_system"
+local sau_sys = ecs.system "shadow_aabb_update_system"
 local math3d    = require "math3d"
 local setting	= import_package "ant.settings"
 local ENABLE_SHADOW<const> = setting:get "graphic/shadow/enable"
 local renderutil= ecs.require "ant.render|util"
 if not ENABLE_SHADOW then
-	renderutil.default_system(pca_sys, "entity_ready", "update_camera")
+	renderutil.default_system(sau_sys, "entity_ready", "update_camera")
 	return
 end
 
 local INV_Z<const> = true
 local CUSTOM_NPLANE<const>  = math3d.ref(math3d.vector(0, 1, 0, 5))
 local CUSTOM_FPLANE<const>  = math3d.ref(math3d.vector(0, 1, 0, 0))
+
 local REMOVE_DEFAULT_UPDATE_CAMERA = false
-function pca_sys:entity_ready()
+local CLOSE_SCENE_UPDATE = false
+
+function sau_sys:entity_ready()
     if not REMOVE_DEFAULT_UPDATE_CAMERA then
         for e in w:select "main_camera_aabb:update" do
             e.main_camera_aabb.default_update = false 
             REMOVE_DEFAULT_UPDATE_CAMERA = true
         end
     end
+
+    if not CLOSE_SCENE_UPDATE then
+        for e in w:select "pack_scene_aabb:update" do
+            e.pack_scene_aabb.need_update = false
+            CLOSE_SCENE_UPDATE = true
+        end
+    end
 end
 
-function pca_sys:update_camera()
+function sau_sys:update_camera()
     local mcae = w:first "main_camera_aabb:update"
     local mq = w:first "main_queue camera_ref:in"
 	local ce <close> = world:entity(mq.camera_ref, "camera_changed?in camera:in scene:in")
