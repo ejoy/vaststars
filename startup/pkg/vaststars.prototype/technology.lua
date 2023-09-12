@@ -1030,6 +1030,7 @@ prototype "碳处理1" {
   prerequisites = {"电解水","空气分离工艺1"},
   ingredients = {
       {"气候科技包", 1},
+      {"地质科技包", 1},
   },
   count = 5,
   time = "4s"
