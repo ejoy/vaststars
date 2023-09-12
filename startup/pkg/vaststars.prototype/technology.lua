@@ -1141,6 +1141,7 @@ prototype "碳处理2" {
   prerequisites = {"生产氢气","生产二氧化碳"},
   ingredients = {
       {"气候科技包", 1},
+      {"地质科技包", 1},
   },
   count = 8,
   time = "2s"
