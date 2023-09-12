@@ -94,14 +94,14 @@ value:
     efk:
       path: /pkg/vaststars.resources/effects/sandstorm2.efk
       speed: 1
-    name: root
     scene: {}
     visible_state: main_queue
   mount: 5
   policy:
-    ant.general|name
     ant.scene|scene_object
     ant.efk|efk
+  tag:
+    root
 ---
 file: mesh.prefab
 op: add
@@ -128,14 +128,14 @@ value:
     efk:
       path: /pkg/vaststars.resources/effects/sandstorm2.efk
       speed: 1
-    name: root
     scene: {}
     visible_state: main_queue
   mount: 7
   policy:
-    ant.general|name
     ant.scene|scene_object
     ant.efk|efk
+  tag:
+    root
 ---
 file: mesh.prefab
 op: createfile

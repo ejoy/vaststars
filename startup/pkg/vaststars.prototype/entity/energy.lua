@@ -3,6 +3,7 @@ local prototype = gameplay.register.prototype
 
 prototype "蒸汽发电机I" {
     model = "glbs/turbine-1.glb|mesh.prefab",
+    model_status = {work = true, low_power = true},
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_turbine.texture",
     construct_detector = {"exclusive"},
     type = {"building", "generator", "fluidboxes","assembling","auto_set_recipe"},
@@ -39,6 +40,7 @@ prototype "蒸汽发电机I" {
 
 prototype "蒸汽发电机II" {
     model = "glbs/turbine-1.glb|mesh.prefab",
+    model_status = {work = true},
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_turbine.texture",
     construct_detector = {"exclusive"},
     type = {"building", "generator", "fluidboxes","assembling","auto_set_recipe"},
@@ -75,6 +77,7 @@ prototype "蒸汽发电机II" {
 
 prototype "蒸汽发电机III" {
     model = "glbs/turbine-1.glb|mesh.prefab",
+    model_status = {work = true},
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_turbine.texture",
     construct_detector = {"exclusive"},
     type = {"building", "generator", "fluidboxes","assembling","auto_set_recipe"},
@@ -111,6 +114,7 @@ prototype "蒸汽发电机III" {
 
 prototype "风力发电机I" {
     model = "glbs/wind-turbine-1.glb|mesh.prefab",
+    model_status = {work = true},
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_wind_turbine.texture",
     construct_detector = {"exclusive"},
     type = {"building", "generator", "wind_turbine"},
@@ -216,6 +220,7 @@ prototype "蓄电池III" {
 
 prototype "核反应堆" {
     model = "glbs/wind-turbine-1.glb|mesh.prefab",
+    model_status = {work = true},
     icon = "/pkg/vaststars.resources/ui/textures/construct/solar-panel.texture",
     construct_detector = {"exclusive"},
     type = {"building", "generator"},

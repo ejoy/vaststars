@@ -1,5 +1,9 @@
 ---
 file: mesh.prefab
+op: copyfile
+path: work.prefab
+---
+file: work.prefab
 op: add
 path: /-
 value:
@@ -7,18 +11,22 @@ value:
     efk:
       path: /pkg/vaststars.resources/effects/chimney_smoke.efk
       speed: 1
-    name: work
     scene:
       s: {2, 2, 2}
       t: {0, 30.700000762939453, 0}
-    visible_state: ""
+    visible_state: main_queue
   mount: 1
   policy:
-    ant.general|name
     ant.scene|scene_object
     ant.efk|efk
+  tag:
+    work
 ---
 file: mesh.prefab
+op: copyfile
+path: low_power.prefab
+---
+file: low_power.prefab
 op: add
 path: /-
 value:
@@ -26,16 +34,16 @@ value:
     efk:
       path: /pkg/vaststars.resources/effects/chimney_smoke.efk
       speed: 1
-    name: low_power
     scene:
       s: {0.800000011920929, 0.800000011920929, 0.800000011920929}
       t: {0, 20.100000381469727, 0}
-    visible_state: ""
+    visible_state: main_queue
   mount: 1
   policy:
-    ant.general|name
     ant.scene|scene_object
     ant.efk|efk
+  tag:
+    low_power
 ---
 file: mesh.prefab
 op: createfile

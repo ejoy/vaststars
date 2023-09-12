@@ -3,6 +3,7 @@ local prototype = gameplay.register.prototype
 
 prototype "熔炼炉I" {
     model = "glbs/furnace-1.glb|mesh.prefab",
+    model_status = {work = true},
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_furnace.texture",
     construct_detector = {"exclusive"},
     type = {"building", "assembling", "consumer","fluidboxes"},
@@ -41,6 +42,7 @@ prototype "熔炼炉I" {
 
 prototype "熔炼炉II" {
     model = "glbs/furnace-1.glb|mesh.prefab",
+    model_status = {work = true},
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_furnace.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling","fluidboxes"},
@@ -79,6 +81,7 @@ prototype "熔炼炉II" {
 
 prototype "熔炼炉III" {
     model = "glbs/furnace-1.glb|mesh.prefab",
+    model_status = {work = true},
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_furnace.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling","fluidboxes"},
@@ -170,6 +173,7 @@ prototype "粉碎机III" {
 
 prototype "浮选器I" {
     model = "glbs/flotation-cell-1.glb|mesh.prefab",
+    model_status = {work = true, low_power = true},
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_flotation_cell.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
@@ -226,6 +230,7 @@ prototype "浮选器I" {
 
 prototype "浮选器II" {
     model = "glbs/flotation-cell-1.glb|mesh.prefab",
+    model_status = {work = true, low_power = true},
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_flotation_cell.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
@@ -282,6 +287,7 @@ prototype "浮选器II" {
 
 prototype "浮选器III" {
     model = "glbs/flotation-cell-1.glb|mesh.prefab",
+    model_status = {work = true, low_power = true},
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_flotation_cell.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},

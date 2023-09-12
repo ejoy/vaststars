@@ -10,13 +10,11 @@ value:
   data:
     material: /pkg/ant.landform/assets/materials/crack.material
     mesh: meshes/Plane_P1.meshbin
-    name: crack
     scene: {}
     visible_state: main_view|selectable
   policy:
     ant.scene|scene_object
     ant.render|render
-    ant.general|name
 ---
 file: mesh.prefab
 op: createfile

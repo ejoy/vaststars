@@ -25,7 +25,6 @@ local function rebot(system)
             system,
         },
         policy = {
-            "ant.general|name",
             "ant.scene|scene_object",
             "ant.render|render",
             "ant.render|render_queue",

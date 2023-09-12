@@ -32,7 +32,7 @@ function M:stage_camera_usage(datamodel)
         iui.close("/pkg/vaststars.resources/ui/login.rml")
         new_game(mode)
     end
-    
+
     for _ in reboot_mb:unpack() do
         local window = import_package "ant.window"
         window.reboot {
@@ -48,7 +48,6 @@ function M:stage_camera_usage(datamodel)
                 "vaststars.gamerender|init_system",
             },
             policy = {
-                "ant.general|name",
                 "ant.scene|scene_object",
                 "ant.render|render",
                 "ant.render|render_queue",
