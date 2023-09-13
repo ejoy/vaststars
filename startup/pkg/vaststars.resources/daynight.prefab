@@ -5,8 +5,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
+  name: /pkg/vaststars.resources/daynight.prefab
   daynight:
-    name: /pkg/vaststars.resources/daynight.prefab
     ambient:
       ---
       time: 0
