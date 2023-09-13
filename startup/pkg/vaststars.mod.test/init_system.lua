@@ -181,7 +181,7 @@ local kb_mb = world:sub{"keyboard"}
 local tf_table = {}
 local remove_id
 function S:data_changed()
---[[     for e in w:select "name:in bounding:in" do
+--[[     for e in w:select "bounding:in" do
         if e.name == "test_road" then
             local center, extent = math3d.aabb_center_extents(e.bounding.scene_aabb)
             local t = 1 
