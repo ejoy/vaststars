@@ -760,12 +760,12 @@ local guide = {
         name = "",
 		narrative = {
            -- {"基地{/color:4bd0ff 东面}有未开发的{/g 铁矿}，前往开采铁矿需要更便捷物流方式..哔哩..哔哗..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-2.texture"},
-            {"修建{/g 公路}可以让我们使用{/color:4bd0ff 运输车辆}抵达{/g 铁矿}..哔哗(高兴)", "/pkg/vaststars.resources/ui/textures/guide/guide-3.texture"},
+            {"让我们尽快开发{/g 制铁工艺}..哔哗(高兴)", "/pkg/vaststars.resources/ui/textures/guide/guide-3.texture"},
         },
         narrative_end = {
             guide_progress = 49,
             task = {
-                "公路研究",
+                "铁矿熔炼",
             }
         },
         prerequisites = {

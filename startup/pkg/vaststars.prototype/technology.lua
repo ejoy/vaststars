@@ -507,75 +507,6 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "公路研究" {
-    desc = "掌握使用石砖制造公路的技术",
-    type = { "tech" },
-    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
-    prerequisites = {"生产石砖"},
-    effects = {
-      unlock_recipe = {"砖石公路打印"},
-      unlock_item = {"砖石公路-X型"},
-    },
-    ingredients = {
-        {"地质科技包", 1},
-    },
-    count = 5,
-    time = "3s"
-  }
-
-  prototype "建造公路" {
-    desc = "建造30段公路",
-    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-    type = { "task" },
-    task = {"stat_production", 0, "砖石公路-X型"},
-    prerequisites = {"公路研究"},
-    count = 30,
-    tips_pic = {
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ore3.texture",
-    },
-    sign_desc = {
-      { desc = "使用组装机生产30段公路", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-    },
-  }
-  
-  prototype "通向铁矿" {
-    desc = "铺设20段公路",
-    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-    type = { "task" },
-    task = {"unknown", 0, 1},
-    task_params = {},
-    prerequisites = {"建造公路"},
-    count = 20,
-    tips_pic = {
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_road1.texture",
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_road2.texture",
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_road3.texture",
-    },
-    -- guide_focus = {
-    --   {
-    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-    --     x = 138,
-    --     y = 125,
-    --     w = 0.25,
-    --     h = 0.25,
-    --   },
-    --   {
-    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-    --     x = 139,
-    --     y = 125,
-    --     w = 0.25,
-    --     h = 0.25,
-    --   },
-    --   {
-    --     camera_x = 125,
-    --     camera_y = 122,
-    --   },
-    -- },
-    sign_desc = {
-      { desc = "铺设道路从指挥中心到东边的铁矿", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-    },
-  }
-
   prototype "铁矿熔炼" {
     desc = "掌握熔炼铁矿石冶炼成铁板的工艺",
     type = { "tech" },
@@ -584,7 +515,7 @@ local prototype = gameplay.register.prototype
       unlock_recipe = {"铁板T1"},
       unlock_item = {"铁板"},
     },
-    prerequisites = {"通向铁矿"},
+    prerequisites = {"生产石砖"},
     ingredients = {
         {"地质科技包", 1},
     },
@@ -680,6 +611,56 @@ local prototype = gameplay.register.prototype
     },
   }
 
+  prototype "公路研究" {
+    desc = "掌握使用石砖制造公路的技术",
+    type = { "tech" },
+    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
+    prerequisites = {"生产石砖","生产铁棒"},
+    effects = {
+      unlock_recipe = {"砖石公路打印"},
+      unlock_item = {"砖石公路-X型"},
+    },
+    ingredients = {
+        {"地质科技包", 1},
+    },
+    count = 5,
+    time = "3s"
+  }
+
+  prototype "建造公路" {
+    desc = "建造30段公路",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = { "task" },
+    task = {"stat_production", 0, "砖石公路-X型"},
+    prerequisites = {"公路研究"},
+    count = 30,
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ore3.texture",
+    },
+    sign_desc = {
+      { desc = "使用组装机生产30段公路", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+  
+  prototype "通向铁矿" {
+    desc = "铺设20段公路",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = { "task" },
+    task = {"unknown", 0, 1},
+    task_params = {},
+    prerequisites = {"建造公路"},
+    count = 20,
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_road1.texture",
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_road2.texture",
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_road3.texture",
+    },
+    sign_desc = {
+      { desc = "铺设道路从指挥中心到东边的铁矿", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
+
   prototype "物流学1" {
     desc = "研究出货车站和收货车站建造工艺",
     type = { "tech" },
@@ -688,44 +669,13 @@ local prototype = gameplay.register.prototype
       unlock_recipe = {"维修停车站"},
       unlock_item = {"停车站框架"},
     },
-    prerequisites = {"生产铁棒"},
+    prerequisites = {"通向铁矿"},
     ingredients = {
         {"地质科技包", 1},
     },
     count = 8,
     time = "4s"
   }
-
-  -- prototype "放置出货车站" {
-  --   desc = "放置1座出货车站",
-  --   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-  --   type = { "task" },
-  --   task = {"select_entity", 0, "出货车站"},
-  --   prerequisites = {"物流学1"},
-  --   count = 1,
-  --   effects = {
-  --   },
-  --   tips_pic = {
-  --     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
-  --   },
-  --   -- guide_focus = {
-  --   --   {
-  --   --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-  --   --     x = 109,
-  --   --     y = 136,
-  --   --     w = 5,
-  --   --     h = 5,
-  --   --     show_arrow = true,
-  --   --   },
-  --   --   {
-  --   --     camera_x = 108,
-  --   --     camera_y = 130,
-  --   --   },
-  --   -- },
-  --   sign_desc = {
-  --     { desc = "生产并放置1座出货车站", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-  --   },
-  -- }
 
   prototype "放置物流站" {
     desc = "放置1座物流站",
