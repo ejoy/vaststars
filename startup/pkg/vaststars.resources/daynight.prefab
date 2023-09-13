@@ -1,6 +1,12 @@
 ---
 data:
+  scene: {}
+policy:
+  ant.scene|scene_object
+---
+data:
   daynight:
+    name: /pkg/vaststars.resources/daynight.prefab
     ambient:
       ---
       time: 0
@@ -21,12 +27,14 @@ data:
     rotator:
       ---
       time: 0
-      value: {-0.9838573932647705, -0.17653483152389526, 0.032251037657260895}
+      value: {-0.9838575124740601, -0.17653416097164154, 0.03225358948111534}
       ---
       time: 0.5
-      value: {-0.04806450754404068, -0.636186420917511, 0.7700923681259155}
+      value: {-0.04806309938430786, -0.6361834406852722, 0.7700924277305603}
       ---
-      time: 1
+      time: 0.949999988079071
       value: {0.9406062960624695, -0.19252729415893555, 0.27963149547576904}
 policy:
   ant.daynight|daynight
+tag:
+  daynight
