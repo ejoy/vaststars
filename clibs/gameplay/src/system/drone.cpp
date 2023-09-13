@@ -117,12 +117,24 @@ struct ChestSearcher {
     struct Node {
         airport_berth berth;
         building* building;
+        Node(airport_berth berth, struct building* building)
+            : berth(berth)
+            , building(building)
+        {}
     };
     struct ItemNode: public Node {
         uint16_t item;
+        ItemNode(airport_berth berth, struct building* building, uint16_t item)
+            : Node(berth, building)
+            , item(item)
+        {}
     };
     struct AmountNode: public Node {
         uint16_t amount;
+        AmountNode(airport_berth berth, struct building* building, uint16_t amount)
+            : Node(berth, building)
+            , amount(amount)
+        {}
     };
     std::vector<Node> demand_place;
     std::vector<AmountNode> transit_pickup;
@@ -143,6 +155,10 @@ static void rebuild(world& w) {
     struct chestinfo {
         uint16_t item;
         container::slot::slot_type type;
+        chestinfo(uint16_t item, container::slot::slot_type type)
+            : item(item)
+            , type(type)
+        {}
     };
     struct mapinfo {
         uint8_t x;
@@ -441,10 +457,10 @@ static bool FindTask(world& w, DroneEntity& e, ecs::drone& drone, airport& info)
             if (auto building = w.buildings.find(getxy(berth.x, berth.y))) {
                 auto& chestslot = chest::array_at(w, container::index::from(building->chest), berth.slot);
                 if (chestslot.amount > chestslot.lock_item) {
-                    supply_pickup.push_back({
+                    supply_pickup.emplace_back(
                         berth,
-                        building,
-                    });
+                        building
+                    );
                 }
             }
         }
@@ -452,10 +468,10 @@ static bool FindTask(world& w, DroneEntity& e, ecs::drone& drone, airport& info)
             if (auto building = w.buildings.find(getxy(berth.x, berth.y))) {
                 auto& chestslot = chest::array_at(w, container::index::from(building->chest), berth.slot);
                 if (chestslot.limit > chestslot.amount + chestslot.lock_space) {
-                    s.demand_place.push_back({
+                    s.demand_place.emplace_back(
                         berth,
-                        building,
-                    });
+                        building
+                    );
                 }
             }
         }
@@ -464,18 +480,18 @@ static bool FindTask(world& w, DroneEntity& e, ecs::drone& drone, airport& info)
                 auto& chestslot = chest::array_at(w, container::index::from(building->chest), berth.slot);
                 assert(chestslot.amount >= chestslot.lock_item);
                 if (chestslot.amount > chestslot.lock_item) {
-                    s.transit_pickup.push_back({
+                    s.transit_pickup.emplace_back(
                         berth,
                         building,
-                        (uint16_t)(chestslot.amount - chestslot.lock_item),
-                    });
+                        (uint16_t)(chestslot.amount - chestslot.lock_item)
+                    );
                 }
                 if (chestslot.limit > chestslot.amount + chestslot.lock_space) {
-                    s.transit_place.push_back({
+                    s.transit_place.emplace_back(
                         berth,
                         building,
-                        (uint16_t)(chestslot.amount - chestslot.lock_item),
-                    });
+                        (uint16_t)(chestslot.amount - chestslot.lock_item)
+                    );
                 }
             }
         }
@@ -571,10 +587,10 @@ static bool FindTaskOnlyMov2(world& w, DroneEntity& e, ecs::drone& drone, airpor
         if (auto building = w.buildings.find(getxy(berth.x, berth.y))) {
             auto& chestslot = chest::array_at(w, container::index::from(building->chest), berth.slot);
             if (chestslot.limit > chestslot.amount + chestslot.lock_space) {
-                demand_place.push_back({
+                demand_place.emplace_back(
                     berth,
-                    building,
-                });
+                    building
+                );
             }
         }
     }
@@ -588,10 +604,10 @@ static bool FindTaskOnlyMov2(world& w, DroneEntity& e, ecs::drone& drone, airpor
         if (auto building = w.buildings.find(getxy(berth.x, berth.y))) {
             auto& chestslot = chest::array_at(w, container::index::from(building->chest), berth.slot);
             if (chestslot.limit > chestslot.amount + chestslot.lock_space) {
-                transit_place.push_back({
+                transit_place.emplace_back(
                     berth,
-                    building,
-                });
+                    building
+                );
             }
         }
     }
