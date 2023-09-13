@@ -57,7 +57,8 @@
                 ingredient_icons = {},
                 guide_progress = 0,
                 focus_building_icon = "",
-                inventory_bar = {}
+                inventory_bar = {},
+                tech_count = 0,
             }
 
             function start.clickButton(...)
@@ -92,8 +93,9 @@
         </tech-or-task-bar>
         <tech-or-task-bar style = "flex-direction: row; align-items: center; gap: 1vmin; left: 83.13vmax;" data-if = "not (not is_concise_mode and show_tech_progress)" data-event-click="clickButton('click_techortaskicon', is_task)">
             <div style = "width: 16.28vmin; height: 16.28vmin; background-size: 100% 100%; background-image: /pkg/vaststars.resources/ui/textures/construct/tech-icon.texture;" />
-            <!--add tech counts-->
-            <div style = "position: absolute; left:10vmin; top:0; width:6vmin; height: 6vmin; background-size: cover; background-image: /pkg/vaststars.resources/ui/textures/common/page1.texture; font-size: 4vmin; text-align: center;">1</div>
+            <div style = "position: absolute; left: 11vmin; top: 1vmin; width: 4vmin; height: 4vmin; background-color: rgb(234, 75, 26); font-size: 3.25vmin; border-radius: 50%;">
+                <div style = "text-align: center; margin: 0 0 0 -0.3vmin;">{{tech_count}}</div>
+            </div>
         </tech-or-task-bar>
 
         <main-button style = "position: absolute; left: 72.20vmax; top: 67.00vmin; background-image: /pkg/vaststars.resources/ui/textures/construct/main-button-bg.texture; background-size: 100% 100%;" data-event-click = "clickButton('construct')" 

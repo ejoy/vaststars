@@ -10,7 +10,6 @@ local rhwi = import_package "ant.hwi"
 local font = import_package "ant.font"
 local iani = ecs.require "ant.animation|controller.state_machine"
 local iui = ecs.require "engine.system.ui_system"
-local iefk = ecs.require "engine.efk"
 local NOTHING <const> = require "debugger".nothing
 local TERRAIN_ONLY <const> = require "debugger".terrain_only
 
@@ -31,8 +30,6 @@ function m:init_world()
     world:create_instance {
         prefab = "/pkg/vaststars.resources/light.prefab",
     }
-
-    iefk.preload "/pkg/vaststars.resources/effects/"
 
     rhwi.set_profie(gameplay_core.settings_get("debug", true))
 

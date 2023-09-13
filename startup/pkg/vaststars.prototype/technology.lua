@@ -147,7 +147,7 @@ local prototype = gameplay.register.prototype
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"select_entity", 0, "仓库I"},
-    prerequisites = {"放置无人机平台"},
+    prerequisites = {"放置电线杆"},
     count = 1,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_pole1.texture",
