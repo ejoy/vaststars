@@ -226,7 +226,7 @@ static int lbuild(lua_State *L) {
                 }
                 else {
                     uint16_t to;
-                    if (auto res = w.market.relocate(w, l.item_prototype, C, to)) {
+                    if (w.market.relocate(w, l.item_prototype, C, to)) {
                         restartTask(w, l, to);
                     }
                     else if (auto home = w.market.nearest_park(w, C); home != 0xffff) {

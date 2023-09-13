@@ -93,24 +93,8 @@ static container::slot* ChestGetSlot(world& w, airport_berth const& berth) {
     return nullptr;
 }
 
-static std::optional<uint8_t> ChestFindSlot(world& w, airport_berth const& berth, uint16_t item) {
-    if (auto building = w.buildings.find(getxy(berth.x, berth.y))) {
-        auto c = container::index::from(building->chest);
-        container::slot* index = chest::find_item(w, c, item);
-        if (index) {
-            auto& start = chest::array_at(w, c, 0);
-            return (uint8_t)(index-&start);
-        }
-    }
-    return std::nullopt;
-}
-
 static void SetStatus(ecs::drone& drone, drone_status status) {
     drone.status = (uint8_t)status;
-}
-
-static void AssertStatus(ecs::drone& drone, drone_status status) {
-    assert(drone.status == (uint8_t)status);
 }
 
 static void CheckHasHome(world& w, DroneEntity& e, ecs::drone& drone, std::function<void(world&, DroneEntity&, ecs::drone&, airport&)> f) {
