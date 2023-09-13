@@ -221,7 +221,7 @@ function terrain:enable_terrain(x, y)
     local new = _get_screen_group_id(self, x, y)
     local add, del = diff(self._enabled_group_id, new)
     self._enabled_group_id = new
-    local go<close> = ig.obj "view_visible"
+    local go = ig.obj "view_visible"
     for _, group_id in ipairs(add) do
         print(("enable group id: %s"):format(group_id))
         go:enable(group_id, true)
@@ -231,6 +231,7 @@ function terrain:enable_terrain(x, y)
         go:enable(group_id, false)
     end
 
+    go:flush()
     go:filter("render_object_visible", "render_object")
     go:filter("hitch_visible", "hitch")
     go:filter("efk_visible", "efk")
