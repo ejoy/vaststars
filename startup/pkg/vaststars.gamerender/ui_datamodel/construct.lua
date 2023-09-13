@@ -196,6 +196,7 @@ function M:create()
         category_idx = 0,
         item_idx = 0,
         status = "normal",
+        tech_count = __get_new_tech_count(global.science.tech_list),
     }
 end
 

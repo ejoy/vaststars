@@ -24,7 +24,7 @@ events["obj_motion"] = function(_, e, method, ...)
 end
 
 local M = {}
-function M.create(width, height, unit, srt, pos_offset)
+function M.create(width, height, unit, srt, pos_offset, material)
 	local hw = width * 0.5
 	local hw_len = hw * unit
 
@@ -57,7 +57,7 @@ function M.create(width, height, unit, srt, pos_offset)
 	end
 
 	local objects = {}
-	objects[#objects+1] = ientity_object.create(ipl.add_linelist(vertices, LINE_WIDTH, COLOR, MATERIAL, srt, RENDER_LAYER.GRID), events)
+	objects[#objects+1] = ientity_object.create(ipl.add_linelist(vertices, LINE_WIDTH, COLOR, material or MATERIAL, srt, RENDER_LAYER.GRID), events)
 
 	local outer_proxy = {
 		objects = objects,
