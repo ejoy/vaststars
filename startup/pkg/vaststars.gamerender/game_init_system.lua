@@ -17,7 +17,6 @@ local terrain = ecs.require "terrain"
 local iroadnet = ecs.require "roadnet"
 local saveload = ecs.require "saveload"
 local global = require "global"
-local iefk = ecs.require "engine.efk"
 
 local m = ecs.system 'game_init_system'
 local gameworld_prebuild
@@ -38,8 +37,6 @@ function m:init_world()
     world:create_instance {
         prefab = "/pkg/vaststars.resources/sky.prefab"
     }
-
-    iefk.preload "/pkg/vaststars.resources/effects/"
 
     if NOTHING then
         imain_menu_manager.init("camera_default.prefab")
