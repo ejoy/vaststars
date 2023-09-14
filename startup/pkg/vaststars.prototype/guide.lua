@@ -87,7 +87,7 @@ local guide = {
         name = "",
 		narrative = {
            -- {"哔哩..矿物采集进展非常顺利，存活概率大幅提升至{/color:4bd0ff 0.3244%}..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-2.texture"},
-            {"哔哩..在{/color:4bd0ff 仓库I}中选择储存{/g 碎石}，无人机就会自动搬运物资了..哔哩(高兴)", "/pkg/vaststars.resources/ui/textures/guide/guide-3.texture"},
+            {"哔哩..在{/color:4bd0ff 仓库I}中选择储存物品{/g 碎石}..哔哩(高兴)", "/pkg/vaststars.resources/ui/textures/guide/guide-3.texture"},
         },
         narrative_end = {
             guide_progress = 25,
@@ -104,7 +104,7 @@ local guide = {
         name = "",
 		narrative = {
            -- {"哔哩..采矿机通电正常运转。石矿里{/color:4bd0ff 碎石}将被开采出来..哔哩(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
-            {"哔哩..{/color:4bd0ff 碎石}存放需要仓库，{/color:4bd0ff 废墟}里的{/g 无人机平台I}正好适合....(轻松)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
+            {"哔哩..现在我们需要修建{/g 无人机平台}从采矿机运送{/color:4bd0ff 碎石}到{/g 仓库}....(轻松)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
         },
         narrative_end = {
             guide_progress = 20,
