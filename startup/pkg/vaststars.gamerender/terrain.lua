@@ -29,47 +29,13 @@ local SURFACE_HEIGHT <const> = 0
 local TILE_SIZE <const> = 10
 local WIDTH <const> = 256 -- coordinate value range: [0, WIDTH - 1]
 local HEIGHT <const> = 256
-local GRID_WIDTH <const> = 92
-local GRID_HEIGHT <const> = 50
+local GRID_WIDTH <const> = 10
+local GRID_HEIGHT <const> = 10
 assert(GRID_WIDTH % 2 == 0 and GRID_HEIGHT % 2 == 0)
 
 local function _hash(x, y)
     assert(x & 0xFF == x and y & 0xFF == y)
     return x | (y<<8)
-end
-
-local function _get_screen_group_id(self, x, y)
-	local grid_x = x//GRID_WIDTH
-	local grid_y = y//GRID_HEIGHT
-	assert(self._group_id[_hash(grid_x, grid_y)])
-
-    local result = {}
-    local min_x, max_x = self._grid_bounds[1][1], self._grid_bounds[2][1]
-    local min_y, max_y = self._grid_bounds[1][2], self._grid_bounds[2][2]
-    local xb, xe
-    if x % GRID_WIDTH + 1 <= GRID_WIDTH / 2 then
-        xb = math.max(grid_x - 1, min_x)
-        xe = grid_x
-    else
-        xb = grid_x
-        xe = math.min(grid_x + 1, max_x)
-    end
-    local yb, ye
-    if y % GRID_HEIGHT + 1 <= GRID_HEIGHT / 2 then
-        yb = math.max(grid_y - 1, min_y)
-        ye = grid_y
-    else
-        yb = grid_y
-        ye = math.min(grid_y + 1, max_y)
-    end
-
-	for i = xb, xe do
-		for j = yb, ye do
-            local group_id = self._group_id[_hash(i, j)]
-			result[group_id] = true
-		end
-	end
-    return result
 end
 
 local function _get_coord_by_position(self, position)
@@ -87,8 +53,8 @@ local function _get_coord_by_position(self, position)
 end
 
 local function _get_grid_id(x, y)
-    local grid_x = x//GRID_WIDTH
-    local grid_y = y//GRID_HEIGHT
+    local grid_x = math.ceil(x/GRID_WIDTH)
+    local grid_y = math.ceil(y/GRID_HEIGHT)
     return _hash(grid_x, grid_y)
 end
 
@@ -132,8 +98,6 @@ function terrain:create(width, height)
 
     self._group_id = gen_group_id()
     self._enabled_group_id = {}
-
-    self.init = true
 end
 
 function terrain:reset_mineral(map)
@@ -199,7 +163,7 @@ function terrain:can_place_on_mineral(x, y, w, h)
     return true, m.mineral
 end
 
-function terrain:enable_terrain(x, y)
+function terrain:enable_terrain(lefttop, rightbottom)
     if self.lock_group == true then
         return
     end
@@ -218,7 +182,20 @@ function terrain:enable_terrain(x, y)
         return add, del
     end
 
-    local new = _get_screen_group_id(self, x, y)
+    local ltCoord = self:get_coord_by_position(lefttop) or {0, 0}
+    local rbCoord = self:get_coord_by_position(rightbottom) or {self._width - 1, self._height - 1}
+
+    local ltGridCoord = {math.ceil(ltCoord[1] / GRID_WIDTH), math.ceil(ltCoord[2] / GRID_HEIGHT)}
+    local rbGridCoord = {math.ceil(rbCoord[1] / GRID_WIDTH), math.ceil(rbCoord[2] / GRID_HEIGHT)}
+
+    local new = {}
+    for x = ltGridCoord[1], rbGridCoord[1] do
+        for y = ltGridCoord[2], rbGridCoord[2] do
+            local group_id = assert(self._group_id[_hash(x, y)])
+            new[group_id] = true
+        end
+    end
+
     local add, del = diff(self._enabled_group_id, new)
     self._enabled_group_id = new
     local go = ig.obj "view_visible"

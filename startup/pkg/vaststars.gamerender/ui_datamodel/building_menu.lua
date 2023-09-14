@@ -230,7 +230,7 @@ local function station_set_item(gameplay_world, e, type, item)
     end
 
     local typeobject = iprototype.queryById(item)
-    items[#items+1] = {type, item, typeobject.station_limit}
+    items[#items+1] = {type, item, typeobject.station_capacity or 1}
     iGameplayStation.set_item(gameplay_world, e, items)
 end
 

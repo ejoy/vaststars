@@ -1,10 +1,9 @@
 local ecs = ...
 local world = ecs.world
+local w = world.w
 
 local NOTHING <const> = require "debugger".nothing
 local TERRAIN_ONLY <const> = require "debugger".terrain_only
-local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
-local camera_zoom_mb = world:sub {"camera_zoom"}
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local imain_menu_manager = ecs.require "main_menu_manager"
 local icanvas = ecs.require "engine.canvas"
@@ -17,6 +16,7 @@ local terrain = ecs.require "terrain"
 local iroadnet = ecs.require "roadnet"
 local saveload = ecs.require "saveload"
 local global = require "global"
+local math3d = require "math3d"
 
 local m = ecs.system 'game_init_system'
 local gameworld_prebuild
@@ -37,6 +37,7 @@ function m:init_world()
     world:create_instance {
         prefab = "/pkg/vaststars.resources/sky.prefab"
     }
+    terrain:create()
 
     if NOTHING then
         imain_menu_manager.init("camera_default.prefab")
@@ -67,7 +68,6 @@ function m:init_world()
     -- audio.play("event:/openui1")
     audio.play("event:/background")
 
-    terrain:create()
     iroadnet:create()
 
     local args = global.startup_args
@@ -109,18 +109,11 @@ function m:gameworld_end()
 end
 
 function m:camera_usage()
-    local camera_changed = false
-    for _ in dragdrop_camera_mb:unpack() do
-        camera_changed = true
-    end
-    for _ in camera_zoom_mb:unpack() do
-        camera_changed = true
-    end
-    if camera_changed and terrain.init then
-        local coord = terrain:align(icamera_controller.get_central_position(), 1, 1)
-        if coord then
-            terrain:enable_terrain(coord[1], coord[2])
-        end
+    local mq = w:first "main_queue camera_ref:in"
+    local ce = world:entity(mq.camera_ref, "camera_changed?in camera:in scene:in")
+    if ce.camera_changed then
+        local points = icamera_controller.get_interset_points()
+        terrain:enable_terrain(points[2], math3d.set_index(points[3], 1, math3d.index(points[4], 1)))
     end
 end
 

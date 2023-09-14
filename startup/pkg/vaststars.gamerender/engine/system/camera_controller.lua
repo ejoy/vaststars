@@ -292,6 +292,27 @@ function icamera_controller.get_central_position()
     return math3d.muladd(ray.d, math3d.plane_ray(ray.o, ray.d, YAXIS_PLANE), ray.o)
 end
 
+function icamera_controller.get_interset_points()
+    local mq = w:first("main_queue camera_ref:in render_target:in")
+    local ce <close> = world:entity(mq.camera_ref, "camera:in scene:in")
+    local points = math3d.frustum_points(ce.camera.viewprojmat)
+    local lb_raydir = math3d.sub(math3d.array_index(points, 5), math3d.array_index(points, 1))
+    local lt_raydir = math3d.sub(math3d.array_index(points, 6), math3d.array_index(points, 2))
+    local rb_raydir = math3d.sub(math3d.array_index(points, 7), math3d.array_index(points, 3))
+    local rt_raydir = math3d.sub(math3d.array_index(points, 8), math3d.array_index(points, 4))
+
+    local height = 0
+    local xz_plane = math3d.vector(0, 1, 0, height)
+
+    local eyepos = math3d.index(ce.scene.worldmat, 4)
+    return {
+        math3d.muladd(math3d.plane_ray(eyepos, lb_raydir, xz_plane), lb_raydir, eyepos),
+        math3d.muladd(math3d.plane_ray(eyepos, lt_raydir, xz_plane), lt_raydir, eyepos),
+        math3d.muladd(math3d.plane_ray(eyepos, rb_raydir, xz_plane), rb_raydir, eyepos),
+        math3d.muladd(math3d.plane_ray(eyepos, rt_raydir, xz_plane), rt_raydir, eyepos),
+    }
+end
+
 function icamera_controller.set_camera_from_prefab(prefab, callback)
     cam_cmd_queue:push {{"set_camera_from_prefab", prefab}}
     if callback then

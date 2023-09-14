@@ -197,13 +197,6 @@ function M:restore_camera_setting()
         iom.set_srt(ce, camera_setting.s, camera_setting.r, camera_setting.t)
         ic.set_frustum(ce, camera_setting.frustum)
     end
-
-    if terrain.init then
-        local coord = terrain:align(icamera_controller.get_central_position(), 1, 1)
-        if coord then
-            terrain:enable_terrain(coord[1], coord[2])
-        end
-    end
 end
 
 function M:backup()
@@ -349,11 +342,6 @@ function M:restart(mode, game_template)
     iscience.update_tech_list(cw)
     iguide.world = cw
     iui.set_guide_progress(iguide.get_progress())
-
-    local coord = terrain:align(icamera_controller.get_central_position(), 1, 1)
-    if coord then
-        terrain:enable_terrain(coord[1], coord[2])
-    end
 
     game_template = game_template or "item.startup"
     gameplay_core.get_storage().game_template = game_template

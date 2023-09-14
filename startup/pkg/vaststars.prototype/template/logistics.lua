@@ -158,13 +158,13 @@ local entities = { {
   y = 118
 }, {
   dir = "S",
-  items = {{"supply", "碎石", "10"}},
+  items = {{"supply", "碎石", "1"}},
   prototype_name = "物流站",
   x = 120,
   y = 126
 }, {
   dir = "S",
-  items = {{"supply", "铁矿石", "10"}},
+  items = {{"supply", "铁矿石", "1"}},
   prototype_name = "物流站",
   x = 154,
   y = 126
@@ -175,13 +175,13 @@ local entities = { {
   y = 127
 }, {
   dir = "W",
-  items = {{"demand", "铁矿石", "10"}},
+  items = {{"demand", "铁矿石", "1"}},
   prototype_name = "物流站",
   x = 136,
   y = 118
 }, {
   dir = "W",
-  items = {{"demand", "碎石", "10"}},
+  items = {{"demand", "碎石", "1"}},
   prototype_name = "物流站",
   x = 136,
   y = 108

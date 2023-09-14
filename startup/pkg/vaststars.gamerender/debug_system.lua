@@ -17,6 +17,8 @@ function debug_sys:init_world()
 end
 
 function debug_sys:ui_update()
+    local w = world.w
+
     for _, key, press in kb_mb:unpack() do
         if key == "T" and press == 0 then
             local gameplay_world = gameplay_core.get_world()
@@ -35,12 +37,11 @@ function debug_sys:ui_update()
 
     for _, _, v in gesture_tap_mb:unpack() do
         local x, y = v.x, v.y
-        if terrain.init then
-            local pos = icamera_controller.screen_to_world(x, y, {PLANES[1]})
-            local coord = terrain:get_coord_by_position(pos[1])
-            if coord then
-                log.info(("gesture tap coord: (%s, %s)"):format(coord[1], coord[2]))
-            end
+        local pos = icamera_controller.screen_to_world(x, y, {PLANES[1]})
+        local coord = terrain:get_coord_by_position(pos[1])
+        if coord then
+            log.info(("gesture tap coord: (%s, %s)"):format(coord[1], coord[2]))
+            log.info(("group(%s)"):format(terrain:get_group_id(coord[1], coord[2])))
         end
     end
 end
