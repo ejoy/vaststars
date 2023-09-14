@@ -170,16 +170,6 @@ local function __clean(datamodel)
     datamodel.status = "normal"
 end
 
-local function __get_new_tech_count(tech_list)
-    local count = 0
-    for _, tech in ipairs(tech_list) do
-        if global.science.tech_picked_flag[tech.detail.name] then
-            count = count + 1
-        end
-    end
-    return count
-end
-
 ---------------
 local M = {}
 
@@ -196,7 +186,7 @@ function M:create()
         category_idx = 0,
         item_idx = 0,
         status = "normal",
-        tech_count = __get_new_tech_count(global.science.tech_list),
+        tech_count = #global.science.tech_list,
     }
 end
 
@@ -227,7 +217,7 @@ function M:update_tech(datamodel, tech)
         datamodel.current_tech_progress_detail = tech.progress.."/"..tech.detail.count
     else
         datamodel.show_tech_progress = false
-        datamodel.tech_count = __get_new_tech_count(global.science.tech_list)
+        datamodel.tech_count = #global.science.tech_list
     end
 end
 
