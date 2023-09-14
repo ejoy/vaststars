@@ -1,9 +1,6 @@
 import "@ant.objcontroller"
-import "@ant.rmlui"
-import "@ant.sky"
 import "@ant.animation"
 import "@ant.camera"
-import "@ant.efk"
 import "@ant.modifier"
 import "@ant.terrain"
 import "@ant.motion_sampler"
@@ -64,6 +61,7 @@ pipeline "prototype"
 
 feature "engine"
     .require_feature "ant.efk"
+    .require_feature "ant.rmlui"
     .require_feature "ant.sky|sky"
 
 ----------------------------------------------------
