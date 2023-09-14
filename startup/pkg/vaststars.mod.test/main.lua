@@ -9,6 +9,9 @@ import_package "ant.window".start {
         "update",
         "exit",
     },
+    feature = {
+        "ant.efk"
+    },
     system = {
         "vaststars.mod.test|init_system",
     },

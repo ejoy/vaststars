@@ -63,6 +63,7 @@ pipeline "prototype"
     .stage "prototype_restore"
 
 feature "engine"
+    .require_feature "ant.efk"
     .require_feature "ant.sky|sky"
 
 ----------------------------------------------------
@@ -75,7 +76,6 @@ policy "engine"
     .include_policy "ant.render|indirect"
     .include_policy "ant.render|draw_indirect"
     .include_policy "ant.render|ibl"
-    .include_policy "ant.efk|efk"
     .include_policy "ant.starsky|starsky"
     .require_system "ant.modifier|modifier_system"
     .require_system "ant.animation|animation_system"
