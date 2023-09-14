@@ -34,10 +34,6 @@ void fluidflow::remove_id(uint16_t id) {
 }
 
 bool fluidflow::build(uint16_t id, struct fluid_box *box) {
-	box->capacity *= multiple;
-	box->height *= multiple;
-	box->base_level *= multiple;
-	box->pumping_speed *= multiple;
 	if (fluidflow_build(network, id, box)) {
 		return false;
 	}

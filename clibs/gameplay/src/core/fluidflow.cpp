@@ -13,10 +13,10 @@ static int fluidflow_build(lua_State *L) {
     int base_level = bee::lua::checkinteger<int>(L, 5);
     int pumping_speed = bee::lua::optinteger<int, 0>(L, 6);
     fluid_box box {
-        .capacity = capacity,
-        .height = height,
-        .base_level = base_level,
-        .pumping_speed = pumping_speed,
+        .capacity = capacity * fluidflow::multiple,
+        .height = height * fluidflow::multiple,
+        .base_level = base_level * fluidflow::multiple,
+        .pumping_speed = pumping_speed * fluidflow::multiple,
     };
     auto& flow = w.fluidflows[fluid];
     uint16_t id = flow.create_id();
