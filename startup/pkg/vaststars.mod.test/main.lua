@@ -10,7 +10,8 @@ import_package "ant.window".start {
         "exit",
     },
     feature = {
-        "ant.efk"
+        "ant.efk",
+        "ant.animation",
     },
     system = {
         "vaststars.mod.test|init_system",
