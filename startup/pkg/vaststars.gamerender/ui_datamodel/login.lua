@@ -44,6 +44,9 @@ function M:stage_camera_usage(datamodel)
                 "update",
                 "exit",
             },
+            feature = {
+                "vaststars.gamerender|engine",
+            },
             system = {
                 "vaststars.gamerender|init_system",
             },

@@ -9,6 +9,9 @@ import_package "ant.window".start {
         "update",
         "exit",
     },
+    feature = {
+        "vaststars.gamerender|engine",
+    },
     system = {
         "vaststars.gamerender|init_system",
     },

@@ -21,6 +21,9 @@ local function rebot(system)
             "update",
             "exit",
         },
+        feature = {
+            "vaststars.gamerender|engine",
+        },
         system = {
             system,
         },
