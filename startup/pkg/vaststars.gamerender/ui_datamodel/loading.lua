@@ -96,8 +96,8 @@ if __ANT_RUNTIME__ then
         vfs.realpath(f)
     end
     function handler.dir(f)
-        for file in fs.pairs(fs.path(f)) do
-            if fs.is_directory(file) then
+        for file, file_status in fs.pairs(fs.path(f)) do
+            if file_status:is_directory() then
                 status_addtask {
                     type = "dir",
                     filename = file:string(),
