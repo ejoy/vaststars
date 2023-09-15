@@ -12,6 +12,7 @@ import_package "ant.window".start {
     feature = {
         "ant.efk",
         "ant.animation",
+        "ant.landform",
     },
     system = {
         "vaststars.mod.test|init_system",

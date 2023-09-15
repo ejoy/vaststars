@@ -1,11 +1,8 @@
-import "@ant.objcontroller"
+
 import "@ant.camera"
-import "@ant.terrain"
-import "@ant.motion_sampler"
+import "@ant.debug"
 import "@mod.printer"
 import "@mod.billboard"
-import "@ant.debug"
-import "@ant.landform"
 import "@mod.shadow_aabb_update"
 
 pipeline "init"
@@ -59,11 +56,14 @@ feature "engine"
     .import_feature "ant.animation"
     .import_feature "ant.daynight"
     .import_feature "ant.efk"
+    .import_feature "ant.landform"
     .import_feature "ant.modifier"
     .import_feature "ant.motion_sampler"
+    .import_feature "ant.objcontroller|pickup"
     .import_feature "ant.rmlui"
     .import_feature "ant.sky|sky"
     .import_feature "ant.starsky"
+    .import_feature "ant.terrain|canvas"
 
 ----------------------------------------------------
 ----------------------------------------------------
@@ -73,14 +73,9 @@ policy "engine"
     .include_policy "ant.render|draw_indirect"
     .include_policy "ant.render|ibl"
     .require_system "ant.render|draw_indirect_system"
-    .require_system "ant.terrain|canvas_system"
     .require_system "ant.render|hitch_system"
 
 policy "mod"
-    .require_system "ant.landform|terrain_system"
-    .require_system "ant.landform|stone_mountain_system"
-    .require_system "ant.landform|road_system"
-    .require_system "ant.landform|translucent_plane_system"
     .require_system "mod.billboard|billboard_system"
     .require_system "mod.shadow_aabb_update|shadow_aabb_update_system"
 

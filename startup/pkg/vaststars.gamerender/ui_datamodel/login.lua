@@ -54,7 +54,6 @@ function M:stage_camera_usage(datamodel)
                 "ant.scene|scene_object",
                 "ant.render|render",
                 "ant.render|render_queue",
-                "ant.objcontroller|pickup",
             }
         }
     end

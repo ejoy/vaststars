@@ -30,7 +30,6 @@ local function rebot(system)
         policy = {
             "ant.render|render",
             "ant.render|render_queue",
-            "ant.objcontroller|pickup",
         }
     }
 end
