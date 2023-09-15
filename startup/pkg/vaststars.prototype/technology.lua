@@ -678,7 +678,7 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "放置送货物流站" {
-    desc = "放置1座物流站",
+    desc = "放置1座物流站作为送货站",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"select_entity", 0, "物流站"},
@@ -693,7 +693,7 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "放置收货物流站" {
-    desc = "放置1座物流站",
+    desc = "放置1座物流站作为收货站",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"select_entity", 0, "物流站"},
@@ -708,7 +708,7 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "放置停车站" {
-    desc = "放置1座物流站",
+    desc = "放置1座停车站",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"select_entity", 0, "物流站"},

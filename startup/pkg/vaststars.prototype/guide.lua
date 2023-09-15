@@ -897,7 +897,7 @@ local guide = {
             {"我们基地正在扩大,也随之带来更大的电力负荷,让我们放置{/color:4bd0ff 太阳能板}发电吧..哔哩(期待）", "/pkg/vaststars.resources/ui/textures/guide/guide-2.texture"},
         },
         narrative_end = {
-            guide_progress = 61,
+            guide_progress = 59,
             task = {
                 "放置太阳能板",
             }
@@ -915,7 +915,7 @@ local guide = {
         },
         narrative_end = {
             pop_chapter = {"第二阶段","化工生产"},
-            guide_progress = 59,
+            guide_progress = 60,
             task = {
             }
         },
@@ -930,7 +930,7 @@ local guide = {
             {"{/g 塑料}可制造更多精密元件，掌握这种新材料，存活概率提升为{/color:4bd0ff 1.2923%}..哔哩(高兴）", "/pkg/vaststars.resources/ui/textures/guide/guide-3.texture"},
         },
         narrative_end = {
-            guide_progress = 60,
+            guide_progress = 61,
             task = {
             }
         },
@@ -945,7 +945,7 @@ local guide = {
             {"终于可以研制机械装置进入自动化生产，这可以大大提高效率..哔哩..和放松你的手臂..哔哩(期待）", "/pkg/vaststars.resources/ui/textures/guide/guide-2.texture"},
         },
         narrative_end = {
-            guide_progress = 61,
+            guide_progress = 62,
             task = {
             }
         },
