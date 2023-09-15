@@ -10,8 +10,9 @@ import_package "ant.window".start {
         "exit",
     },
     feature = {
-        "ant.efk",
         "ant.animation",
+        "ant.camera|camera_controller",
+        "ant.efk",
         "ant.landform",
     },
     system = {
