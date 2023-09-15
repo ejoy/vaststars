@@ -677,7 +677,7 @@ local prototype = gameplay.register.prototype
     time = "4s"
   }
 
-  prototype "放置物流站" {
+  prototype "放置送货物流站" {
     desc = "放置1座物流站",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
@@ -687,24 +687,41 @@ local prototype = gameplay.register.prototype
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
-    -- guide_focus = {
-    --   {
-    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-    --     x = 109,
-    --     y = 136,
-    --     w = 5,
-    --     h = 5,
-    --     show_arrow = true,
-    --   },
-    --   {
-    --     camera_x = 108,
-    --     camera_y = 130,
-    --   },
-    -- },
     sign_desc = {
-      { desc = "在邻近矿区的公路边放置1座物流站", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "在邻近铁矿和铝矿区的公路边放置1座物流站", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
+
+  prototype "放置收货物流站" {
+    desc = "放置1座物流站",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = { "task" },
+    task = {"select_entity", 0, "物流站"},
+    prerequisites = {"物流学1"},
+    count = 2,
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "在邻近生产地质科技包组装机的公路边放置1座物流站", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "放置停车站" {
+    desc = "放置1座物流站",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = { "task" },
+    task = {"select_entity", 0, "物流站"},
+    prerequisites = {"放置送货物流站","放置收货物流站"},
+    count = 1,
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "在公路边放置1座停车站", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
 
   prototype "汽修技术" {
     desc = "研究修理运输车辆工艺",
@@ -714,7 +731,7 @@ local prototype = gameplay.register.prototype
       unlock_recipe = {"维修运输汽车"},
       unlock_item = {"运输车辆I","破损运输车辆"},
     },
-    prerequisites = {"放置物流站"},
+    prerequisites = {"放置停车站"},
     ingredients = {
         {"地质科技包", 1},
     },
