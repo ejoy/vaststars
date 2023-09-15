@@ -15,6 +15,7 @@ import_package "ant.window".start {
         "ant.efk",
         "ant.landform",
         "ant.objcontroller|pickup",
+        "mod.billboard",
         "mod.printer",
     },
     system = {
