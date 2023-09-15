@@ -31,7 +31,7 @@ local function updateSlots(e, datamodel)
 
         if slot.item ~= 0 then
             local typeobject_item = assert(iprototype.queryById(slot.item))
-            slots[#slots + 1] = {id = typeobject_item.id, slot_index = i, icon = typeobject_item.item_icon, name = typeobject_item.name, type = slot.type, remove = false}
+            slots[#slots + 1] = {id = typeobject_item.id, slot_index = i, icon = typeobject_item.item_icon, name = iprototype.display_name(typeobject_item), type = slot.type, remove = false}
         end
     end
     datamodel.disable = (#slots == max_slot)
@@ -80,6 +80,7 @@ local function updateItems(datamodel, existing)
         local category_idx = assert(cache[typeobject.item_category])
         local items = res[category_idx].items
         items[#items+1] = {
+            prototype = typeobject.id,
             name = typeobject.name,
             icon = typeobject.item_icon,
             new = (not storage.item_picked_flag[typeobject.name]) and true or false,
@@ -132,13 +133,13 @@ function M:stage_ui_update(datamodel, gameplay_eid, interface)
     for _, _, _, category_idx, item_idx, set_type in set_item_mb:unpack() do
         assert(datamodel.items[category_idx])
         assert(datamodel.items[category_idx].items[item_idx])
-        local name = datamodel.items[category_idx].items[item_idx].name
-        local typeobject = assert(iprototype.queryByName(name))
+        local prototype = datamodel.items[category_idx].items[item_idx].prototype
+        local typeobject = assert(iprototype.queryById(prototype))
         local e = gameplay_core.get_entity(gameplay_eid)
         local gameplay_world = gameplay_core.get_world()
         interface.set_item(gameplay_world, e, set_type, typeobject.id)
-        itask.update_progress("set_item", name)
-        markItem(name)
+        itask.update_progress("set_item", typeobject.name)
+        markItem(typeobject.name)
         updateSlots(e, datamodel)
 
         datamodel.show_set_item = false
@@ -147,7 +148,7 @@ function M:stage_ui_update(datamodel, gameplay_eid, interface)
 
     for _, _, _, idx in click_slot_mb:unpack() do
         local slot = assert(datamodel.slots[idx])
-        if slot.name ~= "" then
+        if slot.id ~= 0 then
             slot.remove = true
         end
     end

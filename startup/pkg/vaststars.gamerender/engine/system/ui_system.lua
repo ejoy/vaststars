@@ -295,24 +295,6 @@ function iui.set_guide_progress(progress)
     end
 end
 
-local function _get_vmin(w, h, ratio)
-    local w = w / ratio
-    local h = h / ratio
-    return math.min(w, h)
-end
-
-local function _to_vmin(vmin, v)
-    return v / vmin * 100
-end
-
-function iui.convert_coord(x, y)
-    local mq = w:first("main_queue camera_ref:in render_target:in")
-    local ce <close> = world:entity(mq.camera_ref, "camera:in")
-    local vr = mq.render_target.view_rect
-    local vmin = _get_vmin(vr.w, vr.h, vr.ratio)
-    return _to_vmin(vmin, x), _to_vmin(vmin, y)
-end
-
 function iui.redirect(url, ...)
     if windowBindings[url] then
         world:pub {"rmlui_message_pub", url, ...}
