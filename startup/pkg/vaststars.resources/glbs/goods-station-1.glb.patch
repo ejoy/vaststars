@@ -1,4 +1,19 @@
 ---
+file: materials/Material.011.material
+op: replace
+path: /properties/u_emissive_factor
+value: {0, 0, 1, 0}
+---
+file: materials/Material.011.material
+op: replace
+path: /properties/u_pbr_factor
+value: {1, 1, 0.5, 1}
+---
+file: materials/Material.011.material
+op: replace
+path: /state/CULL
+value: NONE
+---
 file: mesh.prefab
 op: add
 path: /-
@@ -15,20 +30,90 @@ value:
   tag:
     shelf
 ---
-file: materials/Material.011.material
-op: replace
-path: /properties/u_emissive_factor
-value: {0, 0, 1, 0}
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
+      t: {24, 0, -16}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    slot1
 ---
-file: materials/Material.011.material
-op: replace
-path: /properties/u_pbr_factor
-value: {1, 1, 0.5, 1}
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      r: {-0.2921813130378723, -0.30963370203971863, -0.10060609132051468, 0.8992416262626648}
+      t: {12, 2.5, -9.199999809265137}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    slot2
 ---
-file: materials/Material.011.material
-op: replace
-path: /state/CULL
-value: NONE
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
+      t: {0, 5.599999904632568, -4.800000190734863}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    slot3
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      r: {0.07676295936107635, -0.9201543927192688, 0.2294202595949173, 0.30787938833236694}
+      t: {-12, 2.5, -9.199999809265137}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    slot4
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
+      t: {-24, 0, -16}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    slot5
 ---
 file: mesh.prefab
 op: createfile
@@ -56,3 +141,68 @@ value:
     ant.animation|slot
   tag:
     shelf
+  ---
+  data:
+    scene:
+      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
+      t: {24, 0, -16}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    slot1
+  ---
+  data:
+    scene:
+      r: {-0.2921813130378723, -0.30963370203971863, -0.10060609132051468, 0.8992416262626648}
+      t: {12, 2.5, -9.199999809265137}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    slot2
+  ---
+  data:
+    scene:
+      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
+      t: {0, 5.599999904632568, -4.800000190734863}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    slot3
+  ---
+  data:
+    scene:
+      r: {0.07676295936107635, -0.9201543927192688, 0.2294202595949173, 0.30787938833236694}
+      t: {-12, 2.5, -9.199999809265137}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    slot4
+  ---
+  data:
+    scene:
+      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
+      t: {-24, 0, -16}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    slot5
