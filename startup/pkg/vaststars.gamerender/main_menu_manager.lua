@@ -2,14 +2,9 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local icamera_controller = ecs.require "engine.system.camera_controller"
-local saveload = ecs.require "saveload"
+local archiving = require "archiving"
 local window = import_package "ant.window"
 local global = require "global"
-
-local function init(prefab)
-    icamera_controller.set_camera_from_prefab(prefab)
-end
 
 local function rebot(system)
     window.reboot {
@@ -35,21 +30,18 @@ local function rebot(system)
 end
 
 local function new_game(mode, game_template)
-    rebot("vaststars.gamerender|game_init_system")
     global.startup_args = {"new_game", mode, game_template}
+    rebot("vaststars.gamerender|game_init_system")
 end
 
 local function continue_game()
-    local index = saveload:get_restore_index()
-    if not index then
-        return
-    end
-    global.startup_args = {"continue_game", index}
+    global.startup_args = {"continue_game", assert(archiving.last())}
     rebot("vaststars.gamerender|game_init_system")
 end
 
 local function load_game(index)
-    if not saveload:check_restore_index(index) then
+    if not archiving.check(index) then
+        log.error("invalid index: %s", index)
         return
     end
     global.startup_args = {"load_game", index}
@@ -58,7 +50,6 @@ local function load_game(index)
 end
 
 return {
-    init = init,
     rebot = rebot,
     load_game = load_game,
     new_game = new_game,

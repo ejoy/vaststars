@@ -39,13 +39,8 @@ function m:init_world()
     }
     terrain:create()
 
-    if NOTHING then
-        imain_menu_manager.init("camera_default.prefab")
-        return
-    end
-
-    if TERRAIN_ONLY then
-        imain_menu_manager.init("camera_default.prefab")
+    if NOTHING or TERRAIN_ONLY then
+        icamera_controller.set_camera_from_prefab("camera_default.prefab")
         return
     end
 

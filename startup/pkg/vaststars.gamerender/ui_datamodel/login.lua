@@ -12,12 +12,13 @@ local load_template_mb = mailbox:sub {"load_template"}
 local new_game = ecs.require "main_menu_manager".new_game
 local continue_game = ecs.require "main_menu_manager".continue_game
 local debugger <const> = require "debugger"
-local saveload = ecs.require "saveload"
+local archiving = require "archiving"
+
 ---------------
 local M = {}
 function M:create()
     return {
-        show_continue_game = (saveload:get_restore_index() ~= nil)
+        show_continue_game = (archiving.last() ~= nil)
     }
 end
 

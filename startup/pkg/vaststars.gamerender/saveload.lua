@@ -6,21 +6,9 @@ local gameplay_core = require "gameplay.core"
 local fs = require "bee.filesystem"
 local json = import_package "ant.json"
 local debugger = require "debugger"
-local CUSTOM_ARCHIVING <const> = require "debugger".custom_archiving
 local iprototype_cache = require "gameplay.prototype_cache.init"
-local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
-local CHANGED_FLAG_ALL <const> = require("gameplay.interface.constant").CHANGED_FLAG_ALL
 local iBackpack = import_package "vaststars.gameplay".interface "backpack"
-local directory = require "directory"
-
-local archival_base_dir
-if CUSTOM_ARCHIVING then
-    archival_base_dir = (fs.exe_path():parent_path() / CUSTOM_ARCHIVING):lexically_normal():string()
-else
-    archival_base_dir = (directory.app_path "vaststars" / "archiving/"):string()
-end
-local archiving_list_path = archival_base_dir .. "archiving.json"
-local camera_setting_path = archival_base_dir .. "camera.json"
+local archiving = require "archiving"
 local iprototype = require "gameplay.interface.prototype"
 local iroadnet_converter = require "roadnet_converter"
 local objects = require "objects"
@@ -28,10 +16,8 @@ local ifluid = require "gameplay.interface.fluid"
 local iscience = require "gameplay.interface.science"
 local iguide = require "gameplay.interface.guide"
 local iui = ecs.require "engine.system.ui_system"
-local PROTOTYPE_VERSION <const> = import_package("vaststars.prototype")("version")
 local global = require "global"
 local create_buildings = require "building_components"
-
 local igameplay = ecs.require "gameplay_system"
 local irq = ecs.require "ant.render|render_system.renderqueue"
 local iom = ecs.require "ant.objcontroller|obj_motion"
@@ -39,11 +25,15 @@ local ic = ecs.require "ant.camera|camera"
 local math3d = require "math3d"
 local iobject = ecs.require "object"
 local terrain = ecs.require "terrain"
-local icamera_controller = ecs.require "engine.system.camera_controller"
 local ipower = ecs.require "power"
 local ipower_line = ecs.require "power_line"
 local iroadnet = ecs.require "roadnet"
+
 local MAX_ARCHIVING_COUNT <const> = 9
+local PROTOTYPE_VERSION <const> = import_package("vaststars.prototype")("version")
+local CAMERA_CONFIG = archiving.path() .. "camera.json"
+local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
+local CHANGED_FLAG_ALL <const> = require("gameplay.interface.constant").CHANGED_FLAG_ALL
 
 local function clean()
     global.buildings = create_buildings()
@@ -189,15 +179,16 @@ local function get_camera_setting()
     return t
 end
 
-local M = {running = false}
-function M:restore_camera_setting()
-    if fs.exists(fs.path(camera_setting_path)) then
-        local camera_setting = json.decode(readall(camera_setting_path))
+local function restore_camera_setting()
+    if fs.exists(fs.path(CAMERA_CONFIG)) then
+        local camera_setting = json.decode(readall(CAMERA_CONFIG))
         local ce <close> = world:entity(irq.main_camera())
         iom.set_srt(ce, camera_setting.s, camera_setting.r, camera_setting.t)
         ic.set_frustum(ce, camera_setting.frustum)
     end
 end
+
+local M = {running = false}
 
 function M:backup()
     if not self.running then
@@ -205,104 +196,45 @@ function M:backup()
         return false
     end
 
-    local archival_list = M:get_archival_list()
-    while #archival_list + 1 > MAX_ARCHIVING_COUNT do
-        local archival = table.remove(archival_list, 1)
-        local archival_dir = archival_base_dir .. ("%s"):format(archival.dir)
-        print("remove", archival_dir)
-        fs.remove_all(archival_dir)
+    local list = archiving.list()
+    while #list + 1 > MAX_ARCHIVING_COUNT do
+        local archival = table.remove(list, 1)
+        local fullpath = archiving.path() .. ("%s"):format(archival.dir)
+        print("remove", fullpath)
+        fs.remove_all(fullpath)
     end
 
     local t = os.date("*t")
     local dn = ("%04d-%02d-%02d-%02d-%02d-%02d"):format(t.year, t.month, t.day, t.hour, t.min, t.sec)
-    local archival_dir = archival_base_dir .. ("%s"):format(dn)
+    local fullpath = archiving.path() .. ("%s"):format(dn)
 
-    archival_list[#archival_list + 1] = {dir = dn}
-    gameplay_core.backup(archival_dir)
+    list[#list + 1] = {dir = dn}
+    gameplay_core.backup(fullpath)
 
-    writeall(archival_dir .. "/version", json.encode({PROTOTYPE_VERSION = PROTOTYPE_VERSION}))
-    writeall(archiving_list_path, json.encode(archival_list))
-    writeall(camera_setting_path, json.encode(get_camera_setting()))
-    print("save success", archival_dir)
+    writeall(fullpath .. "/version", json.encode({PROTOTYPE_VERSION = PROTOTYPE_VERSION}))
+    writeall(archiving.config(), json.encode(list))
+    writeall(CAMERA_CONFIG, json.encode(get_camera_setting()))
+    print("save success", fullpath)
     return true
 end
 
-function M:check_restore_index(index)
-    local archival_list = json.decode(readall(archiving_list_path))
-    if #archival_list <= 0 then
-        return false
-    end
-
-    local archival_relative_dir = archival_list[index].dir
-    local archival_dir = archival_base_dir .. ("%s"):format(archival_relative_dir)
-
-    if not fs.exists(fs.path(archival_dir)) then
-        log.warn(("`%s` not exists"):format(archival_relative_dir))
-        archival_list[index] = nil
-        index = index - 1
-        return false
-    end
-
-    if not fs.exists(fs.path(archival_dir .. "/version")) then
-        log.warn(("`%s` not exists"):format(archival_dir .. "/version"))
-        archival_list[index] = nil
-        index = index - 1
-        return false
-    end
-
-    local version = json.decode(readall(archival_dir .. "/version"))
-    if version.PROTOTYPE_VERSION ~= PROTOTYPE_VERSION then
-        log.error(("Failed `%s` version `%s` current `%s`"):format(archival_relative_dir, archival_list[index].version, PROTOTYPE_VERSION))
-        return false
-    else
-        return true
-    end
-end
-
-function M:get_restore_index()
-    if not fs.exists(fs.path(archiving_list_path)) then
-        return
-    end
-
-    local archival_list = json.decode(readall(archiving_list_path))
-    if #archival_list <= 0 then
-        return
-    end
-
-    local index = #archival_list
-    while index > 0 do
-        local ok = self:check_restore_index(index)
-        if ok then
-            break
-        end
-        index = index - 1
-    end
-
-    if index == 0 then
-        return
-    end
-    return index
-end
-
 function M:restore(index)
-    assert(fs.exists(fs.path(archiving_list_path)))
-    local archival_list = json.decode(readall(archiving_list_path))
-    assert(#archival_list > 0)
-    assert(#archival_list >= index)
+    local list = archiving.list()
+    assert(#list > 0)
+    assert(#list >= index)
 
-    local archival_relative_dir = archival_list[index].dir
-    local archival_dir = archival_base_dir .. ("%s"):format(archival_relative_dir)
-    assert(fs.exists(fs.path(archival_dir)))
-    assert(fs.exists(fs.path(archival_dir .. "/version")))
+    local fullpath = archiving.path() .. ("%s"):format(list[index].dir)
+    assert(fs.exists(fs.path(fullpath)))
+    assert(fs.exists(fs.path(fullpath .. "/version")))
 
-    local version = json.decode(readall(archival_dir .. "/version"))
+    local version = json.decode(readall(fullpath .. "/version"))
     assert(version.PROTOTYPE_VERSION == PROTOTYPE_VERSION)
 
-    self:restore_camera_setting()
+    restore_camera_setting()
 
     self.running = true
     world:pipeline_func "gameworld_clean" ()
-    gameplay_core.restore(archival_dir)
+    gameplay_core.restore(fullpath)
     iprototype_cache.reload()
     world:pipeline_func "prototype" ()
 
@@ -327,7 +259,7 @@ function M:restore(index)
 
     iui.open({"/pkg/vaststars.resources/ui/construct.rml"})
     iui.open({"/pkg/vaststars.resources/ui/message_pop.rml"})
-    print("restore success", archival_dir)
+    print("restore success", fullpath)
     return true
 end
 
@@ -385,13 +317,6 @@ function M:restart(mode, game_template)
         gameplay_core.get_storage().game_mode = mode
     end
 
-end
-
-function M:get_archival_list()
-    if not fs.exists(fs.path(archiving_list_path)) then
-        return {}
-    end
-    return json.decode(readall(archiving_list_path))
 end
 
 return M

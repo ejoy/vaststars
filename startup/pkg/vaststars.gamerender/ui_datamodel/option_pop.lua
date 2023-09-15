@@ -10,11 +10,11 @@ local debug_mb = mailbox:sub {"debug"}
 local back_to_main_menu_mb = mailbox:sub {"back_to_main_menu"}
 local lock_group_mb = mailbox:sub {"lock_group"}
 local iui = ecs.require "engine.system.ui_system"
+local archiving = require "archiving"
 
 local saveload = ecs.require "saveload"
 local gameplay_core = require "gameplay.core"
 local icanvas = ecs.require "engine.canvas"
-local new_game = ecs.require "main_menu_manager".new_game
 local imain_menu_manager = ecs.require "main_menu_manager"
 local rhwi = import_package "ant.hwi"
 local terrain = ecs.require "terrain"
@@ -23,7 +23,7 @@ local terrain = ecs.require "terrain"
 local M = {}
 function M:create()
     local archival_files = {}
-    for _, v in ipairs(saveload:get_archival_list()) do
+    for _, v in ipairs(archiving.list()) do
         archival_files[#archival_files+1] = v.dir
     end
 
@@ -49,7 +49,7 @@ function M:stage_camera_usage()
     end
 
     for _ in restart_mb:unpack() do
-        new_game()
+        imain_menu_manager.new_game()
         iui.close("/pkg/vaststars.resources/ui/option_pop.rml")
     end
 
