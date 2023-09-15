@@ -1,5 +1,3 @@
-import "@ant.render"
-
 component "printer".type "lua"
 
 system "printer_system"

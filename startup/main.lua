@@ -2,7 +2,8 @@ package.path = "engine/?.lua"
 require "bootstrap"
 import_package "ant.window".start {
     import = {
-        "@vaststars.gamerender"
+        "@vaststars.gamerender",
+        "@ant.render",
     },
     pipeline = {
         "init",

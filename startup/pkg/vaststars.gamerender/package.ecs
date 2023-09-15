@@ -1,5 +1,3 @@
-import "@ant.render"
-
 pipeline "init"
     .stage "init"
     .stage "post_init"
