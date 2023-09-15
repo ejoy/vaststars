@@ -28,7 +28,6 @@ local function rebot(system)
             system,
         },
         policy = {
-            "ant.scene|scene_object",
             "ant.render|render",
             "ant.render|render_queue",
             "ant.objcontroller|pickup",

@@ -56,14 +56,14 @@ pipeline "prototype"
     .stage "prototype_restore"
 
 feature "engine"
-    .require_feature "ant.animation"
-    .require_feature "ant.daynight"
-    .require_feature "ant.efk"
-    .require_feature "ant.modifier"
-    .require_feature "ant.motion_sampler"
-    .require_feature "ant.rmlui"
-    .require_feature "ant.sky|sky"
-    .require_feature "ant.starsky"
+    .import_feature "ant.animation"
+    .import_feature "ant.daynight"
+    .import_feature "ant.efk"
+    .import_feature "ant.modifier"
+    .import_feature "ant.motion_sampler"
+    .import_feature "ant.rmlui"
+    .import_feature "ant.sky|sky"
+    .import_feature "ant.starsky"
 
 ----------------------------------------------------
 ----------------------------------------------------

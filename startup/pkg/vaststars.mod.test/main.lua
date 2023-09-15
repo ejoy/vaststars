@@ -17,7 +17,6 @@ import_package "ant.window".start {
         "vaststars.mod.test|init_system",
     },
     policy = {
-        "ant.scene|scene_object",
         "ant.render|render",
         "ant.render|render_queue",
     }
