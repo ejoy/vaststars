@@ -106,6 +106,7 @@ function M:stage_ui_update(datamodel)
                 local typeobject = assert(iprototype.queryByName(name))
                 local t = {
                     icon = typeobject.icon,
+                    name = iprototype.display_name(typeobject),
                 }
                 datamodel.item_assembling[#datamodel.item_assembling+1] = t
             end

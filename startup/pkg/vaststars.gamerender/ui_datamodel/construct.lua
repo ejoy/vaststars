@@ -497,6 +497,7 @@ function M:stage_camera_usage(datamodel)
             end
         end
 
+        ibackpack.place(gameplay_core.get_world(), typeobject.id, 1)
         igameplay.destroy_entity(object.gameplay_eid)
         gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
 

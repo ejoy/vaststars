@@ -72,7 +72,12 @@ return function()
         end
 
         for item, recipe in pairs(Item2Recipe) do
-            Item2Assembling[item] = Recipe2Assembling[recipe.name]
+            if Recipe2Assembling[recipe.name] then
+                table.sort(Recipe2Assembling[recipe.name], function(a, b)
+                    return iprototype.queryByName(a).item_order < iprototype.queryByName(b).item_order
+                end)
+                Item2Assembling[item] = Recipe2Assembling[recipe.name]
+            end
         end
     end
 

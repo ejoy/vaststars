@@ -186,8 +186,9 @@
                 </div>
                 <div style = "font-size: 5.00vmin;margin-bottom: 1vmin;">生产建筑</div>
                 <div style = "flex-direction: row; align-items: center; justify-content: center;">
-                    <div data-for = "item_assembling" style = "flex-direction: column;  width: 14.00vmin; height: 14.00vmin; background-size: 100% 100%; gap: 1.50vmin; align-items: center; justify-content: flex-end;" data-style-background-image = "it.icon">
-                        <div style = "text-align: center; font-size: 2.50vmin; color: rgb(246, 142, 14);">建筑名称</div>
+                    <div style = "flex-direction: column; gap: 1.50vmin;" data-for = "item_assembling">
+                        <div style = "width: 14.00vmin; height: 14.00vmin; background-size: 100% 100%; align-items: center; justify-content: flex-end;" data-style-background-image = "it.icon" />
+                        <div style = "text-align: center; font-size: 2.50vmin; color: rgb(246, 142, 14); margin-top: -4vmin;">{{it.name}}</div>
                     </div>
                 </div>
             </div>

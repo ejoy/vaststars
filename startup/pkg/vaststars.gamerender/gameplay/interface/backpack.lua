@@ -31,6 +31,10 @@ local function pickup(world, item, amount)
     return ok
 end
 
+local function place(world, item, amount)
+    return iBackpack.place(world, item, amount)
+end
+
 local function get_moveable_count(world, item, count)
     local limit = get_backpack_limit(item)
     local existing = iBackpack.query(world, item)
@@ -185,6 +189,7 @@ end
 
 return {
     query = query,
+    place = place,
     pickup = pickup,
     get_moveable_count = get_moveable_count,
     get_placeable_count = get_placeable_count,

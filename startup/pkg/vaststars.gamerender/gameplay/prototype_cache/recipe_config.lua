@@ -18,14 +18,14 @@ return function ()
             if v.recipe_category then
                 table.insert(cache_a[v.recipe_craft_category], {
                     name = v.name,
-                    order = v.recipe_order,
+                    recipe_order = v.recipe_order,
                     icon = v.recipe_icon,
                     recipe_category = v.recipe_category,
                 })
             else
                 table.insert(cache_c[v.recipe_craft_category], {
                     name = v.name,
-                    order = v.recipe_order,
+                    recipe_order = v.recipe_order,
                     icon = v.recipe_icon,
                 })
             end
@@ -37,11 +37,9 @@ return function ()
                 for _, c in ipairs(v.craft_category) do
                     table.move(cache_a[c], 1, #cache_a[c], #assembling_recipes[v.name] + 1, assembling_recipes[v.name])
                 end
-                for _, v in pairs(assembling_recipes[v.name]) do
-                    table.sort(v, function(a, b)
-                        return a.order < b.order
-                    end)
-                end
+                table.sort(assembling_recipes[v.name], function(a, b)
+                    return a.recipe_order < b.recipe_order
+                end)
             end
 
             if iprototype.has_type(v.type, "chimney") and v.craft_category then
@@ -51,7 +49,7 @@ return function ()
                 end
                 for _, v in pairs(chimney_recipes[v.name]) do
                     table.sort(v, function(a, b)
-                        return a.order < b.order
+                        return a.recipe_order < b.recipe_order
                     end)
                 end
             end

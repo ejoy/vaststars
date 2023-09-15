@@ -22,7 +22,6 @@ local function updateSlots(e, datamodel)
     local gameplay_world = gameplay_core.get_world()
     local max_slot = ichest.get_max_slot(typeobject)
     local slots = {}
-    local existing = {}
 
     for i = 1, max_slot do
         local slot = gameplay_world:container_get(e.station or e.chest, i)
@@ -32,14 +31,13 @@ local function updateSlots(e, datamodel)
 
         if slot.item ~= 0 then
             local typeobject_item = assert(iprototype.queryById(slot.item))
-            slots[#slots + 1] = {slot_index = i, icon = typeobject_item.item_icon, name = typeobject_item.name, type = slot.type, remove = false}
-            existing[slot.item] = true
+            slots[#slots + 1] = {id = typeobject_item.id, slot_index = i, icon = typeobject_item.item_icon, name = typeobject_item.name, type = slot.type, remove = false}
         end
     end
     datamodel.disable = (#slots == max_slot)
 
     for i = #slots + 1, max_slot do
-        slots[#slots + 1] = {slot_index = i, icon = "", name = "", type = ""}
+        slots[#slots + 1] = {id = 0, slot_index = i, icon = "", name = "", type = ""}
     end
     table.sort(slots, function(a, b)
         local v1 = a.type == "supply" and 0 or 1
@@ -47,8 +45,6 @@ local function updateSlots(e, datamodel)
         return v1 == v2 and a.slot_index < b.slot_index or v1 < v2
     end)
     datamodel.slots = slots
-
-    return existing
 end
 
 local function updateItems(datamodel, existing)
@@ -124,10 +120,9 @@ function M:create(gameplay_eid, interface)
     }
 
     local e = assert(gameplay_core.get_entity(gameplay_eid))
+    updateSlots(e, datamodel)
 
-    local existing = updateSlots(e, datamodel)
-    updateItems(datamodel, existing)
-
+    datamodel.items = {}
     datamodel.supply_button = interface.supply_button
     datamodel.demand_button = interface.demand_button
     return datamodel
@@ -144,9 +139,7 @@ function M:stage_ui_update(datamodel, gameplay_eid, interface)
         interface.set_item(gameplay_world, e, set_type, typeobject.id)
         itask.update_progress("set_item", name)
         markItem(name)
-
-        local existing = updateSlots(e, datamodel)
-        updateItems(datamodel, existing)
+        updateSlots(e, datamodel)
 
         datamodel.show_set_item = false
         datamodel.set_type = ""
@@ -160,6 +153,13 @@ function M:stage_ui_update(datamodel, gameplay_eid, interface)
     end
 
     for _, _, _, type in click_set_item_mb:unpack() do
+        local existing = {}
+        for _, slot in ipairs(datamodel.slots) do
+            if slot.id ~= 0 and slot.type ~= type then
+                existing[slot.id] = true
+            end
+        end
+        updateItems(datamodel, existing)
         datamodel.show_set_item = true
         datamodel.set_type = type
     end
@@ -173,9 +173,7 @@ function M:stage_ui_update(datamodel, gameplay_eid, interface)
         local e = gameplay_core.get_entity(gameplay_eid)
         local gameplay_world = gameplay_core.get_world()
         interface.remove_item(gameplay_world, e, slot.slot_index)
-
-        local existing = updateSlots(e, datamodel)
-        updateItems(datamodel, existing)
+        updateSlots(e, datamodel)
     end
 end
 

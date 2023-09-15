@@ -70,7 +70,7 @@ function M:create(gameplay_eid)
         }
     end
 
-    for _, recipe in pairs(recipes) do
+    for _, recipe in ipairs(recipes) do
         if not recipe_unlocked(recipe.name) then
             goto continue
         end
