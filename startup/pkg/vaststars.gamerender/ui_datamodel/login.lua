@@ -40,11 +40,6 @@ function M:stage_camera_usage(datamodel)
             import = {
                 "@vaststars.gamerender"
             },
-            pipeline = {
-                "init",
-                "update",
-                "exit",
-            },
             feature = {
                 "vaststars.gamerender|engine",
             },

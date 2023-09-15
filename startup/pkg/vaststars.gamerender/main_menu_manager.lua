@@ -11,11 +11,6 @@ local function rebot(system)
         import = {
             "@vaststars.gamerender"
         },
-        pipeline = {
-            "init",
-            "update",
-            "exit",
-        },
         feature = {
             "vaststars.gamerender|engine",
         },
