@@ -1,18 +1,13 @@
 import "@ant.render"
-import "@mod.printer"
-import "@mod.billboard"
 
 system "init_system"
     .implement "init_system.lua"
-    .require_system "mod.billboard|billboard_system"
     .require_system "ant.render|draw_indirect_system"
-    .require_system "ant.objcontroller|pickup_system"
     .require_policy "ant.render|indirect"
     .require_policy "ant.render|light"
     .require_policy "ant.render|render"
     .require_policy "ant.render|render_queue"
     .require_policy "ant.render|csm_queue"
-    .require_policy "mod.printer|printer"
     .require_policy "ant.render|draw_indirect"
 
 pipeline "init"

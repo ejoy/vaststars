@@ -1,7 +1,4 @@
-import "@ant.debug"
-import "@mod.printer"
-import "@mod.billboard"
-import "@mod.shadow_aabb_update"
+import "@ant.render"
 
 pipeline "init"
     .stage "init"
@@ -62,6 +59,8 @@ feature "engine"
     .import_feature "ant.sky|sky"
     .import_feature "ant.starsky"
     .import_feature "ant.terrain|canvas"
+    .import_feature "mod.billboard"
+    .import_feature "mod.shadow_aabb_update"
 
 ----------------------------------------------------
 ----------------------------------------------------
@@ -72,10 +71,6 @@ policy "engine"
     .include_policy "ant.render|ibl"
     .require_system "ant.render|draw_indirect_system"
     .require_system "ant.render|hitch_system"
-
-policy "mod"
-    .require_system "mod.billboard|billboard_system"
-    .require_system "mod.shadow_aabb_update|shadow_aabb_update_system"
 
 policy "engine_utils"
     .require_system "camera_controller"
@@ -111,14 +106,12 @@ policy "gameplay"
 system "init_system"
     .require_policy "engine"
     .require_policy "engine_utils"
-    .require_policy "mod"
     .implement "init_system.lua"
 
 system "game_init_system"
     .require_policy "engine"
     .require_policy "engine_utils"
     .require_policy "render_updates"
-    .require_policy "mod"
     .require_policy "gameplay"
     .implement "game_init_system.lua"
 

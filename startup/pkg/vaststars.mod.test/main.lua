@@ -14,6 +14,8 @@ import_package "ant.window".start {
         "ant.camera|camera_controller",
         "ant.efk",
         "ant.landform",
+        "ant.objcontroller|pickup",
+        "mod.printer",
     },
     system = {
         "vaststars.mod.test|init_system",

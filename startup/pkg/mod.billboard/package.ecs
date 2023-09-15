@@ -1,5 +1,4 @@
 policy "billboard"
-    .require_system "billboard_system"
     .component "billboard"
 
 component "billboard"
