@@ -12,7 +12,7 @@ local drone_sys = ecs.system "drone_system"
 local gameplay_core = require "gameplay.core"
 local global = require "global"
 local terrain = ecs.require "terrain"
-local irl = ecs.require "ant.render|render_layer"
+local irl   = ecs.require "ant.render|render_layer.render_layer"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
 -- enum defined in c 

@@ -5,7 +5,7 @@ local w = world.w
 local math3d = require "math3d"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local iom = ecs.require "ant.objcontroller|obj_motion"
-local irl = ecs.require "ant.render|render_layer"
+local irl = ecs.require "ant.render|render_layer.render_layer"
 
 local ARROW_VALID <const> = math3d.constant("v4", {0.0, 1.0, 0.0, 1})
 local ARROW_INVALID <const> = math3d.constant("v4", {1.0, 0.0, 0.0, 1})

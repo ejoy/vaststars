@@ -11,7 +11,7 @@ local ig = ecs.require "ant.group|group"
 
 local mathpkg = import_package "ant.math"
 local mc = mathpkg.constant
-local irl = ecs.require "ant.render|render_layer"
+local irl		    = ecs.require "ant.render|render_layer.render_layer"
 local igame_object = ecs.require "engine.game_object"
 
 local prefab_slots = require("engine.prefab_parser").slots
