@@ -9,7 +9,6 @@ import_package "ant.window".start {
         "ant.landform",
         "ant.objcontroller|pickup",
         "mod.billboard",
-        "ant.render",
         "mod.printer",
     }
 }
