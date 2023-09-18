@@ -38,7 +38,8 @@ function M:stage_camera_usage(datamodel)
         local window = import_package "ant.window"
         window.reboot {
             import = {
-                "@vaststars.gamerender"
+                "@ant.render",
+                "@vaststars.gamerender",
             },
             feature = {
                 "vaststars.gamerender|engine",

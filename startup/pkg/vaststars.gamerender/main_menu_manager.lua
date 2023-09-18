@@ -9,6 +9,7 @@ local global = require "global"
 local function rebot(system)
     window.reboot {
         import = {
+            "@ant.render",
             "@vaststars.gamerender"
         },
         feature = {
