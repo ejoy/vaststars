@@ -4,5 +4,4 @@ system "printer_system"
     .implement "printer.lua"
 
 policy "printer"
-    .require_system "ant.render|postprocess_obj_system"
     .component "printer"
