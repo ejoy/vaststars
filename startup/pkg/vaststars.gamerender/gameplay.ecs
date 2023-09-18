@@ -1,0 +1,63 @@
+system "game_init_system"
+    .implement "game_init_system.lua"
+
+system "assembling_system"
+    .implement "render_updates/assembling.lua"
+
+system "daynight_system"
+    .implement "render_updates/daynight.lua"
+
+system "building_system"
+    .implement "render_updates/building.lua"
+
+system "inventory_system"
+    .implement "render_updates/inventory.lua"
+
+system "drone_system"
+    .implement "render_updates/drone.lua"
+
+system "work_state_system"
+    .implement "render_updates/work_state.lua"
+
+system "task_system"
+    .implement "render_updates/task.lua"
+
+system "storage_tank_system"
+    .implement "render_updates/storage_tank.lua"
+
+system "statistic_system"
+    .implement "render_updates/statistic.lua"
+
+system "station_system"
+    .implement "render_updates/station.lua"
+
+system "guide_system"
+    .implement "render_updates/guide.lua"
+
+system "science_system"
+    .implement "render_updates/science.lua"
+
+system "lorry_system"
+    .implement "render_updates/lorry.lua"
+
+system "fluidbox_system"
+    .implement "render_updates/fluidbox.lua"
+
+system "ing_res_motion_system"
+    .implement "render_updates/ing_res_motion.lua"
+
+system "road_system"
+    .implement "render_updates/road.lua"
+
+system "chimney_system"
+    .implement "render_updates/chimney.lua"
+
+system "pick_object_sys"
+    .implement "pick_object_system.lua"
+
+system "power_check_system"
+    .implement "power_check_system.lua"
+
+system "prototype_cache_system"
+    .implement "prototype_cache.lua"
+

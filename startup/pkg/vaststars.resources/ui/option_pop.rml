@@ -92,10 +92,6 @@
                             <div class="middle-bg" style='background-image: "/pkg/vaststars.resources/ui/textures/road/forbidden.texture";'/>
                             <div class = "recipe-name-text" style="font-size: 5.73vmin;">{{debug == false and '调试开启' or '调试关闭'}}</div>
                         </button>
-                        <button class = "button-style" style="background-color: rgb(52, 207, 115)" data-event-click = "clickButton('back_to_main_menu')">
-                            <div class="middle-bg" style='background-image: "/pkg/vaststars.resources/ui/textures/road/forbidden.texture";'/>
-                            <div class = "recipe-name-text" style="font-size: 5.73vmin;">重新登录</div>
-                        </button> 
                         <button class = "button-style" style="background-color: rgb(52, 207, 115)" data-event-click = "clickButton('lock_group')">
                             <div class = "recipe-name-text" style="font-size: 4.73vmin;">{{lock_group and 'UnLock Group' or 'Lock Group'}}</div>
                         </button> 

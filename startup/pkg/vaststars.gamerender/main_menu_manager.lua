@@ -6,33 +6,22 @@ local archiving = require "archiving"
 local window = import_package "ant.window"
 local global = require "global"
 
-local function rebot(system)
+local function rebot()
     window.reboot {
-        import = {
-            "@ant.render",
-            "@vaststars.gamerender"
-        },
         feature = {
-            "vaststars.gamerender|engine",
-        },
-        system = {
-            system,
-        },
-        policy = {
-            "ant.render|render",
-            "ant.render|render_queue",
+            "vaststars.gamerender|gameplay",
         }
     }
 end
 
 local function new_game(mode, game_template)
     global.startup_args = {"new_game", mode, game_template}
-    rebot("vaststars.gamerender|game_init_system")
+    rebot()
 end
 
 local function continue_game()
     global.startup_args = {"continue_game", assert(archiving.last())}
-    rebot("vaststars.gamerender|game_init_system")
+    rebot()
 end
 
 local function load_game(index)
@@ -41,7 +30,7 @@ local function load_game(index)
         return
     end
     global.startup_args = {"load_game", index}
-    rebot("vaststars.gamerender|game_init_system")
+    rebot()
     return true
 end
 

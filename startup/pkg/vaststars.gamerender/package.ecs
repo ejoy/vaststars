@@ -45,69 +45,28 @@ pipeline "gameworld_clean"
 pipeline "prototype"
     .stage "prototype_restore"
 
-feature "engine"
-    .import_feature "ant.animation"
-    .import_feature "ant.daynight"
-    .import_feature "ant.efk"
-    .import_feature "ant.landform"
-    .import_feature "ant.modifier"
-    .import_feature "ant.motion_sampler"
-    .import_feature "ant.objcontroller|pickup"
-    .import_feature "ant.render"
-    .import_feature "ant.rmlui"
-    .import_feature "ant.sky|sky"
-    .import_feature "ant.starsky"
-    .import_feature "ant.polyline"
-    .import_feature "ant.terrain|canvas"
-    .import_feature "mod.billboard"
-    .import_feature "mod.shadow_aabb_update"
+import_feature "ant.animation"
+import_feature "ant.daynight"
+import_feature "ant.efk"
+import_feature "ant.landform"
+import_feature "ant.modifier"
+import_feature "ant.motion_sampler"
+import_feature "ant.objcontroller|pickup"
+import_feature "ant.render"
+import_feature "ant.rmlui"
+import_feature "ant.sky|sky"
+import_feature "ant.starsky"
+import_feature "ant.polyline"
+import_feature "ant.terrain|canvas"
+import_feature "mod.billboard"
+import_feature "mod.shadow_aabb_update"
 
-----------------------------------------------------
-----------------------------------------------------
-policy "engine_utils"
-    .require_system "camera_controller"
-    .require_system "entity_object_system"
-    .require_system "debug_system"
-    .require_system "update_system"
+feature "gameplay"
+    .import "gameplay.ecs"
 
-policy "render_updates"
-    .require_system "assembling_system"
-    .require_system "daynight_system"
-    .require_system "building_system"
-    .require_system "inventory_system"
-    .require_system "drone_system"
-    .require_system "work_state_system"
-    .require_system "task_system"
-    .require_system "storage_tank_system"
-    .require_system "statistic_system"
-    .require_system "station_system"
-    .require_system "guide_system"
-    .require_system "science_system"
-    .require_system "lorry_system"
-    .require_system "fluidbox_system"
-    .require_system "road_system"
-    .require_system "chimney_system"
+feature "login"
+    .import "login.ecs"
 
-policy "gameplay"
-    .require_system "pick_object_sys"
-    .require_system "prototype_cache_system"
-    .require_system "power_check_system"
-
-----------------------------------------------------
-----------------------------------------------------
-system "init_system"
-    .require_policy "engine_utils"
-    .implement "init_system.lua"
-
-system "game_init_system"
-    .require_policy "engine_utils"
-    .require_policy "render_updates"
-    .require_policy "gameplay"
-    .implement "game_init_system.lua"
-
-----------------------------------------------------
-----------------------------------------------------
--- engine_utils
 system "ui_system"
     .implement "engine/system/ui_system.lua"
 
@@ -122,66 +81,3 @@ system "debug_system"
 
 system "update_system"
     .implement "update_system.lua"
-
-system "pick_object_sys"
-    .implement "pick_object_system.lua"
-
-----------------------------------------------------
-----------------------------------------------------
--- render_updates
-system "assembling_system"
-    .implement "render_updates/assembling.lua"
-
-system "daynight_system"
-    .implement "render_updates/daynight.lua"
-
-system "building_system"
-    .implement "render_updates/building.lua"
-
-system "inventory_system"
-    .implement "render_updates/inventory.lua"
-
-system "drone_system"
-    .implement "render_updates/drone.lua"
-
-system "work_state_system"
-    .implement "render_updates/work_state.lua"
-
-system "task_system"
-    .implement "render_updates/task.lua"
-
-system "storage_tank_system"
-    .implement "render_updates/storage_tank.lua"
-
-system "statistic_system"
-    .implement "render_updates/statistic.lua"
-
-system "station_system"
-    .implement "render_updates/station.lua"
-
-system "guide_system"
-    .implement "render_updates/guide.lua"
-
-system "science_system"
-    .implement "render_updates/science.lua"
-
-system "lorry_system"
-    .implement "render_updates/lorry.lua"
-
-system "fluidbox_system"
-    .implement "render_updates/fluidbox.lua"
-
-system "ing_res_motion_system"
-    .implement "render_updates/ing_res_motion.lua"
-
-system "road_system"
-    .implement "render_updates/road.lua"
-
-system "chimney_system"
-    .implement "render_updates/chimney.lua"
-
-system "power_check_system"
-    .implement "power_check_system.lua"
-
-system "prototype_cache_system"
-    .implement "prototype_cache.lua"

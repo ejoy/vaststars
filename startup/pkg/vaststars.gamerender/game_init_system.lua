@@ -5,7 +5,6 @@ local w = world.w
 local NOTHING <const> = require "debugger".nothing
 local TERRAIN_ONLY <const> = require "debugger".terrain_only
 local icamera_controller = ecs.require "engine.system.camera_controller"
-local imain_menu_manager = ecs.require "main_menu_manager"
 local icanvas = ecs.require "engine.canvas"
 local audio = import_package "ant.audio"
 local rhwi = import_package "ant.hwi"

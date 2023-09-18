@@ -37,19 +37,8 @@ function M:stage_camera_usage(datamodel)
     for _ in reboot_mb:unpack() do
         local window = import_package "ant.window"
         window.reboot {
-            import = {
-                "@ant.render",
-                "@vaststars.gamerender",
-            },
             feature = {
-                "vaststars.gamerender|engine",
-            },
-            system = {
-                "vaststars.gamerender|init_system",
-            },
-            policy = {
-                "ant.render|render",
-                "ant.render|render_queue",
+                "vaststars.gamerender|login",
             }
         }
     end
