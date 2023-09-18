@@ -1,9 +1,6 @@
 package.path = "engine/?.lua"
 require "bootstrap"
 import_package "ant.window".start {
-    import = {
-        "@ant.render",
-    },
     feature = {
         "vaststars.mod.test",
         "ant.animation",
@@ -12,10 +9,7 @@ import_package "ant.window".start {
         "ant.landform",
         "ant.objcontroller|pickup",
         "mod.billboard",
+        "ant.render",
         "mod.printer",
-    },
-    policy = {
-        "ant.render|render",
-        "ant.render|render_queue",
     }
 }
