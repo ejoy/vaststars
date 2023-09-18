@@ -194,12 +194,11 @@ local function get_fly_height(prev_x, prev_y, next_x, next_y)
 end
 
 local drone_to_remove = {}
-
 function drone_sys:gameworld_update()
     local gameworld = gameplay_core.get_world()
     local same_dest_offset = {}
     local drone_task = {}
-    for e in gameworld.ecs:select "drone:in eid:in" do
+    for e in gameworld.ecs:select "drone_changed drone:in eid:in" do
         local drone = e.drone
         if drone.status == STATUS_HAS_ERROR then
             if lookup_drones[e.eid] then
@@ -211,6 +210,23 @@ function drone_sys:gameworld_update()
             lookup_drones[e.eid] = create_drone(drone.prev_x, drone.prev_y, drone.prev_slot)
         else
             local current = lookup_drones[e.eid]
+            if drone.item ~= 0 then
+                local typeobject_item = iprototype.queryById(drone.item)
+                local item_prefab = world:create_instance {
+                    prefab = "/pkg/vaststars.resources/" .. typeobject_item.item_model,
+                    parent = current.prefab.tag["*"][1],
+                    group = current.prefab.group,
+                    on_ready = function(inst)
+                        local re <close> = world:entity(inst.tag["*"][1])
+                        iom.set_position(re, math3d.vector(0.0, -4.0, 0.0))
+                        iom.set_scale(re, math3d.vector(1.5, 1.5, 1.5))
+                    end
+                }
+                current:set_item(item_prefab)
+            else
+                current:destroy_item()
+            end
+
             local flyid = drone.prev_x | (drone.prev_y << 16) | (drone.prev_slot << 24) | (drone.next_x << 28) | (drone.next_y << 30) | (drone.next_slot << 32)
             if current.flyid ~= flyid or current.to_home then
                 if drone.maxprogress > 0 then
@@ -227,20 +243,6 @@ function drone_sys:gameworld_update()
                     if isHome(drone.next_x, drone.next_y) then
                         current:gohome(flyid, from, getHomePos(to), fly_height)
                     else
-                        if drone.item ~= 0 then
-                            local typeobject_item = iprototype.queryById(drone.item)
-                            local item_prefab = world:create_instance {
-                                prefab = "/pkg/vaststars.resources/" .. typeobject_item.item_model,
-                                parent = current.prefab.tag["*"][1],
-                                group = current.prefab.group,
-                                on_ready = function(inst)
-                                    local re <close> = world:entity(inst.tag["*"][1])
-                                    iom.set_position(re, math3d.vector(0.0, -4.0, 0.0))
-                                    iom.set_scale(re, math3d.vector(1.5, 1.5, 1.5))
-                                end
-                            }
-                            current:set_item(item_prefab)
-                        end
                         drone_task[#drone_task + 1] = {flyid, current, from, to, fly_height, drone.maxprogress, drone.maxprogress - drone.progress}
                     end
                 elseif isHome(drone.prev_x, drone.prev_y) and not current.to_home then

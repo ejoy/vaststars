@@ -31,12 +31,23 @@
                     transform: scale(1.03);
                 }
             }
+            .small-item1 {
+                margin:0 0.075vmin;
+                flex-direction: column;
+                align-items:center;
+                justify-content:flex-end;
+                background-color: rgb(61, 61, 61);
+                border: 0.2vmin rgb(251, 177, 61);
+                background-size:cover;
+                width: 5.70vmin;
+                height: 5.70vmin;
+                font-size: 3.00vmin;
+            }
         </style>
         <style path = "/pkg/vaststars.resources/ui/common/building_style.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "lua.ui_system"
             local start = ui_sys.createDataMode {
-                object_id = 0,
                 property_list = {},
                 icon = "",
                 prototype_name = " ",
@@ -50,6 +61,8 @@
                 show_assemble = false,
                 recipe_name = " ",
                 guide_progress = 0,
+                item_icon = "",
+                item_name = "",
             }
         </script>
     </head>
@@ -62,6 +75,13 @@
                     <div data-style-background-image="icon" style = "width: 20vmin; height: 20vmin; background-size: cover;" />
                 </div>
                 <div style = "text-align: center; top: -3.0vmin; font-size: 4vmin; word-break: break-all;">{{prototype_name}}</div>
+
+                <div style="width:90%; margin-left: 3%; margin-right: 3%; flex-direction: row; justify-content: center; align-items: center;" data-if = "item_icon ~= ''">
+                    <div style="flex-direction: column; justify-content: center; align-items: center;">
+                        <div class="small-item1" style="margin: 0.5vmin; height: 8vmin; width: 8vmin; margin-top: 8vmin;" data-style-background-image="item_icon" />
+                        <div style="text-align: center; font-size: 3.5vmin;">{{item_name}}</div>
+                    </div>
+                </div>
 
                 <!-- property list -->
                 <div style = "margin-left: 3%; margin-right: 3%; border-bottom: 0.1vmin #6d6d6d; padding-top: 1vmin;" />

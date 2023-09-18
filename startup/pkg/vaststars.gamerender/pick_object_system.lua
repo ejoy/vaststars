@@ -59,6 +59,7 @@ local function __push_object(lorries, pick_x, pick_y, x, y, status)
                     dist_x = x,
                     dist_y = y,
                     lorry = lorry,
+                    eid = lorry_id,
                 }
             end
         end

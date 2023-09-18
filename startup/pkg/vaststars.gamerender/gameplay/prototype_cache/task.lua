@@ -1,4 +1,5 @@
 local iprototype = require "gameplay.interface.prototype"
+local gameplay_core = require "gameplay.core"
 
 --[[
 custom_type :
@@ -18,7 +19,13 @@ local custom_type_mapping = {
     [0] = {s = "undef", check = function() end}, -- TODO
     [1] = {s = "road_laying", check = function(task_params, progress, count) return (progress or 0) + count end},
     [2] = {s = "lorry_count", check = function(task_params)
-        return 0
+        local ecs = gameplay_core.get_world().ecs
+        local count = ecs:count("lorry:in")
+        if count >= task_params.lorry_count then
+            return 1
+        else
+            return 0
+        end
     end, },
     [3] = {s = "set_recipe", check = function(task_params, progress, recipe_name)
         if task_params.recipe == recipe_name then

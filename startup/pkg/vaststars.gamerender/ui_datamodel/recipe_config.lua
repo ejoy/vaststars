@@ -44,7 +44,7 @@ function M:create(gameplay_eid)
 
     if e.assembling.recipe ~= 0 then
         local typeobject = iprototype.queryById(e.assembling.recipe)
-        datamodel.recipe_name = typeobject.name
+        datamodel.recipe_name = iprototype.display_name(typeobject)
         datamodel.recipe_icon = typeobject.recipe_icon
         datamodel.recipe_time = itypes.time(typeobject.time)
         datamodel.recipe_ingredients = irecipe.get_elements(typeobject.ingredients)
@@ -84,9 +84,10 @@ function M:create(gameplay_eid)
             new = false
         end
 
+        local recipe_typeobject = iprototype.queryById(recipe.id)
         res[category_idx].recipes[recipe_idx] = {
             id = ("%s:%s"):format(category_idx, recipe_idx), -- for rml
-            name = recipe.name,
+            name = iprototype.display_name(recipe_typeobject),
             icon = recipe.icon,
             new = new,
             selected = (datamodel.recipe_name == recipe.name) and true or false,
@@ -122,7 +123,7 @@ function M:stage_ui_update(datamodel, gameplay_eid)
         __set_recipe_value(datamodel, category_idx, recipe_idx, "new", false)
 
         local typeobject = iprototype.queryByName(recipe_name)
-        datamodel.recipe_name = typeobject.name
+        datamodel.recipe_name = iprototype.display_name(typeobject)
         datamodel.recipe_icon = typeobject.recipe_icon
         datamodel.recipe_time = itypes.time(typeobject.time)
         datamodel.recipe_ingredients = irecipe.get_elements(typeobject.ingredients)

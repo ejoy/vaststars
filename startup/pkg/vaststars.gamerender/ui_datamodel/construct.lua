@@ -112,7 +112,7 @@ local function __on_pick_non_building(datamodel, o, force)
         typeobject = iprototype.queryByName(typeobject.base)
     end
 
-    iui.open({"/pkg/vaststars.resources/ui/non_building_detail_panel.rml"}, typeobject.icon, iprototype.display_name(typeobject))
+    iui.open({"/pkg/vaststars.resources/ui/non_building_detail_panel.rml"}, typeobject.icon, iprototype.display_name(typeobject), o.eid)
     if datamodel.is_concise_mode and force ~= true then
         return true
     end
@@ -614,7 +614,7 @@ function M:stage_camera_usage(datamodel)
 
                     if not iprototype.is_pipe(selected_obj.name) then
                         local typeobject = iprototype.queryByName(selected_obj.name)
-                        iui.open({"/pkg/vaststars.resources/ui/non_building_detail_panel.rml"}, typeobject.item_icon, iprototype.display_name(typeobject))
+                        iui.open({"/pkg/vaststars.resources/ui/non_building_detail_panel.rml"}, typeobject.item_icon, iprototype.display_name(typeobject), selected_obj.eid)
                     end
                 end
             else

@@ -17,6 +17,7 @@ return function ()
         for _, v in pairs(iprototype.each_type "recipe") do
             if v.recipe_category then
                 table.insert(cache_a[v.recipe_craft_category], {
+                    id = v.id,
                     name = v.name,
                     recipe_order = v.recipe_order,
                     icon = v.recipe_icon,
@@ -24,6 +25,7 @@ return function ()
                 })
             else
                 table.insert(cache_c[v.recipe_craft_category], {
+                    id = v.id,
                     name = v.name,
                     recipe_order = v.recipe_order,
                     icon = v.recipe_icon,

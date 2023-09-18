@@ -31,7 +31,7 @@ local start_srts = {}
 local cache = {}
 local lorries = {}
 
-local function __gen_keyframes(last_srt, x, y, toward, offset)
+local function genKeyFrames(last_srt, x, y, toward, offset)
     local road_srt = {s = mc.ONE, t = math3d.vector(iterrain:get_position_by_coord(x, y, ROAD_SIZE, ROAD_SIZE))}
     if not rawget(cache[toward], offset) then
         assert(false, ("can not found track keyframes w(%s) from(%s) -> to(%s) offset(%s)"):format(
@@ -79,21 +79,18 @@ motion_events["update"] = function(obj, e, x, y, toward, offset, last_srt, maxpr
         obj.x, obj.y, obj.toward, obj.offset = x, y, toward, offset
         obj.last_srt = obj.last_srt or last_srt
 
-        local kfs = __gen_keyframes(obj.last_srt, x, y, toward, offset)
+        local kfs = genKeyFrames(obj.last_srt, x, y, toward, offset)
         ims.set_keyframes(e, table.unpack(kfs))
 
         local last = kfs[#kfs]
         obj.last_srt.s.v = last.s
         obj.last_srt.r.q = last.r
         obj.last_srt.t.v = last.t
-    end
 
-    if not (obj.maxprogress == maxprogress and obj.progress == progress) then
-        obj.maxprogress, obj.progress = maxprogress, progress
         ims.set_duration(e, maxprogress, progress, true)
     end
 end
-local function __create_lorry(classid, x, y, toward, offset)
+local function createLorry(classid, x, y, toward, offset)
     local road_srt = {s = mc.ONE, t = math3d.vector(iterrain:get_position_by_coord(x, y, ROAD_SIZE, ROAD_SIZE))}
     local start_srt = start_srts[toward]
 
@@ -106,7 +103,7 @@ local function __create_lorry(classid, x, y, toward, offset)
 
     local last_srt = {s = math3d.ref(s), r = math3d.ref(r), t = math3d.ref(t)}
     local typeobject = assert(iprototype.queryById(classid))
-    local kfs = __gen_keyframes(last_srt, x, y, toward, offset)
+    local kfs = genKeyFrames(last_srt, x, y, toward, offset)
     local lorry = create_lorry(typeobject.model, kfs[1].s, kfs[1].r, kfs[1].t, motion_events)
     lorry.classid = classid
     lorry.last_srt = last_srt
@@ -182,7 +179,7 @@ function lorry_sys:gameworld_update()
     local ecs = gameplay_core.get_world().ecs
 
     local l, classid, x, y, offset, toward, item_classid, item_amount, progress, maxprogress, lorry
-    for e in ecs:select "lorry:in eid:in" do
+    for e in ecs:select "lorry_changed lorry:in eid:in" do
         l = e.lorry
         classid = l.prototype
         lorry = lorries[e.eid]
@@ -205,9 +202,10 @@ function lorry_sys:gameworld_update()
         assert(offset == 0 or offset == 1)
 
         if not lorry then
-            lorry = __create_lorry(classid, x, y, toward, offset)
+            lorry = createLorry(classid, x, y, toward, offset)
             lorries[e.eid] = lorry
         end
+
         lorry:motion_opt("update", x, y, toward, offset, lorry.last_srt, maxprogress, maxprogress - progress, true)
         lorry:set_item(item_classid, item_amount)
         ::continue::
