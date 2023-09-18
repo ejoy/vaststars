@@ -36,8 +36,8 @@ path: /-
 value:
   data:
     scene:
-      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
-      t: {24, 0, -16}
+      r: {0, 0, 0, 1}
+      t: {15, 0, -15}
     slot:
       follow_flag: 1
       joint_name: None
@@ -53,8 +53,8 @@ path: /-
 value:
   data:
     scene:
-      r: {-0.2921813130378723, -0.30963370203971863, -0.10060609132051468, 0.8992416262626648}
-      t: {12, 2.5, -9.199999809265137}
+      r: {-0.2391176074743271, -0.36964383721351624, -0.0990457683801651, 0.8923990726470947}
+      t: {9.725162506103516, 3.899289608001709, -7.325549125671387}
     slot:
       follow_flag: 1
       joint_name: None
@@ -71,7 +71,7 @@ value:
   data:
     scene:
       r: {0, -0.7071067690849304, 0, 0.7071067690849304}
-      t: {0, 5.599999904632568, -4.800000190734863}
+      t: {0, 5.599999904632568, -5}
     slot:
       follow_flag: 1
       joint_name: None
@@ -87,8 +87,8 @@ path: /-
 value:
   data:
     scene:
-      r: {0.07676295936107635, -0.9201543927192688, 0.2294202595949173, 0.30787938833236694}
-      t: {-12, 2.5, -9.199999809265137}
+      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
+      t: {0, 5.599999904632568, -5}
     slot:
       follow_flag: 1
       joint_name: None
@@ -104,8 +104,8 @@ path: /-
 value:
   data:
     scene:
-      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
-      t: {-24, 0, -16}
+      r: {0.0990457609295845, -0.8923990726470947, 0.2391176074743271, 0.36964380741119385}
+      t: {-9.725000381469727, 3.8989999294281006, -7.326000213623047}
     slot:
       follow_flag: 1
       joint_name: None
@@ -114,6 +114,63 @@ value:
     ant.animation|slot
   tag:
     slot5
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      t: {-5, 10, 5}
+  mount: 1
+  policy:
+    ant.scene|scene_object
+  tag:
+    depot
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  mount: 9
+  prefab: /pkg/vaststars.resources/glbs/depot.glb|mesh.prefab
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      t: {5, 10, 5}
+  mount: 1
+  policy:
+    ant.scene|scene_object
+  tag:
+    depot
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  mount: 11
+  prefab: /pkg/vaststars.resources/glbs/depot.glb|mesh.prefab
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      r: {0, -1, 0, -4.371138828673793e-08}
+      t: {-15, 0, -15}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    slot6
 ---
 file: mesh.prefab
 op: createfile
@@ -144,8 +201,8 @@ value:
   ---
   data:
     scene:
-      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
-      t: {24, 0, -16}
+      r: {0, 0, 0, 1}
+      t: {15, 0, -15}
     slot:
       follow_flag: 1
       joint_name: None
@@ -157,8 +214,8 @@ value:
   ---
   data:
     scene:
-      r: {-0.2921813130378723, -0.30963370203971863, -0.10060609132051468, 0.8992416262626648}
-      t: {12, 2.5, -9.199999809265137}
+      r: {-0.2391176074743271, -0.36964383721351624, -0.0990457683801651, 0.8923990726470947}
+      t: {9.725162506103516, 3.899289608001709, -7.325549125671387}
     slot:
       follow_flag: 1
       joint_name: None
@@ -171,7 +228,7 @@ value:
   data:
     scene:
       r: {0, -0.7071067690849304, 0, 0.7071067690849304}
-      t: {0, 5.599999904632568, -4.800000190734863}
+      t: {0, 5.599999904632568, -5}
     slot:
       follow_flag: 1
       joint_name: None
@@ -183,8 +240,8 @@ value:
   ---
   data:
     scene:
-      r: {0.07676295936107635, -0.9201543927192688, 0.2294202595949173, 0.30787938833236694}
-      t: {-12, 2.5, -9.199999809265137}
+      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
+      t: {0, 5.599999904632568, -5}
     slot:
       follow_flag: 1
       joint_name: None
@@ -196,8 +253,8 @@ value:
   ---
   data:
     scene:
-      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
-      t: {-24, 0, -16}
+      r: {0.0990457609295845, -0.8923990726470947, 0.2391176074743271, 0.36964380741119385}
+      t: {-9.725000381469727, 3.8989999294281006, -7.326000213623047}
     slot:
       follow_flag: 1
       joint_name: None
@@ -206,3 +263,16 @@ value:
     ant.animation|slot
   tag:
     slot5
+  ---
+  data:
+    scene:
+      r: {0, -1, 0, -4.371138828673793e-08}
+      t: {-15, 0, -15}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    slot6
