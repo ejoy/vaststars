@@ -53,6 +53,7 @@ feature "engine"
     .import_feature "ant.modifier"
     .import_feature "ant.motion_sampler"
     .import_feature "ant.objcontroller|pickup"
+    .import_feature "ant.render"
     .import_feature "ant.rmlui"
     .import_feature "ant.sky|sky"
     .import_feature "ant.starsky"
@@ -63,14 +64,6 @@ feature "engine"
 
 ----------------------------------------------------
 ----------------------------------------------------
-policy "engine"
-    .include_policy "ant.render|csm_queue"
-    .include_policy "ant.render|indirect"
-    .include_policy "ant.render|draw_indirect"
-    .include_policy "ant.render|ibl"
-    .require_system "ant.render|draw_indirect_system"
-    .require_system "ant.render|hitch_system"
-
 policy "engine_utils"
     .require_system "camera_controller"
     .require_system "entity_object_system"
@@ -103,12 +96,10 @@ policy "gameplay"
 ----------------------------------------------------
 ----------------------------------------------------
 system "init_system"
-    .require_policy "engine"
     .require_policy "engine_utils"
     .implement "init_system.lua"
 
 system "game_init_system"
-    .require_policy "engine"
     .require_policy "engine_utils"
     .require_policy "render_updates"
     .require_policy "gameplay"
