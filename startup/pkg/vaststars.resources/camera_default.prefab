@@ -15,7 +15,6 @@ data:
     aperture      : 16.0
     shutter_speed : 0.008
     ISO           : 100
-  pack_camera_aabb: true
 tag:
   camera
 policy:
