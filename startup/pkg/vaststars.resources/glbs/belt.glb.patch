@@ -1,0 +1,46 @@
+---
+file: materials/Material.011.material
+op: add
+path: /fx/setting/UV_MOTION
+value: 1
+---
+file: materials/Material.011.material
+op: add
+path: /properties/u_uvmotion
+value: {0, -0.35, 1, 1}
+---
+file: materials/Material.011.material
+op: copyfile
+path: materials/input.material
+---
+file: materials/input.material
+op: replace
+path: /properties/u_emissive_factor
+value: {0, 0, 1, 1}
+---
+file: mesh.prefab
+op: copyfile
+path: input.prefab
+---
+file: input.prefab
+op: replace
+path: /2/data/material
+value: materials/input.material
+---
+file: materials/Material.011.material
+op: copyfile
+path: materials/output.material
+---
+file: materials/output.material
+op: replace
+path: /properties/u_emissive_factor
+value: {1, 0, 0, 1}
+---
+file: mesh.prefab
+op: copyfile
+path: output.prefab
+---
+file: output.prefab
+op: replace
+path: /2/data/material
+value: materials/output.material
