@@ -19,3 +19,4 @@ tag:
   camera
 policy:
   ant.camera|camera
+  ant.camera|exposure
