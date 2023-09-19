@@ -843,6 +843,23 @@ local guide = {
         },
 	},
 
+
+    {
+        name = "",
+		narrative = {
+            {"从指挥中心派遣{/g 运输车辆}..哔哗..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-2.texture"},
+        },
+        narrative_end = {
+            guide_progress = 53,
+            task = {
+                "物流网络",
+            }
+        },
+        prerequisites = {
+            "维修运输车辆",
+        },
+	},
+
     {
         name = "",
 		narrative = {

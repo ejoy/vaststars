@@ -758,6 +758,27 @@ local prototype = gameplay.register.prototype
     },
   }
 
+  prototype "物流网络" {
+    desc = "派遣2辆运输车",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    task = {"unknown", 0, 2},                          
+    task_params = {lorry_count = 2},
+    prerequisites = {"维修运输车辆"},
+    count = 1,
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate1.texture",
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate2.texture",
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate3.texture",
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate4.texture",
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate5.texture",
+    },
+    sign_desc = {
+      { desc = "指挥中心派遣2辆运输车", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
+
+
 prototype "气候研究1" {
   desc = "对火星大气成分进行标本采集和研究",
   type = { "tech" },
@@ -766,7 +787,7 @@ prototype "气候研究1" {
     unlock_recipe = {"气候科技包T1"},
     unlock_item = {"气候科技包"},
   },
-  prerequisites = {"维修运输车辆"},
+  prerequisites = {"物流网络"},
   ingredients = {
       {"地质科技包", 1},
   },
