@@ -889,6 +889,7 @@ local guide = {
             }
         },
         prerequisites = {
+            "建筑维修4",
             "电解水",
         },
 	},

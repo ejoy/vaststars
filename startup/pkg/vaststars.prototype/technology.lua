@@ -1017,7 +1017,7 @@ prototype "空气分离工艺1" {
   effects = {
     unlock_recipe = {"空气分离1"},
   },
-  prerequisites = {"建筑维修4"},
+  prerequisites = {"建筑维修4","电解水"},
   ingredients = {
       {"气候科技包", 1},
   },
