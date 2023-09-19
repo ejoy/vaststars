@@ -761,6 +761,7 @@ local prototype = gameplay.register.prototype
   prototype "物流网络" {
     desc = "派遣2辆运输车",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = { "task" },
     task = {"unknown", 0, 2},                          
     task_params = {lorry_count = 2},
     prerequisites = {"维修运输车辆"},
