@@ -804,8 +804,8 @@ prototype "建筑维修2" {
   type = { "tech" },
   icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
   effects = {
-    unlock_recipe = {"维修水电站","维修空气过滤器","维修地下水挖掘机","维修蒸馏厂"},
-    unlock_item = {"水电站框架","空气过滤器框架","地下水挖掘机框架","蒸馏厂框架"},
+    unlock_recipe = {"维修水电站","维修空气过滤器","维修地下水挖掘机","维修蒸馏厂","维修电解厂"},
+    unlock_item = {"水电站框架","空气过滤器框架","地下水挖掘机框架","蒸馏厂框架","电解厂框架"},
   },
   prerequisites = {"气候研究1"},
   ingredients = {

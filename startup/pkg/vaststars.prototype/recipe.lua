@@ -2482,7 +2482,7 @@ prototype "维修蒸馏厂" {
     results = {
         {"蒸馏厂I", 1},
     },
-    time = "5s",
+    time = "10s",
     description = "破损维修破损的电解厂",
 }
 
@@ -2499,7 +2499,7 @@ prototype "维修化工厂" {
     results = {
         {"化工厂I", 1},
     },
-    time = "5s",
+    time = "10s",
     description = "破损维修破损的化工厂",
 }
 
@@ -2510,13 +2510,14 @@ prototype "维修电解厂" {
     recipe_order =  54,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/electrolysis-design.texture",
     ingredients = {
-        {"电动机I", 5},
+        {"铁制电线杆", 1},
+        {"液罐I", 1},
         {"电解厂框架", 1},
     },
     results = {
         {"电解厂I", 1},
     },
-    time = "5s",
+    time = "10s",
     description = "破损维修破损的电解厂",
 }
 
