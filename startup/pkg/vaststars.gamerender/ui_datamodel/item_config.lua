@@ -156,7 +156,7 @@ function M:stage_ui_update(datamodel, gameplay_eid, interface)
     for _, _, _, type in click_set_item_mb:unpack() do
         local existing = {}
         for _, slot in ipairs(datamodel.slots) do
-            if slot.id ~= 0 and slot.type ~= type then
+            if slot.id ~= 0 and slot.type ~= "transit" and slot.type ~= type then -- special handling for 'transit' type
                 existing[slot.id] = true
             end
         end

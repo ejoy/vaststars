@@ -85,10 +85,6 @@
                 <button-icon style='background-image: "/pkg/vaststars.resources/ui/textures/road/write.texture";'/>
                 <button-text>读取进度</button-text>
             </button>
-            <button data-event-click = "clickButton('reboot')">
-                <button-icon style='background-image: "/pkg/vaststars.resources/ui/textures/character/health.texture";'/>
-                <button-text>重启游戏</button-text>
-            </button>
             <button data-event-click = "clickButton('load_template')">
                 <button-icon style='background-image: "/pkg/vaststars.resources/ui/textures/character/health.texture";'/>
                 <button-text>测试模式</button-text>

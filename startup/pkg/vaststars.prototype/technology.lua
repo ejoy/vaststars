@@ -763,9 +763,8 @@ local prototype = gameplay.register.prototype
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"unknown", 0, 2},                          
-    task_params = {lorry_count = 2},
     prerequisites = {"维修运输车辆"},
-    count = 1,
+    count = 2,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate1.texture",
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate2.texture",

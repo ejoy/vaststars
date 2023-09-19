@@ -4,7 +4,7 @@ local gameplay_core = require "gameplay.core"
 --[[
 custom_type :
 1. road_laying, count = x,
-2. lorry_count, count = x,
+2. count = x,
 3. set_recipe, recipe = x,
 4. auto_complete_task,
 5. set_item, item = x,
@@ -20,12 +20,14 @@ local custom_type_mapping = {
     [1] = {s = "road_laying", check = function(task_params, progress, count) return (progress or 0) + count end},
     [2] = {s = "lorry_count", check = function(task_params)
         local ecs = gameplay_core.get_world().ecs
-        local count = ecs:count("lorry:in")
-        if count >= task_params.lorry_count then
-            return 1
-        else
-            return 0
+
+        local count = 0
+        for e in ecs:select "lorry:in" do
+            if e.lorry.prototype ~= 0 then
+                count = count + 1
+            end
         end
+        return count
     end, },
     [3] = {s = "set_recipe", check = function(task_params, progress, recipe_name)
         if task_params.recipe == recipe_name then

@@ -7,6 +7,7 @@ local restart_mb = mailbox:sub {"restart"}
 local close_mb = mailbox:sub {"close"}
 local info_mb = mailbox:sub {"info"}
 local debug_mb = mailbox:sub {"debug"}
+local back_to_main_menu_mb = mailbox:sub {"back_to_main_menu"}
 local lock_group_mb = mailbox:sub {"lock_group"}
 local iui = ecs.require "engine.system.ui_system"
 local archiving = require "archiving"
@@ -70,6 +71,17 @@ function M:stage_camera_usage()
         gameplay_core.settings_set("debug", debug)
         rhwi.set_profie(debug)
         iui.close("/pkg/vaststars.resources/ui/option_pop.rml")
+    end
+
+    for _ in back_to_main_menu_mb:unpack() do
+        iui.close("/pkg/vaststars.resources/ui/option_pop.rml")
+        iui.close("/pkg/vaststars.resources/ui/main_menu.rml")
+        local window = import_package "ant.window"
+        window.reboot {
+            feature = {
+                "vaststars.gamerender|login",
+            }
+        }
     end
 
     for _ in lock_group_mb:unpack() do
