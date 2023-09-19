@@ -18,15 +18,6 @@ op: replace
 path: /properties/u_emissive_factor
 value: {0, 0, 1, 1}
 ---
-file: mesh.prefab
-op: copyfile
-path: input.prefab
----
-file: input.prefab
-op: replace
-path: /2/data/material
-value: materials/input.material
----
 file: materials/Material.011.material
 op: copyfile
 path: materials/output.material
@@ -36,11 +27,41 @@ op: replace
 path: /properties/u_emissive_factor
 value: {1, 0, 0, 1}
 ---
-file: mesh.prefab
-op: copyfile
-path: output.prefab
----
 file: output.prefab
 op: replace
 path: /2/data/material
 value: materials/output.material
+---
+file: input.prefab
+op: replace
+path: /2/data/material
+value: materials/input.material
+---
+file: input.prefab
+op: replace
+path: /1/data/scene/r
+value: {0, 1, 0, -4.371138828673793e-08}
+---
+file: mesh.prefab
+op: copyfile
+path: input.prefab
+---
+file: mesh.prefab
+op: copyfile
+path: output.prefab
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      t: {0, 5, 0}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    slot1
