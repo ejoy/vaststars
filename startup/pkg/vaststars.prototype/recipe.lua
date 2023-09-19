@@ -2298,11 +2298,62 @@ prototype "维修无人机平台" {
     description = "维修破损的无人机平台",
 }
 
+prototype "维修铁制电线杆" {
+    type = { "recipe" },
+    recipe_craft_category = "生产手工制造",
+    recipe_category =  "加工",
+    recipe_order =  51,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/iron-wire.texture",
+    ingredients = {
+        {"铁棒", 2},
+        {"电线杆框架", 1},
+    },
+    results = {
+        {"铁制电线杆", 1},
+    },
+    time = "5s",
+    description = "修复破损的铁制电线杆",
+}
+
+prototype "维修运输汽车" {
+    type = { "recipe" },
+    recipe_craft_category = "生产手工制造",
+    recipe_category =  "加工",
+    recipe_order =  54,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/steel-gear.texture",
+    ingredients = {
+        {"铁棒", 1},
+        {"破损运输车辆", 1},q
+    },
+    results = {
+        {"运输车辆I", 1},
+    },
+    time = "4s",
+    description = "修复破损的运输汽车",
+}
+
+prototype "维修停车站" {
+    type = { "recipe" },
+    recipe_craft_category = "建筑打印",
+    recipe_category =  "加工",
+    recipe_order =  55,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/goodsstation-input-design.texture",
+    ingredients = {
+        {"石砖", 4},
+        {"停车站框架", 1},
+    },
+    results = {
+        {"停车站", 1},
+    },
+    time = "8s",
+    description = "维修破损的停车站",
+}
+
 prototype "维修空气过滤器" {
     type = { "recipe" },
     recipe_craft_category = "建筑打印",
     recipe_category =  "加工",
-    recipe_order =  50,
+    recipe_order =  56,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/gas-separate.texture",
     ingredients = {
         {"铁棒", 5},
@@ -2319,7 +2370,7 @@ prototype "维修地下水挖掘机" {
     type = { "recipe" },
     recipe_craft_category = "建筑打印",
     recipe_category =  "加工",
-    recipe_order =  51,
+    recipe_order =  58,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/water-excavator-design.texture",
     ingredients = {
         {"铁齿轮", 5},
@@ -2336,7 +2387,7 @@ prototype "维修水电站" {
     type = { "recipe" },
     recipe_craft_category = "建筑打印",
     recipe_category =  "加工",
-    recipe_order =  54,
+    recipe_order =  60,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/hydroplant-design.texture",
     ingredients = {
         {"石砖", 16},
@@ -2353,7 +2404,7 @@ prototype "维修组装机" {
     type = { "recipe" },
     recipe_craft_category = "生产手工制造",
     recipe_category =  "加工",
-    recipe_order =  118,
+    recipe_order =  62,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/assembler-design.texture",
     ingredients = {
         {"铁齿轮", 8},
@@ -2366,28 +2417,11 @@ prototype "维修组装机" {
     description = "修复破损的组装机",
 }
 
-prototype "维修铁制电线杆" {
-    type = { "recipe" },
-    recipe_craft_category = "生产手工制造",
-    recipe_category =  "加工",
-    recipe_order =  120,
-    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/iron-wire.texture",
-    ingredients = {
-        {"铁棒", 2},
-        {"电线杆框架", 1},
-    },
-    results = {
-        {"铁制电线杆", 1},
-    },
-    time = "5s",
-    description = "修复破损的铁制电线杆",
-}
-
 prototype "维修太阳能板" {
     type = { "recipe" },
     recipe_craft_category = "生产手工制造",
     recipe_category =  "加工",
-    recipe_order =  122,
+    recipe_order =  64,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/solar-panel-design.texture",
     ingredients = {
         {"铁齿轮", 3},
@@ -2401,22 +2435,7 @@ prototype "维修太阳能板" {
     description = "修复破损的太阳能板",
 }
 
-prototype "维修运输汽车" {
-    type = { "recipe" },
-    recipe_craft_category = "生产手工制造",
-    recipe_category =  "加工",
-    recipe_order =  128,
-    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/steel-gear.texture",
-    ingredients = {
-        {"铁棒", 1},
-        {"破损运输车辆", 1},q
-    },
-    results = {
-        {"运输车辆I", 1},
-    },
-    time = "4s",
-    description = "修复破损的运输汽车",
-}
+
 
 -- prototype "维修出货车站" {
 --     type = { "recipe" },
@@ -2452,28 +2471,13 @@ prototype "维修运输汽车" {
 --     description = "维修破损的收货车站",
 -- }
 
-prototype "维修停车站" {
-    type = { "recipe" },
-    recipe_craft_category = "建筑打印",
-    recipe_category =  "加工",
-    recipe_order =  54,
-    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/goodsstation-input-design.texture",
-    ingredients = {
-        {"石砖", 4},
-        {"停车站框架", 1},
-    },
-    results = {
-        {"停车站", 1},
-    },
-    time = "8s",
-    description = "维修破损的停车站",
-}
+
 
 prototype "维修蒸馏厂" {
     type = { "recipe" },
     recipe_craft_category = "建筑打印",
     recipe_category =  "加工",
-    recipe_order =  56,
+    recipe_order =  66,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/chemistry-design.texture",
     ingredients = {
         {"铁齿轮", 8},
@@ -2490,7 +2494,7 @@ prototype "维修电解厂" {
     type = { "recipe" },
     recipe_craft_category = "建筑打印",
     recipe_category =  "加工",
-    recipe_order =  57,
+    recipe_order =  68,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/electrolysis-design.texture",
     ingredients = {
         {"铁制电线杆", 1},
@@ -2508,7 +2512,7 @@ prototype "维修化工厂" {
     type = { "recipe" },
     recipe_craft_category = "建筑打印",
     recipe_category =  "加工",
-    recipe_order =  58,
+    recipe_order =  70,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/chemistry-design.texture",
     ingredients = {
         {"液罐I", 5},
