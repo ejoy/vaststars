@@ -804,8 +804,8 @@ prototype "建筑维修2" {
   type = { "tech" },
   icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
   effects = {
-    unlock_recipe = {"维修水电站","维修空气过滤器","维修地下水挖掘机","维修蒸馏厂","维修电解厂"},
-    unlock_item = {"水电站框架","空气过滤器框架","地下水挖掘机框架","蒸馏厂框架","电解厂框架"},
+    unlock_recipe = {"维修水电站","维修空气过滤器","维修地下水挖掘机"},
+    unlock_item = {"水电站框架","空气过滤器框架","地下水挖掘机框架"},
   },
   prerequisites = {"气候研究1"},
   ingredients = {
@@ -993,6 +993,23 @@ prototype "电解水" {
   time = "4s"
 }
 
+prototype "建筑维修4" {
+  desc = "获得维修机械的技术",
+  type = { "tech" },
+  icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
+  effects = {
+    unlock_recipe = {"维修化工厂","维修蒸馏厂","维修电解厂"},
+    unlock_item = {"化工厂框架","蒸馏厂框架","电解厂框架"},
+  },
+  prerequisites = {"生产液罐"},
+  ingredients = {
+      {"地质科技包", 1},
+      {"气候科技包", 1},
+  },
+  count = 8,
+  time = "4s"
+}
+
 prototype "空气分离工艺1" {
   desc = "获得火星大气分离出纯净气体的工艺",
   type = { "tech" },
@@ -1000,7 +1017,7 @@ prototype "空气分离工艺1" {
   effects = {
     unlock_recipe = {"空气分离1"},
   },
-  prerequisites = {"电解水"},
+  prerequisites = {"建筑维修4"},
   ingredients = {
       {"气候科技包", 1},
   },
@@ -1158,8 +1175,8 @@ prototype "建筑维修3" {
   type = { "tech" },
   icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
   effects = {
-    unlock_recipe = {"维修组装机","维修化工厂","维修太阳能板"},
-    unlock_item = {"化工厂框架","组装机框架","太阳能板框架"},
+    unlock_recipe = {"维修组装机","维修太阳能板"},
+    unlock_item = {"组装机框架","太阳能板框架"},
   },
   prerequisites = {"冶金学1"},
   ingredients = {
@@ -1262,23 +1279,6 @@ prototype "电磁学1" {
     {"气候科技包", 1},
   },
   count = 6,
-  time = "5s"
-}
-
-prototype "建筑维修4" {
-  desc = "获得维修机械的技术",
-  type = { "tech" },
-  icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
-  effects = {
-    unlock_recipe = {"维修电解厂"},
-    unlock_item = {"电解厂框架"},
-  },
-  prerequisites = {"电磁学1"},
-  ingredients = {
-      {"地质科技包", 1},
-      {"气候科技包", 1},
-  },
-  count = 4,
   time = "5s"
 }
 
