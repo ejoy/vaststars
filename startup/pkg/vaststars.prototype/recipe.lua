@@ -2466,7 +2466,7 @@ prototype "维修停车站" {
         {"停车站", 1},
     },
     time = "8s",
-    description = "维修破损的收货车站",
+    description = "维修破损的停车站",
 }
 
 prototype "维修蒸馏厂" {
@@ -2483,7 +2483,7 @@ prototype "维修蒸馏厂" {
         {"蒸馏厂I", 1},
     },
     time = "10s",
-    description = "破损维修破损的电解厂",
+    description = "破损维修破损的蒸馏厂",
 }
 
 prototype "维修化工厂" {
