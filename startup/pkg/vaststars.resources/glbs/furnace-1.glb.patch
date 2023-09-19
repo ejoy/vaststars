@@ -1,110 +1,4 @@
 ---
-file: mesh.prefab
-op: add
-path: /-
-value:
-  data:
-    scene:
-      r: {0, 1, 0, -4.371138828673793e-08}
-      t: {-11.399999618530273, 7.5, 11.399999618530273}
-    slot:
-      follow_flag: 1
-      joint_name: None
-  mount: 1
-  policy:
-    ant.animation|slot
-  tag:
-    shelf1
----
-file: mesh.prefab
-op: add
-path: /-
-value:
-  data:
-    scene:
-      r: {0, 1, 0, -4.371138828673793e-08}
-      t: {0, 7.5, 15}
-    slot:
-      follow_flag: 1
-      joint_name: None
-  mount: 1
-  policy:
-    ant.animation|slot
-  tag:
-    shelf2
----
-file: mesh.prefab
-op: add
-path: /-
-value:
-  data:
-    scene:
-      r: {0, -1, 0, -4.371138828673793e-08}
-      t: {11.399999618530273, 7.5, 11.399999618530273}
-    slot:
-      follow_flag: 1
-      joint_name: None
-  mount: 1
-  policy:
-    ant.animation|slot
-  tag:
-    shelf3
----
-file: mesh.prefab
-op: add
-path: /-
-value:
-  data:
-    scene:
-      r: {0, 0, 0, 1}
-      t: {-11.399999618530273, 7.5, -11.399999618530273}
-    slot:
-      follow_flag: 1
-      joint_name: None
-  mount: 1
-  policy:
-    ant.animation|slot
-  tag:
-    shelf4
----
-file: mesh.prefab
-op: add
-path: /-
-value:
-  data:
-    scene:
-      r: {0, 0, 0, 1}
-      t: {0, 7.5, -15}
-    slot:
-      follow_flag: 1
-      joint_name: None
-  mount: 1
-  policy:
-    ant.animation|slot
-  tag:
-    shelf5
----
-file: mesh.prefab
-op: add
-path: /-
-value:
-  data:
-    scene:
-      r: {0, 0, 0, 1}
-      t: {11.399999618530273, 7.5, -11.399999618530273}
-    slot:
-      follow_flag: 1
-      joint_name: None
-  mount: 1
-  policy:
-    ant.animation|slot
-  tag:
-    shelf6
----
-file: mesh.prefab
-op: copyfile
-path: work.prefab
----
 file: work.prefab
 op: add
 path: /-
@@ -126,6 +20,112 @@ value:
     work
 ---
 file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      r: {0, 0.9238795042037964, 0, 0.3826834261417389}
+      t: {-10, 4.5, 10}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    shelf1
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      r: {0, 1, 0, -4.371138828673793e-08}
+      t: {0, 4.5, 15}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    shelf2
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      r: {0, -0.9238795042037964, 0, 0.3826834261417389}
+      t: {10, 7.5, 10}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    shelf3
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      r: {0, 0.3826834559440613, 0, 0.9238795042037964}
+      t: {-10, 4.5, -11.399999618530273}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    shelf4
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      r: {0, 0, 0, 1}
+      t: {0, 4.5, -15}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    shelf5
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      r: {0, -0.3826834559440613, 0, 0.9238795042037964}
+      t: {10, 4.5, -10}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    shelf6
+---
+file: mesh.prefab
+op: copyfile
+path: work.prefab
+---
+file: mesh.prefab
 op: createfile
 path: hitch.prefab
 value:
@@ -142,8 +142,8 @@ value:
   ---
   data:
     scene:
-      r: {0, 1, 0, -4.371138828673793e-08}
-      t: {-11.399999618530273, 7.5, 11.399999618530273}
+      r: {0, 0.9238795042037964, 0, 0.3826834261417389}
+      t: {-10, 4.5, 10}
     slot:
       follow_flag: 1
       joint_name: None
@@ -156,7 +156,7 @@ value:
   data:
     scene:
       r: {0, 1, 0, -4.371138828673793e-08}
-      t: {0, 7.5, 15}
+      t: {0, 4.5, 15}
     slot:
       follow_flag: 1
       joint_name: None
@@ -168,8 +168,8 @@ value:
   ---
   data:
     scene:
-      r: {0, -1, 0, -4.371138828673793e-08}
-      t: {11.399999618530273, 7.5, 11.399999618530273}
+      r: {0, -0.9238795042037964, 0, 0.3826834261417389}
+      t: {10, 7.5, 10}
     slot:
       follow_flag: 1
       joint_name: None
@@ -181,8 +181,8 @@ value:
   ---
   data:
     scene:
-      r: {0, 0, 0, 1}
-      t: {-11.399999618530273, 7.5, -11.399999618530273}
+      r: {0, 0.3826834559440613, 0, 0.9238795042037964}
+      t: {-10, 4.5, -11.399999618530273}
     slot:
       follow_flag: 1
       joint_name: None
@@ -195,7 +195,7 @@ value:
   data:
     scene:
       r: {0, 0, 0, 1}
-      t: {0, 7.5, -15}
+      t: {0, 4.5, -15}
     slot:
       follow_flag: 1
       joint_name: None
@@ -207,8 +207,8 @@ value:
   ---
   data:
     scene:
-      r: {0, 0, 0, 1}
-      t: {11.399999618530273, 7.5, -11.399999618530273}
+      r: {0, -0.3826834559440613, 0, 0.9238795042037964}
+      t: {10, 4.5, -10}
     slot:
       follow_flag: 1
       joint_name: None

@@ -1,4 +1,14 @@
 ---
+file: low_power.prefab
+op: replace
+path: /2/data/animation/low_power
+value: /pkg/vaststars.resources/animations/miner_Bone_low.anim
+---
+file: work.prefab
+op: replace
+path: /2/data/animation/work
+value: /pkg/vaststars.resources/animations/miner_Bone.anim
+---
 file: mesh.prefab
 op: add
 path: /-
@@ -23,9 +33,9 @@ path: /-
 value:
   data:
     scene:
-      r: {0, 0, 0, 1}
+      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
-      t: {17.968830108642578, 15.485337257385254, 0}
+      t: {18.493000030517578, 13.654000282287598, 0}
     slot:
       follow_flag: 1
       joint_name: None
@@ -39,19 +49,9 @@ file: mesh.prefab
 op: copyfile
 path: low_power.prefab
 ---
-file: low_power.prefab
-op: replace
-path: /2/data/animation/low_power
-value: /pkg/vaststars.resources/animations/miner_Bone_low.anim
----
 file: mesh.prefab
 op: copyfile
 path: work.prefab
----
-file: work.prefab
-op: replace
-path: /2/data/animation/work
-value: /pkg/vaststars.resources/animations/miner_Bone.anim
 ---
 file: mesh.prefab
 op: createfile
@@ -84,9 +84,9 @@ value:
   ---
   data:
     scene:
-      r: {0, 0, 0, 1}
+      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
-      t: {17.968830108642578, 15.485337257385254, 0}
+      t: {18.493000030517578, 13.654000282287598, 0}
     slot:
       follow_flag: 1
       joint_name: None

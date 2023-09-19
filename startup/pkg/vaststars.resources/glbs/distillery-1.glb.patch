@@ -1,8 +1,4 @@
 ---
-file: mesh.prefab
-op: copyfile
-path: work.prefab
----
 file: work.prefab
 op: add
 path: /-
@@ -81,13 +77,17 @@ value:
     work4
 ---
 file: mesh.prefab
+op: copyfile
+path: work.prefab
+---
+file: mesh.prefab
 op: add
 path: /-
 value:
   data:
     scene:
-      r: {0, 1, 0, -4.371138828673793e-08}
-      t: {-12, 15, 17}
+      r: {-0, 0.7071067690849304, 0, 0.7071067690849304}
+      t: {-20, 11, -7.5}
     slot:
       follow_flag: 1
       joint_name: None
@@ -103,8 +103,8 @@ path: /-
 value:
   data:
     scene:
-      r: {0, 1, 0, -4.371138828673793e-08}
-      t: {0, 17.84029769897461, 17}
+      r: {-0, 0.7071067690849304, 0, 0.7071067690849304}
+      t: {-21, 11, 0}
     slot:
       follow_flag: 1
       joint_name: None
@@ -120,8 +120,8 @@ path: /-
 value:
   data:
     scene:
-      r: {0, 1, 0, -4.371138828673793e-08}
-      t: {12, 15, 17}
+      r: {-0, 0.7071067690849304, 0, 0.7071067690849304}
+      t: {-20, 11, 7.5}
     slot:
       follow_flag: 1
       joint_name: None
@@ -137,7 +137,8 @@ path: /-
 value:
   data:
     scene:
-      t: {-17, 15, -17}
+      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
+      t: {20, 11, 7.5}
     slot:
       follow_flag: 1
       joint_name: None
@@ -153,7 +154,8 @@ path: /-
 value:
   data:
     scene:
-      t: {0, 11, -22}
+      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
+      t: {21, 11, 0}
     slot:
       follow_flag: 1
       joint_name: None
@@ -169,7 +171,8 @@ path: /-
 value:
   data:
     scene:
-      t: {17, 15, -17}
+      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
+      t: {20, 11, -7.5}
     slot:
       follow_flag: 1
       joint_name: None
@@ -196,8 +199,8 @@ value:
   ---
   data:
     scene:
-      r: {0, 1, 0, -4.371138828673793e-08}
-      t: {-12, 15, 17}
+      r: {-0, 0.7071067690849304, 0, 0.7071067690849304}
+      t: {-20, 11, -7.5}
     slot:
       follow_flag: 1
       joint_name: None
@@ -209,8 +212,8 @@ value:
   ---
   data:
     scene:
-      r: {0, 1, 0, -4.371138828673793e-08}
-      t: {0, 17.84029769897461, 17}
+      r: {-0, 0.7071067690849304, 0, 0.7071067690849304}
+      t: {-21, 11, 0}
     slot:
       follow_flag: 1
       joint_name: None
@@ -222,8 +225,8 @@ value:
   ---
   data:
     scene:
-      r: {0, 1, 0, -4.371138828673793e-08}
-      t: {12, 15, 17}
+      r: {-0, 0.7071067690849304, 0, 0.7071067690849304}
+      t: {-20, 11, 7.5}
     slot:
       follow_flag: 1
       joint_name: None
@@ -235,7 +238,8 @@ value:
   ---
   data:
     scene:
-      t: {-17, 15, -17}
+      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
+      t: {20, 11, 7.5}
     slot:
       follow_flag: 1
       joint_name: None
@@ -247,7 +251,8 @@ value:
   ---
   data:
     scene:
-      t: {0, 11, -22}
+      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
+      t: {21, 11, 0}
     slot:
       follow_flag: 1
       joint_name: None
@@ -259,7 +264,8 @@ value:
   ---
   data:
     scene:
-      t: {17, 15, -17}
+      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
+      t: {20, 11, -7.5}
     slot:
       follow_flag: 1
       joint_name: None
