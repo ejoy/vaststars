@@ -1,2 +1,0 @@
-system "shadow_aabb_update_system"
-    .implement "shadow_aabb_update.lua"

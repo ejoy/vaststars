@@ -58,7 +58,7 @@ import_feature "ant.sky|sky"
 import_feature "ant.starsky"
 import_feature "ant.polyline"
 import_feature "ant.terrain|canvas"
-import_feature "mod.shadow_aabb_update"
+import_feature "ant.shadow_bounding"
 
 feature "gameplay"
     .import "gameplay.ecs"
@@ -80,3 +80,6 @@ system "debug_system"
 
 system "update_system"
     .implement "update_system.lua"
+
+system "camera_bounding_pack_system"
+    .implement "camera_bounding_pack_system.lua"
