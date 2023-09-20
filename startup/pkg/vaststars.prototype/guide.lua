@@ -790,42 +790,6 @@ local guide = {
         },
 	},
 
-    -- {
-    --     name = "",
-	-- 	narrative = {
-    --         {"使用{/g 电线杆}将我们刚铺设的{/g 太阳能板}连接入{/color:4bd0ff 电网},这样基地就会获得更多电能..哔哩..哔哗..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-2.texture"},
-    --     },
-    --     narrative_end = {
-    --         guide_progress = 50,
-    --         task = {
-    --             "电力覆盖",
-    --         }
-    --     },
-    --     prerequisites = {
-    --         "放置太阳能板",
-    --     },
-	-- }, 
-
-    
-    -- {
-    --     name = "",
-	-- 	narrative = {
-    --         {"{/color:4bd0ff 石砖}是铺设{/color:4bd0ff 公路}的最佳材料..哔哩..哔哗..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-2.texture"},
-    --         {"{/color:4bd0ff 建造中心}选择{/g 砖石公路打印}就可以开始建造公路了..哔哩..哔哗..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-2.texture"},
-    --     },
-    --     narrative_end = {
-    --         guide_progress = 51,
-    --         task = {
-    --             "通向铁矿",
-    --         }
-    --     },
-    --     prerequisites = {
-    --         "建造公路",
-    --     },
-	-- }, 
-
-
-
     {
         name = "",
 		narrative = {

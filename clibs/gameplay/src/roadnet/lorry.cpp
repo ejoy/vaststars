@@ -42,6 +42,7 @@ namespace roadnet {
         w.rw.LorryEntity(w, l).enable_tag<ecs::lorry_changed>();
     }
     void lorryMove(ecs::lorry& l, world& w, uint8_t x, uint8_t y, uint8_t z) {
+        l.status = lorry_status::normal;
         l.maxprogress = l.progress = l.time;
         l.prev_x = l.x;
         l.prev_y = l.y;

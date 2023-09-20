@@ -51,7 +51,6 @@ local function create(material, property, color, srt, render_layer)
 			render_layer = render_layer or "translucent",
 			simplemesh = imesh.init_mesh(ientity.create_mesh({"p3|n3", plane_vb}, nil, math3d.live(math3d.aabb({-0.5, 0, -0.5}, {0.5, 0, 0.5}))), true),
 			on_ready = function (e)
-				ivs.set_state(e, "main_view", true)
                 imaterial.set_property(e, property, color)
 			end
 		},

@@ -120,6 +120,14 @@ local function create(prefab, s, r, t, motion_events)
     outer.objs[#outer.objs + 1] = lorry_obj
     outer.objs[#outer.objs + 1] = shadow_obj
 
+    function outer:work()
+        local model = assert(prefab:match("(.*%.glb|).*%.prefab"))
+        model = model .. "work.prefab"
+        lorry_obj:update({workstatus = "work", prefab = model})
+    end
+    function outer:idle()
+        lorry_obj:update({workstatus = "idle", prefab = prefab})
+    end
     function outer:remove()
         for _, obj in ipairs(self.objs) do
             obj:remove()

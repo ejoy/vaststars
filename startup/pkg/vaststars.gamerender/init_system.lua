@@ -48,14 +48,6 @@ function m:init_world()
     icamera_controller.set_camera_from_prefab("camera_gamecover.prefab")
     world:create_instance {
         prefab = "/pkg/vaststars.resources/glbs/game-cover.glb|mesh.prefab",
-        on_ready = function(self)
-            for _, eid in ipairs(self.tag['*']) do
-                local e <close> = world:entity(eid, "animation_birth?in")
-                if e.animation_birth then
-                    iani.play(self, {name = e.animation_birth, loop = true, speed = 1.0, manual = false})
-                end
-            end
-        end
     }
     iui.open({"/pkg/vaststars.resources/ui/login.rml"})
 end

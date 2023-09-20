@@ -13,10 +13,16 @@ local ims = ecs.require "ant.motion_sampler|motion_sampler"
 local gameplay_core = require "gameplay.core"
 local prefab_slots = require("engine.prefab_parser").slots
 local prefab_root = require("engine.prefab_parser").root
+local objects = require "objects"
+local iconstant = require "gameplay.interface.constant"
+
 local CONFIG <const> = import_package "vaststars.prototype".load("road_track")
 local ROAD_TRACKS <const> = CONFIG.TRACKS
+local ROAD_TRACKS_MODEL <const> = CONFIG.ROAD_MODEL
+local STATION_TRACKS <const> = CONFIG.STATION_TRACKS
+local STATION_TRACKS_MODEL <const> = CONFIG.STATION_MODEL
 local START_SLOTS <const> = CONFIG.START
-local ROAD_TRACK_MODEL <const> = CONFIG.MODEL
+local ALL_DIR = iconstant.ALL_DIR
 
 local ROAD_SIZE <const> = 2
 local ROAD_DIRECTION = {
@@ -29,15 +35,36 @@ local ROAD_DIRECTION = {
 
 local start_srts = {}
 local cache = {}
+local station_cache = {}
 local lorries = {}
 
 local function genKeyFrames(last_srt, x, y, toward, offset)
-    local road_srt = {s = mc.ONE, t = math3d.vector(iterrain:get_position_by_coord(x, y, ROAD_SIZE, ROAD_SIZE))}
-    if not rawget(cache[toward], offset) then
+    local srts, building_srt
+    local isStation = false
+    local o = objects:coord(x, y)
+    if o then
+        local typeobject = iprototype.queryByName(o.prototype_name)
+        if iprototype.has_types(typeobject.type, "station", "park") then -- special treatment for 'park,' assuming that 'station' and 'park' share the same model
+            isStation = true
+        end
+    end
+
+    local c
+    if isStation then
+        assert(o)
+        building_srt = o.srt
+        c = station_cache[o.dir]
+    else
+        building_srt = {s = mc.ONE, t = math3d.vector(iterrain:get_position_by_coord(x, y, ROAD_SIZE, ROAD_SIZE))}
+        c = cache
+    end
+
+    if not rawget(c[toward], offset) then
         assert(false, ("can not found track keyframes w(%s) from(%s) -> to(%s) offset(%s)"):format(
             toward, ROAD_DIRECTION[toward >> 0x2], ROAD_DIRECTION[toward & 0x3], offset))
     end
-    local srts = assert(rawget(cache[toward], offset))
+    srts = assert(rawget(c[toward], offset))
+
     local step = 1 / #srts
     local key_frames = {}
 
@@ -56,7 +83,7 @@ local function genKeyFrames(last_srt, x, y, toward, offset)
 
         local s, r, t = math3d.srt(
             math3d.mul(
-                math3d.matrix {s = road_srt.s, r = road_srt.r, t = road_srt.t},
+                math3d.matrix {s = building_srt.s, r = building_srt.r, t = building_srt.t},
                 math3d.matrix {s = srt.s, r = srt.r, t = srt.t}
             )
         )
@@ -111,21 +138,20 @@ local function createLorry(classid, x, y, toward, offset)
     return lorry
 end
 
-function lorry_sys:prototype_restore()
+local function loadModelTrack(model, tracks)
+    local slots = prefab_slots(model)
+    assert(slots and next(slots))
+
+    local root_srt = prefab_root(model).data.scene
+
     local mt = {}
     mt.__index = function (t, k)
         t[k] = setmetatable({}, mt)
         return t[k]
     end
 
-    cache = setmetatable({}, mt)
-
-    local slots = prefab_slots(ROAD_TRACK_MODEL)
-    assert(slots and next(slots))
-
-    local root_srt = prefab_root(ROAD_TRACK_MODEL).data.scene
-
-    for toward, v in pairs(ROAD_TRACKS) do
+    local cache = setmetatable({}, mt)
+    for toward, v in pairs(tracks) do
         assert(rawget(cache, toward) == nil)
 
         for offset, slot_names in pairs(v) do
@@ -152,6 +178,20 @@ function lorry_sys:prototype_restore()
             cache[toward][offset] = track_srts
         end
     end
+
+    return cache
+end
+
+function lorry_sys:prototype_restore()
+    cache = loadModelTrack(ROAD_TRACKS_MODEL, ROAD_TRACKS)
+
+    for _, dir in ipairs(ALL_DIR) do
+        station_cache[dir] = loadModelTrack(STATION_TRACKS_MODEL, STATION_TRACKS[dir])
+    end
+
+    local root_srt = prefab_root(ROAD_TRACKS_MODEL).data.scene
+    local slots = prefab_slots(ROAD_TRACKS_MODEL)
+    assert(slots and next(slots))
 
     for toward, slot_name in pairs(START_SLOTS) do
         local s = assert(slots[slot_name])
@@ -204,6 +244,12 @@ function lorry_sys:gameworld_update()
         if not lorry then
             lorry = createLorry(classid, x, y, toward, offset)
             lorries[e.eid] = lorry
+        end
+
+        if l.status == 0 then
+            lorry:work()
+        else
+            lorry:idle()
         end
 
         lorry:motion_opt("update", x, y, toward, offset, lorry.last_srt, maxprogress, maxprogress - progress, true)

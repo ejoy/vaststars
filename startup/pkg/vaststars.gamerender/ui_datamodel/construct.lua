@@ -297,7 +297,7 @@ local function open_focus_tips(tech_node)
                     prefab = "/pkg/vaststars.resources/glbs/arrow-guide.glb|mesh.prefab",
                     on_ready = function(self)
                         for _, eid in ipairs(self.tag['*']) do
-                            local e <close> = world:entity(eid, "render_object?in animation_birth?in")
+                            local e <close> = world:entity(eid, "render_object?in")
                             if e.render_object then
                                 irl.set_layer(e, RENDER_LAYER.SELECTED_BOXES)
                             end
@@ -305,8 +305,6 @@ local function open_focus_tips(tech_node)
 
                         local root <close> = world:entity(assert(self.tag['*'][1]))
                         iom.set_position(root, center)
-
-                        iani.play(self, {name = "Armature.001Action", loop = true, speed = 1.0, manual = false})
                     end,
                 }))
             end
