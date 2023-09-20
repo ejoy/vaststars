@@ -1,7 +1,0 @@
-component "printer".type "lua"
-
-system "printer_system"
-    .implement "printer.lua"
-
-policy "printer"
-    .component "printer"

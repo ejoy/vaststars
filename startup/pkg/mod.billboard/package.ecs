@@ -1,7 +1,0 @@
-policy "billboard"
-    .component "billboard"
-
-component "billboard"
-
-system "billboard_system"
-    .implement "billboard.lua"
