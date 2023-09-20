@@ -90,7 +90,7 @@ local __get_hitch_children ; do
             group = hitch_group_id,
             on_ready = function (self)
                 for _, eid in ipairs(self.tag["*"]) do
-                    local e <close> = world:entity(eid, "render_object?update animation?in efk?in anim_ctrl?in")
+                    local e <close> = world:entity(eid, "render_object?update animation?in anim_ctrl?in")
                     if render_layer and e.render_object then
                         irl.set_layer(e, render_layer)
                     end

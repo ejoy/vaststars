@@ -22,13 +22,9 @@ local function create_object(prefab, srt)
             iom.set_srt(root, srt.s, srt.r, srt.t)
 
             for _, eid in ipairs(self.tag['*']) do
-                local e <close> = world:entity(eid, "render_object?in animation_birth?in")
+                local e <close> = world:entity(eid, "render_object?in")
                 if e.render_object then
                     irl.set_layer(e, RENDER_LAYER.SELECTED_BOXES)
-                end
-
-                if e.animation_birth then
-                    iani.play(self, {name = e.animation_birth, loop = true, speed = 1.0, manual = false})
                 end
             end
         end,

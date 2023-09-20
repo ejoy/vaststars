@@ -43,6 +43,7 @@ local PICKUP_COMPONENTS <const> = {
 local PLACE_COMPONENTS <const> = {
     "assembling",
     "laboratory",
+    "chest",
 }
 
 local SET_ITEM_COMPONENTS <const> = {

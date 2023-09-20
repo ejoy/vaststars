@@ -5,7 +5,8 @@ local CROSS_TYPE <const> = {
     bl = 12, bt = 13, br = 14, bb = 15,
 }
 
-MODEL = "/pkg/vaststars.resources/glbs/road/X.glb|mesh.prefab"
+ROAD_MODEL = "/pkg/vaststars.resources/glbs/road/X.glb|mesh.prefab"
+STATION_MODEL = "/pkg/vaststars.resources/glbs/goods-station-1.glb|mesh.prefab"
 
 START = {
     [CROSS_TYPE.ll] = "path_start_l",
@@ -24,6 +25,49 @@ START = {
     [CROSS_TYPE.bt] = "path_start_b",
     [CROSS_TYPE.br] = "path_start_b",
     [CROSS_TYPE.bb] = "path_start_b",
+}
+
+STATION_TRACKS = {
+    N = {
+        [CROSS_TYPE.bl] = {
+            [0] = {'path_b2l_1', 'path_b2l_2'},
+            [1] = {'path_b2l_3'},
+        },
+        [CROSS_TYPE.rb] = {
+            [0] = {'path_b2l_3'},
+            [1] = {'path_r2b_2'},
+        },
+    },
+    W = {
+        [CROSS_TYPE.rb] = {
+            [0] = {'path_b2l_1', 'path_b2l_2'},
+            [1] = {'path_b2l_3'},
+        },
+        [CROSS_TYPE.tr] = {
+            [0] = {'path_b2l_3'},
+            [1] = {'path_r2b_2'},
+        },
+    },
+    S = {
+        [CROSS_TYPE.tr] = {
+            [0] = {'path_b2l_1', 'path_b2l_2'},
+            [1] = {'path_b2l_3'},
+        },
+        [CROSS_TYPE.lt] = {
+            [0] = {'path_b2l_3'},
+            [1] = {'path_r2b_2'},
+        },
+    },
+    E = {
+        [CROSS_TYPE.lt] = {
+            [0] = {'path_b2l_1', 'path_b2l_2'},
+            [1] = {'path_b2l_3'},
+        },
+        [CROSS_TYPE.bl] = {
+            [0] = {'path_b2l_3'},
+            [1] = {'path_r2b_2'},
+        },
+    },
 }
 
 TRACKS = {
