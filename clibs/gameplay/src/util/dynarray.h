@@ -28,7 +28,7 @@ namespace roadnet {
         dynarray& operator=(dynarray&& d) = delete;
 
         void            reset(size_type n)            { clear(); if (n > 0) { data_ = new T[n]; size_ = n;  } }
-        void            clear()                       { delete[] data_; size_ = 0; }
+        void            clear()                       { delete[] data_; size_ = 0; data_ = nullptr; }
         const_reference operator[](size_type n) const { assert(n < size_); return data_[n]; }
         reference       operator[](size_type n)       { assert(n < size_); return data_[n]; }
         size_type       size()                  const { return size_; }
