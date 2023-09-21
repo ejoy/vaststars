@@ -587,27 +587,32 @@ local entities = { {
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 125,
+    x = 127,
     y = 116
   }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 122,
+    y = 116
+  },{
     dir = "W",
     fluid_name = {
-      input = { "空气" },
+      input = { "空气","地下卤水" },
       output = {}
     },
     prototype_name = "水电站I",
-    recipe = "气候科技包1",
+    recipe = "气候科技包T1",
     x = 145,
     y = 117
   }, {
     dir = "W",
     fluid_name = {
-      input = { "空气" },
+      input = { "空气","地下卤水" },
       output = {}
     },
     prototype_name = "水电站I",
-    recipe = "气候科技包1",
-    x = 150,
+    recipe = "气候科技包T1",
+    x = 151,
     y = 117
   }, {
     dir = "N",
@@ -2626,12 +2631,12 @@ local entities = { {
     },
     prototype_name = "空气过滤器I",
     recipe = "空气过滤",
-    x = 150,
+    x = 151,
     y = 115
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 133,
+    x = 135,
     y = 116
   }, {
     dir = "N",
@@ -3579,7 +3584,7 @@ local entities = { {
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 141,
+    x = 143,
     y = 116
   }, {
     dir = "N",
@@ -3730,13 +3735,7 @@ local entities = { {
     dir = "N",
     items = {{"supply", "气候科技包", "1"}},
     prototype_name = "物流站",
-    x = 154,
-    y = 122
-  }, {
-    dir = "N",
-    items = {{"supply", "气候科技包", "1"}},
-    prototype_name = "物流站",
-    x = 142,
+    x = 148,
     y = 122
   }, {
     dir = "N",
@@ -3953,7 +3952,7 @@ local entities = { {
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 148,
+    x = 150,
     y = 116
   }, {
     dir = "N",
@@ -3968,26 +3967,40 @@ local entities = { {
   }, {
     dir = "N",
     prototype_name = "无人机平台I",
-    x = 146,
-    y = 122
-  }, {
-    dir = "N",
-    items = {{"气候科技包", 50}},
-    prototype_name = "仓库I",
-    x = 148,
-    y = 122
+    x = 150,
+    y = 120
   }, {
     dir = "N",
     items = {{"气候科技包", 50}},
     prototype_name = "仓库I",
     x = 150,
-    y = 122
+    y = 119
   }, {
     dir = "N",
     prototype_name = "无人机平台I",
-    x = 152,
-    y = 122
+    x = 150,
+    y = 121
   }, {
+    dir = "E",
+    fluid_name = {
+      input = {},
+      output = { "地下卤水" }
+    },
+    prototype_name = "地下水挖掘机I",
+    recipe = "离岸抽水",
+    x = 153,
+    y = 114
+  },{
+    dir = "E",
+    fluid_name = {
+      input = {},
+      output = { "地下卤水" }
+    },
+    prototype_name = "地下水挖掘机I",
+    recipe = "离岸抽水",
+    x = 147,
+    y = 114
+  },{
     dir = "E",
     items = {{"supply", "铁矿石", "1"}},
     prototype_name = "物流站",
