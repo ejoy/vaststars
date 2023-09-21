@@ -3201,11 +3201,29 @@ prototype "空气分离2" {
     description = "空气分离出纯净气体",
 }
 
-prototype "二氧化碳转一氧化碳" {
+prototype "二氧化碳转甲烷" {
     type = { "recipe" },
     recipe_craft_category = "流体基础化工",
     recipe_category =  "化工",
     recipe_order =  31,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/co22ch4.texture",
+    ingredients = {
+        {"二氧化碳", 32},
+        {"氢气", 110},
+    },
+    results = {
+        {"甲烷", 24},
+        {"纯水", 10},
+    },
+    time = "1s",
+    description = "二氧化碳转甲烷",
+}
+
+prototype "二氧化碳转一氧化碳" {
+    type = { "recipe" },
+    recipe_craft_category = "流体基础化工",
+    recipe_category =  "化工",
+    recipe_order =  34,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/co22co.texture",
     ingredients = {
         {"二氧化碳", 40},
@@ -3219,23 +3237,6 @@ prototype "二氧化碳转一氧化碳" {
     description = "二氧化碳转一氧化碳",
 }
 
-prototype "二氧化碳转甲烷" {
-    type = { "recipe" },
-    recipe_craft_category = "流体基础化工",
-    recipe_category =  "化工",
-    recipe_order =  34,
-    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/co22ch4.texture",
-    ingredients = {
-        {"二氧化碳", 32},
-        {"氢气", 110},
-    },
-    results = {
-        {"甲烷", 24},
-        {"纯水", 10},
-    },
-    time = "1s",
-    description = "二氧化碳转甲烷",
-}
 
 prototype "一氧化碳转石墨" {
     type = { "recipe" },
