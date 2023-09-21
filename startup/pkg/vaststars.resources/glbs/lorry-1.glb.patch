@@ -17,6 +17,31 @@ value:
     item
 ---
 file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene: {}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    arrow
+---
+file: mesh.prefab
+op: replace
+path: /2/data/visible_state
+value: main_view|selectable
+---
+file: mesh.prefab
+op: replace
+path: /3/data/visible_state
+value: main_view|selectable
+---
+file: mesh.prefab
 op: createfile
 path: hitch.prefab
 value:
