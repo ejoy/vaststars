@@ -14,6 +14,7 @@ local global = require "global"
 local terrain = ecs.require "terrain"
 local irl   = ecs.require "ant.render|render_layer.render_layer"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
+local prefab_slots = require("engine.prefab_parser").slots
 
 -- enum defined in c 
 local STATUS_HAS_ERROR = 1
@@ -61,12 +62,18 @@ local function isHome(x, y)
     return false
 end
 
-local function getHomePos(pos)
-    return math3d.add(math3d.set_index(pos, 2, 0), {6, 8, -6})
+local function getHomePos(x, y, pos)
+    local object = objects:coord(x, y)
+    if not object then
+        return pos
+    end
+    local typeobject = iprototype.queryByName(object.prototype_name)
+    local slot = assert(prefab_slots("/pkg/vaststars.resources/" .. typeobject.model).park)
+    return math3d.add(math3d.set_index(pos, 2, 0), slot.scene.t)
 end
 
 local function create_drone(x, y, slot)
-    local homepos = getHomePos(getPosition(x, y, slot))
+    local homepos = getHomePos(x, y, getPosition(x, y, slot))
     local task = {
         flying = false,
         duration = 0,
@@ -241,14 +248,14 @@ function drone_sys:gameworld_update()
                     local fly_height = get_fly_height(drone.prev_x, drone.prev_y, drone.next_x, drone.next_y)
                     -- status : go_home
                     if isHome(drone.next_x, drone.next_y) then
-                        current:gohome(flyid, from, getHomePos(to), fly_height)
+                        current:gohome(flyid, from, getHomePos(drone.next_x, drone.next_y, to), fly_height)
                     else
                         drone_task[#drone_task + 1] = {flyid, current, from, to, fly_height, drone.maxprogress, drone.maxprogress - drone.progress}
                     end
                 elseif isHome(drone.prev_x, drone.prev_y) and not current.to_home then
                     -- status : to_home
                     local dst = getPosition(drone.prev_x, drone.prev_y, drone.prev_slot)
-                    current:gohome(flyid, math3d.set_index(dst, 2, item_height), getHomePos(dst), fly_to_home_height, 15)
+                    current:gohome(flyid, math3d.set_index(dst, 2, item_height), getHomePos(drone.prev_x, drone.prev_y, dst), fly_to_home_height, 15)
                 end
             else
                 current:update(drone.maxprogress > 0 and (drone.maxprogress - drone.progress) / drone.maxprogress or 0, drone.item ~= 0)

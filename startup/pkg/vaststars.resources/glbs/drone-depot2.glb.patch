@@ -13,7 +13,7 @@ value:
   policy:
     ant.animation|slot
   tag:
-    item_slot
+    park
 ---
 file: mesh.prefab
 op: createfile
@@ -40,4 +40,4 @@ value:
   policy:
     ant.animation|slot
   tag:
-    item_slot
+    park
