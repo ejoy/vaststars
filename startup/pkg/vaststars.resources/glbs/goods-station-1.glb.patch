@@ -1,19 +1,4 @@
 ---
-file: materials/Material.011.material
-op: replace
-path: /properties/u_emissive_factor
-value: {0, 0, 1, 0}
----
-file: materials/Material.011.material
-op: replace
-path: /properties/u_pbr_factor
-value: {1, 1, 0.5, 1}
----
-file: materials/Material.011.material
-op: replace
-path: /state/CULL
-value: NONE
----
 file: mesh.prefab
 op: add
 path: /-
@@ -138,7 +123,47 @@ path: /-
 value:
   data:
     scene:
-      t: {-5, 10, 5}
+      t: {5, 3.5, 5}
+  mount: 1
+  policy:
+    ant.scene|scene_object
+  tag:
+    mesh
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  mount: 10
+  prefab: /pkg/vaststars.resources/glbs/depot.glb|mesh.prefab
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      t: {-5, 3.5, 5}
+  mount: 1
+  policy:
+    ant.scene|scene_object
+  tag:
+    mesh
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  mount: 12
+  prefab: /pkg/vaststars.resources/glbs/depot.glb|mesh.prefab
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      t: {-7.5, 10, 7.5}
     slot:
       follow_flag: 1
       joint_name: None
@@ -154,7 +179,7 @@ path: /-
 value:
   data:
     scene:
-      t: {5, 10, 5}
+      t: {-2.5, 10, 7.5}
     slot:
       follow_flag: 1
       joint_name: None
@@ -163,6 +188,117 @@ value:
     ant.animation|slot
   tag:
     slot2
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      t: {2.5, 10, 7.5}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    slot3
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      t: {7.5, 10, 7.5}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    slot4
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      t: {-7.5, 10, 2.5}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    slot5
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      t: {-2.5, 10, 2.5}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    slot6
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      t: {2.5, 10, 2.5}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    slot7
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      t: {7.5, 10, 2.5}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    slot8
+---
+file: materials/Material.011.material
+op: replace
+path: /properties/u_emissive_factor
+value: {0, 0, 1, 0}
+---
+file: materials/Material.011.material
+op: replace
+path: /properties/u_pbr_factor
+value: {1, 1, 0.5, 1}
+---
+file: materials/Material.011.material
+op: replace
+path: /state/CULL
+value: NONE
 ---
 file: mesh.prefab
 op: createfile
@@ -271,10 +407,12 @@ value:
   ---
   data:
     scene:
-      t: {-5, 10, 5}
+      parent: 112
+      t: {-7.5, 10, 7.5}
     slot:
       follow_flag: 1
       joint_name: None
+  index: 14
   mount: 1
   policy:
     ant.animation|slot
@@ -283,12 +421,98 @@ value:
   ---
   data:
     scene:
-      t: {5, 10, 5}
+      parent: 112
+      t: {-2.5, 10, 7.5}
     slot:
       follow_flag: 1
       joint_name: None
+  index: 15
   mount: 1
   policy:
     ant.animation|slot
   tag:
     slot2
+  ---
+  data:
+    scene:
+      parent: 112
+      t: {2.5, 10, 7.5}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  index: 16
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    slot3
+  ---
+  data:
+    scene:
+      parent: 112
+      t: {7.5, 10, 7.5}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  index: 17
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    slot4
+  ---
+  data:
+    scene:
+      parent: 112
+      t: {-7.5, 10, 2.5}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  index: 18
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    slot5
+  ---
+  data:
+    scene:
+      parent: 112
+      t: {-2.5, 10, 2.5}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  index: 19
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    slot6
+  ---
+  data:
+    scene:
+      parent: 112
+      t: {2.5, 10, 2.5}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  index: 20
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    slot7
+  ---
+  data:
+    scene:
+      parent: 112
+      t: {7.5, 10, 2.5}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  index: 21
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    slot8
