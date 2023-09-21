@@ -10,8 +10,8 @@ local get_shelf_matrices = shelf_matrices.get_shelf_matrices
 local get_item_matrices = shelf_matrices.get_item_matrices
 
 local PREFABS <const> = {
-    ["in"]  = "/pkg/vaststars.resources/glbs/shelf-input.glb|mesh.prefab",
-    ["out"] = "/pkg/vaststars.resources/glbs/shelf-output.glb|mesh.prefab",
+    ["in"]  = "/pkg/vaststars.resources/glbs/belt.glb|input.prefab",
+    ["out"] = "/pkg/vaststars.resources/glbs/belt.glb|output.prefab",
 }
 
 local mt = {}

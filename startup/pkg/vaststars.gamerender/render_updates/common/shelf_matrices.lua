@@ -4,8 +4,8 @@ local building_io_slots = import_package "vaststars.prototype"("building_io_slot
 local math3d = require "math3d"
 
 local PREFABS <const> = {
-    ["in"]  = "/pkg/vaststars.resources/glbs/shelf-input.glb|mesh.prefab",
-    ["out"] = "/pkg/vaststars.resources/glbs/shelf-output.glb|mesh.prefab",
+    ["in"]  = "/pkg/vaststars.resources/glbs/belt.glb|input.prefab",
+    ["out"] = "/pkg/vaststars.resources/glbs/belt.glb|output.prefab",
 }
 
 local function __get_slot_srts(building_model, ingredients_n, results_n)

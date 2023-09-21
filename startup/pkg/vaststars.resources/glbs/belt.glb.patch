@@ -7,7 +7,23 @@ value: 1
 file: materials/Material.011.material
 op: add
 path: /properties/u_uvmotion
-value: {0, -0.35, 1, 1}
+value: {0, -0.175, 1, 1}
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      t: {0, 5, 0}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    item_slot
 ---
 file: materials/Material.011.material
 op: copyfile
@@ -49,19 +65,3 @@ path: input.prefab
 file: mesh.prefab
 op: copyfile
 path: output.prefab
----
-file: mesh.prefab
-op: add
-path: /-
-value:
-  data:
-    scene:
-      t: {0, 5, 0}
-    slot:
-      follow_flag: 1
-      joint_name: None
-  mount: 1
-  policy:
-    ant.animation|slot
-  tag:
-    slot1
