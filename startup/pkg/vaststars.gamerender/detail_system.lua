@@ -219,7 +219,7 @@ do
 
     function idetail.selected(gameplay_eid)
         local e = assert(gameplay_core.get_entity(gameplay_eid))
-        local typeobject = e.lorry and iprototype.queryById(e.lorry.item_prototype) or iprototype.queryById(e.building.prototype)
+        local typeobject = e.lorry and iprototype.queryById(e.lorry.prototype) or iprototype.queryById(e.building.prototype)
         local object
         if e.building then
             object = assert(objects:coord(e.building.x, e.building.y))

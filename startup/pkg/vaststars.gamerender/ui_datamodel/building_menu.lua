@@ -192,7 +192,12 @@ function M:create(gameplay_eid)
     iui.register_leave("/pkg/vaststars.resources/ui/building_menu.rml")
 
     local e = assert(gameplay_core.get_entity(gameplay_eid))
-    local typeobject = e.lorry and iprototype.queryById(e.lorry.item_prototype) or iprototype.queryById(e.building.prototype)
+    local typeobject
+    if e.lorry then
+        typeobject = iprototype.queryById(e.lorry.prototype)
+    else
+        typeobject = iprototype.queryById(e.building.prototype)
+    end
 
     local set_item = hasSetItem(e, typeobject)
     local pickup_item = hasComponent(e, PICKUP_COMPONENTS)
@@ -286,9 +291,15 @@ end
 
 function M:stage_ui_update(datamodel, gameplay_eid)
     local e = assert(gameplay_core.get_entity(gameplay_eid))
-    local typeobject = e.lorry and iprototype.queryById(e.lorry.item_prototype) or iprototype.queryById(e.building.prototype)
-
-    updateMoveableCount(datamodel, e, typeobject)
+    local typeobject
+    if e.lorry then
+        typeobject = iprototype.queryById(e.lorry.prototype)
+    else
+        typeobject = iprototype.queryById(e.building.prototype)
+    end
+    if typeobject then
+        updateMoveableCount(datamodel, e, typeobject)
+    end
 
     for _ in set_recipe_mb:unpack() do
         iui.open({"/pkg/vaststars.resources/ui/recipe_config.rml"}, gameplay_eid)
