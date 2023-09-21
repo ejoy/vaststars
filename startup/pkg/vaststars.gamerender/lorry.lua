@@ -17,7 +17,7 @@ local igame_object = ecs.require "engine.game_object"
 local prefab_slots = require("engine.prefab_parser").slots
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local ltween = require "motion.tween"
-local ITEM_INDEX <const> = 4
+local ITEM_INDEX <const> = 5
 local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
 
 local sampler_group
@@ -77,22 +77,36 @@ local function __create_shadow_object(parent)
     })
 end
 
-local function __create_item_object(prefab, parent, offset_srt)
+local function __create_item_object(prefab, parent, offset_srt, visible)
     local outer = {instance = world:create_instance {
         prefab = prefab,
         parent = parent,
         group = sampler_group,
         on_ready = function (self)
             local root <close> = world:entity(self.tag['*'][1])
-            iom.set_srt(root, offset_srt.s or mc.ONE, offset_srt.r or mc.IDENTITY_QUAT, offset_srt.t or mc.ZERO_PT)
+            if offset_srt then
+                iom.set_srt(root, offset_srt.s or mc.ONE, offset_srt.r or mc.IDENTITY_QUAT, offset_srt.t or mc.ZERO_PT)
+            end
 
             for _, eid in ipairs(self.tag['*']) do
                 local e <close> = world:entity(eid, "visible_state?in render_object?in")
                 if e.visible_state then
                     ivs.set_state(e, "cast_shadow", false)
+                    if visible ~= nil then
+                        ivs.set_state(e, "main_view", visible)
+                    end
                 end
                 if e.render_object then
                     irl.set_layer(e, RENDER_LAYER.LORRY_ITEM)
+                end
+            end
+        end,
+        on_message = function(self, msg, visible)
+            assert(msg == "show")
+            for _, eid in ipairs(self.tag['*']) do
+                local e <close> = world:entity(eid, "visible_state?in")
+                if e.visible_state then
+                    ivs.set_state(e, "main_view", visible)
                 end
             end
         end
@@ -112,13 +126,18 @@ local function create(prefab, s, r, t, motion_events)
         ig.enable(sampler_group, "view_visible", sampler_group)
     end
 
+    local slots = prefab_slots(RESOURCES_BASE_PATH:format(prefab))
+    assert(slots.arrow)
+
     local outer = {objs = {}, item_classid = 0, item_amount = 0}
     local motion_obj = __create_motion_object(s, r, t, motion_events)
     local lorry_obj = __create_lorry_object(prefab, motion_obj.id)
     local shadow_obj = __create_shadow_object(motion_obj.id)
+    local arrow = __create_item_object("/pkg/vaststars.resources/glbs/arrow-guide.glb|mesh.prefab", motion_obj.id, slots.arrow.scene, false)
     outer.objs[#outer.objs + 1] = motion_obj
     outer.objs[#outer.objs + 1] = lorry_obj
     outer.objs[#outer.objs + 1] = shadow_obj
+    outer.objs[#outer.objs + 1] = arrow
 
     function outer:work()
         local model = assert(prefab:match("(.*%.glb|).*%.prefab"))
@@ -132,6 +151,9 @@ local function create(prefab, s, r, t, motion_events)
         for _, obj in ipairs(self.objs) do
             obj:remove()
         end
+    end
+    function outer:show_arrow(b)
+        arrow:send("show", b)
     end
     function outer:set_item(item_classid, item_amount)
         if self.item_classid == item_classid and self.item_amount == item_amount then
@@ -155,7 +177,6 @@ local function create(prefab, s, r, t, motion_events)
         local typeobject = iprototype.queryById(item_classid)
         assert(typeobject, ("item_classid %d not found"):format(item_classid))
         assert(typeobject.item_model)
-        local slots = prefab_slots(RESOURCES_BASE_PATH:format(prefab))
         assert(slots.item)
 
         self.objs[ITEM_INDEX] = __create_item_object(RESOURCES_BASE_PATH:format(typeobject.item_model), motion_obj.id, slots.item.scene)

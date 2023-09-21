@@ -33,6 +33,7 @@ local ibackpack = require "gameplay.interface.backpack"
 local gesture_longpress_mb = world:sub{"gesture", "longpress"}
 local igameplay = ecs.require "gameplay_system"
 local audio = import_package "ant.audio"
+local ilorry = ecs.require "render_updates.lorry"
 
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
 local ROAD_SIZE <const> = 2
@@ -137,6 +138,10 @@ local function __on_pick_ground(datamodel)
 end
 
 local function __unpick_lorry(lorry_id)
+    local lorry = ilorry.get(lorry_id)
+    if lorry then
+        lorry:show_arrow(false)
+    end
 end
 
 local status = "default"
@@ -418,6 +423,10 @@ function M:stage_camera_usage(datamodel)
 
                     if __on_pick_non_building(datamodel, o) then
                         leave = false
+                        local lorry = ilorry.get(pick_lorry_id)
+                        if lorry then
+                            lorry:show_arrow(true)
+                        end
                     end
                 elseif o and o.class == CLASS.Object then
                     idetail.unselected()
