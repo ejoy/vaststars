@@ -121,7 +121,7 @@ prototype "空气过滤器框架" {
     hub_limit = 15,
     backpack_limit = 16,
     item_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
-    item_icon = "/pkg/vaststars.resources/textures/icons/item/hydroplant.texture",
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/air-filter.texture",
     item_category = "加工",
     item_order = 3,
     item_description = "用于建造空气过滤器的框架",
