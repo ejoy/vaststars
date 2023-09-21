@@ -16,6 +16,24 @@ value:
     ant.scene|scene_object
     ant.render|render
 ---
+file: geothermal.prefab
+op: add
+path: /-
+value:
+  data:
+    efk:
+      path: /pkg/vaststars.resources/effects/furnace_smoke.efk
+      speed: 1
+    scene:
+      s: {10, 10, 10}
+    visible_state: main_queue
+  mount: 1
+  policy:
+    ant.scene|scene_object
+    ant.efk|efk
+  tag:
+    furnace_smoke
+---
 file: mesh.prefab
 op: createfile
 path: hitch.prefab
