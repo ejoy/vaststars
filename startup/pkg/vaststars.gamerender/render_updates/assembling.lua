@@ -444,7 +444,7 @@ function assembling_sys:gameworld_build()
                 local slot = assert(gameplay_world:container_get(e.chest, idx))
                 local typeobject_item = iprototype.queryById(slot.item)
                 if iprototype.has_type(typeobject_item.type, "item") then
-                    items[idx] = slot.item
+                    items[idx] = {item = slot.item, amount = slot.amount}
                 end
             end
 
@@ -452,10 +452,10 @@ function assembling_sys:gameworld_build()
             if io_shelves then
                 if io_shelves:get_recipe() ~= e.assembling.recipe then
                     io_shelves:remove()
-                    building.io_shelves = create_io_shelves(group, e.building.prototype, e.assembling.recipe, object.srt, items) -- TODO: group_id
+                    building.io_shelves = create_io_shelves(group, e.building.prototype, e.assembling.recipe, object.srt, items)
                 end
             else
-                building.io_shelves = create_io_shelves(group, e.building.prototype, e.assembling.recipe, object.srt, items) -- TODO: group_id
+                building.io_shelves = create_io_shelves(group, e.building.prototype, e.assembling.recipe, object.srt, items)
             end
         end
 
@@ -494,6 +494,7 @@ local update = interval_call(300, function()
                 local slot = assert(gameplay_world:container_get(e.chest, idx))
                 local typeobject_item = iprototype.queryById(slot.item)
                 if iprototype.has_type(typeobject_item.type, "item") then
+                    io_shelves:update(idx, slot.amount)
                     ing_res_motion:update(idx, slot.item, slot.amount)
                 end
             end
