@@ -28,7 +28,7 @@ local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 local terrain = ecs.require "terrain"
 local gameplay_core = require "gameplay.core"
 local ROAD_SIZE <const> = 2
-local SPRITE_COLOR = import_package "vaststars.prototype".load("sprite_color")
+local SPRITE_COLOR = import_package "vaststars.prototype"("sprite_color")
 local ibuilding = ecs.require "render_updates.building"
 local ibackpack = require "gameplay.interface.backpack"
 

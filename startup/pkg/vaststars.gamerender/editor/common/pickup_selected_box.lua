@@ -4,7 +4,7 @@ local w = world.w
 
 local iprototype = require "gameplay.interface.prototype"
 local create_selected_boxes = ecs.require "selected_boxes"
-local SPRITE_COLOR = import_package "vaststars.prototype".load("sprite_color")
+local SPRITE_COLOR = import_package "vaststars.prototype"("sprite_color")
 
 local mt = {}
 mt.__index = mt

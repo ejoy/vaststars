@@ -130,7 +130,7 @@ end
 do
     local temp_objects = {}
     local create_sprite = ecs.require "sprite"
-    local SPRITE_COLOR <const> = import_package "vaststars.prototype".load("sprite_color")
+    local SPRITE_COLOR <const> = import_package "vaststars.prototype"("sprite_color")
     local DOTTED_LINE_MATERIAL <const> = "/pkg/vaststars.resources/materials/dotted_line.material"
     local iquad_lines_entity = ecs.require "engine.quad_lines_entity"
 
@@ -203,21 +203,6 @@ do
         idetail.unselected()
 
         local e = assert(gameplay_core.get_entity(gameplay_eid))
-
-        do
-            local object = assert(objects:coord(e.building.x, e.building.y))
-            local vsobject = assert(vsobject_manager:get(object.id))
-            vsobject:modifier("start", {name = "talk", forwards = true})
-            temp_objects[#temp_objects+1] = {
-                remove = function (self)
-                    local vsobject = vsobject_manager:get(object.id)
-                    if vsobject then
-                        vsobject:modifier("start", {name = "over", forwards = true})
-                    end
-                end
-            }
-        end
-
         do
             local typeobject = iprototype.queryById(e.building.prototype)
             local w, h = iprototype.rotate_area(typeobject.area, e.building.direction)

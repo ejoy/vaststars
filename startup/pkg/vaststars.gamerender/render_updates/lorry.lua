@@ -16,7 +16,7 @@ local prefab_root = require("engine.prefab_parser").root
 local objects = require "objects"
 local iconstant = require "gameplay.interface.constant"
 
-local CONFIG <const> = import_package "vaststars.prototype".load("road_track")
+local CONFIG <const> = import_package "vaststars.prototype"("road_track")
 local ROAD_TRACKS <const> = CONFIG.TRACKS
 local ROAD_TRACKS_MODEL <const> = CONFIG.ROAD_MODEL
 local STATION_TRACKS <const> = CONFIG.STATION_TRACKS
