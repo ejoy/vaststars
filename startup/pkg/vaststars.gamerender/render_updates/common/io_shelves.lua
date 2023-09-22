@@ -28,13 +28,13 @@ local function __create_shelves(group_id, recipe, shelf_matrices)
             prefab = (idx <= ingredients_n) and PREFABS["in"] or PREFABS["out"],
             group = group_id,
             on_ready = function (self)
-                local root <close> = world:entity(self.tag["*"][1])
-                iom.set_srt(root, math3d.srt(mat))
+                local root <close> = world:entity(self.tag["*"][1], "scene:in")
+                iom.set_srt(root, math3d.srt(math3d.mul(mat, math3d.matrix(root.scene))))
             end,
             on_message = function (self, event, mat, group_id) -- TODO: group_id
                 assert(event == "on_position_change", "invalid message")
-                local root <close> = world:entity(self.tag["*"][1])
-                iom.set_srt(root, math3d.srt(mat))
+                local root <close> = world:entity(self.tag["*"][1], "scene:in")
+                iom.set_srt(root, math3d.srt(math3d.mul(mat, math3d.matrix(root.scene))))
             end
         }
     end
