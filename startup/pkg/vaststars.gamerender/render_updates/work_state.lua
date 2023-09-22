@@ -40,6 +40,9 @@ end
 
 local function get_working_state(e)
     if e.assembling then
+        if e.capacitance and e.capacitance.network == 0 then
+            return STATUS_IDLE
+        end
         return e.assembling.progress > 0 and STATUS_WORKING or STATUS_IDLE
     end
     if e.chimney then
@@ -57,7 +60,7 @@ end
 local update = interval_call(3000, function()
     local world = gameplay_core.get_world()
     local buildings = global.buildings
-    for e in world.ecs:select "building:in road:absent eid:in chimney?in assembling?in wind_turbine?in solar_panel?in base?in" do
+    for e in world.ecs:select "building:in road:absent eid:in capacitance?in chimney?in assembling?in wind_turbine?in solar_panel?in base?in" do
         -- only some buildings have a working state
         local current = get_working_state(e)
         if not current then
