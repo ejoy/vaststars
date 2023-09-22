@@ -68,8 +68,12 @@ local function getHomePos(x, y, pos)
         return pos
     end
     local typeobject = iprototype.queryByName(object.prototype_name)
-    local slot = assert(prefab_slots("/pkg/vaststars.resources/" .. typeobject.model).park, ("/pkg/vaststars.resources/" .. typeobject.model .. " can not find park slot"))
-    return math3d.add(math3d.set_index(pos, 2, 0), slot.scene.t)
+    local slots = prefab_slots("/pkg/vaststars.resources/" .. typeobject.model)
+    if not slots.park then
+        return pos
+    end
+
+    return math3d.add(math3d.set_index(pos, 2, 0), slots.park.scene.t)
 end
 
 local function create_drone(x, y, slot)
