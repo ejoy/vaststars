@@ -504,13 +504,13 @@ local entities = { {
   }, {
     dir = "N",
     prototype_name = "组装机I",
-    recipe = "地质科技包1",
+    recipe = "地质科技包T1",
     x = 98,
     y = 121
   }, {
     dir = "N",
     prototype_name = "组装机I",
-    recipe = "地质科技包1",
+    recipe = "地质科技包T1",
     x = 101,
     y = 121
   }, {
@@ -4086,13 +4086,13 @@ local entities = { {
   }, {
     dir = "N",
     prototype_name = "组装机I",
-    recipe = "地质科技包1",
+    recipe = "地质科技包T1",
     x = 124,
     y = 145
   }, {
     dir = "N",
     prototype_name = "组装机I",
-    recipe = "地质科技包1",
+    recipe = "地质科技包T1",
     x = 127,
     y = 145
   }, {
