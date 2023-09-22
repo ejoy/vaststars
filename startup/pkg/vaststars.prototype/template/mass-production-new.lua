@@ -6168,11 +6168,6 @@ local entities = { {
   }, {
     dir = "E",
     prototype_name = "砖石公路-I型",
-    x = 112,
-    y = 96
-  }, {
-    dir = "E",
-    prototype_name = "砖石公路-I型",
     x = 114,
     y = 96
   }, {
@@ -6230,7 +6225,17 @@ local entities = { {
     prototype_name = "砖石公路-U型",
     x = 96,
     y = 94
-  } }
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-T型",
+    x = 112,
+    y = 96
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-U型",
+    x = 112,
+    y = 98
+  }}
 local mineral = {
   ["102,62"] = "铁矿石",
   ["115,133"] = "碎石",
