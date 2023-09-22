@@ -323,7 +323,7 @@ prototype "空气过滤器I" {
         input = {},
         output = {
             {
-                capacity = 100,
+                capacity = 200,
                 height = 200,
                 base_level = 150,
                 connections = {
@@ -354,7 +354,7 @@ prototype "空气过滤器II" {
         input = {},
         output = {
             {
-                capacity = 100,
+                capacity = 200,
                 height = 200,
                 base_level = 150,
                 connections = {
@@ -385,7 +385,7 @@ prototype "空气过滤器III" {
         input = {},
         output = {
             {
-                capacity = 100,
+                capacity = 200,
                 height = 200,
                 base_level = 150,
                 connections = {
