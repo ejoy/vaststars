@@ -68,7 +68,7 @@ local function getHomePos(x, y, pos)
         return pos
     end
     local typeobject = iprototype.queryByName(object.prototype_name)
-    local slot = assert(prefab_slots("/pkg/vaststars.resources/" .. typeobject.model).park)
+    local slot = assert(prefab_slots("/pkg/vaststars.resources/" .. typeobject.model).park, ("/pkg/vaststars.resources/" .. typeobject.model .. " can not find park slot"))
     return math3d.add(math3d.set_index(pos, 2, 0), slot.scene.t)
 end
 
