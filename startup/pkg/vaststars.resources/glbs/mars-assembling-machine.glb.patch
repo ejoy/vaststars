@@ -1,21 +1,12 @@
 ---
-file: low_power.prefab
-op: replace
-path: /2/data/animation/low_power
-value: /pkg/vaststars.resources/animations/mars-assembling-machine_animat_low.anim
----
-file: work.prefab
-op: replace
-path: /2/data/animation/work
-value: /pkg/vaststars.resources/animations/mars-assembling-machine_animat.anim
----
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
     scene:
-      t: {0, 15, 11}
+      r: {-0, 1, -0, -4.371138828673793e-08}
+      t: {0, 11, 11}
     slot:
       follow_flag: 1
       joint_name: None
@@ -31,7 +22,8 @@ path: /-
 value:
   data:
     scene:
-      t: {6, 15, 11}
+      r: {-0, 1, -0, -4.371138828673793e-08}
+      t: {6, 11, 11}
     slot:
       follow_flag: 1
       joint_name: None
@@ -47,7 +39,8 @@ path: /-
 value:
   data:
     scene:
-      t: {-6, 15, 11}
+      r: {-0, 1, -0, -4.371138828673793e-08}
+      t: {-6, 11, 11}
     slot:
       follow_flag: 1
       joint_name: None
@@ -63,7 +56,7 @@ path: /-
 value:
   data:
     scene:
-      t: {0, 3.799999952316284, -13.199999809265137}
+      t: {0, 8, -11}
     slot:
       follow_flag: 1
       joint_name: None
@@ -79,7 +72,7 @@ path: /-
 value:
   data:
     scene:
-      t: {6, 3.799999952316284, -13.199999809265137}
+      t: {6, 8, -11}
     slot:
       follow_flag: 1
       joint_name: None
@@ -95,7 +88,7 @@ path: /-
 value:
   data:
     scene:
-      t: {-6, 3.799999952316284, -13.199999809265137}
+      t: {-6, 8, -11}
     slot:
       follow_flag: 1
       joint_name: None
@@ -112,6 +105,16 @@ path: low_power.prefab
 file: mesh.prefab
 op: copyfile
 path: work.prefab
+---
+file: low_power.prefab
+op: replace
+path: /2/data/animation/low_power
+value: /pkg/vaststars.resources/animations/mars-assembling-machine_animat_low.anim
+---
+file: work.prefab
+op: replace
+path: /2/data/animation/work
+value: /pkg/vaststars.resources/animations/mars-assembling-machine_animat.anim
 ---
 file: mesh.prefab
 op: createfile
@@ -130,7 +133,8 @@ value:
   ---
   data:
     scene:
-      t: {0, 15, 11}
+      r: {-0, 1, -0, -4.371138828673793e-08}
+      t: {0, 11, 11}
     slot:
       follow_flag: 1
       joint_name: None
@@ -142,7 +146,8 @@ value:
   ---
   data:
     scene:
-      t: {6, 15, 11}
+      r: {-0, 1, -0, -4.371138828673793e-08}
+      t: {6, 11, 11}
     slot:
       follow_flag: 1
       joint_name: None
@@ -154,7 +159,8 @@ value:
   ---
   data:
     scene:
-      t: {-6, 15, 11}
+      r: {-0, 1, -0, -4.371138828673793e-08}
+      t: {-6, 11, 11}
     slot:
       follow_flag: 1
       joint_name: None
@@ -166,7 +172,7 @@ value:
   ---
   data:
     scene:
-      t: {0, 3.799999952316284, -13.199999809265137}
+      t: {0, 8, -11}
     slot:
       follow_flag: 1
       joint_name: None
@@ -178,7 +184,7 @@ value:
   ---
   data:
     scene:
-      t: {6, 3.799999952316284, -13.199999809265137}
+      t: {6, 8, -11}
     slot:
       follow_flag: 1
       joint_name: None
@@ -190,7 +196,7 @@ value:
   ---
   data:
     scene:
-      t: {-6, 3.799999952316284, -13.199999809265137}
+      t: {-6, 8, -11}
     slot:
       follow_flag: 1
       joint_name: None
