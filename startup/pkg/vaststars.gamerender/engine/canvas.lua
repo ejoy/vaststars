@@ -9,7 +9,6 @@ local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local iom = ecs.require "ant.objcontroller|obj_motion"
 
 local types <const> = {
-    BUILDING_BASE = 1,
     ICON = 2,
     PICKUP_ICON = 3,
     ROAD_ENTRANCE_MARKER = 4,
@@ -63,15 +62,6 @@ local CANVAS_BUILD <const> = {
                 "/pkg/vaststars.resources/materials/canvas/fluid-indication-arrow-output.material",
             }
         }
-    },
-
-    [types.BUILDING_BASE] = {
-        {
-            render_layer = RENDER_LAYER.BUILDING_BASE,
-            materials = {
-                "/pkg/vaststars.resources/materials/canvas/building-base.material",
-            }
-        },
     },
 
     [types.ROAD_ENTRANCE_MARKER] = {

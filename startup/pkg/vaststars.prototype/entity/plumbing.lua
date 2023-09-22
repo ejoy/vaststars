@@ -108,7 +108,6 @@ prototype "地下水挖掘机I" {
     recipe = "离岸抽水",
     building_menu = false,
     io_shelf = false,
-    building_base = false,
     maxslot = "8",
     camera_distance = 72,
     fluidboxes = {
@@ -142,7 +141,6 @@ prototype "地下水挖掘机II" {
     recipe = "离岸抽水",
     building_menu = false,
     io_shelf = false,
-    building_base = false,
     maxslot = "8",
     camera_distance = 72,
     fluidboxes = {
@@ -174,7 +172,6 @@ prototype "核子挖掘机" {
     recipe = "离岸抽水",
     building_menu = false,
     io_shelf = false,
-    building_base = false,
     maxslot = "8",
     camera_distance = 72,
     fluidboxes = {
@@ -271,7 +268,6 @@ prototype "排水口I" {
     rotate_on_build = true,
     craft_category = {"流体液体排泄"},
     speed = "100%",
-    building_base = false,
     camera_distance = 89,
     building_menu = false,
     fluidbox = {
@@ -294,7 +290,6 @@ prototype "排水口II" {
     rotate_on_build = true,
     craft_category = {"流体液体排泄"},
     speed = "500%",
-    building_base = false,
     camera_distance = 89,
     building_menu = false,
     fluidbox = {
@@ -421,7 +416,6 @@ prototype "管道1-I型" {
             {type="input-output", position={0,0,"S"}},
         },
     },
-    building_base = false,
 }
 
 prototype "管道1-L型" {
@@ -443,7 +437,6 @@ prototype "管道1-L型" {
             {type="input-output", position={0,0,"E"}},
         },
     },
-    building_base = false,
 }
 
 prototype "管道1-T型" {
@@ -466,7 +459,6 @@ prototype "管道1-T型" {
             {type="input-output", position={0,0,"W"}},
         },
     },
-    building_base = false,
 }
 
 prototype "管道1-X型" {
@@ -492,7 +484,6 @@ prototype "管道1-X型" {
             {type="input-output", position={0,0,"W"}},
         },
     },
-    building_base = false,
 }
 
 prototype "管道1-O型" {
@@ -512,7 +503,6 @@ prototype "管道1-O型" {
         connections = {
         },
     },
-    building_base = false,
 }
 
 prototype "管道1-U型" {
@@ -533,7 +523,6 @@ prototype "管道1-U型" {
             {type="input-output", position={0,0,"N"}},
         },
     },
-    building_base = false,
 }
 
 prototype "地下管1-JU型" {
@@ -555,7 +544,6 @@ prototype "地下管1-JU型" {
             {type="input-output", position={0,0,"N"}, ground = 10},
         },
     },
-    building_base = false,
 }
 
 prototype "地下管1-JI型" {
@@ -579,7 +567,6 @@ prototype "地下管1-JI型" {
             {type="input-output", position={0,0,"N"}, ground = 10},
         },
     },
-    building_base = false,
 }
 
 prototype "地下管2-JU型" {
@@ -601,7 +588,6 @@ prototype "地下管2-JU型" {
             {type="input-output", position={0,0,"N"}, ground = 14},
         },
     },
-    building_base = false,
 }
 
 prototype "地下管2-JI型" {
@@ -624,5 +610,4 @@ prototype "地下管2-JI型" {
             {type="input-output", position={0,0,"N"}, ground = 14},
         },
     },
-    building_base = false,
 }

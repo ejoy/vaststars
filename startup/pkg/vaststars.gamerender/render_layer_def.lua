@@ -6,7 +6,7 @@ return {
     {
         "background",
         {"TERRAIN", "MINERAL"},
-        {"BUILDING_BASE", "ROAD", "GRID"},
+        {"ROAD", "GRID"},
         {"TRANSLUCENT_PLANE"},
         {"BUILDING"},
         {"LORRY_SHADOW", "LORRY", "LORRY_ITEM", "DRONE"},

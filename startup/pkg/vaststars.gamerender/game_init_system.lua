@@ -46,7 +46,6 @@ function m:init_world()
     rhwi.set_profie(gameplay_core.settings_get("debug", true))
 
     icanvas.create(icanvas.types().ICON, gameplay_core.settings_get("info", true), 10)
-    icanvas.create(icanvas.types().BUILDING_BASE, true, 0.01)
     icanvas.create(icanvas.types().PICKUP_ICON, false, 10)
     icanvas.create(icanvas.types().ROAD_ENTRANCE_MARKER, false, 0.02)
 

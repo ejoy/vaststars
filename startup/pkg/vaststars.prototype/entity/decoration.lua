@@ -10,7 +10,6 @@ prototype "机身残骸" {
     chest_style = "chest",
     chest_destroy = true,
     area = "5x5",
-    building_base = false,
 }
 
 prototype "机翼残骸" {
@@ -22,7 +21,6 @@ prototype "机翼残骸" {
     chest_style = "chest",
     chest_destroy = true,
     area = "3x3",
-    building_base = false,
 }
 
 prototype "机头残骸" {
@@ -34,7 +32,6 @@ prototype "机头残骸" {
     chest_style = "chest",
     chest_destroy = true,
     area = "3x3",
-    building_base = false,
 }
 
 prototype "机尾残骸" {
@@ -46,5 +43,4 @@ prototype "机尾残骸" {
     chest_style = "chest",
     chest_destroy = true,
     area = "3x3",
-    building_base = false,
 }

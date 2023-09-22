@@ -15,7 +15,6 @@ prototype "指挥中心" {
     camera_distance = 100,
     teardown = false,
     move = false,
-    building_base = false,
     crossing = {
         connections = {
             {type="factory", position={2,4,"S"}},
@@ -114,7 +113,6 @@ prototype "砖石公路-I型" {
     road = {
         "0,0,║",
     },
-    building_base = false,
 }
 
 prototype "砖石公路-L型" {
@@ -137,7 +135,6 @@ prototype "砖石公路-L型" {
     road = {
         "0,0,╚",
     },
-    building_base = false,
 }
 
 prototype "砖石公路-T型" {
@@ -161,7 +158,6 @@ prototype "砖石公路-T型" {
     road = {
         "0,0,╦",
     },
-    building_base = false,
 }
 
 prototype "砖石公路-O型" {
@@ -181,7 +177,6 @@ prototype "砖石公路-O型" {
     },
     road = {
     },
-    building_base = false,
 }
 
 prototype "砖石公路-U型" {
@@ -203,7 +198,6 @@ prototype "砖石公路-U型" {
     road = {
         "0,0,v",
     },
-    building_base = false,
 }
 
 prototype "砖石公路-X型" {
@@ -229,7 +223,6 @@ prototype "砖石公路-X型" {
     road = {
         "0,0,╬",
     },
-    building_base = false,
 }
 
 --出货车站需要设置送货类型以及需求车辆
@@ -239,7 +232,6 @@ prototype "出货车站" {
     construct_detector = {"exclusive"},
     type = {"building", "station"},
     chest_style = "station",
-    building_base = false,
     rotate_on_build = true,
     area = "4x2",
     drone_height = 24,
@@ -265,7 +257,6 @@ prototype "收货车站" {
     construct_detector = {"exclusive"},
     type = {"building", "station"},
     chest_style = "station",
-    building_base = false,
     rotate_on_build = true,
     area = "4x2",
     drone_height = 24,
@@ -290,7 +281,6 @@ prototype "物流站" {
     construct_detector = {"exclusive"},
     type = {"building", "station"},
     chest_style = "station",
-    building_base = false,
     rotate_on_build = true,
     area = "4x2",
     drone_height = 24,
@@ -314,7 +304,6 @@ prototype "停车站" {
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_goods_station1.texture",
     construct_detector = {"exclusive"},
     type = {"building","park"},
-    building_base = false,
     rotate_on_build = true,
     area = "4x2",
     drone_height = 24,
