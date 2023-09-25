@@ -38,7 +38,14 @@ function m:init_world()
     }
     terrain:create()
 
-    if NOTHING or TERRAIN_ONLY then
+    if NOTHING then
+        icamera_controller.set_camera_from_prefab("camera_default.prefab")
+        return
+    end
+
+    iroadnet:create()
+
+    if TERRAIN_ONLY then
         icamera_controller.set_camera_from_prefab("camera_default.prefab")
         return
     end
@@ -60,8 +67,6 @@ function m:init_world()
 
     -- audio.play("event:/openui1")
     audio.play("event:/background")
-
-    iroadnet:create()
 
     local args = global.startup_args
     if args[1] == "new_game" then
