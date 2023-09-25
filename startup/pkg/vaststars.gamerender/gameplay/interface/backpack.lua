@@ -51,7 +51,7 @@ local function get_placeable_count(world, item, count)
 end
 
 local function move_to_backpack(world, e, idx)
-    local slot = assert(world:container_get(e.chest, idx))
+    local slot = assert(ichest.get(world, e.chest, idx))
     if slot.item == 0 or slot.amount <= 0 then
         return 0
     end
@@ -73,7 +73,7 @@ end
 
 local function backpack_to_chest(world, e, f)
     for idx = 1, ichest.MAX_SLOT do
-        local slot = world:container_get(e.chest, idx)
+        local slot = ichest.get(world, e.chest, idx)
         if not slot then
             break
         end
@@ -95,7 +95,7 @@ end
 
 local function chest_to_backpack(world, e, f)
     for i = 1, ichest.MAX_SLOT do
-        local slot = world:container_get(e.chest, i)
+        local slot = ichest.get(world, e.chest, i)
         if not slot then
             break
         end
@@ -171,7 +171,7 @@ end
 
 local function can_move_to_backpack(world, e)
     for i = 1, ichest.MAX_SLOT do
-        local slot = world:container_get(e.chest, i)
+        local slot = ichest.get(world, e.chest, i)
         if not slot then
             break
         end

@@ -485,31 +485,31 @@ function M:stage_camera_usage(datamodel)
         selected_obj = nil
 
         local object = assert(objects:get(object_id))
-        local gw = gameplay_core.get_world()
+        local gameplay_world = gameplay_core.get_world()
         local typeobject = iprototype.queryByName(object.prototype_name)
 
         local e = gameplay_core.get_entity(object.gameplay_eid)
         if e.chest then
-            if not ibackpack.can_move_to_backpack(gameplay_core.get_world(), e) then
+            if not ibackpack.can_move_to_backpack(gameplay_world, e) then
                 log.error("can not teardown")
                 goto continue
             end
 
             for i = 1, ichest.MAX_SLOT do
-                local slot = gameplay_core.get_world():container_get(e.chest, i)
+                local slot = ichest.get(gameplay_world, e.chest, i)
                 if not slot then
                     break
                 end
-                ibackpack.move_to_backpack(gameplay_core.get_world(), e, i)
+                ibackpack.move_to_backpack(gameplay_world, e, i)
             end
         end
 
-        ibackpack.place(gameplay_core.get_world(), typeobject.id, 1)
+        ibackpack.place(gameplay_world, typeobject.id, 1)
         igameplay.destroy_entity(object.gameplay_eid)
         gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
 
         if typeobject.power_network_link or typeobject.power_supply_distance then
-            ipower:build_power_network(gw)
+            ipower:build_power_network(gameplay_world)
             ipower_line.update_line(ipower:get_pole_lines())
         end
 
