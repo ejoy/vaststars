@@ -22,6 +22,12 @@ local COLOR = {
     [STATUS_NO_POWER] = SPRITE_COLOR.WORK_STATE_NO_POWER,
 }
 
+local STATUS = {
+    [STATUS_WORKING] = "work",
+    [STATUS_IDLE] = "idle",
+    [STATUS_NO_POWER] = "idle",
+}
+
 local function create_workstatus()
     local status = STATUS_NONE
     local function on_position_change()
@@ -84,7 +90,7 @@ local update = interval_call(3000, function()
             goto continue
         end
         workstatus:set(current)
-        vsobject:update({workstatus = "idle", emissive_color = COLOR[current]})
+        vsobject:update({workstatus = STATUS[current], emissive_color = COLOR[current]})
         ::continue::
     end
 end)
