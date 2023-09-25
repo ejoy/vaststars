@@ -22,20 +22,22 @@ local STATUS_IDLE <const> = 2
 local STATUS_WORK <const> = 3
 local STATUS_WAIT_INPUT <const> = 4
 local STATUS_WAIT_OUTPUT <const> = 5
-local STATUS_SHORT_OF_POWER <const> = 6
-local STATUS_STACK_FULL <const> = 7
-local STATUS_CHARGE <const> = 8
-local STATUS_DISCHARGE <const> = 9
-local STATUS_NO_ENERGY <const> = 10
-local STATUS_STOP_DISCHARGE <const> = 11
-local STATUS_POLE_OFFLINE <const> = 12
-local STATUS_NO_RECIPE <const> = 13
+local STATUS_WAIT_OUTPUT2 <const> = 6
+local STATUS_SHORT_OF_POWER <const> = 7
+local STATUS_STACK_FULL <const> = 8
+local STATUS_CHARGE <const> = 9
+local STATUS_DISCHARGE <const> = 10
+local STATUS_NO_ENERGY <const> = 11
+local STATUS_STOP_DISCHARGE <const> = 12
+local STATUS_POLE_OFFLINE <const> = 13
+local STATUS_NO_RECIPE <const> = 14
 local detail_panel_status = {
     {desc = "断电停机", icon = "/pkg/vaststars.resources/ui/textures/detail/stop.texture"},
     {desc = "待机空闲", icon = "/pkg/vaststars.resources/ui/textures/detail/idle.texture"},
     {desc = "正常工作", icon = "/pkg/vaststars.resources/ui/textures/detail/work.texture"},
-    {desc = "等待供料", icon = "/pkg/vaststars.resources/ui/textures/detail/idle.texture"},
+    {desc = "等待供料", icon = "/pkg/vaststars.resources/ui/textures/detail/stop.texture"},
     {desc = "等待出货", icon = "/pkg/vaststars.resources/ui/textures/detail/idle.texture"},
+    {desc = "无出货物流", icon = "/pkg/vaststars.resources/ui/textures/detail/stop.texture"},
     {desc = "供电不足", icon = "/pkg/vaststars.resources/ui/textures/detail/idle.texture"},
     {desc = "存货已满", icon = "/pkg/vaststars.resources/ui/textures/detail/idle.texture"},
     {desc = "正常充电", icon = "/pkg/vaststars.resources/ui/textures/detail/work.texture"},
