@@ -3,20 +3,24 @@ local world = ecs.world
 local w = world.w
 
 local global = require "global"
-local math3d = require "math3d"
 local objects = require "objects"
 local vsobject_manager = ecs.require "vsobject_manager"
 local interval_call = ecs.require "engine.interval_call"
 local gameplay_core = require "gameplay.core"
 local work_state_sys = ecs.system "work_state_system"
-
-local EMISSIVE_COLOR_WORKING  = math3d.constant("v4", {0.0, 1.0, 0.0, 1})
-local EMISSIVE_COLOR_LOWPOWER = math3d.constant("v4", {1.0, 0.9, 0.0, 1})
-local EMISSIVE_COLOR_IDLE = math3d.constant("v4", {1.0, 0.0, 0.0, 1})
+local ipower_check = ecs.require "power_check_system"
+local SPRITE_COLOR <const> = import_package "vaststars.prototype"("sprite_color")
 
 local STATUS_NONE <const> = 0
 local STATUS_WORKING <const> = 1
 local STATUS_IDLE <const> = 2
+local STATUS_NO_POWER <const> = 3
+
+local COLOR = {
+    [STATUS_WORKING] = SPRITE_COLOR.WORK_STATE_WORKING,
+    [STATUS_IDLE] = SPRITE_COLOR.WORK_STATE_IDLE,
+    [STATUS_NO_POWER] = SPRITE_COLOR.WORK_STATE_NO_POWER,
+}
 
 local function create_workstatus()
     local status = STATUS_NONE
@@ -39,10 +43,10 @@ local function create_workstatus()
 end
 
 local function get_working_state(e)
+    if e.capacitance and not ipower_check.is_powered_on(gameplay_core.get_world(), e) then
+        return STATUS_NO_POWER
+    end
     if e.assembling then
-        if e.capacitance and e.capacitance.network == 0 then
-            return STATUS_IDLE
-        end
         return e.assembling.progress > 0 and STATUS_WORKING or STATUS_IDLE
     end
     if e.chimney then
@@ -80,17 +84,12 @@ local update = interval_call(3000, function()
             goto continue
         end
         workstatus:set(current)
-
-        if current == STATUS_IDLE then
-            vsobject:update({workstatus = "idle", emissive_color = EMISSIVE_COLOR_IDLE})
-        else
-            vsobject:update({workstatus = "work", emissive_color = EMISSIVE_COLOR_WORKING})
-        end
-        -- TODO: low_power
+        vsobject:update({workstatus = "idle", emissive_color = COLOR[current]})
         ::continue::
     end
 end)
 
 function work_state_sys:gameworld_update()
+    local w = world.w
     update()
 end

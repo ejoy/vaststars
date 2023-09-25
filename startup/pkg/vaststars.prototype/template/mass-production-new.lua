@@ -4242,19 +4242,19 @@ local entities = { {
     y = 100
   }, {
     dir = "N",
-    items = {},
+    items = {{"铝矿石", 0}},
     prototype_name = "仓库I",
     x = 93,
     y = 100
   }, {
     dir = "N",
-    items = {},
+    items = {{"铝矿石", 0}},
     prototype_name = "仓库I",
     x = 108,
     y = 93
   }, {
     dir = "N",
-    items = {},
+    items = {{"铝矿石", 0}},
     prototype_name = "仓库I",
     x = 130,
     y = 99

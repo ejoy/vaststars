@@ -170,9 +170,6 @@ return function ()
     function world:fluidflow_query(fluid, id)
         return cFluidflow.query(cworld, fluid, id)
     end
-    function world:container_get(c, i)
-        return iChest.get(self, c, i)
-    end
     function world:now()
         return self._frame
     end
