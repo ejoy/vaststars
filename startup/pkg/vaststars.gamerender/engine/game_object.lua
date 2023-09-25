@@ -133,8 +133,12 @@ hitchEvents["obj_motion"] = function(self, extraData, method, ...)
     iom[method](e, ...)
 end
 hitchEvents["modifier"] = function(self, extraData, method, ...)
-    assert(extraData.srt_modifier)
-    imodifier[method](extraData.srt_modifier, ...)
+    imodifier[method](
+        self.tag["hitch"][1],
+        0,
+        "/pkg/vaststars.resources/glbs/animation/Interact_build.glb|mesh.prefab",
+        "Bone",
+        ...)
 end
 
 local igame_object = {}
@@ -174,12 +178,12 @@ function igame_object.create(init)
             if srt.t then
                 iom.set_position(root, srt.t)
             end
-            extraData.srt_modifier = imodifier.create_bone_modifier(
-                eid,
-                init.group_id,
-                "/pkg/vaststars.resources/glbs/animation/Interact_build.glb|mesh.prefab",
-                "Bone"
-            )
+            -- extraData.srt_modifier = imodifier.create_bone_modifier(
+            --     eid,
+            --     init.group_id,
+            --     "/pkg/vaststars.resources/glbs/animation/Interact_build.glb|mesh.prefab",
+            --     "Bone"
+            -- )
 
             assert(hitchEvents["group"])(self, extraData, children.hitch_group_id)
         end,
