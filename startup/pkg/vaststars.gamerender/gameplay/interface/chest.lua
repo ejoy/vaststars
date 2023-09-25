@@ -18,7 +18,7 @@ local function has_chest(type)
 end
 
 local function get(world, ...)
-    local c = world:container_get(...)
+    local c = iChest.get(world, ...)
     if c and c.item == 0 then
         return
     end
@@ -43,7 +43,7 @@ end
 
 local function has_item(world, e)
     for i = 1, MAX_SLOT do
-        local slot = world:container_get(e, i)
+        local slot = iChest.get(world, e, i)
         if not slot then
             return false
         end

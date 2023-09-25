@@ -195,7 +195,7 @@ end
 
 local function getChestSlots(gameplay_world, chest, max_slot, res)
     for i = 1, max_slot do
-        local slot = gameplay_world:container_get(chest, i)
+        local slot = ichest.get(gameplay_world, chest, i)
         if not slot then
             break
         end
@@ -352,14 +352,14 @@ local function get_entity_property_list(object_id, recipe_inputs, recipe_ouputs)
     elseif e.laboratory then
         local current_inputs = ilaboratory:get_elements(typeobject.inputs)
         local items = {}
-        local gw = gameplay_core.get_world()
+        local gameplay_world = gameplay_core.get_world()
         for i, value in ipairs(current_inputs) do
             local slot = ichest.get(gameplay_core.get_world(), e.chest, i)
-            items[#items+1] = {icon = value.icon, name = "", count = slot and slot.amount or 0, demand_count = gw:container_get(e.chest, 1).limit}
+            items[#items+1] = {icon = value.icon, name = "", count = slot and slot.amount or 0, demand_count = ichest.get(gameplay_world, e.chest, 1).limit}
         end
         prolist.chest_list_1 = items
     end
-    
+
     --modify status
     if typeobject.name == "铁制电线杆" then
         prolist.status = pole_status

@@ -25,6 +25,7 @@ local ifluid = require "gameplay.interface.fluid"
 local ipower_check = ecs.require "power_check_system"
 local gameplay = import_package "vaststars.gameplay"
 local ichimney = gameplay.interface "chimney"
+local ichest = require "gameplay.interface.chest"
 
 local ROTATORS <const> = {
     N = math.rad(0),
@@ -441,7 +442,7 @@ function assembling_sys:gameworld_build()
             local results_n <const> = #typeobject_recipe.results//4 - 1
             local items = {}
             for idx = 1, ingredients_n + results_n do
-                local slot = assert(gameplay_world:container_get(e.chest, idx))
+                local slot = assert(ichest.get(gameplay_world, e.chest, idx))
                 local typeobject_item = iprototype.queryById(slot.item)
                 if iprototype.has_type(typeobject_item.type, "item") then
                     items[idx] = {item = slot.item, amount = slot.amount}
@@ -491,7 +492,7 @@ local update = interval_call(300, function()
             local ingredients_n <const> = #typeobject_recipe.ingredients//4 - 1
             local results_n <const> = #typeobject_recipe.results//4 - 1
             for idx = 1, ingredients_n + results_n do
-                local slot = assert(gameplay_world:container_get(e.chest, idx))
+                local slot = assert(ichest.get(gameplay_world, e.chest, idx))
                 local typeobject_item = iprototype.queryById(slot.item)
                 if iprototype.has_type(typeobject_item.type, "item") then
                     io_shelves:update(idx, slot.amount)

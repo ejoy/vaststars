@@ -24,7 +24,7 @@ local function updateSlots(e, datamodel)
     local slots = {}
 
     for i = 1, max_slot do
-        local slot = gameplay_world:container_get(e.station or e.chest, i)
+        local slot = ichest.get(gameplay_world, e.station or e.chest, i)
         if not slot then
             break
         end

@@ -97,7 +97,7 @@ local function getMoveableCount(e)
     elseif hasComponent(e, PICKUP_COMPONENTS) then
         local c
         for i = 1, ichest.MAX_SLOT do
-            local slot = gameplay_world:container_get(e.chest, i)
+            local slot = ichest.get(gameplay_world, e.chest, i)
             if not slot then
                 break
             end
@@ -153,7 +153,7 @@ local function getPlaceableCount(e, typeobject)
     elseif hasPlaceItem(e, typeobject) then
         local c
         for i = 1, ichest.get_max_slot(iprototype.queryById(e.building.prototype)) do
-            local slot = gameplay_world:container_get(e.chest, i)
+            local slot = ichest.get(gameplay_world, e.chest, i)
             if not slot then
                 break
             end
@@ -228,7 +228,7 @@ local function station_set_item(gameplay_world, e, type, item)
     local items = {}
 
     for i = 1, ichest.get_max_slot(iprototype.queryById(e.building.prototype)) do
-        local slot = gameplay_world:container_get(e.station, i)
+        local slot = ichest.get(gameplay_world, e.station, i)
         if not slot then
             break
         end
@@ -244,7 +244,7 @@ local function station_remove_item(gameplay_world, e, slot_index)
     local items = {}
 
     for i = 1, ichest.get_max_slot(iprototype.queryById(e.building.prototype)) do
-        local slot = gameplay_world:container_get(e.station, i)
+        local slot = ichest.get(gameplay_world, e.station, i)
         if not slot then
             break
         end
@@ -261,7 +261,7 @@ local function chest_set_item(gameplay_world, e, type, item)
     local items = {}
     local typeobject = iprototype.queryById(e.building.prototype)
     for i = 1, ichest.get_max_slot(typeobject) do
-        local slot = gameplay_world:container_get(e.chest, i)
+        local slot = ichest.get(gameplay_world, e.chest, i)
         if not slot then
             break
         end
@@ -276,7 +276,7 @@ local function chest_remove_item(gameplay_world, e, slot_index)
     local items = {}
 
     for i = 1, ichest.get_max_slot(iprototype.queryById(e.building.prototype)) do
-        local slot = gameplay_world:container_get(e.chest, i)
+        local slot = ichest.get(gameplay_world, e.chest, i)
         if not slot then
             break
         end
