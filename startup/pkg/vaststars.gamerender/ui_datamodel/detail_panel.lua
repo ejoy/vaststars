@@ -354,10 +354,9 @@ local function get_entity_property_list(object_id, recipe_inputs, recipe_ouputs)
     elseif e.laboratory then
         local current_inputs = ilaboratory:get_elements(typeobject.inputs)
         local items = {}
-        local gameplay_world = gameplay_core.get_world()
         for i, value in ipairs(current_inputs) do
             local slot = ichest.get(gameplay_core.get_world(), e.chest, i)
-            items[#items+1] = {icon = value.icon, name = "", count = slot and slot.amount or 0, demand_count = ichest.get(gameplay_world, e.chest, 1).limit}
+            items[#items+1] = {icon = value.icon, name = "", count = slot and slot.amount or 0, demand_count = slot and slot.limit or 0}
         end
         prolist.chest_list_1 = items
     end
@@ -383,17 +382,25 @@ local function get_entity_property_list(object_id, recipe_inputs, recipe_ouputs)
                 if status then
                     prolist.status = status
                 end
-            elseif prolist.chest_list_1 and #prolist.chest_list_1 > 0 then
+            elseif e.chest then
+                local full = true
+                for i = 1, ichest.get_max_slot(typeobject) do
+                    local slot = ichest.get(gameplay_core.get_world(), e.chest, i)
+                    if not slot then
+                        break
+                    end
+                    if slot.item ~= 0 and slot.amount < slot.limit then
+                        full = false
+                        break
+                    end
+                end
+
                 if e.laboratory then
-                    for _, value in ipairs(prolist.chest_list_1) do
-                        if value.count < value.demand_count then
-                            prolist.status = STATUS_WAIT_INPUT
-                            break
-                        end
+                    if not full then
+                        prolist.status = STATUS_WAIT_INPUT
                     end
                 else
-                    local iteminfo = prolist.chest_list_1[#prolist.chest_list_1]
-                    if iteminfo.count == iteminfo.max_count then
+                    if full then
                         prolist.status = STATUS_STACK_FULL
                     end
                 end
