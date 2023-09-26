@@ -3780,19 +3780,19 @@ local entities = { {
     y = 142
   }, {
     dir = "S",
-    items = {{"supply", "铁齿轮", "1"}},
+    items = {{"supply", "铁齿轮", "1"},{"supply", "铁齿轮", "1"},{"supply", "铁齿轮", "1"},{"supply", "铁齿轮", "1"}},
     prototype_name = "物流站",
     x = 88,
     y = 140
   }, {
     dir = "S",
-    items = {{"supply", "铁齿轮", "1"}},
+    items = {{"supply", "铁齿轮", "1"},{"supply", "铁齿轮", "1"},{"supply", "铁齿轮", "1"},{"supply", "铁齿轮", "1"}},
     prototype_name = "物流站",
     x = 112,
     y = 140
   }, {
     dir = "N",
-    items = {{"demand", "铁齿轮", "1"}},
+    items = {{"demand", "铁齿轮", "1"},{"demand", "铁齿轮", "1"},{"demand", "铁齿轮", "1"},{"demand", "铁齿轮", "1"}},
     prototype_name = "物流站",
     x = 104,
     y = 136
@@ -3832,13 +3832,13 @@ local entities = { {
     y = 173
   }, {
     dir = "S",
-    items = {{"supply", "电动机I", "1"}},
+    items = {{"supply", "电动机I", "1"},{"supply", "电动机I", "1"},{"supply", "电动机I", "1"},{"supply", "电动机I", "1"}},
     prototype_name = "物流站",
     x = 102,
     y = 128
   }, {
     dir = "S",
-    items = {{"demand", "碎石", "1"}},
+    items = {{"demand", "碎石", "1"},{"demand", "碎石", "1"},{"demand", "碎石", "1"}},
     prototype_name = "物流站",
     x = 96,
     y = 128
