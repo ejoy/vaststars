@@ -1752,16 +1752,6 @@ local entities = { {
   }, {
     dir = "N",
     prototype_name = "无人机平台I",
-    x = 184,
-    y = 173
-  }, {
-    dir = "N",
-    prototype_name = "无人机平台I",
-    x = 184,
-    y = 161
-  }, {
-    dir = "N",
-    prototype_name = "无人机平台I",
     x = 189,
     y = 160
   }, {
@@ -3633,18 +3623,6 @@ local entities = { {
     x = 189,
     y = 158
   }, {
-    dir = "E",
-    items = {{"demand", "塑料", "1"}},
-    prototype_name = "物流站",
-    x = 184,
-    y = 156
-  }, {
-    dir = "E",
-    items = {{"demand", "塑料", "1"}},
-    prototype_name = "物流站",
-    x = 184,
-    y = 174
-  }, {
     dir = "W",
     items = {{"supply", "塑料", "1"}},
     prototype_name = "物流站",
@@ -3652,34 +3630,16 @@ local entities = { {
     y = 164
   }, {
     dir = "W",
-    items = {{"demand", "电动机I", "1"}},
+    items = {{"demand", "电动机I", "1"},{"supply", "机械科技包", "1"},{"demand", "塑料", "1"},},
     prototype_name = "物流站",
     x = 190,
     y = 168
   }, {
     dir = "W",
-    items = {{"demand", "电动机I", "1"}},
+    items = {{"demand", "电动机I", "1"},{"supply", "机械科技包", "1"},{"demand", "塑料", "1"},},
     prototype_name = "物流站",
     x = 190,
     y = 162
-  }, {
-    dir = "W",
-    items = {{"supply", "机械科技包", "1"}},
-    prototype_name = "物流站",
-    x = 190,
-    y = 176
-  }, {
-    dir = "W",
-    items = {{"supply", "机械科技包", "1"}},
-    prototype_name = "物流站",
-    x = 190,
-    y = 154
-  }, {
-    dir = "E",
-    items = {{"supply", "机械科技包", "1"}},
-    prototype_name = "物流站",
-    x = 184,
-    y = 168
   }, {
     dir = "N",
     items = {{"supply", "碎石", "1"}},
