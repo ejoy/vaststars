@@ -87,6 +87,7 @@ local File <const> = {
     [".ibbin"] = true,
     [".meshbin"] = true,
     [".skinbin"] = true,
+    [".attr"] = true,
 }
 
 local handler = {}
