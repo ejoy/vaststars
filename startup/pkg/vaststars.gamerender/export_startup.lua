@@ -35,7 +35,7 @@ funcs["park"] = DO_NOTHING
 funcs["airport"] = DO_NOTHING
 
 funcs["base"] = function(entity)
-    entity.items = {{"运输车辆I", 50}}
+    entity.amount = 0
     return entity
 end
 
