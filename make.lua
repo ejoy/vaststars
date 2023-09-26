@@ -11,11 +11,7 @@ lm.c = "c17"
 lm.cxx = "c++20"
 if lm.os == "ios" then
     lm.arch = "arm64"
-    if lm.mode == "release" then
-        lm.sys = "ios13.0"
-    else
-        lm.sys = "ios14.1"
-    end
+    lm.sys = "ios15.0"
 elseif lm.os == "macos" then
     lm.sys = "macos11.0"
 end
