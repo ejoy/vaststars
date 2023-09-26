@@ -97,11 +97,12 @@ function M:stage_camera_usage(datamodel)
 
     for _ in change_ratio_mb:unpack() do
         local whichratio = "scene_ratio"    -- "ratio"
-        datamodel.scene_ratio = datamodel.scene_ratio - 0.1
-        if datamodel.scene_ratio <= 0.0000001 then
+        datamodel.scene_ratio = irender.get_framebuffer_ratio(whichratio) - 0.1
+        if datamodel.scene_ratio <= 0.01 then
             datamodel.scene_ratio = 1
         end
         irender.set_framebuffer_ratio(whichratio, datamodel.scene_ratio)
+        gameplay_core.settings_set("ratio", datamodel.scene_ratio)
     end
 end
 

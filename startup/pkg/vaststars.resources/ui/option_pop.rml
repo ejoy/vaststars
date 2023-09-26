@@ -64,56 +64,55 @@
             end
         </script>
     </head>
-    <body style = "background-color: black;">
-        <div class="item-container-region" data-event-click = "clickButton('close')">
-            <div class="recipe-panel" style = "flex-direction: column; height: 100%;">
-                <!-- 标题栏 -->
-                <div class = "recipe-name-block">
-                    <div class = "recipe-name-text" style="-webkit-text-stroke:0.2vmin #000; font-size: 5vmin;">设置</div>
-                </div>
-                <div style="width: 100%; height:95%; flex-direction: column; justify-content: center; align-items: center;">
-                    <div class = "recipe-change-block">
-                        <button class = "button-style" style="background-color:rgb(203, 118, 24);" data-event-click = "clickButton('save')">
-                            <div class="middle-bg" style='background-image: "/pkg/vaststars.resources/ui/textures/science/book.texture";'/>
-                            <div class = "recipe-name-text" style="font-size: 5.73vmin;">保存游戏</div>
-                        </button>
-                        <button class = "button-style" style="background-color:rgb(52, 207, 115);" data-event-click = "show_archival_files = not show_archival_files">
-                            <div class="middle-bg" style='background-image: "/pkg/vaststars.resources/ui/textures/construct/work.texture";'/>
-                            <div class = "recipe-name-text" style="font-size: 5.73vmin;">读取游戏</div>
-                        </button> 
-                        <button class = "button-style" style="background-color:rgb(0, 160, 235);" data-event-click = "clickButton('info')">
-                            <div class="middle-bg" style='background-image: "/pkg/vaststars.resources/ui/textures/science/book.texture";'/>
-                            <div class = "recipe-name-text" style="font-size: 5.73vmin;">{{info == false and '提示开启' or '提示关闭'}}</div>
-                        </button>
-                        <button class = "button-style" style="background-color:rgb(253, 0, 0);" data-event-click = "clickButton('debug')">
-                            <div class="middle-bg" style='background-image: "/pkg/vaststars.resources/ui/textures/road/forbidden.texture";'/>
-                            <div class = "recipe-name-text" style="font-size: 5.73vmin;">{{debug == false and '调试开启' or '调试关闭'}}</div>
-                        </button>
-                        <button class = "button-style" style="background-color: rgb(52, 207, 115)" data-event-click = "clickButton('back_to_main_menu')">
-                            <div class="middle-bg" style='background-image: "/pkg/vaststars.resources/ui/textures/road/forbidden.texture";'/>
-                            <div class = "recipe-name-text" style="font-size: 5.73vmin;">重新登录</div>
-                        </button> 
-                        <button class = "button-style" style="background-color: rgb(52, 207, 115)" data-event-click = "clickButton('lock_group')">
-                            <div class = "recipe-name-text" style="font-size: 4.73vmin;">{{lock_group and 'UnLock Group' or 'Lock Group'}}</div>
-                        </button>
-                        <button class = "button-style" style="background-color:rgb(203, 118, 24);" data-event-click = "clickButton('change_ratio')">
-                            <div class = "recipe-name-text" style="font-size: 5.73vmin;">{{"ratio: " .. scene_ratio}}</div>
-                        </button>
-                    </div>
+    <body style = "background-color: black; align-items: center;">
+        <div style = "width: 100%; height: 100%;" data-event-click = "clickButton('close')"/>
+        <div class="recipe-panel" style = "position: absolute; flex-direction: column; height: 100%;">
+            <!-- 标题栏 -->
+            <div class = "recipe-name-block">
+                <div class = "recipe-name-text" style="-webkit-text-stroke:0.2vmin #000; font-size: 5vmin;">设置</div>
+            </div>
+            <div style="width: 100%; height:95%; flex-direction: column; justify-content: center; align-items: center;">
+                <div class = "recipe-change-block">
+                    <button class = "button-style" style="background-color:rgb(203, 118, 24);" data-event-click = "clickButton('save')">
+                        <div class="middle-bg" style='background-image: "/pkg/vaststars.resources/ui/textures/science/book.texture";'/>
+                        <div class = "recipe-name-text" style="font-size: 5.73vmin;">保存游戏</div>
+                    </button>
+                    <button class = "button-style" style="background-color:rgb(52, 207, 115);" data-event-click = "show_archival_files = not show_archival_files">
+                        <div class="middle-bg" style='background-image: "/pkg/vaststars.resources/ui/textures/construct/work.texture";'/>
+                        <div class = "recipe-name-text" style="font-size: 5.73vmin;">读取游戏</div>
+                    </button> 
+                    <button class = "button-style" style="background-color:rgb(0, 160, 235);" data-event-click = "clickButton('info')">
+                        <div class="middle-bg" style='background-image: "/pkg/vaststars.resources/ui/textures/science/book.texture";'/>
+                        <div class = "recipe-name-text" style="font-size: 5.73vmin;">{{info == false and '提示开启' or '提示关闭'}}</div>
+                    </button>
+                    <button class = "button-style" style="background-color:rgb(253, 0, 0);" data-event-click = "clickButton('debug')">
+                        <div class="middle-bg" style='background-image: "/pkg/vaststars.resources/ui/textures/road/forbidden.texture";'/>
+                        <div class = "recipe-name-text" style="font-size: 5.73vmin;">{{debug == false and '调试开启' or '调试关闭'}}</div>
+                    </button>
+                    <button class = "button-style" style="background-color: rgb(52, 207, 115)" data-event-click = "clickButton('back_to_main_menu')">
+                        <div class="middle-bg" style='background-image: "/pkg/vaststars.resources/ui/textures/road/forbidden.texture";'/>
+                        <div class = "recipe-name-text" style="font-size: 5.73vmin;">重新登录</div>
+                    </button> 
+                    <button class = "button-style" style="background-color: rgb(52, 207, 115)" data-event-click = "clickButton('lock_group')">
+                        <div class = "recipe-name-text" style="font-size: 4.73vmin;">{{lock_group and 'UnLock Group' or 'Lock Group'}}</div>
+                    </button>
+                    <button class = "button-style" style="background-color:rgb(203, 118, 24);" data-event-click = "clickButton('change_ratio')">
+                        <div class = "recipe-name-text" style="font-size: 5.73vmin;">{{"ratio: " .. scene_ratio}}</div>
+                    </button>
                 </div>
             </div>
-            <div class="recipe-panel" style = "flex-direction: column; height: 100%;" data-if = "show_archival_files">
-                <!-- 标题栏 -->
-                <div class = "recipe-name-block">
-                    <div class = "recipe-name-text">存档</div>
-                </div>
-                <div style="width: 100%; height:90%; flex-direction: column; justify-content: center; align-items: center;">
-                    <div class = "recipe-change-block" style = "justify-content: center; align-items: center;">
-                        <button class = "button-style" style="background-color:rgb(203, 118, 24);" data-for = "archival_files" data-event-click = "clickButton('restore', it_index)">
-                            <div class = "recipe-name-text" style="font-size: 3.73vmin;">{{it_index}}</div>
-                            <div class = "recipe-name-text" style="font-size: 2.73vmin;">{{it}}</div>
-                        </button>
-                    </div>
+        </div>
+        <div class="recipe-panel" style = "flex-direction: column; height: 100%;" data-if = "show_archival_files">
+            <!-- 标题栏 -->
+            <div class = "recipe-name-block">
+                <div class = "recipe-name-text">存档</div>
+            </div>
+            <div style="width: 100%; height:90%; flex-direction: column; justify-content: center; align-items: center;">
+                <div class = "recipe-change-block" style = "justify-content: center; align-items: center;">
+                    <button class = "button-style" style="background-color:rgb(203, 118, 24);" data-for = "archival_files" data-event-click = "clickButton('restore', it_index)">
+                        <div class = "recipe-name-text" style="font-size: 3.73vmin;">{{it_index}}</div>
+                        <div class = "recipe-name-text" style="font-size: 2.73vmin;">{{it}}</div>
+                    </button>
                 </div>
             </div>
         </div>

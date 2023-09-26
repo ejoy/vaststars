@@ -16,6 +16,7 @@ local iroadnet = ecs.require "roadnet"
 local saveload = ecs.require "saveload"
 local global = require "global"
 local math3d = require "math3d"
+local irender = ecs.require "ant.render|render_system.render"
 
 local m = ecs.system 'game_init_system'
 local gameworld_prebuild
@@ -51,6 +52,8 @@ function m:init_world()
     end
 
     rhwi.set_profie(gameplay_core.settings_get("debug", true))
+
+    irender.set_framebuffer_ratio("scene_ratio", gameplay_core.settings_get("ratio", 1))
 
     icanvas.create(icanvas.types().ICON, gameplay_core.settings_get("info", true), 10)
     icanvas.create(icanvas.types().PICKUP_ICON, false, 10)
