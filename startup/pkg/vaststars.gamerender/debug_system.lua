@@ -19,7 +19,7 @@ end
 function debug_sys:ui_update()
     local w = world.w
 
-    for _, key, press in kb_mb:unpack() do
+    for _, key, press, state in kb_mb:unpack() do
         if key == "T" and press == 0 then
             local gameplay_world = gameplay_core.get_world()
             print(("current tick value of the gameplay world is: %d"):format(gameplay_world:now()))
@@ -30,7 +30,7 @@ function debug_sys:ui_update()
             end
         end
 
-        if key == "S" and press == 0 then
+        if state.CTRL and key == "S" and press == 0 then
             export_startup()
         end
     end
