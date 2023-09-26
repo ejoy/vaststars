@@ -88,6 +88,7 @@ local File <const> = {
     [".meshbin"] = true,
     [".skinbin"] = true,
     [".attr"] = true,
+    [".state"] = true,
 }
 
 local handler = {}
