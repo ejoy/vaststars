@@ -120,6 +120,7 @@ prototype "熔炼炉III" {
 
 prototype "粉碎机I" {
     model = "glbs/crusher-1.glb|mesh.prefab",
+    model_status = {work = true, low_power = true},
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_crusher.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling"},
@@ -138,6 +139,7 @@ prototype "粉碎机I" {
 
 prototype "粉碎机II" {
     model = "glbs/crusher-1.glb|mesh.prefab",
+    model_status = {work = true, low_power = true},
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_crusher.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling"},
@@ -156,6 +158,7 @@ prototype "粉碎机II" {
 
 prototype "粉碎机III" {
     model = "glbs/crusher-1.glb|mesh.prefab",
+    model_status = {work = true, low_power = true},
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_crusher.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling"},

@@ -95,13 +95,13 @@ local __get_hitch_children ; do
                         irl.set_layer(e, render_layer)
                     end
 
-                    if workstatus and e.animation then
-                        playAnimation(self, e, workstatus, hitch_group_id)
-                    end
-
                     -- special handling for keyframe animations
                     if e.anim_ctrl then
                         iani.load_events(eid, getEventFile(prefab))
+                    end
+
+                    if workstatus and e.animation then
+                        playAnimation(self, e, workstatus, hitch_group_id)
                     end
                 end
             end,
