@@ -4038,9 +4038,9 @@ local entities = { {
     y = 92
   }, {
     dir = "N",
-    items = {{"demand", "碎石", "1"}, { "demand", "铁矿石", 1 }, { "demand", "铝矿石", 1 } },
+    items = {{"demand", "碎石", "1"}, { "demand", "铁矿石", 1 }, { "demand", "铝矿石", 1 }, { "supply", "地质科技包", 1 } },
     prototype_name = "物流站",
-    x = 122,
+    x = 124,
     y = 150
   }, {
     dir = "N",
@@ -4066,12 +4066,6 @@ local entities = { {
     prototype_name = "仓库I",
     x = 130,
     y = 148
-  }, {
-    dir = "N",
-    items = {{"supply", "地质科技包", "1"}},
-    prototype_name = "物流站",
-    x = 128,
-    y = 150
   }, {
     dir = "N",
     prototype_name = "无人机平台I",
@@ -4242,12 +4236,12 @@ local entities = { {
   }, {
     dir = "N",
     prototype_name = "无人机平台I",
-    x = 126,
-    y = 148
+    x = 125,
+    y = 149
   }, {
     dir = "N",
     prototype_name = "无人机平台I",
-    x = 126,
+    x = 128,
     y = 149
   } }
   local road = { {
