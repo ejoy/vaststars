@@ -259,7 +259,7 @@ local entities = { {
     y = 158
   }, {
     dir = "N",
-    items = {{"铁矿石", 50}},
+    items = {{"铁矿石", 50},{"碎石", 0},},
     prototype_name = "仓库I",
     x = 96,
     y = 159
@@ -3559,7 +3559,7 @@ local entities = { {
     y = 158
   }, {
     dir = "N",
-    items = {{"铁矿石", 50}},
+    items = {{"铁矿石", 50},{"碎石", 0},},
     prototype_name = "仓库I",
     x = 106,
     y = 159
