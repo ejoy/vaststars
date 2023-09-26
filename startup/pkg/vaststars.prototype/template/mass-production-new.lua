@@ -3983,13 +3983,13 @@ local entities = { {
     y = 142
   }, {
     dir = "N",
-    items = {{"demand", "铁矿石", "1"},{"supply", "碎石", "1"}},
+    items = {{"demand", "铁矿石", "1"},{"demand", "铁矿石", "1"},{"demand", "铁矿石", "1"},{"supply", "碎石", "1"}},
     prototype_name = "物流站",
     x = 92,
     y = 158
   }, {
     dir = "N",
-    items = {{"demand", "铁矿石", "1"},{"supply", "碎石", "1"}},
+    items = {{"demand", "铁矿石", "1"},{"demand", "铁矿石", "1"},{"demand", "铁矿石", "1"},{"supply", "碎石", "1"}},
     prototype_name = "物流站",
     x = 108,
     y = 158
