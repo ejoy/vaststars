@@ -551,8 +551,8 @@ local entities = { {
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 184,
-    y = 167
+    x = 185,
+    y = 168
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
@@ -1747,11 +1747,6 @@ local entities = { {
   }, {
     dir = "N",
     prototype_name = "无人机平台I",
-    x = 184,
-    y = 166
-  }, {
-    dir = "N",
-    prototype_name = "无人机平台I",
     x = 189,
     y = 160
   }, {
@@ -2035,13 +2030,8 @@ local entities = { {
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 191,
-    y = 166
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 191,
-    y = 174
+    x = 185,
+    y = 160
   }, {
     dir = "W",
     fluid_name = "氧气",
@@ -3299,6 +3289,11 @@ local entities = { {
     prototype_name = "铁制电线杆",
     x = 177,
     y = 192
+  }, {
+    dir = "N",
+    prototype_name = "铁制电线杆",
+    x = 172,
+    y = 123
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
@@ -5109,11 +5104,6 @@ local entities = { {
     dir = "N",
     prototype_name = "砖石公路-I型",
     x = 192,
-    y = 166
-  }, {
-    dir = "N",
-    prototype_name = "砖石公路-I型",
-    x = 192,
     y = 162
   }, {
     dir = "E",
@@ -5395,11 +5385,6 @@ local entities = { {
     prototype_name = "砖石公路-I型",
     x = 182,
     y = 164
-  }, {
-    dir = "N",
-    prototype_name = "砖石公路-I型",
-    x = 182,
-    y = 166
   }, {
     dir = "N",
     prototype_name = "砖石公路-I型",
@@ -6205,7 +6190,37 @@ local entities = { {
     prototype_name = "砖石公路-U型",
     x = 112,
     y = 98
-  }}
+  }, {
+    dir = "W",
+    prototype_name = "砖石公路-T型",
+    x = 182,
+    y = 166
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 184,
+    y = 166
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 186,
+    y = 166
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-T型",
+    x = 192,
+    y = 166
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 188,
+    y = 166
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 190,
+    y = 166
+  } }
 local mineral = {
   ["102,62"] = "铁矿石",
   ["115,133"] = "碎石",
