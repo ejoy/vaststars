@@ -3607,19 +3607,19 @@ local entities = { {
     y = 158
   }, {
     dir = "W",
-    items = {{"supply", "塑料", "1"}},
+    items = {{"supply", "塑料", "1"},{"supply", "塑料", "1"},{"supply", "塑料", "1"},{"supply", "塑料", "1"}},
     prototype_name = "物流站",
     x = 180,
     y = 164
   }, {
     dir = "W",
-    items = {{"demand", "电动机I", "1"},{"supply", "机械科技包", "1"},{"demand", "塑料", "1"},},
+    items = {{"demand", "电动机I", "1"},{"demand", "电动机I", "1"},{"supply", "机械科技包", "1"},{"demand", "塑料", "1"},{"demand", "塑料", "1"}},
     prototype_name = "物流站",
     x = 190,
     y = 168
   }, {
     dir = "W",
-    items = {{"demand", "电动机I", "1"},{"supply", "机械科技包", "1"},{"demand", "塑料", "1"},},
+    items = {{"demand", "电动机I", "1"},{"demand", "电动机I", "1"},{"supply", "机械科技包", "1"},{"demand", "塑料", "1"},{"demand", "塑料", "1"}},
     prototype_name = "物流站",
     x = 190,
     y = 162
