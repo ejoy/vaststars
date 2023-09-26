@@ -3669,7 +3669,7 @@ local entities = { {
     y = 142
   }, {
     dir = "N",
-    items = {{"supply", "石墨", "1"}},
+    items = {{"supply", "石墨", "1"},{"supply", "石墨", "1"}},
     prototype_name = "物流站",
     x = 124,
     y = 160
@@ -3758,13 +3758,13 @@ local entities = { {
     y = 192
   }, {
     dir = "S",
-    items = {{"demand", "石墨", "1"}},
+    items = {{"demand", "石墨", "1"},{"demand", "石墨", "1"}},
     prototype_name = "物流站",
     x = 96,
     y = 140
   }, {
     dir = "S",
-    items = {{"demand", "石墨", "1"}},
+    items = {{"demand", "石墨", "1"},{"demand", "石墨", "1"}},
     prototype_name = "物流站",
     x = 104,
     y = 140
