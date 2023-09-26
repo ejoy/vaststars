@@ -1743,7 +1743,7 @@ local entities = { {
     dir = "N",
     prototype_name = "无人机平台I",
     x = 189,
-    y = 174
+    y = 171
   }, {
     dir = "N",
     prototype_name = "无人机平台I",
@@ -1768,8 +1768,13 @@ local entities = { {
     dir = "N",
     prototype_name = "无人机平台I",
     x = 189,
-    y = 172
+    y = 173
   }, {
+    dir = "N",
+    prototype_name = "无人机平台I",
+    x = 189,
+    y = 175
+  },{
     dir = "W",
     prototype_name = "停车站",
     x = 64,
@@ -3867,6 +3872,11 @@ local entities = { {
     y = 148
   }, {
     dir = "N",
+    prototype_name = "无人机平台I",
+    x = 189,
+    y = 162
+  },{
+    dir = "N",
     items = {{"碎石", 50}},
     prototype_name = "仓库I",
     x = 110,
@@ -3876,13 +3886,13 @@ local entities = { {
     items = {{"机械科技包", 0}},
     prototype_name = "仓库I",
     x = 190,
-    y = 158
+    y = 160
   }, {
     dir = "N",
     items = {{"机械科技包", 0}},
     prototype_name = "仓库I",
     x = 190,
-    y = 174
+    y = 173
   }, {
     dir = "S",
     items = {{"supply", "电动机I", "1"}},
