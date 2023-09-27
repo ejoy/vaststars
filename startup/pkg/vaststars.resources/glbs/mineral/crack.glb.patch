@@ -3,37 +3,6 @@ file: mesh.prefab
 op: copyfile
 path: geothermal.prefab
 ---
-file: geothermal.prefab
-op: replace
-path: "/2"
-value:
-  data:
-    material: /pkg/ant.landform/assets/materials/crack.material
-    mesh: meshes/Plane_P1.meshbin
-    scene: {}
-    visible_state: main_view|selectable
-  policy:
-    ant.scene|scene_object
-    ant.render|render
----
-file: geothermal.prefab
-op: add
-path: /-
-value:
-  data:
-    efk:
-      path: /pkg/vaststars.resources/effects/furnace_smoke.efk
-      speed: 1
-    scene:
-      s: {10, 10, 10}
-    visible_state: main_queue
-  mount: 1
-  policy:
-    ant.scene|scene_object
-    ant.efk|efk
-  tag:
-    furnace_smoke
----
 file: mesh.prefab
 op: createfile
 path: hitch.prefab
@@ -48,3 +17,34 @@ value:
     ant.render|hitch_object
   tag:
     hitch
+---
+file: geothermal.prefab
+op: add
+path: /-
+value:
+  data:
+    efk:
+      path: /pkg/vaststars.resources/effects/Geothermal.efk
+      speed: 1
+    scene:
+      s: {8, 8, 8}
+    visible_state: main_queue
+  mount: 1
+  policy:
+    ant.scene|scene_object
+    ant.efk|efk
+  tag:
+    Geothermal
+---
+file: geothermal.prefab
+op: replace
+path: "/2"
+value:
+  data:
+    material: /pkg/ant.landform/assets/materials/crack.material
+    mesh: meshes/Plane_P1.meshbin
+    scene: {}
+    visible_state: main_view|selectable
+  policy:
+    ant.scene|scene_object
+    ant.render|render
