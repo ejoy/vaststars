@@ -182,13 +182,13 @@ local function __clean(datamodel)
     iui.close("/pkg/vaststars.resources/ui/construct_road_or_pipe.rml")
     datamodel.status = "normal"
 
-    LockAxis = false
     LockAxisStatus = {
         status = false,
         BeginX = 0,
         BeginY = 0,
     }
     world:pub {"game_camera", "unlock"}
+    log.info("unlock axis")
 end
 
 ---------------
@@ -412,17 +412,27 @@ function M:stage_camera_usage(datamodel)
         if e.state == "began" then
             iui.leave()
             if builder and LockAxis and LockAxisStatus.status == false then
-                LockAxisStatus.BeginX, LockAxisStatus.BeginY = e.x, e.y
+                log.info("lock axis begin", e.x, e.y)
+
+                local coord = terrain:get_coord_by_position(math3d.vector(e.x, 0, e.y))
+                LockAxisStatus.BeginX, LockAxisStatus.BeginY = coord[1], coord[2]
+            end
+        elseif e.state == "changed" and builder then
+            if LockAxis and LockAxisStatus.status == false then
+                local coord = terrain:get_coord_by_position(math3d.vector(e.x, 0, e.y))
+                if coord[1] ~= LockAxisStatus.BeginX or coord[2] ~= LockAxisStatus.BeginY then
+                    local dx = math.abs(coord[1] - LockAxisStatus.BeginX)
+                    local dy = math.abs(coord[2] - LockAxisStatus.BeginY)
+                    local p = dx > dy and "z-axis" or "x-axis"
+                    world:pub {"game_camera", "lock", p}
+                    log.info("lock axis ", p)
+                    LockAxisStatus.status = true
+                end
             end
         elseif e.state == "ended" and builder then
-            if LockAxis and LockAxisStatus.status == false then
-                local dx = math.abs(e.x - LockAxisStatus.BeginX)
-                local dy = math.abs(e.y - LockAxisStatus.BeginY)
-                local p = dx > dy and "z-axis" or "x-axis"
-                world:pub {"game_camera", "lock", p}
-                log.info("lock axis ", p)
-                LockAxisStatus.status = true
-            end
+            world:pub {"game_camera", "unlock"}
+            log.info("unlock axis")
+            LockAxisStatus.status = false
 
             builder:touch_end(builder_datamodel)
             self:flush()
