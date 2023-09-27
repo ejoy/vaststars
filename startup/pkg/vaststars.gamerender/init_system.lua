@@ -12,6 +12,7 @@ local iani = ecs.require "ant.animation|state_machine"
 local iui = ecs.require "engine.system.ui_system"
 local NOTHING <const> = require "debugger".nothing
 local TERRAIN_ONLY <const> = require "debugger".terrain_only
+local ltask = require "ltask"
 
 local m = ecs.system 'init_system'
 
@@ -19,6 +20,8 @@ bgfx.maxfps(FRAMES_PER_SECOND)
 font.import "/pkg/vaststars.resources/ui/font/Alibaba-PuHuiTi-Regular.ttf"
 
 function m:init_world()
+	ltask.uniqueservice "vaststars.tools|webserver"
+
     if NOTHING or TERRAIN_ONLY then
         ecs.require "main_menu_manager".new_game()
         return
