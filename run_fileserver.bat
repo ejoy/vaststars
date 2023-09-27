@@ -21,7 +21,7 @@ if not exist "%exe%" (
 
 pushd %current_dir%
 	title %mode% - %current_dir%%exe%
-	%current_dir%%exe% %param%
+	%current_dir%%exe% -s
 popd
 
 :end
