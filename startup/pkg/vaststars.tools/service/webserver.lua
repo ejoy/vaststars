@@ -5,12 +5,14 @@ print "Webserver start"
 local ServiceIO = ltask.queryservice "io"
 local WEB_PORT <const> = "9000"
 
-local function main()
-	ltask.send(ServiceIO, "REDIRECT", "TUNNEL", ltask.self())
-	ltask.send(ServiceIO, "SEND", "TUNNEL_OPEN", WEB_PORT)
-end
+if __ANT_RUNTIME__ then
+	local function main()
+		ltask.send(ServiceIO, "REDIRECT", "TUNNEL", ltask.self())
+		ltask.send(ServiceIO, "SEND", "TUNNEL_OPEN", WEB_PORT)
+	end
 
-main()
+	main()
+end
 
 local S = {}
 
