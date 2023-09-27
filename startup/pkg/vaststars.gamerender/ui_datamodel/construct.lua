@@ -415,12 +415,14 @@ function M:stage_camera_usage(datamodel)
                 log.info("lock axis begin", e.x, e.y)
 
                 local coord = terrain:get_coord_by_position(math3d.vector(e.x, 0, e.y))
-                LockAxisStatus.BeginX, LockAxisStatus.BeginY = coord[1], coord[2]
+                if coord then
+                    LockAxisStatus.BeginX, LockAxisStatus.BeginY = coord[1], coord[2]
+                end
             end
         elseif e.state == "changed" and builder then
             if LockAxis and LockAxisStatus.status == false then
                 local coord = terrain:get_coord_by_position(math3d.vector(e.x, 0, e.y))
-                if coord[1] ~= LockAxisStatus.BeginX or coord[2] ~= LockAxisStatus.BeginY then
+                if coord and coord[1] ~= LockAxisStatus.BeginX or coord[2] ~= LockAxisStatus.BeginY then
                     local dx = math.abs(coord[1] - LockAxisStatus.BeginX)
                     local dy = math.abs(coord[2] - LockAxisStatus.BeginY)
                     local p = dx > dy and "z-axis" or "x-axis"
