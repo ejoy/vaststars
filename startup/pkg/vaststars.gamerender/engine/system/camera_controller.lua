@@ -26,6 +26,8 @@ local icamera_controller = {}
 local ui_message_move_camera_mb = world:sub {"ui_message", "move_camera"}
 local gesture_pinch = world:sub {"gesture", "pinch"}
 local gesture_pan = world:sub {"gesture", "pan"}
+local game_camera_lock_mb = world:sub {"game_camera", "lock"}
+local game_camera_unlock_mb = world:sub {"game_camera", "unlock"}
 
 local datalist = require "datalist"
 local fs = require "filesystem"
@@ -200,14 +202,23 @@ local function __handle_camera_motion()
 end
 
 local __handle_drop_camera; do
-    local starting
+    local starting = math3d.ref()
+    local lock
 
     function __handle_drop_camera(ce)
+        for _, _, axis in game_camera_lock_mb:unpack() do
+            lock = axis
+        end
+
+        for _ in game_camera_unlock_mb:unpack() do
+            lock = nil
+        end
+
         local ending_x, ending_y
         for _, _, e in gesture_pan:unpack() do
             if __check_camera_editable() then
                 if e.state == "began" then
-                    starting = math3d.ref(icamera_controller.screen_to_world(e.x, e.y, PLANES)[1])
+                    starting.v = icamera_controller.screen_to_world(e.x, e.y, PLANES)[1]
                 else
                     ending_x, ending_y = e.x, e.y
                 end
@@ -221,6 +232,16 @@ local __handle_drop_camera; do
             local ending = icamera_controller.screen_to_world(ending_x, ending_y, PLANES)[1]
             local delta_vec = math3d.sub(starting, ending)
             local pos = math3d.add(scene.t, delta_vec)
+
+            if lock then
+                if lock == "x-axis" then
+                    pos = math3d.set_index(pos, 1, math3d.index(scene.t, 1))
+                elseif lock == "z-axis" then
+                    pos = math3d.set_index(pos, 3, math3d.index(scene.t, 3))
+                else
+                    assert(false)
+                end
+            end
 
             pos = math3d.set_index(pos, 1, __clamp(math3d.index(pos, 1), CAMERA_XAIXS_MIN, CAMERA_XAIXS_MAX))
             pos = math3d.set_index(pos, 3, __clamp(math3d.index(pos, 3), CAMERA_ZAIXS_MIN, CAMERA_ZAIXS_MAX))

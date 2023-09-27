@@ -21,7 +21,6 @@ local EDITOR_CACHE_NAMES = {"CONFIRM", "CONSTRUCTED"}
 local create_station_builder = ecs.require "editor.stationbuilder"
 local terrain = ecs.require "terrain"
 local selected_boxes = ecs.require "selected_boxes"
-local iani = ecs.require "ant.animation|state_machine"
 local irl = ecs.require "ant.render|render_layer.render_layer"
 local iom = ecs.require "ant.objcontroller|obj_motion"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
@@ -63,6 +62,8 @@ local remove_one_mb = mailbox:sub {"remove_one"}
 local unselected_mb = mailbox:sub {"unselected"}
 local gesture_tap_mb = world:sub{"gesture", "tap"}
 local gesture_pan_mb = world:sub {"gesture", "pan"}
+local lock_axis_mb = mailbox:sub {"lock_axis"}
+local unlock_axis_mb = mailbox:sub {"unlock_axis"}
 
 local CLASS = {
     Lorry = 1,
@@ -76,6 +77,13 @@ local builder, builder_datamodel, builder_ui
 local excluded_pickup_id -- object id
 local pick_lorry_id
 local selected_obj
+
+local LockAxis = false
+local LockAxisStatus = {
+    status = false,
+    BeginX = 0,
+    BeginY = 0,
+}
 
 local function __on_pick_building(datamodel, o)
     local object = o.object
@@ -173,6 +181,14 @@ local function __clean(datamodel)
     iui.close("/pkg/vaststars.resources/ui/build.rml") -- TODO: remove this
     iui.close("/pkg/vaststars.resources/ui/construct_road_or_pipe.rml")
     datamodel.status = "normal"
+
+    LockAxis = false
+    LockAxisStatus = {
+        status = false,
+        BeginX = 0,
+        BeginY = 0,
+    }
+    world:pub {"game_camera", "unlock"}
 end
 
 ---------------
@@ -395,8 +411,19 @@ function M:stage_camera_usage(datamodel)
     for _, _, e in gesture_pan_mb:unpack() do
         if e.state == "began" then
             iui.leave()
-        end
-        if e.state == "ended" and builder then
+            if builder and LockAxis and LockAxisStatus.status == false then
+                LockAxisStatus.BeginX, LockAxisStatus.BeginY = e.x, e.y
+            end
+        elseif e.state == "ended" and builder then
+            if LockAxis and LockAxisStatus.status == false then
+                local dx = math.abs(e.x - LockAxisStatus.BeginX)
+                local dy = math.abs(e.y - LockAxisStatus.BeginY)
+                local p = dx > dy and "z-axis" or "x-axis"
+                world:pub {"game_camera", "lock", p}
+                log.info("lock axis ", p)
+                LockAxisStatus.status = true
+            end
+
             builder:touch_end(builder_datamodel)
             self:flush()
         end
@@ -741,6 +768,21 @@ function M:stage_camera_usage(datamodel)
             gameplay_core.world_update = true
             __clean(datamodel)
         end)
+    end
+
+    for _ in lock_axis_mb:unpack() do
+        LockAxis = true
+    end
+
+    for _ in unlock_axis_mb:unpack() do
+        LockAxis = false
+        LockAxisStatus = {
+            status = false,
+            BeginX = 0,
+            BeginY = 0,
+        }
+        world:pub {"game_camera", "unlock"}
+        log.info("unlock axis")
     end
 
     for _, _, _, prototype_name in remove_one_mb:unpack() do

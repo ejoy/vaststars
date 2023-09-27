@@ -5,6 +5,7 @@ local iui = ecs.require "engine.system.ui_system"
 local gameplay_core = require "gameplay.core"
 local click_button_mb = mailbox:sub {"click_button"}
 local click_main_button_mb = mailbox:sub {"click_main_button"}
+local lock_axis_mb = mailbox:sub {"lock_axis"}
 local ibackpack = require "gameplay.interface.backpack"
 
 local MAX_SHORTCUT_COUNT <const> = 5
@@ -85,6 +86,7 @@ function M:create()
     end
 
     return {
+        lock_axis = false,
         shortcut_index = max_idx or 0,
         shortcut = shortcut,
         main_button_icon = main_button_icon,
@@ -114,6 +116,15 @@ function M:stage_ui_update(datamodel)
 
     for _ in click_main_button_mb:unpack() do
         iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "build")
+    end
+
+    for _ in lock_axis_mb:unpack() do
+        datamodel.lock_axis = not datamodel.lock_axis
+        if datamodel.lock_axis then
+            iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "lock_axis")
+        else
+            iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "unlock_axis")
+        end
     end
 end
 
