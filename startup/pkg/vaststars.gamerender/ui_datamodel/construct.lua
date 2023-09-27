@@ -398,6 +398,32 @@ local function __construct_entity(typeobject)
     end
 end
 
+local function move_focus(e)
+	local dx = math.abs(e.x - LockAxisStatus.BeginX)
+	local dy = math.abs(e.y - LockAxisStatus.BeginY)
+	if dx > 10 or dy > 10 then
+		LockAxisStatus.BeginX = e.x
+		LockAxisStatus.BeginY = e.y
+		LockAxisStatus.count = 0
+		return
+	end
+	local count = LockAxisStatus.count + 1
+	if count > 3 then
+		if dx > dy * 2 then
+			return "z-axis"
+		elseif dy > dx * 2 then
+			return "x-axis"
+		else
+			LockAxisStatus.BeginX = e.x
+			LockAxisStatus.BeginY = e.y
+			LockAxisStatus.count = 0
+			return
+		end
+	else
+		LockAxisStatus.count = count
+	end
+end
+
 function M:stage_camera_usage(datamodel)
     local dragdrop_delta
     for _, delta in dragdrop_camera_mb:unpack() do
@@ -413,22 +439,17 @@ function M:stage_camera_usage(datamodel)
             iui.leave()
             if builder and LockAxis and LockAxisStatus.status == false then
                 log.info("lock axis begin", e.x, e.y)
-                local coord = terrain:get_coord_by_position(icamera_controller.screen_to_world(e.x, e.y, PLANES)[1])
-                if coord then
-                    LockAxisStatus.BeginX, LockAxisStatus.BeginY = coord[1], coord[2]
-                end
+				LockAxisStatus.BeginX, LockAxisStatus.BeginY = e.x, e.y
+				LockAxisStatus.count = 0
             end
         elseif e.state == "changed" and builder then
             if LockAxis and LockAxisStatus.status == false then
-                local coord = terrain:get_coord_by_position(icamera_controller.screen_to_world(e.x, e.y, PLANES)[1])
-                if coord and (coord[1] ~= LockAxisStatus.BeginX or coord[2] ~= LockAxisStatus.BeginY) then
-                    local dx = math.abs(coord[1] - LockAxisStatus.BeginX)
-                    local dy = math.abs(coord[2] - LockAxisStatus.BeginY)
-                    local p = dx > dy and "z-axis" or "x-axis"
-                    world:pub {"game_camera", "lock", p}
-                    log.info("lock axis ", p)
-                    LockAxisStatus.status = true
-                end
+				local p = move_focus(e)
+				if p then
+					world:pub {"game_camera", "lock", p}
+					log.info("lock axis ", p)
+					LockAxisStatus.status = true
+				end
             end
         elseif e.state == "ended" and builder then
             world:pub {"game_camera", "unlock"}
