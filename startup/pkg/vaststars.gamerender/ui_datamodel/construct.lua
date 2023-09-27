@@ -630,6 +630,10 @@ function M:stage_camera_usage(datamodel)
                 if selected_obj.class == CLASS.Lorry then
                     iui.open({"/pkg/vaststars.resources/ui/building_menu.rml"}, pick_lorry_id)
                     idetail.selected(pick_lorry_id)
+
+                    local e = assert(gameplay_core.get_entity(pick_lorry_id))
+                    icamera_controller.focus_on_position(terrain:get_position_by_coord(e.lorry.x, e.lorry.y, 1, 1))
+
                 elseif selected_obj.class == CLASS.Object and not iprototype.is_pipe(selected_obj.object.prototype_name) then -- TODO: optimize
                     local object = selected_obj.object
                     icamera_controller.focus_on_position(object.srt.t)
