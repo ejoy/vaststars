@@ -31,6 +31,8 @@ local WIDTH <const> = 256 -- coordinate value range: [0, WIDTH - 1]
 local HEIGHT <const> = 256
 local GRID_WIDTH <const> = 10
 local GRID_HEIGHT <const> = 10
+local MAX_BUILDING_WIDTH <const> = 6
+local MAX_BUILDING_HEIGHT <const> = 6
 assert(GRID_WIDTH % 2 == 0 and GRID_HEIGHT % 2 == 0)
 
 local function _hash(x, y)
@@ -181,6 +183,10 @@ function terrain:enable_terrain(lefttop, rightbottom)
         end
         return add, del
     end
+
+    -- because the group id of the buildings is calculated based on the coordinates of the top-left corner, so we need to expand the range
+    lefttop = math3d.add(lefttop, {-(MAX_BUILDING_WIDTH * TILE_SIZE), 0, MAX_BUILDING_HEIGHT * TILE_SIZE})
+    rightbottom = math3d.add(rightbottom, {MAX_BUILDING_WIDTH * TILE_SIZE, 0, -(MAX_BUILDING_HEIGHT * TILE_SIZE)})
 
     local ltCoord = self:get_coord_by_position(lefttop) or {0, 0}
     local rbCoord = self:get_coord_by_position(rightbottom) or {self._width - 1, self._height - 1}

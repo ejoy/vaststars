@@ -157,6 +157,7 @@ function igame_object.create(init)
     local prefab = RESOURCES_BASE_PATH:format(init.prefab)
     local glb = assert(prefab:match("^(.*%.glb)|.*%.prefab$"))
     local hitchPrefab = glb .. "|hitch.prefab"
+    -- log.info(("hitch prefab: %s, group_id: %s"):format(hitchPrefab, init.group_id))
 
     local children = __get_hitch_children(prefab, init.color, init.workstatus or "idle", init.emissive_color, init.render_layer)
     local srt = init.srt or {}
