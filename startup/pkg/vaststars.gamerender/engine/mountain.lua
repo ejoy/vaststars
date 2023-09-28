@@ -28,15 +28,8 @@ local function idx2coord(v)
     return x, y
 end
 
-local mt = {}
-mt.__index = function (t, k)
-    t[k] = setmetatable({}, mt)
-    return t[k]
-end
-
+local MOUNTAIN_MASKS
 local M = {}
-local cache = setmetatable({}, mt)
-
 function M:create()
     local idx_string = ism.create_random_sm(MOUNTAIN.density, MAP_WIDTH, MAP_HEIGHT, OFFSET, TILE_SIZE)
     for key = 1, #idx_string do
@@ -47,7 +40,7 @@ function M:create()
         local x1, y1, w, h = v[1], v[2], v[3], v[4]
         for x = x1, x1 + w - 1 do
             for y = y1, y1 + h - 1 do
-                cache[coord2idx(x,y)] = 0
+                MOUNTAIN_MASKS[coord2idx(x,y)] = 0
             end
         end
     end
@@ -56,7 +49,7 @@ function M:create()
         local x1, y1, w, h = v[1], v[2], v[3], v[4]
         for x = x1, x1 + w - 1 do
             for y = y1, y1 + h - 1 do
-                cache[coord2idx(x,y)] = 0
+                MOUNTAIN_MASKS[coord2idx(x,y)] = 0
             end
         end
     end
@@ -73,12 +66,12 @@ function M:create()
         end
     end
 
-    ism.create_sm_entity(t)
+    im.create(groups, OFFSET, UNIT)
 end
 
 function M:has_mountain(x, y)
-    local key = coord2idx(x, y)
-    return (cache[key] == 1)
+    local idx = coord2idx(x, y)
+    return (assert(MOUNTAIN_MASKS[idx], ("Invalid x:%d, y:%d, idx"):format(x, y, idx)) == 1)
 end
 
 return M
