@@ -33,6 +33,7 @@ local gesture_longpress_mb = world:sub{"gesture", "longpress"}
 local igameplay = ecs.require "gameplay_system"
 local audio = import_package "ant.audio"
 local ilorry = ecs.require "render_updates.lorry"
+local igame_object = ecs.require "engine.game_object"
 
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
 local ROAD_SIZE <const> = 2
@@ -164,8 +165,10 @@ local function __switch_status(s, cb)
 
     if status == "default" then
         icamera_controller.toggle_view("default", cb)
+        igame_object.stop_world()
     elseif status == "construct" then
         icamera_controller.toggle_view("construct", cb)
+        igame_object.restart_world()
     end
 end
 

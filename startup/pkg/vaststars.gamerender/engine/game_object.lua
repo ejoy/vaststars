@@ -20,7 +20,7 @@ local function on_prefab_message(prefab, cmd, ...)
     end
 end
 
-local __calc_param_hash ; do
+local calcHash ; do
     local function get_hash_func(max_value)
         local n = 0
         local cache = {}
@@ -42,7 +42,7 @@ local __calc_param_hash ; do
     local emissive_color_hash = get_hash_func(0xf)
     local render_layer_hash = get_hash_func(0xf)
 
-    function __calc_param_hash(prefab, color, workstatus, emissive_color, render_layer)
+    function calcHash(prefab, color, workstatus, emissive_color, render_layer)
         local h1 = prefab_hash(prefab or 0) -- 8 bits
         local h2 = color_hash(color or 0) -- 4 bits
         local h3 = workstatus_hash(workstatus or 0) -- 1 bits
@@ -52,7 +52,7 @@ local __calc_param_hash ; do
     end
 end
 
-local __get_hitch_children ; do
+local getHitchChildren, stopWorld, restartWorld ; do
     local cache = {}
     local NEXT_HITCH_GROUP = 1
 
@@ -75,9 +75,9 @@ local __get_hitch_children ; do
         return ANIMATIONS_BASE_PATH .. eventFile
     end
 
-    function __get_hitch_children(prefab, color, workstatus, emissive_color, render_layer)
+    function getHitchChildren(prefab, color, workstatus, emissive_color, render_layer)
         render_layer = render_layer or RENDER_LAYER.BUILDING
-        local hash = __calc_param_hash(prefab, tostring(color), workstatus, tostring(emissive_color), render_layer)
+        local hash = calcHash(prefab, tostring(color), workstatus, tostring(emissive_color), render_layer)
         if cache[hash] then
             return cache[hash]
         end
@@ -85,7 +85,7 @@ local __get_hitch_children ; do
         local hitch_group_id = ig.register("HITCH_GROUP_" .. NEXT_HITCH_GROUP)
         NEXT_HITCH_GROUP = NEXT_HITCH_GROUP + 1
 
-        local prefab_instance = world:create_instance {
+        local inst = world:create_instance {
             prefab = prefab,
             group = hitch_group_id,
             on_ready = function (self)
@@ -110,35 +110,59 @@ local __get_hitch_children ; do
             end
         }
         if color then
-            world:instance_message(prefab_instance, "material", "set_property", "u_basecolor_factor", color)
+            world:instance_message(inst, "material", "set_property", "u_basecolor_factor", color)
         end
         if emissive_color then
-            world:instance_message(prefab_instance, "material", "set_property", "u_emissive_factor", emissive_color)
+            world:instance_message(inst, "material", "set_property", "u_emissive_factor", emissive_color)
         end
 
-        cache[hash] = {prefab_file_name = prefab, instance = prefab_instance, hitch_group_id = hitch_group_id, pose = iani.create_pose()}
+        cache[hash] = {instance = inst, hitch_group_id = hitch_group_id}
         return cache[hash]
+    end
+
+    function stopWorld()
+        for _, v in pairs(cache) do
+            world:instance_message(v.instance, "stop_world")
+        end
+    end
+
+    function restartWorld()
+        for _, v in pairs(cache) do
+            world:instance_message(v.instance, "restart_world")
+        end
     end
 end
 
 local hitchEvents = {}
-hitchEvents["group"] = function(self, extraData, group)
+hitchEvents["group"] = function(self, group)
     local e <close> = world:entity(self.tag["hitch"][1])
     w:extend(e, "hitch:update hitch_bounding?out")
     e.hitch.group = group
     e.hitch_bounding = true
 end
-hitchEvents["obj_motion"] = function(self, extraData, method, ...)
+hitchEvents["obj_motion"] = function(self, method, ...)
     local e <close> = world:entity(self.tag["hitch"][1])
     iom[method](e, ...)
 end
-hitchEvents["modifier"] = function(self, extraData, method, ...)
+hitchEvents["modifier"] = function(self, method, ...)
     imodifier[method](
         self.tag["hitch"][1],
         0,
         "/pkg/vaststars.resources/glbs/animation/Interact_build.glb|mesh.prefab",
         "Bone",
         ...)
+end
+
+local function set_srt(e, srt)
+    if srt.s then
+        iom.set_srt(e, srt.s, srt.r, srt.t)
+    end
+    if srt.r then
+        iom.set_rotation(e, srt.r)
+    end
+    if srt.t then
+        iom.set_position(e, srt.t)
+    end
 end
 
 local igame_object = {}
@@ -159,37 +183,20 @@ function igame_object.create(init)
     local hitchPrefab = glb .. "|hitch.prefab"
     -- log.info(("hitch prefab: %s, group_id: %s"):format(hitchPrefab, init.group_id))
 
-    local children = __get_hitch_children(prefab, init.color, init.workstatus or "idle", init.emissive_color, init.render_layer)
+    local children = getHitchChildren(prefab, init.color, init.workstatus or "idle", init.emissive_color, init.render_layer)
     local srt = init.srt or {}
 
-    local extraData = {} -- special handling for srt_modifier: srt_modifier must be used after on_ready
     local hitchObject = world:create_instance {
         group = init.group_id,
         prefab = hitchPrefab,
         parent = init.parent,
         on_ready = function(self)
-            local eid = self.tag["hitch"][1]
-            local root <close> = world:entity(eid)
-            if srt.s then
-                iom.set_scale(root, srt.s)
-            end
-            if srt.r then
-                iom.set_rotation(root, srt.r)
-            end
-            if srt.t then
-                iom.set_position(root, srt.t)
-            end
-            -- extraData.srt_modifier = imodifier.create_bone_modifier(
-            --     eid,
-            --     init.group_id,
-            --     "/pkg/vaststars.resources/glbs/animation/Interact_build.glb|mesh.prefab",
-            --     "Bone"
-            -- )
-
-            assert(hitchEvents["group"])(self, extraData, children.hitch_group_id)
+            local root <close> = world:entity(self.tag["hitch"][1])
+            set_srt(root, srt)
+            assert(hitchEvents["group"])(self, children.hitch_group_id)
         end,
         on_message = function(self, event, ...)
-            assert(hitchEvents[event])(self, extraData, ...)
+            assert(hitchEvents[event])(self, ...)
         end
     }
 
@@ -197,25 +204,21 @@ function igame_object.create(init)
         world:remove_instance(self.hitchObject)
     end
 
-    -- prefab_file_name, color, emissive_color
     local function update(self, t)
         for k, v in pairs(t) do
-            self.__cache[k] = v
+            if v == "null" then
+                self.data[k] = nil
+            else
+                self.data[k] = v
+            end
         end
 
-        if self.__cache.color == "null" then
-            self.__cache.color = nil
-        end
-        if self.__cache.emissive_color == "null" then
-            self.__cache.emissive_color = nil
-        end
-
-        children = __get_hitch_children(
-            RESOURCES_BASE_PATH:format(self.__cache.prefab),
-            self.__cache.color,
-            self.__cache.workstatus,
-            self.__cache.emissive_color,
-            self.__cache.render_layer
+        children = getHitchChildren(
+            RESOURCES_BASE_PATH:format(self.data.prefab),
+            self.data.color,
+            self.data.workstatus,
+            self.data.emissive_color,
+            self.data.render_layer
         )
         world:instance_message(self.hitchObject, "group", children.hitch_group_id)
     end
@@ -227,7 +230,7 @@ function igame_object.create(init)
     end
 
     local outer = {
-        __cache = init,
+        data = init,
         group_id = init.group_id,
         hitchObject = hitchObject,
     }
@@ -236,6 +239,14 @@ function igame_object.create(init)
     outer.update = update
     outer.send   = send
     return outer
+end
+
+function igame_object.stop_world()
+    stopWorld()
+end
+
+function igame_object.restart_world()
+    restartWorld()
 end
 
 return igame_object
