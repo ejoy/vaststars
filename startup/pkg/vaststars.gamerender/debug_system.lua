@@ -42,6 +42,15 @@ function debug_sys:ui_update()
         if coord then
             log.info(("gesture tap coord: (%s, %s)"):format(coord[1], coord[2]))
             log.info(("group(%s)"):format(terrain:get_group_id(coord[1], coord[2])))
+
+            local objects = require "objects"
+            local vsobject_manager = ecs.require "vsobject_manager"
+            local object = objects:coord(coord[1], coord[2])
+            if object then
+                local vsobject = assert(vsobject_manager:get(object.id), ("(%s) vsobject not found"):format(object.prototype_name))
+                local game_object = vsobject.game_object
+                log.info(("hitch id: %s"):format(game_object.hitchObject.tag.hitch[1]))
+            end
         end
     end
 end
