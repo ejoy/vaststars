@@ -8,7 +8,6 @@ local icamera_controller = ecs.require "engine.system.camera_controller"
 local audio = import_package "ant.audio"
 local rhwi = import_package "ant.hwi"
 local font = import_package "ant.font"
-local iani = ecs.require "ant.animation|state_machine"
 local iui = ecs.require "engine.system.ui_system"
 local NOTHING <const> = require "debugger".nothing
 local TERRAIN_ONLY <const> = require "debugger".terrain_only

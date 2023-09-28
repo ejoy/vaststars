@@ -879,6 +879,15 @@ local function clean(self, datamodel)
     self.super.clean(self, datamodel)
 end
 
+local function confirm(self, datamodel)
+    if self.state == STATE_NONE then
+        self:start_laying(datamodel)
+    elseif self.state == STATE_START then
+        self:finish_laying(datamodel)
+        __complete(self)
+    end
+end
+
 local function create()
     local builder = create_builder()
 
@@ -886,7 +895,7 @@ local function create()
     M.new_entity = new_entity
     M.touch_move = touch_move
     M.touch_end = touch_end
-    M.complete = complete
+    M.confirm = confirm
 
     M.clean = clean
 
