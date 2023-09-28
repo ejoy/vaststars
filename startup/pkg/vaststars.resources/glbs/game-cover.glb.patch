@@ -70,6 +70,11 @@ path: /4/data/render_layer
 value: translucent
 ---
 file: mesh.prefab
+op: replace
+path: /2/data/animation_birth
+value: ArmatureAction.001
+---
+file: mesh.prefab
 op: add
 path: /-
 value:
