@@ -9,7 +9,6 @@ local fs = require "filesystem"
 
 local rmlui_message_mb = world:sub {"rmlui_message"}
 local ui_message_mb = world:sub {"ui_message"}
-local ui_message_send_mb = world:sub {"ui_message_send"}
 
 local windowBindings = {} -- = {[url] = { w = xx, datamodel = xx, }, ...}
 local changedWindows = {}
@@ -173,16 +172,6 @@ function ui_system.ui_update()
         end
     end
 
-    for msg in ui_message_send_mb:each() do
-        local binding = windowBindings[msg[2]]
-        if binding then
-            local ud = {}
-            ud.event = msg[3]
-            ud.ud = {table_unpack(msg, 4, #msg)}
-            windowBindings[msg[2]].window.postMessage(ud)
-        end
-    end
-
     for url in pairs(stage_ui_update) do
         if not closeWindows[url] then
             local binding = windowBindings[url]
@@ -262,8 +251,12 @@ function iui.is_open(url)
 end
 
 function iui.send(url, event, ...)
-    if windowBindings[url] then
-        world:pub {"ui_message_send", url, event, ...}
+    local binding = windowBindings[url]
+    if binding then
+        local ud = {}
+        ud.event = event
+        ud.ud = {...}
+        binding.window.postMessage(ud)
     end
 end
 
