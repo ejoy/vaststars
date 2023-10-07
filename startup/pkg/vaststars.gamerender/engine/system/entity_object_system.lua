@@ -8,8 +8,8 @@ local entity_object_remove_mb = world:sub {"entity_object_remove"}
 local entity_object_sys = ecs.system "entity_object_system"
 local ientity_object = {}
 
--- why scene_update stage? because we may want to get world matrix of entity in events
-function entity_object_sys:scene_update()
+-- it must be after the scene_update stage, otherwise you cannot obtain the entity's correct world matrix
+function entity_object_sys:update_world()
     for msg in entity_object_message_mb:each() do
         local object = msg[2]
         local events = msg[3]
