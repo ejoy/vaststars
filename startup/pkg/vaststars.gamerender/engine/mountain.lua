@@ -54,19 +54,34 @@ function M:create()
         end
     end
 
-    local t = {}
-    for i = 1, MAP_WIDTH * MAP_HEIGHT do
-        local x, y = idx2coord(i)
-        if cache[i] == 1 then
-            if x & 0xff ~= x or y & 0xff ~= y then
-                t[i] = 0
-            else
-                t[i] = terrain:get_group_id(x, y)
-            end
+    local groups = setmetatable({}, {__index=function (t, gid) local tt={}; t[gid]=tt; return tt end})
+    for i = 1, WIDTH * HEIGHT do
+        if 0 ~= MOUNTAIN_MASKS[i] then
+            local x, y = idx2coord(i)
+            assert(1<=x and x<=WIDTH and 1<=y and y<=HEIGHT)
+            local indices = groups[terrain:get_group_id(x, y)]
+            indices[#indices+1] = i
         end
     end
 
-    im.create(groups, OFFSET, UNIT)
+    local groups2 = {
+        -- [5] = {coord2idx(130, 123)},
+        -- [6] = {coord2idx(100, 116), coord2idx(98, 114)},
+        -- [9] = {coord2idx(103, 115), coord2idx(107, 115), coord2idx(109, 115)},
+        [11] = {coord2idx(106, 133), coord2idx(105, 135), coord2idx(105, 136), coord2idx(107, 137)},
+        -- [12] = {coord2idx(116, 116), coord2idx(112, 115), coord2idx(120, 115)},
+        -- [13] = {coord2idx(120, 125), coord2idx(114, 128)},
+        -- [14] = {coord2idx(116, 137)},
+        -- [15] = {coord2idx(130, 115)},
+        -- [16] = {coord2idx(121, 137), coord2idx(126, 137), coord2idx (129, 136)},
+        -- [17] = {coord2idx(131, 115)},
+        -- [18] = {coord2idx(138, 123), coord2idx(132, 123)},
+        -- [19] = {coord2idx(133, 135)},
+        -- [20] = {coord2idx(141, 115), coord2idx(146, 115)},
+        -- [21] = {coord2idx(142, 122)},
+    }
+
+    im.create(groups2, WIDTH, HEIGHT, OFFSET, UNIT)
 end
 
 function M:has_mountain(x, y)
