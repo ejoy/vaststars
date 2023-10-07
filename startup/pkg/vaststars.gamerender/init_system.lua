@@ -19,7 +19,7 @@ bgfx.maxfps(FRAMES_PER_SECOND)
 font.import "/pkg/vaststars.resources/ui/font/Alibaba-PuHuiTi-Regular.ttf"
 
 function m:init_world()
-	ltask.uniqueservice "vaststars.tools|webserver"
+	ltask.uniqueservice "vaststars.webserver|webserver"
 
     if NOTHING or TERRAIN_ONLY then
         ecs.require "main_menu_manager".new_game()
