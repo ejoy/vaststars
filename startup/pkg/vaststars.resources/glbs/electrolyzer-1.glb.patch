@@ -1,26 +1,11 @@
 ---
 file: mesh.prefab
 op: copyfile
-path: work.prefab
+path: low_power.prefab
 ---
-file: work.prefab
-op: add
-path: /-
-value:
-  data:
-    efk:
-      path: /pkg/vaststars.resources/effects/electrolyzer_lightning.efk
-    scene:
-      r: {0.3907310962677002, 0, 0, -0.9205048680305481}
-      s: {1.2000000476837158, 1, 1}
-      t: {0, 28, -8.399999618530273, 1}
-    visible_state: main_queue
-  mount: 1
-  policy:
-    ant.scene|scene_object
-    ant.efk|efk
-  tag:
-    work
+file: mesh.prefab
+op: copyfile
+path: work.prefab
 ---
 file: mesh.prefab
 op: createfile
@@ -36,3 +21,42 @@ value:
     ant.render|hitch_object
   tag:
     hitch
+---
+file: work.prefab
+op: add
+path: /-
+value:
+  data:
+    efk:
+      path: /pkg/vaststars.resources/effects/electrolyzer_lightning.efk
+    scene:
+      r: {0.3907310962677002, 0, 0, -0.9205048680305481}
+      s: {1.2000000476837158, 1.2000000476837158, 1.2000000476837158}
+      t: {0, 27.28621482849121, -8.399999618530273}
+    visible_state: main_queue
+  mount: 1
+  policy:
+    ant.scene|scene_object
+    ant.efk|efk
+  tag:
+    work
+---
+file: low_power.prefab
+op: add
+path: /-
+value:
+  data:
+    efk:
+      path: /pkg/vaststars.resources/effects/electrolyzer_lightning_low.efk
+      speed: 1
+    scene:
+      r: {-0.3907311260700226, 0, 0, 0.9205048680305481}
+      s: {1.2000000476837158, 1, 1}
+      t: {0, 27.285999298095703, -7.897428512573242}
+    visible_state: main_queue
+  mount: 1
+  policy:
+    ant.scene|scene_object
+    ant.efk|efk
+  tag:
+    electrolyzer_lightning_low
