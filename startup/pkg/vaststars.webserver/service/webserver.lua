@@ -86,7 +86,7 @@ local function response(session, write, ...)
 	local ok, err = httpd.write_response(write, ...)
 	if not ok then
 		if err ~= socket_error then
-			print(string.format("session = %d, %s", session, err))
+			print(string.format("session = %s, %s", session, err))
 		end
 	end
 end
