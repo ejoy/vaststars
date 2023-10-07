@@ -6,11 +6,12 @@ print "Webserver start"
 
 local ServiceIO = ltask.queryservice "io"
 local WEB_PORT <const> = "9000"
+local WEB_TUNNEL <const> = "WEBTUN"
 
 if __ANT_RUNTIME__ then
 	local function main()
-		ltask.send(ServiceIO, "REDIRECT", "TUNNEL", ltask.self())
-		ltask.send(ServiceIO, "SEND", "TUNNEL_OPEN", WEB_PORT)
+		ltask.send(ServiceIO, "REDIRECT", WEB_TUNNEL, ltask.self())
+		ltask.send(ServiceIO, "SEND", "TUNNEL_OPEN", WEB_PORT, WEB_TUNNEL)
 	end
 
 	main()
@@ -139,7 +140,7 @@ setmetatable(sessions , {
 	end
 })
 
-function S.TUNNEL(port, session, req)
+S[WEB_TUNNEL] = function (port, session, req)
 	local s = sessions[session]
 	s.append(req)
 end
