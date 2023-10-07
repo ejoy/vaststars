@@ -91,6 +91,31 @@ local function response(session, write, ...)
 	end
 end
 
+local route = {
+	vfs = "webvfs",
+}
+
+local escapes = {
+	['<'] = '&lt;',
+	['>'] = '&gt;',
+	['"'] = '&quot;',
+	["'"] = '&apos;',
+	['&'] = '&amp;',
+}
+
+local function escape_html(s)
+	return (s:gsub("[<>\"\'&]", escapes))
+end
+
+local lua_error_temp = [[
+<html>
+<head><meta charset="utf-8"></head>
+<body><pre>
+%s
+</pre></body>
+</html>
+]]
+
 local function http_request(s)
 	local code, url, method, header, body = httpd.read_request(s.read)
 	if code then
@@ -102,19 +127,38 @@ local function http_request(s)
 				table.insert(tmp, string.format("host: %s", header.host))
 			end
 			local path, query = urllib.parse(url)
-			table.insert(tmp, string.format("path: %s", path))
-			if query then
-				local q = urllib.parse_query(query)
-				for k, v in pairs(q) do
-					table.insert(tmp, string.format("query: %s= %s", k,v))
+			local root, path = path:match "^/([^/]+)(.*)"
+			local mod = route[root]
+			if mod then
+				local ok, m = xpcall(require, debug.traceback, mod)
+				if ok then
+					if query then
+						query = urllib.parse_query(query)
+					end
+					local ok, code, data, header = xpcall(m.get, debug.traceback, path, query)
+					if ok then
+						response(id, s.write, code, data, header)
+					else
+						response(id, s.write, 500, lua_error_temp:format(escape_html(code)))
+					end
+				else
+					response(id, s.write, 500, lua_error_temp:format(escape_html(m)))
 				end
+			else
+				table.insert(tmp, string.format("path: %s", path))
+				if query then
+					local q = urllib.parse_query(query)
+					for k, v in pairs(q) do
+						table.insert(tmp, string.format("query: %s= %s", k,v))
+					end
+				end
+				table.insert(tmp, "-----header----")
+				for k,v in pairs(header) do
+					table.insert(tmp, string.format("%s = %s",k,v))
+				end
+				table.insert(tmp, "-----body----\n" .. body)
+				response(id, s.write, code, table.concat(tmp,"\n"))
 			end
-			table.insert(tmp, "-----header----")
-			for k,v in pairs(header) do
-				table.insert(tmp, string.format("%s = %s",k,v))
-			end
-			table.insert(tmp, "-----body----\n" .. body)
-			response(id, s.write, code, table.concat(tmp,"\n"))
 		end
 	else
 		if url == socket_error then
