@@ -34,10 +34,10 @@ local content_text_types = {
 }
 
 local function get_file(path)
-	local ext = path:extension():string():sub(2):lower()
+	local ext = path:extension():string():lower()
 	local localpath = path:localpath():string()
 	local header = {
-		["Content-Type"] = content_text_types[ext] and "text/html ; charset=UTF-8" or "application/octet-stream"
+		["Content-Type"] = content_text_types[ext] and "text/plain;charset=utf-8" or "application/octet-stream"
 	}
 	-- todo: use func for large file
 	local f = assert(io.open(localpath, "rb"))
@@ -89,9 +89,9 @@ function M.get(path)
 		path = "/"
 	end
 	local pathname = fs.path(path)
-	local data = get_path(pathname)
+	local data, header = get_path(pathname)
 	if data then
-		return 200, data
+		return 200, data, header
 	else
 		return 403, "ERROR 403 : " ..  path .. " not found"
 	end
