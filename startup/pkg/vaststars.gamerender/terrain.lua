@@ -9,16 +9,15 @@ local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local ig = ecs.require "ant.group|group"
 
--- three-dimensional axial
+-- world coordinate system
 -- z
 -- ▲
 -- │
--- │
 -- └──►x
 
--- two-dimensional axial
+-- logical coordinate system
+-- range: [0, WIDTH - 1], determined by gameplay
 -- ┌──►x
--- │
 -- │
 -- ▼
 -- y
@@ -27,7 +26,7 @@ local terrain = {}
 
 local SURFACE_HEIGHT <const> = 0
 local TILE_SIZE <const> = 10
-local WIDTH <const> = 256 -- coordinate value range: [0, WIDTH - 1]
+local WIDTH <const> = 256
 local HEIGHT <const> = 256
 local GRID_WIDTH <const> = 8
 local GRID_HEIGHT <const> = 8
