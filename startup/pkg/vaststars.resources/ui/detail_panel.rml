@@ -266,7 +266,7 @@
                 </div>
             </div>
             <!-- detail panel end -->
-            <div class="tips-bg" style='flex-direction: row; justify-content: center; align-items: center;' data-if="areaid==1.0">
+            <div class="tips-bg" style='flex-direction: row; justify-content: flex-start; align-items: center; margin-left: -3vmin;' data-if="areaid==1.0">
                 <div style='width: 50vmin; height: 50vmin; background-image:"<detail_scene>"; background-size: 100% 100%;'/>
                 <div style="width: 39vmin; flex-direction: column; justify-content: center; align-items: flex-start;">
                     <div style="text-align: left; font-size: 6vmin;">{{prototype_name}}</div>
