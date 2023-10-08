@@ -7,7 +7,6 @@ local tracedoc = require "utility.tracedoc"
 local table_unpack = table.unpack
 local fs = require "filesystem"
 
-local rmlui_message_mb = world:sub {"rmlui_message"}
 local ui_message_mb = world:sub {"ui_message"}
 
 local windowBindings = {} -- = {[url] = { w = xx, datamodel = xx, }, ...}
@@ -74,21 +73,14 @@ local function open(uiData, ...)
     binding = {}
     binding.window = irmlui.open(url)
     binding.window.addEventListener("message", function(event)
-        if not event.data then
-            console.log("event data is null")
-            return
-        end
-
-        local res = event.data
+        local res = assert(event.data)
         if res.event == "__CLOSE" then
             local close_url = res.ud[1] or url
             closeWindows[close_url] = true
-        elseif res.event == "__OPEN" then
-            world:pub {"rmlui_message", res.event, table_unpack(res.ud)}
         elseif res.event == "__PUB" then
             world:pub {"rmlui_message_pub", url, table_unpack(res.ud)}
         else
-            world:pub {"rmlui_message", res.event, res.ud}
+            assert(false, "Unknown event: " .. res.event)
         end
     end)
     windowBindings[url] = binding
@@ -119,10 +111,6 @@ local function open(uiData, ...)
     binding.param = {...}
     binding.datamodel = tracedoc.new(binding.template.create(...))
     binding.datamodel.guide_progress = guide_progress
-
-    if binding.template.onload then
-        binding.template.onload(...)
-    end
     binding.template.flush()
 
     if binding.template.stage_camera_usage then
@@ -132,51 +120,12 @@ local function open(uiData, ...)
     return binding.datamodel
 end
 
-local function world_pub(msg)
-    world:pub(msg)
-end
-
 local function close(url)
     closeWindows[url] = true
 end
 
-local ui_events = {
-    __OPEN = open,
-    __WORLD_PUB = world_pub,
-}
-
 local ui_system = ecs.system "ui_system"
 function ui_system.ui_update()
-    local event, func
-
-    -- rmlui to world
-    for msg in rmlui_message_mb:each() do
-        event = msg[2]
-        func = assert(ui_events[event], ("Can not found event `%s`"):format(event))
-        func(table_unpack(msg, 3, #msg))
-    end
-
-    -- world to rmlui
-    for msg in ui_message_mb:each() do
-        for _, binding in pairs(windowBindings) do
-            local ud = {}
-            ud.event = msg[2]
-            ud.ud = {table_unpack(msg, 3, #msg)}
-            binding.window.postMessage(ud)
-        end
-    end
-
-    for url in pairs(changedWindows) do
-        if not closeWindows[url] then
-            local binding = windowBindings[url]
-            if binding then
-                binding.template.flush()
-            end
-        end
-    end
-end
-
-function ui_system.camera_usage()
     for url in pairs(stage_camera_usage) do
         if not closeWindows[url] then
             local binding = windowBindings[url]
@@ -201,6 +150,25 @@ function ui_system.camera_usage()
         end
     end
     closeWindows = {}
+
+    -- world to rmlui
+    for msg in ui_message_mb:each() do
+        for _, binding in pairs(windowBindings) do
+            local ud = {}
+            ud.event = msg[2]
+            ud.ud = {table_unpack(msg, 3, #msg)}
+            binding.window.postMessage(ud)
+        end
+    end
+
+    for url in pairs(changedWindows) do
+        if not closeWindows[url] then
+            local binding = windowBindings[url]
+            if binding then
+                binding.template.flush()
+            end
+        end
+    end
 end
 
 function ui_system.exit()
