@@ -18,7 +18,19 @@ local m = ecs.system 'init_system'
 bgfx.maxfps(FRAMES_PER_SECOND)
 font.import "/pkg/vaststars.resources/ui/font/Alibaba-PuHuiTi-Regular.ttf"
 
+-- todo: more info
+local function register_info()
+	local S = ltask.dispatch()
+
+	function S.info(what, q)
+		q = q or {}
+		q.COMMAND = what
+		return q
+	end
+end
+
 function m:init_world()
+	register_info()
 	ltask.uniqueservice "vaststars.webserver|webserver"
 
     if NOTHING or TERRAIN_ONLY then

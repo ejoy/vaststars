@@ -93,6 +93,7 @@ end
 
 local route = {
 	vfs = "webvfs",
+	info = "webinfo",
 }
 
 local escapes = {
