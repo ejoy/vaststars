@@ -14,30 +14,38 @@ local html_footer = [[
 </body>
 ]]
 
+local plaintext = "text/plain;charset=utf-8"
+
 local content_text_types = {
-    [".settings"] = true,
+    [".settings"] = plaintext,
     -- ecs
-    [".prefab"] = true,
-    [".ecs"] = true,
+    [".prefab"] = plaintext,
+    [".ecs"] = plaintext,
     -- script
-    [".lua"] = true,
+    [".lua"] = plaintext,
     -- ui
-    [".rcss"] = true,
-    [".rml"] = true,
+    [".rcss"] = plaintext,
+    [".rml"] = plaintext,
     -- animation
-    [".event"] = true,
-    [".anim"] = true,
+    [".event"] = plaintext,
+    [".anim"] = plaintext,
     -- compiled resource
-    [".cfg"] = true,
-    [".attr"] = true,
-    [".state"] = true,
+    [".cfg"] = plaintext,
+    [".attr"] = plaintext,
+    [".state"] = plaintext,
+	-- for html
+	[".html"] = "text/html",
+	[".js"] = "text/html",
+	[".gif"] = "image/gif",
+	[".jpg"] = "image/jpeg",
+	[".png"] = "image/png",
 }
 
 local function get_file(path)
 	local ext = path:extension():string():lower()
 	local localpath = path:localpath():string()
 	local header = {
-		["Content-Type"] = content_text_types[ext] and "text/plain;charset=utf-8" or "application/octet-stream"
+		["Content-Type"] = content_text_types[ext] or "application/octet-stream"
 	}
 	-- todo: use func for large file
 	local f = assert(io.open(localpath, "rb"))

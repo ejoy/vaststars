@@ -127,38 +127,26 @@ local function http_request(s)
 			if header.host then
 				table.insert(tmp, string.format("host: %s", header.host))
 			end
-			local path, query = urllib.parse(url)
-			local root, path = path:match "^/([^/]+)(.*)"
+			local fullpath, query = urllib.parse(url)
+			local root, path = fullpath:match "^/([^/]+)(.*)"
 			local mod = route[root]
-			if mod then
-				local ok, m = xpcall(require, debug.traceback, mod)
+			if not mod then
+				mod = "webroot"
+				path = fullpath:match "^/?(.*)"
+			end
+			local ok, m = xpcall(require, debug.traceback, mod)
+			if ok then
+				if query then
+					query = urllib.parse_query(query)
+				end
+				local ok, code, data, header = xpcall(m.get, debug.traceback, path, query)
 				if ok then
-					if query then
-						query = urllib.parse_query(query)
-					end
-					local ok, code, data, header = xpcall(m.get, debug.traceback, path, query)
-					if ok then
-						response(id, s.write, code, data, header)
-					else
-						response(id, s.write, 500, lua_error_temp:format(escape_html(code)))
-					end
+					response(id, s.write, code, data, header)
 				else
-					response(id, s.write, 500, lua_error_temp:format(escape_html(m)))
+					response(id, s.write, 500, lua_error_temp:format(escape_html(code)))
 				end
 			else
-				table.insert(tmp, string.format("path: %s", path))
-				if query then
-					local q = urllib.parse_query(query)
-					for k, v in pairs(q) do
-						table.insert(tmp, string.format("query: %s= %s", k,v))
-					end
-				end
-				table.insert(tmp, "-----header----")
-				for k,v in pairs(header) do
-					table.insert(tmp, string.format("%s = %s",k,v))
-				end
-				table.insert(tmp, "-----body----\n" .. body)
-				response(id, s.write, code, table.concat(tmp,"\n"))
+				response(id, s.write, 500, lua_error_temp:format(escape_html(m)))
 			end
 		end
 	else
