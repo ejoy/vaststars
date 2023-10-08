@@ -15,7 +15,6 @@ local changedWindows = {}
 local windowListeners = {}
 local closeWindows = {}
 local leaveWindows = {}
-local stage_ui_update = {}
 local stage_camera_usage = {}
 
 local guide_progress = 0
@@ -63,11 +62,10 @@ local function open(uiData, ...)
     if binding then
         if binding.template then
             binding.param = {...}
-            for k, v in pairs(tracedoc.new(binding.template:create(...))) do -- trigger tracedoc.doc_changed
+            for k, v in pairs(tracedoc.new(binding.template.create(...))) do -- trigger tracedoc.doc_changed
                 binding.datamodel[k] = v
             end
             binding.datamodel.guide_progress = guide_progress
-            binding.template:flush()
             changedWindows[url] = true
         end
         return binding.datamodel
@@ -100,7 +98,7 @@ local function open(uiData, ...)
         return binding.datamodel
     end
 
-    function binding.template:flush()
+    function binding.template.flush()
         changedWindows[url] = nil
 
         if not tracedoc.changed(binding.datamodel) then
@@ -119,17 +117,13 @@ local function open(uiData, ...)
     end
 
     binding.param = {...}
-    binding.datamodel = tracedoc.new(binding.template:create(...))
+    binding.datamodel = tracedoc.new(binding.template.create(...))
     binding.datamodel.guide_progress = guide_progress
 
     if binding.template.onload then
         binding.template.onload(...)
     end
-    binding.template:flush()
-
-    if binding.template.stage_ui_update then
-        stage_ui_update[url] = true
-    end
+    binding.template.flush()
 
     if binding.template.stage_camera_usage then
         stage_camera_usage[url] = true
@@ -172,21 +166,11 @@ function ui_system.ui_update()
         end
     end
 
-    for url in pairs(stage_ui_update) do
-        if not closeWindows[url] then
-            local binding = windowBindings[url]
-            binding.template:stage_ui_update(binding.datamodel, table_unpack(binding.param))
-            if tracedoc.changed(binding.datamodel) then
-                changedWindows[url] = true
-            end
-        end
-    end
-
     for url in pairs(changedWindows) do
         if not closeWindows[url] then
             local binding = windowBindings[url]
             if binding then
-                binding.template:flush()
+                binding.template.flush()
             end
         end
     end
@@ -196,7 +180,7 @@ function ui_system.camera_usage()
     for url in pairs(stage_camera_usage) do
         if not closeWindows[url] then
             local binding = windowBindings[url]
-            binding.template:stage_camera_usage(binding.datamodel, table_unpack(binding.param))
+            binding.template.stage_camera_usage(binding.datamodel, table_unpack(binding.param))
             if tracedoc.changed(binding.datamodel) then
                 changedWindows[url] = true
             end
@@ -208,12 +192,11 @@ function ui_system.camera_usage()
         local binding = windowBindings[url]
         if binding then
             if binding.template and binding.template.close then
-                binding.template:close(binding.datamodel)
+                binding.template.close(binding.datamodel)
             end
             binding.window:close()
             windowBindings[url] = nil
             changedWindows[url] = nil
-            stage_ui_update[url] = nil
             stage_camera_usage[url] = nil
         end
     end
@@ -223,7 +206,7 @@ end
 function ui_system.exit()
     for _, binding in pairs(windowBindings) do
         if binding.template and binding.template.close then
-            binding.template:close(binding.datamodel)
+            binding.template.close(binding.datamodel)
         end
     end
 end
@@ -272,7 +255,7 @@ function iui.call_datamodel_method(url, event, ...)
         return
     end
 
-    func(binding.template, binding.datamodel, ...)
+    func(binding.datamodel, ...)
     if tracedoc.changed(binding.datamodel) then
         changedWindows[url] = true
     end

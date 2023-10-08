@@ -15,7 +15,7 @@ local iroadnet = ecs.require "roadnet"
 local math3d = require "math3d"
 local gameplay_core = require "gameplay.core"
 local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_box"
-local create_road_next_box = ecs.require "editor.common.road_next_box"
+local iinstance_object = ecs.require "engine.instance_object"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
@@ -26,6 +26,7 @@ local ROAD_SIZE <const> = 2
 local CHANGED_FLAG_ROADNET <const> = require("gameplay.interface.constant").CHANGED_FLAG_ROADNET
 local imountain = ecs.require "engine.mountain"
 local ibackpack = require "gameplay.interface.backpack"
+local iom = ecs.require "ant.objcontroller|obj_motion"
 
 local function isValidRoadCoord(x, y, cache_names)
     for i = 0, ROAD_SIZE - 1 do
@@ -94,16 +95,52 @@ local function packarea(w, h)
     return (w << 8) | h
 end
 
+local DIRECTION <const> = {
+    N = 0,
+    E = 1,
+    S = 2,
+    W = 3,
+}
+
+local DIR_MOVE_DELTA <const> = {
+    ['N'] = {x = 0,  y = 1},
+    ['E'] = {x = 1,  y = 0},
+    ['S'] = {x = 0,  y = -1},
+    ['W'] = {x = -1, y = 0},
+    [DIRECTION.N] = {x = 0,  y = 1},
+    [DIRECTION.E] = {x = 1,  y = 0},
+    [DIRECTION.S] = {x = 0,  y = -1},
+    [DIRECTION.W] = {x = -1, y = 0},
+}
+
+local function getPlacedRoadPrototypeName(x, y, default_prototype_name, default_dir)
+    if not isValidRoadCoord(x, y, EDITOR_CACHE_NAMES) then
+        return default_prototype_name, default_dir
+    end
+
+    local mask = getRoad(x, y) or 0
+    for _, dir in ipairs(iconstant.ALL_DIR_NUM) do
+        local dx, dy = iprototype.move_coord(x, y, dir, ROAD_SIZE, ROAD_SIZE)
+        local m = getRoad(dx, dy)
+        if m and not iroad.check(mask, dir) then
+            mask = iroad.open(mask, dir)
+        end
+    end
+
+    return iroadnet_converter.mask_to_prototype_name_dir(mask)
+end
+
 --------------------------------------------------------------------------------------------------
 local function new_entity(self, datamodel, typeobject, x, y)
-    local dir = DEFAULT_DIR
     assert(x and y)
 
     iobject.remove(self.coord_indicator)
 
     self.typeobject = typeobject
+
+    local prototype_name, dir = getPlacedRoadPrototypeName(x, y, self.typeobject.name, DEFAULT_DIR)
     self.coord_indicator = iobject.new {
-        prototype_name = typeobject.name,
+        prototype_name = prototype_name,
         dir = dir,
         x = x,
         y = y,
@@ -131,8 +168,26 @@ local function new_entity(self, datamodel, typeobject, x, y)
     end
     if not self.pickup_components.next_box then
         local dx, dy = iprototype.move_coord(x, y, self.forward_dir, ROAD_SIZE)
-        local position = math3d.ref(math3d.vector(terrain:get_position_by_coord(dx, dy, iprototype.rotate_area(typeobject.area, dir))))
-        self.pickup_components.next_box = create_road_next_box(position, typeobject.area, dir, true, self.forward_dir)
+        self.pickup_components.next_box = iinstance_object.create(world:create_instance {
+            prefab = "/pkg/vaststars.resources/glbs/road/road_indicator.glb|mesh.prefab",
+            on_ready = function (instance)
+                local root <close> = world:entity(instance.tag['*'][1])
+                iom.set_position(root, math3d.vector(terrain:get_position_by_coord(dx, dy, iprototype.rotate_area(typeobject.area, dir))))
+                iom.set_rotation(root, ROTATORS[self.forward_dir])
+            end,
+            on_message = function (instance, msg, ...)
+                if msg == "on_position_change" then
+                    local building_srt = ...
+                    local position = building_srt.t
+                    local delta = DIR_MOVE_DELTA[self.forward_dir]
+                    local x, z = position[1] + delta.x * terrain.tile_size * ROAD_SIZE, position[3] + delta.y * terrain.tile_size * ROAD_SIZE
+
+                    local root <close> = world:entity(instance.tag['*'][1])
+                    iom.set_position(root, math3d.vector(x, position[2], z))
+                    iom.set_rotation(root, ROTATORS[self.forward_dir])
+                end
+            end
+        }, {"on_position_change", "on_status_change", "set_forward_dir"})
     end
 
     datamodel.show_rotate = true
@@ -156,6 +211,24 @@ local function touch_end(self, datamodel)
 
     local typeobject = iprototype.queryByName(coord_indicator.prototype_name)
     coord_indicator.srt.t, coord_indicator.x, coord_indicator.y = __align(icamera_controller.get_central_position(), typeobject.area, coord_indicator.dir)
+
+    local prototype_name, dir = getPlacedRoadPrototypeName(self.coord_indicator.x, self.coord_indicator.y, self.typeobject.name, DEFAULT_DIR)
+    if prototype_name ~= self.coord_indicator.prototype_name or dir ~= self.coord_indicator.dir then
+        local x, y = self.coord_indicator.x, self.coord_indicator.y
+        iobject.remove(self.coord_indicator)
+        print("touch_move", x, y, prototype_name, dir)
+        self.coord_indicator = iobject.new {
+            prototype_name = prototype_name,
+            dir = dir,
+            x = x,
+            y = y,
+            srt = {
+                t = math3d.ref(math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(self.typeobject.area, dir)))),
+                r = ROTATORS[dir],
+            },
+            group_id = 0,
+        }
+    end
 
     updateComponentsPosition(self)
     updateComponentsStatus(self)

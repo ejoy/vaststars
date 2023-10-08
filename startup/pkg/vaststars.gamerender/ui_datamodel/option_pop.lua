@@ -23,7 +23,7 @@ local irender = ecs.require "ant.render|render_system.render"
 
 ---------------
 local M = {}
-function M:create()
+function M.create()
     local archival_files = {}
     for _, v in ipairs(archiving.list()) do
         archival_files[#archival_files+1] = v.dir
@@ -41,7 +41,7 @@ function M:create()
     }
 end
 
-function M:stage_camera_usage(datamodel)
+function M.stage_camera_usage(datamodel)
     for _ in save_mb:unpack() do
         if saveload:backup() then
             iui.close("/pkg/vaststars.resources/ui/option_pop.rml")

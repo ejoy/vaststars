@@ -19,14 +19,14 @@ local ivs = ecs.require "ant.render|visible_state"
 local function __get_construct_menu()
     local res = {}
     for category_idx, menu in ipairs(CONSTRUCT_MENU) do
-        local m = {}
-        m.category = menu.category
-        m.items = {}
+        local r = {}
+        r.category = menu.category
+        r.items = {}
 
         for item_idx, prototype_name in ipairs(menu.items) do
             local typeobject = assert(iprototype.queryByName(prototype_name))
             local count = ibackpack.query(gameplay_core.get_world(), typeobject.id)
-            m.items[#m.items + 1] = {
+            r.items[#r.items + 1] = {
                 id = ("%s:%s"):format(category_idx, item_idx),
                 prototype = typeobject.id,
                 name = iprototype.display_name(typeobject),
@@ -36,7 +36,7 @@ local function __get_construct_menu()
             }
         end
 
-        res[#res+1] = m
+        res[#res+1] = r
     end
     return res
 end
@@ -96,7 +96,7 @@ end
 local M = {}
 local model
 
-function M:create()
+function M.create()
     local storage = gameplay_core.get_storage()
     storage.shortcut = storage.shortcut or {}
     local shortcut = {}
@@ -155,7 +155,7 @@ function M:create()
     return datamodel
 end
 
-function M:stage_ui_update(datamodel)
+function M.stage_camera_usage(datamodel)
     for _, _, _, category_idx, item_idx in click_item_mb:unpack() do
         if datamodel.category_idx == category_idx and datamodel.item_idx == item_idx then
             __set_item_value(datamodel, category_idx, item_idx, "selected", false)

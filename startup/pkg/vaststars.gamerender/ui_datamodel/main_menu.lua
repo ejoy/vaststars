@@ -9,11 +9,11 @@ local iui = ecs.require "engine.system.ui_system"
 local gameplay_core = require "gameplay.core"
 
 local M = {}
-function M:create()
+function M.create()
     return {}
 end
 
-function M:stage_ui_update(datamodel)
+function M.stage_camera_usage(datamodel)
     for _ in statistical_data_mb:unpack() do
         iui.open({"/pkg/vaststars.resources/ui/statistics.rml"})
     end
@@ -26,9 +26,6 @@ function M:stage_ui_update(datamodel)
         gameplay_core.world_update = true
         iui.close("/pkg/vaststars.resources/ui/main_menu.rml")
     end
-end
-
-function M:update_tech(datamodel)
 end
 
 return M

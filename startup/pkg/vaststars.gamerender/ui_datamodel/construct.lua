@@ -197,7 +197,7 @@ end
 ---------------
 local M = {}
 
-function M:create()
+function M.create()
     return {
         is_concise_mode = false,
         show_tech_progress = false,
@@ -215,7 +215,7 @@ function M:create()
 end
 
 local current_techname = ""
-function M:update_tech(datamodel, tech)
+function M.update_tech(datamodel, tech)
     if tech then
         if current_techname ~= tech.name then
             local ingredient_icons = {}
@@ -245,56 +245,12 @@ function M:update_tech(datamodel, tech)
     end
 end
 
-function M:update_inventory_bar(datamodel, t)
+function M.update_inventory_bar(datamodel, t)
     datamodel.inventory_bar = {}
     for _, v in ipairs(t) do
         datamodel.inventory_bar[#datamodel.inventory_bar + 1] = v
         if #datamodel.inventory_bar >= 4 then
             break
-        end
-    end
-end
-
-function M:stage_ui_update(datamodel)
-    for _ in rotate_mb:unpack() do
-        if builder and builder.rotate then
-            builder:rotate(builder_datamodel)
-        end
-    end
-
-    for _ in build_mb:unpack() do
-        if builder and builder.confirm then
-            builder:confirm(builder_datamodel)
-            audio.play "event:/function/place"
-        end
-    end
-
-    for _ in quit_mb:unpack() do
-        __clean(datamodel)
-        __switch_status("default", function()
-            gameplay_core.world_update = true
-            __clean(datamodel)
-        end)
-    end
-
-    for _ in guide_on_going_mb:unpack() do
-        __clean(datamodel)
-        __switch_status("default", function()
-            gameplay_core.world_update = true
-            __clean(datamodel)
-        end)
-    end
-
-    for _ in click_techortaskicon_mb:unpack() do
-        gameplay_core.world_update = false
-        iui.open({"/pkg/vaststars.resources/ui/science.rml"})
-    end
-
-    for _ in help_mb:unpack() do
-        if not iui.is_open("/pkg/vaststars.resources/ui/help_panel.rml") then
-            iui.open({"/pkg/vaststars.resources/ui/help_panel.rml"})
-        else
-            iui.close("/pkg/vaststars.resources/ui/help_panel.rml")
         end
     end
 end
@@ -427,14 +383,55 @@ local function move_focus(e)
 	end
 end
 
-function M:stage_camera_usage(datamodel)
+function M.stage_camera_usage(datamodel)
+    for _ in rotate_mb:unpack() do
+        if builder and builder.rotate then
+            builder:rotate(builder_datamodel)
+        end
+    end
+
+    for _ in build_mb:unpack() do
+        if builder and builder.confirm then
+            builder:confirm(builder_datamodel)
+            audio.play "event:/function/place"
+        end
+    end
+
+    for _ in quit_mb:unpack() do
+        __clean(datamodel)
+        __switch_status("default", function()
+            gameplay_core.world_update = true
+            __clean(datamodel)
+        end)
+    end
+
+    for _ in guide_on_going_mb:unpack() do
+        __clean(datamodel)
+        __switch_status("default", function()
+            gameplay_core.world_update = true
+            __clean(datamodel)
+        end)
+    end
+
+    for _ in click_techortaskicon_mb:unpack() do
+        gameplay_core.world_update = false
+        iui.open({"/pkg/vaststars.resources/ui/science.rml"})
+    end
+
+    for _ in help_mb:unpack() do
+        if not iui.is_open("/pkg/vaststars.resources/ui/help_panel.rml") then
+            iui.open({"/pkg/vaststars.resources/ui/help_panel.rml"})
+        else
+            iui.close("/pkg/vaststars.resources/ui/help_panel.rml")
+        end
+    end
+
     local dragdrop_delta
     for _, delta in dragdrop_camera_mb:unpack() do
         dragdrop_delta = delta
     end
     if dragdrop_delta and builder then
         builder:touch_move(builder_datamodel, dragdrop_delta)
-        self:flush()
     end
 
     for _, _, e in gesture_pan_mb:unpack() do
@@ -460,7 +457,6 @@ function M:stage_camera_usage(datamodel)
             LockAxisStatus.status = false
 
             builder:touch_end(builder_datamodel)
-            self:flush()
         end
     end
 
@@ -634,7 +630,7 @@ function M:stage_camera_usage(datamodel)
         ::continue::
     end
 
-    -- TODO: 多个UI的stage_ui_update中会产生focus_tips_event事件，focus_tips_event处理逻辑涉及到要修改相机位置，所以暂时放在这里处理
+    -- TODO: 多个UI的 update() 中会产生focus_tips_event事件，focus_tips_event处理逻辑涉及到要修改相机位置，所以暂时放在这里处理
     for _, action, tech_node in focus_tips_event:unpack() do
         if action == "open" then
             open_focus_tips(tech_node)

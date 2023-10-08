@@ -23,7 +23,7 @@ end
 
 local M = {}
 
-function M:create()
+function M.create()
     local storage = gameplay_core.get_storage()
     storage.shortcut = storage.shortcut or {}
 
@@ -93,7 +93,7 @@ function M:create()
     }
 end
 
-function M:stage_ui_update(datamodel)
+function M.stage_camera_usage(datamodel)
     for _, _, _, index in click_button_mb:unpack() do
         local shortcut = assert(datamodel.shortcut[index])
         if shortcut.unknown == true then

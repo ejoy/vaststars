@@ -55,7 +55,7 @@ end
 ---------------
 local M = {}
 
-function M:create()
+function M.create()
     return {
         category_idx = 0,
         item_idx = 0,
@@ -67,7 +67,7 @@ function M:create()
     }
 end
 
-function M:stage_ui_update(datamodel)
+function M.stage_camera_usage(datamodel)
     for _, _, _, category_idx, item_idx in click_item_mb:unpack() do
         if datamodel.category_idx == category_idx and datamodel.item_idx == item_idx then
             set_item_value(datamodel, category_idx, item_idx, "selected", false)
@@ -116,13 +116,10 @@ function M:stage_ui_update(datamodel)
     for _ in close_mb:unpack() do
         iui.close("/pkg/vaststars.resources/ui/inventory.rml")
     end
-
-    self:flush()
 end
 
-function M:update(datamodel)
+function M.update(datamodel)
     datamodel.inventory = get_inventory()
-    self:flush()
 end
 
 return M

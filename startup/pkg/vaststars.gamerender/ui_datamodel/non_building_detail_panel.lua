@@ -9,7 +9,7 @@ local interval_call = ecs.require "engine.interval_call"
 
 local M = {}
 
-function M:create(icon, name, gameplay_eid)
+function M.create(icon, name, gameplay_eid)
     iui.register_leave("/pkg/vaststars.resources/ui/non_building_detail_panel.rml")
 
     local item_icon = ""
@@ -50,7 +50,7 @@ local updateLorryIcon = interval_call(300, function(datamodel, gameplay_eid)
     end
 end)
 
-function M:stage_ui_update(datamodel, icon, name, gameplay_eid)
+function M.stage_camera_usage(datamodel, icon, name, gameplay_eid)
     updateLorryIcon(datamodel, gameplay_eid)
 end
 

@@ -8,7 +8,7 @@ local gameplay_core = require "gameplay.core"
 
 local M = {}
 local guide_desc
-function M:create(desc)
+function M.create(desc)
     guide_desc = desc
     local speech = desc.narrative
     return {
@@ -18,7 +18,7 @@ function M:create(desc)
     }
 end
 
-function M:stage_ui_update(datamodel)
+function M.stage_camera_usage(datamodel)
     for _ in story_click_mb:unpack() do
         local speech = guide_desc.narrative
         local count = datamodel.count + 1

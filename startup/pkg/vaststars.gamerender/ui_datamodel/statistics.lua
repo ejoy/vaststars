@@ -42,7 +42,7 @@ local function create_grid(row, col)
     end
     grid[#grid + 1] = ientity.create_screen_line_list(lines, nil, {u_color = {0.05, 0.05, 0.05, 1.0}, u_canvas_size = {canvas_size_w, canvas_size_h, 0, 0} }, true, "translucent", queuename)
 end
-function M:create(object_id)
+function M.create(object_id)
     if #chart_color_table < 1 then
         chart_color_table[#chart_color_table + 1] = {0, 110, 255, 255}
         chart_color_table[#chart_color_table + 1] = {0, 255, 221, 255}
@@ -195,7 +195,7 @@ local filter_interval = {
     ["10m"] = 12.0,
     ["1h"] = 72.0,
 }
-function M:stage_ui_update(datamodel)
+function M.stage_camera_usage(datamodel)
     local gid = iUiRt.get_group_id("statistic_chart")
     if gid and canvas_size_w == 0 then
         ig.enable(gid, "view_visible", true)

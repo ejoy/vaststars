@@ -1,14 +1,13 @@
-local ecs = ...
+local ecs, mailbox = ...
+local world = ecs.world
+local w = world.w
+
 local M = {}
-function M:create(text)
+function M.create(text)
     return {
         main_text = text[1],
         sub_text = text[2],
     }
-end
-
-function M:stage_ui_update(datamodel)
-
 end
 
 return M

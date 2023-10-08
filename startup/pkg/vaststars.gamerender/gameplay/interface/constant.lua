@@ -2,7 +2,17 @@ local math3d = require "math3d"
 local mathpkg = import_package"ant.math"
 local mc = mathpkg.constant
 
+local DIRECTION <const> = {
+    N = 0,
+    E = 1,
+    S = 2,
+    W = 3,
+}
+
 local M = {}
+M.MAP_WIDTH = 256
+M.MAP_HEIGHT = 256
+M.TILE_SIZE = 10
 M.ALL_DIR = {'N', 'S', 'W', 'E'}
 M.ALL_DIR_NUM = {0, 1, 2, 3}
 M.DEFAULT_DIR = 'N'
@@ -11,6 +21,11 @@ M.ROTATORS = {
     E = math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(90)})  )),
     S = math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(180)}) )),
     W = math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(270)}) )),
+
+    [DIRECTION.N] = math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(0)})   )), -- TODO: remove
+    [DIRECTION.E] = math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(90)})  )),
+    [DIRECTION.S] = math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(180)}) )),
+    [DIRECTION.W] = math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(270)}) )),
 }
 M.UPS = 30
 M.DELTA_TIME = 1000 / M.UPS

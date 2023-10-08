@@ -113,7 +113,7 @@ local function markItem(item_name)
     storage.item_picked_flag[item_name] = true
 end
 
-function M:create(gameplay_eid, interface)
+function M.create(gameplay_eid, interface)
     local datamodel = {
         show_set_item = false,
         set_type = "",
@@ -129,7 +129,7 @@ function M:create(gameplay_eid, interface)
     return datamodel
 end
 
-function M:stage_ui_update(datamodel, gameplay_eid, interface)
+function M.stage_camera_usage(datamodel, gameplay_eid, interface)
     for _, _, _, category_idx, item_idx, set_type in set_item_mb:unpack() do
         assert(datamodel.items[category_idx])
         assert(datamodel.items[category_idx].items[item_idx])

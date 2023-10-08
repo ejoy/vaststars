@@ -13,7 +13,7 @@ local iprototype = require "gameplay.interface.prototype"
 ---------------
 local M = {}
 
-function M:create(prototype_name)
+function M.create(prototype_name)
     local typeobject = iprototype.queryByName(prototype_name)
 
     return {
@@ -23,7 +23,7 @@ function M:create(prototype_name)
     }
 end
 
-function M:stage_ui_update(datamodel)
+function M.stage_camera_usage(datamodel)
     for _ in quit_mb:unpack() do
         iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "quit")
     end

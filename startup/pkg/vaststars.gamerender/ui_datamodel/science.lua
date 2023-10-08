@@ -95,7 +95,7 @@ local function get_button_str(tech)
     return "开始" .. (tech.task and "任务" or "研究")
 end
 
-function M:create(object_id)
+function M.create(object_id)
     local items = get_techlist(global.science.tech_list)
     current_tech = items[1]
     if not current_tech then
@@ -116,7 +116,7 @@ function M:create(object_id)
     }
 end
 
-function M:stage_ui_update(datamodel)
+function M.stage_camera_usage(datamodel)
     local function set_current_tech(tech)
         if current_tech == tech then
             return

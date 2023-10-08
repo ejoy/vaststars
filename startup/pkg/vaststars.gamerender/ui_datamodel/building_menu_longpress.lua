@@ -11,7 +11,7 @@ local teardown_mb = mailbox:sub {"teardown"}
 local copy_md = mailbox:sub {"copy"}
 
 local M = {}
-function M:create(object_id)
+function M.create(object_id)
     iui.register_leave("/pkg/vaststars.resources/ui/building_menu_longpress.rml")
 
     local object = assert(objects:get(object_id))
@@ -29,7 +29,7 @@ function M:create(object_id)
     return datamodel
 end
 
-function M:stage_ui_update(datamodel, object_id)
+function M.stage_camera_usage(datamodel, object_id)
     for _ in move_mb:unpack() do
         iui.leave()
         iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "move", object_id)

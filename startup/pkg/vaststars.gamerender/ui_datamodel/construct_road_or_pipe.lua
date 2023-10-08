@@ -27,7 +27,7 @@ local event_handler = create_event_handler(
     end
 )
 
-function M:create(prototype_name, kv)
+function M.create(prototype_name, kv)
     local datamodel = {
         is_concise_mode = false,
         show_start_laying = false,
@@ -45,7 +45,7 @@ function M:create(prototype_name, kv)
     return datamodel
 end
 
-function M:stage_ui_update(datamodel, prototype_name)
+function M.stage_camera_usage(datamodel, prototype_name)
     event_handler(prototype_name)
 
     for _ in click_main_button_mb:unpack() do

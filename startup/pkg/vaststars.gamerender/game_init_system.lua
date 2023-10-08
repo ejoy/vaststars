@@ -17,6 +17,8 @@ local saveload = ecs.require "saveload"
 local global = require "global"
 local math3d = require "math3d"
 local irender = ecs.require "ant.render|render_system.render"
+local imountain = ecs.require "engine.mountain"
+local CONSTANT <const> = require("gameplay.interface.constant")
 
 local m = ecs.system 'game_init_system'
 local gameworld_prebuild
@@ -43,6 +45,8 @@ function m:init_world()
         icamera_controller.set_camera_from_prefab("camera_default.prefab")
         return
     end
+
+    imountain:create(CONSTANT.MAP_WIDTH, CONSTANT.MAP_HEIGHT, CONSTANT.MAP_WIDTH//2, CONSTANT.TILE_SIZE)
 
     iroadnet:create()
 

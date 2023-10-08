@@ -3,12 +3,8 @@ local world = ecs.world
 local w = world.w
 
 local iroad = ecs.require "engine.road"
-local imountain = ecs.require "engine.mountain"
 local iroadnet_converter = require "roadnet_converter"
-
-local WIDTH <const> = 256 -- coordinate value range: [0, WIDTH - 1]
-local HEIGHT <const> = 256 -- coordinate value range: [0, HEIGHT - 1]
-local UNIT <const> = 10
+local CONSTANT <const> = require("gameplay.interface.constant")
 
 local roadnet = {}
 
@@ -40,8 +36,7 @@ local LAYER_NAMES <const> = {"road", "indicator"}
 local SHAPE_TYPES <const> = {"valid", "invalid", "normal", "modify", "remove"}
 
 function roadnet:create()
-    imountain:create(WIDTH, HEIGHT, WIDTH//2, UNIT)
-    iroad:create(WIDTH, HEIGHT, WIDTH//2, LAYER_NAMES, SHAPE_TYPES)
+    iroad:create(CONSTANT.MAP_WIDTH, CONSTANT.MAP_HEIGHT, CONSTANT.MAP_WIDTH//2, LAYER_NAMES, SHAPE_TYPES)
 end
 
 -- map = {coord = {x, y, shape_type, shape, dir}, ...}

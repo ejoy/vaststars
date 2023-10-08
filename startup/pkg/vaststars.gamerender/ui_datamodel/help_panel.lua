@@ -6,7 +6,7 @@ local iui = ecs.require "engine.system.ui_system"
 
 local M = {}
 
-function M:create()
+function M.create()
     iui.register_leave("/pkg/vaststars.resources/ui/help_panel.rml")
     return {
         helps = help_info,

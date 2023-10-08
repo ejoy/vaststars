@@ -9,7 +9,7 @@ local iui = ecs.require "engine.system.ui_system"
 
 ---------------
 local M = {}
-function M:create()
+function M.create()
     local templates = {}
     for v in fs.pairs(fs.path("/pkg/vaststars.prototype/template/")) do
         if fs.is_directory(v) then
@@ -28,7 +28,7 @@ function M:create()
     }
 end
 
-function M:stage_camera_usage(datamodel)
+function M.stage_camera_usage(datamodel)
     for _, _, _, filename in load_template_mb:unpack() do
         debugger.set_free_mode(true)
         iui.close("/pkg/vaststars.resources/ui/template.rml")

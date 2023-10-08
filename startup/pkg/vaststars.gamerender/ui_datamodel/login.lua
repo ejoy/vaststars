@@ -15,13 +15,13 @@ local archiving = require "archiving"
 
 ---------------
 local M = {}
-function M:create()
+function M.create()
     return {
         show_continue_game = (archiving.last() ~= nil)
     }
 end
 
-function M:stage_camera_usage(datamodel)
+function M.stage_camera_usage(datamodel)
     for _ in continue_mb:unpack() do
         iui.close("/pkg/vaststars.resources/ui/login.rml")
         continue_game()

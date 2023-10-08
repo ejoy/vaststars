@@ -20,7 +20,7 @@ local event_handler = create_event_handler(
 ---------------
 local M = {}
 
-function M:create(show_rotate)
+function M.create(show_rotate)
     return {
         show_rotate  = show_rotate,
         show_quit  = true,
@@ -28,7 +28,7 @@ function M:create(show_rotate)
     }
 end
 
-function M:stage_ui_update(datamodel)
+function M.stage_camera_usage(datamodel)
     event_handler()
 end
 

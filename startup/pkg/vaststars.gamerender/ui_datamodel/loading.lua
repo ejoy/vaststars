@@ -165,7 +165,7 @@ local function worker(index)
     status[index] = ""
 end
 
-function M:create()
+function M.create()
     status = {
         pending = {},
         loading = 0,
@@ -188,7 +188,7 @@ function M:create()
     }
 end
 
-function M:stage_camera_usage(datamodel)
+function M.stage_camera_usage(datamodel)
     if status_stopped() then
         iui.close("/pkg/vaststars.resources/ui/loading.rml")
         return
@@ -200,7 +200,7 @@ function M:stage_camera_usage(datamodel)
     datamodel.total = status.loading + #status.pending + status.loaded
 end
 
-function M:close()
+function M.close()
     status.stop = true
     while not status_stopped() do
         ltask.sleep(1)

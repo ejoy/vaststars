@@ -466,7 +466,7 @@ local function update_model(mdl)
     iom.set_rotation(e, math3d.quaternion{math.rad(model_euler[1]), math.rad(model_euler[2]), math.rad(model_euler[3])})
 end
 local camera_dist
-function M:create(object_id)
+function M.create(object_id)
     iui.register_leave("/pkg/vaststars.resources/ui/detail_panel.rml")
 
     counter = update_interval
@@ -590,7 +590,7 @@ local function update_power(power)
     step_frame_head(st)
 end
 
-function M:stage_ui_update(datamodel, object_id)
+function M.stage_camera_usage(datamodel, object_id)
     if model_ready and model_inst then
         update_model(model_inst)
     end
