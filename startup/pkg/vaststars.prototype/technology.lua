@@ -662,7 +662,7 @@ local prototype = gameplay.register.prototype
 
 
   prototype "物流学1" {
-    desc = "研究出货车站和收货车站建造工艺",
+    desc = "研究维修停车场的方法",
     type = { "tech" },
     icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
     effects = {

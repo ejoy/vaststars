@@ -15,6 +15,13 @@ return function()
     local prototype_name_dir_mask = setmetatable({}, mt)
 
     for _, pt in pairs(iprototype.each_type("building", "road")) do
+        local track
+        if pt.track == "U" or pt.track == "O" then
+            track = "I"
+        else
+            track = pt.track
+        end
+
         for _, dir in ipairs(pt.building_direction) do
             local v = 0
             for _, conn in ipairs(pt.crossing.connections) do
@@ -22,14 +29,14 @@ return function()
                 v = v | (1 << dn)
             end
 
-            mask_shape_dir[v] = {pt.track, dir}
+            mask_shape_dir[v] = {track, dir}
             mask_prototype_name_dir[v] = {pt.name, dir}
 
             assert(not prototype_name_dir_mask[pt.name][dir])
             prototype_name_dir_mask[pt.name][dir] = v
         end
 
-        prototype_name_shape[pt.name] = pt.track
+        prototype_name_shape[pt.name] = track
     end
 
     return {

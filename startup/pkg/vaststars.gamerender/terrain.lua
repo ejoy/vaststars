@@ -29,11 +29,12 @@ local SURFACE_HEIGHT <const> = 0
 local TILE_SIZE <const> = 10
 local WIDTH <const> = 256 -- coordinate value range: [0, WIDTH - 1]
 local HEIGHT <const> = 256
-local GRID_WIDTH <const> = 10
-local GRID_HEIGHT <const> = 10
+local GRID_WIDTH <const> = 8
+local GRID_HEIGHT <const> = 8
 local MAX_BUILDING_WIDTH <const> = 6
 local MAX_BUILDING_HEIGHT <const> = 6
 assert(GRID_WIDTH % 2 == 0 and GRID_HEIGHT % 2 == 0)
+assert(WIDTH % GRID_WIDTH == 0 and HEIGHT % GRID_HEIGHT == 0)
 
 local function _hash(x, y)
     assert(x & 0xFF == x and y & 0xFF == y)
