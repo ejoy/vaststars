@@ -11,6 +11,7 @@ prototype "机身残骸" {
     chest_destroy = true,
     area = "5x5",
     camera_distance = 93,
+    max_slot = 4,
 }
 
 prototype "机翼残骸" {
@@ -22,6 +23,7 @@ prototype "机翼残骸" {
     chest_style = "chest",
     chest_destroy = true,
     area = "3x3",
+    max_slot = 4,
 }
 
 prototype "机头残骸" {
@@ -33,6 +35,7 @@ prototype "机头残骸" {
     chest_style = "chest",
     chest_destroy = true,
     area = "3x3",
+    max_slot = 4,
 }
 
 prototype "机尾残骸" {
@@ -45,4 +48,5 @@ prototype "机尾残骸" {
     chest_destroy = true,
     area = "3x3",
     camera_distance = 55,
+    max_slot = 4,
 }
