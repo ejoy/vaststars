@@ -978,8 +978,6 @@ local function clean(self, datamodel)
     end
     self.pickup_components = {}
     self.pending = {}
-
-    gameplay_core.world_update = true
 end
 
 local function create()
