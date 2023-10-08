@@ -682,15 +682,34 @@ local function confirm(self, datamodel)
     gameplay_core.set_changed(CHANGED_FLAG_BUILDING | CHANGED_FLAG_FLUIDFLOW)
 end
 
+local function getPlacedPrototypeName(x, y, default_prototype_name, default_dir)
+    local o = objects:coord(x, y, EDITOR_CACHE_NAMES)
+    local prototype_name, dir
+    if not o then
+        prototype_name, dir = iflow_connector.cleanup(default_prototype_name, default_dir)
+    else
+        prototype_name, dir = o.prototype_name, o.dir
+    end
+
+    for _, d in ipairs(iconstant.ALL_DIR) do
+        local dx, dy = iprototype.move_coord(x, y, d)
+        local o = objects:coord(dx, dy, EDITOR_CACHE_NAMES)
+        if o and iprototype.is_pipe(o.prototype_name) then
+            prototype_name, dir = iflow_connector.set_connection(prototype_name, dir, d, true)
+        end
+    end
+    return prototype_name, dir
+end
+
 --------------------------------------------------------------------------------------------------
 local function new_entity(self, datamodel, typeobject, x, y)
     assert(x and y)
     self.typeobject = typeobject
     iobject.remove(self.coord_indicator)
-    local dir = DEFAULT_DIR
+    local prototype_name, dir = getPlacedPrototypeName(x, y, typeobject.name, DEFAULT_DIR)
 
     self.coord_indicator = iobject.new {
-        prototype_name = typeobject.name,
+        prototype_name = prototype_name,
         dir = dir,
         x = x,
         y = y,
@@ -739,6 +758,24 @@ local function touch_end(self, datamodel)
     self.coord_indicator, x, y = iobject.align(self.coord_indicator)
     self.coord_indicator.x, self.coord_indicator.y = x, y
     self:revert_changes({"TEMPORARY"})
+
+    local prototype_name, dir = getPlacedPrototypeName(self.coord_indicator.x, self.coord_indicator.y, self.typeobject.name, DEFAULT_DIR)
+    if prototype_name ~= self.coord_indicator.prototype_name or dir ~= self.coord_indicator.dir then
+        local x, y = self.coord_indicator.x, self.coord_indicator.y
+        iobject.remove(self.coord_indicator)
+        print("touch_move", x, y, prototype_name, dir)
+        self.coord_indicator = iobject.new {
+            prototype_name = prototype_name,
+            dir = dir,
+            x = x,
+            y = y,
+            srt = {
+                t = math3d.ref(math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(self.typeobject.area, dir)))),
+                r = ROTATORS[dir],
+            },
+            group_id = 0,
+        }
+    end
 
     if self.grid_entity then
         local typeobject = iprototype.queryByName(self.coord_indicator.prototype_name)
