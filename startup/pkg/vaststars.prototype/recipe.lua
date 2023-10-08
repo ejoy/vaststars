@@ -1838,7 +1838,7 @@ prototype "蓄电池3" {
     description = "制造可存储电能和输出电能的蓄电池",
 }
 
-prototype "出货车站打印" {
+prototype "物流站打印" {
     type = { "recipe" },
     recipe_craft_category = "生产大型制造",
     recipe_category =  "物流",
@@ -1849,13 +1849,13 @@ prototype "出货车站打印" {
         {"石砖", 4},
     },
     results = {
-        {"出货车站", 1},
+        {"物流站", 1},
     },
     time = "8s",
-    description = "向运输车辆装载货物的车站",
+    description = "向运输车辆装卸货物的车站",
 }
 
-prototype "收货车站打印" {
+prototype "停车站打印" {
     type = { "recipe" },
     recipe_craft_category = "生产大型制造",
     recipe_category =  "物流",
@@ -1866,10 +1866,10 @@ prototype "收货车站打印" {
         {"石砖", 4},
     },
     results = {
-        {"收货车站", 1},
+        {"停车站", 1},
     },
     time = "8s",
-    description = "从运输车辆卸下货物的车站",
+    description = "容纳停靠运输车辆的车站",
 }
 
 prototype "火箭区段1" {
@@ -2434,44 +2434,6 @@ prototype "维修太阳能板" {
     time = "10s",
     description = "修复破损的太阳能板",
 }
-
-
-
--- prototype "维修出货车站" {
---     type = { "recipe" },
---     recipe_craft_category = "建筑打印",
---     recipe_category =  "加工",
---     recipe_order =  56,
---     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/goodsstation-out-design.texture",
---     ingredients = {
---         {"石砖", 4},
---         {"出货车站框架", 1},
---     },
---     results = {
---         {"出货车站", 1},
---     },
---     time = "8s",
---     description = "维修破损的出货车站",
--- }
-
--- prototype "维修收货车站" {
---     type = { "recipe" },
---     recipe_craft_category = "建筑打印",
---     recipe_category =  "加工",
---     recipe_order =  56,
---     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/goodsstation-input-design.texture",
---     ingredients = {
---         {"石砖", 4},
---         {"收货车站框架", 1},
---     },
---     results = {
---         {"收货车站", 1},
---     },
---     time = "8s",
---     description = "维修破损的收货车站",
--- }
-
-
 
 prototype "维修蒸馏厂" {
     type = { "recipe" },
