@@ -46,13 +46,10 @@ local building_detail_config = {
 		"chest_capacity",
 	},
 	["机身残骸"] = {
-		"chest_capacity",
 	},
 	["机翼残骸"] = {
-		"chest_capacity",
 	},
 	["机尾残骸"] = {
-		"chest_capacity",
 	},
 	["蒸汽发电机"] = {
 		"generate_power",
