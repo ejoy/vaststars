@@ -63,5 +63,5 @@ function m:init_world()
     world:create_instance {
         prefab = "/pkg/vaststars.resources/glbs/game-cover.glb|mesh.prefab",
     }
-    iui.open({"/pkg/vaststars.resources/ui/login.rml"})
+    iui.open({rml = "/pkg/vaststars.resources/ui/login.rml"})
 end

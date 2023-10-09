@@ -34,17 +34,17 @@ function M.stage_camera_usage(datamodel)
     end
 
     for _ in load_resources_mb:unpack() do
-        iui.open({"/pkg/vaststars.resources/ui/loading.rml"})
+        iui.open({rml = "/pkg/vaststars.resources/ui/loading.rml"})
     end
 
     for _ in load_archive_mb:unpack() do
         iui.close("/pkg/vaststars.resources/ui/login.rml")
-        iui.open({"/pkg/vaststars.resources/ui/option_pop.rml"})
+        iui.open({rml = "/pkg/vaststars.resources/ui/option_pop.rml"})
     end
 
     for _ in load_template_mb:unpack() do
         iui.close("/pkg/vaststars.resources/ui/login.rml")
-        iui.open({"/pkg/vaststars.resources/ui/template.rml"})
+        iui.open({rml = "/pkg/vaststars.resources/ui/template.rml"})
     end
 end
 

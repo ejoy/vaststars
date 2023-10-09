@@ -302,7 +302,7 @@ function M.stage_camera_usage(datamodel, gameplay_eid)
     end
 
     for _ in set_recipe_mb:unpack() do
-        iui.open({"/pkg/vaststars.resources/ui/recipe_config.rml"}, gameplay_eid)
+        iui.open({rml = "/pkg/vaststars.resources/ui/recipe_config.rml"}, gameplay_eid)
     end
 
     for _ in set_item_mb:unpack() do
@@ -318,7 +318,7 @@ function M.stage_camera_usage(datamodel, gameplay_eid)
             interface.remove_item = chest_remove_item
             interface.demand_button = true
         end
-        iui.open({"/pkg/vaststars.resources/ui/item_config.rml"}, gameplay_eid, interface)
+        iui.open({rml = "/pkg/vaststars.resources/ui/item_config.rml"}, gameplay_eid, interface)
     end
 
     for _ in lorry_factory_inc_lorry_mb:unpack() do

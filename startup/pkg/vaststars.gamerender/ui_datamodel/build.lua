@@ -98,7 +98,7 @@ function M.stage_camera_usage(datamodel)
         local shortcut = assert(datamodel.shortcut[index])
         if shortcut.unknown == true then
             iui.close("/pkg/vaststars.resources/ui/build.rml")
-            iui.open({"/pkg/vaststars.resources/ui/build_setting.rml"})
+            iui.open({rml = "/pkg/vaststars.resources/ui/build_setting.rml"})
         else
             if datamodel.shortcut_index ~= 0 then
                 datamodel.shortcut[datamodel.shortcut_index].selected = false

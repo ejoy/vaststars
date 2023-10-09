@@ -245,7 +245,7 @@ function M.stage_camera_usage(datamodel)
         shortcut.last_timestamp = os.time()
 
         iui.close("/pkg/vaststars.resources/ui/build_setting.rml")
-        iui.open({"/pkg/vaststars.resources/ui/build.rml"})
+        iui.open({rml = "/pkg/vaststars.resources/ui/build.rml"})
     end
 end
 

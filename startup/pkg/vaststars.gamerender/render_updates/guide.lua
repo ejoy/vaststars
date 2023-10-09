@@ -33,7 +33,7 @@ function guide_sys:gameworld_update()
         iui.broadcast("/pkg/vaststars.resources/ui/guide_on_going")
 
         -- pop guide ui
-        iui.open({"/pkg/vaststars.resources/ui/guide_pop.rml"}, guide)
+        iui.open({rml = "/pkg/vaststars.resources/ui/guide_pop.rml"}, guide)
         iguide.set_is_in_guide(true)
     end
 end
