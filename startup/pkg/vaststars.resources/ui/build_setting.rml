@@ -243,7 +243,7 @@
         </construct-box>
 
         <main-button style = "position: absolute; left: 72.20vmax; top: 67.00vmin; background-image: /pkg/vaststars.resources/ui/textures/construct/main-button-bg.texture; background-size: 100% 100%;" data-event-click = "clickButton('click_main_button')">
-            <main-button-icon style = "background-image: /pkg/vaststars.resources/ui/textures/build_setting/main-button-confirm.texture;" />
+            <main-button-icon style = "width:88%; height:88%; background-image: /pkg/vaststars.resources/ui/textures/build_setting/main-button-confirm.texture;" />
         </main-button>
     </body>
 </rml>
