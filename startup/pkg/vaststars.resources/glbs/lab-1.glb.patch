@@ -7,11 +7,6 @@ file: mesh.prefab
 op: copyfile
 path: low_power.prefab
 ---
-file: low_power.prefab
-op: replace
-path: /2/data/animation/low_power
-value: /pkg/vaststars.resources/animations/lab_animat_low.anim
----
 file: mesh.prefab
 op: createfile
 path: hitch.prefab
@@ -36,3 +31,13 @@ file: work.prefab
 op: replace
 path: /2/data/animation_birth
 value: work
+---
+file: low_power.prefab
+op: replace
+path: /2/data/animation/low_power
+value: /pkg/vaststars.resources/animations/lab_animat_low.anim
+---
+file: low_power.prefab
+op: replace
+path: /2/data/animation_birth
+value: low_power

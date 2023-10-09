@@ -64,13 +64,16 @@ local function get_working_state(e)
     if e.solar_panel then
         return e.solar_panel.efficiency > 0 and STATUS_WORKING or STATUS_IDLE
     end
+    if e.laboratory then
+        return e.laboratory.progress > 0 and STATUS_WORKING or STATUS_IDLE
+    end
 end
 
 -- switch the working status of all machines every 3 seconds
 local update = interval_call(3000, function()
     local world = gameplay_core.get_world()
     local buildings = global.buildings
-    for e in world.ecs:select "building:in road:absent eid:in capacitance?in chimney?in assembling?in wind_turbine?in solar_panel?in base?in" do
+    for e in world.ecs:select "building:in road:absent eid:in capacitance?in chimney?in assembling?in wind_turbine?in solar_panel?in base?in laboratory?in" do
         -- only some buildings have a working state
         local current = get_working_state(e)
         if not current then
