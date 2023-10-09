@@ -10,42 +10,118 @@ local terrain = ecs.require "terrain"
 local WIDTH<const>, HEIGHT<const> = 256, 256
 
 local MOUNTAIN_MASKS
-local M = {}
-function M:create()
-    --if true then return end
-    MOUNTAIN_MASKS = im.create_random_sm(WIDTH, HEIGHT)
 
-    local function set_masks(r, v)
-        -- x, y base 0
-        local x0, y0, ww, hh = r[1], r[2], r[3], r[4]
-        --base 1
-        local x1, y1 = x0+1, y0+1
+local function set_masks(masks, r, v)
+    -- x, y base 0
+    local x0, y0, ww, hh = r[1], r[2], r[3], r[4]
+    --base 1
+    local x1, y1 = x0+1, y0+1
 
-        --range:[x1, x1+ww), [y1, y+hh)
-        for x=x1, x1+ww-1 do
-            for y=y1, y1+hh-1 do
-                MOUNTAIN_MASKS[im.coord2idx(x, y, WIDTH)] = v
-            end
+    --range:[x1, x1+ww), [y1, y+hh)
+    for x=x1, x1+ww-1 do
+        for y=y1, y1+hh-1 do
+            masks[im.coord2idx(x, y, WIDTH)] = v
         end
     end
+end
+
+local function build_mountain_masks()
+    local masks = im.create_random_sm(WIDTH, HEIGHT)
 
     for _, v in ipairs(MOUNTAIN.excluded_rects) do
-        set_masks(v, 0)
+        set_masks(masks, v, 0)
     end
 
     for _, v in ipairs(MOUNTAIN.mountain_coords) do
-        set_masks(v, 1)
+        set_masks(masks, v, 1)
     end
 
-    local groups = setmetatable({}, {__index=function (t, gid) local tt={}; t[gid]=tt; return tt end})
-    for i = 1, WIDTH * HEIGHT do
-        if 0 ~= MOUNTAIN_MASKS[i] then
-            local x, y = im.idx2coord(i, WIDTH)
-            assert(1<=x and x<=WIDTH and 1<=y and y<=HEIGHT)
-            local x0, y0 = x-1, y-1
-            local indices = groups[terrain:get_group_id(x0, y0)]
-            indices[#indices+1] = {coord = {x, y}, pos = terrain:get_begin_position_by_coord(x0, y0)}
+    -- for _, v in ipairs{{125, 125, 2, 2}, {128, 128, 3, 3}, {134, 128, 4, 4}} do
+    --     set_masks(masks, v, 1)
+    -- end
+
+    return masks
+end
+
+local function in_sub_range(subindices, idx, ...)
+    for range=select(1, ...), select('#', ...) do
+        local baseidx = idx // range
+        if subindices[baseidx] then
+            return true
         end
+    end
+end
+
+local function merge_indices(indices, width, height, range)
+    local m = {}
+    for iz=1, height, range do
+        for ix=1, width, range do
+            local idx = (iz-1)*width+ix
+
+            local function is_sub_range(baseidx, range)
+                for izz=1, range do
+                    for ixx=1, range do
+                        local sidx = baseidx + (izz-1) * width + ixx
+                        if indices[sidx] == 0 then
+                            return false
+                        end
+                    end
+                end
+                return true
+            end
+
+            if is_sub_range(idx, range) then
+                m[#m+1] = {sidx=range, baseidx=idx}
+            end
+        end
+    end
+    return m
+end
+
+local function build_sub_indices(masks)
+    local subindices = {}
+    for range=4, 2, -1 do
+        local m = merge_indices(masks, WIDTH, HEIGHT, range)
+        for _, info in ipairs(m) do
+            subindices[info.baseidx] = info
+            local x, y = im.idx2coord(info.baseidx, WIDTH)
+            set_masks(masks, {x-1, y-1, info.sidx, info.sidx}, 1)
+        end
+    end
+
+    for idx, mask in ipairs(masks) do
+        if 0 ~= mask then
+            if not in_sub_range(subindices, idx, 2, 3, 4) then
+                subindices[idx] = {sidx=1, baseidx=idx}
+            end
+        end
+    end
+    return subindices
+end
+
+local function idxoffset(baseidx, sidx)
+    local subidx = (sidx // 2)+1
+    return baseidx + (subidx-1)*WIDTH+subidx
+end
+
+local M = {}
+function M:create()
+    --if true then return end
+    local masks = build_mountain_masks()
+
+    local subindices = build_sub_indices(masks)
+
+    local groups = setmetatable({}, {__index=function (t, gid) local tt={}; t[gid]=tt; return tt end})
+
+    for baseidx, info in pairs(subindices) do
+        local sidx = info.sidx
+        local idx = idxoffset(baseidx, sidx)
+
+        local x, y = im.idx2coord(idx, WIDTH)
+        assert(1<=x and x<=WIDTH and 1<=y and y<=HEIGHT)
+        local x0, y0 = x-1, y-1
+        local indices = groups[terrain:get_group_id(x0, y0)]
+        indices[#indices+1] = {coord = {x, y}, pos = terrain:get_begin_position_by_coord(x0, y0), sidx=sidx}
     end
 
     im.create(groups, WIDTH, HEIGHT)
