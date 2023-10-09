@@ -12,7 +12,7 @@ local WIDTH<const>, HEIGHT<const> = 256, 256
 local MOUNTAIN_MASKS
 local M = {}
 function M:create()
-
+    --if true then return end
     MOUNTAIN_MASKS = im.create_random_sm(WIDTH, HEIGHT)
 
     -- for _, v in ipairs(MOUNTAIN.excluded_rects) do
@@ -47,13 +47,13 @@ function M:create()
     for i=1, WIDTH * HEIGHT do
         local x, y = im.idx2coord(i, WIDTH)
         assert(1<=x and x<=WIDTH and 1<=y and y<=HEIGHT)
-        local indices = allgroups[terrain:get_group_id(x, y)]
-        indices[#indices+1] = {coord = {x, y}, pos = terrain:get_begin_position_by_coord(x-1, y-1)}
+        local x0, y0 = x-1, y-1
+        local indices = allgroups[terrain:get_group_id(x0, y0)]
+        indices[#indices+1] = {coord = {x, y}, pos = terrain:get_begin_position_by_coord(x0, y0)}
     end
 
     local groups = {
-        [351] = allgroups[351],
-        [352] = allgroups[352],
+        [138] = allgroups[138],
     }
 
     -- for i=1, 20 do
