@@ -201,8 +201,7 @@ local function touch_move(self, datamodel, delta_vec)
         iobject.move_delta(self.coord_indicator, delta_vec)
 
         local coord_indicator = self.coord_indicator
-        local typeobject = iprototype.queryByName(coord_indicator.prototype_name)
-        local _, x, y = __align(icamera_controller.get_central_position(), typeobject.area, coord_indicator.dir)
+        local _, x, y = __align(icamera_controller.get_central_position(), self.typeobject.area, coord_indicator.dir)
         local prototype_name, dir = getPlacedRoadPrototypeName(x, y, self.typeobject.name, DEFAULT_DIR)
         if prototype_name ~= self.coord_indicator.prototype_name or dir ~= self.coord_indicator.dir then
             local srt = self.coord_indicator.srt

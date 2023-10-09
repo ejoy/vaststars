@@ -26,6 +26,7 @@ local global = require "global"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local ifluidbox = ecs.require "render_updates.fluidbox"
 local iprototype_cache = ecs.require "prototype_cache"
+local icamera_controller = ecs.require "engine.system.camera_controller"
 local CHANGED_FLAG_BUILDING <const> = require("gameplay.interface.constant").CHANGED_FLAG_BUILDING
 local CHANGED_FLAG_FLUIDFLOW <const> = require("gameplay.interface.constant").CHANGED_FLAG_FLUIDFLOW
 
@@ -731,12 +732,41 @@ local function new_entity(self, datamodel, typeobject, x, y)
     _builder_init(self, datamodel)
 end
 
+
+local function __align(position, area, dir)
+    local coord = terrain:align(position, iprototype.rotate_area(area, dir))
+    if not coord then
+        return
+    end
+    local t = math3d.ref(math3d.vector(terrain:get_position_by_coord(coord[1], coord[2], iprototype.rotate_area(area, dir))))
+    return t, coord[1], coord[2]
+end
+
 local function touch_move(self, datamodel, delta_vec)
     if not self.coord_indicator then
         return
     end
     if self.coord_indicator then
         iobject.move_delta(self.coord_indicator, delta_vec)
+
+        local coord_indicator = self.coord_indicator
+        local typeobject = iprototype.queryByName(coord_indicator.prototype_name)
+        local _, x, y = __align(icamera_controller.get_central_position(), typeobject.area, coord_indicator.dir)
+        local prototype_name, dir = getPlacedPrototypeName(x, y, self.typeobject.name, DEFAULT_DIR)
+        if prototype_name ~= self.coord_indicator.prototype_name or dir ~= self.coord_indicator.dir then
+            local srt = self.coord_indicator.srt
+            local x, y = self.coord_indicator.x, self.coord_indicator.y
+            iobject.remove(self.coord_indicator)
+            print("touch_move", x, y, prototype_name, dir)
+            self.coord_indicator = iobject.new {
+                prototype_name = prototype_name,
+                dir = dir,
+                x = x,
+                y = y,
+                srt = srt,
+                group_id = 0,
+            }
+        end
     end
     if self.grid_entity then
         local typeobject = iprototype.queryByName(self.coord_indicator.prototype_name)
