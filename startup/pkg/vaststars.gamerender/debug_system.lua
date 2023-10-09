@@ -125,7 +125,8 @@ function debug_sys:ui_update()
         local pos = icamera_controller.screen_to_world(x, y, XZ_PLANE)
         local coord = terrain:get_coord_by_position(pos)
         if coord then
-            log.info(("gesture tap coord: (%s, %s)"):format(coord[1], coord[2]))
+            local pp = terrain:get_position_by_coord(coord[1], coord[2], 256, 256)
+            log.info(("gesture tap coord: (%d, %d), position: (%.2f, %.2f, %.2f)"):format(coord[1], coord[2], pp[1], pp[2], pp[3]))
             log.info(("group(%s)"):format(terrain:get_group_id(coord[1], coord[2])))
 
             local objects = require "objects"
