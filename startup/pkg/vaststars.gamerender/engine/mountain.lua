@@ -23,7 +23,7 @@ end
 
 local function idx2coord(v)
     local x = (v - 1) % (MAX_X - MIN_X + 1) + MIN_X
-    local y = MAX_Y - math.floor((v - 1) / (MAX_X - MIN_X + 1))
+    local y = MAX_Y - math.floor((v - 1) // (MAX_X - MIN_X + 1))
     return x, y
 end
 

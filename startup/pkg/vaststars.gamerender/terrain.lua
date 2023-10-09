@@ -55,7 +55,7 @@ local function _get_coord_by_position(self, position)
     end
 
     local origin = self._origin
-    return {math.floor((posx - origin[1]) / TILE_SIZE), math.floor((origin[2] - posz) / TILE_SIZE)}
+    return {math.floor((posx - origin[1]) // TILE_SIZE), math.floor((origin[2] - posz) // TILE_SIZE)}
 end
 
 local function _get_grid_id(x, y)
