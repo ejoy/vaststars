@@ -15,22 +15,26 @@ function M:create()
     --if true then return end
     MOUNTAIN_MASKS = im.create_random_sm(WIDTH, HEIGHT)
 
-    for _, v in ipairs(MOUNTAIN.excluded_rects) do
-        local x1, y1, w, h = v[1], v[2], v[3], v[4]
-        for x = x1, x1 + w - 1 do
-            for y = y1, y1 + h - 1 do
-                MOUNTAIN_MASKS[im.coord2idx(x,y, WIDTH)] = 0
+    local function set_masks(r, v)
+        -- x, y base 0
+        local x0, y0, ww, hh = r[1], r[2], r[3], r[4]
+        --base 1
+        local x1, y1 = x0+1, y0+1
+
+        --range:[x1, x1+ww), [y1, y+hh)
+        for x=x1, x1+ww-1 do
+            for y=y1, y1+hh-1 do
+                MOUNTAIN_MASKS[im.coord2idx(x, y, WIDTH)] = v
             end
         end
     end
 
+    for _, v in ipairs(MOUNTAIN.excluded_rects) do
+        set_masks(v, 0)
+    end
+
     for _, v in ipairs(MOUNTAIN.mountain_coords) do
-        local x1, y1, w, h = v[1], v[2], v[3], v[4]
-        for x = x1, x1 + w - 1 do
-            for y = y1, y1 + h - 1 do
-                MOUNTAIN_MASKS[im.coord2idx(x,y, WIDTH)] = 0
-            end
-        end
+        set_masks(v, 1)
     end
 
     local groups = setmetatable({}, {__index=function (t, gid) local tt={}; t[gid]=tt; return tt end})
