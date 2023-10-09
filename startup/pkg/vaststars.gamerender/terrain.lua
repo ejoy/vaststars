@@ -5,20 +5,19 @@ local w     = world.w
 local iprototype = require "gameplay.interface.prototype"
 local math3d = require "math3d"
 local igame_object = ecs.require "engine.game_object"
+local ig = ecs.require "ant.group|group"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
-local ig = ecs.require "ant.group|group"
 
--- three-dimensional axial
--- z
--- ▲
--- │
--- │
+-- world coordinate system
+-- z   y
+-- ▲  7 
+-- | /
 -- └──►x
 
--- two-dimensional axial
+-- logical coordinate system
+-- range: [0, WIDTH - 1], determined by gameplay
 -- ┌──►x
--- │
 -- │
 -- ▼
 -- y
@@ -27,17 +26,22 @@ local terrain = {}
 
 local SURFACE_HEIGHT <const> = 0
 local TILE_SIZE <const> = 10
-local WIDTH <const> = 256 -- coordinate value range: [0, WIDTH - 1]
+local WIDTH <const> = 256
 local HEIGHT <const> = 256
-local GRID_WIDTH <const> = 10
-local GRID_HEIGHT <const> = 10
+local GRID_WIDTH <const> = 16
+local GRID_HEIGHT <const> = 16
 local MAX_BUILDING_WIDTH <const> = 6
 local MAX_BUILDING_HEIGHT <const> = 6
 assert(GRID_WIDTH % 2 == 0 and GRID_HEIGHT % 2 == 0)
+assert(WIDTH % GRID_WIDTH == 0 and HEIGHT % GRID_HEIGHT == 0)
 
 local function _hash(x, y)
     assert(x & 0xFF == x and y & 0xFF == y)
     return x | (y<<8)
+end
+
+local function _get_gridxy(x, y)
+    return (x // GRID_WIDTH) + 1, (y // GRID_HEIGHT) + 1
 end
 
 local function _get_coord_by_position(self, position)
@@ -46,31 +50,27 @@ local function _get_coord_by_position(self, position)
 
     if (posx < boundary_3d[1][1] or posx > boundary_3d[2][1]) or
         (posz < boundary_3d[1][3] or posz > boundary_3d[2][3]) then
-        log.error(("out of bounds (%f, %f) : (%s) - (%s)"):format(posx, posz, table.concat(boundary_3d[1], ","), table.concat(boundary_3d[2], ",")))
+        -- log.error(("out of bounds (%f, %f) : (%s) - (%s)"):format(posx, posz, table.concat(boundary_3d[1], ","), table.concat(boundary_3d[2], ",")))
         return
     end
 
     local origin = self._origin
-    return {math.floor((posx - origin[1]) / TILE_SIZE), math.floor((origin[2] - posz) / TILE_SIZE)}
+    return {math.floor((posx - origin[1]) // TILE_SIZE), math.floor((origin[2] - posz) // TILE_SIZE)}
 end
 
 local function _get_grid_id(x, y)
-    local grid_x = math.ceil(x/GRID_WIDTH)
-    local grid_y = math.ceil(y/GRID_HEIGHT)
-    return _hash(grid_x, grid_y)
+    return _hash(_get_gridxy(x, y))
 end
 
 function terrain:get_group_id(x, y)
 	return self._group_id[_get_grid_id(x, y)]
 end
 
-function terrain:create(width, height)
+function terrain:create()
     self.lock_group = false
     self.surface_height = SURFACE_HEIGHT
     self.tile_size = TILE_SIZE
-    self.tile_width, self.tile_height = width or WIDTH, height or HEIGHT
-
-    self._width, self._height = width or WIDTH, height or HEIGHT
+    self._width, self._height = WIDTH, HEIGHT
     local offset_3d = {-(self._width * TILE_SIZE)/2, 0.0, -(self._height * TILE_SIZE)/2}
     local boundary_3d = {
         offset_3d,
@@ -85,7 +85,7 @@ function terrain:create(width, height)
     }
     self._grid_bounds = {
         {0, 0},
-        {math.ceil(self._width / GRID_WIDTH) - 1, math.ceil(self._height / GRID_HEIGHT) - 1},
+        {_get_gridxy(self._coord_bounds[2][1], self._coord_bounds[2][2])},
     }
 
     local function gen_group_id()
@@ -94,7 +94,7 @@ function terrain:create(width, height)
                 local o = "TERRAIN_GROUP_" .. k
                 local gid = ig.register(o)
                 tt[k] = gid
-                return gid
+                return tt[k]
         end})
     end
 
@@ -189,10 +189,10 @@ function terrain:enable_terrain(lefttop, rightbottom)
     rightbottom = math3d.add(rightbottom, {MAX_BUILDING_WIDTH * TILE_SIZE, 0, -(MAX_BUILDING_HEIGHT * TILE_SIZE)})
 
     local ltCoord = self:get_coord_by_position(lefttop) or {0, 0}
-    local rbCoord = self:get_coord_by_position(rightbottom) or {self._width - 1, self._height - 1}
+    local rbCoord = self:get_coord_by_position(rightbottom) or {self._coord_bounds[2][1], self._coord_bounds[2][2]}
 
-    local ltGridCoord = {math.ceil(ltCoord[1] / GRID_WIDTH), math.ceil(ltCoord[2] / GRID_HEIGHT)}
-    local rbGridCoord = {math.ceil(rbCoord[1] / GRID_WIDTH), math.ceil(rbCoord[2] / GRID_HEIGHT)}
+    local ltGridCoord = {_get_gridxy(ltCoord[1], ltCoord[2])}
+    local rbGridCoord = {_get_gridxy(rbCoord[1], rbCoord[2])}
 
     local new = {}
     for x = ltGridCoord[1], rbGridCoord[1] do

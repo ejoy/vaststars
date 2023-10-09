@@ -1,24 +1,11 @@
 local tracedoc = require "lua.tracedoc"
 
 local M = {}
-function M.world_pub(msg)
-    local ud = {}
-    ud.event = "__WORLD_PUB"
-    ud.ud = msg
-    window.extern.postMessage(ud)
-end
 
 function M.pub(msg)
     local ud = {}
     ud.event = "__PUB"
     ud.ud = msg
-    window.extern.postMessage(ud)
-end
-
-function M.open(url, ...)
-    local ud = {}
-    ud.event = "__OPEN"
-    ud.ud = {url, ...}
     window.extern.postMessage(ud)
 end
 

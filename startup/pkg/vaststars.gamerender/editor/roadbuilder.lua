@@ -199,6 +199,24 @@ end
 local function touch_move(self, datamodel, delta_vec)
     if self.coord_indicator then
         iobject.move_delta(self.coord_indicator, delta_vec)
+
+        local coord_indicator = self.coord_indicator
+        local _, x, y = __align(icamera_controller.get_central_position(), self.typeobject.area, coord_indicator.dir)
+        local prototype_name, dir = getPlacedRoadPrototypeName(x, y, self.typeobject.name, DEFAULT_DIR)
+        if prototype_name ~= self.coord_indicator.prototype_name or dir ~= self.coord_indicator.dir then
+            local srt = self.coord_indicator.srt
+            local x, y = self.coord_indicator.x, self.coord_indicator.y
+            iobject.remove(self.coord_indicator)
+            print("touch_move", x, y, prototype_name, dir)
+            self.coord_indicator = iobject.new {
+                prototype_name = prototype_name,
+                dir = dir,
+                x = x,
+                y = y,
+                srt = srt,
+                group_id = 0,
+            }
+        end
     end
     updateComponentsPosition(self)
 end
@@ -216,7 +234,7 @@ local function touch_end(self, datamodel)
     if prototype_name ~= self.coord_indicator.prototype_name or dir ~= self.coord_indicator.dir then
         local x, y = self.coord_indicator.x, self.coord_indicator.y
         iobject.remove(self.coord_indicator)
-        print("touch_move", x, y, prototype_name, dir)
+        print("touch_end", x, y, prototype_name, dir)
         self.coord_indicator = iobject.new {
             prototype_name = prototype_name,
             dir = dir,

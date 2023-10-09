@@ -15,11 +15,11 @@ end
 
 function M.stage_camera_usage(datamodel)
     for _ in statistical_data_mb:unpack() do
-        iui.open({"/pkg/vaststars.resources/ui/statistics.rml"})
+        iui.open({rml = "/pkg/vaststars.resources/ui/statistics.rml"})
     end
 
     for _ in game_settings_mb:unpack() do
-        iui.open({"/pkg/vaststars.resources/ui/option_pop.rml"})
+        iui.open({rml = "/pkg/vaststars.resources/ui/option_pop.rml"})
     end
 
     for _ in quit_mb:unpack() do

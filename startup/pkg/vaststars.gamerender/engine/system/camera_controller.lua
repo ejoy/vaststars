@@ -61,8 +61,7 @@ local function __clamp(v, min, max)
 end
 
 local function zoom(factor, x, y)
-    local mq = w:first("main_queue camera_ref:in render_target:in")
-    local ce <close> = world:entity(mq.camera_ref)
+    local ce <close> = world:entity(irq.main_camera())
 
     local pos = iom.get_position(ce)
     local target = icamera_controller.screen_to_world(x, y, PLANES)[1]
@@ -79,8 +78,7 @@ local function zoom(factor, x, y)
 end
 
 local function focus_on_position(position)
-    local mq = w:first("main_queue camera_ref:in")
-    local ce <close> = world:entity(mq.camera_ref)
+    local ce <close> = world:entity(irq.main_camera())
     local p = icamera_controller.get_central_position()
     local delta = math3d.set_index(math3d.sub(position, p), 2, 0) -- the camera is always moving in the x/z axis and the y axis is always 0
     return iom.get_scale(ce), iom.get_rotation(ce), math3d.add(iom.get_position(ce), delta)
@@ -108,19 +106,18 @@ local function get_world_delta(rotation, xz_point)
 end
 
 local function toggle_view(v)
-    local mq = w:first("main_queue camera_ref:in")
-    local e <close> = world:entity(mq.camera_ref)
+    local ce <close> = world:entity(irq.main_camera())
 
     -- using the properties of similar triangles to calculate the position of the z-axis
     if v == "construct" then
-        local position = iom.get_position(e)
+        local position = iom.get_position(ce)
         local z = CAMERA_DELTA_Z * (math3d.index(position, 2) / math3d.index(CAMERA_DEFAULT_POSITION, 2))
-        local position = math3d.add(iom.get_position(e), math3d.vector(0, 0, z))
+        local position = math3d.add(iom.get_position(ce), math3d.vector(0, 0, z))
         return CAMERA_CONSTRUCT_SCALE, CAMERA_CONSTRUCT_ROTATION, position
     else
-        local position = iom.get_position(e)
+        local position = iom.get_position(ce)
         local z = -CAMERA_DELTA_Z * (math3d.index(position, 2) / math3d.index(CAMERA_DEFAULT_POSITION, 2))
-        local position = math3d.add(iom.get_position(e), math3d.vector(0, 0, z))
+        local position = math3d.add(iom.get_position(ce), math3d.vector(0, 0, z))
         return CAMERA_DEFAULT_SCALE, CAMERA_DEFAULT_ROTATION, position
     end
 
@@ -146,16 +143,14 @@ local function __set_camera_from_prefab(prefab)
     assert(data[1] and data[1].data and data[1].data.camera)
     local c = data[1].data
 
-    local mq = w:first("main_queue camera_ref:in")
-    local e <close> = world:entity(mq.camera_ref, "scene:update")
-    iom.set_srt(e, c.scene.s or mc.ONE, c.scene.r, c.scene.t)
-    ic.set_frustum(e, c.camera.frustum)
+    local ce <close> = world:entity(irq.main_camera())
+    iom.set_srt(ce, c.scene.s or mc.ONE, c.scene.r, c.scene.t)
+    ic.set_frustum(ce, c.camera.frustum)
 end
 
 local function __set_camera_srt(s, r, t)
-    local mq = w:first("main_queue camera_ref:in")
-    local e <close> = world:entity(mq.camera_ref, "scene:update")
-    iom.set_srt(e, s, r, t)
+    local ce <close> = world:entity(irq.main_camera())
+    iom.set_srt(ce, s, r, t)
 end
 
 local function __check_camera_editable()
@@ -167,8 +162,7 @@ local function __add_camera_track(s, r, t)
     local skl = skeleton.build({{name = "root", s = mc.T_ONE, r = mc.T_IDENTITY_QUAT, t = mc.T_ZERO}})
     raw_animation:setup(skl, 2)
 
-    local mq = w:first("main_queue camera_ref:in")
-    local ce <close> = world:entity(mq.camera_ref)
+    local ce <close> = world:entity(irq.main_camera())
 
     raw_animation:push_prekey(
         "root",
@@ -227,9 +221,8 @@ local function __handle_camera_motion()
     if cam_motion_matrix_queue:size() > 0 then
         local mat = cam_motion_matrix_queue:pop()
         if mat then
-            local mq = w:first("main_queue camera_ref:in")
-            local e <close> = world:entity(mq.camera_ref)
-            iom.set_srt(e, math3d.srt(mat))
+            local ce <close> = world:entity(irq.main_camera())
+            iom.set_srt(ce, math3d.srt(mat))
             world:pub {"dragdrop_camera"}
         end
     end
@@ -287,8 +280,7 @@ local __handle_drop_camera; do
 end
 
 function camera_controller:camera_usage()
-    local mq = w:first("main_queue camera_ref:in")
-    local ce <close> = world:entity(mq.camera_ref)
+    local ce <close> = world:entity(irq.main_camera())
 
     for _, _, e in gesture_pinch:unpack() do
         if __check_camera_editable() then
@@ -300,8 +292,7 @@ function camera_controller:camera_usage()
     __handle_camera_motion()
 
     for _, _, left, top, position in ui_message_move_camera_mb:unpack() do
-        local mq = w:first("main_queue render_target:in")
-        local vr = mq.render_target.view_rect
+        local vr = irq.view_rect("main_queue")
         local vmin = math.min(vr.w / vr.ratio, vr.h / vr.ratio)
         local ui_position = icamera_controller.screen_to_world(left / 100 * vmin, top / 100 * vmin, PLANES)[1]
 
@@ -312,10 +303,10 @@ end
 
 -- the following interfaces must be called during the `camera_usage` stage
 function icamera_controller.screen_to_world(x, y, planes, vp)
-    local mq = w:first("main_queue render_target:in camera_ref:in")
-    local ce <close> = world:entity(mq.camera_ref, "camera:in")
+    local ce <close> = world:entity(irq.main_camera(), "camera:in")
     local vpmat = vp and vp or ce.camera.viewprojmat
-    local vr = mq.render_target.view_rect
+
+    local vr = irq.view_rect("main_queue")
     local nx, ny = mu.remap_xy(x, y, vr.ratio)
     local ndcpt = mu.pt2D_to_NDC({nx, ny}, vr)
     ndcpt[3] = 0
@@ -333,10 +324,9 @@ function icamera_controller.screen_to_world(x, y, planes, vp)
 end
 
 function icamera_controller.world_to_screen(position)
-    local mq = w:first("main_queue camera_ref:in render_target:in")
-    local ce <close> = world:entity(mq.camera_ref, "camera:in")
+    local ce <close> = world:entity(irq.main_camera(), "camera:in")
     local vp = ce.camera.viewprojmat
-    local vr = mq.render_target.view_rect
+    local vr = irq.view_rect("main_queue")
     return mu.world_to_screen(vp, vr, position)
 end
 
@@ -347,8 +337,7 @@ function icamera_controller.get_central_position()
 end
 
 function icamera_controller.get_interset_points()
-    local mq = w:first("main_queue camera_ref:in render_target:in")
-    local ce <close> = world:entity(mq.camera_ref, "camera:in scene:in")
+    local ce <close> = world:entity(irq.main_camera(), "camera:in scene:in")
     local points = math3d.frustum_points(ce.camera.viewprojmat)
     local lb_raydir = math3d.sub(math3d.array_index(points, 5), math3d.array_index(points, 1))
     local lt_raydir = math3d.sub(math3d.array_index(points, 6), math3d.array_index(points, 2))

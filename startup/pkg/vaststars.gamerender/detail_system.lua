@@ -94,7 +94,7 @@ function idetail.show(object_id)
 
     idetail.selected(object.gameplay_eid)
     if typeobject.building_menu ~= false then
-        iui.open({"/pkg/vaststars.resources/ui/building_menu.rml"}, gameplay_eid)
+        iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.rml"}, gameplay_eid)
     end
 
     do

@@ -204,7 +204,7 @@
         </script>
     </head>
     <body style = "pointer-events: none; margin: 0 3.995vmax 0 4.715vmax;" onload="init()">
-        <div style = "margin: 0 0 0 -4.715vmax; position: absolute; width: 103.995vmax; height: 100%; background-color: rgba(128, 128, 128, 200);" data-event-click = "clickSpace()" />
+        <background data-event-click = "clickSpace()" />
         <buttons-container>
             <button-container data-style-transform = "it.transform" data-style-margin = "it.margin" data-for = "shortcut_buttons" >
                 <button>
@@ -243,7 +243,7 @@
         </construct-box>
 
         <main-button style = "position: absolute; left: 72.20vmax; top: 67.00vmin; background-image: /pkg/vaststars.resources/ui/textures/construct/main-button-bg.texture; background-size: 100% 100%;" data-event-click = "clickButton('click_main_button')">
-            <main-button-icon style = "background-image: /pkg/vaststars.resources/ui/textures/build_setting/main-button-confirm.texture;" />
+            <main-button-icon style = "width:88%; height:88%; background-image: /pkg/vaststars.resources/ui/textures/build_setting/main-button-confirm.texture;" />
         </main-button>
     </body>
 </rml>

@@ -92,7 +92,7 @@ local function __on_pick_building(datamodel, o)
         return
     end
 
-    iui.open({"/pkg/vaststars.resources/ui/detail_panel.rml"}, object.id)
+    iui.open({rml = "/pkg/vaststars.resources/ui/detail_panel.rml"}, object.id)
     if datamodel.is_concise_mode then
         return true
     end
@@ -122,7 +122,7 @@ local function __on_pick_non_building(datamodel, o, force)
         typeobject = iprototype.queryByName(typeobject.base)
     end
 
-    iui.open({"/pkg/vaststars.resources/ui/non_building_detail_panel.rml"}, typeobject.icon, iprototype.display_name(typeobject), o.eid)
+    iui.open({rml = "/pkg/vaststars.resources/ui/non_building_detail_panel.rml"}, typeobject.icon, iprototype.display_name(typeobject), o.eid)
     if datamodel.is_concise_mode and force ~= true then
         return true
     end
@@ -141,7 +141,7 @@ local function __on_pick_non_building(datamodel, o, force)
 end
 
 local function __on_pick_ground(datamodel)
-    iui.open({"/pkg/vaststars.resources/ui/main_menu.rml"})
+    iui.open({rml = "/pkg/vaststars.resources/ui/main_menu.rml"})
     gameplay_core.world_update = false
     return true
 end
@@ -415,12 +415,12 @@ function M.stage_camera_usage(datamodel)
 
     for _ in click_techortaskicon_mb:unpack() do
         gameplay_core.world_update = false
-        iui.open({"/pkg/vaststars.resources/ui/science.rml"})
+        iui.open({rml = "/pkg/vaststars.resources/ui/science.rml"})
     end
 
     for _ in help_mb:unpack() do
         if not iui.is_open("/pkg/vaststars.resources/ui/help_panel.rml") then
-            iui.open({"/pkg/vaststars.resources/ui/help_panel.rml"})
+            iui.open({rml = "/pkg/vaststars.resources/ui/help_panel.rml"})
         else
             iui.close("/pkg/vaststars.resources/ui/help_panel.rml")
         end
@@ -604,7 +604,7 @@ function M.stage_camera_usage(datamodel)
 
             idetail.unselected()
             builder_ui = "/pkg/vaststars.resources/ui/move_building.rml"
-            builder_datamodel = iui.open({"/pkg/vaststars.resources/ui/move_building.rml"}, object.prototype_name)
+            builder_datamodel = iui.open({rml = "/pkg/vaststars.resources/ui/move_building.rml"}, object.prototype_name)
             builder = create_movebuilder(object_id)
             builder:new_entity(builder_datamodel, typeobject)
         end)
@@ -642,7 +642,7 @@ function M.stage_camera_usage(datamodel)
     for _ in construct_mb:unpack() do
         datamodel.is_concise_mode = true
         __switch_status("construct", function()
-            iui.open({"/pkg/vaststars.resources/ui/build.rml"})
+            iui.open({rml = "/pkg/vaststars.resources/ui/build.rml"})
             gameplay_core.world_update = false
         end)
     end
@@ -659,7 +659,7 @@ function M.stage_camera_usage(datamodel)
                 datamodel.status = "selected"
 
                 if selected_obj.class == CLASS.Lorry then
-                    iui.open({"/pkg/vaststars.resources/ui/building_menu.rml"}, pick_lorry_id)
+                    iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.rml"}, pick_lorry_id)
                     idetail.selected(pick_lorry_id)
 
                     local e = assert(gameplay_core.get_entity(pick_lorry_id))
@@ -678,12 +678,12 @@ function M.stage_camera_usage(datamodel)
 
                     if iprototype.is_road(selected_obj.name) or iprototype.is_pipe(selected_obj.name) or iprototype.is_pipe_to_ground(selected_obj.name) then
                         datamodel.focus_building_icon = ""
-                        iui.open({"/pkg/vaststars.resources/ui/construct_road_or_pipe.rml"}, selected_obj.name, {show_start_laying = true})
+                        iui.open({rml = "/pkg/vaststars.resources/ui/construct_road_or_pipe.rml"}, selected_obj.name, {show_start_laying = true})
                     end
 
                     if not iprototype.is_pipe(selected_obj.name) then
                         local typeobject = iprototype.queryByName(selected_obj.name)
-                        iui.open({"/pkg/vaststars.resources/ui/non_building_detail_panel.rml"}, typeobject.item_icon, iprototype.display_name(typeobject), selected_obj.eid)
+                        iui.open({rml = "/pkg/vaststars.resources/ui/non_building_detail_panel.rml"}, typeobject.item_icon, iprototype.display_name(typeobject), selected_obj.eid)
                     end
                 end
             else
@@ -719,9 +719,9 @@ function M.stage_camera_usage(datamodel)
                 goto continue
             end
 
-            iui.open({"/pkg/vaststars.resources/ui/building_menu_longpress.rml"}, object.id)
+            iui.open({rml = "/pkg/vaststars.resources/ui/building_menu_longpress.rml"}, object.id)
         elseif selected_obj.class == CLASS.Road then
-            iui.open({"/pkg/vaststars.resources/ui/construct_road_or_pipe.rml"}, selected_obj.name, {show_remove_one = true, show_start_teardown = true})
+            iui.open({rml = "/pkg/vaststars.resources/ui/construct_road_or_pipe.rml"}, selected_obj.name, {show_remove_one = true, show_start_teardown = true})
         end
 
         ::continue::
@@ -843,7 +843,7 @@ function M.stage_camera_usage(datamodel)
     end
 
     for _ in inventory_mb:unpack() do
-        iui.open({"/pkg/vaststars.resources/ui/inventory.rml"})
+        iui.open({rml = "/pkg/vaststars.resources/ui/inventory.rml"})
     end
 
     iobject.flush()

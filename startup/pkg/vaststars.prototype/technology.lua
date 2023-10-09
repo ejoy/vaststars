@@ -662,7 +662,7 @@ local prototype = gameplay.register.prototype
 
 
   prototype "物流学1" {
-    desc = "研究出货车站和收货车站建造工艺",
+    desc = "研究维修停车场的方法",
     type = { "tech" },
     icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
     effects = {
@@ -1441,7 +1441,7 @@ prototype "物流车站1" {
   type = { "tech" },
   icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
   effects = {
-    unlock_recipe = {"出货车站打印","收货车站打印"},
+    unlock_recipe = {"物流站打印","停车站打印"},
     unlock_item = {"物流站"},
   },
   prerequisites = {"自动化1"},

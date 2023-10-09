@@ -26,6 +26,7 @@ local global = require "global"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local ifluidbox = ecs.require "render_updates.fluidbox"
 local iprototype_cache = ecs.require "prototype_cache"
+local icamera_controller = ecs.require "engine.system.camera_controller"
 local CHANGED_FLAG_BUILDING <const> = require("gameplay.interface.constant").CHANGED_FLAG_BUILDING
 local CHANGED_FLAG_FLUIDFLOW <const> = require("gameplay.interface.constant").CHANGED_FLAG_FLUIDFLOW
 
@@ -682,15 +683,34 @@ local function confirm(self, datamodel)
     gameplay_core.set_changed(CHANGED_FLAG_BUILDING | CHANGED_FLAG_FLUIDFLOW)
 end
 
+local function getPlacedPrototypeName(x, y, default_prototype_name, default_dir)
+    local o = objects:coord(x, y, EDITOR_CACHE_NAMES)
+    local prototype_name, dir
+    if not o then
+        prototype_name, dir = iflow_connector.cleanup(default_prototype_name, default_dir)
+    else
+        prototype_name, dir = o.prototype_name, o.dir
+    end
+
+    for _, d in ipairs(iconstant.ALL_DIR) do
+        local dx, dy = iprototype.move_coord(x, y, d)
+        local o = objects:coord(dx, dy, EDITOR_CACHE_NAMES)
+        if o and iprototype.is_pipe(o.prototype_name) then
+            prototype_name, dir = iflow_connector.set_connection(prototype_name, dir, d, true)
+        end
+    end
+    return prototype_name, dir
+end
+
 --------------------------------------------------------------------------------------------------
 local function new_entity(self, datamodel, typeobject, x, y)
     assert(x and y)
     self.typeobject = typeobject
     iobject.remove(self.coord_indicator)
-    local dir = DEFAULT_DIR
+    local prototype_name, dir = getPlacedPrototypeName(x, y, typeobject.name, DEFAULT_DIR)
 
     self.coord_indicator = iobject.new {
-        prototype_name = typeobject.name,
+        prototype_name = prototype_name,
         dir = dir,
         x = x,
         y = y,
@@ -712,12 +732,41 @@ local function new_entity(self, datamodel, typeobject, x, y)
     _builder_init(self, datamodel)
 end
 
+
+local function __align(position, area, dir)
+    local coord = terrain:align(position, iprototype.rotate_area(area, dir))
+    if not coord then
+        return
+    end
+    local t = math3d.ref(math3d.vector(terrain:get_position_by_coord(coord[1], coord[2], iprototype.rotate_area(area, dir))))
+    return t, coord[1], coord[2]
+end
+
 local function touch_move(self, datamodel, delta_vec)
     if not self.coord_indicator then
         return
     end
     if self.coord_indicator then
         iobject.move_delta(self.coord_indicator, delta_vec)
+
+        local coord_indicator = self.coord_indicator
+        local typeobject = iprototype.queryByName(coord_indicator.prototype_name)
+        local _, x, y = __align(icamera_controller.get_central_position(), typeobject.area, coord_indicator.dir)
+        local prototype_name, dir = getPlacedPrototypeName(x, y, self.typeobject.name, DEFAULT_DIR)
+        if prototype_name ~= self.coord_indicator.prototype_name or dir ~= self.coord_indicator.dir then
+            local srt = self.coord_indicator.srt
+            local x, y = self.coord_indicator.x, self.coord_indicator.y
+            iobject.remove(self.coord_indicator)
+            print("touch_move", x, y, prototype_name, dir)
+            self.coord_indicator = iobject.new {
+                prototype_name = prototype_name,
+                dir = dir,
+                x = x,
+                y = y,
+                srt = srt,
+                group_id = 0,
+            }
+        end
     end
     if self.grid_entity then
         local typeobject = iprototype.queryByName(self.coord_indicator.prototype_name)
@@ -739,6 +788,24 @@ local function touch_end(self, datamodel)
     self.coord_indicator, x, y = iobject.align(self.coord_indicator)
     self.coord_indicator.x, self.coord_indicator.y = x, y
     self:revert_changes({"TEMPORARY"})
+
+    local prototype_name, dir = getPlacedPrototypeName(self.coord_indicator.x, self.coord_indicator.y, self.typeobject.name, DEFAULT_DIR)
+    if prototype_name ~= self.coord_indicator.prototype_name or dir ~= self.coord_indicator.dir then
+        local x, y = self.coord_indicator.x, self.coord_indicator.y
+        iobject.remove(self.coord_indicator)
+        print("touch_move", x, y, prototype_name, dir)
+        self.coord_indicator = iobject.new {
+            prototype_name = prototype_name,
+            dir = dir,
+            x = x,
+            y = y,
+            srt = {
+                t = math3d.ref(math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(self.typeobject.area, dir)))),
+                r = ROTATORS[dir],
+            },
+            group_id = 0,
+        }
+    end
 
     if self.grid_entity then
         local typeobject = iprototype.queryByName(self.coord_indicator.prototype_name)
@@ -941,8 +1008,6 @@ local function clean(self, datamodel)
     end
     self.pickup_components = {}
     self.pending = {}
-
-    gameplay_core.world_update = true
 end
 
 local function create()
