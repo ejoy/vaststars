@@ -151,7 +151,7 @@
         </script>
     </head>
     <body style = "pointer-events: none; margin: 0 3.995vmax 0 4.715vmax;" onload="init()">
-        <div style = "margin: 0 0 0 -4.715vmax; position: absolute; width: 103.995vmax; height: 100%; background-color: rgba(128, 128, 128, 200);" data-event-click = "clickButton('close')"/>
+        <background data-event-click = "clickButton('close')"/>
         <construct-box>
             <construct-list>
                 <div style = "width: 100%; align-items: flex-start;" data-for = "c, c_index : inventory">
