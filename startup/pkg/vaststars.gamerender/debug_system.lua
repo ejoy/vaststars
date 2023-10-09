@@ -95,6 +95,15 @@ local function __get_detail_str(eid)
 end
 
 function debug_sys:init_world()
+    -- world:create_instance{
+    --     prefab = "/pkg/ant.resources.binary/meshes/base/cube.glb|mesh.prefab",
+    --     on_ready = function (e)
+    --         local rooteid = e.tag['*'][1]
+    --         local re<close> = world:entity(rooteid, "scene:update")
+    --         iom.set_position(re, math3d.vector(0, 0, 0, 1))
+    --         iom.set_scale(re, 10)
+    --     end
+    -- }
 end
 
 function debug_sys:ui_update()
