@@ -22,8 +22,6 @@ local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 -- ▼
 -- y
 
-local terrain = {}
-
 local SURFACE_HEIGHT <const> = 0
 local TILE_SIZE <const> = 10
 local WIDTH <const> = 256
@@ -34,6 +32,16 @@ local MAX_BUILDING_WIDTH <const> = 6
 local MAX_BUILDING_HEIGHT <const> = 6
 assert(GRID_WIDTH % 2 == 0 and GRID_HEIGHT % 2 == 0)
 assert(WIDTH % GRID_WIDTH == 0 and HEIGHT % GRID_HEIGHT == 0)
+local OFFSET_3D <const> = {-(WIDTH * TILE_SIZE)/2, 0.0, -(HEIGHT * TILE_SIZE)/2}
+local BOUNDARY_3D <const> = {
+    OFFSET_3D,
+    {OFFSET_3D[1] + WIDTH * TILE_SIZE, OFFSET_3D[2], OFFSET_3D[3] + HEIGHT * TILE_SIZE}
+}
+local ORIGIN <const> = {OFFSET_3D[1], BOUNDARY_3D[2][3]} -- the world position corresponding to the logical origin (0, 0)
+local COORD_BOUNDARY <const> = {
+    {0, 0},
+    {WIDTH - 1, HEIGHT - 1},
+}
 
 local function _hash(x, y)
     assert(x & 0xFF == x and y & 0xFF == y)
@@ -44,23 +52,23 @@ local function _get_gridxy(x, y)
     return (x // GRID_WIDTH) + 1, (y // GRID_HEIGHT) + 1
 end
 
-local function _get_coord_by_position(self, position)
-    local boundary_3d = self._boundary_3d
+local function _get_coord_by_position(position)
     local posx, posz = math3d.index(position, 1, 3)
 
-    if (posx < boundary_3d[1][1] or posx > boundary_3d[2][1]) or
-        (posz < boundary_3d[1][3] or posz > boundary_3d[2][3]) then
-        -- log.error(("out of bounds (%f, %f) : (%s) - (%s)"):format(posx, posz, table.concat(boundary_3d[1], ","), table.concat(boundary_3d[2], ",")))
+    if (posx < BOUNDARY_3D[1][1] or posx > BOUNDARY_3D[2][1]) or
+        (posz < BOUNDARY_3D[1][3] or posz > BOUNDARY_3D[2][3]) then
+        -- log.error(("out of bounds (%f, %f) : (%s) - (%s)"):format(posx, posz, table.concat(BOUNDARY_3D[1], ","), table.concat(BOUNDARY_3D[2], ",")))
         return
     end
 
-    local origin = self._origin
-    return {math.floor((posx - origin[1]) // TILE_SIZE), math.floor((origin[2] - posz) // TILE_SIZE)}
+    return {math.floor((posx - ORIGIN[1]) // TILE_SIZE), math.floor((ORIGIN[2] - posz) // TILE_SIZE)}
 end
 
 local function _get_grid_id(x, y)
     return _hash(_get_gridxy(x, y))
 end
+
+local terrain = {}
 
 function terrain:get_group_id(x, y)
 	return self._group_id[_get_grid_id(x, y)]
@@ -71,22 +79,6 @@ function terrain:create()
     self.surface_height = SURFACE_HEIGHT
     self.tile_size = TILE_SIZE
     self._width, self._height = WIDTH, HEIGHT
-    local offset_3d = {-(self._width * TILE_SIZE)/2, 0.0, -(self._height * TILE_SIZE)/2}
-    local boundary_3d = {
-        offset_3d,
-        {offset_3d[1] + self._width * TILE_SIZE, offset_3d[2], offset_3d[3] + self._height * TILE_SIZE}
-    }
-
-    self._boundary_3d = boundary_3d
-    self._origin = {offset_3d[1], boundary_3d[2][3]} -- origin in logical coordinates
-    self._coord_bounds = {
-        {0, 0},
-        {self._width - 1, self._height - 1},
-    }
-    self._grid_bounds = {
-        {0, 0},
-        {_get_gridxy(self._coord_bounds[2][1], self._coord_bounds[2][2])},
-    }
 
     local function gen_group_id()
         return setmetatable({}, {
@@ -189,7 +181,7 @@ function terrain:enable_terrain(lefttop, rightbottom)
     rightbottom = math3d.add(rightbottom, {MAX_BUILDING_WIDTH * TILE_SIZE, 0, -(MAX_BUILDING_HEIGHT * TILE_SIZE)})
 
     local ltCoord = self:get_coord_by_position(lefttop) or {0, 0}
-    local rbCoord = self:get_coord_by_position(rightbottom) or {self._coord_bounds[2][1], self._coord_bounds[2][2]}
+    local rbCoord = self:get_coord_by_position(rightbottom) or {COORD_BOUNDARY[2][1], COORD_BOUNDARY[2][2]}
 
     local ltGridCoord = {_get_gridxy(ltCoord[1], ltCoord[2])}
     local rbGridCoord = {_get_gridxy(rbCoord[1], rbCoord[2])}
@@ -221,21 +213,20 @@ function terrain:enable_terrain(lefttop, rightbottom)
 end
 
 function terrain:verify_coord(x, y)
-    local coord_bounds = self._coord_bounds
-    if x < coord_bounds[1][1] or x > coord_bounds[2][1] then
+    if x < COORD_BOUNDARY[1][1] or x > COORD_BOUNDARY[2][1] then
         return false
     end
-    if y < coord_bounds[1][2] or y > coord_bounds[2][2] then
+    if y < COORD_BOUNDARY[1][2] or y > COORD_BOUNDARY[2][2] then
         return false
     end
     return true
 end
 
 function terrain:bound_coord(x, y)
-    x = math.max(x, self._coord_bounds[1][1])
-    x = math.min(x, self._coord_bounds[2][1])
-    y = math.max(y, self._coord_bounds[1][2])
-    y = math.min(y, self._coord_bounds[2][2])
+    x = math.max(x, COORD_BOUNDARY[1][1])
+    x = math.min(x, COORD_BOUNDARY[2][1])
+    y = math.max(y, COORD_BOUNDARY[1][2])
+    y = math.min(y, COORD_BOUNDARY[2][2])
     return x, y
 end
 
@@ -248,14 +239,11 @@ function terrain:move_coord(x, y, dir, dx, dy)
 end
 
 function terrain:get_begin_position_by_coord(x, y)
-    local coord_bounds = self._coord_bounds
-    local origin = self._origin
-
     if not self:verify_coord(x, y) then
-        log.error(("out of bounds (%s,%s) : (%s) - (%s)"):format(x, y, table.concat(coord_bounds[1], ","), table.concat(coord_bounds[2], ",")))
+        log.error(("out of bounds (%s,%s) : (%s) - (%s)"):format(x, y, table.concat(COORD_BOUNDARY[1], ","), table.concat(COORD_BOUNDARY[2], ",")))
         return
     end
-    return {origin[1] + (x * TILE_SIZE), SURFACE_HEIGHT, origin[2] - (y * TILE_SIZE)}
+    return {ORIGIN[1] + (x * TILE_SIZE), SURFACE_HEIGHT, ORIGIN[2] - (y * TILE_SIZE)}
 end
 
 -- return the position of the center of the entity
@@ -272,7 +260,7 @@ end
 function terrain:align(position, w, h)
     -- equivalent to: math3d.vector {math3d.index(position, 1) - (w / 2 * TILE_SIZE), math3d.index(position, 2), math3d.index(position, 3) + (h / 2 * TILE_SIZE)}
     local begin_position = math3d.muladd(1/2*TILE_SIZE, math3d.vector(-w, 0.0, h), position)
-    local coord = _get_coord_by_position(self, begin_position)
+    local coord = _get_coord_by_position(begin_position)
     if not coord then
         return
     end
@@ -286,7 +274,7 @@ function terrain:align(position, w, h)
 end
 
 function terrain:get_coord_by_position(position)
-    return _get_coord_by_position(self, position)
+    return _get_coord_by_position(position)
 end
 
 return terrain

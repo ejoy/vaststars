@@ -252,7 +252,7 @@ local __handle_drop_camera; do
             end
         end
 
-        if starting and ending_x and ending_y then
+        if starting.v and ending_x and ending_y then
             w:extend(ce, "scene:in")
             local scene = ce.scene
 
