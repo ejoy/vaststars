@@ -86,6 +86,27 @@ local function focus_on_position(position)
     return iom.get_scale(ce), iom.get_rotation(ce), math3d.add(iom.get_position(ce), delta)
 end
 
+local function gen_screen_coord(vp, vr, xz_point)
+    assert(math3d.index(xz_point, 2) == 0, "xz_point's y axis should be zero!\n")
+    return mu.world_to_screen(vp, vr, xz_point)
+end
+
+local function get_world_delta(rotation, xz_point)
+    local mq = w:first("main_queue camera_ref:in render_target:in")
+    local ce <close> = world:entity(mq.camera_ref, "camera:in scene:in")
+    local vr = mq.render_target.view_rect
+
+    local vp0 = ce.camera.viewprojmat
+    local screen_point = gen_screen_coord(vp0, vr, xz_point)
+
+    local wm = math3d.matrix{s=ce.scene.s,r=rotation,t=ce.scene.t}
+    local vm = math3d.inverse(wm)
+    local vp1 = math3d.mul(ce.camera.projmat, vm)
+
+    local sx, sy = math3d.index(screen_point, 1, 2)
+    return math3d.sub(xz_point, icamera_controller.screen_to_world(sx, sy, {math3d.constant("v4", {0, 1, 0, 0})}, vp1)[1])
+end
+
 local function toggle_view(v)
     local mq = w:first("main_queue camera_ref:in")
     local e <close> = world:entity(mq.camera_ref)
@@ -102,6 +123,19 @@ local function toggle_view(v)
         local position = math3d.add(iom.get_position(e), math3d.vector(0, 0, z))
         return CAMERA_DEFAULT_SCALE, CAMERA_DEFAULT_ROTATION, position
     end
+
+--[[     local te = world:entity(127, "bounding?in")
+    local center = math3d.aabb_center_extents(te.bounding.scene_aabb)
+    local xz_point = math3d.set_index(center, 2, 0)
+    if v == "construct" then
+        local position = iom.get_position(e)
+        local world_delta = get_world_delta(CAMERA_CONSTRUCT_ROTATION, xz_point)
+        return CAMERA_CONSTRUCT_SCALE, CAMERA_CONSTRUCT_ROTATION, math3d.add(position, world_delta)
+    else
+        local position = iom.get_position(e)
+        local world_delta = get_world_delta(CAMERA_DEFAULT_ROTATION, xz_point)
+        return CAMERA_DEFAULT_SCALE, CAMERA_DEFAULT_ROTATION, math3d.add(position, world_delta)
+    end ]] 
 end
 
 local function __set_camera_from_prefab(prefab)
@@ -277,11 +311,10 @@ function camera_controller:camera_usage()
 end
 
 -- the following interfaces must be called during the `camera_usage` stage
-function icamera_controller.screen_to_world(x, y, planes)
+function icamera_controller.screen_to_world(x, y, planes, vp)
     local mq = w:first("main_queue render_target:in camera_ref:in")
     local ce <close> = world:entity(mq.camera_ref, "camera:in")
-    local vpmat = ce.camera.viewprojmat
-
+    local vpmat = vp and vp or ce.camera.viewprojmat
     local vr = mq.render_target.view_rect
     local nx, ny = mu.remap_xy(x, y, vr.ratio)
     local ndcpt = mu.pt2D_to_NDC({nx, ny}, vr)
