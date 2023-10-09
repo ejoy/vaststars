@@ -314,7 +314,7 @@ local function new_entity(self, datamodel, typeobject)
         if iprototype.has_types(typeobject.type, "station") then
             self.grid_entity = igrid_entity.create(terrain._width // ROAD_SIZE, terrain._height // ROAD_SIZE, terrain.tile_size * ROAD_SIZE, {t = __calc_grid_position(self, typeobject, self.pickup_object.dir)})
         else
-            self.grid_entity = igrid_entity.create(terrain.tile_width, terrain.tile_height, terrain.tile_size, {t = __calc_grid_position(self, typeobject, self.pickup_object.dir)})
+            self.grid_entity = igrid_entity.create(terrain._width, terrain._height, terrain.tile_size, {t = __calc_grid_position(self, typeobject, self.pickup_object.dir)})
         end
     end
 
