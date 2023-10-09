@@ -41,7 +41,7 @@ local function _hash(x, y)
 end
 
 local function _get_gridxy(x, y)
-    return math.floor(x / GRID_WIDTH) + 1, math.floor(y / GRID_HEIGHT) + 1
+    return (x // GRID_WIDTH) + 1, (y // GRID_HEIGHT) + 1
 end
 
 local function _get_coord_by_position(self, position)
@@ -91,11 +91,9 @@ function terrain:create()
     local function gen_group_id()
         return setmetatable({}, {
             __index = function (tt, k)
-                if not rawget(tt, k) then
-                    local o = "TERRAIN_GROUP_" .. k
-                    local gid = ig.register(o)
-                    tt[k] = gid
-                end
+                local o = "TERRAIN_GROUP_" .. k
+                local gid = ig.register(o)
+                tt[k] = gid
                 return tt[k]
         end})
     end
