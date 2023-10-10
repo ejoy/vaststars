@@ -148,7 +148,7 @@
                         <div style = "width: 100%; height: 100%; align-items: center; justify-content: center;">
                             <button-pic style = "border-radius: 50%; width: 13.40vmin; height: 13.40vmin;" data-style-background-image = "it.icon" data-style-transform = "it.transform_inner" data-if = "not it.unknown" />
                             <button-pic style = "width: 9.96vmin; height: 9.96vmin; flex-direction: column; justify-content: flex-end; align-items: center;" data-if = "not it.unknown and it.count ~= ''" data-style-transform = "it.transform_inner">
-                                <div style = "color: rgb(255, 255, 255); font-size: 3vmin; -webkit-text-stroke: 0.3vmin rgb(63, 60, 63);">{{it.count}}</div>
+                                <div style = "font-size: 3.5vmin; -webkit-text-stroke: 0.3vmin rgb(63, 60, 63);" data-style-color = "it.count == 0 and 'rgb(255,0,0)' or 'rgb(255,255,255)'">{{it.count}}</div>
                             </button-pic>
                             <button-pic style = "width: 9.96vmin; height: 9.96vmin; background-image: /pkg/vaststars.resources/ui/textures/build/main-button-unknown.texture" data-if = "it.unknown" data-style-transform = "it.transform_inner" />
                         </div>
