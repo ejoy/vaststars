@@ -35,7 +35,8 @@ function m:init_world()
 	ltask.call(web, "start", {
 		port = 9000,
 		cgi = {
-			info = "vaststars.webcgi",
+			info = "vaststars.webcgi|info",
+			upload = "vaststars.webcgi|upload",
 		},
 		route = {
 			vfs = "/",
