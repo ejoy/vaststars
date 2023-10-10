@@ -693,12 +693,27 @@ local prototype = gameplay.register.prototype
     time = "4s"
   }
 
+  prototype "恢复物流" {
+    desc = "维修2座物流站",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = { "task" },
+    task = {"stat_production", 0, "物流站"},
+    prerequisites = {"物流学1"},
+    count = 2,
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "使用组装机维修2座物流站", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
   prototype "放置送货物流站" {
     desc = "放置1座物流站作为送货站",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"select_entity", 0, "物流站"},
-    prerequisites = {"物流学1"},
+    prerequisites = {"恢复物流"},
     count = 1,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
