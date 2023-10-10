@@ -26,8 +26,6 @@ local icamera_controller = {}
 local ui_message_move_camera_mb = world:sub {"ui_message", "move_camera"}
 local gesture_pinch = world:sub {"gesture", "pinch"}
 local gesture_pan = world:sub {"gesture", "pan"}
-local game_camera_lock_mb = world:sub {"game_camera", "lock"}
-local game_camera_unlock_mb = world:sub {"game_camera", "unlock"}
 
 local datalist = require "datalist"
 local fs = require "filesystem"
@@ -55,6 +53,7 @@ local CAMERA_ZAIXS_MAX <const> = 800
 
 local cam_cmd_queue = create_queue()
 local cam_motion_matrix_queue = create_queue()
+local LockAxis
 
 local function __clamp(v, min, max)
     return math_max(min, math_min(v, max))
@@ -230,17 +229,8 @@ end
 
 local __handle_drop_camera; do
     local starting = math3d.ref()
-    local lock
 
     function __handle_drop_camera(ce)
-        for _, _, axis in game_camera_lock_mb:unpack() do
-            lock = axis
-        end
-
-        for _ in game_camera_unlock_mb:unpack() do
-            lock = nil
-        end
-
         local ending_x, ending_y
         for _, _, e in gesture_pan:unpack() do
             if __check_camera_editable() then
@@ -260,10 +250,10 @@ local __handle_drop_camera; do
             local delta_vec = math3d.sub(starting, ending)
             local pos = math3d.add(scene.t, delta_vec)
 
-            if lock then
-                if lock == "x-axis" then
+            if LockAxis then
+                if LockAxis == "x-axis" then
                     pos = math3d.set_index(pos, 1, math3d.index(scene.t, 1))
-                elseif lock == "z-axis" then
+                elseif LockAxis == "z-axis" then
                     pos = math3d.set_index(pos, 3, math3d.index(scene.t, 3))
                 else
                     assert(false)
@@ -375,6 +365,14 @@ function icamera_controller.toggle_view(v, callback)
     if callback then
         cam_cmd_queue:push {{"callback", callback}}
     end
+end
+
+function icamera_controller.lock_axis(v)
+    LockAxis = v
+end
+
+function icamera_controller.unlock_axis()
+    LockAxis = nil
 end
 
 -- for debug

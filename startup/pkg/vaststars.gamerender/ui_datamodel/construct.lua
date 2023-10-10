@@ -190,7 +190,7 @@ local function __clean(datamodel)
         BeginX = 0,
         BeginY = 0,
     }
-    world:pub {"game_camera", "unlock"}
+    icamera_controller.unlock_axis()
     log.info("unlock axis")
 end
 
@@ -446,14 +446,14 @@ function M.stage_camera_usage(datamodel)
             if LockAxis and LockAxisStatus.status == false then
 				local p = move_focus(e)
 				if p then
-					world:pub {"game_camera", "lock", p}
 					log.info("lock axis ", p)
+                    icamera_controller.lock_axis(p)
 					LockAxisStatus.status = true
 				end
             end
         elseif e.state == "ended" and builder then
-            world:pub {"game_camera", "unlock"}
             log.info("unlock axis")
+            icamera_controller.unlock_axis()
             LockAxisStatus.status = false
 
             builder:touch_end(builder_datamodel)
@@ -816,7 +816,7 @@ function M.stage_camera_usage(datamodel)
             BeginX = 0,
             BeginY = 0,
         }
-        world:pub {"game_camera", "unlock"}
+        icamera_controller.unlock_axis()
         log.info("unlock axis")
     end
 
