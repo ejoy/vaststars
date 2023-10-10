@@ -35,21 +35,7 @@ local function build_mountain_masks()
     for _, v in ipairs(MOUNTAIN.mountain_coords) do
         set_masks(masks, v, 1)
     end
-
-    -- for _, v in ipairs{{125, 125, 2, 2}, {128, 128, 3, 3}, {134, 128, 4, 4}} do
-    --     set_masks(masks, v, 1)
-    -- end
-
     return masks
-end
-
-local function in_sub_range(subindices, idx, ...)
-    for range=select(1, ...), select('#', ...) do
-        local baseidx = idx // range
-        if subindices[baseidx] then
-            return true
-        end
-    end
 end
 
 local function merge_indices(indices, width, height, range)
@@ -91,9 +77,7 @@ local function build_sub_indices(masks)
 
     for idx, mask in ipairs(masks) do
         if 0 ~= mask then
-            if not in_sub_range(subindices, idx, 2, 3, 4) then
-                subindices[idx] = {sidx=1, baseidx=idx}
-            end
+            subindices[idx] = {sidx=1, baseidx=idx}
         end
     end
     return subindices
@@ -109,7 +93,7 @@ function M:create()
     --if true then return end
     local masks = build_mountain_masks()
 
-    local subindices = build_sub_indices(masks)
+    local subindices = build_sub_indices(masks);
 
     local groups = setmetatable({}, {__index=function (t, gid) local tt={}; t[gid]=tt; return tt end})
 
