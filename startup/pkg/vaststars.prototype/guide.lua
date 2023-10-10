@@ -260,7 +260,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "放置组装机",
+            "地质研究",
         },
 	},
 
@@ -274,7 +274,7 @@ local guide = {
             pop_chapter = {"第一章","自动生产"},
             guide_progress = 35,--10
             task = {
-                "组装机生产",
+                "放置组装机",
             }
         },
         prerequisites = {

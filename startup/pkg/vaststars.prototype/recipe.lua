@@ -2489,25 +2489,7 @@ prototype "维修化工厂" {
 
 -------------------------------------------
 
-
-
 prototype "地质科技包1" {
-    type = { "recipe" },
-    recipe_craft_category = "器件小型制造",
-    --recipe_category =  "器件",
-    recipe_order =  80,
-    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/geology-pack-1.texture",
-    ingredients = {
-        {"碎石", 6},
-    },
-    results = {
-        {"地质科技包", 1},
-    },
-    time = "12s",
-    description = "地质材料制造地质科技包",
-}
-
-prototype "地质科技包T1" {
     type = { "recipe" },
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
