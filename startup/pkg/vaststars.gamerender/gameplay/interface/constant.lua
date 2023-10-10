@@ -16,6 +16,7 @@ local DIRECTION <const> = {
 local M = {}
 M.MAP_WIDTH = 256
 M.MAP_HEIGHT = 256
+M.MAP_OFFSET = M.MAP_WIDTH // 2
 M.TILE_SIZE = 10
 M.ROAD_SIZE = 2
 M.ALL_DIR = {'N', 'S', 'W', 'E'}
