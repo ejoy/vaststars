@@ -2,7 +2,7 @@ local ecs, mailbox = ...
 local world = ecs.world
 
 local math3d = require "math3d"
-local PLANES <const> = {math3d.constant("v4", {0, 1, 0, 0})}
+local XZ_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local gameplay_core = require "gameplay.core"
 local iui = ecs.require "engine.system.ui_system"
@@ -468,59 +468,57 @@ function M.stage_camera_usage(datamodel)
 
         local x, y = v.x, v.y
 
-        for _, pos in ipairs(icamera_controller.screen_to_world(x, y, PLANES)) do
-            local coord = terrain:get_coord_by_position(pos)
-            if coord then
-                local o = ipick_object.blur_pick(coord[1], coord[2])
-                if o and o.class == CLASS.Lorry then
-                    if pick_lorry_id then
-                        __unpick_lorry(pick_lorry_id)
-                    end
-                    idetail.unselected()
-                    pick_lorry_id = o.id
+        local pos = icamera_controller.screen_to_world(x, y, XZ_PLANE)
+        local coord = terrain:get_coord_by_position(pos)
+        if coord then
+            local o = ipick_object.blur_pick(coord[1], coord[2])
+            if o and o.class == CLASS.Lorry then
+                if pick_lorry_id then
+                    __unpick_lorry(pick_lorry_id)
+                end
+                idetail.unselected()
+                pick_lorry_id = o.id
 
-                    if __on_pick_non_building(datamodel, o) then
-                        leave = false
-                        local lorry = ilorry.get(pick_lorry_id)
-                        if lorry then
-                            lorry:show_arrow(true)
-                        end
+                if __on_pick_non_building(datamodel, o) then
+                    leave = false
+                    local lorry = ilorry.get(pick_lorry_id)
+                    if lorry then
+                        lorry:show_arrow(true)
                     end
-                elseif o and o.class == CLASS.Object then
-                    idetail.unselected()
-                    iui.close("/pkg/vaststars.resources/ui/construct_road_or_pipe.rml") -- TODO: remove this
-                    if __on_pick_building(datamodel, o) then
-                        __unpick_lorry(pick_lorry_id)
-                        pick_lorry_id = nil
-                        leave = false
-                    end
-                elseif o and (o.class == CLASS.Mineral or o.class == CLASS.Mountain or o.class == CLASS.Road)then
-                    idetail.unselected()
-                    iui.close("/pkg/vaststars.resources/ui/construct_road_or_pipe.rml") -- TODO: remove this
-                    if __on_pick_non_building(datamodel, o) then
-                        __unpick_lorry(pick_lorry_id)
-                        pick_lorry_id = nil
-                        leave = false
-                    end
-                else
+                end
+            elseif o and o.class == CLASS.Object then
+                idetail.unselected()
+                iui.close("/pkg/vaststars.resources/ui/construct_road_or_pipe.rml") -- TODO: remove this
+                if __on_pick_building(datamodel, o) then
                     __unpick_lorry(pick_lorry_id)
                     pick_lorry_id = nil
-
-                    idetail.unselected()
+                    leave = false
                 end
-                break
+            elseif o and (o.class == CLASS.Mineral or o.class == CLASS.Mountain or o.class == CLASS.Road)then
+                idetail.unselected()
+                iui.close("/pkg/vaststars.resources/ui/construct_road_or_pipe.rml") -- TODO: remove this
+                if __on_pick_non_building(datamodel, o) then
+                    __unpick_lorry(pick_lorry_id)
+                    pick_lorry_id = nil
+                    leave = false
+                end
+            else
+                __unpick_lorry(pick_lorry_id)
+                pick_lorry_id = nil
+
+                idetail.unselected()
             end
+            break
         end
     end
 
     local function __get_building(x, y)
-        for _, pos in ipairs(icamera_controller.screen_to_world(x, y, PLANES)) do
-            local coord = terrain:get_coord_by_position(pos)
-            if coord then
-                local r = objects:coord(coord[1], coord[2], EDITOR_CACHE_NAMES)
-                if r then
-                    return r
-                end
+        local pos = icamera_controller.screen_to_world(x, y, XZ_PLANE)
+        local coord = terrain:get_coord_by_position(pos)
+        if coord then
+            local r = objects:coord(coord[1], coord[2], EDITOR_CACHE_NAMES)
+            if r then
+                return r
             end
         end
     end

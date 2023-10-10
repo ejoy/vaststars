@@ -29,7 +29,10 @@ local function register_info()
 	end
 end
 
-function m:init_world()
+local function start_web()
+    if not __ANT_RUNTIME__ then
+		return
+	end
 	register_info()
 	local web = ltask.uniqueservice "ant.webserver|webserver"
 	ltask.call(web, "start", {
@@ -43,6 +46,10 @@ function m:init_world()
 		},
 		home = "/web",
 	})
+end
+
+function m:init_world()
+	start_web()
 
     if NOTHING or TERRAIN_ONLY then
         ecs.require "main_menu_manager".new_game()

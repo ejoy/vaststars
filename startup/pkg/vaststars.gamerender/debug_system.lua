@@ -7,9 +7,9 @@ local kb_mb = world:sub{"keyboard"}
 local gameplay_core = require "gameplay.core"
 local export_startup = ecs.require "export_startup"
 local gesture_tap_mb = world:sub{"gesture", "tap"}
+local gesture_mb = world:sub{"gesture"}
 local math3d = require "math3d"
-local YAXIS_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
-local PLANES <const> = {YAXIS_PLANE}
+local XZ_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
 local terrain = ecs.require "terrain"
 local icamera_controller = ecs.require "engine.system.camera_controller"
 
@@ -37,8 +37,8 @@ function debug_sys:ui_update()
 
     for _, _, v in gesture_tap_mb:unpack() do
         local x, y = v.x, v.y
-        local pos = icamera_controller.screen_to_world(x, y, {PLANES[1]})
-        local coord = terrain:get_coord_by_position(pos[1])
+        local pos = icamera_controller.screen_to_world(x, y, XZ_PLANE)
+        local coord = terrain:get_coord_by_position(pos)
         if coord then
             log.info(("gesture tap coord: (%s, %s)"):format(coord[1], coord[2]))
             log.info(("group(%s)"):format(terrain:get_group_id(coord[1], coord[2])))
@@ -53,5 +53,17 @@ function debug_sys:ui_update()
             end
         end
     end
+
+    -- local function stringify(v)
+    --     local t = {}
+    --     for k, v in pairs(v) do
+    --         t[#t+1] = ("%s = %s"):format(k, v)
+    --     end
+    --     table.sort(t, function(a, b) return a < b end)
+    --     return table.concat(t, ", ")
+    -- end
+    -- for _, type, v in gesture_mb:unpack() do
+    --     log.info(type, ",", stringify(v))
+    -- end
 end
 
