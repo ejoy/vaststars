@@ -16,9 +16,7 @@ local math_max = math.max
 local math_min = math.min
 
 local MOVE_SPEED <const> = 8.0
-
-local YAXIS_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
-local PLANES <const> = {YAXIS_PLANE}
+local XZ_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
 
 local camera_controller = ecs.system "camera_controller"
 local icamera_controller = {}
@@ -63,7 +61,7 @@ local function zoom(factor, x, y)
     local ce <close> = world:entity(irq.main_camera())
 
     local pos = iom.get_position(ce)
-    local target = icamera_controller.screen_to_world(x, y, PLANES)[1]
+    local target = icamera_controller.screen_to_world(x, y, XZ_PLANE)
     local dir = math3d.normalize(math3d.sub(target, pos))
     local pos = math3d.muladd(dir, factor * MOVE_SPEED, pos)
 
@@ -101,7 +99,7 @@ local function get_world_delta(rotation, xz_point)
     local vp1 = math3d.mul(ce.camera.projmat, vm)
 
     local sx, sy = math3d.index(screen_point, 1, 2)
-    return math3d.sub(xz_point, icamera_controller.screen_to_world(sx, sy, {math3d.constant("v4", {0, 1, 0, 0})}, vp1)[1])
+    return math3d.sub(xz_point, icamera_controller.screen_to_world(sx, sy, XZ_PLANE, vp1))
 end
 
 local function toggle_view(v)
@@ -235,7 +233,7 @@ local __handle_drop_camera; do
         for _, _, e in gesture_pan:unpack() do
             if __check_camera_editable() then
                 if e.state == "began" then
-                    starting.v = icamera_controller.screen_to_world(e.x, e.y, PLANES)[1]
+                    starting.v = icamera_controller.screen_to_world(e.x, e.y, XZ_PLANE)
                 else
                     ending_x, ending_y = e.x, e.y
                 end
@@ -246,7 +244,7 @@ local __handle_drop_camera; do
             w:extend(ce, "scene:in")
             local scene = ce.scene
 
-            local ending = icamera_controller.screen_to_world(ending_x, ending_y, PLANES)[1]
+            local ending = icamera_controller.screen_to_world(ending_x, ending_y, XZ_PLANE)
             local delta_vec = math3d.sub(starting, ending)
             local pos = math3d.add(scene.t, delta_vec)
 
@@ -284,7 +282,7 @@ function camera_controller:camera_usage()
     for _, _, left, top, position in ui_message_move_camera_mb:unpack() do
         local vr = irq.view_rect("main_queue")
         local vmin = math.min(vr.w / vr.ratio, vr.h / vr.ratio)
-        local ui_position = icamera_controller.screen_to_world(left / 100 * vmin, top / 100 * vmin, PLANES)[1]
+        local ui_position = icamera_controller.screen_to_world(left / 100 * vmin, top / 100 * vmin, XZ_PLANE)
 
         local delta = math3d.set_index(math3d.sub(position, ui_position), 2, 0) -- the camera is always moving in the x/z axis and the y axis is always 0
         iom.move_delta(ce, delta)
@@ -292,7 +290,7 @@ function camera_controller:camera_usage()
 end
 
 -- the following interfaces must be called during the `camera_usage` stage
-function icamera_controller.screen_to_world(x, y, planes, vp)
+function icamera_controller.screen_to_world(x, y, plane, vp)
     local ce <close> = world:entity(irq.main_camera(), "camera:in")
     local vpmat = vp and vp or ce.camera.viewprojmat
 
@@ -305,12 +303,7 @@ function icamera_controller.screen_to_world(x, y, planes, vp)
     local p1 = mu.ndc_to_world(vpmat, ndcpt)
 
     local ray = {o = p0, d = math3d.sub(p0, p1)}
-
-    local t = {}
-    for _, plane in ipairs(planes) do
-        t[#t + 1] = math3d.muladd(ray.d, math3d.plane_ray(ray.o, ray.d, plane), ray.o)
-    end
-    return t
+    return math3d.muladd(ray.d, math3d.plane_ray(ray.o, ray.d, plane), ray.o)
 end
 
 function icamera_controller.world_to_screen(position)
@@ -323,7 +316,7 @@ end
 function icamera_controller.get_central_position()
     local ce <close> = world:entity(irq.main_camera())
     local ray = {o = iom.get_position(ce), d = math3d.mul(math.maxinteger, iom.get_direction(ce))}
-    return math3d.muladd(ray.d, math3d.plane_ray(ray.o, ray.d, YAXIS_PLANE), ray.o)
+    return math3d.muladd(ray.d, math3d.plane_ray(ray.o, ray.d, XZ_PLANE), ray.o)
 end
 
 function icamera_controller.get_interset_points()
