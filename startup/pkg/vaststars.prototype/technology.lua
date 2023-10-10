@@ -682,8 +682,8 @@ local prototype = gameplay.register.prototype
     type = { "tech" },
     icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
     effects = {
-      unlock_recipe = {"维修停车站"},
-      unlock_item = {"停车站框架"},
+      unlock_recipe = {"维修停车站","维修物流站"},
+      unlock_item = {"停车站框架","物流站框架"},
     },
     prerequisites = {"通向铁矿"},
     ingredients = {

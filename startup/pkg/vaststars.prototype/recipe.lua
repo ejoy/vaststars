@@ -2332,11 +2332,29 @@ prototype "维修运输汽车" {
     description = "修复破损的运输汽车",
 }
 
-prototype "维修停车站" {
+
+prototype "维修物流站" {
     type = { "recipe" },
     recipe_craft_category = "建筑打印",
     recipe_category =  "加工",
     recipe_order =  55,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/goodsstation-input-design.texture",
+    ingredients = {
+        {"铁齿轮", 2},
+        {"物流站框架", 1},
+    },
+    results = {
+        {"物流站", 1},
+    },
+    time = "5s",
+    description = "维修破损的停车站",
+}
+
+prototype "维修停车站" {
+    type = { "recipe" },
+    recipe_craft_category = "建筑打印",
+    recipe_category =  "加工",
+    recipe_order =  56,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/goodsstation-input-design.texture",
     ingredients = {
         {"石砖", 4},
@@ -2349,11 +2367,12 @@ prototype "维修停车站" {
     description = "维修破损的停车站",
 }
 
+
 prototype "维修空气过滤器" {
     type = { "recipe" },
     recipe_craft_category = "建筑打印",
     recipe_category =  "加工",
-    recipe_order =  56,
+    recipe_order =  57,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/gas-separate.texture",
     ingredients = {
         {"铁棒", 5},
