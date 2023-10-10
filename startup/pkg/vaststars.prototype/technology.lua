@@ -719,7 +719,7 @@ local prototype = gameplay.register.prototype
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "在邻近铁矿和铝矿区的公路边放置1座物流站", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "铁矿和铝矿区的公路边放置1座物流站并设置发货类型", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -734,7 +734,7 @@ local prototype = gameplay.register.prototype
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "在邻近生产地质科技包组装机的公路边放置1座物流站", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "在生产地质科技包组装机的公路边放置1座物流站并设置收货类型", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
