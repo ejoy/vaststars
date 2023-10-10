@@ -30,18 +30,20 @@ local function register_info()
 end
 
 function m:init_world()
-	register_info()
-	local web = ltask.uniqueservice "ant.webserver|webserver"
-	ltask.call(web, "start", {
-		port = 9000,
-		cgi = {
-			info = "vaststars.webcgi",
-		},
-		route = {
-			vfs = "/",
-		},
-		home = "/web",
-	})
+    if __ANT_RUNTIME__ then
+        register_info()
+        local web = ltask.uniqueservice "ant.webserver|webserver"
+        ltask.call(web, "start", {
+            port = 9000,
+            cgi = {
+                info = "vaststars.webcgi",
+            },
+            route = {
+                vfs = "/",
+            },
+            home = "/web",
+        })
+    end
 
     if NOTHING or TERRAIN_ONLY then
         ecs.require "main_menu_manager".new_game()
