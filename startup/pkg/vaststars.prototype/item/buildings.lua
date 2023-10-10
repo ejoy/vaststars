@@ -679,7 +679,7 @@ prototype "砖石公路-X型" {
     type = {"item"},
     item_category = "物流",
     station_limit = 16,
-    hub_limit = 64,
+    hub_limit = 60,
     backpack_limit = 100,
     item_order = 2,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/road.texture",
