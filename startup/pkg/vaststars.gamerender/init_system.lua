@@ -40,6 +40,7 @@ local function start_web()
 		cgi = {
 			info = "vaststars.webcgi|info",
 			upload = "vaststars.webcgi|upload",
+			texture = "vaststars.webcgi|texture",
 		},
 		route = {
 			vfs = "/",
