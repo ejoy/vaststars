@@ -99,7 +99,7 @@ return function(start)
     -- end
 
     if spec[start.prototype_name] then
-        spec[start.prototype_name](start, BUILDING_MENU_POSITIONS, DEFAULT)
+        spec[start.prototype_name](start, DEFAULT_OFFSETS, DEFAULT)
         return
     end
 
