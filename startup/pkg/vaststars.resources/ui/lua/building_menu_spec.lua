@@ -56,6 +56,62 @@ t["采矿机III"] = function(start, offsets, DEFAULT)
     show_buttons(start, offsets)
 end
 
+t["机身残骸"] = function(start, offsets, DEFAULT)
+    start.buttons = {}
+    if start.pickup_item then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.command = "pickup_item"
+        v.number = start.pickup_item_count
+        v.show_number = true
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/pickup-item.texture"
+        start.buttons[#start.buttons + 1] = v
+    end
+
+    show_buttons(start, offsets)
+end
+
+t["机翼残骸"] = function(start, offsets, DEFAULT)
+    start.buttons = {}
+    if start.pickup_item then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.command = "pickup_item"
+        v.number = start.pickup_item_count
+        v.show_number = true
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/pickup-item.texture"
+        start.buttons[#start.buttons + 1] = v
+    end
+
+    show_buttons(start, offsets)
+end
+
+t["机头残骸"] = function(start, offsets, DEFAULT)
+    start.buttons = {}
+    if start.pickup_item then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.command = "pickup_item"
+        v.number = start.pickup_item_count
+        v.show_number = true
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/pickup-item.texture"
+        start.buttons[#start.buttons + 1] = v
+    end
+
+    show_buttons(start, offsets)
+end
+
+t["机尾残骸"] = function(start, offsets, DEFAULT)
+    start.buttons = {}
+    if start.pickup_item then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.command = "pickup_item"
+        v.number = start.pickup_item_count
+        v.show_number = true
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/pickup-item.texture"
+        start.buttons[#start.buttons + 1] = v
+    end
+
+    show_buttons(start, offsets)
+end
+
 t["空气过滤器I"] = function(start, offsets, DEFAULT)
     start.buttons = {}
     show_buttons(start, offsets)
