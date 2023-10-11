@@ -172,7 +172,7 @@ local prototype = gameplay.register.prototype
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "无人机平台物品设置为“碎石”", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "仓库设置收货选择“碎石”", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -373,20 +373,6 @@ local prototype = gameplay.register.prototype
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_click_build.texture",
     },
-    -- guide_focus = {
-    --   {
-    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-    --     x = 130,
-    --     y = 115.8,
-    --     w = 1.8,
-    --     h = 1.8,
-    --     show_arrow = true,
-    --   },
-    --   {
-    --     camera_x = 128,
-    --     camera_y = 121,
-    --   },
-    -- },
     sign_desc = {
       { desc = "放置1座科研中心", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
@@ -423,7 +409,7 @@ local prototype = gameplay.register.prototype
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "仓库物品设置为“地质科技包”", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "仓库设置收货选择“地质科技包”", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
