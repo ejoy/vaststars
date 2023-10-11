@@ -383,7 +383,7 @@ local function move_focus(e)
 	end
 end
 
-function M.stage_camera_usage(datamodel)
+function M.update(datamodel)
     for _ in rotate_mb:unpack() do
         if builder and builder.rotate then
             builder:rotate(builder_datamodel)
@@ -437,26 +437,31 @@ function M.stage_camera_usage(datamodel)
     for _, _, e in gesture_pan_mb:unpack() do
         if e.state == "began" then
             iui.leave()
-            if builder and LockAxis and LockAxisStatus.status == false then
-                log.info("lock axis begin", e.x, e.y)
-				LockAxisStatus.BeginX, LockAxisStatus.BeginY = e.x, e.y
-				LockAxisStatus.count = 0
-            end
-        elseif e.state == "changed" and builder then
-            if LockAxis and LockAxisStatus.status == false then
-				local p = move_focus(e)
-				if p then
-					log.info("lock axis ", p)
-                    icamera_controller.lock_axis(p)
-					LockAxisStatus.status = true
-				end
-            end
-        elseif e.state == "ended" and builder then
-            log.info("unlock axis")
-            icamera_controller.unlock_axis()
-            LockAxisStatus.status = false
+        end
 
-            builder:touch_end(builder_datamodel)
+        if builder then
+            if e.state == "began" then
+                if LockAxis and LockAxisStatus.status == false then
+                    log.info("lock axis begin", e.x, e.y)
+                    LockAxisStatus.BeginX, LockAxisStatus.BeginY = e.x, e.y
+                    LockAxisStatus.count = 0
+                end
+            elseif e.state == "changed" then
+                if LockAxisStatus.status == false then
+                    local p = move_focus(e)
+                    if p then
+                        log.info("lock axis ", p)
+                        icamera_controller.lock_axis(p)
+                        LockAxisStatus.status = true
+                    end
+                end
+            elseif e.state == "ended" then
+                log.info("unlock axis")
+                icamera_controller.unlock_axis()
+                LockAxisStatus.status = false
+
+                builder:touch_end(builder_datamodel)
+            end
         end
     end
 

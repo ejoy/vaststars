@@ -21,7 +21,6 @@ local XZ_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
 local camera_controller = ecs.system "camera_controller"
 local icamera_controller = {}
 
-local ui_message_move_camera_mb = world:sub {"ui_message", "move_camera"}
 local gesture_pinch = world:sub {"gesture", "pinch"}
 local gesture_pan = world:sub {"gesture", "pan"}
 
@@ -278,15 +277,6 @@ function camera_controller:camera_usage()
 
     __handle_drop_camera(ce)
     __handle_camera_motion()
-
-    for _, _, left, top, position in ui_message_move_camera_mb:unpack() do
-        local vr = irq.view_rect("main_queue")
-        local vmin = math.min(vr.w / vr.ratio, vr.h / vr.ratio)
-        local ui_position = icamera_controller.screen_to_world(left / 100 * vmin, top / 100 * vmin, XZ_PLANE)
-
-        local delta = math3d.set_index(math3d.sub(position, ui_position), 2, 0) -- the camera is always moving in the x/z axis and the y axis is always 0
-        iom.move_delta(ce, delta)
-    end
 end
 
 -- the following interfaces must be called during the `camera_usage` stage

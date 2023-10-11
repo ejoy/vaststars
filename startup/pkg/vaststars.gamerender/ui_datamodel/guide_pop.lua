@@ -18,7 +18,7 @@ function M.create(desc)
     }
 end
 
-function M.stage_camera_usage(datamodel)
+function M.update(datamodel)
     for _ in story_click_mb:unpack() do
         local speech = guide_desc.narrative
         local count = datamodel.count + 1

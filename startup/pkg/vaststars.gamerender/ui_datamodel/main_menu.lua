@@ -13,7 +13,7 @@ function M.create()
     return {}
 end
 
-function M.stage_camera_usage(datamodel)
+function M.update(datamodel)
     for _ in statistical_data_mb:unpack() do
         iui.open({rml = "/pkg/vaststars.resources/ui/statistics.rml"})
     end

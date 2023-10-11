@@ -590,7 +590,7 @@ local function update_power(power)
     step_frame_head(st)
 end
 
-function M.stage_camera_usage(datamodel, object_id)
+function M.update(datamodel, object_id)
     if model_ready and model_inst then
         update_model(model_inst)
     end

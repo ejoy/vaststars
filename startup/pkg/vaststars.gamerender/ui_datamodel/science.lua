@@ -116,7 +116,7 @@ function M.create(object_id)
     }
 end
 
-function M.stage_camera_usage(datamodel)
+function M.update(datamodel)
     local function set_current_tech(tech)
         if current_tech == tech then
             return

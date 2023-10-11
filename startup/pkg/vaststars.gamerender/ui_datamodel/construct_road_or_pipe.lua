@@ -45,7 +45,7 @@ function M.create(prototype_name, kv)
     return datamodel
 end
 
-function M.stage_camera_usage(datamodel, prototype_name)
+function M.update(datamodel, prototype_name)
     event_handler(prototype_name)
 
     for _ in click_main_button_mb:unpack() do

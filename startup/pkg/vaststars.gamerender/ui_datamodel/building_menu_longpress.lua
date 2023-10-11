@@ -29,7 +29,7 @@ function M.create(object_id)
     return datamodel
 end
 
-function M.stage_camera_usage(datamodel, object_id)
+function M.update(datamodel, object_id)
     for _ in move_mb:unpack() do
         iui.leave()
         iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "move", object_id)

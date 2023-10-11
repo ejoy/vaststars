@@ -17,7 +17,7 @@ function M.create(content)
     }
 end
 
-function M.stage_camera_usage(datamodel)
+function M.update(datamodel)
     for _ in close_mb:unpack() do
         iguide.set_running(true)
         iui.close("/pkg/vaststars.resources/ui/tech_tips.rml")

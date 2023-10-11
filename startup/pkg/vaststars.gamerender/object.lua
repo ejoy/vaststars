@@ -166,7 +166,7 @@ local function move_delta(object, delta_vec)
     end
 
     local typeobject = iprototype.queryByName(object.prototype_name)
-    local position = math3d.ref(math3d.add(object.srt.t, delta_vec))
+    local position = math3d.add(object.srt.t, delta_vec)
     local coord = terrain:align(position, iprototype.rotate_area(typeobject.area, object.dir))
     if not coord then
         log.error(("can not get coord"))
@@ -174,7 +174,7 @@ local function move_delta(object, delta_vec)
     end
 
     object.x, object.y = coord[1], coord[2]
-    object.srt.t = position
+    object.srt.t.v = position
     return object
 end
 

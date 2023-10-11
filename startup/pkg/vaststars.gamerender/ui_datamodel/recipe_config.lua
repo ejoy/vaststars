@@ -111,7 +111,7 @@ function M.create(gameplay_eid)
     return datamodel
 end
 
-function M.stage_camera_usage(datamodel, gameplay_eid)
+function M.update(datamodel, gameplay_eid)
     for _, _, _, category_idx, recipe_idx in click_recipe_mb:unpack() do
         __set_recipe_value(datamodel, datamodel.category_idx, datamodel.recipe_idx, "selected", false)
         __set_recipe_value(datamodel, category_idx, recipe_idx, "selected", true)

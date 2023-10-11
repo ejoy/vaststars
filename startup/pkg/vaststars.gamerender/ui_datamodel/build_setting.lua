@@ -155,7 +155,7 @@ function M.create()
     return datamodel
 end
 
-function M.stage_camera_usage(datamodel)
+function M.update(datamodel)
     for _, _, _, category_idx, item_idx in click_item_mb:unpack() do
         if datamodel.category_idx == category_idx and datamodel.item_idx == item_idx then
             __set_item_value(datamodel, category_idx, item_idx, "selected", false)

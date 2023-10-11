@@ -50,7 +50,7 @@ local updateLorryIcon = interval_call(300, function(datamodel, gameplay_eid)
     end
 end)
 
-function M.stage_camera_usage(datamodel, icon, name, gameplay_eid)
+function M.update(datamodel, icon, name, gameplay_eid)
     updateLorryIcon(datamodel, gameplay_eid)
 end
 

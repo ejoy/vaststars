@@ -195,7 +195,7 @@ local filter_interval = {
     ["10m"] = 12.0,
     ["1h"] = 72.0,
 }
-function M.stage_camera_usage(datamodel)
+function M.update(datamodel)
     local gid = iUiRt.get_group_id("statistic_chart")
     if gid and canvas_size_w == 0 then
         ig.enable(gid, "view_visible", true)

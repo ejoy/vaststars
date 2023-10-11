@@ -23,7 +23,7 @@ function M.create(prototype_name)
     }
 end
 
-function M.stage_camera_usage(datamodel)
+function M.update(datamodel)
     for _ in quit_mb:unpack() do
         iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "quit")
     end

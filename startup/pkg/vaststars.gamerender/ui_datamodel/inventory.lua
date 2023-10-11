@@ -67,7 +67,7 @@ function M.create()
     }
 end
 
-function M.stage_camera_usage(datamodel)
+function M.update(datamodel)
     for _, _, _, category_idx, item_idx in click_item_mb:unpack() do
         if datamodel.category_idx == category_idx and datamodel.item_idx == item_idx then
             set_item_value(datamodel, category_idx, item_idx, "selected", false)
@@ -118,7 +118,7 @@ function M.stage_camera_usage(datamodel)
     end
 end
 
-function M.update(datamodel)
+function M.update_inventory(datamodel)
     datamodel.inventory = get_inventory()
 end
 

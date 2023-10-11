@@ -41,7 +41,7 @@ function M.create()
     }
 end
 
-function M.stage_camera_usage(datamodel)
+function M.update(datamodel)
     for _ in save_mb:unpack() do
         if saveload:backup() then
             iui.close("/pkg/vaststars.resources/ui/option_pop.rml")

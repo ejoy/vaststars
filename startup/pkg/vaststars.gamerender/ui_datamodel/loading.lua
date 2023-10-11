@@ -187,7 +187,7 @@ function M.create()
     }
 end
 
-function M.stage_camera_usage(datamodel)
+function M.update(datamodel)
     if status_stopped() then
         iui.close("/pkg/vaststars.resources/ui/loading.rml")
         return

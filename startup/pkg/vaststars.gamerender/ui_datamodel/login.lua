@@ -21,7 +21,7 @@ function M.create()
     }
 end
 
-function M.stage_camera_usage(datamodel)
+function M.update(datamodel)
     for _ in continue_mb:unpack() do
         iui.close("/pkg/vaststars.resources/ui/login.rml")
         continue_game()

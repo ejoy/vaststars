@@ -129,7 +129,7 @@ function M.create(gameplay_eid, interface)
     return datamodel
 end
 
-function M.stage_camera_usage(datamodel, gameplay_eid, interface)
+function M.update(datamodel, gameplay_eid, interface)
     for _, _, _, category_idx, item_idx, set_type in set_item_mb:unpack() do
         assert(datamodel.items[category_idx])
         assert(datamodel.items[category_idx].items[item_idx])

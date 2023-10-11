@@ -289,7 +289,7 @@ local function chest_remove_item(gameplay_world, e, slot_index)
     iGameplayChest.chest_set(gameplay_world, e, items)
 end
 
-function M.stage_camera_usage(datamodel, gameplay_eid)
+function M.update(datamodel, gameplay_eid)
     local e = assert(gameplay_core.get_entity(gameplay_eid))
     local typeobject
     if e.lorry then

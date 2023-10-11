@@ -9,7 +9,6 @@ local iom           = ecs.require "ant.objcontroller|obj_motion"
 local irl		    = ecs.require "ant.render|render_layer.render_layer"
 
 local imaterial = ecs.require "ant.asset|material"
-local iani = ecs.require "ant.animation|state_machine"
 local iupdate = ecs.require "update_system"
 
 local DELTA_TIME <const> = require("gameplay.interface.constant").DELTA_TIME

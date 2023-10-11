@@ -7,14 +7,12 @@ local tracedoc = require "utility.tracedoc"
 local table_unpack = table.unpack
 local fs = require "filesystem"
 
-local ui_message_mb = world:sub {"ui_message"}
-
 local windowBindings = {} -- = {[rml] = { w = xx, datamodel = xx, }, ...}
 local changedWindows = {}
 local windowListeners = {}
 local closeWindows = {}
 local leaveWindows = {}
-local stage_camera_usage = {}
+local updateWindows = {}
 
 local guide_progress = 0
 
@@ -113,8 +111,8 @@ local function open(v, ...)
     binding.datamodel.guide_progress = guide_progress
     binding.template.flush()
 
-    if binding.template.stage_camera_usage then
-        stage_camera_usage[rml] = true
+    if binding.template.update then
+        updateWindows[rml] = true
     end
 
     return binding.datamodel
@@ -126,13 +124,20 @@ end
 
 local ui_system = ecs.system "ui_system"
 function ui_system.ui_update()
-    for rml in pairs(stage_camera_usage) do
+    for rml in pairs(updateWindows) do
         if not closeWindows[rml] then
             local binding = windowBindings[rml]
-            binding.template.stage_camera_usage(binding.datamodel, table_unpack(binding.param))
+            binding.template.update(binding.datamodel, table_unpack(binding.param))
             if tracedoc.changed(binding.datamodel) then
                 changedWindows[rml] = true
             end
+        end
+    end
+
+    for rml in pairs(changedWindows) do
+        if not closeWindows[rml] then
+            local binding = assert(windowBindings[rml])
+            binding.template.flush()
         end
     end
 
@@ -146,29 +151,10 @@ function ui_system.ui_update()
             binding.window:close()
             windowBindings[rml] = nil
             changedWindows[rml] = nil
-            stage_camera_usage[rml] = nil
+            updateWindows[rml] = nil
         end
     end
     closeWindows = {}
-
-    -- world to rmlui
-    for msg in ui_message_mb:each() do
-        for _, binding in pairs(windowBindings) do
-            local ud = {}
-            ud.event = msg[2]
-            ud.ud = {table_unpack(msg, 3, #msg)}
-            binding.window.postMessage(ud)
-        end
-    end
-
-    for rml in pairs(changedWindows) do
-        if not closeWindows[rml] then
-            local binding = windowBindings[rml]
-            if binding then
-                binding.template.flush()
-            end
-        end
-    end
 end
 
 function ui_system.exit()
@@ -223,10 +209,8 @@ function iui.call_datamodel_method(rml, event, ...)
         return
     end
 
-    func(binding.datamodel, ...)
-    if tracedoc.changed(binding.datamodel) then
-        changedWindows[rml] = true
-    end
+    changedWindows[rml] = true
+    return func(binding.datamodel, ...)
 end
 
 function iui.set_guide_progress(progress)
@@ -258,7 +242,7 @@ end
 function iui.leave()
     for rml in pairs(windowBindings) do
         if leaveWindows[rml] then
-            iui.close(rml)
+            close(rml)
         end
     end
 end

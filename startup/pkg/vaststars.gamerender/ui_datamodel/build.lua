@@ -93,7 +93,7 @@ function M.create()
     }
 end
 
-function M.stage_camera_usage(datamodel)
+function M.update(datamodel)
     for _, _, _, index in click_button_mb:unpack() do
         local shortcut = assert(datamodel.shortcut[index])
         if shortcut.unknown == true then

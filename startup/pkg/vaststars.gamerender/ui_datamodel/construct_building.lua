@@ -28,7 +28,7 @@ function M.create(show_rotate)
     }
 end
 
-function M.stage_camera_usage(datamodel)
+function M.update(datamodel)
     event_handler()
 end
 
