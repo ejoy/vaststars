@@ -839,9 +839,6 @@ local function finish_laying(self, datamodel)
         self.dotted_line:show(false)
     end
 
-    local typeobject = iprototype.queryByName(self.coord_indicator.prototype_name)
-    self:new_entity(datamodel, typeobject)
-
     self.state = STATE_NONE
     datamodel.show_finish_laying = false
     datamodel.show_cancel = false
