@@ -2294,7 +2294,7 @@ prototype "维修无人机平台" {
     results = {
         {"无人机平台I", 1},
     },
-    time = "5s",
+    time = "4s",
     description = "维修破损的无人机平台",
 }
 
@@ -2311,7 +2311,7 @@ prototype "维修铁制电线杆" {
     results = {
         {"铁制电线杆", 1},
     },
-    time = "5s",
+    time = "2s",
     description = "修复破损的铁制电线杆",
 }
 
@@ -2328,7 +2328,7 @@ prototype "维修运输汽车" {
     results = {
         {"运输车辆I", 1},
     },
-    time = "4s",
+    time = "3s",
     description = "修复破损的运输汽车",
 }
 
@@ -2381,7 +2381,7 @@ prototype "维修空气过滤器" {
     results = {
         {"空气过滤器I", 1},
     },
-    time = "5s",
+    time = "4s",
     description = "维修破损的可过滤空气装置",
 }
 
@@ -2398,7 +2398,7 @@ prototype "维修地下水挖掘机" {
     results = {
         {"地下水挖掘机I", 1},
     },
-    time = "5s",
+    time = "4s",
     description = "维修破损的地下水挖掘装置",
 }
 
@@ -2415,7 +2415,7 @@ prototype "维修水电站" {
     results = {
         {"水电站I", 1},
     },
-    time = "5s",
+    time = "6s",
     description = "维修破损的水电站",
 }
 
@@ -2432,7 +2432,7 @@ prototype "维修组装机" {
     results = {
         {"组装机I", 1},
     },
-    time = "5s",
+    time = "4s",
     description = "修复破损的组装机",
 }
 
