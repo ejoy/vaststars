@@ -86,6 +86,8 @@ local LockAxisStatus = {
     BeginY = 0,
 }
 
+local Mode
+
 local function __on_pick_building(datamodel, o)
     local object = o.object
     if excluded_pickup_id and excluded_pickup_id == object.id then
@@ -140,12 +142,6 @@ local function __on_pick_non_building(datamodel, o, force)
     return true
 end
 
-local function __on_pick_ground(datamodel)
-    iui.open({rml = "/pkg/vaststars.resources/ui/main_menu.rml"})
-    gameplay_core.world_update = false
-    return true
-end
-
 local function __unpick_lorry(lorry_id)
     local lorry = ilorry.get(lorry_id)
     if lorry then
@@ -163,16 +159,19 @@ local function __switch_status(s, cb)
     end
     status = s
 
+    local pos = icamera_controller.get_central_position()
+    pos = math3d.set_index(pos, 2, 0)
+
     if status == "default" then
-        icamera_controller.toggle_view("default", cb)
+        icamera_controller.toggle_view("default", math3d.ref(pos), cb)
         igame_object.stop_world()
     elseif status == "construct" then
-        icamera_controller.toggle_view("construct", cb)
+        icamera_controller.toggle_view("construct", math3d.ref(pos), cb)
         igame_object.restart_world()
     end
 end
 
-local function __clean(datamodel)
+local function __clean(datamodel, unlock)
     if builder then
         builder:clean(builder_datamodel)
         builder, builder_datamodel = nil, nil
@@ -184,12 +183,17 @@ local function __clean(datamodel)
     iui.close("/pkg/vaststars.resources/ui/build.rml") -- TODO: remove this
     iui.close("/pkg/vaststars.resources/ui/construct_road_or_pipe.rml")
     datamodel.status = "normal"
+    iui.leave()
 
     LockAxisStatus = {
         status = false,
         BeginX = 0,
         BeginY = 0,
     }
+
+    if unlock == false then
+        return
+    end
     icamera_controller.unlock_axis()
     log.info("unlock axis")
 end
@@ -383,6 +387,53 @@ local function move_focus(e)
 	end
 end
 
+local function pickupObject(datamodel, position, func)
+    local coord = terrain:get_coord_by_position(position)
+    if not coord then
+        return false
+    end
+
+    local o = ipick_object[func](coord[1], coord[2])
+    if o and o.class == CLASS.Lorry then
+        if pick_lorry_id then
+            __unpick_lorry(pick_lorry_id)
+        end
+        idetail.unselected()
+        pick_lorry_id = o.id
+
+        if __on_pick_non_building(datamodel, o) then
+            local lorry = ilorry.get(pick_lorry_id)
+            if lorry then
+                lorry:show_arrow(true)
+            end
+            return true
+        end
+    elseif o and o.class == CLASS.Object then
+        idetail.unselected()
+        iui.close("/pkg/vaststars.resources/ui/construct_road_or_pipe.rml") -- TODO: remove this
+        if __on_pick_building(datamodel, o) then
+            __unpick_lorry(pick_lorry_id)
+            pick_lorry_id = nil
+            return true
+        end
+    elseif o and (o.class == CLASS.Mineral or o.class == CLASS.Mountain or o.class == CLASS.Road)then
+        idetail.unselected()
+        iui.close("/pkg/vaststars.resources/ui/construct_road_or_pipe.rml") -- TODO: remove this
+        if __on_pick_non_building(datamodel, o) then
+            __unpick_lorry(pick_lorry_id)
+            pick_lorry_id = nil
+            return true
+        end
+    else
+        __unpick_lorry(pick_lorry_id)
+        pick_lorry_id = nil
+
+        idetail.unselected()
+    end
+
+    return false
+end
+
 function M.update(datamodel)
     for _ in rotate_mb:unpack() do
         if builder and builder.rotate then
@@ -434,6 +485,9 @@ function M.update(datamodel)
         builder:touch_move(builder_datamodel, dragdrop_delta)
     end
 
+    local pan_changed = false
+    local longpress_startpoint
+
     for _, _, e in gesture_pan_mb:unpack() do
         if e.state == "began" then
             iui.leave()
@@ -463,79 +517,47 @@ function M.update(datamodel)
                 builder:touch_end(builder_datamodel)
             end
         end
+
+        if Mode == "pickup" then
+            if e.state == "changed" then
+                pan_changed = true
+                longpress_startpoint = {x = e.x, y = e.y}
+            elseif e.state == "ended" then
+                Mode = nil
+                longpress_startpoint = nil
+
+                local pos = icamera_controller.get_central_position()
+                pos = math3d.set_index(pos, 2, 0)
+                icamera_controller.toggle_view("default", math3d.ref(math3d.set_index(pos, 2, 0)), function()
+                    icamera_controller.unlock_axis()
+                end)
+            end
+        end
+    end
+
+    if pan_changed and longpress_startpoint then
+        __clean(datamodel, false)
+        local pos = icamera_controller.screen_to_world(longpress_startpoint.x, longpress_startpoint.y, XZ_PLANE)
+        pickupObject(datamodel, pos, "pick")
     end
 
     local leave = true
     local gesture_tap_changed = false
     for _, _, v in gesture_tap_mb:unpack() do
+        leave = false
         iui.leave()
         gesture_tap_changed = true
-
-        local x, y = v.x, v.y
-
-        local pos = icamera_controller.screen_to_world(x, y, XZ_PLANE)
-        local coord = terrain:get_coord_by_position(pos)
-        if coord then
-            local o = ipick_object.blur_pick(coord[1], coord[2])
-            if o and o.class == CLASS.Lorry then
-                if pick_lorry_id then
-                    __unpick_lorry(pick_lorry_id)
-                end
-                idetail.unselected()
-                pick_lorry_id = o.id
-
-                if __on_pick_non_building(datamodel, o) then
-                    leave = false
-                    local lorry = ilorry.get(pick_lorry_id)
-                    if lorry then
-                        lorry:show_arrow(true)
-                    end
-                end
-            elseif o and o.class == CLASS.Object then
-                idetail.unselected()
-                iui.close("/pkg/vaststars.resources/ui/construct_road_or_pipe.rml") -- TODO: remove this
-                if __on_pick_building(datamodel, o) then
-                    __unpick_lorry(pick_lorry_id)
-                    pick_lorry_id = nil
-                    leave = false
-                end
-            elseif o and (o.class == CLASS.Mineral or o.class == CLASS.Mountain or o.class == CLASS.Road)then
-                idetail.unselected()
-                iui.close("/pkg/vaststars.resources/ui/construct_road_or_pipe.rml") -- TODO: remove this
-                if __on_pick_non_building(datamodel, o) then
-                    __unpick_lorry(pick_lorry_id)
-                    pick_lorry_id = nil
-                    leave = false
-                end
-            else
-                __unpick_lorry(pick_lorry_id)
-                pick_lorry_id = nil
-
-                idetail.unselected()
-            end
-            break
-        end
-    end
-
-    local function __get_building(x, y)
-        local pos = icamera_controller.screen_to_world(x, y, XZ_PLANE)
-        local coord = terrain:get_coord_by_position(pos)
-        if coord then
-            local r = objects:coord(coord[1], coord[2], EDITOR_CACHE_NAMES)
-            if r then
-                return r
-            end
-        end
+        local pos = icamera_controller.screen_to_world(v.x, v.y, XZ_PLANE)
+        pickupObject(datamodel, pos, "blur_pick")
     end
 
     for _, _, v in gesture_longpress_mb:unpack() do
-        local x, y = v.x, v.y
-        leave = false
-        local object = __get_building(x, y)
-        if not object then
-            idetail.unselected()
-            __on_pick_ground(datamodel)
-        end
+        local pos = icamera_controller.screen_to_world(v.x, v.y, XZ_PLANE)
+        pickupObject(datamodel, pos, "pick")
+
+        Mode = "pickup"
+        icamera_controller.lock_axis("xz-axis")
+        icamera_controller.toggle_view("pickup", math3d.ref(math3d.set_index(pos, 2, 0)))
     end
 
     for _, _, _, object_id in teardown_mb:unpack() do

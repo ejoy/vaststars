@@ -26,18 +26,19 @@ local gesture_pan = world:sub {"gesture", "pan"}
 
 local datalist = require "datalist"
 local fs = require "filesystem"
-local CAMERA_DEFAULT = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/camera_default.prefab")):read "a")[1].data.scene
-local CAMERA_CONSTRUCT = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/camera_construct.prefab")):read "a")[1].data.scene
+local CAMERA_DEFAULT <const> = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/camera_default.prefab")):read "a")[1].data.scene
+local CAMERA_CONSTRUCT <const> = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/camera_construct.prefab")):read "a")[1].data.scene
+local CAMERA_PICKUP <const> = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/camera_pickup.prefab")):read "a")[1].data.scene
 
 local CAMERA_DEFAULT_SCALE    = CAMERA_DEFAULT.s and math3d.constant("v4", CAMERA_DEFAULT.s)or mc.ONE
 local CAMERA_DEFAULT_ROTATION = CAMERA_DEFAULT.r and math3d.constant("quat", CAMERA_DEFAULT.r) or mc.IDENTITY_QUAT
-local CAMERA_DEFAULT_POSITION = CAMERA_DEFAULT.t and math3d.constant("v4", CAMERA_DEFAULT.t) or mc.ZERO_PT
 
 local CAMERA_CONSTRUCT_SCALE    = CAMERA_CONSTRUCT.s and math3d.constant("v4", CAMERA_CONSTRUCT.s) or mc.ONE
 local CAMERA_CONSTRUCT_ROTATION = CAMERA_CONSTRUCT.r and math3d.constant("quat", CAMERA_CONSTRUCT.r) or mc.IDENTITY_QUAT
-local CAMERA_CONSTRUCT_POSITION = CAMERA_CONSTRUCT.t and math3d.constant("v4", CAMERA_CONSTRUCT.t) or mc.ZERO_PT
 
-local CAMERA_DELTA_Z <const> = math3d.index(math3d.sub(CAMERA_CONSTRUCT_POSITION, CAMERA_DEFAULT_POSITION), 3)
+local CAMERA_PICKUP_SCALE    = CAMERA_PICKUP.s and math3d.constant("v4", CAMERA_PICKUP.s) or mc.ONE
+local CAMERA_PICKUP_ROTATION = CAMERA_PICKUP.r and math3d.constant("quat", CAMERA_PICKUP.r) or mc.IDENTITY_QUAT
+local CAMERA_PICKUP_POSITION = CAMERA_PICKUP.t and math3d.constant("v4", CAMERA_PICKUP.t) or mc.ZERO_PT
 
 local CAMERA_DEFAULT_YAIXS <const> = CAMERA_DEFAULT.t[2]
 local CAMERA_YAIXS_MIN <const> = CAMERA_DEFAULT_YAIXS - 280
@@ -80,55 +81,39 @@ local function focus_on_position(position)
     return iom.get_scale(ce), iom.get_rotation(ce), math3d.add(iom.get_position(ce), delta)
 end
 
-local function gen_screen_coord(vp, vr, xz_point)
-    assert(math3d.index(xz_point, 2) == 0, "xz_point's y axis should be zero!\n")
-    return mu.world_to_screen(vp, vr, xz_point)
-end
-
-local function get_world_delta(rotation, xz_point)
+local function get_world_delta(rotation, xzpos)
     local mq = w:first("main_queue camera_ref:in render_target:in")
     local ce <close> = world:entity(mq.camera_ref, "camera:in scene:in")
     local vr = mq.render_target.view_rect
 
     local vp0 = ce.camera.viewprojmat
-    local screen_point = gen_screen_coord(vp0, vr, xz_point)
+    local screen_point = mu.world_to_screen(vp0, vr, xzpos)
 
     local wm = math3d.matrix{s=ce.scene.s,r=rotation,t=ce.scene.t}
     local vm = math3d.inverse(wm)
     local vp1 = math3d.mul(ce.camera.projmat, vm)
 
     local sx, sy = math3d.index(screen_point, 1, 2)
-    return math3d.sub(xz_point, icamera_controller.screen_to_world(sx, sy, XZ_PLANE, vp1))
+    return math3d.sub(xzpos, icamera_controller.screen_to_world(sx, sy, XZ_PLANE, vp1))
 end
 
-local function toggle_view(v)
+local function toggle_view(v, xzpos)
     local ce <close> = world:entity(irq.main_camera())
+    assert(math3d.index(xzpos, 2) == 0, "y axis should be zero!")
+    local position = iom.get_position(ce)
 
-    -- using the properties of similar triangles to calculate the position of the z-axis
     if v == "construct" then
-        local position = iom.get_position(ce)
-        local z = CAMERA_DELTA_Z * (math3d.index(position, 2) / math3d.index(CAMERA_DEFAULT_POSITION, 2))
-        local position = math3d.add(iom.get_position(ce), math3d.vector(0, 0, z))
-        return CAMERA_CONSTRUCT_SCALE, CAMERA_CONSTRUCT_ROTATION, position
-    else
-        local position = iom.get_position(ce)
-        local z = -CAMERA_DELTA_Z * (math3d.index(position, 2) / math3d.index(CAMERA_DEFAULT_POSITION, 2))
-        local position = math3d.add(iom.get_position(ce), math3d.vector(0, 0, z))
-        return CAMERA_DEFAULT_SCALE, CAMERA_DEFAULT_ROTATION, position
-    end
-
---[[     local te = world:entity(127, "bounding?in")
-    local center = math3d.aabb_center_extents(te.bounding.scene_aabb)
-    local xz_point = math3d.set_index(center, 2, 0)
-    if v == "construct" then
-        local position = iom.get_position(e)
-        local world_delta = get_world_delta(CAMERA_CONSTRUCT_ROTATION, xz_point)
+        local world_delta = get_world_delta(CAMERA_CONSTRUCT_ROTATION, xzpos)
         return CAMERA_CONSTRUCT_SCALE, CAMERA_CONSTRUCT_ROTATION, math3d.add(position, world_delta)
-    else
-        local position = iom.get_position(e)
-        local world_delta = get_world_delta(CAMERA_DEFAULT_ROTATION, xz_point)
+    elseif v == "pickup" then
+            local world_delta = get_world_delta(CAMERA_PICKUP_ROTATION, xzpos)
+            return CAMERA_PICKUP_SCALE, CAMERA_PICKUP_ROTATION, math3d.add(position, world_delta)
+    elseif v == "default" then
+        local world_delta = get_world_delta(CAMERA_DEFAULT_ROTATION, xzpos)
         return CAMERA_DEFAULT_SCALE, CAMERA_DEFAULT_ROTATION, math3d.add(position, world_delta)
-    end ]] 
+    else
+        assert(false)
+    end
 end
 
 local function __set_camera_from_prefab(prefab)
@@ -252,6 +237,8 @@ local __handle_drop_camera; do
                     pos = math3d.set_index(pos, 1, math3d.index(scene.t, 1))
                 elseif LockAxis == "z-axis" then
                     pos = math3d.set_index(pos, 3, math3d.index(scene.t, 3))
+                elseif LockAxis == "xz-axis" then
+                    return
                 else
                     assert(false)
                 end
@@ -343,8 +330,8 @@ function icamera_controller.focus_on_position(position, callback)
     end
 end
 
-function icamera_controller.toggle_view(v, callback)
-    cam_cmd_queue:push {{"toggle_view", v}}
+function icamera_controller.toggle_view(v, xzpos, callback)
+    cam_cmd_queue:push {{"toggle_view", v, xzpos}}
     if callback then
         cam_cmd_queue:push {{"callback", callback}}
     end

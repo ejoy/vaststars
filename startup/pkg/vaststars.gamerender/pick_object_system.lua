@@ -151,27 +151,53 @@ function ipick_object.pick_road(x, y)
     }
 end
 
-function ipick_object.pick_obj(x, y)
-    local o = objects:coord(x, y)
-    if o then
-        local typeobject = iprototype.queryByName(o.prototype_name)
-        local w, h = iprototype.rotate_area(typeobject.area, o.dir)
-        return {
-            class = CLASS.Object,
-            name = o.prototype_name,
-            id = o.id,
-            dist_x = x,
-            dist_y = y,
-            object = o,
-            x = x,
-            y = y,
-            w = w,
-            h = h,
-            get_pos = function(self)
-                return assert(terrain:get_position_by_coord(self.x, self.y, self.w, self.h))
-            end,
-        }
+function ipick_object.pick(x, y)
+    local gameplay_world = gameplay_core.get_world()
+
+    local dx, dy
+    local lorries = {}
+    for e in gameplay_world.ecs:select "lorry:in eid:in" do
+        local lorry = e.lorry
+        local classid = lorry.prototype
+        if classid == 0 then
+            goto continue
+        end
+        dx, dy = e.lorry.x, e.lorry.y
+        local coord = __pack(dx, dy)
+        lorries[coord] = lorries[coord] or {}
+        lorries[coord][#lorries[coord] + 1] = e.eid
+        ::continue::
     end
+
+    local objs = {}
+    local status = setmetatable({}, mt)
+    for dx = x - 1, x + 1 do
+        for dy = y - 1, y + 1 do
+            if dx & 0xFF == dx and dy & 0xFF == dy then
+                __push_object(lorries, x, y, dx, dy, status)
+            end
+        end
+    end
+    for _, v in pairs(status) do
+        for _, obj in pairs(v) do
+            objs[#objs + 1] = obj
+        end
+    end
+    table.sort(objs, function(a, b)
+        local dist_a = (a.dist_x - x) ^ 2 + (a.dist_y - y) ^ 2
+        local dist_b = (b.dist_x - x) ^ 2 + (b.dist_y - y) ^ 2
+        if dist_a ~= dist_b then
+            return dist_a < dist_b
+        else
+            if a.class == b.class then
+                return a.id < b.id
+            else
+                return a.class < b.class
+            end
+        end
+    end)
+
+    return objs[1]
 end
 
 function ipick_object.blur_pick(x, y)
