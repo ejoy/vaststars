@@ -24,6 +24,9 @@ local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
 local STATE_NONE  <const> = 0
 local STATE_START <const> = 1
+local gameplay_core = require "gameplay.core"
+local CHANGED_FLAG_BUILDING <const> = require("gameplay.interface.constant").CHANGED_FLAG_BUILDING
+local CHANGED_FLAG_FLUIDFLOW <const> = require("gameplay.interface.constant").CHANGED_FLAG_FLUIDFLOW
 
 local function _show_dotted_line(self, from_x, from_y, to_x, to_y, dir, dir_delta)
     from_x, from_y = from_x + dir_delta.x, from_y + dir_delta.y
@@ -798,6 +801,8 @@ local function complete(self, datamodel)
 
     iobject.remove(self.coord_indicator)
     self.coord_indicator = nil
+
+    gameplay_core.set_changed(CHANGED_FLAG_BUILDING | CHANGED_FLAG_FLUIDFLOW)
 
     self:new_entity(datamodel, typeobject)
     return true
