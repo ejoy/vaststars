@@ -95,13 +95,12 @@ local function get_world_delta(rotation, xzpos, delta_y)
 
     local vp0 = ce.camera.viewprojmat
     local screen_point = mu.world_to_screen(vp0, vr, xzpos)
-
-    local wm = math3d.matrix{s=ce.scene.s,r=rotation,t=ce.scene.t}
+    local dy = delta_y and math3d.vector(0, delta_y, 0) or math3d.vector(0, 0, 0)
+    local wm = math3d.matrix{s=ce.scene.s,r=rotation,t=math3d.add(ce.scene.t, dy)}
     local vm = math3d.inverse(wm)
     local vp1 = math3d.mul(ce.camera.projmat, vm)
 
     local sx, sy = math3d.index(screen_point, 1, 2)
-    local dy = delta_y and math3d.vector(0, delta_y, 0) or math3d.vector(0, 0, 0)
     return math3d.add(math3d.sub(xzpos, icamera_controller.screen_to_world(sx, sy, XZ_PLANE, vp1)), dy)
 end
 
