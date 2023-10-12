@@ -74,6 +74,7 @@
                 <div style = "font-size: 5.00vmin; margin-top: 0.50vmin; text-align: center;">{{it.count}}</div>
             </div>
         </inventory-bar>
+        <inventory-bar style = "position: absolute; top: 0; left: 80.00vmin;" data-event-click = "clickButton('settings')" />
 
         <tech-or-task-bar style = "flex-direction: row; align-items: center; gap: 1vmin;" data-if = "not is_concise_mode and show_tech_progress" data-event-click="clickButton('click_techortaskicon', is_task)">
             <div style = "width: 16.28vmin; height: 16.28vmin; background-size: 100% 100%;" data-style-background-image="is_task and '/pkg/vaststars.resources/ui/textures/construct/task-icon.texture' or '/pkg/vaststars.resources/ui/textures/construct/tech-icon.texture'" />

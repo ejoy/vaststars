@@ -689,7 +689,7 @@ local function getPlacedPrototypeName(x, y, default_prototype_name, default_dir)
     if not o then
         prototype_name, dir = iflow_connector.cleanup(default_prototype_name, default_dir)
     else
-        prototype_name, dir = o.prototype_name, o.dir
+        prototype_name, dir = default_prototype_name, default_dir
     end
 
     for _, d in ipairs(iconstant.ALL_DIR) do

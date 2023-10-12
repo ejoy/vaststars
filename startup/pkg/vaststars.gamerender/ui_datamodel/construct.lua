@@ -65,6 +65,7 @@ local gesture_tap_mb = world:sub{"gesture", "tap"}
 local gesture_pan_mb = world:sub {"gesture", "pan"}
 local lock_axis_mb = mailbox:sub {"lock_axis"}
 local unlock_axis_mb = mailbox:sub {"unlock_axis"}
+local settings_mb = mailbox:sub {"settings"}
 
 local CLASS = {
     Lorry = 1,
@@ -544,11 +545,12 @@ function M.update(datamodel)
     local leave = true
     local gesture_tap_changed = false
     for _, _, v in gesture_tap_mb:unpack() do
-        leave = false
         iui.leave()
         gesture_tap_changed = true
         local pos = icamera_controller.screen_to_world(v.x, v.y, XZ_PLANE)
-        pickupObject(datamodel, pos, "blur_pick")
+        if pickupObject(datamodel, pos, "blur_pick") then
+            leave = false
+        end
     end
 
     for _, _, v in gesture_longpress_mb:unpack() do
@@ -869,6 +871,10 @@ function M.update(datamodel)
 
     for _ in inventory_mb:unpack() do
         iui.open({rml = "/pkg/vaststars.resources/ui/inventory.rml"})
+    end
+
+    for _ in settings_mb:unpack() do
+        iui.open({rml = "/pkg/vaststars.resources/ui/main_menu.rml"})
     end
 
     iobject.flush()

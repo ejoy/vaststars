@@ -9,7 +9,7 @@ local entity_object_sys = ecs.system "entity_object_system"
 local ientity_object = {}
 
 -- it must be after the scene_update stage, otherwise you cannot obtain the entity's correct world matrix
-function entity_object_sys:update_world()
+function entity_object_sys:ui_update()
     for msg in entity_object_message_mb:each() do
         local object = msg[2]
         local events = msg[3]
