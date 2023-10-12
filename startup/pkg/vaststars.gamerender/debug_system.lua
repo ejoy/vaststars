@@ -9,10 +9,11 @@ local export_startup = ecs.require "export_startup"
 local gesture_tap_mb = world:sub{"gesture", "tap"}
 local gesture_mb = world:sub{"gesture"}
 local math3d = require "math3d"
-local XZ_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
 local terrain = ecs.require "terrain"
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local iprototype = require "gameplay.interface.prototype"
+local GESTURE_LOG <const> = require "debugger".gesture_log
+local XZ_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
 
 local function __get_capacitance(eid)
     local e = gameplay_core.get_entity(eid)
@@ -155,16 +156,18 @@ function debug_sys:ui_update()
         end
     end
 
-    -- local function stringify(v)
-    --     local t = {}
-    --     for k, v in pairs(v) do
-    --         t[#t+1] = ("%s = %s"):format(k, v)
-    --     end
-    --     table.sort(t, function(a, b) return a < b end)
-    --     return table.concat(t, ", ")
-    -- end
-    -- for _, type, v in gesture_mb:unpack() do
-    --     log.info(type, ",", stringify(v))
-    -- end
+    if GESTURE_LOG then
+        local function stringify(v)
+            local t = {}
+            for k, v in pairs(v) do
+                t[#t+1] = ("%s = %s"):format(k, v)
+            end
+            table.sort(t, function(a, b) return a < b end)
+            return table.concat(t, ", ")
+        end
+        for _, type, v in gesture_mb:unpack() do
+            log.info(type, ",", stringify(v))
+        end
+    end
 end
 

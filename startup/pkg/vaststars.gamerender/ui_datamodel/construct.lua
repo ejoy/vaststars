@@ -87,8 +87,6 @@ local LockAxisStatus = {
     BeginY = 0,
 }
 
-local Mode
-
 local function __on_pick_building(datamodel, o)
     local object = o.object
     if excluded_pickup_id and excluded_pickup_id == object.id then
@@ -486,9 +484,6 @@ function M.update(datamodel)
         builder:touch_move(builder_datamodel, dragdrop_delta)
     end
 
-    local pan_changed = false
-    local longpress_startpoint
-
     for _, _, e in gesture_pan_mb:unpack() do
         if e.state == "began" then
             iui.leave()
@@ -502,7 +497,7 @@ function M.update(datamodel)
                     LockAxisStatus.count = 0
                 end
             elseif e.state == "changed" then
-                if LockAxisStatus.status == false then
+                if LockAxis and LockAxisStatus.status == false then
                     local p = move_focus(e)
                     if p then
                         log.info("lock axis ", p)
@@ -518,28 +513,6 @@ function M.update(datamodel)
                 builder:touch_end(builder_datamodel)
             end
         end
-
-        if Mode == "pickup" then
-            if e.state == "changed" then
-                pan_changed = true
-                longpress_startpoint = {x = e.x, y = e.y}
-            elseif e.state == "ended" then
-                Mode = nil
-                longpress_startpoint = nil
-
-                local pos = icamera_controller.get_central_position()
-                pos = math3d.set_index(pos, 2, 0)
-                icamera_controller.toggle_view("default", math3d.ref(math3d.set_index(pos, 2, 0)), function()
-                    icamera_controller.unlock_axis()
-                end)
-            end
-        end
-    end
-
-    if pan_changed and longpress_startpoint then
-        __clean(datamodel, false)
-        local pos = icamera_controller.screen_to_world(longpress_startpoint.x, longpress_startpoint.y, XZ_PLANE)
-        pickupObject(datamodel, pos, "pick")
     end
 
     local leave = true
@@ -553,13 +526,34 @@ function M.update(datamodel)
         end
     end
 
-    for _, _, v in gesture_longpress_mb:unpack() do
-        local pos = icamera_controller.screen_to_world(v.x, v.y, XZ_PLANE)
-        pickupObject(datamodel, pos, "pick")
+    local longpress_startpoint = {}
+    for _, _, e in gesture_longpress_mb:unpack() do
+        if e.state == "began" then
+            local pos = icamera_controller.screen_to_world(e.x, e.y, XZ_PLANE)
+            pickupObject(datamodel, pos, "pick")
+            icamera_controller.lock_axis("xz-axis")
+            icamera_controller.toggle_view("pickup", math3d.ref(math3d.set_index(pos, 2, 0)))
 
-        Mode = "pickup"
-        icamera_controller.lock_axis("xz-axis")
-        icamera_controller.toggle_view("pickup", math3d.ref(math3d.set_index(pos, 2, 0)))
+        elseif e.state == "changed" then
+            longpress_startpoint.x = e.x
+            longpress_startpoint.y = e.y
+
+        elseif e.state == "ended" then
+            longpress_startpoint = nil
+
+            local pos = icamera_controller.get_central_position()
+            pos = math3d.set_index(pos, 2, 0)
+            icamera_controller.toggle_view("default", math3d.ref(math3d.set_index(pos, 2, 0)), function()
+                icamera_controller.unlock_axis()
+            end)
+        end
+    end
+
+    if longpress_startpoint and longpress_startpoint.x and longpress_startpoint.y then
+        log.info("longpress_startpoint", longpress_startpoint.x, longpress_startpoint.y)
+        __clean(datamodel, false)
+        local pos = icamera_controller.screen_to_world(longpress_startpoint.x, longpress_startpoint.y, XZ_PLANE)
+        pickupObject(datamodel, pos, "pick")
     end
 
     for _, _, _, object_id in teardown_mb:unpack() do
