@@ -30,15 +30,21 @@ local CAMERA_DEFAULT <const> = datalist.parse(fs.open(fs.path("/pkg/vaststars.re
 local CAMERA_CONSTRUCT <const> = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/camera_construct.prefab")):read "a")[1].data.scene
 local CAMERA_PICKUP <const> = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/camera_pickup.prefab")):read "a")[1].data.scene
 
-local CAMERA_DEFAULT_SCALE    = CAMERA_DEFAULT.s and math3d.constant("v4", CAMERA_DEFAULT.s)or mc.ONE
-local CAMERA_DEFAULT_ROTATION = CAMERA_DEFAULT.r and math3d.constant("quat", CAMERA_DEFAULT.r) or mc.IDENTITY_QUAT
+local CAMERA_DEFAULT_SCALE <const> = CAMERA_DEFAULT.s and math3d.constant("v4", CAMERA_DEFAULT.s)or mc.ONE
+local CAMERA_DEFAULT_ROTATION <const> = CAMERA_DEFAULT.r and math3d.constant("quat", CAMERA_DEFAULT.r) or mc.IDENTITY_QUAT
 
-local CAMERA_CONSTRUCT_SCALE    = CAMERA_CONSTRUCT.s and math3d.constant("v4", CAMERA_CONSTRUCT.s) or mc.ONE
-local CAMERA_CONSTRUCT_ROTATION = CAMERA_CONSTRUCT.r and math3d.constant("quat", CAMERA_CONSTRUCT.r) or mc.IDENTITY_QUAT
+local CAMERA_CONSTRUCT_SCALE <const> = CAMERA_CONSTRUCT.s and math3d.constant("v4", CAMERA_CONSTRUCT.s) or mc.ONE
+local CAMERA_CONSTRUCT_ROTATION <const> = CAMERA_CONSTRUCT.r and math3d.constant("quat", CAMERA_CONSTRUCT.r) or mc.IDENTITY_QUAT
+local CAMERA_CONSTRUCT_POSITION <const> = CAMERA_CONSTRUCT.t and math3d.constant("v4", CAMERA_CONSTRUCT.t) or mc.ZERO_PT
+assert(math3d.index(CAMERA_CONSTRUCT_POSITION, 1) == 0)
+assert(math3d.index(CAMERA_CONSTRUCT_POSITION, 2) == 0)
+assert(math3d.index(CAMERA_CONSTRUCT_POSITION, 3) == 0)
 
-local CAMERA_PICKUP_SCALE    = CAMERA_PICKUP.s and math3d.constant("v4", CAMERA_PICKUP.s) or mc.ONE
-local CAMERA_PICKUP_ROTATION = CAMERA_PICKUP.r and math3d.constant("quat", CAMERA_PICKUP.r) or mc.IDENTITY_QUAT
-local CAMERA_PICKUP_POSITION = CAMERA_PICKUP.t and math3d.constant("v4", CAMERA_PICKUP.t) or mc.ZERO_PT
+local CAMERA_PICKUP_SCALE <const> = CAMERA_PICKUP.s and math3d.constant("v4", CAMERA_PICKUP.s) or mc.ONE
+local CAMERA_PICKUP_ROTATION <const> = CAMERA_PICKUP.r and math3d.constant("quat", CAMERA_PICKUP.r) or mc.IDENTITY_QUAT
+local CAMERA_PICKUP_POSITION <const> = CAMERA_PICKUP.t and math3d.constant("v4", CAMERA_PICKUP.t) or mc.ZERO_PT
+assert(math3d.index(CAMERA_PICKUP_POSITION, 1) == 0)
+assert(math3d.index(CAMERA_PICKUP_POSITION, 3) == 0)
 
 local CAMERA_DEFAULT_YAIXS <const> = CAMERA_DEFAULT.t[2]
 local CAMERA_YAIXS_MIN <const> = CAMERA_DEFAULT_YAIXS - 280
@@ -52,6 +58,7 @@ local CAMERA_ZAIXS_MAX <const> = 800
 local cam_cmd_queue = create_queue()
 local cam_motion_matrix_queue = create_queue()
 local LockAxis
+local DeltaY
 
 local function __clamp(v, min, max)
     return math_max(min, math_min(v, max))
@@ -102,14 +109,21 @@ local function toggle_view(v, xzpos)
     local ce <close> = world:entity(irq.main_camera())
     assert(math3d.index(xzpos, 2) == 0, "y axis should be zero!")
     local position = iom.get_position(ce)
+
     if v == "construct" then
         local world_delta = get_world_delta(CAMERA_CONSTRUCT_ROTATION, xzpos)
         return CAMERA_CONSTRUCT_SCALE, CAMERA_CONSTRUCT_ROTATION, math3d.add(position, world_delta)
     elseif v == "pickup" then
-            local world_delta = get_world_delta(CAMERA_PICKUP_ROTATION, xzpos)
+            DeltaY = math3d.index(CAMERA_PICKUP_POSITION, 2) - math3d.index(position, 2)
+            local world_delta = get_world_delta(CAMERA_PICKUP_ROTATION, xzpos, DeltaY)
             return CAMERA_PICKUP_SCALE, CAMERA_PICKUP_ROTATION, math3d.add(position, world_delta)
     elseif v == "default" then
-        local world_delta = get_world_delta(CAMERA_DEFAULT_ROTATION, xzpos)
+        local y
+        if DeltaY then
+            y = -DeltaY
+            DeltaY = nil
+        end
+        local world_delta = get_world_delta(CAMERA_DEFAULT_ROTATION, xzpos, y)
         return CAMERA_DEFAULT_SCALE, CAMERA_DEFAULT_ROTATION, math3d.add(position, world_delta)
     else
         assert(false)
