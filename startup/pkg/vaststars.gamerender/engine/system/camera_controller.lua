@@ -81,7 +81,7 @@ local function focus_on_position(position)
     return iom.get_scale(ce), iom.get_rotation(ce), math3d.add(iom.get_position(ce), delta)
 end
 
-local function get_world_delta(rotation, xzpos)
+local function get_world_delta(rotation, xzpos, delta_y)
     local mq = w:first("main_queue camera_ref:in render_target:in")
     local ce <close> = world:entity(mq.camera_ref, "camera:in scene:in")
     local vr = mq.render_target.view_rect
@@ -94,14 +94,14 @@ local function get_world_delta(rotation, xzpos)
     local vp1 = math3d.mul(ce.camera.projmat, vm)
 
     local sx, sy = math3d.index(screen_point, 1, 2)
-    return math3d.sub(xzpos, icamera_controller.screen_to_world(sx, sy, XZ_PLANE, vp1))
+    local dy = delta_y and math3d.vector(0, delta_y, 0) or math3d.vector(0, 0, 0)
+    return math3d.add(math3d.sub(xzpos, icamera_controller.screen_to_world(sx, sy, XZ_PLANE, vp1)), dy)
 end
 
 local function toggle_view(v, xzpos)
     local ce <close> = world:entity(irq.main_camera())
     assert(math3d.index(xzpos, 2) == 0, "y axis should be zero!")
     local position = iom.get_position(ce)
-
     if v == "construct" then
         local world_delta = get_world_delta(CAMERA_CONSTRUCT_ROTATION, xzpos)
         return CAMERA_CONSTRUCT_SCALE, CAMERA_CONSTRUCT_ROTATION, math3d.add(position, world_delta)
@@ -114,6 +114,19 @@ local function toggle_view(v, xzpos)
     else
         assert(false)
     end
+--[[     local delta_y = -100
+    if v == "construct" then
+        local world_delta = get_world_delta(CAMERA_CONSTRUCT_ROTATION, xzpos, delta_y)
+        return CAMERA_CONSTRUCT_SCALE, CAMERA_CONSTRUCT_ROTATION, math3d.add(position, world_delta)
+    elseif v == "pickup" then
+            local world_delta = get_world_delta(CAMERA_PICKUP_ROTATION, xzpos, delta_y)
+            return CAMERA_PICKUP_SCALE, CAMERA_PICKUP_ROTATION, math3d.add(position, world_delta)
+    elseif v == "default" then
+        local world_delta = get_world_delta(CAMERA_DEFAULT_ROTATION, xzpos, -delta_y)
+        return CAMERA_DEFAULT_SCALE, CAMERA_DEFAULT_ROTATION, math3d.add(position, world_delta)
+    else
+        assert(false)
+    end ]]
 end
 
 local function __set_camera_from_prefab(prefab)
