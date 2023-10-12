@@ -112,10 +112,20 @@ op: replace
 path: /2/data/animation/low_power
 value: /pkg/vaststars.resources/animations/crusher_animat_low.anim
 ---
+file: low_power.prefab
+op: replace
+path: /2/data/animation_birth
+value: low_power
+---
 file: work.prefab
 op: replace
 path: /2/data/animation/work
 value: /pkg/vaststars.resources/animations/crusher_animat.anim
+---
+file: work.prefab
+op: replace
+path: /2/data/animation_birth
+value: work
 ---
 file: mesh.prefab
 op: createfile
@@ -131,79 +141,3 @@ value:
     ant.render|hitch_object
   tag:
     hitch
-  ---
-  data:
-    scene:
-      r: {0, 1, 0, -4.371138828673793e-08}
-      t: {-6, 16, 10}
-    slot:
-      follow_flag: 1
-      joint_name: None
-  mount: 1
-  policy:
-    ant.animation|slot
-  tag:
-    shelf1
-  ---
-  data:
-    scene:
-      r: {0, 1, 0, -4.371138828673793e-08}
-      t: {0, 16, 10}
-    slot:
-      follow_flag: 1
-      joint_name: None
-  mount: 1
-  policy:
-    ant.animation|slot
-  tag:
-    shelf2
-  ---
-  data:
-    scene:
-      r: {0, -1, 0, -4.371138828673793e-08}
-      t: {6, 16, 10}
-    slot:
-      follow_flag: 1
-      joint_name: None
-  mount: 1
-  policy:
-    ant.animation|slot
-  tag:
-    shelf3
-  ---
-  data:
-    scene:
-      r: {0, 0, 0, 1}
-      t: {-6, 10, -11}
-    slot:
-      follow_flag: 1
-      joint_name: None
-  mount: 1
-  policy:
-    ant.animation|slot
-  tag:
-    shelf4
-  ---
-  data:
-    scene:
-      t: {0, 10, -11}
-    slot:
-      follow_flag: 1
-      joint_name: None
-  mount: 1
-  policy:
-    ant.animation|slot
-  tag:
-    shelf5
-  ---
-  data:
-    scene:
-      t: {6, 10, -11}
-    slot:
-      follow_flag: 1
-      joint_name: None
-  mount: 1
-  policy:
-    ant.animation|slot
-  tag:
-    shelf6
