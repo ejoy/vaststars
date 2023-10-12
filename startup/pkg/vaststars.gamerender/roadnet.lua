@@ -69,9 +69,9 @@ function roadnet:update()
     iroad:flush()
 end
 
-function roadnet:set(layer_name, shape_type, x, y, mask)
+function roadnet:set(layer_name, shape_state, x, y, mask)
     local shape, dir = iroadnet_converter.mask_to_shape_dir(mask)
-    iroad:set(layer_name, shape_type, x, y, shape, dir)
+    iroad:set(layer_name, shape_state, x, y, shape, dir)
 
     self._layer_cache[layer_name] = self._layer_cache[layer_name] or {}
     self._layer_cache[layer_name][__pack(x, y)] = true
