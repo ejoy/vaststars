@@ -101,8 +101,6 @@ local function __on_pick_building(datamodel, o)
     iui.close("/pkg/vaststars.resources/ui/build.rml") -- TODO: remove this
     iui.close("/pkg/vaststars.resources/ui/construct_road_or_pipe.rml")
 
-    audio.play "event:/ui/click"
-
     local typeobject = iprototype.queryByName(object.prototype_name)
     if typeobject.base then
         typeobject = iprototype.queryByName(typeobject.base)
@@ -522,6 +520,7 @@ function M.update(datamodel)
         gesture_tap_changed = true
         local pos = icamera_controller.screen_to_world(v.x, v.y, XZ_PLANE)
         if pickupObject(datamodel, pos, "blur_pick") then
+            audio.play "event:/ui/click"
             leave = false
         end
     end

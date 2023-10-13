@@ -2,8 +2,28 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local assembling_sys = ecs.system "assembling_system"
+local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
+local ICON_STATUS_NOPOWER <const> = 1
+local ICON_STATUS_NORECIPE <const> = 2
+local ICON_STATUS_RECIPE <const> = 3
+local ROTATORS <const> = {
+    N = math.rad(0),
+    E = math.rad(-90),
+    S = math.rad(-180),
+    W = math.rad(-270),
+}
+local DIRECTION <const> = {
+    [0] = 'N',
+    [1] = 'E',
+    [2] = 'S',
+    [3] = 'W',
+}
 
+local datalist = require "datalist"
+local fs = require "filesystem"
+local RECIPES_CFG <const> = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/config/canvas/recipes.cfg")):read "a")
+
+local assembling_sys = ecs.system "assembling_system"
 local objects = require "objects"
 local global = require "global"
 local iprototype = require "gameplay.interface.prototype"
@@ -12,13 +32,9 @@ local create_ing_res_motion = ecs.require "render_updates.common.ing_res_motion"
 local assetmgr = import_package "ant.asset"
 local iterrain = ecs.require "terrain"
 local icanvas = ecs.require "engine.canvas"
-local datalist = require "datalist"
-local fs = require "filesystem"
-local RECIPES_CFG = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/config/canvas/recipes.cfg")):read "a")
 local irecipe = require "gameplay.interface.recipe"
 local gameplay_core = require "gameplay.core"
 local interval_call = ecs.require "engine.interval_call"
-local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local draw_fluid_icon = ecs.require "fluid_icon"
 local iprototype_cache = require "gameplay.prototype_cache.init"
 local ifluid = require "gameplay.interface.fluid"
@@ -26,17 +42,6 @@ local ipower_check = ecs.require "power_check_system"
 local gameplay = import_package "vaststars.gameplay"
 local ichimney = gameplay.interface "chimney"
 local ichest = require "gameplay.interface.chest"
-
-local ROTATORS <const> = {
-    N = math.rad(0),
-    E = math.rad(-90),
-    S = math.rad(-180),
-    W = math.rad(-270),
-}
-
-local ICON_STATUS_NOPOWER <const> = 1
-local ICON_STATUS_NORECIPE <const> = 2
-local ICON_STATUS_RECIPE <const> = 3
 
 local function __get_texture_size(materialpath)
     local res = assetmgr.resource(materialpath)
@@ -56,17 +61,6 @@ local function __get_draw_rect(x, y, icon_w, icon_h, multiple)
     local draw_y = y + (tile_size / 2)
     return draw_x, draw_y, draw_w, draw_h
 end
-
-local DIRECTION <const> = {
-    N = 0,
-    E = 1,
-    S = 2,
-    W = 3,
-    [0] = 'N',
-    [1] = 'E',
-    [2] = 'S',
-    [3] = 'W',
-}
 
 local function __calc_begin_xy(x, y, w, h)
     local tile_size = iterrain.tile_size
