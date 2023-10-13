@@ -237,6 +237,7 @@ function M:restore(index)
     gameplay_core.restore(fullpath)
     iprototype_cache.reload()
     world:pipeline_func "prototype" ()
+    iguide.init(import_package("vaststars.prototype")(gameplay_core.get_storage().game_template).guide)
 
     clean()
     local renderData = {}
@@ -247,7 +248,7 @@ function M:restore(index)
     end
     iroadnet:init(renderData, true)
 
-    local game_template = gameplay_core.get_storage().game_template or "item.startup"
+    local game_template = assert(gameplay_core.get_storage().game_template)
     local game_template_mineral = import_package("vaststars.prototype")(game_template).mineral
     terrain:reset_mineral(game_template_mineral)
 
@@ -275,8 +276,7 @@ function M:restart(mode, game_template)
     iguide.world = cw
     iui.set_guide_progress(iguide.get_progress())
 
-    game_template = game_template or "item.startup"
-    gameplay_core.get_storage().game_template = game_template
+    gameplay_core.get_storage().game_template = assert(game_template)
     local config = import_package("vaststars.prototype")(game_template)
 
     --

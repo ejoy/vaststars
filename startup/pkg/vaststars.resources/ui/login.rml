@@ -69,11 +69,11 @@
                 <button-icon style='background-image: "/pkg/vaststars.resources/ui/textures/road/traffic.texture";'/>
                 <button-text>继续游戏</button-text>
             </button>
-            <button data-event-click = "clickButton('start_mode', 'adventure')">
+            <button data-event-click = "clickButton('start_game', 'adventure', 'template.default')">
                 <button-icon style='background-image: "/pkg/vaststars.resources/ui/textures/road_net/big_bag.texture";'/>
                 <button-text>冒险模式</button-text>
             </button>
-            <button data-event-click = "clickButton('start_mode', 'free')">
+            <button data-event-click = "clickButton('start_game', 'free', 'template.default')">
                 <button-icon style='background-image: "/pkg/vaststars.resources/ui/textures/construct/work.texture";'/>
                 <button-text>自由模式</button-text>
             </button> 

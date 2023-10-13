@@ -1,7 +1,7 @@
 local ecs, mailbox = ...
 local world = ecs.world
 
-local load_template_mb = mailbox:sub {"load_template"}
+local start_game_mb = mailbox:sub {"start_game"}
 local new_game = ecs.require "main_menu_manager".new_game
 local fs = require "filesystem"
 local debugger <const> = require "debugger"
@@ -18,7 +18,12 @@ function M.create()
             assert(tostring(v:extension()) == ".lua")
             local filename = "template." .. v:stem():string()
             local f = import_package("vaststars.prototype")(filename)
+            if f.show == false then
+                goto continue
+            end
+
             templates[#templates + 1] = {order = f.order or 0, name = f.name or "undef", filename = filename}
+            ::continue::
         end
     end
     table.sort(templates, function(a, b) return a.order < b.order end)
@@ -29,10 +34,10 @@ function M.create()
 end
 
 function M.update(datamodel)
-    for _, _, _, filename in load_template_mb:unpack() do
-        debugger.set_free_mode(true)
+    for _, _, _, mode, template in start_game_mb:unpack() do
+        debugger.set_free_mode(mode == "free")
         iui.close("/pkg/vaststars.resources/ui/template.rml")
-        new_game("free", filename)
+        new_game(mode, template)
     end
 end
 

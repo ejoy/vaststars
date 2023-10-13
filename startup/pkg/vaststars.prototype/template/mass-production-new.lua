@@ -6199,5 +6199,5 @@ return {
     road = road,
     mineral = mineral,
     order = 7,
+    guide = "guide",
 }
-    

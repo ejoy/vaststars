@@ -79,6 +79,8 @@ function m:init_world()
     if args[1] == "new_game" then
         icamera_controller.set_camera_from_prefab("camera_default.prefab")
         local mode, game_template = args[2], args[3]
+        local guide = import_package("vaststars.prototype")(game_template).guide
+        iguide.init(import_package("vaststars.prototype")(guide))
         saveload:restart(mode, game_template)
         iguide.world = gameplay_core.get_world()
         iui.set_guide_progress(iguide.get_progress())

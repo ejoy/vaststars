@@ -121,8 +121,10 @@ local mineral = {
 }
 
 return {
-  name = "纯净模式",
+  name = "默认模板",
   entities = entities,
   road = road,
   mineral = mineral,
+  show = false,
+  guide = "guide",
 }

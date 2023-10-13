@@ -68,7 +68,7 @@
                 </div>
                 <div style="width: 100%; height:90%; flex-direction: column; justify-content: center; align-items: center;">
                     <div class = "recipe-change-block" style = "justify-content: center; align-items: center;">
-                        <button class = "button-style" style="background-color:rgb(203, 118, 24);" data-for = "templates" data-event-click = "clickButton('load_template', it.filename)">
+                        <button class = "button-style" style="background-color:rgb(203, 118, 24);" data-for = "templates" data-event-click = "clickButton('start_game', 'free', it.filename)">
                             <div class = "recipe-name-text" style="font-size: 4.73vmin;">{{it.name}}</div>
                         </button>
                     </div>

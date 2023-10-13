@@ -1,7 +1,11 @@
-local guide = import_package "vaststars.prototype"("guide")
 local M = {}
 local is_in_guide = false
 local running = true
+local globalGuide
+
+function M.init(guide)
+    globalGuide = guide
+end
 
 function M.get_guide_id()
     local world = M.world
@@ -18,7 +22,7 @@ function M.get_guide_id()
 end
 
 function M.get_guide()
-    return guide[M.get_guide_id()]
+    return globalGuide[M.get_guide_id()]
 end
 
 function M.get_progress()
@@ -26,15 +30,15 @@ function M.get_progress()
     if guide_id == 1 then
         return 0
     end
-    assert(guide_id > 1 and guide_id <= #guide + 1)
-    return guide[guide_id - 1].narrative_end.guide_progress
+    assert(guide_id > 1 and guide_id <= #globalGuide + 1)
+    return globalGuide[guide_id - 1].narrative_end.guide_progress
 end
 
 function M.step_progress()
     is_in_guide = false
 
     local storage = M.world.storage
-    if storage.guide_id <= #guide then
+    if storage.guide_id <= #globalGuide then
         storage.guide_id = storage.guide_id + 1
     end
 end
