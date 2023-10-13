@@ -47,8 +47,10 @@ local function restore_world()
         gameplay_core.get_world():research_progress(task, typeobject.count)
     end
 
+    local f = import_package("vaststars.prototype")(gameplay_core.get_storage().game_template).guide
+    local guide = import_package("vaststars.prototype")(f)
+
     local function _debug()
-        local guide = import_package "vaststars.prototype"("guide")
         if debugger.skip_guide then
             print("skip guide")
             gameplay_core.get_storage().guide_id = #guide
