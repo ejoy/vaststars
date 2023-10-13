@@ -5,9 +5,8 @@ local w     = world.w
 local ism = ecs.require "ant.landform|stone_mountain_system"
 local terrain = ecs.require "terrain"
 
---local WIDTH, HEIGHT = terrain:grid_size()
---TODO: WIDTH and HEIGHT should get from terrain, and idx2coord/coord2idx should provide from terrain
-local WIDTH<const>, HEIGHT<const> = 256, 256
+local CONST<const> = require "gameplay.interface.constant"
+local WIDTH<const>, HEIGHT<const> = CONST.MAP_WIDTH, CONST.MAP_HEIGHT
 
 local MOUNTAIN_MASKS
 
@@ -20,7 +19,7 @@ local function set_masks(masks, r, v)
     --range:[x1, x1+ww), [y1, y+hh)
     for x=x1, x1+ww-1 do
         for y=y1, y1+hh-1 do
-            masks[im.coord2idx(x, y, WIDTH)] = v
+            masks[terrain:coord2idx1(x, y, WIDTH)] = v
         end
     end
 end
@@ -70,7 +69,7 @@ local function build_sub_indices(masks)
         local m = merge_indices(masks, WIDTH, HEIGHT, range)
         for _, info in ipairs(m) do
             subindices[info.baseidx] = info
-            local x, y = im.idx2coord(info.baseidx, WIDTH)
+            local x, y = terrain:idx2coord(info.baseidx-1, WIDTH)
             set_masks(masks, {x-1, y-1, info.sidx, info.sidx}, 1)
         end
     end
@@ -101,7 +100,7 @@ function M:create()
         local sidx = info.sidx
         local idx = idxoffset(baseidx, sidx)
 
-        local x, y = im.idx2coord(idx, WIDTH)
+        local x, y = terrain:idx2coord(idx, WIDTH)
         assert(1<=x and x<=WIDTH and 1<=y and y<=HEIGHT)
         local x0, y0 = x-1, y-1
         local indices = groups[terrain:get_group_id(x0, y0)]
@@ -112,7 +111,7 @@ function M:create()
 end
 
 function M:has_mountain(x, y)
-    local idx = im.coord2idx(x, y, WIDTH)
+    local idx = terrain:coord2idx(x, y, WIDTH)
     return (0 ~= assert(MOUNTAIN_MASKS[idx], ("Invalid x:%d, y:%d, idx"):format(x, y, idx)))
 end
 

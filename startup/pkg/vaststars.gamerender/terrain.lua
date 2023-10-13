@@ -272,4 +272,44 @@ function terrain:get_coord_by_position(position)
     return _get_coord_by_position(position)
 end
 
+--base 0
+function terrain:idx2coord(idx)
+    return (idx % WIDTH), (idx // WIDTH)
+end
+
+--base 0
+function terrain:coord2idx(x, y)
+    return y * WIDTH + x
+end
+
+--base 1
+function terrain:idx2coord1(idx)
+    assert(idx > 0, "Invalid idx, it's base 1")
+    local idxbase0 = idx - 1
+    local x0, y0 = terrain:idx2coord(idxbase0)
+    return x0+1, y0+1
+end
+
+-- base 1
+function terrain:coord2idx1(x, y)
+    assert(x > 0 and y > 0, "Invalid x or y, it's base 1")
+
+    return terrain:coord2idx(x-1, y-1)
+end
+
+local DEBUG_COORD_IDX<const> = false
+if DEBUG_COORD_IDX then
+    local function coord_idx_test(idx, checkx, checky)
+        local x, y = terrain.idx2coord1(idx)
+        assert(x == checkx and y == checky)
+
+        local idx1 = terrain.coord2idx1(x, y)
+        assert(idx1 == idx)
+    end
+
+    coord_idx_test(1, 1, 1)
+    coord_idx_test(256, 256, 1)
+    coord_idx_test(257, 1, 2)
+end
+
 return terrain
