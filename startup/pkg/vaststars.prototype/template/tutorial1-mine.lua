@@ -6,16 +6,10 @@ local entities = { {
     y = 120
   }, {
     dir = "N",
-    items = { { "收货车站", 2 }, { "出货车站", 2 }, { "铁制电线杆", 10 }, { "熔炼炉I", 2 }, { "无人机平台I", 5 }, { "水电站I", 2 } },
+    items = { { "采矿机I", 3 }, { "仓库I", 1 }, { "铁制电线杆", 10 }},
     prototype_name = "机身残骸",
-    x = 125,
+    x = 121,
     y = 129
-  }, {
-    dir = "S",
-    items = { { "无人机平台I", 4 }, { "采矿机I", 2 }, { "科研中心I", 1 }, { "组装机I", 4 } },
-    prototype_name = "机尾残骸",
-    x = 110,
-    y = 120
   }, {
     dir = "N",
     prototype_name = "风力发电机I",
@@ -25,8 +19,8 @@ local entities = { {
 local road = {}
 
 local mineral = {
-  ["138,115"] = "铝矿石",
-  ["133,135"] = "铁矿石",
+  ["134,121"] = "铝矿石",
+  ["127,135"] = "铁矿石",
   ["115,129"] = "碎石",
 }
 
@@ -36,6 +30,7 @@ return {
     road = road,
     mineral = mineral,
     order = 7,
-    guide = "guide.guide1",
+    guide = "guide",
+    show = false,
 }
     
