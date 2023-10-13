@@ -112,6 +112,22 @@ prototype "蒸汽发电机III" {
     }
 }
 
+prototype "旧风力发电机" {
+    model = "glbs/wind-turbine-1.glb|mesh.prefab",
+    model_status = {work = true},
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_wind_turbine.texture",
+    construct_detector = {"exclusive"},
+    type = {"building", "generator", "wind_turbine"},
+    area = "3x3",
+    power = "600kW",
+    priority = "primary",
+    building_menu = false,
+    power_network_link = true,
+    power_supply_area = "11x11",
+    power_supply_distance = 7,
+    camera_distance = 140,
+}
+
 prototype "风力发电机I" {
     model = "glbs/wind-turbine-1.glb|mesh.prefab",
     model_status = {work = true},

@@ -411,6 +411,18 @@ prototype "风力发电机I" {
     item_description = "利用风能转换电能的装置",
 }
 
+prototype "旧风力发电机" {
+    type = {"item"},
+    item_category = "物流",
+    station_limit = 8,
+    hub_limit = 15,
+    backpack_limit = 20,
+    item_order = 2,
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/wind-turbine.texture",
+    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_description = "利用风能转换电能的装置",
+}
+
 prototype "铁制电线杆" {
     type = {"item"},
     item_category = "物流",
