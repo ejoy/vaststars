@@ -3,10 +3,20 @@ file: mesh.prefab
 op: copyfile
 path: work.prefab
 ---
+file: materials/Material.001.material
+op: replace
+path: /state/CULL
+value: NONE
+---
 file: work.prefab
 op: replace
 path: /2/data/animation/work
 value: /pkg/vaststars.resources/animations/wind_turbine_animat.anim
+---
+file: work.prefab
+op: replace
+path: /2/data/animation_birth
+value: work
 ---
 file: mesh.prefab
 op: createfile
@@ -22,8 +32,3 @@ value:
     ant.render|hitch_object
   tag:
     hitch
----
-file: materials/Material.001.material
-op: replace
-path: /state/CULL
-value: NONE

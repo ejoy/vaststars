@@ -3,6 +3,20 @@ file: mesh.prefab
 op: copyfile
 path: work.prefab
 ---
+file: mesh.prefab
+op: copyfile
+path: low_power.prefab
+---
+file: low_power.prefab
+op: replace
+path: /2/data/animation/low_power
+value: /pkg/vaststars.resources/animations/mars-pumpjack_animat_low.anim
+---
+file: low_power.prefab
+op: replace
+path: /2/data/animation_birth
+value: low_power
+---
 file: work.prefab
 op: add
 path: /-
@@ -22,19 +36,15 @@ value:
   tag:
     work
 ---
-file: mesh.prefab
-op: copyfile
-path: low_power.prefab
----
-file: low_power.prefab
-op: replace
-path: /2/data/animation/low_power
-value: /pkg/vaststars.resources/animations/mars-pumpjack_animat_low.anim
----
 file: work.prefab
 op: replace
 path: /2/data/animation/work
 value: /pkg/vaststars.resources/animations/mars-pumpjack_animat.anim
+---
+file: work.prefab
+op: replace
+path: /2/data/animation_birth
+value: work
 ---
 file: mesh.prefab
 op: createfile

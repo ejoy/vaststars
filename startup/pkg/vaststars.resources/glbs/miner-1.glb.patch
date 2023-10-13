@@ -43,15 +43,25 @@ file: mesh.prefab
 op: copyfile
 path: work.prefab
 ---
+file: low_power.prefab
+op: replace
+path: /2/data/animation/low_power
+value: /pkg/vaststars.resources/animations/miner_Bone_low.anim
+---
+file: low_power.prefab
+op: replace
+path: /2/data/animation_birth
+value: low_power
+---
 file: work.prefab
 op: replace
 path: /2/data/animation/work
 value: /pkg/vaststars.resources/animations/miner_Bone.anim
 ---
-file: low_power.prefab
+file: work.prefab
 op: replace
-path: /2/data/animation/low_power
-value: /pkg/vaststars.resources/animations/miner_Bone_low.anim
+path: /2/data/animation_birth
+value: work
 ---
 file: mesh.prefab
 op: createfile
@@ -67,31 +77,3 @@ value:
     ant.render|hitch_object
   tag:
     hitch
-  ---
-  data:
-    scene:
-      r: {0, 0, 0, 1}
-      s: {4, 4, 4}
-      t: {0, 0, 0}
-    slot:
-      follow_flag: 1
-      joint_name: None
-  mount: 1
-  policy:
-    ant.animation|slot
-  tag:
-    effect
-  ---
-  data:
-    scene:
-      r: {0, 0.7071067690849304, 0, 0.7071067690849304}
-      s: {1, 1, 1}
-      t: {14.093000411987305, 4.754000186920166, 0}
-    slot:
-      follow_flag: 1
-      joint_name: None
-  mount: 1
-  policy:
-    ant.animation|slot
-  tag:
-    shelf5

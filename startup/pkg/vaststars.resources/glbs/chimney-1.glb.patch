@@ -3,28 +3,14 @@ file: mesh.prefab
 op: copyfile
 path: work.prefab
 ---
-file: work.prefab
-op: add
-path: /-
-value:
-  data:
-    efk:
-      path: /pkg/vaststars.resources/effects/chimney_smoke.efk
-      speed: 1
-    scene:
-      s: {2, 2, 2}
-      t: {0, 30.700000762939453, 0}
-    visible_state: main_queue
-  mount: 1
-  policy:
-    ant.scene|scene_object
-    ant.efk|efk
-  tag:
-    work
----
 file: mesh.prefab
 op: copyfile
 path: low_power.prefab
+---
+file: materials/Material.material
+op: replace
+path: /state/CULL
+value: NONE
 ---
 file: low_power.prefab
 op: add
@@ -36,7 +22,7 @@ value:
       speed: 1
     scene:
       s: {0.800000011920929, 0.800000011920929, 0.800000011920929}
-      t: {0, 20.100000381469727, 0}
+      t: {0, 27.033798217773438, 0}
     visible_state: main_queue
   mount: 1
   policy:
@@ -44,6 +30,25 @@ value:
     ant.efk|efk
   tag:
     low_power
+---
+file: work.prefab
+op: add
+path: /-
+value:
+  data:
+    efk:
+      path: /pkg/vaststars.resources/effects/chimney_smoke.efk
+      speed: 1
+    scene:
+      s: {3, 3, 3}
+      t: {0, 28, 0}
+    visible_state: main_queue
+  mount: 1
+  policy:
+    ant.scene|scene_object
+    ant.efk|efk
+  tag:
+    work
 ---
 file: mesh.prefab
 op: createfile
@@ -59,8 +64,3 @@ value:
     ant.render|hitch_object
   tag:
     hitch
----
-file: materials/Material.material
-op: replace
-path: /state/CULL
-value: NONE

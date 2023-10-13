@@ -1,23 +1,7 @@
 ---
-file: work.prefab
-op: add
-path: /-
-value:
-  data:
-    efk:
-      path: /pkg/vaststars.resources/effects/furnace_smoke.efk
-      speed: 1
-    scene:
-      r: {0, 0, 0, 1}
-      s: {3.200000047683716, 3.200000047683716, 3.200000047683716}
-      t: {0, 11.5, 0}
-    visible_state: main_queue
-  mount: 1
-  policy:
-    ant.scene|scene_object
-    ant.efk|efk
-  tag:
-    work
+file: mesh.prefab
+op: copyfile
+path: low_power.prefab
 ---
 file: mesh.prefab
 op: add
@@ -126,6 +110,41 @@ op: copyfile
 path: work.prefab
 ---
 file: mesh.prefab
+op: replace
+path: /2/data/animation_birth
+value: idle
+---
+file: work.prefab
+op: add
+path: /-
+value:
+  data:
+    efk:
+      path: /pkg/vaststars.resources/effects/furnace_smoke.efk
+      speed: 1
+    scene:
+      r: {0, 0, 0, 1}
+      s: {3.200000047683716, 3.200000047683716, 3.200000047683716}
+      t: {0, 11.5, 0}
+    visible_state: main_queue
+  mount: 1
+  policy:
+    ant.scene|scene_object
+    ant.efk|efk
+  tag:
+    work
+---
+file: work.prefab
+op: replace
+path: /2/data/animation_birth
+value: work
+---
+file: low_power.prefab
+op: replace
+path: /2/data/animation_birth
+value: low_power
+---
+file: mesh.prefab
 op: createfile
 path: hitch.prefab
 value:
@@ -139,81 +158,3 @@ value:
     ant.render|hitch_object
   tag:
     hitch
-  ---
-  data:
-    scene:
-      r: {0, 0.9238795042037964, 0, 0.3826834261417389}
-      t: {-10, 4.5, 10}
-    slot:
-      follow_flag: 1
-      joint_name: None
-  mount: 1
-  policy:
-    ant.animation|slot
-  tag:
-    shelf1
-  ---
-  data:
-    scene:
-      r: {0, 1, 0, -4.371138828673793e-08}
-      t: {0, 4.5, 15}
-    slot:
-      follow_flag: 1
-      joint_name: None
-  mount: 1
-  policy:
-    ant.animation|slot
-  tag:
-    shelf2
-  ---
-  data:
-    scene:
-      r: {0, -0.9238795042037964, 0, 0.3826834261417389}
-      t: {10, 7.5, 10}
-    slot:
-      follow_flag: 1
-      joint_name: None
-  mount: 1
-  policy:
-    ant.animation|slot
-  tag:
-    shelf3
-  ---
-  data:
-    scene:
-      r: {0, 0.3826834559440613, 0, 0.9238795042037964}
-      t: {-10, 4.5, -11.399999618530273}
-    slot:
-      follow_flag: 1
-      joint_name: None
-  mount: 1
-  policy:
-    ant.animation|slot
-  tag:
-    shelf4
-  ---
-  data:
-    scene:
-      r: {0, 0, 0, 1}
-      t: {0, 4.5, -15}
-    slot:
-      follow_flag: 1
-      joint_name: None
-  mount: 1
-  policy:
-    ant.animation|slot
-  tag:
-    shelf5
-  ---
-  data:
-    scene:
-      r: {0, -0.3826834559440613, 0, 0.9238795042037964}
-      t: {10, 4.5, -10}
-    slot:
-      follow_flag: 1
-      joint_name: None
-  mount: 1
-  policy:
-    ant.animation|slot
-  tag:
-    shelf6
