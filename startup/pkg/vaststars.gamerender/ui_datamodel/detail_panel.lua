@@ -1,20 +1,6 @@
 local ecs, mailbox = ...
 local world = ecs.world
 local w = world.w
-local math3d = require "math3d"
-local iUiRt = ecs.require "ant.rmlui|ui_rt_system"
-local iom = ecs.require "ant.objcontroller|obj_motion"
-local property_list = import_package "vaststars.prototype"("property_list")
-local objects = require "objects"
-local global = require "global"
-local iprototype = require "gameplay.interface.prototype"
-local gameplay_core = require "gameplay.core"
-local itypes = require "gameplay.interface.types"
-local ilaboratory = require "gameplay.interface.laboratory"
-local ichest = require "gameplay.interface.chest"
-local building_detail = import_package "vaststars.prototype"("building_detail_config")
-local assembling_common = require "ui_datamodel.common.assembling"
-local iui = ecs.require "engine.system.ui_system"
 
 local UPS <const> = require("gameplay.interface.constant").UPS
 local STATUS_NO_POWER <const> = 1
@@ -47,6 +33,22 @@ local detail_panel_status = {
     {desc = "脱网连接", icon = "/pkg/vaststars.resources/ui/textures/detail/idle.texture"},
     {desc = "无配方", icon = "/pkg/vaststars.resources/ui/textures/detail/idle.texture"},
 }
+
+local math3d = require "math3d"
+local iUiRt = ecs.require "ant.rmlui|ui_rt_system"
+local iom = ecs.require "ant.objcontroller|obj_motion"
+local property_list = import_package "vaststars.prototype"("property_list")
+local objects = require "objects"
+local global = require "global"
+local iprototype = require "gameplay.interface.prototype"
+local gameplay_core = require "gameplay.core"
+local itypes = require "gameplay.interface.types"
+local ilaboratory = require "gameplay.interface.laboratory"
+local ichest = require "gameplay.interface.chest"
+local building_detail = import_package "vaststars.prototype"("building_detail_config")
+local assembling_common = require "ui_datamodel.common.assembling"
+local iui = ecs.require "engine.system.ui_system"
+
 -- optimize for pole status
 local pole_status = STATUS_WORK
 local power_statistic

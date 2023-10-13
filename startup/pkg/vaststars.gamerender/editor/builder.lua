@@ -1,20 +1,22 @@
 local ecs = ...
 local world = ecs.world
 
+local CONSTANT <const> = require("gameplay.interface.constant")
+local DEFAULT_DIR <const> = CONSTANT.DEFAULT_DIR
+local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
+local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
+
 local iprototype = require "gameplay.interface.prototype"
 local objects = require "objects"
-local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 local ieditor = ecs.require "editor.editor"
 local imining = require "gameplay.interface.mining"
 local iobject = ecs.require "object"
 local terrain = ecs.require "terrain"
 local ipower = ecs.require "power"
 local ipower_line = ecs.require "power_line"
-local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
 local igameplay = ecs.require "gameplay_system"
 local gameplay_core = require "gameplay.core"
 local ibuilding = ecs.require "render_updates.building"
-local CHANGED_FLAG_BUILDING <const> = require("gameplay.interface.constant").CHANGED_FLAG_BUILDING
 
 local function check_construct_detector(self, prototype_name, x, y, dir, exclude_object_id)
     dir = dir or DEFAULT_DIR

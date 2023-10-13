@@ -1,23 +1,26 @@
 local ecs = ...
 local world = ecs.world
 
+local CONSTANT <const> = require("gameplay.interface.constant")
+local ROTATORS <const> = CONSTANT.ROTATORS
+local DEFAULT_DIR <const> = CONSTANT.DEFAULT_DIR
+local SPRITE_COLOR <const> = import_package "vaststars.prototype"("sprite_color")
+
+local math3d = require "math3d"
+local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
+
 local iprototype = require "gameplay.interface.prototype"
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local create_builder = ecs.require "editor.builder"
 local ieditor = ecs.require "editor.editor"
 local objects = require "objects"
-local DEFAULT_DIR <const> = 'N'
 local irecipe = require "gameplay.interface.recipe"
 local iobject = ecs.require "object"
 local ipower = ecs.require "power"
 local ipower_line = ecs.require "power_line"
 local imining = require "gameplay.interface.mining"
-local math3d = require "math3d"
 local igrid_entity = ecs.require "engine.grid_entity"
-local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
-local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local create_sprite = ecs.require "sprite"
-local SPRITE_COLOR = import_package "vaststars.prototype"("sprite_color")
 local create_selected_boxes = ecs.require "selected_boxes"
 local terrain = ecs.require "terrain"
 local gameplay_core = require "gameplay.core"

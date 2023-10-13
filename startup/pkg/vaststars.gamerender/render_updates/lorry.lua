@@ -2,6 +2,24 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
+local CONSTANT <const> = require("gameplay.interface.constant")
+local CONFIG <const> = import_package "vaststars.prototype"("road_track")
+local ROAD_TRACKS <const> = CONFIG.TRACKS
+local ROAD_TRACKS_MODEL <const> = CONFIG.ROAD_MODEL
+local STATION_TRACKS <const> = CONFIG.STATION_TRACKS
+local STATION_TRACKS_MODEL <const> = CONFIG.STATION_MODEL
+local START_SLOTS <const> = CONFIG.START
+local ALL_DIR = CONSTANT.ALL_DIR
+
+local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
+local ROAD_DIRECTION = {
+    [0] = "left",
+    [1] = "top",
+    [2] = "right",
+    [3] = "bottom",
+    [4] = "none",
+}
+
 local lorry_sys = ecs.system "lorry_system"
 local ilorry = {}
 local math3d = require "math3d"
@@ -14,24 +32,6 @@ local gameplay_core = require "gameplay.core"
 local prefab_slots = require("engine.prefab_parser").slots
 local prefab_root = require("engine.prefab_parser").root
 local objects = require "objects"
-local iconstant = require "gameplay.interface.constant"
-
-local CONFIG <const> = import_package "vaststars.prototype"("road_track")
-local ROAD_TRACKS <const> = CONFIG.TRACKS
-local ROAD_TRACKS_MODEL <const> = CONFIG.ROAD_MODEL
-local STATION_TRACKS <const> = CONFIG.STATION_TRACKS
-local STATION_TRACKS_MODEL <const> = CONFIG.STATION_MODEL
-local START_SLOTS <const> = CONFIG.START
-local ALL_DIR = iconstant.ALL_DIR
-
-local ROAD_SIZE <const> = 2
-local ROAD_DIRECTION = {
-    [0] = "left",
-    [1] = "top",
-    [2] = "right",
-    [3] = "bottom",
-    [4] = "none",
-}
 
 local start_srts = {}
 local cache = {}

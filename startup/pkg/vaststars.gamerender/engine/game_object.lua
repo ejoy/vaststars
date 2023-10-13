@@ -59,10 +59,7 @@ local getHitchChildren, stopWorld, restartWorld ; do
     local function playAnimation(prefab_inst, e, workstatus, group)
         w:extend(e, "animation:in")
         local start = workstatus .. "_start"
-
-        if e.animation[workstatus] then
-            iani.play(prefab_inst, {name = workstatus, loop = true, speed = 1.0, manual = false, group = group})
-        elseif e.animation[start] then
+        if e.animation[start] then
             iani.play(prefab_inst, {name = start, loop = false, speed = 1.0, manual = true, forwards = true, group = group})
             iani.set_time(prefab_inst, iani.get_duration(prefab_inst, start))
         end

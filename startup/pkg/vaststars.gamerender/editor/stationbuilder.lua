@@ -1,36 +1,42 @@
 local ecs = ...
 local world = ecs.world
 
+local CONSTANT <const> = require "gameplay.interface.constant"
+local ROTATORS <const> = CONSTANT.ROTATORS
+local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
+local DEFAULT_DIR <const> = CONSTANT.DEFAULT_DIR
+local ALL_DIR <const> = CONSTANT.ALL_DIR
+local DIR_MOVE_DELTA <const> = CONSTANT.DIR_MOVE_DELTA
+local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
+local SPRITE_COLOR <const> = import_package "vaststars.prototype"("sprite_color")
+
+local datalist = require "datalist"
+local fs = require "filesystem"
+local ROAD_ENTRANCE_MARKER_CFG <const> = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/config/canvas/road-entrance-marker.cfg")):read "a")
+
+local math3d = require "math3d"
+local COLOR_GREEN <const> = math3d.constant("v4", {0.3, 1, 0, 1})
+local COLOR_RED <const> = math3d.constant("v4", {1, 0.03, 0, 1})
+local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
+
 local iprototype = require "gameplay.interface.prototype"
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local create_builder = ecs.require "editor.builder"
 local ieditor = ecs.require "editor.editor"
 local objects = require "objects"
-local DEFAULT_DIR <const> = 'N'
 local iobject = ecs.require "object"
 local ipower = ecs.require "power"
 local ipower_line = ecs.require "power_line"
-local iconstant = require "gameplay.interface.constant"
-local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
-local ALL_DIR = iconstant.ALL_DIR
 local igrid_entity = ecs.require "engine.grid_entity"
 local mc = import_package "ant.math".constant
 local create_road_entrance = ecs.require "editor.road_entrance"
 local create_selected_boxes = ecs.require "selected_boxes"
 local icanvas = ecs.require "engine.canvas"
-local datalist = require "datalist"
-local fs = require "filesystem"
-local ROAD_ENTRANCE_MARKER_CFG = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/config/canvas/road-entrance-marker.cfg")):read "a")
-local math3d = require "math3d"
-local COLOR_GREEN = math3d.constant("v4", {0.3, 1, 0, 1})
-local COLOR_RED = math3d.constant("v4", {1, 0.03, 0, 1})
-local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 local terrain = ecs.require "terrain"
 local gameplay_core = require "gameplay.core"
-local ROAD_SIZE <const> = 2
-local SPRITE_COLOR = import_package "vaststars.prototype"("sprite_color")
 local ibuilding = ecs.require "render_updates.building"
 local ibackpack = require "gameplay.interface.backpack"
+local iterrain = ecs.require "terrain"
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -288,15 +294,6 @@ local function _get_connections_dir(prototype_name, dir)
     return r
 end
 
-local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
-local iterrain = ecs.require "terrain"
-local dir_move_delta = {
-    ['N'] = {x = 0,  y = 1},
-    ['E'] = {x = 1,  y = 0},
-    ['S'] = {x = 0,  y = -1},
-    ['W'] = {x = -1, y = 0},
-}
-
 local function _get_rect(x, y, icon_w, icon_h)
     local max = math.max(icon_h, icon_w)
     local draw_w = iterrain.tile_size * (icon_w / max)
@@ -306,7 +303,7 @@ local function _get_rect(x, y, icon_w, icon_h)
     return draw_x, draw_y, draw_w, draw_h
 end
 
-local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
+local ROTATORS <const> = CONSTANT.ROTATORS
 
 local function __show_road_entrance_marker(self, typeobject)
     local function _get_road_entrance_offset(typeobject, dir)
@@ -360,7 +357,7 @@ local function __show_road_entrance_marker(self, typeobject)
     local min_coord
     for _, c in ipairs(coords) do
         local position = terrain:get_position_by_coord(c.x, c.y, 1, 1)
-        local delta = dir_move_delta[iprototype.reverse_dir(c.dir)]
+        local delta = DIR_MOVE_DELTA[iprototype.reverse_dir(c.dir)]
 
         position[1] = position[1] + (delta.x * (iterrain.tile_size / 2))
         position[3] = position[3] + (delta.y * (iterrain.tile_size / 2))
@@ -380,7 +377,7 @@ local function __show_road_entrance_marker(self, typeobject)
     local markers = {}
     for _, coord in ipairs(coords) do
         local position = terrain:get_begin_position_by_coord(coord.x, coord.y, 1, 1)
-        local delta = dir_move_delta[iprototype.reverse_dir(coord.dir)]
+        local delta = DIR_MOVE_DELTA[iprototype.reverse_dir(coord.dir)]
 
         position[1] = position[1] + (delta.x * (iterrain.tile_size / 2))
         position[3] = position[3] + (delta.y * (iterrain.tile_size / 2))

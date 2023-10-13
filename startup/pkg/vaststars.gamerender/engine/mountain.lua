@@ -2,20 +2,21 @@ local ecs   = ...
 local world = ecs.world
 local w     = world.w
 
-local MOUNTAIN = import_package "vaststars.prototype"("mountain")
 local ism = ecs.require "ant.landform|stone_mountain_system"
 local terrain = ecs.require "terrain"
 
-local UNIT <const> = 10
-local WIDTH <const> = 256
-local HEIGHT <const> = 256
-local OFFSET <const> = WIDTH // 2
-assert(OFFSET == HEIGHT // 2)
+local MOUNTAIN = import_package "vaststars.prototype"("mountain")
+local CONSTANT <const> = require("gameplay.interface.constant")
+local TILE_SIZE <const> = CONSTANT.TILE_SIZE
+local MAP_WIDTH <const> = CONSTANT.MAP_WIDTH
+local MAP_HEIGHT <const> = CONSTANT.MAP_HEIGHT
+local OFFSET <const> = MAP_WIDTH // 2
+assert(OFFSET == MAP_HEIGHT // 2)
 
 local MIN_X <const> = 1
-local MAX_X <const> = WIDTH
+local MAX_X <const> = MAP_WIDTH
 local MIN_Y <const> = 1
-local MAX_Y <const> = HEIGHT
+local MAX_Y <const> = MAP_HEIGHT
 
 local function coord2idx(x, y)
     return (MAX_Y - y) * (MAX_X - MIN_X + 1) + (x - MIN_X + 1)
@@ -37,7 +38,7 @@ local M = {}
 local cache = setmetatable({}, mt)
 
 function M:create()
-    local idx_string = ism.create_random_sm(MOUNTAIN.density, WIDTH, HEIGHT, OFFSET, UNIT)
+    local idx_string = ism.create_random_sm(MOUNTAIN.density, MAP_WIDTH, MAP_HEIGHT, OFFSET, TILE_SIZE)
     for key = 1, #idx_string do
         cache[key] = string.unpack("B", idx_string, key)
     end
@@ -61,7 +62,7 @@ function M:create()
     end
 
     local t = {}
-    for i = 1, WIDTH * HEIGHT do
+    for i = 1, MAP_WIDTH * MAP_HEIGHT do
         local x, y = idx2coord(i)
         if cache[i] == 1 then
             if x & 0xff ~= x or y & 0xff ~= y then

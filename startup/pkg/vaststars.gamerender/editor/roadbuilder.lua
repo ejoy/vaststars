@@ -1,29 +1,32 @@
 local ecs = ...
 local world = ecs.world
 
+local CONSTANT <const> = require("gameplay.interface.constant")
+local ROTATORS <const> = CONSTANT.ROTATORS
+local DEFAULT_DIR <const> = CONSTANT.DEFAULT_DIR
+local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
+local CHANGED_FLAG_ROADNET <const> = CONSTANT.CHANGED_FLAG_ROADNET
+local DIR_MOVE_DELTA <const> = CONSTANT.DIR_MOVE_DELTA
+local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
+
+local math3d = require "math3d"
+local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
+
 local create_builder = ecs.require "editor.builder"
 local iprototype = require "gameplay.interface.prototype"
-local iconstant = require "gameplay.interface.constant"
 local iobject = ecs.require "object"
 local objects = require "objects"
 local terrain = ecs.require "terrain"
-local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 local task = ecs.require "task"
 local iroadnet_converter = require "roadnet_converter"
 local igrid_entity = ecs.require "engine.grid_entity"
 local iroadnet = ecs.require "roadnet"
-local math3d = require "math3d"
 local gameplay_core = require "gameplay.core"
 local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_box"
 local iinstance_object = ecs.require "engine.instance_object"
-local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
-local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
-local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
 local ibuilding = ecs.require "render_updates.building"
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local iroad = ecs.require "vaststars.gamerender|render_updates.road"
-local ROAD_SIZE <const> = 2
-local CHANGED_FLAG_ROADNET <const> = require("gameplay.interface.constant").CHANGED_FLAG_ROADNET
 local imountain = ecs.require "engine.mountain"
 local ibackpack = require "gameplay.interface.backpack"
 local iom = ecs.require "ant.objcontroller|obj_motion"
@@ -102,24 +105,13 @@ local DIRECTION <const> = {
     W = 3,
 }
 
-local DIR_MOVE_DELTA <const> = {
-    ['N'] = {x = 0,  y = 1},
-    ['E'] = {x = 1,  y = 0},
-    ['S'] = {x = 0,  y = -1},
-    ['W'] = {x = -1, y = 0},
-    [DIRECTION.N] = {x = 0,  y = 1},
-    [DIRECTION.E] = {x = 1,  y = 0},
-    [DIRECTION.S] = {x = 0,  y = -1},
-    [DIRECTION.W] = {x = -1, y = 0},
-}
-
 local function getPlacedRoadPrototypeName(x, y, default_prototype_name, default_dir)
     if not isValidRoadCoord(x, y, EDITOR_CACHE_NAMES) then
         return default_prototype_name, default_dir
     end
 
     local mask = getRoad(x, y) or 0
-    for _, dir in ipairs(iconstant.ALL_DIR_NUM) do
+    for _, dir in ipairs(CONSTANT.ALL_DIR_NUM) do
         local dx, dy = iprototype.move_coord(x, y, dir, ROAD_SIZE, ROAD_SIZE)
         local m = getRoad(dx, dy)
         if m and not iroad.check(mask, dir) then
@@ -265,7 +257,7 @@ local function place(self, datamodel)
     assert(x % 2 == 0 and y % 2 == 0)
 
     local mask = getRoad(x, y) or 0
-    for _, dir in ipairs(iconstant.ALL_DIR_NUM) do
+    for _, dir in ipairs(CONSTANT.ALL_DIR_NUM) do
         local dx, dy = iprototype.move_coord(x, y, dir, ROAD_SIZE, ROAD_SIZE)
         local m = getRoad(dx, dy)
         if m then

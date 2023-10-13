@@ -3,16 +3,20 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local ipl = ecs.require "ant.polyline|polyline"
-local iom = ecs.require "ant.objcontroller|obj_motion"
-local ientity_object = ecs.require "engine.system.entity_object_system"
-local math3d = require "math3d"
 local LINE_WIDTH <const> = 70
 local COLOR <const> = {0.0, 1.0, 0.0, 0.4}
 local MATERIAL <const> = "/pkg/vaststars.resources/materials/polylinelist.material"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
-local terrain = ecs.require "terrain"
+local CONSTANT <const> = require("gameplay.interface.constant")
+local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
+
+local math3d = require "math3d"
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
+
+local ipl = ecs.require "ant.polyline|polyline"
+local iom = ecs.require "ant.objcontroller|obj_motion"
+local ientity_object = ecs.require "engine.system.entity_object_system"
+local terrain = ecs.require "terrain"
 local icamera_controller = ecs.require "engine.system.camera_controller"
 
 local events = {}
@@ -69,7 +73,6 @@ function M.create(width, height, unit, srt, pos_offset, material)
 			self.objects = {}
 		end,
 		on_position_change = function(self, srt)
-			local ROAD_SIZE = 2
 			local coord = terrain:align(icamera_controller.get_central_position(), ROAD_SIZE, ROAD_SIZE)
 			if not coord then
 				return

@@ -2,10 +2,12 @@ local ecs, mailbox = ...
 local world = ecs.world
 local w = world.w
 
+local CHANGED_FLAG_ASSEMBLING <const> = require("gameplay.interface.constant").CHANGED_FLAG_ASSEMBLING
+local RECIPE_CATEGORY <const> = import_package "vaststars.prototype"("recipe_category")
+
 local set_recipe_mb = mailbox:sub {"set_recipe"}
 local click_recipe_mb = mailbox:sub {"click_recipe"}
 local clear_recipe_mb = mailbox:sub {"clear_recipe"}
-local RECIPE_CATEGORY <const> = import_package "vaststars.prototype"("recipe_category")
 local irecipe = require "gameplay.interface.recipe"
 local gameplay_core = require "gameplay.core"
 local iprototype = require "gameplay.interface.prototype"
@@ -14,7 +16,6 @@ local iworld = require "gameplay.interface.world"
 local recipe_unlocked = ecs.require "ui_datamodel.common.recipe_unlocked".recipe_unlocked
 local itask = ecs.require "task"
 local iprototype_cache = require "gameplay.prototype_cache.init"
-local CHANGED_FLAG_ASSEMBLING <const> = require("gameplay.interface.constant").CHANGED_FLAG_ASSEMBLING
 local itypes = require "gameplay.interface.types"
 
 local function __set_recipe_value(datamodel, category_idx, recipe_idx, key, value)

@@ -2,16 +2,14 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
+local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
+local DELTA_TIME <const> = require("gameplay.interface.constant").DELTA_TIME
 local mc = import_package "ant.math".constant
 local math3d = require "math3d"
-local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
-local iom           = ecs.require "ant.objcontroller|obj_motion"
-local irl		    = ecs.require "ant.render|render_layer.render_layer"
-
+local iom = ecs.require "ant.objcontroller|obj_motion"
+local irl = ecs.require "ant.render|render_layer.render_layer"
 local imaterial = ecs.require "ant.asset|material"
 local iupdate = ecs.require "update_system"
-
-local DELTA_TIME <const> = require("gameplay.interface.constant").DELTA_TIME
 
 local function create_object(prefab, srt)
     return world:create_instance {

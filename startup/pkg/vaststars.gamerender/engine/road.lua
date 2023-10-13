@@ -2,18 +2,16 @@ local ecs   = ...
 local world = ecs.world
 local w     = world.w
 
-local iterrain  = ecs.require "ant.landform|terrain_system"
-local UNIT <const> = 10
-local iroad = ecs.require "ant.landform|road"
-local ROAD_SIZE = 2
-local ROAD_WIDTH, ROAD_HEIGHT = ROAD_SIZE * UNIT, ROAD_SIZE * UNIT
-local terrain  = ecs.require "terrain"
+local CONSTANT <const> = require("gameplay.interface.constant")
+local TILE_SIZE <const> = CONSTANT.TILE_SIZE
+local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
+local ROAD_WIDTH, ROAD_HEIGHT = ROAD_SIZE * TILE_SIZE, ROAD_SIZE * TILE_SIZE
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
-local function __pack(x, y)
-    assert(x & 0xFF == x and y & 0xFF == y)
-    return x | (y<<8)
-end
+local iterrain  = ecs.require "ant.landform|terrain_system"
+local iprototype = require "gameplay.interface.prototype"
+local iroad = ecs.require "ant.landform|road"
+local terrain  = ecs.require "terrain"
 
 local function convertTileToWorld(x, y)
     local pos = terrain:get_begin_position_by_coord(x, y, 1, 1)
@@ -39,7 +37,7 @@ function road:create(width, height, offset, layer_names, shape_types)
     for _, state in ipairs(shape_types) do
         self.shape_types[state] = true
     end
-    iterrain.gen_terrain_field(width, height, offset, UNIT, RENDER_LAYER.TERRAIN)
+    iterrain.gen_terrain_field(width, height, offset, TILE_SIZE, RENDER_LAYER.TERRAIN)
 end
 
 function road:get_offset()
@@ -82,7 +80,7 @@ function road:init(layer_name, map)
             }
         }
 
-        self.cache[__pack(x, y)] = v
+        self.cache[iprototype.packcoord(x, y)] = v
         t[#t+1] = v
     end
     iroad.update_roadnet_group(0, t, RENDER_LAYER.ROAD)
@@ -95,10 +93,10 @@ function road:set(layer_name, shape_type, x, y, shape, dir)
     assert(self.layer_names[layer_name])
     assert(self.shape_types[shape_type])
 
-    local v = self.cache[__pack(x, y)]
+    local v = self.cache[iprototype.packcoord(x, y)]
     if not v then
         local posx, posy = convertTileToWorld(x, y)
-        self.cache[__pack(x, y)] = {
+        self.cache[iprototype.packcoord(x, y)] = {
             x = posx,
             y = posy,
             layers = {
@@ -117,17 +115,17 @@ function road:set(layer_name, shape_type, x, y, shape, dir)
         }
     end
 
-    self._update_cache[__pack(x, y)] = true
+    self._update_cache[iprototype.packcoord(x, y)] = true
 end
 
 function road:del(layer_name, x, y)
     assert(self._offset)
     assert(self.layer_names[layer_name])
 
-    local v = assert(self.cache[__pack(x, y)])
+    local v = assert(self.cache[iprototype.packcoord(x, y)])
     if v then
         v.layers[inner_layer_names[layer_name]] = nil
-        self._update_cache[__pack(x, y)] = true
+        self._update_cache[iprototype.packcoord(x, y)] = true
     end
 end
 

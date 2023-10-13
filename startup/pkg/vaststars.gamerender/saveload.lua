@@ -32,8 +32,9 @@ local iroadnet = ecs.require "roadnet"
 local MAX_ARCHIVING_COUNT <const> = 9
 local PROTOTYPE_VERSION <const> = import_package("vaststars.prototype")("version")
 local CAMERA_CONFIG = archiving.path() .. "camera.json"
-local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
-local CHANGED_FLAG_ALL <const> = require("gameplay.interface.constant").CHANGED_FLAG_ALL
+local CONSTANT <const> = require("gameplay.interface.constant")
+local ROTATORS <const> = CONSTANT.ROTATORS
+local CHANGED_FLAG_ALL <const> = CONSTANT.CHANGED_FLAG_ALL
 
 local function clean()
     global.buildings = create_buildings()

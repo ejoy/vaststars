@@ -1,8 +1,24 @@
 local ecs, mailbox = ...
 local world = ecs.world
 
+local CONSTANT <const> = require("gameplay.interface.constant")
+local DEFAULT_DIR <const> = CONSTANT.DEFAULT_DIR
+local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
+local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
+local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
+local EDITOR_CACHE_NAMES <const> = {"CONFIRM", "CONSTRUCTED"}
+local CLASS <const> = {
+    Lorry = 1,
+    Object = 2,
+    Mineral = 3,
+    Mountain = 4,
+    Road = 5,
+}
+
 local math3d = require "math3d"
 local XZ_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
+local COLOR_GREEN = math3d.constant("v4", {0.3, 1, 0, 1})
+
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local gameplay_core = require "gameplay.core"
 local iui = ecs.require "engine.system.ui_system"
@@ -17,14 +33,11 @@ local objects = require "objects"
 local global = require "global"
 local iobject = ecs.require "object"
 local idetail = ecs.require "detail_system"
-local EDITOR_CACHE_NAMES = {"CONFIRM", "CONSTRUCTED"}
 local create_station_builder = ecs.require "editor.stationbuilder"
 local terrain = ecs.require "terrain"
 local selected_boxes = ecs.require "selected_boxes"
 local irl = ecs.require "ant.render|render_layer.render_layer"
 local iom = ecs.require "ant.objcontroller|obj_motion"
-local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
-local COLOR_GREEN = math3d.constant("v4", {0.3, 1, 0, 1})
 local ichest = require "gameplay.interface.chest"
 local ipower_line = ecs.require "power_line"
 local ipick_object = ecs.require "pick_object_system"
@@ -34,11 +47,6 @@ local igameplay = ecs.require "gameplay_system"
 local audio = import_package "ant.audio"
 local ilorry = ecs.require "render_updates.lorry"
 local igame_object = ecs.require "engine.game_object"
-
-local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
-local ROAD_SIZE <const> = 2
-local CHANGED_FLAG_BUILDING <const> = require("gameplay.interface.constant").CHANGED_FLAG_BUILDING
-
 local rotate_mb = mailbox:sub {"rotate"}
 local build_mb = mailbox:sub {"build"}
 local quit_mb = mailbox:sub {"quit"}
@@ -66,14 +74,6 @@ local gesture_pan_mb = world:sub {"gesture", "pan"}
 local lock_axis_mb = mailbox:sub {"lock_axis"}
 local unlock_axis_mb = mailbox:sub {"unlock_axis"}
 local settings_mb = mailbox:sub {"settings"}
-
-local CLASS = {
-    Lorry = 1,
-    Object = 2,
-    Mineral = 3,
-    Mountain = 4,
-    Road = 5,
-}
 
 local builder, builder_datamodel, builder_ui
 local excluded_pickup_id -- object id

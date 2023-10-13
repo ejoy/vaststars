@@ -2,6 +2,9 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
+local CONSTANT <const> = require("gameplay.interface.constant")
+local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
+
 local gameplay_core = require "gameplay.core"
 local ipick_object = {}
 local objects = require "objects"
@@ -11,7 +14,6 @@ local iprototype = require "gameplay.interface.prototype"
 local ilorry = ecs.require "render_updates.lorry"
 local ibuilding = ecs.require "render_updates.building"
 local pick_object_sys = ecs.system "pick_object_sys"
-local ROAD_SIZE <const> = 2
 
 local MountainName = ""
 
@@ -32,10 +34,6 @@ end
 local pointer = 0
 local last_x, last_y
 
-local function __pack(x, y)
-    return x | (y<<8)
-end
-
 local function __distance(x1, y1, x2, y2)
     return (x1 - x2) ^ 2 + (y1 - y2) ^ 2
 end
@@ -46,7 +44,7 @@ local function get_pos(self)
 end
 
 local function __push_object(lorries, pick_x, pick_y, x, y, status)
-    local lorry_ids = lorries[__pack(x, y)]
+    local lorry_ids = lorries[iprototype.packcoord(x, y)]
     if lorry_ids then
         for _, lorry_id in ipairs(lorry_ids) do
             local lorry = ilorry.get(lorry_id)
@@ -92,10 +90,10 @@ local function __push_object(lorries, pick_x, pick_y, x, y, status)
     end
 
     if imountain:has_mountain(x, y) then
-        status.mountain[__pack(x, y)] = {
+        status.mountain[iprototype.packcoord(x, y)] = {
             class = CLASS.Mountain,
             name = MountainName,
-            id = __pack(x, y),
+            id = iprototype.packcoord(x, y),
             dist_x = x,
             dist_y = y,
             x = x,
@@ -163,7 +161,7 @@ function ipick_object.pick(x, y)
             goto continue
         end
         dx, dy = e.lorry.x, e.lorry.y
-        local coord = __pack(dx, dy)
+        local coord = iprototype.packcoord(dx, dy)
         lorries[coord] = lorries[coord] or {}
         lorries[coord][#lorries[coord] + 1] = e.eid
         ::continue::
@@ -217,7 +215,7 @@ function ipick_object.blur_pick(x, y)
             goto continue
         end
         dx, dy = e.lorry.x, e.lorry.y
-        local coord = __pack(dx, dy)
+        local coord = iprototype.packcoord(dx, dy)
         lorries[coord] = lorries[coord] or {}
         lorries[coord][#lorries[coord] + 1] = e.eid
         ::continue::

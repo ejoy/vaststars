@@ -1,6 +1,11 @@
+local CONSTANT <const> = require("gameplay.interface.constant")
+local MAP_WIDTH <const> = CONSTANT.MAP_WIDTH
+local DIR_MOVE_DELTA <const> = CONSTANT.DIR_MOVE_DELTA
+local DIRECTION <const> = CONSTANT.DIRECTION
+
+local math_abs = math.abs
 local gameplay = import_package "vaststars.gameplay"
 import_package "vaststars.prototype"
-local math_abs = math.abs
 
 local function unpackarea(area)
     return area >> 8, area & 0xFF
@@ -77,30 +82,13 @@ function M.queryFirstByType(...)
 end
 
 function M.packcoord(x, y)
-    assert(x & 0xFF == x)
-    assert(y & 0xFF == y)
-    return x | (y<<8)
-end
-
-function M.unpackcoord(coord)
-    return coord & 0xFF, coord >> 8
+    return y * MAP_WIDTH + x
 end
 
 function M.is_fluid_id(id)
     local typeobject = assert(M.queryById(id))
     return M.has_type(typeobject.type, "fluid")
 end
-
-local DIRECTION <const> = {
-    N = 0,
-    E = 1,
-    S = 2,
-    W = 3,
-    [0] = 0, -- TODO: remove this
-    [1] = 1,
-    [2] = 2,
-    [3] = 3,
-}
 
 local REVERSE <const> = {
     [DIRECTION.N] = DIRECTION.S,
@@ -144,27 +132,20 @@ function M.dir_tostring(dir)
     return assert(DIRECTION_REV[dir])
 end
 
-local dir_move_delta = {
-    ['N'] = {x = 0,  y = -1},
-    ['E'] = {x = 1,  y = 0},
-    ['S'] = {x = 0,  y = 1},
-    ['W'] = {x = -1, y = 0},
-}
-
 function M.calc_dir(x1, y1, x2, y2)
     local dx = math_abs(x1 - x2)
     local dy = math_abs(y1 - y2)
     if dx > dy then
         if x1 < x2 then
-            return 'E', dir_move_delta['E']
+            return 'E', DIR_MOVE_DELTA['E']
         else
-            return 'W', dir_move_delta['W']
+            return 'W', DIR_MOVE_DELTA['W']
         end
     else
         if y1 < y2 then
-            return 'S', dir_move_delta['S']
+            return 'S', DIR_MOVE_DELTA['S']
         else
-            return 'N', dir_move_delta['N']
+            return 'N', DIR_MOVE_DELTA['N']
         end
     end
 end
@@ -185,7 +166,7 @@ function M.move_coord(x, y, dir, dx, dy)
     dy = dy or dx
     dir = assert(DIRECTION_REV[dir]) -- TODO: remove this
 
-    local c = assert(dir_move_delta[dir])
+    local c = assert(DIR_MOVE_DELTA[dir])
     return x + c.x * dx, y + c.y * dy
 end
 

@@ -2,15 +2,15 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
+local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
+local CONSTANT <const> = require("gameplay.interface.constant")
+local MAP_HEIGHT <const> = CONSTANT.MAP_HEIGHT
 local itp = ecs.require "ant.landform|translucent_plane_system"
 local iroad = ecs.require "engine.road"
-local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
-local WIDTH <const> = 256 -- coordinate value range: [0, WIDTH - 1]
-local HEIGHT <const> = 256 -- coordinate value range: [0, HEIGHT - 1]
 local function __convert_coord(x, y)
     local offset_x, offset_y = iroad:get_offset()
-    x, y = x, HEIGHT - y - 1
+    x, y = x, MAP_HEIGHT - y - 1
     return x - offset_x, y - offset_y
 end
 

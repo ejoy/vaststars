@@ -4,6 +4,7 @@ local w = world.w
 
 local NOTHING <const> = require "debugger".nothing
 local TERRAIN_ONLY <const> = require "debugger".terrain_only
+local CONSTANT <const> = require("gameplay.interface.constant")
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local icanvas = ecs.require "engine.canvas"
 local audio = import_package "ant.audio"
@@ -18,7 +19,6 @@ local global = require "global"
 local math3d = require "math3d"
 local irender = ecs.require "ant.render|render_system.render"
 local imountain = ecs.require "engine.mountain"
-local CONSTANT <const> = require("gameplay.interface.constant")
 
 local m = ecs.system 'game_init_system'
 local gameworld_prebuild

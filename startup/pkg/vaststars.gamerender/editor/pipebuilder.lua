@@ -1,42 +1,42 @@
 local ecs = ...
 local world = ecs.world
 
+
+local CONSTANT <const> = require("gameplay.interface.constant")
+local ROTATORS <const> = CONSTANT.ROTATORS
+local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
+local CHANGED_FLAG_FLUIDFLOW <const> = CONSTANT.CHANGED_FLAG_FLUIDFLOW
+local DEFAULT_DIR <const> = CONSTANT.DEFAULT_DIR
+local ALL_DIR = CONSTANT.ALL_DIR
+local ALL_DIR_NUM = CONSTANT.ALL_DIR_NUM
+local REMOVE <const> = {}
+local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
+-- To distinguish between "batch construction" and "batch teardown" in the touch_end event.
+local STATE_NONE  <const> = 0
+local STATE_START <const> = 1
+local STATE_TEARDOWN <const> = 2
+
+local math3d = require "math3d"
+local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
+
 local create_builder = ecs.require "editor.builder"
 local iprototype = require "gameplay.interface.prototype"
 local packcoord = iprototype.packcoord
-local unpackcoord = iprototype.unpackcoord
-local iconstant = require "gameplay.interface.constant"
-local ALL_DIR = iconstant.ALL_DIR
-local ALL_DIR_NUM = iconstant.ALL_DIR_NUM
 local ifluid = require "gameplay.interface.fluid"
 local iobject = ecs.require "object"
 local iprototype = require "gameplay.interface.prototype"
 local iflow_connector = require "gameplay.interface.flow_connector"
 local objects = require "objects"
 local math_abs = math.abs
-local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 local igrid_entity = ecs.require "engine.grid_entity"
 local terrain = ecs.require "terrain"
 local igameplay = ecs.require "gameplay_system"
 local gameplay_core = require "gameplay.core"
-local math3d = require "math3d"
-local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_box"
 local global = require "global"
-local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local ifluidbox = ecs.require "render_updates.fluidbox"
 local iprototype_cache = ecs.require "prototype_cache"
 local icamera_controller = ecs.require "engine.system.camera_controller"
-local CHANGED_FLAG_BUILDING <const> = require("gameplay.interface.constant").CHANGED_FLAG_BUILDING
-local CHANGED_FLAG_FLUIDFLOW <const> = require("gameplay.interface.constant").CHANGED_FLAG_FLUIDFLOW
-
-local REMOVE <const> = {}
-local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
-
--- To distinguish between "batch construction" and "batch teardown" in the touch_end event.
-local STATE_NONE  <const> = 0
-local STATE_START <const> = 1
-local STATE_TEARDOWN <const> = 2
 
 local function length(t)
     local n = 0
@@ -169,24 +169,24 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
 
         if x == from_x and y == from_y then
             if object then
-                map[coord] = {_set_endpoint_connection(prototype_name, State, object, State.starting_connection, dir)}
+                map[coord] = {x, y, _set_endpoint_connection(prototype_name, State, object, State.starting_connection, dir)}
             else
                 local endpoint_prototype_name, endpoint_dir = iflow_connector.cleanup(prototype_name, DEFAULT_DIR)
                 endpoint_prototype_name, endpoint_dir = _connect_to_neighbor(State, x, y, endpoint_prototype_name, endpoint_dir)
                 if not (x == to_x and y == to_y) then
                     endpoint_prototype_name, endpoint_dir = iflow_connector.set_connection(endpoint_prototype_name, endpoint_dir, dir, true)
                 end
-                map[coord] = {endpoint_prototype_name, endpoint_dir}
+                map[coord] = {x, y, endpoint_prototype_name, endpoint_dir}
             end
 
         elseif x == to_x and y == to_y then
             if object then
-                map[coord] = {_set_endpoint_connection(prototype_name, State, object, State.ending_connection, reverse_dir)}
+                map[coord] = {x, y, _set_endpoint_connection(prototype_name, State, object, State.ending_connection, reverse_dir)}
             else
                 local endpoint_prototype_name, endpoint_dir = iflow_connector.cleanup(prototype_name, DEFAULT_DIR)
                 endpoint_prototype_name, endpoint_dir = _connect_to_neighbor(State, x, y, endpoint_prototype_name, endpoint_dir)
                 endpoint_prototype_name, endpoint_dir = iflow_connector.set_connection(endpoint_prototype_name, endpoint_dir, reverse_dir, true)
-                map[coord] = {endpoint_prototype_name, endpoint_dir}
+                map[coord] = {x, y, endpoint_prototype_name, endpoint_dir}
             end
         else
             if object then
@@ -196,19 +196,19 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                     if not iprototype.has_type(typeobject.type, "fluidbox") then
                         State.succ = false
                     end
-                    map[coord] = {object.prototype_name, object.dir}
+                    map[coord] = {x, y, object.prototype_name, object.dir}
                 else
                     local endpoint_prototype_name, endpoint_dir = object.prototype_name, object.dir
                     endpoint_prototype_name, endpoint_dir = iflow_connector.set_connection(endpoint_prototype_name, endpoint_dir, dir, true)
                     endpoint_prototype_name, endpoint_dir = iflow_connector.set_connection(endpoint_prototype_name, endpoint_dir, reverse_dir, true)
-                    map[coord] = {endpoint_prototype_name, endpoint_dir}
+                    map[coord] = {x, y, endpoint_prototype_name, endpoint_dir}
                 end
             else
                 local endpoint_prototype_name, endpoint_dir = iflow_connector.cleanup(prototype_name, DEFAULT_DIR)
                 endpoint_prototype_name, endpoint_dir = iflow_connector.set_connection(endpoint_prototype_name, endpoint_dir, dir, true)
                 endpoint_prototype_name, endpoint_dir = iflow_connector.set_connection(endpoint_prototype_name, endpoint_dir, reverse_dir, true)
                 endpoint_prototype_name, endpoint_dir = _connect_to_neighbor(State, x, y, endpoint_prototype_name, endpoint_dir)
-                map[coord] = {endpoint_prototype_name, endpoint_dir}
+                map[coord] = {x, y, endpoint_prototype_name, endpoint_dir}
             end
         end
 
@@ -219,21 +219,22 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
     end
 
     -- TODO: map may be include some non-pipe objects, such as some building which have fluidboxes, only for changing the state of the building
-    for coord, v in pairs(map) do
-        local x, y = unpackcoord(coord)
+    for _, v in pairs(map) do
+        local x, y = v[1], v[2]
+        local prototype_name, dir = v[3], v[4]
         local object = objects:coord(x, y, EDITOR_CACHE_NAMES)
         if object then
             object = assert(objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone))
-            if object.prototype_name ~= v[1] or object.dir ~= v[2] then
-                object.prototype_name = v[1]
-                object.dir = v[2]
+            if object.prototype_name ~= prototype_name or object.dir ~= dir then
+                object.prototype_name = prototype_name
+                object.dir = dir
                 object.srt.r = ROTATORS[object.dir]
                 object.fluid_name = State.fluid_name
             end
         else
             object = iobject.new {
-                prototype_name = v[1],
-                dir = v[2],
+                prototype_name = prototype_name,
+                dir = dir,
                 x = x,
                 y = y,
                 srt = {
@@ -277,35 +278,35 @@ local function _teardown_end(self, datamodel, State, dir, dir_delta)
 
         if x == from_x and y == from_y then
             if object then
-                map[coord] = {_set_endpoint_connection(prototype_name, State, object, State.starting_connection, dir)}
+                map[coord] = {x, y, _set_endpoint_connection(prototype_name, State, object, State.starting_connection, dir)}
             else
                 local endpoint_prototype_name, endpoint_dir = iflow_connector.cleanup(prototype_name, DEFAULT_DIR)
                 endpoint_prototype_name, endpoint_dir = _connect_to_neighbor(State, x, y, endpoint_prototype_name, endpoint_dir)
                 if not (x == to_x and y == to_y) then
                     endpoint_prototype_name, endpoint_dir = iflow_connector.set_connection(endpoint_prototype_name, endpoint_dir, dir, true)
                 end
-                map[coord] = {endpoint_prototype_name, endpoint_dir}
+                map[coord] = {x, y, endpoint_prototype_name, endpoint_dir}
             end
 
         elseif x == to_x and y == to_y then
             if object then
-                map[coord] = {_set_endpoint_connection(prototype_name, State, object, State.ending_connection, reverse_dir)}
+                map[coord] = {x, y, _set_endpoint_connection(prototype_name, State, object, State.ending_connection, reverse_dir)}
             else
                 local endpoint_prototype_name, endpoint_dir = iflow_connector.cleanup(prototype_name, DEFAULT_DIR)
                 endpoint_prototype_name, endpoint_dir = _connect_to_neighbor(State, x, y, endpoint_prototype_name, endpoint_dir)
                 endpoint_prototype_name, endpoint_dir = iflow_connector.set_connection(endpoint_prototype_name, endpoint_dir, reverse_dir, true)
-                map[coord] = {endpoint_prototype_name, endpoint_dir}
+                map[coord] = {x, y, endpoint_prototype_name, endpoint_dir}
             end
         else
             if object then
                 if not iprototype.is_pipe(object.prototype_name) then
                     State.succ = false
-                    map[coord] = {object.prototype_name, object.dir}
+                    map[coord] = {x, y, object.prototype_name, object.dir}
                 else
                     local endpoint_prototype_name, endpoint_dir = object.prototype_name, object.dir
                     endpoint_prototype_name, endpoint_dir = iflow_connector.set_connection(endpoint_prototype_name, endpoint_dir, dir, true)
                     endpoint_prototype_name, endpoint_dir = iflow_connector.set_connection(endpoint_prototype_name, endpoint_dir, reverse_dir, true)
-                    map[coord] = {endpoint_prototype_name, endpoint_dir}
+                    map[coord] = {x, y, endpoint_prototype_name, endpoint_dir}
                 end
             else
                 State.succ = false
@@ -319,20 +320,21 @@ local function _teardown_end(self, datamodel, State, dir, dir_delta)
     end
 
     -- TODO: map may be include some non-pipe objects, such as some building which have fluidboxes, only for changing the state of the building
-    for coord, v in pairs(map) do
-        local x, y = unpackcoord(coord)
+    for _, v in pairs(map) do
+        local x, y = v[1], v[2]
+        local prototype_name, dir = v[3], v[4]
         local object = objects:coord(x, y, EDITOR_CACHE_NAMES)
         if object then
             object = assert(objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone))
-            if object.prototype_name ~= v[1] or object.dir ~= v[2] then
-                object.prototype_name = v[1]
-                object.dir = v[2]
+            if object.prototype_name ~= prototype_name or object.dir ~= dir then
+                object.prototype_name = prototype_name
+                object.dir = dir
                 object.srt.r = ROTATORS[object.dir]
             end
         else
             object = iobject.new {
-                prototype_name = v[1],
-                dir = v[2],
+                prototype_name = prototype_name,
+                dir = dir,
                 x = x,
                 y = y,
                 srt = {
@@ -644,9 +646,9 @@ local function confirm(self, datamodel)
     datamodel.show_cancel = false
 
     local removed = {}
-    for coord, object in pairs(self.pending) do
+    for _, object in pairs(self.pending) do
         if object == REMOVE then
-            removed[coord] = true
+            removed[object.id] = object
         else
             local object_id = object.id
             local old = objects:get(object_id, {"CONSTRUCTED"})
@@ -664,20 +666,18 @@ local function confirm(self, datamodel)
     end
     objects:commit("CONFIRM", "CONSTRUCTED")
 
-    for coord in pairs(removed) do
-        local x, y = iprototype.unpackcoord(coord)
-        local obj = assert(objects:coord(x, y))
-        iobject.remove(obj)
-        objects:remove(obj.id)
-        local building = global.buildings[obj.id]
+    for _, object in pairs(removed) do
+        iobject.remove(object)
+        objects:remove(object.id)
+        local building = global.buildings[object.id]
         if building then
             for _, v in pairs(building) do
                 v:remove()
             end
         end
 
-        print("remove", obj.id, obj.x, obj.y)
-        igameplay.destroy_entity(obj.gameplay_eid)
+        print("remove", object.id, object.x, object.y)
+        igameplay.destroy_entity(object.gameplay_eid)
     end
 
     gameplay_core.set_changed(CHANGED_FLAG_BUILDING | CHANGED_FLAG_FLUIDFLOW)
@@ -692,7 +692,7 @@ local function getPlacedPrototypeName(x, y, default_prototype_name, default_dir)
         prototype_name, dir = default_prototype_name, default_dir
     end
 
-    for _, d in ipairs(iconstant.ALL_DIR) do
+    for _, d in ipairs(ALL_DIR) do
         local dx, dy = iprototype.move_coord(x, y, d)
         local o = objects:coord(dx, dy, EDITOR_CACHE_NAMES)
         if o and iprototype.is_pipe(o.prototype_name) then

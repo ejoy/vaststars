@@ -1,6 +1,16 @@
 local ecs = ...
 local world = ecs.world
 
+local CONSTANT = require "gameplay.interface.constant"
+local ROTATORS <const> = CONSTANT.ROTATORS
+local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
+local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
+local ALL_DIR = CONSTANT.ALL_DIR
+local SPRITE_COLOR <const> = import_package "vaststars.prototype"("sprite_color")
+
+local math3d = require "math3d"
+local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
+
 local iprototype = require "gameplay.interface.prototype"
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local create_builder = ecs.require "editor.builder"
@@ -11,16 +21,11 @@ local ipower = ecs.require "power"
 local ipower_line = ecs.require "power_line"
 local imining = require "gameplay.interface.mining"
 local math3d = require "math3d"
-local iconstant = require "gameplay.interface.constant"
-local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
-local ALL_DIR = iconstant.ALL_DIR
 local igrid_entity = ecs.require "engine.grid_entity"
 local mc = import_package "ant.math".constant
 local create_road_entrance = ecs.require "editor.road_entrance"
 local global = require "global"
 local create_sprite = ecs.require "sprite"
-local SPRITE_COLOR = import_package "vaststars.prototype"("sprite_color")
-local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 local create_pickup_icon = ecs.require "pickup_icon".create
 local create_pickup_icon_chimney = ecs.require "pickup_icon_chimney".create
 local terrain = ecs.require "terrain"
@@ -30,8 +35,6 @@ local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_bo
 local create_selected_boxes = ecs.require "selected_boxes"
 local vsobject_manager = ecs.require "vsobject_manager"
 local igameplay = ecs.require "gameplay_system"
-local ROAD_SIZE <const> = 2
-local CHANGED_FLAG_BUILDING <const> = require("gameplay.interface.constant").CHANGED_FLAG_BUILDING
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)

@@ -2,13 +2,6 @@ local ecs   = ...
 local world = ecs.world
 local w     = world.w
 
-local iprototype = require "gameplay.interface.prototype"
-local math3d = require "math3d"
-local igame_object = ecs.require "engine.game_object"
-local ig = ecs.require "ant.group|group"
-local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
-local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
-
 -- world coordinate system
 -- z   y
 -- ▲  7 
@@ -22,10 +15,12 @@ local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 -- ▼
 -- y
 
+local CONSTANT <const> = require("gameplay.interface.constant")
 local SURFACE_HEIGHT <const> = 0
-local TILE_SIZE <const> = 10
-local WIDTH <const> = 256
-local HEIGHT <const> = 256
+local TILE_SIZE <const> = CONSTANT.TILE_SIZE
+local WIDTH <const> = CONSTANT.MAP_WIDTH
+local HEIGHT <const> = CONSTANT.MAP_HEIGHT
+local ROTATORS <const> = CONSTANT.ROTATORS
 local GRID_WIDTH <const> = 16
 local GRID_HEIGHT <const> = 16
 local MAX_BUILDING_WIDTH <const> = 6
@@ -42,11 +37,11 @@ local COORD_BOUNDARY <const> = {
     {0, 0},
     {WIDTH - 1, HEIGHT - 1},
 }
-
-local function _hash(x, y)
-    assert(x & 0xFF == x and y & 0xFF == y)
-    return x | (y<<8)
-end
+local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
+local iprototype = require "gameplay.interface.prototype"
+local math3d = require "math3d"
+local igame_object = ecs.require "engine.game_object"
+local ig = ecs.require "ant.group|group"
 
 local function _get_gridxy(x, y)
     return (x // GRID_WIDTH) + 1, (y // GRID_HEIGHT) + 1
@@ -65,7 +60,7 @@ local function _get_coord_by_position(position)
 end
 
 local function _get_grid_id(x, y)
-    return _hash(_get_gridxy(x, y))
+    return iprototype.packcoord(_get_gridxy(x, y))
 end
 
 local terrain = {}
@@ -116,12 +111,12 @@ function terrain:reset_mineral(map)
         local w, h = typeobject.mineral_area:match("^(%d+)x(%d+)$")
         w, h = tonumber(w), tonumber(h)
 
-        local hash = _hash(x, y)
+        local hash = iprototype.packcoord(x, y)
         self.mineral[hash] = {x = x, y = y, w = w, h = h, mineral = mineral}
 
         for i = 0, w - 1 do
             for j = 0, h - 1 do
-                self.mineral_cache[_hash(x + i, y + j)] = hash
+                self.mineral_cache[iprototype.packcoord(x + i, y + j)] = hash
             end
         end
 
@@ -136,7 +131,7 @@ function terrain:reset_mineral(map)
 end
 
 function terrain:get_mineral(x, y)
-    local hash = self.mineral_cache[_hash(x, y)]
+    local hash = self.mineral_cache[iprototype.packcoord(x, y)]
     if not hash then
         return
     end
@@ -146,7 +141,7 @@ end
 
 function terrain:can_place_on_mineral(x, y, w, h)
     local mid_x, mid_y = x + w // 2, y + h // 2
-    local hash = self.mineral_cache[_hash(mid_x, mid_y)]
+    local hash = self.mineral_cache[iprototype.packcoord(mid_x, mid_y)]
     local m = self.mineral[hash]
     if not m then
         return false
@@ -189,7 +184,7 @@ function terrain:enable_terrain(lefttop, rightbottom)
     local new = {}
     for x = ltGridCoord[1], rbGridCoord[1] do
         for y = ltGridCoord[2], rbGridCoord[2] do
-            local group_id = assert(self._group_id[_hash(x, y)])
+            local group_id = assert(self._group_id[iprototype.packcoord(x, y)])
             new[group_id] = true
         end
     end

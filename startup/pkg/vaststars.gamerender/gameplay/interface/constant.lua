@@ -7,15 +7,31 @@ local DIRECTION <const> = {
     E = 1,
     S = 2,
     W = 3,
+    [0] = 0, -- TODO: remove this
+    [1] = 1,
+    [2] = 2,
+    [3] = 3,
 }
 
 local M = {}
 M.MAP_WIDTH = 256
 M.MAP_HEIGHT = 256
 M.TILE_SIZE = 10
+M.ROAD_SIZE = 2
 M.ALL_DIR = {'N', 'S', 'W', 'E'}
 M.ALL_DIR_NUM = {0, 1, 2, 3}
 M.DEFAULT_DIR = 'N'
+M.DIRECTION = DIRECTION
+M.DIR_MOVE_DELTA = {
+    ['N'] = {x = 0,  y = 1},
+    ['E'] = {x = 1,  y = 0},
+    ['S'] = {x = 0,  y = -1},
+    ['W'] = {x = -1, y = 0},
+    [DIRECTION.N] = {x = 0,  y = 1},
+    [DIRECTION.E] = {x = 1,  y = 0},
+    [DIRECTION.S] = {x = 0,  y = -1},
+    [DIRECTION.W] = {x = -1, y = 0},
+}
 M.ROTATORS = {
     N = math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(0)})   )),
     E = math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(90)})  )),

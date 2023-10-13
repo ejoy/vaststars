@@ -1,32 +1,34 @@
 local ecs = ...
 local world = ecs.world
 
+local CONSTANT <const> = require("gameplay.interface.constant")
+local ROTATORS <const> = CONSTANT.ROTATORS
+local DEFAULT_DIR <const> = CONSTANT.DEFAULT_DIR
+local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
+local CHANGED_FLAG_FLUIDFLOW <const> = CONSTANT.CHANGED_FLAG_FLUIDFLOW
+local STATE_NONE  <const> = 0
+local STATE_START <const> = 1
+local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
+
+local math3d = require "math3d"
+local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
+
 local create_builder = ecs.require "editor.builder"
 local iprototype = require "gameplay.interface.prototype"
 local packcoord = iprototype.packcoord
-local unpackcoord = iprototype.unpackcoord
 local ifluid = require "gameplay.interface.fluid"
 local iobject = ecs.require "object"
 local iprototype = require "gameplay.interface.prototype"
 local iflow_connector = require "gameplay.interface.flow_connector"
 local objects = require "objects"
 local math_abs = math.abs
-local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 local iquad_lines_entity = ecs.require "engine.quad_lines_entity" -- NOTE: different from pipe_builder
 local dotted_line_material <const> = "/pkg/vaststars.resources/materials/dotted_line.material" -- NOTE: different from pipe_builder
 local igrid_entity = ecs.require "engine.grid_entity"
-local math3d = require "math3d"
-local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 local terrain = ecs.require "terrain"
 local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_box"
 local global = require "global"
-local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
-local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
-local STATE_NONE  <const> = 0
-local STATE_START <const> = 1
 local gameplay_core = require "gameplay.core"
-local CHANGED_FLAG_BUILDING <const> = require("gameplay.interface.constant").CHANGED_FLAG_BUILDING
-local CHANGED_FLAG_FLUIDFLOW <const> = require("gameplay.interface.constant").CHANGED_FLAG_FLUIDFLOW
 
 local function _show_dotted_line(self, from_x, from_y, to_x, to_y, dir, dir_delta)
     from_x, from_y = from_x + dir_delta.x, from_y + dir_delta.y
@@ -89,7 +91,7 @@ local function _connect_to_neighbor(State, PipeToGroundState, x, y, neighbor_dir
                 local coord = packcoord(object.x, object.y)
                 _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, iprototype.reverse_dir(neighbor_dir), true)
                 if _prototype_name then
-                    PipeToGroundState.map[coord] = {_prototype_name, _dir}
+                    PipeToGroundState.map[coord] = {object.x, object.y, _prototype_name, _dir}
                 end
             end
 
@@ -167,7 +169,7 @@ local function _set_starting(prototype_name, State, PipeToGroundState, x, y, dir
     if not object then
         local endpoint_prototype_name, endpoint_dir = iflow_connector.covers_pipe_to_ground(typeobject.building_category, nil, dir)
         endpoint_prototype_name, endpoint_dir = _connect_to_neighbor(State, PipeToGroundState, x, y, iprototype.reverse_dir(dir), endpoint_prototype_name, endpoint_dir)
-        PipeToGroundState.map[packcoord(x, y)] = {assert(endpoint_prototype_name), assert(endpoint_dir)}
+        PipeToGroundState.map[packcoord(x, y)] = {x, y, assert(endpoint_prototype_name), assert(endpoint_dir)}
         return x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
     end
 
@@ -177,13 +179,13 @@ local function _set_starting(prototype_name, State, PipeToGroundState, x, y, dir
         if _can_replace(object, dir) then
             -- replace the neighbor pipe with a pipe to ground
             _prototype_name, _dir = iflow_connector.covers_pipe_to_ground(typeobject.building_category, iprototype.reverse_dir(dir), dir)
-            PipeToGroundState.map[coord] = {assert(_prototype_name), assert(_dir)}
+            PipeToGroundState.map[coord] = {x, y, assert(_prototype_name), assert(_dir)}
             return x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
         end
 
         -- the neighbor pipe can not be replaced with a pipe to ground, so we need to change the shape of the pipe
         _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, dir, true)
-        PipeToGroundState.map[coord] = {assert(_prototype_name), assert(_dir)}
+        PipeToGroundState.map[coord] = {x, y, assert(_prototype_name), assert(_dir)}
 
         local x, y = object.x + PipeToGroundState.dir_delta.x, object.y + PipeToGroundState.dir_delta.y
         if x == PipeToGroundState.to_x and y == PipeToGroundState.to_y then
@@ -196,17 +198,17 @@ local function _set_starting(prototype_name, State, PipeToGroundState, x, y, dir
         coord = packcoord(x, y)
         local next_object = objects:coord(x, y, EDITOR_CACHE_NAMES)
         if not next_object then
-            PipeToGroundState.map[coord] = {assert(_prototype_name), assert(_dir)}
+            PipeToGroundState.map[coord] = {x, y, assert(_prototype_name), assert(_dir)}
             return x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
         end
 
         if not _can_replace(next_object, dir) then
             State.succ = false
-            PipeToGroundState.map[coord] = {assert(next_object.prototype_name), assert(next_object.dir)}
+            PipeToGroundState.map[coord] = {x, y, assert(next_object.prototype_name), assert(next_object.dir)}
             return x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
         end
 
-        PipeToGroundState.map[coord] = {assert(_prototype_name), assert(_dir)}
+        PipeToGroundState.map[coord] = {x, y, assert(_prototype_name), assert(_dir)}
         return x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
 
     elseif iprototype.is_pipe_to_ground(object.prototype_name) then
@@ -221,19 +223,19 @@ local function _set_starting(prototype_name, State, PipeToGroundState, x, y, dir
         _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, dir, true)
         if _prototype_name then
             local coord = packcoord(x, y)
-            PipeToGroundState.map[coord] = {assert(_prototype_name), assert(_dir)}
+            PipeToGroundState.map[coord] = {x, y, assert(_prototype_name), assert(_dir)}
 
             _prototype_name, _dir = iflow_connector.covers_pipe_to_ground(typeobject.building_category, iprototype.reverse_dir(dir), dir)
             if _prototype_name then
                 x, y = x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
                 local coord = packcoord(x, y)
-                PipeToGroundState.map[coord] = {assert(_prototype_name), assert(_dir)}
+                PipeToGroundState.map[coord] = {x, y, assert(_prototype_name), assert(_dir)}
             end
         else
             local coord = packcoord(x, y)
             _prototype_name, _dir = iflow_connector.covers_pipe_to_ground(typeobject.building_category, iprototype.reverse_dir(dir), dir)
             _prototype_name, _dir = iflow_connector.set_connection(_prototype_name, _dir, iprototype.reverse_dir(dir), false)
-            PipeToGroundState.map[coord] = {assert(_prototype_name), assert(_dir)}
+            PipeToGroundState.map[coord] = {x, y, assert(_prototype_name), assert(_dir)}
         end
 
         return x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
@@ -252,17 +254,17 @@ local function _set_starting(prototype_name, State, PipeToGroundState, x, y, dir
         local coord = packcoord(x, y)
         local next_object = objects:coord(x, y, EDITOR_CACHE_NAMES)
         if not next_object then
-            PipeToGroundState.map[coord] = {assert(_prototype_name), assert(_dir)}
+            PipeToGroundState.map[coord] = {x, y, assert(_prototype_name), assert(_dir)}
             return x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
         end
 
         if not _can_replace(next_object, dir) then
             State.succ = false
-            PipeToGroundState.map[coord] = {assert(next_object.prototype_name), assert(next_object.dir)}
+            PipeToGroundState.map[coord] = {x, y, assert(next_object.prototype_name), assert(next_object.dir)}
             return x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
         end
 
-        PipeToGroundState.map[coord] = {assert(_prototype_name), assert(_dir)}
+        PipeToGroundState.map[coord] = {x, y, assert(_prototype_name), assert(_dir)}
         return x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
     end
 end
@@ -298,7 +300,7 @@ local function _set_section(prototype_name, State, PipeToGroundState, x, y, dir)
     end
 
     local _prototype_name, _dir = iflow_connector.covers_pipe_to_ground(typeobject.building_category, dir, reverse_dir)
-    PipeToGroundState.map[packcoord(x, y)] = {assert(_prototype_name), assert(_dir)}
+    PipeToGroundState.map[packcoord(x, y)] = {x, y, assert(_prototype_name), assert(_dir)}
 
     x, y = x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
     State.dotted_line_coord = {x, y, PipeToGroundState.to_x, PipeToGroundState.to_y, dir, PipeToGroundState.dir_delta}
@@ -317,7 +319,7 @@ local function _set_section(prototype_name, State, PipeToGroundState, x, y, dir)
         end
     end
     local _prototype_name, _dir = iflow_connector.covers_pipe_to_ground(typeobject.building_category, reverse_dir, dir)
-    PipeToGroundState.map[packcoord(x, y)] = {assert(_prototype_name), assert(_dir)}
+    PipeToGroundState.map[packcoord(x, y)] = {x, y, assert(_prototype_name), assert(_dir)}
 
     if last then
         return
@@ -335,12 +337,12 @@ local function _set_ending(prototype_name, State, PipeToGroundState, x, y, dir)
 
     local object = objects:coord(x, y, EDITOR_CACHE_NAMES)
     if not object then
-        PipeToGroundState.map[packcoord(x, y)] = {assert(endpoint_prototype_name), assert(endpoint_dir)}
+        PipeToGroundState.map[packcoord(x, y)] = {x, y, assert(endpoint_prototype_name), assert(endpoint_dir)}
         return
     end
 
     if _can_replace(object, dir) then
-        PipeToGroundState.map[packcoord(x, y)] = {assert(endpoint_prototype_name), assert(endpoint_dir)}
+        PipeToGroundState.map[packcoord(x, y)] = {x, y, assert(endpoint_prototype_name), assert(endpoint_dir)}
         return
     end
 
@@ -359,7 +361,7 @@ local function _set_ending(prototype_name, State, PipeToGroundState, x, y, dir)
     end
 
     endpoint_prototype_name, endpoint_dir = iflow_connector.covers_pipe_to_ground(typeobject.building_category, dir, iprototype.reverse_dir(dir))
-    PipeToGroundState.map[coord] = {assert(endpoint_prototype_name), assert(endpoint_dir)}
+    PipeToGroundState.map[coord] = {px, py, assert(endpoint_prototype_name), assert(endpoint_dir)}
 
     coord = packcoord(x, y)
     local _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, iprototype.reverse_dir(dir), true)
@@ -368,7 +370,7 @@ local function _set_ending(prototype_name, State, PipeToGroundState, x, y, dir)
         return
     end
 
-    PipeToGroundState.map[coord] = {_prototype_name, _dir}
+    PipeToGroundState.map[coord] = {x, y, _prototype_name, _dir}
 end
 
 local function _get_item_name(prototype_name)
@@ -428,14 +430,14 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
             -- refresh the shape of the neighboring pipe
             -- TODO: optimize
             local coord = packcoord(to_x, to_y)
-            if PipeToGroundState.map[coord] and iprototype.is_pipe_to_ground(PipeToGroundState.map[coord][1]) then
+            if PipeToGroundState.map[coord] and iprototype.is_pipe_to_ground(PipeToGroundState.map[coord][3]) then
                 local dx, dy = last_x + dir_delta.x, last_y + dir_delta.y
                 local coord = packcoord(dx, dy)
                 local object = objects:coord(dx, dy, EDITOR_CACHE_NAMES)
                 if object and (iprototype.is_pipe(object.prototype_name) or iprototype.is_pipe_to_ground(object.prototype_name)) then
                     local _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, iprototype.reverse_dir(dir), false)
                     if object.prototype_name ~= _prototype_name or object.dir ~= _dir then
-                        PipeToGroundState.map[coord] = {assert(_prototype_name), _dir}
+                        PipeToGroundState.map[coord] = {x, y, assert(_prototype_name), _dir}
                     end
                 end
             end
@@ -463,25 +465,26 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
         end
     end
 
-    for coord, v in pairs(PipeToGroundState.map) do
-        local x, y = unpackcoord(coord)
+    for _, v in pairs(PipeToGroundState.map) do
+        local x, y = v[1], v[2]
+        local prototype_name, dir = v[3], v[4]
         local object = objects:coord(x, y, EDITOR_CACHE_NAMES)
         if object then
             object = assert(objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone))
-            if object.prototype_name ~= v[1] or object.dir ~= v[2] then
-                if _get_item_name(object.prototype_name) ~= _get_item_name(v[1]) then
+            if object.prototype_name ~= prototype_name or object.dir ~= dir then
+                if _get_item_name(object.prototype_name) ~= _get_item_name(prototype_name) then
                     local item_name = _get_item_name(object.prototype_name)
                     PipeToGroundState.remove[item_name] = (PipeToGroundState.remove[item_name] or 0) + 1
                 end
-                object.prototype_name = v[1]
-                object.dir = v[2]
+                object.prototype_name = prototype_name
+                object.dir = dir
                 object.srt.r = ROTATORS[object.dir]
             end
 
         else
             object = iobject.new {
-                prototype_name = v[1],
-                dir = v[2],
+                prototype_name = prototype_name,
+                dir = dir,
                 x = x,
                 y = y,
                 srt = {

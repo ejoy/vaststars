@@ -2,6 +2,9 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
+local SPRITE_COLOR <const> = import_package "vaststars.prototype"("sprite_color")
+local DOTTED_LINE_MATERIAL <const> = "/pkg/vaststars.resources/materials/dotted_line.material"
+
 local iui = ecs.require "engine.system.ui_system"
 local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
@@ -10,6 +13,8 @@ local gameplay_core = require "gameplay.core"
 local create_selected_boxes = ecs.require "selected_boxes"
 local terrain = ecs.require "terrain"
 local audio = import_package "ant.audio"
+local create_sprite = ecs.require "sprite"
+local iquad_lines_entity = ecs.require "engine.quad_lines_entity"
 
 function idetail.show(object_id)
     local object = assert(objects:get(object_id))
@@ -25,10 +30,6 @@ end
 
 do
     local temp_objects = {}
-    local create_sprite = ecs.require "sprite"
-    local SPRITE_COLOR <const> = import_package "vaststars.prototype"("sprite_color")
-    local DOTTED_LINE_MATERIAL <const> = "/pkg/vaststars.resources/materials/dotted_line.material"
-    local iquad_lines_entity = ecs.require "engine.quad_lines_entity"
 
     local function __check_pipe_to_ground(object, dir)
         local typeobject = iprototype.queryByName(object.prototype_name)

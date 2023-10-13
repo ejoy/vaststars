@@ -3,10 +3,11 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
+local CONSTANT = require "gameplay.interface.constant"
+local ROTATORS = CONSTANT.ROTATORS
+
 local ientity_object = ecs.require "engine.system.entity_object_system"
 local ientity = ecs.require "ant.render|components.entity"
-local constant = require "gameplay.interface.constant"
-local ROTATORS = constant.ROTATORS
 local iom = ecs.require "ant.objcontroller|obj_motion"
 local math3d = require "math3d"
 local ivs = ecs.require "ant.render|visible_state"

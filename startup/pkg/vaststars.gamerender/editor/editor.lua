@@ -1,9 +1,9 @@
 local ecs = ...
 local world = ecs.world
 
+local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local objects = require "objects"
 local iobject = ecs.require "object"
-local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 
 --
 local M = {}
