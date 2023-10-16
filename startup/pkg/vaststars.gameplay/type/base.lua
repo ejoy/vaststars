@@ -58,6 +58,5 @@ local base = type "base"
 function base:ctor(init, pt)
     return {
         base = true,
-        base_changed = true,
     }
 end

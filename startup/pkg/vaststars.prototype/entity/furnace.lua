@@ -37,7 +37,7 @@ prototype "熔炼炉I" {
             },
         },
     },
-    maxslot = "8",
+    maxslot = 8,
 }
 
 prototype "熔炼炉II" {
@@ -76,7 +76,7 @@ prototype "熔炼炉II" {
             },
         },
     },
-    maxslot = "8",
+    maxslot = 8,
 }
 
 prototype "熔炼炉III" {
@@ -115,7 +115,7 @@ prototype "熔炼炉III" {
             },
         },
     },
-    maxslot = "8",
+    maxslot = 8,
 }
 
 prototype "粉碎机I" {
@@ -134,7 +134,7 @@ prototype "粉碎机I" {
     allow_set_recipt = true,
     craft_category = {"矿石粉碎"},
     camera_distance = 65,
-    maxslot = "8",
+    maxslot = 8,
 }
 
 prototype "粉碎机II" {
@@ -153,7 +153,7 @@ prototype "粉碎机II" {
     allow_set_recipt = true,
     craft_category = {"矿石粉碎"},
     camera_distance = 65,
-    maxslot = "8",
+    maxslot = 8,
 }
 
 prototype "粉碎机III" {
@@ -171,7 +171,7 @@ prototype "粉碎机III" {
     allow_set_recipt = true,
     craft_category = {"矿石粉碎"},
     camera_distance = 65,
-    maxslot = "8",
+    maxslot = 8,
 }
 
 prototype "浮选器I" {
@@ -190,7 +190,7 @@ prototype "浮选器I" {
     allow_set_recipt = true,
     craft_category = {"矿石浮选"},
     camera_distance = 40,
-    maxslot = "8",
+    maxslot = 8,
     fluidboxes = {
         input = {
             {
@@ -247,7 +247,7 @@ prototype "浮选器II" {
     allow_set_recipt = true,
     craft_category = {"矿石浮选"},
     camera_distance = 40,
-    maxslot = "8",
+    maxslot = 8,
     fluidboxes = {
         input = {
             {
@@ -304,7 +304,7 @@ prototype "浮选器III" {
     allow_set_recipt = true,
     craft_category = {"矿石浮选"},
     camera_distance = 40,
-    maxslot = "8",
+    maxslot = 8,
     fluidboxes = {
         input = {
             {

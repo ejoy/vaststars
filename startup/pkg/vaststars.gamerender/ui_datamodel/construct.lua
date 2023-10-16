@@ -57,7 +57,7 @@ local help_mb = mailbox:sub {"help"}
 local move_md = mailbox:sub {"move"}
 local teardown_mb = mailbox:sub {"teardown"}
 local construct_entity_mb = mailbox:sub {"construct_entity"}
-local inventory_mb = mailbox:sub {"inventory"}
+local backpack_mb = mailbox:sub {"backpack"}
 local focus_tips_event = world:sub {"focus_tips"}
 local construct_mb = mailbox:sub {"construct"}
 local ipower = ecs.require "power"
@@ -246,11 +246,11 @@ function M.update_tech(datamodel, tech)
     end
 end
 
-function M.update_inventory_bar(datamodel, t)
-    datamodel.inventory_bar = {}
+function M.update_backpack_bar(datamodel, t)
+    datamodel.backpack_bar = {}
     for _, v in ipairs(t) do
-        datamodel.inventory_bar[#datamodel.inventory_bar + 1] = v
-        if #datamodel.inventory_bar >= 4 then
+        datamodel.backpack_bar[#datamodel.backpack_bar + 1] = v
+        if #datamodel.backpack_bar >= 4 then
             break
         end
     end
@@ -862,8 +862,8 @@ function M.update(datamodel)
         end)
     end
 
-    for _ in inventory_mb:unpack() do
-        iui.open({rml = "/pkg/vaststars.resources/ui/inventory.rml"})
+    for _ in backpack_mb:unpack() do
+        iui.open({rml = "/pkg/vaststars.resources/ui/backpack.rml"})
     end
 
     for _ in settings_mb:unpack() do

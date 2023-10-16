@@ -108,7 +108,7 @@ prototype "地下水挖掘机I" {
     recipe = "离岸抽水",
     building_menu = false,
     io_shelf = false,
-    maxslot = "8",
+    maxslot = 8,
     camera_distance = 72,
     fluidboxes = {
         input = {},
@@ -141,7 +141,7 @@ prototype "地下水挖掘机II" {
     recipe = "离岸抽水",
     building_menu = false,
     io_shelf = false,
-    maxslot = "8",
+    maxslot = 8,
     camera_distance = 72,
     fluidboxes = {
         input = {},
@@ -172,7 +172,7 @@ prototype "核子挖掘机" {
     recipe = "离岸抽水",
     building_menu = false,
     io_shelf = false,
-    maxslot = "8",
+    maxslot = 8,
     camera_distance = 72,
     fluidboxes = {
         input = {},
@@ -316,7 +316,7 @@ prototype "空气过滤器I" {
     speed = "100%",
     priority = "secondary",
     recipe = "空气过滤",
-    maxslot = "8",
+    maxslot = 8,
     sound = "building/air-filter",
     camera_distance = 90,
     fluidboxes = {
@@ -347,7 +347,7 @@ prototype "空气过滤器II" {
     speed = "300%",
     priority = "secondary",
     recipe = "空气过滤",
-    maxslot = "8",
+    maxslot = 8,
     sound = "building/air-filter",
     camera_distance = 90,
     fluidboxes = {
@@ -378,7 +378,7 @@ prototype "空气过滤器III" {
     speed = "800%",
     priority = "secondary",
     recipe = "空气过滤",
-    maxslot = "8",
+    maxslot = 8,
     sound = "building/air-filter",
     camera_distance = 90,
     fluidboxes = {

@@ -16,7 +16,7 @@ prototype "采矿机I" {
     sound = "building/miner",
     mining_category = {"矿石开采"},
     speed = "100%",
-    maxslot = "8",
+    maxslot = 8,
     camera_distance = 95,
 }
 
@@ -35,7 +35,7 @@ prototype "采矿机II" {
     sound = "building/miner",
     mining_category = {"矿石开采"},
     speed = "200%",
-    maxslot = "8",
+    maxslot = 8,
     camera_distance = 95,
 }
 
@@ -54,6 +54,6 @@ prototype "采矿机III" {
     sound = "building/miner",
     mining_category = {"矿石开采"},
     speed = "300%",
-    maxslot = "8",
+    maxslot = 8,
     camera_distance = 95,
 }

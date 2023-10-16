@@ -10,7 +10,6 @@ local continue_mb = mailbox:sub {"continue"}
 local load_template_mb = mailbox:sub {"load_template"}
 local new_game = ecs.require "main_menu_manager".new_game
 local continue_game = ecs.require "main_menu_manager".continue_game
-local debugger <const> = require "debugger"
 local archiving = require "archiving"
 
 ---------------
@@ -27,10 +26,9 @@ function M.update(datamodel)
         continue_game()
     end
 
-    for _, _, _, mode, template in start_game_mb:unpack() do
-        debugger.set_free_mode(mode == "free")
+    for _, _, _, template in start_game_mb:unpack() do
         iui.close("/pkg/vaststars.resources/ui/login.rml")
-        new_game(mode, template)
+        new_game(template)
     end
 
     for _ in load_resources_mb:unpack() do

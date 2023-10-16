@@ -127,4 +127,5 @@ return {
   mineral = mineral,
   show = false,
   guide = "guide",
+  mode = "free",
 }

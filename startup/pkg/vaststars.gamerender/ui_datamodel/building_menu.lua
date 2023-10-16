@@ -2,6 +2,28 @@ local ecs, mailbox = ...
 local world = ecs.world
 local w = world.w
 
+local CHEST_TYPE_CONVERT <const> = {
+    [0] = "none",
+    [1] = "supply",
+    [2] = "demand",
+    [3] = "transit",
+}
+
+local PICKUP_COMPONENTS <const> = {
+    "assembling",
+    "chest",
+}
+
+local PLACE_COMPONENTS <const> = {
+    "assembling",
+    "laboratory",
+    "chest",
+}
+
+local SET_ITEM_COMPONENTS <const> = {
+    "station",
+}
+
 local gameplay_core = require "gameplay.core"
 local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
@@ -28,28 +50,6 @@ local gameplay = import_package "vaststars.gameplay"
 local iGameplayStation = gameplay.interface "station"
 local iGameplayChest = gameplay.interface "chest"
 
-local CHEST_TYPE_CONVERT <const> = {
-    [0] = "none",
-    [1] = "supply",
-    [2] = "demand",
-    [3] = "transit",
-}
-
-local PICKUP_COMPONENTS <const> = {
-    "assembling",
-    "chest",
-}
-
-local PLACE_COMPONENTS <const> = {
-    "assembling",
-    "laboratory",
-    "chest",
-}
-
-local SET_ITEM_COMPONENTS <const> = {
-    "station",
-}
-
 local function hasComponent(e, components)
     for _, v in ipairs(components) do
         if e[v] then
@@ -62,11 +62,15 @@ local function hasSetItem(e, typeobject)
     return hasComponent(e, SET_ITEM_COMPONENTS) or (e.chest and CHEST_TYPE_CONVERT[typeobject.chest_type] == "transit")
 end
 
+local function hasPickupItem(e, typeobject)
+    return hasComponent(e, PICKUP_COMPONENTS)
+end
+
 local function hasPlaceItem(e, typeobject)
     return hasComponent(e, PLACE_COMPONENTS) or (e.chest and CHEST_TYPE_CONVERT[typeobject.chest_type] == "transit")
 end
 
-local function getMoveableCount(e)
+local function getPickableCount(e)
     local gameplay_world = gameplay_core.get_world()
 
     if e.assembling then
@@ -181,8 +185,8 @@ local function getPlaceableCount(e, typeobject)
     end
 end
 
-local updateMoveableCount = interval_call(300, function(datamodel, e, typeobject)
-    datamodel.pickup_item_count = datamodel.pickup_item and getMoveableCount(e) or 0
+local updateItemCount = interval_call(300, function(datamodel, e, typeobject)
+    datamodel.pickup_item_count = datamodel.pickup_item and getPickableCount(e) or 0
     datamodel.place_item_count = datamodel.place_item and getPlaceableCount(e, typeobject) or 0
 end)
 
@@ -200,7 +204,7 @@ function M.create(gameplay_eid)
     end
 
     local set_item = hasSetItem(e, typeobject)
-    local pickup_item = hasComponent(e, PICKUP_COMPONENTS)
+    local pickup_item = hasPickupItem(e, typeobject)
     local place_item = hasPlaceItem(e, typeobject)
     local lorry_factory_inc_lorry = (e.factory == true)
     local show_set_recipe = false
@@ -215,7 +219,7 @@ function M.create(gameplay_eid)
         lorry_factory_dec_lorry = false,
         pickup_item = pickup_item,
         place_item = place_item,
-        pickup_item_count = pickup_item and getMoveableCount(e) or 0,
+        pickup_item_count = pickup_item and getPickableCount(e) or 0,
         place_item_count = place_item and getPlaceableCount(e, typeobject) or 0,
         set_item = set_item,
         remove_lorry = (e.lorry ~= nil),
@@ -298,7 +302,7 @@ function M.update(datamodel, gameplay_eid)
         typeobject = iprototype.queryById(e.building.prototype)
     end
     if typeobject then
-        updateMoveableCount(datamodel, e, typeobject)
+        updateItemCount(datamodel, e, typeobject)
     end
 
     for _ in set_recipe_mb:unpack() do
@@ -384,7 +388,7 @@ function M.update(datamodel, gameplay_eid)
 
         local sp_x, sp_y = math3d.index(icamera_controller.world_to_screen(object.srt.t), 1, 2)
         iui.send("/pkg/vaststars.resources/ui/message_pop.rml", "item", {action = "up", left = sp_x, top = sp_y, items = msgs})
-        iui.call_datamodel_method("/pkg/vaststars.resources/ui/construct.rml", "update_inventory_bar", msgs)
+        iui.call_datamodel_method("/pkg/vaststars.resources/ui/construct.rml", "update_backpack_bar", msgs)
     end
 
     for _ in place_item_mb:unpack() do
@@ -413,7 +417,7 @@ function M.update(datamodel, gameplay_eid)
 
         local sp_x, sp_y = math3d.index(icamera_controller.world_to_screen(object.srt.t), 1, 2)
         iui.send("/pkg/vaststars.resources/ui/message_pop.rml", "item", {action = "down", left = sp_x, top = sp_y, items = msgs})
-        iui.call_datamodel_method("/pkg/vaststars.resources/ui/construct.rml", "update_inventory_bar", msgs)
+        iui.call_datamodel_method("/pkg/vaststars.resources/ui/construct.rml", "update_backpack_bar", msgs)
     end
 
     for _ in remove_lorry_mb:unpack() do

@@ -482,4 +482,5 @@ return {
     mineral = mineral,
     order = 5,
     guide = "guide",
+    mode = "free",
 }

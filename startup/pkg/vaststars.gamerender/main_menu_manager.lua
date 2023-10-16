@@ -14,8 +14,8 @@ local function rebot()
     }
 end
 
-local function new_game(mode, game_template)
-    global.startup_args = {"new_game", mode, game_template}
+local function new_game(game_template)
+    global.startup_args = {"new_game", game_template}
     rebot()
 end
 

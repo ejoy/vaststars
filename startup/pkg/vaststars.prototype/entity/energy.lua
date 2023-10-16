@@ -17,7 +17,7 @@ prototype "蒸汽发电机I" {
     sound = "building/steam-turbine",
     -- recipe = "蒸汽发电",
     craft_category = {"流体发电"},
-    maxslot = "8",
+    maxslot = 8,
     power_supply_area = "3x5",
     power_supply_distance = 0,
     camera_distance = 95,
@@ -54,7 +54,7 @@ prototype "蒸汽发电机II" {
     sound = "building/steam-turbine",
     -- recipe = "蒸汽发电",
     craft_category = {"流体发电"},
-    maxslot = "8",
+    maxslot = 8,
     power_supply_area = "3x5",
     power_supply_distance = 0,
     camera_distance = 95,
@@ -91,7 +91,7 @@ prototype "蒸汽发电机III" {
     sound = "building/steam-turbine",
     -- recipe = "蒸汽发电",
     craft_category = {"流体发电"},
-    maxslot = "8",
+    maxslot = 8,
     power_supply_area = "3x5",
     power_supply_distance = 0,
     camera_distance = 95,
@@ -258,7 +258,7 @@ prototype "换热器I" {
     rotate_on_build = true,
     craft_category = {"流体换热处理"},
     building_menu = false,
-    maxslot = "8",
+    maxslot = 8,
     camera_distance = 100,
     fluidboxes = {
         input = {
@@ -312,7 +312,7 @@ prototype "锅炉I" {
     rotate_on_build = true,
     io_shelf = false,
     craft_category = {"流体换热处理"},
-    maxslot = "8",
+    maxslot = 8,
     allow_set_recipt = true,
     camera_distance = 65,
     fluidboxes = {
@@ -352,7 +352,7 @@ prototype "地热井I" {
     building_menu = false,
     sound = "building/geothermal",
     mining_category = {"地热处理"},
-    maxslot = "8",
+    maxslot = 8,
     camera_distance = 96,
     fluidboxes = {
         input = {
@@ -382,7 +382,7 @@ prototype "地热井II" {
     building_menu = false,
     sound = "building/geothermal",
     mining_category = {"地热处理"},
-    maxslot = "8",
+    maxslot = 8,
     camera_distance = 96,
     fluidboxes = {
         input = {
@@ -412,7 +412,7 @@ prototype "地热井III" {
     building_menu = false,
     sound = "building/geothermal",
     mining_category = {"地热处理"},
-    maxslot = "8",
+    maxslot = 8,
     camera_distance = 96,
     fluidboxes = {
         input = {

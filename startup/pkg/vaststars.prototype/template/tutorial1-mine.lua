@@ -32,5 +32,5 @@ return {
     order = 7,
     guide = "guide",
     show = false,
+    mode = "adventure",
 }
-    

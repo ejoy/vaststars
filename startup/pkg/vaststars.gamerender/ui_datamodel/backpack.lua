@@ -11,7 +11,7 @@ local close_mb = mailbox:sub {"close"}
 local iui = ecs.require "engine.system.ui_system"
 local iprototype_cache = ecs.require "prototype_cache"
 
-local function get_inventory()
+local function get_backpack()
     local t = {}
     for _, slot in pairs(iBackpack.all(gameplay_core.get_world())) do
         local typeobject_item = assert(iprototype.queryById(slot.prototype))
@@ -34,22 +34,22 @@ local function get_inventory()
         end)
     end
 
-    local inventory = {}
+    local backpack = {}
     for _, category in ipairs(ITEM_CATEGORY) do
         if t[category] then
-            inventory[#inventory+1] = {category = category, items = t[category]}
+            backpack[#backpack+1] = {category = category, items = t[category]}
         end
     end
-    return inventory
+    return backpack
 end
 
 local function set_item_value(datamodel, category_idx, item_idx, key, value)
     if category_idx == 0 and item_idx == 0 then
         return
     end
-    assert(datamodel.inventory[category_idx])
-    assert(datamodel.inventory[category_idx].items[item_idx])
-    datamodel.inventory[category_idx].items[item_idx][key] = value
+    assert(datamodel.backpack[category_idx])
+    assert(datamodel.backpack[category_idx].items[item_idx])
+    datamodel.backpack[category_idx].items[item_idx][key] = value
 end
 
 ---------------
@@ -63,7 +63,7 @@ function M.create()
         item_desc = "",
         item_ingredients = {},
         item_assembling = {},
-        inventory = get_inventory(),
+        backpack = get_backpack(),
     }
 end
 
@@ -84,7 +84,7 @@ function M.update(datamodel)
             datamodel.category_idx = category_idx
             datamodel.item_idx = item_idx
 
-            local item_name = datamodel.inventory[category_idx].items[item_idx].name
+            local item_name = datamodel.backpack[category_idx].items[item_idx].name
             local typeobject = iprototype.queryByName(item_name)
             datamodel.item_name = iprototype.display_name(typeobject)
             datamodel.item_desc = typeobject.item_description or ""
@@ -114,12 +114,12 @@ function M.update(datamodel)
     end
 
     for _ in close_mb:unpack() do
-        iui.close("/pkg/vaststars.resources/ui/inventory.rml")
+        iui.close("/pkg/vaststars.resources/ui/backpack.rml")
     end
 end
 
-function M.update_inventory(datamodel)
-    datamodel.inventory = get_inventory()
+function M.update_backpack(datamodel)
+    datamodel.backpack = get_backpack()
 end
 
 return M

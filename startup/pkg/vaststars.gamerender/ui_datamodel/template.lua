@@ -22,7 +22,7 @@ function M.create()
                 goto continue
             end
 
-            templates[#templates + 1] = {order = f.order or 0, name = f.name or "undef", filename = filename}
+            templates[#templates + 1] = {order = f.order or 0, mode = f.mode, name = f.name or "undef", filename = filename}
             ::continue::
         end
     end
@@ -34,10 +34,9 @@ function M.create()
 end
 
 function M.update(datamodel)
-    for _, _, _, mode, template in start_game_mb:unpack() do
-        debugger.set_free_mode(mode == "free")
+    for _, _, _, template in start_game_mb:unpack() do
         iui.close("/pkg/vaststars.resources/ui/template.rml")
-        new_game(mode, template)
+        new_game(template)
     end
 end
 

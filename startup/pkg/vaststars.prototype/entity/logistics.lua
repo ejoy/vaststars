@@ -10,7 +10,7 @@ prototype "指挥中心" {
     item = "运输车辆I",
     type = {"building", "base", "factory"},
     speed = "50%",
-    maxslot = "8",
+    maxslot = 8,
     area = "6x6",
     camera_distance = 100,
     teardown = false,

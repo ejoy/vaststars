@@ -16,4 +16,5 @@ return {
   mineral = mineral,
   order = 2,
   guide = "guide",
+  mode = "free",
 }

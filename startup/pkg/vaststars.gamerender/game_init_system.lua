@@ -5,6 +5,7 @@ local w = world.w
 local NOTHING <const> = require "debugger".nothing
 local TERRAIN_ONLY <const> = require "debugger".terrain_only
 local CONSTANT <const> = require("gameplay.interface.constant")
+
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local icanvas = ecs.require "engine.canvas"
 local audio = import_package "ant.audio"
@@ -19,6 +20,7 @@ local global = require "global"
 local math3d = require "math3d"
 local irender = ecs.require "ant.render|render_system.render"
 local imountain = ecs.require "engine.mountain"
+local debugger = require "debugger"
 
 local m = ecs.system 'game_init_system'
 local gameworld_prebuild
@@ -78,9 +80,11 @@ function m:init_world()
     local args = global.startup_args
     if args[1] == "new_game" then
         icamera_controller.set_camera_from_prefab("camera_default.prefab")
-        local mode, game_template = args[2], args[3]
+        local game_template = args[2]
+        local mode = import_package("vaststars.prototype")(game_template).mode
         local guide = import_package("vaststars.prototype")(game_template).guide
         iguide.init(import_package("vaststars.prototype")(guide))
+        debugger.set_free_mode(mode == "free")
         saveload:restart(mode, game_template)
         iguide.world = gameplay_core.get_world()
         iui.set_guide_progress(iguide.get_progress())
@@ -103,7 +107,7 @@ end
 local TAGS <const> = {
     "building_new",
     "building_changed",
-    "base_changed",
+    "backpack_changed",
     "lorry_changed",
     "drone_changed",
 }

@@ -1,19 +1,20 @@
+local MAX_AMOUNT <const> = 99999
+
 local iBackpack = import_package "vaststars.gameplay".interface "backpack"
 local iprototype = require "gameplay.interface.prototype"
 local ichest = require "gameplay.interface.chest"
 local debugger = require "debugger"
 local math_min = math.min
-local MAX_AMOUNT <const> = 99999
 
 local function get_backpack_limit(item)
     local typeobject = assert(iprototype.queryById(item))
     return typeobject.backpack_limit or 0
 end
 
-local function set_base_changed(world)
-    local e = world.ecs:first("base base_changed?out")
-    e.base_changed = true
-    world.ecs:submit(e)
+local function set_backpack_changed(world)
+    world.ecs:new {
+        backpack_changed = true
+    }
 end
 
 local function query(world, item)
@@ -26,7 +27,7 @@ local function pickup(world, item, amount)
     end
     local ok = iBackpack.pickup(world, item, amount)
     if ok then
-        set_base_changed(world)
+        set_backpack_changed(world)
     end
     return ok
 end
@@ -67,7 +68,7 @@ local function move_to_backpack(world, e, idx)
 
     ichest.pickup(world, e, idx, available)
     iBackpack.place(world, slot.item, available)
-    set_base_changed(world)
+    set_backpack_changed(world)
     return available
 end
 

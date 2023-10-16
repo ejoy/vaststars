@@ -330,7 +330,7 @@
                                 <div class = "materials-name">{{it.name}}</div>
                                 <div style = "flex-grow: 1; flex-direction:row-reverse;">
                                     <div class = "materials-num" data-style-color = "it.color" data-if = "it.state == 'can_craft' || it.state == 'enough'">X{{it.count}}</div>
-                                    <div class = "materials-num" data-style-color = "it.color" data-if = "it.state == 'lack'">X({{it.inventory_count}}/{{it.count}})</div>
+                                    <div class = "materials-num" data-style-color = "it.color" data-if = "it.state == 'lack'">X({{it.backpack_count}}/{{it.count}})</div>
                                 </div>
                             </div>
                         </div>

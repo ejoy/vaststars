@@ -111,5 +111,5 @@ return {
     order = 7,
     guide = "guide",
     show = true,
+    mode = "adventure",
 }
-    

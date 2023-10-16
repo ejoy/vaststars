@@ -25,7 +25,7 @@
             tool-button:active {
                 transform: scale(1.2);
             }
-            inventory-bar {
+            backpack-bar {
                 flex-direction: row;
                 left: 0vmax;
                 top: 1.17vmin;
@@ -57,7 +57,7 @@
                 ingredient_icons = {},
                 guide_progress = 0,
                 focus_building_icon = "",
-                inventory_bar = {},
+                backpack_bar = {},
                 tech_count = 0,
             }
 
@@ -68,13 +68,13 @@
         </script>
     </head>
     <body style = "pointer-events: none; margin: 0 3.995vmax 0 4.715vmax;">
-        <inventory-bar data-event-click = "clickButton('inventory')">
-            <div data-for = "inventory_bar" style = "flex-direction: row;">
+        <backpack-bar data-event-click = "clickButton('backpack')">
+            <div data-for = "backpack_bar" style = "flex-direction: row;">
                 <div style = "width: 7.00vmin; height: 7.00vmin; background-size: 100% 100%; background-color: rgb(61, 61, 61);" data-style-background-image = "it.icon"/>
                 <div style = "font-size: 5.00vmin; margin-top: 0.50vmin; text-align: center;">{{it.count}}</div>
             </div>
-        </inventory-bar>
-        <inventory-bar style = "position: absolute; top: 0; left: 80.00vmin;" data-event-click = "clickButton('settings')" />
+        </backpack-bar>
+        <backpack-bar style = "position: absolute; top: 0; left: 80.00vmin;" data-event-click = "clickButton('settings')" />
 
         <tech-or-task-bar style = "flex-direction: row; align-items: center; gap: 1vmin;" data-if = "not is_concise_mode and show_tech_progress" data-event-click="clickButton('click_techortaskicon', is_task)">
             <div style = "width: 16.28vmin; height: 16.28vmin; background-size: 100% 100%;" data-style-background-image="is_task and '/pkg/vaststars.resources/ui/textures/construct/task-icon.texture' or '/pkg/vaststars.resources/ui/textures/construct/tech-icon.texture'" />
