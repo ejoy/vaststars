@@ -3,7 +3,7 @@ local prototype = gameplay.register.prototype
 
 
 prototype "碎石" {
-    display_name = "石矿",
+    mineral_name = "石矿",
     type = {"item"},
     station_limit = 15,
     hub_limit = 60,
@@ -19,7 +19,7 @@ prototype "碎石" {
 }
 
 prototype "铁矿石" {
-    display_name = "铁矿",
+    mineral_name = "铁矿",
     type = {"item"},
     station_limit = 15,
     hub_limit = 60,
@@ -35,7 +35,7 @@ prototype "铁矿石" {
 }
 
 prototype "铝矿石" {
-    display_name = "铝矿",
+    mineral_name = "铝矿",
     type = {"item"},
     station_limit = 15,
     hub_limit = 60,
@@ -172,7 +172,7 @@ prototype "铝丝" {
 }
 
 prototype "砂岩" {
-    display_name = "砂矿",
+    mineral_name = "砂矿",
     type = {"item"},
     station_limit = 15,
     hub_limit = 60,

@@ -21,9 +21,12 @@ local prototype = gameplay.register.prototype
 
   -- task = {"unknown", 0, 6},
   -- task_params = {ui = "place_item",  building = "xxx"},  放置物品
-  
-  -- place_item, task_params = {building = "xx", item = "xx", count = xx,}  放置物品到指定建筑
-  -- set_itmes, task_params = {items = {"demand|xx", "supply|xx", ...}}     设置多个收货/发货物品
+
+  -- task = {"unknown", 0, 7},
+  -- task_params = {building = "xx", item = "xx", count = xx,}  放置物品到指定建筑
+
+  -- task = {"unknown", 0, 8},
+  -- task_params = {items = {"demand|xx", "supply|xx", ...}}     设置多个收货/发货物品
   
 
   prototype "采矿教学" {
@@ -186,6 +189,10 @@ local prototype = gameplay.register.prototype
         h = 1.2,
         show_arrow = false,
       },
+      {
+        camera_x = 126,
+        camera_y = 128,
+      },
     },
     sign_desc = {
       { desc = "放置电线杆连接风力发电机让3台采矿机处于电网范围内", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
@@ -228,8 +235,8 @@ local prototype = gameplay.register.prototype
     desc = "仓库选择碎石",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
-    task = {"unknown", 0, 5},                          
-    task_params = {item = "碎石"},
+    task = {"unknown", 0, 8},
+    task_params = {items = {"demand|铁矿石","demand|铝矿石"}},
     count = 1,
     prerequisites = {"仓库放置"},
     tips_pic = {
