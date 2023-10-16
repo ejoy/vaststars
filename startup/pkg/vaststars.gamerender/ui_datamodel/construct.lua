@@ -121,7 +121,7 @@ local function __on_pick_non_building(datamodel, o, force)
         typeobject = iprototype.queryByName(typeobject.base)
     end
 
-    iui.open({rml = "/pkg/vaststars.resources/ui/non_building_detail_panel.rml"}, typeobject.icon, iprototype.display_name(typeobject), o.eid)
+    iui.open({rml = "/pkg/vaststars.resources/ui/non_building_detail_panel.rml"}, typeobject.icon, typeobject.mineral_name and typeobject.mineral_name or iprototype.display_name(typeobject), o.eid)
     if datamodel.is_concise_mode and force ~= true then
         return true
     end
