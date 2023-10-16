@@ -4,7 +4,7 @@ local w = world.w
 
 local gameplay_core = require "gameplay.core"
 local debugger <const> = require "debugger"
-local iprototype_cache = require "gameplay.prototype_cache.init"
+local iprototype_cache = ecs.require "prototype_cache"
 
 local function is_unlocked(prototype_name)
     if debugger.item_unlocked then

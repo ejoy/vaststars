@@ -112,4 +112,5 @@ return {
     guide = "guide",
     show = false,
     mode = "adventure",
+    start_tech = "迫降火星",
 }

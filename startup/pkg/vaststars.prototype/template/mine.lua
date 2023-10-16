@@ -17,4 +17,5 @@ return {
   order = 2,
   guide = "guide",
   mode = "free",
+  start_tech = "迫降火星",
 }

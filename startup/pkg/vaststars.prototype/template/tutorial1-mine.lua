@@ -37,4 +37,5 @@ return {
     guide = "guide.guide1",
     show = true,
     mode = "adventure",
+    start_tech = "采矿教学",
 }

@@ -272,8 +272,10 @@ end
 function M:restart(mode, game_template)
     world:pipeline_func "gameworld_clean" ()
     gameplay_core.restart()
+    gameplay_core.get_storage().game_template = assert(game_template)
+
     iprototype_cache.reload()
-    world:pipeline_func "prototype" ()
+    world:pipeline_func "prototype" (gameplay_core.get_world())
 
     self.running = true
     local cw = gameplay_core.get_world()
@@ -281,7 +283,6 @@ function M:restart(mode, game_template)
     iguide.world = cw
     iui.set_guide_progress(iguide.get_progress())
 
-    gameplay_core.get_storage().game_template = assert(game_template)
     local config = import_package("vaststars.prototype")(game_template)
 
     --

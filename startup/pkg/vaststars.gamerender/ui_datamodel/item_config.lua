@@ -138,6 +138,10 @@ function M.update(datamodel, gameplay_eid, interface)
         local e = gameplay_core.get_entity(gameplay_eid)
         local gameplay_world = gameplay_core.get_world()
         interface.set_item(gameplay_world, e, set_type, typeobject.id)
+        markItem(typeobject.name)
+        updateSlots(e, datamodel)
+
+        --
         itask.update_progress("set_item", typeobject.name)
         local t = {}
         for _, slot in ipairs(datamodel.slots) do
@@ -147,9 +151,8 @@ function M.update(datamodel, gameplay_eid, interface)
             end
         end
         itask.update_progress("set_items", t)
-        markItem(typeobject.name)
-        updateSlots(e, datamodel)
 
+        --
         datamodel.show_set_item = false
         datamodel.set_type = ""
     end

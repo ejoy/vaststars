@@ -15,7 +15,7 @@ custom_type :
        task = {"unknown", 0, 6},
        task_params = {ui = "item_transfer_unsubscribe", , building = ""},
 7. place_item, task_params = {building = xx, item = xx, count = xx,}
-8. set_itmes, task_params = {items = {"demand|xx", "supply|xx", ...}}
+8. set_items, task_params = {items = {"demand|xx", "supply|xx", ...}}
 --]]
 local custom_type_mapping = {
     [0] = {s = "undef", check = function() end}, -- TODO
@@ -62,10 +62,10 @@ local custom_type_mapping = {
             return 0
         end
     end, },
-    [8] = {s = "set_itmes", check = function(task_params, progress, items)
+    [8] = {s = "set_items", check = function(task_params, progress, items)
         table.sort(items, function(a, b) return a < b end)
         table.sort(task_params.items, function(a, b) return a < b end)
-        if table.concat(items) == table.concat(task_params.itmes) then
+        if table.concat(items) == table.concat(task_params.items) then
             return 1
         else
             return 0

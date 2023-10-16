@@ -412,4 +412,5 @@ return {
   order = 6,
   guide = "guide",
   mode = "free",
+  start_tech = "迫降火星",
 }

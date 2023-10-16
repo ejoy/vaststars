@@ -236,7 +236,7 @@ local prototype = gameplay.register.prototype
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"unknown", 0, 8},
-    task_params = {items = {"demand|铁矿石","demand|铝矿石"}},
+    task_params = {items = {"transit|碎石", "transit|铁矿石","transit|铝矿石"}},
     count = 1,
     prerequisites = {"仓库放置"},
     tips_pic = {
