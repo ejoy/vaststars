@@ -35,7 +35,7 @@ local prototype = gameplay.register.prototype
     effects = {
       -- unlock_recipe = {"采矿机打印"},
     },
-    prerequisites = {""},
+    prerequisites = {},
     count = 1,
     tips_pic = {
       "",

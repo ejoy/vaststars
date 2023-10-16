@@ -37,7 +37,7 @@ local prototype = gameplay.register.prototype
     effects = {
       -- unlock_recipe = {"采矿机打印"},
     },
-    prerequisites = {""},
+    prerequisites = {},
     count = 1,
     tips_pic = {
       "",
@@ -216,7 +216,7 @@ local prototype = gameplay.register.prototype
         y = 117,
         w = 1.2,
         h = 1.2,
-        show_arrow = true,
+        show_arrow = false,
       },
       {
         camera_x = 120,
