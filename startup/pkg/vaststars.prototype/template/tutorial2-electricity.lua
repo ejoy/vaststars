@@ -110,6 +110,6 @@ return {
     mineral = mineral,
     order = 7,
     guide = "guide",
-    show = true,
+    show = false,
     mode = "adventure",
 }

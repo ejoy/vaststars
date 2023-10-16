@@ -1,3 +1,5 @@
+require "tech.tech1"
+
 local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype
 
@@ -22,6 +24,8 @@ local prototype = gameplay.register.prototype
   -- task = {"unknown", 0, 6},
   -- task_params = {ui = "place_item",  building = "xxx"},  放置物品
   
+  -- place_item, task_params = {building = "xx", item = "xx", count = xx,}  放置物品到指定建筑
+  -- set_itmes, task_params = {items = {"demand|xx", "supply|xx", ...}}     设置多个收货/发货物品
 
   prototype "迫降火星" {
     desc = "迫降火星",
