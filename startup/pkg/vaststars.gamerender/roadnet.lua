@@ -4,7 +4,10 @@ local w = world.w
 
 local iroad = ecs.require "engine.road"
 local iroadnet_converter = require "roadnet_converter"
-local CONSTANT <const> = require("gameplay.interface.constant")
+local CONSTANT <const> = require "gameplay.interface.constant"
+
+local iterrain  = ecs.require "ant.landform|terrain_system"
+local RENDER_LAYER <const> = ecs.require "engine.render_layer".RENDER_LAYER
 
 local roadnet = {}
 
@@ -36,7 +39,7 @@ local LAYER_NAMES <const> = {"road", "indicator"}
 local SHAPE_TYPES <const> = {"valid", "invalid", "normal", "modify", "remove"}
 
 function roadnet:create()
-    iroad:create(CONSTANT.MAP_WIDTH, CONSTANT.MAP_HEIGHT, CONSTANT.MAP_WIDTH//2, LAYER_NAMES, SHAPE_TYPES)
+    iterrain.gen_terrain_field(CONSTANT.MAP_WIDTH, CONSTANT.MAP_HEIGHT, CONSTANT.MAP_OFFSET, CONSTANT.TILE_SIZE, RENDER_LAYER.TERRAIN)
 end
 
 -- map = {coord = {x, y, shape_type, shape, dir}, ...}
