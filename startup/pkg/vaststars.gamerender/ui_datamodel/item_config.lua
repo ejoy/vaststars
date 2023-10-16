@@ -139,6 +139,14 @@ function M.update(datamodel, gameplay_eid, interface)
         local gameplay_world = gameplay_core.get_world()
         interface.set_item(gameplay_world, e, set_type, typeobject.id)
         itask.update_progress("set_item", typeobject.name)
+        local t = {}
+        for _, slot in ipairs(datamodel.slots) do
+            if slot.id ~= 0 then
+                local prototype = assert(iprototype.queryById(slot.id))
+                t[#t+1] = ("%s|%s"):format(slot.type, prototype.name)
+            end
+        end
+        itask.update_progress("set_items", t)
         markItem(typeobject.name)
         updateSlots(e, datamodel)
 

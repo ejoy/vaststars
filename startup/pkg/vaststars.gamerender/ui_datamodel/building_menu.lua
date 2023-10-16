@@ -395,6 +395,18 @@ function M.update(datamodel, gameplay_eid)
         local object = assert(objects:coord(e.building.x, e.building.y))
         local gameplay_world = gameplay_core.get_world()
 
+        for i = 1, ichest.MAX_SLOT do
+            local slot = ichest.get(gameplay_world, e.chest, i)
+            if not slot then
+                break
+            end
+            if slot.item == 0 then
+                goto continue
+            end
+            itask.update_progress("place_item", object.prototype_name, iprototype.queryById(slot.item).name, slot.amount)
+            ::continue::
+        end
+
         local msgs = {}
         if e.assembling then
             ibackpack.backpack_to_assembling(gameplay_world, e, function(id, n)

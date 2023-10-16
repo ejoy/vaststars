@@ -4,16 +4,18 @@ local gameplay_core = require "gameplay.core"
 --[[
 custom_type :
 1. road_laying, count = x,
-2. count = x,
+2. lorry_count = x,
 3. set_recipe, recipe = x,
 4. auto_complete_task,
-5. set_item, item = x,
+5. set_item, task_params = {item = "xx"}
 6. click_ui, ui = x,
    eg. task = {"unknown", 0, 6},
        task_params = {ui = "item_transfer_subscribe", building = ""},
       
        task = {"unknown", 0, 6},
        task_params = {ui = "item_transfer_unsubscribe", , building = ""},
+7. place_item, building = xx, item = xx, count = xx,
+8. set_itmes, task_params = {items = {"demand|xx", "supply|xx", ...}}
 --]]
 local custom_type_mapping = {
     [0] = {s = "undef", check = function() end}, -- TODO
@@ -48,6 +50,22 @@ local custom_type_mapping = {
     end, },
     [6] = {s = "click_ui", check = function(task_params, progress, ui, building)
         if task_params.ui == ui and task_params.building == building then
+            return 1
+        else
+            return 0
+        end
+    end, },
+    [7] = {s = "place_item", check = function(task_params, progress, building, item, count)
+        if task_params.building == building and task_params.item == item and task_params.count <= count then
+            return 1
+        else
+            return 0
+        end
+    end, },
+    [8] = {s = "set_itmes", check = function(task_params, progress, items)
+        table.sort(items, function(a, b) return a < b end)
+        table.sort(task_params.items, function(a, b) return a < b end)
+        if table.concat(items) == table.concat(task_params.itmes) then
             return 1
         else
             return 0
