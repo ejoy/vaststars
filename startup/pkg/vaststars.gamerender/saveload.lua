@@ -240,7 +240,9 @@ function M:restore(index)
     gameplay_core.restore(fullpath)
     iprototype_cache.reload()
     world:pipeline_func "prototype" ()
-    iguide.init(import_package("vaststars.prototype")(gameplay_core.get_storage().game_template).guide)
+
+    local guide = import_package("vaststars.prototype")(gameplay_core.get_storage().game_template).guide
+    iguide.init(import_package("vaststars.prototype")(guide))
 
     clean()
     local renderData = {}
