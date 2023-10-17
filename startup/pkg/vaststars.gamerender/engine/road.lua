@@ -50,13 +50,27 @@ local function new_groups()
 end
 
 -- map = {{x, y, state, shape, dir}, ...}
-function road:init(map)
+function road:update(map, layername)
     local groups = new_groups()
     for _, v in ipairs(map) do
         local x, y, state, shape, dir = table.unpack(v)
-        add_road(groups, x, y, state, shape, dir, "road")
+        add_road(groups, x, y, state, shape, dir, layername)
     end
     iroad.update_roadnet(groups, RENDER_LAYER.ROAD)
+end
+
+function road:update_raw(groups)
+    iroad.update_roadnet(groups, RENDER_LAYER.ROAD)
+end
+
+function road:group_obj()
+    return setmetatable({
+        add = add_road,
+        remove = del_road,
+        commit = function (self)
+            iroad.update_roadnet(self, RENDER_LAYER.ROAD)
+        end
+    }, {__index=function (tt, gid) local t = {}; tt[gid] = t; return t end})
 end
 
 local MODIFY_GROUPS = new_groups()

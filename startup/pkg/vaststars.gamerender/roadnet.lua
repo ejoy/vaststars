@@ -36,27 +36,18 @@ end
 ---------------------------------------------------------
 
 local LAYER_NAMES <const> = {"road", "indicator"}
-local SHAPE_TYPES <const> = {"valid", "invalid", "normal", "modify", "remove"}
-
 function roadnet:create()
     iterrain.gen_terrain_field(CONSTANT.MAP_WIDTH, CONSTANT.MAP_HEIGHT, CONSTANT.MAP_OFFSET, CONSTANT.TILE_SIZE, RENDER_LAYER.TERRAIN)
 end
 
 -- map = {coord = {x, y, shape_type, shape, dir}, ...}
 function roadnet:init(map)
-     self._layer_cache = {}
-    for _, name in ipairs(LAYER_NAMES) do
-        self._layer_cache[name] = {}
-    end
-
-    local layer_name = LAYER_NAMES[1]
     local res = {}
     for coord, v in pairs(map) do
         local x, y = __unpack(coord)
-        self._layer_cache[layer_name][__pack(x, y)] = true
         res[#res + 1] = {x, y, v[3], v[4], v[5]}
     end
-    iroad:init(layer_name, res)
+    iroad:init("road", res)
 end
 
 function roadnet:clear(layer_name)
