@@ -12,7 +12,7 @@ local entities = { {
   }, {
     dir = "N",
     prototype_name = "组装机I",
-    x = 121,
+    x = 122,
     y = 115
   }, {
     dir = "N",

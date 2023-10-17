@@ -164,7 +164,7 @@ local guide1 = {
             {"哔哩..恭喜你结束了{/g 挖矿教学}..哔哩..(高兴)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
-            pop_chapter = {"祝贺","结束教学"},
+            pop_chapter = {"祝贺","教学完成"},
             task = {
                 "挖矿教学结束",
             },
