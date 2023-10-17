@@ -71,12 +71,60 @@ local prototype = gameplay.register.prototype
     },
   }
 
+  prototype "矿区搭建" {
+    desc = "放置3台采矿机",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = {"task" },
+    task = {"select_entity", 0, "采矿机I"},
+    prerequisites = {"检查废墟"},
+    count = 3,
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    guide_focus = {
+      {
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        x = 106,
+        y = 128,
+        w = 3.2,
+        h = 3.2,
+        show_arrow = false,
+      },
+      {
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        x = 116,
+        y = 132,
+        w = 3.2,
+        h = 3.2,
+        show_arrow = false,
+      },
+      {
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        x = 107,
+        y = 138,
+        w = 3.2,
+        h = 3.2,
+        show_arrow = false,
+      },
+      {
+        camera_x = 113,
+        camera_y = 134,
+      },
+    },
+    effects = {
+      unlock_item = {"碎石","铁矿石","铝矿石"},
+    },
+    sign_desc = {
+      { desc = "在石矿、铁矿、铝矿上各放置1台采矿机", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
   prototype "风力发电机放置" {
     desc = "放置1座旧风力发电机",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = {"task" },
     task = {"select_entity", 0, "旧风力发电机"},
-    prerequisites = {"检查废墟"},
+    prerequisites = {"矿区搭建"},
     count = 1,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -95,10 +143,58 @@ local prototype = gameplay.register.prototype
         camera_y = 130,
       },
     },
-    effects = {
-       unlock_item = {"碎石","铁矿石","铝矿石"},
-    },
     sign_desc = {
       { desc = "放置1座旧风力发电机供电给矿区的无人机平台", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
+  
+
+  prototype "收集矿石" {
+    desc = "仓库选择收货类型",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = { "task" },
+    task = {"unknown", 0, 8},
+    task_params = {items = {"transit|碎石", "transit|铁矿石","transit|铝矿石"}},
+    count = 1,
+    prerequisites = {"风力发电机放置"},
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    effects = {
+      unlock_item = {"地质科技包"},
+      unlock_recipe = {"地质科技包1"},
+    },
+    guide_focus = {
+      {
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        x = 111,
+        y = 133,
+        w = 1.2,
+        h = 1.2,
+        show_arrow = true,
+      },
+      {
+        camera_x = 111,
+        camera_y = 133,
+      },
+    },
+    sign_desc = {
+      { desc = "仓库设置收货选择“碎石”、“铁矿石”、“铝矿石”", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "电力铺设" {
+    desc = "使得3台组装机通电",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = {"task" },
+    task = {"select_entity", 0, "铁制电线杆"},
+    prerequisites = {"收集矿石"},
+    count = 3,
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "放置电线杆连接风力发电机让3台组装机处于电网范围内", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
