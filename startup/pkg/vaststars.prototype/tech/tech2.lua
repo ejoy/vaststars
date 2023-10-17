@@ -161,10 +161,6 @@ local prototype = gameplay.register.prototype
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
-    effects = {
-      unlock_item = {"地质科技包"},
-      unlock_recipe = {"地质科技包1"},
-    },
     guide_focus = {
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
@@ -191,10 +187,30 @@ local prototype = gameplay.register.prototype
     task = {"select_entity", 0, "铁制电线杆"},
     prerequisites = {"收集矿石"},
     count = 3,
+    effects = {
+      unlock_item = {"地质科技包"},
+      unlock_recipe = {"地质科技包1"},
+    },
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
       { desc = "放置电线杆连接风力发电机让3台组装机处于电网范围内", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "生产设置" {
+    desc = "组装机配方选择地质科技包1",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = { "task" },
+    task = {"unknown", 0, 3},                          
+    task_params = {recipe = "地质科技包1"},
+    count = 1,
+    prerequisites = {"电力铺设"},
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "组装机生产设置为“地质科技包1”", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }

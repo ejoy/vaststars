@@ -10,12 +10,6 @@ local entities = { {
     prototype_name = "机头残骸",
     x = 140,
     y = 136
-  },{
-    dir = "S",
-    items = { { "仓库I", 1 },{ "组装机I", 3 },{"科研中心I",1}, { "无人机平台I", 3}},
-    prototype_name = "机头残骸",
-    x = 135,
-    y = 130
   }, {
     dir = "E",
     items = { { "地下水挖掘机I", 2},{ "锅炉I", 2},{ "蒸汽发电机I", 4}, },
