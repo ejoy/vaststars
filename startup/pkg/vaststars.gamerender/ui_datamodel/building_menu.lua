@@ -216,7 +216,6 @@ function M.create(gameplay_eid)
         prototype_name = typeobject.name,
         show_set_recipe = show_set_recipe,
         lorry_factory_inc_lorry = lorry_factory_inc_lorry,
-        lorry_factory_dec_lorry = false,
         pickup_item = pickup_item,
         place_item = place_item,
         pickup_item_count = pickup_item and getPickableCount(e) or 0,
@@ -395,18 +394,6 @@ function M.update(datamodel, gameplay_eid)
         local object = assert(objects:coord(e.building.x, e.building.y))
         local gameplay_world = gameplay_core.get_world()
 
-        for i = 1, ichest.MAX_SLOT do
-            local slot = ichest.get(gameplay_world, e.chest, i)
-            if not slot then
-                break
-            end
-            if slot.item == 0 then
-                goto continue
-            end
-            itask.update_progress("place_item", object.prototype_name, iprototype.queryById(slot.item).name, slot.amount)
-            ::continue::
-        end
-
         local msgs = {}
         if e.assembling then
             ibackpack.backpack_to_assembling(gameplay_world, e, function(id, n)
@@ -430,6 +417,18 @@ function M.update(datamodel, gameplay_eid)
         local sp_x, sp_y = math3d.index(icamera_controller.world_to_screen(object.srt.t), 1, 2)
         iui.send("/pkg/vaststars.resources/ui/message_pop.rml", "item", {action = "down", left = sp_x, top = sp_y, items = msgs})
         iui.call_datamodel_method("/pkg/vaststars.resources/ui/construct.rml", "update_backpack_bar", msgs)
+
+        for i = 1, ichest.MAX_SLOT do
+            local slot = ichest.get(gameplay_world, e.chest, i)
+            if not slot then
+                break
+            end
+            if slot.item == 0 then
+                goto continue
+            end
+            itask.update_progress("place_item", object.prototype_name, iprototype.queryById(slot.item).name, slot.amount)
+            ::continue::
+        end
     end
 
     for _ in remove_lorry_mb:unpack() do
