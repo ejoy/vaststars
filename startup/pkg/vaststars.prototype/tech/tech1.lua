@@ -261,12 +261,26 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 7},
     task_params = {building = "仓库I", item = "碎石"},
     prerequisites = {"收货设置1"},
-    count = 2,
+    count = 4,
+    guide_focus = {
+      {
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        x = 116,
+        y = 130,
+        w = 3.2,
+        h = 3.2,
+        show_arrow = false,
+      },
+      {
+        camera_x = 116,
+        camera_y = 130,
+      },
+    },
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "向仓库里放置2块碎石", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "向仓库里放置4块碎石", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -278,6 +292,20 @@ local prototype = gameplay.register.prototype
     task_params = {recipe = "地质科技包1"},
     count = 1,
     prerequisites = {"仓库存储矿石"},
+    guide_focus = {
+      {
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        x = 122,
+        y = 116,
+        w = 3.2,
+        h = 3.2,
+        show_arrow = false,
+      },
+      {
+        camera_x = 122,
+        camera_y = 116,
+      },
+    },
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -319,5 +347,22 @@ local prototype = gameplay.register.prototype
     },
     sign_desc = {
       { desc = "使用组装机生产3个地质科技包", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "挖矿教学结束" {
+    desc = "教学结束",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = { "task" },
+    task = {"unknown", 0, 4},
+    effects = {
+    },
+    prerequisites = {"科技包生产"},
+    count = 1,
+    tips_pic = {
+      "",
+    },
+    sign_desc = {
+      { desc = "完成所有的挖矿教学", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
