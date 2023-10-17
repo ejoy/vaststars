@@ -315,7 +315,7 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "收货设置2" {
-    desc = "仓库选择地质科技包",
+    desc = "配方选择地质科技包",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"unknown", 0, 5},                          
@@ -333,7 +333,7 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "科技包生产" {
-    desc = "组装机生产地质科技包",
+    desc = "组装机生产3个地质科技包",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"stat_production", 0, "地质科技包"},
@@ -346,7 +346,7 @@ local prototype = gameplay.register.prototype
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack6.texture",
     },
     sign_desc = {
-      { desc = "使用组装机生产3个地质科技包", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "供应碎石、铁矿石、铝矿石各6个作为原料供组装机生产", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
