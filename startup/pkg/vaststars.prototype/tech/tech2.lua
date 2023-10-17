@@ -47,7 +47,7 @@ local prototype = gameplay.register.prototype
     type = {"task" },
     task = {"unknown", 0, 6},
     task_params = {ui = "pickup_item", building = "机身残骸"},
-    prerequisites = {"采矿教学"},
+    prerequisites = {"电网教学"},
     count = 1,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
