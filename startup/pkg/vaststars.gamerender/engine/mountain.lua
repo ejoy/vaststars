@@ -100,7 +100,7 @@ function M:create()
         local sidx = info.sidx
         local idx = idxoffset(baseidx, sidx)
 
-        local x, y = terrain:idx2coord(idx, WIDTH)
+        local x, y = terrain:idx2coord1(idx, WIDTH)
         assert(1<=x and x<=WIDTH and 1<=y and y<=HEIGHT)
         local x0, y0 = x-1, y-1
         local indices = groups[terrain:get_group_id(x0, y0)]

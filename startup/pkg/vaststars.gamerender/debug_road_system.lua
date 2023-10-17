@@ -7,7 +7,7 @@ local kb_mb = world:sub{"keyboard"}
 local math3d = require "math3d"
 local iom = ecs.require "ant.objcontroller|obj_motion"
 
-local iroad = ecs.require "road"
+local iroad = ecs.require "engine.road"
 local CONSTANT = ecs.require "gameplay.interface.constant"
 
 local ROW_SPACING, COL_SPACING = 3, 3 -- unit per tile
