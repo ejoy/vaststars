@@ -1,18 +1,12 @@
 local entities = { {
     dir = "N",
-    prototype_name = "指挥中心",
-    amount = 50,
-    x = 124,
-    y = 120
-  }, {
-    dir = "N",
-    items = { { "旧风力发电机", 1 },{ "采矿机I", 3 },},
+    items = { { "采矿机I", 3 },{ "铁制电线杆", 10},{ "旧风力发电机", 1 },},
     prototype_name = "机身残骸",
     x = 115,
     y = 123
   }, {
     dir = "N",
-    items = {{ "太阳能板I", 5 },{ "蓄电池I", 10 },{ "铁制电线杆", 10}},
+    items = {{ "太阳能板I", 5 },{ "蓄电池I", 10 }},
     prototype_name = "机头残骸",
     x = 140,
     y = 136
@@ -109,8 +103,8 @@ return {
     road = road,
     mineral = mineral,
     order = 7,
-    guide = "guide",
-    show = false,
+    guide = "guide.guide2",
+    show = true,
     mode = "adventure",
-    start_tech = "迫降火星",
+    start_tech = "电网教学",
 }
