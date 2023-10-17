@@ -50,5 +50,22 @@ return function ()
         end
     end
 
+    local function length(t)
+        local n = 0
+        for _ in pairs(t) do
+            n = n + 1
+        end
+        return n
+    end
+    for prototype_name, v in pairs(unlocked_tech) do
+        if length(v) > 1 then
+            local t = {}
+            for k in pairs(v) do
+                table.insert(t, k)
+            end
+            error(("prototype `%s` is unlocked by multiple techs: %s"):format(prototype_name, table.concat(t, ", ")))
+        end
+    end
+
     return unlocked_tech
 end

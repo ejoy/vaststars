@@ -1,6 +1,6 @@
 local entities = { {
     dir = "N",
-    items = { { "采矿机I", 3 }, { "仓库I", 1 }, { "铁制电线杆", 10 }},
+    items = {{ "仓库I", 1 }, { "采矿机I", 3 },  { "铁制电线杆", 9 }},
     prototype_name = "机身残骸",
     x = 121,
     y = 129
@@ -12,7 +12,7 @@ local entities = { {
   }, {
     dir = "N",
     prototype_name = "组装机I",
-    x = 121,
+    x = 122,
     y = 115
   }, {
     dir = "N",

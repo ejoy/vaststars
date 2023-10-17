@@ -56,10 +56,8 @@ local custom_type_mapping = {
         end
     end, },
     [7] = {s = "place_item", check = function(task_params, progress, building, item, count)
-        if task_params.building == building and task_params.item == item then
+        if task_params.building == building and task_params.item == item and (progress or 0) < count then
             return count
-        else
-            return 0
         end
     end, },
     [8] = {s = "set_items", check = function(task_params, progress, items)
