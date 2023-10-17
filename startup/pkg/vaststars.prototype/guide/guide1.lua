@@ -96,7 +96,7 @@ local guide1 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..在仓库里放置{/g 6个碎石}、{/g 6个铁矿石}、{/g 6个铝矿石}", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..在仓库里放置{/g 2个碎石}", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
