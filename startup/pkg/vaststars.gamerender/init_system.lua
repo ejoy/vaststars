@@ -43,9 +43,11 @@ local function start_web()
 			texture = "vaststars.webcgi|texture",
 		},
 		route = {
-			vfs = "/",
+			vfs = "vfs:/",
+			log = "log:/",
+			app = "app:/",
 		},
-		home = "/web",
+		home = "vfs:/web",
 	})
 end
 
