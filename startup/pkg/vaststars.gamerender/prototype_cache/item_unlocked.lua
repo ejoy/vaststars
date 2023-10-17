@@ -30,7 +30,10 @@ return function ()
 
     local res = {}
     local function insertTasks(taskName, prerequisites, res)
-        res[#res+1] = taskName
+        if res[taskName] then
+            return
+        end
+        res[taskName] = true
         for _, name in ipairs(prerequisites[taskName]) do
             insertTasks(name, prerequisites, res)
         end
@@ -38,7 +41,7 @@ return function ()
     insertTasks(start_tech, prerequisites, res)
 
     local unlocked_tech = setmetatable({}, mt)
-    for _, name in ipairs(res) do
+    for name in pairs(res) do
         local typeobject = iprototype.queryByName(name)
         if typeobject.effects and typeobject.effects.unlock_item then
             for _, prototype_name in ipairs(typeobject.effects.unlock_item) do

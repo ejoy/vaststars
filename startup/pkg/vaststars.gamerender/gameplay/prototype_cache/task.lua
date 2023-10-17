@@ -15,7 +15,7 @@ custom_type :
        task = {"unknown", 0, 6},
        task_params = {ui = "item_transfer_unsubscribe", , building = ""},
 7. place_item, task_params = {building = xx, item = xx, count = xx,}
-8. set_items, task_params = {items = {"demand|xx", "supply|xx", ...}}
+8. set_items, task_params = {items = {"demand|xx", "supply|xx", "transit|xx", ...}}
 --]]
 local custom_type_mapping = {
     [0] = {s = "undef", check = function() end}, -- TODO
