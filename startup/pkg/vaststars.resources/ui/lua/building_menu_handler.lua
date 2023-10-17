@@ -120,13 +120,6 @@ return function(start)
         start.buttons[#start.buttons + 1] = v
     end
 
-    if start.lorry_factory_dec_lorry then
-        local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "lorry_factory_stop_build"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/lorry-factory-dec-lorry.texture"
-        start.buttons[#start.buttons + 1] = v
-    end
-
     if start.lorry_factory_inc_lorry then
         local v = setmetatable({}, {__index = DEFAULT})
         v.command = "lorry_factory_inc_lorry"

@@ -527,6 +527,10 @@ function M.update(datamodel)
 
     local longpress_startpoint = {}
     for _, _, e in gesture_longpress_mb:unpack() do
+        -- don't respond to long press in build mode
+        if datamodel.is_concise_mode then
+            goto continue
+        end
         if e.state == "began" then
             local pos = icamera_controller.screen_to_world(e.x, e.y, XZ_PLANE)
             pickupObject(datamodel, pos, "pick")
@@ -546,6 +550,7 @@ function M.update(datamodel)
                 icamera_controller.unlock_axis()
             end)
         end
+        ::continue::
     end
 
     if longpress_startpoint and longpress_startpoint.x and longpress_startpoint.y then

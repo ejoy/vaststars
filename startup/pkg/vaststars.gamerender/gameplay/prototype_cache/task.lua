@@ -14,7 +14,7 @@ custom_type :
       
        task = {"unknown", 0, 6},
        task_params = {ui = "item_transfer_unsubscribe", , building = ""},
-7. place_item, task_params = {building = xx, item = xx, count = xx,}
+7. place_item, task_params = {building = xx, item = xx, }, count = xx
 8. set_items, task_params = {items = {"demand|xx", "supply|xx", "transit|xx", ...}}
 --]]
 local custom_type_mapping = {
@@ -56,8 +56,8 @@ local custom_type_mapping = {
         end
     end, },
     [7] = {s = "place_item", check = function(task_params, progress, building, item, count)
-        if task_params.building == building and task_params.item == item and task_params.count <= count then
-            return 1
+        if task_params.building == building and task_params.item == item then
+            return count
         else
             return 0
         end
