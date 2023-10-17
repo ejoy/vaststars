@@ -15,9 +15,15 @@ local FLUIDBOXES_IO_TYPE <const> = {
 }
 local FLUIDBOXES <const> = {"in1","in2","in3","in4","out1","out2","out3"}
 
-local fs = require "filesystem"
-local datalist = require "datalist"
-local FLUIDS_CFG <const> = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/config/canvas/fluids.cfg")):read "a")
+
+local function read_datalist(path)
+    local fs = require "filesystem"
+    local datalist = require "datalist"
+    local fastio = require "fastio"
+    return datalist.parse(fastio.readall(fs.path(path):localpath():string(), path))
+end
+
+local FLUIDS_CFG <const> = read_datalist "/pkg/vaststars.resources/config/canvas/fluids.cfg"
 
 local ROTATORS <const> = {
     N = math.rad(0),

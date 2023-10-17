@@ -5,11 +5,16 @@ local w = world.w
 local assetmgr = import_package "ant.asset"
 local iterrain = ecs.require "terrain"
 local icanvas = ecs.require "engine.canvas"
-local datalist = require "datalist"
-local fs = require "filesystem"
 local iprototype = require "gameplay.interface.prototype"
 
-local FLUIDS_CFG <const> = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/config/canvas/fluids.cfg")):read "a")
+local function read_datalist(path)
+    local fs = require "filesystem"
+    local datalist = require "datalist"
+    local fastio = require "fastio"
+    return datalist.parse(fastio.readall(fs.path(path):localpath():string(), path))
+end
+
+local FLUIDS_CFG <const> = read_datalist "/pkg/vaststars.resources/config/canvas/fluids.cfg"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local BG_MATERIAL_PATH = "/pkg/vaststars.resources/materials/canvas/fluid-bg.material"
 local ICON_MATERIAL_PATH = "/pkg/vaststars.resources/materials/canvas/fluids.material"

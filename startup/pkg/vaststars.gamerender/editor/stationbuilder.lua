@@ -10,9 +10,13 @@ local DIR_MOVE_DELTA <const> = CONSTANT.DIR_MOVE_DELTA
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local SPRITE_COLOR <const> = import_package "vaststars.prototype"("sprite_color")
 
-local datalist = require "datalist"
-local fs = require "filesystem"
-local ROAD_ENTRANCE_MARKER_CFG <const> = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/config/canvas/road-entrance-marker.cfg")):read "a")
+local function read_datalist(path)
+    local fs = require "filesystem"
+    local datalist = require "datalist"
+    local fastio = require "fastio"
+    return datalist.parse(fastio.readall(fs.path(path):localpath():string(), path))
+end
+local ROAD_ENTRANCE_MARKER_CFG <const> = read_datalist "/pkg/vaststars.resources/config/canvas/road-entrance-marker.cfg"
 
 local math3d = require "math3d"
 local COLOR_GREEN <const> = math3d.constant("v4", {0.3, 1, 0, 1})
