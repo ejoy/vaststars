@@ -149,6 +149,10 @@ hitchEvents["modifier"] = function(self, method, ...)
         "Bone",
         ...)
 end
+hitchEvents["attach"] = function(self, slot_name, instance)
+    local eid = assert(self.tag[slot_name][1])
+    world:instance_set_parent(instance, eid)
+end
 
 local function set_srt(e, srt)
     if srt.s then
