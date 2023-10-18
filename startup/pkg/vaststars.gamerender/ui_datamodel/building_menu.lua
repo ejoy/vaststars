@@ -357,12 +357,16 @@ function M.update(datamodel, gameplay_eid)
             ibackpack.assembling_to_backpack(gameplay_world, e, function(id, n)
                 local item = iprototype.queryById(id)
                 msgs[#msgs + 1] = {icon = item.item_icon, name = item.name, count = n}
+
+                itask.update_progress("pickup_item", object.prototype_name, item.name, n)
             end)
 
         elseif hasComponent(e, PICKUP_COMPONENTS) then
             ibackpack.chest_to_backpack(gameplay_world, e, function(id, n)
                 local item = iprototype.queryById(id)
                 msgs[#msgs + 1] = {icon = assert(item.item_icon), name = item.name, count = n}
+
+                itask.update_progress("pickup_item", object.prototype_name, item.name, n)
             end)
 
             if typeobject.chest_destroy then
@@ -388,18 +392,6 @@ function M.update(datamodel, gameplay_eid)
         local sp_x, sp_y = math3d.index(icamera_controller.world_to_screen(object.srt.t), 1, 2)
         iui.send("/pkg/vaststars.resources/ui/message_pop.rml", "item", {action = "up", left = sp_x, top = sp_y, items = msgs})
         iui.call_datamodel_method("/pkg/vaststars.resources/ui/construct.rml", "update_backpack_bar", msgs)
-
-        for i = 1, ichest.MAX_SLOT do
-            local slot = ichest.get(gameplay_world, e.chest, i)
-            if not slot then
-                break
-            end
-            if slot.item == 0 then
-                goto continue
-            end
-            itask.update_progress("pickup_item", object.prototype_name, iprototype.queryById(slot.item).name, slot.amount)
-            ::continue::
-        end
     end
 
     for _ in place_item_mb:unpack() do
