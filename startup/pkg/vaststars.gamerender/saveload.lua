@@ -28,6 +28,7 @@ local terrain = ecs.require "terrain"
 local ipower = ecs.require "power"
 local ipower_line = ecs.require "power_line"
 local iroadnet = ecs.require "roadnet"
+local srt = require "utility.srt"
 
 local MAX_ARCHIVING_COUNT <const> = 9
 local PROTOTYPE_VERSION <const> = import_package("vaststars.prototype")("version")
@@ -76,10 +77,10 @@ local function restore_world()
             dir = dir,
             x = x,
             y = y,
-            srt = {
-                t = math3d.ref(math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)))),
+            srt = srt.new({
+                t = math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir))),
                 r = ROTATORS[dir],
-            },
+            }),
             fluid_name = fluid_name,
         }
         object.gameplay_eid = gameplay_eid

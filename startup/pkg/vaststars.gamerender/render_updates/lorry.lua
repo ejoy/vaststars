@@ -32,6 +32,7 @@ local gameplay_core = require "gameplay.core"
 local prefab_slots = require("engine.prefab_parser").slots
 local prefab_root = require("engine.prefab_parser").root
 local objects = require "objects"
+local srt = require "utility.srt"
 
 local start_srts = {}
 local cache = {}
@@ -110,9 +111,9 @@ motion_events["update"] = function(obj, e, x, y, toward, offset, last_srt, maxpr
         ims.set_keyframes(e, table.unpack(kfs))
 
         local last = kfs[#kfs]
-        obj.last_srt.s.v = last.s
-        obj.last_srt.r.q = last.r
-        obj.last_srt.t.v = last.t
+        obj.last_srt.s = last.s
+        obj.last_srt.r = last.r
+        obj.last_srt.t = last.t
 
         ims.set_duration(e, maxprogress, progress, true)
     end
@@ -128,7 +129,11 @@ local function createLorry(classid, x, y, toward, offset)
         )
     )
 
-    local last_srt = {s = math3d.ref(s), r = math3d.ref(r), t = math3d.ref(t)}
+    local last_srt = srt.new {
+        s = s,
+        r = r,
+        t = t,
+    }
     local typeobject = assert(iprototype.queryById(classid))
     local kfs = genKeyFrames(last_srt, x, y, toward, offset)
     local lorry = create_lorry(typeobject.model, kfs[1].s, kfs[1].r, kfs[1].t, motion_events)
@@ -169,10 +174,10 @@ local function loadModelTrack(model, tracks)
                     )
                 )
 
-                track_srts[#track_srts+1] = {
-                    s = math3d.ref(s),
-                    r = math3d.ref(r),
-                    t = math3d.ref(t),
+                track_srts[#track_srts+1] = srt.new {
+                    s = s,
+                    r = r,
+                    t = t,
                 }
             end
             cache[toward][offset] = track_srts
@@ -207,10 +212,10 @@ function lorry_sys:prototype_restore()
                 math3d.matrix(slot_srt)
             )
         )
-        start_srts[toward] = {
-            s = math3d.ref(s),
-            r = math3d.ref(r),
-            t = math3d.ref(t),
+        start_srts[toward] = srt.new {
+            s = s,
+            r = r,
+            t = t,
         }
     end
 end

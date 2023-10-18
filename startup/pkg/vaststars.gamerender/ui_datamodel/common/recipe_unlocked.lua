@@ -4,7 +4,7 @@ local w = world.w
 
 local gameplay_core = require "gameplay.core"
 local debugger = require "debugger"
-local iprototype_cache = require "gameplay.prototype_cache.init"
+local iprototype_cache = ecs.require "prototype_cache"
 
 local function recipe_unlocked(recipe)
     if debugger.recipe_unlocked then

@@ -29,6 +29,7 @@ local terrain = ecs.require "terrain"
 local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_box"
 local global = require "global"
 local gameplay_core = require "gameplay.core"
+local srt = require "utility.srt"
 
 local function _show_dotted_line(self, from_x, from_y, to_x, to_y, dir, dir_delta)
     from_x, from_y = from_x + dir_delta.x, from_y + dir_delta.y
@@ -487,10 +488,10 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                 dir = dir,
                 x = x,
                 y = y,
-                srt = {
-                    t = math3d.ref(math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)))),
+                srt = srt.new({
+                    t = math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir))),
                     r = ROTATORS[dir],
-                },
+                }),
                 fluid_name = State.fluid_name,
                 group_id = 0,
             }
@@ -671,7 +672,7 @@ local function __calc_grid_position(self, typeobject, x, y, dir)
     local w, h = iprototype.rotate_area(typeobject.area, dir)
     local _, originPosition = terrain:align(math3d.vector {0, 0, 0}, w, h)
     local buildingPosition = terrain:get_position_by_coord(x, y, w, h)
-    return math3d.ref(math3d.add(math3d.sub(buildingPosition, originPosition), GRID_POSITION_OFFSET))
+    return math3d.add(math3d.sub(buildingPosition, originPosition), GRID_POSITION_OFFSET)
 end
 
 --------------------------------------------------------------------------------------------------
@@ -687,10 +688,10 @@ local function new_entity(self, datamodel, typeobject)
         dir = dir,
         x = x,
         y = y,
-        srt = {
-            t = math3d.ref(math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)))),
+        srt = srt.new({
+            t = math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir))),
             r = ROTATORS[dir],
-        },
+        }),
         fluid_name = "",
         group_id = 0,
     }

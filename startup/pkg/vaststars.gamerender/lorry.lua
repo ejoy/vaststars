@@ -5,19 +5,14 @@ local w = world.w
 local ims = ecs.require "ant.motion_sampler|motion_sampler"
 local ientity_object = ecs.require "engine.system.entity_object_system"
 local iprototype = require "gameplay.interface.prototype"
-local iom = ecs.require "ant.objcontroller|obj_motion"
 local ivs = ecs.require "ant.render|visible_state"
 local ig = ecs.require "ant.group|group"
 
-local mathpkg = import_package "ant.math"
-local mc = mathpkg.constant
-local irl		    = ecs.require "ant.render|render_layer.render_layer"
+local irl = ecs.require "ant.render|render_layer.render_layer"
 local igame_object = ecs.require "engine.game_object"
 
-local prefab_slots = require("engine.prefab_parser").slots
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local ltween = require "motion.tween"
-local ITEM_INDEX <const> = 5
 local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
 
 local sampler_group
@@ -77,24 +72,31 @@ local function __create_shadow_object(parent)
     })
 end
 
-local function __create_item_object(prefab, parent, offset_srt, visible)
-    local outer = {instance = world:create_instance {
-        prefab = prefab,
-        parent = parent,
-        group = sampler_group,
-        on_ready = function (self)
-            local root <close> = world:entity(self.tag['*'][1])
-            if offset_srt then
-                iom.set_srt(root, offset_srt.s or mc.ONE, offset_srt.r or mc.IDENTITY_QUAT, offset_srt.t or mc.ZERO_PT)
-            end
+local function create(prefab, s, r, t, motion_events)
+    if not sampler_group then
+        sampler_group = ims.sampler_group()
+        ig.enable(sampler_group, "view_visible", sampler_group)
+    end
 
+    local outer = {
+        objs = {},
+        item_classid = 0,
+        item_amount = 0,
+    }
+    local motion_obj = __create_motion_object(s, r, t, motion_events)
+    local lorry_obj = __create_lorry_object(prefab, motion_obj.id)
+    local shadow_obj = __create_shadow_object(motion_obj.id)
+    outer.objs[#outer.objs + 1] = motion_obj
+    outer.objs[#outer.objs + 1] = lorry_obj
+    outer.objs[#outer.objs + 1] = shadow_obj
+    outer.arrow = world:create_instance({
+        prefab = "/pkg/vaststars.resources/glbs/road/arrow.glb|mesh.prefab",
+        on_ready = function(self)
             for _, eid in ipairs(self.tag['*']) do
                 local e <close> = world:entity(eid, "visible_state?in render_object?in")
                 if e.visible_state then
                     ivs.set_state(e, "cast_shadow", false)
-                    if visible ~= nil then
-                        ivs.set_state(e, "main_view", visible)
-                    end
+                    ivs.set_state(e, "main_view", false)
                 end
                 if e.render_object then
                     irl.set_layer(e, RENDER_LAYER.LORRY_ITEM)
@@ -104,40 +106,14 @@ local function __create_item_object(prefab, parent, offset_srt, visible)
         on_message = function(self, msg, visible)
             assert(msg == "show")
             for _, eid in ipairs(self.tag['*']) do
-                local e <close> = world:entity(eid, "visible_state?in")
+                local e <close> = world:entity(eid, "visible_state?in render_object?in")
                 if e.visible_state then
                     ivs.set_state(e, "main_view", visible)
                 end
             end
-        end
-    }}
-    function outer:remove()
-        world:remove_instance(self.instance)
-    end
-    function outer:send(...)
-        world:instance_message(self.instance, ...)
-    end
-    return outer
-end
-
-local function create(prefab, s, r, t, motion_events)
-    if not sampler_group then
-        sampler_group = ims.sampler_group()
-        ig.enable(sampler_group, "view_visible", sampler_group)
-    end
-
-    local slots = prefab_slots(RESOURCES_BASE_PATH:format(prefab))
-    assert(slots.arrow)
-
-    local outer = {objs = {}, item_classid = 0, item_amount = 0}
-    local motion_obj = __create_motion_object(s, r, t, motion_events)
-    local lorry_obj = __create_lorry_object(prefab, motion_obj.id)
-    local shadow_obj = __create_shadow_object(motion_obj.id)
-    local arrow = __create_item_object("/pkg/vaststars.resources/glbs/arrow-guide.glb|mesh.prefab", motion_obj.id, slots.arrow.scene, false)
-    outer.objs[#outer.objs + 1] = motion_obj
-    outer.objs[#outer.objs + 1] = lorry_obj
-    outer.objs[#outer.objs + 1] = shadow_obj
-    outer.objs[#outer.objs + 1] = arrow
+        end,
+    })
+    lorry_obj:send("attach", "arrow", outer.arrow)
 
     function outer:work()
         local model = assert(prefab:match("(.*%.glb|).*%.prefab"))
@@ -151,9 +127,13 @@ local function create(prefab, s, r, t, motion_events)
         for _, obj in ipairs(self.objs) do
             obj:remove()
         end
+        world:remove_instance(self.arrow)
+        if self.item then
+            world:remove_instance(self.item)
+        end
     end
     function outer:show_arrow(b)
-        arrow:send("show", b)
+        world:instance_message(outer.arrow, "show", b)
     end
     function outer:set_item(item_classid, item_amount)
         if self.item_classid == item_classid and self.item_amount == item_amount then
@@ -163,23 +143,33 @@ local function create(prefab, s, r, t, motion_events)
         self.item_amount = item_amount
 
         if item_classid == 0 or item_amount == 0 then
-            if self.objs[ITEM_INDEX] then
-                self.objs[ITEM_INDEX]:remove()
-                self.objs[ITEM_INDEX] = nil
+            if self.item then
+                world:remove_instance(self.item)
+                self.item = nil
             end
             return
         end
 
-        if self.objs[ITEM_INDEX] then
-            self.objs[ITEM_INDEX]:remove()
+        if self.item then
+            world:remove_instance(self.item)
         end
 
         local typeobject = iprototype.queryById(item_classid)
         assert(typeobject, ("item_classid %d not found"):format(item_classid))
         assert(typeobject.item_model)
-        assert(slots.item)
 
-        self.objs[ITEM_INDEX] = __create_item_object(RESOURCES_BASE_PATH:format(typeobject.item_model), motion_obj.id, slots.item.scene)
+        self.item = world:create_instance({
+            prefab = RESOURCES_BASE_PATH:format(typeobject.item_model),
+            on_ready = function(self)
+                for _, eid in ipairs(self.tag['*']) do
+                    local e <close> = world:entity(eid, "render_object?in")
+                    if e.render_object then
+                        irl.set_layer(e, RENDER_LAYER.LORRY_ITEM)
+                    end
+                end
+            end,
+        })
+        lorry_obj:send("attach", "item", self.item)
     end
     function outer:motion_opt(...)
         motion_obj:send(...)

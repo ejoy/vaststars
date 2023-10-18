@@ -37,6 +37,7 @@ local global = require "global"
 local ifluidbox = ecs.require "render_updates.fluidbox"
 local iprototype_cache = ecs.require "prototype_cache"
 local icamera_controller = ecs.require "engine.system.camera_controller"
+local srt = require "utility.srt"
 
 local function length(t)
     local n = 0
@@ -237,10 +238,10 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                 dir = dir,
                 x = x,
                 y = y,
-                srt = {
-                    t = math3d.ref(math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)))),
+                srt = srt.new({
+                    t = math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir))),
                     r = ROTATORS[dir],
-                },
+                }),
                 fluid_name = State.fluid_name,
                 group_id = 0,
             }
@@ -337,10 +338,10 @@ local function _teardown_end(self, datamodel, State, dir, dir_delta)
                 dir = dir,
                 x = x,
                 y = y,
-                srt = {
-                    t = math3d.ref(math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)))),
+                srt = srt.new({
+                    t = math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir))),
                     r = ROTATORS[dir],
-                },
+                }),
                 fluid_name = State.fluid_name,
                 group_id = 0,
             }
@@ -628,7 +629,7 @@ end
 local function __calc_grid_position(building_position, typeobject, dir)
     local w, h = iprototype.rotate_area(typeobject.area, dir)
     local _, originPosition = terrain:align(math3d.vector(0, 0, 0), w, h)
-    return math3d.ref(math3d.add(math3d.sub(building_position, originPosition), GRID_POSITION_OFFSET))
+    return math3d.add(math3d.sub(building_position, originPosition), GRID_POSITION_OFFSET)
 end
 
 local function confirm(self, datamodel)
@@ -714,10 +715,10 @@ local function new_entity(self, datamodel, typeobject, x, y)
         dir = dir,
         x = x,
         y = y,
-        srt = {
-            t = math3d.ref(math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)))),
+        srt = srt.new({
+            t = math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir))),
             r = ROTATORS[dir],
-        },
+        }),
         fluid_name = "",
         group_id = 0,
     }
@@ -738,8 +739,7 @@ local function __align(position, area, dir)
     if not coord then
         return
     end
-    local t = math3d.ref(math3d.vector(terrain:get_position_by_coord(coord[1], coord[2], iprototype.rotate_area(area, dir))))
-    return t, coord[1], coord[2]
+    return coord[1], coord[2]
 end
 
 local function touch_move(self, datamodel, delta_vec)
@@ -751,7 +751,7 @@ local function touch_move(self, datamodel, delta_vec)
 
         local coord_indicator = self.coord_indicator
         local typeobject = iprototype.queryByName(coord_indicator.prototype_name)
-        local _, x, y = __align(icamera_controller.get_central_position(), typeobject.area, coord_indicator.dir)
+        local x, y = __align(icamera_controller.get_central_position(), typeobject.area, coord_indicator.dir)
         local prototype_name, dir = getPlacedPrototypeName(x, y, self.typeobject.name, DEFAULT_DIR)
         if prototype_name ~= self.coord_indicator.prototype_name or dir ~= self.coord_indicator.dir then
             local srt = self.coord_indicator.srt
@@ -799,10 +799,10 @@ local function touch_end(self, datamodel)
             dir = dir,
             x = x,
             y = y,
-            srt = {
-                t = math3d.ref(math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(self.typeobject.area, dir)))),
+            srt = srt.new({
+                t = math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(self.typeobject.area, dir))),
                 r = ROTATORS[dir],
-            },
+            }),
             group_id = 0,
         }
     end
@@ -891,10 +891,10 @@ local function place_one(self, datamodel)
         dir = dir,
         x = x,
         y = y,
-        srt = {
-            t = math3d.ref(math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, "N")))),
+        srt = srt.new({
+            t = math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, "N"))),
             r = ROTATORS["N"],
-        },
+        }),
         fluid_name = '',
         group_id = 0,
     }

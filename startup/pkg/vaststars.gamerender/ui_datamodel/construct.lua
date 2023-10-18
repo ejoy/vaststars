@@ -160,10 +160,10 @@ local function __switch_status(s, cb)
     pos = math3d.set_index(pos, 2, 0)
 
     if status == "default" then
-        icamera_controller.toggle_view("default", math3d.ref(pos), cb)
+        icamera_controller.toggle_view("default", pos, cb)
         igame_object.stop_world()
     elseif status == "construct" then
-        icamera_controller.toggle_view("construct", math3d.ref(pos), cb)
+        icamera_controller.toggle_view("construct", pos, cb)
         igame_object.restart_world()
     end
 end
@@ -297,7 +297,7 @@ local function open_focus_tips(tech_node)
             end
             tech_node.selected_tips[#tech_node.selected_tips + 1] = {selected_boxes({"/pkg/vaststars.resources/" .. nd.prefab}, center, COLOR_GREEN, nd.w, nd.h), prefab}
         elseif nd.camera_x and nd.camera_y then
-            icamera_controller.focus_on_position(terrain:get_position_by_coord(nd.camera_x, nd.camera_y, width, height))
+            icamera_controller.focus_on_position(math3d.vector(terrain:get_position_by_coord(nd.camera_x, nd.camera_y, width, height)))
         end
     end
 end
@@ -535,7 +535,7 @@ function M.update(datamodel)
             local pos = icamera_controller.screen_to_world(e.x, e.y, XZ_PLANE)
             pickupObject(datamodel, pos, "pick")
             icamera_controller.lock_axis("xz-axis")
-            icamera_controller.toggle_view("pickup", math3d.ref(math3d.set_index(pos, 2, 0)))
+            icamera_controller.toggle_view("pickup", math3d.set_index(pos, 2, 0))
 
         elseif e.state == "changed" then
             longpress_startpoint.x = e.x
@@ -546,7 +546,7 @@ function M.update(datamodel)
 
             local pos = icamera_controller.get_central_position()
             pos = math3d.set_index(pos, 2, 0)
-            icamera_controller.toggle_view("default", math3d.ref(math3d.set_index(pos, 2, 0)), function()
+            icamera_controller.toggle_view("default", math3d.set_index(pos, 2, 0), function()
                 icamera_controller.unlock_axis()
             end)
         end
@@ -688,7 +688,7 @@ function M.update(datamodel)
                     idetail.selected(pick_lorry_id)
 
                     local e = assert(gameplay_core.get_entity(pick_lorry_id))
-                    icamera_controller.focus_on_position(terrain:get_position_by_coord(e.lorry.x, e.lorry.y, 1, 1))
+                    icamera_controller.focus_on_position(math3d.vector(terrain:get_position_by_coord(e.lorry.x, e.lorry.y, 1, 1)))
 
                 elseif selected_obj.class == CLASS.Object and not iprototype.is_pipe(selected_obj.object.prototype_name) then -- TODO: optimize
                     local object = selected_obj.object
@@ -698,7 +698,7 @@ function M.update(datamodel)
                     idetail.selected(object.gameplay_eid)
                 else
                     if selected_obj.get_pos then
-                        icamera_controller.focus_on_position(selected_obj:get_pos())
+                        icamera_controller.focus_on_position(math3d.vector(selected_obj:get_pos()))
                     end
 
                     if iprototype.is_road(selected_obj.name) or iprototype.is_pipe(selected_obj.name) or iprototype.is_pipe_to_ground(selected_obj.name) then
@@ -765,7 +765,7 @@ function M.update(datamodel)
         __switch_status("construct", function()
             assert(selected_obj)
             if selected_obj.get_pos then
-                icamera_controller.focus_on_position(selected_obj:get_pos())
+                icamera_controller.focus_on_position(math3d.vector(selected_obj:get_pos()))
             end
 
             gameplay_core.world_update = false
@@ -796,7 +796,7 @@ function M.update(datamodel)
         __switch_status("construct", function()
             assert(selected_obj)
             if selected_obj.get_pos then
-                icamera_controller.focus_on_position(selected_obj:get_pos())
+                icamera_controller.focus_on_position(math3d.vector(selected_obj:get_pos()))
             end
 
             gameplay_core.world_update = false
@@ -850,7 +850,7 @@ function M.update(datamodel)
 
         assert(selected_obj)
         if selected_obj.get_pos then
-            icamera_controller.focus_on_position(selected_obj:get_pos())
+            icamera_controller.focus_on_position(math3d.vector(selected_obj:get_pos()))
         end
 
         local typeobject = iprototype.queryByName(prototype_name)

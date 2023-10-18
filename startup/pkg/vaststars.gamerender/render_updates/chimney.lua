@@ -11,6 +11,7 @@ local icanvas = ecs.require "engine.canvas"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local objects = require "objects"
 local global = require "global"
+local math3d = require "math3d"
 
 local ROTATORS <const> = {
     N = math.rad(0),
@@ -47,7 +48,7 @@ end
 
 local function __draw_fluid_indication_arrow(object_id, building_srt, dir, prototype)
     local typeobject = iprototype.queryById(prototype)
-    local begin_x, begin_y = __calc_begin_xy(building_srt.t[1], building_srt.t[3], iprototype.rotate_area(typeobject.area, dir))
+    local begin_x, begin_y = __calc_begin_xy(math3d.index(building_srt.t, 1), math3d.index(building_srt.t, 3), iprototype.rotate_area(typeobject.area, dir))
     for _, conn in ipairs(typeobject.fluidbox.connections) do
         local connection_x, connection_y, connection_dir = iprototype.rotate_connection(conn.position, dir, typeobject.area)
         local material_path

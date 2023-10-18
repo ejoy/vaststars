@@ -45,7 +45,7 @@ end
 
 local function __draw_fluid_indication_arrow(object_id, building_srt, dir, prototype)
     local typeobject = iprototype.queryById(prototype)
-    local begin_x, begin_y = __calc_begin_xy(building_srt.t[1], building_srt.t[3], iprototype.rotate_area(typeobject.area, dir))
+    local begin_x, begin_y = __calc_begin_xy(math3d.index(building_srt.t, 1), math3d.index(building_srt.t, 3), iprototype.rotate_area(typeobject.area, dir))
     for _, conn in ipairs(typeobject.fluidbox.connections) do
         local connection_x, connection_y, connection_dir = iprototype.rotate_connection(conn.position, dir, typeobject.area)
         local material_path
@@ -113,9 +113,9 @@ function mt:remove()
 end
 
 function mt:on_position_change(building_srt, dir)
-    local delta = math3d.ref(math3d.sub(building_srt.t, self.position))
+    local delta = math3d.sub(building_srt.t, self.position)
     local obj = icanvas.get(icanvas.types().PICKUP_ICON)
-    obj:send("iom", "move_delta", delta)
+    obj:send("iom", "move_delta", math3d.live(delta))
     self.position = building_srt.t
 
     if dir ~= self.dir then

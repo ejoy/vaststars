@@ -163,7 +163,6 @@ local function create_drone(x, y, slot)
             w:remove(self.motion_xz)
         end,
     }
-    task.current_pos = homepos
     local motion_xz = imotion.create_motion_object(nil, nil, math3d.set_index(homepos, 2, 0))
     task.motion_xz = motion_xz
     local motion_y = imotion.create_motion_object(nil, nil, math3d.vector(0, math3d.index(homepos, 2), 0), motion_xz)

@@ -1,10 +1,8 @@
 local math3d = require "math3d"
+local mathpkg = import_package "ant.math"
+local mc = mathpkg.constant
 
 local srt = {}
-
-local scale_1 <const> = math3d.constant("v4", 1,1,1,1)
-local quat_i <const> = math3d.constant "quat"
-local trans_0 <const> = math3d.constant("v4", 0,0,0,1)
 
 local unmark = math3d.unmark
 local mark = math3d.mark
@@ -42,9 +40,9 @@ end
 
 function srt.new(init)
 	local v = {
-		s = math3d.vector(init.s or scale_1),
-		r = math3d.quaternion(init.r or quat_i),
-		t = math3d.vector(init.t or trans_0),
+		s = mark(math3d.vector(init.s or mc.ONE)),
+		r = mark(math3d.quaternion(init.r or mc.IDENTITY_QUAT)),
+		t = mark(math3d.vector(init.t or mc.ZERO_PT)),
 	}
 	return setmetatable({ raw = v }, {
 		__index = v,

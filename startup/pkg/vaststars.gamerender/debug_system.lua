@@ -2,18 +2,21 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
+local GESTURE_LOG <const> = require "debugger".gesture_log
+
+local math3d = require "math3d"
+local XZ_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
+
 local debug_sys = ecs.system "debug_system"
 local kb_mb = world:sub{"keyboard"}
 local gameplay_core = require "gameplay.core"
 local export_startup = ecs.require "export_startup"
 local gesture_tap_mb = world:sub{"gesture", "tap"}
 local gesture_mb = world:sub{"gesture"}
-local math3d = require "math3d"
 local terrain = ecs.require "terrain"
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local iprototype = require "gameplay.interface.prototype"
-local GESTURE_LOG <const> = require "debugger".gesture_log
-local XZ_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
+local idm = ecs.require "ant.debug|debug_mipmap"
 
 local function __get_capacitance(eid)
     local e = gameplay_core.get_entity(eid)
@@ -109,6 +112,14 @@ function debug_sys:ui_update()
 
         if state.CTRL and key == "S" and press == 0 then
             export_startup()
+        end
+
+        if state.CTRL and key == "M" and press == 0 then
+            idm.convert_to_debug_mipmap()
+        end
+
+        if state.CTRL and key == "N" and press == 0 then
+            idm.restore_to_origin_mipmap()
         end
     end
 

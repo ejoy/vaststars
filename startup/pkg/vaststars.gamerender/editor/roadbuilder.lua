@@ -30,6 +30,7 @@ local iroad = ecs.require "vaststars.gamerender|render_updates.road"
 local imountain = ecs.require "engine.mountain"
 local ibackpack = require "gameplay.interface.backpack"
 local iom = ecs.require "ant.objcontroller|obj_motion"
+local srt = require "utility.srt"
 
 local function isValidRoadCoord(x, y, cache_names)
     for i = 0, ROAD_SIZE - 1 do
@@ -70,7 +71,7 @@ local function __align(position, area, dir)
         return
     end
     coord[1], coord[2] = coord[1] - (coord[1] % ROAD_SIZE), coord[2] - (coord[2] % ROAD_SIZE)
-    local t = math3d.ref(math3d.vector(terrain:get_position_by_coord(coord[1], coord[2], iprototype.rotate_area(area, dir))))
+    local t = math3d.vector(terrain:get_position_by_coord(coord[1], coord[2], iprototype.rotate_area(area, dir)))
     return t, coord[1], coord[2]
 end
 
@@ -136,17 +137,17 @@ local function new_entity(self, datamodel, typeobject, x, y)
         dir = dir,
         x = x,
         y = y,
-        srt = {
-            t = math3d.ref(math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)))),
+        srt = srt.new({
+            t = math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir))),
             r = ROTATORS[dir],
-        },
+        }),
         group_id = 0,
     }
 
     if not self.pickup_components.grid_entity then
         local position = __align(self.coord_indicator.srt.t, packarea(8 * ROAD_SIZE, 8 * ROAD_SIZE), dir)
         position = math3d.add(position, GRID_POSITION_OFFSET)
-        local offset = math3d.ref(math3d.sub(self.coord_indicator.srt.t, position))
+        local offset = math3d.sub(self.coord_indicator.srt.t, position)
         self.pickup_components.grid_entity = igrid_entity.create(
             terrain._width // ROAD_SIZE,
             terrain._height // ROAD_SIZE,
@@ -172,10 +173,10 @@ local function new_entity(self, datamodel, typeobject, x, y)
                     local building_srt = ...
                     local position = building_srt.t
                     local delta = DIR_MOVE_DELTA[self.forward_dir]
-                    local x, z = position[1] + delta.x * terrain.tile_size * ROAD_SIZE, position[3] + delta.y * terrain.tile_size * ROAD_SIZE
+                    local x, z = math3d.index(position, 1) + delta.x * terrain.tile_size * ROAD_SIZE, math3d.index(position, 3) + delta.y * terrain.tile_size * ROAD_SIZE
 
                     local root <close> = world:entity(instance.tag['*'][1])
-                    iom.set_position(root, math3d.vector(x, position[2], z))
+                    iom.set_position(root, math3d.vector(x, math3d.index(position, 2), z))
                     iom.set_rotation(root, ROTATORS[self.forward_dir])
                 end
             end
@@ -232,10 +233,10 @@ local function touch_end(self, datamodel)
             dir = dir,
             x = x,
             y = y,
-            srt = {
-                t = math3d.ref(math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(self.typeobject.area, dir)))),
+            srt = srt.new({
+                t = math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(self.typeobject.area, dir))),
                 r = ROTATORS[dir],
-            },
+            }),
             group_id = 0,
         }
     end
@@ -284,7 +285,7 @@ local function place(self, datamodel)
     local dx, dy = iprototype.move_coord(x, y, self.forward_dir, ROAD_SIZE)
     self:new_entity(datamodel, self.typeobject, dx, dy)
 
-    icamera_controller.focus_on_position(terrain:get_position_by_coord(dx, dy, ROAD_SIZE, ROAD_SIZE))
+    icamera_controller.focus_on_position(math3d.vector(terrain:get_position_by_coord(dx, dy, ROAD_SIZE, ROAD_SIZE)))
 
     ibackpack.pickup(gameplay_core.get_world(), typeobject.id, 1)
     task.update_progress("road_laying", 1)

@@ -63,7 +63,7 @@ local function clone(outer)
         y = assert(outer.y),
         fluid_name = outer.fluid_name,
         gameplay_eid = outer.gameplay_eid,
-        srt = {s = outer.srt.s, r = outer.srt.r, t = outer.srt.t},
+        srt = outer.srt,
         group_id = outer.group_id,
     }
 
@@ -174,7 +174,7 @@ local function move_delta(object, delta_vec)
     end
 
     object.x, object.y = coord[1], coord[2]
-    object.srt.t.v = position
+    object.srt.t = position
     return object
 end
 
@@ -194,7 +194,7 @@ local function align(object)
     if not coord then
         return object
     end
-    object.srt.t = math3d.ref(math3d.vector(terrain:get_position_by_coord(coord[1], coord[2], iprototype.rotate_area(typeobject.area, object.dir))))
+    object.srt.t = math3d.vector(terrain:get_position_by_coord(coord[1], coord[2], iprototype.rotate_area(typeobject.area, object.dir)))
     return object, coord[1], coord[2]
 end
 
@@ -202,7 +202,7 @@ local function coord(object, x, y)
     assert(object)
     assert(object.prototype_name ~= "")
     local typeobject = iprototype.queryByName(object.prototype_name)
-    local position = math3d.ref(math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, object.dir))))
+    local position = math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, object.dir)))
     if not position then
         log.error(("can not get position"))
         return

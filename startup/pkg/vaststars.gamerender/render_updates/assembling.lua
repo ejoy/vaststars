@@ -46,6 +46,7 @@ local ipower_check = ecs.require "power_check_system"
 local gameplay = import_package "vaststars.gameplay"
 local ichimney = gameplay.interface "chimney"
 local ichest = require "gameplay.interface.chest"
+local math3d = require "math3d"
 
 local function __get_texture_size(materialpath)
     local res = assetmgr.resource(materialpath)
@@ -74,7 +75,7 @@ local function __calc_begin_xy(x, y, w, h)
 end
 
 local function __draw_icon(e, object_id, building_srt, status, recipe)
-    local x, y = building_srt.t[1], building_srt.t[3]
+    local x, y = math3d.index(building_srt.t, 1), math3d.index(building_srt.t, 3)
     if status == ICON_STATUS_NOPOWER then
         local material_path = "/pkg/vaststars.resources/materials/canvas/no-power.material"
         local icon_w, icon_h = __get_texture_size(material_path)
@@ -263,7 +264,7 @@ local function create_icon(object_id, e, building_srt)
 end
 
 local function __draw_consumer_icon(object_id, building_srt)
-    local x, y = building_srt.t[1], building_srt.t[3]
+    local x, y = math3d.index(building_srt.t, 1), math3d.index(building_srt.t, 3)
     local material_path = "/pkg/vaststars.resources/materials/canvas/no-power.material"
     local icon_w, icon_h = __get_texture_size(material_path)
     local texture_x, texture_y, texture_w, texture_h = 0, 0, icon_w, icon_h

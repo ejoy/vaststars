@@ -28,6 +28,7 @@ local ibuilding = ecs.require "render_updates.building"
 local create_pickup_icon_chimney = ecs.require "pickup_icon_chimney".create
 local ibackpack = require "gameplay.interface.backpack"
 local ichest = require "gameplay.interface.chest"
+local srt = require "utility.srt"
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -205,10 +206,10 @@ local function __new_entity(self, datamodel, typeobject, position, x, y, dir)
         dir = dir,
         x = x,
         y = y,
-        srt = {
-            t = math3d.ref(math3d.vector(position)),
+        srt = srt.new({
+            t = math3d.vector(position),
             r = ROTATORS[dir],
-        },
+        }),
         fluid_name = fluid_name,
         group_id = 0,
         recipe = recipe,
@@ -228,7 +229,7 @@ end
 local function __calc_grid_position(self, typeobject, dir)
     local _, originPosition = terrain:align(math3d.vector {0, 0, 0}, iprototype.rotate_area(typeobject.area, dir))
     local buildingPosition = terrain:get_position_by_coord(self.pickup_object.x, self.pickup_object.y, iprototype.rotate_area(typeobject.area, dir))
-    return math3d.ref(math3d.add(math3d.sub(buildingPosition, originPosition), GRID_POSITION_OFFSET))
+    return math3d.add(math3d.sub(buildingPosition, originPosition), GRID_POSITION_OFFSET)
 end
 
 local function __get_nearby_buldings(x, y, w, h)
@@ -427,7 +428,7 @@ local function __align(object)
     if not coord then
         return object
     end
-    object.srt.t = math3d.ref(math3d.vector(position))
+    object.srt.t = math3d.vector(position)
     return object, coord[1], coord[2]
 end
 

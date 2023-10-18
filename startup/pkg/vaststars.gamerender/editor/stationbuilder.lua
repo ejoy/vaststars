@@ -41,6 +41,7 @@ local gameplay_core = require "gameplay.core"
 local ibuilding = ecs.require "render_updates.building"
 local ibackpack = require "gameplay.interface.backpack"
 local iterrain = ecs.require "terrain"
+local srt = require "utility.srt"
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -64,7 +65,7 @@ local function _get_road_entrance_position(typeobject, dir, position)
 
     local conn  = typeobject.crossing.connections[1]
     local ox, oy, ddir = iprototype.rotate_connection(conn.position, dir, typeobject.area)
-    return math3d.ref(math3d.add(position, {ox * terrain.tile_size / 2, 0, oy * terrain.tile_size / 2})), ddir
+    return srt.new({t = math3d.add(position, {ox * terrain.tile_size / 2, 0, oy * terrain.tile_size / 2})}), ddir
 end
 
 local function __align(prototype_name, dir)
@@ -74,7 +75,7 @@ local function __align(prototype_name, dir)
         return
     end
     coord[1], coord[2] = coord[1] - (coord[1] % ROAD_SIZE), coord[2] - (coord[2] % ROAD_SIZE)
-    position = math3d.ref(math3d.vector(terrain:get_position_by_coord(coord[1], coord[2], iprototype.rotate_area(typeobject.area, dir))))
+    position = math3d.vector(terrain:get_position_by_coord(coord[1], coord[2], iprototype.rotate_area(typeobject.area, dir)))
 
     return position, coord[1], coord[2]
 end
@@ -241,10 +242,10 @@ local function __new_entity(self, datamodel, typeobject)
         dir = dir,
         x = x,
         y = y,
-        srt = {
-            t = math3d.ref(math3d.vector(position)),
+        srt = srt.new({
+            t = position,
             r = ROTATORS[dir],
-        },
+        }),
         fluid_name = "",
         group_id = 0,
     }
@@ -423,7 +424,7 @@ local function __calc_grid_position(typeobject, x, y, dir)
     local w, h = iprototype.rotate_area(typeobject.area, dir)
     local _, originPosition = terrain:align(math3d.vector {10, 0, -10}, w, h) -- TODO: remove hardcode
     local buildingPosition = terrain:get_position_by_coord(x - (x % ROAD_SIZE), y - (y % ROAD_SIZE), ROAD_SIZE, ROAD_SIZE)
-    return math3d.ref(math3d.add(math3d.sub(buildingPosition, originPosition), GRID_POSITION_OFFSET))
+    return math3d.add(math3d.sub(buildingPosition, originPosition), GRID_POSITION_OFFSET)
 end
 
 local function new_entity(self, datamodel, typeobject)
@@ -513,7 +514,7 @@ local function touch_end(self, datamodel)
         return
     end
     pickup_object.x, pickup_object.y = x, y
-    pickup_object.srt.t = math3d.ref(math3d.vector(position))
+    pickup_object.srt.t = position
 
     local typeobject = iprototype.queryByName(pickup_object.prototype_name)
 
