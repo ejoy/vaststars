@@ -4,18 +4,38 @@ local gameplay_core = require "gameplay.core"
 --[[
 custom_type :
 1. road_laying, count = x,
-2. lorry_count = x,
+    task = {"unknown", 0, 1},
+    task_params = {},
+    count = xx,
+2. lorry_count
+    task = {"unknown", 0, 2},
+    count = 2,
 3. set_recipe, recipe = x,
-4. auto_complete_task,
-5. set_item, task_params = {item = "xx"}
+    task = {"unknown", 0, 3},                          
+    task_params = {recipe = "地质科技包1"},
+    count = 1,
+4. auto_complete_task
+    task = {"unknown", 0, 4},
+5. set_item
+    task = {"unknown", 0, 5},
+    task_params = {item = "xx"}
 6. click_ui, ui = x,
-   eg. task = {"unknown", 0, 6},
-       task_params = {ui = "item_transfer_subscribe", building = ""},
-      
-       task = {"unknown", 0, 6},
-       task_params = {ui = "item_transfer_unsubscribe", , building = ""},
-7. place_item, task_params = {building = xx, item = xx, }, count = xx
-8. set_items, task_params = {items = {"demand|xx", "supply|xx", "transit|xx", ...}}
+    task = {"unknown", 0, 6},
+    task_params = {ui = "item_transfer_subscribe", building = ""},
+
+    task = {"unknown", 0, 6},
+    task_params = {ui = "item_transfer_unsubscribe", , building = ""},
+7. place_item
+    task = {"unknown", 0, 7},
+    task_params = {building = xx, item = xx, },
+    count = xx
+8. set_items, 
+    task = {"unknown", 0, 8},
+    task_params = {items = {"demand|xx", "supply|xx", "transit|xx", ...}}
+9. pickup_item
+    task = {"unknown", 0, 9},
+    task_params = {building = xx, item = xx, }
+    count = xx
 --]]
 local custom_type_mapping = {
     [0] = {s = "undef", check = function() end}, -- TODO
@@ -67,6 +87,11 @@ local custom_type_mapping = {
             return 1
         else
             return 0
+        end
+    end, },
+    [9] = {s = "pickup_item", check = function(task_params, progress, building, item, count)
+        if task_params.building == building and task_params.item == item then
+            return (progress or 0) + count
         end
     end, },
 }
