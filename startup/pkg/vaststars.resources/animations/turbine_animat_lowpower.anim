@@ -1,0 +1,35 @@
+---
+duration: 3
+name: turbine_animat_lowpower
+sample_ratio: 50
+skeleton: /pkg/vaststars.resources/glbs/turbine-1.glb|animations/skeleton.ozz
+target_anims:
+  ---
+  clips:
+    ---
+    amplitude_pos: 0
+    amplitude_rot: 180
+    direction: 2
+    random_amplitude: false
+    range: {0, 149}
+    repeat_count: 1
+    rot_axis: 3
+    tween: 1
+    type: 1
+  inherit: {false, false, false}
+  target_name: Bone
+  ---
+  clips:
+    ---
+    amplitude_pos: 0
+    amplitude_rot: -180
+    direction: 2
+    random_amplitude: false
+    range: {0, 149}
+    repeat_count: 1
+    rot_axis: 2
+    tween: 1
+    type: 1
+  inherit: {false, false, false}
+  target_name: Bone.001
+type: ske
