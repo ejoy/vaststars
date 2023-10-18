@@ -66,7 +66,8 @@ local guide1 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..放置1座{/g 仓库}在{/g 组装机}附近，确保仓库放置在{/color:4bd0ff 无人机平台范围}内..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..放置1座{/g 仓库}在{/color:4bd0ff 组装机}和{/color:4bd0ff 无人机平台}附近..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..注意{/color:4bd0ff 仓库}需要放置在{/g 无人机平台物流范围}内..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
@@ -82,7 +83,7 @@ local guide1 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..仓库分别设置收货{/g 碎石}、{/g 铁矿石}、{/g 铝矿石}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..{/color:4bd0ff 仓库}分别设置收货{/g 碎石}、{/g 铁矿石}、{/g 铝矿石}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
