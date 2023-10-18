@@ -130,7 +130,7 @@ local guide2 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..往新{/color:4bd0ff 仓库}转放{/g 10个铝矿石}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..往{/color:4bd0ff 新仓库}转放{/g 10个铝矿石}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
