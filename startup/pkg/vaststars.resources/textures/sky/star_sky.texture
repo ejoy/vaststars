@@ -1,8 +1,11 @@
+compress:
+  android: ASTC8X8
+  ios: ASTC8X8
+  windows: BC3
 colorspace: sRGB
 normalmap: false
 path: /pkg/vaststars.resources/textures/cubemap/star_sky.png
-mipmap: 0
-maxsize: 2048x2048
+maxsize: 128x128
 sampler:
   MAG: LINEAR
   MIN: LINEAR
