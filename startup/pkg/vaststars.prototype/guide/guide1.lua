@@ -96,10 +96,27 @@ local guide1 = {
         },
 	},
 
+    
     {
         name = "",
 		narrative = {
-            {"哔哩..在仓库里放置{/g 4个碎石}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..从采矿机里获取{/g 4个碎石}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            task = {
+                "获取碎石",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "收货设置1",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
+            {"哔哩..将从采矿机获得的原料放置{/g 6个碎石}到仓库里..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
@@ -108,7 +125,7 @@ local guide1 = {
             guide_progress = 10,
         },
         prerequisites = {
-            "收货设置1",
+            "获取碎石",
         },
 	},
 
