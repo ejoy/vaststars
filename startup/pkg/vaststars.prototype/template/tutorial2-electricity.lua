@@ -10,12 +10,6 @@ local entities = { {
     prototype_name = "机头残骸",
     x = 140,
     y = 136
-  },{
-    dir = "S",
-    items = { { "仓库I", 1 },{ "组装机I", 3 },{"科研中心I",1}, { "无人机平台I", 3}},
-    prototype_name = "机头残骸",
-    x = 135,
-    y = 130
   }, {
     dir = "E",
     items = { { "地下水挖掘机I", 2},{ "锅炉I", 2},{ "蒸汽发电机I", 4}, },
@@ -50,7 +44,7 @@ local entities = { {
     dir = "N",
     items = {},
     prototype_name = "组装机I",
-    x = 124,
+    x = 123,
     y = 129
   },{
     dir = "N",
@@ -62,8 +56,14 @@ local entities = { {
     dir = "N",
     items = {},
     prototype_name = "组装机I",
-    x = 130,
+    x = 131,
     y = 129
+  },{
+    dir = "N",
+    items = {},
+    prototype_name = "无人机平台I",
+    x = 126,
+    y = 132
   },{
     dir = "N",
     items = {},
@@ -73,7 +73,7 @@ local entities = { {
   },{
     dir = "N",
     items = {},
-    prototype_name = "无人机平台I",
+    prototype_name = "仓库I",
     x = 128,
     y = 132
   },{
@@ -81,6 +81,12 @@ local entities = { {
     items = {},
     prototype_name = "无人机平台I",
     x = 129,
+    y = 132
+  },{
+    dir = "N",
+    items = {},
+    prototype_name = "无人机平台I",
+    x = 130,
     y = 132
   },{
     dir = "N",

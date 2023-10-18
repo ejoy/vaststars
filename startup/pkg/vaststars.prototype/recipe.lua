@@ -2323,7 +2323,7 @@ prototype "维修运输汽车" {
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/steel-gear.texture",
     ingredients = {
         {"铁棒", 1},
-        {"破损运输车辆", 1},q
+        {"破损运输车辆", 1},
     },
     results = {
         {"运输车辆I", 1},

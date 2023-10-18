@@ -24,11 +24,15 @@ local icamera_controller = {}
 local gesture_pinch = world:sub {"gesture", "pinch"}
 local gesture_pan = world:sub {"gesture", "pan"}
 
-local datalist = require "datalist"
-local fs = require "filesystem"
-local CAMERA_DEFAULT <const> = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/camera_default.prefab")):read "a")[1].data.scene
-local CAMERA_CONSTRUCT <const> = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/camera_construct.prefab")):read "a")[1].data.scene
-local CAMERA_PICKUP <const> = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/camera_pickup.prefab")):read "a")[1].data.scene
+local function read_datalist(path)
+    local fs = require "filesystem"
+    local datalist = require "datalist"
+    local fastio = require "fastio"
+    return datalist.parse(fastio.readall(fs.path(path):localpath():string(), path))
+end
+local CAMERA_DEFAULT <const> = read_datalist "/pkg/vaststars.resources/camera_default.prefab" [1].data.scene
+local CAMERA_CONSTRUCT <const> = read_datalist "/pkg/vaststars.resources/camera_construct.prefab" [1].data.scene
+local CAMERA_PICKUP <const> = read_datalist "/pkg/vaststars.resources/camera_pickup.prefab" [1].data.scene
 
 local CAMERA_DEFAULT_SCALE <const> = CAMERA_DEFAULT.s and math3d.constant("v4", CAMERA_DEFAULT.s)or mc.ONE
 local CAMERA_DEFAULT_ROTATION <const> = CAMERA_DEFAULT.r and math3d.constant("quat", CAMERA_DEFAULT.r) or mc.IDENTITY_QUAT
@@ -143,7 +147,7 @@ local function toggle_view(v, xzpos)
 end
 
 local function __set_camera_from_prefab(prefab)
-    local data = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/" .. prefab)):read "a")
+    local data = read_datalist("/pkg/vaststars.resources/" .. prefab)
     if not data then
         return
     end

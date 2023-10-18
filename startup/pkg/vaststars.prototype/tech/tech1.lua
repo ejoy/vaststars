@@ -250,7 +250,7 @@ local prototype = gameplay.register.prototype
       unlock_recipe = {"地质科技包1"},
     },
     sign_desc = {
-      { desc = "仓库设置收货选择“碎石”", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "仓库设置收货选择“碎石”、“铁矿石”、“铝矿石”", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
