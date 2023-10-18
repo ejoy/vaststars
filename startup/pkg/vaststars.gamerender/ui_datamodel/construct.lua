@@ -160,10 +160,10 @@ local function __switch_status(s, cb)
     pos = math3d.set_index(pos, 2, 0)
 
     if status == "default" then
-        icamera_controller.toggle_view("default", math3d.ref(pos), cb)
+        icamera_controller.toggle_view("default", pos, cb)
         igame_object.stop_world()
     elseif status == "construct" then
-        icamera_controller.toggle_view("construct", math3d.ref(pos), cb)
+        icamera_controller.toggle_view("construct", pos, cb)
         igame_object.restart_world()
     end
 end
@@ -535,7 +535,7 @@ function M.update(datamodel)
             local pos = icamera_controller.screen_to_world(e.x, e.y, XZ_PLANE)
             pickupObject(datamodel, pos, "pick")
             icamera_controller.lock_axis("xz-axis")
-            icamera_controller.toggle_view("pickup", math3d.ref(math3d.set_index(pos, 2, 0)))
+            icamera_controller.toggle_view("pickup", math3d.set_index(pos, 2, 0))
 
         elseif e.state == "changed" then
             longpress_startpoint.x = e.x
@@ -546,7 +546,7 @@ function M.update(datamodel)
 
             local pos = icamera_controller.get_central_position()
             pos = math3d.set_index(pos, 2, 0)
-            icamera_controller.toggle_view("default", math3d.ref(math3d.set_index(pos, 2, 0)), function()
+            icamera_controller.toggle_view("default", math3d.set_index(pos, 2, 0), function()
                 icamera_controller.unlock_axis()
             end)
         end

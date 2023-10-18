@@ -109,6 +109,8 @@ local function get_world_delta(rotation, xzpos, delta_y)
 end
 
 local function toggle_view(v, xzpos)
+    math3d.unmark(xzpos)
+
     local ce <close> = world:entity(irq.main_camera())
     assert(math3d.index(xzpos, 2) == 0, "y axis should be zero!")
     local position = iom.get_position(ce)
@@ -361,7 +363,7 @@ function icamera_controller.focus_on_position(position, callback)
 end
 
 function icamera_controller.toggle_view(v, xzpos, callback)
-    cam_cmd_queue:push {{"toggle_view", v, xzpos}}
+    cam_cmd_queue:push {{"toggle_view", v, math3d.mark(xzpos)}}
     if callback then
         cam_cmd_queue:push {{"callback", callback}}
     end

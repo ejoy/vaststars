@@ -2,12 +2,13 @@ local ecs   = ...
 local world = ecs.world
 local w     = world.w
 
-local cbp_sys = ecs.system "camera_bounding_pack_system"
-local math3d    = require "math3d"
+local INV_Z <const> = true
 
-local INV_Z<const> = true
-local CUSTOM_NPLANE<const>  = math3d.ref(math3d.vector(0, 1, 0, 5))
-local CUSTOM_FPLANE<const>  = math3d.ref(math3d.vector(0, 1, 0, 0))
+local math3d    = require "math3d"
+local CUSTOM_NPLANE <const> = math3d.constant("v4", {0, 1, 0, 5})
+local CUSTOM_FPLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
+
+local cbp_sys = ecs.system "camera_bounding_pack_system"
 
 function cbp_sys:update_camera()
     local sbe = w:first "shadow_bounding:update"
@@ -33,7 +34,7 @@ function cbp_sys:update_camera()
         local function ray_intersect_with_plane(plane)
             for n, nray in pairs(rays) do
                 local o = opoints[n]
-                ipoints[#ipoints+1] = math3d.add(math3d.mul(math3d.plane_ray(o, nray, plane.v), nray), o)
+                ipoints[#ipoints+1] = math3d.add(math3d.mul(math3d.plane_ray(o, nray, plane), nray), o)
             end
         end
         get_frustum_points_rays()

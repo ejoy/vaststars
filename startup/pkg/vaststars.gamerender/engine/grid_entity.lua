@@ -90,7 +90,7 @@ function M.create(width, height, unit, srt, pos_offset, material)
 		-- TODO: remove this function
 		set_position = function(self, position)
 			for _, obj in ipairs(self.objects) do
-				obj:send("obj_motion", "set_position", position)
+				obj:send("obj_motion", "set_position", math3d.live(position))
 			end
 		end,
 		on_status_change = function(self)
