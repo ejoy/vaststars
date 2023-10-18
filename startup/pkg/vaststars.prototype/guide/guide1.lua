@@ -2,7 +2,7 @@ local guide1 = {
 	{
         name = "",
 		narrative = {
-            {"哔哩..让我们正式进入{/color:4bd0ff 采矿教学}", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..欢迎进入{/g 采矿教学}", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             pop_chapter = {"教学","开采矿物"},
@@ -17,7 +17,7 @@ local guide1 = {
 	{
         name = "",
 		narrative = {
-            {"哔哩..检查地面上的{/color:4bd0ff 废墟堆},拾取残余{/g 物资}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..检查附近的{/color:4bd0ff 废墟堆},拾取残余{/g 物资}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
@@ -33,7 +33,7 @@ local guide1 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..在三处矿点上各放置1台{/g 采矿机}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..在{/color:4bd0ff 3处矿点}上各放置1台{/g 采矿机}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
@@ -49,7 +49,8 @@ local guide1 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..放置{/g 铁制电线杆}连接附近{/color:4bd0ff 风力发电机}并让采矿机处于{/color:4bd0ff 电线杆覆盖范围}内..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..放置{/g 铁制电线杆}连接附近{/color:4bd0ff 风力发电机}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..注意让{/g 电线杆供电区}覆盖{/color:4bd0ff 采矿机}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
@@ -113,7 +114,7 @@ local guide1 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..点击{/g 组装机}并设置配方{/g 地质科技包1}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..点击{/color:4bd0ff 组装机}并设置配方{/g 地质科技包1}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
@@ -129,7 +130,7 @@ local guide1 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..点击{/g 仓库}并添加收货类型{/g 地质科技包}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..点击{/color:4bd0ff 仓库}并添加收货类型{/g 地质科技包}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
@@ -145,7 +146,7 @@ local guide1 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..往仓库里放置{/g 矿物}让组装机生产足够的{/g 地质科技包}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..往仓库里放置{/color:4bd0ff 矿物}作为组装机生产{/color:4bd0ff 地质科技包}的原料..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
