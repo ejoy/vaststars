@@ -49,8 +49,8 @@ local guide2 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..所有的{/color:4bd0ff 采矿机}处于{/r 缺电状态}..哔哩..(担忧)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
-            {"哔哩..请放置1台{/g 风力发电机}给矿区{/color:4bd0ff 供电}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..所有{/color:4bd0ff 采矿机}处于{/r 缺电状态},这不是我们希望的..哔哩..(担忧)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..请放置1台{/g 旧风力发电机}给矿区{/color:4bd0ff 供电}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
@@ -108,6 +108,38 @@ local guide2 = {
         },
         prerequisites = {
             "电力铺设",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
+            {"哔哩..设置{/color:4bd0ff 仓库}收货{/g 碎石}、{/g 铁矿石}、{/g 铝矿石}、{/g 地质科技包}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            task = {
+                "新仓库设置",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "生产设置",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
+            {"哔哩..往新{/color:4bd0ff 仓库}转放{/g 10个铝矿石}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            task = {
+                "仓库互转",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "新仓库设置",
         },
 	},
 

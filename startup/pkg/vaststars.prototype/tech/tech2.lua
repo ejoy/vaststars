@@ -214,3 +214,63 @@ local prototype = gameplay.register.prototype
       { desc = "组装机生产设置为“地质科技包1”", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
+
+  prototype "新仓库设置" {
+    desc = "仓库选择碎石",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = { "task" },
+    task = {"unknown", 0, 8},
+    task_params = {items = {"transit|碎石", "transit|铁矿石","transit|铝矿石","transit|地质科技包"}},
+    count = 1,
+    prerequisites = {"生产设置"},
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    guide_focus = {
+      {
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        x = 128,
+        y = 132,
+        w = 1.2,
+        h = 1.2,
+        show_arrow = true,
+      },
+      {
+        camera_x = 128,
+        camera_y = 132,
+      },
+    },
+    sign_desc = {
+      { desc = "仓库设置收货选择“碎石”、“铁矿石”、“铝矿石”、“地质科技包”", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "仓库互转" {
+    desc = "仓库放置铝矿石",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = { "task" },                     
+    task = {"unknown", 0, 7},
+    task_params = {building = "仓库I", item = "铝矿石"},
+    prerequisites = {"新仓库设置"},
+    count = 10,
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    guide_focus = {
+      {
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        x = 128,
+        y = 132,
+        w = 1.2,
+        h = 1.2,
+        show_arrow = false,
+      },
+      {
+        camera_x = 128,
+        camera_y = 132,
+      },
+    },
+    sign_desc = {
+      { desc = "向新仓库里放置10块铝矿石", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
