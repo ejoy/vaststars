@@ -2,16 +2,18 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local igame_object = ecs.require "engine.game_object"
-local iprototype = require "gameplay.interface.prototype"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 
+local igame_object = ecs.require "engine.game_object"
+local iprototype = require "gameplay.interface.prototype"
+local math3d = require "math3d"
+
 local function set_position(self, position)
-    self.game_object:send("obj_motion", "set_position", position)
+    self.game_object:send("obj_motion", "set_position", math3d.live(position))
 end
 
 local function set_dir(self, dir)
-    self.game_object:send("obj_motion", "set_rotation", ROTATORS[dir])
+    self.game_object:send("obj_motion", "set_rotation", math3d.live(ROTATORS[dir]))
 end
 
 local function remove(self)

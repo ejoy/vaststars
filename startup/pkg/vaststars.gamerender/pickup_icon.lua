@@ -153,7 +153,7 @@ end
 
 local function __create_icons(self, typeobject, gameplay_eid, building_srt, dir)
     local e = assert(gameplay_core.get_entity(gameplay_eid))
-    local begin_x, begin_y = __calc_begin_xy(building_srt.t[1], building_srt.t[3], iprototype.rotate_area(typeobject.area, dir))
+    local begin_x, begin_y = __calc_begin_xy(math3d.index(building_srt.t, 1), math3d.index(building_srt.t, 3), iprototype.rotate_area(typeobject.area, dir))
 
     if e.fluidboxes then
         for _, classify in ipairs(FLUIDBOXES) do
@@ -187,9 +187,9 @@ function mt:on_position_change(building_srt, dir)
         return
     end
 
-    local delta = math3d.ref(math3d.sub(building_srt.t, self.position))
+    local delta = math3d.sub(building_srt.t, self.position)
     local obj = icanvas.get(icanvas.types().PICKUP_ICON)
-    obj:send("iom", "move_delta", delta)
+    obj:send("iom", "move_delta", math3d.live(delta))
     self.position = building_srt.t
 
     if dir ~= self.dir then

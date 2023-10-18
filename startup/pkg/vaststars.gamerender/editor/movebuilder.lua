@@ -35,6 +35,7 @@ local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_bo
 local create_selected_boxes = ecs.require "selected_boxes"
 local vsobject_manager = ecs.require "vsobject_manager"
 local igameplay = ecs.require "gameplay_system"
+local srt = require "utility.srt"
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -271,10 +272,10 @@ local function __new_entity(self, datamodel, typeobject)
         dir = dir,
         x = x,
         y = y,
-        srt = {
-            t = math3d.ref(math3d.vector(building_positon)),
+        srt = srt.new({
+            t = math3d.vector(building_positon),
             r = ROTATORS[dir],
-        },
+        }),
         group_id = 0,
     }
 
@@ -306,7 +307,7 @@ end
 local function __calc_grid_position(self, typeobject, dir)
     local _, originPosition = terrain:align(math3d.vector {0, 0, 0}, iprototype.rotate_area(typeobject.area, dir))
     local buildingPosition = terrain:get_position_by_coord(self.pickup_object.x, self.pickup_object.y, iprototype.rotate_area(typeobject.area, dir))
-    return math3d.ref(math3d.add(math3d.sub(buildingPosition, originPosition), GRID_POSITION_OFFSET))
+    return math3d.add(math3d.sub(buildingPosition, originPosition), GRID_POSITION_OFFSET)
 end
 
 local function new_entity(self, datamodel, typeobject)
@@ -352,7 +353,7 @@ local function __align(object)
         position = math3d.vector(terrain:get_position_by_coord(coord[1], coord[2], iprototype.rotate_area(typeobject.area, object.dir)))
     end
 
-    object.srt.t.v = math3d.vector(position)
+    object.srt.t = math3d.vector(position)
     return object, coord[1], coord[2]
 end
 

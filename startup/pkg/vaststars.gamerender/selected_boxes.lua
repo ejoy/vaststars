@@ -108,7 +108,7 @@ function mt:remove()
 end
 
 function mt:set_position(center)
-    self.center = center
+    self.center.v = center
     for idx, o in pairs(self.corners) do
         local position = math3d.live(math3d.muladd(CORNER_DIRECTIONS[idx], self.corner_offset, self.center))
         world:instance_message(o, "obj_motion", "set_position", position)
@@ -194,7 +194,7 @@ return function(prefabs, center, color, w, h)
         corner_offset = math3d.ref(math3d.vector(width / 2, 0, height / 2)),
         line_offset = math3d.ref(math3d.vector(w * 10 / 2, 0, h * 10 / 2)),
         lines = {},
-        center = center,
+        center = math3d.ref(math3d.vector(center)),
         color = math3d.ref(color),
         prefabs = prefabs,
         w = w,

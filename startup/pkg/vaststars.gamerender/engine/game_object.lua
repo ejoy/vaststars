@@ -152,7 +152,7 @@ end
 
 local function set_srt(e, srt)
     if srt.s then
-        iom.set_srt(e, srt.s, srt.r, srt.t)
+        iom.set_scale(e, srt.s)
     end
     if srt.r then
         iom.set_rotation(e, srt.r)

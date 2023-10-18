@@ -1,10 +1,14 @@
 local ecs   = ...
 local world = ecs.world
 local w     = world.w
-local iterrain          = ecs.require "terrain"
-local ipl               = ecs.require "ant.polyline|polyline"
-local LINE_COLOR <const> = {1.0, 0.0, 0.0, 0.7}--math3d.constant("v4", {1.0, 0.0, 0.0, 0.7})
+
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
+
+local math3d = require "math3d"
+local LINE_COLOR <const> = math3d.constant("v4", {1.0, 0.0, 0.0, 0.7})
+
+local iterrain = ecs.require "terrain"
+local ipl = ecs.require "ant.polyline|polyline"
 
 local M ={}
 local temp_lines
@@ -17,10 +21,10 @@ local function get_line(pole1, pole2)
     local pos1
     local pos2
     if pole1.position and pole1.smooth_pos then
-        pos1 = {pole1.position[1], pole1.position[2], pole1.position[3]}
+        pos1 = {math3d.index(pole1.position, 1), math3d.index(pole1.position, 2), math3d.index(pole1.position, 3)}
     end
     if pole2.position and pole2.smooth_pos then
-        pos2 = {pole2.position[1], pole2.position[2], pole2.position[3]}
+        pos2 = {math3d.index(pole2.position, 1), math3d.index(pole2.position, 2), math3d.index(pole2.position, 3)}
     end
     pos1 = pos1 or iterrain:get_position_by_coord(pole1.x, pole1.y, pole1.w, pole1.h)
     pos1[2] = pos1[2] + pole_height

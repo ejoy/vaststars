@@ -86,6 +86,8 @@ local function zoom(factor, x, y)
 end
 
 local function focus_on_position(position)
+    math3d.unmark(position)
+
     local ce <close> = world:entity(irq.main_camera())
     local p = icamera_controller.get_central_position()
     local delta = math3d.set_index(math3d.sub(position, p), 2, 0) -- the camera is always moving in the x/z axis and the y axis is always 0
@@ -203,7 +205,7 @@ local function __add_camera_track(s, r, t)
     while ratio <= 1.0 do
         poseresult:do_sample(animation.new_sampling_context(1), ani, ratio, 0)
         poseresult:fetch_result()
-        cam_motion_matrix_queue:push( math3d.ref(poseresult:joint(1)) )
+        cam_motion_matrix_queue:push( math3d.mark(poseresult:joint(1)) )
         ratio = ratio + step
     end
 end
@@ -234,6 +236,8 @@ local function __handle_camera_motion()
     if cam_motion_matrix_queue:size() > 0 then
         local mat = cam_motion_matrix_queue:pop()
         if mat then
+            math3d.unmark(mat)
+
             local ce <close> = world:entity(irq.main_camera())
             iom.set_srt(ce, math3d.srt(mat))
             world:pub {"dragdrop_camera"}
@@ -356,7 +360,7 @@ function icamera_controller.set_camera_from_prefab(prefab, callback)
 end
 
 function icamera_controller.focus_on_position(position, callback)
-    cam_cmd_queue:push {{"focus_on_position", position}}
+    cam_cmd_queue:push {{"focus_on_position", math3d.mark(position)}}
     if callback then
         cam_cmd_queue:push {{"callback", callback}}
     end

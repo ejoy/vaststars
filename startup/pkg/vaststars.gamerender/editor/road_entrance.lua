@@ -17,7 +17,7 @@ function mt:remove()
 end
 
 function mt:set_srt(s, r, t)
-    world:instance_message(self.arrow, "obj_motion", "set_srt", s, r, t)
+    world:instance_message(self.arrow, "obj_motion", "set_srt", math3d.live(s), math3d.live(r), math3d.live(t))
 end
 
 function mt:set_state(state)
