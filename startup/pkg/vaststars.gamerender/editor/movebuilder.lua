@@ -62,7 +62,7 @@ local function _get_road_entrance_position(typeobject, x, y, dir)
     if not succ then
         return
     end
-    return terrain:get_position_by_coord(neighbor_x, neighbor_y, 1, 1), neighbor_x, neighbor_y, conn.dir
+    return math3d.vector(terrain:get_position_by_coord(neighbor_x, neighbor_y, 1, 1)), neighbor_x, neighbor_y, conn.dir
 end
 
 local function __rotate_area(w, h, dir)
