@@ -114,7 +114,7 @@ local guide2 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..设置{/color:4bd0ff 仓库}收货{/g 碎石}、{/g 铁矿石}、{/g 铝矿石}、{/g 地质科技包}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..设置{/color:4bd0ff 新仓库}收货{/g 碎石}、{/g 铁矿石}、{/g 铝矿石}、{/g 地质科技包}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
@@ -143,6 +143,37 @@ local guide2 = {
         },
 	},
 
+    {
+        name = "",
+		narrative = {
+            {"哔哩..检查新{/color:4bd0ff 废墟}并拾取{/g 太阳能板}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            task = {
+                "太阳能板获取",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "仓库互转",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
+            {"哔哩..放置{/g 4个太阳能板}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            task = {
+                "太阳能板放置",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "太阳能板获取",
+        },
+	},
 }
 
 return guide2

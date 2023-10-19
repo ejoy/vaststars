@@ -88,7 +88,7 @@ local prototype = gameplay.register.prototype
         y = 128,
         w = 3.2,
         h = 3.2,
-        show_arrow = false,
+        show_arrow = true,
       },
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
@@ -96,7 +96,7 @@ local prototype = gameplay.register.prototype
         y = 132,
         w = 3.2,
         h = 3.2,
-        show_arrow = false,
+        show_arrow = true,
       },
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
@@ -104,7 +104,7 @@ local prototype = gameplay.register.prototype
         y = 138,
         w = 3.2,
         h = 3.2,
-        show_arrow = false,
+        show_arrow = true,
       },
       {
         camera_x = 113,
@@ -207,6 +207,36 @@ local prototype = gameplay.register.prototype
     task_params = {recipe = "地质科技包1"},
     count = 1,
     prerequisites = {"电力铺设"},
+    guide_focus = {
+      {
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        x = 124,
+        y = 130,
+        w = 3.2,
+        h = 3.2,
+        show_arrow = false,
+      },
+      {
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        x = 128,
+        y = 130,
+        w = 3.2,
+        h = 3.2,
+        show_arrow = false,
+      },
+      {
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        x = 132,
+        y = 130,
+        w = 3.2,
+        h = 3.2,
+        show_arrow = false,
+      },
+      {
+        camera_x = 128,
+        camera_y = 130,
+      },
+    },
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -266,11 +296,64 @@ local prototype = gameplay.register.prototype
         show_arrow = false,
       },
       {
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        x = 111,
+        y = 133,
+        w = 1.2,
+        h = 1.2,
+        show_arrow = false,
+      },
+      {
         camera_x = 128,
         camera_y = 132,
       },
     },
     sign_desc = {
       { desc = "向新仓库里放置10块铝矿石", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "太阳能板获取" {
+    desc = "建造太阳能板",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = { "task" },
+    task = {"unknown", 0, 9},
+    task_params = {building = "机头残骸", item = "太阳能板I"},
+    count = 4,
+    prerequisites = {"仓库互转"},
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    guide_focus = {
+      {
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        x = 141,
+        y = 137,
+        w = 2.2,
+        h = 2.2,
+        show_arrow = false,
+      },
+      {
+        camera_x = 141,
+        camera_y = 137,
+      },
+    },
+    sign_desc = {
+      { desc = "从废墟里获取4个太阳能板", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "太阳能板放置" {
+    desc = "放置太阳能板",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = {"task" },
+    task = {"select_entity", 0, "太阳能板I"},
+    count = 4,
+    prerequisites = {"太阳能板获取"},
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "放置4个太阳能板并确保连入电网", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }

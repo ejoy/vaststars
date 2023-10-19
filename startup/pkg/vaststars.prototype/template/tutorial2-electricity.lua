@@ -6,7 +6,7 @@ local entities = { {
     y = 123
   }, {
     dir = "N",
-    items = {{ "太阳能板I", 5 },{ "蓄电池I", 10 }},
+    items = {{ "太阳能板I", 4 },{ "蓄电池I", 10 }},
     prototype_name = "机头残骸",
     x = 140,
     y = 136
