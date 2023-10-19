@@ -334,7 +334,7 @@ function M:build_power_network(gw, exclude_eid)
     self:clear_all_temp_pole()
     local powerpole = {}
     local capacitance = {}
-    for v in gameplay_core.select("eid:in building:in road:absent capacitance?in REMOVED:absent") do
+    for v in gameplay_core.select("eid:in building:in road:absent capacitance?in accumulator?in generator?in REMOVED:absent") do
         if v.eid == exclude_eid then
             goto continue
         end
@@ -372,7 +372,7 @@ function M:build_power_network(gw, exclude_eid)
                 sd = typeobject.power_supply_distance,
                 power_network_link = typeobject.power_network_link,
                 --for filter
-                gen_power = typeobject.power,
+                gen_power = typeobject.power and (v.accumulator or v.generator),
             }
         end
         ::continue::
