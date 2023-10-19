@@ -24,19 +24,17 @@ local function register_debug()
 
     local COMMAND = {}
     COMMAND.ping = function(q)
-        q = q or {}
-        q.COMMAND = q
-        return q
+        return {COMMAND = q}
     end
 
-    COMMAND.mipmap = function()
-        world:pub {"game_debug", "mipmap"}
+	function S.send(what, ...)
+        world:pub {"game_debug", what, ...}
         return "SUCCESS"
     end
 
-	function S.debug(what, q)
-		local c = assert(COMMAND[what])
-		return c(q)
+    function S.call(what, ...)
+        local c = assert(COMMAND[what])
+		return c(what, ...)
 	end
 end
 

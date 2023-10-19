@@ -4,18 +4,14 @@ local w = world.w
 
 local iprototype = require "gameplay.interface.prototype"
 local objects = require "objects"
-local global = require "global"
-local icanvas = ecs.require "engine.canvas"
-local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
-local iterrain = ecs.require "terrain"
-local datalist = require "datalist"
-local fs = require "filesystem"
 local building_sys = ecs.system "building_system"
 local gameplay_core = require "gameplay.core"
 local ibuilding = {}
 local igameplay = ecs.require "gameplay_system"
 local gameplay = import_package "vaststars.gameplay"
 local igameplay_building = gameplay.interface "building"
+local itask = ecs.require "task"
+local ipower_check = ecs.require "power_check_system"
 
 local DIRECTION <const> = {
     N = 0,
@@ -54,6 +50,13 @@ function building_sys:gameworld_build()
             prototype = iprototype.queryById(e.building.prototype).name,
             direction = iprototype.dir_tostring(e.building.direction),
         }
+    end
+
+    for e in gameplay_world.ecs:select "building:in road:absent eid:in" do
+        if ipower_check.is_powered_on(gameplay_core.get_world(), e) then
+            local typeobject = iprototype.queryById(e.building.prototype)
+            itask.update_progress("power_check", typeobject.name, 1)
+        end
     end
 end
 

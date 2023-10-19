@@ -43,6 +43,7 @@ pipeline "gameworld_clean"
     .stage "gameworld_clean"
 
 pipeline "prototype"
+    .stage "prototype_prerestore"
     .stage "prototype_restore"
 
 import_feature "ant.animation"

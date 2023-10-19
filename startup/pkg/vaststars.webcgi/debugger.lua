@@ -33,7 +33,9 @@ local function debugstring(root)
 end
 
 function M.get(path, q)
-	local debug = ltask.call(ServiceGame, "debug", path, q)
+	local cmd, path = path:match "^([^/]+)/(.*)"
+	print(cmd, path)
+	local debug = ltask.call(ServiceGame, cmd, path, q)
 	return 200, debugstring(debug)
 end
 

@@ -115,14 +115,6 @@ function debug_sys:ui_update()
         if state.CTRL and key == "S" and press == 0 then
             export_startup()
         end
-
-        if state.CTRL and key == "M" and press == 0 then
-            idm.convert_to_debug_mipmap()
-        end
-
-        if state.CTRL and key == "N" and press == 0 then
-            idm.restore_to_origin_mipmap()
-        end
     end
 
     for _, _, v in gesture_tap_mb:unpack() do
@@ -177,6 +169,8 @@ function debug_sys:ui_update()
             else
                 idm.restore_to_origin_mipmap()
             end
+        else
+            log.info("unknown game_debug message: ", v)
         end
     end
 

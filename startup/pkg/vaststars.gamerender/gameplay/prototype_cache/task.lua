@@ -36,6 +36,10 @@ custom_type :
     task = {"unknown", 0, 9},
     task_params = {building = xx, item = xx, }
     count = xx
+10.power_check
+    task = {"unknown", 0, 10},
+    task_params = {building = xx, }
+    count = xx
 --]]
 local custom_type_mapping = {
     [0] = {s = "undef", check = function() end}, -- TODO
@@ -91,6 +95,11 @@ local custom_type_mapping = {
     end, },
     [9] = {s = "pickup_item", check = function(task_params, progress, building, item, count)
         if task_params.building == building and task_params.item == item then
+            return (progress or 0) + count
+        end
+    end, },
+    [10] = {s = "power_check", check = function(task_params, progress, building, count)
+        if task_params.building == building then
             return (progress or 0) + count
         end
     end, },
