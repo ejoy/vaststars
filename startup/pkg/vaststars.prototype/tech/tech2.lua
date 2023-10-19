@@ -101,7 +101,7 @@ local prototype = gameplay.register.prototype
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 107,
-        y = 138,
+        y = 137,
         w = 3.2,
         h = 3.2,
         show_arrow = true,
@@ -136,14 +136,14 @@ local prototype = gameplay.register.prototype
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 112,
-        y = 130,
+        y = 131,
         w = 3.2,
         h = 3.2,
         show_arrow = true,
       },
       {
         camera_x = 112,
-        camera_y = 130,
+        camera_y = 131,
       },
     },
     sign_desc = {
@@ -215,7 +215,7 @@ local prototype = gameplay.register.prototype
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 124,
-        y = 130,
+        y = 131,
         w = 3.0,
         h = 3.0,
         show_arrow = false,
@@ -223,7 +223,7 @@ local prototype = gameplay.register.prototype
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 128,
-        y = 130,
+        y = 131,
         w = 3.0,
         h = 3.0,
         show_arrow = false,
@@ -231,7 +231,7 @@ local prototype = gameplay.register.prototype
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 132,
-        y = 130,
+        y = 131,
         w = 3.0,
         h = 3.0,
         show_arrow = false,
@@ -264,7 +264,7 @@ local prototype = gameplay.register.prototype
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 128,
-        y = 132,
+        y = 133,
         w = 1.2,
         h = 1.2,
         show_arrow = true,
@@ -294,7 +294,7 @@ local prototype = gameplay.register.prototype
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 128,
-        y = 132,
+        y = 133,
         w = 1.2,
         h = 1.2,
         show_arrow = false,

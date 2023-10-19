@@ -39,68 +39,68 @@ local entities = { {
     items = {},
     prototype_name = "无人机平台I",
     x = 113,
-    y = 133
+    y = 135
   },{
     dir = "N",
     items = {},
     prototype_name = "组装机I",
     x = 123,
-    y = 129
+    y = 130
   },{
     dir = "N",
     items = {},
     prototype_name = "组装机I",
     x = 127,
-    y = 129
+    y = 130
   },{
     dir = "N",
     items = {},
     prototype_name = "组装机I",
     x = 131,
-    y = 129
+    y = 130
   },{
     dir = "N",
     items = {},
     prototype_name = "无人机平台I",
     x = 126,
-    y = 132
+    y = 133
   },{
     dir = "N",
     items = {},
     prototype_name = "无人机平台I",
     x = 127,
-    y = 132
+    y = 133
   },{
     dir = "N",
     items = {},
     prototype_name = "仓库I",
     x = 128,
-    y = 132
+    y = 133
   },{
     dir = "N",
     items = {},
     prototype_name = "无人机平台I",
     x = 129,
-    y = 132
+    y = 133
   },{
     dir = "N",
     items = {},
     prototype_name = "无人机平台I",
     x = 130,
-    y = 132
+    y = 133
   },{
     dir = "N",
     items = {},
     prototype_name = "科研中心I",
     x = 127,
-    y = 134
+    y = 135
   },}
 local road = {}
 
 local mineral = {
   ["115,131"] = "碎石",
   ["105,127"] = "铁矿石",
-  ["106,137"] = "铝矿石",
+  ["106,136"] = "铝矿石",
 }
 
 return {
