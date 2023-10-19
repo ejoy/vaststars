@@ -50,7 +50,7 @@ end
 
 function ipower_check.is_powered_on(world, e)
     world.ecs:extend(e, "consumer?in generator?in accumulator?in capacitance?in")
-    if not e.capacitance and not e.generator and not e.accumulator and not e.capacitance then
+    if not e.capacitance and not e.generator and not e.accumulator then
         return false
     end
 
