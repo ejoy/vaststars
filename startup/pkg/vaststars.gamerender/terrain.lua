@@ -272,6 +272,24 @@ function terrain:get_coord_by_position(position)
     return _get_coord_by_position(position)
 end
 
+function terrain:group_indices(gid)
+    local gx0, gy0 = gid // GRID_WIDTH, gid % GRID_HEIGHT
+    local indices = {}
+
+    local offset0 = (gy0 * GRID_HEIGHT) * WIDTH + gx0 * GRID_WIDTH
+    for ih=1, GRID_HEIGHT do
+        local y = (ih-1) * WIDTH
+        for iw=1, GRID_WIDTH do
+            indices[#indices+1] = offset0 + y + (iw-1)   --base0
+        end
+    end
+    return indices
+end
+
+function terrain:grid_size()
+    return GRID_WIDTH, GRID_HEIGHT
+end
+
 --base 0
 function terrain:idx2coord(idx)
     return (idx % WIDTH), (idx // WIDTH)
