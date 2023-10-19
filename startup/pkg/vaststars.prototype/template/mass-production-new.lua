@@ -610,7 +610,7 @@ local entities = { {
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 127,
+    x = 129,
     y = 116
   }, {
     dir = "N",
@@ -2639,7 +2639,7 @@ local entities = { {
   }, {
     dir = "N",
     prototype_name = "铁制电线杆",
-    x = 135,
+    x = 136,
     y = 116
   }, {
     dir = "N",
