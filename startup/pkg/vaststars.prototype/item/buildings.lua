@@ -411,7 +411,7 @@ prototype "风力发电机I" {
     item_description = "利用风能转换电能的装置",
 }
 
-prototype "旧风力发电机" {
+prototype "轻型风力发电机" {
     type = {"item"},
     item_category = "物流",
     station_limit = 8,
@@ -604,6 +604,18 @@ prototype "太阳能板II" {
 }
 
 prototype "太阳能板III" {
+    type = {"item"},
+    item_category = "物流",
+    station_limit = 8,
+    hub_limit = 15,
+    backpack_limit = 20,
+    item_order = 24,
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/solar-panel.texture",
+    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_description = "利用太阳能产生光电效应发电的装置",
+}
+
+prototype "轻型太阳能板" {
     type = {"item"},
     item_category = "物流",
     station_limit = 8,

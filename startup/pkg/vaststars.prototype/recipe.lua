@@ -2454,6 +2454,22 @@ prototype "维修太阳能板" {
     description = "修复破损的太阳能板",
 }
 
+prototype "轻型太阳能板" {
+    type = { "recipe" },
+    recipe_craft_category = "生产手工制造",
+    recipe_category =  "加工",
+    recipe_order =  65,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/solar-panel-design.texture",
+    ingredients = {
+        {"石砖", 5},
+    },
+    results = {
+        {"轻型太阳能板", 1},
+    },
+    time = "6s",
+    description = "修复破损的太阳能板",
+}
+
 prototype "维修蒸馏厂" {
     type = { "recipe" },
     recipe_craft_category = "建筑打印",

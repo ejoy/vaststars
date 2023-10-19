@@ -120,13 +120,13 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "风力发电机放置" {
-    desc = "放置1座旧风力发电机",
+    desc = "放置1座轻型风力发电机",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = {"task" },
     task = {"unknown", 0, 10},
     task_params = {building = "采矿机I"},
     count = 3,
-    -- task = {"select_entity", 0, "旧风力发电机"},
+    -- task = {"select_entity", 0, "轻型风力发电机"},
     -- count = 1,
     prerequisites = {"矿区搭建"},
     tips_pic = {
@@ -147,7 +147,7 @@ local prototype = gameplay.register.prototype
       },
     },
     sign_desc = {
-      { desc = "放置1座旧风力发电机供电给矿区的无人机平台", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "放置1座轻型风力发电机供电给矿区的无人机平台", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -322,7 +322,7 @@ local prototype = gameplay.register.prototype
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"unknown", 0, 9},
-    task_params = {building = "机头残骸", item = "太阳能板I"},
+    task_params = {building = "机头残骸", item = "轻型太阳能板"},
     count = 4,
     prerequisites = {"仓库互转"},
     tips_pic = {
@@ -347,11 +347,12 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "太阳能板放置" {
-    desc = "放置太阳能板",
+  prototype "太阳能发电" {
+    desc = "将太阳能板接入电网",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = {"task" },
-    task = {"select_entity", 0, "太阳能板I"},
+    task = {"unknown", 0, 10},
+    task_params = {building = "轻型太阳能板"},
     count = 4,
     prerequisites = {"太阳能板获取"},
     tips_pic = {
@@ -360,4 +361,20 @@ local prototype = gameplay.register.prototype
     sign_desc = {
       { desc = "放置4个太阳能板并确保连入电网", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
+  }
+
+  prototype "太阳能制造技术" {
+    desc = "研究生产太阳能板工艺",
+    type = { "tech" },
+    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
+    effects = {
+      unlock_item = {"轻型太阳能板","石砖"},
+      unlock_recipe = {"轻型太阳能板","石砖"},
+    },
+    prerequisites = {"太阳能1"},
+    ingredients = {
+      {"地质科技包", 1},
+    },
+    count = 5,
+    time = "6s"
   }
