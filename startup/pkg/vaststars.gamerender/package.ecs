@@ -37,6 +37,7 @@ pipeline "gameworld_prebuild"
     .stage "gameworld_prebuild"
 
 pipeline "gameworld_build"
+    .stage "gameworld_beforebuild"
     .stage "gameworld_build"
 
 pipeline "gameworld_clean"

@@ -29,7 +29,7 @@ local function updateStatus(ecs)
     end
 end
 
-function power_check_sys:gameworld_build()
+function power_check_sys:gameworld_beforebuild()
     local gameplay_world = gameplay_core.get_world()
     local ecs = gameplay_world.ecs
     updateStatus(ecs)
