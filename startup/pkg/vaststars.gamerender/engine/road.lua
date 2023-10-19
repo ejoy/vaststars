@@ -4,11 +4,11 @@ local iroad     = ecs.require "ant.landform|road"
 local terrain   = ecs.require "terrain"
 
 local RENDER_LAYER <const> = ecs.require "engine.render_layer".RENDER_LAYER
-
+local CONST<const>  = ecs.require "gameplay.interface.constant"
+local ROAD_HEIGHT<const> = CONST.ROAD_HEIGHT
 local function convertTileToWorld(x, y)
-    local _, height = iroad.get_road_size()
     local pos = terrain:get_begin_position_by_coord(x, y, 1, 1)
-    return pos[1], pos[3] - height
+    return pos[1], pos[3] - ROAD_HEIGHT
 end
 
 local road = {}
@@ -48,11 +48,14 @@ end
 local function new_groups()
     return setmetatable({}, {__index=function (tt, gid) local t = {}; tt[gid] = t; return t end})
 end
+function road:init()
+    iroad.create(CONST.ROAD_WIDTH, CONST.ROAD_HEIGHT)
+end
 
 -- map = {{x, y, state, shape, dir}, ...}
-function road:update(map, layername)
+function road:update(roads, layername)
     local groups = new_groups()
-    for _, v in ipairs(map) do
+    for _, v in ipairs(roads) do
         local x, y, state, shape, dir = table.unpack(v)
         add_road(groups, x, y, state, shape, dir, layername)
     end

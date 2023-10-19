@@ -34,20 +34,19 @@ local function __unpack(coord)
     return coord & 0xFF, coord >> 8
 end
 ---------------------------------------------------------
-
-local LAYER_NAMES <const> = {"road", "indicator"}
 function roadnet:create()
+    iroad:init()
     iterrain.gen_terrain_field(CONSTANT.MAP_WIDTH, CONSTANT.MAP_HEIGHT, CONSTANT.MAP_OFFSET, CONSTANT.TILE_SIZE, RENDER_LAYER.TERRAIN)
 end
 
 -- map = {coord = {x, y, shape_type, shape, dir}, ...}
 function roadnet:init(map)
-    local res = {}
+    local roads = {}
     for coord, v in pairs(map) do
         local x, y = __unpack(coord)
-        res[#res + 1] = {x, y, v[3], v[4], v[5]}
+        roads[#roads + 1] = {x, y, v[3], v[4], v[5]}
     end
-    iroad:init("road", res)
+    iroad:update(roads, "road")
 end
 
 function roadnet:clear(layer_name)

@@ -10,6 +10,9 @@ local iom = ecs.require "ant.objcontroller|obj_motion"
 local iroad = ecs.require "engine.road"
 local CONSTANT = ecs.require "gameplay.interface.constant"
 
+local icamera_controller = ecs.require "engine.system.camera_controller"
+local mc = import_package "ant.math".constant
+
 local ROW_SPACING, COL_SPACING = 3, 3 -- unit per tile
 local RENDER_LAYER <const> = ecs.require "engine.render_layer".RENDER_LAYER
 
@@ -39,12 +42,14 @@ local SHAPE_DIRECTIONS<const> = {"N", "E", "S", "W"}
 local ROAD_STATES<const> = {"valid", "invalid"}
 local INDICATOR_STATES<const> = {"normal", "remove", "modify"}
 
+local START_X<const>, START_Y<const> = 118, 118
+
 local function create_road()
     local t = {}
-    local x, y = 0, 0
+    local x, y = START_X, START_Y
     for _, shape in ipairs(SHAPE_TYPES) do
         y = y + ROW_SPACING
-        x = 0
+        x = START_X
         for _, state in ipairs(ROAD_STATES) do
             for _, dir in ipairs(SHAPE_DIRECTIONS) do
                 t[#t+1] = {
@@ -64,10 +69,10 @@ end
 
 local function create_mark()
     local t = {}
-    local x, y = 0, 0
+    local x, y = START_X, START_Y
     for _, shape in ipairs(SHAPE_TYPES) do
         y = y + ROW_SPACING
-        x = 0
+        x = START_X
         for _, state in ipairs(INDICATOR_STATES) do
             for _, dir in ipairs(SHAPE_DIRECTIONS) do
                 t[#t+1] = {x, y, state, shape, dir}
@@ -80,10 +85,10 @@ end
 
 local function create_road_mark()
     local go = iroad:group_obj()
-    local x, y = 0, 0
+    local x, y = START_X, START_Y
     for _, shape in ipairs(SHAPE_TYPES) do
         y = y + ROW_SPACING
-        x = 0
+        x = START_X
 
         for _, dir in ipairs(SHAPE_DIRECTIONS) do
             for _, rstate in ipairs(ROAD_STATES) do
@@ -100,6 +105,14 @@ local function create_road_mark()
     go:commit()
 end
 
+local function move_camera()
+    -- icamera_controller.set_camera_srt(
+    --     mc.ONE,
+    --     math3d.ref(math3d.quaternion(0.70710676908493,0.0,0.0,0.70710676908493)),
+    --     math3d.ref(math3d.vector(168.09506225586,349.99993896484,117.53267669678,0.0))
+    -- )
+end
+
 function debug_road_sys:init_world()
     -- world:create_instance{
     --     prefab = "/pkg/ant.resources.binary/meshes/base/cube.glb|mesh.prefab",
@@ -111,25 +124,16 @@ function debug_road_sys:init_world()
     --     end
     -- }
 
-    local rhwi = import_package "ant.hwi"
-    rhwi.set_debug {}
+    -- local rhwi = import_package "ant.hwi"
+    -- rhwi.set_debug {}
 
-    local iterrain  = ecs.require "ant.landform|terrain_system"
-    iterrain.gen_terrain_field(CONSTANT.MAP_WIDTH, CONSTANT.MAP_HEIGHT, CONSTANT.MAP_OFFSET, CONSTANT.TILE_SIZE, RENDER_LAYER.TERRAIN)
+    -- local iterrain  = ecs.require "ant.landform|terrain_system"
+    -- iterrain.gen_terrain_field(CONSTANT.MAP_WIDTH, CONSTANT.MAP_HEIGHT, CONSTANT.MAP_OFFSET, CONSTANT.TILE_SIZE, RENDER_LAYER.TERRAIN)
+    iroad:init()
 end
 
 function debug_road_sys:ui_update()
     for _, key, press in kb_mb:unpack() do
-        local mc = import_package "ant.math".constant
-        local icamera_controller = ecs.require "engine.system.camera_controller"
-        local function move_camera()
-            icamera_controller.set_camera_srt(
-                mc.ONE,
-                math3d.ref(math3d.quaternion(0.70710676908493,0.0,0.0,0.70710676908493)),
-                math3d.ref(math3d.vector(168.09506225586,349.99993896484,117.53267669678,0.0))
-            )
-        end
-
         if key == "T" and press == 0 then
             move_camera()
             create_road()
