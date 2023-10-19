@@ -8,7 +8,7 @@ local tconcat = table.concat
 local tinsert = table.insert
 local srep = string.rep
 
-local function infostring(root)
+local function debugstring(root)
 	if type(root) ~= "table" then
 		return tostring(root)
 	end
@@ -33,8 +33,8 @@ local function infostring(root)
 end
 
 function M.get(path, q)
-	local info = ltask.call(ServiceGame, "info", path, q)
-	return 200, infostring(info)
+	local debug = ltask.call(ServiceGame, "debug", path, q)
+	return 200, debugstring(debug)
 end
 
 return M

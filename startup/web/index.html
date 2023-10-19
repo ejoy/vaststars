@@ -8,12 +8,26 @@
  <li><a href="vfs">Virtual File System</a>
  <li><a href="log">Log Directory</a>
  <li><a href="app">App Directory</a>
- <li><a href="info/ping">Ping Info</a>
+ <li><a href="debug/ping">Ping Info</a>
+ <li><a id = "debug_mipmap" href="#">Debug Mipmap</a>
  <li><a href="texture">texture</a>
 </ul>
 <form id="upload-form" action="upload" method="post" enctype="multipart/form-data" >
 　　　<input type="file" id="upload" name="upload" /> <br />
 　　　<input type="submit" value="Upload" />
 </form>
+<script>
+    document.getElementById("debug_mipmap").addEventListener("click", function(event) {
+        event.preventDefault();
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "debug/mipmap", true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                console.log(xhr.responseText);
+            }
+        };
+        xhr.send();
+    });
+</script>
  </body>
 </html>

@@ -19,13 +19,24 @@ bgfx.maxfps(FRAMES_PER_SECOND)
 font.import "/pkg/vaststars.resources/ui/font/Alibaba-PuHuiTi-Regular.ttf"
 
 -- todo: more info
-local function register_info()
+local function register_debug()
 	local S = ltask.dispatch()
 
-	function S.info(what, q)
-		q = q or {}
-		q.COMMAND = what
-		return q
+    local COMMAND = {}
+    COMMAND.ping = function(q)
+        q = q or {}
+        q.COMMAND = q
+        return q
+    end
+
+    COMMAND.mipmap = function()
+        world:pub {"game_debug", "mipmap"}
+        return "SUCCESS"
+    end
+
+	function S.debug(what, q)
+		local c = assert(COMMAND[what])
+		return c(q)
 	end
 end
 
@@ -33,12 +44,12 @@ local function start_web()
     if not __ANT_RUNTIME__ then
 		return
 	end
-	register_info()
+	register_debug()
 	local web = ltask.uniqueservice "ant.webserver|webserver"
 	ltask.call(web, "start", {
 		port = 9000,
 		cgi = {
-			info = "vaststars.webcgi|info",
+			debug = "vaststars.webcgi|debug",
 			upload = "vaststars.webcgi|upload",
 			texture = "vaststars.webcgi|texture",
 		},

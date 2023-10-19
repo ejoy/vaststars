@@ -17,6 +17,8 @@ local terrain = ecs.require "terrain"
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local iprototype = require "gameplay.interface.prototype"
 local idm = ecs.require "ant.debug|debug_mipmap"
+local game_debug_mb = world:sub{"game_debug"}
+local debug_mipmap = false
 
 local function __get_capacitance(eid)
     local e = gameplay_core.get_entity(eid)
@@ -163,6 +165,17 @@ function debug_sys:ui_update()
                         __get_capacitance(gameplay_eid).delta,
                         __get_detail_str(gameplay_eid)
                     ))
+            end
+        end
+    end
+
+    for _, v in game_debug_mb:unpack() do
+        if v == "mipmap" then
+            debug_mipmap = not debug_mipmap
+            if debug_mipmap then
+                idm.convert_to_debug_mipmap()
+            else
+                idm.restore_to_origin_mipmap()
             end
         end
     end

@@ -1,5 +1,5 @@
 return {
-	info = require "info",
+	debug = require "debugger",
 	upload = require "upload",
 	texture = require "texture",
 }
