@@ -4,6 +4,7 @@ local w = world.w
 
 local NOTHING <const> = require "debugger".nothing
 local TERRAIN_ONLY <const> = require "debugger".terrain_only
+local DISABLE_AUDIO <const> = require "debugger".disable_audio
 local CONSTANT <const> = require("gameplay.interface.constant")
 
 local icamera_controller = ecs.require "engine.system.camera_controller"
@@ -75,7 +76,9 @@ function m:init_world()
     }
 
     -- audio.play("event:/openui1")
-    audio.play("event:/background")
+    if not DISABLE_AUDIO then
+        audio.play("event:/background")
+    end
 
     local args = global.startup_args
     if args[1] == "new_game" then

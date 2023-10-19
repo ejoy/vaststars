@@ -11,6 +11,7 @@ local font = import_package "ant.font"
 local iui = ecs.require "engine.system.ui_system"
 local NOTHING <const> = require "debugger".nothing
 local TERRAIN_ONLY <const> = require "debugger".terrain_only
+local DISABLE_AUDIO <const> = require "debugger".disable_audio
 local ltask = require "ltask"
 
 local m = ecs.system 'init_system'
@@ -86,7 +87,9 @@ function m:init_world()
         "/pkg/vaststars.resources/sounds/UI.bank",
     }
 
-    audio.play("event:/background")
+    if not DISABLE_AUDIO then
+        audio.play("event:/background")
+    end
 
     --
     icamera_controller.set_camera_from_prefab("camera_gamecover.prefab")
