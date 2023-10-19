@@ -371,7 +371,7 @@ local prototype = gameplay.register.prototype
       unlock_item = {"轻型太阳能板","石砖"},
       unlock_recipe = {"轻型太阳能板","石砖"},
     },
-    prerequisites = {"太阳能1"},
+    prerequisites = {"太阳能发电"},
     ingredients = {
       {"地质科技包", 1},
     },
