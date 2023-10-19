@@ -131,7 +131,7 @@ local guide2 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..往{/color:4bd0ff 新仓库}转放{/g 10个铝矿石}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..往{/color:4bd0ff 新仓库}转放{/color:4bd0ff 10个}{/g 铝矿石}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
@@ -163,7 +163,7 @@ local guide2 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..放置{/g 4个轻型太阳能板}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..放置{/color:4bd0ff 4个}{/g 轻型太阳能板}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {

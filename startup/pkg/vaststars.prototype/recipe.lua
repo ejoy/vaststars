@@ -2461,12 +2461,12 @@ prototype "轻型太阳能板" {
     recipe_order =  65,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/solar-panel-design.texture",
     ingredients = {
-        {"石砖", 5},
+        {"石砖", 4},
     },
     results = {
         {"轻型太阳能板", 1},
     },
-    time = "6s",
+    time = "3s",
     description = "修复破损的太阳能板",
 }
 

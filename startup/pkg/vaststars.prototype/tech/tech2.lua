@@ -376,5 +376,5 @@ local prototype = gameplay.register.prototype
       {"地质科技包", 1},
     },
     count = 5,
-    time = "6s"
+    time = "3s"
   }
