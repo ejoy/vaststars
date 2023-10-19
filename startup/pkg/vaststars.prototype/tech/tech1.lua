@@ -35,13 +35,16 @@ local prototype = gameplay.register.prototype
   -- task_params = {building = xx, item = xx, }
   -- count = xx
 
+  -- task = {"unknown", 0, 10},
+  -- task_params = {building = xx, }
+  -- count = xx
+
   prototype "采矿教学" {
     desc = "学习如何在游戏中采矿",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"unknown", 0, 4},
     effects = {
-      -- unlock_recipe = {"采矿机打印"},
     },
     prerequisites = {},
     count = 1,

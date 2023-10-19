@@ -38,6 +38,10 @@ local prototype = gameplay.register.prototype
   -- task_params = {building = xx, item = xx, }
   -- count = xx
 
+  -- task = {"unknown", 0, 10},
+  -- task_params = {building = xx, }
+  -- count = xx
+
   prototype "迫降火星" {
     desc = "迫降火星",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",

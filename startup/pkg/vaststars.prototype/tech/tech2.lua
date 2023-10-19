@@ -184,9 +184,10 @@ local prototype = gameplay.register.prototype
     desc = "使得3台组装机通电",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = {"task" },
-    task = {"select_entity", 0, "铁制电线杆"},
-    prerequisites = {"收集矿石"},
+    task = {"unknown", 0, 10},
+    task_params = {building = "组装机I"},
     count = 3,
+    prerequisites = {"收集矿石"},
     effects = {
       unlock_item = {"地质科技包"},
       unlock_recipe = {"地质科技包1"},
