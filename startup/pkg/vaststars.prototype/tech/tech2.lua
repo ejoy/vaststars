@@ -189,7 +189,7 @@ local prototype = gameplay.register.prototype
     type = {"task" },
     task = {"unknown", 0, 10},
     task_params = {building = "组装机I"},
-    count = 3,
+    count = 2,
     prerequisites = {"收集矿石"},
     effects = {
       unlock_item = {"地质科技包"},
@@ -215,14 +215,6 @@ local prototype = gameplay.register.prototype
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 124,
-        y = 131,
-        w = 3.0,
-        h = 3.0,
-        show_arrow = false,
-      },
-      {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-        x = 128,
         y = 131,
         w = 3.0,
         h = 3.0,
@@ -368,8 +360,8 @@ local prototype = gameplay.register.prototype
     type = { "tech" },
     icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
     effects = {
-      unlock_item = {"轻型太阳能板","石砖"},
-      unlock_recipe = {"轻型太阳能板","石砖"},
+      unlock_item = {"轻型太阳能板","铁板"},
+      unlock_recipe = {"轻型太阳能板","铁板1"},
     },
     prerequisites = {"太阳能发电"},
     ingredients = {

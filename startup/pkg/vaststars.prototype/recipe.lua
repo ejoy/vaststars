@@ -2461,7 +2461,7 @@ prototype "轻型太阳能板" {
     recipe_order =  65,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/solar-panel-design.texture",
     ingredients = {
-        {"石砖", 4},
+        {"铁板", 4},
     },
     results = {
         {"轻型太阳能板", 1},

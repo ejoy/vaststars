@@ -54,7 +54,7 @@ local guide1 = {
         },
         narrative_end = {
             task = {
-                "电网搭建",
+                "采矿机通电",
             },
             guide_progress = 10,
         },
@@ -76,7 +76,7 @@ local guide1 = {
             guide_progress = 10,
         },
         prerequisites = {
-            "电网搭建",
+            "采矿机通电",
         },
 	},
 

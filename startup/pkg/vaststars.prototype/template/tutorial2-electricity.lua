@@ -49,7 +49,7 @@ local entities = { {
   },{
     dir = "N",
     items = {},
-    prototype_name = "组装机I",
+    prototype_name = "熔炼炉I",
     x = 127,
     y = 130
   },{
