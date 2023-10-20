@@ -1,5 +1,6 @@
 require "tech.tech1"
 require "tech.tech2"
+require "tech.tech3"
 
 local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype
