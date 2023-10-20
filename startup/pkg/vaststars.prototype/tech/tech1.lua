@@ -35,7 +35,7 @@ local prototype = gameplay.register.prototype
   -- task_params = {building = xx, item = xx, }
   -- count = xx
 
-  -- task = {"unknown", 0, 10},
+  -- task = {"unknown", 0, 10},           x个建筑处于通电状态
   -- task_params = {building = xx, }
   -- count = xx
 

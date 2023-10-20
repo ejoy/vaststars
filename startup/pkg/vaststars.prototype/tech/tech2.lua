@@ -371,13 +371,28 @@ local prototype = gameplay.register.prototype
     time = "5s"
   }
 
+  prototype "更多仓库" {
+    desc = "放置更多的仓库用于存储物资",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = {"task" },
+    task = {"select_entity", 0, "仓库I"}, 
+    count = 3,
+    prerequisites = {"太阳能制造技术"},
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "在熔炼炉边放置第3个仓库存储物资", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
   prototype "铁板生产" {
     desc = "规模生产铁板",
     type = { "task" },
     icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
     task = {"stat_production", 0, "铁板"},
     count = 5,
-    prerequisites = {"太阳能制造技术"},
+    prerequisites = {"更多仓库"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -419,7 +434,7 @@ local prototype = gameplay.register.prototype
     desc = "铺设发电设施让基地供电充足",
     type = { "task" },
     icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
-    task = {"power_generator", 3},  
+    task = {"power_generator", 3},
     count = 1500,
     prerequisites = {"太阳能板制造"},
     tips_pic = {
