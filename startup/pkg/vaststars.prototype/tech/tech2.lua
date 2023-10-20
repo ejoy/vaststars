@@ -310,7 +310,7 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "太阳能板获取" {
-    desc = "建造太阳能板",
+    desc = "检查废墟获取资源",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"unknown", 0, 9},
@@ -340,7 +340,7 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "太阳能发电" {
-    desc = "将太阳能板接入电网",
+    desc = "太阳能板接入电网",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = {"task" },
     task = {"unknown", 0, 10},
@@ -367,6 +367,65 @@ local prototype = gameplay.register.prototype
     ingredients = {
       {"地质科技包", 1},
     },
+    count = 3,
+    time = "5s"
+  }
+
+  prototype "铁板生产" {
+    desc = "规模生产铁板",
+    type = { "task" },
+    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
+    task = {"stat_production", 0, "铁板"},
     count = 5,
-    time = "3s"
+    prerequisites = {"太阳能制造技术"},
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    guide_focus = {
+      {
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        x = 128,
+        y = 131,
+        w = 3.0,
+        h = 3.0,
+        show_arrow = true,
+      },
+      {
+        camera_x = 128,
+        camera_y = 131,
+      },
+    },
+    sign_desc = {
+      { desc = "使用熔炼炉生产5个铁板", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "太阳能板制造" {
+    desc = "制造轻型太阳能板",
+    type = { "task" },
+    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
+    task = {"stat_production", 0, "轻型太阳能板"},
+    count = 2,
+    prerequisites = {"铁板生产"},
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "使用组装机生产2个轻型太阳能板", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "基地发电" {
+    desc = "铺设发电设施让基地供电充足",
+    type = { "task" },
+    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
+    task = {"power_generator", 3},  
+    count = 1500,
+    prerequisites = {"太阳能板制造"},
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "铺设太阳能板让基地发电量达到1500kW", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
   }
