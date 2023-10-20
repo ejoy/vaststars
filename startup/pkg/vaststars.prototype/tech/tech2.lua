@@ -315,7 +315,7 @@ local prototype = gameplay.register.prototype
     type = { "task" },
     task = {"unknown", 0, 9},
     task_params = {building = "机头残骸", item = "轻型太阳能板"},
-    count = 4,
+    count = 2,
     prerequisites = {"仓库互转"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -335,7 +335,7 @@ local prototype = gameplay.register.prototype
       },
     },
     sign_desc = {
-      { desc = "从废墟里获取4个太阳能板", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "从废墟里获取2个太阳能板", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -345,15 +345,31 @@ local prototype = gameplay.register.prototype
     type = {"task" },
     task = {"unknown", 0, 10},
     task_params = {building = "轻型太阳能板"},
-    count = 4,
+    count = 2,
     prerequisites = {"太阳能板获取"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "放置4个太阳能板并确保连入电网", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "放置2个轻型太阳能板并确保连入电网", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
+
+  -- prototype "蓄电池铺设" {
+  --   desc = "蓄电池接入电网",
+  --   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+  --   type = {"task" },
+  --   task = {"unknown", 0, 10},
+  --   task_params = {building = "蓄电池I"},
+  --   count = 4,
+  --   prerequisites = {"太阳能板获取"},
+  --   tips_pic = {
+  --     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "放置4个蓄电池并确保连入电网", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+  --   },
+  -- }
 
   prototype "太阳能制造技术" {
     desc = "研究生产太阳能板工艺",
@@ -403,7 +419,7 @@ local prototype = gameplay.register.prototype
         y = 131,
         w = 3.0,
         h = 3.0,
-        show_arrow = true,
+        show_arrow = false,
       },
       {
         camera_x = 128,
@@ -442,5 +458,85 @@ local prototype = gameplay.register.prototype
     },
     sign_desc = {
       { desc = "铺设太阳能板让基地发电量达到1500kW", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "发电机获取" {
+    desc = "检查废墟获取资源",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = { "task" },
+    task = {"unknown", 0, 9},
+    task_params = {building = "机尾残骸", item = "蒸汽发电机I"},
+    count = 1,
+    prerequisites = {"基地发电"},
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    guide_focus = {
+      {
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        x = 130,
+        y = 115,
+        w = 3.1,
+        h = 3.1,
+        show_arrow = false,
+      },
+      {
+        camera_x = 130,
+        camera_y = 115,
+      },
+    },
+    sign_desc = {
+      { desc = "从废墟里获取4个太阳能板", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "锅炉放置" {
+    desc = "放置锅炉",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = {"task" },
+    task = {"select_entity", 0, "锅炉I"},
+    count = 1,
+    effects = {
+      unlock_recipe = {"卤水沸腾"},
+    },
+    prerequisites = {"发电机获取"},
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "放置1座锅炉", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "地下水挖掘机放置" {
+    desc = "放置地下水挖掘机",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = {"task" },
+    task = {"unknown", 0, 10},
+    task_params = {building = "地下水挖掘机I"},
+    count = 1,
+    prerequisites = {"锅炉放置"},
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "放置1台地下水挖掘机并确保连入电网", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "发电机放置" {
+    desc = "放置蒸汽发电机",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = {"task" },
+    task = {"unknown", 0, 10},
+    task_params = {building = "蒸汽发电机I"},
+    count = 1,
+    prerequisites = {"地下水挖掘机放置"},
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "放置2台蒸汽发电机I并确保连入电网", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
