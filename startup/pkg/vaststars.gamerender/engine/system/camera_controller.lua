@@ -133,7 +133,7 @@ local function get_dst_pos(snum, p, v, src_r, src_t, dst_r, xzpoint, dis)
         if i == snum then t = 1 end
         local cur_dst_r = math3d.slerp(src_r, dst_r, t)
         local cur_dst_t = get_dst_r_t_sample(p, v, cur_src_r, cur_src_t, cur_dst_r, xzpoint, delta_distance)
-        dst_table[#dst_table+1] = {s = mc.ONE, r = cur_dst_r, t = cur_dst_t}
+        dst_table[#dst_table+1] = math3d.mark(math3d.matrix{r = cur_dst_r, t = cur_dst_t})
         cur_src_r, cur_src_t = cur_dst_r, cur_dst_t
     end
     return dst_table
@@ -141,9 +141,21 @@ end
 
 local xzpoint, viewmat, projmat, dst_r, dst_t, delta_distance, sample_num
 
-local function toggle_view(v, xzpos, snum, dis)
+local function toggle_view(v, xzpos, snum)
 
-    local function adjust_camera_rt(target_rot)
+    local function get_delta_distance(src_r, src_t, dst_r, dst_t, xzpoint)
+        local src_dir = math3d.inverse(math3d.todirection(src_r))
+        local src_plane = math3d.plane(xzpoint, src_dir)
+        local src_dis = math3d.dot(src_t, src_dir) - math3d.index(src_plane, 4)
+    
+        local dst_dir = math3d.inverse(math3d.todirection(dst_r))
+        local dst_plane = math3d.plane(xzpoint, dst_dir)
+        local dst_dis = math3d.dot(dst_t, dst_dir) - math3d.index(dst_plane, 4)
+        
+        return dst_dis - src_dis
+    end
+
+    local function adjust_camera_rt(target_rot, target_pos)
         math3d.unmark(xzpos)
 
         local ce <close> = world:entity(irq.main_camera(), "camera:in scene:in")
@@ -151,6 +163,8 @@ local function toggle_view(v, xzpos, snum, dis)
 
         local src_r, src_t = ce.scene.r, ce.scene.t
         dst_r, xzpoint, viewmat, projmat = target_rot, math3d.mark(xzpos), ce.camera.viewmat, math3d.mark(ce.camera.projmat)
+        delta_distance = get_delta_distance(src_r, src_t, target_rot, target_pos, xzpoint)
+
         local dst_table = get_dst_pos(sample_num, projmat, viewmat, src_r, src_t, dst_r, xzpoint, delta_distance)
         dst_t = dst_table[#dst_table].t
         viewmat = math3d.mark(math3d.inverse(math3d.matrix{r=dst_r,t=dst_t}))
@@ -163,14 +177,13 @@ local function toggle_view(v, xzpos, snum, dis)
         return dst_table
     end
 
-    -- sample_num/delta_distance should be set
+    -- sample_num should be set
     sample_num = snum and snum or 20
-    delta_distance = dis and dis or -100
 
     if v == "construct" then
-        return adjust_camera_rt(CAMERA_CONSTRUCT_ROTATION)
+        return adjust_camera_rt(CAMERA_CONSTRUCT_ROTATION, CAMERA_CONSTRUCT_POSITION)
     elseif v == "pickup" then
-        return adjust_camera_rt(CAMERA_PICKUP_ROTATION)
+        return adjust_camera_rt(CAMERA_PICKUP_ROTATION, CAMERA_PICKUP_POSITION)
     elseif v == "default" then
         return restore_camera_rt(CAMERA_DEFAULT_ROTATION)
     else
@@ -220,19 +233,6 @@ local function toggle_view(v, xzpos)
     else
         assert(false)
     end
---[[     local delta_y = -100
-    if v == "construct" then
-        local world_delta = get_world_delta(CAMERA_CONSTRUCT_ROTATION, xzpos, delta_y)
-        return CAMERA_CONSTRUCT_SCALE, CAMERA_CONSTRUCT_ROTATION, math3d.add(position, world_delta)
-    elseif v == "pickup" then
-            local world_delta = get_world_delta(CAMERA_PICKUP_ROTATION, xzpos, delta_y)
-            return CAMERA_PICKUP_SCALE, CAMERA_PICKUP_ROTATION, math3d.add(position, world_delta)
-    elseif v == "default" then
-        local world_delta = get_world_delta(CAMERA_DEFAULT_ROTATION, xzpos, -delta_y)
-        return CAMERA_DEFAULT_SCALE, CAMERA_DEFAULT_ROTATION, math3d.add(position, world_delta)
-    else
-        assert(false)
-    end ]]
 end
 
 local function __set_camera_from_prefab(prefab)
