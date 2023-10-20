@@ -94,6 +94,91 @@ local function focus_on_position(position)
     return iom.get_scale(ce), iom.get_rotation(ce), math3d.add(iom.get_position(ce), delta)
 end
 
+--[[ local function get_dst_r_t_sample(p, v, src_r, src_t, dst_r, xzpoint, distance)
+    local mq = w:first("main_queue camera_ref:in render_target:in")
+    local vr = mq.render_target.view_rect
+    local vp = math3d.mul(p, v)
+    local screen_point = mu.world_to_screen(vp, vr, xzpoint)
+
+    local wm = math3d.matrix{r = dst_r, t = src_t}
+    local vm = math3d.inverse(wm)
+    local vp1 = math3d.mul(p, vm)
+
+    local sx, sy = math3d.index(screen_point, 1, 2)
+
+    local src_dir = math3d.inverse(math3d.todirection(src_r))
+    local src_plane = math3d.plane(xzpoint, src_dir)
+    local src_distance = math3d.dot(src_t, src_dir) - math3d.index(src_plane, 4)
+
+    local dst_dir = math3d.inverse(math3d.todirection(dst_r))
+    local dst_xzpoint = math3d.sub(src_t, math3d.mul(dst_dir, src_distance + distance))
+    local dst_plane = math3d.plane(dst_xzpoint, dst_dir)
+
+    -- xzpoint_intersect_dst_plane_point
+    local inter_point = icamera_controller.screen_to_world(sx, sy, dst_plane, vp1)
+
+    local delta_t = math3d.sub(xzpoint, inter_point)
+    local dst_t = math3d.add(src_t, delta_t)
+    return math3d.mark(dst_t)
+end
+
+local function get_dst_pos(snum, p, v, src_r, src_t, dst_r, xzpoint, dis)
+    local distance = dis and dis or 0
+    local delta = 1 / snum
+    local delta_distance = distance * delta
+    local dst_table = {}
+    local cur_src_r, cur_src_t = src_r, src_t
+    for i = 1, snum do
+        local t = delta * i
+        if i == snum then t = 1 end
+        local cur_dst_r = math3d.slerp(src_r, dst_r, t)
+        local cur_dst_t = get_dst_r_t_sample(p, v, cur_src_r, cur_src_t, cur_dst_r, xzpoint, delta_distance)
+        dst_table[#dst_table+1] = {s = mc.ONE, r = cur_dst_r, t = cur_dst_t}
+        cur_src_r, cur_src_t = cur_dst_r, cur_dst_t
+    end
+    return dst_table
+end
+
+local xzpoint, viewmat, projmat, dst_r, dst_t, delta_distance, sample_num
+
+local function toggle_view(v, xzpos, snum, dis)
+
+    local function adjust_camera_rt(target_rot)
+        math3d.unmark(xzpos)
+
+        local ce <close> = world:entity(irq.main_camera(), "camera:in scene:in")
+        assert(math3d.index(xzpos, 2) == 0, "y axis should be zero!")
+
+        local src_r, src_t = ce.scene.r, ce.scene.t
+        dst_r, xzpoint, viewmat, projmat = target_rot, math3d.mark(xzpos), ce.camera.viewmat, math3d.mark(ce.camera.projmat)
+        local dst_table = get_dst_pos(sample_num, projmat, viewmat, src_r, src_t, dst_r, xzpoint, delta_distance)
+        dst_t = dst_table[#dst_table].t
+        viewmat = math3d.mark(math3d.inverse(math3d.matrix{r=dst_r,t=dst_t}))
+        return dst_table
+    end
+
+    local function restore_camera_rt(target_rot)
+        local delta_dis = delta_distance and -delta_distance or 0
+        local dst_table = get_dst_pos(sample_num, projmat, viewmat, dst_r, dst_t, target_rot, xzpoint, delta_dis)
+        return dst_table
+    end
+
+    -- sample_num/delta_distance should be set
+    sample_num = snum and snum or 20
+    delta_distance = dis and dis or -100
+
+    if v == "construct" then
+        return adjust_camera_rt(CAMERA_CONSTRUCT_ROTATION)
+    elseif v == "pickup" then
+        return adjust_camera_rt(CAMERA_PICKUP_ROTATION)
+    elseif v == "default" then
+        return restore_camera_rt(CAMERA_DEFAULT_ROTATION)
+    else
+        assert(false)
+    end
+
+end ]]
+
 local function get_world_delta(rotation, xzpos, delta_y)
     local mq = w:first("main_queue camera_ref:in render_target:in")
     local ce <close> = world:entity(mq.camera_ref, "camera:in scene:in")
