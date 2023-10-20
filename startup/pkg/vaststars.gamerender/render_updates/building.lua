@@ -52,12 +52,7 @@ function building_sys:gameworld_build()
         }
     end
 
-    for e in gameplay_world.ecs:select "building:in road:absent eid:in" do
-        if ipower_check.is_powered_on(gameplay_core.get_world(), e) then
-            local typeobject = iprototype.queryById(e.building.prototype)
-            itask.update_progress("power_check", typeobject.name, 1)
-        end
-    end
+    itask.update_progress("power_check")
 end
 
 function ibuilding.get(x, y)

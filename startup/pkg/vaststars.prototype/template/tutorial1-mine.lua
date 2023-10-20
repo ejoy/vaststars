@@ -18,7 +18,7 @@ local entities = { {
     dir = "N",
     prototype_name = "无人机平台I",
     x = 120,
-    y = 116
+    y = 117
   },}
 local road = {}
 

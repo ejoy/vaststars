@@ -50,7 +50,7 @@ local guide2 = {
         name = "",
 		narrative = {
             {"哔哩..所有{/color:4bd0ff 采矿机}处于{/r 缺电状态},这不是我们希望的..哔哩..(担忧)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
-            {"哔哩..请放置1台{/g 旧风力发电机}给矿区{/color:4bd0ff 供电}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..请放置1台{/g 轻型风力发电机}给矿区{/color:4bd0ff 供电}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
@@ -66,7 +66,8 @@ local guide2 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..{/color:4bd0ff 仓库}设置收货{/g 碎石}、{/g 铁矿石}、{/g 铝矿石}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..{/color:4bd0ff 风力发电机}可给设备供电,所有的{/g 采矿机}都正常运转了..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..现在设置{/color:4bd0ff 仓库}收货{/g 碎石}、{/g 铁矿石}、{/g 铝矿石}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
@@ -130,7 +131,7 @@ local guide2 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..往{/color:4bd0ff 新仓库}转放{/g 10个铝矿石}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..往{/color:4bd0ff 新仓库}转放{/color:4bd0ff 10个}{/g 铝矿石}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
@@ -162,16 +163,33 @@ local guide2 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..放置{/g 4个太阳能板}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..放置{/color:4bd0ff 4个}{/g 轻型太阳能板}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
-                "太阳能板放置",
+                "太阳能发电",
             },
             guide_progress = 10,
         },
         prerequisites = {
             "太阳能板获取",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
+            {"哔哩..让我们开始研究制造{/color:4bd0ff 轻型太阳能板}的科技..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..只要给{/color:4bd0ff 科研中心}提供{/g 地质科技包},科研就会开展..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            task = {
+                "太阳能制造技术",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "太阳能发电",
         },
 	},
 }

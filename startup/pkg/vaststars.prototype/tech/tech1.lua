@@ -131,13 +131,14 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "电网搭建" {
+  prototype "采矿机通电" {
     desc = "使得3台采矿机通电",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = {"task" },
-    task = {"select_entity", 0, "铁制电线杆"},
+    task = {"unknown", 0, 10},
+    task_params = {building = "采矿机I"},
+    count = 3,
     prerequisites = {"采矿机放置"},
-    count = 6,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -213,7 +214,7 @@ local prototype = gameplay.register.prototype
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = {"task" },
     task = {"select_entity", 0, "仓库I"},
-    prerequisites = {"电网搭建"},
+    prerequisites = {"采矿机通电"},
     count = 1,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -222,14 +223,14 @@ local prototype = gameplay.register.prototype
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 120,
-        y = 117,
+        y = 115,
         w = 1.2,
         h = 1.2,
         show_arrow = false,
       },
       {
         camera_x = 120,
-        camera_y = 117,
+        camera_y = 115,
       },
     },
     effects = {

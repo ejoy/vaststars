@@ -101,7 +101,7 @@ local prototype = gameplay.register.prototype
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 107,
-        y = 138,
+        y = 137,
         w = 3.2,
         h = 3.2,
         show_arrow = true,
@@ -120,13 +120,13 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "风力发电机放置" {
-    desc = "放置1座旧风力发电机",
+    desc = "放置1座轻型风力发电机",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = {"task" },
     task = {"unknown", 0, 10},
     task_params = {building = "采矿机I"},
     count = 3,
-    -- task = {"select_entity", 0, "旧风力发电机"},
+    -- task = {"select_entity", 0, "轻型风力发电机"},
     -- count = 1,
     prerequisites = {"矿区搭建"},
     tips_pic = {
@@ -136,18 +136,18 @@ local prototype = gameplay.register.prototype
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 112,
-        y = 130,
+        y = 131,
         w = 3.2,
         h = 3.2,
         show_arrow = true,
       },
       {
         camera_x = 112,
-        camera_y = 130,
+        camera_y = 131,
       },
     },
     sign_desc = {
-      { desc = "放置1座旧风力发电机供电给矿区的无人机平台", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "放置1座轻型风力发电机供电给矿区的无人机平台", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -189,7 +189,7 @@ local prototype = gameplay.register.prototype
     type = {"task" },
     task = {"unknown", 0, 10},
     task_params = {building = "组装机I"},
-    count = 3,
+    count = 2,
     prerequisites = {"收集矿石"},
     effects = {
       unlock_item = {"地质科技包"},
@@ -215,15 +215,7 @@ local prototype = gameplay.register.prototype
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 124,
-        y = 130,
-        w = 3.0,
-        h = 3.0,
-        show_arrow = false,
-      },
-      {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-        x = 128,
-        y = 130,
+        y = 131,
         w = 3.0,
         h = 3.0,
         show_arrow = false,
@@ -231,7 +223,7 @@ local prototype = gameplay.register.prototype
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 132,
-        y = 130,
+        y = 131,
         w = 3.0,
         h = 3.0,
         show_arrow = false,
@@ -264,7 +256,7 @@ local prototype = gameplay.register.prototype
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 128,
-        y = 132,
+        y = 133,
         w = 1.2,
         h = 1.2,
         show_arrow = true,
@@ -294,7 +286,7 @@ local prototype = gameplay.register.prototype
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 128,
-        y = 132,
+        y = 133,
         w = 1.2,
         h = 1.2,
         show_arrow = false,
@@ -322,7 +314,7 @@ local prototype = gameplay.register.prototype
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"unknown", 0, 9},
-    task_params = {building = "机头残骸", item = "太阳能板I"},
+    task_params = {building = "机头残骸", item = "轻型太阳能板"},
     count = 4,
     prerequisites = {"仓库互转"},
     tips_pic = {
@@ -347,11 +339,12 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "太阳能板放置" {
-    desc = "放置太阳能板",
+  prototype "太阳能发电" {
+    desc = "将太阳能板接入电网",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = {"task" },
-    task = {"select_entity", 0, "太阳能板I"},
+    task = {"unknown", 0, 10},
+    task_params = {building = "轻型太阳能板"},
     count = 4,
     prerequisites = {"太阳能板获取"},
     tips_pic = {
@@ -360,4 +353,20 @@ local prototype = gameplay.register.prototype
     sign_desc = {
       { desc = "放置4个太阳能板并确保连入电网", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
+  }
+
+  prototype "太阳能制造技术" {
+    desc = "研究生产太阳能板工艺",
+    type = { "tech" },
+    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
+    effects = {
+      unlock_item = {"轻型太阳能板","铁板"},
+      unlock_recipe = {"轻型太阳能板","铁板1"},
+    },
+    prerequisites = {"太阳能发电"},
+    ingredients = {
+      {"地质科技包", 1},
+    },
+    count = 5,
+    time = "3s"
   }

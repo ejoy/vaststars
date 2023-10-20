@@ -112,7 +112,7 @@ prototype "蒸汽发电机III" {
     }
 }
 
-prototype "旧风力发电机" {
+prototype "轻型风力发电机" {
     model = "glbs/wind-turbine-1.glb|mesh.prefab",
     model_status = {work = true},
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_wind_turbine.texture",
@@ -179,6 +179,20 @@ prototype "太阳能板III" {
     type = {"building","generator","solar_panel"},
     area = "3x3",
     power = "600kW",
+    priority = "primary",
+    building_menu = false,
+    power_supply_area = "3x3",
+    power_supply_distance = 0,
+    camera_distance = 70,
+}
+
+prototype "轻型太阳能板" {
+    model = "glbs/solar-panel-1.glb|mesh.prefab",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_solar_panel.texture",
+    construct_detector = {"exclusive"},
+    type = {"building","generator","solar_panel"},
+    area = "3x3",
+    power = "100kW",
     priority = "primary",
     building_menu = false,
     power_supply_area = "3x3",
