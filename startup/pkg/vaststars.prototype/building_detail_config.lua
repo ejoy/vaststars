@@ -57,6 +57,9 @@ local building_detail_config = {
 	["太阳能板"] = {
 		"generate_power",
 	},
+	["轻型太阳能板"] = {
+		"generate_power",
+	},
 	["蓄电池"] = {
 		"generate_power",
 		"charge_power",
@@ -117,7 +120,7 @@ local building_detail_config = {
 		"power_supply_area",
 		"power_supply_distance",
 	},
-	["旧风力发电机"] = {
+	["轻型风力发电机"] = {
 		"generate_power",
 		"power_supply_area",
 		"power_supply_distance",
