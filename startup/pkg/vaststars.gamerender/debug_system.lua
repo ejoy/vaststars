@@ -18,7 +18,6 @@ local icamera_controller = ecs.require "engine.system.camera_controller"
 local iprototype = require "gameplay.interface.prototype"
 local idm = ecs.require "ant.debug|debug_mipmap"
 local game_debug_mb = world:sub{"game_debug"}
-local debug_mipmap = false
 
 local function __get_capacitance(eid)
     local e = gameplay_core.get_entity(eid)
@@ -115,6 +114,10 @@ function debug_sys:ui_update()
         if state.CTRL and key == "S" and press == 0 then
             export_startup()
         end
+
+        if state.CTRL and key == "M" and press == 0 then
+            idm.reset_texture_mipmap(true, 9)
+        end
     end
 
     for _, _, v in gesture_tap_mb:unpack() do
@@ -162,15 +165,12 @@ function debug_sys:ui_update()
     end
 
     for _, cmd, params in game_debug_mb:unpack() do
+        log.info("message: ", cmd)
+        for k, v in pairs(params) do
+            log.info(k, v, type(v))
+        end
         if cmd == "mipmap" then
-            debug_mipmap = not debug_mipmap
-            if debug_mipmap then
-                idm.convert_to_debug_mipmap()
-            else
-                idm.restore_to_origin_mipmap()
-            end
-        elseif cmd == "mipmap_level" then
-            idm.reset_mipmap_level(tonumber(params.level))
+            idm.reset_texture_mipmap((params.debug == "true"), tonumber(params.level))
         else
             log.info("unknown game_debug message: ", cmd)
         end
