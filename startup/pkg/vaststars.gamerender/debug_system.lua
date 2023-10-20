@@ -161,16 +161,18 @@ function debug_sys:ui_update()
         end
     end
 
-    for _, v in game_debug_mb:unpack() do
-        if v == "mipmap" then
+    for _, cmd, params in game_debug_mb:unpack() do
+        if cmd == "mipmap" then
             debug_mipmap = not debug_mipmap
             if debug_mipmap then
                 idm.convert_to_debug_mipmap()
             else
                 idm.restore_to_origin_mipmap()
             end
+        elseif cmd == "mipmap_level" then
+            idm.reset_mipmap_level(tonumber(params.level))
         else
-            log.info("unknown game_debug message: ", v)
+            log.info("unknown game_debug message: ", cmd)
         end
     end
 

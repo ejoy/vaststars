@@ -1,33 +1,53 @@
 <html>
- <head>
-  <meta charset="UTF-8">
-  <title>Ant Enging</title>
- </head>
- <body>
-<ul>
- <li><a href="vfs">Virtual File System</a>
- <li><a href="log">Log Directory</a>
- <li><a href="app">App Directory</a>
- <li><a href="debug/call/ping">Ping Info</a>
- <li><a id = "debug_mipmap" href="#">Debug Mipmap</a>
- <li><a href="texture">texture</a>
-</ul>
-<form id="upload-form" action="upload" method="post" enctype="multipart/form-data" >
-　　　<input type="file" id="upload" name="upload" /> <br />
-　　　<input type="submit" value="Upload" />
-</form>
-<script>
-    document.getElementById("debug_mipmap").addEventListener("click", function(event) {
-        event.preventDefault();
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", "debug/send/mipmap", true);
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                console.log(xhr.responseText);
-            }
-        };
-        xhr.send();
-    });
-</script>
- </body>
+<head>
+    <meta charset="UTF-8">
+    <title>Ant Enging</title>
+</head>
+<body>
+    <ul>
+        <li><a href="vfs">Virtual File System</a></li>
+        <li><a href="log">Log Directory</a></li>
+        <li><a href="app">App Directory</a></li>
+        <li><a href="debug/call/ping">Ping Info</a></li>
+        <li><a id="debug-mipmap-link" href="#">Debug Mipmap</a></li>
+        <li>
+            <a id="mipmap-level-link" href="#">Mipmap Level</a>
+            <input style="margin-left: 10px; width: 50px;" type="text" value="9" id="mipmap-level">
+        </li>
+        <li><a id="texture-link" href="texture">Texture</a></li>
+    </ul>
+
+    <form id="upload-form" action="upload" method="post" enctype="multipart/form-data">
+        <input type="file" id="upload" name="upload" /><br />
+        <input type="submit" value="Upload" />
+    </form>
+
+    <script>
+        document.getElementById("debug-mipmap-link").addEventListener("click", function(event) {
+            event.preventDefault();
+            sendRequest("debug/send/mipmap");
+        });
+
+        document.getElementById("mipmap-level-link").addEventListener("click", function(event) {
+            event.preventDefault();
+            var inputContent = document.getElementById("mipmap-level").value;
+            sendRequest(`debug/send/mipmap_level?level=${inputContent}`);
+        });
+
+        function sendRequest(url) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", url, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        console.log(xhr.responseText)
+                    } else {
+                        console.log("Error", xhr.statusText);
+                    }
+                }
+            };
+            xhr.send();
+        }
+    </script>
+</body>
 </html>
