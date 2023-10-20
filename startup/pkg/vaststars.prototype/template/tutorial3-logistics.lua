@@ -153,8 +153,8 @@ local entities = { {
     dir = "N",
     prototype_name = "指挥中心",
     amount = 0,
-    x = 149,
-    y = 125
+    x = 152,
+    y = 114
   }, }
 local road = {}
 
