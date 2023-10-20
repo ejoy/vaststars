@@ -17,7 +17,7 @@ local function is_empty_road(g)
     return nil == g.road or nil == g.indicator
 end
 
-local function add_road(groups, x, y, state, shape, dir, layer)
+local function add_road(groups, layer, x, y, state, shape, dir)
     local gid = terrain:get_group_id(x, y)
     local g = groups[gid]
     local idx = terrain:coord2idx(x, y)
@@ -57,7 +57,7 @@ function road:update(roads, layername)
     local groups = new_groups()
     for _, v in ipairs(roads) do
         local x, y, state, shape, dir = table.unpack(v)
-        add_road(groups, x, y, state, shape, dir, layername)
+        add_road(groups, layername, x, y, state, shape, dir)
     end
     iroad.update_roadnet(groups, RENDER_LAYER.ROAD)
 end
@@ -78,14 +78,16 @@ end
 
 local MODIFY_GROUPS = new_groups()
 
+
+--TODO: MUST change this param order, to keep it the same as 'update'
 -- shape = "I" / "U" / "L" / "T" / "O"
 -- dir = "N" / "E" / "S" / "W"
 function road:set(layer_name, state, x, y, shape, dir)
-    add_road(MODIFY_GROUPS, x, y, state, shape, dir, layer_name)
+    add_road(MODIFY_GROUPS, layer_name, x, y, state, shape, dir)
 end
 
 function road:del(layer_name, x, y)
-    del_road(MODIFY_GROUPS, x, y, layer_name)
+    del_road(MODIFY_GROUPS, layer_name, x, y)
 end
 
 function road:flush()
