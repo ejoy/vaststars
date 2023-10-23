@@ -54,7 +54,13 @@ local prototype = gameplay.register.prototype
     desc = "放置1砖石公路",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = {"task" },
-    task = {"select_entity", 0, "铁制电线杆"},
+    task = {"unknown", 0, 1},
+    task_params = {
+        path = {
+                {{112, 134}, {145, 134}},
+                {{163, 132}, {163, 122}},
+              }
+    },
     prerequisites = {"废墟搜索"},
     count = 1,
     tips_pic = {
@@ -79,7 +85,7 @@ local prototype = gameplay.register.prototype
     --   },
     -- },
     sign_desc = {
-      { desc = "放置1砖石公路", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "修补砖石公路", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
   
