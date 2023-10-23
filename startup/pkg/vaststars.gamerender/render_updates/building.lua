@@ -10,8 +10,6 @@ local ibuilding = {}
 local igameplay = ecs.require "gameplay_system"
 local gameplay = import_package "vaststars.gameplay"
 local igameplay_building = gameplay.interface "building"
-local itask = ecs.require "task"
-local ipower_check = ecs.require "power_check_system"
 
 local DIRECTION <const> = {
     N = 0,
@@ -51,8 +49,6 @@ function building_sys:gameworld_build()
             direction = iprototype.dir_tostring(e.building.direction),
         }
     end
-
-    itask.update_progress("power_check")
 end
 
 function ibuilding.get(x, y)

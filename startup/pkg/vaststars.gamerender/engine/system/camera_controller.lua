@@ -62,7 +62,6 @@ local CAMERA_ZAIXS_MAX <const> = 800
 local cam_cmd_queue = create_queue()
 local cam_motion_matrix_queue = create_queue()
 local LockAxis
-local DeltaY
 
 local function __clamp(v, min, max)
     return math_max(min, math_min(v, max))
@@ -107,24 +106,24 @@ local function toggle_view(v, cur_xzpoint, snum)
         local vr = mq.render_target.view_rect
         local src_vp = math3d.mul(pm, src_vm)
         local screen_point = mu.world_to_screen(src_vp, vr, xzpoint)
-    
+
         local wm = math3d.matrix{r = dr, t = st}
         local dst_vm = math3d.inverse(wm)
         local dst_vp = math3d.mul(pm, dst_vm)
-    
+
         local sx, sy = math3d.index(screen_point, 1, 2)
-    
+
         local src_dir = math3d.inverse(math3d.todirection(sr))
         local src_plane = math3d.plane(xzpoint, src_dir)
         local src_dis = math3d.dot(st, src_dir) - math3d.index(src_plane, 4)
-    
+
         local dst_dir = math3d.inverse(math3d.todirection(dr))
         local dst_xzpoint = math3d.sub(st, math3d.mul(dst_dir, src_dis + delta_dis))
         local dst_plane = math3d.plane(dst_xzpoint, dst_dir)
-    
+
         -- xzpoint_intersect_dst_plane_point
         local inter_point = icamera_controller.screen_to_world(sx, sy, dst_plane, dst_vp)
-    
+
         local delta_t = math3d.sub(xzpoint, inter_point)
         return math3d.add(st, delta_t)
     end
@@ -166,7 +165,6 @@ local function toggle_view(v, cur_xzpoint, snum)
         return dst_table
     end
 
-
     if v == "construct" then
         last_view = "construct"
         return adjust_camera_rt(ce.scene.r, ce.scene.t, CAMERA_CONSTRUCT_ROTATION, ce.scene.t, cur_xzpoint, ce.camera.viewmat, ce.camera.projmat)
@@ -175,15 +173,18 @@ local function toggle_view(v, cur_xzpoint, snum)
         return adjust_camera_rt(ce.scene.r, ce.scene.t, CAMERA_PICKUP_ROTATION, CAMERA_PICKUP_POSITION, cur_xzpoint, ce.camera.viewmat, ce.camera.projmat)
     elseif v == "default" then
         delta_dis = delta_dis and -delta_dis or 0
-        if last_view:match "construct" then
-            local t = get_dst_rt(ce.scene.r, ce.scene.t, CAMERA_DEFAULT_ROTATION, cur_xzpoint, ce.camera.viewmat, ce.camera.projmat, delta_dis, sample_num)
-            dst_r, dst_t, delta_dis, view_mat, last_xzpoint, last_view = nil, nil, nil, nil, nil, nil
-            return t
+        local t
+        if last_view == "construct" then
+            t = get_dst_rt(ce.scene.r, ce.scene.t, CAMERA_DEFAULT_ROTATION, cur_xzpoint, ce.camera.viewmat, ce.camera.projmat, delta_dis, sample_num)
         else
-            local t = get_dst_rt(dst_r, dst_t, CAMERA_DEFAULT_ROTATION, last_xzpoint, view_mat, ce.camera.projmat, delta_dis, sample_num)
-            dst_r, dst_t, delta_dis, view_mat, last_xzpoint, last_view = nil, nil, nil, nil, nil, nil
-            return t
+            t = get_dst_rt(dst_r, dst_t, CAMERA_DEFAULT_ROTATION, last_xzpoint, view_mat, ce.camera.projmat, delta_dis, sample_num)
         end
+        math3d.unmark(dst_r)
+        math3d.unmark(dst_t)
+        math3d.unmark(view_mat)
+        math3d.unmark(last_xzpoint)
+        dst_r, dst_t, delta_dis, view_mat, last_xzpoint, last_view = nil, nil, nil, nil, nil, nil
+        return t
     else
         assert(false)
     end

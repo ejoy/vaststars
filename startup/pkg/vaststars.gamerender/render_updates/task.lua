@@ -9,6 +9,7 @@ local task_sys = ecs.system "task_system"
 local update = interval_call(300, function()
     itask.update_progress("lorry_count")
     itask.update_progress("auto_complete_task")
+    itask.update_progress("power_check")
 end)
 
 function task_sys:gameworld_update()

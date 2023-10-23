@@ -129,7 +129,7 @@ local custom_type_mapping = {
         local function is_powered_on(world, e)
             world.ecs:extend(e, "consumer?in generator?in accumulator?in capacitance?in")
             if not e.capacitance and not e.generator and not e.accumulator then
-                return false
+                return true
             end
 
             world.ecs:extend(e, "capacitance:in building:in")

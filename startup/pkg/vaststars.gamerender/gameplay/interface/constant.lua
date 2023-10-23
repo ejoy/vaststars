@@ -23,13 +23,13 @@ M.ALL_DIR_NUM = {0, 1, 2, 3}
 M.DEFAULT_DIR = 'N'
 M.DIRECTION = DIRECTION
 M.DIR_MOVE_DELTA = {
-    ['N'] = {x = 0,  y = 1},
+    ['N'] = {x = 0,  y = -1},
     ['E'] = {x = 1,  y = 0},
-    ['S'] = {x = 0,  y = -1},
+    ['S'] = {x = 0,  y = 1},
     ['W'] = {x = -1, y = 0},
-    [DIRECTION.N] = {x = 0,  y = 1},
+    [DIRECTION.N] = {x = 0,  y = -1},
     [DIRECTION.E] = {x = 1,  y = 0},
-    [DIRECTION.S] = {x = 0,  y = -1},
+    [DIRECTION.S] = {x = 0,  y = 1},
     [DIRECTION.W] = {x = -1, y = 0},
 }
 M.ROTATORS = {

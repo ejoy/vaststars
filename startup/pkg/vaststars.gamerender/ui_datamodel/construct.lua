@@ -573,7 +573,7 @@ function M.update(datamodel)
 
         local e = gameplay_core.get_entity(object.gameplay_eid)
         if e.chest then
-            if not ibackpack.can_move_to_backpack(gameplay_world, e) then
+            if not ibackpack.can_move_to_backpack(gameplay_world, e, typeobject.id) then
                 log.error("can not teardown")
                 goto continue
             end

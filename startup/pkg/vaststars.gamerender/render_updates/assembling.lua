@@ -52,7 +52,7 @@ local function __get_texture_size(materialpath)
     local res = assetmgr.resource(materialpath)
     local texobj = assetmgr.resource(res.properties.s_basecolor.texture)
     local ti = texobj.texinfo
-    return ti.width, ti.height
+    return tonumber(ti.width), tonumber(ti.height)
 end
 
 local function __get_draw_rect(x, y, icon_w, icon_h, multiple)

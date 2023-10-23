@@ -170,13 +170,13 @@ local function assembling_to_backpack(world, e, f)
     end
 end
 
-local function can_move_to_backpack(world, e)
+local function can_move_to_backpack(world, e, item)
     for i = 1, ichest.MAX_SLOT do
         local slot = ichest.get(world, e.chest, i)
         if not slot then
             break
         end
-        if slot.item == 0 then
+        if slot.item ~= item then
             goto continue
         end
         local count = get_moveable_count(world, slot.item, slot.amount)
