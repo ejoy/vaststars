@@ -57,9 +57,19 @@
                 audio.play("event:/ui/button1")
                 ui_sys.pub {...}
             end
+
+            function init()
+                for _, e in ipairs(document.getElementsByTagName "template-list") do
+                    console.log("init")
+                    e.scrollInsets(0, 0, 0, 200)
+                    e.addEventListener("pan", function(param)
+                        e.scrollTop = e.scrollTop - param.dy
+                    end)
+                end
+            end
         </script>
     </head>
-    <body style = "background-color: black;">
+    <body style = "background-color: black;" onload="init()">
         <div class="item-container-region">
             <div class="recipe-panel" style = "flex-direction: column; height: 100%;">
                 <!-- 标题栏 -->
@@ -67,11 +77,11 @@
                     <div class = "recipe-name-text">模板</div>
                 </div>
                 <div style="width: 100%; height:90%; flex-direction: column; justify-content: center; align-items: center;">
-                    <div class = "recipe-change-block" style = "justify-content: center; align-items: center;">
+                    <template-list class = "recipe-change-block" style = "justify-content: center; align-items: center; overflow: scroll;">
                         <button class = "button-style" style="background-color:rgb(203, 118, 24);" data-for = "templates" data-event-click = "clickButton('start_game', it.filename)">
                             <div class = "recipe-name-text" style="font-size: 4.73vmin;">{{it.name}}</div>
                         </button>
-                    </div>
+                    </template-list>
                 </div>
             </div>
         </div>

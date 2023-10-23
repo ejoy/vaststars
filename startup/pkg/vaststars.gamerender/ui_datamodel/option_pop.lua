@@ -26,7 +26,7 @@ local M = {}
 function M.create()
     local archival_files = {}
     for _, v in ipairs(archiving.list()) do
-        archival_files[#archival_files+1] = v.dir
+        archival_files[#archival_files+1] = v:match("([^/]+)$")
     end
 
     local whichratio = "scene_ratio" -- "ratio"

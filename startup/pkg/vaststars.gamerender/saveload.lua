@@ -202,8 +202,7 @@ function M:backup()
 
     local list = archiving.list()
     while #list + 1 > MAX_ARCHIVING_COUNT do
-        local archival = table.remove(list, 1)
-        local fullpath = archiving.path() .. ("%s"):format(archival.dir)
+        local fullpath = table.remove(list, 1)
         print("remove", fullpath)
         fs.remove_all(fullpath)
     end
@@ -216,7 +215,6 @@ function M:backup()
     gameplay_core.backup(fullpath)
 
     writeall(fullpath .. "/version", json.encode({PROTOTYPE_VERSION = PROTOTYPE_VERSION}))
-    writeall(archiving.config(), json.encode(list))
     writeall(CAMERA_CONFIG, json.encode(get_camera_setting()))
     print("save success", fullpath)
     return true
@@ -227,7 +225,7 @@ function M:restore(index)
     assert(#list > 0)
     assert(#list >= index)
 
-    local fullpath = archiving.path() .. ("%s"):format(list[index].dir)
+    local fullpath = list[index]
     assert(fs.exists(fs.path(fullpath)))
     assert(fs.exists(fs.path(fullpath .. "/version")))
 

@@ -10,41 +10,52 @@ if not __ANT_RUNTIME__ and CUSTOM_ARCHIVING then
 else
     ARCHIVAL_BASE_DIR = (directory.app_path "vaststars" / "archiving/"):string()
 end
-local ARCHIVING_CONFIG <const> = ARCHIVAL_BASE_DIR .. "archiving.json"
 
 local function readall(file)
     local f <close> = assert(io.open(file, "rb"))
     return f:read "a"
 end
 
+local function fetch_all_archiving(path)
+    local r = {}
+    for v in fs.pairs(path) do
+        if fs.is_directory(v) then
+            r[#r+1] = v:string()
+        end
+    end
+    table.sort(r, function(a, b)
+        return a:gsub("-", "") < b:gsub("-", "")
+    end)
+    return r
+end
+
 local m = {}
 function m.check(index)
-    local list = json.decode(readall(ARCHIVING_CONFIG))
+    local list = fetch_all_archiving(ARCHIVAL_BASE_DIR)
     if #list <= 0 then
         return false
     end
 
-    local relative = list[index].dir
-    local fullpath = fs.path(ARCHIVAL_BASE_DIR .. ("%s"):format(relative))
+    local fullpath = list[index]
 
     if not fs.exists(fullpath) then
-        log.warn(("`%s` not exists"):format(relative))
+        log.warn(("`%s` not exists"):format(fullpath))
         list[index] = nil
         index = index - 1
         return false
     end
 
-    local versionpath = fullpath / "version"
+    local versionpath = fullpath .. "/version"
     if not fs.exists(versionpath) then
-        log.warn(("`%s` not exists"):format(versionpath:string()))
+        log.warn(("`%s` not exists"):format(versionpath))
         list[index] = nil
         index = index - 1
         return false
     end
 
-    local v = json.decode(readall(versionpath:string()))
+    local v = json.decode(readall(versionpath))
     if v.PROTOTYPE_VERSION ~= PROTOTYPE_VERSION then
-        log.error(("Failed `%s` version `%s` current `%s`"):format(relative, list[index].version, PROTOTYPE_VERSION))
+        log.error(("Failed `%s` version `%s` current `%s`"):format(fullpath, list[index].version, PROTOTYPE_VERSION))
         return false
     else
         return true
@@ -52,11 +63,7 @@ function m.check(index)
 end
 
 function m.last()
-    if not fs.exists(fs.path(ARCHIVING_CONFIG)) then
-        return
-    end
-
-    local list = json.decode(readall(ARCHIVING_CONFIG))
+    local list = fetch_all_archiving(ARCHIVAL_BASE_DIR)
     if #list <= 0 then
         return false
     end
@@ -77,14 +84,7 @@ function m.last()
 end
 
 function m.list()
-    if not fs.exists(fs.path(ARCHIVING_CONFIG)) then
-        return {}
-    end
-    return json.decode(readall(ARCHIVING_CONFIG))
-end
-
-function m.config()
-    return ARCHIVING_CONFIG
+    return fetch_all_archiving(ARCHIVAL_BASE_DIR)
 end
 
 function m.path()
