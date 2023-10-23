@@ -265,17 +265,27 @@ static int
 lupdate(lua_State *L) {
 	auto& w = getworld(L);
 	// step 1: init ecs::powergrid runtime struct
-	auto pg = ecs_api::array<ecs::powergrid>(w.ecs);
+	auto pgs = ecs_api::array<ecs::powergrid>(w.ecs);
+	for (int ii = 1; ii < 256; ++ii) {
+		ecs::powergrid& pg = pgs[ii];
+		for (size_t i = 0; i < POWER_PRIORITY; ++i) {
+			pg.consumer_power[i] = 0;
+			pg.generator_power[i] = 0;
+		}
+		pg.accumulator_output = 0;
+		pg.accumulator_input = 0;
+		pg.active = false;
+	}
 	// step 2: stat consumers in ecs::powergrid
-	stat_consumer(w, pg);
+	stat_consumer(w, pgs);
 	// step 3: stat generators
-	stat_generator(w, pg);
+	stat_generator(w, pgs);
 	// step 4: stat accumulators
-	stat_accumulator(w, pg);
+	stat_accumulator(w, pgs);
 	// step 5: calc efficiency
-	calc_efficiency(w, pg);
+	calc_efficiency(w, pgs);
 	// step 6: ecs::powergrid charge consumers' capacitance, and consume generators' capacitance
-	powergrid_run(w, pg);
+	powergrid_run(w, pgs);
 	return 0;
 }
 
