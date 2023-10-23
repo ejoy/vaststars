@@ -12,6 +12,15 @@ local prototype = gameplay.register.prototype
   --task = {"power_generator", 0},                      电力发电到达X瓦
   --task = {"unknown", 0},                              自定义任务
   
+  -- task = {"unknown", 0, 1},
+  -- task_params = {
+  --     path = {
+  --         {{117, 125}, {135, 125}},
+  --         ...
+  --     }
+  -- },
+  -- count = 1,                                         连接A点到B点的路网
+
   --task = {"unknown", 0, 2},                           派遣运输车
 
   --task = {"unknown", 0, 3},                           自定义任务，组装机指定选择配方

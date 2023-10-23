@@ -60,10 +60,10 @@ local prototype = gameplay.register.prototype
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
-    effects = {
-      unlock_recipe = {"石砖","砖石公路打印"},
-      unlock_item = {"石砖","砖石公路-X型"},
-    },
+    -- effects = {
+    --   unlock_recipe = {"石砖","砖石公路打印"},
+    --   unlock_item = {"石砖","砖石公路-X型"},
+    -- },
     -- guide_focus = {
     --   {
     --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
@@ -111,6 +111,9 @@ local prototype = gameplay.register.prototype
     sign_desc = {
       { desc = "放置1座物流站", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
+    effects = {
+      unlock_item = {"碎石","铁矿石"},
+    },
   }
 
   prototype "物流站设置" {
@@ -119,7 +122,7 @@ local prototype = gameplay.register.prototype
     type = {"task" },
     task = {"unknown", 0, 8},
     task_params = {items = {"supply|碎石", "supply|铁矿石"}},
-    prerequisites = {"停车站放置"},
+    prerequisites = {"物流站放置"},
     count = 1,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -142,6 +145,10 @@ local prototype = gameplay.register.prototype
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate3.texture",
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate4.texture",
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate5.texture",
+    },
+    effects = {
+      unlock_recipe = {"石砖","砖石公路打印"},
+      unlock_item = {"石砖","砖石公路-X型"},
     },
     sign_desc = {
       { desc = "指挥中心派遣2辆运输车", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
