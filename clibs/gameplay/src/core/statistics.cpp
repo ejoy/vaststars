@@ -43,6 +43,10 @@ void statistics::dataset::step() {
     data[pos].reset();
 }
 
+statistics::frame& statistics::dataset::back() {
+    return data[pos];
+}
+
 void statistics::dataset::sum(dataset const& d) {
     step();
     size_t n = tick / d.tick;
