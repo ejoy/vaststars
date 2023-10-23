@@ -1,4 +1,24 @@
 ---
+file: images/dron-depot_Metallic-dron-depot_Roughness.texture
+op: add
+path: /maxsize
+value: 64
+---
+file: images/dron-depot_color.texture
+op: add
+path: /maxsize
+value: 64
+---
+file: images/dron-depot_normal.texture
+op: add
+path: /maxsize
+value: 64
+---
+file: images/dron-depot_light.texture
+op: add
+path: /maxsize
+value: 16
+---
 file: mesh.prefab
 op: add
 path: /-

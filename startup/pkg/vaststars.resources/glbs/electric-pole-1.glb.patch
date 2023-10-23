@@ -1,4 +1,29 @@
 ---
+file: images/electric-pole_Metallic-electric-pole_Roughness.texture
+op: add
+path: /maxsize
+value: 64
+---
+file: images/electric-pole_normal.texture
+op: add
+path: /maxsize
+value: 64
+---
+file: images/electric-pole_light.texture
+op: add
+path: /maxsize
+value: 64
+---
+file: images/electric-pole_color.texture
+op: add
+path: /maxsize
+value: 64
+---
+file: materials/Material.001.material
+op: replace
+path: /state/CULL
+value: CCW
+---
 file: mesh.prefab
 op: createfile
 path: hitch.prefab
@@ -13,8 +38,3 @@ value:
     ant.render|hitch_object
   tag:
     hitch
----
-file: materials/Material.001.material
-op: replace
-path: /state/CULL
-value: CCW

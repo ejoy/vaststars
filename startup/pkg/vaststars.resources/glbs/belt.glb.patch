@@ -1,14 +1,4 @@
 ---
-file: materials/Material.011.material
-op: add
-path: /fx/setting/UV_MOTION
-value: 1
----
-file: materials/Material.011.material
-op: add
-path: /properties/u_uvmotion
-value: {0, -0.175, 1, 1}
----
 file: mesh.prefab
 op: add
 path: /-
@@ -24,6 +14,64 @@ value:
     ant.animation|slot
   tag:
     item_slot
+---
+file: mesh.prefab
+op: copyfile
+path: input.prefab
+---
+file: mesh.prefab
+op: copyfile
+path: output.prefab
+---
+file: images/track-A_normal.texture
+op: add
+path: /maxsize
+value: 32
+---
+file: images/track-B_normal.texture
+op: add
+path: /maxsize
+value: 32
+---
+file: images/track-B_Metallic-track-B_Roughness.texture
+op: add
+path: /maxsize
+value: 32
+---
+file: images/track-A_color.texture
+op: add
+path: /maxsize
+value: 32
+---
+file: images/track-A_Metallic-track-A_Roughness.texture
+op: add
+path: /maxsize
+value: 32
+---
+file: images/anything_light.texture
+op: add
+path: /maxsize
+value: 16
+---
+file: images/track-B_color.texture
+op: add
+path: /maxsize
+value: 32
+---
+file: images/track-A_light.texture
+op: add
+path: /maxsize
+value: 32
+---
+file: materials/Material.011.material
+op: add
+path: /fx/setting/UV_MOTION
+value: 1
+---
+file: materials/Material.011.material
+op: add
+path: /properties/u_uvmotion
+value: {0, -0.175, 1, 1}
 ---
 file: materials/Material.011.material
 op: copyfile
@@ -57,11 +105,3 @@ file: input.prefab
 op: replace
 path: /1/data/scene/r
 value: {0, 1, 0, -4.371138828673793e-08}
----
-file: mesh.prefab
-op: copyfile
-path: input.prefab
----
-file: mesh.prefab
-op: copyfile
-path: output.prefab

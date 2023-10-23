@@ -1,4 +1,24 @@
 ---
+file: images/small-warehouse_normal.texture
+op: add
+path: /maxsize
+value: 64
+---
+file: images/small-warehouse_Metallic-small-warehouse_Roughness.texture
+op: add
+path: /maxsize
+value: 64
+---
+file: images/small-warehouse_color.texture
+op: add
+path: /maxsize
+value: 64
+---
+file: images/small-warehouse_light.texture
+op: add
+path: /maxsize
+value: 32
+---
 file: mesh.prefab
 op: add
 path: /-

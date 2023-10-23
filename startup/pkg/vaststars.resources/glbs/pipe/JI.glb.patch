@@ -1,4 +1,19 @@
 ---
+file: images/pipe_I_normal.texture
+op: add
+path: /maxsize
+value: 64
+---
+file: images/pipe_I_color.texture
+op: add
+path: /maxsize
+value: 64
+---
+file: images/pipe_I_Roughness.texture
+op: add
+path: /maxsize
+value: 64
+---
 file: mesh.prefab
 op: createfile
 path: hitch.prefab
