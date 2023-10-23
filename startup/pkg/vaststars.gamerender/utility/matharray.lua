@@ -50,12 +50,31 @@ array.vector = ctor "vector"
 array.matrix = ctor "matrix"
 array.quat = ctor "quat"
 
+function array.append(a, n)
+	local tmp = {}
+	for i = 1, a.n do
+		tmp[i] = array_index(a._array, i)
+	end
+	local append_n = #n
+	table.move(n, 1, append_n, a.n+1, tmp)
+	unmark(a._array)
+	local array_ctor = assert(math3d["array_" .. a.type])
+	a._array = mark(array_ctor(tmp))
+	a.n = a.n + append_n
+	return a
+end
+
 --[[
 
 local v = array.vector {
 	{ 1,2,3,4 },
 	{ 5,6,7,8 },
 }
+
+array.append(v, {
+	{ 8,7,6,5 },
+	{ 4,3,2,1 },
+})
 
 print(v, #v)
 
