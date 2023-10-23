@@ -134,7 +134,7 @@ local function get_display_info(e, typeobject, t)
                             status = (e.solar_panel.efficiency > 0 and STATUS_DISCHARGE or STATUS_STOP_DISCHARGE)
                         elseif st then
                             -- power is sum of 50 tick
-                            current = st["power"] * (UPS / 50)
+                            current = st["power"] * (UPS / st.power_count)
                             if typeobject.name == "蓄电池I" then
                                 if (cn == "charge_power" and e.capacitance.delta > 0) or (cn == "power" and e.capacitance.delta < 0) then
                                     current = 0
@@ -521,7 +521,8 @@ function M.create(object_id)
         drain = 0,
         power = 0,
         state = 0,
-        no_power_count = 0
+        no_power_count = 0,
+        power_count = 0
     }
     return datamodel
 end
@@ -560,6 +561,7 @@ local function step_frame_head(st)
         st.no_power_count = st.no_power_count + 1
     end
     st.head = (st.head >= frame_period) and 1 or st.head + 1
+    st.power_count = st.power_count + 1
     if st.head == st.tail then
         local fp = st.frames[st.tail]
         if fp then
@@ -577,6 +579,7 @@ local function step_frame_head(st)
                 end
             end
             st.tail = (st.tail >= frame_period) and 1 or st.tail + 1
+            st.power_count = st.power_count - 1
         end
     end
 end
