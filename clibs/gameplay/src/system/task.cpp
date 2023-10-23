@@ -54,11 +54,13 @@ uint64_t task::select_entity(world& w) const {
 }
 
 uint64_t task::power_generator(world& w) const {
+    constexpr uint16_t UPS = 30;
+    // 10m / 150 = 10 * 60 * 30 / 150 = 120(frame)
     uint64_t sum = 0;
-    for (auto const& [_, v] : w.stat._total.generate_power) {
+    for (auto const& [_, v] : w.stat._dataset[2].back().generate_power) {
         sum += v;
     }
-    return sum;
+    return sum / (120 / UPS);
 }
 
 uint64_t task::eval(world& w) const {

@@ -34,6 +34,7 @@ struct statistics {
         void sum(dataset const& d);
         bool update(uint64_t time);
         bool update(uint64_t time, dataset const& d);
+        frame& back();
     };
 
     statistics();
