@@ -206,6 +206,18 @@ prototype "采矿机III" {
     item_description = "挖掘、钻探地下矿物资源的设备",
 }
 
+prototype "轻型采矿机" {
+    type = {"item"},
+    item_category = "加工",
+    station_limit = 8,
+    hub_limit = 15,
+    backpack_limit = 20,
+    item_order = 35,
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/miner.texture",
+    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_description = "挖掘、钻探地下矿物资源的设备",
+}
+
 prototype "蒸汽发电机I" {
     type = {"item"},
     item_category = "物流",

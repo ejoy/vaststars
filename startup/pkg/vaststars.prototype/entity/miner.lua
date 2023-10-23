@@ -57,3 +57,22 @@ prototype "采矿机III" {
     maxslot = 8,
     camera_distance = 95,
 }
+
+prototype "轻型采矿机" {
+    model = "glbs/miner-1.glb|mesh.prefab",
+    model_status = {work = true, low_power = true},
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_miner.texture",
+    construct_detector = {"exclusive"},
+    type = {"building", "consumer", "assembling", "mining"},
+    area = "3x3",
+    drone_height = 42,
+    assembling_icon = false,
+    power = "150kW",
+    priority = "secondary",
+    mining_area = "5x5",
+    sound = "building/miner",
+    mining_category = {"矿石开采"},
+    speed = "100%",
+    maxslot = 8,
+    camera_distance = 95,
+}

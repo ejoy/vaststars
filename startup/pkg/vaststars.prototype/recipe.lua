@@ -697,6 +697,23 @@ prototype "采矿机3" {
     description = "使用铁制品和电动机制造采矿机",
 }
 
+prototype "轻型采矿机" {
+    type = { "recipe" },
+    recipe_craft_category = "生产中型制造",
+    recipe_category =  "加工",
+    recipe_order =  41,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/miner-design.texture",
+    ingredients = {
+        {"石砖", 4},
+        {"铁板", 4},
+    },
+    results = {
+        {"轻型采矿机", 1},
+    },
+    time = "10s",
+    description = "使用石块和铁板制造采矿机",
+}
+
 prototype "熔炼炉1" {
     type = { "recipe" },
     recipe_craft_category = "生产中型制造",
