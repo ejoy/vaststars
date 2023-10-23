@@ -43,7 +43,7 @@ void statistics::dataset::step() {
     data[pos].reset();
 }
 
-statistics::frame& statistics::dataset::back() {
+statistics::frame const& statistics::dataset::back() const {
     return data[pos];
 }
 
@@ -102,10 +102,10 @@ void statistics::update(uint64_t time) {
         return;
     }
     _total.add(current());
-    _dataset[0].step();
     for (size_t i = 1; i < _dataset.size(); ++i) {
         if (!_dataset[i].update(time, _dataset[i-1])) {
-            return;
+            break;
         }
     }
+    _dataset[0].step();
 }
