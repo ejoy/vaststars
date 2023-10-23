@@ -144,7 +144,197 @@ local entities = { {
     x = 152,
     y = 114
   }, }
-local road = {}
+  local road = { {
+    dir = "E",
+    prototype_name = "砖石公路-U型",
+    x = 114,
+    y = 134
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 116,
+    y = 134
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 118,
+    y = 134
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 120,
+    y = 134
+  }, {
+    dir = "W",
+    prototype_name = "砖石公路-U型",
+    x = 122,
+    y = 134
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-U型",
+    x = 130,
+    y = 134
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 132,
+    y = 134
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 134,
+    y = 134
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 136,
+    y = 134
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-U型",
+    x = 144,
+    y = 134
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 148,
+    y = 134
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 150,
+    y = 134
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 152,
+    y = 134
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 154,
+    y = 134
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 156,
+    y = 134
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 158,
+    y = 134
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 160,
+    y = 134
+  }, {
+    dir = "W",
+    prototype_name = "砖石公路-L型",
+    x = 162,
+    y = 134
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 162,
+    y = 132
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-U型",
+    x = 162,
+    y = 130
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 160,
+    y = 120
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 158,
+    y = 120
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 156,
+    y = 120
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 154,
+    y = 120
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-L型",
+    x = 162,
+    y = 120
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-U型",
+    x = 162,
+    y = 122
+  }, {
+    dir = "W",
+    prototype_name = "砖石公路-U型",
+    x = 138,
+    y = 134
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 152,
+    y = 120
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 150,
+    y = 120
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 146,
+    y = 126
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 146,
+    y = 128
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 146,
+    y = 130
+  }, {
+    dir = "S",
+    prototype_name = "砖石公路-T型",
+    x = 146,
+    y = 134
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 146,
+    y = 132
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 146,
+    y = 124
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-I型",
+    x = 148,
+    y = 120
+  }, {
+    dir = "N",
+    prototype_name = "砖石公路-I型",
+    x = 146,
+    y = 122
+  }, {
+    dir = "E",
+    prototype_name = "砖石公路-L型",
+    x = 146,
+    y = 120
+  } }
 
 local mineral = {
   ["115,127"] = "碎石",

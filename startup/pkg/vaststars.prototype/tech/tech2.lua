@@ -429,13 +429,13 @@ local prototype = gameplay.register.prototype
     type = { "task" },
     icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
     task = {"power_generator", 3},
-    count = 1000,
+    count = 600,
     prerequisites = {"太阳能板制造"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "铺设太阳能板让基地发电量达到1500kW", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "铺设太阳能板让基地发电量达到800kW", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 

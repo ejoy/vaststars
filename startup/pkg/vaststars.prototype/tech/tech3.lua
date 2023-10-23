@@ -83,12 +83,27 @@ local prototype = gameplay.register.prototype
     },
   }
   
+  prototype "停车站放置" {
+    desc = "放置1座停车站",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = {"task" },
+    task = {"select_entity", 0, "停车站"},
+    prerequisites = {"道路维修"},
+    count = 1,
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "在放置1座停车站", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
   prototype "物流站放置" {
     desc = "放置1座物流站",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = {"task" },
     task = {"select_entity", 0, "物流站"},
-    prerequisites = {"道路维修"},
+    prerequisites = {"停车站放置"},
     count = 1,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -98,33 +113,19 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "停车站放置" {
-    desc = "放置1座停车站",
+  prototype "物流站设置" {
+    desc = "物流站设置",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = {"task" },
-    task = {"select_entity", 0, "停车站"},
-    prerequisites = {"物流站放置"},
+    task = {"unknown", 0, 8},
+    task_params = {items = {"supply|碎石", "supply|铁矿石"}},
+    prerequisites = {"停车站放置"},
     count = 1,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "在放置1座停车站", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-    },
-  }
-
-  prototype "停车站放置" {
-    desc = "放置1座停车站",
-    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-    type = {"task" },
-    task = {"select_entity", 0, "停车站"},
-    prerequisites = {"物流站放置"},
-    count = 1,
-    tips_pic = {
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
-    },
-    sign_desc = {
-      { desc = "在放置1座停车站", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "物流站设置出货碎石和铁矿石", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -133,7 +134,7 @@ local prototype = gameplay.register.prototype
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"unknown", 0, 2},                          
-    prerequisites = {"停车站放置"},
+    prerequisites = {"物流站放置"},
     count = 2,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate1.texture",
