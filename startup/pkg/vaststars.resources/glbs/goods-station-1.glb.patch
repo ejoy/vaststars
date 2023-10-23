@@ -1,4 +1,24 @@
 ---
+file: images/small-warehouse2_normal.texture
+op: add
+path: /maxsize
+value: 128
+---
+file: images/small-warehouse2_light.texture
+op: add
+path: /maxsize
+value: 64
+---
+file: images/small-warehouse2_Metallic-small-warehouse2_Roughness.texture
+op: add
+path: /maxsize
+value: 128
+---
+file: images/mars-truck2_color.texture
+op: add
+path: /maxsize
+value: 128
+---
 file: mesh.prefab
 op: add
 path: /-
@@ -407,12 +427,10 @@ value:
   ---
   data:
     scene:
-      parent: 112
       t: {-7.5, 10, 7.5}
     slot:
       follow_flag: 1
       joint_name: None
-  index: 14
   mount: 1
   policy:
     ant.animation|slot
@@ -421,12 +439,10 @@ value:
   ---
   data:
     scene:
-      parent: 112
       t: {-2.5, 10, 7.5}
     slot:
       follow_flag: 1
       joint_name: None
-  index: 15
   mount: 1
   policy:
     ant.animation|slot
@@ -435,12 +451,10 @@ value:
   ---
   data:
     scene:
-      parent: 112
       t: {2.5, 10, 7.5}
     slot:
       follow_flag: 1
       joint_name: None
-  index: 16
   mount: 1
   policy:
     ant.animation|slot
@@ -449,12 +463,10 @@ value:
   ---
   data:
     scene:
-      parent: 112
       t: {7.5, 10, 7.5}
     slot:
       follow_flag: 1
       joint_name: None
-  index: 17
   mount: 1
   policy:
     ant.animation|slot
@@ -463,12 +475,10 @@ value:
   ---
   data:
     scene:
-      parent: 112
       t: {-7.5, 10, 2.5}
     slot:
       follow_flag: 1
       joint_name: None
-  index: 18
   mount: 1
   policy:
     ant.animation|slot
@@ -477,12 +487,10 @@ value:
   ---
   data:
     scene:
-      parent: 112
       t: {-2.5, 10, 2.5}
     slot:
       follow_flag: 1
       joint_name: None
-  index: 19
   mount: 1
   policy:
     ant.animation|slot
@@ -491,12 +499,10 @@ value:
   ---
   data:
     scene:
-      parent: 112
       t: {2.5, 10, 2.5}
     slot:
       follow_flag: 1
       joint_name: None
-  index: 20
   mount: 1
   policy:
     ant.animation|slot
@@ -505,12 +511,10 @@ value:
   ---
   data:
     scene:
-      parent: 112
       t: {7.5, 10, 2.5}
     slot:
       follow_flag: 1
       joint_name: None
-  index: 21
   mount: 1
   policy:
     ant.animation|slot
