@@ -9,14 +9,13 @@ local iom = ecs.require "ant.objcontroller|obj_motion"
 
 local terrain = ecs.require "terrain"
 
-local iroad = ecs.require "engine.road"
+local iroadnet = ecs.require "roadnet"
 local CONSTANT = ecs.require "gameplay.interface.constant"
 
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local mc = import_package "ant.math".constant
 
 local ROW_SPACING, COL_SPACING = 2, 2 -- unit per tile
-local RENDER_LAYER <const> = ecs.require "engine.render_layer".RENDER_LAYER
 
 local function print_camera_position()
     local mq = w:first("main_queue camera_ref:in render_target:in")
@@ -47,47 +46,52 @@ local ROAD_STATES<const> = {"normal", "remove", "modify"}
 local START_X<const>, START_Y<const> = 118, 118--CONSTANT.MAP_OFFSET, CONSTANT.MAP_OFFSET
 
 local function create_road()
-    local t = {}
     local x, y = START_X, START_Y
     for _, shape in ipairs(SHAPE_TYPES) do
         y = y + ROW_SPACING
         x = START_X
         for _, state in ipairs(ROAD_STATES) do
             for _, dir in ipairs(SHAPE_DIRECTIONS) do
-                t[#t+1] = {
-                    x, y, state, shape, dir
-                }
+                iroadnet:set("road", state, x, y, shape, dir)
                 x = x + COL_SPACING
             end
         end
     end
 
-    -- t[#t+1] = {START_X+0, START_Y, "valid", "L", "N"}
-    -- t[#t+1] = {START_X+3, START_Y, "valid", "L", "E"}
-    -- t[#t+1] = {START_X+6, START_Y, "valid", "L", "S"}
-    -- t[#t+1] = {START_X+9, START_Y, "valid", "L", "W"}
-    iroad:update(t, "road")
+    -- iroadnet:set("road", "valid", START_X+0, START_Y, "L", "N")
+    -- iroadnet:set("road", "valid", START_X+3, START_Y, "L", "E")
+    -- iroadnet:set("road", "valid", START_X+6, START_Y, "L", "S")
+    -- iroadnet:set("road", "valid", START_X+9, START_Y, "L", "W")
+    iroadnet:flush()
 end
 
 local function create_simple_road()
-    iroad:set("road", "valid", 0, 0, "O", "N")
-    iroad:flush()
+    iroadnet:update{
+        [terrain:get_group_id(0, 0)] = {
+            x=0, y=0,
+            pos = iroadnet:cvtcoord2pos(0, 0),
+            road = {
+                state = "valid",
+                shape = "O",
+                dir = "N",
+            }
+        }
+    }
 end
 
 local function create_mark()
-    local t = {}
     local x, y = START_X, START_Y
     for _, shape in ipairs(SHAPE_TYPES) do
         y = y + ROW_SPACING
         x = START_X
         for _, state in ipairs(INDICATOR_STATES) do
             for _, dir in ipairs(SHAPE_DIRECTIONS) do
-                t[#t+1] = {x, y, state, shape, dir}
+                iroadnet:set("indicator", state, x, y, shape, dir)
                 x = x + COL_SPACING
             end
         end
     end
-    iroad:update(t, "indicator")
+    iroadnet:flush()
 end
 
 local function create_road_mark()
@@ -98,17 +102,17 @@ local function create_road_mark()
 
         for _, dir in ipairs(SHAPE_DIRECTIONS) do
             for _, rstate in ipairs(ROAD_STATES) do
-                iroad:set("road", rstate, x, y, shape, dir)
+                iroadnet:set("road", rstate, x, y, shape, dir)
                 x = x + COL_SPACING
             end
     
             for _, istate in ipairs(INDICATOR_STATES) do
-                iroad:set("indicator", istate, x, y, shape, dir)
+                iroadnet:set("indicator", istate, x, y, shape, dir)
                 x = x + COL_SPACING
             end
         end
     end
-    iroad:flush()
+    iroadnet:flush()
 end
 
 local function move_camera()
@@ -136,7 +140,6 @@ function debug_road_sys:init_world()
 
     -- local iterrain  = ecs.require "ant.landform|terrain_system"
     -- iterrain.gen_terrain_field(CONSTANT.MAP_WIDTH, CONSTANT.MAP_HEIGHT, CONSTANT.MAP_OFFSET, CONSTANT.TILE_SIZE, RENDER_LAYER.TERRAIN)
-    iroad:init()
     DO_ONCE = 1
 end
 

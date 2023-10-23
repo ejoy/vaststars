@@ -244,13 +244,12 @@ function M:restore(index)
     iguide.init(import_package("vaststars.prototype")(guide))
 
     clean()
-    local renderData = {}
     for v in gameplay_core.select("road building:in") do
         local typeobject = iprototype.queryById(v.building.prototype)
         local shape = iroadnet_converter.to_shape(typeobject.name)
-        renderData[iprototype.packcoord(v.building.x, v.building.y)] = {v.building.x, v.building.y, "normal", shape, iprototype.dir_tostring(v.building.direction)}
+        iroadnet:set("road", v.building.x, v.building.y, "normal", shape, iprototype.dir_tostring(v.building.direction))
     end
-    iroadnet:init(renderData, true)
+    iroadnet:flush()
 
     local game_template = assert(gameplay_core.get_storage().game_template)
     local game_template_mineral = import_package("vaststars.prototype")(game_template).mineral
@@ -294,13 +293,12 @@ function M:restart(mode, game_template)
         igameplay.create_entity(e)
     end
 
-    local renderData = {}
     for _, road in ipairs(config.road or {}) do
         igameplay.create_entity(road)
         local shape, dir = iroadnet_converter.to_shape(road.prototype_name), road.dir
-        renderData[iprototype.packcoord(road.x, road.y)] = {road.x, road.y, "normal", shape, dir}
+        iroadnet:set("road", "normal", road.x, road.y, shape, dir)
     end
-    iroadnet:init(renderData, true)
+    iroadnet:flush()
 
     for _, e in ipairs(config.backpack or {}) do
         local typeobject = iprototype.queryByName(e.prototype_name)

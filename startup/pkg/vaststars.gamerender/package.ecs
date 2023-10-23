@@ -81,8 +81,8 @@ system "entity_object_system"
 system "debug_system"
     .implement "debug_system.lua"
 
-system "debug_road_system"
-    .implement "debug_road_system.lua"
+-- system "debug_road_system"
+--     .implement "debug_road_system.lua"
 
 system "update_system"
     .implement "update_system.lua"
