@@ -290,7 +290,6 @@ local function place(self, datamodel)
 
     iroadnet:update()
     gameplay_core.set_changed(CHANGED_FLAG_ROADNET)
-    task.update_progress("road_laying", 0)
 
     local dx, dy = iprototype.move_coord(x, y, self.forward_dir, ROAD_SIZE)
     self:new_entity(datamodel, self.typeobject, dx, dy)
@@ -298,7 +297,7 @@ local function place(self, datamodel)
     icamera_controller.focus_on_position(math3d.vector(terrain:get_position_by_coord(dx, dy, ROAD_SIZE, ROAD_SIZE)))
 
     ibackpack.pickup(gameplay_core.get_world(), typeobject.id, 1)
-    task.update_progress("road_laying", 1)
+    task.update_progress("is_road_connected")
 end
 
 local function clean(self, datamodel)

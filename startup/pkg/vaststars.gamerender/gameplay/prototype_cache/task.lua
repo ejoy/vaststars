@@ -1,12 +1,19 @@
 local iprototype = require "gameplay.interface.prototype"
 local gameplay_core = require "gameplay.core"
+local CONSTANT = require "gameplay.interface.constant"
+local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
 
 --[[
 custom_type :
-1. road_laying, count = x,
+1. is_road_connected
     task = {"unknown", 0, 1},
-    task_params = {},
-    count = xx,
+    task_params = {
+        path = {
+            {{117, 125}, {135, 125}},
+            ...
+        }
+    },
+    count = 1,
 2. lorry_count
     task = {"unknown", 0, 2},
     count = 2,
@@ -41,9 +48,50 @@ custom_type :
     task_params = {building = xx, }
     count = xx
 --]]
+
+local function check_path_connected(sx, sy, dx, dy, road)
+    assert(sx == dx or sy == dy)
+    local start, stop, step
+    if sx == dx then
+        start, stop, step = sy, dy, sy < dy and ROAD_SIZE or -ROAD_SIZE
+        for y = start, stop, step do
+            if not road[iprototype.packcoord(sx, y)] then
+                return false
+            end
+        end
+    else
+        start, stop, step = sx, dx, sx < dx and ROAD_SIZE or -ROAD_SIZE
+        for x = start, stop, step do
+            if not road[iprototype.packcoord(x, sy)] then
+                return false
+            end
+        end
+    end
+    return true
+end
+
 local custom_type_mapping = {
     [0] = {s = "undef", check = function() end}, -- TODO
-    [1] = {s = "road_laying", check = function(task_params, progress, count) return (progress or 0) + count end},
+    [1] = {s = "is_road_connected", check = function(task_params, progress)
+        local cache = {}
+        local gameplay_world = gameplay_core.get_world()
+        for e in gameplay_world.ecs:select "road building:in eid:in REMOVED:absent" do
+            cache[iprototype.packcoord(e.building.x, e.building.y)] = {
+                eid = e.eid,
+                x = e.building.x,
+                y = e.building.y,
+                prototype = iprototype.queryById(e.building.prototype).name,
+                direction = iprototype.dir_tostring(e.building.direction),
+            }
+        end
+
+        for _, v in ipairs(task_params.path) do
+            if not check_path_connected(v[1][1], v[1][2], v[2][1], v[2][2], cache) then
+                return progress
+            end
+        end
+        return 1
+    end},
     [2] = {s = "lorry_count", check = function(task_params)
         local ecs = gameplay_core.get_world().ecs
 
