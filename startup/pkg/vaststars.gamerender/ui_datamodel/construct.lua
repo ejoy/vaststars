@@ -574,7 +574,7 @@ function M.update(datamodel)
         local e = gameplay_core.get_entity(object.gameplay_eid)
         if e.chest then
             if not ibackpack.can_move_to_backpack(gameplay_world, e, typeobject.id) then
-                log.error("can not teardown")
+                log.error("backpack is full")
                 goto continue
             end
 
@@ -587,7 +587,12 @@ function M.update(datamodel)
             end
         end
 
+        if ibackpack.get_available_capacity(gameplay_world, typeobject.id, 1) <= 0 then
+            log.error("backpack is full")
+            goto continue
+        end
         ibackpack.place(gameplay_world, typeobject.id, 1)
+
         igameplay.destroy_entity(object.gameplay_eid)
         gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
 

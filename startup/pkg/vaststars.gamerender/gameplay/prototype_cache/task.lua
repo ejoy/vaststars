@@ -98,9 +98,22 @@ local custom_type_mapping = {
             return (progress or 0) + count
         end
     end, },
-    [10] = {s = "in_power_grid", check = function(task_params, progress, building, count)
+    [10] = {s = "in_one_power_grid", check = function(task_params, progress)
         local gameplay_world = gameplay_core.get_world()
         local ecs = gameplay_world.ecs
+
+        local c = 0
+        for i = 1, 255 do
+            local pg = ecs:object("powergrid", i+1)
+            if pg.active == 0 then
+                break
+            end
+            c = c + 1
+            if c > 1 then
+                return progress
+            end
+        end
+
         local count = 0
         for e in ecs:select "building:in capacitance:in road:absent eid:in" do
             local typeobject = iprototype.queryById(e.building.prototype)

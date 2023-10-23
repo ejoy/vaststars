@@ -93,7 +93,7 @@ local function getPickableCount(e)
             if c then -- the number of non-fluid outputs is greater than 1
                 return "+"
             end
-            c = ibackpack.get_moveable_count(gameplay_world, slot.item, ichest.get_amount(slot))
+            c = ibackpack.get_available_capacity(gameplay_world, slot.item, ichest.get_amount(slot))
             ::continue::
         end
         return c or 0
@@ -112,7 +112,7 @@ local function getPickableCount(e)
             if c then -- the number of non-fluid outputs is greater than 1
                 return "+"
             end
-            c = ibackpack.get_moveable_count(gameplay_world, slot.item, ichest.get_amount(slot))
+            c = ibackpack.get_available_capacity(gameplay_world, slot.item, ichest.get_amount(slot))
             ::continue::
         end
 
@@ -152,7 +152,7 @@ local function getPlaceableCount(e, typeobject)
         if available <= 0 then
             return 0
         end
-        return ibackpack.get_placeable_count(gameplay_world, ingredient, available)
+        return ibackpack.get_available_count(gameplay_world, ingredient, available)
 
     elseif hasPlaceItem(e, typeobject) then
         local c
@@ -167,7 +167,7 @@ local function getPlaceableCount(e, typeobject)
             assert(not iprototype.is_fluid_id(slot.item))
 
             local space = ichest.get_space(slot)
-            local available = ibackpack.get_placeable_count(gameplay_world, slot.item, space)
+            local available = ibackpack.get_available_count(gameplay_world, slot.item, space)
             if available < 0 then
                 goto continue
             end

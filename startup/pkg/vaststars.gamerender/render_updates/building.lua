@@ -50,7 +50,7 @@ function building_sys:gameworld_build()
             direction = iprototype.dir_tostring(e.building.direction),
         }
     end
-    itask.update_progress("in_power_grid")
+    itask.update_progress("in_one_power_grid")
 end
 
 function ibuilding.get(x, y)

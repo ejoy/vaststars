@@ -36,7 +36,7 @@ local function place(world, item, amount)
     return iBackpack.place(world, item, amount)
 end
 
-local function get_moveable_count(world, item, count)
+local function get_available_capacity(world, item, count)
     local limit = get_backpack_limit(item)
     local existing = iBackpack.query(world, item)
     if existing >= limit then
@@ -46,7 +46,7 @@ local function get_moveable_count(world, item, count)
     return math_min(limit - existing, count)
 end
 
-local function get_placeable_count(world, item, count)
+local function get_available_count(world, item, count)
     local existing = debugger.infinite_item and MAX_AMOUNT or iBackpack.query(world, item)
     return math_min(count, existing)
 end
@@ -82,7 +82,7 @@ local function backpack_to_chest(world, e, f)
             goto continue
         end
 
-        local c = get_placeable_count(world, slot.item, ichest.get_space(slot))
+        local c = get_available_count(world, slot.item, ichest.get_space(slot))
         if c <= 0 then
             goto continue
         end
@@ -134,7 +134,7 @@ local function backpack_to_assembling(world, e, f)
             goto continue
         end
 
-        local c = get_placeable_count(world, slot.item, n - amount)
+        local c = get_available_count(world, slot.item, n - amount)
         if c <= 0 then
             goto continue
         end
@@ -179,7 +179,7 @@ local function can_move_to_backpack(world, e, item)
         if slot.item ~= item then
             goto continue
         end
-        local count = get_moveable_count(world, slot.item, slot.amount)
+        local count = get_available_capacity(world, slot.item, slot.amount)
         if count < slot.amount then
             return false
         end
@@ -192,8 +192,8 @@ return {
     query = query,
     place = place,
     pickup = pickup,
-    get_moveable_count = get_moveable_count,
-    get_placeable_count = get_placeable_count,
+    get_available_capacity = get_available_capacity,
+    get_available_count = get_available_count,
     move_to_backpack = move_to_backpack,
     can_move_to_backpack = can_move_to_backpack,
     backpack_to_chest = backpack_to_chest,
