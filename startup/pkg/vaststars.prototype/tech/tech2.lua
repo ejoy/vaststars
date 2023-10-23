@@ -498,6 +498,9 @@ local prototype = gameplay.register.prototype
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
+    effects = {
+      unlock_recipe = {"蒸汽发电"},
+    },
     sign_desc = {
       { desc = "放置1台地下水挖掘机并确保连入电网", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
@@ -515,6 +518,6 @@ local prototype = gameplay.register.prototype
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "放置2台蒸汽发电机I并确保连入电网", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "放置1台蒸汽发电机I并确保连入电网", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
