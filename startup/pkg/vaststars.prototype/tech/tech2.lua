@@ -429,7 +429,7 @@ local prototype = gameplay.register.prototype
     type = { "task" },
     icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
     task = {"power_generator", 3},
-    count = 1500,
+    count = 1000,
     prerequisites = {"太阳能板制造"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
