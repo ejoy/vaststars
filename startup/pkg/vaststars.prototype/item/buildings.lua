@@ -507,6 +507,18 @@ prototype "科研中心III" {
     item_description = "致力于科学研究和开发活动的设施",
 }
 
+prototype "地质科研中心" {
+    type = {"item"},
+    item_category = "物流",
+    station_limit = 8,
+    hub_limit = 15,
+    backpack_limit = 20,
+    item_order = 10,
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/lab.texture",
+    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_description = "致力于科学研究和开发活动的设施",
+}
+
 prototype "物流站" {
     type = {"item"},
     item_category = "物流",

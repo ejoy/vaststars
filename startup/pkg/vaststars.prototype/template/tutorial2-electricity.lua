@@ -91,7 +91,7 @@ local entities = { {
   },{
     dir = "N",
     items = {},
-    prototype_name = "科研中心I",
+    prototype_name = "地质科研中心",
     x = 127,
     y = 135
   },}

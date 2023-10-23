@@ -100,7 +100,7 @@ local guide2 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..{/color:4bd0ff 组装机}设置配方{/g 地质科技包1}进行生产..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..{/color:4bd0ff 组装机}设置配方{/g 轻质石砖}进行生产..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
@@ -116,7 +116,7 @@ local guide2 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..设置{/color:4bd0ff 新仓库}收货{/g 碎石}、{/g 铁矿石}、{/g 铝矿石}、{/g 地质科技包}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..设置{/color:4bd0ff 新仓库}收货{/g 碎石}、{/g 铁矿石}、{/g 铝矿石}、{/g 轻质石砖}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
@@ -157,7 +157,7 @@ local guide2 = {
             guide_progress = 10,
         },
         prerequisites = {
-            "仓库互转",
+            "生产轻质石砖",
         },
 	},
 
@@ -168,7 +168,7 @@ local guide2 = {
         },
         narrative_end = {
             task = {
-                "太阳能发电",
+                "太阳能板铺设",
             },
             guide_progress = 10,
         },
@@ -185,13 +185,12 @@ local guide2 = {
         },
         narrative_end = {
             task = {
-                "太阳能制造技术",
-                -- "蓄电池铺设",
+                "蓄电池铺设",
             },
             guide_progress = 10,
         },
         prerequisites = {
-            "太阳能发电",
+            "太阳能板铺设",
         },
 	},
 
@@ -225,6 +224,23 @@ local guide2 = {
         },
         prerequisites = {
             "基地发电",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
+            {"哔哩..恭喜你结束了{/g 电网教学}..哔哩..(高兴)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            pop_chapter = {"祝贺","教学完成"},
+            task = {
+                "电网教学结束",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "启动科技研究",
         },
 	},
 }

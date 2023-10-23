@@ -52,6 +52,25 @@ prototype "科研中心I" {
     },
 }
 
+prototype "地质科研中心" {
+    type = {"building", "consumer","laboratory"},
+    chest_style = "chest",
+    model = "glbs/lab-1.glb|mesh.prefab",
+    model_status = {work = true, low_power = true},
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_lab.texture",
+    construct_detector = {"exclusive"},
+    area = "3x3",
+    power = "1MW",
+    speed = "100%",
+    sound = "building/lab",
+    camera_distance = 75,
+    drone_height = 42,
+    priority = "secondary",
+    inputs = {
+        "地质科技包",
+    },
+}
+
 prototype "科研中心II" {
     type = {"building", "consumer","laboratory"},
     chest_style = "chest",

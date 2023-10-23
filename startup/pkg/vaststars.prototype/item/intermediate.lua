@@ -62,6 +62,18 @@ prototype "石砖" {
     item_category = "物流",
 }
 
+prototype "轻质石砖" {
+    type = {"item"},
+    station_limit = 15,
+    hub_limit = 30,
+    backpack_limit = 50,
+    item_order = 1,
+    item_model = "glbs/stackeditems/stone-brick.glb|mesh.prefab",
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/stone-brick.texture",
+    item_description = "由天然石材制成的建筑材料",
+    item_category = "物流",
+}
+
 prototype "铁板" {
     type = {"item"},
     station_limit = 15,   --物品需要填写： 长 X 高
