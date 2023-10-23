@@ -34,6 +34,11 @@ local building_detail_config = {
 		"production_speed",
 		-- "productivity_bonus",
 	},
+	["轻型采矿机"] = {
+		"work_power",
+		"production_speed",
+		-- "productivity_bonus",
+	},
 	["粉碎机"] = {
 		"work_power",
 		"production_speed",

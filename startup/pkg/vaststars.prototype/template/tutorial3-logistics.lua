@@ -1,9 +1,9 @@
 local entities = { {
     dir = "N",
-    items = { { "物流站", 3 },{ "停车站", 1},{"砖石公路-X型",50},{"组装机I",15}},
+    items = { { "物流站", 3 },{ "停车站", 1},{"砖石公路-X型",50},{"铁制电线杆",15}},
     prototype_name = "机身残骸",
     x = 109,
-    y = 121
+    y = 138
   }, {
     dir = "N",
     items = {{ "轻型太阳能板", 2 },{ "蓄电池I", 4 },{ "仓库I", 1 }},
@@ -43,45 +43,33 @@ local entities = { {
   },{
     dir = "N",
     recipe = "铁矿石挖掘",
-    prototype_name = "采矿机I",
-    x = 105,
-    y = 127
-  },{
-    dir = "N",
-    recipe = "碎石挖掘",
-    prototype_name = "采矿机I",
+    prototype_name = "轻型采矿机",
     x = 105,
     y = 136
   },{
     dir = "N",
-    recipe = "铁矿石挖掘",
-    prototype_name = "采矿机I",
-    x = 115,
-    y = 136
-  },{
-    dir = "N",
     recipe = "碎石挖掘",
-    prototype_name = "采矿机I",
+    prototype_name = "轻型采矿机",
     x = 115,
     y = 127
   },{
     dir = "N",
     items = {},
     prototype_name = "组装机I",
-    x = 122,
-    y = 130
+    x = 150,
+    y = 129
   },{
     dir = "N",
     items = {},
     prototype_name = "熔炼炉I",
-    x = 126,
-    y = 130
+    x = 154,
+    y = 129
   },{
     dir = "N",
     items = {},
     prototype_name = "组装机I",
-    x = 130,
-    y = 130
+    x = 158,
+    y = 129
   },{
     dir = "N",
     items = {},
@@ -98,31 +86,31 @@ local entities = { {
     dir = "N",
     items = {},
     prototype_name = "无人机平台I",
-    x = 125,
+    x = 153,
     y = 133
   },{
     dir = "N",
     items = {},
     prototype_name = "无人机平台I",
-    x = 126,
+    x = 154,
     y = 133
   },{
     dir = "N",
     items = {},
     prototype_name = "仓库I",
-    x = 127,
+    x = 155,
     y = 133
   },{
     dir = "N",
     items = {},
     prototype_name = "无人机平台I",
-    x = 128,
+    x = 156,
     y = 133
   },{
     dir = "N",
     items = {},
     prototype_name = "无人机平台I",
-    x = 129,
+    x = 157,
     y = 133
   },{
     dir = "N",
@@ -160,9 +148,10 @@ local road = {}
 
 local mineral = {
   ["115,127"] = "碎石",
-  ["105,127"] = "铁矿石",
-  ["105,136"] = "碎石",
+  ["105,127"] = "碎石",
+  ["105,136"] = "铁矿石",
   ["115,136"] = "铁矿石",
+  ["156,100"] = "铝矿石",
 }
 
 return {

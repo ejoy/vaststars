@@ -35,14 +35,14 @@ local prototype = gameplay.register.prototype
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 111,
-        y = 123,
+        y = 140,
         w = 4.0,
         h = 4.0,
         show_arrow = true,
       },
       {
-        camera_x = 110,
-        camera_y = 122,
+        camera_x = 111,
+        camera_y = 138,
       },
     },
     sign_desc = {

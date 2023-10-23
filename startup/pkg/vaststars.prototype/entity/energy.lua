@@ -119,7 +119,7 @@ prototype "轻型风力发电机" {
     construct_detector = {"exclusive"},
     type = {"building", "generator", "wind_turbine"},
     area = "3x3",
-    power = "600kW",
+    power = "400kW",
     priority = "primary",
     building_menu = false,
     power_network_link = true,
