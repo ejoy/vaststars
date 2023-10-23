@@ -58,14 +58,14 @@ local function _get_connections(prototype_name, x, y, dir)
     return r
 end
 
-local function _get_road_entrance_position(typeobject, dir, position)
+local function _get_road_entrance_srt(typeobject, dir, position)
     if not typeobject.crossing then
         return
     end
 
     local conn  = typeobject.crossing.connections[1]
     local ox, oy, ddir = iprototype.rotate_connection(conn.position, dir, typeobject.area)
-    return srt.new({t = math3d.add(position, {ox * terrain.tile_size / 2, 0, oy * terrain.tile_size / 2})}), ddir
+    return srt.new({t = math3d.add(position, {ox * terrain.tile_size / 2, 0, oy * terrain.tile_size / 2}), r = ROTATORS[ddir]})
 end
 
 local function __align(prototype_name, dir)
@@ -252,14 +252,13 @@ local function __new_entity(self, datamodel, typeobject)
 
     __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject)
 
-    local road_entrance_position, road_entrance_dir = _get_road_entrance_position(typeobject, dir, self.pickup_object.srt.t)
+    local srt = _get_road_entrance_srt(typeobject, dir, self.pickup_object.srt.t)
     local w, h = iprototype.rotate_area(typeobject.area, dir)
     local self_selected_boxes_position = terrain:get_position_by_coord(x, y, w, h)
-    if road_entrance_position then
-        local srt = {t = road_entrance_position, r = ROTATORS[road_entrance_dir]}
+    if srt then
         if datamodel.show_confirm then
             if not self.road_entrance then
-                self.road_entrance = create_road_entrance(srt, "valid")
+                self.road_entrance = create_road_entrance(srt.t, "valid")
             else
                 self.road_entrance:set_state("valid")
             end
@@ -271,7 +270,7 @@ local function __new_entity(self, datamodel, typeobject)
             end
         else
             if not self.road_entrance then
-                self.road_entrance = create_road_entrance(srt, "invalid")
+                self.road_entrance = create_road_entrance(srt.t, "invalid")
             else
                 self.road_entrance:set_state("invalid")
             end
@@ -452,9 +451,9 @@ local function rotate(self, datamodel, dir, delta_vec)
     pickup_object.dir = iprototype.dir_tostring(dir)
     pickup_object.srt.r = ROTATORS[pickup_object.dir]
 
-    local road_entrance_position, ddir = _get_road_entrance_position(typeobject, pickup_object.dir, pickup_object.srt.t)
-    if road_entrance_position then
-        self.road_entrance:set_srt(mc.ONE, ROTATORS[ddir], road_entrance_position)
+    local srt = _get_road_entrance_srt(typeobject, pickup_object.dir, pickup_object.srt.t)
+    if srt then
+        self.road_entrance:set_srt(srt.s, srt.r, srt.t)
     end
 
     local w, h = iprototype.rotate_area(typeobject.area, pickup_object.dir)
@@ -472,9 +471,9 @@ local function touch_move(self, datamodel, delta_vec)
             self.grid_entity:set_position(__calc_grid_position(typeobject, self.pickup_object.x, self.pickup_object.y, self.pickup_object.dir))
         end
 
-        local road_entrance_position, road_entrance_dir = _get_road_entrance_position(typeobject, self.pickup_object.dir, self.pickup_object.srt.t)
-        assert(road_entrance_position)
-        self.road_entrance:set_srt(mc.ONE, ROTATORS[road_entrance_dir], road_entrance_position)
+        local srt = _get_road_entrance_srt(typeobject, self.pickup_object.dir, self.pickup_object.srt.t)
+        assert(srt)
+        self.road_entrance:set_srt(srt.s, srt.r, srt.t)
 
         local position, x, y = __align(self.pickup_object.prototype_name, self.pickup_object.dir)
         if position then
@@ -534,8 +533,9 @@ local function touch_end(self, datamodel)
         end
     end
 
-    local road_entrance_position, road_entrance_dir = _get_road_entrance_position(typeobject, self.pickup_object.dir, self.pickup_object.srt.t)
-    self.road_entrance:set_srt(mc.ONE, ROTATORS[road_entrance_dir], road_entrance_position)
+    local srt= _get_road_entrance_srt(typeobject, self.pickup_object.dir, self.pickup_object.srt.t)
+    assert(srt)
+    self.road_entrance:set_srt(srt.s, srt.r, srt.t)
 
     local w, h = iprototype.rotate_area(typeobject.area, self.pickup_object.dir)
     local self_selected_boxes_position = terrain:get_position_by_coord(pickup_object.x, pickup_object.y, w, h)

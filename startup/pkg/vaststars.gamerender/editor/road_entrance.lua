@@ -35,12 +35,15 @@ local imaterial = ecs.require "ant.asset|material"
 local function createPrefabInst(prefab, position)
     prefab = assert(prefab:match("(.*%.glb|).*%.prefab"))
     prefab = prefab .. "translucent.prefab"
+    position = math3d.mark(position)
 
     return world:create_instance {
         prefab = prefab,
         on_ready = function (self)
             local root <close> = world:entity(self.tag['*'][1])
-            iom.set_position(root, math3d.vector(position))
+
+            math3d.unmark(position)
+            iom.set_position(root, position)
             for _, eid in ipairs(self.tag['*']) do
                 local e <close> = world:entity(eid, "render_object?in")
                 if e.render_object then
@@ -65,7 +68,7 @@ local function createPrefabInst(prefab, position)
     }
 end
 
-return function(srt, state)
+return function(position, state)
     local arrow_color
     if state == "valid" then
         arrow_color = ARROW_VALID
@@ -75,7 +78,7 @@ return function(srt, state)
 
     local M = {}
 
-    M.arrow = createPrefabInst("/pkg/vaststars.resources/glbs/road/station_indicator.glb|mesh.prefab", srt.t)
+    M.arrow = createPrefabInst("/pkg/vaststars.resources/glbs/road/station_indicator.glb|mesh.prefab", position)
     world:instance_message(M.arrow, "material", "set_property", "u_basecolor_factor", arrow_color)
 
     return setmetatable(M, mt)

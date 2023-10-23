@@ -6,8 +6,18 @@ local ROTATORS <const> = CONSTANT.ROTATORS
 local DEFAULT_DIR <const> = CONSTANT.DEFAULT_DIR
 local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
 local CHANGED_FLAG_ROADNET <const> = CONSTANT.CHANGED_FLAG_ROADNET
-local DIR_MOVE_DELTA <const> = CONSTANT.DIR_MOVE_DELTA
 local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
+local DIRECTION <const> = CONSTANT.DIRECTION
+local WORLD_MOVE_DELTA <const> = {
+    ['N'] = {x = 0,  y = 1},
+    ['E'] = {x = 1,  y = 0},
+    ['S'] = {x = 0,  y = -1},
+    ['W'] = {x = -1, y = 0},
+    [DIRECTION.N] = {x = 0,  y = 1},
+    [DIRECTION.E] = {x = 1,  y = 0},
+    [DIRECTION.S] = {x = 0,  y = -1},
+    [DIRECTION.W] = {x = -1, y = 0},
+}
 
 local math3d = require "math3d"
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
@@ -172,7 +182,7 @@ local function new_entity(self, datamodel, typeobject, x, y)
                 if msg == "on_position_change" then
                     local building_srt = ...
                     local position = building_srt.t
-                    local delta = DIR_MOVE_DELTA[self.forward_dir]
+                    local delta = WORLD_MOVE_DELTA[self.forward_dir]
                     local x, z = math3d.index(position, 1) + delta.x * terrain.tile_size * ROAD_SIZE, math3d.index(position, 3) + delta.y * terrain.tile_size * ROAD_SIZE
 
                     local root <close> = world:entity(instance.tag['*'][1])

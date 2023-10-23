@@ -134,7 +134,10 @@ local function get_display_info(e, typeobject, t)
                             status = (e.solar_panel.efficiency > 0 and STATUS_DISCHARGE or STATUS_STOP_DISCHARGE)
                         elseif st then
                             -- power is sum of 50 tick
-                            current = st["power"] * (UPS / st.power_count)
+                            current = st["power"] * UPS
+                            if st.power_count ~= 0 then
+                                current = current / st.power_count
+                            end
                             if typeobject.name == "蓄电池I" then
                                 if (cn == "charge_power" and e.capacitance.delta > 0) or (cn == "power" and e.capacitance.delta < 0) then
                                     current = 0
