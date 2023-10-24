@@ -17,11 +17,11 @@ local function readall(file)
 end
 
 local function fetch_all_archiving(root)
+    local r = {}
     if not fs.exists(root) then
-        fs.create_directories(root)
+        return r
     end
 
-    local r = {}
     for path in fs.pairs(root) do
         if not fs.is_directory(path) then
             goto continue
