@@ -217,7 +217,7 @@ function drone_sys:gameworld_update()
             goto continue
         end
         if not lookup_drones[e.eid] then
-            lookup_drones[e.eid] = create_drone(drone.prev_x, drone.prev_y, drone.prev_slot)
+            lookup_drones[e.eid] = create_drone(drone.prev_x, drone.prev_y, drone.prev_slot + 1)
         else
             local current = lookup_drones[e.eid]
             if drone.item ~= 0 then
@@ -246,8 +246,8 @@ function drone_sys:gameworld_update()
                         same_dest_offset[flyid] = same_dest_offset[flyid] - (drone_offset / 2)
                     end
 
-                    local from = getPosition(drone.prev_x, drone.prev_y, drone.prev_slot)
-                    local to = getPosition(drone.next_x, drone.next_y, drone.next_slot)
+                    local from = getPosition(drone.prev_x, drone.prev_y, drone.prev_slot + 1)
+                    local to = getPosition(drone.next_x, drone.next_y, drone.next_slot + 1)
                     local fly_height = get_fly_height(drone.prev_x, drone.prev_y, drone.next_x, drone.next_y)
                     -- status : go_home
                     if isHome(drone.next_x, drone.next_y) then

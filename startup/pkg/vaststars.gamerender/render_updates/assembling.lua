@@ -47,6 +47,9 @@ local gameplay = import_package "vaststars.gameplay"
 local ichimney = gameplay.interface "chimney"
 local ichest = require "gameplay.interface.chest"
 local math3d = require "math3d"
+local vsobject_manager = ecs.require "vsobject_manager"
+local terrain = ecs.require "terrain"
+local iworld = require "gameplay.interface.world"
 
 local function __get_texture_size(materialpath)
     local res = assetmgr.resource(materialpath)
@@ -301,9 +304,6 @@ local function create_consumer_icon(object_id, building_srt)
     }
 end
 
-local terrain = ecs.require "terrain"
-local iworld = require "gameplay.interface.world"
-
 local function __find_neighbor_fluid(gameplay_world, x, y, dir, ground)
     local succ, dx, dy = false, x, y
     for i = 1, ground or 1 do
@@ -412,6 +412,11 @@ function assembling_sys:gameworld_prebuild()
     end
 end
 
+local function getGameObject(object)
+    local vsobject = assert(vsobject_manager:get(object.id), ("(%s) vsobject not found"):format(object.prototype_name))
+    return vsobject.game_object
+end
+
 function assembling_sys:gameworld_build()
     local gameplay_world = gameplay_core.get_world()
     for e in gameplay_world.ecs:select "assembling:in building:in chest:in" do
@@ -436,26 +441,11 @@ function assembling_sys:gameworld_build()
                 building.io_shelves = nil
             end
         else
-            local typeobject_recipe = iprototype.queryById(e.assembling.recipe)
-            local ingredients_n <const> = #typeobject_recipe.ingredients//4 - 1
-            local results_n <const> = #typeobject_recipe.results//4 - 1
-            local items = {}
-            for idx = 1, ingredients_n + results_n do
-                local slot = assert(ichest.get(gameplay_world, e.chest, idx))
-                local typeobject_item = iprototype.queryById(slot.item)
-                if iprototype.has_type(typeobject_item.type, "item") then
-                    items[idx] = {item = slot.item, amount = slot.amount}
-                end
-            end
-
             local io_shelves = building.io_shelves
             if io_shelves then
-                if io_shelves:get_recipe() ~= e.assembling.recipe then
-                    io_shelves:remove()
-                    building.io_shelves = create_io_shelves(group, e.building.prototype, e.assembling.recipe, object.srt, items)
-                end
+                building.io_shelves:update(gameplay_world, e, getGameObject(object))
             else
-                building.io_shelves = create_io_shelves(group, e.building.prototype, e.assembling.recipe, object.srt, items)
+                building.io_shelves = create_io_shelves(gameplay_world, e, getGameObject(object))
             end
         end
 
@@ -494,7 +484,7 @@ local update = interval_call(300, function()
                 local slot = assert(ichest.get(gameplay_world, e.chest, idx))
                 local typeobject_item = iprototype.queryById(slot.item)
                 if iprototype.has_type(typeobject_item.type, "item") then
-                    io_shelves:update(idx, slot.amount)
+                    io_shelves:update_item(idx, slot.amount)
                     ing_res_motion:update(idx, slot.item, slot.amount)
                 end
             end

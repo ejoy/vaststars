@@ -5,7 +5,7 @@ path: /-
 value:
   data:
     scene:
-      r: {0, 1, 0, -4.371138828673793e-08}
+      r: {0, 0, 0, 1}
       t: {0, 11, 11}
     slot:
       follow_flag: 1
@@ -22,7 +22,7 @@ path: /-
 value:
   data:
     scene:
-      r: {0, 1, 0, -4.371138828673793e-08}
+      r: {0, 0, 0, 1}
       t: {6, 11, 11}
     slot:
       follow_flag: 1
@@ -39,7 +39,7 @@ path: /-
 value:
   data:
     scene:
-      r: {0, 1, 0, -4.371138828673793e-08}
+      r: {0, 0, 0, 1}
       t: {-6, 11, 11}
     slot:
       follow_flag: 1
@@ -56,6 +56,7 @@ path: /-
 value:
   data:
     scene:
+      r: {0, -1, 0, -4.371138828673793e-08}
       t: {0, 8, -11}
     slot:
       follow_flag: 1
@@ -72,6 +73,7 @@ path: /-
 value:
   data:
     scene:
+      r: {0, -1, 0, -4.371138828673793e-08}
       t: {6, 8, -11}
     slot:
       follow_flag: 1
@@ -88,6 +90,7 @@ path: /-
 value:
   data:
     scene:
+      r: {0, -1, 0, -4.371138828673793e-08}
       t: {-6, 8, -11}
     slot:
       follow_flag: 1
@@ -140,3 +143,81 @@ value:
     ant.render|hitch_object
   tag:
     hitch
+  ---
+  data:
+    scene:
+      r: {-0, 0, 0, 1}
+      t: {0, 11, 11}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    shelf2
+  ---
+  data:
+    scene:
+      r: {-0, 0, 0, 1}
+      t: {6, 11, 11}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    shelf3
+  ---
+  data:
+    scene:
+      r: {-0, 0, 0, 1}
+      t: {-6, 11, 11}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    shelf1
+  ---
+  data:
+    scene:
+      r: {0, -1, 0, -4.371138828673793e-08}
+      t: {0, 8, -11}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    shelf5
+  ---
+  data:
+    scene:
+      r: {0, -1, 0, -4.371138828673793e-08}
+      t: {6, 8, -11}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    shelf6
+  ---
+  data:
+    scene:
+      r: {0, -1, 0, -4.371138828673793e-08}
+      t: {-6, 8, -11}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    shelf4

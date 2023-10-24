@@ -268,7 +268,17 @@ local function place(self, datamodel)
     end
     assert(x % 2 == 0 and y % 2 == 0)
 
-    local mask = getRoad(x, y) or 0
+    local mask = getRoad(x, y)
+    if not mask then
+        local gameplay_world = gameplay_core.get_world()
+        if ibackpack.query(gameplay_world, self.typeobject.id) < 1 then
+            return
+        end
+        assert(ibackpack.pickup(gameplay_world, self.typeobject.id, 1))
+
+        mask = 0
+    end
+
     for _, dir in ipairs(CONSTANT.ALL_DIR_NUM) do
         local dx, dy = iprototype.move_coord(x, y, dir, ROAD_SIZE, ROAD_SIZE)
         local m = getRoad(dx, dy)

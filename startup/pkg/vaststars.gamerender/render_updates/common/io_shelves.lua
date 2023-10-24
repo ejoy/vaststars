@@ -2,51 +2,24 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local math3d = require "math3d"
-local iom = ecs.require "ant.objcontroller|obj_motion"
-local iprototype = require "gameplay.interface.prototype"
-local shelf_matrices = require "render_updates.common.shelf_matrices"
-local ivs = ecs.require "ant.render|visible_state"
-local get_shelf_matrices = shelf_matrices.get_shelf_matrices
-local get_item_matrices = shelf_matrices.get_item_matrices
-
 local PREFABS <const> = {
     ["in"]  = "/pkg/vaststars.resources/glbs/belt.glb|input.prefab",
     ["out"] = "/pkg/vaststars.resources/glbs/belt.glb|output.prefab",
 }
+local BUILDING_IO_SLOTS <const> = import_package "vaststars.prototype"("building_io_slots")
+
+local math3d = require "math3d"
+local ivs = ecs.require "ant.render|visible_state"
+local terrain = ecs.require "terrain"
+local iprototype = require "gameplay.interface.prototype"
+local ichest = require "gameplay.interface.chest"
+local iom = ecs.require "ant.objcontroller|obj_motion"
 
 local mt = {}
 mt.__index = mt
 
-local function __create_shelves(group_id, recipe, shelf_matrices)
-    local typeobject_recipe = iprototype.queryById(recipe)
-    local ingredients_n <const> = #typeobject_recipe.ingredients//4 - 1
-
-    local objects = {}
-    for idx, mat in pairs(shelf_matrices) do
-        objects[idx] = world:create_instance {
-            prefab = (idx <= ingredients_n) and PREFABS["in"] or PREFABS["out"],
-            group = group_id,
-            on_ready = function (self)
-                local root <close> = world:entity(self.tag["*"][1], "scene:in")
-                iom.set_srt(root, math3d.srt(math3d.mul(mat, math3d.matrix(root.scene))))
-            end,
-            on_message = function (self, event, mat, group_id) -- TODO: group_id
-                assert(event == "on_position_change", "invalid message")
-                local root <close> = world:entity(self.tag["*"][1], "scene:in")
-                iom.set_srt(root, math3d.srt(math3d.mul(mat, math3d.matrix(root.scene))))
-            end
-        }
-    end
-    return objects
-end
-
-local prefabEvents = {}
-prefabEvents["on_position_change"] = function (self, mat, group_id)
-    local root <close> = world:entity(self.tag["*"][1])
-    iom.set_srt(root, math3d.srt(mat))
-end
-prefabEvents["show"] = function (self, show)
+local item_events = {}
+item_events["show"] = function (self, show)
     for _, eid in ipairs(self.tag["*"]) do
         local e <close> = world:entity(eid, "visible_state?in")
         if e.visible_state then
@@ -55,53 +28,49 @@ prefabEvents["show"] = function (self, show)
     end
 end
 
-local function __create_item(group_id, item_mat, item, amount)
+local function create_item(group_id, item, amount)
     local typeobject_item = iprototype.queryById(item)
     assert(typeobject_item.item_model, ("no pile model: %s"):format(typeobject_item.name))
     local prefab = "/pkg/vaststars.resources/" .. typeobject_item.item_model
 
-    local s, r, t = math3d.srt(item_mat)
     return world:create_instance {
         group = group_id,
         prefab = prefab,
         on_message = function (self, event, ...)
-            assert(prefabEvents[event], "invalid message")
-            prefabEvents[event](self, ...)
+            assert(item_events[event], "invalid message")
+            item_events[event](self, ...)
         end,
         on_ready = function (self)
-            local root <close> = world:entity(self.tag['*'][1])
-            iom.set_srt(root, s, r, t)
-
             if amount <= 0 then
-                for _, eid in ipairs(self.tag["*"]) do
-                    local e <close> = world:entity(eid, "visible_state?in")
-                    if e.visible_state then
-                        ivs.set_state(e, "main_view", false)
-                    end
-                end
+                item_events["show"](self, false)
             end
         end
     }
 end
 
-local function __create_items(group_id, item_matrices, items)
-    local t = {}
-    local item_shows = {}
+local function create_shelf(self, gameplay_world, e, game_object, shelf_prefab, shelf_slot_name, idx)
+    local group_id = terrain:get_group_id(e.building.x, e.building.y)
+    local slot = assert(ichest.get(gameplay_world, e.chest, idx))
+    local typeobject_item = iprototype.queryById(slot.item)
+    if iprototype.has_type(typeobject_item.type, "item") then
+        local shelf = world:create_instance {
+            prefab = shelf_prefab,
+            group = group_id,
+            on_message = function(self, msg, slot_name, instance)
+                assert(msg == "attach")
+                local eid = assert(self.tag[slot_name][1])
+                world:instance_set_parent(instance, eid)
+            end
+        }
+        game_object:send("attach", shelf_slot_name, shelf)
+        self._shelves[idx] = shelf
 
-    for idx, v in pairs(items) do
-        assert(item_matrices[idx])
-        t[idx] = __create_item(group_id, item_matrices[idx], v.item, v.amount)
-        item_shows[idx] = v.amount > 0
-    end
-    return t, item_shows
-end
+        local item = create_item(group_id, slot.item, slot.amount)
+        world:instance_message(shelf, "attach", "item_slot", item)
+        self._items[idx] = item
 
-local function __get_item_positions(item_matrices)
-    local positions = {}
-    for idx, mat in pairs(item_matrices) do
-        positions[idx] = math3d.ref(math3d.index(mat, 4))
+        self._item_shows[idx] = slot.amount > 0
     end
-    return positions
 end
 
 function mt:get_recipe()
@@ -109,39 +78,50 @@ function mt:get_recipe()
 end
 
 function mt:get_item_position(idx)
-    return self._item_positions[idx]
+    local item = self._items[idx]
+    if not item then
+        return
+    end
+    local _, _, t = math3d.srt(iom.worldmat(world:entity(item.tag["*"][1])))
+    return t
 end
 
 --
 function mt:remove()
-    self._shelf_matrices = {}
-    self._item_matrices = {}
-    self._item_positions = {}
-
-    for _, o in pairs(self._shelves) do
-        world:remove_instance(o)
-    end
-    self._shelves = {}
     for _, o in pairs(self._items) do
         world:remove_instance(o)
     end
     self._items = {}
+    for _, o in pairs(self._shelves) do
+        world:remove_instance(o)
+    end
+    self._shelves = {}
+    self._item_shows = {}
+end
+
+local function rebuild(self, gameplay_world, e, game_object)
+    local typeobject_recipe = iprototype.queryById(e.assembling.recipe)
+    local ingredients_n <const> = #typeobject_recipe.ingredients//4 - 1
+    local results_n <const> = #typeobject_recipe.results//4 - 1
+    local key = ("%s%s"):format(ingredients_n, results_n)
+    local cfg = assert(BUILDING_IO_SLOTS[key], "BUILDING_IO_SLOTS[" .. key .. "] not found")
+
+    for i = 1, #cfg.in_slots do
+        local idx = i
+        create_shelf(self, gameplay_world, e, game_object, PREFABS["in"], "shelf".. cfg.in_slots[i], idx)
+    end
+
+    for i = 1, #cfg.out_slots do
+        local idx = i + ingredients_n
+        create_shelf(self, gameplay_world, e, game_object, PREFABS["out"], "shelf".. cfg.out_slots[i], idx)
+    end
 end
 
 function mt:on_position_change(building_srt, group_id)
-    self._shelf_matrices = get_shelf_matrices(self._building, self._recipe, math3d.matrix(building_srt))
-    self._item_matrices = get_item_matrices(self._recipe, self._shelf_matrices)
-    self._item_positions = __get_item_positions(self._item_matrices)
-
-    for idx, o in pairs(self._shelves) do
-        world:instance_message(o, "on_position_change", self._shelf_matrices[idx], group_id)
-    end
-    for idx, o in pairs(self._items) do
-        world:instance_message(o, "on_position_change", self._item_matrices[idx], group_id)
-    end
+    -- TODO: implement this
 end
 
-function mt:update(idx, amount)
+function mt:update_item(idx, amount)
     assert(self._items[idx])
     assert(self._item_shows[idx] ~= nil)
 
@@ -152,20 +132,23 @@ function mt:update(idx, amount)
     end
 end
 
+function mt:update(gameplay_world, e, game_object)
+    if self._recipe ~= e.assembling.recipe then
+        self:remove()
+        self._recipe = e.assembling.recipe
+        rebuild(self, gameplay_world, e, game_object)
+    end
+end
+
 local m = {}
-function m.create(group_id, building, recipe, building_srt, items)
+function m.create(gameplay_world, e, game_object)
     local self = setmetatable({}, mt)
-    self._building = building
-    self._recipe = recipe
+    self._recipe = e.assembling.recipe
+    self._shelves = {}
+    self._items = {}
     self._item_shows = {}
 
-    self._shelf_matrices = get_shelf_matrices(self._building, self._recipe, math3d.matrix(building_srt))
-    self._item_matrices = get_item_matrices(self._recipe, self._shelf_matrices)
-    self._item_positions = __get_item_positions(self._item_matrices)
-
-    self._shelves = __create_shelves(group_id, self._recipe, self._shelf_matrices)
-    self._items, self._item_shows = __create_items(group_id, self._item_matrices, items)
-
+    rebuild(self, gameplay_world, e, game_object)
     return self
 end
 return m

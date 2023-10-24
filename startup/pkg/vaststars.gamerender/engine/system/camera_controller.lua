@@ -104,8 +104,7 @@ local function toggle_view(v, cur_xzpoint)
     assert(math3d.index(cur_xzpoint, 2) == 0, "y axis should be zero!")
 
     local function get_dst_rt_sample(sr, st, dr, xzpoint, src_vm, pm, delta_dis)
-        local mq = w:first("main_queue camera_ref:in render_target:in")
-        local vr = mq.render_target.view_rect
+        local vr = irq.view_rect("main_queue")
         local src_vp = math3d.mul(pm, src_vm)
         local screen_point = mu.world_to_screen(src_vp, vr, xzpoint)
 
@@ -346,7 +345,7 @@ function camera_controller:camera_usage()
     __handle_camera_motion()
 end
 
--- the following interfaces must be called during the `camera_usage` stage
+-- the following interfaces must be called after the `camera_usage` stage
 function icamera_controller.screen_to_world(x, y, plane, vp)
     local ce <close> = world:entity(irq.main_camera(), "camera:in")
     local vpmat = vp and vp or ce.camera.viewprojmat
