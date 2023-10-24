@@ -160,6 +160,12 @@ function debug_sys:ui_update()
                         __get_capacitance(gameplay_eid).delta,
                         __get_detail_str(gameplay_eid)
                     ))
+            else
+                local ibuilding = ecs.require "render_updates.building"
+                local road = ibuilding.get(coord[1]//2*2, coord[2]//2*2)
+                if road then
+                    log.info(("road: (%s,%s)"):format(road.x, road.y))
+                end
             end
         end
     end

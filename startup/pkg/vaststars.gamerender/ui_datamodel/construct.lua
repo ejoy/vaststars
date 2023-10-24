@@ -857,10 +857,17 @@ function M.update(datamodel)
         if selected_obj.get_pos then
             icamera_controller.focus_on_position(math3d.vector(selected_obj:get_pos()))
         end
-
         local typeobject = iprototype.queryByName(prototype_name)
         assert(typeobject.base)
         typeobject = iprototype.queryByName(typeobject.base)
+
+        local gameplay_world = gameplay_core.get_world()
+        if ibackpack.get_available_capacity(gameplay_world, typeobject.id, 1) <= 0 then
+            log.error("backpack is full")
+            goto continue
+        end
+        ibackpack.place(gameplay_world, typeobject.id, 1)
+
         builder_ui = "/pkg/vaststars.resources/ui/construct_road_or_pipe.rml"
         builder_datamodel = iui.get_datamodel("/pkg/vaststars.resources/ui/construct_road_or_pipe.rml")
         builder = create_roadbuilder()
@@ -870,6 +877,8 @@ function M.update(datamodel)
             gameplay_core.world_update = true
             __clean(datamodel)
         end)
+
+        ::continue::
     end
 
     for _ in backpack_mb:unpack() do

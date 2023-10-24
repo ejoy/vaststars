@@ -9,6 +9,7 @@ local mu, mc = mathpkg.util, mathpkg.constant
 local irq = ecs.require "ant.render|render_system.renderqueue"
 local ic = ecs.require "ant.camera|camera"
 local create_queue = require("utility.queue")
+local create_mathqueue = require("utility.mathqueue")
 local hierarchy = require "hierarchy"
 local animation = hierarchy.animation
 local skeleton = hierarchy.skeleton
@@ -60,7 +61,7 @@ local CAMERA_ZAIXS_MIN <const> = -1450
 local CAMERA_ZAIXS_MAX <const> = 800
 
 local cam_cmd_queue = create_queue()
-local cam_motion_matrix_queue = create_queue()
+local cam_motion_matrix_queue = create_mathqueue()
 local LockAxis
 
 local function __clamp(v, min, max)
@@ -95,9 +96,10 @@ end
 
 local  dst_r, dst_t, delta_dis, view_mat, last_xzpoint, last_view
 
-local function toggle_view(v, cur_xzpoint, snum)
+local function toggle_view(v, cur_xzpoint)
+    math3d.unmark(cur_xzpoint)
 
-    local sample_num = snum and snum or 15
+    local sample_num = 15
     local ce <close> = world:entity(irq.main_camera(), "camera:in scene:in")
     assert(math3d.index(cur_xzpoint, 2) == 0, "y axis should be zero!")
 
@@ -142,7 +144,7 @@ local function toggle_view(v, cur_xzpoint, snum)
             dst_table[#dst_table+1] = math3d.matrix{r = cur_dst_r, t = cur_dst_t}
             cur_src_r, cur_src_t = cur_dst_r, cur_dst_t
         end
-        return dst_table, math3d.mark(cur_src_t)
+        return dst_table, cur_src_t
     end
 
     local function get_delta_distance(sr, st, dr, dt, xzpoint)
@@ -243,12 +245,14 @@ local function __add_camera_track(s, r, t)
     local ratio = 0
     local step = 2 / 30
 
+    local t = {}
     while ratio <= 1.0 do
         poseresult:do_sample(animation.new_sampling_context(1), ani, ratio, 0)
         poseresult:fetch_result()
-        cam_motion_matrix_queue:push( math3d.mark(poseresult:joint(1)) )
+        t[#t +1] = poseresult:joint(1)
         ratio = ratio + step
     end
+    cam_motion_matrix_queue:push(t)
 end
 
 local function __handle_camera_motion()
@@ -263,9 +267,7 @@ local function __handle_camera_motion()
             __add_camera_track(focus_on_position(table.unpack(c, 2)))
         elseif c[1] == "toggle_view" then
             local t = toggle_view(table.unpack(c, 2))
-            for _, mat in ipairs(t) do
-                cam_motion_matrix_queue:push(math3d.mark(mat))
-            end
+            cam_motion_matrix_queue:push(t)
         elseif c[1] == "callback" then
             c[2]()
         elseif c[1] == "set_camera_from_prefab" then
@@ -280,8 +282,6 @@ local function __handle_camera_motion()
     if cam_motion_matrix_queue:size() > 0 then
         local mat = cam_motion_matrix_queue:pop()
         if mat then
-            math3d.unmark(mat)
-
             local ce <close> = world:entity(irq.main_camera())
             iom.set_srt(ce, math3d.srt(mat))
             world:pub {"dragdrop_camera"}

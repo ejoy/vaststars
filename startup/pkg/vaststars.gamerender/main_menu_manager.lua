@@ -25,10 +25,6 @@ local function continue_game()
 end
 
 local function load_game(index)
-    if not archiving.check(index) then
-        log.error("invalid index: %s", index)
-        return
-    end
     global.startup_args = {"load_game", index}
     rebot()
     return true
