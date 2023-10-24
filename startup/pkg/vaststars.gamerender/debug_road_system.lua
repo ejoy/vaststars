@@ -52,16 +52,16 @@ local function create_road()
         x = START_X
         for _, state in ipairs(ROAD_STATES) do
             for _, dir in ipairs(SHAPE_DIRECTIONS) do
-                iroadnet:set("road", state, x, y, shape, dir)
+                iroadnet:set("road", x, y, state, shape, dir)
                 x = x + COL_SPACING
             end
         end
     end
 
-    -- iroadnet:set("road", "valid", START_X+0, START_Y, "L", "N")
-    -- iroadnet:set("road", "valid", START_X+3, START_Y, "L", "E")
-    -- iroadnet:set("road", "valid", START_X+6, START_Y, "L", "S")
-    -- iroadnet:set("road", "valid", START_X+9, START_Y, "L", "W")
+    -- iroadnet:set("road", START_X+0, START_Y, "valid", "L", "N")
+    -- iroadnet:set("road", START_X+3, START_Y, "valid", "L", "E")
+    -- iroadnet:set("road", START_X+6, START_Y, "valid", "L", "S")
+    -- iroadnet:set("road", START_X+9, START_Y, "valid", "L", "W")
     iroadnet:flush()
 end
 
@@ -102,12 +102,12 @@ local function create_road_mark()
 
         for _, dir in ipairs(SHAPE_DIRECTIONS) do
             for _, rstate in ipairs(ROAD_STATES) do
-                iroadnet:set("road", rstate, x, y, shape, dir)
+                iroadnet:set("road", x, y, rstate, shape, dir)
                 x = x + COL_SPACING
             end
     
             for _, istate in ipairs(INDICATOR_STATES) do
-                iroadnet:set("indicator", istate, x, y, shape, dir)
+                iroadnet:set("indicator", x, y, istate, shape, dir)
                 x = x + COL_SPACING
             end
         end

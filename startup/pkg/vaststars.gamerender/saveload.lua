@@ -40,7 +40,6 @@ local CHANGED_FLAG_ALL <const> = CONSTANT.CHANGED_FLAG_ALL
 local function clean()
     global.buildings = create_buildings()
     objects:clear()
-    iroadnet:clear("road")
 end
 
 local function restore_world()
@@ -296,7 +295,7 @@ function M:restart(mode, game_template)
     for _, road in ipairs(config.road or {}) do
         igameplay.create_entity(road)
         local shape, dir = iroadnet_converter.to_shape(road.prototype_name), road.dir
-        iroadnet:set("road", "normal", road.x, road.y, shape, dir)
+        iroadnet:set("road", road.x, road.y, "normal", shape, dir)
     end
     iroadnet:flush()
 

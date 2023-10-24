@@ -3,7 +3,6 @@ local world = ecs.world
 local w = world.w
 
 local iroad = ecs.require "ant.landform|road"
-local iroadnet_converter = require "roadnet_converter"
 local CONSTANT <const> = require "gameplay.interface.constant"
 
 local iterrain  = ecs.require "ant.landform|terrain_system"
@@ -102,7 +101,7 @@ function roadnet:flush()
     MODIFIED_GROUPS:update()
 end
 
-function roadnet:set(layer_name, shape_state, x, y, shape, dir)
+function roadnet:set(layer_name, x, y, shape_state, shape, dir)
     local gid = add_road(layer_name, x, y, shape_state, shape, dir)
     MODIFIED_GROUPS:mark(gid)
 end
