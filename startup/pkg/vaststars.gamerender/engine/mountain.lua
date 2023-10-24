@@ -90,10 +90,9 @@ end
 
 local M = {}
 function M:create()
-    --if true then return end
-    local masks = build_mountain_masks()
+    MOUNTAIN_MASKS = build_mountain_masks()
 
-    local subindices = build_sub_indices(masks);
+    local subindices = build_sub_indices(MOUNTAIN_MASKS);
 
     local groups = setmetatable({}, {__index=function (t, gid) local tt={}; t[gid]=tt; return tt end})
 
