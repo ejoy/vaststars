@@ -112,7 +112,7 @@ function M:create()
 end
 
 function M:has_mountain(x, y)
-    local idx = terrain:coord2idx(x, y, WIDTH)
+    local idx = terrain:coord2idx1(x, y, WIDTH)
     return (0 ~= assert(MOUNTAIN_MASKS[idx], ("Invalid x:%d, y:%d, idx"):format(x, y, idx)))
 end
 
