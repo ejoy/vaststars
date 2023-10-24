@@ -90,7 +90,7 @@ local guide2 = {
         },
         narrative_end = {
             task = {
-                "物流站设置",
+                "物流站发货设置",
             },
             guide_progress = 10,
         },
