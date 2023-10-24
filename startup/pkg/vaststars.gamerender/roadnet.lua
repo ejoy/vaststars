@@ -25,16 +25,6 @@ local roadnet = {}
 -- │
 -- │
 -- └──►x
-
-local function __pack(x, y)
-    assert(x & 0xFF == x and y & 0xFF == y)
-    return x | (y<<8)
-end
-
-local function __unpack(coord)
-    return coord & 0xFF, coord >> 8
-end
-
 local function new_groups() return setmetatable({}, {__index=function (tt, gid) local t = {}; tt[gid] = t; return t end}) end
 
 local GROUP_ROADS = new_groups()
@@ -50,7 +40,7 @@ local function cvtcoord2pos(x, y)
     return {pos[1], pos[3] - CONSTANT.ROAD_HEIGHT}
 end
 
-local function add_road(groups, layer, x, y, state, shape, dir)
+local function add_road(layer, x, y, state, shape, dir)
     local gid = terrain:get_group_id(x, y)
     local idx = terrain:coord2idx(x, y)
     local item = {
@@ -62,19 +52,20 @@ local function add_road(groups, layer, x, y, state, shape, dir)
             dir     = dir,
         }
     }
-    groups[gid][idx] = item
     GROUP_ROADS[gid][idx] = item
+    return gid, idx
 end
 
-local function del_road(groups, layer, x, y)
+local function del_road(layer, x, y)
     local gid = terrain:get_group_id(x, y)
     local idx = terrain:coord2idx(x, y)
-    local item = groups[gid][idx]
+    local item = GROUP_ROADS[gid][idx]
     if item then
         item[layer] = nil
         if nil == item.road and nil == item.indicator then
-            groups[gid][idx] = nil
+            GROUP_ROADS[gid][idx] = nil
         end
+        return gid, idx
     end
 end
 
@@ -82,42 +73,43 @@ function roadnet:update(g)
     iroad.update_roadnet(g, RENDER_LAYER.ROAD)
 end
 
-local function find_layer_groups(layer)
+function roadnet:clear(layer_name)
     local g = {}
     for gid, items in pairs(GROUP_ROADS) do
         for idx, item in pairs(items) do
             -- if it has any layer we want
-            if item[layer] then
+            if item[layer_name] then
                 g[gid] = true
-                break
+                item[layer_name] = nil
             end
         end
     end
-    return g
+    iroad.clear(g, layer_name)
 end
 
-function roadnet:clear(layer_name)
-    local groups = find_layer_groups(layer_name)
-    for _, gid in ipairs(groups) do
-        GROUP_ROADS[gid] = nil
-    end
-    iroad.clear(groups, layer)
-end
-
-local MODIFIED_GROUPS = new_groups()
+local MODIFIED_GROUPS = {
+    which_groups = {},
+    clear   = function (self) self.which_groups = {} end,
+    mark    = function (self, gid) self.which_groups[gid] = GROUP_ROADS[gid] end,
+    update  = function (self)
+        if next(self.which_groups) then
+            iroad.update_roadnet(self.which_groups, RENDER_LAYER.ROAD)
+            self:clear()
+        end
+    end,
+}
 function roadnet:flush()
-    if next(MODIFIED_GROUPS) then
-        iroad.update_roadnet(MODIFIED_GROUPS, RENDER_LAYER.ROAD)
-        MODIFIED_GROUPS = new_groups()
-    end
+    MODIFIED_GROUPS:update()
 end
 
 function roadnet:set(layer_name, shape_state, x, y, shape, dir)
-    add_road(MODIFIED_GROUPS, layer_name, x, y, shape_state, shape, dir)
+    local gid = add_road(layer_name, x, y, shape_state, shape, dir)
+    MODIFIED_GROUPS:mark(gid)
 end
 
 function roadnet:del(layer_name, x, y)
-    del_road(MODIFIED_GROUPS, layer_name, x, y)
+    local gid = del_road(layer_name, x, y)
+    MODIFIED_GROUPS:mark(gid)
 end
 
 function roadnet:cvtcoord2pos(x, y)
