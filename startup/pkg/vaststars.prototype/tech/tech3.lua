@@ -211,3 +211,180 @@ local prototype = gameplay.register.prototype
       { desc = "指挥中心派遣2辆运输车", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
+
+  prototype "石砖大生产" {
+    desc = "规模生产石砖",
+    type = { "task" },
+    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
+    task = {"stat_production", 0, "石砖"},
+    count = 3,
+    prerequisites = {"派遣运输车"},
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "使用组装机生产3个石砖", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "铁板大生产" {
+    desc = "规模生产石砖",
+    type = { "task" },
+    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
+    task = {"stat_production", 0, "铁板"},
+    count = 3,
+    prerequisites = {"石砖大生产"},
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    effects = {
+      unlock_recipe = {"轻型采矿机"},
+      unlock_item = {"轻型采矿机"},
+    },
+    sign_desc = {
+      { desc = "使用组装机生产3个石砖", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "制造采矿机" {
+    desc = "制造轻型采矿机",
+    type = { "task" },
+    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
+    task = {"stat_production", 0, "轻型采矿机"},
+    count = 1,
+    prerequisites = {"铁板大生产"},
+    effects = {
+      unlock_recipe = {"轻型运输车"},
+      unlock_item = {"轻型运输车"},
+    },
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "使用组装机生产1个轻型采矿机", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "铝矿石开采" {
+    desc = "放置3台采矿机",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = {"task" },
+    task = {"select_entity", 0, "采矿机I"},
+    prerequisites = {"制造采矿机"},
+    count = 3,
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    guide_focus = {
+      {
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        x = 106,
+        y = 128,
+        w = 3.2,
+        h = 3.2,
+        show_arrow = true,
+      },
+      {
+        camera_x = 113,
+        camera_y = 134,
+      },
+    },
+    effects = {
+      unlock_item = {"铝矿石"},
+    },
+    sign_desc = {
+      { desc = "在石矿、铁矿、铝矿上各放置1台采矿机", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "更多运输车" {
+    desc = "派遣6辆运输车",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = { "task" },
+    task = {"unknown", 0, 2},                          
+    prerequisites = {"物流站收货设置"},
+    count = 6,
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate1.texture",
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate2.texture",
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate3.texture",
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate4.texture",
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate5.texture",
+    },
+    sign_desc = {
+      { desc = "指挥中心总共派遣6辆运输车", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
+  -- prototype "铝矿石运输" {
+  --   desc = "车辆运输铝矿石",
+  --   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+  --   type = {"task" },
+  --   task = {"select_entity", 0, "采矿机I"},
+  --   prerequisites = {"制造采矿机"},
+  --   count = 3,
+  --   tips_pic = {
+  --     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+  --   },
+  --   guide_focus = {
+  --     {
+  --       prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+  --       x = 106,
+  --       y = 128,
+  --       w = 3.2,
+  --       h = 3.2,
+  --       show_arrow = true,
+  --     },
+  --     {
+  --       camera_x = 113,
+  --       camera_y = 134,
+  --     },
+  --   },
+  --   sign_desc = {
+  --     { desc = "在石矿、铁矿、铝矿上各放置1台采矿机", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+  --   },
+  -- }
+
+  prototype "科技包大生产" {
+    desc = "规模生产地质科技包",
+    type = { "task" },
+    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
+    task = {"stat_production", 0, "地质科技包"},
+    count = 3,
+    prerequisites = {"更多运输车"},
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "使用组装机生产3个地质科技包", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "开启科技研究" {
+    desc = "获得火星岩石加工成石砖的工艺",
+    type = { "tech" },
+    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
+    prerequisites = {"科技包大生产"},
+    ingredients = {
+        {"地质科技包", 1},
+    },
+    count = 8,
+    time = "1s"
+  }
+
+  prototype "物流教学结束" {
+    desc = "教学结束",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = { "task" },
+    task = {"unknown", 0, 4},
+    effects = {
+    },
+    prerequisites = {"开启科技研究"},
+    count = 1,
+    tips_pic = {
+      "",
+    },
+    sign_desc = {
+      { desc = "完成所有的物流教学", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }

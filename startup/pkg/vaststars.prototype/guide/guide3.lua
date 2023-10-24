@@ -98,6 +98,23 @@ local guide2 = {
             "停车站放置",
         },
 	},
+
+    {
+        name = "",
+		narrative = {
+            {"哔哩..恭喜你结束了{/g 物流教学}..哔哩..(高兴)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            pop_chapter = {"祝贺","教学完成"},
+            task = {
+                "物流教学结束",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "开启科技研究",
+        },
+	},
 }
 
 return guide2

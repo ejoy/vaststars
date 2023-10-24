@@ -6,16 +6,10 @@ local entities = { {
   y = 138
 }, {
   dir = "N",
-  items = { { "仓库I", 4 }, { "蓄电池I", 4 }, { "运输车辆I", 10 }, { "轻型太阳能板", 2 } },
+  items = { { "仓库I", 4 }, { "蓄电池I", 4 }, { "轻型运输车", 2 }, { "轻型太阳能板", 2 } },
   prototype_name = "机头残骸",
   x = 140,
   y = 136
-}, {
-  dir = "E",
-  items = { { "地下水挖掘机I", 1 }, { "锅炉I", 1 }, { "蒸汽发电机I", 1 } },
-  prototype_name = "机尾残骸",
-  x = 129,
-  y = 114
 }, {
   dir = "N",
   items = { { "碎石", 45 }, { "碎石", 45 }, { "铁矿石", 51 }, { "铁矿石", 50 } },
@@ -60,6 +54,12 @@ local entities = { {
   fluid_name = "",
   prototype_name = "熔炼炉I",
   x = 152,
+  y = 126
+}, {
+  dir = "N",
+  fluid_name = "",
+  prototype_name = "科研中心I",
+  x = 156,
   y = 126
 }, {
   dir = "N",
@@ -126,7 +126,7 @@ local entities = { {
 }, {
   amount = 0,
   dir = "N",
-  prototype_name = "指挥中心",
+  prototype_name = "物流中心",
   x = 152,
   y = 114
 }, {

@@ -1958,6 +1958,22 @@ prototype "车辆装配" {
     description = "制造运输汽车",
 }
 
+prototype "轻型运输车" {
+    type = { "recipe" },
+    recipe_craft_category = "生产中型制造",
+    recipe_category =  "加工",
+    recipe_order =  128,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/glass.texture",
+    ingredients = {
+        {"铁板", 8},
+    },
+    results = {
+        {"轻型运输车", 1},
+    },
+    time = "4s",
+    description = "制造轻型运输车",
+}
+
 ------------------打印-------------------
 prototype "处理器1" {
     type = { "recipe" },
