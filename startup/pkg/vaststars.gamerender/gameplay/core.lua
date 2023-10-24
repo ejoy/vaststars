@@ -31,7 +31,7 @@ local ARCHIVAL_BASE_DIR
 if CUSTOM_ARCHIVING then
     ARCHIVAL_BASE_DIR = (fs.exe_path():parent_path() / CUSTOM_ARCHIVING):lexically_normal():string()
 else
-    ARCHIVAL_BASE_DIR = (directory.app_path "vaststars" / "archiving/"):string()
+    ARCHIVAL_BASE_DIR = (directory.app_path() / "archiving/"):string()
 end
 local GLOBAL_SETTINGS_FILENAME <const> = ARCHIVAL_BASE_DIR .. "settings.json"
 local json = import_package "ant.json"

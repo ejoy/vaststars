@@ -8,7 +8,7 @@ local ARCHIVAL_BASE_DIR
 if not __ANT_RUNTIME__ and CUSTOM_ARCHIVING then
     ARCHIVAL_BASE_DIR = (fs.exe_path():parent_path() / CUSTOM_ARCHIVING):lexically_normal():string()
 else
-    ARCHIVAL_BASE_DIR = (directory.app_path "vaststars" / "archiving/"):string()
+    ARCHIVAL_BASE_DIR = (directory.app_path() / "archiving/"):string()
 end
 
 local function readall(file)
