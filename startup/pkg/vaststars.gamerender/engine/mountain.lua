@@ -2,7 +2,8 @@ local ecs   = ...
 local world = ecs.world
 local w     = world.w
 
-local ism = ecs.require "ant.landform|stone_mountain_system"
+local im = ecs.require "ant.landform|stone_mountain_system"
+local MOUNTAIN = import_package "vaststars.prototype"("mountain")
 local terrain = ecs.require "terrain"
 
 local CONST<const> = require "gameplay.interface.constant"
