@@ -29,8 +29,6 @@ local create_builder = ecs.require "editor.builder"
 local ieditor = ecs.require "editor.editor"
 local objects = require "objects"
 local iobject = ecs.require "object"
-local ipower = ecs.require "power"
-local ipower_line = ecs.require "power_line"
 local igrid_entity = ecs.require "engine.grid_entity"
 local mc = import_package "ant.math".constant
 local create_road_entrance = ecs.require "editor.road_entrance"
@@ -541,14 +539,6 @@ local function touch_end(self, datamodel)
     local self_selected_boxes_position = terrain:get_position_by_coord(pickup_object.x, pickup_object.y, w, h)
     self.self_selected_boxes:set_position(self_selected_boxes_position)
     self.self_selected_boxes:set_wh(w, h)
-
-    -- update temp pole
-    if typeobject.supply_area and typeobject.supply_distance then
-        local aw, ah = iprototype.rotate_area(typeobject.area, self.pickup_object.dir)
-        local sw, sh = iprototype.rotate_area(typeobject.supply_area, pickup_object.dir)
-        ipower:merge_pole({power_network_link_target = 0, key = pickup_object.id, targets = {}, x = self.pickup_object.x, y = self.pickup_object.y, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.supply_distance, power_network_link = typeobject.power_network_link})
-        ipower_line.update_temp_line(ipower:get_temp_pole())
-    end
 end
 
 local function confirm(self, datamodel)
@@ -565,13 +555,6 @@ local function confirm(self, datamodel)
 
     datamodel.show_confirm = false
     datamodel.show_rotate = false
-    --
-    if typeobject.supply_area and typeobject.supply_distance then
-        local aw, ah = iprototype.rotate_area(typeobject.area, pickup_object.dir)
-        local sw, sh = iprototype.rotate_area(typeobject.supply_area, pickup_object.dir)
-        ipower:merge_pole({power_network_link_target = 0, key = pickup_object.id, targets = {}, x = pickup_object.x, y = pickup_object.y, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.supply_distance, power_network_link = typeobject.power_network_link}, true)
-        ipower_line.update_temp_line(ipower:get_temp_pole())
-    end
 
     if self.grid_entity then
         self.grid_entity:remove()
@@ -714,10 +697,6 @@ local function clean(self, datamodel)
     datamodel.show_confirm = false
     datamodel.show_rotate = false
     self.super.clean(self, datamodel)
-    -- clear temp pole
-    ipower:clear_all_temp_pole()
-    ipower_line.update_temp_line(ipower:get_temp_pole())
-
     icanvas.remove_item(icanvas.types().ROAD_ENTRANCE_MARKER, 0)
 
     if self.road_entrance then

@@ -6,7 +6,7 @@ local entities = { {
     y = 120
   }, {
     dir = "N",
-    items = { { "收货车站", 2 }, { "出货车站", 2 }, { "铁制电线杆", 10 }, { "熔炼炉I", 2 }, { "无人机平台I", 5 }, { "水电站I", 2 } },
+    items = { { "收货车站", 2 }, { "出货车站", 2 }, { "熔炼炉I", 2 }, { "无人机平台I", 5 }, { "水电站I", 2 } },
     prototype_name = "机身残骸",
     x = 107,
     y = 134
@@ -33,41 +33,6 @@ local entities = { {
     prototype_name = "风力发电机I",
     x = 119,
     y = 121
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 117,
-    y = 122
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 117,
-    y = 130
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 117,
-    y = 135
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 117,
-    y = 140
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 117,
-    y = 145
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 117,
-    y = 150
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 117,
-    y = 155
   }, {
     dir = "N",
     fluid_name = {
@@ -435,16 +400,6 @@ local entities = { {
     x = 133,
     y = 154
   }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 125,
-    y = 155
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 132,
-    y = 155
-  } , {
     dir = "E",
     fluid_name = "",
     prototype_name = "排水口I",

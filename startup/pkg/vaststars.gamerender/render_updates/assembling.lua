@@ -32,7 +32,6 @@ local objects = require "objects"
 local global = require "global"
 local iprototype = require "gameplay.interface.prototype"
 local create_io_shelves = ecs.require "render_updates.common.io_shelves".create
-local create_ing_res_motion = ecs.require "render_updates.common.ing_res_motion".create
 local assetmgr = import_package "ant.asset"
 local iterrain = ecs.require "terrain"
 local icanvas = ecs.require "engine.canvas"
@@ -431,7 +430,6 @@ function assembling_sys:gameworld_build()
         end
 
         local building = global.buildings[object.id]
-        local group = terrain:get_group_id(e.building.x, e.building.y)
 
         --
         if e.assembling.recipe == 0 then
@@ -447,15 +445,6 @@ function assembling_sys:gameworld_build()
             else
                 building.io_shelves = create_io_shelves(gameplay_world, e, getGameObject(object))
             end
-        end
-
-        --
-        if building.ing_res_motion then
-            building.ing_res_motion:remove()
-            building.ing_res_motion = nil
-        end
-        if e.assembling.recipe ~= 0 then
-            building.ing_res_motion = create_ing_res_motion(group, e.building.prototype, e.assembling.recipe, object.srt)
         end
         ::continue::
     end
@@ -474,9 +463,7 @@ local update = interval_call(300, function()
         local building = global.buildings[object.id]
 
         local io_shelves = building.io_shelves
-        local ing_res_motion = building.ing_res_motion
         if io_shelves then
-            assert(ing_res_motion)
             local typeobject_recipe = iprototype.queryById(e.assembling.recipe)
             local ingredients_n <const> = #typeobject_recipe.ingredients//4 - 1
             local results_n <const> = #typeobject_recipe.results//4 - 1
@@ -485,7 +472,6 @@ local update = interval_call(300, function()
                 local typeobject_item = iprototype.queryById(slot.item)
                 if iprototype.has_type(typeobject_item.type, "item") then
                     io_shelves:update_item(idx, slot.amount)
-                    ing_res_motion:update(idx, slot.item, slot.amount)
                 end
             end
         end

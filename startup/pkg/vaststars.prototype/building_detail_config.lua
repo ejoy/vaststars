@@ -116,19 +116,11 @@ local building_detail_config = {
 		"fluid_volume",
 		"fluid_rate",
 	},
-	["铁制电线杆"] = {
-		"power_supply_area",
-		"power_supply_distance",
-	},
 	["风力发电机"] = {
 		"generate_power",
-		"power_supply_area",
-		"power_supply_distance",
 	},
 	["轻型风力发电机"] = {
 		"generate_power",
-		"power_supply_area",
-		"power_supply_distance",
 	},
 	["无人机平台"] = {
 		"work_power",

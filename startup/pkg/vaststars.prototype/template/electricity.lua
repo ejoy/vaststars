@@ -6,7 +6,7 @@ local entities = { {
     y = 120
   }, {
     dir = "N",
-    items = { { "水电站I", 2 }, { "收货车站", 2 }, { "无人机平台I", 5 }, { "出货车站", 2 }, { "铁制电线杆", 10 }, { "熔炼炉I", 2 } },
+    items = { { "水电站I", 2 }, { "收货车站", 2 }, { "无人机平台I", 5 }, { "出货车站", 2 }, { "熔炼炉I", 2 } },
     prototype_name = "机身残骸",
     x = 107,
     y = 134
@@ -38,27 +38,12 @@ local entities = { {
     prototype_name = "太阳能板I",
     x = 118,
     y = 135
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 168,
-    y = 128
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 117,
-    y = 134
-  }, {
+  },{
     dir = "N",
     prototype_name = "采矿机I",
     recipe = "碎石挖掘",
     x = 115,
     y = 129
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 129,
-    y = 136
   }, {
     dir = "N",
     prototype_name = "太阳能板I",
@@ -104,33 +89,13 @@ local entities = { {
     recipe = "蒸汽发电",
     x = 133,
     y = 143
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 132,
-    y = 142
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 160,
-    y = 128
-  }, {
+  },{
     dir = "N",
     prototype_name = "采矿机I",
     recipe = "铁矿石挖掘",
     x = 164,
     y = 129
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 160,
-    y = 135
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 160,
-    y = 142
-  }, {
+  },{
     dir = "N",
     prototype_name = "太阳能板I",
     x = 159,
@@ -237,21 +202,6 @@ local entities = { {
     recipe = "地热气发电",
     x = 122,
     y = 141
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 121,
-    y = 145
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 115,
-    y = 145
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 115,
-    y = 150
   }, {
     dir = "S",
     fluid_name = {

@@ -18,8 +18,6 @@ prototype "蒸汽发电机I" {
     -- recipe = "蒸汽发电",
     craft_category = {"流体发电"},
     maxslot = 8,
-    power_supply_area = "3x5",
-    power_supply_distance = 0,
     camera_distance = 95,
     fluidboxes = {
         input = {
@@ -55,8 +53,6 @@ prototype "蒸汽发电机II" {
     -- recipe = "蒸汽发电",
     craft_category = {"流体发电"},
     maxslot = 8,
-    power_supply_area = "3x5",
-    power_supply_distance = 0,
     camera_distance = 95,
     fluidboxes = {
         input = {
@@ -92,8 +88,6 @@ prototype "蒸汽发电机III" {
     -- recipe = "蒸汽发电",
     craft_category = {"流体发电"},
     maxslot = 8,
-    power_supply_area = "3x5",
-    power_supply_distance = 0,
     camera_distance = 95,
     fluidboxes = {
         input = {
@@ -122,9 +116,6 @@ prototype "轻型风力发电机" {
     power = "450kW",
     priority = "primary",
     building_menu = false,
-    power_network_link = true,
-    power_supply_area = "11x11",
-    power_supply_distance = 7,
     camera_distance = 140,
 }
 
@@ -138,9 +129,6 @@ prototype "风力发电机I" {
     power = "1.2MW",
     priority = "primary",
     building_menu = false,
-    power_network_link = true,
-    power_supply_area = "11x11",
-    power_supply_distance = 7,
     camera_distance = 140,
 }
 
@@ -153,8 +141,6 @@ prototype "太阳能板I" {
     power = "300kW",
     priority = "primary",
     building_menu = false,
-    power_supply_area = "3x3",
-    power_supply_distance = 0,
     camera_distance = 70,
 }
 
@@ -167,8 +153,6 @@ prototype "太阳能板II" {
     power = "450kW",
     priority = "primary",
     building_menu = false,
-    power_supply_area = "3x3",
-    power_supply_distance = 0,
     camera_distance = 70,
 }
 
@@ -181,8 +165,6 @@ prototype "太阳能板III" {
     power = "600kW",
     priority = "primary",
     building_menu = false,
-    power_supply_area = "3x3",
-    power_supply_distance = 0,
     camera_distance = 70,
 }
 
@@ -195,8 +177,6 @@ prototype "轻型太阳能板" {
     power = "60kW",
     priority = "primary",
     building_menu = false,
-    power_supply_area = "3x3",
-    power_supply_distance = 0,
     camera_distance = 70,
 }
 
@@ -211,8 +191,6 @@ prototype "蓄电池I" {
     area = "2x2",
     sound = "building/electricity",
     building_menu = false,
-    power_supply_area = "2x2",
-    power_supply_distance = 0,
     camera_distance = 55,
 }
 
@@ -227,8 +205,6 @@ prototype "蓄电池II" {
     area = "2x2",
     sound = "building/electricity",
     building_menu = false,
-    power_supply_area = "2x2",
-    power_supply_distance = 0,
     camera_distance = 55,
 }
 
@@ -243,8 +219,6 @@ prototype "蓄电池III" {
     area = "2x2",
     sound = "building/electricity",
     building_menu = false,
-    power_supply_area = "2x2",
-    power_supply_distance = 0,
     camera_distance = 55,
 }
 

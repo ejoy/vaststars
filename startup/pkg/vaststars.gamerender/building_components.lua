@@ -1,6 +1,5 @@
 local BUILDING_COMPONENTS = {
     io_shelves = true,
-    ing_res_motion = true,
     station_shelf = true,
     assembling_icon = true,
     chimney_icon = true,

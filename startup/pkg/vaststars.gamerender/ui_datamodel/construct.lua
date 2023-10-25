@@ -39,7 +39,6 @@ local selected_boxes = ecs.require "selected_boxes"
 local irl = ecs.require "ant.render|render_layer.render_layer"
 local iom = ecs.require "ant.objcontroller|obj_motion"
 local ichest = require "gameplay.interface.chest"
-local ipower_line = ecs.require "power_line"
 local ipick_object = ecs.require "pick_object_system"
 local ibackpack = require "gameplay.interface.backpack"
 local gesture_longpress_mb = world:sub{"gesture", "longpress"}
@@ -60,7 +59,6 @@ local construct_entity_mb = mailbox:sub {"construct_entity"}
 local backpack_mb = mailbox:sub {"backpack"}
 local focus_tips_event = world:sub {"focus_tips"}
 local construct_mb = mailbox:sub {"construct"}
-local ipower = ecs.require "power"
 local main_button_tap_mb = mailbox:sub {"main_button_tap"}
 local main_button_longpress_mb = mailbox:sub {"main_button_longpress"}
 local start_laying_mb = mailbox:sub {"start_laying"}
@@ -595,11 +593,6 @@ function M.update(datamodel)
 
         igameplay.destroy_entity(object.gameplay_eid)
         gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
-
-        if typeobject.power_network_link or typeobject.power_supply_distance then
-            ipower:build_power_network(gameplay_world)
-            ipower_line.update_line(ipower:get_pole_lines())
-        end
 
         iobject.remove(object)
         objects:remove(object_id)

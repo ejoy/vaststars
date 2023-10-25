@@ -6,7 +6,7 @@ local entities = { {
   y = 118
 }, {
   dir = "N",
-  items = { { "水电站I", 2 }, { "物流站", 2 }, { "无人机平台I", 5 }, { "物流站", 2 }, { "铁制电线杆", 10 }, { "熔炼炉I", 2 } },
+  items = { { "水电站I", 2 }, { "物流站", 2 }, { "无人机平台I", 5 }, { "物流站", 2 }, { "熔炼炉I", 2 } },
   prototype_name = "机身残骸",
   x = 107,
   y = 134
@@ -126,36 +126,6 @@ local entities = { {
   prototype_name = "仓库I",
   x = 131,
   y = 117
-}, {
-  dir = "N",
-  prototype_name = "铁制电线杆",
-  x = 134,
-  y = 119
-}, {
-  dir = "N",
-  prototype_name = "铁制电线杆",
-  x = 134,
-  y = 114
-}, {
-  dir = "N",
-  prototype_name = "铁制电线杆",
-  x = 128,
-  y = 114
-}, {
-  dir = "N",
-  prototype_name = "铁制电线杆",
-  x = 122,
-  y = 114
-}, {
-  dir = "N",
-  prototype_name = "铁制电线杆",
-  x = 114,
-  y = 114
-}, {
-  dir = "N",
-  prototype_name = "铁制电线杆",
-  x = 114,
-  y = 118
 }, {
   dir = "S",
   items = {{"supply", "碎石", "1"}},

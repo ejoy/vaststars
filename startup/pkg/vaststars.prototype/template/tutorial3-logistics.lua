@@ -1,6 +1,6 @@
 local entities = { {
   dir = "N",
-  items = { { "停车站", 1 },{ "物流站", 3},{"铁制电线杆",15},{"砖石公路-X型",10},},
+  items = { { "停车站", 1 },{ "物流站", 3},{"砖石公路-X型",10},},
   prototype_name = "机身残骸",
   x = 109,
   y = 138
@@ -98,31 +98,6 @@ local entities = { {
   prototype_name = "无人机平台I",
   x = 150,
   y = 125
-}, {
-  dir = "N",
-  prototype_name = "铁制电线杆",
-  x = 117,
-  y = 131
-}, {
-  dir = "N",
-  prototype_name = "铁制电线杆",
-  x = 125,
-  y = 131
-}, {
-  dir = "N",
-  prototype_name = "铁制电线杆",
-  x = 133,
-  y = 131
-}, {
-  dir = "N",
-  prototype_name = "铁制电线杆",
-  x = 141,
-  y = 131
-}, {
-  dir = "N",
-  prototype_name = "铁制电线杆",
-  x = 149,
-  y = 131
 }, {
   amount = 0,
   dir = "N",

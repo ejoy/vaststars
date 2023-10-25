@@ -16,8 +16,6 @@ local ieditor = ecs.require "editor.editor"
 local objects = require "objects"
 local irecipe = require "gameplay.interface.recipe"
 local iobject = ecs.require "object"
-local ipower = ecs.require "power"
-local ipower_line = ecs.require "power_line"
 local imining = require "gameplay.interface.mining"
 local igrid_entity = ecs.require "engine.grid_entity"
 local create_sprite = ecs.require "sprite"
@@ -50,11 +48,6 @@ local function __create_self_sprite(typeobject, x, y, dir, sprite_color)
     local offset_x, offset_y = 0, 0
     if typeobject.supply_area then
         local aw, ah = iprototype.rotate_area(typeobject.supply_area, dir)
-        local w, h = iprototype.rotate_area(typeobject.area, dir)
-        offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
-        sprite = create_sprite(x + offset_x, y + offset_y, aw, ah, dir, sprite_color)
-    elseif typeobject.power_supply_area then
-        local aw, ah = iprototype.rotate_area(typeobject.power_supply_area, dir)
         local w, h = iprototype.rotate_area(typeobject.area, dir)
         offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
         sprite = create_sprite(x + offset_x, y + offset_y, aw, ah, dir, sprite_color)
@@ -155,16 +148,12 @@ local function __new_entity(self, datamodel, typeobject, position, x, y, dir)
     if not self:check_construct_detector(typeobject.name, x, y, dir) then
         if typeobject.supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID
-        elseif typeobject.power_supply_area then
-            sprite_color = SPRITE_COLOR.CONSTRUCT_POWER_INVALID
         end
         datamodel.show_confirm = false
         valid = false
     else
         if typeobject.supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_VALID
-        elseif typeobject.power_supply_area then
-            sprite_color = SPRITE_COLOR.CONSTRUCT_POWER_VALID
         end
         datamodel.show_confirm = true
         valid = true
@@ -375,20 +364,6 @@ end
 local function new_entity(self, datamodel, typeobject)
     self.typeobject = typeobject
 
-    if typeobject.power_supply_area and typeobject.power_supply_distance and not typeobject.supply_area then
-        local sprite_color = SPRITE_COLOR.POWER_SUPPLY_AREA
-        for _, object in objects:all() do
-            local otypeobject = iprototype.queryByName(object.prototype_name)
-            if otypeobject.power_supply_area then
-                local w, h = iprototype.rotate_area(otypeobject.area, object.dir)
-                local ow, oh = iprototype.rotate_area(otypeobject.power_supply_area, object.dir)
-                if not self.sprites[object.id] then
-                    self.sprites[object.id] = create_sprite(object.x - (ow - w)//2, object.y - (oh - h)//2, ow, oh, object.dir, sprite_color)
-                end
-            end
-        end
-    end
-
     if ichest.has_chest(typeobject.type) then
         local sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_OTHER
         for _, object in objects:all() do
@@ -458,14 +433,6 @@ local function touch_move(self, datamodel, delta_vec)
         self.grid_entity:set_position(__calc_grid_position(self, typeobject, pickup_object.dir))
     end
 
-    -- update temp pole
-    if typeobject.power_supply_area and typeobject.power_supply_distance then
-        local aw, ah = iprototype.rotate_area(typeobject.area, pickup_object.dir)
-        local sw, sh = iprototype.rotate_area(typeobject.power_supply_area, pickup_object.dir)
-        ipower:merge_pole({power_network_link_target = 0, key = pickup_object.id, position = pickup_object.srt.t, targets = {}, x = lx, y = ly, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.power_supply_distance, smooth_pos = true, power_network_link = typeobject.power_network_link})
-        ipower_line.update_temp_line(ipower:get_temp_pole())
-    end
-
     if self.last_x == lx and self.last_y == ly then
         return
     end
@@ -482,10 +449,6 @@ local function touch_move(self, datamodel, delta_vec)
         if typeobject.supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID
             local aw, ah = iprototype.rotate_area(typeobject.supply_area, pickup_object.dir)
-            offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
-        elseif typeobject.power_supply_area then
-            sprite_color = SPRITE_COLOR.CONSTRUCT_POWER_INVALID
-            local aw, ah = iprototype.rotate_area(typeobject.power_supply_area, pickup_object.dir)
             offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
         end
         if self.sprite then
@@ -505,10 +468,6 @@ local function touch_move(self, datamodel, delta_vec)
         if typeobject.supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_VALID
             local aw, ah = iprototype.rotate_area(typeobject.supply_area, pickup_object.dir)
-            offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
-        elseif typeobject.power_supply_area then
-            sprite_color = SPRITE_COLOR.CONSTRUCT_POWER_VALID
-            local aw, ah = iprototype.rotate_area(typeobject.power_supply_area, pickup_object.dir)
             offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
         end
         if self.sprite then
@@ -564,13 +523,6 @@ local function confirm(self, datamodel)
 
     datamodel.show_confirm = false
     datamodel.show_rotate = false
-    --
-    if typeobject.power_supply_area and typeobject.power_supply_distance then
-        local aw, ah = iprototype.rotate_area(typeobject.area, pickup_object.dir)
-        local sw, sh = iprototype.rotate_area(typeobject.power_supply_area, pickup_object.dir)
-        ipower:merge_pole({power_network_link_target = 0, key = pickup_object.id, targets = {}, x = pickup_object.x, y = pickup_object.y, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.power_supply_distance, power_network_link = typeobject.power_network_link}, true)
-        ipower_line.update_temp_line(ipower:get_temp_pole())
-    end
 
     self.pickup_object = nil
     self.super.complete(self, pickup_object.id)
@@ -641,16 +593,12 @@ local function rotate(self, datamodel, dir, delta_vec)
         valid = false
         if typeobject.supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID
-        elseif typeobject.power_supply_area then
-            sprite_color = SPRITE_COLOR.CONSTRUCT_POWER_INVALID
         end
         datamodel.show_confirm = false
     else
         valid = true
         if typeobject.supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_VALID
-        elseif typeobject.power_supply_area then
-            sprite_color = SPRITE_COLOR.CONSTRUCT_POWER_VALID
         end
         datamodel.show_confirm = true
     end
@@ -697,9 +645,6 @@ local function clean(self, datamodel)
     datamodel.show_confirm = false
     datamodel.show_rotate = false
     self.super.clean(self, datamodel)
-    -- clear temp pole
-    ipower:clear_all_temp_pole()
-    ipower_line.update_temp_line(ipower:get_temp_pole())
 end
 
 local function create(item)
