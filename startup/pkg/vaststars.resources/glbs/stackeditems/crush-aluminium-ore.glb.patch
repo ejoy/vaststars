@@ -8,8 +8,3 @@ file: materials/Material.001.material
 op: replace
 path: /fx/setting/no_predepth
 value: true
----
-file: materials/Material.001.material
-op: replace
-path: /properties/u_rotator_rate
-value: {1, 0, 0, 0}
