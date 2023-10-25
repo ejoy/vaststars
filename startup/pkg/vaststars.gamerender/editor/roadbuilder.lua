@@ -94,7 +94,8 @@ local function setRoad(x, y, mask)
         direction = dir,
         road = true,
     }
-    iroadnet:set("road", "normal", x, y, mask)
+    local shape, dir = iroadnet_converter.mask_to_shape_dir(mask)
+    iroadnet:set("road", x, y, "normal", shape, dir)
 end
 
 local function getRoad(x, y)
@@ -104,17 +105,6 @@ local function getRoad(x, y)
     end
     return iroadnet_converter.prototype_name_dir_to_mask(road.prototype, road.direction)
 end
-
-local function packarea(w, h)
-    return (w << 8) | h
-end
-
-local DIRECTION <const> = {
-    N = 0,
-    E = 1,
-    S = 2,
-    W = 3,
-}
 
 local function getPlacedRoadPrototypeName(x, y, default_prototype_name, default_dir)
     if not isValidRoadCoord(x, y, EDITOR_CACHE_NAMES) then
@@ -155,7 +145,7 @@ local function new_entity(self, datamodel, typeobject, x, y)
     }
 
     if not self.pickup_components.grid_entity then
-        local position = __align(self.coord_indicator.srt.t, packarea(8 * ROAD_SIZE, 8 * ROAD_SIZE), dir)
+        local position = __align(self.coord_indicator.srt.t, iprototype.packarea(8 * ROAD_SIZE, 8 * ROAD_SIZE), dir)
         position = math3d.add(position, GRID_POSITION_OFFSET)
         local offset = math3d.sub(self.coord_indicator.srt.t, position)
         self.pickup_components.grid_entity = igrid_entity.create(
@@ -267,7 +257,17 @@ local function place(self, datamodel)
     end
     assert(x % 2 == 0 and y % 2 == 0)
 
-    local mask = getRoad(x, y) or 0
+    local mask = getRoad(x, y)
+    if not mask then
+        local gameplay_world = gameplay_core.get_world()
+        if ibackpack.query(gameplay_world, self.typeobject.id) < 1 then
+            return
+        end
+        assert(ibackpack.pickup(gameplay_world, self.typeobject.id, 1))
+
+        mask = 0
+    end
+
     for _, dir in ipairs(CONSTANT.ALL_DIR_NUM) do
         local dx, dy = iprototype.move_coord(x, y, dir, ROAD_SIZE, ROAD_SIZE)
         local m = getRoad(dx, dy)

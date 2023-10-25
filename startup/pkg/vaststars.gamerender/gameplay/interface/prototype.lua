@@ -85,6 +85,10 @@ function M.packcoord(x, y)
     return y * MAP_WIDTH + x
 end
 
+function M.packarea(w, h)
+    return (w << 8) | h
+end
+
 function M.is_fluid_id(id)
     local typeobject = assert(M.queryById(id))
     return M.has_type(typeobject.type, "fluid")

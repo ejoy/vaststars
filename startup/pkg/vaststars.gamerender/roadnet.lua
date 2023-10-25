@@ -2,9 +2,12 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local iroad = ecs.require "engine.road"
-local iroadnet_converter = require "roadnet_converter"
-local CONSTANT <const> = require("gameplay.interface.constant")
+local iroad = ecs.require "ant.landform|road"
+local CONSTANT <const> = require "gameplay.interface.constant"
+
+local iterrain  = ecs.require "ant.landform|terrain_system"
+local RENDER_LAYER <const> = ecs.require "engine.render_layer".RENDER_LAYER
+local terrain   = ecs.require "terrain"
 
 local roadnet = {}
 
@@ -21,65 +24,95 @@ local roadnet = {}
 -- │
 -- │
 -- └──►x
+local function new_groups() return setmetatable({}, {__index=function (tt, gid) local t = {}; tt[gid] = t; return t end}) end
 
-local function __pack(x, y)
-    assert(x & 0xFF == x and y & 0xFF == y)
-    return x | (y<<8)
-end
+local GROUP_ROADS = new_groups()
 
-local function __unpack(coord)
-    return coord & 0xFF, coord >> 8
-end
 ---------------------------------------------------------
-
-local LAYER_NAMES <const> = {"road", "indicator"}
-local SHAPE_TYPES <const> = {"valid", "invalid", "normal", "modify", "remove"}
-
 function roadnet:create()
-    iroad:create(CONSTANT.MAP_WIDTH, CONSTANT.MAP_HEIGHT, CONSTANT.MAP_WIDTH//2, LAYER_NAMES, SHAPE_TYPES)
+    iroad.create(CONSTANT.ROAD_WIDTH, CONSTANT.ROAD_HEIGHT)
+    iterrain.gen_terrain_field(CONSTANT.MAP_WIDTH, CONSTANT.MAP_HEIGHT, CONSTANT.MAP_OFFSET, CONSTANT.TILE_SIZE, RENDER_LAYER.TERRAIN)
 end
 
--- map = {coord = {x, y, shape_type, shape, dir}, ...}
-function roadnet:init(map)
-     self._layer_cache = {}
-    for _, name in ipairs(LAYER_NAMES) do
-        self._layer_cache[name] = {}
-    end
+local function cvtcoord2pos(x, y)
+    local pos = terrain:get_begin_position_by_coord(x, y, 1, 1)
+    return {pos[1], pos[3] - CONSTANT.ROAD_HEIGHT}
+end
 
-    local layer_name = LAYER_NAMES[1]
-    local res = {}
-    for coord, v in pairs(map) do
-        local x, y = __unpack(coord)
-        self._layer_cache[layer_name][__pack(x, y)] = true
-        res[#res + 1] = {x, y, v[3], v[4], v[5]}
+local function add_road(layer, x, y, state, shape, dir)
+    local gid = terrain:get_group_id(x, y)
+    local idx = terrain:coord2idx(x, y)
+    local item = {
+        x=x, y=y,
+        pos = cvtcoord2pos(x, y),
+        [layer] = {
+            state   = state,
+            shape   = shape,
+            dir     = dir,
+        }
+    }
+    GROUP_ROADS[gid][idx] = item
+    return gid, idx
+end
+
+local function del_road(layer, x, y)
+    local gid = terrain:get_group_id(x, y)
+    local idx = terrain:coord2idx(x, y)
+    local item = GROUP_ROADS[gid][idx]
+    if item then
+        item[layer] = nil
+        if nil == item.road and nil == item.indicator then
+            GROUP_ROADS[gid][idx] = nil
+        end
+        return gid, idx
     end
-    iroad:init(layer_name, res)
+end
+
+function roadnet:update(g)
+    iroad.update_roadnet(g, RENDER_LAYER.ROAD)
 end
 
 function roadnet:clear(layer_name)
-    self._layer_cache = self._layer_cache or {}
-    for coord in pairs(self._layer_cache[layer_name] or {}) do
-        local x, y = __unpack(coord)
-        iroad:del(layer_name, x, y)
+    local g = {}
+    for gid, items in pairs(GROUP_ROADS) do
+        for idx, item in pairs(items) do
+            -- if it has any layer we want
+            if item[layer_name] then
+                g[gid] = true
+                item[layer_name] = nil
+            end
+        end
     end
-    self._layer_cache[layer_name] = {}
+    iroad.clear(g, layer_name)
 end
 
-function roadnet:update()
-    iroad:flush()
+local MODIFIED_GROUPS = {
+    which_groups = {},
+    clear   = function (self) self.which_groups = {} end,
+    mark    = function (self, gid) self.which_groups[gid] = GROUP_ROADS[gid] end,
+    update  = function (self)
+        if next(self.which_groups) then
+            iroad.update_roadnet(self.which_groups, RENDER_LAYER.ROAD)
+            self:clear()
+        end
+    end,
+}
+function roadnet:flush()
+    MODIFIED_GROUPS:update()
 end
 
-function roadnet:set(layer_name, shape_type, x, y, mask)
-    local shape, dir = iroadnet_converter.mask_to_shape_dir(mask)
-    iroad:set(layer_name, shape_type, x, y, shape, dir)
-
-    self._layer_cache[layer_name] = self._layer_cache[layer_name] or {}
-    self._layer_cache[layer_name][__pack(x, y)] = true
+function roadnet:set(layer_name, x, y, shape_state, shape, dir)
+    local gid = add_road(layer_name, x, y, shape_state, shape, dir)
+    MODIFIED_GROUPS:mark(gid)
 end
 
 function roadnet:del(layer_name, x, y)
-    iroad:del(layer_name, x, y)
-    self._layer_cache[layer_name][__pack(x, y)] = nil
+    local gid = del_road(layer_name, x, y)
+    MODIFIED_GROUPS:mark(gid)
+end
+
+function roadnet:cvtcoord2pos(x, y)
+    return cvtcoord2pos(x, y)
 end
 
 return roadnet

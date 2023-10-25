@@ -751,6 +751,22 @@ prototype "运输车辆I" {
     model = "glbs/lorry-1.glb|mesh.prefab",
 }
 
+prototype "轻型运输车" {
+    type = {"item"},
+    item_category = "物流",
+    station_limit = 8,
+    item_description = "行驶在公路上可运输货物的交通工具",
+    capacitance = "10MJ",
+    speed = 63,
+    hub_limit = 15,
+    backpack_limit = 50,
+    item_order = 4,
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/truck.texture",
+    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_mars_truck.texture",
+    model = "glbs/lorry-1.glb|mesh.prefab",
+}
+
 prototype "换热器I" {
     type = {"item"},
     item_category = "物流",

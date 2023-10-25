@@ -16,6 +16,7 @@ local ltask = require "ltask"
 
 local m = ecs.system 'init_system'
 
+local is_webserver_started = false
 bgfx.maxfps(FRAMES_PER_SECOND)
 font.import "/pkg/vaststars.resources/ui/font/Alibaba-PuHuiTi-Regular.ttf"
 
@@ -40,9 +41,11 @@ local function register_debug()
 end
 
 local function start_web()
-    if not __ANT_RUNTIME__ then
+    if not __ANT_RUNTIME__ or is_webserver_started then
 		return
 	end
+
+    is_webserver_started = true
 	register_debug()
 	local web = ltask.uniqueservice "ant.webserver|webserver"
 	ltask.call(web, "start", {

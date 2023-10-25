@@ -28,6 +28,33 @@ prototype "指挥中心" {
     },
 }
 
+prototype "物流中心" {
+    model = "glbs/headquater-1.glb|mesh.prefab",
+    model_status = {work = true},
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_headquarter.texture",
+    construct_detector = {"exclusive"},
+    craft_category = {"基地制造"},
+    item = "轻型运输车",
+    type = {"building", "base", "factory"},
+    speed = "50%",
+    maxslot = 8,
+    area = "6x6",
+    camera_distance = 100,
+    teardown = false,
+    move = false,
+    crossing = {
+        connections = {
+            {type="factory", position={2,4,"S"}},
+        },
+    },
+    starting = "2,2",
+    road = {
+        "2,2,║",
+        "2,4,║",
+        "2,6,╨",
+    },
+}
+
 prototype "科研中心I" {
     type = {"building", "consumer","laboratory"},
     chest_style = "chest",

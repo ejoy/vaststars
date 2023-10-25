@@ -1,6 +1,7 @@
 .build/
 .log/
-.repo/
+.app/
+.fileserver/
 .vs/
 /build/
 bin/
