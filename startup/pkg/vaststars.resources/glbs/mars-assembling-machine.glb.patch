@@ -1,11 +1,31 @@
 ---
+file: images/Mars-assembling_normal.texture
+op: add
+path: /maxsize
+value: 128
+---
+file: images/Mars-assembling_Metallic-Mars-assembling_Roughness.texture
+op: add
+path: /maxsize
+value: 128
+---
+file: images/Mars-assembling.texture
+op: add
+path: /maxsize
+value: 128
+---
+file: images/Mars-assembling_light.texture
+op: add
+path: /maxsize
+value: 64
+---
 file: mesh.prefab
 op: add
 path: /-
 value:
   data:
     scene:
-      r: {0, 0, 0, 1}
+      r: {0, 1, 0, -4.371138828673793e-08}
       t: {0, 11, 11}
     slot:
       follow_flag: 1
@@ -22,7 +42,7 @@ path: /-
 value:
   data:
     scene:
-      r: {0, 0, 0, 1}
+      r: {0, 1, 0, -4.371138828673793e-08}
       t: {6, 11, 11}
     slot:
       follow_flag: 1
@@ -39,7 +59,7 @@ path: /-
 value:
   data:
     scene:
-      r: {0, 0, 0, 1}
+      r: {0, 1, 0, -4.371138828673793e-08}
       t: {-6, 11, 11}
     slot:
       follow_flag: 1
@@ -56,7 +76,6 @@ path: /-
 value:
   data:
     scene:
-      r: {0, -1, 0, -4.371138828673793e-08}
       t: {0, 8, -11}
     slot:
       follow_flag: 1
@@ -73,7 +92,6 @@ path: /-
 value:
   data:
     scene:
-      r: {0, -1, 0, -4.371138828673793e-08}
       t: {6, 8, -11}
     slot:
       follow_flag: 1
@@ -90,7 +108,6 @@ path: /-
 value:
   data:
     scene:
-      r: {0, -1, 0, -4.371138828673793e-08}
       t: {-6, 8, -11}
     slot:
       follow_flag: 1
@@ -146,7 +163,7 @@ value:
   ---
   data:
     scene:
-      r: {-0, 0, 0, 1}
+      r: {0, 1, 0, -4.371138828673793e-08}
       t: {0, 11, 11}
     slot:
       follow_flag: 1
@@ -159,7 +176,7 @@ value:
   ---
   data:
     scene:
-      r: {-0, 0, 0, 1}
+      r: {0, 1, 0, -4.371138828673793e-08}
       t: {6, 11, 11}
     slot:
       follow_flag: 1
@@ -172,7 +189,7 @@ value:
   ---
   data:
     scene:
-      r: {-0, 0, 0, 1}
+      r: {0, 1, 0, -4.371138828673793e-08}
       t: {-6, 11, 11}
     slot:
       follow_flag: 1
@@ -185,7 +202,6 @@ value:
   ---
   data:
     scene:
-      r: {0, -1, 0, -4.371138828673793e-08}
       t: {0, 8, -11}
     slot:
       follow_flag: 1
@@ -198,7 +214,6 @@ value:
   ---
   data:
     scene:
-      r: {0, -1, 0, -4.371138828673793e-08}
       t: {6, 8, -11}
     slot:
       follow_flag: 1
@@ -211,7 +226,6 @@ value:
   ---
   data:
     scene:
-      r: {0, -1, 0, -4.371138828673793e-08}
       t: {-6, 8, -11}
     slot:
       follow_flag: 1

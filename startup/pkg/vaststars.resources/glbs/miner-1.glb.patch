@@ -1,4 +1,24 @@
 ---
+file: images/miner_color.texture
+op: add
+path: /maxsize
+value: 128
+---
+file: images/miner_normal.texture
+op: add
+path: /maxsize
+value: 128
+---
+file: images/miner_Metallic-miner_Roughness.texture
+op: add
+path: /maxsize
+value: 128
+---
+file: images/miner_light.texture
+op: add
+path: /maxsize
+value: 64
+---
 file: mesh.prefab
 op: add
 path: /-

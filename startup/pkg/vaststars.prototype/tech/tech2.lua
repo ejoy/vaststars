@@ -447,7 +447,7 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "基地发电" {
+  prototype "太阳能发电" {
     desc = "铺设发电设施让基地供电充足",
     type = { "task" },
     icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
@@ -469,7 +469,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 9},
     task_params = {building = "机尾残骸", item = "蒸汽发电机I"},
     count = 1,
-    prerequisites = {"基地发电"},
+    prerequisites = {"太阳能发电"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },

@@ -5,25 +5,10 @@ local w = world.w
 local iroad = ecs.require "ant.landform|road"
 local CONSTANT <const> = require "gameplay.interface.constant"
 
-local iterrain  = ecs.require "ant.landform|terrain_system"
 local RENDER_LAYER <const> = ecs.require "engine.render_layer".RENDER_LAYER
 local terrain   = ecs.require "terrain"
 
 local roadnet = {}
-
--- logic axis
--- ┌──►x
--- │
--- │
--- ▼
--- y
-
--- render axis
--- z
--- ▲
--- │
--- │
--- └──►x
 local function new_groups() return setmetatable({}, {__index=function (tt, gid) local t = {}; tt[gid] = t; return t end}) end
 
 local GROUP_ROADS = new_groups()
@@ -31,11 +16,10 @@ local GROUP_ROADS = new_groups()
 ---------------------------------------------------------
 function roadnet:create()
     iroad.create(CONSTANT.ROAD_WIDTH, CONSTANT.ROAD_HEIGHT)
-    iterrain.gen_terrain_field(CONSTANT.MAP_WIDTH, CONSTANT.MAP_HEIGHT, CONSTANT.MAP_OFFSET, CONSTANT.TILE_SIZE, RENDER_LAYER.TERRAIN)
 end
 
 local function cvtcoord2pos(x, y)
-    local pos = terrain:get_begin_position_by_coord(x, y, 1, 1)
+    local pos = terrain:get_begin_position_by_coord(x, y)
     return {pos[1], pos[3] - CONSTANT.ROAD_HEIGHT}
 end
 

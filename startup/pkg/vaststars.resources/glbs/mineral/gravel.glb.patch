@@ -1,4 +1,19 @@
 ---
+file: images/TexturesCom_PlasterBare_Old_512_roughness.texture
+op: add
+path: /maxsize
+value: 64
+---
+file: images/TexturesCom_PlasterBare_Old_512_albedo2.texture
+op: add
+path: /maxsize
+value: 64
+---
+file: images/TexturesCom_PlasterBare_Old_512_normal.texture
+op: add
+path: /maxsize
+value: 64
+---
 file: mesh.prefab
 op: createfile
 path: hitch.prefab

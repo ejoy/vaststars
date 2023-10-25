@@ -1,4 +1,19 @@
 ---
+file: images/pump_color.texture
+op: add
+path: /maxsize
+value: 64
+---
+file: images/pump_Metallic-pump_Roughness.texture
+op: add
+path: /maxsize
+value: 64
+---
+file: images/pump_normal.texture
+op: add
+path: /maxsize
+value: 64
+---
 file: mesh.prefab
 op: add
 path: /-

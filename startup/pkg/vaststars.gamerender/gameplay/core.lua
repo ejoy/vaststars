@@ -1,5 +1,6 @@
 local gameplay = import_package "vaststars.gameplay"
 local fs = require "bee.filesystem"
+local archiving = require "archiving"
 
 local function __create_gameplay_world()
     local world = gameplay.createWorld()
@@ -24,16 +25,7 @@ local world = __create_gameplay_world()
 local irecipe = require "gameplay.interface.recipe"
 local iprototype = require "gameplay.interface.prototype"
 local MULTIPLE <const> = require "debugger".multiple
-local directory = require "directory"
-
-local CUSTOM_ARCHIVING <const> = require "debugger".custom_archiving
-local ARCHIVAL_BASE_DIR
-if CUSTOM_ARCHIVING then
-    ARCHIVAL_BASE_DIR = (fs.exe_path():parent_path() / CUSTOM_ARCHIVING):lexically_normal():string()
-else
-    ARCHIVAL_BASE_DIR = (directory.app_path "vaststars" / "archiving/"):string()
-end
-local GLOBAL_SETTINGS_FILENAME <const> = ARCHIVAL_BASE_DIR .. "settings.json"
+local GLOBAL_SETTINGS_FILENAME <const> = archiving.path() .. "settings.json"
 local json = import_package "ant.json"
 
 local m = {}
