@@ -6,6 +6,7 @@ local NOTHING <const> = require "debugger".nothing
 local TERRAIN_ONLY <const> = require "debugger".terrain_only
 local DISABLE_AUDIO <const> = require "debugger".disable_audio
 local CONSTANT <const> = require("gameplay.interface.constant")
+local RENDER_LAYER <const> = ecs.require "engine.render_layer".RENDER_LAYER
 
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local icanvas = ecs.require "engine.canvas"
@@ -22,6 +23,7 @@ local math3d = require "math3d"
 local irender = ecs.require "ant.render|render_system.render"
 local imountain = ecs.require "engine.mountain"
 local debugger = require "debugger"
+local iterrain  = ecs.require "ant.landform|terrain_system"
 
 local m = ecs.system 'game_init_system'
 local gameworld_prebuild
@@ -49,6 +51,7 @@ function m:init_world()
         return
     end
 
+    iterrain.gen_terrain_field(CONSTANT.MAP_WIDTH, CONSTANT.MAP_HEIGHT, CONSTANT.MAP_OFFSET, CONSTANT.TILE_SIZE, RENDER_LAYER.TERRAIN)
     imountain:create(CONSTANT.MAP_WIDTH, CONSTANT.MAP_HEIGHT, CONSTANT.MAP_WIDTH//2, CONSTANT.TILE_SIZE)
 
     iroadnet:create()
