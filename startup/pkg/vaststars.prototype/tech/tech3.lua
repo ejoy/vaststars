@@ -245,22 +245,76 @@ local prototype = gameplay.register.prototype
     },
   }
 
+  prototype "生产公路" {
+    desc = "生产砖石公路",
+    type = { "task" },
+    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
+    task = {"stat_production", 0, "砖石公路-X型"},
+    count = 15,
+    prerequisites = {"石砖大生产"},
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "使用组装机生产15段砖石公路", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
   prototype "铁板大生产" {
     desc = "规模生产石砖",
     type = { "task" },
     icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
     task = {"stat_production", 0, "铁板"},
     count = 3,
-    prerequisites = {"石砖大生产"},
+    prerequisites = {"生产公路"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     effects = {
-      unlock_recipe = {"轻型采矿机"},
-      unlock_item = {"轻型采矿机"},
+      unlock_recipe = {"轻型运输车"},
+      unlock_item = {"轻型运输车"},
     },
     sign_desc = {
       { desc = "使用组装机生产3个石砖", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
+
+  prototype "制造运输车" {
+    desc = "制造轻型运输车",
+    type = { "task" },
+    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
+    task = {"stat_production", 0, "轻型运输车"},
+    count = 1,
+    prerequisites = {"铁板大生产"},
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "使用组装机生产1辆轻型运输车", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "更多运输车" {
+    desc = "派遣3辆运输车",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = { "task" },
+    task = {"unknown", 0, 2},                          
+    prerequisites = {"制造运输车"},
+    count = 3,
+    effects = {
+      unlock_recipe = {"轻型采矿机"},
+      unlock_item = {"轻型采矿机"},
+    },
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate1.texture",
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate2.texture",
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate3.texture",
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate4.texture",
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate5.texture",
+    },
+    sign_desc = {
+      { desc = "指挥中心总共派遣3辆运输车", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -270,11 +324,7 @@ local prototype = gameplay.register.prototype
     icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
     task = {"stat_production", 0, "轻型采矿机"},
     count = 1,
-    prerequisites = {"铁板大生产"},
-    effects = {
-      unlock_recipe = {"轻型运输车"},
-      unlock_item = {"轻型运输车"},
-    },
+    prerequisites = {"更多运输车"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -287,7 +337,7 @@ local prototype = gameplay.register.prototype
     desc = "放置3台采矿机",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = {"task" },
-    task = {"select_entity", 0, "采矿机I"},
+    task = {"select_entity", 0, "轻型采矿机"},
     prerequisites = {"制造采矿机"},
     count = 3,
     tips_pic = {
@@ -296,47 +346,26 @@ local prototype = gameplay.register.prototype
     guide_focus = {
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-        x = 106,
-        y = 128,
+        x = 157,
+        y = 101,
         w = 3.2,
         h = 3.2,
         show_arrow = true,
       },
       {
-        camera_x = 113,
-        camera_y = 134,
+        camera_x = 157,
+        camera_y = 101,
       },
     },
     effects = {
-      unlock_item = {"铝矿石"},
+      unlock_recipe = {"地质科技包1"},
+      unlock_item = {"铝矿石","地质科技包"},
     },
     sign_desc = {
       { desc = "在铝矿上放置1台采矿机", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
-  prototype "更多运输车" {
-    desc = "派遣6辆运输车",
-    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-    type = { "task" },
-    task = {"unknown", 0, 2},                          
-    prerequisites = {"铝矿石开采"},
-    count = 6,
-    effects = {
-      unlock_recipe = {"地质科技包1"},
-      unlock_item = {"地质科技包"},
-    },
-    tips_pic = {
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate1.texture",
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate2.texture",
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate3.texture",
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate4.texture",
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate5.texture",
-    },
-    sign_desc = {
-      { desc = "指挥中心总共派遣6辆运输车", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-    },
-  }
 
   -- prototype "铝矿石运输" {
   --   desc = "车辆运输铝矿石",
@@ -373,7 +402,7 @@ local prototype = gameplay.register.prototype
     icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
     task = {"stat_production", 0, "地质科技包"},
     count = 3,
-    prerequisites = {"更多运输车"},
+    prerequisites = {"铝矿石开采"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -382,8 +411,8 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "开启科技研究" {
-    desc = "获得火星岩石加工成石砖的工艺",
+  prototype "完成科技研究" {
+    desc = "完成新的科技研究",
     type = { "tech" },
     icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
     prerequisites = {"科技包大生产"},
@@ -401,7 +430,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 4},
     effects = {
     },
-    prerequisites = {"开启科技研究"},
+    prerequisites = {"完成科技研究"},
     count = 1,
     tips_pic = {
       "",

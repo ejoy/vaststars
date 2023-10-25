@@ -1965,7 +1965,7 @@ prototype "轻型运输车" {
     recipe_order =  128,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/glass.texture",
     ingredients = {
-        {"铁板", 8},
+        {"铁板", 5},
     },
     results = {
         {"轻型运输车", 1},

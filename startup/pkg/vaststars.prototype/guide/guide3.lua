@@ -160,7 +160,7 @@ local guide2 = {
             guide_progress = 10,
         },
         prerequisites = {
-            "铁板大生产",
+            "更多运输车",
         },
 	},
 
@@ -192,7 +192,7 @@ local guide2 = {
             guide_progress = 10,
         },
         prerequisites = {
-            "更多运输车",
+            "铝矿石开采",
         },
 	},
 
@@ -209,7 +209,7 @@ local guide2 = {
             guide_progress = 10,
         },
         prerequisites = {
-            "开启科技研究",
+            "完成科技研究",
         },
 	},
 }
