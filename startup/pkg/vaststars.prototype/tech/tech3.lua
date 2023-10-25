@@ -196,6 +196,20 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 2},                          
     prerequisites = {"物流站收货设置"},
     count = 2,
+    guide_focus = {
+      {
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        x = 152.5,
+        y = 114.5,
+        w = 5.2,
+        h = 5.2,
+        show_arrow = true,
+      },
+      {
+        camera_x = 152,
+        camera_y = 114,
+      },
+    },
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate1.texture",
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate2.texture",
@@ -208,7 +222,7 @@ local prototype = gameplay.register.prototype
       unlock_item = {"石砖","砖石公路-X型"},
     },
     sign_desc = {
-      { desc = "指挥中心派遣2辆运输车", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "物流中心派遣2辆运输车", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -293,7 +307,7 @@ local prototype = gameplay.register.prototype
       unlock_item = {"铝矿石"},
     },
     sign_desc = {
-      { desc = "在石矿、铁矿、铝矿上各放置1台采矿机", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "在铝矿上放置1台采矿机", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -304,6 +318,10 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 2},                          
     prerequisites = {"物流站收货设置"},
     count = 6,
+    effects = {
+      unlock_recipe = {"地质科技包1"},
+      unlock_item = {"地质科技包"},
+    },
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate1.texture",
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate2.texture",

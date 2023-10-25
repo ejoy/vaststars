@@ -86,7 +86,7 @@ local guide2 = {
         name = "",
 		narrative = {
             {"哔哩..下个重要物流设施是{/g 物流站},其中可以设置{/color:4bd0ff 发货}和{/color:4bd0ff 收货}..哔哩", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
-            {"哔哩..让我们尝试将矿区边的{/color:4bd0ff 物流站}设置为{/g 发货}吧..哔哩", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..让我们尝试将矿区边的{/color:4bd0ff 物流站}设置{/g 发货类型}吧..哔哩", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
@@ -96,6 +96,103 @@ local guide2 = {
         },
         prerequisites = {
             "停车站放置",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
+            {"哔哩.. 让我们在把组装机边的{/color:4bd0ff 物流站}设置{/g 收货类型}吧..哔哩", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..当两个物流站的{/color:4bd0ff 发货类型}和{/color:4bd0ff 收货类型}相同时,运输车就会开始两地运输..哔哩", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            task = {
+                "物流站收货设置",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "物流站发货设置",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
+            {"哔哩.. 让我们前往{/color:4bd0ff 物流中心}派遣{/g 运输车}吧..哔哩", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            task = {
+                "派遣运输车",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "物流站收货设置",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
+            {"哔哩.. 现在{/color:4bd0ff 运输车}开始运输了，让运输车运送原料生产一些{/g 石砖}吧..哔哩", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            task = {
+                "石砖大生产",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "派遣运输车",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
+            {"哔哩.. 有了{/color:4bd0ff 石砖}和{/color:4bd0ff 铁板}这些加工材料，允许我们生产更多{/g 采矿机}..哔哩", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            task = {
+                "制造采矿机",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "铁板大生产",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
+            {"哔哩.. 有了新制造的{/color:4bd0ff 采矿机}我们就可以开采{/g 铝矿}了..哔哩", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            task = {
+                "铝矿石开采",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "制造采矿机",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
+            {"哔哩.. 现在可以开采{/color:4bd0ff 石矿}、{/color:4bd0ff 铁矿}和{/color:4bd0ff 铝矿},我们就可以制造{/g 地质科技包}了..哔哩", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            task = {
+                "科技包大生产",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "更多运输车",
         },
 	},
 
