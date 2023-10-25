@@ -66,8 +66,7 @@ local guide2 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..{/g 风力发电机}为供电设施,以其为中心的{/color:4bd0ff 蓝色区域}为供电范围..哔哩..", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
-            {"哔哩..处于{/color:4bd0ff 蓝色供电区}的{/g 采矿机}都顺利通电工作了..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},  
+            {"哔哩..{/g 采矿机}都顺利通电工作了..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},  
             {"哔哩..现在设置{/color:4bd0ff 仓库}收货{/g 碎石}、{/g 铁矿石}、{/g 铝矿石}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
@@ -223,7 +222,7 @@ local guide2 = {
             guide_progress = 10,
         },
         prerequisites = {
-            "基地发电",
+            "太阳能发电",
         },
 	},
 

@@ -35,17 +35,14 @@ local CAMERA_DEFAULT <const> = read_datalist "/pkg/vaststars.resources/camera_de
 local CAMERA_CONSTRUCT <const> = read_datalist "/pkg/vaststars.resources/camera_construct.prefab" [1].data.scene
 local CAMERA_PICKUP <const> = read_datalist "/pkg/vaststars.resources/camera_pickup.prefab" [1].data.scene
 
-local CAMERA_DEFAULT_SCALE <const> = CAMERA_DEFAULT.s and math3d.constant("v4", CAMERA_DEFAULT.s)or mc.ONE
 local CAMERA_DEFAULT_ROTATION <const> = CAMERA_DEFAULT.r and math3d.constant("quat", CAMERA_DEFAULT.r) or mc.IDENTITY_QUAT
 
-local CAMERA_CONSTRUCT_SCALE <const> = CAMERA_CONSTRUCT.s and math3d.constant("v4", CAMERA_CONSTRUCT.s) or mc.ONE
 local CAMERA_CONSTRUCT_ROTATION <const> = CAMERA_CONSTRUCT.r and math3d.constant("quat", CAMERA_CONSTRUCT.r) or mc.IDENTITY_QUAT
 local CAMERA_CONSTRUCT_POSITION <const> = CAMERA_CONSTRUCT.t and math3d.constant("v4", CAMERA_CONSTRUCT.t) or mc.ZERO_PT
 assert(math3d.index(CAMERA_CONSTRUCT_POSITION, 1) == 0)
 assert(math3d.index(CAMERA_CONSTRUCT_POSITION, 2) == 0)
 assert(math3d.index(CAMERA_CONSTRUCT_POSITION, 3) == 0)
 
-local CAMERA_PICKUP_SCALE <const> = CAMERA_PICKUP.s and math3d.constant("v4", CAMERA_PICKUP.s) or mc.ONE
 local CAMERA_PICKUP_ROTATION <const> = CAMERA_PICKUP.r and math3d.constant("quat", CAMERA_PICKUP.r) or mc.IDENTITY_QUAT
 local CAMERA_PICKUP_POSITION <const> = CAMERA_PICKUP.t and math3d.constant("v4", CAMERA_PICKUP.t) or mc.ZERO_PT
 assert(math3d.index(CAMERA_PICKUP_POSITION, 1) == 0)

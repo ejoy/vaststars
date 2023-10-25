@@ -6,8 +6,8 @@ local ROTATORS <const> = CONSTANT.ROTATORS
 local DEFAULT_DIR <const> = CONSTANT.DEFAULT_DIR
 local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
 local CHANGED_FLAG_ROADNET <const> = CONSTANT.CHANGED_FLAG_ROADNET
-local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 local DIRECTION <const> = CONSTANT.DIRECTION
+local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 local WORLD_MOVE_DELTA <const> = {
     ['N'] = {x = 0,  y = 1},
     ['E'] = {x = 1,  y = 0},
@@ -288,7 +288,6 @@ local function place(self, datamodel)
     iobject.remove(self.coord_indicator)
     self.coord_indicator = nil
 
-    iroadnet:update()
     gameplay_core.set_changed(CHANGED_FLAG_ROADNET)
 
     local dx, dy = iprototype.move_coord(x, y, self.forward_dir, ROAD_SIZE)
@@ -310,7 +309,6 @@ local function clean(self, datamodel)
     self.pickup_components = {}
 
     datamodel.show_rotate = false
-    iroadnet:update()
 end
 
 local function rotate(self)
@@ -327,7 +325,6 @@ local function remove_one(self, datamodel, x, y)
     ibuilding.remove(x, y)
     iroadnet:del("road", x, y)
 
-    iroadnet:update()
     gameplay_core.set_changed(CHANGED_FLAG_ROADNET)
 end
 
