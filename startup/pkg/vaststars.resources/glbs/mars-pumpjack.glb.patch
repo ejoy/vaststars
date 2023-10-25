@@ -1,4 +1,9 @@
 ---
+file: images/anything_light.texture
+op: add
+path: /maxsize
+value: 16
+---
 file: mesh.prefab
 op: copyfile
 path: work.prefab
@@ -6,6 +11,21 @@ path: work.prefab
 file: mesh.prefab
 op: copyfile
 path: low_power.prefab
+---
+file: images/Pumpjack_color.texture
+op: add
+path: /maxsize
+value: 128
+---
+file: images/Pumpjack_normal.texture
+op: add
+path: /maxsize
+value: 128
+---
+file: images/Pumpjack_Metallic.png-Pumpjack_Roughness.texture
+op: add
+path: /maxsize
+value: 128
 ---
 file: low_power.prefab
 op: replace

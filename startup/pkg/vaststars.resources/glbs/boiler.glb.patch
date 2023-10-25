@@ -1,4 +1,29 @@
 ---
+file: images/boiler_normal.texture
+op: add
+path: /maxsize
+value: 128
+---
+file: images/boiler_Metallic-boiler_Roughness.texture
+op: add
+path: /maxsize
+value: 128
+---
+file: images/boiler_light.texture
+op: add
+path: /maxsize
+value: 128
+---
+file: images/boiler_color.texture
+op: add
+path: /maxsize
+value: 128
+---
+file: materials/Material.001.material
+op: replace
+path: /state/CULL
+value: NONE
+---
 file: mesh.prefab
 op: createfile
 path: hitch.prefab
@@ -13,8 +38,3 @@ value:
     ant.render|hitch_object
   tag:
     hitch
----
-file: materials/Material.001.material
-op: replace
-path: /state/CULL
-value: NONE

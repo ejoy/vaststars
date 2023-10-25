@@ -1,4 +1,9 @@
 ---
+file: images/damage_assembling_color.texture
+op: add
+path: /maxsize
+value: 64
+---
 file: mesh.prefab
 op: add
 path: /-
