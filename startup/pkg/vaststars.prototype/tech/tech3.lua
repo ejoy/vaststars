@@ -261,7 +261,7 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "铁板大生产" {
-    desc = "规模生产石砖",
+    desc = "规模生产铁板",
     type = { "task" },
     icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
     task = {"stat_production", 0, "铁板"},
@@ -275,7 +275,7 @@ local prototype = gameplay.register.prototype
       unlock_item = {"轻型运输车"},
     },
     sign_desc = {
-      { desc = "使用组装机生产3个石砖", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "使用熔炼炉生产3个铁板", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
