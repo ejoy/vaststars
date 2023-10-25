@@ -199,8 +199,8 @@ local prototype = gameplay.register.prototype
     guide_focus = {
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-        x = 152.5,
-        y = 114.5,
+        x = 154.5,
+        y = 116.5,
         w = 5.2,
         h = 5.2,
         show_arrow = true,
@@ -233,6 +233,10 @@ local prototype = gameplay.register.prototype
     task = {"stat_production", 0, "石砖"},
     count = 3,
     prerequisites = {"派遣运输车"},
+    effects = {
+      unlock_recipe = {"铁板1"},
+      unlock_item = {"铁板"},
+    },
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -316,7 +320,7 @@ local prototype = gameplay.register.prototype
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"unknown", 0, 2},                          
-    prerequisites = {"物流站收货设置"},
+    prerequisites = {"铝矿石开采"},
     count = 6,
     effects = {
       unlock_recipe = {"地质科技包1"},
