@@ -24,7 +24,7 @@ local COORD_BOUNDARY <const> = {{0, 0}, {WIDTH - 1, HEIGHT - 1}}
 local iprototype = require "gameplay.interface.prototype"
 local math3d = require "math3d"
 
-local function _get_coord_by_position(position)
+local function _position2coord(position)
     local posx, posz = math3d.index(position, 1, 3)
     if (posx < BOUNDARY_3D[1][1] or posx > BOUNDARY_3D[2][1]) or
         (posz < BOUNDARY_3D[1][3] or posz > BOUNDARY_3D[2][3]) then
@@ -35,7 +35,7 @@ local function _get_coord_by_position(position)
     return {math.floor((posx - ORIGIN[1]) // TILE_SIZE), math.floor((ORIGIN[2] - posz) // TILE_SIZE)}
 end
 
-local function _verify_coord(x, y)
+local function _verify(x, y)
     if x < COORD_BOUNDARY[1][1] or x > COORD_BOUNDARY[2][1] then
         return false
     end
@@ -60,14 +60,14 @@ end
 
 function coord.move(x, y, dir, dx, dy)
     local _x, _y = iprototype.move_coord(x, y, dir, dx, dy)
-    if not _verify_coord(_x, _y) then
+    if not _verify(_x, _y) then
         return false, coord.bound(_x, _y)
     end
     return true, _x, _y
 end
 
 function coord.lefttop_position(x, y)
-    if not _verify_coord(x, y) then
+    if not _verify(x, y) then
         log.error(("out of bounds (%s,%s) : (%s) - (%s)"):format(x, y, table.concat(COORD_BOUNDARY[1], ","), table.concat(COORD_BOUNDARY[2], ",")))
         return
     end
@@ -85,14 +85,14 @@ function coord.position(x, y, w, h)
 end
 
 function coord.position2coord(position)
-    return _get_coord_by_position(position)
+    return _position2coord(position)
 end
 
 -- position is the center of the entity
 function coord.align(position, w, h)
     -- equivalent to: math3d.vector {math3d.index(position, 1) - (w / 2 * TILE_SIZE), math3d.index(position, 2), math3d.index(position, 3) + (h / 2 * TILE_SIZE)}
     local begin_position = math3d.muladd(1/2*TILE_SIZE, math3d.vector(-w, 0.0, h), position)
-    local c = _get_coord_by_position(begin_position)
+    local c = _position2coord(begin_position)
     if not c then
         return
     end

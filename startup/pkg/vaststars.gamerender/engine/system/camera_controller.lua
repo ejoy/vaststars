@@ -18,6 +18,7 @@ local math_min = math.min
 
 local MOVE_SPEED <const> = 8.0
 local XZ_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
+local CAMERA_SAMPLE_NUM <const> = 7
 
 local camera_controller = ecs.system "camera_controller"
 local icamera_controller = {}
@@ -96,7 +97,6 @@ local  dst_r, dst_t, delta_dis, view_mat, last_xzpoint, last_view
 local function toggle_view(v, cur_xzpoint)
     math3d.unmark(cur_xzpoint)
 
-    local sample_num = 15
     local ce <close> = world:entity(irq.main_camera(), "camera:in scene:in")
     assert(math3d.index(cur_xzpoint, 2) == 0, "y axis should be zero!")
 
@@ -157,7 +157,7 @@ local function toggle_view(v, cur_xzpoint)
 
     local function adjust_camera_rt(sr, st, dr, dt, xzpoint, vm, pm)
         local dis = get_delta_distance(sr, st, dr, dt, xzpoint)
-        local dst_table, last_t = get_dst_rt(sr, st, dr, xzpoint, vm, pm, dis, sample_num)
+        local dst_table, last_t = get_dst_rt(sr, st, dr, xzpoint, vm, pm, dis, CAMERA_SAMPLE_NUM)
         local new_vm = math3d.inverse(math3d.matrix{r = dr, t = last_t})
         dst_r, dst_t, delta_dis, view_mat, last_xzpoint = math3d.mark(dr), math3d.mark(last_t), dis, math3d.mark(new_vm), math3d.mark(xzpoint)
         return dst_table
@@ -173,9 +173,9 @@ local function toggle_view(v, cur_xzpoint)
         delta_dis = delta_dis and -delta_dis or 0
         local t
         if last_view == "construct" then
-            t = get_dst_rt(ce.scene.r, ce.scene.t, CAMERA_DEFAULT_ROTATION, cur_xzpoint, ce.camera.viewmat, ce.camera.projmat, delta_dis, sample_num)
+            t = get_dst_rt(ce.scene.r, ce.scene.t, CAMERA_DEFAULT_ROTATION, cur_xzpoint, ce.camera.viewmat, ce.camera.projmat, delta_dis, CAMERA_SAMPLE_NUM)
         else
-            t = get_dst_rt(dst_r, dst_t, CAMERA_DEFAULT_ROTATION, last_xzpoint, view_mat, ce.camera.projmat, delta_dis, sample_num)
+            t = get_dst_rt(dst_r, dst_t, CAMERA_DEFAULT_ROTATION, last_xzpoint, view_mat, ce.camera.projmat, delta_dis, CAMERA_SAMPLE_NUM)
         end
         math3d.unmark(dst_r)
         math3d.unmark(dst_t)
