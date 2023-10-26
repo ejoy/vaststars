@@ -3,14 +3,7 @@ local world = ecs.world
 local w = world.w
 
 local itp = ecs.require "ant.landform|translucent_plane_system"
-local CONSTANT <const> = require "gameplay.interface.constant"
-local RENDER_LAYER <const> = ecs.require "engine.render_layer".RENDER_LAYER
-
 local tp = {}
-local WIDTH <const> = CONSTANT.MAP_WIDTH
-local HEIGHT <const> = CONSTANT.MAP_HEIGHT
-local TILE_SIZE <const> = CONSTANT.TILE_SIZE
-local OFFSET <const> = {-(WIDTH * TILE_SIZE)/2, -(HEIGHT * TILE_SIZE)/2}
 
 -- render axis
 -- z
@@ -20,7 +13,6 @@ local OFFSET <const> = {-(WIDTH * TILE_SIZE)/2, -(HEIGHT * TILE_SIZE)/2}
 -- └──►x
 
 local function get_sub_rects(rects)
-
     local function remove_corner_sub_rects(rects)
         local rnum = #rects
         for i = 1, rnum do
@@ -98,16 +90,10 @@ local function get_sub_rects(rects)
     return rects
 end
 
-local function set_offsets(rects)
-    for _, rect in ipairs(rects) do
-        rect.x, rect.y = rect.x + OFFSET[1], rect.y + OFFSET[2]
-    end
-end
-
-function tp.update(rects)
-    set_offsets(rects)
+-- rects = {{x = xx, y = xx, w = xx, h = xx, gid = xx, color = xx}, ...}
+function tp.update(rects, render_layer, size)
     local sub_rects = get_sub_rects(rects)
-    itp.update_tp(sub_rects, RENDER_LAYER.TRANSLUCENT_PLANE, TILE_SIZE)
+    itp.update_tp(sub_rects, render_layer, size)
 end
 
 function tp.clear()

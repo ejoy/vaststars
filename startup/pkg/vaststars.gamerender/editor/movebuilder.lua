@@ -1,16 +1,15 @@
 local ecs = ...
 local world = ecs.world
 
-local CONSTANT = require "gameplay.interface.constant"
-local ROTATORS <const> = CONSTANT.ROTATORS
-local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
-local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
-local ALL_DIR = CONSTANT.ALL_DIR
-local SPRITE_COLOR <const> = import_package "vaststars.prototype"("sprite_color")
 local CONSTANT <const> = require "gameplay.interface.constant"
 local MAP_WIDTH <const> = CONSTANT.MAP_WIDTH
 local MAP_HEIGHT <const> = CONSTANT.MAP_HEIGHT
 local TILE_SIZE <const> = CONSTANT.TILE_SIZE
+local ROTATORS <const> = CONSTANT.ROTATORS
+local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
+local ALL_DIR <const> = CONSTANT.ALL_DIR
+local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
+local SPRITE_COLOR <const> = import_package "vaststars.prototype"("sprite_color")
 
 local math3d = require "math3d"
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
@@ -22,7 +21,6 @@ local ieditor = ecs.require "editor.editor"
 local objects = require "objects"
 local iobject = ecs.require "object"
 local imining = require "gameplay.interface.mining"
-local math3d = require "math3d"
 local igrid_entity = ecs.require "engine.grid_entity"
 local mc = import_package "ant.math".constant
 local create_road_entrance = ecs.require "editor.road_entrance"
@@ -79,7 +77,6 @@ local function __create_self_sprite(typeobject, x, y, dir, sprite_color)
     end
     return sprite
 end
-
 
 local function __get_nearby_buldings(exclude_id, x, y, w, h)
     local r = {}
@@ -282,9 +279,9 @@ local function __new_entity(self, datamodel, typeobject)
     if road_entrance_position then
         local srt = {t = road_entrance_position, r = ROTATORS[road_entrance_dir]}
         if datamodel.show_confirm then
-            self.road_entrance = create_road_entrance(srt, "valid")
+            self.road_entrance = create_road_entrance(srt.t, "valid")
         else
-            self.road_entrance = create_road_entrance(srt, "invalid")
+            self.road_entrance = create_road_entrance(srt.t, "invalid")
         end
     end
 end

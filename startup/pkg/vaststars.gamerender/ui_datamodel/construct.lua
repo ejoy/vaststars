@@ -568,6 +568,9 @@ function M.update(datamodel)
         local object = assert(objects:get(object_id))
         local gameplay_world = gameplay_core.get_world()
         local typeobject = iprototype.queryByName(object.prototype_name)
+        if typeobject.base then
+            typeobject = iprototype.queryByName(typeobject.base)
+        end
 
         local e = gameplay_core.get_entity(object.gameplay_eid)
         if e.chest then
