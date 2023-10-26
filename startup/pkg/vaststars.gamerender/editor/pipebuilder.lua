@@ -4,16 +4,16 @@ local world = ecs.world
 
 local CONSTANT <const> = require "gameplay.interface.constant"
 local ROTATORS <const> = CONSTANT.ROTATORS
-local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
-local CHANGED_FLAG_FLUIDFLOW <const> = CONSTANT.CHANGED_FLAG_FLUIDFLOW
+local ALL_DIR <const> = CONSTANT.ALL_DIR
+local ALL_DIR_NUM <const> = CONSTANT.ALL_DIR_NUM
 local DEFAULT_DIR <const> = CONSTANT.DEFAULT_DIR
-local ALL_DIR = CONSTANT.ALL_DIR
-local ALL_DIR_NUM = CONSTANT.ALL_DIR_NUM
-local REMOVE <const> = {}
-local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 local MAP_WIDTH <const> = CONSTANT.MAP_WIDTH
 local MAP_HEIGHT <const> = CONSTANT.MAP_HEIGHT
 local TILE_SIZE <const> = CONSTANT.TILE_SIZE
+local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
+local CHANGED_FLAG_FLUIDFLOW <const> = CONSTANT.CHANGED_FLAG_FLUIDFLOW
+local REMOVE <const> = {}
+local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 -- To distinguish between "batch construction" and "batch teardown" in the touch_end event.
 local STATE_NONE  <const> = 0
 local STATE_START <const> = 1
