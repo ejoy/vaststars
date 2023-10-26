@@ -23,7 +23,7 @@ local function get_backpack()
         v.count = slot.amount
         v.order = typeobject_item.item_order or 0
 
-        local category = assert(typeobject_item.item_category, ("`%s` item_category is nil"):format(typeobject_item.name))
+        local category = typeobject_item.item_category or error(("`%s` item_category is nil"):format(typeobject_item.name))
         t[category] = t[category] or {}
         t[category][#t[category]+1] = v
     end

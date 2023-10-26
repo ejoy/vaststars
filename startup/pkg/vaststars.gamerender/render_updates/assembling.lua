@@ -12,12 +12,6 @@ local ROTATORS <const> = {
     S = math.rad(-180),
     W = math.rad(-270),
 }
-local DIRECTION <const> = {
-    [0] = 'N',
-    [1] = 'E',
-    [2] = 'S',
-    [3] = 'W',
-}
 
 local function read_datalist(path)
     local fs = require "filesystem"
@@ -130,7 +124,7 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
                 local recipe_typeobject = assert(iprototype.queryById(recipe))
                 local cfg = RECIPES_CFG[recipe_typeobject.recipe_icon]
                 if not cfg then
-                    assert(cfg, ("can not found `%s`"):format(recipe_typeobject.recipe_icon))
+                    error(("can not found `%s`"):format(recipe_typeobject.recipe_icon))
                     return
                 end
                 material_path = "/pkg/vaststars.resources/materials/canvas/recipes.material"
@@ -163,7 +157,7 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
                     {"results", "output"},
                 }
 
-                local begin_x, begin_y = __calc_begin_xy(x, y, iprototype.rotate_area(typeobject.area, DIRECTION[e.building.direction]))
+                local begin_x, begin_y = __calc_begin_xy(x, y, iprototype.rotate_area(typeobject.area, e.building.direction))
                 for _, r in ipairs(t) do
                     local i = 0
                     for _, v in ipairs(irecipe.get_elements(recipe_typeobject[r[1]])) do
@@ -171,7 +165,7 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
                             i = i + 1
                             local c = assert(typeobject.fluidboxes[r[2]][i])
                             local connection = assert(c.connections[1])
-                            local connection_x, connection_y, connection_dir = iprototype.rotate_connection(connection.position, DIRECTION[e.building.direction], typeobject.area)
+                            local connection_x, connection_y, connection_dir = iprototype.rotate_connection(connection.position, e.building.direction, typeobject.area)
                             draw_fluid_icon(
                                 object_id,
                                 begin_x + connection_x * iterrain.tile_size + iterrain.tile_size / 2,
@@ -412,7 +406,7 @@ function assembling_sys:gameworld_prebuild()
 end
 
 local function getGameObject(object)
-    local vsobject = assert(vsobject_manager:get(object.id), ("(%s) vsobject not found"):format(object.prototype_name))
+    local vsobject = vsobject_manager:get(object.id) or error(("(%s) vsobject not found"):format(object.prototype_name))
     return vsobject.game_object
 end
 

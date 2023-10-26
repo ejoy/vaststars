@@ -133,7 +133,7 @@ return function()
         local typeobject = iprototype.queryById(v.building.prototype)
         local entity = {prototype_name = typeobject.name}
         for _, t in ipairs(typeobject.type) do
-            local func = assert(funcs[t], ("unknown type %s"):format(t))
+            local func = funcs[t] or error(("unknown type %s"):format(t))
             entity = func(entity, v)
         end
         entities[#entities+1] = entity

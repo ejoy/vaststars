@@ -26,7 +26,7 @@ return function()
                 assert(#result == 1, "recipe of mining should only have one result")
 
                 local mineral = iprototype.queryById(result[1].id).name
-                assert(mining_recipe[mineral] == nil, ("find duplicate recipe for mineral `%s`"):format(mineral))
+                local _ = mining_recipe[mineral] == nil or error(("find duplicate recipe for mineral `%s`"):format(mineral))
                 mining_recipe[typeobject.name][mineral] = recipe_typeobject.name
             end
         end

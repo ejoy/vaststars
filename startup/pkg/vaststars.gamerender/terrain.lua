@@ -106,7 +106,7 @@ function terrain:reset_mineral(map)
 
         local typeobject = iprototype.queryByName(mineral)
         local errmsg <const> = "%s is defined as a type of mineral, but no corresponding mineral model is configured."
-        local mineral_model = assert(assert(typeobject).mineral_model, errmsg:format(mineral))
+        local mineral_model = assert(typeobject).mineral_model or error(errmsg:format(mineral))
 
         local w, h = typeobject.mineral_area:match("^(%d+)x(%d+)$")
         w, h = tonumber(w), tonumber(h)

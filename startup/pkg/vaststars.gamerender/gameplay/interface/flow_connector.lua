@@ -4,8 +4,8 @@ local iprototype_cache = require "gameplay.prototype_cache.init"
 local M = {}
 function M.covers(prototype_name, entity_dir)
     local prototype_covers = iprototype_cache.get("flow_connector").prototype_covers
-    assert(prototype_covers[prototype_name], ("invalid prototype_name `%s`"):format(prototype_name))
-    assert(prototype_covers[prototype_name][entity_dir], ("invalid entity_dir `%s`"):format(entity_dir))
+    local _ = prototype_covers[prototype_name] or error(("invalid prototype_name `%s`"):format(prototype_name))
+    _ = prototype_covers[prototype_name][entity_dir] or error(("invalid entity_dir `%s`"):format(entity_dir))
     local c = prototype_covers[prototype_name][entity_dir]
     return c.prototype_name, c.entity_dir
 end
@@ -39,8 +39,8 @@ function M.set_connection(prototype_name, entity_dir, connection_dir, s)
     local accel = iprototype_cache.get("flow_connector").accel
     local prototype_bits = iprototype_cache.get("flow_connector").prototype_bits
 
-    assert(prototype_bits[covers_prototype_name], ("invalid prototype_name `%s`"):format(covers_prototype_name))
-    assert(prototype_bits[covers_prototype_name][covers_dir], ("invalid entity_dir `%s`"):format(covers_dir))
+    local _ = prototype_bits[covers_prototype_name] or error(("invalid prototype_name `%s`"):format(covers_prototype_name))
+    _ = prototype_bits[covers_prototype_name][covers_dir] or error(("invalid entity_dir `%s`"):format(covers_dir))
     local bits
     local typeobject = iprototype.queryByName(prototype_name)
 
@@ -80,8 +80,8 @@ end
 
 function M.cleanup(prototype_name, entity_dir)
     local prototype_cleanup = iprototype_cache.get("flow_connector").prototype_cleanup
-    assert(prototype_cleanup[prototype_name], ("invalid prototype_name `%s`"):format(prototype_name))
-    assert(prototype_cleanup[prototype_name][entity_dir], ("invalid entity_dir `%s`"):format(entity_dir))
+    local _ = prototype_cleanup[prototype_name] or error(("invalid prototype_name `%s`"):format(prototype_name))
+    _ = prototype_cleanup[prototype_name][entity_dir] or error(("invalid entity_dir `%s`"):format(entity_dir))
     local c = prototype_cleanup[prototype_name][entity_dir]
     return c.prototype_name, c.entity_dir
 end

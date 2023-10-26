@@ -16,7 +16,6 @@ end
 
 local function set(self, obj)
 	local key = assert(obj[self.key_field_name])
-	-- assert(self.objs[key] == nil, ("duplicate key `%s`"):format(key))
 	self.objs[key] = obj
 
 	for field_name in pairs(self.index_field_names) do
@@ -31,7 +30,7 @@ end
 
 local function sync(self, syncobj, ...)
 	local key = assert(syncobj[self.key_field_name])
-	local obj = assert(self.objs[key], ("duplicate key `%s`"):format(key))
+	local obj = self.objs[key] or error(("duplicate key `%s`"):format(key))
 
 	local field_names = {...}
 	assert(#field_names >= 1)
@@ -47,7 +46,7 @@ end
 
 local function select(self, field_name, value)
 	assert(value ~= nil)
-	assert(self.index_field_names[field_name], ("must specify the field_name `%s` as index field name"):format(field_name))
+	local _ = self.index_field_names[field_name] or error(("must specify the field_name `%s` as index field name"):format(field_name))
 
 	if not self.cache[field_name] then
 		return next, EMPTY_TABLE, nil
