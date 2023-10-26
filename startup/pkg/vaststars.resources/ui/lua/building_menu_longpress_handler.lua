@@ -1,5 +1,3 @@
-local spec = require "lua.building_menu_spec"
-
 local TRANSFORM_DELTA <const> = 18
 local LINE_MARGIN_RIGHT_DELTA <const> = -2
 local LINE_TRANSFORM_DELTA <const> = -5
@@ -60,11 +58,6 @@ local function show_buttons(start)
 end
 
 return function(start)
-    if spec[start.prototype_name] then
-        spec[start.prototype_name](start, BUILDING_MENU_POSITIONS, DEFAULT)
-        return
-    end
-
     start.buttons = {}
     if start.teardown then
         local v = setmetatable({}, {__index = DEFAULT})
