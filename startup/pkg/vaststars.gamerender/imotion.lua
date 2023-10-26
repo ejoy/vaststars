@@ -4,16 +4,8 @@ local world = ecs.world
 local ims   = ecs.require "ant.motion_sampler|motion_sampler"
 local ig    = ecs.require "ant.group|group"
 
-local ientity_object = ecs.require "engine.system.entity_object_system"
-
-local events = {
-    ["motion"] = function(_, e, method, ...)
-        ims[method](e, ...)
-    end
-}
-
 local motion = {}
-function motion.create_motion_object(s, r, t, parent, ev)
+function motion.create_motion_object(s, r, t, parent)
     if not motion.sampler_group then
         local gid = ims.sampler_group()
         ig.enable(gid, "view_visible", true)
@@ -35,6 +27,7 @@ function motion.create_motion_object(s, r, t, parent, ev)
             motion_sampler = {},
         }
     }
-    return ev and ientity_object.create(m_eid, events) or m_eid
+    return m_eid
 end
+
 return motion
