@@ -299,10 +299,10 @@ end
 
 local function _get_rect(x, y, icon_w, icon_h)
     local max = math.max(icon_h, icon_w)
-    local draw_w = iTILE_SIZE * (icon_w / max)
-    local draw_h = iTILE_SIZE * (icon_h / max)
-    local draw_x = x + (iTILE_SIZE - draw_w) / 2
-    local draw_y = y + (iTILE_SIZE - draw_h) / 2
+    local draw_w = TILE_SIZE * (icon_w / max)
+    local draw_h = TILE_SIZE * (icon_h / max)
+    local draw_x = x + (TILE_SIZE - draw_w) / 2
+    local draw_y = y + (TILE_SIZE - draw_h) / 2
     return draw_x, draw_y, draw_w, draw_h
 end
 
@@ -359,11 +359,11 @@ local function __show_road_entrance_marker(self, typeobject)
     local min_dist
     local min_coord
     for _, c in ipairs(coords) do
-        local position = icoord.position(c.x, c.y, 1, 1)
+        local position = assert(icoord.position(c.x, c.y, 1, 1))
         local delta = DIR_MOVE_DELTA[iprototype.reverse_dir(c.dir)]
 
-        position[1] = position[1] + (delta.x * (iTILE_SIZE / 2))
-        position[3] = position[3] + (delta.y * (iTILE_SIZE / 2))
+        position[1] = position[1] + (delta.x * (TILE_SIZE / 2))
+        position[3] = position[3] + (delta.y * (TILE_SIZE / 2))
 
         local dist = math.abs(position[1] - pr[1]) + math.abs(position[3] - pr[3])
         if not min_dist then
@@ -379,11 +379,11 @@ local function __show_road_entrance_marker(self, typeobject)
 
     local markers = {}
     for _, coord in ipairs(coords) do
-        local position = icoord.lefttop_position(coord.x, coord.y, 1, 1)
+        local position = assert(icoord.lefttop_position(coord.x, coord.y, 1, 1))
         local delta = DIR_MOVE_DELTA[iprototype.reverse_dir(coord.dir)]
 
-        position[1] = position[1] + (delta.x * (iTILE_SIZE / 2))
-        position[3] = position[3] + (delta.y * (iTILE_SIZE / 2))
+        position[1] = position[1] + (delta.x * (TILE_SIZE / 2))
+        position[3] = position[3] + (delta.y * (TILE_SIZE / 2))
 
         local cfg
         if coord.x == min_coord.x and coord.y == min_coord.y and coord.dir == min_coord.dir then
@@ -392,7 +392,7 @@ local function __show_road_entrance_marker(self, typeobject)
             cfg = ROAD_ENTRANCE_MARKER_CFG["green"]
         end
 
-        local x, y, w, h = _get_rect(position[1], position[3] - iTILE_SIZE, cfg.width, cfg.height)
+        local x, y, w, h = _get_rect(position[1], position[3] - TILE_SIZE, cfg.width, cfg.height)
         markers[#markers+1] = {
             texture = {
                 rect = {

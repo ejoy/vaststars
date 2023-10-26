@@ -68,14 +68,6 @@ local function _get_road_entrance_position(typeobject, x, y, dir)
     return math3d.vector(icoord.position(neighbor_x, neighbor_y, 1, 1)), neighbor_x, neighbor_y, conn.dir
 end
 
-local function __rotate_area(w, h, dir)
-    if dir == 'N' or dir == 'S' then
-        return w, h
-    elseif dir == 'E' or dir == 'W' then
-        return h, w
-    end
-end
-
 local function __create_self_sprite(typeobject, x, y, dir, sprite_color)
     local sprite
     local offset_x, offset_y = 0, 0
