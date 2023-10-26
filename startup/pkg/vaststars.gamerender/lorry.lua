@@ -84,8 +84,6 @@ local function create(prefab, s, r, t)
                     irl.set_layer(e, RENDER_LAYER.LORRY_ITEM)
                 end
             end
-            --local eid = assert(lorry_obj.tag[slot_name][1])
-            world:instance_set_parent(self, find_slot(lorry_obj.hitchObject, "arrow"))
         end,
         on_message = function(self, msg, visible)
             assert(msg == "show")
