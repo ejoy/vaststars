@@ -68,7 +68,7 @@ function M.update(datamodel)
     for _ in info_mb:unpack() do
         local info = not gameplay_core.settings_get("info", true)
         gameplay_core.settings_set("info", info)
-        icanvas.show(icanvas.types().ICON, info)
+        icanvas.show("icon", info)
         iui.close("/pkg/vaststars.resources/ui/option_pop.rml")
     end
 

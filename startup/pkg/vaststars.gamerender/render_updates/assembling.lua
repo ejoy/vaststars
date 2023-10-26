@@ -77,7 +77,7 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
         local icon_w, icon_h = __get_texture_size(material_path)
         local texture_x, texture_y, texture_w, texture_h = 0, 0, icon_w, icon_h
         local draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x, y, icon_w, icon_h, 1.5)
-        icanvas.add_item(icanvas.types().ICON,
+        icanvas.add_item("icon",
             object_id,
             icanvas.get_key(material_path, RENDER_LAYER.ICON),
             {
@@ -99,7 +99,7 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
             local icon_w, icon_h = __get_texture_size(material_path)
             local texture_x, texture_y, texture_w, texture_h = 0, 0, icon_w, icon_h
             local draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x, y, icon_w, icon_h, 1.5)
-            icanvas.add_item(icanvas.types().ICON,
+            icanvas.add_item("icon",
                 object_id,
                 icanvas.get_key(material_path, RENDER_LAYER.ICON),
                 {
@@ -130,7 +130,7 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
                 material_path = "/pkg/vaststars.resources/materials/canvas/recipes.material"
                 texture_x, texture_y, texture_w, texture_h = cfg.x, cfg.y, cfg.width, cfg.height
                 draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x, y, cfg.width, cfg.height, 1.5)
-                icanvas.add_item(icanvas.types().ICON,
+                icanvas.add_item("icon",
                     object_id,
                     icanvas.get_key(material_path, RENDER_LAYER.ICON_CONTENT),
                     {
@@ -189,7 +189,7 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
                                 icon_w,
                                 icon_h
                             )
-                            icanvas.add_item(icanvas.types().ICON,
+                            icanvas.add_item("icon",
                                 object_id,
                                 icanvas.get_key(material_path, RENDER_LAYER.FLUID_INDICATION_ARROW),
                                 {
@@ -225,11 +225,11 @@ local function create_icon(object_id, e, building_srt)
     local function on_position_change(self, building_srt)
         local object = assert(objects:get(object_id))
         local e = assert(gameplay_core.get_entity(object.gameplay_eid))
-        icanvas.remove_item(icanvas.types().ICON, object_id)
+        icanvas.remove_item("icon", object_id)
         __draw_icon(e, object_id, building_srt, status, recipe)
     end
     local function remove(self)
-        icanvas.remove_item(icanvas.types().ICON, object_id)
+        icanvas.remove_item("icon", object_id)
     end
     local function update(self, e)
         local s
@@ -248,7 +248,7 @@ local function create_icon(object_id, e, building_srt)
         end
 
         status, recipe = s, e.assembling.recipe
-        icanvas.remove_item(icanvas.types().ICON, object_id)
+        icanvas.remove_item("icon", object_id)
         __draw_icon(e, object_id, building_srt, status, recipe)
     end
     return {
@@ -265,7 +265,7 @@ local function __draw_consumer_icon(object_id, building_srt)
     local icon_w, icon_h = __get_texture_size(material_path)
     local texture_x, texture_y, texture_w, texture_h = 0, 0, icon_w, icon_h
     local draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x, y, icon_w, icon_h, 1.5)
-    icanvas.add_item(icanvas.types().ICON,
+    icanvas.add_item("icon",
         object_id,
         icanvas.get_key(material_path, RENDER_LAYER.ICON_CONTENT),
         {
@@ -285,10 +285,10 @@ end
 local function create_consumer_icon(object_id, building_srt)
     __draw_consumer_icon(object_id, building_srt)
     local function remove()
-        icanvas.remove_item(icanvas.types().ICON, object_id)
+        icanvas.remove_item("icon", object_id)
     end
     local function on_position_change(self, building_srt)
-        icanvas.remove_item(icanvas.types().ICON, object_id)
+        icanvas.remove_item("icon", object_id)
         __draw_consumer_icon(object_id, building_srt)
     end
     return {

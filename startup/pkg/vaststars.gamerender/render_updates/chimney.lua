@@ -67,7 +67,7 @@ local function __draw_fluid_indication_arrow(object_id, building_srt, dir, proto
             icon_w,
             icon_h
         )
-        icanvas.add_item(icanvas.types().ICON,
+        icanvas.add_item("icon",
             object_id,
             icanvas.get_key(material_path, RENDER_LAYER.FLUID_INDICATION_ARROW),
             {
@@ -91,11 +91,11 @@ end
 local function __create_icon(object_id, building_srt, dir, prototype)
     local function on_position_change(self, building_srt)
         local object = assert(objects:get(object_id))
-        icanvas.remove_item(icanvas.types().ICON, object_id)
+        icanvas.remove_item("icon", object_id)
         __draw_fluid_indication_arrow(object_id, building_srt, object.dir, prototype)
     end
     local function remove(self)
-        icanvas.remove_item(icanvas.types().ICON, object_id)
+        icanvas.remove_item("icon", object_id)
     end
     __draw_fluid_indication_arrow(object_id, building_srt, dir, prototype)
 

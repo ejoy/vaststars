@@ -22,7 +22,7 @@ local function __create_storage_tank_icon(object_id, building_srt, fluid)
         draw_fluid_icon(self.id, self.x, self.y, self.fluid, 1.5)
     end
     function m:remove()
-        icanvas.remove_item(icanvas.types().ICON, self.id)
+        icanvas.remove_item("icon", self.id)
     end
     function m:update(fluid)
         if self.fluid == fluid then

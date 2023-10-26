@@ -413,8 +413,8 @@ local function __show_road_entrance_marker(self, typeobject)
         table.unpack(markers)
     }
 
-    -- icanvas.remove_item(icanvas.types().ROAD_ENTRANCE_MARKER, 0)
-    -- icanvas.add_item(icanvas.types().ROAD_ENTRANCE_MARKER, 0, table.unpack(t))
+    -- icanvas.remove_item("road_entrance_marker", 0)
+    -- icanvas.add_item("road_entrance_marker", 0, table.unpack(t))
     return min_coord
 end
 
@@ -431,9 +431,9 @@ local function new_entity(self, datamodel, typeobject)
     __new_entity(self, datamodel, typeobject)
     self.pickup_object.APPEAR = true
 
-    icanvas.remove_item(icanvas.types().ROAD_ENTRANCE_MARKER, 0)
+    icanvas.remove_item("road_entrance_marker", 0)
     __show_road_entrance_marker(self, typeobject)
-    icanvas.show(icanvas.types().ROAD_ENTRANCE_MARKER, true)
+    icanvas.show("road_entrance_marker", true)
 
     if not self.grid_entity then
         self.grid_entity = igrid_entity.create(MAP_WIDTH // ROAD_SIZE, MAP_HEIGHT // ROAD_SIZE, TILE_SIZE * ROAD_SIZE, {t = __calc_grid_position(typeobject, self.pickup_object.x, self.pickup_object.y, self.pickup_object.dir)})
@@ -485,10 +485,10 @@ local function touch_move(self, datamodel, delta_vec)
         __show_nearby_buildings_selected_boxes(self, x, y, self.pickup_object.dir, typeobject)
 
         self.last_position = self.pickup_object.srt.t
-        icanvas.remove_item(icanvas.types().ROAD_ENTRANCE_MARKER, 0)
+        icanvas.remove_item("road_entrance_marker", 0)
         local c = __show_road_entrance_marker(self, typeobject)
         if c then
-            icanvas.show(icanvas.types().ROAD_ENTRANCE_MARKER, true)
+            icanvas.show("road_entrance_marker", true)
             if c.dir ~= self.pickup_object.dir then
                 rotate(self, datamodel, c.dir)
             end
@@ -562,7 +562,7 @@ local function confirm(self, datamodel)
         self.grid_entity = nil
     end
 
-    icanvas.remove_item(icanvas.types().ROAD_ENTRANCE_MARKER, 0)
+    icanvas.remove_item("road_entrance_marker", 0)
     ieditor:revert_changes({"TEMPORARY"})
 
     self.super.complete(self, pickup_object.id)
@@ -698,7 +698,7 @@ local function clean(self, datamodel)
     datamodel.show_confirm = false
     datamodel.show_rotate = false
     self.super.clean(self, datamodel)
-    icanvas.remove_item(icanvas.types().ROAD_ENTRANCE_MARKER, 0)
+    icanvas.remove_item("road_entrance_marker", 0)
 
     if self.road_entrance then
         self.road_entrance:remove()

@@ -64,9 +64,9 @@ function m:init_world()
 
     irender.set_framebuffer_ratio("scene_ratio", gameplay_core.settings_get("ratio", 1))
 
-    icanvas.create(icanvas.types().ICON, gameplay_core.settings_get("info", true), 10)
-    icanvas.create(icanvas.types().PICKUP_ICON, false, 10)
-    icanvas.create(icanvas.types().ROAD_ENTRANCE_MARKER, false, 0.02)
+    icanvas.create("icon", gameplay_core.settings_get("info", true), 10)
+    icanvas.create("pickup_icon", false, 10)
+    icanvas.create("road_entrance_marker", false, 0.02)
 
     -- audio test (Master.strings.bank must be first)
     audio.load {

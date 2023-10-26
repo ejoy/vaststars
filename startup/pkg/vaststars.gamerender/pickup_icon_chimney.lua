@@ -64,7 +64,7 @@ local function __draw_fluid_indication_arrow(object_id, building_srt, dir, proto
             icon_w,
             icon_h
         )
-        icanvas.add_item(icanvas.types().PICKUP_ICON,
+        icanvas.add_item("pickup_icon",
             object_id,
             icanvas.get_key(material_path, RENDER_LAYER.FLUID_INDICATION_ARROW),
             {
@@ -88,11 +88,11 @@ end
 local function __create_icon(object_id, building_srt, dir, prototype)
     local function on_position_change(self, building_srt)
         local object = assert(objects:get(object_id))
-        icanvas.remove_item(icanvas.types().PICKUP_ICON, object_id)
+        icanvas.remove_item("pickup_icon", object_id)
         __draw_fluid_indication_arrow(object_id, building_srt, object.dir, prototype)
     end
     local function remove(self)
-        icanvas.remove_item(icanvas.types().PICKUP_ICON, object_id)
+        icanvas.remove_item("pickup_icon", object_id)
     end
     __draw_fluid_indication_arrow(object_id, building_srt, dir, prototype)
 
@@ -107,19 +107,19 @@ local mt = {}
 mt.__index = mt
 
 function mt:remove()
-    icanvas.remove_item(icanvas.types().PICKUP_ICON, 0)
-    icanvas.show(icanvas.types().PICKUP_ICON, false)
-    icanvas.iom(icanvas.types().PICKUP_ICON, "set_position", {0, 0, 0})
+    icanvas.remove_item("pickup_icon", 0)
+    icanvas.show("pickup_icon", false)
+    icanvas.iom("pickup_icon", "set_position", {0, 0, 0})
 end
 
 function mt:on_position_change(building_srt, dir)
     local delta = math3d.sub(building_srt.t, self.position)
-    icanvas.iom(icanvas.types().PICKUP_ICON, "move_delta", math3d.live(delta))
+    icanvas.iom("pickup_icon", "move_delta", math3d.live(delta))
     self.position = building_srt.t
 
     if dir ~= self.dir then
-        icanvas.remove_item(icanvas.types().PICKUP_ICON, 0)
-        icanvas.iom(icanvas.types().PICKUP_ICON, "set_position", {0, 0, 0})
+        icanvas.remove_item("pickup_icon", 0)
+        icanvas.iom("pickup_icon", "set_position", {0, 0, 0})
         __create_icon(0, building_srt, dir, self.typeobject.id)
         self.dir = dir
     end
@@ -136,7 +136,7 @@ function m.create(dir, building_srt, typeobject)
     self.dir = dir
     self.position = building_srt.t
     __create_icon(0, building_srt, dir, typeobject.id)
-    icanvas.show(icanvas.types().PICKUP_ICON, true)
+    icanvas.show("pickup_icon", true)
     return self
 end
 return m

@@ -80,7 +80,7 @@ local function __create_icon(fluid, begin_x, begin_y, connection_x, connection_y
         },
         x = draw_x, y = draw_y, w = draw_w, h = draw_h,
     }
-    icanvas.add_item(icanvas.types().PICKUP_ICON, 0, icanvas.get_key(material_path, RENDER_LAYER.ICON), item1)
+    icanvas.add_item("pickup_icon", 0, icanvas.get_key(material_path, RENDER_LAYER.ICON), item1)
 
     local fluid_typeobject = iprototype.queryById(fluid)
     local cfg = FLUIDS_CFG[fluid_typeobject.item_icon]
@@ -109,7 +109,7 @@ local function __create_icon(fluid, begin_x, begin_y, connection_x, connection_y
         },
         x = draw_x, y = draw_y, w = draw_w, h = draw_h,
     }
-    icanvas.add_item(icanvas.types().PICKUP_ICON, 0, icanvas.get_key(material_path, RENDER_LAYER.ICON_CONTENT), item2)
+    icanvas.add_item("pickup_icon", 0, icanvas.get_key(material_path, RENDER_LAYER.ICON_CONTENT), item2)
 end
 
 local function __create_fluid_indication_arrow(connection_x, connection_y, connection_dir, iotype, begin_x, begin_y)
@@ -130,7 +130,7 @@ local function __create_fluid_indication_arrow(connection_x, connection_y, conne
         icon_w,
         icon_h
     )
-    icanvas.add_item(icanvas.types().PICKUP_ICON,
+    icanvas.add_item("pickup_icon",
         0,
         icanvas.get_key(material_path, RENDER_LAYER.FLUID_INDICATION_ARROW),
         {
@@ -175,9 +175,9 @@ local mt = {}
 mt.__index = mt
 
 function mt:remove()
-    icanvas.remove_item(icanvas.types().PICKUP_ICON, 0)
-    icanvas.show(icanvas.types().PICKUP_ICON, false)
-    icanvas.iom(icanvas.types().PICKUP_ICON, "set_position", {0, 0, 0})
+    icanvas.remove_item("pickup_icon", 0)
+    icanvas.show("pickup_icon", false)
+    icanvas.iom("pickup_icon", "set_position", {0, 0, 0})
 end
 
 function mt:on_position_change(building_srt, dir)
@@ -186,12 +186,12 @@ function mt:on_position_change(building_srt, dir)
     end
 
     local delta = math3d.sub(building_srt.t, self.position)
-    icanvas.iom(icanvas.types().PICKUP_ICON, "move_delta", math3d.live(delta))
+    icanvas.iom("pickup_icon", "move_delta", math3d.live(delta))
     self.position = building_srt.t
 
     if dir ~= self.dir then
-        icanvas.remove_item(icanvas.types().PICKUP_ICON, 0)
-        icanvas.iom(icanvas.types().PICKUP_ICON, "set_position", {0, 0, 0})
+        icanvas.remove_item("pickup_icon", 0)
+        icanvas.iom("pickup_icon", "set_position", {0, 0, 0})
         __create_icons(self, self.typeobject, self.gameplay_eid, building_srt, dir)
         self.dir = dir
     end
@@ -212,7 +212,7 @@ function m.create(typeobject, dir, gameplay_eid, building_srt)
     self.gameplay_eid = gameplay_eid
     self.position = building_srt.t
     __create_icons(self, typeobject, gameplay_eid, building_srt, dir)
-    icanvas.show(icanvas.types().PICKUP_ICON, true)
+    icanvas.show("pickup_icon", true)
     return self
 end
 return m

@@ -44,7 +44,7 @@ local function __draw_bg(id, x, y, multiple)
     local icon_w, icon_h = __get_texture_size(BG_MATERIAL_PATH)
     local texture_x, texture_y, texture_w, texture_h = 0, 0, icon_w, icon_h
     local draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x, y, icon_w, icon_h, multiple)
-    icanvas.add_item(icanvas.types().ICON,
+    icanvas.add_item("icon",
         id,
         icanvas.get_key(BG_MATERIAL_PATH, RENDER_LAYER.ICON),
         {
@@ -71,7 +71,7 @@ local function __draw_icon(id, x, y, fluid, multiple)
 
     local texture_x, texture_y, texture_w, texture_h = cfg.x, cfg.y, cfg.width, cfg.height
     local draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x, y, cfg.width, cfg.height, multiple)
-    icanvas.add_item(icanvas.types().ICON,
+    icanvas.add_item("icon",
         id,
         icanvas.get_key(ICON_MATERIAL_PATH, RENDER_LAYER.ICON_CONTENT),
         {

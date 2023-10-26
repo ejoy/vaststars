@@ -9,14 +9,8 @@ local SURFACE_HEIGHT <const> = CONSTANT.SURFACE_HEIGHT
 local icas   = ecs.require "ant.terrain|canvas"
 local iom = ecs.require "ant.objcontroller|obj_motion"
 
-local types <const> = {
-    ICON = 2,
-    PICKUP_ICON = 3,
-    ROAD_ENTRANCE_MARKER = 4,
-}
-
 local CANVAS_BUILD <const> = {
-    [types.ICON] = {
+    ["icon"] = {
         {
             render_layer = RENDER_LAYER.ICON,
             materials = {
@@ -42,7 +36,7 @@ local CANVAS_BUILD <const> = {
         }
     },
 
-    [types.PICKUP_ICON] = {
+    ["pickup_icon"] = {
         {
             render_layer = RENDER_LAYER.ICON,
             materials = {
@@ -65,7 +59,7 @@ local CANVAS_BUILD <const> = {
         }
     },
 
-    [types.ROAD_ENTRANCE_MARKER] = {
+    ["road_entrance_marker"] = {
         {
             render_layer = RENDER_LAYER.ROAD_ENTRANCE_ARROW,
             materials = {
@@ -163,9 +157,5 @@ end
 function M.get_key(materialpath, render_layer)
     assert(rawget(key_cache[render_layer], materialpath))
     return key_cache[render_layer][materialpath]
-end
-
-function M.types()
-    return types
 end
 return M

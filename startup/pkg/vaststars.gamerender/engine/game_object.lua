@@ -229,6 +229,12 @@ function igame_object.create(init)
     local function modifier(self, method, ...)
         world:instance_message(self.hitchObject, "modifier", method, ...)
     end
+    local function get_slot_position(self, slot_name)
+        assert(self.hitchObject)
+        local eid = assert(self.hitchObject.tag[slot_name][1])
+        local e <close> = assert(world:entity(eid))
+        return iom.worldmat(e)
+    end
 
     local outer = {
         data = init,
@@ -239,6 +245,7 @@ function igame_object.create(init)
     outer.remove = remove
     outer.update = update
     outer.send   = send
+    outer.get_slot_position = get_slot_position
     return outer
 end
 

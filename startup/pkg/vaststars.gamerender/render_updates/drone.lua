@@ -14,8 +14,8 @@ local global = require "global"
 local icoord = require "coord"
 local irl   = ecs.require "ant.render|render_layer.render_layer"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
-local prefab_slots = require("engine.prefab_parser").slots
 local igroup = ecs.require "group"
+local vsobject_manager = ecs.require "vsobject_manager"
 
 -- enum defined in c 
 local STATUS_HAS_ERROR = 1
@@ -54,6 +54,11 @@ local function getPosition(x, y, slot)
     end
 end
 
+local function getGameObject(object)
+    local vsobject = vsobject_manager:get(object.id) or error(("(%s) vsobject not found"):format(object.prototype_name))
+    return vsobject.game_object
+end
+
 local function isHome(x, y)
     local object = objects:coord(x, y)
     if object then
@@ -68,13 +73,10 @@ local function getHomePos(x, y, pos)
     if not object then
         return pos
     end
-    local typeobject = iprototype.queryByName(object.prototype_name)
-    local slots = prefab_slots("/pkg/vaststars.resources/" .. typeobject.model)
-    if not slots.park then
-        return pos
-    end
 
-    return math3d.add(math3d.set_index(pos, 2, 0), slots.park.scene.t)
+    local game_object = assert(getGameObject(object))
+    local worldmat = game_object:get_slot_position("park")
+    return math3d.index(worldmat, 4)
 end
 
 local function create_drone(x, y, slot)
