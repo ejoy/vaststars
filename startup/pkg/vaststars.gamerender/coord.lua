@@ -92,17 +92,17 @@ end
 function coord.align(position, w, h)
     -- equivalent to: math3d.vector {math3d.index(position, 1) - (w / 2 * TILE_SIZE), math3d.index(position, 2), math3d.index(position, 3) + (h / 2 * TILE_SIZE)}
     local begin_position = math3d.muladd(1/2*TILE_SIZE, math3d.vector(-w, 0.0, h), position)
-    local coord = _get_coord_by_position(begin_position)
-    if not coord then
+    local c = _get_coord_by_position(begin_position)
+    if not c then
         return
     end
 
-    local begining = coord.lefttop_position(coord[1], coord[2])
+    local begining = coord.lefttop_position(c[1], c[2])
     if not begining then
         return
     end
 
-    return coord, {begining[1] + (w / 2 * TILE_SIZE), math3d.index(position, 2), begining[3] - (h / 2 * TILE_SIZE)}
+    return c, {begining[1] + (w / 2 * TILE_SIZE), math3d.index(position, 2), begining[3] - (h / 2 * TILE_SIZE)}
 end
 
 --base 0
