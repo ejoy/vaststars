@@ -5551,7 +5551,7 @@ return {
     entities = entities,
     road = road,
     mineral = mineral,
-    order = 7,
+    order = 8,
     guide = "guide",
     mode = "free",
     start_tech = "迫降火星",
