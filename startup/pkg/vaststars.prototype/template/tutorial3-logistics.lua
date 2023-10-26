@@ -20,7 +20,12 @@ local entities = { {
   dir = "N",
   prototype_name = "无人机平台I",
   x = 109,
-  y = 131
+  y = 133
+}, {
+  dir = "N",
+  prototype_name = "无人机平台I",
+  x = 113,
+  y = 133
 }, {
   dir = "N",
   prototype_name = "无人机平台I",
