@@ -1,12 +1,12 @@
 local entities = { {
   dir = "N",
-  items = { { "停车站", 1 },{ "物流站", 3},{"铁制电线杆",15},{"砖石公路-X型",15},},
+  items = { { "停车站", 1 },{ "物流站", 3}, { "轻型运输车", 2 },{"砖石公路-X型",10},},
   prototype_name = "机身残骸",
   x = 109,
   y = 138
 }, {
   dir = "N",
-  items = { { "仓库I", 4 }, { "蓄电池I", 4 }, { "轻型运输车", 2 }, { "轻型太阳能板", 2 } },
+  items = { { "仓库I", 4 }, { "蓄电池I", 4 }, { "无人机平台I", 2 },{ "轻型太阳能板", 2 } },
   prototype_name = "机头残骸",
   x = 140,
   y = 136
@@ -20,7 +20,12 @@ local entities = { {
   dir = "N",
   prototype_name = "无人机平台I",
   x = 109,
-  y = 131
+  y = 133
+}, {
+  dir = "N",
+  prototype_name = "无人机平台I",
+  x = 113,
+  y = 133
 }, {
   dir = "N",
   prototype_name = "无人机平台I",
@@ -98,31 +103,6 @@ local entities = { {
   prototype_name = "无人机平台I",
   x = 150,
   y = 125
-}, {
-  dir = "N",
-  prototype_name = "铁制电线杆",
-  x = 117,
-  y = 131
-}, {
-  dir = "N",
-  prototype_name = "铁制电线杆",
-  x = 125,
-  y = 131
-}, {
-  dir = "N",
-  prototype_name = "铁制电线杆",
-  x = 133,
-  y = 131
-}, {
-  dir = "N",
-  prototype_name = "铁制电线杆",
-  x = 141,
-  y = 131
-}, {
-  dir = "N",
-  prototype_name = "铁制电线杆",
-  x = 149,
-  y = 131
 }, {
   amount = 0,
   dir = "N",
@@ -371,7 +351,6 @@ local entities = { {
 
 local mineral = {
   ["115,127"] = "碎石",
-  ["105,127"] = "铁矿石",
   ["105,136"] = "铁矿石",
   ["156,100"] = "铝矿石",
 }

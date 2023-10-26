@@ -50,7 +50,6 @@ local assembling_common = require "ui_datamodel.common.assembling"
 local iui = ecs.require "engine.system.ui_system"
 
 -- optimize for pole status
-local pole_status = STATUS_WORK
 local power_statistic
 
 local function format_vars(fmt, vars)
@@ -367,57 +366,53 @@ local function get_entity_property_list(object_id, recipe_inputs, recipe_ouputs)
     end
 
     --modify status
-    if typeobject.name == "铁制电线杆" then
-        prolist.status = pole_status
-    else
-        if prolist.status ~= STATUS_NO_POWER then
-            if e.assembling then
-                local status
-                if e.assembling.recipe == 0 then
-                    status = STATUS_NO_RECIPE
-                else
-                    if e.assembling.progress <= 0 then
-                        if e.assembling.status == 0 then
-                            status = STATUS_WAIT_INPUT
-                        elseif e.assembling.status == 1 then
-                            status = STATUS_WAIT_OUTPUT
-                        end
+    if prolist.status ~= STATUS_NO_POWER then
+        if e.assembling then
+            local status
+            if e.assembling.recipe == 0 then
+                status = STATUS_NO_RECIPE
+            else
+                if e.assembling.progress <= 0 then
+                    if e.assembling.status == 0 then
+                        status = STATUS_WAIT_INPUT
+                    elseif e.assembling.status == 1 then
+                        status = STATUS_WAIT_OUTPUT
                     end
                 end
-                if status then
-                    prolist.status = status
+            end
+            if status then
+                prolist.status = status
+            end
+        elseif e.chest then
+            local full = true
+            for i = 1, ichest.get_max_slot(typeobject) do
+                local slot = ichest.get(gameplay_core.get_world(), e.chest, i)
+                if not slot then
+                    break
                 end
-            elseif e.chest then
-                local full = true
-                for i = 1, ichest.get_max_slot(typeobject) do
-                    local slot = ichest.get(gameplay_core.get_world(), e.chest, i)
-                    if not slot then
-                        break
-                    end
-                    if slot.item ~= 0 and slot.amount < slot.limit then
-                        full = false
-                        break
-                    end
+                if slot.item ~= 0 and slot.amount < slot.limit then
+                    full = false
+                    break
                 end
+            end
 
-                if e.laboratory then
-                    if not full then
-                        prolist.status = STATUS_WAIT_INPUT
-                    end
-                else
-                    if full then
-                        prolist.status = STATUS_STACK_FULL
-                    end
+            if e.laboratory then
+                if not full then
+                    prolist.status = STATUS_WAIT_INPUT
+                end
+            else
+                if full then
+                    prolist.status = STATUS_STACK_FULL
                 end
             end
         end
-        if e.chimney then
-            if e.chimney.recipe == 0 then
-                prolist.status = STATUS_NO_RECIPE
-            else
-                local r = gameplay_core.fluidflow_query(e.fluidbox.fluid, e.fluidbox.id)
-                prolist.status = (r and r.volume > 0) and STATUS_WORK or STATUS_WAIT_INPUT
-            end
+    end
+    if e.chimney then
+        if e.chimney.recipe == 0 then
+            prolist.status = STATUS_NO_RECIPE
+        else
+            local r = gameplay_core.fluidflow_query(e.fluidbox.fluid, e.fluidbox.id)
+            prolist.status = (r and r.volume > 0) and STATUS_WORK or STATUS_WAIT_INPUT
         end
     end
     return prolist
@@ -483,24 +478,6 @@ function M.create(object_id)
     local typeobject = iprototype.queryByName(object.prototype_name)
     if typeobject.base then
         typeobject = iprototype.queryByName(typeobject.base)
-    end
-    if typeobject.name == "铁制电线杆" then
-        pole_status = STATUS_WORK
-        local found = false
-        for _, value in ipairs(global.power_network) do
-            for _, pole in ipairs(value.poles) do
-                if pole.eid == e.eid then
-                    found = true
-                    break
-                end
-            end
-            if found then
-                break
-            end
-        end
-        if not found then
-            pole_status = STATUS_POLE_OFFLINE
-        end
     end
 
     local datamodel = {

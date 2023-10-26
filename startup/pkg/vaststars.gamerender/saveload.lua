@@ -25,8 +25,6 @@ local ic = ecs.require "ant.camera|camera"
 local math3d = require "math3d"
 local iobject = ecs.require "object"
 local terrain = ecs.require "terrain"
-local ipower = ecs.require "power"
-local ipower_line = ecs.require "power_line"
 local iroadnet = ecs.require "roadnet"
 local srt = require "utility.srt"
 
@@ -155,9 +153,6 @@ local function restore_world()
 
     iobject.flush()
     iscience.update_tech_list(gameplay_core.get_world())
-    -- update power network
-    ipower:build_power_network(gameplay_core.get_world())
-    ipower_line.update_line(ipower:get_pole_lines())
     global.statistic.valid = false
 end
 

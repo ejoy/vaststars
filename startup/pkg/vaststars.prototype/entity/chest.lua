@@ -60,8 +60,6 @@ prototype "无人机平台I" {
     drone = {
         "无人机I",
     },
-    power_supply_area = "5x5",
-    power_supply_distance = 3,
     camera_distance = 35,
     sound = "building/drone",
 }
@@ -80,8 +78,6 @@ prototype "无人机平台II" {
         "无人机II",
         "无人机II",
     },
-    power_supply_area = "5x5",
-    power_supply_distance = 3,
     camera_distance = 35,
     sound = "building/drone",
 }
@@ -102,8 +98,6 @@ prototype "无人机平台III" {
         "无人机III",
         "无人机III",
     },
-    power_supply_area = "5x5",
-    power_supply_distance = 3,
     camera_distance = 35,
     sound = "building/drone",
 }

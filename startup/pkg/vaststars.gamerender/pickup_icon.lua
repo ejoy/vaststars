@@ -86,7 +86,7 @@ local function __create_icon(fluid, begin_x, begin_y, connection_x, connection_y
     local fluid_typeobject = iprototype.queryById(fluid)
     local cfg = FLUIDS_CFG[fluid_typeobject.item_icon]
     if not cfg then
-        assert(cfg, ("can not found `%s`"):format(fluid_typeobject.item_icon))
+        error(("can not found `%s`"):format(fluid_typeobject.item_icon))
         return
     end
 

@@ -78,7 +78,7 @@ local function open(v, ...)
         elseif res.event == "__PUB" then
             world:pub {"rmlui_message_pub", rml, table_unpack(res.ud)}
         else
-            assert(false, "Unknown event: " .. res.event)
+            error("Unknown event: " .. res.event)
         end
     end)
     windowBindings[rml] = binding

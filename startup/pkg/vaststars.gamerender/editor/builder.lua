@@ -12,8 +12,6 @@ local ieditor = ecs.require "editor.editor"
 local imining = require "gameplay.interface.mining"
 local iobject = ecs.require "object"
 local terrain = ecs.require "terrain"
-local ipower = ecs.require "power"
-local ipower_line = ecs.require "power_line"
 local igameplay = ecs.require "gameplay_system"
 local gameplay_core = require "gameplay.core"
 local ibuilding = ecs.require "render_updates.building"
@@ -86,33 +84,6 @@ local function complete(self, object_id)
     objects:remove(object_id, "CONFIRM")
     objects:set(object, "CONSTRUCTED")
     gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
-
-    -- TODO: duplicate code
-    local gw = gameplay_core.get_world()
-    local typeobject = iprototype.queryByName(object.prototype_name)
-    if typeobject.power_network_link or typeobject.power_supply_distance then
-        -- update power network
-        ipower:build_power_network(gw)
-        ipower_line.update_line(ipower:get_pole_lines())
-    else
-        local v = gameplay_core.get_entity(object.gameplay_eid)
-        if v.capacitance then
-            local capacitance = {}
-            local e = v.building
-            local typeobject = iprototype.queryById(e.prototype)
-            local aw, ah = iprototype.rotate_area(typeobject.area, e.direction)
-            capacitance[#capacitance + 1] = {
-                targets = {},
-                power_network_link_target = 0,
-                eid = v.eid,
-                x = e.x,
-                y = e.y,
-                w = aw,
-                h = ah,
-            }
-            ipower:set_network_id(gw, capacitance)
-        end
-    end
 end
 
 local function create()

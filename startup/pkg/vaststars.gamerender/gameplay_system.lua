@@ -9,7 +9,7 @@ local gameplay = import_package "vaststars.gameplay"
 local igameplay_building = gameplay.interface "building"
 
 function igameplay.create_entity(init)
-    local typeobject = assert(iprototype.queryByName(init.prototype_name), ("invalid prototype name: " .. init.prototype_name))
+    local typeobject = iprototype.queryByName(init.prototype_name) or error(("invalid prototype name: " .. init.prototype_name))
     local eid = gameplay_core.create_entity(init)
     world:pub {"gameplay", "create_entity", eid, typeobject}
     return eid

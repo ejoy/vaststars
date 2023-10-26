@@ -6,13 +6,7 @@ local entities = { {
   y = 120
 }, {
   dir = "N",
-  items = {},
-  prototype_name = "铁制电线杆",
-  x = 118,
-  y = 136
-}, {
-  dir = "N",
-  items = { { "无人机平台I", 8 } , { "采矿机I", 4 }, { "仓库I", 8 },{ "铁制电线杆", 15 } },
+  items = { { "无人机平台I", 8 } , { "采矿机I", 4 }, { "仓库I", 8 } },
   prototype_name = "机身残骸",
   x = 107,
   y = 134

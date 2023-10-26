@@ -30,7 +30,7 @@ end
 
 local function create_item(group_id, item, amount)
     local typeobject_item = iprototype.queryById(item)
-    assert(typeobject_item.item_model, ("no pile model: %s"):format(typeobject_item.name))
+    local _ = typeobject_item.item_model or error(("no pile model: %s"):format(typeobject_item.name))
     local prefab = "/pkg/vaststars.resources/" .. typeobject_item.item_model
 
     return world:create_instance {
@@ -104,7 +104,7 @@ local function rebuild(self, gameplay_world, e, game_object)
     local ingredients_n <const> = #typeobject_recipe.ingredients//4 - 1
     local results_n <const> = #typeobject_recipe.results//4 - 1
     local key = ("%s%s"):format(ingredients_n, results_n)
-    local cfg = assert(BUILDING_IO_SLOTS[key], "BUILDING_IO_SLOTS[" .. key .. "] not found")
+    local cfg = BUILDING_IO_SLOTS[key] or error("BUILDING_IO_SLOTS[" .. key .. "] not found")
 
     for i = 1, #cfg.in_slots do
         local idx = i

@@ -12,12 +12,6 @@ local ROTATORS <const> = {
     S = math.rad(-180),
     W = math.rad(-270),
 }
-local DIRECTION <const> = {
-    [0] = 'N',
-    [1] = 'E',
-    [2] = 'S',
-    [3] = 'W',
-}
 
 local function read_datalist(path)
     local fs = require "filesystem"
@@ -32,7 +26,6 @@ local objects = require "objects"
 local global = require "global"
 local iprototype = require "gameplay.interface.prototype"
 local create_io_shelves = ecs.require "render_updates.common.io_shelves".create
-local create_ing_res_motion = ecs.require "render_updates.common.ing_res_motion".create
 local assetmgr = import_package "ant.asset"
 local iterrain = ecs.require "terrain"
 local icanvas = ecs.require "engine.canvas"
@@ -131,7 +124,7 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
                 local recipe_typeobject = assert(iprototype.queryById(recipe))
                 local cfg = RECIPES_CFG[recipe_typeobject.recipe_icon]
                 if not cfg then
-                    assert(cfg, ("can not found `%s`"):format(recipe_typeobject.recipe_icon))
+                    error(("can not found `%s`"):format(recipe_typeobject.recipe_icon))
                     return
                 end
                 material_path = "/pkg/vaststars.resources/materials/canvas/recipes.material"
@@ -164,7 +157,7 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
                     {"results", "output"},
                 }
 
-                local begin_x, begin_y = __calc_begin_xy(x, y, iprototype.rotate_area(typeobject.area, DIRECTION[e.building.direction]))
+                local begin_x, begin_y = __calc_begin_xy(x, y, iprototype.rotate_area(typeobject.area, e.building.direction))
                 for _, r in ipairs(t) do
                     local i = 0
                     for _, v in ipairs(irecipe.get_elements(recipe_typeobject[r[1]])) do
@@ -172,7 +165,7 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
                             i = i + 1
                             local c = assert(typeobject.fluidboxes[r[2]][i])
                             local connection = assert(c.connections[1])
-                            local connection_x, connection_y, connection_dir = iprototype.rotate_connection(connection.position, DIRECTION[e.building.direction], typeobject.area)
+                            local connection_x, connection_y, connection_dir = iprototype.rotate_connection(connection.position, e.building.direction, typeobject.area)
                             draw_fluid_icon(
                                 object_id,
                                 begin_x + connection_x * iterrain.tile_size + iterrain.tile_size / 2,
@@ -413,7 +406,7 @@ function assembling_sys:gameworld_prebuild()
 end
 
 local function getGameObject(object)
-    local vsobject = assert(vsobject_manager:get(object.id), ("(%s) vsobject not found"):format(object.prototype_name))
+    local vsobject = vsobject_manager:get(object.id) or error(("(%s) vsobject not found"):format(object.prototype_name))
     return vsobject.game_object
 end
 
@@ -431,7 +424,6 @@ function assembling_sys:gameworld_build()
         end
 
         local building = global.buildings[object.id]
-        local group = terrain:get_group_id(e.building.x, e.building.y)
 
         --
         if e.assembling.recipe == 0 then
@@ -447,15 +439,6 @@ function assembling_sys:gameworld_build()
             else
                 building.io_shelves = create_io_shelves(gameplay_world, e, getGameObject(object))
             end
-        end
-
-        --
-        if building.ing_res_motion then
-            building.ing_res_motion:remove()
-            building.ing_res_motion = nil
-        end
-        if e.assembling.recipe ~= 0 then
-            building.ing_res_motion = create_ing_res_motion(group, e.building.prototype, e.assembling.recipe, object.srt)
         end
         ::continue::
     end
@@ -474,9 +457,7 @@ local update = interval_call(300, function()
         local building = global.buildings[object.id]
 
         local io_shelves = building.io_shelves
-        local ing_res_motion = building.ing_res_motion
         if io_shelves then
-            assert(ing_res_motion)
             local typeobject_recipe = iprototype.queryById(e.assembling.recipe)
             local ingredients_n <const> = #typeobject_recipe.ingredients//4 - 1
             local results_n <const> = #typeobject_recipe.results//4 - 1
@@ -485,7 +466,6 @@ local update = interval_call(300, function()
                 local typeobject_item = iprototype.queryById(slot.item)
                 if iprototype.has_type(typeobject_item.type, "item") then
                     io_shelves:update_item(idx, slot.amount)
-                    ing_res_motion:update(idx, slot.item, slot.amount)
                 end
             end
         end

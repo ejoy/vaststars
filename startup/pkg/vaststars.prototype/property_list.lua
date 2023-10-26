@@ -116,18 +116,6 @@ local property_list = {
 		desc = "最高温度",
 		pos = 24,
 	},
-	["power_supply_area"] = {
-		icon = "/pkg/vaststars.resources/ui/textures/property/supply-area.texture",
-		desc = "覆盖范围",
-		value = "$power_supply_area$",
-		pos = 25,
-	},
-	["power_supply_distance"] = {
-		icon = "/pkg/vaststars.resources/ui/textures/property/supply-distance.texture",
-		desc = "连接距离",
-		value = "$power_supply_distance$",
-		pos = 26,
-	},
 	["mine_deposit"] = {
 		icon = "/pkg/vaststars.resources/ui/textures/property/mine-deposit.texture",
 		desc = "矿物储量",
@@ -168,9 +156,6 @@ for _, classify in ipairs {"in1","in2","in3","in4","out1","out2","out3"} do
 end
 
 property_list.converter = {}
-property_list.converter["power_supply_area"] = function(v)
-	return string.format("%sx%s", v >> 8, v & 0xFF)
-end
 
 property_list.converter["fluid_volume"] = function(v)
 	return string.format("%.1f", v)

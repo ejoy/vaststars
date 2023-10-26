@@ -86,7 +86,7 @@ local update = interval_call(3000, function()
             goto continue
         end
 
-        local vsobject = assert(vsobject_manager:get(object.id), ("(%s) vsobject not found"):format(object.prototype_name))
+        local vsobject = vsobject_manager:get(object.id) or error(("(%s) vsobject not found"):format(object.prototype_name))
         buildings[object.id].workstatus = buildings[object.id].workstatus or create_workstatus()
         local workstatus = buildings[object.id].workstatus
         if current == workstatus:get() then

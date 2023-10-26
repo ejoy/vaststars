@@ -43,9 +43,6 @@ system "lorry_system"
 system "fluidbox_system"
     .implement "render_updates/fluidbox.lua"
 
-system "ing_res_motion_system"
-    .implement "render_updates/ing_res_motion.lua"
-
 system "road_system"
     .implement "render_updates/road.lua"
 

@@ -189,8 +189,7 @@ return function ()
             goto continue
         end
 
-        local c = custom_type_mapping[custom_type]
-        assert(c, "unknown custom_type: " .. custom_type)
+        local c = custom_type_mapping[custom_type] or error("unknown custom_type: " .. custom_type)
         cache[c.s][typeobject.name] = {task_name = typeobject.name, task_params = typeobject.task_params, check = c.check}
         ::continue::
     end

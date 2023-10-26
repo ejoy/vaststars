@@ -40,16 +40,6 @@ local entities = { {
     y = 130
   }, {
     dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 97,
-    y = 153
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 107,
-    y = 153
-  }, {
-    dir = "N",
     prototype_name = "无人机平台I",
     x = 115,
     y = 129
@@ -80,16 +70,6 @@ local entities = { {
     prototype_name = "无人机平台I",
     x = 100,
     y = 129
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 122,
-    y = 130
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 114,
-    y = 130
   }, {
     dir = "N",
     prototype_name = "无人机平台I",
@@ -538,86 +518,6 @@ local entities = { {
     x = 124,
     y = 156
   }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 115,
-    y = 148
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 136,
-    y = 147
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 123,
-    y = 147
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 115,
-    y = 142
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 185,
-    y = 168
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 107,
-    y = 142
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 99,
-    y = 142
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 91,
-    y = 142
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 102,
-    y = 162
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 97,
-    y = 162
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 107,
-    y = 162
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 107,
-    y = 157
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 97,
-    y = 157
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 115,
-    y = 152
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 129,
-    y = 116
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 122,
-    y = 116
-  },{
     dir = "W",
     fluid_name = {
       input = { "空气","地下卤水" },
@@ -637,11 +537,6 @@ local entities = { {
     recipe = "气候科技包T1",
     x = 151,
     y = 117
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 156,
-    y = 116
   }, {
     dir = "W",
     fluid_name = {
@@ -663,11 +558,6 @@ local entities = { {
     x = 145,
     y = 169
   }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 147,
-    y = 168
-  }, {
     dir = "E",
     fluid_name = {
       input = { "二氧化碳", "氢气" },
@@ -687,26 +577,6 @@ local entities = { {
     recipe = "二氧化碳转一氧化碳",
     x = 147,
     y = 180
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 147,
-    y = 175
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 147,
-    y = 183
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 155,
-    y = 168
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 163,
-    y = 168
   }, {
     dir = "W",
     fluid_name = {
@@ -754,11 +624,6 @@ local entities = { {
     x = 147,
     y = 188
   }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 147,
-    y = 187
-  }, {
     dir = "W",
     fluid_name = {
       input = { "氧气", "甲烷" },
@@ -789,16 +654,6 @@ local entities = { {
     x = 175,
     y = 169
   }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 163,
-    y = 174
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 163,
-    y = 183
-  }, {
     dir = "W",
     fluid_name = {
       input = {},
@@ -819,16 +674,6 @@ local entities = { {
     x = 143,
     y = 172
   }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 141,
-    y = 175
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 141,
-    y = 168
-  }, {
     dir = "E",
     fluid_name = "氮气",
     prototype_name = "烟囱I",
@@ -842,11 +687,6 @@ local entities = { {
     recipe = "氮气排泄",
     x = 150,
     y = 172
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 134,
-    y = 175
   }, {
     dir = "S",
     fluid_name = "二氧化碳",
@@ -1333,16 +1173,6 @@ local entities = { {
     y = 202
   }, {
     dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 169,
-    y = 156
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 165,
-    y = 151
-  }, {
-    dir = "N",
     fluid_name = "氯气",
     prototype_name = "液罐I",
     x = 173,
@@ -1661,16 +1491,6 @@ local entities = { {
     prototype_name = "管道1-I型",
     x = 159,
     y = 180
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 177,
-    y = 160
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 177,
-    y = 168
   }, {
     dir = "S",
     fluid_name = "盐酸",
@@ -2026,36 +1846,6 @@ local entities = { {
     recipe = "地下卤水电解1",
     x = 161,
     y = 175
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 163,
-    y = 179
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 72,
-    y = 91
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 121,
-    y = 161
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 94,
-    y = 162
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 128,
-    y = 161
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 185,
-    y = 160
   }, {
     dir = "W",
     fluid_name = "氧气",
@@ -2638,11 +2428,6 @@ local entities = { {
     y = 115
   }, {
     dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 136,
-    y = 116
-  }, {
-    dir = "N",
     prototype_name = "无人机平台I",
     x = 207,
     y = 162
@@ -2785,26 +2570,6 @@ local entities = { {
     y = 163
   }, {
     dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 64,
-    y = 162
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 58,
-    y = 162
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 52,
-    y = 162
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 64,
-    y = 169
-  }, {
-    dir = "N",
     prototype_name = "蓄电池I",
     x = 67,
     y = 167
@@ -2845,16 +2610,6 @@ local entities = { {
     y = 167
   }, {
     dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 58,
-    y = 169
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 52,
-    y = 169
-  }, {
-    dir = "N",
     prototype_name = "蓄电池I",
     x = 51,
     y = 167
@@ -2863,11 +2618,6 @@ local entities = { {
     prototype_name = "蓄电池I",
     x = 49,
     y = 167
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 70,
-    y = 169
   }, {
     dir = "N",
     prototype_name = "蓄电池I",
@@ -2938,26 +2688,6 @@ local entities = { {
     prototype_name = "蓄电池I",
     x = 49,
     y = 170
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 70,
-    y = 172
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 64,
-    y = 172
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 58,
-    y = 172
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 52,
-    y = 172
   }, {
     dir = "N",
     prototype_name = "蓄电池I",
@@ -3079,31 +2809,6 @@ local entities = { {
     x = 46,
     y = 173
   }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 47,
-    y = 162
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 41,
-    y = 162
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 46,
-    y = 172
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 40,
-    y = 172
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 34,
-    y = 172
-  }, {
     dir = "S",
     fluid_name = {
       input = { "蒸汽" },
@@ -3163,226 +2868,6 @@ local entities = { {
     recipe = "蒸汽发电",
     x = 31,
     y = 163
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 34,
-    y = 162
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 64,
-    y = 154
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 64,
-    y = 146
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 64,
-    y = 138
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 64,
-    y = 130
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 167,
-    y = 127
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 69,
-    y = 130
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 64,
-    y = 122
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 64,
-    y = 115
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 64,
-    y = 107
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 64,
-    y = 99
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 64,
-    y = 91
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 77,
-    y = 130
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 85,
-    y = 130
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 122,
-    y = 122
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 172,
-    y = 127
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 179,
-    y = 127
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 187,
-    y = 127
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 195,
-    y = 127
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 203,
-    y = 127
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 165,
-    y = 143
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 169,
-    y = 168
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 165,
-    y = 137
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 130,
-    y = 147
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 178,
-    y = 137
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 171,
-    y = 137
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 191,
-    y = 160
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 198,
-    y = 160
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 205,
-    y = 160
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 115,
-    y = 157
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 177,
-    y = 176
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 177,
-    y = 184
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 177,
-    y = 192
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 172,
-    y = 123
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 169,
-    y = 160
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 70,
-    y = 175
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 64,
-    y = 175
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 58,
-    y = 175
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 52,
-    y = 175
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 185,
-    y = 176
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 181,
-    y = 163
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 195,
-    y = 119
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 190,
-    y = 130
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 190,
-    y = 176
   }, {
     dir = "N",
     prototype_name = "蓄电池I",
@@ -3530,51 +3015,6 @@ local entities = { {
     x = 176,
     y = 138
   }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 152,
-    y = 151
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 213,
-    y = 160
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 78,
-    y = 169
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 86,
-    y = 169
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 94,
-    y = 169
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 107,
-    y = 135
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 100,
-    y = 135
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 96,
-    y = 135
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 195,
-    y = 135
-  }, {
     dir = "S",
     fluid_name = {
       input = {},
@@ -3584,21 +3024,6 @@ local entities = { {
     recipe = "地热采集",
     x = 209,
     y = 141
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 203,
-    y = 135
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 209,
-    y = 135
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 209,
-    y = 127
   }, {
     dir = "N",
     items = {{"铁矿石", 0}},
@@ -3628,11 +3053,6 @@ local entities = { {
     prototype_name = "物流站",
     x = 100,
     y = 152
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 143,
-    y = 116
   }, {
     dir = "N",
     prototype_name = "组装机I",
@@ -3705,11 +3125,6 @@ local entities = { {
     x = 184,
     y = 132
   }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 100,
-    y = 124
-  }, {
     dir = "E",
     items = {{"supply", "铁矿石", "1"}},
     prototype_name = "物流站",
@@ -3721,16 +3136,6 @@ local entities = { {
     prototype_name = "物流站",
     x = 168,
     y = 126
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 160,
-    y = 151
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 148,
-    y = 151
   }, {
     dir = "E",
     items = {{"supply", "碎石", "1"}},
@@ -3749,16 +3154,6 @@ local entities = { {
     prototype_name = "物流站",
     x = 148,
     y = 122
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 123,
-    y = 142
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 165,
-    y = 131
   }, {
     dir = "S",
     items = {{"demand", "机械科技包", "1"}},
@@ -3819,11 +3214,6 @@ local entities = { {
     prototype_name = "物流站",
     x = 168,
     y = 114
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 172,
-    y = 116
   }, {
     dir = "S",
     fluid_name = "氧气",
@@ -3919,21 +3309,6 @@ local entities = { {
     y = 128
   }, {
     dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 107,
-    y = 130
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 100,
-    y = 130
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 92,
-    y = 130
-  }, {
-    dir = "N",
     prototype_name = "无人机平台I",
     x = 99,
     y = 124
@@ -3965,41 +3340,6 @@ local entities = { {
     prototype_name = "物流站",
     x = 104,
     y = 120
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 150,
-    y = 118
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 148,
-    y = 147
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 142,
-    y = 147
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 164,
-    y = 116
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 91,
-    y = 148
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 112,
-    y = 148
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 164,
-    y = 123
   }, {
     dir = "N",
     prototype_name = "无人机平台I",
@@ -4126,65 +3466,10 @@ local entities = { {
     y = 177
   }, {
     dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 92,
-    y = 122
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 92,
-    y = 114
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 92,
-    y = 106
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 92,
-    y = 98
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 92,
-    y = 90
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 100,
-    y = 90
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 108,
-    y = 90
-  }, {
-    dir = "N",
     prototype_name = "采矿机I",
     recipe = "铝矿挖掘",
     x = 110,
     y = 92
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 116,
-    y = 90
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 124,
-    y = 90
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 132,
-    y = 90
-  }, {
-    dir = "N",
-    prototype_name = "铁制电线杆",
-    x = 132,
-    y = 98
   }, {
     dir = "N",
     prototype_name = "采矿机I",
@@ -6266,7 +5551,7 @@ return {
     entities = entities,
     road = road,
     mineral = mineral,
-    order = 7,
+    order = 8,
     guide = "guide",
     mode = "free",
     start_tech = "迫降火星",

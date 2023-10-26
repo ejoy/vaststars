@@ -61,7 +61,7 @@ local function genKeyFrames(last_srt, x, y, toward, offset)
     end
 
     if not rawget(c[toward], offset) then
-        assert(false, ("can not found track keyframes w(%s) from(%s) -> to(%s) offset(%s)"):format(
+        error(("can not found track keyframes w(%s) from(%s) -> to(%s) offset(%s)"):format(
             toward, ROAD_DIRECTION[toward >> 0x2], ROAD_DIRECTION[toward & 0x3], offset))
     end
     srts = assert(rawget(c[toward], offset))

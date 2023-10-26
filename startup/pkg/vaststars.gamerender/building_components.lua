@@ -1,6 +1,5 @@
 local BUILDING_COMPONENTS = {
     io_shelves = true,
-    ing_res_motion = true,
     station_shelf = true,
     assembling_icon = true,
     chimney_icon = true,
@@ -14,13 +13,13 @@ local BUILDING_COMPONENT_METHODS = {
 }
 local component_mt = {}
 function component_mt:__index(k)
-    assert(BUILDING_COMPONENTS[k], "invalid building component: " .. k)
+    local _ = BUILDING_COMPONENTS[k] or error("invalid building component: " .. k)
     return rawget(self, k)
 end
 function component_mt:__newindex(k, v)
     if v ~= nil then
         for method in pairs(BUILDING_COMPONENT_METHODS) do
-            assert(v[method], ("component '%s' does not support method '%s'"):format(k, method))
+            local _ = v[method] or error(("component '%s' does not support method '%s'"):format(k, method))
         end
     end
     return rawset(self, k, v)

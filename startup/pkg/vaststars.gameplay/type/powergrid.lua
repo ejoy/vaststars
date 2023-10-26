@@ -17,7 +17,7 @@ function generator:ctor(init, pt)
 		capacitance = {
 			shortage = pt.capacitance,
 			delta = 0,
-			network = 0,
+			network = 1,
 		},
 		generator = true,
 	}
@@ -48,7 +48,7 @@ function consumer:ctor(init, pt)
 		capacitance = {
 			shortage = pt.capacitance,
 			delta = 0,
-			network = 0,
+			network = 1,
 		},
 		consumer = true,
 	}
@@ -72,7 +72,7 @@ function accumulator:ctor(init, pt)
 		capacitance = {
 			shortage = pt.capacitance,
 			delta = 0,
-			network = 0,
+			network = 1,
 		},
 		accumulator = true,
 	}

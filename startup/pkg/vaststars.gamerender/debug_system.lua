@@ -143,7 +143,7 @@ function debug_sys:ui_update()
             local object = objects:coord(coord[1], coord[2])
             if object then
                 local gameplay_eid = object.gameplay_eid
-                local vsobject = assert(vsobject_manager:get(object.id), ("(%s) vsobject not found"):format(object.prototype_name))
+                local vsobject = vsobject_manager:get(object.id) or error(("(%s) vsobject not found"):format(object.prototype_name))
                 local game_object = vsobject.game_object
                 log.info(("hitch id: %s"):format(game_object.hitchObject.tag.hitch[1]))
 

@@ -154,8 +154,7 @@ local function create(prefab, s, r, t, motion_events)
             world:remove_instance(self.item)
         end
 
-        local typeobject = iprototype.queryById(item_classid)
-        assert(typeobject, ("item_classid %d not found"):format(item_classid))
+        local typeobject = iprototype.queryById(item_classid) or error(("item_classid %d not found"):format(item_classid))
         assert(typeobject.item_model)
 
         self.item = world:create_instance({
