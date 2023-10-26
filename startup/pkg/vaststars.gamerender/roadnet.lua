@@ -6,7 +6,8 @@ local iroad = ecs.require "ant.landform|road"
 local CONSTANT <const> = require "gameplay.interface.constant"
 
 local RENDER_LAYER <const> = ecs.require "engine.render_layer".RENDER_LAYER
-local terrain   = ecs.require "terrain"
+local icoord = require "coord"
+local igroup = ecs.require "group"
 
 local roadnet = {}
 local function new_groups() return setmetatable({}, {__index=function (tt, gid) local t = {}; tt[gid] = t; return t end}) end
@@ -19,13 +20,13 @@ function roadnet:create()
 end
 
 local function cvtcoord2pos(x, y)
-    local pos = terrain:get_begin_position_by_coord(x, y)
+    local pos = icoord.lefttop_position(x, y)
     return {pos[1], pos[3] - CONSTANT.ROAD_HEIGHT}
 end
 
 local function add_road(layer, x, y, state, shape, dir)
-    local gid = terrain:get_group_id(x, y)
-    local idx = terrain:coord2idx(x, y)
+    local gid = igroup.id(x, y)
+    local idx = icoord:coord2idx(x, y)
     local item = {
         x=x, y=y,
         pos = cvtcoord2pos(x, y),
@@ -40,8 +41,8 @@ local function add_road(layer, x, y, state, shape, dir)
 end
 
 local function del_road(layer, x, y)
-    local gid = terrain:get_group_id(x, y)
-    local idx = terrain:coord2idx(x, y)
+    local gid = igroup.id(x, y)
+    local idx = icoord:coord2idx(x, y)
     local item = GROUP_ROADS[gid][idx]
     if item then
         item[layer] = nil

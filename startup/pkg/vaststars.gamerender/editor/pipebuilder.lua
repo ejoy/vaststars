@@ -2,7 +2,7 @@ local ecs = ...
 local world = ecs.world
 
 
-local CONSTANT <const> = require("gameplay.interface.constant")
+local CONSTANT <const> = require "gameplay.interface.constant"
 local ROTATORS <const> = CONSTANT.ROTATORS
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local CHANGED_FLAG_FLUIDFLOW <const> = CONSTANT.CHANGED_FLAG_FLUIDFLOW
@@ -11,6 +11,9 @@ local ALL_DIR = CONSTANT.ALL_DIR
 local ALL_DIR_NUM = CONSTANT.ALL_DIR_NUM
 local REMOVE <const> = {}
 local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
+local MAP_WIDTH <const> = CONSTANT.MAP_WIDTH
+local MAP_HEIGHT <const> = CONSTANT.MAP_HEIGHT
+local TILE_SIZE <const> = CONSTANT.TILE_SIZE
 -- To distinguish between "batch construction" and "batch teardown" in the touch_end event.
 local STATE_NONE  <const> = 0
 local STATE_START <const> = 1
@@ -24,12 +27,11 @@ local iprototype = require "gameplay.interface.prototype"
 local packcoord = iprototype.packcoord
 local ifluid = require "gameplay.interface.fluid"
 local iobject = ecs.require "object"
-local iprototype = require "gameplay.interface.prototype"
 local iflow_connector = require "gameplay.interface.flow_connector"
 local objects = require "objects"
 local math_abs = math.abs
 local igrid_entity = ecs.require "engine.grid_entity"
-local terrain = ecs.require "terrain"
+local icoord = require "coord"
 local igameplay = ecs.require "gameplay_system"
 local gameplay_core = require "gameplay.core"
 local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_box"
@@ -73,7 +75,7 @@ end
 local function _connect_to_neighbor(State, x, y, prototype_name, dir)
     local succ, neighbor_x, neighbor_y, dx, dy
     for _, neighbor_dir in ipairs(ALL_DIR) do
-        succ, neighbor_x, neighbor_y = terrain:move_coord(x, y, neighbor_dir, 1)
+        succ, neighbor_x, neighbor_y = icoord.move(x, y, neighbor_dir, 1)
         if not succ then
             goto continue
         end
@@ -88,7 +90,7 @@ local function _connect_to_neighbor(State, x, y, prototype_name, dir)
         end
 
         for _, fb in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
-            succ, dx, dy = terrain:move_coord(fb.x, fb.y, fb.dir, 1)
+            succ, dx, dy = icoord.move(fb.x, fb.y, fb.dir, 1)
             if succ and dx == x and dy == y then
                 if State.fluid_name ~= "" then
                     if fb.fluid_name ~= "" then
@@ -239,7 +241,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                 x = x,
                 y = y,
                 srt = srt.new({
-                    t = math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir))),
+                    t = math3d.vector(icoord.position(x, y, iprototype.rotate_area(typeobject.area, dir))),
                     r = ROTATORS[dir],
                 }),
                 fluid_name = State.fluid_name,
@@ -339,7 +341,7 @@ local function _teardown_end(self, datamodel, State, dir, dir_delta)
                 x = x,
                 y = y,
                 srt = srt.new({
-                    t = math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir))),
+                    t = math3d.vector(icoord.position(x, y, iprototype.rotate_area(typeobject.area, dir))),
                     r = ROTATORS[dir],
                 }),
                 fluid_name = State.fluid_name,
@@ -447,7 +449,7 @@ local function _builder_start(self, datamodel)
         end
 
         local succ
-        succ, to_x, to_y = terrain:move_coord(connection.x, connection.y, dir,
+        succ, to_x, to_y = icoord.move(connection.x, connection.y, dir,
             math_abs(to_x - connection.x),
             math_abs(to_y - connection.y)
         )
@@ -466,7 +468,7 @@ local function _builder_start(self, datamodel)
                     if another.dir ~= iprototype.reverse_dir(dir) then
                         goto continue
                     end
-                    succ, to_x, to_y = terrain:move_coord(connection.x, connection.y, dir,
+                    succ, to_x, to_y = icoord.move(connection.x, connection.y, dir,
                         math_abs(another.x - connection.x),
                         math_abs(another.y - connection.y)
                     )
@@ -498,7 +500,7 @@ local function _builder_start(self, datamodel)
 
         State.from_x, State.from_y = from_x, from_y
         local succ
-        succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir,
+        succ, to_x, to_y = icoord.move(from_x, from_y, dir,
             math_abs(to_x - from_x),
             math_abs(to_y - from_y)
         )
@@ -513,7 +515,7 @@ local function _builder_start(self, datamodel)
                 if fluidbox.dir ~= iprototype.reverse_dir(dir) then
                     goto continue
                 end
-                succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir,
+                succ, to_x, to_y = icoord.move(from_x, from_y, dir,
                     math_abs(from_x - fluidbox.x),
                     math_abs(from_y - fluidbox.y)
                 )
@@ -532,7 +534,7 @@ local function _builder_start(self, datamodel)
 
         --
         local succ
-        succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir,
+        succ, to_x, to_y = icoord.move(from_x, from_y, dir,
             math_abs(to_x - from_x),
             math_abs(to_y - from_y)
         )
@@ -576,7 +578,7 @@ local function _teardown_start(self, datamodel)
         end
 
         local succ
-        succ, to_x, to_y = terrain:move_coord(connection.x, connection.y, dir,
+        succ, to_x, to_y = icoord.move(connection.x, connection.y, dir,
             math_abs(to_x - connection.x),
             math_abs(to_y - connection.y)
         )
@@ -595,7 +597,7 @@ local function _teardown_start(self, datamodel)
                     if another.dir ~= iprototype.reverse_dir(dir) then
                         goto continue
                     end
-                    succ, to_x, to_y = terrain:move_coord(connection.x, connection.y, dir,
+                    succ, to_x, to_y = icoord.move(connection.x, connection.y, dir,
                         math_abs(another.x - connection.x),
                         math_abs(another.y - connection.y)
                     )
@@ -628,7 +630,7 @@ end
 
 local function __calc_grid_position(building_position, typeobject, dir)
     local w, h = iprototype.rotate_area(typeobject.area, dir)
-    local _, originPosition = terrain:align(math3d.vector(0, 0, 0), w, h)
+    local _, originPosition = icoord.align(math3d.vector(0, 0, 0), w, h)
     return math3d.add(math3d.sub(building_position, originPosition), GRID_POSITION_OFFSET)
 end
 
@@ -716,7 +718,7 @@ local function new_entity(self, datamodel, typeobject, x, y)
         x = x,
         y = y,
         srt = srt.new({
-            t = math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir))),
+            t = math3d.vector(icoord.position(x, y, iprototype.rotate_area(typeobject.area, dir))),
             r = ROTATORS[dir],
         }),
         fluid_name = "",
@@ -724,7 +726,7 @@ local function new_entity(self, datamodel, typeobject, x, y)
     }
 
     if not self.grid_entity then
-        self.grid_entity = igrid_entity.create(terrain._width, terrain._height, terrain.tile_size, {t = __calc_grid_position(self.coord_indicator.srt.t, typeobject, dir)})
+        self.grid_entity = igrid_entity.create(MAP_WIDTH, MAP_HEIGHT, TILE_SIZE, {t = __calc_grid_position(self.coord_indicator.srt.t, typeobject, dir)})
     end
 
     self.pickup_components[#self.pickup_components + 1] = create_pickup_selected_box(self.coord_indicator.srt.t, typeobject.area, dir, true)
@@ -735,7 +737,7 @@ end
 
 
 local function __align(position, area, dir)
-    local coord = terrain:align(position, iprototype.rotate_area(area, dir))
+    local coord = icoord.align(position, iprototype.rotate_area(area, dir))
     if not coord then
         return
     end
@@ -771,7 +773,7 @@ local function touch_move(self, datamodel, delta_vec)
     if self.grid_entity then
         local typeobject = iprototype.queryByName(self.coord_indicator.prototype_name)
         local w, h = iprototype.rotate_area(typeobject.area, self.coord_indicator.dir)
-        local grid_position = terrain:get_position_by_coord(self.coord_indicator.x, self.coord_indicator.y, w, h)
+        local grid_position = icoord.position(self.coord_indicator.x, self.coord_indicator.y, w, h)
         self.grid_entity:set_position(__calc_grid_position(grid_position, typeobject, self.coord_indicator.dir))
     end
     for _, c in pairs(self.pickup_components) do
@@ -800,7 +802,7 @@ local function touch_end(self, datamodel)
             x = x,
             y = y,
             srt = srt.new({
-                t = math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(self.typeobject.area, dir))),
+                t = math3d.vector(icoord.position(x, y, iprototype.rotate_area(self.typeobject.area, dir))),
                 r = ROTATORS[dir],
             }),
             group_id = 0,
@@ -810,7 +812,7 @@ local function touch_end(self, datamodel)
     if self.grid_entity then
         local typeobject = iprototype.queryByName(self.coord_indicator.prototype_name)
         local w, h = iprototype.rotate_area(typeobject.area, self.coord_indicator.dir)
-        local grid_position = terrain:get_position_by_coord(self.coord_indicator.x, self.coord_indicator.y, w, h)
+        local grid_position = icoord.position(self.coord_indicator.x, self.coord_indicator.y, w, h)
         self.grid_entity:set_position(__calc_grid_position(grid_position, typeobject, self.coord_indicator.dir))
     end
 
@@ -892,7 +894,7 @@ local function place_one(self, datamodel)
         x = x,
         y = y,
         srt = srt.new({
-            t = math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, "N"))),
+            t = math3d.vector(icoord.position(x, y, iprototype.rotate_area(typeobject.area, "N"))),
             r = ROTATORS["N"],
         }),
         fluid_name = '',

@@ -24,14 +24,15 @@ local iom = ecs.require "ant.objcontroller|obj_motion"
 local ic = ecs.require "ant.camera|camera"
 local math3d = require "math3d"
 local iobject = ecs.require "object"
-local terrain = ecs.require "terrain"
+local icoord = require "coord"
 local iroadnet = ecs.require "roadnet"
 local srt = require "utility.srt"
+local imineral = ecs.require "mineral"
 
 local MAX_ARCHIVING_COUNT <const> = 9
 local PROTOTYPE_VERSION <const> = import_package("vaststars.prototype")("version")
 local CAMERA_CONFIG = archiving.path() .. "camera.json"
-local CONSTANT <const> = require("gameplay.interface.constant")
+local CONSTANT <const> = require "gameplay.interface.constant"
 local ROTATORS <const> = CONSTANT.ROTATORS
 local CHANGED_FLAG_ALL <const> = CONSTANT.CHANGED_FLAG_ALL
 
@@ -75,7 +76,7 @@ local function restore_world()
             x = x,
             y = y,
             srt = srt.new({
-                t = math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir))),
+                t = math3d.vector(icoord.position(x, y, iprototype.rotate_area(typeobject.area, dir))),
                 r = ROTATORS[dir],
             }),
             fluid_name = fluid_name,
@@ -247,7 +248,7 @@ function M:restore(index)
 
     local game_template = assert(gameplay_core.get_storage().game_template)
     local game_template_mineral = import_package("vaststars.prototype")(game_template).mineral
-    terrain:reset_mineral(game_template_mineral)
+    imineral.init(game_template_mineral)
 
     iscience.update_tech_list(gameplay_core.get_world())
     debugger.set_free_mode(gameplay_core.get_storage().game_mode == "free")
@@ -280,7 +281,7 @@ function M:restart(mode, game_template)
     --
     clean()
     local game_template_mineral = import_package("vaststars.prototype")(game_template).mineral
-    terrain:reset_mineral(game_template_mineral)
+    imineral.init(game_template_mineral)
 
     --
     for _, e in ipairs(config.entities or {}) do

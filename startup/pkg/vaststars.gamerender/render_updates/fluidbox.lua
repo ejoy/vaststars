@@ -4,7 +4,7 @@ local w = world.w
 
 local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
-local terrain = ecs.require "terrain"
+local icoord = require "coord"
 local gameplay_core = require "gameplay.core"
 local fluidbox_sys = ecs.system "fluidbox_system"
 local gameplay = import_package "vaststars.gameplay"
@@ -68,7 +68,7 @@ local ifluid = require "gameplay.interface.fluid"
 local function __find_neighbor_fluid(gameplay_world, x, y, dir, ground)
     local succ, dx, dy = false, x, y
     for i = 1, ground or 1 do
-        succ, dx, dy = terrain:move_coord(dx, dy, dir, 1)
+        succ, dx, dy = icoord.move(dx, dy, dir, 1)
         if not succ then
             return
         end

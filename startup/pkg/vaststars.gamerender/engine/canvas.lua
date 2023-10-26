@@ -2,10 +2,12 @@ local ecs   = ...
 local world = ecs.world
 local w     = world.w
 
-local icas   = ecs.require "ant.terrain|canvas"
-local iterrain = ecs.require "terrain"
-local ientity_object = ecs.require "engine.system.entity_object_system"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
+local CONSTANT <const> = require "gameplay.interface.constant"
+local SURFACE_HEIGHT <const> = CONSTANT.SURFACE_HEIGHT
+
+local icas   = ecs.require "ant.terrain|canvas"
+local ientity_object = ecs.require "engine.system.entity_object_system"
 local iom = ecs.require "ant.objcontroller|obj_motion"
 
 local types <const> = {
@@ -129,7 +131,7 @@ function M.create(canvas_type, show, yaxis)
         },
         data = {
             scene = {
-                t = {0.0, yaxis or iterrain.surface_height + 10, 0.0},
+                t = {0.0, yaxis or SURFACE_HEIGHT + 10, 0.0},
             },
             canvas = {
                 show = show,

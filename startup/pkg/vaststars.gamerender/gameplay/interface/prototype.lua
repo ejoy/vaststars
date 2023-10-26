@@ -1,4 +1,4 @@
-local CONSTANT <const> = require("gameplay.interface.constant")
+local CONSTANT <const> = require "gameplay.interface.constant"
 local MAP_WIDTH <const> = CONSTANT.MAP_WIDTH
 local DIR_MOVE_DELTA <const> = CONSTANT.DIR_MOVE_DELTA
 local DIRECTION <const> = CONSTANT.DIRECTION

@@ -11,10 +11,11 @@ local imotion = ecs.require "imotion"
 local drone_sys = ecs.system "drone_system"
 local gameplay_core = require "gameplay.core"
 local global = require "global"
-local terrain = ecs.require "terrain"
+local icoord = require "coord"
 local irl   = ecs.require "ant.render|render_layer.render_layer"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local prefab_slots = require("engine.prefab_parser").slots
+local igroup = ecs.require "group"
 
 -- enum defined in c 
 local STATUS_HAS_ERROR = 1
@@ -34,7 +35,7 @@ end
 local function getPosition(x, y, slot)
     local object = objects:coord(x, y)
     if not object then
-        return math3d.vector(terrain:get_position_by_coord(x, y, 1, 1))
+        return math3d.vector(icoord.position(x, y, 1, 1))
     end
 
     local building = global.buildings[object.id]
@@ -170,7 +171,7 @@ local function create_drone(x, y, slot)
     task.prefab = world:create_instance {
         prefab = "/pkg/vaststars.resources/glbs/drone.glb|mesh.prefab",
         parent = motion_y,
-        group = terrain:get_group_id(x, y),
+        group = igroup.id(x, y),
         on_ready = function(self)
             for _, eid in ipairs(self.tag["*"]) do
                 local e <close> = world:entity(eid, "render_object?update")

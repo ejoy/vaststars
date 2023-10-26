@@ -57,4 +57,3 @@ system "power_check_system"
 
 system "prototype_cache_system"
     .implement "prototype_cache.lua"
-

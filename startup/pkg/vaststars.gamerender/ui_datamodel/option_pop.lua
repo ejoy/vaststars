@@ -18,8 +18,8 @@ local gameplay_core = require "gameplay.core"
 local icanvas = ecs.require "engine.canvas"
 local imain_menu_manager = ecs.require "main_menu_manager"
 local rhwi = import_package "ant.hwi"
-local terrain = ecs.require "terrain"
 local irender = ecs.require "ant.render|render_system.render"
+local igroup = ecs.require "group"
 
 ---------------
 local M = {}
@@ -36,7 +36,7 @@ function M.create()
         archival_files = archival_files,
         info = gameplay_core.settings_get("info", true),
         debug = gameplay_core.settings_get("debug", true),
-        lock_group = terrain.lock_group,
+        lock_group = igroup.is_lock(),
         scene_ratio = scene_ratio,
     }
 end
@@ -91,7 +91,7 @@ function M.update(datamodel)
     end
 
     for _ in lock_group_mb:unpack() do
-        terrain.lock_group = not terrain.lock_group
+        igroup.lock(not igroup.is_lock())
         iui.close("/pkg/vaststars.resources/ui/option_pop.rml")
     end
 

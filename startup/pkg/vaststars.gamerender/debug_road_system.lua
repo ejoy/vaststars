@@ -6,14 +6,8 @@ local debug_road_sys = ecs.system "debug_road_system"
 local kb_mb = world:sub{"keyboard"}
 local math3d = require "math3d"
 local iom = ecs.require "ant.objcontroller|obj_motion"
-
-local terrain = ecs.require "terrain"
-
+local igroup = ecs.require "group"
 local iroadnet = ecs.require "roadnet"
-local CONSTANT = ecs.require "gameplay.interface.constant"
-
-local icamera_controller = ecs.require "engine.system.camera_controller"
-local mc = import_package "ant.math".constant
 
 local ROW_SPACING, COL_SPACING = 2, 2 -- unit per tile
 
@@ -67,7 +61,7 @@ end
 
 local function create_simple_road()
     iroadnet:update{
-        [terrain:get_group_id(0, 0)] = {
+        [igroup.id(0, 0)] = {
             x=0, y=0,
             pos = iroadnet:cvtcoord2pos(0, 0),
             road = {

@@ -1,7 +1,7 @@
 local ecs, mailbox = ...
 local world = ecs.world
 
-local CONSTANT <const> = require("gameplay.interface.constant")
+local CONSTANT <const> = require "gameplay.interface.constant"
 local DEFAULT_DIR <const> = CONSTANT.DEFAULT_DIR
 local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
@@ -34,7 +34,7 @@ local global = require "global"
 local iobject = ecs.require "object"
 local idetail = ecs.require "detail_system"
 local create_station_builder = ecs.require "editor.stationbuilder"
-local terrain = ecs.require "terrain"
+local icoord = require "coord"
 local selected_boxes = ecs.require "selected_boxes"
 local irl = ecs.require "ant.render|render_layer.render_layer"
 local iom = ecs.require "ant.objcontroller|obj_motion"
@@ -270,7 +270,7 @@ local function open_focus_tips(tech_node)
             end
 
             local prefab
-            local center = terrain:get_position_by_coord(nd.x, nd.y, 1, 1)
+            local center = icoord.position(nd.x, nd.y, 1, 1)
             if nd.show_arrow then
                 prefab = assert(world:create_instance({
                     prefab = "/pkg/vaststars.resources/glbs/arrow-guide.glb|mesh.prefab",
@@ -295,7 +295,7 @@ local function open_focus_tips(tech_node)
             end
             tech_node.selected_tips[#tech_node.selected_tips + 1] = {selected_boxes({"/pkg/vaststars.resources/" .. nd.prefab}, center, COLOR_GREEN, nd.w, nd.h), prefab}
         elseif nd.camera_x and nd.camera_y then
-            icamera_controller.focus_on_position(math3d.vector(terrain:get_position_by_coord(nd.camera_x, nd.camera_y, width, height)))
+            icamera_controller.focus_on_position(math3d.vector(icoord.position(nd.camera_x, nd.camera_y, width, height)))
         end
     end
 end
@@ -383,7 +383,7 @@ local function move_focus(e)
 end
 
 local function pickupObject(datamodel, position, func)
-    local coord = terrain:get_coord_by_position(position)
+    local coord = icoord.position2coord(position)
     if not coord then
         return false
     end
@@ -686,7 +686,7 @@ function M.update(datamodel)
                     idetail.selected(pick_lorry_id)
 
                     local e = assert(gameplay_core.get_entity(pick_lorry_id))
-                    icamera_controller.focus_on_position(math3d.vector(terrain:get_position_by_coord(e.lorry.x, e.lorry.y, 1, 1)))
+                    icamera_controller.focus_on_position(math3d.vector(icoord.position(e.lorry.x, e.lorry.y, 1, 1)))
 
                 elseif selected_obj.class == CLASS.Object and not iprototype.is_pipe(selected_obj.object.prototype_name) then -- TODO: optimize
                     local object = selected_obj.object

@@ -1,4 +1,4 @@
-local matharray = require("utility.matharray")
+local matharray = require "utility.matharray"
 
 local function push(self, t)
 	if self.array == nil then

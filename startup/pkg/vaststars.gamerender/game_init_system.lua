@@ -5,7 +5,7 @@ local w = world.w
 local NOTHING <const> = require "debugger".nothing
 local TERRAIN_ONLY <const> = require "debugger".terrain_only
 local DISABLE_AUDIO <const> = require "debugger".disable_audio
-local CONSTANT <const> = require("gameplay.interface.constant")
+local CONSTANT <const> = require "gameplay.interface.constant"
 local RENDER_LAYER <const> = ecs.require "engine.render_layer".RENDER_LAYER
 
 local icamera_controller = ecs.require "engine.system.camera_controller"
@@ -15,7 +15,6 @@ local rhwi = import_package "ant.hwi"
 local gameplay_core = require "gameplay.core"
 local iguide = require "gameplay.interface.guide"
 local iui = ecs.require "engine.system.ui_system"
-local terrain = ecs.require "terrain"
 local iroadnet = ecs.require "roadnet"
 local saveload = ecs.require "saveload"
 local global = require "global"
@@ -24,6 +23,7 @@ local irender = ecs.require "ant.render|render_system.render"
 local imountain = ecs.require "engine.mountain"
 local debugger = require "debugger"
 local iterrain  = ecs.require "ant.landform|terrain_system"
+local igroup = ecs.require "group"
 
 local m = ecs.system 'game_init_system'
 local gameworld_prebuild
@@ -44,7 +44,6 @@ function m:init_world()
     world:create_instance {
         prefab = "/pkg/vaststars.resources/sky.prefab"
     }
-    terrain:create()
 
     if NOTHING then
         icamera_controller.set_camera_from_prefab("camera_default.prefab")
@@ -130,7 +129,7 @@ function m:camera_usage()
     local ce = world:entity(mq.camera_ref, "camera_changed?in camera:in scene:in")
     if ce.camera_changed then
         local points = icamera_controller.get_interset_points()
-        terrain:enable_terrain(points[2], math3d.set_index(points[3], 1, math3d.index(points[4], 1)))
+        igroup.enable(points[2], math3d.set_index(points[3], 1, math3d.index(points[4], 1)))
     end
 end
 

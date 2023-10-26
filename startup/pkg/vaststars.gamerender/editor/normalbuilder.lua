@@ -1,10 +1,13 @@
 local ecs = ...
 local world = ecs.world
 
-local CONSTANT <const> = require("gameplay.interface.constant")
+local CONSTANT <const> = require "gameplay.interface.constant"
 local ROTATORS <const> = CONSTANT.ROTATORS
 local DEFAULT_DIR <const> = CONSTANT.DEFAULT_DIR
 local SPRITE_COLOR <const> = import_package "vaststars.prototype"("sprite_color")
+local MAP_WIDTH <const> = CONSTANT.MAP_WIDTH
+local MAP_HEIGHT <const> = CONSTANT.MAP_HEIGHT
+local TILE_SIZE <const> = CONSTANT.TILE_SIZE
 
 local math3d = require "math3d"
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
@@ -20,13 +23,14 @@ local imining = require "gameplay.interface.mining"
 local igrid_entity = ecs.require "engine.grid_entity"
 local create_sprite = ecs.require "sprite"
 local create_selected_boxes = ecs.require "selected_boxes"
-local terrain = ecs.require "terrain"
+local icoord = require "coord"
 local gameplay_core = require "gameplay.core"
 local ibuilding = ecs.require "render_updates.building"
 local create_pickup_icon_chimney = ecs.require "pickup_icon_chimney".create
 local ibackpack = require "gameplay.interface.backpack"
 local ichest = require "gameplay.interface.chest"
 local srt = require "utility.srt"
+local imineral = ecs.require "mineral"
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
@@ -133,7 +137,7 @@ local function _get_mineral_recipe(prototype_name, x, y, w, h)
     if not iprototype.has_type(typeobject.type, "mining") then
         return
     end
-    local succ, mineral = terrain:can_place_on_mineral(x, y, w, h)
+    local succ, mineral = imineral.can_place(x, y, w, h)
     if not succ then
         return
     end
@@ -216,15 +220,15 @@ local function __new_entity(self, datamodel, typeobject, position, x, y, dir)
 end
 
 local function __calc_grid_position(self, typeobject, dir)
-    local _, originPosition = terrain:align(math3d.vector {0, 0, 0}, iprototype.rotate_area(typeobject.area, dir))
-    local buildingPosition = terrain:get_position_by_coord(self.pickup_object.x, self.pickup_object.y, iprototype.rotate_area(typeobject.area, dir))
+    local _, originPosition = icoord.align(math3d.vector {0, 0, 0}, iprototype.rotate_area(typeobject.area, dir))
+    local buildingPosition = icoord.position(self.pickup_object.x, self.pickup_object.y, iprototype.rotate_area(typeobject.area, dir))
     return math3d.add(math3d.sub(buildingPosition, originPosition), GRID_POSITION_OFFSET)
 end
 
 local function __get_nearby_buldings(x, y, w, h)
     local r = {}
-    local begin_x, begin_y = terrain:bound_coord(x - ((10 - w) // 2), y - ((10 - h) // 2))
-    local end_x, end_y = terrain:bound_coord(x + ((10 - w) // 2) + w, y + ((10 - h) // 2) + h)
+    local begin_x, begin_y = icoord.bound(x - ((10 - w) // 2), y - ((10 - h) // 2))
+    local end_x, end_y = icoord.bound(x + ((10 - w) // 2) + w, y + ((10 - h) // 2) + h)
     for x = begin_x, end_x do
         for y = begin_y, end_y do
             local object = objects:coord(x, y)
@@ -384,7 +388,7 @@ local function new_entity(self, datamodel, typeobject)
         return
     end
 
-    local position = terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir))
+    local position = icoord.position(x, y, iprototype.rotate_area(typeobject.area, dir))
 
     __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject)
 
@@ -392,14 +396,14 @@ local function new_entity(self, datamodel, typeobject)
     self.pickup_object.APPEAR = true
 
     if not self.grid_entity then
-        self.grid_entity = igrid_entity.create(terrain._width, terrain._height, terrain.tile_size, {t = __calc_grid_position(self, typeobject, dir)})
+        self.grid_entity = igrid_entity.create(MAP_WIDTH, MAP_HEIGHT, TILE_SIZE, {t = __calc_grid_position(self, typeobject, dir)})
     end
 end
 
 local function __align(object)
     assert(object)
     local typeobject = iprototype.queryByName(object.prototype_name)
-    local coord, position = terrain:align(icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, object.dir))
+    local coord, position = icoord.align(icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, object.dir))
     if not coord then
         return object
     end
@@ -546,7 +550,7 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
     if typeobject.crossing then
         local valid = false
         for _, conn in ipairs(_get_connections(prototype_name, x, y, dir)) do
-            local succ, dx, dy = terrain:move_coord(conn.x, conn.y, conn.dir, 1)
+            local succ, dx, dy = icoord.move(conn.x, conn.y, conn.dir, 1)
             if not succ then
                 goto continue
             end

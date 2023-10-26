@@ -10,10 +10,10 @@ local BUILDING_IO_SLOTS <const> = import_package "vaststars.prototype"("building
 
 local math3d = require "math3d"
 local ivs = ecs.require "ant.render|visible_state"
-local terrain = ecs.require "terrain"
 local iprototype = require "gameplay.interface.prototype"
 local ichest = require "gameplay.interface.chest"
 local iom = ecs.require "ant.objcontroller|obj_motion"
+local igroup = ecs.require "group"
 
 local mt = {}
 mt.__index = mt
@@ -49,7 +49,7 @@ local function create_item(group_id, item, amount)
 end
 
 local function create_shelf(self, gameplay_world, e, game_object, shelf_prefab, shelf_slot_name, idx)
-    local group_id = terrain:get_group_id(e.building.x, e.building.y)
+    local group_id = igroup.id(e.building.x, e.building.y)
     local slot = assert(ichest.get(gameplay_world, e.chest, idx))
     local typeobject_item = iprototype.queryById(slot.item)
     if iprototype.has_type(typeobject_item.type, "item") then

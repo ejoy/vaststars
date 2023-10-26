@@ -2,8 +2,10 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
+local CONSTANT <const> = require "gameplay.interface.constant"
+local TILE_SIZE <const> = CONSTANT.TILE_SIZE
+
 local assetmgr = import_package "ant.asset"
-local iterrain = ecs.require "terrain"
 local icanvas = ecs.require "engine.canvas"
 local iprototype = require "gameplay.interface.prototype"
 
@@ -27,7 +29,7 @@ local function __get_texture_size(materialpath)
 end
 
 local function __get_draw_rect(x, y, icon_w, icon_h, multiple)
-    local tile_size = iterrain.tile_size * multiple
+    local tile_size = TILE_SIZE * multiple
     multiple = multiple or 1
     y = y - tile_size
     local max = math.max(icon_h, icon_w)

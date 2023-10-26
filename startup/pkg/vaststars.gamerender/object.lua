@@ -4,8 +4,9 @@ local world = ecs.world
 local vsobject_manager = ecs.require "vsobject_manager"
 local iprototype = require "gameplay.interface.prototype"
 local math3d = require "math3d"
-local terrain = ecs.require "terrain"
+local icoord = require "coord"
 local icamera_controller = ecs.require "engine.system.camera_controller"
+local igroup = ecs.require "group"
 local changeset = {}
 local removed = {}
 
@@ -113,7 +114,7 @@ local function flush()
                 prototype_name = outer.prototype_name,
                 dir = outer.dir,
                 position = outer.srt.t,
-                group_id = outer.group_id or terrain:get_group_id(outer.x, outer.y),
+                group_id = outer.group_id or igroup.id(outer.x, outer.y),
             }
         else
             for k in pairs(outer.__change_keys) do
@@ -167,7 +168,7 @@ local function move_delta(object, delta_vec)
 
     local typeobject = iprototype.queryByName(object.prototype_name)
     local position = math3d.add(object.srt.t, delta_vec)
-    local coord = terrain:align(position, iprototype.rotate_area(typeobject.area, object.dir))
+    local coord = icoord.align(position, iprototype.rotate_area(typeobject.area, object.dir))
     if not coord then
         log.error(("can not get coord"))
         return
@@ -180,7 +181,7 @@ end
 
 local function central_coord(prototype_name, dir)
     local typeobject = iprototype.queryByName(prototype_name)
-    local coord = terrain:align(icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, dir))
+    local coord = icoord.align(icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, dir))
     if not coord then
         return
     end
@@ -190,11 +191,11 @@ end
 local function align(object)
     assert(object)
     local typeobject = iprototype.queryByName(object.prototype_name)
-    local coord = terrain:align(icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, object.dir))
+    local coord = icoord.align(icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, object.dir))
     if not coord then
         return object
     end
-    object.srt.t = math3d.vector(terrain:get_position_by_coord(coord[1], coord[2], iprototype.rotate_area(typeobject.area, object.dir)))
+    object.srt.t = math3d.vector(icoord.position(coord[1], coord[2], iprototype.rotate_area(typeobject.area, object.dir)))
     return object, coord[1], coord[2]
 end
 
@@ -202,7 +203,7 @@ local function coord(object, x, y)
     assert(object)
     assert(object.prototype_name ~= "")
     local typeobject = iprototype.queryByName(object.prototype_name)
-    local position = math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, object.dir)))
+    local position = math3d.vector(icoord.position(x, y, iprototype.rotate_area(typeobject.area, object.dir)))
     if not position then
         log.error(("can not get position"))
         return

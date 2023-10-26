@@ -12,6 +12,8 @@ local ROTATORS <const> = {
     S = math.rad(-180),
     W = math.rad(-270),
 }
+local CONSTANT <const> = require "gameplay.interface.constant"
+local TILE_SIZE <const> = CONSTANT.TILE_SIZE
 
 local function read_datalist(path)
     local fs = require "filesystem"
@@ -27,7 +29,6 @@ local global = require "global"
 local iprototype = require "gameplay.interface.prototype"
 local create_io_shelves = ecs.require "render_updates.common.io_shelves".create
 local assetmgr = import_package "ant.asset"
-local iterrain = ecs.require "terrain"
 local icanvas = ecs.require "engine.canvas"
 local irecipe = require "gameplay.interface.recipe"
 local gameplay_core = require "gameplay.core"
@@ -41,7 +42,7 @@ local ichimney = gameplay.interface "chimney"
 local ichest = require "gameplay.interface.chest"
 local math3d = require "math3d"
 local vsobject_manager = ecs.require "vsobject_manager"
-local terrain = ecs.require "terrain"
+local icoord = require "coord"
 local iworld = require "gameplay.interface.world"
 
 local function __get_texture_size(materialpath)
@@ -53,7 +54,7 @@ end
 
 local function __get_draw_rect(x, y, icon_w, icon_h, multiple)
     multiple = multiple or 1
-    local tile_size = iterrain.tile_size * multiple
+    local tile_size = TILE_SIZE * multiple
     y = y - tile_size
     local max = math.max(icon_h, icon_w)
     local draw_w = tile_size * (icon_w / max)
@@ -64,9 +65,8 @@ local function __get_draw_rect(x, y, icon_w, icon_h, multiple)
 end
 
 local function __calc_begin_xy(x, y, w, h)
-    local tile_size = iterrain.tile_size
-    local begin_x = x - (w * tile_size) / 2
-    local begin_y = y + (h * tile_size) / 2
+    local begin_x = x - (w * TILE_SIZE) / 2
+    local begin_y = y + (h * TILE_SIZE) / 2
     return begin_x, begin_y
 end
 
@@ -168,8 +168,8 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
                             local connection_x, connection_y, connection_dir = iprototype.rotate_connection(connection.position, e.building.direction, typeobject.area)
                             draw_fluid_icon(
                                 object_id,
-                                begin_x + connection_x * iterrain.tile_size + iterrain.tile_size / 2,
-                                begin_y - connection_y * iterrain.tile_size - iterrain.tile_size / 2,
+                                begin_x + connection_x * TILE_SIZE + TILE_SIZE / 2,
+                                begin_y - connection_y * TILE_SIZE - TILE_SIZE / 2,
                                 v.id
                             )
 
@@ -184,8 +184,8 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
                             icon_w, icon_h = __get_texture_size(material_path)
                             texture_x, texture_y, texture_w, texture_h = 0, 0, icon_w, icon_h
                             draw_x, draw_y, draw_w, draw_h = __get_draw_rect(
-                                begin_x + dx * iterrain.tile_size + iterrain.tile_size / 2,
-                                begin_y - dy * iterrain.tile_size - iterrain.tile_size / 2,
+                                begin_x + dx * TILE_SIZE + TILE_SIZE / 2,
+                                begin_y - dy * TILE_SIZE - TILE_SIZE / 2,
                                 icon_w,
                                 icon_h
                             )
@@ -300,7 +300,7 @@ end
 local function __find_neighbor_fluid(gameplay_world, x, y, dir, ground)
     local succ, dx, dy = false, x, y
     for i = 1, ground or 1 do
-        succ, dx, dy = terrain:move_coord(dx, dy, dir, 1)
+        succ, dx, dy = icoord.move(dx, dy, dir, 1)
         if not succ then
             return
         end

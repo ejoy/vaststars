@@ -2,19 +2,20 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local iprototype = require "gameplay.interface.prototype"
-local assetmgr = import_package "ant.asset"
-local iterrain = ecs.require "terrain"
-local icanvas = ecs.require "engine.canvas"
-local math3d = require "math3d"
+local CONSTANT <const> = require "gameplay.interface.constant"
+local TILE_SIZE <const> = CONSTANT.TILE_SIZE
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
-local gameplay_core = require "gameplay.core"
 local FLUIDBOXES_IO_TYPE <const> = {
     ["in"] = "input",
     ["out"] = "output",
 }
 local FLUIDBOXES <const> = {"in1","in2","in3","in4","out1","out2","out3"}
-
+local ROTATORS <const> = {
+    N = math.rad(0),
+    E = math.rad(-90),
+    S = math.rad(-180),
+    W = math.rad(-270),
+}
 
 local function read_datalist(path)
     local fs = require "filesystem"
@@ -22,15 +23,13 @@ local function read_datalist(path)
     local fastio = require "fastio"
     return datalist.parse(fastio.readall(fs.path(path):localpath():string(), path))
 end
-
 local FLUIDS_CFG <const> = read_datalist "/pkg/vaststars.resources/config/canvas/fluids.cfg"
 
-local ROTATORS <const> = {
-    N = math.rad(0),
-    E = math.rad(-90),
-    S = math.rad(-180),
-    W = math.rad(-270),
-}
+local iprototype = require "gameplay.interface.prototype"
+local assetmgr = import_package "ant.asset"
+local icanvas = ecs.require "engine.canvas"
+local math3d = require "math3d"
+local gameplay_core = require "gameplay.core"
 
 local function __get_texture_size(materialpath)
     local res = assetmgr.resource(materialpath)
@@ -41,7 +40,7 @@ end
 
 local function __get_draw_rect(x, y, icon_w, icon_h, multiple)
     multiple = multiple or 1
-    local tile_size = iterrain.tile_size * multiple
+    local tile_size = TILE_SIZE * multiple
     multiple = multiple or 1
     y = y - tile_size
     local max = math.max(icon_h, icon_w)
@@ -53,7 +52,7 @@ local function __get_draw_rect(x, y, icon_w, icon_h, multiple)
 end
 
 local function __calc_begin_xy(x, y, w, h)
-    local tile_size = iterrain.tile_size
+    local tile_size = TILE_SIZE
     local begin_x = x - (w * tile_size) / 2
     local begin_y = y + (h * tile_size) / 2
     return begin_x, begin_y
@@ -63,8 +62,8 @@ local function __create_icon(fluid, begin_x, begin_y, connection_x, connection_y
     local material_path = "/pkg/vaststars.resources/materials/canvas/fluid-bg.material"
     local texture_x, texture_y, texture_w, texture_h = 0, 0, __get_texture_size(material_path)
     local draw_x, draw_y, draw_w, draw_h = __get_draw_rect(
-        begin_x + connection_x * iterrain.tile_size + iterrain.tile_size / 2,
-        begin_y - connection_y * iterrain.tile_size - iterrain.tile_size / 2,
+        begin_x + connection_x * TILE_SIZE + TILE_SIZE / 2,
+        begin_y - connection_y * TILE_SIZE - TILE_SIZE / 2,
         texture_w,
         texture_h,
         1
@@ -93,8 +92,8 @@ local function __create_icon(fluid, begin_x, begin_y, connection_x, connection_y
     local material_path = "/pkg/vaststars.resources/materials/canvas/fluids.material"
     texture_x, texture_y, texture_w, texture_h = cfg.x, cfg.y, cfg.width, cfg.height
     draw_x, draw_y, draw_w, draw_h = __get_draw_rect(
-        begin_x + connection_x * iterrain.tile_size + iterrain.tile_size / 2,
-        begin_y - connection_y * iterrain.tile_size - iterrain.tile_size / 2,
+        begin_x + connection_x * TILE_SIZE + TILE_SIZE / 2,
+        begin_y - connection_y * TILE_SIZE - TILE_SIZE / 2,
         texture_w,
         texture_h,
         1
@@ -126,8 +125,8 @@ local function __create_fluid_indication_arrow(connection_x, connection_y, conne
     local icon_w, icon_h = __get_texture_size(material_path)
     local texture_x, texture_y, texture_w, texture_h = 0, 0, icon_w, icon_h
     local draw_x, draw_y, draw_w, draw_h = __get_draw_rect(
-        begin_x + dx * iterrain.tile_size + iterrain.tile_size / 2,
-        begin_y - dy * iterrain.tile_size - iterrain.tile_size / 2,
+        begin_x + dx * TILE_SIZE + TILE_SIZE / 2,
+        begin_y - dy * TILE_SIZE - TILE_SIZE / 2,
         icon_w,
         icon_h
     )

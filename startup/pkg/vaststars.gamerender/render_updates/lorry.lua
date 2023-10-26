@@ -2,7 +2,7 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local CONSTANT <const> = require("gameplay.interface.constant")
+local CONSTANT <const> = require "gameplay.interface.constant"
 local CONFIG <const> = import_package "vaststars.prototype"("road_track")
 local ROAD_TRACKS <const> = CONFIG.TRACKS
 local ROAD_TRACKS_MODEL <const> = CONFIG.ROAD_MODEL
@@ -24,7 +24,7 @@ local lorry_sys = ecs.system "lorry_system"
 local ilorry = {}
 local math3d = require "math3d"
 local iprototype = require "gameplay.interface.prototype"
-local iterrain = ecs.require "terrain"
+local icoord = require "coord"
 local create_lorry = ecs.require "lorry"
 local mc = import_package "ant.math".constant
 local ims = ecs.require "ant.motion_sampler|motion_sampler"
@@ -56,7 +56,7 @@ local function genKeyFrames(last_srt, x, y, toward, offset)
         building_srt = o.srt
         c = station_cache[o.dir]
     else
-        building_srt = {s = mc.ONE, t = math3d.vector(iterrain:get_position_by_coord(x, y, ROAD_SIZE, ROAD_SIZE))}
+        building_srt = {s = mc.ONE, t = math3d.vector(icoord.position(x, y, ROAD_SIZE, ROAD_SIZE))}
         c = cache
     end
 
@@ -119,7 +119,7 @@ motion_events["update"] = function(obj, e, x, y, toward, offset, last_srt, maxpr
     end
 end
 local function createLorry(classid, x, y, toward, offset)
-    local road_srt = {s = mc.ONE, t = math3d.vector(iterrain:get_position_by_coord(x, y, ROAD_SIZE, ROAD_SIZE))}
+    local road_srt = {s = mc.ONE, t = math3d.vector(icoord.position(x, y, ROAD_SIZE, ROAD_SIZE))}
     local start_srt = start_srts[toward]
 
     local s, r, t = math3d.srt(

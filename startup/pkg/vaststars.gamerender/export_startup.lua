@@ -7,7 +7,7 @@ local gameplay_core = import_package "vaststars.gamerender"("gameplay.core")
 local iprototype = import_package "vaststars.gamerender"("gameplay.interface.prototype")
 local irecipe = import_package "vaststars.gamerender"("gameplay.interface.recipe")
 local ichest = require "gameplay.interface.chest"
-local terrain = ecs.require "terrain"
+local imineral = ecs.require "mineral"
 
 local function DO_NOTHING(entity)
     return entity
@@ -174,6 +174,6 @@ return {
         inspect(entities),
         inspect(backpack),
         inspect(roads),
-        inspect(terrain.mineral_source)
+        inspect(imineral.source())
     ))
 end

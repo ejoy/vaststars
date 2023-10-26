@@ -2,19 +2,20 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local CONSTANT <const> = require("gameplay.interface.constant")
+local CONSTANT <const> = require "gameplay.interface.constant"
 local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
 
 local gameplay_core = require "gameplay.core"
 local ipick_object = {}
 local objects = require "objects"
-local terrain = ecs.require "terrain"
+local icoord = require "coord"
 local imountain = ecs.require "engine.mountain"
 local iprototype = require "gameplay.interface.prototype"
 local ilorry = ecs.require "render_updates.lorry"
 local ibuilding = ecs.require "render_updates.building"
-local pick_object_sys = ecs.system "pick_object_sys"
+local imineral = ecs.require "mineral"
 
+local pick_object_sys = ecs.system "pick_object_sys"
 local MountainName = ""
 
 local CLASS = {
@@ -77,7 +78,7 @@ local function __push_object(lorries, pick_x, pick_y, x, y, status)
         end
     end
 
-    o, id = terrain:get_mineral(x, y)
+    o, id = imineral.get(x, y)
     if o then
         local mineral = status.mineral[id]
         if not mineral then
@@ -116,7 +117,7 @@ local function __push_object(lorries, pick_x, pick_y, x, y, status)
                 w = ROAD_SIZE,
                 h = ROAD_SIZE,
                 get_pos = function(self)
-                    return assert(terrain:get_position_by_coord(self.x, self.y, self.w, self.h))
+                    return assert(icoord.position(self.x, self.y, self.w, self.h))
                 end,
             }
         else
@@ -144,7 +145,7 @@ function ipick_object.pick_road(x, y)
         w = ROAD_SIZE,
         h = ROAD_SIZE,
         get_pos = function(self)
-            return assert(terrain:get_position_by_coord(self.x, self.y, self.w, self.h))
+            return assert(icoord.position(self.x, self.y, self.w, self.h))
         end,
     }
 end

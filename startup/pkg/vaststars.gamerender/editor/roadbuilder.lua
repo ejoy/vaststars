@@ -1,10 +1,13 @@
 local ecs = ...
 local world = ecs.world
 
-local CONSTANT <const> = require("gameplay.interface.constant")
+local CONSTANT <const> = require "gameplay.interface.constant"
 local ROTATORS <const> = CONSTANT.ROTATORS
 local DEFAULT_DIR <const> = CONSTANT.DEFAULT_DIR
 local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
+local MAP_WIDTH <const> = CONSTANT.MAP_WIDTH
+local MAP_HEIGHT <const> = CONSTANT.MAP_HEIGHT
+local TILE_SIZE <const> = CONSTANT.TILE_SIZE
 local CHANGED_FLAG_ROADNET <const> = CONSTANT.CHANGED_FLAG_ROADNET
 local DIRECTION <const> = CONSTANT.DIRECTION
 local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
@@ -26,7 +29,7 @@ local create_builder = ecs.require "editor.builder"
 local iprototype = require "gameplay.interface.prototype"
 local iobject = ecs.require "object"
 local objects = require "objects"
-local terrain = ecs.require "terrain"
+local icoord = require "coord"
 local task = ecs.require "task"
 local iroadnet_converter = require "roadnet_converter"
 local igrid_entity = ecs.require "engine.grid_entity"
@@ -41,6 +44,7 @@ local imountain = ecs.require "engine.mountain"
 local ibackpack = require "gameplay.interface.backpack"
 local iom = ecs.require "ant.objcontroller|obj_motion"
 local srt = require "utility.srt"
+local imineral = ecs.require "mineral"
 
 local function isValidRoadCoord(x, y, cache_names)
     for i = 0, ROAD_SIZE - 1 do
@@ -51,7 +55,7 @@ local function isValidRoadCoord(x, y, cache_names)
             end
         end
     end
-    if terrain:get_mineral(x, y) then
+    if imineral.get(x, y) then
         return false
     end
     if imountain:has_mountain(x, y) then
@@ -76,12 +80,12 @@ local function updateComponentsPosition(self)
 end
 
 local function __align(position, area, dir)
-    local coord = terrain:align(position, iprototype.rotate_area(area, dir))
+    local coord = icoord.align(position, iprototype.rotate_area(area, dir))
     if not coord then
         return
     end
     coord[1], coord[2] = coord[1] - (coord[1] % ROAD_SIZE), coord[2] - (coord[2] % ROAD_SIZE)
-    local t = math3d.vector(terrain:get_position_by_coord(coord[1], coord[2], iprototype.rotate_area(area, dir)))
+    local t = math3d.vector(icoord.position(coord[1], coord[2], iprototype.rotate_area(area, dir)))
     return t, coord[1], coord[2]
 end
 
@@ -138,7 +142,7 @@ local function new_entity(self, datamodel, typeobject, x, y)
         x = x,
         y = y,
         srt = srt.new({
-            t = math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir))),
+            t = math3d.vector(icoord.position(x, y, iprototype.rotate_area(typeobject.area, dir))),
             r = ROTATORS[dir],
         }),
         group_id = 0,
@@ -149,9 +153,9 @@ local function new_entity(self, datamodel, typeobject, x, y)
         position = math3d.add(position, GRID_POSITION_OFFSET)
         local offset = math3d.sub(self.coord_indicator.srt.t, position)
         self.pickup_components.grid_entity = igrid_entity.create(
-            terrain._width // ROAD_SIZE,
-            terrain._height // ROAD_SIZE,
-            terrain.tile_size * ROAD_SIZE,
+            MAP_WIDTH // ROAD_SIZE,
+            MAP_HEIGHT // ROAD_SIZE,
+            TILE_SIZE * ROAD_SIZE,
             {t = self.coord_indicator.srt.t},
             offset
         )
@@ -165,7 +169,7 @@ local function new_entity(self, datamodel, typeobject, x, y)
             prefab = "/pkg/vaststars.resources/glbs/road/road_indicator.glb|mesh.prefab",
             on_ready = function (instance)
                 local root <close> = world:entity(instance.tag['*'][1])
-                iom.set_position(root, math3d.vector(terrain:get_position_by_coord(dx, dy, iprototype.rotate_area(typeobject.area, dir))))
+                iom.set_position(root, math3d.vector(icoord.position(dx, dy, iprototype.rotate_area(typeobject.area, dir))))
                 iom.set_rotation(root, ROTATORS[self.forward_dir])
             end,
             on_message = function (instance, msg, ...)
@@ -173,7 +177,7 @@ local function new_entity(self, datamodel, typeobject, x, y)
                     local building_srt = ...
                     local position = building_srt.t
                     local delta = WORLD_MOVE_DELTA[self.forward_dir]
-                    local x, z = math3d.index(position, 1) + delta.x * terrain.tile_size * ROAD_SIZE, math3d.index(position, 3) + delta.y * terrain.tile_size * ROAD_SIZE
+                    local x, z = math3d.index(position, 1) + delta.x * TILE_SIZE * ROAD_SIZE, math3d.index(position, 3) + delta.y * TILE_SIZE * ROAD_SIZE
 
                     local root <close> = world:entity(instance.tag['*'][1])
                     iom.set_position(root, math3d.vector(x, math3d.index(position, 2), z))
@@ -234,7 +238,7 @@ local function touch_end(self, datamodel)
             x = x,
             y = y,
             srt = srt.new({
-                t = math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(self.typeobject.area, dir))),
+                t = math3d.vector(icoord.position(x, y, iprototype.rotate_area(self.typeobject.area, dir))),
                 r = ROTATORS[dir],
             }),
             group_id = 0,
@@ -293,7 +297,7 @@ local function place(self, datamodel)
     local dx, dy = iprototype.move_coord(x, y, self.forward_dir, ROAD_SIZE)
     self:new_entity(datamodel, self.typeobject, dx, dy)
 
-    icamera_controller.focus_on_position(math3d.vector(terrain:get_position_by_coord(dx, dy, ROAD_SIZE, ROAD_SIZE)))
+    icamera_controller.focus_on_position(math3d.vector(icoord.position(dx, dy, ROAD_SIZE, ROAD_SIZE)))
 
     ibackpack.pickup(gameplay_core.get_world(), typeobject.id, 1)
     task.update_progress("is_road_connected")

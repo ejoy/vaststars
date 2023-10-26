@@ -8,7 +8,7 @@ local global = require "global"
 local iprototype = require "gameplay.interface.prototype"
 local station_sys = ecs.system "station_system"
 local gameplay_core = require "gameplay.core"
-local terrain = ecs.require "terrain"
+local igroup = ecs.require "group"
 
 local function createShelf(object, e, item_id)
     local typeobject_building = iprototype.queryById(e.building.prototype)
@@ -35,7 +35,7 @@ local function createShelf(object, e, item_id)
     local typeobject_item = iprototype.queryById(item_id)
     local prefab = "/pkg/vaststars.resources/" .. typeobject_item.item_model
     local item_model = world:create_instance {
-        group = terrain:get_group_id(e.building.x, e.building.y),
+        group = igroup.id(e.building.x, e.building.y),
         prefab = prefab,
     }
 

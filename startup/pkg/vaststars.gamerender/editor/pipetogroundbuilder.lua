@@ -1,11 +1,14 @@
 local ecs = ...
 local world = ecs.world
 
-local CONSTANT <const> = require("gameplay.interface.constant")
+local CONSTANT <const> = require "gameplay.interface.constant"
 local ROTATORS <const> = CONSTANT.ROTATORS
 local DEFAULT_DIR <const> = CONSTANT.DEFAULT_DIR
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local CHANGED_FLAG_FLUIDFLOW <const> = CONSTANT.CHANGED_FLAG_FLUIDFLOW
+local MAP_WIDTH <const> = CONSTANT.MAP_WIDTH
+local MAP_HEIGHT <const> = CONSTANT.MAP_HEIGHT
+local TILE_SIZE <const> = CONSTANT.TILE_SIZE
 local STATE_NONE  <const> = 0
 local STATE_START <const> = 1
 local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
@@ -25,7 +28,7 @@ local math_abs = math.abs
 local iquad_lines_entity = ecs.require "engine.quad_lines_entity" -- NOTE: different from pipe_builder
 local dotted_line_material <const> = "/pkg/vaststars.resources/materials/dotted_line.material" -- NOTE: different from pipe_builder
 local igrid_entity = ecs.require "engine.grid_entity"
-local terrain = ecs.require "terrain"
+local icoord = require "coord"
 local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_box"
 local global = require "global"
 local gameplay_core = require "gameplay.core"
@@ -46,7 +49,7 @@ local function _show_dotted_line(self, from_x, from_y, to_x, to_y, dir, dir_delt
         return
     end
 
-    local position = terrain:get_position_by_coord(from_x, from_y, 1, 1)
+    local position = icoord.position(from_x, from_y, 1, 1)
     self.dotted_line:update(position, quad_num, dir)
     self.dotted_line:show(true)
 end
@@ -67,7 +70,7 @@ end
 -- automatically connects to its neighbors which has fluidbox, except for pipe or pipe to ground
 local function _connect_to_neighbor(State, PipeToGroundState, x, y, neighbor_dir, prototype_name, dir)
     local succ, neighbor_x, neighbor_y, dx, dy
-    succ, neighbor_x, neighbor_y = terrain:move_coord(x, y, neighbor_dir, 1)
+    succ, neighbor_x, neighbor_y = icoord.move(x, y, neighbor_dir, 1)
     if not succ then
         return prototype_name, dir
     end
@@ -83,7 +86,7 @@ local function _connect_to_neighbor(State, PipeToGroundState, x, y, neighbor_dir
     end
 
     for _, fb in ipairs(ifluid:get_fluidbox(_prototype_name, object.x, object.y, _dir, object.fluid_name)) do
-        succ, dx, dy = terrain:move_coord(fb.x, fb.y, fb.dir, 1)
+        succ, dx, dy = icoord.move(fb.x, fb.y, fb.dir, 1)
         if succ and dx == x and dy == y then
             prototype_name, dir = iflow_connector.set_connection(prototype_name, dir, neighbor_dir, true)
             assert(prototype_name and dir) -- TODO:remove this assert
@@ -489,7 +492,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                 x = x,
                 y = y,
                 srt = srt.new({
-                    t = math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir))),
+                    t = math3d.vector(icoord.position(x, y, iprototype.rotate_area(typeobject.area, dir))),
                     r = ROTATORS[dir],
                 }),
                 fluid_name = State.fluid_name,
@@ -573,7 +576,7 @@ local function _builder_start(self, datamodel)
         State.starting_fluidbox = fluidbox
 
         local succ
-        succ, to_x, to_y = terrain:move_coord(fluidbox.x, fluidbox.y, dir,
+        succ, to_x, to_y = icoord.move(fluidbox.x, fluidbox.y, dir,
             math_abs(to_x - fluidbox.x),
             math_abs(to_y - fluidbox.y)
         )
@@ -592,7 +595,7 @@ local function _builder_start(self, datamodel)
                     if another.dir ~= iprototype.reverse_dir(dir) then
                         goto continue
                     end
-                    succ, to_x, to_y = terrain:move_coord(fluidbox.x, fluidbox.y, dir,
+                    succ, to_x, to_y = icoord.move(fluidbox.x, fluidbox.y, dir,
                         math_abs(another.x - fluidbox.x),
                         math_abs(another.y - fluidbox.y)
                     )
@@ -631,7 +634,7 @@ local function _builder_start(self, datamodel)
                 if fluidbox.dir ~= iprototype.reverse_dir(dir) then
                     goto continue
                 end
-                succ, to_x, to_y = terrain:move_coord(fluidbox.x, fluidbox.y, dir,
+                succ, to_x, to_y = icoord.move(fluidbox.x, fluidbox.y, dir,
                     math_abs(from_x - fluidbox.x),
                     math_abs(from_y - fluidbox.y)
                 )
@@ -650,7 +653,7 @@ local function _builder_start(self, datamodel)
 
         --
         local succ
-        succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir,
+        succ, to_x, to_y = icoord.move(from_x, from_y, dir,
             math_abs(to_x - from_x),
             math_abs(to_y - from_y)
         )
@@ -670,8 +673,8 @@ end
 
 local function __calc_grid_position(self, typeobject, x, y, dir)
     local w, h = iprototype.rotate_area(typeobject.area, dir)
-    local _, originPosition = terrain:align(math3d.vector {0, 0, 0}, w, h)
-    local buildingPosition = terrain:get_position_by_coord(x, y, w, h)
+    local _, originPosition = icoord.align(math3d.vector {0, 0, 0}, w, h)
+    local buildingPosition = icoord.position(x, y, w, h)
     return math3d.add(math3d.sub(buildingPosition, originPosition), GRID_POSITION_OFFSET)
 end
 
@@ -689,7 +692,7 @@ local function new_entity(self, datamodel, typeobject)
         x = x,
         y = y,
         srt = srt.new({
-            t = math3d.vector(terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir))),
+            t = math3d.vector(icoord.position(x, y, iprototype.rotate_area(typeobject.area, dir))),
             r = ROTATORS[dir],
         }),
         fluid_name = "",
@@ -697,7 +700,7 @@ local function new_entity(self, datamodel, typeobject)
     }
 
     if not self.grid_entity then
-        self.grid_entity = igrid_entity.create(terrain._width, terrain._height, terrain.tile_size, {t = __calc_grid_position(self, typeobject, x, y, dir)})
+        self.grid_entity = igrid_entity.create(MAP_WIDTH, MAP_HEIGHT, TILE_SIZE, {t = __calc_grid_position(self, typeobject, x, y, dir)})
     end
 
     self.pickup_components[#self.pickup_components + 1] = create_pickup_selected_box(self.coord_indicator.srt.t, typeobject.area, dir, true)

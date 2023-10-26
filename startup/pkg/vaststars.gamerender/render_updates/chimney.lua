@@ -2,13 +2,15 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
+local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
+local CONSTANT <const> = require "gameplay.interface.constant"
+local TILE_SIZE <const> = CONSTANT.TILE_SIZE
+
 local chimney_sys = ecs.system "chimney_system"
 local gameplay_core = require "gameplay.core"
 local iprototype = require "gameplay.interface.prototype"
-local iterrain = ecs.require "terrain"
 local assetmgr = import_package "ant.asset"
 local icanvas = ecs.require "engine.canvas"
-local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local objects = require "objects"
 local global = require "global"
 local math3d = require "math3d"
@@ -21,9 +23,8 @@ local ROTATORS <const> = {
 }
 
 local function __calc_begin_xy(x, y, w, h)
-    local tile_size = iterrain.tile_size
-    local begin_x = x - (w * tile_size) / 2
-    local begin_y = y + (h * tile_size) / 2
+    local begin_x = x - (w * TILE_SIZE) / 2
+    local begin_y = y + (h * TILE_SIZE) / 2
     return begin_x, begin_y
 end
 
@@ -36,7 +37,7 @@ end
 
 local function __get_draw_rect(x, y, icon_w, icon_h, multiple)
     multiple = multiple or 1
-    local tile_size = iterrain.tile_size * multiple
+    local tile_size = TILE_SIZE * multiple
     y = y - tile_size
     local max = math.max(icon_h, icon_w)
     local draw_w = tile_size * (icon_w / max)
@@ -61,8 +62,8 @@ local function __draw_fluid_indication_arrow(object_id, building_srt, dir, proto
         local icon_w, icon_h = __get_texture_size(material_path)
         local texture_x, texture_y, texture_w, texture_h = 0, 0, icon_w, icon_h
         local draw_x, draw_y, draw_w, draw_h = __get_draw_rect(
-            begin_x + dx * iterrain.tile_size + iterrain.tile_size / 2,
-            begin_y - dy * iterrain.tile_size - iterrain.tile_size / 2,
+            begin_x + dx * TILE_SIZE + TILE_SIZE / 2,
+            begin_y - dy * TILE_SIZE - TILE_SIZE / 2,
             icon_w,
             icon_h
         )

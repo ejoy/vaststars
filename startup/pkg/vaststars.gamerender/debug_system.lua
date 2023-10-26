@@ -7,17 +7,18 @@ local GESTURE_LOG <const> = require "debugger".gesture_log
 local math3d = require "math3d"
 local XZ_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
 
-local debug_sys = ecs.system "debug_system"
-local kb_mb = world:sub{"keyboard"}
+local icoord = require "coord"
 local gameplay_core = require "gameplay.core"
-local export_startup = ecs.require "export_startup"
-local gesture_tap_mb = world:sub{"gesture", "tap"}
-local gesture_mb = world:sub{"gesture"}
-local terrain = ecs.require "terrain"
-local icamera_controller = ecs.require "engine.system.camera_controller"
 local iprototype = require "gameplay.interface.prototype"
+local igroup = ecs.require "group"
+local export_startup = ecs.require "export_startup"
+local icamera_controller = ecs.require "engine.system.camera_controller"
 local idm = ecs.require "ant.debug|debug_mipmap"
-local game_debug_mb = world:sub{"game_debug"}
+local kb_mb = world:sub {"keyboard"}
+local game_debug_mb = world:sub {"game_debug"}
+local gesture_tap_mb = world:sub {"gesture", "tap"}
+local gesture_mb = world:sub {"gesture"}
+local debug_sys = ecs.system "debug_system"
 
 local function __get_capacitance(eid)
     local e = gameplay_core.get_entity(eid)
@@ -132,11 +133,11 @@ function debug_sys:ui_update()
     for _, _, v in gesture_tap_mb:unpack() do
         local x, y = v.x, v.y
         local pos = icamera_controller.screen_to_world(x, y, XZ_PLANE)
-        local coord = terrain:get_coord_by_position(pos)
+        local coord = icoord.position2coord(pos)
         if coord then
-            local pp = terrain:get_position_by_coord(coord[1], coord[2], 256, 256)
+            local pp = icoord.position(coord[1], coord[2], 256, 256)
             log.info(("gesture tap coord: (%d, %d), position: (%.2f, %.2f, %.2f)"):format(coord[1], coord[2], pp[1], pp[2], pp[3]))
-            log.info(("group(%s)"):format(terrain:get_group_id(coord[1], coord[2])))
+            log.info(("group(%s)"):format(igroup.id(coord[1], coord[2])))
 
             local objects = require "objects"
             local vsobject_manager = ecs.require "vsobject_manager"

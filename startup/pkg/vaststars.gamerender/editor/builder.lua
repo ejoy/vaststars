@@ -1,7 +1,7 @@
 local ecs = ...
 local world = ecs.world
 
-local CONSTANT <const> = require("gameplay.interface.constant")
+local CONSTANT <const> = require "gameplay.interface.constant"
 local DEFAULT_DIR <const> = CONSTANT.DEFAULT_DIR
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
@@ -11,10 +11,10 @@ local objects = require "objects"
 local ieditor = ecs.require "editor.editor"
 local imining = require "gameplay.interface.mining"
 local iobject = ecs.require "object"
-local terrain = ecs.require "terrain"
 local igameplay = ecs.require "gameplay_system"
 local gameplay_core = require "gameplay.core"
 local ibuilding = ecs.require "render_updates.building"
+local imineral = ecs.require "mineral"
 
 local function check_construct_detector(self, prototype_name, x, y, dir, exclude_object_id)
     dir = dir or DEFAULT_DIR
@@ -35,7 +35,7 @@ local function check_construct_detector(self, prototype_name, x, y, dir, exclude
                 end
 
                 if not found_mineral then
-                    found_mineral = terrain:get_mineral(x + i, y + j)
+                    found_mineral = imineral.get(x + i, y + j)
                 end
             end
         end
@@ -47,7 +47,7 @@ local function check_construct_detector(self, prototype_name, x, y, dir, exclude
         if not found_mineral then
             return false
         else
-            local succ, mineral = terrain:can_place_on_mineral(x, y, w, h)
+            local succ, mineral = imineral.can_place(x, y, w, h)
             if not succ then
                 return false
             end
