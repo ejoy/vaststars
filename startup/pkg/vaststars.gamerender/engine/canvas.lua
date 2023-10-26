@@ -7,7 +7,6 @@ local CONSTANT <const> = require "gameplay.interface.constant"
 local SURFACE_HEIGHT <const> = CONSTANT.SURFACE_HEIGHT
 
 local icas   = ecs.require "ant.terrain|canvas"
-local ientity_object = ecs.require "engine.system.entity_object_system"
 local iom = ecs.require "ant.objcontroller|obj_motion"
 
 local types <const> = {
@@ -94,37 +93,11 @@ for _, infos in pairs(CANVAS_BUILD) do
     end
 end
 
-local entity_events = {}
-entity_events.add_item = function(self, e, id, ...)
-    self.cache = self.cache or {}
-    self.cache[id] = self.cache[id] or {}
-
-    for _, item_id in ipairs(icas.add_items(e, ...)) do
-        self.cache[id][#self.cache[id]+1] = item_id
-    end
-end
-
-entity_events.remove_item = function(self, e, id)
-    if not self.cache or not self.cache[id] then
-        return
-    end
-
-    for _, item_id in ipairs(self.cache[id]) do
-        icas.remove_item(e, item_id)
-    end
-    self.cache[id] = nil
-end
-entity_events.show = function(_, e, b)
-    icas.show(e, b)
-end
-entity_events.iom = function(_, e, method, ...)
-    iom[method](e, ...)
-end
-
 local M = {}
 function M.create(canvas_type, show, yaxis)
     assert(rawget(cache, canvas_type) == nil)
-    cache[canvas_type] = ientity_object.create(world:create_entity {
+    local materials = {}
+    local canvas_eid; canvas_eid = world:create_entity {
         policy = {
             "ant.scene|scene_object",
             "ant.terrain|canvas",
@@ -135,41 +108,61 @@ function M.create(canvas_type, show, yaxis)
             },
             canvas = {
                 show = show,
+                materials = materials,
             },
-            on_ready = function(e)
-                local infos = CANVAS_BUILD[canvas_type]
-                for _, info in ipairs(infos) do
-                    icas.build(e, show, info.render_layer, table.unpack(info.materials))
-                end
-            end,
+            on_ready = function ()
+                cache[canvas_type] = {
+                    eid = canvas_eid,
+                }
+            end
         }
-    }, entity_events)
+    }
+    local infos = CANVAS_BUILD[canvas_type]
+    for _, info in ipairs(infos) do
+        icas.build(materials, canvas_eid, show, info.render_layer, table.unpack(info.materials))
+    end
 end
 
 function M.add_item(canvas_type, id, key, ...)
     assert(type(key) == "string" )
     local canvas_entity_object = assert(cache[canvas_type])
-    canvas_entity_object:send("add_item", id, key, ...)
+    canvas_entity_object.cache = canvas_entity_object.cache or {}
+    canvas_entity_object.cache[id] = canvas_entity_object.cache[id] or {}
+
+    local e <close> = world:entity(canvas_entity_object.eid)
+    for _, item_id in ipairs(icas.add_items(e, key, ...)) do
+        canvas_entity_object.cache[id][#canvas_entity_object.cache[id]+1] = item_id
+    end
     return id
 end
 
 function M.remove_item(canvas_type, id)
     local canvas_entity_object = assert(cache[canvas_type])
-    canvas_entity_object:send("remove_item", id)
+    if not canvas_entity_object.cache or not canvas_entity_object.cache[id] then
+        return
+    end
+    local e <close> = world:entity(canvas_entity_object.eid)
+    for _, item_id in ipairs(canvas_entity_object.cache[id]) do
+        icas.remove_item(e, item_id)
+    end
+    canvas_entity_object.cache[id] = nil
 end
 
 function M.show(canvas_type, b)
     local canvas_entity_object = assert(cache[canvas_type])
-    canvas_entity_object:send("show", b)
+    local e <close> = world:entity(canvas_entity_object.eid)
+    icas.show(e, b)
+end
+
+function M.iom(canvas_type, method, ...)
+    local canvas_entity_object = assert(cache[canvas_type])
+    local e <close> = world:entity(canvas_entity_object.eid)
+    iom[method](e, ...)
 end
 
 function M.get_key(materialpath, render_layer)
     assert(rawget(key_cache[render_layer], materialpath))
     return key_cache[render_layer][materialpath]
-end
-
-function M.get(canvas_type)
-    return cache[canvas_type]
 end
 
 function M.types()

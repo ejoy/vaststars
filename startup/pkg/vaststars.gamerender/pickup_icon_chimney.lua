@@ -109,19 +109,17 @@ mt.__index = mt
 function mt:remove()
     icanvas.remove_item(icanvas.types().PICKUP_ICON, 0)
     icanvas.show(icanvas.types().PICKUP_ICON, false)
-    local obj = icanvas.get(icanvas.types().PICKUP_ICON)
-    obj:send("iom", "set_position", {0, 0, 0})
+    icanvas.iom(icanvas.types().PICKUP_ICON, "set_position", {0, 0, 0})
 end
 
 function mt:on_position_change(building_srt, dir)
     local delta = math3d.sub(building_srt.t, self.position)
-    local obj = icanvas.get(icanvas.types().PICKUP_ICON)
-    obj:send("iom", "move_delta", math3d.live(delta))
+    icanvas.iom(icanvas.types().PICKUP_ICON, "move_delta", math3d.live(delta))
     self.position = building_srt.t
 
     if dir ~= self.dir then
         icanvas.remove_item(icanvas.types().PICKUP_ICON, 0)
-        obj:send("iom", "set_position", {0, 0, 0})
+        icanvas.iom(icanvas.types().PICKUP_ICON, "set_position", {0, 0, 0})
         __create_icon(0, building_srt, dir, self.typeobject.id)
         self.dir = dir
     end
