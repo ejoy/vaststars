@@ -100,14 +100,14 @@ local function genKeyFrames(last_srt, x, y, toward, offset)
     return key_frames
 end
 
-local motion_events = {}
 -- key_frames = {s = xx, r = xx, t = xx, step = xx}, ...
-motion_events["update"] = function(obj, e, x, y, toward, offset, last_srt, maxprogress, progress)
+local function update(obj, x, y, toward, offset, last_srt, maxprogress, progress)
     if not (obj.x == x and obj.y == y and obj.toward == toward and obj.offset == offset) then
         obj.x, obj.y, obj.toward, obj.offset = x, y, toward, offset
         obj.last_srt = obj.last_srt or last_srt
 
         local kfs = genKeyFrames(obj.last_srt, x, y, toward, offset)
+        local e <close> = world:entity(obj.motion)
         ims.set_keyframes(e, table.unpack(kfs))
 
         local last = kfs[#kfs]
@@ -118,6 +118,7 @@ motion_events["update"] = function(obj, e, x, y, toward, offset, last_srt, maxpr
         ims.set_duration(e, maxprogress, progress, true)
     end
 end
+
 local function createLorry(classid, x, y, toward, offset)
     local road_srt = {s = mc.ONE, t = math3d.vector(icoord.position(x, y, ROAD_SIZE, ROAD_SIZE))}
     local start_srt = start_srts[toward]
@@ -136,7 +137,7 @@ local function createLorry(classid, x, y, toward, offset)
     }
     local typeobject = assert(iprototype.queryById(classid))
     local kfs = genKeyFrames(last_srt, x, y, toward, offset)
-    local lorry = create_lorry(typeobject.model, kfs[1].s, kfs[1].r, kfs[1].t, motion_events)
+    local lorry = create_lorry(typeobject.model, kfs[1].s, kfs[1].r, kfs[1].t)
     lorry.classid = classid
     lorry.last_srt = last_srt
 
@@ -249,6 +250,8 @@ function lorry_sys:gameworld_update()
         if not lorry then
             lorry = createLorry(classid, x, y, toward, offset)
             lorries[e.eid] = lorry
+        else
+            update(lorry, x, y, toward, offset, lorry.last_srt, maxprogress, maxprogress - progress, true)
         end
 
         if l.status == 0 then
@@ -256,8 +259,6 @@ function lorry_sys:gameworld_update()
         else
             lorry:idle()
         end
-
-        lorry:motion_opt("update", x, y, toward, offset, lorry.last_srt, maxprogress, maxprogress - progress, true)
         lorry:set_item(item_classid, item_amount)
         ::continue::
     end
