@@ -106,9 +106,9 @@ local function create(prefab, s, r, t)
         lorry_obj:update({workstatus = "idle", prefab = prefab})
     end
     function outer:remove()
-        world:remove(motion_entity)
-        world:remove(lorry_obj.id)
-        world:remove(shadow_entity)
+        world:remove_entity(motion_entity)
+        world:remove_entity(lorry_obj.id)
+        world:remove_entity(shadow_entity)
         world:remove_instance(arrow_instance)
         if self.item then
             world:remove_instance(self.item)
