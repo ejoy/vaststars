@@ -38,9 +38,8 @@ function M.create(material)
         ivs.set_state(e, "main_view", b)
     end
     function outer:update(position, quad_num, dir)
-        local e <close> = world:entity(eid)
+        local e <close> = world:entity(eid, "render_object:update")
         iom.set_position(e, math3d.add(position, delta_vec[dir]))
-        w:extend(e, "render_object:update")
         local ro = e.render_object
         ro.ib_num = quad_num * 6
         ro.vb_num = quad_num * 4
