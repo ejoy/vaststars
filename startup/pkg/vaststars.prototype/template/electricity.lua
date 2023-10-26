@@ -244,5 +244,6 @@ return {
     order = 4,
     guide = "guide",
     mode = "free",
+    show = false,
     start_tech = "迫降火星",
 }
