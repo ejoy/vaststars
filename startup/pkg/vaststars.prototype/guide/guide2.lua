@@ -83,22 +83,6 @@ local guide2 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..铺设{/g 铁制电线杆}让右侧的所有{/color:4bd0ff 组装机}工作..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
-        },
-        narrative_end = {
-            task = {
-                "电力铺设",
-            },
-            guide_progress = 10,
-        },
-        prerequisites = {
-            "收集矿石",
-        },
-	},
-
-    {
-        name = "",
-		narrative = {
             {"哔哩..{/color:4bd0ff 组装机}设置配方{/g 轻质石砖}进行生产..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
@@ -108,7 +92,7 @@ local guide2 = {
             guide_progress = 10,
         },
         prerequisites = {
-            "电力铺设",
+            "收集矿石",
         },
 	},
 

@@ -156,28 +156,12 @@ local prototype = gameplay.register.prototype
         camera_y = 133,
       },
     },
-    sign_desc = {
-      { desc = "仓库设置收货选择“碎石”、“铁矿石”、“铝矿石”", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-    },
-  }
-
-  prototype "电力铺设" {
-    desc = "使得3台组装机通电",
-    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-    type = {"task" },
-    task = {"unknown", 0, 10},
-    task_params = {building = "组装机I"},
-    count = 2,
-    prerequisites = {"收集矿石"},
     effects = {
       unlock_item = {"轻质石砖"},
       unlock_recipe = {"轻质石砖"},
     },
-    tips_pic = {
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
-    },
     sign_desc = {
-      { desc = "放置电线杆连接风力发电机让3台组装机处于电网范围内", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "仓库设置收货选择“碎石”、“铁矿石”、“铝矿石”", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -188,7 +172,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 3},                          
     task_params = {recipe = "轻质石砖"},
     count = 1,
-    prerequisites = {"电力铺设"},
+    prerequisites = {"收集矿石"},
     guide_focus = {
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
@@ -572,7 +556,7 @@ local prototype = gameplay.register.prototype
     ingredients = {
         {"地质科技包", 1},
     },
-    count = 10,
+    count = 8,
     time = "1s"
   }
 
