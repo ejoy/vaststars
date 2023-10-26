@@ -218,8 +218,8 @@ local prototype = gameplay.register.prototype
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate5.texture",
     },
     effects = {
-      unlock_recipe = {"石砖","砖石公路打印"},
-      unlock_item = {"石砖","砖石公路-X型"},
+      unlock_recipe = {"石砖"},
+      unlock_item = {"石砖"},
     },
     sign_desc = {
       { desc = "物流中心派遣2辆运输车", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
@@ -234,8 +234,8 @@ local prototype = gameplay.register.prototype
     count = 3,
     prerequisites = {"派遣运输车"},
     effects = {
-      unlock_recipe = {"铁板1"},
-      unlock_item = {"铁板"},
+      unlock_recipe = {"砖石公路打印"},
+      unlock_item = {"砖石公路-X型"},
     },
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -252,6 +252,10 @@ local prototype = gameplay.register.prototype
     task = {"stat_production", 0, "砖石公路-X型"},
     count = 15,
     prerequisites = {"石砖大生产"},
+    effects = {
+      unlock_recipe = {"铁板1"},
+      unlock_item = {"铁板"},
+    },
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },

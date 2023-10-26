@@ -1945,7 +1945,7 @@ prototype "车辆装配" {
     recipe_craft_category = "生产中型制造",
     recipe_category =  "加工",
     recipe_order =  128,
-    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/glass.texture",
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/construction-design.texture",
     ingredients = {
         {"铁齿轮", 4},
         {"橡胶", 4},
@@ -1963,7 +1963,7 @@ prototype "轻型运输车" {
     recipe_craft_category = "生产中型制造",
     recipe_category =  "加工",
     recipe_order =  128,
-    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/glass.texture",
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/construction-design.texture",
     ingredients = {
         {"铁板", 5},
     },
