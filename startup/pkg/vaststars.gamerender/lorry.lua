@@ -107,7 +107,7 @@ local function create(prefab, s, r, t)
     end
     function outer:remove()
         world:remove_entity(motion_entity)
-        world:remove_entity(lorry_obj.id)
+        lorry_obj:remove()
         world:remove_entity(shadow_entity)
         world:remove_instance(arrow_instance)
         if self.item then
