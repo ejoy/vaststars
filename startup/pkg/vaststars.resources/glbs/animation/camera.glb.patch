@@ -1,5 +1,5 @@
 ---
 file: mesh.prefab
 op: replace
-path: /1/data/scene/t
-value: {-50, 0, 0}
+path: /2/data/animation/anim0
+value: /pkg/vaststars.resources/animations/camera.anim
