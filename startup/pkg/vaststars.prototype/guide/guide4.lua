@@ -9,7 +9,7 @@ local guide2 = {
             task = {
                 "流体教学",
             },
-            guide_progress = 1,
+            guide_progress = 10,
         },
         prerequisites = {},
 	},

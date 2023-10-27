@@ -133,90 +133,12 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "采矿机通电" {
-    desc = "使得3台采矿机通电",
-    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-    type = {"task" },
-    task = {"unknown", 0, 10},
-    task_params = {building = "采矿机I"},
-    count = 3,
-    prerequisites = {"采矿机放置"},
-    tips_pic = {
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
-    },
-    guide_focus = {
-      {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-        x = 122,
-        y = 122,
-        w = 3.2,
-        h = 3.2,
-        show_arrow = false,
-      },
-      {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-        x = 128,
-        y = 122,
-        w = 1.2,
-        h = 1.2,
-        show_arrow = false,
-      },
-      {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-        x = 133,
-        y = 122,
-        w = 1.2,
-        h = 1.2,
-        show_arrow = false,
-      },
-      {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-        x = 116,
-        y = 122,
-        w = 1.2,
-        h = 1.2,
-        show_arrow = false,
-      },
-      {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-        x = 116,
-        y = 128,
-        w = 1.2,
-        h = 1.2,
-        show_arrow = false,
-      },
-      {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-        x = 116,
-        y = 136,
-        w = 1.2,
-        h = 1.2,
-        show_arrow = false,
-      },
-      {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-        x = 124,
-        y = 136,
-        w = 1.2,
-        h = 1.2,
-        show_arrow = false,
-      },
-      {
-        camera_x = 126,
-        camera_y = 128,
-      },
-    },
-    sign_desc = {
-      { desc = "放置电线杆连接风力发电机让3台采矿机处于电网范围内", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-    },
-  }
-
   prototype "仓库放置" {
     desc = "放置1座仓库",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = {"task" },
     task = {"select_entity", 0, "仓库I"},
-    prerequisites = {"采矿机通电"},
+    prerequisites = {"采矿机放置"},
     count = 1,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
