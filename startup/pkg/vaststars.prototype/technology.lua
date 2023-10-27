@@ -55,6 +55,10 @@ local prototype = gameplay.register.prototype
   -- task_params = {building = xx, }
   -- count = xx
 
+  -- task = {"unknown", 0, 11},               X建筑的指定水口连接液体
+  -- task_params = {building = xx, fluids = {xx, xx}}
+  -- count = 1
+
   prototype "迫降火星" {
     desc = "迫降火星",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",

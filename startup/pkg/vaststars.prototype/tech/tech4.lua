@@ -54,6 +54,9 @@ local prototype = gameplay.register.prototype
     desc = "连接液罐",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
+    -- task = {"unknown", 0, 9},                 
+    -- task_params = {building = "仓库I", item = "管道1-X型", },
+    -- count = 1,
     task = {"unknown", 0, 11},
     task_params = {building = "液罐I", fluids = {"地下卤水"}},
     count = 1,
@@ -161,12 +164,12 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "连接水电站" {
+  prototype "卤水送入" {
     desc = "连接水电站",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
-    task = {"unknown", 0, 9},    
-    task_params = {building = "仓库I", item = "管道1-X型", },
+    task = {"unknown", 0, 11},
+    task_params = {building = "水电站I", fluids = {"地下卤水"}},
     count = 1,
     prerequisites = {"生产地下管"},
     tips_pic = {
@@ -194,15 +197,130 @@ local prototype = gameplay.register.prototype
       },
     },
     sign_desc = {
+      { desc = "绕过障碍将液罐中的卤水连接入水电站", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
+  -- prototype "空气送入" {
+  --   desc = "连接水电站",
+  --   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+  --   type = { "task" },
+  --   task = {"unknown", 0, 11},
+  --   task_params = {building = "水电站I", fluids = {"空气"}},
+  --   count = 1,
+  --   prerequisites = {"卤水送入"},
+  --   tips_pic = {
+  --     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+  --   },
+  --   guide_focus = {
+  --     {
+  --       prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+  --       x = 132.5,
+  --       y = 144.5,
+  --       w = 2.1,
+  --       h = 2.1,
+  --       show_arrow = false,
+  --     },
+  --     {
+  --       camera_x = 133,
+  --       camera_y = 144,
+  --     },
+  --   },
+  --   sign_desc = {
+  --     { desc = "放置空气过滤器在将空气连接入水电站", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+  --   },
+  -- }
+
+  prototype "气候科技包生产" {
+    desc = "生产气候科技包",
+    type = { "task" },
+    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
+    task = {"stat_production", 0, "气候科技包"},
+    count = 1,
+    prerequisites = {"卤水送入"},
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "使用水电站生产1个生产气候科技包", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "启动第二水电站" {
+    desc = "连接水电站",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = { "task" },
+    task = {"unknown", 0, 11},
+    task_params = {building = "水电站I", fluids = {"地下卤水","空气"}},
+    count = 1,
+    prerequisites = {"气候科技包生产"},
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    guide_focus = {
+      {
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        x = 133,
+        y = 147,
+        w = 1.0,
+        h = 1.0,
+        show_arrow = false,
+      },      {
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        x = 133,
+        y = 149,
+        w = 1.0,
+        h = 1.0,
+        show_arrow = false,
+      },
+      {
+        camera_x = 133,
+        camera_y = 148,
+      },
+    },
+    sign_desc = {
       { desc = "液罐绕过障碍连接水电站", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
+
+  prototype "液罐制造工艺" {
+    desc = "火星地下开采卤水进行过滤净化工艺",
+    type = { "tech" },
+    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
+    effects = {
+      unlock_item = {"液罐I"},
+      unlock_recipe = {"液罐1"},
+    },
+    prerequisites = {"启动第二水电站"},
+    ingredients = {
+      {"气候科技包", 1},
+    },
+    count = 5,
+    time = "4s"
+  }
+
+
+  prototype "液罐生产" {
+    desc = "生产液罐",
+    type = { "task" },
+    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
+    task = {"stat_production", 0, "地下管1-JI型"},
+    count = 2,
+    prerequisites = {"液罐制造工艺"},
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "使用组装机生产2个液罐", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
 
   prototype "完成流体研究" {
     desc = "完成新的科技研究",
     type = { "tech" },
     icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
-    prerequisites = {"连接水电站"},
+    prerequisites = {"液罐生产"},
     ingredients = {
         {"地质科技包", 1},
     },

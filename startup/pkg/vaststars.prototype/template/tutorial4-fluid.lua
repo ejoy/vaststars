@@ -6,7 +6,7 @@ local entities = {{
   y = 118
 }, {
   dir = "N",
-  items = { { "空气过滤器I", 5 }, { "地下水挖掘机I", 5 } },
+  items = { { "空气过滤器I", 5 }, { "地下水挖掘机I", 5 },  { "电解厂I", 1 }},
   prototype_name = "机身残骸",
   x = 128,
   y = 147
@@ -789,28 +789,6 @@ local entities = {{
   x = 143,
   y = 164
 }, {
-  dir = "N",
-  prototype_name = "无人机平台I",
-  x = 129,
-  y = 160
-}, {
-  dir = "N",
-  items = { { "石墨", 50 } },
-  prototype_name = "仓库I",
-  x = 129,
-  y = 161
-}, {
-  dir = "N",
-  prototype_name = "无人机平台I",
-  x = 122,
-  y = 160
-}, {
-  dir = "N",
-  items = { { "石墨", 50 } },
-  prototype_name = "仓库I",
-  x = 122,
-  y = 161
-}, {
   dir = "E",
   fluid_name = "甲烷",
   prototype_name = "管道1-I型",
@@ -1304,66 +1282,12 @@ local entities = {{
   x = 138,
   y = 202
 }, {
-  dir = "S",
-  fluid_name = "纯水",
-  prototype_name = "地下管1-JI型",
-  x = 128,
-  y = 193
-}, {
-  dir = "N",
-  fluid_name = "纯水",
-  prototype_name = "地下管1-JI型",
-  x = 128,
-  y = 192
-}, {
-  dir = "S",
-  fluid_name = "纯水",
-  prototype_name = "地下管1-JI型",
-  x = 128,
-  y = 171
-}, {
-  dir = "S",
-  fluid_name = "纯水",
-  prototype_name = "地下管1-JI型",
-  x = 128,
-  y = 182
-}, {
-  dir = "N",
-  fluid_name = "纯水",
-  prototype_name = "地下管1-JI型",
-  x = 128,
-  y = 170
-}, {
-  dir = "N",
-  fluid_name = "纯水",
-  prototype_name = "地下管1-JI型",
-  x = 128,
-  y = 181
-}, {
-  dir = "S",
-  fluid_name = "纯水",
-  prototype_name = "地下管1-JU型",
-  x = 128,
-  y = 160
-}, {
   dir = "E",
   fluid_name = "纯水",
   prototype_name = "地下管1-JI型",
   x = 129,
   y = 202
-}, {
-  dir = "N",
-  fluid_name = "纯水",
-  prototype_name = "管道1-L型",
-  x = 128,
-  y = 202
-}, {
-  dir = "N",
-  fluid_name = "纯水",
-  prototype_name = "地下管1-JI型",
-  x = 128,
-  y = 201
-}, {
+},  {
   dir = "S",
   fluid_name = "二氧化碳",
   prototype_name = "烟囱I",
@@ -2204,7 +2128,7 @@ local entities = {{
   y = 144
 }, {
   dir = "N",
-  items = { { "气候科技包", 19 } },
+  items = { { "气候科技包", 0 } },
   prototype_name = "仓库I",
   x = 139,
   y = 146
