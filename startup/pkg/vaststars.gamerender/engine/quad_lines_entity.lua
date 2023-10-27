@@ -36,10 +36,10 @@ function M.create(material)
     }
     local outer = {}
     function outer:show(b)
-        local e <close> = world:entity(eid)
         if not ready then
             return
         end
+        local e <close> = world:entity(eid)
         ivs.set_state(e, "main_view", b)
     end
     function outer:update(position, quad_num, dir)
