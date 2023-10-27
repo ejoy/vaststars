@@ -9,7 +9,6 @@ local ROTATORS = CONSTANT.ROTATORS
 local ientity = ecs.require "ant.render|components.entity"
 local iom = ecs.require "ant.objcontroller|obj_motion"
 local math3d = require "math3d"
-local ivs = ecs.require "ant.render|visible_state"
 
 local delta_vec = {
     ['N'] = math3d.constant("v4", {0, 0, -5}),
@@ -18,51 +17,26 @@ local delta_vec = {
     ['W'] = math3d.constant("v4", {5, 0, 0}),
 }
 
+local MATERIAL <const> = "/pkg/vaststars.resources/materials/dotted_line.material"
+
 local M = {}
-function M.create(material, position, quad_num, dir, b)
-    local eid = ientity.create_quad_lines_entity({}, material, 10, 10.0, false, "translucent")
-    local ready = false
+function M.create(position, quad_num, dir)
+    local eid = ientity.create_quad_lines_entity({}, MATERIAL, 10, 10.0, false, "translucent")
     world:create_entity {
         policy = {},
         data = {
             on_ready = function ()
-                ready = true
                 local e <close> = world:entity(eid, "render_object:update")
                 local ro = e.render_object
                 ro.ib_start, ro.ib_num = 0, 0 -- *6
                 ro.vb_start, ro.vb_num = 0, 0 -- *4
-                if position then
-                    ro.ib_num = quad_num * 6
-                    ro.vb_num = quad_num * 4
-                    ivs.set_state(e, "main_view", b)
-                    iom.set_position(e, math3d.add(position, delta_vec[dir]))
-                    iom.set_rotation(e, ROTATORS[dir])
-                end
+                ro.ib_num = quad_num * 6
+                ro.vb_num = quad_num * 4
+                iom.set_position(e, math3d.add(position, delta_vec[dir]))
+                iom.set_rotation(e, ROTATORS[dir])
             end
         }
     }
-    local outer = {}
-    function outer:show(b)
-        if not ready then
-            return
-        end
-        local e <close> = world:entity(eid)
-        ivs.set_state(e, "main_view", b)
-    end
-    function outer:update(position, quad_num, dir)
-        if not ready then
-            return
-        end
-        local e <close> = world:entity(eid, "render_object:update")
-        iom.set_position(e, math3d.add(position, delta_vec[dir]))
-        local ro = e.render_object
-        ro.ib_num = quad_num * 6
-        ro.vb_num = quad_num * 4
-        iom.set_rotation(e, ROTATORS[dir])
-    end
-    function outer:remove()
-        world:remove_entity(eid)
-    end
-    return outer
+    return eid
 end
 return M

@@ -3,7 +3,6 @@ local world = ecs.world
 local w = world.w
 
 local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
-local DOTTED_LINE_MATERIAL <const> = "/pkg/vaststars.resources/materials/dotted_line.material"
 
 local iui = ecs.require "engine.system.ui_system"
 local objects = require "objects"
@@ -173,8 +172,7 @@ do
                     local succ, dx, dy = icoord.move(object.x, object.y, connection_dir, 1)
                     if succ then
                         local position = icoord.position(dx, dy, 1, 1)
-                        local dotted_line = iquad_lines_entity.create(DOTTED_LINE_MATERIAL, position, quad_num, connection_dir, true)
-                        temp_objects[#temp_objects+1] = dotted_line
+                        temp_objects[#temp_objects+1] = iquad_lines_entity.create(position, quad_num, connection_dir)
                     end
                 end
             end

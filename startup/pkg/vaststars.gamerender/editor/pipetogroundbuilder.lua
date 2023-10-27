@@ -26,7 +26,6 @@ local iflow_connector = require "gameplay.interface.flow_connector"
 local objects = require "objects"
 local math_abs = math.abs
 local iquad_lines_entity = ecs.require "engine.quad_lines_entity" -- NOTE: different from pipe_builder
-local dotted_line_material <const> = "/pkg/vaststars.resources/materials/dotted_line.material" -- NOTE: different from pipe_builder
 local igrid_entity = ecs.require "engine.grid_entity"
 local icoord = require "coord"
 local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_box"
@@ -50,8 +49,10 @@ local function _show_dotted_line(self, from_x, from_y, to_x, to_y, dir, dir_delt
     end
 
     local position = icoord.position(from_x, from_y, 1, 1)
-    self.dotted_line:update(position, quad_num, dir)
-    self.dotted_line:show(true)
+    if self.dotted_line then
+        world:remove_entity(self.dotted_line)
+    end
+    self.dotted_line = iquad_lines_entity.create(position, quad_num, dir)
 end
 
 local function _check_dotted_line(from_x, from_y, to_x, to_y, dir, dir_delta) -- TODO: remove this function
@@ -734,7 +735,10 @@ local function touch_end(self, datamodel)
     self.coord_indicator.x, self.coord_indicator.y = x, y
 
     self:revert_changes({"TEMPORARY"})
-    self.dotted_line:show(false) -- NOTE: different from pipe_builder
+    if self.dotted_line then
+        world:remove_entity(self.dotted_line)
+        self.dotted_line = nil
+    end
 
     for _, c in pairs(self.pickup_components) do
         c:on_position_change(self.coord_indicator.srt, self.coord_indicator.dir)
@@ -847,8 +851,9 @@ local function finish_laying(self, datamodel)
     end
     objects:commit("TEMPORARY", "CONFIRM")
 
-    if self.dotted_line then -- NOTE: different from pipe_builder
-        self.dotted_line:show(false)
+    if self.dotted_line then
+        world:remove_entity(self.dotted_line)
+        self.dotted_line = nil
     end
 
     self.state = STATE_NONE
@@ -868,7 +873,7 @@ local function clean(self, datamodel)
     self.coord_indicator = nil
 
     if self.dotted_line then -- NOTE: different from pipe_builder
-        self.dotted_line:remove()
+        world:remove_entity(self.dotted_line)
         self.dotted_line = nil
     end
 
@@ -914,7 +919,6 @@ local function create()
     M.start_laying = start_laying
     M.cancel = cancel
     M.finish_laying = finish_laying
-    M.dotted_line = iquad_lines_entity.create(dotted_line_material) -- NOTE: different from pipe_builder
 
     return M
 end
