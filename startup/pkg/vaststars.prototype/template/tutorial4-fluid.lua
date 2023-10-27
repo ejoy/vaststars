@@ -1832,7 +1832,7 @@ local entities = {{
   y = 135
 }, {
   dir = "N",
-  items = {{"石砖", 0},{"碎石", 0}},
+  items = {{"碎石", 0}},
   prototype_name = "仓库I",
   x = 120,
   y = 134

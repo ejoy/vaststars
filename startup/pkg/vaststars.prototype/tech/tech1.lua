@@ -41,6 +41,10 @@ local prototype = gameplay.register.prototype
   -- task_params = {building = xx, }
   -- count = xx
 
+  -- task = {"unknown", 0, 11},               X建筑的指定水口连接液体
+  -- task_params = {building = xx, fluids = {xx, xx}}
+  -- count = 1
+
   prototype "采矿教学" {
     desc = "学习如何在游戏中采矿",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",

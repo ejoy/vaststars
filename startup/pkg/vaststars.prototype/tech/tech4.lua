@@ -54,8 +54,8 @@ local prototype = gameplay.register.prototype
     desc = "连接液罐",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
-    task = {"unknown", 0, 9},    
-    task_params = {building = "仓库I", item = "管道1-X型", },
+    task = {"unknown", 0, 11},
+    task_params = {building = "液罐I", fluids = {"地下卤水"}},
     count = 1,
     effects = {
       unlock_item = {"地下管1-JI型"},
@@ -161,11 +161,48 @@ local prototype = gameplay.register.prototype
     },
   }
 
+  prototype "连接水电站" {
+    desc = "连接水电站",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = { "task" },
+    task = {"unknown", 0, 9},    
+    task_params = {building = "仓库I", item = "管道1-X型", },
+    count = 1,
+    prerequisites = {"生产地下管"},
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    guide_focus = {
+      {
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        x = 126,
+        y = 142,
+        w = 1.0,
+        h = 1.0,
+        show_arrow = false,
+      },      {
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        x = 133,
+        y = 142,
+        w = 1.0,
+        h = 1.0,
+        show_arrow = false,
+      },
+      {
+        camera_x = 130,
+        camera_y = 142,
+      },
+    },
+    sign_desc = {
+      { desc = "液罐绕过障碍连接水电站", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
   prototype "完成流体研究" {
     desc = "完成新的科技研究",
     type = { "tech" },
     icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
-    prerequisites = {"生产地下管"},
+    prerequisites = {"连接水电站"},
     ingredients = {
         {"地质科技包", 1},
     },
