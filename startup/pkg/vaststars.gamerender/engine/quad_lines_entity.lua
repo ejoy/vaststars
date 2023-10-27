@@ -19,7 +19,7 @@ local delta_vec = {
 }
 
 local M = {}
-function M.create(material)
+function M.create(material, position, quad_num, dir, b)
     local eid = ientity.create_quad_lines_entity({}, material, 10, 10.0, false, "translucent")
     local ready = false
     world:create_entity {
@@ -31,6 +31,13 @@ function M.create(material)
                 local ro = e.render_object
                 ro.ib_start, ro.ib_num = 0, 0 -- *6
                 ro.vb_start, ro.vb_num = 0, 0 -- *4
+                if position then
+                    ro.ib_num = quad_num * 6
+                    ro.vb_num = quad_num * 4
+                    ivs.set_state(e, "main_view", b)
+                    iom.set_position(e, math3d.add(position, delta_vec[dir]))
+                    iom.set_rotation(e, ROTATORS[dir])
+                end
             end
         }
     }

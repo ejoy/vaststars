@@ -170,13 +170,10 @@ do
                 end
 
                 if quad_num > 0 then
-                    local dotted_line = iquad_lines_entity.create(DOTTED_LINE_MATERIAL)
                     local succ, dx, dy = icoord.move(object.x, object.y, connection_dir, 1)
                     if succ then
                         local position = icoord.position(dx, dy, 1, 1)
-                        dotted_line:update(position, quad_num, connection_dir)
-                        dotted_line:show(true)
-
+                        local dotted_line = iquad_lines_entity.create(DOTTED_LINE_MATERIAL, position, quad_num, connection_dir, true)
                         temp_objects[#temp_objects+1] = dotted_line
                     end
                 end
