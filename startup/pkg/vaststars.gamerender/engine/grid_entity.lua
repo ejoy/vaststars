@@ -15,17 +15,8 @@ local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 
 local ipl = ecs.require "ant.polyline|polyline"
 local iom = ecs.require "ant.objcontroller|obj_motion"
-local ientity_object = ecs.require "engine.system.entity_object_system"
 local icoord = require "coord"
 local icamera_controller = ecs.require "engine.system.camera_controller"
-
-local events = {}
-events["remove"] = function(_, e)
-	w:remove(e)
-end
-events["obj_motion"] = function(_, e, method, ...)
-    iom[method](e, ...)
-end
 
 local M = {}
 function M.create(width, height, unit, srt, pos_offset, material)
@@ -60,19 +51,22 @@ function M.create(width, height, unit, srt, pos_offset, material)
 		srt.t = math3d.add(srt.t, pos_offset)
 	end
 
-	local objects = {}
-	objects[#objects+1] = ientity_object.create(ipl.add_linelist(vertices, LINE_WIDTH, COLOR, material or MATERIAL, srt, RENDER_LAYER.GRID), events)
+	local eid = ipl.add_linelist(vertices, LINE_WIDTH, COLOR, material or MATERIAL, srt, RENDER_LAYER.GRID)
+	local ready = false
+	world:create_entity {
+		policy = {},
+		data = {
+			on_ready = function ()
+				ready = true
+			end
+		}
+	}
 
 	local outer_proxy = {
-		objects = objects,
-		remove = function(self)
-			assert(#self.objects > 0)
-			for _, obj in ipairs(self.objects) do
-				obj:send("remove")
-			end
-			self.objects = {}
+		remove = function()
+			world:remove_entity(eid)
 		end,
-		on_position_change = function(self, srt)
+		on_position_change = function(_, srt)
 			local coord = icoord.align(icamera_controller.get_central_position(), ROAD_SIZE, ROAD_SIZE)
 			if not coord then
 				return
@@ -83,17 +77,19 @@ function M.create(width, height, unit, srt, pos_offset, material)
 			local t = icoord.position(coord[1], coord[2], ROAD_SIZE, ROAD_SIZE)
 			local p = math3d.live(math3d.add(math3d.sub(t, originPosition), GRID_POSITION_OFFSET))
 
-			for _, obj in ipairs(self.objects) do
-				obj:send("obj_motion", "set_position", p)
+			if ready then
+				local e <close> = world:entity(eid)
+				iom.set_position(e, p)
 			end
 		end,
 		-- TODO: remove this function
-		set_position = function(self, position)
-			for _, obj in ipairs(self.objects) do
-				obj:send("obj_motion", "set_position", math3d.live(position))
+		set_position = function(_, position)
+			if ready then
+				local e <close> = world:entity(eid)
+				iom.set_position(e, math3d.live(position))
 			end
 		end,
-		on_status_change = function(self)
+		on_status_change = function(_)
 			-- do nothing
 		end
 	}

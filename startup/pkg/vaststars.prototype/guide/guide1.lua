@@ -49,23 +49,6 @@ local guide1 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..放置{/g 铁制电线杆}连接附近{/color:4bd0ff 风力发电机}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
-            {"哔哩..注意让{/g 电线杆供电区}覆盖{/color:4bd0ff 采矿机}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
-        },
-        narrative_end = {
-            task = {
-                "采矿机通电",
-            },
-            guide_progress = 10,
-        },
-        prerequisites = {
-            "采矿机放置",
-        },
-	},
-
-    {
-        name = "",
-		narrative = {
             {"哔哩..放置1座{/g 仓库}在{/color:4bd0ff 组装机}和{/color:4bd0ff 无人机平台}附近..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
             {"哔哩..注意{/color:4bd0ff 仓库}需要放置在{/g 无人机平台物流范围}内..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
@@ -76,7 +59,7 @@ local guide1 = {
             guide_progress = 10,
         },
         prerequisites = {
-            "采矿机通电",
+            "采矿机放置",
         },
 	},
 

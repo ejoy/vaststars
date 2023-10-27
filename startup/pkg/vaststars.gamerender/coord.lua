@@ -111,22 +111,8 @@ function coord.idx2coord(idx)
 end
 
 --base 0
-function coord:coord2idx(x, y)
+function coord.coord2idx(x, y)
     return y * WIDTH + x
-end
-
---base 1
-function coord.idx2coord1(idx)
-    assert(idx > 0, "Invalid idx, it's base 1")
-    local idxbase0 = idx - 1
-    local x0, y0 = coord.idx2coord(idxbase0)
-    return x0+1, y0+1
-end
-
--- base 1
-function coord:coord2idx1(x, y)
-    assert(x > 0 and y > 0, "Invalid x or y, it's base 1")
-    return coord:coord2idx(x-1, y-1)
 end
 
 return coord

@@ -74,9 +74,6 @@ system "ui_system"
 system "camera_controller"
     .implement "engine/system/camera_controller.lua"
 
-system "entity_object_system"
-    .implement "engine/system/entity_object_system.lua"
-
 system "debug_system"
     .implement "debug_system.lua"
 

@@ -26,7 +26,7 @@ end
 
 local function add_road(layer, x, y, state, shape, dir)
     local gid = igroup.id(x, y)
-    local idx = icoord:coord2idx(x, y)
+    local idx = icoord.coord2idx(x, y)
     local item = {
         x=x, y=y,
         pos = cvtcoord2pos(x, y),

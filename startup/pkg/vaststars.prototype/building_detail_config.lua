@@ -2,46 +2,55 @@ local building_detail_config = {
 	["组装机"] = {
 		"work_power",
 		"production_speed",
+		-- "capacitance",
 		-- "productivity_bonus",
 	},
 	["化工厂"] = {
 		"work_power",
 		"production_speed",
+		-- "capacitance",		
 		-- "productivity_bonus",
 	},
 	["熔炼炉"] = {
 		"work_power",
 		"production_speed",
+		-- "capacitance",
 		-- "productivity_bonus",
 	},
 	["水电站"] = {
 		"work_power",
 		"production_speed",
+		-- "capacitance",		
 		-- "productivity_bonus",
 	},
 	["电解厂"] = {
 		"work_power",
 		"production_speed",
+		-- "capacitance",		
 		-- "productivity_bonus",
 	},
 	["蒸馏厂"] = {
 		"work_power",
 		"production_speed",
+		-- "capacitance",		
 		-- "productivity_bonus",
 	},
 	["采矿机"] = {
 		"work_power",
 		"production_speed",
+		-- "capacitance",		
 		-- "productivity_bonus",
 	},
 	["轻型采矿机"] = {
 		"work_power",
 		"production_speed",
+		-- "capacitance",		
 		-- "productivity_bonus",
 	},
 	["粉碎机"] = {
 		"work_power",
 		"production_speed",
+		-- "capacitance",		
 		-- "productivity_bonus",
 	},
 	["小铁制箱子"] = {
@@ -78,6 +87,7 @@ local building_detail_config = {
 	["科研中心"] = {
 		"work_power",
 		"research_speed",
+		-- "capacitance",		
 	},
 	["液罐"] = {
 		"fluid_name",
@@ -125,6 +135,7 @@ local building_detail_config = {
 	["无人机平台"] = {
 		"work_power",
 		"drone_count",
+		-- "capacitance",		
 	},
 	["铁矿"] = {
 		"mine_type",
