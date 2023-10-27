@@ -104,7 +104,7 @@ local function get_png(id)
 	if png then
 		return 200, png, png_header
 	else
-		return 403, "No texture " .. id
+		return 404, "No texture " .. id
 	end
 end
 
@@ -116,7 +116,7 @@ function M.get(path, q)
 		if id then
 			return get_png(id)
 		else
-			return 403, "Unknown " .. path
+			return 404, "Unknown " .. path
 		end
 	end
 end
