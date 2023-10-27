@@ -63,4 +63,16 @@ M.CHANGED_FLAG_ROADNET    = 1 << 3
 M.CHANGED_FLAG_FLUIDFLOW  = 1 << 4
 M.CHANGED_FLAG_ALL = M.CHANGED_FLAG_ASSEMBLING | M.CHANGED_FLAG_BUILDING | M.CHANGED_FLAG_CHIMNEY | M.CHANGED_FLAG_ROADNET | M.CHANGED_FLAG_FLUIDFLOW
 
+M.IN_FLUIDBOXES = {
+    {fluid = "in1_fluid", id = "in1_id"},
+    {fluid = "in2_fluid", id = "in2_id"},
+    {fluid = "in3_fluid", id = "in3_id"},
+    {fluid = "in4_fluid", id = "in4_id"},
+}
+M.OUT_FLUIDBOXES = {
+    {fluid = "out1_fluid", id = "out1_id"},
+    {fluid = "out2_fluid", id = "out2_id"},
+    {fluid = "out3_fluid", id = "out3_id"},
+}
+
 return M

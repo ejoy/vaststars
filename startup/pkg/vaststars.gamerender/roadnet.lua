@@ -42,7 +42,7 @@ end
 
 local function del_road(layer, x, y)
     local gid = igroup.id(x, y)
-    local idx = icoord:coord2idx(x, y)
+    local idx = icoord.coord2idx(x, y)
     local item = GROUP_ROADS[gid][idx]
     if item then
         item[layer] = nil

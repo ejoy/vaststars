@@ -2,7 +2,7 @@ local iprototype = require "gameplay.interface.prototype"
 local gameplay_core = require "gameplay.core"
 local CONSTANT = require "gameplay.interface.constant"
 local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
-
+local IN_FLUIDBOXES <const> = CONSTANT.IN_FLUIDBOXES
 --[[
 custom_type :
 1. is_road_connected
@@ -34,19 +34,23 @@ custom_type :
     task_params = {ui = "item_transfer_unsubscribe", , building = ""},
 7. place_item
     task = {"unknown", 0, 7},
-    task_params = {building = xx, item = xx, },
+    task_params = {building = "xx", item = "xx", },
     count = xx
 8. set_items, 
     task = {"unknown", 0, 8},
     task_params = {items = {"demand|xx", "supply|xx", "transit|xx", ...}}
 9. pickup_item
     task = {"unknown", 0, 9},
-    task_params = {building = xx, item = xx, }
+    task_params = {building = "xx", item = "xx", }
     count = xx
-10.power_check
+10.in_one_power_grid
     task = {"unknown", 0, 10},
-    task_params = {building = xx, }
+    task_params = {building = "xx", }
     count = xx
+11.check_fluids_input
+    task = {"unknown", 0, 11},
+    task_params = {building = "xx", fluids = {"xx", "xx"}}
+    count = 1
 --]]
 
 local function check_path_connected(sx, sy, dx, dy, road)
@@ -163,7 +167,7 @@ local custom_type_mapping = {
         end
 
         local count = 0
-        for e in ecs:select "building:in capacitance:in road:absent eid:in" do
+        for e in ecs:select "building:in capacitance:in road:absent" do
             local typeobject = iprototype.queryById(e.building.prototype)
             if task_params.building == typeobject.name and e.capacitance.network ~= 0 then
                 count = count + 1
@@ -171,6 +175,67 @@ local custom_type_mapping = {
         end
 
         return math.max(count, progress or 0)
+    end, },
+    [11] = {s = "check_fluids_input", check = function(task_params, progress)
+        local gameplay_world = gameplay_core.get_world()
+        local ecs = gameplay_world.ecs
+        local building = task_params.building
+        local types = iprototype.queryByName(building).type
+        if iprototype.has_type(types, "fluidboxes") then
+            for e in ecs:select "fluidboxes:in building:in" do
+                local typeobject = iprototype.queryById(e.building.prototype)
+                if building ~= typeobject.name then
+                    goto continue
+                end
+
+                local t = {}
+                for _, v in ipairs(IN_FLUIDBOXES) do
+                    local fluid = e.fluidboxes[v.fluid]
+                    local id = e.fluidboxes[v.id]
+                    if fluid ~= 0 and id ~= 0 then
+                        local r = gameplay_core.fluidflow_query(fluid, id)
+                        local f = iprototype.queryById(fluid)
+                        t[f.name] = r.volume
+                    end
+                end
+
+                for _, v in ipairs(task_params.fluids) do
+                    if t[v] == nil then
+                        goto continue
+                    end
+                    if t[v] <= 0 then
+                        goto continue
+                    end
+                end
+
+                do
+                    return 1
+                end
+                ::continue::
+            end
+        elseif iprototype.has_type(types, "fluidbox") then
+            for e in ecs:select "fluidbox:in building:in" do
+                local typeobject = iprototype.queryById(e.building.prototype)
+                if building ~= typeobject.name then
+                    goto continue
+                end
+                assert(#task_params.fluids == 1)
+
+                local r = gameplay_core.fluidflow_query(e.fluidbox.fluid, e.fluidbox.id)
+                local f = iprototype.queryById(e.fluidbox.fluid)
+                if task_params.fluids[1] == f.name then
+                    if r.volume > 0 then
+                        return 1
+                    else
+                        goto continue
+                    end
+                end
+                ::continue::
+            end
+        else
+            assert(false)
+        end
+        return 0
     end, },
 }
 
