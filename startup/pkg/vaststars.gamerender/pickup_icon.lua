@@ -5,11 +5,7 @@ local w = world.w
 local CONSTANT <const> = require "gameplay.interface.constant"
 local TILE_SIZE <const> = CONSTANT.TILE_SIZE
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
-local FLUIDBOXES_IO_TYPE <const> = {
-    ["in"] = "input",
-    ["out"] = "output",
-}
-local FLUIDBOXES <const> = {"in1","in2","in3","in4","out1","out2","out3"}
+local FLUIDBOXES <const> = CONSTANT.FLUIDBOXES
 local ROTATORS <const> = {
     N = math.rad(0),
     E = math.rad(-90),
@@ -155,17 +151,14 @@ local function __create_icons(self, typeobject, gameplay_eid, building_srt, dir)
     local begin_x, begin_y = __calc_begin_xy(math3d.index(building_srt.t, 1), math3d.index(building_srt.t, 3), iprototype.rotate_area(typeobject.area, dir))
 
     if e.fluidboxes then
-        for _, classify in ipairs(FLUIDBOXES) do
-            local iotype, idx = classify:match("^(%a+)(%d+)$")
-            iotype, idx = assert(FLUIDBOXES_IO_TYPE[iotype]), assert(tonumber(idx))
-
-            local fluid = e.fluidboxes[classify.."_fluid"]
+        for _, v in ipairs(FLUIDBOXES) do
+            local fluid = e.fluidboxes[v.fluid]
             if fluid ~= 0 then
-                local c = assert(typeobject.fluidboxes[iotype][idx])
+                local c = assert(typeobject.fluidboxes[v.classify][v.index])
                 local connection = assert(c.connections[1])
                 local connection_x, connection_y, connection_dir = iprototype.rotate_connection(connection.position, dir, typeobject.area)
                 __create_icon(fluid, begin_x, begin_y, connection_x, connection_y)
-                __create_fluid_indication_arrow(connection_x, connection_y, connection_dir, iotype, begin_x, begin_y)
+                __create_fluid_indication_arrow(connection_x, connection_y, connection_dir, v.classify, begin_x, begin_y)
             end
         end
     end

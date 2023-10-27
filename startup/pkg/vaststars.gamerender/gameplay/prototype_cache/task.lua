@@ -181,6 +181,8 @@ local custom_type_mapping = {
         local ecs = gameplay_world.ecs
         local building = task_params.building
         local types = iprototype.queryByName(building).type
+        local count = 0
+
         if iprototype.has_type(types, "fluidboxes") then
             for e in ecs:select "fluidboxes:in building:in" do
                 local typeobject = iprototype.queryById(e.building.prototype)
@@ -208,9 +210,7 @@ local custom_type_mapping = {
                     end
                 end
 
-                do
-                    return 1
-                end
+                count = count + 1
                 ::continue::
             end
         elseif iprototype.has_type(types, "fluidbox") then
@@ -225,7 +225,7 @@ local custom_type_mapping = {
                 local f = iprototype.queryById(e.fluidbox.fluid)
                 if task_params.fluids[1] == f.name then
                     if r.volume > 0 then
-                        return 1
+                        count = count + 1
                     else
                         goto continue
                     end
@@ -235,7 +235,7 @@ local custom_type_mapping = {
         else
             assert(false)
         end
-        return 0
+        return count
     end, },
 }
 

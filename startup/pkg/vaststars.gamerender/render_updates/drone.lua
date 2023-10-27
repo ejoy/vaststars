@@ -42,19 +42,17 @@ local function getPosition(x, y, slot)
         return math3d.vector(icoord.position(x, y, 1, 1))
     end
 
+    local io_shelves
     local building = global.buildings[object.id]
-    if not building then
-        return math3d.set_index(object.srt.t, 2, item_height)
+    if building then
+        io_shelves = building.io_shelves
     end
-    local io_shelves = building.io_shelves
-    if not io_shelves then
-        return math3d.set_index(object.srt.t, 2, item_height)
-    end
-    local pos = io_shelves:get_item_position(slot)
-    if not pos then
-        return math3d.set_index(object.srt.t, 2, item_height)
+
+    if io_shelves then
+        -- parking slot base 0
+        return assert(io_shelves:get_item_position(slot + 1))
     else
-        return pos
+        return math3d.set_index(object.srt.t, 2, item_height) -- TODO: if the building doesn't have shelves, then get the building's parking slots
     end
 end
 
@@ -76,6 +74,10 @@ local function getHomePos(x, y, pos)
     local object = objects:coord(x, y)
     if not object then
         return pos
+    end
+
+    if not isHome(x, y) then
+        return math3d.set_index(pos, 2, item_height)
     end
 
     local game_object = assert(getGameObject(object))
@@ -224,7 +226,7 @@ function drone_sys:gameworld_update()
             goto continue
         end
         if not lookup_drones[e.eid] then
-            lookup_drones[e.eid] = create_drone(drone.prev_x, drone.prev_y, drone.prev_slot + 1)
+            lookup_drones[e.eid] = create_drone(drone.prev_x, drone.prev_y, drone.prev_slot)
         else
             local current = lookup_drones[e.eid]
             if drone.item ~= 0 then
@@ -253,8 +255,8 @@ function drone_sys:gameworld_update()
                         same_dest_offset[flyid] = same_dest_offset[flyid] - (drone_offset / 2)
                     end
 
-                    local from = getPosition(drone.prev_x, drone.prev_y, drone.prev_slot + 1)
-                    local to = getPosition(drone.next_x, drone.next_y, drone.next_slot + 1)
+                    local from = getPosition(drone.prev_x, drone.prev_y, drone.prev_slot)
+                    local to = getPosition(drone.next_x, drone.next_y, drone.next_slot)
                     local fly_height = get_fly_height(drone.prev_x, drone.prev_y, drone.next_x, drone.next_y)
                     -- status : go_home
                     if isHome(drone.next_x, drone.next_y) then

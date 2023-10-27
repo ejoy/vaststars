@@ -3,6 +3,7 @@ local world = ecs.world
 local w = world.w
 
 local GESTURE_LOG <const> = ecs.require "debugger".gesture_log
+local FLUIDBOXES <const> = ecs.require "gameplay.interface.constant".FLUIDBOXES
 
 local math3d = require "math3d"
 local XZ_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
@@ -66,21 +67,15 @@ local function __get_detail_str(eid)
     local res = {}
 
     if e.fluidbox then
-        res[#res+1] = __fluid_str("fluidbox 0 ", e.fluidbox.fluid, e.fluidbox.id, typeobject.fluidbox.base_level, typeobject.fluidbox.capacity, typeobject.fluidbox.height)
+        res[#res+1] = __fluid_str("fluidbox ", e.fluidbox.fluid, e.fluidbox.id, typeobject.fluidbox.base_level, typeobject.fluidbox.capacity, typeobject.fluidbox.height)
     end
 
     if e.fluidboxes then
-        local fluidboxes_io_type = {
-            ["in"] = "input",
-            ["out"] = "output",
-        }
-        for _, classify in ipairs {"in1","in2","in3","in4","out1","out2","out3"} do
-            local iotype, idx = classify:match("^(%a+)(%d+)$")
-            local box = typeobject.fluidboxes[fluidboxes_io_type[iotype]][tonumber(idx)] or {base_level = 0, capacity = 0, height = 0}
-
-            local fluid = e.fluidboxes[classify.."_fluid"]
-            local id = e.fluidboxes[classify.."_id"]
-            res[#res+1] = __fluid_str(("fluidbox %s "):format(classify), fluid, id, box.base_level, box.capacity, box.height)
+        for _, v in ipairs(FLUIDBOXES) do
+            local box = typeobject.fluidboxes[v.classify][v.index] or {base_level = 0, capacity = 0, height = 0}
+            local fluid = e.fluidboxes[v.fluid]
+            local id = e.fluidboxes[v.id]
+            res[#res+1] = __fluid_str(("fluidboxes %s%s "):format(v.classify, v.index), fluid, id, box.base_level, box.capacity, box.height)
         end
     end
 

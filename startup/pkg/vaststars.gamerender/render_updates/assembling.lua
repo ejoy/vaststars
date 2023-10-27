@@ -2,6 +2,9 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
+local CONSTANT <const> = require "gameplay.interface.constant"
+local TILE_SIZE <const> = CONSTANT.TILE_SIZE
+local FLUIDBOXES <const> = CONSTANT.FLUIDBOXES
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local ICON_STATUS_NOPOWER <const> = 1
 local ICON_STATUS_NORECIPE <const> = 2
@@ -12,8 +15,6 @@ local ROTATORS <const> = {
     S = math.rad(-180),
     W = math.rad(-270),
 }
-local CONSTANT <const> = require "gameplay.interface.constant"
-local TILE_SIZE <const> = CONSTANT.TILE_SIZE
 
 local function read_datalist(path)
     local fs = require "filesystem"
@@ -323,18 +324,11 @@ local function __find_neighbor_fluid(gameplay_world, x, y, dir, ground)
             elseif iprototype.has_type(typeobject.type, "fluidboxes") then
                 fluid_name = {}
                 local e = assert(gameplay_world.entity[object.gameplay_eid])
-
-                local io_name = {
-                    ["in"] = "input",
-                    ["out"] = "output",
-                }
-                for _, io_type in ipairs({"in", "out"}) do
-                    for i = 1, 4 do
-                        local n = io_type .. i .. "_fluid"
-                        if e.fluidboxes[n] and e.fluidboxes[n] ~= 0 then
-                            fluid_name[io_name[io_type]] = fluid_name[io_name[io_type]] or {}
-                            fluid_name[io_name[io_type]][i] = iprototype.queryById(e.fluidboxes[n]).name
-                        end
+                for _, v in ipairs(FLUIDBOXES) do
+                    local f = e.fluidboxes[v.fluid]
+                    if f ~= 0 then
+                        fluid_name[v.classify] = fluid_name[v.classify] or {}
+                        fluid_name[v.classify][v.index] = iprototype.queryById(f).name
                     end
                 end
             end

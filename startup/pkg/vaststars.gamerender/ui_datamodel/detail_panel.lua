@@ -3,6 +3,7 @@ local world = ecs.world
 local w = world.w
 
 local UPS <const> = require("gameplay.interface.constant").UPS
+local FLUIDBOXES <const> = ecs.require "gameplay.interface.constant".FLUIDBOXES
 local STATUS_NO_POWER <const> = 1
 local STATUS_IDLE <const> = 2
 local STATUS_WORK <const> = 3
@@ -273,11 +274,6 @@ local function get_property(e, typeobject)
     end
 
     if e.fluidboxes then
-        local fluidboxes_type_str = {
-            ["out"] = "output",
-            ["in"] = "input",
-        }
-
         local function add_property(t, key, value)
             if value == 0 then
                 return t
@@ -286,28 +282,27 @@ local function get_property(e, typeobject)
             return t
         end
 
-        for _, classify in ipairs {"in1","in2","in3","in4","out1","out2","out3"} do
-            local fluid = e.fluidboxes[classify.."_fluid"]
-            local id = e.fluidboxes[classify.."_id"]
+        for _, v in ipairs(FLUIDBOXES) do
+            local fluid = e.fluidboxes[v.fluid]
+            local id = e.fluidboxes[v.id]
             if fluid ~= 0 and id ~= 0 then
                 local f = gameplay_core.fluidflow_query(fluid, id)
                 if f then
-                    if classify == "out1" then
+                    if v.name == "out1" then
                         local pt = iprototype.queryById(fluid)
                         -- only show out1 detail
                         add_property(t, "fluid_name", pt.name)
                         add_property(t, "fluid_volume", f.volume / f.multiple)
                         add_property(t, "fluid_capacity", math.floor(f.capacity / f.multiple))
                     end
-                    add_property(t, "fluidboxes_" .. classify .. "_volume", f.volume / f.multiple)
-                    add_property(t, "fluidboxes_" .. classify .. "_capacity", math.floor(f.capacity / f.multiple))
-                    add_property(t, "fluidboxes_" .. classify .. "_flow", f.flow / f.multiple)
+                    add_property(t, "fluidboxes_" .. v.name .. "_volume", f.volume / f.multiple)
+                    add_property(t, "fluidboxes_" .. v.name .. "_capacity", math.floor(f.capacity / f.multiple))
+                    add_property(t, "fluidboxes_" .. v.name .. "_flow", f.flow / f.multiple)
 
-                    local fluidboxes_type, fluidboxes_index = classify:match("(%l*)(%d*)")
-                    local cfg = typeobject.fluidboxes[fluidboxes_type_str[fluidboxes_type]][tonumber(fluidboxes_index)]
+                    local cfg = typeobject.fluidboxes[v.classify][v.index]
 
-                    add_property(t, "fluidboxes_" .. classify .. "_base_level", cfg.base_level)
-                    add_property(t, "fluidboxes_" .. classify .. "_height", cfg.height)
+                    add_property(t, "fluidboxes_" .. v.name .. "_base_level", cfg.base_level)
+                    add_property(t, "fluidboxes_" .. v.name .. "_height", cfg.height)
                 end
             end
         end

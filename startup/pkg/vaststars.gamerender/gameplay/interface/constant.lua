@@ -63,16 +63,23 @@ M.CHANGED_FLAG_ROADNET    = 1 << 3
 M.CHANGED_FLAG_FLUIDFLOW  = 1 << 4
 M.CHANGED_FLAG_ALL = M.CHANGED_FLAG_ASSEMBLING | M.CHANGED_FLAG_BUILDING | M.CHANGED_FLAG_CHIMNEY | M.CHANGED_FLAG_ROADNET | M.CHANGED_FLAG_FLUIDFLOW
 
+-- fluid & id: corresponds to the field name in the e.fluidboxes
+-- classify: represents the category of fluidboxes in the configuration, either "input" or "output"
+-- index: represents the index in the input or output array in the configuration
 M.IN_FLUIDBOXES = {
-    {fluid = "in1_fluid", id = "in1_id"},
-    {fluid = "in2_fluid", id = "in2_id"},
-    {fluid = "in3_fluid", id = "in3_id"},
-    {fluid = "in4_fluid", id = "in4_id"},
+    {name = "in1", fluid = "in1_fluid", id = "in1_id", classify = "input", index = 1},
+    {name = "in2", fluid = "in2_fluid", id = "in2_id", classify = "input", index = 2},
+    {name = "in3", fluid = "in3_fluid", id = "in3_id", classify = "input", index = 3},
+    {name = "in4", fluid = "in4_fluid", id = "in4_id", classify = "input", index = 4},
 }
 M.OUT_FLUIDBOXES = {
-    {fluid = "out1_fluid", id = "out1_id"},
-    {fluid = "out2_fluid", id = "out2_id"},
-    {fluid = "out3_fluid", id = "out3_id"},
+    {name = "out1", fluid = "out1_fluid", id = "out1_id", classify = "output", index = 1},
+    {name = "out2", fluid = "out2_fluid", id = "out2_id", classify = "output", index = 2},
+    {name = "out3", fluid = "out3_fluid", id = "out3_id", classify = "output", index = 3},
 }
+
+M.FLUIDBOXES = {}
+table.move(M.IN_FLUIDBOXES, 1, #M.IN_FLUIDBOXES, 1, M.FLUIDBOXES)
+table.move(M.OUT_FLUIDBOXES, 1, #M.OUT_FLUIDBOXES, #M.FLUIDBOXES+1, M.FLUIDBOXES)
 
 return M

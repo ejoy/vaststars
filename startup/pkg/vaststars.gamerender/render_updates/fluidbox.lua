@@ -2,14 +2,8 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local objects = require "objects"
-local iprototype = require "gameplay.interface.prototype"
-local icoord = require "coord"
-local gameplay_core = require "gameplay.core"
-local fluidbox_sys = ecs.system "fluidbox_system"
-local gameplay = import_package "vaststars.gameplay"
-local igameplay_fluidbox = gameplay.interface "fluidbox"
-
+local CONSTANT <const> = require "gameplay.interface.constant"
+local FLUIDBOXES <const> = CONSTANT.FLUIDBOXES
 local DIRECTION <const> = {
     N = 0,
     E = 1,
@@ -32,6 +26,14 @@ local N <const> = 0
 local E <const> = 1
 local S <const> = 2
 local W <const> = 3
+
+local objects = require "objects"
+local iprototype = require "gameplay.interface.prototype"
+local icoord = require "coord"
+local gameplay_core = require "gameplay.core"
+local fluidbox_sys = ecs.system "fluidbox_system"
+local gameplay = import_package "vaststars.gameplay"
+local igameplay_fluidbox = gameplay.interface "fluidbox"
 
 local FluidboxCache = {}
 
@@ -91,18 +93,11 @@ local function __find_neighbor_fluid(gameplay_world, x, y, dir, ground)
             elseif iprototype.has_type(typeobject.type, "fluidboxes") then
                 fluid_name = {}
                 local e = assert(gameplay_world.entity[object.gameplay_eid])
-
-                local io_name = {
-                    ["in"] = "input",
-                    ["out"] = "output",
-                }
-                for _, io_type in ipairs({"in", "out"}) do
-                    for i = 1, 4 do
-                        local n = io_type .. i .. "_fluid"
-                        if e.fluidboxes[n] and e.fluidboxes[n] ~= 0 then
-                            fluid_name[io_name[io_type]] = fluid_name[io_name[io_type]] or {}
-                            fluid_name[io_name[io_type]][i] = iprototype.queryById(e.fluidboxes[n]).name
-                        end
+                for _, v in ipairs(FLUIDBOXES) do
+                    local f = e.fluidboxes[v.fluid]
+                    if f ~= 0 then
+                        fluid_name[v.classify] = fluid_name[v.classify] or {}
+                        fluid_name[v.classify][v.index] = iprototype.queryById(f).name
                     end
                 end
             end
