@@ -2,7 +2,7 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local SPRITE_COLOR <const> = import_package "vaststars.prototype"("sprite_color")
+local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
 local DOTTED_LINE_MATERIAL <const> = "/pkg/vaststars.resources/materials/dotted_line.material"
 
 local iui = ecs.require "engine.system.ui_system"

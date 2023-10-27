@@ -1,7 +1,20 @@
 local ecs = ...
 local world = ecs.world
 
-local FRAMES_PER_SECOND <const> = 30
+local CONSTANT <const> = require "gameplay.interface.constant"
+local FPS <const> = CONSTANT.FPS
+local NOTHING <const> = ecs.require "debugger".nothing
+local TERRAIN_ONLY <const> = ecs.require "debugger".terrain_only
+local DISABLE_AUDIO <const> = ecs.require "debugger".disable_audio
+local CUSTOM_ARCHIVING <const> = ecs.require "debugger".custom_archiving
+local PROTOTYPE_VERSION <const> = ecs.require "vaststars.prototype|version"
+
+local ARCHIVAL_BASE_DIR
+if not __ANT_RUNTIME__ and CUSTOM_ARCHIVING then
+    local fs = require "bee.filesystem"
+    ARCHIVAL_BASE_DIR = (fs.exe_path():parent_path() / CUSTOM_ARCHIVING):lexically_normal():string()
+end
+
 local bgfx = require 'bgfx'
 local gameplay_core = require "gameplay.core"
 local icamera_controller = ecs.require "engine.system.camera_controller"
@@ -9,15 +22,13 @@ local audio = import_package "ant.audio"
 local rhwi = import_package "ant.hwi"
 local font = import_package "ant.font"
 local iui = ecs.require "engine.system.ui_system"
-local NOTHING <const> = require "debugger".nothing
-local TERRAIN_ONLY <const> = require "debugger".terrain_only
-local DISABLE_AUDIO <const> = require "debugger".disable_audio
 local ltask = require "ltask"
+local global = require "global"
+local archiving = require "archiving"
 
 local m = ecs.system 'init_system'
 
-local is_webserver_started = false
-bgfx.maxfps(FRAMES_PER_SECOND)
+bgfx.maxfps(FPS)
 font.import "/pkg/vaststars.resources/ui/font/Alibaba-PuHuiTi-Regular.ttf"
 
 -- todo: more info
@@ -41,11 +52,11 @@ local function register_debug()
 end
 
 local function start_web()
-    if not __ANT_RUNTIME__ or is_webserver_started then
+    if not __ANT_RUNTIME__ or global.is_webserver_started then
 		return
 	end
 
-    is_webserver_started = true
+    global.is_webserver_started = true
 	register_debug()
 	local webserver = import_package "vaststars.webcgi"
 	webserver.start()
@@ -53,6 +64,11 @@ end
 
 function m:init_world()
 	start_web()
+
+    if ARCHIVAL_BASE_DIR then
+        archiving.set_dir(ARCHIVAL_BASE_DIR)
+    end
+    archiving.set_version(PROTOTYPE_VERSION)
 
     if NOTHING or TERRAIN_ONLY then
         ecs.require "main_menu_manager".new_game()

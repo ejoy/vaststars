@@ -6,7 +6,7 @@ local PREFABS <const> = {
     ["in"]  = "/pkg/vaststars.resources/glbs/belt.glb|input.prefab",
     ["out"] = "/pkg/vaststars.resources/glbs/belt.glb|output.prefab",
 }
-local BUILDING_IO_SLOTS <const> = import_package "vaststars.prototype"("building_io_slots")
+local BUILDING_IO_SLOTS <const> = ecs.require "vaststars.prototype|building_io_slots"
 
 local math3d = require "math3d"
 local ivs = ecs.require "ant.render|visible_state"

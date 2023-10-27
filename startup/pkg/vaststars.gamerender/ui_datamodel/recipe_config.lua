@@ -3,7 +3,7 @@ local world = ecs.world
 local w = world.w
 
 local CHANGED_FLAG_ASSEMBLING <const> = require("gameplay.interface.constant").CHANGED_FLAG_ASSEMBLING
-local RECIPE_CATEGORY <const> = import_package "vaststars.prototype"("recipe_category")
+local RECIPE_CATEGORY <const> = ecs.require "vaststars.prototype|recipe_category"
 
 local set_recipe_mb = mailbox:sub {"set_recipe"}
 local click_recipe_mb = mailbox:sub {"click_recipe"}

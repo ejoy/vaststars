@@ -2,7 +2,7 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local SPRITE_COLOR <const> = import_package "vaststars.prototype"("sprite_color")
+local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
 
 local iprototype = require "gameplay.interface.prototype"
 local create_selected_boxes = ecs.require "selected_boxes"

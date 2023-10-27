@@ -2,6 +2,8 @@ local ecs, mailbox = ...
 local world = ecs.world
 local w = world.w
 
+local ITEM_CATEGORY <const> = ecs.require "vaststars.prototype|item_category"
+
 local gameplay_core = require "gameplay.core"
 local set_item_mb = mailbox:sub {"set_item"}
 local click_slot_mb = mailbox:sub {"click_slot"}
@@ -10,7 +12,6 @@ local cancel_set_item_mb = mailbox:sub {"cancel_set_item"}
 local remove_slot_mb = mailbox:sub {"remove_slot"}
 local itask = ecs.require "task"
 local item_unlocked = ecs.require "ui_datamodel.common.item_unlocked".is_unlocked
-local ITEM_CATEGORY <const> = import_package "vaststars.prototype"("item_category")
 local iprototype = require "gameplay.interface.prototype"
 local ichest = require "gameplay.interface.chest"
 

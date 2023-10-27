@@ -3,7 +3,7 @@ local world = ecs.world
 local w = world.w
 
 local gameplay_core = require "gameplay.core"
-local debugger <const> = require "debugger"
+local debugger <const> = ecs.require "debugger"
 local iprototype_cache = ecs.require "prototype_cache"
 
 local function is_unlocked(prototype_name)

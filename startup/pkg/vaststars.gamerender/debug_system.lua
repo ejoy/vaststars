@@ -2,7 +2,7 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local GESTURE_LOG <const> = require "debugger".gesture_log
+local GESTURE_LOG <const> = ecs.require "debugger".gesture_log
 
 local math3d = require "math3d"
 local XZ_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})

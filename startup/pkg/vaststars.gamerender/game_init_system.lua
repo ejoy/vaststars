@@ -2,9 +2,10 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local NOTHING <const> = require "debugger".nothing
-local TERRAIN_ONLY <const> = require "debugger".terrain_only
-local DISABLE_AUDIO <const> = require "debugger".disable_audio
+local debugger = ecs.require "debugger"
+local NOTHING <const> = debugger.nothing
+local TERRAIN_ONLY <const> = debugger.terrain_only
+local DISABLE_AUDIO <const> = debugger.disable_audio
 local CONSTANT <const> = require "gameplay.interface.constant"
 local RENDER_LAYER <const> = ecs.require "engine.render_layer".RENDER_LAYER
 
@@ -21,9 +22,9 @@ local global = require "global"
 local math3d = require "math3d"
 local irender = ecs.require "ant.render|render_system.render"
 local imountain = ecs.require "engine.mountain"
-local debugger = require "debugger"
 local iterrain  = ecs.require "ant.landform|terrain_system"
 local igroup = ecs.require "group"
+local backpack = require "gameplay.interface.backpack"
 
 local m = ecs.system 'game_init_system'
 local gameworld_prebuild
@@ -86,9 +87,9 @@ function m:init_world()
     if args[1] == "new_game" then
         icamera_controller.set_camera_from_prefab("camera_default.prefab")
         local game_template = args[2]
-        local mode = import_package("vaststars.prototype")(game_template).mode
-        local guide = import_package("vaststars.prototype")(game_template).guide
-        iguide.init(import_package("vaststars.prototype")(guide))
+        local mode = ecs.require(("vaststars.prototype|%s"):format(game_template)).mode
+        local guide = ecs.require(("vaststars.prototype|%s"):format(game_template)).guide
+        iguide.init(ecs.require(("vaststars.prototype|%s"):format(guide)))
         debugger.set_free_mode(mode == "free")
         saveload:restart(mode, game_template)
         iguide.world = gameplay_core.get_world()
@@ -105,6 +106,10 @@ function m:init_world()
         iui.set_guide_progress(iguide.get_progress())
     else
         assert(false)
+    end
+
+    if debugger.infinite_item then
+        backpack.set_infinite_item(true)
     end
     global.startup_args = {}
 end

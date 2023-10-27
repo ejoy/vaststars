@@ -2,11 +2,12 @@ local ecs, mailbox = ...
 local world = ecs.world
 local w = world.w
 
+local CONSTRUCT_MENU <const> = ecs.require "vaststars.prototype|construct_menu"
+local MAX_SHORTCUT_COUNT <const> = 5
+
 local iui = ecs.require "engine.system.ui_system"
 local gameplay_core = require "gameplay.core"
-local CONSTRUCT_MENU <const> = import_package "vaststars.prototype"("construct_menu")
 local iprototype = require "gameplay.interface.prototype"
-local MAX_SHORTCUT_COUNT <const> = 5
 local click_item_mb = mailbox:sub {"click_item"}
 local click_menu_button_mb = mailbox:sub {"click_menu_button"}
 local click_main_button_mb = mailbox:sub {"click_main_button"}

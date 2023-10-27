@@ -2,13 +2,21 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
+local MAX_ARCHIVING_COUNT <const> = 9
+local PROTOTYPE_VERSION <const> = ecs.require "vaststars.prototype|version"
+local CONSTANT <const> = require "gameplay.interface.constant"
+local ROTATORS <const> = CONSTANT.ROTATORS
+local CHANGED_FLAG_ALL <const> = CONSTANT.CHANGED_FLAG_ALL
+
+local archiving = require "archiving"
+local CAMERA_CONFIG = archiving.path() .. "camera.json"
+
+local debugger = ecs.require "debugger"
 local gameplay_core = require "gameplay.core"
 local fs = require "bee.filesystem"
 local json = import_package "ant.json"
-local debugger = require "debugger"
 local iprototype_cache = require "gameplay.prototype_cache.init"
 local iBackpack = import_package "vaststars.gameplay".interface "backpack"
-local archiving = require "archiving"
 local iprototype = require "gameplay.interface.prototype"
 local iroadnet_converter = require "roadnet_converter"
 local objects = require "objects"
@@ -29,13 +37,6 @@ local iroadnet = ecs.require "roadnet"
 local srt = require "utility.srt"
 local imineral = ecs.require "mineral"
 
-local MAX_ARCHIVING_COUNT <const> = 9
-local PROTOTYPE_VERSION <const> = import_package("vaststars.prototype")("version")
-local CAMERA_CONFIG = archiving.path() .. "camera.json"
-local CONSTANT <const> = require "gameplay.interface.constant"
-local ROTATORS <const> = CONSTANT.ROTATORS
-local CHANGED_FLAG_ALL <const> = CONSTANT.CHANGED_FLAG_ALL
-
 local function clean()
     global.buildings = create_buildings()
     objects:clear()
@@ -47,8 +48,8 @@ local function restore_world()
         gameplay_core.get_world():research_progress(task, typeobject.count)
     end
 
-    local f = import_package("vaststars.prototype")(gameplay_core.get_storage().game_template).guide
-    local guide = import_package("vaststars.prototype")(f)
+    local f = ecs.require(("vaststars.prototype|%s"):format(gameplay_core.get_storage().game_template)).guide
+    local guide = ecs.require(("vaststars.prototype|%s"):format(f))
 
     local function _debug()
         if debugger.skip_guide then
@@ -235,8 +236,8 @@ function M:restore(index)
     iprototype_cache.reload()
     world:pipeline_func "prototype" ()
 
-    local guide = import_package("vaststars.prototype")(gameplay_core.get_storage().game_template).guide
-    iguide.init(import_package("vaststars.prototype")(guide))
+    local guide = ecs.require(("vaststars.prototype|%s"):format(gameplay_core.get_storage().game_template)).guide
+    iguide.init(ecs.require(("vaststars.prototype|%s"):format(guide)))
 
     clean()
     for v in gameplay_core.select("road building:in") do
@@ -247,7 +248,7 @@ function M:restore(index)
     iroadnet:flush()
 
     local game_template = assert(gameplay_core.get_storage().game_template)
-    local game_template_mineral = import_package("vaststars.prototype")(game_template).mineral
+    local game_template_mineral = ecs.require(("vaststars.prototype|%s"):format(game_template)).mineral
     imineral.init(game_template_mineral)
 
     iscience.update_tech_list(gameplay_core.get_world())
@@ -276,11 +277,11 @@ function M:restart(mode, game_template)
     iguide.world = cw
     iui.set_guide_progress(iguide.get_progress())
 
-    local config = import_package("vaststars.prototype")(game_template)
+    local config = ecs.require(("vaststars.prototype|%s"):format(game_template))
 
     --
     clean()
-    local game_template_mineral = import_package("vaststars.prototype")(game_template).mineral
+    local game_template_mineral = ecs.require(("vaststars.prototype|%s"):format(game_template)).mineral
     imineral.init(game_template_mineral)
 
     --
@@ -300,7 +301,7 @@ function M:restart(mode, game_template)
         iBackpack.place(gameplay_core.get_world(), typeobject.id, e.count)
     end
 
-    local prepare = import_package("vaststars.prototype")(game_template).prepare
+    local prepare = ecs.require(("vaststars.prototype|%s"):format(game_template)).prepare
     if prepare then
         prepare(gameplay_core.get_world())
     end

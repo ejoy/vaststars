@@ -3,8 +3,9 @@ local MAX_AMOUNT <const> = 99999
 local iBackpack = import_package "vaststars.gameplay".interface "backpack"
 local iprototype = require "gameplay.interface.prototype"
 local ichest = require "gameplay.interface.chest"
-local debugger = require "debugger"
 local math_min = math.min
+
+local infinite_item = false
 
 local function get_backpack_limit(item)
     local typeobject = assert(iprototype.queryById(item))
@@ -17,12 +18,16 @@ local function set_backpack_changed(world)
     }
 end
 
+local function set_infinite_item(b)
+    infinite_item = b
+end
+
 local function query(world, item)
-    return debugger.infinite_item and MAX_AMOUNT or iBackpack.query(world, item)
+    return infinite_item and MAX_AMOUNT or iBackpack.query(world, item)
 end
 
 local function pickup(world, item, amount)
-    if debugger.infinite_item then
+    if infinite_item then
         return true
     end
     local ok = iBackpack.pickup(world, item, amount)
@@ -47,7 +52,7 @@ local function get_available_capacity(world, item, count)
 end
 
 local function get_available_count(world, item, count)
-    local existing = debugger.infinite_item and MAX_AMOUNT or iBackpack.query(world, item)
+    local existing = infinite_item and MAX_AMOUNT or iBackpack.query(world, item)
     return math_min(count, existing)
 end
 
@@ -189,6 +194,7 @@ local function can_move_to_backpack(world, e, item)
 end
 
 return {
+    set_infinite_item = set_infinite_item,
     query = query,
     place = place,
     pickup = pickup,

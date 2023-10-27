@@ -1,11 +1,17 @@
-local gameplay = import_package "vaststars.gameplay"
-local fs = require "bee.filesystem"
 local archiving = require "archiving"
+local GLOBAL_SETTINGS_FILENAME <const> = archiving.path() .. "settings.json"
 
+local gameplay = import_package "vaststars.gameplay"
 local function __create_gameplay_world()
     local world = gameplay.createWorld()
     return world
 end
+
+local fs = require "bee.filesystem"
+local world = __create_gameplay_world()
+local irecipe = require "gameplay.interface.recipe"
+local iprototype = require "gameplay.interface.prototype"
+local json = import_package "ant.json"
 
 local function __writeall(file, content)
     local parent = fs.path(file):parent_path()
@@ -21,16 +27,8 @@ local function __readall(file)
     return f:read "a"
 end
 
-local world = __create_gameplay_world()
-local irecipe = require "gameplay.interface.recipe"
-local iprototype = require "gameplay.interface.prototype"
-local MULTIPLE <const> = require "debugger".multiple
-local GLOBAL_SETTINGS_FILENAME <const> = archiving.path() .. "settings.json"
-local json = import_package "ant.json"
-
 local m = {}
 m.world_update = false
-m.multiple = MULTIPLE or 1
 m.system_changed_flags = 0
 
 function m.select(...)
@@ -42,13 +40,7 @@ function m.extend(...)
 end
 
 function m.update()
-    for _ = 1, m.multiple do
-        world:update()
-    end
-end
-
-function m.set_multiple(n)
-    m.multiple = n
+    world:update()
 end
 
 function m.is_researched(...)

@@ -47,6 +47,7 @@ M.ROTATORS = {
     [DIRECTION.S] = math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(180)}) )),
     [DIRECTION.W] = math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(270)}) )),
 }
+M.FPS = 30
 M.UPS = 30
 M.DELTA_TIME = 1000 / M.UPS
 

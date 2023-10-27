@@ -2,10 +2,13 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
+local CONSTANT <const> = require "gameplay.interface.constant"
+local UPS <const> = CONSTANT.UPS
+
 local ipower_check = {}
 local power_check_sys = ecs.system "power_check_system"
 local gameplay_core = require "gameplay.core"
-local iprototype = import_package "vaststars.gamerender"("gameplay.interface.prototype")
+local iprototype = ecs.require "vaststars.gamerender|gameplay.interface.prototype"
 
 local PowerGrids = {}
 
@@ -39,7 +42,7 @@ function power_check_sys:gameworld_update()
     local gameplay_world = gameplay_core.get_world()
     local ecs = gameplay_world.ecs
 
-    if gameplay_world:now() % 30 == 0 then
+    if gameplay_world:now() % UPS == 0 then
         updateStatus(ecs)
     end
 end

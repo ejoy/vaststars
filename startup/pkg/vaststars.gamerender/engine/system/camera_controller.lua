@@ -2,8 +2,15 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local iom = ecs.require "ant.objcontroller|obj_motion"
+local MOVE_SPEED <const> = 8.0
+local CAMERA_SAMPLE_NUM <const> = 7
+local CONSTANT <const> = require "gameplay.interface.constant"
+local FPS <const> = CONSTANT.FPS
+
 local math3d = require "math3d"
+local XZ_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
+
+local iom = ecs.require "ant.objcontroller|obj_motion"
 local mathpkg = import_package "ant.math"
 local mu, mc = mathpkg.util, mathpkg.constant
 local irq = ecs.require "ant.render|render_system.renderqueue"
@@ -15,10 +22,6 @@ local animation = hierarchy.animation
 local skeleton = hierarchy.skeleton
 local math_max = math.max
 local math_min = math.min
-
-local MOVE_SPEED <const> = 8.0
-local XZ_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
-local CAMERA_SAMPLE_NUM <const> = 7
 
 local camera_controller = ecs.system "camera_controller"
 local icamera_controller = {}
@@ -239,7 +242,7 @@ local function __add_camera_track(s, r, t)
     poseresult:setup(skl)
 
     local ratio = 0
-    local step = 2 / 30
+    local step = 2 / FPS
 
     local t = {}
     while ratio <= 1.0 do

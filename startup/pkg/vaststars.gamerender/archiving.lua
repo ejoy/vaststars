@@ -2,14 +2,8 @@ local fs = require "bee.filesystem"
 local json = import_package "ant.json"
 local directory = require "directory"
 
-local PROTOTYPE_VERSION <const> = import_package("vaststars.prototype")("version")
-local CUSTOM_ARCHIVING <const> = require "debugger".custom_archiving
-local ARCHIVAL_BASE_DIR
-if not __ANT_RUNTIME__ and CUSTOM_ARCHIVING then
-    ARCHIVAL_BASE_DIR = (fs.exe_path():parent_path() / CUSTOM_ARCHIVING):lexically_normal():string()
-else
-    ARCHIVAL_BASE_DIR = (directory.app_path() / "archiving/"):string()
-end
+local ARCHIVAL_BASE_DIR = (directory.app_path() / "archiving/"):string()
+local prototype_version = 1
 
 local function readall(file)
     local f <close> = assert(io.open(file, "rb"))
@@ -34,8 +28,8 @@ local function fetch_all_archiving(root)
         end
 
         local v = json.decode(readall(versionpath:string()))
-        if v.PROTOTYPE_VERSION ~= PROTOTYPE_VERSION then
-            log.error(("Failed `%s` version `%s` current `%s`"):format(path, v.PROTOTYPE_VERSION, PROTOTYPE_VERSION))
+        if v.PROTOTYPE_VERSION ~= prototype_version then
+            log.error(("Failed `%s` version `%s` current `%s`"):format(path, v.PROTOTYPE_VERSION, prototype_version))
             goto continue
         end
 
@@ -61,6 +55,14 @@ end
 
 function m.path()
     return ARCHIVAL_BASE_DIR
+end
+
+function m.set_dir(path)
+    ARCHIVAL_BASE_DIR = path
+end
+
+function m.set_version(version)
+    prototype_version = version
 end
 
 return m

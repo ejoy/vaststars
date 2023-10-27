@@ -9,7 +9,7 @@ local interval_call = ecs.require "engine.interval_call"
 local gameplay_core = require "gameplay.core"
 local work_state_sys = ecs.system "work_state_system"
 local ipower_check = ecs.require "power_check_system"
-local SPRITE_COLOR <const> = import_package "vaststars.prototype"("sprite_color")
+local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
 
 local STATUS_NONE <const> = 0
 local STATUS_WORKING <const> = 1

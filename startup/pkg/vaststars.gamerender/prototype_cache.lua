@@ -14,7 +14,7 @@ local techs = {} -- task_name -> true
 
 function prototype_cache_sys:prototype_prerestore()
     local game_template = gameplay_core.get_storage().game_template
-    local start_tech = import_package("vaststars.prototype")(game_template).start_tech
+    local start_tech = ecs.require(("vaststars.prototype|%s"):format(game_template)).start_tech
 
     local mt = {}
     function mt:__index(k)

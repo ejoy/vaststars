@@ -3,9 +3,9 @@ local world = ecs.world
 local w     = world.w
 
 local iBackpack = import_package "vaststars.gameplay".interface "backpack"
-local gameplay_core = import_package "vaststars.gamerender"("gameplay.core")
-local iprototype = import_package "vaststars.gamerender"("gameplay.interface.prototype")
-local irecipe = import_package "vaststars.gamerender"("gameplay.interface.recipe")
+local gameplay_core = ecs.require "gameplay.core"
+local iprototype = ecs.require "gameplay.interface.prototype"
+local irecipe = ecs.require "gameplay.interface.recipe"
 local ichest = require "gameplay.interface.chest"
 local imineral = ecs.require "mineral"
 

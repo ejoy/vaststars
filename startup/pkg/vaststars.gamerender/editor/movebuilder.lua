@@ -9,7 +9,7 @@ local ROTATORS <const> = CONSTANT.ROTATORS
 local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
 local ALL_DIR <const> = CONSTANT.ALL_DIR
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
-local SPRITE_COLOR <const> = import_package "vaststars.prototype"("sprite_color")
+local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
 
 local math3d = require "math3d"
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})

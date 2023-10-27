@@ -2,14 +2,13 @@ local ecs   = ...
 local world = ecs.world
 local w     = world.w
 
+local MOUNTAIN <const> = ecs.require "vaststars.prototype|mountain"
+local CONST <const> = require "gameplay.interface.constant"
+local WIDTH <const>, HEIGHT<const> = CONST.MAP_WIDTH, CONST.MAP_HEIGHT
+
 local im = ecs.require "ant.landform|stone_mountain_system"
-local MOUNTAIN = import_package "vaststars.prototype"("mountain")
 local icoord = require "coord"
 local igroup = ecs.require "group"
-
-local CONST<const> = require "gameplay.interface.constant"
-local WIDTH<const>, HEIGHT<const> = CONST.MAP_WIDTH, CONST.MAP_HEIGHT
-
 local MOUNTAIN_MASKS
 
 local function set_masks(masks, r, v)

@@ -1,7 +1,12 @@
 local ecs = ...
 local world = ecs.world
 local w = world.w
-local math3d    = require "math3d"
+
+local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
+local CONSTANT <const> = require "gameplay.interface.constant"
+local UPS <const> = CONSTANT.UPS
+
+local math3d = require "math3d"
 local iom = ecs.require "ant.objcontroller|obj_motion"
 local objects = require "objects"
 local ims = ecs.require "ant.motion_sampler|motion_sampler"
@@ -13,7 +18,6 @@ local gameplay_core = require "gameplay.core"
 local global = require "global"
 local icoord = require "coord"
 local irl   = ecs.require "ant.render|render_layer.render_layer"
-local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local igroup = ecs.require "group"
 local vsobject_manager = ecs.require "vsobject_manager"
 
@@ -92,7 +96,7 @@ local function create_drone(x, y, slot)
             -- fix move drone airport
             -- if self.to_home then return end
             self:destroy_item()
-            self:flyto(flyid, fly_height, from, to, true, duration or 30)
+            self:flyto(flyid, fly_height, from, to, true, duration or UPS)
             self.to_home = true
         end,
         flyto = function (self, flyid, height, from, to, home, duration, start)

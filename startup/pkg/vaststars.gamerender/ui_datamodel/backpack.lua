@@ -2,7 +2,8 @@ local ecs, mailbox = ...
 local world = ecs.world
 local w = world.w
 
-local ITEM_CATEGORY <const> = import_package "vaststars.prototype"("item_category")
+local ITEM_CATEGORY <const> = ecs.require "vaststars.prototype|item_category"
+
 local gameplay_core = require "gameplay.core"
 local iprototype = require "gameplay.interface.prototype"
 local iBackpack = import_package "vaststars.gameplay".interface "backpack"

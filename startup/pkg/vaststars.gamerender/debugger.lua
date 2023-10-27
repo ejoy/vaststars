@@ -1,8 +1,12 @@
+local ecs = ...
+local world = ecs.world
+local w = world.w
+
 local fs = require "filesystem"
 local debugger
 local fn = "/pkg/vaststars.prototype/debugger.lua"
 if fs.exists(fs.path(fn)) then
-    debugger = import_package "vaststars.prototype"("debugger")
+    debugger = ecs.require "vaststars.prototype|debugger"
 else
     debugger = {}
 end

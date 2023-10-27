@@ -4,7 +4,6 @@ local world = ecs.world
 local start_game_mb = mailbox:sub {"start_game"}
 local new_game = ecs.require "main_menu_manager".new_game
 local fs = require "filesystem"
-local debugger <const> = require "debugger"
 local iui = ecs.require "engine.system.ui_system"
 
 ---------------
@@ -17,7 +16,7 @@ function M.create()
         else
             assert(tostring(v:extension()) == ".lua")
             local filename = "template." .. v:stem():string()
-            local f = import_package("vaststars.prototype")(filename)
+            local f = ecs.require(("vaststars.prototype|%s"):format(filename))
             if f.show == false then
                 goto continue
             end
