@@ -47,21 +47,8 @@ local function start_web()
 
     is_webserver_started = true
 	register_debug()
-	local web = ltask.uniqueservice "ant.webserver|webserver"
-	ltask.call(web, "start", {
-		port = 9000,
-		cgi = {
-			debug = "vaststars.webcgi|debug",
-			upload = "vaststars.webcgi|upload",
-			texture = "vaststars.webcgi|texture",
-		},
-		route = {
-			vfs = "vfs:/",
-			log = "log:/",
-			app = "app:/",
-		},
-		home = "vfs:/web",
-	})
+	local webserver = import_package "vaststars.webcgi"
+	webserver.start()
 end
 
 function m:init_world()
