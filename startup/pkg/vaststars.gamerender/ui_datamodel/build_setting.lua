@@ -46,7 +46,9 @@ local function __get_construct_menu()
             ::continue::
         end
 
-        res[#res+1] = r
+        if #r.items > 0 then
+            res[#res+1] = r
+        end
     end
     return res
 end
