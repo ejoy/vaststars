@@ -85,9 +85,8 @@ funcs["chest"] = function(world, e, info)
             break
         end
 
-        local amount = ichest.get_amount(slot)
-        if slot.item ~= 0 and amount ~= 0 then
-            items[#items+1] = {iprototype.queryById(slot.item).name, amount}
+        if slot.item ~= 0 then
+            items[#items+1] = {iprototype.queryById(slot.item).name, ichest.get_amount(slot)}
         end
     end
 
