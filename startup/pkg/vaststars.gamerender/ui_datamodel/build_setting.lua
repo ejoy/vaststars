@@ -16,8 +16,12 @@ local ibackpack = require "gameplay.interface.backpack"
 local math3d = require "math3d"
 local iom = ecs.require "ant.objcontroller|obj_motion"
 local ivs = ecs.require "ant.render|visible_state"
+local item_unlocked = ecs.require "ui_datamodel.common.item_unlocked".is_unlocked
+local iBackpack = import_package "vaststars.gameplay".interface "backpack"
 
 local function __get_construct_menu()
+    local gameplay_world = gameplay_core.get_world()
+
     local res = {}
     for category_idx, menu in ipairs(CONSTRUCT_MENU) do
         local r = {}
@@ -26,7 +30,11 @@ local function __get_construct_menu()
 
         for item_idx, prototype_name in ipairs(menu.items) do
             local typeobject = assert(iprototype.queryByName(prototype_name))
-            local count = ibackpack.query(gameplay_core.get_world(), typeobject.id)
+            if not item_unlocked(typeobject.name) and iBackpack.query(gameplay_world, typeobject.id) <= 0 then
+                goto continue
+            end
+
+            local count = ibackpack.query(gameplay_world, typeobject.id)
             r.items[#r.items + 1] = {
                 id = ("%s:%s"):format(category_idx, item_idx),
                 prototype = typeobject.id,
@@ -35,6 +43,7 @@ local function __get_construct_menu()
                 count = count,
                 selected = false,
             }
+            ::continue::
         end
 
         res[#res+1] = r
