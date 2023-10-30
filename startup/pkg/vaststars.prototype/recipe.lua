@@ -4133,7 +4133,7 @@ prototype "卤水沸腾" {
     description = "卤水转蒸汽",
 }
 
-prototype "特殊科研配方" {
+prototype "特殊地质科技包" {
     type = { "recipe" },
     recipe_craft_category = "登录配方",
     --recipe_category =  "化工",
@@ -4143,7 +4143,106 @@ prototype "特殊科研配方" {
         {"碎石", 1},
     },
     results = {
+        {"地质科技包",5},
     },
-    time = "30s",
+    time = "3s",
+    description = "丁二烯排泄",
+}
+
+prototype "特殊铁矿石" {
+    type = { "recipe" },
+    recipe_craft_category = "登录配方",
+    --recipe_category =  "化工",
+    recipe_order =  118,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
+    ingredients = {
+        {"地质科技包", 2},
+    },
+    results = {
+        {"铁矿石",15},
+    },
+    time = "3s",
+    description = "丁二烯排泄",
+}
+
+prototype "特殊电解" {
+    type = { "recipe" },
+    recipe_craft_category = "登录配方",
+    --recipe_category =  "化工",
+    recipe_order =  118,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
+    ingredients = {
+        {"铁板", 8},
+    },
+    results = {
+    },
+    time = "3s",
+    description = "丁二烯排泄",
+}
+
+prototype "特殊电解2" {
+    type = { "recipe" },
+    recipe_craft_category = "登录配方",
+    recipe_category =  "化工",
+    recipe_order =  118,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
+    ingredients = {
+        {"铁板", 1},
+    },
+    results = {
+        {"地下卤水", 100},
+    },
+    time = "1s",
+    description = "丁二烯排泄",
+}
+
+prototype "特殊化工" {
+    type = { "recipe" },
+    recipe_craft_category = "登录配方",
+    recipe_category =  "化工",
+    recipe_order =  118,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
+    ingredients = {
+        {"空气", 100},
+        {"地下卤水", 100},
+    },
+    results = {
+        {"氧气",200},
+    },
+    time = "1s",
+    description = "丁二烯排泄",
+}
+
+prototype "特殊水电" {
+    type = { "recipe" },
+    recipe_craft_category = "登录配方",
+    recipe_category =  "化工",
+    recipe_order =  118,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
+    ingredients = {
+        {"空气", 100},
+        {"地下卤水", 100},
+    },
+    results = {
+        {"气候科技包",5},
+    },
+    time = "3s",
+    description = "丁二烯排泄",
+}
+
+prototype "特殊化工2" {
+    type = { "recipe" },
+    recipe_craft_category = "登录配方",
+    recipe_category =  "化工",
+    recipe_order =  118,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
+    ingredients = {
+        {"氧气", 100},
+    },
+    results = {
+        {"空气", 100},
+        {"地下卤水", 100},
+    },
+    time = "3s",
     description = "丁二烯排泄",
 }
