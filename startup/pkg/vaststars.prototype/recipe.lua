@@ -3495,7 +3495,7 @@ prototype "乙烯转丁二烯" {
         {"氢气", 30},
     },
     time = "1s",
-    description = "甲烷转乙烯",
+    description = "乙烯转丁二烯",
 }
 
 prototype "纯水转蒸汽" {
@@ -3511,7 +3511,7 @@ prototype "纯水转蒸汽" {
         {"蒸汽", 270},
     },
     time = "1s",
-    description = "蒸汽排泄",
+    description = "纯水加热成为蒸汽",
 }
 
 prototype "塑料1" {
@@ -3986,6 +3986,21 @@ prototype "氯气排泄" {
     },
     time = "1s",
     description = "氢气排泄",
+}
+
+prototype "空气排泄" {
+    type = { "recipe" },
+    recipe_craft_category = "流体气体排泄",
+    --recipe_category =  "化工",
+    recipe_order =  117,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
+    ingredients = {
+        {"空气", 100},
+    },
+    results = {
+    },
+    time = "1s",
+    description = "空气排泄",
 }
 
 prototype "一氧化碳排泄" {

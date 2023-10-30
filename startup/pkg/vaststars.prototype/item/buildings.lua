@@ -911,3 +911,27 @@ prototype "机尾残骸" {
     item_model = "glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "损坏飞行器残留的机尾组件",
 }
+
+prototype "特殊组装机" {
+    type = {"item"},
+    --item_category = "物流",
+    station_limit = 50,
+    hub_limit = 15,
+    backpack_limit = 100,
+    item_order = 106,
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/ruin.texture",
+    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_description = "损坏飞行器残留的机尾组件",
+}
+
+prototype "特殊科研中心" {
+    type = {"item"},
+    --item_category = "物流",
+    station_limit = 50,
+    hub_limit = 15,
+    backpack_limit = 100,
+    item_order = 106,
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/ruin.texture",
+    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_description = "损坏飞行器残留的机尾组件",
+}

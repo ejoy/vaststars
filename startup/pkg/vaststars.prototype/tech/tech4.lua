@@ -261,17 +261,17 @@ local prototype = gameplay.register.prototype
     guide_focus = {
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-        x = 133,
+        x = 132,
         y = 147,
-        w = 1.0,
-        h = 1.0,
+        w = 3.1,
+        h = 3.1,
         show_arrow = false,
       },      {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-        x = 133,
-        y = 149,
-        w = 1.0,
-        h = 1.0,
+        x = 132.5,
+        y = 149.5,
+        w = 2.0,
+        h = 2.0,
         show_arrow = false,
       },
       {
@@ -280,7 +280,7 @@ local prototype = gameplay.register.prototype
       },
     },
     sign_desc = {
-      { desc = "放置地下水挖掘机和空气过滤器让第二个水电站运转", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "放置地下水挖掘机和空气过滤器启动第二个水电站", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -301,11 +301,12 @@ local prototype = gameplay.register.prototype
   }
 
 
-  prototype "液罐生产" {
-    desc = "生产液罐",
+  prototype "液罐获取" {
+    desc = "获取液罐",
     type = { "task" },
     icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
-    task = {"stat_production", 0, "液罐I"},
+    task = {"unknown", 0, 9},                 
+    task_params = {building = "组装机I", item = "液罐I", },
     count = 2,
     prerequisites = {"液罐制造工艺"},
     tips_pic = {
@@ -314,8 +315,14 @@ local prototype = gameplay.register.prototype
     effects = {
       unlock_recipe = {"地下卤水电解1","空气分离1","二氧化碳转甲烷","二氧化碳转一氧化碳"},
     },
+    guide_focus = {
+      {
+        camera_x = 127,
+        camera_y = 135,
+      },
+    },
     sign_desc = {
-      { desc = "使用组装机生产2个液罐", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "从组装机里获取已生产的2个液罐", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -326,7 +333,7 @@ local prototype = gameplay.register.prototype
     icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
     prerequisites = {"液罐生产"},
     ingredients = {
-        {"地质科技包", 1},
+        {"气候科技包", 1},
     },
     count = 8,
     time = "1s"

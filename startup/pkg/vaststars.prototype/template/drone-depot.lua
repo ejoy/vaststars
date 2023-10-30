@@ -195,6 +195,6 @@ return {
     mineral = mineral,
     order = 3,
     guide = "guide",
-    mode = "free",
+    mode = "false",
     start_tech = "迫降火星",
 }
