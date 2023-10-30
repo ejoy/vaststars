@@ -3,86 +3,84 @@ local world = ecs.world
 local w     = world.w
 
 local iBackpack = import_package "vaststars.gameplay".interface "backpack"
-local gameplay_core = ecs.require "gameplay.core"
+local gameplay_core = require "gameplay.core"
 local iprototype = ecs.require "gameplay.interface.prototype"
 local irecipe = ecs.require "gameplay.interface.recipe"
 local ichest = require "gameplay.interface.chest"
 local imineral = ecs.require "mineral"
 
-local function DO_NOTHING(entity)
-    return entity
-end
-
 local funcs = {}
-funcs["item"] = DO_NOTHING
-funcs["recipe"] = DO_NOTHING
-funcs["consumer"] = DO_NOTHING
-funcs["fluidboxes"] = DO_NOTHING -- usually only assembler has fluidboxes, handle it uniformly in assembling type
-funcs["pipe"] = DO_NOTHING -- pipes are typically represented by fluidbox and should be handled in the fluidbox type
-funcs["pipe_to_ground"] = DO_NOTHING -- pipes are typically represented by fluidbox and should be handled in the fluidbox type
-funcs["generator"] = DO_NOTHING
-funcs["inserter"] = DO_NOTHING
-funcs["pole"] = DO_NOTHING
-funcs["laboratory"] = DO_NOTHING
-funcs["mining"] = DO_NOTHING
-funcs["solar_panel"] = DO_NOTHING
-funcs["road"] = DO_NOTHING
-funcs["factory"] = DO_NOTHING
-funcs["wind_turbine"] = DO_NOTHING
-funcs["accumulator"] = DO_NOTHING
-funcs["auto_set_recipe"] = DO_NOTHING
-funcs["park"] = DO_NOTHING
-funcs["airport"] = DO_NOTHING
-
-funcs["base"] = function(entity)
-    entity.amount = 0
-    return entity
+funcs["base"] = function(world, e, info)
+    world.ecs:extend(e, "base?in")
+    if not e.base then
+        return info
+    end
+    info.amount = 0
+    return info
 end
 
-funcs["building"] = function (entity, e)
-    entity.prototype_name = iprototype.queryById(e.building.prototype).name
-    entity.dir = iprototype.dir_tostring(e.building.direction)
-    entity.x = e.building.x
-    entity.y = e.building.y
-    return entity
+funcs["building"] = function(world, e, info)
+    info.prototype_name = iprototype.queryById(e.building.prototype).name
+    info.dir = iprototype.dir_tostring(e.building.direction)
+    info.x = e.building.x
+    info.y = e.building.y
+    return info
 end
 
-funcs["assembling"] = function (entity, e)
-    gameplay_core.extend(e, "assembling?in")
+funcs["assembling"] = function(world, e, info)
+    world.ecs:extend(e, "assembling?in")
+    if not e.assembling then
+        return info
+    end
     if e.assembling.recipe ~= 0 then
         local typeobject = iprototype.queryById(e.assembling.recipe)
-        entity.recipe = typeobject.name
-        entity.fluid_name = irecipe.get_init_fluids(typeobject)
+        info.recipe = typeobject.name
+        info.fluid_name = irecipe.get_init_fluids(typeobject)
     else
-        entity.fluid_name = ""
+        info.fluid_name = ""
     end
-    return entity
+    return info
 end
 
-funcs["fluidbox"] = function (entity, e)
-    gameplay_core.extend(e, "fluidbox?in")
+funcs["fluidbox"] = function(world, e, info)
+    world.ecs:extend(e, "fluidbox?in")
+    if not e.fluidbox then
+        return info
+    end
     if e.fluidbox.fluid ~= 0 and e.fluidbox.id ~= 0 then
         local typeobject = iprototype.queryById(e.fluidbox.fluid)
-        entity.fluid_name = typeobject.name
+        info.fluid_name = typeobject.name
     else
-        entity.fluid_name = ""
+        info.fluid_name = ""
     end
-    return entity
+    return info
 end
 
-funcs["chimney"] = function (entity, e)
-    gameplay_core.extend(e, "chimney?in")
+funcs["chimney"] = function(world, e, info)
+    world.ecs:extend(e, "chimney?in")
+    if not e.chimney then
+        return info
+    end
     if e.chimney.recipe ~= 0 then
-        entity.recipe = iprototype.queryById(e.chimney.recipe).name
+        info.recipe = iprototype.queryById(e.chimney.recipe).name
     end
-    return entity
+    return info
 end
 
-funcs["chest"] = function (entity, e)
-    gameplay_core.extend(e, "chest?in building?in")
+funcs["chest"] = function(world, e, info)
+    world.ecs:extend(e, "chest?in")
+    if not e.chest then
+        return info
+    end
+
+    local typeobject = iprototype.queryById(e.building.prototype)
+    if not iprototype.has_type(typeobject.type, "chest") then
+        return info
+    end
+
     local items = {}
     for i = 1, ichest.MAX_SLOT do
-        local slot = ichest.get(gameplay_core.get_world(), e.chest, i)
+        local slot = ichest.get(world, e.chest, i)
         if not slot then
             break
         end
@@ -93,22 +91,25 @@ funcs["chest"] = function (entity, e)
         end
     end
 
-    entity.items = items
-    return entity
+    info.items = items
+    return info
 end
 
-funcs["station"] = function (entity, e)
-    gameplay_core.extend(e, "station?in")
+funcs["station"] = function(world, e, info)
+    world.ecs:extend(e, "station?in")
+    if not e.station then
+        return info
+    end
     local items = {}
     for i = 1, ichest.MAX_SLOT do
-        local slot = ichest.get(gameplay_core.get_world(), e.station, i)
+        local slot = ichest.get(world, e.station, i)
         if not slot then
             break
         end
         items[#items+1] = {slot.type, slot.item == 0 and "" or assert(iprototype.queryById(slot.item)).name, slot.limit}
     end
-    entity.items = items
-    return entity
+    info.items = items
+    return info
 end
 
 local function writeall(file, content)
@@ -127,34 +128,35 @@ end
 local inspect = require "inspect"
 return function()
     log.info("export entity")
+    local gameplay_world = gameplay_core.get_world()
+    local gameplay_ecs = gameplay_world.ecs
 
     local entities = {}
-    for v in gameplay_core.select("building:in road:absent") do
-        local typeobject = iprototype.queryById(v.building.prototype)
-        local entity = {prototype_name = typeobject.name}
-        for _, t in ipairs(typeobject.type) do
-            local func = funcs[t] or error(("unknown type %s"):format(t))
-            entity = func(entity, v)
+    for e in gameplay_ecs:select "building:in road:absent" do
+        local typeobject = iprototype.queryById(e.building.prototype)
+        local info = {prototype_name = typeobject.name}
+        for _, func in pairs(funcs) do
+            info = func(gameplay_world, e, info)
         end
-        entities[#entities+1] = entity
+        entities[#entities+1] = info
+    end
+
+    local roads = {}
+    for e in gameplay_ecs:select "building:in road:in" do
+        roads[#roads+1] = {
+            x = e.building.x,
+            y = e.building.y,
+            prototype_name = iprototype.queryById(e.building.prototype).name,
+            dir = iprototype.dir_tostring(e.building.direction),
+        }
     end
 
     local backpack = {}
-    for _, slot in pairs(iBackpack.all(gameplay_core.get_world())) do
+    for _, slot in pairs(iBackpack.all(gameplay_world)) do
         local typeobject_item = assert(iprototype.queryById(slot.prototype))
         backpack[#backpack+1] = {
             prototype_name = typeobject_item.name,
             count = slot.amount
-        }
-    end
-
-    local roads = {}
-    for v in gameplay_core.select("building:in road:in") do
-        roads[#roads+1] = {
-            x = v.building.x,
-            y = v.building.y,
-            prototype_name = iprototype.queryById(v.building.prototype).name,
-            dir = iprototype.dir_tostring(v.building.direction),
         }
     end
 
@@ -176,4 +178,6 @@ return {
         inspect(roads),
         inspect(imineral.source())
     ))
+
+    log.info("export entity success")
 end

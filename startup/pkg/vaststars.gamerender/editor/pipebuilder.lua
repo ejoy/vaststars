@@ -913,7 +913,18 @@ local function place_one(self, datamodel)
             if iprototype.is_pipe(neighbor.prototype_name) then
                 local m = iprototype_cache.get("pipe").PrototypeDirToMask(neighbor.prototype_name, neighbor.dir)
                 m = m | (1 << iprototype.reverse_dir(dir))
+                local typeobject = iprototype.queryByName(neighbor.prototype_name)
                 local prototype, dir = iprototype_cache.get("pipe").MaskToPrototypeDir(typeobject.building_category, m)
+                local o = assert(objects:modify(dx, dy, {"CONFIRM", "CONSTRUCTED"}, iobject.clone))
+                o.prototype_name = prototype
+                o.dir = dir
+                self.pending[iprototype.packcoord(o.x, o.y)] = o
+                print("place_one", o.x, o.y, o.prototype_name)
+            elseif iprototype.is_pipe_to_ground(neighbor.prototype_name) then
+                local m = iprototype_cache.get("pipe_to_ground").PrototypeDirToMask(neighbor.prototype_name, neighbor.dir)
+                m = m | (1 << (iprototype.reverse_dir(dir)*2))
+                local typeobject = iprototype.queryByName(neighbor.prototype_name)
+                local prototype, dir = iprototype_cache.get("pipe_to_ground").MaskToPrototypeDir(typeobject.building_category, m)
                 local o = assert(objects:modify(dx, dy, {"CONFIRM", "CONSTRUCTED"}, iobject.clone))
                 o.prototype_name = prototype
                 o.dir = dir

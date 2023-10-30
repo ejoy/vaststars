@@ -143,15 +143,16 @@ function m:frame_update()
         return
     end
 
+    local gameplay_world = gameplay_core.get_world()
     if gameplay_core.system_changed_flags ~= 0 then
         print("build world")
         gameplay_core.system_changed_flags = 0
         gameworld_prebuild()
-        gameplay_core.update()
+        gameplay_world:update()
         gameworld_build()
     else
         if gameplay_core.world_update then
-            gameplay_core.update()
+            gameplay_world:update()
             gameworld()
         end
     end

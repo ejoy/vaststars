@@ -42,7 +42,7 @@ local function clean()
     objects:clear()
 end
 
-local function restore_world()
+local function restore_world(gameplay_world)
     local function _finish_task(task)
         local typeobject = iprototype.queryByName(task)
         gameplay_core.get_world():research_progress(task, typeobject.count)
@@ -90,7 +90,7 @@ local function restore_world()
     local all_object = {}
     local map = {} -- coord -> id
     local fluidbox_map = {} -- coord -> id -- only for fluidbox
-    for v in gameplay_core.select("eid:in building:in road:absent fluidbox?in fluidboxes?in assembling?in") do
+    for v in gameplay_world.ecs:select("eid:in building:in road:absent fluidbox?in fluidboxes?in assembling?in") do
         local e = v.building
         local typeobject = iprototype.queryById(e.prototype)
         local fluid_name = ""
@@ -240,7 +240,8 @@ function M:restore(index)
     iguide.init(ecs.require(("vaststars.prototype|%s"):format(guide)))
 
     clean()
-    for v in gameplay_core.select("road building:in") do
+    local gameplay_world = gameplay_core.get_world()
+    for v in gameplay_world.ecs:select "road building:in" do
         local typeobject = iprototype.queryById(v.building.prototype)
         local shape = iroadnet_converter.to_shape(typeobject.name)
         iroadnet:set("road", v.building.x, v.building.y, "normal", shape, iprototype.dir_tostring(v.building.direction))
@@ -253,7 +254,7 @@ function M:restore(index)
 
     iscience.update_tech_list(gameplay_core.get_world())
     debugger.set_free_mode(gameplay_core.get_storage().game_mode == "free")
-    restore_world()
+    restore_world(gameplay_world)
     gameplay_core.set_changed(CHANGED_FLAG_ALL)
     gameplay_core.world_update = true
 
@@ -269,12 +270,12 @@ function M:restart(mode, game_template)
     gameplay_core.get_storage().game_template = assert(game_template)
 
     iprototype_cache.reload()
-    world:pipeline_func "prototype" (gameplay_core.get_world())
+    local gameplay_world = gameplay_core.get_world()
+    world:pipeline_func "prototype" (gameplay_world)
 
     self.running = true
-    local cw = gameplay_core.get_world()
-    iscience.update_tech_list(cw)
-    iguide.world = cw
+    iscience.update_tech_list(gameplay_world)
+    iguide.world = gameplay_world
     iui.set_guide_progress(iguide.get_progress())
 
     local config = ecs.require(("vaststars.prototype|%s"):format(game_template))
@@ -298,15 +299,15 @@ function M:restart(mode, game_template)
 
     for _, e in ipairs(config.backpack or {}) do
         local typeobject = iprototype.queryByName(e.prototype_name)
-        iBackpack.place(gameplay_core.get_world(), typeobject.id, e.count)
+        iBackpack.place(gameplay_world, typeobject.id, e.count)
     end
 
     local prepare = ecs.require(("vaststars.prototype|%s"):format(game_template)).prepare
     if prepare then
-        prepare(gameplay_core.get_world())
+        prepare(gameplay_world)
     end
 
-    restore_world()
+    restore_world(gameplay_world)
     gameplay_core.set_changed(CHANGED_FLAG_ALL)
     gameplay_core.world_update = true
 

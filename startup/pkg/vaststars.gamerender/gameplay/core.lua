@@ -31,18 +31,6 @@ local m = {}
 m.world_update = false
 m.system_changed_flags = 0
 
-function m.select(...)
-    return world.ecs:select(...)
-end
-
-function m.extend(...)
-    return world.ecs:extend(...)
-end
-
-function m.update()
-    world:update()
-end
-
 function m.is_researched(...)
     return world:is_researched(...)
 end
