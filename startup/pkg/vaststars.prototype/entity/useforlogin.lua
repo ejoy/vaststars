@@ -17,7 +17,7 @@ prototype "特殊组装机" {
     drone_height = 22,
     allow_set_recipt = true,
     camera_distance = 62,
-    craft_category = {"金属小型制造","物流小型制造","物流中型制造","物流大型制造","生产中型制造","生产大型制造","生产手工制造","器件小型制造","器件中型制造","建筑打印","登录配方"},
+    craft_category = {"登录配方"},
     fluidboxes = {
         input = {
             {
@@ -58,7 +58,7 @@ prototype "特殊科研中心" {
     drone_height = 22,
     allow_set_recipt = true,
     camera_distance = 62,
-    craft_category = {"金属小型制造","物流小型制造","物流中型制造","物流大型制造","生产中型制造","生产大型制造","生产手工制造","器件小型制造","器件中型制造","建筑打印","登录配方"},
+    craft_category = {"登录配方"},
     fluidboxes = {
         input = {
             {

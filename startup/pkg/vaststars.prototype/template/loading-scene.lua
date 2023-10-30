@@ -598,42 +598,58 @@ local entities = { {
   y = 134
 }, {
   dir = "N",
+  fluid_name = "",
   prototype_name = "特殊科研中心",
+  recipe = "特殊科研配方",
   x = 144,
   y = 138
 }, {
   dir = "N",
+  fluid_name = "",
   prototype_name = "特殊科研中心",
+  recipe = "特殊科研配方",
   x = 150,
   y = 141
 }, {
   dir = "N",
+  fluid_name = "",
   prototype_name = "特殊科研中心",
+  recipe = "特殊科研配方",
   x = 144,
   y = 141
 }, {
   dir = "N",
+  fluid_name = "",
   prototype_name = "特殊科研中心",
+  recipe = "特殊科研配方",
   x = 147,
   y = 141
 }, {
   dir = "N",
+  fluid_name = "",
   prototype_name = "特殊科研中心",
+  recipe = "特殊科研配方",
   x = 162,
   y = 121
 }, {
   dir = "N",
+  fluid_name = "",
   prototype_name = "特殊科研中心",
+  recipe = "特殊科研配方",
   x = 167,
   y = 121
 }, {
   dir = "N",
+  fluid_name = "",
   prototype_name = "特殊科研中心",
+  recipe = "特殊科研配方",
   x = 167,
   y = 118
 }, {
   dir = "N",
+  fluid_name = "",
   prototype_name = "特殊科研中心",
+  recipe = "特殊科研配方",
   x = 162,
   y = 118
 }, {
@@ -2522,7 +2538,7 @@ local entities = { {
   y = 144
 }, {
   dir = "N",
-  items = { { "气候科技包", 5 } },
+  items = { { "气候科技包", 9 } },
   prototype_name = "仓库I",
   x = 110,
   y = 125
@@ -2540,13 +2556,13 @@ local entities = { {
   y = 125
 }, {
   dir = "N",
-  items = { { "气候科技包", 4 } },
+  items = { { "气候科技包", 9 } },
   prototype_name = "仓库I",
   x = 112,
   y = 125
 }, {
   dir = "N",
-  items = { { "气候科技包", 3 } },
+  items = { { "气候科技包", 8 } },
   prototype_name = "仓库I",
   x = 114,
   y = 125
@@ -3200,6 +3216,7 @@ local entities = { {
   dir = "N",
   fluid_name = "空气",
   prototype_name = "烟囱I",
+  recipe = "空气排泄",
   x = 121,
   y = 103
 }, {
@@ -3222,18 +3239,22 @@ local entities = { {
   y = 103
 }, {
   dir = "S",
-  items = {},
+  items = { { "demand", "碎石", 1 }, { "demand", "碎石", 1 }, { "demand", "碎石", 1 }, { "demand", "碎石", 1 } },
   prototype_name = "物流站",
   x = 148,
   y = 138
 }, {
   dir = "N",
+  fluid_name = "",
   prototype_name = "特殊科研中心",
+  recipe = "特殊科研配方",
   x = 153,
   y = 138
 }, {
   dir = "N",
+  fluid_name = "",
   prototype_name = "特殊科研中心",
+  recipe = "特殊科研配方",
   x = 153,
   y = 141
 }, {
@@ -3266,14 +3287,32 @@ local entities = { {
   prototype_name = "无人机平台I",
   x = 152,
   y = 138
-} }
-local backpack = { {
-  count = 1,
-  prototype_name = "物流站"
 }, {
-  count = 3,
-  prototype_name = "砖石公路-X型"
+  dir = "N",
+  items = {},
+  prototype_name = "仓库I",
+  x = 147,
+  y = 139
+}, {
+  dir = "N",
+  items = {},
+  prototype_name = "仓库I",
+  x = 148,
+  y = 140
+}, {
+  dir = "N",
+  items = {},
+  prototype_name = "仓库I",
+  x = 151,
+  y = 140
+}, {
+  dir = "N",
+  items = {},
+  prototype_name = "仓库I",
+  x = 152,
+  y = 139
 } }
+local backpack = {}
 local road = { {
   dir = "E",
   prototype_name = "砖石公路-I型",

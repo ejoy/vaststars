@@ -4132,3 +4132,18 @@ prototype "卤水沸腾" {
     time = "1.5s",
     description = "卤水转蒸汽",
 }
+
+prototype "特殊科研配方" {
+    type = { "recipe" },
+    recipe_craft_category = "登录配方",
+    --recipe_category =  "化工",
+    recipe_order =  118,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
+    ingredients = {
+        {"碎石", 1},
+    },
+    results = {
+    },
+    time = "30s",
+    description = "丁二烯排泄",
+}
