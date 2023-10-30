@@ -13,6 +13,13 @@ function auto_set_recipe:ctor(init, pt)
     }
 end
 
+local depot = type "depot"
+function depot:ctor(init, pt)
+    return {
+        depot = true,
+    }
+end
+
 local recipe = type "recipe"
     .ingredients "items"
     .results "items"

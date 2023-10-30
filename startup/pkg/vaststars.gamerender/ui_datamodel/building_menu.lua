@@ -24,6 +24,10 @@ local SET_ITEM_COMPONENTS <const> = {
     "station",
 }
 
+local CONSTANT <const> = require "gameplay.interface.constant"
+local CHANGED_FLAG_STATION <const> = CONSTANT.CHANGED_FLAG_STATION
+local CHANGED_FLAG_DEPOT <const> = CONSTANT.CHANGED_FLAG_DEPOT
+
 local gameplay_core = require "gameplay.core"
 local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
@@ -241,6 +245,7 @@ local function station_set_item(gameplay_world, e, type, item)
     local typeobject = iprototype.queryById(item)
     items[#items+1] = {type, item, typeobject.station_capacity or 1}
     iGameplayStation.set_item(gameplay_world, e, items)
+    gameplay_core.set_changed(CHANGED_FLAG_STATION)
 end
 
 local function station_remove_item(gameplay_world, e, slot_index)
@@ -258,6 +263,7 @@ local function station_remove_item(gameplay_world, e, slot_index)
     end
 
     iGameplayStation.set_item(gameplay_world, e, items)
+    gameplay_core.set_changed(CHANGED_FLAG_STATION)
 end
 
 local function chest_set_item(gameplay_world, e, type, item)
@@ -273,6 +279,7 @@ local function chest_set_item(gameplay_world, e, type, item)
 
     items[#items+1] = {CHEST_TYPE_CONVERT[typeobject.chest_type], item}
     iGameplayChest.chest_set(gameplay_world, e, items)
+    gameplay_core.set_changed(CHANGED_FLAG_DEPOT)
 end
 
 local function chest_remove_item(gameplay_world, e, slot_index)
@@ -290,6 +297,7 @@ local function chest_remove_item(gameplay_world, e, slot_index)
     end
 
     iGameplayChest.chest_set(gameplay_world, e, items)
+    gameplay_core.set_changed(CHANGED_FLAG_DEPOT)
 end
 
 function M.update(datamodel, gameplay_eid)

@@ -2,13 +2,13 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local STATION_SLOTS <const> = {"slot1", "slot2", "slot3", "slot4", "slot5", "slot6", "slot7", "slot8"}
+local SLOTS <const> = {"item_slot_1", "item_slot_2", "item_slot_3", "item_slot_4"}
 
 local objects = require "objects"
 local ichest = require "gameplay.interface.chest"
 local global = require "global"
 local iprototype = require "gameplay.interface.prototype"
-local station_sys = ecs.system "station_system"
+local depot_sys = ecs.system "depot_system"
 local gameplay_core = require "gameplay.core"
 local igroup = ecs.require "group"
 local ivs = ecs.require "ant.render|visible_state"
@@ -79,7 +79,7 @@ local function create(gameplay_world, e, game_object)
                     end
                 end
             }
-            game_object:send("attach", assert(STATION_SLOTS[idx]), inst)
+            game_object:send("attach", assert(SLOTS[idx]), inst)
             o.items[idx] = {inst = inst, show = show}
         end
     end
@@ -92,39 +92,39 @@ local function get_game_object(object_id)
     return vsobject.game_object
 end
 
-function station_sys:gameworld_build()
-    log.info("station_sys:gameworld_build")
+function depot_sys:gameworld_build()
+    log.info("depot_sys:gameworld_build")
     local gameplay_world = gameplay_core.get_world()
-    for e in gameplay_world.ecs:select "station:in chest:in building:in eid:in" do
+    for e in gameplay_world.ecs:select "depot chest:in building:in eid:in" do
         -- object may not have been fully created yet
         local object = objects:coord(e.building.x, e.building.y)
         if not object then
             goto continue
         end
 
-        local station_shelf = assert(global.buildings[object.id]).station_shelf
-        if station_shelf then
-            station_shelf:remove()
+        local depot_items = assert(global.buildings[object.id]).depot_items
+        if depot_items then
+            depot_items:remove()
         end
 
         local o = create(gameplay_world, e, get_game_object(object.id))
         assert(o.remove)
-        global.buildings[object.id].station_shelf = o
+        global.buildings[object.id].depot_items = o
         ::continue::
     end
 end
 
-function station_sys:gameworld_update()
+function depot_sys:gameworld_update()
     local gameplay_world = gameplay_core.get_world()
-    for e in gameplay_world.ecs:select "station:in chest:in building:in eid:in" do
+    for e in gameplay_world.ecs:select "depot chest:in building:in eid:in" do
         -- object may not have been fully created yet
         local object = objects:coord(e.building.x, e.building.y)
         if not object then
             goto continue
         end
 
-        local station_shelf = assert(global.buildings[object.id]).station_shelf
-        station_shelf:update(gameplay_world, e)
+        local depot_items = assert(global.buildings[object.id]).depot_items
+        depot_items:update(gameplay_world, e)
         ::continue::
     end
 end

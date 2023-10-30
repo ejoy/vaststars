@@ -1,6 +1,7 @@
 local BUILDING_COMPONENTS = {
     io_shelves = true,
     station_shelf = true,
+    depot_items = true,
     assembling_icon = true,
     chimney_icon = true,
     consumer_icon = true,

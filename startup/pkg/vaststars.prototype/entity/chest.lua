@@ -10,15 +10,6 @@ prototype "小铁制箱子I" {
     area = "1x1",
 }
 
-prototype "建材箱" {
-    model = "glbs/drop-box.glb|mesh.prefab",
-    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_chest.texture",
-    construct_detector = {"exclusive"},
-    type = {"building", "chest"},
-    chest_type = "supply",
-    area = "1x1",
-}
-
 prototype "小铁制箱子II" {
     model = "glbs/small-chest.glb|mesh.prefab",
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_chest.texture",
@@ -39,7 +30,7 @@ prototype "仓库I" {
     model = "glbs/depot.glb|mesh.prefab",
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_chest.texture",
     construct_detector = {"exclusive"},
-    type = {"building", "chest"},
+    type = {"building", "chest", "depot"},
     chest_style = "station",
     chest_type = "transit",
     area = "1x1",

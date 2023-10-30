@@ -1,40 +1,4 @@
 ---
-file: images/small-warehouse2_normal.texture
-op: add
-path: /maxsize
-value: 128
----
-file: images/small-warehouse2_light.texture
-op: add
-path: /maxsize
-value: 64
----
-file: images/small-warehouse2_Metallic-small-warehouse2_Roughness.texture
-op: add
-path: /maxsize
-value: 128
----
-file: images/mars-truck2_color.texture
-op: add
-path: /maxsize
-value: 128
----
-file: mesh.prefab
-op: add
-path: /-
-value:
-  data:
-    scene:
-      t: {0, 19, 0}
-    slot:
-      follow_flag: 1
-      joint_name: None
-  mount: 1
-  policy:
-    ant.animation|slot
-  tag:
-    shelf
----
 file: mesh.prefab
 op: add
 path: /-
@@ -154,7 +118,7 @@ file: mesh.prefab
 op: add
 path: /-
 value:
-  mount: 10
+  mount: 9
   prefab: /pkg/vaststars.resources/glbs/depot.glb|mesh.prefab
 ---
 file: mesh.prefab
@@ -174,7 +138,7 @@ file: mesh.prefab
 op: add
 path: /-
 value:
-  mount: 12
+  mount: 11
   prefab: /pkg/vaststars.resources/glbs/depot.glb|mesh.prefab
 ---
 file: mesh.prefab
@@ -305,6 +269,26 @@ value:
   tag:
     slot8
 ---
+file: images/small-warehouse2_normal.texture
+op: add
+path: /maxsize
+value: 128
+---
+file: images/small-warehouse2_light.texture
+op: add
+path: /maxsize
+value: 64
+---
+file: images/small-warehouse2_Metallic-small-warehouse2_Roughness.texture
+op: add
+path: /maxsize
+value: 128
+---
+file: images/mars-truck2_color.texture
+op: add
+path: /maxsize
+value: 128
+---
 file: materials/Material.011.material
 op: replace
 path: /properties/u_emissive_factor
@@ -334,18 +318,6 @@ value:
     ant.render|hitch_object
   tag:
     hitch
-  ---
-  data:
-    scene:
-      t: {0, 19, 0}
-    slot:
-      follow_flag: 1
-      joint_name: None
-  mount: 1
-  policy:
-    ant.animation|slot
-  tag:
-    shelf
   ---
   data:
     scene:
