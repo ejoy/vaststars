@@ -4196,6 +4196,22 @@ prototype "特殊电解2" {
     description = "丁二烯排泄",
 }
 
+prototype "特殊电解3" {
+    type = { "recipe" },
+    recipe_craft_category = "登录配方",
+    recipe_category =  "化工",
+    recipe_order =  118,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
+    ingredients = {
+        {"铁矿石", 1},
+    },
+    results = {
+        {"空气", 100},
+    },
+    time = "1s",
+    description = "丁二烯排泄",
+}
+
 prototype "特殊化工" {
     type = { "recipe" },
     recipe_craft_category = "登录配方",
@@ -4241,6 +4257,22 @@ prototype "特殊化工2" {
     },
     results = {
         {"空气", 100},
+        {"地下卤水", 100},
+    },
+    time = "3s",
+    description = "丁二烯排泄",
+}
+
+prototype "特殊蒸馏" {
+    type = { "recipe" },
+    recipe_craft_category = "登录配方",
+    recipe_category =  "化工",
+    recipe_order =  118,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
+    ingredients = {
+        {"空气", 100},
+    },
+    results = {
         {"地下卤水", 100},
     },
     time = "3s",
