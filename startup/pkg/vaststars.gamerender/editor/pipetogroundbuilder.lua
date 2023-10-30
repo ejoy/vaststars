@@ -50,7 +50,8 @@ local function _show_dotted_line(self, from_x, from_y, to_x, to_y, dir, dir_delt
 
     local position = icoord.position(from_x, from_y, 1, 1)
     if self.dotted_line then
-        world:remove_entity(self.dotted_line)
+        self.dotted_line:remove()
+        self.dotted_line = nil
     end
     self.dotted_line = iquad_lines_entity.create(position, quad_num, dir)
 end
@@ -736,7 +737,7 @@ local function touch_end(self, datamodel)
 
     self:revert_changes({"TEMPORARY"})
     if self.dotted_line then
-        world:remove_entity(self.dotted_line)
+        self.dotted_line:remove()
         self.dotted_line = nil
     end
 
@@ -852,7 +853,7 @@ local function finish_laying(self, datamodel)
     objects:commit("TEMPORARY", "CONFIRM")
 
     if self.dotted_line then
-        world:remove_entity(self.dotted_line)
+        self.dotted_line:remove()
         self.dotted_line = nil
     end
 
@@ -872,8 +873,8 @@ local function clean(self, datamodel)
     iobject.remove(self.coord_indicator)
     self.coord_indicator = nil
 
-    if self.dotted_line then -- NOTE: different from pipe_builder
-        world:remove_entity(self.dotted_line)
+    if self.dotted_line then
+        self.dotted_line:remove()
         self.dotted_line = nil
     end
 
