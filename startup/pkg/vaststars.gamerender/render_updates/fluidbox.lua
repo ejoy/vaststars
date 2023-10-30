@@ -132,8 +132,10 @@ end
 
 function fluidbox_sys:gameworld_prebuild()
     local gameplay_world = gameplay_core.get_world()
+    local gameplay_ecs = gameplay_world.ecs
+
     local changed = {}
-    for e in gameplay_world.ecs:select "building_new:in fluidbox:in eid:in" do
+    for e in gameplay_ecs:select "building_new:in fluidbox:in eid:in" do
         changed[e.eid] = true
     end
 
@@ -168,9 +170,11 @@ end
 
 function fluidbox_sys:gameworld_build()
     local gameplay_world = gameplay_core.get_world()
+    local gameplay_ecs = gameplay_world.ecs
+
     FluidboxCache = {}
 
-    for e in gameplay_world.ecs:select "fluidbox:in building:in" do
+    for e in gameplay_ecs:select "fluidbox:in building:in" do
         local typeobject = iprototype.queryById(e.building.prototype)
         if iprototype.has_type(typeobject.type, "pipe") then
             for _, dir in pairs(PipeDirection) do
@@ -193,7 +197,7 @@ function fluidbox_sys:gameworld_build()
         end
     end
 
-    for e in gameplay_world.ecs:select "fluidboxes:in building:in" do
+    for e in gameplay_ecs:select "fluidboxes:in building:in" do
         local typeobject = iprototype.queryById(e.building.prototype)
 
         local inputs = typeobject.fluidboxes.input
@@ -220,6 +224,8 @@ function fluidbox_sys:gameworld_build()
             end
         end
     end
+
+    gameplay_ecs:clear("building_new")
 end
 
 function fluidbox_sys:gameworld_clean()

@@ -214,10 +214,12 @@ end
 
 local drone_to_remove = {}
 function drone_sys:gameworld_update()
-    local gameworld = gameplay_core.get_world()
+    local gameplay_world = gameplay_core.get_world()
+    local gameplay_ecs = gameplay_world.ecs
+
     local same_dest_offset = {}
     local drone_task = {}
-    for e in gameworld.ecs:select "drone_changed drone:in eid:in" do
+    for e in gameplay_ecs:select "drone_changed drone:in eid:in" do
         local drone = e.drone
         if drone.status == STATUS_HAS_ERROR then
             if lookup_drones[e.eid] then
@@ -281,6 +283,7 @@ function drone_sys:gameworld_update()
         task[2]:flyto(flyid, task[5], task[3], to, false, task[6], task[7])
         same_dest_offset[flyid] = same_dest_offset[flyid] + drone_offset
     end
+    gameplay_ecs:clear("drone_changed")
 end
 
 function drone_sys:gameworld_clean()

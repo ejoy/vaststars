@@ -27,13 +27,16 @@ local EDITOR_CACHE_NAMES = {"CONSTRUCTED"}
 
 function building_sys:gameworld_update()
     local gameplay_world = gameplay_core.get_world()
-    for e in gameplay_world.ecs:select "building_changed building:in road:absent" do
+    local gameplay_ecs = gameplay_world.ecs
+
+    for e in gameplay_ecs:select "building_changed building:in road:absent" do
         local object = assert(objects:coord(e.building.x, e.building.y))
         local typeobject = iprototype.queryById(e.building.prototype)
         object.prototype_name = typeobject.name
         object.dir = DIRECTION[e.building.direction]
         objects:set(object, EDITOR_CACHE_NAMES[1])
     end
+    gameplay_ecs:clear("building_changed")
 end
 
 local building_cache = {}

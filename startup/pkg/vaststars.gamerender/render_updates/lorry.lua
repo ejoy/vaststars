@@ -222,10 +222,11 @@ function lorry_sys:prototype_restore()
 end
 
 function lorry_sys:gameworld_update()
-    local ecs = gameplay_core.get_world().ecs
+    local gameplay_world = gameplay_core.get_world()
+    local gameplay_ecs = gameplay_world.ecs
 
     local l, classid, x, y, offset, toward, item_classid, item_amount, progress, maxprogress, lorry
-    for e in ecs:select "lorry_changed lorry:in eid:in" do
+    for e in gameplay_ecs:select "lorry_changed lorry:in eid:in" do
         l = e.lorry
         classid = l.prototype
         lorry = lorries[e.eid]
@@ -251,7 +252,7 @@ function lorry_sys:gameworld_update()
             lorry = createLorry(classid, x, y, toward, offset)
             lorries[e.eid] = lorry
         else
-            update(lorry, x, y, toward, offset, lorry.last_srt, maxprogress, maxprogress - progress, true)
+            update(lorry, x, y, toward, offset, lorry.last_srt, maxprogress, maxprogress - progress)
         end
 
         if l.status == 0 then
@@ -262,6 +263,7 @@ function lorry_sys:gameworld_update()
         lorry:set_item(item_classid, item_amount)
         ::continue::
     end
+    gameplay_ecs:clear("lorry_changed")
 end
 
 function lorry_sys:gameworld_clean()

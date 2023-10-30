@@ -116,10 +116,6 @@ end
 
 local TAGS <const> = {
     "building_new",
-    "building_changed",
-    "backpack_changed",
-    "lorry_changed",
-    "drone_changed",
 }
 
 function m:gameworld_end()
