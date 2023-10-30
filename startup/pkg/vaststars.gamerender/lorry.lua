@@ -5,45 +5,20 @@ local w = world.w
 local ims = ecs.require "ant.motion_sampler|motion_sampler"
 local iprototype = require "gameplay.interface.prototype"
 local ivs = ecs.require "ant.render|visible_state"
-local ig = ecs.require "ant.group|group"
 local ientity = ecs.require "ant.render|components.entity"
 local irl = ecs.require "ant.render|render_layer.render_layer"
 local igame_object = ecs.require "engine.game_object"
+local imotion = ecs.require "imotion"
 
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
-local ltween = require "motion.tween"
 local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
 
-local sampler_group
-
 local function create(prefab, s, r, t)
-    if not sampler_group then
-        sampler_group = ims.sampler_group()
-        ig.enable(sampler_group, "view_visible", sampler_group)
-    end
-
+    local motion_entity = imotion.create_motion_object(s, r, t)
     local outer = {
         item_classid = 0,
         item_amount = 0,
-    }
-    local motion_entity; motion_entity = world:create_entity {
-        group = sampler_group,
-        policy = {
-            "ant.scene|scene_object",
-            "ant.motion_sampler|motion_sampler",
-        },
-        data = {
-            scene = {
-                s = s,
-                r = r,
-                t = t,
-            },
-            motion_sampler = {},
-            on_ready = function(e)
-                outer.motion = motion_entity
-                ims.set_tween(e, ltween.type("None"), ltween.type("None"))
-            end
-        }
+        motion = motion_entity,
     }
     local lorry_obj = igame_object.create {
         prefab = prefab,
