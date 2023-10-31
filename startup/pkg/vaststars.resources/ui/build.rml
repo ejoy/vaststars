@@ -79,7 +79,7 @@
             local start = ui_sys.createDataMode {
                 lock_axis = false,
                 shortcut_buttons = {},
-                shortcut = {},
+                shortcuts = {},
                 main_button_icon = "",
             }
 
@@ -111,12 +111,12 @@
                             local selected = false
                             local unknown = false
                             local count = ""
-                            if start.shortcut[i] then
-                                prototype_name = start.shortcut[i].prototype_name
-                                icon = start.shortcut[i].icon
-                                selected = start.shortcut[i].selected
-                                unknown = start.shortcut[i].unknown
-                                count = start.shortcut[i].count
+                            if start.shortcuts[i] then
+                                prototype_name = start.shortcuts[i].prototype_name
+                                icon = start.shortcuts[i].icon
+                                selected = start.shortcuts[i].selected
+                                unknown = start.shortcuts[i].unknown
+                                count = start.shortcuts[i].count
                             end
 
                             start.shortcut_buttons[i] = {
@@ -134,7 +134,7 @@
                         end
                         start("shortcut_buttons")
                     end,
-                    "shortcut",
+                    "shortcuts",
                 }
             })
         </script>

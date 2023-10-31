@@ -56,7 +56,6 @@ local help_mb = mailbox:sub {"help"}
 local move_md = mailbox:sub {"move"}
 local teardown_mb = mailbox:sub {"teardown"}
 local construct_entity_mb = mailbox:sub {"construct_entity"}
-local backpack_mb = mailbox:sub {"backpack"}
 local focus_tips_event = world:sub {"focus_tips"}
 local construct_mb = mailbox:sub {"construct"}
 local main_button_tap_mb = mailbox:sub {"main_button_tap"}
@@ -259,12 +258,8 @@ local function open_focus_tips(tech_node)
     if not focus then
         return
     end
-    local width, height
     for _, nd in ipairs(focus) do
         if nd.prefab then
-            if not width or not height then
-                width, height = nd.w, nd.h
-            end
             if not tech_node.selected_tips then
                 tech_node.selected_tips = {}
             end
@@ -295,7 +290,7 @@ local function open_focus_tips(tech_node)
             end
             tech_node.selected_tips[#tech_node.selected_tips + 1] = {selected_boxes({"/pkg/vaststars.resources/" .. nd.prefab}, center, COLOR_GREEN, nd.w, nd.h), prefab}
         elseif nd.camera_x and nd.camera_y then
-            icamera_controller.focus_on_position(math3d.vector(icoord.position(nd.camera_x, nd.camera_y, width, height)))
+            icamera_controller.focus_on_position(math3d.vector(icoord.position(nd.camera_x, nd.camera_y, nd.w, nd.h)))
         end
     end
 end
@@ -875,10 +870,6 @@ function M.update(datamodel)
         end)
 
         ::continue::
-    end
-
-    for _ in backpack_mb:unpack() do
-        iui.open({rml = "/pkg/vaststars.resources/ui/backpack.rml"})
     end
 
     for _ in settings_mb:unpack() do

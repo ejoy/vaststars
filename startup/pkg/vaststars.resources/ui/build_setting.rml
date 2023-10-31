@@ -121,8 +121,8 @@
             local button_pos = require "lua.button_pos"
             local start = ui_sys.createDataMode({
                 shortcut_buttons = {},
-                shortcut = {},
-                construct_menu = {},
+                shortcuts = {},
+                construct_list = {},
                 item_name = "",
                 item_desc = "",
                 category_idx = 0,
@@ -162,10 +162,10 @@
                             local prototype_name = ""
                             local icon = ""
                             local selected = false
-                            if start.shortcut[i] then
-                                prototype_name = start.shortcut[i].prototype_name
-                                icon = start.shortcut[i].icon
-                                selected = start.shortcut[i].selected
+                            if start.shortcuts[i] then
+                                prototype_name = start.shortcuts[i].prototype_name
+                                icon = start.shortcuts[i].icon
+                                selected = start.shortcuts[i].selected
                             end
 
                             start.shortcut_buttons[i] = {
@@ -181,7 +181,7 @@
                         end
                         start("shortcut_buttons")
                     end,
-                    "shortcut",
+                    "shortcuts",
                 },
                 {
                     function(start)
@@ -228,7 +228,7 @@
 
         <construct-box>
             <construct-list>
-                <div style = "width: 100%; align-items: flex-start;" data-for = "c, c_index : construct_menu">
+                <div style = "width: 100%; align-items: flex-start;" data-for = "c, c_index : construct_list">
                     <div style = "position: absolute; left: 0vmin; top: 0vmin; background-image: /pkg/vaststars.resources/ui/textures/item-config/category-bg.texture; width: 23.50vmax; height: 23.13vmin; background-size: 100% 100%;" />
                     <div style = "margin-left: 5.58vmin; margin-top: 2.58vmin; width: 100%; flex-direction: row; font-size: 4.20vmin;">{{c.category}}</div>
                     <div style = "flex-direction: row; flex-wrap: wrap;">

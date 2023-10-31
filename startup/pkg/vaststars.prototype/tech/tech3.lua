@@ -43,6 +43,8 @@ local prototype = gameplay.register.prototype
       {
         camera_x = 111,
         camera_y = 138,
+        w = 4.0,
+        h = 4.0,
       },
     },
     sign_desc = {
@@ -90,6 +92,8 @@ local prototype = gameplay.register.prototype
       {
         camera_x = 150,
         camera_y = 132,
+        w = 2,
+        h = 6.4,
       },
     },
     sign_desc = {
@@ -119,6 +123,8 @@ local prototype = gameplay.register.prototype
       {
         camera_x = 164,
         camera_y = 122,
+        w = 4.2,
+        h = 2.1,
       },
     },
     effects = {
@@ -152,6 +158,8 @@ local prototype = gameplay.register.prototype
       {
         camera_x = 114,
         camera_y = 132,
+        w = 4.2,
+        h = 2.1,
       },
     },
     sign_desc = {
@@ -182,6 +190,8 @@ local prototype = gameplay.register.prototype
       {
         camera_x = 148,
         camera_y = 126,
+        w = 2.1,
+        h = 4.2,
       },
     },
     sign_desc = {
@@ -208,6 +218,8 @@ local prototype = gameplay.register.prototype
       {
         camera_x = 152,
         camera_y = 114,
+        w = 5.2,
+        h = 5.2,
       },
     },
     tips_pic = {
@@ -359,6 +371,8 @@ local prototype = gameplay.register.prototype
       {
         camera_x = 157,
         camera_y = 101,
+        w = 3.2,
+        h = 3.2,
       },
     },
     effects = {
@@ -393,6 +407,8 @@ local prototype = gameplay.register.prototype
   --     {
   --       camera_x = 113,
   --       camera_y = 134,
+  --       w = 3.2,
+  --       h = 3.2,
   --     },
   --   },
   --   sign_desc = {

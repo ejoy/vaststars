@@ -221,6 +221,10 @@ local custom_type_mapping = {
                 end
                 assert(#task_params.fluids == 1)
 
+                if e.fluidbox.fluid == 0 or e.fluidbox.id == 0 then
+                    goto continue
+                end
+
                 local r = gameplay_core.fluidflow_query(e.fluidbox.fluid, e.fluidbox.id)
                 local f = iprototype.queryById(e.fluidbox.fluid)
                 if task_params.fluids[1] == f.name then

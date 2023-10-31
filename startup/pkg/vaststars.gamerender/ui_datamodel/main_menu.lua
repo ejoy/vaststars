@@ -3,6 +3,7 @@ local world = ecs.world
 
 local statistical_data_mb = mailbox:sub {"statistical_data"}
 local game_settings_mb = mailbox:sub {"game_settings"}
+local backpack_mb = mailbox:sub {"backpack"}
 local quit_mb = mailbox:sub {"quit"}
 
 local iui = ecs.require "engine.system.ui_system"
@@ -25,6 +26,10 @@ function M.update(datamodel)
     for _ in quit_mb:unpack() do
         gameplay_core.world_update = true
         iui.close("/pkg/vaststars.resources/ui/main_menu.rml")
+    end
+
+    for _ in backpack_mb:unpack() do
+        iui.open({rml = "/pkg/vaststars.resources/ui/backpack.rml"})
     end
 end
 

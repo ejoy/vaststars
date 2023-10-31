@@ -53,6 +53,11 @@
                 <button-pic class = "game-settings-button" />
                 <button-text>游戏设置</button-text>
             </button-container>
+
+            <button-container data-event-click = "clickButton('backpack')">
+                <button-pic class = "game-settings-button" />
+                <button-text>打开背包</button-text>
+            </button-container>
         </div>
     </body>
 </rml>
