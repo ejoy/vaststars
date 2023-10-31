@@ -181,10 +181,13 @@ function m.station_set(world, e, items)
         iBuilding.dirty(world, "chest")
     end
     if items ~= nil then
+        local mark = {}
         local chest_args = {}
         local station_args = {}
         for _, v in ipairs(items) do
             local type, item, limit = v[1], v[2], v[3]
+            assert(not mark[item])
+            mark[item] = true
             chest_args[#chest_args+1] = {
                 type = type == "supply" and "demand" or "supply",
                 item = item,
