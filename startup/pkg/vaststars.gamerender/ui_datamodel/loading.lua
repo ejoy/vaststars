@@ -10,21 +10,7 @@ local M = {}
 local WorkerNum <const> = 6
 local status
 
-local BlackList <const> = {
-    ["/pkg/ant.bake"] = true,
-    ["/pkg/ant.editor"] = true,
-    ["/pkg/ant.imgui"] = true,
-    ["/pkg/ant.efk/efkbgfx/examples"] = true,
-    ["/pkg/ant.resources.binary/test"] = true,
-    ["/pkg/ant.resources.binary/meshes"] = true,
-    ["/pkg/vaststars.mod.test"] = true,
-    ["/pkg/vaststars.tools"] = true,
-}
-
 local function status_addtask(task)
-    if BlackList[task.filename] then
-        return
-    end
     if task.type == "dir" then
         table.insert(status.pending, 1, task)
     else
@@ -56,40 +42,6 @@ local Resource <const> = {
     [".glb"] = true,
 }
 
-local File <const> = {
-    [".settings"] = true,
-    -- ecs
-    [".prefab"] = true,
-    [".ecs"] = true,
-    -- script
-    [".lua"] = true,
-    -- ui
-    [".rcss"] = true,
-    [".rml"] = true,
-    -- effect
-    [".efk"] = true,
-    -- font
-    [".ttf"] = true,
-    [".otf"] = true, --TODO: remove it?
-    [".ttc"] = true, --TODO: remove it?
-    -- sound
-    [".bank"] = true,
-    -- animation
-    [".event"] = true,
-    [".anim"] = true,
-    -- compiled resource
-    [".bin"] = true,
-    [".cfg"] = true,
-    [".ozz"] = true,
-    [".vbbin"] = true,
-    [".vb2bin"] = true,
-    [".ibbin"] = true,
-    [".meshbin"] = true,
-    [".skinbin"] = true,
-    [".attr"] = true,
-    [".state"] = true,
-}
-
 local handler = {}
 
 if __ANT_RUNTIME__ then
@@ -104,13 +56,10 @@ if __ANT_RUNTIME__ then
                     filename = file:string(),
                 }
             else
-                local ext = file:extension():string()
-                if File[ext] then
-                    status_addtask {
-                        type = "file",
-                        filename = file:string(),
-                    }
-                end
+                status_addtask {
+                    type = "file",
+                    filename = file:string(),
+                }
             end
         end
     end
