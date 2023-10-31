@@ -1,13 +1,13 @@
 local guide = require "guide.guide4"
 local mountain = require "mountain"
 
-local entities = {{
+local entities = { {
   dir = "N",
   items = { { "空气过滤器I", 2 }, { "地下水挖掘机I", 3 }, { "烟囱I", 2}, { "排水口I", 2}},
   prototype_name = "机身残骸",
   x = 126,
   y = 147
-}, {
+},{
   dir = "N",
   fluid_name = {
     input = {},
@@ -35,7 +35,7 @@ local entities = {{
   recipe = "碎石挖掘",
   x = 115,
   y = 135
-},{
+}, {
   dir = "N",
   prototype_name = "无人机平台I",
   x = 118,
@@ -54,7 +54,7 @@ local entities = {{
   y = 135
 }, {
   dir = "N",
-  items = {{"管道1-X型","10"}},
+  items = { { "管道1-X型", 10 } },
   prototype_name = "仓库I",
   x = 124,
   y = 134
@@ -65,12 +65,13 @@ local entities = {{
   y = 133
 }, {
   dir = "N",
+  fluid_name = "",
   prototype_name = "组装机I",
   x = 123,
   y = 135
 }, {
   dir = "N",
-  items = {{"碎石", 20}},
+  items = { { "碎石", 60 } },
   prototype_name = "仓库I",
   x = 120,
   y = 134
@@ -142,7 +143,7 @@ local entities = {{
   y = 134
 }, {
   dir = "N",
-  items = { { "铁矿石", 46 }, { "铁棒", 30 } },
+  items = { { "铁矿石", 60 }, { "铁棒", 30 } },
   prototype_name = "仓库I",
   x = 132,
   y = 134
@@ -210,25 +211,28 @@ local entities = {{
   y = 144
 }, {
   dir = "N",
-  items = { { "气候科技包", 0 } },
+  items = { { "气候科技包", 11 } },
   prototype_name = "仓库I",
   x = 139,
   y = 146
 }, {
   dir = "N",
+  fluid_name = "",
   prototype_name = "电解厂I",
-  x = 114,
-  y = 155
-},{
-  dir = "S",
-  prototype_name = "蒸馏厂I",
-  x = 124,
+  x = 97,
   y = 155
 }, {
   dir = "S",
+  fluid_name = "",
+  prototype_name = "蒸馏厂I",
+  x = 108,
+  y = 155
+}, {
+  dir = "S",
+  fluid_name = "",
   prototype_name = "化工厂I",
-  x = 120,
-  y = 148
+  x = 103,
+  y = 147
 }, {
   dir = "N",
   prototype_name = "无人机平台I",
@@ -249,31 +253,86 @@ local entities = {{
   recipe = "气候科技包T1",
   x = 134,
   y = 146
-}}
-  local road = {  }
+}, {
+  dir = "S",
+  fluid_name = "",
+  prototype_name = "烟囱I",
+  x = 97,
+  y = 167
+}, {
+  dir = "E",
+  fluid_name = "",
+  prototype_name = "管道1-U型",
+  x = 101,
+  y = 150
+}, {
+  dir = "W",
+  fluid_name = "",
+  prototype_name = "管道1-U型",
+  x = 102,
+  y = 150
+}, {
+  dir = "W",
+  fluid_name = "",
+  prototype_name = "管道1-U型",
+  x = 107,
+  y = 150
+}, {
+  dir = "E",
+  fluid_name = "",
+  prototype_name = "管道1-U型",
+  x = 106,
+  y = 150
+}, {
+  dir = "N",
+  fluid_name = "",
+  prototype_name = "管道1-O型",
+  x = 97,
+  y = 159
+} }
+local backpack = { {
+  count = 3,
+  prototype_name = "空气过滤器I"
+}, {
+  count = 4,
+  prototype_name = "地下水挖掘机I"
+}, {
+  count = 1,
+  prototype_name = "烟囱I"
+}, {
+  count = 2,
+  prototype_name = "排水口I"
+}, {
+  count = 41,
+  prototype_name = "管道1-X型"
+}, {
+  count = 2,
+  prototype_name = "地下管1-JI型"
+} }
+local road = {}
 local mineral = {
-  ["135,131"] = "铁矿石",
-  ["135,135"] = "铁矿石",
-  ["128,141"] = "铁矿石",
-  ["115,131"] = "碎石",
-  ["115,135"] = "碎石",
-  ["164,127"] = "铁矿石",
-  ["170,112"] = "碎石",
-  ["173,76"] = "铁矿石",
-  ["180,193"] = "铁矿石",
-  ["192,132"] = "碎石",
-  ["197,117"] = "铁矿石",
-  ["209,162"] = "铁矿石",
-  ["210,142"] = "地热气",
-  ["61,118"] = "铁矿石",
-  ["62,185"] = "铁矿石",
-  ["72,132"] = "碎石",
-  ["75,93"] = "铁矿石",
-  ["91,165"] = "铁矿石",
-  ["93,102"] = "铝矿石",
-  ["93,203"] = "地热气",
-  ["131,100"] = "铝矿石",
-  ["110,92"] = "铝矿石",
+["110,92"] = "铝矿石",
+["115,131"] = "碎石",
+["115,135"] = "碎石",
+["128,141"] = "铁矿石",
+["131,100"] = "铝矿石",
+["135,131"] = "铁矿石",
+["135,135"] = "铁矿石",
+["164,127"] = "铁矿石",
+["170,112"] = "碎石",
+["173,76"] = "铁矿石",
+["180,193"] = "铁矿石",
+["192,132"] = "碎石",
+["197,117"] = "铁矿石",
+["209,162"] = "铁矿石",
+["210,142"] = "地热气",
+["61,118"] = "铁矿石",
+["62,185"] = "铁矿石",
+["72,132"] = "碎石",
+["75,93"] = "铁矿石",
+["93,102"] = "铝矿石",
+["93,203"] = "地热气",
+["97,162"] = "铁矿石"
 }
 
 return {
