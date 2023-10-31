@@ -1772,24 +1772,6 @@ local entities = { {
   x = 165,
   y = 120
 }, {
-  dir = "N",
-  fluid_name = "",
-  prototype_name = "烟囱I",
-  x = 162,
-  y = 116
-}, {
-  dir = "N",
-  fluid_name = "",
-  prototype_name = "烟囱I",
-  x = 162,
-  y = 114
-}, {
-  dir = "N",
-  fluid_name = "",
-  prototype_name = "烟囱I",
-  x = 162,
-  y = 112
-}, {
   dir = "S",
   items = { { "demand", "铁板", 1 } },
   prototype_name = "物流站",
@@ -1875,7 +1857,7 @@ local entities = { {
   y = 134
 }, {
   dir = "N",
-  items = { { "气候科技包", 7 } },
+  items = { { "气候科技包", 8 } },
   prototype_name = "仓库I",
   x = 110,
   y = 125
@@ -1893,13 +1875,13 @@ local entities = { {
   y = 125
 }, {
   dir = "N",
-  items = { { "气候科技包", 7 } },
+  items = { { "气候科技包", 8 } },
   prototype_name = "仓库I",
   x = 112,
   y = 125
 }, {
   dir = "N",
-  items = { { "气候科技包", 6 } },
+  items = { { "气候科技包", 7 } },
   prototype_name = "仓库I",
   x = 114,
   y = 125
@@ -3326,13 +3308,30 @@ local entities = { {
   prototype_name = "管道1-T型",
   x = 106,
   y = 139
+}, {
+  dir = "N",
+  prototype_name = "风力发电机I",
+  x = 162,
+  y = 112
+}, {
+  dir = "N",
+  prototype_name = "蓄电池I",
+  x = 165,
+  y = 112
+}, {
+  dir = "N",
+  prototype_name = "蓄电池I",
+  x = 162,
+  y = 115
+}, {
+  dir = "N",
+  prototype_name = "蓄电池I",
+  x = 165,
+  y = 115
 } }
 local backpack = { {
   count = 3,
-  prototype_name = "管道1-X型"
-}, {
-  count = 1,
-  prototype_name = "蓄电池I"
+  prototype_name = "烟囱I"
 } }
 local road = { {
   dir = "E",
