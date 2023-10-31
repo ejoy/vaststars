@@ -2,7 +2,7 @@ local ecs   = ...
 local world = ecs.world
 local w     = world.w
 
-local MOUNTAIN <const> = ecs.require "vaststars.prototype|mountain"
+-- local MOUNTAIN <const> = ecs.require "vaststars.prototype|mountain"
 local CONST <const> = require "gameplay.interface.constant"
 local WIDTH <const>, HEIGHT<const> = CONST.MAP_WIDTH, CONST.MAP_HEIGHT
 
@@ -23,14 +23,14 @@ local function set_masks(masks, r, v)
     end
 end
 
-local function build_mountain_masks()
+local function build_mountain_masks(mountain_cfg)
     local masks = im.create_random_sm(WIDTH, HEIGHT)
 
-    for _, v in ipairs(MOUNTAIN.excluded_rects) do
+    for _, v in ipairs(mountain_cfg.excluded_rects) do
         set_masks(masks, v, 0)
     end
 
-    for _, v in ipairs(MOUNTAIN.mountain_coords) do
+    for _, v in ipairs(mountain_cfg.mountain_coords) do
         set_masks(masks, v, 1)
     end
     return masks
@@ -87,10 +87,9 @@ local function idxoffset(baseidx, sidx)
 end
 
 local M = {}
-function M:create()
-    MOUNTAIN_MASKS = build_mountain_masks()
-
-    local subindices = build_sub_indices(MOUNTAIN_MASKS);
+function M:create(mountain_cfg)
+    MOUNTAIN_MASKS = build_mountain_masks(mountain_cfg)
+    local subindices = build_sub_indices(MOUNTAIN_MASKS)
 
     local groups = setmetatable({}, {__index=function (t, gid) local tt={}; t[gid]=tt; return tt end})
 

@@ -1,3 +1,6 @@
+local guide = require "guide"
+local mountain = require "mountain"
+
 local entities = { {
     dir = "N",
     prototype_name = "指挥中心",
@@ -1495,6 +1498,7 @@ local entities = { {
     dir = "S",
     fluid_name = "盐酸",
     prototype_name = "排水口I",
+    recipe = "盐酸排泄",
     x = 177,
     y = 181
   }, {
@@ -3049,7 +3053,7 @@ local entities = { {
     y = 159
   }, {
     dir = "S",
-    items = {{"supply", "碾碎铁矿石", "1"},{"supply", "碾碎铁矿石", "1"},{"supply", "碾碎铁矿石", "1"},{"supply", "碾碎铁矿石", "1"}},
+    items = { { "supply", "碾碎铁矿石", 1 } },
     prototype_name = "物流站",
     x = 100,
     y = 152
@@ -3102,19 +3106,19 @@ local entities = { {
     y = 158
   }, {
     dir = "W",
-    items = {{"supply", "塑料", "1"},{"supply", "塑料", "1"},{"supply", "塑料", "1"},{"supply", "塑料", "1"}},
+    items = { { "supply", "塑料", 1 } },
     prototype_name = "物流站",
     x = 180,
     y = 164
   }, {
     dir = "W",
-    items = {{"demand", "电动机I", "1"},{"demand", "电动机I", "1"},{"supply", "机械科技包", "1"},{"demand", "塑料", "1"},{"demand", "塑料", "1"}},
+    items = { { "demand", "电动机I", 1 }, { "supply", "机械科技包", 1 }, { "demand", "塑料", 1 } },
     prototype_name = "物流站",
     x = 190,
     y = 168
   }, {
     dir = "W",
-    items = {{"demand", "电动机I", "1"},{"demand", "电动机I", "1"},{"supply", "机械科技包", "1"},{"demand", "塑料", "1"},{"demand", "塑料", "1"}},
+    items = { { "demand", "电动机I", 1 }, { "supply", "机械科技包", 1 }, { "demand", "塑料", 1 } },
     prototype_name = "物流站",
     x = 190,
     y = 162
@@ -3144,7 +3148,7 @@ local entities = { {
     y = 142
   }, {
     dir = "N",
-    items = {{"supply", "石墨", "1"},{"supply", "石墨", "1"}},
+    items = { { "supply", "石墨", 1 } },
     prototype_name = "物流站",
     x = 124,
     y = 160
@@ -3223,13 +3227,13 @@ local entities = { {
     y = 192
   }, {
     dir = "S",
-    items = {{"demand", "石墨", "1"},{"demand", "石墨", "1"}},
+    items = { { "demand", "石墨", 1 } },
     prototype_name = "物流站",
     x = 96,
     y = 140
   }, {
     dir = "S",
-    items = {{"demand", "石墨", "1"},{"demand", "石墨", "1"}},
+    items = { { "demand", "石墨", 1 } },
     prototype_name = "物流站",
     x = 104,
     y = 140
@@ -3245,31 +3249,31 @@ local entities = { {
     y = 142
   }, {
     dir = "S",
-    items = {{"supply", "铁齿轮", "1"},{"supply", "铁齿轮", "1"},{"supply", "铁齿轮", "1"},{"supply", "铁齿轮", "1"}},
+    items = { { "supply", "铁齿轮", 1 } },
     prototype_name = "物流站",
     x = 88,
     y = 140
   }, {
     dir = "S",
-    items = {{"supply", "铁齿轮", "1"},{"supply", "铁齿轮", "1"},{"supply", "铁齿轮", "1"},{"supply", "铁齿轮", "1"}},
+    items = { { "supply", "铁齿轮", 1 } },
     prototype_name = "物流站",
     x = 112,
     y = 140
   }, {
     dir = "N",
-    items = {{"demand", "铁齿轮", "1"},{"demand", "铁齿轮", "1"},{"demand", "铁齿轮", "1"},{"demand", "铁齿轮", "1"}},
+    items = { { "demand", "铁齿轮", 1 } },
     prototype_name = "物流站",
     x = 104,
     y = 136
   }, {
     dir = "N",
-    items = {{"demand", "碾碎铁矿石", "1"},{"demand", "碾碎铁矿石", "1"},{"supply", "碎石", "1"},{"supply", "碎石", "1"}},
+    items = { { "demand", "碾碎铁矿石", 1 }, { "supply", "碎石", 1 } },
     prototype_name = "物流站",
     x = 96,
     y = 148
   }, {
     dir = "N",
-    items = {{"demand", "碾碎铁矿石", "1"},{"demand", "碾碎铁矿石", "1"},{"supply", "碎石", "1"},{"supply", "碎石", "1"}},
+    items = { { "demand", "碾碎铁矿石", 1 }, { "supply", "碎石", 1 } },
     prototype_name = "物流站",
     x = 104,
     y = 148
@@ -3297,13 +3301,13 @@ local entities = { {
     y = 173
   }, {
     dir = "S",
-    items = {{"supply", "电动机I", "1"},{"supply", "电动机I", "1"},{"supply", "电动机I", "1"},{"supply", "电动机I", "1"}},
+    items = { { "supply", "电动机I", 1 } },
     prototype_name = "物流站",
     x = 102,
     y = 128
   }, {
     dir = "S",
-    items = {{"demand", "碎石", "1"},{"demand", "碎石", "1"},{"demand", "碎石", "1"}},
+    items = { { "demand", "碎石", 1 } },
     prototype_name = "物流站",
     x = 96,
     y = 128
@@ -3396,13 +3400,13 @@ local entities = { {
     y = 142
   }, {
     dir = "N",
-    items = {{"demand", "铁矿石", "1"},{"demand", "铁矿石", "1"},{"demand", "铁矿石", "1"},{"supply", "碎石", "1"}},
+    items = { { "demand", "铁矿石", 1 }, { "supply", "碎石", 1 } },
     prototype_name = "物流站",
     x = 92,
     y = 158
   }, {
     dir = "N",
-    items = {{"demand", "铁矿石", "1"},{"demand", "铁矿石", "1"},{"demand", "铁矿石", "1"},{"supply", "碎石", "1"}},
+    items = { { "demand", "铁矿石", 1 }, { "supply", "碎石", 1 } },
     prototype_name = "物流站",
     x = 108,
     y = 158
@@ -5551,8 +5555,9 @@ return {
     entities = entities,
     road = road,
     mineral = mineral,
+    mountain = mountain,
     order = 8,
-    guide = "guide",
+    guide = guide,
     mode = "free",
     start_tech = "迫降火星",
 }

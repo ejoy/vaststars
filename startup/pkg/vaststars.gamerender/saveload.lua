@@ -36,6 +36,7 @@ local icoord = require "coord"
 local iroadnet = ecs.require "roadnet"
 local srt = require "utility.srt"
 local imineral = ecs.require "mineral"
+local imountain = ecs.require "engine.mountain"
 
 local function clean()
     global.buildings = create_buildings()
@@ -48,8 +49,8 @@ local function restore_world(gameplay_world)
         gameplay_core.get_world():research_progress(task, typeobject.count)
     end
 
-    local f = ecs.require(("vaststars.prototype|%s"):format(gameplay_core.get_storage().game_template)).guide
-    local guide = ecs.require(("vaststars.prototype|%s"):format(f))
+    local game_template = ecs.require(("vaststars.prototype|%s"):format(gameplay_core.get_storage().game_template))
+    local guide = game_template.guide
 
     local function _debug()
         if debugger.skip_guide then
@@ -235,22 +236,22 @@ function M:restore(index)
     gameplay_core.restore(fullpath)
     iprototype_cache.reload()
     world:pipeline_func "prototype" ()
-
-    local guide = ecs.require(("vaststars.prototype|%s"):format(gameplay_core.get_storage().game_template)).guide
-    iguide.init(ecs.require(("vaststars.prototype|%s"):format(guide)))
-
     clean()
+
     local gameplay_world = gameplay_core.get_world()
+    local game_template_file = assert(gameplay_core.get_storage().game_template)
+    local game_template = ecs.require(("vaststars.prototype|%s"):format(game_template_file))
+
+    iguide.init(gameplay_world, game_template.guide)
+    imineral.init(game_template.mineral)
+    imountain:create(game_template.mountain)
+
     for v in gameplay_world.ecs:select "road building:in" do
         local typeobject = iprototype.queryById(v.building.prototype)
         local shape = iroadnet_converter.to_shape(typeobject.name)
         iroadnet:set("road", v.building.x, v.building.y, "normal", shape, iprototype.dir_tostring(v.building.direction))
     end
     iroadnet:flush()
-
-    local game_template = assert(gameplay_core.get_storage().game_template)
-    local game_template_mineral = ecs.require(("vaststars.prototype|%s"):format(game_template)).mineral
-    imineral.init(game_template_mineral)
 
     iscience.update_tech_list(gameplay_core.get_world())
     debugger.set_free_mode(gameplay_core.get_storage().game_mode == "free")
@@ -264,10 +265,10 @@ function M:restore(index)
     return true
 end
 
-function M:restart(mode, game_template)
+function M:restart(mode, game_template_file)
     world:pipeline_func "gameworld_clean" ()
     gameplay_core.restart()
-    gameplay_core.get_storage().game_template = assert(game_template)
+    gameplay_core.get_storage().game_template = assert(game_template_file)
 
     iprototype_cache.reload()
     local gameplay_world = gameplay_core.get_world()
@@ -275,34 +276,32 @@ function M:restart(mode, game_template)
 
     self.running = true
     iscience.update_tech_list(gameplay_world)
-    iguide.world = gameplay_world
-    iui.set_guide_progress(iguide.get_progress())
 
-    local config = ecs.require(("vaststars.prototype|%s"):format(game_template))
+    local game_template = ecs.require(("vaststars.prototype|%s"):format(game_template_file))
 
     --
     clean()
-    local game_template_mineral = ecs.require(("vaststars.prototype|%s"):format(game_template)).mineral
+    local game_template_mineral = game_template.mineral
     imineral.init(game_template_mineral)
 
     --
-    for _, e in ipairs(config.entities or {}) do
+    for _, e in ipairs(game_template.entities or {}) do
         igameplay.create_entity(e)
     end
 
-    for _, road in ipairs(config.road or {}) do
+    for _, road in ipairs(game_template.road or {}) do
         igameplay.create_entity(road)
         local shape, dir = iroadnet_converter.to_shape(road.prototype_name), road.dir
         iroadnet:set("road", road.x, road.y, "normal", shape, dir)
     end
     iroadnet:flush()
 
-    for _, e in ipairs(config.backpack or {}) do
+    for _, e in ipairs(game_template.backpack or {}) do
         local typeobject = iprototype.queryByName(e.prototype_name)
         iBackpack.place(gameplay_world, typeobject.id, e.count)
     end
 
-    local prepare = ecs.require(("vaststars.prototype|%s"):format(game_template)).prepare
+    local prepare = game_template.prepare
     if prepare then
         prepare(gameplay_world)
     end

@@ -3,8 +3,9 @@ local is_in_guide = false
 local running = true
 local globalGuide
 
-function M.init(guide)
+function M.init(gameplay_world, guide)
     globalGuide = guide
+    M.world = gameplay_world
 end
 
 function M.get_guide_id()

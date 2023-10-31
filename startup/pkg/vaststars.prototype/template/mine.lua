@@ -1,3 +1,6 @@
+local guide = require "guide"
+local mountain = require "mountain"
+
 local entities = {}
 local road = {}
 
@@ -14,8 +17,9 @@ return {
   entities = entities,
   road = road,
   mineral = mineral,
+  mountain = mountain,
   order = 2,
-  guide = "guide",
+  guide = guide,
   mode = "free",
   start_tech = "迫降火星",
 }

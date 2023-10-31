@@ -74,6 +74,10 @@ function coord.lefttop_position(x, y)
     return {ORIGIN[1] + (x * TILE_SIZE), SURFACE_HEIGHT, ORIGIN[2] - (y * TILE_SIZE)}
 end
 
+function coord.origin_position()
+    return ORIGIN
+end
+
 -- return the position of the center of the entity
 function coord.position(x, y, w, h)
     local begining = coord.lefttop_position(x, y)

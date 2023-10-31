@@ -5,13 +5,13 @@ local w     = world.w
 local CONSTANT <const> = require "gameplay.interface.constant"
 local MAP_WIDTH <const> = CONSTANT.MAP_WIDTH
 local MAP_HEIGHT <const> = CONSTANT.MAP_HEIGHT
-local GRID_WIDTH <const> = 16
-local GRID_HEIGHT <const> = 16
-assert(GRID_WIDTH % 2 == 0 and GRID_HEIGHT % 2 == 0)
-assert(MAP_WIDTH % GRID_WIDTH == 0 and MAP_HEIGHT % GRID_HEIGHT == 0)
+local TILE_SIZE <const> = CONSTANT.TILE_SIZE
+local MAP_CHUNK_WIDTH <const> = 16
+local MAP_CHUNK_HEIGHT <const> = 16
+assert(MAP_CHUNK_WIDTH % 2 == 0 and MAP_CHUNK_HEIGHT % 2 == 0)
+assert(MAP_WIDTH % MAP_CHUNK_WIDTH == 0 and MAP_HEIGHT % MAP_CHUNK_HEIGHT == 0)
 local MAX_BUILDING_WIDTH <const> = 6
 local MAX_BUILDING_HEIGHT <const> = 6
-local TILE_SIZE <const> = CONSTANT.TILE_SIZE
 
 local icoord = require "coord"
 local COORD_BOUNDARY <const> = icoord.boundary()
@@ -31,7 +31,7 @@ end})
 local lock = false
 
 local function _get_gridxy(x, y)
-    return (x // GRID_WIDTH) + 1, (y // GRID_HEIGHT) + 1
+    return (x // MAP_CHUNK_WIDTH) + 1, (y // MAP_CHUNK_HEIGHT) + 1
 end
 
 local function _get_grid_id(x, y)
@@ -47,8 +47,12 @@ function group.is_lock()
     return lock
 end
 
-function group.lock(l)
-    lock = l
+function group.lock(b)
+    lock = b
+end
+
+function group.map_chunk_wh()
+    return MAP_CHUNK_WIDTH, MAP_CHUNK_HEIGHT
 end
 
 function group.enable(lefttop, rightbottom)

@@ -7,7 +7,6 @@ local NOTHING <const> = debugger.nothing
 local TERRAIN_ONLY <const> = debugger.terrain_only
 local DISABLE_AUDIO <const> = debugger.disable_audio
 local CONSTANT <const> = require "gameplay.interface.constant"
-local RENDER_LAYER <const> = ecs.require "engine.render_layer".RENDER_LAYER
 
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local icanvas = ecs.require "engine.canvas"
@@ -22,7 +21,7 @@ local global = require "global"
 local math3d = require "math3d"
 local irender = ecs.require "ant.render|render_system.render"
 local imountain = ecs.require "engine.mountain"
-local iterrain  = ecs.require "ant.landform|terrain_system"
+local iterrain  = ecs.require "terrain"
 local igroup = ecs.require "group"
 local backpack = require "gameplay.interface.backpack"
 
@@ -51,9 +50,7 @@ function m:init_world()
         return
     end
 
-    iterrain.gen_terrain_field(CONSTANT.MAP_WIDTH, CONSTANT.MAP_HEIGHT, CONSTANT.MAP_OFFSET, CONSTANT.TILE_SIZE, RENDER_LAYER.TERRAIN)
-    imountain:create(CONSTANT.MAP_WIDTH, CONSTANT.MAP_HEIGHT, CONSTANT.MAP_WIDTH//2, CONSTANT.TILE_SIZE)
-
+    iterrain.create()
     iroadnet:create()
 
     if TERRAIN_ONLY then
@@ -86,23 +83,21 @@ function m:init_world()
     local args = global.startup_args
     if args[1] == "new_game" then
         icamera_controller.set_camera_from_prefab("camera_default.prefab")
-        local game_template = args[2]
-        local mode = ecs.require(("vaststars.prototype|%s"):format(game_template)).mode
-        local guide = ecs.require(("vaststars.prototype|%s"):format(game_template)).guide
-        iguide.init(ecs.require(("vaststars.prototype|%s"):format(guide)))
+        local game_template_file = args[2]
+        local game_template = ecs.require(("vaststars.prototype|%s"):format(game_template_file))
+        local mode = game_template.mode
+        imountain:create(game_template.mountain)
         debugger.set_free_mode(mode == "free")
-        saveload:restart(mode, game_template)
-        iguide.world = gameplay_core.get_world()
+        saveload:restart(mode, game_template_file)
+        iguide.init(gameplay_core.get_world(), game_template.guide)
         iui.set_guide_progress(iguide.get_progress())
     elseif args[1] == "continue_game" then
         local index = args[2]
         saveload:restore(index)
-        iguide.world = gameplay_core.get_world()
         iui.set_guide_progress(iguide.get_progress())
     elseif args[1] == "load_game" then
         local index = args[2]
         saveload:restore(index)
-        iguide.world = gameplay_core.get_world()
         iui.set_guide_progress(iguide.get_progress())
     else
         assert(false)

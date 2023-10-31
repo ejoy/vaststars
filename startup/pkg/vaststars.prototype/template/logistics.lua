@@ -1,3 +1,6 @@
+local guide = require "guide"
+local mountain = require "mountain"
+
 local entities = { {
   dir = "N",
   prototype_name = "指挥中心",
@@ -379,8 +382,9 @@ return {
   entities = entities,
   road = road,
   mineral = mineral,
+  mountain = mountain,
   order = 6,
-  guide = "guide",
+  guide = guide,
   mode = "free",
   show = false,
   start_tech = "迫降火星",

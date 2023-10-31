@@ -1,3 +1,12 @@
+local guide = require "guide"
+local mountain = {
+  density = 0.1,
+  mountain_coords = {},
+  excluded_rects = {
+    {0, 0, 255, 255},
+  },
+}
+
 local entities = { {
   amount = 25,
   dir = "N",
@@ -224,13 +233,13 @@ local entities = { {
   y = 120
 }, {
   dir = "E",
-  items = { { "supply", "铁矿石", 1 }, { "supply", "铁矿石", 1 } },
+  items = { { "supply", "铁矿石", 1 } },
   prototype_name = "物流站",
   x = 136,
   y = 142
 }, {
   dir = "W",
-  items = { { "supply", "气候科技包", 1 }, { "supply", "气候科技包", 1 }, { "supply", "气候科技包", 1 }, { "supply", "气候科技包", 1 } },
+  items = { { "supply", "气候科技包", 1 } },
   prototype_name = "物流站",
   x = 132,
   y = 142
@@ -254,7 +263,7 @@ local entities = { {
   y = 124
 }, {
   dir = "S",
-  items = { { "demand", "铁板", 1 }, { "demand", "铁板", 1 } },
+  items = { { "demand", "铁板", 1 } },
   prototype_name = "物流站",
   x = 146,
   y = 122
@@ -1745,19 +1754,19 @@ local entities = { {
   y = 120
 }, {
   dir = "S",
-  items = { { "demand", "铁板", 1 }, { "demand", "铁板", 1 } },
+  items = { { "demand", "铁板", 1 } },
   prototype_name = "物流站",
   x = 150,
   y = 122
 }, {
   dir = "E",
-  items = { { "supply", "气候科技包", 1 }, { "supply", "气候科技包", 1 }, { "supply", "气候科技包", 1 }, { "supply", "气候科技包", 1 } },
+  items = { { "supply", "气候科技包", 1 } },
   prototype_name = "物流站",
   x = 146,
   y = 110
 }, {
   dir = "W",
-  items = { { "demand", "铁板", 1 }, { "demand", "铁板", 1 }, { "demand", "铁板", 1 }, { "demand", "铁板", 1 } },
+  items = { { "demand", "铁板", 1 } },
   prototype_name = "物流站",
   x = 142,
   y = 112
@@ -2337,7 +2346,7 @@ local entities = { {
   y = 103
 }, {
   dir = "S",
-  items = { { "demand", "地质科技包", 1 }, { "demand", "地质科技包", 1 }, { "demand", "地质科技包", 1 }, { "demand", "地质科技包", 1 }, { "demand", "气候科技包", 1 }, { "demand", "气候科技包", 1 }, { "demand", "气候科技包", 1 }, { "demand", "气候科技包", 1 } },
+  items = { { "demand", "地质科技包", 1 }, },
   prototype_name = "物流站",
   x = 148,
   y = 138
@@ -2407,7 +2416,7 @@ local entities = { {
   y = 139
 }, {
   dir = "S",
-  items = { { "supply", "地质科技包", 1 }, { "supply", "地质科技包", 1 }, { "supply", "地质科技包", 1 }, { "supply", "地质科技包", 1 }, { "supply", "地质科技包", 1 }, { "supply", "地质科技包", 1 }, { "supply", "地质科技包", 1 }, { "supply", "地质科技包", 1 } },
+  items = { { "supply", "地质科技包", 1 } },
   prototype_name = "物流站",
   x = 110,
   y = 128
@@ -2419,7 +2428,7 @@ local entities = { {
   y = 130
 }, {
   dir = "N",
-  items = { { "supply", "铁板", 1 }, { "supply", "铁板", 1 }, { "supply", "铁板", 1 }, { "supply", "铁板", 1 }, { "supply", "铁板", 1 }, { "supply", "铁板", 1 }, { "supply", "铁板", 1 }, { "supply", "铁板", 1 } },
+  items = { { "supply", "铁板", 1 } },
   prototype_name = "物流站",
   x = 112,
   y = 140
@@ -2493,7 +2502,7 @@ local entities = { {
   y = 138
 }, {
   dir = "W",
-  items = { { "demand", "地质科技包", 1 }, { "demand", "地质科技包", 1 }, { "demand", "地质科技包", 1 }, { "demand", "地质科技包", 1 }, { "demand", "气候科技包", 1 }, { "demand", "气候科技包", 1 }, { "demand", "气候科技包", 1 }, { "demand", "气候科技包", 1 } },
+  items = { { "demand", "地质科技包", 1 }},
   prototype_name = "物流站",
   x = 168,
   y = 114
@@ -2761,7 +2770,7 @@ local entities = { {
   y = 128
 }, {
   dir = "W",
-  items = { { "demand", "铁板", 1 }, { "demand", "铁板", 1 }, { "demand", "铁板", 1 }, { "demand", "铁板", 1 } },
+  items = { { "demand", "铁板", 1 } },
   prototype_name = "物流站",
   x = 132,
   y = 134
@@ -3286,7 +3295,7 @@ local entities = { {
   y = 115
 }, {
   dir = "E",
-  items = { { "demand", "铁矿石", 1 }, { "demand", "铁矿石", 1 }, { "demand", "铁矿石", 1 }, { "demand", "铁矿石", 1 }, { "supply", "铁板", 1 }, { "supply", "铁板", 1 }, { "supply", "铁板", 1 }, { "supply", "铁板", 1 } },
+  items = { { "demand", "铁矿石", 1 } },
   prototype_name = "物流站",
   x = 120,
   y = 116
@@ -4436,8 +4445,9 @@ return {
     entities = entities,
     road = road,
     mineral = mineral,
+    mountain = mountain,
     order = 7,
-    guide = "guide",
+    guide = guide,
     show = true,
     mode = "free",
     start_tech = "登录科技",

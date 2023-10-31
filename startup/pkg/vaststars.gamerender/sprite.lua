@@ -5,13 +5,11 @@ local w = world.w
 local itp = ecs.require "ant.landform|translucent_plane_system"
 local CONSTANT = require "gameplay.interface.constant"
 local MAP_HEIGHT <const> = CONSTANT.MAP_HEIGHT
-local MAP_OFFSET <const> = CONSTANT.MAP_OFFSET
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
 --x, y base 0
 local function __convert_coord(x, y)
     x, y = x, MAP_HEIGHT - y - 1
-    return x - MAP_OFFSET, y - MAP_OFFSET
 end
 
 return function(x, y, w, h, dir, color)

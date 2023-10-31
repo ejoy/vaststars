@@ -1,3 +1,6 @@
+local guide = require "guide.guide3"
+local mountain = require "mountain"
+
 local entities = { {
   dir = "N",
   items = { { "停车站", 1 },{ "物流站", 3}, { "轻型运输车", 2 },{"砖石公路-X型",10},},
@@ -360,8 +363,9 @@ return {
     entities = entities,
     road = road,
     mineral = mineral,
+    mountain = mountain,
     order = 7,
-    guide = "guide.guide3",
+    guide = guide,
     show = true,
     mode = "adventure",
     start_tech = "物流教学",
