@@ -76,7 +76,8 @@ local prototype = gameplay.register.prototype
         w = 1.0,
         h = 1.0,
         show_arrow = false,
-      },      {
+      },
+      {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 119,
         y = 142,
@@ -184,7 +185,8 @@ local prototype = gameplay.register.prototype
         w = 1.0,
         h = 1.0,
         show_arrow = false,
-      },      {
+      }, 
+      {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 133,
         y = 142,
@@ -266,7 +268,8 @@ local prototype = gameplay.register.prototype
         w = 3.1,
         h = 3.1,
         show_arrow = false,
-      },      {
+      },
+      {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 132.5,
         y = 149.5,
@@ -300,7 +303,6 @@ local prototype = gameplay.register.prototype
     time = "4s"
   }
 
-
   prototype "液罐获取" {
     desc = "获取液罐",
     type = { "task" },
@@ -313,7 +315,7 @@ local prototype = gameplay.register.prototype
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     effects = {
-      unlock_recipe = {"地下卤水电解1","空气分离1","二氧化碳转甲烷","二氧化碳转一氧化碳"},
+      unlock_recipe = {"地下卤水电解1"},
     },
     guide_focus = {
       {
@@ -326,12 +328,79 @@ local prototype = gameplay.register.prototype
     },
   }
 
+  prototype "电解厂配方设置" {
+    desc = "组装机配方选择地质科技包1",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = { "task" },
+    task = {"unknown", 0, 3},                          
+    task_params = {recipe = "地下卤水电解1"},
+    count = 1,
+    prerequisites = {"液罐获取"},
+    guide_focus = {
+      {
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        x = 115,
+        y = 156,
+        w = 4.1,
+        h = 4.1,
+        show_arrow = true,
+      },
+      {
+        camera_x = 115,
+        camera_y = 145,
+      },
+    },
+    effects = {
+      unlock_recipe = {"空气分离1"},
+    },
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "组装机生产设置为“地质科技包1”", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "蒸馏厂配方设置" {
+    desc = "组装机配方选择地质科技包1",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = { "task" },
+    task = {"unknown", 0, 3},                          
+    task_params = {recipe = "空气分离1"},
+    count = 1,
+    prerequisites = {"电解厂配方设置"},
+    effects = {
+      unlock_recipe = {"二氧化碳转甲烷"},
+    },
+    guide_focus = {
+      {
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        x = 115,
+        y = 156,
+        w = 4.1,
+        h = 4.1,
+        show_arrow = true,
+      },
+      {
+        camera_x = 115,
+        camera_y = 145,
+      },
+    },
+
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "组装机生产设置为“地质科技包1”", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
 
   prototype "完成流体研究" {
     desc = "完成新的科技研究",
     type = { "tech" },
     icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
-    prerequisites = {"液罐生产"},
+    prerequisites = {"蒸馏厂配方设置"},
     ingredients = {
         {"气候科技包", 1},
     },
