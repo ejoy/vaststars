@@ -14,6 +14,21 @@ local prototype = gameplay.register.prototype
     time = "1s"
   }
 
-
+  prototype "登录结束" {
+    desc = "教学结束",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = { "task" },
+    task = {"unknown", 0, 4},
+    effects = {
+    },
+    prerequisites = {"登录科技"},
+    count = 1,
+    tips_pic = {
+      "",
+    },
+    sign_desc = {
+      { desc = "完成所有的挖矿教学", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
 
  
