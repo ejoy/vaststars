@@ -211,6 +211,10 @@ static int lbuild(lua_State *L) {
                     continue;
                 }
                 auto C = *lorrywhere.find(w.rw.getLorryId(l));
+                if (!C) {
+                    assert(false);
+                    continue;
+                }
                 if (l.item_amount == 0) {
                     l.item_prototype = 0;
                     if (auto res = w.market.match(w, C)) {
