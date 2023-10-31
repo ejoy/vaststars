@@ -1,5 +1,5 @@
 local entities = { {
-  amount = 0,
+  amount = 25,
   dir = "N",
   prototype_name = "指挥中心",
   x = 124,
