@@ -288,3 +288,42 @@ prototype "特殊水电站" {
         },
     },
 }
+
+prototype "特殊熔炼炉" {
+    model = "glbs/furnace-1.glb|mesh.prefab",
+    model_status = {work = true},
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_furnace.texture",
+    construct_detector = {"exclusive"},
+    type = {"building", "assembling", "consumer","fluidboxes"},
+    area = "3x3",
+    speed = "75%",
+    power = "300kW",
+    priority = "secondary",
+    sound = "building/furnace",
+    allow_set_recipt = true,
+    craft_category = {"登录配方"},
+    camera_distance = 62,
+    fluidboxes = {
+        input = {
+            {
+                capacity = 500,
+                height = 100,
+                base_level = -100,
+                connections = {
+                    {type="input", position={1,0,"N"}},
+                }
+            },
+        },
+        output = {
+            {
+                capacity = 500,
+                height = 100,
+                base_level = 100,
+                connections = {
+                    {type="output", position={1,2,"S"}},
+                }
+            },
+        },
+    },
+    maxslot = 8,
+}

@@ -2,6 +2,7 @@ require "tech.tech1"
 require "tech.tech2"
 require "tech.tech3"
 require "tech.tech4"
+require "tech.logintech"
 
 local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype

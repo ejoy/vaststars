@@ -4278,3 +4278,19 @@ prototype "特殊蒸馏" {
     time = "3s",
     description = "丁二烯排泄",
 }
+
+prototype "特殊铁板" {
+    type = { "recipe" },
+    recipe_craft_category = "登录配方",
+    recipe_category =  "金属",
+    recipe_order =  11,
+    recipe_icon = "/pkg/vaststars.resources/textures/icons/recipe/plate-Fe-1.texture",
+    ingredients = {
+        {"铁矿石", 1},
+    },
+    results = {
+        {"铁板", 1},
+    },
+    time = "1s",
+    description = "铁矿石通过金属冶炼获得铁板",
+}
