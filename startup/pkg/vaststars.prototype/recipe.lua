@@ -4143,7 +4143,7 @@ prototype "特殊地质科技包" {
         {"碎石", 1},
     },
     results = {
-        {"地质科技包",5},
+        {"地质科技包",3},
     },
     time = "3s",
     description = "丁二烯排泄",
@@ -4156,10 +4156,10 @@ prototype "特殊铁矿石" {
     recipe_order =  118,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
     ingredients = {
-        {"地质科技包", 2},
+        {"地质科技包", 1},
     },
     results = {
-        {"铁矿石",15},
+        {"铁矿石",7},
     },
     time = "3s",
     description = "丁二烯排泄",
@@ -4203,7 +4203,7 @@ prototype "特殊电解3" {
     recipe_order =  118,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
     ingredients = {
-        {"铁矿石", 1},
+        {"铁板", 1},
     },
     results = {
         {"空气", 100},
