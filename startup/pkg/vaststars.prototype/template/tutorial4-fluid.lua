@@ -260,6 +260,19 @@ local entities = { {
   x = 97,
   y = 167
 }, {
+  dir = "N",
+  fluid_name = "氧气",
+  prototype_name = "烟囱I",
+  recipe = "氧气排泄",
+  x = 99,
+  y = 153
+}, {
+  dir = "N",
+  fluid_name = "氢气",
+  prototype_name = "液罐I",
+  x = 91,
+  y = 149
+}, {
   dir = "E",
   fluid_name = "",
   prototype_name = "管道1-U型",
@@ -283,12 +296,6 @@ local entities = { {
   prototype_name = "管道1-U型",
   x = 106,
   y = 150
-}, {
-  dir = "N",
-  fluid_name = "",
-  prototype_name = "管道1-O型",
-  x = 97,
-  y = 159
 } }
 local backpack = { {
   count = 3,
@@ -332,7 +339,7 @@ local mineral = {
 ["75,93"] = "铁矿石",
 ["93,102"] = "铝矿石",
 ["93,203"] = "地热气",
-["97,162"] = "铁矿石"
+["97,162"] = "铝矿石"
 }
 
 return {

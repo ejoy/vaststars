@@ -56,7 +56,7 @@
 
             <button-container data-event-click = "clickButton('backpack')">
                 <button-pic class = "game-settings-button" />
-                <button-text>打开背包</button-text>
+                <button-text>储存仓库</button-text>
             </button-container>
         </div>
     </body>

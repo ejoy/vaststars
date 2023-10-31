@@ -171,7 +171,7 @@ local guide2 = {
             guide_progress = 10,
         },
         prerequisites = {
-            "完成流体研究",
+            "甲烷生产",
         },
 	},
 }

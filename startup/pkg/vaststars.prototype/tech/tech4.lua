@@ -326,6 +326,22 @@ local prototype = gameplay.register.prototype
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
+    guide_focus = {
+      {
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        x = 128,
+        y = 136,
+        w = 3.0,
+        h = 3.0,
+        show_arrow = false,
+      },
+      {
+        camera_x = 128,
+        camera_y = 136,
+        w = 3.0,
+        h = 3.0,
+      },
+    },
     effects = {
       unlock_recipe = {"地下卤水电解1"},
     },
@@ -425,10 +441,18 @@ local prototype = gameplay.register.prototype
     guide_focus = {
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-        x = 97,
-        y = 167,
+        x = 97.5,
+        y = 167.5,
         w = 2.0,
         h = 2.0,
+        show_arrow = true,
+      },
+      {
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        x = 97,
+        y = 159,
+        w = 1.2,
+        h = 1.2,
         show_arrow = false,
       },
       {
@@ -443,6 +467,41 @@ local prototype = gameplay.register.prototype
     },
   }
 
+  prototype "氢气存储" {
+    desc = "液罐存储氢气",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = { "task" },
+    task = {"unknown", 0, 11},
+    task_params = {building = "液罐I", fluids = {"氢气"}},
+    prerequisites = {"连接烟囱"},
+    count = 1,
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack3.texture",
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack4.texture",
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack5.texture",
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack6.texture",
+    },
+    guide_focus = {
+      {
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        x = 92,
+        y = 150,
+        w = 3.0,
+        h = 3.0,
+        show_arrow = true,
+      },
+      {
+        camera_x = 94,
+        camera_y = 152,
+        w = 3.0,
+        h = 3.0,
+      },
+    },
+    sign_desc = {
+      { desc = "电解厂生产氢气并用液罐存储", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
   prototype "蒸馏厂配方设置" {
     desc = "组装机配方选择地质科技包1",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
@@ -450,10 +509,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 3},                          
     task_params = {recipe = "空气分离1"},
     count = 1,
-    prerequisites = {"连接烟囱"},
-    effects = {
-      unlock_recipe = {"二氧化碳转甲烷"},
-    },
+    prerequisites = {"氢气存储"},
     guide_focus = {
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
@@ -470,12 +526,97 @@ local prototype = gameplay.register.prototype
         h = 4.1,
       },
     },
-
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
       { desc = "蒸馏厂选择配方“空气分离1”", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "连接空气净化器" {
+    desc = "连接烟囱",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = { "task" },
+    task = {"unknown", 0, 11},
+    task_params = {building = "蒸馏厂I", fluids = {"空气"}},
+    count = 1,
+    prerequisites = {"蒸馏厂配方设置"},
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    guide_focus = {
+      {
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        x = 111.5,
+        y = 160.5,
+        w = 2.0,
+        h = 2.0,
+        show_arrow = false,
+      },
+      {
+        camera_x = 112,
+        camera_y = 161,
+        w = 2.0,
+        h = 2.0,
+      },
+    },
+    sign_desc = {
+      { desc = "放置地下水挖掘机连接电解厂", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "二氧化碳存储" {
+    desc = "液罐存储氢气",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = { "task" },
+    task = {"unknown", 0, 11},
+    task_params = {building = "液罐I", fluids = {"二氧化碳"}},
+    prerequisites = {"连接空气净化器"},
+    count = 1,
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack3.texture",
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack4.texture",
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack5.texture",
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack6.texture",
+    },
+    effects = {
+      unlock_recipe = {"二氧化碳转甲烷"},
+    },
+    sign_desc = {
+      { desc = "电解厂生产氢气并用液罐存储", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "氮气清除" {
+    desc = "排泄生产的氮气",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = { "task" },
+    task = {"unknown", 0, 11},
+    task_params = {building = "烟囱I", fluids = {"氮气"}},
+    count = 1,
+    prerequisites = {"二氧化碳存储"},
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    guide_focus = {
+      {
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        x = 111.5,
+        y = 153.5,
+        w = 2.0,
+        h = 2.0,
+        show_arrow = false,
+      },
+      {
+        camera_x = 111,
+        camera_y = 153,
+        w = 2.0,
+        h = 2.0,
+      },
+    },
+    sign_desc = {
+      { desc = "放置烟囱排泄氮气", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -486,7 +627,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 3},                          
     task_params = {recipe = "二氧化碳转甲烷"},
     count = 1,
-    prerequisites = {"蒸馏厂配方设置"},
+    prerequisites = {"氮气清除"},
     guide_focus = {
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
@@ -512,17 +653,54 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "完成流体研究" {
-    desc = "完成新的科技研究",
-    type = { "tech" },
-    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
+  prototype "化工厂原料添加" {
+    desc = "向化工厂输送原料",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = { "task" },
+    task = {"unknown", 0, 11},
+    task_params = {building = "化工厂I", fluids = {"二氧化碳","氢气"}},
     prerequisites = {"化工厂配方设置"},
-    ingredients = {
-        {"气候科技包", 1},
+    count = 1,
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack3.texture",
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack4.texture",
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack5.texture",
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack6.texture",
     },
-    count = 8,
-    time = "1s"
+    sign_desc = {
+      { desc = "化工厂输送氢气和二氧化碳", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
   }
+
+  prototype "甲烷生产" {
+    desc = "化工厂生产甲烷",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = { "task" },
+    task = {"stat_production", 0, "甲烷"}, 
+    prerequisites = {"化工厂原料添加"},
+    count = 300,
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack3.texture",
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack4.texture",
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack5.texture",
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack6.texture",
+    },
+    sign_desc = {
+      { desc = "化工厂生产300个单位甲烷", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
+  -- prototype "完成流体研究" {
+  --   desc = "完成新的科技研究",
+  --   type = { "tech" },
+  --   icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
+  --   prerequisites = {"甲烷生产"},
+  --   ingredients = {
+  --       {"气候科技包", 1},
+  --   },
+  --   count = 8,
+  --   time = "1s"
+  -- }
 
   prototype "流体教学结束" {
     desc = "教学结束",
@@ -531,7 +709,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 4},
     effects = {
     },
-    prerequisites = {"完成科技研究"},
+    prerequisites = {"甲烷生产"},
     count = 1,
     tips_pic = {
       "",
