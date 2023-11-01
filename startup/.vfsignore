@@ -7,3 +7,5 @@ block:
 	/pkg/ant.resources.binary/meshes
 	/pkg/vaststars.mod.test
 	/pkg/vaststars.tools
+ignore:
+	/web
