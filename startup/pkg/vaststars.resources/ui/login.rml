@@ -74,11 +74,11 @@
                 <button-text>冒险模式</button-text>
             </button>
             <button data-event-click = "clickButton('start_game', 'template.free')">
-                <button-icon style='background-image: "/pkg/vaststars.resources/ui/textures/construct/work.texture";'/>
+                <button-icon style='background-image: "/pkg/vaststars.resources/ui/textures/character/timer.texture";'/>
                 <button-text>自由模式</button-text>
             </button> 
             <button data-event-click = "clickButton('load_resources')">
-                <button-icon style='background-image: "/pkg/vaststars.resources/ui/textures/road_net/big_bag.texture";'/>
+                <button-icon style='background-image: "/pkg/vaststars.resources/ui/textures/character/flash.texture";'/>
                 <button-text>加载资源</button-text>
             </button> 
             <button data-event-click = "clickButton('load_archive')">
