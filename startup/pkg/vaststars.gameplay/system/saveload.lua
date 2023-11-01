@@ -1,6 +1,7 @@
 local system = require "register.system"
 local luaecs = import_package "ant.luaecs"
 local json = import_package "ant.json"
+local fastio = require "fastio"
 
 local function writeall(file, content)
     local f <close> = assert(io.open(file, "wb"))
@@ -8,8 +9,7 @@ local function writeall(file, content)
 end
 
 local function readall(file)
-    local f <close> = assert(io.open(file, "rb"))
-    return f:read "a"
+    return fastio.readall_s(file)
 end
 
 do
