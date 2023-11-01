@@ -8,7 +8,7 @@ target_anims:
   clips:
     ---
     amplitude_pos: 0
-    amplitude_rot: -360
+    amplitude_rot: 360
     direction: 2
     random_amplitude: false
     range: {0, 299}
