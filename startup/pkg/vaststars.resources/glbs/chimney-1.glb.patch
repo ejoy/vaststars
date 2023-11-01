@@ -1,4 +1,17 @@
 ---
+file: images/anything_light.texture
+op: add
+path: /maxsize
+value: 16
+---
+file: mesh.prefab
+op: copyfile
+path: work.prefab
+---
+file: mesh.prefab
+op: copyfile
+path: low_power.prefab
+---
 file: images/Chimney_Metallic-Chimney_Roughness.texture
 op: add
 path: /maxsize
@@ -9,23 +22,10 @@ op: add
 path: /maxsize
 value: 128
 ---
-file: images/anything_light.texture
-op: add
-path: /maxsize
-value: 1
----
 file: images/Chimney_color.texture
 op: add
 path: /maxsize
 value: 128
----
-file: mesh.prefab
-op: copyfile
-path: work.prefab
----
-file: mesh.prefab
-op: copyfile
-path: low_power.prefab
 ---
 file: materials/Material.material
 op: replace
