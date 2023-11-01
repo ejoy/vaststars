@@ -232,6 +232,8 @@ local function get_dir_file(hash, resource)
 			local r = insert_file(item, name, path)
 			if r[2] then
 				r.dir = get_dir_file(path, resource)
+			else
+				r.dir = false
 			end
 		else
 			error ("Invalid dir file " .. hash)
@@ -253,7 +255,11 @@ local function expand_tree(r, tree, resource, ident)
 		elseif exist == nil then
 			table.insert(r, ident .. name .. " UNKNOWN")
 		else
-			table.insert(r, ident .. name .. " " .. hash)
+			if item.dir == false then
+				table.insert(r, ('%s<span style="color:red">%s</span> %s'):format(ident, name, hash))
+			else
+				table.insert(r, ident .. name .. " " .. hash)
+			end
 		end
 	end
 end
