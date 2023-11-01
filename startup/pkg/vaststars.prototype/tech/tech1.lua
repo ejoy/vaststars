@@ -159,7 +159,7 @@ local prototype = gameplay.register.prototype
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 120,
-        y = 115,
+        y = 121,
         w = 1.2,
         h = 1.2,
         color = {0.3, 1, 0, 1},
@@ -167,7 +167,7 @@ local prototype = gameplay.register.prototype
       },
       {
         camera_x = 120,
-        camera_y = 115,
+        camera_y = 121,
         w = 1.2,
         h = 1.2,
       },
@@ -261,7 +261,7 @@ local prototype = gameplay.register.prototype
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 123,
-        y = 116,
+        y = 122,
         w = 3.2,
         h = 3.2,
         color = {0.3, 1, 0, 1},
