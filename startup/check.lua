@@ -1,4 +1,4 @@
-package.path = "engine/?.lua"
+package.path = "/engine/?.lua"
 require "bootstrap"
 import_package "vaststars.prototype"
 local iprototype = import_package "vaststars.gamerender"("gameplay.interface.prototype")
