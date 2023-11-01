@@ -2502,7 +2502,7 @@ local entities = { {
   y = 138
 }, {
   dir = "W",
-  items = { { "demand", "地质科技包", 1 }},
+  items = { { "demand", "地质科技包", 1 }, { "demand", "气候科技包", 1 }},
   prototype_name = "物流站",
   x = 168,
   y = 114
