@@ -242,15 +242,17 @@ local function get_dir_file(hash, resource)
 	return item
 end
 
-local function expand_tree(r, tree, resource, ident)
+local function expand_tree(r, root, tree, resource, ident)
 	for _, item in ipairs(tree) do
 		local name = item[1]
 		local exist = item[2]
 		local hash = item[3]
 		if exist then
-			table.insert(r, ('%s%s <a href="/repo/%s">%s</a>'):format(ident, name, hash, hash))
 			if item.dir then
-				expand_tree(r, item.dir, resource, ident .. "  ")
+				table.insert(r, ('%s%s [<a href="/repo/tree/%s">%s</a>]'):format(ident, name, hash, hash))
+				expand_tree(r, root, item.dir, resource, ident .. "  ")
+			else
+				table.insert(r, ('%s%s <a href="/repo/%s">%s</a>'):format(ident, name, hash, hash))
 			end
 		elseif exist == nil then
 			table.insert(r, ident .. name .. " UNKNOWN")
@@ -264,39 +266,55 @@ local function expand_tree(r, tree, resource, ident)
 	end
 end
 
-local function get_tree_from(root)
+
+local content_temp_header_title = [[
+<html>
+<head><meta charset="utf-8"></head>
+<title>%s</title>
+<body>
+<pre>
+]]
+
+local function get_tree_from(root, subroot)
 	local resource = get_dir_resource(root)
-	local tree = get_dir_file(root, resource)
-	local r = { content_temp_header }
-	expand_tree(r, tree, resource, "")
+	local tree = get_dir_file(subroot, resource)
+	if not tree then
+		return 403, "No hash : " .. subroot
+	end
+	local r = { content_temp_header_title:format(subroot) }
+	expand_tree(r, root, tree, resource, "")
 	table.insert(r, content_temp_footer)
-	return table.concat(r, "\n"),  htmltext
+	return 200, table.concat(r, "\n"),  htmltext
 end
 
-local function get_tree()
+local function get_tree(subroot)
 	local r = roots()
 	local hash = r:match(SHA1)
-	return get_tree_from(hash)
+	return get_tree_from(hash, subroot or hash)
 end
 
 function M.get(path)
 	if path == "" then
 		return 200, get_hash_index()
-	elseif path == "tree" then
-		return 200, get_tree()
 	else
-		local resource = path:match "^resource/(.*)"
-		if resource then
-			local r = get_resource(resource)
+		local t, subpath = path:match "^(%a+)/(.*)"
+		if t == nil then
+			if path == "tree" then
+				return get_tree()
+			elseif invalid_path(path) then
+				return 404, "Invalid " ..  tostring(path)
+			else
+				return get_hash_prefix(path)
+			end
+		elseif t == "resource" then
+			local r = get_resource(subpath)
 			if r then
 				return 200, add_links(r)
 			else
-				return 404, "Not Found RESOURCE " .. resource
+				return 404, "Not Found RESOURCE " .. subpath
 			end
-		elseif invalid_path(path) then
-			return 404, "Invalid " ..  tostring(path)
-		else
-			return get_hash_prefix(path)
+		elseif t == "tree" then
+			return get_tree(subpath)
 		end
 	end
 end
