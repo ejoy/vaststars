@@ -223,7 +223,8 @@ local function get_dir_file(hash, resource)
 		elseif t == "r" then
 			local h = resource[path]
 			if h then
-				insert_file(item, name, h)
+				local r = insert_file(item, name, h)
+				r.resource = true
 			else
 				-- unknown
 				table.insert(item, { name } )
@@ -249,8 +250,10 @@ local function expand_tree(r, root, tree, resource, ident)
 		local hash = item[3]
 		if exist then
 			if item.dir then
-				table.insert(r, ('%s%s [<a href="/repo/tree/%s">%s</a>]'):format(ident, name, hash, hash))
+				table.insert(r, ('%s<span style="color:blue">%s</span> <a href="/repo/tree/%s">%s</a>'):format(ident, name, hash, hash))
 				expand_tree(r, root, item.dir, resource, ident .. "  ")
+			elseif item.resource then
+				table.insert(r, ('%s<span style="color:green">%s</span> <a href="/repo/tree/%s">%s</a>'):format(ident, name, hash, hash))
 			else
 				table.insert(r, ('%s%s <a href="/repo/%s">%s</a>'):format(ident, name, hash, hash))
 			end
@@ -259,6 +262,8 @@ local function expand_tree(r, root, tree, resource, ident)
 		else
 			if item.dir == false then
 				table.insert(r, ('%s<span style="color:red">%s</span> %s'):format(ident, name, hash))
+			elseif item.resource then
+				table.insert(r, ('%s<span style="color:green">%s</span> %s'):format(ident, name, hash))
 			else
 				table.insert(r, ident .. name .. " " .. hash)
 			end
