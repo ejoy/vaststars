@@ -17,7 +17,6 @@ local CLASS <const> = {
 
 local math3d = require "math3d"
 local XZ_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
-local COLOR_GREEN = math3d.constant("v4", {0.3, 1, 0, 1})
 
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local gameplay_core = require "gameplay.core"
@@ -35,7 +34,7 @@ local iobject = ecs.require "object"
 local idetail = ecs.require "detail_system"
 local create_station_builder = ecs.require "editor.stationbuilder"
 local icoord = require "coord"
-local selected_boxes = ecs.require "selected_boxes"
+local create_selected_box = ecs.require "selected_boxes"
 local irl = ecs.require "ant.render|render_layer.render_layer"
 local iom = ecs.require "ant.objcontroller|obj_motion"
 local ichest = require "gameplay.interface.chest"
@@ -288,7 +287,7 @@ local function open_focus_tips(tech_node)
                     excluded_pickup_id = object.id
                 end
             end
-            tech_node.selected_tips[#tech_node.selected_tips + 1] = {selected_boxes({"/pkg/vaststars.resources/" .. nd.prefab}, center, COLOR_GREEN, nd.w, nd.h), prefab}
+            tech_node.selected_tips[#tech_node.selected_tips + 1] = {create_selected_box({"/pkg/vaststars.resources/" .. nd.prefab}, center, math3d.vector(nd.color), nd.w, nd.h), prefab}
         elseif nd.camera_x and nd.camera_y then
             icamera_controller.focus_on_position(math3d.vector(icoord.position(nd.camera_x, nd.camera_y, nd.w, nd.h)))
         end

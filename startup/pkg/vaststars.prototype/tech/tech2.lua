@@ -37,6 +37,7 @@ local prototype = gameplay.register.prototype
         y = 125,
         w = 4.0,
         h = 4.0,
+        color = {0.3, 1, 0, 1},
         show_arrow = true,
       },
       {
@@ -68,6 +69,7 @@ local prototype = gameplay.register.prototype
         y = 128,
         w = 3.2,
         h = 3.2,
+        color = {0.3, 1, 0, 1},
         show_arrow = true,
       },
       {
@@ -76,6 +78,7 @@ local prototype = gameplay.register.prototype
         y = 132,
         w = 3.2,
         h = 3.2,
+        color = {0.3, 1, 0, 1},
         show_arrow = true,
       },
       {
@@ -84,6 +87,7 @@ local prototype = gameplay.register.prototype
         y = 137,
         w = 3.2,
         h = 3.2,
+        color = {0.3, 1, 0, 1},
         show_arrow = true,
       },
       {
@@ -121,6 +125,7 @@ local prototype = gameplay.register.prototype
         y = 131,
         w = 3.2,
         h = 3.2,
+        color = {0.3, 1, 0, 1},
         show_arrow = true,
       },
       {
@@ -155,6 +160,7 @@ local prototype = gameplay.register.prototype
         y = 133,
         w = 1.2,
         h = 1.2,
+        color = {0.3, 1, 0, 1},
         show_arrow = true,
       },
       {
@@ -188,6 +194,7 @@ local prototype = gameplay.register.prototype
         y = 131,
         w = 3.0,
         h = 3.0,
+        color = {0.3, 1, 0, 1},
         show_arrow = false,
       },
       {
@@ -196,6 +203,7 @@ local prototype = gameplay.register.prototype
         y = 131,
         w = 3.0,
         h = 3.0,
+        color = {0.3, 1, 0, 1},
         show_arrow = false,
       },
       {
@@ -231,6 +239,7 @@ local prototype = gameplay.register.prototype
         y = 133,
         w = 1.2,
         h = 1.2,
+        color = {0.3, 1, 0, 1},
         show_arrow = true,
       },
       {
@@ -263,6 +272,7 @@ local prototype = gameplay.register.prototype
         y = 133,
         w = 1.2,
         h = 1.2,
+        color = {0.3, 1, 0, 1},
         show_arrow = false,
       },
       {
@@ -271,6 +281,7 @@ local prototype = gameplay.register.prototype
         y = 133,
         w = 1.2,
         h = 1.2,
+        color = {0.3, 1, 0, 1},
         show_arrow = false,
       },
       {
@@ -318,6 +329,7 @@ local prototype = gameplay.register.prototype
         y = 137,
         w = 2.2,
         h = 2.2,
+        color = {0.3, 1, 0, 1},
         show_arrow = false,
       },
       {
@@ -416,6 +428,7 @@ local prototype = gameplay.register.prototype
         y = 131,
         w = 3.0,
         h = 3.0,
+        color = {0.3, 1, 0, 1},
         show_arrow = false,
       },
       {
@@ -482,6 +495,7 @@ local prototype = gameplay.register.prototype
         y = 115,
         w = 3.1,
         h = 3.1,
+        color = {0.3, 1, 0, 1},
         show_arrow = false,
       },
       {

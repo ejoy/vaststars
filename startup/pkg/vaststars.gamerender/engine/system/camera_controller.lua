@@ -214,12 +214,10 @@ local function __check_camera_editable()
     return cam_cmd_queue:size() <= 0 and cam_motion_matrix_queue:size() <= 0
 end
 
-local function __add_camera_track(s, r, t)
+local function __add_camera_track(ce, s, r, t)
     local raw_animation = animation.new_raw_animation()
     local skl = skeleton.build({{name = "root", s = mc.T_ONE, r = mc.T_IDENTITY_QUAT, t = mc.T_ZERO}})
     raw_animation:setup(skl, 2)
-
-    local ce <close> = world:entity(irq.main_camera())
 
     raw_animation:push_prekey(
         "root",
@@ -254,7 +252,7 @@ local function __add_camera_track(s, r, t)
     cam_motion_matrix_queue:push(t)
 end
 
-local function __handle_camera_motion()
+local function __handle_camera_motion(ce)
     if cam_motion_matrix_queue:size() == 0 then
         if cam_cmd_queue:size() == 0 then
             return
@@ -263,7 +261,7 @@ local function __handle_camera_motion()
         local cmd = assert(cam_cmd_queue:pop())
         local c = cmd[1]
         if c[1] == "focus_on_position" then
-            __add_camera_track(focus_on_position(table.unpack(c, 2)))
+            __add_camera_track(ce, focus_on_position(table.unpack(c, 2)))
         elseif c[1] == "toggle_view" then
             local t = toggle_view(table.unpack(c, 2))
             cam_motion_matrix_queue:push(t)
@@ -342,7 +340,7 @@ function camera_controller:camera_usage()
     end
 
     __handle_drop_camera(ce)
-    __handle_camera_motion()
+    __handle_camera_motion(ce)
 end
 
 -- the following interfaces must be called after the `camera_usage` stage
@@ -375,8 +373,7 @@ function icamera_controller.get_central_position()
     return math3d.muladd(ray.d, math3d.plane_ray(ray.o, ray.d, XZ_PLANE), ray.o)
 end
 
-function icamera_controller.get_interset_points()
-    local ce <close> = world:entity(irq.main_camera(), "camera:in scene:in")
+function icamera_controller.get_interset_points(ce)
     local points = math3d.frustum_points(ce.camera.viewprojmat)
     local lb_raydir = math3d.sub(math3d.array_index(points, 5), math3d.array_index(points, 1))
     local lt_raydir = math3d.sub(math3d.array_index(points, 6), math3d.array_index(points, 2))

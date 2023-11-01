@@ -96,6 +96,7 @@ local prototype = gameplay.register.prototype
         y = 136,
         w = 3.5,
         h = 3.5,
+        color = {0.3, 1, 0, 1},
         show_arrow = true,
       },
       {
@@ -127,6 +128,7 @@ local prototype = gameplay.register.prototype
       --   y = 141,
       --   w = 3.2,
       --   h = 3.2,
+      -- color = {0.3, 1, 0, 1},
       --   show_arrow = true,
       -- },
       {
@@ -135,6 +137,7 @@ local prototype = gameplay.register.prototype
         y = 134,
         w = 3.2,
         h = 3.2,
+        color = {0.3, 1, 0, 1},
       },
       {
         camera_x = 116,
@@ -171,6 +174,7 @@ local prototype = gameplay.register.prototype
         y = 128,
         w = 1.2,
         h = 1.2,
+        color = {0.3, 1, 0, 1},
         show_arrow = true,
       },
       {
@@ -269,6 +273,7 @@ local prototype = gameplay.register.prototype
         y = 141,
         w = 3.2,
         h = 3.2,
+        color = {0.3, 1, 0, 1},
         -- show_arrow = true,
       },
       -- {
@@ -277,6 +282,7 @@ local prototype = gameplay.register.prototype
       --   y = 136,
       --   w = 3.2,
       --   h = 3.2,
+      --   color = {0.3, 1, 0, 1},
       -- },
       {
         camera_x = 139,
@@ -310,6 +316,7 @@ local prototype = gameplay.register.prototype
     --     y = 117.8,
     --     w = 1.8,
     --     h = 1.8,
+    --     color = {0.3, 1, 0, 1},
     --     show_arrow = true,
     --   },
     --   {
@@ -318,6 +325,7 @@ local prototype = gameplay.register.prototype
     --     y = 124,
     --     w = 3.5,
     --     h = 3.5,
+    --     color = {0.3, 1, 0, 1},
     --   },
     --   {
     --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
@@ -325,6 +333,7 @@ local prototype = gameplay.register.prototype
     --     y = 124,
     --     w = 3.5,
     --     h = 3.5,
+    --     color = {0.3, 1, 0, 1},
     --   },
     --   {
     --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
@@ -332,6 +341,7 @@ local prototype = gameplay.register.prototype
     --     y = 124,
     --     w = 3.5,
     --     h = 3.5,
+    --     color = {0.3, 1, 0, 1},
     --   },
     --   {
     --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
@@ -339,6 +349,7 @@ local prototype = gameplay.register.prototype
     --     y = 132,
     --     w = 3.5,
     --     h = 3.5,
+    --     color = {0.3, 1, 0, 1},
     --   },
     --   {
     --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
@@ -346,6 +357,7 @@ local prototype = gameplay.register.prototype
     --     y = 132,
     --     w = 3.5,
     --     h = 3.5,
+    --     color = {0.3, 1, 0, 1},
     --   },
     --   {
     --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
@@ -353,6 +365,7 @@ local prototype = gameplay.register.prototype
     --     y = 132,
     --     w = 3.5,
     --     h = 3.5,
+    --     color = {0.3, 1, 0, 1},
     --   },
     --   {
     --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
@@ -360,6 +373,7 @@ local prototype = gameplay.register.prototype
     --     y = 128,
     --     w = 3.5,
     --     h = 3.5,
+    --     color = {0.3, 1, 0, 1},
     --   },
     --   {
     --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
@@ -367,6 +381,7 @@ local prototype = gameplay.register.prototype
     --     y = 128,
     --     w = 3.5,
     --     h = 3.5,
+    --     color = {0.3, 1, 0, 1},
     --   },
     --   {
     --     camera_x = 115,
@@ -479,6 +494,7 @@ local prototype = gameplay.register.prototype
     --     y = 127.8,
     --     w = 1.8,
     --     h = 1.8,
+    --     color = {0.3, 1, 0, 1},
     --     show_arrow = true,
     --   },
     --   {
