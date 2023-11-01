@@ -12,6 +12,7 @@ local world = __create_gameplay_world()
 local irecipe = require "gameplay.interface.recipe"
 local iprototype = require "gameplay.interface.prototype"
 local json = import_package "ant.json"
+local fastio = require "fastio"
 
 local function __writeall(file, content)
     local parent = fs.path(file):parent_path()
@@ -23,8 +24,7 @@ local function __writeall(file, content)
 end
 
 local function __readall(file)
-    local f <close> = assert(io.open(file, "rb"))
-    return f:read "a"
+    return fastio.readall_s(file)
 end
 
 local m = {}

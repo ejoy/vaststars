@@ -26,7 +26,7 @@ local create_selected_boxes = ecs.require "selected_boxes"
 local icoord = require "coord"
 local gameplay_core = require "gameplay.core"
 local ibuilding = ecs.require "render_updates.building"
-local create_pickup_icon_chimney = ecs.require "pickup_icon_chimney".create
+local create_fluid_indicators = ecs.require "fluid_indicators".create
 local ibackpack = require "gameplay.interface.backpack"
 local ichest = require "gameplay.interface.chest"
 local srt = require "utility.srt"
@@ -208,8 +208,8 @@ local function __new_entity(self, datamodel, typeobject, position, x, y, dir)
         recipe = recipe,
     }
 
-    if iprototype.has_type(typeobject.type, "chimney") then
-        self.pickup_components.pickup_icon_chimney = create_pickup_icon_chimney(dir, self.pickup_object.srt, typeobject)
+    if typeobject.fluid_indicators ~= false and iprototype.has_types(typeobject.type, "chimney", "fluidbox", "fluidboxes") then
+        self.pickup_components.fluid_indicators = create_fluid_indicators(dir, self.pickup_object.srt, typeobject)
     end
 
     if self.sprite then

@@ -1,13 +1,13 @@
 local fs = require "bee.filesystem"
 local json = import_package "ant.json"
 local directory = require "directory"
+local fastio = require "fastio"
 
 local ARCHIVAL_BASE_DIR = (directory.app_path() / "archiving/"):string()
 local prototype_version = 1
 
 local function readall(file)
-    local f <close> = assert(io.open(file, "rb"))
-    return f:read "a"
+    return fastio.readall_s(file)
 end
 
 local function fetch_all_archiving(root)

@@ -37,6 +37,7 @@ local iroadnet = ecs.require "roadnet"
 local srt = require "utility.srt"
 local imineral = ecs.require "mineral"
 local imountain = ecs.require "engine.mountain"
+local fastio = require "fastio"
 
 local function clean()
     global.buildings = create_buildings()
@@ -165,8 +166,7 @@ local function writeall(file, content)
 end
 
 local function readall(file)
-    local f <close> = assert(io.open(file, "rb"))
-    return f:read "a"
+    return fastio.readall_s(file)
 end
 
 local function get_camera_setting()

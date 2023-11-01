@@ -2,16 +2,15 @@ local serialize = import_package "ant.serialize"
 local assetmgr = import_package "ant.asset"
 local mathpkg = import_package "ant.math"
 local mc = mathpkg.constant
+local fastio = require "fastio"
 
 local function read_file(filename)
-    local f
+    local c
     if string.sub(filename, 1, 1) == "/" then
-        f = assert(io.open(assetmgr.compile(filename), "rb"))
+        c = fastio.readall_s(assetmgr.compile(filename))
     else
-        f = assert(io.open(filename, "rb"))
+        c = fastio.readall_s(filename)
     end
-    local c = f:read "a"
-    f:close()
     return c
 end
 

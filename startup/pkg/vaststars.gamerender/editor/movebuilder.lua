@@ -27,7 +27,7 @@ local create_road_entrance = ecs.require "editor.road_entrance"
 local global = require "global"
 local create_sprite = ecs.require "sprite"
 local create_pickup_icon = ecs.require "pickup_icon".create
-local create_pickup_icon_chimney = ecs.require "pickup_icon_chimney".create
+local create_fluid_indicators = ecs.require "fluid_indicators".create
 local icoord = require "coord"
 local gameplay_core = require "gameplay.core"
 local ibuilding = ecs.require "render_updates.building"
@@ -265,7 +265,7 @@ local function __new_entity(self, datamodel, typeobject)
         self.pickup_components.pickup_icon = create_pickup_icon(typeobject, dir, object.gameplay_eid, self.pickup_object.srt)
     end
     if e.chimney then
-        self.pickup_components.pickup_icon_chimney = create_pickup_icon_chimney(dir, self.pickup_object.srt, typeobject)
+        self.pickup_components.fluid_indicators = create_fluid_indicators(dir, self.pickup_object.srt, typeobject)
     end
     self.pickup_components.self_selected_box = create_pickup_selected_box(self.pickup_object.srt.t, typeobject.area, dir, datamodel.show_confirm and true or false)
     __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject)

@@ -47,7 +47,20 @@ end
 local function __draw_fluid_indication_arrow(object_id, building_srt, dir, prototype)
     local typeobject = iprototype.queryById(prototype)
     local begin_x, begin_y = __calc_begin_xy(math3d.index(building_srt.t, 1), math3d.index(building_srt.t, 3), iprototype.rotate_area(typeobject.area, dir))
-    for _, conn in ipairs(typeobject.fluidbox.connections) do
+
+    local connections
+    if typeobject.fluidbox then
+        connections = typeobject.fluidbox.connections
+    elseif typeobject.fluidboxes then
+        connections = {}
+        for _, io in pairs(typeobject.fluidboxes) do
+            for _, v in ipairs(io) do
+                table.move(v.connections, 1, #v.connections, #connections + 1, connections)
+            end
+        end
+    end
+
+    for _, conn in ipairs(connections) do
         local connection_x, connection_y, connection_dir = iprototype.rotate_connection(conn.position, dir, typeobject.area)
         local material_path
         if conn.type == "input" then
