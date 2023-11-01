@@ -2,9 +2,8 @@ block:
 	/pkg/ant.bake
 	/pkg/ant.editor
 	/pkg/ant.imgui
-	/pkg/ant.efk/efkbgfx/examples
-	/pkg/ant.resources.binary/test
-	/pkg/ant.resources.binary/meshes
+	/pkg/ant.efk/efkbgfx
+	/pkg/ant.resources.binary
 	/pkg/vaststars.mod.test
 	/pkg/vaststars.tools
 ignore:
