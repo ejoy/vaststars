@@ -1,9 +1,10 @@
 block:
 	/pkg/ant.bake
 	/pkg/ant.editor
-	/pkg/ant.imgui
 	/pkg/ant.efk/efkbgfx
+	/pkg/ant.imgui
 	/pkg/ant.resources.binary
+	/pkg/ant.vfs
 	/pkg/vaststars.mod.test
 	/pkg/vaststars.tools
 ignore:
