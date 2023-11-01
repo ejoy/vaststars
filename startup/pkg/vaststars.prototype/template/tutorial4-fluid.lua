@@ -3,7 +3,7 @@ local mountain = require "mountain"
 
 local entities = { {
   dir = "N",
-  items = { { "空气过滤器I", 2 }, { "地下水挖掘机I", 3 }, { "烟囱I", 2}, { "排水口I", 2}},
+  items = { { "空气过滤器I", 2 }, { "地下水挖掘机I", 2 }, { "烟囱I", 1}, { "排水口I", 1}},
   prototype_name = "机身残骸",
   x = 126,
   y = 147
@@ -23,6 +23,12 @@ local entities = { {
   prototype_name = "液罐I",
   x = 123,
   y = 141
+}, {
+  dir = "N",
+  fluid_name = "纯水",
+  prototype_name = "排水口I",
+  x = 102,
+  y = 144
 }, {
   dir = "N",
   prototype_name = "轻型采矿机",
@@ -54,7 +60,7 @@ local entities = { {
   y = 135
 }, {
   dir = "N",
-  items = { { "管道1-X型", 10 } },
+  items = { { "管道1-X型", 30 } },
   prototype_name = "仓库I",
   x = 124,
   y = 134
