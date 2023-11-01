@@ -102,7 +102,7 @@ local function view_file(fullpath)
 	end
 end
 
-local function get_hash_prefix(prefix, header)
+local function get_hash_prefix(prefix)
 	local head = prefix:sub(1,2)
 	local path = REPO_PATH .. head
 	local files = {}
@@ -119,10 +119,6 @@ local function get_hash_prefix(prefix, header)
 	if count == 0 then
 		return 404, "Not found : " .. prefix
 	elseif count == 1 then
-		local t = {}
-		for k,v in pairs(header) do
-			table.insert(t, k .. ":" .. v .. "\n")
-		end
 		local fullname = files[1]
 		if fullname ~= prefix then
 			return 302, "Found", { Location = "/repo/" .. fullname }
@@ -138,13 +134,22 @@ local function link_sha1_resource(s)
 	return ('<a href="/repo/%s">%s</a> (<a href="/repo/resource/%s">RESOURCE</a>)'):format(s,s,s)
 end
 
-local function get_root()
+local function roots()
 	local f = io.open(REPO_PATH .. "root", "rb")
 	if not f then
 		return "No ROOT"
 	end
 	local content = f:read "a"
 	f:close()
+	return content
+end
+
+local function get_root()
+	local f = io.open(REPO_PATH .. "root", "rb")
+	if not f then
+		return "No ROOT"
+	end
+	local content = roots()
 	return content:gsub(SHA1, link_sha1_resource)
 end
 
@@ -168,24 +173,124 @@ local function get_resource(hash)
 	local path = REPO_PATH .. "/" .. head .. "/" .. hash .. ".resource"
 	local f = io.open(path, "rb")
 	if not f then
-		return 404, "Not Found RESOURCE " .. hash
+		return
 	end
 	local content = f:read "a"
 	f:close()
-	return 200, add_links(content)
+	return content
 end
 
-function M.get(path, q , header)
+local function get_dir_resource(root)
+	local c = get_resource(root)
+	if c then
+		local map = {}
+		for hash, path in c:gmatch "(%w+) (%S+)" do
+			map[path] = hash
+		end
+		return map
+	else
+		return {}
+	end
+end
+
+local function open_hash_file(hash)
+	local head = hash:sub(1,2)
+	local fullpath = REPO_PATH .. "/" .. head .. "/" .. hash
+	return io.open(fullpath, "rb")
+end
+
+local function insert_file(item, name, path)
+	local f = open_hash_file(path)
+	if f then
+		f:close()
+	end
+	local r = { name, f ~= nil, path }
+	table.insert(item, r )
+	return r
+end
+
+local function get_dir_file(hash, resource)
+	local f = open_hash_file(hash)
+	if not f then
+		return
+	end
+	local content = f:read "a"
+	f:close()
+	local item = {}
+	for t, name, path in content:gmatch "(%a) (%S+) (%S+)" do
+		if t == "f" then
+			insert_file(item, name, path)
+		elseif t == "r" then
+			local h = resource[path]
+			if h then
+				insert_file(item, name, h)
+			else
+				-- unknown
+				table.insert(item, { name } )
+			end
+		elseif t == "d" then
+			local r = insert_file(item, name, path)
+			if r[2] then
+				r.dir = get_dir_file(path, resource)
+			end
+		else
+			error ("Invalid dir file " .. hash)
+		end
+	end
+	return item
+end
+
+local function expand_tree(r, tree, resource, ident)
+	for _, item in ipairs(tree) do
+		local name = item[1]
+		local exist = item[2]
+		local hash = item[3]
+		if exist then
+			table.insert(r, ('%s%s <a href="/repo/%s">%s</a>'):format(ident, name, hash, hash))
+			if item.dir then
+				expand_tree(r, item.dir, resource, ident .. "  ")
+			end
+		elseif exist == nil then
+			table.insert(r, ident .. name .. " UNKNOWN")
+		else
+			table.insert(r, ident .. name .. " " .. hash)
+		end
+	end
+end
+
+local function get_tree_from(root)
+	local resource = get_dir_resource(root)
+	local tree = get_dir_file(root, resource)
+	local r = { content_temp_header }
+	expand_tree(r, tree, resource, "")
+	table.insert(r, content_temp_footer)
+	return table.concat(r, "\n"),  htmltext
+end
+
+local function get_tree()
+	local r = roots()
+	local hash = r:match(SHA1)
+	return get_tree_from(hash)
+end
+
+function M.get(path)
 	if path == "" then
 		return 200, get_hash_index()
+	elseif path == "tree" then
+		return 200, get_tree()
 	else
 		local resource = path:match "^resource/(.*)"
 		if resource then
-			return get_resource(resource)
+			local r = get_resource(resource)
+			if r then
+				return 200, add_links(r)
+			else
+				return 404, "Not Found RESOURCE " .. resource
+			end
 		elseif invalid_path(path) then
 			return 404, "Invalid " ..  tostring(path)
 		else
-			return get_hash_prefix(path, header)
+			return get_hash_prefix(path)
 		end
 	end
 end
