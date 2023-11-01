@@ -10,18 +10,18 @@ local entities = { {
   }, {
     dir = "N",
     prototype_name = "风力发电机I",
-    x = 121,
-    y = 121
+    x = 115,
+    y = 135
   }, {
     dir = "N",
     prototype_name = "组装机I",
     x = 122,
-    y = 115
+    y = 121
   }, {
     dir = "N",
     prototype_name = "无人机平台I",
     x = 120,
-    y = 117
+    y = 123
   },}
 local road = {}
 
