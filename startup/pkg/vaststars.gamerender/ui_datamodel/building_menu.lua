@@ -233,22 +233,32 @@ end
 
 local function station_set_item(gameplay_world, e, type, item)
     local items = {}
+    local found = false
 
     for i = 1, ichest.get_max_slot(iprototype.queryById(e.building.prototype)) do
         local slot = ichest.get(gameplay_world, e.station, i)
         if not slot then
             break
         end
-        items[#items+1] = {slot.type, slot.item, slot.limit}
+
+        local limit = slot.limit
+        if slot.item == item then
+            limit = limit + 1
+            found = true
+        end
+        items[#items+1] = {slot.type, slot.item, limit}
     end
 
-    local typeobject = iprototype.queryById(item)
-    items[#items+1] = {type, item, typeobject.station_capacity or 1}
+    if not found then
+        local typeobject = iprototype.queryById(item)
+        items[#items+1] = {type, item, typeobject.station_capacity or 1}
+    end
+
     iGameplayStation.set_item(gameplay_world, e, items)
     gameplay_core.set_changed(CHANGED_FLAG_STATION)
 end
 
-local function station_remove_item(gameplay_world, e, slot_index)
+local function station_remove_item(gameplay_world, e, slot_index, item)
     local items = {}
 
     for i = 1, ichest.get_max_slot(iprototype.queryById(e.building.prototype)) do
@@ -257,7 +267,9 @@ local function station_remove_item(gameplay_world, e, slot_index)
             break
         end
 
-        if i ~= slot_index then
+        if slot.item == item and slot.limit - 1 > 0 then
+            items[#items+1] = {slot.type, slot.item, slot.limit - 1}
+        elseif i ~= slot_index then
             items[#items+1] = {slot.type, slot.item, slot.limit}
         end
     end

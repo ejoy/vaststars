@@ -32,7 +32,13 @@ local function updateSlots(e, datamodel)
 
         if slot.item ~= 0 then
             local typeobject_item = assert(iprototype.queryById(slot.item))
-            slots[#slots + 1] = {id = typeobject_item.id, slot_index = i, icon = typeobject_item.item_icon, name = iprototype.display_name(typeobject_item), type = slot.type, remove = false}
+            if e.station then
+                for i = 1, slot.limit do
+                    slots[#slots + 1] = {id = typeobject_item.id, slot_index = i, icon = typeobject_item.item_icon, name = iprototype.display_name(typeobject_item), type = slot.type, remove = false}
+                end
+            else
+                slots[#slots + 1] = {id = typeobject_item.id, slot_index = i, icon = typeobject_item.item_icon, name = iprototype.display_name(typeobject_item), type = slot.type, remove = false}
+            end
         end
     end
     datamodel.disable = (#slots == max_slot)
@@ -185,7 +191,7 @@ function M.update(datamodel, gameplay_eid, interface)
         local slot = assert(datamodel.slots[idx])
         local e = gameplay_core.get_entity(gameplay_eid)
         local gameplay_world = gameplay_core.get_world()
-        interface.remove_item(gameplay_world, e, slot.slot_index)
+        interface.remove_item(gameplay_world, e, slot.slot_index, slot.id)
         updateSlots(e, datamodel)
     end
 end
