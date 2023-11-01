@@ -141,10 +141,10 @@ local function new_entity(self, datamodel, typeobject, x, y)
         dir = dir,
         x = x,
         y = y,
-        srt = srt.new({
+        srt = srt.new {
             t = math3d.vector(icoord.position(x, y, iprototype.rotate_area(typeobject.area, dir))),
             r = ROTATORS[dir],
-        }),
+        },
         group_id = 0,
     }
 
@@ -237,10 +237,10 @@ local function touch_end(self, datamodel)
             dir = dir,
             x = x,
             y = y,
-            srt = srt.new({
+            srt = srt.new {
                 t = math3d.vector(icoord.position(x, y, iprototype.rotate_area(self.typeobject.area, dir))),
                 r = ROTATORS[dir],
-            }),
+            },
             group_id = 0,
         }
     end

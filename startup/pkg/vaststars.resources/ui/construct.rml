@@ -73,6 +73,7 @@
                 <div style = "width: 7.00vmin; height: 7.00vmin; background-size: 100% 100%; background-color: rgb(61, 61, 61);" data-style-background-image = "it.icon"/>
                 <div style = "font-size: 5.00vmin; margin-top: 0.50vmin; text-align: center;">{{it.count}}</div>
             </div>
+            <div style = "width: 7.00vmin; height: 7.00vmin; background-size: 100% 100%; background-image: /pkg/vaststars.resources/ui/textures/main-menu/game-settings-normal.texture;" data-if = "#backpack_bar <= 0"/>            
         </backpack-bar>
 
         <tech-or-task-bar style = "flex-direction: row; align-items: center; gap: 1vmin;" data-if = "not is_concise_mode and show_tech_progress" data-event-click="clickButton('click_techortaskicon', is_task)">

@@ -254,10 +254,10 @@ local function __new_entity(self, datamodel, typeobject)
         dir = dir,
         x = x,
         y = y,
-        srt = srt.new({
+        srt = srt.new {
             t = math3d.vector(building_positon),
             r = ROTATORS[dir],
-        }),
+        },
         group_id = 0,
     }
 

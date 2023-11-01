@@ -163,11 +163,7 @@ local function loadModelTrack(model, tracks)
         for offset, slot_names in pairs(v) do
             local track_srts = {}
             for _, slot_name in ipairs(slot_names) do
-                local slot_srt = {
-                    s = math3d.vector(slots[slot_name].scene.s),
-                    r = math3d.quaternion(slots[slot_name].scene.r),
-                    t = math3d.vector(slots[slot_name].scene.t),
-                }
+                local slot_srt = slots[slot_name].scene
                 local s, r, t = math3d.srt(
                     math3d.mul(
                         math3d.matrix(root_srt),
@@ -201,11 +197,7 @@ function lorry_sys:prototype_restore()
 
     for toward, slot_name in pairs(START_SLOTS) do
         local s = assert(slots[slot_name])
-        local slot_srt = {
-            s = math3d.vector(s.scene.s),
-            r = math3d.quaternion(s.scene.r),
-            t = math3d.vector(s.scene.t),
-        }
+        local slot_srt = s.scene
 
         local s, r, t = math3d.srt(
             math3d.mul(

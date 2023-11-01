@@ -493,10 +493,10 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                 dir = dir,
                 x = x,
                 y = y,
-                srt = srt.new({
+                srt = srt.new {
                     t = math3d.vector(icoord.position(x, y, iprototype.rotate_area(typeobject.area, dir))),
                     r = ROTATORS[dir],
-                }),
+                },
                 fluid_name = State.fluid_name,
                 group_id = 0,
             }
@@ -693,10 +693,10 @@ local function new_entity(self, datamodel, typeobject)
         dir = dir,
         x = x,
         y = y,
-        srt = srt.new({
+        srt = srt.new {
             t = math3d.vector(icoord.position(x, y, iprototype.rotate_area(typeobject.area, dir))),
             r = ROTATORS[dir],
-        }),
+        },
         fluid_name = "",
         group_id = 0,
     }

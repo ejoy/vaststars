@@ -64,7 +64,7 @@ local function _get_road_entrance_srt(typeobject, dir, position)
 
     local conn  = typeobject.crossing.connections[1]
     local ox, oy, ddir = iprototype.rotate_connection(conn.position, dir, typeobject.area)
-    return srt.new({t = math3d.add(position, {ox * TILE_SIZE / 2, 0, oy * TILE_SIZE / 2}), r = ROTATORS[ddir]})
+    return srt.new {t = math3d.add(position, {ox * TILE_SIZE / 2, 0, oy * TILE_SIZE / 2}), r = ROTATORS[ddir]}
 end
 
 local function __align(prototype_name, dir)
@@ -241,10 +241,10 @@ local function __new_entity(self, datamodel, typeobject)
         dir = dir,
         x = x,
         y = y,
-        srt = srt.new({
+        srt = srt.new {
             t = position,
             r = ROTATORS[dir],
-        }),
+        },
         fluid_name = "",
         group_id = 0,
     }

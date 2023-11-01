@@ -78,10 +78,10 @@ local function restore_world(gameplay_world)
             dir = dir,
             x = x,
             y = y,
-            srt = srt.new({
+            srt = srt.new {
                 t = math3d.vector(icoord.position(x, y, iprototype.rotate_area(typeobject.area, dir))),
                 r = ROTATORS[dir],
-            }),
+            },
             fluid_name = fluid_name,
         }
         object.gameplay_eid = gameplay_eid

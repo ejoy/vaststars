@@ -199,10 +199,10 @@ local function __new_entity(self, datamodel, typeobject, position, x, y, dir)
         dir = dir,
         x = x,
         y = y,
-        srt = srt.new({
+        srt = srt.new {
             t = math3d.vector(position),
             r = ROTATORS[dir],
-        }),
+        },
         fluid_name = fluid_name,
         group_id = 0,
         recipe = recipe,

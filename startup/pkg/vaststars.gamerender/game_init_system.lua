@@ -6,7 +6,6 @@ local debugger = ecs.require "debugger"
 local NOTHING <const> = debugger.nothing
 local TERRAIN_ONLY <const> = debugger.terrain_only
 local DISABLE_AUDIO <const> = debugger.disable_audio
-local CONSTANT <const> = require "gameplay.interface.constant"
 
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local icanvas = ecs.require "engine.canvas"
@@ -23,7 +22,7 @@ local irender = ecs.require "ant.render|render_system.render"
 local imountain = ecs.require "engine.mountain"
 local iterrain  = ecs.require "terrain"
 local igroup = ecs.require "group"
-local backpack = require "gameplay.interface.backpack"
+local ibackpack = require "gameplay.interface.backpack"
 
 local m = ecs.system 'game_init_system'
 local gameworld_prebuild
@@ -75,7 +74,6 @@ function m:init_world()
         "/pkg/vaststars.resources/sounds/UI.bank",
     }
 
-    -- audio.play("event:/openui1")
     if not DISABLE_AUDIO then
         audio.play("event:/background")
     end
@@ -103,21 +101,13 @@ function m:init_world()
         assert(false)
     end
 
-    if debugger.infinite_item then
-        backpack.set_infinite_item(true)
-    end
+    ibackpack.set_infinite_item(debugger.infinite_item)
     global.startup_args = {}
 end
 
-local TAGS <const> = {
-    "building_new",
-}
-
 function m:gameworld_end()
     local gameplay_ecs = gameplay_core.get_world().ecs
-    for _, tag in ipairs(TAGS) do
-        gameplay_ecs:clear(tag)
-    end
+    gameplay_ecs:clear("building_new")
 end
 
 function m:camera_usage()
