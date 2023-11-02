@@ -112,22 +112,15 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 10},
     task_params = {building = "采矿机I"},
     count = 3,
-    -- task = {"select_entity", 0, "轻型风力发电机"},
-    -- count = 1,
+    effects = {
+      unlock_item = {"轻质石砖"},
+      unlock_recipe = {"轻质石砖"},
+    },
     prerequisites = {"矿区搭建"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     guide_focus = {
-      {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-        x = 112,
-        y = 131,
-        w = 3.2,
-        h = 3.2,
-        color = {0.3, 1, 0, 1},
-        show_arrow = true,
-      },
       {
         camera_x = 112,
         camera_y = 131,
@@ -140,45 +133,6 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  
-
-  prototype "收集矿石" {
-    desc = "仓库选择收货类型",
-    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-    type = { "task" },
-    task = {"unknown", 0, 8},
-    task_params = {items = {"transit|碎石", "transit|铁矿石","transit|铝矿石"}},
-    count = 1,
-    prerequisites = {"风力发电机放置"},
-    tips_pic = {
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
-    },
-    guide_focus = {
-      {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-        x = 111,
-        y = 133,
-        w = 1.2,
-        h = 1.2,
-        color = {0.3, 1, 0, 1},
-        show_arrow = true,
-      },
-      {
-        camera_x = 111,
-        camera_y = 133,
-        w = 1.2,
-        h = 1.2,
-      },
-    },
-    effects = {
-      unlock_item = {"轻质石砖"},
-      unlock_recipe = {"轻质石砖"},
-    },
-    sign_desc = {
-      { desc = "仓库设置收货选择“碎石”、“铁矿石”、“铝矿石”", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-    },
-  }
-
   prototype "生产设置" {
     desc = "组装机配方选择地质科技包1",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
@@ -186,7 +140,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 3},                          
     task_params = {recipe = "轻质石砖"},
     count = 1,
-    prerequisites = {"收集矿石"},
+    prerequisites = {"风力发电机放置"},
     guide_focus = {
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
@@ -317,7 +271,7 @@ local prototype = gameplay.register.prototype
     type = { "task" },
     task = {"unknown", 0, 9},
     task_params = {building = "机头残骸", item = "轻型太阳能板"},
-    count = 2,
+    count = 1,
     prerequisites = {"生产轻质石砖"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -340,7 +294,7 @@ local prototype = gameplay.register.prototype
       },
     },
     sign_desc = {
-      { desc = "从废墟里获取2个太阳能板", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "从废墟里获取1个太阳能板", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -350,7 +304,7 @@ local prototype = gameplay.register.prototype
     type = {"task" },
     task = {"unknown", 0, 10},
     task_params = {building = "轻型太阳能板"},
-    count = 2,
+    count = 1,
     prerequisites = {"太阳能板获取"},
     effects = {
       unlock_item = {"铁板"},
@@ -360,7 +314,7 @@ local prototype = gameplay.register.prototype
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "放置2个轻型太阳能板并确保连入电网", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "放置1个轻型太阳能板并确保连入电网", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -396,28 +350,14 @@ local prototype = gameplay.register.prototype
   --   time = "5s"
   -- }
 
-  prototype "更多仓库" {
-    desc = "放置更多的仓库用于存储物资",
-    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-    type = {"task" },
-    task = {"select_entity", 0, "仓库I"}, 
-    count = 3,
-    prerequisites = {"蓄电池铺设"},
-    tips_pic = {
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
-    },
-    sign_desc = {
-      { desc = "在熔炼炉边放置第3个仓库存储物资", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-    },
-  }
-
   prototype "铁板生产" {
     desc = "规模生产铁板",
     type = { "task" },
     icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
-    task = {"stat_production", 0, "铁板"},
-    count = 5,
-    prerequisites = {"更多仓库"},
+    task = {"unknown", 0, 3}, 
+    task_params = {recipe = "铁板1"},
+    count = 1,
+    prerequisites = {"蓄电池铺设"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -443,7 +383,7 @@ local prototype = gameplay.register.prototype
       unlock_recipe = {"轻型太阳能板"},
     },
     sign_desc = {
-      { desc = "使用熔炼炉生产5个铁板", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "在熔炼炉进行铁板生产", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -451,14 +391,15 @@ local prototype = gameplay.register.prototype
     desc = "制造轻型太阳能板",
     type = { "task" },
     icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
-    task = {"stat_production", 0, "轻型太阳能板"},
-    count = 2,
+    task = {"unknown", 0, 9},
+    task_params = {building = "组装机I", item = "轻型太阳能板"},
+    count = 1,
     prerequisites = {"铁板生产"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "使用组装机生产2个轻型太阳能板", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "用组装机生产并获取1个轻型太阳能板", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -473,7 +414,7 @@ local prototype = gameplay.register.prototype
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "铺设太阳能板让基地发电量达到800kW", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "铺设太阳能板让基地发电量达到600kW", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -528,14 +469,30 @@ local prototype = gameplay.register.prototype
     },
   }
 
+  prototype "锅炉设置" {
+    desc = "规模生产铁板",
+    type = { "task" },
+    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
+    task = {"unknown", 0, 3}, 
+    task_params = {recipe = "卤水沸腾"},
+    count = 1,
+    prerequisites = {"锅炉放置"},
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "在熔炼炉进行铁板生产", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
+
   prototype "地下水挖掘机放置" {
     desc = "放置地下水挖掘机",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = {"task" },
-    task = {"unknown", 0, 10},
-    task_params = {building = "地下水挖掘机I"},
+    task = {"unknown", 0, 11},
+    task_params = {building = "锅炉I", fluids = {"地下卤水"}},
     count = 1,
-    prerequisites = {"锅炉放置"},
+    prerequisites = {"锅炉设置"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -543,7 +500,7 @@ local prototype = gameplay.register.prototype
       unlock_recipe = {"蒸汽发电"},
     },
     sign_desc = {
-      { desc = "放置1台地下水挖掘机并确保连入电网", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "放置1台地下水挖掘机连接锅炉对应液口", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -551,8 +508,8 @@ local prototype = gameplay.register.prototype
     desc = "放置蒸汽发电机",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = {"task" },
-    task = {"unknown", 0, 10},
-    task_params = {building = "蒸汽发电机I"},
+    task = {"unknown", 0, 11},
+    task_params = {building = "蒸汽发电机I", fluids = {"蒸汽"}},
     count = 1,
     prerequisites = {"地下水挖掘机放置"},
     tips_pic = {
@@ -563,7 +520,7 @@ local prototype = gameplay.register.prototype
       unlock_recipe = {"地质科技包1"},
     },
     sign_desc = {
-      { desc = "放置1台蒸汽发电机I并确保连入电网", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "放置1台蒸汽发电机并连接锅炉对应液口", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -583,14 +540,14 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "启动科技研究" {
-    desc = "获得火星岩石加工成石砖的工艺",
+    desc = "进行地质科学分析",
     type = { "tech" },
     icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
     prerequisites = {"生产科技包"},
     ingredients = {
         {"地质科技包", 1},
     },
-    count = 8,
+    count = 5,
     time = "1s"
   }
 

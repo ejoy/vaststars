@@ -66,23 +66,6 @@ local guide2 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..{/g 采矿机}都顺利通电工作了..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},  
-            {"哔哩..现在设置{/color:4bd0ff 仓库}收货{/g 碎石}、{/g 铁矿石}、{/g 铝矿石}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
-        },
-        narrative_end = {
-            task = {
-                "收集矿石",
-            },
-            guide_progress = 10,
-        },
-        prerequisites = {
-            "风力发电机放置",
-        },
-	},
-
-    {
-        name = "",
-		narrative = {
             {"哔哩..{/color:4bd0ff 组装机}设置配方{/g 轻质石砖}进行生产..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
@@ -92,7 +75,7 @@ local guide2 = {
             guide_progress = 10,
         },
         prerequisites = {
-            "收集矿石",
+            "风力发电机放置",
         },
 	},
 
@@ -131,6 +114,22 @@ local guide2 = {
     {
         name = "",
 		narrative = {
+            {"哔哩..我们使用{/color:4bd0ff 组装机}生产一些{/g 轻质石砖}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            task = {
+                "生产轻质石砖",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "仓库互转",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
             {"哔哩..检查新{/color:4bd0ff 废墟}并拾取{/g 太阳能板}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
@@ -147,7 +146,7 @@ local guide2 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..放置{/color:4bd0ff 2个}{/g 轻型太阳能板}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..放置{/color:4bd0ff 1个}{/g 轻型太阳能板}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
@@ -177,22 +176,53 @@ local guide2 = {
         },
 	},
 
-    -- {
-    --     name = "",
-	-- 	narrative = {
-    --         {"哔哩..让我们开始研究制造{/color:4bd0ff 轻型太阳能板}的科技..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
-    --         {"哔哩..只要给{/color:4bd0ff 科研中心}提供{/g 地质科技包},科研就会开展..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
-    --     },
-    --     narrative_end = {
-    --         task = {
-    --             "太阳能制造技术",
-    --         },
-    --         guide_progress = 10,
-    --     },
-    --     prerequisites = {
-    --         "蓄电池铺设",
-    --     },
-	-- },
+    {
+        name = "",
+		narrative = {
+            {"哔哩..使用{/color:4bd0ff 熔炼炉}生产一些{/g 铁板}..哔哩", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            task = {
+                "铁板生产",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "蓄电池铺设",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
+            {"哔哩..有了{/color:4bd0ff 铁板}我们可以生产{/g 轻型太阳能板}..哔哩", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            task = {
+                "太阳能板制造",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "铁板生产",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
+            {"哔哩..因为{/color:4bd0ff 用电设施}增多，基地发电量不足，我们铺设{/g 轻型太阳能板}提高发电量..哔哩", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            task = {
+                "太阳能发电",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "太阳能板制造",
+        },
+	},
 
     {
         name = "",
@@ -207,6 +237,102 @@ local guide2 = {
         },
         prerequisites = {
             "太阳能发电",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
+            {"哔哩..先放置{/g 锅炉}做发电准备..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            task = {
+                "锅炉放置",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "发电机获取",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
+            {"哔哩..前往{/color:4bd0ff 锅炉}进行{/g 卤水沸腾}的工作准备..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            task = {
+                "锅炉设置",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "锅炉放置",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
+            {"哔哩..放置{/g 地下水挖掘机}连接{/color:4bd0ff 锅炉}的对应{/color:4bd0ff 液口}进行原料输送..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            task = {
+                "地下水挖掘机放置",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "锅炉设置",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
+            {"哔哩..放置{/g 蒸汽发电机}连接{/color:4bd0ff 锅炉}的对应{/color:4bd0ff 液口}接收蒸汽发电..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            task = {
+                "发电机放置",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "地下水挖掘机放置",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
+            {"哔哩..现在电力充足，请前往{/color:4bd0ff 组装机}生产{/g 地质科技包}为科学研究进行准备..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            task = {
+                "生产科技包",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "发电机放置",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
+            {"哔哩..{/color:4bd0ff 地质科技包}准备完毕，现在开始科技研究..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            task = {
+                "启动科技研究",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "生产科技包",
         },
 	},
 

@@ -24,13 +24,13 @@ prototype "轻质石砖" {
     recipe_order =  12,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/stone-brick.texture",
     ingredients = {
-        {"碎石", 4},
-        {"铝矿石", 3},
+        {"碎石", 3},
+        {"铝矿石", 2},
     },
     results = {
         {"轻质石砖", 1},
     },
-    time = "6s",
+    time = "3s",
     description = "铁矿石通过金属冶炼获得铁板",
 }
 
@@ -2510,8 +2510,8 @@ prototype "轻型太阳能板" {
     recipe_order =  65,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/solar-panel-design.texture",
     ingredients = {
-        {"铁板", 5},
-        {"轻质石砖", 5},
+        {"铁板", 4},
+        {"轻质石砖", 4},
     },
     results = {
         {"轻型太阳能板", 1},

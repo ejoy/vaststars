@@ -9,7 +9,7 @@ local entities = { {
     y = 123
   }, {
     dir = "N",
-    items = {{ "轻型太阳能板", 2 },{ "蓄电池I", 4 },{ "仓库I", 1 }},
+    items = {{ "轻型太阳能板", 1 },{ "蓄电池I", 4 }},
     prototype_name = "机头残骸",
     x = 140,
     y = 136
@@ -21,7 +21,7 @@ local entities = { {
     y = 114
   },{
     dir = "N",
-    items = {},
+    items = { { "碎石", 0},{ "铁矿石", 0},{ "铝矿石", 0} },
     prototype_name = "仓库I",
     x = 111,
     y = 133
@@ -79,6 +79,12 @@ local entities = { {
     prototype_name = "仓库I",
     x = 128,
     y = 133
+  },{
+    dir = "N",
+    items = {{ "铁板", 6 }},
+    prototype_name = "仓库I",
+    x = 128,
+    y = 134
   },{
     dir = "N",
     items = {},
