@@ -37,7 +37,7 @@ local entities = { {
   y = 131
 }, {
   dir = "N",
-  items = { { "碎石", 42 } },
+  items = { { "碎石", 54 } },
   prototype_name = "仓库I",
   x = 117,
   y = 130
@@ -137,7 +137,7 @@ local entities = { {
   y = 132
 }, {
   dir = "N",
-  items = { { "碎石", 58 } },
+  items = { { "碎石", 60 } },
   prototype_name = "仓库I",
   x = 189,
   y = 133
@@ -252,7 +252,7 @@ local entities = { {
   y = 158
 }, {
   dir = "N",
-  items = { { "铁矿石", 33 }, { "碎石", 0 } },
+  items = { { "铁矿石", 60 }, { "碎石", 0 } },
   prototype_name = "仓库I",
   x = 96,
   y = 159
@@ -297,7 +297,7 @@ local entities = { {
   y = 152
 }, {
   dir = "N",
-  items = { { "碾碎铁矿石", 9 } },
+  items = { { "碾碎铁矿石", 20 } },
   prototype_name = "仓库I",
   x = 97,
   y = 152
@@ -308,7 +308,7 @@ local entities = { {
   y = 152
 }, {
   dir = "N",
-  items = { { "碾碎铁矿石", 9 } },
+  items = { { "碾碎铁矿石", 22 } },
   prototype_name = "仓库I",
   x = 106,
   y = 152
@@ -324,7 +324,7 @@ local entities = { {
   y = 148
 }, {
   dir = "N",
-  items = { { "碾碎铁矿石", 0 }, { "碎石", 1 } },
+  items = { { "碾碎铁矿石", 0 }, { "碎石", 0 } },
   prototype_name = "仓库I",
   x = 108,
   y = 149
@@ -456,7 +456,7 @@ local entities = { {
   y = 92
 }, {
   dir = "N",
-  items = { { "铁矿石", 57 } },
+  items = { { "铁矿石", 59 } },
   prototype_name = "仓库I",
   x = 72,
   y = 92
@@ -467,7 +467,7 @@ local entities = { {
   y = 120
 }, {
   dir = "N",
-  items = { { "铁矿石", 47 } },
+  items = { { "铁矿石", 43 } },
   prototype_name = "仓库I",
   x = 198,
   y = 120
@@ -484,7 +484,7 @@ local entities = { {
   y = 129
 }, {
   dir = "N",
-  items = { { "碎石", 60 }, { "铁矿石", 4 }, { "铝矿石", 60 } },
+  items = { { "碎石", 60 }, { "铁矿石", 0 }, { "铝矿石", 60 } },
   prototype_name = "仓库I",
   x = 97,
   y = 124
@@ -1395,7 +1395,7 @@ local entities = { {
   y = 160
 }, {
   dir = "N",
-  items = { { "石墨", 9 } },
+  items = { { "石墨", 30 } },
   prototype_name = "仓库I",
   x = 129,
   y = 161
@@ -1406,7 +1406,7 @@ local entities = { {
   y = 160
 }, {
   dir = "N",
-  items = { { "石墨", 3 } },
+  items = { { "石墨", 30 } },
   prototype_name = "仓库I",
   x = 122,
   y = 161
@@ -2935,13 +2935,13 @@ local entities = { {
   y = 136
 }, {
   dir = "N",
-  items = { { "气候科技包", 1 }, { "气候科技包", 1 }, { "气候科技包", 2 }, { "气候科技包", 2 } },
+  items = { { "气候科技包", 8 }, { "气候科技包", 8 }, { "气候科技包", 8 }, { "气候科技包", 8 } },
   prototype_name = "仓库I",
   x = 168,
   y = 136
 }, {
   dir = "N",
-  items = { { "地质科技包", 8 }, { "地质科技包", 9 }, { "地质科技包", 9 }, { "地质科技包", 9 } },
+  items = { { "地质科技包", 11 }, { "地质科技包", 12 }, { "地质科技包", 11 }, { "地质科技包", 11 } },
   prototype_name = "仓库I",
   x = 169,
   y = 136
@@ -2962,7 +2962,7 @@ local entities = { {
   y = 137
 }, {
   dir = "N",
-  items = { { "地质科技包", 5 }, { "地质科技包", 5 }, { "地质科技包", 6 }, { "地质科技包", 6 } },
+  items = { { "地质科技包", 9 }, { "地质科技包", 9 }, { "地质科技包", 8 }, { "地质科技包", 8 } },
   prototype_name = "仓库I",
   x = 174,
   y = 136
@@ -2999,16 +2999,6 @@ local entities = { {
   x = 176,
   y = 138
 }, {
-  dir = "S",
-  fluid_name = {
-    input = {},
-    output = { "地热" }
-  },
-  prototype_name = "地热井I",
-  recipe = "地热采集",
-  x = 209,
-  y = 141
-}, {
   dir = "N",
   items = { { "铁矿石", 60 } },
   prototype_name = "仓库I",
@@ -3027,7 +3017,7 @@ local entities = { {
   y = 158
 }, {
   dir = "N",
-  items = { { "铁矿石", 29 }, { "碎石", 1 } },
+  items = { { "铁矿石", 60 }, { "碎石", 0 } },
   prototype_name = "仓库I",
   x = 106,
   y = 159
@@ -3049,16 +3039,6 @@ local entities = { {
   recipe = "机械科技包1",
   x = 186,
   y = 175
-}, {
-  dir = "S",
-  fluid_name = {
-    input = { "地热" },
-    output = {}
-  },
-  prototype_name = "蒸汽发电机I",
-  recipe = "地热气发电",
-  x = 210,
-  y = 136
 }, {
   dir = "S",
   fluid_name = {
@@ -3404,7 +3384,7 @@ local entities = { {
   y = 150
 }, {
   dir = "N",
-  items = { { "碎石", 60 }, { "铁矿石", 0 }, { "铝矿石", 2 } },
+  items = { { "碎石", 60 }, { "铁矿石", 0 }, { "铝矿石", 17 } },
   prototype_name = "仓库I",
   x = 123,
   y = 148
@@ -3507,7 +3487,7 @@ local entities = { {
   y = 93
 }, {
   dir = "N",
-  items = { { "铝矿石", 3 } },
+  items = { { "铝矿石", 2 } },
   prototype_name = "仓库I",
   x = 130,
   y = 99
@@ -3559,8 +3539,104 @@ local entities = { {
   prototype_name = "无人机平台I",
   x = 149,
   y = 99
+}, {
+  dir = "W",
+  fluid_name = {
+    input = { "空气", "地下卤水" },
+    output = {}
+  },
+  prototype_name = "水电站I",
+  recipe = "气候科技包T1",
+  x = 140,
+  y = 117
+}, {
+  dir = "W",
+  fluid_name = {
+    input = { "空气", "地下卤水" },
+    output = {}
+  },
+  prototype_name = "水电站I",
+  recipe = "气候科技包T1",
+  x = 156,
+  y = 117
+}, {
+  dir = "E",
+  fluid_name = {
+    input = {},
+    output = { "地下卤水" }
+  },
+  prototype_name = "地下水挖掘机I",
+  recipe = "离岸抽水",
+  x = 142,
+  y = 114
+}, {
+  dir = "E",
+  fluid_name = {
+    input = {},
+    output = { "地下卤水" }
+  },
+  prototype_name = "地下水挖掘机I",
+  recipe = "离岸抽水",
+  x = 158,
+  y = 114
+}, {
+  dir = "N",
+  fluid_name = {
+    input = {},
+    output = { "空气" }
+  },
+  prototype_name = "空气过滤器I",
+  recipe = "空气过滤",
+  x = 156,
+  y = 115
+}, {
+  dir = "N",
+  fluid_name = {
+    input = {},
+    output = { "空气" }
+  },
+  prototype_name = "空气过滤器I",
+  recipe = "空气过滤",
+  x = 140,
+  y = 115
+}, {
+  dir = "N",
+  prototype_name = "无人机平台I",
+  x = 146,
+  y = 122
+}, {
+  dir = "N",
+  prototype_name = "无人机平台I",
+  x = 153,
+  y = 122
+}, {
+  dir = "S",
+  fluid_name = {
+    input = {},
+    output = { "地热" }
+  },
+  prototype_name = "地热井I",
+  recipe = "地热采集",
+  x = 209,
+  y = 141
+}, {
+  dir = "S",
+  fluid_name = {
+    input = { "地热" },
+    output = {}
+  },
+  recipe = "地热气发电",
+  prototype_name = "蒸汽发电机I",
+  x = 210,
+  y = 136
 } }
-local backpack = {}
+local backpack = { {
+  count = 2,
+  prototype_name = "蒸汽发电机I"
+}, {
+  count = 1,
+  prototype_name = "地热井I"
+} }
 local road = { {
   dir = "N",
   prototype_name = "砖石公路-I型",
