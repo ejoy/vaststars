@@ -15,22 +15,8 @@ local hash_index = [[
 {ROOT}
 </pre>
 <p>{TOTAL} files</p>
-<p><ul>
-%s
-</ul></p>
 </body>
 ]]
-
-function init_index()
-	local tmp = {}
-	for i = 0, 0xff do
-		table.insert(tmp, ('<li><a href="/app/.repo/%02x">%02x</a> {%02x} files </li>\n'):format(i,i,i))
-	end
-	local content = table.concat(tmp)
-	hash_index = hash_index:format(content)
-end
-
-init_index()
 
 local function count_files(path)
 	local n = 0
@@ -43,9 +29,6 @@ local function count_files(path)
 end
 
 local function invalid_path(path)
-	if #path < 3 then
-		return true
-	end
 	path = path:lower()
 	if path:find "[^%da-f]" then
 		return true
@@ -103,8 +86,7 @@ local function view_file(fullpath)
 end
 
 local function get_hash_prefix(prefix)
-	local head = prefix:sub(1,2)
-	local path = REPO_PATH .. head
+	local path = REPO_PATH
 	local files = {}
 	local n = #prefix
 	for file in lfs.pairs(path) do
@@ -156,21 +138,14 @@ end
 local function get_hash_index()
 	local total = 0
 	local count = {}
-	for i = 0, 0xff do
-		local name = string.format("%02x", i)
-		local path = REPO_PATH .. name
-		local n = count_files(path)
-		total = total + n
-		count[name] = n
-	end
-	count.TOTAL = total
+	local n = count_files(REPO_PATH)
+	count.TOTAL = n
 	count.ROOT = get_root()
 	return (hash_index:gsub ("{(.-)}", count))
 end
 
 local function get_resource(hash)
-	local head = hash:sub(1,2)
-	local path = REPO_PATH .. "/" .. head .. "/" .. hash .. ".resource"
+	local path = REPO_PATH .. "/" .. hash .. ".resource"
 	local f = io.open(path, "rb")
 	if not f then
 		return
@@ -194,8 +169,7 @@ local function get_dir_resource(root)
 end
 
 local function open_hash_file(hash)
-	local head = hash:sub(1,2)
-	local fullpath = REPO_PATH .. "/" .. head .. "/" .. hash
+	local fullpath = REPO_PATH .. "/" .. hash
 	return io.open(fullpath, "rb")
 end
 
