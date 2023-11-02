@@ -151,6 +151,70 @@ local guide2 = {
     {
         name = "",
 		narrative = {
+            {"哔哩.. 在{/color:4bd0ff 组装机}里用{/color:4bd0ff 石砖}生产一些{/g 砖石公路}吧..哔哩", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            task = {
+                "生产公路",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "石砖大生产",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
+            {"哔哩.. 下面我们使用{/color:4bd0ff 熔炼炉}炼制一些{/g 铁板}..哔哩", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            task = {
+                "铁板大生产",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "生产公路",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
+            {"哔哩.. 我们可以用{/color:4bd0ff 铁板}可以生产更多的{/g 运输车辆}..哔哩", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            task = {
+                "制造运输车",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "铁板大生产",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
+            {"哔哩.. 前往{/color:4bd0ff 物流中心}派遣更多的{/g 运输车辆}..哔哩", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            task = {
+                "更多运输车",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "制造运输车",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
             {"哔哩.. 有了{/color:4bd0ff 石砖}和{/color:4bd0ff 铁板}这些加工材料，允许我们生产更多{/g 采矿机}..哔哩", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {

@@ -268,7 +268,8 @@ local prototype = gameplay.register.prototype
     desc = "生产砖石公路",
     type = { "task" },
     icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
-    task = {"stat_production", 0, "砖石公路-X型"},
+    task = {"unknown", 0, 9},
+    task_params = {building = "组装机I", item = "砖石公路-X型"},
     count = 15,
     prerequisites = {"石砖大生产"},
     effects = {
@@ -279,7 +280,7 @@ local prototype = gameplay.register.prototype
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "使用组装机生产15段砖石公路", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "从组装机里获取生产好的15段砖石公路", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -307,14 +308,15 @@ local prototype = gameplay.register.prototype
     desc = "制造轻型运输车",
     type = { "task" },
     icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
-    task = {"stat_production", 0, "轻型运输车"},
+    task = {"unknown", 0, 9},
+    task_params = {building = "组装机I", item = "轻型运输车"},
     count = 1,
     prerequisites = {"铁板大生产"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "使用组装机生产1辆轻型运输车", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "从组装机里获取生产完毕的1辆轻型运输车", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -335,6 +337,23 @@ local prototype = gameplay.register.prototype
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate3.texture",
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate4.texture",
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate5.texture",
+    },
+    guide_focus = {
+      {
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        x = 154.5,
+        y = 116.5,
+        w = 5.2,
+        h = 5.2,
+        color = {0.3, 1, 0, 1},
+        show_arrow = true,
+      },
+      {
+        camera_x = 152,
+        camera_y = 114,
+        w = 5.2,
+        h = 5.2,
+      },
     },
     sign_desc = {
       { desc = "指挥中心总共派遣3辆运输车", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
