@@ -364,14 +364,14 @@ local prototype = gameplay.register.prototype
     desc = "制造轻型采矿机",
     type = { "task" },
     icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
-    task = {"stat_production", 0, "轻型采矿机"},
+    task_params = {building = "组装机I", item = "轻型采矿机"},
     count = 1,
     prerequisites = {"更多运输车"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "使用组装机生产1个轻型采矿机", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "使用组装机生产并获取1个轻型采矿机", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -467,7 +467,7 @@ local prototype = gameplay.register.prototype
     ingredients = {
         {"地质科技包", 1},
     },
-    count = 8,
+    count = 5,
     time = "1s"
   }
 

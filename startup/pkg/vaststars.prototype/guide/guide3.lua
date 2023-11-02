@@ -263,6 +263,22 @@ local guide2 = {
     {
         name = "",
 		narrative = {
+            {"哔哩.. 让我们完成最后{/color:4bd0ff 科技研究}..哔哩", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            task = {
+                "完成科技研究",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "科技包大生产",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
             {"哔哩..恭喜你结束了{/g 物流教学}..哔哩..(高兴)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
