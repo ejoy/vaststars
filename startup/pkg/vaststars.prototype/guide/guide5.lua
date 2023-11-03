@@ -1,4 +1,4 @@
-local guide2 = {
+local guide5 = {
 	{
         name = "",
 		narrative = {
@@ -14,6 +14,22 @@ local guide2 = {
         prerequisites = {},
 	},
 
+	{
+        name = "",
+		narrative = {
+            {"哔哩..欢迎进入{/g 自动化教学}", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            task = {
+                "采矿机规划",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "自动化教学",
+        },
+	},
+
     {
         name = "",
 		narrative = {
@@ -22,15 +38,15 @@ local guide2 = {
         narrative_end = {
             pop_chapter = {"祝贺","教学完成"},
             task = {
-                "自动化教学结束",
+                "自动化结束",
             },
             guide_progress = 10,
         },
         prerequisites = {
-            "自动化教学",
+            "采矿机规划",
         },
 	},
    
 }
 
-return guide2
+return guide5

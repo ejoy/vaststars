@@ -5931,7 +5931,7 @@ return {
     road = road,
     mineral = mineral,
     mountain = mountain,
-    order = 8,
+    order = 9,
     guide = guide,
     mode = "free",
     start_tech = "迫降火星",

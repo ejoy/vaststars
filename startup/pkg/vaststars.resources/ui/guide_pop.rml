@@ -5,7 +5,7 @@
                 font: "阿里巴巴普惠体";
             }
             .guide-speech-block {
-                margin-left: 10vmin;
+                /* margin-left: 10vmin; */
                 flex-direction: row;
                 width: 85%;
                 height:100%;
@@ -74,7 +74,7 @@
         <div style = "flex-direction: row; justify-content: center; margin-bottom: 2vmin; align-items: flex-end; width: 100%; height:98%; animation:0.4s linear 0s enlarge;" data-event-click="click()">
             <div class="panel" style="width:40%; height:24%;  align-items: center; justify-content: flex-start;">
                 <richtext class = "guide-speech-block">{{speech}}</richtext>
-                <div class="guide-avatar-block" data-style-background-image="avatar"/>
+                <!-- div class="guide-avatar-block" data-style-background-image="avatar"/ -->
                 <div class="guide-info-block"/>
             </div>
         </div>

@@ -4449,7 +4449,7 @@ return {
     road = road,
     mineral = mineral,
     mountain = mountain,
-    order = 7,
+    order = 8,
     guide = guide,
     show = true,
     mode = "free",
