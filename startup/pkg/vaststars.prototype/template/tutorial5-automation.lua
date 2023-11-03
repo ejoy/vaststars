@@ -3042,7 +3042,7 @@ local entities = { {
 }, {
   dir = "S",
   fluid_name = {
-    input = { "地热" },
+    input = { "地热气" },
     output = {}
   },
   prototype_name = "蒸汽发电机I",
@@ -3052,7 +3052,7 @@ local entities = { {
 }, {
   dir = "S",
   fluid_name = {
-    input = { "地热" },
+    input = { "地热气" },
     output = {}
   },
   prototype_name = "蒸汽发电机I",
@@ -3613,7 +3613,7 @@ local entities = { {
   dir = "S",
   fluid_name = {
     input = {},
-    output = { "地热" }
+    output = { "地热气" }
   },
   prototype_name = "地热井I",
   recipe = "地热采集",
@@ -3622,7 +3622,7 @@ local entities = { {
 }, {
   dir = "S",
   fluid_name = {
-    input = { "地热" },
+    input = { "地热气" },
     output = {}
   },
   recipe = "地热气发电",
