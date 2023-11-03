@@ -5933,7 +5933,7 @@ return {
   mountain = mountain,
   order = 7,
   guide = guide,
-  show = false,
-  mode = "adventure",
+  show = true,
+  mode = "free",
   start_tech = "自动化教学",
 }

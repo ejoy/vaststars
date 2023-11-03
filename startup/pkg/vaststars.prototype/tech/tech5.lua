@@ -20,8 +20,6 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  
-
   prototype "自动化教学结束" {
     desc = "教学结束",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
