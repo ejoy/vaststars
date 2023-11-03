@@ -44,48 +44,21 @@ local Resource <const> = {
 
 local handler = {}
 
-if __ANT_RUNTIME__ then
-    function handler.file(f)
-        vfs.realpath(f)
-    end
-    function handler.dir(f)
-        for file, file_status in fs.pairs(fs.path(f)) do
-            if file_status:is_directory() then
-                status_addtask {
-                    type = "dir",
-                    filename = file:string(),
-                }
-            else
-                status_addtask {
-                    type = "file",
-                    filename = file:string(),
-                }
-            end
-        end
-    end
-else
-    function handler.file(f)
-    end
-    function handler.compile(f)
-        assetmgr.compile_file(vfs.realpath(f))
-    end
-    function handler.dir(f)
-        local lfs = require "bee.filesystem"
-        for file in fs.pairs(fs.path(f)) do
-            if lfs.is_directory(file:localpath()) then
-                status_addtask {
-                    type = "dir",
-                    filename = file:string(),
-                }
-            else
-                local ext = file:extension():string()
-                if Resource[ext] then
-                    status_addtask {
-                        type = "compile",
-                        filename = file:string(),
-                    }
-                end
-            end
+function handler.file(f)
+    vfs.realpath(f)
+end
+function handler.dir(f)
+    for file, file_status in fs.pairs(fs.path(f)) do
+        if file_status:is_directory() then
+            status_addtask {
+                type = "dir",
+                filename = file:string(),
+            }
+        else
+            status_addtask {
+                type = "file",
+                filename = file:string(),
+            }
         end
     end
 end

@@ -1,9 +1,11 @@
 block:
 	/pkg/ant.bake
 	/pkg/ant.editor
-	/pkg/ant.efk/efkbgfx
+#	/pkg/ant.efk/efkbgfx
 	/pkg/ant.imgui
-	/pkg/ant.resources.binary
+#	/pkg/ant.resources.binary
+	/pkg/ant.resources.binary/meshes
+	/pkg/ant.resources.binary/test
 	/pkg/ant.vfs
 	/pkg/vaststars.mod.test
 	/pkg/vaststars.tools
