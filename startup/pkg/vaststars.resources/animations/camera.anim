@@ -1,31 +1,20 @@
 ---
-duration: 3.02
+duration: 2
 name: camera
 sample_ratio: 50
-skeleton: /pkg/vaststars.resources/glbs/animation/camera.glb|animations/skeleton.ozz
 target_anims:
   ---
   clips:
     ---
     amplitude_pos: 0
-    amplitude_rot: 60
-    direction: 1
+    amplitude_rot: 90
+    direction: 2
     random_amplitude: false
-    range: {0, 65}
+    range: {0, 99}
     repeat_count: 1
     rot_axis: 1
-    tween: 4
-    type: 1
-    ---
-    amplitude_pos: 80
-    amplitude_rot: 0
-    direction: 1
-    random_amplitude: false
-    range: {66, 150}
-    repeat_count: 1
-    rot_axis: 2
     tween: 1
     type: 1
-  inherit: {false, false, true}
-  target_name: Bone
-type: ske
+  inherit: {false, false, false}
+  target_name: Plane_P1
+type: srt
