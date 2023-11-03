@@ -253,7 +253,7 @@ return function ()
 
     local UNKNOWN <const> = 5 -- custom task type, see also register_unit("task", ...)
     for _, typeobject in pairs(iprototype.each_type("task")) do
-        local task_type, _, custom_type = string.unpack("<I2I2I2", typeobject.task) -- second param is multiple
+        local task_type, _, custom_type = string.unpack("<I2I2I2", typeobject.task or error(("`%s` missing task parameter"):format(typeobject.name))) -- second param is multiple
         if task_type ~= UNKNOWN then
             goto continue
         end
