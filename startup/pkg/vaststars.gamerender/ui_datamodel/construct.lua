@@ -376,13 +376,13 @@ local function move_focus(e)
 	end
 end
 
-local function pickupObject(datamodel, position, func)
+local function pickupObject(datamodel, position, blur)
     local coord = icoord.position2coord(position)
     if not coord then
         return false
     end
 
-    local o = ipick_object[func](coord[1], coord[2])
+    local o = ipick_object.pick(coord[1], coord[2], blur)
     if o and o.class == CLASS.Lorry then
         if pick_lorry_id then
             __unpick_lorry(pick_lorry_id)
@@ -511,7 +511,7 @@ function M.update(datamodel)
         iui.leave()
         gesture_tap_changed = true
         local pos = icamera_controller.screen_to_world(v.x, v.y, XZ_PLANE)
-        if pickupObject(datamodel, pos, "blur_pick") then
+        if pickupObject(datamodel, pos, true) then
             audio.play "event:/ui/click"
             leave = false
         end
@@ -525,7 +525,7 @@ function M.update(datamodel)
         end
         if e.state == "began" then
             local pos = icamera_controller.screen_to_world(e.x, e.y, XZ_PLANE)
-            pickupObject(datamodel, pos, "pick")
+            pickupObject(datamodel, pos)
             icamera_controller.lock_axis("xz-axis")
             icamera_controller.toggle_view("pickup", math3d.set_index(pos, 2, 0))
 
@@ -549,7 +549,7 @@ function M.update(datamodel)
         log.info("longpress_startpoint", longpress_startpoint.x, longpress_startpoint.y)
         __clean(datamodel, false)
         local pos = icamera_controller.screen_to_world(longpress_startpoint.x, longpress_startpoint.y, XZ_PLANE)
-        pickupObject(datamodel, pos, "pick")
+        pickupObject(datamodel, pos)
     end
 
     for _, _, _, object_id in teardown_mb:unpack() do

@@ -504,9 +504,13 @@ local function touch_end(self, datamodel)
 end
 
 local function confirm(self, datamodel)
-    local pickup_object = assert(self.pickup_object)
+    local pickup_object = self.pickup_object
+    if not pickup_object then
+        return
+    end
     local succ = self:check_construct_detector(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir)
     if not succ then
+        self.pickup_object = nil
         log.info("can not construct")
         return
     end

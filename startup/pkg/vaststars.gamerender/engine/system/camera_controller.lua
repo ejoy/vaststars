@@ -10,25 +10,6 @@ local FPS <const> = CONSTANT.FPS
 local math3d = require "math3d"
 local XZ_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
 
-local iom = ecs.require "ant.objcontroller|obj_motion"
-local mathpkg = import_package "ant.math"
-local mu, mc = mathpkg.util, mathpkg.constant
-local irq = ecs.require "ant.render|render_system.renderqueue"
-local ic = ecs.require "ant.camera|camera"
-local create_queue = require "utility.queue"
-local create_mathqueue = require "utility.mathqueue"
-local hierarchy = require "hierarchy"
-local animation = hierarchy.animation
-local skeleton = hierarchy.skeleton
-local math_max = math.max
-local math_min = math.min
-
-local camera_controller = ecs.system "camera_controller"
-local icamera_controller = {}
-
-local gesture_pinch = world:sub {"gesture", "pinch"}
-local gesture_pan = world:sub {"gesture", "pan"}
-
 local function read_datalist(path)
     local fs = require "filesystem"
     local datalist = require "datalist"
@@ -40,7 +21,6 @@ local CAMERA_CONSTRUCT <const> = read_datalist "/pkg/vaststars.resources/camera_
 local CAMERA_PICKUP <const> = read_datalist "/pkg/vaststars.resources/camera_pickup.prefab" [1].data.scene
 
 local CAMERA_DEFAULT_ROTATION <const> = CAMERA_DEFAULT.r and math3d.constant("quat", CAMERA_DEFAULT.r) or mc.IDENTITY_QUAT
-
 local CAMERA_CONSTRUCT_ROTATION <const> = CAMERA_CONSTRUCT.r and math3d.constant("quat", CAMERA_CONSTRUCT.r) or mc.IDENTITY_QUAT
 local CAMERA_CONSTRUCT_POSITION <const> = CAMERA_CONSTRUCT.t and math3d.constant("v4", CAMERA_CONSTRUCT.t) or mc.ZERO_PT
 assert(math3d.index(CAMERA_CONSTRUCT_POSITION, 1) == 0)
@@ -53,21 +33,29 @@ assert(math3d.index(CAMERA_PICKUP_POSITION, 1) == 0)
 assert(math3d.index(CAMERA_PICKUP_POSITION, 3) == 0)
 
 local CAMERA_DEFAULT_YAIXS <const> = CAMERA_DEFAULT.t[2]
-local CAMERA_YAIXS_MIN <const> = CAMERA_DEFAULT_YAIXS - 280
-local CAMERA_YAIXS_MAX <const> = CAMERA_DEFAULT_YAIXS + 150
+local CAMERA_POSITION_MIN <const> = math3d.constant { type = "v4", -1000, CAMERA_DEFAULT_YAIXS - 280, -1450}
+local CAMERA_POSITION_MAX <const> = math3d.constant { type = "v4",  1000, CAMERA_DEFAULT_YAIXS + 150,   800}
 
-local CAMERA_XAIXS_MIN <const> = -1000
-local CAMERA_XAIXS_MAX <const> = 1000
-local CAMERA_ZAIXS_MIN <const> = -1450
-local CAMERA_ZAIXS_MAX <const> = 800
+local iom = ecs.require "ant.objcontroller|obj_motion"
+local mathpkg = import_package "ant.math"
+local mu, mc = mathpkg.util, mathpkg.constant
+local irq = ecs.require "ant.render|render_system.renderqueue"
+local ic = ecs.require "ant.camera|camera"
+local create_queue = require "utility.queue"
+local create_mathqueue = require "utility.mathqueue"
+local hierarchy = require "hierarchy"
+local animation = hierarchy.animation
+local skeleton = hierarchy.skeleton
+
+local camera_controller = ecs.system "camera_controller"
+local icamera_controller = {}
+
+local gesture_pinch = world:sub {"gesture", "pinch"}
+local gesture_pan = world:sub {"gesture", "pan"}
 
 local cam_cmd_queue = create_queue()
 local cam_motion_matrix_queue = create_mathqueue()
 local LockAxis
-
-local function __clamp(v, min, max)
-    return math_max(min, math_min(v, max))
-end
 
 local function zoom(factor, x, y)
     local ce <close> = world:entity(irq.main_camera())
@@ -78,19 +66,16 @@ local function zoom(factor, x, y)
     local pos = math3d.muladd(dir, factor * MOVE_SPEED, pos)
 
     local y = math3d.index(pos, 2)
-    if y >= CAMERA_YAIXS_MIN and y <= CAMERA_YAIXS_MAX then
-        pos = math3d.set_index(pos, 1, __clamp(math3d.index(pos, 1), CAMERA_XAIXS_MIN, CAMERA_XAIXS_MAX))
-        pos = math3d.set_index(pos, 3, __clamp(math3d.index(pos, 3), CAMERA_ZAIXS_MIN, CAMERA_ZAIXS_MAX))
-        iom.set_position(ce, pos)
+    if y >= math3d.index(CAMERA_POSITION_MIN, 2) and y <= math3d.index(CAMERA_POSITION_MAX, 2) then
+        iom.set_position(ce, mu.clamp_vec(pos, CAMERA_POSITION_MIN, CAMERA_POSITION_MAX))
         world:pub {"camera_zoom"}
     end
 end
 
-local function focus_on_position(position)
+local function focus_on_position(ce, position)
     math3d.unmark(position)
 
-    local ce <close> = world:entity(irq.main_camera())
-    local p = icamera_controller.get_central_position()
+    local p = icamera_controller.get_central_position(ce)
     local delta = math3d.set_index(math3d.sub(position, p), 2, 0) -- the camera is always moving in the x/z axis and the y axis is always 0
     return iom.get_scale(ce), iom.get_rotation(ce), math3d.add(iom.get_position(ce), delta)
 end
@@ -261,7 +246,7 @@ local function __handle_camera_motion(ce)
         local cmd = assert(cam_cmd_queue:pop())
         local c = cmd[1]
         if c[1] == "focus_on_position" then
-            __add_camera_track(ce, focus_on_position(table.unpack(c, 2)))
+            __add_camera_track(ce, focus_on_position(ce, table.unpack(c, 2)))
         elseif c[1] == "toggle_view" then
             local t = toggle_view(table.unpack(c, 2))
             cam_motion_matrix_queue:push(t)
@@ -321,9 +306,7 @@ local __handle_drop_camera; do
                 end
             end
 
-            pos = math3d.set_index(pos, 1, __clamp(math3d.index(pos, 1), CAMERA_XAIXS_MIN, CAMERA_XAIXS_MAX))
-            pos = math3d.set_index(pos, 3, __clamp(math3d.index(pos, 3), CAMERA_ZAIXS_MIN, CAMERA_ZAIXS_MAX))
-
+            pos = mu.clamp_vec(pos, CAMERA_POSITION_MIN, CAMERA_POSITION_MAX)
             iom.set_position(ce, pos)
             world:pub {"dragdrop_camera", math3d.ref(delta_vec)}
         end
@@ -361,14 +344,14 @@ function icamera_controller.screen_to_world(x, y, plane, vp)
 end
 
 function icamera_controller.world_to_screen(position)
-    local ce <close> = world:entity(irq.main_camera(), "camera:in")
+    local ce = world:entity(irq.main_camera(), "camera:in")
     local vp = ce.camera.viewprojmat
     local vr = irq.view_rect("main_queue")
     return mu.world_to_screen(vp, vr, position)
 end
 
-function icamera_controller.get_central_position()
-    local ce <close> = world:entity(irq.main_camera())
+function icamera_controller.get_central_position(ce)
+    ce = ce or world:entity(irq.main_camera())
     local ray = {o = iom.get_position(ce), d = math3d.mul(math.maxinteger, iom.get_direction(ce))}
     return math3d.muladd(ray.d, math3d.plane_ray(ray.o, ray.d, XZ_PLANE), ray.o)
 end

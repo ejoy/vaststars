@@ -1,4 +1,114 @@
 ---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      r: {0, 0, 0, 1}
+      t: {0, 11, 11}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    shelf2
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      r: {0, 0, 0, 1}
+      t: {6, 11, 11}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    shelf3
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      r: {0, 0, 0, 1}
+      t: {-6, 11, 11}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    shelf1
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      r: {0, -1, 0, -4.371138828673793e-08}
+      t: {0, 8, -11}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    shelf5
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      r: {0, -1, 0, -4.371138828673793e-08}
+      t: {6, 8, -11}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    shelf6
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      r: {0, -1, 0, -4.371138828673793e-08}
+      t: {-6, 8, -11}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    shelf4
+---
+file: mesh.prefab
+op: copyfile
+path: low_power.prefab
+---
+file: mesh.prefab
+op: copyfile
+path: work.prefab
+---
 file: images/Mars-assembling_normal.texture
 op: add
 path: /maxsize
@@ -18,113 +128,6 @@ file: images/Mars-assembling_light.texture
 op: add
 path: /maxsize
 value: 64
----
-file: mesh.prefab
-op: add
-path: /-
-value:
-  data:
-    scene:
-      r: {0, 1, 0, -4.371138828673793e-08}
-      t: {0, 11, 11}
-    slot:
-      follow_flag: 1
-      joint_name: None
-  mount: 1
-  policy:
-    ant.animation|slot
-  tag:
-    shelf2
----
-file: mesh.prefab
-op: add
-path: /-
-value:
-  data:
-    scene:
-      r: {0, 1, 0, -4.371138828673793e-08}
-      t: {6, 11, 11}
-    slot:
-      follow_flag: 1
-      joint_name: None
-  mount: 1
-  policy:
-    ant.animation|slot
-  tag:
-    shelf3
----
-file: mesh.prefab
-op: add
-path: /-
-value:
-  data:
-    scene:
-      r: {0, 1, 0, -4.371138828673793e-08}
-      t: {-6, 11, 11}
-    slot:
-      follow_flag: 1
-      joint_name: None
-  mount: 1
-  policy:
-    ant.animation|slot
-  tag:
-    shelf1
----
-file: mesh.prefab
-op: add
-path: /-
-value:
-  data:
-    scene:
-      t: {0, 8, -11}
-    slot:
-      follow_flag: 1
-      joint_name: None
-  mount: 1
-  policy:
-    ant.animation|slot
-  tag:
-    shelf5
----
-file: mesh.prefab
-op: add
-path: /-
-value:
-  data:
-    scene:
-      t: {6, 8, -11}
-    slot:
-      follow_flag: 1
-      joint_name: None
-  mount: 1
-  policy:
-    ant.animation|slot
-  tag:
-    shelf6
----
-file: mesh.prefab
-op: add
-path: /-
-value:
-  data:
-    scene:
-      t: {-6, 8, -11}
-    slot:
-      follow_flag: 1
-      joint_name: None
-  mount: 1
-  policy:
-    ant.animation|slot
-  tag:
-    shelf4
----
-file: mesh.prefab
-op: copyfile
-path: low_power.prefab
----
-file: mesh.prefab
-op: copyfile
-path: work.prefab
 ---
 file: low_power.prefab
 op: replace
@@ -163,7 +166,7 @@ value:
   ---
   data:
     scene:
-      r: {0, 1, 0, -4.371138828673793e-08}
+      r: {0, 0, 0, 1}
       t: {0, 11, 11}
     slot:
       follow_flag: 1
@@ -176,7 +179,7 @@ value:
   ---
   data:
     scene:
-      r: {0, 1, 0, -4.371138828673793e-08}
+      r: {0, 0, 0, 1}
       t: {6, 11, 11}
     slot:
       follow_flag: 1
@@ -189,7 +192,7 @@ value:
   ---
   data:
     scene:
-      r: {0, 1, 0, -4.371138828673793e-08}
+      r: {0, 0, 0, 1}
       t: {-6, 11, 11}
     slot:
       follow_flag: 1
@@ -202,6 +205,7 @@ value:
   ---
   data:
     scene:
+      r: {0, -1, 0, -4.371138828673793e-08}
       t: {0, 8, -11}
     slot:
       follow_flag: 1
@@ -214,6 +218,7 @@ value:
   ---
   data:
     scene:
+      r: {0, -1, 0, -4.371138828673793e-08}
       t: {6, 8, -11}
     slot:
       follow_flag: 1
@@ -226,6 +231,7 @@ value:
   ---
   data:
     scene:
+      r: {0, -1, 0, -4.371138828673793e-08}
       t: {-6, 8, -11}
     slot:
       follow_flag: 1
