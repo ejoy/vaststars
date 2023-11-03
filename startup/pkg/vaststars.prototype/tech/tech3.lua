@@ -363,6 +363,7 @@ local prototype = gameplay.register.prototype
   prototype "制造采矿机" {
     desc = "制造轻型采矿机",
     type = { "task" },
+    task = {"unknown", 0, 9},
     icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
     task_params = {building = "组装机I", item = "轻型采矿机"},
     count = 1,
