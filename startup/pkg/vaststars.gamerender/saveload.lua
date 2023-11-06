@@ -258,9 +258,6 @@ function M:restore(index)
     restore_world(gameplay_world)
     gameplay_core.set_changed(CHANGED_FLAG_ALL)
     gameplay_core.world_update = true
-
-    iui.open({rml = "/pkg/vaststars.resources/ui/construct.rml"})
-    iui.open({rml = "/pkg/vaststars.resources/ui/message_pop.rml"})
     print("restore success", fullpath)
     return true
 end
@@ -310,8 +307,6 @@ function M:restart(mode, game_template_file)
     gameplay_core.set_changed(CHANGED_FLAG_ALL)
     gameplay_core.world_update = true
 
-    iui.open({rml = "/pkg/vaststars.resources/ui/construct.rml"})
-    iui.open({rml = "/pkg/vaststars.resources/ui/message_pop.rml"})
     if mode then
         gameplay_core.get_storage().game_mode = mode
     end

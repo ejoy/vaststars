@@ -82,12 +82,7 @@ function M.update(datamodel)
     for _ in back_to_main_menu_mb:unpack() do
         iui.close("/pkg/vaststars.resources/ui/option_pop.rml")
         iui.close("/pkg/vaststars.resources/ui/main_menu.rml")
-        local window = import_package "ant.window"
-        window.reboot {
-            feature = {
-                "vaststars.gamerender|login",
-            }
-        }
+        imain_menu_manager.login()
     end
 
     for _ in lock_group_mb:unpack() do

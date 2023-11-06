@@ -30,9 +30,15 @@ local function load_game(index)
     return true
 end
 
+local function login()
+    global.startup_args = {"login"}
+    rebot()
+end
+
 return {
     rebot = rebot,
     load_game = load_game,
     new_game = new_game,
     continue_game = continue_game,
+    login = login,
 }

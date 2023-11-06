@@ -17,11 +17,9 @@ end
 
 local bgfx = require 'bgfx'
 local gameplay_core = require "gameplay.core"
-local icamera_controller = ecs.require "engine.system.camera_controller"
 local audio = import_package "ant.audio"
 local rhwi = import_package "ant.hwi"
 local font = import_package "ant.font"
-local iui = ecs.require "engine.system.ui_system"
 local ltask = require "ltask"
 local global = require "global"
 local archiving = require "archiving"
@@ -95,10 +93,6 @@ function m:init_world()
         audio.play("event:/background")
     end
 
-    --
-    icamera_controller.set_camera_from_prefab("camera_gamecover.prefab")
-    world:create_instance {
-        prefab = "/pkg/vaststars.resources/glbs/game-cover.glb|mesh.prefab",
-    }
-    iui.open({rml = "/pkg/vaststars.resources/ui/login.rml"})
+    local login = ecs.require "main_menu_manager".login
+    login()
 end

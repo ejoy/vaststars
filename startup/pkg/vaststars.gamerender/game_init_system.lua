@@ -61,10 +61,6 @@ function m:init_world()
 
     irender.set_framebuffer_ratio("scene_ratio", gameplay_core.settings_get("ratio", 1))
 
-    icanvas.create("icon", gameplay_core.settings_get("info", true), 10)
-    icanvas.create("pickup_icon", false, 10)
-    icanvas.create("road_entrance_marker", false, 0.02)
-
     -- audio test (Master.strings.bank must be first)
     audio.load {
         "/pkg/vaststars.resources/sounds/Master.strings.bank",
@@ -89,18 +85,44 @@ function m:init_world()
         saveload:restart(mode, game_template_file)
         iguide.init(gameplay_core.get_world(), game_template.guide)
         iui.set_guide_progress(iguide.get_progress())
+        iui.open({rml = "/pkg/vaststars.resources/ui/construct.rml"})
+        iui.open({rml = "/pkg/vaststars.resources/ui/message_pop.rml"})
+        icanvas.create("icon", gameplay_core.settings_get("info", true), 10)
+
+    elseif args[1] == "login" then
+        icamera_controller.set_camera_from_prefab("camera_default.prefab")
+        local game_template_file = "template.loading-scene"
+        local game_template = ecs.require(("vaststars.prototype|%s"):format(game_template_file))
+        local mode = game_template.mode
+        imountain:create(game_template.mountain)
+        debugger.set_free_mode(mode == "free")
+        saveload:restart(mode, game_template_file)
+        iguide.init(gameplay_core.get_world(), game_template.guide)
+        iui.set_guide_progress(iguide.get_progress())
+        iui.open({rml = "/pkg/vaststars.resources/ui/login.rml"})
+        icanvas.create("icon", false, 10)
+
     elseif args[1] == "continue_game" then
         local index = args[2]
         saveload:restore(index)
         iui.set_guide_progress(iguide.get_progress())
+        iui.open({rml = "/pkg/vaststars.resources/ui/construct.rml"})
+        iui.open({rml = "/pkg/vaststars.resources/ui/message_pop.rml"})
+        icanvas.create("icon", gameplay_core.settings_get("info", true), 10)
+
     elseif args[1] == "load_game" then
         local index = args[2]
         saveload:restore(index)
         iui.set_guide_progress(iguide.get_progress())
+        iui.open({rml = "/pkg/vaststars.resources/ui/construct.rml"})
+        iui.open({rml = "/pkg/vaststars.resources/ui/message_pop.rml"})
+        icanvas.create("icon", gameplay_core.settings_get("info", true), 10)
     else
         assert(false)
     end
 
+    icanvas.create("pickup_icon", false, 10)
+    icanvas.create("road_entrance_marker", false, 0.02)
     ibackpack.set_infinite_item(debugger.infinite_item)
     global.startup_args = {}
 end
