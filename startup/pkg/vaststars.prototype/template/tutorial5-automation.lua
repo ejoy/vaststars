@@ -2,14 +2,14 @@ local guide = require "guide.guide5"
 local mountain = require "mountain"
 
 local entities = { {
-  amount = 10,
+  amount = 5,
   dir = "N",
   prototype_name = "指挥中心",
   x = 124,
   y = 118
 }, {
   dir = "N",
-  items = { { "运输车辆I", 25 }, { "砖石公路-X型", 100 } },
+  items = { { "运输车辆I", 25 }, { "砖石公路-X型", 100 }},
   prototype_name = "机头残骸",
   x = 131,
   y = 121

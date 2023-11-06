@@ -21,7 +21,7 @@ local guide1 = {
         },
         narrative_end = {
             task = {
-                "拾取物资",
+                "拾取物资1",
             },
             guide_progress = 2,
         },

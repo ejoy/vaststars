@@ -17,11 +17,11 @@ local guide5 = {
 	{
         name = "",
 		narrative = {
-            {"哔哩..欢迎进入{/g 自动化教学}", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..从{/color:4bd0ff 废墟堆}里拾取有用物资", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
-                "采矿机规划",
+                "拾取物资1",
             },
             guide_progress = 10,
         },
