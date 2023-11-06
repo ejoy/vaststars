@@ -67,7 +67,6 @@ local function get_techlist(tech_list)
 
         return {
             name = name,
-            icon = assert(value.icon),
             desc = value.desc or " ",
             sub_icon = sub_icon,
             sub_desc = sub_desc,

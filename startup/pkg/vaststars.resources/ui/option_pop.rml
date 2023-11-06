@@ -85,23 +85,18 @@
                 <div style="width: 100%; height:95%; flex-direction: column; justify-content: center; align-items: center;">
                     <div class = "recipe-change-block">
                         <button class = "button-style" style="background-color:rgb(203, 118, 24);" data-event-click = "clickButton('save')">
-                            <div class="middle-bg" style='background-image: "/pkg/vaststars.resources/ui/textures/science/book.texture";'/>
                             <div class = "recipe-name-text" style="font-size: 5.73vmin;">保存游戏</div>
                         </button>
                         <button class = "button-style" style="background-color:rgb(52, 207, 115);" data-event-click = "show_archival_files = not show_archival_files">
-                            <div class="middle-bg" style='background-image: "/pkg/vaststars.resources/ui/textures/construct/work.texture";'/>
                             <div class = "recipe-name-text" style="font-size: 5.73vmin;">读取游戏</div>
                         </button> 
                         <button class = "button-style" style="background-color:rgb(0, 160, 235);" data-event-click = "clickButton('info')">
-                            <div class="middle-bg" style='background-image: "/pkg/vaststars.resources/ui/textures/science/book.texture";'/>
                             <div class = "recipe-name-text" style="font-size: 5.73vmin;">{{info == false and '提示开启' or '提示关闭'}}</div>
                         </button>
                         <button class = "button-style" style="background-color:rgb(253, 0, 0);" data-event-click = "clickButton('debug')">
-                            <div class="middle-bg" style='background-image: "/pkg/vaststars.resources/ui/textures/road/forbidden.texture";'/>
                             <div class = "recipe-name-text" style="font-size: 5.73vmin;">{{debug == false and '调试开启' or '调试关闭'}}</div>
                         </button>
                         <button class = "button-style" style="background-color: rgb(52, 207, 115)" data-event-click = "clickButton('back_to_main_menu')">
-                            <div class="middle-bg" style='background-image: "/pkg/vaststars.resources/ui/textures/road/forbidden.texture";'/>
                             <div class = "recipe-name-text" style="font-size: 5.73vmin;">重新登录</div>
                         </button> 
                         <button class = "button-style" style="background-color: rgb(52, 207, 115)" data-event-click = "clickButton('lock_group')">

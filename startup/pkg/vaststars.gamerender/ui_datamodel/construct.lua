@@ -51,7 +51,6 @@ local quit_mb = mailbox:sub {"quit"}
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
 local click_techortaskicon_mb = mailbox:sub {"click_techortaskicon"}
 local guide_on_going_mb = mailbox:sub {"guide_on_going"}
-local help_mb = mailbox:sub {"help"}
 local move_md = mailbox:sub {"move"}
 local teardown_mb = mailbox:sub {"teardown"}
 local construct_entity_mb = mailbox:sub {"construct_entity"}
@@ -456,14 +455,6 @@ function M.update(datamodel)
     for _ in click_techortaskicon_mb:unpack() do
         gameplay_core.world_update = false
         iui.open({rml = "/pkg/vaststars.resources/ui/science.rml"})
-    end
-
-    for _ in help_mb:unpack() do
-        if not iui.is_open("/pkg/vaststars.resources/ui/help_panel.rml") then
-            iui.open({rml = "/pkg/vaststars.resources/ui/help_panel.rml"})
-        else
-            iui.close("/pkg/vaststars.resources/ui/help_panel.rml")
-        end
     end
 
     local dragdrop_delta

@@ -43,6 +43,8 @@ local ui_click_mb = mailbox:sub {"ui_click"}
 local pickup_item_mb = mailbox:sub {"pickup_item"}
 local place_item_mb = mailbox:sub {"place_item"}
 local remove_lorry_mb = mailbox:sub {"remove_lorry"}
+local move_mb = mailbox:sub {"move"}
+local copy_md = mailbox:sub {"copy"}
 
 local ichest = require "gameplay.interface.chest"
 local ibackpack = require "gameplay.interface.backpack"
@@ -216,6 +218,9 @@ function M.create(gameplay_eid)
         show_set_recipe = typeobject.allow_set_recipt and true or false
     end
 
+    local move = typeobject.move ~= false
+    local copy = true
+
     local datamodel = {
         prototype_name = typeobject.name,
         show_set_recipe = show_set_recipe,
@@ -226,6 +231,8 @@ function M.create(gameplay_eid)
         place_item_count = place_item and getPlaceableCount(e, typeobject) or 0,
         set_item = set_item,
         remove_lorry = (e.lorry ~= nil),
+        move = move,
+        copy = copy,
     }
 
     return datamodel
@@ -322,6 +329,16 @@ function M.update(datamodel, gameplay_eid)
     end
     if typeobject then
         updateItemCount(datamodel, e, typeobject)
+    end
+
+    for _ in move_mb:unpack() do
+        iui.leave()
+        local object = assert(objects:coord(e.building.x, e.building.y))
+        iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "move", object.id)
+    end
+    for _ in copy_md:unpack() do
+        local object = assert(objects:coord(e.building.x, e.building.y))
+        iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "construct_entity", object.prototype_name)
     end
 
     for _ in set_recipe_mb:unpack() do

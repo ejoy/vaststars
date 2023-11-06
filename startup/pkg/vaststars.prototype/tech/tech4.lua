@@ -166,7 +166,6 @@ local prototype = gameplay.register.prototype
   prototype "获取地下管" {
     desc = "获取打造的地下管",
     type = { "task" },
-    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
     task = {"unknown", 0, 9},                 
     task_params = {building = "组装机I", item = "地下管1-JI型", },
     count = 2,
@@ -266,7 +265,6 @@ local prototype = gameplay.register.prototype
   prototype "气候科技包生产" {
     desc = "生产气候科技包",
     type = { "task" },
-    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
     task = {"stat_production", 0, "气候科技包"},
     count = 1,
     prerequisites = {"地下管连接"},
@@ -323,7 +321,6 @@ local prototype = gameplay.register.prototype
   prototype "液罐制造工艺" {
     desc = "火星地下开采卤水进行过滤净化工艺",
     type = { "tech" },
-    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
     effects = {
       unlock_item = {"液罐I"},
       unlock_recipe = {"液罐1"},
@@ -339,7 +336,6 @@ local prototype = gameplay.register.prototype
   prototype "液罐获取" {
     desc = "获取液罐",
     type = { "task" },
-    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
     task = {"unknown", 0, 9},                 
     task_params = {building = "组装机I", item = "液罐I", },
     count = 2,
@@ -812,7 +808,6 @@ local prototype = gameplay.register.prototype
   -- prototype "完成流体研究" {
   --   desc = "完成新的科技研究",
   --   type = { "tech" },
-  --   icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
   --   prerequisites = {"甲烷生产"},
   --   ingredients = {
   --       {"气候科技包", 1},

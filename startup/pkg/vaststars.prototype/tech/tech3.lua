@@ -248,7 +248,6 @@ local prototype = gameplay.register.prototype
   prototype "石砖大生产" {
     desc = "规模生产石砖",
     type = { "task" },
-    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
     task = {"stat_production", 0, "石砖"},
     count = 3,
     prerequisites = {"派遣运输车"},
@@ -267,7 +266,6 @@ local prototype = gameplay.register.prototype
   prototype "生产公路" {
     desc = "生产砖石公路",
     type = { "task" },
-    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
     task = {"unknown", 0, 9},
     task_params = {building = "组装机I", item = "砖石公路-X型"},
     count = 15,
@@ -287,7 +285,6 @@ local prototype = gameplay.register.prototype
   prototype "铁板大生产" {
     desc = "规模生产铁板",
     type = { "task" },
-    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
     task = {"stat_production", 0, "铁板"},
     count = 3,
     prerequisites = {"生产公路"},
@@ -307,7 +304,6 @@ local prototype = gameplay.register.prototype
   prototype "制造运输车" {
     desc = "制造轻型运输车",
     type = { "task" },
-    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
     task = {"unknown", 0, 9},
     task_params = {building = "组装机I", item = "轻型运输车"},
     count = 1,
@@ -364,7 +360,6 @@ local prototype = gameplay.register.prototype
     desc = "制造轻型采矿机",
     type = { "task" },
     task = {"unknown", 0, 9},
-    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
     task_params = {building = "组装机I", item = "轻型采矿机"},
     count = 1,
     prerequisites = {"更多运输车"},
@@ -448,7 +443,6 @@ local prototype = gameplay.register.prototype
   prototype "科技包大生产" {
     desc = "规模生产地质科技包",
     type = { "task" },
-    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
     task = {"stat_production", 0, "地质科技包"},
     count = 3,
     prerequisites = {"铝矿石开采"},
@@ -463,7 +457,6 @@ local prototype = gameplay.register.prototype
   prototype "完成科技研究" {
     desc = "完成新的科技研究",
     type = { "tech" },
-    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
     prerequisites = {"科技包大生产"},
     ingredients = {
         {"地质科技包", 1},

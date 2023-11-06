@@ -65,9 +65,7 @@ end
 function m:init_world()
 	start_web()
 
-    if ARCHIVAL_BASE_DIR then
-        archiving.set_dir(ARCHIVAL_BASE_DIR)
-    end
+    archiving.set_dir(ARCHIVAL_BASE_DIR)
     archiving.set_version(PROTOTYPE_VERSION)
 
     if NOTHING or TERRAIN_ONLY then

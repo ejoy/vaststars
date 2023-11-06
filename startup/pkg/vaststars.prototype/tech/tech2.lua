@@ -253,7 +253,6 @@ local prototype = gameplay.register.prototype
   prototype "生产轻质石砖" {
     desc = "规模生产生产轻质石砖",
     type = { "task" },
-    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
     task = {"stat_production", 0, "轻质石砖"},
     count = 2,
     prerequisites = {"仓库互转"},
@@ -337,7 +336,6 @@ local prototype = gameplay.register.prototype
   -- prototype "太阳能制造技术" {
   --   desc = "研究生产太阳能板工艺",
   --   type = { "tech" },
-  --   icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
   --   effects = {
   --     unlock_item = {"轻型太阳能板","铁板"},
   --     unlock_recipe = {"轻型太阳能板","铁板1"},
@@ -353,7 +351,6 @@ local prototype = gameplay.register.prototype
   prototype "铁板生产" {
     desc = "规模生产铁板",
     type = { "task" },
-    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
     task = {"unknown", 0, 3}, 
     task_params = {recipe = "铁板1"},
     count = 1,
@@ -390,7 +387,6 @@ local prototype = gameplay.register.prototype
   prototype "太阳能板制造" {
     desc = "制造轻型太阳能板",
     type = { "task" },
-    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
     task = {"unknown", 0, 9},
     task_params = {building = "组装机I", item = "轻型太阳能板"},
     count = 1,
@@ -406,7 +402,6 @@ local prototype = gameplay.register.prototype
   prototype "太阳能发电" {
     desc = "铺设发电设施让基地供电充足",
     type = { "task" },
-    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
     task = {"power_generator", 3},
     count = 600,
     prerequisites = {"太阳能板制造"},
@@ -472,7 +467,6 @@ local prototype = gameplay.register.prototype
   prototype "锅炉设置" {
     desc = "规模生产铁板",
     type = { "task" },
-    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
     task = {"unknown", 0, 3}, 
     task_params = {recipe = "卤水沸腾"},
     count = 1,
@@ -527,7 +521,6 @@ local prototype = gameplay.register.prototype
   prototype "生产科技包" {
     desc = "规模生产地质科技包",
     type = { "task" },
-    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
     task = {"stat_production", 0, "地质科技包"},
     count = 3,
     prerequisites = {"发电机放置"},
@@ -542,7 +535,6 @@ local prototype = gameplay.register.prototype
   prototype "启动科技研究" {
     desc = "进行地质科学分析",
     type = { "tech" },
-    icon = "/pkg/vaststars.resources/ui/textures/science/book.texture",
     prerequisites = {"生产科技包"},
     ingredients = {
         {"地质科技包", 1},

@@ -21,12 +21,6 @@ button:active {
 		align-self:center;
 		background-size:cover;
 }
-.button-text {
-	background-color: rgb(128,156,126);
-	font-size: 2.40vmin;
-	text-align:center;
-	border-radius: 0.53vmin;
-}
 /*面板*/
 .panel {
 	background-color: rgb(44, 32, 18);
@@ -51,52 +45,10 @@ button:active {
 	height: 14.67vmin; 
 	background-size:cover;
 }
-.find-button {
-	top:0.8%; 
-	background-color: rgba(255, 255, 255, 0); 
-	border: 0.00vmin; 
-	background-image:"/pkg/vaststars.resources/ui/textures/factory/seacher.texture"; 
-	width: 13.07vmin; 
-	height: 13.07vmin; 
-	background-size:cover;
-}
-.recipe-change-button {
-	background-image:"/pkg/vaststars.resources/ui/textures/assemble/wheel.texture"; 
-	width: 13.07vmin; 
-	height: 13.07vmin; 
-	background-size:cover;
-}
 .menu-title {
 	-webkit-text-stroke: 0.20vmin rgb(0, 112, 192); 
 	font-size:225%;
 	justify-content: flex-start;
-}
-.menu-title-2 {
-	-webkit-text-stroke: 0.15vmin rgb(89, 73, 39);
-	font-size:200%;
-	justify-content: flex-start;
-	text-align: right; 
-	color:rgb(246, 142, 14);
-}
-
-/*背包tab按钮*/
-workbutton {
-	font-size: 2.67vmin;
-	color: rgb(221, 235, 26);
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	border-radius: 1.33vmin;
-	border: 0.27vmin rgb(89, 73, 39);
-	background-color: rgb(246, 142, 14);
-	height: 8.67vmin;
-	width: 17.33vmin;
-}
-.workbutton-bg {
-	width: 6.67vmin;
-	height: 6.67vmin; 
-	background-size: cover;
-	align-items: center;
 }
 .item-container-region {
 	width: 100%;
@@ -126,15 +78,6 @@ workbutton {
 	height: 12.00vmin;
 	font-size: 2.40vmin;
 }
-.item-title {
-	text-align: center;
-	background-color: rgb(246, 237, 189);
-	border-radius: 0.67vmin;
-	color:rgb(73, 60, 32);
-	-webkit-text-stroke: 0.07vmin rgb(73, 60, 32);
-	width: 11.33vmin;
-	margin: 0.00vmin;
-}
 .item-count {
 	font-size: 4vmin;
 	position: absolute;
@@ -155,39 +98,6 @@ workbutton {
 	font-size: 4vmin;
 	-webkit-text-stroke: 0.3vmin rgb(39, 32, 17);          
 }
-.item-add {
-	background-color:rgb(143, 143, 143);
-	border: 0.27vmin rgb(89, 73, 39);
-	background-size:cover;
-	width: 12.00vmin;
-	height: 12.00vmin;
-	background-image: "/pkg/vaststars.resources/ui/textures/science/add.texture";
-}
-/*分割线*/
-.draw-line {
-	margin-bottom:0.1em;
-	width: 100%;
-	border-bottom: 1.5px rgb(89, 73, 39);
-}
-/*tab区域*/
-.tab-container {
-	flex-direction: row;
-	justify-content: space-evenly;
-	width:100%;
-	flex-wrap: wrap;
-}
-.catalog-desc {
-	font-size: 4.2vmin;
-	-webkit-text-stroke: 0.20vmin rgb(39, 32, 17); 
-	position:absolute;
-	top:-1vmin; 
-	left:0vmin;
-	color: rgb(221, 235, 26)
-}
-.property-display {
-	flex-direction: row;
-	align-items:center;
-}
 .property-icon {
 	width: 4.00vmin;
 	height: 4.00vmin;
@@ -206,18 +116,6 @@ workbutton {
 .column {
 	flex-direction: column;
 	align-items:center;
-}
-/*右侧建筑信息栏*/
-.build-info-block {
-	width: 100%;
-	flex-direction: row;
-	align-items: center;
-	justify-content: flex-start;
-}
-.bulid-status-info {
-	margin-top: 1.5em;
-	font-size: 2.67vmin;
-	color: aquamarine;
 }
 .build-picture {
 	margin: 0.1em;
@@ -256,48 +154,6 @@ workbutton {
 	color: rgb(255, 255, 255);
 	-webkit-text-stroke: 0.20vmin rgb(39, 32, 17); 
 }
-.change-recipe {
-	margin:0 0 0 3em;
-	align-items: center;
-	justify-content: space-between;
-	width: 10.67vmin;
-	height: 10.67vmin;
-	background-image:"/pkg/vaststars.resources/ui/textures/science/book.texture";
-	background-size:cover;
-}
-.item-page-block {
-	margin-left:2em;
-	transition: left 0.5s linear-out; 
-}
-/*建筑模型和信息*/
-.build-info-reigon {
-	width: 100%;
-	height:97%;
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-evenly;
-}
-.build-model-block {
-	margin-top: 2em;
-	width: 44%;
-	height:66%;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-}
-.build-model {
-	width:90%;
-	height:90%;
-	background-size: cover;
-}
-.power-block {
-	margin-top: 0.3em;
-	flex-direction: row;
-	justify-content: center;
-	align-items: flex-start;
-	width:100%;
-	height:10%;
-}
 .info-block {
 	margin-top:1em;
 	width: 28%;
@@ -318,159 +174,6 @@ workbutton {
 	height: 9.00vmin;
 	font-size: 2.00vmin;
 	background-image: "/pkg/vaststars.resources/ui/textures/construct/insert1.texture";
-}
-/*物品按钮弹出框*/
-.exchange-title {
-	font-size: 42px;
-	text-align: center;
-}
-.button-exchange-block {
-	flex-direction: row;
-	width: 100%;
-	height:100%;
-	align-items: center;
-	justify-content: space-evenly;
-	background-color: rgb(85, 85, 85);
-}
-.button-exchange {
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-	width: 22.00vmin;
-	height: 9.53vmin;
-	background-color: rgb(52, 207, 115);
-}
-.button-exchange-text {
-	font-size: 3.73vmin;
-	text-align: center;
-	color: rgb(255,249,214);
-}
-.button-exchange-arrow {
-	width: 8vmin;
-	height: 5.64vmin;
-	background-size: cover;
-	background-image: "/pkg/vaststars.resources/ui/textures/exchange/left_arrow.texture";
-}
-.button-exchange-box {
-	width: 7.00vmin;
-	height: 7.00vmin;
-	background-size: cover;
-	background-image: "/pkg/vaststars.resources/ui/textures/exchange/yellow_box.texture";
-}
-.exchange-region {
-	width: 100%;    
-	background-color: rgb(40, 40, 40);
-	border: 0.22vmin rgb(89, 73, 39);
-}
-.exchange-region-1 {
-	margin:0.2em auto;
-	width: 100%;    
-	background-color: rgb(40, 40, 40);
-	border: 0.22vmin rgb(89, 73, 39);
-}
-.menu-title-block { 
-	background-color: rgb(203, 118, 24);
-	text-align: center;
-	width: 100%; 
-	font-size: 4.80vmin;
-	-webkit-text-stroke: 0.07vmin rgb(73, 60, 32);
-}
-.road-item {
-	background-color: rgb(255, 242, 204);
-	border: 0.27vmin white;
-	border-radius: 0.67vmin;
-}
-.big-bg {
-	width: 8.00vmin;
-	height: 8.00vmin;
-	background-size: cover;
-}
-.middle-bg {
-	width: 6.67vmin;
-	height: 6.67vmin;
-	background-size: cover;
-}
-.small-bg {
-	width: 4.43vmin;
-	height: 4.43vmin;
-	background-size: cover;
-}
-.station-name-block {
-	background-color: rgb(44, 32, 18);
-	width: 100%;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-	border: 0.10vmin  rgb(89, 73, 39);
-	font-size: 5.07vmin;
-}
-.route-name-block {
-	background-color: rgb(203, 118, 24);
-	width: 100%;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-	border: 0.10vmin rgb(89, 73, 39);
-	font-size: 3.47vmin;
-}
-.route-change-block {
-	width: 100%;
-	flex-direction: column;
-	align-items: flex-start;
-	border: 0.10vmin rgb(89, 73, 39);
-	background-color: rgb(44, 32, 18);
-	font-size: 3.47vmin;
-}
-.route-button-block {
-	width: 100%;
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-evenly;
-	background-color: rgb(44, 32, 18);
-	font-size: 3.47vmin;
-}
-.route-name-text {
-	font-size: 3.73vmin;
-	text-align: center;
-	margin-bottom:1vmin;
-}
-.button-name-change {
-	width: 4.00vmin;
-	height: 4.00vmin;
-}
-.pic-block {
-	flex-direction: row;
-	justify-content: space-evenly;
-	align-items: center;
-	background-color: rgb(191,144,0);
-	font-size: 3.73vmin;
-	background-size: cover;
-	border-radius: 0.27vmin;
-}
-.two-route-block {
-	flex-direction: column;
-	justify-content: space-evenly;
-	align-items: center;
-	background-color: rgb(44, 32, 18);
-	font-size: 3.73vmin;
-	background-size: cover;
-	border-radius: 0.27vmin;
-	width: 100%;
-}
-.change-button-block {
-	flex-direction: row;
-	justify-content: space-evenly;
-	align-items: center;
-	background-size: cover;
-	border-radius: 0.27vmin;
-	width: 100%;
-}
-.change-button {
-	width: 10.67vmin;
-	height: 10.67vmin;
-	background-color: rgb(250, 205, 9);
-	border: 0.27vmin rgb(89, 73, 39);
-	background-size: cover;
 }
 .confirm-button {
 	margin-bottom: 0.5em;

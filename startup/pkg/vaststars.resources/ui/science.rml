@@ -44,7 +44,7 @@
             }
             .item-recipe-info {
                 margin: auto;
-                background-image:"/pkg/vaststars.resources/ui/textures/science/book.texture"; 
+                background-image:"/pkg/vaststars.resources/ui/textures/science/right_item_bg0.texture"; 
                 width: 13.07vmin;  
                 height: 13.07vmin;  
                 background-size:cover;

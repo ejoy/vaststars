@@ -5,7 +5,7 @@ compress:
     windows: BC3
 noresize: true
 normalmap: false
-path: ../../image/main-menu/statistical-data-pressed.png
+path: ../../image/main-menu/normal.png
 sampler:
     MAG: LINEAR
     MIN: LINEAR

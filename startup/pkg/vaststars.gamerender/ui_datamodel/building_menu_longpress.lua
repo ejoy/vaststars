@@ -5,10 +5,7 @@ local w = world.w
 local iprototype = require "gameplay.interface.prototype"
 local objects = require "objects"
 local iui = ecs.require "engine.system.ui_system"
-
-local move_mb = mailbox:sub {"move"}
 local teardown_mb = mailbox:sub {"teardown"}
-local copy_md = mailbox:sub {"copy"}
 
 local M = {}
 function M.create(object_id)
@@ -20,9 +17,7 @@ function M.create(object_id)
 
     local datamodel = {
         prototype_name = object.prototype_name,
-        move = typeobject.move ~= false,
         teardown = typeobject.teardown ~= false,
-        copy = true,
         object_id = object_id,
     }
 
@@ -30,16 +25,8 @@ function M.create(object_id)
 end
 
 function M.update(datamodel, object_id)
-    for _ in move_mb:unpack() do
-        iui.leave()
-        iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "move", object_id)
-    end
     for _ in teardown_mb:unpack() do
         iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "teardown", object_id)
-    end
-    for _ in copy_md:unpack() do
-        local object = assert(objects:get(object_id))
-        iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "construct_entity", object.prototype_name)
     end
 end
 

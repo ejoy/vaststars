@@ -8,29 +8,33 @@
                 flex-direction: column;
                 align-items: center;
             }
+            button-pic-container {
+                width: 26.40vmin;
+                height: 26.32vmin;
+                align-items: center;
+                justify-content: center;
+            }
             button-pic {
-                width: 28.12vmin;
-                height: 28.12vmin;
+                width: 19.94vmin;
+                height: 19.94vmin;
                 background-size: 100% 100%;
+            }
+            button-overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-image: /pkg/vaststars.resources/ui/textures/main-menu/normal.texture;
+                background-size: 100% 100%;
+            }
+            button-overlay:active {
+                background-image: /pkg/vaststars.resources/ui/textures/main-menu/selected.texture;
             }
             button-text {
                 justify-content: center;
                 align-items: center;
-                font-size: 7.46vmin;
-                color: rgb(166,166,166);
-            }
-            .statistical-data-button {
-                background-image: "/pkg/vaststars.resources/ui/textures/main-menu/statistical-data-normal.texture";
-            }
-            .statistical-data-button:active {
-                background-image: "/pkg/vaststars.resources/ui/textures/main-menu/statistical-data-pressed.texture";
-            }
-            .game-settings-button {
-                background-image: "/pkg/vaststars.resources/ui/textures/main-menu/game-settings-normal.texture";
-            }
-            .game-settings-button:active {
-                background-image: "/pkg/vaststars.resources/ui/textures/main-menu/game-settings-pressed.texture";
-                background-size: cover;
+                font-size: 4.44vmin;
             }
         </style>
         <script type="text/x-lua" >
@@ -45,17 +49,26 @@
     <body>
         <div style="background-color: rgba(0, 0, 0, 240); flex-direction: row; justify-content: center; align-items: center; width: 100%; height: 100%; gap: 13.00vmax;" data-event-click = "clickButton('quit')">
             <button-container data-event-click = "clickButton('statistical_data')">
-                <button-pic class = "statistical-data-button" />
+                <button-pic-container>
+                    <button-pic style = "background-image: /pkg/vaststars.resources/ui/textures/main-menu/statistical-data.texture;" />
+                    <button-overlay />
+                </button-pic-container>
                 <button-text>统计数据</button-text>
             </button-container>
 
             <button-container data-event-click = "clickButton('game_settings')">
-                <button-pic class = "game-settings-button" />
+                <button-pic-container>
+                    <button-pic style = "background-image: /pkg/vaststars.resources/ui/textures/main-menu/game-settings.texture;" />
+                    <button-overlay />
+                </button-pic-container>
                 <button-text>游戏设置</button-text>
             </button-container>
 
             <button-container data-event-click = "clickButton('backpack')">
-                <button-pic class = "game-settings-button" />
+                <button-pic-container>
+                    <button-pic style = "background-image: /pkg/vaststars.resources/ui/textures/main-menu/backpack.texture;" />
+                    <button-overlay />
+                </button-pic-container>
                 <button-text>储存仓库</button-text>
             </button-container>
         </div>

@@ -4,7 +4,7 @@ local directory = require "directory"
 local fastio = require "fastio"
 
 local ARCHIVAL_BASE_DIR = (directory.app_path() / "archiving/"):string()
-local prototype_version = 1
+local PROTOTYPE_VERSION = 1
 
 local function readall(file)
     return fastio.readall_s(file)
@@ -28,8 +28,8 @@ local function fetch_all_archiving(root)
         end
 
         local v = json.decode(readall(versionpath:string()))
-        if v.PROTOTYPE_VERSION ~= prototype_version then
-            log.error(("Failed `%s` version `%s` current `%s`"):format(path, v.PROTOTYPE_VERSION, prototype_version))
+        if v.PROTOTYPE_VERSION ~= PROTOTYPE_VERSION then
+            log.error(("Failed `%s` version `%s` current `%s`"):format(path, v.PROTOTYPE_VERSION, PROTOTYPE_VERSION))
             goto continue
         end
 
@@ -58,11 +58,13 @@ function m.path()
 end
 
 function m.set_dir(path)
-    ARCHIVAL_BASE_DIR = path
+    if path then
+        ARCHIVAL_BASE_DIR = path
+    end
 end
 
 function m.set_version(version)
-    prototype_version = version
+    PROTOTYPE_VERSION = version
 end
 
 return m

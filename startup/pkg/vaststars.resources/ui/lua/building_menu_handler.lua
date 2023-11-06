@@ -150,5 +150,19 @@ return function(start)
         start.buttons[#start.buttons + 1] = v
     end
 
+    if start.move then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.command = "move"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/move.texture"
+        start.buttons[#start.buttons + 1] = v
+    end
+
+    if start.copy then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.command = "copy"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/clone.texture"
+        start.buttons[#start.buttons + 1] = v
+    end
+
     show_buttons(start)
 end
