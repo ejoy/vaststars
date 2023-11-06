@@ -22,7 +22,7 @@ assert(MAP_CHUNK_WIDTH == MAP_CHUNK_HEIGHT)
 local MAP_CHUNK_SIZE <const> = MAP_CHUNK_WIDTH * TILE_SIZE
 
 local icoord = ecs.require "coord"
-local ipt = ecs.require "ant.landform|plane_terrain2"
+local ipt = ecs.require "ant.landform|plane_terrain"
 
 local M = {}
 function M.create()
