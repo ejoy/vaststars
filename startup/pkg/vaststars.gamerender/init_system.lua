@@ -20,6 +20,7 @@ local audio = import_package "ant.audio"
 local font = import_package "ant.font"
 local ltask = require "ltask"
 local archiving = require "archiving"
+local rebot_world = ecs.require "rebot_world"
 
 local m = ecs.system 'init_system'
 
@@ -62,15 +63,6 @@ function m:init_world()
     archiving.set_dir(ARCHIVAL_BASE_DIR)
     archiving.set_version(PROTOTYPE_VERSION)
 
-    if NOTHING or TERRAIN_ONLY then
-        ecs.require "main_menu_manager".new_game()
-        return
-    end
-
-    world:create_instance {
-        prefab = "/pkg/vaststars.resources/light.prefab",
-    }
-
     -- audio test (Master.strings.bank must be first)
     audio.load {
         "/pkg/vaststars.resources/sounds/Master.strings.bank",
@@ -80,10 +72,23 @@ function m:init_world()
         "/pkg/vaststars.resources/sounds/UI.bank",
     }
 
+    if NOTHING then
+        rebot_world("nothing")
+        return
+    end
+
+    if TERRAIN_ONLY then
+        rebot_world("terrain_only")
+        return
+    end
+
+    world:create_instance {
+        prefab = "/pkg/vaststars.resources/light.prefab",
+    }
+
     if not DISABLE_AUDIO then
         audio.play("event:/background")
     end
 
-    local login = ecs.require "main_menu_manager".login
-    login()
+    rebot_world("login")
 end

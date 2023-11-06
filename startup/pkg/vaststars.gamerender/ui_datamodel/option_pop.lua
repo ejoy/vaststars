@@ -3,7 +3,6 @@ local world = ecs.world
 
 local save_mb = mailbox:sub {"save"}
 local restore_mb = mailbox:sub {"restore"}
-local restart_mb = mailbox:sub {"restart"}
 local close_mb = mailbox:sub {"close"}
 local info_mb = mailbox:sub {"info"}
 local debug_mb = mailbox:sub {"debug"}
@@ -16,10 +15,10 @@ local archiving = require "archiving"
 local saveload = ecs.require "saveload"
 local gameplay_core = require "gameplay.core"
 local icanvas = ecs.require "engine.canvas"
-local imain_menu_manager = ecs.require "main_menu_manager"
 local rhwi = import_package "ant.hwi"
 local irender = ecs.require "ant.render|render_system.render"
 local igroup = ecs.require "group"
+local rebot_world = ecs.require "rebot_world"
 
 ---------------
 local M = {}
@@ -49,14 +48,8 @@ function M.update(datamodel)
     end
 
     for _, _, _, index in restore_mb:unpack() do
-        if imain_menu_manager.load_game(index) then
-            iui.close("/pkg/vaststars.resources/ui/option_pop.rml")
-        end
-    end
-
-    for _ in restart_mb:unpack() do
-        imain_menu_manager.new_game()
         iui.close("/pkg/vaststars.resources/ui/option_pop.rml")
+        rebot_world("load_game", index)
     end
 
     for _ in close_mb:unpack() do
@@ -82,7 +75,7 @@ function M.update(datamodel)
     for _ in back_to_main_menu_mb:unpack() do
         iui.close("/pkg/vaststars.resources/ui/option_pop.rml")
         iui.close("/pkg/vaststars.resources/ui/main_menu.rml")
-        imain_menu_manager.login()
+        rebot_world("login")
     end
 
     for _ in lock_group_mb:unpack() do

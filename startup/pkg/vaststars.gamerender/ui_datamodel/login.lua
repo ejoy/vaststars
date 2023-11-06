@@ -8,9 +8,8 @@ local load_resources_mb = mailbox:sub {"load_resources"}
 local load_archive_mb = mailbox:sub {"load_archive"}
 local continue_mb = mailbox:sub {"continue"}
 local load_template_mb = mailbox:sub {"load_template"}
-local new_game = ecs.require "main_menu_manager".new_game
-local continue_game = ecs.require "main_menu_manager".continue_game
 local archiving = require "archiving"
+local rebot_world = ecs.require "rebot_world"
 
 ---------------
 local M = {}
@@ -23,12 +22,12 @@ end
 function M.update(datamodel)
     for _ in continue_mb:unpack() do
         iui.close("/pkg/vaststars.resources/ui/login.rml")
-        continue_game()
+        rebot_world("load_game", assert(archiving.last()))
     end
 
     for _, _, _, template in start_game_mb:unpack() do
         iui.close("/pkg/vaststars.resources/ui/login.rml")
-        new_game(template)
+        rebot_world("new_game", template)
     end
 
     for _ in load_resources_mb:unpack() do

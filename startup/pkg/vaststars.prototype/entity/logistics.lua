@@ -15,6 +15,7 @@ prototype "指挥中心" {
     camera_distance = 100,
     teardown = false,
     move = false,
+    copy = false,
     crossing = {
         connections = {
             {type="factory", position={2,4,"S"}},

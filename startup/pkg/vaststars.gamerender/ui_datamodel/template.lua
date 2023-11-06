@@ -2,7 +2,7 @@ local ecs, mailbox = ...
 local world = ecs.world
 
 local start_game_mb = mailbox:sub {"start_game"}
-local new_game = ecs.require "main_menu_manager".new_game
+local rebot_world = ecs.require "rebot_world"
 local fs = require "filesystem"
 local iui = ecs.require "engine.system.ui_system"
 
@@ -35,7 +35,7 @@ end
 function M.update(datamodel)
     for _, _, _, template in start_game_mb:unpack() do
         iui.close("/pkg/vaststars.resources/ui/template.rml")
-        new_game(template)
+        rebot_world("new_game", template)
     end
 end
 

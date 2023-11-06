@@ -219,7 +219,7 @@ function M.create(gameplay_eid)
     end
 
     local move = typeobject.move ~= false
-    local copy = true
+    local copy = typeobject.copy ~= false
 
     local datamodel = {
         prototype_name = typeobject.name,

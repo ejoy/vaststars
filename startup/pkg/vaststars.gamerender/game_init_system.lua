@@ -3,13 +3,8 @@ local world = ecs.world
 local w = world.w
 
 local debugger = ecs.require "debugger"
-local NOTHING <const> = debugger.nothing
-local TERRAIN_ONLY <const> = debugger.terrain_only
-local DISABLE_AUDIO <const> = debugger.disable_audio
-
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local icanvas = ecs.require "engine.canvas"
-local audio = import_package "ant.audio"
 local rhwi = import_package "ant.hwi"
 local gameplay_core = require "gameplay.core"
 local iguide = require "gameplay.interface.guide"
@@ -28,6 +23,78 @@ local m = ecs.system 'game_init_system'
 local gameworld_prebuild
 local gameworld_build
 local gameworld
+local need_update = false
+
+local funcs = {}
+funcs["nothing"] = function()
+    icamera_controller.set_camera_from_prefab("camera_default.prefab")
+end
+
+funcs["terrain_only"] = function()
+    need_update = true
+    iterrain.create()
+    icamera_controller.set_camera_from_prefab("camera_default.prefab")
+end
+
+funcs["login"] = function()
+    need_update = true
+    iterrain.create()
+    iroadnet:create()
+    icamera_controller.set_camera_from_prefab("camera_default.prefab")
+    local game_template_file = "template.loading-scene"
+    local game_template = ecs.require(("vaststars.prototype|%s"):format(game_template_file))
+    local mode = game_template.mode
+    imountain:create(game_template.mountain)
+    debugger.set_free_mode(mode == "free")
+    saveload:restart(mode, game_template_file)
+    iguide.init(gameplay_core.get_world(), game_template.guide)
+    iui.set_guide_progress(iguide.get_progress())
+    iui.open({rml = "/pkg/vaststars.resources/ui/login.rml"})
+    icanvas.create("icon", false, 10)
+    rhwi.set_profie(false)
+    icanvas.create("pickup_icon", false, 10)
+    icanvas.create("road_entrance_marker", false, 0.02)
+    ibackpack.set_infinite_item(debugger.infinite_item)
+    irender.set_framebuffer_ratio("scene_ratio", gameplay_core.settings_get("ratio", 1))
+end
+
+funcs["new_game"] = function(template)
+    need_update = true
+    iterrain.create()
+    iroadnet:create()
+    icamera_controller.set_camera_from_prefab("camera_default.prefab")
+    local game_template = ecs.require(("vaststars.prototype|%s"):format(template))
+    local mode = game_template.mode
+    imountain:create(game_template.mountain)
+    debugger.set_free_mode(mode == "free")
+    saveload:restart(mode, template)
+    iguide.init(gameplay_core.get_world(), game_template.guide)
+    iui.set_guide_progress(iguide.get_progress())
+    iui.open({rml = "/pkg/vaststars.resources/ui/construct.rml"})
+    iui.open({rml = "/pkg/vaststars.resources/ui/message_pop.rml"})
+    icanvas.create("icon", gameplay_core.settings_get("info", true), 10)
+    rhwi.set_profie(gameplay_core.settings_get("debug", true))
+    icanvas.create("pickup_icon", false, 10)
+    icanvas.create("road_entrance_marker", false, 0.02)
+    ibackpack.set_infinite_item(debugger.infinite_item)
+    irender.set_framebuffer_ratio("scene_ratio", gameplay_core.settings_get("ratio", 1))
+end
+
+funcs["load_game"] = function(index)
+    need_update = true
+    iterrain.create()
+    iroadnet:create()
+    saveload:restore(index)
+    iui.set_guide_progress(iguide.get_progress())
+    iui.open({rml = "/pkg/vaststars.resources/ui/construct.rml"})
+    iui.open({rml = "/pkg/vaststars.resources/ui/message_pop.rml"})
+    icanvas.create("icon", gameplay_core.settings_get("info", true), 10)
+    rhwi.set_profie(gameplay_core.settings_get("debug", true))
+    icanvas.create("pickup_icon", false, 10)
+    icanvas.create("road_entrance_marker", false, 0.02)
+    ibackpack.set_infinite_item(debugger.infinite_item)
+    irender.set_framebuffer_ratio("scene_ratio", gameplay_core.settings_get("ratio", 1))
+end
 
 function m:init_world()
     gameworld_prebuild = world:pipeline_func "gameworld_prebuild"
@@ -44,76 +111,9 @@ function m:init_world()
         prefab = "/pkg/vaststars.resources/sky.prefab"
     }
 
-    if NOTHING then
-        icamera_controller.set_camera_from_prefab("camera_default.prefab")
-        return
-    end
-
-    iterrain.create()
-    iroadnet:create()
-
-    if TERRAIN_ONLY then
-        icamera_controller.set_camera_from_prefab("camera_default.prefab")
-        return
-    end
-
-    irender.set_framebuffer_ratio("scene_ratio", gameplay_core.settings_get("ratio", 1))
-
     local args = global.startup_args
-    if args[1] == "new_game" then
-        icamera_controller.set_camera_from_prefab("camera_default.prefab")
-        local game_template_file = args[2]
-        local game_template = ecs.require(("vaststars.prototype|%s"):format(game_template_file))
-        local mode = game_template.mode
-        imountain:create(game_template.mountain)
-        debugger.set_free_mode(mode == "free")
-        saveload:restart(mode, game_template_file)
-        iguide.init(gameplay_core.get_world(), game_template.guide)
-        iui.set_guide_progress(iguide.get_progress())
-        iui.open({rml = "/pkg/vaststars.resources/ui/construct.rml"})
-        iui.open({rml = "/pkg/vaststars.resources/ui/message_pop.rml"})
-        icanvas.create("icon", gameplay_core.settings_get("info", true), 10)
-        rhwi.set_profie(gameplay_core.settings_get("debug", true))
-
-    elseif args[1] == "login" then
-        icamera_controller.set_camera_from_prefab("camera_default.prefab")
-        local game_template_file = "template.loading-scene"
-        local game_template = ecs.require(("vaststars.prototype|%s"):format(game_template_file))
-        local mode = game_template.mode
-        imountain:create(game_template.mountain)
-        debugger.set_free_mode(mode == "free")
-        saveload:restart(mode, game_template_file)
-        iguide.init(gameplay_core.get_world(), game_template.guide)
-        iui.set_guide_progress(iguide.get_progress())
-        iui.open({rml = "/pkg/vaststars.resources/ui/login.rml"})
-        icanvas.create("icon", false, 10)
-        rhwi.set_profie(false)
-
-    elseif args[1] == "continue_game" then
-        local index = args[2]
-        saveload:restore(index)
-        iui.set_guide_progress(iguide.get_progress())
-        iui.open({rml = "/pkg/vaststars.resources/ui/construct.rml"})
-        iui.open({rml = "/pkg/vaststars.resources/ui/message_pop.rml"})
-        icanvas.create("icon", gameplay_core.settings_get("info", true), 10)
-        rhwi.set_profie(gameplay_core.settings_get("debug", true))
-
-    elseif args[1] == "load_game" then
-        local index = args[2]
-        saveload:restore(index)
-        iui.set_guide_progress(iguide.get_progress())
-        iui.open({rml = "/pkg/vaststars.resources/ui/construct.rml"})
-        iui.open({rml = "/pkg/vaststars.resources/ui/message_pop.rml"})
-        icanvas.create("icon", gameplay_core.settings_get("info", true), 10)
-        rhwi.set_profie(gameplay_core.settings_get("debug", true))
-
-    else
-        assert(false)
-    end
-
-    icanvas.create("pickup_icon", false, 10)
-    icanvas.create("road_entrance_marker", false, 0.02)
-    ibackpack.set_infinite_item(debugger.infinite_item)
+    local func = assert(funcs[args[1]])
+    func(table.unpack(args, 2))
     global.startup_args = {}
 end
 
@@ -132,7 +132,7 @@ function m:camera_usage()
 end
 
 function m:frame_update()
-    if NOTHING then
+    if not need_update then
         return
     end
 

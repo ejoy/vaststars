@@ -162,6 +162,7 @@ function ui_system.exit()
         if binding.template and binding.template.close then
             binding.template.close(binding.datamodel)
         end
+        binding.window:close()
     end
 end
 
