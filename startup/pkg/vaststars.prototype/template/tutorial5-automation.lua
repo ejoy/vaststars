@@ -2,26 +2,26 @@ local guide = require "guide.guide5"
 local mountain = require "mountain"
 
 local entities = { {
-  amount = 5,
+  amount = 0,
   dir = "N",
   prototype_name = "指挥中心",
   x = 124,
   y = 118
 }, {
   dir = "N",
-  items = { { "运输车辆I", 25 }, { "砖石公路-X型", 100 }},
+  items = { { "仓库I", 20 }, { "物流站", 15 }, { "运输车辆I", 30 }, { "砖石公路-X型", 100 } },
   prototype_name = "机头残骸",
   x = 131,
   y = 121
 }, {
   dir = "W",
-  items = { { "水电站I", 2 }, { "空气过滤器I", 5 }, { "地下水挖掘机I", 4 }, { "烟囱I", 3 } },
+  items = { { "烟囱I", 3 }, { "水电站I", 2 }, { "空气过滤器I", 5 }, { "地下水挖掘机I", 7 } },
   prototype_name = "机翼残骸",
   x = 146,
   y = 118
 }, {
   dir = "W",
-  items = { { "太阳能板I", 5 }, { "蓄电池I", 15 }, { "地下水挖掘机I", 3 }, { "蒸汽发电机I", 4 } },
+  items = { { "蓄电池I", 15 }, { "太阳能板I", 5 }, { "无人机平台I", 20 }, { "蒸汽发电机I", 4 } },
   prototype_name = "机身残骸",
   x = 43,
   y = 169
@@ -44,7 +44,7 @@ local entities = { {
   y = 130
 }, {
   dir = "N",
-  items = { { "碎石", 60 } },
+  items = { { "碎石", 33 } },
   prototype_name = "仓库I",
   x = 75,
   y = 132
@@ -65,7 +65,7 @@ local entities = { {
   y = 134
 }, {
   dir = "N",
-  items = { { "石砖", 30 } },
+  items = { { "石砖", 26 } },
   prototype_name = "仓库I",
   x = 98,
   y = 134
@@ -345,7 +345,7 @@ local entities = { {
   y = 143
 }, {
   dir = "N",
-  items = { { "石墨", 30 } },
+  items = { { "石墨", 28 } },
   prototype_name = "仓库I",
   x = 95,
   y = 143
@@ -382,7 +382,7 @@ local entities = { {
   y = 143
 }, {
   dir = "N",
-  items = { { "石墨", 30 } },
+  items = { { "石墨", 26 } },
   prototype_name = "仓库I",
   x = 107,
   y = 143
@@ -398,7 +398,7 @@ local entities = { {
   y = 92
 }, {
   dir = "N",
-  items = { { "铁矿石", 60 } },
+  items = { { "铁矿石", 58 } },
   prototype_name = "仓库I",
   x = 72,
   y = 92
@@ -1179,7 +1179,7 @@ local entities = { {
   y = 160
 }, {
   dir = "N",
-  items = { { "石墨", 30 } },
+  items = { { "石墨", 0 } },
   prototype_name = "仓库I",
   x = 122,
   y = 161
@@ -2789,7 +2789,7 @@ local entities = { {
   y = 150
 }, {
   dir = "N",
-  items = { { "碎石", 60 }, { "铁矿石", 60 }, { "铝矿石", 0 } },
+  items = { { "碎石", 52 }, { "铁矿石", 56 }, { "铝矿石", 0 } },
   prototype_name = "仓库I",
   x = 123,
   y = 148
@@ -2846,12 +2846,6 @@ local entities = { {
   x = 131,
   y = 100
 }, {
-  dir = "W",
-  items = { { "supply", "铝矿石", 2 } },
-  prototype_name = "物流站",
-  x = 94,
-  y = 98
-}, {
   dir = "S",
   items = { { "supply", "铝矿石", 2 } },
   prototype_name = "物流站",
@@ -2875,7 +2869,7 @@ local entities = { {
   y = 100
 }, {
   dir = "N",
-  items = { { "铝矿石", 60 } },
+  items = { { "铝矿石", 42 } },
   prototype_name = "仓库I",
   x = 130,
   y = 99
@@ -2901,12 +2895,6 @@ local entities = { {
   x = 122,
   y = 128
 }, {
-  dir = "S",
-  items = { { "supply", "铁矿石", 2 } },
-  prototype_name = "物流站",
-  x = 144,
-  y = 98
-}, {
   dir = "N",
   prototype_name = "无人机平台I",
   x = 149,
@@ -2921,26 +2909,6 @@ local entities = { {
   recipe = "气候科技包T1",
   x = 140,
   y = 117
-}, {
-  dir = "E",
-  fluid_name = {
-    input = {},
-    output = { "地下卤水" }
-  },
-  prototype_name = "地下水挖掘机I",
-  recipe = "离岸抽水",
-  x = 142,
-  y = 114
-}, {
-  dir = "N",
-  fluid_name = {
-    input = {},
-    output = { "空气" }
-  },
-  prototype_name = "空气过滤器I",
-  recipe = "空气过滤",
-  x = 140,
-  y = 115
 }, {
   dir = "N",
   prototype_name = "无人机平台I",
@@ -2979,38 +2947,11 @@ local entities = { {
   y = 117
 } }
 local backpack = { {
-  count = 6,
-  prototype_name = "石墨"
+  count = 1,
+  prototype_name = "空气过滤器I"
 }, {
-  count = 11,
-  prototype_name = "碎石"
-}, {
-  count = 4,
-  prototype_name = "铁矿石"
-}, {
-  count = 2,
-  prototype_name = "铝矿石"
-}, {
-  count = 40,
-  prototype_name = "一氧化碳"
-}, {
-  count = 1000,
-  prototype_name = "氢气"
-}, {
-  count = 1000,
-  prototype_name = "氯气"
-}, {
-  count = 500,
-  prototype_name = "氧气"
-}, {
-  count = 15,
-  prototype_name = "甲烷"
-}, {
-  count = 29,
-  prototype_name = "乙烯"
-}, {
-  count = 8,
-  prototype_name = "石砖"
+  count = 1,
+  prototype_name = "地下水挖掘机I"
 } }
 local road = { {
   dir = "N",
@@ -4993,6 +4934,7 @@ local mineral = {
 ["93,102"] = "铝矿石",
 ["93,203"] = "地热气"
 }
+
 
 
 

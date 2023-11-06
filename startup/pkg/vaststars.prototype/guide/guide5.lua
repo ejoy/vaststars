@@ -30,6 +30,38 @@ local guide5 = {
         },
 	},
 
+	{
+        name = "",
+		narrative = {
+            {"哔哩..在路网里添加足够的{/g 运输车辆}，让整个基地的物流开始正常运转。", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            task = {
+                "运输车派遣",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "拾取物资1",
+        },
+	},
+
+	-- {
+    --     name = "",
+	-- 	narrative = {
+    --         {"哔哩..利用获得{/color:4bd0ff 砖石公路}修复断开道路，使得物流网络顺畅。", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+    --     },
+    --     narrative_end = {
+    --         task = {
+    --             "修复道路",
+    --         },
+    --         guide_progress = 10,
+    --     },
+    --     prerequisites = {
+    --         "拾取物资1",
+    --     },
+	-- },
+
     {
         name = "",
 		narrative = {
@@ -43,7 +75,7 @@ local guide5 = {
             guide_progress = 10,
         },
         prerequisites = {
-            "采矿机规划",
+            "运输车派遣",
         },
 	},
    
