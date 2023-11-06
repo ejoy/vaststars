@@ -102,14 +102,6 @@ value:
     shelf6
 ---
 file: mesh.prefab
-op: copyfile
-path: low_power.prefab
----
-file: mesh.prefab
-op: copyfile
-path: work.prefab
----
-file: mesh.prefab
 op: replace
 path: /2/data/animation_birth
 value: idle
@@ -139,6 +131,14 @@ file: images/furnace_norml.texture
 op: add
 path: /maxsize
 value: 128
+---
+file: mesh.prefab
+op: copyfile
+path: low_power.prefab
+---
+file: mesh.prefab
+op: copyfile
+path: work.prefab
 ---
 file: low_power.prefab
 op: replace
