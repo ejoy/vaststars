@@ -54,7 +54,7 @@ local function __create_self_sprite(typeobject, x, y, dir, sprite_color)
         local aw, ah = iprototype.rotate_area(typeobject.supply_area, dir)
         local w, h = iprototype.rotate_area(typeobject.area, dir)
         offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
-        sprite = create_sprite(x + offset_x, y + offset_y, aw, ah, dir, sprite_color)
+        sprite = create_sprite(x + offset_x, y + offset_y, aw, ah, sprite_color)
     end
     return sprite
 end
@@ -376,7 +376,7 @@ local function new_entity(self, datamodel, typeobject)
                 local w, h = iprototype.rotate_area(otypeobject.area, object.dir)
                 local ow, oh = iprototype.rotate_area(otypeobject.supply_area, object.dir)
                 if not self.sprites[object.id] then
-                    self.sprites[object.id] = create_sprite(object.x - (ow - w)//2, object.y - (oh - h)//2, ow, oh, object.dir, sprite_color)
+                    self.sprites[object.id] = create_sprite(object.x - (ow - w)//2, object.y - (oh - h)//2, ow, oh, sprite_color)
                 end
             end
         end

@@ -48,10 +48,6 @@
                 pointer-events: none;
                 animation: 1.6s cubic-in-out 0s teleport-send;
             }
-            .item-teleport-recv {
-                pointer-events: none;
-                animation: 1.6s cubic-in-out 0s teleport-recv;
-            }
             .materials {
                 pointer-events: none;
                 flex-direction: row;
@@ -156,26 +152,8 @@
                     opacity: 0;
                 }
             }
-            @keyframes teleport-recv {
-                0% {
-                    left: 80vmin;
-                    top: 5vmin;
-                    opacity: 1;
-                }
-                95% {
-                    left: 20vmin;
-                    top: 65vmin;
-                    opacity: 1;
-                }
-                100% {
-                    left: 20vmin;
-                    top: 65vmin;
-                    opacity: 0;
-                }
-            }
         </style>
         <style path = "/pkg/vaststars.resources/ui/common/building_style.rcss"/>
-        <style path = "/pkg/vaststars.resources/ui/common/listpage_style.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "lua.ui_system"
             local start = ui_sys.createDataMode {
@@ -235,25 +213,6 @@
                             </div>
                         ]]):format(it.icon, it.name, it.count)
                     end
-                end,
-                ["teleport-recv"] = function(...)
-                    local parent = document.getElementById('pop_root')
-                    local child = document.createElement "div"
-                    child.outerHTML = ([[<div class="item-teleport-send" style="flex-direction:row; left: 20vmin; top:65vmin;"/>]])
-                    for _, it in ipairs(param.items) do
-                        local item = document.createElement "div"
-                        item.outerHTML = ([[
-                            <div class = "materials">
-                                <div class = "materials-icon" style = 'background-image: %s;'/>
-                            </div>
-                        ]]):format(it.icon)
-                        child.appendChild(item)
-                    end
-                    child.addEventListener('animationend', function(event)
-                        console.log("----teleport-recv animationend----")
-                        parent.removeChild(child)
-                    end)
-                    parent.appendChild(child)
                 end,
             })
         </script>

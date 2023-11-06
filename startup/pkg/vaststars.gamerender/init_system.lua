@@ -16,12 +16,9 @@ if not __ANT_RUNTIME__ and CUSTOM_ARCHIVING then
 end
 
 local bgfx = require 'bgfx'
-local gameplay_core = require "gameplay.core"
 local audio = import_package "ant.audio"
-local rhwi = import_package "ant.hwi"
 local font = import_package "ant.font"
 local ltask = require "ltask"
-local global = require "global"
 local archiving = require "archiving"
 
 local m = ecs.system 'init_system'
@@ -50,11 +47,10 @@ local function register_debug()
 end
 
 local function start_web()
-    if not __ANT_RUNTIME__ or global.is_webserver_started then
+    if not __ANT_RUNTIME__ then
 		return
 	end
 
-    global.is_webserver_started = true
 	register_debug()
 	local webserver = import_package "vaststars.webcgi"
 	webserver.start()
@@ -72,13 +68,8 @@ function m:init_world()
     end
 
     world:create_instance {
-        prefab = "/pkg/vaststars.resources/daynight.prefab",
-    }
-    world:create_instance {
         prefab = "/pkg/vaststars.resources/light.prefab",
     }
-
-    rhwi.set_profie(gameplay_core.settings_get("debug", true))
 
     -- audio test (Master.strings.bank must be first)
     audio.load {

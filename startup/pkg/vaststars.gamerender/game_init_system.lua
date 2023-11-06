@@ -57,22 +57,7 @@ function m:init_world()
         return
     end
 
-    rhwi.set_profie(gameplay_core.settings_get("debug", true))
-
     irender.set_framebuffer_ratio("scene_ratio", gameplay_core.settings_get("ratio", 1))
-
-    -- audio test (Master.strings.bank must be first)
-    audio.load {
-        "/pkg/vaststars.resources/sounds/Master.strings.bank",
-        "/pkg/vaststars.resources/sounds/Master.bank",
-        "/pkg/vaststars.resources/sounds/Building.bank",
-        "/pkg/vaststars.resources/sounds/Function.bank",
-        "/pkg/vaststars.resources/sounds/UI.bank",
-    }
-
-    if not DISABLE_AUDIO then
-        audio.play("event:/background")
-    end
 
     local args = global.startup_args
     if args[1] == "new_game" then
@@ -88,6 +73,7 @@ function m:init_world()
         iui.open({rml = "/pkg/vaststars.resources/ui/construct.rml"})
         iui.open({rml = "/pkg/vaststars.resources/ui/message_pop.rml"})
         icanvas.create("icon", gameplay_core.settings_get("info", true), 10)
+        rhwi.set_profie(gameplay_core.settings_get("debug", true))
 
     elseif args[1] == "login" then
         icamera_controller.set_camera_from_prefab("camera_default.prefab")
@@ -101,6 +87,7 @@ function m:init_world()
         iui.set_guide_progress(iguide.get_progress())
         iui.open({rml = "/pkg/vaststars.resources/ui/login.rml"})
         icanvas.create("icon", false, 10)
+        rhwi.set_profie(false)
 
     elseif args[1] == "continue_game" then
         local index = args[2]
@@ -109,6 +96,7 @@ function m:init_world()
         iui.open({rml = "/pkg/vaststars.resources/ui/construct.rml"})
         iui.open({rml = "/pkg/vaststars.resources/ui/message_pop.rml"})
         icanvas.create("icon", gameplay_core.settings_get("info", true), 10)
+        rhwi.set_profie(gameplay_core.settings_get("debug", true))
 
     elseif args[1] == "load_game" then
         local index = args[2]
@@ -117,6 +105,8 @@ function m:init_world()
         iui.open({rml = "/pkg/vaststars.resources/ui/construct.rml"})
         iui.open({rml = "/pkg/vaststars.resources/ui/message_pop.rml"})
         icanvas.create("icon", gameplay_core.settings_get("info", true), 10)
+        rhwi.set_profie(gameplay_core.settings_get("debug", true))
+
     else
         assert(false)
     end

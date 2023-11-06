@@ -73,7 +73,7 @@ local function __create_self_sprite(typeobject, x, y, dir, sprite_color)
         local aw, ah = iprototype.rotate_area(typeobject.supply_area, dir)
         local w, h = iprototype.rotate_area(typeobject.area, dir)
         offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
-        sprite = create_sprite(x + offset_x, y + offset_y, aw, ah, dir, sprite_color)
+        sprite = create_sprite(x + offset_x, y + offset_y, aw, ah, sprite_color)
     end
     return sprite
 end

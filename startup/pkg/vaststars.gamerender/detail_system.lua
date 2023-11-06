@@ -132,19 +132,32 @@ do
 
         --
         if typeobject.supply_area then
-            for _, o in objects:all() do
+            local t = {}
+            for x = object.x - 20, object.x + 20 do
+                for y = object.y - 20, object.y + 20 do
+                    local o = objects:coord(x, y)
+                    if o and o.id ~= object.id then
+                        local otypeobject = iprototype.queryByName(o.prototype_name)
+                        if otypeobject.supply_area then
+                            t[#t+1] = o.id
+                        end
+                    end
+                end
+            end
+
+            for id in pairs(t) do
+                local o = assert(objects:get(id))
                 local otypeobject = iprototype.queryByName(o.prototype_name)
                 if otypeobject.supply_area and o.id ~= object.id then
                     local w, h = iprototype.rotate_area(otypeobject.area, o.dir)
                     local ow, oh = iprototype.rotate_area(otypeobject.supply_area, o.dir)
-                    ow, oh = tonumber(ow), tonumber(oh)
-                    temp_objects[#temp_objects+1] = create_sprite(o.x - (ow - w)//2, o.y - (oh - h)//2, ow, oh, o.dir, SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_OTHER)
+                    temp_objects[#temp_objects+1] = create_sprite(o.x - (ow - w)//2, o.y - (oh - h)//2, ow, oh, SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_OTHER)
                 end
             end
+
             local w, h = iprototype.rotate_area(typeobject.area, object.dir)
             local ow, oh = iprototype.rotate_area(typeobject.supply_area, object.dir)
-            ow, oh = tonumber(ow), tonumber(oh)
-            temp_objects[#temp_objects+1] = create_sprite(object.x - (ow - w)//2, object.y - (oh - h)//2, ow, oh, object.dir, SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_VALID)
+            temp_objects[#temp_objects+1] = create_sprite(object.x - (ow - w)//2, object.y - (oh - h)//2, ow, oh, SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_VALID)
         end
 
         --
