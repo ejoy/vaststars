@@ -113,33 +113,10 @@ return function(start)
         start.buttons[#start.buttons + 1] = v
     end
 
-    if start.show_set_recipe then
-        local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "set_recipe"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/set-recipe.texture"
-        start.buttons[#start.buttons + 1] = v
-    end
-
     if start.lorry_factory_inc_lorry then
         local v = setmetatable({}, {__index = DEFAULT})
         v.command = "lorry_factory_inc_lorry"
         v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/lorry-factory-inc-lorry.texture"
-        start.buttons[#start.buttons + 1] = v
-    end
-
-    if start.set_item then
-        local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "set_item"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/set-item.texture"
-        start.buttons[#start.buttons + 1] = v
-    end
-
-    if start.place_item then
-        local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "place_item"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/place-item.texture"
-        v.number = start.place_item_count
-        v.show_number = true
         start.buttons[#start.buttons + 1] = v
     end
 
@@ -157,10 +134,33 @@ return function(start)
         start.buttons[#start.buttons + 1] = v
     end
 
+    if start.set_item then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.command = "set_item"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/set-item.texture"
+        start.buttons[#start.buttons + 1] = v
+    end
+
+    if start.show_set_recipe then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.command = "set_recipe"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/set-recipe.texture"
+        start.buttons[#start.buttons + 1] = v
+    end
+
     if start.copy then
         local v = setmetatable({}, {__index = DEFAULT})
         v.command = "copy"
         v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/clone.texture"
+        start.buttons[#start.buttons + 1] = v
+    end
+
+    if start.place_item then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.command = "place_item"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/place-item.texture"
+        v.number = start.place_item_count
+        v.show_number = true
         start.buttons[#start.buttons + 1] = v
     end
 
