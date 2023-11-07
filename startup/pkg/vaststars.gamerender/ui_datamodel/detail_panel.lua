@@ -573,8 +573,7 @@ function M.update(datamodel, object_id)
     if model_ready and model_inst then
         update_model(model_inst)
     end
-    local gid = iUiRt.get_group_id("detail_scene")
-    if gid and not model_inst then
+    if not model_inst then
         model_inst = iUiRt.set_rt_prefab("detail_scene",
             model_path,
             {s = {1,1,1}, t = {0, 0, 0}}, camera_dist)

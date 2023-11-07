@@ -196,7 +196,9 @@ function M.update(datamodel)
                 "/pkg/vaststars.resources/" .. typeobject.model,
                 {s = {1, 1, 1}, t = {0, 0, 0}}, typeobject.camera_distance, nil, model_message_func
             )
-            world:instance_message(model, "disable_cast_shadow")
+            if model then
+                world:instance_message(model, "disable_cast_shadow") 
+            end
 
             local data = get_shortcur(datamodel.shortcut_id)
             data.prototype = typeobject.id
@@ -239,7 +241,9 @@ function M.update(datamodel)
                     "/pkg/vaststars.resources/" .. typeobject.model,
                     {s = {1, 1, 1}, t = {0, 0, 0}}, typeobject.camera_distance, nil, model_message_func
                 )
-                world:instance_message(model, "disable_cast_shadow")
+                if model then
+                    world:instance_message(model, "disable_cast_shadow") 
+                end
             end
         else
             datamodel.category_idx = 0
