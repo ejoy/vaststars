@@ -61,6 +61,9 @@ local function init()
         "/pkg/vaststars.resources/sounds/Function.bank",
         "/pkg/vaststars.resources/sounds/UI.bank",
     }
+    if not DISABLE_AUDIO then
+        audio.play("event:/background")
+    end
 
     if NOTHING then
         global.startup_args = {"nothing"}
@@ -73,9 +76,6 @@ local function init()
     end
 
     global.startup_args = {"new_game", "template.loading-scene"}
-    if not DISABLE_AUDIO then
-        audio.play("event:/background")
-    end
 end
 
 local function init_game(template)
@@ -137,15 +137,17 @@ funcs["load_game"] = function(path)
     init_game(template)
 end
 
-function m:init_world()
+function m:init()
     if not global.init then
         init()
         global.init = true
     end
+
     gameworld_prebuild = world:pipeline_func "gameworld_prebuild"
     gameworld_build = world:pipeline_func "gameworld_build"
     gameworld = world:pipeline_func "gameworld"
 
+    -- the light must be created in the frame before all entities are created
     world:create_instance {
         prefab = "/pkg/vaststars.resources/daynight.prefab"
     }
@@ -155,7 +157,9 @@ function m:init_world()
     world:create_instance {
         prefab = "/pkg/vaststars.resources/sky.prefab"
     }
+end
 
+function m:init_world()
     local args = global.startup_args
     local func = assert(funcs[args[1]])
     func(table.unpack(args, 2))

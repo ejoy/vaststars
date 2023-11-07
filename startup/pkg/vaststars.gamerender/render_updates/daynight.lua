@@ -12,7 +12,6 @@ local daynight_sys = ecs.system "daynight_system"
 local daynight_update; do
     if DAYNIGHT_DEBUG == "" then
         function daynight_update()
-            return false
         end
     elseif DAYNIGHT_DEBUG then
         local total_sec = tostring(DAYNIGHT_DEBUG)
@@ -25,23 +24,13 @@ local daynight_update; do
         end
 
         function daynight_update()
-            local dne = w:first "daynight:in"
-            if not dne then
-                return false
-            end
-
+            local dne = assert(w:first "daynight:in")
             idn.update_cycle(dne, (gettime() % total_ms)/total_ms)
-            return false
         end
     else
         function daynight_update(gameplayWorld)
-            local dne = w:first "daynight:in"
-            if not dne then
-                return false
-            end
-
+            local dne = assert(w:first "daynight:in")
             idn.update_cycle(dne, (gameplayWorld:now() % DayTick)/DayTick)
-            return false
         end
     end
 end
