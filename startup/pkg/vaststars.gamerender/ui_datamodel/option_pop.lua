@@ -18,7 +18,7 @@ local icanvas = ecs.require "engine.canvas"
 local rhwi = import_package "ant.hwi"
 local irender = ecs.require "ant.render|render_system.render"
 local igroup = ecs.require "group"
-local rebot_world = ecs.require "rebot_world"
+local reboot_world = ecs.require "reboot_world"
 
 ---------------
 local M = {}
@@ -49,7 +49,8 @@ function M.update(datamodel)
 
     for _, _, _, index in restore_mb:unpack() do
         iui.close("/pkg/vaststars.resources/ui/option_pop.rml")
-        rebot_world("load_game", index)
+        local list = archiving.list()
+        reboot_world("load_game", assert(list[index]))
     end
 
     for _ in close_mb:unpack() do
@@ -75,7 +76,7 @@ function M.update(datamodel)
     for _ in back_to_main_menu_mb:unpack() do
         iui.close("/pkg/vaststars.resources/ui/option_pop.rml")
         iui.close("/pkg/vaststars.resources/ui/main_menu.rml")
-        rebot_world("login")
+        reboot_world("new_game", "template.loading-scene")
     end
 
     for _ in lock_group_mb:unpack() do

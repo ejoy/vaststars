@@ -5,7 +5,7 @@ local w = world.w
 local window = import_package "ant.window"
 local global = require "global"
 
-local function rebot(...)
+return function(...)
     global.startup_args = {...}
 
     window.reboot {
@@ -14,4 +14,3 @@ local function rebot(...)
         }
     }
 end
-return rebot

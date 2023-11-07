@@ -1,5 +1,5 @@
-system "game_init_system"
-    .implement "game_init_system.lua"
+system "init_system"
+    .implement "init_system.lua"
 
 system "assembling_system"
     .implement "render_updates/assembling.lua"
@@ -60,3 +60,6 @@ system "prototype_cache_system"
 
 system "depot_sys"
     .implement "render_updates/depot.lua"
+
+system "camera_system"
+    .implement "render_updates/camera.lua"

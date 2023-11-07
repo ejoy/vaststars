@@ -127,4 +127,8 @@ return {
   guide = guide,
   mode = "adventure",
   start_tech = "迫降火星",
+  init_ui = {
+    "/pkg/vaststars.resources/ui/construct.rml",
+    "/pkg/vaststars.resources/ui/message_pop.rml"
+  },
 }

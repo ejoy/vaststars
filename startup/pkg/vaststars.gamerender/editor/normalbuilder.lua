@@ -21,7 +21,9 @@ local irecipe = require "gameplay.interface.recipe"
 local iobject = ecs.require "object"
 local imining = require "gameplay.interface.mining"
 local igrid_entity = ecs.require "engine.grid_entity"
-local create_sprite = ecs.require "sprite"
+local isprite = ecs.require "sprite"
+local create_sprite = isprite.create
+local flush_sprite = isprite.flush
 local create_selected_boxes = ecs.require "selected_boxes"
 local icoord = require "coord"
 local gameplay_core = require "gameplay.core"
@@ -393,6 +395,7 @@ local function new_entity(self, datamodel, typeobject)
     __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject)
 
     __new_entity(self, datamodel, typeobject, position, x, y, dir)
+    flush_sprite()
     self.pickup_object.APPEAR = true
 
     if not self.grid_entity then
@@ -484,6 +487,7 @@ local function touch_move(self, datamodel, delta_vec)
             c:on_status_change(datamodel.show_confirm)
         end
     end
+    flush_sprite()
 
     -- the fluid type of the liquid container should be determined based on the surrounding fluid tanks when placing the fluid tank
     if iprototype.has_type(typeobject.type, "fluidbox") then
@@ -617,6 +621,7 @@ local function rotate(self, datamodel, dir, delta_vec)
         self.sprite:remove()
     end
     self.sprite = __create_self_sprite(typeobject, x, y, pickup_object.dir, sprite_color)
+    flush_sprite()
 end
 
 local function clean(self, datamodel)
@@ -634,6 +639,7 @@ local function clean(self, datamodel)
         self.sprite:remove()
         self.sprite = nil
     end
+    flush_sprite()
 
     for _, o in pairs(self.selected_boxes) do
         o:remove()

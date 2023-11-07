@@ -42,4 +42,8 @@ return {
     show = true,
     mode = "adventure",
     start_tech = "采矿教学",
+    init_ui = {
+      "/pkg/vaststars.resources/ui/construct.rml",
+      "/pkg/vaststars.resources/ui/message_pop.rml"
+    },
 }

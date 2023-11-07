@@ -1,6 +1,7 @@
 local create_buildings = require "building_components"
 
 return {
+    init = false,
     startup_args = {},
     science = {},
     statistic = {

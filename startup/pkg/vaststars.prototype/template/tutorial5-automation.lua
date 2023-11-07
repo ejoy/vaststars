@@ -4980,4 +4980,8 @@ return {
   show = true,
   mode = "adventure",
   start_tech = "自动化教学",
+  init_ui = {
+    "/pkg/vaststars.resources/ui/construct.rml",
+    "/pkg/vaststars.resources/ui/message_pop.rml"
+  },
 }

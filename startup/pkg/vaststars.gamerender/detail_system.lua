@@ -12,7 +12,9 @@ local gameplay_core = require "gameplay.core"
 local create_selected_boxes = ecs.require "selected_boxes"
 local icoord = require "coord"
 local audio = import_package "ant.audio"
-local create_sprite = ecs.require "sprite"
+local isprite = ecs.require "sprite"
+local create_sprite = isprite.create
+local flush_sprite = isprite.flush
 local iquad_lines_entity = ecs.require "engine.quad_lines_entity"
 
 function idetail.show(object_id)
@@ -158,6 +160,8 @@ do
             local w, h = iprototype.rotate_area(typeobject.area, object.dir)
             local ow, oh = iprototype.rotate_area(typeobject.supply_area, object.dir)
             temp_objects[#temp_objects+1] = create_sprite(object.x - (ow - w)//2, object.y - (oh - h)//2, ow, oh, SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_VALID)
+
+            flush_sprite()
         end
 
         --

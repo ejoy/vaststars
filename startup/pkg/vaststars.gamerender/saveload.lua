@@ -21,8 +21,6 @@ local iprototype = require "gameplay.interface.prototype"
 local iroadnet_converter = require "roadnet_converter"
 local objects = require "objects"
 local ifluid = require "gameplay.interface.fluid"
-local iscience = require "gameplay.interface.science"
-local iguide = require "gameplay.interface.guide"
 local iui = ecs.require "engine.system.ui_system"
 local global = require "global"
 local create_buildings = require "building_components"
@@ -35,8 +33,6 @@ local iobject = ecs.require "object"
 local icoord = require "coord"
 local iroadnet = ecs.require "roadnet"
 local srt = require "utility.srt"
-local imineral = ecs.require "mineral"
-local imountain = ecs.require "engine.mountain"
 local fastio = require "fastio"
 
 local function clean()
@@ -54,11 +50,8 @@ local function restore_world(gameplay_world)
     local guide = game_template.guide
 
     local function _debug()
-        if debugger.skip_guide then
+        if next(guide) and debugger.skip_guide then
             print("skip guide")
-            gameplay_core.get_storage().guide_id = #guide
-            iui.set_guide_progress(guide[#guide].narrative_end.guide_progress)
-
             for _, guide in ipairs(guide) do
                 if next(guide.narrative_end.task) then
                     for _, task in ipairs(guide.narrative_end.task) do
@@ -66,6 +59,7 @@ local function restore_world(gameplay_world)
                     end
                 end
             end
+            gameplay_core.get_storage().guide_id = #guide + 1
         end
     end
     _debug()
@@ -156,7 +150,6 @@ local function restore_world(gameplay_world)
     end
 
     iobject.flush()
-    iscience.update_tech_list(gameplay_core.get_world())
     global.statistic.valid = false
 end
 
@@ -217,12 +210,7 @@ function M:backup()
     return true
 end
 
-function M:restore(index)
-    local list = archiving.list()
-    assert(#list > 0)
-    assert(#list >= index)
-
-    local fullpath = list[index]
+function M:restore(fullpath)
     assert(fs.exists(fs.path(fullpath)))
     assert(fs.exists(fs.path(fullpath .. "/version")))
 
@@ -239,13 +227,6 @@ function M:restore(index)
     clean()
 
     local gameplay_world = gameplay_core.get_world()
-    local game_template_file = assert(gameplay_core.get_storage().game_template)
-    local game_template = ecs.require(("vaststars.prototype|%s"):format(game_template_file))
-
-    iguide.init(gameplay_world, game_template.guide)
-    imineral.init(game_template.mineral)
-    imountain:create(game_template.mountain)
-
     for v in gameplay_world.ecs:select "road building:in" do
         local typeobject = iprototype.queryById(v.building.prototype)
         local shape = iroadnet_converter.to_shape(typeobject.name)
@@ -253,7 +234,6 @@ function M:restore(index)
     end
     iroadnet:flush()
 
-    iscience.update_tech_list(gameplay_core.get_world())
     debugger.set_free_mode(gameplay_core.get_storage().game_mode == "free")
     restore_world(gameplay_world)
     gameplay_core.set_changed(CHANGED_FLAG_ALL)
@@ -272,14 +252,10 @@ function M:restart(mode, game_template_file)
     world:pipeline_func "prototype" (gameplay_world)
 
     self.running = true
-    iscience.update_tech_list(gameplay_world)
-
     local game_template = ecs.require(("vaststars.prototype|%s"):format(game_template_file))
 
     --
     clean()
-    local game_template_mineral = game_template.mineral
-    imineral.init(game_template_mineral)
 
     --
     for _, e in ipairs(game_template.entities or {}) do

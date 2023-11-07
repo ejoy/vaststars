@@ -41,14 +41,6 @@ local function fetch_all_archiving(root)
 end
 
 local m = {}
-function m.last()
-    local list = fetch_all_archiving(ARCHIVAL_BASE_DIR)
-    if #list <= 0 then
-        return
-    end
-    return #list
-end
-
 function m.list()
     return fetch_all_archiving(ARCHIVAL_BASE_DIR)
 end
