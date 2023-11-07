@@ -3,14 +3,16 @@
 .app/
 .fileserver/
 .vs/
+.repo/
 /build/
-bin/
+/bin/
+/startup/res/
+/.vscode/
 pkg/ecs/ecs.lua
 .DS_Store
 *.xcuserstate
 *.xcbkptlist
 *.xcscheme
-/.vscode
 /runtime/macos/FrameCapture/
 clibs/gameplay/src/util/component.h
 /startup/pkg/vaststars.prototype/debugger.lua
@@ -19,4 +21,3 @@ clibs/gameplay/src/util/component.h
 /startup/mod
 /startup/pkg/vaststars.resources/glb/test_*.glb
 *.plist
-/startup/.repo
