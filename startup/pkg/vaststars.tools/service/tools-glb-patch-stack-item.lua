@@ -118,12 +118,7 @@ end
 
 local function getRealPath(Mapping, materialRelated)
     local key = fs.path(materialRelated):filename():replace_extension(""):string()
-    local Realname
-    for k, v in pairs(Mapping) do
-        if v == key then
-            Realname = k
-        end
-    end
+    local Realname = Mapping[key]
     assert(Realname, "not found material: " .. materialRelated)
     return fs.path(materialRelated):replace_filename(Realname):string() .. fs.path(materialRelated):extension():string()
 end
