@@ -139,7 +139,7 @@ local guide5 = {
             guide_progress = 10,
         },
         prerequisites = {
-            "气候科技包量产",
+            "自动化科技",
         },
 	},
    
