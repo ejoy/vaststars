@@ -61,6 +61,7 @@ import_feature "ant.starsky"
 import_feature "ant.polyline"
 import_feature "ant.terrain|canvas"
 import_feature "ant.shadow_bounding"
+import_feature "ant.blur_scene"
 
 feature "gameplay"
     .import "gameplay.ecs"
