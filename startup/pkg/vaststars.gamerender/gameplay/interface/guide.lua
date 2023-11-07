@@ -1,7 +1,7 @@
 local M = {}
 local is_in_guide = false
 local running = true
-local globalGuide
+local globalGuide = {}
 
 function M.init(gameplay_world, guide)
     globalGuide = guide

@@ -25,7 +25,9 @@ local igrid_entity = ecs.require "engine.grid_entity"
 local mc = import_package "ant.math".constant
 local create_road_entrance = ecs.require "editor.road_entrance"
 local global = require "global"
-local create_sprite = ecs.require "sprite"
+local isprite = ecs.require "sprite"
+local create_sprite = isprite.create
+local flush_sprite = isprite.flush
 local create_pickup_icon = ecs.require "pickup_icon".create
 local create_fluid_indicators = ecs.require "fluid_indicators".create
 local icoord = require "coord"
@@ -397,6 +399,7 @@ local function touch_move(self, datamodel, delta_vec)
         end
         if self.sprite then
             self.sprite:move(pickup_object.x + offset_x, pickup_object.y + offset_y, sprite_color)
+            flush_sprite()
         end
         for _, c in pairs(self.pickup_components) do
             c:on_status_change(datamodel.show_confirm)
@@ -416,6 +419,7 @@ local function touch_move(self, datamodel, delta_vec)
         end
         if self.sprite then
             self.sprite:move(pickup_object.x + offset_x, pickup_object.y + offset_y, sprite_color)
+            flush_sprite()
         end
         for _, c in pairs(self.pickup_components) do
             c:on_status_change(datamodel.show_confirm)
@@ -461,6 +465,7 @@ local function confirm(self, datamodel)
     if self.sprite then
         self.sprite:remove()
         self.sprite = nil
+        flush_sprite()
     end
     if self.grid_entity then
         self.grid_entity:remove()
@@ -549,6 +554,7 @@ local function rotate(self, datamodel, dir, delta_vec)
         self.sprite:remove()
     end
     self.sprite = __create_self_sprite(typeobject, x, y, pickup_object.dir, sprite_color)
+    flush_sprite()
 
     local road_entrance_position, dx, dy, ddir = _get_road_entrance_position(typeobject, x, y, pickup_object.dir)
     if road_entrance_position then
@@ -584,6 +590,7 @@ local function clean(self, datamodel)
     if self.sprite then
         self.sprite:remove()
         self.sprite = nil
+        flush_sprite()
     end
 
     local vsobject = assert(vsobject_manager:get(self.move_object_id))

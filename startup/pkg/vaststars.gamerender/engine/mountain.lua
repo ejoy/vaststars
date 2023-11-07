@@ -87,7 +87,7 @@ local function idxoffset(baseidx, sidx)
 end
 
 local M = {}
-function M:create(mountain_cfg)
+function M:init(mountain_cfg)
     MOUNTAIN_MASKS = build_mountain_masks(mountain_cfg)
     local subindices = build_sub_indices(MOUNTAIN_MASKS)
 
