@@ -93,14 +93,14 @@ end
 function debug_sys:init_world()
 end
 
-local ibs           = ecs.require "ant.blur_scene|blur_scene"
+local ibs           = ecs.require "ant.render|blur_scene.blur_scene"
 
 function debug_sys:ui_update()
     local w = world.w
 
     for _, key, press, state in kb_mb:unpack() do
         if key == "A" and press == 0 then
-            ibs.blur_scene(5)   -- default gaussian blur count is 3
+            ibs.blur_scene()   -- default gaussian blur count is 3
         end
 
         if key == "B" and press == 0 then
