@@ -36,5 +36,5 @@ target_anims:
     tween: 1
     type: 1
   inherit: {false, false, false}
-  target_name: Plane_P1
+  target_name: camera
 type: srt
