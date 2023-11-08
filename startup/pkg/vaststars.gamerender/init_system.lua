@@ -139,15 +139,22 @@ funcs["new_game"] = function(file)
         debugger[k] = v
     end
 
+    local mf
+    if template.camera_animation then
+        mf = imodifier.create_srt_modifier_from_file(nil, 0, template.camera_animation, false, true)
+    end
+
     -- replace the default camera
-    local mf = imodifier.create_srt_modifier_from_file(nil, 0, "/pkg/vaststars.resources/animations/camera.anim", false, true)
     world:create_instance {
         prefab = assert(template.camera),
         on_ready = function(self)
             local eid = assert(self.tag["camera"][1])
-            imodifier.set_target(mf, eid)
-            imodifier.start(mf, {loop = true})
             irq.set_camera("main_queue", eid)
+
+            if mf then
+                imodifier.set_target(mf, eid)
+                imodifier.start(mf, {loop = true})
+            end
         end
     }
 
