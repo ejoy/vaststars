@@ -3,7 +3,7 @@ local json = import_package "ant.json"
 local directory = require "directory"
 local fastio = require "fastio"
 
-local ARCHIVAL_BASE_DIR = (directory.app_path() / "archiving/"):string()
+local ARCHIVAL_BASE_DIR <const> = (directory.app_path() / "archiving/"):string()
 local PROTOTYPE_VERSION = 1
 
 local function readall(file)
@@ -47,12 +47,6 @@ end
 
 function m.path()
     return ARCHIVAL_BASE_DIR
-end
-
-function m.set_dir(path)
-    if path then
-        ARCHIVAL_BASE_DIR = path
-    end
 end
 
 function m.set_version(version)

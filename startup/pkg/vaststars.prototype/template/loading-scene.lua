@@ -4451,11 +4451,16 @@ return {
     order = 8,
     guide = {},
     show = true,
-    mode = "free",
     start_tech = "登录科技",
     performance_stats = false,
     canvas_icon = false,
     init_ui = {
       "/pkg/vaststars.resources/ui/login.rml",
+    },
+    debugger = {
+      skip_guide = true,
+      recipe_unlocked = true,
+      item_unlocked = true,
+      infinite_item = true,
     },
 }

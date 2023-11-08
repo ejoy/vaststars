@@ -385,11 +385,16 @@ return {
   mountain = mountain,
   order = 6,
   guide = guide,
-  mode = "free",
   show = false,
   start_tech = "迫降火星",
   init_ui = {
     "/pkg/vaststars.resources/ui/construct.rml",
     "/pkg/vaststars.resources/ui/message_pop.rml"
+  },
+  debugger = {
+    skip_guide = true,
+    recipe_unlocked = true,
+    item_unlocked = true,
+    infinite_item = true,
   },
 }

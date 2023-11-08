@@ -7,16 +7,10 @@ local FPS <const> = CONSTANT.FPS
 local NOTHING <const> = ecs.require "debugger".nothing
 local TERRAIN_ONLY <const> = ecs.require "debugger".terrain_only
 local DISABLE_AUDIO <const> = ecs.require "debugger".disable_audio
-local CUSTOM_ARCHIVING <const> = ecs.require "debugger".custom_archiving
 local PROTOTYPE_VERSION <const> = ecs.require "vaststars.prototype|version"
 
-local ARCHIVAL_BASE_DIR
-if not __ANT_RUNTIME__ and CUSTOM_ARCHIVING then
-    local fs = require "bee.filesystem"
-    ARCHIVAL_BASE_DIR = (fs.exe_path():parent_path() / CUSTOM_ARCHIVING):lexically_normal():string()
-end
-
 local debugger = ecs.require "debugger"
+local iprototype = require "gameplay.interface.prototype"
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local icanvas = ecs.require "engine.canvas"
 local rhwi = import_package "ant.hwi"
@@ -50,7 +44,6 @@ font.import "/pkg/vaststars.resources/ui/font/Alibaba-PuHuiTi-Regular.ttf"
 local function init()
     start_web()
 
-    archiving.set_dir(ARCHIVAL_BASE_DIR)
     archiving.set_version(PROTOTYPE_VERSION)
 
     -- audio test (Master.strings.bank must be first)
@@ -81,9 +74,7 @@ end
 local function init_game(template)
     imineral.init(template.mineral)
     imountain:init(template.mountain)
-    iguide.init(gameplay_core.get_world(), template.guide)
     iscience.update_tech_list(gameplay_core.get_world())
-    iui.set_guide_progress(iguide.get_progress())
 
     rhwi.set_profie(template.performance_stats ~= false and gameplay_core.settings_get("debug", true) or false)
     ibackpack.set_infinite_item(debugger.infinite_item)
@@ -92,6 +83,21 @@ local function init_game(template)
     icanvas.create("icon", template.canvas_icon ~= false and gameplay_core.settings_get("info", true) or false, 10)
     icanvas.create("pickup_icon", false, 10)
     icanvas.create("road_entrance_marker", false, 0.02)
+
+    iguide.init(gameplay_core.get_world(), template.guide)
+    if next(template.guide) and debugger.skip_guide then
+        print("skip guide")
+        for _, guide in ipairs(template.guide) do
+            if next(guide.narrative_end.task) then
+                for _, task in ipairs(guide.narrative_end.task) do
+                    local typeobject = iprototype.queryByName(task)
+                    gameplay_core.get_world():research_progress(task, typeobject.count)
+                end
+            end
+        end
+        gameplay_core.get_storage().guide_id = #template.guide + 1
+    end
+    iui.set_guide_progress(iguide.get_progress())
 
     for _, rml in ipairs(template.init_ui) do
         iui.open({rml = rml})
@@ -115,15 +121,15 @@ funcs["new_game"] = function(file)
     iroadnet:create()
     icamera_controller.set_camera_from_prefab("camera_default.prefab")
 
+    saveload:restart(file)
     local template = ecs.require(("vaststars.prototype|%s"):format(file))
-    local mode = template.mode
-    debugger.set_free_mode(mode == "free")
-    saveload:restart(mode, file)
-
+    for k, v in pairs(template.debugger or {}) do
+        debugger[k] = v
+    end
     init_game(template)
 end
 
-funcs["load_game"] = function(path)
+funcs["restore"] = function(path)
     need_update = true
     iterrain.create()
     iroadnet:create()
@@ -131,9 +137,9 @@ funcs["load_game"] = function(path)
     saveload:restore(path)
     local file = assert(gameplay_core.get_storage().game_template)
     local template = ecs.require(("vaststars.prototype|%s"):format(file))
-    local mode = template.mode
-    debugger.set_free_mode(mode == "free")
-
+    for k, v in pairs(template.debugger or {}) do
+        debugger[k] = v
+    end
     init_game(template)
 end
 

@@ -3,9 +3,9 @@ local world = ecs.world
 
 local iui = ecs.require "engine.system.ui_system"
 
-local start_game_mb = mailbox:sub {"start_game"}
+local new_game_mb = mailbox:sub {"new_game"}
 local load_resources_mb = mailbox:sub {"load_resources"}
-local load_archive_mb = mailbox:sub {"load_archive"}
+local restore_mb = mailbox:sub {"restore"}
 local continue_mb = mailbox:sub {"continue"}
 local load_template_mb = mailbox:sub {"load_template"}
 local archiving = require "archiving"
@@ -21,13 +21,11 @@ end
 
 function M.update(datamodel)
     for _ in continue_mb:unpack() do
-        iui.close("/pkg/vaststars.resources/ui/login.rml")
         local list = archiving.list()
-        reboot_world("load_game", assert(list[#list]))
+        reboot_world("restore", assert(list[#list]))
     end
 
-    for _, _, _, template in start_game_mb:unpack() do
-        iui.close("/pkg/vaststars.resources/ui/login.rml")
+    for _, _, _, template in new_game_mb:unpack() do
         reboot_world("new_game", template)
     end
 
@@ -35,13 +33,11 @@ function M.update(datamodel)
         iui.open({rml = "/pkg/vaststars.resources/ui/loading.rml"})
     end
 
-    for _ in load_archive_mb:unpack() do
-        iui.close("/pkg/vaststars.resources/ui/login.rml")
+    for _ in restore_mb:unpack() do
         iui.open({rml = "/pkg/vaststars.resources/ui/option_pop.rml"})
     end
 
     for _ in load_template_mb:unpack() do
-        iui.close("/pkg/vaststars.resources/ui/login.rml")
         iui.open({rml = "/pkg/vaststars.resources/ui/template.rml"})
     end
 end
