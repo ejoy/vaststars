@@ -5,11 +5,11 @@ data:
       aspect: 2
       f: 1200
       fov: 35
-      n: 1
+      n: 0.2
   scene:
     r: {0.7071067690849304,0.0,0.0,0.7071067690849304}
-    t: {0, 0, 0}
-    updir: {0, 0, 1, 0}
+    t: {-50, 331.8, -155}
+    updir: {0, 1, 0, 0}
   exposure:
     type          : manual
     aperture      : 16.0

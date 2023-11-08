@@ -76,4 +76,5 @@ return {
     item_unlocked = true,
     infinite_item = true,
   },
+  camera = "/pkg/vaststars.resources/camera_default.prefab",
 }

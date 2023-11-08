@@ -11,7 +11,6 @@ local PROTOTYPE_VERSION <const> = ecs.require "vaststars.prototype|version"
 
 local debugger = ecs.require "debugger"
 local iprototype = require "gameplay.interface.prototype"
-local icamera_controller = ecs.require "engine.system.camera_controller"
 local icanvas = ecs.require "engine.canvas"
 local rhwi = import_package "ant.hwi"
 local gameplay_core = require "gameplay.core"
@@ -31,6 +30,7 @@ local audio = import_package "ant.audio"
 local font = import_package "ant.font"
 local archiving = require "archiving"
 local start_web = ecs.require "webcgi"
+local irq = ecs.require "ant.render|render_system.renderqueue"
 
 local m = ecs.system "game_init_system"
 local gameworld_prebuild
@@ -106,26 +106,47 @@ end
 
 local funcs = {}
 funcs["nothing"] = function()
-    icamera_controller.set_camera_from_prefab("camera_default.prefab")
+    world:create_instance {
+        prefab = "/pkg/vaststars.resources/camera_default.prefab",
+        on_ready = function(self)
+            local eid = assert(self.tag["camera"][1])
+            irq.set_camera("main_queue", eid)
+        end
+    }
 end
 
 funcs["terrain_only"] = function()
     need_update = true
     iterrain.create()
-    icamera_controller.set_camera_from_prefab("camera_default.prefab")
+    world:create_instance {
+        prefab = "/pkg/vaststars.resources/camera_default.prefab",
+        on_ready = function(self)
+            local eid = assert(self.tag["camera"][1])
+            irq.set_camera("main_queue", eid)
+        end
+    }
 end
 
 funcs["new_game"] = function(file)
     need_update = true
     iterrain.create()
     iroadnet:create()
-    icamera_controller.set_camera_from_prefab("camera_default.prefab")
 
     saveload:restart(file)
     local template = ecs.require(("vaststars.prototype|%s"):format(file))
     for k, v in pairs(template.debugger or {}) do
         debugger[k] = v
     end
+
+    -- replace the default camera
+    world:create_instance {
+        prefab = assert(template.camera),
+        on_ready = function(self)
+            local eid = assert(self.tag["camera"][1])
+            irq.set_camera("main_queue", eid)
+        end
+    }
+
     init_game(template)
 end
 

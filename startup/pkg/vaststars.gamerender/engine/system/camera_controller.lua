@@ -20,12 +20,17 @@ local CAMERA_DEFAULT <const> = read_datalist "/pkg/vaststars.resources/camera_de
 local CAMERA_CONSTRUCT <const> = read_datalist "/pkg/vaststars.resources/camera_construct.prefab" [1].data.scene
 local CAMERA_PICKUP <const> = read_datalist "/pkg/vaststars.resources/camera_pickup.prefab" [1].data.scene
 
+local mathpkg = import_package "ant.math"
+local mu, mc = mathpkg.util, mathpkg.constant
 local CAMERA_DEFAULT_ROTATION <const> = CAMERA_DEFAULT.r and math3d.constant("quat", CAMERA_DEFAULT.r) or mc.IDENTITY_QUAT
+local CAMERA_DEFAULT_POSITION <const> = CAMERA_DEFAULT.t and math3d.constant("v4", CAMERA_DEFAULT.t) or mc.ZERO_PT
+
 local CAMERA_CONSTRUCT_ROTATION <const> = CAMERA_CONSTRUCT.r and math3d.constant("quat", CAMERA_CONSTRUCT.r) or mc.IDENTITY_QUAT
 local CAMERA_CONSTRUCT_POSITION <const> = CAMERA_CONSTRUCT.t and math3d.constant("v4", CAMERA_CONSTRUCT.t) or mc.ZERO_PT
-assert(math3d.index(CAMERA_CONSTRUCT_POSITION, 1) == 0)
-assert(math3d.index(CAMERA_CONSTRUCT_POSITION, 2) == 0)
-assert(math3d.index(CAMERA_CONSTRUCT_POSITION, 3) == 0)
+
+assert(math3d.index(CAMERA_CONSTRUCT_POSITION, 1) == math3d.index(CAMERA_DEFAULT_POSITION, 1))
+assert(math3d.index(CAMERA_CONSTRUCT_POSITION, 2) == math3d.index(CAMERA_DEFAULT_POSITION, 2))
+assert(math3d.index(CAMERA_CONSTRUCT_POSITION, 3) == math3d.index(CAMERA_DEFAULT_POSITION, 3))
 
 local CAMERA_PICKUP_ROTATION <const> = CAMERA_PICKUP.r and math3d.constant("quat", CAMERA_PICKUP.r) or mc.IDENTITY_QUAT
 local CAMERA_PICKUP_POSITION <const> = CAMERA_PICKUP.t and math3d.constant("v4", CAMERA_PICKUP.t) or mc.ZERO_PT
@@ -37,8 +42,6 @@ local CAMERA_POSITION_MIN <const> = math3d.constant { type = "v4", -1000, CAMERA
 local CAMERA_POSITION_MAX <const> = math3d.constant { type = "v4",  1000, CAMERA_DEFAULT_YAIXS + 150,   800}
 
 local iom = ecs.require "ant.objcontroller|obj_motion"
-local mathpkg = import_package "ant.math"
-local mu, mc = mathpkg.util, mathpkg.constant
 local irq = ecs.require "ant.render|render_system.renderqueue"
 local ic = ecs.require "ant.camera|camera"
 local create_queue = require "utility.queue"
