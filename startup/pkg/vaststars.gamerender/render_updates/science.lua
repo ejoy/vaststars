@@ -7,15 +7,14 @@ local iscience = require "gameplay.interface.science"
 local iui = ecs.require "engine.system.ui_system"
 local gameplay_core = require "gameplay.core"
 local science_sys = ecs.system "science_system"
+local iguide_tips = ecs.require "guide_tips"
 
 function science_sys:gameworld_update()
     local gameplay_world = gameplay_core.get_world()
     local science = global.science
     if science.current_tech then
         if gameplay_world:is_researched(science.current_tech.name) then
-            if science.current_tech.selected_tips then
-                world:pub {"focus_tips", "close", science.current_tech}
-            end
+            iguide_tips.clear()
             iscience.update_tech_list(gameplay_world)
             iui.call_datamodel_method("/pkg/vaststars.resources/ui/construct.rml", "update_tech")
             world:pub {"research_finished", science.current_tech.name}

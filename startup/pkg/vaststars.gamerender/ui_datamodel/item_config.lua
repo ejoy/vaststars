@@ -154,7 +154,8 @@ function M.update(datamodel, gameplay_eid, interface)
         for _, slot in ipairs(datamodel.slots) do
             if slot.id ~= 0 then
                 local prototype = assert(iprototype.queryById(slot.id))
-                t[#t+1] = ("%s|%s"):format(slot.type, prototype.name)
+                local k = ("%s|%s"):format(slot.type, prototype.name)
+                t[k] = (t[k] or 0) + 1
             end
         end
         itask.update_progress("set_items", t)

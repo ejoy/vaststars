@@ -137,13 +137,17 @@ local custom_type_mapping = {
         end
     end, },
     [8] = {s = "set_items", check = function(task_params, progress, items)
-        table.sort(items, function(a, b) return a < b end)
-        table.sort(task_params.items, function(a, b) return a < b end)
-        if table.concat(items) == table.concat(task_params.items) then
-            return 1
-        else
-            return 0
+        local t = {}
+        for _, item in ipairs(task_params.items) do
+            t[item] = (t[item] or 0) + 1
         end
+
+        for k, c in pairs(t) do
+            if (items[k] or 0) < c then
+                return 0
+            end
+        end
+        return 1
     end, },
     [9] = {s = "pickup_item", check = function(task_params, progress, building, item, count)
         if task_params.building == building and task_params.item == item then

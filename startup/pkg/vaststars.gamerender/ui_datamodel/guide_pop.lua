@@ -1,10 +1,12 @@
 local ecs, mailbox= ...
 local world = ecs.world
+
 local global = require "global"
 local iui = ecs.require "engine.system.ui_system"
 local iguide = require "gameplay.interface.guide"
 local story_click_mb = mailbox:sub {"story_click"}
 local gameplay_core = require "gameplay.core"
+local iguide_tips = ecs.require "guide_tips"
 
 local M = {}
 local guide_desc
@@ -44,7 +46,7 @@ function M.update(datamodel)
                 if tech_node then
                     global.science.tech_picked_flag[tech_node.detail.name] = false
                     global.science.current_tech = tech_node
-                    world:pub {"focus_tips", "open", global.science.current_tech}
+                    iguide_tips.show(global.science.current_tech)
                 end
                 iguide.set_task(task_name)
             end

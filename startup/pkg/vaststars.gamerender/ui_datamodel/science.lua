@@ -11,6 +11,8 @@ local click_tech_event = mailbox:sub {"click_tech"}
 local close_techui_event = mailbox:sub {"close_techui"}
 local show_list_event = mailbox:sub {"show_list"}
 local switch_mb = mailbox:sub {"switch"}
+local iguide_tips = ecs.require "guide_tips"
+
 local M = {}
 local current_tech
 local function get_techlist(tech_list)
@@ -161,12 +163,10 @@ function M.update(datamodel)
             end
             game_world:research_queue {current_tech.name}
             global.science.current_tech = global.science.tech_tree[current_tech.name]
-            world:pub {"focus_tips", "open", global.science.current_tech}
+            iguide_tips.show(global.science.current_tech)
         else
             game_world:research_queue {}
-            if global.science.current_tech then
-                world:pub {"focus_tips", "close", global.science.current_tech}
-            end
+            iguide_tips.clear()
             global.science.current_tech = nil
         end
         datamodel.current_running = current_tech.running

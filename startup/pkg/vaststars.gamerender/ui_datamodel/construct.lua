@@ -5,8 +5,6 @@ local CONSTANT <const> = require "gameplay.interface.constant"
 local DEFAULT_DIR <const> = CONSTANT.DEFAULT_DIR
 local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
-local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
-local EDITOR_CACHE_NAMES <const> = {"CONFIRM", "CONSTRUCTED"}
 local CLASS <const> = {
     Lorry = 1,
     Object = 2,
@@ -34,9 +32,6 @@ local iobject = ecs.require "object"
 local idetail = ecs.require "detail_system"
 local create_station_builder = ecs.require "editor.stationbuilder"
 local icoord = require "coord"
-local create_selected_box = ecs.require "selected_boxes"
-local irl = ecs.require "ant.render|render_layer.render_layer"
-local iom = ecs.require "ant.objcontroller|obj_motion"
 local ichest = require "gameplay.interface.chest"
 local ipick_object = ecs.require "pick_object_system"
 local ibackpack = require "gameplay.interface.backpack"
@@ -54,7 +49,6 @@ local guide_on_going_mb = mailbox:sub {"guide_on_going"}
 local move_md = mailbox:sub {"move"}
 local teardown_mb = mailbox:sub {"teardown"}
 local construct_entity_mb = mailbox:sub {"construct_entity"}
-local focus_tips_event = world:sub {"focus_tips"}
 local construct_mb = mailbox:sub {"construct"}
 local main_button_tap_mb = mailbox:sub {"main_button_tap"}
 local main_button_longpress_mb = mailbox:sub {"main_button_longpress"}
@@ -69,9 +63,9 @@ local gesture_pan_mb = world:sub {"gesture", "pan"}
 local lock_axis_mb = mailbox:sub {"lock_axis"}
 local unlock_axis_mb = mailbox:sub {"unlock_axis"}
 local settings_mb = mailbox:sub {"settings"}
+local iguide_tips = ecs.require "guide_tips"
 
 local builder, builder_datamodel, builder_ui
-local excluded_pickup_id -- object id
 local pick_lorry_id
 local selected_obj
 
@@ -84,7 +78,7 @@ local LockAxisStatus = {
 
 local function __on_pick_building(datamodel, o)
     local object = o.object
-    if excluded_pickup_id and excluded_pickup_id == object.id then
+    if iguide_tips.get_excluded_pickup_id() == object.id then
         return
     end
 
@@ -249,63 +243,6 @@ function M.update_backpack_bar(datamodel, t)
             break
         end
     end
-end
-
-local function open_focus_tips(tech_node)
-    local focus = tech_node.detail.guide_focus
-    if not focus then
-        return
-    end
-    for _, nd in ipairs(focus) do
-        if nd.prefab then
-            if not tech_node.selected_tips then
-                tech_node.selected_tips = {}
-            end
-
-            local prefab
-            local center = icoord.position(nd.x, nd.y, 1, 1)
-            if nd.show_arrow then
-                prefab = assert(world:create_instance({
-                    prefab = "/pkg/vaststars.resources/glbs/arrow-guide.glb|mesh.prefab",
-                    on_ready = function(self)
-                        for _, eid in ipairs(self.tag['*']) do
-                            local e <close> = world:entity(eid, "render_object?in")
-                            if e.render_object then
-                                irl.set_layer(e, RENDER_LAYER.SELECTED_BOXES)
-                            end
-                        end
-
-                        local root <close> = world:entity(assert(self.tag['*'][1]))
-                        iom.set_position(root, center)
-                    end,
-                }))
-            end
-            if nd.force then
-                local object = objects:coord(nd.x, nd.y, EDITOR_CACHE_NAMES)
-                if object then
-                    excluded_pickup_id = object.id
-                end
-            end
-            tech_node.selected_tips[#tech_node.selected_tips + 1] = {create_selected_box({"/pkg/vaststars.resources/" .. nd.prefab}, center, math3d.vector(nd.color), nd.w, nd.h), prefab}
-        elseif nd.camera_x and nd.camera_y then
-            icamera_controller.focus_on_position(math3d.vector(icoord.position(nd.camera_x, nd.camera_y, nd.w, nd.h)))
-        end
-    end
-end
-
-local function close_focus_tips(tech_node)
-    local selected_tips = tech_node.selected_tips
-    if not selected_tips then
-        return
-    end
-    for _, tip in ipairs(selected_tips) do
-        tip[1]:remove()
-        if tip[2] then
-            world:remove_instance(tip[2])
-        end
-    end
-    tech_node.selected_tips = {}
-    excluded_pickup_id = nil
 end
 
 local function __construct_entity(typeobject)
@@ -641,15 +578,6 @@ function M.update(datamodel)
         ::continue::
     end
 
-    -- TODO: 多个UI的 update() 中会产生focus_tips_event事件，focus_tips_event处理逻辑涉及到要修改相机位置，所以暂时放在这里处理
-    for _, action, tech_node in focus_tips_event:unpack() do
-        if action == "open" then
-            open_focus_tips(tech_node)
-        elseif action == "close" then
-            close_focus_tips(tech_node)
-        end
-    end
-
     for _ in construct_mb:unpack() do
         datamodel.is_concise_mode = true
         __switch_status("construct", function()
@@ -718,7 +646,7 @@ function M.update(datamodel)
         assert(selected_obj)
         if selected_obj.class == CLASS.Object then
             local object = selected_obj.object
-            if excluded_pickup_id and excluded_pickup_id == object.id then
+            if iguide_tips.get_excluded_pickup_id() == object.id then
                 goto continue
             end
 
