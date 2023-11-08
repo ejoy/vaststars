@@ -11,7 +11,6 @@ local CHANGED_FLAG_ALL <const> = CONSTANT.CHANGED_FLAG_ALL
 local archiving = require "archiving"
 local CAMERA_CONFIG = archiving.path() .. "camera.json"
 
-local debugger = ecs.require "debugger"
 local gameplay_core = require "gameplay.core"
 local fs = require "bee.filesystem"
 local json = import_package "ant.json"
@@ -21,7 +20,6 @@ local iprototype = require "gameplay.interface.prototype"
 local iroadnet_converter = require "roadnet_converter"
 local objects = require "objects"
 local ifluid = require "gameplay.interface.fluid"
-local iui = ecs.require "engine.system.ui_system"
 local global = require "global"
 local create_buildings = require "building_components"
 local igameplay = ecs.require "gameplay_system"
@@ -41,30 +39,6 @@ local function clean()
 end
 
 local function restore_world(gameplay_world)
-    local function _finish_task(task)
-        local typeobject = iprototype.queryByName(task)
-        gameplay_core.get_world():research_progress(task, typeobject.count)
-    end
-
-    local game_template = ecs.require(("vaststars.prototype|%s"):format(gameplay_core.get_storage().game_template))
-    local guide = game_template.guide
-
-    local function _debug()
-        if next(guide) and debugger.skip_guide then
-            print("skip guide")
-            for _, guide in ipairs(guide) do
-                if next(guide.narrative_end.task) then
-                    for _, task in ipairs(guide.narrative_end.task) do
-                        _finish_task(task)
-                    end
-                end
-            end
-            gameplay_core.get_storage().guide_id = #guide + 1
-        end
-    end
-    _debug()
-
-    --
     local function restore_object(gameplay_eid, prototype_name, dir, x, y, fluid_name)
         local typeobject = iprototype.queryByName(prototype_name)
         local object = iobject.new {
@@ -234,7 +208,6 @@ function M:restore(fullpath)
     end
     iroadnet:flush()
 
-    debugger.set_free_mode(gameplay_core.get_storage().game_mode == "free")
     restore_world(gameplay_world)
     gameplay_core.set_changed(CHANGED_FLAG_ALL)
     gameplay_core.world_update = true
@@ -242,7 +215,7 @@ function M:restore(fullpath)
     return true
 end
 
-function M:restart(mode, game_template_file)
+function M:restart(game_template_file)
     world:pipeline_func "gameworld_clean" ()
     gameplay_core.restart()
     gameplay_core.get_storage().game_template = assert(game_template_file)
@@ -282,11 +255,6 @@ function M:restart(mode, game_template_file)
     restore_world(gameplay_world)
     gameplay_core.set_changed(CHANGED_FLAG_ALL)
     gameplay_core.world_update = true
-
-    if mode then
-        gameplay_core.get_storage().game_mode = mode
-    end
-
 end
 
 return M

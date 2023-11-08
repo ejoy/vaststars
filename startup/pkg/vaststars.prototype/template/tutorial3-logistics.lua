@@ -367,10 +367,15 @@ return {
     order = 7,
     guide = guide,
     show = true,
-    mode = "adventure",
     start_tech = "物流教学",
     init_ui = {
       "/pkg/vaststars.resources/ui/construct.rml",
       "/pkg/vaststars.resources/ui/message_pop.rml"
+    },
+    debugger = {
+      skip_guide = false,
+      recipe_unlocked = false,
+      item_unlocked = false,
+      infinite_item = false,
     },
 }

@@ -514,7 +514,6 @@ local function confirm(self, datamodel)
     end
     local succ = self:check_construct_detector(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir)
     if not succ then
-        self.pickup_object = nil
         log.info("can not construct")
         return
     end

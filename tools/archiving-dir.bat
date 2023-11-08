@@ -1,1 +1,1 @@
-explorer.exe %localappdata%\vaststars
+explorer.exe ..\startup\.app\archiving

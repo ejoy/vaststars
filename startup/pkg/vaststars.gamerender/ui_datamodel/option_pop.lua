@@ -50,7 +50,7 @@ function M.update(datamodel)
     for _, _, _, index in restore_mb:unpack() do
         iui.close("/pkg/vaststars.resources/ui/option_pop.rml")
         local list = archiving.list()
-        reboot_world("load_game", assert(list[index]))
+        reboot_world("restore", assert(list[index]))
     end
 
     for _ in close_mb:unpack() do
