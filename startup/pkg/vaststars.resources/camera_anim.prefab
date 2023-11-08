@@ -1,0 +1,32 @@
+---
+data:
+  scene: {}
+policy:
+  ant.scene|scene_object
+tag:
+  Scene
+---
+data:
+  scene:
+    r: {0.4226182699203491, 0, 0, 0.9063077569007874}
+    t: {-100, 250, -250}
+  slot:
+    follow_flag: 1
+    joint_name: None
+mount: 1
+policy:
+  ant.animation|slot
+tag:
+  offset
+---
+data:
+  scene:
+    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
+    joint_name: None
+mount: 2
+policy:
+  ant.animation|slot
+tag:
+  camera
