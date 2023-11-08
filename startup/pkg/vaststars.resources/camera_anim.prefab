@@ -20,13 +20,23 @@ tag:
   offset
 ---
 data:
+  camera:
+    frustum:
+      aspect: 2
+      f: 1200
+      fov: 35
+      n: 0.2
   scene:
     t: {0, 0, 0}
-  slot:
-    follow_flag: 1
-    joint_name: None
-mount: 2
-policy:
-  ant.animation|slot
+    updir: {0, 1, 0, 0}
+  exposure:
+    type          : manual
+    aperture      : 16.0
+    shutter_speed : 0.008
+    ISO           : 100
 tag:
   camera
+mount: 2
+policy:
+  ant.camera|camera
+  ant.camera|exposure
