@@ -1,18 +1,38 @@
 ---
-duration: 2
+duration: 30
 name: camera
 sample_ratio: 50
 target_anims:
   ---
   clips:
     ---
-    amplitude_pos: 0
-    amplitude_rot: 90
-    direction: 2
+    amplitude_pos: 200
+    amplitude_rot: 0
+    direction: 1
     random_amplitude: false
-    range: {0, 99}
+    range: {50, 750}
     repeat_count: 1
     rot_axis: 1
+    tween: 1
+    type: 1
+    ---
+    amplitude_pos: 200
+    amplitude_rot: 0
+    direction: 1
+    random_amplitude: false
+    range: {751, 800}
+    repeat_count: 1
+    rot_axis: 2
+    tween: 1
+    type: 1
+    ---
+    amplitude_pos: 0
+    amplitude_rot: 0
+    direction: 2
+    random_amplitude: false
+    range: {801, 1499}
+    repeat_count: 1
+    rot_axis: 2
     tween: 1
     type: 1
   inherit: {false, false, false}

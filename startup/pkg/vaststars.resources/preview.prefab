@@ -1,0 +1,726 @@
+---
+data:
+  scene:
+    t: {0, 0, 0}
+policy:
+  ant.scene|scene_object
+---
+data:
+  scene:
+    t: {40, 0, 100}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  work
+---
+mount: 2
+prefab: /pkg/vaststars.resources/glbs/air-filter.glb|work.prefab
+---
+data:
+  scene:
+    t: {-150, 0, 0}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  mesh
+---
+mount: 4
+prefab: /pkg/vaststars.resources/glbs/accumulator-1.glb|mesh.prefab
+---
+data:
+  scene:
+    t: {0, 0, 100}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  low_power
+---
+mount: 6
+prefab: /pkg/vaststars.resources/glbs/air-filter.glb|low_power.prefab
+---
+data:
+  scene:
+    t: {-40, 0, 100}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  mesh
+---
+mount: 8
+prefab: /pkg/vaststars.resources/glbs/air-filter.glb|mesh.prefab
+---
+data:
+  scene:
+    t: {-147.39999389648438, 0, 38.900001525878906}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  mesh
+---
+mount: 10
+prefab: /pkg/vaststars.resources/glbs/boiler.glb|mesh.prefab
+---
+data:
+  scene:
+    t: {-147.39999389648438, 0, -43}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  mesh
+---
+mount: 12
+prefab: /pkg/vaststars.resources/glbs/chemical-plant-1.glb|mesh.prefab
+---
+data:
+  scene:
+    t: {-45, 0, 50}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  mesh
+---
+mount: 14
+prefab: /pkg/vaststars.resources/glbs/chimney-1.glb|mesh.prefab
+---
+data:
+  scene:
+    t: {0, 0, 50}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  low_power
+---
+mount: 16
+prefab: /pkg/vaststars.resources/glbs/chimney-1.glb|low_power.prefab
+---
+data:
+  scene:
+    t: {45, 0, 50}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  work
+---
+mount: 18
+prefab: /pkg/vaststars.resources/glbs/chimney-1.glb|work.prefab
+---
+data:
+  scene:
+    t: {100, 0, 100}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  mesh
+---
+mount: 20
+prefab: /pkg/vaststars.resources/glbs/crusher-1.glb|mesh.prefab
+---
+data:
+  scene:
+    t: {150, 0, 100}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  low_power
+---
+mount: 22
+prefab: /pkg/vaststars.resources/glbs/crusher-1.glb|low_power.prefab
+---
+data:
+  scene:
+    t: {200, 0, 100}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  work
+---
+mount: 24
+prefab: /pkg/vaststars.resources/glbs/crusher-1.glb|work.prefab
+---
+data:
+  scene:
+    t: {-200, 0, 40}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  mesh
+---
+mount: 26
+prefab: /pkg/vaststars.resources/glbs/depot.glb|mesh.prefab
+---
+data:
+  scene:
+    t: {-55.900001525878906, 0, 180}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  mesh
+---
+mount: 28
+prefab: /pkg/vaststars.resources/glbs/distillery-1.glb|mesh.prefab
+---
+data:
+  scene:
+    t: {60, 0, 180}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  work
+---
+mount: 30
+prefab: /pkg/vaststars.resources/glbs/distillery-1.glb|work.prefab
+---
+data:
+  scene:
+    t: {-232.9246826171875, 0, 38.17839050292969}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  mesh
+---
+mount: 32
+prefab: /pkg/vaststars.resources/glbs/drone-depot.glb|mesh.prefab
+---
+data:
+  scene:
+    t: {-198.69483947753906, 0, 0}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  mesh
+---
+mount: 34
+prefab: /pkg/vaststars.resources/glbs/drone-depot2.glb|mesh.prefab
+---
+data:
+  scene:
+    t: {-227.928466796875, 0, 0}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  mesh
+---
+mount: 36
+prefab: /pkg/vaststars.resources/glbs/drone-depot2.glb|mesh.prefab
+---
+data:
+  scene:
+    t: {-193.17855834960938, 0, -38.45345687866211}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  mesh
+---
+mount: 38
+prefab: /pkg/vaststars.resources/glbs/electric-pole-1.glb|mesh.prefab
+---
+data:
+  scene:
+    t: {-60, 0, -100}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  mesh
+---
+mount: 40
+prefab: /pkg/vaststars.resources/glbs/electrolyzer-1.glb|mesh.prefab
+---
+data:
+  scene:
+    t: {0, 0, -100}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  low_power
+---
+mount: 42
+prefab: /pkg/vaststars.resources/glbs/electrolyzer-1.glb|low_power.prefab
+---
+data:
+  scene:
+    t: {60, 0, -100}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  work
+---
+mount: 44
+prefab: /pkg/vaststars.resources/glbs/electrolyzer-1.glb|work.prefab
+---
+data:
+  scene:
+    t: {120, 0, 50}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  mesh
+---
+mount: 46
+prefab: /pkg/vaststars.resources/glbs/flotation-cell-1.glb|mesh.prefab
+---
+data:
+  scene:
+    t: {180, 0, 50}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  low_power
+---
+mount: 48
+prefab: /pkg/vaststars.resources/glbs/flotation-cell-1.glb|low_power.prefab
+---
+data:
+  scene:
+    t: {240, 0, 50}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  work
+---
+mount: 50
+prefab: /pkg/vaststars.resources/glbs/flotation-cell-1.glb|work.prefab
+---
+data:
+  scene:
+    t: {-60, 0, -50}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  mesh
+---
+mount: 52
+prefab: /pkg/vaststars.resources/glbs/furnace-1.glb|mesh.prefab
+---
+data:
+  scene:
+    t: {20, 0, -50}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  work
+---
+mount: 54
+prefab: /pkg/vaststars.resources/glbs/furnace-1.glb|work.prefab
+---
+data:
+  scene:
+    t: {-207.6969451904297, 0, -88.91860961914063}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  mesh
+---
+mount: 56
+prefab: /pkg/vaststars.resources/glbs/geothermal-plant.glb|mesh.prefab
+---
+data:
+  scene:
+    t: {-144.78134155273438, 0, -87.68624877929688}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  mesh
+---
+mount: 58
+prefab: /pkg/vaststars.resources/glbs/goods-station-1.glb|mesh.prefab
+---
+data:
+  scene:
+    t: {120, 0, 170}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  mesh
+---
+mount: 60
+prefab: /pkg/vaststars.resources/glbs/headquater-1.glb|mesh.prefab
+---
+data:
+  scene:
+    t: {240, 0, 170}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  work
+---
+mount: 62
+prefab: /pkg/vaststars.resources/glbs/headquater-1.glb|work.prefab
+---
+data:
+  scene:
+    t: {70, 0, 0}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  mesh
+---
+mount: 64
+prefab: /pkg/vaststars.resources/glbs/hydro-plant-1.glb|mesh.prefab
+---
+data:
+  scene:
+    t: {140, 0, 0}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  low_power
+---
+mount: 66
+prefab: /pkg/vaststars.resources/glbs/hydro-plant-1.glb|low_power.prefab
+---
+data:
+  scene:
+    t: {210, 0, 0}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  work
+---
+mount: 68
+prefab: /pkg/vaststars.resources/glbs/hydro-plant-1.glb|work.prefab
+---
+data:
+  scene:
+    t: {100, 0, -50}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  mesh
+---
+mount: 70
+prefab: /pkg/vaststars.resources/glbs/lab-1.glb|mesh.prefab
+---
+data:
+  scene:
+    t: {160, -3.0517578125e-05, -50}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  low_power
+---
+mount: 72
+prefab: /pkg/vaststars.resources/glbs/lab-1.glb|low_power.prefab
+---
+data:
+  scene:
+    t: {220, 0, -50}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  work
+---
+mount: 74
+prefab: /pkg/vaststars.resources/glbs/lab-1.glb|work.prefab
+---
+data:
+  scene:
+    t: {130, 0, -100}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  mesh
+---
+mount: 76
+prefab: /pkg/vaststars.resources/glbs/mars-assembling-machine.glb|mesh.prefab
+---
+data:
+  scene:
+    t: {170, 0, -100}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  low_power
+---
+mount: 78
+prefab: /pkg/vaststars.resources/glbs/mars-assembling-machine.glb|low_power.prefab
+---
+data:
+  scene:
+    t: {210, 0, -100}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  work
+---
+mount: 80
+prefab: /pkg/vaststars.resources/glbs/mars-assembling-machine.glb|work.prefab
+---
+data:
+  scene:
+    t: {-50, -3.0517578125e-05, 250}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  mesh
+---
+mount: 82
+prefab: /pkg/vaststars.resources/glbs/mars-outfall.glb|mesh.prefab
+---
+data:
+  scene:
+    t: {0, 0, 250}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  low_power
+---
+mount: 84
+prefab: /pkg/vaststars.resources/glbs/mars-outfall.glb|low_power.prefab
+---
+data:
+  scene:
+    t: {50, 0, 250}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  work
+---
+mount: 86
+prefab: /pkg/vaststars.resources/glbs/mars-outfall.glb|work.prefab
+---
+data:
+  scene:
+    t: {100, 0, 230}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  mesh
+---
+mount: 88
+prefab: /pkg/vaststars.resources/glbs/mars-pumpjack.glb|mesh.prefab
+---
+data:
+  scene:
+    t: {140, 0, 230}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  low_power
+---
+mount: 90
+prefab: /pkg/vaststars.resources/glbs/mars-pumpjack.glb|low_power.prefab
+---
+data:
+  scene:
+    t: {180, 0, 230}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  work
+---
+mount: 92
+prefab: /pkg/vaststars.resources/glbs/mars-pumpjack.glb|work.prefab
+---
+data:
+  scene:
+    t: {270, 0, 100}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  mesh
+---
+mount: 94
+prefab: /pkg/vaststars.resources/glbs/miner-1.glb|mesh.prefab
+---
+data:
+  scene:
+    t: {320, 0, 100}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  low_power
+---
+mount: 96
+prefab: /pkg/vaststars.resources/glbs/miner-1.glb|low_power.prefab
+---
+data:
+  scene:
+    t: {370, 0, 100}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  work
+---
+mount: 98
+prefab: /pkg/vaststars.resources/glbs/miner-1.glb|work.prefab
+---
+data:
+  scene:
+    t: {-60, 0, -160}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  mesh
+---
+mount: 100
+prefab: /pkg/vaststars.resources/glbs/pump-1.glb|mesh.prefab
+---
+data:
+  scene:
+    t: {-20, 0, -160}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  low_power
+---
+mount: 102
+prefab: /pkg/vaststars.resources/glbs/pump-1.glb|low_power.prefab
+---
+data:
+  scene:
+    t: {20, 0, -160}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  work
+---
+mount: 104
+prefab: /pkg/vaststars.resources/glbs/pump-1.glb|work.prefab
+---
+data:
+  scene:
+    t: {-150, 0, 90}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  mesh
+---
+mount: 106
+prefab: /pkg/vaststars.resources/glbs/solar-panel-1.glb|mesh.prefab
+---
+data:
+  scene:
+    t: {-200, 0, 100}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  mesh
+---
+mount: 108
+prefab: /pkg/vaststars.resources/glbs/storage-tank-1.glb|mesh.prefab
+---
+data:
+  scene:
+    t: {70, 0, -160}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  mesh
+---
+mount: 110
+prefab: /pkg/vaststars.resources/glbs/turbine-1.glb|mesh.prefab
+---
+data:
+  scene:
+    t: {110, 0, -160}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  work
+---
+mount: 112
+prefab: /pkg/vaststars.resources/glbs/turbine-1.glb|work.prefab
+---
+data:
+  scene:
+    t: {280, 0, 0}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  mesh
+---
+mount: 114
+prefab: /pkg/vaststars.resources/glbs/wind-turbine-1.glb|mesh.prefab
+---
+data:
+  scene:
+    t: {330, 0, 0}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  work
+---
+mount: 116
+prefab: /pkg/vaststars.resources/glbs/wind-turbine-1.glb|work.prefab
+---
+data:
+  scene:
+    t: {0, 0, 180}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  low_power
+---
+mount: 118
+prefab: /pkg/vaststars.resources/glbs/distillery-1.glb|low_power.prefab
+---
+data:
+  scene:
+    t: {-20, 0, -50}
+mount: 1
+policy:
+  ant.scene|scene_object
+tag:
+  low_power
+---
+mount: 120
+prefab: /pkg/vaststars.resources/glbs/furnace-1.glb|low_power.prefab

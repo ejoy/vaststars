@@ -1,5 +1,30 @@
 ---
 file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene: {}
+  mount: 1
+  policy:
+    ant.scene|scene_object
+  tag:
+    preview
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  mount: 1
+  prefab: /pkg/vaststars.resources/preview.prefab
+---
+file: mesh.prefab
 op: replace
-path: /1/data/scene/t
-value: {0, 0, 0}
+path: /3/tag
+value:
+  Plane_P1
+---
+file: mesh.prefab
+op: replace
+path: /2/data/scene/t
+value: {-100, 350, 0}
