@@ -222,7 +222,7 @@ prototype "烟囱I" {
     craft_category = {"流体气体排泄"},
     speed = "100%",
     camera_distance = 70,
-    building_menu = false,
+    building_menu = true,
     fluidbox = {
         capacity = 1000,
         height = 100,
@@ -244,7 +244,7 @@ prototype "烟囱II" {
     craft_category = {"流体气体排泄"},
     speed = "500%",
     camera_distance = 70,
-    building_menu = false,
+    building_menu = true,
     fluidbox = {
         capacity = 1000,
         height = 100,
@@ -266,7 +266,7 @@ prototype "排水口I" {
     craft_category = {"流体液体排泄"},
     speed = "100%",
     camera_distance = 89,
-    building_menu = false,
+    building_menu = true,
     fluidbox = {
         capacity = 1000,
         height = 100,
@@ -288,7 +288,7 @@ prototype "排水口II" {
     craft_category = {"流体液体排泄"},
     speed = "500%",
     camera_distance = 89,
-    building_menu = false,
+    building_menu = true,
     fluidbox = {
         capacity = 1000,
         height = 100,

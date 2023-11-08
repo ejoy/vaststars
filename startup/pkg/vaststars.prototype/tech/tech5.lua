@@ -150,7 +150,7 @@ local prototype = gameplay.register.prototype
     guide_focus = {
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-        x = 124.5,
+        x = 125.5,
         y = 150.5,
         w = 4.3,
         h = 2.3,
@@ -517,6 +517,15 @@ local prototype = gameplay.register.prototype
         show_arrow = false,
       },
       {
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        x = 143.5,
+        y = 172.5,
+        w = 2,
+        h = 2,
+        color = {0.3, 1, 0, 1},
+        show_arrow = false,
+      },
+      {
         camera_x = 148,
         camera_y = 177,
         w = 5.2,
@@ -594,7 +603,7 @@ local prototype = gameplay.register.prototype
       unlock_recipe = {"塑料1"},
       unlock_item = {"塑料"},
     },
-    prerequisites = {"乙烯量产"},
+    prerequisites = {"乙烯量产","管道工艺2"},
     ingredients = {
         {"气候科技包", 1},
     },
@@ -839,14 +848,14 @@ local prototype = gameplay.register.prototype
   prototype "机械科技包量产" {
     desc = "生产机械科技包",
     type = { "task" },
-    task = {"stat_production", 0, "地质科技包"},
-    count = 3,
+    task = {"stat_production", 0, "机械科技包"},
+    count = 6,
     prerequisites = {"机械工程"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "组装机生产3个机械科技包", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "组装机生产6个机械科技包", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 

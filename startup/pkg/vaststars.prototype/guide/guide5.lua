@@ -65,7 +65,7 @@ local guide5 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..再前往生产中心设置物流站的收货{/color:4bd0ff 铝矿石},进而完善物流供需。", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..前往组装机附近设置物流站的收货{/color:4bd0ff 铝矿石},进而完善物流供需。", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
@@ -90,7 +90,7 @@ local guide5 = {
             guide_progress = 10,
         },
         prerequisites = {
-            "铝矿石发货设置",
+            "铝矿石收货设置",
         },
 	},
 
