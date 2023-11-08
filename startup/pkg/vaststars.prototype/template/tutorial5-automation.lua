@@ -26,11 +26,11 @@ local entities = { {
   x = 43,
   y = 169
 }, {
-  dir = "W",
+  dir = "E",
   items = { { "管道1-X型", 20 }, { "地下管1-JI型", 6 }, { "烟囱I", 4 }, { "排水口I", 2 } },
-  prototype_name = "机尾残骸",
-  x = 154,
-  y = 171
+  prototype_name = "机身残骸",
+  x = 152,
+  y = 170
 }, {
   dir = "N",
   prototype_name = "采矿机I",
@@ -2768,7 +2768,7 @@ local entities = { {
   y = 92
 }, {
   dir = "N",
-  items = { { "demand", "碎石", 1 }, { "demand", "铁矿石", 1 }, { "demand", "铝矿石", 1 }, { "supply", "地质科技包", 1 } },
+  items = { { "demand", "碎石", 1 }, { "demand", "铁矿石", 1 }, { "supply", "地质科技包", 1 } },
   prototype_name = "物流站",
   x = 124,
   y = 150

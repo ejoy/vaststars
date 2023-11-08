@@ -65,11 +65,27 @@ local guide5 = {
     {
         name = "",
 		narrative = {
+            {"哔哩..再前往生产中心设置物流站的收货{/color:4bd0ff 铝矿石},进而完善物流供需。", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            task = {
+                "铝矿石收货设置",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "铝矿石发货设置",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
             {"哔哩..在路网里添加足够的{/g 运输车辆}，让整个基地的物流开始正常运转。", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
-                "运输车派遣",
+                "运输车派遣1",
             },
             guide_progress = 10,
         },
@@ -90,7 +106,7 @@ local guide5 = {
             guide_progress = 10,
         },
         prerequisites = {
-            "运输车派遣",
+            "运输车派遣1",
         },
 	},
 
@@ -123,6 +139,38 @@ local guide5 = {
         },
         prerequisites = {
             "气候研究",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
+            {"哔哩..基地需要更多发电设备,请使得{/g 锅炉}开始运转", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            task = {
+                "锅炉运转",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "气候科技包量产",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
+            {"哔哩..让我们开始最后的研究阶段，来检验{/color:4bd0ff 自动化}带来的效率提升", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            task = {
+                "自动化科技",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "机械科技包量产",
         },
 	},
 
