@@ -31,6 +31,7 @@ local font = import_package "ant.font"
 local archiving = require "archiving"
 local start_web = ecs.require "webcgi"
 local irq = ecs.require "ant.render|render_system.renderqueue"
+local imodifier = ecs.require "ant.modifier|modifier"
 
 local m = ecs.system "game_init_system"
 local gameworld_prebuild
@@ -139,10 +140,13 @@ funcs["new_game"] = function(file)
     end
 
     -- replace the default camera
+    local mf = imodifier.create_srt_modifier_from_file(nil, 0, "/pkg/vaststars.resources/animations/camera.anim", false, true)
     world:create_instance {
         prefab = assert(template.camera),
         on_ready = function(self)
             local eid = assert(self.tag["camera"][1])
+            imodifier.set_target(mf, eid)
+            imodifier.start(mf, {loop = true})
             irq.set_camera("main_queue", eid)
         end
     }
