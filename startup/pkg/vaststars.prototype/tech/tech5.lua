@@ -363,8 +363,8 @@ local prototype = gameplay.register.prototype
     desc = "研究石砖打造工艺",
     type = { "tech" },
     effects = {
-      unlock_recipe = {"石砖"},
-      unlock_item = {"石砖"},
+      unlock_recipe = {"石砖","砖石公路打印"},
+      unlock_item = {"石砖","砖石公路-X型"},
     },
     prerequisites = {"锅炉运转"},
     ingredients = {
