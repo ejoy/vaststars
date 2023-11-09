@@ -85,12 +85,6 @@ return function(start)
     -- end
 
     start.buttons = {}
-    if start.show_start_laying then
-        local v = setmetatable({}, {__index = DEFAULT})
-        v.params = {"start_laying"}
-        v.icon = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/clone.texture"
-        start.buttons[#start.buttons + 1] = v
-    end
 
     if start.show_remove_one then
         local v = setmetatable({}, {__index = DEFAULT})
