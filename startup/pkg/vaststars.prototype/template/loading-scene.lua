@@ -4457,6 +4457,9 @@ return {
     init_ui = {
       "/pkg/vaststars.resources/ui/login.rml",
     },
+    init_instances = {
+      "/pkg/vaststars.resources/glbs/road/arrow.glb|mesh.prefab",
+    },
     debugger = {
       skip_guide = true,
       recipe_unlocked = true,

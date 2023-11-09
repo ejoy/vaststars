@@ -100,6 +100,12 @@ local function init_game(template)
     end
     iui.set_guide_progress(iguide.get_progress())
 
+    for _, prefab in ipairs(template.init_instances) do
+        world:create_instance {
+            prefab = prefab
+        }
+    end
+
     for _, rml in ipairs(template.init_ui) do
         iui.open({rml = rml})
     end
