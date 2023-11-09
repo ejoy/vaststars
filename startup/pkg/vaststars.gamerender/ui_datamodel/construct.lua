@@ -330,6 +330,7 @@ local function pickupObject(datamodel, position, blur)
             local lorry = ilorry.get(pick_lorry_id)
             if lorry then
                 lorry:show_arrow(true)
+                iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.rml"}, pick_lorry_id)
             end
             return true
         end
@@ -339,6 +340,7 @@ local function pickupObject(datamodel, position, blur)
         if __on_pick_building(datamodel, o) then
             __unpick_lorry(pick_lorry_id)
             pick_lorry_id = nil
+            idetail.show(o.object.id)
             return true
         end
     elseif o and (o.class == CLASS.Mineral or o.class == CLASS.Mountain or o.class == CLASS.Road)then
@@ -347,6 +349,7 @@ local function pickupObject(datamodel, position, blur)
         if __on_pick_non_building(datamodel, o) then
             __unpick_lorry(pick_lorry_id)
             pick_lorry_id = nil
+            iui.open({rml = "/pkg/vaststars.resources/ui/construct_road_or_pipe.rml"}, o.name, {show_start_laying = true})
             return true
         end
     else
@@ -598,7 +601,6 @@ function M.update(datamodel)
                 datamodel.status = "selected"
 
                 if selected_obj.class == CLASS.Lorry then
-                    iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.rml"}, pick_lorry_id)
                     idetail.selected(pick_lorry_id)
 
                     local e = assert(gameplay_core.get_entity(pick_lorry_id))
@@ -608,7 +610,6 @@ function M.update(datamodel)
                     local object = selected_obj.object
                     icamera_controller.focus_on_position(object.srt.t)
 
-                    idetail.show(object.id)
                     idetail.selected(object.gameplay_eid)
                 else
                     if selected_obj.get_pos then
@@ -617,7 +618,6 @@ function M.update(datamodel)
 
                     if iprototype.is_road(selected_obj.name) or iprototype.is_pipe(selected_obj.name) or iprototype.is_pipe_to_ground(selected_obj.name) then
                         datamodel.focus_building_icon = ""
-                        iui.open({rml = "/pkg/vaststars.resources/ui/construct_road_or_pipe.rml"}, selected_obj.name, {show_start_laying = true})
                     end
 
                     if not iprototype.is_pipe(selected_obj.name) then

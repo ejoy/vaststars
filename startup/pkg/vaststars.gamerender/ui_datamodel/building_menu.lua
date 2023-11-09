@@ -62,10 +62,11 @@ local function hasComponent(e, components)
             return true
         end
     end
+    return false
 end
 
 local function hasSetItem(e, typeobject)
-    return hasComponent(e, SET_ITEM_COMPONENTS) or (e.chest and CHEST_TYPE_CONVERT[typeobject.chest_type] == "transit")
+    return hasComponent(e, SET_ITEM_COMPONENTS) or (e.chest and CHEST_TYPE_CONVERT[typeobject.chest_type] == "transit" or false)
 end
 
 local function hasPickupItem(e, typeobject)
@@ -73,7 +74,7 @@ local function hasPickupItem(e, typeobject)
 end
 
 local function hasPlaceItem(e, typeobject)
-    return hasComponent(e, PLACE_COMPONENTS) or (e.chest and CHEST_TYPE_CONVERT[typeobject.chest_type] == "transit")
+    return hasComponent(e, PLACE_COMPONENTS) or (e.chest and CHEST_TYPE_CONVERT[typeobject.chest_type] == "transit" or false)
 end
 
 local function getPickableCount(e)
@@ -337,6 +338,7 @@ function M.update(datamodel, gameplay_eid)
         iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "move", object.id)
     end
     for _ in copy_md:unpack() do
+        assert(e.building)
         local object = assert(objects:coord(e.building.x, e.building.y))
         iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "construct_entity", object.prototype_name)
     end
