@@ -178,7 +178,7 @@ function M.update(datamodel)
 
             local storage = gameplay_core.get_storage()
             storage.shortcuts = storage.shortcuts or {}
-            storage.shortcuts[datamodel.shortcut_id] = nil
+            storage.shortcuts[datamodel.shortcut_id] = {prototype = 0, icon = "", times = 0, selected = true}
 
             datamodel.shortcuts[datamodel.shortcut_id] = {prototype = 0, icon = "", times = 0, selected = true}
         else
