@@ -100,7 +100,7 @@ function debug_sys:ui_update()
 
     for _, key, press, state in kb_mb:unpack() do
         if key == "A" and press == 0 then
-            ibs.blur_scene()   -- default gaussian blur count is 3
+            ibs.blur_scene()   -- default gaussian blur count is 5
         end
 
         if key == "B" and press == 0 then
