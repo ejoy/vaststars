@@ -82,6 +82,7 @@ do
             o:remove()
         end
         temp_objects = {}
+        flush_sprite()
     end
 
     function idetail.focus_non_building(x, y, w, h)

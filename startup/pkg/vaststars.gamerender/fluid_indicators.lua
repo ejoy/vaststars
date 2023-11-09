@@ -64,9 +64,9 @@ local function __draw_fluid_indication_arrow(object_id, building_srt, dir, proto
         local connection_x, connection_y, connection_dir = iprototype.rotate_connection(conn.position, dir, typeobject.area)
         local material_path
         if conn.type == "input" then
-            material_path = "/pkg/vaststars.resources/materials/canvas/fluid-indication-arrow-input.material"
+            material_path = "/pkg/vaststars.resources/materials/canvas/pickup-fluid-indication-arrow-input.material"
         else
-            material_path = "/pkg/vaststars.resources/materials/canvas/fluid-indication-arrow-output.material"
+            material_path = "/pkg/vaststars.resources/materials/canvas/pickup-fluid-indication-arrow-output.material"
         end
         local dx, dy = iprototype.move_coord(connection_x, connection_y, connection_dir, 1, 1)
         local icon_w, icon_h = __get_texture_size(material_path)

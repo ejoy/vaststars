@@ -53,8 +53,8 @@ local CANVAS_BUILD <const> = {
         {
             render_layer = RENDER_LAYER.FLUID_INDICATION_ARROW,
             materials = {
-                "/pkg/vaststars.resources/materials/canvas/fluid-indication-arrow-input.material",
-                "/pkg/vaststars.resources/materials/canvas/fluid-indication-arrow-output.material",
+                "/pkg/vaststars.resources/materials/canvas/pickup-fluid-indication-arrow-input.material",
+                "/pkg/vaststars.resources/materials/canvas/pickup-fluid-indication-arrow-output.material",
             }
         }
     },

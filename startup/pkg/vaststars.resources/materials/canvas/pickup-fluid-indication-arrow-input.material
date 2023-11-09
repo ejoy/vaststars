@@ -1,0 +1,11 @@
+fx:
+  shader_type: PBR
+  setting:
+    lighting: off
+properties:
+  s_basecolor:
+    stage: 0
+    texture: /pkg/vaststars.resources/textures/canvas/pickup-fluid-indication-arrow-input.texture
+  u_basecolor_factor: {2.0, 2.0, 2.0, 1.0}
+  u_emissive_factor: {0.0, 0.0, 0.0, 0.0}
+state: /pkg/ant.resources/materials/states/blend.state

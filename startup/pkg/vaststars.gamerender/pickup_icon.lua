@@ -113,9 +113,9 @@ local function __create_fluid_indication_arrow(connection_x, connection_y, conne
     local material_path
 
     if iotype == "input" then
-        material_path = "/pkg/vaststars.resources/materials/canvas/fluid-indication-arrow-input.material"
+        material_path = "/pkg/vaststars.resources/materials/canvas/pickup-fluid-indication-arrow-input.material"
     else
-        material_path = "/pkg/vaststars.resources/materials/canvas/fluid-indication-arrow-output.material"
+        material_path = "/pkg/vaststars.resources/materials/canvas/pickup-fluid-indication-arrow-output.material"
     end
 
     local icon_w, icon_h = __get_texture_size(material_path)
