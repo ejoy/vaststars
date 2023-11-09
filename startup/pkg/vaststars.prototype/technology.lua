@@ -153,49 +153,12 @@ local prototype = gameplay.register.prototype
   }
 
 
-  prototype "放置电线杆" {
-    desc = "放置1根铁制电线杆",
-    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-    type = { "task" },
-    task = {"select_entity", 0, "铁制电线杆"},
-    prerequisites = {"放置采矿机1"},
-    count = 2,
-    effects = {
-      --  unlock_recipe = {"无人机平台I打印"},
-      --  unlock_item = {"无人机平台I框架"},
-    },
-    tips_pic = {
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_pole1.texture",
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_pole2.texture",
-    },
-    guide_focus = {
-      {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-        x = 118,
-        y = 128,
-        w = 1.2,
-        h = 1.2,
-        color = {0.3, 1, 0, 1},
-        show_arrow = true,
-      },
-      {
-        camera_x = 118,
-        camera_y = 128,
-        w = 1.2,
-        h = 1.2,
-      },
-    },
-    sign_desc = {
-      { desc = "从风力发电机到采矿机放置1根铁制电线杆构成电网", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-    },
-  }
-
   prototype "放置仓库" {
     desc = "放置1座仓库",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"select_entity", 0, "仓库I"},
-    prerequisites = {"放置电线杆"},
+    prerequisites = {"放置采矿机1"},
     count = 1,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_pole1.texture",
