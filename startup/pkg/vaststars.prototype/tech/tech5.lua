@@ -531,7 +531,7 @@ local prototype = gameplay.register.prototype
         y = 166.5,
         w = 2,
         h = 2,
-        color = {0.3, 1, 0, 1},
+        color = {0, 0.7, 0.95, 1},
         show_arrow = false,
       },
       {
@@ -540,7 +540,7 @@ local prototype = gameplay.register.prototype
         y = 172.5,
         w = 2,
         h = 2,
-        color = {0.3, 1, 0, 1},
+        color = {0, 0.7, 0.95, 1},
         show_arrow = false,
       },
       {
@@ -549,7 +549,7 @@ local prototype = gameplay.register.prototype
         y = 172.5,
         w = 2,
         h = 2,
-        color = {0.3, 1, 0, 1},
+        color = {0, 0.7, 0.95, 1},
         show_arrow = false,
       },
       {
