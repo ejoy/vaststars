@@ -26,9 +26,9 @@ end
 
 return function ()
 	local webserver = import_package "vaststars.webcgi"
+	register_debug()
 
 	if __ANT_RUNTIME__ then
-		register_debug()
 		webserver.start "redirect"
 	else
 		webserver.start "direct"
