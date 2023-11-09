@@ -4460,6 +4460,9 @@ return {
     init_instances = {
       "/pkg/vaststars.resources/glbs/road/arrow.glb|mesh.prefab",
     },
+    research_queue = {
+      "登录科技",
+    },
     debugger = {
       skip_guide = true,
       recipe_unlocked = true,

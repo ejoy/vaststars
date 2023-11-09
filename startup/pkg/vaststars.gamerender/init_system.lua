@@ -73,9 +73,11 @@ local function init()
 end
 
 local function init_game(template)
+    local gameplay_world = gameplay_core.get_world()
+
     imineral.init(template.mineral)
     imountain:init(template.mountain)
-    iscience.update_tech_list(gameplay_core.get_world())
+    iscience.update_tech_list(gameplay_world)
 
     rhwi.set_profie(template.performance_stats ~= false and gameplay_core.settings_get("debug", true) or false)
     ibackpack.set_infinite_item(debugger.infinite_item)
@@ -85,14 +87,18 @@ local function init_game(template)
     icanvas.create("pickup_icon", false, 10)
     icanvas.create("road_entrance_marker", false, 0.02)
 
-    iguide.init(gameplay_core.get_world(), template.guide)
+    if template.research_queue then
+        gameplay_world:research_queue(template.research_queue)
+    end
+
+    iguide.init(gameplay_world, template.guide)
     if next(template.guide) and debugger.skip_guide then
         print("skip guide")
         for _, guide in ipairs(template.guide) do
             if next(guide.narrative_end.task) then
                 for _, task in ipairs(guide.narrative_end.task) do
                     local typeobject = iprototype.queryByName(task)
-                    gameplay_core.get_world():research_progress(task, typeobject.count)
+                    gameplay_world:research_progress(task, typeobject.count)
                 end
             end
         end
