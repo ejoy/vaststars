@@ -126,6 +126,8 @@ return {
       "/pkg/vaststars.resources/ui/construct.rml",
       "/pkg/vaststars.resources/ui/message_pop.rml"
     },
+    init_instances = {
+    },
     debugger = {
       skip_guide = false,
       recipe_unlocked = false,
