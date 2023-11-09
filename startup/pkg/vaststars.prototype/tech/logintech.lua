@@ -10,7 +10,7 @@ local prototype = gameplay.register.prototype
         {"气候科技包", 1},
     },
     count = 65000,
-    time = "2s"
+    time = "4s"
   }
 
   prototype "登录结束" {
