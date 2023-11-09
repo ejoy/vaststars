@@ -1,8 +1,9 @@
 local ltask = require "ltask"
 
-local function start()
+local function start(mode)
 	local web = ltask.uniqueservice "ant.webserver|webserver"
 	ltask.call(web, "start", {
+		mode = mode,
 		port = 9000,
 		cgi = {
 			debug = "vaststars.webcgi|debug",

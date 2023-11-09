@@ -25,11 +25,12 @@ local function register_debug()
 end
 
 return function ()
-    if not __ANT_RUNTIME__ then
-		return
-	end
-
-	register_debug()
 	local webserver = import_package "vaststars.webcgi"
-	webserver.start()
+
+	if __ANT_RUNTIME__ then
+		register_debug()
+		webserver.start "redirect"
+	else
+		webserver.start "direct"
+	end
 end
