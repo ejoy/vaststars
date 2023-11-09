@@ -2901,8 +2901,8 @@ local entities = { {
   y = 122
 }, {
   dir = "N",
-  prototype_name = "无人机平台I",
-  x = 153,
+  prototype_name = "仓库I",
+  x = 152,
   y = 122
 }, {
   dir = "S",

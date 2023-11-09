@@ -366,6 +366,15 @@ local prototype = gameplay.register.prototype
         show_arrow = false,
       },
       {
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        x = 41,
+        y = 174,
+        w = 3.1,
+        h = 3.1,
+        color = {0, 0.7, 0.95, 1},
+        show_arrow = false,
+      },
+      {
         camera_x = 37,
         camera_y = 173,
         w = 5.2,
