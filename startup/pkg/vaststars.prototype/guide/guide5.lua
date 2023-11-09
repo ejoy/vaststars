@@ -129,7 +129,7 @@ local guide5 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..让我们量产新解锁的{/g 气候科技包}", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..让我们使用{/color:4bd0ff 水电站}生产新解锁的{/g 气候科技包}", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
