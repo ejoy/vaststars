@@ -4463,6 +4463,6 @@ return {
       item_unlocked = true,
       infinite_item = true,
     },
-    camera = "/pkg/vaststars.resources/camera_default.prefab",
+    camera = "/pkg/vaststars.resources/camera_anim.prefab",
     camera_animation = "/pkg/vaststars.resources/animations/camera.anim",
 }

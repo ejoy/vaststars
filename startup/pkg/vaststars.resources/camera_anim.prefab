@@ -24,7 +24,7 @@ data:
     frustum:
       aspect: 2
       f: 1200
-      fov: 35
+      fov: 60
       n: 0.2
   scene:
     t: {0, 0, 0}
