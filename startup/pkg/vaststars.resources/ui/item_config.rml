@@ -240,7 +240,7 @@
             end
         </script>
     </head>
-    <body style = "pointer-events: none; margin: 0 3.995vmax 0 4.715vmax; flex-direction: column;" onload="init()">
+    <body style = "pointer-events: none; margin: 1.32vmin 3.995vmax 0 4.97vmax; flex-direction: column;" onload="init()">
         <header-container>
             <caption-line-container style = "flex-direction: row-reverse;"><caption-line /></caption-line-container>
             <caption style = "font-size: 6.50vmin; justify-content: center; align-items: center;">设 置 物 品</caption>

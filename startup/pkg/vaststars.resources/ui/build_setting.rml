@@ -203,7 +203,7 @@
             end
         </script>
     </head>
-    <body style = "pointer-events: none; margin: 0 3.995vmax 0 4.715vmax;" onload="init()">
+    <body style = "pointer-events: none; margin: 1.32vmin 3.995vmax 0 4.97vmax;" onload="init()">
         <background data-event-click = "clickSpace()" />
         <buttons-container>
             <button-container data-style-transform = "it.transform" data-style-margin = "it.margin" data-for = "shortcut_buttons" >
