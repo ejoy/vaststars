@@ -334,7 +334,7 @@ local prototype = gameplay.register.prototype
 }
   
   prototype "仓库设置2" {
-    desc = "仓库选择地质科技包",
+    desc = "仓库收货地质科技包",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"unknown", 0, 5},                          
@@ -384,7 +384,7 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "组装机设置" {
-    desc = "组装机配方选择地质科技包1",
+    desc = "组装机生产地质科技包1",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"unknown", 0, 3},                          
@@ -395,12 +395,12 @@ local prototype = gameplay.register.prototype
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "组装机生产设置为“地质科技包1”", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "组装机生产配方设置为“地质科技包1”", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
   prototype "组装机生产" {
-    desc = "自动化生产科技包用于科技研究",
+    desc = "组装机自动化生产科技包",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"stat_production", 0, "地质科技包"},
@@ -433,7 +433,7 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "生产石砖" {
-    desc = "挖掘足够的碎石进行深加工",
+    desc = "将碎石打造成其他材料",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"stat_production", 0, "石砖"},
@@ -481,7 +481,7 @@ local prototype = gameplay.register.prototype
   }
   
   prototype "生产铁板" {
-    desc = "铁板可以打造坚固器材，对于基地建设多多益善",
+    desc = "熔炼炉生产铁板",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"stat_production", 0, "铁板"},
@@ -564,7 +564,7 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "建造公路" {
-    desc = "建造30段公路",
+    desc = "建造物流所需的公路",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"stat_production", 0, "砖石公路-X型"},
@@ -613,7 +613,7 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "恢复物流" {
-    desc = "维修2座物流站",
+    desc = "维修物流站",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"stat_production", 0, "物流站"},
@@ -668,7 +668,7 @@ local prototype = gameplay.register.prototype
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "在公路边放置1座停车站", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "在公路边放置1座停车站来启动物流", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -748,7 +748,7 @@ prototype "气候研究1" {
 }
 
 prototype "建筑维修2" {
-  desc = "获得维修机械的技术",
+  desc = "获得维修流体处理机械的技术",
   type = { "tech" },
   effects = {
     unlock_recipe = {"维修水电站","维修空气过滤器","维修地下水挖掘机"},
@@ -763,7 +763,7 @@ prototype "建筑维修2" {
 }
 
 prototype "管道系统1" {
-  desc = "研究装载和运输气液原料的管道",
+  desc = "研究装载和运输流体的管道",
   type = { "tech" },
   effects = {
     unlock_recipe = {"管道1","管道2","液罐1"},
@@ -778,7 +778,7 @@ prototype "管道系统1" {
 }
 
 prototype "生产管道" {
-  desc = "生产可以传输气液原料的管道",
+  desc = "生产可以传输流体原料的管道",
   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
   type = { "task" },
   task = {"stat_production", 0, "管道1-X型"},
@@ -829,7 +829,7 @@ prototype "重修水电站" {
 }
 
 prototype "放置水电站" {
-  desc = "放置1座水电站",
+  desc = "水电站建造",
   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
   type = { "task" },
   task = {"select_entity", 0, "水电站I"},
@@ -909,7 +909,7 @@ prototype "排放1" {
 }
 
   prototype "生产液罐" {
-    desc = "生产可以存储气液的容器",
+    desc = "生产可以存储流体的容器",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"stat_production", 0, "液罐I"},
@@ -1047,7 +1047,7 @@ prototype "生产氢气" {
 }
 
 prototype "放置蒸馏厂" {
-  desc = "放置可以蒸馏并分离气液的工厂",
+  desc = "放置可以蒸馏并分离流体的工厂",
   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
   type = { "task" },
   task = {"select_entity", 0, "蒸馏厂I"},
@@ -1604,7 +1604,7 @@ prototype "有机化学2" {
 }
 
 prototype "管道系统2" {
-  desc = "研究可储藏气液原料的装置",
+  desc = "研究可储藏流体原料的装置",
   type = { "tech" },
   effects = {
     unlock_recipe = {"液罐2"},
@@ -2846,7 +2846,7 @@ prototype "太阳能2" {
 }
 
 prototype "管道系统3" {
-  desc = "研究可储藏气液原料的装置",
+  desc = "研究可储藏流体原料的装置",
   type = { "tech" },
   effects = {
     unlock_recipe = {"液罐3"},
