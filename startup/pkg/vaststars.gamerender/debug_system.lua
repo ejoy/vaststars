@@ -93,18 +93,30 @@ end
 function debug_sys:init_world()
 end
 
-local ibs           = ecs.require "ant.render|blur_scene.blur_scene"
 
+local bid
 function debug_sys:ui_update()
     local w = world.w
 
     for _, key, press, state in kb_mb:unpack() do
         if key == "A" and press == 0 then
-            ibs.blur_scene()   -- default gaussian blur count is 5
+            -- default gaussian blur count is 5
+            bid = world:create_entity {
+                policy = {
+                    "ant.render|blur_scene",
+                },
+                data = {
+                    blur_scene = {
+                        cur_count = 0,
+                        max_count = 5,
+                        material  = "/pkg/vaststars.resources/materials/blend_scene.material"
+                    }
+                },
+            }
         end
 
         if key == "B" and press == 0 then
-            ibs.restore_scene()
+            w:remove(bid)
         end
 
         if key == "T" and press == 0 then
