@@ -148,7 +148,7 @@ do
                 end
             end
 
-            for id in pairs(t) do
+            for _, id in pairs(t) do
                 local o = assert(objects:get(id))
                 local otypeobject = iprototype.queryByName(o.prototype_name)
                 if otypeobject.supply_area and o.id ~= object.id then

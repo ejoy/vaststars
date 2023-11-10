@@ -30,8 +30,9 @@
                 left: 0vmax;
                 top: 1.17vmin;
                 width: 78.21vmin;
-                height: 7.48vmin;
+                height: 11.14vmin;
                 gap: 1.50vmin;
+                overflow: hidden;
             }
             tech-or-task-bar {
                 position: absolute;
@@ -67,13 +68,13 @@
             end
         </script>
     </head>
-    <body style = "pointer-events: none; margin: 0 3.995vmax 0 4.715vmax;">
+    <body style = "pointer-events: none; margin: 1.32vmin 3.995vmax 0 4.97vmax;">
         <backpack-bar data-event-click = "clickButton('settings')">
             <div data-for = "backpack_bar" style = "flex-direction: row;">
-                <div style = "width: 7.00vmin; height: 7.00vmin; background-size: 100% 100%; background-color: rgb(61, 61, 61);" data-style-background-image = "it.icon"/>
-                <div style = "font-size: 5.00vmin; margin-top: 0.50vmin; text-align: center;">{{it.count}}</div>
+                <div style = "width: 10.67vmin; height: 10.67vmin; background-size: 100% 100%; background-color: rgb(61, 61, 61);" data-style-background-image = "it.icon"/>
+                <div style = "font-size: 7.67vmin; width: 10.67vmin; height: 10.67vmin; text-align: center;">{{it.count}}</div>
             </div>
-            <div style = "width: 7.00vmin; height: 7.00vmin; background-size: 100% 100%; background-image: /pkg/vaststars.resources/ui/textures/main-menu/game-settings.texture;" data-if = "#backpack_bar <= 0"/>            
+            <div style = "width: 10.67vmin; height: 11.14vmin; background-size: 100% 100%; background-image: /pkg/vaststars.resources/ui/textures/construct/settings.texture;" data-if = "#backpack_bar <= 0"/>            
         </backpack-bar>
 
         <tech-or-task-bar style = "flex-direction: row; align-items: center; gap: 1vmin;" data-if = "not is_concise_mode and show_tech_progress" data-event-click="clickButton('click_techortaskicon', is_task)">

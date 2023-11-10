@@ -238,16 +238,8 @@ local prototype = gameplay.register.prototype
         w = 3.2,
         h = 3.2,
         color = {0.3, 1, 0, 1},
-        -- show_arrow = true,
+        show_arrow = false,
       },
-      -- {
-      --   prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-      --   x = 109,
-      --   y = 136,
-      --   w = 3.2,
-      --   h = 3.2,
-      --   color = {0.3, 1, 0, 1},
-      -- },
       {
         camera_x = 139,
         camera_y = 139,
@@ -273,87 +265,6 @@ local prototype = gameplay.register.prototype
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
-    -- guide_focus = {
-    --   {
-    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-    --     x = 114,
-    --     y = 117.8,
-    --     w = 1.8,
-    --     h = 1.8,
-    --     color = {0.3, 1, 0, 1},
-    --     show_arrow = true,
-    --   },
-    --   {
-    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-    --     x = 110,
-    --     y = 124,
-    --     w = 3.5,
-    --     h = 3.5,
-    --     color = {0.3, 1, 0, 1},
-    --   },
-    --   {
-    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-    --     x = 118,
-    --     y = 124,
-    --     w = 3.5,
-    --     h = 3.5,
-    --     color = {0.3, 1, 0, 1},
-    --   },
-    --   {
-    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-    --     x = 114,
-    --     y = 124,
-    --     w = 3.5,
-    --     h = 3.5,
-    --     color = {0.3, 1, 0, 1},
-    --   },
-    --   {
-    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-    --     x = 114,
-    --     y = 132,
-    --     w = 3.5,
-    --     h = 3.5,
-    --     color = {0.3, 1, 0, 1},
-    --   },
-    --   {
-    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-    --     x = 110,
-    --     y = 132,
-    --     w = 3.5,
-    --     h = 3.5,
-    --     color = {0.3, 1, 0, 1},
-    --   },
-    --   {
-    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-    --     x = 118,
-    --     y = 132,
-    --     w = 3.5,
-    --     h = 3.5,
-    --     color = {0.3, 1, 0, 1},
-    --   },
-    --   {
-    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-    --     x = 110,
-    --     y = 128,
-    --     w = 3.5,
-    --     h = 3.5,
-    --     color = {0.3, 1, 0, 1},
-    --   },
-    --   {
-    --     prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-    --     x = 118,
-    --     y = 128,
-    --     w = 3.5,
-    --     h = 3.5,
-    --     color = {0.3, 1, 0, 1},
-    --   },
-    --   {
-    --     camera_x = 115,
-    --     camera_y = 125,
-    --     w = 3.5,
-    --     h = 3.5,
-    --   },
-    -- },
     sign_desc = {
       { desc = "在铁矿采矿机的附近放置1座风力发电机对其供电", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
@@ -607,8 +518,8 @@ local prototype = gameplay.register.prototype
     desc = "获得维修机械的技术",
     type = { "tech" },
     effects = {
-      unlock_recipe = {"维修无人机平台","维修铁制电线杆"},
-      unlock_item = {"无人机平台平台","电线杆框架"},
+      unlock_recipe = {"维修无人机平台"},
+      unlock_item = {"无人机平台平台"},
     },
     prerequisites = {"铁加工1"},
     ingredients = {
@@ -1405,23 +1316,6 @@ prototype "蒸馏1" {
   time = "5s"
 }
 
-prototype "电力传输1" {
-  desc = "将电能远距离传输的技术",
-  type = { "tech" },
-  effects = {
-    unlock_recipe = {"铁制电线杆"},
-    unlock_item = {"铁制电线杆"},
-  },
-  prerequisites = {"生产机械科技包"},
-  ingredients = {
-    {"地质科技包", 1},
-    {"气候科技包", 1},
-    {"机械科技包", 1},
-  },
-  count = 4,
-  time = "12s"
-}
-
 prototype "泵系统1" {
   desc = "使用机械方式加快流体流动",
   type = { "tech" },
@@ -1429,7 +1323,7 @@ prototype "泵系统1" {
     unlock_recipe = {"压力泵1"},
     unlock_item = {"压力泵I"},
   },
-  prerequisites = {"电力传输1"},
+  prerequisites = {"蒸馏1"},
   ingredients = {
     {"气候科技包", 1},
     {"机械科技包", 1},
@@ -2001,23 +1895,6 @@ prototype "电子器件1" {
   time = "5s"
 }
 
-prototype "电力传输2" {
-  desc = "将电能远距离传输的技术",
-  type = { "tech" },
-  effects = {
-    unlock_recipe = {"远程电线杆"},
-    unlock_item = {"远程电线杆"},
-  },
-  prerequisites = {"电子器件1"},
-  ingredients = {
-    {"地质科技包", 1},
-    {"气候科技包", 1},
-    {"机械科技包", 1},
-  },
-  count = 20,
-  time = "8s"
-}
-
 prototype "太阳能存储1" {
   desc = "研究将太阳能板转化的电能进行储存的电池",
   type = { "tech" },
@@ -2025,7 +1902,7 @@ prototype "太阳能存储1" {
     unlock_recipe = {"蓄电池1"},
     unlock_item = {"蓄电池I"},
   },
-  prerequisites = {"电力传输2"},
+  prerequisites = {"电子器件1"},
   ingredients = {
     {"地质科技包", 1},
     {"气候科技包", 1},
@@ -2408,24 +2285,6 @@ prototype "建筑材料" {
   time = "15s"
 }
 
-prototype "电力传输3" {
-  desc = "将电能远距离传输的技术",
-  type = { "tech" },
-  effects = {
-    unlock_recipe = {"广域电线杆"},
-    unlock_item = {"广域电线杆"},
-  },
-  prerequisites = {"建筑材料"},
-  ingredients = {
-    {"地质科技包", 1},
-    {"气候科技包", 1},
-    {"机械科技包", 1},
-    {"电子科技包", 1},
-  },
-  count = 150,
-  time = "15s"
-}
-
 prototype "地下水净化2" {
   desc = "火星地下开采卤水进行过滤净化工艺",
   type = { "tech" },
@@ -2433,7 +2292,7 @@ prototype "地下水净化2" {
     unlock_recipe = {"水电站2","地下水挖掘机2"},
     unlock_item = {"水电站II","地下水挖掘机II"},
   },
-  prerequisites = {"电力传输3"},
+  prerequisites = {"建筑材料"},
   ingredients = {
     {"气候科技包", 1},
     {"机械科技包", 1},
