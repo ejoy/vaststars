@@ -38,8 +38,8 @@ end
 
 local function merge_indices(indices, width, height, range)
     local m = {}
-    for iz=0, height-1, range do
-        for ix=0, width-1, range do
+    for iz=0, height-1 do
+        for ix=0, width-1 do
             local idx = iz*width+ix
 
             local function is_sub_range(baseidx, range)
@@ -69,7 +69,7 @@ local function build_sub_indices(masks)
         for _, info in ipairs(m) do
             subindices[info.baseidx] = info
             local x, y = icoord.idx2coord(info.baseidx)
-            set_masks(masks, {x, y, info.sidx, info.sidx}, 1)
+            set_masks(masks, {x, y, info.sidx, info.sidx}, 0)
         end
     end
 
