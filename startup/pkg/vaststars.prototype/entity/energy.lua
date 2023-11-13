@@ -81,7 +81,7 @@ prototype "蒸汽发电机III" {
     rotate_on_build = true,
     io_shelf = false,
     assembling_icon = false,
-    building_menu = false,
+    building_menu = true,
     power = "6MW",
     priority = "secondary",
     sound = "building/steam-turbine",
@@ -115,7 +115,7 @@ prototype "轻型风力发电机" {
     area = "3x3",
     power = "450kW",
     priority = "primary",
-    building_menu = false,
+    building_menu = true,
     camera_distance = 140,
 }
 

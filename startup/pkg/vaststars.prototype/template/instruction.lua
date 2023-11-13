@@ -2,25 +2,31 @@ local guide = require "guide"
 local mountain = require "mountain"
 
 local entities = { {
+  amount = 20,
   dir = "N",
-  prototype_name = "风力发电机I",
-  x = 182,
-  y = 71
-}, {
-  dir = "N",
-  prototype_name = "风力发电机I",
-  x = 185,
-  y = 71
+  prototype_name = "指挥中心",
+  x = 156,
+  y = 76
 }, {
   dir = "N",
   prototype_name = "风力发电机I",
   x = 182,
-  y = 74
+  y = 11
 }, {
   dir = "N",
   prototype_name = "风力发电机I",
   x = 185,
-  y = 74
+  y = 11
+}, {
+  dir = "N",
+  prototype_name = "风力发电机I",
+  x = 182,
+  y = 14
+}, {
+  dir = "N",
+  prototype_name = "风力发电机I",
+  x = 185,
+  y = 14
 }, {
   dir = "N",
   prototype_name = "组装机I",
@@ -51,7 +57,7 @@ local entities = { {
   y = 93
 }, {
   dir = "N",
-  items = { { "机械科技包", 28 }, { "化学科技包", 28 }, { "物理科技包", 28 }, { "地质科技包", 28 } },
+  items = { { "机械科技包", 26 }, { "化学科技包", 26 }, { "物理科技包", 26 }, { "地质科技包", 26 } },
   prototype_name = "仓库I",
   x = 127,
   y = 89
@@ -84,7 +90,7 @@ local entities = { {
   y = 129
 }, {
   dir = "N",
-  items = { { "碎石", 29 }, { "碎石", 28 } },
+  items = { { "碎石", 60 }, { "碎石", 60 } },
   prototype_name = "仓库I",
   x = 117,
   y = 132
@@ -101,7 +107,7 @@ local entities = { {
   y = 129
 }, {
   dir = "N",
-  items = { { "铝矿石", 35 } },
+  items = { { "铝矿石", 60 } },
   prototype_name = "仓库I",
   x = 132,
   y = 132
@@ -118,7 +124,7 @@ local entities = { {
   y = 129
 }, {
   dir = "N",
-  items = { { "铁矿石", 55 } },
+  items = { { "铁矿石", 60 } },
   prototype_name = "仓库I",
   x = 122,
   y = 132
@@ -128,23 +134,133 @@ local entities = { {
   x = 121,
   y = 132
 } }
-local backpack = { {
-  count = 1,
-  prototype_name = "仓库I"
+local backpack = {}
+local road = { {
+  dir = "E",
+  prototype_name = "砖石公路-U型",
+  x = 154,
+  y = 82
 }, {
-  count = 46,
-  prototype_name = "碎石"
+  dir = "E",
+  prototype_name = "砖石公路-I型",
+  x = 156,
+  y = 82
 }, {
-  count = 24,
-  prototype_name = "铁矿石"
+  dir = "E",
+  prototype_name = "砖石公路-I型",
+  x = 158,
+  y = 82
 }, {
-  count = 16,
-  prototype_name = "铝矿石"
+  dir = "E",
+  prototype_name = "砖石公路-I型",
+  x = 160,
+  y = 82
 }, {
-  count = 29,
-  prototype_name = "地质科技包"
+  dir = "E",
+  prototype_name = "砖石公路-I型",
+  x = 162,
+  y = 82
+}, {
+  dir = "E",
+  prototype_name = "砖石公路-I型",
+  x = 164,
+  y = 82
+}, {
+  dir = "E",
+  prototype_name = "砖石公路-I型",
+  x = 166,
+  y = 82
+}, {
+  dir = "E",
+  prototype_name = "砖石公路-I型",
+  x = 168,
+  y = 82
+}, {
+  dir = "E",
+  prototype_name = "砖石公路-I型",
+  x = 170,
+  y = 82
+}, {
+  dir = "E",
+  prototype_name = "砖石公路-I型",
+  x = 172,
+  y = 82
+}, {
+  dir = "N",
+  prototype_name = "砖石公路-T型",
+  x = 174,
+  y = 82
+}, {
+  dir = "N",
+  prototype_name = "砖石公路-I型",
+  x = 174,
+  y = 84
+}, {
+  dir = "N",
+  prototype_name = "砖石公路-I型",
+  x = 174,
+  y = 86
+}, {
+  dir = "N",
+  prototype_name = "砖石公路-I型",
+  x = 174,
+  y = 88
+}, {
+  dir = "N",
+  prototype_name = "砖石公路-I型",
+  x = 174,
+  y = 90
+}, {
+  dir = "N",
+  prototype_name = "砖石公路-I型",
+  x = 174,
+  y = 92
+}, {
+  dir = "N",
+  prototype_name = "砖石公路-I型",
+  x = 174,
+  y = 94
+}, {
+  dir = "N",
+  prototype_name = "砖石公路-I型",
+  x = 174,
+  y = 96
+}, {
+  dir = "N",
+  prototype_name = "砖石公路-I型",
+  x = 174,
+  y = 98
+}, {
+  dir = "N",
+  prototype_name = "砖石公路-I型",
+  x = 174,
+  y = 100
+}, {
+  dir = "N",
+  prototype_name = "砖石公路-U型",
+  x = 174,
+  y = 102
+}, {
+  dir = "E",
+  prototype_name = "砖石公路-I型",
+  x = 176,
+  y = 82
+}, {
+  dir = "E",
+  prototype_name = "砖石公路-I型",
+  x = 178,
+  y = 82
+}, {
+  dir = "E",
+  prototype_name = "砖石公路-I型",
+  x = 180,
+  y = 82
+}, {
+  dir = "W",
+  prototype_name = "砖石公路-U型",
+  x = 182,
+  y = 82
 } }
-local road = {}
 local mineral = {
 ["115,129"] = "碎石",
 ["120,129"] = "铁矿石",
@@ -152,7 +268,6 @@ local mineral = {
 ["130,129"] = "铝矿石",
 ["135,129"] = "砂岩"
 }
-
 return {
   name = "游戏教程",
   entities = entities,
@@ -169,7 +284,7 @@ return {
   init_instances = {
   },
   debugger = {
-    skip_guide = false,
+    skip_guide = true,
     recipe_unlocked = true,
     item_unlocked = true,
     infinite_item = true,

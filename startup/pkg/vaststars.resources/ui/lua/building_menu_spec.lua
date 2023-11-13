@@ -211,4 +211,26 @@ t["烟囱II"] = function(start, offsets, DEFAULT)
     show_buttons(start, offsets)
 end
 
+t["风力发电机I"] = function(start, offsets, DEFAULT)
+    start.buttons = {}
+    if start.move then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.command = "move"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/move.texture"
+        start.buttons[#start.buttons + 1] = v
+    end
+    show_buttons(start, offsets)
+end
+
+t["轻型风力发电机"] = function(start, offsets, DEFAULT)
+    start.buttons = {}
+    if start.move then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.command = "move"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/move.texture"
+        start.buttons[#start.buttons + 1] = v
+    end
+    show_buttons(start, offsets)
+end
+
 return t
