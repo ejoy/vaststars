@@ -67,7 +67,7 @@ local prototype = gameplay.register.prototype
     type = { "task" },
     task = {"unknown", 0, 4},
     effects = {
-      -- unlock_recipe = {"采矿机打印"},
+      unlock_item = {"碎石","铁矿石","铝矿石"},
     },
     prerequisites = {},
     count = 1,
@@ -79,41 +79,41 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "搜索废墟" {
-    desc = "从废墟中搜索物资",
-    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-    type = {"task" },
-    task = {"unknown", 0, 6},
-    task_params = {ui = "pickup_item", building = "机身残骸"},
-    prerequisites = {"迫降火星"},
-    count = 1,
-    effects = {
-      unlock_item = {"碎石"},
-    },
-    tips_pic = {
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
-    },
-    guide_focus = {
-      {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-        x = 109,
-        y = 136,
-        w = 3.5,
-        h = 3.5,
-        color = {0.3, 1, 0, 1},
-        show_arrow = true,
-      },
-      {
-        camera_x = 109,
-        camera_y = 136,
-        w = 3.5,
-        h = 3.5,
-      },
-    },
-    sign_desc = {
-      { desc = "搜索机身残骸获取有用物资", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "搜索废墟" {
+  --   desc = "从废墟中搜索物资",
+  --   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+  --   type = {"task" },
+  --   task = {"unknown", 0, 6},
+  --   task_params = {ui = "pickup_item", building = "机身残骸"},
+  --   prerequisites = {"迫降火星"},
+  --   count = 1,
+  --   effects = {
+  --     unlock_item = {"碎石"},
+  --   },
+  --   tips_pic = {
+  --     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+  --   },
+  --   guide_focus = {
+  --     {
+  --       prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+  --       x = 109,
+  --       y = 136,
+  --       w = 3.5,
+  --       h = 3.5,
+  --       color = {0.3, 1, 0, 1},
+  --       show_arrow = true,
+  --     },
+  --     {
+  --       camera_x = 109,
+  --       camera_y = 136,
+  --       w = 3.5,
+  --       h = 3.5,
+  --     },
+  --   },
+  --   sign_desc = {
+  --     { desc = "搜索机身残骸获取有用物资", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+  --   },
+  -- }
 
   -- prototype "放置采矿机1" {
   --   desc = "放置1台采矿机",
@@ -208,23 +208,23 @@ local prototype = gameplay.register.prototype
   --   },
   -- }
 
-  prototype "收集碎石" {
-    desc = "挖掘足够的碎石可以开始进行锻造",
-    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-    type = { "task" },
-    task = {"stat_production", 0, "碎石"},
-    prerequisites = {"搜索废墟"},
-    count = 12,
-    effects = {
-      unlock_item = {"铁矿石","铝矿石"},
-    },
-    tips_pic = {
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ore3.texture",
-    },
-    sign_desc = {
-      { desc = "使用无人机平台收集12个碎石", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "收集碎石" {
+  --   desc = "挖掘足够的碎石可以开始进行锻造",
+  --   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+  --   type = { "task" },
+  --   task = {"stat_production", 0, "碎石"},
+  --   prerequisites = {"搜索废墟"},
+  --   count = 12,
+  --   effects = {
+  --     unlock_item = {"铁矿石","铝矿石"},
+  --   },
+  --   tips_pic = {
+  --     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ore3.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "使用无人机平台收集12个碎石", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+  --   },
+  -- }
 
   -- prototype "放置采矿机2" {
   --   desc = "放置1台采矿机",
@@ -276,50 +276,50 @@ local prototype = gameplay.register.prototype
   --   },
   -- }
 
-  prototype "收集铁矿石" {
-    desc = "挖掘足够的铁矿石",
-    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-    type = { "task" },
-    task = {"stat_production", 0, "铁矿石"},
-    prerequisites = {"收集碎石"},
-    count = 6,
-    tips_pic = {
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ore3.texture",
-    },
-    sign_desc = {
-      { desc = "收集6个铁矿石", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "收集铁矿石" {
+  --   desc = "挖掘足够的铁矿石",
+  --   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+  --   type = { "task" },
+  --   task = {"stat_production", 0, "铁矿石"},
+  --   prerequisites = {"收集碎石"},
+  --   count = 6,
+  --   tips_pic = {
+  --     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ore3.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "收集6个铁矿石", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+  --   },
+  -- }
 
-  prototype "收集铝矿石" {
-    desc = "挖掘足够的铝矿石",
-    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-    type = { "task" },
-    task = {"stat_production", 0, "铝矿石"},
-    prerequisites = {"收集碎石"},
-    count = 6,
-    tips_pic = {
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ore3.texture",
-    },
-    sign_desc = {
-      { desc = "收集6个铝矿石", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "收集铝矿石" {
+  --   desc = "挖掘足够的铝矿石",
+  --   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+  --   type = { "task" },
+  --   task = {"stat_production", 0, "铝矿石"},
+  --   prerequisites = {"收集碎石"},
+  --   count = 6,
+  --   tips_pic = {
+  --     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ore3.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "收集6个铝矿石", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+  --   },
+  -- }
 
-  prototype "放置科研中心" {
-    desc = "放置可以研究火星科技的建筑",
-    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-    type = { "task" },
-    task = {"select_entity", 0, "科研中心I"},
-    prerequisites = {"收集铝矿石","收集铁矿石"},
-    count = 1,
-    tips_pic = {
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_click_build.texture",
-    },
-    sign_desc = {
-      { desc = "放置1座科研中心", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "放置科研中心" {
+  --   desc = "放置可以研究火星科技的建筑",
+  --   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+  --   type = { "task" },
+  --   task = {"select_entity", 0, "科研中心I"},
+  --   prerequisites = {"收集铝矿石","收集铁矿石"},
+  --   count = 1,
+  --   tips_pic = {
+  --     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_click_build.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "放置1座科研中心", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+  --   },
+  -- }
 
   prototype "地质研究" {
     desc = "对火星地质结构进行标本采集和研究",
@@ -332,7 +332,7 @@ local prototype = gameplay.register.prototype
     },
     count = 8,
     time = "2s",
-    prerequisites = {"放置科研中心"},
+    prerequisites = {"迫降火星"},
     sign_desc = {
       { desc = "该科技是一项前沿科技，可引导其他的科技研究", icon = "/pkg/vaststars.resources/ui/textures/science/key_sign.texture"},
     },
@@ -405,23 +405,23 @@ local prototype = gameplay.register.prototype
   --   },
   -- }
 
-  prototype "组装机生产" {
-    desc = "组装机自动化生产科技包",
-    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-    type = { "task" },
-    task = {"stat_production", 0, "地质科技包"},
-    prerequisites = {"地质研究"},
-    count = 3,
-    tips_pic = {
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack3.texture",
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack4.texture",
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack5.texture",
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack6.texture",
-    },
-    sign_desc = {
-      { desc = "使用组装机生产3个地质科技包", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "组装机生产" {
+  --   desc = "组装机自动化生产科技包",
+  --   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+  --   type = { "task" },
+  --   task = {"stat_production", 0, "地质科技包"},
+  --   prerequisites = {"地质研究"},
+  --   count = 3,
+  --   tips_pic = {
+  --     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack3.texture",
+  --     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack4.texture",
+  --     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack5.texture",
+  --     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack6.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "使用组装机生产3个地质科技包", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+  --   },
+  -- }
 
   prototype "石头处理1" {
     desc = "获得火星岩石加工成石砖的工艺",
@@ -430,7 +430,7 @@ local prototype = gameplay.register.prototype
       unlock_recipe = {"石砖"},
       unlock_item = {"石砖"},
     },
-    prerequisites = {"组装机生产"},
+    prerequisites = {"地质研究"},
     ingredients = {
         {"地质科技包", 1},
     },
@@ -438,20 +438,20 @@ local prototype = gameplay.register.prototype
     time = "3s"
   }
 
-  prototype "生产石砖" {
-    desc = "将碎石打造成其他材料",
-    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-    type = { "task" },
-    task = {"stat_production", 0, "石砖"},
-    prerequisites = {"石头处理1"},
-    count = 8,
-    tips_pic = {
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ore3.texture",
-    },
-    sign_desc = {
-      { desc = "使用组装机生产8个石砖", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "生产石砖" {
+  --   desc = "将碎石打造成其他材料",
+  --   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+  --   type = { "task" },
+  --   task = {"stat_production", 0, "石砖"},
+  --   prerequisites = {"石头处理1"},
+  --   count = 8,
+  --   tips_pic = {
+  --     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ore3.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "使用组装机生产8个石砖", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+  --   },
+  -- }
 
   prototype "铁矿熔炼" {
     desc = "掌握熔炼铁矿石冶炼成铁板的工艺",
@@ -460,7 +460,7 @@ local prototype = gameplay.register.prototype
       unlock_recipe = {"铁板T1"},
       unlock_item = {"铁板"},
     },
-    prerequisites = {"生产石砖"},
+    prerequisites = {"石头处理1"},
     ingredients = {
         {"地质科技包", 1},
     },
@@ -486,24 +486,24 @@ local prototype = gameplay.register.prototype
   --   },
   -- }
   
-  prototype "生产铁板" {
-    desc = "熔炼炉生产铁板",
-    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-    type = { "task" },
-    task = {"stat_production", 0, "铁板"},
-    prerequisites = {"铁矿熔炼"},
-    count = 4,
-    tips_pic = {
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate1.texture",
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate2.texture",
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate3.texture",
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate4.texture",
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate5.texture",
-    },
-    sign_desc = {
-      { desc = "使用熔炼炉生产4块铁板", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "生产铁板" {
+  --   desc = "熔炼炉生产铁板",
+  --   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+  --   type = { "task" },
+  --   task = {"stat_production", 0, "铁板"},
+  --   prerequisites = {"铁矿熔炼"},
+  --   count = 4,
+  --   tips_pic = {
+  --     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate1.texture",
+  --     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate2.texture",
+  --     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate3.texture",
+  --     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate4.texture",
+  --     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate5.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "使用熔炼炉生产4块铁板", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+  --   },
+  -- }
 
   prototype "铁加工1" {
     desc = "获得更多铁成品的加工工艺",
@@ -512,7 +512,7 @@ local prototype = gameplay.register.prototype
       unlock_recipe = {"铁齿轮T1","铁棒1"},
       unlock_item = {"铁齿轮","铁棒"},
     },
-    prerequisites = {"生产铁板"},
+    prerequisites = {"铁矿熔炼"},
     ingredients = {
         {"地质科技包", 1},
     },
@@ -535,29 +535,29 @@ local prototype = gameplay.register.prototype
     time = "4s"
   }
 
-  prototype "生产铁棒" {
-    desc = "铁棒可打造长形组件也可加工成其他铁制品",
-    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-    type = { "task" },
-    task = {"stat_production", 0, "铁棒"},
-    prerequisites = {"铁加工1"},
-    count = 10,
-    tips_pic = {
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate1.texture",
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate2.texture",
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate3.texture",
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate4.texture",
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate5.texture",
-    },
-    sign_desc = {
-      { desc = "使用组装机生产10个铁棒", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "生产铁棒" {
+  --   desc = "铁棒可打造长形组件也可加工成其他铁制品",
+  --   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+  --   type = { "task" },
+  --   task = {"stat_production", 0, "铁棒"},
+  --   prerequisites = {"铁加工1"},
+  --   count = 10,
+  --   tips_pic = {
+  --     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate1.texture",
+  --     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate2.texture",
+  --     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate3.texture",
+  --     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate4.texture",
+  --     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate5.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "使用组装机生产10个铁棒", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+  --   },
+  -- }
 
   prototype "公路研究" {
     desc = "掌握使用石砖制造公路的技术",
     type = { "tech" },
-    prerequisites = {"生产石砖","生产铁棒"},
+    prerequisites = {"建筑维修1"},
     effects = {
       unlock_recipe = {"砖石公路打印"},
       unlock_item = {"砖石公路-X型"},
@@ -618,20 +618,20 @@ local prototype = gameplay.register.prototype
     time = "4s"
   }
 
-  prototype "恢复物流" {
-    desc = "维修物流站",
-    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-    type = { "task" },
-    task = {"stat_production", 0, "物流站"},
-    prerequisites = {"物流学1"},
-    count = 2,
-    tips_pic = {
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
-    },
-    sign_desc = {
-      { desc = "使用组装机维修2座物流站", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "恢复物流" {
+  --   desc = "维修物流站",
+  --   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+  --   type = { "task" },
+  --   task = {"stat_production", 0, "物流站"},
+  --   prerequisites = {"物流学1"},
+  --   count = 2,
+  --   tips_pic = {
+  --     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "使用组装机维修2座物流站", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+  --   },
+  -- }
 
   -- prototype "放置发货物流站" {
   --   desc = "放置1座物流站作为送货站",
@@ -663,20 +663,20 @@ local prototype = gameplay.register.prototype
   --   },
   -- }
 
-  prototype "放置停车站" {
-    desc = "放置1座停车站",
-    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-    type = { "task" },
-    task = {"select_entity", 0, "停车站"},
-    prerequisites = {"恢复物流"},
-    count = 1,
-    tips_pic = {
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
-    },
-    sign_desc = {
-      { desc = "在公路边放置1座停车站来启动物流", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "放置停车站" {
+  --   desc = "放置1座停车站",
+  --   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+  --   type = { "task" },
+  --   task = {"select_entity", 0, "停车站"},
+  --   prerequisites = {"恢复物流"},
+  --   count = 1,
+  --   tips_pic = {
+  --     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "在公路边放置1座停车站来启动物流", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+  --   },
+  -- }
 
 
   prototype "汽修技术" {
@@ -686,7 +686,7 @@ local prototype = gameplay.register.prototype
       unlock_recipe = {"维修运输汽车"},
       unlock_item = {"运输车辆I","破损运输车辆"},
     },
-    prerequisites = {"放置停车站"},
+    prerequisites = {"物流学1"},
     ingredients = {
         {"地质科技包", 1},
     },
@@ -713,24 +713,24 @@ local prototype = gameplay.register.prototype
   --   },
   -- }
 
-  prototype "物流网络" {
-    desc = "派遣2辆运输车",
-    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-    type = { "task" },
-    task = {"unknown", 0, 2},                          
-    prerequisites = {"汽修技术"},
-    count = 2,
-    tips_pic = {
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate1.texture",
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate2.texture",
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate3.texture",
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate4.texture",
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate5.texture",
-    },
-    sign_desc = {
-      { desc = "指挥中心派遣2辆运输车", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "物流网络" {
+  --   desc = "派遣2辆运输车",
+  --   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+  --   type = { "task" },
+  --   task = {"unknown", 0, 2},                          
+  --   prerequisites = {"汽修技术"},
+  --   count = 2,
+  --   tips_pic = {
+  --     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate1.texture",
+  --     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate2.texture",
+  --     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate3.texture",
+  --     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate4.texture",
+  --     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate5.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "指挥中心派遣2辆运输车", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+  --   },
+  -- }
 
 
 
@@ -741,7 +741,7 @@ prototype "气候研究1" {
     unlock_recipe = {"气候科技包T1"},
     unlock_item = {"气候科技包"},
   },
-  prerequisites = {"物流网络"},
+  prerequisites = {"汽修技术"},
   ingredients = {
       {"地质科技包", 1},
   },
@@ -783,20 +783,20 @@ prototype "管道系统1" {
   time = "4s"
 }
 
-prototype "生产管道" {
-  desc = "生产可以传输流体原料的管道",
-  icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-  type = { "task" },
-  task = {"stat_production", 0, "管道1-X型"},
-  prerequisites = {"管道系统1"},
-  count = 10,
-  tips_pic = {
-    "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_pipe1.texture",
-  },
-  sign_desc = {
-    { desc = "使用组装机生产10个管道", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-  },
-}
+-- prototype "生产管道" {
+--   desc = "生产可以传输流体原料的管道",
+--   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+--   type = { "task" },
+--   task = {"stat_production", 0, "管道1-X型"},
+--   prerequisites = {"管道系统1"},
+--   count = 10,
+--   tips_pic = {
+--     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_pipe1.texture",
+--   },
+--   sign_desc = {
+--     { desc = "使用组装机生产10个管道", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+--   },
+-- }
 
 -- prototype "建造空气过滤器" {
 --   desc = "建造可以过滤空气的装置",
@@ -865,39 +865,39 @@ prototype "生产管道" {
 --   },
 -- }
 
-prototype "生产气候科技包" {
-  desc = "生产科技包用于科技研究",
-  icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-  type = { "task" },
-  task = {"stat_production", 0, "气候科技包"},
-  prerequisites = {"生产管道"},
-  count = 1,
-  tips_pic = {
-    "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_climatepack2.texture",
-    "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_climatepack3.texture",
-    "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_climatepack4.texture",
-    "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_climatepack5.texture",
-  },
-  sign_desc = {
-    { desc = "使用水电站生产1个气候科技包", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-  },
-}
+-- prototype "生产气候科技包" {
+--   desc = "生产科技包用于科技研究",
+--   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+--   type = { "task" },
+--   task = {"stat_production", 0, "气候科技包"},
+--   prerequisites = {"生产管道"},
+--   count = 1,
+--   tips_pic = {
+--     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_climatepack2.texture",
+--     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_climatepack3.texture",
+--     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_climatepack4.texture",
+--     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_climatepack5.texture",
+--   },
+--   sign_desc = {
+--     { desc = "使用水电站生产1个气候科技包", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+--   },
+-- }
 
-prototype "收集空气" {
-  desc = "采集火星上的空气",
-  type = { "task" },
-  icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-  task = {"stat_production", 0, "空气"},
-  prerequisites = {"生产气候科技包"},
-  count = 20000,
-  tips_pic = {
-    "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_air1.texture",
-    "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_air2.texture",
-  },
-  sign_desc = {
-    { desc = "用空气过滤器生产20000单位空气", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",},
-  },
-}
+-- prototype "收集空气" {
+--   desc = "采集火星上的空气",
+--   type = { "task" },
+--   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+--   task = {"stat_production", 0, "空气"},
+--   prerequisites = {"生产气候科技包"},
+--   count = 20000,
+--   tips_pic = {
+--     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_air1.texture",
+--     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_air2.texture",
+--   },
+--   sign_desc = {
+--     { desc = "用空气过滤器生产20000单位空气", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",},
+--   },
+-- }
 
 prototype "排放1" {
   desc = "研究气体和液体的排放工艺",
@@ -906,7 +906,7 @@ prototype "排放1" {
     unlock_recipe = {"烟囱1","排水口1","地下管1"},
     unlock_item = {"烟囱I","排水口I","地下管1-JI型"},
   },
-  prerequisites = {"生产气候科技包","生产管道"},
+  prerequisites = {"管道系统1"},
   ingredients = {
     {"气候科技包", 1},
   },
@@ -914,20 +914,20 @@ prototype "排放1" {
   time = "2s"
 }
 
-  prototype "生产液罐" {
-    desc = "生产可以存储流体的容器",
-    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-    type = { "task" },
-    task = {"stat_production", 0, "液罐I"},
-    prerequisites = {"生产管道","生产气候科技包"},
-    count = 2,
-    tips_pic = {
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_pipe1.texture",
-    },
-    sign_desc = {
-      { desc = "使用组装机生产2座液罐", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "生产液罐" {
+  --   desc = "生产可以存储流体的容器",
+  --   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+  --   type = { "task" },
+  --   task = {"stat_production", 0, "液罐I"},
+  --   prerequisites = {"生产管道","生产气候科技包"},
+  --   count = 2,
+  --   tips_pic = {
+  --     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_pipe1.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "使用组装机生产2座液罐", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+  --   },
+  -- }
 
 prototype "电解水" {
   desc = "对水通电产生电化学反应生成气体",
@@ -935,7 +935,7 @@ prototype "电解水" {
   effects = {
     unlock_recipe = {"地下卤水电解1"},
   },
-  prerequisites = {"生产液罐","排放1"},
+  prerequisites = {"排放1"},
   ingredients = {
       {"气候科技包", 1},
   },
@@ -950,7 +950,7 @@ prototype "建筑维修4" {
     unlock_recipe = {"维修化工厂","维修蒸馏厂","维修电解厂"},
     unlock_item = {"化工厂框架","蒸馏厂框架","电解厂框架"},
   },
-  prerequisites = {"生产液罐"},
+  prerequisites = {"电解水"},
   ingredients = {
       {"地质科技包", 1},
       {"气候科技包", 1},
@@ -979,7 +979,7 @@ prototype "碳处理1" {
   effects = {
     unlock_recipe = {"二氧化碳转甲烷"},
   },
-  prerequisites = {"电解水","空气分离工艺1"},
+  prerequisites = {"电解水"},
   ingredients = {
       {"气候科技包", 1},
       {"地质科技包", 1},
@@ -1036,21 +1036,21 @@ prototype "碳处理1" {
 -- }
 
 
-prototype "生产氢气" {
-  desc = "生产工业气体氢气",
-  icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-  type = { "task" },
-  task = {"stat_production", 0, "氢气"},
-  prerequisites = {"碳处理1"},
-  count = 500,
-  tips_pic = {
-    "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_h21.texture",
-    "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_h22.texture",
-  },
-  sign_desc = {
-    { desc = "电解厂电解卤水生产500个单位氢气,并使用液罐储存生产氢气", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-  },
-}
+-- prototype "生产氢气" {
+--   desc = "生产工业气体氢气",
+--   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+--   type = { "task" },
+--   task = {"stat_production", 0, "氢气"},
+--   prerequisites = {"碳处理1"},
+--   count = 500,
+--   tips_pic = {
+--     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_h21.texture",
+--     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_h22.texture",
+--   },
+--   sign_desc = {
+--     { desc = "电解厂电解卤水生产500个单位氢气,并使用液罐储存生产氢气", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+--   },
+-- }
 
 -- prototype "放置蒸馏厂" {
 --   desc = "放置可以蒸馏并分离流体的工厂",
@@ -1068,21 +1068,21 @@ prototype "生产氢气" {
 --   },
 -- }
 
-prototype "生产二氧化碳" {
-  desc = "生产工业气体二氧化碳",
-  icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-  type = { "task" },
-  task = {"stat_production", 0, "二氧化碳"},
-  prerequisites = {"生产氢气"},
-  count = 500,
-  tips_pic = {
-    "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_co21.texture",
-    "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_co22.texture",
-  },
-  sign_desc = {
-    { desc = "蒸馏厂分离空气生产500个单位二氧化碳", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-  },
-}
+-- prototype "生产二氧化碳" {
+--   desc = "生产工业气体二氧化碳",
+--   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+--   type = { "task" },
+--   task = {"stat_production", 0, "二氧化碳"},
+--   prerequisites = {"碳处理1"},
+--   count = 500,
+--   tips_pic = {
+--     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_co21.texture",
+--     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_co22.texture",
+--   },
+--   sign_desc = {
+--     { desc = "蒸馏厂分离空气生产500个单位二氧化碳", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+--   },
+-- }
 
 prototype "碳处理2" {
   desc = "含碳气体化合成其他物质的工艺",
@@ -1090,7 +1090,7 @@ prototype "碳处理2" {
   effects = {
     unlock_recipe = {"甲烷转乙烯","二氧化碳转一氧化碳","一氧化碳转石墨"},
   },
-  prerequisites = {"生产氢气","生产二氧化碳"},
+  prerequisites = {"碳处理1"},
   ingredients = {
       {"气候科技包", 1},
       {"地质科技包", 1},
@@ -1147,20 +1147,20 @@ prototype "建筑维修3" {
 --   },
 -- }
 
-prototype "生产甲烷" {
-  desc = "生产工业气体甲烷",
-  icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-  type = { "task" },
-  task = {"stat_production", 0, "甲烷"},
-  prerequisites = {"建筑维修3"},
-  count = 1000,
-  tips_pic = {
-    "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ch4.texture",
-  },
-  sign_desc = {
-    { desc = "用化工厂生产1000个单位甲烷", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-  },
-}
+-- prototype "生产甲烷" {
+--   desc = "生产工业气体甲烷",
+--   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+--   type = { "task" },
+--   task = {"stat_production", 0, "甲烷"},
+--   prerequisites = {"建筑维修3"},
+--   count = 1000,
+--   tips_pic = {
+--     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ch4.texture",
+--   },
+--   sign_desc = {
+--     { desc = "用化工厂生产1000个单位甲烷", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+--   },
+-- }
 
 prototype "有机化学1" {
   desc = "研究碳化合物组成、结构和制备方法",
@@ -1169,7 +1169,7 @@ prototype "有机化学1" {
     unlock_recipe = {"塑料1"},
     unlock_item = {"塑料"},
   },
-  prerequisites = {"生产甲烷"},
+  prerequisites = {"建筑维修3"},
   ingredients = {
     {"地质科技包", 1},
     {"气候科技包", 1},
@@ -1178,35 +1178,35 @@ prototype "有机化学1" {
   time = "10s"
 }
 
-prototype "生产乙烯" {
-  desc = "生产工业气体乙烯",
-  icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-  type = { "task" },
-  task = {"stat_production", 0, "乙烯"},
-  prerequisites = {"有机化学1"},
-  count = 1000,
-  tips_pic = {
-    "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ch4.texture",
-  },
-  sign_desc = {
-    { desc = "用化工厂生产1000个单位乙烯", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-  },
-}
+-- prototype "生产乙烯" {
+--   desc = "生产工业气体乙烯",
+--   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+--   type = { "task" },
+--   task = {"stat_production", 0, "乙烯"},
+--   prerequisites = {"有机化学1"},
+--   count = 1000,
+--   tips_pic = {
+--     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ch4.texture",
+--   },
+--   sign_desc = {
+--     { desc = "用化工厂生产1000个单位乙烯", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+--   },
+-- }
 
-prototype "生产塑料" {
-  desc = "用有机化学的原理生产质量轻、耐腐蚀的化工材料塑料",
-  icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-  type = { "task" },
-  task = {"stat_production", 0, "塑料"},
-  prerequisites = {"生产乙烯"},
-  count = 30,
-  tips_pic = {
-    "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_plastic.texture",
-  },
-  sign_desc = {
-    { desc = "用化工厂生产30个塑料", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-  },
-}
+-- prototype "生产塑料" {
+--   desc = "用有机化学的原理生产质量轻、耐腐蚀的化工材料塑料",
+--   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+--   type = { "task" },
+--   task = {"stat_production", 0, "塑料"},
+--   prerequisites = {"生产乙烯"},
+--   count = 30,
+--   tips_pic = {
+--     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_plastic.texture",
+--   },
+--   sign_desc = {
+--     { desc = "用化工厂生产30个塑料", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+--   },
+-- }
 
 prototype "电磁学1" {
   desc = "研究电能转换成机械能的基础供能装置",
@@ -1215,7 +1215,7 @@ prototype "电磁学1" {
     unlock_recipe = {"电动机T1"},
     unlock_item = {"电动机I"},
   },
-  prerequisites = {"生产塑料","排放1"},
+  prerequisites = {"有机化学1"},
   ingredients = {
     {"地质科技包", 1},
     {"气候科技包", 1},

@@ -24,7 +24,7 @@ local guide = {
         narrative_end = {
             pop_chapter = {"序章","迫降P4031"},
             task = {
-                "搜索废墟",
+                "地质研究",
             },
             guide_progress = 10,
         },
@@ -274,7 +274,7 @@ local guide = {
             pop_chapter = {"第一章","自动生产"},
             guide_progress = 35,--10
             task = {
-                "组装机生产",
+                "石头处理1",
             }
         },
         prerequisites = {
