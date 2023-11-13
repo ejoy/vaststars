@@ -11,7 +11,7 @@ local guide = {
             task = {
                 "迫降火星",
             },
-            guide_progress = 5,
+            guide_progress = 10,
         },
         prerequisites = {},
 	},
