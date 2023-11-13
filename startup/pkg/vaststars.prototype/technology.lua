@@ -509,7 +509,7 @@ local prototype = gameplay.register.prototype
     desc = "获得更多铁成品的加工工艺",
     type = { "tech" },
     effects = {
-      unlock_recipe = {"铁齿轮T1","铁棒1"},
+      unlock_recipe = {"铁齿轮","铁棒1"},
       unlock_item = {"铁齿轮","铁棒"},
     },
     prerequisites = {"铁矿熔炼"},

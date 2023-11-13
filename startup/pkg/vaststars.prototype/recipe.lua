@@ -466,7 +466,7 @@ prototype "电动机3" {
     description = "铁制品和塑料打造初级电动机",
 }
 
-prototype "铁齿轮" {
+prototype "铁齿轮T1" {
     type = { "recipe" },
     recipe_craft_category = "金属小型制造",
     recipe_category =  "金属",
@@ -482,7 +482,7 @@ prototype "铁齿轮" {
     description = "使用铁制品加工铁齿轮",
 }
 
-prototype "铁齿轮T1" {
+prototype "铁齿轮" {
     type = { "recipe" },
     recipe_craft_category = "金属小型制造",
     recipe_category =  "金属",

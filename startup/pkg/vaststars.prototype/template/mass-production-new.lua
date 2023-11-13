@@ -1515,13 +1515,13 @@ local entities = { {
 }, {
   dir = "N",
   prototype_name = "组装机I",
-  recipe = "铁齿轮",
+  recipe = "铁齿轮T1",
   x = 109,
   y = 140
 }, {
   dir = "N",
   prototype_name = "组装机I",
-  recipe = "铁齿轮",
+  recipe = "铁齿轮T1",
   x = 92,
   y = 140
 }, {
