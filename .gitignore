@@ -1,6 +1,7 @@
 .build/
 .log/
 .app/
+.ios/
 .fileserver/
 .vs/
 .repo/

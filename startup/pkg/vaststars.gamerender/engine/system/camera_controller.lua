@@ -48,6 +48,7 @@ local create_mathqueue = require "utility.mathqueue"
 local hierarchy = require "hierarchy"
 local animation = hierarchy.animation
 local skeleton = hierarchy.skeleton
+local now = require "engine.time".now
 
 local camera_controller = ecs.system "camera_controller"
 local icamera_controller = {}
@@ -170,7 +171,7 @@ local function toggle_view(v, cur_xzpoint)
         return adjust_camera_rt(ce.scene.r, ce.scene.t, CAMERA_CONSTRUCT_ROTATION, ce.scene.t, cur_xzpoint, ce.camera.viewmat, ce.camera.projmat)
     elseif v == "pickup" then
         last_view = "pickup"
-        return adjust_camera_rt(ce.scene.r, ce.scene.t, CAMERA_PICKUP_ROTATION, CAMERA_PICKUP_POSITION, cur_xzpoint, ce.camera.viewmat, ce.camera.projmat)
+        return adjust_camera_rt(ce.scene.r, ce.scene.t, CAMERA_PICKUP_ROTATION, ce.scene.t, cur_xzpoint, ce.camera.viewmat, ce.camera.projmat)
     elseif v == "default" then
         delta_dis = delta_dis and -delta_dis or 0
         local t
@@ -191,16 +192,16 @@ local function toggle_view(v, cur_xzpoint)
 
 end
 
-local function __set_camera_srt(s, r, t)
+local function set_camera_srt(s, r, t)
     local ce <close> = world:entity(irq.main_camera())
     iom.set_srt(ce, s, r, t)
 end
 
-local function __check_camera_editable()
+local function check_camera_editable()
     return cam_cmd_queue:size() <= 0 and cam_motion_matrix_queue:size() <= 0
 end
 
-local function __add_camera_track(ce, s, r, t)
+local function add_camera_track(ss, sr, st, ns, nr, nt)
     local raw_animation = animation.new_raw_animation()
     local skl = skeleton.build({{name = "root", s = mc.T_ONE, r = mc.T_IDENTITY_QUAT, t = mc.T_ZERO}})
     raw_animation:setup(skl, 2)
@@ -208,17 +209,17 @@ local function __add_camera_track(ce, s, r, t)
     raw_animation:push_prekey(
         "root",
         0,
-        iom.get_scale(ce),
-        iom.get_rotation(ce),
-        iom.get_position(ce)
+        ss,
+        sr,
+        st
     )
 
     raw_animation:push_prekey(
         "root",
         1,
-        s,
-        r,
-        t
+        ns,
+        nr,
+        nt
     )
 
     local ani = raw_animation:build()
@@ -238,7 +239,7 @@ local function __add_camera_track(ce, s, r, t)
     cam_motion_matrix_queue:push(t)
 end
 
-local function __handle_camera_motion(ce)
+local function handle_camera_motion(ce)
     if cam_motion_matrix_queue:size() == 0 then
         if cam_cmd_queue:size() == 0 then
             return
@@ -247,14 +248,14 @@ local function __handle_camera_motion(ce)
         local cmd = assert(cam_cmd_queue:pop())
         local c = cmd[1]
         if c[1] == "focus_on_position" then
-            __add_camera_track(ce, focus_on_position(ce, table.unpack(c, 2)))
+            add_camera_track(iom.get_scale(ce), iom.get_rotation(ce), iom.get_position(ce), focus_on_position(ce, table.unpack(c, 2)))
         elseif c[1] == "toggle_view" then
             local t = toggle_view(table.unpack(c, 2))
             cam_motion_matrix_queue:push(t)
         elseif c[1] == "callback" then
             c[2]()
         elseif c[1] == "set_camera_srt" then
-            __set_camera_srt(c[2], c[3], c[4])
+            set_camera_srt(c[2], c[3], c[4])
         else
             assert(false)
         end
@@ -263,24 +264,29 @@ local function __handle_camera_motion(ce)
     if cam_motion_matrix_queue:size() > 0 then
         local mat = cam_motion_matrix_queue:pop()
         if mat then
-            local ce <close> = world:entity(irq.main_camera())
             iom.set_srt(ce, math3d.srt(mat))
             world:pub {"dragdrop_camera"}
         end
     end
 end
 
-local __handle_drop_camera; do
+local handle_drop_camera; do
     local starting = math3d.ref()
+    local start_time
 
-    function __handle_drop_camera(ce)
+    function handle_drop_camera(ce)
+        local pan_ended = false
         local ending_x, ending_y
         for _, _, e in gesture_pan:unpack() do
-            if __check_camera_editable() then
+            if check_camera_editable() then
                 if e.state == "began" then
                     starting.v = icamera_controller.screen_to_world(e.x, e.y, XZ_PLANE)
+                    start_time = now()
                 else
                     ending_x, ending_y = e.x, e.y
+                    if e.state == "ended" then
+                        pan_ended = true
+                    end
                 end
             end
         end
@@ -290,6 +296,7 @@ local __handle_drop_camera; do
             local scene = ce.scene
 
             local ending = icamera_controller.screen_to_world(ending_x, ending_y, XZ_PLANE)
+            local end_time = now()
             local delta_vec = math3d.sub(starting, ending)
             local pos = math3d.add(scene.t, delta_vec)
 
@@ -308,6 +315,14 @@ local __handle_drop_camera; do
             pos = mu.clamp_vec(pos, CAMERA_POSITION_MIN, CAMERA_POSITION_MAX)
             iom.set_position(ce, pos)
             world:pub {"dragdrop_camera", math3d.ref(delta_vec)}
+
+            if pan_ended then
+                local delta = end_time - start_time
+                local x, y, z = math3d.index(delta_vec, 1), math3d.index(delta_vec, 2), math3d.index(delta_vec, 3)
+                local v = math3d.mul(math3d.vector(x/delta, y/delta, z/delta), 500)
+                local p = mu.clamp_vec(math3d.add(pos, v), CAMERA_POSITION_MIN, CAMERA_POSITION_MAX)
+                add_camera_track(scene.s, scene.r, pos, scene.s, scene.r, p)
+            end
         end
     end
 end
@@ -316,13 +331,13 @@ function camera_controller:camera_usage()
     local ce <close> = world:entity(irq.main_camera())
 
     for _, _, e in gesture_pinch:unpack() do
-        if __check_camera_editable() then
+        if check_camera_editable() then
             zoom(e.velocity, e.x, e.y)
         end
     end
 
-    __handle_drop_camera(ce)
-    __handle_camera_motion(ce)
+    handle_drop_camera(ce)
+    handle_camera_motion(ce)
 end
 
 -- the following interfaces must be called after the `camera_usage` stage

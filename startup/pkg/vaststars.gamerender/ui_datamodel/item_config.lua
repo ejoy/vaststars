@@ -133,6 +133,7 @@ function M.create(gameplay_eid, interface)
     datamodel.items = {}
     datamodel.supply_button = interface.supply_button
     datamodel.demand_button = interface.demand_button
+    datamodel.show_add = interface.show_add
     return datamodel
 end
 

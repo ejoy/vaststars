@@ -2,7 +2,6 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local ims = ecs.require "ant.motion_sampler|motion_sampler"
 local iprototype = require "gameplay.interface.prototype"
 local ivs = ecs.require "ant.render|visible_state"
 local ientity = ecs.require "ant.render|components.entity"

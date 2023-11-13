@@ -2,6 +2,15 @@
     <head>
         <style path = "/pkg/vaststars.resources/ui/common.rcss"/>
         <style>
+            body::after {
+                position: absolute;
+                z-index: -1;
+                width: 100%;
+                height: 100%;
+                left: -4.97vmax;
+                top: -1.32vmin;
+                background-color: rgba(0, 0, 0, 240);
+            }
             main-button {
                 width: 29.90vmin;
                 height: 29.90vmin;
@@ -66,7 +75,7 @@
             }
             construct-box {
                 position: absolute;
-                left: 0vmax;
+                left: 4.97vmax;
                 top: 0.62vmin;
                 width: 71.37vmin;
                 height: 98.52vmin;
@@ -151,7 +160,7 @@
         </script>
     </head>
     <body style = "pointer-events: none; margin: 1.32vmin 3.995vmax 0 4.97vmax;" onload="init()">
-        <background data-event-click = "clickButton('close')"/>
+        <div style = "position: absolute; top: 0; left: 0; width: 100vmax; height: 100vmin;" data-event-click = "clickButton('close')" />
         <construct-box>
             <construct-list>
                 <div style = "width: 100%; align-items: flex-start;" data-for = "c, c_index : backpack">
