@@ -62,7 +62,7 @@
                 background-lattice: 13.09% 18.94% 19.23% 18.35% 40.00% 50.00%;
                 flex-direction: row;
             }
-            icon-remove-container {
+            icon-edit-container {
                 position: absolute;
                 width: 100%;
                 height: 100%;
@@ -74,6 +74,12 @@
                 height: 29.91vmin;
                 background-size: 100% 100%;
                 background-image: "/pkg/vaststars.resources/ui/textures/item-config/remove.texture";
+            }
+            icon-add {
+                width: 29.91vmin;
+                height: 29.91vmin;
+                background-size: 100% 100%;
+                background-image: "/pkg/vaststars.resources/ui/textures/item-config/add.texture";
             }
             icon-left-lab {
                 width: 3.64vmax;
@@ -185,6 +191,7 @@
                 disable = true,
                 supply_button = false,
                 demand_button = false,
+                show_add = false,
             }, function(start)
                 if start.supply_button then
                     start.buttons[#start.buttons+1] = {
@@ -259,7 +266,8 @@
                                 {{it.name}}
                             </icon-right-lab>
                         </icon-right-box>
-                        <icon-remove-container data-if = "it.icon ~= '' and it.remove == true"><icon-remove /></icon-remove-container>
+                        <icon-edit-container data-if = "it.icon ~= '' and it.remove == true"><icon-remove /></icon-edit-container>
+                        <icon-edit-container data-if = "it.icon == '' and show_add == true" data-event-click = "clickSetItem(disable, 'demand')"><icon-add /></icon-edit-container>
                     </icon-container>
                 </icons-container>
                 <buttons-container data-style-justify-content = "#buttons <= 1 and 'center' or 'flex-start'">

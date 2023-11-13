@@ -355,10 +355,11 @@ function M.update(datamodel, gameplay_eid)
             interface.remove_item = station_remove_item
             interface.supply_button = true
             interface.demand_button = true
+            interface.show_add = false
         else
             interface.set_item = chest_set_item
             interface.remove_item = chest_remove_item
-            interface.demand_button = true
+            interface.show_add = true
         end
         iui.open({rml = "/pkg/vaststars.resources/ui/item_config.rml"}, gameplay_eid, interface)
     end
