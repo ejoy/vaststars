@@ -8,6 +8,7 @@ local load_resources_mb = mailbox:sub {"load_resources"}
 local restore_mb = mailbox:sub {"restore"}
 local continue_mb = mailbox:sub {"continue"}
 local load_template_mb = mailbox:sub {"load_template"}
+local load_tutorial_template_mb = mailbox:sub {"load_tutorial_template"}
 local archiving = require "archiving"
 local reboot_world = ecs.require "reboot_world"
 
@@ -38,7 +39,11 @@ function M.update(datamodel)
     end
 
     for _ in load_template_mb:unpack() do
-        iui.open({rml = "/pkg/vaststars.resources/ui/template.rml"})
+        iui.open({rml = "/pkg/vaststars.resources/ui/template.rml"}, function(s) return not s:match("^tutorial.*$") end)
+    end
+
+    for _ in load_tutorial_template_mb:unpack() do
+        iui.open({rml = "/pkg/vaststars.resources/ui/template.rml"}, function(s) return s:match("^tutorial.*$") end)
     end
 end
 

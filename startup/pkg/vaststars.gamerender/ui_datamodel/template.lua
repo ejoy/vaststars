@@ -8,13 +8,17 @@ local iui = ecs.require "engine.system.ui_system"
 
 ---------------
 local M = {}
-function M.create()
+function M.create(func)
     local templates = {}
     for v in fs.pairs(fs.path("/pkg/vaststars.prototype/template/")) do
         if fs.is_directory(v) then
             assert(false)
         else
             assert(tostring(v:extension()) == ".lua")
+            if not func(v:filename():string()) then
+                goto continue
+            end
+
             local filename = "template." .. v:stem():string()
             local f = ecs.require(("vaststars.prototype|%s"):format(filename))
             if f.show == false then

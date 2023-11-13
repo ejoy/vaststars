@@ -85,10 +85,14 @@
                 <button-icon style='background-image: "/pkg/vaststars.resources/ui/textures/road/write.texture";'/>
                 <button-text>读取进度</button-text>
             </button>
+            <button data-event-click = "clickButton('load_tutorial_template')">
+                <button-icon style='background-image: "/pkg/vaststars.resources/ui/textures/character/health.texture";'/>
+                <button-text>教学模式</button-text>
+            </button>
             <button data-event-click = "clickButton('load_template')">
                 <button-icon style='background-image: "/pkg/vaststars.resources/ui/textures/character/health.texture";'/>
                 <button-text>测试模式</button-text>
-            </button>
+            </button>           
         </right-box>
     </body>
 </rml>
