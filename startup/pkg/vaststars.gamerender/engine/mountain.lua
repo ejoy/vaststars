@@ -62,7 +62,10 @@ local function merge_indices(indices, width, height, range)
     return m
 end
 
-local function build_sub_indices(masks)
+local function build_sub_indices(MASKS)
+    local masks = {}
+    for k, v in pairs(MASKS) do masks[k]=v end
+
     local subindices = {}
     for range=4, 2, -1 do
         local m = merge_indices(masks, WIDTH, HEIGHT, range)
