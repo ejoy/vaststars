@@ -1,9 +1,8 @@
 local ecs, mailbox = ...
 local world = ecs.world
+local w = world.w
 
 local CONSTANT <const> = require "gameplay.interface.constant"
-local DEFAULT_DIR <const> = CONSTANT.DEFAULT_DIR
-local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local CLASS <const> = {
     Lorry = 1,
@@ -49,14 +48,10 @@ local guide_on_going_mb = mailbox:sub {"guide_on_going"}
 local move_md = mailbox:sub {"move"}
 local teardown_mb = mailbox:sub {"teardown"}
 local construct_entity_mb = mailbox:sub {"construct_entity"}
-local construct_mb = mailbox:sub {"construct"}
+local copy_mb = mailbox:sub {"copy"}
+local build_mode_mb = mailbox:sub {"build_mode"}
 local main_button_tap_mb = mailbox:sub {"main_button_tap"}
 local main_button_longpress_mb = mailbox:sub {"main_button_longpress"}
-local start_laying_mb = mailbox:sub {"start_laying"}
-local finish_laying_mb = mailbox:sub {"finish_laying"}
-local start_teardown_mb = mailbox:sub {"start_teardown"}
-local finish_teardown_mb = mailbox:sub {"finish_teardown"}
-local remove_one_mb = mailbox:sub {"remove_one"}
 local unselected_mb = mailbox:sub {"unselected"}
 local gesture_tap_mb = world:sub{"gesture", "tap"}
 local gesture_pan_mb = world:sub {"gesture", "pan"}
@@ -66,7 +61,6 @@ local settings_mb = mailbox:sub {"settings"}
 local iguide_tips = ecs.require "guide_tips"
 
 local builder, builder_datamodel, builder_ui
-local pick_lorry_id
 local selected_obj
 
 local LockAxis = false
@@ -76,84 +70,18 @@ local LockAxisStatus = {
     BeginY = 0,
 }
 
-local function __on_pick_building(datamodel, o)
-    local object = o.object
-    if iguide_tips.get_excluded_pickup_id() == object.id then
-        return
-    end
-
-    iui.open({rml = "/pkg/vaststars.resources/ui/detail_panel.rml"}, object.id)
-    if datamodel.is_concise_mode then
-        return true
-    end
-
-    iui.close("/pkg/vaststars.resources/ui/build.rml") -- TODO: remove this
-    iui.close("/pkg/vaststars.resources/ui/construct_road_or_pipe.rml")
-
-    local typeobject = iprototype.queryByName(object.prototype_name)
-    if typeobject.base then
-        typeobject = iprototype.queryByName(typeobject.base)
-    end
-
-    datamodel.focus_building_icon = typeobject.item_icon
-
-    selected_obj = o
-    datamodel.status = "focus"
-
-    idetail.focus(assert(object.gameplay_eid))
-    return true
-end
-
-local function __on_pick_non_building(datamodel, o, force)
-    local typeobject = iprototype.queryByName(o.name)
-    if typeobject.base then
-        typeobject = iprototype.queryByName(typeobject.base)
-    end
-
-    iui.open({rml = "/pkg/vaststars.resources/ui/non_building_detail_panel.rml"}, typeobject.icon, typeobject.mineral_name and typeobject.mineral_name or iprototype.display_name(typeobject), o.eid)
-    if datamodel.is_concise_mode and force ~= true then
-        return true
-    end
-
-    datamodel.focus_building_icon = typeobject.item_icon
-
-    selected_obj = o
-    datamodel.status = "focus"
-
-    if o.x and o.y and o.w and o.h then
-        idetail.focus_non_building(o.x, o.y, o.w, o.h)
-    else
-        idetail.unselected()
-    end
-    return true
-end
-
-local function __unpick_lorry(lorry_id)
-    local lorry = ilorry.get(lorry_id)
-    if lorry then
-        lorry:show_arrow(false)
-    end
-end
-
-local status = "default"
-local function __switch_status(s, cb)
-    if status == s then
-        if cb then
-            cb()
-        end
-        return
-    end
-    status = s
-
-    local pos = icamera_controller.get_central_position()
+local function toggle_view(s, cb)
+    local pos = icamera_controller.get_screen_world_position("CENTER")
     pos = math3d.set_index(pos, 2, 0)
 
-    if status == "default" then
+    if s == "default" then
         icamera_controller.toggle_view("default", pos, cb)
-        igame_object.stop_world()
-    elseif status == "construct" then
-        icamera_controller.toggle_view("construct", pos, cb)
         igame_object.restart_world()
+    elseif s == "construct" then
+        icamera_controller.toggle_view("construct", pos, cb)
+        igame_object.stop_world()
+    else
+        assert(false)
     end
 end
 
@@ -164,11 +92,10 @@ local function __clean(datamodel, unlock)
         iui.close(builder_ui)
     end
     idetail.unselected()
-    datamodel.is_concise_mode = false
     datamodel.focus_building_icon = ""
-    iui.close("/pkg/vaststars.resources/ui/build.rml") -- TODO: remove this
-    iui.close("/pkg/vaststars.resources/ui/construct_road_or_pipe.rml")
-    datamodel.status = "normal"
+    datamodel.status = "NORMAL"
+
+    iui.close("/pkg/vaststars.resources/ui/build.rml")
     iui.leave()
 
     LockAxisStatus = {
@@ -189,7 +116,7 @@ local M = {}
 
 function M.create()
     return {
-        is_concise_mode = false,
+        status = "NORMAL",
         show_tech_progress = false,
         current_tech_icon = "none",    --当前科技图标
         current_tech_name = "none",    --当前科技名字
@@ -199,7 +126,6 @@ function M.create()
         show_ingredient = false,
         category_idx = 0,
         item_idx = 0,
-        status = "normal",
         tech_count = #global.science.tech_list,
     }
 end
@@ -245,45 +171,26 @@ function M.update_backpack_bar(datamodel, t)
     end
 end
 
-local function __construct_entity(typeobject)
+local function _construct_entity(typeobject, position_type)
     idetail.unselected()
     gameplay_core.world_update = false
+    builder_ui = "/pkg/vaststars.resources/ui/construct_building.rml"
+    builder_datamodel = iui.get_datamodel("/pkg/vaststars.resources/ui/construct.rml")
 
+    --TODO: prototype should be a parameter
     if iprototype.has_type(typeobject.type, "road") then
-        local x, y = iobject.central_coord(typeobject.name, DEFAULT_DIR)
-        x, y = x - (x % ROAD_SIZE), y - (y % ROAD_SIZE)
-
-        builder_ui = "/pkg/vaststars.resources/ui/construct_road_or_pipe.rml" -- TODO: remove this
-        builder_datamodel = iui.get_datamodel("/pkg/vaststars.resources/ui/construct.rml")
         builder = create_roadbuilder()
-        builder:new_entity(builder_datamodel, typeobject, x, y)
     elseif iprototype.has_type(typeobject.type, "pipe") then
-        local x, y = iobject.central_coord(typeobject.name, DEFAULT_DIR)
-        x, y = x - (x % ROAD_SIZE), y - (y % ROAD_SIZE)
-
-        builder_ui = "/pkg/vaststars.resources/ui/construct_road_or_pipe.rml" -- TODO: remove this
-        builder_datamodel = iui.get_datamodel("/pkg/vaststars.resources/ui/construct.rml")
         builder = create_pipebuilder()
-        builder:new_entity(builder_datamodel, typeobject, x, y)
     elseif iprototype.has_type(typeobject.type, "pipe_to_ground") then
-        local x, y = iobject.central_coord(typeobject.name, DEFAULT_DIR)
-        x, y = x - (x % ROAD_SIZE), y - (y % ROAD_SIZE)
-
-        builder_ui = "/pkg/vaststars.resources/ui/construct_road_or_pipe.rml"  -- TODO: remove this
-        builder_datamodel = iui.get_datamodel("/pkg/vaststars.resources/ui/construct.rml")
         builder = create_pipetogroundbuilder()
-        builder:new_entity(builder_datamodel, typeobject, x, y)
     elseif iprototype.has_types(typeobject.type, "station", "park") then
-        builder_ui = "/pkg/vaststars.resources/ui/construct_building.rml"
-        builder_datamodel = iui.get_datamodel("/pkg/vaststars.resources/ui/construct.rml")
         builder = create_station_builder()
-        builder:new_entity(builder_datamodel, typeobject)
     else
-        builder_ui = "/pkg/vaststars.resources/ui/construct_building.rml"
-        builder_datamodel = iui.get_datamodel("/pkg/vaststars.resources/ui/construct.rml")
         builder = create_normalbuilder(typeobject.id)
-        builder:new_entity(builder_datamodel, typeobject)
     end
+
+    builder:new_entity(builder_datamodel, typeobject, position_type)
 end
 
 local function move_focus(e)
@@ -312,54 +219,171 @@ local function move_focus(e)
 	end
 end
 
-local function pickupObject(datamodel, position, blur)
+local function pickupObjectOnBuild(datamodel, position, blur)
     local coord = icoord.position2coord(position)
     if not coord then
-        return false
+        return
     end
+    idetail.unselected()
 
     local o = ipick_object.pick(coord[1], coord[2], blur)
     if o and o.class == CLASS.Lorry then
-        if pick_lorry_id then
-            __unpick_lorry(pick_lorry_id)
-        end
-        idetail.unselected()
-        pick_lorry_id = o.id
+        local typeobject = iprototype.queryByName(o.name)
+        iui.open({rml = "/pkg/vaststars.resources/ui/non_building_detail_panel.rml"}, typeobject.icon, typeobject.mineral_name and typeobject.mineral_name or iprototype.display_name(typeobject), o.eid)
 
-        if __on_pick_non_building(datamodel, o) then
-            local lorry = ilorry.get(pick_lorry_id)
+        local lorry = assert(ilorry.get(o.id))
+        lorry:show_arrow(true)
+        idetail.add_tmp_object({remove = function()
+            local lorry = ilorry.get(o.id)
             if lorry then
-                lorry:show_arrow(true)
-                iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.rml"}, pick_lorry_id)
+                lorry:show_arrow(false)
             end
-            return true
-        end
+        end})
+        return
+
     elseif o and o.class == CLASS.Object then
-        idetail.unselected()
-        iui.close("/pkg/vaststars.resources/ui/construct_road_or_pipe.rml") -- TODO: remove this
-        if __on_pick_building(datamodel, o) then
-            __unpick_lorry(pick_lorry_id)
-            pick_lorry_id = nil
-            idetail.show(o.object.id)
-            return true
+        local object = o.object
+        local excluded_pickup_id = iguide_tips.get_excluded_pickup_id()
+        if excluded_pickup_id and excluded_pickup_id ~= object.id then
+            return
         end
-    elseif o and (o.class == CLASS.Mineral or o.class == CLASS.Mountain or o.class == CLASS.Road)then
-        idetail.unselected()
-        iui.close("/pkg/vaststars.resources/ui/construct_road_or_pipe.rml") -- TODO: remove this
-        if __on_pick_non_building(datamodel, o) then
-            __unpick_lorry(pick_lorry_id)
-            pick_lorry_id = nil
-            iui.open({rml = "/pkg/vaststars.resources/ui/construct_road_or_pipe.rml"}, o.name, {show_start_laying = true})
-            return true
+
+        iui.open({rml = "/pkg/vaststars.resources/ui/detail_panel.rml"}, object.id)
+
+        idetail.focus(assert(object.gameplay_eid))
+        return
+
+    elseif o and (o.class == CLASS.Mountain or o.class == CLASS.Road) then
+        local typeobject = iprototype.queryByName(o.name)
+        iui.open({rml = "/pkg/vaststars.resources/ui/non_building_detail_panel.rml"}, typeobject.icon, iprototype.display_name(typeobject), o.eid)
+
+        if o.x and o.y and o.w and o.h then
+            idetail.focus_non_building(o.x, o.y, o.w, o.h)
         end
+        return
+
+    elseif o and o.class == CLASS.Mineral then
+        local typeobject = iprototype.queryByName(o.name)
+        iui.open({rml = "/pkg/vaststars.resources/ui/non_building_detail_panel.rml"}, typeobject.icon, typeobject.mineral_name and typeobject.mineral_name or iprototype.display_name(typeobject), o.eid)
+
+        idetail.focus_non_building(o.x, o.y, o.w, o.h)
+        return
     else
-        __unpick_lorry(pick_lorry_id)
-        pick_lorry_id = nil
-
-        idetail.unselected()
+        __clean(datamodel)
+        toggle_view("default", function()
+            gameplay_core.world_update = true
+            __clean(datamodel)
+        end)
     end
+end
 
-    return false
+local function pickupObject(datamodel, position, blur)
+    local coord = icoord.position2coord(position)
+    if not coord then
+        return
+    end
+    idetail.unselected()
+
+    local o = ipick_object.pick(coord[1], coord[2], blur)
+    if o and o.class == CLASS.Lorry then
+        local typeobject = iprototype.queryByName(o.name)
+        iui.open({rml = "/pkg/vaststars.resources/ui/non_building_detail_panel.rml"}, typeobject.icon, typeobject.mineral_name and typeobject.mineral_name or iprototype.display_name(typeobject), o.eid)
+
+        local lorry = assert(ilorry.get(o.id))
+        lorry:show_arrow(true)
+        idetail.add_tmp_object({remove = function()
+            local lorry = ilorry.get(o.id)
+            if lorry then
+                lorry:show_arrow(false)
+            end
+        end})
+
+        --
+        selected_obj = o
+        datamodel.focus_building_icon = typeobject.item_icon
+        datamodel.status = "FOCUS"
+
+        iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.rml"}, o.id)
+
+        audio.play "event:/ui/click"
+        return
+
+    elseif o and o.class == CLASS.Object then
+        local object = o.object
+        local excluded_pickup_id = iguide_tips.get_excluded_pickup_id()
+        if excluded_pickup_id and excluded_pickup_id ~= object.id then
+            return
+        end
+
+        local typeobject = iprototype.queryByName(object.prototype_name)
+        iui.open({rml = "/pkg/vaststars.resources/ui/detail_panel.rml"}, object.id)
+
+        idetail.focus(assert(object.gameplay_eid))
+
+        --
+        selected_obj = o
+        datamodel.focus_building_icon = typeobject.item_icon
+        datamodel.status = "FOCUS"
+
+        local gameplay_eid = object.gameplay_eid
+        local typeobject = iprototype.queryByName(object.prototype_name)
+        if typeobject.building_menu ~= false then
+            iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.rml"}, gameplay_eid)
+        end
+
+        audio.play "event:/ui/click"
+        return
+
+    elseif o and (o.class == CLASS.Mountain or o.class == CLASS.Road) then
+        local typeobject = iprototype.queryByName(o.name)
+        iui.open({rml = "/pkg/vaststars.resources/ui/non_building_detail_panel.rml"}, typeobject.icon, iprototype.display_name(typeobject), o.eid)
+
+        if o.x and o.y and o.w and o.h then
+            idetail.focus_non_building(o.x, o.y, o.w, o.h)
+        end
+
+        --
+        selected_obj = o
+        datamodel.focus_building_icon = typeobject.item_icon
+        datamodel.status = "FOCUS"
+
+        if o.class == CLASS.Road then
+            iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.rml"}, o.id)
+        end
+
+        audio.play "event:/ui/click"
+        return
+
+    elseif o and o.class == CLASS.Mineral then
+        local typeobject = iprototype.queryByName(o.name)
+        iui.open({rml = "/pkg/vaststars.resources/ui/non_building_detail_panel.rml"}, typeobject.icon, typeobject.mineral_name and typeobject.mineral_name or iprototype.display_name(typeobject), o.eid)
+
+        idetail.focus_non_building(o.x, o.y, o.w, o.h)
+
+        selected_obj = o
+
+        --
+        datamodel.show_construct_button = true
+        idetail.add_tmp_object({remove = function()
+            datamodel.show_construct_button = false
+        end})
+        audio.play "event:/ui/click"
+        return
+
+    else
+        idetail.focus_non_building(coord[1], coord[2], 1, 1)
+
+        selected_obj = nil
+        datamodel.focus_building_icon = ""
+
+        --
+        datamodel.show_construct_button = true
+        idetail.add_tmp_object({remove = function()
+            datamodel.show_construct_button = false
+        end})
+        audio.play "event:/ui/click"
+        return
+    end
 end
 
 function M.update(datamodel)
@@ -378,7 +402,7 @@ function M.update(datamodel)
 
     for _ in quit_mb:unpack() do
         __clean(datamodel)
-        __switch_status("default", function()
+        toggle_view("default", function()
             gameplay_core.world_update = true
             __clean(datamodel)
         end)
@@ -386,7 +410,7 @@ function M.update(datamodel)
 
     for _ in guide_on_going_mb:unpack() do
         __clean(datamodel)
-        __switch_status("default", function()
+        toggle_view("default", function()
             gameplay_core.world_update = true
             __clean(datamodel)
         end)
@@ -407,7 +431,14 @@ function M.update(datamodel)
 
     for _, _, e in gesture_pan_mb:unpack() do
         if e.state == "began" then
+            idetail.unselected()
+            selected_obj = nil
             iui.leave()
+
+            -- in copy mode
+            if datamodel.status ~= "BUILD" then
+                datamodel.focus_building_icon = ""
+            end
         end
 
         if builder then
@@ -436,22 +467,22 @@ function M.update(datamodel)
         end
     end
 
-    local leave = true
-    local gesture_tap_changed = false
     for _, _, v in gesture_tap_mb:unpack() do
         iui.leave()
-        gesture_tap_changed = true
         local pos = icamera_controller.screen_to_world(v.x, v.y, XZ_PLANE)
-        if pickupObject(datamodel, pos, true) then
-            audio.play "event:/ui/click"
-            leave = false
+
+        -- don't respond to tap in build mode
+        if datamodel.status == "BUILD" then
+            pickupObjectOnBuild(datamodel, pos, false)
+        else
+            pickupObject(datamodel, pos, true)
         end
     end
 
     local longpress_startpoint = {}
     for _, _, e in gesture_longpress_mb:unpack() do
         -- don't respond to long press in build mode
-        if datamodel.is_concise_mode then
+        if datamodel.status == "BUILD" then
             goto continue
         end
         if e.state == "began" then
@@ -467,7 +498,7 @@ function M.update(datamodel)
         elseif e.state == "ended" then
             longpress_startpoint = nil
 
-            local pos = icamera_controller.get_central_position()
+            local pos = icamera_controller.get_screen_world_position("CENTER")
             pos = math3d.set_index(pos, 2, 0)
             icamera_controller.toggle_view("default", math3d.set_index(pos, 2, 0), function()
                 icamera_controller.unlock_axis()
@@ -483,21 +514,17 @@ function M.update(datamodel)
         pickupObject(datamodel, pos)
     end
 
-    for _, _, _, object_id in teardown_mb:unpack() do
+    for _, _, _, gameplay_eid in teardown_mb:unpack() do
         iui.leave()
         idetail.unselected()
-        datamodel.status = "normal"
         datamodel.focus_building_icon = ""
+        datamodel.status = "NORMAL"
+
         selected_obj = nil
 
-        local object = assert(objects:get(object_id))
         local gameplay_world = gameplay_core.get_world()
-        local typeobject = iprototype.queryByName(object.prototype_name)
-        if typeobject.base then
-            typeobject = iprototype.queryByName(typeobject.base)
-        end
-
-        local e = gameplay_core.get_entity(object.gameplay_eid)
+        local e = gameplay_core.get_entity(gameplay_eid)
+        local typeobject = iprototype.queryById(e.building.prototype)
         if e.chest then
             if not ibackpack.can_move_to_backpack(gameplay_world, e, typeobject.id) then
                 log.error("backpack is full")
@@ -519,32 +546,31 @@ function M.update(datamodel)
         end
         ibackpack.place(gameplay_world, typeobject.id, 1)
 
-        igameplay.destroy_entity(object.gameplay_eid)
+        igameplay.destroy_entity(gameplay_eid)
         gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
 
-        iobject.remove(object)
-        objects:remove(object_id)
-        local building = global.buildings[object_id]
-        if building then
-            for _, v in pairs(building) do
-                v:remove()
+        --TODO
+        -- ibuilding.remove(x, y)
+        -- iroadnet:del("road", x, y)
+        -- gameplay_core.set_changed(CHANGED_FLAG_ROADNET)
+
+        -- the road will not execute the following logic
+        for _, o in objects:selectall("gameplay_eid", gameplay_eid, {"CONSTRUCTED"}) do
+            iobject.remove(o)
+            objects:remove(o.id)
+            local building = global.buildings[o.id]
+            if building then
+                for _, v in pairs(building) do
+                    v:remove()
+                end
             end
         end
         ::continue::
     end
 
-    if gesture_tap_changed and leave then
-        __clean(datamodel)
-        __switch_status("default", function()
-            __clean(datamodel)
-            gameplay_core.world_update = true
-        end)
-
-        iui.leave()
-    end
-
     for _, _, _, object_id in move_md:unpack() do
-        __switch_status("construct", function()
+        datamodel.status = "BUILD"
+        toggle_view("construct", function()
             if builder then
                 builder:clean(builder_datamodel)
             end
@@ -562,9 +588,7 @@ function M.update(datamodel)
     end
 
     for _, _, _, name in construct_entity_mb:unpack() do
-        if name == "" then
-            goto continue
-        end
+        assert(datamodel.status == "BUILD")
         local typeobject = iprototype.queryByName(name)
         if ibackpack.query(gameplay_core.get_world(), typeobject.id) >= 1 then
             idetail.unselected()
@@ -576,53 +600,58 @@ function M.update(datamodel)
                 builder, builder_datamodel = nil, nil
                 iui.close(builder_ui)
             end
-            __construct_entity(typeobject)
+            _construct_entity(typeobject, "RIGHT_CENTER")
         end
-        ::continue::
     end
 
-    for _ in construct_mb:unpack() do
-        datamodel.is_concise_mode = true
-        __switch_status("construct", function()
+    for _, _, _, name in copy_mb:unpack() do
+        local typeobject = iprototype.queryByName(name)
+
+        datamodel.status = "BUILD"
+        idetail.unselected()
+        toggle_view("construct", function()
+            iui.leave()
+            iui.open({rml = "/pkg/vaststars.resources/ui/build.rml"}, typeobject.id)
+            gameplay_core.world_update = false
+
+            assert(builder == nil)
+            _construct_entity(typeobject, "RIGHT_CENTER")
+        end)
+    end
+
+    for _ in build_mode_mb:unpack() do
+        datamodel.status = "BUILD"
+        idetail.unselected()
+        toggle_view("construct", function()
+            iui.leave()
             iui.open({rml = "/pkg/vaststars.resources/ui/build.rml"})
             gameplay_core.world_update = false
         end)
     end
 
     for _ in main_button_tap_mb:unpack() do
-        if datamodel.status == "selected" then
-            __unpick_lorry(pick_lorry_id)
+        if datamodel.status == "SELECTED" then
             iui.leave()
             idetail.unselected()
-            datamodel.status = "normal"
             datamodel.focus_building_icon = ""
+            datamodel.status = "NORMAL"
+
         else
             if selected_obj then
-                datamodel.status = "selected"
+                datamodel.status = "SELECTED"
 
                 if selected_obj.class == CLASS.Lorry then
-                    idetail.selected(pick_lorry_id)
+                    local e = assert(gameplay_core.get_entity(selected_obj.id))
+                    icamera_controller.focus_on_position("CENTER", math3d.vector(icoord.position(e.lorry.x, e.lorry.y, 1, 1)))
 
-                    local e = assert(gameplay_core.get_entity(pick_lorry_id))
-                    icamera_controller.focus_on_position(math3d.vector(icoord.position(e.lorry.x, e.lorry.y, 1, 1)))
-
-                elseif selected_obj.class == CLASS.Object and not iprototype.is_pipe(selected_obj.object.prototype_name) then -- TODO: optimize
+                elseif selected_obj.class == CLASS.Object then
                     local object = selected_obj.object
-                    icamera_controller.focus_on_position(object.srt.t)
+                    icamera_controller.focus_on_position("CENTER", object.srt.t)
 
                     idetail.selected(object.gameplay_eid)
                 else
                     if selected_obj.get_pos then
-                        icamera_controller.focus_on_position(math3d.vector(selected_obj:get_pos()))
-                    end
-
-                    if iprototype.is_road(selected_obj.name) or iprototype.is_pipe(selected_obj.name) or iprototype.is_pipe_to_ground(selected_obj.name) then
-                        datamodel.focus_building_icon = ""
-                    end
-
-                    if not iprototype.is_pipe(selected_obj.name) then
-                        local typeobject = iprototype.queryByName(selected_obj.name)
-                        iui.open({rml = "/pkg/vaststars.resources/ui/non_building_detail_panel.rml"}, typeobject.item_icon, iprototype.display_name(typeobject), selected_obj.eid)
+                        icamera_controller.focus_on_position("CENTER", math3d.vector(selected_obj:get_pos()))
                     end
                 end
             else
@@ -632,116 +661,34 @@ function M.update(datamodel)
     end
 
     for _ in unselected_mb:unpack() do
-        __unpick_lorry(pick_lorry_id)
         iui.leave()
         idetail.unselected()
-        datamodel.status = "normal"
         datamodel.focus_building_icon = ""
+        datamodel.status = "NORMAL"
+
         selected_obj = nil
     end
 
     for _ in main_button_longpress_mb:unpack() do
-        iui.leave()
-
         assert(selected_obj)
         if selected_obj.class == CLASS.Object then
+            iui.leave()
             local object = selected_obj.object
             if iguide_tips.get_excluded_pickup_id() == object.id then
                 goto continue
             end
 
-            idetail.selected(object.gameplay_eid)
-
             local prototype_name = object.prototype_name
             local typeobject = iprototype.queryByName(prototype_name)
-            if typeobject.move == false and typeobject.teardown == false then
+            if typeobject.teardown == false then
                 goto continue
             end
-
-            iui.open({rml = "/pkg/vaststars.resources/ui/building_menu_longpress.rml"}, object.id)
-        elseif selected_obj.class == CLASS.Road then
-            iui.open({rml = "/pkg/vaststars.resources/ui/construct_road_or_pipe.rml"}, selected_obj.name, {show_remove_one = true, show_start_teardown = true})
+            iui.open({rml = "/pkg/vaststars.resources/ui/building_menu_longpress.rml"}, selected_obj.object.gameplay_eid)
+        elseif selected_obj.class == CLASS.Lorry or selected_obj.class == CLASS.Road then
+            iui.leave()
+            iui.open({rml = "/pkg/vaststars.resources/ui/building_menu_longpress.rml"}, selected_obj.id)
         end
-
         ::continue::
-    end
-
-    for _, _, _, prototype_name in start_laying_mb:unpack() do
-        local create_builder
-        if iprototype.is_road(prototype_name) then
-            goto continue
-        elseif iprototype.is_pipe(prototype_name) then
-            create_builder = create_pipebuilder
-        else
-            assert(false)
-        end
-
-        __switch_status("construct", function()
-            assert(selected_obj)
-            if selected_obj.get_pos then
-                icamera_controller.focus_on_position(math3d.vector(selected_obj:get_pos()))
-            end
-
-            gameplay_core.world_update = false
-            local typeobject = iprototype.queryByName(prototype_name)
-            assert(typeobject.base)
-            typeobject = iprototype.queryByName(typeobject.base)
-            builder_ui = "/pkg/vaststars.resources/ui/construct_road_or_pipe.rml"
-            builder_datamodel = iui.get_datamodel("/pkg/vaststars.resources/ui/construct_road_or_pipe.rml")
-            datamodel.is_concise_mode = true
-            builder_datamodel.is_concise_mode = true
-            builder = create_builder()
-            builder:new_entity(builder_datamodel, typeobject, selected_obj.x, selected_obj.y)
-            builder:start_laying(builder_datamodel)
-        end)
-        ::continue::
-    end
-
-    for _, _, _, prototype_name in start_teardown_mb:unpack() do
-        local create_builder
-        if iprototype.is_road(prototype_name) then
-            goto continue
-        elseif iprototype.is_pipe(prototype_name) then
-            create_builder = create_pipebuilder
-        else
-            assert(false)
-        end
-
-        __switch_status("construct", function()
-            assert(selected_obj)
-            if selected_obj.get_pos then
-                icamera_controller.focus_on_position(math3d.vector(selected_obj:get_pos()))
-            end
-
-            gameplay_core.world_update = false
-            local typeobject = iprototype.queryByName(prototype_name)
-            assert(typeobject.base)
-            typeobject = iprototype.queryByName(typeobject.base)
-            builder_ui = "/pkg/vaststars.resources/ui/construct_road_or_pipe.rml"
-            builder_datamodel = iui.get_datamodel("/pkg/vaststars.resources/ui/construct_road_or_pipe.rml")
-            datamodel.is_concise_mode = true
-            builder_datamodel.is_concise_mode = true
-            builder_datamodel.show_remove_one = false
-            builder = create_builder()
-            builder:new_entity(builder_datamodel, typeobject, selected_obj.x, selected_obj.y)
-            builder:start_teardown(builder_datamodel)
-        end)
-        ::continue::
-    end
-
-    for _ in finish_laying_mb:unpack() do
-        assert(builder)
-        builder:finish_laying(builder_datamodel)
-    end
-
-    for _ in finish_teardown_mb:unpack() do
-        assert(builder)
-        builder:finish_teardown(builder_datamodel)
-
-        __switch_status("default", function()
-            gameplay_core.world_update = true
-            __clean(datamodel)
-        end)
     end
 
     for _ in lock_axis_mb:unpack() do
@@ -757,37 +704,6 @@ function M.update(datamodel)
         }
         icamera_controller.unlock_axis()
         log.info("unlock axis")
-    end
-
-    for _, _, _, prototype_name in remove_one_mb:unpack() do
-        assert(iprototype.is_road(prototype_name) or iprototype.is_pipe(prototype_name))
-
-        assert(selected_obj)
-        if selected_obj.get_pos then
-            icamera_controller.focus_on_position(math3d.vector(selected_obj:get_pos()))
-        end
-        local typeobject = iprototype.queryByName(prototype_name)
-        assert(typeobject.base)
-        typeobject = iprototype.queryByName(typeobject.base)
-
-        local gameplay_world = gameplay_core.get_world()
-        if ibackpack.get_available_capacity(gameplay_world, typeobject.id, 1) <= 0 then
-            log.error("backpack is full")
-            goto continue
-        end
-        ibackpack.place(gameplay_world, typeobject.id, 1)
-
-        builder_ui = "/pkg/vaststars.resources/ui/construct_road_or_pipe.rml"
-        builder_datamodel = iui.get_datamodel("/pkg/vaststars.resources/ui/construct_road_or_pipe.rml")
-        builder = create_roadbuilder()
-        builder:remove_one(builder_datamodel, selected_obj.x, selected_obj.y)
-
-        __switch_status("default", function()
-            gameplay_core.world_update = true
-            __clean(datamodel)
-        end)
-
-        ::continue::
     end
 
     for _ in settings_mb:unpack() do

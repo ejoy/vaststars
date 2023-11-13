@@ -22,19 +22,7 @@ events["material"] = function(prefab, method, ...)
     end
 end
 
-events["stop_world"] = function(prefab, method, ...)
-    for _, eid in ipairs(prefab.tag["*"]) do
-        local e <close> = world:entity(eid, "anim_ctrl?in efk?in")
-        if e.anim_ctrl then
-            iani.pause(eid, false)
-        end
-        if e.efk then
-            iefk.pause(e, false)
-        end
-    end
-end
-
-events["restart_world"] = function(prefab, method, ...)
+events["stop_world"] = function(prefab)
     for _, eid in ipairs(prefab.tag["*"]) do
         local e <close> = world:entity(eid, "anim_ctrl?in efk?in")
         if e.anim_ctrl then
@@ -42,6 +30,18 @@ events["restart_world"] = function(prefab, method, ...)
         end
         if e.efk then
             iefk.pause(e, true)
+        end
+    end
+end
+
+events["restart_world"] = function(prefab)
+    for _, eid in ipairs(prefab.tag["*"]) do
+        local e <close> = world:entity(eid, "anim_ctrl?in efk?in")
+        if e.anim_ctrl then
+            iani.pause(eid, false)
+        end
+        if e.efk then
+            iefk.pause(e, false)
         end
     end
 end

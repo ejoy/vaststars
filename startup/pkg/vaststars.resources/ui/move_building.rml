@@ -21,12 +21,11 @@
             local ui_sys = require "lua.ui_system"
             local start = ui_sys.createDataMode {
                 buttons = {},
-                show_cancel = false,
                 show_confirm = false,
                 show_rotate = false,
             }
 
-            start.buttons[#start.buttons+1] = {name = "取消", show_var = "show_cancel", show = false, param = "quit", background_image = "/pkg/vaststars.resources/ui/textures/cmdcenter/yellow_arrow.texture"}
+
             start.buttons[#start.buttons+1] = {name = "旋转", show_var = "show_rotate", show = false, param = "rotate", background_image = "/pkg/vaststars.resources/ui/textures/construct/rotate.texture"}
             start.buttons[#start.buttons+1] = {name = "确认", show_var = "show_confirm", show = false, param = "build", background_image = "/pkg/vaststars.resources/ui/textures/construct/confirm.texture"}
             start("buttons")
@@ -53,7 +52,6 @@
             end
             --
             ui_sys.mapping(start, {
-                {getMappingParam("show_cancel")},
                 {getMappingParam("show_confirm")},
                 {getMappingParam("show_rotate")},
             })

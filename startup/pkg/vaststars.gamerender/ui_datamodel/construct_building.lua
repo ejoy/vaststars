@@ -23,7 +23,6 @@ local M = {}
 function M.create(show_rotate)
     return {
         show_rotate  = show_rotate,
-        show_quit  = true,
         show_confirm = true,
     }
 end

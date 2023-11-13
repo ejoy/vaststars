@@ -4,6 +4,13 @@ local w = world.w
 
 local CONSTANT <const> = require "gameplay.interface.constant"
 local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
+local CLASS = {
+    Lorry = 1,
+    Object = 2,
+    Mineral = 3,
+    Mountain = 4,
+    Road = 5,
+}
 
 local gameplay_core = require "gameplay.core"
 local ipick_object = {}
@@ -17,14 +24,6 @@ local imineral = ecs.require "mineral"
 
 local pick_object_sys = ecs.system "pick_object_sys"
 local MountainName = ""
-
-local CLASS = {
-    Lorry = 1,
-    Object = 2,
-    Mineral = 3,
-    Mountain = 4,
-    Road = 5,
-}
 
 local mt = {}
 mt.__index = function (t, k)
@@ -60,8 +59,7 @@ local function push_objects(lorries, pick_x, pick_y, x, y, mark, blur)
                         get_pos = get_lorry_pos,
                         class = CLASS.Lorry,
                         id = lorry_id,
-                        dist_x = x,
-                        dist_y = y,
+                        dist = distance(pick_x, pick_y, x, y),
                         lorry = lorry,
                         eid = lorry_id,
                     }
@@ -76,10 +74,11 @@ local function push_objects(lorries, pick_x, pick_y, x, y, mark, blur)
     if o then
         local building = mark.building[o.id]
         if not building then
-            mark.building[o.id] = {class = CLASS.Object, id = o.id, dist_x = x, dist_y = y, x = o.x, y = o.y, object = o, name = o.prototype_name}
+            mark.building[o.id] = {class = CLASS.Object, id = o.id, dist = distance(pick_x, pick_y, x, y), x = o.x, y = o.y, object = o, name = o.prototype_name}
         else
-            if distance(pick_x, pick_y, x, y) < distance(pick_x, pick_y, building.dist_x, building.dist_y) then
-                building.dist_x, building.dist_y = x, y
+            local v = distance(pick_x, pick_y, x, y)
+            if v < building.dist then
+                building.dist = v
             end
         end
         return
@@ -93,8 +92,7 @@ local function push_objects(lorries, pick_x, pick_y, x, y, mark, blur)
                 class = CLASS.Road,
                 name = iprototype.queryByName(o.prototype).name,
                 id = o.eid,
-                dist_x = o.x,
-                dist_y = o.y,
+                dist = distance(pick_x, pick_y, x, y),
                 x = o.x,
                 y = o.y,
                 w = ROAD_SIZE,
@@ -104,8 +102,9 @@ local function push_objects(lorries, pick_x, pick_y, x, y, mark, blur)
                 end,
             }
         else
-            if distance(pick_x, pick_y, x, y) < distance(pick_x, pick_y, road.dist_x, road.dist_y) then
-                road.dist_x, road.dist_y = x, y
+            local v = distance(pick_x, pick_y, x, y)
+            if v < road.dist then
+                road.dist = v
             end
         end
         return
@@ -115,10 +114,23 @@ local function push_objects(lorries, pick_x, pick_y, x, y, mark, blur)
     if o then
         local mineral = mark.mineral[id]
         if not mineral then
-            mark.mineral[id] = {class = CLASS.Mineral, id = id, dist_x = x, dist_y = y, x = x, y = y, name = o.mineral}
+            mark.mineral[id] = {
+                class = CLASS.Mineral,
+                name = o.mineral,
+                id = id,
+                dist = distance(pick_x, pick_y, x, y),
+                x = o.x,
+                y = o.y,
+                w = o.w,
+                h = o.h,
+                get_pos = function(self)
+                    return assert(icoord.position(self.x, self.y, self.w, self.h))
+                end,
+            }
         else
-            if distance(pick_x, pick_y, x, y) < distance(pick_x, pick_y, mineral.dist_x, mineral.dist_y) then
-                mineral.dist_x, mineral.dist_y = x, y
+            local v = distance(pick_x, pick_y, x, y)
+            if v < mineral.dist then
+                mineral.dist = v
             end
         end
         return
@@ -129,10 +141,11 @@ local function push_objects(lorries, pick_x, pick_y, x, y, mark, blur)
             class = CLASS.Mountain,
             name = MountainName,
             id = iprototype.packcoord(x, y),
-            dist_x = x,
-            dist_y = y,
+            dist = distance(pick_x, pick_y, x, y),
             x = x,
             y = y,
+            w = 1,
+            h = 1,
         }
         return
     end
@@ -172,10 +185,8 @@ function ipick_object.pick(x, y, blur)
         end
     end
     table.sort(objs, function(a, b)
-        local dist_a = (a.dist_x - x) ^ 2 + (a.dist_y - y) ^ 2
-        local dist_b = (b.dist_x - x) ^ 2 + (b.dist_y - y) ^ 2
-        if dist_a ~= dist_b then
-            return dist_a < dist_b
+        if a.dist ~= b.dist then
+            return a.dist < b.dist
         else
             if a.class == b.class then
                 return a.id < b.id

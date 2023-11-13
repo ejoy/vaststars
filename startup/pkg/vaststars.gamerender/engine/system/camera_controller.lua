@@ -43,7 +43,6 @@ local CAMERA_POSITION_MAX <const> = math3d.constant { type = "v4",  1000, CAMERA
 
 local iom = ecs.require "ant.objcontroller|obj_motion"
 local irq = ecs.require "ant.render|render_system.renderqueue"
-local ic = ecs.require "ant.camera|camera"
 local create_queue = require "utility.queue"
 local create_mathqueue = require "utility.mathqueue"
 local hierarchy = require "hierarchy"
@@ -75,10 +74,22 @@ local function zoom(factor, x, y)
     end
 end
 
-local function focus_on_position(ce, position)
+local function get_screen_world_position(ce, position_type)
+    if position_type == "CENTER" then
+        local ray = {o = iom.get_position(ce), d = math3d.mul(math.maxinteger, iom.get_direction(ce))}
+        return math3d.muladd(ray.d, math3d.plane_ray(ray.o, ray.d, XZ_PLANE), ray.o)
+    elseif position_type == "RIGHT_CENTER" then
+        local vr = irq.view_rect("main_queue")
+        return icamera_controller.screen_to_world(vr.x + vr.w * (3/4), vr.y + vr.h / 2, XZ_PLANE)
+    else
+        error(("invalid type : %s"):format(position_type))
+    end
+end
+
+local function focus_on_position(ce, position_type, position)
     math3d.unmark(position)
 
-    local p = icamera_controller.get_central_position(ce)
+    local p = get_screen_world_position(ce, position_type)
     local delta = math3d.set_index(math3d.sub(position, p), 2, 0) -- the camera is always moving in the x/z axis and the y axis is always 0
     return iom.get_scale(ce), iom.get_rotation(ce), math3d.add(iom.get_position(ce), delta)
 end
@@ -180,19 +191,6 @@ local function toggle_view(v, cur_xzpoint)
 
 end
 
-local function __set_camera_from_prefab(prefab)
-    local data = read_datalist("/pkg/vaststars.resources/" .. prefab)
-    if not data then
-        return
-    end
-    assert(data[1] and data[1].data and data[1].data.camera)
-    local c = data[1].data
-
-    local ce <close> = world:entity(irq.main_camera())
-    iom.set_srt(ce, c.scene.s or mc.ONE, c.scene.r, c.scene.t)
-    ic.set_frustum(ce, c.camera.frustum)
-end
-
 local function __set_camera_srt(s, r, t)
     local ce <close> = world:entity(irq.main_camera())
     iom.set_srt(ce, s, r, t)
@@ -255,8 +253,6 @@ local function __handle_camera_motion(ce)
             cam_motion_matrix_queue:push(t)
         elseif c[1] == "callback" then
             c[2]()
-        elseif c[1] == "set_camera_from_prefab" then
-            __set_camera_from_prefab(c[2])
         elseif c[1] == "set_camera_srt" then
             __set_camera_srt(c[2], c[3], c[4])
         else
@@ -353,10 +349,9 @@ function icamera_controller.world_to_screen(position)
     return mu.world_to_screen(vp, vr, position)
 end
 
-function icamera_controller.get_central_position(ce)
-    ce = ce or world:entity(irq.main_camera())
-    local ray = {o = iom.get_position(ce), d = math3d.mul(math.maxinteger, iom.get_direction(ce))}
-    return math3d.muladd(ray.d, math3d.plane_ray(ray.o, ray.d, XZ_PLANE), ray.o)
+function icamera_controller.get_screen_world_position(position_type)
+    local ce = world:entity(irq.main_camera())
+    return get_screen_world_position(ce, position_type)
 end
 
 function icamera_controller.get_interset_points(ce)
@@ -378,18 +373,8 @@ function icamera_controller.get_interset_points(ce)
     }
 end
 
-function icamera_controller.set_camera_from_prefab(prefab, callback)
-    cam_cmd_queue:push {{"set_camera_from_prefab", prefab}}
-    if callback then
-        cam_cmd_queue:push {{"callback", callback}}
-    end
-end
-
-function icamera_controller.focus_on_position(position, callback)
-    cam_cmd_queue:push {{"focus_on_position", math3d.mark(position)}}
-    if callback then
-        cam_cmd_queue:push {{"callback", callback}}
-    end
+function icamera_controller.focus_on_position(type, position)
+    cam_cmd_queue:push {{"focus_on_position", type, math3d.mark(position)}}
 end
 
 function icamera_controller.toggle_view(v, xzpos, callback)

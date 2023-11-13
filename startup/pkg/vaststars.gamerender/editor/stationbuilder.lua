@@ -67,9 +67,10 @@ local function _get_road_entrance_srt(typeobject, dir, position)
     return srt.new {t = math3d.add(position, {ox * TILE_SIZE / 2, 0, oy * TILE_SIZE / 2}), r = ROTATORS[ddir]}
 end
 
-local function __align(prototype_name, dir)
+local function __align(prototype_name, dir, position_type)
     local typeobject = iprototype.queryByName(prototype_name)
-    local coord, position = icoord.align(icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, dir))
+    local pos = icamera_controller.get_screen_world_position(position_type)
+    local coord, position = icoord.align(pos, iprototype.rotate_area(typeobject.area, dir))
     if not coord then
         return
     end
@@ -220,14 +221,8 @@ local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobjec
     end
 end
 
-local function __new_entity(self, datamodel, typeobject)
+local function __new_entity(self, datamodel, typeobject, x, y, position, dir)
     iobject.remove(self.pickup_object)
-    local dir = DEFAULT_DIR
-    local position, x, y = __align(typeobject.name, dir)
-    if not x or not y then
-        return
-    end
-
     if not self:check_construct_detector(typeobject.name, x, y, dir) then
         datamodel.show_confirm = false
         datamodel.show_rotate = true
@@ -425,10 +420,17 @@ local function __calc_grid_position(typeobject, x, y, dir)
     return math3d.add(math3d.sub(buildingPosition, originPosition), GRID_POSITION_OFFSET)
 end
 
-local function new_entity(self, datamodel, typeobject)
+local function new_entity(self, datamodel, typeobject, position_type)
     self.typeobject = typeobject
+    self.position_type = position_type
 
-    __new_entity(self, datamodel, typeobject)
+    local dir = DEFAULT_DIR
+    local position, x, y = __align(typeobject.name, dir, position_type)
+    if not x or not y then
+        return
+    end
+
+    __new_entity(self, datamodel, typeobject, x, y, position, dir)
     self.pickup_object.APPEAR = true
 
     icanvas.remove_item("road_entrance_marker", 0)
@@ -474,7 +476,7 @@ local function touch_move(self, datamodel, delta_vec)
         assert(srt)
         self.road_entrance:set_srt(srt.s, srt.r, srt.t)
 
-        local position, x, y = __align(self.pickup_object.prototype_name, self.pickup_object.dir)
+        local position, x, y = __align(self.pickup_object.prototype_name, self.pickup_object.dir, self.position_type)
         if position then
             local w, h = iprototype.rotate_area(typeobject.area, self.pickup_object.dir)
             local self_selected_boxes_position = icoord.position(x, y, w, h)
@@ -507,7 +509,7 @@ local function touch_end(self, datamodel)
         return
     end
 
-    local position, x, y = __align(self.pickup_object.prototype_name, self.pickup_object.dir)
+    local position, x, y = __align(self.pickup_object.prototype_name, self.pickup_object.dir, self.position_type)
     if not position then
         return
     end
@@ -566,13 +568,15 @@ local function confirm(self, datamodel)
     ieditor:revert_changes({"TEMPORARY"})
 
     self.super.complete(self, pickup_object.id)
+
+    local position, dir = pickup_object.srt.t, pickup_object.dir
     self.pickup_object = nil
 
     local typeobject = iprototype.queryByName(pickup_object.prototype_name)
     assert(ibackpack.pickup(gameplay_core.get_world(), typeobject.id, 1))
     local continue_construct = ibackpack.query(gameplay_core.get_world(), typeobject.id) > 0
     if continue_construct then
-        new_entity(self, datamodel, typeobject)
+        __new_entity(self, datamodel, typeobject, pickup_object.x, pickup_object.y, position, dir)
     end
 end
 

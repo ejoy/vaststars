@@ -169,7 +169,7 @@ prototype "空气过滤器III" {
     item_description = "抽取空气的装置",
 }
 
-prototype "管道1-X型" {
+local pipe = {
     type = {"item"},
     item_category = "化工",
     station_limit = 15,
@@ -180,8 +180,14 @@ prototype "管道1-X型" {
     backpack_limit = 100,
     item_description = "放置在地上传输流体的管道",
 }
+prototype "管道1-I型"(setmetatable({}, {__index = pipe}))
+prototype "管道1-L型"(setmetatable({}, {__index = pipe}))
+prototype "管道1-T型"(setmetatable({}, {__index = pipe}))
+prototype "管道1-X型"(setmetatable({}, {__index = pipe}))
+prototype "管道1-O型"(setmetatable({}, {__index = pipe}))
+prototype "管道1-U型"(setmetatable({}, {__index = pipe}))
 
-prototype "地下管1-JI型" {
+local pile_to_ground_1 = {
     type = {"item"},
     item_category = "化工",
     station_limit = 15,
@@ -192,8 +198,10 @@ prototype "地下管1-JI型" {
     backpack_limit = 100,
     item_description = "放置在地下传输流体的管道",
 }
+prototype "地下管1-JU型"(setmetatable({}, {__index = pile_to_ground_1}))
+prototype "地下管1-JI型"(setmetatable({}, {__index = pile_to_ground_1}))
 
-prototype "地下管2-JI型" {
+local pile_to_ground_2 = {
     type = {"item"},
     item_category = "化工",
     station_limit = 15,
@@ -204,3 +212,5 @@ prototype "地下管2-JI型" {
     backpack_limit = 100,
     item_description = "放置在地下传输流体的管道",
 }
+prototype "地下管2-JU型"(setmetatable({}, {__index = pile_to_ground_2}))
+prototype "地下管2-JI型"(setmetatable({}, {__index = pile_to_ground_2}))

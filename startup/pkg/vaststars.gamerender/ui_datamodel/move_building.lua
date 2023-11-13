@@ -17,7 +17,6 @@ function M.create(prototype_name)
     local typeobject = iprototype.queryByName(prototype_name)
 
     return {
-        show_quit  = true,
         show_confirm = true,
         show_rotate = (typeobject.rotate_on_build == true),
     }

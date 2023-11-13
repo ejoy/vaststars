@@ -53,7 +53,7 @@ local function show(tech_node)
             end
             selected_tips[#selected_tips + 1] = {create_selected_box({"/pkg/vaststars.resources/" .. nd.prefab}, center, math3d.vector(nd.color), nd.w, nd.h), prefab}
         elseif nd.camera_x and nd.camera_y then
-            icamera_controller.focus_on_position(math3d.vector(icoord.position(nd.camera_x, nd.camera_y, nd.w, nd.h)))
+            icamera_controller.focus_on_position("CENTER", math3d.vector(icoord.position(nd.camera_x, nd.camera_y, nd.w, nd.h)))
         end
     end
 end

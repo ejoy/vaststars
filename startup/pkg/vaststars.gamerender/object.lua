@@ -5,7 +5,6 @@ local vsobject_manager = ecs.require "vsobject_manager"
 local iprototype = require "gameplay.interface.prototype"
 local math3d = require "math3d"
 local icoord = require "coord"
-local icamera_controller = ecs.require "engine.system.camera_controller"
 local igroup = ecs.require "group"
 local changeset = {}
 local removed = {}
@@ -179,26 +178,6 @@ local function move_delta(object, delta_vec)
     return object
 end
 
-local function central_coord(prototype_name, dir)
-    local typeobject = iprototype.queryByName(prototype_name)
-    local coord = icoord.align(icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, dir))
-    if not coord then
-        return
-    end
-    return coord[1], coord[2]
-end
-
-local function align(object)
-    assert(object)
-    local typeobject = iprototype.queryByName(object.prototype_name)
-    local coord = icoord.align(icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, object.dir))
-    if not coord then
-        return object
-    end
-    object.srt.t = math3d.vector(icoord.position(coord[1], coord[2], iprototype.rotate_area(typeobject.area, object.dir)))
-    return object, coord[1], coord[2]
-end
-
 local function coord(object, x, y)
     assert(object)
     assert(object.prototype_name ~= "")
@@ -218,8 +197,6 @@ return {
     clone = clone,
     flush = flush,
     move_delta = move_delta,
-    align = align,
-    central_coord = central_coord,
     coord = coord,
     remove = remove,
 }

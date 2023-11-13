@@ -4,7 +4,6 @@ local w = world.w
 
 local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
 
-local iui = ecs.require "engine.system.ui_system"
 local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
 local idetail = {}
@@ -16,18 +15,6 @@ local isprite = ecs.require "sprite"
 local create_sprite = isprite.create
 local flush_sprite = isprite.flush
 local iquad_lines_entity = ecs.require "engine.quad_lines_entity"
-
-function idetail.show(object_id)
-    local object = assert(objects:get(object_id))
-    local gameplay_eid = object.gameplay_eid
-    local typeobject = iprototype.queryByName(object.prototype_name)
-
-    idetail.selected(object.gameplay_eid)
-    if typeobject.building_menu ~= false then
-        iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.rml"}, gameplay_eid)
-    end
-    return true
-end
 
 do
     local temp_objects = {}
@@ -83,6 +70,10 @@ do
         end
         temp_objects = {}
         flush_sprite()
+    end
+
+    function idetail.add_tmp_object(o)
+        temp_objects[#temp_objects+1] = o
     end
 
     function idetail.focus_non_building(x, y, w, h)

@@ -394,16 +394,16 @@ prototype "空气过滤器III" {
 }
 
 prototype "管道1-I型" {
-    base = "管道1-X型",
     building_category = 1,
+    display_name = "管道I",
     model = "glbs/pipe/I.glb|mesh.prefab",
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_pipe.texture",
     construct_detector = {"exclusive"},
-    camera_distance = 30,
     building_direction = {"N", "E"},
     building_menu = false,
     type = {"building","fluidbox","pipe"},
     area = "1x1",
+    camera_distance = 30,
     fluidbox = {
         capacity = 100,
         height = 100,
@@ -416,8 +416,8 @@ prototype "管道1-I型" {
 }
 
 prototype "管道1-L型" {
-    base = "管道1-X型",
     building_category = 1,
+    display_name = "管道I",
     model = "glbs/pipe/L.glb|mesh.prefab",
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_pipe.texture",
     construct_detector = {"exclusive"},
@@ -425,6 +425,7 @@ prototype "管道1-L型" {
     building_menu = false,
     type = {"building","fluidbox","pipe"},
     area = "1x1",
+    camera_distance = 30,
     fluidbox = {
         capacity = 100,
         height = 100,
@@ -437,8 +438,8 @@ prototype "管道1-L型" {
 }
 
 prototype "管道1-T型" {
-    base = "管道1-X型",
     building_category = 1,
+    display_name = "管道I",
     model = "glbs/pipe/T.glb|mesh.prefab",
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_pipe.texture",
     construct_detector = {"exclusive"},
@@ -446,6 +447,7 @@ prototype "管道1-T型" {
     building_menu = false,
     type = {"building","fluidbox","pipe"},
     area = "1x1",
+    camera_distance = 30,
     fluidbox = {
         capacity = 100,
         height = 100,
@@ -459,7 +461,6 @@ prototype "管道1-T型" {
 }
 
 prototype "管道1-X型" {
-    base = "管道1-X型",
     building_category = 1,
     display_name = "管道I",
     model = "glbs/pipe/X.glb|mesh.prefab",
@@ -484,8 +485,8 @@ prototype "管道1-X型" {
 }
 
 prototype "管道1-O型" {
-    base = "管道1-X型",
     building_category = 1,
+    display_name = "管道I",
     model = "glbs/pipe/O.glb|mesh.prefab",
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_pipe.texture",
     construct_detector = {"exclusive"},
@@ -493,6 +494,7 @@ prototype "管道1-O型" {
     building_menu = false,
     type = {"building","fluidbox","pipe"},
     area = "1x1",
+    camera_distance = 30,
     fluidbox = {
         capacity = 100,
         height = 100,
@@ -503,8 +505,8 @@ prototype "管道1-O型" {
 }
 
 prototype "管道1-U型" {
-    base = "管道1-X型",
     building_category = 1,
+    display_name = "管道I",
     model = "glbs/pipe/U.glb|mesh.prefab",
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_pipe.texture",
     construct_detector = {"exclusive"},
@@ -512,6 +514,7 @@ prototype "管道1-U型" {
     building_menu = false,
     type = {"building","fluidbox","pipe"},
     area = "1x1",
+    camera_distance = 30,
     fluidbox = {
         capacity = 100,
         height = 100,
@@ -523,7 +526,6 @@ prototype "管道1-U型" {
 }
 
 prototype "地下管1-JU型" {
-    base = "地下管1-JI型",
     building_category = 2,
     display_name = "地下管I",
     model = "glbs/pipe/JU.glb|mesh.prefab",
@@ -533,6 +535,7 @@ prototype "地下管1-JU型" {
     building_direction = {"N", "E", "S", "W"},
     type = {"building","fluidbox","pipe_to_ground"},
     area = "1x1",
+    camera_distance = 25,
     fluidbox = {
         capacity = 100,
         height = 100,
@@ -544,7 +547,6 @@ prototype "地下管1-JU型" {
 }
 
 prototype "地下管1-JI型" {
-    base = "地下管1-JI型",
     building_category = 2,
     display_name = "地下管I",
     model = "glbs/pipe/JI.glb|mesh.prefab",
@@ -567,7 +569,6 @@ prototype "地下管1-JI型" {
 }
 
 prototype "地下管2-JU型" {
-    base = "地下管2-JI型",
     building_category = 3,
     display_name = "地下管II",
     model = "glbs/pipe/JU.glb|mesh.prefab",
@@ -588,7 +589,6 @@ prototype "地下管2-JU型" {
 }
 
 prototype "地下管2-JI型" {
-    base = "地下管2-JI型",
     building_category = 3,
     display_name = "地下管II",
     model = "glbs/pipe/JI.glb|mesh.prefab",

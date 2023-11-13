@@ -470,10 +470,6 @@ function M.create(object_id)
         return {}
     end
     local typeobject = iprototype.queryByName(object.prototype_name)
-    if typeobject.base then
-        typeobject = iprototype.queryByName(typeobject.base)
-    end
-
     local datamodel = {
         object_id = object_id,
         icon = typeobject.icon,

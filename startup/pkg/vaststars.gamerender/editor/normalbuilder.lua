@@ -146,81 +146,6 @@ local function _get_mineral_recipe(prototype_name, x, y, w, h)
     return imining.get_mineral_recipe(prototype_name, mineral)
 end
 
-local function __new_entity(self, datamodel, typeobject, position, x, y, dir)
-    iobject.remove(self.pickup_object)
-
-    local sprite_color
-    local valid
-    if not self:check_construct_detector(typeobject.name, x, y, dir) then
-        if typeobject.supply_area then
-            sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID
-        end
-        datamodel.show_confirm = false
-        valid = false
-    else
-        if typeobject.supply_area then
-            sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_VALID
-        end
-        datamodel.show_confirm = true
-        valid = true
-    end
-    datamodel.show_rotate = (typeobject.rotate_on_build == true)
-
-    -- some assembling machine have default recipe
-    local fluid_name = ""
-    if typeobject.recipe then
-        local recipe_typeobject = iprototype.queryByName(typeobject.recipe)
-        if recipe_typeobject then
-            fluid_name = irecipe.get_init_fluids(recipe_typeobject) or "" -- maybe no fluid in recipe
-        end
-    end
-
-    -- the fluid type of the liquid container should be determined based on the surrounding fluid tanks when placing the fluid tank
-    if iprototype.has_type(typeobject.type, "fluidbox") then
-        local fluid_types = __get_neighbor_fluid_types(typeobject.name, x, y, dir)
-        if #fluid_types > 1 then
-            datamodel.show_confirm = false
-            valid = false
-        else
-            fluid_name = fluid_types[1] or ""
-        end
-    end
-
-    __show_self_selected_boxes(self, position, typeobject, dir, valid)
-    local w, h = iprototype.rotate_area(typeobject.area, dir)
-    local recipe = _get_mineral_recipe(typeobject.name, x, y, w, h)
-    if recipe then
-        local recipe_typeobject = iprototype.queryByName(recipe)
-        if recipe_typeobject then
-            fluid_name = irecipe.get_init_fluids(recipe_typeobject) or "" -- maybe no fluid in recipe
-        end
-    end
-
-    self.pickup_object = iobject.new {
-        prototype_name = typeobject.name,
-        dir = dir,
-        x = x,
-        y = y,
-        srt = srt.new {
-            t = math3d.vector(position),
-            r = ROTATORS[dir],
-        },
-        fluid_name = fluid_name,
-        group_id = 0,
-        recipe = recipe,
-    }
-
-    if typeobject.fluid_indicators ~= false and iprototype.has_types(typeobject.type, "chimney", "fluidbox", "fluidboxes") then
-        self.pickup_components.fluid_indicators = create_fluid_indicators(dir, self.pickup_object.srt, typeobject)
-    end
-
-    if self.sprite then
-        self.sprite:remove()
-    end
-
-    self.sprite = __create_self_sprite(typeobject, x, y, dir, sprite_color)
-end
-
 local function __calc_grid_position(self, typeobject, dir)
     local _, originPosition = icoord.align(math3d.vector {0, 0, 0}, iprototype.rotate_area(typeobject.area, dir))
     local buildingPosition = icoord.position(self.pickup_object.x, self.pickup_object.y, iprototype.rotate_area(typeobject.area, dir))
@@ -367,9 +292,7 @@ local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobjec
     end
 end
 
-local function new_entity(self, datamodel, typeobject)
-    self.typeobject = typeobject
-
+local function __new_entity(self, datamodel, typeobject, x, y, position, dir)
     if ichest.has_chest(typeobject.type) then
         local sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_OTHER
         for _, object in objects:all() do
@@ -384,17 +307,80 @@ local function new_entity(self, datamodel, typeobject)
         end
     end
 
-    local dir = DEFAULT_DIR
-    local x, y = iobject.central_coord(typeobject.name, dir)
-    if not x or not y then
-        return
-    end
-
-    local position = icoord.position(x, y, iprototype.rotate_area(typeobject.area, dir))
-
     __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject)
 
-    __new_entity(self, datamodel, typeobject, position, x, y, dir)
+    local sprite_color
+    local valid
+    if not self:check_construct_detector(typeobject.name, x, y, dir) then
+        if typeobject.supply_area then
+            sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID
+        end
+        datamodel.show_confirm = false
+        valid = false
+    else
+        if typeobject.supply_area then
+            sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_VALID
+        end
+        datamodel.show_confirm = true
+        valid = true
+    end
+    datamodel.show_rotate = (typeobject.rotate_on_build == true)
+
+    -- some assembling machine have default recipe
+    local fluid_name = ""
+    if typeobject.recipe then
+        local recipe_typeobject = iprototype.queryByName(typeobject.recipe)
+        if recipe_typeobject then
+            fluid_name = irecipe.get_init_fluids(recipe_typeobject) or "" -- maybe no fluid in recipe
+        end
+    end
+
+    -- the fluid type of the liquid container should be determined based on the surrounding fluid tanks when placing the fluid tank
+    if iprototype.has_type(typeobject.type, "fluidbox") then
+        local fluid_types = __get_neighbor_fluid_types(typeobject.name, x, y, dir)
+        if #fluid_types > 1 then
+            datamodel.show_confirm = false
+            valid = false
+        else
+            fluid_name = fluid_types[1] or ""
+        end
+    end
+
+    __show_self_selected_boxes(self, position, typeobject, dir, valid)
+    local w, h = iprototype.rotate_area(typeobject.area, dir)
+    local recipe = _get_mineral_recipe(typeobject.name, x, y, w, h)
+    if recipe then
+        local recipe_typeobject = iprototype.queryByName(recipe)
+        if recipe_typeobject then
+            fluid_name = irecipe.get_init_fluids(recipe_typeobject) or "" -- maybe no fluid in recipe
+        end
+    end
+
+    iobject.remove(self.pickup_object)
+    self.pickup_object = iobject.new {
+        prototype_name = typeobject.name,
+        dir = dir,
+        x = x,
+        y = y,
+        srt = srt.new {
+            t = math3d.vector(position),
+            r = ROTATORS[dir],
+        },
+        fluid_name = fluid_name,
+        group_id = 0,
+        recipe = recipe,
+    }
+
+    if typeobject.fluid_indicators ~= false and iprototype.has_types(typeobject.type, "chimney", "fluidbox", "fluidboxes") then
+        self.pickup_components.fluid_indicators = create_fluid_indicators(dir, self.pickup_object.srt, typeobject)
+    end
+
+    if self.sprite then
+        self.sprite:remove()
+    end
+
+    self.sprite = __create_self_sprite(typeobject, x, y, dir, sprite_color)
+
     flush_sprite()
     self.pickup_object.APPEAR = true
 
@@ -403,15 +389,21 @@ local function new_entity(self, datamodel, typeobject)
     end
 end
 
-local function __align(object)
-    assert(object)
-    local typeobject = iprototype.queryByName(object.prototype_name)
-    local coord, position = icoord.align(icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, object.dir))
+local function align(position_type, area, dir)
+    local p = icamera_controller.get_screen_world_position(position_type)
+    local coord, pos = icoord.align(p, iprototype.rotate_area(area, dir))
     if not coord then
-        return object
+        return
     end
-    object.srt.t = math3d.vector(position)
-    return object, coord[1], coord[2]
+    return coord[1], coord[2], math3d.vector(pos)
+end
+
+local function new_entity(self, datamodel, typeobject, position_type)
+    self.typeobject = typeobject
+    self.position_type = position_type
+
+    local x, y, pos = align(self.position_type, self.typeobject.area, DEFAULT_DIR)
+    __new_entity(self, datamodel, typeobject, x, y, pos, DEFAULT_DIR)
 end
 
 local function touch_move(self, datamodel, delta_vec)
@@ -421,14 +413,12 @@ local function touch_move(self, datamodel, delta_vec)
     local pickup_object = self.pickup_object
     iobject.move_delta(pickup_object, delta_vec)
 
-    local x, y
-    self.pickup_object, x, y = __align(self.pickup_object)
-    local lx, ly = x, y
-    if not lx then
+    local x, y, pos = align(self.position_type, self.typeobject.area, self.pickup_object.dir)
+    if not x then
         datamodel.show_confirm = false
         return
     end
-    pickup_object.x, pickup_object.y = lx, ly
+    pickup_object.srt.t, pickup_object.x, pickup_object.y = pos, x, y
 
     local typeobject = iprototype.queryByName(pickup_object.prototype_name)
 
@@ -440,16 +430,16 @@ local function touch_move(self, datamodel, delta_vec)
         self.grid_entity:set_position(__calc_grid_position(self, typeobject, pickup_object.dir))
     end
 
-    if self.last_x == lx and self.last_y == ly then
+    if self.last_x == x and self.last_y == y then
         return
     end
-    self.last_x, self.last_y = lx, ly
+    self.last_x, self.last_y = x, y
 
     local sprite_color
     local valid
     local offset_x, offset_y = 0, 0
     local w, h = iprototype.rotate_area(typeobject.area, pickup_object.dir)
-    if not self:check_construct_detector(pickup_object.prototype_name, lx, ly, pickup_object.dir) then -- TODO
+    if not self:check_construct_detector(pickup_object.prototype_name, x, y, pickup_object.dir) then -- TODO
         datamodel.show_confirm = false
         valid = false
 
@@ -538,12 +528,11 @@ local function confirm(self, datamodel)
     self.pickup_object = nil
     self.super.complete(self, pickup_object.id)
 
-    local typeobject = iprototype.queryByName(pickup_object.prototype_name)
     assert(ibackpack.pickup(gameplay_core.get_world(), typeobject.id, 1))
 
     local continue_construct = ibackpack.query(gameplay_core.get_world(), typeobject.id) > 0
     if continue_construct then
-        new_entity(self, datamodel, typeobject)
+        __new_entity(self, datamodel, typeobject, pickup_object.x, pickup_object.y, pickup_object.srt.t, pickup_object.dir)
     end
 end
 
@@ -585,14 +574,12 @@ local function rotate(self, datamodel, dir, delta_vec)
     pickup_object.dir = iprototype.dir_tostring(dir)
     pickup_object.srt.r = ROTATORS[pickup_object.dir]
 
-    local x, y
-    self.pickup_object, x, y = __align(self.pickup_object)
-    local lx, ly = x, y
-    if not lx then
+    local x, y, pos = align(self.position_type, self.typeobject.area, self.pickup_object.dir)
+    if not x then
         datamodel.show_confirm = false
         return
     end
-    pickup_object.x, pickup_object.y = lx, ly
+    pickup_object.srt.t, pickup_object.x, pickup_object.y = pos, x, y
 
     local typeobject = iprototype.queryByName(pickup_object.prototype_name)
     for _, c in pairs(self.pickup_components) do
@@ -660,7 +647,7 @@ local function clean(self, datamodel)
     self.super.clean(self, datamodel)
 end
 
-local function create(item)
+local function create()
     local builder = create_builder()
 
     local M = setmetatable({super = builder}, {__index = builder})
@@ -675,7 +662,6 @@ local function create(item)
     M.self_selected_boxes = nil
     M.selected_boxes = {}
     M.last_x, M.last_y = -1, -1
-    M.item = item
     M.pickup_components = {}
 
     return M

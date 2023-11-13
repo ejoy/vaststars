@@ -225,10 +225,12 @@ local function __new_entity(self, datamodel, typeobject)
 
     iobject.remove(self.pickup_object)
     local dir = object.dir
-    local x, y = iobject.central_coord(typeobject.name, dir)
-    if not x or not y then
+    local typeobject = iprototype.queryByName(typeobject.name)
+    local coord = icoord.align(icamera_controller.get_screen_world_position("CENTER"), iprototype.rotate_area(typeobject.area, dir))
+    if not coord then
         return
     end
+    local x, y = coord[1], coord[2]
     local building_positon = icoord.position(x, y, iprototype.rotate_area(typeobject.area, dir))
 
     local sprite_color
@@ -325,7 +327,7 @@ end
 local function __align(object)
     assert(object)
     local typeobject = iprototype.queryByName(object.prototype_name)
-    local coord, position = icoord.align(icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, object.dir))
+    local coord, position = icoord.align(icamera_controller.get_screen_world_position("CENTER"), iprototype.rotate_area(typeobject.area, object.dir))
     if not coord then
         return object
     end
@@ -477,7 +479,6 @@ local function confirm(self, datamodel)
     ieditor:revert_changes({"TEMPORARY"})
     datamodel.show_confirm = false
     datamodel.show_rotate = false
-    datamodel.show_cancel = false
 end
 
 local function check_construct_detector(self, prototype_name, x, y, dir)
@@ -531,7 +532,7 @@ local function rotate(self, datamodel, dir, delta_vec)
     for _, c in pairs(self.pickup_components) do
         c:on_position_change(self.pickup_object.srt, self.pickup_object.dir)
     end
-    local coord = icoord.align(icamera_controller.get_central_position(), iprototype.rotate_area(typeobject.area, dir))
+    local coord = icoord.align(icamera_controller.get_screen_world_position("CENTER"), iprototype.rotate_area(typeobject.area, dir))
     if not coord then
         return
     end

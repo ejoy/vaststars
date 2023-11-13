@@ -2,6 +2,11 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
+local N <const> = 0
+local E <const> = 1
+local S <const> = 2
+local W <const> = 3
+
 local gameplay_core = require "gameplay.core"
 local road_sys = ecs.system "road_system"
 local iroad = {}
@@ -20,11 +25,6 @@ end
 local function unpack(coord)
     return coord & 0xFF, coord >> 8
 end
-
-local N <const> = 0
-local E <const> = 1
-local S <const> = 2
-local W <const> = 3
 
 local function open(bits, dir)
     assert(bits & (1 << dir) == 0)

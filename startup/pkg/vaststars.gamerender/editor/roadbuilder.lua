@@ -127,15 +127,10 @@ local function getPlacedRoadPrototypeName(x, y, default_prototype_name, default_
     return iroadnet_converter.mask_to_prototype_name_dir(mask)
 end
 
---------------------------------------------------------------------------------------------------
-local function new_entity(self, datamodel, typeobject, x, y)
-    assert(x and y)
-
+local function _new_entity(self, datamodel, typeobject, x, y)
     iobject.remove(self.coord_indicator)
 
-    self.typeobject = typeobject
-
-    local prototype_name, dir = getPlacedRoadPrototypeName(x, y, self.typeobject.name, DEFAULT_DIR)
+    local prototype_name, dir = getPlacedRoadPrototypeName(x, y, typeobject.name, DEFAULT_DIR)
     self.coord_indicator = iobject.new {
         prototype_name = prototype_name,
         dir = dir,
@@ -157,7 +152,9 @@ local function new_entity(self, datamodel, typeobject, x, y)
             MAP_HEIGHT // ROAD_SIZE,
             TILE_SIZE * ROAD_SIZE,
             {t = self.coord_indicator.srt.t},
-            offset
+            offset,
+            nil,
+            self.position_type
         )
     end
     if not self.pickup_components.selected_box then
@@ -192,13 +189,26 @@ local function new_entity(self, datamodel, typeobject, x, y)
     updateComponentsPosition(self)
     updateComponentsStatus(self)
 end
+--------------------------------------------------------------------------------------------------
+local function new_entity(self, datamodel, typeobject, position_type)
+    print(typeobject)
+    self.typeobject = typeobject
+    self.position_type = position_type
+
+    local coord = assert(icoord.position2coord(icamera_controller.get_screen_world_position(position_type)))
+    local x, y = coord[1], coord[2]
+    x, y = x - (x % ROAD_SIZE), y - (y % ROAD_SIZE)
+
+    _new_entity(self, datamodel, typeobject, x, y)
+end
 
 local function touch_move(self, datamodel, delta_vec)
     if self.coord_indicator then
         iobject.move_delta(self.coord_indicator, delta_vec)
 
         local coord_indicator = self.coord_indicator
-        local _, x, y = __align(icamera_controller.get_central_position(), self.typeobject.area, coord_indicator.dir)
+        local pos = icamera_controller.get_screen_world_position(self.position_type)
+        local _, x, y = __align(pos, self.typeobject.area, coord_indicator.dir)
         local prototype_name, dir = getPlacedRoadPrototypeName(x, y, self.typeobject.name, DEFAULT_DIR)
         if prototype_name ~= self.coord_indicator.prototype_name or dir ~= self.coord_indicator.dir then
             local srt = self.coord_indicator.srt
@@ -225,7 +235,8 @@ local function touch_end(self, datamodel)
     end
 
     local typeobject = iprototype.queryByName(coord_indicator.prototype_name)
-    coord_indicator.srt.t, coord_indicator.x, coord_indicator.y = __align(icamera_controller.get_central_position(), typeobject.area, coord_indicator.dir)
+    local pos = icamera_controller.get_screen_world_position(self.position_type)
+    coord_indicator.srt.t, coord_indicator.x, coord_indicator.y = __align(pos, typeobject.area, coord_indicator.dir)
 
     local prototype_name, dir = getPlacedRoadPrototypeName(self.coord_indicator.x, self.coord_indicator.y, self.typeobject.name, DEFAULT_DIR)
     if prototype_name ~= self.coord_indicator.prototype_name or dir ~= self.coord_indicator.dir then
@@ -295,9 +306,9 @@ local function place(self, datamodel)
     gameplay_core.set_changed(CHANGED_FLAG_ROADNET)
 
     local dx, dy = iprototype.move_coord(x, y, self.forward_dir, ROAD_SIZE)
-    self:new_entity(datamodel, self.typeobject, dx, dy)
+    _new_entity(self, datamodel, self.typeobject, dx, dy)
 
-    icamera_controller.focus_on_position(math3d.vector(icoord.position(dx, dy, ROAD_SIZE, ROAD_SIZE)))
+    icamera_controller.focus_on_position("RIGHT_CENTER", math3d.vector(icoord.position(dx, dy, ROAD_SIZE, ROAD_SIZE)))
 
     ibackpack.pickup(gameplay_core.get_world(), typeobject.id, 1)
     task.update_progress("is_road_connected")
@@ -325,13 +336,6 @@ local function rotate(self)
     end
 end
 
-local function remove_one(self, datamodel, x, y)
-    ibuilding.remove(x, y)
-    iroadnet:del("road", x, y)
-
-    gameplay_core.set_changed(CHANGED_FLAG_ROADNET)
-end
-
 local function create()
     local builder = create_builder()
 
@@ -340,7 +344,6 @@ local function create()
     M.touch_move = touch_move
     M.touch_end = touch_end
     M.rotate = rotate
-    M.remove_one = remove_one
 
     M.confirm = place
     M.clean = clean

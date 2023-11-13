@@ -141,7 +141,6 @@ prototype "科研中心III" {
 
 
 prototype "砖石公路-I型" {
-    base = "砖石公路-X型",
     building_category = 4,
     display_name = "砖石公路",
     model = "glbs/road/I.glb|mesh.prefab",
@@ -152,6 +151,7 @@ prototype "砖石公路-I型" {
     type = {"building", "road"},
     area = "2x2",
     camera_distance = 50,
+    move = false,
     crossing = {
         connections = {
             {type="none", position={0,0,"N"}},
@@ -164,7 +164,6 @@ prototype "砖石公路-I型" {
 }
 
 prototype "砖石公路-L型" {
-    base = "砖石公路-X型",
     building_category = 4,
     display_name = "砖石公路",
     model = "glbs/road/L.glb|mesh.prefab",
@@ -175,6 +174,7 @@ prototype "砖石公路-L型" {
     type = {"building", "road"},
     area = "2x2",
     camera_distance = 50,
+    move = false,
     crossing = {
         connections = {
             {type="none", position={0,0,"N"}},
@@ -187,7 +187,6 @@ prototype "砖石公路-L型" {
 }
 
 prototype "砖石公路-T型" {
-    base = "砖石公路-X型",
     building_category = 4,
     display_name = "砖石公路",
     model = "glbs/road/T.glb|mesh.prefab",
@@ -198,6 +197,7 @@ prototype "砖石公路-T型" {
     type = {"building", "road"},
     area = "2x2",
     camera_distance = 50,
+    move = false,
     crossing = {
         connections = {
             {type="none", position={0,0,"E"}},
@@ -211,7 +211,6 @@ prototype "砖石公路-T型" {
 }
 
 prototype "砖石公路-O型" {
-    base = "砖石公路-X型",
     building_category = 4,
     display_name = "砖石公路",
     model = "glbs/road/I.glb|mesh.prefab",
@@ -222,6 +221,7 @@ prototype "砖石公路-O型" {
     type = {"building", "road"},
     area = "2x2",
     camera_distance = 50,
+    move = false,
     crossing = {
         connections = {
         }
@@ -231,7 +231,6 @@ prototype "砖石公路-O型" {
 }
 
 prototype "砖石公路-U型" {
-    base = "砖石公路-X型",
     building_category = 4,
     display_name = "砖石公路",
     model = "glbs/road/I.glb|mesh.prefab",
@@ -242,6 +241,7 @@ prototype "砖石公路-U型" {
     type = {"building", "road"},
     area = "2x2",
     camera_distance = 50,
+    move = false,
     crossing = {
         connections = {
             {type="none", position={0,0,"N"}},
@@ -253,7 +253,6 @@ prototype "砖石公路-U型" {
 }
 
 prototype "砖石公路-X型" {
-    base = "砖石公路-X型",
     building_category = 4,
     display_name = "砖石公路",
     model = "glbs/road/X.glb|mesh.prefab",
@@ -264,6 +263,7 @@ prototype "砖石公路-X型" {
     type = {"building", "road"},
     area = "2x2",
     camera_distance = 50,
+    move = false,
     crossing = {
         connections = {
             {type="none", position={0,0,"N"}},

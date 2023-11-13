@@ -1,119 +1,98 @@
 local ecs, mailbox = ...
 local world = ecs.world
 
+local CONSTRUCT_LIST <const> = ecs.require "vaststars.prototype|construct_list"
+
 local iui = ecs.require "engine.system.ui_system"
-local gameplay_core = require "gameplay.core"
-local click_button_mb = mailbox:sub {"click_button"}
 local click_main_button_mb = mailbox:sub {"click_main_button"}
 local lock_axis_mb = mailbox:sub {"lock_axis"}
+local gameplay_core = require "gameplay.core"
 local ibackpack = require "gameplay.interface.backpack"
-
-local MAX_SHORTCUT_COUNT <const> = 5
 local iprototype = require "gameplay.interface.prototype"
-
-local function default_shortcut()
-    return {prototype = 0, prototype_name = "", icon = "", last_timestamp = 0, selected = false, unknown = true}
-end
-
-local function update_shortcur_timestamp(index)
-    local storage = gameplay_core.get_storage()
-    storage.shortcuts[index] = storage.shortcuts[index] or default_shortcut()
-    storage.shortcuts[index].last_timestamp = os.time()
-end
+local item_unlocked = ecs.require "ui_datamodel.common.item_unlocked".is_unlocked
+local click_item_mb = mailbox:sub {"click_item"}
 
 local M = {}
 
-function M.create()
-    local storage = gameplay_core.get_storage()
-    storage.shortcuts = storage.shortcuts or {}
+local function get_list()
+    local gameplay_world = gameplay_core.get_world()
 
-    local main_button_icon = ""
-    local shortcuts = {}
+    local res = {}
+    for category_idx, menu in ipairs(CONSTRUCT_LIST) do
+        local r = {}
+        r.category = menu.category
+        r.items = {}
 
-    local min_idx = 1
-    local first_unknown_idx
-    local min_timestamp = math.maxinteger
+        for item_idx, prototype_name in ipairs(menu.items) do
+            local typeobject = assert(iprototype.queryByName(prototype_name))
+            local count = ibackpack.query(gameplay_world, typeobject.id)
 
-    for i = 1, MAX_SHORTCUT_COUNT do
-        local s = storage.shortcuts[i]
-        if not s or (s and s.prototype == 0) or (s and s.prototype == nil) then
-            shortcuts[i] = default_shortcut()
-            if not first_unknown_idx then
-                first_unknown_idx = i
+            if not item_unlocked(typeobject.name) and count <= 0 then
+                goto continue
             end
-        else
-            local typeobject = iprototype.queryById(s.prototype)
-            shortcuts[i] = {
+
+            r.items[#r.items + 1] = {
+                id = ("%s:%s"):format(category_idx, item_idx),
                 prototype = typeobject.id,
-                prototype_name = iprototype.display_name(typeobject),
-                count = ibackpack.query(gameplay_core.get_world(), typeobject.id),
+                name = iprototype.display_name(typeobject),
                 icon = typeobject.item_icon,
-                last_timestamp = s.last_timestamp or 0,
+                count = count,
                 selected = false,
-                unknown = false
             }
+            ::continue::
         end
 
-        if shortcuts[i].last_timestamp < min_timestamp then
-            min_timestamp = shortcuts[i].last_timestamp
-            min_idx = i
+        if #r.items > 0 then
+            res[#res+1] = r
         end
     end
-    if first_unknown_idx then
-        shortcuts[first_unknown_idx].unknown = true
-    else
-        shortcuts[min_idx].unknown = true
-    end
+    return res
+end
 
-    -- select the last used building
-    local max_idx
-    local max_timestamp = math.mininteger
-    for i = 1, MAX_SHORTCUT_COUNT do
-        if shortcuts[i].prototype_name ~= "" and shortcuts[i].last_timestamp > max_timestamp then
-            max_timestamp = shortcuts[i].last_timestamp
-            max_idx = i
+local function update_list_item(construct_list, category_idx, item_idx, key, value)
+    if category_idx == 0 and item_idx == 0 then
+        return
+    end
+    assert(construct_list[category_idx])
+    assert(construct_list[category_idx].items[item_idx])
+    construct_list[category_idx].items[item_idx][key] = value
+end
+
+local function get_index(list, prototype)
+    for category_idx, v in pairs(list) do
+        for item_idx, item in pairs(v.items) do
+            if item.prototype == prototype then
+                return category_idx, item_idx
+            end
         end
     end
+    assert(false)
+end
 
-    if max_idx then
-        shortcuts[max_idx].selected = true
-        update_shortcur_timestamp(max_idx)
+function M.create(prototype)
+    local main_button_icon = ""
+    if prototype then
+        local typeobject = assert(iprototype.queryById(prototype))
+        main_button_icon = typeobject.item_icon
+    end
 
-        local typeobject = iprototype.queryById(shortcuts[max_idx].prototype)
-        iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "construct_entity", typeobject.name)
-
-        main_button_icon = shortcuts[max_idx].icon
+    local category_idx, item_idx = 0, 0
+    local construct_list = get_list()
+    if prototype then
+        category_idx, item_idx = get_index(construct_list, prototype)
+        update_list_item(construct_list, category_idx, item_idx, "selected", true)
     end
 
     return {
         lock_axis = false,
-        shortcut_index = max_idx or 0,
-        shortcuts = shortcuts,
         main_button_icon = main_button_icon,
+        category_idx = category_idx,
+        item_idx = item_idx,
+        construct_list = construct_list,
     }
 end
 
 function M.update(datamodel)
-    for _, _, _, index in click_button_mb:unpack() do
-        local shortcut = assert(datamodel.shortcuts[index])
-        if shortcut.unknown == true then
-            iui.close("/pkg/vaststars.resources/ui/build.rml")
-            iui.open({rml = "/pkg/vaststars.resources/ui/build_setting.rml"})
-        else
-            if datamodel.shortcut_index ~= 0 then
-                datamodel.shortcuts[datamodel.shortcut_index].selected = false
-            end
-
-            datamodel.shortcut_index = index
-            datamodel.shortcuts[index].selected = true
-            update_shortcur_timestamp(index)
-
-            local typeobject = iprototype.queryById(datamodel.shortcuts[index].prototype)
-            iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "construct_entity", typeobject.name)
-            datamodel.main_button_icon = datamodel.shortcuts[index].icon
-        end
-    end
-
     for _ in click_main_button_mb:unpack() do
         iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "build")
     end
@@ -125,6 +104,19 @@ function M.update(datamodel)
         else
             iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "unlock_axis")
         end
+    end
+
+    for _, _, _, category_idx, item_idx in click_item_mb:unpack() do
+        update_list_item(datamodel.construct_list, datamodel.category_idx, datamodel.item_idx, "selected", false)
+        update_list_item(datamodel.construct_list, category_idx, item_idx, "selected", true)
+        datamodel.category_idx = category_idx
+        datamodel.item_idx = item_idx
+
+        local prototype = datamodel.construct_list[category_idx].items[item_idx].prototype
+        local typeobject = assert(iprototype.queryById(prototype))
+        datamodel.main_button_icon = typeobject.item_icon
+
+        iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "construct_entity", typeobject.name)
     end
 end
 

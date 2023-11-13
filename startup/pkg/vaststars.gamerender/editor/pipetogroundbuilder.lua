@@ -32,6 +32,7 @@ local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_bo
 local global = require "global"
 local gameplay_core = require "gameplay.core"
 local srt = require "utility.srt"
+local icamera_controller = ecs.require "engine.system.camera_controller"
 
 local function _show_dotted_line(self, from_x, from_y, to_x, to_y, dir, dir_delta)
     from_x, from_y = from_x + dir_delta.x, from_y + dir_delta.y
@@ -505,29 +506,6 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
     end
 
     _show_dotted_line(self, table.unpack(State.dotted_line_coord))
-
-    datamodel.show_finish_laying = State.succ
-end
-
-local function _builder_init(self, datamodel)
-    local coord_indicator = self.coord_indicator
-    local function is_valid_starting(x, y)
-        local object = objects:coord(x, y, EDITOR_CACHE_NAMES)
-        if not object then
-            return true
-        end
-        return #_get_covers_fluidbox(object) > 0
-    end
-
-    if is_valid_starting(coord_indicator.x, coord_indicator.y) then
-        datamodel.show_start_laying = true
-    else
-        datamodel.show_start_laying = false
-    end
-
-    for _, c in pairs(self.pickup_components) do
-        c:on_status_change(datamodel.show_start_laying)
-    end
 end
 
 -- sort by distance and direction
@@ -680,21 +658,26 @@ local function __calc_grid_position(self, typeobject, x, y, dir)
     return math3d.add(math3d.sub(buildingPosition, originPosition), GRID_POSITION_OFFSET)
 end
 
---------------------------------------------------------------------------------------------------
-local function new_entity(self, datamodel, typeobject)
-    self.typeobject = typeobject
+local function __align(position_type, prototype_name, dir)
+    local typeobject = iprototype.queryByName(prototype_name)
+    local pos = icamera_controller.get_screen_world_position(position_type)
+    local coord, position = icoord.align(pos, iprototype.rotate_area(typeobject.area, dir))
+    if not coord then
+        return
+    end
+    return math3d.vector(position), coord[1], coord[2]
+end
 
+local function _new_entity(self, datamodel, typeobject, x, y, position, dir)
     iobject.remove(self.coord_indicator)
-    local dir = DEFAULT_DIR
 
-    local x, y = iobject.central_coord(typeobject.name, dir)
     self.coord_indicator = iobject.new {
         prototype_name = typeobject.name,
         dir = dir,
         x = x,
         y = y,
         srt = srt.new {
-            t = math3d.vector(icoord.position(x, y, iprototype.rotate_area(typeobject.area, dir))),
+            t = position,
             r = ROTATORS[dir],
         },
         fluid_name = "",
@@ -706,9 +689,20 @@ local function new_entity(self, datamodel, typeobject)
     end
 
     self.pickup_components[#self.pickup_components + 1] = create_pickup_selected_box(self.coord_indicator.srt.t, typeobject.area, dir, true)
+end
 
-    --
-    _builder_init(self, datamodel)
+--------------------------------------------------------------------------------------------------
+local function new_entity(self, datamodel, typeobject, position_type)
+    self.typeobject = typeobject
+    self.position_type = position_type
+
+    local dir = DEFAULT_DIR
+    local pos, x, y = __align(self.position_type, self.typeobject.name, dir)
+    if not pos then
+        return
+    end
+
+    _new_entity(self, datamodel, typeobject, x, y, pos, dir)
 end
 
 local function touch_move(self, datamodel, delta_vec)
@@ -731,9 +725,8 @@ local function touch_end(self, datamodel)
     if not self.coord_indicator then
         return
     end
-    local x, y
-    self.coord_indicator, x, y = iobject.align(self.coord_indicator)
-    self.coord_indicator.x, self.coord_indicator.y = x, y
+    local pos, x, y = __align(self.position_type, self.typeobject.name, self.coord_indicator.dir)
+    self.coord_indicator.srt.t, self.coord_indicator.x, self.coord_indicator.y = pos, x, y
 
     self:revert_changes({"TEMPORARY"})
     if self.dotted_line then
@@ -745,9 +738,7 @@ local function touch_end(self, datamodel)
         c:on_position_change(self.coord_indicator.srt, self.coord_indicator.dir)
     end
 
-    if self.state ~= STATE_START then
-        _builder_init(self, datamodel)
-    else
+    if self.state == STATE_START then
         _builder_start(self, datamodel)
     end
 end
@@ -805,45 +796,31 @@ local function complete(self, datamodel)
     self:revert_changes({"TEMPORARY"})
 
     datamodel.show_rotate = false
-    datamodel.show_finish_laying = false
-    datamodel.show_cancel = false
-    datamodel.show_start_laying = false
 
     local typeobject = iprototype.queryByName(self.coord_indicator.prototype_name)
 
+    local x, y = self.coord_indicator.x, self.coord_indicator.y
+    local pos, dir = self.coord_indicator.srt.t, self.coord_indicator.dir
     iobject.remove(self.coord_indicator)
     self.coord_indicator = nil
 
     gameplay_core.set_changed(CHANGED_FLAG_BUILDING | CHANGED_FLAG_FLUIDFLOW)
 
-    self:new_entity(datamodel, typeobject)
+    _new_entity(self, datamodel, typeobject, x, y, pos, dir)
     return true
 end
 
 local function start_laying(self, datamodel)
-    local x, y
-    self.coord_indicator, x, y = iobject.align(self.coord_indicator)
-    self.coord_indicator.x, self.coord_indicator.y = x, y
+    local pos, x, y = __align(self.position_type, self.typeobject.name, self.coord_indicator.dir)
+    self.coord_indicator.srt.t, self.coord_indicator.x, self.coord_indicator.y = pos, x, y
 
     self:revert_changes({"TEMPORARY"})
-    datamodel.show_start_laying = false
-    datamodel.show_cancel = true
 
     self.state = STATE_START
     self.from_x = self.coord_indicator.x
     self.from_y = self.coord_indicator.y
 
     _builder_start(self, datamodel)
-end
-
-local function cancel(self, datamodel)
-    self:revert_changes({"TEMPORARY"})
-    local typeobject = iprototype.queryByName(self.coord_indicator.prototype_name)
-    self:new_entity(datamodel, typeobject)
-
-    self.state = STATE_NONE
-    datamodel.show_finish_laying = false
-    datamodel.show_cancel = false
 end
 
 local function finish_laying(self, datamodel)
@@ -858,8 +835,6 @@ local function finish_laying(self, datamodel)
     end
 
     self.state = STATE_NONE
-    datamodel.show_finish_laying = false
-    datamodel.show_cancel = false
 
     return complete(self, datamodel)
 end
@@ -887,17 +862,14 @@ local function clean(self, datamodel)
     self:revert_changes({"TEMPORARY"})
     datamodel.show_rotate = false
     self.state = STATE_NONE
-    datamodel.show_finish_laying = false
-    datamodel.show_cancel = false
-    datamodel.show_start_laying = false
     self.super.clean(self, datamodel)
 end
 
 local function confirm(self, datamodel)
     if self.state == STATE_NONE then
-        self:start_laying(datamodel)
+        start_laying(self, datamodel)
     elseif self.state == STATE_START then
-        self:finish_laying(datamodel)
+        finish_laying(self, datamodel)
         __complete(self)
     end
 end
@@ -917,9 +889,6 @@ local function create()
     M.pickup_components = {}
     M.prototype_name = ""
     M.state = STATE_NONE
-    M.start_laying = start_laying
-    M.cancel = cancel
-    M.finish_laying = finish_laying
 
     return M
 end

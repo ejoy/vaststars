@@ -19,7 +19,7 @@ local icoord = require "coord"
 local icamera_controller = ecs.require "engine.system.camera_controller"
 
 local M = {}
-function M.create(width, height, unit, srt, pos_offset, material)
+function M.create(width, height, unit, srt, pos_offset, material, position_type)
 	local hw = width * 0.5
 	local hw_len = hw * unit
 
@@ -67,7 +67,8 @@ function M.create(width, height, unit, srt, pos_offset, material)
 			world:remove_entity(eid)
 		end,
 		on_position_change = function(_, srt)
-			local coord = icoord.align(icamera_controller.get_central_position(), ROAD_SIZE, ROAD_SIZE)
+			assert(position_type)
+			local coord = icoord.align(icamera_controller.get_screen_world_position(position_type), ROAD_SIZE, ROAD_SIZE)
 			if not coord then
 				return
 			end
