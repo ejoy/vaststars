@@ -4,11 +4,6 @@
             body {
                 font: "阿里巴巴普惠体";
             }
-            .safe-area {
-                width: 92%;
-                height: 93%;
-                pointer-events: none;
-            }
             .building-button-container {
                 flex-direction: row-reverse;
                 align-items: flex-start;
@@ -70,12 +65,10 @@
         </script>
     </head>
     <body style = "pointer-events: none; justify-content: center; align-items: center;">
-        <div class = "safe-area">    
-            <div class = "layout">
-                <div class = "building-button-container" data-style-transform = "it.outer_transform" data-for = "buttons">
-                    <div class = "building-button" style = "pointer-events: none; width: 18.23vmin; height: 18.23vmin;" data-style-transform = "it.inner_transform">
-                        <div class = "building-button" style = "width: 18.23vmin; height: 18.23vmin;" data-style-background-image = "it.background_image" data-event-click = "clickButton(it.command)" />
-                    </div>
+        <div class = "layout">
+            <div class = "building-button-container" data-style-transform = "it.outer_transform" data-for = "buttons">
+                <div class = "building-button" style = "pointer-events: none; width: 18.23vmin; height: 18.23vmin;" data-style-transform = "it.inner_transform">
+                    <div class = "building-button" style = "width: 18.23vmin; height: 18.23vmin;" data-style-background-image = "it.background_image" data-event-click = "clickButton(it.command)" />
                 </div>
             </div>
         </div>

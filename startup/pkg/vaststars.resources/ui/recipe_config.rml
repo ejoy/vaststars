@@ -2,6 +2,16 @@
     <head>
         <style path = "/pkg/vaststars.resources/ui/common.rcss"/>
         <style>
+            body::before {
+                position: absolute;
+                z-index: -1;
+                width: 100%;
+                height: 100%;
+                left: -4.97vmax;
+                top: -1.32vmin;
+                background-image: /pkg/vaststars.resources/ui/textures/recipe-config/bg.texture;
+                background-size: 100% 100%;
+            }
             caption-container {
                 height: 17.50vmin;
                 width: 100%;
@@ -150,15 +160,15 @@
             })
         </script>
     </head>
-    <body style = "justify-content: center; align-items: center; background-image: /pkg/vaststars.resources/ui/textures/recipe-config/bg.texture; background-size: 100% 100%;" onload="init()">
+    <body style = "margin: 1.32vmin 3.995vmax 0 4.97vmax; justify-content: center; align-items: center;" onload="init()">
         <caption-container>
-            <caption-line style = "position: absolute; pointer-events: none; left: 24.26vmax; top: 12.89vmin; width: 15.34vmax;" />
-            <caption style = "position: absolute; pointer-events: none; left: 41.18vmax; top: 7.89vmin; width: 17.58vmax; height: 10vmin; font-size: 6.50vmin; justify-content: center; align-items: center;">生 产 预 览</caption>
-            <caption-line style = "position: absolute; pointer-events: none; left: 60.54vmax; top: 12.89vmin; width: 15.34vmax;" />
+            <caption-line style = "pointer-events: none; position: absolute; left: 24.26vmax; top: 12.89vmin; width: 15.34vmax;" />
+            <caption style = "pointer-events: none; position: absolute; left: 41.18vmax; top: 7.89vmin; width: 17.58vmax; height: 10vmin; font-size: 6.50vmin; justify-content: center; align-items: center;">生 产 预 览</caption>
+            <caption-line style = "pointer-events: none; position: absolute; left: 60.54vmax; top: 12.89vmin; width: 15.34vmax;" />
         </caption-container>
-        <div>
-            <div style = "position: absolute; margin-left: -8.26vmax; margin-top: -10.50vmin; top: 0; left: 0; width: 100vmax; height: 100vmin;" data-event-click = "clickClose()" />
-            <div class = "safe-area" style = "align-items: center;">
+        <div style = "position: absolute; margin-left: -4.97vmax; margin-top: -1.32vmin; width: 100vmax; height: 100vmin;" data-event-click = "clickClose()" />
+        <div style = "pointer-events: none; width: 92%; height: 93%;">
+            <div style = "pointer-events: none; align-items: center;">
                 <flex-row>
                     <left-box>
                         <recipe-list id = "recipe-list">

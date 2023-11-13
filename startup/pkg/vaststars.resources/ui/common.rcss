@@ -2,12 +2,6 @@ body {
     font: 100% "阿里巴巴普惠体";
 }
 
-.safe-area {
-    width: 92%;
-    height: 93%;
-    pointer-events: none;
-}
-
 flex-row {
     flex-direction: row;
     pointer-events: none;
@@ -21,12 +15,4 @@ button-confirm {
 }
 button-confirm:active {
     background-image: "/pkg/vaststars.resources/ui/textures/common/button-confirm-active.texture";
-}
-
-background {
-    position: absolute;
-    margin: 0 0 0 -4.715vmax;
-    width: 103.995vmax;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 240);
 }
