@@ -9,7 +9,7 @@ tag:
 data:
   scene:
     r: {0.4226182699203491, 0, 0, 0.9063077569007874}
-    t: {-100, 250, -250}
+    t: {-100, 200, -200}
   slot:
     follow_flag: 1
     joint_name: None
@@ -26,17 +26,17 @@ data:
       f: 1200
       fov: 60
       n: 0.2
+  exposure:
+    ISO: 100
+    aperture: 16
+    shutter_speed: 0.008
+    type: manual
   scene:
     t: {0, 0, 0}
     updir: {0, 1, 0, 0}
-  exposure:
-    type          : manual
-    aperture      : 16.0
-    shutter_speed : 0.008
-    ISO           : 100
-tag:
-  camera
 mount: 2
 policy:
   ant.camera|camera
   ant.camera|exposure
+tag:
+  camera

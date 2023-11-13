@@ -1,26 +1,66 @@
 ---
-duration: 30
+duration: 60
 name: camera
 sample_ratio: 50
 target_anims:
   ---
   clips:
     ---
-    amplitude_pos: 200
+    amplitude_pos: 4
     amplitude_rot: 0
     direction: 1
     random_amplitude: false
-    range: {50, 750}
+    range: {50, 250}
     repeat_count: 1
     rot_axis: 1
+    tween: 2
+    type: 1
+    ---
+    amplitude_pos: 296
+    amplitude_rot: 0
+    direction: 1
+    random_amplitude: false
+    range: {251, 1250}
+    repeat_count: 1
+    rot_axis: 2
     tween: 1
     type: 1
     ---
-    amplitude_pos: 200
+    amplitude_pos: 300
     amplitude_rot: 0
     direction: 1
     random_amplitude: false
-    range: {751, 800}
+    range: {1251, 1450}
+    repeat_count: 1
+    rot_axis: 2
+    tween: 3
+    type: 1
+    ---
+    amplitude_pos: 300
+    amplitude_rot: 0
+    direction: 1
+    random_amplitude: false
+    range: {1451, 1550}
+    repeat_count: 1
+    rot_axis: 2
+    tween: 1
+    type: 1
+    ---
+    amplitude_pos: 296
+    amplitude_rot: 0
+    direction: 1
+    random_amplitude: false
+    range: {1551, 1750}
+    repeat_count: 1
+    rot_axis: 2
+    tween: 2
+    type: 1
+    ---
+    amplitude_pos: 4
+    amplitude_rot: 0
+    direction: 1
+    random_amplitude: false
+    range: {1751, 2750}
     repeat_count: 1
     rot_axis: 2
     tween: 1
@@ -28,12 +68,12 @@ target_anims:
     ---
     amplitude_pos: 0
     amplitude_rot: 0
-    direction: 2
+    direction: 1
     random_amplitude: false
-    range: {801, 1499}
+    range: {2751, 2950}
     repeat_count: 1
     rot_axis: 2
-    tween: 1
+    tween: 3
     type: 1
   inherit: {false, false, false}
   target_name: camera
