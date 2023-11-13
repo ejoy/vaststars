@@ -306,20 +306,20 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  -- prototype "放置科研中心" {
-  --   desc = "放置可以研究火星科技的建筑",
-  --   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-  --   type = { "task" },
-  --   task = {"select_entity", 0, "科研中心I"},
-  --   prerequisites = {"收集铝矿石"},
-  --   count = 1,
-  --   tips_pic = {
-  --     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_click_build.texture",
-  --   },
-  --   sign_desc = {
-  --     { desc = "放置1座科研中心", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-  --   },
-  -- }
+  prototype "放置科研中心" {
+    desc = "放置可以研究火星科技的建筑",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = { "task" },
+    task = {"select_entity", 0, "科研中心I"},
+    prerequisites = {"收集铝矿石","收集铁矿石"},
+    count = 1,
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_click_build.texture",
+    },
+    sign_desc = {
+      { desc = "放置1座科研中心", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+  }
 
   prototype "地质研究" {
     desc = "对火星地质结构进行标本采集和研究",
@@ -332,7 +332,7 @@ local prototype = gameplay.register.prototype
     },
     count = 8,
     time = "2s",
-    prerequisites = {"收集铁矿石","收集铝矿石"},
+    prerequisites = {"放置科研中心"},
     sign_desc = {
       { desc = "该科技是一项前沿科技，可引导其他的科技研究", icon = "/pkg/vaststars.resources/ui/textures/science/key_sign.texture"},
     },
