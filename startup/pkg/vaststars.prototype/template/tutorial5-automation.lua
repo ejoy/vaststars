@@ -4911,7 +4911,7 @@ local mineral = {
 
 
 return {
-  name = "教学:自动化搭建",
+  name = "自动化搭建",
   entities = entities,
   road = road,
   mineral = mineral,

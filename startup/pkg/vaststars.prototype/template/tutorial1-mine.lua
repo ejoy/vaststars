@@ -32,7 +32,7 @@ local mineral = {
 }
 
 return {
-    name = "教学:矿物挖掘",
+    name = "矿物挖掘",
     entities = entities,
     road = road,
     mineral = mineral,
