@@ -78,7 +78,7 @@ local entities = { {
   y = 88
 }, {
   dir = "N",
-  items = {},
+  items = { { "采矿机I", 20 }, { "组装机I", 15 }, { "太阳能板I", 5 }, { "蓄电池I", 2 } },
   prototype_name = "仓库I",
   x = 142,
   y = 60

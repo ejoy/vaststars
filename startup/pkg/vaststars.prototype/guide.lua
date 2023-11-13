@@ -274,11 +274,11 @@ local guide = {
             pop_chapter = {"第一章","自动生产"},
             guide_progress = 35,--10
             task = {
-                "放置组装机",
+                "组装机生产",
             }
         },
         prerequisites = {
-            "仓库设置2",
+            "地质研究",
         },
 	},
     
@@ -404,7 +404,7 @@ local guide = {
     {
         name = "",
 		narrative = {
-            {"{/g 化工厂}准备就绪，让我们正式进入化工生产..哔哩..哔哩..(高兴）", "/pkg/vaststars.resources/ui/textures/guide/guide-3.texture"},
+            {"让我们正式进入化工生产..哔哩..哔哩..(高兴）", "/pkg/vaststars.resources/ui/textures/guide/guide-3.texture"},
         },
         narrative_end = {
             pop_chapter = {"第二章","化工生产"},
@@ -413,7 +413,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "放置化工厂",
+            "碳处理1",
         },
 	},
 
