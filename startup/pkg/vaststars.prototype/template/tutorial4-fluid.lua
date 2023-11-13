@@ -354,7 +354,7 @@ return {
   road = road,
   mineral = mineral,
   mountain = mountain,
-  order = 7,
+  order = 4,
   guide = guide,
   show = true,
   start_tech = "流体教学",

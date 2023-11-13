@@ -37,7 +37,7 @@ return {
     road = road,
     mineral = mineral,
     mountain = mountain,
-    order = 7,
+    order = 1,
     guide = guide,
     show = true,
     start_tech = "采矿教学",

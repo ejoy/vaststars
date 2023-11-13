@@ -364,7 +364,7 @@ return {
     road = road,
     mineral = mineral,
     mountain = mountain,
-    order = 7,
+    order = 3,
     guide = guide,
     show = true,
     start_tech = "物流教学",

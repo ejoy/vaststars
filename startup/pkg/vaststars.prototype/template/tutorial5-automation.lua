@@ -4916,7 +4916,7 @@ return {
   road = road,
   mineral = mineral,
   mountain = mountain,
-  order = 7,
+  order = 5,
   guide = guide,
   show = true,
   start_tech = "自动化教学",

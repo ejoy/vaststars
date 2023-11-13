@@ -118,7 +118,7 @@ return {
     road = road,
     mineral = mineral,
     mountain = mountain,
-    order = 7,
+    order = 2,
     guide = guide,
     show = true,
     start_tech = "电网教学",
