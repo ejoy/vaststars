@@ -9,7 +9,7 @@ local entities = { {
   y = 120
 },{
   dir = "N",
-  items = { { "无人机平台I", 8 } , { "采矿机I", 4 }, { "仓库I", 8 } },
+  items = { { "无人机平台I", 8 } , { "采矿机I", 4 }, { "仓库I", 8 } , { "风力发电机I", 2 }},
   prototype_name = "机身残骸",
   x = 107,
   y = 134
@@ -33,7 +33,7 @@ local entities = { {
   y = 111
 }, {
   dir = "W",
-  items = { { "风力发电机I", 1 },{ "科研中心I", 2 },{ "组装机I", 8 },{ "熔炼炉I", 2 }},
+  items = {{ "科研中心I", 2 },{ "组装机I", 8 },{ "熔炼炉I", 2 }},
   prototype_name = "机翼残骸",
   x = 143,
   y = 145
@@ -57,12 +57,7 @@ local entities = { {
 --   x = 115,
 --   y = 133
 -- },
-{
-  dir = "N",
-  prototype_name = "风力发电机I",
-  x = 117,
-  y = 121
-}}
+}
 local road = {}
 
 local mineral = {
