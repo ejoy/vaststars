@@ -67,8 +67,7 @@ local LockAxisStatus = {
     BeginY = 0,
 }
 
-local function toggle_view(s, cb)
-    local pos = icamera_controller.get_screen_world_position("CENTER")
+local function toggle_view(s, pos, cb)
     pos = math3d.set_index(pos, 2, 0)
 
     if s == "default" then
@@ -282,7 +281,7 @@ local function pickupObjectOnBuild(datamodel, position, blur)
         return
     else
         __clean(datamodel)
-        toggle_view("default", function()
+        toggle_view("default", icamera_controller.get_screen_world_position("CENTER"), function()
             gameplay_core.world_update = true
             __clean(datamodel)
         end)
@@ -415,7 +414,7 @@ function M.update(datamodel)
 
     for _ in quit_mb:unpack() do
         __clean(datamodel)
-        toggle_view("default", function()
+        toggle_view("default", icamera_controller.get_screen_world_position("CENTER"), function()
             gameplay_core.world_update = true
             __clean(datamodel)
         end)
@@ -423,7 +422,7 @@ function M.update(datamodel)
 
     for _ in guide_on_going_mb:unpack() do
         __clean(datamodel)
-        toggle_view("default", function()
+        toggle_view("default", icamera_controller.get_screen_world_position("CENTER"), function()
             gameplay_core.world_update = true
             __clean(datamodel)
         end)
@@ -583,7 +582,7 @@ function M.update(datamodel)
 
     for _, _, _, object_id in move_md:unpack() do
         datamodel.status = "BUILD"
-        toggle_view("construct", function()
+        toggle_view("construct", icamera_controller.get_screen_world_position("CENTER"), function()
             if builder then
                 builder:clean(builder_datamodel)
             end
@@ -622,7 +621,7 @@ function M.update(datamodel)
 
         datamodel.status = "BUILD"
         idetail.unselected()
-        toggle_view("construct", function()
+        toggle_view("construct", icamera_controller.get_screen_world_position("CENTER"), function()
             iui.leave()
             iui.open({rml = "/pkg/vaststars.resources/ui/build.rml"}, typeobject.id)
             gameplay_core.world_update = false
@@ -636,12 +635,11 @@ function M.update(datamodel)
         datamodel.status = "BUILD"
         assert(selected_obj)
         local pos = math3d.vector(icoord.position(selected_obj.x, selected_obj.y, selected_obj.w, selected_obj.h))
-        icamera_controller.focus_on_position("RIGHT_CENTER", pos, function()
-            toggle_view("construct", function()
-                iui.leave()
-                iui.open({rml = "/pkg/vaststars.resources/ui/build.rml"})
-                gameplay_core.world_update = false
-            end)
+        icamera_controller.focus_on_position("RIGHT_CENTER", pos)
+        toggle_view("construct", pos, function()
+            iui.leave()
+            iui.open({rml = "/pkg/vaststars.resources/ui/build.rml"})
+            gameplay_core.world_update = false
         end)
     end
 
