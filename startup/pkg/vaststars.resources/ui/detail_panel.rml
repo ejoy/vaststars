@@ -293,7 +293,7 @@
             <div class="tips-bg" style='align-items: flex-start; margin-left: -3vmin;' data-if="areaid==2.0" data-event-longpress="onLongPressTips(ev)">
                 <div data-for = "property : property_list">
                     <div style = "margin-left: 10vmin; height: 22vmin; flex-direction: row; align-items: center; justify-content: flex-start;">
-                        <div style = "width: 16.00vmin; height: 16.00vmin; background-size:cover;" data-style-background-image="property.icon" />
+                        <div style = "width: 16vmin; height: 16vmin; background-size:cover;" data-style-background-image="property.icon" />
                         <div style = "flex-direction: column; justify-content: center; align-items: flex-start;">
                             <div style = "color:#adadad; padding-bottom: 0.75vmin; font-size: 8vmin; text-align: center;">{{property.desc}}</div>
                             <div style = "text-align: center; font-size: 6vmin;" data-style-color = "property.color or 'rgb(255,255,255)'">{{property.value}}</div>
@@ -303,8 +303,11 @@
             </div>
             <div class="tips-bg" style="margin-left: -3vmin;" data-if="areaid==3.0" data-event-longpress="onLongPressTips(ev)">
                 <div style="width:80%; flex-direction: row; justify-content: flex-start; align-items: center; flex-wrap: wrap;">
-                    <div data-for = "chest : chest_list_1" class="small-item1" style="margin: 1vmin; width: 18vmin; height: 18vmin;" data-style-border = "chest.type == 'supply' and '0.3vmin rgb(254, 98, 124);' or (chest.type == 'demand' and '0.3vmin rgb(23, 176, 240);' or '0.2vmin rgb(255, 255, 255);')" data-style-background-image="chest.icon">
-                        <div style="font-size: 6.00vmin; -webkit-text-stroke:0.25vmin rgb(0, 0, 0);" data-if="chest.icon ~= ''">{{chest.count}}</div>
+                    <div style='flex-direction: column; align-items: center;' data-for = "chest : chest_list_1" >
+                        <div class="small-item1" style="margin: 1vmin; width: 15vmin; height: 15vmin;" data-style-border = "chest.type == 'supply' and '0.3vmin rgb(254, 98, 124);' or (chest.type == 'demand' and '0.3vmin rgb(23, 176, 240);' or '0.2vmin rgb(255, 255, 255);')" data-style-background-image="chest.icon">
+                            <div style="font-size: 6vmin; -webkit-text-stroke:0.25vmin rgb(0, 0, 0);" data-if="chest.icon ~= ''">{{chest.count}}</div>
+                        </div>
+                        <div style='font-size: 4vmin'>{{chest.name}}</div>
                     </div>
                 </div>
             </div>
@@ -363,15 +366,21 @@
             </div>
             <div class="tips-bg" style="flex-direction: row;  margin-left: -3vmin;" data-if="areaid==6.0" data-event-longpress="onLongPressTips(ev)">
                 <div style="width:80%; flex-direction: row; justify-content: flex-start; align-items: center; flex-wrap: wrap;">
-                    <div data-for = "chest : chest_list_2" class="small-item1" style="margin: 1vmin; width: 18vmin; height: 18vmin;" data-style-border = "chest.type == 'supply' and '0.3vmin rgb(23, 176, 240);' or (chest.type == 'demand' and '0.3vmin rgb(254, 98, 124);' or '0.2vmin rgb(255, 255, 255);')" data-style-background-image="chest.icon">
-                        <div style="font-size: 6.00vmin; -webkit-text-stroke:0.25vmin rgb(0, 0, 0);" data-if="chest.icon ~= ''">{{chest.count}}</div>
+                    <div style='flex-direction: column; align-items: center;' data-for = "chest : chest_list_2">
+                        <div class="small-item1" style="margin: 1vmin; width: 15vmin; height: 15vmin;" data-style-border = "chest.type == 'supply' and '0.3vmin rgb(23, 176, 240);' or (chest.type == 'demand' and '0.3vmin rgb(254, 98, 124);' or '0.2vmin rgb(255, 255, 255);')" data-style-background-image="chest.icon">
+                            <div style="font-size: 6.00vmin; -webkit-text-stroke:0.25vmin rgb(0, 0, 0);" data-if="chest.icon ~= ''">{{chest.count}}</div>
+                        </div>
+                        <div style='font-size: 4vmin'>{{chest.name}}</div>
                     </div>
                 </div>
             </div>
             <div class="tips-bg" style="flex-direction: row;  margin-left: -3vmin;" data-if="areaid==7.0" data-event-longpress="onLongPressTips(ev)">
                 <div style="width:80%; flex-direction: row; justify-content: flex-start; align-items: center; flex-wrap: wrap;">
-                    <div data-for = "chest : chest_list_1" class="small-item1" style="margin: 1vmin; width: 18vmin; height: 18vmin;" data-style-border = "chest.type == 'supply' and '0.3vmin rgb(254, 98, 124);' or (chest.type == 'demand' and '0.3vmin rgb(23, 176, 240);' or '0.2vmin rgb(255, 255, 255);')" data-style-background-image="chest.icon">
-                        <div style="font-size: 6.00vmin; -webkit-text-stroke:0.25vmin rgb(0, 0, 0);" data-if="chest.icon ~= ''">{{chest.count}}</div>
+                    <div style='flex-direction: column; align-items: center;' data-for = "chest : chest_list_1">
+                        <div class="small-item1" style="margin: 1vmin; width: 15vmin; height: 15vmin;" data-style-border = "chest.type == 'supply' and '0.3vmin rgb(254, 98, 124);' or (chest.type == 'demand' and '0.3vmin rgb(23, 176, 240);' or '0.2vmin rgb(255, 255, 255);')" data-style-background-image="chest.icon">
+                            <div style="font-size: 6.00vmin; -webkit-text-stroke:0.25vmin rgb(0, 0, 0);" data-if="chest.icon ~= ''">{{chest.count}}</div>
+                        </div>
+                        <div style='font-size: 4vmin'>{{chest.name}}</div>
                     </div>
                 </div>
             </div>
