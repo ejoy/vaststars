@@ -4,8 +4,7 @@ local w = world.w
 
 local MOVE_SPEED <const> = 8.0
 local CAMERA_SAMPLE_NUM <const> = 7
-local CONSTANT <const> = require "gameplay.interface.constant"
-local FPS <const> = CONSTANT.FPS
+local DELTA_TIME <const> = require("gameplay.interface.constant").DELTA_TIME
 
 local math3d = require "math3d"
 local XZ_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
@@ -198,15 +197,13 @@ local function check_camera_editable()
     return cam_cmd_queue:size() <= 0 and cam_motion_matrix_queue:size() <= 0
 end
 
-local function add_camera_track(r, t1, t2)
-    local ratio = 0
-    local step = 2 / FPS
-
+local function add_camera_track(r, t1, t2, duration)
     local t = {}
-    while ratio <= 1.0 do
-        t[#t +1] = math3d.matrix({r = r, t = math3d.lerp(t1, t2, ratio)})
-        ratio = ratio + step
-    end
+    local d = 0
+    repeat
+        d = d + DELTA_TIME
+        t[#t +1] = math3d.matrix({r = r, t = math3d.lerp(t1, t2, d / duration)})
+    until d >= duration
     cam_motion_matrix_queue:push(t)
 end
 
@@ -219,7 +216,7 @@ local function handle_camera_motion(ce)
         local cmd = assert(cam_cmd_queue:pop())
         local c = cmd[1]
         if c[1] == "focus_on_position" then
-            add_camera_track(iom.get_rotation(ce), iom.get_position(ce), focus_on_position(ce, table.unpack(c, 2)))
+            add_camera_track(iom.get_rotation(ce), iom.get_position(ce), focus_on_position(ce, table.unpack(c, 2)), 500)
         elseif c[1] == "toggle_view" then
             local t = toggle_view(table.unpack(c, 2))
             cam_motion_matrix_queue:push(t)
@@ -294,7 +291,7 @@ local handle_drop_camera; do
                     local velocity = math3d.vector(x / delta_time, y / delta_time, z / delta_time)
                     distance = math3d.mul(velocity, 250)
                     local p = mu.clamp_vec(math3d.add(pos, distance), CAMERA_POSITION_MIN, CAMERA_POSITION_MAX)
-                    add_camera_track(iom.get_rotation(ce), pos, p)
+                    add_camera_track(iom.get_rotation(ce), pos, p, 250)
                 else
                     iom.set_position(ce, pos)
                 end
