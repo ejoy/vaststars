@@ -121,7 +121,8 @@ static int lbuild(lua_State *L) {
                 auto mov1 = stations.find(l.ending);
                 auto mov2 = stations.find(l.mov2);
                 if (!mov1 || !mov2) {
-                    assert(false);
+                    roadnet::lorryTargetNone(l);
+                    lorrywhere.insert_or_assign(w.rw.getLorryId(l), roadnet::straightid{});
                     break;
                 }
                 if (!station_valid_mov1(w, l, *mov1) || !station_valid_mov2(w, l, *mov2)) {
@@ -136,7 +137,8 @@ static int lbuild(lua_State *L) {
             case roadnet::lorry_target::mov2: {
                 auto mov2 = stations.find(l.ending);
                 if (!mov2) {
-                    assert(false);
+                    roadnet::lorryTargetNone(l);
+                    lorrywhere.insert_or_assign(w.rw.getLorryId(l), roadnet::straightid{});
                     break;
                 }
                 if (!station_valid_mov2(w, l, *mov2)) {
