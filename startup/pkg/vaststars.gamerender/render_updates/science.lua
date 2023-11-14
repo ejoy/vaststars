@@ -36,3 +36,8 @@ function science_sys:gameworld_update()
     end
     return false
 end
+
+function science_sys:exit()
+    local science = global.science
+    science.current_tech = nil
+end
