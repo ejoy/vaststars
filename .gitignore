@@ -4,7 +4,7 @@
 .ios/
 .fileserver/
 .vs/
-.repo/
+.vfs/
 /build/
 /bin/
 /startup/res/
