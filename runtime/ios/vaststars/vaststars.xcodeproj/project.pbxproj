@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		11307ABA2B020D9A00F5CC9B /* .vfs in Resources */ = {isa = PBXBuildFile; fileRef = 11307AB92B020D9A00F5CC9B /* .vfs */; };
 		115F77B029C1A17500F87BBB /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 115F77AF29C1A17500F87BBB /* IOSurface.framework */; };
 		115F77B229C1A1EA00F87BBB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 115F77B129C1A1EA00F87BBB /* CoreGraphics.framework */; };
 		11C5E60F2A09F8AD00793559 /* assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 11C5E60E2A09F8AD00793559 /* assets.xcassets */; };
@@ -24,6 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		11307AB92B020D9A00F5CC9B /* .vfs */ = {isa = PBXFileReference; lastKnownFileType = folder; name = .vfs; path = ../../../../startup/.vfs; sourceTree = "<group>"; };
 		115F77AF29C1A17500F87BBB /* IOSurface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOSurface.framework; path = System/Library/Frameworks/IOSurface.framework; sourceTree = SDKROOT; };
 		115F77B129C1A1EA00F87BBB /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		11C5E60E2A09F8AD00793559 /* assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = assets.xcassets; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 		11FAA84B279AA48600D847F3 /* vaststars */ = {
 			isa = PBXGroup;
 			children = (
+				11307AB92B020D9A00F5CC9B /* .vfs */,
 				11FAA880279E8EF700D847F3 /* Info.plist */,
 				11FAA869279E7C2500D847F3 /* vaststars_modules.c */,
 				11FAA87C279E808A00D847F3 /* Settings.bundle */,
@@ -167,6 +170,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11307ABA2B020D9A00F5CC9B /* .vfs in Resources */,
 				11C5E60F2A09F8AD00793559 /* assets.xcassets in Resources */,
 				11FAA87D279E808A00D847F3 /* Settings.bundle in Resources */,
 			);
