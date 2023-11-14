@@ -465,7 +465,7 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "锅炉设置" {
-    desc = "规模生产铁板",
+    desc = "锅炉设置生产配方",
     type = { "task" },
     task = {"unknown", 0, 3}, 
     task_params = {recipe = "卤水沸腾"},
@@ -475,7 +475,7 @@ local prototype = gameplay.register.prototype
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "在熔炼炉进行铁板生产", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "锅炉设置“卤水沸腾”", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 

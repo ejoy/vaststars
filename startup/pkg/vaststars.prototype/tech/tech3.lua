@@ -253,7 +253,6 @@ local prototype = gameplay.register.prototype
     prerequisites = {"派遣运输车"},
     effects = {
       unlock_recipe = {"砖石公路打印"},
-      unlock_item = {"砖石公路-X型"},
     },
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -293,7 +292,6 @@ local prototype = gameplay.register.prototype
     },
     effects = {
       unlock_recipe = {"轻型运输车"},
-      unlock_item = {"轻型运输车"},
     },
     sign_desc = {
       { desc = "使用熔炼炉生产3个铁板", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
@@ -325,7 +323,6 @@ local prototype = gameplay.register.prototype
     count = 3,
     effects = {
       unlock_recipe = {"轻型采矿机"},
-      unlock_item = {"轻型采矿机"},
     },
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_ironplate1.texture",
