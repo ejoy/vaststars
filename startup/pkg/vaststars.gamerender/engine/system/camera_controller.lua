@@ -320,7 +320,7 @@ local handle_drop_camera; do
                 local delta_time = now() - start_time
                 local x, y, z = math3d.index(delta_vec, 1), math3d.index(delta_vec, 2), math3d.index(delta_vec, 3)
                 local velocity = math3d.vector(x / delta_time, y / delta_time, z / delta_time)
-                distance = math3d.mul(velocity, 500)
+                distance = math3d.mul(velocity, 250)
                 local p = mu.clamp_vec(math3d.add(pos, distance), CAMERA_POSITION_MIN, CAMERA_POSITION_MAX)
                 add_camera_track(scene.s, scene.r, pos, scene.s, scene.r, p)
             else

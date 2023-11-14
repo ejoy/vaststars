@@ -31,6 +31,8 @@ local function pop(self)
 end
 
 local function clear(self)
+	self.head = 1
+	self.tail = 1
 	self.array = nil
 end
 
