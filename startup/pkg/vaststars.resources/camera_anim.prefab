@@ -46,7 +46,8 @@ data:
     path: /pkg/vaststars.resources/effects/sandstorm3.efk
     speed: 1
   scene:
-    s: {0.10000000149011612, 0.10000000149011612, 0.10000000149011612}
+    s: {1, 1, 1}
+    t: {0, 0, 10}
   visible_state: main_queue
 mount: 3
 policy:
