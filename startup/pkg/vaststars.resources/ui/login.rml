@@ -21,6 +21,7 @@
                 padding: 3.7vmin 5vmin 0 0;
             }
             info {
+                margin-left:4vmin;
                 font-size: 2.5vmin;
                 color: rgb(145, 141, 141);
             }
