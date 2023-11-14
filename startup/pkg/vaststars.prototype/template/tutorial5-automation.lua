@@ -27,7 +27,7 @@ local entities = { {
   y = 169
 }, {
   dir = "E",
-  items = { { "管道1-X型", 20 }, { "地下管1-JI型", 6 }, { "烟囱I", 4 }, { "排水口I", 2 } },
+  items = { { "管道1-X型", 30 }, { "地下管1-JI型", 30 }, { "烟囱I", 4 }, { "排水口I", 2 } },
   prototype_name = "机身残骸",
   x = 152,
   y = 170
@@ -305,7 +305,7 @@ local entities = { {
 }, {
   dir = "N",
   fluid_name = "",
-  prototype_name = "熔炼炉I",
+  prototype_name = "组装机I",
   x = 94,
   y = 145
 }, {
@@ -323,7 +323,7 @@ local entities = { {
 }, {
   dir = "N",
   fluid_name = "",
-  prototype_name = "熔炼炉I",
+  prototype_name = "组装机I",
   x = 107,
   y = 145
 }, {
@@ -1020,12 +1020,6 @@ local entities = { {
   prototype_name = "地下管1-JU型",
   x = 174,
   y = 171
-}, {
-  dir = "E",
-  fluid_name = "乙烯",
-  prototype_name = "地下管1-JI型",
-  x = 172,
-  y = 167
 }, {
   dir = "S",
   fluid_name = "乙烯",

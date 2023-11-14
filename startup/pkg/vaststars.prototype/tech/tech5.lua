@@ -895,8 +895,8 @@ local prototype = gameplay.register.prototype
         {"气候科技包", 1},
         {"机械科技包", 1},
     },
-    count = 20,
-    time = "2s"
+    count = 15,
+    time = "3s"
   }
 
   prototype "自动化结束" {
