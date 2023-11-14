@@ -1,0 +1,22 @@
+---
+data:
+  scene:
+    s: {3.5, 3.5, 3.5}
+    t: {0, 0, 50}
+policy:
+  ant.scene|scene_object
+tag:
+  Scene
+---
+data:
+  efk:
+    path: /pkg/vaststars.resources/effects/sandstorm.efk
+    speed: 1
+  scene: {}
+  visible_state: main_queue
+mount: 1
+policy:
+  ant.scene|scene_object
+  ant.efk|efk
+tag:
+  sandstorm

@@ -4458,7 +4458,7 @@ return {
       "/pkg/vaststars.resources/ui/login.rml",
     },
     init_instances = {
-      "/pkg/vaststars.resources/glbs/road/arrow.glb|mesh.prefab",
+      "/pkg/vaststars.resources/effects/login.prefab",
     },
     research_queue = {
       "登录科技",
