@@ -1,6 +1,7 @@
 local ecs = ...
 local world = ecs.world
 local w = world.w
+local mathmsg = require "utility.mathmsg"
 
 local MOVE_SPEED <const> = 8.0
 local CAMERA_SAMPLE_NUM <const> = 7
@@ -235,7 +236,7 @@ local function handle_camera_motion(ce)
             local t1 = iom.get_position(ce)
             local t2 = math3d.index(mat, 4)
             iom.set_srt(ce, math3d.srt(mat))
-            world:pub {"dragdrop_camera", math3d.ref(math3d.sub(t2, t1))}
+            world:pub(mathmsg("dragdrop_camera", math3d.sub(t2, t1)))
         end
     end
 end
@@ -302,7 +303,7 @@ local handle_drop_camera; do
             if distance then
                 delta_vec = math3d.add(delta_vec, distance)
             end
-            world:pub {"dragdrop_camera", math3d.ref(delta_vec)}
+            world:pub(mathmsg("dragdrop_camera", delta_vec))
         end
     end
 end
