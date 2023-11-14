@@ -313,16 +313,23 @@ local handle_drop_camera; do
             end
 
             pos = mu.clamp_vec(pos, CAMERA_POSITION_MIN, CAMERA_POSITION_MAX)
-            iom.set_position(ce, pos)
-            world:pub {"dragdrop_camera", math3d.ref(delta_vec)}
 
+            local distance
             if pan_ended then
-                local delta = end_time - start_time
+                local delta_time = end_time - start_time
                 local x, y, z = math3d.index(delta_vec, 1), math3d.index(delta_vec, 2), math3d.index(delta_vec, 3)
-                local v = math3d.mul(math3d.vector(x/delta, y/delta, z/delta), 500)
-                local p = mu.clamp_vec(math3d.add(pos, v), CAMERA_POSITION_MIN, CAMERA_POSITION_MAX)
+                local velocity = math3d.vector(x / delta_time, y / delta_time, z / delta_time)
+                distance = math3d.mul(velocity, 500)
+                local p = mu.clamp_vec(math3d.add(pos, distance), CAMERA_POSITION_MIN, CAMERA_POSITION_MAX)
                 add_camera_track(scene.s, scene.r, pos, scene.s, scene.r, p)
+            else
+                cam_motion_matrix_queue:push({math3d.matrix{r = scene.r, t = pos}})
             end
+
+            if distance then
+                delta_vec = math3d.add(delta_vec, distance)
+            end
+            world:pub {"dragdrop_camera", math3d.ref(delta_vec)}
         end
     end
 end
