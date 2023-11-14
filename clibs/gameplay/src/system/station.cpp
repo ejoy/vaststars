@@ -185,20 +185,24 @@ static int lbuild(lua_State *L) {
         if (!lorrywhere.empty()) {
             for (auto const& cross : w.rw.crossAry) {
                 for (size_t i = 0; i < 2; ++i) {
-                    if (cross.cross_lorry[i] && lorrywhere.contains(cross.cross_lorry[i])) {
-                        auto t = cross.cross_status[i];
-                        auto C = cross.neighbor[(uint8_t)t & 0x03u];
-                        lorrywhere.insert_or_assign(cross.cross_lorry[i], C);
+                    if (cross.cross_lorry[i]) {
+                        auto [found, slot] = lorrywhere.find_or_insert(cross.cross_lorry[i]);
+                        if (found) {
+                            auto t = cross.cross_status[i];
+                            auto C = cross.neighbor[(uint8_t)t & 0x03u];
+                            *slot = C;
+                        }
                     }
                 }
             }
             uint16_t N = (uint16_t)w.rw.straightAry.size();
             for (uint16_t id = 0; id < N; ++id) {
                 auto& straight = w.rw.straightAry[id];
-                for (uint16_t i = 1; i < straight.len; ++i) {
+                for (uint16_t i = 0; i < straight.len; ++i) {
                     if (roadnet::lorryid lorryId = w.rw.LorryInRoad(straight.lorryOffset+i)) {
-                        if (lorrywhere.contains(lorryId)) {
-                            lorrywhere.insert_or_assign(lorryId, roadnet::straightid{id});
+                        auto [found, slot] = lorrywhere.find_or_insert(lorryId);
+                        if (found) {
+                            *slot = roadnet::straightid{id};
                         }
                     }
                 }
