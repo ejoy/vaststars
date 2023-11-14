@@ -264,40 +264,41 @@ local function handle_camera_motion(ce)
     if cam_motion_matrix_queue:size() > 0 then
         local mat = cam_motion_matrix_queue:pop()
         if mat then
+            local t1 = iom.get_position(ce)
+            local t2 = math3d.index(mat, 4)
             iom.set_srt(ce, math3d.srt(mat))
-            world:pub {"dragdrop_camera"}
+            world:pub {"dragdrop_camera", math3d.ref(math3d.sub(t2, t1))}
         end
     end
 end
 
 local handle_drop_camera; do
-    local starting = math3d.ref()
+    local start_pos = math3d.ref()
     local start_time
 
     function handle_drop_camera(ce)
         local pan_ended = false
         local ending_x, ending_y
+
         for _, _, e in gesture_pan:unpack() do
-            if check_camera_editable() then
-                if e.state == "began" then
-                    starting.v = icamera_controller.screen_to_world(e.x, e.y, XZ_PLANE)
-                    start_time = now()
-                else
-                    ending_x, ending_y = e.x, e.y
-                    if e.state == "ended" then
-                        pan_ended = true
-                    end
+            if e.state == "began" then
+                start_pos.v = icamera_controller.screen_to_world(e.x, e.y, XZ_PLANE)
+                start_time = now()
+                cam_motion_matrix_queue:clear()
+            else
+                ending_x, ending_y = e.x, e.y
+                if e.state == "ended" then
+                    pan_ended = true
                 end
             end
         end
 
-        if starting.v and ending_x and ending_y then
+        if start_pos.v and ending_x and ending_y then
             w:extend(ce, "scene:in")
             local scene = ce.scene
 
-            local ending = icamera_controller.screen_to_world(ending_x, ending_y, XZ_PLANE)
-            local end_time = now()
-            local delta_vec = math3d.sub(starting, ending)
+            local end_pos = icamera_controller.screen_to_world(ending_x, ending_y, XZ_PLANE)
+            local delta_vec = math3d.sub(start_pos, end_pos)
             local pos = math3d.add(scene.t, delta_vec)
 
             if LockAxis then
@@ -316,14 +317,14 @@ local handle_drop_camera; do
 
             local distance
             if pan_ended then
-                local delta_time = end_time - start_time
+                local delta_time = now() - start_time
                 local x, y, z = math3d.index(delta_vec, 1), math3d.index(delta_vec, 2), math3d.index(delta_vec, 3)
                 local velocity = math3d.vector(x / delta_time, y / delta_time, z / delta_time)
                 distance = math3d.mul(velocity, 500)
                 local p = mu.clamp_vec(math3d.add(pos, distance), CAMERA_POSITION_MIN, CAMERA_POSITION_MAX)
                 add_camera_track(scene.s, scene.r, pos, scene.s, scene.r, p)
             else
-                cam_motion_matrix_queue:push({math3d.matrix{r = scene.r, t = pos}})
+                iom.set_position(ce, pos)
             end
 
             if distance then

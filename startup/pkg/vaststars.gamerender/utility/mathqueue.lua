@@ -16,6 +16,9 @@ local function pop(self)
 		self.array = nil
 		return nil
 	else
+		if not self.array then
+			return nil
+		end
 		local r = self.array[self.head]
 		self.head = self.head + 1
 		if self.head == self.tail then
@@ -25,6 +28,10 @@ local function pop(self)
 		end
 		return r
 	end
+end
+
+local function clear(self)
+	self.array = nil
 end
 
 local function size(self)
@@ -40,6 +47,7 @@ local function create()
 	q.push = push
 	q.pop = pop
 	q.size = size
+	q.clear = clear
 	return q
 end
 return create
