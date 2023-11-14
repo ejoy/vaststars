@@ -40,3 +40,17 @@ policy:
   ant.camera|exposure
 tag:
   camera
+---
+data:
+  efk:
+    path: /pkg/vaststars.resources/effects/sandstorm3.efk
+    speed: 1
+  scene:
+    s: {0.10000000149011612, 0.10000000149011612, 0.10000000149011612}
+  visible_state: main_queue
+mount: 3
+policy:
+  ant.scene|scene_object
+  ant.efk|efk
+tag:
+  sandstorm3
