@@ -76,37 +76,6 @@ do
         temp_objects[#temp_objects+1] = o
     end
 
-    function idetail.focus_non_building(x, y, w, h)
-        idetail.unselected()
-
-        local pos = icoord.position(x, y, w, h)
-        temp_objects[#temp_objects+1] = create_selected_boxes(
-            {
-                "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
-                "/pkg/vaststars.resources/glbs/selected-box-no-animation-line.glb|mesh.prefab",
-            },
-            pos, SPRITE_COLOR.SELECTED_OUTLINE, w, h
-        )
-    end
-
-    function idetail.focus(gameplay_eid)
-        idetail.unselected()
-
-        local e = assert(gameplay_core.get_entity(gameplay_eid))
-        do
-            local typeobject = iprototype.queryById(e.building.prototype)
-            local w, h = iprototype.rotate_area(typeobject.area, e.building.direction)
-            local pos = icoord.position(e.building.x, e.building.y, w, h)
-            temp_objects[#temp_objects+1] = create_selected_boxes(
-                {
-                    "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
-                    "/pkg/vaststars.resources/glbs/selected-box-no-animation-line.glb|mesh.prefab",
-                },
-                pos, SPRITE_COLOR.SELECTED_OUTLINE, w, h
-            )
-        end
-    end
-
     function idetail.selected(gameplay_eid)
         local e = assert(gameplay_core.get_entity(gameplay_eid))
         local typeobject = e.lorry and iprototype.queryById(e.lorry.prototype) or iprototype.queryById(e.building.prototype)

@@ -4,13 +4,10 @@ local w = world.w
 
 local CONSTANT <const> = require "gameplay.interface.constant"
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
-local CLASS <const> = {
-    Lorry = 1,
-    Object = 2,
-    Mineral = 3,
-    Mountain = 4,
-    Road = 5,
-}
+local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
+
+local ipick_object = ecs.require "pick_object_system"
+local CLASS <const> = ipick_object.CLASS
 
 local math3d = require "math3d"
 local XZ_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
@@ -32,7 +29,6 @@ local idetail = ecs.require "detail_system"
 local create_station_builder = ecs.require "editor.stationbuilder"
 local icoord = require "coord"
 local ichest = require "gameplay.interface.chest"
-local ipick_object = ecs.require "pick_object_system"
 local ibackpack = require "gameplay.interface.backpack"
 local gesture_longpress_mb = world:sub{"gesture", "longpress"}
 local igameplay = ecs.require "gameplay_system"
@@ -59,6 +55,7 @@ local lock_axis_mb = mailbox:sub {"lock_axis"}
 local unlock_axis_mb = mailbox:sub {"unlock_axis"}
 local settings_mb = mailbox:sub {"settings"}
 local iguide_tips = ecs.require "guide_tips"
+local create_selected_boxes = ecs.require "selected_boxes"
 
 local builder, builder_datamodel, builder_ui
 local selected_obj
@@ -219,6 +216,18 @@ local function move_focus(e)
 	end
 end
 
+local function show_selectbox(x, y, w, h)
+    local pos = icoord.position(x, y, w, h)
+    local o = create_selected_boxes(
+        {
+            "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
+            "/pkg/vaststars.resources/glbs/selected-box-no-animation-line.glb|mesh.prefab",
+        },
+        pos, SPRITE_COLOR.SELECTED_OUTLINE, w, h
+    )
+    idetail.add_tmp_object(o)
+end
+
 local function pickupObjectOnBuild(datamodel, position, blur)
     local coord = icoord.position2coord(position)
     if not coord then
@@ -250,7 +259,10 @@ local function pickupObjectOnBuild(datamodel, position, blur)
 
         iui.open({rml = "/pkg/vaststars.resources/ui/detail_panel.rml"}, object.id)
 
-        idetail.focus(assert(object.gameplay_eid))
+        local e = assert(gameplay_core.get_entity(object.gameplay_eid))
+        local typeobject = iprototype.queryById(e.building.prototype)
+        local w, h = iprototype.rotate_area(typeobject.area, e.building.direction)
+        show_selectbox(e.building.x, e.building.y, w, h)
         return
 
     elseif o and (o.class == CLASS.Mountain or o.class == CLASS.Road) then
@@ -258,7 +270,7 @@ local function pickupObjectOnBuild(datamodel, position, blur)
         iui.open({rml = "/pkg/vaststars.resources/ui/non_building_detail_panel.rml"}, typeobject.icon, iprototype.display_name(typeobject), o.eid)
 
         if o.x and o.y and o.w and o.h then
-            idetail.focus_non_building(o.x, o.y, o.w, o.h)
+            show_selectbox(o.x, o.y, o.w, o.h)
         end
         return
 
@@ -266,7 +278,7 @@ local function pickupObjectOnBuild(datamodel, position, blur)
         local typeobject = iprototype.queryByName(o.name)
         iui.open({rml = "/pkg/vaststars.resources/ui/non_building_detail_panel.rml"}, typeobject.icon, typeobject.mineral_name and typeobject.mineral_name or iprototype.display_name(typeobject), o.eid)
 
-        idetail.focus_non_building(o.x, o.y, o.w, o.h)
+        show_selectbox(o.x, o.y, o.w, o.h)
         return
     else
         __clean(datamodel)
@@ -285,6 +297,7 @@ local function pickupObject(datamodel, position, blur)
     idetail.unselected()
 
     local o = ipick_object.pick(coord[1], coord[2], blur)
+    assert(o)
     if o and o.class == CLASS.Lorry then
         local typeobject = iprototype.queryByName(o.name)
         iui.open({rml = "/pkg/vaststars.resources/ui/non_building_detail_panel.rml"}, typeobject.icon, typeobject.mineral_name and typeobject.mineral_name or iprototype.display_name(typeobject), o.eid)
@@ -315,10 +328,12 @@ local function pickupObject(datamodel, position, blur)
             return
         end
 
-        local typeobject = iprototype.queryByName(object.prototype_name)
         iui.open({rml = "/pkg/vaststars.resources/ui/detail_panel.rml"}, object.id)
 
-        idetail.focus(assert(object.gameplay_eid))
+        local e = assert(gameplay_core.get_entity(object.gameplay_eid))
+        local typeobject = iprototype.queryById(e.building.prototype)
+        local w, h = iprototype.rotate_area(typeobject.area, e.building.direction)
+        show_selectbox(e.building.x, e.building.y, w, h)
 
         --
         selected_obj = o
@@ -338,9 +353,7 @@ local function pickupObject(datamodel, position, blur)
         local typeobject = iprototype.queryByName(o.name)
         iui.open({rml = "/pkg/vaststars.resources/ui/non_building_detail_panel.rml"}, typeobject.icon, iprototype.display_name(typeobject), o.eid)
 
-        if o.x and o.y and o.w and o.h then
-            idetail.focus_non_building(o.x, o.y, o.w, o.h)
-        end
+        show_selectbox(o.x, o.y, o.w, o.h)
 
         --
         selected_obj = o
@@ -358,7 +371,7 @@ local function pickupObject(datamodel, position, blur)
         local typeobject = iprototype.queryByName(o.name)
         iui.open({rml = "/pkg/vaststars.resources/ui/non_building_detail_panel.rml"}, typeobject.icon, typeobject.mineral_name and typeobject.mineral_name or iprototype.display_name(typeobject), o.eid)
 
-        idetail.focus_non_building(o.x, o.y, o.w, o.h)
+        show_selectbox(o.x, o.y, o.w, o.h)
 
         selected_obj = o
 
@@ -370,10 +383,10 @@ local function pickupObject(datamodel, position, blur)
         audio.play "event:/ui/click"
         return
 
-    else
-        idetail.focus_non_building(coord[1], coord[2], 1, 1)
+    elseif o and o.class == CLASS.Empty then
+        show_selectbox(o.x, o.y, o.w, o.h)
 
-        selected_obj = nil
+        selected_obj = o
         datamodel.focus_building_icon = ""
 
         --
@@ -621,11 +634,14 @@ function M.update(datamodel)
 
     for _ in build_mode_mb:unpack() do
         datamodel.status = "BUILD"
-        idetail.unselected()
-        toggle_view("construct", function()
-            iui.leave()
-            iui.open({rml = "/pkg/vaststars.resources/ui/build.rml"})
-            gameplay_core.world_update = false
+        assert(selected_obj)
+        local pos = math3d.vector(icoord.position(selected_obj.x, selected_obj.y, selected_obj.w, selected_obj.h))
+        icamera_controller.focus_on_position("RIGHT_CENTER", pos, function()
+            toggle_view("construct", function()
+                iui.leave()
+                iui.open({rml = "/pkg/vaststars.resources/ui/build.rml"})
+                gameplay_core.world_update = false
+            end)
         end)
     end
 

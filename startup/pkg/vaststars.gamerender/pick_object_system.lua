@@ -4,12 +4,13 @@ local w = world.w
 
 local CONSTANT <const> = require "gameplay.interface.constant"
 local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
-local CLASS = {
+local CLASS <const> = {
     Lorry = 1,
     Object = 2,
     Mineral = 3,
     Mountain = 4,
     Road = 5,
+    Empty = 6,
 }
 
 local gameplay_core = require "gameplay.core"
@@ -149,6 +150,17 @@ local function push_objects(lorries, pick_x, pick_y, x, y, mark, blur)
         }
         return
     end
+
+    mark.empty[iprototype.packcoord(x, y)] = {
+        class = CLASS.Empty,
+        name = "",
+        id = iprototype.packcoord(x, y),
+        dist = distance(pick_x, pick_y, x, y),
+        x = x,
+        y = y,
+        w = 1,
+        h = 1,
+    }
 end
 
 function pick_object_sys:prototype_restore()
@@ -205,5 +217,7 @@ function ipick_object.pick(x, y, blur)
     -- log.info("pick", #objs, pointer)
     return objs[pointer]
 end
+
+ipick_object.CLASS = CLASS
 
 return ipick_object
