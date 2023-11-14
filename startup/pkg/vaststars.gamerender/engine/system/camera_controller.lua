@@ -45,9 +45,6 @@ local iom = ecs.require "ant.objcontroller|obj_motion"
 local irq = ecs.require "ant.render|render_system.renderqueue"
 local create_queue = require "utility.queue"
 local create_mathqueue = require "utility.mathqueue"
-local hierarchy = require "hierarchy"
-local animation = hierarchy.animation
-local skeleton = hierarchy.skeleton
 local now = require "engine.time".now
 
 local camera_controller = ecs.system "camera_controller"
@@ -92,7 +89,7 @@ local function focus_on_position(ce, position_type, position)
 
     local p = get_screen_world_position(ce, position_type)
     local delta = math3d.set_index(math3d.sub(position, p), 2, 0) -- the camera is always moving in the x/z axis and the y axis is always 0
-    return iom.get_scale(ce), iom.get_rotation(ce), math3d.add(iom.get_position(ce), delta)
+    return math3d.add(iom.get_position(ce), delta)
 end
 
 local  dst_r, dst_t, delta_dis, view_mat, last_xzpoint, last_view
@@ -201,39 +198,13 @@ local function check_camera_editable()
     return cam_cmd_queue:size() <= 0 and cam_motion_matrix_queue:size() <= 0
 end
 
-local function add_camera_track(ss, sr, st, ns, nr, nt)
-    local raw_animation = animation.new_raw_animation()
-    local skl = skeleton.build({{name = "root", s = mc.T_ONE, r = mc.T_IDENTITY_QUAT, t = mc.T_ZERO}})
-    raw_animation:setup(skl, 2)
-
-    raw_animation:push_prekey(
-        "root",
-        0,
-        ss,
-        sr,
-        st
-    )
-
-    raw_animation:push_prekey(
-        "root",
-        1,
-        ns,
-        nr,
-        nt
-    )
-
-    local ani = raw_animation:build()
-    local poseresult = animation.new_pose_result(#skl)
-    poseresult:setup(skl)
-
+local function add_camera_track(r, t1, t2)
     local ratio = 0
     local step = 2 / FPS
 
     local t = {}
     while ratio <= 1.0 do
-        poseresult:do_sample(animation.new_sampling_context(1), ani, ratio, 0)
-        poseresult:fetch_result()
-        t[#t +1] = poseresult:joint(1)
+        t[#t +1] = math3d.matrix({r = r, t = math3d.lerp(t1, t2, ratio)})
         ratio = ratio + step
     end
     cam_motion_matrix_queue:push(t)
@@ -248,7 +219,7 @@ local function handle_camera_motion(ce)
         local cmd = assert(cam_cmd_queue:pop())
         local c = cmd[1]
         if c[1] == "focus_on_position" then
-            add_camera_track(iom.get_scale(ce), iom.get_rotation(ce), iom.get_position(ce), focus_on_position(ce, table.unpack(c, 2)))
+            add_camera_track(iom.get_rotation(ce), iom.get_position(ce), focus_on_position(ce, table.unpack(c, 2)))
         elseif c[1] == "toggle_view" then
             local t = toggle_view(table.unpack(c, 2))
             cam_motion_matrix_queue:push(t)
@@ -318,11 +289,15 @@ local handle_drop_camera; do
             local distance
             if pan_ended then
                 local delta_time = now() - start_time
-                local x, y, z = math3d.index(delta_vec, 1), math3d.index(delta_vec, 2), math3d.index(delta_vec, 3)
-                local velocity = math3d.vector(x / delta_time, y / delta_time, z / delta_time)
-                distance = math3d.mul(velocity, 250)
-                local p = mu.clamp_vec(math3d.add(pos, distance), CAMERA_POSITION_MIN, CAMERA_POSITION_MAX)
-                add_camera_track(scene.s, scene.r, pos, scene.s, scene.r, p)
+                if delta_time > 0 then
+                    local x, y, z = math3d.index(delta_vec, 1), math3d.index(delta_vec, 2), math3d.index(delta_vec, 3)
+                    local velocity = math3d.vector(x / delta_time, y / delta_time, z / delta_time)
+                    distance = math3d.mul(velocity, 250)
+                    local p = mu.clamp_vec(math3d.add(pos, distance), CAMERA_POSITION_MIN, CAMERA_POSITION_MAX)
+                    add_camera_track(iom.get_rotation(ce), pos, p)
+                else
+                    iom.set_position(ce, pos)
+                end
             else
                 iom.set_position(ce, pos)
             end
