@@ -43,15 +43,15 @@ tag:
 ---
 data:
   efk:
-    path: /pkg/vaststars.resources/effects/sandstorm3.efk
+    path: /pkg/vaststars.resources/effects/sandstorm5.efk
     speed: 1
   scene:
     s: {1, 1, 1}
-    t: {0, 0, 15}
+    t: {10, -20,40}
   visible_state: main_queue
 mount: 3
 policy:
   ant.scene|scene_object
   ant.efk|efk
 tag:
-  sandstorm3
+  sandstorm5
