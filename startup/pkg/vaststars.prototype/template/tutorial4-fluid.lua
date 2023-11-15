@@ -202,7 +202,7 @@ local entities = { {
     output = {}
   },
   prototype_name = "水电站I",
-  recipe = "气候科技包T1",
+  recipe = "气候科技包1",
   x = 134,
   y = 141
 }, {
@@ -256,7 +256,7 @@ local entities = { {
     output = {}
   },
   prototype_name = "水电站I",
-  recipe = "气候科技包T1",
+  recipe = "气候科技包1",
   x = 134,
   y = 146
 }, {

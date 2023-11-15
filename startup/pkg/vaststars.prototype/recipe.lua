@@ -2627,24 +2627,7 @@ prototype "地质科技包2" {
     description = "地质材料制造地质科技包",
 }
 
-
 prototype "气候科技包1" {
-    type = { "recipe" },
-    recipe_craft_category = "流体液体处理",
-    --recipe_category =  "器件",
-    recipe_order =  82,
-    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/climatology-pack-1.texture",
-    ingredients = {
-        {"空气", 2200},
-    },
-    results = {
-        {"气候科技包", 1},
-    },
-    time = "20s",
-    description = "气候材料制造气候科技包",
-}
-
-prototype "气候科技包T1" {
     type = { "recipe" },
     recipe_craft_category = "流体液体处理",
     recipe_category =  "器件",

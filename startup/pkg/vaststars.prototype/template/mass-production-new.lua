@@ -527,7 +527,7 @@ local entities = { {
     output = {}
   },
   prototype_name = "水电站I",
-  recipe = "气候科技包T1",
+  recipe = "气候科技包1",
   x = 145,
   y = 117
 }, {
@@ -537,7 +537,7 @@ local entities = { {
     output = {}
   },
   prototype_name = "水电站I",
-  recipe = "气候科技包T1",
+  recipe = "气候科技包1",
   x = 151,
   y = 117
 }, {
@@ -3546,7 +3546,7 @@ local entities = { {
     output = {}
   },
   prototype_name = "水电站I",
-  recipe = "气候科技包T1",
+  recipe = "气候科技包1",
   x = 140,
   y = 117
 }, {
@@ -3556,7 +3556,7 @@ local entities = { {
     output = {}
   },
   prototype_name = "水电站I",
-  recipe = "气候科技包T1",
+  recipe = "气候科技包1",
   x = 156,
   y = 117
 }, {

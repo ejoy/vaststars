@@ -233,7 +233,7 @@ local prototype = gameplay.register.prototype
     desc = "对火星大气成分进行标本采集和研究",
     type = { "tech" },
     effects = {
-      unlock_recipe = {"气候科技包T1"},
+      unlock_recipe = {"气候科技包1"},
       unlock_item = {"气候科技包"},
     },
     guide_focus = {
