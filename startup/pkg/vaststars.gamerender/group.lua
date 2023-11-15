@@ -96,11 +96,9 @@ function group.enable(lefttop, rightbottom)
     enabled_group_ids = new
     local go = ig.obj "view_visible"
     for _, group_id in ipairs(add) do
-        print(("enable group id: %s"):format(group_id))
         go:enable(group_id, true)
     end
     for _, group_id in ipairs(del) do
-        print(("disable group id: %s"):format(group_id))
         go:enable(group_id, false)
     end
 
