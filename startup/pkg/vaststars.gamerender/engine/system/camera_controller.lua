@@ -298,12 +298,6 @@ local handle_drop_camera; do
 						local velocity = math3d.mul(delta_vec, delta_inv * DELTA_TIME)
 						local acceleration = math3d.mul(velocity, DELTA_TIME / duration )
 						local t = scene.t
---						print(
---							"velocity = ", math3d.tostring(velocity),
---							"acceleration = ", math3d.tostring(acceleration),
---							"FRAME = ", frame,
---							"T = ", math3d.tostring(t)
---						)
 						local track = {}
 						local m = { r = scene.r, t = t }
 						for i = 1, frame do
