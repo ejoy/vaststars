@@ -383,8 +383,11 @@ function icamera_controller.get_interset_points(ce)
     }
 end
 
-function icamera_controller.focus_on_position(type, position)
+function icamera_controller.focus_on_position(type, position, callback)
     cam_cmd_queue:push {{"focus_on_position", type, math3d.mark(position)}}
+    if callback then
+        cam_cmd_queue:push {{"callback", callback}}
+    end
 end
 
 function icamera_controller.toggle_view(v, xzpos, callback)
