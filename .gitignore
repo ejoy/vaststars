@@ -22,3 +22,4 @@ clibs/gameplay/src/util/component.h
 /startup/mod
 /startup/pkg/vaststars.resources/glb/test_*.glb
 *.plist
+/startup/.repo
