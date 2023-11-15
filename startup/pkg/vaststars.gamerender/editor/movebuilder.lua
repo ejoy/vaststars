@@ -615,6 +615,7 @@ local function create(move_object_id)
     M.typeobject = nil
     M.continue_construct = false
 
+    M.CONFIRM_EXIT = true
     return M
 end
 return create

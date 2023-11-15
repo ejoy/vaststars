@@ -41,6 +41,7 @@ assert(math3d.index(CAMERA_PICKUP_POSITION, 3) == 0)
 local CAMERA_DEFAULT_YAIXS <const> = CAMERA_DEFAULT.t[2]
 local CAMERA_POSITION_MIN <const> = math3d.constant { type = "v4", -1000, CAMERA_DEFAULT_YAIXS - 280, -1450}
 local CAMERA_POSITION_MAX <const> = math3d.constant { type = "v4",  1000, CAMERA_DEFAULT_YAIXS + 150,   800}
+local CAMERA_BOUNDS_AABB <const> = math3d.constant_array("v4", math3d.aabb(CAMERA_POSITION_MIN, CAMERA_POSITION_MAX))
 
 local iom = ecs.require "ant.objcontroller|obj_motion"
 local irq = ecs.require "ant.render|render_system.renderqueue"
@@ -272,6 +273,10 @@ local handle_drop_camera; do
             local delta_vec = math3d.sub(start_pos, end_pos)
             local pos = math3d.add(scene.t, delta_vec)
 
+            if math3d.aabb_test_point(CAMERA_BOUNDS_AABB, scene.t) == 0 and math3d.aabb_test_point(CAMERA_BOUNDS_AABB, pos) <= 0 then
+                return
+            end
+
             if LockAxis then
                 if LockAxis == "x-axis" then
                     pos = math3d.set_index(pos, 1, math3d.index(scene.t, 1))
@@ -302,11 +307,17 @@ local handle_drop_camera; do
 						local m = { r = scene.r, t = t }
 						for i = 1, frame do
 							velocity = math3d.sub(velocity, acceleration)
-							t = mu.clamp_vec(math3d.add(t, velocity), CAMERA_POSITION_MIN, CAMERA_POSITION_MAX)
+                            t = math3d.add(t, velocity)
+
+                            if math3d.aabb_test_point(CAMERA_BOUNDS_AABB, t) <= 0 then
+                                break
+                            end
 							m.t = t
 							track[i] = math3d.matrix(m)
 						end
-					    cam_motion_matrix_queue:push(track)
+                        if #track > 0 then
+    					    cam_motion_matrix_queue:push(track)
+                        end
 					end
 				end
 			end
