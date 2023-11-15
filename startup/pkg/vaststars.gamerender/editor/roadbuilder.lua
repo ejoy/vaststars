@@ -224,8 +224,8 @@ local function touch_move(self, datamodel, delta_vec)
                 group_id = 0,
             }
         end
+        updateComponentsPosition(self)
     end
-    updateComponentsPosition(self)
 end
 
 local function touch_end(self, datamodel)
@@ -263,6 +263,9 @@ end
 
 local function place(self, datamodel)
     local coord_indicator = self.coord_indicator
+    if not coord_indicator then
+        return
+    end
     local typeobject = iprototype.queryByName(coord_indicator.prototype_name)
     coord_indicator.srt.t, coord_indicator.x, coord_indicator.y = __align(coord_indicator.srt.t, typeobject.area, coord_indicator.dir)
 
@@ -306,9 +309,9 @@ local function place(self, datamodel)
     gameplay_core.set_changed(CHANGED_FLAG_ROADNET)
 
     local dx, dy = iprototype.move_coord(x, y, self.forward_dir, ROAD_SIZE)
-    _new_entity(self, datamodel, self.typeobject, dx, dy)
-
-    icamera_controller.focus_on_position("RIGHT_CENTER", math3d.vector(icoord.position(dx, dy, ROAD_SIZE, ROAD_SIZE)))
+    icamera_controller.focus_on_position("RIGHT_CENTER", math3d.vector(icoord.position(dx, dy, ROAD_SIZE, ROAD_SIZE)), function ()
+        _new_entity(self, datamodel, self.typeobject, dx, dy)
+    end)
 
     ibackpack.pickup(gameplay_core.get_world(), typeobject.id, 1)
     task.update_progress("is_road_connected")

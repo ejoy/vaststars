@@ -140,7 +140,7 @@ prototype "太阳能板I" {
     area = "3x3",
     power = "300kW",
     priority = "primary",
-    building_menu = false,
+    building_menu = true,
     camera_distance = 70,
 }
 
@@ -152,7 +152,7 @@ prototype "太阳能板II" {
     area = "3x3",
     power = "450kW",
     priority = "primary",
-    building_menu = false,
+    building_menu = true,
     camera_distance = 70,
 }
 
@@ -164,7 +164,7 @@ prototype "太阳能板III" {
     area = "3x3",
     power = "600kW",
     priority = "primary",
-    building_menu = false,
+    building_menu = true,
     camera_distance = 70,
 }
 
@@ -176,7 +176,7 @@ prototype "轻型太阳能板" {
     area = "3x3",
     power = "60kW",
     priority = "primary",
-    building_menu = false,
+    building_menu = true,
     camera_distance = 70,
 }
 
@@ -190,7 +190,7 @@ prototype "蓄电池I" {
 	capacitance = "10MJ",
     area = "2x2",
     sound = "building/electricity",
-    building_menu = false,
+    building_menu = true,
     camera_distance = 55,
 }
 
@@ -204,7 +204,7 @@ prototype "蓄电池II" {
 	capacitance = "30MJ",
     area = "2x2",
     sound = "building/electricity",
-    building_menu = false,
+    building_menu = true,
     camera_distance = 55,
 }
 
@@ -218,7 +218,7 @@ prototype "蓄电池III" {
 	capacitance = "60MJ",
     area = "2x2",
     sound = "building/electricity",
-    building_menu = false,
+    building_menu = true,
     camera_distance = 55,
 }
 

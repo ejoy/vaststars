@@ -3,6 +3,7 @@ local world = ecs.world
 local w = world.w
 local mathmsg = require "utility.mathmsg"
 
+local ACCELERATION_INV <const> = 1000 / 1 -- m / s
 local MOVE_SPEED <const> = 8.0
 local CAMERA_SAMPLE_NUM <const> = 7
 local DELTA_TIME <const> = require("gameplay.interface.constant").DELTA_TIME
@@ -40,6 +41,7 @@ assert(math3d.index(CAMERA_PICKUP_POSITION, 3) == 0)
 local CAMERA_DEFAULT_YAIXS <const> = CAMERA_DEFAULT.t[2]
 local CAMERA_POSITION_MIN <const> = math3d.constant { type = "v4", -1000, CAMERA_DEFAULT_YAIXS - 280, -1450}
 local CAMERA_POSITION_MAX <const> = math3d.constant { type = "v4",  1000, CAMERA_DEFAULT_YAIXS + 150,   800}
+local CAMERA_BOUNDS_AABB <const> = math3d.constant_array("v4", math3d.aabb(CAMERA_POSITION_MIN, CAMERA_POSITION_MAX))
 
 local iom = ecs.require "ant.objcontroller|obj_motion"
 local irq = ecs.require "ant.render|render_system.renderqueue"
@@ -252,12 +254,13 @@ local handle_drop_camera; do
         for _, _, e in gesture_pan:unpack() do
             if e.state == "began" then
                 start_pos.v = icamera_controller.screen_to_world(e.x, e.y, XZ_PLANE)
-                start_time = now()
+				-- todo: use e.timestamp only
+                start_time = e.timestamp or now()
                 cam_motion_matrix_queue:clear()
             else
                 ending_x, ending_y = e.x, e.y
                 if e.state == "ended" then
-                    pan_ended = true
+                    pan_ended = e.timestamp or now()
                 end
             end
         end
@@ -269,6 +272,10 @@ local handle_drop_camera; do
             local end_pos = icamera_controller.screen_to_world(ending_x, ending_y, XZ_PLANE)
             local delta_vec = math3d.sub(start_pos, end_pos)
             local pos = math3d.add(scene.t, delta_vec)
+
+            if math3d.aabb_test_point(CAMERA_BOUNDS_AABB, scene.t) == 0 and math3d.aabb_test_point(CAMERA_BOUNDS_AABB, pos) <= 0 then
+                return
+            end
 
             if LockAxis then
                 if LockAxis == "x-axis" then
@@ -283,26 +290,38 @@ local handle_drop_camera; do
             end
 
             pos = mu.clamp_vec(pos, CAMERA_POSITION_MIN, CAMERA_POSITION_MAX)
+			iom.set_position(ce, pos)
 
-            local distance
             if pan_ended then
-                local delta_time = now() - start_time
+                local delta_time = pan_ended - start_time
                 if delta_time > 0 then
-                    local x, y, z = math3d.index(delta_vec, 1), math3d.index(delta_vec, 2), math3d.index(delta_vec, 3)
-                    local velocity = math3d.vector(x / delta_time, y / delta_time, z / delta_time)
-                    distance = math3d.mul(velocity, 250)
-                    local p = mu.clamp_vec(math3d.add(pos, distance), CAMERA_POSITION_MIN, CAMERA_POSITION_MAX)
-                    add_camera_track(iom.get_rotation(ce), pos, p, 250)
-                else
-                    iom.set_position(ce, pos)
-                end
-            else
-                iom.set_position(ce, pos)
-            end
+					local distance = math3d.length(delta_vec)
+					local delta_inv = 1 / delta_time
+					local duration = distance * delta_inv * ACCELERATION_INV
+					local frame = duration // DELTA_TIME
+					if frame > 0 then
+						local velocity = math3d.mul(delta_vec, delta_inv * DELTA_TIME)
+						local acceleration = math3d.mul(velocity, DELTA_TIME / duration )
+						local t = scene.t
+						local track = {}
+						local m = { r = scene.r, t = t }
+						for i = 1, frame do
+							velocity = math3d.sub(velocity, acceleration)
+                            t = math3d.add(t, velocity)
 
-            if distance then
-                delta_vec = math3d.add(delta_vec, distance)
-            end
+                            if math3d.aabb_test_point(CAMERA_BOUNDS_AABB, t) <= 0 then
+                                break
+                            end
+							m.t = t
+							track[i] = math3d.matrix(m)
+						end
+                        if #track > 0 then
+    					    cam_motion_matrix_queue:push(track)
+                        end
+					end
+				end
+			end
+
             world:pub(mathmsg("dragdrop_camera", delta_vec))
         end
     end
@@ -369,8 +388,11 @@ function icamera_controller.get_interset_points(ce)
     }
 end
 
-function icamera_controller.focus_on_position(type, position)
+function icamera_controller.focus_on_position(type, position, callback)
     cam_cmd_queue:push {{"focus_on_position", type, math3d.mark(position)}}
+    if callback then
+        cam_cmd_queue:push {{"callback", callback}}
+    end
 end
 
 function icamera_controller.toggle_view(v, xzpos, callback)

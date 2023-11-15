@@ -409,6 +409,14 @@ function M.update(datamodel)
         if builder and builder.confirm then
             builder:confirm(builder_datamodel)
             audio.play "event:/function/place"
+
+            if builder.CONFIRM_EXIT then
+                __clean(datamodel)
+                toggle_view("default", icamera_controller.get_screen_world_position("CENTER"), function()
+                    gameplay_core.world_update = true
+                    __clean(datamodel)
+                end)
+            end
         end
     end
 
