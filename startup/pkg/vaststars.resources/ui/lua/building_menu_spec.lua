@@ -120,6 +120,13 @@ t["空气过滤器I"] = function(start, offsets, DEFAULT)
         v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/move.texture"
         start.buttons[#start.buttons + 1] = v
     end
+
+    if start.copy then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.command = "copy"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/clone.texture"
+        start.buttons[#start.buttons + 1] = v
+    end
     show_buttons(start, offsets)
 end
 
@@ -129,6 +136,13 @@ t["空气过滤器II"] = function(start, offsets, DEFAULT)
         local v = setmetatable({}, {__index = DEFAULT})
         v.command = "move"
         v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/move.texture"
+        start.buttons[#start.buttons + 1] = v
+    end
+
+    if start.copy then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.command = "copy"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/clone.texture"
         start.buttons[#start.buttons + 1] = v
     end
     show_buttons(start, offsets)
@@ -142,6 +156,13 @@ t["空气过滤器III"] = function(start, offsets, DEFAULT)
         v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/move.texture"
         start.buttons[#start.buttons + 1] = v
     end
+
+    if start.copy then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.command = "copy"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/clone.texture"
+        start.buttons[#start.buttons + 1] = v
+    end
     show_buttons(start, offsets)
 end
 
@@ -151,6 +172,13 @@ t["地下水挖掘机I"] = function(start, offsets, DEFAULT)
         local v = setmetatable({}, {__index = DEFAULT})
         v.command = "move"
         v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/move.texture"
+        start.buttons[#start.buttons + 1] = v
+    end
+
+    if start.copy then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.command = "copy"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/clone.texture"
         start.buttons[#start.buttons + 1] = v
     end
     show_buttons(start, offsets)
@@ -164,183 +192,15 @@ t["地下水挖掘机II"] = function(start, offsets, DEFAULT)
         v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/move.texture"
         start.buttons[#start.buttons + 1] = v
     end
-    show_buttons(start, offsets)
-end
 
-t["排水口I"] = function(start, offsets, DEFAULT)
-    start.buttons = {}
-    if start.move then
+    if start.copy then
         local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "move"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/move.texture"
+        v.command = "copy"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/clone.texture"
         start.buttons[#start.buttons + 1] = v
     end
     show_buttons(start, offsets)
 end
 
-t["排水口II"] = function(start, offsets, DEFAULT)
-    start.buttons = {}
-    if start.move then
-        local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "move"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/move.texture"
-        start.buttons[#start.buttons + 1] = v
-    end
-    show_buttons(start, offsets)
-end
-
-t["烟囱I"] = function(start, offsets, DEFAULT)
-    start.buttons = {}
-    if start.move then
-        local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "move"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/move.texture"
-        start.buttons[#start.buttons + 1] = v
-    end
-    show_buttons(start, offsets)
-end
-
-t["烟囱II"] = function(start, offsets, DEFAULT)
-    start.buttons = {}
-    if start.move then
-        local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "move"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/move.texture"
-        start.buttons[#start.buttons + 1] = v
-    end
-    show_buttons(start, offsets)
-end
-
-t["风力发电机I"] = function(start, offsets, DEFAULT)
-    start.buttons = {}
-    if start.move then
-        local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "move"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/move.texture"
-        start.buttons[#start.buttons + 1] = v
-    end
-    show_buttons(start, offsets)
-end
-
-t["轻型风力发电机"] = function(start, offsets, DEFAULT)
-    start.buttons = {}
-    if start.move then
-        local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "move"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/move.texture"
-        start.buttons[#start.buttons + 1] = v
-    end
-    show_buttons(start, offsets)
-end
-
-t["液罐I"] = function(start, offsets, DEFAULT)
-    start.buttons = {}
-    if start.move then
-        local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "move"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/move.texture"
-        start.buttons[#start.buttons + 1] = v
-    end
-    show_buttons(start, offsets)
-end
-
-t["液罐II"] = function(start, offsets, DEFAULT)
-    start.buttons = {}
-    if start.move then
-        local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "move"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/move.texture"
-        start.buttons[#start.buttons + 1] = v
-    end
-    show_buttons(start, offsets)
-end
-
-t["液罐III"] = function(start, offsets, DEFAULT)
-    start.buttons = {}
-    if start.move then
-        local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "move"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/move.texture"
-        start.buttons[#start.buttons + 1] = v
-    end
-    show_buttons(start, offsets)
-end
-
-t["太阳能板I"] = function(start, offsets, DEFAULT)
-    start.buttons = {}
-    if start.move then
-        local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "move"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/move.texture"
-        start.buttons[#start.buttons + 1] = v
-    end
-    show_buttons(start, offsets)
-end
-
-t["太阳能板II"] = function(start, offsets, DEFAULT)
-    start.buttons = {}
-    if start.move then
-        local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "move"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/move.texture"
-        start.buttons[#start.buttons + 1] = v
-    end
-    show_buttons(start, offsets)
-end
-
-t["太阳能板III"] = function(start, offsets, DEFAULT)
-    start.buttons = {}
-    if start.move then
-        local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "move"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/move.texture"
-        start.buttons[#start.buttons + 1] = v
-    end
-    show_buttons(start, offsets)
-end
-
-t["轻型太阳能板"] = function(start, offsets, DEFAULT)
-    start.buttons = {}
-    if start.move then
-        local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "move"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/move.texture"
-        start.buttons[#start.buttons + 1] = v
-    end
-    show_buttons(start, offsets)
-end
-
-t["蓄电池I"] = function(start, offsets, DEFAULT)
-    start.buttons = {}
-    if start.move then
-        local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "move"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/move.texture"
-        start.buttons[#start.buttons + 1] = v
-    end
-    show_buttons(start, offsets)
-end
-
-t["蓄电池II"] = function(start, offsets, DEFAULT)
-    start.buttons = {}
-    if start.move then
-        local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "move"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/move.texture"
-        start.buttons[#start.buttons + 1] = v
-    end
-    show_buttons(start, offsets)
-end
-
-t["蓄电池III"] = function(start, offsets, DEFAULT)
-    start.buttons = {}
-    if start.move then
-        local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "move"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/move.texture"
-        start.buttons[#start.buttons + 1] = v
-    end
-    show_buttons(start, offsets)
-end
 
 return t
