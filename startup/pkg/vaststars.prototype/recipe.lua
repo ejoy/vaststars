@@ -417,9 +417,7 @@ prototype "电动机T1" {
     recipe_order =  52,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/electric-motor.texture",
     ingredients = {
-        {"铁棒", 1},
-        {"铁丝", 2},
-        {"铁板", 2},
+        {"铁齿轮", 2},
         {"塑料", 1},
     },
     results = {
