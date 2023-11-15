@@ -319,6 +319,18 @@ prototype "蓄电池框架" {
     item_description = "用于建造蓄电池的框架",
 }
 
+prototype "蒸汽发电机框架" {
+    type = {"item"},
+    station_limit = 5,
+    hub_limit = 15,
+    backpack_limit = 20,
+    item_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/turbine.texture",
+    item_category = "加工",
+    item_order = 30,
+    item_description = "用于建造蒸汽发电机的框架",
+}
+
 prototype "科研中心框架" {
     type = {"item"},
     station_limit = 5,

@@ -947,8 +947,8 @@ prototype "建筑维修4" {
   desc = "获得维修机械的技术",
   type = { "tech" },
   effects = {
-    unlock_recipe = {"维修化工厂","维修蒸馏厂","维修电解厂"},
-    unlock_item = {"化工厂框架","蒸馏厂框架","电解厂框架"},
+    unlock_recipe = {"维修化工厂","维修蒸馏厂","维修电解厂","维修蒸汽发电机"},
+    unlock_item = {"化工厂框架","蒸馏厂框架","电解厂框架","蒸汽发电机框架"},
   },
   prerequisites = {"电解水"},
   ingredients = {

@@ -2544,7 +2544,6 @@ prototype "维修电解厂" {
     recipe_order =  68,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/electrolysis-design.texture",
     ingredients = {
-        {"铁制电线杆", 1},
         {"液罐I", 1},
         {"电解厂框架", 1},
     },
@@ -2553,6 +2552,23 @@ prototype "维修电解厂" {
     },
     time = "10s",
     description = "破损维修破损的电解厂",
+}
+
+prototype "维修蒸汽发电机" {
+    type = { "recipe" },
+    recipe_craft_category = "生产手工制造",
+    recipe_category =  "加工",
+    recipe_order =  629,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/insulated-wire-1.texture",
+    ingredients = {
+        {"地下管1-JI型", 6},
+        {"蒸汽发电机框架", 1},
+    },
+    results = {
+        {"蒸汽发电机I", 1},
+    },
+    time = "4s",
+    description = "修复破损的蒸汽发电机",
 }
 
 prototype "维修化工厂" {
