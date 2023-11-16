@@ -6,7 +6,7 @@ policy:
 ---
 data:
   daynight:
-    path: /pkg/vaststars.resources/daynight.prefab
+    path: /pkg/vaststars.resources/daynight_night.prefab
     raw:
       ambient:
         ---

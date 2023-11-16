@@ -199,7 +199,7 @@ function m:init()
 
     -- the light must be created in the frame before all entities are created
     world:create_instance {
-        prefab = "/pkg/vaststars.resources/daynight.prefab"
+        prefab = "/pkg/vaststars.resources/daynight_day.prefab"
     }
     world:create_instance {
         prefab = "/pkg/vaststars.resources/light.prefab"
