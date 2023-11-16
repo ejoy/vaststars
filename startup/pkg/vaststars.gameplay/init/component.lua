@@ -18,11 +18,6 @@ mainkey "building" {
     "uint8 direction",	-- 0:North 1:East 2:South 3:West
 }
 
-mainkey "backpack" {
-    "uint16 prototype",
-    "uint16 amount",
-}
-
 component "chest" {
     "uint16 chest",
 }
