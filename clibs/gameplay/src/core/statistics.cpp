@@ -29,6 +29,7 @@ void statistics::frame::reset() {
     consumption.clear();
     generate_power.clear();
     consume_power.clear();
+    power = 0;
 }
 
 void statistics::frame::add(frame const& f) {
@@ -36,6 +37,7 @@ void statistics::frame::add(frame const& f) {
     flatmap_add(consumption, f.consumption);
     flatmap_add(generate_power, f.generate_power);
     flatmap_add(consume_power, f.consume_power);
+    power += f.power;
 }
 
 void statistics::dataset::step() {
