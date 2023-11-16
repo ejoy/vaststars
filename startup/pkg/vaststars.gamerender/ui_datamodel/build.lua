@@ -15,7 +15,7 @@ local click_item_mb = mailbox:sub {"click_item"}
 local M = {}
 
 local function is_show(prototype_name, count)
-    return item_unlocked(prototype_name) and count <= 0
+    return item_unlocked(prototype_name) or count > 0
 end
 
 local function get_list()
