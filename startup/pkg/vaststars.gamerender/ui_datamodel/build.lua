@@ -14,6 +14,10 @@ local click_item_mb = mailbox:sub {"click_item"}
 
 local M = {}
 
+local function is_show(prototype_name, count)
+    return item_unlocked(prototype_name) and count <= 0
+end
+
 local function get_list()
     local gameplay_world = gameplay_core.get_world()
 
@@ -26,8 +30,7 @@ local function get_list()
         for item_idx, prototype_name in ipairs(menu.items) do
             local typeobject = assert(iprototype.queryByName(prototype_name))
             local count = ibackpack.query(gameplay_world, typeobject.id)
-
-            if not item_unlocked(typeobject.name) and count <= 0 then
+            if not is_show(typeobject.name, count) then
                 goto continue
             end
 
@@ -118,6 +121,13 @@ function M.update(datamodel)
 
         iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "construct_entity", typeobject.name)
     end
+end
+
+function M.check(prototype)
+    local gameplay_world = gameplay_core.get_world()
+    local typeobject = assert(iprototype.queryById(prototype))
+    local count = ibackpack.query(gameplay_world, typeobject.id)
+    return is_show(typeobject.name, count)
 end
 
 return M

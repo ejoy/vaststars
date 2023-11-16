@@ -92,15 +92,13 @@ function coord.position2coord(position)
     return _position2coord(position)
 end
 
--- position is the center of the entity
 function coord.align(position, w, h)
-    -- equivalent to: math3d.vector {math3d.index(position, 1) - (w / 2 * TILE_SIZE), math3d.index(position, 2), math3d.index(position, 3) + (h / 2 * TILE_SIZE)}
-    local begin_position = math3d.muladd(1/2*TILE_SIZE, math3d.vector(-w, 0.0, h), position)
-    local c = _position2coord(begin_position)
+    local c = _position2coord(position)
     if not c then
         return
     end
 
+    c[1], c[2] = c[1] - (w // 2), c[2] - (h // 2)
     local begining = coord.lefttop_position(c[1], c[2])
     if not begining then
         return
