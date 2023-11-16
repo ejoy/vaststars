@@ -160,6 +160,7 @@ namespace lua_world {
         file_write(f, frame.consumption);
         file_write(f, frame.generate_power);
         file_write(f, frame.consume_power);
+        file_write(f, frame.power);
     }
 
     void file_read(FILE* f, statistics::frame& frame) {
@@ -167,6 +168,7 @@ namespace lua_world {
         file_read(f, frame.consumption);
         file_read(f, frame.generate_power);
         file_read(f, frame.consume_power);
+        file_read(f, frame.power);
     }
 
     static void backup_scope(lua_State* L, FILE* f, const char* name, std::function<void()> func) {

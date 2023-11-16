@@ -22,6 +22,7 @@ struct statistics {
         flatmap<uint16_t, uint32_t> consumption;
         flatmap<uint16_t, uint64_t> generate_power;
         flatmap<uint16_t, uint64_t> consume_power;
+        uint64_t                    power = 0;
         void reset();
         void add(frame const& f);
     };

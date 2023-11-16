@@ -74,6 +74,7 @@ stat_accumulator(world& w, std::span<ecs::powergrid> pg) {
 
 static void
 calc_efficiency(world& w, std::span<ecs::powergrid> pgs) {
+	auto& frame = w.stat.current();
 	for (int ii = 1; ii < 256; ++ii) {
 		ecs::powergrid& pg = pgs[ii];
 		if (!pg.active) {
@@ -97,6 +98,7 @@ calc_efficiency(world& w, std::span<ecs::powergrid> pgs) {
 			need_power -= offer_power;
 			// accumulator output
 			if (need_power >= pg.accumulator_output) {
+				frame.power += offer_power + pg.accumulator_output;
 				if (pg.accumulator_output == 0) {
 					pg.accumulator_efficiency = 0;
 				} else {
@@ -117,6 +119,7 @@ calc_efficiency(world& w, std::span<ecs::powergrid> pgs) {
 					}
 				}
 			} else {
+				frame.power += offer_power + need_power;
 				pg.accumulator_efficiency = (float)need_power / pg.accumulator_output;
 				// power is enough now.
 				for (size_t i=0;i<POWER_PRIORITY;i++) {
@@ -131,6 +134,7 @@ calc_efficiency(world& w, std::span<ecs::powergrid> pgs) {
 			offer_power -= need_power;
 			// charge accumulators
 			if (offer_power >= pg.accumulator_input) {
+				frame.power += need_power + pg.accumulator_input;
 				if (pg.accumulator_input == 0) {
 					pg.accumulator_efficiency = 0;
 				} else {
@@ -151,6 +155,7 @@ calc_efficiency(world& w, std::span<ecs::powergrid> pgs) {
 					}
 				}
 			} else {
+				frame.power += need_power + offer_power;
 				pg.accumulator_efficiency = -(float)offer_power / pg.accumulator_input;
 				// part charge, generators full output
 				for (size_t i=0;i<POWER_PRIORITY;i++) {
