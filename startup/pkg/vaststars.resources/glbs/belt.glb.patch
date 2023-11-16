@@ -65,8 +65,8 @@ value: 32
 ---
 file: materials/Material.011.material
 op: add
-path: /fx/setting/UV_MOTION
-value: 1
+path: /fx/setting/uv_motion
+value: true
 ---
 file: materials/Material.011.material
 op: add

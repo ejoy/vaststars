@@ -1,8 +1,8 @@
 ---
 file: materials/Material.material
 op: replace
-path: /fx/setting/UV_MOTION
-value: 1
+path: /fx/setting/uv_motion
+value: true
 ---
 file: materials/Material.material
 op: replace
