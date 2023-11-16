@@ -943,19 +943,19 @@ prototype "电解水" {
   time = "4s"
 }
 
-prototype "建筑维修4" {
+prototype "建筑维修3" {
   desc = "获得维修机械的技术",
   type = { "tech" },
   effects = {
-    unlock_recipe = {"维修化工厂","维修蒸馏厂","维修电解厂","维修蒸汽发电机"},
-    unlock_item = {"化工厂框架","蒸馏厂框架","电解厂框架","蒸汽发电机框架"},
+    unlock_recipe = {"维修太阳能板","维修蒸馏厂","维修电解厂"},
+    unlock_item = {"太阳能板框架","蒸馏厂框架","电解厂框架"},
   },
   prerequisites = {"电解水"},
   ingredients = {
       {"地质科技包", 1},
       {"气候科技包", 1},
   },
-  count = 8,
+  count = 6,
   time = "4s"
 }
 
@@ -965,7 +965,7 @@ prototype "空气分离工艺1" {
   effects = {
     unlock_recipe = {"空气分离1"},
   },
-  prerequisites = {"建筑维修4","电解水"},
+  prerequisites = {"建筑维修3","电解水"},
   ingredients = {
       {"气候科技包", 1},
   },
@@ -1084,13 +1084,29 @@ prototype "碳处理1" {
 --   },
 -- }
 
+prototype "建筑维修4" {
+  desc = "获得维修机械的技术",
+  type = { "tech" },
+  effects = {
+    unlock_recipe = {"维修化工厂","维修蒸汽发电机"},
+    unlock_item = {"化工厂框架","蒸汽发电机框架"},
+  },
+  prerequisites = {"空气分离工艺1","碳处理1"},
+  ingredients = {
+      {"地质科技包", 1},
+      {"气候科技包", 1},
+  },
+  count = 8,
+  time = "4s"
+}
+
 prototype "碳处理2" {
   desc = "含碳气体化合成其他物质的工艺",
   type = { "tech" },
   effects = {
     unlock_recipe = {"甲烷转乙烯","二氧化碳转一氧化碳","一氧化碳转石墨"},
   },
-  prerequisites = {"碳处理1"},
+  prerequisites = {"建筑维修4"},
   ingredients = {
       {"气候科技包", 1},
       {"地质科技包", 1},
@@ -1113,22 +1129,6 @@ prototype "冶金学1" {
   },
   count = 12,
   time = "4s"
-}
-
-prototype "建筑维修3" {
-  desc = "获得维修机械的技术",
-  type = { "tech" },
-  effects = {
-    unlock_recipe = {"维修组装机","维修太阳能板"},
-    unlock_item = {"组装机框架","太阳能板框架"},
-  },
-  prerequisites = {"冶金学1"},
-  ingredients = {
-      {"地质科技包", 1},
-      {"气候科技包", 1},
-  },
-  count = 6,
-  time = "3s"
 }
 
 -- prototype "放置化工厂" {
@@ -1169,7 +1169,7 @@ prototype "有机化学1" {
     unlock_recipe = {"塑料1"},
     unlock_item = {"塑料"},
   },
-  prerequisites = {"建筑维修3"},
+  prerequisites = {"冶金学1"},
   ingredients = {
     {"地质科技包", 1},
     {"气候科技包", 1},
