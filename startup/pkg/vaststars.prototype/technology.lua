@@ -1084,6 +1084,21 @@ prototype "碳处理1" {
 --   },
 -- }
 
+prototype "加热卤水发电" {
+  desc = "研究通过加热卤水获得蒸汽驱动发电机",
+  type = { "tech" },
+  effects = {
+    unlock_recipe = {"卤水沸腾"},
+  },
+  prerequisites = {"碳处理1"},
+  ingredients = {
+      {"气候科技包", 1},
+  },
+  count = 10,
+  time = "3s"
+}
+
+
 prototype "建筑维修4" {
   desc = "获得维修机械的技术",
   type = { "tech" },
@@ -1091,7 +1106,7 @@ prototype "建筑维修4" {
     unlock_recipe = {"维修化工厂","维修蒸汽发电机"},
     unlock_item = {"化工厂框架","蒸汽发电机框架"},
   },
-  prerequisites = {"空气分离工艺1","碳处理1"},
+  prerequisites = {"空气分离工艺1","加热卤水发电"},
   ingredients = {
       {"地质科技包", 1},
       {"气候科技包", 1},
@@ -1871,7 +1886,7 @@ prototype "沸腾实验" {
   desc = "通过加热液体获取蒸汽的工艺",
   type = { "tech" },
   effects = {
-    unlock_recipe = {"换热器1","热管1","纯水沸腾","卤水沸腾"},
+    unlock_recipe = {"换热器1","热管1","纯水沸腾"},
     unlock_item = {"换热器I","热管1-X型"},
   },
   prerequisites = {"铝丝制造"},
