@@ -76,7 +76,7 @@ end
 
 local function get_screen_world_position(ce, position_type)
     if position_type == "CENTER" then
-        local ray = {o = iom.get_position(ce), d = math3d.mul(math.maxinteger, iom.get_direction(ce))}
+        local ray = {o = iom.get_position(ce), d = math3d.todirection(iom.get_rotation(ce))}
         return math3d.muladd(ray.d, math3d.plane_ray(ray.o, ray.d, XZ_PLANE), ray.o)
     elseif position_type == "RIGHT_CENTER" then
         local vr = irq.view_rect("main_queue")
@@ -90,8 +90,7 @@ local function focus_on_position(ce, position_type, position)
     math3d.unmark(position)
 
     local p = get_screen_world_position(ce, position_type)
-    local delta = math3d.set_index(math3d.sub(position, p), 2, 0) -- the camera is always moving in the x/z axis and the y axis is always 0
-    return math3d.add(iom.get_position(ce), delta)
+    return math3d.add(iom.get_position(ce), math3d.sub(position, p))
 end
 
 local  dst_r, dst_t, delta_dis, view_mat, last_xzpoint, last_view
@@ -205,7 +204,8 @@ local function add_camera_track(r, t1, t2, duration)
     local d = 0
     repeat
         d = d + DELTA_TIME
-        t[#t +1] = math3d.matrix({r = r, t = math3d.lerp(t1, t2, d / duration)})
+        local ratio = math.min(d / duration, 1.0)
+        t[#t +1] = math3d.matrix({r = r, t = math3d.lerp(t1, t2, ratio)})
     until d >= duration
     cam_motion_matrix_queue:push(t)
 end

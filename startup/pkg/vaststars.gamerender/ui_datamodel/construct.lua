@@ -626,6 +626,10 @@ function M.update(datamodel)
 
     for _, _, _, name in copy_mb:unpack() do
         local typeobject = iprototype.queryByName(name)
+        if not iui.call_datamodel_method("/pkg/vaststars.resources/ui/build.rml", "check", typeobject.id) then
+            print("item not unlocked or not enough") -- TODO: show tips
+            goto continue
+        end
 
         datamodel.status = "BUILD"
         idetail.unselected()
@@ -637,6 +641,7 @@ function M.update(datamodel)
             assert(builder == nil)
             _construct_entity(typeobject, "RIGHT_CENTER")
         end)
+        ::continue::
     end
 
     for _ in build_mode_mb:unpack() do
