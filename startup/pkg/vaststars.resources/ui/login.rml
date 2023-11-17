@@ -75,7 +75,7 @@
     </head>
     <body style = "pointer-events: none; margin: 1.32vmin 3.995vmax 0 4.97vmax;">
         <left-box>
-            <info>IN DEVELOPMENT</info>
+            <info>{{version}}</info>
         </left-box>
         <left-box-1>
             <logo />

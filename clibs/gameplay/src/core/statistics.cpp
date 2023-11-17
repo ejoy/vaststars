@@ -2,26 +2,12 @@
 #include "core/world.h"
 #include "util/prototype.h"
 
-template <typename Key, typename Mapped>
-void flatmap_add(flatmap<Key, Mapped>& a, flatmap<Key, Mapped> const& b) {
-    for (auto const& [k, v] : b) {
-        stat_add(a, k, v);
-    }
-}
-
-template <typename Key, typename Mapped>
-void flatmap_stat(flatmap<Key, Mapped>& m, recipe_items const& r) {
-    for (size_t i = 0; i < r.n; ++i) {
-        stat_add<Key, Mapped>(m, r.items[i].item, r.items[i].amount);
-    }
-}
-
 void statistics::finish_recipe(world& w, uint16_t id) {
     auto const& ingredients = prototype::get<"ingredients", recipe_items>(w, id);
     auto const& results = prototype::get<"results", recipe_items>(w, id);
     auto& frame = current();
-    flatmap_stat(frame.consumption, ingredients);
-    flatmap_stat(frame.production, results);
+    stat_add(frame.consumption, ingredients);
+    stat_add(frame.production, results);
 }
 
 void statistics::frame::reset() {
@@ -33,10 +19,10 @@ void statistics::frame::reset() {
 }
 
 void statistics::frame::add(frame const& f) {
-    flatmap_add(production, f.production);
-    flatmap_add(consumption, f.consumption);
-    flatmap_add(generate_power, f.generate_power);
-    flatmap_add(consume_power, f.consume_power);
+    stat_add(production, f.production);
+    stat_add(consumption, f.consumption);
+    stat_add(generate_power, f.generate_power);
+    stat_add(consume_power, f.consume_power);
     power += f.power;
 }
 

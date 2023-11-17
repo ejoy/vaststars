@@ -11,7 +11,7 @@ prototype "任务" {
     type = {"item"},
     station_limit = 0,
     backpack_limit = 0,
-    hub_limit = 0,
+    chest_limit = 0,
     item_model = "",
     tech_icon = "",
     item_category = "",

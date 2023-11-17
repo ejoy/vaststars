@@ -167,6 +167,16 @@ return function ()
         end
     end
 
+    function world:stat_dataset()
+        return cworld:stat_dataset()
+    end
+    function world:stat_total(dataset, type)
+        return cworld:stat_total(dataset, type)
+    end
+    function world:stat_query(dataset, type, id)
+        return cworld:stat_query(dataset, type, id)
+    end
+
     function world:fluidflow_query(fluid, id)
         return cFluidflow.query(cworld, fluid, id)
     end

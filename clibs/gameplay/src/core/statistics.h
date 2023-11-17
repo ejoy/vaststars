@@ -16,6 +16,20 @@ void stat_add(flatmap<Key, Mapped>& m, Key const& key, Mapped mapped) {
     }
 }
 
+template <typename Key, typename Mapped>
+void stat_add(flatmap<Key, Mapped>& a, flatmap<Key, Mapped> const& b) {
+    for (auto const& [k, v] : b) {
+        stat_add(a, k, v);
+    }
+}
+
+template <typename Key, typename Mapped>
+void stat_add(flatmap<Key, Mapped>& m, recipe_items const& r) {
+    for (size_t i = 0; i < r.n; ++i) {
+        stat_add<Key, Mapped>(m, r.items[i].item, r.items[i].amount);
+    }
+}
+
 struct statistics {
     struct frame {
         flatmap<uint16_t, uint32_t> production;

@@ -6,7 +6,7 @@ prototype "碎石" {
     mineral_name = "石矿",
     type = {"item"},
     station_limit = 15,
-    hub_limit = 60,
+    chest_limit = 60,
     backpack_limit = 100,
     item_order = 1,
     item_model = "glbs/stackeditems/gravel.glb|mesh.prefab",
@@ -22,7 +22,7 @@ prototype "铁矿石" {
     mineral_name = "铁矿",
     type = {"item"},
     station_limit = 15,
-    hub_limit = 60,
+    chest_limit = 60,
     backpack_limit = 100,
     item_order = 2,
     item_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
@@ -38,7 +38,7 @@ prototype "铝矿石" {
     mineral_name = "铝矿",
     type = {"item"},
     station_limit = 15,
-    hub_limit = 60,
+    chest_limit = 60,
     backpack_limit = 100,
     item_order = 3,
     item_model = "glbs/stackeditems/aluminium-ore.glb|mesh.prefab",
@@ -53,7 +53,7 @@ prototype "铝矿石" {
 prototype "石砖" {
     type = {"item"},
     station_limit = 15,
-    hub_limit = 30,
+    chest_limit = 30,
     backpack_limit = 50,
     item_order = 1,
     item_model = "glbs/stackeditems/stone-brick.glb|mesh.prefab",
@@ -65,7 +65,7 @@ prototype "石砖" {
 prototype "轻质石砖" {
     type = {"item"},
     station_limit = 15,
-    hub_limit = 30,
+    chest_limit = 30,
     backpack_limit = 50,
     item_order = 1,
     item_model = "glbs/stackeditems/stone-brick.glb|mesh.prefab",
@@ -78,7 +78,7 @@ prototype "铁板" {
     type = {"item"},
     station_limit = 15,   --物品需要填写： 长 X 高
     --capacity = 32,  --物品需要填写容纳总量值
-    hub_limit = 30,
+    chest_limit = 30,
     backpack_limit = 50,
     item_order = 5,
     item_model = "glbs/stackeditems/iron-plate.glb|mesh.prefab",
@@ -90,7 +90,7 @@ prototype "铁板" {
 prototype "铁棒" {
     type = {"item"},
     station_limit = 15,
-    hub_limit = 30,
+    chest_limit = 30,
     backpack_limit = 50,
     item_order = 6,
     item_model = "glbs/stackeditems/iron-plate.glb|mesh.prefab",
@@ -102,7 +102,7 @@ prototype "铁棒" {
 prototype "铁丝" {
     type = {"item"},
     station_limit = 15,
-    hub_limit = 30,
+    chest_limit = 30,
     backpack_limit = 100,
     item_order = 8,
     item_model = "glbs/stackeditems/iron-wire.glb|mesh.prefab",
@@ -114,7 +114,7 @@ prototype "铁丝" {
 prototype "铁齿轮" {
     type = {"item"},
     station_limit = 15,
-    hub_limit = 30,
+    chest_limit = 30,
     backpack_limit = 100,
     item_order = 9,
     item_model = "glbs/stackeditems/iron-gear.glb|mesh.prefab",
@@ -126,7 +126,7 @@ prototype "铁齿轮" {
 prototype "钢板" {
     type = {"item"},
     station_limit = 15,
-    hub_limit = 30,
+    chest_limit = 30,
     backpack_limit = 50,
     item_order = 10,
     item_model = "glbs/stackeditems/steel-plate.glb|mesh.prefab",
@@ -138,7 +138,7 @@ prototype "钢板" {
 prototype "钢齿轮" {
     type = {"item"},
     station_limit = 15,
-    hub_limit = 30,
+    chest_limit = 30,
     backpack_limit = 100,
     item_order = 12,
     item_model = "glbs/stackeditems/steel-gear.glb|mesh.prefab",
@@ -150,7 +150,7 @@ prototype "钢齿轮" {
 prototype "铝板" {
     type = {"item"},
     station_limit = 15,
-    hub_limit = 30,
+    chest_limit = 30,
     backpack_limit = 50,
     item_order = 13,
     item_model = "glbs/stackeditems/aluminium-plate.glb|mesh.prefab",
@@ -162,7 +162,7 @@ prototype "铝板" {
 prototype "铝棒" {
     type = {"item"},
     station_limit = 8,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 25,
     item_order = 14,
     item_model = "glbs/stackeditems/aluminium-rod.glb|mesh.prefab",
@@ -174,7 +174,7 @@ prototype "铝棒" {
 prototype "铝丝" {
     type = {"item"},
     station_limit = 15,
-    hub_limit = 30,
+    chest_limit = 30,
     backpack_limit = 100,
     item_order = 15,
     item_model = "glbs/stackeditems/iron-wire.glb|mesh.prefab",
@@ -187,7 +187,7 @@ prototype "砂岩" {
     mineral_name = "砂矿",
     type = {"item"},
     station_limit = 15,
-    hub_limit = 60,
+    chest_limit = 60,
     backpack_limit = 100,
     item_order = 16,
     item_model = "glbs/stackeditems/gravel.glb|mesh.prefab",
@@ -201,7 +201,7 @@ prototype "砂岩" {
 prototype "碾碎铁矿石" {
     type = {"item"},
     station_limit = 15,
-    hub_limit = 60,
+    chest_limit = 60,
     backpack_limit = 100,
     item_order = 18,
     item_model = "glbs/stackeditems/crush-iron-ore.glb|mesh.prefab",
@@ -213,7 +213,7 @@ prototype "碾碎铁矿石" {
 prototype "碾碎铝矿石" {
     type = {"item"},
     station_limit = 15,
-    hub_limit = 60,
+    chest_limit = 60,
     backpack_limit = 100,
     item_order = 20,
     item_model = "glbs/stackeditems/crush-aluminium-ore.glb|mesh.prefab",
@@ -225,7 +225,7 @@ prototype "碾碎铝矿石" {
 prototype "氢氧化铝" {
     type = {"item"},
     station_limit = 15,
-    hub_limit = 30,
+    chest_limit = 30,
     backpack_limit = 50,
     item_order = 10,
     item_model = "glbs/stackeditems/aluminium-hydroxide.glb|mesh.prefab",
@@ -237,7 +237,7 @@ prototype "氢氧化铝" {
 prototype "氧化铝" {
     type = {"item"},
     station_limit = 15,
-    hub_limit = 30,
+    chest_limit = 30,
     backpack_limit = 50,
     item_order = 22,
     item_model = "glbs/stackeditems/aluminium-oxide.glb|mesh.prefab",
@@ -249,7 +249,7 @@ prototype "氧化铝" {
 prototype "碳化铝" {
     type = {"item"},
     station_limit = 15,
-    hub_limit = 30,
+    chest_limit = 30,
     backpack_limit = 50,
     item_order = 24,
     item_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
@@ -261,7 +261,7 @@ prototype "碳化铝" {
 prototype "石墨" {
     type = {"item"},
     station_limit = 15,
-    hub_limit = 30,
+    chest_limit = 30,
     backpack_limit = 100,
     item_order = 12,
     item_model = "glbs/stackeditems/graphite.glb|mesh.prefab",
@@ -273,7 +273,7 @@ prototype "石墨" {
 prototype "硅" {
     type = {"item"},
     station_limit = 15,
-    hub_limit = 30,
+    chest_limit = 30,
     backpack_limit = 100,
     item_order = 14,
     item_model = "glbs/stackeditems/silicon.glb|mesh.prefab",
@@ -285,7 +285,7 @@ prototype "硅" {
 prototype "硅板" {
     type = {"item"},
     station_limit = 15,
-    hub_limit = 30,
+    chest_limit = 30,
     backpack_limit = 50,
     item_order = 8,
     item_model = "glbs/stackeditems/silicon-plate.glb|mesh.prefab",
@@ -297,7 +297,7 @@ prototype "硅板" {
 prototype "沙石矿" {
     type = {"item"},
     station_limit = 15,
-    hub_limit = 60,
+    chest_limit = 60,
     backpack_limit = 100,
     item_order = 4,
     item_model = "glbs/stackeditems/limestone.glb|mesh.prefab",
@@ -309,7 +309,7 @@ prototype "沙石矿" {
 prototype "氢氧化钠" {
     type = {"item"},
     station_limit = 15,
-    hub_limit = 30,
+    chest_limit = 30,
     backpack_limit = 100,
     item_order = 16,
     item_model = "glbs/stackeditems/sodium-hydroxide.glb|mesh.prefab",
@@ -321,7 +321,7 @@ prototype "氢氧化钠" {
 prototype "钠" {
     type = {"item"},
     station_limit = 15,
-    hub_limit = 30,
+    chest_limit = 30,
     backpack_limit = 100,
     item_order = 18,
     item_model = "glbs/stackeditems/gravel.glb|mesh.prefab",
@@ -333,7 +333,7 @@ prototype "钠" {
 prototype "金红石" {
     type = {"item"},
     station_limit = 15,
-    hub_limit = 30,
+    chest_limit = 30,
     backpack_limit = 100,
     item_order = 26,
     item_model = "glbs/stackeditems/gravel.glb|mesh.prefab",
@@ -345,7 +345,7 @@ prototype "金红石" {
 prototype "钛板" {
     type = {"item"},
     station_limit = 15,
-    hub_limit = 30,
+    chest_limit = 30,
     backpack_limit = 50,
     item_order = 28,
     item_model = "glbs/stackeditems/copper-plate.glb|mesh.prefab",
@@ -366,7 +366,7 @@ prototype "钛板" {
 prototype "沙子" {
     type = {"item"},
     station_limit = 15,
-    hub_limit = 60,
+    chest_limit = 60,
     backpack_limit = 100,
     item_order = 17,
     item_model = "glbs/stackeditems/sand.glb|mesh.prefab",
@@ -378,7 +378,7 @@ prototype "沙子" {
 prototype "塑料" {
     type = {"item"},
     station_limit = 8,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 25,
     item_order = 7,
     item_model = "glbs/stackeditems/plastic.glb|mesh.prefab",
@@ -390,7 +390,7 @@ prototype "塑料" {
 prototype "电动机I" {
     type = {"item"},
     station_limit = 8,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 25,
     item_order = 10,
     item_model = "glbs/stackeditems/motor.glb|mesh.prefab",
@@ -402,7 +402,7 @@ prototype "电动机I" {
 prototype "电动机II" {
     type = {"item"},
     station_limit = 8,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 25,
     item_order = 11,
     item_model = "glbs/stackeditems/motor.glb|mesh.prefab",
@@ -414,7 +414,7 @@ prototype "电动机II" {
 prototype "电动机III" {
     type = {"item"},
     station_limit = 8,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 25,
     item_order = 12,
     item_model = "glbs/stackeditems/motor.glb|mesh.prefab",
@@ -426,7 +426,7 @@ prototype "电动机III" {
 prototype "玻璃" {
     type = {"item"},
     station_limit = 8,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 25,
     item_order = 13,
     item_model = "glbs/stackeditems/glass.glb|mesh.prefab",
@@ -438,7 +438,7 @@ prototype "玻璃" {
 prototype "坩埚" {
     type = {"item"},
     station_limit = 8,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 25,
     item_order = 14,
     item_model = "glbs/stackeditems/crucible.glb|mesh.prefab",
@@ -450,7 +450,7 @@ prototype "坩埚" {
 prototype "橡胶" {
     type = {"item"},
     station_limit = 8,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 25,
     item_order = 16,
     item_model = "glbs/stackeditems/rubber.glb|mesh.prefab",
@@ -462,7 +462,7 @@ prototype "橡胶" {
 prototype "电容I" {
     type = {"item"},
     station_limit = 8,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 25,
     item_order = 20,
     item_model = "glbs/stackeditems/capacitor.glb|mesh.prefab",
@@ -474,7 +474,7 @@ prototype "电容I" {
 prototype "电容II" {
     type = {"item"},
     station_limit = 8,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 25,
     item_order = 22,
     item_model = "glbs/stackeditems/capacitor.glb|mesh.prefab",
@@ -486,7 +486,7 @@ prototype "电容II" {
 prototype "绝缘线" {
     type = {"item"},
     station_limit = 8,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 25,
     item_order = 24,
     item_model = "glbs/stackeditems/insulated-wire.glb|mesh.prefab",
@@ -498,7 +498,7 @@ prototype "绝缘线" {
 prototype "逻辑电路" {
     type = {"item"},
     station_limit = 8,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 25,
     item_order = 26,
     item_model = "glbs/stackeditems/logic-circuit.glb|mesh.prefab",
@@ -510,7 +510,7 @@ prototype "逻辑电路" {
 prototype "数据线" {
     type = {"item"},
     station_limit = 8,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 25,
     item_order = 28,
     item_model = "glbs/stackeditems/iron-plate.glb|mesh.prefab",
@@ -522,7 +522,7 @@ prototype "数据线" {
 prototype "运算电路" {
     type = {"item"},
     station_limit = 8,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 25,
     item_order = 30,
     item_model = "glbs/stackeditems/iron-plate.glb|mesh.prefab",
@@ -534,7 +534,7 @@ prototype "运算电路" {
 prototype "效能插件I" {
     type = {"item"},
     station_limit = 8,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 25,
     item_order = 40,
     item_model = "glbs/stackeditems/green-electronic-circuit.glb|mesh.prefab",
@@ -546,7 +546,7 @@ prototype "效能插件I" {
 prototype "效能插件II" {
     type = {"item"},
     station_limit = 8,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 25,
     item_order = 42,
     item_model = "glbs/stackeditems/green-electronic-circuit.glb|mesh.prefab",
@@ -558,7 +558,7 @@ prototype "效能插件II" {
 prototype "效能插件III" {
     type = {"item"},
     station_limit = 8,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 25,
     item_order = 44,
     item_model = "glbs/stackeditems/green-electronic-circuit.glb|mesh.prefab",
@@ -571,7 +571,7 @@ prototype "效能插件III" {
 prototype "产能插件I" {
     type = {"item"},
     station_limit = 8,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 25,
     item_order = 46,
     item_model = "glbs/stackeditems/red-electronic-circuit.glb|mesh.prefab",
@@ -583,7 +583,7 @@ prototype "产能插件I" {
 prototype "产能插件II" {
     type = {"item"},
     station_limit = 8,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 25,
     item_order = 48,
     item_model = "glbs/stackeditems/red-electronic-circuit.glb|mesh.prefab",
@@ -595,7 +595,7 @@ prototype "产能插件II" {
 prototype "产能插件III" {
     type = {"item"},
     station_limit = 8,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 25,
     item_order = 50,
     item_model = "glbs/stackeditems/red-electronic-circuit.glb|mesh.prefab",
@@ -607,7 +607,7 @@ prototype "产能插件III" {
 prototype "速度插件I" {
     type = {"item"},
     station_limit = 8,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 25,
     item_order = 52,
     item_model = "glbs/stackeditems/blue-electronic-circuit.glb|mesh.prefab",
@@ -619,7 +619,7 @@ prototype "速度插件I" {
 prototype "速度插件II" {
     type = {"item"},
     station_limit = 8,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 25,
     item_order = 54,
     item_model = "glbs/stackeditems/blue-electronic-circuit.glb|mesh.prefab",
@@ -631,7 +631,7 @@ prototype "速度插件II" {
 prototype "速度插件III" {
     type = {"item"},
     station_limit = 8,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 25,
     item_order = 56,
     item_model = "glbs/stackeditems/blue-electronic-circuit.glb|mesh.prefab",
@@ -643,7 +643,7 @@ prototype "速度插件III" {
 prototype "混凝土" {
     type = {"item"},
     station_limit = 8,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 25,
     item_order = 10,
     item_model = "glbs/stackeditems/iron-plate.glb|mesh.prefab",
@@ -655,7 +655,7 @@ prototype "混凝土" {
 prototype "处理器I" {
     type = {"item"},
     station_limit = 8,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 25,
     item_order = 60,
     item_model = "glbs/stackeditems/logic-circuit.glb|mesh.prefab",
@@ -667,7 +667,7 @@ prototype "处理器I" {
 prototype "处理器II" {
     type = {"item"},
     station_limit = 8,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 25,
     item_order = 62,
     item_model = "glbs/stackeditems/logic-circuit.glb|mesh.prefab",
@@ -679,7 +679,7 @@ prototype "处理器II" {
 prototype "电池I" {
     type = {"item"},
     station_limit = 8,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 25,
     item_order = 64,
     item_model = "glbs/stackeditems/iron-plate.glb|mesh.prefab",
@@ -691,7 +691,7 @@ prototype "电池I" {
 prototype "电池II" {
     type = {"item"},
     station_limit = 8,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 25,
     item_order = 66,
     item_model = "glbs/stackeditems/iron-plate.glb|mesh.prefab",
@@ -703,7 +703,7 @@ prototype "电池II" {
 prototype "玻璃纤维" {
     type = {"item"},
     station_limit = 8,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 25,
     item_order = 70,
     item_model = "glbs/stackeditems/iron-plate.glb|mesh.prefab",
@@ -715,7 +715,7 @@ prototype "玻璃纤维" {
 prototype "石墨烯" {
     type = {"item"},
     station_limit = 8,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 25,
     item_order = 72,
     item_model = "glbs/stackeditems/iron-plate.glb|mesh.prefab",
@@ -727,7 +727,7 @@ prototype "石墨烯" {
 prototype "隔热板" {
     type = {"item"},
     station_limit = 8,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 25,
     item_order = 80,
     item_model = "glbs/stackeditems/iron-plate.glb|mesh.prefab",
@@ -739,7 +739,7 @@ prototype "隔热板" {
 prototype "火箭控制器" {
     type = {"item"},
     station_limit = 8,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 25,
     item_order = 90,
     item_model = "glbs/stackeditems/iron-plate.glb|mesh.prefab",
@@ -751,7 +751,7 @@ prototype "火箭控制器" {
 prototype "火箭区段" {
     type = {"item"},
     station_limit = 8,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 25,
     item_order = 92,
     item_model = "glbs/stackeditems/iron-plate.glb|mesh.prefab",
@@ -763,7 +763,7 @@ prototype "火箭区段" {
 prototype "火箭整流罩" {
     type = {"item"},
     station_limit = 8,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 25,
     item_order = 94,
     item_model = "glbs/stackeditems/iron-plate.glb|mesh.prefab",
@@ -775,7 +775,7 @@ prototype "火箭整流罩" {
 prototype "地质科技包" {
     type = {"item"},
     station_limit = 15,
-    hub_limit = 30,
+    chest_limit = 30,
     backpack_limit = 100,
     item_order = 1,
     item_model = "glbs/stackeditems/geology-pack.glb|mesh.prefab",
@@ -788,7 +788,7 @@ prototype "地质科技包" {
 prototype "气候科技包" {
     type = {"item"},
     station_limit = 15,
-    hub_limit = 30,
+    chest_limit = 30,
     backpack_limit = 100,
     item_order = 2,
     item_model = "glbs/stackeditems/climatology-pack.glb|mesh.prefab",
@@ -801,7 +801,7 @@ prototype "气候科技包" {
 prototype "机械科技包" {
     type = {"item"},
     station_limit = 15,
-    hub_limit = 30,
+    chest_limit = 30,
     backpack_limit = 100,
     item_order = 3,
     item_model = "glbs/stackeditems/mechanical-pack.glb|mesh.prefab",
@@ -814,7 +814,7 @@ prototype "机械科技包" {
 prototype "电子科技包" {
     type = {"item"},
     station_limit = 15,
-    hub_limit = 30,
+    chest_limit = 30,
     backpack_limit = 100,
     item_order = 4,
     item_model = "glbs/stackeditems/electrical-pack.glb|mesh.prefab",
@@ -827,7 +827,7 @@ prototype "电子科技包" {
 prototype "化学科技包" {
     type = {"item"},
     station_limit = 15,
-    hub_limit = 30,
+    chest_limit = 30,
     backpack_limit = 100,
     item_order = 5,
     item_model = "glbs/stackeditems/chemical-pack.glb|mesh.prefab",
@@ -840,7 +840,7 @@ prototype "化学科技包" {
 prototype "物理科技包" {
     type = {"item"},
     station_limit = 15,
-    hub_limit = 30,
+    chest_limit = 30,
     backpack_limit = 100,
     item_order = 6,
     item_model = "glbs/stackeditems/physical-pack.glb|mesh.prefab",
@@ -853,7 +853,7 @@ prototype "物理科技包" {
 prototype "废料" {
     type = {"item"},
     station_limit = 15,
-    hub_limit = 30,
+    chest_limit = 30,
     backpack_limit = 100,
     item_order = 100,
     item_model = "glbs/stackeditems/scrap.glb|mesh.prefab",
@@ -865,7 +865,7 @@ prototype "废料" {
 prototype "铜板" {
     type = {"item"},
     station_limit = 15,
-    hub_limit = 30,
+    chest_limit = 30,
     backpack_limit = 100,
     item_order = 50,
     item_model = "glbs/stackeditems/copper-plate.glb|mesh.prefab",
@@ -876,7 +876,7 @@ prototype "铜板" {
 prototype "铜丝" {
     type = {"item"},
     station_limit = 15,
-    hub_limit = 30,
+    chest_limit = 30,
     backpack_limit = 100,
     item_order = 52,
     item_model = "glbs/stackeditems/copper-wire.glb|mesh.prefab",
@@ -888,7 +888,7 @@ prototype "铜丝" {
 prototype "电路板" {
     type = {"item"},
     station_limit = 15,
-    hub_limit = 30,
+    chest_limit = 30,
     backpack_limit = 100,
     item_order = 54,
     item_model = "glbs/stackeditems/logic-circuit.glb|mesh.prefab",
@@ -900,7 +900,7 @@ prototype "电路板" {
 prototype "核铀燃料" {
 	type = { "item" },
 	station_limit = 15,
-    hub_limit = 30,
+    chest_limit = 30,
     backpack_limit = 100,
     item_order = 56,
     item_model = "glbs/stackeditems/iron-plate.glb|mesh.prefab",
@@ -912,7 +912,7 @@ prototype "核铀燃料" {
 prototype "用尽的核铀燃料" {
 	type = { "item" },
 	station_limit = 15,
-    hub_limit = 30,
+    chest_limit = 30,
     backpack_limit = 100,
     item_order = 58,
     item_model = "glbs/stackeditems/iron-plate.glb|mesh.prefab",
@@ -924,7 +924,7 @@ prototype "用尽的核铀燃料" {
 prototype "海藻" {
 	type = { "item" },
 	station_limit = 15,
-    hub_limit = 30,
+    chest_limit = 30,
     backpack_limit = 100,
     item_order = 80,
     item_model = "glbs/stackeditems/iron-plate.glb|mesh.prefab",
@@ -936,7 +936,7 @@ prototype "海藻" {
 prototype "纤维燃料" {
 	type = { "item" },
 	station_limit = 15,
-    hub_limit = 30,
+    chest_limit = 30,
     backpack_limit = 100,
     item_order = 82,
     item_model = "glbs/stackeditems/iron-plate.glb|mesh.prefab",

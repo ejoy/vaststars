@@ -11,12 +11,19 @@ local load_template_mb = mailbox:sub {"load_template"}
 local load_tutorial_template_mb = mailbox:sub {"load_tutorial_template"}
 local archiving = require "archiving"
 local reboot_world = ecs.require "reboot_world"
+local iversion = import_package "vaststars.version"
+local vfs = require "vfs"
 
 ---------------
 local M = {}
 function M.create()
     return {
-        show_continue_game = (#archiving.list() > 0)
+        show_continue_game = (#archiving.list() > 0),
+        version = "IN DEVELOPMENT " .. table.concat({
+            string.sub(iversion.game, 1, 6),
+            string.sub(iversion.engine, 1, 6),
+            string.sub(vfs.version(), 1, 6),
+        }, "-")
     }
 end
 
