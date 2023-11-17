@@ -92,8 +92,7 @@ namespace lua_world {
         return 0;
     }
 
-    static int
-    destroy(lua_State* L) {
+    static int destroy(lua_State* L) {
         auto& w = getworld(L);
         w.~world();
         return 0;
@@ -101,6 +100,180 @@ namespace lua_world {
 
     int backup_world(lua_State* L);
     int restore_world(lua_State* L);
+
+    constexpr uint16_t UPS = UINT16_C(30);
+    enum class stat_type {
+        production,
+        consumption,
+        generate_power,
+        consume_power,
+        power,
+    };
+    static const char* const opts[] = {
+        "production",
+        "consumption",
+        "generate_power",
+        "consume_power",
+        "power",
+        NULL
+    };
+
+    static int stat_dataset(lua_State* L) {
+        auto& w = getworld(L);
+        size_t PRECISION = w.stat._dataset[0].data.size();
+        lua_Integer n = 0;
+        lua_Integer t = PRECISION / UPS;
+        lua_createtable(L, (int)w.stat._dataset.size(), 0);
+        for (auto& dataset: w.stat._dataset) {
+            t *= dataset.tick;
+            lua_pushinteger(L, t);
+            lua_seti(L, -2, ++n);
+        }
+        return 1;
+    }
+
+    static int stat_total(lua_State* L) {
+        auto& w = getworld(L);
+        auto i = luaL_checkinteger(L, 2);
+        if (i < 0 || i >= (lua_Integer)w.stat._dataset.size()) {
+            return luaL_error(L, "invalid dataset `%d`", i);
+        }
+        auto& dataset = w.stat._dataset[i].data;
+        auto type = (stat_type)luaL_checkoption(L, 3, NULL, opts);
+        switch (type) {
+        case stat_type::production: {
+            flatmap<uint16_t, uint32_t> production;
+            for (auto& f : dataset) {
+                stat_add(production, f.production);
+            }
+            lua_createtable(L, 0, (int)production.size());
+            for (auto [k, v]: production) {
+                lua_pushinteger(L, k);
+                lua_pushinteger(L, v);
+                lua_rawset(L, -3);
+            }
+            return 1;
+        }
+        case stat_type::consumption: {
+            flatmap<uint16_t, uint32_t> consumption;
+            for (auto& f : dataset) {
+                stat_add(consumption, f.consumption);
+            }
+            lua_createtable(L, 0, (int)consumption.size());
+            for (auto [k, v]: consumption) {
+                lua_pushinteger(L, k);
+                lua_pushinteger(L, v);
+                lua_rawset(L, -3);
+            }
+            return 1;
+        }
+        case stat_type::generate_power: {
+            flatmap<uint16_t, uint64_t> generate_power;
+            for (auto& f : dataset) {
+                stat_add(generate_power, f.generate_power);
+            }
+            lua_createtable(L, 0, (int)generate_power.size());
+            for (auto [k, v]: generate_power) {
+                lua_pushinteger(L, k);
+                lua_pushinteger(L, v);
+                lua_rawset(L, -3);
+            }
+            return 1;
+        }
+        case stat_type::consume_power: {
+            flatmap<uint16_t, uint64_t> consume_power;
+            for (auto& f : dataset) {
+                stat_add(consume_power, f.consume_power);
+            }
+            lua_createtable(L, 0, (int)consume_power.size());
+            for (auto [k, v]: consume_power) {
+                lua_pushinteger(L, k);
+                lua_pushinteger(L, v);
+                lua_rawset(L, -3);
+            }
+            return 1;
+        }
+        case stat_type::power: {
+            uint64_t power = 0;
+            for (auto& f : dataset) {
+                power += f.power;
+            }
+            lua_pushinteger(L, power);
+            return 1;
+        }
+        default:
+            std::unreachable();
+        }
+    }
+
+    static int stat_pusharray(lua_State* L, statistics::dataset& dataset, uint16_t ud, std::function<uint64_t(statistics::frame&, uint16_t)> getvalue) {
+        lua_Integer n = 0;
+        lua_createtable(L, (int)dataset.data.size(), 0);
+        for (auto& f: dataset.data) {
+            lua_pushinteger(L, getvalue(f, ud));
+            lua_seti(L, -2, ++n);
+        }
+        return 1;
+    }
+
+    static int stat_query(lua_State* L) {
+        auto& w = getworld(L);
+        auto i = luaL_checkinteger(L, 2);
+        if (i < 0 || i >= (lua_Integer)w.stat._dataset.size()) {
+            return luaL_error(L, "invalid dataset `%d`", i);
+        }
+        auto type = (stat_type)luaL_checkoption(L, 3, NULL, opts);
+        switch (type) {
+        case stat_type::production: {
+            uint16_t classid = (uint16_t)luaL_checkinteger(L, 4);
+            return stat_pusharray(L, w.stat._dataset[i], classid, [](statistics::frame& f, uint16_t id) {
+                auto s = f.production.find(id);
+                if (s) {
+                    return uint64_t(*s);
+                }
+                return UINT64_C(0);
+            });
+        }
+        case stat_type::consumption: {
+            uint16_t classid = (uint16_t)luaL_checkinteger(L, 4);
+            return stat_pusharray(L, w.stat._dataset[i], classid, [&](statistics::frame& f, uint16_t id) {
+                auto s = f.consumption.find(id);
+                if (s) {
+                    return uint64_t(*s);
+                }
+                return UINT64_C(0);
+            });
+        }
+        case stat_type::generate_power: {
+            uint16_t classid = (uint16_t)luaL_checkinteger(L, 4);
+            return stat_pusharray(L, w.stat._dataset[i], classid, [&](statistics::frame& f, uint16_t id) {
+                auto s = f.generate_power.find(id);
+                if (s) {
+                    return *s;
+                }
+                return UINT64_C(0);
+            });
+        }
+        case stat_type::consume_power: {
+            uint16_t classid = (uint16_t)luaL_checkinteger(L, 4);
+            return stat_pusharray(L, w.stat._dataset[i], classid, [&](statistics::frame& f, uint16_t id) {
+                auto s = f.consume_power.find(id);
+                if (s) {
+                    return *s;
+                }
+                return UINT64_C(0);
+            });
+        }
+        case stat_type::power: {
+            return stat_pusharray(L, w.stat._dataset[i], 0, [](statistics::frame& f, uint16_t) {
+                return f.power;
+            });
+        }
+        default:
+            std::unreachable();
+        }
+        return 1;
+    }
 
     constexpr static intptr_t LuaFunction = 0;
 
@@ -230,6 +403,10 @@ namespace lua_world {
                 // saveload
                 { "backup_world", backup_world },
                 { "restore_world", restore_world },
+                // statistics
+                { "stat_dataset", stat_dataset },
+                { "stat_total", stat_total },
+                { "stat_query", stat_query },
                 // misc
                 {"set_dirty", set_dirty},
                 {"is_dirty", is_dirty},
@@ -270,7 +447,7 @@ lfileno(lua_State* L) {
 }
 
 extern "C" int
-luaopen_vaststars_world_core(lua_State *L) {
+luaopen_vaststars_world_core(lua_State* L) {
 	luaL_checkversion(L);
 	luaL_Reg l[] = {
 		{ "create_world", lua_world::create },
