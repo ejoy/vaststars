@@ -1,0 +1,9 @@
+CF_FILESERVER = "文件服务器";
+CF_CONNECT = "连接";
+CF_NONE = "没有";
+CF_USB = "USB";
+CF_TCP = "TCP";
+CF_TCP_ADDRESS = "TCP地址 (例如 ip:port)";
+CF_VFS = "文件";
+CF_CLEANUP = "清除缓存";
+CF_ROOT = "存档";

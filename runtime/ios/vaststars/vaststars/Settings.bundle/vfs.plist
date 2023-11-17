@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>StringsTable</key>
+	<string>Root</string>
+	<key>PreferenceSpecifiers</key>
+	<array>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>CF_CLEANUP</string>
+			<key>Key</key>
+			<string>clean_up_next_time</string>
+			<key>DefaultValue</key>
+			<false/>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>CF_ROOT</string>
+			<key>Key</key>
+			<string>root_slot</string>
+			<key>DefaultValue</key>
+			<string>1</string>
+			<key>Values</key>
+			<array>
+				<string>_1</string>
+				<string>_2</string>
+				<string>_3</string>
+				<string>_4</string>
+			</array>
+			<key>Titles</key>
+			<array>
+				<string>1</string>
+				<string>2</string>
+				<string>3</string>
+				<string>4</string>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>
