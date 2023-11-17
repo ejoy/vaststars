@@ -1,11 +1,13 @@
 fx:
   shader_type: PBR
+  macros:
+    "ALPHAMODE_OPAQUE=1"
   setting:
-    ALPHAMODE_OPAQUE: 1
     lighting: on
     cast_shadow: off
     shadow_receive: off
     subsurface: off
+  varyings: /pkt/ant.resources/material/lighting.varyings
 properties:
   u_basecolor_factor: {0, 0, 0, 0.95}
   u_emissive_factor: {0, 0, 0, 0}
