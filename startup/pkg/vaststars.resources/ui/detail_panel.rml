@@ -290,7 +290,7 @@
                     <div style="color:#adadad; font-size: 4vmin; word-break: break-all;">{{desc}}</div>
                 </div>
             </div>
-            <div class="tips-bg" style='align-items: flex-start; margin-left: -3vmin;' data-if="areaid==2.0" data-event-longpress="onLongPressTips(ev)">
+            <div class="tips-bg" style='align-items: flex-start; margin-left: -3vmin;' data-if="areaid==2.0 and #property_list>0" data-event-longpress="onLongPressTips(ev)">
                 <div data-for = "property : property_list">
                     <div style = "margin-left: 10vmin; height: 22vmin; flex-direction: row; align-items: center; justify-content: flex-start;">
                         <div style = "width: 16vmin; height: 16vmin; background-size:cover;" data-style-background-image="property.icon" />
