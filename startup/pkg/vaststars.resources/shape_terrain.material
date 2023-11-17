@@ -1,9 +1,8 @@
 fx:
   shader_type: PBR
   setting:
-    #CYLINDER_TRANSFORM: 1
-    WITH_COLOR_ATTRIB: 1
-    surfacetype: background
+    lighting: on
+  varyings: /pkg/ant.resources/materials/lighting.varyings
 properties:
   s_basecolor:
     stage: 0

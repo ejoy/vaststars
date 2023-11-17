@@ -2,6 +2,7 @@ fx:
   shader_type: PBR
   setting:
     lighting: off
+  varyings: /pkg/ant.resources/materials/nolighting.varyings
 state: /pkg/ant.resources/materials/states/translucent.state
 properties:
   s_basecolor:
