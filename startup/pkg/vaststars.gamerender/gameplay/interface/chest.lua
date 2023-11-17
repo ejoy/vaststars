@@ -34,11 +34,11 @@ local function get_space(slot)
 end
 
 local function pickup(world, ...)
-    iChest.chest_pickup(world, ...)
+    iChest.pickup(world, ...)
 end
 
 local function place(world, ...)
-    iChest.chest_place(world, ...)
+    iChest.place(world, ...)
 end
 
 local function has_item(world, e)
