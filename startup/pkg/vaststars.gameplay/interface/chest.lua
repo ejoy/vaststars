@@ -73,8 +73,10 @@ function m.place(world, e, item, n)
             cChest.place(world._cworld, e.chest.chest, i, n)
             return true
         end
-        if slot.item == 0 or slot.amount == 0 then
-            first_empty = i
+        if not first_empty then
+            if  slot.item == 0 or slot.amount == 0 then
+                first_empty = i
+            end
         end
     end
     if not first_empty then
