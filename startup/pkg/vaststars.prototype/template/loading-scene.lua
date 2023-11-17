@@ -9,7 +9,7 @@ local mountain = {
 local entities = { {
   amount = 30,
   dir = "N",
-  prototype_name = "指挥中心",
+  prototype_name = "物流中心",
   x = 124,
   y = 120
 }, {
@@ -4450,7 +4450,7 @@ return {
     mountain = mountain,
     order = 8,
     guide = {},
-    show = false,
+    show = true,
     start_tech = "登录科技",
     performance_stats = false,
     canvas_icon = false,
