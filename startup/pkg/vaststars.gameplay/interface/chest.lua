@@ -41,12 +41,50 @@ function m.create(world, items)
     return cChest.create(world._cworld, table.concat(t))
 end
 
-function m.pickup(world, e, i, n)
+function m.pickup_at(world, e, i, n)
     return cChest.pickup(world._cworld, e.chest.chest, i, n)
 end
 
-function m.place(world, e, i, n)
+function m.place_at(world, e, i, n)
     return cChest.place(world._cworld, e.chest.chest, i, n)
+end
+
+function m.pickup(world, e, item, n)
+    for i = 1, 256 do
+        local slot = cChest.get(world._cworld, e.chest.chest, i)
+        if not slot then
+            break
+        end
+        if slot.item == item then
+            return cChest.pickup(world._cworld, e.chest.chest, i, n)
+        end
+    end
+    return 0
+end
+
+function m.place(world, e, item, n)
+    local first_empty
+    for i = 1, 256 do
+        local slot = cChest.get(world._cworld, e.chest.chest, i)
+        if not slot then
+            break
+        end
+        if slot.item == item then
+            cChest.place(world._cworld, e.chest.chest, i, n)
+            return true
+        end
+        if slot.item == 0 or slot.amount == 0 then
+            first_empty = i
+        end
+    end
+    if not first_empty then
+        return false
+    end
+    cChest.set(world._cworld, e.chest.chest, first_empty, {
+        item = item,
+        amount = n,
+        limit = prototype.queryById(item).backpack_limit,
+    })
 end
 
 function m.get(world, c, i)
