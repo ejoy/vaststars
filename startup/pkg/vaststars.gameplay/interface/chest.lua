@@ -1,5 +1,4 @@
 local iBuilding = require "interface.building"
-local iBackpack = require "interface.backpack"
 local cChest = require "vaststars.chest.core"
 local prototype = require "prototype"
 
@@ -84,9 +83,6 @@ function m.chest_set(world, e, items)
         end
         e.chest.chest = m.create(world, chest_args)
         iBuilding.dirty(world, "chest")
-    end
-    for item, amount in pairs(chest_items) do
-        iBackpack.place(world, item, amount)
     end
 end
 

@@ -1,5 +1,4 @@
 local iBuilding = require "interface.building"
-local iBackpack = require "interface.backpack"
 local iChest = require "interface.chest"
 local cChest = require "vaststars.chest.core"
 local prototype = require "prototype"
@@ -70,13 +69,6 @@ function m.set_item(world, e, items)
         e.station.chest = iChest.create(world, station_args)
         iBuilding.dirty(world, "chest")
         iBuilding.dirty(world, "station")
-    end
-    for item, amount in pairs(station_items) do
-        local limit = prototype.queryById(item).station_limit
-        iBackpack.place(world, item, amount * limit)
-    end
-    for item, amount in pairs(chest_items) do
-        iBackpack.place(world, item, amount)
     end
 end
 
