@@ -77,7 +77,7 @@ function m.chest_set(world, e, items)
             chest_args[#chest_args+1] = {
                 type = type,
                 item = item,
-                limit = prototype.queryById(item).hub_limit,
+                limit = prototype.queryById(item).chest_limit,
                 amount = chest_items[item] or 0,
             }
             chest_items[item] = nil

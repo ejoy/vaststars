@@ -15,7 +15,7 @@ function c:ctor(init, pt)
                 type = pt.chest_type,
                 item = typeobject.id,
                 amount = v[2],
-                limit = typeobject.hub_limit,
+                limit = typeobject.chest_limit,
             }
         end
     end

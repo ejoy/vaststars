@@ -85,7 +85,7 @@ local prototype = gameplay.register.prototype
 prototype "破损运输车辆" {
     type = {"item"},
     station_limit = 50,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 20,
     item_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/truck.texture",
@@ -106,7 +106,7 @@ prototype "破损运输车辆" {
 prototype "水电站框架" {
     type = {"item"},
     station_limit = 5,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 20,
     item_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/hydroplant.texture",
@@ -118,7 +118,7 @@ prototype "水电站框架" {
 prototype "空气过滤器框架" {
     type = {"item"},
     station_limit = 5,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 20,
     item_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/air-filter.texture",
@@ -130,7 +130,7 @@ prototype "空气过滤器框架" {
 prototype "地下水挖掘机框架" {
     type = {"item"},
     station_limit = 5,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 20,
     item_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/water-excavator.texture",
@@ -142,7 +142,7 @@ prototype "地下水挖掘机框架" {
 prototype "电解厂框架" {
     type = {"item"},
     station_limit = 5,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 20,
     item_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/electrolysis.texture",
@@ -154,7 +154,7 @@ prototype "电解厂框架" {
 prototype "化工厂框架" {
     type = {"item"},
     station_limit = 5,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 20,
     item_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/chemistry.texture",
@@ -166,7 +166,7 @@ prototype "化工厂框架" {
 prototype "采矿机框架" {
     type = {"item"},
     station_limit = 5,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 20,
     item_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/miner.texture",
@@ -178,7 +178,7 @@ prototype "采矿机框架" {
 prototype "组装机框架" {
     type = {"item"},
     station_limit = 5,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 20,
     item_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/assembler.texture",
@@ -190,7 +190,7 @@ prototype "组装机框架" {
 prototype "电线杆框架" {
     type = {"item"},
     station_limit = 5,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 20,
     item_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/iron-wire.texture",
@@ -202,7 +202,7 @@ prototype "电线杆框架" {
 prototype "无人机平台框架" {
     type = {"item"},
     station_limit = 5,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 20,
     item_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/drone-depot.texture",
@@ -214,7 +214,7 @@ prototype "无人机平台框架" {
 prototype "压力泵框架" {
     type = {"item"},
     station_limit = 5,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 20,
     item_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/hydroplant.texture",
@@ -226,7 +226,7 @@ prototype "压力泵框架" {
 prototype "液罐框架" {
     type = {"item"},
     station_limit = 5,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 20,
     item_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/hydroplant.texture",
@@ -238,7 +238,7 @@ prototype "液罐框架" {
 prototype "出货车站框架" {
     type = {"item"},
     station_limit = 5,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 20,
     item_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/goodstation-input.texture",
@@ -250,7 +250,7 @@ prototype "出货车站框架" {
 prototype "收货车站框架" {
     type = {"item"},
     station_limit = 5,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 20,
     item_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/goodstation-input.texture",
@@ -262,7 +262,7 @@ prototype "收货车站框架" {
 prototype "物流站框架" {
     type = {"item"},
     station_limit = 5,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 20,
     item_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/goodstation-input.texture",
@@ -274,7 +274,7 @@ prototype "物流站框架" {
 prototype "停车站框架" {
     type = {"item"},
     station_limit = 5,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 20,
     item_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/goodstation-input.texture",
@@ -286,7 +286,7 @@ prototype "停车站框架" {
 prototype "熔炼炉框架" {
     type = {"item"},
     station_limit = 5,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 20,
     item_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/furnace.texture",
@@ -298,7 +298,7 @@ prototype "熔炼炉框架" {
 prototype "太阳能板框架" {
     type = {"item"},
     station_limit = 5,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 20,
     item_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/solar-panel.texture",
@@ -310,7 +310,7 @@ prototype "太阳能板框架" {
 prototype "蓄电池框架" {
     type = {"item"},
     station_limit = 5,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 20,
     item_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/grid-battery.texture",
@@ -322,7 +322,7 @@ prototype "蓄电池框架" {
 prototype "蒸汽发电机框架" {
     type = {"item"},
     station_limit = 5,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 20,
     item_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/turbine.texture",
@@ -334,7 +334,7 @@ prototype "蒸汽发电机框架" {
 prototype "科研中心框架" {
     type = {"item"},
     station_limit = 5,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 20,
     item_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/lab.texture",
@@ -346,7 +346,7 @@ prototype "科研中心框架" {
 prototype "排水口框架" {
     type = {"item"},
     station_limit = 5,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 20,
     item_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/assembler.texture",
@@ -358,7 +358,7 @@ prototype "排水口框架" {
 prototype "粉碎机框架" {
     type = {"item"},
     station_limit = 5,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 20,
     item_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/assembler.texture",
@@ -370,7 +370,7 @@ prototype "粉碎机框架" {
 prototype "蒸馏厂框架" {
     type = {"item"},
     station_limit = 5,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 20,
     item_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/chemistry.texture",
@@ -382,7 +382,7 @@ prototype "蒸馏厂框架" {
 prototype "烟囱框架" {
     type = {"item"},
     station_limit = 5,
-    hub_limit = 15,
+    chest_limit = 15,
     backpack_limit = 20,
     item_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/chemistry.texture",
