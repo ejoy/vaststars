@@ -7,11 +7,17 @@ for _ = 1, 16 do
 end
 
 local entities = { {
+  amount = 30,
+  dir = "N",
+  prototype_name = "物流中心",
+  x = 124,
+  y = 118
+}, {
   dir = "N",
   items = items,
   prototype_name = "指挥中心",
-  x = 124,
-  y = 118
+  x = 118,
+  y = 112
 }, {
   dir = "N",
   prototype_name = "无人机平台I",

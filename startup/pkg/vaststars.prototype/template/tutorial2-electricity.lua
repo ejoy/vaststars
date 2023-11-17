@@ -1,7 +1,18 @@
 local guide = require "guide.guide2"
 local mountain = require "mountain"
 
+local items = {}
+for _ = 1, 16 do
+  items[#items+1] = {"", 0}
+end
+
 local entities = { {
+    dir = "N",
+    items = items,
+    prototype_name = "指挥中心",
+    x = 126,
+    y = 120
+  },{
     dir = "N",
     items = { { "采矿机I", 3 },{ "轻型风力发电机", 1 },},
     prototype_name = "机身残骸",

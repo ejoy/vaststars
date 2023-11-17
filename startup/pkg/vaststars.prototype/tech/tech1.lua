@@ -117,8 +117,8 @@ local prototype = gameplay.register.prototype
       },
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-        x = 135,
-        y = 122,
+        x = 132,
+        y = 124,
         w = 3.2,
         h = 3.2,
         color = {0.3, 1, 0, 1},

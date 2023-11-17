@@ -303,7 +303,7 @@ local prototype = gameplay.register.prototype
     desc = "制造轻型运输车",
     type = { "task" },
     task = {"unknown", 0, 9},
-    task_params = {building = "组装机I", item = "轻型运输车"},
+    task_params = {building = "组装机I", item = "运输车辆I"},
     count = 1,
     prerequisites = {"铁板大生产"},
     tips_pic = {
