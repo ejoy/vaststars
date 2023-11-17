@@ -164,5 +164,12 @@ return function(start)
         start.buttons[#start.buttons + 1] = v
     end
 
+    if start.inventory then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.command = "inventory"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/place-item.texture"
+        start.buttons[#start.buttons + 1] = v
+    end
+
     show_buttons(start)
 end

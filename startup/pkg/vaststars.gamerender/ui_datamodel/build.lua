@@ -7,7 +7,7 @@ local iui = ecs.require "engine.system.ui_system"
 local click_main_button_mb = mailbox:sub {"click_main_button"}
 local lock_axis_mb = mailbox:sub {"lock_axis"}
 local gameplay_core = require "gameplay.core"
-local ibackpack = require "gameplay.interface.backpack"
+local iinventory = require "gameplay.interface.inventory"
 local iprototype = require "gameplay.interface.prototype"
 local item_unlocked = ecs.require "ui_datamodel.common.item_unlocked".is_unlocked
 local click_item_mb = mailbox:sub {"click_item"}
@@ -29,7 +29,7 @@ local function get_list()
 
         for item_idx, prototype_name in ipairs(menu.items) do
             local typeobject = assert(iprototype.queryByName(prototype_name))
-            local count = ibackpack.query(gameplay_world, typeobject.id)
+            local count = iinventory.query(gameplay_world, typeobject.id)
             if not is_show(typeobject.name, count) then
                 goto continue
             end
@@ -126,7 +126,7 @@ end
 function M.check(prototype)
     local gameplay_world = gameplay_core.get_world()
     local typeobject = assert(iprototype.queryById(prototype))
-    local count = ibackpack.query(gameplay_world, typeobject.id)
+    local count = iinventory.query(gameplay_world, typeobject.id)
     return is_show(typeobject.name, count)
 end
 

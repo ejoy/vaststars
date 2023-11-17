@@ -39,7 +39,7 @@ local icanvas = ecs.require "engine.canvas"
 local icoord = require "coord"
 local gameplay_core = require "gameplay.core"
 local ibuilding = ecs.require "render_updates.building"
-local ibackpack = require "gameplay.interface.backpack"
+local iinventory = require "gameplay.interface.inventory"
 local srt = require "utility.srt"
 
 -- TODO: duplicate from roadbuilder.lua
@@ -573,8 +573,8 @@ local function confirm(self, datamodel)
     self.pickup_object = nil
 
     local typeobject = iprototype.queryByName(pickup_object.prototype_name)
-    assert(ibackpack.pickup(gameplay_core.get_world(), typeobject.id, 1))
-    local continue_construct = ibackpack.query(gameplay_core.get_world(), typeobject.id) > 0
+    assert(iinventory.pickup(gameplay_core.get_world(), typeobject.id, 1))
+    local continue_construct = iinventory.query(gameplay_core.get_world(), typeobject.id) > 0
     if continue_construct then
         __new_entity(self, datamodel, typeobject, pickup_object.x, pickup_object.y, position, dir)
     end

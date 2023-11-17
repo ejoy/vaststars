@@ -157,7 +157,6 @@ tag "wind_turbine"
 tag "base"
 
 --
-tag "backpack_changed"
 tag "station_changed"
 tag "building_new"
 tag "building_changed"

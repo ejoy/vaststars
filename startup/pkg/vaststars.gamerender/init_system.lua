@@ -22,7 +22,7 @@ local global = require "global"
 local irender = ecs.require "ant.render|render_system.render"
 local imountain = ecs.require "engine.mountain"
 local iterrain  = ecs.require "terrain"
-local ibackpack = require "gameplay.interface.backpack"
+local iinventory = require "gameplay.interface.inventory"
 local imineral = ecs.require "mineral"
 local iscience = require "gameplay.interface.science"
 local bgfx = require 'bgfx'
@@ -80,7 +80,7 @@ local function init_game(template)
     iscience.update_tech_list(gameplay_world)
 
     rhwi.set_profie(template.performance_stats ~= false and gameplay_core.settings_get("debug", true) or false)
-    ibackpack.set_infinite_item(debugger.infinite_item)
+    iinventory.set_infinite_item(debugger.infinite_item)
     irender.set_framebuffer_ratio("scene_ratio", gameplay_core.settings_get("ratio", 1))
 
     icanvas.create("icon", template.canvas_icon ~= false and gameplay_core.settings_get("info", true) or false, 10)

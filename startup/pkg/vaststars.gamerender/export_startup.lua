@@ -2,7 +2,6 @@ local ecs   = ...
 local world = ecs.world
 local w     = world.w
 
-local iBackpack = import_package "vaststars.gameplay".interface "backpack"
 local gameplay_core = require "gameplay.core"
 local iprototype = ecs.require "gameplay.interface.prototype"
 local irecipe = ecs.require "gameplay.interface.recipe"
@@ -79,7 +78,7 @@ funcs["chest"] = function(world, e, info)
     end
 
     local items = {}
-    for i = 1, ichest.MAX_SLOT do
+    for i = 1, ichest.get_max_slot(typeobject) do
         local slot = ichest.get(world, e.chest, i)
         if not slot then
             break
@@ -100,7 +99,7 @@ funcs["station"] = function(world, e, info)
         return info
     end
     local items = {}
-    for i = 1, ichest.MAX_SLOT do
+    for i = 1, ichest.get_max_slot(iprototype.queryById(e.building.prototype)) do
         local slot = ichest.get(world, e.station, i)
         if not slot then
             break
@@ -150,30 +149,18 @@ return function()
         }
     end
 
-    local backpack = {}
-    for _, slot in pairs(iBackpack.all(gameplay_world)) do
-        local typeobject_item = assert(iprototype.queryById(slot.prototype))
-        backpack[#backpack+1] = {
-            prototype_name = typeobject_item.name,
-            count = slot.amount
-        }
-    end
-
     writefile(([[
 local entities = %s
-local backpack = %s
 local road = %s
 local mineral = %s
 
 return {
     entities = entities,
-    backpack = backpack,
     road = road,
     mineral = mineral,
 }
     ]]):format(
         inspect(entities),
-        inspect(backpack),
         inspect(roads),
         inspect(imineral.source())
     ))

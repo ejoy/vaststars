@@ -26,7 +26,7 @@ function meta:on_position_change()
     -- do nothing
 end
 function meta:update(gameplay_world, e)
-    for idx = 1, ichest.MAX_SLOT do
+    for idx = 1, ichest.get_max_slot(iprototype.queryById(e.building.prototype)) do
         local slot = ichest.get(gameplay_world, e.chest, idx)
         if not slot then
             break
@@ -54,7 +54,7 @@ end
 local function create(gameplay_world, e, game_object)
     local o = {items = {}}
 
-    for idx = 1, ichest.MAX_SLOT do
+    for idx = 1, ichest.get_max_slot(iprototype.queryById(e.building.prototype)) do
         local slot = ichest.get(gameplay_world, e.chest, idx)
         if not slot then
             break

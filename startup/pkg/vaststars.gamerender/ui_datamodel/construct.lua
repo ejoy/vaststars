@@ -29,7 +29,7 @@ local idetail = ecs.require "detail_system"
 local create_station_builder = ecs.require "editor.stationbuilder"
 local icoord = require "coord"
 local ichest = require "gameplay.interface.chest"
-local ibackpack = require "gameplay.interface.backpack"
+local iinventory = require "gameplay.interface.inventory"
 local gesture_longpress_mb = world:sub{"gesture", "longpress"}
 local igameplay = ecs.require "gameplay_system"
 local audio = import_package "ant.audio"
@@ -157,11 +157,11 @@ function M.update_tech(datamodel, tech)
     end
 end
 
-function M.update_backpack_bar(datamodel, t)
-    datamodel.backpack_bar = {}
+function M.update_item_bar(datamodel, t)
+    datamodel.item_bar = {}
     for _, v in ipairs(t) do
-        datamodel.backpack_bar[#datamodel.backpack_bar + 1] = v
-        if #datamodel.backpack_bar >= 4 then
+        datamodel.item_bar[#datamodel.item_bar + 1] = v
+        if #datamodel.item_bar >= 4 then
             break
         end
     end
@@ -539,32 +539,7 @@ function M.update(datamodel)
         idetail.unselected()
         datamodel.focus_building_icon = ""
         datamodel.status = "NORMAL"
-
         selected_obj = nil
-
-        local gameplay_world = gameplay_core.get_world()
-        local e = gameplay_core.get_entity(gameplay_eid)
-        local typeobject = iprototype.queryById(e.building.prototype)
-        if e.chest then
-            if not ibackpack.can_move_to_backpack(gameplay_world, e, typeobject.id) then
-                log.error("backpack is full")
-                goto continue
-            end
-
-            for i = 1, ichest.MAX_SLOT do
-                local slot = ichest.get(gameplay_world, e.chest, i)
-                if not slot then
-                    break
-                end
-                ibackpack.move_to_backpack(gameplay_world, e, i)
-            end
-        end
-
-        if ibackpack.get_available_capacity(gameplay_world, typeobject.id, 1) <= 0 then
-            log.error("backpack is full")
-            goto continue
-        end
-        ibackpack.place(gameplay_world, typeobject.id, 1)
 
         igameplay.destroy_entity(gameplay_eid)
         gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
@@ -585,7 +560,8 @@ function M.update(datamodel)
                 end
             end
         end
-        ::continue::
+
+        --TODO Add a ruined building
     end
 
     for _, _, _, object_id in move_md:unpack() do
@@ -610,7 +586,7 @@ function M.update(datamodel)
     for _, _, _, name in construct_entity_mb:unpack() do
         assert(datamodel.status == "BUILD")
         local typeobject = iprototype.queryByName(name)
-        if ibackpack.query(gameplay_core.get_world(), typeobject.id) >= 1 then
+        if iinventory.query(gameplay_core.get_world(), typeobject.id) >= 1 then
             idetail.unselected()
             gameplay_core.world_update = false
 

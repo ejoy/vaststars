@@ -1,84 +1,81 @@
 local MAX_AMOUNT <const> = 99999
 
-local iBackpack = import_package "vaststars.gameplay".interface "backpack"
 local iprototype = require "gameplay.interface.prototype"
 local ichest = require "gameplay.interface.chest"
 local math_min = math.min
+local math_max = math.max
 
 local infinite_item = false
 
-local function get_backpack_limit(item)
+local function get_limit(item)
     local typeobject = assert(iprototype.queryById(item))
     return typeobject.backpack_limit or 0
-end
-
-local function set_backpack_changed(world)
-    world.ecs:new {
-        backpack_changed = true
-    }
 end
 
 local function set_infinite_item(b)
     infinite_item = b
 end
 
+local function _query(world, item)
+    local e = assert(world.ecs:first "base chest:in building:in")
+    for idx = 1, ichest.get_max_slot(iprototype.queryById(e.building.prototype)) do
+        local slot = ichest.get(world, e.chest, idx)
+        if not slot then
+            break
+        end
+        if slot.item == item then
+            return slot
+        end
+    end
+end
+
 local function query(world, item)
-    return infinite_item and MAX_AMOUNT or iBackpack.query(world, item)
+    if infinite_item then
+        return MAX_AMOUNT
+    end
+    local slot = _query(world, item)
+    if not slot then
+        return 0
+    end
+    return slot.amount
 end
 
 local function pickup(world, item, amount)
     if infinite_item then
         return true
     end
-    local ok = iBackpack.pickup(world, item, amount)
-    if ok then
-        set_backpack_changed(world)
-    end
-    return ok
+    local e = assert(world.ecs:first "base chest:in building:in")
+    return ichest.pickup(world, e, item, amount) > 0
 end
 
 local function place(world, item, amount)
-    return iBackpack.place(world, item, amount)
+    local e = assert(world.ecs:first "base building:in chest:update")
+    return ichest.place(world, e, item, amount)
 end
 
-local function get_available_capacity(world, item, count)
-    local limit = get_backpack_limit(item)
-    local existing = iBackpack.query(world, item)
-    if existing >= limit then
-        return 0
-    end
-
-    return math_min(limit - existing, count)
+local function get_capacity(world, item)
+    local slot = _query(world, item)
+    return slot and math_max(slot.limit - slot.amount, 0) or get_limit(item)
 end
 
-local function get_available_count(world, item, count)
-    local existing = infinite_item and MAX_AMOUNT or iBackpack.query(world, item)
-    return math_min(count, existing)
-end
-
-local function move_to_backpack(world, e, idx)
+local function move_to_inventory(world, e, idx)
     local slot = assert(ichest.get(world, e.chest, idx))
     if slot.item == 0 or slot.amount <= 0 then
         return 0
     end
 
-    local existing = iBackpack.query(world, slot.item)
-    local limit = get_backpack_limit(slot.item)
-    if existing >= limit then
+    local available = math_min(get_capacity(world, slot.item), slot.amount)
+    if available <= 0 then
         return 0
     end
 
-    local available = math_min(limit - existing, slot.amount)
-    assert(available > 0)
-
-    ichest.pickup(world, e, idx, available)
-    iBackpack.place(world, slot.item, available)
-    set_backpack_changed(world)
+    ichest.pickup_at(world, e, idx, available)
+    place(world, slot.item, available)
     return available
 end
 
-local function backpack_to_chest(world, e, f)
-    for idx = 1, ichest.MAX_SLOT do
+local function inventory_to_chest(world, e, f)
+    for idx = 1, ichest.get_max_slot(iprototype.queryById(e.building.prototype)) do
         local slot = ichest.get(world, e.chest, idx)
         if not slot then
             break
@@ -86,21 +83,20 @@ local function backpack_to_chest(world, e, f)
         if slot.item == 0 then
             goto continue
         end
-
-        local c = get_available_count(world, slot.item, ichest.get_space(slot))
+        local c = math_min(query(world, slot.item), ichest.get_space(slot))
         if c <= 0 then
             goto continue
         end
 
         assert(pickup(world, slot.item, c))
-        ichest.place(world, e, idx, c)
+        ichest.place_at(world, e, idx, c)
         f(slot.item, c)
         ::continue::
     end
 end
 
-local function chest_to_backpack(world, e, f)
-    for i = 1, ichest.MAX_SLOT do
+local function chest_to_inventory(world, e, f)
+    for i = 1, ichest.get_max_slot(iprototype.queryById(e.building.prototype)) do
         local slot = ichest.get(world, e.chest, i)
         if not slot then
             break
@@ -109,7 +105,7 @@ local function chest_to_backpack(world, e, f)
             goto continue
         end
 
-        local c = move_to_backpack(world, e, i)
+        local c = move_to_inventory(world, e, i)
         if c <= 0 then
             goto continue
         end
@@ -119,7 +115,7 @@ local function chest_to_backpack(world, e, f)
     end
 end
 
-local function backpack_to_assembling(world, e, f)
+local function inventory_to_assembling(world, e, f)
     if e.assembling.recipe == 0 then
         return
     end
@@ -139,19 +135,19 @@ local function backpack_to_assembling(world, e, f)
             goto continue
         end
 
-        local c = get_available_count(world, slot.item, n - amount)
+        local c = math_min(query(world, slot.item), n - amount)
         if c <= 0 then
             goto continue
         end
         assert(pickup(world, slot.item, c))
-        ichest.place(world, e, idx, c)
+        ichest.place_at(world, e, idx, c)
 
         f(id, c)
         ::continue::
     end
 end
 
-local function assembling_to_backpack(world, e, f)
+local function assembling_to_inventory(world, e, f)
     if e.assembling.recipe == 0 then
         return
     end
@@ -165,7 +161,7 @@ local function assembling_to_backpack(world, e, f)
             goto continue
         end
 
-        local c = move_to_backpack(world, e, idx)
+        local c = move_to_inventory(world, e, idx)
         if c <= 0 then
             goto continue
         end
@@ -175,22 +171,19 @@ local function assembling_to_backpack(world, e, f)
     end
 end
 
-local function can_move_to_backpack(world, e, item)
-    for i = 1, ichest.MAX_SLOT do
+local function all(world)
+    local e = assert(world.ecs:first "base chest:in building:in")
+    local items = {}
+    for i = 1, ichest.get_max_slot(iprototype.queryById(e.building.prototype)) do
         local slot = ichest.get(world, e.chest, i)
         if not slot then
             break
         end
-        if slot.item ~= item then
-            goto continue
+        if slot.item ~= 0 and slot.amount > 0 then
+            items[#items+1] = slot
         end
-        local count = get_available_capacity(world, slot.item, slot.amount)
-        if count < slot.amount then
-            return false
-        end
-        ::continue::
     end
-    return true
+    return items
 end
 
 return {
@@ -198,12 +191,10 @@ return {
     query = query,
     place = place,
     pickup = pickup,
-    get_available_capacity = get_available_capacity,
-    get_available_count = get_available_count,
-    move_to_backpack = move_to_backpack,
-    can_move_to_backpack = can_move_to_backpack,
-    backpack_to_chest = backpack_to_chest,
-    chest_to_backpack = chest_to_backpack,
-    backpack_to_assembling = backpack_to_assembling,
-    assembling_to_backpack = assembling_to_backpack,
+    all = all,
+    get_capacity = get_capacity,
+    inventory_to_chest = inventory_to_chest,
+    chest_to_inventory = chest_to_inventory,
+    inventory_to_assembling = inventory_to_assembling,
+    assembling_to_inventory = assembling_to_inventory,
 }

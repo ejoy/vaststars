@@ -115,7 +115,7 @@
                 top: 31.00vmin;
                 width: 31.02vmax;
                 height: 68.07vmin;
-                background-image: "/pkg/vaststars.resources/ui/textures/backpack/item-source-bg.texture";
+                background-image: "/pkg/vaststars.resources/ui/textures/inventory/item-source-bg.texture";
                 background-size: 100% 100%;
                 background-lattice: 5.24% 11.21% 28.29% 5.26% 15.52% 67.12%;
             }
@@ -124,7 +124,7 @@
             local ui_sys = require "lua.ui_system"
             local scrollToItem = require "lua.scrolltoitem"
             local start = ui_sys.createDataMode({
-                backpack = {},
+                inventory = {},
                 item_name = "",
                 item_desc = "",
                 item_ingredients = {},
@@ -168,7 +168,7 @@
         <div style = "position: absolute; top: 0; left: 0; width: 100vmax; height: 100vmin;" data-event-click = "clickButton('close')" />
         <construct-box>
             <construct-list>
-                <div style = "width: 100%; align-items: flex-start;" data-for = "c, c_index : backpack">
+                <div style = "width: 100%; align-items: flex-start;" data-for = "c, c_index : inventory">
                     <div style = "position: absolute; left: 0vmin; top: 0vmin; background-image: /pkg/vaststars.resources/ui/textures/item-config/category-bg.texture; width: 23.50vmax; height: 23.13vmin; background-size: 100% 100%;" />
                     <div style = "margin-left: 5.58vmin; margin-top: 2.58vmin; width: 100%; flex-direction: row; font-size: 4.20vmin;">{{c.category}}</div>
                     <div style = "flex-direction: row; flex-wrap: wrap;">

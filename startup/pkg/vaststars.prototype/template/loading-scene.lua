@@ -3372,10 +3372,7 @@ local entities = { {
   x = 114,
   y = 139
 } }
-local backpack = { {
-  count = 31,
-  prototype_name = "铁板"
-} }
+
 local road = { {
   dir = "E",
   prototype_name = "砖石公路-I型",

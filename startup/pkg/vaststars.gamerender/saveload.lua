@@ -15,7 +15,6 @@ local gameplay_core = require "gameplay.core"
 local fs = require "bee.filesystem"
 local json = import_package "ant.json"
 local iprototype_cache = require "gameplay.prototype_cache.init"
-local iBackpack = import_package "vaststars.gameplay".interface "backpack"
 local iprototype = require "gameplay.interface.prototype"
 local iroadnet_converter = require "roadnet_converter"
 local objects = require "objects"
@@ -241,11 +240,6 @@ function M:restart(game_template_file)
         iroadnet:set("road", road.x, road.y, "normal", shape, dir)
     end
     iroadnet:flush()
-
-    for _, e in ipairs(game_template.backpack or {}) do
-        local typeobject = iprototype.queryByName(e.prototype_name)
-        iBackpack.place(gameplay_world, typeobject.id, e.count)
-    end
 
     local prepare = game_template.prepare
     if prepare then

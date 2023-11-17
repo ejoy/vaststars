@@ -41,7 +41,7 @@ local ibuilding = ecs.require "render_updates.building"
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local iroad = ecs.require "vaststars.gamerender|render_updates.road"
 local imountain = ecs.require "engine.mountain"
-local ibackpack = require "gameplay.interface.backpack"
+local iinventory = require "gameplay.interface.inventory"
 local iom = ecs.require "ant.objcontroller|obj_motion"
 local srt = require "utility.srt"
 local imineral = ecs.require "mineral"
@@ -278,10 +278,10 @@ local function place(self, datamodel)
     local mask = getRoad(x, y)
     if not mask then
         local gameplay_world = gameplay_core.get_world()
-        if ibackpack.query(gameplay_world, self.typeobject.id) < 1 then
+        if iinventory.query(gameplay_world, self.typeobject.id) < 1 then
             return
         end
-        assert(ibackpack.pickup(gameplay_world, self.typeobject.id, 1))
+        assert(iinventory.pickup(gameplay_world, self.typeobject.id, 1))
 
         mask = 0
     end
@@ -313,7 +313,7 @@ local function place(self, datamodel)
         _new_entity(self, datamodel, self.typeobject, dx, dy)
     end)
 
-    ibackpack.pickup(gameplay_core.get_world(), typeobject.id, 1)
+    iinventory.pickup(gameplay_core.get_world(), typeobject.id, 1)
     task.update_progress("is_road_connected")
 end
 

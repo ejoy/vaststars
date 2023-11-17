@@ -29,7 +29,7 @@ local icoord = require "coord"
 local gameplay_core = require "gameplay.core"
 local ibuilding = ecs.require "render_updates.building"
 local create_fluid_indicators = ecs.require "fluid_indicators".create
-local ibackpack = require "gameplay.interface.backpack"
+local iinventory = require "gameplay.interface.inventory"
 local ichest = require "gameplay.interface.chest"
 local srt = require "utility.srt"
 local imineral = ecs.require "mineral"
@@ -528,9 +528,9 @@ local function confirm(self, datamodel)
     self.pickup_object = nil
     self.super.complete(self, pickup_object.id)
 
-    assert(ibackpack.pickup(gameplay_core.get_world(), typeobject.id, 1))
+    assert(iinventory.pickup(gameplay_core.get_world(), typeobject.id, 1))
 
-    local continue_construct = ibackpack.query(gameplay_core.get_world(), typeobject.id) > 0
+    local continue_construct = iinventory.query(gameplay_core.get_world(), typeobject.id) > 0
     if continue_construct then
         __new_entity(self, datamodel, typeobject, pickup_object.x, pickup_object.y, pickup_object.srt.t, pickup_object.dir)
     end

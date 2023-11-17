@@ -17,6 +17,10 @@ local function has_chest(type)
     return iprototype.has_types(type, table.unpack(CHEST_TYPES))
 end
 
+local function set(world, e, item)
+    return iChest.chest_set(world, e, item)
+end
+
 local function get(world, ...)
     local c = iChest.get(world, ...)
     if c and c.item == 0 then
@@ -33,12 +37,20 @@ local function get_space(slot)
     return slot.limit - slot.amount - slot.lock_space
 end
 
-local function pickup(world, ...)
+local function pickup_at(world, ...)
     iChest.pickup_at(world, ...)
 end
 
-local function place(world, ...)
+local function place_at(world, ...)
     iChest.place_at(world, ...)
+end
+
+local function pickup(world, ...)
+    iChest.pickup(world, ...)
+end
+
+local function place(world, ...)
+    iChest.place(world, ...)
 end
 
 local function has_item(world, e)
@@ -55,13 +67,15 @@ local function has_item(world, e)
 end
 
 return {
-    MAX_SLOT = MAX_SLOT,
     has_chest = has_chest,
+    set = set,
     get = get,
     get_amount = get_amount,
     get_space = get_space,
     has_item = has_item,
     get_max_slot = get_max_slot,
+    pickup_at = pickup_at,
+    place_at = place_at,
     pickup = pickup,
     place = place,
 }

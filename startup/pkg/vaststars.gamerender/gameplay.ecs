@@ -10,9 +10,6 @@ system "daynight_system"
 system "building_system"
     .implement "render_updates/building.lua"
 
-system "backpack_system"
-    .implement "render_updates/backpack.lua"
-
 system "drone_system"
     .implement "render_updates/drone.lua"
 

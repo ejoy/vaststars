@@ -6,16 +6,16 @@ local ITEM_CATEGORY <const> = ecs.require "vaststars.prototype|item_category"
 
 local gameplay_core = require "gameplay.core"
 local iprototype = require "gameplay.interface.prototype"
-local iBackpack = import_package "vaststars.gameplay".interface "backpack"
+local iinventory = require "gameplay.interface.inventory"
 local click_item_mb = mailbox:sub {"click_item"}
 local close_mb = mailbox:sub {"close"}
 local iui = ecs.require "engine.system.ui_system"
 local iprototype_cache = ecs.require "prototype_cache"
 
-local function get_backpack()
+local function get_items()
     local t = {}
-    for _, slot in pairs(iBackpack.all(gameplay_core.get_world())) do
-        local typeobject_item = assert(iprototype.queryById(slot.prototype))
+    for _, slot in pairs(iinventory.all(gameplay_core.get_world())) do
+        local typeobject_item = assert(iprototype.queryById(slot.item))
 
         local v = {}
         v.id = typeobject_item.id
@@ -35,22 +35,22 @@ local function get_backpack()
         end)
     end
 
-    local backpack = {}
+    local inventory = {}
     for _, category in ipairs(ITEM_CATEGORY) do
         if t[category] then
-            backpack[#backpack+1] = {category = category, items = t[category]}
+            inventory[#inventory+1] = {category = category, items = t[category]}
         end
     end
-    return backpack
+    return inventory
 end
 
 local function set_item_value(datamodel, category_idx, item_idx, key, value)
     if category_idx == 0 and item_idx == 0 then
         return
     end
-    assert(datamodel.backpack[category_idx])
-    assert(datamodel.backpack[category_idx].items[item_idx])
-    datamodel.backpack[category_idx].items[item_idx][key] = value
+    assert(datamodel.inventory[category_idx])
+    assert(datamodel.inventory[category_idx].items[item_idx])
+    datamodel.inventory[category_idx].items[item_idx][key] = value
 end
 
 ---------------
@@ -64,7 +64,7 @@ function M.create()
         item_desc = "",
         item_ingredients = {},
         item_assembling = {},
-        backpack = get_backpack(),
+        inventory = get_items(),
     }
 end
 
@@ -85,7 +85,7 @@ function M.update(datamodel)
             datamodel.category_idx = category_idx
             datamodel.item_idx = item_idx
 
-            local item_name = datamodel.backpack[category_idx].items[item_idx].name
+            local item_name = datamodel.inventory[category_idx].items[item_idx].name
             local typeobject = iprototype.queryByName(item_name)
             datamodel.item_name = iprototype.display_name(typeobject)
             datamodel.item_desc = typeobject.item_description or ""
@@ -115,12 +115,8 @@ function M.update(datamodel)
     end
 
     for _ in close_mb:unpack() do
-        iui.close("/pkg/vaststars.resources/ui/backpack.rml")
+        iui.close("/pkg/vaststars.resources/ui/inventory.rml")
     end
-end
-
-function M.update_backpack(datamodel)
-    datamodel.backpack = get_backpack()
 end
 
 return M

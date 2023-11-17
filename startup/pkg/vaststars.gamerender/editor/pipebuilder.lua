@@ -31,7 +31,7 @@ local ifluidbox = ecs.require "render_updates.fluidbox"
 local iprototype_cache = ecs.require "prototype_cache"
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local srt = require "utility.srt"
-local ibackpack = require "gameplay.interface.backpack"
+local iinventory = require "gameplay.interface.inventory"
 
 local function length(t)
     local n = 0
@@ -267,10 +267,10 @@ local function place_one(self, datamodel)
     end
 
     local gameplay_world = gameplay_core.get_world()
-    if ibackpack.query(gameplay_world, self.typeobject.id) < 1 then
+    if iinventory.query(gameplay_world, self.typeobject.id) < 1 then
         return
     end
-    assert(ibackpack.pickup(gameplay_world, self.typeobject.id, 1))
+    assert(iinventory.pickup(gameplay_world, self.typeobject.id, 1))
 
     --
     local m = 0

@@ -303,25 +303,7 @@ local entities = { {
   x = 106,
   y = 150
 } }
-local backpack = { {
-  count = 3,
-  prototype_name = "空气过滤器I"
-}, {
-  count = 4,
-  prototype_name = "地下水挖掘机I"
-}, {
-  count = 1,
-  prototype_name = "烟囱I"
-}, {
-  count = 2,
-  prototype_name = "排水口I"
-}, {
-  count = 41,
-  prototype_name = "管道1-X型"
-}, {
-  count = 2,
-  prototype_name = "地下管1-JI型"
-} }
+
 local road = {}
 local mineral = {
 ["110,92"] = "铝矿石",

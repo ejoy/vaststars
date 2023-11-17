@@ -43,11 +43,12 @@ local ui_click_mb = mailbox:sub {"ui_click"}
 local pickup_item_mb = mailbox:sub {"pickup_item"}
 local place_item_mb = mailbox:sub {"place_item"}
 local remove_lorry_mb = mailbox:sub {"remove_lorry"}
+local inventory_mb = mailbox:sub {"inventory"}
+
 local move_mb = mailbox:sub {"move"}
 local copy_md = mailbox:sub {"copy"}
-
 local ichest = require "gameplay.interface.chest"
-local ibackpack = require "gameplay.interface.backpack"
+local iinventory = require "gameplay.interface.inventory"
 local global = require "global"
 local iobject = ecs.require "object"
 local igameplay = ecs.require "gameplay_system"
@@ -100,14 +101,14 @@ local function getPickableCount(e)
             if c then -- the number of non-fluid outputs is greater than 1
                 return "+"
             end
-            c = ibackpack.get_available_capacity(gameplay_world, slot.item, ichest.get_amount(slot))
+            c = math.min(iinventory.get_capacity(gameplay_world, slot.item), ichest.get_amount(slot))
             ::continue::
         end
         return c or 0
 
     elseif hasComponent(e, PICKUP_COMPONENTS) then
         local c
-        for i = 1, ichest.MAX_SLOT do
+        for i = 1, ichest.get_max_slot(iprototype.queryById(e.building.prototype)) do
             local slot = ichest.get(gameplay_world, e.chest, i)
             if not slot then
                 break
@@ -119,7 +120,7 @@ local function getPickableCount(e)
             if c then -- the number of non-fluid outputs is greater than 1
                 return "+"
             end
-            c = ibackpack.get_available_capacity(gameplay_world, slot.item, ichest.get_amount(slot))
+            c = math.min(iinventory.get_capacity(gameplay_world, slot.item), ichest.get_amount(slot))
             ::continue::
         end
 
@@ -159,7 +160,7 @@ local function getPlaceableCount(e, typeobject)
         if available <= 0 then
             return 0
         end
-        return ibackpack.get_available_count(gameplay_world, ingredient, available)
+        return math.min(iinventory.query(gameplay_world, ingredient), available)
 
     elseif hasPlaceItem(e, typeobject) then
         local c
@@ -174,7 +175,7 @@ local function getPlaceableCount(e, typeobject)
             assert(not iprototype.is_fluid_id(slot.item))
 
             local space = ichest.get_space(slot)
-            local available = ibackpack.get_available_count(gameplay_world, slot.item, space)
+            local available = math.min(iinventory.query(gameplay_world, slot.item), space)
             if available < 0 then
                 goto continue
             end
@@ -234,6 +235,7 @@ function M.create(gameplay_eid)
         remove_lorry = (e.lorry ~= nil),
         move = move,
         copy = copy,
+        inventory = iprototype.has_type(typeobject.type, "base"),
     }
 
     return datamodel
@@ -298,7 +300,7 @@ local function chest_set_item(gameplay_world, e, type, item)
     end
 
     items[#items+1] = {CHEST_TYPE_CONVERT[typeobject.chest_type], item}
-    iGameplayChest.chest_set(gameplay_world, e, items)
+    ichest.set(gameplay_world, e, items)
     gameplay_core.set_changed(CHANGED_FLAG_DEPOT)
 end
 
@@ -316,7 +318,7 @@ local function chest_remove_item(gameplay_world, e, slot_index)
         end
     end
 
-    iGameplayChest.chest_set(gameplay_world, e, items)
+    ichest.set(gameplay_world, e, items)
     gameplay_core.set_changed(CHANGED_FLAG_DEPOT)
 end
 
@@ -376,11 +378,11 @@ function M.update(datamodel, gameplay_eid)
             print("item already full")
             goto continue
         end
-        if not ibackpack.pickup(gameplay_core.get_world(), slot.item, 1) then
+        if not iinventory.pickup(gameplay_core.get_world(), slot.item, 1) then
             print("failed to place")
             goto continue
         end
-        ichest.place(gameplay_core.get_world(), e, 1, 1)
+        ichest.place_at(gameplay_core.get_world(), e, 1, 1)
         ::continue::
     end
 
@@ -394,7 +396,7 @@ function M.update(datamodel, gameplay_eid)
 
         local msgs = {}
         if e.assembling then
-            ibackpack.assembling_to_backpack(gameplay_world, e, function(id, n)
+            iinventory.assembling_to_inventory(gameplay_world, e, function(id, n)
                 local item = iprototype.queryById(id)
                 msgs[#msgs + 1] = {icon = item.item_icon, name = item.name, count = n}
 
@@ -402,7 +404,7 @@ function M.update(datamodel, gameplay_eid)
             end)
 
         elseif hasComponent(e, PICKUP_COMPONENTS) then
-            ibackpack.chest_to_backpack(gameplay_world, e, function(id, n)
+            iinventory.chest_to_inventory(gameplay_world, e, function(id, n)
                 local item = iprototype.queryById(id)
                 msgs[#msgs + 1] = {icon = assert(item.item_icon), name = item.name, count = n}
 
@@ -431,7 +433,7 @@ function M.update(datamodel, gameplay_eid)
 
         local sp_x, sp_y = math3d.index(icamera_controller.world_to_screen(object.srt.t), 1, 2)
         iui.send("/pkg/vaststars.resources/ui/message_pop.rml", "item", {action = "up", left = sp_x, top = sp_y, items = msgs})
-        iui.call_datamodel_method("/pkg/vaststars.resources/ui/construct.rml", "update_backpack_bar", msgs)
+        iui.call_datamodel_method("/pkg/vaststars.resources/ui/construct.rml", "update_item_bar", msgs)
     end
 
     for _ in place_item_mb:unpack() do
@@ -440,13 +442,13 @@ function M.update(datamodel, gameplay_eid)
 
         local msgs = {}
         if e.assembling then
-            ibackpack.backpack_to_assembling(gameplay_world, e, function(id, n)
+            iinventory.inventory_to_assembling(gameplay_world, e, function(id, n)
                 local item = iprototype.queryById(id)
                 msgs[#msgs+1] = {icon = item.item_icon, name = item.name, count = n}
             end)
 
         elseif hasPlaceItem(e, typeobject) then
-            ibackpack.backpack_to_chest(gameplay_world, e, function(id, n)
+            iinventory.inventory_to_chest(gameplay_world, e, function(id, n)
                 local item = iprototype.queryById(id)
                 msgs[#msgs+1] = {icon = item.item_icon, name = item.name, count = n}
             end)
@@ -460,9 +462,9 @@ function M.update(datamodel, gameplay_eid)
 
         local sp_x, sp_y = math3d.index(icamera_controller.world_to_screen(object.srt.t), 1, 2)
         iui.send("/pkg/vaststars.resources/ui/message_pop.rml", "item", {action = "down", left = sp_x, top = sp_y, items = msgs})
-        iui.call_datamodel_method("/pkg/vaststars.resources/ui/construct.rml", "update_backpack_bar", msgs)
+        iui.call_datamodel_method("/pkg/vaststars.resources/ui/construct.rml", "update_item_bar", msgs)
 
-        for i = 1, ichest.MAX_SLOT do
+        for i = 1, ichest.get_max_slot(iprototype.queryById(e.building.prototype)) do
             local slot = ichest.get(gameplay_world, e.chest, i)
             if not slot then
                 break
@@ -479,6 +481,10 @@ function M.update(datamodel, gameplay_eid)
         e.lorry_willremove = true
         iui.leave()
         iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "unselected")
+    end
+
+    for _ in inventory_mb:unpack() do
+        iui.open({rml = "/pkg/vaststars.resources/ui/inventory.rml"})
     end
 end
 

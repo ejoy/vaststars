@@ -1,9 +1,14 @@
 local guide = require "guide"
 local mountain = require "mountain"
 
+local items = {}
+for _ = 1, 16 do
+  items[#items+1] = {"", 0}
+end
+
 local entities = { {
-  amount = 50,
   dir = "N",
+  items = items,
   prototype_name = "指挥中心",
   x = 124,
   y = 118
@@ -3630,13 +3635,7 @@ local entities = { {
   x = 210,
   y = 136
 } }
-local backpack = { {
-  count = 2,
-  prototype_name = "蒸汽发电机I"
-}, {
-  count = 1,
-  prototype_name = "地热井I"
-} }
+
 local road = { {
   dir = "N",
   prototype_name = "砖石公路-I型",

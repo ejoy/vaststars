@@ -63,14 +63,6 @@
                 </button-pic-container>
                 <button-text>游戏设置</button-text>
             </button-container>
-
-            <button-container data-event-click = "clickButton('backpack')">
-                <button-pic-container>
-                    <button-pic style = "background-image: /pkg/vaststars.resources/ui/textures/main-menu/backpack.texture;" />
-                    <button-overlay />
-                </button-pic-container>
-                <button-text>储存仓库</button-text>
-            </button-container>
         </div>
     </body>
 </rml>

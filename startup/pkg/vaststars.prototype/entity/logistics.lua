@@ -7,8 +7,9 @@ prototype "指挥中心" {
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_headquarter.texture",
     construct_detector = {"exclusive"},
     craft_category = {"基地制造"},
-    item = "运输车辆I",
-    type = {"building", "base", "factory"},
+    type = {"building", "base", "chest"},
+    chest_type = "supply",
+    max_slot = 16,
     speed = "50%",
     maxslot = 8,
     area = "6x6",
@@ -16,17 +17,6 @@ prototype "指挥中心" {
     teardown = false,
     move = false,
     copy = false,
-    crossing = {
-        connections = {
-            {type="factory", position={2,4,"S"}},
-        },
-    },
-    starting = "2,2",
-    road = {
-        "2,2,║",
-        "2,4,║",
-        "2,6,╨",
-    },
 }
 
 prototype "物流中心" {
