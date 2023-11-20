@@ -43,8 +43,8 @@
             }
 
             local AUDIOS <const> = {
-                ["pickup_item"] = "event:/function/pickup",
-                ["place_item"] = "event:/function/putdown",
+                ["set_transfer_source"] = "event:/function/pickup",
+                ["transfer"] = "event:/function/putdown",
             }
 
             function start.clickButton(command, disabled)
@@ -64,7 +64,7 @@
                         handler(start)
                     end,
                     "show_set_recipe", "lorry_factory_inc_lorry",
-                    "guide_progress", "place_item_count", "set_item"
+                    "guide_progress", "transfer_count", "set_item"
                 }
             })
         </script>

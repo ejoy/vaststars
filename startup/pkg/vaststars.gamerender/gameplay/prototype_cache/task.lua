@@ -32,17 +32,14 @@ custom_type :
 
     task = {"unknown", 0, 6},
     task_params = {ui = "item_transfer_unsubscribe", , building = ""},
-7. place_item
+7. transfer
     task = {"unknown", 0, 7},
     task_params = {building = "xx", item = "xx", },
     count = xx
 8. set_items, 
     task = {"unknown", 0, 8},
     task_params = {items = {"demand|xx", "supply|xx", "transit|xx", ...}}
-9. pickup_item
-    task = {"unknown", 0, 9},
-    task_params = {building = "xx", item = "xx", }
-    count = xx
+9. 
 10.in_one_power_grid
     task = {"unknown", 0, 10},
     task_params = {building = "xx", }
@@ -131,7 +128,7 @@ local custom_type_mapping = {
             return 0
         end
     end, },
-    [7] = {s = "place_item", check = function(task_params, progress, building, item, count)
+    [7] = {s = "transfer", check = function(task_params, progress, building, item, count)
         if task_params.building == building and task_params.item == item then
             return (progress or 0) + count
         end
@@ -148,11 +145,6 @@ local custom_type_mapping = {
             end
         end
         return 1
-    end, },
-    [9] = {s = "pickup_item", check = function(task_params, progress, building, item, count)
-        if task_params.building == building and task_params.item == item then
-            return (progress or 0) + count
-        end
     end, },
     [10] = {s = "in_one_power_grid", check = function(task_params, progress)
         local gameplay_world = gameplay_core.get_world()
@@ -262,7 +254,7 @@ return function ()
             goto continue
         end
 
-        local c = custom_type_mapping[custom_type] or error("unknown custom_type: " .. custom_type)
+        local c = custom_type_mapping[custom_type] or error(("task: %s, unknown custom_type: %d"):format(typeobject.name, custom_type))
         cache[c.s][typeobject.name] = {task_name = typeobject.name, task_params = typeobject.task_params, check = c.check}
         ::continue::
     end

@@ -25,8 +25,8 @@ local set_recipe_mb = mailbox:sub {"set_recipe"}
 local set_item_mb = mailbox:sub {"set_item"}
 local lorry_factory_inc_lorry_mb = mailbox:sub {"lorry_factory_inc_lorry"}
 local ui_click_mb = mailbox:sub {"ui_click"}
-local pickup_item_mb = mailbox:sub {"pickup_item"}
-local place_item_mb = mailbox:sub {"place_item"}
+local set_transfer_source_mb = mailbox:sub {"set_transfer_source"}
+local transfer_mb = mailbox:sub {"transfer"}
 local remove_lorry_mb = mailbox:sub {"remove_lorry"}
 local inventory_mb = mailbox:sub {"inventory"}
 
@@ -38,20 +38,15 @@ local interval_call = ecs.require "engine.interval_call"
 local gameplay = import_package "vaststars.gameplay"
 local iGameplayStation = gameplay.interface "station"
 local itransfer = ecs.require "transfer"
+local iobject = ecs.require "object"
+local global = require "global"
+local igameplay = ecs.require "gameplay_system"
 
 local function hasSetItem(e, typeobject)
     return e.station or (e.chest and CHEST_TYPE_CONVERT[typeobject.chest_type] == "transit" or false)
 end
 
-local function hasPickupItem(e)
-    return e.chest ~= nil
-end
-
-local function hasPlaceItem(e)
-    return e.chest ~= nil
-end
-
-local updateItemCount = interval_call(300, function(datamodel, e)
+local update = interval_call(300, function(datamodel, e)
     local info = itransfer.get_transfer_info(gameplay_core.get_world())
     local length = 0
     for _, _ in pairs(info) do
@@ -59,7 +54,7 @@ local updateItemCount = interval_call(300, function(datamodel, e)
     end
 
     local count = 0
-    if datamodel.place_item then
+    if datamodel.transfer then
         if length > 1 then
             count = "+"
         elseif length == 1 then
@@ -69,7 +64,7 @@ local updateItemCount = interval_call(300, function(datamodel, e)
             count = 0
         end
     end
-    datamodel.place_item_count = count
+    datamodel.transfer_count = count
 end)
 
 ---------------
@@ -86,16 +81,16 @@ function M.create(gameplay_eid)
     end
 
     local set_item = hasSetItem(e, typeobject)
-    local place_item = hasPlaceItem(e)
+    local transfer = e.chest ~= nil
     local lorry_factory_inc_lorry = (e.factory == true)
 
     local datamodel = {
         prototype_name = typeobject.name,
         show_set_recipe = e.assembling and typeobject.allow_set_recipt or false,
         lorry_factory_inc_lorry = lorry_factory_inc_lorry,
-        pickup_item = hasPickupItem(e),
-        place_item = place_item,
-        place_item_count = 0,
+        set_transfer_source = e.chest ~= nil,
+        transfer = transfer,
+        transfer_count = 0,
         set_item = set_item,
         remove_lorry = (e.lorry ~= nil),
         move = typeobject.move ~= false,
@@ -189,19 +184,21 @@ end
 
 function M.update(datamodel, gameplay_eid)
     local e = assert(gameplay_core.get_entity(gameplay_eid))
+    update(datamodel, e)
+
     local typeobject
     if e.lorry then
         typeobject = iprototype.queryById(e.lorry.prototype)
     else
         typeobject = iprototype.queryById(e.building.prototype)
     end
-    updateItemCount(datamodel, e)
 
     for _ in move_mb:unpack() do
         iui.leave()
         local object = assert(objects:coord(e.building.x, e.building.y))
         iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "move", object.id)
     end
+
     for _ in copy_md:unpack() do
         assert(e.building)
         local typeobject = iprototype.queryById(e.building.prototype)
@@ -253,11 +250,11 @@ function M.update(datamodel, gameplay_eid)
         itask.update_progress("click_ui", message, typeobject.name)
     end
 
-    for _ in pickup_item_mb:unpack() do
+    for _ in set_transfer_source_mb:unpack() do
         itransfer.set_source_eid(e.eid)
     end
 
-    for _ in place_item_mb:unpack() do
+    for _ in transfer_mb:unpack() do
         local object = assert(objects:coord(e.building.x, e.building.y))
         local gameplay_world = gameplay_core.get_world()
 
@@ -270,11 +267,32 @@ function M.update(datamodel, gameplay_eid)
             local typeobject = iprototype.queryById(item)
             msgs[#msgs+1] = {icon = typeobject.item_icon, name = typeobject.name, count = n}
 
-            itask.update_progress("place_item", object.prototype_name, typeobject.name, n)
+            itask.update_progress("transfer", object.prototype_name, typeobject.name, n)
         end)
 
         local sp_x, sp_y = math3d.index(icamera_controller.world_to_screen(object.srt.t), 1, 2)
         iui.send("/pkg/vaststars.resources/ui/message_pop.rml", "item", {action = "down", left = sp_x, top = sp_y, items = msgs})
+
+        local seid = assert(itransfer.get_source_eid())
+        local source = assert(gameplay_core.get_entity(seid))
+        if source.chest then
+            local typeobject = iprototype.queryById(source.building.prototype)
+            if not ichest.has_item(gameplay_world, source.chest) and typeobject.chest_destroy then
+                local object = assert(objects:coord(source.building.x, source.building.y))
+
+                iobject.remove(object)
+                objects:remove(object.id)
+                local building = global.buildings[object.id]
+                if building then
+                    for _, v in pairs(building) do
+                        v:remove()
+                    end
+                end
+
+                igameplay.destroy_entity(seid)
+                itransfer.set_source_eid(nil)
+            end
+        end
     end
 
     for _ in remove_lorry_mb:unpack() do

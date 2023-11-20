@@ -66,12 +66,12 @@ end
 local function test(start, count)
     local buttons = {
         [1] = {
-            background_image = "/pkg/vaststars.resources/ui/textures/building-menu/pickup-item.texture",
+            background_image = "/pkg/vaststars.resources/ui/textures/building-menu/set-transfer-source.texture",
             command = "-pickup-item",
         },
         [2] = {
-            background_image = "/pkg/vaststars.resources/ui/textures/building-menu/place-item.texture",
-            command = "-place-item",
+            background_image = "/pkg/vaststars.resources/ui/textures/building-menu/transfer.texture",
+            command = "-transfer",
         },
         [3] = {
             background_image = "/pkg/vaststars.resources/ui/textures/building-menu/teardown.texture",
@@ -104,10 +104,10 @@ return function(start)
     end
 
     start.buttons = {}
-    if start.pickup_item then
+    if start.set_transfer_source then
         local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "pickup_item"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/pickup-item.texture"
+        v.command = "set_transfer_source"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/set-transfer-source.texture"
         start.buttons[#start.buttons + 1] = v
     end
 
@@ -160,11 +160,11 @@ return function(start)
         start.buttons[#start.buttons + 1] = v
     end
 
-    if start.place_item then
+    if start.transfer then
         local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "place_item"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/place-item.texture"
-        v.number = start.place_item_count
+        v.command = "transfer"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/transfer.texture"
+        v.number = start.transfer_count
         v.show_number = true
         start.buttons[#start.buttons + 1] = v
     end

@@ -2,6 +2,24 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
+local STATUS_NONE <const> = 0
+local STATUS_WORKING <const> = 1
+local STATUS_IDLE <const> = 2
+local STATUS_NO_POWER <const> = 3
+
+local STATUS = {
+    [STATUS_WORKING] = "work",
+    [STATUS_IDLE] = "idle",
+    [STATUS_NO_POWER] = "idle",
+}
+
+local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
+local COLOR = {
+    [STATUS_WORKING] = SPRITE_COLOR.WORK_STATE_WORKING,
+    [STATUS_IDLE] = SPRITE_COLOR.WORK_STATE_IDLE,
+    [STATUS_NO_POWER] = SPRITE_COLOR.WORK_STATE_NO_POWER,
+}
+
 local global = require "global"
 local objects = require "objects"
 local vsobject_manager = ecs.require "vsobject_manager"
@@ -9,24 +27,6 @@ local interval_call = ecs.require "engine.interval_call"
 local gameplay_core = require "gameplay.core"
 local work_state_sys = ecs.system "work_state_system"
 local ipower_check = ecs.require "power_check_system"
-local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
-
-local STATUS_NONE <const> = 0
-local STATUS_WORKING <const> = 1
-local STATUS_IDLE <const> = 2
-local STATUS_NO_POWER <const> = 3
-
-local COLOR = {
-    [STATUS_WORKING] = SPRITE_COLOR.WORK_STATE_WORKING,
-    [STATUS_IDLE] = SPRITE_COLOR.WORK_STATE_IDLE,
-    [STATUS_NO_POWER] = SPRITE_COLOR.WORK_STATE_NO_POWER,
-}
-
-local STATUS = {
-    [STATUS_WORKING] = "work",
-    [STATUS_IDLE] = "idle",
-    [STATUS_NO_POWER] = "idle",
-}
 
 local function create_workstatus()
     local status = STATUS_NONE

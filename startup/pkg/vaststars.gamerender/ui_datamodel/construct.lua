@@ -126,6 +126,7 @@ function M.create()
         category_idx = 0,
         item_idx = 0,
         tech_count = #global.science.tech_list,
+        item_bar = {},
     }
 end
 
@@ -394,6 +395,9 @@ end
 
 local update = interval_call(300, function(datamodel)
     if not itransfer.get_source_eid() then
+        if #datamodel.item_bar > 0 then
+            datamodel.item_bar = {}
+        end
         return
     end
 

@@ -16,10 +16,10 @@ end
 
 t["采矿机I"] = function(start, offsets, DEFAULT)
     start.buttons = {}
-    if start.pickup_item then
+    if start.set_transfer_source then
         local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "pickup_item"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/pickup-item.texture"
+        v.command = "set_transfer_source"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/set-transfer-source.texture"
         start.buttons[#start.buttons + 1] = v
     end
 
@@ -28,10 +28,10 @@ end
 
 t["采矿机II"] = function(start, offsets, DEFAULT)
     start.buttons = {}
-    if start.pickup_item then
+    if start.set_transfer_source then
         local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "pickup_item"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/pickup-item.texture"
+        v.command = "set_transfer_source"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/set-transfer-source.texture"
         start.buttons[#start.buttons + 1] = v
     end
 
@@ -40,10 +40,10 @@ end
 
 t["采矿机III"] = function(start, offsets, DEFAULT)
     start.buttons = {}
-    if start.pickup_item then
+    if start.set_transfer_source then
         local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "pickup_item"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/pickup-item.texture"
+        v.command = "set_transfer_source"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/set-transfer-source.texture"
         start.buttons[#start.buttons + 1] = v
     end
 
@@ -52,10 +52,10 @@ end
 
 t["机身残骸"] = function(start, offsets, DEFAULT)
     start.buttons = {}
-    if start.pickup_item then
+    if start.set_transfer_source then
         local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "pickup_item"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/pickup-item.texture"
+        v.command = "set_transfer_source"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/set-transfer-source.texture"
         start.buttons[#start.buttons + 1] = v
     end
 
@@ -64,10 +64,10 @@ end
 
 t["机翼残骸"] = function(start, offsets, DEFAULT)
     start.buttons = {}
-    if start.pickup_item then
+    if start.set_transfer_source then
         local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "pickup_item"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/pickup-item.texture"
+        v.command = "set_transfer_source"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/set-transfer-source.texture"
         start.buttons[#start.buttons + 1] = v
     end
 
@@ -76,10 +76,10 @@ end
 
 t["机头残骸"] = function(start, offsets, DEFAULT)
     start.buttons = {}
-    if start.pickup_item then
+    if start.set_transfer_source then
         local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "pickup_item"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/pickup-item.texture"
+        v.command = "set_transfer_source"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/set-transfer-source.texture"
         start.buttons[#start.buttons + 1] = v
     end
 
@@ -88,10 +88,10 @@ end
 
 t["机尾残骸"] = function(start, offsets, DEFAULT)
     start.buttons = {}
-    if start.pickup_item then
+    if start.set_transfer_source then
         local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "pickup_item"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/pickup-item.texture"
+        v.command = "set_transfer_source"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/set-transfer-source.texture"
         start.buttons[#start.buttons + 1] = v
     end
 
