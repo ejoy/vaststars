@@ -268,8 +268,8 @@ local prototype = gameplay.register.prototype
     desc = "检查废墟获取资源",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
-    task = {"unknown", 0, 9},
-    task_params = {building = "机头残骸", item = "轻型太阳能板"},
+    task = {"unknown", 0, 7},
+    task_params = {building = "指挥中心", item = "轻型太阳能板", count = 1,},
     count = 1,
     prerequisites = {"生产轻质石砖"},
     tips_pic = {
@@ -293,7 +293,7 @@ local prototype = gameplay.register.prototype
       },
     },
     sign_desc = {
-      { desc = "从废墟里获取1个太阳能板", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "从废墟里获取1个太阳能板放置入指挥中心", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -387,8 +387,8 @@ local prototype = gameplay.register.prototype
   prototype "太阳能板制造" {
     desc = "制造轻型太阳能板",
     type = { "task" },
-    task = {"unknown", 0, 9},
-    task_params = {building = "组装机I", item = "轻型太阳能板"},
+    task = {"unknown", 0, 6},
+    task_params = {ui = "pickup_item", building = "组装机I"}, 
     count = 1,
     prerequisites = {"铁板生产"},
     tips_pic = {
@@ -417,8 +417,8 @@ local prototype = gameplay.register.prototype
     desc = "检查废墟获取资源",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
-    task = {"unknown", 0, 9},
-    task_params = {building = "机尾残骸", item = "蒸汽发电机I"},
+    task = {"unknown", 0, 6},
+    task_params = {ui = "pickup_item", building = "机尾残骸"},
     count = 1,
     prerequisites = {"太阳能发电"},
     tips_pic = {

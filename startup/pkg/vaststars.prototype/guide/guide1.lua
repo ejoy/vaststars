@@ -33,6 +33,23 @@ local guide1 = {
     {
         name = "",
 		narrative = {
+            {"哔哩..将获取的{/color:4bd0ff 建筑}放置入{/g 指挥中心}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..{/g 指挥中心}可以将收纳的建筑铺设到基地中..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            task = {
+                "放置指挥中心",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "拾取物资",
+        },
+	},
+
+    {
+        name = "",
+		narrative = {
             {"哔哩..在{/color:4bd0ff 3处矿点}上各放置1台{/g 采矿机}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
@@ -42,7 +59,7 @@ local guide1 = {
             guide_progress = 10,
         },
         prerequisites = {
-            "拾取物资",
+            "放置指挥中心",
         },
 	},
 
@@ -83,7 +100,7 @@ local guide1 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..从采矿机里获取{/g 4个碎石}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..从采矿机里获取{/g 碎石}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {

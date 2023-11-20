@@ -265,8 +265,8 @@ local prototype = gameplay.register.prototype
   prototype "生产公路" {
     desc = "生产砖石公路",
     type = { "task" },
-    task = {"unknown", 0, 9},
-    task_params = {building = "组装机I", item = "砖石公路-X型"},
+    task = {"unknown", 0, 7},
+    task_params = {building = "指挥中心", item = "砖石公路-X型", count = 15,},
     count = 15,
     prerequisites = {"石砖大生产"},
     effects = {
@@ -302,8 +302,7 @@ local prototype = gameplay.register.prototype
   prototype "制造运输车" {
     desc = "制造轻型运输车",
     type = { "task" },
-    task = {"unknown", 0, 9},
-    task_params = {building = "组装机I", item = "运输车辆I"},
+    task = {"stat_production", 0, "运输车辆I"},
     count = 1,
     prerequisites = {"铁板大生产"},
     tips_pic = {
@@ -356,8 +355,7 @@ local prototype = gameplay.register.prototype
   prototype "制造采矿机" {
     desc = "制造轻型采矿机",
     type = { "task" },
-    task = {"unknown", 0, 9},
-    task_params = {building = "组装机I", item = "轻型采矿机"},
+    task = {"stat_production", 0, "轻型采矿机"},
     count = 1,
     prerequisites = {"更多运输车"},
     tips_pic = {

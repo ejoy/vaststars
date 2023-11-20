@@ -24,8 +24,8 @@ local prototype = gameplay.register.prototype
     desc = "仓库选择碎石",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
-    task = {"unknown", 0, 9},                 
-    task_params = {building = "仓库I", item = "管道1-X型", },
+    task = {"unknown", 0, 6},
+    task_params = {ui = "pickup_item", building = "仓库I"},
     count = 30,
     prerequisites = {"流体教学"},
     tips_pic = {
@@ -57,9 +57,6 @@ local prototype = gameplay.register.prototype
     desc = "连接液罐",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
-    -- task = {"unknown", 0, 9},                 
-    -- task_params = {building = "仓库I", item = "管道1-X型", },
-    -- count = 1,
     task = {"unknown", 0, 11},
     task_params = {building = "液罐I", fluids = {"地下卤水"}},
     count = 1,
@@ -166,8 +163,7 @@ local prototype = gameplay.register.prototype
   prototype "获取地下管" {
     desc = "获取打造的地下管",
     type = { "task" },
-    task = {"unknown", 0, 9},                 
-    task_params = {building = "组装机I", item = "地下管1-JI型", },
+    task = {"stat_production", 0, "地下管1-JI型"},                
     count = 2,
     prerequisites = {"地下管生产设置"},
     tips_pic = {
@@ -336,8 +332,7 @@ local prototype = gameplay.register.prototype
   prototype "液罐获取" {
     desc = "获取液罐",
     type = { "task" },
-    task = {"unknown", 0, 9},                 
-    task_params = {building = "组装机I", item = "液罐I", },
+    task = {"stat_production", 0, "液罐I"},                 
     count = 2,
     prerequisites = {"液罐制造工艺"},
     tips_pic = {
