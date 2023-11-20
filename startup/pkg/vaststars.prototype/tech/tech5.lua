@@ -22,7 +22,7 @@ local prototype = gameplay.register.prototype
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = {"task" },
     task = {"unknown", 0, 6},
-    task_params = {ui = "pickup_item", building = "机头残骸"},
+    task_params = {ui = "set_transfer_source", building = "机头残骸"},
     prerequisites = {"自动化教学"},
     count = 1,
     tips_pic = {

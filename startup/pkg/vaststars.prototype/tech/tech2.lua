@@ -24,7 +24,7 @@ local prototype = gameplay.register.prototype
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = {"task" },
     task = {"unknown", 0, 6},
-    task_params = {ui = "pickup_item", building = "机身残骸"},
+    task_params = {ui = "set_transfer_source", building = "机身残骸"},
     prerequisites = {"电网教学"},
     count = 1,
     tips_pic = {
@@ -388,7 +388,7 @@ local prototype = gameplay.register.prototype
     desc = "制造轻型太阳能板",
     type = { "task" },
     task = {"unknown", 0, 6},
-    task_params = {ui = "pickup_item", building = "组装机I"}, 
+    task_params = {ui = "set_transfer_source", building = "组装机I"}, 
     count = 1,
     prerequisites = {"铁板生产"},
     tips_pic = {
@@ -418,7 +418,7 @@ local prototype = gameplay.register.prototype
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"unknown", 0, 6},
-    task_params = {ui = "pickup_item", building = "机尾残骸"},
+    task_params = {ui = "set_transfer_source", building = "机尾残骸"},
     count = 1,
     prerequisites = {"太阳能发电"},
     tips_pic = {
