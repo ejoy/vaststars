@@ -116,4 +116,5 @@ return {
     place = place,
     pickup = pickup,
     all = all,
+    is_valid_item = is_valid_item,
 }

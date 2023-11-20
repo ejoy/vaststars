@@ -49,8 +49,7 @@ local function get_slots(gameplay_world, e, slot_types)
 
         local slot = ichest.get(gameplay_world, e.chest, idx)
         while slot do
-            local is_fluid_id = iprototype.is_fluid_id(slot.item)
-            if slot.item ~= 0 and not is_fluid_id and slot_types[slot.type] then
+            if slot.item ~= 0 and not iprototype.is_fluid_id(slot.item) and slot_types[slot.type] then
                 return idx, slot
             else
                 idx = idx + 1
@@ -92,12 +91,13 @@ local function get_transfer_info(gameplay_world)
     end
 
     local r = {}
-    local is_base = (de.base ~= nil)
-    if is_base then
+    if de.base then
         for item, tt in pairs(t) do
-            for _, s in pairs(tt) do
-                local c = math.min(iinventory.get_capacity(gameplay_world, item), s.amount)
-                r[item] = math.max(r[item] or 0, c)
+            if iinventory.is_valid_item(item) then
+                for _, s in pairs(tt) do
+                    local c = math.min(iinventory.get_capacity(gameplay_world, item), s.amount)
+                    r[item] = math.max(r[item] or 0, c)
+                end
             end
         end
     else
@@ -142,8 +142,7 @@ local function transfer(gameplay_world, func)
     end
 
     local r = {}
-    local is_base = (de.base ~= nil)
-    if is_base then
+    if de.base then
         for item, tt in pairs(t) do
             for sidx, s in pairs(tt) do
                 local c = math.min(iinventory.get_capacity(gameplay_world, item), s.amount)

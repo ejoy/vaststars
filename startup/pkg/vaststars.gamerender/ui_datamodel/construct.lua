@@ -28,7 +28,6 @@ local iobject = ecs.require "object"
 local idetail = ecs.require "detail_system"
 local create_station_builder = ecs.require "editor.stationbuilder"
 local icoord = require "coord"
-local ichest = require "gameplay.interface.chest"
 local iinventory = require "gameplay.interface.inventory"
 local gesture_longpress_mb = world:sub{"gesture", "longpress"}
 local igameplay = ecs.require "gameplay_system"
@@ -92,6 +91,8 @@ local function __clean(datamodel, unlock)
     idetail.unselected()
     datamodel.focus_building_icon = ""
     datamodel.status = "NORMAL"
+    itransfer.set_dest_eid(nil)
+    selected_obj = nil
 
     iui.close("/pkg/vaststars.resources/ui/build.rml")
     iui.leave()
@@ -468,9 +469,12 @@ function M.update(datamodel)
             selected_obj = nil
             iui.leave()
 
-            -- in copy mode
+            -- not in copy mode
             if datamodel.status ~= "BUILD" then
                 datamodel.focus_building_icon = ""
+                datamodel.status = "NORMAL"
+                itransfer.set_dest_eid(nil)
+                selected_obj = nil
             end
         end
 
@@ -552,6 +556,7 @@ function M.update(datamodel)
         idetail.unselected()
         datamodel.focus_building_icon = ""
         datamodel.status = "NORMAL"
+        itransfer.set_dest_eid(nil)
         selected_obj = nil
 
         local e = assert(gameplay_core.get_entity(gameplay_eid))
@@ -658,6 +663,8 @@ function M.update(datamodel)
             idetail.unselected()
             datamodel.focus_building_icon = ""
             datamodel.status = "NORMAL"
+            itransfer.set_dest_eid(nil)
+            selected_obj = nil
 
         else
             if selected_obj then
@@ -688,7 +695,7 @@ function M.update(datamodel)
         idetail.unselected()
         datamodel.focus_building_icon = ""
         datamodel.status = "NORMAL"
-
+        itransfer.set_dest_eid(nil)
         selected_obj = nil
     end
 
