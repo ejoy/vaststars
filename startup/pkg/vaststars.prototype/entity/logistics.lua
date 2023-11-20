@@ -30,8 +30,6 @@ prototype "物流中心" {
     maxslot = 8,
     area = "6x6",
     camera_distance = 100,
-    teardown = false,
-    move = false,
     crossing = {
         connections = {
             {type="factory", position={2,4,"S"}},

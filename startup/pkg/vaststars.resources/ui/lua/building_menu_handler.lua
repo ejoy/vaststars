@@ -113,13 +113,6 @@ return function(start)
         start.buttons[#start.buttons + 1] = v
     end
 
-    if start.lorry_factory_inc_lorry then
-        local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "lorry_factory_inc_lorry"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/lorry-factory-inc-lorry.texture"
-        start.buttons[#start.buttons + 1] = v
-    end
-
     if start.remove_lorry then
         local v = setmetatable({}, {__index = DEFAULT})
         v.command = "remove_lorry"
@@ -131,6 +124,13 @@ return function(start)
         local v = setmetatable({}, {__index = DEFAULT})
         v.command = "move"
         v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/move.texture"
+        start.buttons[#start.buttons + 1] = v
+    end
+
+    if start.lorry_factory_inc_lorry then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.command = "lorry_factory_inc_lorry"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/lorry-factory-inc-lorry.texture"
         start.buttons[#start.buttons + 1] = v
     end
 
@@ -155,6 +155,13 @@ return function(start)
         start.buttons[#start.buttons + 1] = v
     end
 
+    if start.inventory then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.command = "inventory"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/set-recipe.texture"
+        start.buttons[#start.buttons + 1] = v
+    end
+
     if start.place_item then
         local v = setmetatable({}, {__index = DEFAULT})
         v.command = "place_item"
@@ -164,12 +171,6 @@ return function(start)
         start.buttons[#start.buttons + 1] = v
     end
 
-    if start.inventory then
-        local v = setmetatable({}, {__index = DEFAULT})
-        v.command = "inventory"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/place-item.texture"
-        start.buttons[#start.buttons + 1] = v
-    end
 
     show_buttons(start)
 end
