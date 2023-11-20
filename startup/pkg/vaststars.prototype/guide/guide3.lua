@@ -155,7 +155,7 @@ local guide2 = {
         },
         narrative_end = {
             task = {
-                "生产公路",
+                "更多公路",
             },
             guide_progress = 10,
         },
@@ -176,7 +176,7 @@ local guide2 = {
             guide_progress = 10,
         },
         prerequisites = {
-            "生产公路",
+            "更多公路",
         },
 	},
 

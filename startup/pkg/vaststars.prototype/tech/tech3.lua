@@ -262,7 +262,7 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "生产公路" {
+  prototype "更多公路" {
     desc = "生产砖石公路",
     type = { "task" },
     task = {"unknown", 0, 7},
@@ -277,7 +277,7 @@ local prototype = gameplay.register.prototype
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "从组装机里获取生产好的15段砖石公路", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "组装机生产的15段砖石公路并放入指挥中心", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -286,7 +286,7 @@ local prototype = gameplay.register.prototype
     type = { "task" },
     task = {"stat_production", 0, "铁板"},
     count = 3,
-    prerequisites = {"生产公路"},
+    prerequisites = {"更多公路"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -300,16 +300,17 @@ local prototype = gameplay.register.prototype
 
 
   prototype "制造运输车" {
-    desc = "制造轻型运输车",
+    desc = "制造运输车辆",
     type = { "task" },
-    task = {"stat_production", 0, "运输车辆I"},
+    task = {"unknown", 0, 7},
+    task_params = {building = "物流中心", item = "运输车辆I", count = 1,},
     count = 1,
     prerequisites = {"铁板大生产"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "从组装机里获取生产完毕的1辆轻型运输车", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "从组装机生产1辆运输车并放置至物流中心", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -355,14 +356,15 @@ local prototype = gameplay.register.prototype
   prototype "制造采矿机" {
     desc = "制造轻型采矿机",
     type = { "task" },
-    task = {"stat_production", 0, "轻型采矿机"},
+    task = {"unknown", 0, 7},
+    task_params = {building = "指挥中心", item = "轻型采矿机", count = 1,},
     count = 1,
     prerequisites = {"更多运输车"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "使用组装机生产并获取1个轻型采矿机", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "使用组装机1个轻型采矿机并放置至指挥中心", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
