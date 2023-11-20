@@ -11,6 +11,7 @@ prototype "指挥中心" {
     maxslot = 16,
     speed = "50%",
     area = "6x6",
+    sound = "building/headquarter",
     camera_distance = 100,
     teardown = false,
     move = false,
@@ -28,6 +29,7 @@ prototype "物流中心" {
     speed = "50%",
     maxslot = 8,
     area = "6x6",
+    sound = "building/logistics-center",
     camera_distance = 100,
     crossing = {
         connections = {
@@ -322,6 +324,7 @@ prototype "物流站" {
     rotate_on_build = true,
     area = "4x2",
     drone_height = 24,
+    sound = "building/logistics-center",
     crossing = {
         connections = {
             {type="station", position={1,1,"S"}},
@@ -345,6 +348,7 @@ prototype "停车站" {
     rotate_on_build = true,
     area = "4x2",
     drone_height = 24,
+    sound = "building/logistics-center",
     crossing = {
         connections = {
             {type="station", position={1,1,"S"}},
