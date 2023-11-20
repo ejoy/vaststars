@@ -239,7 +239,7 @@ function M.update(datamodel, gameplay_eid)
             goto continue
         end
         if not iinventory.pickup(gameplay_core.get_world(), slot.item, 1) then
-            print("failed to place")
+            print("failed to pickup") --TODO: show error message
             goto continue
         end
         ichest.place_at(gameplay_core.get_world(), e, 1, 1)
@@ -255,6 +255,9 @@ function M.update(datamodel, gameplay_eid)
     end
 
     for _ in transfer_mb:unpack() do
+        if not itransfer.get_source_eid() then
+            goto continue
+        end
         local object = assert(objects:coord(e.building.x, e.building.y))
         local gameplay_world = gameplay_core.get_world()
 
@@ -273,7 +276,7 @@ function M.update(datamodel, gameplay_eid)
         local sp_x, sp_y = math3d.index(icamera_controller.world_to_screen(object.srt.t), 1, 2)
         iui.send("/pkg/vaststars.resources/ui/message_pop.rml", "item", {action = "down", left = sp_x, top = sp_y, items = msgs})
 
-        local seid = assert(itransfer.get_source_eid())
+        local seid = itransfer.get_source_eid()
         local source = assert(gameplay_core.get_entity(seid))
         if source.chest then
             local typeobject = iprototype.queryById(source.building.prototype)
@@ -293,6 +296,7 @@ function M.update(datamodel, gameplay_eid)
                 itransfer.set_source_eid(nil)
             end
         end
+        ::continue::
     end
 
     for _ in remove_lorry_mb:unpack() do

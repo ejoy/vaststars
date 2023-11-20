@@ -5,11 +5,8 @@ local w = world.w
 local EMPTY_FUNCTION <const> = function() end
 local SOURCE_TYPES <const> = {
     ["supply"] = true,
-    ["transit"] = true,
-    ["demand"] = true,
 }
 local DEST_TYPES <const> = {
-    ["supply"] = true,
     ["transit"] = true,
     ["demand"] = true,
 }

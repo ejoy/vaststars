@@ -70,6 +70,9 @@ local function pickup(world, item, amount)
     if infinite_item then
         return true
     end
+    if query(world, item) < amount then
+        return false
+    end
     ichest.pickup(world, get_entity(world), item, amount)
     return true
 end
