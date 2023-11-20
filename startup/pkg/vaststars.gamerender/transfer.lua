@@ -110,7 +110,7 @@ local function get_transfer_info(gameplay_world)
 
             for _, s in pairs(tt) do
                 -- this assumes that the assembler's slot of limit is twice the quantity required by the recipe
-                local limit = is_assembling and (s.limit // 2) or slot.limit
+                local limit = is_assembling and (slot.limit // 2) or slot.limit
                 local c = math.min(math.max(limit - slot.amount, 0), s.amount)
                 r[slot.item] = math.max(r[slot.item] or 0, c)
                 s.amount = s.amount - c
@@ -164,7 +164,7 @@ local function transfer(gameplay_world, func)
 
             for sidx, s in pairs(tt) do
                 -- this assumes that the assembler's slot of limit is twice the quantity required by the recipe
-                local limit = is_assembling and (s.limit // 2) or slot.limit
+                local limit = is_assembling and (slot.limit // 2) or slot.limit
                 local c = math.min(math.max(limit - slot.amount, 0), s.amount)
                 if c > 0 then
                     ichest.pickup_at(gameplay_world, se, sidx, c)
