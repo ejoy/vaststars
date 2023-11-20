@@ -31,6 +31,7 @@ function meta:update(gameplay_world, e)
         if not slot then
             break
         end
+        assert(slot.item ~= 0)
 
         local v = assert(self.items[idx])
         local show = slot.amount <= 0
@@ -59,6 +60,7 @@ local function create(gameplay_world, e, game_object)
         if not slot then
             break
         end
+        assert(slot.item ~= 0)
 
         local item = slot.item
         local show = slot.amount <= 0

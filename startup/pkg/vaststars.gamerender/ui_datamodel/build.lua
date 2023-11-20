@@ -123,6 +123,7 @@ function M.update(datamodel)
     end
 end
 
+-- When cloning a building, used to check if cloning is possible
 function M.check(prototype)
     local gameplay_world = gameplay_core.get_world()
     local typeobject = assert(iprototype.queryById(prototype))

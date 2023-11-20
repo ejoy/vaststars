@@ -263,11 +263,13 @@ local function place_one(self, datamodel)
         return
     end
     if countNeighboringFluids(x, y) > 1 then
+        print("can not place, too many neighboring fluids") --TODO: show error message
         return
     end
 
     local gameplay_world = gameplay_core.get_world()
     if iinventory.query(gameplay_world, self.typeobject.id) < 1 then
+        print("can not place, not enough " .. self.typeobject.name) --TODO: show error message
         return
     end
     assert(iinventory.pickup(gameplay_world, self.typeobject.id, 1))

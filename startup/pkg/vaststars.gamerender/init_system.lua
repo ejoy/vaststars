@@ -72,6 +72,15 @@ local function init()
     global.startup_args = {"new_game", "template.loading-scene"}
 end
 
+local function get_lorrys()
+    local l = {}
+    for _, typeobject in pairs(iprototype.each_type("factory")) do
+        local item = iprototype.queryByName(typeobject.item)
+        l[item.id] = true
+    end
+    return l
+end
+
 local function init_game(template)
     local gameplay_world = gameplay_core.get_world()
 
@@ -80,8 +89,10 @@ local function init_game(template)
     iscience.update_tech_list(gameplay_world)
 
     rhwi.set_profie(template.performance_stats ~= false and gameplay_core.settings_get("debug", true) or false)
-    iinventory.set_infinite_item(debugger.infinite_item)
     irender.set_framebuffer_ratio("scene_ratio", gameplay_core.settings_get("ratio", 1))
+
+    iinventory.set_infinite_item(debugger.infinite_item)
+    iinventory.set_lorry_list(get_lorrys())
 
     icanvas.create("icon", template.canvas_icon ~= false and gameplay_core.settings_get("info", true) or false, 10)
     icanvas.create("pickup_icon", false, 10)

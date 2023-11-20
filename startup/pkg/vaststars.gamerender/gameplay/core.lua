@@ -77,6 +77,15 @@ init_func["road"] = function (pt, template)
     return template
 end
 
+init_func["base"] = function (pt, template)
+    local items = {}
+    for _ = 1, pt.maxslot do
+        items[#items+1] = {"", 0}
+    end
+    template.items = items
+    return template
+end
+
 local post_funcs = {}
 
 function m.create_entity(init)

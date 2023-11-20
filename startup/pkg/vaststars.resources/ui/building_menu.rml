@@ -64,7 +64,7 @@
                         handler(start)
                     end,
                     "show_set_recipe", "lorry_factory_inc_lorry",
-                    "guide_progress", "pickup_item_count", "place_item_count", "set_item"
+                    "guide_progress", "place_item_count", "set_item"
                 }
             })
         </script>

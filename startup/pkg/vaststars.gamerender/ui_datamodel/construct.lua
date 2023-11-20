@@ -56,6 +56,8 @@ local unlock_axis_mb = mailbox:sub {"unlock_axis"}
 local settings_mb = mailbox:sub {"settings"}
 local iguide_tips = ecs.require "guide_tips"
 local create_selected_boxes = ecs.require "selected_boxes"
+local interval_call = ecs.require "engine.interval_call"
+local itransfer = ecs.require "transfer"
 
 local builder, builder_datamodel, builder_ui
 local selected_obj
@@ -154,16 +156,6 @@ function M.update_tech(datamodel, tech)
     else
         datamodel.show_tech_progress = false
         datamodel.tech_count = #global.science.tech_list
-    end
-end
-
-function M.update_item_bar(datamodel, t)
-    datamodel.item_bar = {}
-    for _, v in ipairs(t) do
-        datamodel.item_bar[#datamodel.item_bar + 1] = v
-        if #datamodel.item_bar >= 4 then
-            break
-        end
     end
 end
 
@@ -297,6 +289,8 @@ local function pickupObject(datamodel, position, blur)
 
     local o = ipick_object.pick(coord[1], coord[2], blur)
     assert(o)
+    local building_eid
+
     if o and o.class == CLASS.Lorry then
         local typeobject = iprototype.queryByName(o.name)
         iui.open({rml = "/pkg/vaststars.resources/ui/non_building_detail_panel.rml"}, typeobject.icon, typeobject.mineral_name and typeobject.mineral_name or iprototype.display_name(typeobject), o.eid)
@@ -318,7 +312,6 @@ local function pickupObject(datamodel, position, blur)
         iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.rml"}, o.id)
 
         audio.play "event:/ui/click"
-        return
 
     elseif o and o.class == CLASS.Object then
         local object = o.object
@@ -329,7 +322,8 @@ local function pickupObject(datamodel, position, blur)
 
         iui.open({rml = "/pkg/vaststars.resources/ui/detail_panel.rml"}, object.id)
 
-        local e = assert(gameplay_core.get_entity(object.gameplay_eid))
+        local gameplay_eid = object.gameplay_eid
+        local e = assert(gameplay_core.get_entity(gameplay_eid))
         local typeobject = iprototype.queryById(e.building.prototype)
         local w, h = iprototype.rotate_area(typeobject.area, e.building.direction)
         show_selectbox(e.building.x, e.building.y, w, h)
@@ -339,14 +333,14 @@ local function pickupObject(datamodel, position, blur)
         datamodel.focus_building_icon = typeobject.item_icon
         datamodel.status = "FOCUS"
 
-        local gameplay_eid = object.gameplay_eid
         local typeobject = iprototype.queryByName(object.prototype_name)
         if typeobject.building_menu ~= false then
             iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.rml"}, gameplay_eid)
         end
 
         audio.play "event:/ui/click"
-        return
+
+        building_eid = gameplay_eid
 
     elseif o and (o.class == CLASS.Mountain or o.class == CLASS.Road) then
         local typeobject = iprototype.queryByName(o.name)
@@ -364,7 +358,6 @@ local function pickupObject(datamodel, position, blur)
         end
 
         audio.play "event:/ui/click"
-        return
 
     elseif o and o.class == CLASS.Mineral then
         local typeobject = iprototype.queryByName(o.name)
@@ -380,7 +373,6 @@ local function pickupObject(datamodel, position, blur)
             datamodel.show_construct_button = false
         end})
         audio.play "event:/ui/click"
-        return
 
     elseif o and o.class == CLASS.Empty then
         show_selectbox(o.x, o.y, o.w, o.h)
@@ -394,11 +386,32 @@ local function pickupObject(datamodel, position, blur)
             datamodel.show_construct_button = false
         end})
         audio.play "event:/ui/click"
-        return
     end
+
+    itransfer.set_dest_eid(building_eid)
 end
 
+local update = interval_call(300, function(datamodel)
+    if not itransfer.get_source_eid() then
+        return
+    end
+
+    local gameplay_world = gameplay_core.get_world()
+    datamodel.item_bar = {}
+    local info = itransfer.get_transfer_info(gameplay_world)
+    for _, slot in itransfer.get_source_slots(gameplay_world) do
+        local typeobject = iprototype.queryById(slot.item)
+        local is_transfer = info[slot.item] ~= nil
+        datamodel.item_bar[#datamodel.item_bar + 1] = {icon = assert(typeobject.item_icon), name = typeobject.name, count = slot.amount, is_transfer = is_transfer, value = is_transfer and 1 or 0}
+    end
+    table.sort(datamodel.item_bar, function(a, b)
+        return a.value > b.value
+    end)
+end)
+
 function M.update(datamodel)
+    update(datamodel)
+
     for _ in rotate_mb:unpack() do
         if builder and builder.rotate then
             builder:rotate(builder_datamodel)
@@ -541,6 +554,10 @@ function M.update(datamodel)
         datamodel.status = "NORMAL"
         selected_obj = nil
 
+        local e = assert(gameplay_core.get_entity(gameplay_eid))
+        assert(e)
+        local item = e.building.prototype
+
         igameplay.destroy_entity(gameplay_eid)
         gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
 
@@ -562,6 +579,7 @@ function M.update(datamodel)
         end
 
         --TODO Add a ruined building
+        iinventory.place(gameplay_core.get_world(), item, 1)
     end
 
     for _, _, _, object_id in move_md:unpack() do
@@ -597,13 +615,15 @@ function M.update(datamodel)
                 iui.close(builder_ui)
             end
             _construct_entity(typeobject, "RIGHT_CENTER")
+        else
+            --TODO: show error message
         end
     end
 
     for _, _, _, name in copy_mb:unpack() do
         local typeobject = iprototype.queryByName(name)
         if not iui.call_datamodel_method("/pkg/vaststars.resources/ui/build.rml", "check", typeobject.id) then
-            print("item not unlocked or not enough") -- TODO: show tips
+            print("item not unlocked or not enough") --TODO: show error message
             goto continue
         end
 

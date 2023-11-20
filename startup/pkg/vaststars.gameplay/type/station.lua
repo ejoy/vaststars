@@ -7,7 +7,7 @@ local InvalidChest <const> = 0
 local c = type "station"
     .endpoint "position"
     .road "network"
-    .max_slot "integer"
+    .maxslot "integer"
 
 function c:ctor(init, pt)
     local world = self

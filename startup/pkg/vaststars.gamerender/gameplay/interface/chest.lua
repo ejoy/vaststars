@@ -10,7 +10,7 @@ local CHEST_TYPES <const> = {
 
 local MAX_SLOT <const> = 256
 local function get_max_slot(typeobject)
-    return typeobject.max_slot and typeobject.max_slot or MAX_SLOT
+    return typeobject.maxslot and typeobject.maxslot or MAX_SLOT
 end
 
 local function has_chest(type)
@@ -22,11 +22,7 @@ local function set(world, e, item)
 end
 
 local function get(world, ...)
-    local c = iChest.get(world, ...)
-    if c and c.item == 0 then
-        return
-    end
-    return c
+    return iChest.get(world, ...)
 end
 
 local function get_amount(slot)

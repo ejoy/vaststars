@@ -51,6 +51,7 @@ end
 local function create_shelf(self, gameplay_world, e, game_object, shelf_prefab, shelf_slot_name, idx)
     local group_id = igroup.id(e.building.x, e.building.y)
     local slot = assert(ichest.get(gameplay_world, e.chest, idx))
+    assert(slot.item ~= 0)
     local typeobject_item = iprototype.queryById(slot.item)
     if iprototype.has_type(typeobject_item.type, "item") then
         local shelf = world:create_instance {

@@ -35,7 +35,7 @@ prototype "仓库I" {
     chest_type = "transit",
     area = "1x1",
     camera_distance = 30,
-    max_slot = 4,
+    maxslot = 4,
 }
 
 prototype "无人机平台I" {

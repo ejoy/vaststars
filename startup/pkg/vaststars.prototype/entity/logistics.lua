@@ -8,9 +8,8 @@ prototype "指挥中心" {
     construct_detector = {"exclusive"},
     type = {"building", "base", "chest"},
     chest_type = "supply",
-    max_slot = 16,
+    maxslot = 16,
     speed = "50%",
-    maxslot = 8,
     area = "6x6",
     camera_distance = 100,
     teardown = false,
@@ -285,7 +284,7 @@ prototype "出货车站" {
         "0,0,╔╗",
         "0,2,╨╨",
     },
-    max_slot = 8,
+    maxslot = 8,
     camera_distance = 90,
 }
 
@@ -310,7 +309,7 @@ prototype "收货车站" {
         "0,0,╔╗",
         "0,2,╨╨",
     },
-    max_slot = 8,
+    maxslot = 8,
     camera_distance = 90,
 }
 
@@ -334,7 +333,7 @@ prototype "物流站" {
         "0,0,╔╗",
         "0,2,╨╨",
     },
-    max_slot = 8,
+    maxslot = 8,
     camera_distance = 90,
 }
 

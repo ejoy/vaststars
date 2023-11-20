@@ -457,6 +457,7 @@ local update = interval_call(300, function()
             local results_n <const> = #typeobject_recipe.results//4 - 1
             for idx = 1, ingredients_n + results_n do
                 local slot = assert(ichest.get(gameplay_world, e.chest, idx))
+                assert(slot.item ~= 0)
                 local typeobject_item = iprototype.queryById(slot.item)
                 if iprototype.has_type(typeobject_item.type, "item") then
                     io_shelves:update_item(idx, slot.amount)

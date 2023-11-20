@@ -72,21 +72,14 @@ funcs["chest"] = function(world, e, info)
         return info
     end
 
-    local typeobject = iprototype.queryById(e.building.prototype)
-    if not iprototype.has_type(typeobject.type, "chest") then
-        return info
-    end
-
     local items = {}
-    for i = 1, ichest.get_max_slot(typeobject) do
+    for i = 1, ichest.get_max_slot(iprototype.queryById(e.building.prototype)) do
         local slot = ichest.get(world, e.chest, i)
         if not slot then
             break
         end
 
-        if slot.item ~= 0 then
-            items[#items+1] = {iprototype.queryById(slot.item).name, ichest.get_amount(slot)}
-        end
+        items[#items+1] = {(slot.item ~= 0) and iprototype.queryById(slot.item).name or 0, ichest.get_amount(slot)}
     end
 
     info.items = items
@@ -98,13 +91,14 @@ funcs["station"] = function(world, e, info)
     if not e.station then
         return info
     end
+
     local items = {}
     for i = 1, ichest.get_max_slot(iprototype.queryById(e.building.prototype)) do
         local slot = ichest.get(world, e.station, i)
         if not slot then
             break
         end
-        items[#items+1] = {slot.type, slot.item == 0 and "" or assert(iprototype.queryById(slot.item)).name, slot.limit}
+        items[#items+1] = {slot.type, (slot.item ~= 0) and iprototype.queryById(slot.item).name or "", slot.limit}
     end
     info.items = items
     return info

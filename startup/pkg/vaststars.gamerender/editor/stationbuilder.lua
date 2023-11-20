@@ -548,11 +548,17 @@ local function confirm(self, datamodel)
     local pickup_object = assert(self.pickup_object)
     local succ = self:check_construct_detector(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir)
     if not succ then
-        log.info("can not construct")
+        log.info("can not construct") --TODO: show error message
         return
     end
 
-    local typeobject = iprototype.queryByName(pickup_object.prototype_name)
+    local gameplay_world = gameplay_core.get_world()
+    if iinventory.query(gameplay_world, self.typeobject.id) < 1 then
+        print("can not place, not enough " .. self.typeobject.name) --TODO: show error message
+        return
+    end
+    assert(iinventory.pickup(gameplay_world, self.typeobject.id, 1))
+
     objects:set(pickup_object, "CONFIRM")
     pickup_object.PREPARE = true
 
@@ -572,12 +578,7 @@ local function confirm(self, datamodel)
     local position, dir = pickup_object.srt.t, pickup_object.dir
     self.pickup_object = nil
 
-    local typeobject = iprototype.queryByName(pickup_object.prototype_name)
-    assert(iinventory.pickup(gameplay_core.get_world(), typeobject.id, 1))
-    local continue_construct = iinventory.query(gameplay_core.get_world(), typeobject.id) > 0
-    if continue_construct then
-        __new_entity(self, datamodel, typeobject, pickup_object.x, pickup_object.y, position, dir)
-    end
+    __new_entity(self, datamodel, self.typeobject, pickup_object.x, pickup_object.y, position, dir)
 end
 
 local function __is_station_placeable(prototype_name)
