@@ -57,6 +57,7 @@ local iguide_tips = ecs.require "guide_tips"
 local create_selected_boxes = ecs.require "selected_boxes"
 local interval_call = ecs.require "engine.interval_call"
 local itransfer = ecs.require "transfer"
+local can_build = ecs.require "ui_datamodel.common.can_build"
 
 local builder, builder_datamodel, builder_ui
 local selected_obj
@@ -629,16 +630,22 @@ function M.update(datamodel)
         end
     end
 
-    for _, _, _, name in copy_mb:unpack() do
+    for _, _, _, name, position in copy_mb:unpack() do
+        math3d.unmark(position)
+
         local typeobject = iprototype.queryByName(name)
-        if not iui.call_datamodel_method("/pkg/vaststars.resources/ui/build.rml", "check", typeobject.id) then
+        local gameplay_world = gameplay_core.get_world()
+        local count = iinventory.query(gameplay_world, typeobject.id)
+        if not can_build(typeobject.name, count) then
             print("item not unlocked or not enough") --TODO: show error message
             goto continue
         end
 
         datamodel.status = "BUILD"
         idetail.unselected()
-        toggle_view("construct", icamera_controller.get_screen_world_position("CENTER"), function()
+
+        icamera_controller.focus_on_position("RIGHT_CENTER", position)
+        toggle_view("construct", position, function()
             iui.leave()
             iui.open({rml = "/pkg/vaststars.resources/ui/build.rml"}, typeobject.id)
             gameplay_core.world_update = false

@@ -201,8 +201,9 @@ function M.update(datamodel, gameplay_eid)
 
     for _ in copy_md:unpack() do
         assert(e.building)
+        local object = assert(objects:coord(e.building.x, e.building.y))
         local typeobject = iprototype.queryById(e.building.prototype)
-        iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "copy", typeobject.name)
+        iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "copy", typeobject.item_name or typeobject.name, math3d.mark(object.srt.t))
     end
 
     for _ in set_recipe_mb:unpack() do

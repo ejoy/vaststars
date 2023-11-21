@@ -9,14 +9,10 @@ local lock_axis_mb = mailbox:sub {"lock_axis"}
 local gameplay_core = require "gameplay.core"
 local iinventory = require "gameplay.interface.inventory"
 local iprototype = require "gameplay.interface.prototype"
-local item_unlocked = ecs.require "ui_datamodel.common.item_unlocked".is_unlocked
 local click_item_mb = mailbox:sub {"click_item"}
+local can_build = ecs.require "ui_datamodel.common.can_build"
 
 local M = {}
-
-local function is_show(prototype_name, count)
-    return item_unlocked(prototype_name) or count > 0
-end
 
 local function get_list()
     local gameplay_world = gameplay_core.get_world()
@@ -30,7 +26,7 @@ local function get_list()
         for item_idx, prototype_name in ipairs(menu.items) do
             local typeobject = assert(iprototype.queryByName(prototype_name))
             local count = iinventory.query(gameplay_world, typeobject.id)
-            if not is_show(typeobject.name, count) then
+            if not can_build(typeobject.name, count) then
                 goto continue
             end
 
@@ -121,14 +117,6 @@ function M.update(datamodel)
 
         iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "construct_entity", typeobject.name)
     end
-end
-
--- When cloning a building, used to check if cloning is possible
-function M.check(prototype)
-    local gameplay_world = gameplay_core.get_world()
-    local typeobject = assert(iprototype.queryById(prototype))
-    local count = iinventory.query(gameplay_world, typeobject.id)
-    return is_show(typeobject.name, count)
 end
 
 return M

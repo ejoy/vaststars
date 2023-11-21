@@ -50,7 +50,7 @@ local function getPosition(x, y, slot)
 
     if io_shelves then
         -- parking slot base 0
-        return assert(io_shelves:get_item_position(slot + 1))
+        return io_shelves:get_item_position(slot + 1) or error(("(%s) slot(%s) not found"):format(object.prototype_name, slot))
     else
         return math3d.set_index(object.srt.t, 2, item_height) -- TODO: if the building doesn't have shelves, then get the building's parking slots
     end

@@ -396,6 +396,7 @@ prototype "空气过滤器III" {
 prototype "管道1-I型" {
     building_category = 1,
     display_name = "管道I",
+    item_name = "管道1-X型",
     model = "glbs/pipe/I.glb|mesh.prefab",
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_pipe.texture",
     construct_detector = {"exclusive"},
@@ -418,6 +419,7 @@ prototype "管道1-I型" {
 prototype "管道1-L型" {
     building_category = 1,
     display_name = "管道I",
+    item_name = "管道1-X型",
     model = "glbs/pipe/L.glb|mesh.prefab",
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_pipe.texture",
     construct_detector = {"exclusive"},
@@ -440,6 +442,7 @@ prototype "管道1-L型" {
 prototype "管道1-T型" {
     building_category = 1,
     display_name = "管道I",
+    item_name = "管道1-X型",
     model = "glbs/pipe/T.glb|mesh.prefab",
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_pipe.texture",
     construct_detector = {"exclusive"},
@@ -463,6 +466,7 @@ prototype "管道1-T型" {
 prototype "管道1-X型" {
     building_category = 1,
     display_name = "管道I",
+    item_name = "管道1-X型",
     model = "glbs/pipe/X.glb|mesh.prefab",
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_pipe.texture",
     construct_detector = {"exclusive"},
@@ -487,6 +491,7 @@ prototype "管道1-X型" {
 prototype "管道1-O型" {
     building_category = 1,
     display_name = "管道I",
+    item_name = "管道1-X型",
     model = "glbs/pipe/O.glb|mesh.prefab",
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_pipe.texture",
     construct_detector = {"exclusive"},
@@ -507,6 +512,7 @@ prototype "管道1-O型" {
 prototype "管道1-U型" {
     building_category = 1,
     display_name = "管道I",
+    item_name = "管道1-X型",
     model = "glbs/pipe/U.glb|mesh.prefab",
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_pipe.texture",
     construct_detector = {"exclusive"},
@@ -528,6 +534,7 @@ prototype "管道1-U型" {
 prototype "地下管1-JU型" {
     building_category = 2,
     display_name = "地下管I",
+    item_name = "地下管1-JU型",
     model = "glbs/pipe/JU.glb|mesh.prefab",
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_underground_pipe.texture",
     construct_detector = {"exclusive"},
@@ -549,6 +556,7 @@ prototype "地下管1-JU型" {
 prototype "地下管1-JI型" {
     building_category = 2,
     display_name = "地下管I",
+    item_name = "地下管1-JU型",
     model = "glbs/pipe/JI.glb|mesh.prefab",
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_underground_pipe.texture",
     construct_detector = {"exclusive"},
@@ -571,6 +579,7 @@ prototype "地下管1-JI型" {
 prototype "地下管2-JU型" {
     building_category = 3,
     display_name = "地下管II",
+    item_name = "地下管2-JU型",
     model = "glbs/pipe/JU.glb|mesh.prefab",
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_underground_pipe.texture",
     construct_detector = {"exclusive"},
@@ -591,6 +600,7 @@ prototype "地下管2-JU型" {
 prototype "地下管2-JI型" {
     building_category = 3,
     display_name = "地下管II",
+    item_name = "地下管2-JU型",
     model = "glbs/pipe/JI.glb|mesh.prefab",
     icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_underground_pipe.texture",
     construct_detector = {"exclusive"},
