@@ -21,8 +21,8 @@ local prototype = gameplay.register.prototype
     desc = "从废墟中搜索物资",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = {"task" },
-    task = {"unknown", 0, 6},
-    task_params = {ui = "set_transfer_source", building = "机头残骸"},
+    task = {"unknown", 0, 7},
+    task_params = {building = "指挥中心", item = "运输车辆I", count = 30,},
     prerequisites = {"自动化教学"},
     count = 1,
     tips_pic = {
@@ -39,6 +39,15 @@ local prototype = gameplay.register.prototype
         show_arrow = true,
       },
       {
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        x = 120.5,
+        y = 114.5,
+        w = 5.2,
+        h = 5.2,
+        color = {0, 0.7, 0.95, 1},
+        show_arrow = false,
+      },
+      {
         camera_x = 131,
         camera_y = 121,
         w = 4.0,
@@ -46,7 +55,7 @@ local prototype = gameplay.register.prototype
       },
     },
     sign_desc = {
-      { desc = "搜索机身残骸获取有用物资", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "搜索机身残骸获取有用物资并放入指挥中心", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
