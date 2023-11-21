@@ -21,12 +21,12 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "管道接收" {
-    desc = "仓库选择碎石",
+    desc = "仓库选择获取管道",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"unknown", 0, 6},
     task_params = {ui = "set_transfer_source", building = "仓库I"},
-    count = 30,
+    count = 1,
     prerequisites = {"流体教学"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
