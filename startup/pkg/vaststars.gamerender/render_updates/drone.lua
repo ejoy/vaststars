@@ -50,7 +50,8 @@ local function getPosition(x, y, slot)
 
     if io_shelves then
         -- parking slot base 0
-        return io_shelves:get_item_position(slot + 1) or error(("(%s) slot(%s) not found"):format(object.prototype_name, slot))
+        local pos = io_shelves:get_item_position(slot + 1)
+        return pos or math3d.set_index(object.srt.t, 2, item_height) -- when the assembly machine switches recipes, drones may attempt to pick up items from non-existent shelves
     else
         return math3d.set_index(object.srt.t, 2, item_height) -- TODO: if the building doesn't have shelves, then get the building's parking slots
     end
