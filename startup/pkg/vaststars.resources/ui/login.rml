@@ -7,7 +7,7 @@
             left-box {
                 position: absolute;
                 width: 100%;
-                height: 100%;
+                height: 99%;
                 align-items: flex-start;
                 justify-content: flex-end;
             }
