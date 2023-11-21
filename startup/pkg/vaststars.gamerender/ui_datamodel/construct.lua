@@ -5,6 +5,7 @@ local w = world.w
 local CONSTANT <const> = require "gameplay.interface.constant"
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
+local ROTATORS <const> = CONSTANT.ROTATORS
 
 local ipick_object = ecs.require "pick_object_system"
 local CLASS <const> = ipick_object.CLASS
@@ -58,6 +59,8 @@ local create_selected_boxes = ecs.require "selected_boxes"
 local interval_call = ecs.require "engine.interval_call"
 local itransfer = ecs.require "transfer"
 local can_build = ecs.require "ui_datamodel.common.can_build"
+local ichest = require "gameplay.interface.chest"
+local srt = require "utility.srt"
 
 local builder, builder_datamodel, builder_ui
 local selected_obj
@@ -565,11 +568,26 @@ function M.update(datamodel)
         selected_obj = nil
 
         local e = assert(gameplay_core.get_entity(gameplay_eid))
-        assert(e)
-        local item = e.building.prototype
+
+        local items = {}
+        if e.chest then
+            for i = 1, ichest.get_max_slot(iprototype.queryById(e.building.prototype)) do
+                local slot = ichest.get(gameplay_core.get_world(), e.chest, i)
+                if not slot then
+                    break
+                end
+                if slot.item ~= 0 and slot.amount > 0 then
+                    local typeobject = iprototype.queryById(slot.item)
+                    items[#items+1] = {typeobject.name, slot.amount}
+                end
+            end
+        end
+        do
+            local typeobject = iprototype.queryById(e.building.prototype)
+            items[#items+1] = {typeobject.name, 1}
+        end
 
         igameplay.destroy_entity(gameplay_eid)
-        gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
 
         --TODO
         -- ibuilding.remove(x, y)
@@ -577,19 +595,33 @@ function M.update(datamodel)
         -- gameplay_core.set_changed(CHANGED_FLAG_ROADNET)
 
         -- the road will not execute the following logic
-        for _, o in objects:selectall("gameplay_eid", gameplay_eid, {"CONSTRUCTED"}) do
-            iobject.remove(o)
-            objects:remove(o.id)
-            local building = global.buildings[o.id]
-            if building then
-                for _, v in pairs(building) do
-                    v:remove()
-                end
+        local old_object = assert(objects:coord(e.building.x, e.building.y))
+        iobject.remove(old_object)
+        objects:remove(old_object.id)
+        local building = global.buildings[old_object.id]
+        if building then
+            for _, v in pairs(building) do
+                v:remove()
             end
         end
 
-        --TODO Add a ruined building
-        iinventory.place(gameplay_core.get_world(), item, 1)
+        -- Add a ruined building
+        local new_object = iobject.new {
+            prototype_name = "建筑物残骸", --TODO: remove hard code
+            dir = "N",
+            x = e.building.x,
+            y = e.building.y,
+            srt = srt.new {
+                t = math3d.vector(icoord.position(e.building.x, e.building.y, 1, 1)),
+                r = ROTATORS["N"],
+            },
+            group_id = old_object.group_id,
+            items = items,
+        }
+        new_object.gameplay_eid = igameplay.create_entity(new_object)
+        objects:set(new_object, "CONSTRUCTED")
+
+        gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
     end
 
     for _, _, _, object_id in move_md:unpack() do

@@ -50,3 +50,15 @@ prototype "机尾残骸" {
     camera_distance = 55,
     maxslot = 4,
 }
+
+prototype "建筑物残骸" {
+    model = "glbs/broken-building.glb|mesh.prefab",
+    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_debris.texture",
+    construct_detector = {"exclusive"},
+    type = {"building", "chest"},
+    chest_type = "supply",
+    chest_style = "chest",
+    chest_destroy = true,
+    area = "1x1",
+    camera_distance = 55,
+}

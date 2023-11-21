@@ -45,6 +45,7 @@ local function new(init)
         fluid_name = init.fluid_name,
         srt = init.srt,
         group_id = init.group_id,
+        items = init.items,
     }
 
     local outer = setmetatable(t, mt)

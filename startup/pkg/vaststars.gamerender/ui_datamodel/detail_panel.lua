@@ -205,7 +205,7 @@ local function getChestSlots(gameplay_world, chest, max_slot, res)
         if not slot then
             break
         end
-        if slot.item ~= 0 then
+        if slot.item ~= 0 and slot.amount > 0 then
             local typeobject_item = assert(iprototype.queryById(slot.item))
             res[#res + 1] = {slot_index = i, icon = typeobject_item.item_icon, name = typeobject_item.name, count = ichest.get_amount(slot), max_count = slot.limit, type = slot.type}
         end
