@@ -24,9 +24,9 @@ local prototype = gameplay.register.prototype
     desc = "仓库选择获取管道",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
-    task = {"unknown", 0, 6},
-    task_params = {ui = "set_transfer_source", building = "仓库I"},
-    count = 1,
+    task = {"unknown", 0, 7},
+    task_params = {building = "指挥中心", item = "管道1-X型", count = 30,},
+    count = 30,
     prerequisites = {"流体教学"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -42,6 +42,15 @@ local prototype = gameplay.register.prototype
         show_arrow = true,
       },
       {
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        x = 124.5,
+        y = 124.5,
+        w = 5.2,
+        h = 5.2,
+        color = {0, 0.7, 0.95, 1},
+        show_arrow = false,
+      },
+      {
         camera_x = 124,
         camera_y = 134,
         w = 1.2,
@@ -49,7 +58,7 @@ local prototype = gameplay.register.prototype
       },
     },
     sign_desc = {
-      { desc = "仓库里获取30个“管道”", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "仓库里获取30个“管道”并放入指挥中心", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -163,7 +172,8 @@ local prototype = gameplay.register.prototype
   prototype "获取地下管" {
     desc = "获取打造的地下管",
     type = { "task" },
-    task = {"stat_production", 0, "地下管1-JI型"},                
+    task = {"unknown", 0, 7},
+    task_params = {building = "指挥中心", item = "地下管1-JI型", count = 2,},          
     count = 2,
     prerequisites = {"地下管生产设置"},
     tips_pic = {
@@ -332,7 +342,8 @@ local prototype = gameplay.register.prototype
   prototype "液罐获取" {
     desc = "获取液罐",
     type = { "task" },
-    task = {"stat_production", 0, "液罐I"},                 
+    task = {"unknown", 0, 7},
+    task_params = {building = "指挥中心", item = "液罐I", count = 2,},
     count = 2,
     prerequisites = {"液罐制造工艺"},
     tips_pic = {
@@ -359,7 +370,7 @@ local prototype = gameplay.register.prototype
       unlock_recipe = {"地下卤水电解1"},
     },
     sign_desc = {
-      { desc = "从组装机里获取已生产的2个液罐", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "从组装机生产的2个液罐并放入指挥中心", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -507,33 +518,6 @@ local prototype = gameplay.register.prototype
         h = 3.0,
         color = {0, 0.7, 0.95, 1},
         show_arrow = true,
-      },
-      {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-        x = 92,
-        y = 152,
-        w = 1.2,
-        h = 1.2,
-        color = {0.3, 1, 0, 1},
-        show_arrow = false,
-      },
-      {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-        x = 90,
-        y = 150,
-        w = 1.2,
-        h = 1.2,
-        color = {0.3, 1, 0, 1},
-        show_arrow = false,
-      },
-      {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-        x = 92,
-        y = 147,
-        w = 1.2,
-        h = 1.2,
-        color = {0.3, 1, 0, 1},
-        show_arrow = false,
       },
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
