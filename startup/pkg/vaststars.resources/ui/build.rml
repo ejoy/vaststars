@@ -67,7 +67,7 @@
 
                     local last_y
                     e.addEventListener("pan", function(param)
-                        if param.state == "changed" then
+                        if last_y and param.state == "changed" then
                             e.scrollTop = e.scrollTop - (param.y - last_y)
                         end
                         last_y = param.y
