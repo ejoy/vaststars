@@ -60,3 +60,6 @@ system "depot_sys"
 
 system "camera_system"
     .implement "render_updates/camera.lua"
+
+system "update_system"
+    .implement "update_system.lua"

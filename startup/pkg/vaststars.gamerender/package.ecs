@@ -53,7 +53,6 @@ import_feature "ant.efk"
 import_feature "ant.landform"
 import_feature "ant.modifier"
 import_feature "ant.motion_sampler"
-import_feature "ant.objcontroller|pickup"
 import_feature "ant.render"
 import_feature "ant.rmlui"
 import_feature "ant.sky|sky"
@@ -65,23 +64,14 @@ import_feature "ant.shadow_bounding"
 feature "gameplay"
     .import "gameplay.ecs"
 
-feature "login"
-    .import "login.ecs"
-
 system "ui_system"
     .implement "engine/system/ui_system.lua"
 
 system "camera_controller"
     .implement "engine/system/camera_controller.lua"
 
+system "camera_bounding_pack_system"
+    .implement "engine/system/camera_bounding_pack_system.lua"
+
 system "debug_system"
     .implement "debug_system.lua"
-
--- system "debug_road_system"
---     .implement "debug_road_system.lua"
-
-system "update_system"
-    .implement "update_system.lua"
-
-system "camera_bounding_pack_system"
-    .implement "camera_bounding_pack_system.lua"

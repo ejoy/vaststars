@@ -41,6 +41,7 @@ local itransfer = ecs.require "transfer"
 local iobject = ecs.require "object"
 local global = require "global"
 local igameplay = ecs.require "gameplay_system"
+local icoord = require "coord"
 
 local function hasSetItem(e, typeobject)
     return e.station or (e.chest and CHEST_TYPE_CONVERT[typeobject.chest_type] == "transit" or false)
@@ -201,9 +202,9 @@ function M.update(datamodel, gameplay_eid)
 
     for _ in copy_md:unpack() do
         assert(e.building)
-        local object = assert(objects:coord(e.building.x, e.building.y))
         local typeobject = iprototype.queryById(e.building.prototype)
-        iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "copy", typeobject.item_name or typeobject.name, math3d.mark(object.srt.t))
+        local pos = math3d.vector(icoord.position(e.building.x, e.building.y, iprototype.rotate_area(typeobject.area, e.building.direction)))
+        iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "copy", typeobject.item_name or typeobject.name, math3d.mark(pos))
     end
 
     for _ in set_recipe_mb:unpack() do
