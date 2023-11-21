@@ -129,7 +129,7 @@ local guide2 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..两个{/color:4bd0ff 水电站}开始运转，让我们生产足够{/g 气候科技包}进行科学研究", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..两座{/color:4bd0ff 水电站}开始运转，生产足够{/g 气候科技包}进行科学研究", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
