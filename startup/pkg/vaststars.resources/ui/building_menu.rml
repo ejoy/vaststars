@@ -63,8 +63,8 @@
                     function(_)
                         handler(start)
                     end,
-                    "show_set_recipe", "lorry_factory_inc_lorry",
-                    "guide_progress", "transfer_count", "set_item"
+                    "show_set_recipe", "lorry_factory_inc_lorry", "set_transfer_source", "transfer", "transfer_count",
+                    "set_item", "remove_lorry", "move", "copy", "inventory", "guide_progress",
                 }
             })
         </script>

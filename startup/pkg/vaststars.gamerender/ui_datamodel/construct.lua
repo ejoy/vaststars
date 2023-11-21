@@ -411,7 +411,8 @@ local update = interval_call(300, function(datamodel)
     for _, slot in itransfer.get_source_slots(gameplay_world) do
         local typeobject = iprototype.queryById(slot.item)
         local is_transfer = info[slot.item] ~= nil
-        datamodel.item_bar[#datamodel.item_bar + 1] = {icon = assert(typeobject.item_icon), name = typeobject.name, count = slot.amount, is_transfer = is_transfer, value = is_transfer and 1 or 0}
+        local item_icon = typeobject.item_icon or error("no item icon for " .. typeobject.name)
+        datamodel.item_bar[#datamodel.item_bar + 1] = {icon = item_icon, name = typeobject.name, count = slot.amount, is_transfer = is_transfer, value = is_transfer and 1 or 0}
     end
     table.sort(datamodel.item_bar, function(a, b)
         return a.value > b.value
