@@ -53,6 +53,39 @@ local prototype = gameplay.register.prototype
     },
   }
 
+  prototype "放置物资" {
+    desc = "将物资放置至指挥中心",
+    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+    type = {"task" },
+    task = {"unknown", 0, 7},
+    task_params = {building = "指挥中心", item = "砖石公路-X型", count = 1,},
+    prerequisites = {"废墟搜索"},
+    count = 1,
+    tips_pic = {
+      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+    },
+    guide_focus = {
+      {
+        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        x = 132.5,
+        y = 122.5,
+        w = 5.2,
+        h = 5.2,
+        color = {0.3, 1, 0, 1},
+        show_arrow = true,
+      },
+      {
+        camera_x = 130,
+        camera_y = 120,
+        w = 4.0,
+        h = 4.0,
+      },
+    },
+    sign_desc = {
+      { desc = "将废墟获取的采矿机放置至指挥中心", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    },
+}
+
   prototype "道路维修" {
     desc = "维修砖石公路",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
@@ -64,7 +97,7 @@ local prototype = gameplay.register.prototype
                 {{162, 132}, {162, 122}},
               }
     },
-    prerequisites = {"废墟搜索"},
+    prerequisites = {"放置物资"},
     count = 1,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",

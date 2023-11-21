@@ -32,6 +32,22 @@ local guide2 = {
 
     {
         name = "",
+		narrative = {
+            {"哔哩..将获得{/color:4bd0ff 建筑物资}放入{/g 指挥中心}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            task = {
+                "放置物资",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "废墟搜索",
+        },
+	},
+
+    {
+        name = "",
         narrative = {
             {"哔哩..我们从废墟中获得了许多{/g 砖石公路},这些物资是{/color:4bd0ff 搭建公路}的重要材料..哔哩", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
             {"哔哩..残缺的公路阻碍正常物流,用{/g 砖石公路}修补{/color:4bd0ff 2处断开公路}..哔哩", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
@@ -43,7 +59,7 @@ local guide2 = {
             guide_progress = 10,
         },
         prerequisites = {
-            "废墟搜索",
+            "放置物资",
         },
 	},
 
