@@ -14,7 +14,7 @@ local function show_buttons(start, offsets)
     start("buttons")
 end
 
-t["采矿机I"] = function(start, offsets, DEFAULT)
+t["采矿机I"] = function(start, offsets, DEFAULT) --采矿建筑仅保留获取
     start.buttons = {}
     if start.set_transfer_source then
         local v = setmetatable({}, {__index = DEFAULT})
@@ -26,7 +26,7 @@ t["采矿机I"] = function(start, offsets, DEFAULT)
     show_buttons(start, offsets)
 end
 
-t["采矿机II"] = function(start, offsets, DEFAULT)
+t["采矿机II"] = function(start, offsets, DEFAULT) --采矿建筑仅保留获取
     start.buttons = {}
     if start.set_transfer_source then
         local v = setmetatable({}, {__index = DEFAULT})
@@ -38,7 +38,7 @@ t["采矿机II"] = function(start, offsets, DEFAULT)
     show_buttons(start, offsets)
 end
 
-t["采矿机III"] = function(start, offsets, DEFAULT)
+t["采矿机III"] = function(start, offsets, DEFAULT) --采矿建筑仅保留获取
     start.buttons = {}
     if start.set_transfer_source then
         local v = setmetatable({}, {__index = DEFAULT})
@@ -50,7 +50,7 @@ t["采矿机III"] = function(start, offsets, DEFAULT)
     show_buttons(start, offsets)
 end
 
-t["机身残骸"] = function(start, offsets, DEFAULT)
+t["机身残骸"] = function(start, offsets, DEFAULT) --废墟建筑仅保留获取
     start.buttons = {}
     if start.set_transfer_source then
         local v = setmetatable({}, {__index = DEFAULT})
@@ -62,7 +62,7 @@ t["机身残骸"] = function(start, offsets, DEFAULT)
     show_buttons(start, offsets)
 end
 
-t["机翼残骸"] = function(start, offsets, DEFAULT)
+t["机翼残骸"] = function(start, offsets, DEFAULT) --废墟建筑仅保留获取
     start.buttons = {}
     if start.set_transfer_source then
         local v = setmetatable({}, {__index = DEFAULT})
@@ -74,7 +74,7 @@ t["机翼残骸"] = function(start, offsets, DEFAULT)
     show_buttons(start, offsets)
 end
 
-t["机头残骸"] = function(start, offsets, DEFAULT)
+t["机头残骸"] = function(start, offsets, DEFAULT) --废墟建筑仅保留获取
     start.buttons = {}
     if start.set_transfer_source then
         local v = setmetatable({}, {__index = DEFAULT})
@@ -86,7 +86,7 @@ t["机头残骸"] = function(start, offsets, DEFAULT)
     show_buttons(start, offsets)
 end
 
-t["机尾残骸"] = function(start, offsets, DEFAULT)
+t["机尾残骸"] = function(start, offsets, DEFAULT) --废墟建筑仅保留获取
     start.buttons = {}
     if start.set_transfer_source then
         local v = setmetatable({}, {__index = DEFAULT})
@@ -98,7 +98,7 @@ t["机尾残骸"] = function(start, offsets, DEFAULT)
     show_buttons(start, offsets)
 end
 
-t["空气过滤器I"] = function(start, offsets, DEFAULT)
+t["空气过滤器I"] = function(start, offsets, DEFAULT) --液体输入/输出建筑仅保留移动和复制
     start.buttons = {}
     if start.move then
         local v = setmetatable({}, {__index = DEFAULT})
@@ -116,7 +116,7 @@ t["空气过滤器I"] = function(start, offsets, DEFAULT)
     show_buttons(start, offsets)
 end
 
-t["空气过滤器II"] = function(start, offsets, DEFAULT)
+t["空气过滤器II"] = function(start, offsets, DEFAULT) --液体输入/输出建筑仅保留移动和复制
     start.buttons = {}
     if start.move then
         local v = setmetatable({}, {__index = DEFAULT})
@@ -134,7 +134,7 @@ t["空气过滤器II"] = function(start, offsets, DEFAULT)
     show_buttons(start, offsets)
 end
 
-t["空气过滤器III"] = function(start, offsets, DEFAULT)
+t["空气过滤器III"] = function(start, offsets, DEFAULT) --液体输入/输出建筑仅保留移动和复制
     start.buttons = {}
     if start.move then
         local v = setmetatable({}, {__index = DEFAULT})
@@ -152,7 +152,7 @@ t["空气过滤器III"] = function(start, offsets, DEFAULT)
     show_buttons(start, offsets)
 end
 
-t["地下水挖掘机I"] = function(start, offsets, DEFAULT)
+t["地下水挖掘机I"] = function(start, offsets, DEFAULT) --液体输入/输出建筑仅保留移动和复制
     start.buttons = {}
     if start.move then
         local v = setmetatable({}, {__index = DEFAULT})
@@ -170,7 +170,7 @@ t["地下水挖掘机I"] = function(start, offsets, DEFAULT)
     show_buttons(start, offsets)
 end
 
-t["地下水挖掘机II"] = function(start, offsets, DEFAULT)
+t["地下水挖掘机II"] = function(start, offsets, DEFAULT)   --液体输入/输出建筑仅保留移动和复制
     start.buttons = {}
     if start.move then
         local v = setmetatable({}, {__index = DEFAULT})
