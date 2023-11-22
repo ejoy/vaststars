@@ -310,7 +310,7 @@ local function place(self, datamodel)
 
     local dx, dy = iprototype.move_coord(x, y, self.forward_dir, ROAD_SIZE)
     icamera_controller.focus_on_position("RIGHT_CENTER", math3d.vector(icoord.position(dx, dy, ROAD_SIZE, ROAD_SIZE)), function ()
-        if self.destory then
+        if self.destroy then
             return
         end
         _new_entity(self, datamodel, self.typeobject, dx, dy)
@@ -321,7 +321,7 @@ local function place(self, datamodel)
 end
 
 local function clean(self, datamodel)
-    self.destory = true
+    self.destroy = true
     iobject.remove(self.coord_indicator)
     self.coord_indicator = nil
 
@@ -355,7 +355,7 @@ local function create()
     M.confirm = place
     M.clean = clean
 
-    M.destory = false
+    M.destroy = false
     M.pickup_components = {}
     M.typeobject = nil
     M.forward_dir = DEFAULT_DIR

@@ -331,6 +331,7 @@ function M.update(datamodel, gameplay_eid)
 
                 igameplay.destroy_entity(seid)
                 itransfer.set_source_eid(nil)
+                iui.leave()
             end
         end
         ::continue::

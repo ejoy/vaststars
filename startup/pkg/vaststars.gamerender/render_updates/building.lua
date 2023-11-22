@@ -7,10 +7,16 @@ local objects = require "objects"
 local building_sys = ecs.system "building_system"
 local gameplay_core = require "gameplay.core"
 local ibuilding = {}
-local igameplay = ecs.require "gameplay_system"
 local gameplay = import_package "vaststars.gameplay"
 local igameplay_building = gameplay.interface "building"
 local itask = ecs.require "task"
+local ichest = require "gameplay.interface.chest"
+local itransfer = ecs.require "transfer"
+local iobject = ecs.require "object"
+local global = require "global"
+local igameplay = ecs.require "gameplay_system"
+local iui = ecs.require "engine.system.ui_system"
+local interval_call = ecs.require "engine.interval_call"
 
 local DIRECTION <const> = {
     N = 0,
@@ -25,6 +31,33 @@ local DIRECTION <const> = {
 
 local EDITOR_CACHE_NAMES = {"CONSTRUCTED"}
 
+local check_debris = interval_call(300, function(gameplay_world, gameplay_ecs)
+    for e in gameplay_ecs:select "debris building:in chest:in eid:in" do
+        if ichest.has_item(gameplay_world, e.chest) then
+            goto continue
+        end
+        local typeobject = iprototype.queryById(e.building.prototype)
+        if not ichest.has_item(gameplay_world, e.chest) and typeobject.chest_destroy then
+            local object = assert(objects:coord(e.building.x, e.building.y))
+
+            iobject.remove(object)
+            objects:remove(object.id)
+            local building = global.buildings[object.id]
+            if building then
+                for _, v in pairs(building) do
+                    v:remove()
+                end
+            end
+
+            igameplay.destroy_entity(e.eid)
+            itransfer.set_source_eid(nil)
+            iui.leave()
+            iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "unselected", e.eid)
+        end
+        ::continue::
+    end
+end)
+
 function building_sys:gameworld_update()
     local gameplay_world = gameplay_core.get_world()
     local gameplay_ecs = gameplay_world.ecs
@@ -37,6 +70,8 @@ function building_sys:gameworld_update()
         objects:set(object, EDITOR_CACHE_NAMES[1])
     end
     gameplay_ecs:clear("building_changed")
+
+    check_debris(gameplay_world, gameplay_ecs)
 end
 
 local building_cache = {}

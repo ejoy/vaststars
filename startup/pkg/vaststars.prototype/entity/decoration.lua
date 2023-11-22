@@ -55,10 +55,11 @@ prototype "建筑物残骸" {
     model = "glbs/broken-building.glb|mesh.prefab",
     icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_debris.texture",
     construct_detector = {"exclusive"},
-    type = {"building", "chest"},
+    type = {"building", "chest", "debris"},
     chest_type = "supply",
     chest_style = "chest",
     chest_destroy = true,
+    copy = false,
     area = "1x1",
     camera_distance = 55,
 }

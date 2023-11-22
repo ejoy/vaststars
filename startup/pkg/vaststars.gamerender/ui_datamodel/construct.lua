@@ -739,13 +739,19 @@ function M.update(datamodel)
         end
     end
 
-    for _ in unselected_mb:unpack() do
+    for _, _, _, eid in unselected_mb:unpack() do
+        if eid then
+            if selected_obj and selected_obj.class == CLASS.Object and selected_obj.object.gameplay_eid ~= eid then
+               goto continue
+            end
+        end
         iui.leave()
         idetail.unselected()
         datamodel.focus_building_icon = ""
         datamodel.status = "NORMAL"
         itransfer.set_dest_eid(nil)
         selected_obj = nil
+        ::continue::
     end
 
     for _ in main_button_longpress_mb:unpack() do

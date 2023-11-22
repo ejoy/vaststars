@@ -155,6 +155,7 @@ component "solar_panel" {
 
 tag "wind_turbine"
 tag "base"
+tag "debris"
 
 --
 tag "station_changed"
