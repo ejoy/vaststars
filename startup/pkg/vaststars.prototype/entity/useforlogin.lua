@@ -4,7 +4,7 @@ local prototype = gameplay.register.prototype
 prototype "特殊组装机" {
     model = "glbs/mars-assembling-machine.glb|mesh.prefab",
     model_status = {work = true, low_power = true},
-    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_mars_assembling_machine.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_mars_assembling_machine.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "3x3",
@@ -45,7 +45,7 @@ prototype "特殊组装机" {
 prototype "特殊电解厂" {
     model = "glbs/electrolyzer-1.glb|mesh.prefab",
     model_status = {work = true},
-    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_electrolyzer.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_electrolyzer.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "4x4",
@@ -104,7 +104,7 @@ prototype "特殊电解厂" {
 prototype "特殊蒸馏厂" {
     model = "glbs/distillery-1.glb|mesh.prefab",
     model_status = {work = true},
-    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_distillery.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_distillery.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "5x5",
@@ -169,7 +169,7 @@ prototype "特殊蒸馏厂" {
 
 prototype "特殊化工厂" {
     model = "glbs/chemical-plant-1.glb|mesh.prefab",
-    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_chemical_plant.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_chemical_plant.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "3x3",
@@ -236,7 +236,7 @@ prototype "特殊化工厂" {
 prototype "特殊水电站" {
     model = "glbs/hydro-plant-1.glb|mesh.prefab",
     model_status = {work = true, low_power = true},
-    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_hydro_plant.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_hydro_plant.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "5x5",
@@ -292,7 +292,7 @@ prototype "特殊水电站" {
 prototype "特殊熔炼炉" {
     model = "glbs/furnace-1.glb|mesh.prefab",
     model_status = {work = true},
-    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_furnace.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_furnace.texture",
     construct_detector = {"exclusive"},
     type = {"building", "assembling", "consumer","fluidboxes"},
     area = "3x3",
@@ -331,7 +331,7 @@ prototype "特殊熔炼炉" {
 prototype "特殊采矿机" {
     model = "glbs/miner-1.glb|mesh.prefab",
     model_status = {work = true, low_power = true},
-    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_miner.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_miner.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "mining"},
     area = "3x3",

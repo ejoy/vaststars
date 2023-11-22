@@ -186,7 +186,7 @@ prototype "地热气" {
     type = {"fluid"},
     catagory = {"普通气体"},
     item_icon = "/pkg/vaststars.resources/textures/icons/item/gas-steam.texture",
-    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_geothermal_well.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_geothermal_well.texture",
     color = {1, 1, 1, 1},
     heat_capacity = "1KJ",
     default_temperature = 165,

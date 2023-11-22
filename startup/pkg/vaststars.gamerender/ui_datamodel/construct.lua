@@ -583,11 +583,6 @@ function M.update(datamodel)
                 end
             end
         end
-        do
-            local typeobject = iprototype.queryById(e.building.prototype)
-            items[#items+1] = {typeobject.name, 1}
-        end
-
         igameplay.destroy_entity(gameplay_eid)
 
         --TODO
@@ -596,33 +591,40 @@ function M.update(datamodel)
         -- gameplay_core.set_changed(CHANGED_FLAG_ROADNET)
 
         -- the road will not execute the following logic
-        local old_object = assert(objects:coord(e.building.x, e.building.y))
-        iobject.remove(old_object)
-        objects:remove(old_object.id)
-        local building = global.buildings[old_object.id]
-        if building then
-            for _, v in pairs(building) do
-                v:remove()
+        local old_object = objects:coord(e.building.x, e.building.y)
+        if old_object then
+            iobject.remove(old_object)
+            objects:remove(old_object.id)
+            local building = global.buildings[old_object.id]
+            if building then
+                for _, v in pairs(building) do
+                    v:remove()
+                end
+            end
+
+            if #items > 0 then
+                -- Add a ruined building
+                local new_object = iobject.new {
+                    prototype_name = "建筑物残骸", --TODO: remove hard code
+                    dir = "N",
+                    x = e.building.x,
+                    y = e.building.y,
+                    srt = srt.new {
+                        t = math3d.vector(icoord.position(e.building.x, e.building.y, 1, 1)),
+                        r = ROTATORS["N"],
+                    },
+                    group_id = old_object.group_id,
+                    items = items,
+                }
+                new_object.gameplay_eid = igameplay.create_entity(new_object)
+                objects:set(new_object, "CONSTRUCTED")
             end
         end
 
-        -- Add a ruined building
-        local new_object = iobject.new {
-            prototype_name = "建筑物残骸", --TODO: remove hard code
-            dir = "N",
-            x = e.building.x,
-            y = e.building.y,
-            srt = srt.new {
-                t = math3d.vector(icoord.position(e.building.x, e.building.y, 1, 1)),
-                r = ROTATORS["N"],
-            },
-            group_id = old_object.group_id,
-            items = items,
-        }
-        new_object.gameplay_eid = igameplay.create_entity(new_object)
-        objects:set(new_object, "CONSTRUCTED")
-
         gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
+
+        -- the building directly go into the backpack
+        iinventory.place(gameplay_core.get_world(), e.building.prototype, 1)
     end
 
     for _, _, _, object_id in move_md:unpack() do

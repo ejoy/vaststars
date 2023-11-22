@@ -111,6 +111,14 @@ return function(start)
         start.buttons[#start.buttons + 1] = v
     end
 
+    if start.transfer_source then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.command = "transfer_source"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/set-transfer-source.texture"
+        v.selected = true
+        start.buttons[#start.buttons + 1] = v
+    end
+
     if start.remove_lorry then
         local v = setmetatable({}, {__index = DEFAULT})
         v.command = "remove_lorry"

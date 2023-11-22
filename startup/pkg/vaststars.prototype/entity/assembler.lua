@@ -4,7 +4,7 @@ local prototype = gameplay.register.prototype
 prototype "组装机I" {
     model = "glbs/mars-assembling-machine.glb|mesh.prefab",
     model_status = {work = true, low_power = true},
-    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_mars_assembling_machine.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_mars_assembling_machine.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "3x3",
@@ -46,7 +46,7 @@ prototype "组装机I" {
 prototype "组装机II" {
     model = "glbs/mars-assembling-machine.glb|mesh.prefab",
     model_status = {work = true, low_power = true},
-    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_mars_assembling_machine.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_mars_assembling_machine.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "3x3",
@@ -87,7 +87,7 @@ prototype "组装机II" {
 prototype "组装机III" {
     model = "glbs/mars-assembling-machine.glb|mesh.prefab",
     model_status = {work = true, low_power = true},
-    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_mars_assembling_machine.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_mars_assembling_machine.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "3x3",
@@ -128,7 +128,7 @@ prototype "组装机III" {
 prototype "铸造厂I" {
     model = "glbs/mars-assembling-machine.glb|mesh.prefab",
     model_status = {work = true, low_power = true},
-    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_assemble.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_assemble.texture",
     construct_detector = {"exclusive"},
     type = {"building", "consumer", "assembling", "fluidboxes"},
     area = "3x3",

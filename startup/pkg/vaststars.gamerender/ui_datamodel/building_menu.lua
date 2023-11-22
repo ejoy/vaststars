@@ -26,6 +26,7 @@ local set_item_mb = mailbox:sub {"set_item"}
 local lorry_factory_inc_lorry_mb = mailbox:sub {"lorry_factory_inc_lorry"}
 local ui_click_mb = mailbox:sub {"ui_click"}
 local set_transfer_source_mb = mailbox:sub {"set_transfer_source"}
+local transfer_source_mb = mailbox:sub {"transfer_source"}
 local transfer_mb = mailbox:sub {"transfer"}
 local remove_lorry_mb = mailbox:sub {"remove_lorry"}
 local inventory_mb = mailbox:sub {"inventory"}
@@ -82,15 +83,17 @@ function M.create(gameplay_eid)
     end
 
     local set_item = hasSetItem(e, typeobject)
-    local transfer = e.chest ~= nil
+    local transfer_source = itransfer.get_source_eid() == e.eid
+    local set_transfer_source = not transfer_source and e.chest ~= nil
     local lorry_factory_inc_lorry = (e.factory == true)
 
     local datamodel = {
         prototype_name = typeobject.name,
         show_set_recipe = e.assembling and typeobject.allow_set_recipt or false,
         lorry_factory_inc_lorry = lorry_factory_inc_lorry,
-        set_transfer_source = e.chest ~= nil,
-        transfer = transfer,
+        set_transfer_source = set_transfer_source,
+        transfer_source = transfer_source,
+        transfer = e.chest ~= nil,
         transfer_count = 0,
         set_item = set_item,
         remove_lorry = (e.lorry ~= nil),
@@ -254,6 +257,14 @@ function M.update(datamodel, gameplay_eid)
 
     for _ in set_transfer_source_mb:unpack() do
         itransfer.set_source_eid(e.eid)
+        datamodel.transfer_source = true
+        datamodel.set_transfer_source = not datamodel.transfer_source and e.chest ~= nil
+    end
+
+    for _ in transfer_source_mb:unpack() do
+        itransfer.set_source_eid(nil)
+        datamodel.transfer_source = false
+        datamodel.set_transfer_source = not datamodel.transfer_source and e.chest ~= nil
     end
 
     for _ in transfer_mb:unpack() do

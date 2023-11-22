@@ -23,6 +23,14 @@ t["采矿机I"] = function(start, offsets, DEFAULT) --采矿建筑仅保留获�
         start.buttons[#start.buttons + 1] = v
     end
 
+    if start.transfer_source then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.command = "transfer_source"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/set-transfer-source.texture"
+        v.selected = true
+        start.buttons[#start.buttons + 1] = v
+    end
+
     show_buttons(start, offsets)
 end
 
@@ -32,6 +40,14 @@ t["采矿机II"] = function(start, offsets, DEFAULT) --采矿建筑仅保留获�
         local v = setmetatable({}, {__index = DEFAULT})
         v.command = "set_transfer_source"
         v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/set-transfer-source.texture"
+        start.buttons[#start.buttons + 1] = v
+    end
+
+    if start.transfer_source then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.command = "transfer_source"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/set-transfer-source.texture"
+        v.selected = true
         start.buttons[#start.buttons + 1] = v
     end
 
@@ -47,6 +63,14 @@ t["采矿机III"] = function(start, offsets, DEFAULT) --采矿建筑仅保留获
         start.buttons[#start.buttons + 1] = v
     end
 
+    if start.transfer_source then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.command = "transfer_source"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/set-transfer-source.texture"
+        v.selected = true
+        start.buttons[#start.buttons + 1] = v
+    end
+
     show_buttons(start, offsets)
 end
 
@@ -56,6 +80,14 @@ t["机身残骸"] = function(start, offsets, DEFAULT) --废墟建筑仅保留获
         local v = setmetatable({}, {__index = DEFAULT})
         v.command = "set_transfer_source"
         v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/set-transfer-source.texture"
+        start.buttons[#start.buttons + 1] = v
+    end
+
+    if start.transfer_source then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.command = "transfer_source"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/set-transfer-source.texture"
+        v.selected = true
         start.buttons[#start.buttons + 1] = v
     end
 
@@ -71,6 +103,14 @@ t["机翼残骸"] = function(start, offsets, DEFAULT) --废墟建筑仅保留获
         start.buttons[#start.buttons + 1] = v
     end
 
+    if start.transfer_source then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.command = "transfer_source"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/set-transfer-source.texture"
+        v.selected = true
+        start.buttons[#start.buttons + 1] = v
+    end
+
     show_buttons(start, offsets)
 end
 
@@ -83,6 +123,14 @@ t["机头残骸"] = function(start, offsets, DEFAULT) --废墟建筑仅保留获
         start.buttons[#start.buttons + 1] = v
     end
 
+    if start.transfer_source then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.command = "transfer_source"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/set-transfer-source.texture"
+        v.selected = true
+        start.buttons[#start.buttons + 1] = v
+    end
+
     show_buttons(start, offsets)
 end
 
@@ -92,6 +140,14 @@ t["机尾残骸"] = function(start, offsets, DEFAULT) --废墟建筑仅保留获
         local v = setmetatable({}, {__index = DEFAULT})
         v.command = "set_transfer_source"
         v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/set-transfer-source.texture"
+        start.buttons[#start.buttons + 1] = v
+    end
+
+    if start.transfer_source then
+        local v = setmetatable({}, {__index = DEFAULT})
+        v.command = "transfer_source"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/set-transfer-source.texture"
+        v.selected = true
         start.buttons[#start.buttons + 1] = v
     end
 
