@@ -8,11 +8,11 @@ local NOTHING <const> = ecs.require "debugger".nothing
 local TERRAIN_ONLY <const> = ecs.require "debugger".terrain_only
 
 local global = require "global"
-local reboot_world = ecs.require "reboot_world"
 local audio = import_package "ant.audio"
 local start_web = ecs.require "engine.webcgi"
 local archiving = require "archiving"
 local ltask = require "ltask"
+local window = import_package "ant.window"
 
 return function()
     if global.init then
@@ -39,12 +39,18 @@ return function()
     end
 
     if NOTHING then
-        reboot_world({"vaststars.gamerender|gameplay"}, "nothing")
+        global.startup_args = {"nothing"}
+        window.reboot {
+            feature = {"vaststars.gamerender|gameplay"},
+        }
         return
     end
 
     if TERRAIN_ONLY then
-        reboot_world({"vaststars.gamerender|gameplay"}, "terrain_only")
+        global.startup_args = {"terrain_only"}
+        window.reboot {
+            feature = {"vaststars.gamerender|gameplay"},
+        }
         return
     end
 

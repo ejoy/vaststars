@@ -22,18 +22,18 @@ local icamera_controller = ecs.require "engine.system.camera_controller"
 local math3d = require "math3d"
 
 local set_recipe_mb = mailbox:sub {"set_recipe"}
-local set_item_mb = mailbox:sub {"set_item"}
 local lorry_factory_inc_lorry_mb = mailbox:sub {"lorry_factory_inc_lorry"}
-local ui_click_mb = mailbox:sub {"ui_click"}
-local set_transfer_source_mb = mailbox:sub {"set_transfer_source"}
 local transfer_source_mb = mailbox:sub {"transfer_source"}
+local set_transfer_source_mb = mailbox:sub {"set_transfer_source"}
 local transfer_mb = mailbox:sub {"transfer"}
+local set_item_mb = mailbox:sub {"set_item"}
 local remove_lorry_mb = mailbox:sub {"remove_lorry"}
-local inventory_mb = mailbox:sub {"inventory"}
-local teardown_mb = mailbox:sub {"teardown"}
-
 local move_mb = mailbox:sub {"move"}
 local copy_md = mailbox:sub {"copy"}
+local inventory_mb = mailbox:sub {"inventory"}
+local teardown_mb = mailbox:sub {"teardown"}
+local ui_click_mb = mailbox:sub {"ui_click"}
+
 local ichest = require "gameplay.interface.chest"
 local iinventory = require "gameplay.interface.inventory"
 local interval_call = ecs.require "engine.interval_call"

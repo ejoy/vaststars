@@ -18,7 +18,8 @@ local icanvas = ecs.require "engine.canvas"
 local rhwi = import_package "ant.hwi"
 local irender = ecs.require "ant.render|render_system.render"
 local igroup = ecs.require "group"
-local reboot_world = ecs.require "reboot_world"
+local window = import_package "ant.window"
+local global = require "global"
 
 ---------------
 local M = {}
@@ -50,7 +51,10 @@ function M.update(datamodel)
     for _, _, _, index in restore_mb:unpack() do
         iui.close("/pkg/vaststars.resources/ui/option_pop.rml")
         local list = archiving.list()
-        reboot_world({"vaststars.gamerender|gameplay"}, "restore", assert(list[index]))
+        global.startup_args = {"restore", assert(list[index])}
+        window.reboot {
+            feature = {"vaststars.gamerender|gameplay"},
+        }
     end
 
     for _ in close_mb:unpack() do
@@ -76,7 +80,10 @@ function M.update(datamodel)
     for _ in back_to_main_menu_mb:unpack() do
         iui.close("/pkg/vaststars.resources/ui/option_pop.rml")
         iui.close("/pkg/vaststars.resources/ui/main_menu.rml")
-        reboot_world({"vaststars.gamerender|login"}, "new_game", "template.loading-scene")
+        global.startup_args = {"new_game", "template.loading-scene"}
+        window.reboot {
+            feature = {"vaststars.gamerender|login"},
+        }
     end
 
     for _ in lock_group_mb:unpack() do
