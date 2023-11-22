@@ -3,7 +3,7 @@ local prototype = gameplay.register.prototype
 
 prototype "机身残骸" {
     model = "glbs/broken-assembling-3x3.glb|mesh.prefab",
-    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_debris.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_debris.texture",
     construct_detector = {"exclusive"},
     type = {"building", "chest"},
     chest_type = "supply",
@@ -16,7 +16,7 @@ prototype "机身残骸" {
 
 prototype "机翼残骸" {
     model = "glbs/broken-outfall-2x2.glb|mesh.prefab",
-    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_debris.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_debris.texture",
     construct_detector = {"exclusive"},
     type = {"building", "chest"},
     chest_type = "supply",
@@ -28,7 +28,7 @@ prototype "机翼残骸" {
 
 prototype "机头残骸" {
     model = "glbs/broken-outfall-2x2.glb|mesh.prefab",
-    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_debris.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_debris.texture",
     construct_detector = {"exclusive"},
     type = {"building", "chest"},
     chest_type = "supply",
@@ -40,7 +40,7 @@ prototype "机头残骸" {
 
 prototype "机尾残骸" {
     model = "glbs/broken-pump-2x2.glb|mesh.prefab",
-    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_debris.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_debris.texture",
     construct_detector = {"exclusive"},
     type = {"building", "chest"},
     chest_type = "supply",
@@ -53,7 +53,7 @@ prototype "机尾残骸" {
 
 prototype "建筑物残骸" {
     model = "glbs/broken-building.glb|mesh.prefab",
-    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_debris.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_debris.texture",
     construct_detector = {"exclusive"},
     type = {"building", "chest"},
     chest_type = "supply",

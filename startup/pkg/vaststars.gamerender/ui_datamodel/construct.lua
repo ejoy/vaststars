@@ -131,6 +131,7 @@ function M.create()
         item_idx = 0,
         tech_count = #global.science.tech_list,
         item_bar = {},
+        transfer_id = 0,
     }
 end
 
@@ -315,7 +316,7 @@ local function pickupObject(datamodel, position, blur)
         datamodel.focus_building_icon = typeobject.item_icon
         datamodel.status = "FOCUS"
 
-        iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.rml"}, o.id)
+        iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.rml"}, o.id, false)
 
         audio.play "event:/ui/click"
 
@@ -341,7 +342,7 @@ local function pickupObject(datamodel, position, blur)
 
         local typeobject = iprototype.queryByName(object.prototype_name)
         if typeobject.building_menu ~= false then
-            iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.rml"}, gameplay_eid)
+            iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.rml"}, gameplay_eid, false)
         end
 
         audio.play "event:/ui/click"
@@ -360,7 +361,7 @@ local function pickupObject(datamodel, position, blur)
         datamodel.status = "FOCUS"
 
         if o.class == CLASS.Road then
-            iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.rml"}, o.id)
+            iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.rml"}, o.id, false)
         end
 
         audio.play "event:/ui/click"
@@ -398,6 +399,8 @@ local function pickupObject(datamodel, position, blur)
 end
 
 local update = interval_call(300, function(datamodel)
+    datamodel.transfer_id = itransfer.get_source_eid() or 0
+
     if not itransfer.get_source_eid() then
         if #datamodel.item_bar > 0 then
             datamodel.item_bar = {}
@@ -583,11 +586,6 @@ function M.update(datamodel)
                 end
             end
         end
-        do
-            local typeobject = iprototype.queryById(e.building.prototype)
-            items[#items+1] = {typeobject.name, 1}
-        end
-
         igameplay.destroy_entity(gameplay_eid)
 
         --TODO
@@ -596,33 +594,40 @@ function M.update(datamodel)
         -- gameplay_core.set_changed(CHANGED_FLAG_ROADNET)
 
         -- the road will not execute the following logic
-        local old_object = assert(objects:coord(e.building.x, e.building.y))
-        iobject.remove(old_object)
-        objects:remove(old_object.id)
-        local building = global.buildings[old_object.id]
-        if building then
-            for _, v in pairs(building) do
-                v:remove()
+        local old_object = objects:coord(e.building.x, e.building.y)
+        if old_object then
+            iobject.remove(old_object)
+            objects:remove(old_object.id)
+            local building = global.buildings[old_object.id]
+            if building then
+                for _, v in pairs(building) do
+                    v:remove()
+                end
+            end
+
+            if #items > 0 then
+                -- Add a ruined building
+                local new_object = iobject.new {
+                    prototype_name = "建筑物残骸", --TODO: remove hard code
+                    dir = "N",
+                    x = e.building.x,
+                    y = e.building.y,
+                    srt = srt.new {
+                        t = math3d.vector(icoord.position(e.building.x, e.building.y, 1, 1)),
+                        r = ROTATORS["N"],
+                    },
+                    group_id = old_object.group_id,
+                    items = items,
+                }
+                new_object.gameplay_eid = igameplay.create_entity(new_object)
+                objects:set(new_object, "CONSTRUCTED")
             end
         end
 
-        -- Add a ruined building
-        local new_object = iobject.new {
-            prototype_name = "建筑物残骸", --TODO: remove hard code
-            dir = "N",
-            x = e.building.x,
-            y = e.building.y,
-            srt = srt.new {
-                t = math3d.vector(icoord.position(e.building.x, e.building.y, 1, 1)),
-                r = ROTATORS["N"],
-            },
-            group_id = old_object.group_id,
-            items = items,
-        }
-        new_object.gameplay_eid = igameplay.create_entity(new_object)
-        objects:set(new_object, "CONSTRUCTED")
-
         gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
+
+        -- the building directly go into the backpack
+        iinventory.place(gameplay_core.get_world(), e.building.prototype, 1)
     end
 
     for _, _, _, object_id in move_md:unpack() do
@@ -757,10 +762,10 @@ function M.update(datamodel)
             if typeobject.teardown == false then
                 goto continue
             end
-            iui.open({rml = "/pkg/vaststars.resources/ui/building_menu_longpress.rml"}, selected_obj.object.gameplay_eid)
+            iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.rml"}, selected_obj.object.gameplay_eid, true)
         elseif selected_obj.class == CLASS.Lorry or selected_obj.class == CLASS.Road then
             iui.leave()
-            iui.open({rml = "/pkg/vaststars.resources/ui/building_menu_longpress.rml"}, selected_obj.id)
+            iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.rml"}, selected_obj.id, true)
         end
         ::continue::
     end

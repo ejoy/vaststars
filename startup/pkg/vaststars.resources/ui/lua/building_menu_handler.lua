@@ -41,13 +41,14 @@ local DEFAULT_OFFSETS = {
     }
 }
 
-local DEFAULT <const> = {
+local DEFAULT_MT <const> = {__index = {
     command = " ",
     number = -1,
     show_number = false,
     show_background = false,
     disabled = false,
-}
+    selected = false,
+}}
 
 local function show_buttons(start)
     -- console.log("#start.buttons", #start.buttons)
@@ -67,23 +68,23 @@ local function test(start, count)
     local buttons = {
         [1] = {
             background_image = "/pkg/vaststars.resources/ui/textures/building-menu/set-transfer-source.texture",
-            command = "-pickup-item",
+            command = "test",
         },
         [2] = {
             background_image = "/pkg/vaststars.resources/ui/textures/building-menu/transfer.texture",
-            command = "-transfer",
+            command = "test",
         },
         [3] = {
             background_image = "/pkg/vaststars.resources/ui/textures/building-menu/teardown.texture",
-            command = "-teardown",
+            command = "test",
         }, 
         [4] = {
             background_image = "/pkg/vaststars.resources/ui/textures/building-menu/move.texture",
-            command = "-move",
+            command = "test",
         },
         [5] = {
             background_image = "/pkg/vaststars.resources/ui/textures/building-menu/clone.texture",
-            command = "-clone",
+            command = "test",
         },
     }
 
@@ -99,69 +100,77 @@ return function(start)
     -- end
 
     if spec[start.prototype_name] then
-        spec[start.prototype_name](start, DEFAULT_OFFSETS, DEFAULT)
+        spec[start.prototype_name](start, DEFAULT_OFFSETS, DEFAULT_MT)
         return
     end
 
     start.buttons = {}
     if start.set_transfer_source then
-        local v = setmetatable({}, {__index = DEFAULT})
+        local v = setmetatable({}, DEFAULT_MT)
         v.command = "set_transfer_source"
         v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/set-transfer-source.texture"
         start.buttons[#start.buttons + 1] = v
     end
 
+    if start.transfer_source then
+        local v = setmetatable({}, DEFAULT_MT)
+        v.command = "transfer_source"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/set-transfer-source.texture"
+        v.selected = true
+        start.buttons[#start.buttons + 1] = v
+    end
+
     if start.remove_lorry then
-        local v = setmetatable({}, {__index = DEFAULT})
+        local v = setmetatable({}, DEFAULT_MT)
         v.command = "remove_lorry"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/lorry-factory-dec-lorry.texture"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/remove-lorry.texture"
         start.buttons[#start.buttons + 1] = v
     end
 
     if start.move then
-        local v = setmetatable({}, {__index = DEFAULT})
+        local v = setmetatable({}, DEFAULT_MT)
         v.command = "move"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/move.texture"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/move.texture"
         start.buttons[#start.buttons + 1] = v
     end
 
     if start.lorry_factory_inc_lorry then
-        local v = setmetatable({}, {__index = DEFAULT})
+        local v = setmetatable({}, DEFAULT_MT)
         v.command = "lorry_factory_inc_lorry"
         v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/lorry-factory-inc-lorry.texture"
         start.buttons[#start.buttons + 1] = v
     end
 
     if start.set_item then
-        local v = setmetatable({}, {__index = DEFAULT})
+        local v = setmetatable({}, DEFAULT_MT)
         v.command = "set_item"
         v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/set-item.texture"
         start.buttons[#start.buttons + 1] = v
     end
 
-    if start.show_set_recipe then
-        local v = setmetatable({}, {__index = DEFAULT})
+    if start.set_recipe then
+        local v = setmetatable({}, DEFAULT_MT)
         v.command = "set_recipe"
         v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/set-recipe.texture"
         start.buttons[#start.buttons + 1] = v
     end
 
     if start.copy then
-        local v = setmetatable({}, {__index = DEFAULT})
+        local v = setmetatable({}, DEFAULT_MT)
         v.command = "copy"
-        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu-longpress/clone.texture"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/clone.texture"
         start.buttons[#start.buttons + 1] = v
     end
 
     if start.inventory then
-        local v = setmetatable({}, {__index = DEFAULT})
+        local v = setmetatable({}, DEFAULT_MT)
         v.command = "inventory"
         v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/set-recipe.texture"
         start.buttons[#start.buttons + 1] = v
     end
 
     if start.transfer then
-        local v = setmetatable({}, {__index = DEFAULT})
+        local v = setmetatable({}, DEFAULT_MT)
         v.command = "transfer"
         v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/transfer.texture"
         v.number = start.transfer_count
@@ -169,6 +178,12 @@ return function(start)
         start.buttons[#start.buttons + 1] = v
     end
 
+    if start.teardown then
+        local v = setmetatable({}, DEFAULT_MT)
+        v.command = "teardown"
+        v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/teardown.texture"
+        start.buttons[#start.buttons + 1] = v
+    end
 
     show_buttons(start)
 end

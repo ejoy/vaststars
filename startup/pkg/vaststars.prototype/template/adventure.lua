@@ -13,6 +13,12 @@ local entities = { {
   x = 124,
   y = 120
 },{
+  dir = "E",
+  amount = 0,
+  prototype_name = "物流中心",
+  x = 138,
+  y = 126
+}, {
   dir = "N",
   items = { { "无人机平台I", 8 } , { "风力发电机I", 1 }, { "采矿机I", 4 }, { "仓库I", 8 } ,},
   prototype_name = "机身残骸",

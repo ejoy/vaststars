@@ -1521,7 +1521,7 @@ prototype "发电机1" {
     unlock_recipe = {"蒸汽发电机1"},
     unlock_item = {"蒸汽发电机I"},
   },
-  prerequisites = {"电力传输1","钢加工"},
+  prerequisites = {"钢加工"},
   ingredients = {
     {"气候科技包", 1},
     {"机械科技包", 1},
@@ -1940,7 +1940,7 @@ prototype "电子研究" {
     unlock_recipe = {"电子科技包1"},
     unlock_item = {"电子科技包"},
   },
-  prerequisites = {"电子器件1","电力传输2"},
+  prerequisites = {"电子器件1"},
   ingredients = {
     {"地质科技包", 1},
     {"气候科技包", 1},

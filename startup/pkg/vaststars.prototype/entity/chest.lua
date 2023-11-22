@@ -3,7 +3,7 @@ local prototype = gameplay.register.prototype
 
 prototype "小铁制箱子I" {
     model = "glbs/small-chest.glb|mesh.prefab",
-    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_chest.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"building", "chest"},
     chest_type = "supply",
@@ -12,7 +12,7 @@ prototype "小铁制箱子I" {
 
 prototype "小铁制箱子II" {
     model = "glbs/small-chest.glb|mesh.prefab",
-    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_chest.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"building"},
     area = "1x1",
@@ -20,7 +20,7 @@ prototype "小铁制箱子II" {
 
 prototype "大铁制箱子I" {
     model = "glbs/small-chest.glb|mesh.prefab",
-    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_chest.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"building"},
     area = "2x2",
@@ -28,7 +28,7 @@ prototype "大铁制箱子I" {
 
 prototype "仓库I" {
     model = "glbs/depot.glb|mesh.prefab",
-    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_chest.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"building", "chest", "depot"},
     chest_style = "station",
@@ -40,7 +40,7 @@ prototype "仓库I" {
 
 prototype "无人机平台I" {
     model = "glbs/drone-depot2.glb|mesh.prefab",
-    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_drone_depot.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_drone_depot.texture",
     construct_detector = {"exclusive"},
     type = {"building", "airport", "consumer"},
     priority = "secondary",
@@ -57,7 +57,7 @@ prototype "无人机平台I" {
 
 prototype "无人机平台II" {
     model = "glbs/drone-depot2.glb|mesh.prefab",
-    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_drone_depot.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_drone_depot.texture",
     construct_detector = {"exclusive"},
     type = {"building", "airport", "consumer"},
     priority = "secondary",
@@ -75,7 +75,7 @@ prototype "无人机平台II" {
 
 prototype "无人机平台III" {
     model = "glbs/drone-depot2.glb|mesh.prefab",
-    icon = "/pkg/vaststars.resources/ui/textures/building_pic/small_pic_drone_depot.texture",
+    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_drone_depot.texture",
     construct_detector = {"exclusive"},
     type = {"building", "airport", "consumer"},
     priority = "secondary",
