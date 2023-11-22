@@ -30,6 +30,7 @@ local transfer_source_mb = mailbox:sub {"transfer_source"}
 local transfer_mb = mailbox:sub {"transfer"}
 local remove_lorry_mb = mailbox:sub {"remove_lorry"}
 local inventory_mb = mailbox:sub {"inventory"}
+local teardown_mb = mailbox:sub {"teardown"}
 
 local move_mb = mailbox:sub {"move"}
 local copy_md = mailbox:sub {"copy"}
@@ -71,7 +72,7 @@ end)
 
 ---------------
 local M = {}
-function M.create(gameplay_eid)
+function M.create(gameplay_eid, longpress)
     iui.register_leave("/pkg/vaststars.resources/ui/building_menu.rml")
 
     local e = assert(gameplay_core.get_entity(gameplay_eid))
@@ -82,27 +83,50 @@ function M.create(gameplay_eid)
         typeobject = iprototype.queryById(e.building.prototype)
     end
 
-    local set_item = hasSetItem(e, typeobject)
-    local transfer_source = itransfer.get_source_eid() == e.eid
-    local set_transfer_source = not transfer_source and e.chest ~= nil
-    local lorry_factory_inc_lorry = (e.factory == true)
+    local set_recipe = false
+    local lorry_factory_inc_lorry = false
+    local transfer_source = false
+    local set_transfer_source = false
+    local transfer = false
+    local transfer_count = 0
+    local set_item = false
+    local remove_lorry = false
+    local move = false
+    local copy = false
+    local inventory = false
+    local teardown = false
 
-    local datamodel = {
+    if longpress then
+        teardown = typeobject.teardown ~= false
+    else
+        set_recipe = e.assembling and typeobject.allow_set_recipt or false
+        lorry_factory_inc_lorry = (e.factory == true)
+        transfer_source = itransfer.get_source_eid() == e.eid
+        set_transfer_source = not transfer_source and e.chest ~= nil
+        transfer = e.chest ~= nil
+        transfer_count = 0
+        set_item = hasSetItem(e, typeobject)
+        remove_lorry = (e.lorry ~= nil)
+        move = typeobject.move ~= false
+        copy = typeobject.copy ~= false
+        inventory = iprototype.has_type(typeobject.type, "base")
+    end
+
+    return {
         prototype_name = typeobject.name,
-        show_set_recipe = e.assembling and typeobject.allow_set_recipt or false,
+        set_recipe = set_recipe,
         lorry_factory_inc_lorry = lorry_factory_inc_lorry,
-        set_transfer_source = set_transfer_source,
         transfer_source = transfer_source,
-        transfer = e.chest ~= nil,
-        transfer_count = 0,
+        set_transfer_source = set_transfer_source,
+        transfer = transfer,
+        transfer_count = transfer_count,
         set_item = set_item,
-        remove_lorry = (e.lorry ~= nil),
-        move = typeobject.move ~= false,
-        copy = typeobject.copy ~= false,
-        inventory = iprototype.has_type(typeobject.type, "base"),
+        remove_lorry = remove_lorry,
+        move = move,
+        copy = copy,
+        inventory = inventory,
+        teardown = teardown,
     }
-
-    return datamodel
 end
 
 local function station_set_item(gameplay_world, e, type, item)
@@ -320,6 +344,10 @@ function M.update(datamodel, gameplay_eid)
 
     for _ in inventory_mb:unpack() do
         iui.open({rml = "/pkg/vaststars.resources/ui/inventory.rml"})
+    end
+
+    for _ in teardown_mb:unpack() do
+        iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "teardown", gameplay_eid)
     end
 end
 

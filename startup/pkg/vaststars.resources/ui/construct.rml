@@ -33,7 +33,6 @@
                 height: 11.14vmin;
                 gap: 1.50vmin;
                 overflow: hidden;
-                /* animation: 1s sine-in-out 0s enlarge; */
             }
             tech-or-task-bar {
                 position: absolute;
@@ -76,22 +75,37 @@
                 focus_building_icon = "",
                 item_bar = {},
                 tech_count = 0,
+                transfer_id = 0,
             }
 
             function start.clickButton(...)
-                -- console.log(...)
                 ui_sys.pub {...}
             end
+
+            ui_sys.mapping(start, {
+                {
+                    function(_)
+                        local e = document.getElementById "item_bar"
+                        e.style.animation = "0.75s sine-in-out 0s enlarge"
+                        window.setTimeout(function()
+                            e.style.animation = "none";
+                        end, 750);
+                    end,
+                    "transfer_id",
+                }
+            })
         </script>
     </head>
     <body style = "pointer-events: none; margin: 1.32vmin 3.995vmax 0 4.97vmax;">
         <item-bar data-event-click = "clickButton('settings')" data-if = "status ~= 'BUILD'">
-            <div data-for = "item_bar" style = "flex-direction: row; animation: 0.75s sine-in-out 0s enlarge;">
-                <div style = "width: 10.67vmin; height: 10.67vmin; background-size: 100% 100%; background-color: rgb(61, 61, 61);" data-style-background-image = "it.icon" data-style-border = "it.is_transfer and '0.20vmin #3498db' or '0vmin'">
-                    <div style = "position:absolute; top:0;right:0; font-size:4.5vmin; text-align: center;">{{it.count}}</div>
-                </div>  
+            <div id = "item_bar">
+                <div data-for = "item_bar" style = "flex-direction: row;">
+                    <div style = "width: 10.67vmin; height: 10.67vmin; background-size: 100% 100%; background-color: rgb(61, 61, 61);" data-style-background-image = "it.icon" data-style-border = "it.is_transfer and '0.20vmin #3498db' or '0vmin'">
+                        <div style = "position:absolute; top:0;right:0; font-size:4.5vmin; text-align: center;">{{it.count}}</div>
+                    </div>  
+                </div>
+                <div style = "width: 10.67vmin; height: 11.14vmin; background-size: 100% 100%; background-image: /pkg/vaststars.resources/ui/textures/construct/settings.texture;" data-if = "#item_bar <= 0"/>            
             </div>
-            <div style = "width: 10.67vmin; height: 11.14vmin; background-size: 100% 100%; background-image: /pkg/vaststars.resources/ui/textures/construct/settings.texture;" data-if = "#item_bar <= 0"/>            
         </item-bar>
 
         <tech-or-task-bar style = "flex-direction: row; align-items: center; gap: 1vmin;" data-if = "status ~= 'BUILD' and show_tech_progress" data-event-click="clickButton('click_techortaskicon', is_task)">

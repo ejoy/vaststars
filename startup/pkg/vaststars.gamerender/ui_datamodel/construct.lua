@@ -131,6 +131,7 @@ function M.create()
         item_idx = 0,
         tech_count = #global.science.tech_list,
         item_bar = {},
+        transfer_id = 0,
     }
 end
 
@@ -315,7 +316,7 @@ local function pickupObject(datamodel, position, blur)
         datamodel.focus_building_icon = typeobject.item_icon
         datamodel.status = "FOCUS"
 
-        iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.rml"}, o.id)
+        iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.rml"}, o.id, false)
 
         audio.play "event:/ui/click"
 
@@ -341,7 +342,7 @@ local function pickupObject(datamodel, position, blur)
 
         local typeobject = iprototype.queryByName(object.prototype_name)
         if typeobject.building_menu ~= false then
-            iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.rml"}, gameplay_eid)
+            iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.rml"}, gameplay_eid, false)
         end
 
         audio.play "event:/ui/click"
@@ -360,7 +361,7 @@ local function pickupObject(datamodel, position, blur)
         datamodel.status = "FOCUS"
 
         if o.class == CLASS.Road then
-            iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.rml"}, o.id)
+            iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.rml"}, o.id, false)
         end
 
         audio.play "event:/ui/click"
@@ -398,6 +399,8 @@ local function pickupObject(datamodel, position, blur)
 end
 
 local update = interval_call(300, function(datamodel)
+    datamodel.transfer_id = itransfer.get_source_eid() or 0
+
     if not itransfer.get_source_eid() then
         if #datamodel.item_bar > 0 then
             datamodel.item_bar = {}
@@ -759,10 +762,10 @@ function M.update(datamodel)
             if typeobject.teardown == false then
                 goto continue
             end
-            iui.open({rml = "/pkg/vaststars.resources/ui/building_menu_longpress.rml"}, selected_obj.object.gameplay_eid)
+            iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.rml"}, selected_obj.object.gameplay_eid, true)
         elseif selected_obj.class == CLASS.Lorry or selected_obj.class == CLASS.Road then
             iui.leave()
-            iui.open({rml = "/pkg/vaststars.resources/ui/building_menu_longpress.rml"}, selected_obj.id)
+            iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.rml"}, selected_obj.id, true)
         end
         ::continue::
     end
