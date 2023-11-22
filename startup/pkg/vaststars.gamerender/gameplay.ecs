@@ -1,50 +1,5 @@
-system "init_system"
-    .implement "init_system.lua"
-
-system "assembling_system"
-    .implement "render_updates/assembling.lua"
-
-system "daynight_system"
-    .implement "render_updates/daynight.lua"
-
-system "building_system"
-    .implement "render_updates/building.lua"
-
-system "drone_system"
-    .implement "render_updates/drone.lua"
-
-system "work_state_system"
-    .implement "render_updates/work_state.lua"
-
-system "task_system"
-    .implement "render_updates/task.lua"
-
-system "storage_tank_system"
-    .implement "render_updates/storage_tank.lua"
-
-system "statistic_system"
-    .implement "render_updates/statistic.lua"
-
-system "station_system"
-    .implement "render_updates/station.lua"
-
-system "guide_system"
-    .implement "render_updates/guide.lua"
-
-system "science_system"
-    .implement "render_updates/science.lua"
-
-system "lorry_system"
-    .implement "render_updates/lorry.lua"
-
-system "fluidbox_system"
-    .implement "render_updates/fluidbox.lua"
-
-system "road_system"
-    .implement "render_updates/road.lua"
-
-system "chimney_system"
-    .implement "render_updates/chimney.lua"
+system "game_init_system"
+    .implement "game_init_system.lua"
 
 system "pick_object_sys"
     .implement "pick_object_system.lua"
@@ -52,14 +7,11 @@ system "pick_object_sys"
 system "power_check_system"
     .implement "power_check_system.lua"
 
-system "prototype_cache_system"
-    .implement "prototype_cache.lua"
+system "guide_system"
+    .implement "render_updates/guide.lua"
 
-system "depot_sys"
-    .implement "render_updates/depot.lua"
+system "statistic_system"
+    .implement "render_updates/statistic.lua"
 
-system "camera_system"
-    .implement "render_updates/camera.lua"
-
-system "update_system"
-    .implement "update_system.lua"
+system "task_system"
+    .implement "render_updates/task.lua"

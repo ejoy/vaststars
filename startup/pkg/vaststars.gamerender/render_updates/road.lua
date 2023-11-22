@@ -12,7 +12,7 @@ local road_sys = ecs.system "road_system"
 local iroad = {}
 
 local iroadnet_converter = require "roadnet_converter"
-local iroadnet = ecs.require "roadnet"
+local iroadnet = ecs.require "engine.roadnet"
 local iprototype = require "gameplay.interface.prototype"
 
 local gameplay = import_package "vaststars.gameplay"

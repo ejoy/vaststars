@@ -5,12 +5,10 @@ local w = world.w
 local window = import_package "ant.window"
 local global = require "global"
 
-return function(...)
+return function(feature, ...)
     global.startup_args = {...}
 
     window.reboot {
-        feature = {
-            "vaststars.gamerender|gameplay",
-        }
+        feature = feature,
     }
 end

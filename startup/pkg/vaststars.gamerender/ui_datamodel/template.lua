@@ -39,7 +39,7 @@ end
 function M.update(datamodel)
     for _, _, _, template in start_game_mb:unpack() do
         iui.close("/pkg/vaststars.resources/ui/template.rml")
-        reboot_world("new_game", template)
+        reboot_world({"vaststars.gamerender|gameplay"}, "new_game", template)
     end
 end
 

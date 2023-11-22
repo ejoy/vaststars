@@ -7,7 +7,7 @@ local ivs = ecs.require "ant.render|visible_state"
 local ientity = ecs.require "ant.render|components.entity"
 local irl = ecs.require "ant.render|render_layer.render_layer"
 local igame_object = ecs.require "engine.game_object"
-local imotion = ecs.require "imotion"
+local imotion = ecs.require "engine.motion"
 
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"

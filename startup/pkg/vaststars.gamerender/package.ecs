@@ -61,6 +61,9 @@ import_feature "ant.polyline"
 import_feature "ant.terrain|canvas"
 import_feature "ant.shadow_bounding"
 
+feature "login"
+    .import "login.ecs"
+
 feature "gameplay"
     .import "gameplay.ecs"
 
@@ -75,3 +78,51 @@ system "camera_bounding_pack_system"
 
 system "debug_system"
     .implement "debug_system.lua"
+
+system "assembling_system"
+    .implement "render_updates/assembling.lua"
+
+system "daynight_system"
+    .implement "render_updates/daynight.lua"
+
+system "building_system"
+    .implement "render_updates/building.lua"
+
+system "drone_system"
+    .implement "render_updates/drone.lua"
+
+system "work_state_system"
+    .implement "render_updates/work_state.lua"
+
+system "storage_tank_system"
+    .implement "render_updates/storage_tank.lua"
+
+system "station_system"
+    .implement "render_updates/station.lua"
+
+system "science_system"
+    .implement "render_updates/science.lua"
+
+system "lorry_system"
+    .implement "render_updates/lorry.lua"
+
+system "fluidbox_system"
+    .implement "render_updates/fluidbox.lua"
+
+system "road_system"
+    .implement "render_updates/road.lua"
+
+system "chimney_system"
+    .implement "render_updates/chimney.lua"
+
+system "prototype_cache_system"
+    .implement "prototype_cache.lua"
+
+system "depot_sys"
+    .implement "render_updates/depot.lua"
+
+system "camera_system"
+    .implement "render_updates/camera.lua"
+
+system "update_system"
+    .implement "update_system.lua"

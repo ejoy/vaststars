@@ -4,10 +4,6 @@ local w = world.w
 
 local CONSTANT <const> = require "gameplay.interface.constant"
 local FPS <const> = CONSTANT.FPS
-local NOTHING <const> = ecs.require "debugger".nothing
-local TERRAIN_ONLY <const> = ecs.require "debugger".terrain_only
-local DISABLE_AUDIO <const> = ecs.require "debugger".disable_audio
-local PROTOTYPE_VERSION <const> = ecs.require "vaststars.prototype|version"
 
 local debugger = ecs.require "debugger"
 local iprototype = require "gameplay.interface.prototype"
@@ -16,7 +12,7 @@ local rhwi = import_package "ant.hwi"
 local gameplay_core = require "gameplay.core"
 local iguide = require "gameplay.interface.guide"
 local iui = ecs.require "engine.system.ui_system"
-local iroadnet = ecs.require "roadnet"
+local iroadnet = ecs.require "engine.roadnet"
 local saveload = ecs.require "saveload"
 local global = require "global"
 local irender = ecs.require "ant.render|render_system.render"
@@ -26,53 +22,18 @@ local iinventory = require "gameplay.interface.inventory"
 local imineral = ecs.require "mineral"
 local iscience = require "gameplay.interface.science"
 local bgfx = require 'bgfx'
-local audio = import_package "ant.audio"
 local font = import_package "ant.font"
-local archiving = require "archiving"
-local start_web = ecs.require "webcgi"
 local irq = ecs.require "ant.render|render_system.renderqueue"
 local imodifier = ecs.require "ant.modifier|modifier"
+local init = ecs.require "init"
 
 local m = ecs.system "game_init_system"
 local gameworld_prebuild
 local gameworld_build
 local gameworld
-local need_update = false
 
 bgfx.maxfps(FPS)
 font.import "/pkg/vaststars.resources/ui/font/Alibaba-PuHuiTi-Regular.ttf"
-
-local function init()
-	local ltask = require "ltask"
-	ltask.uniqueservice "vaststars.gamerender|memtexture"
-    start_web()
-
-    archiving.set_version(PROTOTYPE_VERSION)
-
-    -- audio test (Master.strings.bank must be first)
-    audio.load {
-        "/pkg/vaststars.resources/sounds/Master.strings.bank",
-        "/pkg/vaststars.resources/sounds/Master.bank",
-        "/pkg/vaststars.resources/sounds/Building.bank",
-        "/pkg/vaststars.resources/sounds/Function.bank",
-        "/pkg/vaststars.resources/sounds/UI.bank",
-    }
-    if not DISABLE_AUDIO then
-        audio.play("event:/background")
-    end
-
-    if NOTHING then
-        global.startup_args = {"nothing"}
-        return
-    end
-
-    if TERRAIN_ONLY then
-        global.startup_args = {"terrain_only"}
-        return
-    end
-
-    global.startup_args = {"new_game", "template.loading-scene"}
-end
 
 local function get_lorrys()
     local l = {}
@@ -131,30 +92,7 @@ local function init_game(template)
 end
 
 local funcs = {}
-funcs["nothing"] = function()
-    world:create_instance {
-        prefab = "/pkg/vaststars.resources/camera_default.prefab",
-        on_ready = function(self)
-            local eid = assert(self.tag["camera"][1])
-            irq.set_camera("main_queue", eid)
-        end
-    }
-end
-
-funcs["terrain_only"] = function()
-    need_update = true
-    iterrain.create()
-    world:create_instance {
-        prefab = "/pkg/vaststars.resources/camera_default.prefab",
-        on_ready = function(self)
-            local eid = assert(self.tag["camera"][1])
-            irq.set_camera("main_queue", eid)
-        end
-    }
-end
-
 funcs["new_game"] = function(file)
-    need_update = true
     iterrain.create()
     iroadnet:create()
 
@@ -186,25 +124,8 @@ funcs["new_game"] = function(file)
     init_game(template)
 end
 
-funcs["restore"] = function(path)
-    need_update = true
-    iterrain.create()
-    iroadnet:create()
-
-    saveload:restore(path)
-    local file = assert(gameplay_core.get_storage().game_template)
-    local template = ecs.require(("vaststars.prototype|%s"):format(file))
-    for k, v in pairs(template.debugger or {}) do
-        debugger[k] = v
-    end
-    init_game(template)
-end
-
 function m:init()
-    if not global.init then
-        init()
-        global.init = true
-    end
+    init()
 
     gameworld_prebuild = world:pipeline_func "gameworld_prebuild"
     gameworld_build = world:pipeline_func "gameworld_build"
@@ -224,9 +145,11 @@ end
 
 function m:init_world()
     local args = global.startup_args
-    local func = assert(funcs[args[1]])
-    func(table.unpack(args, 2))
-    global.startup_args = {}
+    local func = funcs[args[1]]
+    if func then
+        func(table.unpack(args, 2))
+        global.startup_args = {}
+    end
 end
 
 function m:gameworld_end()
@@ -235,10 +158,6 @@ function m:gameworld_end()
 end
 
 function m:frame_update()
-    if not need_update then
-        return
-    end
-
     local gameplay_world = gameplay_core.get_world()
     if gameplay_core.system_changed_flags ~= 0 then
         print("build world")

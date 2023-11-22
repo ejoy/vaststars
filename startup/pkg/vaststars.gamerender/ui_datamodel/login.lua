@@ -30,11 +30,11 @@ end
 function M.update(datamodel)
     for _ in continue_mb:unpack() do
         local list = archiving.list()
-        reboot_world("restore", assert(list[#list]))
+        reboot_world({"vaststars.gamerender|gameplay"}, "restore", assert(list[#list]))
     end
 
     for _, _, _, template in new_game_mb:unpack() do
-        reboot_world("new_game", template)
+        reboot_world({"vaststars.gamerender|gameplay"}, "new_game", template)
     end
 
     for _ in load_resources_mb:unpack() do
