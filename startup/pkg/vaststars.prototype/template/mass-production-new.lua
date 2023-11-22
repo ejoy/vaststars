@@ -3528,7 +3528,26 @@ local entities = { {
   prototype_name = "停车站",
   x = 122,
   y = 128
+}, 
+----------------------
+{
+  dir = "S",
+  prototype_name = "停车站",
+  x = 146,
+  y = 126
 }, {
+  dir = "N",
+  prototype_name = "停车站",
+  x = 130,
+  y = 128
+},{
+  dir = "N",
+  prototype_name = "停车站",
+  x = 130,
+  y = 136
+}, 
+------------------
+{
   dir = "W",
   items = { { "supply", "铁矿石", 2 } },
   prototype_name = "物流站",
