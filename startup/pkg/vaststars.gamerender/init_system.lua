@@ -43,6 +43,8 @@ bgfx.maxfps(FPS)
 font.import "/pkg/vaststars.resources/ui/font/Alibaba-PuHuiTi-Regular.ttf"
 
 local function init()
+	local ltask = require "ltask"
+	ltask.uniqueservice "vaststars.gamerender|memtexture"
     start_web()
 
     archiving.set_version(PROTOTYPE_VERSION)
