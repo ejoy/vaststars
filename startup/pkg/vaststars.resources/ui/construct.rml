@@ -33,6 +33,7 @@
                 height: 11.14vmin;
                 gap: 1.50vmin;
                 overflow: hidden;
+                /* animation: 1s sine-in-out 0s enlarge; */
             }
             tech-or-task-bar {
                 position: absolute;
@@ -42,6 +43,20 @@
                 height: 16.28vmin;
                 background-image: /pkg/vaststars.resources/ui/textures/construct/tech-or-task-bg.texture;
                 background-size: 100% 100%;
+            }
+            @keyframes enlarge {
+                0% {
+                    transform: scale(0.7);
+                    opacity: 0.8;
+                }
+                60% {
+                    transform: scale(1.2);
+                    opacity: 0.95;
+                }
+                100% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
             }
         </style>
         <script type="text/x-lua" >
@@ -71,7 +86,7 @@
     </head>
     <body style = "pointer-events: none; margin: 1.32vmin 3.995vmax 0 4.97vmax;">
         <item-bar data-event-click = "clickButton('settings')" data-if = "status ~= 'BUILD'">
-            <div data-for = "item_bar" style = "flex-direction: row;">
+            <div data-for = "item_bar" style = "flex-direction: row; animation: 0.75s sine-in-out 0s enlarge;">
                 <div style = "width: 10.67vmin; height: 10.67vmin; background-size: 100% 100%; background-color: rgb(61, 61, 61);" data-style-background-image = "it.icon" data-style-border = "it.is_transfer and '0.20vmin #3498db' or '0vmin'">
                     <div style = "position:absolute; top:0;right:0; font-size:4.5vmin; text-align: center;">{{it.count}}</div>
                 </div>  
