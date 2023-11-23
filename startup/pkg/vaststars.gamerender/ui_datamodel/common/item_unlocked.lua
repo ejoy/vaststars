@@ -3,11 +3,11 @@ local world = ecs.world
 local w = world.w
 
 local gameplay_core = require "gameplay.core"
-local debugger <const> = ecs.require "debugger"
+local game_settings <const> = ecs.require "game_settings"
 local iprototype_cache = ecs.require "prototype_cache"
 
 local function is_unlocked(prototype_name)
-    if debugger.item_unlocked then
+    if game_settings.item_unlocked then
         return true
     end
 

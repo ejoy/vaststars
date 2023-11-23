@@ -4082,11 +4082,6 @@ local road = { {
   x = 116,
   y = 124
 }, {
-  dir = "E",
-  prototype_name = "砖石公路-L型",
-  x = 114,
-  y = 124
-}, {
   dir = "W",
   prototype_name = "砖石公路-L型",
   x = 140,
@@ -5292,11 +5287,6 @@ local road = { {
   x = 106,
   y = 124
 }, {
-  dir = "S",
-  prototype_name = "砖石公路-L型",
-  x = 106,
-  y = 118
-}, {
   dir = "N",
   prototype_name = "砖石公路-I型",
   x = 106,
@@ -5921,6 +5911,46 @@ local road = { {
   prototype_name = "砖石公路-I型",
   x = 118,
   y = 140
+}, {
+  dir = "W",
+  prototype_name = "砖石公路-T型",
+  x = 114,
+  y = 124
+}, {
+  dir = "N",
+  prototype_name = "砖石公路-I型",
+  x = 114,
+  y = 122
+}, {
+  dir = "N",
+  prototype_name = "砖石公路-I型",
+  x = 114,
+  y = 120
+}, {
+  dir = "S",
+  prototype_name = "砖石公路-L型",
+  x = 114,
+  y = 118
+}, {
+  dir = "E",
+  prototype_name = "砖石公路-I型",
+  x = 112,
+  y = 118
+}, {
+  dir = "E",
+  prototype_name = "砖石公路-I型",
+  x = 110,
+  y = 118
+}, {
+  dir = "N",
+  prototype_name = "砖石公路-T型",
+  x = 106,
+  y = 118
+}, {
+  dir = "E",
+  prototype_name = "砖石公路-I型",
+  x = 108,
+  y = 118
 } }
 local mineral = {
 ["102,62"] = "铁矿石",
@@ -5964,7 +5994,7 @@ return {
     },
     init_instances = {
     },
-    debugger = {
+    game_settings = {
       skip_guide = true,
       recipe_unlocked = true,
       item_unlocked = true,

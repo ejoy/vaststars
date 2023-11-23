@@ -4,34 +4,27 @@ local w = world.w
 
 local CONSTANT <const> = require "gameplay.interface.constant"
 local FPS <const> = CONSTANT.FPS
-local NOTHING <const> = ecs.require "debugger".nothing
-local TERRAIN_ONLY <const> = ecs.require "debugger".terrain_only
-local DISABLE_AUDIO <const> = ecs.require "debugger".disable_audio
-local PROTOTYPE_VERSION <const> = ecs.require "vaststars.prototype|version"
 
-local debugger = ecs.require "debugger"
-local iprototype = require "gameplay.interface.prototype"
-local icanvas = ecs.require "engine.canvas"
+local bgfx = require "bgfx"
 local rhwi = import_package "ant.hwi"
-local gameplay_core = require "gameplay.core"
-local iguide = require "gameplay.interface.guide"
+local font = import_package "ant.font"
+local irender = ecs.require "ant.render|render_system.render"
+local irq = ecs.require "ant.render|render_system.renderqueue"
 local iui = ecs.require "engine.system.ui_system"
-local iroadnet = ecs.require "roadnet"
+local iroadnet = ecs.require "engine.roadnet"
+local icanvas = ecs.require "engine.canvas"
+local imountain = ecs.require "engine.mountain"
+local iprototype = require "gameplay.interface.prototype"
+local iguide = require "gameplay.interface.guide"
+local iinventory = require "gameplay.interface.inventory"
+local iscience = require "gameplay.interface.science"
+local gameplay_core = require "gameplay.core"
 local saveload = ecs.require "saveload"
 local global = require "global"
-local irender = ecs.require "ant.render|render_system.render"
-local imountain = ecs.require "engine.mountain"
 local iterrain  = ecs.require "terrain"
-local iinventory = require "gameplay.interface.inventory"
 local imineral = ecs.require "mineral"
-local iscience = require "gameplay.interface.science"
-local bgfx = require 'bgfx'
-local audio = import_package "ant.audio"
-local font = import_package "ant.font"
-local archiving = require "archiving"
-local start_web = ecs.require "webcgi"
-local irq = ecs.require "ant.render|render_system.renderqueue"
-local imodifier = ecs.require "ant.modifier|modifier"
+local init = ecs.require "init"
+local game_settings = ecs.require "game_settings"
 
 local m = ecs.system "game_init_system"
 local gameworld_prebuild
@@ -41,38 +34,6 @@ local need_update = false
 
 bgfx.maxfps(FPS)
 font.import "/pkg/vaststars.resources/ui/font/Alibaba-PuHuiTi-Regular.ttf"
-
-local function init()
-	local ltask = require "ltask"
-	ltask.uniqueservice "vaststars.gamerender|memtexture"
-    start_web()
-
-    archiving.set_version(PROTOTYPE_VERSION)
-
-    -- audio test (Master.strings.bank must be first)
-    audio.load {
-        "/pkg/vaststars.resources/sounds/Master.strings.bank",
-        "/pkg/vaststars.resources/sounds/Master.bank",
-        "/pkg/vaststars.resources/sounds/Building.bank",
-        "/pkg/vaststars.resources/sounds/Function.bank",
-        "/pkg/vaststars.resources/sounds/UI.bank",
-    }
-    if not DISABLE_AUDIO then
-        audio.play("event:/background")
-    end
-
-    if NOTHING then
-        global.startup_args = {"nothing"}
-        return
-    end
-
-    if TERRAIN_ONLY then
-        global.startup_args = {"terrain_only"}
-        return
-    end
-
-    global.startup_args = {"new_game", "template.loading-scene"}
-end
 
 local function get_lorrys()
     local l = {}
@@ -93,7 +54,7 @@ local function init_game(template)
     rhwi.set_profie(template.performance_stats ~= false and gameplay_core.settings_get("debug", true) or false)
     irender.set_framebuffer_ratio("scene_ratio", gameplay_core.settings_get("ratio", 1))
 
-    iinventory.set_infinite_item(debugger.infinite_item)
+    iinventory.set_infinite_item(game_settings.infinite_item)
     iinventory.set_lorry_list(get_lorrys())
 
     icanvas.create("icon", template.canvas_icon ~= false and gameplay_core.settings_get("info", true) or false, 10)
@@ -105,7 +66,7 @@ local function init_game(template)
     end
 
     iguide.init(gameplay_world, template.guide)
-    if next(template.guide) and debugger.skip_guide then
+    if next(template.guide) and game_settings.skip_guide then
         print("skip guide")
         for _, guide in ipairs(template.guide) do
             if next(guide.narrative_end.task) then
@@ -160,13 +121,8 @@ funcs["new_game"] = function(file)
 
     saveload:restart(file)
     local template = ecs.require(("vaststars.prototype|%s"):format(file))
-    for k, v in pairs(template.debugger or {}) do
-        debugger[k] = v
-    end
-
-    local mf
-    if template.camera_animation then
-        mf = imodifier.create_srt_modifier_from_file(nil, 0, template.camera_animation, false, true)
+    for k, v in pairs(template.game_settings or {}) do
+        game_settings[k] = v
     end
 
     -- replace the default camera
@@ -175,11 +131,6 @@ funcs["new_game"] = function(file)
         on_ready = function(self)
             local eid = assert(self.tag["camera"][1])
             irq.set_camera("main_queue", eid)
-
-            if mf then
-                imodifier.set_target(mf, eid)
-                imodifier.start(mf, {loop = true})
-            end
         end
     }
 
@@ -194,17 +145,14 @@ funcs["restore"] = function(path)
     saveload:restore(path)
     local file = assert(gameplay_core.get_storage().game_template)
     local template = ecs.require(("vaststars.prototype|%s"):format(file))
-    for k, v in pairs(template.debugger or {}) do
-        debugger[k] = v
+    for k, v in pairs(template.game_settings or {}) do
+        game_settings[k] = v
     end
     init_game(template)
 end
 
 function m:init()
-    if not global.init then
-        init()
-        global.init = true
-    end
+    init()
 
     gameworld_prebuild = world:pipeline_func "gameworld_prebuild"
     gameworld_build = world:pipeline_func "gameworld_build"

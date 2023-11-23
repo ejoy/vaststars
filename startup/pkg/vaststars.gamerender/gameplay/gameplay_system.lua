@@ -3,10 +3,11 @@ local world = ecs.world
 local w = world.w
 
 local gameplay_core = require "gameplay.core"
-local igameplay = {}
 local iprototype = require "gameplay.interface.prototype"
 local gameplay = import_package "vaststars.gameplay"
 local igameplay_building = gameplay.interface "building"
+
+local igameplay = {}
 
 function igameplay.create_entity(init)
     local typeobject = iprototype.queryByName(init.prototype_name) or error(("invalid prototype name: " .. init.prototype_name))

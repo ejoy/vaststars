@@ -10,9 +10,10 @@ local continue_mb = mailbox:sub {"continue"}
 local load_template_mb = mailbox:sub {"load_template"}
 local load_tutorial_template_mb = mailbox:sub {"load_tutorial_template"}
 local archiving = require "archiving"
-local reboot_world = ecs.require "reboot_world"
 local iversion = import_package "vaststars.version"
 local vfs = require "vfs"
+local window = import_package "ant.window"
+local global = require "global"
 
 ---------------
 local M = {}
@@ -30,11 +31,17 @@ end
 function M.update(datamodel)
     for _ in continue_mb:unpack() do
         local list = archiving.list()
-        reboot_world("restore", assert(list[#list]))
+        global.startup_args = {"restore", assert(list[#list])}
+        window.reboot {
+            feature = {"vaststars.gamerender|gameplay"},
+        }
     end
 
     for _, _, _, template in new_game_mb:unpack() do
-        reboot_world("new_game", template)
+        global.startup_args = {"new_game", template}
+        window.reboot {
+            feature = {"vaststars.gamerender|gameplay"},
+        }
     end
 
     for _ in load_resources_mb:unpack() do

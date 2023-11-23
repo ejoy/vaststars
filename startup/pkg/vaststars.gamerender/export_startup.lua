@@ -117,7 +117,7 @@ local function writefile(content)
     writeall(f, content)
 end
 
-local inspect = require "inspect"
+local inspect = require "utility.inspect"
 return function()
     log.info("export entity")
     local gameplay_world = gameplay_core.get_world()

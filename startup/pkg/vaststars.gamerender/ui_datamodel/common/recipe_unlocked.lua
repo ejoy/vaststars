@@ -3,11 +3,11 @@ local world = ecs.world
 local w = world.w
 
 local gameplay_core = require "gameplay.core"
-local debugger = ecs.require "debugger"
+local game_settings = ecs.require "game_settings"
 local iprototype_cache = ecs.require "prototype_cache"
 
 local function recipe_unlocked(recipe)
-    if debugger.recipe_unlocked then
+    if game_settings.recipe_unlocked then
         return true
     end
     local tech = next(iprototype_cache.get("recipe_unlocked")[recipe])

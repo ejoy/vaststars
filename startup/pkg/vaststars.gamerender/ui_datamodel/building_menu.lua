@@ -13,62 +13,37 @@ local CONSTANT <const> = require "gameplay.interface.constant"
 local CHANGED_FLAG_STATION <const> = CONSTANT.CHANGED_FLAG_STATION
 local CHANGED_FLAG_DEPOT <const> = CONSTANT.CHANGED_FLAG_DEPOT
 
-local gameplay_core = require "gameplay.core"
-local objects = require "objects"
-local iprototype = require "gameplay.interface.prototype"
-local iui = ecs.require "engine.system.ui_system"
-local itask = ecs.require "task"
-local icamera_controller = ecs.require "engine.system.camera_controller"
 local math3d = require "math3d"
-
-local set_recipe_mb = mailbox:sub {"set_recipe"}
-local set_item_mb = mailbox:sub {"set_item"}
-local lorry_factory_inc_lorry_mb = mailbox:sub {"lorry_factory_inc_lorry"}
-local ui_click_mb = mailbox:sub {"ui_click"}
-local set_transfer_source_mb = mailbox:sub {"set_transfer_source"}
-local transfer_source_mb = mailbox:sub {"transfer_source"}
-local transfer_mb = mailbox:sub {"transfer"}
-local remove_lorry_mb = mailbox:sub {"remove_lorry"}
-local inventory_mb = mailbox:sub {"inventory"}
-local teardown_mb = mailbox:sub {"teardown"}
-
-local move_mb = mailbox:sub {"move"}
-local copy_md = mailbox:sub {"copy"}
-local ichest = require "gameplay.interface.chest"
-local iinventory = require "gameplay.interface.inventory"
+local gameplay_core = require "gameplay.core"
+local iui = ecs.require "engine.system.ui_system"
+local icamera_controller = ecs.require "engine.system.camera_controller"
 local interval_call = ecs.require "engine.interval_call"
 local gameplay = import_package "vaststars.gameplay"
-local iGameplayStation = gameplay.interface "station"
+local igameplay_station = gameplay.interface "station"
+
+local set_recipe_mb = mailbox:sub {"set_recipe"}
+local lorry_factory_inc_lorry_mb = mailbox:sub {"lorry_factory_inc_lorry"}
+local transfer_source_mb = mailbox:sub {"transfer_source"}
+local set_transfer_source_mb = mailbox:sub {"set_transfer_source"}
+local transfer_mb = mailbox:sub {"transfer"}
+local set_item_mb = mailbox:sub {"set_item"}
+local remove_lorry_mb = mailbox:sub {"remove_lorry"}
+local move_mb = mailbox:sub {"move"}
+local copy_md = mailbox:sub {"copy"}
+local inventory_mb = mailbox:sub {"inventory"}
+local teardown_mb = mailbox:sub {"teardown"}
+local ui_click_mb = mailbox:sub {"ui_click"}
+
+local iprototype = require "gameplay.interface.prototype"
+local ichest = require "gameplay.interface.chest"
+local iinventory = require "gameplay.interface.inventory"
+local igameplay = ecs.require "gameplay.gameplay_system"
 local itransfer = ecs.require "transfer"
 local iobject = ecs.require "object"
 local global = require "global"
-local igameplay = ecs.require "gameplay_system"
 local icoord = require "coord"
-
-local function hasSetItem(e, typeobject)
-    return e.station or (e.chest and CHEST_TYPE_CONVERT[typeobject.chest_type] == "transit" or false)
-end
-
-local update = interval_call(300, function(datamodel, e)
-    local info = itransfer.get_transfer_info(gameplay_core.get_world())
-    local length = 0
-    for _, _ in pairs(info) do
-        length = length + 1
-    end
-
-    local count = 0
-    if datamodel.transfer then
-        if length > 1 then
-            count = "+"
-        elseif length == 1 then
-            local _, amount = next(info)
-            count = amount
-        else
-            count = 0
-        end
-    end
-    datamodel.transfer_count = count
-end)
+local itask = ecs.require "task"
+local objects = require "objects"
 
 ---------------
 local M = {}
@@ -104,8 +79,7 @@ function M.create(gameplay_eid, longpress)
         transfer_source = itransfer.get_source_eid() == e.eid
         set_transfer_source = not transfer_source and e.chest ~= nil
         transfer = e.chest ~= nil
-        transfer_count = 0
-        set_item = hasSetItem(e, typeobject)
+        set_item = e.station or (e.chest and CHEST_TYPE_CONVERT[typeobject.chest_type] == "transit" or false)
         remove_lorry = (e.lorry ~= nil)
         move = typeobject.move ~= false
         copy = typeobject.copy ~= false
@@ -152,7 +126,7 @@ local function station_set_item(gameplay_world, e, type, item)
         items[#items+1] = {type, item, typeobject.station_capacity or 1}
     end
 
-    iGameplayStation.set_item(gameplay_world, e, items)
+    igameplay_station.set_item(gameplay_world, e, items)
     gameplay_core.set_changed(CHANGED_FLAG_STATION)
 end
 
@@ -172,7 +146,7 @@ local function station_remove_item(gameplay_world, e, slot_index, item)
         end
     end
 
-    iGameplayStation.set_item(gameplay_world, e, items)
+    igameplay_station.set_item(gameplay_world, e, items)
     gameplay_core.set_changed(CHANGED_FLAG_STATION)
 end
 
@@ -210,6 +184,27 @@ local function chest_remove_item(gameplay_world, e, slot_index)
     gameplay_core.set_changed(CHANGED_FLAG_DEPOT)
 end
 
+local update = interval_call(300, function(datamodel, e)
+    local info = itransfer.get_transfer_info(gameplay_core.get_world())
+    local length = 0
+    for _, _ in pairs(info) do
+        length = length + 1
+    end
+
+    local count = 0
+    if datamodel.transfer then
+        if length > 1 then
+            count = "+"
+        elseif length == 1 then
+            local _, amount = next(info)
+            count = amount
+        else
+            count = 0
+        end
+    end
+    datamodel.transfer_count = count
+end)
+
 function M.update(datamodel, gameplay_eid)
     local e = assert(gameplay_core.get_entity(gameplay_eid))
     update(datamodel, e)
@@ -239,7 +234,6 @@ function M.update(datamodel, gameplay_eid)
     end
 
     for _ in set_item_mb:unpack() do
-        assert(hasSetItem(e, typeobject))
         local interface = {}
         if e.station then
             interface.set_item = station_set_item

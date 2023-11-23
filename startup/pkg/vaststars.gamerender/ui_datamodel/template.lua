@@ -2,7 +2,8 @@ local ecs, mailbox = ...
 local world = ecs.world
 
 local start_game_mb = mailbox:sub {"start_game"}
-local reboot_world = ecs.require "reboot_world"
+local window = import_package "ant.window"
+local global = require "global"
 local fs = require "filesystem"
 local iui = ecs.require "engine.system.ui_system"
 
@@ -39,7 +40,10 @@ end
 function M.update(datamodel)
     for _, _, _, template in start_game_mb:unpack() do
         iui.close("/pkg/vaststars.resources/ui/template.rml")
-        reboot_world("new_game", template)
+        global.startup_args = {"new_game", template}
+        window.reboot {
+            feature = {"vaststars.gamerender|gameplay"},
+        }
     end
 end
 

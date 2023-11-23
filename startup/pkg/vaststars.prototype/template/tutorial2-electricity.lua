@@ -139,7 +139,7 @@ return {
     },
     init_instances = {
     },
-    debugger = {
+    game_settings = {
       skip_guide = false,
       recipe_unlocked = false,
       item_unlocked = false,

@@ -1,6 +1,6 @@
 local t = {}
 
-local function show_buttons(start, offsets)
+local function set_button_offset(start, offsets)
     -- console.log("#start.buttons", #start.buttons)
     if #start.buttons > 0 then
         local def = offsets[#start.buttons]
@@ -31,7 +31,7 @@ t["采矿机I"] = function(start, offsets, DEFAULT_MT) --采矿建筑仅保留�
         start.buttons[#start.buttons + 1] = v
     end
 
-    show_buttons(start, offsets)
+    set_button_offset(start, offsets)
 end
 
 t["采矿机II"] = function(start, offsets, DEFAULT_MT) --采矿建筑仅保留获取
@@ -51,7 +51,7 @@ t["采矿机II"] = function(start, offsets, DEFAULT_MT) --采矿建筑仅保留�
         start.buttons[#start.buttons + 1] = v
     end
 
-    show_buttons(start, offsets)
+    set_button_offset(start, offsets)
 end
 
 t["采矿机III"] = function(start, offsets, DEFAULT_MT) --采矿建筑仅保留获取
@@ -71,7 +71,7 @@ t["采矿机III"] = function(start, offsets, DEFAULT_MT) --采矿建筑仅保留
         start.buttons[#start.buttons + 1] = v
     end
 
-    show_buttons(start, offsets)
+    set_button_offset(start, offsets)
 end
 
 t["机身残骸"] = function(start, offsets, DEFAULT_MT) --废墟建筑仅保留获取
@@ -91,7 +91,7 @@ t["机身残骸"] = function(start, offsets, DEFAULT_MT) --废墟建筑仅保留
         start.buttons[#start.buttons + 1] = v
     end
 
-    show_buttons(start, offsets)
+    set_button_offset(start, offsets)
 end
 
 t["机翼残骸"] = function(start, offsets, DEFAULT_MT) --废墟建筑仅保留获取
@@ -111,7 +111,7 @@ t["机翼残骸"] = function(start, offsets, DEFAULT_MT) --废墟建筑仅保留
         start.buttons[#start.buttons + 1] = v
     end
 
-    show_buttons(start, offsets)
+    set_button_offset(start, offsets)
 end
 
 t["机头残骸"] = function(start, offsets, DEFAULT_MT) --废墟建筑仅保留获取
@@ -131,7 +131,7 @@ t["机头残骸"] = function(start, offsets, DEFAULT_MT) --废墟建筑仅保留
         start.buttons[#start.buttons + 1] = v
     end
 
-    show_buttons(start, offsets)
+    set_button_offset(start, offsets)
 end
 
 t["机尾残骸"] = function(start, offsets, DEFAULT_MT) --废墟建筑仅保留获取
@@ -151,7 +151,7 @@ t["机尾残骸"] = function(start, offsets, DEFAULT_MT) --废墟建筑仅保留
         start.buttons[#start.buttons + 1] = v
     end
 
-    show_buttons(start, offsets)
+    set_button_offset(start, offsets)
 end
 
 t["空气过滤器I"] = function(start, offsets, DEFAULT_MT) --液体输入/输出建筑仅保留移动和复制
@@ -169,7 +169,7 @@ t["空气过滤器I"] = function(start, offsets, DEFAULT_MT) --液体输入/输�
         v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/clone.texture"
         start.buttons[#start.buttons + 1] = v
     end
-    show_buttons(start, offsets)
+    set_button_offset(start, offsets)
 end
 
 t["空气过滤器II"] = function(start, offsets, DEFAULT_MT) --液体输入/输出建筑仅保留移动和复制
@@ -187,7 +187,7 @@ t["空气过滤器II"] = function(start, offsets, DEFAULT_MT) --液体输入/输
         v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/clone.texture"
         start.buttons[#start.buttons + 1] = v
     end
-    show_buttons(start, offsets)
+    set_button_offset(start, offsets)
 end
 
 t["空气过滤器III"] = function(start, offsets, DEFAULT_MT) --液体输入/输出建筑仅保留移动和复制
@@ -205,7 +205,7 @@ t["空气过滤器III"] = function(start, offsets, DEFAULT_MT) --液体输入/�
         v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/clone.texture"
         start.buttons[#start.buttons + 1] = v
     end
-    show_buttons(start, offsets)
+    set_button_offset(start, offsets)
 end
 
 t["地下水挖掘机I"] = function(start, offsets, DEFAULT_MT) --液体输入/输出建筑仅保留移动和复制
@@ -223,7 +223,7 @@ t["地下水挖掘机I"] = function(start, offsets, DEFAULT_MT) --液体输入/�
         v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/clone.texture"
         start.buttons[#start.buttons + 1] = v
     end
-    show_buttons(start, offsets)
+    set_button_offset(start, offsets)
 end
 
 t["地下水挖掘机II"] = function(start, offsets, DEFAULT_MT)   --液体输入/输出建筑仅保留移动和复制
@@ -241,7 +241,7 @@ t["地下水挖掘机II"] = function(start, offsets, DEFAULT_MT)   --液体输�
         v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/clone.texture"
         start.buttons[#start.buttons + 1] = v
     end
-    show_buttons(start, offsets)
+    set_button_offset(start, offsets)
 end
 
 
