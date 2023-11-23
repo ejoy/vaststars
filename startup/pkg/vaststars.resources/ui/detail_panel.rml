@@ -306,7 +306,7 @@
                 <div style="width:80%; flex-direction: row; justify-content: flex-start; align-items: center; flex-wrap: wrap;">
                     <div style='flex-direction: column; align-items: center;' data-for = "chest : chest_list_1" >
                         <div class="small-item1" style="margin: 1vmin; width: 15vmin; height: 15vmin;" data-style-border = "chest.type == 'supply' and '0.3vmin rgb(254, 98, 124);' or (chest.type == 'demand' and '0.3vmin rgb(23, 176, 240);' or '0.2vmin rgb(255, 255, 255);')" data-style-background-image="chest.icon">
-                            <div style="font-size: 6vmin; -webkit-text-stroke:0.25vmin rgb(0, 0, 0);" data-if="chest.icon ~= ''">{{chest.count}}</div>
+                            <div style="font-size: 5.4vmin; -webkit-text-stroke:0.25vmin rgb(0, 0, 0);" data-if="chest.icon ~= ''">{{chest.count}}</div>
                         </div>
                         <div style='font-size: 3vmin'>{{chest.name}}</div>
                     </div>
@@ -326,7 +326,7 @@
                                 <div class="item-count-new" style="font-size: 5.4vmin;">x{{it.count}}</div>
                             </div>
                         </div>
-                        <div style='font-size: 4.8vmin'>{{it.name}}</div>
+                        <div style='font-size: 3.1vmin'>{{it.name}}</div>
                     </div>
                 </div>
             </div>
