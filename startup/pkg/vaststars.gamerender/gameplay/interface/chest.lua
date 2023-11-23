@@ -1,5 +1,5 @@
 local iprototype = require "gameplay.interface.prototype"
-local iChest = import_package "vaststars.gameplay".interface "chest"
+local igameplay_chest = import_package "vaststars.gameplay".interface "chest"
 
 local CHEST_TYPES <const> = {
     "assembling",
@@ -9,6 +9,7 @@ local CHEST_TYPES <const> = {
 }
 
 local MAX_SLOT <const> = 256
+
 local function get_max_slot(typeobject)
     return typeobject.maxslot and typeobject.maxslot or MAX_SLOT
 end
@@ -18,11 +19,11 @@ local function has_chest(type)
 end
 
 local function set(world, e, item)
-    return iChest.chest_set(world, e, item)
+    return igameplay_chest.chest_set(world, e, item)
 end
 
 local function get(world, ...)
-    return iChest.get(world, ...)
+    return igameplay_chest.get(world, ...)
 end
 
 local function get_amount(slot)
@@ -34,24 +35,24 @@ local function get_space(slot)
 end
 
 local function pickup_at(world, ...)
-    iChest.pickup_at(world, ...)
+    igameplay_chest.pickup_at(world, ...)
 end
 
 local function place_at(world, ...)
-    iChest.place_at(world, ...)
+    igameplay_chest.place_at(world, ...)
 end
 
 local function pickup(world, ...)
-    iChest.pickup(world, ...)
+    igameplay_chest.pickup(world, ...)
 end
 
 local function place(world, ...)
-    iChest.place(world, ...)
+    igameplay_chest.place(world, ...)
 end
 
 local function has_item(world, e)
     for i = 1, MAX_SLOT do
-        local slot = iChest.get(world, e, i)
+        local slot = igameplay_chest.get(world, e, i)
         if not slot then
             return false
         end

@@ -14,7 +14,7 @@ local ichest = require "gameplay.interface.chest"
 local itransfer = ecs.require "transfer"
 local iobject = ecs.require "object"
 local global = require "global"
-local igameplay = ecs.require "gameplay_system"
+local igameplay = ecs.require "gameplay.gameplay_system"
 local iui = ecs.require "engine.system.ui_system"
 local interval_call = ecs.require "engine.interval_call"
 

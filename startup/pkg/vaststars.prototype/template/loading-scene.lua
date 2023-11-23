@@ -4460,7 +4460,7 @@ return {
     research_queue = {
       "登录科技",
     },
-    debugger = {
+    game_settings = {
       skip_guide = true,
       recipe_unlocked = true,
       item_unlocked = true,

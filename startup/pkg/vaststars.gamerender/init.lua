@@ -3,9 +3,9 @@ local world = ecs.world
 local w = world.w
 
 local PROTOTYPE_VERSION <const> = ecs.require "vaststars.prototype|version"
-local DISABLE_AUDIO <const> = ecs.require "debugger".disable_audio
-local NOTHING <const> = ecs.require "debugger".nothing
-local TERRAIN_ONLY <const> = ecs.require "debugger".terrain_only
+local DISABLE_AUDIO <const> = ecs.require "game_settings".disable_audio
+local NOTHING <const> = ecs.require "game_settings".nothing
+local TERRAIN_ONLY <const> = ecs.require "game_settings".terrain_only
 
 local global = require "global"
 local audio = import_package "ant.audio"

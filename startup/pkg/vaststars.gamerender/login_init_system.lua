@@ -25,7 +25,7 @@ local global = require "global"
 local iterrain  = ecs.require "terrain"
 local imineral = ecs.require "mineral"
 local init = ecs.require "init"
-local debugger = ecs.require "debugger"
+local game_settings = ecs.require "game_settings"
 
 local m = ecs.system "game_init_system"
 local gameworld_prebuild
@@ -54,7 +54,7 @@ local function init_game(template)
     rhwi.set_profie(template.performance_stats ~= false and gameplay_core.settings_get("debug", true) or false)
     irender.set_framebuffer_ratio("scene_ratio", gameplay_core.settings_get("ratio", 1))
 
-    iinventory.set_infinite_item(debugger.infinite_item)
+    iinventory.set_infinite_item(game_settings.infinite_item)
     iinventory.set_lorry_list(get_lorrys())
 
     icanvas.create("icon", template.canvas_icon ~= false and gameplay_core.settings_get("info", true) or false, 10)
@@ -66,7 +66,7 @@ local function init_game(template)
     end
 
     iguide.init(gameplay_world, template.guide)
-    if next(template.guide) and debugger.skip_guide then
+    if next(template.guide) and game_settings.skip_guide then
         print("skip guide")
         for _, guide in ipairs(template.guide) do
             if next(guide.narrative_end.task) then
@@ -98,8 +98,8 @@ funcs["new_game"] = function(file)
 
     saveload:restart(file)
     local template = ecs.require(("vaststars.prototype|%s"):format(file))
-    for k, v in pairs(template.debugger or {}) do
-        debugger[k] = v
+    for k, v in pairs(template.game_settings or {}) do
+        game_settings[k] = v
     end
 
     local mf

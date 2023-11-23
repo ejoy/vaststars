@@ -1,15 +1,11 @@
 local spec = require "lua.building_menu_spec"
 
 local TRANSFORM_DELTA <const> = 18
-local LINE_MARGIN_RIGHT_DELTA <const> = -2
-local LINE_TRANSFORM_DELTA <const> = -5
 local BUILDING_MENU_POSITIONS = {}
 for i = 1, 5 do
     BUILDING_MENU_POSITIONS[i] = {
         outer_transform = ("rotate(%sdeg)"):format(-TRANSFORM_DELTA * (i - 1)),
         inner_transform = ("rotate(%sdeg)"):format(TRANSFORM_DELTA * (i - 1)),
-        line_margin_right = ("%svmin"):format(LINE_MARGIN_RIGHT_DELTA * (i - 1)),
-        line_transform = ("rotate(%sdeg)"):format(LINE_TRANSFORM_DELTA * (i - 1))
     }
 end
 
@@ -42,15 +38,12 @@ local DEFAULT_OFFSETS = {
 }
 
 local DEFAULT_MT <const> = {__index = {
-    command = " ",
-    number = -1,
-    show_number = false,
-    show_background = false,
-    disabled = false,
+    command = "",
+    number = "", -- can have a value of either a digit or '+', '' 
     selected = false,
 }}
 
-local function show_buttons(start)
+local function set_button_offset(start)
     -- console.log("#start.buttons", #start.buttons)
     if #start.buttons > 0 then
         local def = DEFAULT_OFFSETS[#start.buttons]
@@ -64,41 +57,7 @@ local function show_buttons(start)
     start("buttons")
 end
 
-local function test(start, count)
-    local buttons = {
-        [1] = {
-            background_image = "/pkg/vaststars.resources/ui/textures/building-menu/set-transfer-source.texture",
-            command = "test",
-        },
-        [2] = {
-            background_image = "/pkg/vaststars.resources/ui/textures/building-menu/transfer.texture",
-            command = "test",
-        },
-        [3] = {
-            background_image = "/pkg/vaststars.resources/ui/textures/building-menu/teardown.texture",
-            command = "test",
-        }, 
-        [4] = {
-            background_image = "/pkg/vaststars.resources/ui/textures/building-menu/move.texture",
-            command = "test",
-        },
-        [5] = {
-            background_image = "/pkg/vaststars.resources/ui/textures/building-menu/clone.texture",
-            command = "test",
-        },
-    }
-
-    for i = 1, count do
-        start.buttons[i] = buttons[i]
-    end
-    show_buttons(start)
-end
-
 return function(start)
-    -- if test then
-    --     return test(start, 5)
-    -- end
-
     if spec[start.prototype_name] then
         spec[start.prototype_name](start, DEFAULT_OFFSETS, DEFAULT_MT)
         return
@@ -174,7 +133,6 @@ return function(start)
         v.command = "transfer"
         v.background_image = "/pkg/vaststars.resources/ui/textures/building-menu/transfer.texture"
         v.number = start.transfer_count
-        v.show_number = true
         start.buttons[#start.buttons + 1] = v
     end
 
@@ -185,5 +143,5 @@ return function(start)
         start.buttons[#start.buttons + 1] = v
     end
 
-    show_buttons(start)
+    set_button_offset(start)
 end

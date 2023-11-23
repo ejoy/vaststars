@@ -2,7 +2,7 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local DAYNIGHT_DEBUG <const> = ecs.require "debugger".daynight
+local DAYNIGHT_DEBUG <const> = ecs.require "game_settings".daynight
 local DayTick <const> = require("gameplay.interface.constant").DayTick
 local idn = ecs.require "ant.daynight|daynight"
 local gameplay_core = require "gameplay.core"

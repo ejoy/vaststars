@@ -743,7 +743,7 @@ local function touch_end(self, datamodel)
     end
 end
 
-local igameplay = ecs.require "gameplay_system"
+local igameplay = ecs.require "gameplay.gameplay_system"
 local function __complete(self)
     for object_id, object in objects:all("CONFIRM") do -- TODO: duplicate code, see also pipe_function_pop.lua
         -- TODO: special case for assembling machine

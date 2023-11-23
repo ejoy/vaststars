@@ -2,7 +2,7 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local GESTURE_LOG <const> = ecs.require "debugger".gesture_log
+local GESTURE_LOG <const> = ecs.require "game_settings".gesture_log
 local FLUIDBOXES <const> = ecs.require "gameplay.interface.constant".FLUIDBOXES
 
 local math3d = require "math3d"

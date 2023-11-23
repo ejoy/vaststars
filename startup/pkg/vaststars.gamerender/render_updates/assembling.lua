@@ -39,7 +39,7 @@ local iprototype_cache = require "gameplay.prototype_cache.init"
 local ifluid = require "gameplay.interface.fluid"
 local ipower_check = ecs.require "power_check_system"
 local gameplay = import_package "vaststars.gameplay"
-local ichimney = gameplay.interface "chimney"
+local igameplay_chimney = gameplay.interface "chimney"
 local ichest = require "gameplay.interface.chest"
 local math3d = require "math3d"
 local vsobject_manager = ecs.require "vsobject_manager"
@@ -390,7 +390,7 @@ function assembling_sys:gameworld_prebuild()
                 if recipe_name then
                     local pt = iprototype.queryByName(recipe_name)
                     if pt.id ~= e.chimney.recipe then
-                        ichimney.set_recipe(e, recipe_name)
+                        igameplay_chimney.set_recipe(e, recipe_name)
                     end
                     break
                 end

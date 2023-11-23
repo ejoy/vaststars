@@ -36,7 +36,7 @@ local ibuilding = ecs.require "render_updates.building"
 local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_box"
 local create_selected_boxes = ecs.require "selected_boxes"
 local vsobject_manager = ecs.require "vsobject_manager"
-local igameplay = ecs.require "gameplay_system"
+local igameplay = ecs.require "gameplay.gameplay_system"
 local srt = require "utility.srt"
 local imineral = ecs.require "mineral"
 
