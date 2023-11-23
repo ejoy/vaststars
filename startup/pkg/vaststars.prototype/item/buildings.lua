@@ -14,6 +14,20 @@ prototype "指挥中心" {
     item_model = "glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "存储材料和装配运输汽车的核心建筑",
 }
+
+prototype "物流中心" {
+    type = {"item"},
+    item_category = "物流",
+    station_limit = 1,
+    chest_limit = 15,
+    backpack_limit = 1,
+    item_order = 50,
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/headquater.texture",
+    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_description = "运输车辆出发和停靠的建筑",
+}
+
+
 prototype "组装机I" {
     type = {"item"},
     item_category = "加工",
