@@ -1,2 +1,0 @@
-system "login_init_system"
-    .implement "login_init_system.lua"

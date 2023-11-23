@@ -10,8 +10,6 @@ local continue_mb = mailbox:sub {"continue"}
 local load_template_mb = mailbox:sub {"load_template"}
 local load_tutorial_template_mb = mailbox:sub {"load_tutorial_template"}
 local archiving = require "archiving"
-local iversion = import_package "vaststars.version"
-local vfs = require "vfs"
 local window = import_package "ant.window"
 local global = require "global"
 
@@ -20,11 +18,6 @@ local M = {}
 function M.create()
     return {
         show_continue_game = (#archiving.list() > 0),
-        version = "IN DEVELOPMENT " .. table.concat({
-            string.sub(iversion.game, 1, 6),
-            string.sub(iversion.engine, 1, 6),
-            string.sub(vfs.version(), 1, 6),
-        }, "-")
     }
 end
 

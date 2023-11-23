@@ -7,7 +7,6 @@ local FPS <const> = CONSTANT.FPS
 
 local bgfx = require "bgfx"
 local rhwi = import_package "ant.hwi"
-local font = import_package "ant.font"
 local irender = ecs.require "ant.render|render_system.render"
 local irq = ecs.require "ant.render|render_system.renderqueue"
 local imodifier = ecs.require "ant.modifier|modifier"
@@ -27,13 +26,12 @@ local imineral = ecs.require "mineral"
 local init = ecs.require "init"
 local game_settings = ecs.require "game_settings"
 
-local m = ecs.system "game_init_system"
+local m = ecs.system "login_scene_system"
 local gameworld_prebuild
 local gameworld_build
 local gameworld
 
 bgfx.maxfps(FPS)
-font.import "/pkg/vaststars.resources/ui/font/Alibaba-PuHuiTi-Regular.ttf"
 
 local function get_lorrys()
     local l = {}

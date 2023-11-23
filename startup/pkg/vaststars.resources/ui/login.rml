@@ -4,20 +4,6 @@
             body {
                 font: "阿里巴巴普惠体";
             }
-            left-box {
-                position: absolute;
-                width: 100%;
-                height: 99%;
-                align-items: flex-start;
-                justify-content: flex-end;
-            }
-            left-box-1 { /* TODO: remove this */
-                position: absolute;
-                width: 100%;
-                height: 100%;
-                align-items: flex-start;
-                justify-content: flex-start;
-            }
             right-box {
                 position: absolute;
                 width: 100%;
@@ -26,16 +12,6 @@
                 align-items: flex-end;
                 gap: 1.50vmin;
                 padding: 3.7vmin 5vmin 0 0;
-            }
-            info {
-                font-size: 2.5vmin;
-                color: rgb(145, 141, 141);
-            }
-            logo {
-                background-image: "/pkg/vaststars.resources/ui/textures/login/logo.texture";
-                background-size: 100% 100%;
-                width: 63.01vmin;
-                height: 26.56vmin;
             }
             button {
                 flex-direction: row;
@@ -74,12 +50,6 @@
         </script>
     </head>
     <body style = "pointer-events: none; margin: 1.32vmin 3.995vmax 0 4.97vmax;">
-        <left-box>
-            <info>{{version}}</info>
-        </left-box>
-        <left-box-1>
-            <logo />
-        </left-box-1>
         <right-box>
             <button data-event-click = "clickButton('continue')" data-if = "show_continue_game">
                 <button-icon style='background-image: "/pkg/vaststars.resources/ui/textures/road/traffic.texture";'/>
