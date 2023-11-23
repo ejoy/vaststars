@@ -257,12 +257,9 @@ return {
 
 -----------物流中心类型---------
     ["物流中心"] = {
-        "set_transfer_source",
-        "transfer_source",
         "move",
         "lorry_factory_inc_lorry",
         "copy",
-        "transfer",
         "teardown",
     },
 -----------科研中心类型---------
@@ -502,7 +499,6 @@ return {
         "move",
         "set_item",
         "copy",
-        "transfer",
         "teardown",
     },
 }
