@@ -287,7 +287,6 @@ prototype "锅炉I" {
     io_shelf = false,
     craft_category = {"流体换热处理"},
     maxslot = 8,
-    allow_set_recipt = true,
     camera_distance = 65,
     fluidboxes = {
         input = {

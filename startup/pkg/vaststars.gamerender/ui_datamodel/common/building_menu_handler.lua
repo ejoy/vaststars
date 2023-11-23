@@ -43,20 +43,6 @@ local DEFAULT_OFFSETS = {
     }
 }
 
-local COMMANDS = {
-    "set_transfer_source",
-    "transfer_source",
-    "remove_lorry",
-    "move",
-    "lorry_factory_inc_lorry",
-    "set_item",
-    "set_recipe",
-    "copy",
-    "inventory",
-    "transfer",
-    "teardown",
-}
-
 local COMMAND_HANDLERS <const> = {
     ["transfer"] = function(status, button)
         button.number = status.transfer_count
@@ -91,8 +77,13 @@ local function set_button_offset(buttons)
 end
 
 return function(prototype_name, status)
+    if not CUSTOM_COMMANDS[prototype_name] then
+        log.error("No custom commands for building: " .. prototype_name)
+        return {}
+    end
+
     local buttons = {}
-    for _, command in ipairs(CUSTOM_COMMANDS[prototype_name] or COMMANDS) do
+    for _, command in ipairs(CUSTOM_COMMANDS[prototype_name] or {}) do
         if status[command] then
             local button = create_button(command)
             local h = COMMAND_HANDLERS[command]

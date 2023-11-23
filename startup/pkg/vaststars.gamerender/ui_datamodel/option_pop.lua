@@ -80,7 +80,6 @@ function M.update(datamodel)
     for _ in back_to_main_menu_mb:unpack() do
         iui.close("/pkg/vaststars.resources/ui/option_pop.rml")
         iui.close("/pkg/vaststars.resources/ui/main_menu.rml")
-        global.startup_args = {"new_game", "template.loading-scene"}
         window.reboot {
             feature = {"vaststars.gamerender|login"},
         }

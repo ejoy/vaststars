@@ -75,7 +75,7 @@ function M.create(gameplay_eid, longpress)
     if longpress then
         teardown = true
     else
-        set_recipe = e.assembling and typeobject.allow_set_recipt or false
+        set_recipe = (e.assembling ~= nil)
         lorry_factory_inc_lorry = (e.factory == true)
         transfer_source = itransfer.get_source_eid() == e.eid
         set_transfer_source = not transfer_source and e.chest ~= nil

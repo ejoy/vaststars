@@ -52,3 +52,6 @@ feature "gameplay"
 
 feature "login"
     .import "login/main.ecs"
+
+feature "gameplay_update"
+    .import "gameplay/gameplay_update.ecs"
