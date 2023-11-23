@@ -497,5 +497,12 @@ return {
         "transfer",
         "teardown",
     },
-
+    ----------物流站类型-------------
+    ["物流站"] = {
+        "move",
+        "set_item",
+        "copy",
+        "transfer",
+        "teardown",
+    },
 }
