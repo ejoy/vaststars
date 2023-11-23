@@ -34,46 +34,29 @@
         <style path = "/pkg/vaststars.resources/ui/common/building_style.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "lua.ui_system"
-            local handler = require "lua.building_menu_handler"
             local start = ui_sys.createDataMode {
-                prototype_name = "",
                 guide_progress = 0,
                 buttons = {},
             }
 
-            local AUDIOS <const> = {
-                ["set_transfer_source"] = "event:/function/pickup",
-                ["transfer"] = "event:/function/putdown",
-                ["teardown"] = "event:/function/demolish",
-            }
-
-            function start.clickButton(command)
-                if command == "" then
+            function start.clickButton(button)
+                if button.command == "" then
                     return
                 end
-                if AUDIOS[command] then
-                    audio.play(AUDIOS[command])
+                if button.audio then
+                    console.log("play audio", button.audio)
+                    audio.play(button.audio)
                 end
-                ui_sys.pub {command}
-                ui_sys.pub {"ui_click", command}
+                ui_sys.pub {button.command}
+                ui_sys.pub {"ui_click", button.command}
             end
-
-            ui_sys.mapping(start, {
-                {
-                    function(_)
-                        handler(start)
-                    end,
-                    "set_recipe", "lorry_factory_inc_lorry", "set_transfer_source", "transfer", "transfer_count",
-                    "set_item", "remove_lorry", "move", "copy", "inventory", "guide_progress", "teardown",
-                }
-            })
         </script>
     </head>
     <body style = "pointer-events: none; justify-content: center; align-items: center;">
         <div class = "layout">
             <div class = "building-button-container" data-style-transform = "it.outer_transform" data-for = "buttons">
                 <div class = "building-button" style = "pointer-events: none; width: 18.23vmin; height: 18.23vmin;" data-style-transform = "it.inner_transform">
-                    <div class = "building-button" style = "width: 18.23vmin; height: 18.23vmin;" data-event-click = "clickButton(it.command)">
+                    <div class = "building-button" style = "width: 18.23vmin; height: 18.23vmin;" data-event-click = "clickButton(it)">
                         <div style = "position: absolute; background-size: 100% 100%; position: absolute; width: 100%; height: 100%;" data-style-background-image = "it.background_image" />
                         <div style = "position: absolute; background-size: 100% 100%; position: absolute; width: 100%; height: 100%; background-image: /pkg/vaststars.resources/ui/textures/building-menu/selected.texture" data-if = "it.selected" />
                         <div data-if = "it.number ~= ''" style = "position: absolute; top: 54.90%; left: 36.00%; width: 22.00%; font-size: 0.65em; text-align: center; align-items: center; -webkit-text-stroke: 0.2vmin rgb(63, 60, 63);" data-style-color = "(it.number == '' or it.number == '+') and 'rgb(0,255,0)' or (it.number > 0 and 'rgb(0,255,0)' or 'rgb(255,255,255)')">{{it.number}}</div>
