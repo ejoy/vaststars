@@ -73,7 +73,7 @@ function M.create(gameplay_eid, longpress)
     local teardown = false
 
     if longpress then
-        teardown = typeobject.teardown ~= false
+        teardown = true
     else
         set_recipe = e.assembling and typeobject.allow_set_recipt or false
         lorry_factory_inc_lorry = (e.factory == true)
@@ -82,8 +82,8 @@ function M.create(gameplay_eid, longpress)
         transfer = e.chest ~= nil
         set_item = e.station or (e.chest and CHEST_TYPE_CONVERT[typeobject.chest_type] == "transit" or false)
         remove_lorry = (e.lorry ~= nil)
-        move = typeobject.move ~= false
-        copy = typeobject.copy ~= false
+        move = true
+        copy = true
         inventory = iprototype.has_type(typeobject.type, "base")
     end
 

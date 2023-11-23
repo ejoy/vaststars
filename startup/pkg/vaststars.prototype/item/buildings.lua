@@ -745,9 +745,6 @@ prototype "运输车辆I" {
     item_model = "glbs/stackeditems/building.glb|mesh.prefab",
     icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_mars_truck.texture",
     model = "glbs/lorry-1.glb|mesh.prefab",
-    teardown = false,
-    move = false,
-    copy = false,
 }
 
 prototype "轻型运输车" {

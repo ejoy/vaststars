@@ -13,9 +13,6 @@ prototype "指挥中心" {
     area = "6x6",
     sound = "building/headquarter",
     camera_distance = 100,
-    teardown = false,
-    move = false,
-    copy = false,
 }
 
 prototype "物流中心" {
@@ -140,7 +137,6 @@ prototype "砖石公路-I型" {
     type = {"building", "road"},
     area = "2x2",
     camera_distance = 50,
-    move = false,
     crossing = {
         connections = {
             {type="none", position={0,0,"N"}},
@@ -164,7 +160,6 @@ prototype "砖石公路-L型" {
     type = {"building", "road"},
     area = "2x2",
     camera_distance = 50,
-    move = false,
     crossing = {
         connections = {
             {type="none", position={0,0,"N"}},
@@ -188,7 +183,6 @@ prototype "砖石公路-T型" {
     type = {"building", "road"},
     area = "2x2",
     camera_distance = 50,
-    move = false,
     crossing = {
         connections = {
             {type="none", position={0,0,"E"}},
@@ -213,7 +207,6 @@ prototype "砖石公路-O型" {
     type = {"building", "road"},
     area = "2x2",
     camera_distance = 50,
-    move = false,
     crossing = {
         connections = {
         }
@@ -234,7 +227,6 @@ prototype "砖石公路-U型" {
     type = {"building", "road"},
     area = "2x2",
     camera_distance = 50,
-    move = false,
     crossing = {
         connections = {
             {type="none", position={0,0,"N"}},
@@ -257,7 +249,6 @@ prototype "砖石公路-X型" {
     type = {"building", "road"},
     area = "2x2",
     camera_distance = 50,
-    move = false,
     crossing = {
         connections = {
             {type="none", position={0,0,"N"}},

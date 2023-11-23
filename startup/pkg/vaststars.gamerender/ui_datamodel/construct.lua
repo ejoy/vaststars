@@ -340,10 +340,7 @@ local function pickupObject(datamodel, position, blur)
         datamodel.focus_building_icon = typeobject.item_icon
         datamodel.status = "FOCUS"
 
-        local typeobject = iprototype.queryByName(object.prototype_name)
-        if typeobject.building_menu ~= false then
-            iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.rml"}, gameplay_eid, false)
-        end
+        iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.rml"}, gameplay_eid, false)
 
         audio.play "event:/ui/click"
 

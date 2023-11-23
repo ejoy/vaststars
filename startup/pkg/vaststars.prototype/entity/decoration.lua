@@ -59,7 +59,6 @@ prototype "建筑物残骸" {
     chest_type = "supply",
     chest_style = "chest",
     chest_destroy = true,
-    copy = false,
     area = "1x1",
     camera_distance = 55,
 }
