@@ -334,7 +334,7 @@
                     <div style='flex-direction: column; align-items: center;' data-for="recipe_inputs">
                         <div class="small-item1" style="width: 12vmin; height: 12vmin; border: 0.3vmin rgb(0, 217, 255);" data-style-background-image="it.icon">
                             <div class ="item-count-combination">
-                                <div class="item-count-new" data-style-font-size="it.count > 99 and '4vmin' or '5.4vmin'" data-style-color="it.count < it.demand_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">x{{it.count}}</div>
+                                <div class="item-count-new" data-style-font-size="it.count > 99 and '3.5vmin' or '4.2vmin'" data-style-color="it.count < it.demand_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">x{{it.count}}</div>
                             </div>
                         </div>
                         <div style='flex-direction: row;'>
@@ -353,7 +353,7 @@
                     <div style='flex-direction: column; align-items: center;' data-for="recipe_ouputs">
                         <div class="small-item1" style="width: 12vmin; height: 12vmin; border: 0.3vmin rgb(251, 177, 61);" data-style-background-image="it.icon">
                             <div class ="item-count-combination">
-                                <div class="item-count-new" data-style-font-size="it.count > 99 and '4vmin' or '5.4vmin'" data-style-color="it.count < it.output_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">x{{it.count}}</div>
+                                <div class="item-count-new" data-style-font-size="it.count > 99 and '3.5vmin' or '4.2vmin'" data-style-color="it.count < it.output_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">x{{it.count}}</div>
                             </div>
                         </div>
                         <div style='flex-direction: row;'>
