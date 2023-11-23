@@ -193,7 +193,7 @@ prototype "采矿机I" {
     item_order = 30,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/miner.texture",
     item_model = "glbs/stackeditems/building.glb|mesh.prefab",
-    item_description = "挖掘、钻探地下矿物资源的设备",
+    item_description = "挖掘或钻探地下矿物资源的设备",
 }
 
 prototype "采矿机II" {
@@ -205,7 +205,7 @@ prototype "采矿机II" {
     item_order = 32,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/miner.texture",
     item_model = "glbs/stackeditems/building.glb|mesh.prefab",
-    item_description = "挖掘、钻探地下矿物资源的设备",
+    item_description = "挖掘或钻探地下矿物资源的设备",
 }
 
 prototype "采矿机III" {
@@ -217,7 +217,7 @@ prototype "采矿机III" {
     item_order = 34,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/miner.texture",
     item_model = "glbs/stackeditems/building.glb|mesh.prefab",
-    item_description = "挖掘、钻探地下矿物资源的设备",
+    item_description = "挖掘或钻探地下矿物资源的设备",
 }
 
 prototype "轻型采矿机" {
@@ -229,7 +229,7 @@ prototype "轻型采矿机" {
     item_order = 35,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/miner.texture",
     item_model = "glbs/stackeditems/building.glb|mesh.prefab",
-    item_description = "挖掘、钻探地下矿物资源的设备",
+    item_description = "挖掘或钻探地下矿物资源的设备",
 }
 
 prototype "蒸汽发电机I" {
