@@ -194,23 +194,23 @@
     <body style = "pointer-events: none; justify-content: center; align-items: center;">
         <div class="panel1" style="flex-direction: row; justify-content: flex-start; align-items: center;">
             <!-- detail panel begin -->
-            <div style = 'margin-left: 6.5%; margin-top: 18vmin; margin-bottom: 7vmin; width: 17.10vmax; height: 80vmin; background-lattice: 32.97% 11.50% 32.97% 11.50% 50% 50%; background-image: "/pkg/vaststars.resources/ui/textures/detail/background.texture"; background-size: 100% 100%;'>
+            <div style = 'margin-left: 6.5%; margin-top: 18vmin; margin-bottom: 7vmin; width: 17.10vmax; height: 81vmin; background-lattice: 32.97% 11.50% 32.97% 11.50% 50% 50%; background-image: "/pkg/vaststars.resources/ui/textures/detail/background.texture"; background-size: 100% 100%;'>
                 <!-- title -->
                 <div style = "flex-direction: row; justify-content: center; align-items: center;">
                     <div data-style-background-image="icon" style = "width: 20vmin; height: 20vmin; background-size: cover;" data-event-longpress="onLongPress(ev, 1)" data-event-click="onClick(ev, 1)" />
                 </div>
-                <div style="top: -3.0vmin; height: 9vmin;">
+                <div style="top: -3.0vmin; height: 8vmin;">
                     <div style = "text-align: center; font-size: 4vmin; word-break: break-all;">{{prototype_name}}</div>
                     <div style = "text-align: center; font-size: 3.2vmin; color: #000; margin-left: 2%; margin-right: 2%; background-size: 100% 100%;" data-style-background-image="detail_panel_status_icon">{{detail_panel_status_desc}}</div>
                 </div>
                 <!-- property list -->
-                <div style="height: 21vmin;" data-event-longpress="onLongPress(ev, 2)" data-event-click="onClick(ev, 2)">
+                <div style="height: 22vmin;" data-event-longpress="onLongPress(ev, 2)" data-event-click="onClick(ev, 2)">
                     <div data-for = "property : property_list">
-                        <div style = "width: 100%; height: 9vmin; flex-direction: row; align-items: center; justify-content: flex-start;">
+                        <div style = "width: 100%; height: 7vmin; flex-direction: row; align-items: center; justify-content: flex-start;">
                             <!-- div style = "width: 8.00vmin; height: 8.00vmin; background-size:cover;" data-style-background-image="property.icon" /-->
                             <!-- proprety & value -->
                             <div style = "flex-direction: column; justify-content: center; align-items: center; width: 100%;">
-                                <div style = "color:#adadad; padding-bottom: 0.75vmin; font-size: 3.2vmin; text-align: center;">{{property.desc}}</div>
+                                <div style = "color:#adadad; font-size: 3.2vmin; text-align: center;">{{property.desc}}</div>
                                 <div style = "text-align: center; font-size: 2.8vmin;" data-style-color = "property.color or 'rgb(255,255,255)'">{{property.value}}</div>
                             </div>
                         </div>
