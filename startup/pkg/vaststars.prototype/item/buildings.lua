@@ -542,31 +542,7 @@ prototype "物流站" {
     item_order = 15,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/goodstation-input.texture",
     item_model = "glbs/stackeditems/building.glb|mesh.prefab",
-    item_description = "给运输车提供货物的车站",
-}
-
-prototype "出货车站" {
-    type = {"item"},
-    --item_category = "物流",
-    station_limit = 8,
-    chest_limit = 15,
-    backpack_limit = 20,
-    item_order = 16,
-    item_icon = "/pkg/vaststars.resources/textures/icons/item/goodstation-input.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
-    item_description = "给运输车提供货物的车站",
-}
-
-prototype "收货车站" {
-    type = {"item"},
-    --item_category = "物流",
-    station_limit = 8,
-    chest_limit = 15,
-    backpack_limit = 20,
-    item_order = 18,
-    item_icon = "/pkg/vaststars.resources/textures/icons/item/goodstation-input.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
-    item_description = "从运输车收取货物的车站",
+    item_description = "给运输车辆提供货物的车站",
 }
 
 prototype "停车站" {
@@ -578,7 +554,7 @@ prototype "停车站" {
     item_order = 19,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/goodstation-input.texture",
     item_model = "glbs/stackeditems/building.glb|mesh.prefab",
-    item_description = "从运输车收取货物的车站",
+    item_description = "从运输车辆收取货物的车站",
 }
 
 prototype "电解厂I" {
