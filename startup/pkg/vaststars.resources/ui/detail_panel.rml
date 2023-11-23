@@ -102,9 +102,9 @@
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                margin-left: 10vmin;
+                margin: 10vmin 10vmin 0 0;
                 width: 80vmin;
-                height: 80vmin;
+                height: 75vmin;
                 background-image: "/pkg/vaststars.resources/ui/textures/detail/tips_bg.texture";
                 background-size: 100% 100%;
                 background-lattice: 9.89% 12.36% 9.89% 12.36% 49.22% 49.22%;
@@ -283,7 +283,7 @@
                 </div>
             </div>
             <!-- detail panel end -->
-            <div class="tips-bg" style='flex-direction: row; justify-content: flex-start; align-items: center; margin-left: -3vmin;' data-if="areaid==1.0" data-event-longpress="onLongPressTips(ev)">
+            <div class="tips-bg" style='flex-direction: row; justify-content:center; align-items: center; margin-left: -3vmin;' data-if="areaid==1.0" data-event-longpress="onLongPressTips(ev)">
                 <div style='width: 40vmin; height: 40vmin; background-image:"<detail_scene>"; background-size: 100% 100%;'/>
                 <div style="width: 35vmin; flex-direction: column; justify-content: center; align-items: flex-start;">
                     <div style="text-align: left; font-size: 6vmin;">{{prototype_name}}</div>
@@ -292,7 +292,7 @@
             </div>
             <div class="tips-bg" style='align-items: flex-start; margin-left: -3vmin;' data-if="areaid==2.0 and #property_list>0" data-event-longpress="onLongPressTips(ev)">
                 <div data-for = "property : property_list">
-                    <div style = "margin-left: 10vmin; height: 22vmin; flex-direction: row; align-items: center; justify-content: flex-start;">
+                    <div style = "margin-left: 10vmin; height: 22vmin; flex-direction: row; align-items: center; justify-content: center;">
                         <div style = "width: 16vmin; height: 16vmin; background-size:cover;" data-style-background-image="property.icon" />
                         <div style = "flex-direction: column; justify-content: center; align-items: center;">
                             <div style = "color:#adadad; padding-bottom: 0.75vmin; font-size: 6.2vmin; text-align: center;">{{property.desc}}</div>
@@ -303,7 +303,7 @@
             </div>
             <!--物流中心-->
             <div class="tips-bg" style="margin-left: -3vmin;" data-if="areaid==3.0" data-event-longpress="onLongPressTips(ev)">
-                <div style="width:80%; flex-direction: row; justify-content: flex-start; align-items: center; flex-wrap: wrap;">
+                <div style="width:80%; flex-direction: row; justify-content: center; align-items: center; flex-wrap: wrap;">
                     <div style='flex-direction: column; align-items: center;' data-for = "chest : chest_list_1" >
                         <div class="small-item1" style="margin: 1vmin; width: 15vmin; height: 15vmin;" data-style-border = "chest.type == 'supply' and '0.3vmin rgb(254, 98, 124);' or (chest.type == 'demand' and '0.3vmin rgb(23, 176, 240);' or '0.2vmin rgb(255, 255, 255);')" data-style-background-image="chest.icon">
                             <div style="font-size: 5.4vmin; -webkit-text-stroke:0.25vmin rgb(0, 0, 0);" data-if="chest.icon ~= ''">{{chest.count}}</div>
