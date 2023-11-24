@@ -29,10 +29,8 @@ local DIRECTION <const> = {
     [3] = 'W',
 }
 
-local EDITOR_CACHE_NAMES = {"CONSTRUCTED"}
-
 local check_debris = interval_call(300, function(gameplay_world, gameplay_ecs)
-    for e in gameplay_ecs:select "debris building:in chest:in eid:in" do
+    for e in gameplay_ecs:select "debris:in building:in chest:in eid:in" do
         if ichest.has_item(gameplay_world, e.chest) then
             goto continue
         end
@@ -67,7 +65,7 @@ function building_sys:gameworld_update()
         local typeobject = iprototype.queryById(e.building.prototype)
         object.prototype_name = typeobject.name
         object.dir = DIRECTION[e.building.direction]
-        objects:set(object, EDITOR_CACHE_NAMES[1])
+        objects:set(object, "CONSTRUCTED")
     end
     gameplay_ecs:clear("building_changed")
 

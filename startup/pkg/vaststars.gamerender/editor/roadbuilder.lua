@@ -10,7 +10,6 @@ local MAP_HEIGHT <const> = CONSTANT.MAP_HEIGHT
 local TILE_SIZE <const> = CONSTANT.TILE_SIZE
 local CHANGED_FLAG_ROADNET <const> = CONSTANT.CHANGED_FLAG_ROADNET
 local DIRECTION <const> = CONSTANT.DIRECTION
-local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 local WORLD_MOVE_DELTA <const> = {
     ['N'] = {x = 0,  y = 1},
     ['E'] = {x = 1,  y = 0},
@@ -46,10 +45,10 @@ local iom = ecs.require "ant.objcontroller|obj_motion"
 local srt = require "utility.srt"
 local imineral = ecs.require "mineral"
 
-local function isValidRoadCoord(x, y, cache_names)
+local function isValidRoadCoord(x, y)
     for i = 0, ROAD_SIZE - 1 do
         for j = 0, ROAD_SIZE - 1 do
-            local object = objects:coord(x + i, y + j, cache_names)
+            local object = objects:coord(x + i, y + j)
             if object then
                 return false
             end
@@ -66,7 +65,7 @@ end
 
 local function updateComponentsStatus(self)
     local coord_indicator = self.coord_indicator
-    local show_confirm = isValidRoadCoord(coord_indicator.x, coord_indicator.y, EDITOR_CACHE_NAMES)
+    local show_confirm = isValidRoadCoord(coord_indicator.x, coord_indicator.y)
     for _, c in pairs(self.pickup_components) do
         c:on_status_change(show_confirm)
     end
@@ -111,7 +110,7 @@ local function getRoad(x, y)
 end
 
 local function getPlacedRoadPrototypeName(x, y, default_prototype_name, default_dir)
-    if not isValidRoadCoord(x, y, EDITOR_CACHE_NAMES) then
+    if not isValidRoadCoord(x, y) then
         return default_prototype_name, default_dir
     end
 
@@ -270,7 +269,7 @@ local function place(self, datamodel)
     coord_indicator.srt.t, coord_indicator.x, coord_indicator.y = __align(coord_indicator.srt.t, typeobject.area, coord_indicator.dir)
 
     local x, y = coord_indicator.x, coord_indicator.y
-    if not isValidRoadCoord(coord_indicator.x, coord_indicator.y, EDITOR_CACHE_NAMES) then
+    if not isValidRoadCoord(coord_indicator.x, coord_indicator.y) then
         return
     end
     assert(x % 2 == 0 and y % 2 == 0)

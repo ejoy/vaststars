@@ -46,6 +46,7 @@ local function new(init)
         srt = init.srt,
         group_id = init.group_id,
         items = init.items,
+        debris = init.debris,
     }
 
     local outer = setmetatable(t, mt)
@@ -115,6 +116,7 @@ local function flush()
                 dir = outer.dir,
                 position = outer.srt.t,
                 group_id = outer.group_id or igroup.id(outer.x, outer.y),
+                debris = outer.debris,
             }
         else
             for k in pairs(outer.__change_keys) do

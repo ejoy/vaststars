@@ -51,8 +51,9 @@ prototype "机尾残骸" {
     maxslot = 4,
 }
 
-prototype "建筑物残骸" {
-    model = "glbs/broken-building.glb|mesh.prefab",
+prototype "建筑物残骸 1x1" {
+    display_name = "建筑物残骸",
+    model = "",
     icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_debris.texture",
     construct_detector = {"exclusive"},
     type = {"building", "chest", "debris"},
@@ -60,5 +61,135 @@ prototype "建筑物残骸" {
     chest_style = "chest",
     chest_destroy = true,
     area = "1x1",
+    camera_distance = 55,
+}
+
+prototype "建筑物残骸 1x2" {
+    display_name = "建筑物残骸",
+    model = "",
+    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_debris.texture",
+    construct_detector = {"exclusive"},
+    type = {"building", "chest", "debris"},
+    chest_type = "supply",
+    chest_style = "chest",
+    chest_destroy = true,
+    area = "1x2",
+    camera_distance = 55,
+}
+
+prototype "建筑物残骸 2x1" {
+    display_name = "建筑物残骸",
+    model = "",
+    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_debris.texture",
+    construct_detector = {"exclusive"},
+    type = {"building", "chest", "debris"},
+    chest_type = "supply",
+    chest_style = "chest",
+    chest_destroy = true,
+    area = "2x1",
+    camera_distance = 55,
+}
+
+prototype "建筑物残骸 2x2" {
+    display_name = "建筑物残骸",
+    model = "",
+    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_debris.texture",
+    construct_detector = {"exclusive"},
+    type = {"building", "chest", "debris"},
+    chest_type = "supply",
+    chest_style = "chest",
+    chest_destroy = true,
+    area = "2x2",
+    camera_distance = 55,
+}
+
+prototype "建筑物残骸 3x3" {
+    display_name = "建筑物残骸",
+    model = "",
+    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_debris.texture",
+    construct_detector = {"exclusive"},
+    type = {"building", "chest", "debris"},
+    chest_type = "supply",
+    chest_style = "chest",
+    chest_destroy = true,
+    area = "3x3",
+    camera_distance = 55,
+}
+
+prototype "建筑物残骸 3x5" {
+    display_name = "建筑物残骸",
+    model = "",
+    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_debris.texture",
+    construct_detector = {"exclusive"},
+    type = {"building", "chest", "debris"},
+    chest_type = "supply",
+    chest_style = "chest",
+    chest_destroy = true,
+    area = "3x5",
+    camera_distance = 55,
+}
+
+prototype "建筑物残骸 4x2" {
+    display_name = "建筑物残骸",
+    model = "",
+    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_debris.texture",
+    construct_detector = {"exclusive"},
+    type = {"building", "chest", "debris"},
+    chest_type = "supply",
+    chest_style = "chest",
+    chest_destroy = true,
+    area = "4x2",
+    camera_distance = 55,
+}
+
+prototype "建筑物残骸 4x4" {
+    display_name = "建筑物残骸",
+    model = "",
+    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_debris.texture",
+    construct_detector = {"exclusive"},
+    type = {"building", "chest", "debris"},
+    chest_type = "supply",
+    chest_style = "chest",
+    chest_destroy = true,
+    area = "4x4",
+    camera_distance = 55,
+}
+
+prototype "建筑物残骸 5x3" {
+    display_name = "建筑物残骸",
+    model = "",
+    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_debris.texture",
+    construct_detector = {"exclusive"},
+    type = {"building", "chest", "debris"},
+    chest_type = "supply",
+    chest_style = "chest",
+    chest_destroy = true,
+    area = "5x3",
+    camera_distance = 55,
+}
+
+prototype "建筑物残骸 5x5" {
+    display_name = "建筑物残骸",
+    model = "",
+    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_debris.texture",
+    construct_detector = {"exclusive"},
+    type = {"building", "chest", "debris"},
+    chest_type = "supply",
+    chest_style = "chest",
+    chest_destroy = true,
+    area = "5x5",
+    camera_distance = 55,
+}
+
+prototype "建筑物残骸 6x6" {
+    display_name = "建筑物残骸",
+    model = "",
+    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_debris.texture",
+    construct_detector = {"exclusive"},
+    type = {"building", "chest", "debris"},
+    chest_type = "supply",
+    chest_style = "chest",
+    chest_destroy = true,
+    area = "6x6",
     camera_distance = 55,
 }

@@ -6,6 +6,7 @@ local CONSTANT <const> = require "gameplay.interface.constant"
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
 local ROTATORS <const> = CONSTANT.ROTATORS
+local DEBRIS <const> = ecs.require "vaststars.prototype|debris"
 
 local ipick_object = ecs.require "pick_object_system"
 local CLASS <const> = ipick_object.CLASS
@@ -603,18 +604,22 @@ function M.update(datamodel)
             end
 
             if #items > 0 then
+                local typeobject = iprototype.queryById(e.building.prototype)
+                local w, h = iprototype.rotate_area(typeobject.area, e.building.direction)
+
                 -- Add a ruined building
                 local new_object = iobject.new {
-                    prototype_name = "建筑物残骸", --TODO: remove hard code
-                    dir = "N",
+                    prototype_name = assert(DEBRIS[("%sx%s"):format(w, h)]),
+                    dir = old_object.dir,
                     x = e.building.x,
                     y = e.building.y,
                     srt = srt.new {
-                        t = math3d.vector(icoord.position(e.building.x, e.building.y, 1, 1)),
-                        r = ROTATORS["N"],
+                        t = math3d.vector(icoord.position(e.building.x, e.building.y, w, h)),
+                        r = ROTATORS[old_object.dir],
                     },
                     group_id = old_object.group_id,
                     items = items,
+                    debris = e.building.prototype,
                 }
                 new_object.gameplay_eid = igameplay.create_entity(new_object)
                 objects:set(new_object, "CONSTRUCTED")

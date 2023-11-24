@@ -4,7 +4,6 @@ local world = ecs.world
 local CONSTANT <const> = require "gameplay.interface.constant"
 local DEFAULT_DIR <const> = CONSTANT.DEFAULT_DIR
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
-local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 
 local iprototype = require "gameplay.interface.prototype"
 local objects = require "objects"
@@ -25,7 +24,7 @@ local function check_construct_detector(self, prototype_name, x, y, dir, exclude
         local found_mineral
         for i = 0, w - 1 do
             for j = 0, h - 1 do
-                local object = objects:coord(x + i, y + j, EDITOR_CACHE_NAMES)
+                local object = objects:coord(x + i, y + j)
                 if object and object.id ~= exclude_object_id then
                     return false
                 end
@@ -62,8 +61,6 @@ local function clean(self, datamodel)
     if self.pickup_object then
         iobject.remove(self.pickup_object)
     end
-
-    ieditor:revert_changes({"TEMPORARY"})
 end
 
 local function complete(self, object_id)

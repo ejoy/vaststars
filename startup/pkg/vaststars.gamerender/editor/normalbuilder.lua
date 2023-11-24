@@ -492,8 +492,6 @@ local function touch_move(self, datamodel, delta_vec)
 end
 
 local function touch_end(self, datamodel)
-    ieditor:revert_changes({"TEMPORARY"})
-
     touch_move(self, datamodel, {0, 0, 0})
 end
 
@@ -571,8 +569,6 @@ end
 
 local function rotate(self, datamodel, dir, delta_vec)
     local pickup_object = assert(self.pickup_object)
-
-    ieditor:revert_changes({"TEMPORARY"})
     dir = dir or iprototype.rotate_dir_times(pickup_object.dir, -1)
     pickup_object.dir = iprototype.dir_tostring(dir)
     pickup_object.srt.r = ROTATORS[pickup_object.dir]
@@ -644,7 +640,6 @@ local function clean(self, datamodel)
         self.self_selected_boxes = nil
     end
 
-    ieditor:revert_changes({"TEMPORARY"})
     datamodel.show_confirm = false
     datamodel.show_rotate = false
     self.super.clean(self, datamodel)

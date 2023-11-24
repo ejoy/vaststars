@@ -53,7 +53,57 @@ return {
         "transfer_source",
         "teardown",
     },
-    ["建筑物残骸"] = {
+    ["建筑物残骸 1x1"] = {
+        "set_transfer_source",
+        "transfer_source",
+        "transfer",
+    },
+    ["建筑物残骸 1x2"] = {
+        "set_transfer_source",
+        "transfer_source",
+        "transfer",
+    },
+    ["建筑物残骸 2x1"] = {
+        "set_transfer_source",
+        "transfer_source",
+        "transfer",
+    },
+    ["建筑物残骸 2x2"] = {
+        "set_transfer_source",
+        "transfer_source",
+        "transfer",
+    },
+    ["建筑物残骸 3x3"] = {
+        "set_transfer_source",
+        "transfer_source",
+        "transfer",
+    },
+    ["建筑物残骸 3x5"] = {
+        "set_transfer_source",
+        "transfer_source",
+        "transfer",
+    },
+    ["建筑物残骸 4x2"] = {
+        "set_transfer_source",
+        "transfer_source",
+        "transfer",
+    },
+    ["建筑物残骸 4x4"] = {
+        "set_transfer_source",
+        "transfer_source",
+        "transfer",
+    },
+    ["建筑物残骸 5x3"] = {
+        "set_transfer_source",
+        "transfer_source",
+        "transfer",
+    },
+    ["建筑物残骸 5x5"] = {
+        "set_transfer_source",
+        "transfer_source",
+        "transfer",
+    },
+    ["建筑物残骸 6x6"] = {
         "set_transfer_source",
         "transfer_source",
         "transfer",

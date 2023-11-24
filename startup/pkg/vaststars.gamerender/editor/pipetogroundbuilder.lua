@@ -11,7 +11,7 @@ local MAP_HEIGHT <const> = CONSTANT.MAP_HEIGHT
 local TILE_SIZE <const> = CONSTANT.TILE_SIZE
 local STATE_NONE  <const> = 0
 local STATE_START <const> = 1
-local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
+local EDITOR_CACHE_NAMES = {"CONFIRM", "CONSTRUCTED"}
 
 local math3d = require "math3d"
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
@@ -501,7 +501,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                 fluid_name = State.fluid_name,
                 group_id = 0,
             }
-            objects:set(object, EDITOR_CACHE_NAMES[1])
+            objects:set(object, "CONFIRM")
         end
     end
 
@@ -728,7 +728,7 @@ local function touch_end(self, datamodel)
     local pos, x, y = __align(self.position_type, self.typeobject.name, self.coord_indicator.dir)
     self.coord_indicator.srt.t, self.coord_indicator.x, self.coord_indicator.y = pos, x, y
 
-    self:revert_changes({"TEMPORARY"})
+    self:revert_changes({"CONFIRM"})
     if self.dotted_line then
         self.dotted_line:remove()
         self.dotted_line = nil
@@ -793,7 +793,7 @@ local function complete(self, datamodel)
         self.grid_entity = nil
     end
 
-    self:revert_changes({"TEMPORARY"})
+    self:revert_changes({"CONFIRM"})
 
     datamodel.show_rotate = false
 
@@ -814,7 +814,7 @@ local function start_laying(self, datamodel)
     local pos, x, y = __align(self.position_type, self.typeobject.name, self.coord_indicator.dir)
     self.coord_indicator.srt.t, self.coord_indicator.x, self.coord_indicator.y = pos, x, y
 
-    self:revert_changes({"TEMPORARY"})
+    self:revert_changes({"CONFIRM"})
 
     self.state = STATE_START
     self.from_x = self.coord_indicator.x
@@ -824,10 +824,9 @@ local function start_laying(self, datamodel)
 end
 
 local function finish_laying(self, datamodel)
-    for _, object in objects:all("TEMPORARY") do
+    for _, object in objects:all("CONFIRM") do
         object.PREPARE = true
     end
-    objects:commit("TEMPORARY", "CONFIRM")
 
     if self.dotted_line then
         self.dotted_line:remove()
@@ -859,7 +858,7 @@ local function clean(self, datamodel)
     self.pickup_components = {}
 
     self.removed = {}
-    self:revert_changes({"TEMPORARY"})
+    self:revert_changes({"CONFIRM"})
     datamodel.show_rotate = false
     self.state = STATE_NONE
     self.super.clean(self, datamodel)

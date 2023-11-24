@@ -4,7 +4,7 @@ local iprototype = require "gameplay.interface.prototype"
 local DEFAULT_CACHE_NAMES <const> = {"CONSTRUCTED"}
 local DEFAULT_CACHE_NAME <const> = "CONSTRUCTED"
 
-local ALL_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
+local ALL_CACHE_NAMES = {"CONFIRM", "CONSTRUCTED"}
 
 local objects = create_cache(ALL_CACHE_NAMES, "id", "gameplay_eid") -- = {[id] = object, ...}
 local tile_objects = create_cache(ALL_CACHE_NAMES, "coord", "id") -- = {[coord] = {id = xx, coord = coord}

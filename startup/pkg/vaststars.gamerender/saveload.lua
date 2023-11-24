@@ -38,7 +38,7 @@ local function clean()
 end
 
 local function restore_world(gameplay_world)
-    local function restore_object(gameplay_eid, prototype_name, dir, x, y, fluid_name)
+    local function restore_object(gameplay_eid, prototype_name, dir, x, y, fluid_name, debris)
         local typeobject = iprototype.queryByName(prototype_name)
         local object = iobject.new {
             prototype_name = prototype_name,
@@ -50,6 +50,7 @@ local function restore_world(gameplay_world)
                 r = ROTATORS[dir],
             },
             fluid_name = fluid_name,
+            debris = debris,
         }
         object.gameplay_eid = gameplay_eid
         objects:set(object)
@@ -59,7 +60,8 @@ local function restore_world(gameplay_world)
     local all_object = {}
     local map = {} -- coord -> id
     local fluidbox_map = {} -- coord -> id -- only for fluidbox
-    for v in gameplay_world.ecs:select("eid:in building:in road:absent fluidbox?in fluidboxes?in assembling?in") do
+    local debris
+    for v in gameplay_world.ecs:select("eid:in building:in road:absent fluidbox?in fluidboxes?in assembling?in debris?in") do
         local e = v.building
         local typeobject = iprototype.queryById(e.prototype)
         local fluid_name = ""
@@ -95,6 +97,9 @@ local function restore_world(gameplay_world)
                 end
             end
         end
+        if v.debris then
+            debris = v.debris.prototype
+        end
 
         assert(iprototype.has_type(typeobject.type, "road") == false)
         all_object[v.eid] = {
@@ -103,6 +108,7 @@ local function restore_world(gameplay_world)
             x = e.x,
             y = e.y,
             fluid_name = fluid_name,
+            debris = debris,
         }
 
         local w, h = iprototype.rotate_area(typeobject.area, e.direction)
@@ -119,7 +125,7 @@ local function restore_world(gameplay_world)
 
     -----------
     for id, v in pairs(all_object) do
-        restore_object(id, v.prototype_name, v.dir, v.x, v.y, v.fluid_name)
+        restore_object(id, v.prototype_name, v.dir, v.x, v.y, v.fluid_name, v.debris)
     end
 
     iobject.flush()

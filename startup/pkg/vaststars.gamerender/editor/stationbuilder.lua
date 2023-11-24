@@ -445,7 +445,6 @@ end
 local function rotate(self, datamodel, dir, delta_vec)
     local pickup_object = assert(self.pickup_object)
 
-    ieditor:revert_changes({"TEMPORARY"})
     dir = dir or iprototype.rotate_dir_times(pickup_object.dir, -1)
 
     local typeobject = iprototype.queryByName(pickup_object.prototype_name)
@@ -502,8 +501,6 @@ local function touch_move(self, datamodel, delta_vec)
 end
 
 local function touch_end(self, datamodel)
-    ieditor:revert_changes({"TEMPORARY"})
-
     local pickup_object = self.pickup_object
     if not pickup_object then
         return
@@ -571,7 +568,6 @@ local function confirm(self, datamodel)
     end
 
     icanvas.remove_item("road_entrance_marker", 0)
-    ieditor:revert_changes({"TEMPORARY"})
 
     self.super.complete(self, pickup_object.id)
 
@@ -699,7 +695,6 @@ local function clean(self, datamodel)
     end
     self.selected_boxes = {}
 
-    ieditor:revert_changes({"TEMPORARY"})
     datamodel.show_confirm = false
     datamodel.show_rotate = false
     self.super.clean(self, datamodel)
