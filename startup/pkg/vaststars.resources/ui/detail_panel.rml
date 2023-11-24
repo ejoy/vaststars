@@ -346,9 +346,11 @@
                         </div>
                     </div>
                     <div class="column" style="justify-content: flex-start; width: 50%; height: 9vmin;">
-                        <div class="progress_bar" style="height: 7.2vmin;" data-style-width="progress"/>
-                        <div class="indicator" style='top: -7.5vmin; height: 8vmin; width: 1vmin;' data-style-left="progress"/>
-                        <div style="text-align: center; font-size: 4vmin; top: -15.5vmin;">{{progress}}</div>
+                        <div class="progress_bar" style="height: 7.2vmin; justify-content: center;" data-style-width="progress">
+                            <div style="text-align: center; font-size: 4vmin;height: 80%;width: 36vmin;-webkit-text-stroke: 0.2vmin #000;">{{progress}}</div>
+                        </div>
+                        
+                        <div class="indicator" style='top: -7.5vmin; height: 8vmin; width: 1vmin; border: 1px #f00;' data-style-left="progress"/>
                     </div>
                     <div class="column" style="width: 25%; justify-content: space-evenly; align-items: center;">
                         <div style='flex-direction: column; align-items: center;' data-for="recipe_ouputs">
