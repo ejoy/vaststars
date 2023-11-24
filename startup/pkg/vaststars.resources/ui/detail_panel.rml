@@ -312,20 +312,23 @@
             </div>
             <!--采矿机-->
             <div class="tips-bg" style="margin-left: -3vmin;" data-if="areaid==4.0" data-event-longpress="onLongPressTips(ev)">
-                <div class="column" style="top: 5vmin; justify-content: center; width: 62vmin; height: 9vmin;">
-                    <div class="progress_bar" style="height: 7.2vmin; justify-content: center;" data-style-width="progress">
-                        <div style="text-align: center; font-size: 4vmin;height: 80%;width: 62vmin;-webkit-text-stroke: 0.2vmin #000;">{{progress}}</div>
-                    </div>
-                    <div class="indicator" style='width: 1vmin;' data-style-left="progress"/>
-                </div>
-                <div class="row" style="width: 80%; justify-content: flex-end;">
-                    <div style='flex-direction: column; align-items: center;' data-for="recipe_ouputs">
-                        <div class="small-item1" style="width: 15vmin; height: 15vmin;" data-style-background-image="it.icon">
-                            <div class ="item-count-combination">
-                                <div class="item-count-new" style="font-size: 5.4vmin;" data-style-color="it.count < it.output_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">x{{it.count}}</div>
-                            </div>
+                <div style="flex-direction: row; justify-content: center; align-items: center; height:79%; width: 90%;">
+                    <div class="column" style="width: 25%; justify-content: space-evenly; align-items: center;"></div>
+                    <div class="column" style="top: 5vmin; justify-content: center; width: 50%; height: 9vmin;">
+                        <div class="progress_bar" style="height: 7.2vmin; justify-content: center;" data-style-width="progress">
+                            <div style="text-align: center; font-size: 4vmin;height: 80%; width:36vmin; -webkit-text-stroke: 0.2vmin #000;">{{progress}}</div>
                         </div>
-                        <div style='font-size: 3.1vmin'>{{it.name}}</div>
+                        <div class="indicator" style='width: 1vmin;' data-style-left="progress"/>
+                    </div>
+                    <div class="row" style="width: 25%; justify-content: space-evenly; align-items: center;">
+                        <div style='flex-direction: column; align-items: center;' data-for="recipe_ouputs">
+                            <div class="small-item1" style="width: 11vmin; height: 11vmin; border: 0.3vmin rgb(251, 177, 61);" data-style-background-image="it.icon">
+                                <div class ="item-count-combination">
+                                    <div class="item-count-new" style="font-size: 5.4vmin;" data-style-color="it.count < it.output_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">x{{it.count}}</div>
+                                </div>
+                            </div>
+                            <div style='font-size: 3.1vmin'>{{it.name}}</div>
+                        </div>
                     </div>
                 </div>
             </div>
