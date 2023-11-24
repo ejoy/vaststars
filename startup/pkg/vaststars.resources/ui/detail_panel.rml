@@ -329,36 +329,38 @@
                 </div>
             </div>
             <!--组装机-->
-            <div class="tips-bg" style='flex-direction: row; justify-content: center; align-items: center; margin-left: -3vmin;' data-if="areaid==5.0" data-event-longpress="onLongPressTips(ev)">
-                <div class="column" style="width: 18vmin; justify-content: space-evenly; align-items: center;">
-                    <div style='flex-direction: column; align-items: center;' data-for="recipe_inputs">
-                        <div class="small-item1" style="width: 12vmin; height: 12vmin; border: 0.3vmin rgb(0, 217, 255);" data-style-background-image="it.icon">
-                            <div class ="item-count-combination">
-                                <div class="item-count-new" data-style-font-size="it.count > 99 and '3.5vmin' or '4.2vmin'" data-style-color="it.count < it.demand_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">x{{it.count}}</div>
+            <div class="tips-bg" style='flex-direction: column; justify-content: center; align-items: center; margin-left: -3vmin;' data-if="areaid==5.0" data-event-longpress="onLongPressTips(ev)">
+                <div style="height:10%;width: 100%; color: rgb(246, 142, 14); text-align: center; font-size: 4.8vmin;">{{recipe_name}}</div>
+                <div style="flex-direction: row; justify-content: center; align-items: center; height:70%; width: 90%;">
+                    <div class="column" style="width: 25%; justify-content: space-evenly; align-items: center;">
+                        <div style='flex-direction: column; align-items: center;' data-for="recipe_inputs">
+                            <div class="small-item1" style="width: 12vmin; height: 12vmin; border: 0.3vmin rgb(0, 217, 255);" data-style-background-image="it.icon">
+                                <div class ="item-count-combination">
+                                    <div class="item-count-new" data-style-font-size="it.count > 99 and '3.5vmin' or '4.2vmin'" data-style-color="it.count < it.demand_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">x{{it.count}}</div>
+                                </div>
                             </div>
-                        </div>
-                        <div style='flex-direction: row;'>
-                            <div style="margin-bottom: 1.25vmin; font-size: 3.1vmin;">{{it.name}}</div>
-                            <div style="font-size: 2.8vmin; color:#adadad; margin-left: 1vmin; align-self: baseline;" data-if="it.demand_count > 1">x{{it.demand_count}}</div>
+                            <div style='flex-direction: row;'>
+                                <div style="margin-bottom: 1.25vmin; font-size: 3vmin;">{{it.name}}</div>
+                                <div style="font-size: 2.8vmin; color:#adadad; margin:0.15vmin 0.75vmin 0 0; align-self: baseline;" data-if="it.demand_count > 1">x{{it.demand_count}}</div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="column" style="justify-content: flex-start; width: 35vmin; height: 18vmin;">
-                    <div style="color: rgb(246, 142, 14); text-align: center; font-size: 4.8vmin;">{{recipe_name}}</div>
-                    <div class="progress_bar" style="height: 7.2vmin;" data-style-width="progress"/>
-                    <div class="indicator" style='top: -7.5vmin; height: 8vmin; width: 1vmin;' data-style-left="progress"/>
-                    <div style="text-align: center; font-size: 4vmin; top: -15.5vmin;">{{progress}}</div>
-                </div>
-                <div class="column" style="width: 18vmin; justify-content: space-evenly; align-items: center;">
-                    <div style='flex-direction: column; align-items: center;' data-for="recipe_ouputs">
-                        <div class="small-item1" style="width: 12vmin; height: 12vmin; border: 0.3vmin rgb(251, 177, 61);" data-style-background-image="it.icon">
-                            <div class ="item-count-combination">
-                                <div class="item-count-new" data-style-font-size="it.count > 99 and '3.5vmin' or '4.2vmin'" data-style-color="it.count < it.output_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">x{{it.count}}</div>
+                    <div class="column" style="justify-content: flex-start; width: 50%; height: 9vmin;">
+                        <div class="progress_bar" style="height: 7.2vmin;" data-style-width="progress"/>
+                        <div class="indicator" style='top: -7.5vmin; height: 8vmin; width: 1vmin;' data-style-left="progress"/>
+                        <div style="text-align: center; font-size: 4vmin; top: -15.5vmin;">{{progress}}</div>
+                    </div>
+                    <div class="column" style="width: 25%; justify-content: space-evenly; align-items: center;">
+                        <div style='flex-direction: column; align-items: center;' data-for="recipe_ouputs">
+                            <div class="small-item1" style="width: 12vmin; height: 12vmin; border: 0.3vmin rgb(251, 177, 61);" data-style-background-image="it.icon">
+                                <div class ="item-count-combination">
+                                    <div class="item-count-new" data-style-font-size="it.count > 99 and '3.5vmin' or '4.2vmin'" data-style-color="it.count < it.output_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">x{{it.count}}</div>
+                                </div>
                             </div>
-                        </div>
-                        <div style='flex-direction: row;'>
-                            <div style="margin-bottom: 1.25vmin; font-size: 3.25vmin;">{{it.name}}</div>
-                            <div style="font-size: 2.8vmin; color:#adadad; margin-left: 1vmin; align-self: baseline;" data-if="it.output_count > 1">x{{it.output_count}}</div>
+                            <div style='flex-direction: row;'>
+                                <div style="margin-bottom: 1.25vmin; font-size: 3vmin;">{{it.name}}</div>
+                                <div style="font-size: 2.8vmin; color:#adadad; margin:0.15vmin 0.75vmin 0 0; align-self: baseline;" data-if="it.output_count > 1">x{{it.output_count}}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
