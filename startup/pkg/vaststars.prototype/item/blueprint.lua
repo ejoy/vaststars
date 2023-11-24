@@ -235,18 +235,6 @@ prototype "液罐框架" {
     item_description = "用于液罐的框架",
 }
 
-prototype "出货车站框架" {
-    type = {"item"},
-    station_limit = 5,
-    chest_limit = 15,
-    backpack_limit = 20,
-    item_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
-    item_icon = "/pkg/vaststars.resources/textures/icons/item/goodstation-input.texture",
-    --item_category = "加工",
-    item_order = 21,
-    item_description = "用于建造出货车站的框架",
-}
-
 prototype "收货车站框架" {
     type = {"item"},
     station_limit = 5,

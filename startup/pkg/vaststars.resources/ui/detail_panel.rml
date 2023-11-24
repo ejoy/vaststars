@@ -313,9 +313,10 @@
             <!--采矿机-->
             <div class="tips-bg" style="margin-left: -3vmin;" data-if="areaid==4.0" data-event-longpress="onLongPressTips(ev)">
                 <div class="column" style="top: 5vmin; justify-content: center; width: 62vmin; height: 9vmin;">
-                    <div class="progress_bar" data-style-width="progress"/>
+                    <div class="progress_bar" style="height: 7.2vmin; justify-content: center;" data-style-width="progress">
+                        <div style="text-align: center; font-size: 4vmin;height: 80%;width: 62vmin;-webkit-text-stroke: 0.2vmin #000;">{{progress}}</div>
+                    </div>
                     <div class="indicator" style='width: 1vmin;' data-style-left="progress"/>
-                    <div style="text-align: center; font-size: 5.4vmin; top: -220%; -webkit-text-stroke: 0.2vmin #000;">{{progress}}</div>
                 </div>
                 <div class="row" style="width: 80%; justify-content: flex-end;">
                     <div style='flex-direction: column; align-items: center;' data-for="recipe_ouputs">
