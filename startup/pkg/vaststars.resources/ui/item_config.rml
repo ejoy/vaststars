@@ -64,10 +64,11 @@
             }
             icon-edit-container {
                 position: absolute;
-                width: 100%;
+                width: 93.5%;
                 height: 100%;
                 align-items: center;
                 justify-content: center;
+                border: 1px #fff;
             }
             icon-remove {
                 width: 29.91vmin;
