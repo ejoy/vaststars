@@ -322,7 +322,7 @@
                     <div style='flex-direction: column; align-items: center;' data-for="recipe_ouputs">
                         <div class="small-item1" style="width: 15vmin; height: 15vmin;" data-style-background-image="it.icon">
                             <div class ="item-count-combination">
-                                <div class="item-count-new" style="font-size: 5.4vmin;">x{{it.count}}</div>
+                                <div class="item-count-new" style="font-size: 5.4vmin;" data-style-color="it.count < it.output_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">x{{it.count}}</div>
                             </div>
                         </div>
                         <div style='font-size: 3.1vmin'>{{it.name}}</div>
