@@ -219,6 +219,26 @@ return {
         "copy",
         "teardown",
     },
+    ["烟囱I"] = {
+        "move",
+        "copy",
+        "teardown",
+    },
+    ["烟囱II"] = {
+        "move",
+        "copy",
+        "teardown",
+    },
+    ["排水口I"] = {
+        "move",
+        "copy",
+        "teardown",
+    },
+    ["排水口II"] = {
+        "move",
+        "copy",
+        "teardown",
+    },
     -- 公路仅保留复制和拆除
     ["砖石公路-I型"] = {
         "copy",
