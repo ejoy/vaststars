@@ -32,7 +32,7 @@
                 color: rgb(145, 141, 141);
             }
             logo {
-                background-image: "/pkg/vaststars.resources/ui/textures/login/logo.texture";
+                background-image: "mem:/pkg/vaststars.resources/glbs/headquater-1.glb|mesh.prefab;config:1,1";
                 background-size: 100% 100%;
                 width: 63.01vmin;
                 height: 26.56vmin;
