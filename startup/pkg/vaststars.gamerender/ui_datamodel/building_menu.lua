@@ -303,18 +303,21 @@ function M.update(datamodel, gameplay_eid)
         local object = assert(objects:coord(e.building.x, e.building.y))
         local gameplay_world = gameplay_core.get_world()
 
-        local msgs = {}
+        local t = {}
         itransfer.transfer(gameplay_world, function(item, n)
             if e.station then
                 e.station_changed = true
             end
 
-            local typeobject = iprototype.queryById(item)
-            msgs[#msgs+1] = {icon = typeobject.item_icon, name = typeobject.name, count = n}
-
+            t[item] = (t[item] or 0) + n
             itask.update_progress("transfer", object.prototype_name, typeobject.name, n)
         end)
 
+        local msgs = {}
+        for item, n in pairs(t) do
+            local typeobject = iprototype.queryById(item)
+            msgs[#msgs+1] = {icon = typeobject.item_icon, name = typeobject.name, count = n}
+        end
         local sp_x, sp_y = math3d.index(icamera_controller.world_to_screen(object.srt.t), 1, 2)
         iui.send("/pkg/vaststars.resources/ui/message_pop.rml", "item", {action = "down", left = sp_x, top = sp_y, items = msgs})
 
