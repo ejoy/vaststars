@@ -52,31 +52,24 @@
     <body style = "pointer-events: none; margin: 1.32vmin 3.995vmax 0 4.97vmax;">
         <right-box>
             <button data-event-click = "clickButton('continue')" data-if = "show_continue_game">
-                <button-icon style='background-image: "/pkg/vaststars.resources/ui/textures/road/traffic.texture";'/>
                 <button-text>继续游戏</button-text>
             </button>
             <button data-event-click = "clickButton('new_game', 'template.adventure')">
-                <button-icon style='background-image: "/pkg/vaststars.resources/ui/textures/character/timer.texture";'/>
                 <button-text>冒险模式</button-text>
             </button>
             <button data-event-click = "clickButton('new_game', 'template.free')">
-                <button-icon style='background-image: "/pkg/vaststars.resources/ui/textures/character/timer.texture";'/>
                 <button-text>自由模式</button-text>
             </button> 
             <button data-event-click = "clickButton('load_resources')">
-                <button-icon style='background-image: "/pkg/vaststars.resources/ui/textures/character/flash.texture";'/>
                 <button-text>加载资源</button-text>
             </button> 
             <button data-event-click = "clickButton('restore')">
-                <button-icon style='background-image: "/pkg/vaststars.resources/ui/textures/road/write.texture";'/>
                 <button-text>读取进度</button-text>
             </button>
             <button data-event-click = "clickButton('load_tutorial_template')">
-                <button-icon style='background-image: "/pkg/vaststars.resources/ui/textures/character/health.texture";'/>
                 <button-text>教学模式</button-text>
             </button>
             <button data-event-click = "clickButton('load_template')">
-                <button-icon style='background-image: "/pkg/vaststars.resources/ui/textures/character/health.texture";'/>
                 <button-text>测试模式</button-text>
             </button>           
         </right-box>
