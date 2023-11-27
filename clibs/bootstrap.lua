@@ -37,6 +37,9 @@ elseif arg[#arg] == "-p" then
     arg[0] = "3rd/ant/tools/filepack/main.lua"
     arg[1] = "../../startup"
     arg[2] = nil
+elseif arg[#arg] == "-e" then
+    arg[0] = "3rd/ant/tools/editor/main.lua"
+    arg[1] = nil
 elseif arg[0] == nil or arg[0] == "" then
     arg[0] = "startup/main.lua"
 end
