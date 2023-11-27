@@ -67,9 +67,6 @@ if EnableSanitize then
     lm.mode = "debug"
     lm:config "sanitize" {
         flags = "-fsanitize=address",
-        msvc = {
-            defines = "_DISABLE_STRING_ANNOTATION"
-        },
         gcc = {
             ldflags = "-fsanitize=address"
         },
