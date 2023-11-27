@@ -19,9 +19,9 @@ local DEFAULT_SIZE_CONFIGS <const> = {
 }
 
 local DEFAULT_ROT_CONFIGS <const> = {
-	{1, 0, 0},
-	{1, -0.5, 0},
-	{1, 0.5, 0},
+	{0, 0, 0},
+	{0, -0.5, 0},
+	{0, 0.5, 0},
 }
 
 local function init()
