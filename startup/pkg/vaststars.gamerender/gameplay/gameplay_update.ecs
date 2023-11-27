@@ -1,0 +1,2 @@
+system "gameplay_update_system"
+    .implement "gameplay/gameplay_update_system.lua"

@@ -981,8 +981,8 @@ prototype "碳处理1" {
   },
   prerequisites = {"电解水"},
   ingredients = {
-      {"气候科技包", 1},
       {"地质科技包", 1},
+      {"气候科技包", 1},
   },
   count = 5,
   time = "4s"
@@ -1123,8 +1123,9 @@ prototype "碳处理2" {
   },
   prerequisites = {"建筑维修4"},
   ingredients = {
-      {"气候科技包", 1},
-      {"地质科技包", 1},
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+
   },
   count = 8,
   time = "2s"

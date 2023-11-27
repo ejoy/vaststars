@@ -7,7 +7,6 @@ local FPS <const> = CONSTANT.FPS
 
 local bgfx = require "bgfx"
 local rhwi = import_package "ant.hwi"
-local font = import_package "ant.font"
 local irender = ecs.require "ant.render|render_system.render"
 local irq = ecs.require "ant.render|render_system.renderqueue"
 local imodifier = ecs.require "ant.modifier|modifier"
@@ -16,24 +15,18 @@ local iroadnet = ecs.require "engine.roadnet"
 local icanvas = ecs.require "engine.canvas"
 local imountain = ecs.require "engine.mountain"
 local iprototype = require "gameplay.interface.prototype"
-local iguide = require "gameplay.interface.guide"
 local iinventory = require "gameplay.interface.inventory"
 local iscience = require "gameplay.interface.science"
 local gameplay_core = require "gameplay.core"
 local saveload = ecs.require "saveload"
-local global = require "global"
 local iterrain  = ecs.require "terrain"
 local imineral = ecs.require "mineral"
 local init = ecs.require "init"
 local game_settings = ecs.require "game_settings"
 
-local m = ecs.system "game_init_system"
-local gameworld_prebuild
-local gameworld_build
-local gameworld
+local m = ecs.system "login_scene_system"
 
 bgfx.maxfps(FPS)
-font.import "/pkg/vaststars.resources/ui/font/Alibaba-PuHuiTi-Regular.ttf"
 
 local function get_lorrys()
     local l = {}
@@ -65,21 +58,6 @@ local function init_game(template)
         gameplay_world:research_queue(template.research_queue)
     end
 
-    iguide.init(gameplay_world, template.guide)
-    if next(template.guide) and game_settings.skip_guide then
-        print("skip guide")
-        for _, guide in ipairs(template.guide) do
-            if next(guide.narrative_end.task) then
-                for _, task in ipairs(guide.narrative_end.task) do
-                    local typeobject = iprototype.queryByName(task)
-                    gameplay_world:research_progress(task, typeobject.count)
-                end
-            end
-        end
-        gameplay_core.get_storage().guide_id = #template.guide + 1
-    end
-    iui.set_guide_progress(iguide.get_progress())
-
     for _, prefab in ipairs(template.init_instances) do
         world:create_instance {
             prefab = prefab
@@ -91,8 +69,23 @@ local function init_game(template)
     end
 end
 
-local funcs = {}
-funcs["new_game"] = function(file)
+function m:init()
+    init()
+
+    -- the light must be created in the frame before all entities are created
+    world:create_instance {
+        prefab = "/pkg/vaststars.resources/daynight_day.prefab"
+    }
+    world:create_instance {
+        prefab = "/pkg/vaststars.resources/light.prefab"
+    }
+    world:create_instance {
+        prefab = "/pkg/vaststars.resources/sky.prefab"
+    }
+end
+
+function m:init_world()
+    local file = "template.loading-scene"
     iterrain.create()
     iroadnet:create()
 
@@ -122,53 +115,5 @@ funcs["new_game"] = function(file)
     }
 
     init_game(template)
-end
-
-function m:init()
-    init()
-
-    gameworld_prebuild = world:pipeline_func "gameworld_prebuild"
-    gameworld_build = world:pipeline_func "gameworld_build"
-    gameworld = world:pipeline_func "gameworld"
-
-    -- the light must be created in the frame before all entities are created
-    world:create_instance {
-        prefab = "/pkg/vaststars.resources/daynight_day.prefab"
-    }
-    world:create_instance {
-        prefab = "/pkg/vaststars.resources/light.prefab"
-    }
-    world:create_instance {
-        prefab = "/pkg/vaststars.resources/sky.prefab"
-    }
-end
-
-function m:init_world()
-    local args = global.startup_args
-    local func = funcs[args[1]]
-    if func then
-        func(table.unpack(args, 2))
-        global.startup_args = {}
-    end
-end
-
-function m:gameworld_end()
-    local gameplay_ecs = gameplay_core.get_world().ecs
-    gameplay_ecs:clear("building_new")
-end
-
-function m:frame_update()
-    local gameplay_world = gameplay_core.get_world()
-    if gameplay_core.system_changed_flags ~= 0 then
-        print("build world")
-        gameplay_core.system_changed_flags = 0
-        gameworld_prebuild()
-        gameplay_world:update()
-        gameworld_build()
-    else
-        if gameplay_core.world_update then
-            gameplay_world:update()
-            gameworld()
-        end
-    end
+    world:import_feature "vaststars.gamerender|gameplay_update"
 end

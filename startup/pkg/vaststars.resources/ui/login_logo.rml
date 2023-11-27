@@ -1,0 +1,64 @@
+<rml>
+    <head>
+        <style>
+            body {
+                font: "阿里巴巴普惠体";
+                pointer-events: none;
+            }
+            div {
+                width: 100%;
+                height: 100%;
+                justify-content: space-between;
+            }
+            background {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background-color: #000;
+                z-index: -1;
+            }
+            logo {
+                background-image: "/pkg/vaststars.resources/ui/textures/login/logo.texture";
+                background-size: 100% 100%;
+                width: 63.01vmin;
+                height: 26.56vmin;
+                left: 4.97vmax;
+            }
+            info {
+                font-size: 2.5vmin;
+                color: rgb(145, 141, 141);
+                left: 4.97vmax;
+            }
+        </style>
+        <script type="text/x-lua" >
+            local model = window.createModel {
+                version = ""
+            }
+            window.addEventListener("message", function(event)
+                local ev = event.data
+                if ev.type == "set" then
+                    for k, v in pairs(ev.data) do
+                        model[k] = v
+                    end
+                end
+            end)
+            local function step()
+                if window.getPendingTexture() == 0 then
+                    local e = document.getElementsByTagName("background")[1]
+                    e.parentNode.removeChild(e)
+                    window.extern.postMessage { type = "loaded" }
+                    return
+                end
+                window.requestAnimationFrame(step)
+            end
+            window.requestAnimationFrame(step)
+        </script>
+    </head>
+    <body>
+        <div>
+            <logo />
+            <info>{{version}}</info>
+        </div>
+        <background />
+    </body>
+</rml>

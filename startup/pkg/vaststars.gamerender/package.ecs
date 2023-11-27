@@ -47,82 +47,11 @@ pipeline "prototype"
     .stage "prototype_prerestore"
     .stage "prototype_restore"
 
-import_feature "ant.animation"
-import_feature "ant.daynight"
-import_feature "ant.efk"
-import_feature "ant.landform"
-import_feature "ant.modifier"
-import_feature "ant.motion_sampler"
-import_feature "ant.render|render"
-import_feature "ant.rmlui|rt"
-import_feature "ant.sky|sky"
-import_feature "ant.starsky"
-import_feature "ant.polyline"
-import_feature "ant.terrain|canvas"
-import_feature "ant.shadow_bounding"
-
-feature "login"
-    .import "login.ecs"
-
 feature "gameplay"
     .import "gameplay.ecs"
 
-system "ui_system"
-    .implement "engine/system/ui_system.lua"
+feature "login"
+    .import "login/main.ecs"
 
-system "camera_controller"
-    .implement "engine/system/camera_controller.lua"
-
-system "camera_bounding_pack_system"
-    .implement "engine/system/camera_bounding_pack_system.lua"
-
-system "debug_system"
-    .implement "debug_system.lua"
-
-system "assembling_system"
-    .implement "render_updates/assembling.lua"
-
-system "daynight_system"
-    .implement "render_updates/daynight.lua"
-
-system "building_system"
-    .implement "render_updates/building.lua"
-
-system "drone_system"
-    .implement "render_updates/drone.lua"
-
-system "work_state_system"
-    .implement "render_updates/work_state.lua"
-
-system "storage_tank_system"
-    .implement "render_updates/storage_tank.lua"
-
-system "station_system"
-    .implement "render_updates/station.lua"
-
-system "science_system"
-    .implement "render_updates/science.lua"
-
-system "lorry_system"
-    .implement "render_updates/lorry.lua"
-
-system "fluidbox_system"
-    .implement "render_updates/fluidbox.lua"
-
-system "road_system"
-    .implement "render_updates/road.lua"
-
-system "chimney_system"
-    .implement "render_updates/chimney.lua"
-
-system "prototype_cache_system"
-    .implement "prototype_cache.lua"
-
-system "depot_sys"
-    .implement "render_updates/depot.lua"
-
-system "camera_system"
-    .implement "render_updates/camera.lua"
-
-system "update_system"
-    .implement "update_system.lua"
+feature "gameplay_update"
+    .import "gameplay/gameplay_update.ecs"

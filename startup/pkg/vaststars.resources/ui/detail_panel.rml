@@ -102,9 +102,9 @@
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                margin-left: 10vmin;
-                width: 100vmin;
-                height: 80vmin;
+                margin: 10vmin 10vmin 0 0;
+                width: 80vmin;
+                height: 75vmin;
                 background-image: "/pkg/vaststars.resources/ui/textures/detail/tips_bg.texture";
                 background-size: 100% 100%;
                 background-lattice: 9.89% 12.36% 9.89% 12.36% 49.22% 49.22%;
@@ -194,23 +194,23 @@
     <body style = "pointer-events: none; justify-content: center; align-items: center;">
         <div class="panel1" style="flex-direction: row; justify-content: flex-start; align-items: center;">
             <!-- detail panel begin -->
-            <div style = 'margin-left: 6.5%; margin-top: 20vmin; margin-bottom: 7vmin; width: 17.10vmax; height: 86vmin; background-lattice: 32.97% 11.50% 32.97% 11.50% 50% 50%; background-image: "/pkg/vaststars.resources/ui/textures/detail/background.texture"; background-size: 100% 100%;'>
+            <div style = 'margin-left: 6.5%; margin-top: 18vmin; margin-bottom: 7vmin; width: 17.10vmax; height: 81vmin; background-lattice: 32.97% 11.50% 32.97% 11.50% 50% 50%; background-image: "/pkg/vaststars.resources/ui/textures/detail/background.texture"; background-size: 100% 100%;'>
                 <!-- title -->
                 <div style = "flex-direction: row; justify-content: center; align-items: center;">
                     <div data-style-background-image="icon" style = "width: 20vmin; height: 20vmin; background-size: cover;" data-event-longpress="onLongPress(ev, 1)" data-event-click="onClick(ev, 1)" />
                 </div>
-                <div style="top: -3.0vmin; height: 9vmin;">
+                <div style="top: -3.0vmin; height: 8vmin;">
                     <div style = "text-align: center; font-size: 4vmin; word-break: break-all;">{{prototype_name}}</div>
                     <div style = "text-align: center; font-size: 3.2vmin; color: #000; margin-left: 2%; margin-right: 2%; background-size: 100% 100%;" data-style-background-image="detail_panel_status_icon">{{detail_panel_status_desc}}</div>
                 </div>
                 <!-- property list -->
-                <div style="height: 27vmin;" data-event-longpress="onLongPress(ev, 2)" data-event-click="onClick(ev, 2)">
+                <div style="height: 22vmin;" data-event-longpress="onLongPress(ev, 2)" data-event-click="onClick(ev, 2)">
                     <div data-for = "property : property_list">
-                        <div style = "width: 100%; height: 9vmin; flex-direction: row; align-items: center; justify-content: flex-start;">
+                        <div style = "width: 100%; height: 7vmin; flex-direction: row; align-items: center; justify-content: flex-start;">
                             <!-- div style = "width: 8.00vmin; height: 8.00vmin; background-size:cover;" data-style-background-image="property.icon" /-->
                             <!-- proprety & value -->
                             <div style = "flex-direction: column; justify-content: center; align-items: center; width: 100%;">
-                                <div style = "color:#adadad; padding-bottom: 0.75vmin; font-size: 3.2vmin; text-align: center;">{{property.desc}}</div>
+                                <div style = "color:#adadad; font-size: 3.2vmin; text-align: center;">{{property.desc}}</div>
                                 <div style = "text-align: center; font-size: 2.8vmin;" data-style-color = "property.color or 'rgb(255,255,255)'">{{property.value}}</div>
                             </div>
                         </div>
@@ -283,29 +283,28 @@
                 </div>
             </div>
             <!-- detail panel end -->
-            <div class="tips-bg" style='flex-direction: row; justify-content: flex-start; align-items: center; margin-left: -3vmin;' data-if="areaid==1.0" data-event-longpress="onLongPressTips(ev)">
-                <div style='width: 50vmin; height: 50vmin; background-image:"<detail_scene>"; background-size: 100% 100%;'/>
-                <div style="width: 39vmin; flex-direction: column; justify-content: center; align-items: flex-start;">
-                    <div style="text-align: left; font-size: 6vmin;">{{prototype_name}}</div>
-                    <div style="color:#adadad; font-size: 4vmin; word-break: break-all;">{{desc}}</div>
-                </div>
+            <div class="tips-bg" style='flex-direction: column; justify-content:center; align-items: center; margin-left: -3vmin;' data-if="areaid==1.0" data-event-longpress="onLongPressTips(ev)">
+                <div style="width: 100%; height: 10%; justify-content: center; align-items: center; text-align: center; font-size: 6vmin;">{{prototype_name}}</div>
+                <div style='width: 60%; height: 60%; justify-content: center; align-items: center; background-image:"<detail_scene>"; background-size: 100% 100%;'/>
+                <div style="width: 80%; height: 10%; justify-content: center; align-items: center; text-align: center; color:#adadad; font-size:3.8vmin; word-break: break-all;">{{desc}}</div>
             </div>
-            <div class="tips-bg" style='align-items: flex-start; margin-left: -3vmin;' data-if="areaid==2.0 and #property_list>0" data-event-longpress="onLongPressTips(ev)">
+            <div class="tips-bg" style='align-items: center; margin-left: -3vmin;' data-if="areaid==2.0 and #property_list>0" data-event-longpress="onLongPressTips(ev)">
                 <div data-for = "property : property_list">
-                    <div style = "margin-left: 10vmin; height: 22vmin; flex-direction: row; align-items: center; justify-content: flex-start;">
-                        <div style = "width: 16vmin; height: 16vmin; background-size:cover;" data-style-background-image="property.icon" />
-                        <div style = "flex-direction: column; justify-content: center; align-items: flex-start;">
-                            <div style = "color:#adadad; padding-bottom: 0.75vmin; font-size: 8vmin; text-align: center;">{{property.desc}}</div>
-                            <div style = "text-align: center; font-size: 6vmin;" data-style-color = "property.color or 'rgb(255,255,255)'">{{property.value}}</div>
+                    <div style = "height: 18vmin; flex-direction: row; align-items: center; justify-content: center;">
+                        <!-- div style = "width: 100%; height: 8vmin; background-size:cover;" data-style-background-image="property.icon" /-->
+                        <div style = "flex-direction: column; justify-content: center; align-items: center;">
+                            <div style = "color:#adadad; padding-bottom: 0.2vmin; font-size: 6.2vmin; text-align: center;">{{property.desc}}</div>
+                            <div style = "text-align: center; font-size: 4.4vmin;" data-style-color = "property.color or 'rgb(255,255,255)'">{{property.value}}</div>
                         </div>
                     </div>
                 </div>
             </div>
+            <!--物流中心-->
             <div class="tips-bg" style="margin-left: -3vmin;" data-if="areaid==3.0" data-event-longpress="onLongPressTips(ev)">
-                <div style="width:80%; flex-direction: row; justify-content: flex-start; align-items: center; flex-wrap: wrap;">
+                <div style="width:80%; flex-direction: row; justify-content: center; align-items: center; flex-wrap: wrap;">
                     <div style='flex-direction: column; align-items: center;' data-for = "chest : chest_list_1" >
                         <div class="small-item1" style="margin: 1vmin; width: 15vmin; height: 15vmin;" data-style-border = "chest.type == 'supply' and '0.3vmin rgb(254, 98, 124);' or (chest.type == 'demand' and '0.3vmin rgb(23, 176, 240);' or '0.2vmin rgb(255, 255, 255);')" data-style-background-image="chest.icon">
-                            <div style="font-size: 6vmin; -webkit-text-stroke:0.25vmin rgb(0, 0, 0);" data-if="chest.icon ~= ''">{{chest.count}}</div>
+                            <div style="font-size: 5.4vmin; -webkit-text-stroke:0.25vmin rgb(0, 0, 0);" data-if="chest.icon ~= ''">{{chest.count}}</div>
                         </div>
                         <div style='font-size: 3vmin'>{{chest.name}}</div>
                     </div>
@@ -313,72 +312,82 @@
             </div>
             <!--采矿机-->
             <div class="tips-bg" style="margin-left: -3vmin;" data-if="areaid==4.0" data-event-longpress="onLongPressTips(ev)">
-                <div class="column" style="top: 5vmin; justify-content: center; width: 62vmin; height: 9vmin;">
-                    <div class="progress_bar" data-style-width="progress"/>
-                    <div class="indicator" style='width: 1vmin;' data-style-left="progress"/>
-                    <div style="text-align: center; font-size: 5.4vmin; top: -220%; -webkit-text-stroke: 0.2vmin #000;">{{progress}}</div>
-                </div>
-                <div class="row" style="width: 80%; justify-content: flex-end;">
-                    <div style='flex-direction: column; align-items: center;' data-for="recipe_ouputs">
-                        <div class="small-item1" style="width: 15vmin; height: 15vmin;" data-style-background-image="it.icon">
-                            <div class ="item-count-combination">
-                                <div class="item-count-new" style="font-size: 5.4vmin;">x{{it.count}}</div>
-                            </div>
+                <div style="flex-direction: row; justify-content: center; align-items: center; height:79%; width: 90%;">
+                    <div class="column" style="width: 25%; justify-content: space-evenly; align-items: center;"></div>
+                    <div class="column" style="top: 5vmin; justify-content: center; width: 50%; height: 9vmin;">
+                        <div class="progress_bar" style="height: 7.2vmin; justify-content: center;" data-style-width="progress">
+                            <div style="text-align: center; font-size: 4vmin;height: 80%; width:36vmin; -webkit-text-stroke: 0.2vmin #000;">{{progress}}</div>
                         </div>
-                        <div style='font-size: 6vmin'>{{it.name}}</div>
+                        <div class="indicator" style='width: 1vmin;' data-style-left="progress"/>
+                    </div>
+                    <div class="row" style="width: 25%; justify-content: space-evenly; align-items: center;">
+                        <div style='flex-direction: column; align-items: center;' data-for="recipe_ouputs">
+                            <div class="small-item1" style="width: 11vmin; height: 11vmin; border: 0.3vmin rgb(251, 177, 61);" data-style-background-image="it.icon">
+                                <div class ="item-count-combination">
+                                    <div class="item-count-new" style="font-size: 5.4vmin;" data-style-color="it.count < it.output_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">x{{it.count}}</div>
+                                </div>
+                            </div>
+                            <div style='font-size: 3.1vmin'>{{it.name}}</div>
+                        </div>
                     </div>
                 </div>
             </div>
             <!--组装机-->
-            <div class="tips-bg" style='flex-direction: row; justify-content: center; align-items: center; margin-left: -3vmin;' data-if="areaid==5.0" data-event-longpress="onLongPressTips(ev)">
-                <div class="column" style="width: 18vmin; justify-content: space-evenly; align-items: center;">
-                    <div style='flex-direction: column; align-items: center;' data-for="recipe_inputs">
-                        <div class="small-item1" style="width: 12vmin; height: 12vmin; border: 0.3vmin rgb(0, 217, 255);" data-style-background-image="it.icon">
-                            <div class ="item-count-combination">
-                                <div class="item-count-new" data-style-font-size="it.count > 99 and '4vmin' or '5.4vmin'" data-style-color="it.count < it.demand_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">x{{it.count}}</div>
+            <div class="tips-bg" style='flex-direction: column; justify-content: center; align-items: center; margin-left: -3vmin;' data-if="areaid==5.0" data-event-longpress="onLongPressTips(ev)">
+                <div style="height:8%;width: 90%; color: rgb(246, 142, 14); text-align: center; font-size: 4.8vmin;">{{recipe_name}}</div>
+                <div style="flex-direction: row; justify-content: center; align-items: center; height:79%; width: 90%;">
+                    <div class="column" style="width: 25%; justify-content: space-evenly; align-items: center;">
+                        <div style='flex-direction: column; align-items: center;' data-for="recipe_inputs">
+                            <div class="small-item1" style="width: 11vmin; height: 11vmin; border: 0.3vmin rgb(0, 217, 255);" data-style-background-image="it.icon">
+                                <div class ="item-count-combination">
+                                    <div class="item-count-new" data-style-font-size="it.count > 99 and '3.5vmin' or '4.2vmin'" data-style-color="it.count < it.demand_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">x{{it.count}}</div>
+                                </div>
                             </div>
-                        </div>
-                        <div style='flex-direction: row;'>
-                            <div style="margin-bottom: 1.25vmin; font-size: 3.25vmin;">{{it.name}}</div>
-                            <div style="font-size: 2.8vmin; color:#adadad; margin-left: 1vmin; align-self: baseline;" data-if="it.demand_count > 1">x{{it.demand_count}}</div>
+                            <div style='flex-direction: row;'>
+                                <div style="margin-bottom: 1.25vmin; font-size: 3vmin;">{{it.name}}</div>
+                                <div style="font-size: 2.8vmin; color:#adadad; margin:0.15vmin 0.75vmin 0 0; align-self: baseline;" data-if="it.demand_count > 1">x{{it.demand_count}}</div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="column" style="justify-content: flex-start; width: 50vmin; height: 18vmin;">
-                    <div style="color: rgb(246, 142, 14); text-align: center; font-size: 6vmin;">{{recipe_name}}</div>
-                    <div class="progress_bar" style="height: 7.2vmin;" data-style-width="progress"/>
-                    <div class="indicator" style='top: -7.5vmin; height: 8vmin; width: 1vmin;' data-style-left="progress"/>
-                    <div style="text-align: center; font-size: 6vmin; top: -15.5vmin;">{{progress}}</div>
-                </div>
-                <div class="column" style="width: 18vmin; justify-content: space-evenly; align-items: center;">
-                    <div style='flex-direction: column; align-items: center;' data-for="recipe_ouputs">
-                        <div class="small-item1" style="width: 12vmin; height: 12vmin; border: 0.3vmin rgb(251, 177, 61);" data-style-background-image="it.icon">
-                            <div class ="item-count-combination">
-                                <div class="item-count-new" data-style-font-size="it.count > 99 and '4vmin' or '5.4vmin'" data-style-color="it.count < it.output_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">x{{it.count}}</div>
-                            </div>
+                    <div class="column" style="justify-content: flex-start; width: 50%; height: 9vmin;">
+                        <div class="progress_bar" style="height: 7.2vmin; justify-content: center;" data-style-width="progress">
+                            <div style="text-align: center; font-size: 4vmin;height: 80%;width: 36vmin;-webkit-text-stroke: 0.2vmin #000;">{{progress}}</div>
                         </div>
-                        <div style='flex-direction: row;'>
-                            <div style="margin-bottom: 1.25vmin; font-size: 3.25vmin;">{{it.name}}</div>
-                            <div style="font-size: 2.8vmin; color:#adadad; margin-left: 1vmin; align-self: baseline;" data-if="it.output_count > 1">x{{it.output_count}}</div>
+                        
+                        <div class="indicator" style='top: -7.5vmin; height: 8vmin; width: 1vmin; border: 1px #f00;' data-style-left="progress"/>
+                    </div>
+                    <div class="column" style="width: 25%; justify-content: space-evenly; align-items: center;">
+                        <div style='flex-direction: column; align-items: center;' data-for="recipe_ouputs">
+                            <div class="small-item1" style="width: 11vmin; height: 11vmin; border: 0.3vmin rgb(251, 177, 61);" data-style-background-image="it.icon">
+                                <div class ="item-count-combination">
+                                    <div class="item-count-new" data-style-font-size="it.count > 99 and '3.5vmin' or '4.2vmin'" data-style-color="it.count < it.output_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">x{{it.count}}</div>
+                                </div>
+                            </div>
+                            <div style='flex-direction: row;'>
+                                <div style="margin-bottom: 1.25vmin; font-size: 3vmin;">{{it.name}}</div>
+                                <div style="font-size: 2.8vmin; color:#adadad; margin:0.15vmin 0.75vmin 0 0; align-self: baseline;" data-if="it.output_count > 1">x{{it.output_count}}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <!--物流站-->
             <div class="tips-bg" style="flex-direction: row;  margin-left: -3vmin;" data-if="areaid==6.0" data-event-longpress="onLongPressTips(ev)">
-                <div style="width:80%; flex-direction: row; justify-content: flex-start; align-items: center; flex-wrap: wrap;">
+                <div style="width:80%; flex-direction: row; justify-content: center; align-items: center; flex-wrap: wrap;">
                     <div style='flex-direction: column; align-items: center;' data-for = "chest : chest_list_2">
-                        <div class="small-item1" style="margin: 1vmin; width: 15vmin; height: 15vmin;" data-style-border = "chest.type == 'supply' and '0.3vmin rgb(23, 176, 240);' or (chest.type == 'demand' and '0.3vmin rgb(254, 98, 124);' or '0.2vmin rgb(255, 255, 255);')" data-style-background-image="chest.icon">
-                            <div style="font-size: 6.00vmin; -webkit-text-stroke:0.25vmin rgb(0, 0, 0);" data-if="chest.icon ~= ''">{{chest.count}}</div>
+                        <div class="small-item1" style="margin: 0.5vmin; width: 14vmin; height: 14vmin;" data-style-border = "chest.type == 'supply' and '0.3vmin rgb(23, 176, 240);' or (chest.type == 'demand' and '0.3vmin rgb(254, 98, 124);' or '0.2vmin rgb(255, 255, 255);')" data-style-background-image="chest.icon">
+                            <div style="font-size: 5.00vmin; -webkit-text-stroke:0.25vmin rgb(0, 0, 0);" data-if="chest.icon ~= ''">{{chest.count}}</div>
                         </div>
                         <div style='font-size: 3vmin'>{{chest.name}}</div>
                     </div>
                 </div>
             </div>
+            <!--仓库-->
             <div class="tips-bg" style="flex-direction: row;  margin-left: -3vmin;" data-if="areaid==7.0" data-event-longpress="onLongPressTips(ev)">
-                <div style="width:80%; flex-direction: row; justify-content: flex-start; align-items: center; flex-wrap: wrap;">
+                <div style="width:80%; flex-direction: row; justify-content: center; align-items: center; flex-wrap: wrap;">
                     <div style='flex-direction: column; align-items: center;' data-for = "chest : chest_list_1">
-                        <div class="small-item1" style="margin: 1vmin; width: 15vmin; height: 15vmin;" data-style-border = "chest.type == 'supply' and '0.3vmin rgb(254, 98, 124);' or (chest.type == 'demand' and '0.3vmin rgb(23, 176, 240);' or '0.2vmin rgb(255, 255, 255);')" data-style-background-image="chest.icon">
-                            <div style="font-size: 6.00vmin; -webkit-text-stroke:0.25vmin rgb(0, 0, 0);" data-if="chest.icon ~= ''">{{chest.count}}</div>
+                        <div class="small-item1" style="margin: 0.5vmin; width: 14vmin; height: 14vmin;" data-style-border = "chest.type == 'supply' and '0.3vmin rgb(254, 98, 124);' or (chest.type == 'demand' and '0.3vmin rgb(23, 176, 240);' or '0.2vmin rgb(255, 255, 255);')" data-style-background-image="chest.icon">
+                            <div style="font-size: 5.00vmin; -webkit-text-stroke:0.25vmin rgb(0, 0, 0);" data-if="chest.icon ~= ''">{{chest.count}}</div>
                         </div>
                         <div style='font-size: 3vmin'>{{chest.name}}</div>
                     </div>

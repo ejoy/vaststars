@@ -3531,20 +3531,10 @@ local entities = { {
 }, 
 ----------------------
 {
-  dir = "S",
+  dir = "W",
   prototype_name = "停车站",
-  x = 146,
-  y = 126
-}, {
-  dir = "N",
-  prototype_name = "停车站",
-  x = 130,
-  y = 128
-},{
-  dir = "N",
-  prototype_name = "停车站",
-  x = 130,
-  y = 136
+  x = 64,
+  y = 108
 }, 
 ------------------
 {

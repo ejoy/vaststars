@@ -1,0 +1,4 @@
+import "scene.ecs"
+
+system "login_scene_system"
+    .implement "login/scene_system.lua"

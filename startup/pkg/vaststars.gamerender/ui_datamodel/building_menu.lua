@@ -44,6 +44,7 @@ local global = require "global"
 local icoord = require "coord"
 local itask = ecs.require "task"
 local objects = require "objects"
+local handler = ecs.require "ui_datamodel.common.building_menu_handler"
 
 ---------------
 local M = {}
@@ -72,34 +73,40 @@ function M.create(gameplay_eid, longpress)
     local teardown = false
 
     if longpress then
-        teardown = typeobject.teardown ~= false
+        teardown = true
     else
-        set_recipe = e.assembling and typeobject.allow_set_recipt or false
+        set_recipe = (e.assembling ~= nil)
         lorry_factory_inc_lorry = (e.factory == true)
         transfer_source = itransfer.get_source_eid() == e.eid
         set_transfer_source = not transfer_source and e.chest ~= nil
         transfer = e.chest ~= nil
         set_item = e.station or (e.chest and CHEST_TYPE_CONVERT[typeobject.chest_type] == "transit" or false)
         remove_lorry = (e.lorry ~= nil)
-        move = typeobject.move ~= false
-        copy = typeobject.copy ~= false
+        move = true
+        copy = true
         inventory = iprototype.has_type(typeobject.type, "base")
     end
 
-    return {
-        prototype_name = typeobject.name,
+    local status = {
         set_recipe = set_recipe,
         lorry_factory_inc_lorry = lorry_factory_inc_lorry,
         transfer_source = transfer_source,
         set_transfer_source = set_transfer_source,
         transfer = transfer,
-        transfer_count = transfer_count,
         set_item = set_item,
         remove_lorry = remove_lorry,
         move = move,
         copy = copy,
         inventory = inventory,
         teardown = teardown,
+
+        transfer_count = transfer_count,
+    }
+
+    local buttons = handler(typeobject.name, status)
+    return {
+        status = status,
+        buttons = buttons,
     }
 end
 
@@ -184,7 +191,7 @@ local function chest_remove_item(gameplay_world, e, slot_index)
     gameplay_core.set_changed(CHANGED_FLAG_DEPOT)
 end
 
-local update = interval_call(300, function(datamodel, e)
+local update = interval_call(300, function(datamodel, typeobject)
     local info = itransfer.get_transfer_info(gameplay_core.get_world())
     local length = 0
     for _, _ in pairs(info) do
@@ -192,7 +199,7 @@ local update = interval_call(300, function(datamodel, e)
     end
 
     local count = 0
-    if datamodel.transfer then
+    if datamodel.status.transfer then
         if length > 1 then
             count = "+"
         elseif length == 1 then
@@ -202,19 +209,21 @@ local update = interval_call(300, function(datamodel, e)
             count = 0
         end
     end
-    datamodel.transfer_count = count
+    if datamodel.status.transfer_count ~= count then
+        datamodel.status.transfer_count = count
+        datamodel.buttons = handler(typeobject.name, datamodel.status)
+    end
 end)
 
 function M.update(datamodel, gameplay_eid)
     local e = assert(gameplay_core.get_entity(gameplay_eid))
-    update(datamodel, e)
-
     local typeobject
     if e.lorry then
         typeobject = iprototype.queryById(e.lorry.prototype)
     else
         typeobject = iprototype.queryById(e.building.prototype)
     end
+    update(datamodel, typeobject)
 
     for _ in move_mb:unpack() do
         iui.leave()
@@ -275,14 +284,16 @@ function M.update(datamodel, gameplay_eid)
 
     for _ in set_transfer_source_mb:unpack() do
         itransfer.set_source_eid(e.eid)
-        datamodel.transfer_source = true
-        datamodel.set_transfer_source = not datamodel.transfer_source and e.chest ~= nil
+        datamodel.status.transfer_source = true
+        datamodel.status.set_transfer_source = not datamodel.status.transfer_source and e.chest ~= nil
+        datamodel.buttons = handler(typeobject.name, datamodel.status)
     end
 
     for _ in transfer_source_mb:unpack() do
         itransfer.set_source_eid(nil)
-        datamodel.transfer_source = false
-        datamodel.set_transfer_source = not datamodel.transfer_source and e.chest ~= nil
+        datamodel.status.transfer_source = false
+        datamodel.status.set_transfer_source = not datamodel.status.transfer_source and e.chest ~= nil
+        datamodel.buttons = handler(typeobject.name, datamodel.status)
     end
 
     for _ in transfer_mb:unpack() do

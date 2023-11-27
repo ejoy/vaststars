@@ -4,6 +4,8 @@ local c = type "debris"
 
 function c:ctor(init, pt)
     return {
-        debris = true,
+        debris = {
+            prototype = init.debris,
+        }
     }
 end

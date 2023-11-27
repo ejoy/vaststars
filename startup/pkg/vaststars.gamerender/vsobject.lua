@@ -65,8 +65,16 @@ end
 -- }
 return function (init)
     local typeobject = iprototype.queryByName(init.prototype_name)
+
+    local model = typeobject.model
+    if init.debris then
+        local typeobject = iprototype.queryById(init.debris)
+        model = assert(typeobject.model:match("(.*%.glb|).*%.prefab"))
+        model = model .. "debris.prefab"
+    end
+
     local game_object = assert(igame_object.create({
-        prefab = typeobject.model,
+        prefab = model,
         group_id = init.group_id,
         color = init.color,
         srt = {r = ROTATORS[init.dir], t = init.position},

@@ -4,20 +4,6 @@
             body {
                 font: "阿里巴巴普惠体";
             }
-            left-box {
-                position: absolute;
-                width: 100%;
-                height: 99%;
-                align-items: flex-start;
-                justify-content: flex-end;
-            }
-            left-box-1 { /* TODO: remove this */
-                position: absolute;
-                width: 100%;
-                height: 100%;
-                align-items: flex-start;
-                justify-content: flex-start;
-            }
             right-box {
                 position: absolute;
                 width: 100%;
@@ -26,16 +12,6 @@
                 align-items: flex-end;
                 gap: 1.50vmin;
                 padding: 3.7vmin 5vmin 0 0;
-            }
-            info {
-                font-size: 2.5vmin;
-                color: rgb(145, 141, 141);
-            }
-            logo {
-                background-image: "mem:/pkg/vaststars.resources/glbs/headquater-1.glb|mesh.prefab;config:1,1";
-                background-size: 100% 100%;
-                width: 63.01vmin;
-                height: 26.56vmin;
             }
             button {
                 flex-direction: row;
@@ -74,39 +50,26 @@
         </script>
     </head>
     <body style = "pointer-events: none; margin: 1.32vmin 3.995vmax 0 4.97vmax;">
-        <left-box>
-            <info>{{version}}</info>
-        </left-box>
-        <left-box-1>
-            <logo />
-        </left-box-1>
         <right-box>
             <button data-event-click = "clickButton('continue')" data-if = "show_continue_game">
-                <button-icon style='background-image: "/pkg/vaststars.resources/ui/textures/road/traffic.texture";'/>
                 <button-text>继续游戏</button-text>
             </button>
             <button data-event-click = "clickButton('new_game', 'template.adventure')">
-                <button-icon style='background-image: "/pkg/vaststars.resources/ui/textures/character/timer.texture";'/>
                 <button-text>冒险模式</button-text>
             </button>
             <button data-event-click = "clickButton('new_game', 'template.free')">
-                <button-icon style='background-image: "/pkg/vaststars.resources/ui/textures/character/timer.texture";'/>
                 <button-text>自由模式</button-text>
             </button> 
             <button data-event-click = "clickButton('load_resources')">
-                <button-icon style='background-image: "/pkg/vaststars.resources/ui/textures/character/flash.texture";'/>
                 <button-text>加载资源</button-text>
             </button> 
             <button data-event-click = "clickButton('restore')">
-                <button-icon style='background-image: "/pkg/vaststars.resources/ui/textures/road/write.texture";'/>
                 <button-text>读取进度</button-text>
             </button>
             <button data-event-click = "clickButton('load_tutorial_template')">
-                <button-icon style='background-image: "/pkg/vaststars.resources/ui/textures/character/health.texture";'/>
                 <button-text>教学模式</button-text>
             </button>
             <button data-event-click = "clickButton('load_template')">
-                <button-icon style='background-image: "/pkg/vaststars.resources/ui/textures/character/health.texture";'/>
                 <button-text>测试模式</button-text>
             </button>           
         </right-box>

@@ -55,23 +55,39 @@ namespace roadnet {
     }
 
     static route_value buildResult(network& w, dijkstraContext& ctx, straightid S, straightid E) {
-        for (auto C = E;;) {
+        assert(S != E);
+        std::vector<straightid> vec;
+        for (auto C = E; S != C;) {
             auto node = ctx.get(C);
             assert(node);
+            vec.push_back(C);
             C = node->prev;
-            w.routeCached.insert_or_assign(route_key { C, E }, route_value {
-                true,
-                node->dir,
-                node->distance,
-            });
-            if (C == S) {
-                return route_value {
-                    true,
-                    node->dir,
-                    node->distance,
-                };
-            }
         }
+        vec.push_back(S);
+
+        auto StartDistance = 0;
+        while (vec.size() >= 2) {
+            auto StartId = vec.back();
+            vec.pop_back();
+            auto StartNode = ctx.get(vec.back());
+            auto StartDir = StartNode->dir;
+            auto LastDistance = StartNode->distance;
+            for (auto it = vec.rbegin(); it != vec.rend(); ++it) {
+                auto C = *it;
+                auto node = ctx.get(C);
+                w.routeCached.insert_or_assign(route_key { StartId, C }, route_value {
+                    true,
+                    StartDir,
+                    (uint16_t)(node->distance - StartDistance),
+                });
+                C = node->prev;
+            }
+            StartDistance = LastDistance;
+        }
+        if (auto pval = w.routeCached.find({ S, E })) {
+            return *pval;
+        }
+        return { false };
     }
 
     static route_value dijkstra(network& w, straightid S, straightid E) {

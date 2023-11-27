@@ -15,7 +15,6 @@ prototype "化工厂I" {
     priority = "secondary",
     maxslot = 8,
     drone_height = 22,
-    allow_set_recipt = true,
     camera_distance = 75,
     craft_category = {"器件基础化工","流体基础化工"},
     fluidboxes = {
@@ -81,7 +80,6 @@ prototype "化工厂II" {
     priority = "secondary",
     maxslot = 8,
     drone_height = 22,
-    allow_set_recipt = true,
     camera_distance = 75,
     craft_category = {"器件基础化工","流体基础化工"},
     fluidboxes = {
@@ -147,7 +145,6 @@ prototype "化工厂III" {
     priority = "secondary",
     maxslot = 8,
     drone_height = 22,
-    allow_set_recipt = true,
     camera_distance = 75,
     craft_category = {"器件基础化工","流体基础化工"},
     fluidboxes = {
@@ -214,7 +211,6 @@ prototype "蒸馏厂I" {
     craft_category = {"过滤"},
     maxslot = 8,
     drone_height = 22,
-    allow_set_recipt = true,
     camera_distance = 100,
     fluidboxes = {
         input = {
@@ -280,7 +276,6 @@ prototype "蒸馏厂II" {
     craft_category = {"过滤"},
     maxslot = 8,
     drone_height = 22,
-    allow_set_recipt = true,
     camera_distance = 100,
     fluidboxes = {
         input = {
@@ -346,7 +341,6 @@ prototype "蒸馏厂III" {
     craft_category = {"过滤"},
     maxslot = 8,
     drone_height = 22,
-    allow_set_recipt = true,
     camera_distance = 100,
     fluidboxes = {
         input = {
@@ -415,7 +409,6 @@ prototype "电解厂I" {
     craft_category = {"电解"},
     maxslot = 8,
     drone_height = 22,
-    allow_set_recipt = true,
     camera_distance = 100,
     fluidboxes = {
         input = {
@@ -474,7 +467,6 @@ prototype "电解厂II" {
     craft_category = {"电解"},
     maxslot = 8,
     drone_height = 22,
-    allow_set_recipt = true,
     camera_distance = 100,
     fluidboxes = {
         input = {
@@ -533,7 +525,6 @@ prototype "电解厂III" {
     craft_category = {"电解"},
     maxslot = 8,
     drone_height = 22,
-    allow_set_recipt = true,
     camera_distance = 100,
     fluidboxes = {
         input = {
@@ -589,7 +580,6 @@ prototype "水电站I" {
     priority = "secondary",
     craft_category = {"流体液体处理"},
     maxslot = 8,
-    allow_set_recipt = true,
     camera_distance = 100,
     fluidboxes = {
         input = {
@@ -645,7 +635,6 @@ prototype "水电站II" {
     priority = "secondary",
     craft_category = {"流体液体处理"},
     maxslot = 8,
-    allow_set_recipt = true,
     camera_distance = 100,
     fluidboxes = {
         input = {
@@ -701,7 +690,6 @@ prototype "水电站III" {
     priority = "secondary",
     craft_category = {"流体液体处理"},
     maxslot = 8,
-    allow_set_recipt = true,
     camera_distance = 100,
     fluidboxes = {
         input = {

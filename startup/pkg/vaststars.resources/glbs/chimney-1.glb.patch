@@ -71,6 +71,29 @@ value:
     work
 ---
 file: mesh.prefab
+op: copyfile
+path: debris.prefab
+---
+file: debris.prefab
+op: add
+path: /-
+value:
+  data:
+    scene: {}
+  mount: 1
+  policy:
+    ant.scene|scene_object
+  tag:
+    mesh
+---
+file: debris.prefab
+op: add
+path: /-
+value:
+  mount: 1
+  prefab: /pkg/vaststars.resources/glbs/scaffold/2x2.glb|mesh.prefab
+---
+file: mesh.prefab
 op: createfile
 path: hitch.prefab
 value:

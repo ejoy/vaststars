@@ -14,6 +14,20 @@ prototype "指挥中心" {
     item_model = "glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "存储材料和装配运输汽车的核心建筑",
 }
+
+prototype "物流中心" {
+    type = {"item"},
+    item_category = "物流",
+    station_limit = 1,
+    chest_limit = 15,
+    backpack_limit = 1,
+    item_order = 50,
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/headquater.texture",
+    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_description = "运输车辆出发和停靠的建筑",
+}
+
+
 prototype "组装机I" {
     type = {"item"},
     item_category = "加工",
@@ -179,7 +193,7 @@ prototype "采矿机I" {
     item_order = 30,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/miner.texture",
     item_model = "glbs/stackeditems/building.glb|mesh.prefab",
-    item_description = "挖掘、钻探地下矿物资源的设备",
+    item_description = "挖掘或钻探地下矿物资源的设备",
 }
 
 prototype "采矿机II" {
@@ -191,7 +205,7 @@ prototype "采矿机II" {
     item_order = 32,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/miner.texture",
     item_model = "glbs/stackeditems/building.glb|mesh.prefab",
-    item_description = "挖掘、钻探地下矿物资源的设备",
+    item_description = "挖掘或钻探地下矿物资源的设备",
 }
 
 prototype "采矿机III" {
@@ -203,7 +217,7 @@ prototype "采矿机III" {
     item_order = 34,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/miner.texture",
     item_model = "glbs/stackeditems/building.glb|mesh.prefab",
-    item_description = "挖掘、钻探地下矿物资源的设备",
+    item_description = "挖掘或钻探地下矿物资源的设备",
 }
 
 prototype "轻型采矿机" {
@@ -215,7 +229,7 @@ prototype "轻型采矿机" {
     item_order = 35,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/miner.texture",
     item_model = "glbs/stackeditems/building.glb|mesh.prefab",
-    item_description = "挖掘、钻探地下矿物资源的设备",
+    item_description = "挖掘或钻探地下矿物资源的设备",
 }
 
 prototype "蒸汽发电机I" {
@@ -528,31 +542,7 @@ prototype "物流站" {
     item_order = 15,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/goodstation-input.texture",
     item_model = "glbs/stackeditems/building.glb|mesh.prefab",
-    item_description = "给运输车提供货物的车站",
-}
-
-prototype "出货车站" {
-    type = {"item"},
-    --item_category = "物流",
-    station_limit = 8,
-    chest_limit = 15,
-    backpack_limit = 20,
-    item_order = 16,
-    item_icon = "/pkg/vaststars.resources/textures/icons/item/goodstation-input.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
-    item_description = "给运输车提供货物的车站",
-}
-
-prototype "收货车站" {
-    type = {"item"},
-    --item_category = "物流",
-    station_limit = 8,
-    chest_limit = 15,
-    backpack_limit = 20,
-    item_order = 18,
-    item_icon = "/pkg/vaststars.resources/textures/icons/item/goodstation-input.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
-    item_description = "从运输车收取货物的车站",
+    item_description = "给运输车辆提供货物的车站",
 }
 
 prototype "停车站" {
@@ -564,7 +554,7 @@ prototype "停车站" {
     item_order = 19,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/goodstation-input.texture",
     item_model = "glbs/stackeditems/building.glb|mesh.prefab",
-    item_description = "从运输车收取货物的车站",
+    item_description = "从运输车辆收取货物的车站",
 }
 
 prototype "电解厂I" {
@@ -742,25 +732,6 @@ prototype "砖石公路-U型"(setmetatable({}, {__index = road}))
 prototype "砖石公路-X型"(setmetatable({}, {__index = road}))
 
 prototype "运输车辆I" {
-    type = {"item"},
-    item_category = "物流",
-    station_limit = 8,
-    item_description = "行驶在公路上可运输货物的交通工具",
-    capacitance = "10MJ",
-    speed = 63,
-    chest_limit = 15,
-    backpack_limit = 50,
-    item_order = 4,
-    item_icon = "/pkg/vaststars.resources/textures/icons/item/truck.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
-    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_mars_truck.texture",
-    model = "glbs/lorry-1.glb|mesh.prefab",
-    teardown = false,
-    move = false,
-    copy = false,
-}
-
-prototype "轻型运输车" {
     type = {"item"},
     item_category = "物流",
     station_limit = 8,

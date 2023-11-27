@@ -153,9 +153,12 @@ component "solar_panel" {
     "uint8 efficiency"
 }
 
+mainkey "debris" {
+    "uint16 prototype",
+}
+
 tag "wind_turbine"
 tag "base"
-tag "debris"
 
 --
 tag "station_changed"

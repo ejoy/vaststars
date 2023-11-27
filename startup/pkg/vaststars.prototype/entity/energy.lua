@@ -11,7 +11,6 @@ prototype "蒸汽发电机I" {
     rotate_on_build = true,
     io_shelf = false,
     assembling_icon = false,
-    building_menu = false,
     power = "900kW",
     priority = "secondary",
     sound = "building/steam-turbine",
@@ -46,7 +45,6 @@ prototype "蒸汽发电机II" {
     rotate_on_build = true,
     io_shelf = false,
     assembling_icon = false,
-    building_menu = false,
     power = "2.4MW",
     priority = "secondary",
     sound = "building/steam-turbine",
@@ -81,7 +79,6 @@ prototype "蒸汽发电机III" {
     rotate_on_build = true,
     io_shelf = false,
     assembling_icon = false,
-    building_menu = true,
     power = "6MW",
     priority = "secondary",
     sound = "building/steam-turbine",
@@ -115,7 +112,6 @@ prototype "轻型风力发电机" {
     area = "3x3",
     power = "450kW",
     priority = "primary",
-    building_menu = true,
     camera_distance = 140,
 }
 
@@ -128,7 +124,6 @@ prototype "风力发电机I" {
     area = "3x3",
     power = "1.2MW",
     priority = "primary",
-    building_menu = false,
     camera_distance = 140,
 }
 
@@ -140,7 +135,6 @@ prototype "太阳能板I" {
     area = "3x3",
     power = "300kW",
     priority = "primary",
-    building_menu = true,
     camera_distance = 70,
 }
 
@@ -152,7 +146,6 @@ prototype "太阳能板II" {
     area = "3x3",
     power = "450kW",
     priority = "primary",
-    building_menu = true,
     camera_distance = 70,
 }
 
@@ -164,7 +157,6 @@ prototype "太阳能板III" {
     area = "3x3",
     power = "600kW",
     priority = "primary",
-    building_menu = true,
     camera_distance = 70,
 }
 
@@ -176,7 +168,6 @@ prototype "轻型太阳能板" {
     area = "3x3",
     power = "60kW",
     priority = "primary",
-    building_menu = true,
     camera_distance = 70,
 }
 
@@ -190,7 +181,6 @@ prototype "蓄电池I" {
 	capacitance = "10MJ",
     area = "2x2",
     sound = "building/electricity",
-    building_menu = true,
     camera_distance = 55,
 }
 
@@ -204,7 +194,6 @@ prototype "蓄电池II" {
 	capacitance = "30MJ",
     area = "2x2",
     sound = "building/electricity",
-    building_menu = true,
     camera_distance = 55,
 }
 
@@ -218,7 +207,6 @@ prototype "蓄电池III" {
 	capacitance = "60MJ",
     area = "2x2",
     sound = "building/electricity",
-    building_menu = true,
     camera_distance = 55,
 }
 
@@ -245,7 +233,6 @@ prototype "换热器I" {
     io_shelf = false,
     rotate_on_build = true,
     craft_category = {"流体换热处理"},
-    building_menu = false,
     maxslot = 8,
     camera_distance = 100,
     fluidboxes = {
@@ -284,7 +271,6 @@ prototype "热管1-X型" {
     model = "glbs/pipe/I.glb|mesh.prefab",
     icon = "/pkg/vaststars.resources/ui/textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
-    building_menu = false,
     type = {"building"},
     area = "1x1",
     camera_distance = 100,
@@ -301,7 +287,6 @@ prototype "锅炉I" {
     io_shelf = false,
     craft_category = {"流体换热处理"},
     maxslot = 8,
-    allow_set_recipt = true,
     camera_distance = 65,
     fluidboxes = {
         input = {
@@ -337,7 +322,6 @@ prototype "地热井I" {
     area = "5x5",
     rotate_on_build = true,
     io_shelf = false,
-    building_menu = false,
     sound = "building/geothermal",
     mining_category = {"地热处理"},
     maxslot = 8,
@@ -367,7 +351,6 @@ prototype "地热井II" {
     area = "5x5",
     rotate_on_build = true,
     io_shelf = false,
-    building_menu = false,
     sound = "building/geothermal",
     mining_category = {"地热处理"},
     maxslot = 8,
@@ -397,7 +380,6 @@ prototype "地热井III" {
     area = "5x5", 
     rotate_on_build = true,
     io_shelf = false,
-    building_menu = false,
     sound = "building/geothermal",
     mining_category = {"地热处理"},
     maxslot = 8,

@@ -7,7 +7,6 @@ prototype "铁制电线杆" {
     construct_detector = {"exclusive"},
     type = {"building"},
     area = "1x1",
-    building_menu = false,
     camera_distance = 90,
 }
 
@@ -17,7 +16,6 @@ prototype "远程电线杆" {
     construct_detector = {"exclusive"},
     type = {"building"},
     area = "2x2",
-    building_menu = false,
     camera_distance = 90,
 }
 
@@ -27,6 +25,5 @@ prototype "广域电线杆" {
     construct_detector = {"exclusive"},
     type = {"building"},
     area = "2x2",
-    building_menu = false,
     camera_distance = 90,
 }

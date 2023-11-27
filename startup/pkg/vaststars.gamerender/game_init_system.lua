@@ -27,10 +27,6 @@ local init = ecs.require "init"
 local game_settings = ecs.require "game_settings"
 
 local m = ecs.system "game_init_system"
-local gameworld_prebuild
-local gameworld_build
-local gameworld
-local need_update = false
 
 bgfx.maxfps(FPS)
 font.import "/pkg/vaststars.resources/ui/font/Alibaba-PuHuiTi-Regular.ttf"
@@ -103,7 +99,6 @@ funcs["nothing"] = function()
 end
 
 funcs["terrain_only"] = function()
-    need_update = true
     iterrain.create()
     world:create_instance {
         prefab = "/pkg/vaststars.resources/camera_default.prefab",
@@ -115,7 +110,6 @@ funcs["terrain_only"] = function()
 end
 
 funcs["new_game"] = function(file)
-    need_update = true
     iterrain.create()
     iroadnet:create()
 
@@ -135,10 +129,10 @@ funcs["new_game"] = function(file)
     }
 
     init_game(template)
+    world:import_feature "vaststars.gamerender|gameplay_update"
 end
 
 funcs["restore"] = function(path)
-    need_update = true
     iterrain.create()
     iroadnet:create()
 
@@ -148,15 +142,13 @@ funcs["restore"] = function(path)
     for k, v in pairs(template.game_settings or {}) do
         game_settings[k] = v
     end
+
     init_game(template)
+    world:import_feature "vaststars.gamerender|gameplay_update"
 end
 
 function m:init()
     init()
-
-    gameworld_prebuild = world:pipeline_func "gameworld_prebuild"
-    gameworld_build = world:pipeline_func "gameworld_build"
-    gameworld = world:pipeline_func "gameworld"
 
     -- the light must be created in the frame before all entities are created
     world:create_instance {
@@ -175,29 +167,4 @@ function m:init_world()
     local func = assert(funcs[args[1]])
     func(table.unpack(args, 2))
     global.startup_args = {}
-end
-
-function m:gameworld_end()
-    local gameplay_ecs = gameplay_core.get_world().ecs
-    gameplay_ecs:clear("building_new")
-end
-
-function m:frame_update()
-    if not need_update then
-        return
-    end
-
-    local gameplay_world = gameplay_core.get_world()
-    if gameplay_core.system_changed_flags ~= 0 then
-        print("build world")
-        gameplay_core.system_changed_flags = 0
-        gameworld_prebuild()
-        gameplay_world:update()
-        gameworld_build()
-    else
-        if gameplay_core.world_update then
-            gameplay_world:update()
-            gameworld()
-        end
-    end
 end

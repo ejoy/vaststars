@@ -12,7 +12,7 @@ local MAP_HEIGHT <const> = CONSTANT.MAP_HEIGHT
 local TILE_SIZE <const> = CONSTANT.TILE_SIZE
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local CHANGED_FLAG_FLUIDFLOW <const> = CONSTANT.CHANGED_FLAG_FLUIDFLOW
-local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
+local EDITOR_CACHE_NAMES = {"CONFIRM", "CONSTRUCTED"}
 
 local math3d = require "math3d"
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
@@ -85,8 +85,6 @@ local function confirm(self, datamodel)
     end
     iobject.remove(self.coord_indicator)
     self.coord_indicator = nil
-
-    self:revert_changes({"TEMPORARY"})
 
     for _, object in pairs(self.pending) do
         local object_id = object.id
@@ -221,7 +219,6 @@ local function touch_end(self, datamodel)
     end
 
     self.coord_indicator.srt.t, self.coord_indicator.x, self.coord_indicator.y = pos, x, y
-    self:revert_changes({"TEMPORARY"})
 
     local prototype_name, dir = getPlacedPrototypeName(self.coord_indicator.x, self.coord_indicator.y, self.typeobject.name, DEFAULT_DIR)
     if prototype_name ~= self.coord_indicator.prototype_name or dir ~= self.coord_indicator.dir then
@@ -299,7 +296,7 @@ local function place_one(self, datamodel)
         fluid_name = '',
         group_id = 0,
     }
-    objects:set(object, EDITOR_CACHE_NAMES[2])
+    objects:set(object, "CONFIRM")
     self.pending[iprototype.packcoord(object.x, object.y)] = object
     print("place_one", object.x, object.y, object.prototype_name)
 
@@ -341,8 +338,6 @@ local function place_one(self, datamodel)
 end
 
 local function clean(self, datamodel)
-    self:revert_changes({"TEMPORARY", "CONFIRM"})
-
     if self.grid_entity then
         self.grid_entity:remove()
         self.grid_entity = nil

@@ -13,9 +13,6 @@ prototype "指挥中心" {
     area = "6x6",
     sound = "building/headquarter",
     camera_distance = 100,
-    teardown = false,
-    move = false,
-    copy = false,
 }
 
 prototype "物流中心" {
@@ -140,7 +137,6 @@ prototype "砖石公路-I型" {
     type = {"building", "road"},
     area = "2x2",
     camera_distance = 50,
-    move = false,
     crossing = {
         connections = {
             {type="none", position={0,0,"N"}},
@@ -164,7 +160,6 @@ prototype "砖石公路-L型" {
     type = {"building", "road"},
     area = "2x2",
     camera_distance = 50,
-    move = false,
     crossing = {
         connections = {
             {type="none", position={0,0,"N"}},
@@ -188,7 +183,6 @@ prototype "砖石公路-T型" {
     type = {"building", "road"},
     area = "2x2",
     camera_distance = 50,
-    move = false,
     crossing = {
         connections = {
             {type="none", position={0,0,"E"}},
@@ -213,7 +207,6 @@ prototype "砖石公路-O型" {
     type = {"building", "road"},
     area = "2x2",
     camera_distance = 50,
-    move = false,
     crossing = {
         connections = {
         }
@@ -234,7 +227,6 @@ prototype "砖石公路-U型" {
     type = {"building", "road"},
     area = "2x2",
     camera_distance = 50,
-    move = false,
     crossing = {
         connections = {
             {type="none", position={0,0,"N"}},
@@ -257,7 +249,6 @@ prototype "砖石公路-X型" {
     type = {"building", "road"},
     area = "2x2",
     camera_distance = 50,
-    move = false,
     crossing = {
         connections = {
             {type="none", position={0,0,"N"}},
@@ -269,56 +260,6 @@ prototype "砖石公路-X型" {
     road = {
         "0,0,╬",
     },
-}
-
---出货车站需要设置送货类型以及需求车辆
-prototype "出货车站" {
-    model = "glbs/goods-station-1.glb|mesh.prefab",
-    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_goods_station1.texture",
-    construct_detector = {"exclusive"},
-    type = {"building", "station"},
-    chest_style = "station",
-    rotate_on_build = true,
-    area = "4x2",
-    drone_height = 24,
-    crossing = {
-        connections = {
-            {type="station", position={1,1,"S"}},
-            {type="station", position={1,2,"S"}},
-        },
-    },
-    endpoint = "2,0",
-    road = {
-        "0,0,╔╗",
-        "0,2,╨╨",
-    },
-    maxslot = 8,
-    camera_distance = 90,
-}
-
---收货车站需要设置送货类型
-prototype "收货车站" {
-    model = "glbs/goods-station-1.glb|mesh.prefab",
-    icon = "/pkg/vaststars.resources/ui/textures/building-pic/small_pic_goods_station1.texture",
-    construct_detector = {"exclusive"},
-    type = {"building", "station"},
-    chest_style = "station",
-    rotate_on_build = true,
-    area = "4x2",
-    drone_height = 24,
-    crossing = {
-        connections = {
-            {type="station", position={1,1,"S"}},
-            {type="station", position={1,2,"S"}},
-        },
-    },
-    endpoint = "2,0",
-    road = {
-        "0,0,╔╗",
-        "0,2,╨╨",
-    },
-    maxslot = 8,
-    camera_distance = 90,
 }
 
 prototype "物流站" {
