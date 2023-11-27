@@ -136,7 +136,7 @@ local function transfer(gameplay_world, func)
     local t = {}
     for idx, slot in get_slots(gameplay_world, se, SOURCE_TYPES) do
         t[slot.item] = t[slot.item] or {}
-        t[slot.item][idx] = {limit = slot.limit, amount = slot.amount}
+        t[slot.item][idx] = {amount = slot.amount}
     end
 
     local r = {}
@@ -160,16 +160,25 @@ local function transfer(gameplay_world, func)
                 goto continue
             end
 
+            -- this assumes that the assembler's slot of limit is twice the quantity required by the recipe
+            local limit = is_assembling and (slot.limit // 2) or slot.limit
+            local c = math.max(limit - slot.amount, 0)
+            if c <= 0 then
+                goto continue
+            end
+
             for sidx, s in pairs(tt) do
-                -- this assumes that the assembler's slot of limit is twice the quantity required by the recipe
-                local limit = is_assembling and (slot.limit // 2) or slot.limit
-                local c = math.min(math.max(limit - slot.amount, 0), s.amount)
-                if c > 0 then
-                    ichest.pickup_at(gameplay_world, se, sidx, c)
-                    ichest.place_at(gameplay_world, de, idx, c)
-                    func(slot.item, c)
-                    s.amount = s.amount - c
-                    break
+                local cc = math.min(c, s.amount)
+                if cc > 0 then
+                    ichest.pickup_at(gameplay_world, se, sidx, cc)
+                    ichest.place_at(gameplay_world, de, idx, cc)
+                    func(slot.item, cc)
+                    s.amount = s.amount - cc
+                    c = c - cc
+
+                    if c <= 0 then
+                        break
+                    end
                 end
             end
             ::continue::

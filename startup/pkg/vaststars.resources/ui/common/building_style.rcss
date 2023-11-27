@@ -126,14 +126,6 @@ button:active {
 	background-image: "/pkg/vaststars.resources/ui/textures/construct/assembler.texture";
 	border: 0.27vmin rgb(92, 184, 92);
 }
-/*进度条*/
-.progress-pic {
-	width: 4.00vmin;
-	height: 4.00vmin;
-	background-size:cover;
-	background-image:"/pkg/vaststars.resources/ui/textures/character/flash.texture";
-
-}
 .progress-bar-block {
 	margin:0 0 0.05em 0;
 	justify-content: flex-start;
