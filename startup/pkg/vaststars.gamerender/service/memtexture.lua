@@ -1,19 +1,47 @@
-local ltask = require "ltask"
-local bgfx = require "bgfx"
+local ltask 		= require "ltask"
+local bgfx  		= require "bgfx"
+local ServiceWorld  = ltask.queryservice "ant.window|world"
+local S 			= {}
 
-local S = {}
+local DEFAULT_SIZE_CONFIGS <const> = {
+	{
+		width  = 512,
+		height = 512,
+	},
+	{
+		width  = 256,
+		height = 256,
+	},
+	{
+		width  = 128,
+		height = 128,
+	},	
+}
+
+local DEFAULT_ROT_CONFIGS <const> = {
+	{1, 0, 0},
+	{1, -0.5, 0},
+	{1, 0.5, 0},
+}
 
 local function init()
 	local textmgr = ltask.uniqueservice "ant.resource_manager|resource"
 	ltask.call(textmgr, "register", "mem", ltask.self())
 end
 
-function S.load(path)
-	-- todo:
+function S.load(path, config)
+
+	local function parse_config()
+		return config:match "%w+:(%d),(%d)"
+	end
+
+	local size_config, rot_config = parse_config()
+	local size = size_config and DEFAULT_SIZE_CONFIGS[tonumber(size_config)] or DEFAULT_SIZE_CONFIGS[1]
+	local rot  = rot_config  and DEFAULT_ROT_CONFIGS[tonumber(rot_config)]   or DEFAULT_ROT_CONFIGS[1]
 	local c = {
 		info = {
-            width = 1,
-            height = 1,
+            width = size.width,
+            height = size.height,
             format = "RGBA8",
             mipmap = false,
             depth = 1,
@@ -23,11 +51,12 @@ function S.load(path)
             numMips = 1,
             bitsPerPixel = 32,
 		},
-		flag = "umwwvm+l*p-l",
+		flag = "+l-lvcucrt",
 		handle = nil,
 	}
-	c.handle = bgfx.create_texture2d(1, 1, false, 1, "RGBA8", c.flag,
-		bgfx.memory_buffer("bbbb", {0xff,0,0,0}))
+
+	c.handle = ltask.call(ServiceWorld, "create_mem_texture_prefab", path, size.width, size.height, rot)
+
 	return c
 end
 
