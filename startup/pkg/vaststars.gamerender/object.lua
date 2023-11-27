@@ -1,8 +1,24 @@
 local ecs = ...
 local world = ecs.world
 
+local BUILDING_EFK_SCALE <const> = {
+    ["1x1"] = {4, 4, 4},
+    ["1x2"] = {5, 5, 5},
+    ["2x1"] = {5, 5, 5},
+    ["2x2"] = {5, 5, 5},
+    ["3x2"] = {7, 7, 7},
+    ["3x3"] = {7, 7, 7},
+    ["3x5"] = {10, 10, 10},
+    ["4x2"] = {7, 7, 7},
+    ["4x4"] = {10, 10, 10},
+    ["5x3"] = {10, 10, 10},
+    ["5x5"] = {12, 12, 12},
+    ["6x6"] = {12, 12, 12},
+}
+
 local vsobject_manager = ecs.require "vsobject_manager"
 local iprototype = require "gameplay.interface.prototype"
+local iefk = ecs.require "engine.system.efk"
 local math3d = require "math3d"
 local icoord = require "coord"
 local igroup = ecs.require "group"
@@ -151,6 +167,11 @@ local function flush()
         local vsobject = vsobject_manager:get(outer.id)
         if vsobject then
             vsobject:modifier("start_bone_modifier", {name = "confirm"})
+
+            local typeobject = iprototype.queryByName(outer.prototype_name)
+            local w, h = iprototype.rotate_area(typeobject.area, outer.dir)
+            local scale = assert(BUILDING_EFK_SCALE[w.."x"..h])
+            iefk.play("/pkg/vaststars.resources/effects/building-animat.efk", {s = scale, t = outer.srt.t})
         end
     end
 

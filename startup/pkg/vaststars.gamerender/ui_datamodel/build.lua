@@ -65,7 +65,7 @@ local function get_index(list, prototype)
             end
         end
     end
-    assert(false)
+    error(("%s not found in construct_list"):format(iprototype.queryById(prototype).name))
 end
 
 function M.create(prototype)
