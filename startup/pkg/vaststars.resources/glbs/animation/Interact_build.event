@@ -1,4 +1,4 @@
-appear:
+confirm:
   ---
   event_list:
     ---
@@ -8,4 +8,4 @@ appear:
     link_info:
       slot_name: ""
     name: Effect2
-  time: 0.26
+  time: 0.24
