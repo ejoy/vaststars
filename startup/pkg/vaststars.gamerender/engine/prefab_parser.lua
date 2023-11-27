@@ -1,24 +1,13 @@
 local serialize = import_package "ant.serialize"
-local assetmgr = import_package "ant.asset"
 local mathpkg = import_package "ant.math"
+local aio = import_package "ant.io"
 local mc = mathpkg.constant
-local fastio = require "fastio"
-
-local function read_file(filename)
-    local c
-    if string.sub(filename, 1, 1) == "/" then
-        c = fastio.readall_s(assetmgr.compile(filename))
-    else
-        c = fastio.readall_s(filename)
-    end
-    return c
-end
 
 local parse ; do
     local caches = {}
     function parse(fullpath)
         if not caches[fullpath] then
-            caches[fullpath] = serialize.parse(fullpath, read_file(fullpath))
+            caches[fullpath] = serialize.parse(fullpath, aio.readall(fullpath))
         end
         return caches[fullpath]
     end
