@@ -68,7 +68,6 @@
                 height: 100%;
                 align-items: center;
                 justify-content: center;
-                border: 1px #fff;
             }
             icon-remove {
                 width: 29.91vmin;
