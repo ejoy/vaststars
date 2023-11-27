@@ -29,7 +29,7 @@
                 flex-direction: row;
                 left: 0vmax;
                 top: 1.17vmin;
-                width: 78.21vmin;
+                width: 69.00vmax;
                 height: 11.14vmin;
                 gap: 1.50vmin;
                 overflow: hidden;

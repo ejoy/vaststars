@@ -138,7 +138,12 @@ local function assembling_reset_items(world, recipe, chest, option, maxslot)
         create_slot(isFluidId(id) and "none" or "supply", id, n * option.resultsLimit)
     end
     for item, amount in pairs(olditems) do
-        create_slot("supply", item, amount)
+        if amount > 0 then
+            create_slot("supply", item, amount)
+        end
+        if #newitems >= maxslot then
+            break
+        end
     end
     return newitems
 end
