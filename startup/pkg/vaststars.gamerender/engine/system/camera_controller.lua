@@ -11,11 +11,10 @@ local DELTA_TIME <const> = require("gameplay.interface.constant").DELTA_TIME
 local math3d = require "math3d"
 local XZ_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
 
+local aio = import_package "ant.io"
+local datalist = require "datalist"
 local function read_datalist(path)
-    local fs = require "filesystem"
-    local datalist = require "datalist"
-    local fastio = require "fastio"
-    return datalist.parse(fastio.readall(fs.path(path):localpath():string(), path))
+    return datalist.parse(aio.readall(path))
 end
 local CAMERA_DEFAULT <const> = read_datalist "/pkg/vaststars.resources/camera_default.prefab" [1].data.scene
 local CAMERA_CONSTRUCT <const> = read_datalist "/pkg/vaststars.resources/camera_construct.prefab" [1].data.scene

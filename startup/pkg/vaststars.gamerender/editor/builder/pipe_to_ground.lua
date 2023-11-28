@@ -16,7 +16,6 @@ local EDITOR_CACHE_NAMES = {"CONFIRM", "CONSTRUCTED"}
 local math3d = require "math3d"
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 
-local create_builder = ecs.require "editor.builder"
 local iprototype = require "gameplay.interface.prototype"
 local packcoord = iprototype.packcoord
 local ifluid = require "gameplay.interface.fluid"
@@ -28,11 +27,34 @@ local math_abs = math.abs
 local iquad_lines_entity = ecs.require "engine.quad_lines_entity" -- NOTE: different from pipe_builder
 local igrid_entity = ecs.require "engine.grid_entity"
 local icoord = require "coord"
-local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_box"
+local create_pickup_selected_box = ecs.require "editor.indicators.pickup_selected_box"
 local global = require "global"
 local gameplay_core = require "gameplay.core"
 local srt = require "utility.srt"
 local icamera_controller = ecs.require "engine.system.camera_controller"
+
+local function revert_changes(revert_cache_names)
+    local t = {}
+    for _, cache_name in ipairs(revert_cache_names) do
+        for id, object in objects:all(cache_name) do
+            t[id] = object
+        end
+    end
+    objects:clear(revert_cache_names)
+
+    for id, object in pairs(t) do
+        local old_object = objects:get(id, {"CONFIRM", "CONSTRUCTED"})
+        if old_object then
+            object.prototype_name = old_object.prototype_name
+            object.dir = old_object.dir
+            object.srt.r = ROTATORS[object.dir]
+            object.fluid_name = old_object.fluid_name
+        else
+            iobject.remove(object)
+        end
+    end
+    iobject.flush() -- object is removed from cache, so we need to flush it, else it will keep the old state
+end
 
 local function _show_dotted_line(self, from_x, from_y, to_x, to_y, dir, dir_delta)
     from_x, from_y = from_x + dir_delta.x, from_y + dir_delta.y
@@ -59,14 +81,7 @@ end
 
 local function _check_dotted_line(from_x, from_y, to_x, to_y, dir, dir_delta) -- TODO: remove this function
     from_x, from_y = from_x + dir_delta.x, from_y + dir_delta.y
-    local quad_num
-    if from_x == to_x then
-        quad_num = math_abs(from_y - to_y)
-    elseif from_y == to_y then
-        quad_num = math_abs(from_x - to_x)
-    else
-        assert(false)
-    end
+    assert(from_x == to_x or from_y == to_y)
 end
 
 -- Note: different from pipe_builder
@@ -593,7 +608,7 @@ local function _builder_start(self, datamodel)
             end
         end
 
-        if not self:check_construct_detector(prototype_name, to_x, to_y, DEFAULT_DIR) then
+        if not self._check_coord(to_x, to_y, 1, 1) then
             State.succ = false
         end
         State.to_x, State.to_y = to_x, to_y
@@ -601,7 +616,7 @@ local function _builder_start(self, datamodel)
         _builder_end(self, datamodel, State, dir, delta)
         return
     else
-        if not self:check_construct_detector(prototype_name, from_x, from_y, DEFAULT_DIR) then
+        if not self._check_coord(from_x, from_y, 1, 1) then
             State.succ = false
         end
         State.from_x, State.from_y = from_x, from_y
@@ -641,7 +656,7 @@ local function _builder_start(self, datamodel)
         if not succ then
             State.succ = false
         end
-        if not self:check_construct_detector(prototype_name, to_x, to_y, DEFAULT_DIR) then
+        if not self._check_coord(to_x, to_y, 1, 1) then
             State.succ = false
         end
         State.to_x, State.to_y = to_x, to_y
@@ -668,7 +683,7 @@ local function __align(position_type, prototype_name, dir)
     return math3d.vector(position), coord[1], coord[2]
 end
 
-local function _new_entity(self, datamodel, typeobject, x, y, position, dir)
+local function _new_entity(self, typeobject, x, y, position, dir)
     iobject.remove(self.coord_indicator)
 
     self.coord_indicator = iobject.new {
@@ -692,19 +707,6 @@ local function _new_entity(self, datamodel, typeobject, x, y, position, dir)
 end
 
 --------------------------------------------------------------------------------------------------
-local function new_entity(self, datamodel, typeobject, position_type)
-    self.typeobject = typeobject
-    self.position_type = position_type
-
-    local dir = DEFAULT_DIR
-    local pos, x, y = __align(self.position_type, self.typeobject.name, dir)
-    if not pos then
-        return
-    end
-
-    _new_entity(self, datamodel, typeobject, x, y, pos, dir)
-end
-
 local function touch_move(self, datamodel, delta_vec)
     if not self.coord_indicator then
         return
@@ -728,7 +730,7 @@ local function touch_end(self, datamodel)
     local pos, x, y = __align(self.position_type, self.typeobject.name, self.coord_indicator.dir)
     self.coord_indicator.srt.t, self.coord_indicator.x, self.coord_indicator.y = pos, x, y
 
-    self:revert_changes({"CONFIRM"})
+    revert_changes({"CONFIRM"})
     if self.dotted_line then
         self.dotted_line:remove()
         self.dotted_line = nil
@@ -793,7 +795,7 @@ local function complete(self, datamodel)
         self.grid_entity = nil
     end
 
-    self:revert_changes({"CONFIRM"})
+    revert_changes({"CONFIRM"})
 
     datamodel.show_rotate = false
 
@@ -806,7 +808,7 @@ local function complete(self, datamodel)
 
     gameplay_core.set_changed(CHANGED_FLAG_BUILDING | CHANGED_FLAG_FLUIDFLOW)
 
-    _new_entity(self, datamodel, typeobject, x, y, pos, dir)
+    _new_entity(self, typeobject, x, y, pos, dir)
     return true
 end
 
@@ -814,7 +816,7 @@ local function start_laying(self, datamodel)
     local pos, x, y = __align(self.position_type, self.typeobject.name, self.coord_indicator.dir)
     self.coord_indicator.srt.t, self.coord_indicator.x, self.coord_indicator.y = pos, x, y
 
-    self:revert_changes({"CONFIRM"})
+    revert_changes({"CONFIRM"})
 
     self.state = STATE_START
     self.from_x = self.coord_indicator.x
@@ -858,10 +860,13 @@ local function clean(self, datamodel)
     self.pickup_components = {}
 
     self.removed = {}
-    self:revert_changes({"CONFIRM"})
+    revert_changes({"CONFIRM"})
     datamodel.show_rotate = false
     self.state = STATE_NONE
-    self.super.clean(self, datamodel)
+
+    if self.pickup_object then
+        iobject.remove(self.pickup_object)
+    end
 end
 
 local function confirm(self, datamodel)
@@ -873,22 +878,32 @@ local function confirm(self, datamodel)
     end
 end
 
-local function create()
-    local builder = create_builder()
+local function create(datamodel, typeobject, position_type)
+    local m = {}
+    m.touch_move = touch_move
+    m.touch_end = touch_end
+    m.confirm = confirm
 
-    local M = setmetatable({super = builder}, {__index = builder})
-    M.new_entity = new_entity
-    M.touch_move = touch_move
-    M.touch_end = touch_end
-    M.confirm = confirm
+    m.clean = clean
 
-    M.clean = clean
+    m.removed = {}
+    m.pickup_components = {}
+    m.prototype_name = ""
+    m.state = STATE_NONE
 
-    M.removed = {}
-    M.pickup_components = {}
-    M.prototype_name = ""
-    M.state = STATE_NONE
+    m._check_coord = ecs.require(("editor.rules.check_coord.%s"):format(typeobject.check_coord))
 
-    return M
+    m.typeobject = typeobject
+    m.position_type = position_type
+
+    local dir = DEFAULT_DIR
+    local pos, x, y = __align(m.position_type, m.typeobject.name, dir)
+    if not pos then
+        return
+    end
+
+    _new_entity(m, typeobject, x, y, pos, dir)
+
+    return m
 end
 return create

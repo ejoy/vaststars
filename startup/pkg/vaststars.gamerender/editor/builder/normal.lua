@@ -8,14 +8,13 @@ local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
 local MAP_WIDTH <const> = CONSTANT.MAP_WIDTH
 local MAP_HEIGHT <const> = CONSTANT.MAP_HEIGHT
 local TILE_SIZE <const> = CONSTANT.TILE_SIZE
+local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 
 local math3d = require "math3d"
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 
 local iprototype = require "gameplay.interface.prototype"
 local icamera_controller = ecs.require "engine.system.camera_controller"
-local create_builder = ecs.require "editor.builder"
-local ieditor = ecs.require "editor.editor"
 local objects = require "objects"
 local irecipe = require "gameplay.interface.recipe"
 local iobject = ecs.require "object"
@@ -27,27 +26,12 @@ local flush_sprite = isprite.flush
 local create_selected_boxes = ecs.require "selected_boxes"
 local icoord = require "coord"
 local gameplay_core = require "gameplay.core"
-local ibuilding = ecs.require "render_updates.building"
 local create_fluid_indicators = ecs.require "fluid_indicators".create
 local iinventory = require "gameplay.interface.inventory"
 local ichest = require "gameplay.interface.chest"
 local srt = require "utility.srt"
 local imineral = ecs.require "mineral"
-
--- TODO: duplicate from roadbuilder.lua
-local function _get_connections(prototype_name, x, y, dir)
-    local typeobject = iprototype.queryByName(prototype_name)
-    local r = {}
-    if not typeobject.crossing then
-        return r
-    end
-
-    for _, conn in ipairs(typeobject.crossing.connections) do
-        local dx, dy, ddir = iprototype.rotate_connection(conn.position, dir, typeobject.area)
-        r[#r+1] = {x = x + dx, y = y + dy, dir = ddir}
-    end
-    return r
-end
+local igameplay = ecs.require "gameplay.gameplay_system"
 
 local function __create_self_sprite(typeobject, x, y, dir, sprite_color)
     local sprite
@@ -311,7 +295,8 @@ local function __new_entity(self, datamodel, typeobject, x, y, position, dir)
 
     local sprite_color
     local valid
-    if not self:check_construct_detector(typeobject.name, x, y, dir) then
+    local w, h = iprototype.rotate_area(typeobject.area, dir)
+    if not self._check_coord(x, y, w, h) then
         if typeobject.supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID
         end
@@ -398,14 +383,6 @@ local function align(position_type, area, dir)
     return coord[1], coord[2], math3d.vector(pos)
 end
 
-local function new_entity(self, datamodel, typeobject, position_type)
-    self.typeobject = typeobject
-    self.position_type = position_type
-
-    local x, y, pos = align(self.position_type, self.typeobject.area, DEFAULT_DIR)
-    __new_entity(self, datamodel, typeobject, x, y, pos, DEFAULT_DIR)
-end
-
 local function touch_move(self, datamodel, delta_vec)
     if not self.pickup_object then
         return
@@ -439,7 +416,7 @@ local function touch_move(self, datamodel, delta_vec)
     local valid
     local offset_x, offset_y = 0, 0
     local w, h = iprototype.rotate_area(typeobject.area, pickup_object.dir)
-    if not self:check_construct_detector(pickup_object.prototype_name, x, y, pickup_object.dir) then -- TODO
+    if not self._check_coord(x, y, w, h) then
         datamodel.show_confirm = false
         valid = false
 
@@ -495,13 +472,34 @@ local function touch_end(self, datamodel)
     touch_move(self, datamodel, {0, 0, 0})
 end
 
+local function complete(object_id)
+    assert(object_id)
+    local object = objects:get(object_id, {"CONFIRM"})
+    local old = objects:get(object_id, {"CONSTRUCTED"})
+    if not old then
+        object.gameplay_eid = igameplay.create_entity(object)
+    else
+        if old.prototype_name ~= object.prototype_name then
+            igameplay.destroy_entity(object.gameplay_eid)
+            object.gameplay_eid = igameplay.create_entity(object)
+        elseif old.dir ~= object.dir then
+            igameplay.rotate(object.gameplay_eid, object.dir)
+        end
+    end
+
+    objects:remove(object_id, "CONFIRM")
+    objects:set(object, "CONSTRUCTED")
+    gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
+end
+
 local function confirm(self, datamodel)
     local pickup_object = self.pickup_object
     if not pickup_object then
         return
     end
 
-    local succ = self:check_construct_detector(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir)
+    local w, h = iprototype.rotate_area(self.typeobject.area, pickup_object.dir)
+    local succ = self._check_coord(pickup_object.x, pickup_object.y, w, h)
     if not succ then
         log.info("can not construct") --TODO: show error message
         return
@@ -514,9 +512,6 @@ local function confirm(self, datamodel)
     end
     assert(iinventory.pickup(gameplay_world, self.typeobject.id, 1))
 
-    local typeobject = iprototype.queryByName(pickup_object.prototype_name)
-
-    local w, h = iprototype.rotate_area(typeobject.area, pickup_object.dir)
     pickup_object.recipe = _get_mineral_recipe(pickup_object.prototype_name, pickup_object.x, pickup_object.y, w, h)
     if pickup_object.recipe then
         local recipe_typeobject = iprototype.queryByName(pickup_object.recipe)
@@ -532,39 +527,9 @@ local function confirm(self, datamodel)
     datamodel.show_rotate = false
 
     self.pickup_object = nil
-    self.super.complete(self, pickup_object.id)
+    complete(pickup_object.id)
 
-    __new_entity(self, datamodel, typeobject, pickup_object.x, pickup_object.y, pickup_object.srt.t, pickup_object.dir)
-end
-
-local function check_construct_detector(self, prototype_name, x, y, dir)
-    local succ = self.super:check_construct_detector(prototype_name, x, y, dir)
-    if not succ then
-        return false
-    end
-
-    local typeobject = iprototype.queryByName(prototype_name)
-    if typeobject.crossing then
-        local valid = false
-        for _, conn in ipairs(_get_connections(prototype_name, x, y, dir)) do
-            local succ, dx, dy = icoord.move(conn.x, conn.y, conn.dir, 1)
-            if not succ then
-                goto continue
-            end
-
-            if ibuilding.get(dx, dy) then
-                valid = true
-                break
-            end
-            ::continue::
-        end
-
-        if not valid then
-            return false
-        end
-    end
-
-    return true
+    __new_entity(self, datamodel, self.typeobject, pickup_object.x, pickup_object.y, pickup_object.srt.t, pickup_object.dir)
 end
 
 local function rotate(self, datamodel, dir, delta_vec)
@@ -586,7 +551,7 @@ local function rotate(self, datamodel, dir, delta_vec)
     end
     local sprite_color
     local valid
-    if not self:check_construct_detector(typeobject.name, pickup_object.x, pickup_object.y, pickup_object.dir) then
+    if not self._check_coord(typeobject.name, pickup_object.x, pickup_object.y, pickup_object.dir) then
         valid = false
         if typeobject.supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID
@@ -642,26 +607,31 @@ local function clean(self, datamodel)
 
     datamodel.show_confirm = false
     datamodel.show_rotate = false
-    self.super.clean(self, datamodel)
+    if self.pickup_object then
+        iobject.remove(self.pickup_object)
+    end
 end
 
-local function create()
-    local builder = create_builder()
+local function create(datamodel, typeobject, position_type)
+    local m = {}
+    m.touch_move = touch_move
+    m.touch_end = touch_end
+    m.confirm = confirm
+    m.rotate = rotate
+    m.clean = clean
+    m.sprites = {}
+    m.self_selected_boxes = nil
+    m.selected_boxes = {}
+    m.last_x, m.last_y = -1, -1
+    m.pickup_components = {}
 
-    local M = setmetatable({super = builder}, {__index = builder})
-    M.new_entity = new_entity
-    M.touch_move = touch_move
-    M.touch_end = touch_end
-    M.confirm = confirm
-    M.rotate = rotate
-    M.clean = clean
-    M.check_construct_detector = check_construct_detector
-    M.sprites = {}
-    M.self_selected_boxes = nil
-    M.selected_boxes = {}
-    M.last_x, M.last_y = -1, -1
-    M.pickup_components = {}
+    m._check_coord = ecs.require(("editor.rules.check_coord.%s"):format(typeobject.check_coord))
 
-    return M
+    m.typeobject = typeobject
+    m.position_type = position_type
+
+    local x, y, pos = align(m.position_type, m.typeobject.area, DEFAULT_DIR)
+    __new_entity(m, datamodel, typeobject, x, y, pos, DEFAULT_DIR)
+    return m
 end
 return create

@@ -1,0 +1,20 @@
+---
+file: materials/Material.010.material
+op: replace
+path: /state/CULL
+value: NONE
+---
+file: mesh.prefab
+op: createfile
+path: hitch.prefab
+value:
+  ---
+  data:
+    hitch:
+      group: 0
+    scene: {}
+    visible_state: main_view|cast_shadow|selectable
+  policy:
+    ant.render|hitch_object
+  tag:
+    hitch

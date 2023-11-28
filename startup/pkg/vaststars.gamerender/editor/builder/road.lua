@@ -24,7 +24,6 @@ local WORLD_MOVE_DELTA <const> = {
 local math3d = require "math3d"
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 
-local create_builder = ecs.require "editor.builder"
 local iprototype = require "gameplay.interface.prototype"
 local iobject = ecs.require "object"
 local objects = require "objects"
@@ -34,7 +33,7 @@ local iroadnet_converter = require "roadnet_converter"
 local igrid_entity = ecs.require "engine.grid_entity"
 local iroadnet = ecs.require "engine.roadnet"
 local gameplay_core = require "gameplay.core"
-local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_box"
+local create_pickup_selected_box = ecs.require "editor.indicators.pickup_selected_box"
 local iinstance_object = ecs.require "engine.instance_object"
 local ibuilding = ecs.require "render_updates.building"
 local icamera_controller = ecs.require "engine.system.camera_controller"
@@ -189,18 +188,6 @@ local function _new_entity(self, datamodel, typeobject, x, y)
     updateComponentsStatus(self)
 end
 --------------------------------------------------------------------------------------------------
-local function new_entity(self, datamodel, typeobject, position_type)
-    print(typeobject)
-    self.typeobject = typeobject
-    self.position_type = position_type
-
-    local coord = assert(icoord.position2coord(icamera_controller.get_screen_world_position(position_type)))
-    local x, y = coord[1], coord[2]
-    x, y = x - (x % ROAD_SIZE), y - (y % ROAD_SIZE)
-
-    _new_entity(self, datamodel, typeobject, x, y)
-end
-
 local function touch_move(self, datamodel, delta_vec)
     if self.coord_indicator then
         iobject.move_delta(self.coord_indicator, delta_vec)
@@ -342,23 +329,30 @@ local function rotate(self)
     end
 end
 
-local function create()
-    local builder = create_builder()
+local function create(datamodel, typeobject, position_type)
+    local m = {}
+    m.touch_move = touch_move
+    m.touch_end = touch_end
+    m.rotate = rotate
 
-    local M = setmetatable({super = builder}, {__index = builder})
-    M.new_entity = new_entity
-    M.touch_move = touch_move
-    M.touch_end = touch_end
-    M.rotate = rotate
+    m.confirm = place
+    m.clean = clean
 
-    M.confirm = place
-    M.clean = clean
+    m.destroy = false
+    m.pickup_components = {}
+    m.typeobject = nil
+    m.forward_dir = DEFAULT_DIR
 
-    M.destroy = false
-    M.pickup_components = {}
-    M.typeobject = nil
-    M.forward_dir = DEFAULT_DIR
+    print(typeobject)
+    m.typeobject = typeobject
+    m.position_type = position_type
 
-    return M
+    local coord = assert(icoord.position2coord(icamera_controller.get_screen_world_position(position_type)))
+    local x, y = coord[1], coord[2]
+    x, y = x - (x % ROAD_SIZE), y - (y % ROAD_SIZE)
+
+    _new_entity(m, datamodel, typeobject, x, y)
+
+    return m
 end
 return create

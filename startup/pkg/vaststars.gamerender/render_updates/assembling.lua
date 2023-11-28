@@ -16,11 +16,10 @@ local ROTATORS <const> = {
     W = math.rad(-270),
 }
 
+local aio = import_package "ant.io"
+local datalist = require "datalist"
 local function read_datalist(path)
-    local fs = require "filesystem"
-    local datalist = require "datalist"
-    local fastio = require "fastio"
-    return datalist.parse(fastio.readall(fs.path(path):localpath():string(), path))
+    return datalist.parse(aio.readall(path))
 end
 local RECIPES_CFG <const> = read_datalist "/pkg/vaststars.resources/config/canvas/recipes.cfg"
 

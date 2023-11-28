@@ -545,18 +545,6 @@ prototype "物流站" {
     item_description = "给运输车辆提供货物的车站",
 }
 
-prototype "停车站" {
-    type = {"item"},
-    item_category = "物流",
-    station_limit = 8,
-    chest_limit = 15,
-    backpack_limit = 20,
-    item_order = 19,
-    item_icon = "/pkg/vaststars.resources/textures/icons/item/goodstation-input.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
-    item_description = "从运输车辆收取货物的车站",
-}
-
 prototype "电解厂I" {
     type = {"item"},
     item_category = "化工",

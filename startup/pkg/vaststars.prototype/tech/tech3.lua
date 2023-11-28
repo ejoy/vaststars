@@ -136,41 +136,6 @@ local prototype = gameplay.register.prototype
       { desc = "修补2处断开的砖石公路", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
-  
-  prototype "停车站放置" {
-    desc = "放置1座停车站",
-    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-    type = {"task" },
-    task = {"select_entity", 0, "停车站"},
-    prerequisites = {"道路维修"},
-    count = 1,
-    tips_pic = {
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
-    },
-    guide_focus = {
-      {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-        x = 165.5,
-        y = 122.5,
-        w = 4.2,
-        h = 2.1,
-        color = {0.3, 1, 0, 1},
-        show_arrow = true,
-      },
-      {
-        camera_x = 164,
-        camera_y = 122,
-        w = 4.2,
-        h = 2.1,
-      },
-    },
-    effects = {
-      unlock_item = {"碎石","铁矿石"},
-    },
-    sign_desc = {
-      { desc = "在放置1座停车站", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-    },
-  }
 
   prototype "物流站发货设置" {
     desc = "物流站发货设置",
@@ -178,7 +143,7 @@ local prototype = gameplay.register.prototype
     type = {"task" },
     task = {"unknown", 0, 8},
     task_params = {items = {"supply|碎石", "supply|铁矿石"}},
-    prerequisites = {"停车站放置"},
+    prerequisites = {"道路维修"},
     count = 1,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",

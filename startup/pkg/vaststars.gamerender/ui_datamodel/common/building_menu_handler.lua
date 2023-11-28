@@ -48,10 +48,6 @@ local COMMAND_HANDLERS <const> = {
         button.number = status.transfer_count
         return button
     end,
-    ["transfer_source"] = function(status, button)
-        button.selected = true
-        return button
-    end,
 }
 
 local function create_button(command)

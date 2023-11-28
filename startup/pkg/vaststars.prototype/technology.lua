@@ -607,8 +607,8 @@ local prototype = gameplay.register.prototype
     desc = "研究维修停车场的方法",
     type = { "tech" },
     effects = {
-      unlock_recipe = {"维修停车站","维修物流站"},
-      unlock_item = {"停车站框架","物流站框架","物流站","停车站"},
+      unlock_recipe = {"维修物流站"},
+      unlock_item = {"物流站框架","物流站"},
     },
     prerequisites = {"公路研究"},
     ingredients = {
@@ -662,22 +662,6 @@ local prototype = gameplay.register.prototype
   --     { desc = "在生产地质科技包组装机的公路边放置1座物流站并设置收货类型", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
   --   },
   -- }
-
-  -- prototype "放置停车站" {
-  --   desc = "放置1座停车站",
-  --   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-  --   type = { "task" },
-  --   task = {"select_entity", 0, "停车站"},
-  --   prerequisites = {"恢复物流"},
-  --   count = 1,
-  --   tips_pic = {
-  --     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
-  --   },
-  --   sign_desc = {
-  --     { desc = "在公路边放置1座停车站来启动物流", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-  --   },
-  -- }
-
 
   prototype "汽修技术" {
     desc = "研究修理运输车辆工艺",
@@ -1373,7 +1357,7 @@ prototype "物流车站1" {
   desc = "研究供运输车辆装卸货物的物流点",
   type = { "tech" },
   effects = {
-    unlock_recipe = {"物流站打印","停车站打印"},
+    unlock_recipe = {"物流站打印"},
   },
   prerequisites = {"自动化1"},
   ingredients = {
