@@ -18,11 +18,15 @@ local DEFAULT_SIZE_CONFIGS <const> = {
 	},	
 }
 
-local DEFAULT_ROT_CONFIGS <const> = {
-	{0, 0, 0},
-	{0, -0.5, 0},
-	{0, 0.5, 0},
+local DEFAULT_STATIC_ROT_CONFIGS <const> = {
+	{0.25, 0, 0},
+	{0.25, -0.5, 0},
+	{0.25, 0.5, 0},
 }
+
+local DEFAULT_DYNAMIC_ROT_CONFIG = {0, 0, 0}
+
+local RT_CACHE = {}
 
 local function init()
 	local textmgr = ltask.uniqueservice "ant.resource_manager|resource"
@@ -32,12 +36,13 @@ end
 function S.load(path, config)
 
 	local function parse_config()
-		return config:match "%w+:(%d),(%d)"
+		return config:match "%w+:(%a),(%d),(%d)"
 	end
 
-	local size_config, rot_config = parse_config()
+	local type, size_config, rot_config = parse_config()
+	local is_dynamic = type == 'd'
 	local size = size_config and DEFAULT_SIZE_CONFIGS[tonumber(size_config)] or DEFAULT_SIZE_CONFIGS[1]
-	local rot  = rot_config  and DEFAULT_ROT_CONFIGS[tonumber(rot_config)]   or DEFAULT_ROT_CONFIGS[1]
+	local rot  = rot_config  and DEFAULT_STATIC_ROT_CONFIGS[tonumber(rot_config)]   or DEFAULT_STATIC_ROT_CONFIGS[1]
 	local c = {
 		info = {
             width = size.width,
@@ -55,9 +60,20 @@ function S.load(path, config)
 		handle = nil,
 	}
 
-	c.handle = ltask.call(ServiceWorld, "create_mem_texture_prefab", path, size.width, size.height, rot)
+	if is_dynamic then
+		local rt_idx
+		c.handle, rt_idx = ltask.call(ServiceWorld, "create_mem_texture_dynamic_prefab", path, size.width, size.height, DEFAULT_DYNAMIC_ROT_CONFIG)
+		RT_CACHE[c.handle] = rt_idx
+	else
+		c.handle = ltask.call(ServiceWorld, "create_mem_texture_static_prefab", path, size.width, size.height, rot)
+	end
 
-	return c
+	return c, is_dynamic
+end
+
+function S.unload(handle)
+	bgfx.destroy(handle)
+	ltask.call(ServiceWorld, "destroy_mem_texture_dynamic_prefab", RT_CACHE[handle])
 end
 
 init()
