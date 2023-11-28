@@ -218,16 +218,16 @@ local prototype = gameplay.register.prototype
     guide_focus = {
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-        x = 154.5,
-        y = 116.5,
-        w = 5.2,
-        h = 5.2,
+        x = 155.5,
+        y = 120.5,
+        w = 4.2,
+        h = 6.2,
         color = {0.3, 1, 0, 1},
         show_arrow = true,
       },
       {
-        camera_x = 152,
-        camera_y = 114,
+        camera_x = 155,
+        camera_y = 120,
         w = 5.2,
         h = 5.2,
       },
