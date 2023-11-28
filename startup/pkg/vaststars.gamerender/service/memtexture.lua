@@ -19,9 +19,9 @@ local DEFAULT_SIZE_CONFIGS <const> = {
 }
 
 local DEFAULT_STATIC_ROT_CONFIGS <const> = {
-	{0.25, 0, 0},
-	{0.25, -0.5, 0},
-	{0.25, 0.5, 0},
+	{0, 0, 0},
+	{0, -0.35, 0},
+	{0, 0.35, 0},
 }
 
 local DEFAULT_DYNAMIC_ROT_CONFIG = {0, 0, 0}

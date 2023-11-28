@@ -4,7 +4,7 @@ local prototype = gameplay.register.prototype
 prototype "采矿机I" {
     model = "glbs/miner-1.glb|mesh.prefab",
     model_status = {work = true, low_power = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/miner-1.glb|mesh.prefab config:s,3,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/miner-1.glb|mesh.prefab config:s,1,3",
     check_coord = "mining",
     builder = "normal",
     type = {"building", "consumer", "assembling", "mining"},
@@ -24,7 +24,7 @@ prototype "采矿机I" {
 prototype "采矿机II" {
     model = "glbs/miner-1.glb|mesh.prefab",
     model_status = {work = true, low_power = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/miner-1.glb|mesh.prefab config:s,3,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/miner-1.glb|mesh.prefab config:s,1,3",
     check_coord = "mining",
     builder = "normal",
     type = {"building", "consumer", "assembling", "mining"},
@@ -44,7 +44,7 @@ prototype "采矿机II" {
 prototype "采矿机III" {
     model = "glbs/miner-1.glb|mesh.prefab",
     model_status = {work = true, low_power = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/miner-1.glb|mesh.prefab config:s,3,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/miner-1.glb|mesh.prefab config:s,1,3",
     check_coord = "mining",
     builder = "normal",
     type = {"building", "consumer", "assembling", "mining"},
@@ -64,7 +64,7 @@ prototype "采矿机III" {
 prototype "轻型采矿机" {
     model = "glbs/miner-1.glb|mesh.prefab",
     model_status = {work = true, low_power = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/miner-1.glb|mesh.prefab config:s,3,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/miner-1.glb|mesh.prefab config:s,1,3",
     check_coord = "mining",
     builder = "normal",
     type = {"building", "consumer", "assembling", "mining"},
