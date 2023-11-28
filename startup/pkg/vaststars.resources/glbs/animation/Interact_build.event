@@ -2,10 +2,7 @@ confirm:
   ---
   event_list:
     ---
-    asset_path: /pkg/vaststars.resources/effects/building-animat.efk
-    event_type: Effect
-    life_time: 2
-    link_info:
-      slot_name: ""
-    name: Effect2
+    event_type: Message
+    msg_content: ""
+    name: confirm
   time: 0.24
