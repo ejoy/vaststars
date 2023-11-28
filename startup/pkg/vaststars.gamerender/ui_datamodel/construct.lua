@@ -19,16 +19,11 @@ local gameplay_core = require "gameplay.core"
 local iui = ecs.require "engine.system.ui_system"
 local iprototype = require "gameplay.interface.prototype"
 local irecipe = require "gameplay.interface.recipe"
-local create_normalbuilder = ecs.require "editor.normalbuilder"
-local create_movebuilder = ecs.require "editor.movebuilder"
-local create_roadbuilder = ecs.require "editor.roadbuilder"
-local create_pipebuilder = ecs.require "editor.pipebuilder"
-local create_pipetogroundbuilder = ecs.require "editor.pipetogroundbuilder"
+local create_movebuilder = ecs.require "editor.builder.move"
 local objects = require "objects"
 local global = require "global"
 local iobject = ecs.require "object"
 local idetail = ecs.require "detail_system"
-local create_station_builder = ecs.require "editor.stationbuilder"
 local icoord = require "coord"
 local iinventory = require "gameplay.interface.inventory"
 local gesture_longpress_mb = world:sub{"gesture", "longpress"}
@@ -173,20 +168,8 @@ local function _construct_entity(typeobject, position_type)
     builder_ui = "/pkg/vaststars.resources/ui/construct_building.rml"
     builder_datamodel = iui.get_datamodel("/pkg/vaststars.resources/ui/construct.rml")
 
-    --TODO: prototype should be a parameter
-    if iprototype.has_type(typeobject.type, "road") then
-        builder = create_roadbuilder()
-    elseif iprototype.has_type(typeobject.type, "pipe") then
-        builder = create_pipebuilder()
-    elseif iprototype.has_type(typeobject.type, "pipe_to_ground") then
-        builder = create_pipetogroundbuilder()
-    elseif iprototype.has_types(typeobject.type, "station", "park") then
-        builder = create_station_builder()
-    else
-        builder = create_normalbuilder(typeobject.id)
-    end
-
-    builder:new_entity(builder_datamodel, typeobject, position_type)
+    local create_builder = ecs.require("editor.builder." .. typeobject.builder)
+    builder = create_builder(builder_datamodel, typeobject, position_type)
 end
 
 local function move_focus(e)
@@ -646,8 +629,7 @@ function M.update(datamodel)
             idetail.unselected()
             builder_ui = "/pkg/vaststars.resources/ui/move_building.rml"
             builder_datamodel = iui.open({rml = "/pkg/vaststars.resources/ui/move_building.rml"}, object.prototype_name)
-            builder = create_movebuilder(object_id)
-            builder:new_entity(builder_datamodel, typeobject)
+            builder = create_movebuilder(object_id, builder_datamodel, typeobject)
         end)
     end
 

@@ -163,12 +163,7 @@ local entities = { {
   prototype_name = "物流站",
   x = 136,
   y = 108
-}, {
-  dir = "S",
-  prototype_name = "停车站",
-  x = 146,
-  y = 116
-}}
+},}
 local road = { {
   dir = "E",
   prototype_name = "砖石公路-I型",

@@ -1886,23 +1886,6 @@ prototype "物流站打印" {
     description = "向运输车辆装卸货物的车站",
 }
 
-prototype "停车站打印" {
-    type = { "recipe" },
-    recipe_craft_category = "生产大型制造",
-    recipe_category =  "物流",
-    recipe_order =  80,
-    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/goodsstation-input-design.texture",
-    ingredients = {
-        {"电动机I", 1},
-        {"石砖", 4},
-    },
-    results = {
-        {"停车站", 1},
-    },
-    time = "8s",
-    description = "容纳停靠运输车辆的车站",
-}
-
 prototype "火箭区段1" {
     type = { "recipe" },
     recipe_craft_category = "生产大型制造",
@@ -2394,26 +2377,8 @@ prototype "维修物流站" {
         {"物流站", 1},
     },
     time = "5s",
-    description = "维修破损的停车站",
+    description = "维修破损的物流站",
 }
-
-prototype "维修停车站" {
-    type = { "recipe" },
-    recipe_craft_category = "建筑打印",
-    recipe_category =  "加工",
-    recipe_order =  56,
-    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/goodsstation-input-design.texture",
-    ingredients = {
-        {"石砖", 4},
-        {"停车站框架", 1},
-    },
-    results = {
-        {"停车站", 1},
-    },
-    time = "8s",
-    description = "维修破损的停车站",
-}
-
 
 prototype "维修空气过滤器" {
     type = { "recipe" },

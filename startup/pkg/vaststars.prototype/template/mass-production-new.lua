@@ -11,7 +11,7 @@ local entities = { {
   dir = "N",
   prototype_name = "物流中心",
   x = 124,
-  y = 118
+  y = 122
 }, {
   dir = "N",
   items = items,
@@ -3523,18 +3523,6 @@ local entities = { {
   prototype_name = "无人机平台I",
   x = 128,
   y = 149
-}, {
-  dir = "N",
-  prototype_name = "停车站",
-  x = 122,
-  y = 128
-}, 
-----------------------
-{
-  dir = "W",
-  prototype_name = "停车站",
-  x = 64,
-  y = 108
 }, 
 ------------------
 {

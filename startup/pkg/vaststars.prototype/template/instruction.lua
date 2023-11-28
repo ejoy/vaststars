@@ -138,12 +138,7 @@ local entities = { {
   prototype_name = "无人机平台I",
   x = 121,
   y = 132
-}, {
-  dir = "S",
-  prototype_name = "停车站",
-  x = 176,
-  y = 84
-}, {
+},{
   dir = "S",
   items = { { "supply", "碎石", 1 }, { "supply", "铁矿石", 1 }, { "supply", "铝矿石", 1 }, { "demand", "地质科技包", 3 } },
   prototype_name = "物流站",

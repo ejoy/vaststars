@@ -17,7 +17,6 @@ local EDITOR_CACHE_NAMES = {"CONFIRM", "CONSTRUCTED"}
 local math3d = require "math3d"
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 
-local create_builder = ecs.require "editor.builder"
 local iprototype = require "gameplay.interface.prototype"
 local iobject = ecs.require "object"
 local iflow_connector = require "gameplay.interface.flow_connector"
@@ -26,7 +25,7 @@ local igrid_entity = ecs.require "engine.grid_entity"
 local icoord = require "coord"
 local igameplay = ecs.require "gameplay.gameplay_system"
 local gameplay_core = require "gameplay.core"
-local create_pickup_selected_box = ecs.require "editor.common.pickup_selected_box"
+local create_pickup_selected_box = ecs.require "editor.indicators.pickup_selected_box"
 local ifluidbox = ecs.require "render_updates.fluidbox"
 local iprototype_cache = ecs.require "prototype_cache"
 local icamera_controller = ecs.require "engine.system.camera_controller"
@@ -161,14 +160,6 @@ local function _new_entity(self, datamodel, typeobject, x, y, pos, dir)
     _builder_init(self, datamodel)
 end
 --------------------------------------------------------------------------------------------------
-
-local function new_entity(self, datamodel, typeobject, position_type)
-    self.typeobject = typeobject
-    self.position_type = position_type
-
-    local x, y, pos = align(self.position_type, self.typeobject.area, DEFAULT_DIR)
-    _new_entity(self, datamodel, typeobject, x, y, pos, DEFAULT_DIR)
-end
 
 local function touch_move(self, datamodel, delta_vec)
     if not self.coord_indicator then
@@ -352,22 +343,25 @@ local function clean(self, datamodel)
     self.pending = {}
 end
 
-local function create()
-    local builder = create_builder()
+local function create(datamodel, typeobject, position_type)
+    local m = {}
+    m.touch_move = touch_move
+    m.touch_end = touch_end
 
-    local M = setmetatable({super = builder}, {__index = builder})
-    M.new_entity = new_entity
-    M.touch_move = touch_move
-    M.touch_end = touch_end
+    m.prototype_name = ""
+    m.confirm = place_one
+    m.clean = clean
 
-    M.prototype_name = ""
-    M.confirm = place_one
-    M.clean = clean
+    m.pending = {}
+    m.pickup_components = {}
+    m.to_x = nil
+    m.to_y = nil
 
-    M.pending = {}
-    M.pickup_components = {}
-    M.to_x = nil
-    M.to_y = nil
-    return M
+    m.typeobject = typeobject
+    m.position_type = position_type
+
+    local x, y, pos = align(m.position_type, m.typeobject.area, DEFAULT_DIR)
+    _new_entity(m, datamodel, typeobject, x, y, pos, DEFAULT_DIR)
+    return m
 end
 return create
