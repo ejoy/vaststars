@@ -1,6 +1,6 @@
 return {
     ["set_transfer_source"] = "/pkg/vaststars.resources/ui/textures/building-menu/set-transfer-source.texture",
-    ["transfer_source"] = "/pkg/vaststars.resources/ui/textures/building-menu/set-transfer-source.texture",
+    ["transfer_source"] = "/pkg/vaststars.resources/ui/textures/building-menu/transfer-source.texture",
     ["remove_lorry"] = "/pkg/vaststars.resources/ui/textures/building-menu/remove-lorry.texture",
     ["move"] = "/pkg/vaststars.resources/ui/textures/building-menu/move.texture",
     ["lorry_factory_inc_lorry"] = "/pkg/vaststars.resources/ui/textures/building-menu/lorry-factory-inc-lorry.texture",

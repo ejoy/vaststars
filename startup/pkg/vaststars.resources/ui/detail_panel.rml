@@ -142,6 +142,9 @@
                     transform: scale(1.03);
                 }
             }
+            scroll-item-list {
+                overflow: scroll;
+            }
         </style>
         <style path = "/pkg/vaststars.resources/ui/common/building_style.rcss"/>
         <script type="text/x-lua" >
@@ -189,9 +192,24 @@
                 end
             end
 
+            function init()
+                for _, e in ipairs(document.getElementsByTagName "scroll-item-list") do
+                    console.log("init")
+                    e.scrollInsets(0, 0, 0, 200)
+
+                    local last_y
+                    e.addEventListener("pan", function(param)
+                        if last_y and param.state == "changed" then
+                            e.scrollTop = e.scrollTop - (param.y - last_y)
+                        end
+                        last_y = param.y
+                    end)
+                end
+            end
+
         </script>
     </head>
-    <body style = "pointer-events: none; justify-content: center; align-items: center;">
+    <body style = "pointer-events: none; justify-content: center; align-items: center;" onload="init()">
         <div class="panel1" style="flex-direction: row; justify-content: flex-start; align-items: center;">
             <!-- detail panel begin -->
             <div style = 'margin-left: 6.5%; margin-top: 18vmin; margin-bottom: 7vmin; width: 17.10vmax; height: 81vmin; background-lattice: 32.97% 11.50% 32.97% 11.50% 50% 50%; background-image: "/pkg/vaststars.resources/ui/textures/detail/background.texture"; background-size: 100% 100%;'>
@@ -301,14 +319,14 @@
             </div>
             <!--物流中心-->
             <div class="tips-bg" style="margin-left: -3vmin;" data-if="areaid==3.0" data-event-longpress="onLongPressTips(ev)">
-                <div style="width:80%; flex-direction: row; justify-content: center; align-items: center; flex-wrap: wrap;">
-                    <div style='flex-direction: column; align-items: center;' data-for = "chest : chest_list_1" >
+                <scroll-item-list style="width: 71.5%; height: 80%; flex-direction: row; align-items: center; flex-wrap: wrap;">
+                    <div style='width: 19vmin; flex-direction: column; align-items: center;' data-for = "chest : chest_list_1" >
                         <div class="small-item1" style="margin: 1vmin; width: 15vmin; height: 15vmin;" data-style-border = "chest.type == 'supply' and '0.3vmin rgb(254, 98, 124);' or (chest.type == 'demand' and '0.3vmin rgb(23, 176, 240);' or '0.2vmin rgb(255, 255, 255);')" data-style-background-image="chest.icon">
                             <div style="font-size: 5.4vmin; -webkit-text-stroke:0.25vmin rgb(0, 0, 0);" data-if="chest.icon ~= ''">{{chest.count}}</div>
                         </div>
                         <div style='font-size: 3vmin'>{{chest.name}}</div>
                     </div>
-                </div>
+                </scroll-item-list>
             </div>
             <!--采矿机-->
             <div class="tips-bg" style="margin-left: -3vmin;" data-if="areaid==4.0" data-event-longpress="onLongPressTips(ev)">
