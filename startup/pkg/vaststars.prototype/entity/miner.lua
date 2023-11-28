@@ -18,7 +18,6 @@ prototype "采矿机I" {
     mining_category = {"矿石开采"},
     speed = "100%",
     maxslot = 8,
-    camera_distance = 95,
 }
 
 prototype "采矿机II" {
@@ -38,7 +37,6 @@ prototype "采矿机II" {
     mining_category = {"矿石开采"},
     speed = "200%",
     maxslot = 8,
-    camera_distance = 95,
 }
 
 prototype "采矿机III" {
@@ -58,7 +56,6 @@ prototype "采矿机III" {
     mining_category = {"矿石开采"},
     speed = "300%",
     maxslot = 8,
-    camera_distance = 95,
 }
 
 prototype "轻型采矿机" {
@@ -78,5 +75,4 @@ prototype "轻型采矿机" {
     mining_category = {"矿石开采"},
     speed = "100%",
     maxslot = 8,
-    camera_distance = 95,
 }

@@ -35,9 +35,6 @@ local detail_panel_status = {
     {desc = "无配方", icon = "/pkg/vaststars.resources/ui/textures/detail/idle.texture"},
 }
 
-local math3d = require "math3d"
-local iUiRt = ecs.require "ant.rmlui|ui_rt_system"
-local iom = ecs.require "ant.objcontroller|obj_motion"
 local property_list = ecs.require "vaststars.prototype|property_list"
 local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
@@ -434,33 +431,7 @@ end
 
 local last_inputs, last_ouputs
 local preinput
-local function copy_table(inputs)
-    local out = {}
-    for index, item in ipairs(inputs) do
-        local t = {}
-        for key, value in pairs(item) do
-            t[key] = value
-        end
-        out[index] = t
-    end
-    return out
-end
 
-local model_inst
-local model_path
-local model_ready
-local model_euler
-local function update_model(mdl)
-    local e <close> = world:entity(mdl.tag["*"][1])
-    if not model_euler then
-        local r = iom.get_rotation(e)
-        local rad = math3d.tovalue(math3d.quat2euler(r))
-        model_euler = { math.deg(rad[1]), math.deg(rad[2]), math.deg(rad[3]) }
-    end
-    model_euler[2] = model_euler[2] + 1
-    iom.set_rotation(e, math3d.quaternion{math.rad(model_euler[1]), math.rad(model_euler[2]), math.rad(model_euler[3])})
-end
-local camera_dist
 function M.create(object_id)
     iui.register_leave("/pkg/vaststars.resources/ui/detail_panel.rml")
 
@@ -476,15 +447,11 @@ function M.create(object_id)
         icon = typeobject.icon,
         desc = typeobject.item_description,
         prototype_name = iprototype.display_name(typeobject),
+        model = "mem:/pkg/vaststars.resources/" .. typeobject.model .. " config:d,1,3",
         areaid = 0
     }
     last_inputs, last_ouputs = update_property_list(datamodel, get_entity_property_list(object_id))
     preinput = {}
-    model_path = "/pkg/vaststars.resources/"..typeobject.model
-    model_ready = false
-    model_euler = nil
-    model_inst = nil
-    camera_dist = typeobject.camera_distance
     power_statistic = {
         tail = 1,
         head = 1,
@@ -567,16 +534,6 @@ local function update_power(power)
 end
 
 function M.update(datamodel, object_id)
-    if model_ready and model_inst then
-        update_model(model_inst)
-    end
-    if not model_inst then
-        model_inst = iUiRt.set_rt_prefab("detail_scene",
-            model_path,
-            {s = {1,1,1}, t = {0, 0, 0}}, camera_dist)
-        model_ready = true
-    end
-
     local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if e.capacitance then

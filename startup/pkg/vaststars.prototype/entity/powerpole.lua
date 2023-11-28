@@ -8,7 +8,6 @@ prototype "铁制电线杆" {
     builder = "normal",
     type = {"building"},
     area = "1x1",
-    camera_distance = 90,
 }
 
 prototype "远程电线杆" {
@@ -18,7 +17,6 @@ prototype "远程电线杆" {
     builder = "normal",
     type = {"building"},
     area = "2x2",
-    camera_distance = 90,
 }
 
 prototype "广域电线杆" {
@@ -28,5 +26,4 @@ prototype "广域电线杆" {
     builder = "normal",
     type = {"building"},
     area = "2x2",
-    camera_distance = 90,
 }

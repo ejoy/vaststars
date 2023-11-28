@@ -11,7 +11,6 @@ prototype "机身残骸" {
     chest_style = "chest",
     chest_destroy = true,
     area = "5x5",
-    camera_distance = 93,
     maxslot = 4,
 }
 
@@ -51,7 +50,6 @@ prototype "机尾残骸" {
     chest_style = "chest",
     chest_destroy = true,
     area = "3x3",
-    camera_distance = 55,
     maxslot = 4,
 }
 
@@ -66,7 +64,6 @@ prototype "建筑物残骸 1x1" {
     chest_style = "chest",
     chest_destroy = true,
     area = "1x1",
-    camera_distance = 55,
 }
 
 prototype "建筑物残骸 1x2" {
@@ -80,7 +77,6 @@ prototype "建筑物残骸 1x2" {
     chest_style = "chest",
     chest_destroy = true,
     area = "1x2",
-    camera_distance = 55,
 }
 
 prototype "建筑物残骸 2x1" {
@@ -94,7 +90,6 @@ prototype "建筑物残骸 2x1" {
     chest_style = "chest",
     chest_destroy = true,
     area = "2x1",
-    camera_distance = 55,
 }
 
 prototype "建筑物残骸 2x2" {
@@ -108,7 +103,6 @@ prototype "建筑物残骸 2x2" {
     chest_style = "chest",
     chest_destroy = true,
     area = "2x2",
-    camera_distance = 55,
 }
 
 prototype "建筑物残骸 3x3" {
@@ -122,7 +116,6 @@ prototype "建筑物残骸 3x3" {
     chest_style = "chest",
     chest_destroy = true,
     area = "3x3",
-    camera_distance = 55,
 }
 
 prototype "建筑物残骸 3x5" {
@@ -136,7 +129,6 @@ prototype "建筑物残骸 3x5" {
     chest_style = "chest",
     chest_destroy = true,
     area = "3x5",
-    camera_distance = 55,
 }
 
 prototype "建筑物残骸 4x2" {
@@ -150,7 +142,6 @@ prototype "建筑物残骸 4x2" {
     chest_style = "chest",
     chest_destroy = true,
     area = "4x2",
-    camera_distance = 55,
 }
 
 prototype "建筑物残骸 4x4" {
@@ -164,7 +155,6 @@ prototype "建筑物残骸 4x4" {
     chest_style = "chest",
     chest_destroy = true,
     area = "4x4",
-    camera_distance = 55,
 }
 
 prototype "建筑物残骸 5x3" {
@@ -178,7 +168,6 @@ prototype "建筑物残骸 5x3" {
     chest_style = "chest",
     chest_destroy = true,
     area = "5x3",
-    camera_distance = 55,
 }
 
 prototype "建筑物残骸 5x5" {
@@ -192,7 +181,6 @@ prototype "建筑物残骸 5x5" {
     chest_style = "chest",
     chest_destroy = true,
     area = "5x5",
-    camera_distance = 55,
 }
 
 prototype "建筑物残骸 6x6" {
@@ -206,5 +194,4 @@ prototype "建筑物残骸 6x6" {
     chest_style = "chest",
     chest_destroy = true,
     area = "6x6",
-    camera_distance = 55,
 }
