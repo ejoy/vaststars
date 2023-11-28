@@ -608,7 +608,7 @@ local prototype = gameplay.register.prototype
     type = { "tech" },
     effects = {
       unlock_recipe = {"维修停车站","维修物流站"},
-      unlock_item = {"停车站框架","物流站框架"},
+      unlock_item = {"停车站框架","物流站框架","物流站","停车站"},
     },
     prerequisites = {"公路研究"},
     ingredients = {
@@ -1374,7 +1374,6 @@ prototype "物流车站1" {
   type = { "tech" },
   effects = {
     unlock_recipe = {"物流站打印","停车站打印"},
-    unlock_item = {"物流站"},
   },
   prerequisites = {"自动化1"},
   ingredients = {
