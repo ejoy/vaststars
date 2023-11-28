@@ -17,7 +17,6 @@ prototype "组装机I" {
     maxslot = 8,
     fluid_indicators = false, ---------不显示液口
     drone_height = 22,
-    camera_distance = 62,
     craft_category = {"金属小型制造","物流小型制造","物流中型制造","物流大型制造","生产中型制造","生产大型制造","生产手工制造","器件小型制造","器件中型制造","建筑打印"},
     fluidboxes = {
         input = {
@@ -58,7 +57,6 @@ prototype "组装机II" {
     maxslot = 8,
     fluid_indicators = false,
     drone_height = 22,
-    camera_distance = 62,
     craft_category = {"金属小型制造","物流小型制造","物流中型制造","物流大型制造","生产中型制造","生产大型制造","生产手工制造","器件小型制造","器件中型制造","建筑打印"},
     fluidboxes = {
         input = {
@@ -99,7 +97,6 @@ prototype "组装机III" {
     maxslot = 8,
     fluid_indicators = false,
     drone_height = 22,
-    camera_distance = 62,
     craft_category = {"金属小型制造","物流小型制造","物流中型制造","物流大型制造","生产中型制造","生产大型制造","生产手工制造","器件小型制造","器件中型制造","建筑打印"},
     fluidboxes = {
         input = {
@@ -140,7 +137,6 @@ prototype "铸造厂I" {
     maxslot = 8,
     fluid_indicators = false,
     drone_height = 22,
-    camera_distance = 100,
     fluidboxes = {
         input = {
             {

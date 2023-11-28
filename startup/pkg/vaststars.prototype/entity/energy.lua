@@ -18,7 +18,6 @@ prototype "蒸汽发电机I" {
     -- recipe = "蒸汽发电",
     craft_category = {"流体发电"},
     maxslot = 8,
-    camera_distance = 95,
     fluidboxes = {
         input = {
             {
@@ -53,7 +52,6 @@ prototype "蒸汽发电机II" {
     -- recipe = "蒸汽发电",
     craft_category = {"流体发电"},
     maxslot = 8,
-    camera_distance = 95,
     fluidboxes = {
         input = {
             {
@@ -88,7 +86,6 @@ prototype "蒸汽发电机III" {
     -- recipe = "蒸汽发电",
     craft_category = {"流体发电"},
     maxslot = 8,
-    camera_distance = 95,
     fluidboxes = {
         input = {
             {
@@ -116,7 +113,6 @@ prototype "轻型风力发电机" {
     area = "3x3",
     power = "450kW",
     priority = "primary",
-    camera_distance = 140,
 }
 
 prototype "风力发电机I" {
@@ -129,7 +125,6 @@ prototype "风力发电机I" {
     area = "3x3",
     power = "1.2MW",
     priority = "primary",
-    camera_distance = 140,
 }
 
 prototype "太阳能板I" {
@@ -141,7 +136,6 @@ prototype "太阳能板I" {
     area = "3x3",
     power = "300kW",
     priority = "primary",
-    camera_distance = 70,
 }
 
 prototype "太阳能板II" {
@@ -153,7 +147,6 @@ prototype "太阳能板II" {
     area = "3x3",
     power = "450kW",
     priority = "primary",
-    camera_distance = 70,
 }
 
 prototype "太阳能板III" {
@@ -165,7 +158,6 @@ prototype "太阳能板III" {
     area = "3x3",
     power = "600kW",
     priority = "primary",
-    camera_distance = 70,
 }
 
 prototype "轻型太阳能板" {
@@ -177,7 +169,6 @@ prototype "轻型太阳能板" {
     area = "3x3",
     power = "60kW",
     priority = "primary",
-    camera_distance = 70,
 }
 
 prototype "蓄电池I" {
@@ -191,7 +182,6 @@ prototype "蓄电池I" {
 	capacitance = "10MJ",
     area = "2x2",
     sound = "building/electricity",
-    camera_distance = 55,
 }
 
 prototype "蓄电池II" {
@@ -205,7 +195,6 @@ prototype "蓄电池II" {
 	capacitance = "30MJ",
     area = "2x2",
     sound = "building/electricity",
-    camera_distance = 55,
 }
 
 prototype "蓄电池III" {
@@ -219,7 +208,6 @@ prototype "蓄电池III" {
 	capacitance = "60MJ",
     area = "2x2",
     sound = "building/electricity",
-    camera_distance = 55,
 }
 
 prototype "核反应堆" {
@@ -232,7 +220,6 @@ prototype "核反应堆" {
     area = "3x3",
     power = "40MW",
     priority = "primary",
-    camera_distance = 100,
 }
 
 prototype "换热器I" {
@@ -248,7 +235,6 @@ prototype "换热器I" {
     rotate_on_build = true,
     craft_category = {"流体换热处理"},
     maxslot = 8,
-    camera_distance = 100,
     fluidboxes = {
         input = {
             {
@@ -288,7 +274,6 @@ prototype "热管1-X型" {
     builder = "normal",
     type = {"building"},
     area = "1x1",
-    camera_distance = 100,
 }
 
 prototype "锅炉I" {
@@ -303,7 +288,6 @@ prototype "锅炉I" {
     io_shelf = false,
     craft_category = {"流体换热处理"},
     maxslot = 8,
-    camera_distance = 65,
     fluidboxes = {
         input = {
             {
@@ -342,7 +326,6 @@ prototype "地热井I" {
     sound = "building/geothermal",
     mining_category = {"地热处理"},
     maxslot = 8,
-    camera_distance = 96,
     fluidboxes = {
         input = {
         },
@@ -372,7 +355,6 @@ prototype "地热井II" {
     sound = "building/geothermal",
     mining_category = {"地热处理"},
     maxslot = 8,
-    camera_distance = 96,
     fluidboxes = {
         input = {
         },
@@ -402,7 +384,6 @@ prototype "地热井III" {
     sound = "building/geothermal",
     mining_category = {"地热处理"},
     maxslot = 8,
-    camera_distance = 96,
     fluidboxes = {
         input = {
         },

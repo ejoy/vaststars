@@ -63,22 +63,22 @@ local guide2 = {
         },
 	},
 
-    {
-        name = "",
-		narrative = {
-            {"哔哩..空闲的{/color:4bd0ff 运输车辆}必须停靠在{/g 停车站}..哔哩", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
-            {"哔哩..让我们先在路边修建一座{/g 停车站}..哔哩", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
-        },
-        narrative_end = {
-            task = {
-                "停车站放置",
-            },
-            guide_progress = 10,
-        },
-        prerequisites = {
-            "道路维修",
-        },
-	},
+    -- {
+    --     name = "",
+	-- 	narrative = {
+    --         {"哔哩..空闲的{/color:4bd0ff 运输车辆}必须停靠在{/g 停车站}..哔哩", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+    --         {"哔哩..让我们先在路边修建一座{/g 停车站}..哔哩", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+    --     },
+    --     narrative_end = {
+    --         task = {
+    --             "停车站放置",
+    --         },
+    --         guide_progress = 10,
+    --     },
+    --     prerequisites = {
+    --         "道路维修",
+    --     },
+	-- },
 
     -- {
     --     name = "",
@@ -111,7 +111,7 @@ local guide2 = {
             guide_progress = 10,
         },
         prerequisites = {
-            "停车站放置",
+            "道路维修",
         },
 	},
 

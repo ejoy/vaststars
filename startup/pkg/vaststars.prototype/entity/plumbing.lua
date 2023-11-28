@@ -9,7 +9,6 @@ prototype "液罐I" {
     storage_tank = true,
     type = {"building", "fluidbox"},
     area = "3x3",
-    camera_distance = 72,
     sound = "building/hydro-plant",
     fluidbox = {
         capacity = 15000,
@@ -32,7 +31,6 @@ prototype "液罐II" {
     storage_tank = true,
     type = {"building", "fluidbox"},
     area = "3x3",
-    camera_distance = 72,
     sound = "building/hydro-plant",
     fluidbox = {
         capacity = 30000,
@@ -55,7 +53,6 @@ prototype "液罐III" {
     storage_tank = true,
     type = {"building", "fluidbox"},
     area = "3x3",
-    camera_distance = 72,
     sound = "building/hydro-plant",
     fluidbox = {
         capacity = 60000,
@@ -78,7 +75,6 @@ prototype "气罐I" {
     storage_tank = true,
     type = {"building", "fluidbox"},
     area = "3x3",
-    camera_distance = 72,
     fluidbox = {
         capacity = 15000,
         height = 100,
@@ -109,7 +105,6 @@ prototype "地下水挖掘机I" {
     recipe = "离岸抽水",
     io_shelf = false,
     maxslot = 8,
-    camera_distance = 72,
     fluidboxes = {
         input = {},
         output = {
@@ -142,7 +137,6 @@ prototype "地下水挖掘机II" {
     recipe = "离岸抽水",
     io_shelf = false,
     maxslot = 8,
-    camera_distance = 72,
     fluidboxes = {
         input = {},
         output = {
@@ -173,7 +167,6 @@ prototype "核子挖掘机" {
     recipe = "离岸抽水",
     io_shelf = false,
     maxslot = 8,
-    camera_distance = 72,
     fluidboxes = {
         input = {},
         output = {
@@ -200,7 +193,6 @@ prototype "压力泵I" {
     rotate_on_build = true,
     power = "10kW",
     drain = "300W",
-    camera_distance = 100,
     priority = "secondary",
     fluidbox = {
         capacity = 500,
@@ -225,7 +217,6 @@ prototype "烟囱I" {
     rotate_on_build = true,
     craft_category = {"流体气体排泄"},
     speed = "100%",
-    camera_distance = 70,
     fluidbox = {
         capacity = 1000,
         height = 100,
@@ -247,7 +238,6 @@ prototype "烟囱II" {
     rotate_on_build = true,
     craft_category = {"流体气体排泄"},
     speed = "500%",
-    camera_distance = 70,
     fluidbox = {
         capacity = 1000,
         height = 100,
@@ -269,7 +259,6 @@ prototype "排水口I" {
     rotate_on_build = true,
     craft_category = {"流体液体排泄"},
     speed = "100%",
-    camera_distance = 89,
     fluidbox = {
         capacity = 1000,
         height = 100,
@@ -291,7 +280,6 @@ prototype "排水口II" {
     rotate_on_build = true,
     craft_category = {"流体液体排泄"},
     speed = "500%",
-    camera_distance = 89,
     fluidbox = {
         capacity = 1000,
         height = 100,
@@ -319,7 +307,6 @@ prototype "空气过滤器I" {
     recipe = "空气过滤",
     maxslot = 8,
     sound = "building/air-filter",
-    camera_distance = 90,
     fluidboxes = {
         input = {},
         output = {
@@ -351,7 +338,6 @@ prototype "空气过滤器II" {
     recipe = "空气过滤",
     maxslot = 8,
     sound = "building/air-filter",
-    camera_distance = 90,
     fluidboxes = {
         input = {},
         output = {
@@ -383,7 +369,6 @@ prototype "空气过滤器III" {
     recipe = "空气过滤",
     maxslot = 8,
     sound = "building/air-filter",
-    camera_distance = 90,
     fluidboxes = {
         input = {},
         output = {
@@ -410,7 +395,6 @@ prototype "管道1-I型" {
     building_direction = {"N", "E"},
     type = {"building","fluidbox","pipe"},
     area = "1x1",
-    camera_distance = 30,
     fluidbox = {
         capacity = 100,
         height = 100,
@@ -433,7 +417,6 @@ prototype "管道1-L型" {
     building_direction = {"N", "E", "S", "W"},
     type = {"building","fluidbox","pipe"},
     area = "1x1",
-    camera_distance = 30,
     fluidbox = {
         capacity = 100,
         height = 100,
@@ -456,7 +439,6 @@ prototype "管道1-T型" {
     building_direction = {"N", "E", "S", "W"},
     type = {"building","fluidbox","pipe"},
     area = "1x1",
-    camera_distance = 30,
     fluidbox = {
         capacity = 100,
         height = 100,
@@ -480,7 +462,6 @@ prototype "管道1-X型" {
     building_direction = {"N"},
     type = {"building","fluidbox","pipe"},
     area = "1x1",
-    camera_distance = 30,
     fluidbox = {
         capacity = 100,
         height = 100,
@@ -505,7 +486,6 @@ prototype "管道1-O型" {
     building_direction = {"N"},
     type = {"building","fluidbox","pipe"},
     area = "1x1",
-    camera_distance = 30,
     fluidbox = {
         capacity = 100,
         height = 100,
@@ -526,7 +506,6 @@ prototype "管道1-U型" {
     building_direction = {"N", "E", "S", "W"},
     type = {"building","fluidbox","pipe"},
     area = "1x1",
-    camera_distance = 30,
     fluidbox = {
         capacity = 100,
         height = 100,
@@ -548,7 +527,6 @@ prototype "地下管1-JU型" {
     building_direction = {"N", "E", "S", "W"},
     type = {"building","fluidbox","pipe_to_ground"},
     area = "1x1",
-    camera_distance = 25,
     fluidbox = {
         capacity = 100,
         height = 100,
@@ -570,7 +548,6 @@ prototype "地下管1-JI型" {
     building_direction = {"N", "E", "S", "W"},
     type = {"building","fluidbox","pipe_to_ground"},
     area = "1x1",
-    camera_distance = 25,
     fluidbox = {
         capacity = 100,
         height = 100,

@@ -13,7 +13,6 @@ prototype "指挥中心" {
     speed = "50%",
     area = "6x6",
     sound = "building/headquarter",
-    camera_distance = 100,
 }
 
 prototype "物流中心" {
@@ -29,7 +28,6 @@ prototype "物流中心" {
     maxslot = 8,
     area = "4x6",
     sound = "building/logistics-center",
-    camera_distance = 100,
     crossing = {
         connections = {
             {type="factory", position={2,4,"S"}},
@@ -54,7 +52,6 @@ prototype "科研中心I" {
     power = "100kW",
     speed = "100%",
     sound = "building/lab",
-    camera_distance = 75,
     drone_height = 42,
     priority = "secondary",
     inputs = {
@@ -79,7 +76,6 @@ prototype "地质科研中心" {
     power = "1MW",
     speed = "100%",
     sound = "building/lab",
-    camera_distance = 75,
     drone_height = 42,
     priority = "secondary",
     inputs = {
@@ -99,7 +95,6 @@ prototype "科研中心II" {
     power = "250kW",
     speed = "200%",
     sound = "building/lab",
-    camera_distance = 75,
     priority = "secondary",
     inputs = {
         "地质科技包",
@@ -120,7 +115,6 @@ prototype "科研中心III" {
     power = "500kW",
     speed = "400%",
     sound = "building/lab",
-    camera_distance = 75,
     priority = "secondary",
     inputs = {
         "地质科技包",
@@ -142,7 +136,6 @@ prototype "砖石公路-I型" {
     track = "I",
     type = {"building", "road"},
     area = "2x2",
-    camera_distance = 50,
     crossing = {
         connections = {
             {type="none", position={0,0,"N"}},
@@ -166,7 +159,6 @@ prototype "砖石公路-L型" {
     track = "L",
     type = {"building", "road"},
     area = "2x2",
-    camera_distance = 50,
     crossing = {
         connections = {
             {type="none", position={0,0,"N"}},
@@ -190,7 +182,6 @@ prototype "砖石公路-T型" {
     track = "T",
     type = {"building", "road"},
     area = "2x2",
-    camera_distance = 50,
     crossing = {
         connections = {
             {type="none", position={0,0,"E"}},
@@ -215,7 +206,6 @@ prototype "砖石公路-O型" {
     track = "O",
     type = {"building", "road"},
     area = "2x2",
-    camera_distance = 50,
     crossing = {
         connections = {
         }
@@ -236,7 +226,6 @@ prototype "砖石公路-U型" {
     track = "U",
     type = {"building", "road"},
     area = "2x2",
-    camera_distance = 50,
     crossing = {
         connections = {
             {type="none", position={0,0,"N"}},
@@ -259,7 +248,6 @@ prototype "砖石公路-X型" {
     track = "X",
     type = {"building", "road"},
     area = "2x2",
-    camera_distance = 50,
     crossing = {
         connections = {
             {type="none", position={0,0,"N"}},
@@ -296,7 +284,6 @@ prototype "物流站" {
         "0,2,╨╨",
     },
     maxslot = 8,
-    camera_distance = 90,
 }
 
 prototype "停车站" {
@@ -320,7 +307,6 @@ prototype "停车站" {
         "0,0,╔╗",
         "0,2,╨╨",
     },
-    camera_distance = 90,
 }
 
 prototype "广播塔I" {
@@ -335,7 +321,6 @@ prototype "广播塔I" {
     speed = "100%",
     module_slot = 1,
     module_supply_area = "9x9",
-    camera_distance = 75,
     priority = "secondary",
 }
 
@@ -351,7 +336,6 @@ prototype "广播塔II" {
     speed = "100%",
     module_slot = 2,
     module_supply_area = "13x13",
-    camera_distance = 75,
     priority = "secondary",
 }
 
@@ -367,6 +351,5 @@ prototype "广播塔III" {
     speed = "125%",
     module_slot = 3,
     module_supply_area = "13x13",
-    camera_distance = 75,
     priority = "secondary",
 }

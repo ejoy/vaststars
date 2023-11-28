@@ -156,6 +156,7 @@
                 desc = "",
                 status_icon = "",
                 prototype_name = " ",
+                model = "",
                 detail_panel_status_icon = "/pkg/vaststars.resources/ui/textures/work_status_icon/normal.texture",
                 detail_panel_status_desc = "正常工作",
                 chest_list_1 = {},
@@ -303,7 +304,7 @@
             <!-- detail panel end -->
             <div class="tips-bg" style='flex-direction: column; justify-content:center; align-items: center; margin-left: -3vmin;' data-if="areaid==1.0" data-event-longpress="onLongPressTips(ev)">
                 <div style="width: 100%; height: 10%; justify-content: center; align-items: center; text-align: center; font-size: 6vmin;">{{prototype_name}}</div>
-                <div style='width: 60%; height: 60%; justify-content: center; align-items: center; background-image:"<detail_scene>"; background-size: 100% 100%;'/>
+                <div style='width: 60%; height: 60%; justify-content: center; align-items: center; background-size: 100% 100%;' data-style-background-image = "model" data-if = "model ~= ''"/>
                 <div style="width: 80%; height: 10%; justify-content: center; align-items: center; text-align: center; color:#adadad; font-size:3.8vmin; word-break: break-all;">{{desc}}</div>
             </div>
             <div class="tips-bg" style='align-items: center; margin-left: -3vmin;' data-if="areaid==2.0 and #property_list>0" data-event-longpress="onLongPressTips(ev)">

@@ -16,7 +16,6 @@ prototype "特殊组装机" {
     sound = "building/assembling-machine",
     maxslot = 8,
     drone_height = 22,
-    camera_distance = 62,
     craft_category = {"登录配方"},
     fluidboxes = {
         input = {
@@ -60,7 +59,6 @@ prototype "特殊电解厂" {
     craft_category = {"登录配方"},
     maxslot = 8,
     drone_height = 22,
-    camera_distance = 100,
     fluidboxes = {
         input = {
             {
@@ -117,7 +115,6 @@ prototype "特殊蒸馏厂" {
     craft_category = {"登录配方"},
     maxslot = 8,
     drone_height = 22,
-    camera_distance = 100,
     fluidboxes = {
         input = {
             {
@@ -182,7 +179,6 @@ prototype "特殊化工厂" {
     priority = "secondary",
     maxslot = 8,
     drone_height = 22,
-    camera_distance = 75,
     craft_category = {"登录配方"},
     fluidboxes = {
         input = {
@@ -248,7 +244,6 @@ prototype "特殊水电站" {
     priority = "secondary",
     craft_category = {"登录配方"},
     maxslot = 8,
-    camera_distance = 100,
     fluidboxes = {
         input = {
             {
@@ -302,7 +297,6 @@ prototype "特殊熔炼炉" {
     priority = "secondary",
     sound = "building/furnace",
     craft_category = {"登录配方"},
-    camera_distance = 62,
     fluidboxes = {
         input = {
             {
@@ -345,5 +339,4 @@ prototype "特殊采矿机" {
     mining_category = {"矿石开采"},
     speed = "200%",
     maxslot = 8,
-    camera_distance = 95,
 }

@@ -31,7 +31,7 @@ local prototype = gameplay.register.prototype
     guide_focus = {
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-        x = 132,
+        x = 121,
         y = 122,
         w = 3.0,
         h = 3.0,
@@ -40,15 +40,15 @@ local prototype = gameplay.register.prototype
       },
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-        x = 120.5,
-        y = 114.5,
+        x = 110.5,
+        y = 122.5,
         w = 5.2,
         h = 5.2,
         color = {0, 0.7, 0.95, 1},
         show_arrow = false,
       },
       {
-        camera_x = 131,
+        camera_x = 121,
         camera_y = 121,
         w = 4.0,
         h = 4.0,
@@ -188,16 +188,16 @@ local prototype = gameplay.register.prototype
     guide_focus = {
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-        x = 126.5,
-        y = 120.5,
-        w = 5.2,
-        h = 5.2,
+        x = 125.5,
+        y = 130.5,
+        w = 4.2,
+        h = 6.2,
         color = {0.3, 1, 0, 1},
         show_arrow = true,
       },
       {
-        camera_x = 124,
-        camera_y = 120,
+        camera_x = 125,
+        camera_y = 128,
         w = 5.2,
         h = 5.2,
       },

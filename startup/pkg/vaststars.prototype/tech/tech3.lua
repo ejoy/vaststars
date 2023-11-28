@@ -106,6 +106,9 @@ local prototype = gameplay.register.prototype
     --   unlock_recipe = {"石砖","砖石公路打印"},
     --   unlock_item = {"石砖","砖石公路-X型"},
     -- },
+    effects = {
+      unlock_item = {"碎石","铁矿石"},
+    },
     guide_focus = {
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
@@ -136,6 +139,8 @@ local prototype = gameplay.register.prototype
       { desc = "修补2处断开的砖石公路", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
+
+  -- prototype "停车场放置"{}
 
   prototype "物流站发货设置" {
     desc = "物流站发货设置",
@@ -213,16 +218,16 @@ local prototype = gameplay.register.prototype
     guide_focus = {
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
-        x = 154.5,
-        y = 116.5,
-        w = 5.2,
-        h = 5.2,
+        x = 155.5,
+        y = 120.5,
+        w = 4.2,
+        h = 6.2,
         color = {0.3, 1, 0, 1},
         show_arrow = true,
       },
       {
-        camera_x = 152,
-        camera_y = 114,
+        camera_x = 155,
+        camera_y = 120,
         w = 5.2,
         h = 5.2,
       },

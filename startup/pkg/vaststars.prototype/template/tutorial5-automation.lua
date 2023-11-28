@@ -10,19 +10,19 @@ local entities = { {
   dir = "N",
   items = items,
   prototype_name = "指挥中心",
-  x = 118,
-  y = 112
+  x = 108,
+  y = 120
 },{
   amount = 0,
   dir = "N",
   prototype_name = "物流中心",
   x = 124,
-  y = 118
+  y = 128
 }, {
   dir = "N",
-  items = { { "物流站", 15 }, { "运输车辆I", 30 }, { "无人机平台I", 20 }, { "砖石公路-X型", 100 } },
+  items = { { "物流站", 15 }, { "运输车辆I", 30 },{ "砖石公路-X型", 100 }, { "无人机平台I", 20 } },
   prototype_name = "机头残骸",
-  x = 131,
+  x = 120,
   y = 121
 }, {
   dir = "W",

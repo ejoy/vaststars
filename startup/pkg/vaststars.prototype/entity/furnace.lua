@@ -14,7 +14,6 @@ prototype "熔炼炉I" {
     priority = "secondary",
     sound = "building/furnace",
     craft_category = {"金属冶炼"},
-    camera_distance = 62,
     fluidboxes = {
         input = {
             {
@@ -53,7 +52,6 @@ prototype "熔炼炉II" {
     priority = "secondary",
     sound = "building/furnace",
     craft_category = {"金属冶炼"},
-    camera_distance = 62,
     fluidboxes = {
         input = {
             {
@@ -92,7 +90,6 @@ prototype "熔炼炉III" {
     priority = "secondary",
     sound = "building/furnace",
     craft_category = {"金属冶炼"},
-    camera_distance = 62,
     fluidboxes = {
         input = {
             {
@@ -133,7 +130,6 @@ prototype "粉碎机I" {
     priority = "secondary",
     sound = "building/crusher",
     craft_category = {"矿石粉碎"},
-    camera_distance = 65,
     maxslot = 8,
 }
 
@@ -152,7 +148,6 @@ prototype "粉碎机II" {
     priority = "secondary",
     sound = "building/crusher",
     craft_category = {"矿石粉碎"},
-    camera_distance = 65,
     maxslot = 8,
 }
 
@@ -170,7 +165,6 @@ prototype "粉碎机III" {
     priority = "secondary",
     sound = "building/crusher",
     craft_category = {"矿石粉碎"},
-    camera_distance = 65,
     maxslot = 8,
 }
 
@@ -189,7 +183,6 @@ prototype "浮选器I" {
     priority = "secondary",
     sound = "building/hydro-plant",
     craft_category = {"矿石浮选"},
-    camera_distance = 40,
     maxslot = 8,
     fluidboxes = {
         input = {
@@ -246,7 +239,6 @@ prototype "浮选器II" {
     priority = "secondary",
     sound = "building/hydro-plant",
     craft_category = {"矿石浮选"},
-    camera_distance = 40,
     maxslot = 8,
     fluidboxes = {
         input = {
@@ -303,7 +295,6 @@ prototype "浮选器III" {
     priority = "secondary",
     sound = "building/hydro-plant",
     craft_category = {"矿石浮选"},
-    camera_distance = 40,
     maxslot = 8,
     fluidboxes = {
         input = {
