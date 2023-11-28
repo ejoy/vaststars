@@ -11,7 +11,7 @@ local entities = { {
   dir = "N",
   prototype_name = "物流中心",
   x = 124,
-  y = 120
+  y = 124
 }, {
   dir = "N",
   prototype_name = "特殊采矿机",
@@ -77,7 +77,7 @@ local entities = { {
   prototype_name = "特殊蒸馏厂",
   recipe = "特殊化工",
   x = 122,
-  y = 130
+  y = 131
 }, {
   dir = "N",
   fluid_name = {
@@ -86,8 +86,8 @@ local entities = { {
   },
   prototype_name = "特殊电解厂",
   recipe = "特殊电解2",
-  x = 129,
-  y = 130
+  x = 128,
+  y = 131
 }, {
   dir = "S",
   fluid_name = {
@@ -1355,13 +1355,13 @@ local entities = { {
   fluid_name = "地下卤水",
   prototype_name = "管道1-I型",
   x = 127,
-  y = 129
+  y = 130
 }, {
   dir = "E",
   fluid_name = "地下卤水",
   prototype_name = "管道1-I型",
   x = 128,
-  y = 129
+  y = 130
 }, {
   dir = "E",
   fluid_name = "氧气",
@@ -2057,6 +2057,16 @@ local entities = { {
 }, {
   dir = "N",
   prototype_name = "太阳能板I",
+  x = 124,
+  y = 120
+},{
+  dir = "N",
+  prototype_name = "太阳能板I",
+  x = 127,
+  y = 121
+},{
+  dir = "N",
+  prototype_name = "太阳能板I",
   x = 91,
   y = 125
 }, {
@@ -2709,54 +2719,42 @@ local entities = { {
   prototype_name = "管道1-I型",
   x = 123,
   y = 136
-}, {
-  dir = "N",
-  fluid_name = "氧气",
-  prototype_name = "管道1-I型",
-  x = 122,
-  y = 135
-}, {
+},  {
   dir = "N",
   fluid_name = "氧气",
   prototype_name = "管道1-L型",
   x = 122,
   y = 136
 }, {
-  dir = "S",
-  fluid_name = "地下卤水",
-  prototype_name = "管道1-L型",
-  x = 132,
-  y = 129
-}, {
   dir = "E",
   fluid_name = "地下卤水",
   prototype_name = "管道1-I型",
   x = 129,
-  y = 129
+  y = 130
 }, {
   dir = "E",
   fluid_name = "地下卤水",
   prototype_name = "管道1-I型",
   x = 130,
-  y = 129
+  y = 130
 }, {
-  dir = "E",
+  dir = "S",
   fluid_name = "地下卤水",
-  prototype_name = "管道1-I型",
+  prototype_name = "管道1-L型",
   x = 131,
-  y = 129
+  y = 130
 }, {
   dir = "E",
   fluid_name = "地下卤水",
   prototype_name = "管道1-L型",
   x = 125,
-  y = 129
+  y = 130
 }, {
   dir = "E",
   fluid_name = "地下卤水",
   prototype_name = "管道1-I型",
   x = 126,
-  y = 129
+  y = 130
 }, {
   dir = "N",
   fluid_name = {
@@ -2766,7 +2764,7 @@ local entities = { {
   prototype_name = "空气过滤器I",
   recipe = "空气过滤",
   x = 122,
-  y = 128
+  y = 129
 }, {
   dir = "W",
   items = { { "demand", "铁板", 4 } },
@@ -2776,19 +2774,19 @@ local entities = { {
 }, {
   dir = "N",
   prototype_name = "无人机平台I",
-  x = 131,
-  y = 134
+  x = 130,
+  y = 135
 }, {
   dir = "N",
   prototype_name = "无人机平台I",
-  x = 129,
-  y = 134
+  x = 128,
+  y = 135
 }, {
   dir = "N",
   items = { { "铁板", 30 }, { "铁板", 30 } },
   prototype_name = "仓库I",
-  x = 130,
-  y = 134
+  x = 129,
+  y = 135
 }, {
   dir = "S",
   fluid_name = "氧气",
@@ -3283,6 +3281,26 @@ local entities = { {
   x = 165,
   y = 112
 }, {
+  dir = "N",
+  prototype_name = "蓄电池I",
+  x = 130,
+  y = 128
+},{
+  dir = "N",
+  prototype_name = "蓄电池I",
+  x = 132,
+  y = 128
+},{
+  dir = "N",
+  prototype_name = "蓄电池I",
+  x = 132,
+  y = 130
+},{
+  dir = "N",
+  prototype_name = "蓄电池I",
+  x = 132,
+  y = 132
+},{
   dir = "N",
   prototype_name = "蓄电池I",
   x = 162,
