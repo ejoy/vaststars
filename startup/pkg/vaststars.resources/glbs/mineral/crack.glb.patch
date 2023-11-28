@@ -35,16 +35,3 @@ value:
     ant.efk|efk
   tag:
     Geothermal
----
-file: geothermal.prefab
-op: replace
-path: "/2"
-value:
-  data:
-    material: /pkg/ant.landform/assets/materials/crack.material
-    mesh: meshes/Plane_P1.meshbin
-    scene: {}
-    visible_state: main_view|selectable
-  policy:
-    ant.scene|scene_object
-    ant.render|render
