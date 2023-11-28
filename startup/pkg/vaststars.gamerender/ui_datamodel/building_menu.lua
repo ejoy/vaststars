@@ -310,7 +310,8 @@ function M.update(datamodel, gameplay_eid)
             end
 
             t[item] = (t[item] or 0) + n
-            itask.update_progress("transfer", object.prototype_name, typeobject.name, n)
+
+            itask.update_progress("transfer", object.prototype_name, iprototype.queryById(item).name, n)
         end)
 
         local msgs = {}
