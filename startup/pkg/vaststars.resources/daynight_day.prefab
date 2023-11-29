@@ -7,6 +7,7 @@ policy:
 data:
   daynight:
     path: /pkg/vaststars.resources/daynight_day.prefab
+    type: 0
     raw:
       ambient:
         ---
