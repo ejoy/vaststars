@@ -4,6 +4,7 @@ block:
 	/pkg/ant.vfs
 	/pkg/ant.efk/efkbgfx
 	/pkg/ant.resources.binary
+	/pkg/ant.resources.test
 	/pkg/ant.resources/textures/test
 	/pkg/vaststars.mod.test
 	/pkg/vaststars.tools
