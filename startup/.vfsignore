@@ -5,7 +5,6 @@ block:
 	/pkg/ant.efk/efkbgfx
 	/pkg/ant.resources.binary
 	/pkg/ant.resources/textures/test
-	/pkg/ant.resources/textures/color_text.texture
 	/pkg/vaststars.mod.test
 	/pkg/vaststars.tools
 ignore:
