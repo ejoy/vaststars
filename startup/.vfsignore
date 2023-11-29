@@ -5,7 +5,11 @@ block:
 	/pkg/ant.efk/efkbgfx
 	/pkg/ant.resources.binary
 	/pkg/ant.resources.test
-	/pkg/ant.resources/textures/test
+	/pkg/ant.resources/textures/color_text.texture
+	/pkg/ant.resources/textures/irbtn_active.texture
+	/pkg/ant.resources/textures/irbtn_hover.texture
+	/pkg/ant.resources/textures/irbtn_normal.texture
+	/pkg/ant.resources/textures/texture_plane.texture
 	/pkg/vaststars.mod.test
 	/pkg/vaststars.tools
 ignore:
