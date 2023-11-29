@@ -19,12 +19,12 @@ local DEFAULT_SIZE_CONFIGS <const> = {
 }
 
 local DEFAULT_STATIC_ROT_CONFIGS <const> = {
-	{0, 0, 0},
-	{0, -0.35, 0},
-	{0, 0.35, 0},
+	{0.785, 0, 0},
+	{0.785, -0.785, 0},
+	{0.785, 0.785, 0},
 }
 
-local DEFAULT_DYNAMIC_ROT_CONFIG = {0, 0, 0}
+local DEFAULT_DYNAMIC_ROT_CONFIG = {0.785, 0, 0}
 
 local RT_CACHE = {}
 
@@ -36,13 +36,14 @@ end
 function S.load(path, config)
 
 	local function parse_config()
-		return config:match "%w+:(%a),(%d),(%d)"
+		return config:match "%w+:(%a),(%d),(%d),([%d%.]*)"
 	end
 
-	local type, size_config, rot_config = parse_config()
+	local type, size_config, rot_config, dis_config = parse_config()
 	local is_dynamic = type == 'd'
 	local size = size_config and DEFAULT_SIZE_CONFIGS[tonumber(size_config)] or DEFAULT_SIZE_CONFIGS[1]
-	local rot  = rot_config  and DEFAULT_STATIC_ROT_CONFIGS[tonumber(rot_config)]   or DEFAULT_STATIC_ROT_CONFIGS[1]
+	local rot  = rot_config  and DEFAULT_STATIC_ROT_CONFIGS[tonumber(rot_config)] or DEFAULT_STATIC_ROT_CONFIGS[1]
+	local dis = dis_config and tonumber(dis_config) or 1.0
 	local c = {
 		info = {
             width = size.width,
@@ -62,10 +63,10 @@ function S.load(path, config)
 
 	if is_dynamic then
 		local rt_idx
-		c.handle, rt_idx = ltask.call(ServiceWorld, "create_mem_texture_dynamic_prefab", path, size.width, size.height, DEFAULT_DYNAMIC_ROT_CONFIG)
+		c.handle, rt_idx = ltask.call(ServiceWorld, "create_mem_texture_dynamic_prefab", path, size.width, size.height, DEFAULT_DYNAMIC_ROT_CONFIG, dis)
 		RT_CACHE[c.handle] = rt_idx
 	else
-		c.handle = ltask.call(ServiceWorld, "create_mem_texture_static_prefab", path, size.width, size.height, rot)
+		c.handle = ltask.call(ServiceWorld, "create_mem_texture_static_prefab", path, size.width, size.height, rot, dis)
 	end
 
 	return c, is_dynamic
