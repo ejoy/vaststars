@@ -392,14 +392,20 @@ local update = interval_call(300, function(datamodel)
     local gameplay_world = gameplay_core.get_world()
     datamodel.item_bar = {}
     local info = itransfer.get_transfer_info(gameplay_world)
-    for _, slot in itransfer.get_source_slots(gameplay_world) do
+    for idx, slot in itransfer.get_source_slots(gameplay_world) do
         local typeobject = iprototype.queryById(slot.item)
         local is_transfer = info[slot.item] ~= nil
         local item_icon = typeobject.item_icon or error("no item icon for " .. typeobject.name)
-        datamodel.item_bar[#datamodel.item_bar + 1] = {icon = item_icon, name = typeobject.name, count = slot.amount, is_transfer = is_transfer, value = is_transfer and 1 or 0}
+        datamodel.item_bar[#datamodel.item_bar + 1] = {icon = item_icon, name = typeobject.name, count = slot.amount, is_transfer = is_transfer, value = is_transfer and 1 or 0, idx = idx}
     end
     table.sort(datamodel.item_bar, function(a, b)
-        return a.value > b.value
+        if a.value > b.value then
+            return true
+        elseif a.value < b.value then
+            return false
+        else
+            return a.idx < b.idx
+        end
     end)
 end)
 

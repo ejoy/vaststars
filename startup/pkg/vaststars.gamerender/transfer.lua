@@ -133,26 +133,22 @@ local function transfer(gameplay_world, func)
     end
     assert(se.chest and de.chest)
 
-    local t = {}
-    for idx, slot in get_slots(gameplay_world, se, SOURCE_TYPES) do
-        t[slot.item] = t[slot.item] or {}
-        t[slot.item][idx] = {amount = slot.amount}
-    end
-
-    local r = {}
     if de.base then
-        for item, tt in pairs(t) do
-            for sidx, s in pairs(tt) do
-                local c = math.min(iinventory.get_capacity(gameplay_world, item), s.amount)
-                if c > 0 then
-                    r[#r+1] = {sidx = sidx, amount = c, item = item}
-                    ichest.pickup_at(gameplay_world, se, sidx, c)
-                    iinventory.place(gameplay_world, item, c)
-                    func(item, c)
-                end
+        for idx, slot in get_slots(gameplay_world, se, SOURCE_TYPES) do
+            local c = math.min(iinventory.get_capacity(gameplay_world, slot.item), slot.amount)
+            if c > 0 then
+                ichest.pickup_at(gameplay_world, se, idx, c)
+                iinventory.place(gameplay_world, slot.item, c)
+                func(idx, slot.item, c)
             end
         end
     else
+        local t = {}
+        for idx, slot in get_slots(gameplay_world, se, SOURCE_TYPES) do
+            t[slot.item] = t[slot.item] or {}
+            t[slot.item][idx] = {amount = slot.amount}
+        end
+
         local is_assembling = (de.assembling ~= nil)
         for idx, slot in get_slots(gameplay_world, de, DEST_TYPES) do
             local tt = t[slot.item]
@@ -172,7 +168,7 @@ local function transfer(gameplay_world, func)
                 if cc > 0 then
                     ichest.pickup_at(gameplay_world, se, sidx, cc)
                     ichest.place_at(gameplay_world, de, idx, cc)
-                    func(slot.item, cc)
+                    func(idx, slot.item, cc)
                     s.amount = s.amount - cc
                     c = c - cc
 

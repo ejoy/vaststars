@@ -304,20 +304,29 @@ function M.update(datamodel, gameplay_eid)
         local gameplay_world = gameplay_core.get_world()
 
         local t = {}
-        itransfer.transfer(gameplay_world, function(item, n)
+        itransfer.transfer(gameplay_world, function(idx, item, n)
             if e.station then
                 e.station_changed = true
             end
 
-            t[item] = (t[item] or 0) + n
+            if not t[item] then
+                t[item] = {idx = idx, n = 0}
+            end
+            t[item].n = t[item].n + n
 
             itask.update_progress("transfer", object.prototype_name, iprototype.queryById(item).name, n)
         end)
 
+        local tt = {}
+        for item, v in pairs(t) do
+            tt[#tt+1] = {item = item, n = v.n, idx = v.idx}
+        end
+        table.sort(tt, function(a, b) return a.idx < b.idx end)
+
         local msgs = {}
-        for item, n in pairs(t) do
-            local typeobject = iprototype.queryById(item)
-            msgs[#msgs+1] = {icon = typeobject.item_icon, name = typeobject.name, count = n}
+        for _, v in ipairs(tt) do
+            local typeobject = iprototype.queryById(v.item)
+            msgs[#msgs+1] = {icon = typeobject.item_icon, name = typeobject.name, count = v.n}
         end
         local sp_x, sp_y = math3d.index(icamera_controller.world_to_screen(object.srt.t), 1, 2)
         iui.send("/pkg/vaststars.resources/ui/message_pop.rml", "item", {action = "down", left = sp_x, top = sp_y, items = msgs})
