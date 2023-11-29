@@ -1,10 +1,6 @@
-.build/
-.log/
 .app/
 .ios/
-.fileserver/
 .vs/
-.vfs/
 /build/
 /bin/
 /startup/res/
