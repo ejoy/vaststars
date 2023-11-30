@@ -7,7 +7,6 @@ policy:
 data:
   daynight:
     path: /pkg/vaststars.resources/daynight_night.prefab
-    type: 1
     raw:
       ambient:
         ---
@@ -29,10 +28,11 @@ data:
       rotator:
         ---
         time: 0
-        value: {0.19820016622543335, -0.4027109146118164, 0, 0.893610954284668}
+        value: {0.4913382828235626, -0.782651960849762, 0, 0.3821552097797394}
         ---
         time: 1
-        value: {0.18857155740261078, 0.2582254111766815, -0, 0.9475021958351135}
+        value: {0.515853226184845, 0.7268186211585999, -0, 0.4534645974636078}
+    type: 1
 policy:
   ant.daynight|daynight
 tag:

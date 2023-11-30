@@ -77,6 +77,9 @@ function m:init()
         prefab = "/pkg/vaststars.resources/daynight_day.prefab"
     }
     world:create_instance {
+        prefab = "/pkg/vaststars.resources/daynight_night.prefab"
+    }
+    world:create_instance {
         prefab = "/pkg/vaststars.resources/light.prefab"
     }
     world:create_instance {
