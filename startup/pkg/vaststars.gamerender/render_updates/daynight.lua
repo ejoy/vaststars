@@ -8,8 +8,6 @@ local idn = ecs.require "ant.daynight|daynight"
 local gameplay_core = require "gameplay.core"
 
 local daynight_sys = ecs.system "daynight_system"
-local last_cycle, cur_cycle = 0, 0
-local type = 0
 
 local daynight_update; do
     if DAYNIGHT_DEBUG == "" then
@@ -26,29 +24,13 @@ local daynight_update; do
         end
 
         function daynight_update()
-            cur_cycle = (gettime() % total_ms)/total_ms
-            if last_cycle > cur_cycle then
-                type = type == 0 and 1 or 0
-            end
-            for e in w:select "daynight:in" do
-                if e.daynight.type == type then
-                    idn.update_cycle(e, cur_cycle)
-                end
-            end
-            last_cycle = cur_cycle
+            local dne = assert(w:first "daynight:in")
+            idn.update_cycle(dne, (gettime() % total_ms)/total_ms)
         end
     else
         function daynight_update(gameplayWorld)
-            cur_cycle = (gameplayWorld:now() % DayTick)/DayTick
-            if last_cycle > cur_cycle then
-                type = type == 0 and 1 or 0
-            end
-            for e in w:select "daynight:in" do
-                if e.daynight.type == type then
-                    idn.update_cycle(e, cur_cycle)
-                end
-            end
-            last_cycle = cur_cycle
+            local dne = assert(w:first "daynight:in")
+            idn.update_cycle(dne, (gameplayWorld:now() % DayTick)/DayTick)
         end
     end
 end
