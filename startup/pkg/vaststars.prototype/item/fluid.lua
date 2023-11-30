@@ -193,7 +193,7 @@ prototype "地热气" {
     max_temperature = 200,
     item_order = 32,
     item_description = "因地下深处热量而产生的蒸汽",
-    mineral_model = "glbs/mineral/crack.glb|geothermal.prefab",
+    mineral_model = "glbs/mineral/crack.glb|mesh.prefab",
     mineral_area = "3x3",
 }
 

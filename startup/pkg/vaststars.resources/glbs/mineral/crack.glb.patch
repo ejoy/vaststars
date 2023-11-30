@@ -1,9 +1,5 @@
 ---
 file: mesh.prefab
-op: copyfile
-path: geothermal.prefab
----
-file: mesh.prefab
 op: createfile
 path: hitch.prefab
 value:
@@ -18,7 +14,7 @@ value:
   tag:
     hitch
 ---
-file: geothermal.prefab
+file: mesh.prefab
 op: add
 path: /-
 value:
@@ -35,3 +31,49 @@ value:
     ant.efk|efk
   tag:
     Geothermal
+---
+file: materials/Material.001.material
+op: replace
+path: /properties/s_basecolor
+value:
+    stage: 0
+    texture: /pkg/ant.landform/assets/textures/crack_color.texture
+---
+file: materials/Material.001.material
+op: replace
+path: /properties/s_normal
+value:
+    stage: 1
+    texture: /pkg/ant.landform/assets/textures/crack_normal.texture
+---
+file: materials/Material.001.material
+op: add
+path: /properties/s_height
+value:
+    stage: 2
+    texture: /pkg/ant.landform/assets/textures/crack_height.texture
+---
+file: materials/Material.001.material
+op: add
+path: /fx/fs_code
+value: '#include \"crack/crack_fs_func.sh\"'
+---
+file: materials/Material.001.material
+op: add
+path: /state/BLEND_FUNC
+value: "aA"
+---
+file: materials/Material.001.material
+op: add
+path: /state/BLEND_ENABLE
+value: "i"
+---
+file: materials/Material.001.material
+op: remove
+path: /state/BLEND
+---
+file: materials/Material.001.material
+op: replace
+path: /fx/setting/lighting
+value: on
+
