@@ -168,7 +168,9 @@ local function toggle_view(v, cur_xzpoint)
         return adjust_camera_rt(ce.scene.r, ce.scene.t, CAMERA_CONSTRUCT_ROTATION, ce.scene.t, cur_xzpoint, ce.camera.viewmat, ce.camera.projmat)
     elseif v == "pickup" then
         last_view = "pickup"
-        return adjust_camera_rt(ce.scene.r, ce.scene.t, CAMERA_PICKUP_ROTATION, ce.scene.t, cur_xzpoint, ce.camera.viewmat, ce.camera.projmat)
+        local h = math.min(math3d.index(CAMERA_PICKUP_POSITION, 2), math3d.index(ce.scene.t, 2))
+        local pos = math3d.set_index(CAMERA_PICKUP_ROTATION, 2, h)
+        return adjust_camera_rt(ce.scene.r, ce.scene.t, CAMERA_PICKUP_ROTATION, pos, cur_xzpoint, ce.camera.viewmat, ce.camera.projmat)
     elseif v == "default" then
         delta_dis = delta_dis and -delta_dis or 0
         local t

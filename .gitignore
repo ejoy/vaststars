@@ -5,7 +5,8 @@
 
 res/
 .app/
-
+.build/
+.fileserver/
 *.DS_Store
 
 *.xcuserstate
