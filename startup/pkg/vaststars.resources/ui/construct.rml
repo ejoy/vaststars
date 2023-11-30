@@ -132,13 +132,13 @@
             </div>
         </tech-or-task-bar>
 
-        <main-button style = "position: absolute; left: 72.20vmax; top: 67.00vmin; background-image: /pkg/vaststars.resources/ui/textures/construct/main-button-bg.texture; background-size: 100% 100%;" data-event-click = "clickButton('build_mode')" 
+        <main-button style = "position: absolute; right: 0vmax; bottom: 7.00vmin; background-image: /pkg/vaststars.resources/ui/textures/construct/main-button-bg.texture; background-size: 100% 100%;" data-event-click = "clickButton('build_mode')" 
             data-if = "show_construct_button and guide_progress > 5"
             >
             <main-button-icon style = "background-image: /pkg/vaststars.resources/ui/textures/construct/main-button-construct.texture;" />
         </main-button>
 
-        <main-button style = "position: absolute; left: 72.20vmax; top: 67.00vmin; background-image: /pkg/vaststars.resources/ui/textures/construct/main-button-bg.texture; background-size: 100% 100%;"
+        <main-button style = "position: absolute; right: 0vmax; bottom: 7.00vmin; background-image: /pkg/vaststars.resources/ui/textures/construct/main-button-bg.texture; background-size: 100% 100%;"
             data-event-click = "clickButton('main_button_tap')"
             data-event-longpress = "clickButton('main_button_longpress')"
             data-if = "focus_building_icon ~= ''"
