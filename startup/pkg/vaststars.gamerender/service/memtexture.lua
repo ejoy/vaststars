@@ -36,7 +36,7 @@ end
 function S.load(path, config)
 
 	local function parse_config()
-		return config:match "%w+:(%a),(%d),(%d),([%d%.]*)"
+		return config:match "%w+:(%a),(%d),(%d),?([%d%.]*)"
 	end
 
 	local type, size_config, rot_config, dis_config = parse_config()
