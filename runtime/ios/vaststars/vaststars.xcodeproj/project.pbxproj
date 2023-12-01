@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		111602F42B172A4A0013E779 /* vfs.zip in Resources */ = {isa = PBXBuildFile; fileRef = 111602F32B172A4A0013E779 /* vfs.zip */; };
+		111602F62B19AF330013E779 /* launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 111602F52B19AF330013E779 /* launch.storyboard */; };
 		115F77B029C1A17500F87BBB /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 115F77AF29C1A17500F87BBB /* IOSurface.framework */; };
 		115F77B229C1A1EA00F87BBB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 115F77B129C1A1EA00F87BBB /* CoreGraphics.framework */; };
 		11C5E60F2A09F8AD00793559 /* assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 11C5E60E2A09F8AD00793559 /* assets.xcassets */; };
@@ -26,6 +27,7 @@
 
 /* Begin PBXFileReference section */
 		111602F32B172A4A0013E779 /* vfs.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; name = vfs.zip; path = ../../../../startup/vfs.zip; sourceTree = "<group>"; };
+		111602F52B19AF330013E779 /* launch.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = launch.storyboard; sourceTree = "<group>"; };
 		115F77AF29C1A17500F87BBB /* IOSurface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOSurface.framework; path = System/Library/Frameworks/IOSurface.framework; sourceTree = SDKROOT; };
 		115F77B129C1A1EA00F87BBB /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		11C5E60E2A09F8AD00793559 /* assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = assets.xcassets; sourceTree = "<group>"; };
@@ -69,6 +71,7 @@
 		11FAA840279AA48600D847F3 = {
 			isa = PBXGroup;
 			children = (
+				111602F52B19AF330013E779 /* launch.storyboard */,
 				11FAA84B279AA48600D847F3 /* vaststars */,
 				11FAA84A279AA48600D847F3 /* Products */,
 				11FAA86B279E7CFB00D847F3 /* Frameworks */,
@@ -173,6 +176,7 @@
 				111602F42B172A4A0013E779 /* vfs.zip in Resources */,
 				11C5E60F2A09F8AD00793559 /* assets.xcassets in Resources */,
 				11FAA87D279E808A00D847F3 /* Settings.bundle in Resources */,
+				111602F62B19AF330013E779 /* launch.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -354,7 +358,7 @@
 				);
 				INFOPLIST_FILE = vaststars/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UILaunchStoryboardName = launch.storyboard;
 				INFOPLIST_KEY_UIRequiredDeviceCapabilities = metal;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -394,7 +398,7 @@
 				);
 				INFOPLIST_FILE = vaststars/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UILaunchStoryboardName = launch.storyboard;
 				INFOPLIST_KEY_UIRequiredDeviceCapabilities = metal;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

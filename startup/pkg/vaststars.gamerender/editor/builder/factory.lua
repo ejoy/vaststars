@@ -14,6 +14,7 @@ local math3d = require "math3d"
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 local COLOR_GREEN <const> = math3d.constant("v4", {0.3, 1, 0, 1})
 local COLOR_RED <const> = math3d.constant("v4", {1, 0.03, 0, 1})
+local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
 
 local objects = require "objects"
 local ibuilding = ecs.require "render_updates.building"
@@ -29,6 +30,7 @@ local gameplay_core = require "gameplay.core"
 local iinventory = require "gameplay.interface.inventory"
 local igameplay = ecs.require "gameplay.gameplay_system"
 local inner_building = require "editor.inner_building"
+local vsobject_manager = ecs.require "vsobject_manager"
 
 local function _cover_position(pos, dir, area)
     local w, h = area >> 8, area & 0xFF
@@ -205,35 +207,51 @@ local function confirm(self, datamodel)
         return
     end
 
-    local gameplay_world = gameplay_core.get_world()
-    if iinventory.query(gameplay_world, self.typeobject.id) < 1 then
-        print("can not place, not enough " .. self.typeobject.name) --TODO: show error message
-        return
+    if self.move ~= true then
+        local gameplay_world = gameplay_core.get_world()
+        if iinventory.query(gameplay_world, self.typeobject.id) < 1 then
+            print("can not place, not enough " .. self.typeobject.name) --TODO: show error message
+            return
+        end
+        assert(iinventory.pickup(gameplay_world, self.typeobject.id, 1))
+        datamodel.show_confirm = false
+        datamodel.show_rotate = false
+
+        objects:set(pickup_object, "CONSTRUCTED")
+        pickup_object.gameplay_eid = igameplay.create_entity({dir = pickup_object.dir, x = pickup_object.x, y = pickup_object.y, prototype_name = pickup_object.prototype_name, amount = self.typeobject.amount})
+        for _, b in ipairs(self.typeobject.inner_building) do
+            local dx, dy = _cover_position(b, pickup_object.dir, self.typeobject.area)
+            local x, y = pickup_object.x + dx, pickup_object.y + dy
+            local prototype_name = b[3]
+            local typeobject_inner = iprototype.queryByName(prototype_name)
+            local w, h = iprototype.rotate_area(typeobject_inner.area, pickup_object.dir)
+            local dir = iprototype.rotate_dir(typeobject_inner.dir, pickup_object.dir)
+            local gameplay_eid = igameplay.create_entity({dir = iprototype.dir_tostring(dir), x = x, y = y, prototype_name = prototype_name})
+
+            inner_building:set(x, y, w, h, gameplay_eid)
+        end
+
+        pickup_object.PREPARE = true
+        self.pickup_object = nil
+        gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
+        self.self_selected_boxes:remove()
+
+        _new_entity(self, datamodel, self.typeobject, pickup_object.x, pickup_object.y, pickup_object.srt.t, pickup_object.dir)
+    else
+        local object = assert(objects:get(self.move_object_id))
+        local e = gameplay_core.get_entity(object.gameplay_eid)
+        e.building_changed = true
+        igameplay.move(object.gameplay_eid, self.pickup_object.x, self.pickup_object.y)
+        igameplay.rotate(object.gameplay_eid, self.pickup_object.dir)
+        gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
+
+        iobject.coord(object, self.pickup_object.x, self.pickup_object.y)
+        object.dir = self.pickup_object.dir
+        object.srt.r = ROTATORS[object.dir]
+        objects:set(object, "CONSTRUCTED")
+        objects:coord_update(object)
     end
-    assert(iinventory.pickup(gameplay_world, self.typeobject.id, 1))
-    datamodel.show_confirm = false
-    datamodel.show_rotate = false
 
-    objects:set(pickup_object, "CONSTRUCTED")
-    pickup_object.gameplay_eid = igameplay.create_entity({dir = pickup_object.dir, x = pickup_object.x, y = pickup_object.y, prototype_name = pickup_object.prototype_name, amount = self.typeobject.amount})
-    for _, b in ipairs(self.typeobject.inner_building) do
-        local dx, dy = _cover_position(b, pickup_object.dir, self.typeobject.area)
-        local x, y = pickup_object.x + dx, pickup_object.y + dy
-        local prototype_name = b[3]
-        local typeobject_inner = iprototype.queryByName(prototype_name)
-        local w, h = iprototype.rotate_area(typeobject_inner.area, pickup_object.dir)
-        local dir = iprototype.rotate_dir(typeobject_inner.dir, pickup_object.dir)
-        local gameplay_eid = igameplay.create_entity({dir = iprototype.dir_tostring(dir), x = x, y = y, prototype_name = prototype_name})
-
-        inner_building:set(x, y, w, h, gameplay_eid)
-    end
-
-    pickup_object.PREPARE = true
-    self.pickup_object = nil
-    gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
-    self.self_selected_boxes:remove()
-
-    _new_entity(self, datamodel, self.typeobject, pickup_object.x, pickup_object.y, pickup_object.srt.t, pickup_object.dir)
 end
 
 local function clean(self, datamodel)
@@ -279,6 +297,27 @@ local function build(self, v)
     end
 end
 
+local function move_new(self, move_object_id, datamodel, typeobject)
+    self.position_type = "CENTER"
+    self.typeobject = typeobject
+    self.move = true
+
+    local dir = DEFAULT_DIR
+    local w, h = iprototype.rotate_area(self.typeobject.area, dir)
+    local position, x, y = _align(w, h, self.position_type)
+    if not x or not y then
+        return
+    end
+
+    _new_entity(self, datamodel, self.typeobject, x, y, position, dir)
+    self.pickup_object.APPEAR = true
+    self.grid_entity = igrid_entity.create(MAP_WIDTH // ROAD_SIZE, MAP_HEIGHT // ROAD_SIZE, TILE_SIZE * ROAD_SIZE, {t = _calc_grid_position(x, y, w, h)})
+
+    self.move_object_id = move_object_id
+    local vsobject = assert(vsobject_manager:get(self.move_object_id))
+    vsobject:update {state = "translucent", color = SPRITE_COLOR.MOVE_SELF, emissive_color = SPRITE_COLOR.MOVE_SELF}
+end
+
 local function create()
     local m = {}
     m.new = new
@@ -288,6 +327,7 @@ local function create()
     m.rotate = rotate
     m.clean = clean
     m.build = build
+    m.move_new = move_new
     return m
 end
 return create
