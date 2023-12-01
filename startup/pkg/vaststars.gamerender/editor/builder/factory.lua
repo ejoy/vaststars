@@ -207,51 +207,35 @@ local function confirm(self, datamodel)
         return
     end
 
-    if self.move ~= true then
-        local gameplay_world = gameplay_core.get_world()
-        if iinventory.query(gameplay_world, self.typeobject.id) < 1 then
-            print("can not place, not enough " .. self.typeobject.name) --TODO: show error message
-            return
-        end
-        assert(iinventory.pickup(gameplay_world, self.typeobject.id, 1))
-        datamodel.show_confirm = false
-        datamodel.show_rotate = false
+    local gameplay_world = gameplay_core.get_world()
+    if iinventory.query(gameplay_world, self.typeobject.id) < 1 then
+        print("can not place, not enough " .. self.typeobject.name) --TODO: show error message
+        return
+    end
+    assert(iinventory.pickup(gameplay_world, self.typeobject.id, 1))
+    datamodel.show_confirm = false
+    datamodel.show_rotate = false
 
-        objects:set(pickup_object, "CONSTRUCTED")
-        pickup_object.gameplay_eid = igameplay.create_entity({dir = pickup_object.dir, x = pickup_object.x, y = pickup_object.y, prototype_name = pickup_object.prototype_name, amount = self.typeobject.amount})
-        for _, b in ipairs(self.typeobject.inner_building) do
-            local dx, dy = _cover_position(b, pickup_object.dir, self.typeobject.area)
-            local x, y = pickup_object.x + dx, pickup_object.y + dy
-            local prototype_name = b[3]
-            local typeobject_inner = iprototype.queryByName(prototype_name)
-            local w, h = iprototype.rotate_area(typeobject_inner.area, pickup_object.dir)
-            local dir = iprototype.rotate_dir(typeobject_inner.dir, pickup_object.dir)
-            local gameplay_eid = igameplay.create_entity({dir = iprototype.dir_tostring(dir), x = x, y = y, prototype_name = prototype_name})
+    objects:set(pickup_object, "CONSTRUCTED")
+    pickup_object.gameplay_eid = igameplay.create_entity({dir = pickup_object.dir, x = pickup_object.x, y = pickup_object.y, prototype_name = pickup_object.prototype_name, amount = self.typeobject.amount})
+    for _, b in ipairs(self.typeobject.inner_building) do
+        local dx, dy = _cover_position(b, pickup_object.dir, self.typeobject.area)
+        local x, y = pickup_object.x + dx, pickup_object.y + dy
+        local prototype_name = b[3]
+        local typeobject_inner = iprototype.queryByName(prototype_name)
+        local w, h = iprototype.rotate_area(typeobject_inner.area, pickup_object.dir)
+        local dir = iprototype.rotate_dir(typeobject_inner.dir, pickup_object.dir)
+        local gameplay_eid = igameplay.create_entity({dir = iprototype.dir_tostring(dir), x = x, y = y, prototype_name = prototype_name})
 
-            inner_building:set(x, y, w, h, gameplay_eid)
-        end
-
-        pickup_object.PREPARE = true
-        self.pickup_object = nil
-        gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
-        self.self_selected_boxes:remove()
-
-        _new_entity(self, datamodel, self.typeobject, pickup_object.x, pickup_object.y, pickup_object.srt.t, pickup_object.dir)
-    else
-        local object = assert(objects:get(self.move_object_id))
-        local e = gameplay_core.get_entity(object.gameplay_eid)
-        e.building_changed = true
-        igameplay.move(object.gameplay_eid, self.pickup_object.x, self.pickup_object.y)
-        igameplay.rotate(object.gameplay_eid, self.pickup_object.dir)
-        gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
-
-        iobject.coord(object, self.pickup_object.x, self.pickup_object.y)
-        object.dir = self.pickup_object.dir
-        object.srt.r = ROTATORS[object.dir]
-        objects:set(object, "CONSTRUCTED")
-        objects:coord_update(object)
+        inner_building:set(x, y, w, h, gameplay_eid)
     end
 
+    pickup_object.PREPARE = true
+    self.pickup_object = nil
+    gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
+    self.self_selected_boxes:remove()
+
+    _new_entity(self, datamodel, self.typeobject, pickup_object.x, pickup_object.y, pickup_object.srt.t, pickup_object.dir)
 end
 
 local function clean(self, datamodel)
@@ -297,10 +281,26 @@ local function build(self, v)
     end
 end
 
-local function move_new(self, move_object_id, datamodel, typeobject)
+local build_t = {}
+build_t.new = new
+build_t.touch_move = touch_move
+build_t.touch_end = touch_end
+build_t.confirm = confirm
+build_t.rotate = rotate
+build_t.clean = clean
+build_t.build = build
+local build_mt = {__index = build_t}
+
+local move_t = {CONFIRM_EXIT = true}
+move_t.touch_move = touch_move
+move_t.touch_end = touch_end
+move_t.confirm = confirm
+move_t.rotate = rotate
+move_t.clean = clean
+
+function move_t:new(move_object_id, datamodel, typeobject)
     self.position_type = "CENTER"
     self.typeobject = typeobject
-    self.move = true
 
     local dir = DEFAULT_DIR
     local w, h = iprototype.rotate_area(self.typeobject.area, dir)
@@ -318,16 +318,40 @@ local function move_new(self, move_object_id, datamodel, typeobject)
     vsobject:update {state = "translucent", color = SPRITE_COLOR.MOVE_SELF, emissive_color = SPRITE_COLOR.MOVE_SELF}
 end
 
-local function create()
-    local m = {}
-    m.new = new
-    m.touch_move = touch_move
-    m.touch_end = touch_end
-    m.confirm = confirm
-    m.rotate = rotate
-    m.clean = clean
-    m.build = build
-    m.move_new = move_new
-    return m
+function move_t:confirm(datamodel)
+    local pickup_object = assert(self.pickup_object)
+    local w, h = iprototype.rotate_area(self.typeobject.area, pickup_object.dir)
+    local check_x, check_y = _cover_position(self.typeobject.check_pos, pickup_object.dir, self.typeobject.area)
+    local check_w, check_h = iprototype.rotate_area(self.typeobject.check_area, pickup_object.dir)
+
+    local succ = _check_coord(pickup_object.x, pickup_object.y, w, h, check_x, check_y, check_w, check_h)
+    if not succ then
+        log.info("can not construct") --TODO: show error message
+        return
+    end
+
+    local object = assert(objects:get(self.move_object_id))
+    local e = gameplay_core.get_entity(object.gameplay_eid)
+    e.building_changed = true
+    igameplay.move(object.gameplay_eid, self.pickup_object.x, self.pickup_object.y)
+    igameplay.rotate(object.gameplay_eid, self.pickup_object.dir)
+    gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
+
+    iobject.coord(object, self.pickup_object.x, self.pickup_object.y)
+    object.dir = self.pickup_object.dir
+    object.srt.r = ROTATORS[object.dir]
+    objects:set(object, "CONSTRUCTED")
+    objects:coord_update(object)
+end
+local move_mt = {__index = move_t}
+
+local function create(t)
+    if t == "build" then
+        return setmetatable({}, build_mt)
+    elseif t == "move" then
+        return setmetatable({}, move_mt)
+    else
+        assert(false)
+    end
 end
 return create

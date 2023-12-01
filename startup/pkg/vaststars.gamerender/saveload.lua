@@ -247,7 +247,7 @@ function M:restart(game_template_file)
     for _, e in ipairs(game_template.entities or {}) do
         local typeobject = iprototype.queryByName(e.prototype_name)
         local create_builder = ecs.require("editor.builder." .. typeobject.builder)
-        local builder = create_builder()
+        local builder = create_builder("build")
         builder:build(e)
     end
 
