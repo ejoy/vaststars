@@ -41,10 +41,10 @@ function S.load(path, config)
 
 	local type, size_config, rot_config, dis_config = parse_config()
 	local is_dynamic = type == 'd'
-	local size = size_config and DEFAULT_SIZE_CONFIGS[tonumber(size_config)] or DEFAULT_SIZE_CONFIGS[1]
-	local rot  = rot_config  and DEFAULT_STATIC_ROT_CONFIGS[tonumber(rot_config)] or DEFAULT_STATIC_ROT_CONFIGS[1]
-	local dis = dis_config and tonumber(dis_config) or 1.0
-	local c = {
+	local size 		 = size_config and DEFAULT_SIZE_CONFIGS[tonumber(size_config)] or DEFAULT_SIZE_CONFIGS[1]
+	local rot  	     = rot_config  and DEFAULT_STATIC_ROT_CONFIGS[tonumber(rot_config)] or DEFAULT_STATIC_ROT_CONFIGS[1]
+	local dis 		 = dis_config and tonumber(dis_config) or 1.0
+	local c 		 = {
 		info = {
             width = size.width,
             height = size.height,
