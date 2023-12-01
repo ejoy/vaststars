@@ -11,6 +11,7 @@ local BUILDING_EFK_SCALE <const> = {
     ["3x5"] = {10, 10, 10},
     ["4x2"] = {7, 7, 7},
     ["4x4"] = {10, 10, 10},
+    ["4x6"] = {12, 12, 12},
     ["5x3"] = {10, 10, 10},
     ["5x5"] = {12, 12, 12},
     ["6x6"] = {12, 12, 12},
@@ -169,7 +170,7 @@ local function flush()
             vsobject:modifier("start_bone_modifier", {name = "confirm"})
 
             local typeobject = iprototype.queryByName(outer.prototype_name)
-            local w, h = iprototype.rotate_area(typeobject.area, outer.dir)
+            local w, h = iprototype.unpackarea(typeobject.area) -- Note: No need to rotate based on direction here
             local scale = assert(BUILDING_EFK_SCALE[w.."x"..h])
             iefk.play("/pkg/vaststars.resources/effects/building-animat.efk", {s = scale, t = outer.srt.t})
         end

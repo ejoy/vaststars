@@ -7,10 +7,6 @@ local math_abs = math.abs
 local gameplay = import_package "vaststars.gameplay"
 import_package "vaststars.prototype"
 
-local function unpackarea(area)
-    return area >> 8, area & 0xFF
-end
-
 local M = {}
 function M.queryById(...)
     return gameplay.prototype.queryById(...)
@@ -89,6 +85,10 @@ function M.packarea(w, h)
     return (w << 8) | h
 end
 
+function M.unpackarea(area)
+    return area >> 8, area & 0xFF
+end
+
 function M.is_fluid_id(id)
     local typeobject = assert(M.queryById(id))
     return M.has_type(typeobject.type, "fluid")
@@ -156,7 +156,7 @@ end
 
 function M.rotate_area(area, dir)
     dir = assert(DIRECTION_REV[dir]) -- TODO: remove this
-    local w, h = unpackarea(area)
+    local w, h = M.unpackarea(area)
     if dir == 'N' or dir == 'S' then
         return w, h
     elseif dir == 'E' or dir == 'W' then
@@ -176,7 +176,7 @@ end
 
 function M.rotate_connection(position, direction, area)
     direction = assert(DIRECTION[direction]) -- TODO: remove this
-    local w, h = unpackarea(area)
+    local w, h = M.unpackarea(area)
     local x, y = position[1], position[2]
     local dir = M.rotate_dir(position[3], direction)
     w, h = w - 1, h - 1

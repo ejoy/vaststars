@@ -329,30 +329,34 @@ local function rotate(self)
     end
 end
 
-local function create(datamodel, typeobject, position_type)
-    local m = {}
-    m.touch_move = touch_move
-    m.touch_end = touch_end
-    m.rotate = rotate
-
-    m.confirm = place
-    m.clean = clean
-
-    m.destroy = false
-    m.pickup_components = {}
-    m.typeobject = nil
-    m.forward_dir = DEFAULT_DIR
-
-    print(typeobject)
-    m.typeobject = typeobject
-    m.position_type = position_type
+local function new(self, datamodel, typeobject, position_type)
+    self.typeobject = typeobject
+    self.position_type = position_type
 
     local coord = assert(icoord.position2coord(icamera_controller.get_screen_world_position(position_type)))
     local x, y = coord[1], coord[2]
     x, y = x - (x % ROAD_SIZE), y - (y % ROAD_SIZE)
 
-    _new_entity(m, datamodel, typeobject, x, y)
+    _new_entity(self, datamodel, typeobject, x, y)
+end
 
+local function build(self, v)
+    error("not implement")
+end
+
+local function create()
+    local m = {}
+    m.new = new
+    m.touch_move = touch_move
+    m.touch_end = touch_end
+    m.rotate = rotate
+    m.confirm = place
+    m.clean = clean
+    m.build = build
+    m.destroy = false
+    m.pickup_components = {}
+    m.typeobject = nil
+    m.forward_dir = DEFAULT_DIR
     return m
 end
 return create

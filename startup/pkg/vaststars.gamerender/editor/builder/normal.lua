@@ -612,26 +612,34 @@ local function clean(self, datamodel)
     end
 end
 
-local function create(datamodel, typeobject, position_type)
+local function new(self, datamodel, typeobject, position_type)
+    self._check_coord = ecs.require(("editor.rules.check_coord.%s"):format(typeobject.check_coord))
+
+    self.typeobject = typeobject
+    self.position_type = position_type
+
+    local x, y, pos = align(self.position_type, self.typeobject.area, DEFAULT_DIR)
+    __new_entity(self, datamodel, typeobject, x, y, pos, DEFAULT_DIR)
+end
+
+local function build(self, v)
+    igameplay.create_entity(v)
+end
+
+local function create()
     local m = {}
+    m.new = new
     m.touch_move = touch_move
     m.touch_end = touch_end
     m.confirm = confirm
     m.rotate = rotate
     m.clean = clean
+    m.build = build
     m.sprites = {}
     m.self_selected_boxes = nil
     m.selected_boxes = {}
     m.last_x, m.last_y = -1, -1
     m.pickup_components = {}
-
-    m._check_coord = ecs.require(("editor.rules.check_coord.%s"):format(typeobject.check_coord))
-
-    m.typeobject = typeobject
-    m.position_type = position_type
-
-    local x, y, pos = align(m.position_type, m.typeobject.area, DEFAULT_DIR)
-    __new_entity(m, datamodel, typeobject, x, y, pos, DEFAULT_DIR)
     return m
 end
 return create

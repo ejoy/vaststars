@@ -11,13 +11,6 @@ local MAP_WIDTH <const> = CONSTANT.MAP_WIDTH
 local MAP_HEIGHT <const> = CONSTANT.MAP_HEIGHT
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 
-local aio = import_package "ant.io"
-local datalist = require "datalist"
-local function read_datalist(path)
-    return datalist.parse(aio.readall(path))
-end
-local ROAD_ENTRANCE_MARKER_CFG <const> = read_datalist "/pkg/vaststars.resources/config/canvas/road-entrance-marker.cfg"
-
 local math3d = require "math3d"
 local COLOR_GREEN <const> = math3d.constant("v4", {0.3, 1, 0, 1})
 local COLOR_RED <const> = math3d.constant("v4", {1, 0.03, 0, 1})
@@ -454,19 +447,11 @@ local function clean(self, datamodel)
     end
 end
 
-local function create(datamodel, typeobject, position_type)
-    local m = {}
-    m.touch_move = touch_move
-    m.touch_end = touch_end
-    m.confirm = confirm
-    m.rotate = rotate
-    m.clean = clean
+local function new(self, datamodel, typeobject, position_type)
+    self._check_coord = ecs.require(("editor.rules.check_coord.%s"):format(typeobject.check_coord))
 
-    m.selected_boxes = {}
-    m._check_coord = ecs.require(("editor.rules.check_coord.%s"):format(typeobject.check_coord))
-
-    m.typeobject = typeobject
-    m.position_type = position_type
+    self.typeobject = typeobject
+    self.position_type = position_type
 
     local dir = DEFAULT_DIR
     local position, x, y = __align(typeobject.name, dir, position_type)
@@ -474,12 +459,28 @@ local function create(datamodel, typeobject, position_type)
         return
     end
 
-    __new_entity(m, datamodel, typeobject, x, y, position, dir)
-    m.pickup_object.APPEAR = true
+    __new_entity(self, datamodel, typeobject, x, y, position, dir)
+    self.pickup_object.APPEAR = true
 
-    if not m.grid_entity then
-        m.grid_entity = igrid_entity.create(MAP_WIDTH // ROAD_SIZE, MAP_HEIGHT // ROAD_SIZE, TILE_SIZE * ROAD_SIZE, {t = __calc_grid_position(typeobject, m.pickup_object.x, m.pickup_object.y, m.pickup_object.dir)})
+    if not self.grid_entity then
+        self.grid_entity = igrid_entity.create(MAP_WIDTH // ROAD_SIZE, MAP_HEIGHT // ROAD_SIZE, TILE_SIZE * ROAD_SIZE, {t = __calc_grid_position(typeobject, self.pickup_object.x, self.pickup_object.y, self.pickup_object.dir)})
     end
+end
+
+local function build(self, v)
+    igameplay.create_entity(v)
+end
+
+local function create()
+    local m = {}
+    m.new = new
+    m.touch_move = touch_move
+    m.touch_end = touch_end
+    m.confirm = confirm
+    m.rotate = rotate
+    m.clean = clean
+    m.build = build
+    m.selected_boxes = {}
     return m
 end
 return create

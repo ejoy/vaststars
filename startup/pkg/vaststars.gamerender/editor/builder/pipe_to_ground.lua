@@ -878,32 +878,37 @@ local function confirm(self, datamodel)
     end
 end
 
-local function create(datamodel, typeobject, position_type)
-    local m = {}
-    m.touch_move = touch_move
-    m.touch_end = touch_end
-    m.confirm = confirm
+local function new(self, datamodel, typeobject, position_type)
+    self._check_coord = ecs.require(("editor.rules.check_coord.%s"):format(typeobject.check_coord))
 
-    m.clean = clean
-
-    m.removed = {}
-    m.pickup_components = {}
-    m.prototype_name = ""
-    m.state = STATE_NONE
-
-    m._check_coord = ecs.require(("editor.rules.check_coord.%s"):format(typeobject.check_coord))
-
-    m.typeobject = typeobject
-    m.position_type = position_type
+    self.typeobject = typeobject
+    self.position_type = position_type
 
     local dir = DEFAULT_DIR
-    local pos, x, y = __align(m.position_type, m.typeobject.name, dir)
+    local pos, x, y = __align(self.position_type, self.typeobject.name, dir)
     if not pos then
         return
     end
 
-    _new_entity(m, typeobject, x, y, pos, dir)
+    _new_entity(self, typeobject, x, y, pos, dir)
+end
 
+local function build(self, v)
+    igameplay.create_entity(v)
+end
+
+local function create()
+    local m = {}
+    m.new = new
+    m.touch_move = touch_move
+    m.touch_end = touch_end
+    m.confirm = confirm
+    m.clean = clean
+    m.build = build
+    m.removed = {}
+    m.pickup_components = {}
+    m.prototype_name = ""
+    m.state = STATE_NONE
     return m
 end
 return create

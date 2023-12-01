@@ -31,10 +31,12 @@ local icoord = require "coord"
 local iroadnet = ecs.require "engine.roadnet"
 local srt = require "utility.srt"
 local fastio = require "fastio"
+local inner_building = require "editor.inner_building"
 
 local function clean()
     global.buildings = create_buildings()
     objects:clear()
+    inner_building:clear()
 end
 
 local function restore_world(gameplay_world)
@@ -61,7 +63,7 @@ local function restore_world(gameplay_world)
     local map = {} -- coord -> id
     local fluidbox_map = {} -- coord -> id -- only for fluidbox
     local debris
-    for v in gameplay_world.ecs:select("eid:in building:in road:absent fluidbox?in fluidboxes?in assembling?in debris?in") do
+    for v in gameplay_world.ecs:select("eid:in building:in road:absent inner_building:absent fluidbox?in fluidboxes?in assembling?in debris?in") do
         local e = v.building
         local typeobject = iprototype.queryById(e.prototype)
         local fluid_name = ""
@@ -130,6 +132,12 @@ local function restore_world(gameplay_world)
 
     iobject.flush()
     global.statistic.valid = false
+
+    for e in gameplay_world.ecs:select("inner_building:in eid:in building:in") do
+        local typeobject = iprototype.queryById(e.building.prototype)
+        local w, h = iprototype.rotate_area(typeobject.area, e.building.direction)
+        inner_building:set(e.building.x, e.building.y, w, h, e.eid)
+    end
 end
 
 local function writeall(file, content)
@@ -237,7 +245,10 @@ function M:restart(game_template_file)
 
     --
     for _, e in ipairs(game_template.entities or {}) do
-        igameplay.create_entity(e)
+        local typeobject = iprototype.queryByName(e.prototype_name)
+        local create_builder = ecs.require("editor.builder." .. typeobject.builder)
+        local builder = create_builder()
+        builder:build(e)
     end
 
     for _, road in ipairs(game_template.road or {}) do

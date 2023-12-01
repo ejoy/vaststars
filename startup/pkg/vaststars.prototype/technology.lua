@@ -604,7 +604,7 @@ local prototype = gameplay.register.prototype
 
 
   prototype "物流学1" {
-    desc = "研究维修停车场的方法",
+    desc = "研究维修物流站的方法",
     type = { "tech" },
     effects = {
       unlock_recipe = {"维修物流站"},
