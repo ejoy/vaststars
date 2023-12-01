@@ -343,25 +343,31 @@ local function clean(self, datamodel)
     self.pending = {}
 end
 
-local function create(datamodel, typeobject, position_type)
+local function new(self, datamodel, typeobject, position_type)
+    self.typeobject = typeobject
+    self.position_type = position_type
+
+    local x, y, pos = align(self.position_type, self.typeobject.area, DEFAULT_DIR)
+    _new_entity(self, datamodel, typeobject, x, y, pos, DEFAULT_DIR)
+end
+
+local function build(self, v)
+    igameplay.create_entity(v)
+end
+
+local function create()
     local m = {}
+    m.new = new
     m.touch_move = touch_move
     m.touch_end = touch_end
-
     m.prototype_name = ""
     m.confirm = place_one
     m.clean = clean
-
+    m.build = build
     m.pending = {}
     m.pickup_components = {}
     m.to_x = nil
     m.to_y = nil
-
-    m.typeobject = typeobject
-    m.position_type = position_type
-
-    local x, y, pos = align(m.position_type, m.typeobject.area, DEFAULT_DIR)
-    _new_entity(m, datamodel, typeobject, x, y, pos, DEFAULT_DIR)
     return m
 end
 return create

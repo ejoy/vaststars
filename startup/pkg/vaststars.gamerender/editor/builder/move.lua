@@ -556,33 +556,40 @@ local function get_check_coord(object_id)
     return ecs.require(("editor.rules.check_coord.%s"):format(typeobject.check_coord))
 end
 
-local function create(move_object_id, datamodel, typeobject)
+local function new(self, move_object_id, datamodel, typeobject)
+    self.move_object_id = move_object_id
+    self.typeobject = typeobject
+    self._check_coord = get_check_coord(move_object_id)
+
+    __new_entity(self, datamodel, typeobject)
+    self.pickup_object.APPEAR = true
+
+    if not self.grid_entity then
+        if iprototype.has_types(typeobject.type, "station") then
+            self.grid_entity = igrid_entity.create(MAP_WIDTH // ROAD_SIZE, MAP_HEIGHT // ROAD_SIZE, TILE_SIZE * ROAD_SIZE, {t = __calc_grid_position(self, typeobject, self.pickup_object.dir)})
+        else
+            self.grid_entity = igrid_entity.create(MAP_WIDTH, MAP_HEIGHT, TILE_SIZE, {t = __calc_grid_position(self, typeobject, self.pickup_object.dir)})
+        end
+    end
+end
+
+local function build(self, v)
+    error("not implement")
+end
+
+local function create()
     local m = {}
+    m.new = new
     m.touch_move = touch_move
     m.touch_end = touch_end
     m.confirm = confirm
     m.rotate = rotate
     m.clean = clean
-    m.move_object_id = move_object_id
+    m.build = build
     m.pickup_components = {}
     m.selected_boxes = {}
-    m.typeobject = typeobject
     m.continue_construct = false
-
     m.CONFIRM_EXIT = true
-    m._check_coord = get_check_coord(move_object_id)
-
-    __new_entity(m, datamodel, typeobject)
-    m.pickup_object.APPEAR = true
-
-    if not m.grid_entity then
-        if iprototype.has_types(typeobject.type, "station") then
-            m.grid_entity = igrid_entity.create(MAP_WIDTH // ROAD_SIZE, MAP_HEIGHT // ROAD_SIZE, TILE_SIZE * ROAD_SIZE, {t = __calc_grid_position(m, typeobject, m.pickup_object.dir)})
-        else
-            m.grid_entity = igrid_entity.create(MAP_WIDTH, MAP_HEIGHT, TILE_SIZE, {t = __calc_grid_position(m, typeobject, m.pickup_object.dir)})
-        end
-    end
-
     return m
 end
 return create

@@ -19,11 +19,17 @@ prototype "物流中心" {
     model = "glbs/factory-1.glb|mesh.prefab",
     model_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/factory-1.glb|mesh.prefab config:s,1,3",
-    check_coord = "exclusive",
-    builder = "station",
+    check_coord = "",   -- factory builder special
+    builder = "factory",
+    check_pos = {0,2},  -- factory builder special
+    check_area = "4x2", -- factory builder special
+    inner_building = {  -- factory builder special
+        {0, 4, "停车站"},
+    },
     craft_category = {"基地制造"},
     item = "运输车辆I",
     type = {"building", "factory"},
+    amount = "8",
     speed = "50%",
     maxslot = 8,
     area = "4x6",
@@ -291,7 +297,7 @@ prototype "停车站" {
     icon = "mem:/pkg/vaststars.resources/glbs/goods-station-1.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
-    type = {"building","park"},
+    type = {"building","park","inner_building"},
     rotate_on_build = true,
     area = "4x2",
     drone_height = 24,

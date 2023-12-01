@@ -56,7 +56,7 @@ local interval_call = ecs.require "engine.interval_call"
 local itransfer = ecs.require "transfer"
 local can_build = ecs.require "ui_datamodel.common.can_build"
 local ichest = require "gameplay.interface.chest"
-local srt = require "utility.srt"
+local inner_building = require "editor.inner_building"
 
 local builder, builder_datamodel, builder_ui
 local selected_obj
@@ -169,7 +169,8 @@ local function _construct_entity(typeobject, position_type)
     builder_datamodel = iui.get_datamodel("/pkg/vaststars.resources/ui/construct.rml")
 
     local create_builder = ecs.require("editor.builder." .. typeobject.builder)
-    builder = create_builder(builder_datamodel, typeobject, position_type)
+    builder = create_builder()
+    builder:new(builder_datamodel, typeobject, position_type)
 end
 
 local function move_focus(e)
@@ -592,20 +593,20 @@ function M.update(datamodel)
                 end
             end
 
-            if #items > 0 then
-                local typeobject = iprototype.queryById(e.building.prototype)
-                local w, h = iprototype.rotate_area(typeobject.area, e.building.direction)
+            local typeobject = iprototype.queryById(e.building.prototype)
+            local w, h = iprototype.unpackarea(typeobject.area)
+            for gameplay_eid in inner_building:get(e.building.x, e.building.y, w, h) do
+                igameplay.destroy_entity(gameplay_eid)
+            end
 
+            if #items > 0 then
                 -- Add a ruined building
                 local new_object = iobject.new {
                     prototype_name = assert(DEBRIS[("%sx%s"):format(w, h)]),
                     dir = old_object.dir,
                     x = e.building.x,
                     y = e.building.y,
-                    srt = srt.new {
-                        t = math3d.vector(icoord.position(e.building.x, e.building.y, w, h)),
-                        r = ROTATORS[old_object.dir],
-                    },
+                    srt = old_object.srt,
                     group_id = old_object.group_id,
                     items = items,
                     debris = e.building.prototype,
@@ -635,7 +636,9 @@ function M.update(datamodel)
             idetail.unselected()
             builder_ui = "/pkg/vaststars.resources/ui/move_building.rml"
             builder_datamodel = iui.open({rml = "/pkg/vaststars.resources/ui/move_building.rml"}, object.prototype_name)
-            builder = create_movebuilder(object_id, builder_datamodel, typeobject)
+
+            builder = create_movebuilder()
+            builder:new(object_id, builder_datamodel, typeobject)
         end)
     end
 

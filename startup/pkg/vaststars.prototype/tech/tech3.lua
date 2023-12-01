@@ -140,8 +140,6 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  -- prototype "停车场放置"{}
-
   prototype "物流站发货设置" {
     desc = "物流站发货设置",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
