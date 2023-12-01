@@ -222,7 +222,8 @@ local function confirm(self, datamodel)
         local prototype_name = b[3]
         local typeobject_inner = iprototype.queryByName(prototype_name)
         local w, h = iprototype.rotate_area(typeobject_inner.area, pickup_object.dir)
-        local gameplay_eid = igameplay.create_entity({dir = pickup_object.dir, x = x, y = y, prototype_name = prototype_name})
+        local dir = iprototype.rotate_dir(typeobject_inner.dir, pickup_object.dir)
+        local gameplay_eid = igameplay.create_entity({dir = iprototype.dir_tostring(dir), x = x, y = y, prototype_name = prototype_name})
 
         inner_building:set(x, y, w, h, gameplay_eid)
     end
@@ -271,7 +272,8 @@ local function build(self, v)
         local prototype_name = b[3]
         local typeobject_inner = iprototype.queryByName(prototype_name)
         local w, h = iprototype.rotate_area(typeobject_inner.area, v.dir)
-        local gameplay_eid = igameplay.create_entity({dir = v.dir, x = x, y = y, prototype_name = prototype_name})
+        local dir = iprototype.rotate_dir(b[4], v.dir)
+        local gameplay_eid = igameplay.create_entity({dir = iprototype.dir_tostring(dir), x = x, y = y, prototype_name = prototype_name})
 
         inner_building:set(x, y, w, h, gameplay_eid)
     end

@@ -24,7 +24,7 @@ prototype "物流中心" {
     check_pos = {0,2},  -- factory builder special
     check_area = "4x2", -- factory builder special
     inner_building = {  -- factory builder special
-        {0, 4, "停车站"},
+        {0, 4, "停车站", "S"},
     },
     craft_category = {"基地制造"},
     item = "运输车辆I",
