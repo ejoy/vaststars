@@ -5,6 +5,108 @@ path: /state/CULL
 value: NONE
 ---
 file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      r: {-0.2391176074743271, -0.36964383721351624, -0.0990457683801651, 0.8923990726470947}
+      t: {15, 0, -12.5}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    path_b2l_1
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      r: {-0.2391176074743271, -0.36964383721351624, -0.0990457683801651, 0.8923990726470947}
+      t: {9.725162506103516, 5, -7.325549125671387}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    path_b2l_2
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
+      t: {0, 6.199999809265137, -5}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    path_b2l_3
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
+      t: {0, 6.199999809265137, -5}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    path_r2b_1
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      r: {0.0990457609295845, -0.8923990726470947, 0.2391176074743271, 0.36964380741119385}
+      t: {-9.725000381469727, 5, -7.326000213623047}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    path_r2b_2
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      r: {-3.8096983345781155e-09, -0.9961947202682495, 0.08715573698282242, -4.354505378501017e-08}
+      t: {-15, 0, -15}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    path_r2b_3
+---
+file: mesh.prefab
 op: copyfile
 path: debris.prefab
 ---
