@@ -9,7 +9,6 @@ local function start(mode)
 			debug = "vaststars.webcgi|debug",
 			upload = "vaststars.webcgi|upload",
 			texture = "vaststars.webcgi|texture",
-			repo = "vaststars.webcgi|repo",
 		},
 		route = {
 			vfs = "vfs:/",
@@ -24,6 +23,5 @@ return {
 	debug = require "debugger",
 	upload = require "upload",
 	texture = require "texture",
-	repo = require "repo",
 	start = start,
 }
