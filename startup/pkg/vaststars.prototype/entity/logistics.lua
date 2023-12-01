@@ -26,6 +26,9 @@ prototype "物流中心" {
     inner_building = {  -- factory builder special
         {0, 4, "停车站", "S"},
     },
+    lorry_track = {
+        {0, 4, "4x2", "factory"},
+    },
     craft_category = {"基地制造"},
     item = "运输车辆I",
     type = {"building", "factory"},
@@ -273,6 +276,9 @@ prototype "物流站" {
     check_coord = "exclusive",
     builder = "station",
     type = {"building", "station"},
+    lorry_track = {
+        {0, 0, "4x2", "station"},
+    },
     chest_style = "station",
     rotate_on_build = true,
     area = "4x2",

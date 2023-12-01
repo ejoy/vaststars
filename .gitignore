@@ -15,7 +15,7 @@ res/
 
 /runtime/macos/FrameCapture/
 /clibs/gameplay/src/util/component.h
-/startup/vfs.zip
+/startup/.ios/
 /startup/pkg/vaststars.prototype/debugger.lua
 /startup/imgui.layout
 /startup/mod
