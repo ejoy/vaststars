@@ -293,21 +293,12 @@ prototype "物流站" {
 }
 
 prototype "停车站" {
-    model = "glbs/goods-station-1.glb|mesh.prefab",
-    icon = "mem:/pkg/vaststars.resources/glbs/goods-station-1.glb|mesh.prefab config:s,1,3",
-    check_coord = "exclusive",
-    builder = "normal",
+    model = "", -- inner_building special
+    icon = "",
+    check_coord = "",
+    builder = "",
     type = {"building","park","inner_building"},
-    rotate_on_build = true,
     area = "4x2",
-    drone_height = 24,
-    sound = "building/logistics-center",
-    crossing = {
-        connections = {
-            {type="station", position={1,1,"S"}},
-            {type="station", position={1,2,"S"}},
-        },
-    },
     endpoint = "2,0",
     road = {
         "0,0,╔╗",

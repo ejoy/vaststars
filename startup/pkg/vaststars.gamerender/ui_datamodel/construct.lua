@@ -637,8 +637,14 @@ function M.update(datamodel)
             builder_ui = "/pkg/vaststars.resources/ui/move_building.rml"
             builder_datamodel = iui.open({rml = "/pkg/vaststars.resources/ui/move_building.rml"}, object.prototype_name)
 
-            builder = create_movebuilder()
-            builder:new(object_id, builder_datamodel, typeobject)
+            if typeobject.builder == "factory" then
+                local create_builder = ecs.require("editor.builder." .. typeobject.builder)
+                builder = create_builder()
+                builder:move_new(object_id, builder_datamodel, typeobject)
+            else
+                builder = create_movebuilder()
+                builder:new(object_id, builder_datamodel, typeobject)
+            end
         end)
     end
 
