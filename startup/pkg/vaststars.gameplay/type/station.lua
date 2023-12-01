@@ -8,6 +8,7 @@ local c = type "station"
     .endpoint "position"
     .road "network"
     .maxslot "integer"
+    .lorry_track "lorry_track"
 
 function c:ctor(init, pt)
     local world = self

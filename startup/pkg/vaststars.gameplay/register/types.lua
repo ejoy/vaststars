@@ -279,6 +279,30 @@ register_unit("task", "string", function(args)
 end)
 unit["task"].lazy = true
 
+register_unit("lorry_track", "table", function(t)
+	assert(type(t) == "table")
+
+	local r = {}
+
+	for _, v in ipairs(t) do
+		local x, y = v[1], v[2]
+		local w, h = v[3]:match("(%d+)x(%d+)")
+		w, h = w + 0, h + 0
+
+		local track = v[4]
+		for i = 0, w-1 do
+			for j = 0, h-1 do
+				local dx = x + i
+				local dy = y + j
+				r[dx] = r[dx] or {}
+				r[dx][dy] = track
+			end
+		end
+	end
+
+	return r
+end)
+
 local enum = {
 	priority = {
 		primary = 0,
