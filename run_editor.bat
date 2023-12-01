@@ -3,7 +3,7 @@
 
 set current_dir=%~dp0
 set cachedir=.\3rd\ant\tools\editor\.build
-set param=.\3rd\ant\tools\editor\main.lua
+set param=.\3rd\ant\tools\editor\launch\main.lua
 set mode=%1
 if not defined mode (
 	set mode=release
