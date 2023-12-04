@@ -8,7 +8,8 @@ local CONSTANT <const> = require "gameplay.interface.constant"
 local RENDER_LAYER <const> = ecs.require "engine.render_layer".RENDER_LAYER
 local icoord = require "coord"
 local igroup = ecs.require "group"
-
+local road_material = "/pkg/vaststars.resources/materials/road/road.material"
+local indicator_material = "/pkg/vaststars.resources/materials/road/indicator.material"
 local roadnet = {}
 local function new_groups() return setmetatable({}, {__index=function (tt, gid) local t = {}; tt[gid] = t; return t end}) end
 
@@ -77,7 +78,7 @@ local MODIFIED_GROUPS = {
     mark    = function (self, gid) self.which_groups[gid] = GROUP_ROADS[gid] end,
     update  = function (self)
         if next(self.which_groups) then
-            iroad.update_roadnet(self.which_groups, RENDER_LAYER.ROAD)
+            iroad.update_roadnet(self.which_groups, RENDER_LAYER.ROAD, road_material, indicator_material)
             self:clear()
         end
     end,
