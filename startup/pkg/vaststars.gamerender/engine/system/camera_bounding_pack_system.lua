@@ -19,6 +19,7 @@ function cbp_sys:update_camera()
         local points = math3d.frustum_points(main_camera.viewprojmat)
         local fp, np
         local opoints, rays, ipoints = {}, {}, {}
+
         local function get_frustum_points_rays()
             for i = 1, 4 do
                 fp, np = math3d.array_index(points, i+4), math3d.array_index(points, i)
@@ -31,12 +32,14 @@ function cbp_sys:update_camera()
                 end
             end
         end
+
         local function ray_intersect_with_plane(plane)
             for n, nray in pairs(rays) do
                 local o = opoints[n]
                 ipoints[#ipoints+1] = math3d.add(math3d.mul(math3d.plane_ray(o, nray, plane), nray), o)
             end
         end
+        
         get_frustum_points_rays()
         ray_intersect_with_plane(CUSTOM_NPLANE)
         ray_intersect_with_plane(CUSTOM_FPLANE)
