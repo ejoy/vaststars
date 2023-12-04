@@ -11,6 +11,7 @@ import_feature "ant.starsky"
 import_feature "ant.polyline"
 import_feature "ant.terrain|canvas"
 import_feature "ant.shadow_bounding"
+import_feature "ant.shadow_bounding|scene_bounding_pack"
 
 system "ui_system"
     .implement "engine/system/ui_system.lua"

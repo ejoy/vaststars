@@ -16,7 +16,7 @@ return function (x, y, w, h, object_id)
             end
 
             -- road
-            if ibuilding.get(x + i, y + j) then
+            if ibuilding.get((x + i)//2*2, (y + j)//2*2) then
                 return false
             end
 

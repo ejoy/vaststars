@@ -5,7 +5,6 @@ local w = world.w
 local CONSTANT <const> = require "gameplay.interface.constant"
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
-local ROTATORS <const> = CONSTANT.ROTATORS
 local DEBRIS <const> = ecs.require "vaststars.prototype|debris"
 
 local ipick_object = ecs.require "pick_object_system"
@@ -50,6 +49,7 @@ local gesture_pan_mb = world:sub {"gesture", "pan"}
 local lock_axis_mb = mailbox:sub {"lock_axis"}
 local unlock_axis_mb = mailbox:sub {"unlock_axis"}
 local settings_mb = mailbox:sub {"settings"}
+local focus_transfer_source_mb = mailbox:sub {"focus_transfer_source"}
 local iguide_tips = ecs.require "guide_tips"
 local create_selected_boxes = ecs.require "selected_boxes"
 local interval_call = ecs.require "engine.interval_call"
@@ -169,7 +169,7 @@ local function _construct_entity(typeobject, position_type)
     builder_datamodel = iui.get_datamodel("/pkg/vaststars.resources/ui/construct.rml")
 
     local create_builder = ecs.require("editor.builder." .. typeobject.builder)
-    builder = create_builder()
+    builder = create_builder("build")
     builder:new(builder_datamodel, typeobject, position_type)
 end
 
@@ -639,10 +639,10 @@ function M.update(datamodel)
 
             if typeobject.builder == "factory" then
                 local create_builder = ecs.require("editor.builder." .. typeobject.builder)
-                builder = create_builder()
-                builder:move_new(object_id, builder_datamodel, typeobject)
+                builder = create_builder("move")
+                builder:new(object_id, builder_datamodel, typeobject)
             else
-                builder = create_movebuilder()
+                builder = create_movebuilder("build")
                 builder:new(object_id, builder_datamodel, typeobject)
             end
         end)
@@ -792,6 +792,15 @@ function M.update(datamodel)
 
     for _ in settings_mb:unpack() do
         iui.open({rml = "/pkg/vaststars.resources/ui/main_menu.rml"})
+    end
+
+    for _ in focus_transfer_source_mb:unpack() do
+        local source_eid = itransfer.get_source_eid()
+        if source_eid then
+            local e = assert(gameplay_core.get_entity(source_eid))
+            icamera_controller.focus_on_position("CENTER", math3d.vector(icoord.position(e.building.x, e.building.y, 1, 1)))
+            pickupObject(datamodel, math3d.vector(icoord.position(e.building.x, e.building.y, 1, 1)), true)
+        end
     end
 
     iobject.flush()

@@ -26,10 +26,13 @@
                 transform: scale(1.2);
             }
             item-bar {
+                position: absolute;
+                align-items: center;
+                justify-content: center;
                 flex-direction: row;
-                left: 0vmax;
-                top: 1.17vmin;
-                width: 69.00vmax;
+                left: -4.97vmax;
+                top: -0.15vmin;
+                width: 100vmax;
                 height: 11.14vmin;
                 gap: 1.50vmin;
                 overflow: hidden;
@@ -100,13 +103,13 @@
         </script>
     </head>
     <body style = "pointer-events: none; margin: 1.32vmin 3.995vmax 0 4.97vmax;">
-        <item-bar data-event-click = "clickButton('settings')" data-if = "status ~= 'BUILD'">
-            <item-bar-button data-for = "item_bar" style = "flex-direction: row;">
+        <div style = "width: 10vmin; height: 10vmin; background-size: 100% 100%; background-image: /pkg/vaststars.resources/ui/textures/construct/settings.texture;" data-event-click = "clickButton('settings')" />
+        <item-bar data-if = "status ~= 'BUILD'" style = "pointer-events: none;">
+            <item-bar-button data-for = "item_bar" style = "flex-direction: row;" data-event-click = "clickButton('focus_transfer_source')">
                 <div style = "width: 10.67vmin; height: 10.67vmin; background-size: 100% 100%; background-color: rgb(61, 61, 61);" data-style-background-image = "it.icon" data-style-border = "it.is_transfer and '0.20vmin #3498db' or '0vmin'">
                     <div style = "position:absolute; top:0;right:0; font-size:4.5vmin; text-align: center;">{{it.count}}</div>
                 </div>  
             </item-bar-button>
-            <item-bar-button style = "width: 10.67vmin; height: 11.14vmin; background-size: 100% 100%; background-image: /pkg/vaststars.resources/ui/textures/construct/settings.texture;" data-if = "#item_bar <= 0"/>            
         </item-bar>
 
         <tech-or-task-bar style = "flex-direction: row; align-items: center; gap: 1vmin;" data-if = "status ~= 'BUILD' and show_tech_progress" data-event-click="clickButton('click_techortaskicon', is_task)">

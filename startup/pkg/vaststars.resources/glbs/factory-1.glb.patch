@@ -14,7 +14,7 @@ value:
   policy:
     ant.animation|slot
   tag:
-    path_b2l_1
+    path_t2r_1
 ---
 file: mesh.prefab
 op: add
@@ -31,7 +31,7 @@ value:
   policy:
     ant.animation|slot
   tag:
-    path_b2l_2
+    path_t2r_2
 ---
 file: mesh.prefab
 op: add
@@ -48,7 +48,7 @@ value:
   policy:
     ant.animation|slot
   tag:
-    path_b2l_3
+    path_t2r_3
 ---
 file: mesh.prefab
 op: add
@@ -65,7 +65,7 @@ value:
   policy:
     ant.animation|slot
   tag:
-    path_r2b_1
+    path_l2t_1
 ---
 file: mesh.prefab
 op: add
@@ -82,7 +82,7 @@ value:
   policy:
     ant.animation|slot
   tag:
-    path_r2b_2
+    path_l2t_2
 ---
 file: mesh.prefab
 op: add
@@ -99,7 +99,7 @@ value:
   policy:
     ant.animation|slot
   tag:
-    path_r2b_3
+    path_l2t_3
 ---
 file: mesh.prefab
 op: copyfile
@@ -155,7 +155,7 @@ value:
   policy:
     ant.animation|slot
   tag:
-    path_b2l_1
+    path_t2r_1
   ---
   data:
     scene:
@@ -168,7 +168,7 @@ value:
   policy:
     ant.animation|slot
   tag:
-    path_b2l_2
+    path_t2r_2
   ---
   data:
     scene:
@@ -181,7 +181,7 @@ value:
   policy:
     ant.animation|slot
   tag:
-    path_b2l_3
+    path_t2r_3
   ---
   data:
     scene:
@@ -194,7 +194,7 @@ value:
   policy:
     ant.animation|slot
   tag:
-    path_r2b_1
+    path_l2t_1
   ---
   data:
     scene:
@@ -207,7 +207,7 @@ value:
   policy:
     ant.animation|slot
   tag:
-    path_r2b_2
+    path_l2t_2
   ---
   data:
     scene:
@@ -220,4 +220,4 @@ value:
   policy:
     ant.animation|slot
   tag:
-    path_r2b_3
+    path_l2t_3

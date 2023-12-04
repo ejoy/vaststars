@@ -7,6 +7,7 @@ local c = type "factory"
     .road "network"
     .check_pos "position"
     .check_area "size"
+    .lorry_track "lorry_track"
 
 function c:ctor(init, pt)
     local world = self

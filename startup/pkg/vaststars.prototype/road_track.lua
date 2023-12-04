@@ -7,7 +7,6 @@ local CROSS_TYPE <const> = {
 
 return {
     ROAD_MODEL = "/pkg/vaststars.resources/glbs/road/X.glb|mesh.prefab",
-    STATION_MODEL = "/pkg/vaststars.resources/glbs/goods-station-1.glb|mesh.prefab",
 
     START = {
         [CROSS_TYPE.ll] = "path_start_l",
@@ -26,49 +25,6 @@ return {
         [CROSS_TYPE.bt] = "path_start_b",
         [CROSS_TYPE.br] = "path_start_b",
         [CROSS_TYPE.bb] = "path_start_b",
-    },
-
-    STATION_TRACKS = {
-        N = {
-            [CROSS_TYPE.bl] = {
-                [0] = {'path_b2l_1', 'path_b2l_2'},
-                [1] = {'path_b2l_3'},
-            },
-            [CROSS_TYPE.rb] = {
-                [0] = {'path_b2l_3'},
-                [1] = {'path_r2b_2'},
-            },
-        },
-        W = {
-            [CROSS_TYPE.rb] = {
-                [0] = {'path_b2l_1', 'path_b2l_2'},
-                [1] = {'path_b2l_3'},
-            },
-            [CROSS_TYPE.tr] = {
-                [0] = {'path_b2l_3'},
-                [1] = {'path_r2b_2'},
-            },
-        },
-        S = {
-            [CROSS_TYPE.tr] = {
-                [0] = {'path_b2l_1', 'path_b2l_2'},
-                [1] = {'path_b2l_3'},
-            },
-            [CROSS_TYPE.lt] = {
-                [0] = {'path_b2l_3'},
-                [1] = {'path_r2b_2'},
-            },
-        },
-        E = {
-            [CROSS_TYPE.lt] = {
-                [0] = {'path_b2l_1', 'path_b2l_2'},
-                [1] = {'path_b2l_3'},
-            },
-            [CROSS_TYPE.bl] = {
-                [0] = {'path_b2l_3'},
-                [1] = {'path_r2b_2'},
-            },
-        },
     },
 
     TRACKS = {
@@ -135,6 +91,99 @@ return {
         [CROSS_TYPE.rr] = {
             [0] = {'path_r2r_2'},
             [1] = {'path_r2r_3', 'path_r2r_4', 'path_r2r_5'},
+        },
+    },
+
+    SPEC = {
+        ["station"] = {
+            model = "/pkg/vaststars.resources/glbs/goods-station-1.glb|mesh.prefab",
+            tracks = {
+                N = {
+                    [CROSS_TYPE.bl] = {
+                        [0] = {'path_b2l_1', 'path_b2l_2'},
+                        [1] = {'path_b2l_3'},
+                    },
+                    [CROSS_TYPE.rb] = {
+                        [0] = {'path_b2l_3'},
+                        [1] = {'path_r2b_2'},
+                    },
+                },
+                W = {
+                    [CROSS_TYPE.rb] = {
+                        [0] = {'path_b2l_1', 'path_b2l_2'},
+                        [1] = {'path_b2l_3'},
+                    },
+                    [CROSS_TYPE.tr] = {
+                        [0] = {'path_b2l_3'},
+                        [1] = {'path_r2b_2'},
+                    },
+                },
+                S = {
+                    [CROSS_TYPE.tr] = {
+                        [0] = {'path_b2l_1', 'path_b2l_2'},
+                        [1] = {'path_b2l_3'},
+                    },
+                    [CROSS_TYPE.lt] = {
+                        [0] = {'path_b2l_3'},
+                        [1] = {'path_r2b_2'},
+                    },
+                },
+                E = {
+                    [CROSS_TYPE.lt] = {
+                        [0] = {'path_b2l_1', 'path_b2l_2'},
+                        [1] = {'path_b2l_3'},
+                    },
+                    [CROSS_TYPE.bl] = {
+                        [0] = {'path_b2l_3'},
+                        [1] = {'path_r2b_2'},
+                    },
+                },
+            },
+        },
+        ["factory"] = {
+            model = "/pkg/vaststars.resources/glbs/factory-1.glb|mesh.prefab",
+            tracks = {
+                N = {
+                    [CROSS_TYPE.tr] = {
+                        [0] = {'path_t2r_1', 'path_t2r_2'},
+                        [1] = {'path_t2r_3'},
+                    },
+                    [CROSS_TYPE.lt] = {
+                        [0] = {'path_t2r_3'},
+                        [1] = {'path_l2t_2'},
+                    },
+                },
+                W = {
+                    [CROSS_TYPE.rb] = {
+                        [0] = {'path_t2r_1', 'path_t2r_2'},
+                        [1] = {'path_t2r_3'},
+                    },
+                    [CROSS_TYPE.tr] = {
+                        [0] = {'path_t2r_3'},
+                        [1] = {'path_l2t_2'},
+                    },
+                },
+                S = {
+                    [CROSS_TYPE.tr] = {
+                        [0] = {'path_t2r_1', 'path_t2r_2'},
+                        [1] = {'path_t2r_3'},
+                    },
+                    [CROSS_TYPE.lt] = {
+                        [0] = {'path_t2r_3'},
+                        [1] = {'path_l2t_2'},
+                    },
+                },
+                E = {
+                    [CROSS_TYPE.lt] = {
+                        [0] = {'path_t2r_1', 'path_t2r_2'},
+                        [1] = {'path_t2r_3'},
+                    },
+                    [CROSS_TYPE.bl] = {
+                        [0] = {'path_t2r_3'},
+                        [1] = {'path_l2t_2'},
+                    },
+                },
+            },
         },
     },
 }

@@ -6,8 +6,8 @@ local CONSTANT <const> = require "gameplay.interface.constant"
 local CONFIG <const> = ecs.require "vaststars.prototype|road_track"
 local ROAD_TRACKS <const> = CONFIG.TRACKS
 local ROAD_TRACKS_MODEL <const> = CONFIG.ROAD_MODEL
-local STATION_TRACKS <const> = CONFIG.STATION_TRACKS
-local STATION_TRACKS_MODEL <const> = CONFIG.STATION_MODEL
+local SPEC_TRACKS <const> = CONFIG.SPEC
+
 local START_SLOTS <const> = CONFIG.START
 local ALL_DIR = CONSTANT.ALL_DIR
 
@@ -36,26 +36,22 @@ local srt = require "utility.srt"
 
 local start_srts = {}
 local cache = {}
-local station_cache = {}
+local spec_cache = {}
 local lorries = {}
 
 local function genKeyFrames(last_srt, x, y, toward, offset)
-    local srts, building_srt
-    local isStation = false
+    local srts, building_srt, c
     local o = objects:coord(x, y)
     if o then
         local typeobject = iprototype.queryByName(o.prototype_name)
-        if iprototype.has_types(typeobject.type, "station", "park") then -- special treatment for 'park,' assuming that 'station' and 'park' share the same model
-            isStation = true
+        if typeobject.lorry_track and typeobject.lorry_track[x - o.x] and typeobject.lorry_track[x - o.x][y - o.y] then
+            local name = typeobject.lorry_track[x - o.x][y - o.y]
+            building_srt = o.srt
+            c = spec_cache[name][o.dir]
         end
     end
 
-    local c
-    if isStation then
-        assert(o)
-        building_srt = o.srt
-        c = station_cache[o.dir]
-    else
+    if not c then
         building_srt = {s = mc.ONE, t = math3d.vector(icoord.position(x, y, ROAD_SIZE, ROAD_SIZE))}
         c = cache
     end
@@ -187,8 +183,11 @@ end
 function lorry_sys:prototype_restore()
     cache = loadModelTrack(ROAD_TRACKS_MODEL, ROAD_TRACKS)
 
-    for _, dir in ipairs(ALL_DIR) do
-        station_cache[dir] = loadModelTrack(STATION_TRACKS_MODEL, STATION_TRACKS[dir])
+    for name, v in pairs(SPEC_TRACKS) do
+        spec_cache[name] = {}
+        for _, dir in ipairs(ALL_DIR) do
+            spec_cache[name][dir] = loadModelTrack(v.model, v.tracks[dir])
+        end
     end
 
     local root_srt = prefab_root(ROAD_TRACKS_MODEL).data.scene
