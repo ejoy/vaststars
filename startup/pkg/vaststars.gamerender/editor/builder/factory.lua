@@ -9,6 +9,7 @@ local MAP_HEIGHT <const> = CONSTANT.MAP_HEIGHT
 local TILE_SIZE <const> = CONSTANT.TILE_SIZE
 local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
+local DIRECTION <const> = CONSTANT.DIRECTION
 
 local math3d = require "math3d"
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
@@ -318,6 +319,16 @@ function move_t:new(move_object_id, datamodel, typeobject)
     vsobject:update {state = "translucent", color = SPRITE_COLOR.MOVE_SELF, emissive_color = SPRITE_COLOR.MOVE_SELF}
 end
 
+local function _get_inner_building_config(inner_buildings, dx, dy, area, dir)
+    for _, inner_building in ipairs(inner_buildings) do
+        dx, dy = iprototype.rotate_connection({dx, dy, DEFAULT_DIR}, dir, area)
+        if inner_building[1] == dx and inner_building[2] == dy then
+            return inner_building
+        end
+    end
+    assert(false)
+end
+
 function move_t:confirm(datamodel)
     local pickup_object = assert(self.pickup_object)
     local w, h = iprototype.rotate_area(self.typeobject.area, pickup_object.dir)
@@ -332,12 +343,35 @@ function move_t:confirm(datamodel)
 
     local object = assert(objects:get(self.move_object_id))
     local e = gameplay_core.get_entity(object.gameplay_eid)
+
+    local typeobject = iprototype.queryById(e.building.prototype)
+    local w, h = iprototype.unpackarea(typeobject.area)
+    for gameplay_eid in inner_building:get(e.building.x, e.building.y, w, h) do
+        local ce = gameplay_core.get_entity(gameplay_eid)
+
+        local cfg = _get_inner_building_config(typeobject.inner_building, ce.building.x - e.building.x, ce.building.y - e.building.y, typeobject.area, e.building.direction)
+        local dx, dy, dir = iprototype.rotate_connection({cfg[1], cfg[2], cfg[4]},  DIRECTION[cfg[4]], typeobject.area)
+
+        ce.building_changed = true
+        igameplay.move(gameplay_eid, dx, dy)
+        igameplay.rotate(gameplay_eid, dir)
+
+        local t = iprototype.queryById(ce.building.prototype)
+        local cw, ch = iprototype.unpackarea(t.area)
+
+        inner_building:remove(gameplay_eid)
+        inner_building:set(self.pickup_object.x + dx, self.pickup_object.y + dy, cw, ch, gameplay_eid)
+    end
+
     e.building_changed = true
     igameplay.move(object.gameplay_eid, self.pickup_object.x, self.pickup_object.y)
     igameplay.rotate(object.gameplay_eid, self.pickup_object.dir)
+
     gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
 
-    iobject.coord(object, self.pickup_object.x, self.pickup_object.y)
+    object.x = self.pickup_object.x
+    object.y = self.pickup_object.y
+    object.srt.t = self.pickup_object.srt.t
     object.dir = self.pickup_object.dir
     object.srt.r = ROTATORS[object.dir]
     objects:set(object, "CONSTRUCTED")

@@ -60,7 +60,7 @@ function building_sys:gameworld_update()
     local gameplay_world = gameplay_core.get_world()
     local gameplay_ecs = gameplay_world.ecs
 
-    for e in gameplay_ecs:select "building_changed building:in road:absent" do
+    for e in gameplay_ecs:select "building_changed building:in road:absent inner_building:absent" do
         local object = assert(objects:coord(e.building.x, e.building.y))
         local typeobject = iprototype.queryById(e.building.prototype)
         object.prototype_name = typeobject.name
