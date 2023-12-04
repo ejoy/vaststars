@@ -106,7 +106,7 @@
                     <div style = "position:absolute; top:0;right:0; font-size:4.5vmin; text-align: center;">{{it.count}}</div>
                 </div>  
             </item-bar-button>
-            <item-bar-button style = "width: 10.67vmin; height: 11.14vmin; background-size: 100% 100%; background-image: /pkg/vaststars.resources/ui/textures/construct/settings.texture;" data-if = "#item_bar <= 0"/>            
+            <item-bar-button style = "width: 10vmin; height: 10vmin; background-size: 100% 100%; background-image: /pkg/vaststars.resources/ui/textures/construct/settings.texture;" data-if = "#item_bar <= 0"/>            
         </item-bar>
 
         <tech-or-task-bar style = "flex-direction: row; align-items: center; gap: 1vmin;" data-if = "status ~= 'BUILD' and show_tech_progress" data-event-click="clickButton('click_techortaskicon', is_task)">
