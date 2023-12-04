@@ -608,7 +608,7 @@ local function _builder_start(self, datamodel)
             end
         end
 
-        if not self._check_coord(to_x, to_y, 1, 1) then
+        if not self._check_coord(self.typeobject.name, to_x, to_y, 1, 1) then
             State.succ = false
         end
         State.to_x, State.to_y = to_x, to_y
@@ -616,7 +616,7 @@ local function _builder_start(self, datamodel)
         _builder_end(self, datamodel, State, dir, delta)
         return
     else
-        if not self._check_coord(from_x, from_y, 1, 1) then
+        if not self._check_coord(self.typeobject.name, from_x, from_y, 1, 1) then
             State.succ = false
         end
         State.from_x, State.from_y = from_x, from_y
@@ -656,7 +656,7 @@ local function _builder_start(self, datamodel)
         if not succ then
             State.succ = false
         end
-        if not self._check_coord(to_x, to_y, 1, 1) then
+        if not self._check_coord(self.typeobject.name, to_x, to_y, 1, 1) then
             State.succ = false
         end
         State.to_x, State.to_y = to_x, to_y

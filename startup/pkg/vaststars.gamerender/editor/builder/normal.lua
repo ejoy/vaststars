@@ -296,7 +296,7 @@ local function __new_entity(self, datamodel, typeobject, x, y, position, dir)
     local sprite_color
     local valid
     local w, h = iprototype.rotate_area(typeobject.area, dir)
-    if not self._check_coord(x, y, w, h) then
+    if not self._check_coord(self.typeobject.name, x, y, w, h) then
         if typeobject.supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID
         end
@@ -416,7 +416,7 @@ local function touch_move(self, datamodel, delta_vec)
     local valid
     local offset_x, offset_y = 0, 0
     local w, h = iprototype.rotate_area(typeobject.area, pickup_object.dir)
-    if not self._check_coord(x, y, w, h) then
+    if not self._check_coord(self.typeobject.name, x, y, w, h) then
         datamodel.show_confirm = false
         valid = false
 
@@ -499,7 +499,7 @@ local function confirm(self, datamodel)
     end
 
     local w, h = iprototype.rotate_area(self.typeobject.area, pickup_object.dir)
-    local succ = self._check_coord(pickup_object.x, pickup_object.y, w, h)
+    local succ = self._check_coord(self.typeobject.name, pickup_object.x, pickup_object.y, w, h)
     if not succ then
         log.info("can not construct") --TODO: show error message
         return

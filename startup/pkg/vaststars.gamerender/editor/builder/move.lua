@@ -233,7 +233,7 @@ local function __new_entity(self, datamodel, typeobject)
     local building_positon = icoord.position(x, y, w, h)
 
     local sprite_color
-    if not self._check_coord(x, y, w, h, self.move_object_id) then
+    if not self._check_coord(self.typeobject.name, x, y, w, h, self.move_object_id) then
         if typeobject.supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID
         end
@@ -490,7 +490,7 @@ local function rotate(self, datamodel, dir, delta_vec)
     local w, h = iprototype.rotate_area(typeobject.area, pickup_object.dir)
 
     local sprite_color
-    if not self._check_coord(pickup_object.x, pickup_object.y, w, h, self.move_object_id) then
+    if not self._check_coord(self.typeobject.name, pickup_object.x, pickup_object.y, w, h, self.move_object_id) then
         if typeobject.supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID
         end
