@@ -3321,12 +3321,32 @@ prototype "太阳能存储3" {
   time = "45s"
 }
 
-prototype "广播3" {
+-- prototype "广播3" {
+--   desc = "研究可影响周边生产设施工作效率的装置",
+--   type = { "tech" },
+--   effects = {
+--     unlock_recipe = {"广播塔3"},
+--     unlock_item = {"广播塔III"},
+--   },
+--   prerequisites = {"太阳能3"},
+--   ingredients = {
+--     {"地质科技包", 1},
+--     {"气候科技包", 1},
+--     {"机械科技包", 1},
+--     {"电子科技包", 1},
+--     {"化学科技包", 1},
+--     {"物理科技包", 1},
+--   },
+--   count = 1400,
+--   time = "45s"
+-- }
+
+prototype "碳纳米科技" {
   desc = "研究可影响周边生产设施工作效率的装置",
   type = { "tech" },
   effects = {
-    unlock_recipe = {"广播塔3"},
-    unlock_item = {"广播塔III"},
+    unlock_recipe = {"碳纳米管"},
+    unlock_item = {"碳纳米管"},
   },
   prerequisites = {"太阳能3"},
   ingredients = {
@@ -3341,14 +3361,14 @@ prototype "广播3" {
   time = "45s"
 }
 
-prototype "火箭化学" {
+prototype "太空电梯牵引" {
   desc = "研究可供火箭运行的燃料",
   type = { "tech" },
   effects = {
-    unlock_recipe = {"火箭燃料1"},
-    unlock_item = {"火箭燃料"},
+    unlock_recipe = {"电梯绳缆"},
+    unlock_item = {"电梯绳缆"},
   },
-  prerequisites = {"广播3"},
+  prerequisites = {"碳纳米科技"},
   ingredients = {
     {"地质科技包", 1},
     {"气候科技包", 1},
@@ -3361,14 +3381,14 @@ prototype "火箭化学" {
   time = "45s"
 }
 
-prototype "火箭控制" {
+prototype "太空电梯承重" {
   desc = "研究控制火箭运行的仪器",
   type = { "tech" },
   effects = {
-    unlock_recipe = {"火箭控制器1"},
-    unlock_item = {"火箭控制器"},
+    unlock_recipe = {"电梯配重"},
+    unlock_item = {"电梯配重"},
   },
-  prerequisites = {"火箭化学"},
+  prerequisites = {"太空电梯牵引"},
   ingredients = {
     {"地质科技包", 1},
     {"气候科技包", 1},
@@ -3381,14 +3401,14 @@ prototype "火箭控制" {
   time = "45s"
 }
 
-prototype "火箭架构" {
+prototype "太空电梯装载" {
   desc = "研究组成火箭外部框架",
   type = { "tech" },
   effects = {
-    unlock_recipe = {"火箭区段1"},
-    unlock_item = {"火箭区段"},
+    unlock_recipe = {"电梯厢体"},
+    unlock_item = {"电梯厢体"},
   },
-  prerequisites = {"火箭化学"},
+  prerequisites = {"太空电梯承重"},
   ingredients = {
     {"地质科技包", 1},
     {"气候科技包", 1},
@@ -3401,14 +3421,14 @@ prototype "火箭架构" {
   time = "45s"
 }
 
-prototype "火箭保护" {
+prototype "空间站" {
   desc = "研究保护火箭前端的特殊材料",
   type = { "tech" },
   effects = {
-    unlock_recipe = {"火箭整流罩1"},
-    unlock_item = {"火箭整流罩"},
+    unlock_recipe = {"电梯空间站"},
+    unlock_item = {"电梯空间站"},
   },
-  prerequisites = {"火箭化学"},
+  prerequisites = {"太空电梯装载"},
   ingredients = {
     {"地质科技包", 1},
     {"气候科技包", 1},

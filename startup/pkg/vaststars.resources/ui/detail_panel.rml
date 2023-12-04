@@ -213,7 +213,7 @@
     <body style = "pointer-events: none; justify-content: center; align-items: center;" onload="init()">
         <div class="panel1" style="flex-direction: row; justify-content: flex-start; align-items: center;">
             <!-- detail panel begin -->
-            <div style = 'margin-left: 6.5%; margin-top: 18vmin; margin-bottom: 7vmin; width: 17.10vmax; height: 81vmin; background-lattice: 32.97% 11.50% 32.97% 11.50% 50% 50%; background-image: "/pkg/vaststars.resources/ui/textures/detail/background.texture"; background-size: 100% 100%;'>
+            <div style = 'margin-left: 6.5%; margin-top: 5vmin; margin-bottom: 7vmin; width: 17.10vmax; height: 81vmin; background-lattice: 32.97% 11.50% 32.97% 11.50% 50% 50%; background-image: "/pkg/vaststars.resources/ui/textures/detail/background.texture"; background-size: 100% 100%;'>
                 <!-- title -->
                 <div style = "flex-direction: row; justify-content: center; align-items: center;">
                     <div data-style-background-image="icon" style = "width: 20vmin; height: 20vmin; background-size: cover;" data-event-longpress="onLongPress(ev, 1)" data-event-click="onClick(ev, 1)" />

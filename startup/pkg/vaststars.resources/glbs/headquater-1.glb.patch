@@ -1,27 +1,11 @@
 ---
 file: mesh.prefab
-op: add
-path: /-
-value:
-  data:
-    scene:
-      t: {0, 0, -25}
-  mount: 1
-  policy:
-    ant.scene|scene_object
-  tag:
-    prefab1
----
-file: mesh.prefab
-op: add
-path: /-
-value:
-  mount: 3
-  prefab: /pkg/vaststars.resources/glbs/goods-gate.glb|mesh.prefab
+op: copyfile
+path: work.prefab
 ---
 file: mesh.prefab
 op: copyfile
-path: work.prefab
+path: debris.prefab
 ---
 file: work.prefab
 op: add
@@ -41,10 +25,6 @@ value:
     ant.efk|efk
   tag:
     work
----
-file: mesh.prefab
-op: copyfile
-path: debris.prefab
 ---
 file: debris.prefab
 op: add

@@ -1886,11 +1886,80 @@ prototype "物流站打印" {
     description = "向运输车辆装卸货物的车站",
 }
 
-prototype "火箭区段1" {
+-- prototype "火箭区段1" {
+--     type = { "recipe" },
+--     recipe_craft_category = "生产大型制造",
+--     recipe_category =  "加工",
+--     recipe_order =  64,
+--     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/electric-motor.texture",
+--     ingredients = {
+--         {"钢板", 20},
+--         {"铝板", 30},
+--         {"隔热板", 10},
+--     },
+--     results = {
+--         {"火箭区段", 1},
+--     },
+--     time = "25s",
+--     description = "生产可以拼接成完整火箭的区段",
+-- }
+
+-- prototype "火箭整流罩1" {
+--     type = { "recipe" },
+--     recipe_craft_category = "生产大型制造",
+--     recipe_category =  "加工",
+--     recipe_order =  64,
+--     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/electric-motor.texture",
+--     ingredients = {
+--         {"隔热板", 100},
+--         {"钛板", 200},
+--     },
+--     results = {
+--         {"火箭整流罩", 1},
+--     },
+--     time = "60s",
+--     description = "生产保护火箭头部的金属装置",
+-- }
+
+prototype "电梯绳缆" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "加工",
+    recipe_order =  63,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/electric-motor.texture",
+    ingredients = {
+        {"碳纳米管", 20},
+    },
+    results = {
+        {"电梯绳缆", 1},
+    },
+    time = "20s",
+    description = "制造太空电梯的绳缆",
+}
+
+
+prototype "电梯配重" {
     type = { "recipe" },
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
     recipe_order =  64,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/electric-motor.texture",
+    ingredients = {
+        {"隔热板", 10},
+        {"钛板", 20},
+    },
+    results = {
+        {"电梯配重", 1},
+    },
+    time = "20s",
+    description = "制造电梯的配重",
+}
+
+prototype "电梯厢体" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "加工",
+    recipe_order =  65,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/electric-motor.texture",
     ingredients = {
         {"钢板", 20},
@@ -1898,27 +1967,63 @@ prototype "火箭区段1" {
         {"隔热板", 10},
     },
     results = {
-        {"火箭区段", 1},
+        {"电梯厢体", 1},
     },
     time = "25s",
-    description = "生产可以拼接成完整火箭的区段",
+    description = "制造拼接成完整太空电梯的厢体",
 }
 
-prototype "火箭整流罩1" {
+prototype "电梯空间站" {
     type = { "recipe" },
     recipe_craft_category = "生产大型制造",
+    recipe_category =  "加工",
+    recipe_order =  66,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/electric-motor.texture",
+    ingredients = {
+        {"电梯绳缆", 100},
+        {"太阳能板III", 40},
+    },
+    results = {
+        {"电梯空间站", 1},
+    },
+    time = "60s",
+    description = "制造太空电梯的空间站",
+}
+
+prototype "碳纳米管" {
+    type = { "recipe" },
+    recipe_craft_category = "器件基础化工",
     recipe_category =  "加工",
     recipe_order =  64,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/electric-motor.texture",
     ingredients = {
-        {"隔热板", 100},
-        {"钛板", 200},
+        {"石墨烯", 2},
+        {"氮气", 100},
     },
     results = {
-        {"火箭整流罩", 1},
+        {"碳纳米管", 1},
     },
-    time = "60s",
-    description = "生产保护火箭头部的金属装置",
+    time = "20s",
+    description = "制造石墨烯",
+}
+
+prototype "太空电梯" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    --recipe_category =  "加工",
+    recipe_order =  66,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/electric-motor.texture",
+    ingredients = {
+        {"电梯绳缆", 500},
+        {"电梯配重", 100},
+        {"电梯厢体", 50},
+        {"电梯空间站", 1},
+    },
+    results = {
+        {"太空电梯", 1},
+    },
+    time = "120s",
+    description = "制造太空电梯的空间站",
 }
 
 prototype "车辆装配" {
@@ -3316,25 +3421,25 @@ prototype "氨气" {
     description = "氮气和氢气合成氨气",
 }
 
-prototype "火箭燃料1" {
-    type = { "recipe" },
-    recipe_craft_category = "流体基础化工",
-    recipe_category =  "化工",
-    recipe_order =  34,
-    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/hydrochloric.texture",
-    ingredients = {
-        {"铝丝", 20},
-        {"氧气", 300},
-        {"盐酸", 200},
-        {"氨气", 180},
-    },
-    results = {
-        {"火箭燃料", 3},
-        {"废水", 200},
-    },
-    time = "30s",
-    description = "二氧化碳转甲烷",
-}
+-- prototype "火箭燃料1" {
+--     type = { "recipe" },
+--     recipe_craft_category = "流体基础化工",
+--     recipe_category =  "化工",
+--     recipe_order =  34,
+--     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/hydrochloric.texture",
+--     ingredients = {
+--         {"铝丝", 20},
+--         {"氧气", 300},
+--         {"盐酸", 200},
+--         {"氨气", 180},
+--     },
+--     results = {
+--         {"火箭燃料", 3},
+--         {"废水", 200},
+--     },
+--     time = "30s",
+--     description = "二氧化碳转甲烷",
+-- }
 
 prototype "地下卤水电解1" {
     type = { "recipe" },
