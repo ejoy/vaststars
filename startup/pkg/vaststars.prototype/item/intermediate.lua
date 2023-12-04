@@ -736,7 +736,19 @@ prototype "隔热板" {
     item_category = "器件",
 }
 
-prototype "火箭控制器" {
+prototype "电梯绳缆" {
+    type = {"item"},
+    station_limit = 15,
+    chest_limit = 60,
+    backpack_limit = 100,
+    item_order = 89,
+    item_model = "glbs/stackeditems/iron-plate.glb|mesh.prefab",
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/logic-circuit.texture",
+    item_description = "连接太空电梯的绳缆",
+    item_category = "器件",
+}
+
+prototype "电梯配重" {
     type = {"item"},
     station_limit = 8,
     chest_limit = 15,
@@ -744,11 +756,11 @@ prototype "火箭控制器" {
     item_order = 90,
     item_model = "glbs/stackeditems/iron-plate.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/logic-circuit.texture",
-    item_description = "负责控制和调节火箭在发射、飞行和着陆过程中各种功能和参数的设备",
+    item_description = "太空电梯配重的部分",
     item_category = "器件",
 }
 
-prototype "火箭区段" {
+prototype "电梯厢体" {
     type = {"item"},
     station_limit = 8,
     chest_limit = 15,
@@ -756,21 +768,68 @@ prototype "火箭区段" {
     item_order = 92,
     item_model = "glbs/stackeditems/iron-plate.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/logic-circuit.texture",
-    item_description = "火箭在发射和飞行过程中执行特定功能的一个部分",
+    item_description = "可装载货物并沿着太空电梯爬升的机械厢体",
     item_category = "器件",
 }
 
-prototype "火箭整流罩" {
+prototype "电梯空间站" {
     type = {"item"},
-    station_limit = 8,
-    chest_limit = 15,
-    backpack_limit = 25,
+    station_limit = 1,
+    chest_limit = 1,
+    backpack_limit = 1,
     item_order = 94,
     item_model = "glbs/stackeditems/iron-plate.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/logic-circuit.texture",
-    item_description = "火箭在穿越大气层过程中围绕有效载荷部分的一种保护结构",
+    item_description = "太空电梯在太空中的空间站",
     item_category = "器件",
 }
+
+prototype "碳纳米管" {
+    type = {"item"},
+    station_limit = 15,
+    chest_limit = 60,
+    backpack_limit = 100,
+    item_order = 94,
+    item_model = "glbs/stackeditems/iron-plate.glb|mesh.prefab",
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/logic-circuit.texture",
+    item_description = "一种高强度、高导电性、高热导性的纳米材料",
+    item_category = "器件",
+}
+-- prototype "火箭控制器" {
+--     type = {"item"},
+--     station_limit = 8,
+--     chest_limit = 15,
+--     backpack_limit = 25,
+--     item_order = 90,
+--     item_model = "glbs/stackeditems/iron-plate.glb|mesh.prefab",
+--     item_icon = "/pkg/vaststars.resources/textures/icons/item/logic-circuit.texture",
+--     item_description = "负责控制和调节火箭在发射、飞行和着陆过程中各种功能和参数的设备",
+--     item_category = "器件",
+-- }
+
+-- prototype "火箭区段" {
+--     type = {"item"},
+--     station_limit = 8,
+--     chest_limit = 15,
+--     backpack_limit = 25,
+--     item_order = 92,
+--     item_model = "glbs/stackeditems/iron-plate.glb|mesh.prefab",
+--     item_icon = "/pkg/vaststars.resources/textures/icons/item/logic-circuit.texture",
+--     item_description = "火箭在发射和飞行过程中执行特定功能的一个部分",
+--     item_category = "器件",
+-- }
+
+-- prototype "火箭整流罩" {
+--     type = {"item"},
+--     station_limit = 8,
+--     chest_limit = 15,
+--     backpack_limit = 25,
+--     item_order = 94,
+--     item_model = "glbs/stackeditems/iron-plate.glb|mesh.prefab",
+--     item_icon = "/pkg/vaststars.resources/textures/icons/item/logic-circuit.texture",
+--     item_description = "火箭在穿越大气层过程中围绕有效载荷部分的一种保护结构",
+--     item_category = "器件",
+-- }
 ------------------------------------------------
 prototype "地质科技包" {
     type = {"item"},

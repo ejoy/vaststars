@@ -269,14 +269,14 @@ prototype "四氯化钛" {
     item_description = "一种无色液体,化学式TiCL4",
 }
 
-prototype "火箭燃料" {
-    type = {"fluid"},
-    catagory = {"化学液体"},
-    item_icon = "/pkg/vaststars.resources/textures/icons/item/liquid-hydrochloric.texture",
-    color = {0.75, 0.75, 0.75, 1},
-    heat_capacity = "0.08kJ",
-    default_temperature = 25,
-    max_temperature = 200,
-    item_order = 46,
-    item_description = "用于推动火箭和航天器的推进剂",
-}
+-- prototype "火箭燃料" {
+--     type = {"fluid"},
+--     catagory = {"化学液体"},
+--     item_icon = "/pkg/vaststars.resources/textures/icons/item/liquid-hydrochloric.texture",
+--     color = {0.75, 0.75, 0.75, 1},
+--     heat_capacity = "0.08kJ",
+--     default_temperature = 25,
+--     max_temperature = 200,
+--     item_order = 46,
+--     item_description = "用于推动火箭和航天器的推进剂",
+-- }
