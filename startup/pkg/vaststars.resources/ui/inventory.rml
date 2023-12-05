@@ -134,7 +134,7 @@
             })
 
             function start.clickButton(...)
-                -- console.log(...)
+                -- print(...)
                 ui_sys.pub {...}
             end
 
@@ -150,7 +150,7 @@
 
             function init()
                 for _, e in ipairs(document.getElementsByTagName "construct-list") do
-                    console.log("init")
+                    print("init")
                     e.scrollInsets(0, 0, 0, 200)
 
                     local last_y

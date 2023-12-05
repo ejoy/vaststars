@@ -61,7 +61,7 @@ local function create_button(command)
 end
 
 local function set_button_offset(buttons)
-    -- console.log("#buttons", #buttons)
+    -- print("#buttons", #buttons)
     if #buttons > 0 then
         local offsets = DEFAULT_OFFSETS[#buttons] or error(("(%s)"):format(#buttons))
         for i = 1, #buttons do
