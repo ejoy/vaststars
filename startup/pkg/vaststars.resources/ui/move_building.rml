@@ -18,12 +18,13 @@
             }
         </style>
         <script type="text/x-lua" >
-            local ui_sys = require "lua.ui_system"
-            local start = ui_sys.createDataMode {
+            local ui = import_package "vaststars.ui"
+            local ui_sys = ui.ui_system
+            local start = ui_sys.createDataMode(window, {
                 buttons = {},
                 show_confirm = false,
                 show_rotate = false,
-            }
+            })
 
 
             start.buttons[#start.buttons+1] = {name = "旋转", show_var = "show_rotate", show = false, param = "rotate", background_image = "/pkg/vaststars.resources/ui/textures/construct/rotate.texture"}
@@ -31,7 +32,7 @@
             start("buttons")
 
             function start.clickButton(...)
-                ui_sys.pub {...}
+                ui_sys.pub(window, {...})
             end
 
             local function getMappingParam(var)

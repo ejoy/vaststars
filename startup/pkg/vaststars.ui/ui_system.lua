@@ -1,22 +1,22 @@
-local tracedoc = require "lua.tracedoc"
+local tracedoc = require "tracedoc"
 
 local M = {}
 
-function M.pub(msg)
+function M.pub(window, msg)
     local ud = {}
     ud.event = "__PUB"
     ud.ud = msg
     window.postMessage(ud)
 end
 
-function M.close(url)
+function M.close(window, url)
     local ud = {}
     ud.event = "__CLOSE"
     ud.ud = {url}
     window.postMessage(ud)
 end
 
-function M.addEventListener(event_funcs)
+function M.addEventListener(window, event_funcs)
     window.addEventListener("message", function(data)
         local func = event_funcs[data.event]
         if not func then
@@ -27,7 +27,7 @@ function M.addEventListener(event_funcs)
     end)
 end
 
-function M.createDataMode(init, onload)
+function M.createDataMode(window, init, onload)
     local doc = tracedoc.new(init)
     local datamodel = window.createModel(init)
     datamodel.mapping = nil

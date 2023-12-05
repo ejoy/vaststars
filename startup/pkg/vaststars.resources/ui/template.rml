@@ -49,14 +49,15 @@
         <style path = "/pkg/vaststars.resources/ui/common/building_style.rcss"/>
         <script type="text/x-lua" >
             local audio = import_package "ant.audio"
-            local ui_sys = require "lua.ui_system"
-            local start = ui_sys.createDataMode {
+            local ui = import_package "vaststars.ui"
+            local ui_sys = ui.ui_system
+            local start = ui_sys.createDataMode(window, {
                 templates = {},
-            }
+            })
 
             function start.clickButton(...)
                 audio.play("event:/ui/button1")
-                ui_sys.pub {...}
+                ui_sys.pub(window, {...})
             end
 
             function init()

@@ -155,12 +155,13 @@
         </style>
         <style path = "/pkg/vaststars.resources/ui/common/building_style.rcss"/>
         <script type="text/x-lua" >
-            local ui_sys = require "lua.ui_system"
-            local start = ui_sys.createDataMode {
+            local ui = import_package "vaststars.ui"
+            local ui_sys = ui.ui_system
+            local start = ui_sys.createDataMode(window, {
                 left = "0vmin",
                 top = "0vmin",
-            }
-            ui_sys.addEventListener({
+            })
+            ui_sys.addEventListener(window, {
                 ["message"] = function(...)
                     local param = ...
                     local parent = document.getElementById('pop_root')
