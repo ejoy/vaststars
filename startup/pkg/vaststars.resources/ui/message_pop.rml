@@ -161,7 +161,7 @@
                 left = "0vmin",
                 top = "0vmin",
             })
-            ui_sys.addEventListener(window, {
+            ui_sys.onMessage(window, {
                 ["message"] = function(...)
                     local param = ...
                     local parent = document.getElementById('pop_root')

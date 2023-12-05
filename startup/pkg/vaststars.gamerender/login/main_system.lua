@@ -26,7 +26,7 @@ function m:init()
             version = version,
         },
     }
-    window.addEventListener("message", function (data)
+    window.onMessage(function (data)
         if data.type == "loaded" then
             loading = true
         end

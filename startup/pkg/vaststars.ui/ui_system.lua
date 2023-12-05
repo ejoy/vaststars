@@ -16,8 +16,8 @@ function M.close(window, url)
     window.postMessage(ud)
 end
 
-function M.addEventListener(window, event_funcs)
-    window.addEventListener("message", function(data)
+function M.onMessage(window, event_funcs)
+    window.onMessage(function(data)
         local func = event_funcs[data.event]
         if not func then
             return
@@ -33,7 +33,7 @@ function M.createDataMode(window, init, onload)
     datamodel.mapping = nil
     datamodel.__first = true
 
-    window.addEventListener("message", function(data)
+    window.onMessage(function(data)
         if data.event ~= "__DATAMODEL" then
             return
         end

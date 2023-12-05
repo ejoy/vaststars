@@ -34,7 +34,7 @@
             local model = window.createModel {
                 version = ""
             }
-            window.addEventListener("message", function(data)
+            window.onMessage(function(data)
                 if data.type == "set" then
                     for k, v in pairs(data.data) do
                         model[k] = v
