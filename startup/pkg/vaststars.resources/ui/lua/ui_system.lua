@@ -6,28 +6,23 @@ function M.pub(msg)
     local ud = {}
     ud.event = "__PUB"
     ud.ud = msg
-    window.extern.postMessage(ud)
+    window.postMessage(ud)
 end
 
 function M.close(url)
     local ud = {}
     ud.event = "__CLOSE"
     ud.ud = {url}
-    window.extern.postMessage(ud)
+    window.postMessage(ud)
 end
 
 function M.addEventListener(event_funcs)
-    window.addEventListener("message", function(event)
-        if not event.data then
-            print("event data is nil")
-            return
-        end
-        local res = event.data
-        local func = event_funcs[res.event]
+    window.addEventListener("message", function(data)
+        local func = event_funcs[data.event]
         if not func then
             return
         end
-        func(table.unpack(res.ud))
+        func(table.unpack(data.ud))
         return
     end)
 end
@@ -38,17 +33,12 @@ function M.createDataMode(init, onload)
     datamodel.mapping = nil
     datamodel.__first = true
 
-    window.addEventListener("message", function(event)
-        if not event.data then
-            print("event data is nil")
-            return
-        end
-        local res = event.data
-        if res.event ~= "__DATAMODEL" then
+    window.addEventListener("message", function(data)
+        if data.event ~= "__DATAMODEL" then
             return
         end
 
-        local diff = res.ud
+        local diff = data.ud
         if not diff then
             return
         end

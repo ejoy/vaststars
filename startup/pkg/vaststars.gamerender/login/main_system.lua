@@ -26,9 +26,8 @@ function m:init()
             version = version,
         },
     }
-    window.addEventListener("message", function (event)
-        local ev = event.data
-        if ev.type == "loaded" then
+    window.addEventListener("message", function (data)
+        if data.type == "loaded" then
             loading = true
         end
     end)
