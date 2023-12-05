@@ -56,13 +56,11 @@
             }
 
             function start.clickButton(...)
-                -- print(...)
                 ui_sys.pub {...}
             end
 
             function init()
                 for _, e in ipairs(document.getElementsByTagName "construct-list") do
-                    print("init")
                     e.scrollInsets(0, 0, 0, 200)
 
                     local last_y

@@ -45,7 +45,6 @@
                     return
                 end
                 if button.audio then
-                    print("play audio", button.audio)
                     audio.play(button.audio)
                 end
                 ui_sys.pub {button.command}

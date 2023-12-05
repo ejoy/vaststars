@@ -61,7 +61,6 @@
 
             function init()
                 for _, e in ipairs(document.getElementsByTagName "template-list") do
-                    print("init")
                     e.scrollInsets(0, 0, 0, 200)
 
                     local last_y
