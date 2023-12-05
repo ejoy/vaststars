@@ -44,7 +44,7 @@
                     return
                 end
                 if button.audio then
-                    console.log("play audio", button.audio)
+                    print("play audio", button.audio)
                     audio.play(button.audio)
                 end
                 ui_sys.pub {button.command}

@@ -175,7 +175,7 @@
                         </div>
                     ]]):format(param.message)
                     child.addEventListener('animationend', function(event)
-                        console.log("----message animationend----")
+                        print("----message animationend----")
                         parent.removeChild(child)
                     end)
                     parent.appendChild(child)
@@ -184,7 +184,7 @@
                     local parent = document.getElementById('pop_root')
                     local child = document.createElement "div"
                     child.addEventListener('animationend', function(event)
-                        --console.log("----item animationend----")
+                        --print("----item animationend----")
                         parent.removeChild(child)
                     end)
                     parent.appendChild(child)
