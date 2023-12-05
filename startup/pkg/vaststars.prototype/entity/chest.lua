@@ -31,7 +31,7 @@ prototype "大铁制箱子I" {
 
 prototype "仓库I" {
     model = "glbs/depot.glb|mesh.prefab",
-    icon = "mem:/pkg/vaststars.resources/glbs/depot.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/depot.glb|mesh.prefab config:s,1,3,1.3",
     check_coord = "exclusive",
     builder = "normal",
     type = {"building", "chest", "depot"},
