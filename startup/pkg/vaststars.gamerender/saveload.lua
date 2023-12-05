@@ -136,7 +136,7 @@ local function restore_world(gameplay_world)
     for e in gameplay_world.ecs:select("inner_building:in eid:in building:in") do
         local typeobject = iprototype.queryById(e.building.prototype)
         local w, h = iprototype.rotate_area(typeobject.area, e.building.direction)
-        inner_building:set(e.building.x, e.building.y, w, h, e.eid)
+        inner_building:set(e.eid, e.building.x, e.building.y, w, h)
     end
 end
 

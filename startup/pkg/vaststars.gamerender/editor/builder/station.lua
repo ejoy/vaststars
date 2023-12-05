@@ -196,7 +196,7 @@ end
 local function __new_entity(self, datamodel, typeobject, x, y, position, dir)
     iobject.remove(self.pickup_object)
     local w, h = iprototype.rotate_area(typeobject.area, dir)
-    if not self._check_coord(x, y, w, h) then
+    if not self._check_coord(self.typeobject.name, x, y, w, h) then
         datamodel.show_confirm = false
         datamodel.show_rotate = true
     else
@@ -323,7 +323,7 @@ local function touch_end(self, datamodel)
     local typeobject = iprototype.queryByName(pickup_object.prototype_name)
     local w, h = iprototype.rotate_area(typeobject.area, pickup_object.dir)
 
-    if not self._check_coord(x, y, w, h) then
+    if not self._check_coord(self.typeobject.name, x, y, w, h) then
         datamodel.show_confirm = false
 
         if self.road_entrance then
@@ -372,7 +372,7 @@ local function confirm(self, datamodel)
     local pickup_object = assert(self.pickup_object)
     local w, h = iprototype.rotate_area(self.typeobject.area, pickup_object.dir)
 
-    local succ = self._check_coord(pickup_object.x, pickup_object.y, w, h)
+    local succ = self._check_coord(self.typeobject.name, pickup_object.x, pickup_object.y, w, h)
     if not succ then
         log.info("can not construct") --TODO: show error message
         return

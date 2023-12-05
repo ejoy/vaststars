@@ -694,6 +694,8 @@ function M.update(datamodel)
     end
 
     for _ in build_mode_mb:unpack() do
+        idetail.unselected()
+
         datamodel.status = "BUILD"
         assert(selected_obj)
         local pos = math3d.vector(icoord.position(selected_obj.x, selected_obj.y, selected_obj.w, selected_obj.h))

@@ -19,7 +19,7 @@ end
 function M.addEventListener(event_funcs)
     window.addEventListener("message", function(event)
         if not event.data then
-            console.log("event data is nil")
+            print("event data is nil")
             return
         end
         local res = event.data
@@ -40,7 +40,7 @@ function M.createDataMode(init, onload)
 
     window.addEventListener("message", function(event)
         if not event.data then
-            console.log("event data is nil")
+            print("event data is nil")
             return
         end
         local res = event.data
@@ -70,7 +70,7 @@ function M.createDataMode(init, onload)
         if datamodel.__first then
             datamodel.__first = false
             if onload then
-                console.log("onload")
+                print("onload")
                 onload(datamodel)
             end
         end

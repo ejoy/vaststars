@@ -21,13 +21,13 @@ prototype "物流中心" {
     icon = "mem:/pkg/vaststars.resources/glbs/factory-1.glb|mesh.prefab config:s,1,3",
     check_coord = "",   -- factory builder special
     builder = "factory",
-    check_pos = {0,2},  -- factory builder special
+    check_pos = {0,2,"N"},  -- factory builder special
     check_area = "4x2", -- factory builder special
     inner_building = {  -- factory builder special
-        {0, 4, "停车站", "S"},
+        {0,4,"S","停车站"},
     },
     lorry_track = {
-        {0, 4, "4x2", "factory"},
+        {0,4,"4x2","factory"},
     },
     craft_category = {"基地制造"},
     item = "运输车辆I",

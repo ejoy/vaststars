@@ -9,7 +9,6 @@ local MAP_HEIGHT <const> = CONSTANT.MAP_HEIGHT
 local TILE_SIZE <const> = CONSTANT.TILE_SIZE
 local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
-local DIRECTION <const> = CONSTANT.DIRECTION
 
 local math3d = require "math3d"
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
@@ -33,19 +32,19 @@ local igameplay = ecs.require "gameplay.gameplay_system"
 local inner_building = require "editor.inner_building"
 local vsobject_manager = ecs.require "vsobject_manager"
 
-local function _cover_position(pos, dir, area)
-    local w, h = area >> 8, area & 0xFF
+local function _lefttop_position(pos, dir, host_area, area)
+    local hw, hh = (host_area >> 8) - 1, (host_area & 0xFF) - 1
+    local w, h = (area >> 8) - 1, (area & 0xFF) - 1
+
     local x, y = pos[1], pos[2]
-    w = w - 1
-    h = h - 1
     if dir == "N" then
         return x, y
     elseif dir == "E" then
-        return y, x
+        return hh - y - h, x
     elseif dir == "S" then
-        return x, y
+        return hw - x - w, hh - y - h
     elseif dir == "W" then
-        return y, x
+        return y, hw - x - w
     end
     assert(false)
 end
@@ -107,9 +106,8 @@ local function _new_entity(self, datamodel, typeobject, x, y, position, dir)
 
     local w, h = iprototype.rotate_area(typeobject.area, dir)
     local self_selected_boxes_position = icoord.position(x, y, w, h)
-    local check_x, check_y = _cover_position(self.typeobject.check_pos, dir, self.typeobject.area)
+    local check_x, check_y = _lefttop_position(self.typeobject.check_pos, dir, typeobject.area, typeobject.check_area)
     local check_w, check_h = iprototype.rotate_area(typeobject.check_area, dir)
-
     local valid = _check_coord(x, y, w, h, check_x, check_y, check_w, check_h)
     datamodel.show_confirm = valid
     datamodel.show_rotate = true
@@ -149,12 +147,11 @@ local function _update_state(self, datamodel)
         self.self_selected_boxes:set_wh(w, h)
     end
 
-    local check_x, check_y = _cover_position(self.typeobject.check_pos, pickup_object.dir, self.typeobject.area)
+    local check_x, check_y = _lefttop_position(self.typeobject.check_pos, pickup_object.dir, self.typeobject.area, self.typeobject.check_area)
     local check_w, check_h = iprototype.rotate_area(self.typeobject.check_area, pickup_object.dir)
-
     local valid = _check_coord(x, y, w, h, check_x, check_y, check_w, check_h)
-    datamodel.show_confirm = valid
 
+    datamodel.show_confirm = valid
     self.self_selected_boxes:set_color(valid and COLOR_GREEN or COLOR_RED)
 end
 
@@ -196,12 +193,28 @@ local function rotate(self, datamodel, dir, delta_vec)
     _update_state(self, datamodel)
 end
 
+local function build(self, v)
+    local typeobject = iprototype.queryByName(v.prototype_name)
+    for _, b in ipairs(typeobject.inner_building) do
+        local dx, dy, dir = iprototype.rotate_connection(b, v.dir, typeobject.area)
+        local x, y = v.x + dx, v.y + dy
+
+        local prototype_name = b[4]
+        local gameplay_eid = igameplay.create_entity({dir = iprototype.dir_tostring(dir), x = x, y = y, prototype_name = prototype_name})
+
+        local typeobject_inner = iprototype.queryByName(prototype_name)
+        local w, h = iprototype.rotate_area(typeobject_inner.area, v.dir)
+        inner_building:set(gameplay_eid, x, y, w, h)
+    end
+
+    return igameplay.create_entity(v)
+end
+
 local function confirm(self, datamodel)
     local pickup_object = assert(self.pickup_object)
     local w, h = iprototype.rotate_area(self.typeobject.area, pickup_object.dir)
-    local check_x, check_y = _cover_position(self.typeobject.check_pos, pickup_object.dir, self.typeobject.area)
+    local check_x, check_y = _lefttop_position(self.typeobject.check_pos, pickup_object.dir, self.typeobject.area, self.typeobject.check_area)
     local check_w, check_h = iprototype.rotate_area(self.typeobject.check_area, pickup_object.dir)
-
     local succ = _check_coord(pickup_object.x, pickup_object.y, w, h, check_x, check_y, check_w, check_h)
     if not succ then
         log.info("can not construct") --TODO: show error message
@@ -218,18 +231,7 @@ local function confirm(self, datamodel)
     datamodel.show_rotate = false
 
     objects:set(pickup_object, "CONSTRUCTED")
-    pickup_object.gameplay_eid = igameplay.create_entity({dir = pickup_object.dir, x = pickup_object.x, y = pickup_object.y, prototype_name = pickup_object.prototype_name, amount = self.typeobject.amount})
-    for _, b in ipairs(self.typeobject.inner_building) do
-        local dx, dy = _cover_position(b, pickup_object.dir, self.typeobject.area)
-        local x, y = pickup_object.x + dx, pickup_object.y + dy
-        local prototype_name = b[3]
-        local typeobject_inner = iprototype.queryByName(prototype_name)
-        local w, h = iprototype.rotate_area(typeobject_inner.area, pickup_object.dir)
-        local dir = iprototype.rotate_dir(typeobject_inner.dir, pickup_object.dir)
-        local gameplay_eid = igameplay.create_entity({dir = iprototype.dir_tostring(dir), x = x, y = y, prototype_name = prototype_name})
-
-        inner_building:set(x, y, w, h, gameplay_eid)
-    end
+    pickup_object.gameplay_eid = build(self, {dir = pickup_object.dir, x = pickup_object.x, y = pickup_object.y, prototype_name = pickup_object.prototype_name, amount = self.typeobject.amount})
 
     pickup_object.PREPARE = true
     self.pickup_object = nil
@@ -263,23 +265,6 @@ local function new(self, datamodel, typeobject, position_type)
     _new_entity(self, datamodel, self.typeobject, x, y, position, dir)
     self.pickup_object.APPEAR = true
     self.grid_entity = igrid_entity.create(MAP_WIDTH // ROAD_SIZE, MAP_HEIGHT // ROAD_SIZE, TILE_SIZE * ROAD_SIZE, {t = _calc_grid_position(x, y, w, h)})
-end
-
-local function build(self, v)
-    igameplay.create_entity(v)
-
-    local typeobject = iprototype.queryByName(v.prototype_name)
-    for _, b in ipairs(typeobject.inner_building) do
-        local dx, dy = _cover_position(b, v.dir, typeobject.area)
-        local x, y = v.x + dx, v.y + dy
-        local prototype_name = b[3]
-        local typeobject_inner = iprototype.queryByName(prototype_name)
-        local w, h = iprototype.rotate_area(typeobject_inner.area, v.dir)
-        local dir = iprototype.rotate_dir(b[4], v.dir)
-        local gameplay_eid = igameplay.create_entity({dir = iprototype.dir_tostring(dir), x = x, y = y, prototype_name = prototype_name})
-
-        inner_building:set(x, y, w, h, gameplay_eid)
-    end
 end
 
 local build_t = {}
@@ -319,10 +304,11 @@ function move_t:new(move_object_id, datamodel, typeobject)
     vsobject:update {state = "translucent", color = SPRITE_COLOR.MOVE_SELF, emissive_color = SPRITE_COLOR.MOVE_SELF}
 end
 
-local function _get_inner_building_config(inner_buildings, dx, dy, area, dir)
+local function _get_inner_building_config(inner_buildings, area, dx, dy, dir)
     for _, inner_building in ipairs(inner_buildings) do
-        dx, dy = iprototype.rotate_connection({dx, dy, DEFAULT_DIR}, dir, area)
-        if inner_building[1] == dx and inner_building[2] == dy then
+        local typeobject = iprototype.queryByName(inner_building[4])
+        local x, y = _lefttop_position(inner_building, dir, area, typeobject.area)
+        if x == dx and y == dy then
             return inner_building
         end
     end
@@ -332,9 +318,8 @@ end
 function move_t:confirm(datamodel)
     local pickup_object = assert(self.pickup_object)
     local w, h = iprototype.rotate_area(self.typeobject.area, pickup_object.dir)
-    local check_x, check_y = _cover_position(self.typeobject.check_pos, pickup_object.dir, self.typeobject.area)
+    local check_x, check_y = _lefttop_position(self.typeobject.check_pos, pickup_object.dir, self.typeobject.area, self.typeobject.check_area)
     local check_w, check_h = iprototype.rotate_area(self.typeobject.check_area, pickup_object.dir)
-
     local succ = _check_coord(pickup_object.x, pickup_object.y, w, h, check_x, check_y, check_w, check_h)
     if not succ then
         log.info("can not construct") --TODO: show error message
@@ -349,18 +334,16 @@ function move_t:confirm(datamodel)
     for gameplay_eid in inner_building:get(e.building.x, e.building.y, w, h) do
         local ce = gameplay_core.get_entity(gameplay_eid)
 
-        local cfg = _get_inner_building_config(typeobject.inner_building, ce.building.x - e.building.x, ce.building.y - e.building.y, typeobject.area, e.building.direction)
-        local dx, dy, dir = iprototype.rotate_connection({cfg[1], cfg[2], cfg[4]},  DIRECTION[cfg[4]], typeobject.area)
+        local cfg = _get_inner_building_config(typeobject.inner_building, typeobject.area, ce.building.x - e.building.x, ce.building.y - e.building.y, iprototype.dir_tostring(e.building.direction))
+        local dx, dy = _lefttop_position(cfg, pickup_object.dir, typeobject.area, iprototype.queryById(ce.building.prototype).area)
+        local dir = iprototype.rotate_dir(e.building.direction, pickup_object.dir)
 
         ce.building_changed = true
-        igameplay.move(gameplay_eid, dx, dy)
-        igameplay.rotate(gameplay_eid, dir)
+        igameplay.move(gameplay_eid, self.pickup_object.x + dx, self.pickup_object.y + dy)
+        igameplay.rotate(gameplay_eid, iprototype.dir_tostring(dir))
 
-        local t = iprototype.queryById(ce.building.prototype)
-        local cw, ch = iprototype.unpackarea(t.area)
-
-        inner_building:remove(gameplay_eid)
-        inner_building:set(self.pickup_object.x + dx, self.pickup_object.y + dy, cw, ch, gameplay_eid)
+        local cw, ch = iprototype.unpackarea(iprototype.queryById(ce.building.prototype).area)
+        inner_building:reset(gameplay_eid, self.pickup_object.x + dx, self.pickup_object.y + dy, cw, ch)
     end
 
     e.building_changed = true
@@ -376,6 +359,11 @@ function move_t:confirm(datamodel)
     object.srt.r = ROTATORS[object.dir]
     objects:set(object, "CONSTRUCTED")
     objects:coord_update(object)
+end
+function move_t:clean(datamodel)
+    clean(self, datamodel)
+    local vsobject = assert(vsobject_manager:get(self.move_object_id))
+    vsobject:update {state = "opaque", color = "null", emissive_color = "null"}
 end
 local move_mt = {__index = move_t}
 
