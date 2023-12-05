@@ -38,6 +38,7 @@
             }
         </style>
         <script type="text/x-lua" >
+            local audio = import_package "ant.audio"
             local ui_sys = require "lua.ui_system"
             local start = ui_sys.createDataMode {}
             function start.clickButton(...)

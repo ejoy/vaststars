@@ -33,6 +33,7 @@
         </style>
         <style path = "/pkg/vaststars.resources/ui/common/building_style.rcss"/>
         <script type="text/x-lua" >
+            local audio = import_package "ant.audio"
             local ui_sys = require "lua.ui_system"
             local start = ui_sys.createDataMode {
                 guide_progress = 0,
@@ -44,7 +45,6 @@
                     return
                 end
                 if button.audio then
-                    print("play audio", button.audio)
                     audio.play(button.audio)
                 end
                 ui_sys.pub {button.command}

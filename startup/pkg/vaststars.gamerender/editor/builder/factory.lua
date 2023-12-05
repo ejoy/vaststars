@@ -196,13 +196,15 @@ end
 local function build(self, v)
     local typeobject = iprototype.queryByName(v.prototype_name)
     for _, b in ipairs(typeobject.inner_building) do
-        local dx, dy, dir = iprototype.rotate_connection(b, v.dir, typeobject.area)
-        local x, y = v.x + dx, v.y + dy
-
         local prototype_name = b[4]
+        local typeobject_inner = iprototype.queryByName(prototype_name)
+
+        local dx, dy = _lefttop_position(b, v.dir, typeobject.area, typeobject_inner.area)
+        local x, y = v.x + dx, v.y + dy
+        local dir = iprototype.rotate_dir(b[3], v.dir)
+
         local gameplay_eid = igameplay.create_entity({dir = iprototype.dir_tostring(dir), x = x, y = y, prototype_name = prototype_name})
 
-        local typeobject_inner = iprototype.queryByName(prototype_name)
         local w, h = iprototype.rotate_area(typeobject_inner.area, v.dir)
         inner_building:set(gameplay_eid, x, y, w, h)
     end
