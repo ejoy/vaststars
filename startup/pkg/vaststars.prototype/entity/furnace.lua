@@ -118,7 +118,7 @@ prototype "熔炼炉III" {
 prototype "粉碎机I" {
     model = "glbs/crusher-1.glb|mesh.prefab",
     model_status = {work = true, low_power = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/crusher-1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/crusher-1.glb|mesh.prefab config:s,1,3,1.3",
     check_coord = "exclusive",
     builder = "normal",
     type = {"building", "consumer", "assembling"},
@@ -136,7 +136,7 @@ prototype "粉碎机I" {
 prototype "粉碎机II" {
     model = "glbs/crusher-1.glb|mesh.prefab",
     model_status = {work = true, low_power = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/crusher-1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/crusher-1.glb|mesh.prefab config:s,1,3,1.3",
     check_coord = "exclusive",
     builder = "normal",
     type = {"building", "consumer", "assembling"},
@@ -154,7 +154,7 @@ prototype "粉碎机II" {
 prototype "粉碎机III" {
     model = "glbs/crusher-1.glb|mesh.prefab",
     model_status = {work = true, low_power = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/crusher-1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/crusher-1.glb|mesh.prefab config:s,1,3,1.3",
     check_coord = "exclusive",
     builder = "normal",
     type = {"building", "consumer", "assembling"},
