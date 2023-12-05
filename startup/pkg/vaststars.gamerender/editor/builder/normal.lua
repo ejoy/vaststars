@@ -551,7 +551,9 @@ local function rotate(self, datamodel, dir, delta_vec)
     end
     local sprite_color
     local valid
-    if not self._check_coord(typeobject.name, pickup_object.x, pickup_object.y, pickup_object.dir) then
+    local w, h = iprototype.rotate_area(self.typeobject.area, pickup_object.dir)
+
+    if not self._check_coord(typeobject.name, pickup_object.x, pickup_object.y, w, h) then
         valid = false
         if typeobject.supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID

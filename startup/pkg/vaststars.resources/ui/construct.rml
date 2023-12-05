@@ -62,8 +62,9 @@
             }
         </style>
         <script type="text/x-lua" >
-            local ui_sys = require "lua.ui_system"
-            local start = ui_sys.createDataMode {
+            local ui = import_package "vaststars.ui"
+            local ui_sys = ui.ui_system
+            local start = ui_sys.createDataMode(window, {
                 status = "NORMAL",
                 show_construct_button = false,
                 show_tech_progress = false,     --是否显示科技进度
@@ -79,10 +80,10 @@
                 item_bar = {},
                 tech_count = 0,
                 transfer_id = 0,
-            }
+            })
 
             function start.clickButton(...)
-                ui_sys.pub {...}
+                ui_sys.pub(window, {...})
             end
 
             ui_sys.mapping(start, {
@@ -107,7 +108,7 @@
         <item-bar data-if = "status ~= 'BUILD'" style = "pointer-events: none;">
             <item-bar-button data-for = "item_bar" style = "flex-direction: row;" data-event-click = "clickButton('focus_transfer_source')">
                 <div style = "width: 10.67vmin; height: 10.67vmin; background-size: 100% 100%; background-color: rgb(61, 61, 61);" data-style-background-image = "it.icon" data-style-border = "it.is_transfer and '0.20vmin #3498db' or '0vmin'">
-                    <div style = "position:absolute; top:0;right:0; font-size:4.5vmin; text-align: center;">{{it.count}}</div>
+                    <div style = "position:absolute; top:-0.5vmin;right:0; font-size:4.5vmin; text-align: center; -webkit-text-stroke: 0.2vmin #000;" data-style-color = "it.count > 0 and 'rgb(255,255,255)' or 'rgb(255,0,0)' ">{{it.count}}</div>
                 </div>  
             </item-bar-button>
         </item-bar>

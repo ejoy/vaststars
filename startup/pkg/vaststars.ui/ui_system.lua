@@ -1,54 +1,44 @@
-local tracedoc = require "lua.tracedoc"
+local tracedoc = require "tracedoc"
 
 local M = {}
 
-function M.pub(msg)
+function M.pub(window, msg)
     local ud = {}
     ud.event = "__PUB"
     ud.ud = msg
-    window.extern.postMessage(ud)
+    window.postMessage(ud)
 end
 
-function M.close(url)
+function M.close(window, url)
     local ud = {}
     ud.event = "__CLOSE"
     ud.ud = {url}
-    window.extern.postMessage(ud)
+    window.postMessage(ud)
 end
 
-function M.addEventListener(event_funcs)
-    window.addEventListener("message", function(event)
-        if not event.data then
-            print("event data is nil")
-            return
-        end
-        local res = event.data
-        local func = event_funcs[res.event]
+function M.onMessage(window, event_funcs)
+    window.onMessage(function(data)
+        local func = event_funcs[data.event]
         if not func then
             return
         end
-        func(table.unpack(res.ud))
+        func(table.unpack(data.ud))
         return
     end)
 end
 
-function M.createDataMode(init, onload)
+function M.createDataMode(window, init, onload)
     local doc = tracedoc.new(init)
     local datamodel = window.createModel(init)
     datamodel.mapping = nil
     datamodel.__first = true
 
-    window.addEventListener("message", function(event)
-        if not event.data then
-            print("event data is nil")
-            return
-        end
-        local res = event.data
-        if res.event ~= "__DATAMODEL" then
+    window.onMessage(function(data)
+        if data.event ~= "__DATAMODEL" then
             return
         end
 
-        local diff = res.ud
+        local diff = data.ud
         if not diff then
             return
         end

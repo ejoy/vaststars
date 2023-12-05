@@ -160,8 +160,8 @@
                 rl[#rl + 1] = {id=#rl + 1}
                 console.log("addRoad", #rl)
             end
-            window.addEventListener('message', function(event)
-                event.source.postMessage(event.data)
+            window.addEventListener("message", function(data)
+                window.postMessage(data)
             end)
             window.addEventListener('mousemove', function(event)
                 if event.button then

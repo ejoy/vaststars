@@ -15,13 +15,14 @@
         </style>
         <style path = "/pkg/vaststars.resources/ui/common/building_style.rcss"/>
         <script type="text/x-lua" >
-            local ui_sys = require "lua.ui_system"
-            local start = ui_sys.createDataMode {
+            local ui = import_package "vaststars.ui"
+            local ui_sys = ui.ui_system
+            local start = ui_sys.createDataMode(window, {
                 status = {},
                 progress = "0%",
                 loaded = 0,
                 total = 1,
-            }
+            })
         </script>
     </head>
     <body style = "background-color: black;">

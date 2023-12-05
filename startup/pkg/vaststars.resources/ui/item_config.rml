@@ -179,10 +179,10 @@
             }
         </style>
         <script type="text/x-lua" >
-            local ui_sys = require "lua.ui_system"
-            local scrollToItem = require "lua.scrolltoitem"
+            local ui = import_package "vaststars.ui"
+            local ui_sys = ui.ui_system
 
-            local start = ui_sys.createDataMode({
+            local start = ui_sys.createDataMode(window, {
                 slots = {},
                 buttons = {},
                 items = {},
@@ -212,31 +212,31 @@
 
             function start.clickIcon(c, i)
                 assert(start.set_type == "supply" or start.set_type == "demand", start.set_type)
-                ui_sys.pub {'set_item', c, i, start.set_type}
+                ui_sys.pub(window, {'set_item', c, i, start.set_type})
             end
 
             function start.clickSlot(i)
                 local slot = assert(start.slots[i])
                 if slot.remove then
-                    ui_sys.pub {'remove_slot', i}
+                    ui_sys.pub(window, {'remove_slot', i})
                     return
                 end
-                ui_sys.pub {'click_slot', i}
+                ui_sys.pub(window, {'click_slot', i})
             end
 
             function start.clickSetItem(disable, type)
                 if disable then
                     return
                 end
-                ui_sys.pub {'click_set_item', type}
+                ui_sys.pub(window, {'click_set_item', type})
             end
 
             function start.clickCancelSetItem()
-                ui_sys.pub {'cancel_set_item'}
+                ui_sys.pub(window, {'cancel_set_item'})
             end
 
             function start.clickClose()
-                ui_sys.close()
+                ui_sys.close(window)
             end
 
             function init()

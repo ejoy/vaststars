@@ -32,9 +32,9 @@ prototype "物流中心" {
     craft_category = {"基地制造"},
     item = "运输车辆I",
     type = {"building", "factory"},
-    amount = "8",
+    amount = "0",
     speed = "50%",
-    maxslot = 8,
+    maxslot = 20,
     area = "4x6",
     sound = "building/logistics-center",
     crossing = {

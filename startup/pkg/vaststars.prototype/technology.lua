@@ -607,8 +607,8 @@ local prototype = gameplay.register.prototype
     desc = "研究维修物流站的方法",
     type = { "tech" },
     effects = {
-      unlock_recipe = {"维修物流站"},
-      unlock_item = {"物流站框架","物流站"},
+      unlock_recipe = {"维修物流站","维修物流中心"},
+      unlock_item = {"物流站框架","物流站","物流中心框架","物流中心"},
     },
     prerequisites = {"公路研究"},
     ingredients = {
@@ -1368,6 +1368,21 @@ prototype "物流车站1" {
   time = "10s"
 }
 
+prototype "物流中心研究" {
+  desc = "研究供运输车辆装卸货物的物流点",
+  type = { "tech" },
+  effects = {
+    unlock_recipe = {"物流中心打印"},
+  },
+  prerequisites = {"自动化1"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"机械科技包", 1},
+  },
+  count = 10,
+  time = "10s"
+}
+
 prototype "地下水净化1" {
   desc = "火星地下开采卤水进行过滤净化工艺",
   type = { "tech" },
@@ -1408,7 +1423,7 @@ prototype "炼钢" {
     unlock_recipe = {"钢板1"},
     unlock_item = {"钢板"},
   },
-  prerequisites = {"挖掘1","物流车站1"},
+  prerequisites = {"挖掘1","物流车站1","物流中心研究"},
   ingredients = {
     {"地质科技包", 1},
     {"气候科技包", 1},

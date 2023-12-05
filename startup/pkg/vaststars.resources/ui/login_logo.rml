@@ -34,10 +34,9 @@
             local model = window.createModel {
                 version = ""
             }
-            window.addEventListener("message", function(event)
-                local ev = event.data
-                if ev.type == "set" then
-                    for k, v in pairs(ev.data) do
+            window.onMessage(function(data)
+                if data.type == "set" then
+                    for k, v in pairs(data.data) do
                         model[k] = v
                     end
                 end
@@ -46,7 +45,7 @@
                 if window.getPendingTexture() == 0 then
                     local e = document.getElementsByTagName("background")[1]
                     e.parentNode.removeChild(e)
-                    window.extern.postMessage { type = "loaded" }
+                    window.postMessage { type = "loaded" }
                     return
                 end
                 window.requestAnimationFrame(step)
