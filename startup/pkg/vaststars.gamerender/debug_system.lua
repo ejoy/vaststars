@@ -94,7 +94,8 @@ function debug_sys:init_world()
 end
 
 local ibs           = ecs.require "ant.render|blur_scene.blur_scene"
-
+local ltask 		= require "ltask"
+local ServiceWorld  = ltask.queryservice "ant.window|world"
 function debug_sys:ui_update()
     local w = world.w
 
@@ -105,6 +106,11 @@ function debug_sys:ui_update()
 
         if key == "B" and press == 0 then
             ibs.restore_scene()
+        end
+        
+        if key == "C" and press == 0 then
+            local name = "mem:/pkg/vaststars.resources/glbs/headquater-1.glb|mesh.prefab config:d,1,3"
+            ltask.call(ServiceWorld, "update_portrait_prefab", name)
         end
 
         if key == "T" and press == 0 then
