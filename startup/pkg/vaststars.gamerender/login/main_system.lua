@@ -20,16 +20,9 @@ function m:init()
         string.sub(iversion.engine, 1, 6),
         string.sub(vfs.version(), 1, 6),
     }, "-")
-    window.postMessage {
-        type = "set",
-        data = {
-            version = version,
-        },
-    }
-    window.onMessage(function (data)
-        if data.type == "loaded" then
-            loading = true
-        end
+    iRmlUi.sendMessage("login-version", version)
+    iRmlUi.onMessage("login-loaded", function ()
+        loading = true
     end)
 end
 
