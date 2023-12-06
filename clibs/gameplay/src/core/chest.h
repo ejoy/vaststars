@@ -239,6 +239,7 @@ namespace chest {
     void destroy(world& w, container::index c, bool recycle);
     
     container::slot& array_at(world& w, container::index c, uint8_t offset);
+    container::slot* array_get(world& w, container::index c, uint8_t offset);
     std::span<container::slot> array_slice(world& w, container::index c, uint8_t offset, uint16_t size);
     std::span<container::slot> array_slice(world& w, container::index c);
     uint16_t size(world& w, container::index c);

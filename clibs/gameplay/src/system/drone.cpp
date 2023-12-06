@@ -86,9 +86,15 @@ static uint16_t getxy(uint8_t x, uint8_t y) {
     return ((uint16_t)x << 8) | (uint16_t)y;
 }
 
-static container::slot* ChestGetSlot(world& w, airport_berth const& berth) {
+static container::slot& ChestAt(world& w, airport_berth const& berth) {
+    auto building = w.buildings.find(getxy(berth.x, berth.y));
+    assert(building);
+    return chest::array_at(w, container::index::from(building->chest), berth.slot);
+}
+
+static container::slot* ChestGet(world& w, airport_berth const& berth) {
     if (auto building = w.buildings.find(getxy(berth.x, berth.y))) {
-        return &chest::array_at(w, container::index::from(building->chest), berth.slot);
+        return chest::array_get(w, container::index::from(building->chest), berth.slot);
     }
     return nullptr;
 }
@@ -315,8 +321,8 @@ static void rebuild(world& w) {
             CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, ecs::drone& drone, airport const& info) {
                 auto& mov1 = drone.next;
                 auto& mov2 = drone.mov2;
-                auto slot1 = ChestGetSlot(w, mov1);
-                auto slot2 = ChestGetSlot(w, mov2);
+                auto slot1 = ChestGet(w, mov1);
+                auto slot2 = ChestGet(w, mov2);
                 if (0
                     || !slot1
                     || !slot2
@@ -336,7 +342,7 @@ static void rebuild(world& w) {
         case drone_status::go_mov2:
             CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, ecs::drone& drone, airport const& info) {
                 auto& mov2 = drone.next;
-                auto slot2 = ChestGetSlot(w, mov2);
+                auto slot2 = ChestGet(w, mov2);
                 if (0
                     || !slot2
                     || drone.item != slot2->item
@@ -393,17 +399,15 @@ static void Move(world& w, DroneEntity& e, ecs::drone& drone, const ChestSearche
 static void DoTask(world& w, DroneEntity& e, ecs::drone& drone, const airport& info, const ChestSearcher::Node& mov1, const ChestSearcher::Node& mov2) {
     {
         //lock mov1
-        auto chestslot = ChestGetSlot(w, mov1.berth);
-        assert(chestslot);
-        assert(chestslot->amount > chestslot->lock_item);
-        chestslot->lock_item += 1;
+        auto& chestslot = ChestAt(w, mov1.berth);
+        assert(chestslot.amount > chestslot.lock_item);
+        chestslot.lock_item += 1;
     }
     {
         //lock mov2
-        auto chestslot = ChestGetSlot(w, mov2.berth);
-        assert(chestslot);
-        assert(chestslot->limit > chestslot->amount + chestslot->lock_space);
-        chestslot->lock_space += 1;
+        auto& chestslot = ChestAt(w, mov2.berth);
+        assert(chestslot.limit > chestslot.amount + chestslot.lock_space);
+        chestslot.lock_space += 1;
     }
     //update drone
     mov1.building->pickup_time = w.drone_time;
@@ -416,10 +420,9 @@ static void DoTask(world& w, DroneEntity& e, ecs::drone& drone, const airport& i
 static void DoTaskOnlyMov2(world& w, DroneEntity& e, ecs::drone& drone, const airport& info, const ChestSearcher::Node& mov2) {
     {
         //lock mov2
-        auto chestslot = ChestGetSlot(w, mov2.berth);
-        assert(chestslot);
-        assert(chestslot->limit > chestslot->amount + chestslot->lock_space);
-        chestslot->lock_space += 1;
+        auto& chestslot = ChestAt(w, mov2.berth);
+        assert(chestslot.limit > chestslot.amount + chestslot.lock_space);
+        chestslot.lock_space += 1;
     }
     //update drone
     mov2.building->place_time = w.drone_time;
@@ -635,19 +638,18 @@ static void Arrival(world& w, DroneEntity& e, ecs::drone& drone) {
     switch ((drone_status)drone.status) {
     case drone_status::go_mov1: {
         CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, ecs::drone& drone, airport& info) {
-            auto slot = ChestGetSlot(w, drone.next);
-            assert(slot 
-                && slot->item != 0
-                && (slot->type == container::slot::slot_type::supply || slot->type == container::slot::slot_type::transit)
-                && slot->amount >= slot->lock_item
-                && slot->lock_item > 0
+            auto& slot = ChestAt(w, drone.next);
+            assert(slot.item != 0
+                && (slot.type == container::slot::slot_type::supply || slot.type == container::slot::slot_type::transit)
+                && slot.amount >= slot.lock_item
+                && slot.lock_item > 0
             );
             auto mov2Berth = drone.mov2;
             auto movBuilding = w.buildings.find(getxy(mov2Berth.x, mov2Berth.y));
             assert(movBuilding);
-            slot->lock_item--;
-            slot->amount--;
-            drone.item = slot->item;
+            slot.lock_item--;
+            slot.amount--;
+            drone.item = slot.item;
             SetStatus(drone, drone_status::go_mov2);
             ChestSearcher::Node node {
                 mov2Berth,
@@ -660,14 +662,14 @@ static void Arrival(world& w, DroneEntity& e, ecs::drone& drone) {
     }
     case drone_status::go_mov2: {
         CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, ecs::drone& drone, airport& info) {
-            auto slot = ChestGetSlot(w, drone.next);
-            assert(slot);
-            assert(slot->item == drone.item);
-            assert(slot->type == container::slot::slot_type::demand || slot->type == container::slot::slot_type::transit);
-            assert(slot->limit >= slot->amount + slot->lock_space);
-            assert(slot->lock_space > 0);
-            slot->lock_space--;
-            slot->amount++;
+            auto& slot = ChestAt(w, drone.next);
+            assert(slot.item == drone.item
+                && (slot.type == container::slot::slot_type::demand || slot.type == container::slot::slot_type::transit)
+                && slot.limit >= slot.amount + slot.lock_space
+                && slot.lock_space > 0
+            );
+            slot.lock_space--;
+            slot.amount++;
             drone.item = 0;
             FindTaskNotAtHome(w, e, drone, info);
         });
