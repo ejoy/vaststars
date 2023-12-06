@@ -6,18 +6,18 @@ function M.pub(window, msg)
     local ud = {}
     ud.event = "__PUB"
     ud.ud = msg
-    window.postMessage(ud)
+    window.sendMessage(window.getName(), ud)
 end
 
 function M.close(window, url)
     local ud = {}
     ud.event = "__CLOSE"
     ud.ud = {url}
-    window.postMessage(ud)
+    window.sendMessage(window.getName(), ud)
 end
 
 function M.onMessage(window, event_funcs)
-    window.onMessage(function(data)
+    window.onMessage(window.getName().."-message", function(data)
         local func = event_funcs[data.event]
         if not func then
             return
@@ -33,7 +33,7 @@ function M.createDataMode(window, init, onload)
     datamodel.mapping = nil
     datamodel.__first = true
 
-    window.onMessage(function(data)
+    window.onMessage(window.getName().."-data-model", function(data)
         if data.event ~= "__DATAMODEL" then
             return
         end

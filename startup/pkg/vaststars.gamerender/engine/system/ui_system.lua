@@ -70,7 +70,7 @@ local function open(v, ...)
 
     binding = {}
     binding.window = irmlui.open(rml)
-    binding.window.onMessage(function(data)
+    irmlui.onMessage(rml, function(data)
         local res = assert(data)
         if res.event == "__CLOSE" then
             local close_rml = res.ud[1] or rml
@@ -98,7 +98,7 @@ local function open(v, ...)
         local ud = {}
         ud.event = "__DATAMODEL"
         ud.ud = tracedoc.diff(binding.datamodel)
-        binding.window.postMessage(ud)
+        irmlui.sendMessage(rml.."-data-model", ud)
 
         tracedoc.commit(binding.datamodel)
         if windowListeners[rml] then
@@ -194,7 +194,7 @@ function iui.send(rml, event, ...)
         local ud = {}
         ud.event = event
         ud.ud = {...}
-        binding.window.postMessage(ud)
+        irmlui.sendMessage(rml.."-message", ud)
     end
 end
 
