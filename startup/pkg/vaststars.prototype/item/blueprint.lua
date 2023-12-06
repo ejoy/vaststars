@@ -256,7 +256,19 @@ prototype "物流站框架" {
     item_icon = "/pkg/vaststars.resources/textures/icons/item/goodstation-input.texture",
     item_category = "加工",
     item_order = 23,
-    item_description = "运输车辆停靠且装卸货物的车站框架",
+    item_description = "运输车辆装卸货物的车站框架",
+}
+
+prototype "物流中心框架" {
+    type = {"item"},
+    station_limit = 5,
+    chest_limit = 15,
+    backpack_limit = 20,
+    item_model = "glbs/stackeditems/iron-ore.glb|mesh.prefab",
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/goodstation-output.texture",
+    item_category = "加工",
+    item_order = 24,
+    item_description = "运输车辆停靠且派发的车站框架",
 }
 
 prototype "熔炼炉框架" {

@@ -109,10 +109,11 @@
             }
         </style>
         <script type="text/x-lua" >
-            local ui_sys = require "lua.ui_system"
-            local scrollToItem = require "lua.scrolltoitem"
+            local ui = import_package "vaststars.ui"
+            local ui_sys = ui.ui_system
+            local scrollToItem = ui.scrolltoitem
 
-            local start = ui_sys.createDataMode {
+            local start = ui_sys.createDataMode(window, {
                 object_id = 0,
                 recipes = {},
                 recipe_name = "",
@@ -123,22 +124,22 @@
                 confirm = false,
                 category_idx = 0,
                 recipe_idx = 0,
-            }
+            })
 
             function start.clickButton(...)
-                ui_sys.pub {...}
+                ui_sys.pub(window, {...})
             end
 
             function start.clickClose()
-                ui_sys.close()
+                ui_sys.close(window)
             end
 
             function start.clickClearRecipe()
-                ui_sys.pub {"clear_recipe"}
+                ui_sys.pub(window, {"clear_recipe"})
             end
 
             function start.clickConfirm()
-                ui_sys.pub {"set_recipe", start.object_id}
+                ui_sys.pub(window, {"set_recipe", start.object_id})
             end
 
             function init()
@@ -158,7 +159,7 @@
                 {
                     function(start)
                         window.flush()
-                        scrollToItem("recipe-list", ("%s:%s"):format(start.category_idx, start.recipe_idx))
+                        scrollToItem(document, "recipe-list", ("%s:%s"):format(start.category_idx, start.recipe_idx))
                     end,
                     "category_idx", "recipe_idx",
                 }

@@ -140,8 +140,9 @@
         <style path = "/pkg/vaststars.resources/ui/common/building_style.rcss" />
         <style path = "/pkg/vaststars.resources/ui/common/listpage_style.rcss"/>
         <script type="text/x-lua" >
-            local ui_sys = require "lua.ui_system"
-            local start = ui_sys.createDataMode {
+            local ui = import_package "vaststars.ui"
+            local ui_sys = ui.ui_system
+            local start = ui_sys.createDataMode(window, {
                 show_finish = false,
                 current_icon = "none",
                 current_desc = "none",
@@ -152,7 +153,7 @@
                 return_title = " ",
                 current_tech = {},
                 techitems = {},
-            }
+            })
             start.selected_index = -1
             start.selected_tech = nil
             start.selected_recipe_index = -1
@@ -181,10 +182,10 @@
             end
 
             local function clickTech(index)
-                ui_sys.pub{"click_tech", index}
+                ui_sys.pub(window, {"click_tech", index})
             end
             local function clickRecipe(index)
-                ui_sys.pub{"click_recipe", index}
+                ui_sys.pub(window, {"click_recipe", index})
             end
             
             local select_style_border = "3px rgb(0,255,0)"
@@ -258,9 +259,8 @@
                 item.removeEventListener('click')
                 item.addEventListener('click', function(event) start.click_tech_item(item, index) end)
             end
-            local listclass = require "lua.list"
             window.customElements.define("list", function(e)
-                start.list = listclass.create(document, e, tech_item_init, tech_item_update)
+                start.list = ui.list.create(document, e, tech_item_init, tech_item_update)
             end)
 
             function start.click_detail_item(item, index)
@@ -364,7 +364,7 @@
             end
 
             window.customElements.define("detaillist", function(e)
-                start.detaillist = listclass.create(document, e, detail_item_init, detail_item_update)
+                start.detaillist = ui.list.create(document, e, detail_item_init, detail_item_update)
             end)
             ui_sys.mapping(start, {
                 {
@@ -396,16 +396,16 @@
                 start.show_finish = true
                 start.return_title = "已完成科技"
                 start.list:reset_position()
-                ui_sys.pub {"show_list", "finish"}
+                ui_sys.pub(window, {"show_list", "finish"})
             end
             local function onclose()
                 if start.show_finish then
                     start.show_finish = false
                     start.return_title = "科研目标"
                     start.list:reset_position()
-                    ui_sys.pub {"show_list", "todo"}
+                    ui_sys.pub(window, {"show_list", "todo"})
                 else
-                    ui_sys.pub {"close_techui"}
+                    ui_sys.pub(window, {"close_techui"})
                 end
             end
             function start.clickReturn(event)
@@ -414,7 +414,7 @@
                 end
             end
             function start.startSwitch()
-                ui_sys.pub {"switch"}
+                ui_sys.pub(window, {"switch"})
                 if not start.current_running then
                     if not start.selected_tech then
                         -- clear new flag

@@ -13,12 +13,6 @@ local entities = { {
   x = 124,
   y = 120
 },{
-  dir = "E",
-  amount = 0,
-  prototype_name = "物流中心",
-  x = 138,
-  y = 126
-}, {
   dir = "N",
   items = { { "无人机平台I", 8 } , { "风力发电机I", 1 }, { "采矿机I", 4 }, { "仓库I", 8 } ,},
   prototype_name = "机身残骸",
@@ -32,7 +26,7 @@ local entities = { {
   y = 114
 }, {
   dir = "S",
-  items = {  { "破损运输车辆", 16}, { "物流站框架", 6 }},
+  items = {  { "破损运输车辆", 16}, { "物流站框架", 6 },{ "物流中心框架", 1 }},
   prototype_name = "机尾残骸",
   x = 133,
   y = 123

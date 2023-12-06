@@ -70,8 +70,8 @@ local function open(v, ...)
 
     binding = {}
     binding.window = irmlui.open(rml)
-    binding.window.addEventListener("message", function(event)
-        local res = assert(event.data)
+    binding.window.onMessage(function(data)
+        local res = assert(data)
         if res.event == "__CLOSE" then
             local close_rml = res.ud[1] or rml
             closeWindows[close_rml] = true

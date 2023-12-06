@@ -33,22 +33,23 @@
         </style>
         <style path = "/pkg/vaststars.resources/ui/common/building_style.rcss"/>
         <script type="text/x-lua" >
-            local ui_sys = require "lua.ui_system"
-            local start = ui_sys.createDataMode {
+            local audio = import_package "ant.audio"
+            local ui = import_package "vaststars.ui"
+            local ui_sys = ui.ui_system
+            local start = ui_sys.createDataMode(window, {
                 guide_progress = 0,
                 buttons = {},
-            }
+            })
 
             function start.clickButton(button)
                 if button.command == "" then
                     return
                 end
                 if button.audio then
-                    print("play audio", button.audio)
                     audio.play(button.audio)
                 end
-                ui_sys.pub {button.command}
-                ui_sys.pub {"ui_click", button.command}
+                ui_sys.pub(window, {button.command})
+                ui_sys.pub(window, {"ui_click", button.command})
             end
         </script>
     </head>

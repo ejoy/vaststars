@@ -1874,7 +1874,7 @@ prototype "物流站打印" {
     recipe_craft_category = "生产大型制造",
     recipe_category =  "物流",
     recipe_order =  80,
-    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/goodsstation-out-design.texture",
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/goodsstation-input-design.texture",
     ingredients = {
         {"电动机I", 1},
         {"石砖", 4},
@@ -1884,6 +1884,23 @@ prototype "物流站打印" {
     },
     time = "8s",
     description = "向运输车辆装卸货物的车站",
+}
+
+prototype "物流中心打印" {
+    type = { "recipe" },
+    recipe_craft_category = "生产大型制造",
+    recipe_category =  "物流",
+    recipe_order =  80,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/goodsstation-out-design.texture",
+    ingredients = {
+        {"电动机I", 1},
+        {"石砖", 4},
+    },
+    results = {
+        {"物流中心", 1},
+    },
+    time = "15s",
+    description = "运输车辆停靠和派发的车站",
 }
 
 -- prototype "火箭区段1" {
@@ -2482,6 +2499,24 @@ prototype "维修物流站" {
         {"物流站", 1},
     },
     time = "5s",
+    description = "维修破损的物流站",
+}
+
+prototype "维修物流中心" {
+    type = { "recipe" },
+    recipe_craft_category = "建筑打印",
+    recipe_category =  "加工",
+    recipe_order =  55,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/goodsstation-out-design.texture",
+    ingredients = {
+        {"铁齿轮", 10},
+        {"石砖", 10},
+        {"物流中心框架", 1},
+    },
+    results = {
+        {"物流中心", 1},
+    },
+    time = "10s",
     description = "维修破损的物流站",
 }
 
