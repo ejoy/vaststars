@@ -5,7 +5,6 @@ local BUILDING_COMPONENTS = {
     assembling_icon = true,
     chimney_icon = true,
     consumer_icon = true,
-    workstatus = true,
     storage_tank_icon = true,
 }
 local BUILDING_COMPONENT_METHODS = {

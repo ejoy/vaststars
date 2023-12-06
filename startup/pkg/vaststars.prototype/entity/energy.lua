@@ -3,7 +3,7 @@ local prototype = gameplay.register.prototype
 
 prototype "蒸汽发电机I" {
     model = "glbs/turbine-1.glb|mesh.prefab",
-    model_status = {work = true, low_power = true},
+    work_status = {work = true, low_power = true},
     icon = "mem:/pkg/vaststars.resources/glbs/turbine-1.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
@@ -37,7 +37,7 @@ prototype "蒸汽发电机I" {
 
 prototype "蒸汽发电机II" {
     model = "glbs/turbine-1.glb|mesh.prefab",
-    model_status = {work = true},
+    work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/turbine-1.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
@@ -71,7 +71,7 @@ prototype "蒸汽发电机II" {
 
 prototype "蒸汽发电机III" {
     model = "glbs/turbine-1.glb|mesh.prefab",
-    model_status = {work = true},
+    work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/turbine-1.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
@@ -105,7 +105,7 @@ prototype "蒸汽发电机III" {
 
 prototype "轻型风力发电机" {
     model = "glbs/wind-turbine-1.glb|mesh.prefab",
-    model_status = {work = true},
+    work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/wind-turbine-1.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
@@ -117,7 +117,7 @@ prototype "轻型风力发电机" {
 
 prototype "风力发电机I" {
     model = "glbs/wind-turbine-1.glb|mesh.prefab",
-    model_status = {work = true},
+    work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/wind-turbine-1.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
@@ -212,7 +212,7 @@ prototype "蓄电池III" {
 
 prototype "核反应堆" {
     model = "glbs/wind-turbine-1.glb|mesh.prefab",
-    model_status = {work = true},
+    work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/wind-turbine-1.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",

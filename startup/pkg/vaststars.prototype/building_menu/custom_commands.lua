@@ -244,6 +244,21 @@ return {
         "copy",
         "teardown",
     },
+    ["液罐I"] = {
+        "move",
+        "copy",
+        "teardown",
+    },
+    ["液罐II"] = {
+        "move",
+        "copy",
+        "teardown",
+    },
+    ["液罐III"] = {
+        "move",
+        "copy",
+        "teardown",
+    },
     -- 公路仅保留复制和拆除
     ["砖石公路-I型"] = {
         "copy",

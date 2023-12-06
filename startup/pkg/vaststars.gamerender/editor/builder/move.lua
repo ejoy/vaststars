@@ -372,7 +372,7 @@ local function touch_move(self, datamodel, delta_vec)
     local sprite_color
     local offset_x, offset_y = 0, 0
     local w, h = iprototype.rotate_area(typeobject.area, pickup_object.dir)
-    if not self._check_coord(lx, ly, w, h, self.move_object_id) then -- TODO
+    if not self._check_coord(self.typeobject.name, lx, ly, w, h, self.move_object_id) then -- TODO
         datamodel.show_confirm = false
 
         if self.road_entrance then

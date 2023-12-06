@@ -16,6 +16,15 @@ container::slot& chest::array_at(world& w, container::index start, uint8_t offse
     return w.container.at(start + offset);
 }
 
+container::slot* chest::array_get(world& w, container::index start, uint8_t offset) {
+    assert(start != container::kInvalidIndex);
+    auto& s = w.container.at(start);
+    if (s.eof - start.slot >= offset) {
+        return &w.container.at(start + offset);
+    }
+    return nullptr;
+}
+
 std::span<container::slot> chest::array_slice(world& w, container::index start, uint8_t offset, uint16_t size) {
 #if !defined(NDEBUG)
     if (size > 0) {

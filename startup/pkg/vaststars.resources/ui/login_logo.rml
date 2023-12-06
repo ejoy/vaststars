@@ -31,21 +31,21 @@
             }
         </style>
         <script type="text/x-lua" >
-            local model = window.createModel {
-                version = ""
+            local iversion = import_package "vaststars.version"
+            local vfs = require "vfs"
+            local version = "IN DEVELOPMENT " .. table.concat({
+                string.sub(iversion.game, 1, 6),
+                string.sub(iversion.engine, 1, 6),
+                string.sub(vfs.version(), 1, 6),
+            }, "-")
+            window.createModel {
+                version = version
             }
-            window.onMessage(function(data)
-                if data.type == "set" then
-                    for k, v in pairs(data.data) do
-                        model[k] = v
-                    end
-                end
-            end)
             local function step()
                 if window.getPendingTexture() == 0 then
                     local e = document.getElementsByTagName("background")[1]
                     e.parentNode.removeChild(e)
-                    window.postMessage { type = "loaded" }
+                    window.sendMessage "login-loaded"
                     return
                 end
                 window.requestAnimationFrame(step)

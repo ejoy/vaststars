@@ -3,7 +3,7 @@ local prototype = gameplay.register.prototype
 
 prototype "指挥中心" {
     model = "glbs/headquater-1.glb|mesh.prefab",
-    model_status = {work = true},
+    work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/headquater-1.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
@@ -17,7 +17,7 @@ prototype "指挥中心" {
 
 prototype "物流中心" {
     model = "glbs/factory-1.glb|mesh.prefab",
-    model_status = {work = true},
+    work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/factory-1.glb|mesh.prefab config:s,1,3",
     check_coord = "",   -- factory builder special
     builder = "factory",
@@ -53,7 +53,7 @@ prototype "科研中心I" {
     type = {"building", "consumer","laboratory"},
     chest_style = "chest",
     model = "glbs/lab-1.glb|mesh.prefab",
-    model_status = {work = true, low_power = true},
+    work_status = {work = true, low_power = true},
     icon = "mem:/pkg/vaststars.resources/glbs/lab-1.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
@@ -77,7 +77,7 @@ prototype "地质科研中心" {
     type = {"building", "consumer","laboratory"},
     chest_style = "chest",
     model = "glbs/lab-1.glb|mesh.prefab",
-    model_status = {work = true, low_power = true},
+    work_status = {work = true, low_power = true},
     icon = "mem:/pkg/vaststars.resources/glbs/lab-1.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
@@ -96,7 +96,7 @@ prototype "科研中心II" {
     type = {"building", "consumer","laboratory"},
     chest_style = "chest",
     model = "glbs/lab-1.glb|mesh.prefab",
-    model_status = {work = true, low_power = true},
+    work_status = {work = true, low_power = true},
     icon = "mem:/pkg/vaststars.resources/glbs/lab-1.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
@@ -116,7 +116,7 @@ prototype "科研中心III" {
     type = {"building", "consumer","laboratory"},
     chest_style = "chest",
     model = "glbs/lab-1.glb|mesh.prefab",
-    model_status = {work = true, low_power = true},
+    work_status = {work = true, low_power = true},
     icon = "mem:/pkg/vaststars.resources/glbs/lab-1.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
@@ -315,7 +315,7 @@ prototype "停车站" {
 prototype "广播塔I" {
     type = {"building", "consumer"},
     model = "glbs/lab-1.glb|mesh.prefab",
-    model_status = {work = true, low_power = true},
+    work_status = {work = true, low_power = true},
     icon = "mem:/pkg/vaststars.resources/glbs/lab-1.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
@@ -330,7 +330,7 @@ prototype "广播塔I" {
 prototype "广播塔II" {
     type = {"building", "consumer"},
     model = "glbs/lab-1.glb|mesh.prefab",
-    model_status = {work = true, low_power = true},
+    work_status = {work = true, low_power = true},
     icon = "mem:/pkg/vaststars.resources/glbs/lab-1.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
@@ -345,7 +345,7 @@ prototype "广播塔II" {
 prototype "广播塔III" {
     type = {"building", "consumer"},
     model = "glbs/lab-1.glb|mesh.prefab",
-    model_status = {work = true, low_power = true},
+    work_status = {work = true, low_power = true},
     icon = "mem:/pkg/vaststars.resources/glbs/lab-1.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",

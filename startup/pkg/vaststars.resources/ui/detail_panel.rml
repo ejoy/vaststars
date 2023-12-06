@@ -158,7 +158,7 @@
                 status_icon = "",
                 prototype_name = " ",
                 model = "",
-                detail_panel_status_icon = "/pkg/vaststars.resources/ui/textures/work_status_icon/normal.texture",
+                detail_panel_status_icon = "/pkg/vaststars.resources/ui/textures/detail/work.texture",
                 detail_panel_status_desc = "正常工作",
                 chest_list_1 = {},
                 chest_list_2 = {},

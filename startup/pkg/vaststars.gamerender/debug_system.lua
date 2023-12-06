@@ -152,6 +152,7 @@ function debug_sys:ui_update()
 
                 log.info(([[
                     {
+                        gameplay_eid = %d,
                         group_id = %s,
                         id = %d,
                         prototype_name = "%s",
@@ -163,6 +164,7 @@ function debug_sys:ui_update()
                     },
                     %s
                     ]]):format(
+                        object.gameplay_eid,
                         game_object.group_id,
                         object.id,
                         object.prototype_name,

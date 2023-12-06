@@ -3,7 +3,7 @@ local prototype = gameplay.register.prototype
 
 prototype "特殊组装机" {
     model = "glbs/mars-assembling-machine.glb|mesh.prefab",
-    model_status = {work = true, low_power = true},
+    work_status = {work = true, low_power = true},
     icon = "mem:/pkg/vaststars.resources/glbs/mars-assembling-machine.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
@@ -43,7 +43,7 @@ prototype "特殊组装机" {
 
 prototype "特殊电解厂" {
     model = "glbs/electrolyzer-1.glb|mesh.prefab",
-    model_status = {work = true},
+    work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/electrolyzer-1.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
@@ -101,7 +101,7 @@ prototype "特殊电解厂" {
 
 prototype "特殊蒸馏厂" {
     model = "glbs/distillery-1.glb|mesh.prefab",
-    model_status = {work = true},
+    work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/distillery-1.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
@@ -231,7 +231,7 @@ prototype "特殊化工厂" {
 
 prototype "特殊水电站" {
     model = "glbs/hydro-plant-1.glb|mesh.prefab",
-    model_status = {work = true, low_power = true},
+    work_status = {work = true, low_power = true},
     icon = "mem:/pkg/vaststars.resources/glbs/hydro-plant-1.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
@@ -286,7 +286,7 @@ prototype "特殊水电站" {
 
 prototype "特殊熔炼炉" {
     model = "glbs/furnace-1.glb|mesh.prefab",
-    model_status = {work = true},
+    work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/furnace-1.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
@@ -324,7 +324,7 @@ prototype "特殊熔炼炉" {
 
 prototype "特殊采矿机" {
     model = "glbs/miner-1.glb|mesh.prefab",
-    model_status = {work = true, low_power = true},
+    work_status = {work = true, low_power = true},
     icon = "mem:/pkg/vaststars.resources/glbs/miner-1.glb|mesh.prefab config:s,1,3",
     check_coord = "mining",
     builder = "normal",

@@ -1,4 +1,112 @@
 ---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      t: {6.159999847412109, 7.059999942779541, -10.670000076293945}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    slot2
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      t: {-6.159999847412109, 7.059999942779541, -10.670000076293945}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    slot3
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      t: {12.319999694824219, 10.140000343322754, 0}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    slot4
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      t: {-12.319999694824219, 10.140000343322754, 0}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    slot5
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      t: {6.159999847412109, 16.040000915527344, 10.670000076293945}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    slot6
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      t: {-6.159999847412109, 16.040000915527344, 10.670000076293945}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    slot7
+---
+file: mesh.prefab
+op: copyfile
+path: work.prefab
+---
+file: mesh.prefab
+op: copyfile
+path: low_power.prefab
+---
+file: mesh.prefab
+op: copyfile
+path: debris.prefab
+---
 file: images/lab_light.texture
 op: add
 path: /maxsize
@@ -19,24 +127,6 @@ op: add
 path: /maxsize
 value: 128
 ---
-file: mesh.prefab
-op: copyfile
-path: work.prefab
----
-file: mesh.prefab
-op: copyfile
-path: low_power.prefab
----
-file: low_power.prefab
-op: replace
-path: /2/data/animation/low_power
-value: /pkg/vaststars.resources/animations/lab_animat_low.anim
----
-file: low_power.prefab
-op: replace
-path: /2/data/animation_birth
-value: low_power
----
 file: work.prefab
 op: replace
 path: /2/data/animation/work
@@ -46,10 +136,6 @@ file: work.prefab
 op: replace
 path: /2/data/animation_birth
 value: work
----
-file: mesh.prefab
-op: copyfile
-path: debris.prefab
 ---
 file: debris.prefab
 op: add
@@ -70,6 +156,16 @@ value:
   mount: 1
   prefab: /pkg/vaststars.resources/glbs/scaffold/3x3.glb|mesh.prefab
 ---
+file: low_power.prefab
+op: replace
+path: /2/data/animation/low_power
+value: /pkg/vaststars.resources/animations/lab_animat_low.anim
+---
+file: low_power.prefab
+op: replace
+path: /2/data/animation_birth
+value: low_power
+---
 file: mesh.prefab
 op: createfile
 path: hitch.prefab
@@ -84,3 +180,59 @@ value:
     ant.render|hitch_object
   tag:
     hitch
+  ---
+  data:
+    scene:
+      parent: 111
+      t: {6.159999847412109, 7.059999942779541, -10.670000076293945}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  index: 4
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    slot2
+  ---
+  data:
+    scene:
+      parent: 111
+      t: {-6.159999847412109, 7.059999942779541, -10.670000076293945}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  index: 5
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    slot3
+  ---
+  data:
+    scene:
+      parent: 111
+      t: {12.319999694824219, 10.140000343322754, 0}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  index: 6
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    slot4
+  ---
+  data:
+    scene:
+      parent: 111
+      t: {-12.319999694824219, 10.140000343322754, 0}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  index: 7
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    slot5

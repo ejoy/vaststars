@@ -1,13 +1,9 @@
 ---
 duration: 3
-name: lad_animat_low
+name: lab_animat_low
 sample_ratio: 50
 skeleton: /pkg/vaststars.resources/glbs/lab-1.glb|animations/skeleton.ozz
 target_anims:
-  ---
-  clips: {}
-  inherit: {false, false, false}
-  target_name: Bone.002
   ---
   clips:
     ---
@@ -21,5 +17,5 @@ target_anims:
     tween: 1
     type: 1
   inherit: {false, false, false}
-  target_name: Bone.001
+  target_name: Bone.002
 type: ske
