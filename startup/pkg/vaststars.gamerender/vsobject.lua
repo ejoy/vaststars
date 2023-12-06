@@ -30,16 +30,9 @@ local function update(self, t)
         model = assert(typeobject.model:match("(.*%.glb|).*%.prefab"))
         model = model .. "translucent.prefab"
     else
-        if t.workstatus == "work" then
-            if typeobject.model_status and typeobject.model_status.work then
-                model = assert(typeobject.model:match("(.*%.glb|).*%.prefab"))
-                model = model .. "work.prefab"
-            end
-        elseif t.workstatus == "low_power" then
-            if typeobject.model_status and typeobject.model_status.low_power then
-                model = assert(typeobject.model:match("(.*%.glb|).*%.prefab"))
-                model = model .. "low_power.prefab"
-            end
+        if typeobject.work_status and typeobject.work_status[t.work_status] then
+            model = assert(typeobject.model:match("(.*%.glb|).*%.prefab"))
+            model = ("%s%s.prefab"):format(model, t.work_status)
         else
             model = typeobject.model
         end
@@ -48,7 +41,7 @@ local function update(self, t)
     self.game_object:update {
         prefab = model,
         color = t.color,
-        workstatus = t.workstatus,
+        work_status = t.work_status,
         emissive_color = t.emissive_color,
     }
 end

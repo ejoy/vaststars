@@ -74,10 +74,10 @@ local function create(prefab, s, r, t)
     function outer:work()
         local model = assert(prefab:match("(.*%.glb|).*%.prefab"))
         model = model .. "work.prefab"
-        lorry_obj:update({workstatus = "work", prefab = model})
+        lorry_obj:update({work_status = "work", prefab = model})
     end
     function outer:idle()
-        lorry_obj:update({workstatus = "idle", prefab = prefab})
+        lorry_obj:update({work_status = "idle", prefab = prefab})
     end
     function outer:remove()
         world:remove_entity(motion_entity)

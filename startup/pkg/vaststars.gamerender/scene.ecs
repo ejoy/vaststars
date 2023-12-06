@@ -13,6 +13,8 @@ import_feature "ant.terrain|canvas"
 import_feature "ant.shadow_bounding"
 import_feature "ant.shadow_bounding|scene_bounding_pack"
 
+component "efk_auto_realive"
+
 system "ui_system"
     .implement "engine/system/ui_system.lua"
 
@@ -40,8 +42,8 @@ system "building_system"
 system "drone_system"
     .implement "render_updates/drone.lua"
 
-system "work_state_system"
-    .implement "render_updates/work_state.lua"
+system "work_status_system"
+    .implement "render_updates/work_status.lua"
 
 system "storage_tank_system"
     .implement "render_updates/storage_tank.lua"

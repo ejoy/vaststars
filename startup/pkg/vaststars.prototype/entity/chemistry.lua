@@ -3,6 +3,7 @@ local prototype = gameplay.register.prototype
 
 prototype "化工厂I" {
     model = "glbs/chemical-plant-1.glb|mesh.prefab",
+    work_status = {work_start = true, idle_start = true, work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/chemical-plant-1.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
@@ -198,7 +199,7 @@ prototype "化工厂III" {
 
 prototype "蒸馏厂I" {
     model = "glbs/distillery-1.glb|mesh.prefab",
-    model_status = {work = true},
+    work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/distillery-1.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
@@ -263,7 +264,7 @@ prototype "蒸馏厂I" {
 
 prototype "蒸馏厂II" {
     model = "glbs/distillery-1.glb|mesh.prefab",
-    model_status = {work = true},
+    work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/distillery-1.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
@@ -328,7 +329,7 @@ prototype "蒸馏厂II" {
 
 prototype "蒸馏厂III" {
     model = "glbs/distillery-1.glb|mesh.prefab",
-    model_status = {work = true},
+    work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/distillery-1.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
@@ -394,7 +395,7 @@ prototype "蒸馏厂III" {
 
 prototype "电解厂I" {
     model = "glbs/electrolyzer-1.glb|mesh.prefab",
-    model_status = {work = true},
+    work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/electrolyzer-1.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
@@ -452,7 +453,7 @@ prototype "电解厂I" {
 
 prototype "电解厂II" {
     model = "glbs/electrolyzer-1.glb|mesh.prefab",
-    model_status = {work = true},
+    work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/electrolyzer-1.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
@@ -510,7 +511,7 @@ prototype "电解厂II" {
 
 prototype "电解厂III" {
     model = "glbs/electrolyzer-1.glb|mesh.prefab",
-    model_status = {work = true},
+    work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/electrolyzer-1.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
@@ -568,7 +569,7 @@ prototype "电解厂III" {
 
 prototype "水电站I" {
     model = "glbs/hydro-plant-1.glb|mesh.prefab",
-    model_status = {work = true, low_power = true},
+    work_status = {work = true, low_power = true},
     icon = "mem:/pkg/vaststars.resources/glbs/hydro-plant-1.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
@@ -623,7 +624,7 @@ prototype "水电站I" {
 
 prototype "水电站II" {
     model = "glbs/hydro-plant-1.glb|mesh.prefab",
-    model_status = {work = true, low_power = true},
+    work_status = {work = true, low_power = true},
     icon = "mem:/pkg/vaststars.resources/glbs/hydro-plant-1.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
@@ -678,7 +679,7 @@ prototype "水电站II" {
 
 prototype "水电站III" {
     model = "glbs/hydro-plant-1.glb|mesh.prefab",
-    model_status = {work = true, low_power = true},
+    work_status = {work = true, low_power = true},
     icon = "mem:/pkg/vaststars.resources/glbs/hydro-plant-1.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",

@@ -38,14 +38,14 @@ local calcHash ; do
 
     local prefab_hash = get_hash_func(0xff)
     local color_hash = get_hash_func(0xf)
-    local workstatus_hash = get_hash_func(0xf)
+    local work_status_hash = get_hash_func(0xf)
     local emissive_color_hash = get_hash_func(0xf)
     local render_layer_hash = get_hash_func(0xf)
 
-    function calcHash(prefab, color, workstatus, emissive_color, render_layer)
+    function calcHash(prefab, color, work_status, emissive_color, render_layer)
         local h1 = prefab_hash(prefab or 0) -- 8 bits
         local h2 = color_hash(color or 0) -- 4 bits
-        local h3 = workstatus_hash(workstatus or 0) -- 1 bits
+        local h3 = work_status_hash(work_status or 0) -- 1 bits
         local h4 = emissive_color_hash(emissive_color or 0) -- 4 bits
         local h5 = render_layer_hash(render_layer or 0) -- 4 bits
         return h1 | (h2 << 8) | (h3 << 12) | (h4 << 13) | (h5 << 17)
@@ -56,15 +56,6 @@ local getHitchChildren, stopWorld, restartWorld ; do
     local cache = {}
     local NEXT_HITCH_GROUP = 1
 
-    local function playAnimation(prefab_inst, e, workstatus, group)
-        w:extend(e, "animation:in")
-        local start = workstatus .. "_start"
-        if e.animation[start] then
-            iani.play(prefab_inst, {name = start, loop = false, speed = 1.0, manual = true, forwards = true, group = group})
-            iani.set_time(prefab_inst, iani.get_duration(prefab_inst, start))
-        end
-    end
-
     local function getEventFile(prefab)
         local PATTERN <const> = "^.*/(.*)%.glb|.*%.prefab$"
         local match = prefab:match(PATTERN)
@@ -72,9 +63,9 @@ local getHitchChildren, stopWorld, restartWorld ; do
         return ANIMATIONS_BASE_PATH .. eventFile
     end
 
-    function getHitchChildren(prefab, color, workstatus, emissive_color, render_layer)
+    function getHitchChildren(prefab, color, work_status, emissive_color, render_layer)
         render_layer = render_layer or RENDER_LAYER.BUILDING
-        local hash = calcHash(prefab, tostring(color), workstatus, tostring(emissive_color), render_layer)
+        local hash = calcHash(prefab, tostring(color), work_status, tostring(emissive_color), render_layer)
         if cache[hash] then
             return cache[hash]
         end
@@ -95,10 +86,6 @@ local getHitchChildren, stopWorld, restartWorld ; do
                     -- special handling for keyframe animations
                     if e.anim_ctrl then
                         iani.load_events(eid, getEventFile(prefab))
-                    end
-
-                    if workstatus and e.animation then
-                        playAnimation(self, e, workstatus, hitch_group_id)
                     end
                 end
             end,
@@ -184,7 +171,7 @@ function igame_object.create(init)
     local hitchPrefab = glb .. "|hitch.prefab"
     -- log.info(("hitch prefab: %s, group_id: %s"):format(hitchPrefab, init.group_id))
 
-    local children = getHitchChildren(prefab, init.color, init.workstatus or "idle", init.emissive_color, init.render_layer)
+    local children = getHitchChildren(prefab, init.color, init.work_status or "idle", init.emissive_color, init.render_layer)
     local srt = init.srt or {}
 
     local hitchObject = world:create_instance {
@@ -217,7 +204,7 @@ function igame_object.create(init)
         children = getHitchChildren(
             RESOURCES_BASE_PATH:format(self.data.prefab),
             self.data.color,
-            self.data.workstatus,
+            self.data.work_status,
             self.data.emissive_color,
             self.data.render_layer
         )
