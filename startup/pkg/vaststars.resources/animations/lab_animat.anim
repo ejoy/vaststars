@@ -8,20 +8,6 @@ target_anims:
   clips:
     ---
     amplitude_pos: 0
-    amplitude_rot: 0
-    direction: 2
-    random_amplitude: false
-    range: {0, 149}
-    repeat_count: 1
-    rot_axis: 2
-    tween: 1
-    type: 1
-  inherit: {false, false, true}
-  target_name: Bone
-  ---
-  clips:
-    ---
-    amplitude_pos: 0
     amplitude_rot: -72
     direction: 2
     random_amplitude: false

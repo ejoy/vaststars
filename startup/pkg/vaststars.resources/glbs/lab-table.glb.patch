@@ -1,0 +1,16 @@
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      t: {0, 6.400000095367432, 0}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    slot1
