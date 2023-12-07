@@ -59,33 +59,41 @@ namespace roadnet {
 
     static constexpr uint8_t makeMask(const char* maskstr) {
         uint8_t m = 0;
-        m |= maskstr[0] != '_'? (1 << (uint8_t)direction::l): 0;
-        m |= maskstr[1] != '_'? (1 << (uint8_t)direction::t): 0;
-        m |= maskstr[2] != '_'? (1 << (uint8_t)direction::r): 0;
-        m |= maskstr[3] != '_'? (1 << (uint8_t)direction::b): 0;
+        m |= maskstr[0] != '_'? (1 << 0): 0;
+        m |= maskstr[1] != '_'? (1 << 1): 0;
+        m |= maskstr[2] != '_'? (1 << 2): 0;
+        m |= maskstr[3] != '_'? (1 << 3): 0;
+        m |= maskstr[4] != '_'? (1 << 4): 0;
+        m |= maskstr[5] != '_'? (1 << 5): 0;
+        m |= maskstr[6] != '_'? (1 << 6): 0;
+        m |= maskstr[7] != '_'? (1 << 7): 0;
         return m;
     }
 
     static constexpr uint8_t mask(wchar_t c) {
         switch (c) {
-        case L'\0': case L' ': return makeMask("____");
-        case L'║': return makeMask("_T_B");
-        case L'═': return makeMask("L_R_");
-        case L'╔': return makeMask("__RB");
-        case L'╠': return makeMask("_TRB");
-        case L'╚': return makeMask("_TR_");
-        case L'╦': return makeMask("L_RB");
-        case L'╬': return makeMask("LTRB");
-        case L'╩': return makeMask("LTR_");
-        case L'╗': return makeMask("L__B");
-        case L'╣': return makeMask("LT_B");
-        case L'╝': return makeMask("LT__");
-        case L'>': return makeMask("L___");
-        case L'v': return makeMask("_T__");
-        case L'<': return makeMask("__R_");
-        case L'^': return makeMask("___B");
+        case L' ': return makeMask("________");
+        case L'║': return makeMask("_T_BN_S_");
+        case L'═': return makeMask("L_R__E_W");
+        case L'╔': return makeMask("__RB_ES_");
+        case L'╠': return makeMask("_TRB____");
+        case L'╚': return makeMask("_TR_NE__");
+        case L'╦': return makeMask("L_RB____");
+        case L'╬': return makeMask("LTRB____");
+        case L'╩': return makeMask("LTR_____");
+        case L'╗': return makeMask("L__B__SW");
+        case L'╣': return makeMask("LT_B____");
+        case L'╝': return makeMask("LT__N__W");
+        case L'>': return makeMask("L___NES_");
+        case L'v': return makeMask("_T___ESW");
+        case L'<': return makeMask("__R_N_SW");
+        case L'^': return makeMask("___B_ESW");
         default: assert(false); return 0;
         }
+    }
+
+    static constexpr uint8_t maskl(wchar_t c) {
+        return mask(c) & 0xF;
     }
 
     enum class road_type {
@@ -95,7 +103,7 @@ namespace roadnet {
     };
 
     static constexpr road_type getRoadType(uint8_t m) {
-        switch (m & 0xF) {
+        switch (m) {
         case mask(L'║'):
         case mask(L'═'):
         case mask(L'>'):
@@ -107,15 +115,10 @@ namespace roadnet {
         case mask(L'╗'):
         case mask(L'╝'):
             return road_type::straight;
-        case mask(L'╠'):
-        case mask(L'╦'):
-        case mask(L'╬'):
-        case mask(L'╩'):
-        case mask(L'╣'):
-            return road_type::cross;
         case mask(L' '):
-        default:
             return road_type::invalid;
+        default:
+            return road_type::cross;
         }
     }
 
@@ -125,66 +128,66 @@ namespace roadnet {
 
     static constexpr direction next_direction(loction l, uint8_t m, direction dir) {
         switch (m & 0xF) {
-        case mask(L'║'):
+        case maskl(L'║'):
             switch (dir) {
             case direction::t: return direction::b;
             case direction::b: return direction::t;
             default: break;
             }
             break;
-        case mask(L'═'):
+        case maskl(L'═'):
             switch (dir) {
             case direction::l: return direction::r;
             case direction::r: return direction::l;
             default: break;
             }
             break;
-        case mask(L'>'):
+        case maskl(L'>'):
             switch (dir) {
             case direction::l: return direction::l;
             default: break;
             }
             break;
-        case mask(L'v'):
+        case maskl(L'v'):
             switch (dir) {
             case direction::t: return direction::t;
             default: break;
             }
             break;
-        case mask(L'<'):
+        case maskl(L'<'):
             switch (dir) {
             case direction::r: return direction::r;
             default: break;
             }
             break;
-        case mask(L'^'):
+        case maskl(L'^'):
             switch (dir) {
             case direction::b: return direction::b;
             default: break;
             }
             break;
-        case mask(L'╔'):
+        case maskl(L'╔'):
             switch (dir) {
             case direction::r: return direction::b;
             case direction::b: return direction::r;
             default: break;
             }
             break;
-        case mask(L'╚'):
+        case maskl(L'╚'):
             switch (dir) {
             case direction::r: return direction::t;
             case direction::t: return direction::r;
             default: break;
             }
             break;
-        case mask(L'╗'):
+        case maskl(L'╗'):
             switch (dir) {
             case direction::l: return direction::b;
             case direction::b: return direction::l;
             default: break;
             }
             break;
-        case mask(L'╝'):
+        case maskl(L'╝'):
             switch (dir) {
             case direction::l: return direction::t;
             case direction::t: return direction::l;
@@ -703,28 +706,26 @@ namespace roadnet {
         for (auto const& [loc, _] : status.startingMap) {
             auto m = status.map.find(loc);
             assert(m);
-            auto rawm = *m & 0xF;
-            switch (rawm) {
-            case mask(L'║'): setStarting(*this, status, loc, direction::t, direction::b); break;
-            case mask(L'═'): setStarting(*this, status, loc, direction::l, direction::r); break;
-            case mask(L'╔'): setStarting(*this, status, loc, direction::r, direction::b); break;
-            case mask(L'╚'): setStarting(*this, status, loc, direction::r, direction::t); break;
-            case mask(L'╗'): setStarting(*this, status, loc, direction::l, direction::b); break;
-            case mask(L'╝'): setStarting(*this, status, loc, direction::l, direction::t); break;
+            switch (*m & 0xF) {
+            case maskl(L'║'): setStarting(*this, status, loc, direction::t, direction::b); break;
+            case maskl(L'═'): setStarting(*this, status, loc, direction::l, direction::r); break;
+            case maskl(L'╔'): setStarting(*this, status, loc, direction::r, direction::b); break;
+            case maskl(L'╚'): setStarting(*this, status, loc, direction::r, direction::t); break;
+            case maskl(L'╗'): setStarting(*this, status, loc, direction::l, direction::b); break;
+            case maskl(L'╝'): setStarting(*this, status, loc, direction::l, direction::t); break;
             default: assert(false); break;
             }
         }
         for (auto const& [loc, _] : status.endpointMap) {
             auto m = status.map.find(loc);
             assert(m);
-            auto rawm = *m & 0xF;
-            switch (rawm) {
-            case mask(L'║'): setEndpoint(*this, status, loc, direction::t, direction::b); break;
-            case mask(L'═'): setEndpoint(*this, status, loc, direction::l, direction::r); break;
-            case mask(L'╔'): setEndpoint(*this, status, loc, direction::r, direction::b); break;
-            case mask(L'╚'): setEndpoint(*this, status, loc, direction::r, direction::t); break;
-            case mask(L'╗'): setEndpoint(*this, status, loc, direction::l, direction::b); break;
-            case mask(L'╝'): setEndpoint(*this, status, loc, direction::l, direction::t); break;
+            switch (*m & 0xF) {
+            case maskl(L'║'): setEndpoint(*this, status, loc, direction::t, direction::b); break;
+            case maskl(L'═'): setEndpoint(*this, status, loc, direction::l, direction::r); break;
+            case maskl(L'╔'): setEndpoint(*this, status, loc, direction::r, direction::b); break;
+            case maskl(L'╚'): setEndpoint(*this, status, loc, direction::r, direction::t); break;
+            case maskl(L'╗'): setEndpoint(*this, status, loc, direction::l, direction::b); break;
+            case maskl(L'╝'): setEndpoint(*this, status, loc, direction::l, direction::t); break;
             default: assert(false); break;
             }
         }
