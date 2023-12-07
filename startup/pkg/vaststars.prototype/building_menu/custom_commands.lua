@@ -510,6 +510,28 @@ return {
         "copy",
         "teardown",
     },
+
+    ["浮选器I"] = {
+        "move",
+        "set_recipe",
+        "copy",
+        "teardown",
+    },
+
+    ["浮选器II"] = {
+        "move",
+        "set_recipe",
+        "copy",
+        "teardown",
+    },
+
+    ["浮选器III"] = {
+        "move",
+        "set_recipe",
+        "copy",
+        "teardown",
+    },
+
     ["电解厂I"] = {
         "move",
         "set_recipe",
