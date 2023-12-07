@@ -1893,8 +1893,8 @@ prototype "物流中心打印" {
     recipe_order =  80,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/goodsstation-out-design.texture",
     ingredients = {
-        {"电动机I", 1},
-        {"石砖", 4},
+        {"电动机I", 4},
+        {"石砖", 20},
     },
     results = {
         {"物流中心", 1},
