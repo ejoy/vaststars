@@ -525,7 +525,7 @@ local prototype = gameplay.register.prototype
     type = { "tech" },
     effects = {
       unlock_recipe = {"维修无人机平台"},
-      unlock_item = {"无人机平台平台"},
+      unlock_item = {"无人机平台I"},
     },
     prerequisites = {"铁加工1"},
     ingredients = {
