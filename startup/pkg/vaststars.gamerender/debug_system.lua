@@ -110,7 +110,8 @@ function debug_sys:ui_update()
         
         if key == "C" and press == 0 then
             local name = "mem:/pkg/vaststars.resources/glbs/headquater-1.glb|mesh.prefab config:d,1,3"
-            ltask.call(ServiceWorld, "update_portrait_prefab", name)
+            local prefab_rotation = math3d.quaternion {axis=math3d.vector{0, 1, 0}, r=math.pi * 0.5}
+            ltask.call(ServiceWorld, "render_portrait_prefab", name, prefab_rotation)
         end
 
         if key == "T" and press == 0 then

@@ -7,7 +7,7 @@ local function init()
 	ltask.call(textmgr, "register", "mem", ltask.self())
 end
 
-function S.load(path, config)
+function S.load(name, path, config)
 	local type, size, rot, dis = ltask.call(ServiceWorld, "parse_prefab_config", config)
 
 	local c = {
@@ -27,13 +27,13 @@ function S.load(path, config)
 		handle = nil,
 	}
 
-	c.handle = ltask.call(ServiceWorld, "get_portrait_handle", size.width, size.height, type)
-	ltask.call(ServiceWorld, "set_portrait_prefab", path, rot, dis, type)
+	c.handle = ltask.call(ServiceWorld, "get_portrait_handle", name, size.width, size.height)
+	ltask.call(ServiceWorld, "set_portrait_prefab", name, path, rot, dis, type)
 	return c, true
 end
 
 function S.unload(handle)
-
+	ltask.call(ServiceWorld, "destroy_portrait_handle", handle)
 end
 
 init()
