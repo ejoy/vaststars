@@ -257,6 +257,10 @@ static int lbuild(lua_State *L) {
 static int lupdate(lua_State *L) {
     auto& w = getworld(L);
     for (auto& v : ecs_api::select<ecs::station, ecs::endpoint, ecs::chest>(w.ecs)) {
+        auto& endpoint = v.get<ecs::endpoint>();
+        if (!endpoint.neighbor || !endpoint.rev_neighbor) {
+            continue;
+        }
         auto& station = v.get<ecs::station>();
         auto& chest = v.get<ecs::chest>();
         auto station_c = container::index::from(station.chest);
@@ -288,8 +292,11 @@ static int lupdate(lua_State *L) {
     }
     w.market.match_begin(w);
     for (auto& v : ecs_api::select<ecs::station, ecs::endpoint, ecs::chest>(w.ecs)) {
-        auto& station = v.get<ecs::station>();
         auto& endpoint = v.get<ecs::endpoint>();
+        if (!endpoint.neighbor || !endpoint.rev_neighbor) {
+            continue;
+        }
+        auto& station = v.get<ecs::station>();
         auto& chest = v.get<ecs::chest>();
         auto station_c = container::index::from(station.chest);
         auto chest_c = container::index::from(chest.chest);

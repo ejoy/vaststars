@@ -12,6 +12,7 @@ prototype "熔炼炉I" {
     speed = "75%",
     power = "300kW",
     priority = "secondary",
+    rotate_on_build = true,
     sound = "building/furnace",
     craft_category = {"金属冶炼"},
     fluidboxes = {
@@ -50,6 +51,7 @@ prototype "熔炼炉II" {
     speed = "200%",
     power = "600kW",
     priority = "secondary",
+    rotate_on_build = true,
     sound = "building/furnace",
     craft_category = {"金属冶炼"},
     fluidboxes = {
@@ -88,6 +90,7 @@ prototype "熔炼炉III" {
     speed = "400%",
     power = "1MW",
     priority = "secondary",
+    rotate_on_build = true,
     sound = "building/furnace",
     craft_category = {"金属冶炼"},
     fluidboxes = {
