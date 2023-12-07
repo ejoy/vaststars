@@ -3,25 +3,6 @@ file: mesh.prefab
 op: copyfile
 path: work.prefab
 ---
-file: work.prefab
-op: add
-path: /-
-value:
-  data:
-    efk:
-      path: /pkg/vaststars.resources/effects/flotation-cell_popo.efk
-      speed: 1
-    scene:
-      s: {4, 4, 4}
-      t: {0, 3, 0}
-    visible_state: main_queue
-  mount: 1
-  policy:
-    ant.scene|scene_object
-    ant.efk|efk
-  tag:
-    work
----
 file: mesh.prefab
 op: copyfile
 path: low_power.prefab
@@ -68,6 +49,124 @@ value:
   mount: 1
   prefab: /pkg/vaststars.resources/glbs/scaffold/4x4.glb|mesh.prefab
 ---
+file: work.prefab
+op: add
+path: /-
+value:
+  data:
+    efk:
+      path: /pkg/vaststars.resources/effects/flotation-cell_popo.efk
+      speed: 1
+    scene:
+      s: {4, 4, 4}
+      t: {0, 3, 0}
+    visible_state: main_queue
+  mount: 1
+  policy:
+    ant.scene|scene_object
+    ant.efk|efk
+  tag:
+    work
+---
+file: work.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      t: {8, 16.10153579711914, 14.952470779418945}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    shelf1
+---
+file: work.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      t: {0, 16.101999282836914, 14.95199966430664}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    shelf2
+---
+file: work.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      t: {-8, 16.101999282836914, 14.95199966430664}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    shelf3
+---
+file: work.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      r: {-0, 1, -0, -4.371138828673793e-08}
+      t: {8, 16.101999282836914, -17.108535766601563}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    shelf4
+---
+file: work.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      r: {-0, 1, -0, -4.371138828673793e-08}
+      t: {0, 16.101999282836914, -17.108999252319336}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    shelf5
+---
+file: work.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      r: {-0, 1, -0, -4.371138828673793e-08}
+      t: {-8, 16.101999282836914, -17.108999252319336}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    shelf6
+---
 file: mesh.prefab
 op: createfile
 path: hitch.prefab
@@ -82,3 +181,78 @@ value:
     ant.render|hitch_object
   tag:
     hitch
+  ---
+  data:
+    scene:
+      t: {8, 16.10153579711914, 14.952470779418945}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    shelf1
+  ---
+  data:
+    scene:
+      t: {0, 16.101999282836914, 14.95199966430664}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    shelf2
+  ---
+  data:
+    scene:
+      t: {-8, 16.101999282836914, 14.95199966430664}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    shelf3
+  ---
+  data:
+    scene:
+      r: {-0, 1, -0, -4.371138828673793e-08}
+      t: {8, 16.101999282836914, -17.108535766601563}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    shelf4
+  ---
+  data:
+    scene:
+      r: {-0, 1, -0, -4.371138828673793e-08}
+      t: {0, 16.101999282836914, -17.108999252319336}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    shelf5
+  ---
+  data:
+    scene:
+      r: {-0, 1, -0, -4.371138828673793e-08}
+      t: {-8, 16.101999282836914, -17.108999252319336}
+    slot:
+      follow_flag: 1
+      joint_name: None
+  mount: 1
+  policy:
+    ant.animation|slot
+  tag:
+    shelf6

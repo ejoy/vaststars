@@ -29,6 +29,12 @@ local building_detail_config = {
 		-- "capacitance",		
 		-- "productivity_bonus",
 	},
+	["浮选器"] = {
+		"work_power",
+		"production_speed",
+		-- "capacitance",		
+		-- "productivity_bonus",
+	},
 	["蒸馏厂"] = {
 		"work_power",
 		"production_speed",
