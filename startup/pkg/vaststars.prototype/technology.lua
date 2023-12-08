@@ -1828,7 +1828,7 @@ prototype "硅板制造" {
     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_plastic.texture",
   },
   sign_desc = {
-    { desc = "用组装机生产30个硅板", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    { desc = "用熔炼炉生产30个硅板", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
   },
 }
 
