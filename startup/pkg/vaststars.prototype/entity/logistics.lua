@@ -136,7 +136,7 @@ prototype "科研中心III" {
 prototype "砖石公路-I型" {
     building_category = 4,
     display_name = "砖石公路",
-    item_name = "砖石公路-X型",
+    item = "砖石公路-X型",
     model = "glbs/road/I.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/road/I.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
@@ -159,7 +159,7 @@ prototype "砖石公路-I型" {
 prototype "砖石公路-L型" {
     building_category = 4,
     display_name = "砖石公路",
-    item_name = "砖石公路-X型",
+    item = "砖石公路-X型",
     model = "glbs/road/L.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/road/L.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
@@ -182,7 +182,7 @@ prototype "砖石公路-L型" {
 prototype "砖石公路-T型" {
     building_category = 4,
     display_name = "砖石公路",
-    item_name = "砖石公路-X型",
+    item = "砖石公路-X型",
     model = "glbs/road/T.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/road/T.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
@@ -206,7 +206,7 @@ prototype "砖石公路-T型" {
 prototype "砖石公路-O型" {
     building_category = 4,
     display_name = "砖石公路",
-    item_name = "砖石公路-X型",
+    item = "砖石公路-X型",
     model = "glbs/road/I.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/road/I.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
@@ -226,7 +226,7 @@ prototype "砖石公路-O型" {
 prototype "砖石公路-U型" {
     building_category = 4,
     display_name = "砖石公路",
-    item_name = "砖石公路-X型",
+    item = "砖石公路-X型",
     model = "glbs/road/I.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/road/I.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
@@ -248,7 +248,7 @@ prototype "砖石公路-U型" {
 prototype "砖石公路-X型" {
     building_category = 4,
     display_name = "砖石公路",
-    item_name = "砖石公路-X型",
+    item = "砖石公路-X型",
     model = "glbs/road/X.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/road/X.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",

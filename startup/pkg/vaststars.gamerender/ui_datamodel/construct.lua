@@ -322,7 +322,7 @@ local function pickupObject(datamodel, position, blur)
 
         --
         selected_obj = o
-        datamodel.focus_building_icon = typeobject.item_icon
+        datamodel.focus_building_icon = iprototype.item(typeobject).item_icon
         datamodel.status = "FOCUS"
 
         iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.rml"}, gameplay_eid, false)
@@ -339,7 +339,7 @@ local function pickupObject(datamodel, position, blur)
 
         --
         selected_obj = o
-        datamodel.focus_building_icon = typeobject.item_icon
+        datamodel.focus_building_icon = iprototype.item(typeobject).item_icon
         datamodel.status = "FOCUS"
 
         if o.class == CLASS.Road then
@@ -619,8 +619,7 @@ function M.update(datamodel)
         gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
 
         -- the building directly go into the backpack
-        typeobject = iprototype.queryByName(typeobject.item_name or typeobject.name)
-        iinventory.place(gameplay_core.get_world(), typeobject.id, 1)
+        iinventory.place(gameplay_core.get_world(), iprototype.item(typeobject).id, 1)
     end
 
     for _, _, _, object_id in move_md:unpack() do

@@ -124,7 +124,7 @@ return function()
     local gameplay_ecs = gameplay_world.ecs
 
     local entities = {}
-    for e in gameplay_ecs:select "building:in road:absent" do
+    for e in gameplay_ecs:select "building:in road:absent park:absent" do
         local typeobject = iprototype.queryById(e.building.prototype)
         local info = {prototype_name = typeobject.name}
         for _, func in pairs(funcs) do

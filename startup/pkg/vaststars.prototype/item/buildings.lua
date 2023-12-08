@@ -701,7 +701,7 @@ prototype "水电站III" {
     item_description = "大规模处理气液的设施",
 }
 
-local road = {
+prototype "砖石公路-X型" {
     type = {"item"},
     item_category = "物流",
     station_limit = 16,
@@ -712,12 +712,6 @@ local road = {
     item_model = "glbs/stackeditems/stone-brick.glb|mesh.prefab",
     item_description = "供车辆行驶的砖石公路",
 }
-prototype "砖石公路-I型"(setmetatable({}, {__index = road}))
-prototype "砖石公路-L型"(setmetatable({}, {__index = road}))
-prototype "砖石公路-T型"(setmetatable({}, {__index = road}))
-prototype "砖石公路-O型"(setmetatable({}, {__index = road}))
-prototype "砖石公路-U型"(setmetatable({}, {__index = road}))
-prototype "砖石公路-X型"(setmetatable({}, {__index = road}))
 
 prototype "运输车辆I" {
     type = {"item"},

@@ -196,6 +196,10 @@ function M.display_name(typeobject)
     return typeobject.display_name and typeobject.display_name or typeobject.name
 end
 
+function M.item(typeobject)
+    return typeobject.item and assert(M.queryByName(typeobject.item)) or typeobject
+end
+
 function M.is_pipe(prototype_name)
     local typeobject = assert(M.queryByName(prototype_name))
     return M.has_type(typeobject.type, "pipe")

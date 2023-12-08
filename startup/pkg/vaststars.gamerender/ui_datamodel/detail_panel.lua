@@ -533,7 +533,24 @@ local function update_power(power)
     step_frame_head(st)
 end
 
+local _update_model ; do
+    local math3d = require "math3d"
+    local ltask = require "ltask"
+    local timepassed = 0.0
+    local delta_radian = math.pi * 0.1
+    local itimer = ecs.require "ant.timer|timer_system"
+    function _update_model(name)
+        timepassed = timepassed + itimer.delta()
+        local cur_time = timepassed * 0.001
+        local cur_radian = delta_radian * cur_time
+        local rotation = math3d.quaternion {axis=math3d.vector{0, 1, 0}, r=math.pi * cur_radian}
+        ltask.call(ltask.self(), "render_portrait_prefab", name, math3d.serialize(rotation))
+    end
+end
+
 function M.update(datamodel, object_id)
+    _update_model(datamodel.model)
+
     local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if e.capacitance then

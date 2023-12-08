@@ -235,7 +235,7 @@ function M.update(datamodel, gameplay_eid)
         assert(e.building)
         local typeobject = iprototype.queryById(e.building.prototype)
         local pos = math3d.vector(icoord.position(e.building.x, e.building.y, iprototype.rotate_area(typeobject.area, e.building.direction)))
-        iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "copy", typeobject.item_name or typeobject.name, math3d.mark(pos))
+        iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "copy", iprototype.item(typeobject).name, math3d.mark(pos))
     end
 
     for _ in set_recipe_mb:unpack() do
