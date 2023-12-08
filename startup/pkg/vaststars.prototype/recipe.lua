@@ -2050,7 +2050,7 @@ prototype "车辆装配" {
     recipe_order =  128,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/construction-design.texture",
     ingredients = {
-        {"铁齿轮", 4},
+        {"钢齿轮", 4},
         {"橡胶", 4},
         {"电动机I", 1},
     },
