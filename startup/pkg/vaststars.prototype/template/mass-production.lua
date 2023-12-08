@@ -5958,7 +5958,7 @@ local mineral = {
 
 
 return {
-    name = "规模测试",
+    name = "大规模测试",
     entities = entities,
     road = road,
     mineral = mineral,

@@ -1051,7 +1051,7 @@ prototype "液罐2" {
     type = { "recipe" },
     recipe_craft_category = "生产大型制造",
     recipe_category =  "化工",
-    recipe_order =  22,
+    recipe_order =  23,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/furnace-design.texture",
     ingredients = {
         {"管道1-X型", 6},
@@ -1070,7 +1070,7 @@ prototype "液罐3" {
     type = { "recipe" },
     recipe_craft_category = "生产大型制造",
     recipe_category =  "化工",
-    recipe_order =  22,
+    recipe_order =  24,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/furnace-design.texture",
     ingredients = {
         {"管道1-X型", 6},
