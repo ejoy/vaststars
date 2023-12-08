@@ -1722,6 +1722,23 @@ prototype "坩埚制造" {
   },
 }
 
+prototype "锅炉制造" {
+  desc = "研究可进行高温加工的特殊器皿",
+  type = { "tech" },
+  effects = {
+    unlock_recipe = {"锅炉"},
+    unlock_item = {"锅炉I"},
+  },
+  prerequisites = {"坩埚制造"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+  },
+  count = 10,
+  time = "6s"
+}
+
 prototype "有机化学3" {
   desc = "研究碳化合物组成、结构和制备方法",
   type = { "tech" },
@@ -1729,7 +1746,7 @@ prototype "有机化学3" {
     unlock_recipe = {"橡胶"},
     unlock_item = {"橡胶"},
   },
-  prerequisites = {"化学工程1"},
+  prerequisites = {"化学工程1","锅炉制造"},
   ingredients = {
       {"气候科技包", 1},
       {"机械科技包", 1},

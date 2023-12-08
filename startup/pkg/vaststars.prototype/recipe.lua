@@ -308,6 +308,23 @@ prototype "硅1" {
     description = "将沙子进行浮选获得硅",
 }
 
+prototype "锅炉" {
+    type = { "recipe" },
+    recipe_craft_category = "器件中型制造",
+    recipe_category =  "化工",
+    recipe_order =  68,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/electrolysis-design.texture",
+    ingredients = {
+        {"钢齿轮", 4},
+        {"坩埚", 2},
+    },
+    results = {
+        {"锅炉I", 1},
+    },
+    time = "8s",
+    description = "生产可以加热液体的工业炉",
+}
+
 prototype "玻璃1" {
     type = { "recipe" },
     recipe_craft_category = "器件中型制造",
