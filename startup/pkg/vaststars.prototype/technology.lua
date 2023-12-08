@@ -1565,7 +1565,7 @@ prototype "硅处理" {
   desc = "从沙子中提炼硅的工艺",
   type = { "tech" },
   effects = {
-    unlock_recipe = {"硅1","玻璃"},
+    unlock_recipe = {"硅1","玻璃1"},
     unlock_item = {"硅","玻璃"},
   },
   prerequisites = {"浮选1"},
