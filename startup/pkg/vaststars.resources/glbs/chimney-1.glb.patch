@@ -1,12 +1,4 @@
 ---
-file: mesh.prefab
-op: copyfile
-path: work_start.prefab
----
-file: mesh.prefab
-op: copyfile
-path: idle_start.prefab
----
 file: images/anything_light.texture
 op: add
 path: /maxsize
@@ -15,10 +7,6 @@ value: 16
 file: mesh.prefab
 op: copyfile
 path: work.prefab
----
-file: mesh.prefab
-op: copyfile
-path: low_power.prefab
 ---
 file: images/Chimney_Metallic-Chimney_Roughness.texture
 op: add
@@ -40,37 +28,20 @@ op: replace
 path: /state/CULL
 value: NONE
 ---
-file: low_power.prefab
-op: add
-path: /-
-value:
-  data:
-    efk:
-      path: /pkg/vaststars.resources/effects/chimney_smoke.efk
-      speed: 1
-    scene:
-      s: {0.800000011920929, 0.800000011920929, 0.800000011920929}
-      t: {0, 27.033798217773438, 0}
-    visible_state: main_queue
-  mount: 1
-  policy:
-    ant.scene|scene_object
-    ant.efk|efk
-  tag:
-    low_power
----
 file: work.prefab
 op: add
 path: /-
 value:
   data:
     efk:
-      path: /pkg/vaststars.resources/effects/chimney_smoke.efk
+      path: /pkg/vaststars.resources/effects/chimney_smoke_startEnd.efk
       speed: 1
+      fadeout: true
     scene:
       s: {3, 3, 3}
       t: {0, 28, 0}
     visible_state: main_queue
+    efk_auto_realive: true
   mount: 1
   policy:
     ant.scene|scene_object
@@ -100,48 +71,6 @@ path: /-
 value:
   mount: 1
   prefab: /pkg/vaststars.resources/glbs/scaffold/2x2.glb|mesh.prefab
----
-file: work_start.prefab
-op: add
-path: /-
-value:
-  data:
-    efk:
-      path: /pkg/vaststars.resources/effects/chimney_smoke_startEnd.efk
-      speed: 1
-      startframe: 0
-    scene:
-      s: {3, 3, 3}
-      t: {0, 28, 0}
-    visible_state: main_queue
-    efk_auto_realive: true
-  mount: 1
-  policy:
-    ant.scene|scene_object
-    ant.efk|efk
-  tag:
-    work_start
----
-file: idle_start.prefab
-op: add
-path: /-
-value:
-  data:
-    efk:
-      path: /pkg/vaststars.resources/effects/chimney_smoke_startEnd.efk
-      speed: 1
-      startframe: 90
-    scene:
-      s: {3, 3, 3}
-      t: {0, 28, 0}
-    visible_state: main_queue
-    efk_auto_realive: true
-  mount: 1
-  policy:
-    ant.scene|scene_object
-    ant.efk|efk
-  tag:
-    idle_start
 ---
 file: mesh.prefab
 op: createfile

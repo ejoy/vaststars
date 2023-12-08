@@ -114,6 +114,24 @@ value:
     shelf6
 ---
 file: mesh.prefab
+op: replace
+path: /2/data/animation_birth
+value: work_start
+---
+file: mesh.prefab
+op: replace
+path: /2/data/anim_ctrl
+value:
+  play_state:
+    ratio: 0.0
+    previous_ratio: 0.0
+    speed: 1.0
+    play: false
+    loop: false
+    manual_update: false
+    forwards: true
+---
+file: mesh.prefab
 op: copyfile
 path: debris.prefab
 ---
@@ -136,15 +154,69 @@ value:
   mount: 1
   prefab: /pkg/vaststars.resources/glbs/scaffold/3x3.glb|mesh.prefab
 ---
+file: work.prefab
+op: replace
+path: /2/data/animation_birth
+value: idle_start
+---
+file: work.prefab
+op: replace
+path: /2/data/anim_ctrl
+value:
+  play_state:
+    ratio: 0.0
+    previous_ratio: 0.0
+    speed: 1.0
+    play: false
+    loop: false
+    manual_update: false
+    forwards: true
+---
 file: work_start.prefab
 op: replace
 path: /2/data/animation_birth
 value: work_start
 ---
+file: work_start.prefab
+op: replace
+path: /2/data/anim_ctrl
+value:
+  play_state:
+    ratio: 0.0
+    previous_ratio: 0.0
+    speed: 1.0
+    play: true
+    loop: false
+    manual_update: false
+    forwards: true
+---
+file: work_start.prefab
+op: replace
+path: /2/data/animation_auto_realive
+value: true
+---
 file: idle_start.prefab
 op: replace
 path: /2/data/animation_birth
 value: idle_start
+---
+file: idle_start.prefab
+op: replace
+path: /2/data/anim_ctrl
+value:
+  play_state:
+    ratio: 0.0
+    previous_ratio: 0.0
+    speed: 1.0
+    play: true
+    loop: false
+    manual_update: false
+    forwards: true
+---
+file: idle_start.prefab
+op: replace
+path: /2/data/animation_auto_realive
+value: true
 ---
 file: mesh.prefab
 op: createfile

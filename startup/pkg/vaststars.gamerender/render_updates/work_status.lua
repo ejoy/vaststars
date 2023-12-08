@@ -28,14 +28,16 @@ local COLOR = {
 
 local objects = require "objects"
 local vsobject_manager = ecs.require "vsobject_manager"
-local interval_call = ecs.require "engine.interval_call"
 local gameplay_core = require "gameplay.core"
 local work_status_sys = ecs.system "work_status_system"
 local ipower_check = ecs.require "power_check_system"
 local iprototype = require "gameplay.interface.prototype"
 local iefk = ecs.require "ant.efk|efk"
+local iani = ecs.require "ant.animation|state_machine"
+local itimer = ecs.require "utility.timer"
 
 local work_statuses = {} -- gameplay_eid -> work_status
+local timer = itimer.new()
 
 local function get_working_status(e)
     if e.capacitance and not ipower_check.is_powered_on(gameplay_core.get_world(), e) then
@@ -86,43 +88,6 @@ local check_start = {
     end,
 }
 
--- switch the working status of all machines every 3 seconds
-local update = interval_call(3000, function()
-    local world = gameplay_core.get_world()
-    for e in world.ecs:select "building:in road:absent eid:in capacitance?in chimney?in assembling?in wind_turbine?in solar_panel?in base?in laboratory?in" do
-        -- only some buildings have a working status
-        local current = get_working_status(e)
-        if not current then
-            goto continue
-        end
-
-        local work_status = work_statuses[e.eid] or STATUS_NONE
-        if current == work_status then
-            goto continue
-        end
-
-        local func = check_start[current]
-        if func then
-            current = func(e.building.prototype, work_status)
-        end
-
-        local typeobject = iprototype.queryById(e.building.prototype)
-        if typeobject.work_status and typeobject.work_status.work_start then
-            print(e.eid, typeobject.name, STATUS[work_status], "->", STATUS[current])
-        end
-
-        work_statuses[e.eid] = current
-
-        local vsobject = _get_vsobject(e.building.x, e.building.y)
-        vsobject:update({work_status = STATUS[current], emissive_color = COLOR[current]})
-        ::continue::
-    end
-
-    for e in w:select "efk_auto_realive efk:in" do
-        iefk.play(e)
-    end
-end)
-
 function work_status_sys:gameworld_prebuild()
     local world = gameplay_core.get_world()
     for e in world.ecs:select "REMOVED eid:in" do
@@ -130,8 +95,49 @@ function work_status_sys:gameworld_prebuild()
     end
 end
 
+function work_status_sys:init_world()
+    -- switch the working status of all machines every 3 seconds
+    timer:interval(90, function()
+        local world = gameplay_core.get_world()
+        for e in world.ecs:select "building:in road:absent eid:in capacitance?in chimney?in assembling?in wind_turbine?in solar_panel?in base?in laboratory?in" do
+            -- only some buildings have a working status
+            local current = get_working_status(e)
+            if not current then
+                goto continue
+            end
+
+            local work_status = work_statuses[e.eid] or STATUS_NONE
+            if current == work_status then
+                goto continue
+            end
+
+            local func = check_start[current]
+            if func then
+                current = func(e.building.prototype, work_status)
+            end
+
+            work_statuses[e.eid] = current
+
+            local vsobject = _get_vsobject(e.building.x, e.building.y)
+            vsobject:update({work_status = STATUS[current], emissive_color = COLOR[current]})
+            ::continue::
+        end
+
+        for e in w:select "animation_auto_realive anim_ctrl:in eid:in animation_birth:in" do
+            local play_state = e.anim_ctrl.play_state
+            iani.play(e.eid, {name = e.animation_birth, loop = play_state.loop, speed = play_state.speed, manual = play_state.manual_update, forwards = true})
+        end
+    end)
+
+    timer:interval(30, function()
+        for e in w:select "efk_auto_realive efk:in eid:in" do
+            iefk.play(e)
+        end
+    end)
+end
+
 function work_status_sys:gameworld_update()
-    update()
+    timer:update()
 end
 
 function work_status_sys:exit()

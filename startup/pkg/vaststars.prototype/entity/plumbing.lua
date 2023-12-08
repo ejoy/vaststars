@@ -208,7 +208,7 @@ prototype "压力泵I" {
 
 prototype "烟囱I" {
     model = "glbs/chimney-1.glb|mesh.prefab",
-    work_status = {work = true, low_power = true, work_start = true, idle_start = true,},
+    work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/chimney-1.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
@@ -229,7 +229,7 @@ prototype "烟囱I" {
 
 prototype "烟囱II" {
     model = "glbs/chimney-1.glb|mesh.prefab",
-    work_status = {work = true, low_power = true},
+    work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/chimney-1.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
