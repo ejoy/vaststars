@@ -118,11 +118,6 @@ local entities = { {
   x = 125,
   y = 130
 }, {
-  dir = "E",
-  prototype_name = "停车站",
-  x = 156,
-  y = 134
-}, {
   dir = "N",
   items = { { "supply", "铁矿石", 2 }, { "supply", "铝矿石", 2 } },
   prototype_name = "物流站",
@@ -1303,11 +1298,6 @@ local entities = { {
   prototype_name = "物流站",
   x = 122,
   y = 160
-}, {
-  dir = "E",
-  prototype_name = "停车站",
-  x = 156,
-  y = 130
 }, {
   dir = "W",
   amount = 15,
