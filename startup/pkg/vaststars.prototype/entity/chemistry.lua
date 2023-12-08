@@ -4,7 +4,7 @@ local prototype = gameplay.register.prototype
 prototype "化工厂I" {
     model = "glbs/chemical-plant-1.glb|mesh.prefab",
     work_status = {work_start = true, idle_start = true, work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/chemical-plant-1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/chemical-plant-1.glb|mesh.prefab config:s,1,3,1.6",
     check_coord = "exclusive",
     builder = "normal",
     type = {"building", "consumer", "assembling", "fluidboxes"},
@@ -70,7 +70,7 @@ prototype "化工厂I" {
 prototype "化工厂II" {
     model = "glbs/chemical-plant-1.glb|mesh.prefab",
     work_status = {work_start = true, idle_start = true, work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/chemical-plant-1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/chemical-plant-1.glb|mesh.prefab config:s,1,3,1.6",
     check_coord = "exclusive",
     builder = "normal",
     type = {"building", "consumer", "assembling", "fluidboxes"},
@@ -136,7 +136,7 @@ prototype "化工厂II" {
 prototype "化工厂III" {
     model = "glbs/chemical-plant-1.glb|mesh.prefab",
     work_status = {work_start = true, idle_start = true, work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/chemical-plant-1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/chemical-plant-1.glb|mesh.prefab config:s,1,3,1.6",
     check_coord = "exclusive",
     builder = "normal",
     type = {"building", "consumer", "assembling", "fluidboxes"},

@@ -167,7 +167,7 @@ prototype "特殊蒸馏厂" {
 prototype "特殊化工厂" {
     model = "glbs/chemical-plant-1.glb|mesh.prefab",
     work_status = {work_start = true, idle_start = true, work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/chemical-plant-1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/chemical-plant-1.glb|mesh.prefab config:s,1,3,1.6",
     check_coord = "exclusive",
     builder = "normal",
     type = {"building", "consumer", "assembling", "fluidboxes"},
