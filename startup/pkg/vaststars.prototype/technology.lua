@@ -1713,12 +1713,12 @@ prototype "坩埚制造" {
   type = { "task" },
   task = {"stat_production", 0, "坩埚"},
   prerequisites = {"石头处理3"},
-  count = 20,
+  count = 10,
   tips_pic = {
     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_plastic.texture",
   },
   sign_desc = {
-    { desc = "用组装机生产20个坩埚", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    { desc = "用组装机生产10个坩埚", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
   },
 }
 
