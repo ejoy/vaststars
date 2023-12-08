@@ -302,9 +302,9 @@ prototype "硅1" {
     },
     results = {
         {"废水", 50},
-        {"硅", 6},
+        {"硅", 4},
     },
-    time = "5s",
+    time = "8s",
     description = "将沙子进行浮选获得硅",
 }
 
