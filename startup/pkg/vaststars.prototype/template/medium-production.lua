@@ -1303,7 +1303,7 @@ local entities = { {
   amount = 15,
   prototype_name = "物流中心",
   x = 152,
-  y = 130
+  y = 134
 }, {
   dir = "N",
   prototype_name = "采矿机I",
