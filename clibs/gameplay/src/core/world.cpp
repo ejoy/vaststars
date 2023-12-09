@@ -1,5 +1,5 @@
 #include <lua.hpp>
-#include <binding/binding.h>
+#include <bee/lua/binding.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <assert.h>

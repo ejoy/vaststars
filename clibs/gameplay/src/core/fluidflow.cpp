@@ -1,5 +1,5 @@
 #include <lua.hpp>
-#include <binding/binding.h>
+#include <bee/lua/binding.h>
 #include "core/world.h"
 extern "C" {
     #include "core/fluidflow.h"
