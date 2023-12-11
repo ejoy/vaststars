@@ -3,6 +3,7 @@ local world = ecs.world
 local w = world.w
 
 local itp = ecs.require "ant.landform|translucent_plane_system"
+local MATERIAL <const> = "/pkg/vaststars.resources/materials/tf/translucent_plane.material"
 local tp = {}
 
 -- render axis
@@ -93,7 +94,7 @@ end
 -- rects = {{x = xx, y = xx, w = xx, h = xx, gid = xx, color = xx}, ...}
 function tp.update(rects, render_layer, size)
     local sub_rects = get_sub_rects(rects)
-    itp.update_tp(sub_rects, render_layer, size)
+    itp.update_tp(sub_rects, render_layer, size, MATERIAL)
 end
 
 function tp.clear()

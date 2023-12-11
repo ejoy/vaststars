@@ -5,7 +5,6 @@ local w = world.w
 local CONSTANT <const> = require "gameplay.interface.constant"
 local TILE_SIZE <const> = CONSTANT.TILE_SIZE
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
-
 local itp = ecs.require "engine.translucent_plane"
 local icoord = require "coord"
 local igroup = ecs.require "group"
