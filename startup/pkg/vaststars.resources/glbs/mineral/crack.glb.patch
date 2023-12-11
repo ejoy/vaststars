@@ -37,21 +37,21 @@ op: replace
 path: /properties/s_basecolor
 value:
     stage: 0
-    texture: /pkg/ant.landform/assets/textures/crack_color.texture
+    texture: /pkg/vaststars.resources/textures/crack/crack_color.texture
 ---
 file: materials/Material.001.material
 op: replace
 path: /properties/s_normal
 value:
     stage: 1
-    texture: /pkg/ant.landform/assets/textures/crack_normal.texture
+    texture: /pkg/vaststars.resources/textures/crack/crack_normal.texture
 ---
 file: materials/Material.001.material
 op: add
 path: /properties/s_height
 value:
     stage: 2
-    texture: /pkg/ant.landform/assets/textures/crack_height.texture
+    texture: /pkg/vaststars.resources/textures/crack/crack_height.texture
 ---
 file: materials/Material.001.material
 op: add

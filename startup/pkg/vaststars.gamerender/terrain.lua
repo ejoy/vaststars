@@ -15,6 +15,8 @@ local MAP_BORDER_CHUNK_HEIGHT_SIZE <const> = MAP_BORDER_CHUNK_HEIGHT * TILE_SIZE
 assert(MAP_BORDER_CHUNK_WIDTH_SIZE == MAP_BORDER_CHUNK_HEIGHT_SIZE)
 local MAP_BORDER_CHUNK_SIZE <const> = MAP_BORDER_CHUNK_WIDTH_SIZE
 local ORIGIN <const> = require "coord".origin_position()
+local TERRAIN_MATERIAL <const> = "/pkg/vaststars.resources/materials/terrain/plane_terrain.material"
+local BORDER_MATERIAL <const> = "/pkg/vaststars.resources/materials/terrain/border.material"
 
 local igroup = ecs.require "group"
 local MAP_CHUNK_WIDTH, MAP_CHUNK_HEIGHT = igroup.map_chunk_wh()
@@ -59,7 +61,7 @@ function M.create()
         t = add_border(t, ORIGIN[1] + MAP_WIDTH * TILE_SIZE, y) -- right
     end
 
-    ipt.create_plane_terrain(t, RENDER_LAYER.TERRAIN, MAP_CHUNK_SIZE, MAP_BORDER_CHUNK_SIZE)
+    ipt.create_plane_terrain(t, RENDER_LAYER.TERRAIN, MAP_CHUNK_SIZE, MAP_BORDER_CHUNK_SIZE, TERRAIN_MATERIAL, BORDER_MATERIAL)
 end
 
 return M

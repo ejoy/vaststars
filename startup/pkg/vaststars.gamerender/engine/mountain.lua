@@ -10,7 +10,14 @@ local im = ecs.require "ant.landform|stone_mountain_system"
 local icoord = require "coord"
 local igroup = ecs.require "group"
 local MOUNTAIN_MASKS
-
+local MOUNTAIN_MATERIAL <const> = "/pkg/vaststars.resources/materials/mountain/mountain.material"
+local CS_MATERIAL <const> = "/pkg/vaststars.resources/materials/mountain/mountain_compute.material"
+local MOUNTAIN_MESHBINS = {
+    "/pkg/vaststars.resources/glbs/mountain/mountain1.glb|meshes/Cylinder.002_P1.meshbin",
+    "/pkg/vaststars.resources/glbs/mountain/mountain2.glb|meshes/Cylinder.004_P1.meshbin",
+    "/pkg/vaststars.resources/glbs/mountain/mountain3.glb|meshes/Cylinder_P1.meshbin",
+    "/pkg/vaststars.resources/glbs/mountain/mountain4.glb|meshes/Cylinder.021_P1.meshbin",
+} 
 local function set_masks(masks, r, v)
     -- x, y base 0
     local x0, y0, ww, hh = r[1], r[2], r[3], r[4]
@@ -106,7 +113,7 @@ function M:init(mountain_cfg)
         indices[#indices+1] = {coord = {x0, y0}, pos = icoord.lefttop_position(x0, y0), sidx=sidx}
     end
 
-    im.create(groups, WIDTH, HEIGHT)
+    im.create(groups, MOUNTAIN_MATERIAL, CS_MATERIAL, MOUNTAIN_MESHBINS)
 end
 
 function M:has_mountain(x, y)
