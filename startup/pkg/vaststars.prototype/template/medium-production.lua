@@ -1189,13 +1189,6 @@ local entities = { {
   y = 157
 }, {
   dir = "N",
-  fluid_name = "",
-  items = {},
-  prototype_name = "熔炼炉I",
-  x = 107,
-  y = 133
-}, {
-  dir = "N",
   items = { { "硅", 30 }, { "硅", 30 }, { "坩埚", 15 }, { "坩埚", 15 } },
   prototype_name = "仓库I",
   x = 124,
@@ -2380,14 +2373,7 @@ local entities = { {
   prototype_name = "仓库I",
   x = 123,
   y = 151
-}, {
-  dir = "N",
-  fluid_name = "",
-  items = {},
-  prototype_name = "电解厂I",
-  x = 136,
-  y = 117
-} }
+}}
 local road = { {
   dir = "E",
   prototype_name = "砖石公路-I型",
