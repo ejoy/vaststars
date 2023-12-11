@@ -3,29 +3,6 @@ file: mesh.prefab
 op: copyfile
 path: work.prefab
 ---
-file: mesh.prefab
-op: copyfile
-path: low_power.prefab
----
-file: low_power.prefab
-op: add
-path: /-
-value:
-  data:
-    efk:
-      path: /pkg/vaststars.resources/effects/mars-outfall_s.efk
-      speed: 1
-    scene:
-      s: {1, 1, 0.30000001192092896}
-      t: {0, 23.100000381469727, -7}
-    visible_state: main_queue
-  mount: 1
-  policy:
-    ant.scene|scene_object
-    ant.efk|efk
-  tag:
-    low_power
----
 file: work.prefab
 op: add
 path: /-

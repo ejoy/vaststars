@@ -94,25 +94,6 @@ value:
   tag:
     work
 ---
-file: low_power.prefab
-op: add
-path: /-
-value:
-  data:
-    efk:
-      path: /pkg/vaststars.resources/effects/furnace_smoke.efk
-      speed: 1
-    scene:
-      s: {4, 4, 4}
-      t: {0, 12, 0}
-    visible_state: main_queue
-  mount: 1
-  policy:
-    ant.scene|scene_object
-    ant.efk|efk
-  tag:
-    low_power
----
 file: mesh.prefab
 op: copyfile
 path: work.prefab
@@ -215,10 +196,6 @@ value:
     ant.animation|slot
   tag:
     shelf6
----
-file: mesh.prefab
-op: copyfile
-path: low_power.prefab
 ---
 file: mesh.prefab
 op: copyfile

@@ -3,7 +3,7 @@ local prototype = gameplay.register.prototype
 
 prototype "蒸汽发电机I" {
     model = "glbs/turbine-1.glb|mesh.prefab",
-    work_status = {work = true, low_power = true},
+    work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/turbine-1.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",

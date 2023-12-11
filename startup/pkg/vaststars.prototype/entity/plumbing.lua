@@ -90,7 +90,7 @@ prototype "气罐I" {
 
 prototype "地下水挖掘机I" {
     model = "glbs/mars-pumpjack.glb|mesh.prefab",
-    work_status = {work = true, low_power = true},
+    work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/mars-pumpjack.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
@@ -122,7 +122,7 @@ prototype "地下水挖掘机I" {
 
 prototype "地下水挖掘机II" {
     model = "glbs/mars-pumpjack.glb|mesh.prefab",
-    work_status = {work = true, low_power = true},
+    work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/mars-pumpjack.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
@@ -154,7 +154,7 @@ prototype "地下水挖掘机II" {
 
 prototype "核子挖掘机" {
     model = "glbs/mars-pumpjack.glb|mesh.prefab",
-    work_status = {work = true, low_power = true},
+    work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/mars-pumpjack.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
@@ -184,7 +184,7 @@ prototype "核子挖掘机" {
 
 prototype "压力泵I" {
     model = "glbs/pump-1.glb|mesh.prefab",
-    work_status = {work = true, low_power = true},
+    work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/pump-1.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
@@ -250,7 +250,7 @@ prototype "烟囱II" {
 
 prototype "排水口I" {
     model = "glbs/mars-outfall.glb|mesh.prefab",
-    work_status = {work = true, low_power = true},
+    work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/mars-outfall.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
@@ -271,7 +271,7 @@ prototype "排水口I" {
 
 prototype "排水口II" {
     model = "glbs/mars-outfall.glb|mesh.prefab",
-    work_status = {work = true, low_power = true},
+    work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/mars-outfall.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
@@ -292,7 +292,7 @@ prototype "排水口II" {
 
 prototype "空气过滤器I" {
     model = "glbs/air-filter.glb|mesh.prefab",
-    work_status = {work = true, low_power = true},
+    work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/air-filter.glb|mesh.prefab config:s,1,3,1.2",
     check_coord = "exclusive",
     builder = "normal",
@@ -324,7 +324,7 @@ prototype "空气过滤器I" {
 
 prototype "空气过滤器II" {
     model = "glbs/air-filter.glb|mesh.prefab",
-    work_status = {work = true, low_power = true},
+    work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/air-filter.glb|mesh.prefab config:s,1,3,1.2",
     check_coord = "exclusive",
     builder = "normal",
@@ -355,7 +355,7 @@ prototype "空气过滤器II" {
 
 prototype "空气过滤器III" {
     model = "glbs/air-filter.glb|mesh.prefab",
-    work_status = {work = true, low_power = true},
+    work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/air-filter.glb|mesh.prefab config:s,1,3,1.2",
     check_coord = "exclusive",
     builder = "normal",

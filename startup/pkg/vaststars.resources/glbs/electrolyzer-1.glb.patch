@@ -1,10 +1,6 @@
 ---
 file: mesh.prefab
 op: copyfile
-path: low_power.prefab
----
-file: mesh.prefab
-op: copyfile
 path: work.prefab
 ---
 file: mesh.prefab
@@ -40,26 +36,6 @@ value:
     ant.efk|efk
   tag:
     work
----
-file: low_power.prefab
-op: add
-path: /-
-value:
-  data:
-    efk:
-      path: /pkg/vaststars.resources/effects/electrolyzer_lightning_low.efk
-      speed: 1
-    scene:
-      r: {-0.3907311260700226, 0, 0, 0.9205048680305481}
-      s: {1.2000000476837158, 1, 1}
-      t: {0, 27.285999298095703, -7.897428512573242}
-    visible_state: main_queue
-  mount: 1
-  policy:
-    ant.scene|scene_object
-    ant.efk|efk
-  tag:
-    electrolyzer_lightning_low
 ---
 file: mesh.prefab
 op: copyfile

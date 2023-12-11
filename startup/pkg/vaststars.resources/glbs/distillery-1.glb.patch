@@ -1,10 +1,6 @@
 ---
 file: mesh.prefab
 op: copyfile
-path: low_power.prefab
----
-file: mesh.prefab
-op: copyfile
 path: work.prefab
 ---
 file: mesh.prefab
@@ -108,25 +104,6 @@ value:
     ant.animation|slot
   tag:
     shelf6
----
-file: low_power.prefab
-op: add
-path: /-
-value:
-  data:
-    efk:
-      path: /pkg/vaststars.resources/effects/distillery_fire.efk
-      speed: 1
-    scene:
-      s: {3, 3, 3}
-      t: {0, 10.800000190734863, 0}
-    visible_state: main_queue
-  mount: 1
-  policy:
-    ant.scene|scene_object
-    ant.efk|efk
-  tag:
-    distillery_fire
 ---
 file: work.prefab
 op: add
