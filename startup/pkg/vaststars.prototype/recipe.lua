@@ -1632,7 +1632,7 @@ prototype "电解厂1" {
     recipe_order =  90,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/electrolysis-design.texture",
     ingredients = {
-        {"液罐II", 4},
+        {"液罐I", 4},
         {"钢板", 10},
         {"玻璃", 8},
     },
