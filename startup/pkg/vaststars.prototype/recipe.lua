@@ -1264,7 +1264,7 @@ prototype "烟囱1" {
     type = { "recipe" },
     recipe_craft_category = "生产大型制造",
     recipe_category =  "化工",
-    recipe_order =  65,
+    recipe_order =  60,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/chemistry-design.texture",
     ingredients = {
         {"铁棒", 2},
@@ -1282,7 +1282,7 @@ prototype "烟囱2" {
     type = { "recipe" },
     recipe_craft_category = "生产大型制造",
     recipe_category =  "化工",
-    recipe_order =  65,
+    recipe_order =  61,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/chemistry-design.texture",
     ingredients = {
         {"混凝土", 10},
@@ -1593,7 +1593,7 @@ prototype "无人机平台2" {
     type = { "recipe" },
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
-    recipe_order =  60,
+    recipe_order =  61,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/drone-depot-design.texture",
     ingredients = {
         {"铝棒", 2},
@@ -1611,7 +1611,7 @@ prototype "无人机平台3" {
     type = { "recipe" },
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
-    recipe_order =  60,
+    recipe_order =  62,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/drone-depot-design.texture",
     ingredients = {
         {"电动机II", 4},
