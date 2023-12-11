@@ -1808,7 +1808,7 @@ prototype "铝生产" {
   type = { "tech" },
   effects = {
     unlock_recipe = {"碾碎铝矿石","铝矿石浮选","氧化铝","铝板1"},
-    unlock_item = {"铝板","碾碎铝矿石","氧化铝"},
+    unlock_item = {"铝板","碾碎铝矿石","碾碎铁矿石","氧化铝"},
   },
   prerequisites = {"无机化学","冶金学2"},
   ingredients = {
