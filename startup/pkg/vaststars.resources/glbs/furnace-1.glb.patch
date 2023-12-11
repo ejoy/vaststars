@@ -169,7 +169,6 @@ value:
     efk:
       path: /pkg/vaststars.resources/effects/furnace_smoke.efk
       speed: 1
-    efk_auto_realive: true
     scene:
       r: {0, 0, 0, 1}
       s: {3.200000047683716, 3.200000047683716, 3.200000047683716}
@@ -181,6 +180,7 @@ value:
     ant.efk|efk
   tag:
     work
+    efk_auto_triggered
 ---
 file: work.prefab
 op: replace
@@ -199,6 +199,12 @@ value:
     loop: false
     manual_update: false
     forwards: true
+---
+file: work_start.prefab
+op: replace
+path: /2/tag
+value:
+  animation_auto_triggered
 ---
 file: debris.prefab
 op: add
@@ -241,6 +247,12 @@ value:
     loop: false
     manual_update: false
     forwards: true
+---
+file: idle_start.prefab
+op: replace
+path: /2/tag
+value:
+  animation_auto_triggered
 ---
 file: mesh.prefab
 op: createfile

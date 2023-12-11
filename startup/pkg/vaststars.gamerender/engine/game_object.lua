@@ -83,9 +83,25 @@ local getHitchChildren, stopWorld, restartWorld ; do
                         irl.set_layer(e, render_layer)
                     end
 
-                    -- special handling for keyframe animations
                     if e.anim_ctrl then
+                        -- special handling for keyframe animations
                         iani.load_events(eid, getEventFile(prefab))
+                    end
+                end
+
+                -- special handling for work_start & idle_start work status
+                if self.tag["animation_auto_triggered"] then
+                    for _, eid in ipairs(self.tag["animation_auto_triggered"]) do
+                        local e <close> = world:entity(eid, "animation_auto_triggered?out")
+                        e.animation_auto_triggered = true
+                    end
+                end
+
+                -- special handling for work status
+                if self.tag["efk_auto_triggered"] then
+                    for _, eid in ipairs(self.tag["efk_auto_triggered"]) do
+                        local e <close> = world:entity(eid, "efk_auto_triggered?out")
+                        e.efk_auto_triggered = true
                     end
                 end
             end,

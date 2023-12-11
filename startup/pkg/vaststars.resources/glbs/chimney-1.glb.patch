@@ -41,13 +41,13 @@ value:
       s: {3, 3, 3}
       t: {0, 28, 0}
     visible_state: main_queue
-    efk_auto_realive: true
   mount: 1
   policy:
     ant.scene|scene_object
     ant.efk|efk
   tag:
     work
+    efk_auto_triggered
 ---
 file: mesh.prefab
 op: copyfile

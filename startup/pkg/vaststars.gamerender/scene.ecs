@@ -13,8 +13,8 @@ import_feature "ant.terrain|canvas"
 import_feature "ant.shadow_bounding"
 import_feature "ant.shadow_bounding|scene_bounding_pack"
 
-component "efk_auto_realive"
-component "animation_auto_realive"
+component "efk_auto_triggered"
+component "animation_auto_triggered"
 
 system "ui_system"
     .implement "engine/system/ui_system.lua"
