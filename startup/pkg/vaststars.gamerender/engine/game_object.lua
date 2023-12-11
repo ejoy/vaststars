@@ -7,6 +7,8 @@ local iom               = ecs.require "ant.objcontroller|obj_motion"
 local irl               = ecs.require "ant.render|render_layer.render_layer"
 local ig                = ecs.require "ant.group|group"
 local imodifier         = ecs.require "ant.modifier|modifier"
+local itimer            = ecs.require "ant.timer|timer_system"
+
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
 local ANIMATIONS_BASE_PATH <const> = "/pkg/vaststars.resources/animations/"
@@ -118,18 +120,6 @@ local getHitchChildren, stopWorld, restartWorld ; do
 
         cache[hash] = {instance = inst, hitch_group_id = hitch_group_id}
         return cache[hash]
-    end
-
-    function stopWorld()
-        for _, v in pairs(cache) do
-            world:instance_message(v.instance, "stop_world")
-        end
-    end
-
-    function restartWorld()
-        for _, v in pairs(cache) do
-            world:instance_message(v.instance, "restart_world")
-        end
     end
 end
 
@@ -253,11 +243,11 @@ function igame_object.create(init)
 end
 
 function igame_object.stop_world()
-    stopWorld()
+    itimer.pause()
 end
 
 function igame_object.restart_world()
-    restartWorld()
+    itimer.continue()
 end
 
 return igame_object
