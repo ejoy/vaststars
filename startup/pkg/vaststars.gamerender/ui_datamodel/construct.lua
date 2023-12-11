@@ -570,7 +570,9 @@ function M.update(datamodel)
                 end
                 if slot.item ~= 0 and slot.amount > 0 then
                     local typeobject = iprototype.queryById(slot.item)
-                    items[#items+1] = {typeobject.name, slot.amount}
+                    if not iprototype.is_fluid_id(slot.item) then
+                        items[#items+1] = {typeobject.name, slot.amount}
+                    end
                 end
             end
         end

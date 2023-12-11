@@ -395,11 +395,6 @@ local function _set_ending(prototype_name, State, PipeToGroundState, x, y, dir)
     PipeToGroundState.map[coord] = {x, y, _prototype_name, _dir}
 end
 
-local function _get_item_name(prototype_name)
-    local typeobject = iprototype.queryByName(iflow_connector.covers(prototype_name, DEFAULT_DIR))
-    return typeobject.name
-end
-
 -- NOTE: different from pipe_builder
 local function _builder_end(self, datamodel, State, dir, dir_delta)
     local prototype_name = self.coord_indicator.prototype_name
@@ -479,7 +474,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
             local object = assert(objects:get(object_id))
             object = assert(objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone))
 
-            local item_name = _get_item_name(object.prototype_name)
+            local item_name = iprototype.item(iprototype.queryByName(object.prototype_name)).name
             PipeToGroundState.remove[item_name] = (PipeToGroundState.remove[item_name] or 0) + 1
 
             iobject.remove(object)
@@ -494,8 +489,11 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
         if object then
             object = assert(objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone))
             if object.prototype_name ~= prototype_name or object.dir ~= dir then
-                if _get_item_name(object.prototype_name) ~= _get_item_name(prototype_name) then
-                    local item_name = _get_item_name(object.prototype_name)
+                local item_name_1 = iprototype.item(iprototype.queryByName(object.prototype_name)).name
+                local item_name_2 = iprototype.item(iprototype.queryByName(prototype_name)).name
+
+                if item_name_1 ~= item_name_2 then
+                    local item_name = item_name_1
                     PipeToGroundState.remove[item_name] = (PipeToGroundState.remove[item_name] or 0) + 1
                 end
                 object.prototype_name = prototype_name
@@ -549,11 +547,10 @@ end
 local function _builder_start(self, datamodel)
     local from_x, from_y = self.from_x, self.from_y
     local to_x, to_y = self.coord_indicator.x, self.coord_indicator.y
-    local prototype_name = self.coord_indicator.prototype_name
     local starting = objects:coord(from_x, from_y, EDITOR_CACHE_NAMES)
     local dir, delta = iprototype.calc_dir(from_x, from_y, to_x, to_y)
 
-    local State = {
+    self.State = {
         succ = true,
         fluid_name = "",
         starting_fluidbox = nil,
@@ -564,6 +561,7 @@ local function _builder_start(self, datamodel)
         to_y = to_y,
         dotted_line_coord = {},
     }
+    local State = self.State
 
     if starting then
         -- starting object should at least have one fluidbox, promised by _builder_init()
@@ -742,6 +740,18 @@ local function touch_end(self, datamodel)
 
     if self.state == STATE_START then
         _builder_start(self, datamodel)
+        for _, c in pairs(self.pickup_components) do
+            c:on_status_change(self.State.succ)
+        end
+    else
+        if not self._check_coord(self.typeobject.name, self.coord_indicator.x, self.coord_indicator.y, 1, 1) then
+            self.State = {succ = false}
+        else
+            self.State = {succ = true}
+        end
+        for _, c in pairs(self.pickup_components) do
+            c:on_status_change(self.State.succ)
+        end
     end
 end
 
@@ -870,6 +880,11 @@ local function clean(self, datamodel)
 end
 
 local function confirm(self, datamodel)
+    if self.State and not self.State.succ then
+        log.info("can not construct") --TODO: show error message
+        return
+    end
+
     if self.state == STATE_NONE then
         start_laying(self, datamodel)
     elseif self.state == STATE_START then
