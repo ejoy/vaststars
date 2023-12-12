@@ -149,7 +149,6 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
 
             if typeobject.fluidboxes then
                 local recipe_typeobject = assert(iprototype.queryById(recipe))
-                local ingredients_n <const> = #recipe_typeobject.ingredients//4 - 1
 
                 -- draw fluid icon of fluidboxes
                 local t = {

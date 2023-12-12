@@ -2,6 +2,10 @@ local building_io_slots = {
     --['xy']中x为进料数量、y为出货数量。例如['12']表示1个进料2个出货
     --in_slots为进料端的槽位
     --out_slots为出货端的槽位
+    ['00'] = {
+        in_slots = {},
+        out_slots = {},
+    },
     ['01'] = {
         in_slots = {},
         out_slots = {'5'},

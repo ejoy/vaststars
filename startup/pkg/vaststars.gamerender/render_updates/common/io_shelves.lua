@@ -100,20 +100,32 @@ function mt:remove()
     self._item_shows = {}
 end
 
+local function _get_item_idxs(begin, s)
+    local t = {}
+    local idx = 0
+
+    for i = 2, #s // 4 do
+        local id = string.unpack("<I2I2", s, 4 * i - 3)
+        idx = idx + 1
+        if not iprototype.is_fluid_id(id) then
+            t[#t+1] = begin + idx
+        end
+    end
+    return t
+end
+
 local function rebuild(self, gameplay_world, e, game_object)
     local typeobject_recipe = iprototype.queryById(e.assembling.recipe)
-    local ingredients_n <const> = #typeobject_recipe.ingredients//4 - 1
-    local results_n <const> = #typeobject_recipe.results//4 - 1
-    local key = ("%s%s"):format(ingredients_n, results_n)
+    local ingredients_idxs <const> = _get_item_idxs(0, typeobject_recipe.ingredients)
+    local results_idxs <const> = _get_item_idxs(#typeobject_recipe.ingredients//4 - 1, typeobject_recipe.results)
+    local key = ("%s%s"):format(#ingredients_idxs, #results_idxs)
     local cfg = BUILDING_IO_SLOTS[key] or error("BUILDING_IO_SLOTS[" .. key .. "] not found")
 
-    for i = 1, #cfg.in_slots do
-        local idx = i
+    for i, idx in ipairs(ingredients_idxs) do
         create_shelf(self, gameplay_world, e, game_object, PREFABS["in"], "shelf".. cfg.in_slots[i], idx)
     end
 
-    for i = 1, #cfg.out_slots do
-        local idx = i + ingredients_n
+    for i, idx in ipairs(results_idxs) do
         create_shelf(self, gameplay_world, e, game_object, PREFABS["out"], "shelf".. cfg.out_slots[i], idx)
     end
 end
