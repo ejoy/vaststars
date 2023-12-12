@@ -6,6 +6,10 @@ local building_io_slots = {
         in_slots = {},
         out_slots = {'5'},
     },
+    ['10'] = {
+        in_slots = {'2'},
+        out_slots = {},
+    },
     ['11'] = {
         in_slots = {'2'},
         out_slots = {'5'},
