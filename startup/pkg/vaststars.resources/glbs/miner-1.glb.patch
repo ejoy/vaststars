@@ -57,21 +57,7 @@ value:
 ---
 file: mesh.prefab
 op: copyfile
-path: low_power.prefab
----
-file: mesh.prefab
-op: copyfile
 path: work.prefab
----
-file: low_power.prefab
-op: replace
-path: /2/data/animation/low_power
-value: /pkg/vaststars.resources/animations/miner_Bone_low.anim
----
-file: low_power.prefab
-op: replace
-path: /2/data/animation_birth
-value: low_power
 ---
 file: work.prefab
 op: replace

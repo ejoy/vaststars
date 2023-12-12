@@ -101,10 +101,6 @@ path: work.prefab
 ---
 file: mesh.prefab
 op: copyfile
-path: low_power.prefab
----
-file: mesh.prefab
-op: copyfile
 path: debris.prefab
 ---
 file: images/lab_light.texture
@@ -155,16 +151,6 @@ path: /-
 value:
   mount: 1
   prefab: /pkg/vaststars.resources/glbs/scaffold/3x3.glb|mesh.prefab
----
-file: low_power.prefab
-op: replace
-path: /2/data/animation/low_power
-value: /pkg/vaststars.resources/animations/lab_animat_low.anim
----
-file: low_power.prefab
-op: replace
-path: /2/data/animation_birth
-value: low_power
 ---
 file: mesh.prefab
 op: createfile

@@ -21,10 +21,6 @@ value: 128
 ---
 file: mesh.prefab
 op: copyfile
-path: low_power.prefab
----
-file: mesh.prefab
-op: copyfile
 path: work.prefab
 ---
 file: work.prefab
@@ -55,35 +51,6 @@ file: work.prefab
 op: replace
 path: /2/data/animation_birth
 value: work
----
-file: low_power.prefab
-op: add
-path: /-
-value:
-  data:
-    efk:
-      path: /pkg/vaststars.resources/effects/air-filter_smoke.efk
-      speed: 1
-    scene:
-      s: {1.5, 1.5, 1.5}
-      t: {0, 36.400001525878906, 0}
-    visible_state: main_queue
-  mount: 1
-  policy:
-    ant.scene|scene_object
-    ant.efk|efk
-  tag:
-    low_power
----
-file: low_power.prefab
-op: replace
-path: /2/data/animation/low_power
-value: /pkg/vaststars.resources/animations/air-filter_animat.anim
----
-file: low_power.prefab
-op: replace
-path: /2/data/animation_birth
-value: low_power
 ---
 file: mesh.prefab
 op: copyfile

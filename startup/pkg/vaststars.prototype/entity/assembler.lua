@@ -3,7 +3,7 @@ local prototype = gameplay.register.prototype
 
 prototype "组装机I" {
     model = "glbs/mars-assembling-machine.glb|mesh.prefab",
-    work_status = {work = true, low_power = true},
+    work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/mars-assembling-machine.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
@@ -44,7 +44,7 @@ prototype "组装机I" {
 
 prototype "组装机II" {
     model = "glbs/mars-assembling-machine.glb|mesh.prefab",
-    work_status = {work = true, low_power = true},
+    work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/mars-assembling-machine.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
@@ -84,7 +84,7 @@ prototype "组装机II" {
 
 prototype "组装机III" {
     model = "glbs/mars-assembling-machine.glb|mesh.prefab",
-    work_status = {work = true, low_power = true},
+    work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/mars-assembling-machine.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",
@@ -124,7 +124,7 @@ prototype "组装机III" {
 
 prototype "铸造厂I" {
     model = "glbs/mars-assembling-machine.glb|mesh.prefab",
-    work_status = {work = true, low_power = true},
+    work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/mars-assembling-machine.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "normal",

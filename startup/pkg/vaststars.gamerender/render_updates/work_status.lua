@@ -88,6 +88,38 @@ local check_start = {
     end,
 }
 
+local function _update_work_status()
+    local world = gameplay_core.get_world()
+    for e in world.ecs:select "building:in road:absent eid:in capacitance?in chimney?in assembling?in wind_turbine?in solar_panel?in base?in laboratory?in" do
+        -- only some buildings have a working status
+        local current = get_working_status(e)
+        if not current then
+            goto continue
+        end
+
+        local work_status = work_statuses[e.eid] or STATUS_NONE
+        if current == work_status then
+            goto continue
+        end
+
+        local func = check_start[current]
+        if func then
+            current = func(e.building.prototype, work_status)
+        end
+
+        work_statuses[e.eid] = current
+
+        local vsobject = _get_vsobject(e.building.x, e.building.y)
+        vsobject:update({work_status = STATUS[current], emissive_color = COLOR[current]})
+        ::continue::
+    end
+
+    for e in w:select "animation_auto_triggered anim_ctrl:in eid:in animation_birth:in" do
+        local play_state = e.anim_ctrl.play_state
+        iani.play(e.eid, {name = e.animation_birth, loop = play_state.loop, speed = play_state.speed, manual = play_state.manual_update, forwards = true})
+    end
+end
+
 function work_status_sys:gameworld_prebuild()
     local world = gameplay_core.get_world()
     for e in world.ecs:select "REMOVED eid:in" do
@@ -95,42 +127,16 @@ function work_status_sys:gameworld_prebuild()
     end
 end
 
+function work_status_sys:gameworld_build()
+    _update_work_status()
+end
+
 function work_status_sys:init_world()
     -- switch the working status of all machines every 3 seconds
-    timer:interval(90, function()
-        local world = gameplay_core.get_world()
-        for e in world.ecs:select "building:in road:absent eid:in capacitance?in chimney?in assembling?in wind_turbine?in solar_panel?in base?in laboratory?in" do
-            -- only some buildings have a working status
-            local current = get_working_status(e)
-            if not current then
-                goto continue
-            end
-
-            local work_status = work_statuses[e.eid] or STATUS_NONE
-            if current == work_status then
-                goto continue
-            end
-
-            local func = check_start[current]
-            if func then
-                current = func(e.building.prototype, work_status)
-            end
-
-            work_statuses[e.eid] = current
-
-            local vsobject = _get_vsobject(e.building.x, e.building.y)
-            vsobject:update({work_status = STATUS[current], emissive_color = COLOR[current]})
-            ::continue::
-        end
-
-        for e in w:select "animation_auto_realive anim_ctrl:in eid:in animation_birth:in" do
-            local play_state = e.anim_ctrl.play_state
-            iani.play(e.eid, {name = e.animation_birth, loop = play_state.loop, speed = play_state.speed, manual = play_state.manual_update, forwards = true})
-        end
-    end)
+    timer:interval(90, _update_work_status)
 
     timer:interval(30, function()
-        for e in w:select "efk_auto_realive efk:in eid:in" do
+        for e in w:select "efk_auto_triggered efk:in eid:in" do
             iefk.play(e)
         end
     end)

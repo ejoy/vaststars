@@ -192,8 +192,9 @@ value:
 ---
 file: work_start.prefab
 op: replace
-path: /2/data/animation_auto_realive
-value: true
+path: /2/tag
+value:
+  animation_auto_triggered
 ---
 file: idle_start.prefab
 op: replace
@@ -215,8 +216,9 @@ value:
 ---
 file: idle_start.prefab
 op: replace
-path: /2/data/animation_auto_realive
-value: true
+path: /2/tag
+value:
+  animation_auto_triggered
 ---
 file: mesh.prefab
 op: createfile

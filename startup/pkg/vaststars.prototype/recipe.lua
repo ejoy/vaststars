@@ -97,8 +97,8 @@ prototype "碾碎铝矿石" {
     },
     results = {
         {"碾碎铝矿石", 5},
-        {"沙子", 1},
         {"碾碎铁矿石", 1},
+        {"沙子", 1},
     },
     time = "5s",
     description = "将铝矿石碾碎进行再加工",
@@ -1264,7 +1264,7 @@ prototype "烟囱1" {
     type = { "recipe" },
     recipe_craft_category = "生产大型制造",
     recipe_category =  "化工",
-    recipe_order =  65,
+    recipe_order =  60,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/chemistry-design.texture",
     ingredients = {
         {"铁棒", 2},
@@ -1282,7 +1282,7 @@ prototype "烟囱2" {
     type = { "recipe" },
     recipe_craft_category = "生产大型制造",
     recipe_category =  "化工",
-    recipe_order =  65,
+    recipe_order =  61,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/chemistry-design.texture",
     ingredients = {
         {"混凝土", 10},
@@ -1593,7 +1593,7 @@ prototype "无人机平台2" {
     type = { "recipe" },
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
-    recipe_order =  60,
+    recipe_order =  61,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/drone-depot-design.texture",
     ingredients = {
         {"铝棒", 2},
@@ -1611,7 +1611,7 @@ prototype "无人机平台3" {
     type = { "recipe" },
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
-    recipe_order =  60,
+    recipe_order =  62,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/drone-depot-design.texture",
     ingredients = {
         {"电动机II", 4},
@@ -1633,7 +1633,8 @@ prototype "电解厂1" {
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/electrolysis-design.texture",
     ingredients = {
         {"液罐I", 4},
-        {"铁制电线杆", 8},
+        {"钢板", 10},
+        {"玻璃", 8},
     },
     results = {
         {"电解厂I", 1},

@@ -1104,6 +1104,7 @@ prototype "碳处理2" {
   type = { "tech" },
   effects = {
     unlock_recipe = {"甲烷转乙烯","二氧化碳转一氧化碳","一氧化碳转石墨"},
+    unlock_item = {"石墨"},
   },
   prerequisites = {"建筑维修4"},
   ingredients = {
@@ -1807,7 +1808,7 @@ prototype "铝生产" {
   type = { "tech" },
   effects = {
     unlock_recipe = {"碾碎铝矿石","铝矿石浮选","氧化铝","铝板1"},
-    unlock_item = {"铝板","碾碎铝矿石","氧化铝"},
+    unlock_item = {"铝板","碾碎铝矿石","碾碎铁矿石","氧化铝"},
   },
   prerequisites = {"无机化学","冶金学2"},
   ingredients = {
