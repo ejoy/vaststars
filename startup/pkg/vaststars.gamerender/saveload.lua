@@ -62,7 +62,6 @@ local function restore_world(gameplay_world)
     local all_object = {}
     local map = {} -- coord -> id
     local fluidbox_map = {} -- coord -> id -- only for fluidbox
-    local debris
     for v in gameplay_world.ecs:select("eid:in building:in road:absent inner_building:absent fluidbox?in fluidboxes?in assembling?in debris?in") do
         local e = v.building
         local typeobject = iprototype.queryById(e.prototype)
@@ -99,6 +98,8 @@ local function restore_world(gameplay_world)
                 end
             end
         end
+
+        local debris
         if v.debris then
             debris = v.debris.prototype
         end
