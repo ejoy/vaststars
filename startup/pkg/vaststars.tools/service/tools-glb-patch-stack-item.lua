@@ -148,7 +148,7 @@ for _, f in ipairs(dir(GLB_PATH)) do
     assert(foundMaterialIdx, "not found material" .. f:string())
 
     local materialRelated = prefabData[foundMaterialIdx].data.material:match("^.*%|(.*)$")
-    local materialData = serialize.parse((GLB_VS_BASE_PATH / related .. "|"):string(), readall(f, "/" .. materialRelated .. "/main.cfg"))
+    local materialData = serialize.parse((GLB_VS_BASE_PATH / related .. "|"):string(), readall(f, "/" .. materialRelated .. "/source.ant"))
     local materialReal = getRealPath(materialMapping, materialRelated)
     local patchNodes = {}
 

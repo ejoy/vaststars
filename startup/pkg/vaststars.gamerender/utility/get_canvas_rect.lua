@@ -4,7 +4,7 @@ local function read_datalist(path)
     return datalist.parse(aio.readall(path))
 end
 
-local canvas_cfg = read_datalist "/pkg/vaststars.resources/textures/canvas.cfg"
+local canvas_cfg = read_datalist "/pkg/vaststars.resources/textures/canvas.ant"
 
 local function get_canvas_rect(name)
     local cfg = assert(canvas_cfg[name])

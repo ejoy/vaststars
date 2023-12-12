@@ -18,7 +18,7 @@ local datalist = require "datalist"
 local function read_datalist(path)
     return datalist.parse(aio.readall(path))
 end
-local FLUIDS_CFG <const> = read_datalist "/pkg/vaststars.resources/config/canvas/fluids.cfg"
+local FLUIDS_CFG <const> = read_datalist "/pkg/vaststars.resources/config/canvas/fluids.ant"
 
 local iprototype = require "gameplay.interface.prototype"
 local assetmgr = import_package "ant.asset"

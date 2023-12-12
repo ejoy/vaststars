@@ -21,7 +21,7 @@ local datalist = require "datalist"
 local function read_datalist(path)
     return datalist.parse(aio.readall(path))
 end
-local RECIPES_CFG <const> = read_datalist "/pkg/vaststars.resources/config/canvas/recipes.cfg"
+local RECIPES_CFG <const> = read_datalist "/pkg/vaststars.resources/config/canvas/recipes.ant"
 
 local assembling_sys = ecs.system "assembling_system"
 local objects = require "objects"

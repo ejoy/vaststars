@@ -99,7 +99,7 @@ end
 
 for _, f in ipairs(dir(path)) do
 	local prefab = datalist.parse(readall(f, "/mesh.prefab"))
-	-- local material = datalist.parse(readall(f, get_material(prefab) .. "/main.cfg"))
+	-- local material = datalist.parse(readall(f, get_material(prefab) .. "/source.ant"))
 end
 
 print "ok"

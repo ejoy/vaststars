@@ -15,7 +15,7 @@ local function read_datalist(path)
     return datalist.parse(aio.readall(path))
 end
 
-local FLUIDS_CFG <const> = read_datalist "/pkg/vaststars.resources/config/canvas/fluids.cfg"
+local FLUIDS_CFG <const> = read_datalist "/pkg/vaststars.resources/config/canvas/fluids.ant"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local BG_MATERIAL_PATH = "/pkg/vaststars.resources/materials/canvas/fluid-bg.material"
 local ICON_MATERIAL_PATH = "/pkg/vaststars.resources/materials/canvas/fluids.material"
