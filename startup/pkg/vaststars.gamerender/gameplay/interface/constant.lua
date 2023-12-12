@@ -36,15 +36,15 @@ M.DIR_MOVE_DELTA = {
     [DIRECTION.W] = {x = -1, y = 0},
 }
 M.ROTATORS = {
-    N = math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(0)})   )),
-    E = math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(90)})  )),
-    S = math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(180)}) )),
-    W = math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(270)}) )),
+    N = math3d.constant( math3d.quaternion({axis=mc.YAXIS, r=math.rad(0)})   ),
+    E = math3d.constant( math3d.quaternion({axis=mc.YAXIS, r=math.rad(90)})  ),
+    S = math3d.constant( math3d.quaternion({axis=mc.YAXIS, r=math.rad(180)}) ),
+    W = math3d.constant( math3d.quaternion({axis=mc.YAXIS, r=math.rad(270)}) ),
 
-    [DIRECTION.N] = math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(0)})   )), -- TODO: remove
-    [DIRECTION.E] = math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(90)})  )),
-    [DIRECTION.S] = math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(180)}) )),
-    [DIRECTION.W] = math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(270)}) )),
+    [DIRECTION.N] = math3d.constant( math3d.quaternion({axis=mc.YAXIS, r=math.rad(0)})   ), -- TODO: remove
+    [DIRECTION.E] = math3d.constant( math3d.quaternion({axis=mc.YAXIS, r=math.rad(90)})  ),
+    [DIRECTION.S] = math3d.constant( math3d.quaternion({axis=mc.YAXIS, r=math.rad(180)}) ),
+    [DIRECTION.W] = math3d.constant( math3d.quaternion({axis=mc.YAXIS, r=math.rad(270)}) ),
 }
 M.FPS = 30
 M.UPS = 30

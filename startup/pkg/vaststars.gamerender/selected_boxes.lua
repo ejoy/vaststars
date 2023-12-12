@@ -2,14 +2,17 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
-local DELTA_TIME <const> = require("gameplay.interface.constant").DELTA_TIME
-local mc = import_package "ant.math".constant
-local math3d = require "math3d"
-local iom = ecs.require "ant.objcontroller|obj_motion"
-local irl = ecs.require "ant.render|render_layer.render_layer"
+local RENDER_LAYER <const>  = ecs.require "engine.render_layer".RENDER_LAYER
+local DELTA_TIME <const>    = require"gameplay.interface.constant".DELTA_TIME
+
+local mc        = import_package "ant.math".constant
+
+local math3d    = require "math3d"
+
+local iom       = ecs.require "ant.objcontroller|obj_motion"
+local irl       = ecs.require "ant.render|render_layer.render_layer"
 local imaterial = ecs.require "ant.asset|material"
-local iupdate = ecs.require "update_system"
+local iupdate   = ecs.require "update_system"
 
 local function create_object(prefab, srt)
     return world:create_instance {
@@ -51,30 +54,29 @@ mt.__index = mt
 
 local CORNER_DIRECTIONS <const> = {
     math3d.constant("v4", {-1, 0, 1}),  -- left top
-    math3d.constant("v4", {-1, 0, -1}), -- left bottom
-    math3d.constant("v4", {1, 0, 1}),   -- right top
-    math3d.constant("v4", {1, 0, -1}),  -- right bottom
+    math3d.constant("v4", {-1, 0,-1}), -- left bottom
+    math3d.constant("v4", { 1, 0, 1}),   -- right top
+    math3d.constant("v4", { 1, 0,-1}),  -- right bottom
 }
 
 local CORNER_QUATERNIONS <const> = {
-    math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(180)}) )), -- left top
-    math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(90)})  )), -- left bottom
-    math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(270)}) )), -- right top
-    math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(0)})   )), -- right bottom
+    math3d.constant("quat", math3d.quaternion({axis=mc.YAXIS, r=math.rad(180)})), -- left top
+    math3d.constant("quat", math3d.quaternion({axis=mc.YAXIS, r=math.rad(90)}) ), -- left bottom
+    math3d.constant("quat", math3d.quaternion({axis=mc.YAXIS, r=math.rad(270)})), -- right top
+    math3d.constant("quat", math3d.quaternion({axis=mc.YAXIS, r=math.rad(0)})  ), -- right bottom
 }
-
 local LINE_DIRECTIONS <const> = {
-    math3d.constant("v4", {0, 0, 1}),  -- top
-    math3d.constant("v4", {0, 0, -1}), -- bottom
-    math3d.constant("v4", {-1, 0, 0}), -- left
-    math3d.constant("v4", {1, 0, 0}),  -- right
+    mc.ZAXIS,
+    mc.NZAXIS,
+    mc.NXAXIS,
+    mc.XAXIS,
 }
 
 local LINE_QUATERNIONS <const> = {
-    math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(0)}) )),  -- top
-    math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(0)}) )),  -- bottom
-    math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(90)}) )), -- left
-    math3d.constant( math3d.totable(math3d.quaternion({axis=mc.YAXIS, r=math.rad(90)}) )), -- right
+    math3d.constant("quat", math3d.quaternion({axis=mc.YAXIS, r=math.rad(0)}) ), -- top
+    math3d.constant("quat", math3d.quaternion({axis=mc.YAXIS, r=math.rad(0)}) ), -- bottom
+    math3d.constant("quat", math3d.quaternion({axis=mc.YAXIS, r=math.rad(90)})), -- left
+    math3d.constant("quat", math3d.quaternion({axis=mc.YAXIS, r=math.rad(90)})), -- right
 }
 
 local LINE_SCALE <const> = {
@@ -85,10 +87,10 @@ local LINE_SCALE <const> = {
 }
 
 local LINE_OFFSET <const> = {
-    math3d.constant("v4", {0, 0, 3.8}), -- top
-    math3d.constant("v4", {0, 0, 5}),   -- bottom
-    math3d.constant("v4", {5, 0, 0}),   -- left
-    math3d.constant("v4", {3.8, 0, 0}), -- right
+    math3d.constant("v4", {0,  0, 3.8}), -- top
+    math3d.constant("v4", {0,  0, 5}),   -- bottom
+    math3d.constant("v4", {5,  0, 0}),   -- left
+    math3d.constant("v4", {3.8,0, 0}),   -- right
 }
 
 local LINE_CHECK <const> = {
