@@ -70,7 +70,7 @@ value: /pkg/vaststars.resources/animations/miner_Bone.anim
 ---
 file: work.prefab
 op: replace
-path: /2/data/ozz_animation
+path: /2/data/animation
 value: ./animations/work.ozz
 ---
 file: work.prefab
