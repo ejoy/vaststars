@@ -176,6 +176,24 @@ prototype "氧化铝" {
     description = "将氢氧化铝煅烧获得氧化铝",
 }
 
+prototype "氢氧化铝" {
+    type = { "recipe" },
+    recipe_craft_category = "器件基础化工",
+    recipe_category =  "器件",
+    recipe_order =  16,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/alumina.texture",
+    ingredients = {
+        {"碳化铝", 6},
+        {"纯水", 60},
+    },
+    results = {
+        {"氢氧化铝", 4},
+        {"甲烷", 80},
+    },
+    time = "4s",
+    description = "碳化铝与水化合获得氢氧化铝与甲烷",
+}
+
 prototype "铝板1" {
     type = { "recipe" },
     recipe_craft_category = "金属冶炼",
