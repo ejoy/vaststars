@@ -105,7 +105,7 @@ function m:init_world()
         prefab = assert(template.camera),
         on_ready = function(self)
             local eid = assert(self.tag["camera"][1])
-            irq.set_camera("main_queue", eid)
+            irq.set_camera_from_queuename("main_queue", eid)
 
             if mf then
                 imodifier.set_target(mf, eid)

@@ -93,7 +93,7 @@ funcs["nothing"] = function()
         prefab = "/pkg/vaststars.resources/camera_default.prefab",
         on_ready = function(self)
             local eid = assert(self.tag["camera"][1])
-            irq.set_camera("main_queue", eid)
+            irq.set_camera_from_queuename("main_queue", eid)
         end
     }
 end
@@ -104,7 +104,7 @@ funcs["terrain_only"] = function()
         prefab = "/pkg/vaststars.resources/camera_default.prefab",
         on_ready = function(self)
             local eid = assert(self.tag["camera"][1])
-            irq.set_camera("main_queue", eid)
+            irq.set_camera_from_queuename("main_queue", eid)
         end
     }
 end
@@ -124,7 +124,7 @@ funcs["new_game"] = function(file)
         prefab = assert(template.camera),
         on_ready = function(self)
             local eid = assert(self.tag["camera"][1])
-            irq.set_camera("main_queue", eid)
+            irq.set_camera_from_queuename("main_queue", eid)
         end
     }
 
