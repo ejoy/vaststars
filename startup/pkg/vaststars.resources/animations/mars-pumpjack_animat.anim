@@ -2,7 +2,7 @@
 duration: 0.6
 name: mars-pumpjack_animat
 sample_ratio: 50
-skeleton: /pkg/vaststars.resources/glbs/mars-pumpjack.glb|animations/skeleton.ozz
+skeleton: /pkg/vaststars.resources/glbs/mars-pumpjack.glb|animations/skeleton.bin
 target_anims:
   ---
   clips:

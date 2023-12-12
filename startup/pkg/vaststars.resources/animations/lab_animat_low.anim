@@ -2,7 +2,7 @@
 duration: 3
 name: lab_animat_low
 sample_ratio: 50
-skeleton: /pkg/vaststars.resources/glbs/lab-1.glb|animations/skeleton.ozz
+skeleton: /pkg/vaststars.resources/glbs/lab-1.glb|animations/skeleton.bin
 target_anims:
   ---
   clips:

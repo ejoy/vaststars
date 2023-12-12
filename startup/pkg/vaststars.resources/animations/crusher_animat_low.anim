@@ -2,7 +2,7 @@
 duration: 2
 name: crusher
 sample_ratio: 50
-skeleton: /pkg/vaststars.resources/glbs/crusher-1.glb|animations/skeleton.ozz
+skeleton: /pkg/vaststars.resources/glbs/crusher-1.glb|animations/skeleton.bin
 target_anims:
   ---
   clips:

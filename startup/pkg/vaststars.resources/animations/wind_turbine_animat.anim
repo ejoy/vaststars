@@ -2,7 +2,7 @@
 duration: 6
 name: wind-turbine
 sample_ratio: 50
-skeleton: /pkg/vaststars.resources/glbs/wind-turbine-1.glb|animations/skeleton.ozz
+skeleton: /pkg/vaststars.resources/glbs/wind-turbine-1.glb|animations/skeleton.bin
 target_anims:
   ---
   clips:

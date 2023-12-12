@@ -3,10 +3,19 @@ file: mesh.prefab
 op: copyfile
 path: work.prefab
 ---
+file: animations/animation.ozz
+op: copyfile
+path: animations/work.ozz
+---
+file: animations/work.ozz
+op: replace
+path: /animations/work
+value: /pkg/vaststars.resources/animations/turbine_animat.anim
+---
 file: work.prefab
 op: replace
-path: /2/data/animation/work
-value: /pkg/vaststars.resources/animations/turbine_animat.anim
+path: /2/data/ozz_animation
+value: ./animations/work.ozz
 ---
 file: work.prefab
 op: replace

@@ -2,7 +2,7 @@
 duration: 3
 name: miner_Bone
 sample_ratio: 50
-skeleton: /pkg/vaststars.resources/glbs/miner-1.glb|animations/skeleton.ozz
+skeleton: /pkg/vaststars.resources/glbs/miner-1.glb|animations/skeleton.bin
 target_anims:
   ---
   clips:

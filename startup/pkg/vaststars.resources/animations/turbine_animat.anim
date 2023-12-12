@@ -2,7 +2,7 @@
 duration: 3
 name: turbine_animat
 sample_ratio: 50
-skeleton: /pkg/vaststars.resources/glbs/turbine-1.glb|animations/skeleton.ozz
+skeleton: /pkg/vaststars.resources/glbs/turbine-1.glb|animations/skeleton.bin
 target_anims:
   ---
   clips:

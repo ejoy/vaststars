@@ -2,7 +2,7 @@
 duration: 3
 name: mars-assembling-machine_animat
 sample_ratio: 50
-skeleton: /pkg/vaststars.resources/glbs/mars-assembling-machine.glb|animations/skeleton.ozz
+skeleton: /pkg/vaststars.resources/glbs/mars-assembling-machine.glb|animations/skeleton.bin
 target_anims:
   ---
   clips: {}

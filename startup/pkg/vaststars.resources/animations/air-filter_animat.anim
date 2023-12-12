@@ -2,7 +2,7 @@
 duration: 0.6
 name: air-filter
 sample_ratio: 50
-skeleton: /pkg/vaststars.resources/glbs/air-filter.glb|animations/skeleton.ozz
+skeleton: /pkg/vaststars.resources/glbs/air-filter.glb|animations/skeleton.bin
 target_anims:
   ---
   clips:
