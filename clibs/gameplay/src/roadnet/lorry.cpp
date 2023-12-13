@@ -58,6 +58,7 @@ namespace roadnet {
         l.ending = mov1.rev_neighbor;
         l.mov2 = mov2.rev_neighbor;
         l.item_prototype = item;
+        l.item_amount = 0;
     }
     void lorryGoMov2(ecs::lorry& l, roadnet::straightid mov2, uint16_t amount) {
         l.target = lorry_target::mov2;
