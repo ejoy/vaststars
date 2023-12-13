@@ -391,15 +391,16 @@ local update = interval_call(300, function(datamodel)
     end
 
     local gameplay_world = gameplay_core.get_world()
-    datamodel.item_bar = {}
+
+    local item_bar = {}
     local info = itransfer.get_transfer_info(gameplay_world)
     for idx, slot in itransfer.get_source_slots(gameplay_world) do
         local typeobject = iprototype.queryById(slot.item)
         local is_transfer = info[slot.item] ~= nil
         local item_icon = typeobject.item_icon or error("no item icon for " .. typeobject.name)
-        datamodel.item_bar[#datamodel.item_bar + 1] = {icon = item_icon, name = typeobject.name, count = slot.amount, is_transfer = is_transfer, value = is_transfer and 1 or 0, idx = idx}
+        item_bar[#item_bar + 1] = {icon = item_icon, name = typeobject.name, count = slot.amount, is_transfer = is_transfer, value = is_transfer and 1 or 0, idx = idx}
     end
-    table.sort(datamodel.item_bar, function(a, b)
+    table.sort(item_bar, function(a, b)
         if a.value > b.value then
             return true
         elseif a.value < b.value then
@@ -408,6 +409,11 @@ local update = interval_call(300, function(datamodel)
             return a.idx < b.idx
         end
     end)
+
+    datamodel.item_bar = {}
+    for i = 1, 4 do
+        datamodel.item_bar[i] = item_bar[i]
+    end
 end)
 
 function M.update(datamodel)
@@ -596,7 +602,7 @@ function M.update(datamodel)
                 end
             end
 
-            local w, h = iprototype.unpackarea(typeobject.area)
+            local w, h = iprototype.rotate_area(typeobject.area, e.building.direction)
             for gameplay_eid in inner_building:get(e.building.x, e.building.y, w, h) do
                 igameplay.destroy_entity(gameplay_eid)
             end

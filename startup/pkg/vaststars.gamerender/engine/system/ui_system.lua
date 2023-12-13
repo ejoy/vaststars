@@ -69,7 +69,7 @@ local function open(v, ...)
     end
 
     binding = {}
-    binding.window = irmlui.open(rml)
+    
     irmlui.onMessage(rml, function(data)
         local res = assert(data)
         if res.event == "__CLOSE" then
@@ -85,8 +85,14 @@ local function open(v, ...)
 
     binding.template = _load_datamodel(rml, datamodel)
     if not binding.template then
+        binding.window = irmlui.open(rml)
         return binding.datamodel
     end
+
+    binding.param = {...}
+    binding.datamodel = tracedoc.new(binding.template.create(...))
+    binding.datamodel.guide_progress = guide_progress
+    binding.window = irmlui.open(rml, rml, binding.datamodel)
 
     function binding.template.flush()
         changedWindows[rml] = nil
@@ -106,11 +112,7 @@ local function open(v, ...)
         end
     end
 
-    binding.param = {...}
-    binding.datamodel = tracedoc.new(binding.template.create(...))
-    binding.datamodel.guide_progress = guide_progress
     binding.template.flush()
-
     if binding.template.update then
         updateWindows[rml] = true
     end

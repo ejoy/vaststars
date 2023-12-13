@@ -11,7 +11,7 @@ local c = type "factory"
 
 function c:ctor(init, pt)
     local world = self
-    local typeobject = prototype.queryByName(pt.item)
+    local typeobject = prototype.queryByName(pt.lorry)
     local chest = iChest.create(world, {{
         type = "supply",
         item = typeobject.id,

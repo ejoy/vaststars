@@ -21,7 +21,7 @@ local gesture_tap_mb = world:sub {"gesture", "tap"}
 local gesture_mb = world:sub {"gesture"}
 local debug_sys = ecs.system "debug_system"
 
-local function __get_capacitance(eid)
+local function _get_capacitance(eid)
     local e = gameplay_core.get_entity(eid)
     if not e then
         return {network = "none", delta = 0, shortage = 0}
@@ -34,7 +34,7 @@ local function __get_capacitance(eid)
     return e.capacitance
 end
 
-local function __fluid_str(prefix, fluid, fluidbox_id, box_base_level, box_capacity, box_height)
+local function _fluid_str(prefix, fluid, fluidbox_id, box_base_level, box_capacity, box_height)
     local volume = "(none)"
     local capacity = "(none)"
     local flow = "(none)"
@@ -57,7 +57,7 @@ local function __fluid_str(prefix, fluid, fluidbox_id, box_base_level, box_capac
     )
 end
 
-local function __get_detail_str(eid)
+local function _detail_str(eid)
     local e = gameplay_core.get_entity(eid)
     if not e then
         return
@@ -67,7 +67,7 @@ local function __get_detail_str(eid)
     local res = {}
 
     if e.fluidbox then
-        res[#res+1] = __fluid_str("fluidbox ", e.fluidbox.fluid, e.fluidbox.id, typeobject.fluidbox.base_level, typeobject.fluidbox.capacity, typeobject.fluidbox.height)
+        res[#res+1] = _fluid_str("fluidbox ", e.fluidbox.fluid, e.fluidbox.id, typeobject.fluidbox.base_level, typeobject.fluidbox.capacity, typeobject.fluidbox.height)
     end
 
     if e.fluidboxes then
@@ -75,7 +75,7 @@ local function __get_detail_str(eid)
             local box = typeobject.fluidboxes[v.classify][v.index] or {base_level = 0, capacity = 0, height = 0}
             local fluid = e.fluidboxes[v.fluid]
             local id = e.fluidboxes[v.id]
-            res[#res+1] = __fluid_str(("fluidboxes %s%s "):format(v.classify, v.index), fluid, id, box.base_level, box.capacity, box.height)
+            res[#res+1] = _fluid_str(("fluidboxes %s%s "):format(v.classify, v.index), fluid, id, box.base_level, box.capacity, box.height)
         end
     end
 
@@ -90,30 +90,10 @@ local function __get_detail_str(eid)
     return table.concat(res, "\n\t")
 end
 
-function debug_sys:init_world()
-end
-
-local ibs           = ecs.require "ant.render|blur_scene.blur_scene"
-local ltask 		= require "ltask"
-local ServiceWorld  = ltask.queryservice "ant.window|world"
 function debug_sys:ui_update()
     local w = world.w
 
     for _, key, press, state in kb_mb:unpack() do
-        if key == "A" and press == 0 then
-            ibs.blur_scene(10)   -- default gaussian blur count is 5
-        end
-
-        if key == "B" and press == 0 then
-            ibs.restore_scene()
-        end
-        
-        if key == "C" and press == 0 then
-            local name = "mem:/pkg/vaststars.resources/glbs/headquater-1.glb|mesh.prefab config:d,1,3"
-            local prefab_rotation = math3d.quaternion {axis=math3d.vector{0, 1, 0}, r=math.pi * 0.5}
-            ltask.call(ServiceWorld, "render_portrait_prefab", name, prefab_rotation)
-        end
-
         if key == "T" and press == 0 then
             local gameplay_world = gameplay_core.get_world()
             print(("current tick value of the gameplay world is: %d"):format(gameplay_world:now()))
@@ -126,10 +106,6 @@ function debug_sys:ui_update()
 
         if state.CTRL and key == "S" and press == 1 then
             export_startup()
-        end
-
-        if state.CTRL and key == "M" and press == 1 then
-            idm.reset_texture_mipmap(true, 9)
         end
     end
 
@@ -172,9 +148,9 @@ function debug_sys:ui_update()
                         object.dir,
                         object.x,
                         object.y,
-                        __get_capacitance(gameplay_eid).network,
-                        __get_capacitance(gameplay_eid).delta,
-                        __get_detail_str(gameplay_eid)
+                        _get_capacitance(gameplay_eid).network,
+                        _get_capacitance(gameplay_eid).delta,
+                        _detail_str(gameplay_eid)
                     ))
             else
                 local ibuilding = ecs.require "render_updates.building"

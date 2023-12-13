@@ -34,7 +34,7 @@ font.import "/pkg/vaststars.resources/ui/font/Alibaba-PuHuiTi-Regular.ttf"
 local function get_lorrys()
     local l = {}
     for _, typeobject in pairs(iprototype.each_type("factory")) do
-        local item = iprototype.queryByName(typeobject.item)
+        local item = iprototype.queryByName(typeobject.lorry)
         l[item.id] = true
     end
     return l

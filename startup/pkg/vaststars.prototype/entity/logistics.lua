@@ -30,7 +30,7 @@ prototype "物流中心" {
         {0,4,"4x2","factory"},
     },
     craft_category = {"基地制造"},
-    item = "运输车辆I",
+    lorry = "运输车辆I",
     type = {"building", "factory"},
     amount = "0",
     speed = "50%",
