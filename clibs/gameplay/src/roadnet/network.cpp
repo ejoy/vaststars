@@ -906,6 +906,7 @@ namespace roadnet {
         }
     }
     void network::destroyLorry(world& w, lorry_entity& l) {
+        l.enable_tag<ecs::lorry_changed>();
         l.enable_tag<ecs::lorry_removed>();
         lorryDestroy(l.get<ecs::lorry>(), w);
     }
@@ -916,6 +917,7 @@ namespace roadnet {
         endpointWillReset.reserve(n);
         for (auto& e : ecs_api::select<ecs::lorry_willremove, ecs::lorry>(w.ecs)) {
             auto& lorry = e.get<ecs::lorry>();
+            e.enable_tag<ecs::lorry_changed>();
             e.enable_tag<ecs::lorry_removed>();
             lorryDestroy(lorry, w);
             lorryWillRemove.insert(getLorryId(lorry));
