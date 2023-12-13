@@ -3,7 +3,7 @@ local world = ecs.world
 local w = world.w
 
 local imaterial = ecs.require "ant.asset|material"
-local iani = ecs.require "ant.animation|state_machine"
+local iani = ecs.require "ant.anim_ctrl|state_machine"
 local iefk = ecs.require "ant.efk|efk"
 
 local events = {}

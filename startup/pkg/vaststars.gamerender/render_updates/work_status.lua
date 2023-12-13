@@ -33,7 +33,7 @@ local work_status_sys = ecs.system "work_status_system"
 local ipower_check = ecs.require "power_check_system"
 local iprototype = require "gameplay.interface.prototype"
 local iefk = ecs.require "ant.efk|efk"
-local iani = ecs.require "ant.animation|state_machine"
+local iani = ecs.require "ant.anim_ctrl|state_machine"
 local itimer = ecs.require "utility.timer"
 
 local work_statuses = {} -- gameplay_eid -> work_status
