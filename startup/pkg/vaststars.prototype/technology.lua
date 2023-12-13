@@ -1903,8 +1903,8 @@ prototype "沸腾实验" {
   desc = "通过加热液体获取蒸汽的工艺",
   type = { "tech" },
   effects = {
-    unlock_recipe = {"换热器1","热管1","纯水沸腾"},
-    unlock_item = {"换热器I","热管1-X型"},
+    unlock_recipe = {"纯水沸腾"},
+    -- unlock_item = {"换热器I","热管1-X型"},
   },
   prerequisites = {"铝丝制造"},
   ingredients = {
