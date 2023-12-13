@@ -11,7 +11,7 @@ local prototype = gameplay.register.prototype
         {"机械科技包", 1},
     },
     count = 65000,
-    time = "4s"
+    time = "5s"
   }
 
   prototype "登录结束" {
