@@ -287,6 +287,10 @@ local function pickupObject(datamodel, position, blur)
         local typeobject = iprototype.queryByName(o.name)
         iui.open({rml = "/pkg/vaststars.resources/ui/non_building_detail_panel.rml"}, typeobject.icon, typeobject.mineral_name and typeobject.mineral_name or iprototype.display_name(typeobject), o.eid)
 
+        local e = gameplay_core.get_entity(o.id)
+        local item_name = e.lorry.item_prototype == 0 and "" or iprototype.queryById(e.lorry.item_prototype).name
+        log.info(("lorry: id(%s) item(%s) count(%s)"):format(o.id, item_name, e.lorry.item_amount))
+
         local lorry = assert(ilorry.get(o.id))
         lorry:show_arrow(true)
         idetail.add_tmp_object({remove = function()
