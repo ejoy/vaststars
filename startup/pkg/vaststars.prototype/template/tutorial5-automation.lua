@@ -4910,7 +4910,7 @@ return {
   order = 5,
   guide = guide,
   show = true,
-  start_tech = "自动化教学",
+  start_tech = "拾取物资1",
   init_ui = {
     "/pkg/vaststars.resources/ui/construct.rml",
     "/pkg/vaststars.resources/ui/message_pop.rml"

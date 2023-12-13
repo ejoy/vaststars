@@ -350,7 +350,7 @@ return {
   order = 4,
   guide = guide,
   show = true,
-  start_tech = "流体教学",
+  start_tech = "管道接收",
   init_ui = {
     "/pkg/vaststars.resources/ui/construct.rml",
     "/pkg/vaststars.resources/ui/message_pop.rml"

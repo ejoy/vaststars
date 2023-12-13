@@ -45,22 +45,22 @@ local prototype = gameplay.register.prototype
   -- task_params = {building = xx, fluids = {xx, xx}}
   -- count = 1
 
-  prototype "采矿教学" {
-    desc = "学习如何在游戏中采矿",
-    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-    type = { "task" },
-    task = {"unknown", 0, 4},
-    effects = {
-    },
-    prerequisites = {},
-    count = 1,
-    tips_pic = {
-      "",
-    },
-    sign_desc = {
-      { desc = "正式进入采矿教学", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "采矿教学" {
+  --   desc = "学习如何在游戏中采矿",
+  --   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+  --   type = { "task" },
+  --   task = {"unknown", 0, 4},
+  --   effects = {
+  --   },
+  --   prerequisites = {},
+  --   count = 1,
+  --   tips_pic = {
+  --     "",
+  --   },
+  --   sign_desc = {
+  --     { desc = "正式进入采矿教学", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+  --   },
+  -- }
 
   prototype "拾取物资" {
     desc = "从废墟中搜索物资",
@@ -133,7 +133,7 @@ local prototype = gameplay.register.prototype
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = {"task" },
     task = {"select_entity", 0, "采矿机I"},
-    prerequisites = {"拾取物资"},
+    prerequisites = {"放置指挥中心"},
     count = 3,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",

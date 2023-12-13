@@ -51,7 +51,7 @@ return {
     order = 1,
     guide = guide,
     show = true,
-    start_tech = "采矿教学",
+    start_tech = "拾取物资",
     init_ui = {
       "/pkg/vaststars.resources/ui/construct.rml",
       "/pkg/vaststars.resources/ui/message_pop.rml"

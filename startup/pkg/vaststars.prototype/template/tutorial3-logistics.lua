@@ -379,7 +379,7 @@ return {
     order = 3,
     guide = guide,
     show = true,
-    start_tech = "物流教学",
+    start_tech = "废墟搜索",
     init_ui = {
       "/pkg/vaststars.resources/ui/construct.rml",
       "/pkg/vaststars.resources/ui/message_pop.rml"

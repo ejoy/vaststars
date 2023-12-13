@@ -3,32 +3,33 @@ local guide1 = {
         name = "",
 		narrative = {
             {"哔哩..欢迎进入{/g 采矿教学}", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..检查附近的{/color:4bd0ff 废墟堆},拾取残余{/g 物资}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             pop_chapter = {"教学","开采矿物"},
             task = {
-                "采矿教学",
+                "拾取物资",
             },
             guide_progress = 1,
         },
         prerequisites = {},
 	},
 
-	{
-        name = "",
-		narrative = {
-            {"哔哩..检查附近的{/color:4bd0ff 废墟堆},拾取残余{/g 物资}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
-        },
-        narrative_end = {
-            task = {
-                "拾取物资",
-            },
-            guide_progress = 2,
-        },
-        prerequisites = {
-            "采矿教学",
-        },
-	},
+	-- {
+    --  name = "",
+	-- 	narrative = {
+    --         {"哔哩..检查附近的{/color:4bd0ff 废墟堆},拾取残余{/g 物资}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+    --     },
+    --     narrative_end = {
+    --         task = {
+    --             "拾取物资",
+    --         },
+    --         guide_progress = 2,
+    --     },
+    --     prerequisites = {
+    --         "采矿教学",
+    --     },
+	-- },
 
     {
         name = "",

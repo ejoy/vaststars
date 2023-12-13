@@ -3,32 +3,33 @@ local guide2 = {
         name = "",
 		narrative = {
             {"哔哩..欢迎进入{/g 流体教学}", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..先从{/color:4bd0ff 仓库}里获取一些成品{/g 管道}", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             pop_chapter = {"教学","液网搭建"},
             task = {
-                "流体教学",
+                "管道接收",
             },
             guide_progress = 10,
         },
         prerequisites = {},
 	},
 
-    {
-        name = "",
-		narrative = {
-            {"哔哩..先从{/color:4bd0ff 仓库}里获取一些成品{/g 管道}", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
-        },
-        narrative_end = {
-            task = {
-                "管道接收",
-            },
-            guide_progress = 10,
-        },
-        prerequisites = {
-            "流体教学",
-        },
-	},
+    -- {
+    --     name = "",
+	-- 	narrative = {
+    --         {"哔哩..先从{/color:4bd0ff 仓库}里获取一些成品{/g 管道}", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+    --     },
+    --     narrative_end = {
+    --         task = {
+    --             "管道接收",
+    --         },
+    --         guide_progress = 10,
+    --     },
+    --     prerequisites = {
+    --         "流体教学",
+    --     },
+	-- },
 
     {
         name = "",

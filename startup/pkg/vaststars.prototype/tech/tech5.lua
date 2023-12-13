@@ -2,20 +2,20 @@ local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype
 
 
-  prototype "自动化教学" {
-    desc = "自动化教学",
-    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-    type = { "task" },
-    task = {"unknown", 0, 4},
-    prerequisites = {},
-    count = 1,
-    tips_pic = {
-      "",
-    },
-    sign_desc = {
-      { desc = "自动化教学", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "自动化教学" {
+  --   desc = "自动化教学",
+  --   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+  --   type = { "task" },
+  --   task = {"unknown", 0, 4},
+  --   prerequisites = {},
+  --   count = 1,
+  --   tips_pic = {
+  --     "",
+  --   },
+  --   sign_desc = {
+  --     { desc = "自动化教学", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+  --   },
+  -- }
 
   prototype "拾取物资1" {
     desc = "从废墟中搜索物资",
