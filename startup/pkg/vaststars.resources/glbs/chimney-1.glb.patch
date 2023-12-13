@@ -28,27 +28,6 @@ op: replace
 path: /state/CULL
 value: NONE
 ---
-file: work.prefab
-op: add
-path: /-
-value:
-  data:
-    efk:
-      path: /pkg/vaststars.resources/effects/chimney_smoke_startEnd.efk
-      speed: 1
-      fadeout: true
-    scene:
-      s: {3, 3, 3}
-      t: {0, 28, 0}
-    visible_state: main_queue
-  mount: 1
-  policy:
-    ant.scene|scene_object
-    ant.efk|efk
-  tag:
-    work
-    efk_auto_triggered
----
 file: mesh.prefab
 op: copyfile
 path: debris.prefab
@@ -71,6 +50,71 @@ path: /-
 value:
   mount: 1
   prefab: /pkg/vaststars.resources/glbs/scaffold/2x2.glb|mesh.prefab
+---
+file: work.prefab
+op: add
+path: /-
+value:
+  data:
+    efk:
+      fadeout: true
+      path: /pkg/vaststars.resources/effects/chimney_smoke_startEnd.efk
+      speed: 1
+    scene:
+      s: {3, 3, 3}
+      t: {0, 28, 0}
+    visible_state: main_queue
+  mount: 1
+  policy:
+    ant.scene|scene_object
+    ant.efk|efk
+  tag:
+    work
+    efk_auto_triggered
+---
+file: work.prefab
+op: add
+path: /-
+value:
+  data:
+    timeline:
+      duration: 3
+      key_event:
+        ---
+        event_list:
+          ---
+          asset_path: work
+          event_type: Effect
+          link_info:
+            slot_name: ""
+          name: Effect2
+        tick: 0
+        time: 0
+        ---
+        event_list:
+          ---
+          asset_path: work
+          event_type: Effect
+          link_info:
+            slot_name: ""
+          name: Effect3
+        tick: 29
+        time: 0.9666666666666667
+        ---
+        event_list:
+          ---
+          asset_path: work
+          event_type: Effect
+          link_info:
+            slot_name: ""
+          name: Effect4
+        tick: 59
+        time: 1.9666666666666666
+      loop: false
+  policy:
+    ant.timeline|timeline
+  tag:
+    timeline1
 ---
 file: mesh.prefab
 op: createfile

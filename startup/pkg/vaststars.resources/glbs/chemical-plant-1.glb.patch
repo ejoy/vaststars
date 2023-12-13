@@ -123,13 +123,13 @@ op: replace
 path: /2/data/anim_ctrl
 value:
   play_state:
-    ratio: 0.0
-    previous_ratio: 0.0
-    speed: 1.0
-    play: false
+    forwards: true
     loop: false
     manual_update: false
-    forwards: true
+    play: false
+    previous_ratio: 0
+    ratio: 0
+    speed: 1
 ---
 file: mesh.prefab
 op: copyfile
@@ -164,37 +164,13 @@ op: replace
 path: /2/data/anim_ctrl
 value:
   play_state:
-    ratio: 0.0
-    previous_ratio: 0.0
-    speed: 1.0
+    forwards: true
+    loop: false
+    manual_update: false
     play: false
-    loop: false
-    manual_update: false
-    forwards: true
----
-file: work_start.prefab
-op: replace
-path: /2/data/animation_birth
-value: work_start
----
-file: work_start.prefab
-op: replace
-path: /2/data/anim_ctrl
-value:
-  play_state:
-    ratio: 0.0
-    previous_ratio: 0.0
-    speed: 1.0
-    play: true
-    loop: false
-    manual_update: false
-    forwards: true
----
-file: work_start.prefab
-op: replace
-path: /2/tag
-value:
-  animation_auto_triggered
+    previous_ratio: 0
+    ratio: 0
+    speed: 1
 ---
 file: idle_start.prefab
 op: replace
@@ -206,15 +182,61 @@ op: replace
 path: /2/data/anim_ctrl
 value:
   play_state:
-    ratio: 0.0
-    previous_ratio: 0.0
-    speed: 1.0
-    play: true
+    forwards: true
     loop: false
     manual_update: false
-    forwards: true
+    play: true
+    previous_ratio: 0
+    ratio: 0
+    speed: 1
 ---
 file: idle_start.prefab
+op: replace
+path: /2/tag
+value:
+  animation_auto_triggered
+---
+file: work_start.prefab
+op: add
+path: /-
+value:
+  data:
+    timeline:
+      duration: 3
+      key_event:
+        ---
+        event_list:
+          ---
+          asset_path: work_start
+          event_type: Animation
+          name: Animation2
+        tick: 0
+        time: 0
+      loop: false
+  policy:
+    ant.timeline|timeline
+  tag:
+    timeline1
+---
+file: work_start.prefab
+op: replace
+path: /2/data/animation_birth
+value: work_start
+---
+file: work_start.prefab
+op: replace
+path: /2/data/anim_ctrl
+value:
+  play_state:
+    forwards: true
+    loop: false
+    manual_update: false
+    play: true
+    previous_ratio: 0
+    ratio: 0
+    speed: 1
+---
+file: work_start.prefab
 op: replace
 path: /2/tag
 value:
