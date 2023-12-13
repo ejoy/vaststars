@@ -3,7 +3,7 @@ fx:
   setting:
     lighting: on
     cast_shadow: off
-    shadow_receive: on
+    receive_shadow: on
     subsurface: off
   varyings: /pkg/ant.resources/materials/lighting.varyings
 properties:

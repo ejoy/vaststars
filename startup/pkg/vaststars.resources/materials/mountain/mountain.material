@@ -6,7 +6,7 @@ fx:
   setting:
     lighting:       on
     cast_shadow:    on
-    shadow_receive: on
+    receive_shadow: on
     subsurface:     off
   varyings:
     a_position: vec3
