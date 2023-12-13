@@ -3,6 +3,7 @@
 #include "core/saveload.h"
 #include "roadnet/network.h"
 #include "util/queue.h"
+#include "util/prototype.h"
 #include <unordered_map>
 #include <concepts>
 
@@ -280,6 +281,10 @@ namespace lua_world {
 
     int restore_world(lua_State *L) {
         auto& w = getworld(L);
+
+        w.P = prototype::create_cache(L);
+        lua_setiuservalue(L, 1, 1);
+
         FILE* f = createfile(L, 2, filemode::read);
         luaL_checktype(L, 3, LUA_TTABLE);
         lua_settop(L, 3);
