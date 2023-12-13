@@ -624,7 +624,7 @@ namespace roadnet {
                 assert(!isStarting(status, loc) && !isEndpoint(status, loc));
                 crossid id { status.genCrossId++ };
                 bool ok = status.crossMap.insert(loc, id);
-                assert(ok);
+                assert(ok); (void)ok;
             }
         }
 

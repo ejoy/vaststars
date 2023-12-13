@@ -436,7 +436,7 @@ local _update_model ; do
     local math3d = require "math3d"
     local ltask = require "ltask"
     local timepassed = 0.0
-    local delta_radian = math.pi * 0.1
+    local delta_radian = math.pi * 0.02
     local itimer = ecs.require "ant.timer|timer_system"
     function _update_model(name)
         timepassed = timepassed + itimer.delta()
@@ -482,7 +482,7 @@ function M.create(object_id)
     }
 
     timer = itimer.new()
-    timer:interval(6, function ()
+    timer:interval(3, function ()
         _update_model(datamodel.model)
     end)
     return datamodel

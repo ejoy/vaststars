@@ -45,7 +45,7 @@ local Resource <const> = {
 local handler = {}
 
 function handler.file(f)
-    vfs.realpath(f)
+    vfs.read(f)
 end
 function handler.dir(f)
     for file, file_status in fs.pairs(fs.path(f)) do

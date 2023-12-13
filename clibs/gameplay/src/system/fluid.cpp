@@ -88,12 +88,12 @@ void fluidflow::update() {
 
 void fluidflow::set(int id, int fluid) {
 	int r = fluidflow_set(network, id, fluid, multiple);
-	assert(r != -1);
+	assert(r != -1); (void)r;
 }
 
 void fluidflow::set(int id, int fluid, int user_multiple) {
 	int r = fluidflow_set(network, id, fluid, user_multiple);
-	assert(r != -1);
+	assert(r != -1); (void)r;
 }
 
 static int lupdate(lua_State* L) {

@@ -40,11 +40,14 @@ public:
         bool operator==(const index& rhs) const {
             return page == rhs.page && slot == rhs.slot;
         }
-        operator const uint16_t&() const {
-            return *(uint16_t*)this;
+        operator uint16_t () const {
+            return page | (slot << 8);
         }
         static index from(uint16_t v) {
-            return *(index*)&v;
+            index idx;
+            idx.page = v & 0xff;
+            idx.slot = (v >> 8) & 0xff;
+            return idx;
         }
     };
     struct slot {
