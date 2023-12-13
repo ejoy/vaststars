@@ -8,6 +8,7 @@ local prototype = gameplay.register.prototype
     ingredients = {
         {"地质科技包", 1},
         {"气候科技包", 1},
+        {"机械科技包", 1},
     },
     count = 65000,
     time = "4s"
