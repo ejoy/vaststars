@@ -27,6 +27,9 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 7},
     task_params = {building = "指挥中心", item = "管道1-X型", count = 30,},
     count = 30,
+    effects = {
+      unlock_item = {"管道1-X型","碎石","石砖"},
+    },
     prerequisites = {"流体教学"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
