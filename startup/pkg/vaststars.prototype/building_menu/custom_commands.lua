@@ -517,7 +517,12 @@ return {
         "copy",
         "teardown",
     },
-
+    ["特殊浮选器"] = {
+        "move",
+        "set_recipe",
+        "copy",
+        "teardown",
+    },
     ["浮选器II"] = {
         "move",
         "set_recipe",

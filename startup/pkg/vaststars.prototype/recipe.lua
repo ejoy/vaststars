@@ -4432,3 +4432,21 @@ prototype "特殊铁板" {
     time = "1s",
     description = "铁矿石通过金属冶炼获得铁板",
 }
+
+
+prototype "特殊化工3" {
+    type = { "recipe" },
+    recipe_craft_category = "登录配方",
+    recipe_category =  "化工",
+    recipe_order =  118,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
+    ingredients = {
+        {"地下卤水", 100},
+    },
+    results = {
+        {"机械科技包", 10},
+        {"废水", 100},
+    },
+    time = "3s",
+    description = "丁二烯排泄",
+}
