@@ -13,6 +13,7 @@ import_feature "ant.polyline"
 import_feature "ant.terrain|canvas"
 import_feature "ant.shadow_bounding"
 import_feature "ant.shadow_bounding|scene_bounding_pack"
+import_feature "ant.timeline"
 
 component "efk_auto_triggered"
 component "animation_auto_triggered"

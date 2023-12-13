@@ -18,6 +18,15 @@ funcs["base"] = function(world, e, info)
     return info
 end
 
+funcs["factory"] = function(world, e, info)
+    world.ecs:extend(e, "factory?in")
+    if not e.factory then
+        return info
+    end
+    info.amount = 50
+    return info
+end
+
 funcs["building"] = function(world, e, info)
     info.prototype_name = iprototype.queryById(e.building.prototype).name
     info.dir = iprototype.dir_tostring(e.building.direction)
@@ -143,20 +152,55 @@ return function()
         }
     end
 
+    local file = assert(gameplay_core.get_storage().game_template)
+    local template = ecs.require(("vaststars.prototype|%s"):format(file))
+
     writefile(([[
+local guide = require "guide.guide5"
+local mountain = require "mountain"
+
+local mountain = {
+    density = 0.1,
+    mountain_coords = {},
+    excluded_rects = {
+    {0, 0, 255, 255},
+    },
+}
+
 local entities = %s
 local road = %s
 local mineral = %s
 
 return {
+    name = "%s",
     entities = entities,
     road = road,
     mineral = mineral,
+    mountain = mountain,
+    order = %d,
+    guide = guide,
+    show = true,
+    start_tech = "%s",
+    performance_stats = %s,
+    canvas_icon = %s,
+    init_ui = %s,
+    init_instances = %s,
+    game_settings = %s,
+    camera = "%s",
 }
     ]]):format(
         inspect(entities),
         inspect(roads),
-        inspect(imineral.source())
+        inspect(imineral.source()),
+        template.name,
+        template.order,
+        template.start_tech,
+        tostring(template.performance_stats),
+        tostring(template.canvas_icon),
+        inspect(template.init_ui),
+        inspect(template.init_instances),
+        inspect(template.game_settings, {indent="\t\t\t"}),
+        template.camera
     ))
 
     log.info("export entity success")
