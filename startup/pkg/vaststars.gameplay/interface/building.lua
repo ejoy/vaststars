@@ -9,6 +9,7 @@ local kDirtyChest     <const> = 1 << 3
 local kDirtyPark      <const> = 1 << 4
 local kDirtyStation   <const> = 1 << 5
 local kDirtyAirport   <const> = 1 << 6
+local kDirtyEndpoint  <const> = 1 << 7
 
 local DIRTY <const> = {
     roadnet = kDirtyRoadnet,
@@ -17,6 +18,7 @@ local DIRTY <const> = {
     park = kDirtyPark,
     station = kDirtyStation,
     airport = kDirtyAirport,
+    endpoint = kDirtyEndpoint,
 }
 
 local DIRECTION <const> = {
@@ -32,8 +34,12 @@ end
 
 local function dirty_changed_entity(world, e)
     local flags = 0
-    if e.road or e.endpoint or e.starting then
+    if e.road or e.starting then
         flags = flags | kDirtyRoadnet
+    end
+    if e.endpoint then
+        flags = flags | kDirtyRoadnet
+        flags = flags | kDirtyEndpoint
     end
     if e.fluidbox or e.fluidboxes then
         flags = flags | kDirtyFluidflow
@@ -54,8 +60,12 @@ end
 
 local function dirty_entity(world, e)
     local flags = 0
-    if e.road or e.endpoint or e.starting then
+    if e.road or e.starting then
         flags = flags | kDirtyRoadnet
+    end
+    if e.endpoint then
+        flags = flags | kDirtyRoadnet
+        flags = flags | kDirtyEndpoint
     end
     if e.fluidbox or e.fluidboxes then
         flags = flags | kDirtyFluidflow
@@ -108,6 +118,7 @@ function m.dirty_restore(world)
         | kDirtyPark
         | kDirtyStation
         | kDirtyAirport
+        | kDirtyRoadnet
     )
 end
 

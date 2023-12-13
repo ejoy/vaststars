@@ -95,7 +95,7 @@ static int lbuild(lua_State *L) {
             w.market.set_park(id);
         }
     }
-    if (w.dirty & kDirtyStation) {
+    if (w.dirty & (kDirtyEndpoint | kDirtyStation)) {
         flatmap<roadnet::straightid, uint16_t>         stations;
         flatmap<roadnet::lorryid, roadnet::straightid> lorrywhere;
         for (auto& v : ecs_api::select<ecs::station, ecs::endpoint>(w.ecs)) {

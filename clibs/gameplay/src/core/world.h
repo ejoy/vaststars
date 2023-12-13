@@ -25,6 +25,8 @@ constexpr uint64_t kDirtyChest     = 1 << 3;
 constexpr uint64_t kDirtyPark      = 1 << 4;
 constexpr uint64_t kDirtyStation   = 1 << 5;
 constexpr uint64_t kDirtyAirport   = 1 << 6;
+constexpr uint64_t kDirtyEndpoint  = 1 << 7;
+
 
 struct world {
     ecs_context* ecs;
