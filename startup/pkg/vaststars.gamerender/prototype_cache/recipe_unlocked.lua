@@ -25,8 +25,8 @@ return function ()
     local unlocked_tech = setmetatable({}, mt)
     local function _insert_unlocked_tech(name)
         local typeobject = iprototype.queryByName(name)
-        if typeobject.effects and typeobject.effects.unlock_item then
-            for _, prototype_name in ipairs(typeobject.effects.unlock_item) do
+        if typeobject.effects and typeobject.effects.unlock_recipe then
+            for _, prototype_name in ipairs(typeobject.effects.unlock_recipe) do
                 unlocked_tech[prototype_name][typeobject.name] = true
             end
         end
