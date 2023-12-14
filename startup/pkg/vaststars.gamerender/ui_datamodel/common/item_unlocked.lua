@@ -13,7 +13,7 @@ local function is_unlocked(prototype_name)
 
     local tech = next(iprototype_cache.get("item_unlocked")[prototype_name])
     if not tech then
-        return false
+        return true
     end
     return gameplay_core.is_researched(tech)
 end

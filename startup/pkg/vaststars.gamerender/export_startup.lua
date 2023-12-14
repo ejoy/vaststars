@@ -27,6 +27,15 @@ funcs["factory"] = function(world, e, info)
     return info
 end
 
+funcs["debris"] = function(world, e, info)
+    world.ecs:extend(e, "debris?in")
+    if not e.debris then
+        return info
+    end
+    info.debris = e.debris.prototype
+    return info
+end
+
 funcs["building"] = function(world, e, info)
     info.prototype_name = iprototype.queryById(e.building.prototype).name
     info.dir = iprototype.dir_tostring(e.building.direction)
@@ -78,6 +87,11 @@ end
 funcs["chest"] = function(world, e, info)
     world.ecs:extend(e, "chest?in")
     if not e.chest then
+        return info
+    end
+
+    world.ecs:extend(e, "station?in")
+    if e.station then
         return info
     end
 
