@@ -63,20 +63,14 @@ local prototype = gameplay.register.prototype
 
   prototype "迫降火星" {
     desc = "迫降火星",
-    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-    type = { "task" },
-    task = {"unknown", 0, 4},
+    type = { "tech" },
+    prerequisites = {},
+    ingredients = {},
     effects = {
       unlock_item = {"碎石","铁矿石","铝矿石"},
     },
-    prerequisites = {},
     count = 1,
-    tips_pic = {
-      "",
-    },
-    sign_desc = {
-      { desc = "初次进入火星", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-    },
+    time = "0s"
   }
 
   -- prototype "搜索废墟" {
@@ -332,7 +326,7 @@ local prototype = gameplay.register.prototype
     },
     count = 8,
     time = "2s",
-    prerequisites = {"迫降火星"},
+    prerequisites = {},
     sign_desc = {
       { desc = "该科技是一项前沿科技，可引导其他的科技研究", icon = "/pkg/vaststars.resources/ui/textures/science/key_sign.texture"},
     },

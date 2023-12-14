@@ -1,24 +1,25 @@
 local guide = {
-	{
-        name = "",
-		narrative = {
-            {"哔哩..航天飞机迫降{/g 代号P4031}星球。机体受重创已四分五裂..(失望)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
-            -- {"哔哩..哔哗..哔哩..启动大气分析协议中..P4031{/g 缺少氧气}..(失望)"},
-            -- {"哔哩..哔哗..哔哩..启动地质分析协议中..P4031{/g 石铁丰富}..(轻松)","/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
-            -- {"哔哩..哔哗..启动生存可靠性分析..存活概率为{/color:4bd0ff 0.04565%}..(失望)","/pkg/vaststars.resources/ui/textures/guide/guide-4.texture"},
-        },
-        narrative_end = {
-            task = {
-                "迫降火星",
-            },
-            guide_progress = 10,
-        },
-        prerequisites = {},
-	},
+	-- {
+    --     name = "",
+	-- 	narrative = {
+    --         {"哔哩..航天飞机迫降{/g 代号P4031}星球。机体受重创已四分五裂..(失望)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+    --         -- {"哔哩..哔哗..哔哩..启动大气分析协议中..P4031{/g 缺少氧气}..(失望)"},
+    --         -- {"哔哩..哔哗..哔哩..启动地质分析协议中..P4031{/g 石铁丰富}..(轻松)","/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
+    --         -- {"哔哩..哔哗..启动生存可靠性分析..存活概率为{/color:4bd0ff 0.04565%}..(失望)","/pkg/vaststars.resources/ui/textures/guide/guide-4.texture"},
+    --     },
+    --     narrative_end = {
+    --         task = {
+    --             "迫降火星",
+    --         },
+    --         guide_progress = 10,
+    --     },
+    --     prerequisites = {},
+	-- },
 
 	{
         name = "",
 		narrative = {
+            {"哔哩..航天飞机迫降{/g 代号P4031}星球。机体受重创已四分五裂..(失望)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
             {"哔哩..开采星球资源需要大量物资，附近的{/color:4bd0ff 废墟堆}寻找{/g 有用物资}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-2.texture"},
         },
         narrative_end = {
@@ -28,7 +29,7 @@ local guide = {
             },
             guide_progress = 10,
         },
-        prerequisites = {"迫降火星"},
+        prerequisites = {},
 	},
 
     -- {

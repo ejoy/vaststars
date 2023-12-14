@@ -125,7 +125,10 @@ return {
   mountain = mountain,
   show = false,
   guide = guide,
-  start_tech = "迫降火星",
+  start_tech = "地质研究",
+  research_queue = {
+    "迫降火星",
+  },
   init_ui = {
     "/pkg/vaststars.resources/ui/construct.rml",
     "/pkg/vaststars.resources/ui/message_pop.rml"
