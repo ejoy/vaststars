@@ -146,10 +146,10 @@ return {
       infinite_item = false,
     },
     camera = "/pkg/vaststars.resources/camera_default.prefab",
-    tutorial_desc = "学习如何电力搭建。",
+    tutorial_desc = "学习向基地建筑充足供电",
     tutorial_details = {
-      "放置无人机平台收集开采出来的矿物 2",
-      "放置无人机平台收集开采出来的矿物 2",
-      "放置无人机平台收集开采出来的矿物 2",
+      "放置{/g 风力发电机}为基地供电",
+      "制造并铺设{/g 太阳能板}提供额外供电",
+      "放置{/g 蒸汽发电机}满足更多供电需求",
     },
 }

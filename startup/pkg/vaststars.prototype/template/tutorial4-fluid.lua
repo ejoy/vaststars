@@ -367,10 +367,10 @@ return {
     infinite_item = false,
   },
   camera = "/pkg/vaststars.resources/camera_default.prefab",
-  tutorial_desc = "学习如何液网搭建。",
+  tutorial_desc = "学会铺设液网满足建筑流体获取或排放",
   tutorial_details = {
-    "放置无人机平台收集开采出来的矿物 4",
-    "放置无人机平台收集开采出来的矿物 4",
-    "放置无人机平台收集开采出来的矿物 4",
+    "铺设{/g 管道}或{/g 地下管}连接建筑液口",
+    "放置{/g 液罐}存储更多流体",
+    "使用{/g 烟囱}或{/g 排水口}排放多余流体",
   },
 }

@@ -4924,10 +4924,10 @@ return {
     infinite_item = false,
   },
   camera = "/pkg/vaststars.resources/camera_default.prefab",
-  tutorial_desc = "学习如何自动化搭建。",
+  tutorial_desc = "学会自动化生产和持续研究科技",
   tutorial_details = {
-    "放置无人机平台收集开采出来的矿物 5",
-    "放置无人机平台收集开采出来的矿物 5",
-    "放置无人机平台收集开采出来的矿物 5",
+    "铺设{/g 物流网络}实现原料定点运输",
+    "铺设{/g 液网}向需求建筑供应流体原料",
+    "制造{/g 发电设施}满足基地供电需求",
   },
 }

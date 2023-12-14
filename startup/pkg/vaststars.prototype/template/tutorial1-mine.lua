@@ -65,10 +65,10 @@ return {
       infinite_item = false,
     },
     camera = "/pkg/vaststars.resources/camera_default.prefab",
-    tutorial_desc = "学习如何矿物挖掘。",
+    tutorial_desc = "学习挖掘矿物和存储矿物",
     tutorial_details = {
-      "放置无人机平台收集开采出来的矿物 1",
-      "放置无人机平台收集开采出来的矿物 1",
-      "放置无人机平台收集开采出来的矿物 1",
+      "寻找矿点并放置{/g 采矿机}",
+      "仓库{/g 设置物品}选择开采矿物",
+      "放置{/g 无人机平台}运输开采矿物至仓库",
     },
 }

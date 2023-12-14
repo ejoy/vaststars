@@ -393,10 +393,10 @@ return {
       infinite_item = false,
     },
     camera = "/pkg/vaststars.resources/camera_default.prefab",
-    tutorial_desc = "学习如何物流搭建。",
+    tutorial_desc = "学习铺设公路和物流站展开物流运输",
     tutorial_details = {
-      "放置无人机平台收集开采出来的矿物 3",
-      "放置无人机平台收集开采出来的矿物 3",
-      "放置无人机平台收集开采出来的矿物 3",
+      "修补{/g 断开公路}使得路网通畅",
+      "设置物流站的{/g 收货}和{/g 出货}物品",
+      "增加{/g 运输车辆}加大物流运力",
     },
 }
