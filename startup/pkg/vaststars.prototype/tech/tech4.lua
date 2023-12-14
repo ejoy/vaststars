@@ -20,6 +20,18 @@ local prototype = gameplay.register.prototype
   --   },
   -- }
 
+  prototype "登录科技4" {
+    desc = "获得火星岩石加工成石砖的工艺",
+    type = { "tech" },
+    prerequisites = {},
+    ingredients = {},
+    effects = {
+      unlock_item = {"管道1-X型","碎石","石砖"},
+    },
+    count = 1,
+    time = "0s"
+  }
+
   prototype "管道接收" {
     desc = "仓库选择获取管道",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
@@ -27,10 +39,8 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 7},
     task_params = {building = "指挥中心", item = "管道1-X型", count = 30,},
     count = 30,
-    effects = {
-      unlock_item = {"管道1-X型","碎石","石砖"},
-    },
-    prerequisites = {"流体教学"},
+    effects = {},
+    prerequisites = {},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },

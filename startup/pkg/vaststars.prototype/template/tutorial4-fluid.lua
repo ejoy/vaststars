@@ -351,6 +351,9 @@ return {
   guide = guide,
   show = true,
   start_tech = "管道接收",
+  research_queue = {
+    "登录科技4",
+  },
   init_ui = {
     "/pkg/vaststars.resources/ui/construct.rml",
     "/pkg/vaststars.resources/ui/message_pop.rml"
