@@ -1,7 +1,7 @@
 ---
 duration: 0.6
-name: mars-pumpjack_animat
-sample_ratio: 50
+name: work
+sample_ratio: 30
 skeleton: /pkg/vaststars.resources/glbs/mars-pumpjack.glb|animations/skeleton.bin
 target_anims:
   ---
@@ -11,7 +11,7 @@ target_anims:
     amplitude_rot: 0
     direction: 7
     random_amplitude: false
-    range: {0, 5}
+    range: {0, 2}
     repeat_count: 1
     rot_axis: 2
     tween: 7
@@ -21,7 +21,7 @@ target_anims:
     amplitude_rot: 0
     direction: 6
     random_amplitude: false
-    range: {6, 16}
+    range: {3, 9}
     repeat_count: 2
     rot_axis: 2
     tween: 7
@@ -31,7 +31,7 @@ target_anims:
     amplitude_rot: 0
     direction: 6
     random_amplitude: false
-    range: {17, 29}
+    range: {10, 17}
     repeat_count: 1
     rot_axis: 2
     tween: 7
@@ -45,7 +45,7 @@ target_anims:
     amplitude_rot: -360
     direction: 2
     random_amplitude: false
-    range: {0, 29}
+    range: {0, 17}
     repeat_count: 1
     rot_axis: 2
     tween: 1

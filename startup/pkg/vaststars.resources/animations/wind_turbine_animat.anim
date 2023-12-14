@@ -1,7 +1,7 @@
 ---
 duration: 6
-name: wind-turbine
-sample_ratio: 50
+name: work
+sample_ratio: 30
 skeleton: /pkg/vaststars.resources/glbs/wind-turbine-1.glb|animations/skeleton.bin
 target_anims:
   ---
@@ -11,7 +11,7 @@ target_anims:
     amplitude_rot: 360
     direction: 2
     random_amplitude: false
-    range: {0, 299}
+    range: {0, 179}
     repeat_count: 1
     rot_axis: 3
     tween: 1

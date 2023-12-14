@@ -1,7 +1,7 @@
 ---
 duration: 2.4
 name: work1
-sample_ratio: 50
+sample_ratio: 30
 target_anims:
   ---
   clips:
@@ -10,7 +10,7 @@ target_anims:
     amplitude_rot: 0
     direction: 2
     random_amplitude: false
-    range: {0, 119}
+    range: {0, 71}
     repeat_count: 1
     rot_axis: 2
     tween: 1
@@ -21,7 +21,7 @@ type: srt
 ---
 duration: 2.4
 name: work2
-sample_ratio: 50
+sample_ratio: 30
 target_anims:
   ---
   clips:
@@ -30,7 +30,7 @@ target_anims:
     amplitude_rot: 360
     direction: 2
     random_amplitude: false
-    range: {0, 119}
+    range: {0, 71}
     repeat_count: 1
     rot_axis: 2
     tween: 1

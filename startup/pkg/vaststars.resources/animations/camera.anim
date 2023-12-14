@@ -1,7 +1,7 @@
 ---
 duration: 60
 name: camera
-sample_ratio: 50
+sample_ratio: 30
 target_anims:
   ---
   clips:
@@ -10,7 +10,7 @@ target_anims:
     amplitude_rot: 0
     direction: 1
     random_amplitude: false
-    range: {50, 250}
+    range: {30, 150}
     repeat_count: 1
     rot_axis: 1
     tween: 2
@@ -20,7 +20,7 @@ target_anims:
     amplitude_rot: 0
     direction: 1
     random_amplitude: false
-    range: {251, 1250}
+    range: {151, 750}
     repeat_count: 1
     rot_axis: 2
     tween: 1
@@ -30,7 +30,7 @@ target_anims:
     amplitude_rot: 0
     direction: 1
     random_amplitude: false
-    range: {1251, 1450}
+    range: {751, 870}
     repeat_count: 1
     rot_axis: 2
     tween: 3
@@ -40,7 +40,7 @@ target_anims:
     amplitude_rot: 0
     direction: 1
     random_amplitude: false
-    range: {1451, 1550}
+    range: {871, 930}
     repeat_count: 1
     rot_axis: 2
     tween: 1
@@ -50,7 +50,7 @@ target_anims:
     amplitude_rot: 0
     direction: 1
     random_amplitude: false
-    range: {1551, 1750}
+    range: {931, 1050}
     repeat_count: 1
     rot_axis: 2
     tween: 2
@@ -60,7 +60,7 @@ target_anims:
     amplitude_rot: 0
     direction: 1
     random_amplitude: false
-    range: {1751, 2750}
+    range: {1051, 1650}
     repeat_count: 1
     rot_axis: 2
     tween: 1
@@ -70,7 +70,7 @@ target_anims:
     amplitude_rot: 0
     direction: 1
     random_amplitude: false
-    range: {2751, 2950}
+    range: {1651, 1770}
     repeat_count: 1
     rot_axis: 2
     tween: 3

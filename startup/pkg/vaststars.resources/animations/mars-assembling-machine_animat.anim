@@ -1,7 +1,7 @@
 ---
 duration: 3
-name: mars-assembling-machine_animat
-sample_ratio: 50
+name: work
+sample_ratio: 30
 skeleton: /pkg/vaststars.resources/glbs/mars-assembling-machine.glb|animations/skeleton.bin
 target_anims:
   ---
@@ -15,7 +15,7 @@ target_anims:
     amplitude_rot: 0
     direction: 1
     random_amplitude: false
-    range: {0, 120}
+    range: {0, 72}
     repeat_count: 1
     rot_axis: 2
     tween: 1
@@ -25,7 +25,7 @@ target_anims:
     amplitude_rot: 0
     direction: 1
     random_amplitude: false
-    range: {121, 149}
+    range: {73, 89}
     repeat_count: 1
     rot_axis: 2
     tween: 1
@@ -39,7 +39,7 @@ target_anims:
     amplitude_rot: 0
     direction: 3
     random_amplitude: false
-    range: {0, 110}
+    range: {0, 66}
     repeat_count: 10
     rot_axis: 2
     tween: 7
@@ -57,7 +57,7 @@ target_anims:
     amplitude_rot: -60
     direction: 2
     random_amplitude: false
-    range: {0, 149}
+    range: {0, 89}
     repeat_count: 1
     rot_axis: 1
     tween: 1
@@ -71,7 +71,7 @@ target_anims:
     amplitude_rot: 0
     direction: 3
     random_amplitude: false
-    range: {0, 149}
+    range: {0, 89}
     repeat_count: 1
     rot_axis: 2
     tween: 1

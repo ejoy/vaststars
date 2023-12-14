@@ -1,8 +1,8 @@
 ---
 type: ske
 duration: 3
-name: miner_Bone
-sample_ratio: 50
+name: work
+sample_ratio: 30
 skeleton: /pkg/vaststars.resources/glbs/miner-1.glb|animations/skeleton.bin
 target_anims:
   ---
@@ -12,7 +12,7 @@ target_anims:
     amplitude_rot: 0
     direction: 2
     random_amplitude: false
-    range: {4, 134}
+    range: {2, 79}
     repeat_count: 1
     rot_axis: 2
     tween: 6
@@ -25,7 +25,7 @@ target_anims:
     amplitude_rot: -120
     direction: 2
     random_amplitude: false
-    range: {23, 113}
+    range: {12, 67}
     repeat_count: 8
     rot_axis: 2
     tween: 1
@@ -38,7 +38,7 @@ target_anims:
     amplitude_rot: 27
     direction: 2
     random_amplitude: false
-    range: {4, 134}
+    range: {2, 79}
     repeat_count: 1
     rot_axis: 3
     tween: 6
@@ -51,7 +51,7 @@ target_anims:
     amplitude_rot: 180
     direction: 2
     random_amplitude: false
-    range: {1, 131}
+    range: {1, 78}
     repeat_count: 1
     rot_axis: 2
     tween: 4
